@@ -19,18 +19,6 @@ extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr,
 extern "C" void fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 
-static inline void fn_802CE508_spawn(char* this_, Vec* v) {
-    if (*(s32*)(this_ + 0x4) >= 8) {
-        v->x = lbl_80540E38 + *(f32*)(this_ + 0xc);
-        v->z = lbl_80540E34;
-        v->y = lbl_80540E38 + *(f32*)(this_ + 0x10);
-        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), v, 0, -1, -1);
-    } else {
-        fn_8013CC50(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), this_ + 0xc, lbl_80540E3C, 0x564, 0, 0, 0, 0, 1);
-        fn_8013CC50(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), this_ + 0xc, lbl_80540E40, 0x503, 1, 0, 0, 0, 1);
-    }
-    fn_801F0E34(this_, 0x30003, 0);
-}
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
 {
