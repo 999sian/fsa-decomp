@@ -45,6 +45,11 @@ struct YasiDrawParam {
     }
 };
 extern const char lbl_804721B0[];
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" void fn_801F0E34(void* a, s32 b, s32 c);
+extern "C" void fn_8013CC50(s32 room, void* pos, f32 f, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_802DEB58(void);
+extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_8023CB24(s32 holder);
 extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" void fn_801F06F0(Actor* a, const char* name, s32 id, YasiDrawParam* param, s32 p5, f32 f6, f32 f7);
@@ -95,6 +100,76 @@ extern "C" void fn_8034CC98(Actor* a) {
     fn_801F06F0(a, lbl_804721B0, 0x2b, &param, flag, 1.0f, 1.0f);
     *(f64*)&a->field_0C = *(f64*)&saved;
     a->field_0C.z = saved.z;
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" u16 fn_80226850(void* p, s32 q);
+extern "C" void fn_8034D99C(Actor* a) {
+    u8* p = (u8*)a;
+    u32 attr = (u16)fn_80226850(&a->field_0C, a->field_04);
+    if (attr - 0x64 > 3 && attr - 0x2c2 > 1 && attr != 0x2d2) {
+        if (attr != 0x2d3) {
+            goto bounds;
+        }
+        *(u8*)(p + 0x380) = 1;
+        *(u8*)(p + 0x385) = 1;
+    }
+    if (*(s32*)(p + 0x370) != 1) {
+        return;
+    }
+bounds:
+    f32 minX = *(f32*)(p + 0x80) + a->field_0C.x;
+    f32 maxX = *(f32*)(p + 0x88) + a->field_0C.x;
+    f32 minY = *(f32*)(p + 0x84) + a->field_0C.y;
+    f32 maxY = *(f32*)(p + 0x8c) + a->field_0C.y;
+    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+    s32 i = 0;
+    s32 j = 0;
+    for (; i < count; i++, j += 4) {
+        Actor* e = (Actor*)*(void**)((u8*)fn_801F856C() + j + 8);
+        u8 ok = 0;
+        if (e == 0) {
+            continue;
+        }
+        if (a->field_198 == e->field_198) {
+            continue;
+        }
+        if (e->field_11C != 1) {
+            continue;
+        }
+        if ((s32)a->field_04 != (s32)e->field_04) {
+            continue;
+        }
+        f32 ex = e->field_24.x;
+        f32 ey = e->field_24.y;
+        if (ex >= minX || ey >= minY || ex >= maxX || ey >= maxY) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (ok != 1) {
+            continue;
+        }
+        if (*(s32*)(p + 0x374) >= 8) {
+            return;
+        }
+        if (e->field_1A8 == 1) {
+            *(u8*)(p + 0x380) = 1;
+            *(u8*)(p + 0x381) = 1;
+        } else if (e->field_1A0 == 0x4654474c) {
+            *(u8*)(p + 0x380) = 1;
+            *(u8*)(p + 0x384) = 1;
+        }
+        s32 idx = *(s32*)(p + 0x374);
+        *(u32*)(p + idx * 0x18 + 0x260) = e->field_1A0;
+        *(f32*)(p + idx * 0x18 + 0x264) = ex;
+        *(f32*)(p + idx * 0x18 + 0x268) = ey;
+        *(f32*)(p + idx * 0x18 + 0x26c) = e->field_24.z;
+        *(u32*)(p + idx * 0x18 + 0x270) = e->field_90;
+        *(s32*)(p + idx * 0x18 + 0x274) = e->field_16C;
+        e->field_11C = 0;
+        *(s32*)(p + 0x374) = idx + 1;
+    }
 }
 
 extern "C" void fn_8034DBF4(Actor* a) {
