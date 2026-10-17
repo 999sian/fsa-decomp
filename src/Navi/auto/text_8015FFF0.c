@@ -555,7 +555,7 @@ extern "C" char lbl_80297DD4[];
 extern "C" char lbl_802EE2D4[];
 extern "C" char* fn_80161710(u16* p, char* s, s8 term);
 extern "C" void* fn_80161874(void* a, char** b, s8 term) {
-*b = fn_80161710((u16*)a, *b, term);
+    *b = fn_80161710((u16*)a, *b, term);
     return a;
 }
 
