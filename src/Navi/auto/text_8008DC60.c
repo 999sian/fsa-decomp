@@ -510,6 +510,14 @@ extern "C" void* fn_80092F88(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8009388C(char* param_1) {
+    if (*(u8*)(*(char**)(param_1 + 0x280) + 0x159) == 2) {
+        fn_800C6CA4(*(void**)(param_1 + 0x27c));
+        param_1[0x2a5] = 2;
+        param_1[0x85c] = 5;
+    }
+}
+
 extern "C" void OSResetSystem(int, u32, int);
 extern "C" void fn_80094090(void) {
     OSResetSystem(1, 1, 1);
