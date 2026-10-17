@@ -30,6 +30,52 @@ public:
 };
 extern J3DFogInfo j3dDefaultFogInfo;
 
+struct J3DIndTevStageInfo {
+    u8 mIndStage;  // _00
+    u8 mIndFormat; // _01
+    u8 mBiasSel;   // _02
+    u8 mMtxSel;    // _03
+    u8 mWrapS;     // _04
+    u8 mWrapT;     // _05
+    u8 mPrev;      // _06
+    u8 mLod;       // _07
+    u8 mAlphaSel;  // _08
+    u8 _09;
+    u8 _0A;
+    u8 _0B;
+};
+extern J3DIndTevStageInfo j3dDefaultIndTevStageInfo;
+
+class J3DIndTevStage {
+public:
+    J3DIndTevStage() {
+        mInfo = 0;
+        setIndTevStageInfo(j3dDefaultIndTevStageInfo);
+    }
+    void setIndTevStageInfo(const J3DIndTevStageInfo& info) {
+        setIndStage(info.mIndStage);
+        setIndFormat(info.mIndFormat);
+        setBiasSel(info.mBiasSel);
+        setMtxSel(info.mMtxSel);
+        setWrapS(info.mWrapS);
+        setWrapT(info.mWrapT);
+        setPrev(info.mPrev);
+        setLod(info.mLod);
+        setAlphaSel(info.mAlphaSel);
+    }
+    void setIndStage(u32 stage) { mInfo = mInfo & ~0x03 | stage; }
+    void setIndFormat(u32 format) { mInfo = mInfo & ~0x0C | format << 2; }
+    void setBiasSel(u32 sel) { mInfo = mInfo & ~0x70 | sel << 4; }
+    void setAlphaSel(u32 sel) { mInfo = mInfo & ~0x0180 | sel << 7; }
+    void setMtxSel(u32 sel) { mInfo = mInfo & ~0x1E00 | sel << 9; }
+    void setWrapS(u32 wrap) { mInfo = mInfo & ~0xE000 | wrap << 13; }
+    void setWrapT(u32 wrap) { mInfo = mInfo & ~0x070000 | wrap << 16; }
+    void setLod(u32 lod) { mInfo = mInfo & ~0x080000 | lod << 19; }
+    void setPrev(u32 prev) { mInfo = mInfo & ~0x100000 | prev << 20; }
+
+    u32 mInfo;
+};
+
 class J3DMaterial;
 class J3DMaterialFactory {
 public:
