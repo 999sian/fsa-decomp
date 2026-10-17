@@ -82,7 +82,6 @@ extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, u32 c);
 extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
 extern "C" void fn_8020ED5C(char* this_, s32 st);
 
-
 extern "C" u8 fn_8020DF4C(char* this_) {
     u8 r = 0;
     if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053FA2C &&
