@@ -107,6 +107,26 @@ extern "C" void fn_8008C4DC(void) {
     fn_8008C5F4();
 }
 
+extern "C" s32 fn_8008CB14(u8* self) {
+    if (*(s8*)(self + 0x2e0) == 0) {
+        (*(s8*)(self + 0x2e0))++;
+    } else if (*(s8*)(self + 0x2e0) != -1) {
+        if (*(s32*)(lbl_802BB0FC + 0x44) >= 0xe) {
+            Arg_8008CF88 a = lbl_80284BCC;
+            fn_8008CF88(self, &a, 0);
+        } else if (lbl_802FEDD8 & 1) {
+            switch (lbl_802FEDE4) {
+            case 1: {
+                Arg_8008CF88 b = lbl_80284BD8;
+                fn_8008CF88(self, &b, 0);
+                break;
+            }
+            }
+        }
+    }
+    return 1;
+}
+
 extern f32 lbl_80300A8C;
 extern f32 lbl_80300A90;
 extern char lbl_802C5408[];
