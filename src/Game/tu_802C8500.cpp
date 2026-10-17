@@ -1,4 +1,5 @@
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 class ActorV {
 public:
