@@ -92,6 +92,15 @@ extern "C" u8 fn_802317F0(s32 a, u32 b, void* c, void* d, s32 e);
 extern f32 lbl_8053E298;
 extern u32 lbl_804C1BC0[];
 extern u8 lbl_804C1BD0[];
+
+static inline void gnonReleaseHandle(u8** handle) {
+    u8* h = *handle;
+    if (h != 0) {
+        *(u32*)(h + 0xf4) |= 1;
+        *(s32*)(h + 0x24) = 1;
+        *handle = 0;
+    }
+}
 struct GnonTimers { u8 pad[0x234]; s32 t[10]; };
 
 extern "C" void fn_80192BD8(char* this_) {
@@ -113,6 +122,58 @@ extern "C" void fn_80192BD8(char* this_) {
         if (((GnonTimers*)this_)->t[i] > 0) {
             ((GnonTimers*)this_)->t[i]--;
         }
+    }
+}
+
+extern "C" void fn_80196020(char* this_, s32 idx) {
+    if (idx < 0) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x268) < 0) {
+        u8* h;
+        h = *(u8**)(this_ + 0x328);
+        if (h != 0) {
+            *(u32*)(h + 0xf4) |= 1;
+            *(s32*)(h + 0x24) = 1;
+            *(u8**)(this_ + 0x328) = 0;
+        }
+        h = *(u8**)(this_ + 0x32c);
+        if (h != 0) {
+            *(u32*)(h + 0xf4) |= 1;
+            *(s32*)(h + 0x24) = 1;
+            *(u8**)(this_ + 0x32c) = 0;
+        }
+        h = *(u8**)(this_ + 0x330);
+        if (h != 0) {
+            *(u32*)(h + 0xf4) |= 1;
+            *(s32*)(h + 0x24) = 1;
+            *(u8**)(this_ + 0x330) = 0;
+        }
+        h = *(u8**)(this_ + 0x334);
+        if (h != 0) {
+            *(u32*)(h + 0xf4) |= 1;
+            *(s32*)(h + 0x24) = 1;
+            *(u8**)(this_ + 0x334) = 0;
+        }
+        h = *(u8**)(this_ + 0x338);
+        if (h != 0) {
+            *(u32*)(h + 0xf4) |= 1;
+            *(s32*)(h + 0x24) = 1;
+            *(u8**)(this_ + 0x338) = 0;
+        }
+        *(s32*)(this_ + 0x328) = fn_8013CC50(*(u32*)(this_ + 4), fn_8023E724(idx), 0x2a6, 0, 0, 0, 0, 1, lbl_8053E298);
+        *(s32*)(this_ + 0x32c) = fn_8013CC50(*(u32*)(this_ + 4), fn_8023E724(idx), 0x2a7, 0, 0, 0, 0, 1, lbl_8053E298);
+    }
+    if (fn_8022F3DC(idx) >= 0) {
+        idx = fn_8022F3DC(idx);
+    }
+    fn_8022CA6C(idx, 5, 0);
+    if (fn_802317F0(idx, lbl_804C1BC0[idx], fn_8023E724(idx), lbl_804C1BD0 + idx * 12, 6)) {
+        *(f32*)(this_ + 0x2a8) = lbl_8053E298;
+        *(s32*)(this_ + 0x234) = 100;
+        *(s32*)(this_ + 0x230) = 0x22;
+    } else {
+        *(s32*)(this_ + 0x230) = 0x21;
     }
 }
 
