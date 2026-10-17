@@ -52,6 +52,18 @@ extern "C" void fn_8010BAA0(NaviState_8010ABB0* p) {
     (p->*lbl_8028EA24[((u8*)p)[0x9a]])();
 }
 
+extern "C" void fn_8010BD04(u8* param_1) {
+    if (fn_8002F6BC(param_1) == 0) {
+        param_1[0x9b] = 0x3c;
+        u8 v = param_1[0x9b];
+        VObj_8010BD04* obj = *(VObj_8010BD04**)((u8*)lbl_802FF278 + 4);
+        if (obj != nullptr) {
+            obj->v2(v);
+        }
+        param_1[0x9a] = 2;
+    }
+}
+
 extern "C" void fn_8010BD6C(u8* param_1) {
     if (param_1[0x9b] != 0) {
         param_1[0x9b]--;
