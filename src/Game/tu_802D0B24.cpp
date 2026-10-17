@@ -176,7 +176,7 @@ extern "C" void fn_802D0FAC(char* p) {
         return;
     }
     s32 room = *(s32*)(p + 0x4);
-    char* base = fn_802D6A9C() + 0x10000 + room;
+    char* base = (char*)((u32)fn_802D6A9C() + 0x10000) + room;
     if (*(u8*)(base + 0x31df) == 0) {
         *(f32*)(p + 0x44) += lbl_80540EB0;
         *(YasiVec*)(p + 0xc) += *(YasiVec*)(p + 0x3c);
