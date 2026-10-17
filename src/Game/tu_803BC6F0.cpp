@@ -72,6 +72,8 @@ extern "C" f32 lbl_80543458;
 extern "C" f32 lbl_80543498;
 extern "C" f32* getBounds__7J2DPaneFv(void* this_);
 extern "C" u32 fn_803B9940(void* a, s32 b);
+extern "C" u8 fn_803B90E4(u32 a, s32 b);
+extern "C" u8 fn_803B8CAC(u32 a, s32 b);
 extern "C" void fn_803B9B8C(void* a);
 extern "C" void fn_80402B10(void* a, s16 b, u8 c, f32 d);
 extern "C" void fn_80402628(void* a, s16 b, u8 c, s32 d);
