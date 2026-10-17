@@ -388,9 +388,7 @@ extern "C" void fn_8013D5DC(void* param_1, void* param_2) {
             break;
         }
     }
-    void* obj = *(void**)(self + 0x100);
-    void (*call)(void*, void*) = *(void (**)(void*, void*))(*(u32*)obj + 0x78);
-    call(obj, p);
+    ((VObj_8013D5DC*)*(void**)(self + 0x100))->vf1C(p);
 }
 
 extern "C" void fn_80133694(void*, void*, void*);
