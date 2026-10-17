@@ -1190,12 +1190,14 @@ extern "C" u32 fn_801AFE98(u8* p1, u8* p2) {
 }
 
 extern "C" void* fn_801B09A4(void* self, void* src) {
-    *(u16*)self = *(u16*)((u8*)src + 8);
-    *(u32*)((u8*)self + 4) = 0;
-    *(void**)((u8*)self + 0x78) = fn_801B3658(src, *(u32*)((u8*)src + 0xc));
-    *(void**)((u8*)self + 0x7c) = fn_801B3640(src, *(u32*)((u8*)src + 0x10));
-    *(void**)((u8*)self + 0x80) = fn_801B3628(src, *(u32*)((u8*)src + 0x14));
-    *(void**)((u8*)self + 0x84) = fn_80174B40(src, *(u32*)((u8*)src + 0x18));
+    u8* d = (u8*)self;
+    u8* s = (u8*)src;
+    *(u16*)d = *(u16*)(s + 8);
+    *(u32*)(d + 4) = 0;
+    *(void**)(d + 0x78) = fn_801B3658(src, *(u32*)(s + 0xc));
+    *(void**)(d + 0x7c) = fn_801B3640(src, *(u32*)(s + 0x10));
+    *(void**)(d + 0x80) = fn_801B3628(src, *(u32*)(s + 0x14));
+    *(void**)(d + 0x84) = fn_80174B40(src, *(u32*)(s + 0x18));
     return self;
 }
 
@@ -1248,6 +1250,8 @@ extern "C" void* fn_801B339C(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_801B33F8(void) {}
 
 extern void* lbl_8029B6F4[];
 extern void* lbl_8029AE58[];
