@@ -31,6 +31,7 @@ extern "C" void fn_80118B58(void*, int, int);
 
 extern "C" void fn_8015AB40(void*);
 extern "C" void fn_801196E0(void*);
+extern "C" void fn_8011972C(void* p, u8* src);
 extern "C" u8 fn_80119AD4(void*);
 extern "C" void fn_80119A04(void*);
 extern "C" void fn_80119A28(void*);
@@ -105,6 +106,58 @@ extern "C" void fn_801196B4(void* p) {
     *(s32*)(c + 0x14) = -1;
     *(s32*)(c + 0x18) = -1;
     *(u8*)(c + 0x4) = 0;
+}
+
+extern "C" void fn_8011972C(void* p, u8* src) {
+    u8 b0 = src[0];
+    u8 b1 = src[1];
+    u8 b2 = src[2];
+    u8 b3 = src[3];
+    u8* d = (u8*)p;
+    d[0xc] = b0;
+    d[0xd] = b1;
+    d[0xe] = b2;
+    d[0xf] = b3;
+    d[0x10] = b0;
+    d[0x11] = b1;
+    d[0x12] = b2;
+    d[0x13] = b3;
+    d[0x14] = b0;
+    d[0x15] = b1;
+    d[0x16] = b2;
+    d[0x17] = b3;
+    d[0x18] = b0;
+    d[0x19] = b1;
+    d[0x1a] = b2;
+    d[0x1b] = b3;
+}
+
+extern "C" void fn_80119780(void* p, u8* a, u8* b) {
+    u8 a0 = a[0];
+    u8 a1 = a[1];
+    u8 a2 = a[2];
+    u8 a3 = a[3];
+    u8 b0 = b[0];
+    u8 b1 = b[1];
+    u8 b2 = b[2];
+    u8 b3 = b[3];
+    u8* d = (u8*)p;
+    d[0xc] = a0;
+    d[0xd] = a1;
+    d[0xe] = a2;
+    d[0xf] = a3;
+    d[0x10] = a0;
+    d[0x11] = a1;
+    d[0x12] = a2;
+    d[0x13] = a3;
+    d[0x14] = b0;
+    d[0x15] = b1;
+    d[0x16] = b2;
+    d[0x17] = b3;
+    d[0x18] = b0;
+    d[0x19] = b1;
+    d[0x1a] = b2;
+    d[0x1b] = b3;
 }
 
 extern "C" void* fn_80119978(void* param_1, s16 param_2) {
