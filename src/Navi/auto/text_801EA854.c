@@ -132,6 +132,35 @@ extern "C" unsigned char* TRKGetBuffer(int param_1) {
     return ret;
 }
 
+extern "C" int TRKGetFreeBuffer(int* param_1, unsigned char** param_2) {
+    unsigned char* buf;
+    int err = 0x300;
+    int i;
+
+    *param_2 = 0;
+    for (i = 0; i < 3; i++) {
+        buf = 0;
+        if (i >= 0 && i < 3) {
+            buf = (unsigned char*)lbl_802F8A48 + i * 0x890;
+        }
+        TRKAcquireMutex(buf);
+        if (*(int*)(buf + 4) == 0) {
+            *(int*)(buf + 8) = 0;
+            err = 0;
+            *(int*)(buf + 0xc) = 0;
+            *(int*)(buf + 4) = 1;
+            *param_2 = buf;
+            *param_1 = i;
+            i = 3;
+        }
+        TRKReleaseMutex(buf);
+    }
+    if (err == 0x300) {
+        usr_puts_serial(lbl_80202BF0);
+    }
+    return err;
+}
+
 extern "C" int TRKInitializeMutex(void* mutex);
 extern "C" int TRKInitializeMessageBuffers(void) {
     unsigned char* buf = lbl_802F8A48;
