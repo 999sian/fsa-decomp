@@ -1,5 +1,6 @@
 #include "dolphin/card.h"
 #include "dolphin/os.h"
+#include <string.h>
 
 
 extern "C" u8 lbl_8051E2C0[];
