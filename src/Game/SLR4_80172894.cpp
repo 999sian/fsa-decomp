@@ -22,6 +22,15 @@ extern "C" void* fn_801F666C(void* base, s32 id);
 extern "C" s32 fn_8023DE58(s32 a);
 extern u8 lbl_80529DEC[];
 extern const f32 lbl_8053DB4C;
+extern u8 lbl_8053AB60;
+extern const f32 lbl_8053DAB8;
+extern const f32 lbl_8053DABC;
+extern const f32 lbl_8053DAC0;
+extern char lbl_80466808[];
+extern "C" void fn_80172BC8(void* this_);
+extern "C" void fn_801F02BC(void* this_, char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern "C" void fn_801EF574(void* a, void* b, f32* v, DrawRec* rec);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void v07__5ActorFv(void* this_);
 extern "C" void fn_80172894(void* this_) {
     char* p = (char*)this_;
