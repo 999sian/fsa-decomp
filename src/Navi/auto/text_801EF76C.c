@@ -60,6 +60,8 @@ extern "C" DSError ddh_cc_pre_continue(void)
 
 extern char lbl_80203220[];
 extern int lbl_802FFAC0;
+extern "C" int fn_801EFD10(int p);
+extern "C" void fn_801EFAB0(void* a, void* b, int len);
 extern char lbl_8020327C[];
 extern char lbl_802032A4[];
 extern "C" void MWTRACE(u8, char*, ...);
@@ -192,6 +194,38 @@ extern "C" int gdev_cc_write(void* buf, int len)
 		n -= iVar2;
 	}
 	return 0;
+}
+
+extern "C" int gdev_cc_read(void* param_1, u32 param_2)
+{
+	int iVar1;
+	int iVar2;
+	u8 auStack_518[1304];
+
+	iVar2 = 0;
+	if (lbl_802FFAC8 == 0) {
+		iVar2 = -0x2711;
+	}
+	else {
+		MWTRACE(1, lbl_8020335C, param_2, param_2);
+		while (fn_801EFD10((int)lbl_802FB6D8) < param_2) {
+			iVar2 = 0;
+			iVar1 = fn_801F0430();
+			if (iVar1 != 0) {
+				iVar2 = fn_801F03A4(auStack_518, param_2);
+				if (iVar2 == 0) {
+					fn_801EFBB8(lbl_802FB6D8, auStack_518, iVar1);
+				}
+			}
+		}
+		if (iVar2 == 0) {
+			fn_801EFAB0(lbl_802FB6D8, param_1, param_2);
+		}
+		else {
+			MWTRACE(8, lbl_80203384, iVar2);
+		}
+	}
+	return iVar2;
 }
 
 extern "C" int gdev_cc_close()
