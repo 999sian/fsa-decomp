@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" void* fn_8045A640(void*);
@@ -9,20 +10,22 @@ extern "C" unsigned char lbl_804B20F8[];
 #pragma mark fn_8045B010
 extern "C" void fn_8045AD64(void* p);
 extern "C" void fn_8045B010(void* p) {
-    fn_8045AD64((char*)p - 4);
+    return fn_8045AD64((char*)p - 4);
 }
 extern "C" u16 fn_8045B018(void* p, u8* q) {
     return fn_8045ABC8((char*)p - 4, q);
 }
 
 #pragma mark fn_8045B010
-extern "C" void* fn_8045B020(void* p) {
+extern "C" void* fn_8045A640(void* p);
+void* fn_8045A640(void* p);
+extern "C" void* fn_8045B020(void** p) {
     return fn_8045A640((char*)p - 8);
 }
 
 extern "C" s32 fn_8045A6F4(void* p);
-extern "C" void fn_8045B028(char* p) {
-    fn_8045A6F4(p - 8);
+extern "C" s32 fn_8045B028(void* p) {
+    return fn_8045A6F4((char*)p - 8);
 }
 
 extern "C" void fn_80458880(void* a, u32 b, s32 c);
@@ -66,6 +69,101 @@ extern "C" void fn_8045B030(void* param_1, u8 param_2, s8 param_3) {
     }
 }
 
+extern "C" void stopSoundID__8JAISeMgrF10JAISoundID(void* self, u32* id);
+extern "C" s32 getHandleSoundID__15JAISoundHandlesF10JAISoundID(void* self, u32* id);
+extern "C" void stop__8JAISoundFUl(void* self, u32 x);
+extern "C" void movePitch__18JAISoundParamsMoveFfUl(void* self, f32 x, u32 y);
+extern "C" void __ct__Q25JMath13TRandom_fast_FUl(void* self, u32 x);
+extern u32 lbl_8053AF8C;
+extern s8 lbl_8053AF88;
+extern f32 lbl_80491680[];
+extern f32 __float_epsilon;
+extern "C" void* fn_8045B154(u8* p, u32* param_2) {
+    u8 kind;
+    void** h;
+    void* mgr;
+    s32 i;
+
+    kind = ((u8*)param_2)[1];
+    mgr = *(void**)((u8*)lbl_8053AF80 + 0x34);
+    switch (*(s32*)param_2) {
+    case 0x20036:
+        break;
+    case 0x20037: {
+        u32 a = 0x10002;
+        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &a);
+        break;
+    }
+    case 0x2001f:
+    case 0x20035:
+    case 0x20054:
+    case 0x20055:
+    case 0x20056:
+    case 0x2005f: {
+        u32 b = 0x10003;
+        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &b);
+        break;
+    }
+    case 0x20029: {
+        u32 c = 0x10009;
+        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &c);
+        break;
+    }
+    case 0x20032: {
+        u32 d = 0x20032;
+        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &d);
+        break;
+    }
+    case 0x20049: {
+        u32 e = *param_2;
+        if (getHandleSoundID__15JAISoundHandlesF10JAISoundID(p, &e) != 0) {
+            return NULL;
+        }
+        break;
+    }
+    }
+
+    if (kind == 1) {
+        for (i = 0; i < *(s32*)(p + 4); i++) {
+            void* snd = ((void**)*(void**)p)[i];
+            if (snd != NULL) {
+                u32 sid = *(u32*)((u8*)snd + 0x18);
+                if (((u8*)&sid)[1] == 1 && sid != 0x10009 && sid != 0x1000d) {
+                    stop__8JAISoundFUl(snd, 0);
+                    break;
+                }
+            }
+        }
+    }
+
+    {
+        u32 f = *param_2;
+        h = (void**)fn_80456334(p, &f, 0);
+    }
+    if (h == NULL) {
+        return NULL;
+    }
+    if (*h != NULL && *param_2 != 0x20033 && *param_2 != 0x20049) {
+        if (lbl_8053AF88 == 0) {
+            __ct__Q25JMath13TRandom_fast_FUl(&lbl_8053AF8C, 0);
+            lbl_8053AF88 = 1;
+        }
+        if (*(s8*)(p + 0x5c) >= 0 && *(s8*)(p + 0x5c) < 4) {
+            if (kind == 1) {
+                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[*(s8*)(p + 0x5c)], 0);
+            } else if (kind == 2) {
+                f32 v;
+                u32 bits;
+                lbl_8053AF8C = lbl_8053AF8C * 0x19660d + 0x3c6ef35f;
+                bits = (lbl_8053AF8C >> 9) | 0x3f800000;
+                v = *(f32*)&bits - 1.0f;
+                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, 1.0f + (0.03f * v - 0.015f * (1.0f - __float_epsilon)), 0);
+            }
+        }
+    }
+    return h;
+}
+
 extern "C" char* fn_8045B46C(char* p, unsigned char value, long a, long b, long c) {
     __ct__14WaveControllerFlll(p, a, b, c);
     *(void**)(p + 8) = lbl_804B20F8;
@@ -73,4 +171,6 @@ extern "C" char* fn_8045B46C(char* p, unsigned char value, long a, long b, long 
     *(unsigned char*)(p + 0x5c) = value;
     return p;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
