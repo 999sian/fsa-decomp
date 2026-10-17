@@ -9,6 +9,25 @@ extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* p);
 extern void* lbl_8049E7F0[];
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F7A08(void* a, u32 b);
+extern "C" void* fn_801F666C(void* a, void* b);
+extern "C" void fn_802B39E8(void);
+extern "C" void fn_801F0E34(void* this_, s32 a, s32 b);
+extern "C" void fn_801F0D20(void* this_, s32 a);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" u8 fn_80236D14(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_80238548(s32 i, s32 a, void* pos, s32 b);
+extern u8 lbl_80529DEC[];
+extern u8* lbl_8053AB10;
+extern f32 lbl_8053CC20;
+extern f32 lbl_8053CC24;
+extern f32 lbl_8053CC2C;
 
 struct BTBZ_Box {
     f32 x0, y0, x1, y1;
