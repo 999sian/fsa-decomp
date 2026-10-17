@@ -784,6 +784,11 @@ extern "C" s32 fn_80107EB0(u8* p) {
     }
 }
 
+extern "C" void fn_801080E8(void* p) {
+    *(u8*)((u8*)p + 0x191) = ((u8*)lbl_802C5A84)[0x26];
+    *(u8*)((u8*)p + 0x192) = 0;
+}
+
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
     fn_8015FDA8(a, b);
 }
