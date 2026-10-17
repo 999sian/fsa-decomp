@@ -143,7 +143,7 @@ extern "C" s32 fn_8023DE58(s32 a);
 extern "C" void* fn_801F856C(void);
 extern "C" void Actor_CreateByID(void* a, u32 id, void* rec, void* d, s32 e, s32 f, s32 g);
 extern "C" u8* fn_802D6A9C(void);
-extern "C" void fn_802D6F38(void* a, void* b, void* c, s32 d);
+extern "C" void fn_802D6F38(void* a, void* b, void* c, s32 d, s32 e);
 extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
     s32 v26 = room;
     s32 v22 = room;
