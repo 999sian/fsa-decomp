@@ -55,6 +55,18 @@ struct VObj_80103560 {
     virtual void v7(u8 a);
 };
 
+struct Unk80104320 {
+    u8 pad[0x238];
+    VObj_80103560* objs[2];
+    u8 vals[2];
+    u8 pad2[2];
+    VObj_80103560* objs2[2];
+    u8 vals2[2];
+    u8 sel;
+    u8 pad3[3];
+    u8 flag;
+};
+
 struct Unk80103560 {
     u8 pad[0x498];
     VObj_80103560* objs[2];
@@ -1189,6 +1201,21 @@ extern "C" void fn_80105204(u8* p) {
         *(u8*)(*(u32*)(p + 0x1bc) + 0xb0) = 1;
         p[0xf2] = 2;
         p[0xee] = 8;
+    }
+}
+
+extern "C" void fn_80106540(char* p);
+extern "C" void fn_80105ABC(u8* p) {
+    s32 r1 = fn_80108C38(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0, *(f32*)(lbl_802C5A84 + 0x40), lbl_80301204);
+    s32 r2 = fn_80108D50(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0, *(f32*)(lbl_802C5A84 + 0x44), lbl_80301204);
+    (*(s16*)(p + 0xec))++;
+    if (r1 == 1 && r2 == 1) {
+        *(s16*)(p + 0xec) = 0;
+        p[0x428] = *(u8*)(lbl_802C5A84 + 0x49);
+        p[0x429] = 0;
+        fn_80106540((char*)p);
+        p[0xf2] = 2;
+        p[0xee] = 0x16;
     }
 }
 
