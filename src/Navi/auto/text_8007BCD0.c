@@ -118,15 +118,13 @@ extern "C" void fn_8007C2BC(u8* p) {
 
 extern "C" BOOL fn_8007C374(u8* p, s32 mode)
 {
-    u8* w;
-    s32 off;
-    u8* obj;
-    s32 idx;
     if (mode == 0) {
-        idx = *(u16*)(p + 0x14);
-        obj = *(u8**)(lbl_802EE470 + 0x38);
-        off = idx * 0x30;
+        s32 idx = *(u16*)(p + 0x14);
+        u8* w;
+        u8* obj = *(u8**)(lbl_802EE470 + 0x38);
+        u32 off;
         w = *(u8**)(obj + 0x14);
+        off = idx * 0x30;
         fn_801C5D74(*(u8**)(*(u8**)(obj + 0x84) + 0xc) + off, lbl_802FDC98);
         if (idx == (s8)w[0x310]) {
             fn_8000CB28(lbl_802FDC98, -*(s16*)(w + 0x33a));
@@ -135,8 +133,8 @@ extern "C" BOOL fn_8007C374(u8* p, s32 mode)
         }
         if (idx == (s8)w[0x311]) {
             fn_8000CA54(lbl_802FDC98, -*(s16*)(w + 0x342));
-            fn_8000CB28(lbl_802FDC98, *(s16*)(w + 0x340));
-            fn_8000CBFC(lbl_802FDC98, *(s16*)(w + 0x344));
+            fn_8000CB28(lbl_802FDC98, (s16)*(s16*)(w + 0x340));
+            fn_8000CBFC(lbl_802FDC98, (s16)*(s16*)(w + 0x344));
         }
         fn_801C5D74(lbl_802FDC98, *(u8**)(*(u8**)(obj + 0x84) + 0xc) + off);
         fn_801C5D74(lbl_802FDC98, lbl_802EE58C);
@@ -281,6 +279,32 @@ extern "C" BOOL fn_8007E7CC(u8* p)
 		}
 	}
 	return 0;
+}
+
+extern "C" void fn_801158C0(f32* out, void* a, void* b);
+extern "C" void fn_80115A74(f32* out, f32* in);
+extern "C" s16 fn_80115DF4(f32 a, f32 b);
+extern "C" void fn_8007F6CC(u8* self, f32* dir, void* p, f32* outA, f32* outB)
+{
+    f32 v[3];
+    f32 tmp[3];
+    f32 n[3];
+    s32 d;
+
+    fn_801158C0(tmp, p, self + 0x2a0);
+    v[0] = tmp[0];
+    v[1] = tmp[1];
+    v[2] = tmp[2];
+    fn_80115A74(n, v);
+    d = fn_80115DF4(dir[0], dir[2]);
+    d = fn_80115DF4(v[0], v[2]) - d;
+    *outA = navi_angle(d);
+
+    f32 len = navi_sqrtf(dir[0] * dir[0] + dir[2] * dir[2]);
+    f32 len2 = navi_sqrtf(v[0] * v[0] + v[2] * v[2]);
+    d = fn_80115DF4(len, dir[1]);
+    d = fn_80115DF4(len2, v[1]) - d;
+    *outB = navi_angle(d);
 }
 
 extern "C" int fn_8007C604(u8* p);
