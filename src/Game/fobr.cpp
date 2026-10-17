@@ -28,8 +28,6 @@ public:
     virtual void e1();
     virtual void e2();
     virtual void e3();
-    virtual void e4();
-    virtual void e5();
     virtual u32 load(u32 a, void* b);
 };
 
@@ -166,7 +164,7 @@ extern "C" void fn_8020B558(u8* this_) {
         if ((*(u32*)(this_ + 0x230) & 0x80) == 0) {
             fn_801F06F0(this_, lbl_8046A384, iVar6, &args, 7, lbl_8053F9B8, lbl_8053F9B8);
         } else {
-            if (*(s32*)(this_ + 0x138) == 0) {
+            if (*(u32*)(this_ + 0x138) == 0) {
                 fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), &args, 7, lbl_8046A384, iVar6, 0);
             }
             if (*(s32*)(this_ + 4) < 8) {
@@ -231,6 +229,33 @@ extern "C" s32 fn_8020B848(u8* this_) {
             void* actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
             if (actor != 0) {
                 fn_80207830(actor, *(u16*)(this_ + 0x94), player, fn_8023B6CC(player), fn_8023E724(player), out);
+            }
+        }
+    }
+    return 0;
+}
+
+extern "C" s32 fn_8020B918(u8* this_) {
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > 0.0f &&
+        *(f32*)(this_ + 0x6C) - *(f32*)(this_ + 0x64) > 0.0f) {
+        s32 id = fn_801F82CC(fn_801F856C(), this_, *(u8*)(this_ + 0x195), lbl_8053F9D4);
+        if (id >= 0 && id != *(s32*)(this_ + 0x198)) {
+            void* actor = fn_801F666C(fn_801F856C(), id);
+            if (actor != 0) {
+                s32 room = *(s32*)(this_ + 0x4);
+                if (*(u8*)((u8*)fn_802D6A9C() + room + 0x131df) == 0 && *(f32*)(this_ + 0x14) > lbl_8053F9D8 &&
+                    fn_801CC8E4(actor)) {
+                    return 0;
+                }
+                void* target = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+                if (target != 0) {
+                    FobrVec d;
+                    d.x = *(f32*)(this_ + 0xc) - *(f32*)((u8*)actor + 0x3c);
+                    d.y = *(f32*)(this_ + 0x10) - *(f32*)((u8*)actor + 0x40);
+                    d.z = *(f32*)(this_ + 0x14) - *(f32*)((u8*)actor + 0x44);
+                    fn_80207830(target, *(u16*)(this_ + 0x94), *(s32*)((u8*)actor + 0x110), *(s32*)((u8*)actor + 0x118), &d, *(u32*)((u8*)actor + 0x168));
+                }
+                *(u8*)((u8*)actor + 0x164) = 1;
             }
         }
     }
