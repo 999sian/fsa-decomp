@@ -24,8 +24,23 @@ extern "C" void fn_802BD920(void)
 extern f64 lbl_80540BF8;
 extern f32 lbl_80540BE8;
 extern "C" void fn_802BDCC0(void);
+static inline f32 fn_802BE008_cvt(s32 v) {
+    union {
+        f64 f;
+        u32 w[2];
+    } conv;
+
+    conv.w[0] = 0x43300000;
+    conv.w[1] = (u32)v ^ 0x80000000;
+    return (f32)(conv.f - lbl_80540BF8);
+}
+
 extern "C" void fn_802BE008(u8* param_1)
 {
+    union {
+        f64 f;
+        u32 w[2];
+    } conv;
     s32 t;
     s32 a;
     s32 b;
@@ -59,10 +74,15 @@ extern "C" void fn_802BE008(u8* param_1)
     scale = lbl_80540BE8;
     a = *(s32*)(param_1 + 0x258);
     b = *(s32*)(param_1 + 0x25c);
-    *(f32*)(param_1 + 0x23c) = scale * (f32)(-a);
-    *(f32*)(param_1 + 0x240) = scale * (f32)(-b);
-    *(f32*)(param_1 + 0x244) = scale * (f32)a;
-    *(f32*)(param_1 + 0x248) = scale * (f32)b;
+    conv.w[0] = 0x43300000;
+    conv.w[1] = (u32)(-a) ^ 0x80000000;
+    *(f32*)(param_1 + 0x23c) = scale * (f32)(conv.f - lbl_80540BF8);
+    conv.w[1] = (u32)(-b) ^ 0x80000000;
+    *(f32*)(param_1 + 0x240) = scale * (f32)(conv.f - lbl_80540BF8);
+    conv.w[1] = (u32)a ^ 0x80000000;
+    *(f32*)(param_1 + 0x244) = scale * (f32)(conv.f - lbl_80540BF8);
+    conv.w[1] = (u32)b ^ 0x80000000;
+    *(f32*)(param_1 + 0x248) = scale * (f32)(conv.f - lbl_80540BF8);
     *(f32*)(param_1 + 0x23c) = *(f32*)(param_1 + 0x23c) + *(f32*)(param_1 + 0xc);
     *(f32*)(param_1 + 0x240) = *(f32*)(param_1 + 0x240) + *(f32*)(param_1 + 0x10);
     *(f32*)(param_1 + 0x244) = *(f32*)(param_1 + 0x244) + *(f32*)(param_1 + 0xc);
