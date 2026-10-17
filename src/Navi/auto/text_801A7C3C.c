@@ -1637,6 +1637,18 @@ extern "C" void fn_801B3150(u16* out, void* ptr, u32 index) {
     ((u8*)out)[3] = 0;
 }
 
+extern "C" void fn_801B31D0(u32* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u16 value = *(u16*)(data + indices[index] * 0x14c + 0x148);
+    if (value != 0xffff) {
+        u32* table = *(u32**)((u8*)ptr + 0x64);
+        *out = table[value];
+        return;
+    }
+    *out = lbl_80301D24;
+}
+
 extern "C" void fn_801B338C(void) {}
 
 extern "C" u32 fn_801B3390(void) {
