@@ -55,6 +55,21 @@ extern "C" void* fn_80079EFC(void* this_) {
     return this_;
 }
 
+extern "C" void* __ct__14JKRAramArchiveFlQ210JKRArchive15EMountDirection(void* this_, s32 entryNum, s32 mountDirection) {
+    extern char sVolumeList__13JKRFileLoader[];
+    __ct__10JKRArchiveFlQ210JKRArchive10EMountMode(this_, entryNum, 2);
+    *(void**)this_ = lbl_80498BB0;
+    *(s32*)((u8*)this_ + 0x60) = mountDirection;
+    if (fn_8007A398((u8*)this_, entryNum) == 0) {
+        return this_;
+    }
+    *(u32*)((u8*)this_ + 0x2c) = 0x52415243;
+    *(u32*)((u8*)this_ + 0x28) = *(u32*)((u8*)this_ + 0x54) + *(u32*)(*(u8**)((u8*)this_ + 0x48) + 0x4);
+    prepend__10JSUPtrListFP10JSUPtrLink(sVolumeList__13JKRFileLoader, (u8*)this_ + 0x18);
+    *(u8*)((u8*)this_ + 0x30) = 1;
+    return this_;
+}
+
 extern "C" void free__7JKRHeapFPvP7JKRHeap(void* ptr, void* heap);
 extern "C" void remove__10JSUPtrListFP10JSUPtrLink(char* list, u8* link);
 extern "C" void __dt__10JKRArchiveFv(void* this_, s32 deleteFlag);
