@@ -124,6 +124,16 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     fn_80013E18(self);
 }
 
+extern "C" s32 fn_80015574(s8* p) {
+    if (p[0xa8] == 0) {
+        p[0x53] = 1;
+        p[0xa8]++;
+    } else if (p[0xa8] != -1 && (u8)p[0x5e] < 3) {
+        p[0x5e]++;
+    }
+    return 1;
+}
+
 extern "C" void fn_80015C24(void) {
 }
 
