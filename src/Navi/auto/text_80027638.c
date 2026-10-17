@@ -191,8 +191,9 @@ extern "C" void fn_8002A410(unsigned char* p) {
 
 extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char val) {
     int i;
-    for (i = 0; i < 8; i++) {
-        if ((self + idx * 8)[i + 0x840] == val) return 1;
+    unsigned char* p = self + idx * 8;
+    for (i = 0; i < 8; i++, p++) {
+        if (p[0x840] == val) return 1;
     }
     return 0;
 }
