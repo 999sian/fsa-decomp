@@ -476,7 +476,7 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
-    BOOL testBit(int n) {
+    BOOL testBit(s32 n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
