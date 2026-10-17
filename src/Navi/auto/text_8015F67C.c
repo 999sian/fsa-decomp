@@ -33,6 +33,17 @@ struct VObj_8015FBCC {
     virtual s32 vf7(void);
 };
 
+struct VObjT_8015FBCC {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual s32 vf6(void);
+    virtual s32 vf7(void);
+};
+
 extern "C" void fn_8015D050(void*);
 extern "C" void fn_80166B58(void*, void*);
 extern "C" void* fn_8015F67C(void* param_1)
@@ -116,13 +127,13 @@ extern "C" void fn_8015FBC0(u8* param_1)
     param_1[0x28] = 0;
 }
 
-extern "C" s32 fn_8015FBCC(u8* param_1)
+extern "C" s32 fn_8015FBCC(VObj_8015FBCC* param_1)
 {
     s32 iVar1;
     s32 iVar2;
 
-    iVar1 = ((s32 (*)(void*))((*(u32**)param_1)[6]))(param_1);
-    iVar2 = ((s32 (*)(void*))((*(u32**)param_1)[7]))(param_1);
+    iVar1 = param_1->vf6();
+    iVar2 = param_1->vf7();
     return iVar1 - iVar2;
 }
 
