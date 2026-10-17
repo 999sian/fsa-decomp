@@ -325,6 +325,14 @@ extern "C" f32 fn_801E10DC(void* p, ...);
 extern "C" f64 fn_801E9FA0(f64 a, f64 b);
 extern "C" u32 lbl_80201F60[];
 extern f32 lbl_80301828;
+extern f32 lbl_80301898;
+struct PmfObj_8013C838;
+typedef f32 (PmfObj_8013C838::*PmfFunc_8013C838)(void*, f32);
+typedef void (PmfObj_8013C838::*PmfFunc2_8013C838)(f32);
+struct PmfObj_8013C838 {
+    f32 m_call(void*, f32);
+    void m_call2(f32);
+};
 extern "C" void fn_80136148(void* self, void* p, f32 x) {
     int v = 0;
     if (x >= 0.5f) {
@@ -497,20 +505,21 @@ extern "C" f64 fn_801367EC(Vec_801367EC* p, f64* q, f64 x) {
 extern "C" f64 fn_80136958(Vec_801367EC* p, f64* q, f64 x) {
     u32 n;
     f64 r;
-    if (p->begin == 0) {
+    VObj_801367EC** b = p->begin;
+    if (b == 0) {
         n = 0;
     } else {
-        n = p->end - p->begin;
+        n = p->end - b;
     }
     if (n == 0) {
         return lbl_80301830;
     }
     Range_801367EC it;
+    it.cur = b;
+    it.end = p->end;
     Range_801367EC* pi = &it;
-    pi->cur = p->begin;
-    pi->end = p->end;
     r = pi->next()->v5(x);
-    while (!pi->done()) {
+    while (pi->cur != pi->end) {
         r /= pi->next()->v5(x);
     }
     r /= *q;
@@ -1488,6 +1497,37 @@ extern "C" void fn_8013A878(void) {}
 
 extern "C" void fn_8013A87C(void) {}
 
+extern "C" u8 fn_8013A634(void* p, void* q);
+extern "C" u8 fn_8013AE14(void* param_1, void* param_2)
+{
+    *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x40);
+    u8 result = fn_8013A634((u8*)param_1 + 0x20, param_2);
+    u32 andMask = 0xf;
+    u32 orMask = 0;
+    Iter_8013A388 end;
+    end.node = (u8*)param_1 + 0x14;
+    Iter_8013A388 b0;
+    b0.node = *(void**)((u8*)param_1 + 0x14);
+    Iter_8013A388 e2 = end;
+    Iter_8013A388 b2 = b0;
+    Iter_8013A388 cur = b2;
+    Iter_8013A388 last = e2;
+    while (iterNe2_8013A388(cur, last)) {
+        u8* node = (u8*)cur.node;
+        cur.node = *(void**)node;
+        u8* obj = node - 0xc;
+        u8 r = 0;
+        if (fn_8013A634(obj, param_2) || result) {
+            r = 1;
+        }
+        result = r;
+        andMask &= *(u32*)(obj + 0x30);
+        orMask |= *(u32*)(obj + 0x30);
+    }
+    *(u32*)((u8*)param_1 + 0x1c) = andMask | (orMask << 16);
+    return result;
+}
+
 extern char lbl_802911A0[];
 extern char lbl_80292F24[];
 extern void* lbl_80292F5C[];
@@ -2033,6 +2073,21 @@ extern "C" void fn_8013C508(void* a, void* b, void* c, void* d, void* e) {
         fn_801E10DC(*(void**)((u8*)a + 0x128), *(int*)d, c, (int)d);
         break;
     }
+}
+
+extern "C" u32 fn_80136314(u32 i);
+extern "C" void fn_8013C838(void* a, void* b, f32 x) {
+    void* q = (u8*)b + *(s32*)((u8*)a + 8);
+    u32 w = *(u32*)((u8*)q - 1);
+    f32 t = fn_801E10DC(*(void**)((u8*)b + 0x128), q, x);
+    f32 s = x;
+    if (((w >> 8) & 0xff) == 1) {
+        s = t - x;
+    }
+    if (t > 0.0f) {
+        s = ((f64 (*)(f32, f32))fn_80136314(w & 0xff))(s, t);
+    }
+    fn_801E10DC(*(void**)((u8*)b + 0x128), s);
 }
 
 extern "C" void fn_80133414(void*, int);
