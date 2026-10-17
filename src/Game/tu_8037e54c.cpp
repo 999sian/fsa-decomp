@@ -564,7 +564,8 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f
         f32 len = lbl_8053AD78->f6c * scale;
         f32 total = len + (s32)JUTVideo::getManager()->getFbWidth();
         ((J2DTextBox*)lbl_8053AD78->p4)->setFontSize(w, h);
-        ((J2DTextBox*)lbl_8053AD78->p4)->setFontColor(*color, *color);
+        JUtility::TColor c = *color;
+        ((J2DTextBox*)lbl_8053AD78->p4)->setFontColor(c, c);
         lbl_8053AD78->w7c = lines;
         if (lbl_8053AD78->w7c == 0) {
             lbl_8053AD78->f70 = x - lbl_8053AD78->f6c * scale * lbl_805430BC;
@@ -777,8 +778,9 @@ extern "C" s32 fn_8022CAF8(s32 p);
 extern "C" s32 fn_8022EA0C(s32 p);
 extern "C" void fn_8023061C(s32 p, s32 a);
 extern "C" void fn_803895EC(s32 unused, s32 p, s32 a, u8 b, u8 c) {
+    s32 self;
     s32 orig = p;
-    s32 self = resolvePlayer(orig);
+    self = resolvePlayer(orig);
     for (p = 0; p < 4; p++) {
         if (isActive(p) == 9) {
             if (c) {
@@ -820,22 +822,23 @@ extern "C" u8 fn_80389BF0(s32 p, u32 id) {
 
 
 extern "C" u8 fn_8022C8EC(s32 p);
-extern "C" u8 fn_8038B8A8(s32 unused, s32 p, s32 q, u32 id, u16 flags) {
+extern "C" u8 fn_8038B8A8(s32 unused, s32 p, s32 q, u32 id, u32 flags) {
     if (!isActive(p) && !fn_80303750(p) && fn_8022C8EC(p)) {
-        if (flags & 0x91f) {
+        u16 f = flags;
+        if (f & 0x91f) {
             fn_80390E40(lbl_8053AD78->sub[p], id, 0);
             setActive(p, 1);
-            if (flags & 2) {
+            if (f & 2) {
                 *(u16*)((u8*)lbl_8053AD78->sub[p] + 0x28) |= 0x80;
             } else {
                 *(u16*)((u8*)lbl_8053AD78->sub[p] + 0x28) |= 0x1;
             }
-            if (flags & 8) {
+            if (f & 8) {
                 *(u16*)((u8*)lbl_8053AD78->sub[p] + 0x28) |= 0x10;
-            } else if (flags & 0x10) {
+            } else if (f & 0x10) {
                 *(u16*)((u8*)lbl_8053AD78->sub[p] + 0x28) |= 0x20;
             }
-            if (flags & 0x100) {
+            if (f & 0x100) {
                 *(u16*)((u8*)lbl_8053AD78->sub[p] + 0x28) |= 0x100;
             }
             return 1;
