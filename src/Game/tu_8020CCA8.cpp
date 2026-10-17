@@ -15,7 +15,26 @@ extern "C" u8 fn_801E1D7C(u8* o);
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
 extern "C" void fn_801EF574(void* a, void* b, f32* v, void* rec);
 extern "C" void fn_801CD0D0(f32* a, f32* b);
-extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
+extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, f32 e, f32 f, void* g);
+extern "C" int __float_epsilon[];
+struct CCA8Loc {
+    u8 idx[16];
+    s32 a;
+    s32 b;
+    f32* c;
+    u8 d[11];
+    s32 e;
+    u8 f;
+    u8 g;
+    u8 h;
+    s32 i;
+    s32 j;
+    s32 k;
+};
+struct CCA8ResMgr {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void* get(u32 type, void* name);
+};
 extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
 extern "C" u8 lbl_8046A3C0[];
 extern "C" void* lbl_8053AAF8;
