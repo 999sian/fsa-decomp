@@ -57,6 +57,9 @@ extern "C" void* fn_801721FC(void* self);
 extern "C" char lbl_80202278[];
 extern "C" u8 lbl_80301AC8[2];
 extern "C" void* fn_801749F0(void* p, void* q);
+struct VObj_8016C34C {
+    virtual void v0(s32 a);
+};
 struct UnkVObj_80166424 {
     virtual void vf0();
     virtual void vf1();
@@ -999,6 +1002,29 @@ extern "C" int fn_8016CEB4(u8* p, u32 idx, void* val)
     ((u16*)(p + 4))[idx] = 0xFFFF;
     return 1;
 }
+
+extern "C" int fn_8016CF64(u8* p, u32 idx) {
+    void (*fn)(u8*, u8, u32);
+    if (idx >= 2) {
+        return 0;
+    }
+    if (p[0x78] & (1 << idx)) {
+        fn_80118BD0(((void**)(p + 0x64))[idx], 1);
+    }
+    fn_8015AB1C(((void**)(p + 0x6c))[idx]);
+    if (idx == 0) {
+        *(void**)(p + 0x64) = *(void**)(p + 0x68);
+        *(void**)(p + 0x6c) = *(void**)(p + 0x70);
+        *(u16*)(p + 4) = *(u16*)(p + 6);
+    }
+    *(void**)(p + 0x68) = 0;
+    *(void**)(p + 0x70) = 0;
+    *(u16*)(p + 6) = 0xFFFF;
+    fn = (void (*)(u8*, u8, u32))(((void**)(*(void**)p))[0xac / 4]);
+    fn(p, (u8)idx, 0);
+    return 1;
+}
+
 #pragma use_lmw_stmw reset
 
 extern "C" int fn_8016D038(u8* p, void* src)
@@ -1043,6 +1069,35 @@ extern "C" int fn_8016D0F4(u8* p, void* obj)
     return 1;
 }
 
+#pragma use_lmw_stmw off
+extern "C" s32 fn_8016D174(u8* self, u32 a, u32 c)
+{
+    if (a >= 2) {
+        return 0;
+    }
+    if (c != 0) {
+        if (*(void**)(self + a * 4 + 0x6c) == nullptr) {
+            void* p = fn_8015A90C(0x18);
+            if (p != nullptr) {
+                fn_80119240(p, a, c);
+            }
+            *(void**)(self + a * 4 + 0x6c) = p;
+            if (*(void**)(self + a * 4 + 0x6c) == nullptr) {
+                return 0;
+            }
+        } else {
+            fn_80119240(*(void**)(self + a * 4 + 0x6c), 0, c);
+        }
+        if (*(void**)(self + a * 4 + 0x64) != nullptr) {
+            fn_80118F5C(*(void**)(self + a * 4 + 0x64), *(void**)(self + a * 4 + 0x6c));
+        }
+    } else {
+        fn_8015AB1C(*(void**)(self + a * 4 + 0x6c));
+        *(void**)(self + a * 4 + 0x6c) = nullptr;
+    }
+    return 1;
+}
+#pragma use_lmw_stmw reset
 extern "C" void fn_8016D24C(u8* p, u8 n, u8 flag)
 {
     u8 top = p[0x78] & 0x80;
@@ -2685,6 +2740,38 @@ extern "C" void* fn_80178424(char* self)
         l -= 0xc;
     }
     return *(void**)(l + 0xc);
+}
+
+extern "C" void fn_801788C0(VObj_801788C0* self, Msg_801788C0* p)
+{
+    if (p != nullptr) {
+        switch (p->kind) {
+        case 0:
+            self->v22();
+            break;
+        case 1:
+            self->v23();
+            break;
+        case 7:
+            self->v28();
+            break;
+        case 4:
+            self->v25();
+            break;
+        case 2:
+            self->v24();
+            break;
+        case 6:
+            self->v27();
+            break;
+        case 5:
+            self->v26();
+            break;
+        case 3:
+        default:
+            break;
+        }
+    }
 }
 
 extern "C" void fn_80178990(u8* p, u32 v) { *(u32*)(p + 0xf8) = v; }
