@@ -15,6 +15,10 @@ extern f32 lbl_80301794;
 extern f64 lbl_80301778;
 extern f32 lbl_802F0BC0[][2];
 extern "C" void fn_80123EC0(void* a, ...);
+extern "C" BOOL OSEnableInterrupts(void);
+extern "C" void fn_8015AB1C(void* p);
+extern "C" s32 fn_801C7C6C(void* a, void* b);
+extern "C" void fn_801C7D34(void* p);
 #include "dolphin/os/OSFastCast.h"
 extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
