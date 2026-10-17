@@ -6,3 +6,30 @@
 u32 lbl_802FF228;
 u32 lbl_802FF22C;
 u32 lbl_802FF230;
+
+extern u32 lbl_802FF228;
+extern u32 lbl_802FF22C;
+extern u32 lbl_802FF230;
+extern "C" f64 fn_801E9FA0(void);
+s16 fn_80115D98(void)
+{
+    s32 v;
+
+    v = (s32)(10430.4f * (f32)fn_801E9FA0());
+    if (v < -0x8000) {
+        v += 0x10000;
+    } else if (v > 0x7fff) {
+        v -= 0x10000;
+    }
+    return (s16)v;
+}
+
+extern "C" u32 lbl_802FF228;
+extern "C" u32 lbl_802FF22C;
+extern "C" u32 lbl_802FF230;
+extern "C" void fn_80116054(u32 param_1, u32 param_2, u32 param_3)
+{
+    lbl_802FF228 = param_1;
+    lbl_802FF22C = param_2;
+    lbl_802FF230 = param_3;
+}
