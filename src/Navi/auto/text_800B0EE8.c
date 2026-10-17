@@ -40,6 +40,8 @@ extern NaviStateFn_800B51F8 lbl_802876DC[];
 extern "C" void fn_800B7234(u8* p);
 extern "C" void fn_800B7448(u8* p);
 extern "C" void fn_800B9754(char* self);
+extern "C" void fn_800B9588(u8* p);
+extern "C" void fn_800B96D8(char* p);
 extern "C" void fn_8017A4F8(void* p);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800B4454(void) {}
