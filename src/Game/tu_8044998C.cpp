@@ -88,6 +88,30 @@ extern "C" void fn_8044A024(void* self_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
+extern "C" void fn_8044A06C(void* self_) {
+    u8* self = (u8*)self_;
+    void* handle;
+
+    self[0x13] &= 0xFE;
+    handle = fn_804030C4(0x54494D47, *(const char**)lbl_804B1CA0);
+    Attach(Create(*(void**)(self + 4), lbl_80490C40, 4), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C40, 6), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C40, 8), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C40, 10), handle);
+    self[0x13] &= 0xFD;
+    handle = fn_804030C4(0x54494D47, *(const char**)lbl_804B1CA0);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 8), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 10), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 12), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 14), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 16), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 18), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 20), handle);
+    Attach(Create(*(void**)(self + 4), lbl_80490C78, 22), handle);
+    ((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] = 0;
+    ((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] = 0;
+}
+
 extern "C" void* fn_8044A418(VObj** param_1, short param_2) {
     if (param_1 != 0) {
         *(void**)param_1 = lbl_804B1CC8;
