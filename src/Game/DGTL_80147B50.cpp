@@ -30,8 +30,9 @@ extern "C" void fn_80134DE4(u8* a, s32 b, s32 c);
 extern "C" void* fn_80149A10(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = __vt__4DGTL;
+        int i;
         char* p = this_;
-        int i = 0;
+        i = 0;
         do {
             fn_801EE434(*(void**)(p + 0x798));
             i++;
