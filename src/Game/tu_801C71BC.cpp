@@ -4,6 +4,9 @@ extern "C" void fn_801C8B50(char* this_);
 extern "C" void fn_801C3B7C(void* this_, s32 state);
 extern "C" BOOL fn_800FD4C0(void* ring, u8 a, u8 b);
 extern "C" JGeometry::TVec3<f32> fn_800FE294(void* ring, u8 i);
+extern "C" void fn_800FD818(void* p, s32 n);
+extern "C" void* GetCurrentSlotPtr(void* thisPtr);
+extern "C" s32 fn_801CD664(s32 n);
 
 struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
 extern "C" TndrG* fn_802D6A9C(void);
