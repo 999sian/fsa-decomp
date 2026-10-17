@@ -24,6 +24,7 @@ extern "C" s32 fn_800C3900(void* p, s16 idx, u8 b, s32 c);
 extern "C" s32 fn_800C3A1C(void* p, s16 idx, u8 b, s32 c, s32 d);
 extern "C" s32 fn_800C3B30(void* p, s16 idx, u8 b, f32 f, f32 g, s32 c, s32 d);
 extern "C" void fn_8002F458(s32 a, s32 b);
+extern "C" s32 fn_8002F168(void* p);
 extern "C" void fn_800C256C(u8* p) {
     s32 a = fn_800C3900(p, *(s16*)(p + 0x21e), lbl_802C562C[0x15], 0);
     s32 b = fn_800C3A1C(p, *(s16*)(p + 0x21e), lbl_802C562C[0x15], 0, 0);
