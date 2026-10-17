@@ -77,6 +77,7 @@ void fn_800FDE38(void* ringArray)
 
 // ---- rail node ring helpers
 
+#ifndef RAIL_TYPES_TOP
 typedef JGeometry::TVec3<f32> RailVec;
 
 struct RailNode {
@@ -95,6 +96,7 @@ struct RailRing {
     u8 mCur;
     RailNode* mNodes[1];
 };
+#endif
 
 extern f32 lbl_8053C0B0;
 extern f32 lbl_8053C0D8;
