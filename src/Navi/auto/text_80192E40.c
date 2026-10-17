@@ -13,7 +13,7 @@ typedef struct {
 extern u32 lbl_802FF6B8;
 extern NaviEntry12 lbl_80299AD0[];
 extern void fn_801937C8(void* e, s32 idx);
-extern void fn_801E10DC(void* p, s32 idx, NaviEntry12* tmp);
+extern "C" void fn_801E10DC(void* p, s32 idx, NaviEntry12* tmp);
 extern void* lbl_80299E10[];
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -121,6 +121,41 @@ extern "C" void* fn_801942E4(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_801949C8(void) {
+}
+
+extern "C" void fn_8019552C(u8* p) {
+    NaviEntry12 tmp = lbl_80299AD0[lbl_802FF6B8];
+    fn_801E10DC(p, 0, &tmp);
+}
+
+extern "C" void fn_80195588(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
+    u16 idx = *(u16*)(p + 4);
+    dst[idx] = src[idx];
+    fn_801937C8(&dst[idx], x);
+}
+
+extern "C" void fn_801957E4(u8* p) {
+    u16* list = *(u16**)(p + 0xc);
+    s32 count = *(u16*)(p + 8);
+    NaviEntry12 tmp = lbl_80299AD0[lbl_802FF6B8];
+    s32 i;
+    for (i = 0; i < count; i++) {
+        if (list[0] != 0xffff) {
+            fn_801E10DC(p, i, &tmp);
+        }
+        list++;
+    }
+}
+
+extern "C" void fn_80195890(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
+    s32 i;
+    u16* list = *(u16**)(p + 0xc);
+    for (i = 0; i < *(u16*)(p + 8); i++) {
+        if (list[i] != 0xffff) {
+            dst[list[i]] = src[list[i]];
+            fn_801937C8(&dst[list[i]], x);
+        }
+    }
 }
 
 extern void* lbl_80299CF8[];
