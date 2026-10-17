@@ -33,7 +33,7 @@ struct J2DScreenVT {
 };
 extern u8* lbl_8053AB10;
 extern f32 lbl_80543DB8;
-extern u32 lbl_804B1CD8;
+extern u32 lbl_804B1CD8[];
 extern u32 lbl_80490DB8[];
 extern u32 lbl_80490E00[];
 extern "C" void* fn_804030C4(u32 tag, u32 name);
