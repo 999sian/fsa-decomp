@@ -872,6 +872,16 @@ extern "C" void fn_80094F44(char* param_1) {
     }
 }
 
+extern "C" void fn_80094F98(char* param_1) {
+    if (*(void**)(param_1 + 0x274) != 0) {
+        fn_800FFBCC(*(void**)(param_1 + 0x274));
+    }
+    fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x274) + 0xf2));
+    if (*(*(u8**)(param_1 + 0x274) + 0xf1) == 1) {
+        param_1[0x7e8] = 3;
+    }
+}
+
 extern "C" void fn_80095080(void) {}
 
 extern StateFn_8009287C lbl_80286144[];
