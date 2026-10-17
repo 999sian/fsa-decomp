@@ -75,7 +75,7 @@ public:
     virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
     virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
     virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
-    virtual void v28(); virtual void v29(); virtual u8 v30(); virtual void v31();
+    virtual u8 v28(); virtual void v29(); virtual void v30(); virtual void v31();
     virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
     virtual void v36(); virtual void v37();
 };
@@ -643,6 +643,55 @@ extern "C" s32 fn_80123E9C(u8* self, s32 arg, f32* data) {
         }
     }
     return v17__5ActorFiPf(self, arg, data);
+}
+
+void v01__5ActorFv(void*);
+void* fn_802D6A9C(void);
+void fn_802D7440(void*, s32);
+extern "C" void fn_80124448(u8* self) {
+    v01__5ActorFv(self);
+    lbl_80539F30 = *(s32*)(self + 0x198);
+    ((CompanionCalls*)self)->v25();
+    *(f32*)(self + 0x60) = -7.0f;
+    *(f32*)(self + 0x64) = -7.0f;
+    *(f32*)(self + 0x68) = 7.0f;
+    *(f32*)(self + 0x6c) = 7.0f;
+    *(f32*)(self + 0x70) = *(f32*)(self + 0x60);
+    *(f32*)(self + 0x74) = *(f32*)(self + 0x64);
+    *(f32*)(self + 0x78) = *(f32*)(self + 0x68);
+    *(f32*)(self + 0x7c) = *(f32*)(self + 0x6c);
+    *(f32*)(self + 0x80) = *(f32*)(self + 0x60);
+    *(f32*)(self + 0x84) = *(f32*)(self + 0x64);
+    *(f32*)(self + 0x88) = *(f32*)(self + 0x68);
+    *(f32*)(self + 0x8c) = *(f32*)(self + 0x6c);
+    *(s32*)(self + 0xb8) = 2;
+    ((CompanionCalls*)self)->v28();
+    ((CompanionCalls*)self)->v29();
+    fn_802D7440(fn_802D6A9C(), 0);
+    if (self[0x332]) {
+        ((CompanionCalls*)self)->v31();
+        if (self[0x332]) {
+            u8* p = self;
+            GameLowVec position(*(GameLowVec*)(self + 0xC));
+            position.x -= lbl_8053C9BC;
+            CompanionSlots* slots = (CompanionSlots*)self;
+            s32 i = 0;
+            for (; i < slots->count; i++) {
+                position.x += lbl_8053C9B0;
+                *(s32*)(p + 0x364) = Actor_CreateByID(fn_801F856C(), 'LIMT',
+                    *(u32*)(self + 4), &position, 0, -1, -1);
+                s32 handle = *(s32*)(p + 0x364);
+                if (handle < 0) {
+                    break;
+                }
+                u8* actor = fn_801F666C(fn_801F856C(), handle);
+                if (actor) {
+                    actor[0x11D] = 0;
+                }
+                p += 4;
+            }
+        }
+    }
 }
 
 extern "C" void* fn_80131F0C(void);
