@@ -177,14 +177,13 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
 }
 
 extern "C" void fn_80013F24(void* p) {
-    Unk80013DA0* self = (Unk80013DA0*)p;
     s32 r;
     struct Unk80204EA4 tbl;
-    if (fn_80124868(lbl_802FF370, self->unk50, &r) == 0 && r == 0x40000) {
-        fn_801248B8(lbl_802FF370, self->unk50, fn_80013C38, self);
+    if (fn_80124868(lbl_802FF370, ((Unk80013DA0*)p)->unk50, &r) == 0 && r == 0x40000) {
+        fn_801248B8(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C38, p);
     } else {
         tbl = lbl_80204EA4;
-        fn_8001533C(self, &tbl, 0);
+        fn_8001533C(p, &tbl, 0);
     }
 }
 
