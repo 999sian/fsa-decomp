@@ -7,6 +7,19 @@ struct VObj_800A1A64 {
     virtual void v4();
     virtual void v5();
 };
+struct VObj_800B98AC {
+virtual void v0(int a);
+};
+struct VObj2_800B98AC {
+virtual void v0();
+virtual void v1();
+virtual void v2();
+virtual void v3();
+virtual void v4();
+virtual void v5();
+virtual void v6();
+virtual void v7();
+};
 struct VObj_800B95E4 {
     virtual void v0();
     virtual void v1();
