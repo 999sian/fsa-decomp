@@ -1031,13 +1031,12 @@ extern "C" void fn_8010428C(void* self) {
 
 extern "C" void fn_80104320(void* self) {
     Unk80104320* p = (Unk80104320*)self;
-    u8 sel = p->sel;
     p->flag = 0;
-    p->objs[sel]->v7(0);
-    p->objs[sel ^ 1]->v7(p->vals[sel ^ 1]);
-    p->objs2[sel]->v7(0);
-    p->objs2[sel ^ 1]->v7(p->vals2[sel ^ 1]);
-    p->sel = sel ^ 1;
+    p->objs[p->sel]->v7(0);
+    p->objs[p->sel ^ 1]->v7(p->vals[p->sel ^ 1]);
+    p->objs2[p->sel]->v7(0);
+    p->objs2[p->sel ^ 1]->v7(p->vals2[p->sel ^ 1]);
+    p->sel ^= 1;
 }
 
 extern "C" void fn_801043FC(u8* p) {
