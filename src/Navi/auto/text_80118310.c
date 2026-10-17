@@ -308,7 +308,7 @@ extern "C" void* fn_801195F0(u8* p, s16 del)
 		*(void**)p = lbl_80290080;
 		fn_801D9AFC(*(void**)(lbl_802FF2A4 + 4));
 		do {
-			fn_801D9BF8(lbl_802FF2A8, lbl_802FF2A8 + 1, lbl_802FF2A8 + 2, lbl_802FF2A8 + 3, lbl_802FF2A8 + 4);
+			fn_801D9BF8(&lbl_802FF2A8[0], &lbl_802FF2A8[1], &lbl_802FF2A8[2], &lbl_802FF2A8[3], &lbl_802FF2A8[4]);
 		} while (lbl_802FF2A8[2] == 0);
 		if (lbl_802FF2A4 == p) {
 			lbl_802FF2A4 = nullptr;
