@@ -289,6 +289,11 @@ extern "C" void fn_8002D3E4(char* p) {
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58);
 }
 
+extern "C" void fn_8002D404(void) {
+    extern unsigned int lbl_802FEDDC;
+    lbl_802FEDDC &= 0xfffffdff;
+}
+
 extern "C" void fn_8002E444(char* p, int idx);
 extern "C" void fn_8002E010(char* p, int idx, int val, float f) {
     if (idx < 0 || idx >= 10) {
