@@ -9,6 +9,12 @@ extern "C" void __dt__5ActorFv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" char __vt__4SLR3[];
 extern "C" char* lbl_8053AAF8;
+extern "C" char* lbl_8053AF80;
+extern "C" char lbl_80529DEC[];
+extern "C" s32 fn_802DE814(s32);
+extern "C" char* fn_802D6A9C();
+extern "C" void fn_80458FF0(void*, u32, s32, s32);
+extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
 extern "C" void fn_801719C0(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x108) > 0) {
