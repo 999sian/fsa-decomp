@@ -10,6 +10,10 @@ struct VObj_801A7A38 {
 };
 
 extern "C" void fn_801E10DC(void* p);
+extern "C" void fn_801A73A4(void);
+extern "C" void fn_8015AB40(void* p);
+extern "C" void fn_8015AB1C(void* p);
+extern "C" void fn_80193E40(void* a, void* b);
 extern u8 lbl_8029B188[];
 
 extern "C" void fn_801A59E8(void);
@@ -51,7 +55,7 @@ extern "C" u16 fn_801A6050(void* param_1) {
 }
 
 extern "C" void fn_801A6214(void* param_1, const u16* param_2) {
-    fn_80190684(param_1, *param_2);
+    fn_80190684(param_1, param_2[0]);
 }
 
 extern "C" void fn_801A6238(u8* param_1) {
