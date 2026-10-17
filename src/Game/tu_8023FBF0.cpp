@@ -524,7 +524,7 @@ inline BOOL isLinkOwner(char* p) {
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
-inline s32 countSharingLO(char* p) {
+inline s32 countSharingLO(char* p, s32& me) {
     s32 c = 0;
     for (s32 i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
@@ -536,7 +536,7 @@ inline s32 countSharingLO(char* p) {
                     c++;
                 }
             } else {
-                s32 me = S32(p, 0x4);
+                me = S32(p, 0x4);
                 if (me == fn_8022F3DC(i)) {
                     c++;
                 }
@@ -547,8 +547,8 @@ inline s32 countSharingLO(char* p) {
     }
     return c;
 }
-inline s32 getModeLO(char* p) {
-    if (countSharingLO(p) <= 1) {
+inline s32 getModeLO(char* p, s32& me) {
+    if (countSharingLO(p, me) <= 1) {
         return 5;
     }
     s32 linked = S32(p, 0xd60);
@@ -558,11 +558,12 @@ inline s32 getModeLO(char* p) {
     return S32(p, 0x120c);
 }
 inline BOOL isLinkOwner3(char* p) {
+    s32 me;
     u8 bit = 1 << S32(p, 0x4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
         return 1;
     }
-    if (getModeLO(p) == 4) {
+    if (getModeLO(p, me) == 4) {
         s32 v = linkIdx(p);
         return v != linkRank2(p);
     }
