@@ -1,6 +1,7 @@
 
 
 #include "types.h"
+struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
 struct VObj_8005E8B8 {
     virtual void v0();
     virtual void v1();
@@ -2381,8 +2382,9 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    *(void**)ptr = lbl_80299504;
-    *(void**)ptr = lbl_802994F0;
+    struct S { void* vt; };
+    ((S*)ptr)->vt = lbl_80299504;
+    ((S*)ptr)->vt = lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
