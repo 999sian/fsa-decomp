@@ -3,6 +3,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include <string.h>
 #include "JSystem/JMath/JMath.h"
+#include "Game/SinitPoolChain.h"
 
 #pragma auto_inline off
 
@@ -56,7 +57,7 @@ public:
     virtual void v36();
     virtual void v37();
     virtual void v38();
-    virtual void v39();
+    virtual void v39(f32*, f32*, s32*);
     virtual void v40();
     virtual void v41();
     virtual void v42();
@@ -192,6 +193,101 @@ extern "C" void fn_80121764(u8* self) {
                 actor[0x11C] = 0;
                 ((CompanionSlots*)self)->handles[i] = -1;
             }
+        }
+    }
+}
+
+extern const f32 lbl_8053C9D8;
+extern "C" void fn_801217EC(u8* self, s32 flag) {
+    if (self[0x332]) {
+        s32 i = 0;
+        u8* p = self;
+        for (; i < *(s32*)(self + 0x360); i++) {
+            if (*(s32*)(p + 0x364) < 0 && self[0x332] && i < *(s32*)(self + 0x360) && i >= 0) {
+                GameLowVec pos(*(GameLowVec*)(self + 0xC));
+                pos.x -= lbl_8053C9B0 * (f32)i + lbl_8053C9BC;
+                *(s32*)(p + 0x364) = Actor_CreateByID(fn_801F856C(), 'LIMT', *(u32*)(self + 4), &pos, 0, -1, -1);
+                s32 handle = *(s32*)(p + 0x364);
+                if (handle >= 0) {
+                    u8* actor = fn_801F666C(fn_801F856C(), handle);
+                    if (actor) {
+                        actor[0x11D] = 0;
+                    }
+                }
+            }
+            p += 4;
+        }
+        s32 off = 0;
+        u8* q = self;
+        for (i = 0; i < *(s32*)(self + 0x360); i++) {
+            u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(q + 0x364));
+            if (!actor) {
+                *(s32*)(q + 0x364) = -1;
+            } else {
+                if (self[0x333] != 0 || (u8)flag != 0 || self[0x335] != 0) {
+                    actor[0x11D] = 1;
+                } else {
+                    actor[0x11D] = 0;
+                }
+                if ((u8)flag != 0) {
+                    if (*(s32*)(self + 0x24C) < 8) {
+                        s32 n = *(s32*)(self + 0x108) + 2 - off;
+                        if (n < 0) {
+                            n = 0;
+                        }
+                        if (n >= 4) {
+                            n = 4;
+                        }
+                        *(u32*)(actor + 0x250) = *(u32*)(self + 0x198);
+                        *(f32*)(actor + 0x254) = lbl_8053C9D8;
+                        *(s32*)(actor + 0x24C) = n;
+                    } else if (*(s32*)(self + 0x24C) < 0xC) {
+                        s32 v = *(s32*)(self + 0x108);
+                        *(u32*)(actor + 0x250) = *(u32*)(self + 0x198);
+                        *(f32*)(actor + 0x254) = lbl_8053C9D8;
+                        *(s32*)(actor + 0x24C) = v;
+                    } else {
+                        actor[0x11D] = 0;
+                    }
+                } else if (self[0x335] != 0) {
+                    s32 n = *(s32*)(self + 0x108) - off;
+                    if (n < 0) {
+                        n = 0;
+                    }
+                    if (n >= 4) {
+                        n = 4;
+                    }
+                    *(u32*)(actor + 0x250) = *(u32*)(self + 0x198);
+                    *(f32*)(actor + 0x254) = lbl_8053C9D8;
+                    *(s32*)(actor + 0x24C) = n;
+                } else if (self[0x333] != 0) {
+                    if (*(s32*)(self + 0x354) < 0x2D) {
+                        s32 n = *(s32*)(self + 0x108) + 2 - off;
+                        if (n < 0) {
+                            n = 0;
+                        }
+                        if (n >= 4) {
+                            n = 4;
+                        }
+                        *(u32*)(actor + 0x250) = *(u32*)(self + 0x198);
+                        *(f32*)(actor + 0x254) = lbl_8053C9D8;
+                        *(s32*)(actor + 0x24C) = n;
+                    } else {
+                        s32 n = *(s32*)(self + 0x108) - off;
+                        if (n < 0) {
+                            n = 0;
+                        }
+                        if (n >= 4) {
+                            n = 4;
+                        }
+                        *(u32*)(actor + 0x250) = *(u32*)(self + 0x198);
+                        *(f32*)(actor + 0x254) = lbl_8053C9D8;
+                        *(s32*)(actor + 0x24C) = n;
+                    }
+                }
+            }
+            q += 4;
+            off += 4;
         }
     }
 }
@@ -366,7 +462,10 @@ extern "C" void fn_80122548(u8* self) {
         }
         GameLowVec pos = *fn_8023E724(idx);
         player = *(s32*)(self + 0x344);
-        *(s32*)(self + 0x98) = fn_80230CFC(fn_8022EA0C((player < 0 || player >= 4) ? -1 : player));
+        if (player < 0 || player >= 4) {
+            player = -1;
+        }
+        *(s32*)(self + 0x98) = fn_80230CFC(fn_8022EA0C(player));
         switch (*(s32*)(self + 0x98)) {
         case 0:
             pos.x -= lbl_8053C9BC;
@@ -956,6 +1055,9 @@ extern "C" void* fn_801247C8(u8* self, const char* name, s32 kind, u8 companions
     *(s32*)(self + 0x370) = -1;
     strcpy((char*)(self + 0x384), name);
     return self;
+}
+
+extern "C" void __sinit_tu_801213EC_cpp(void) {
 }
 
 // Keep regional definitions that were present before source-tree consolidation.
