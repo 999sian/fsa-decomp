@@ -1374,10 +1374,10 @@ extern "C" void fn_801297A0(u8* obj, s32 param_2, f32* out) {
 }
 
 extern "C" void fn_801297BC(u8* p, const JGeometry::TVec3f* src, JGeometry::TVec3f* out) {
-    f32 sx = src->x;
-    f32 sy = src->y;
-    f32 sz = src->z;
-    JGeometry::TVec3f tmp(sx, sy, sz);
+    JGeometry::TVec3f tmp;
+    tmp.x = src->x;
+    tmp.y = src->y;
+    tmp.z = src->z;
     u8* q = *(u8**)(p + 0x1e8);
     u8* v = *(u8**)q;
     if (v != 0) {
@@ -1565,7 +1565,10 @@ extern "C" void fn_8012BFA0(u8* p, u8* q) {
     s16 v = *(s16*)(q + 0x80);
     s32 quo = v / d;
     f32 r = (f32)(v - quo * d) / (f32)d;
-    *(f32*)(p + 0x1fc) = r + (f32)(quo & 1) * (lbl_803016B8 - lbl_803016C8 * r);
+    f32 t1 = lbl_803016C8 * r;
+    f32 t2 = lbl_803016B8 - t1;
+    f32 t3 = (f32)(quo & 1) * t2;
+    *(f32*)(p + 0x1fc) = r + t3;
 }
 
 extern "C" void* fn_8012C240(void* ptr, void* param_2) {
