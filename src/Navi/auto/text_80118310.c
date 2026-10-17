@@ -4,6 +4,10 @@
 
 extern "C" void fn_8011C280(int);
 
+struct Navi802FF2A8 {
+    u8 a, b, c, d, e;
+};
+
 struct VObj_8011A74C {
     virtual void v0(void);
     virtual void v1(void);
@@ -289,6 +293,34 @@ extern "C" u16 fn_801194E4(void* param_1, char* param_2) {
     }
     return hash;
 }
+
+extern void* lbl_80290080[];
+extern u8* lbl_802FF2A4;
+extern u8 lbl_802FF2A8[];
+extern void* lbl_802FF540;
+extern "C" void fn_801D9AFC(void*);
+extern "C" void fn_801D9BF8(u8*, u8*, u8*, u8*, u8*);
+extern "C" void fn_80159CB4(void*, void*);
+#pragma use_lmw_stmw off
+extern "C" void* fn_801195F0(u8* p, s16 del)
+{
+	if (p != nullptr) {
+		*(void**)p = lbl_80290080;
+		fn_801D9AFC(*(void**)(lbl_802FF2A4 + 4));
+		do {
+			fn_801D9BF8(lbl_802FF2A8, lbl_802FF2A8 + 1, lbl_802FF2A8 + 2, lbl_802FF2A8 + 3, lbl_802FF2A8 + 4);
+		} while (lbl_802FF2A8[2] == 0);
+		if (lbl_802FF2A4 == p) {
+			lbl_802FF2A4 = nullptr;
+		}
+		fn_80159CB4(lbl_802FF540, *(void**)(p + 8));
+		if (del > 0) {
+			fn_8015AB1C(p);
+		}
+	}
+	return p;
+}
+#pragma use_lmw_stmw reset
 
 extern "C" void fn_801196B4(void* p) {
     char* c = (char*)p;
