@@ -49,6 +49,7 @@ bool fn_8022B244(char*);
 f32 fn_8022C82C(s32);
 f32 fn_8022C76C(s32);
 void fn_8024B298(char*, s32, void*);
+s32 fn_802416C4(char*);
 
 extern const f32 lbl_80540348, lbl_8054034C;
 extern const f32 lbl_80540368;
@@ -772,28 +773,28 @@ void fn_802859C4(char* p) {
                     fn_80251AEC(p, 2);
                 }
             } else {
-                if (fn_8022C5EC(Player_GetLinkTargetIndex(p), 0x40) == 0) {
-                    if (fn_8022C6AC(S32(p, 4)) == lbl_80540360) {
+                if (fn_8022C5EC(Player_GetLinkTargetIndex(p), 0x40)) {
+                    fn_80251AEC(p, 3);
+                } else {
+                    if (fn_8022C6AC(S32(p, 4)) != lbl_80540360) {
+                        fn_80251AEC(p, 3);
+                    } else {
                         if (fn_8022C6AC(Player_GetLinkTargetIndex(p)) == lbl_80540360 && fn_8022CFE8(S32(p, 4)) > lbl_80540360) {
                             s32 target = S32(p, 0x3b4);
-                            if (fn_8023DE58(Player_GetLinkTargetIndex(p)) == target) {
+                            if (target == fn_8023DE58(Player_GetLinkTargetIndex(p))) {
                                 fn_80251AEC(p, 3);
                             }
                         }
-                    } else {
-                        fn_80251AEC(p, 3);
                     }
-                } else {
-                    fn_80251AEC(p, 3);
                 }
             }
         } else {
             if (fn_802486A0(p) == 3) {
                 if (fn_80246F28(p) != lbl_80540360) {
-                    if (fn_80246B10(p, 0x40) == 0) {
-                        fn_80251AEC(p, 2);
-                    } else {
+                    if (fn_80246B10(p, 0x40)) {
                         fn_80251AEC(p, 3);
+                    } else {
+                        fn_80251AEC(p, 2);
                     }
                 } else if (fn_8022CFE8(S32(p, 4)) != lbl_80540360) {
                     fn_80251AEC(p, 3);
