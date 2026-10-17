@@ -3095,20 +3095,13 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
     return *(unsigned char *)(param_1 + 0x58);
 }
 
-extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    u8 *d = (u8 *)param_1 + (param_2 << 3);
-    u8 b = param_3[2];
-    u8 a = param_3[1];
-    d[0x5a] = a;
-    a = param_3[3];
-    d[0x5b] = b;
-    b = param_3[5];
-    d[0x5c] = a;
-    a = param_3[6];
-    d[0x5e] = b;
-    b = param_3[7];
-    d[0x5f] = a;
-    d[0x60] = b;
+extern "C" void fn_800DDDD0(u8* this_, s32 idx, const u8* src) {
+    this_[idx * 8 + 0x5a] = src[1];
+    this_[idx * 8 + 0x5b] = src[2];
+    this_[idx * 8 + 0x5c] = src[3];
+    this_[idx * 8 + 0x5e] = src[5];
+    this_[idx * 8 + 0x5f] = src[6];
+    this_[idx * 8 + 0x60] = src[7];
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
