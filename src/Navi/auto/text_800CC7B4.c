@@ -39,6 +39,56 @@ extern "C" void fn_800CD6FC(u8* self);
 extern "C" void fn_800CD3C4(u8* self);
 extern "C" s32 fn_800CD8E4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
 extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
+extern "C" void fn_800CCFEC(u8* self) {
+    u8* obj = lbl_802BB0FC;
+    if (*(s32*)(obj + 0xf4) == 0x46 || *(s32*)(obj + 0xf4) == 0xb) {
+        self[0x9e] = 1;
+    }
+    fn_801E10DC(self, self[0x9e] * 0xc);
+    fn_800CD3C4(self);
+    fn_800CD6FC(self);
+    fn_800CD444(self);
+}
+
+extern "C" void fn_800CD304(u8* self) {
+    s32 iVar1;
+    s32 iVar2;
+    u8* tbl = lbl_802C5714;
+
+    if (self[0x9b] == 0) {
+        iVar1 = 1;
+    } else {
+        iVar1 = fn_800CD8E4(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 1, lbl_80300EF0, *(f32*)(tbl + 0x1c));
+    }
+    iVar2 = fn_800CD7CC(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 1, lbl_80300EF0, *(f32*)(tbl + 0x20));
+    *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
+    if (iVar1 == 1 && iVar2 == 1) {
+        *(s16*)(self + 0x9c) = 0;
+        self[0x9f] = 1;
+    }
+}
+
+extern "C" void fn_800CD3C4(u8* self) {
+    u8* tbl = lbl_802C5714;
+    s32 iVar1;
+
+    if (self[0x9a] != 0) {
+        iVar1 = fn_800CD8E4(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 0, *(f32*)(tbl + 0x1c), lbl_80300EF0);
+        *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
+        if (iVar1 == 1) {
+            *(s16*)(self + 0x9c) = 0;
+            self[0x9a] = 0;
+            self[0x9b] = 1;
+        }
+    }
+}
+
+extern "C" void fn_800CD6E0(u8* self) {
+    u8* tbl = lbl_802C5714;
+    self[0x94] = tbl[0xc];
+    self[0x95] = 1;
+}
+
 extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
     if (i < 0) {
         return 0;
