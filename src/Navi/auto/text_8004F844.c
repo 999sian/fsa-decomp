@@ -57,6 +57,10 @@ extern "C" void fn_80055C0C(void)
 	lbl_802FF0E8 = *(int*)(lbl_802BB0FC + 0x58) + 1000;
 }
 
+extern "C" void fn_80055C68(void) {
+    *(u32*)(lbl_802BB0FC + 0x108) |= 0x4000;
+}
+
 extern "C" void* fn_8005757C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80249D24;
