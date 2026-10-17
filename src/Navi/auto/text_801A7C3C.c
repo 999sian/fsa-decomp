@@ -1083,6 +1083,19 @@ extern "C" void fn_801AF42C(void* a, void* b) {
     fn_801BA614(b, lbl_802EE58C);
 }
 
+extern "C" void* lbl_8029B61C[];
+extern "C" void fn_801AFD70(void* param_1) {
+    *(void**)param_1 = lbl_8029B61C;
+    *(u16*)((u8*)param_1 + 0x4) = 0;
+    *(u16*)((u8*)param_1 + 0x6) = 0;
+    *(u32*)((u8*)param_1 + 0x8) = 0;
+    *(u32*)((u8*)param_1 + 0xc) = 0;
+    *(u32*)((u8*)param_1 + 0x10) = 0;
+    *(u32*)((u8*)param_1 + 0x14) = 0;
+    *(u32*)((u8*)param_1 + 0x18) = 0;
+    *(u16*)((u8*)param_1 + 0x1c) = 0;
+}
+
 extern void* lbl_8029B61C[];
 extern "C" void* fn_801AFDA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
