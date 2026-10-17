@@ -209,6 +209,22 @@ extern "C" void fn_800E4828(u8* p) {
     }
 }
 
+extern "C" void fn_800E5084(u8* p) {
+    if (*(s16*)(p + 0xb12) == 0) {
+        fn_8002F358(0x9a, 0);
+    }
+    s32 r = fn_800ED0E8(p, *(s16*)(p + 0xb12), (u8)lbl_802C57D4[0x28], 0, 0, *(f32*)(lbl_802C57D4 + 0x24), lbl_80301058);
+    *(s16*)(p + 0xb12) = *(s16*)(p + 0xb12) + 1;
+    if (r == 1) {
+        *(s16*)(p + 0xb12) = 0;
+        fn_8002F358(0xb7, 0);
+        fn_800E53A0(p);
+        p[0x3bc] = 1;
+        *(s16*)(p + 0xa9c) = *(s16*)(lbl_802C57D4 + 0x8e);
+        p[0xa76] = 0xe;
+    }
+}
+
 extern "C" void fn_800E53A0(u8* p);
 extern "C" void fn_800E5458(u8* p);
 extern "C" void fn_800E560C(u8* p);
