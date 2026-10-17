@@ -163,6 +163,7 @@ void fn_8036A894(u8* this_)
 
 extern "C" void fn_8036AA60(char* self) {
     extern void* fn_801902C0(void);
+    char* tbl = lbl_80474C38;
     Mtx m1;
     Mtx m2;
     Vec3f v1;
@@ -199,18 +200,22 @@ extern "C" void fn_8036AA60(char* self) {
         *(s32*)(self + 0x254) = *(s32*)(self + 0x254) + 1;
     }
     st = *(s32*)(self + 0x244);
-    if (st == 1) {
-        if (*(s32*)(self + 0x254) >= ((s32*)(lbl_80474C38 + 0x60))[1]) {
+    switch (st) {
+    case 0:
+    case 2:
+        if (*(s32*)(self + 0x254) >= ((s32*)(tbl + 0x60))[st]) {
+            *(s32*)(self + 0x254) = ((s32*)(tbl + 0x54))[st];
+        }
+        break;
+    case 1:
+        if (*(s32*)(self + 0x254) >= ((s32*)(tbl + 0x60))[1]) {
             *(s32*)(self + 0x244) = 2;
         }
-    } else if (st >= 0 && st < 3) {
-        if (*(s32*)(self + 0x254) >= ((s32*)(lbl_80474C38 + 0x60))[st]) {
-            *(s32*)(self + 0x254) = ((s32*)(lbl_80474C38 + 0x54))[st];
-        }
+        break;
     }
 
     cnt = *(s32*)(self + 0x254);
-    idx = ((s32*)(lbl_80474C38 + 0x8c))[*(s32*)(self + 0x23c)];
+    idx = ((s32*)(tbl + 0x8c))[*(s32*)(self + 0x23c)];
     entry = (char*)fn_801902C0() + idx * 0x60 + 8;
     if (*(s32*)(entry + 0x3c) != 0 && *(u8*)(entry + 0x5c) == 0) {
         *(u8*)(entry + 0x5c) = 1;
