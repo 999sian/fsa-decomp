@@ -41,27 +41,33 @@ extern void* lbl_8053AB10;
 extern float lbl_80542DF4;
 extern float lbl_80542DF8;
 extern float lbl_80542DFC;
+extern float lbl_80542E28;
+extern float lbl_80542E2C;
+extern float lbl_80542E30;
+extern float lbl_80542E34;
+extern float lbl_80542E3C;
+extern "C" f32 lbl_80542E38;
 extern "C" s32 fn_80230CFC(s32);
 extern s32 lbl_80474F4C[];
 extern "C" void fn_80370020(char* self) {
-    JGeometry::TBox2<f32> box;
-    JGeometry::TVec3<f32> pos;
     s32 idx;
+    f32 box[4];
+    JGeometry::TVec3<f32> pos;
 
     if (*(u8*)(self + 0x3a8) == 0) {
         if (*(s32*)(self + 0x3ac) == 0) {
-            box.i.x = *(f32*)(self + 0x60);
-            box.i.y = *(f32*)(self + 0x64);
-            box.f.x = *(f32*)(self + 0x68);
-            box.f.y = *(f32*)(self + 0x6c);
-            box.i.x += *(f32*)(self + 0x324);
-            box.f.x += *(f32*)(self + 0x324);
-            box.i.y += *(f32*)(self + 0x328);
-            box.f.y += *(f32*)(self + 0x328);
-            fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+            box[0] = *(f32*)(self + 0x60);
+            box[1] = *(f32*)(self + 0x64);
+            box[2] = *(f32*)(self + 0x68);
+            box[3] = *(f32*)(self + 0x6c);
+            box[0] += *(f32*)(self + 0x324);
+            box[2] += *(f32*)(self + 0x324);
+            box[1] += *(f32*)(self + 0x328);
+            box[3] += *(f32*)(self + 0x328);
+            fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
             idx = fn_8022FD8C(*(s32*)(self + 0x198));
             if (idx >= 0 && fn_802300EC()) {
-                if (PSVECDistance((Vec*)(self + idx * 0xc + 0x264), (Vec*)(self + 0x324)) > lbl_80542DDC) {
+                if (!(PSVECDistance((Vec*)(self + idx * 0xc + 0x264), (Vec*)(self + 0x324)) <= lbl_80542DDC)) {
                     pos = *(JGeometry::TVec3<f32>*)(self + 0x324);
                     if (fn_8038BD08(idx, 0x510, *(u32*)(self + 4), &pos, 0x22)) {
                         *(s32*)(self + 0x3a4) = idx;
@@ -73,15 +79,15 @@ extern "C" void fn_80370020(char* self) {
             }
         }
     } else if (*(s32*)(self + 0x3a0) == 4) {
-        box.i.x = *(f32*)(self + 0x60);
-        box.i.y = *(f32*)(self + 0x64);
-        box.f.x = *(f32*)(self + 0x68);
-        box.f.y = *(f32*)(self + 0x6c);
-        box.i.x += *(f32*)(self + 0x324);
-        box.f.x += *(f32*)(self + 0x324);
-        box.i.y += *(f32*)(self + 0x328);
-        box.f.y += *(f32*)(self + 0x328);
-        fn_8022FF8C(*(s32*)(self + 0x3a4), (f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        box[0] = *(f32*)(self + 0x60);
+        box[1] = *(f32*)(self + 0x64);
+        box[2] = *(f32*)(self + 0x68);
+        box[3] = *(f32*)(self + 0x6c);
+        box[0] += *(f32*)(self + 0x324);
+        box[2] += *(f32*)(self + 0x324);
+        box[1] += *(f32*)(self + 0x328);
+        box[3] += *(f32*)(self + 0x328);
+        fn_8022FF8C(*(s32*)(self + 0x3a4), box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         if (fn_80388CAC(*(s32*)(self + 0x3a4), *(s32*)(self + 0x198))) {
             *(s32*)(self + 0x3a4) = -1;
             *(u8*)(self + 0x3a8) = 0;
@@ -317,10 +323,11 @@ extern "C" void fn_8037100C(char* self)
 	fn_803703C8(self);
 	((void (*)(void*))fn_803721F4)(self);
 	fn_80370020(self);
-	float bounds[4] = { lbl_80542E18, lbl_80542DEC, lbl_80542E1C, lbl_80542E20 };
-	float* pos = (float*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
+	JGeometry::TBox2f box(lbl_80542E18, lbl_80542DEC, lbl_80542E1C, lbl_80542E20);
+	JGeometry::TBox2f copy = box;
+	JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
 	bool bVar3 = false;
-	if (pos[0] >= bounds[0] && pos[1] >= bounds[1] && pos[0] < bounds[2] && pos[1] < bounds[3]) {
+	if (pos->x >= copy.i.x && pos->y >= copy.i.y && pos->x < copy.f.x && pos->y < copy.f.y) {
 		bVar3 = true;
 	}
 	if (bVar3) {
