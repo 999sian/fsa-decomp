@@ -67,6 +67,10 @@ extern "C" void fn_80050938(void* param_1)
     }
 }
 
+extern "C" void fn_800509E8(void) {
+    *(u32*)(lbl_802BB0FC + 0x104) |= 0x2;
+}
+
 extern "C" void fn_80052AFC(void) {
     char* b = lbl_802BB0FC;
     char* p = lbl_802C050C;
