@@ -854,7 +854,9 @@ extern "C" void fn_80411A94(u8* self, f32 scale) {
 }
 
 struct Tbl8048C1F8 {
-	u8 pad[0x694];
+	u8 pad[0x420];
+	u64 names[4][2]; // 0x420
+	u8 pad460[0x694 - 0x460];
 	s32 vals[12][3];      // 0x694
 	u8 pad724[0x744 - 0x724];
 	u8 next[8][2];        // 0x744
