@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern "C" f32 lbl_8053D43C;
+extern "C" f32 lbl_8053D450;
+
 static inline void GXPosition3f32(f32 x, f32 y, f32 z) {
     *(volatile f32*)0xCC008000 = x;
     *(volatile f32*)0xCC008000 = y;
