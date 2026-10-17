@@ -420,6 +420,31 @@ extern "C" int fn_800C3D60(char* p, short idx, u8 n, int, int b) {
     return 0;
 }
 
+extern "C" BOOL fn_80060794(void* a, void* b, void* c, void* d);
+extern "C" void fn_800C3E20(u8* p) {
+    char* a;
+    switch (p[0x213]) {
+    case 0:
+        break;
+    case 1:
+        a = lbl_802B7CA0 + 0x1424;
+        fn_80060794(a, a + 0xfc, a + 0x100, p + 0x8);
+        break;
+    case 2:
+        a = lbl_802B7CA0 + 0x1424;
+        fn_80060794(a, a + 0xfc, a + 0x100, p + 0x10);
+        break;
+    case 3:
+        a = lbl_802B7CA0 + 0x1424;
+        fn_80060794(a, a + 0xfc, a + 0x100, p + 0x18);
+        break;
+    case 4:
+        a = lbl_802B7CA0 + 0x1424;
+        fn_80060794(a, a + 0x204, a + 0x208, p + 0x20);
+        break;
+    }
+}
+
 extern "C" void* fn_800C40D8(void* param_1, void* param_2) {
     return fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
