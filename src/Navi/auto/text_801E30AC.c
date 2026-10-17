@@ -66,10 +66,76 @@ extern "C" unsigned char fn_801E3178(unsigned int param_1) {
     return *p & 0xc0;
 }
 
+extern "C" unsigned long fn_801E3194(void* a, int b, unsigned long c, void* d);
+extern "C" unsigned long fn_801E34D0(void* a, int b, unsigned long c, void* d) {
+    unsigned long ret;
+    __begin_critical_region(2);
+    ret = fn_801E3194(*(void* volatile*)&a, *(volatile int*)&b, *(volatile unsigned long*)&c, *(void* volatile*)&d);
+    __end_critical_region(2);
+    return ret;
+}
+
+extern "C" int fn_801E3530(void*);
+extern "C" void fn_801E1B54(void*);
+#pragma push
+#pragma optimization_level 0
+extern "C" int fn_801E367C(register void* file) {
+    struct LocalFile {
+        int handle;
+        unsigned short unk0 : 7;
+        unsigned short type : 3;
+        unsigned short orient : 2;
+        unsigned short unk1 : 4;
+        unsigned char pad6[2];
+        unsigned char unk8a : 3;
+        unsigned char free_buffer : 1;
+        unsigned char unk8b : 4;
+        unsigned char pad9[0x13];
+        void* buffer;
+        unsigned char pad20[0x24];
+        int (*close_proc)(int);
+    };
+    register int bad;
+    register int result;
+    register int flush_result;
+    register int close_result;
+    if (file == 0) {
+        return -1;
+    }
+    if (((LocalFile*)file)->type == 0) {
+        return 0;
+    }
+    flush_result = fn_801E3530(file);
+    close_result = ((LocalFile*)file)->close_proc(((LocalFile*)file)->handle);
+    ((LocalFile*)file)->type = 0;
+    ((LocalFile*)file)->handle = 0;
+    if (((LocalFile*)file)->free_buffer) {
+        fn_801E1B54(((LocalFile*)file)->buffer);
+    }
+    bad = 1;
+    if (flush_result == 0 && close_result == 0) {
+        bad = 0;
+    }
+    if (bad) {
+        result = -1;
+    } else {
+        result = 0;
+    }
+    return result;
+}
+#pragma pop
+extern "C" unsigned long fn_801E37A4(void* a, int b, unsigned long c);
+extern "C" unsigned long fn_801E3740(void* a, int b, unsigned long c) {
+    unsigned long ret;
+    int bb = *(volatile int*)&b;
+    __begin_critical_region(2);
+    ret = fn_801E37A4(*(void* volatile*)&a, bb, *(volatile unsigned long*)&c);
+    __end_critical_region(2);
+    return ret;
+}
+
 extern "C" void* fn_801E39E4(void*);
 extern "C" void* fn_801E399C(void* volatile param_1) {
-    extern void __begin_critical_region(int);
-    extern void __end_critical_region(int);
     void* r;
     __begin_critical_region(2);
     r = fn_801E39E4(param_1);
@@ -192,6 +258,53 @@ extern "C" void fn_801E4018(unsigned char* dst, const unsigned char* src, unsign
     if (i != 0) {
         do {
             *--dst = *--src;
+        } while (--i != 0);
+    }
+}
+
+extern "C" void fn_801E40D0(unsigned char* dst, const unsigned char* src, unsigned long n) {
+    unsigned long i;
+    unsigned long chunks;
+    unsigned long words;
+    unsigned long* d32;
+    const unsigned long* s32;
+
+    i = (-(unsigned long)dst) & 3;
+    if (i != 0) {
+        n -= i;
+        do {
+            *dst++ = *src++;
+        } while (--i != 0);
+    }
+    d32 = (unsigned long*)dst;
+    s32 = (const unsigned long*)src;
+    chunks = n >> 5;
+    if (chunks != 0) {
+        do {
+            d32[1] = s32[1];
+            d32[2] = s32[2];
+            d32[3] = s32[3];
+            d32[4] = s32[4];
+            d32[5] = s32[5];
+            d32[6] = s32[6];
+            d32[7] = s32[7];
+            d32[8] = s32[8];
+            d32 += 8;
+            s32 += 8;
+        } while (--chunks != 0);
+    }
+    words = (n >> 2) & 7;
+    if (words != 0) {
+        do {
+            *d32++ = *s32++;
+        } while (--words != 0);
+    }
+    dst = (unsigned char*)d32;
+    src = (const unsigned char*)s32;
+    i = n & 3;
+    if (i != 0) {
+        do {
+            *dst++ = *src++;
         } while (--i != 0);
     }
 }
