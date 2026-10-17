@@ -24,7 +24,7 @@ extern f32 lbl_803012EC;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_8010EA4C(u8* p);
-extern "C" void fn_8010EB54(u8* p);
+extern "C" s32 fn_8010EB54(u8* p);
 extern "C" void fn_8010EA18(u8* p) {
     if (p[0xce] == 0) {
         fn_8010EA4C(p);
@@ -122,15 +122,54 @@ extern "C" void fn_8010F880(u8* param_1) {
     (*(VObj_8010F880**)(param_1 + 0x68))->v7(lbl_802C5B44[0x24]);
 }
 
+extern "C" void fn_8017A4F8(void* p);
+extern "C" void fn_8010F9F8(u8* param_1) {
+    if (*(u8*)(*(u8**)(param_1 + 0xa0) + 0xb0) != 0) {
+        *(s32*)(param_1 + 0xac) += 1;
+        if (*(s32*)(param_1 + 0xac) >= *(s16*)(*(u8**)(param_1 + 0xa8) + 6)) {
+            *(s32*)(param_1 + 0xac) -= *(s16*)(*(u8**)(param_1 + 0xa8) + 6);
+        }
+        *(f32*)(*(u8**)(param_1 + 0xa8) + 8) = (f32)*(s32*)(param_1 + 0xac);
+        *(s32*)(param_1 + 0xc8) += 1;
+        if (*(s32*)(param_1 + 0xc8) >= *(s16*)(*(u8**)(param_1 + 0xc4) + 6)) {
+            *(s32*)(param_1 + 0xc8) -= *(s16*)(*(u8**)(param_1 + 0xc4) + 6);
+        }
+        *(f32*)(*(u8**)(param_1 + 0xc4) + 8) = (f32)*(s32*)(param_1 + 0xc8);
+        fn_8017A4F8(*(void**)(param_1 + 8));
+    }
+}
+
 extern "C" void fn_8010FD00(u8* param_1) {
-    f32 off = lbl_80301310 * param_1[0xc1];
     f32* r = (f32*)fn_80177B10(*(void**)(param_1 + 0xb8));
-    (*(VObj_8010FD00**)(param_1 + 0xb8))->v2(*(f32*)(param_1 + 0xbc) + off, r[1]);
+    u8 b = param_1[0xc1];
+    f32 f2 = r[1];
+    f32 off = lbl_80301310 * b;
+    (*(VObj_8010FD00**)(param_1 + 0xb8))->v2(*(f32*)(param_1 + 0xbc) + off, f2);
 }
 
 extern "C" void fn_801103A0(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
+}
+
+extern "C" void fn_801103DC(u8* param_1) {
+    VObj_801103DC* a = *(VObj_801103DC**)(param_1 + 8);
+    if (a != 0) {
+        a->v0(1);
+    }
+    VObj_801103DC* b = *(VObj_801103DC**)(param_1 + 0xa8);
+    if (b != 0) {
+        b->v0(1);
+    }
+    (*(VObj_801103DC**)(param_1 + 0x10))->v7();
+    if ((s8)lbl_802C5B44[4] >= 0) {
+        s32 n = *(s32*)(lbl_802C5B44 + 8) - 1;
+        *(s32*)(lbl_802C5B44 + 8) = n;
+        if (n == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            *(s8*)(lbl_802C5B44 + 4) = -1;
+        }
+    }
 }
 
 extern "C" void fn_8015FDA8(void*, void*);
