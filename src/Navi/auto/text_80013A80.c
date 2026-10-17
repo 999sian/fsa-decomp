@@ -44,6 +44,15 @@ extern "C" void fn_80124A04(void* mgr, u8 id, void* dst, void (*cb)(void*, void*
 extern "C" s32 fn_80124900(void* mgr, u8 id, void* buf);
 extern "C" void fn_801248B8(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
 extern "C" void fn_80015A40(void* self);
+extern "C" s32 fn_80014EBC(void* p, s32 x);
+extern "C" void fn_80014790(void* p, s32 x);
+extern "C" void fn_80014574(void* p, void (*cb)(void*, void*));
+extern "C" void fn_800145A4(void* p);
+extern "C" s32 fn_8002652C(void);
+extern "C" void fn_800268AC(void);
+extern "C" void fn_80026520(void);
+extern "C" void fn_80026774(void);
+extern "C" void fn_8002669C(void);
 extern "C" void fn_8001533C(void* self, void* tbl, s32 x);
 extern "C" s32 fn_80124868(void* mgr, u8 id, void* buf);
 extern "C" void fn_8012495C(void* mgr, u8 id, void* q, void (*cb)(void*, void*), void* p);
