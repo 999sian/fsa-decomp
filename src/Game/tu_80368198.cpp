@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "dolphin/mtx.h"
 
 union EffWord {
     u32 w;
@@ -76,6 +77,140 @@ extern f32 lbl_80542C6C;
 extern f32 lbl_80542CC0;
 extern "C" void PSMTXTrans(f32 m[3][4], f32 x, f32 y, f32 z);
 extern "C" void fn_802F745C(void* mgr, f32* pos, void* tgt, EffArgs* args);
+
+extern char lbl_80474C38[];
+extern f32 lbl_80542CA4;
+extern f32 lbl_80542CC4;
+extern f32 lbl_80542CC8;
+extern "C" void fn_8010F668(Mtx m, Vec3f* v, f32 f);
+void fn_8036A894(u8* this_)
+{
+    EffArgs args;
+    f32 mtx[3][4];
+    JGeometry::TVec3<f32> pos;
+    u8 i;
+
+    if (*(s32*)(this_ + 0x24c) > 0) {
+        args.f10.w = -1;
+        args.f14.w = -1;
+        for (i = 0; i < 0x10; i += 8) {
+            args.order[i] = i;
+            args.order[(u8)(i + 1)] = i + 1;
+            args.order[(u8)(i + 2)] = i + 2;
+            args.order[(u8)(i + 3)] = i + 3;
+            args.order[(u8)(i + 4)] = i + 4;
+            args.order[(u8)(i + 5)] = i + 5;
+            args.order[(u8)(i + 6)] = i + 6;
+            args.order[(u8)(i + 7)] = i + 7;
+        }
+        args.f14.w = 0;
+        args.b1c = 0;
+        args.b1d = 0;
+        args.b1e = 0;
+        args.b1f = 1;
+        args.b20 = 1;
+        args.b21 = 0;
+        args.b22 = 0;
+        args.b23 = 0;
+        args.b24 = 0;
+        args.b25 = 0;
+        args.b26 = 1;
+        args.w28 = 3;
+        args.b2c = 1;
+        args.b2d = 0;
+        args.b2e = 0;
+        args.x30 = -1;
+        args.x34 = 0;
+        args.x38 = 2;
+        PSMTXTrans(mtx, 0.0f, 0.0f, 0.0f);
+        mtx[0][0] = 96.0f;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = 1.0f;
+        mtx[1][2] = 0.0f;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = 96.0f;
+        args.b1d = -1;
+        args.f14.b[3] = *(u8*)(this_ + 0x24c);
+        args.ptr = mtx;
+        args.b2d = 1;
+        pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+        pos.z = 0.0f;
+        if (*(s32*)(this_ + 4) < 8) {
+            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos.x, *(void**)(this_ + 0x310), &args);
+        }
+    }
+}
+
+extern "C" void fn_8036AA60(char* self) {
+    extern void* fn_801902C0(void);
+    Mtx m1;
+    Mtx m2;
+    Vec3f v1;
+    Vec3f v2;
+    char* entry;
+    s32 cnt;
+    s32 st;
+    s32 idx;
+
+    PSMTXTrans(m1, *(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
+    v1.x = lbl_80542C58;
+    v1.y = lbl_80542C6C;
+    v1.z = lbl_80542C6C;
+    fn_8010F668(m1, &v1, lbl_80542CC4);
+    m2[0][0] = lbl_80542C6C;
+    m2[0][1] = lbl_80542C6C;
+    m2[0][2] = lbl_80542C6C;
+    m2[0][3] = lbl_80542C6C;
+    m2[1][0] = lbl_80542C6C;
+    m2[1][1] = lbl_80542C6C;
+    m2[1][2] = lbl_80542C6C;
+    m2[1][3] = lbl_80542C6C;
+    m2[2][0] = lbl_80542C6C;
+    m2[2][1] = lbl_80542C6C;
+    m2[2][2] = lbl_80542C6C;
+    m2[2][3] = lbl_80542C6C;
+    v2.x = lbl_80542C6C;
+    v2.y = lbl_80542C6C;
+    v2.z = lbl_80542C58;
+    fn_8010F668(m2, &v2, *(f32*)(self + 0x280));
+    PSMTXConcat(m1, m2, m1);
+
+    if (*(u8*)(self + 0x238) != 0) {
+        *(s32*)(self + 0x254) = *(s32*)(self + 0x254) + 1;
+    }
+    st = *(s32*)(self + 0x244);
+    switch (st) {
+    case 0:
+    case 2:
+        if (*(s32*)(self + 0x254) >= ((s32*)(lbl_80474C38 + 0x60))[st]) {
+            *(s32*)(self + 0x254) = ((s32*)(lbl_80474C38 + 0x54))[st];
+        }
+        break;
+    case 1:
+        if (*(s32*)(self + 0x254) >= ((s32*)(lbl_80474C38 + 0x60))[1]) {
+            *(s32*)(self + 0x244) = 2;
+        }
+        break;
+    }
+
+    cnt = *(s32*)(self + 0x254);
+    idx = ((s32*)(lbl_80474C38 + 0x8c))[*(s32*)(self + 0x23c)];
+    entry = (char*)fn_801902C0() + idx * 0x60 + 8;
+    if (*(s32*)(entry + 0x3c) != 0 && *(u8*)(entry + 0x5c) == 0) {
+        *(u8*)(entry + 0x5c) = 1;
+        *(f32*)(entry + 0x0) = lbl_80542CA4;
+        *(f32*)(entry + 0x4) = lbl_80542CA4;
+        *(f32*)(entry + 0x8) = lbl_80542CA4;
+        PSMTXCopy(m1, (f32(*)[4])(entry + 0xc));
+        *(f32*)(entry + 0x48) = lbl_80542CC8;
+        *(s32*)(entry + 0x4c) = cnt;
+        *(s32*)(entry + 0x54) = 0;
+        *(s32*)(entry + 0x58) = 2;
+    }
+}
 
 extern "C" u8 fn_8036B018(u8* this_) {
     s32 v = *(s32*)(this_ + 0x240);
