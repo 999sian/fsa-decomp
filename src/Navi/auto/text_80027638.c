@@ -163,6 +163,12 @@ extern "C" void fn_8002F3F8(void* p, int off, int v) {
     fn_8005867C(off + fn_80058C08(), p, 1, v, -1, lbl_802FFD10);
 }
 
+extern "C" void fn_8002F458(void* p, int off) {
+    int r = fn_80058C08();
+    r = off + r;
+    fn_80058628(r, p, 1);
+}
+
 extern "C" void fn_8002F4A0(void* p, int idx) {
     extern float lbl_802FFD10;
     extern void* lbl_80227868[];
