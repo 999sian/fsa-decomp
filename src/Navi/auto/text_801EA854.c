@@ -12,6 +12,42 @@ extern "C" void* TRK_memcpy(void* dst, const void* src, unsigned int n);
 extern "C" int usr_puts_serial(const char* msg);
 extern "C" const char lbl_80202BF0[];
 extern "C" int gTRKBigEndian[];
+
+static inline int fn_801EAB08_append4(unsigned char* buffer, unsigned char* src) {
+    int result = 0;
+    unsigned int len = 4;
+    unsigned int pos = *(unsigned int*)(buffer + 0xc);
+    if (0x880 - pos < len) {
+        result = 0x301;
+        len = 0x880 - pos;
+    }
+    if (len == 1) {
+        *(buffer + pos + 0x10) = *src;
+    } else {
+        TRK_memcpy(buffer + pos + 0x10, src, len);
+    }
+    *(unsigned int*)(buffer + 0xc) = *(unsigned int*)(buffer + 0xc) + len;
+    *(unsigned int*)(buffer + 8) = *(unsigned int*)(buffer + 0xc);
+    return result;
+}
+
+static inline int fn_801EAB08_append1_ui32(unsigned char* buffer, const unsigned int data) {
+    unsigned char* bigEndianData;
+    unsigned char* byteData;
+    unsigned char swapData[4];
+
+    if (gTRKBigEndian[0]) {
+        bigEndianData = (unsigned char*)&data;
+    } else {
+        byteData = (unsigned char*)&data;
+        bigEndianData = swapData;
+        bigEndianData[0] = byteData[3];
+        bigEndianData[1] = byteData[2];
+        bigEndianData[2] = byteData[1];
+        bigEndianData[3] = byteData[0];
+    }
+    return fn_801EAB08_append4(buffer, bigEndianData);
+}
 extern "C" int fn_801EA854(void* param_1) {
     int err = TRKWriteUARTN((unsigned char*)param_1 + 0x10, *(unsigned int*)((unsigned char*)param_1 + 8));
     MWTRACE(1, lbl_80202BC8, err);
@@ -75,25 +111,22 @@ extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) 
 
 extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
     unsigned char auStack_28[8];
+    int ret;
     unsigned char* puVar4;
     unsigned int uVar1;
     unsigned int n;
-    int ret;
 
-    puVar4 = auStack_28;
-    if (gTRKBigEndian) {
-        puVar4 = param_2;
-    }
+    puVar4 = gTRKBigEndian[0] ? param_2 : auStack_28;
     ret = 0;
     n = 8;
     uVar1 = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
-    if (uVar1 < n) {
+    if (n > uVar1) {
         ret = 0x302;
         n = uVar1;
     }
     TRK_memcpy(puVar4, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, n);
     *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
-    if (gTRKBigEndian == 0 && ret == 0) {
+    if (gTRKBigEndian[0] == 0 && ret == 0) {
         param_2[0] = puVar4[7];
         param_2[1] = puVar4[6];
         param_2[2] = puVar4[5];
