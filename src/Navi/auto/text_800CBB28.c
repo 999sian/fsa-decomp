@@ -33,6 +33,21 @@ struct VObj_800CC1C4 {
 extern "C" f32 fn_800CC3D8(void* self, s32 n, s32 i);
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_800CBF04(u8* param_1) {
+    u8* a = lbl_802C56EC;
+    f32 b = lbl_80300E9C;
+    *(s16*)(param_1 + 0x2a) = 0;
+    fn_800CC1C4(param_1, *(s16*)(param_1 + 0x2a), a[0x10], 0, 0, *(f32*)(a + 0xc), b);
+    fn_800CC2DC(param_1, *(s16*)(param_1 + 0x2a), a[0x10], 0, 0);
+}
+
+struct NaviState_800CBF78;
+typedef void (NaviState_800CBF78::*NaviStateFn_800CBF78)();
+extern NaviStateFn_800CBF78 lbl_8028893C[];
+extern "C" void fn_800CBF78(NaviState_800CBF78* p) {
+    (p->*lbl_8028893C[((u8*)p)[0x2e]])();
+}
+
 extern "C" void fn_800CC1C0(void) {}
 
 extern "C" s32 fn_800CC1C4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
