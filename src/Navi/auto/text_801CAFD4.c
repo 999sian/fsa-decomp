@@ -739,6 +739,32 @@ extern "C" s32 fn_801D2D80(u8* card, s32 result)
     return result;
 }
 
+extern "C" s32 fn_801D32CC(void) {
+    u32 shift = 1;
+    u32 count = 0;
+    u32 tick;
+    s32 result;
+
+    lbl_802FEA30 = OSGetTick();
+    *(volatile u32*)&lbl_802FEA30 = *(volatile u32*)&lbl_802FEA30 * 0x41c64e6d + 0x3039;
+    result = ((*(volatile u32*)&lbl_802FEA30 >> 16) & 0x1f) + 1;
+    while (result < 4 && count < 10) {
+        tick = OSGetTick() << shift;
+        shift++;
+        if (shift > 0x10) {
+            shift = 1;
+        }
+        lbl_802FEA30 = tick;
+        count++;
+        *(volatile u32*)&lbl_802FEA30 = *(volatile u32*)&lbl_802FEA30 * 0x41c64e6d + 0x3039;
+        result = ((*(volatile u32*)&lbl_802FEA30 >> 16) & 0x1f) + 1;
+    }
+    if (result < 4) {
+        result = 4;
+    }
+    return result;
+}
+
 extern "C" s32 fn_801D28AC(s32 chan, void* cb);
 extern "C" s32 fn_801D29E0(s32 chan, void* cb);
 extern "C" void fn_801D427C(void);
@@ -776,7 +802,8 @@ extern "C" u32 fn_801D44FC(u8* param_1) {
 extern u8 lbl_802F7D60[];
 extern "C" void fn_801D4AC8(void*, s32, void*, void*);
 extern "C" void fn_801BC250(void*, s32);
-extern "C" void fn_801D2AFC(s32, s32, void*);
+extern "C" s32 fn_801D2AFC(s32, s32, void*);
+extern "C" void fn_801D493C(void);
 extern "C" void fn_801D45D8(void);
 extern "C" void fn_801D47B8(s32 chan, u8* buf, u32 val) {
     u8* p;
