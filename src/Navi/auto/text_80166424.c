@@ -1404,6 +1404,36 @@ extern "C" int fn_801700CC(u8* p, void* obj)
     return 1;
 }
 
+extern "C" s32 fn_80170148(u8* self, u32 idx, u32 c)
+{
+    u32 off;
+    if (idx >= 8) {
+        return 0;
+    }
+    off = idx * 4;
+    if (c != 0) {
+        if (*(void**)(self + off + 0xfc) == nullptr) {
+            void* p = fn_8015A90C(0x18);
+            if (p != nullptr) {
+                fn_80119240(p, idx, c);
+            }
+            *(void**)(self + off + 0xfc) = p;
+            if (*(void**)(self + off + 0xfc) == nullptr) {
+                return 0;
+            }
+        } else {
+            fn_80119240(*(void**)(self + off + 0xfc), 0, c);
+        }
+        if (*(void**)(self + off + 0xdc) != nullptr) {
+            fn_80118F5C(*(void**)(self + off + 0xdc), *(void**)(self + off + 0xfc));
+        }
+    } else {
+        fn_8015AB1C(*(void**)(self + off + 0xfc));
+        *(void**)(self + off + 0xfc) = nullptr;
+    }
+    return 1;
+}
+
 extern "C" void fn_80170220(u8* p, u32 bit, u8 flag) {
     if (flag != 0) {
         u32 mask = (1 << (u8)bit) - 1;
@@ -1427,6 +1457,34 @@ extern "C" void fn_80170574(u8* p, int unused, u32 idx) {
     if (obj != 0 && *(void**)(obj + 0x20) != 0) {
         fn_801191F0(obj);
     }
+}
+
+extern "C" void* lbl_802986F8[];
+extern "C" void* fn_801706E4(u8* self, s16 param_2)
+{
+	if (self != nullptr) {
+		s32 i;
+		*(void**)self = lbl_802986F8;
+		for (i = 0; i < 8; i++) {
+			if (self[0x1b0] & (1 << i)) {
+				fn_80118BD0(*(void**)(self + 0x16c + i * 4), 1);
+			}
+			fn_8015AB1C(*(void**)(self + 0x18c + i * 4));
+		}
+		if (self[0x1b1] != 0) {
+			void* p = *(void**)(self + 0x1ac);
+			if (p != nullptr) {
+				((VObj_8016C34C*)p)->v0(1);
+			}
+		}
+		if (self != nullptr) {
+			*(void**)self = lbl_80298B14;
+		}
+		if (param_2 > 0) {
+			fn_8015AB1C(self);
+		}
+	}
+	return self;
 }
 
 extern "C" int fn_80171640(u8* p, u32 idx, void* val)
