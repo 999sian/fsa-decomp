@@ -101,6 +101,25 @@ extern "C" void fn_8000A208(void) {
     OSRestoreInterrupts(enabled);
 }
 
+extern char lbl_80203860[];
+extern "C" void fn_800074C0(const char*, ...);
+extern char lbl_802037C0[];
+extern "C" void fn_8000A2BC(void) {
+    char* str = lbl_802037C0;
+    fn_800074C0(str + 0xA0);
+    fn_801BB7E0(lbl_8029F8B0);
+    BOOL enabled = OSDisableInterrupts();
+    if (lbl_802FEB42 == 2) {
+        if (fn_801DB640(lbl_802FEB5C) != fn_8000A208) {
+            fn_8011FD18(fn_8011FD10(), str + 0x18, 0x9D3, lbl_802FB790, str + 0x7C);
+            fn_80007AB8(str + 0x18, 0x9D3, lbl_802FB794);
+        }
+        lbl_802FEB5C = nullptr;
+        lbl_802FEB42++;
+    }
+    OSRestoreInterrupts(enabled);
+}
+
 extern "C" void* fn_8000B3B8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80298574;
