@@ -925,6 +925,12 @@ extern "C" void fn_80128984(void) {
     fn_801DACA4(0, 0, 0, 0x1e, 0, 0x7d);
 }
 
+extern "C" void fn_80128DF0(u8* a, u8* b)
+{
+    u16 idx = (*(u16**)(*(u8**)(a + 4) + 0x38))[b[0x94]];
+    fn_801191F0((*(u8***)(*(u8**)(a + 8) + 8))[idx] + 4, 0);
+}
+
 extern "C" void fn_80128E3C(void** param_1) {
     u8* obj = (u8*)param_1[0];
     u8** info = *(u8***)((u8*)param_1[1] + 0x1c);
