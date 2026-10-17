@@ -5,6 +5,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 #include "Game/ItemBase.h"
+extern "C" void fn_802F86CC(void* obj, f32* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
 
 extern "C" s16 lbl_8048C95C[];
 
