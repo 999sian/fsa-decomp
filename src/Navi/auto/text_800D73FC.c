@@ -61,6 +61,14 @@ extern "C" void fn_800EAFA8(void* p) {
     *(u8*)((u8*)p + 0xa76) = 0;
 }
 
+extern "C" void fn_800EC0E4(void* param_1) {
+    if (*(u8*)((u8*)param_1 + 0xb14) != 0) {
+        *(u8*)((u8*)param_1 + 0xb14) = *(u8*)((u8*)param_1 + 0xb14) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0xa76) = *(u8*)((u8*)param_1 + 0xa77);
+}
+
 extern "C" void fn_800EE0F0(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
