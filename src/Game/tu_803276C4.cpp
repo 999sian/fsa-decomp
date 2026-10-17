@@ -13,7 +13,7 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void PSMTXIdentity(void* m);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
 extern "C" void fn_802F745C(void* a, void* b, void* c, void* d);
-extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
+extern "C" void fn_803075AC(void* p, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 
 extern "C" char __vt__4OSIN[];
