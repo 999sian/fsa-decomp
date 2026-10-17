@@ -18,6 +18,15 @@ extern u8 lbl_8053ABB8[];
 struct SykyVT { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual u8 v11(); virtual u8 v12(); };
 extern void* lbl_8053AF10;
 extern const f32 lbl_8053E460;
+extern const f32 lbl_8053E46C;
+extern const f32 lbl_8053E474;
+extern const f32 lbl_8053E48C;
+extern const f32 lbl_8053E490;
+extern const f32 lbl_8053E494;
+extern const f32 lbl_8053E498;
+extern const f32 lbl_8053E49C;
+extern const f32 lbl_8053E4A0;
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
 extern const char lbl_80468480[];
 extern "C" void fn_8019E37C(u8* p) {
     s32 state = *(s32*)(p + 0x268);
@@ -168,7 +177,7 @@ extern "C" void fn_801A033C(u8* p) {
         lbl_8053ABB8[3] = 0;
         lbl_804C6330[3] = 0;
         *(s32*)(p + 0xb0) = 0xa040004;
-        if (((SykyVT*)p)->v12()) {
+        if (((SykyVT*)p)->v11()) {
             *(s32*)(p + 0x230) = 6;
         } else {
             *(s32*)(p + 0x230) = 0;
