@@ -1760,7 +1760,7 @@ extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
 
 extern "C" void fn_8012D2B0(u8* p, u8* r4, u8* q)
 {
-    if (*(u32*)(*(u8**)q + 8) & 0x20000) {
+    if ((*(u32*)(*(u8**)q + 8) >> 16) & 2) {
         JMathInlineVEC::PSVECScale((JGeometry::TVec3f*)(q + 0x1c), (JGeometry::TVec3f*)(p + 4), *(f32*)(q + 0x28));
     } else {
         fn_801C6684(r4 + 0x78, q + 0x1c, p + 4);
