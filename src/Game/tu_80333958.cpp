@@ -2,6 +2,16 @@
 
 class Actor;
 
+struct Tu80333958ResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* get(u32 type, const char* name);
+};
+
 
 extern "C" char lbl_804AB968[];
 extern "C" void fn_801F2B7C(void* this_, u32 a, u32 b, u32 c);
@@ -21,41 +31,40 @@ extern "C" Actor* fn_80333958(Actor* p, s16 n)
 
 extern const f32 lbl_80541F38;
 extern "C" u16 fn_8022461C(Vec* pos, s32 room);
-extern "C" BOOL fn_803339B8(void* this_, s32 room, Vec* pos) {
-    char* p = (char*)this_;
-    Vec v = *pos;
-    switch (*(s32*)(p + 0x240)) {
+extern "C" BOOL fn_803339B8(void* this_, s32 room, JGeometry::TVec3f* pos) {
+    JGeometry::TVec3f v(*pos);
+    switch (*(s32*)((char*)this_ + 0x240)) {
     case 0:
-        if (*(s32*)(p + 0x23c) != 0) {
+        if (*(s32*)((char*)this_ + 0x23c) != 0) {
             v.y -= lbl_80541F38;
         } else {
             v.y -= lbl_80541F38;
         }
         break;
     case 1:
-        if (*(s32*)(p + 0x23c) != 0) {
+        if (*(s32*)((char*)this_ + 0x23c) != 0) {
             v.y += lbl_80541F38;
         } else {
             v.y += lbl_80541F38;
         }
         break;
     case 2:
-        if (*(s32*)(p + 0x23c) != 0) {
+        if (*(s32*)((char*)this_ + 0x23c) != 0) {
             v.x -= lbl_80541F38;
         } else {
             v.x -= lbl_80541F38;
         }
         break;
     case 3:
-        if (*(s32*)(p + 0x23c) != 0) {
+        if (*(s32*)((char*)this_ + 0x23c) != 0) {
             v.x += lbl_80541F38;
         } else {
             v.x += lbl_80541F38;
         }
         break;
     }
-    s32 kind = (s16)fn_8022461C(&v, room);
-    switch (*(s32*)(p + 0x240)) {
+    s32 kind = (u16)fn_8022461C(&v, room);
+    switch (*(s32*)((char*)this_ + 0x240)) {
     case 0:
         if (kind == 0x41) {
             return 1;
