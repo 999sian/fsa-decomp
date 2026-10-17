@@ -75,6 +75,10 @@ struct Obj240 {
 	u8 pad24[2];
 	s16 f26;
 };
+struct Slots208 {
+	u8 pad0[0x208];
+	u8* slot[16]; // 0x208, indexed by the s32 at 0x340
+};
 struct T80403D84 {
 	u8 pad0[0x240];
 	Obj240* parts[12]; // 0x240
@@ -561,10 +565,8 @@ extern "C" void fn_80409330(u8* self) {
 
 extern "C" char lbl_80529DEC[];
 extern "C" void fn_80409450(void* p) {
-	u32 cmd2;
 	u32 cmd1;
-	char* q;
-	s32 i;
+	u32 cmd2;
 	s32 st;
 	s32 bb;
 	u32 bits;
@@ -573,14 +575,17 @@ extern "C" void fn_80409450(void* p) {
 	*(s16*)((char*)p + 0x41e) += 1;
 	if (*(u8*)((char*)p + 0x663) == 0) {
 		if (*(s16*)((char*)p + 0x41e) == 1) {
-			for (i = 0, q = (char*)p; i < 4; i++, q += 4) {
+			char* q = (char*)p;
+			for (int i = 0; i < 4; i++, q += 4) {
 				*(u8*)(*(char**)(q + 0x2b8) + 0x44) = 0;
 				*(u8*)(*(char**)(q + 0x2b8) + 0x45) = 0;
 				cmd1 = 0x10001;
 				(*(void (**)(void*, u32*))(*(char**)(*(char**)(q + 0x2b8) + 8) + 0x14))(*(void**)(q + 0x2b8), &cmd1);
 			}
 		} else if (*(s16*)((char*)p + 0x41e) == 0x1a) {
-			for (i = 0, q = (char*)p; i < 4; i++, q += 4) {
+			s32 i = 0;
+			char* q = (char*)p;
+			for (; i < 4; i++, q += 4) {
 				*(u8*)(*(char**)(q + 0x2b8) + 0x44) = 0;
 				*(u8*)(*(char**)(q + 0x2b8) + 0x45) = 0;
 				cmd2 = 0x2000e;
@@ -614,7 +619,11 @@ extern "C" void fn_80409450(void* p) {
 			bits &= *(u32*)((char*)row + 0x28);
 			bits = (-bits | bits) >> 31;
 		}
-		*(u8*)(lbl_80529DEC + 0x254) = bits != 0;
+		if (bits != 0) {
+			*(u8*)(lbl_80529DEC + 0x254) = 1;
+		} else {
+			*(u8*)(lbl_80529DEC + 0x254) = 0;
+		}
 		*(s32*)((char*)p + 0x350) = 0x16;
 	}
 }
@@ -694,31 +703,31 @@ extern "C" void fn_8040B93C(u8* self) {
 			*(s32*)(self + 0x380) = 0;
 			*(s16*)(self + 0x428) = 0;
 			{
-				u8* x = *(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2));
+				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
 				(*(u8**)(x + 4))[0xb0] = 1;
 			}
 			{
-				u8* x = *(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2));
+				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
 				u8* y = *(u8**)(x + 4);
 				(*(void (**)(void*, u8))(*(u8**)y + 0x24))(y, x[0x28]);
 			}
 			{
-				u8* x = *(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2));
+				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
 				*(f32*)(self + 0x3b8) = *(f32*)(x + 0xc) - 400.0f;
 			}
 			f32 t;
 			{
-				u8* x = *(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2));
+				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
 				t = *(f32*)(self + 0x3b8) - *(f32*)(x + 0xc);
 				fn_80402E08(x, 0.0f, t);
 			}
 			{
-				u8* x = *(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2));
+				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
 				u8* y = *(u8**)(x + 4);
 				*(f32*)(self + 0x3ac) = (*(f32*)(y + 0x28) - *(f32*)(y + 0x20)) * 0.5f + *(f32*)(y + 0x30);
 			}
 			{
-				u8* y = *(u8**)(*(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2)) + 4);
+				u8* y = *(u8**)(*(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208) + 4);
 				u8* b = getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(lbl_8048C4F8[*(s32*)(self + 0x340)]));
 				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * 0.5f + (*(f32*)(self + 0x3b8) + *(f32*)(b + 4)));
 			}
@@ -726,7 +735,7 @@ extern "C" void fn_8040B93C(u8* self) {
 				*(s32*)(self + 0x350) = 0x11;
 			} else {
 				{
-					u8* x = *(u8**)(self + 0x208 + (*(s32*)(self + 0x340) << 2));
+					u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
 					fn_80402E08(x, 0.0f, 0.0f);
 				}
 				u8* rec = (u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8;
@@ -1219,7 +1228,8 @@ extern u8 lbl_8048C90C[];
 extern u8 lbl_8048C924[];
 extern "C" void fn_80405D00(u8* self, s32 param) {
 	s32 count = 0;
-	for (s32 i = 0; i < 4; i++) {
+	s32 i;
+	for (i = 0; i < 4; i++) {
 		if (*(u32*)(self + 0x38c) & (1 << (*(s32*)(self + 0x340) * 4 + i))) {
 			count++;
 		}
@@ -1494,6 +1504,7 @@ extern "C" f32 lbl_80543900;
 extern "C" f32 lbl_805438D8;
 extern "C" f32 lbl_805438DC;
 extern "C" f32 lbl_80543904;
+#pragma peephole off
 extern "C" void fn_80408114(u8* self) {
     s32 i;
     u8* obj;
@@ -1556,7 +1567,7 @@ extern "C" void fn_80408114(u8* self) {
         }
     }
 }
-
+#pragma peephole reset
 extern "C" void fn_804083D8(u8* self) {
 	u8* p = self;
 	u32 bx0, ax0, bz0, az0, by0, ay0;
