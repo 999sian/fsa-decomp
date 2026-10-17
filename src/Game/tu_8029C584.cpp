@@ -1,7 +1,5 @@
 
 
-#include "Game/SinitPoolChain.h"
-
 struct Vec {
     float x, y, z;
 };
