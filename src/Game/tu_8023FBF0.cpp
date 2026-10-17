@@ -404,8 +404,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 me;
     s32 linked;
+    s32 me;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -534,17 +534,7 @@ s32 fn_8024018C(char* p) {
     return 0;
 }
 s32 fn_80240354(char* p) {
-    u8 bit = 1 << S32(p, 0x4);
-    BOOL owner;
-    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
-        owner = 1;
-    } else if (getMode3(p) == 4) {
-        s32 v = linkIdx(p);
-        owner = v != linkRank2(p);
-    } else {
-        owner = ((u32)S32(p, 0xd60) >> 31) ^ 1;
-    }
-    if ((u8)owner) {
+    if ((u8)isLinkOwner3(p)) {
         return fn_80236768(fn_8022EA0C(S32(p, 0x4)));
     }
     if (U8(p, 0xbdc)) {
