@@ -59,6 +59,14 @@ extern "C" s32 fn_80017CF0(void* p) {
     return r;
 }
 
+extern u32 lbl_802FEBF4;
+extern "C" s32 fn_8001892C(void);
+extern "C" s32 fn_8001C2E4(void* a, void* b);
+extern f32 lbl_802FF238;
+extern f32 lbl_802FFBEC;
+extern "C" s32 fn_80116840(f32* p, f32 a, f32 b);
+extern "C" double fabs(double);
+
 extern "C" void fn_80017F5C(void* tag) {
     cTg_Addition__FP15node_list_classP16create_tag_class(lbl_80205388, tag);
 }
@@ -112,8 +120,9 @@ extern "C" void fn_80018804(u8* p, f32* q) {
 extern "C" void fn_80018870(u8* p, f32* q) {
     s32 idx = (*(s16*)(p + 0x136) >> 2) & 0x3ff8;
     f32 v = *(f32*)(p + 0x154) + *(f32*)(p + 0x234);
-    f32 a = *(f32*)(p + 0x230) * *(f32*)(lbl_802F0BC0 + idx);
-    f32 c = *(f32*)(p + 0x230) * *(f32*)(lbl_802F0BC0 + idx + 4);
+    u8* t = lbl_802F0BC0 + idx;
+    f32 a = *(f32*)(p + 0x230) * *(f32*)t;
+    f32 c = *(f32*)(p + 0x230) * *(f32*)(t + 4);
     if (v < *(f32*)(p + 0x238)) {
         v = *(f32*)(p + 0x238);
     }
