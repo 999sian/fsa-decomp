@@ -575,7 +575,7 @@ extern "C" s32 fn_80125010(s32 param_1, s32* param_2) {
 
 extern "C" s32 fn_8013F008(s32 a, void* b);
 extern "C" s32 fn_801401F4(s32 a, s32 b, void* c);
-extern "C" void fn_8012F6F8(void* a, s32 b, void* c);
+extern "C" void* fn_8012F6F8(void* a, s32 b, void* c);
 extern "C" s32 fn_80125098(s32 param_1, s32* param_2) {
     u8* r31 = *(u8**)param_2;
     s32 r3 = fn_8013F008(*(s32*)(r31 + 0x28), r31 + 0x44);
@@ -991,9 +991,13 @@ extern "C" void fn_80129894(f32* m, f32 s, f32 c) {
 }
 
 extern "C" void fn_801298D4(f32* param_1, f32 param_2, f32 param_3) {
-    f32 zero = lbl_80301698;
+    f32 one;
+    f32 zero;
+    f32 neg = -param_2;
     param_1[0] = param_3;
-    param_1[1] = -param_2;
+    zero = lbl_80301698;
+    one = lbl_80301694;
+    param_1[1] = neg;
     param_1[2] = zero;
     param_1[3] = zero;
     param_1[4] = param_2;
@@ -1002,7 +1006,7 @@ extern "C" void fn_801298D4(f32* param_1, f32 param_2, f32 param_3) {
     param_1[7] = zero;
     param_1[8] = zero;
     param_1[9] = zero;
-    param_1[10] = lbl_80301694;
+    param_1[10] = one;
     param_1[11] = zero;
 }
 
