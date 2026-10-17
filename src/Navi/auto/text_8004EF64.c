@@ -8,6 +8,8 @@ extern "C" void* fn_8004F50C(void* ptr, s16 param_2);
 // .text 0x8004ef64-0x8004f7c4 (19 functions). split_file divides it into the game's real files.
 
 extern void* lbl_8024745C[];
+extern void* lbl_8024763C[];
+extern f32 lbl_803001E8;
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_8004F154(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
