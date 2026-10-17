@@ -1437,7 +1437,6 @@ BOOL fn_80245FEC(char* p) {
 }
 
 PAD_GATED(80245DB0, fn_80309D6C, 0x100)
-PAD_GATED(80246228, fn_80309D6C, 0x100)
 inline s32 countSharing4(char* p) {
     s32 c;
     s32 i;
