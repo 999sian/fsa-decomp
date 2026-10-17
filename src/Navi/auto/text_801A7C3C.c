@@ -2049,6 +2049,20 @@ extern "C" void fn_801B4638(u32* out, u8* p, s32 a, s32 b) {
     out[0] = lbl_80301D04;
 }
 
+extern "C" void fn_801B4684(u32* out, u8* p, s32 a, s32 b) {
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u8* e = *(u8**)(p + 4) + idx * 0x138 + 0xc8;
+    u16 v = *(u16*)(e + b * 2);
+    if (v != 0xffff) {
+        u32* tbl = (u32*)(*(u8**)(p + 0x38) + v * 8);
+        out[0] = tbl[0];
+        out[1] = tbl[1];
+        return;
+    }
+    out[0] = lbl_80302398;
+    out[1] = lbl_8030239C;
+}
+
 extern "C" u32 lbl_80301DEC;
 extern "C" u32 lbl_80302398;
 extern "C" u32 lbl_8030239C;
@@ -2057,11 +2071,11 @@ extern "C" void fn_801B46F4(u32* out, u8* p, s32 a, s32 b) {
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u8* e = *(u8**)(p + 4) + idx * 0x138 + 0x80;
     u16 v = *(u16*)(e + b * 2);
-    if (v != 0xffff) {
+    if (v == 0xffff) {
+        out[0] = def;
+    } else {
         out[0] = ((u32*)*(u8**)(p + 0x3c))[v];
-        return;
     }
-    out[0] = def;
 }
 
 extern "C" u8 fn_801B474C(u8* s, u32 a) {
@@ -3018,4 +3032,3 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
-struct Unk801B425C { u32 v; };
