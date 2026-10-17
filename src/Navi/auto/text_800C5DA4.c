@@ -13,6 +13,9 @@ extern char lbl_802886DC[];
 extern char lbl_802FD3D8;
 extern char lbl_802FD3DC;
 extern char lbl_802AE880[];
+extern "C" s32 fn_80016294(void* a, void* b, u32 c, s32 d);
+extern "C" void fn_8003ABDC(void* a, u32 b, u32 c, u32 d, u32 e);
+extern "C" void fn_8003ABF0(void* a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -303,16 +306,7 @@ extern "C" void fn_800C954C(u8* p) {
         o->v0(1);
     }
     (*(VObj_800C954C**)(p + 0x10))->v7();
-    u8* base = (u8*)lbl_802C567C;
-    s8 flag = *(s8*)(base + 4);
-    if (flag < 0) {
-        return;
-    }
-    s32* cnt = (s32*)(base + 8);
-    if (--*cnt == 0) {
-        fn_800127A0(lbl_8029FDB4 + 4);
-        *(s8*)(base + 4) = -1;
-    }
+    release_800C954C((RefGuard_800C954C*)lbl_802C567C);
 }
 
 extern "C" void fn_800C980C(void* param_1) {
