@@ -2,6 +2,9 @@
 // .text 0x801cafd4-0x801e0c34 (354 functions). split_file divides it into the game's real files.
 
 #include <types.h>
+extern "C" void* __OSSetInterruptHandler(u32 interrupt, void (*handler)(void));
+extern "C" void OSInitThreadQueue(void* queue);
+extern "C" void __OSUnmaskInterrupts(u32 mask);
 extern "C" u8 lbl_802F7D60[];
 extern void* lbl_802FFA4C;
 extern "C" s32 fn_801D61F8(void* self);
@@ -1137,11 +1140,12 @@ extern "C" void fn_801DB684(void* param_1, void* param_2) {
 
 extern void* lbl_802FFA6C;
 extern "C" void fn_801DB750(int param_1, void* param_2) {
+    u32 padding[2];
     char context[720];
-    u16 val;
+    u32 val;
 
     val = *(u16*)((u8*)__peReg + 0xa);
-    val = (val & ~0x8) | 0x8;
+    val = __rlwimi(val, 1, 3, 28, 28);
     *(u16*)((u8*)__peReg + 0xa) = val;
     lbl_802FFA70 = 1;
     if (lbl_802FFA6C != 0) {
