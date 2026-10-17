@@ -1220,6 +1220,14 @@ extern "C" void fn_8015D374(u8* p, void* r4, u32 r5) {
     *(u32*)(p + 0x78) = 0;
 }
 
+extern "C" void fn_8015D3E4(void* p, u32 a, u32 b, u32 c) {
+    *(u32*)((u8*)p + 0x28) = a;
+    *(u32*)((u8*)p + 0x5c) = b & ~0x1f;
+    *(void**)((u8*)p + 0x58) = fn_80159BE0(*(u32*)((u8*)p + 0x5c), 0x20, *(void**)((u8*)p + 0x28));
+    *(void**)((u8*)p + 0x2c) = fn_80159BE0(0x318, 0x20, *(void**)((u8*)p + 0x28));
+    fn_801C0884(*(void**)((u8*)p + 0x2c), (void*)fn_8015D474, p, (void*)(*(u32*)((u8*)p + 0x58) + *(u32*)((u8*)p + 0x5c)), *(u32*)((u8*)p + 0x5c), c, 1);
+}
+
 extern "C" void fn_8015D474(VObj_80088CF8* obj) {
     obj->m1();
 }
