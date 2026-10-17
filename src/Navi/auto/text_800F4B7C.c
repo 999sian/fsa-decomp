@@ -227,6 +227,21 @@ extern "C" void fn_80101038(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x18;
 }
 
+extern "C" void fn_80101064(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x18c) != 0) {
+        fn_8002F458((void*)0xad, 0);
+        *(u8*)(*(u8**)((u8*)param_1 + 0x110) + 0xb0) = 0;
+        *(u8*)(*(u8**)((u8*)param_1 + 0x114) + 0xb0) = 0;
+        *(u8*)(*(u8**)((u8*)param_1 + 0x11c) + 0xb0) = 1;
+        *(u16*)((u8*)param_1 + 0x528) = 8;
+        *(u8*)((u8*)param_1 + 0xf2) = 0xe;
+        *(u8*)((u8*)param_1 + 0x188) = 1;
+        *(u32*)((u8*)param_1 + 0x124) = 0;
+        fn_8002F7C0((void*)9, 0);
+        *(u8*)((u8*)param_1 + 0x189) = 0x19;
+    }
+}
+
 extern "C" void fn_801019C0(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
