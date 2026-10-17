@@ -2,6 +2,20 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/JUtility/TColor.h"
+
+class RupyNum {
+public:
+	void add(u8 digit, int p2, f32 scale, JUtility::TColor color);
+};
+extern "C" RupyNum* lbl_8053AF50;
+extern const u8 lbl_80543170[];
+extern const u8 lbl_80543174[];
+extern const u8 lbl_80543178[];
+extern const f32 lbl_80543194;
+extern const f32 lbl_80543198;
+extern const f32 lbl_8054318C;
+extern const f32 lbl_805431B4;
 
 // ---- from src/Game/fn_80391CE4_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
