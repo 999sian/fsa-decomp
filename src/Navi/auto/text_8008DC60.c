@@ -1741,6 +1741,7 @@ extern "C" void fn_80130974(void* p);
 extern "C" void* fn_8015A90C(u32 n);
 extern "C" void fn_800CC7B4(void* p);
 extern "C" void fn_800CDE98(void* p);
+extern "C" void fn_801E0DB8(void* p, void* fn, s32 a, s32 b, s32 c);
 extern "C" void* lbl_80285698[];
 extern "C" void* lbl_80285708[];
 extern "C" void* lbl_80286980[];
@@ -2204,6 +2205,25 @@ extern NaviStateFn_8009FE50 lbl_80286814[];
 extern NaviStateFn_8009FE50 lbl_80286874[];
 extern "C" void fn_8009FE50(NaviState_8009FE50* p) {
     (p->*lbl_80286814[((u8*)p)[0x2ac]])();
+}
+
+extern "C" void fn_8009FE88(u8* p) {
+    if (*(void**)(p + 0x2a8) == 0) {
+        void** o = (void**)fn_8015A90C(0x294);
+        if (o != 0) {
+            o[0] = lbl_80286964;
+            o[2] = lbl_8027EC78;
+            o[2] = lbl_80289110;
+            fn_801E0DB8(o + 0x6b, (void*)fn_80092F7C, 0, 4, 0x14);
+            fn_801E0DB8(o + 0x7f, (void*)fn_80092F7C, 0, 4, 0x14);
+        }
+        *(void***)(p + 0x2a8) = o;
+        *(void**)(*(u8**)(p + 0x2a8) + 0x10) = *(void**)(p + 0x260);
+        fn_800CDE98(*(void**)(p + 0x2a8));
+    }
+    (*(u8**)(p + 0x2a8))[0x28f] = p[0x2ad];
+    p[0x7e0] = 3;
+    p[0x2ac] = 1;
 }
 
 extern void* lbl_80289110[];
