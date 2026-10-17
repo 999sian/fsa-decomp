@@ -24,6 +24,17 @@ extern "C" void fn_80238548(s32 idx, s32 a, f32* pos, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7440(void* p, s32 x);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
+extern f32 lbl_8053C080;
+extern f32 lbl_8053C050;
+extern f32 lbl_8053BFF0;
+extern f32 lbl_8053BFC0;
+extern f32 lbl_8053BFC4;
+extern f32 lbl_8053BFC8;
+extern "C" void fn_800FA1A4(void* this_);
+extern "C" u8 fn_801F2618(void* this_, void* out, s32 flag);
+extern "C" void fn_800FB6E0(void* p, s32 x);
+extern "C" void fn_802D79E8(void* mgr, s32 room, s32 a, f32 x, f32 y);
+extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
 extern f32 lbl_8053C02C;
 extern f32 lbl_8053C030;
 extern f32 lbl_8053C034;
@@ -168,6 +179,81 @@ extern "C" void fn_800F8A30(void* this_) {
             ((ActorVT*)this_)->slot9();
         }
     }
+}
+
+extern "C" void fn_800F9170(void* this_) {
+    s32 idx = 1;
+    *(u8*)((char*)this_ + 0x249) = idx;
+    void* owner = *(void**)((char*)this_ + 0x240);
+    u32 m = *(u8*)((char*)owner + 0x2ac);
+    u32 k;
+    if (m < 8) {
+        idx = 0;
+        k = 0x2000;
+    } else if (m < 0x10) {
+        k = 0x2000;
+    } else if (m < 0x15) {
+        idx = 2;
+        k = 0x3332;
+    } else if (m < 0x18) {
+        idx = 3;
+        k = 0x5554;
+    } else if (m < 0x1a) {
+        idx = 4;
+        k = 0x8000;
+    } else {
+        idx = 5;
+        k = 0x2000;
+    }
+    u16 ang = *(u16*)((char*)owner + 0x2ae) + (m * k + (idx << 12));
+    f32 t = lbl_8049C634[idx];
+    f32 scale = *(f32*)((char*)owner + 0x2a8);
+    f32 sn = sincosTable___5JMath[(ang >> 5) * 2];
+    f32 cs = sincosTable___5JMath[(ang >> 5) * 2 + 1];
+    f32 x = scale * (t * sn) + *(f32*)((char*)owner + 0xc);
+    f32 y = scale * (t * cs) + *(f32*)((char*)owner + 0x10);
+    f32 z = lbl_8053BFFC + *(f32*)((char*)owner + 0x14) + (f32)(s32)(idx * 13);
+    JGeometry::TVec3<f32> pos = JGeometry::TVec3<f32>(x, y, z);
+    *(u8*)((char*)owner + 0x2ac) += 1;
+    s32 id = *(s32*)((char*)this_ + 0xa0);
+    if (id != -1) {
+        void* target = fn_801F666C(fn_801F856C(), id);
+        if (target != 0 && *(u32*)((char*)target + 0x1a0) == 0x424F4D45) {
+            *(u16*)((char*)this_ + 0x244) = 0x4000;
+            *(u16*)((char*)this_ + 0x24e) = 0;
+            return;
+        }
+    }
+    if (fn_801F3D94(this_, 1) != 0) {
+        return;
+    }
+    if (fn_801F305C(this_)) {
+        return;
+    }
+    *(u32*)((char*)this_ + 0xb0) = 0x80002;
+    *(u16*)((char*)this_ + 0x24e) += 1;
+    owner = *(void**)((char*)this_ + 0x240);
+    JGeometry::TVec3<f32> d = *(JGeometry::TVec3<f32>*)((char*)owner + 0xc);
+    d -= *(JGeometry::TVec3<f32>*)((char*)this_ + 0xc);
+    if (d.length() < lbl_8053C01C && *(u16*)((char*)this_ + 0x24e) > 0x50) {
+        *(s32*)((char*)this_ + 0x234) = 1;
+        d.normalize();
+        d.scale(lbl_8053BFC8);
+        d.z = lbl_8053BFAC;
+        if (*(f32*)((char*)this_ + 0x14) < lbl_8053BFFC || *(u16*)((char*)this_ + 0x24e) < 0x50) {
+            d.x = lbl_8053BFAC;
+            d.y = lbl_8053BFAC;
+            d.z = lbl_8053BFAC;
+        }
+        *(JGeometry::TVec3<f32>*)((char*)this_ + 0x3c) = d;
+        *(JGeometry::TVec3<f32>*)((char*)this_ + 0xc) += *(JGeometry::TVec3<f32>*)((char*)this_ + 0x3c);
+        *(u16*)((char*)this_ + 0x244) += 0x480;
+        *(f32*)((char*)this_ + 0x14) = lbl_8053C020 * __fabsf(sincosTable___5JMath[((*(u16*)((char*)this_ + 0x244)) >> 5) * 2]);
+        if (*(f32*)((char*)this_ + 0x14) <= lbl_8053BFFC) {
+            return;
+        }
+    }
+    fn_801F0E34(this_, 0x50083, 0);
 }
 
 extern "C" void fn_800F9C20(void* this_) {
