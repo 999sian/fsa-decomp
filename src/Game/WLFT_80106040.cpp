@@ -154,13 +154,13 @@ static inline bool wlftOnLift(u8* this_, s32 i) {
     if (fn_8023DE58(i) != room) {
         return false;
     }
-    JGeometry::TVec3<f32> p(*fn_8023E724(i));
     f32 cx = 8.0f + *(f32*)(this_ + 0xc);
     f32 cy = 8.0f + *(f32*)(this_ + 0x10);
     f32 x0 = *(f32*)(this_ + 0x60) + cx;
     f32 y0 = *(f32*)(this_ + 0x64) + cy;
     f32 x1 = *(f32*)(this_ + 0x68) + cx;
     f32 y1 = *(f32*)(this_ + 0x6c) + cy;
+    JGeometry::TVec3<f32> p(*fn_8023E724(i));
     u8 in = 0;
     if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
         in = 1;
