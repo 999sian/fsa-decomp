@@ -1268,6 +1268,12 @@ extern "C" void* fn_80133414(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8013345C(f32* p)
+{
+    p[0] = p[3];
+    ((s32*)p)[2] = 0;
+}
+
 extern void* lbl_80292684[];
 extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
