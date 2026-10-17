@@ -26,6 +26,23 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
+static void showFloat(f32 value, int col)
+{
+    u32 bits = *(u32*)&value;
+    if ((bits & 0x7f800000) == 0x7f800000) {
+        if ((bits & 0x7fffff) != 0) {
+            lbl_8053A914->print_f(lbl_8045E878 + 0xd4, col);
+        } else if ((bits & 0x80000000) != 0) {
+            lbl_8053A914->print_f(lbl_8045E878 + 0xe8, col);
+        } else {
+            lbl_8053A914->print_f(lbl_8045E878 + 0xf8, col);
+        }
+    } else if (value == 0.0f) {
+        lbl_8053A914->print_f(lbl_8045E878 + 0x108, col);
+    } else {
+        lbl_8053A914->print_f(lbl_8045E878 + 0x11c, col, value);
+    }
+}
 extern "C" void* __nw__FUlP7JKRHeapi(size_t size, JKRHeap* heap, int align);
 extern void* lbl_80499414[];
 extern "C" void __ct__9JKRThreadFUlii(JKRThread* this_, u32 stackSize, int msgCount, int threadPriority);
