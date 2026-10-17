@@ -24,21 +24,25 @@ extern "C" void fn_8029B7BC(void) {
 }
 
 extern "C" int fn_8023DE58(int);
-extern "C" int fn_8022DB04(int);
 extern "C" int fn_80230CFC(int);
 extern "C" f32* fn_8023E724(int);
 extern "C" BOOL fn_8022DB04(int);
 extern "C" void fn_8029B7C0(void* this_) {
     u8* self = (u8*)this_;
-    f32 left = *(f32*)(self + 0x60) + *(f32*)(self + 0xc);
-    f32 top = *(f32*)(self + 0x64) + *(f32*)(self + 0x10);
-    f32 right = *(f32*)(self + 0x68) + *(f32*)(self + 0xc);
-    f32 bottom = *(f32*)(self + 0x6c) + *(f32*)(self + 0x10);
+    s32 owner = *(s32*)(self + 4);
+    f32 left = *(f32*)(self + 0x60);
+    f32 top = *(f32*)(self + 0x64);
+    f32 right = *(f32*)(self + 0x68);
+    f32 bottom = *(f32*)(self + 0x6c);
     s32 count = 0;
     s32 i;
 
+    left += *(f32*)(self + 0xc);
+    top += *(f32*)(self + 0x10);
+    right += *(f32*)(self + 0xc);
+    bottom += *(f32*)(self + 0x10);
+
     for (i = 0; i < 4; i++) {
-        s32 owner = *(s32*)(self + 4);
         if (fn_8023DE58(i) == owner && fn_8022DB04(i)) {
             u32 flags = *(u32*)(self + 0x90);
             s32 mode = (flags >> 17) & 3;
