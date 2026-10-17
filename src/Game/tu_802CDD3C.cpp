@@ -26,6 +26,7 @@ extern "C" const u8 lbl_80540E28[];
 extern "C" void* lbl_804A90F0[];
 extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
+extern "C" char sincosTable___5JMath[];
 
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
