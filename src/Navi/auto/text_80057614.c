@@ -19,6 +19,7 @@ extern u8 lbl_8026D4BC[];
 extern "C" void fn_800592CC(void* p);
 extern "C" void fn_80059290(void* p);
 extern "C" s32 fn_80058D70(s32 idx);
+extern u8 lbl_802FC71C[4];
 extern "C" void fn_80058E5C(s32 idx, s32* a, s32* b);
 extern void* lbl_8027EC78[];
 extern void* lbl_80299A8C[];
