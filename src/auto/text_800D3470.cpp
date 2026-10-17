@@ -3335,13 +3335,8 @@ struct fn_800DE29C_Bits2 {
   u8 a : 2;
 };
 
-extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
-{
-    struct Unk {
-        u8 pad[0x21];
-        Unk800DE6DCStage mStage[1];
-    };
-    ((Unk*)param_1)->mStage[param_2].setSwapModeInfo(param_3);
+extern "C" void fn_800DE29C(Unk800DE29C* param_1, int param_2, const u8* param_3) {
+    param_1->mStage[param_2].setSwapModeInfo(param_3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
