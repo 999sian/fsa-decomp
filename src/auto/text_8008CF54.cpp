@@ -24,7 +24,7 @@ static inline f32 dolsqrtfull(f32 mag) {
 }
 
 extern "C" void fn_8008E364(u32);
-extern "C" void fn_8008E4A4(u32);
+extern "C" u32 fn_8008E4A4(u32);
 extern "C" void fn_8008DF30(int, int);
 extern "C" void PADControlMotor(int, int);
 extern "C" int OSGetResetSwitchState(void);
@@ -257,21 +257,15 @@ extern "C" void fn_8008D424(int param_1)
     }
 }
 
-extern "C" void fn_8008D4CC(int param_1, int param_2, int param_3, int param_4)
+extern "C" void fn_8008D4CC(int param_1, int param_2, s64 param_3)
 {
-    int val1 = (int)lbl_8053A948;
-    int val2 = (int)lbl_8053A94C;
-    
-    // Check if param_3 >= val1 AND param_4 >= val2
-    if ((param_3 - val1) >= 0 && (param_4 - val2) >= 0) {
+    if (param_3 >= (((s64)lbl_8053A948 << 32) | (u32)lbl_8053A94C)) {
         lbl_8053A951 = 1;
         u32 func_ptr = lbl_8053A93C;
-        s16 val = *(s16*)(param_1 + 0x7c);
-        lbl_8053A954 = (u32)val;
-        
+        lbl_8053A954 = *(s16*)(param_1 + 0x7c);
+
         if (func_ptr != 0) {
-            u32 arg = lbl_8053A940;
-            ((void (*)(int, u32))(func_ptr))(val, arg);
+            ((void (*)(int, u32))(func_ptr))(*(s16*)(param_1 + 0x7c), lbl_8053A940);
         }
     }
 }
@@ -555,8 +549,8 @@ extern "C" void fn_8008DF30(int param_1, int param_2)
     u32 mask = lbl_80499470[param_1];
     if ((lbl_8053A938 & mask) != 0) {
         u8 control = (u8)param_2;
-        s32 sign = ((s32)-control | (s32)control) >> 31;
-        u8 mode = (u8)(sign & 2);
+        s32 sign = (-(s32)control | (s32)control) >> 31;
+        u8 mode = (u8)(2 & sign);
         PADControlMotor(param_1, mode);
         lbl_8053A934[param_1] = 0;
     }
@@ -623,23 +617,25 @@ extern "C" void fn_8008E1FC(u32 *param_1, u8 *param_2, s32 param_3, u32 param_4)
     param_1[3] = byte_val;
     param_1[2] = ptr_val;
     
-    if (param_3 == 1) {
-        if (param_1[2] == 0) return;
-        if (param_1[3] == 0) return;
-        param_1[1] = 0xffffffff;
-        param_1[0] = 0;
-    } else if (param_3 < 1) {
-        if (param_3 < 0) return;
+    switch (param_3) {
+    case 0:
         if (param_1[2] == 0) return;
         if (param_1[3] == 0) return;
         param_1[1] = param_1[3];
         param_1[0] = 0;
-    } else {
-        if (param_3 >= 3) return;
+        break;
+    case 1:
+        if (param_1[2] == 0) return;
+        if (param_1[3] == 0) return;
+        param_1[1] = 0xffffffff;
+        param_1[0] = 0;
+        break;
+    case 2:
         if (param_1[2] == 0) return;
         if (param_1[3] == 0) return;
         param_1[1] = param_4;
         param_1[0] = 0;
+        break;
     }
 }
 
