@@ -17,7 +17,7 @@ extern "C" void fn_803D75B0(void);
 extern "C" s32 fn_80138A30(void*);
 extern "C" void fn_804310CC(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
-extern "C" void* fn_804030C4(u32, u8*);
+extern "C" u8* fn_804030C4(u32, void*);
 extern "C" void fn_80440D78(void*, void*);
 extern "C" void fn_80440BF4(void*, s32);
 extern "C" void fn_80458FF0(void*, u32, s32, s32);
