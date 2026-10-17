@@ -15,6 +15,12 @@ extern "C" void fn_80041268(void* a, void* b, s32 n);
 extern "C" void fn_8000E0F0(void* self, void* arg, f32 value);
 extern "C" void fn_8000EBB8(void* a);
 extern s16 lbl_802FF04C[3];
+struct Arg_8008CF88 { u32 a, b, c; };
+extern const Arg_8008CF88 lbl_80284BCC;
+extern const Arg_8008CF88 lbl_80284BD8;
+extern u32 lbl_802FEDD8;
+extern s32 lbl_802FEDE4;
+extern "C" void fn_8008CF88(void* self, Arg_8008CF88* arg, s32 n);
 struct VObj_8008C40C {
     virtual void v0();
     virtual void v1();
