@@ -1,4 +1,4 @@
-#include "dolphin/os/OSFastCast.h"
+#include "types.h"
 extern "C" void fn_8015AB1C(void* ptr);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
