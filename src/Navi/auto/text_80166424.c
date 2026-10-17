@@ -1406,30 +1406,28 @@ extern "C" int fn_801700CC(u8* p, void* obj)
 
 extern "C" s32 fn_80170148(u8* self, u32 idx, u32 c)
 {
-    u32 off;
     if (idx >= 8) {
         return 0;
     }
-    off = idx * 4;
     if (c != 0) {
-        if (*(void**)(self + off + 0xfc) == nullptr) {
+        if (((void**)(self + 0xfc))[idx] == nullptr) {
             void* p = fn_8015A90C(0x18);
             if (p != nullptr) {
                 fn_80119240(p, idx, c);
             }
-            *(void**)(self + off + 0xfc) = p;
-            if (*(void**)(self + off + 0xfc) == nullptr) {
+            ((void**)(self + 0xfc))[idx] = p;
+            if (((void**)(self + 0xfc))[idx] == nullptr) {
                 return 0;
             }
         } else {
-            fn_80119240(*(void**)(self + off + 0xfc), 0, c);
+            fn_80119240(((void**)(self + 0xfc))[idx], 0, c);
         }
-        if (*(void**)(self + off + 0xdc) != nullptr) {
-            fn_80118F5C(*(void**)(self + off + 0xdc), *(void**)(self + off + 0xfc));
+        if (((void**)(self + 0xdc))[idx] != nullptr) {
+            fn_80118F5C(((void**)(self + 0xdc))[idx], ((void**)(self + 0xfc))[idx]);
         }
     } else {
-        fn_8015AB1C(*(void**)(self + off + 0xfc));
-        *(void**)(self + off + 0xfc) = nullptr;
+        fn_8015AB1C(((void**)(self + 0xfc))[idx]);
+        ((void**)(self + 0xfc))[idx] = nullptr;
     }
     return 1;
 }
@@ -1543,6 +1541,35 @@ extern "C" int fn_801719B4(u8* p, DtorVObj_80166424* obj) {
     }
     *(void**)(p + 0x1ac) = obj;
     p[0x1b1] = 0;
+    return 1;
+}
+
+extern "C" s32 fn_80171A30(u8* self, u32 a, u32 c)
+{
+    if (a >= 8) {
+        return 0;
+    }
+    if (c != 0) {
+        u8* p = self + a * 4;
+        if (*(void**)(p + 0x18c) == nullptr) {
+            void* q = fn_8015A90C(0x18);
+            if (q != nullptr) {
+                fn_80119240(q, a, c);
+            }
+            *(void**)(p + 0x18c) = q;
+            if (*(void**)(p + 0x18c) == nullptr) {
+                return 0;
+            }
+        } else {
+            fn_80119240(*(void**)(p + 0x18c), 0, c);
+        }
+        if (*(void**)(self + a * 4 + 0x16c) != nullptr) {
+            fn_80118F5C(*(void**)(self + a * 4 + 0x16c), *(void**)(p + 0x18c));
+        }
+    } else {
+        fn_8015AB1C(*(void**)(self + a * 4 + 0x18c));
+        *(void**)(self + a * 4 + 0x18c) = nullptr;
+    }
     return 1;
 }
 
