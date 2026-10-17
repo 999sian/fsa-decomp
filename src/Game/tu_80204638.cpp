@@ -10,7 +10,7 @@ extern "C" void* fn_80204638(void)
 {
     u8* base;
 
-    if (lbl_8053AC58 == 0) {
+    if ((s8)lbl_8053AC58 == 0) {
         base = lbl_804CADE0;
         base[0] = 0;
         *(u32*)(base + 0x54) = 0;
@@ -97,13 +97,29 @@ extern "C" u32 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
 }
 #pragma fp_contract on
 extern "C" void fn_80204834(u8* param_1) {
+    u8 zero = 0;
     for (int i = 0; i < 2; i++) {
-        for (int j = 4; j <= 0x28; j += 4) {
-            u8* p = *(u8**)(param_1 + j);
-            if (p) {
-                p[0x11c] = 0;
-            }
-        }
+        u8* p;
+        p = *(u8**)(param_1 + 0x4);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x8);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0xc);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x10);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x14);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x18);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x1c);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x20);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x24);
+        if (p) p[0x11c] = zero;
+        p = *(u8**)(param_1 + 0x28);
+        if (p) p[0x11c] = zero;
         param_1 += 0x28;
     }
 }
