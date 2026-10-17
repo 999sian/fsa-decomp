@@ -42,6 +42,8 @@ char* fn_802D6A9C();
 u16 fn_8022461C(JGeometry::TVec3<f32>*, s32);
 u8 fn_802265DC(JGeometry::TVec3<f32>*, s32, s32);
 u8 fn_802684A4(char*, JGeometry::TVec3<f32>*, s32);
+u8 fn_802412A4(char*);
+u8 fn_801F3744(char*, s32);
 }
 extern const f32 lbl_80540150;
 extern const f32 lbl_80540154;
@@ -49,6 +51,54 @@ extern const f32 lbl_80540180;
 extern JGeometry::TVec3<f32> lbl_8046B400[];
 extern char* lbl_8053AAF8;
 extern JGeometry::TVec3<f32> lbl_8046B490[20];
+
+extern "C" bool fn_8025EB18(char* p) {
+    bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+    if (held && S32(p, 0x3b4) == 8 && fn_8023DE58(S32(p, 0xd70)) < 8) {
+        JGeometry::TVec3<f32> pos = VEC(p, 0x2f4);
+        s32 room = fn_8023DE58(S32(p, 0xd70));
+        char* a = fn_802D6A9C();
+        if (room < 8)
+            a += 0xcc;
+        else
+            a += 0xdc;
+        f32 ax = F32(a, 0);
+        f32 ay = F32(a, 4);
+        char* b = fn_802D6A9C();
+        if (S32(p, 0x3b4) < 8)
+            b += 0xcc;
+        else
+            b += 0xdc;
+        pos.x += ax - F32(b, 0);
+        pos.y += ay - F32(b, 4);
+        u16 t = fn_8022461C(&pos, fn_8023DE58(S32(p, 0xd70)));
+        if (!fn_802265DC(&pos, fn_8023DE58(S32(p, 0xd70)), 1) || t == 0xe || t == 0x39 || t == 0xd) {
+            if (!fn_802684A4(p, &pos, fn_8023DE58(S32(p, 0xd70))))
+                return false;
+        }
+        F32(p, 0x2f4) = F32(p, 0x8);
+        F32(p, 0x2f8) = F32(p, 0xc);
+        return true;
+    }
+    u16 t2 = fn_8022461C(&VEC(p, 0x2f4), S32(p, 0x3b4));
+    bool held2 = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+    if (held2) {
+        if (!fn_802265DC(&VEC(p, 0x2f4), S32(p, 0x3b4), 1) || t2 == 0xe || t2 == 0x39 || t2 == 0xd) {
+            if (!fn_802684A4(p, &VEC(p, 0x2f4), S32(p, 0x3b4)))
+                return false;
+        }
+        F32(p, 0x2f4) = F32(p, 0x8);
+        F32(p, 0x2f8) = F32(p, 0xc);
+        return true;
+    }
+    char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+    if (actor && ((u8(*)(char*, s32, JGeometry::TVec3<f32>*))(*(void***)actor)[19])(actor, S32(p, 0x3b4), &VEC(p, 0x2f4))) {
+        F32(p, 0x2f4) = F32(p, 0x8);
+        F32(p, 0x2f8) = F32(p, 0xc);
+        return true;
+    }
+    return false;
+}
 
 extern "C" bool fn_8025EDD4(char* p, s32 id, const JGeometry::TVec3<f32>* pos) {
     if (S32(p, 0xd68) == id) {
