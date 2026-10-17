@@ -43,6 +43,10 @@ extern f32 lbl_8053C054;
 extern f32 lbl_8053C058;
 extern f32 lbl_8053C05C;
 extern "C" const f32 lbl_8049C634[];
+extern f32 lbl_8053C014;
+extern f32 lbl_8053C01C;
+extern f32 lbl_8053C020;
+extern f32 lbl_8053BFC8;
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
