@@ -15,6 +15,11 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void fn_801EF830(s32 a, void* b, void* c, s32 d, void* e, s32 f, s32 g);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, void* e, f32 f1, f32 f2);
 
+struct Vec2_80113B54 {
+    f32 x;
+    f32 y;
+};
+
 struct Vec3_80113B54 {
     f32 x;
     f32 y;
@@ -171,6 +176,102 @@ extern "C" void fn_8011395C(char* self) {
         *(int*)(e + 0x4c) = cnt;
         *(int*)(e + 0x54) = 0;
         *(int*)(e + 0x58) = 2;
+    }
+}
+
+extern "C" void fn_80113B54(char* self, int arg) {
+    u8 buf50[0x3c];
+    u8 buf14[0x3c];
+    Vec3_80113B54 vec;
+    int i;
+    int idx;
+    void* spr;
+
+    *(s32*)(buf50 + 0x10) = -1;
+    *(s32*)(buf50 + 0x14) = -1;
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        buf50[(u8)i] = i;
+        buf50[(u8)(i + 1)] = i + 1;
+        buf50[(u8)(i + 2)] = i + 2;
+        buf50[(u8)(i + 3)] = i + 3;
+        buf50[(u8)(i + 4)] = i + 4;
+        buf50[(u8)(i + 5)] = i + 5;
+        buf50[(u8)(i + 6)] = i + 6;
+        buf50[(u8)(i + 7)] = i + 7;
+    }
+    *(s32*)(buf50 + 0x10) = -1;
+    *(s32*)(buf50 + 0x14) = 0;
+    *(s32*)(buf50 + 0x18) = 0;
+    buf50[0x1c] = 0;
+    buf50[0x1d] = 0;
+    buf50[0x1e] = 0;
+    buf50[0x1f] = 1;
+    buf50[0x20] = 1;
+    buf50[0x21] = 0;
+    buf50[0x22] = 0;
+    buf50[0x23] = 0;
+    buf50[0x24] = 0;
+    buf50[0x25] = 0;
+    buf50[0x26] = 1;
+    *(s32*)(buf50 + 0x28) = 3;
+    buf50[0x2c] = 1;
+    buf50[0x2d] = 0;
+    buf50[0x2e] = 0;
+    *(s32*)(buf50 + 0x30) = -1;
+    *(s32*)(buf50 + 0x34) = 0;
+    *(s32*)(buf50 + 0x38) = 2;
+    *(s32*)(buf14 + 0x10) = -1;
+    *(s32*)(buf14 + 0x14) = -1;
+
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        buf14[(u8)i] = i;
+        buf14[(u8)(i + 1)] = i + 1;
+        buf14[(u8)(i + 2)] = i + 2;
+        buf14[(u8)(i + 3)] = i + 3;
+        buf14[(u8)(i + 4)] = i + 4;
+        buf14[(u8)(i + 5)] = i + 5;
+        buf14[(u8)(i + 6)] = i + 6;
+        buf14[(u8)(i + 7)] = i + 7;
+    }
+    *(s32*)(buf14 + 0x10) = -1;
+    *(s32*)(buf14 + 0x14) = 0;
+    *(s32*)(buf14 + 0x18) = 0;
+    buf14[0x1c] = 0;
+    buf14[0x1d] = 0;
+    buf14[0x1e] = 0;
+    buf14[0x1f] = 1;
+    buf14[0x20] = 1;
+    buf14[0x21] = 0;
+    buf14[0x22] = 0;
+    buf14[0x23] = 0;
+    buf14[0x24] = 0;
+    buf14[0x25] = 0;
+    buf14[0x26] = 1;
+    *(s32*)(buf14 + 0x28) = 3;
+    buf14[0x2c] = 1;
+    buf14[0x2d] = 0;
+    buf14[0x2e] = 0;
+    *(s32*)(buf14 + 0x30) = -1;
+    *(s32*)(buf14 + 0x34) = 0;
+    *(s32*)(buf14 + 0x38) = 2;
+
+    vec = *(Vec3_80113B54*)(self + 0xc);
+    vec.y = *(f32*)(self + 0x28);
+
+    if (arg == 0x1d6) {
+        fn_801EF830(*(s32*)(self + 4), &vec, buf14, 7, lbl_80464968, arg + *(s32*)(self + 0x274), 0);
+        idx = arg + *(s32*)(self + 0x274);
+        if (*(s32*)(self + 4) < 8) {
+            spr = ((void* (*)(void*, u32, void*))((void**)*(void**)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x534f4220, lbl_80464968);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), self + 0xc, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
+        }
+    } else {
+        fn_801EF830(*(s32*)(self + 4), &vec, buf14, 7, lbl_8046497C, arg + *(s32*)(self + 0x274), 0);
+        idx = arg + *(s32*)(self + 0x274);
+        if (*(s32*)(self + 4) < 8) {
+            spr = ((void* (*)(void*, u32, void*))((void**)*(void**)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x534f4220, lbl_8046497C);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), self + 0xc, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
+        }
     }
 }
 
