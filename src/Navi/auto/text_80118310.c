@@ -208,8 +208,9 @@ extern char lbl_80290040[];
 extern char lbl_80290050[];
 extern "C" void fn_80007AB8(const char*, int, const char*, ...);
 extern "C" int fn_80119318(u8* self) {
-    s32 r = *(u16*)(self + 0x14) != 0;
-    if (r) {
+    u32 x = *(u16*)(self + 0x14);
+    u32 r = (-x | x) >> 31;
+    if (r != 0) {
         fn_801DD618(self, self[0xc]);
     }
     return r;
@@ -335,6 +336,16 @@ extern "C" void fn_80119780(void* p, u8* a, u8* b) {
     d[0x19] = b1;
     d[0x1a] = b2;
     d[0x1b] = b3;
+}
+
+extern "C" BOOL fn_80119A54(void* param_1);
+extern "C" void* fn_80119904(void* p, void* a, void* b) {
+    fn_801196B4(p);
+    *(void**)p = lbl_802900DC;
+    fn_80119A28(p);
+    fn_801196E0(p);
+    ((void (*)(void*, void*, void*))fn_80119A54)(p, a, b);
+    return p;
 }
 
 extern "C" void* fn_80119978(void* param_1, s16 param_2) {
