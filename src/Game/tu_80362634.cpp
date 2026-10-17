@@ -16,6 +16,8 @@ extern "C" void* lbl_8053AB10;
 extern "C" const char lbl_80474C10[];
 extern "C" const s32 lbl_80474B88[];
 extern "C" const s32 lbl_80474BA0[];
+extern "C" const s32 lbl_80474320[];
+extern "C" f32 lbl_80542B5C;
 
 struct Unk80365AB8;
 typedef void (Unk80365AB8::*Unk80365AB8Func)();
@@ -115,6 +117,46 @@ extern "C" void fn_80363F7C(char* self) {
         *(s32*)(self + 0x264) = lbl_80474BA0[*(s32*)(self + 0x268)];
     }
     ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
+}
+
+extern "C" void fn_80364340(char* self) {
+    if (*(s32*)(self + 0x248) == 0) {
+        JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        JGeometry::TVec3<f32> offs;
+        offs.x = (f32)fn_801CD664(0x17c) - lbl_80542BB4;
+        offs.y = (f32)fn_801CD664(0x17c) - lbl_80542BB8;
+        offs.z = lbl_80542B0C;
+        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(offs);
+        f32 x = *(f32*)(self + 0xc);
+        f32 y = *(f32*)(self + 0x10);
+        bool hit = false;
+        if (x >= lbl_80542B20 && x > lbl_80542B24) {
+            hit = true;
+        } else if (y >= lbl_80542B28 && y > lbl_80542B2C) {
+            hit = true;
+        } else if (x + y < lbl_80542B30) {
+            hit = true;
+        } else if (x > lbl_80542B34 && y < lbl_80542B38) {
+            hit = true;
+        } else {
+            Vec v1 = {lbl_80542B3C, lbl_80542B38, lbl_80542B0C};
+            Vec v2 = {lbl_80542B44, lbl_80542B48, lbl_80542B0C};
+            if (PSVECDistance((Vec*)(self + 0xc), &v1) < lbl_80542B40) {
+                hit = true;
+            } else if (PSVECDistance((Vec*)(self + 0xc), &v2) < lbl_80542B40) {
+                hit = true;
+            }
+        }
+        *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
+        if (!hit) {
+            *(s32*)(self + 0x248) = fn_801CD664(0x32) + 0x3c;
+            offs.z = lbl_80542B4C;
+            JGeometry::TVec3<f32> spawn(saved);
+            spawn.add(offs);
+            u32 type = fn_801CD664(8) | 0x250000;
+            Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)&spawn, type, -1, -1);
+        }
+    }
 }
 
 extern "C" void fn_80364900(char* self) {
