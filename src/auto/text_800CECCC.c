@@ -9,6 +9,13 @@
 #include "JSystem/J3D/J3DAnmTextureSRTKey.h"
 #include "JSystem/J3D/J3DAnmVisibilityFull.h"
 
+extern "C" void fn_800CF370(void** p);
+extern "C" void fn_800CF2B0(void** p);
+extern "C" void** fn_800CF38C(void** p, short del);
+extern "C" void** fn_800CF314(void** p, short del);
+extern "C" void* fn_800CF3E8(void** self, unsigned char* data);
+extern "C" void* fn_800CFB9C(void** self, unsigned char* data);
+
 template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
 extern f32 lbl_8053BC80;
 
