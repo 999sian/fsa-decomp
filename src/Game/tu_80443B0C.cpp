@@ -306,12 +306,7 @@ extern "C" void fn_804446F0(u8* this_, s32 num)
     *(u8*)(*(u8**)(*(u8**)(this_ + 0x10) + 4) + 0xb0) = 1;
     *(u8*)(*(u8**)(*(u8**)(this_ + 0x14) + 4) + 0xb0) = 1;
 
-    {
-        u8* rng = (u8*)lbl_8053AAF8;
-        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-        const u32& bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-        *(s32*)(this_ + 0x48) = (s32)(11.0f * (*(const f32*)&bits - 1.0f)) + 10;
-    }
+    *(s32*)(this_ + 0x48) = (s32)(11.0f * (Tu80443B0C_randf() - 1.0f)) + 10;
     this_[0x4c] = 0;
 
     ((J2DTextBox*)(*(J2DScreen**)(this_ + 4))->search(0x546d6d3033))->setBlackWhite(*(JUtility::TColor*)(this_ + 0x30), *(JUtility::TColor*)(this_ + 0x34));
