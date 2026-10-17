@@ -21,6 +21,7 @@ struct VObj_800EF2A8 {
 
 extern void* lbl_8028B900[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" f32* fn_80177B10(void* p);
 extern char lbl_802B7CA0[];
 extern f32 lbl_8030113C;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
