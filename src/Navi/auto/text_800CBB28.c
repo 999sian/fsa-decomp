@@ -53,6 +53,24 @@ extern "C" s32 fn_800CC1C4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 fr
     return 0;
 }
 
+extern "C" s32 fn_800CC2DC(u8* param_1, s16 param_2, u8 param_3, void* param_4, s32 param_5) {
+    f32 f;
+    if (param_2 < 0) {
+        return 0;
+    }
+    if (param_2 > param_3) {
+        return 1;
+    }
+    f = fn_800CC3D8(param_1, param_3, param_2);
+    if (param_5 != 2) {
+        if (param_5 == 1) {
+            f = lbl_80300EA4 - f;
+        }
+        (*(VObj_800CC1C4**)(param_1 + 0x24))->SetAlpha((int)((float)*(u8*)(param_1 + 0x28) * f));
+    }
+    return 0;
+}
+
 extern "C" void fn_800CC39C(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
