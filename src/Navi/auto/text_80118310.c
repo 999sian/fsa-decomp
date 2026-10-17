@@ -97,6 +97,10 @@ extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param
     fn_80118B58(param_1, param_3, param_4);
 }
 
+extern "C" void fn_80119A04(void* param_1) {
+    fn_8015AB40(*(void**)((u8*)param_1 + 0x50));
+}
+
 extern "C" int fn_8011AB38()
 {
 	return 0;
