@@ -1,5 +1,10 @@
 #include "types.h"
 
+extern "C" void __dt__10JUTTextureFv(void*, s32);
+extern "C" void __dl__FPv(void*);
+extern "C" void __dla__FPv(void*);
+extern "C" u8 lbl_804AA858[];
+
 extern "C" f32 lbl_80541500;
 extern "C" f32 lbl_805414FC;
 extern "C" f32 lbl_80541508;
@@ -33,19 +38,20 @@ extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
     f32 z = pos[2];
     if (*(s32*)(this_ + 0xc21c) > 0) {
-        f32 x = pos[0];
         f32 lo_x = *(f32*)(this_ + 0x2368);
+        f32 x = pos[0];
         if (x >= lo_x && x < (f32)*(s32*)(this_ + 0x2380) * lbl_80541510 + lo_x) {
-            f32 y = pos[1];
             f32 lo_y = *(f32*)(this_ + 0x236c);
+            f32 y = pos[1];
             if (y >= lo_y && y < (f32)*(s32*)(this_ + 0x2384) * lbl_80541510 + lo_y) {
                 f32 scale = lbl_80541514;
-                s32 ix = (s32)(scale * (x - lo_x));
-                s32 iy = (s32)(scale * (y - lo_y));
+                s32 ix = (s32)((x - lo_x) * scale);
+                s32 iy = (s32)((y - lo_y) * scale);
                 f32 fx = scale * ((x - lo_x) - lbl_80541510 * (f32)ix);
                 f32 fy = scale * ((y - lo_y) - lbl_80541510 * (f32)iy);
-                u8* tbl = *(u8**)(this_ + 0x100 + *(s32*)(this_ + 0x2388) * 4);
-                u8* cell = tbl + (iy * 0x30c + ix * 0xc);
+                u8* p = this_ + *(s32*)(this_ + 0x2388) * 4;
+                u8* tbl = *(u8**)(p + 0x100);
+                u8* cell = tbl + iy * 0x30c + ix * 0xc;
                 f32 a = *(f32*)(cell + 0x8);
                 f32 b = *(f32*)(cell + 0x14);
                 f32 c = *(f32*)(cell + 0x314);
@@ -170,8 +176,8 @@ extern "C" void fn_802FF3F0(u8* this_) {
     u8* e;
     u8* mgr;
     u8* video;
-    s32 rect[4];
-    if (this_[0x248] != 0 && *(s32*)(this_ + 0x254) != 0) {
+    Tu802F5040Rect rect;
+    if (this_[0x248] != 0 && *(u32*)(this_ + 0x254) != 0) {
         mgr = *(u8**)((u8*)lbl_8053AB10 + 0x24);
         *(s32*)(mgr + 0x144) = *(s32*)(this_ + 0x24c);
         *(s32*)(mgr + 0x148) = *(s32*)(this_ + 0x250);
@@ -180,14 +186,11 @@ extern "C" void fn_802FF3F0(u8* this_) {
     } else {
         video = *(u8**)((u8*)sManager__8JUTVideo + 4);
         mgr = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        rect[0] = 0;
-        rect[1] = 0;
-        rect[2] = *(u16*)(video + 4);
-        rect[3] = *(u16*)(video + 6);
-        *(s32*)(mgr + 0x144) = rect[0];
-        *(s32*)(mgr + 0x148) = rect[1];
-        *(s32*)(mgr + 0x14c) = rect[2];
-        *(s32*)(mgr + 0x150) = rect[3];
+        rect.m0c = *(u16*)(video + 6);
+        rect.m08 = *(u16*)(video + 4);
+        rect.m00 = 0;
+        rect.m04 = 0;
+        *(Tu802F5040Rect*)(mgr + 0x144) = rect;
     }
     fn_802FC80C(this_);
     p = this_;
