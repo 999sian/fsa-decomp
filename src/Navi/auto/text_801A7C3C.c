@@ -171,8 +171,9 @@ extern "C" void fn_801942E4(void);
 extern "C" int fn_801945C4(void* a, void* b);
 extern "C" void fn_801C5DA8(void* a, void* b, void* c);
 extern "C" int fn_801A95FC(u8* param_1, u8* param_2) {
+    u16 n;
     s32 i;
-    u16 n = *(u16*)(param_2 + 0x7c);
+    n = *(u16*)(param_2 + 0x7c);
     if (n != 0) {
         *(void**)(param_1 + 0xc4) = fn_801E0F6C(fn_8015AA14(n * 0x3c + 0x10), fn_8019428C, fn_801942E4, 0x3c, n);
         for (i = 0; i < *(u16*)(param_2 + 0x7c); i++) {
@@ -184,8 +185,8 @@ extern "C" int fn_801A95FC(u8* param_1, u8* param_2) {
 }
 
 extern "C" int fn_801A98A0(u8* param_1, void* param_2) {
-    u16 i;
     u16 n;
+    u16 i;
     int r;
     *(void**)(param_1 + 0xc) = param_2;
     n = *(u16*)(*(u8**)(param_1 + 4) + 0x7c);
