@@ -57,6 +57,18 @@ struct VObj_8013D304 {
     virtual u32 vf4();
     virtual void vf5(u32);
 };
+struct VObj_8013D488 {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6();
+    virtual void vf7();
+    virtual void vf8();
+    virtual void vf9(u32, s32);
+};
 extern "C" void* fn_8013CD6C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80293318;
@@ -83,6 +95,15 @@ extern "C" void* fn_8013CE9C(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_8013CF14(void) {
+}
+
+extern "C" void fn_801336CC(void* param_1, void* param_2, void* param_3);
+extern "C" void fn_8013CF18(void* param_1) {
+    void* o = *(void**)((u8*)param_1 + 0x60);
+    ((NaviTracker*)o)->fn_5(((NaviTracker*)o)->fn_4() | 1);
+    o = *(void**)((u8*)param_1 + 0x60);
+    u32 local = ((u32 (*)(void*))(*(void***)o)[15])(o);
+    fn_801336CC(param_1, lbl_80201E80, &local);
 }
 
 extern "C" void fn_8013CFA4(void* param_1) {
