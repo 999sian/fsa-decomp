@@ -1187,19 +1187,22 @@ extern s32 lbl_80280284[];
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" void fn_8006C950(u8* param_1) {
-    u8* p = param_1;
-    s32* tbl = lbl_80280284;
-    u32 i = 0;
+    s32* tbl;
+    u8* base;
+    u8* p;
+    s32 i;
     param_1[0x318] = 0;
-    do {
+    tbl = lbl_80280284;
+    base = lbl_80280248;
+    p = param_1;
+    for (i = 0; i <= 5; i++) {
         if (*tbl >= 0) {
-            fn_80022438(*(void**)(p + 0x270), lbl_80280248, *tbl, 0, lbl_80300460, lbl_8030046C, lbl_80300460, lbl_80300464);
+            fn_80022438(*(void**)(p + 0x270), base, *tbl, 0, lbl_80300460, lbl_8030046C, lbl_80300460, lbl_80300464);
             param_1[0x318] |= 1 << i;
         }
-        i++;
         p += 4;
         tbl++;
-    } while (i < 6);
+    }
 }
 #pragma pop
 
@@ -1211,7 +1214,7 @@ extern "C" void fn_8006C9F4(u8* p) {
         val = lbl_802802A8[i];
         if (val >= 0) {
             fn_80022438(*(void**)(p + 0x270 + i * 4), lbl_80280248, val, 0, lbl_80300460, lbl_80300448, lbl_80300460, lbl_80300464);
-            *(u32*)(p + 0x308) |= 1 << i;
+            *(u32*)(p + 0x308) = *(u32*)(p + 0x308) | (1 << i);
         }
     }
 }
@@ -1265,4 +1268,8 @@ extern "C" BOOL fn_8006CFD0(void)
 {
     return TRUE;
 }
-
+struct VObj_80064D18 {
+    void* a;
+    void* b;
+    void* c;
+};
