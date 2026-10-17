@@ -1,6 +1,7 @@
 #include "JSystem/J3D/J3DAnmTransform.h"
 #include "JSystem/J3D/J3DAnmColor.h"
 #include "JSystem/JUtility/JUTNameTab.h"
+#include "JSystem/J3D/J3DAnmTevRegKey.h"
 
 template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
 extern f32 lbl_8053BC80;
@@ -82,27 +83,59 @@ extern "C" void* fn_800CF3E8(void** self, unsigned char* data) {
     unsigned char* entry = data + 0x20;
     u32 i;
     for (i = 0; i < count; i++) {
-        u32 tag = *(u32*)entry;
-        if (tag == 0x54505431) {
+        s32 tag = *(s32*)entry;
+        switch (tag) {
+        case 0x414e4631:
+            fn_800CF650(self, entry);
+            break;
+        case 0x50414631:
+            fn_800CF70C(self, entry);
+            break;
+        case 0x54505431:
             fn_800CF800(self, entry);
-        } else if (tag < 0x54505431) {
-            if (tag == 0x434c4631) {
-                fn_800CF970(self, entry);
-            } else if (tag < 0x434c4631) {
-                if (tag == 0x414e4631) {
-                    fn_800CF650(self, entry);
-                }
-            } else if (tag == 0x50414631) {
-                fn_800CF70C(self, entry);
-            }
-        } else if (tag == 0x56434631) {
-            fn_800CFA04(self, entry);
-        } else if (tag == 0x56414631) {
+            break;
+        case 0x434c4631:
+            fn_800CF970(self, entry);
+            break;
+        case 0x56414631:
             fn_800CF8CC(self, entry);
+            break;
+        case 0x56434631:
+            fn_800CFA04(self, entry);
+            break;
         }
         entry = entry + *(u32*)(entry + 4);
     }
     return self[1];
+}
+
+extern "C" void fn_800CF510(void* param_1, unsigned char* param_2, unsigned char* param_3) {
+    u32 count = *(u32*)(param_3 + 0xc);
+    unsigned char* chunk = param_3 + 0x20;
+    u32 i;
+    for (i = 0; i < count; i++) {
+        switch (*(s32*)chunk) {
+        case 0x414e4631:
+            fn_800CF678(param_1, param_2, chunk);
+            break;
+        case 0x50414631:
+            fn_800CF734(param_1, param_2, chunk);
+            break;
+        case 0x54505431:
+            fn_800CF828(param_1, param_2, chunk);
+            break;
+        case 0x434c4631:
+            fn_800CF998(param_1, param_2, chunk);
+            break;
+        case 0x56414631:
+            fn_800CF8F4(param_1, param_2, chunk);
+            break;
+        case 0x56434631:
+            fn_800CFA2C((void**)param_1, param_2, chunk);
+            break;
+        }
+        chunk += *(u32*)(chunk + 4);
+    }
 }
 
 extern "C" void fn_800CF678(void*, void*, void*);
@@ -168,8 +201,7 @@ extern "C" void fn_800D0424(void** self, const void* data);
 extern "C" void* fn_800CFB9C(void** self, unsigned char* data) {
     unsigned int count = *(unsigned int*)(data + 0xc);
     unsigned char* chunk = data + 0x20;
-    unsigned int i = 0;
-    while (i < count) {
+    for (unsigned int i = 0; i < count; i++) {
         switch (*(unsigned int*)chunk) {
         case 0x414e4b31:
             fn_800CFE04(self, chunk);
@@ -191,7 +223,6 @@ extern "C" void* fn_800CFB9C(void** self, unsigned char* data) {
             break;
         }
         chunk += *(unsigned int*)(chunk + 4);
-        i++;
     }
     return self[1];
 }
