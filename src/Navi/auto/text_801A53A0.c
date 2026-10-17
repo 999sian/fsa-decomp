@@ -106,11 +106,11 @@ extern "C" void fn_801A670C(u8* param_1, s32 param_2) {
 
 extern "C" void fn_8015AB40(void* p);
 extern "C" void fn_8015AB1C(void* p);
-extern "C" void fn_801A73A4(void);
+extern "C" void fn_801A73A4(u8* p);
 extern "C" void fn_80193E40(u32 a, u8* b);
 extern "C" u32* fn_801A7344(u32* param_1, s16 param_2) {
     if (param_1 != NULL) {
-        fn_801A73A4();
+        fn_801A73A4((u8*)param_1);
         fn_8015AB40(*(void**)param_1);
         param_1[0] = 0;
         if (param_2 > 0) {
@@ -177,6 +177,24 @@ extern "C" void fn_801A7A38(u32* param_1) {
     count = param_1[1];
     for (i = 0; i < count; arr++, i++) {
         node = *arr;
+        while (node != NULL) {
+            ((VObj_801A7A38*)node)->v1();
+            node = (u32*)node[1];
+        }
+    }
+}
+
+extern "C" void fn_801A7ABC(u32* param_1) {
+    u32 count;
+    u32** arr;
+    u32** p;
+    s32 i;
+    count = param_1[1];
+    arr = (u32**)param_1[0];
+    i = count - 1;
+    p = arr + i;
+    for (; i >= 0; p--, i--) {
+        u32* node = *p;
         while (node != NULL) {
             ((VObj_801A7A38*)node)->v1();
             node = (u32*)node[1];
