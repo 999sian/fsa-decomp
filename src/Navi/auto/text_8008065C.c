@@ -6,7 +6,7 @@ extern "C" int fn_800183AC(u8* p, void* f, void* q);
 extern "C" int fn_80081BA0(u8* p);
 extern "C" void fn_80081308();
 extern u8 lbl_802FCC10;
-extern "C" void fn_8000D6F4(void*);
+extern "C" char fn_8000D6F4(void*);
 extern "C" void fn_801C5D74(void* p, void* q);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -89,6 +89,28 @@ extern "C" s32 fn_80083584(u8* p) {
         fn_8000D6F4(p + 0x394);
     }
     return 1;
+}
+
+extern "C" BOOL fn_80083B80(void* param_1) {
+    char* p = (char*)param_1;
+    if (p[0x461] == 0) {
+        p[0x461] = p[0x461] + 1;
+    } else if (p[0x461] != -1) {
+        float* sample;
+        p[0x465] = ((char (*)(void*))fn_8000D6F4)(p + 0x3a0);
+        sample = *(float**)(p + 0x3a4);
+        if (sample[3] < 0.0f) {
+            if (*(float*)(p + 0x418) < sample[4]) {
+                p[0x465] = 1;
+            }
+        } else if (sample[3] > 0.0f) {
+            if (*(float*)(p + 0x418) > sample[4]) {
+                p[0x465] = 1;
+            }
+        }
+        *(float*)(p + 0x418) = (*(float**)(p + 0x3a4))[4];
+    }
+    return TRUE;
 }
 
 extern "C" void fn_80081328(void);
