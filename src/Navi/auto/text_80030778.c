@@ -545,6 +545,19 @@ extern "C" void fn_800377BC(void* p) {
     fn_8003793C((char*)p + 0x244, p);
 }
 
+extern "C" void fn_800377E4(void* p) {
+    *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
+    *(int*)((char*)p + 0x2ec) = 6;
+    *(unsigned int*)((char*)p + 0x24c) |= 0x40000000;
+    *(int*)((char*)p + 0x244) = (int)(lbl_802FFD44 * *(float*)((char*)lbl_802BEF44 + 0x8c)) + *(int*)((char*)lbl_802BB0FC + 0x58);
+}
+
+extern "C" void fn_80037844(void* p) {
+    *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
+    *(int*)((char*)p + 0x2ec) = 4;
+    *(unsigned int*)((char*)p + 0x24c) |= 0x80000000;
+}
+
 extern "C" void fn_80037868(void* p) {
     *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
     *(unsigned int*)((char*)p + 0x2ec) = 6;
