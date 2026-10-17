@@ -11,6 +11,7 @@ extern "C" void MWTRACE(unsigned char, char*, ...);
 extern "C" void* TRK_memcpy(void* dst, const void* src, unsigned int n);
 extern "C" int usr_puts_serial(const char* msg);
 extern "C" const char lbl_80202BF0[];
+extern "C" int gTRKBigEndian;
 extern "C" int fn_801EA854(void* param_1) {
     int err = TRKWriteUARTN((unsigned char*)param_1 + 0x10, *(unsigned int*)((unsigned char*)param_1 + 8));
     MWTRACE(1, lbl_80202BC8, err);
@@ -36,6 +37,77 @@ extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) 
         *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
         err = ret;
     }
+}
+
+extern "C" int gTRKBigEndian;
+extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
+    unsigned char auStack_28[8];
+    unsigned char* puVar4;
+    unsigned int uVar1;
+    unsigned int n;
+    int ret;
+
+    puVar4 = auStack_28;
+    if (gTRKBigEndian) {
+        puVar4 = param_2;
+    }
+    ret = 0;
+    n = 8;
+    uVar1 = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+    if (uVar1 < n) {
+        ret = 0x302;
+        n = uVar1;
+    }
+    TRK_memcpy(puVar4, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, n);
+    *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
+    if (gTRKBigEndian == 0 && ret == 0) {
+        param_2[0] = puVar4[7];
+        param_2[1] = puVar4[6];
+        param_2[2] = puVar4[5];
+        param_2[3] = puVar4[4];
+        param_2[4] = puVar4[3];
+        param_2[5] = puVar4[2];
+        param_2[6] = puVar4[1];
+        param_2[7] = puVar4[0];
+    }
+    return ret;
+}
+
+extern "C" int fn_801EAB08(unsigned char* param_1, unsigned int* param_2, int param_3) {
+    int i;
+    int result = 0;
+    for (i = 0; result == 0 && i < param_3; i++) {
+        unsigned int data = *param_2;
+        unsigned char* src;
+        unsigned char* byteData;
+        unsigned char swapped[4];
+        if (gTRKBigEndian) {
+            src = (unsigned char*)&data;
+        } else {
+            byteData = (unsigned char*)&data;
+            src = swapped;
+            src[0] = byteData[3];
+            src[1] = byteData[2];
+            src[2] = byteData[1];
+            src[3] = byteData[0];
+        }
+        unsigned int pos = *(unsigned int*)(param_1 + 0xc);
+        unsigned int len = 4;
+        result = 0;
+        if (0x880 - pos < len) {
+            result = 0x301;
+            len = 0x880 - pos;
+        }
+        if (len == 1) {
+            *(param_1 + pos + 0x10) = *src;
+        } else {
+            TRK_memcpy(param_1 + pos + 0x10, src, len);
+        }
+        param_2++;
+        *(unsigned int*)(param_1 + 0xc) = *(unsigned int*)(param_1 + 0xc) + len;
+        *(unsigned int*)(param_1 + 8) = *(unsigned int*)(param_1 + 0xc);
+    }
+    return result;
 }
 
 extern "C" int TRKAppendBuffer_ui8(void* buffer, const unsigned char* data, int count) {
