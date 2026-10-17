@@ -81,7 +81,7 @@ extern "C" int fn_8008C40C(char* p) {
     char* b = *(char**)(a + 0x4);
     char* c = *(char**)(b + 0x60);
     VObj_8008C40C* e = *(VObj_8008C40C**)(*(char**)c + 0x2c);
-    s16* dst = (s16*)e->v24();
+    s16* dst = (s16*)e;
     dst[0] = lbl_802FF04C[0];
     dst[1] = lbl_802FF04C[1];
     dst[2] = lbl_802FF04C[2];
