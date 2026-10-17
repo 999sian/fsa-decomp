@@ -95,12 +95,6 @@ struct TextBoxVt15 {
     void* (*v15)(void* a, u64 b);
 };
 
-// Looks up the object for a u64 key at lbl_804765D0+keyOff (virtual slot 15 of this->8) and sets it on the cell this+base+idx*4.
-static inline void setCell(u8* this_, s32 base, s32 idx, u32 keyOff, u8 flag) {
-    void* s = (*(TextBoxVt15**)(this_ + 0x8))->v15(*(void**)(this_ + 0x8), *(u64*)(lbl_804765D0 + keyOff + idx * 8));
-    fn_804023D0(*(void**)(this_ + base + idx * 4), s, flag);
-}
-
 static inline void drawTextRow(u8* p, u8* q, u8* t) {
     s32 k;
     for (k = 0; k < 4; k++) {
