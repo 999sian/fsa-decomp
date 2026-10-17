@@ -16,6 +16,19 @@ extern "C" u8 fn_802064E0(u8* p);
 extern "C" u16 fn_8022461C(f32* pos, s32 room);
 extern "C" s32 v17__5ActorFiPf(u8* p, s32 a, f32* b);
 extern "C" f32 lbl_8053F8A8;
+extern "C" const f32 lbl_8053F8B0;
+extern "C" const f32 lbl_8053F8B4;
+extern "C" const f32 lbl_8053F8B8;
+extern "C" u8 lbl_8046A238[];
+extern "C" u8 fn_801F2740(u8* p, s32 n);
+extern "C" void fn_801F3128(u8* p, f32* out);
+extern "C" u8 fn_801F329C(u8* p, s32 i);
+extern "C" void fn_801CD0D0(f32* a, f32* b);
+extern "C" void fn_801F31C4(u8* p, f32* out);
+extern "C" void fn_802397B4(f32* a, void* b, s32 c);
+extern "C" void fn_80238548(s32 i, s32 n, f32* v, s32 t);
+extern "C" void fn_801D2978(u8* p, f32* v, f32 f, void* q, s32 n);
+extern "C" void* fn_8023E724(s32 i);
 extern "C" s32 fn_80206B30(u8* p1, s32 p2, f32* p3) {
     if (p1[0xc4] != 0 || *(s32*)(p1 + 0x248) == 3) {
         return 0;
