@@ -31,6 +31,7 @@ extern const f32 lbl_805437AC;
 extern "C" void fn_80440EE8(void* p);
 extern void* lbl_8053AED8;
 extern void* lbl_8053AB10;
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void*, f32, f32, void*);
 struct T803FC46C;
 typedef void (T803FC46C::*PMF803FC46C)();
 extern PMF803FC46C lbl_804B0BDC[];
