@@ -69,6 +69,16 @@ struct VObj_8013D488 {
     virtual void vf8();
     virtual void vf9(u32, s32);
 };
+extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void fn_801E10DC(void* p);
+extern void* lbl_8029260C[];
+extern void* lbl_80292500[];
+extern "C" void fn_8013CD54(void* param_1) {
+    *(u32*)((u8*)param_1 + 4) = 0;
+    *(u32*)((u8*)param_1 + 8) = 0;
+    *(u32*)((u8*)param_1 + 0x10) = (u32)&lbl_802FF378;
+}
+
 extern "C" void* fn_8013CD6C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80293318;
