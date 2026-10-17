@@ -246,8 +246,8 @@ extern "C" s32 fn_800FAB50(void* this_, void* a, void* b) {
 
 extern "C" void fn_800FCF80(u8* this_) {
     f32 fVar1 = lbl_8053BFCC;
-    *(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0xc);
     f32 fVar2 = lbl_8053BFAC;
+    *(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x240) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x244) = *(f32*)(this_ + 0x14);
     *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0xc);
@@ -288,15 +288,14 @@ extern "C" void fn_800FCF80(u8* this_) {
     f32 a = lbl_8053C054 * k2;
     f32 b = lbl_8053C058 * k2;
     f32 c = lbl_8053C05C * k2;
-    f32 d = lbl_8053BFAC;
     *(f32*)(this_ + 0x60) = a;
     *(f32*)(this_ + 0x64) = b;
     *(f32*)(this_ + 0x68) = c;
-    *(f32*)(this_ + 0x6c) = d;
+    *(f32*)(this_ + 0x6c) = fVar2;
     *(f32*)(this_ + 0x80) = a;
     *(f32*)(this_ + 0x84) = b;
     *(f32*)(this_ + 0x88) = c;
-    *(f32*)(this_ + 0x8c) = d;
+    *(f32*)(this_ + 0x8c) = fVar2;
     *(s32*)(this_ + 0x27c) = 0;
     fn_801F0E34(this_, 0x40026, 0);
     *(s32*)(this_ + 0x280) = 9;
@@ -333,7 +332,7 @@ static inline f32 WRTC_quantize(f32 v) {
     return 0.0001f * (f32)(s32)(10000.0f * v);
 }
 
-static inline u8 WRTC_stepToward(f32* v, f32 target, f32 step) {
+static inline s32 WRTC_stepToward(f32* v, f32 target, f32 step) {
     *v = WRTC_quantize(*v);
     if (*v > target) {
         *v -= step;
@@ -370,6 +369,13 @@ extern "C" void fn_800F8210(WRTCEff* e, s32 n, const f32* pos, u8 kind) {
     if (n < 8) {
         fn_802F601C(*(void**)(lbl_8053AB10 + 0x20), e, 2, 0, s, 4.0f);
     }
+}
+
+extern "C" bool fn_800F82CC(f32* p1, const f32* p2, f32 step) {
+    u8 n = WRTC_stepToward(&p1[0], WRTC_quantize(p2[0]), step);
+    n += WRTC_stepToward(&p1[1], WRTC_quantize(p2[1]), step);
+    n += WRTC_stepToward(&p1[2], WRTC_quantize(p2[2]), step);
+    return n == 3;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
