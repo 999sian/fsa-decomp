@@ -60,6 +60,22 @@ extern u8 lbl_802EE470[];
 extern "C" void fn_80192F60(void* p, s32 param_2);
 extern "C" void* fn_80192FD4(void* ptr, s16 param_2);
 
+struct VObj_801A8440 {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual void vf6(void);
+    virtual void vf7(void);
+    virtual void vf8(void);
+    virtual void vf9(void);
+    virtual void vf10(void);
+    virtual void vf11(void);
+    virtual void vf12(void);
+    virtual void vf13(void);
+};
 struct Pair_801A7D54 { f32 x, y; };
 struct Blk_801A7D54 { Pair_801A7D54 p[3]; u8 b; };
 extern void* lbl_8029BBBC[];
@@ -1789,10 +1805,10 @@ extern "C" void fn_801B2D70(Blk_801A7D54* dst, u8* self, s32 idx, s32 j) {
         a = s[3];
         d[2] = b;
         d[3] = a;
-        b = s[4];
-        a = s[5];
-        d[4] = b;
-        d[5] = a;
+        a = s[4];
+        b = s[5];
+        d[4] = a;
+        d[5] = b;
         d[6] = s[6];
     }
 }
