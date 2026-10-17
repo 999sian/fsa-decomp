@@ -107,6 +107,18 @@ extern "C" void fn_8002F198(void);
 extern "C" void fn_80030418(s32 a, s32 b);
 extern "C" f32 fn_801099E8(void* self, u8 b, s16 a);
 extern f32 lbl_80301208;
+struct VObj_80108104 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+};
 struct VObj_801096BC {
     virtual void v0();
     virtual void v1();
@@ -1016,6 +1028,17 @@ extern "C" void fn_8010428C(void* self) {
     fn_8003ABF0(*(void**)(p + 0x60), *(u32*)(q + 0x240), 0, *(u32*)(q + 0x238), 0, lbl_8028D6E4[p[0x257]], 1, 1);
 }
 
+extern "C" void fn_80104320(void* self) {
+    Unk80104320* p = (Unk80104320*)self;
+    u8 sel = p->sel;
+    p->flag = 0;
+    p->objs[sel]->v7(0);
+    p->objs[sel ^ 1]->v7(p->vals[sel ^ 1]);
+    p->objs2[sel]->v7(0);
+    p->objs2[sel ^ 1]->v7(p->vals2[sel ^ 1]);
+    p->sel = sel ^ 1;
+}
+
 extern "C" void fn_801043FC(u8* p) {
     if (*(u32*)(p + 0x238) != 0) {
         if (*(u32*)(p + 0x23c) != 0) {
@@ -1206,7 +1229,8 @@ extern "C" void fn_80105204(u8* p) {
 
 extern "C" void fn_80106540(char* p);
 extern "C" void fn_80105ABC(u8* p) {
-    s32 r1 = fn_80108C38(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0, *(f32*)(lbl_802C5A84 + 0x40), lbl_80301204);
+    f32 f = lbl_80301204;
+    s32 r1 = fn_80108C38(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0, *(f32*)(lbl_802C5A84 + 0x40), f);
     s32 r2 = fn_80108D50(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0, *(f32*)(lbl_802C5A84 + 0x44), lbl_80301204);
     (*(s16*)(p + 0xec))++;
     if (r1 == 1 && r2 == 1) {
