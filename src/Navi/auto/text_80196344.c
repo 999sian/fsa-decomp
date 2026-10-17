@@ -932,9 +932,9 @@ extern "C" void fn_8019912C(u8* self) {
     extern u32 lbl_80301CFC;
     NaviBytes4 ta;
     NaviBytes4 tb;
-    u32 zero = 0;
     u32 a = lbl_80301CF8;
     u32 b = lbl_80301CFC;
+    u32 zero = 0;
     self[0x14] = 0;
     *(u32*)&ta = a;
     self[4] = ta.b[0];
@@ -1422,6 +1422,20 @@ extern "C" void fn_801BC250(int, int);
 extern "C" void fn_8019DEF0(void)
 {
 	return;
+}
+
+extern "C" void fn_8019DEF4(int param_1)
+{
+	extern int* lbl_802FFA80;
+	lbl_802FFA80[2] = lbl_802FFA80[0] + *(int *)(param_1 + 4);
+	int saved = lbl_802FFA80[2];
+	if (*(unsigned short *)(param_1 + 8) != 0xffff) {
+		fn_801A605C(0, (void *)(param_1 + 8));
+	}
+	fn_80191090(0, *(u8*)(param_1 + 0xa), *(u8*)(param_1 + 0xb), *(u8*)(param_1 + 0xc), 0xff, 0xff, 0xff);
+	u16* e = lbl_802EE5D4[*(u8*)(param_1 + 0xb) & 7];
+	fn_8019019C(*(u8*)(param_1 + 0xa), e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+	fn_801BC250(saved, lbl_802FFA80[2] - saved);
 }
 
 extern "C" void fn_8019DFD8(void* p) {
