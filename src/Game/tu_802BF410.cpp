@@ -1,5 +1,7 @@
 #include "Game/Actor.h"
 
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802F9974(void* mgr, s32 id, s32 n, s32 flag);
 extern "C" void* lbl_8053AB10;
 extern "C" char lbl_8046D470[];
 extern "C" f32 lbl_80540C30;
