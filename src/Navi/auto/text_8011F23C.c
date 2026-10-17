@@ -78,6 +78,8 @@ extern void* lbl_80292558[];
 extern void* lbl_80290ACC[];
 
 extern void* lbl_80298574[];
+extern "C" u8 fn_801268E4(void* a, void* b, void* c);
+extern f32 lbl_803016CC;
 extern void* lbl_80298520[];
 extern "C" void fn_80168E04(void* p);
 extern "C" void fn_801688F0(void* p, u32* a, u32* b, u32* c, u32* d);
@@ -1115,6 +1117,32 @@ extern "C" void fn_80127FF4(char* p) {
     b[2] = (((u32)b[2] * (obj[0xbe] + 1)) >> 8) & 0xff;
     out = c;
     fn_801DE4F4(2, &out);
+}
+
+extern "C" void fn_80128190(char* p, char* q) {
+    u8* obj = *(u8**)p;
+    u32 c = *(u32*)(obj + 0x108);
+    u8* b = (u8*)&c;
+    u32 out;
+    b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
+    b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
+    b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
+    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
+    out = c;
+    fn_801DE4F4(1, &out);
+}
+
+extern "C" void fn_80128240(char* p, char* q) {
+    u8* obj = *(u8**)p;
+    u32 c = *(u32*)(q + 0x8c);
+    u8* b = (u8*)&c;
+    u32 out;
+    b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
+    b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
+    b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
+    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
+    out = c;
+    fn_801DE4F4(1, &out);
 }
 
 extern "C" void fn_80128548(char* p, char* q) {
