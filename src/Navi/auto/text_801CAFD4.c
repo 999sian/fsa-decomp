@@ -14,6 +14,13 @@ extern "C" s32 fn_801D4EFC(void* self, s32 a);
 extern "C" s32 fn_801D513C(void* self, s32 a);
 extern "C" void fn_801D2F34(s32 a);
 extern "C" void fn_801DF650(s32 a);
+extern "C" void fn_801C4F24(long, unsigned long);
+extern "C" int fn_801C5190(s32 chan, s32* out);
+extern "C" void fn_801C4FB4(unsigned long);
+extern "C" void fn_801C58A8(int, void (*)(void));
+extern "C" void fn_801CD214(int);
+extern "C" void fn_801CD620(void);
+extern u8 lbl_802F7D20[];
 extern void* lbl_802FF9B4;
 extern void* lbl_802FF9B0;
 extern void* lbl_802FF9C0;
@@ -1952,7 +1959,9 @@ extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 extern "C" void fn_801DF25C(f32* p) {
     u8* gx = __GXData;
     p[0] = *(s32*)(gx + 0x4d8) != 0 ? lbl_80301F6C : lbl_80301F68;
-    *(GXProjVals*)(p + 1) = *(GXProjVals*)(gx + 0x4dc);
+    for (s32 i = 0; i < 6; i++) {
+        p[1 + i] = *(f32*)(gx + 0x4dc + i * 4);
+    }
 }
 
 extern "C" void fn_801DF344(u32 a) {
@@ -2090,6 +2099,12 @@ extern "C" void fn_801DFFF0(s32* p, s32 a, s32 b) {
     p[2] = a;
     p[3] = a + b;
     p[1] = b;
+}
+
+extern "C" void DCFlushRange(void* addr, u32 nBytes);
+extern u32* lbl_802FFA80;
+extern "C" void fn_801E0008(void) {
+    DCFlushRange((void*)lbl_802FFA80[0], lbl_802FFA80[1]);
 }
 
 typedef struct {
