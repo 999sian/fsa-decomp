@@ -355,7 +355,7 @@ extern "C" void OSRestoreInterrupts(s32 level);
 extern "C" void fn_801DFFF0(void* a, u32 b, u32 c);
 extern "C" void fn_801A8440(u8* self) {
     u8 buf[16];
-    u8* p = buf;
+    u8* p;
     u16 n;
     u8* ent;
     u16 i;
@@ -370,17 +370,14 @@ extern "C" void fn_801A8440(u8* self) {
     }
     OSDisableScheduler();
     n = *(u16*)(self + 0x5c);
+    p = buf;
     for (i = 0; i < n; i++) {
         u32* s;
-        void** vt;
-        void* obj;
         ent = ((u8**)*(u32*)(self + 0x60))[i];
         s = *(u32**)(ent + 0x48);
         fn_801DFFF0(buf, s[0], s[2]);
         lbl_802FFA80 = (u32)p;
-        obj = *(void**)(ent + 0x2c);
-        vt = *(void***)obj;
-        ((void (*)(void*))vt[15])(obj);
+        ((VObj_801A8440*)*(void**)(ent + 0x2c))->vf13();
     }
     lbl_802FFA80 = 0;
     OSEnableScheduler();
@@ -733,11 +730,21 @@ extern "C" f32 fn_801ABF3C(Anim_801ABF3C* self, u16 idx)
     }
 }
 
-extern "C" void fn_801ABFC0(Der_801ABFC0* p) {
-    initMid_801ABFC0(p);
-    p->vt = lbl_8029B41C;
-    p->x18 = 0;
-    p->x1c = 0;
+extern "C" void fn_801ABFC0(u8* p) {
+    f32 f = lbl_80301D6C;
+    *(void**)p = lbl_8027F214;
+    p[4] = 0;
+    p[5] = 0;
+    *(s16*)(p + 6) = 0;
+    *(f32*)(p + 8) = f;
+    *(void**)p = lbl_8029B430;
+    *(s16*)(p + 0xc) = 0;
+    *(s16*)(p + 0xe) = 0;
+    *(s32*)(p + 0x10) = 0;
+    *(s32*)(p + 0x14) = 0;
+    *(void**)p = lbl_8029B41C;
+    *(s32*)(p + 0x18) = 0;
+    *(s32*)(p + 0x1c) = 0;
 }
 
 extern "C" int fn_801194B4(void*, unsigned short);
@@ -1391,6 +1398,30 @@ extern "C" void* fn_801AE680(void* p) {
 
 extern "C" void fn_801AE6B8(void* a, u8* p) {
     fn_801AE6DC(a, p + 0x88);
+}
+
+extern "C" void fn_801AE7D0(void* a, u8* b, u16 c);
+extern "C" void fn_801BC2AC(s32 a, s32 b);
+extern "C" void PPCSync(void);
+extern "C" void fn_801AE6DC(void* a, u8* p) {
+    u16 i;
+    s32 tmp;
+
+    i = 0;
+    tmp = *(s32*)(p + 4);
+    *(s32*)(p + 4) = *(s32*)(p + 8);
+    *(s32*)(p + 8) = tmp;
+    tmp = *(s32*)(p + 0xc);
+    *(s32*)(p + 0xc) = *(s32*)(p + 0x10);
+    *(s32*)(p + 0x10) = tmp;
+    for (; i < *(u16*)a; i++) {
+        fn_801AE7D0(*(void**)(*(u8**)((u8*)a + 8) + i * 0x24 + 0x20), p, i);
+    }
+    fn_801BC2AC(*(s32*)(p + 4), *(s32*)(*(u8**)p) * 0xc);
+    fn_801BC2AC(*(s32*)(p + 0xc), *(s32*)(*(u8**)p + 4) * 0xc);
+    PPCSync();
+    *(s32*)(p + 0x2c) = *(s32*)(p + 4);
+    *(s32*)(p + 0x30) = *(s32*)(p + 0xc);
 }
 
 extern "C" void fn_801AE7B0(u32* p, u32 v) {
@@ -3105,12 +3136,17 @@ extern "C" void* fn_801BA410(void* base, u32 offset);
 extern "C" u16 lbl_80301D34;
 extern "C" u32 lbl_80301D24;
 extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
+    extern f32 lbl_80301DF0;
     u8* d = (u8*)dest;
     u8* s = (u8*)src;
-    *(s16*)(d + 6) = *(s16*)(s + 0xa);
-    d[4] = s[8];
-    *(f32*)(d + 8) = 0.0f;
-    *(void**)(d + 0x10) = fn_801BA410(s, *(u32*)(s + 0x10));
+    f32 f = lbl_80301DF0;
+    u8 c = *(u8*)(s + 8);
+    s16 b = *(s16*)(s + 0xa);
+    *(s16*)(d + 6) = b;
+    u32 w = *(u32*)(s + 0x10);
+    *(u8*)(d + 4) = c;
+    *(f32*)(d + 8) = f;
+    *(void**)(d + 0x10) = fn_801BA410(s, w);
     *(void**)(d + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x14));
 }
 
@@ -3265,12 +3301,12 @@ extern "C" void fn_801BA428(s16 arg0, s16 arg1, s16 arg2, f32* out) {
     u32 a = ((u16)(arg0 / 2) >> 5) * 8;
     u32 b = ((u16)(arg1 / 2) >> 5) * 8;
     u32 c = ((arg2 / 2) >> 2) & 0x3FF8;
-    f32 xa = *(f32*)(px + a);
     f32 ya = *(f32*)(py + a);
-    f32 xb = *(f32*)(px + b);
     f32 yb = *(f32*)(py + b);
-    f32 xc = *(f32*)(px + c);
+    f32 xb = *(f32*)(px + b);
     f32 yc = *(f32*)(py + c);
+    f32 xc = *(f32*)(px + c);
+    f32 xa = *(f32*)(px + a);
     out[3] = ya * (yb * yc) + xa * (xb * xc);
     out[0] = xa * (yb * yc) - ya * (xb * xc);
     out[1] = yc * (ya * xb) + xc * (xa * yb);
