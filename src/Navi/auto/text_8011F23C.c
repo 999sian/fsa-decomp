@@ -1109,7 +1109,9 @@ extern "C" char lbl_8029138C[];
 extern "C" void* fn_801329B4(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_8029138C;
+#pragma dont_inline on
         fn_801328F8(param_1, 0);
+#pragma dont_inline reset
         if (param_2 > 0) {
             fn_8015AB1C(param_1);
         }
@@ -1203,6 +1205,8 @@ extern "C" void fn_80133570(void) {}
 extern "C" void fn_80133574(void) {}
 
 extern "C" void fn_80133578(void) {}
+
+extern "C" void fn_8013357C(void) {}
 
 extern "C" void fn_801338F8(u8* p, void* unused, int i);
 extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v);
