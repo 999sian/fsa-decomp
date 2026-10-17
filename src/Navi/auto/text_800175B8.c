@@ -96,7 +96,7 @@ extern "C" void fn_800187B0(void* p) {
 }
 
 extern s32 lbl_802FB9AC;
-extern "C" void* fn_800200E4(s16 param_1, s8 param_2);
+extern "C" void* fn_800200E4(s16 param_1, u8 param_2);
 extern "C" void fn_80018804(u8* p, f32* q) {
     *(f32*)(p + 0x128) = *(f32*)(p + 0x128) + *(f32*)(p + 0x150);
     *(f32*)(p + 0x12c) = *(f32*)(p + 0x12c) + *(f32*)(p + 0x154);
@@ -107,5 +107,27 @@ extern "C" void fn_80018804(u8* p, f32* q) {
     *(f32*)(p + 0x128) = *(f32*)(p + 0x128) + q[0];
     *(f32*)(p + 0x12c) = *(f32*)(p + 0x12c) + q[1];
     *(f32*)(p + 0x130) = *(f32*)(p + 0x130) + q[2];
+}
+
+extern "C" void fn_80018870(u8* p, f32* q) {
+    s32 idx = (*(s16*)(p + 0x136) >> 2) & 0x3ff8;
+    f32 v = *(f32*)(p + 0x154) + *(f32*)(p + 0x234);
+    f32 a = *(f32*)(p + 0x230) * *(f32*)(lbl_802F0BC0 + idx);
+    f32 c = *(f32*)(p + 0x230) * *(f32*)(lbl_802F0BC0 + idx + 4);
+    if (v < *(f32*)(p + 0x238)) {
+        v = *(f32*)(p + 0x238);
+    }
+    *(f32*)(p + 0x150) = a;
+    *(f32*)(p + 0x154) = v;
+    *(f32*)(p + 0x158) = c;
+    fn_80018804(p, q);
+}
+
+extern "C" void* fn_80018C54(u8* p) {
+    void* r = fn_800200E4(*(s16*)(p + 0xe), *(u8*)(p + 0x240));
+    if (r != nullptr) {
+        return r;
+    }
+    return &lbl_802FB9AC;
 }
 
