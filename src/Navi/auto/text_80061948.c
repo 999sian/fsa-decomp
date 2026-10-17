@@ -61,7 +61,7 @@ extern "C" u8 fn_80010C6C(void* self, s32 a, s32 b, s32 c);
 extern f32 lbl_80300418;
 extern void* lbl_802BF814[];
 extern f64 lbl_80300470;  // SDA label
-extern void fn_8002F358(int, int);
+extern "C" void fn_8002F358(int, int);
 extern f32 lbl_80300468; // SDA label
 extern f32 lbl_80300460; // SDA label
 extern "C" int fn_80020EA4(void* a, void* b);
