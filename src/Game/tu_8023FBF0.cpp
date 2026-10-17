@@ -41,6 +41,23 @@ extern "C" char lbl_804A64A8[];
 extern "C" void __dt__18JPAEmitterCallBackFv(void* this_, s16 flag);
 extern "C" void __dt__19JPAParticleCallBackFv(void* this_, s16 flag);
 extern "C" void fn_80241E64(void* p);
+struct DtorObjA {
+    virtual ~DtorObjA();
+};
+struct DtorObjB {
+    u8 unk_0x0[8];
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6();
+    virtual void vf7();
+    virtual void vf8();
+    virtual void vf9();
+    virtual ~DtorObjB();
+};
 extern "C" void __dl__FPv(void* p);
 
 struct GameRandom {
@@ -1123,13 +1140,11 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 mode;
-        s32 e;
         s32 i;
         s32 c;
         s32 d;
         c = 0;
-        i = c;
-        for (; i < 4; i++) {
+        for (i = c; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
@@ -1139,7 +1154,7 @@ BOOL fn_802454C0(char* p) {
                         c++;
                     }
                 } else {
-                    e = S32(p, 0x4);
+                    s32 e = S32(p, 0x4);
                     if (e == fn_8022F3DC(i)) {
                         c++;
                     }
