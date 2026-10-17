@@ -8,10 +8,7 @@ static inline f32 rsqrt_step(f32 x) {
 }
 
 static inline f32 rsqrt_guard(f32 x) {
-    if (x <= 0.0f) {
-        return x;
-    }
-    return rsqrt_step(x);
+    return x > 0.0f ? rsqrt_step(x) : x;
 }
 
 static inline f32 sqrt_guard(f32 x) {
@@ -196,7 +193,7 @@ extern "C" void fn_8030B774(u8* p) {
             dx = (f32)(x - *(int*)(p + 0x290));
             d2 = dx * dx + dy * dy;
             if (sqrt_guard(d2) > 16.0f) {
-                if (!(d2 <= 32.0f * FLT_EPSILON)) {
+                if (d2 > 32.0f * FLT_EPSILON) {
                     f32 inv = rsqrt_guard(d2);
                     dx *= inv;
                     dy *= inv;
