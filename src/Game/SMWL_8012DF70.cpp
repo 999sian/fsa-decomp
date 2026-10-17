@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
 extern "C" char lbl_8049E8A0[];
