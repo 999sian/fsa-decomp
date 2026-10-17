@@ -25,6 +25,11 @@ extern f64 lbl_80300828;
 extern f64 lbl_80300830;
 extern f64 lbl_80300838;
 extern f32 lbl_802FEAB0;
+extern u8 lbl_802BB0FC[];
+extern u8 lbl_802C5024[];
+extern u8 lbl_8029FDB4[];
+extern u8 lbl_802FCBE0[];
+extern "C" int fn_800126C8(u8* a, u8* b, u8* c);
 
 static inline f32 navi_sqrtf(f32 x)
 {
