@@ -130,6 +130,38 @@ extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 pa
     OSYieldThread();
 }
 
+void JUTException::panic_f(const char* file, int line, const char* fmt, ...)
+{
+    va_list vl;
+    va_start(vl, fmt);
+    char buf[256];
+    vsnprintf(buf, sizeof(buf) - 1, fmt, vl);
+    if (lbl_8053A900 == nullptr)
+    {
+        OSPanic(file, line, buf);
+    }
+    memcpy(lbl_804BA1D0, OSGetCurrentContext(), sizeof(OSContext));
+    lbl_8053A900->mStackPointer = OSGetStackPointer();
+
+    *(u32*)(lbl_804BA1B0 + 0) = lbl_8053A904;
+    *(u16*)(lbl_804BA1B0 + 4) = 0xff;
+    *(u32*)(lbl_804BA1B0 + 8) = (u32)lbl_804BA1D0;
+    *(u32*)(lbl_804BA1B0 + 12) = 0;
+    *(u32*)(lbl_804BA1B0 + 16) = 0;
+
+    if (lbl_8053A914 == nullptr || lbl_8053A914 && FLAG_ON(lbl_8053A914->getOutput(), JUTConsole::OUTPUT_CONSOLE))
+    {
+        OSReport(lbl_8045E934, buf, file, line);
+    }
+    if (lbl_8053A914)
+    {
+        lbl_8053A914->print_f(lbl_8045E934, buf, file, line);
+    }
+    OSSendMessage(&lbl_80499390, lbl_804BA1B0, 1);
+    OSSuspendThread(OSGetCurrentThread());
+    va_end(vl);
+}
+
 extern "C" void fn_8008A4C4(unsigned int param_1)
 {
     __OSFpscrEnableBits = param_1;
