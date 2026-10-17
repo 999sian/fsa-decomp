@@ -1004,6 +1004,14 @@ extern "C" void fn_8009F01C(NaviState_8009E6F0* p) {
     (p->*lbl_80286694[((u8*)p)[0x800]])();
 }
 
+extern "C" void fn_8009F2D4(u8* p) {
+    if (p[0x85d] != 0) {
+        p[0x85d]--;
+        return;
+    }
+    p[0x800] = 4;
+}
+
 extern "C" void fn_8009F2F8(void) {}
 
 extern "C" void fn_8009F43C(void) {}
