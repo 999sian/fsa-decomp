@@ -831,7 +831,7 @@ extern u8 lbl_802F7D60[];
 extern "C" void fn_801D4AC8(void*, s32, void*, void*);
 extern "C" void fn_801BC250(void*, s32);
 extern "C" s32 fn_801D2AFC(s32, s32, void*);
-extern "C" void fn_801D493C(void);
+extern "C" void fn_801D493C(s32 chan, s32 result);
 extern "C" void fn_801D45D8(s32 chan, s32 arg);
 extern "C" void fn_801D47B8(s32 chan, u8* buf, u32 val) {
     u8* p;
