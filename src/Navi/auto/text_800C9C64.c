@@ -138,7 +138,7 @@ extern "C" void fn_800CB688(u8* p) {
     s8 idx = lbl_802C56B4.unk4;
     if (idx >= 0) {
         if (--lbl_802C56B4.unk8 == 0) {
-            ((void (*)(void*, s8))fn_800127A0)(lbl_8029FDB4 + 4, idx);
+            fn_800127A0(lbl_8029FDB4 + 4, idx);
             lbl_802C56B4.unk4 = -1;
         }
     }
