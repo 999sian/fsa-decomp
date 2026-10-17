@@ -28,6 +28,7 @@ extern void* lbl_802FF9C8;
 extern void* lbl_802FF9C4;
 extern "C" void OSRegisterVersion(const char* version);
 extern "C" void fn_801D14E4(void* a, void* b);
+extern "C" void fn_801D1494(const char* fmt, ...);
 extern int lbl_802FF9F8;
 extern void* lbl_802FEA20;
 extern u8 lbl_8029DAA8[];
