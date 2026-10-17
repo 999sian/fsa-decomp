@@ -515,6 +515,26 @@ extern "C" u32 fn_80107EA0(u8* p) {
     return (u32)__cntlzw(p[0x45b]) >> 5;
 }
 
+extern "C" s32 fn_80107EB0(u8* p) {
+    s8 v = p[0x45a];
+    switch (v) {
+    case 0:
+    case 2:
+        if (p[0x45b] == 0) {
+            return 0;
+        }
+        return 2;
+    case 1:
+    case 3:
+        if (p[0x45b] == 0) {
+            return 1;
+        }
+        return 3;
+    default:
+        return -1;
+    }
+}
+
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
     fn_8015FDA8(a, b);
 }
