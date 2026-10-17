@@ -17,7 +17,7 @@ extern "C" void fn_801F0E34(void* this_, s32 id, s32 flag);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" s32 fn_801F6874(s32 angle);
-extern "C" void fn_801F8544(u32 id, s32 room, void* pos, s32 flag);
+extern "C" void fn_801F8544(void* mgr, u32 id, s32 room, void* pos, s32 flag);
 extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 ClassifyBamAngleToQuadrant(s32 angle);
 
