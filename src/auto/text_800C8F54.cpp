@@ -772,22 +772,12 @@ struct J3DTevSwapModeTableInfo {
 extern J3DTevSwapModeInfo j3dDefaultTevSwapMode;
 extern const J3DTevSwapModeTableInfo j3dDefaultTevSwapModeTable;
 extern u32 j3dDefaultIndTexOrderNull;
-struct J3DTevStageBits {
-    u8 _00[7];
-    u8 mTevSwapModeInfo;
-    void setTexSel(const u8 texSel) { mTevSwapModeInfo = (mTevSwapModeInfo & ~0xC) | (texSel << 2); }
-    void setRasSel(const u8 rasSel) { mTevSwapModeInfo = (mTevSwapModeInfo & ~0x3) | rasSel; }
-    void setTevSwapModeInfo(const J3DTevSwapModeInfo& info) {
-        setTexSel(info.mTexSel);
-        setRasSel(info.mRasSel);
-    }
-};
 extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, const void* info);
 extern "C" void fn_800CB4C0(void* out, u8* e) {
-    J3DTevStageBits* self = (J3DTevStageBits*)out;
+    u8* p = (u8*)out;
     setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(out, e);
-    self->setTevSwapModeInfo(j3dDefaultTevSwapMode);
-    self->mTevSwapModeInfo = self->mTevSwapModeInfo;
+    p[7] = (p[7] & ~0x0C) | (j3dDefaultTevSwapMode.mTexSel << 2);
+    p[7] = (p[7] & ~0x03) | j3dDefaultTevSwapMode.mRasSel;
 }
 
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
