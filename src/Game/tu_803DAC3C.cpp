@@ -3,6 +3,7 @@
 #include "types.h"
 #include "dolphin/dvd/dvd.h"
 #include "dolphin/dvd/dvdfs.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 extern "C" {
 extern void* lbl_8053ADD0;
