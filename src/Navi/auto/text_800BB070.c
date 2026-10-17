@@ -89,6 +89,16 @@ extern "C" void fn_800BCEAC(u8* p) {
     }
 }
 
+extern "C" void fn_800BCF00(u8* p) {
+    if (fn_8002F6BC(p) == 0) {
+        fn_8002F9B4();
+        *(s32*)(lbl_802BB0FC + 0x420) = 0;
+        *(s32*)(lbl_802BB0FC + 0x424) = 0;
+        p[0xe5] = 0x1e;
+        p[0xd4] = 6;
+    }
+}
+
 extern "C" void fn_800BCF88(void) {}
 
 extern "C" void fn_800BCF8C(u8* p) {
