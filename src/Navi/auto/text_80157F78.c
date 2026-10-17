@@ -3,8 +3,8 @@
 
 #include "types.h"
 
-BOOL fn_80150388(void);
-void fn_80157F78()
+extern "C" BOOL fn_80150388(void);
+extern "C" BOOL fn_80157F78()
 {
-	fn_80150388();
+	return fn_80150388();
 }
