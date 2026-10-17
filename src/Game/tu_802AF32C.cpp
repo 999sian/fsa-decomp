@@ -14,7 +14,7 @@ extern "C" void* lbl_8053AB10;
 extern "C" char lbl_8046CA50[];
 extern "C" char lbl_804668A8[];
 extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
-extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, bool b, s32 c, s32 d, s32 e, s32 f, s32 g);
 
 
 extern "C" char lbl_804A8418[];
@@ -28,6 +28,30 @@ extern "C" Actor* fn_802AF32C(Actor* p, s16 n) {
 		}
 	}
 	return p;
+}
+
+extern "C" void fn_802AF38C(Actor* thisObj) {
+	u8* p = (u8*)thisObj;
+	DrawRec rec;
+	s32 flag = *(s32*)(p + 0x23c) != 0;
+	if (*(s32*)(p + 0x238) == 2) {
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, 0x1c2, flag, 2, -1, 1, 0, 0);
+	} else if (*(s32*)(p + 0x238) == 3) {
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2d5, flag, 2, -1, 1, 0, 0);
+	} else if (*(s32*)(p + 0x238) == 4) {
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2ee, flag, 2, -1, 1, 0, 0);
+	} else if (*(s32*)(p + 0x238) == 5) {
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2f7, flag, 2, -1, 1, 0, 0);
+	} else if (*(s32*)(p + 0x238) == 6) {
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x129, flag, 2, -1, 1, 0, 0);
+	} else {
+		s32 frame = *(s32*)(p + 0x234) + 0x70;
+		if (*(s32*)(p + 4) < 8) {
+			void* res = lbl_8053AAF8->res->get(0x534F4220, lbl_8046CA50);
+			fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), p + 0xc, res, frame, 1.0f, 1.0f, &rec);
+		}
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, frame, flag, 2, -1, 1, 0, 0);
+	}
 }
 
 extern "C" void fn_802AF6B0(Actor* thisObj) {
