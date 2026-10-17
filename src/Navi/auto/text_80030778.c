@@ -631,3 +631,15 @@ extern "C" void fn_80037880(void* p) {
     *(unsigned short*)((char*)p + 0xb4) = lbl_802272D4[*(unsigned int*)((char*)lbl_802BB0FC + 0x70)];
 }
 
+extern "C" void fn_8003793C(void* p, void*) {
+    lbl_802FEDE0 |= 0x400;
+    *(unsigned int*)((char*)p + 0x8) &= ~4;
+    if (!lbl_802FEE44) {
+        lbl_802FEE44 = 1;
+        lbl_802FEE43 |= 4;
+        lbl_802FEE30 |= 0x8000;
+    }
+    *(unsigned int*)(lbl_802BB0FC + 0xf8) &= ~0x20;
+    fn_80029208(lbl_80246138);
+}
+
