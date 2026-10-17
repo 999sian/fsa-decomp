@@ -23,6 +23,15 @@ extern "C" void fn_801DEE3C(s32);
 extern "C" void fn_801DE24C(s32);
 extern "C" void fn_801DE3E0(s32, s32, s32, s32, s32);
 extern "C" void fn_8004D298(void);
+extern "C" void fn_80040120(void);
+extern "C" void fn_80040410(void);
+extern "C" void fn_800404E8(void);
+extern "C" void fn_800405C0(void);
+extern "C" void fn_80130974(void*);
+extern u8 lbl_802BF0E8;
+extern u8 lbl_802BF104;
+extern u8 lbl_802BF0F4;
+extern u8 lbl_802BF128[];
 extern "C" void* fn_80041C10(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
