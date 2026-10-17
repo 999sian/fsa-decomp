@@ -74,6 +74,11 @@ extern s32 lbl_80539FD0;
 extern void* lbl_8053AF80;
 extern "C" void fn_80458F9C(void* a, s32 b);
 extern u8 lbl_804C18B8[0xC];
+extern const f32 lbl_8053E190;
+extern const f32 lbl_8053E1C4;
+extern const f32 lbl_8053E128;
+extern s32 lbl_804A1B70[];
+extern "C" void* fn_8013CC50(s32 room, f32* pos, f32 scale, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 // BPH2 destructor
 extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
@@ -149,10 +154,13 @@ extern "C" s32 fn_8018DA6C(char* this_) {
 }
 
 extern "C" void fn_8018E5E4(char* this_) {
-    *(f32*)(this_ + 0x80) = lbl_8053E104;
-    *(f32*)(this_ + 0x84) = lbl_8053E104;
-    *(f32*)(this_ + 0x88) = lbl_8053E0E4;
-    *(f32*)(this_ + 0x8c) = lbl_8053E0E4;
+    f32 zero = lbl_8053E0C8;
+    f32 one = lbl_8053E0E4;
+    f32 neg = lbl_8053E104;
+    *(f32*)(this_ + 0x80) = neg;
+    *(f32*)(this_ + 0x84) = neg;
+    *(f32*)(this_ + 0x88) = one;
+    *(f32*)(this_ + 0x8c) = one;
     *(s32*)(this_ + 0x26c) = *(u32*)(this_ + 0x90) & 1;
     *(s32*)(this_ + 0x24c) = 0;
     *(s32*)(this_ + 0x250) = 0;
@@ -182,23 +190,23 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x31c) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x320) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x324) = *(f32*)(this_ + 0x14);
-    *(f32*)(lbl_804C18B8 + 8) = lbl_8053E0C8;
-    *(f32*)(lbl_804C18B8 + 4) = lbl_8053E0C8;
-    *(f32*)(lbl_804C18B8 + 0) = lbl_8053E0C8;
+    *(f32*)(lbl_804C18B8 + 8) = zero;
+    *(f32*)(lbl_804C18B8 + 4) = zero;
+    *(f32*)(lbl_804C18B8 + 0) = zero;
     lbl_80539FC8 = -1;
     *(s32*)(this_ + 0x270) = 0;
     *(s32*)(this_ + 0x264) = 0;
-    *(f32*)(this_ + 0x280) = lbl_8053E0C8;
-    *(f32*)(this_ + 0x288) = lbl_8053E0C8;
+    *(f32*)(this_ + 0x280) = zero;
+    *(f32*)(this_ + 0x288) = zero;
     *(s32*)(this_ + 0x268) = 0;
     *(u8*)(this_ + 0x27b) = 0;
     *(u8*)(this_ + 0x29c) = 0;
-    *(f32*)(this_ + 0x2b4) = lbl_8053E0C8;
-    *(f32*)(this_ + 0x2b0) = lbl_8053E0C8;
-    *(f32*)(this_ + 0x2ac) = lbl_8053E0C8;
-    *(f32*)(this_ + 0x44) = lbl_8053E0C8;
-    *(f32*)(this_ + 0x40) = lbl_8053E0C8;
-    *(f32*)(this_ + 0x3c) = lbl_8053E0C8;
+    *(f32*)(this_ + 0x2b4) = zero;
+    *(f32*)(this_ + 0x2b0) = zero;
+    *(f32*)(this_ + 0x2ac) = zero;
+    *(f32*)(this_ + 0x44) = zero;
+    *(f32*)(this_ + 0x40) = zero;
+    *(f32*)(this_ + 0x3c) = zero;
     *(f32*)(this_ + 0x2a0) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2a8) = *(f32*)(this_ + 0x14);
@@ -219,9 +227,9 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x2bc) = lbl_8053E0D0;
     *(f32*)(this_ + 0x2c0) = lbl_8053E18C;
     *(u8*)(this_ + 0x27a) = 0;
-    *(f32*)(this_ + 0x28c) = lbl_8053E0C8;
+    *(f32*)(this_ + 0x28c) = zero;
     *(f32*)(this_ + 0x284) = lbl_8053E140;
-    *(f32*)(this_ + 0x290) = lbl_8053E0C8;
+    *(f32*)(this_ + 0x290) = zero;
     *(s32*)(this_ + 0x274) = 0x300;
     *(s32*)(this_ + 0x328) = 0;
     *(s32*)(this_ + 0x32c) = 0;
@@ -240,10 +248,10 @@ extern "C" void fn_8018E5E4(char* this_) {
         fn_80458F9C(lbl_8053AF80, 0x3c);
         *(s32*)(this_ + 0x230) = 0;
     } else {
-        *(f32*)(this_ + 0x60) = lbl_8053E104;
-        *(f32*)(this_ + 0x64) = lbl_8053E104;
-        *(f32*)(this_ + 0x68) = lbl_8053E0E4;
-        *(f32*)(this_ + 0x6c) = lbl_8053E0E4;
+        *(f32*)(this_ + 0x60) = neg;
+        *(f32*)(this_ + 0x64) = neg;
+        *(f32*)(this_ + 0x68) = one;
+        *(f32*)(this_ + 0x6c) = one;
         *(s32*)(this_ + 0xb0) = 0x5040004;
         lbl_80539FC8 = *(s32*)(this_ + 0x4);
         *(f32*)(lbl_804C18B8 + 0) = *(f32*)(this_ + 0x2a0);
