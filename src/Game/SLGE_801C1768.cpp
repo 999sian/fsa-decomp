@@ -20,6 +20,8 @@ extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" void fn_801C26D8(void);
 extern "C" u16 lbl_80469424[];
 extern "C" u16 lbl_8053EDB8;
+extern "C" void* fn_801C0D70(void);
+extern "C" void* fn_804032E8(u32 name, void* str);
 extern "C" u16 lbl_8053EDB0[];
 extern "C" u16 lbl_80469418[];
 extern "C" char lbl_80469430[];
