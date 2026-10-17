@@ -29,6 +29,8 @@ extern "C" s32 fn_800A4768(void*, s16, u8, s32, s32, f32, f32);
 extern "C" s32 fn_800A4A90(void*, s16, u8, s32, s32, f32, f32);
 extern char lbl_8029FDB4[];
 extern void* lbl_802FF278;
+extern "C" void fn_8002F458(s32, s32);
+extern "C" void fn_8002F544(s32);
 struct VObj_800A468C {
     virtual void v0();
     virtual void v1();
