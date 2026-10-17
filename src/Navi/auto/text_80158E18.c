@@ -909,6 +909,11 @@ extern "C" BOOL fn_8015CFE4(void* p, u32* a, u32* b) {
     return 0;
 }
 
+extern "C" u32 fn_8015D014(void)
+{
+    return 0x534C4944;
+}
+
 extern "C" u32 fn_8015D020(u8* p) {
     return *(u32*)(p + 0x6c);
 }
