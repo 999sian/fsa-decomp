@@ -66,6 +66,8 @@ extern "C" void fn_80119A28(void*);
 extern u8 lbl_802900DC[];
 extern u8 lbl_80283F48[];
 extern "C" void fn_801193D8(u8* self, u16* table);
+extern "C" int fn_80119318(u8* self);
+extern "C" void fn_801DD58C(void*, s32);
 extern "C" void fn_801DD618(void* p, u32 id);
 extern "C" void fn_80007AB8(const char*, int, const char*, ...);
 extern char lbl_80290040[];
