@@ -81,6 +81,19 @@ extern "C" void fn_8020E268(char* this_) {
 extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, u32 c);
 extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
 extern "C" void fn_8020ED5C(char* this_, s32 st);
+extern "C" u8 fn_801D21F0(void* p);
+extern "C" u8 fn_801F2740(void* this_, s32 a);
+extern "C" u8 fn_80230AD4(s32 i);
+extern "C" u8 fn_8022DE10(s32 id, s32 a);
+extern "C" u8 fn_802300EC(s32 i);
+extern "C" u8 fn_801CD1D0(s32 id);
+extern "C" void fn_802316C8(s32 id, s32 room, void* v);
+extern "C" void fn_801CD150(void* src, void* dst);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern const f32 lbl_8053FA58;
+extern const f32 lbl_8053FA68;
+extern const f32 lbl_8053FA6C;
 
 extern "C" u8 fn_8020DF4C(char* this_) {
     u8 r = 0;
@@ -302,16 +315,21 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
         *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
         *(f32*)(this_ + 0x258) = lbl_8053FA28;
         *(void**)(this_ + 0x2b0) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 0x1af, 0, 0, 0, 0, 1, lbl_8053FA28);
-        if (*(void**)(this_ + 0x2b0) != 0) {
+        {
             char* obj = *(char**)(this_ + 0x2b0);
-            u8 c = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA60 + lbl_8053FA5C);
-            obj[0xb8] = c;
-            obj[0xb9] = c;
-            obj[0xba] = c;
-            obj = *(char**)(this_ + 0x2b0);
-            obj[0xbc] = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA64 + lbl_8053FA5C);
-            obj[0xbd] = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA60 + lbl_8053FA5C);
-            obj[0xbe] = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA2C + lbl_8053FA5C);
+            if (obj != 0) {
+                u8 c = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA60 + lbl_8053FA5C);
+                obj[0xb8] = c;
+                obj[0xb9] = c;
+                obj[0xba] = c;
+                u8 r = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA64 + lbl_8053FA5C);
+                u8 g = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA60 + lbl_8053FA5C);
+                u8 b = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA2C + lbl_8053FA5C);
+                obj = *(char**)(this_ + 0x2b0);
+                obj[0xbc] = r;
+                obj[0xbd] = g;
+                obj[0xbe] = b;
+            }
         }
         break;
     case 2:
@@ -438,7 +456,7 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
     *(s32*)(this_ + 0x24c) = 0;
     *(s32*)(this_ + 0x248) = st;
     if (*(s32*)(this_ + 0x2b8) >= 0) {
-        if (*(s32*)(this_ + 0x248) >= 2 && *(s32*)(this_ + 0x248) < 4) {
+        if (*(s32*)(this_ + 0x248) < 4 && *(s32*)(this_ + 0x248) >= 2) {
             f32* p = (f32*)fn_8023E724(*(s32*)(this_ + 0x2b8));
             if (*(f32*)(this_ + 0xc) >= p[0] - lbl_8053FA84) {
                 if (p[0] + lbl_8053FA84 < *(f32*)(this_ + 0xc)) {
