@@ -12,7 +12,6 @@ extern void* lbl_8029A150[];
 extern "C" void fn_801A605C(int, void*);
 extern "C" void fn_801BC250(int, int);
 struct Bytes4_801A3D94 { u8 b[4]; };
-struct Quad_801A4974 { u8 a, b, c, d; };
 struct Rect16 {
     s16 x, y, w, h;
     void set(const Rect16& r) { x = r.x; y = r.y; w = r.w; h = r.h; }
@@ -2754,11 +2753,12 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8* d = p1 + 0xb8;
-    d[p2 * 4 + 0] = p3[0];
-    d[p2 * 4 + 1] = p3[1];
-    d[p2 * 4 + 2] = p3[2];
-    d[p2 * 4 + 3] = p3[3];
+    u8 a = p3[0];
+    u8* d = p1 + p2 * 4;
+    d[0xb8] = a;
+    d[0xb9] = p3[1];
+    d[0xba] = p3[2];
+    d[0xbb] = p3[3];
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {
