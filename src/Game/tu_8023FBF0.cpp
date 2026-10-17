@@ -1478,30 +1478,7 @@ BOOL fn_80245238(char* p) {
         return PADF(fn, mask) != 0; \
     }
 BOOL fn_802454C0(char* p) {
-    bool ok;
-    bool ok2;
-    s32 v;
-    if (U8(p, 0xc80) == 0) {
-        ok = false;
-    } else if (U8(p, 0xcee) != 0) {
-        ok = false;
-    } else if (U8(p, 0x1215) != 0) {
-        ok = false;
-    } else if (U8(p, 0xca0) == 0) {
-        ok = false;
-    } else if (U8(p, 0xce9) == 0) {
-        ok = false;
-    } else {
-        ok = true;
-    }
-    if (!ok) {
-        ok2 = false;
-    } else if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
-        ok2 = false;
-    } else {
-        ok2 = true;
-    }
-    if (!ok2) {
+    if (!padActive(p)) {
         return 0;
     }
     if (U8(p, 0x456) != 0) {
@@ -3233,10 +3210,10 @@ void fn_8024E46C(char* p) {
 }
 void fn_8024E500(char* p) {
     if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && getItem(p) != 0) {
-        s32 lvl = getItemLevel(p);
         s32 idx = S32(p, 0x4);
         s32 item = getItem(p);
-        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | ((lvl << 22) | (idx << 17)), -1, -1);
+        s32 lvl = getItemLevel(p) << 22;
+        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | (lvl | (idx << 17)), -1, -1);
         setItem(p, 0, 1);
     }
 }
