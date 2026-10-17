@@ -20,6 +20,28 @@ extern "C" s32 fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_801D7874(void* slot);
 extern "C" void fn_8021BD18(void* subObj, s32 arg);
 extern "C" void fn_801D789C(void* child);
+extern "C" s32 fn_801CD664(s32 id);
+extern "C" void fn_801E4D54(void* this_);
+extern "C" void fn_801E4618(void* this_, JGeometry::TVec2<f32>* out, s32 id);
+extern "C" void fn_801D7638(void* p);
+extern "C" void fn_801D76B4(void* p);
+extern "C" void fn_80217A74(void* p);
+extern "C" void fn_80217DE8(void* p);
+extern "C" void fn_80217BC8(void* p);
+extern "C" void fn_80217AB8(void* p);
+extern "C" void fn_80217ED4(void* p);
+extern "C" void fn_801E6A84(void* p, s32 arg);
+extern "C" void detach__5ActorFv(void* this_);
+extern "C" void fn_801D74E0(void* a, void* b, s32 c);
+extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801E44CC(void* p);
+extern "C" void fn_801CDCD0(void* p, s32 a, void* b, s32 c);
+extern const f32 lbl_8053F0DC;
+extern const f32 lbl_8053F0F8;
+extern const f32 lbl_8053F104;
+extern const f32 lbl_8053F110;
+extern const f32 lbl_8053F12C;
+extern const f32 lbl_8053F130;
 
 extern "C" void* fn_801D46FC(void* this_, s16 freeFlag) {
     if (this_ != 0) {
@@ -516,6 +538,97 @@ extern "C" void fn_801D4C70(u8* this_) {
     fn_801F71A4((f32*)(this_ + 0x40), vel.y, lbl_8053F100, lbl_8053F0D8);
 }
 
+extern const f32 lbl_8053F104;
+extern const f32 lbl_8053F108;
+extern const f32 lbl_8053F10C;
+extern const f32 lbl_8053F110;
+extern "C" void fn_801CE32C(void* p);
+extern "C" s32 fn_801CD580(s32 id);
+extern "C" void fn_801E4A18(void* p);
+extern "C" void fn_801D4ED4(u8* this_) {
+    s32 sel = 0;
+    if (this_[0x5d1] != 0) {
+        this_[0x5d1]--;
+        if (this_[0x5d1] == 0) {
+            fn_80217CD8(this_ + 0x448);
+            s16 ang = *(s16*)(this_ + 0x5d2);
+            *(f32*)(this_ + 0x3c) = lbl_8053F104 * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+            *(f32*)(this_ + 0x40) = lbl_8053F104 * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+        }
+    }
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+        break;
+    case 6:
+        if (*(u32*)(this_ + 0x230) & 1) {
+            *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x20);
+            *(f32*)(this_ + 0x44) = *(f32*)(this_ + 0x23c);
+        }
+        sel = 1;
+        break;
+    case 7:
+        *(f32*)(this_ + 0x14) = lbl_8053F108;
+        break;
+    default: {
+        f32 x0 = *(f32*)(this_ + 0x5bc);
+        f32 y0 = *(f32*)(this_ + 0x5c0);
+        switch (*(s32*)(this_ + 0x5b8)) {
+        case 0:
+            *(f32*)(this_ + 0x5bc) += lbl_8053F10C;
+            break;
+        case 1:
+            *(f32*)(this_ + 0x5bc) -= lbl_8053F10C;
+            break;
+        case 2:
+            *(f32*)(this_ + 0x5c0) += lbl_8053F10C;
+            break;
+        case 3:
+            *(f32*)(this_ + 0x5c0) -= lbl_8053F10C;
+            break;
+        }
+        bool done = false;
+        JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0x5bc), *(f32*)(this_ + 0x5c0), 0.0f);
+        bool ok = ((bool (*)(void*, s32, void*))((void**)(*(void**)this_))[19])(this_, *(s32*)(this_ + 0x4), &pos);
+        if (ok) {
+            *(f32*)(this_ + 0x5bc) = x0;
+            done = true;
+            *(f32*)(this_ + 0x5c0) = y0;
+        } else {
+            *(s32*)(this_ + 0x5b4) = *(s32*)(this_ + 0x5b4) + 1;
+            if (*(s32*)(this_ + 0x5b4) >= 0x3c) {
+                done = true;
+            }
+        }
+        if (done) {
+            *(s32*)(this_ + 0x5b8) = fn_801CD580(*(s32*)(this_ + 0x5b8));
+            *(s32*)(this_ + 0x5b4) = 0;
+        }
+        if (!(*(u32*)(this_ + 0x230) & 7)) {
+            sel = 1;
+        }
+        break;
+    }
+    }
+    if (sel) {
+        fn_801CE32C(this_);
+    }
+    if (*(s32*)(this_ + 0x248) == 1) {
+        if (*(f32*)(this_ + 0x14) < lbl_8053F0EC) {
+            *(f32*)(this_ + 0x14) = lbl_8053F0EC;
+        }
+    } else if (!fn_801CD2F8(*(s32*)(this_ + 0x4))) {
+        f32 v = *(f32*)(this_ + 0x14);
+        if (v > lbl_8053F108) {
+            v = lbl_8053F108;
+        } else if (v < lbl_8053F110) {
+            v = lbl_8053F110;
+        }
+        *(f32*)(this_ + 0x14) = v;
+    }
+    fn_801E4A18(this_ + 0x52c);
+    fn_801E4A18(this_ + 0x540);
+    fn_801E4A18(this_ + 0x554);
+}
 
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_8030C210(void* cam, JGeometry::TVec3<f32>* pos);
