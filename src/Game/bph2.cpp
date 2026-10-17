@@ -38,6 +38,7 @@ struct ActorVt_bph2 {
     virtual void v6();
     virtual void v7();
     virtual void setShadow(s32 type, f32 x, f32 y);
+    virtual void v9();
 };
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 
