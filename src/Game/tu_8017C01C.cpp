@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern void* lbl_8053AB10;
 extern f32 lbl_8053DDC8;
@@ -256,6 +257,29 @@ extern "C" u8 fn_8017EB44(const f32* pos) {
     return done;
 }
 
+extern "C" u32 fn_8017EB94(f32* param_1) {
+    f32 v1[3];
+    f32 v0[3];
+    f32 y0 = param_1[1];
+    f32 x0 = param_1[0];
+    void* p = *(void**)((char*)lbl_8053AB10 + 0x24);
+    u32 result = 0;
+    v0[0] = x0;
+    v0[1] = y0;
+    v0[2] = lbl_8053DD28;
+    if (fn_8030C2A8(p, v0)) {
+        f32 y1 = param_1[3];
+        f32 x1 = param_1[2];
+        v1[0] = x1;
+        v1[1] = y1;
+        v1[2] = lbl_8053DD28;
+        if (fn_8030C2A8(p, v1)) {
+            result = 1;
+        }
+    }
+    return result;
+}
+
 extern "C" void fn_8017EC38(u32* dst, const u32* src) {
     dst[0] = src[0];
     dst[1] = src[1];
@@ -318,3 +342,7 @@ extern "C" void fn_8017ED08(void) {
     void* p = *(void**)((char*)lbl_8053AB10 + 0x20);
     *(u8*)((char*)p + 0x216) = 1;
 }
+
+void __sinit_tu_8017C01C_cpp(void) {
+}
+
