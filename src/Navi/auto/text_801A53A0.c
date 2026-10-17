@@ -10,10 +10,6 @@ struct VObj_801A7A38 {
 };
 
 extern "C" void fn_801E10DC(void* p);
-extern "C" void fn_801A73A4(void);
-extern "C" void fn_8015AB40(void* p);
-extern "C" void fn_8015AB1C(void* p);
-extern "C" void fn_80193E40(void* a, void* b);
 extern u8 lbl_8029B188[];
 
 extern "C" void fn_801A59E8(void);
