@@ -68,6 +68,45 @@ extern "C" int fn_8015EC90(char* param_1, int param_2, int param_3) {
     return r;
 }
 
+extern "C" int fn_8015ED10(char* p, u32 size) {
+    char* obj = 0;
+    u32 aligned = (size + 0x1f) & ~0x1f;
+    u32 best = -1;
+    char* n;
+    for (n = *(char**)lbl_802EE28C; n != 0; n = *(char**)(n + 0xc)) {
+        char* o = *(char**)n;
+        if (*(u32*)(o + 0x1c) >= aligned && *(u32*)(o + 0x1c) < best) {
+            best = *(u32*)(o + 0x1c);
+            obj = o;
+            if (best == aligned) {
+                break;
+            }
+        }
+    }
+    if (obj != 0) {
+        return fn_8015F0BC(obj, aligned, *(u8*)(p + 0x40), p);
+    }
+    return 0;
+}
+
+extern "C" int fn_8015ED98(char* p, u32 size) {
+    char* o;
+    char* n;
+    char* obj = 0;
+    u32 aligned = (size + 0x1f) & ~0x1f;
+    for (n = *(char**)((char*)lbl_802EE28C + 4); n != 0; n = *(char**)(n + 0x8)) {
+        o = *(char**)n;
+        if (*(u32*)(o + 0x1c) >= aligned) {
+            obj = o;
+            break;
+        }
+    }
+    if (obj != 0) {
+        return fn_8015F16C(obj, aligned, *(u8*)(p + 0x40), p);
+    }
+    return 0;
+}
+
 extern "C" u32 fn_8015EE10(char* p) {
     char* n;
     u32 max = 0;
