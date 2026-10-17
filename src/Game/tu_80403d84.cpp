@@ -75,6 +75,8 @@ struct Obj240 {
 	u8 pad24[2];
 	s16 f26;
 };
+extern "C" f32 lbl_805438C8;
+
 struct Slots208 {
 	u8 pad0[0x208];
 	u8* slot[16]; // 0x208, indexed by the s32 at 0x340
@@ -730,8 +732,8 @@ extern "C" void fn_8040B93C(u8* self) {
 			{
 				u8* y = *(u8**)(sl->slot[*(s32*)(self + 0x340)] + 4);
 				u8* b = getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(lbl_8048C4F8[*(s32*)(self + 0x340)]));
-				f32 a = *(f32*)(self + 0x3b8) + *(f32*)(b + 4);
-				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * 0.5f + a);
+				f32 bh = *(f32*)(b + 4);
+				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * 0.5f + (bh + *(f32*)(self + 0x3b8)));
 			}
 			if (self[0x662] == 0) {
 				*(s32*)(self + 0x350) = 0x11;
@@ -1229,6 +1231,7 @@ extern u8 lbl_80543888[];
 extern u8 lbl_8048C90C[];
 extern u8 lbl_8048C924[];
 extern "C" void fn_80405D00(u8* self, s32 param) {
+	s32 idx;
 	s32 count = 0;
 	s32 i;
 	for (i = 0; i < 4; i++) {
@@ -1267,8 +1270,8 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 			}
 		}
 	} else {
-		s32 idx = *(s32*)(self + 0x348);
-		if (idx < count - 1 && lbl_8048C90C[state * 3 + idx] == param) {
+		idx = *(s32*)(self + 0x348);
+		if (idx < count - 1 && (&lbl_8048C90C[state * 3])[idx] == param) {
 			*(s32*)(self + 0x348) = idx + 1;
 			*(s32*)(self + 0x34c) = *(s32*)(self + 0x348);
 			if (self[0x65e] == 1) {
@@ -1280,7 +1283,7 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 			fn_80458880(lbl_8053AF80, 0x26, -1);
 		}
 		idx = *(s32*)(self + 0x348);
-		if (idx > 0 && lbl_8048C924[*(s32*)(self + 0x340) * 3 + idx - 1] == param) {
+		if (idx > 0 && (&lbl_8048C924[*(s32*)(self + 0x340) * 3])[idx - 1] == param) {
 			*(s32*)(self + 0x348) = idx - 1;
 			*(s32*)(self + 0x34c) = *(s32*)(self + 0x348);
 			if (self[0x65e] == 1) {
