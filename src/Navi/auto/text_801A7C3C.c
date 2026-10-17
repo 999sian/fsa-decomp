@@ -1378,6 +1378,9 @@ extern "C" void fn_801B70DC(void) {
     return;
 }
 
+extern "C" void fn_801B70E0(void) {
+}
+
 extern "C" void fn_80197AFC(void* param_1);
 extern "C" void fn_801C5D74(void* p, void* q);
 extern "C" void fn_801B70E4(void) {
