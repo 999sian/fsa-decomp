@@ -32,6 +32,17 @@ extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern char lbl_80297C8C[];
+extern "C" void* fn_8016017C(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)((u8*)param_1 + 0xc) = (void*)lbl_80297C8C;
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" int fn_80160564(void* a, void* b, void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -283,6 +294,7 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
 
 extern "C" void fn_80161678(u16* p, void* s);
 extern "C" int fn_801E6578(void* a, void* b);
+extern "C" int fn_801E30E8(int c);
 #pragma use_lmw_stmw off
 extern "C" void* fn_80161518(void* self, void* name) {
     u8* table;
@@ -299,10 +311,14 @@ extern "C" void* fn_80161518(void* self, void* name) {
     table = *(u8**)((u8*)self + 0x44);
     for (i = 0; i < *(u32*)(table + 8); i++) {
         u32 off = *(u32*)(entry + 4) & 0xffffff;
-        if (hash[0] == *(u16*)(entry + 2)) {
-            if (fn_801E6578(base + off, buf) == 0) {
-                return entry;
-            }
+        u8 ok;
+        if (hash[0] != *(u16*)(entry + 2)) {
+            ok = 0;
+        } else {
+            ok = fn_801E6578(base + off, buf) == 0;
+        }
+        if (ok) {
+            return entry;
         }
         entry += 0x14;
     }
