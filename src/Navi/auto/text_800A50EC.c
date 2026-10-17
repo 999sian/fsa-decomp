@@ -7,7 +7,7 @@ struct VObj_800A1A64 {
     virtual void v4(f32 x, f32 y);
     virtual void v5();
     virtual void v6();
-    virtual void v7();
+    virtual void v7(u8 a);
     virtual void v8();
     virtual void v9(u8 a);
 };
@@ -243,6 +243,13 @@ extern "C" void fn_800AC658(u8* p) {
 extern "C" void fn_800AC6BC(u8* p) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(p + 0xa4);
     obj->v4(*(f32*)(p + 0xa8), *(f32*)(p + 0xac) + (*(f32*)(lbl_802C5524 + 0x6c) + lbl_80300C0C * (f32)(p[0x3b4] + 1)));
+}
+
+extern "C" void fn_800AC738(u8* p)
+{
+    p[0x3b1] = 0;
+    p[0x3b2] = 1;
+    (*(VObj_800A1A64**)(p + 0xa4))->v9(lbl_802C5524[0x5a]);
 }
 
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
