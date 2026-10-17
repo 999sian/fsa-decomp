@@ -185,6 +185,15 @@ extern "C" void fn_80103814(void* param_1) {
     }
 }
 
+extern "C" void fn_80104240(u8* p) {
+    if (p[0x259] == 1) {
+        fn_80104320(p);
+    } else {
+        p[0x259] = 1;
+    }
+    fn_8010428C(p);
+}
+
 extern "C" void fn_801074D4(void) {}
 
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
