@@ -26,6 +26,7 @@ extern "C" void fn_8015FC80(void*, int);
 extern char lbl_80297CE8[];
 extern char lbl_80298208[];
 extern "C" void fn_80166C08(void*, int);
+extern "C" s32 fn_80166680(void* a, void* b, u32 c, u32 d);
 extern "C" void fn_80161678(u16* p, void* s);
 extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     if (param_1) {
@@ -444,6 +445,47 @@ extern "C" u32 fn_80160D3C(void* self, u16* p, u32 off, u16 id) {
         return 0;
     }
     return fn_801E6578((u8*)(*(u32*)((u8*)self + 0x54)) + off, p + 2) == 0;
+}
+
+extern "C" void* fn_801610AC(void* p, u32 key, void* name) {
+    u16 buf[2];
+    u8 tmp[0x124];
+    u8* e;
+    u8* a;
+    u8* base;
+    s32 i;
+    u32 n;
+    u32 off;
+    if (key != 0) {
+        fn_80161678(buf, name);
+        n = **(u32**)((u8*)p + 0x44);
+        e = *(u8**)((u8*)p + 0x48);
+        while (n != 0) {
+            if (*(u32*)e == key) {
+                break;
+            }
+            e += 0x10;
+            n--;
+        }
+        if (n == 0) {
+            e = NULL;
+        }
+        if (e != NULL) {
+            a = *(u8**)((u8*)p + 0x4c) + *(u32*)(e + 0xc) * 0x14;
+            base = *(u8**)((u8*)p + 0x54);
+            for (i = 0; i < *(u16*)(e + 0xa); i++) {
+                off = *(u32*)(a + 4) & 0xffffff;
+                if (buf[0] != *(u16*)(a + 2)) {
+                    off = 0;
+                }
+                if (fn_801E6578(base + off, tmp) == 0) {
+                    return a;
+                }
+                a += 0x14;
+            }
+        }
+    }
+    return NULL;
 }
 
 #pragma dont_inline reset
