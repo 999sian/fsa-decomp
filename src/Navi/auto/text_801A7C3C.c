@@ -1,5 +1,11 @@
 #include "types.h"
 
+struct VObj_801AE5C8 {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void* a, s32 b);
+};
+
 struct VObj_801A9EE0 {
     virtual void vf0(void);
     virtual void vf1(void);
@@ -128,6 +134,16 @@ extern "C" void* fn_801A8574(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_801A9E44(u8* p) {
+    u16 n = *(u16*)(*(u8**)(p + 4) + 0x5c);
+    u8* g = lbl_802EE470;
+    u16 i;
+    for (i = 0; i < n; i++) {
+        *(u8**)(g + 0x3c) = *(u8**)(p + 0xc0) + (i << 6);
+        ((VObj_801A9E44*)(*(void***)(*(u8**)(p + 4) + 0x60))[i])->vf7(*(s32*)(p + 0xc));
+    }
 }
 
 extern "C" void fn_801A9EE0(VObj_801A9EE0* p) {
@@ -821,6 +837,67 @@ extern "C" void fn_801AE124(u8* p) {
     *(s16*)(p + 0x4e) = 0;
 }
 
+extern "C" void fn_801AE378(u8* base, u32 idx, u16* src) {
+    if (src == nullptr) {
+        base += idx * 8;
+        *(u16*)(base + 6) = 0;
+        return;
+    }
+    base += idx * 8;
+    *(u32*)(base + 8) = *(u32*)(src + 2);
+    *(u16*)(base + 4) = src[0];
+    *(u16*)(base + 6) = src[1];
+}
+
+extern "C" void fn_801AE3B8(u8* p, s32 i, u8* src) {
+    if (src == 0) {
+        u16 zero = 0;
+        p = p + i * 8;
+        *(u16*)(p + 0x16) = zero;
+        return;
+    }
+    p = p + i * 8;
+    *(u32*)(p + 0x18) = *(u32*)(src + 4);
+    *(u16*)(p + 0x14) = *(u16*)(src + 0);
+    *(u16*)(p + 0x16) = *(u16*)(src + 2);
+}
+
+extern "C" void fn_801AE3F8(u8* p, s32 i, u8* src) {
+    if (src == 0) {
+        p = p + i * 12;
+        *(u16*)(p + 0x5a) = 0;
+        return;
+    }
+    p = p + i * 12;
+    *(u32*)(p + 0x5c) = *(u32*)(src + 8);
+    *(u16*)(p + 0x58) = *(u16*)(src + 4);
+    *(u16*)(p + 0x5a) = *(u16*)(src + 6);
+}
+
+extern "C" void fn_801AE438(u8* p, s32 i, u8* src) {
+    if (src == 0) {
+        p = p + (i << 3);
+        *(u16*)(p + 0xb6) = 0;
+        return;
+    }
+    p = p + (i << 3);
+    *(u32*)(p + 0xb8) = *(u32*)(src + 4);
+    *(u16*)(p + 0xb4) = *(u16*)(src + 0);
+    *(u16*)(p + 0xb6) = *(u16*)(src + 2);
+}
+
+extern "C" void fn_801AE478(u8* p, s32 i, u8* src) {
+    if (src == 0) {
+        p = p + i * 8;
+        *(u16*)(p + 0xd6) = 0;
+        return;
+    }
+    p = p + i * 8;
+    *(u32*)(p + 0xd8) = *(u32*)(src + 4);
+    *(u16*)(p + 0xd4) = *(u16*)(src + 0);
+    *(u16*)(p + 0xd6) = *(u16*)(src + 2);
+}
+
 extern void* lbl_8029B5F8[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_801AE580(void* ptr, s16 param_2) {
@@ -831,6 +908,21 @@ extern "C" void* fn_801AE580(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_801AE5C8(u8* p, u8* src) {
+    if (*(u32*)(src + 8) & 4) {
+        *(u32*)(p + 0x14) |= 2;
+    } else {
+        *(u32*)(p + 0x14) &= ~2;
+    }
+    if (*(u32*)(src + 8) & 8) {
+        *(u32*)(p + 0x14) |= 1;
+    } else {
+        *(u32*)(p + 0x14) &= ~1;
+    }
+    void (*fn)(u8*, u8*, s32) = *(void (**)(u8*, u8*, s32))(*(u32*)p + 8);
+    fn(p, src + 0x88, *(s32*)(src + 0x84));
 }
 
 extern void* lbl_8029B61C[];
