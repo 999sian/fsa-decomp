@@ -51,16 +51,3 @@ extern "C" void* fn_8010D144(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-extern s32 lbl_802FEC60;
-extern s32 lbl_802FDBD0;
-extern s32 lbl_802FDBD4;
-extern s32 lbl_802FDBDC;
-extern char lbl_8028EB08[];
-extern char lbl_8028EB18[];
-extern "C" void* fn_8015A90C(u32 size);
-extern "C" void* fn_80178E80(void* self);
-extern "C" void* fn_8011FD10(void);
-extern "C" void fn_8011FD18(void* a, void* b, s32 c, void* d, void* e, ...);
-extern "C" void fn_80007AB8(void* a, s32 b, void* c, ...);
-extern "C" void fn_80179030(void* a, void* b, s32 c, void* d);
-extern "C" void fn_8010CDD8(u8* p);
