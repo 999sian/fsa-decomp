@@ -69,9 +69,12 @@ extern "C" void* fn_80192F60(void* ptr, s16 param_2) {
 
 extern "C" void fn_80192F9C(u32* p) {
     extern u8 lbl_802EE470[];
-    *(u32*)(lbl_802EE470 + 0x10c) = p[11];
-    *(u32*)(lbl_802EE470 + 0x110) = p[12];
-    *(u32*)(lbl_802EE470 + 0x114) = p[13];
+    u32 a = p[11];
+    u32 b = p[12];
+    u32 c = p[13];
+    *(u32*)(lbl_802EE470 + 0x10c) = a;
+    *(u32*)(lbl_802EE470 + 0x110) = b;
+    *(u32*)(lbl_802EE470 + 0x114) = c;
 }
 
 extern "C" void fn_80192FC0(void* p) {
@@ -85,6 +88,19 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_801DF0BC(u32 a, u32 b);
+extern "C" void* memcpy(void* dst, const void* src, u32 n);
+extern "C" void* fn_8015AA60(u32 size, u32 align);
+extern "C" void fn_801BC250(void* p, u32 n);
+extern "C" u32 fn_80193C2C(u32* p) {
+    if (p[0] == p[1]) {
+        p[1] = (u32)fn_8015AA60(p[3], 0x20);
+        memcpy((void*)p[1], (void*)p[0], p[3]);
+        fn_801BC250((void*)p[1], p[3]);
+    }
+    return 0;
 }
 
 extern "C" void fn_80193CE0(u32* p)
