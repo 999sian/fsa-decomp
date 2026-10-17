@@ -8,8 +8,21 @@ extern "C" char lbl_8029F8D8[];
 extern "C" char* lbl_802FB808;
 extern "C" char* lbl_802FB80C;
 extern "C" int lbl_802FEB98;
+
+struct Unk8000D388List {
+    char* m0;
+    char m4[0x110];
+    char* m114;
+    char* m118;
+
+    Unk8000D388List() {
+        m0 = m4;
+        m114 = m4 + 0x10;
+        m118 = (char*)&m114;
+    }
+};
 extern "C" void fn_8000D388(void) {
-    char* base = lbl_8029F8D8;
+    register char* base = lbl_8029F8D8;
     char* p;
     lbl_802FB808 = base + 0x30;
     lbl_802FB80C = lbl_802FB808 + 0x300;
