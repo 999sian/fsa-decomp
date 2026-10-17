@@ -2,6 +2,7 @@
 
 struct FsaDisposable {
     virtual void v0(void);
+    virtual void v1(void);
     virtual void del(s32);
 };
 
