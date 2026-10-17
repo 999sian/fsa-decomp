@@ -89,6 +89,13 @@ struct Unk80458F04Sound {
     JAISoundParamsMove mMove;
 };
 
+struct Unk80458880Mgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3(JAISoundID* id, Unk80458F04Sound** handle, void* pos);
+};
+
 struct Unk80458F04Starter {
     virtual void v0();
     virtual bool startSound(u32* id, Unk80458F04Sound** handle, void* pos);
