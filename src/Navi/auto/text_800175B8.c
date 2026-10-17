@@ -19,6 +19,13 @@ extern "C" int fn_800175B8(int param_1) {
     return param_1;
 }
 
+extern u32 lbl_802FEBF4;
+extern f32 lbl_802FF238;
+extern f32 lbl_802FFBEC;
+extern "C" s32 fn_8001892C(void);
+extern "C" s32 fn_8001C2E4(void* a, void* b);
+extern "C" s32 fn_80116840(f32* p, f32 a, f32 b);
+
 extern "C" void* fn_800175F4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -87,6 +94,19 @@ extern "C" void fn_80017FCC(void) {
     fn_8001C9FC();
 }
 
+extern "C" void fn_8001873C(u8* p, f32 a, f32 b, f32 c) {
+    f32 local = *(f32*)(p + 0x230);
+    if ((f32)fabs(b) < lbl_802FF238) {
+        fn_80116840(&local, lbl_802FFBEC, c);
+    } else {
+        local = local + b;
+        if (local > a) {
+            local = a;
+        }
+    }
+    *(f32*)(p + 0x230) = local;
+}
+
 extern u8 lbl_802F0BC0[];
 extern "C" void fn_800187B0(void* p) {
     u8* b = (u8*)p;
@@ -118,9 +138,8 @@ extern "C" void fn_80018804(u8* p, f32* q) {
 }
 
 extern "C" void fn_80018870(u8* p, f32* q) {
-    s32 idx = (*(s16*)(p + 0x136) >> 2) & 0x3ff8;
     f32 v = *(f32*)(p + 0x154) + *(f32*)(p + 0x234);
-    u8* t = lbl_802F0BC0 + idx;
+    u8* t = lbl_802F0BC0 + ((*(s16*)(p + 0x136) >> 2) & 0x3ff8);
     f32 a = *(f32*)(p + 0x230) * *(f32*)t;
     f32 c = *(f32*)(p + 0x230) * *(f32*)(t + 4);
     if (v < *(f32*)(p + 0x238)) {
