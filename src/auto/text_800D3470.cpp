@@ -1756,17 +1756,12 @@ extern "C" void fn_800D934C(void* param_1) {
 
     unsigned short* entry = (unsigned short*)(&sTexCoordScaleTable__6J3DSys) + ((scaleIdx & 7) * 4);
 
-    unsigned short v2 = entry[2];
-    unsigned short v0 = entry[0];
-    unsigned short v3 = entry[3];
-    unsigned short v1 = entry[1];
-
-    unsigned int lz0 = __cntlzw(1 - v2);
-    unsigned int lz1 = __cntlzw(1 - v3);
+    unsigned int lz0 = __cntlzw(1 - entry[2]);
+    unsigned int lz1 = __cntlzw(1 - entry[3]);
     unsigned char s0 = (lz0 >> 5) & 0xFF;
     unsigned char s1 = (lz1 >> 5) & 0xFF;
 
-    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(texCoordID, v0, s0, (unsigned char)0, v1, s1, (unsigned char)0);
+    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(texCoordID, entry[0], s0, (unsigned char)0, entry[1], s1, (unsigned char)0);
 }
 
 extern "C" void fn_800D93B4(void* param_1) {
