@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
 // ---- from Game/fn_800FD438_dtor.cpp
