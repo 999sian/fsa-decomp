@@ -201,6 +201,4 @@ extern "C" void fn_8030F9E4(u8* this_) {
     *(f32*)(this_ + 0x8c) = f0;
 }
 
-void fn_8030FB3C(void) {
-}
 
