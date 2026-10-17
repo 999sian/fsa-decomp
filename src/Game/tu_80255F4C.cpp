@@ -1,4 +1,7 @@
-#include "Game/Actor.h"
+#include "types.h"
+#include "JSystem/JMath/JMath.h"
+
+struct Actor;
 
 struct ShapeArg {
     u8 idx[16];
