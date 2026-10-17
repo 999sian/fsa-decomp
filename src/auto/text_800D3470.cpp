@@ -4346,11 +4346,12 @@ extern "C" void fn_800DDA78(u8* this_, u8* src) {
     *(u8*)(this_ + 0x7) = b3;
 }
 
+#endif
+
 extern "C" void fn_800DF0B8(GXColor* param_1, int param_2, const GXColor* param_3) {
     param_1[param_2 + 3] = *param_3;
 }
 
-#endif
 struct Rgb3_800DE210 {
     u8 r, g, b;
 };
