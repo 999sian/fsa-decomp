@@ -65,8 +65,6 @@ struct PoonResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 
@@ -87,10 +85,10 @@ extern "C" void fn_80167998(char* this_) {
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
         prm.mMtx = mtx;
-        f32 rx = 0.0f;
         f32 ry = *(f32*)(this_ + 0x258);
-        f32 rz = 0.0f;
         f32 scale = *(f32*)(this_ + 0x254);
+        f32 rx = 0.0f;
+        f32 rz = 0.0f;
         f32 sx = sin(rx);
         f32 sy = sin(ry);
         f32 sz = sin(rz);
