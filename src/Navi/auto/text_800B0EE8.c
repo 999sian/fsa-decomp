@@ -45,6 +45,8 @@ extern "C" void fn_800B6F64(u8* p);
 extern "C" void fn_800B72AC(u8* p);
 extern "C" void fn_800B7528(u8* p);
 extern "C" void fn_800B78BC(u8* p, int a, int b);
+extern "C" void fn_800B73D8(u8* p);
+extern "C" void fn_800B6F18(u8* p);
 extern char lbl_802B7CA0[];
 extern u32 lbl_802BB0FC[];
 struct NaviState_800B51F8;
