@@ -74,6 +74,8 @@ struct J3DColorChanInfo {
     u8 mDiffuseFn; // _03
     u8 mAttnFn;    // _04
     u8 mAmbSrc;    // _05
+    u8 _06;        // _06
+    u8 _07;        // _07
 };
 extern J3DColorChanInfo j3dDefaultColorChanInfo;
 
@@ -689,11 +691,12 @@ extern "C" u8 fn_800CAF38(u8* p, s32 idx) {
 
 extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int no)
 {
-	J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
-	if (initData->mColorChanControlIndex[no] != 0xffff) {
-		return J3DColorChan(((J3DColorChanInfo*)self->unk_0C)[initData->mColorChanControlIndex[no]]);
-	}
-	return J3DColorChan();
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (initData->mColorChanControlIndex[no] != 0xffff) {
+        J3DColorChanInfo* chanInfo = *(J3DColorChanInfo**)((u8*)self + 0x18);
+        return J3DColorChan(chanInfo[initData->mColorChanControlIndex[no]]);
+    }
+    return J3DColorChan();
 }
 
 extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
