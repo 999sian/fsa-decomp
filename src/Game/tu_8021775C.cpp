@@ -288,3 +288,6 @@ extern "C" void fn_80218020(void** p) {
     p[5] = 0;
     p[6] = 0;
 }
+
+void fn_80218044(void) {}
+
