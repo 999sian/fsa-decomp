@@ -13,6 +13,9 @@ public:
 };
 
 static inline f32 blkInvSqrt(f32 x) {
+    if (x <= 0.0f) {
+        return x;
+    }
     f32 y = __frsqrte(x);
     y = 0.5f * y * (3.0f - (x * (y * y)));
     return y;
@@ -45,6 +48,71 @@ extern "C" void* fn_80207548(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 fn_801CB434(s32 a, f32* b, s32 c);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" f32* fn_8023E724(s32 i);
+extern "C" void fn_802075D8(void* this_, u16 idx) {
+    char* p = (char*)this_;
+    s32 off = idx * 0x24;
+    u8 ok = 1;
+    f32 pos[3];
+
+    *(u8*)(p + off + 0x2d0) = 1;
+    if (idx != 0 && *(u8*)(p + 0x2d0) == 0) {
+        ok = 0;
+    }
+    if (idx != 1 && *(u8*)(p + 0x2f4) == 0) {
+        ok = 0;
+    }
+    if (idx != 2 && *(u8*)(p + 0x318) == 0) {
+        ok = 0;
+    }
+    if (idx != 3 && *(u8*)(p + 0x33c) == 0) {
+        ok = 0;
+    }
+    if (*(u8*)(p + 0x2a8) != 0 && (*(u8*)(p + 0x2a9) & (1 << idx))) {
+        f32* src = (f32*)(p + 0xc);
+        pos[0] = src[0];
+        pos[1] = src[1];
+        pos[2] = src[2];
+        char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + off + 0x2b0));
+        if (obj != 0) {
+            f32* o = (f32*)(obj + 0xc);
+            pos[0] = o[0];
+            pos[1] = o[1];
+            pos[2] = o[2];
+        }
+        s32 id = fn_801CB434(*(s32*)(p + 4), pos, 1);
+        s32 kind = *(s32*)(p + off + 0x2b8);
+        if (kind >= 0 && kind < 4 && *(s32*)(p + 4) == fn_8023DE58(kind)) {
+            if (((ActorV19*)this_)->v19(*(s32*)(p + 4), pos)) {
+                char* b = (char*)fn_801F666C(fn_801F856C(), id);
+                if (b != 0) {
+                    f32* t = fn_8023E724(kind);
+                    f32 dy = t[1] - pos[1];
+                    f32 dx = t[0] - pos[0];
+                    f32 len2 = dx * dx + dy * dy;
+                    if (len2 > 32.0f * *(f32*)__float_epsilon) {
+                        f32 inv = blkInvSqrt(len2);
+                        dx = dx * inv;
+                        dy = dy * inv;
+                    }
+                    dx = dx * 2.0f;
+                    dy = dy * 2.0f;
+                    f32* d = (f32*)(b + 0x3c);
+                    d[0] = dx;
+                    d[1] = dy;
+                }
+            }
+        }
+    }
+    if (ok) {
+        detach__5ActorFv(this_);
+    }
 }
 
 // ---- small members ----
