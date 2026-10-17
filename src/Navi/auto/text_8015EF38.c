@@ -1,4 +1,5 @@
 #include "dolphin/os/OSFastCast.h"
+#include "dolphin/os/OSCache.h"
 typedef void (*VirtualMethod0)(void*, s16);
 typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 
