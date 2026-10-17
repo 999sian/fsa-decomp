@@ -769,10 +769,10 @@ extern "C" void fn_801287A0(u8* param_1, u8* param_2) {
 }
 
 extern "C" void fn_801287D4(char* p) {
+    char* q = *(char**)p;
     s32 i = *(s16*)(p + 0x214);
     char* b = *(char**)(*(char**)(*(char**)(p + 4) + 0x1c) + 0xc);
     u8* e = (u8*)(b + i * 4);
-    char* q = *(char**)p;
     q[0x108] = e[0];
     q[0x109] = e[1];
     q[0x10a] = e[2];
@@ -1682,6 +1682,10 @@ extern "C" void fn_8013345C(f32* p)
 {
     p[0] = p[3];
     ((s32*)p)[2] = 0;
+}
+
+extern "C" void fn_80133470(u8* p, f64 t) {
+    *(f32*)p = *(f32*)(p + 0xc) * ((f64)*(u32*)(p + 4) * t);
 }
 
 extern void* lbl_80292684[];
