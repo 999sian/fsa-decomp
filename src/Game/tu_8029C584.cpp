@@ -14,6 +14,10 @@ extern "C" float* fn_8023E724(int i);
 extern "C" unsigned char* fn_802D6A9C(void);
 extern "C" void fn_801F0D20(void* this_, int a);
 
+struct TVec3f {
+    float x, y, z;
+};
+
 struct Vec {
     float x, y, z;
 };
@@ -189,6 +193,174 @@ extern "C" void fn_8029C584(void* this_) {
         fn_80307AC8(*(unsigned int*)(p + 0x198), *(int*)(p + 0x4), &pos, *(int*)(p + 0x230), 0, 0, -1);
     } else {
         fn_80307AC8(*(unsigned int*)(p + 0x198), *(int*)(p + 0x4), &pos, *(int*)(p + 0x230), 1, 0, -1);
+    }
+}
+
+extern "C" void fn_8029C9AC(void* this_) {
+    const int (*tbl)[6] = lbl_8046C400;
+    char* p = (char*)this_;
+    char* obj = *(char**)(p + 0x254);
+    if (obj != 0) {
+        int state = *(int*)(obj + 0x230);
+        if (state >= 1 && state <= 10) {
+            fn_803703C8();
+        }
+    }
+    if (*(int*)(p + 0x250) != 0) {
+        *(int*)(p + 0x250) -= 1;
+        if (*(int*)(p + 0x250) == 0) {
+            *(unsigned char*)(p + 0x11c) = 0;
+            return;
+        }
+        *(int*)(p + 0x238) = 0;
+    } else {
+        float* src = fn_8023E724(*(int*)(p + 0x90) & 3);
+        *(Vec2*)(p + 0xc) = *(Vec2*)src;
+        *(float*)(p + 0x14) = src[2];
+        *(float*)(p + 0x14) += lbl_8054075C;
+        if (*(int*)(p + 0x234) > 0) {
+            char* base;
+            *(int*)(p + 0x234) -= 1;
+            base = *(char**)(p + 4);
+            if (*(unsigned char*)(base + ((int)fn_802D6A9C() + 0x10000) + 0x31df) != 0) {
+                if (*(unsigned char*)(p + 0x24c) != 0) {
+                    *(int*)(p + 0x230) = 0x3f;
+                } else {
+                    *(int*)(p + 0x230) = 0x44;
+                }
+            } else {
+                if (*(unsigned char*)(p + 0x24c) != 0) {
+                    *(int*)(p + 0x230) = 0x3d;
+                } else {
+                    *(int*)(p + 0x230) = 0x43;
+                }
+            }
+        } else {
+            unsigned char flag;
+            int dir;
+            char* pad;
+            flag = 0;
+            dir = -1;
+            fn_8030AAF4(*(int*)(p + 0x90) & 3);
+            pad = fn_8008E328();
+            if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 0x100)) {
+                *(unsigned char*)(p + 0x244) = 0;
+                *(unsigned char*)(p + 0x11c) = 0;
+                if (*(int*)(p + 0x240) == *(int*)(p + 0x23c)) {
+                    fn_80230EB8(*(int*)(p + 0x90) & 3, 0x58);
+                }
+                goto setAnim;
+            }
+            if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 0x200) || fn_8022C5EC(*(int*)(p + 0x90) & 3, 0x40)) {
+                *(unsigned char*)(p + 0x244) = 1;
+                *(unsigned char*)(p + 0x11c) = 0;
+                fn_80230EB8(*(int*)(p + 0x90) & 3, 0x58);
+                goto setAnim;
+            }
+            {
+                char* base = *(char**)(p + 4);
+                if (*(unsigned char*)(base + ((int)fn_802D6A9C() + 0x10000) + 0x31df) != 0) {
+                    *(int*)(p + 0x23c) = 5;
+                    goto setAnim;
+                }
+            }
+            if (fn_8022C52C(*(int*)(p + 0x90) & 3, 0x40)) {
+                if (fn_8022C9AC(*(int*)(p + 0x90) & 3)) {
+                    if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 8)) {
+                        dir = 0;
+                    } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 4)) {
+                        dir = 1;
+                    } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 1)) {
+                        dir = 2;
+                    } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 2)) {
+                        dir = 3;
+                    }
+                }
+            } else if (pad != 0 && *(unsigned char*)(p + 0x244) == 1 && fn_8022C9AC(*(int*)(p + 0x90) & 3) &&
+                       *(float*)(pad + 0x60) > lbl_80540760) {
+                short a = *(short*)(pad + 0x64);
+                if (a < -0x7000 || a >= 0x7000) {
+                    dir = 0;
+                } else if (a >= -0x5000 && a < -0x3000) {
+                    dir = 2;
+                } else if (a >= -0x1000 && a < 0x1000) {
+                    dir = 1;
+                } else if (a >= 0x3000 && a < 0x5000) {
+                    dir = 3;
+                }
+            } else {
+                if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 1)) {
+                    fn_801F0D20(this_, 0x46);
+                    if (*(unsigned char*)(p + 0x24c) != 0) {
+                        *(int*)(p + 0x23c) = tbl[0][*(int*)(p + 0x23c)];
+                    } else {
+                        *(int*)(p + 0x23c) = tbl[1][*(int*)(p + 0x23c)];
+                    }
+                } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 2)) {
+                    fn_801F0D20(this_, 0x46);
+                    if (*(unsigned char*)(p + 0x24c) != 0) {
+                        *(int*)(p + 0x23c) = tbl[2][*(int*)(p + 0x23c)];
+                    } else {
+                        *(int*)(p + 0x23c) = tbl[3][*(int*)(p + 0x23c)];
+                    }
+                }
+                goto setAnim;
+            }
+            if (dir >= 0) {
+                if (dir == 0) {
+                    if (*(unsigned char*)(p + 0x24c) != 0) {
+                        *(int*)(p + 0x23c) = 2;
+                    } else {
+                        *(int*)(p + 0x23c) = 1;
+                    }
+                } else if (dir == 1) {
+                    *(int*)(p + 0x23c) = 1;
+                } else if (dir == 2) {
+                    if (*(unsigned char*)(p + 0x24c) != 0) {
+                        *(int*)(p + 0x23c) = 3;
+                    } else {
+                        *(int*)(p + 0x23c) = 0;
+                    }
+                } else {
+                    *(int*)(p + 0x23c) = 0;
+                }
+                flag = 1;
+            }
+            if (flag == 1) {
+                *(unsigned char*)(p + 0x244) = 0;
+                if (*(int*)(p + 0x240) == *(int*)(p + 0x23c)) {
+                    fn_80230EB8(*(int*)(p + 0x90) & 3, 0x58);
+                }
+                *(int*)(p + 0x250) = 6;
+                *(int*)(p + 0x238) = 0;
+            }
+setAnim:
+            if (*(unsigned char*)(p + 0x24c) != 0) {
+                *(int*)(p + 0x230) = tbl[4][*(int*)(p + 0x23c)];
+            } else {
+                *(int*)(p + 0x230) = tbl[5][*(int*)(p + 0x23c)];
+            }
+        }
+    }
+    *(int*)(p + 0x238) += 1;
+    if (*(int*)(p + 0x238) >= 12) {
+        *(int*)(p + 0x238) = 0;
+    }
+    {
+        char* base = *(char**)(p + 4);
+        if (*(unsigned char*)(base + ((int)fn_802D6A9C() + 0x10000) + 0x31df) != 0) {
+            if (*(unsigned char*)(p + 0x24c) != 0) {
+                *(int*)(p + 0x230) = 0x3f;
+            } else {
+                *(int*)(p + 0x230) = 0x44;
+            }
+        } else if (*(int*)(p + 0x238) >= 6) {
+            if (*(unsigned char*)(p + 0x24c) != 0) {
+                *(int*)(p + 0x230) = 0x3d;
+            } else {
+                *(int*)(p + 0x230) = 0x43;
+            }
+        }
     }
 }
 
