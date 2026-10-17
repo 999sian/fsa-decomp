@@ -8,7 +8,7 @@ extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D39B8(void* mgr, s32 idx, s32 value);
 extern "C" u8 fn_8023EBB8(s32 idx);
 extern "C" s32 fn_8023EF50(s32 idx);
-extern "C" void fn_80204638(void);
+extern "C" u8* fn_80204638(void);
 extern "C" void fn_802048F4(void);
 
 class JKRHeap;
@@ -485,15 +485,13 @@ extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
     PoolActor** cur = (PoolActor**)pool;
     s32 id = -1;
-    s32 i = 0;
-    while (i < count) {
+    s32 i;
+    for (i = 0; i < count; cur++, i++) {
         PoolActor* a = cur[2];
         if (a != NULL && a->mActive && param == a->mParam && exceptId != a->mId && fn_801CC960(a)) {
             id = pool->mActors[i]->mId;
             break;
         }
-        cur++;
-        i++;
     }
     return id;
 }
@@ -913,51 +911,52 @@ extern "C" u8* fn_801F9078(u8* self, JKRHeap* heap) {
 	u32 n = flag ? 0x200 : 0x400;
 	*(char**)(self + 4) = fn_80085A10(n, (n << 10) + 0x1a8, 0x20, heap, 0);
 	u32* p = (u32*)self;
-	s32 zero = 0;
 	for (s32 i = 0x20; i > 0; i--) {
-		p[2] = zero;
-		p[3] = zero;
-		p[4] = zero;
-		p[5] = zero;
-		p[6] = zero;
-		p[7] = zero;
-		p[8] = zero;
-		p[9] = zero;
-		p[10] = zero;
-		p[11] = zero;
-		p[12] = zero;
-		p[13] = zero;
-		p[14] = zero;
-		p[15] = zero;
-		p[16] = zero;
-		p[17] = zero;
-		p[18] = zero;
-		p[19] = zero;
-		p[20] = zero;
-		p[21] = zero;
-		p[22] = zero;
-		p[23] = zero;
-		p[24] = zero;
-		p[25] = zero;
-		p[26] = zero;
-		p[27] = zero;
-		p[28] = zero;
-		p[29] = zero;
-		p[30] = zero;
-		p[31] = zero;
-		p[32] = zero;
-		p[33] = zero;
+		p[2] = 0;
+		p[3] = 0;
+		p[4] = 0;
+		p[5] = 0;
+		p[6] = 0;
+		p[7] = 0;
+		p[8] = 0;
+		p[9] = 0;
+		p[10] = 0;
+		p[11] = 0;
+		p[12] = 0;
+		p[13] = 0;
+		p[14] = 0;
+		p[15] = 0;
+		p[16] = 0;
+		p[17] = 0;
+		p[18] = 0;
+		p[19] = 0;
+		p[20] = 0;
+		p[21] = 0;
+		p[22] = 0;
+		p[23] = 0;
+		p[24] = 0;
+		p[25] = 0;
+		p[26] = 0;
+		p[27] = 0;
+		p[28] = 0;
+		p[29] = 0;
+		p[30] = 0;
+		p[31] = 0;
+		p[32] = 0;
+		p[33] = 0;
 		p += 32;
 	}
-	lbl_804CABD8[0] = 0.0f;
-	lbl_804CABD8[1] = 0.0f;
-	lbl_804CABD8[2] = 0.0f;
+	f32 zf = lbl_8053F828;
+	lbl_804CABD8[0] = zf;
+	lbl_804CABD8[1] = zf;
+	lbl_804CABD8[2] = zf;
+	void** slot = (void**)self;
 	for (u32 i = 0; i < 0x400; i++) {
-		void** slot = (void**)(self + 0x100c + i * 4);
-		*slot = new (heap, 0) WaveController((s32)lbl_804CABD8, 0, 8);
-		fn_80456120(*slot);
+		slot[0x403] = new (heap, 0) WaveController((s32)lbl_804CABD8, 0, 8);
+		fn_80456120(slot[0x403]);
+		slot++;
 	}
-	*(void**)(self + 0x200c) = new (heap, 0) WaveController(0, 0, 0x18);
+	((void**)self)[0x803] = new (heap, 0) WaveController(0, 0, 0x18);
 	fn_801F62AC(self, heap);
 	return self;
 }
