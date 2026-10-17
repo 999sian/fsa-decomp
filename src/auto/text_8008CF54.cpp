@@ -363,27 +363,22 @@ extern "C" void fn_8008D538(void* this_) {
 
 extern "C" void fn_8008D864(void)
 {
-    u8 val = lbl_8053A951;
-    
-    if (val != 0) {
-        if (lbl_8053A950 == 1) {
-            lbl_8053A951 = 1;
-            lbl_8053A954 = 0xffffffff;
-            
-            u32 fn_ptr = lbl_8053A93C;
-            if (fn_ptr != 0) {
-                void (*fn)(u32) = (void (*)(u32))fn_ptr;
-                u32 param = lbl_8053A940;
-                fn(param);
-            }
-            lbl_8053A950 = 0;
-        }
-    } else {
-        int result = OSGetResetSwitchState();
-        if (result != 0) {
-            lbl_8053A950 = 1;
+    if (lbl_8053A951 != 0) {
+        return;
+    }
+    if (OSGetResetSwitchState() != 0) {
+        lbl_8053A950 = 1;
+        return;
+    }
+    if (lbl_8053A950 == 1) {
+        lbl_8053A951 = 1;
+        lbl_8053A954 = 0xffffffff;
+        if (lbl_8053A93C != 0) {
+            void (*fn)(s32, u32) = (void (*)(s32, u32))lbl_8053A93C;
+            fn(-1, lbl_8053A940);
         }
     }
+    lbl_8053A950 = 0;
 }
 
 extern "C" void fn_8008D8E4(void)
@@ -559,12 +554,9 @@ extern "C" void fn_8008DF30(int param_1, int param_2)
 {
     u32 mask = lbl_80499470[param_1];
     if ((lbl_8053A938 & mask) != 0) {
-        u8 b = (u8)param_2;
-        s32 neg = -(s32)b;
-        s32 ored = neg | b;
-        s32 sign = ored >> 31;
-        u32 motor = 2 & sign;
-        u8 mode = (u8)motor;
+        u8 control = (u8)param_2;
+        s32 sign = ((s32)-control | (s32)control) >> 31;
+        u8 mode = (u8)(sign & 2);
         PADControlMotor(param_1, mode);
         lbl_8053A934[param_1] = 0;
     }
