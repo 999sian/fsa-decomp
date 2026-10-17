@@ -173,6 +173,13 @@ extern "C" void fn_800EA564(void* param_1) {
     p[0xa76] = 0;
 }
 
+extern "C" s32 fn_800EA6D0(void* param_1, s32 param_2);
+extern "C" void fn_800EA59C(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(s32*)(p + 0xa88) = fn_800EA6D0(param_1, (s8)p[0xa6a] + 1);
+    p[0xa76] = 0x3f;
+}
+
 extern "C" void fn_800EA848(u8* p) {
     if (p[0xb14] != 0) {
         p[0xb14]--;
