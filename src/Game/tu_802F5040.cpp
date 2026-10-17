@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JKernel/JKRDecomp.h"
 
 extern "C" s32 checkCompressed__9JKRDecompFPUc(u8*);
 extern "C" void decode__9JKRDecompFPUcPUcUlUl(u8*, u8*, u32, u32);
@@ -147,6 +148,60 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
     }
 }
 
+extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, u32 param_5)
+{
+  u32 size;
+  u8* buf;
+  u8* p;
+  u32 i;
+  u32 j;
+  u32 n;
+
+  if (param_5 == 0) {
+    s32 x;
+    if (checkCompressed__9JKRDecompFPUc(param_2) != 0) {
+      x = ((u32)param_2[4] << 24) | ((u32)param_2[5] << 16) | ((u32)param_2[6] << 8) | (u32)param_2[7];
+    } else {
+      void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+      x = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, param_2);
+    }
+    size = (x < 0) ? 0x2000 : x;
+  } else {
+    size = param_5;
+  }
+  if (checkCompressed__9JKRDecompFPUc(param_2) != 0) {
+    decode__9JKRDecompFPUcPUcUlUl(param_2, *(u8**)(param_1 + 0xf8), 0x8000, 0);
+    buf = *(u8**)(param_1 + 0xf8);
+  } else {
+    buf = param_2;
+  }
+  p = buf + param_3;
+  i = param_4;
+  j = param_4 & ~1;
+  if (param_4 < size) {
+    n = ((size + 1) - param_4) >> 1;
+    for (u32 k = n >> 2; k != 0; k--) {
+      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+      i += 2;
+      j += 2;
+      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+      i += 2;
+      j += 2;
+      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+      i += 2;
+      j += 2;
+      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+      i += 2;
+      j += 2;
+    }
+    for (u32 k = n & 3; k != 0; k--) {
+      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+      i += 2;
+      j += 2;
+    }
+  }
+}
+
 extern "C" void fn_802FF2D8(u8* this_) {
     s32 i;
     u8* p;
@@ -224,7 +279,7 @@ extern "C" void* fn_802FFBF8(void* self, s16 flag) {
         *(u8**)p = lbl_804AA858;
         __dt__10JUTTextureFv(*(void**)(p + 0xE454), 1);
         {
-            u8* q = p + 0x24; s32 i = 9;
+            s32 i = 9; u8* q = p + 0x24;
             do { __dt__10JUTTextureFv(*(void**)(q + 0xE428), 1); q -= 4; } while (--i >= 0);
         }
         {
