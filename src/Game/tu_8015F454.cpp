@@ -15,6 +15,21 @@ extern "C" void fn_8013B490(void* this_);
 extern "C" void fn_8013B1E8(void* this_);
 extern "C" void load__10JUTTextureF11_GXTexMapID(u8* self, s32 id);
 extern "C" const float lbl_8053D638;
+extern "C" const float lbl_8053D640;
+extern "C" const float lbl_8053D644;
+extern "C" const float lbl_8053D648;
+extern "C" const float lbl_8053D64C;
+extern "C" const float lbl_8053D650;
+extern "C" const float lbl_8053D654;
+extern "C" const float lbl_8053D658;
+extern "C" const float lbl_8053D65C;
+extern "C" const float lbl_8053D660;
+extern "C" const float lbl_8053D664;
+extern "C" const float lbl_8053D668;
+extern "C" const float lbl_8053D66C;
+extern "C" u8* sManager__8JUTVideo;
+extern "C" void fn_8013B460(void* this_);
+extern "C" void fn_8030C5F0(void* obj, f32* pos, s32 b, s32 c, f32* out);
 struct FsaResMgr {
     virtual ~FsaResMgr() {}
     virtual void* slot2() { return 0; }
