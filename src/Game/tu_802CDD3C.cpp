@@ -27,6 +27,8 @@ extern "C" void* lbl_804A90F0[];
 extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
 extern "C" char sincosTable___5JMath[];
+extern "C" const f32 lbl_80540E30;
+extern "C" const u8 lbl_80540E28[];
 
 static inline void fn_802CDD9C_draw(char* this_, void* pos, u32 tex, void* rec)
 {
