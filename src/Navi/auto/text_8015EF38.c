@@ -91,9 +91,10 @@ extern "C" u8* fn_8015F0BC(u8* p, s32 a, u8 b, u8* d) {
     return o;
 }
 extern "C" u8* fn_8015F16C(u8* p, s32 a, u8 b, u8* d) {
-    s32 size = *(s32*)(p + 0x1c);
-    s32 off = *(s32*)(p + 0x14) + (*(s32*)(p + 0x18) + size) - a;
-    u8* o = (u8*)fn_8015A9A8(0x24, *(void**)(d + 0x30), 0);
+    u8* o;
+    s32 off;
+    off = *(s32*)(p + 0x14) + *(s32*)(p + 0x18) + *(s32*)(p + 0x1c) - a;
+    o = (u8*)fn_8015A9A8(0x24, *(void**)(d + 0x30), 0);
     if (o != NULL) {
         *(void**)o = lbl_80297AB0;
         fn_80166B58(o + 4, o);
