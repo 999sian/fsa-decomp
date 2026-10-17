@@ -1091,6 +1091,43 @@ extern "C" void fn_80094DCC(Obj_8009287C* param_1) {
     (param_1->*lbl_802860CC[param_1->state])();
 }
 
+extern "C" void fn_80094E04(u8* p) {
+    void** o;
+    if (*(void**)(p + 0x274) == 0) {
+        o = (void**)fn_8015A90C(0x52c);
+        if (o != 0) {
+            o[0] = lbl_80286A98;
+            o[2] = lbl_8027EC78;
+            o[2] = lbl_8028E870;
+            o[4] = lbl_8027EC78;
+            o[4] = lbl_8028E870;
+            o[6] = lbl_8027EC78;
+            o[6] = lbl_8028E870;
+            o[8] = lbl_8027EC78;
+            o[8] = lbl_8028E870;
+            o[10] = lbl_8027EC78;
+            o[10] = lbl_8028E870;
+            o[12] = lbl_8027EC78;
+            o[12] = lbl_8028E870;
+            o[14] = lbl_8027EC78;
+            o[14] = lbl_8028E870;
+            o[16] = lbl_8027EC78;
+            o[16] = lbl_8028E870;
+            o[18] = lbl_8027EC78;
+            o[18] = lbl_8028E870;
+            o[20] = lbl_8027EC78;
+            o[20] = lbl_8028E870;
+            o[22] = lbl_8027EC78;
+            o[22] = lbl_8028E870;
+        }
+        *(void***)(p + 0x274) = o;
+        *(void**)(*(u8**)(p + 0x274) + 0x60) = *(void**)(p + 0x260);
+        (*(u8**)(p + 0x274))[0x52a] = p[0x2835];
+        fn_800F4C70(*(void**)(p + 0x274));
+    }
+    p[0x7e8] = 1;
+}
+
 extern void* lbl_8028E870[];
 extern "C" void* fn_80094EE8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
