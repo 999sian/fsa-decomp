@@ -59,6 +59,42 @@ extern "C" s32 fn_802D3210(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
 
+typedef JGeometry::TVec3<f32> YasiVec;
+extern const f32 lbl_80540F38;
+extern const f32 lbl_80540F3C;
+extern "C" void* fn_801F856C();
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" u16 fn_8022461C(YasiVec* pos, u32 room);
+extern "C" void fn_8013CC50(u32 room, YasiVec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" u8 fn_802DE9A0();
+extern "C" void fn_802D3234(char* p) {
+    if (*(s32*)(p + 0x4) >= 8) {
+        YasiVec pos(*(YasiVec*)(p + 0xc));
+        pos.z = lbl_80540F38;
+        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(p + 0x4), &pos, 0, -1, -1);
+        fn_801F0E34(p, 0x30018, 0);
+    } else if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xd || fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0x39) {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x3d0, 0, 1, 0, 0, 1);
+        fn_801F0E34(p, 0x30022, 0);
+    } else if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xe) {
+        if (fn_802DE9A0()) {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x2a9, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x2aa, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5005f, 0);
+        } else {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x45e, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x45f, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5003f, 0);
+        }
+    } else {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x91, 1, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F3C, 0x92, 1, 0, 0, 0, 1);
+        fn_801F0E34(p, 0x30018, 0);
+    }
+    *(u8*)(p + 0x11c) = 0;
+}
+
 extern "C" void fn_802D3488(u8* param_1) {
     Unk802D3488Buf s;
     u8 i;
