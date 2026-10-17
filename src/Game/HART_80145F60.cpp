@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" const f32 lbl_8053D050;
 extern "C" const f32 lbl_8053D060;
