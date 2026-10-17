@@ -174,8 +174,7 @@ extern "C" int fn_80026790(u8 i, int j) {
 }
 
 extern "C" void fn_800267BC(u8 i) {
-    u8* p = lbl_802BC548 + i * 0x34;
-    u32* w = (u32*)p;
+    u32* w = (u32*)(i * 0x34 + lbl_802BC548);
     w[0] = 0;
     w[1] = 0;
     w[2] = 0;
@@ -188,8 +187,8 @@ extern "C" void fn_800267BC(u8 i) {
     w[9] = 0;
     w[10] = 0;
     w[11] = 0;
-    *(u16*)(p + 0x30) = 0;
-    *(u16*)(p + 0x32) = 0;
+    *(u16*)(w + 12) = 0;
+    *(u16*)((u8*)w + 0x32) = 0;
 }
 
 extern "C" void fn_80026810(u8 i) {
@@ -321,7 +320,7 @@ extern "C" BOOL fn_80026F14(s8* p) {
 }
 
 extern "C" u8 fn_800275B8(u8* param_1) {
-    if (*param_1 != 0) {
+    if (*(volatile u8*)param_1 != 0) {
         *param_1 = *param_1 - 1;
     }
     return *param_1;
