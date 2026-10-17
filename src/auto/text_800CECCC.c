@@ -4,6 +4,10 @@
 #include "JSystem/J3D/J3DAnmTevRegKey.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/J3D/J3DAnmVtxColor.h"
+#include "JSystem/J3D/J3DAnmCluster.h"
+#include "JSystem/J3D/J3DAnmTexPattern.h"
+#include "JSystem/J3D/J3DAnmTextureSRTKey.h"
+#include "JSystem/J3D/J3DAnmVisibilityFull.h"
 
 template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
 extern f32 lbl_8053BC80;
@@ -82,10 +86,11 @@ extern "C" void fn_800CF970(void** self, const unsigned char* data);
 extern "C" void fn_800CFA04(void** self, const void* data);
 extern "C" void* fn_800CF3E8(void** self, unsigned char* data) {
     u32 count = *(u32*)(data + 0xc);
+    s32 tag;
     unsigned char* entry = data + 0x20;
     u32 i;
     for (i = 0; i < count; i++) {
-        s32 tag = *(s32*)entry;
+        tag = *(s32*)entry;
         switch (tag) {
         case 0x414e4631:
             fn_800CF650(self, entry);
