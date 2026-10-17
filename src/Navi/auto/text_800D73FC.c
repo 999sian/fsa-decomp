@@ -51,9 +51,10 @@ extern "C" void fn_800EBD88(char* p);
 extern "C" void fn_800589CC(s32 a);
 extern "C" s32 fn_800E6DA4(void* p);
 extern "C" void fn_800D7A08(u8* p) {
-    fn_800ED5AC(p, *(s16*)(p + 0xb12), (u8)lbl_802C57D4[0x10], 0, 0, *(f32*)(lbl_802C57D4 + 0xc), lbl_80301058);
+    fn_800ED5AC(p, *(s16*)(p + 0xb12), (u8)lbl_802C57D4[0x10], 0, 0, *(f32*)(lbl_802C57D4 + 0xc), 0.0f);
     (*(u8**)(p + 0x858))[0xb0] = 0;
-    fn_800ED6C4(p, *(s16*)(p + 0xb12), *(u8*)(lbl_802C57D4 + 0x18), 0, 0, *(f32*)(lbl_802C57D4 + 0x20), lbl_80301058);
+    u8* d = (u8*)lbl_802C57D4;
+    fn_800ED6C4(p, *(s16*)(p + 0xb12), d[0x18], 0, 0, *(f32*)(d + 0x20), 0.0f);
     (*(u8**)(p + 0x9c8))[0xb0] = 0;
     (*(u8**)(p + 0x9d8))[0xb0] = 0;
 }
