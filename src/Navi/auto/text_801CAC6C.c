@@ -4,7 +4,7 @@
 #include "types.h"
 
 extern void (*lbl_802FF8C8)(void);
-extern "C" s32 fn_801E6510(s32, void*, s32);
+extern "C" s32 fn_801E6510(void*, void*, s32);
 extern "C" void fn_801CAD64(void)
 {
     if (lbl_802FF8C8 != 0) {
