@@ -30,7 +30,7 @@ extern "C" void fn_80058B64(s32 a);
 extern "C" void fn_80057EE0(void);
 extern "C" void fn_80058D00(void);
 extern "C" void fn_8005A484(void);
-extern u32 lbl_80249DA0[];
+extern s32 lbl_80249DA0[];
 extern u8 lbl_802FF100;
 extern u8 lbl_802FF101;
 extern u8 lbl_802FC720[4];
@@ -139,11 +139,10 @@ extern "C" void fn_80057868(void) {
 }
 
 extern "C" void fn_8005786C(void* param_1) {
-    u32* ptr;
-    s32 v;
+    s32 i;
     s32 flag = 1;
-    for (ptr = (u32*)lbl_80249DA0; (v = *ptr) != 0; ptr++) {
-        if (fn_80058A88(v) == 0) {
+    for (i = 0; lbl_80249DA0[i] != 0; i++) {
+        if (fn_80058A88(lbl_80249DA0[i]) == 0) {
             flag = 0;
         }
     }
