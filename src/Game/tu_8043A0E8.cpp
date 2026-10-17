@@ -3,6 +3,40 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 
+struct FsaBlock48 {
+    u32 w[12];
+};
+extern "C" u8 lbl_804B1810[];
+extern "C" u8 lbl_8052C5D8[];
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __register_global_object(void*, void*, void*);
 extern "C" const char* lbl_804B1900[];
 extern "C" const char* lbl_804B1820[];
 extern "C" void* fn_804030C4(u32 type, const char* name);
@@ -393,6 +427,73 @@ extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
     q[0xb0] = 0;
     *(s16*)(param_1 + 0x106) = 1;
     param_1[0x10d] = 0;
+}
+
+extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u32 p5, u8 p6, f32 f1, f32 f2, f32 f3) {
+    if (self[0x252] < 10) {
+        u8 n = self[0x252];
+        f32 b = (f32)(p5 & 1);
+        f32 a = (f32)((p5 >> 1) & 0x7f);
+        *(f32*)(self + 0x118 + n * 4) = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - lbl_80543CC0 * a * f3;
+        *(f32*)(self + 0x140 + self[0x252] * 4) = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
+        *(f32*)(self + 0x168 + self[0x252] * 4) = f3;
+        self[0x244 + self[0x252]] = p3;
+        self[0x226 + self[0x252]] = (u8)p5;
+        self[0x1f4 + self[0x252]] = 0xff;
+        self[0x1fe + self[0x252]] = 0xff;
+        self[0x208 + self[0x252]] = 0xff;
+        self[0x212 + self[0x252]] = 0xff;
+        self[0x21c + self[0x252]] = 0xff;
+
+        u32 count = p5 & 0xff;
+        s32 pow = 1;
+        s32 k = 0;
+        bool flag = p6 != 0;
+        if (count != 0) {
+            if (count > 8) {
+                for (s32 i = 0; i < (s32)((count - 1) >> 3); i++) {
+                    pow *= 100000000;
+                    k += 8;
+                }
+            }
+            if (k < (s32)count) {
+                for (s32 i = (s32)count - k; i != 0; i--) {
+                    pow *= 10;
+                }
+            }
+        }
+        if (value > pow - 1) {
+            value = pow - 1;
+        }
+        if (value < 0) {
+            value = 0;
+        }
+        pow /= 10;
+        u8* d = self;
+        for (s32 i = (s32)count - 1; i > 0; i--) {
+            s32 digit = value / pow;
+            value -= digit * pow;
+            if (flag || digit != 0) {
+                if (!flag) {
+                    flag = true;
+                }
+                d[self[0x252] + 0x1f4] = digit;
+            } else {
+                d[self[0x252] + 0x1f4] = 0xff;
+            }
+            d += 10;
+            pow /= 10;
+        }
+        self[count * 10 + self[0x252] + 0x1ea] = value;
+        u8 lvl = p4;
+        if (lvl > 5) {
+            lvl = 5;
+        }
+        self[0x23a + self[0x252]] = lvl;
+        self[0x252] = self[0x252] + 1;
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_8043CDA0(u8* self) {
@@ -915,9 +1016,7 @@ extern "C" void fn_8043DC98(u8* param_1) {
         virtual void v54();
         virtual void v55();
         virtual void v56();
-        virtual void v57();
-        virtual void v58();
-        virtual void v59(s32, f32, s32, f32, s32, f32, f32);
+        virtual void v57(s32, f32, s32, f32, s32, f32, f32);
     };
     typedef void* (*VFn15)(void*, u32, u32, u32);
     typedef void (*VFn4)(void*, f32, f32);
@@ -967,7 +1066,7 @@ extern "C" void fn_8043DC98(u8* param_1) {
     fn_8043ACE4(param_1);
     fn_8043A638(param_1);
     if (*(void**)(param_1 + 0x10) != NULL && *(u8*)(param_1 + 0x254) != 0) {
-        ((VObj*)*(void**)(param_1 + 0x10))->v59(0, *(f32*)(param_1 + 0x1c0), 0, *(f32*)(param_1 + 0x1c4), 0, *(f32*)(param_1 + 0x1c8), *(f32*)(param_1 + 0x1cc));
+        ((VObj*)*(void**)(param_1 + 0x10))->v57(0, *(f32*)(param_1 + 0x1c0), 0, *(f32*)(param_1 + 0x1c4), 0, *(f32*)(param_1 + 0x1c8), *(f32*)(param_1 + 0x1cc));
         *(u8*)(param_1 + 0x254) = 0;
     }
     if (*(u32*)(param_1 + 0x298) != 0) {
@@ -975,8 +1074,7 @@ extern "C" void fn_8043DC98(u8* param_1) {
     }
     if (*(u8*)(param_1 + 0x257) != 0) {
         fn_8013B490(lbl_8053AB10);
-        void* screen = *(void**)(param_1 + 0xc);
-        void* pane = ((VFn15)(*(void***)screen)[15])(screen, 0x4E0000, 0x4E6461, 0x74613035);
+        void* pane = ((VFn15)(*(void***)*(void**)(param_1 + 0xc))[15])(*(void**)(param_1 + 0xc), 0x4E0000, 0x4E6461, 0x74613035);
         ((VFn4)(*(void***)pane)[4])(pane, *(f32*)(param_1 + 0x110) + (f32)*(s16*)(lbl_8050DB0C + 0x2a2), *(f32*)(param_1 + 0x114) + (f32)*(s16*)(lbl_8050DB0C + 0x2a4));
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(param_1 + 0xc), lbl_80543C88, lbl_80543C88, *(void**)((u8*)lbl_8053AB10 + 0x10));
     }
