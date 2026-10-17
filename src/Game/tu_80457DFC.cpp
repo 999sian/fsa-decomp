@@ -21,6 +21,8 @@ extern "C" void* lbl_80495450[];
 extern "C" void __dt__11JAIAudienceFv(void*, short);
 extern "C" void writePort__8JASTrackFUlUs(void* a, u32 b, u16 c);
 extern "C" const f32 lbl_80543EC4;
+extern "C" const f32 lbl_80543EC8;
+extern "C" const f32 lbl_80543ECC;
 
 struct Unk804580DCTrack {
     virtual void v0();
