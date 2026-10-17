@@ -275,38 +275,50 @@ extern "C" void fn_801352F4(char* this_, s32 which) {
         break;
     case 12:
         if (*(TuVtable7**)(this_ + 0x1c) != 0) {
-            (*(TuVtable7**)(this_ + 0x1c))->v0(1);
+            if (*(TuVtable7**)(this_ + 0x1c) != 0) {
+                (*(TuVtable7**)(this_ + 0x1c))->v0(1);
+            }
             *(void**)(this_ + 0x1c) = 0;
         }
         break;
     case 1:
         if (*(TuVtable7**)(this_ + 0x20) != 0) {
-            (*(TuVtable7**)(this_ + 0x20))->v0(1);
+            if (*(TuVtable7**)(this_ + 0x20) != 0) {
+                (*(TuVtable7**)(this_ + 0x20))->v0(1);
+            }
             *(void**)(this_ + 0x20) = 0;
         }
         break;
     case 2:
     case 5:
         if (*(TuVtable7**)(this_ + 0x28) != 0) {
-            (*(TuVtable7**)(this_ + 0x28))->v0(1);
+            if (*(TuVtable7**)(this_ + 0x28) != 0) {
+                (*(TuVtable7**)(this_ + 0x28))->v0(1);
+            }
             *(void**)(this_ + 0x28) = 0;
         }
         break;
     case 3:
         if (*(TuVtable7**)(this_ + 0x24) != 0) {
-            (*(TuVtable7**)(this_ + 0x24))->v0(1);
+            if (*(TuVtable7**)(this_ + 0x24) != 0) {
+                (*(TuVtable7**)(this_ + 0x24))->v0(1);
+            }
             *(void**)(this_ + 0x24) = 0;
         }
         break;
     case 4:
         if (*(TuVtable7**)(this_ + 0x2c) != 0) {
-            (*(TuVtable7**)(this_ + 0x2c))->v0(1);
+            if (*(TuVtable7**)(this_ + 0x2c) != 0) {
+                (*(TuVtable7**)(this_ + 0x2c))->v0(1);
+            }
             *(void**)(this_ + 0x2c) = 0;
         }
         break;
     case 6:
         if (*(TuVtable7**)(this_ + 0x30) != 0) {
-            (*(TuVtable7**)(this_ + 0x30))->v0(1);
+            if (*(TuVtable7**)(this_ + 0x30) != 0) {
+                (*(TuVtable7**)(this_ + 0x30))->v0(1);
+            }
             *(void**)(this_ + 0x30) = 0;
         }
         break;
@@ -615,6 +627,129 @@ extern "C" void fn_80138C9C(char* this_) {
     *(f32*)(this_ + 0xf4) = fn_803832BC(this_ + 0xc8, 0x42, 0, 0, 0);
     strcpy((*(J2DTextBox**)(this_ + 0xc4))->getStringPtr(), this_ + 0xc8);
     strcpy((*(J2DTextBox**)(this_ + 0xc0))->getStringPtr(), this_ + 0xc8);
+}
+
+extern "C" u8 lbl_8049EF20[];
+extern "C" void __dl__FPv(void* p);
+extern "C" void fn_8007A298(void* p);
+extern "C" void fn_803007A0(void);
+extern "C" void releaseSound__14JAISoundHandleFv(void* p);
+extern "C" void destroy__7JKRHeapFv(void* p);
+extern "C" void* fn_80138E78(u8* p, s16 how) {
+    void* sound;
+    void* tmp;
+
+    if (p != 0) {
+        *(void**)p = lbl_8049EF20;
+        tmp = fn_8008E328(0);
+        *(s32*)(p + 0x10c) = 0;
+        *(s32*)(p + 0x108) = 0;
+        fn_8008DF30(*(s16*)((u8*)tmp + 0x7c), 0);
+        fn_8008E2B8((u8*)tmp + 0x68, *(s16*)((u8*)tmp + 0x7c));
+        if (*(void**)(p + 0x104) != 0) {
+            __dl__FPv(*(void**)(p + 0x104));
+        }
+        if (*(void**)(p + 0x4) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x4)))[2])(*(void**)(p + 0x4), 1);
+            *(void**)(p + 0x4) = 0;
+        }
+        if (*(void**)(p + 0x18) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x18)))[2])(*(void**)(p + 0x18), 1);
+            *(void**)(p + 0x18) = 0;
+        }
+        if (lbl_8053AB10 != 0) {
+            ((void (*)(void*, s32))(*(void***)lbl_8053AB10)[2])(lbl_8053AB10, 1);
+        }
+        if (*(void**)(p + 0x8) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x8)))[2])(*(void**)(p + 0x8), 1);
+        }
+        if (*(void**)(p + 0xc) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xc)))[2])(*(void**)(p + 0xc), 1);
+        }
+        if (*(void**)(p + 0x10) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x10)))[2])(*(void**)(p + 0x10), 1);
+        }
+        if (*(void**)(p + 0x20) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x20)))[2])(*(void**)(p + 0x20), 1);
+            *(void**)(p + 0x20) = 0;
+        }
+        if (*(void**)(p + 0x28) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x28)))[2])(*(void**)(p + 0x28), 1);
+            *(void**)(p + 0x28) = 0;
+        }
+        if (*(void**)(p + 0x24) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x24)))[2])(*(void**)(p + 0x24), 1);
+            *(void**)(p + 0x28) = 0;
+        }
+        if (*(void**)(p + 0x2c) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x2c)))[2])(*(void**)(p + 0x2c), 1);
+            *(void**)(p + 0x2c) = 0;
+        }
+        if (*(void**)(p + 0x30) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x30)))[2])(*(void**)(p + 0x30), 1);
+            *(void**)(p + 0x30) = 0;
+        }
+        if (*(void**)(p + 0x1c) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x1c)))[2])(*(void**)(p + 0x1c), 1);
+            *(void**)(p + 0x1c) = 0;
+        }
+        fn_8007A298(*(void**)(lbl_80529DEC + 0x24));
+        fn_8007A298(*(void**)(lbl_80529DEC + 0x38));
+        fn_8007A298(*(void**)(lbl_80529DEC + 0x40));
+        fn_8007A298(*(void**)(lbl_80529DEC + 0x44));
+        if (*(void**)(p + 0x34) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x34)))[2])(*(void**)(p + 0x34), 1);
+            *(void**)(p + 0x34) = 0;
+        }
+        if (*(void**)(p + 0x38) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x38)))[2])(*(void**)(p + 0x38), 1);
+            *(void**)(p + 0x38) = 0;
+        }
+        if (*(void**)(p + 0x3c) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x3c)))[2])(*(void**)(p + 0x3c), 1);
+            *(void**)(p + 0x3c) = 0;
+        }
+        if (*(void**)(p + 0x40) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x40)))[2])(*(void**)(p + 0x40), 1);
+            *(void**)(p + 0x40) = 0;
+        }
+        ((void (*)(void*))(*(void***)(*(void**)(p + 0xa4)))[3])(*(void**)(p + 0xa4));
+        ((void (*)(void*))(*(void***)(*(void**)(p + 0xa8)))[3])(*(void**)(p + 0xa8));
+        ((void (*)(void*))(*(void***)(*(void**)(lbl_80529DEC + 0x20)))[3])(*(void**)(lbl_80529DEC + 0x20));
+        fn_803007A0();
+        sound = *(void**)(p + 0xa0);
+        if (sound != 0) {
+            if ((u8*)sound + 0x84 != 0) {
+                releaseSound__14JAISoundHandleFv((u8*)sound + 0x84);
+            }
+            if ((u8*)sound + 0x80 != 0) {
+                releaseSound__14JAISoundHandleFv((u8*)sound + 0x80);
+            }
+            __dl__FPv(sound);
+        }
+        destroy__7JKRHeapFv(*(void**)(p + 0x9c));
+        if (*(void**)(p + 0xb8) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xb8)))[2])(*(void**)(p + 0xb8), 1);
+            *(void**)(p + 0xb8) = 0;
+        }
+        if (*(void**)(p + 0xbc) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xbc)))[2])(*(void**)(p + 0xbc), 1);
+            *(void**)(p + 0xbc) = 0;
+        }
+        if (*(void**)(p + 0xc0) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xc0)))[2])(*(void**)(p + 0xc0), 1);
+            *(void**)(p + 0xc0) = 0;
+        }
+        if (*(void**)(p + 0xc4) != 0) {
+            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xc4)))[2])(*(void**)(p + 0xc4), 1);
+            *(void**)(p + 0xc4) = 0;
+        }
+        destroy__7JKRHeapFv(*(void**)(p + 0x98));
+        if (how > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
