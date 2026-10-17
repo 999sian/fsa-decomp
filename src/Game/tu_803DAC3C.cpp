@@ -13,7 +13,6 @@ extern char lbl_80477898[];
 extern void* lbl_8053ACA8;
 extern u8 lbl_80529DEC[];
 u8 fn_80457F80(s32, u32*, s32);
-BOOL DVDOpen(const char*, void*);
 void OSSetSaveRegion(void*, void*);
 void OSSetBootDol(u32);
 BOOL __PADDisableRecalibration(BOOL);
