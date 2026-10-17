@@ -168,6 +168,22 @@ extern "C" void fn_800FFBCC(NaviState_800FFBCC* p) {
     (p->*lbl_8028DD1C[((u8*)p)[0xee]])();
 }
 
+extern "C" void fn_80100164(void* param_1) {
+    if (fn_8002F87C() != 0) {
+        if (*(u16*)((u8*)param_1 + 0x18c) != 0) {
+            *(u8*)((u8*)param_1 + 0xf2) = 1;
+            *(u8*)((u8*)param_1 + 0x188) = 1;
+            fn_8002F458((void*)0xad, 0);
+            *(u8*)((u8*)param_1 + 0x189) = 6;
+        }
+    } else {
+        *(u8*)((u8*)param_1 + 0xf2) = 0xb;
+        *(u8*)((u8*)param_1 + 0x188) = 1;
+        *(u8*)((u8*)param_1 + 0xef) = 8;
+        *(u8*)((u8*)param_1 + 0x189) = 4;
+    }
+}
+
 extern "C" void fn_801001E8(u8* p) {
     if (p[0xef] != 0) {
         p[0xef]--;
@@ -1141,8 +1157,8 @@ extern "C" s32 fn_801096BC(void* self, s16 a, u8 b, void* c, s32 d) {
 
 extern "C" void fn_80109960(void) {
     u8* p = (u8*)lbl_802C5A84;
-    s8 flag = p[0x4];
-    if ((s32)flag >= 0) {
+    s32 flag = (s8)p[0x4];
+    if (flag >= 0) {
         s32 n = *(s32*)(p + 0x8) - 1;
         *(s32*)(p + 0x8) = n;
         if (n == 0) {
