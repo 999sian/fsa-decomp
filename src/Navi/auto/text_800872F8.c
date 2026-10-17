@@ -18,6 +18,17 @@ extern "C" void fn_80159C6C(void* a, s32 b);
 extern void* lbl_802FF2B0;
 extern void* lbl_802FF268;
 extern void* lbl_802FCCF0;
+extern "C" void fn_8005E990(void* a, int b, int c);
+extern "C" void fn_80060794(void* a, void* b, void* c, void* d);
+struct VObj_80088E18 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual s32 v5();
+    virtual s32 v6();
+};
 extern u8 lbl_80283CAC[];
 extern "C" int fn_80012B90(void);
 extern "C" void fn_800636F4(void* a, void* b, int c);
@@ -118,10 +129,38 @@ extern "C" int fn_800877E4(void* param_1) {
     return 1;
 }
 
+extern "C" s32 fn_80087850(void* param_1) {
+    fn_8004D270(param_1);
+    void* p = *(void**)((u8*)param_1 + 0x424);
+    if (p != 0) {
+        fn_800C576C();
+    }
+    fn_8001AA98(fn_8001C984, 0);
+    return 1;
+}
+
 extern "C" BOOL fn_80087A60(void);
 extern "C" BOOL fn_80087A60(void)
 {
     return TRUE;
+}
+
+extern "C" s32 fn_80087A68(void* param_1) {
+    if (fn_80012B90() == 0) {
+        return 0;
+    }
+    fn_800636F4(lbl_80283CAC, lbl_802B7CA0 + 0x2200, 0x40);
+    fn_8001F37C();
+    lbl_802B7CA0[0x1418] = 0;
+    if (*(void**)((u8*)param_1 + 0x424) != 0) {
+        fn_800C57A8();
+        if (*(void**)((u8*)param_1 + 0x424) != 0) {
+            ((VObj_80088954*)*(void**)((u8*)param_1 + 0x424))->v0(1);
+        }
+        *(void**)((u8*)param_1 + 0x424) = 0;
+    }
+    fn_80058B64(0xb);
+    return 1;
 }
 
 extern "C" BOOL fn_8008856C(void);
