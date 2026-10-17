@@ -8,6 +8,10 @@ extern float lbl_80543DA8;
 struct J2DGrafContext;
 struct J2DScreen;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, float, float, const J2DGrafContext*);
+extern "C" u8 lbl_80490940[];
+extern "C" u8 lbl_80490B00[];
+extern "C" u32 lbl_804B1C68;
+extern "C" void* fn_804030C4(u32, u32);
 struct fn_80449494_Obj {
     virtual void Release(int);
 };
