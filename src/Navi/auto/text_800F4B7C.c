@@ -81,12 +81,12 @@ extern "C" BOOL fn_800FFBC4(void)
     return TRUE;
 }
 
-extern "C" void fn_80103560(u8* p) {
-    p[0x526] = 0;
-    (*(VObj_80103560**)(p + p[0x524] * 4 + 0x498))->v7(0);
-    u32 i = p[0x524] ^ 1;
-    (*(VObj_80103560**)(p + i * 4 + 0x498))->v7(p[i + 0x4a0]);
-    p[0x524] ^= 1;
+extern "C" void fn_80103560(Unk80103560* p) {
+    p->count = 0;
+    p->objs[p->sel]->v7(0);
+    u32 i = p->sel ^ 1;
+    p->objs[i]->v7(p->vals[i]);
+    p->sel ^= 1;
 }
 
 extern "C" void fn_80103664(Unk80103664* p) {
