@@ -108,6 +108,24 @@ extern "C" void fn_8013DEBC(void* param_1) {
     }
 }
 
+extern "C" void fn_801336CC(void*, void*, void*);
+extern "C" void fn_8013345C();
+extern "C" void fn_8013DF04(void* param_1) {
+    NaviTracker_8013DF04* o = *(NaviTracker_8013DF04**)((u8*)param_1 + 0x88);
+    void* local;
+    Entry_8013DF04* e;
+    o->fn_5(o->fn_4() | 1);
+    local = (*(NaviTracker_8013DF04**)((u8*)param_1 + 0x88))->fn_19();
+    fn_801336CC(param_1, lbl_80201EB4, &local);
+    for (e = (Entry_8013DF04*)lbl_802C688C; e->id != -1; e++) {
+        f32 v = ((*(NaviTracker_8013DF04**)((u8*)param_1 + 0x88))->*(e->fn))();
+        Slot_8013DF04* s = (Slot_8013DF04*)((u8*)*(void**)((u8*)param_1 + 4) + e->id * 0x14);
+        s->func = (void*)fn_8013345C;
+        s->unk4 = 0;
+        s->value = v;
+    }
+}
+
 extern "C" void fn_801E0DB8(void*, void*, s32, s32, s32);
 extern "C" void fn_8013CD54();
 extern "C" void fn_801337AC(void*, void*, void*);
