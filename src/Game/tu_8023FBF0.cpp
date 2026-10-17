@@ -1335,11 +1335,11 @@ BOOL fn_802454C0(char* p) {
         s32 mode;
         s32 e;
         s32 d;
-        s32 i;
         s32 c;
+        s32 i;
         c = 0;
         i = c;
-        for (; i < 4; i++) {
+        while (i < 4) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
@@ -1357,6 +1357,7 @@ BOOL fn_802454C0(char* p) {
             } else if (i == S32(p, 0xd60)) {
                 c++;
             }
+            i++;
         }
         if (c <= 1) {
             mode = 5;
@@ -1444,7 +1445,7 @@ inline bool padActive3(char* p) {
     }
     return true;
 }
-  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { s32 me; s32 linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { me = S32(p, 0x4);
+  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { s32 linked = S32(p, 0xd60); s32 me; if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { me = S32(p, 0x4);
                         if (me == fn_8022F3DC(i)) {
                       c++;
                   }
