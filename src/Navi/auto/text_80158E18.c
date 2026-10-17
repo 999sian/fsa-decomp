@@ -88,6 +88,132 @@ extern u32 lbl_802FF564;
 #pragma push
 #pragma use_lmw_stmw off
 #pragma dont_inline on
+extern "C" void fn_80158E18(u32* p) {
+    u32 mode = 0;
+    u32 cnt0 = 0;
+    u32 cnt1 = 0;
+    u32 w0 = 0;
+    u32 flags = 0;
+    u32 w1 = 1;
+    u32 w2 = 0;
+    u32 f10 = 0;
+    u32 f11 = 0;
+    u32 f12 = 0;
+    u32 f31 = 0;
+    u32 f30 = 0;
+    u32 f29 = 0;
+    u32 f28 = 0;
+    u32 f27 = 0;
+    u32 f26 = 0;
+    u32 f25 = 0;
+    u32 cmd;
+
+    while ((cmd = p[0]) != 0xff) {
+        switch (cmd) {
+        case 0:
+            w0 = p[1];
+            break;
+        case 1:
+            flags = (flags & ~1) | p[1];
+            break;
+        case 2:
+            flags = (flags & ~2) | (p[1] << 1);
+            break;
+        case 3:
+            flags = (flags & ~4) | (p[1] << 2);
+            break;
+        case 4:
+            flags = (flags & ~8) | (p[1] << 3);
+            break;
+        case 5:
+            flags = (flags & ~16) | (p[1] << 4);
+            break;
+        case 6:
+            flags = (flags & ~32) | (p[1] << 5);
+            break;
+        case 7:
+            flags = (flags & ~64) | (p[1] << 6);
+            break;
+        case 8:
+            flags = (flags & ~128) | (p[1] << 7);
+            break;
+        case 9:
+            w1 = p[1];
+            break;
+        case 10:
+            if (p[1] != 0) {
+                w2 = p[1];
+                mode = 1;
+            }
+            break;
+        case 11:
+            if (p[1] != 0) {
+                w2 = p[1];
+                mode = 2;
+            }
+            break;
+        case 12:
+            f10 = p[1];
+            cnt0 += f10 != 0;
+            break;
+        case 13:
+            f11 = p[1];
+            cnt0 += f11 != 0;
+            break;
+        case 14:
+            f12 = p[1];
+            cnt1 += f12 != 0;
+            break;
+        case 15:
+            f31 = p[1];
+            cnt1 += f31 != 0;
+            break;
+        case 16:
+            f30 = p[1];
+            cnt1 += f30 != 0;
+            break;
+        case 17:
+            f29 = p[1];
+            cnt1 += f29 != 0;
+            break;
+        case 18:
+            f28 = p[1];
+            cnt1 += f28 != 0;
+            break;
+        case 19:
+            f27 = p[1];
+            cnt1 += f27 != 0;
+            break;
+        case 20:
+            f26 = p[1];
+            cnt1 += f26 != 0;
+            break;
+        case 21:
+            f25 = p[1];
+            cnt1 += f25 != 0;
+            break;
+        case 22:
+        case 23:
+        case 24:
+        case 25:
+            break;
+        }
+        p += 2;
+    }
+
+    w0 |= flags << 1;
+    *(volatile u8*)0xCC008000 = 8;
+    *(volatile u8*)0xCC008000 = 0x50;
+    *(volatile u32*)0xCC008000 = (f11 << 15) | (f10 << 13) | (w2 << 11) | (w1 << 9) | w0;
+    *(volatile u8*)0xCC008000 = 8;
+    *(volatile u8*)0xCC008000 = 0x60;
+    *(volatile u32*)0xCC008000 = (f25 << 14) | (f26 << 12) | (f27 << 10) | (f28 << 8) | (f29 << 6) | (f30 << 4) | (f31 << 2) | f12;
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u16*)0xCC008000 = 0;
+    *(volatile u16*)0xCC008000 = 0x1008;
+    *(volatile u32*)0xCC008000 = (cnt1 << 4) | cnt0 | (mode << 2);
+}
+
 extern "C" void fn_8015949C(int attr, u32 base, u8 stride)
 {
     int idx;
@@ -1041,4 +1167,6 @@ extern "C" void fn_8015DB88(void) {
     while (1) {
     }
 }
-
+extern "C" void fn_801BDDBC(void* p, void* data, u32 count);
+extern "C" void fn_80166C84(void* p, void* p2);
+extern u8 lbl_802EE20C[];
