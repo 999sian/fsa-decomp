@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "Game/ItemBase.h"
 
 class FSAVirtBase {
 public:
@@ -159,6 +160,8 @@ extern "C" void* fn_8015B420(char* this_, short how) {
 
 extern "C" void fn_8015B49C(char* this_) {
     s32 id;
+    f32 zero = lbl_8053D4AC;
+    Vec3f* src;
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xfff;
     *(s32*)(this_ + 0x250) = (*(u32*)(this_ + 0x90) >> 24) & 3;
     *(s32*)(this_ + 0x24c) = (*(u32*)(this_ + 0x90) >> 26) & 3;
@@ -177,42 +180,51 @@ extern "C" void fn_8015B49C(char* this_) {
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = 0;
     *(s32*)(this_ + 0x240) = 0x1a;
-    *(f32*)(this_ + 0x29c) = lbl_8053D4AC;
-    *(f32*)(this_ + 0x2a0) = lbl_8053D4AC;
-    *(f32*)(this_ + 0x2a4) = lbl_8053D4AC;
-    *(f32*)(this_ + 0x3c) = lbl_8053D4AC;
-    *(f32*)(this_ + 0x40) = lbl_8053D4AC;
-    *(f32*)(this_ + 0x44) = lbl_8053D4AC;
+    *(f32*)(this_ + 0x29c) = zero;
+    *(f32*)(this_ + 0x2a0) = zero;
+    *(f32*)(this_ + 0x2a4) = zero;
+    *(f32*)(this_ + 0x3c) = zero;
+    *(f32*)(this_ + 0x40) = zero;
+    *(f32*)(this_ + 0x44) = zero;
     if (lbl_8053AAF8[0x7f] == 1) {
         *(s32*)(this_ + 0x238) = 0x5a;
     } else {
         *(s32*)(this_ + 0x238) = 0x2d;
     }
     *(s32*)(this_ + 0x288) = 0;
-    *(Vec3f*)(this_ + 0x27c) = *(Vec3f*)fn_8023E724((void*)*(s32*)(this_ + 0x250));
+    src = (Vec3f*)fn_8023E724((void*)*(s32*)(this_ + 0x250));
+    *(Vec3f*)(this_ + 0x27c) = *src;
     *(s32*)(this_ + 0x274) = *(s32*)(this_ + 0x250);
     if (fn_8022F514(*(s32*)(this_ + 0x250))) {
         *(void**)(this_ + 0x274) = fn_8022F3DC(*(s32*)(this_ + 0x250));
     }
     *(s32*)(this_ + 0x28c) = 0xa;
     id = *(s32*)(this_ + 0x234);
-    if (id >= 0xc) {
-        if (id == 0x2e) {
-            if (*(s32*)(this_ + 0x25c) == 0) {
-                fn_802362C4(*(void**)(this_ + 0x274), lbl_804A0170[id]);
-            }
+    switch (id) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 0x2e:
+        if (*(s32*)(this_ + 0x25c) == 0) {
+            fn_802362C4(*(void**)(this_ + 0x274), lbl_804A0170[id]);
         }
-    } else if (id >= 4) {
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
         if (*(s32*)(this_ + 0x25c) == 0) {
             fn_8043D874(lbl_8053AED0, *(void**)(this_ + 0x274), lbl_804A0170[id], 0);
             if (*(s32*)(this_ + 0x270) != 0) {
                 *(s32*)(this_ + 0x28c) = 2;
             }
         }
-    } else if (id >= 0) {
-        if (*(s32*)(this_ + 0x25c) == 0) {
-            fn_802362C4(*(void**)(this_ + 0x274), lbl_804A0170[id]);
-        }
+        break;
     }
     *(f32*)(this_ + 0x14) = lbl_8053D480 + *(f32*)(this_ + 0x284);
     Actor_CreateByID(fn_801F856C(), 0x42424d42, *(void**)(this_ + 4), this_ + 0xc, 0x20000, -1, -1);
