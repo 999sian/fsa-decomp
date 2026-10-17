@@ -291,6 +291,16 @@ extern "C" int fn_80057488(u32 mask) {
     return n;
 }
 
+extern "C" int fn_80057530(int id) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (id == lbl_802C04D0[i].id) {
+            return lbl_802C04D0[i].value;
+        }
+    }
+    return -1;
+}
+
 extern "C" void* fn_8005757C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80249D24;
