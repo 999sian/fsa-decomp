@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "Game/Actor.h"
 
 extern "C" void fn_8011B878(u8* this_, s32 id);
 extern "C" void* fn_8011921C(void);
