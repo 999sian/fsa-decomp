@@ -36,8 +36,6 @@ struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
 struct Obj_800DDDD0 { u8 pad[0x59]; Ent_800DDDD0 ent[1]; };
 
 struct Unk800DC64CSrc {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
@@ -2196,34 +2194,6 @@ void fn_800DA624(void)
     GDOverflowCheck(0x1e);
     __GDWrite(0x61);
     __GDWrite(0xf3);
-    __GDWrite(0x1e);
-    __GDWrite(0xff);
-    __GDWrite(0x80);
-    __GDWrite(0x61);
-    __GDWrite(0xfe);
-    __GDWrite(0);
-    __GDWrite(0xff);
-    __GDWrite(0xe3);
-    __GDWrite(0x61);
-    __GDWrite(0x41);
-    __GDWrite(0);
-    __GDWrite(0x31);
-    __GDWrite(0);
-    __GDWrite(0x61);
-    __GDWrite(0x40);
-    __GDWrite(0);
-    __GDWrite(0);
-    __GDWrite(0x17);
-    __GDWrite(0x61);
-    __GDWrite(0xfe);
-    __GDWrite(0);
-    __GDWrite(0);
-    __GDWrite(0x40);
-    __GDWrite(0x61);
-    __GDWrite(0x43);
-    __GDWrite(0);
-    __GDWrite(0);
-    __GDWrite(0);
 }
 
 extern "C" void fn_800DA8F8(void) {
