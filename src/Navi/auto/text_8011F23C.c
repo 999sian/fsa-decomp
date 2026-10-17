@@ -1,5 +1,10 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out);
+extern "C" void fn_801D9F18(s32, s32);
+extern "C" void fn_801DB8C4(s32, s32, s32);
+extern f32 lbl_803016A8;
+extern f32 lbl_803016AC;
 extern "C" void* fn_8015A90C(s32 size);
 extern "C" void* lbl_802FF310;
 extern "C" void fn_8011F668(u8* p, void* buf, s16 w, s16 h);
@@ -1471,6 +1476,21 @@ extern "C" void fn_80129A08(f32* p, f32 a, f32 b) {
     p[10] *= a;
 }
 
+extern "C" void fn_8012A5B0(void* a, u8* p) {
+    if ((*(u32*)(p + 0x7c) & 8) == 0) {
+        fn_801D9F18(9, 1);
+        fn_801D9F18(0xd, 1);
+        fn_801DB8C4(0xb8, 1, 1);
+        *(volatile f32*)0xCC008000 = *(f32*)(p + 0x0);
+        *(volatile f32*)0xCC008000 = *(f32*)(p + 0x4);
+        *(volatile f32*)0xCC008000 = *(f32*)(p + 0x8);
+        *(volatile f32*)0xCC008000 = lbl_80301698;
+        *(volatile f32*)0xCC008000 = lbl_80301698;
+        fn_801D9F18(9, 2);
+        fn_801D9F18(0xd, 2);
+    }
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
@@ -1858,6 +1878,28 @@ extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
     param_3[9] = zero;
     param_3[7] = zero;
     param_3[3] = zero;
+}
+
+extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out) {
+    f32* m = (f32*)out;
+    f32 sy = lbl_802F0BC0[(u16)b >> 3][0];
+    f32 cy = lbl_802F0BC0[(u16)b >> 3][1];
+    f32 sz = lbl_802F0BC0[(u16)c >> 3][0];
+    f32 cz = lbl_802F0BC0[(u16)c >> 3][1];
+    f32 sx = lbl_802F0BC0[(u16)a >> 3][0];
+    f32 cx = lbl_802F0BC0[(u16)a >> 3][1];
+    m[0] = cy * cz;
+    m[4] = cy * sz;
+    m[8] = -sy;
+    m[9] = sx * cy;
+    m[10] = cx * cy;
+    m[1] = sx * cz * sy - cx * sz;
+    m[6] = cx * sz * sy - sx * cz;
+    m[2] = sx * sz + cx * cz * sy;
+    m[5] = cx * cz + sx * sz * sy;
+    m[11] = lbl_80301794;
+    m[7] = lbl_80301794;
+    m[3] = lbl_80301794;
 }
 
 extern "C" void fn_80132524(void* a, void* b, void* c, void* d);
