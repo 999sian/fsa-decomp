@@ -1,6 +1,28 @@
 #include "types.h"
 #include "JSystem/JAudio/Interface/JAISound.h"
 #include "JSystem/JAudio/Interface/JAISoundParams.h"
+#include "JSystem/JAudio/JAUSoundObject.h"
+#include "JSystem/JKernel/JKRDisposer.h"
+
+class WaveController {
+public:
+    WaveController(s32 pos, s32 heap, s32 handles);
+    JAUSoundObject mSound;
+    JKRDisposer mDisposer;
+    u8 m30;
+    u8 m31;
+    JGeometry::TVec3f* mPos;
+    JGeometry::TVec3f mPosCopy;
+    u8 m44;
+    u8 m45;
+    f32 m48;
+    f32 m4C;
+    u8 m50;
+    u8 m51;
+    u8 m52;
+    JAISoundID m54;
+    JAISoundID m58;
+};
 
 
 extern u8* lbl_8053AF80;
