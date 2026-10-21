@@ -172,21 +172,28 @@ extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" u8 fn_801F2B20(void* this_, s32 a);
 extern "C" u8 fn_801F2A10(void* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_802A20F0(void* a, void* pos, s32 b, s32 room, s32 c, s32 d);
-extern "C" void fn_801F856C(void);
-extern "C" void Actor_CreateByID(u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
+extern "C" void* fn_801F856C(void);
+extern "C" void Actor_CreateByID(...);
 extern "C" void fn_8030C210(void* a, void* pos);
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
+extern "C" f64 __ps_add(f64 a, f64 b);
 extern "C" void fn_8017A68C(char* this_) {
-    *(TVec3f*)(this_ + 0xc) += *(TVec3f*)(this_ + 0x3c);
+    __psq_st(__ps_add(__psq_l(this_ + 0xc, 0, 0, 0), __psq_l(this_ + 0x3c, 0, 0, 0)), this_ + 0xc, 0, 0, 0);
+    __psq_st(__ps_add(__psq_l(this_ + 0x14, 0, 1, 0), __psq_l(this_ + 0x44, 0, 1, 0)), this_ + 0x14, 0, 1, 0);
 
     if (*(s32*)(this_ + 0x25c) == 1) {
         s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98)) + 0x2000;
+        f32 r = lbl_8053DC7C;
         for (s32 i = 0; i < 2; i++) {
-            f32 pos[3];
+            TVec3f pos;
             SinCos* sc = &sincosTable___5JMath[(u16)ang >> 5];
-            pos[0] = lbl_8053DC7C * sc->first + *(f32*)(this_ + 0xc);
-            pos[1] = lbl_8053DC7C * sc->second + *(f32*)(this_ + 0x10);
-            pos[2] = *(f32*)(this_ + 0x14);
-            fn_802A20F0(lbl_8053AC98, pos, *(s32*)(this_ + 0x258), *(s32*)(this_ + 4), 0, 0);
+            pos.x = *(f32*)(this_ + 0xc);
+            pos.y = *(f32*)(this_ + 0x10);
+            pos.z = *(f32*)(this_ + 0x14);
+            pos.x = r * sc->first + pos.x;
+            pos.y = r * sc->second + pos.y;
+            fn_802A20F0(lbl_8053AC98, &pos, *(s32*)(this_ + 0x258), *(s32*)(this_ + 4), 0, 0);
             ang -= 0x4000;
         }
     }
@@ -293,14 +300,14 @@ extern "C" void fn_8017A68C(char* this_) {
 }
 
 extern "C" s32 fn_8017AAF8(char* this_, s32 p1, s32 p2) {
-    void* handle;
     s32 id;
-    s32 kind;
     s32 sub;
+    s32 kind;
+    void* handle;
     u8* base;
+    id = p1;
     handle = *(void**)(this_ + 0x198);
     base = (u8*)fn_8020D58C();
-    id = p1;
     if (fn_8020D6AC(base + base[1] * 0x784 + 4, p1, p2, handle, lbl_80466880) == 1) {
         return 1;
     }
