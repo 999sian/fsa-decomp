@@ -39,9 +39,22 @@ extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 room, f32* pos, u32 par
 extern "C" void detach__5ActorFv(void* actor);
 extern u16 lbl_8046E9D8[][4];
 
+struct Box4 {
+    f32 x0, y0, x1, y1;
+};
+
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 fn_801F7818(void* mgr, u32 name, u32 room, void* list, s32 max);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 room, f32* pos, u32 param, s32 a, s32 b);
+extern "C" void detach__5ActorFv(void* actor);
+extern u16 lbl_8046E9D8[][4];
+
 extern "C" {
 
 void EmptyHook_802E20D4(void) {}
+
+void fn_802E20D8(u8* this_) {}
 
 void fn_802E20D8(u8* this_) {}
 
