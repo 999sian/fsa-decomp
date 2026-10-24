@@ -44,6 +44,28 @@ static inline void setStateByte(s32 off, u8 v) {
     }
 }
 
+static inline bool isStateLocked() {
+    bool locked;
+    if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(lbl_80529DEC + 0x118) == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
+        locked = true;
+    } else {
+        locked = false;
+    }
+    return locked;
+}
+
+static inline void setStateWord(s32 off, void* v) {
+    if (!isStateLocked()) {
+        *(void**)(lbl_80529DEC + off) = v;
+    }
+}
+
+static inline void setStateByte(s32 off, u8 v) {
+    if (!isStateLocked()) {
+        lbl_80529DEC[off] = v;
+    }
+}
+
 class VObj {
 public:
     virtual void v00();
