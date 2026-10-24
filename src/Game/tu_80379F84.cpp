@@ -47,7 +47,7 @@ extern "C" BOOL fn_80379F84(void* this_) {
 
 extern u8 lbl_80529DEC[];
 extern u8 lbl_8050EC80[];
-extern "C" void fn_80379FF4(void) {
+extern "C" void fn_80379FF4(void* this_) {
     s32 x = *(s32*)(lbl_80529DEC + 0x118);
     s32 y = *(s32*)(lbl_80529DEC + 0x11c);
     if (x < 8 && y < 4 && x >= 0 && x <= 7 && y >= 0 && y <= 3) {
