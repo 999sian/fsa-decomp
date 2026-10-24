@@ -22,6 +22,28 @@ extern "C" void* fn_80235A30(s32);
 extern "C" void* fn_8023587C(s32);
 extern "C" void* fn_80235ACC(s32);
 
+static inline bool isStateLocked() {
+    bool locked;
+    if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(lbl_80529DEC + 0x118) == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
+        locked = true;
+    } else {
+        locked = false;
+    }
+    return locked;
+}
+
+static inline void setStateWord(s32 off, void* v) {
+    if (!isStateLocked()) {
+        *(void**)(lbl_80529DEC + off) = v;
+    }
+}
+
+static inline void setStateByte(s32 off, u8 v) {
+    if (!isStateLocked()) {
+        lbl_80529DEC[off] = v;
+    }
+}
+
 class VObj {
 public:
     virtual void v00();
@@ -96,6 +118,138 @@ extern "C" void fn_80139D70(void) {
     fn_8043D8B4(lbl_8053AED0);
 }
 
+extern "C" void fn_80139D9C(unsigned char* p) {
+    struct VObj2 {
+        virtual void v00();
+        virtual void v04();
+        virtual void v08();
+        virtual void v0C();
+        virtual void v10();
+    };
+    bool bVar1;
+    s32 iVar3 = *(s32*)(lbl_8053AAF8 + 0x4c);
+    if (iVar3 != 7 || *(s32*)(lbl_8053AAF8 + 0x60) < 4) {
+        if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) {
+            bVar1 = true;
+        } else {
+            bVar1 = lbl_8053AAF8[0x88] == 2;
+        }
+        if (!bVar1 && (lbl_8053AAF8[0x7f] != 0 || (iVar3 != 0xa && iVar3 != 0xc))) {
+            goto SKIP;
+        }
+    }
+    fn_80136500(lbl_8053AAF8);
+    ((VObj2*)*(void**)(p + 0xc))->v08();
+    fn_8023F390();
+    fn_801914C4(*(void**)(p + 0x20));
+    fn_8016DE30(*(void**)(p + 0x24));
+    fn_801F871C(*(void**)(p + 8));
+    fn_80190DC8(*(void**)(p + 0x20));
+    fn_8016DCEC(*(void**)(p + 0x24));
+    fn_802A3A0C(lbl_8053AC98);
+    fn_8038D570();
+    fn_80136364(lbl_8053AAF8);
+    if (*(void**)(p + 0x2c) != 0) {
+        fn_8044B960(*(void**)(p + 0x2c));
+    }
+    goto END;
+SKIP:
+    fn_8023F390();
+    fn_802A3A0C(lbl_8053AC98);
+END:
+    fn_8011921C();
+    fn_80118E20();
+    *(s32*)(p + 0x34) += 1;
+    unsigned char* base = lbl_80529DEC;
+    unsigned char* q = lbl_80529DEC;
+    for (s32 i = 0; i < 4; i++) {
+        void* r = fn_80236100(i);
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            *(void**)(q + 0x150) = r;
+        }
+        r = fn_80237774(i);
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            *(void**)(q + 0x160) = r;
+        }
+        r = fn_80235A30(i);
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            *(void**)(q + 0x170) = r;
+        }
+        r = fn_8023587C(i);
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            *(void**)(q + 0x180) = r;
+        }
+        r = fn_80235ACC(i);
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            *(void**)(q + 0x190) = r;
+        }
+        q += 4;
+    }
+    unsigned char* pl = lbl_8053AAF8;
+    void* f8 = *(void**)(pl + 0xf8);
+    if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+        bVar1 = true;
+    } else {
+        bVar1 = false;
+    }
+    if (!bVar1) {
+        *(void**)(lbl_80529DEC + 0x1b0) = f8;
+    }
+    u8 fc = pl[0xfc];
+    if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+        bVar1 = true;
+    } else {
+        bVar1 = false;
+    }
+    if (!bVar1) {
+        lbl_80529DEC[0x214] = fc;
+    }
+    if ((lbl_80529DEC[0x24a] & 1) == 0 && (lbl_80529DEC[0x24a] & 2) == 0 && (lbl_80529DEC[0x24a] & 4) == 0 && (lbl_80529DEC[0x24a] & 8) == 0) {
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            lbl_80529DEC[0x215] = 1;
+        }
+    } else {
+        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+            bVar1 = true;
+        } else {
+            bVar1 = false;
+        }
+        if (!bVar1) {
+            lbl_80529DEC[0x215] = 0;
+        }
+    }
+}
+
 extern "C" void fn_8016EDB0(void*);
 extern "C" void fn_801F8E4C(void*);
 extern "C" void fn_8023F088(void);
@@ -149,8 +303,6 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 	struct VObj {
-		virtual void v00();
-		virtual void v04();
 		virtual void v08(int);
 		virtual void v0C();
 	};
@@ -227,21 +379,31 @@ extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 		}
 		*(void**)(this_ + 0xc) = 0;
 
-		if (*(void**)((char*)lbl_80529DEC + 0x10) != 0) {
-			((VObj*)*(void**)((char*)lbl_80529DEC + 0x10))->v0C();
+		u8* g = (u8*)lbl_80529DEC;
+		if (*(void**)(g + 0x10) != 0) {
+			((VObj*)*(void**)(g + 0x10))->v0C();
 		}
-		*(void**)((char*)lbl_80529DEC + 0x10) = 0;
+		*(void**)(g + 0x10) = 0;
 
-		if (*(void**)((char*)lbl_80529DEC + 0x4c) != 0) {
-			((VObj*)*(void**)((char*)lbl_80529DEC + 0x4c))->v0C();
+		g = (u8*)lbl_80529DEC;
+		if (*(void**)(g + 0x4c) != 0) {
+			((VObj*)*(void**)(g + 0x4c))->v0C();
 		}
-		*(void**)((char*)lbl_80529DEC + 0x4c) = 0;
+		*(void**)(g + 0x4c) = 0;
 
 		if (how > 0) {
 			__dl__FPv(this_);
 		}
 	}
 	return this_;
+}
+
+extern "C" void* fn_8013A538(u8* this_, JKRHeap* heap) {
+    u8* p = this_;
+    *(void**)p = &lbl_8049F080;
+    lbl_8053AB00 = heap;
+    if ((p[0x0] = 0, 1)) {}
+    return p;
 }
 
 extern "C" void fn_8013A884(const unsigned char* src) {
