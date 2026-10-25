@@ -161,9 +161,9 @@ extern "C" void fn_8028676C(char* p) {
         fn_8022BC38(Player_GetLinkTargetIndex(p), *(s32*)(p + 0x3b4), p + 8)) {
         if (!fn_80234ECC(Player_GetLinkTargetIndex(p))) {
             const JGeometry::TVec3f& a = *(JGeometry::TVec3f*)fn_8023E724(Player_GetLinkTargetIndex(p)) - saved;
-            const f32 alen = JGeometry::TUtilf::sqrt(a.x * a.x + a.y * a.y);
+            f32 alen = ((const JGeometry::TVec2f&)a).length();
             const JGeometry::TVec3f& b = *(JGeometry::TVec3f*)(p + 8) - saved;
-            const f32 blen = JGeometry::TUtilf::sqrt(b.x * b.x + b.y * b.y);
+            f32 blen = ((const JGeometry::TVec2f&)b).length();
             if (alen <= blen) {
                 ++*(s32*)(p + 0x1228);
                 if (*(s32*)(p + 0x1238) > 0) --*(s32*)(p + 0x1238);
