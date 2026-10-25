@@ -168,7 +168,7 @@ extern "C" s32 fn_801535B4(Actor* actor)
     s16 angle;
     u16 result;
 
-    if (*(u8*)((u8*)fn_802D6A9C() + 0x10000 + room + 0x31DF)) {
+    if (*(u8*)((u8*)fn_802D6A9C() + room + 0x131DF)) {
         return 0;
     }
     if (*(s32*)(base + 0x230) == 0xE) {
@@ -183,9 +183,9 @@ extern "C" s32 fn_801535B4(Actor* actor)
     *(f32*)(base + 0x2B8) = (f32)((s32)*(f32*)(base + 0x2B8) & 0xFFF8);
     *(f32*)(base + 0x2BC) = (f32)((s32)*(f32*)(base + 0x2BC) & 0xFFF8);
     angle = fn_801F6874(*(s32*)(base + 0x98));
-    *(f32*)(base + 0x2B8) = lbl_8053D314 * *(f32*)((u8*)sincosTable___5JMath + ((u32)(s32)angle >> 2 & 0x3FF8)) + *(f32*)(base + 0x2B8);
+    *(f32*)(base + 0x2B8) = lbl_8053D314 * *(f32*)(sincosTable___5JMath + ((u32)(s32)angle >> 2 & 0x3FF8)) + *(f32*)(base + 0x2B8);
     angle = fn_801F6874(*(s32*)(base + 0x98));
-    *(f32*)(base + 0x2BC) = lbl_8053D314 * *(f32*)((u8*)sincosTable___5JMath + ((u32)(s32)angle >> 2 & 0x3FF8) + 4) + *(f32*)(base + 0x2BC);
+    *(f32*)(base + 0x2BC) = lbl_8053D314 * *(f32*)(sincosTable___5JMath + ((u32)(s32)angle >> 2 & 0x3FF8) + 4) + *(f32*)(base + 0x2BC);
     result = fn_8022461C(base + 0x2B8, *(s32*)(base + 0x4));
     if ((u32)(result - 2) < 2 || result == 0xE) {
         *(s32*)(base + 0x250) = 10000;
@@ -850,4 +850,5 @@ extern "C" f32 fn_80154744()
     result.bits = (random->get_bit32() >> 9) | 0x3F800000;
     return result.value - lbl_8053D25C;
 }
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
