@@ -371,7 +371,7 @@ L156:
             *(f32*)(this_ + 0x284) = dx;
             *(f32*)(this_ + 0x288) = dy;
             f32 len2 = dx * dx + dy * dy;
-            if (len2 > lbl_80540AB8 * __float_epsilon && len2 <= lbl_80540ABC) {
+            if (len2 > lbl_80540AB8 * *(f32*)&__float_epsilon && len2 <= lbl_80540ABC) {
                 f32 r = __frsqrte(len2);
                 f32 inv = lbl_80540AC0 * r * (lbl_80540AC4 - len2 * (r * r));
                 *(f32*)(this_ + 0x284) = dx * inv;
