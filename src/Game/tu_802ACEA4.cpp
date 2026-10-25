@@ -115,11 +115,15 @@ extern "C" void fn_802ADC18(Actor* a) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802AEE10(Actor* a) {
-    u8* p = (u8*)a;
-    s32* ta;
-    s32* tb;
+    f32 one;
+    f32 bx;
+    f32 px;
+    f32 py;
+    f32 ry0;
     s32 i;
+    u8* p = (u8*)a;
     f32 zero = 0.0f;
     *(s32*)(p + 0x234) = a->field_90 & 0x7f;
     *(s32*)(p + 0x238) = (a->field_90 >> 7) & 0x1f;
@@ -131,19 +135,15 @@ extern "C" void fn_802AEE10(Actor* a) {
     case 6:
     default:
         if (*(s32*)(p + 0x23c) == 1) {
-            f32 hi = -20.0f;
-            f32 lo = 20.0f;
-            a->field_60 = hi;
-            a->field_64 = hi;
-            a->field_68 = lo;
-            a->field_6C = lo;
+            a->field_60 = -20.0f;
+            a->field_64 = -20.0f;
+            a->field_68 = 20.0f;
+            a->field_6C = 20.0f;
         } else {
-            f32 hi = -32.0f;
-            f32 lo = 32.0f;
-            a->field_60 = hi;
-            a->field_64 = hi;
-            a->field_68 = lo;
-            a->field_6C = lo;
+            a->field_60 = -32.0f;
+            a->field_64 = -32.0f;
+            a->field_68 = 32.0f;
+            a->field_6C = 32.0f;
         }
         break;
     case 2:
@@ -176,29 +176,26 @@ extern "C" void fn_802AEE10(Actor* a) {
     }
 
     if (*(s32*)(p + 0x234) >= 2) {
-        f32 px = a->field_0C.x;
+        px = a->field_0C.x;
         s32 room = a->field_04;
         u8* mgr = (u8*)fn_802D6A9C();
         Box4 box = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
-        ta = lbl_8046C8CC;
-        tb = lbl_8046C8B0;
-        f32 py;
-        f32 ry0 = box.b;
-        f32 one = 16.0f;
+        s32* ta = lbl_8046C8CC;
+        s32* tb = lbl_8046C8B0;
+        ry0 = box.b;
+        one = 16.0f;
+        bx = box.a;
         for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
-            s32 xi = (s32)(px - box.a);
+            s32 xi = (s32)(px - bx);
             py = a->field_0C.y;
             for (s32 j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
-                s32 x;
                 s32 yi = (s32)(py - ry0);
-                x = xi;
-                if(x < 0) x = 0;
-                else if(x >= 0x200) x = 0x1ff;
+                s32 x = clampTileCoordinate(xi);
                 if(yi < 0) yi = 0;
                 else if(yi >= 0x200) yi = 0x1ff;
                 s32 y = yi;
-                u32 key = ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf);
-                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04, key, 6);
+                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
+                  ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf), 6);
                 py += one;
             }
             px += one;
@@ -206,4 +203,4 @@ extern "C" void fn_802AEE10(Actor* a) {
     }
     *(s32*)(p + 0x230) = 0;
 }
-
+#pragma opt_propagation reset
