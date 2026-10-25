@@ -32,6 +32,45 @@ extern "C" Actor* fn_8034543C(Actor* this_, s16 n) {
     return this_;
 }
 
+extern "C" void fn_8034549C(char* this_) {
+    DrawRec param;
+    f32 mtx[3][4];
+    f32 cx; f32 ry; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
+    mtx[0][3] = lbl_805423A0;
+    mtx[1][3] = lbl_805423A0;
+    mtx[2][3] = lbl_805423A0;
+    ry = *(u16*)(this_ + 0x252) / lbl_805423A4;
+    sx = sin(lbl_805423A0);
+    sy = sin(ry);
+    sz = sin(lbl_805423A0);
+    cx = cos(lbl_805423A0);
+    cy = cos(ry);
+    cz = cos(lbl_805423A0);
+    param.w18 = &mtx;
+    param.b21 = 1;
+    *(s8*)&param.b1c = -1;
+    param.b1d = -1;
+    ((u8*)&param.w10)[3] = 200;
+    f32 sc = lbl_805423A8;
+    f32 cxsz;
+    f32 cxcz;
+    cxcz = cx * cz;
+    sxsy = sx * sy;
+    cxsz = cx * sz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    mtx[0][0] = sc * (cy * cz);
+    mtx[1][0] = sc * (cy * sz);
+    mtx[2][0] = sc * -sy;
+    mtx[0][1] = sc * (sxsy * cz - cxsz);
+    mtx[1][1] = sc * (sxsy * sz + cxcz);
+    mtx[2][1] = sc * (sx * cy);
+    mtx[0][2] = sc * (cxcz * sy + sxsz);
+    mtx[1][2] = sc * (cxsz * sy - sxcz);
+    mtx[2][2] = sc * (cx * cy);
+    fn_801F06F0(this_, lbl_80471FF8, *(s32*)(this_ + 0x24c) + 0x283, &param, -1, sc, sc);
+}
+
 extern "C" void fn_801F71A4(f32, f32, f32, f32);
 extern "C" s32 fn_80345744(Actor* this_) {
     u8* self = (u8*)this_;
