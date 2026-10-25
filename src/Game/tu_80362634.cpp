@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/ItemBase.h"
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
 extern "C" const char lbl_80474BFC[];
@@ -221,20 +222,18 @@ extern "C" void fn_80362680(char* self) {
     }
     if (*(u8*)(self + 0x278) == 1) {
         f32 a = lbl_80542B0C;
-        f32 b = lbl_80542B10;
-        f32 c = lbl_80542B5C;
-        vecs[3] = a;
-        vecs[7] = a;
-        vecs[11] = a;
-        vecs[0] = c;
+        vecs[0] = lbl_80542B5C;
+        vecs[5] = lbl_80542B10;
+        vecs[10] = lbl_80542B10;
         vecs[1] = a;
         vecs[2] = a;
+        vecs[3] = a;
         vecs[4] = a;
-        vecs[5] = b;
         vecs[6] = a;
+        vecs[7] = a;
         vecs[8] = a;
         vecs[9] = a;
-        vecs[10] = b;
+        vecs[11] = a;
         p.unk_0x18 = vecs;
     }
     if (*(s32*)(self + 0x258) == 0) {
@@ -250,28 +249,31 @@ extern "C" f32 lbl_80474BB8[];
 extern "C" const char lbl_80474BD4[];
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
 extern "C" void fn_803628D4(char* self) {
-  JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
-  Mtx mtxA = {{1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.0f}};
-  u8 arr[16];
-  u8 i;
-  for (i = 0; i < 16; i += 8) {
-    arr[i] = i;
-    arr[i + 1] = i + 1;
-    arr[i + 2] = i + 2;
-    arr[i + 3] = i + 3;
-    arr[i + 4] = i + 4;
-    arr[i + 5] = i + 5;
-    arr[i + 6] = i + 6;
-    arr[i + 7] = i + 7;
-  }
-  if ((*(s32*)(self + 0x268) & 7) >= 5) {
-    *(f32*)(self + 0x10) -= lbl_80474BB8[(*(s32*)(self + 0x268) & 7) - 5];
-  }
-  fn_801F06F0(self, lbl_80474BD4, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)arr, -1, lbl_80542B10, lbl_80542B10);
-  *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
-  if (*(s32*)(self + 0x138) == 0) {
-    fn_801EF830(*(s32*)(self + 4), (f32*)(self + 0xc), arr, 7, (u8*)lbl_80474BD4, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), 0);
-  }
+ JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
+ Mtx mtxB;
+ DrawRec p;
+ Mtx mtxA;
+ if ((*(s32*)(self + 0x268) & 7) >= 5) {
+  f32 one;
+  f32 zero;
+  one = lbl_80542B10;
+  zero = lbl_80542B0C;
+  mtxA[0][3] = zero; mtxA[1][3] = zero; mtxA[2][3] = zero;
+  mtxA[0][0] = one; mtxA[0][1] = zero; mtxA[0][2] = zero;
+  mtxA[1][0] = zero; mtxA[1][1] = one; mtxA[1][2] = zero;
+  mtxA[2][0] = zero; mtxA[2][1] = zero; mtxA[2][2] = lbl_80542B5C;
+  p.w18 = mtxA;
+  *(f32*)(self + 0x10) -= lbl_80474BB8[(*(s32*)(self + 0x268) & 7) - 5];
+ }
+ fn_801F06F0(self,lbl_80474BD4,*(s32*)(self+0x26c)+*(s32*)(self+0x264),(s32)&p,-1,lbl_80542B10,lbl_80542B10);
+ *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
+ mtxB[0][0] = lbl_80542B10; mtxB[0][1] = lbl_80542B0C; mtxB[0][2] = lbl_80542B0C;
+ mtxB[1][0] = lbl_80542B0C; mtxB[1][1] = lbl_80542B10; mtxB[1][2] = lbl_80542B0C;
+ mtxB[2][0] = lbl_80542B0C; mtxB[2][1] = lbl_80542B0C; mtxB[2][2] = lbl_80542B10;
+ p.w18 = mtxB;
+ s32 id = *(s32*)(self+0x26c)+*(s32*)(self+0x264);
+ if (*(void**)(self+0x138)==0)
+ fn_801EF830(*(s32*)(self+4),(f32*)(self+0xc),(u8*)&p,7,(u8*)lbl_80474BD4,id,0);
 }
 
 extern "C" void fn_80362B14(char* self) {
@@ -407,11 +409,12 @@ extern "C" void fn_80363664(char* self) {
             s32 prev = *(s32*)(self + 0x26c);
             do {
                 const f32* v;
+                char* p = self;
                 *(s32*)(self + 0x23c) = fn_801CD664(4);
                 v = &lbl_8050C088[*(s32*)(self + 0x23c) * 3];
-                *(f32*)(self + 0x3c) = v[0];
-                *(f32*)(self + 0x40) = v[1];
-                *(f32*)(self + 0x44) = v[2];
+                *(f32*)(p + 0x3c) = v[0];
+                *(f32*)(p + 0x40) = v[1];
+                *(f32*)(p + 0x44) = v[2];
                 *(s32*)(self + 0x248) = fn_801CD664(0x14) + 0x1e;
                 *(s32*)(self + 0x26c) = lbl_804745B8[*(s32*)(self + 0x23c) + 0x14];
             } while (*(s32*)(self + 0x26c) == prev);
@@ -965,7 +968,7 @@ extern "C" void fn_80364F60(char* this_) {
 }
 
 extern "C" void* fn_8013CC50(u32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-extern f32 lbl_80542B10;
+
 extern "C" void fn_8036509C(char* self) {
     if (*(s32*)(self + 0x248) != 0) {
         if (*(s32*)(self + 0x248) <= 0xe) {
