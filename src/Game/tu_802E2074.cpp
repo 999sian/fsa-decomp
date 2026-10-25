@@ -19,7 +19,7 @@ extern "C" void* fn_802E2074(void* this_, s16 freeFlag) {
         *(void**)this_ = lbl_804A9BC8;
         __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
