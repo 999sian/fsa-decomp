@@ -292,10 +292,6 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 extern "C" void __dl__FPv(void* this_);
 #pragma opt_propagation off
 extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
-	struct VObj {
-		virtual void v08(int);
-		virtual void v0C();
-	};
 
 	if (this_ != 0) {
 		*(void**)this_ = lbl_8049F080;
@@ -310,9 +306,11 @@ extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 		}
 
 		if (*(void**)(this_ + 0x2c) != 0) {
-			((VObj*)*(void**)(this_ + 0x2c))->v08(1);
+			if (*(void**)(this_ + 0x2c) != 0) {
+				((ManagerDtorObj*)*(void**)(this_ + 0x2c))->v08(1);
+			}
+			*(void**)(this_ + 0x2c) = 0;
 		}
-		*(void**)(this_ + 0x2c) = 0;
 
 		if (*(void**)(this_ + 0x30) != 0) {
 			freeAll__7JKRHeapFv(*(void**)(this_ + 0x30));
@@ -329,57 +327,57 @@ extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0x1c) != 0) {
-			((VObj*)*(void**)(this_ + 0x1c))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0x1c))->v08(1);
 		}
 		*(void**)(this_ + 0x1c) = 0;
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0x18) != 0) {
-			((VObj*)*(void**)(this_ + 0x18))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0x18))->v08(1);
 		}
 		*(void**)(this_ + 0x18) = 0;
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0x14) != 0) {
-			((VObj*)*(void**)(this_ + 0x14))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0x14))->v08(1);
 		}
 		*(void**)(this_ + 0x14) = 0;
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0x10) != 0) {
-			((VObj*)*(void**)(this_ + 0x10))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0x10))->v08(1);
 		}
 		*(void**)(this_ + 0x10) = 0;
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0x8) != 0) {
-			((VObj*)*(void**)(this_ + 0x8))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0x8))->v08(1);
 		}
 		*(void**)(this_ + 0x8) = 0;
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0x4) != 0) {
-			((VObj*)*(void**)(this_ + 0x4))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0x4))->v08(1);
 		}
 		*(void**)(this_ + 0x4) = 0;
 
 		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
 		if (*(void**)(this_ + 0xc) != 0) {
-			((VObj*)*(void**)(this_ + 0xc))->v08(1);
+			((ManagerDtorObj*)*(void**)(this_ + 0xc))->v08(1);
 		}
 		*(void**)(this_ + 0xc) = 0;
 
 		u8* g = (u8*)lbl_80529DEC;
 		if (*(void**)(g + 0x10) != 0) {
-			((VObj*)*(void**)(g + 0x10))->v0C();
+			((ManagerDtorObj*)*(void**)(g + 0x10))->v0C();
+			*(void**)(g + 0x10) = 0;
 		}
-		*(void**)(g + 0x10) = 0;
 
 		g = (u8*)lbl_80529DEC;
 		if (*(void**)(g + 0x4c) != 0) {
-			((VObj*)*(void**)(g + 0x4c))->v0C();
+			((ManagerDtorObj*)*(void**)(g + 0x4c))->v0C();
+			*(void**)(g + 0x4c) = 0;
 		}
-		*(void**)(g + 0x4c) = 0;
 
 		if (how > 0) {
 			__dl__FPv(this_);
