@@ -16,6 +16,7 @@ extern "C" void fn_801EF830(s32 a, void* b, void* c, s32 d, void* e, s32 f, s32 
 extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, void* e, f32 f1, f32 f2);
 extern "C" void* fn_8011921C(void);
 extern "C" s32 lbl_8046486C[];
+extern "C" s32 fn_8013CC50(void* obj, void* v, u16 a, s32 b, f32 c, u32 d, s32 e, s32 f, s32 g);
 
 static inline void CallVfn24(char* obj, s32 arg) {
     (*(void (***)(char*, s32))obj)[24](obj, arg);
@@ -222,14 +223,7 @@ extern "C" void fn_8011395C(char* self) {
 }
 
 extern "C" void fn_80113B54(char* self, int arg) {
-    struct P {
-        f32 x;
-        f32 y;
-    };
-    struct V {
-        P xy;
-        f32 z;
-    } vec;
+    Vec3xy_80113B54 vec;
     u8 buf50[0x3c];
     u8 buf14[0x3c];
     int i;
@@ -304,8 +298,7 @@ extern "C" void fn_80113B54(char* self, int arg) {
     *(s32*)(buf14 + 0x34) = 0;
     *(s32*)(buf14 + 0x38) = 2;
 
-    *(P*)&vec = *(P*)(self + 0xc);
-    vec.z = *(f32*)(self + 0x14);
+    vec = *(Vec3xy_80113B54*)(self + 0xc);
     vec.xy.y = *(f32*)(self + 0x28);
 
     if (arg == 0x1d6) {
@@ -337,53 +330,53 @@ extern "C" int fn_80113E98(char* self) {
 
 extern "C" void fn_80114860(char* this_) {
     s32 v = *(s32*)((u8*)fn_8011921C() + 8);
-    if (*(s32*)(this_ + 0x238) == 0) {
+    if (*(s32*)(this_ + 0x238) != 0) {
         if (v == lbl_8046486C[2]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 2);
+            CallVfn24(this_, 2);
         } else if (v == lbl_8046486C[3]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 3);
+            CallVfn24(this_, 3);
         } else if (v == lbl_8046486C[4]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 4);
+            CallVfn24(this_, 4);
         } else if (v == lbl_8046486C[5]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 5);
+            CallVfn24(this_, 5);
         } else if (v == lbl_8046486C[6]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 6);
+            CallVfn24(this_, 6);
         } else if (v == lbl_8046486C[7]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 7);
+            CallVfn24(this_, 7);
         } else if (v == lbl_8046486C[9]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 9);
-        } else if (v == lbl_8046486C[11]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 11);
-        } else if (v == lbl_8046486C[12]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 12);
-        } else if (v == lbl_8046486C[13]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 13);
-        } else if (v == lbl_8046486C[14]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 14);
-        } else if (v == lbl_8046486C[15]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 15);
-        } else if (v == lbl_8046486C[16]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 16);
-        } else if (v == lbl_8046486C[17]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 17);
+            CallVfn24(this_, 9);
+        } else if (v == lbl_8046486C[10]) {
+            CallVfn24(this_, 10);
         }
     } else {
         if (v == lbl_8046486C[2]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 2);
+            CallVfn24(this_, 2);
         } else if (v == lbl_8046486C[3]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 3);
+            CallVfn24(this_, 3);
         } else if (v == lbl_8046486C[4]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 4);
+            CallVfn24(this_, 4);
         } else if (v == lbl_8046486C[5]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 5);
+            CallVfn24(this_, 5);
         } else if (v == lbl_8046486C[6]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 6);
+            CallVfn24(this_, 6);
         } else if (v == lbl_8046486C[7]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 7);
+            CallVfn24(this_, 7);
         } else if (v == lbl_8046486C[9]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 9);
-        } else if (v == lbl_8046486C[10]) {
-            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 10);
+            CallVfn24(this_, 9);
+        } else if (v == lbl_8046486C[11]) {
+            CallVfn24(this_, 11);
+        } else if (v == lbl_8046486C[12]) {
+            CallVfn24(this_, 12);
+        } else if (v == lbl_8046486C[13]) {
+            CallVfn24(this_, 13);
+        } else if (v == lbl_8046486C[14]) {
+            CallVfn24(this_, 14);
+        } else if (v == lbl_8046486C[15]) {
+            CallVfn24(this_, 15);
+        } else if (v == lbl_8046486C[16]) {
+            CallVfn24(this_, 16);
+        } else if (v == lbl_8046486C[17]) {
+            CallVfn24(this_, 17);
         }
     }
 }
