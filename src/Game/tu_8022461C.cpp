@@ -24,6 +24,7 @@ extern "C" s32 fn_802255F4(f32* pos, s32 room) {
 return fn_802252F4(pos, room);
 }
 
+#pragma opt_propagation off
 static inline u16 tileIndexForCheck(const f32* __restrict pos, s32 room) {
     struct Rect { f32 x0, y0, x1, y1; };
     u8* g = fn_802D6A9C();
@@ -64,6 +65,7 @@ static inline u32 tileKindForCheck(const f32* __restrict pos, int room) {
     }
     return kind;
 }
+#pragma opt_propagation reset
 
 extern const u16 lbl_8046AADC[];
 #pragma opt_propagation reset
