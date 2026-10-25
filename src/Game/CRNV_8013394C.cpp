@@ -1,5 +1,4 @@
 #include "types.h"
-#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void fn_801EE434(void* obj);
 extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
