@@ -457,7 +457,7 @@ extern "C" void fn_801D5B70(u8* this_) {
     }
 }
 
-extern "C" void fn_801D5D84(void* this_, s32 state) {
+extern "C" void fn_801D5D84(BogfActor* this_, s32 state) {
     switch (state) {
     case 0:
     case 21:
