@@ -1,8 +1,5 @@
 #include "types.h"
 
-static inline bool isOnGround(f32 z) {
-    return 0.0f == z;
-}
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Util.h"
 #include "JSystem/JMath/JMath.h"
