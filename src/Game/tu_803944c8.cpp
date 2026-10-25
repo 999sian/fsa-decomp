@@ -2155,6 +2155,18 @@ void fn_8039FE6C(void) {}
 
 int fn_8039FE70(void) { return 1; }
 
+struct MsgCounter {
+    u8 pad0[0x4c];
+    s32 m4c;
+    s32 m50;
+    s32 m54;
+    s32 m58;
+    u8 m5c;
+    u8 m5d;
+    u8 pad5e[2];
+    u8* m60;
+};
+
 extern "C" u8 fn_803A313C(void*);
 extern "C" void fn_803A3114(void*);
 extern "C" void fn_803A30F0(void*);
@@ -2442,17 +2454,7 @@ extern void* lbl_8053AED0;
 extern u8 lbl_8050EC80[];
 extern u8 lbl_80529DEC[];
 
-struct MsgCounter {
-    u8 pad0[0x4c];
-    s32 m4c;
-    s32 m50;
-    s32 m54;
-    s32 m58;
-    u8 m5c;
-    u8 m5d;
-    u8 pad5e[2];
-    u8* m60;
-};
+
 
 extern void* lbl_8053AF80;
 extern void* lbl_8053AD30;
