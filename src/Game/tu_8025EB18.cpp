@@ -71,6 +71,18 @@ extern JGeometry::TVec3<f32> lbl_8046B580[];
 extern const f32 lbl_80540188;
 extern const f32 lbl_805401E0;
 extern "C" void fn_801F3708(char*, JGeometry::TVec3<f32>*);
+extern "C" s32 fn_8024189C(char*);
+extern "C" void fn_80230D80(s32, JGeometry::TVec3<f32>*);
+extern "C" s32 fn_8023EF50(s32);
+u8 fn_8022E438(s32, u32);
+void fn_80230C6C(s32);
+extern JGeometry::TVec3<f32> lbl_8046B8FC[];
+extern JGeometry::TVec3<f32> lbl_8046B92C[];
+extern const f32 lbl_80540158;
+extern const f32 lbl_8054015C;
+extern const f32 lbl_80540160;
+extern const f32 lbl_80540164;
+extern const f32 lbl_80540168;
 
 extern "C" bool fn_8025EB18(char* p) {
     bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
