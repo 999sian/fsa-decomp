@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" const float lbl_80542210;
 extern "C" const float lbl_8054221C;
@@ -67,15 +68,25 @@ extern "C" void fn_8033EA54(Actor* this_) {
         *(s32*)(p + 0x24c) = 1;
         *(s32*)(p + 0x230) = 1;
         break;
-    case 1:
-        if (*(f32*)(p + 0x240) < lbl_8054221C) {
-            *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + lbl_8054222C;
-            if (*(f32*)(p + 0x240) < lbl_8054221C) {
-                *(f32*)(p + 0x240) = lbl_8054221C;
-                *(s32*)(p + 0x230) = 0;
+    case 1: {
+        Vec sum;
+        f32 dist;
+        if (*(s32*)(p + 0x254) == *(s32*)(p + 0x250)) {
+            sum.x = *(f32*)(p + 0x24) + *(f32*)(p + 0x234);
+            sum.y = *(f32*)(p + 0x28) + *(f32*)(p + 0x238);
+            sum.z = *(f32*)(p + 0x2c) + *(f32*)(p + 0x23c);
+            dist = PSVECDistance((Vec*)(p + 0xc), &sum);
+            if (dist >= (f32)*(u32*)(p + 0x258) * lbl_80542228) {
+                if (*(s32*)(p + 0x254) != *(s32*)(p + 0x250)) {
+                    *(f32*)(p + 0x3c) = lbl_80542210;
+                }
             }
         }
+        if (((s32 (*)(Actor*))(*(void***)this_)[13])(this_) == 1) {
+            *(s32*)(p + 0x230) = 2;
+        }
         break;
+    }
     case 2:
         if (*(f32*)(p + 0x240) > lbl_80542210) {
             *(f32*)(p + 0x240) = *(f32*)(p + 0x240) - lbl_8054222C;
