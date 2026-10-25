@@ -36,6 +36,7 @@ inline void unusedS32(s32 v) {}
 
 // NonMatching: retail keeps a dead float->int conversion (fctiwz + stfd) of
 // "y - mgr->0xd0" in case 0 and a 0x30 frame; this version drops it.
+#pragma opt_dead_assignments off
 extern "C" void fn_802A7D40(u8* this_) {
     u8* mgr = fn_802D6A9C();
     switch (*(s32*)(this_ + 0x230)) {
@@ -45,7 +46,7 @@ extern "C" void fn_802A7D40(u8* this_) {
             *(s32*)(this_ + 0x230) = 1;
             switch ((u8)*(u32*)(this_ + 0x90)) {
             case 1:
-                volatile s32 dy = *(f32*)(this_ + 0x10) - *(f32*)(mgr + 0xd0);
+                s32 dy = *(f32*)(this_ + 0x10) - *(f32*)(mgr + 0xd0);
                 break;
             }
         }
@@ -59,10 +60,13 @@ extern "C" void fn_802A7D40(u8* this_) {
     case 2:
         if (*(s32*)(this_ + 0x234) == 0) {
             if (*(u8**)(this_ + 0x238) == NULL) {
+                f32 y = 24.0f + *(f32*)(this_ + 0x10);
+                f32 x = 16.0f + *(f32*)(this_ + 0xc);
+                f32 z = *(f32*)(this_ + 0x14);
                 Vec3 v;
-                v.x = 16.0f + *(f32*)(this_ + 0xc);
-                v.y = 24.0f + *(f32*)(this_ + 0x10);
-                v.z = *(f32*)(this_ + 0x14);
+                v.x = x;
+                v.y = y;
+                v.z = z;
                 *(u8**)(this_ + 0x238) = fn_8013CC50(*(u32*)(this_ + 4), &v, 0x173, 1, 0, 0, 0, 1, 1.0f);
                 *(s32*)(this_ + 0x230) = 3;
                 *(f32*)(this_ + 0xc) += 16.0f;
@@ -94,7 +98,7 @@ extern "C" void fn_802A7D40(u8* this_) {
         break;
     }
 }
-
+#pragma opt_dead_assignments reset
 extern void* lbl_804A7FB8[];
 
 extern "C" void* fn_802A7F58(u8* this_, s16 freeFlag) {
