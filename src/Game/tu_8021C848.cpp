@@ -64,29 +64,34 @@ extern "C" u8 fn_8021C848(int* param_1) {
 extern "C" void fn_8021C9C4(int* param_1, int param_2)
 {
     int r = 0;
-    char* base = lbl_8046A688;
     param_1[4] = param_2;
     param_1[0] = r;
     param_1[2] = r;
     param_1[3] = r;
     *(char*)(param_1 + 5) = r;
+    char* base = lbl_8046A688;
     switch (param_1[0]) {
     case 0:
+        r = param_1[4];
         base += 0x1c;
-        { int offset = (param_1[4] << 2) + (param_1[2] << 2); r = *(int*)(base + offset); }
+        r *= 4;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
     case 1:
+        r = param_1[4];
         base += 0x2c;
-        { int offset = param_1[4] * 0x1c + param_1[2] * 4; r = *(int*)(base + offset); }
+        r *= 0x1c;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
     case 2:
+        r = param_1[4];
         base += 0x9c;
-        { int offset = param_1[4] * 8 + param_1[2] * 4; r = *(int*)(base + offset); }
+        r *= 8;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
     }
     param_1[1] = r;
 }
-#pragma opt_propagation off
 extern "C" void fn_8021CA70(int* param_1, int param_2)
 {
     int r = 0;
