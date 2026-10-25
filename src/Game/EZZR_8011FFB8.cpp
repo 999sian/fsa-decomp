@@ -17,7 +17,7 @@ static inline f32 EZZR_Sqrt(f32 x) {
 class EZZR : public Actor {
 public:
     virtual void v19();
-    virtual void v20();
+    virtual u8 v20();
     virtual void v21();
     virtual u8 v22();
     virtual void v23();
