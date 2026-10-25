@@ -1,5 +1,13 @@
 #include "types.h"
 
+static inline u32* copyVectorWords(u32* first, u32* last, u32* out) {
+    while (first < last) *out++ = *first++;
+    return out;
+}
+static inline void copyVectorWordsBackward(u32* first, u32* last, u32* out) {
+    while (last > first) *--out = *--last;
+}
+
 extern "C" void* fn_80119E5C(u8* self, s16 size);
 extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801F856C(void);
@@ -148,9 +156,8 @@ extern "C" BOOL fn_801184F0(u8* self, u8 arg)
         *(u32*)(lbl_804BC504 + 0x28) = 0;
         *(u32*)(lbl_804BC504 + 0x10) = 0;
     }
-    end = *(u8***)(self + 0x14);
-    src = *(u8***)(self + 0x14);
     dst = *(u8***)(self + 0x10);
+    src = end = *(u8***)(self + 0x14);
     count = ((u32)end + 3 - (u32)src) >> 2;
     if (src < end) {
         if ((n = count >> 3) != 0) {
@@ -313,6 +320,77 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
     }
 }
 
+extern "C" void __dl__FPv(void*);
+extern "C" u32* fn_801189B0(u8* selfArg, u32* positionArg, u32 amountArg) {
+    u8* self = selfArg;
+    u32 amount = amountArg;
+    u32* result;
+    u32* position = positionArg;
+    u32 capacity;
+    u32 needed;
+    u32* buffer;
+    u32* first;
+    u32* last;
+    u32* src;
+    u32* dst;
+    u32* split;
+    u32* it;
+    u32* volatile guard;
+    u8* volatile owner;
+    if (amount == 0) return position;
+    first = *(u32**)(self + 4);
+    needed = first == 0 ? 0 : ((s32)*(u32**)(self + 8) - (s32)first) / 4;
+    if (amount + needed <= *(u32*)(self + 0xc)) {
+        last = *(u32**)(self + 8);
+        split = position + amount;
+        if (split < last) {
+            src = last - amount;
+            dst = last;
+            u32* end = last;
+            u32* start = src;
+            while (src < end) *dst++ = *src++;
+            src = start;
+            dst = *(u32**)(self + 8);
+            while (src > position) *--dst = *--src;
+            for (it = position; it != split; ++it) {}
+            *(u32**)(self + 8) += amount;
+            return position;
+        } else {
+            src = position;
+            dst = split;
+            while (src < last) *dst++ = *src++;
+            for (it = position; it != *(u32**)(self + 8); ++it) {}
+        }
+        *(u32**)(self + 8) += amount;
+        return position;
+    }
+    needed = first == 0 ? 0 : ((s32)*(u32**)(self + 8) - (s32)first) / 4;
+    u32 newSize = needed + amount;
+    capacity = ((u32(*)(u32,u32,u32))*(void**)(self + 0x10))(*(u32*)(self + 0xc), needed, amount);
+    if (newSize > capacity) capacity = newSize;
+    buffer = (u32*)__nw__FUl(capacity * 4);
+    if (buffer == 0) return *(u32**)(self + 8);
+    src = *(u32**)(self + 4);
+    dst = buffer;
+    owner = self;
+    guard = buffer;
+    while (src < position) *dst++ = *src++;
+    result = dst;
+    src = position;
+    dst += amount;
+    last = *(u32**)(self + 8);
+    while (src < last) *dst++ = *src++;
+    first = *(u32**)(self + 4);
+    last = *(u32**)(self + 8);
+    for (it = first; it != last; ++it) {}
+    guard = first;
+    *(u32**)(self + 8) = buffer + (amount + (((s32)*(u32**)(self + 8) - (s32)*(u32**)(self + 4)) / 4));
+    *(u32**)(self + 4) = buffer;
+    *(u32*)(self + 0xc) = capacity;
+    __dl__FPv(first);
+    return result;
+}
+
 extern "C" void fn_80118E20(u8* self)
 {
     extern u8* lbl_8053AED0;
@@ -471,12 +549,13 @@ extern "C" void fn_801190E4(u8* self)
     if (*(u32*)(self + 0x18) >= 0x14) {
         return;
     }
-    if ((buf = (u8**)__nw__FUl(0x50)) == 0) {
+    buf = (u8**)__nw__FUl(0x50);
+    if (buf == 0) {
         return;
     }
     end = *(u8***)(self + 0x14);
-    src = *(u8***)(self + 0x10);
     a = self + 0xc;
+    src = *(u8***)(self + 0x10);
     dst = buf;
     count = ((u32)end + 3 - (u32)src) >> 2;
     b = buf;
@@ -566,8 +645,8 @@ extern "C" void fn_801194C4(u8* self) {
         switch (*(s32*)(self + 0x24)) {
         case 1:
             {
-                s32 lo[2];
                 s32 hi[2];
+                s32 lo[2];
                 lo[1] = 0;
                 hi[1] = -1;
                 lo[0] = 0;
@@ -575,10 +654,11 @@ extern "C" void fn_801194C4(u8* self) {
                 ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x2c))[76])(*(void**)(self + 0x2c), &hi[1], &lo[1]);
             }
             break;
+        case 0:
         default:
             {
-                s32 lo[2];
                 s32 hi[2];
+                s32 lo[2];
                 lo[1] = 0;
                 hi[1] = 0xff;
                 lo[0] = 0;
@@ -734,13 +814,9 @@ extern "C" void fn_80119998(u8* self, u32 frames, u32 b, s32 mode, u32 d, u32 e,
         self[2] = 0;
     }
     if (*(s32*)(self + 0x24) == 2) {
-        if (mode == 2 || mode >= 2 || mode < 0) {
-            *(u32*)(self + 0x8) = 0x46;
-        } else {
-            *(u32*)(self + 0x8) = 0x23;
-        }
+        *(u32*)(self + 0x8) = (mode == 2 || mode >= 2 || mode < 0) ? 0x46 : 0x23;
     }
-    switch (mode) {
+    switch (*(s32*)(self + 0x1c)) {
     case 0:
         if (*(s32*)(self + 0x24) == 2) {
             f32 pos[3];
