@@ -195,9 +195,9 @@ extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
 extern "C" void fn_8030C210(void* a, void* b);
 extern "C" void fn_801D1C18(void* p);
 inline s32 opgaSpawn(u8* this_, u16 kind) {
-    JGeometry::TVec3f p;
-    JGeometry::TVec3f pos;
     f32 b8[4];
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f p;
     b8[0] = *(f32*)(this_ + 0x60);
     b8[1] = *(f32*)(this_ + 0x64);
     b8[2] = *(f32*)(this_ + 0x68);
@@ -256,27 +256,7 @@ extern "C" void fn_80125EFC(u8* this_) {
     {
         s32 r29;
         switch (*(s32*)(this_ + 0x238)) { case 1: r29=0x4c0; break; case 0: default: r29=0x4bf; break; }
-        f32 b8[4];
-        b8[0] = *(f32*)(this_ + 0x60);
-        b8[1] = *(f32*)(this_ + 0x64);
-        b8[2] = *(f32*)(this_ + 0x68);
-        b8[3] = *(f32*)(this_ + 0x6c);
-        b8[0] += ((OPGA_Vec*)(this_ + 0xc))->x;
-        b8[1] += ((OPGA_Vec*)(this_ + 0xc))->y;
-        b8[2] += ((OPGA_Vec*)(this_ + 0xc))->x;
-        b8[3] += ((OPGA_Vec*)(this_ + 0xc))->y;
-        fn_8022FEB8(b8, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
-        s32 r30 = fn_8022FD8C(*(s32*)(this_ + 0x198));
-        if (r30 >= 0 && fn_802300EC()) {
-            JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
-            pos.y -= lbl_8053CA74;
-            JGeometry::TVec3f p(pos);
-            if (!fn_8038AD24(r30, (u16)r29, *(s32*)(this_ + 0x198), *(s32*)(this_ + 4), &p, 0x28)) {
-                r30 = -1;
-            }
-        } else {
-            r30 = -1;
-        }
+        s32 r30 = opgaSpawn(this_, (u16)r29);
         if (r30 >= 0) {
             *(s32*)(this_ + 0x23c) = r30;
             opgaChangeState(this_, 2);
