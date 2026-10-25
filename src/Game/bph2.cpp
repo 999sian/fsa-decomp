@@ -34,6 +34,11 @@ extern const f32 lbl_8053E100;
 extern const f32 lbl_8053E104;
 extern s32 lbl_80539FCC;
 
+static inline void bph2_drawShadow(s32 room, f32* pos, f32 alpha, f32 size) {
+    JUtility::TColor col(0, 0, 0, (s32)(lbl_8053E0E8 * alpha));
+    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, col, size);
+}
+
 static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) {
     f32 sz;
     f32 sy;
