@@ -1,5 +1,6 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80184040-80184D64 (FAGN). Remaining functions are not yet decompiled.
+#pragma auto_inline off
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
