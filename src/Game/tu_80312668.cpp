@@ -27,8 +27,6 @@ extern "C" Actor* fn_80312668(Actor* p, s16 n) {
     return p;
 }
 
-#pragma opt_common_subs off
-#pragma opt_propagation off
 #pragma opt_propagation off
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
