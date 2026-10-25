@@ -26,7 +26,7 @@ struct fn_801D1974_obj {
         if (m2a8 >= 1) {
             s32 n = m2a8 - 1;
             for (s32 i = 0; i < n; i++) {
-                m2ac[i].set(m2ac[i + 1]);
+                m2ac[i].set(*(JGeometry::TVec2<f32>*)((u8*)this + (i + 1) * 8 + 0x2ac));
             }
             m2a8 = n;
         }
@@ -117,13 +117,13 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
             }
         }
         ret = 1;
-        if (!fn_801CF888(this_, (u8*)this_ + 0xc, &v, *(s32*)((u8*)this_ + 4))) {
+        if (!fn_801CF888(this_, &this_->m00c, &v, *(s32*)((u8*)this_ + 4))) {
             this_->m2a8 = 0;
             ((JGeometry::TVec3<f32>*)&this_->m32c)->set(v.x, v.y, lbl_8053F028);
         } else {
             if (this_->m2a8 >= 1) {
-                f32 dx = this_->m32c - *(f32*)((u8*)this_ + 0xc);
-                f32 dy = this_->m330 - *(f32*)((u8*)this_ + 0x10);
+                f32 dx = this_->m32c - this_->m00c.x;
+                f32 dy = this_->m330 - this_->m00c.y;
                 f32 r = lbl_8053F02C + *(f32*)((u8*)this_ + 0x258);
                 f32 dx2 = dx * dx;
                 f32 dy2 = dy * dy;
