@@ -1,6 +1,8 @@
 #include "types.h"
 #include "sdk/stl/float.h"
 #include "JSystem/JGeometry/Box.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
     JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(actor + 0xc);
     *box = *(JGeometry::TBox2f*)(actor + 0x60);
@@ -67,6 +69,7 @@ void fn_802F6CF4(void* obj, f32* pos, void* res, u8* blk);
 void fn_802F6CF4(void* obj, FsaVec3* pos, void* res, u8* blk);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_801F856C(void);
+#pragma opt_common_subs off
 extern "C" void fn_80226FC8(void* this_, s32 idx) {
     if (*((u8*)this_ + 0x255) != 1) {
         u8* p = (u8*)this_ + idx * 4;
@@ -80,37 +83,27 @@ extern "C" void fn_80226FC8(void* this_, s32 idx) {
         } else if (*((u8*)a + 0x11c) == 0) {
             *(void**)(p + 0x27c) = 0;
         } else {
-            FsaVec3* vel = (FsaVec3*)((u8*)a + 0x3c);
-            FsaVec3* apos = (FsaVec3*)((u8*)a + 0xc);
-            FsaVec3* bpos = (FsaVec3*)((u8*)this_ + 0xc);
-            FsaVec3 d;
-            FsaVec3 v0, v1, v2, v3;
-            u8 hit = 0;
-            if (vel->z * vel->z + vel->x * vel->x + vel->y * vel->y > lbl_8053FF60 * FLT_EPSILON && apos->z < lbl_8053FF64) {
-                d.x = apos->x - bpos->x;
-                d.y = apos->y - bpos->y;
-                d.z = apos->z - bpos->z;
-                if (d.x < lbl_8053FF68 && d.y < lbl_8053FF68 && d.x < lbl_8053FF6C && d.y < lbl_8053FF6C) {
+            JGeometry::TVec3f* vel = (JGeometry::TVec3f*)((u8*)a + 0x3c);
+            JGeometry::TVec3f* apos = (JGeometry::TVec3f*)((u8*)a + 0xc);
+
+            
+            if (!(vel->squared() <= lbl_8053FF60 * FLT_EPSILON) && apos->z < lbl_8053FF64) {
+                JGeometry::TVec3f d = *apos - *(JGeometry::TVec3f*)((u8*)this_ + 0xc);
+                bool hit = false;
+                if (d.x >= lbl_8053FF68 && d.y >= lbl_8053FF68 && d.x < lbl_8053FF6C && d.y < lbl_8053FF6C) {
                     hit = 1;
                 }
                 if (hit) {
-                    ((void (*)(void*))(*(void***)a)[18])(a);
+                    void* target = *(void**)(p + 0x27c);
+                    ((void (*)(void*))(*(void***)target)[18])(target);
                     *(void**)(p + 0x27c) = 0;
-                    v0.x = bpos->x - lbl_8053FF70;
-                    v0.y = bpos->y - lbl_8053FF70;
-                    v0.z = lbl_8053FF74;
+                    JGeometry::TVec3f v0(*(f32*)((u8*)this_ + 0xc) - lbl_8053FF70, *(f32*)((u8*)this_ + 0x10) - lbl_8053FF70, lbl_8053FF74);
                     fn_802A3948(lbl_8053AC98, (f32*)&v0, idx, *(u32*)((u8*)this_ + 4), 0xc);
-                    v1.x = bpos->x + lbl_8053FF70;
-                    v1.y = bpos->y - lbl_8053FF70;
-                    v1.z = lbl_8053FF74;
+                    JGeometry::TVec3f v1(lbl_8053FF70 + *(f32*)((u8*)this_ + 0xc), *(f32*)((u8*)this_ + 0x10) - lbl_8053FF70, lbl_8053FF74);
                     fn_802A3948(lbl_8053AC98, (f32*)&v1, idx, *(u32*)((u8*)this_ + 4), 0xc);
-                    v2.x = bpos->x - lbl_8053FF70;
-                    v2.y = bpos->y + lbl_8053FF70;
-                    v2.z = lbl_8053FF74;
+                    JGeometry::TVec3f v2(*(f32*)((u8*)this_ + 0xc) - lbl_8053FF70, lbl_8053FF70 + *(f32*)((u8*)this_ + 0x10), lbl_8053FF74);
                     fn_802A3948(lbl_8053AC98, (f32*)&v2, idx, *(u32*)((u8*)this_ + 4), 0xc);
-                    v3.x = bpos->x + lbl_8053FF70;
-                    v3.y = bpos->y + lbl_8053FF70;
-                    v3.z = lbl_8053FF74;
+                    JGeometry::TVec3f v3(lbl_8053FF70 + *(f32*)((u8*)this_ + 0xc), lbl_8053FF70 + *(f32*)((u8*)this_ + 0x10), lbl_8053FF74);
                     fn_802A3948(lbl_8053AC98, (f32*)&v3, idx, *(u32*)((u8*)this_ + 4), 0xc);
                     if (*((u8*)this_ + 0x255) == 0) {
                         fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, lbl_8053FF78, 0x3e3, 0, -2, 0, 0, 1);
@@ -121,9 +114,8 @@ extern "C" void fn_80226FC8(void* this_, s32 idx) {
         }
     }
 }
-
-#pragma opt_propagation off
-extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
+#pragma opt_common_subs reset
+extern "C" s32 fn_80227290(void* __restrict this_, f32 eps, const u32* __restrict types, s32 handle) {
     u8 flag;
     s32 count;
     s32 offset;
@@ -137,17 +129,17 @@ extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
         u8* a = *(u8**)((u8*)fn_801F856C() + offset + 8);
         if (a == 0 || a[0x11c] == 0 || *(s32*)(a + 4) != *(s32*)((u8*)this_ + 4) || handle == *(s32*)(a + 0x198)) continue;
         if (flag == 0 && __fabs(*(f32*)((u8*)this_ + 0x14) - *(f32*)(a + 0x14)) > eps) continue;
-        for (u32* t = types; *t != 0x4e554c4c; t++) {
+        for (const u32* __restrict t = types; *t != 0x4e554c4c; t++) {
             if (*t == *(u32*)(a + 0x1a0)) {
                 GateBox box = *(GateBox*)((u8*)this_ + 0x60);
                 JGeometry::TVec3f pos = *(JGeometry::TVec3f*)((u8*)this_ + 0xc);
                 JGeometry::TVec3f otherPos = *(JGeometry::TVec3f*)(a + 0xc);
                 GateBox other = *(GateBox*)(a + 0x60);
                 box.translate(pos.x, pos.y);
+                other.translate(otherPos.x, otherPos.y);
                 box.y0 -= pos.z;
                 pos.z *= 0.5f;
                 box.y1 -= pos.z;
-                other.translate(otherPos.x, otherPos.y);
                 other.y0 -= otherPos.z;
                 otherPos.z *= 0.5f;
                 other.y1 -= otherPos.z;
@@ -159,7 +151,9 @@ extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
                 if (y0 <= ((JGeometry::TBox2f*)&other)->i.y) y0 = ((JGeometry::TBox2f*)&other)->i.y;
                 if (x1 >= ((JGeometry::TBox2f*)&other)->f.x) x1 = ((JGeometry::TBox2f*)&other)->f.x;
                 if (y1 >= ((JGeometry::TBox2f*)&other)->f.y) y1 = ((JGeometry::TBox2f*)&other)->f.y;
-                if (x1 >= x0 && y1 >= y0) { found = *(s32*)(a + 0x198); break; }
+                u8 hit = 0;
+                if (x1 >= x0 && y1 >= y0) hit = 1;
+                if (hit) { found = *(s32*)(a + 0x198); break; }
             }
         }
         if (found >= 0) break;
