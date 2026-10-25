@@ -1,6 +1,7 @@
 #include "types.h"
 extern "C" const f32 lbl_80540678;
 extern "C" const f32 lbl_80540670;
+#include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
@@ -332,6 +333,8 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     return ok;
 }
 
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_80295C40(void* p) {
     s32 i;
     s32 n;
@@ -343,12 +346,13 @@ extern "C" void fn_80295C40(void* p) {
     for (i = 0; i < 4; i++) {
         if (fn_8023F264(i) != 0 && fn_8022F514(i) == 0) {
             n = (*(u32*)((char*)p + 0x90) >> 7) & 0x1f;
-            n = (n + 7) & ~-(n == 0);
+            n = n == 0 ? 0 : n + 7;
             if (n == fn_8023DE58(i)) {
                 n = *(s32*)((char*)p + 4);
                 if (fn_802317F0(i, n, fn_8023E724(i), (char*)p + 0xc, 0x1f) != 0) {
                     *((char*)p + (i + 0x2bc)) = 1;
                 } else {
+                    n = *(s32*)((char*)p + 4);
                     *((char*)p + (i + 0x2bc)) = fn_802317F0(i, n, fn_8023E724(i), (char*)p + 0xc, 0x21);
                 }
             }
@@ -367,21 +371,13 @@ extern "C" void fn_80295C40(void* p) {
     }
     fn_801F0E34(p, 0x30092, 0);
 
-    q = (char*)p;
-    for (k = 0; k < 2; k++) {
-        obj = *(void**)(q + 0x2fc);
+    for (k = 0; k < 4; k++) {
+        obj = ((void**)((char*)p + 0x2fc))[k];
         if (obj != 0) {
             *(u32*)((char*)obj + 0xf4) |= 1;
             *(s32*)((char*)obj + 0x24) = 1;
-            *(void**)(q + 0x2fc) = 0;
+            ((void**)((char*)p + 0x2fc))[k] = 0;
         }
-        obj = *(void**)(q + 0x300);
-        if (obj != 0) {
-            *(u32*)((char*)obj + 0xf4) |= 1;
-            *(s32*)((char*)obj + 0x24) = 1;
-            *(void**)(q + 0x300) = 0;
-        }
-        q += 8;
     }
 
     q = (char*)p;
@@ -395,7 +391,8 @@ extern "C" void fn_80295C40(void* p) {
 
     *(u8*)((char*)p + 0x2bb) = 1;
 }
-
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 extern "C" void fn_80295EE8(void* this_) {
     extern void fn_8013CB44(void* a, s32 b, s32 c, s32 d, f32 e, f32 f, f32 g);
     extern void fn_8023DE58(s32 a);
@@ -661,11 +658,14 @@ extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
 extern "C" void fn_80239914(void*, s32, void*);
 extern "C" void fn_80298978(void* p) {
+    u8* self = (u8*)p;
+    u8* ids = (u8*)p;
+    u8* centers = (u8*)p;
     s32 i;
-    s32 j;
     s32 flag;
-    s32 mode;
-    u32 key;
+    s32 j;
+    u32 mode;
+    s32 key;
     u8 ret;
     void* obj;
     JGeometry::TVec3f pos;
@@ -674,23 +674,29 @@ extern "C" void fn_80298978(void* p) {
     JGeometry::TVec3f* v;
     f32 lenSq;
 
-    for (i = 0; i < *(s32*)((char*)p + 0x29c); i++) {
-        obj = fn_801F666C(fn_801F856C(), *(s32*)((char*)p + 0x25c + i * 4));
+    for (i = 0; i < *(s32*)((char*)p + 0x29c); ids += 4, centers += 8, i++) {
+        obj = fn_801F666C(fn_801F856C(), *(s32*)(ids + 0x25c));
         flag = 0;
         if (obj != 0) {
             v = (JGeometry::TVec3f*)((char*)p + 0x250);
-            lenSq = v->squared();
-            if (lenSq > 32.0f * FLT_EPSILON) {
+            u8 zero = v->isZero();
+            if (zero == 0) {
                 flag = 1;
             } else {
                 for (j = 0; j < 4; j++) {
-                    pos = *(JGeometry::TVec3f*)((char*)obj + 0x238);
-                    pos.x = pos.x + (8.0f * (f32)((j & 1) != 0) - 4.0f);
-                    pos.y = pos.y + (8.0f * (f32)((j & 2) != 0) - 4.0f);
+                    JGeometry::setTVec3f((f32*)((char*)obj + 0x238), &pos.x);
+                    f32 x = 8.0f * (f32)((j & 1) > 0) - 4.0f;
+                    f32 y = 8.0f * (f32)((j & 2) > 0) - 4.0f;
+                    pos.x += x;
+                    pos.y += y;
                     key = *(u32*)((char*)obj + 0x90) & 0x7f;
-                    switch (key) {
+                    if (key == 0 || key == 3) { pos.y += -16.0f; }
+                    else if (key == 1 || key == 2) { pos.y += 16.0f; }
+                    else if (key == 0x17) { pos.x += 16.0f; }
+                    else if (key == 0x18) { pos.x += -16.0f; }
+                    /*switch (key) {
                     case 3:
-                        pos.y = pos.y - 16.0f;
+                        pos.y = pos.y + -16.0f;
                         break;
                     case 1:
                     case 2:
@@ -700,24 +706,27 @@ extern "C" void fn_80298978(void* p) {
                         pos.x = pos.x + 16.0f;
                         break;
                     case 0x18:
-                        pos.x = pos.x - 16.0f;
+                        pos.x = pos.x + -16.0f;
                         break;
                     }
-                    mode = (*(u32*)((char*)obj + 0x90) >> 5) & 7;
-                    mode = mode ? mode + 7 : 0;
-                    ret = (*(u8 (**)(void*, s32, void*))(*(char**)p + 0x4c))(p, mode, &pos);
-                    if ((ret & 0xff) == 1) {
+                    */
+                    mode = (*(u32*)((char*)obj + 0x90) >> 24) & 7;
+                    int room = mode + 7;
+                    if (mode == 0) room = mode;
+                    ItemBase* actor = (ItemBase*)p;
+                    ret = actor->v17(room, &pos.x);
+                    if (ret == 1U) {
                         flag = 1;
                         break;
                     }
                 }
             }
             if (flag == 1) {
-                center = (JGeometry::TVec2f*)((char*)p + 0x2dc) + i;
+                center = (JGeometry::TVec2f*)centers;
                 box.set(-10.0f, -10.0f, 10.0f, 10.0f);
-                box.addPos(*center);
+                box.addPos(*(JGeometry::TVec2f*)((char*)center + 0x2dc));
                 mode = (*(u32*)((char*)p + 0x90) >> 7) & 0x1f;
-                mode = mode ? mode + 7 : 0;
+                mode = mode == 0 ? 0 : mode + 7;
                 fn_80239914(&box, mode, *(void**)((char*)p + 0x198));
             }
         }
