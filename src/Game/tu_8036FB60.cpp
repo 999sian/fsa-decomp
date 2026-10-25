@@ -28,7 +28,7 @@ struct FSAPoolBlock {
 };
 
 
-extern "C" void fn_803721F4(char* self = 0);
+extern "C" void fn_803721F4(char* self);
 extern "C" u8 fn_8023ED8C(int);
 extern "C" void fn_80230C6C(int);
 extern "C" u8 fn_8023E854(int);
