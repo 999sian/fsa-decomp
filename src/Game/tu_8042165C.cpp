@@ -56,6 +56,75 @@ struct SubObj {
     virtual SubObj* w13(u64 x);
 };
 extern u8 lbl_8048E1B8[];
+struct HeartPane {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual HeartPane* search(u64);
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24();
+    virtual void v25();
+    virtual void v26();
+    virtual void v27();
+    virtual void v28();
+    virtual void v29();
+    virtual void v30();
+    virtual void v31();
+    virtual void v32();
+    virtual void v33();
+    virtual void v34();
+    virtual void v35();
+    virtual void v36();
+    virtual void v37();
+    virtual void v38();
+    virtual void v39();
+    virtual void v40();
+    virtual void v41();
+    virtual void v42();
+    virtual void v43();
+    virtual void v44();
+    virtual void v45();
+    virtual void v46();
+    virtual void v47();
+    virtual void v48();
+    virtual void v49();
+    virtual void v50();
+    virtual void v51();
+    virtual void v52();
+    virtual void v53();
+    virtual void v54();
+    virtual void v55();
+    virtual void v56();
+    virtual void v57();
+    virtual void v58();
+    virtual void v59();
+    virtual void v60();
+    virtual void v61();
+    virtual void v62();
+    virtual void v63();
+    virtual void v64();
+    virtual void set(f32, f32, f32, f32, f32, f32, f32, f32);
+};
+
 extern u8 lbl_8050EC80[];
 extern u32 lbl_804B145C[];
 extern "C" u32 fn_802375B0(s32 i);
@@ -383,18 +452,78 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
     }
 }
 
+extern "C" void fn_8042215C(u8* this_, s32 idx) {
+u8* base = lbl_8048E1B8;
+s16* timer = (s16*)(this_ + idx * 2);
+if (timer[0xf4] == 0) {
+((u32*)(this_ + 0x1a8))[idx] = fn_80237774(idx);
+((s32*)(this_ + 0x1c8))[idx] = fn_80237810(idx);
+} else {
+s32 cnt = ((s32*)(this_ + 0x1c8))[idx];
+s32 n = ((s32*)(this_ + 0x1a8))[idx];
+if(cnt > 32) cnt=32;
+if(cnt < 0) cnt=0;
+if(cnt<n) n=cnt;
+if(n<0) n=0;
+u64* a=(u64*)(base+0xc68);
+u64* b=(u64*)(base+0xce8);
+u64* c=(u64*)(base+0xca8);
+u64* d=(u64*)(base+0xd28);
+for(s32 k=0;k<8;k++) {
+if(n>=4) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+cnt -= 4; n-=4;}
+else {
+if(n==0) {
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 0; GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 0;
+if(cnt>0) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 1; GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 1; cnt-=4;}
+else {GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0; GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;}
+} else if(n==1) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+cnt -= 4;}
+else if(n==2) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+cnt -= 4;}
+else if(n==3) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+cnt -= 4;}
+n=0;
+}
+}
+timer[0xf4]--;
+}
+}
+
 extern "C" void fn_80423248(u8* this_, u32 idx) {
     u8* base = lbl_8048E1B8;
     if (this_[0x257] & (u8)(1 << idx)) {
+        s32 t;
         s32 sel = 0;
-        s32 t = ((s32*)(lbl_80529DEC + 0xe8))[idx];
+        s32 v = ((s32*)(lbl_80529DEC + 0xe8))[idx];
         s32 j;
         u32 name;
-        if (t > 9999) {
+        t = v;
+        if (v > 9999) {
             t = 9999;
         }
         if (t < 0) {
-            u32 off = idx * 0x28;
+            s32 off = idx * 0x28;
             u64* key = (u64*)(base + 0xa28 + off);
             u64* p = key;
             for (j = 0; j < 5; j++) {
@@ -412,7 +541,7 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
             ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + off))[4]))[0xb0] = 1;
             sel = 1;
         } else {
-            u32 off = idx * 0x28;
+            s32 off = idx * 0x28;
             u64* p = (u64*)(base + 0xa28 + off);
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(*(JUtility::TColor*)(this_ + 0x214), *(JUtility::TColor*)(this_ + 0x210));
