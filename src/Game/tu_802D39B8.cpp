@@ -109,7 +109,11 @@ s32 fn_8023CBC0(s32);
 s32 fn_8023BCD4(s32);
 void* fn_8023E604(s32);
 s32 fn_80230498(s32, const void*, s32, s32, s32, s32, s32);
-u8 fn_802DCE5C(char*, s32);
+  u8 fn_802DCE5C(char*, s32);
+  void fn_802DEE2C(void);
+  void fn_8023F78C(void);
+  void fn_8023F728(void);
+  void fn_8043D834(void*);
 }
 
 struct FsaActorList {
@@ -2265,6 +2269,82 @@ extern "C" void fn_802DD54C(char* p) {
             }
         }
     }
+}
+
+extern "C" void fn_802DEE2C(void);
+extern "C" void fn_802D3D48(char* p);
+extern "C" void fn_802D92F0(char* p);
+extern "C" void fn_802D8D50(char* p, u8 v);
+extern "C" void fn_802D8328(char* p, u8 a, u8 b);
+extern "C" void fn_80134D14(void* p, u8 v);
+extern "C" void fn_8023F1D4(int, void*, int, int, u8);
+extern "C" u32 fn_8030AAF4(s32 i);
+extern "C" u8 fn_8030A308(void* a, u32 b);
+extern "C" void fn_80303870(s32 i);
+extern "C" void fn_802DD808(char* p) {
+    s32 i, j, k;
+    RoomArrays* ra;
+    f32 pts[3];
+    f32 zero;
+    f32* fp;
+
+    *(s32*)((char*)roomArrays() + 0x1328C) = 0;
+    fn_802DEE2C();
+
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 10; j++) {
+            for (k = 0; k < 8; k++) {
+                roomArrays()->flags1048[i][j][k] = 0;
+            }
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 64; j++) {
+            roomArrays()->values2948[i][j] = 0;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 128; j++) {
+            roomArrays()->flags2D48[i][j] = 0;
+        }
+    }
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 10; j++) {
+            for (k = 0; k < 32; k++) {
+                roomArrays()->flags3548[i][j][k] = 0;
+                roomArrays()->flags6768[i][j][k] = 0;
+            }
+            for (k = 0; k < 256; k++) {
+                roomArrays()->values9968[i][j][k] = 0;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        ((u32*)((char*)roomArrays() + 0x13068))[i] = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        ((s32*)(p + 0x131A8))[i] = -1;
+    }
+    for (i = 0; i < 4; i++) {
+        if ((u8)(1 << i) & *(u8*)(lbl_8053AAF8 + 0x82)) {
+            u32 id = fn_8030AAF4(i);
+            u8 r = fn_8030A308(lbl_8053AAF8, id);
+            if (r == 1) {
+                fn_80303870(i);
+            }
+        }
+    }
+    *(s32*)(p + 0xF0) = 0;
+    zero = lbl_8054111C;
+    fp = (f32*)(p + 0xF0);
+    for (i = 0; i < 32; i++) {
+        fp[i] = zero;
+    }
+    fn_802D3D48(p);
+    fn_80134D14(lbl_8053AAF8, 0);
+    fn_802D92F0(p);
+    fn_802D8D50(p, 0);
+    fn_802D8328(p, 1, 1);
 }
 
 extern "C" void* fn_802DE604(void* p, s16 freeFlag) {
