@@ -287,16 +287,6 @@ void Bfin::state1() {
     }
 }
 
-static inline void bfinStartSwev() {
-    s32 n = fn_801F856C()->count;
-    for (s32 i = 0; i < n; i++) {
-        u8* obj = fn_801F856C()->list[i];
-        if (obj && *(u32*)(obj + 0x1a0) == 'SWEV') {
-            fn_802B3A48(obj);
-        }
-    }
-}
-
 void Bfin::state0() {
     if (fn_80239F10(this)) {
         for (s32 i = 0; i < 4; i++) {
