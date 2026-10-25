@@ -1,5 +1,6 @@
 #include "types.h"
 #include "sdk/stl/float.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 // Reciprocal square root from frsqrte with one Newton step; x must be > 0.
 static inline f32 rsqrt_step(f32 x) {
@@ -40,8 +41,11 @@ extern "C" void fn_8030AE84(u8* p, f32* rect)
 }
 
 extern "C" s32 fn_8030AF10(u8* p, s32 id, f32* rect, u8 flag) {
-    if (id >= 8 && id != *(s32*)(p + 0x28c)) {
-        return 0;
+    if (id >= 8) {
+        s32 sel = *(s32*)(p + 0x28c);
+        if (id != sel) {
+            return 0;
+        }
     }
     if (flag) {
         if ((s32)rect[2] < *(s32*)(p + 0x290)) {
@@ -57,16 +61,20 @@ extern "C" s32 fn_8030AF10(u8* p, s32 id, f32* rect, u8 flag) {
             return 0;
         }
     } else {
-        if ((s32)rect[0] < *(s32*)(p + 0x290) || (s32)rect[0] > *(s32*)(p + 0x290) + 0xf0) {
+        s32 x = (s32)rect[0];
+        if (x < *(s32*)(p + 0x290) || x > *(s32*)(p + 0x290) + 0xf0) {
             return 0;
         }
-        if ((s32)rect[2] < *(s32*)(p + 0x290) || (s32)rect[2] > *(s32*)(p + 0x290) + 0xf0) {
+        x = (s32)rect[2];
+        if (x < *(s32*)(p + 0x290) || x > *(s32*)(p + 0x290) + 0xf0) {
             return 0;
         }
-        if ((s32)rect[1] < *(s32*)(p + 0x294) || (s32)rect[1] > *(s32*)(p + 0x294) + 0xa0) {
+        x = (s32)rect[1];
+        if (x < *(s32*)(p + 0x294) || x > *(s32*)(p + 0x294) + 0xa0) {
             return 0;
         }
-        if ((s32)rect[3] < *(s32*)(p + 0x294) || (s32)rect[3] > *(s32*)(p + 0x294) + 0xa0) {
+        x = (s32)rect[3];
+        if (x < *(s32*)(p + 0x294) || x > *(s32*)(p + 0x294) + 0xa0) {
             return 0;
         }
     }
@@ -93,22 +101,13 @@ extern "C" u8 fn_8023F264(void*);
 extern "C" s32 fn_8030B110(u8* p, s32 id, f32* rect) {
     s32 x;
     s32 y;
-
-    if (fn_8023F264(*(void**)(p + 0x288))) {
-        if (id == *(s32*)(p + 0x28c)) {
-            if (id < 8) {
-                return 1;
-            }
-            x = (s32)rect[0];
-            if (x >= *(s32*)(p + 0x2a4) && x <= *(s32*)(p + 0x2a0)) {
-                y = (s32)rect[1];
-                if (y >= *(s32*)(p + 0x2ac) && y <= *(s32*)(p + 0x2a8)) {
-                    return 1;
-                }
-            }
-        }
-    }
-    return 0;
+    if (!fn_8023F264(*(void**)(p + 0x288)) || id != *(s32*)(p + 0x28c)) return 0;
+    if (id < 8) return 1;
+    x = (s32)rect[0];
+    if (x < *(s32*)(p + 0x2a4) || x > *(s32*)(p + 0x2a0)) return 0;
+    y = (s32)rect[1];
+    if (y < *(s32*)(p + 0x2ac) || y > *(s32*)(p + 0x2a8)) return 0;
+    return 1;
 }
 
 extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
@@ -255,4 +254,6 @@ extern "C" void fn_8030BDF8(u8* p)
     *(u8*)(p + 0x2bc) = 0xff;
     *(u8*)(p + 0x284) = 0;
 }
+
+void fn_8030BE34(void) {}
 
