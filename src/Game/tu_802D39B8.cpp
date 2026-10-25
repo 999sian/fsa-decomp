@@ -1958,11 +1958,13 @@ extern "C" void fn_802DEE2C(void) {
         roomArrays()->flags12F68[i] = 0;
         roomArrays()->flags12FE8[i] = 0;
     }
-    for (s32 i = 0; i < 32; i++) ((u32*)roomArrays()->flags348)[i] = 0;
+    for (s32 i = 0; i < 8; i++) {
+        for (s32 j = 0; j < 4; j++) roomArrays()->flags348[i][j] = 0;
+    }
     for (s32 i = 0; i < 8; i++) roomArrays()->counts6748[i] = 0;
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 10; j++) {
-            for (s32 k = 0; k < 32; k++) roomArrays()->flagsFD68[i][j][k] = 0;
+            for (int k = 0; k < 32; k++) roomArrays()->flagsFD68[i][j][k] = 0;
         }
     }
 }
