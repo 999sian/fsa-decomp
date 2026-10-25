@@ -952,16 +952,16 @@ bool fn_80270A8C(char*);
 bool Player_GetField_0x454(char*);
 void fn_80280B30(char* p) {
     if (fn_80250D30(p) || fn_80240B5C(p)) {
-        F32(p, 0x368) = lbl_80540360;
-        F32(p, 0x36c) = lbl_80540360;
-        F32(p, 0x370) = lbl_80540360;
+        F32(p, 0x368) = 0.0f;
+        F32(p, 0x36c) = 0.0f;
+        F32(p, 0x370) = 0.0f;
         return;
     }
-    if (Player_GetField_0xce8(p) || Player_GetField_0x454(p) || fn_80270A8C(p)) {
-        return;
-    }
+    if (Player_GetField_0xce8(p)) return;
+    if (Player_GetField_0x454(p)) return;
+    if (fn_80270A8C(p)) return;
     if (U8(PTR(p, 0xbf0), 0xb7) != 0) {
-        if (F32(p, 0x10) <= lbl_80540360) {
+        if (F32(p, 0x10) <= 0.0f) {
             if (!fn_80246B10(p, 0x40)) {
                 f32 before = PSVECMag((JGeometry::TVec3<f32>*)(p + 0x368));
                 F32(p, 0x368) += lbl_805403A4 * (F32(p, 0x38c) * fn_8022C82C(S32(p, 0x4)));
@@ -971,14 +971,14 @@ void fn_80280B30(char* p) {
                 }
             }
         } else {
-            F32(p, 0x368) = lbl_80540360;
-            F32(p, 0x36c) = lbl_80540360;
+            F32(p, 0x368) = 0.0f;
+            F32(p, 0x36c) = 0.0f;
         }
-        F32(p, 0x370) = lbl_80540360;
+        F32(p, 0x370) = 0.0f;
         f32 t = PSVECMag((JGeometry::TVec3<f32>*)(p + 0x368));
         t -= lbl_805403A8;
-        if (t < lbl_80540360) {
-            t = lbl_80540360;
+        if (t < 0.0f) {
+            t = 0.0f;
         } else if (t >= lbl_80540378) {
             t = lbl_80540378;
         }
@@ -987,9 +987,9 @@ void fn_80280B30(char* p) {
             F32(p, 0x8) += F32(p, 0x368);
             F32(p, 0xc) += F32(p, 0x36c);
     } else if ((u16)fn_8022461C(p + 0x14, 0) != 3) {
-    F32(p, 0x368) = lbl_80540360;
-    F32(p, 0x36c) = lbl_80540360;
-    F32(p, 0x370) = lbl_80540360;
+    F32(p, 0x368) = 0.0f;
+    F32(p, 0x36c) = 0.0f;
+    F32(p, 0x370) = 0.0f;
     }
 }
 
