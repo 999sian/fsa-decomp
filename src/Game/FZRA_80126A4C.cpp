@@ -256,7 +256,7 @@ static inline u8 fzraFollowRail(u8* p) {
 }
 
 extern "C" int __float_epsilon[];
-static inline void fzraApproach2(f32 t, f32* x, f32 goal) {
+static inline void fzraApproach2(const f32 t, f32* x, const f32 goal) {
     if (t < *(f32*)__float_epsilon) {
         *x = goal;
     } else {
@@ -469,7 +469,7 @@ extern "C" void fn_80127088(void* this_) {
             f32 inv = lbl_8053CAA4 / t;
             *(s32*)(p + 0x254) = (s32)(inv * (f32)(0xff - *(s32*)(p + 0x254)) + (f32)*(s32*)(p + 0x254));
         }
-        fzraApproach((f32*)(p + 0xc), *(f32*)(p + 0x270), (f32)*(s32*)(p + 0x250));
+        fzraApproach2((f32)*(s32*)(p + 0x250), (f32*)(p + 0xc), *(f32*)(p + 0x270));
         if (*(s32*)(p + 0x250) <= 0) {
             fn_80126A4C(this_, 0xe);
         }
