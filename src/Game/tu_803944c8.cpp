@@ -120,17 +120,6 @@ extern "C" void fn_8013B490(void* p);
 extern void* lbl_8053AB10;
 extern u8 lbl_8050DB0C[];
 
-static inline u8 msgDrawFadeAlpha(s32 count, s32 limit) {
-    if (count > limit) count = 0;
-    return (u8)(255.0f * (f32)(limit - count) / (f32)limit);
-}
-static inline s32 msgDrawClampCount(s32 count, s32 limit) {
-    if (count > limit) count = 0;
-    return count;
-}
-static inline u32 msgDrawColorAlpha(u32 color, u8 alpha) {
-    return (color & 0xffffff00) | alpha;
-}
 // NONMATCHING: integer temporary registers.
 #pragma opt_propagation on
 extern "C" void fn_80394690(MsgDraw* w) {
@@ -150,9 +139,9 @@ extern "C" void fn_80394690(MsgDraw* w) {
         strcpy(buf1, w->text1);
         strcpy(buf2, w->text2);
         if (strlen(w->suffix) != 0) {
-            s32 c2;
-            s32 max;
-            s32 cur;
+            int c2;
+            s16 max;
+            int cur;
             cur = *(s32*)(w->m10 + 0x4c);
             max = *(s16*)(lbl_8050DB0C + 0x4c);
             buf1[w->len] = 0;
