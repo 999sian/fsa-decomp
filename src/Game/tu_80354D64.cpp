@@ -5,7 +5,7 @@ struct Actor;
 
 
 extern "C" char __vt__4MRTA[];
-extern "C" void fn_801EE434(...);
+extern "C" void fn_801EE434(void* p = 0);
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
 extern "C" void fn_801F0E34(void*, u32, u32);
@@ -20,19 +20,18 @@ extern "C" const Vec lbl_804722F0[];
 extern "C" s32 fn_80354D64(Actor* this_, u8 arg2) {
     u8* p = (u8*)this_;
     Vec saved;
-    Vec* pos = (Vec*)(p + 0xc);
-    Vec* vel = (Vec*)(p + 0x3c);
-    f32 out[3] = {0.0f, 0.0f, 0.0f};
+    f32 out[3];
     f32 box[4];
     s32 hit = 0;
     s32 i;
 
-    saved = *pos;
-    *vel = lbl_804722F0[arg2];
-    pos->x += vel->x;
-    pos->y += vel->y;
-    pos->z += vel->z;
+    saved = *(Vec*)(p + 0xc);
+    *(Vec*)(p + 0x3c) = lbl_804722F0[arg2];
+    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
 
+    out[0] = 0.0f;
+    out[1] = 0.0f;
+    out[2] = 0.0f;
     if (fn_801F2618(this_, out, 0)) {
         switch (arg2) {
         case 0:
@@ -53,25 +52,19 @@ extern "C" s32 fn_80354D64(Actor* this_, u8 arg2) {
     }
 
     if (!hit) {
-        f32* b = (f32*)(p + 0x60);
         for (i = 0; i < 4; i++) {
-            box[0] = b[0] + pos->x;
-            box[1] = b[1] + pos->y;
-            box[2] = b[2] + pos->x;
-            box[3] = b[3] + pos->y;
+            box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+            box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+            box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+            box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
             if (fn_8023B0F4(i, box, *(s32*)(p + 4), 0, 0.0f)) {
-                void* q = fn_8023E724(i);
-                if (((u8 (*)(void*, s32, void*))(*(u32*)(*(u32*)this_ + 0x4c)))(this_, *(s32*)(p + 4), q) == 1) {
-                    hit = 0;
-                }
+                fn_8023E724(i);
             }
         }
     }
 
-    *pos = saved;
-    vel->x = 0.0f;
-    vel->y = 0.0f;
-    vel->z = 0.0f;
+    *(Vec*)(p + 0xc) = saved;
+    *(Vec*)(p + 0x3c) = lbl_804722F0[0];
     return hit;
 }
 
@@ -146,6 +139,32 @@ extern "C" void fn_803554B8(void* this_)
     fn_8013CC50(*(u32*)(p + 4), p + 0xc, id2, 1, 1.0f, 0, 0, 0, 1);
     fn_801F0E34(this_, 0x30003, 0);
     detach__5ActorFv(this_);
+}
+
+extern "C" void* fn_80239914(f32* out, s32 room, s32 handle);
+extern "C" void* fn_8020D58C(s32 room);
+extern "C" void fn_8020D8C0(void* a, s32 b, s32 c, s32 d);
+extern "C" void fn_80354FE8(void* this_);
+extern "C" void fn_8013CB44(void* this_, s32 a, s32 b, s32 c);
+extern "C" void fn_803558A4(void* this_) {
+    u8* p = (u8*)this_;
+    f32 box[4];
+    s32 st = *(s32*)(p + 0x230);
+
+    box[0] = *(f32*)(p + 0x80) + *(f32*)(p + 0xc);
+    box[1] = *(f32*)(p + 0x84) + *(f32*)(p + 0x10);
+    box[2] = *(f32*)(p + 0x88) + *(f32*)(p + 0xc);
+    box[3] = *(f32*)(p + 0x8c) + *(f32*)(p + 0x10);
+
+    if (st == 1) {
+        fn_80239914(box, *(s32*)(p + 4), *(s32*)(p + 0x198));
+    } else if (st == 0) {
+        fn_8020D8C0(fn_8020D58C(*(s32*)(p + 4)), *(s32*)(p + 4), *(s32*)(p + 0x198), 0);
+    }
+    fn_80354FE8(this_);
+    if (st == 0) {
+        fn_8013CB44(this_, 0, -2, 1);
+    }
 }
 
 extern "C" void fn_80356268(void* this_) {
