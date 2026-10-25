@@ -3,6 +3,7 @@
 // child release, dtor.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" double sin(double);
 extern "C" double cos(double);
@@ -132,8 +133,9 @@ extern "C" void fn_80166EC4(u8* this_) {
         pos[1] += vel[1];
         pos[2] += vel[2];
     }
+    u8 r31 = 0;
     if (*(s32*)(this_ + 0x230) != 3) {
-        if (fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4)) == 0xe) {
+        if ((s32)(u16)fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4)) == 0xe) {
             fn_801F0E34(this_, 0x4001a, 0);
             *(f32*)(this_ + 0x44) = lbl_8053D7F8;
             *(f32*)(this_ + 0x40) = lbl_8053D7F8;
@@ -146,7 +148,7 @@ extern "C" void fn_80166EC4(u8* this_) {
             fn_801F2B7C(this_, -100, -1, 1);
         }
     }
-    u8 r31 = fn_801F2618(this_, 0, 0);
+    r31 = fn_801F2618(this_, 0, 0);
     switch (*(s32*)(this_ + 0x230)) {
     case 0: {
         u8* c = *(u8**)(this_ + 0x26c);
@@ -163,7 +165,7 @@ extern "C" void fn_80166EC4(u8* this_) {
     }
     /* fall through */
     case 1:
-        if (*(f32*)(this_ + 0x14) > lbl_8053D7F8) goto L538;
+        if (!(*(f32*)(this_ + 0x14) <= lbl_8053D7F8)) goto L538;
         *(f32*)(this_ + 0x14) = lbl_8053D7F8;
         *(f32*)(this_ + 0x44) = lbl_8053D7F8;
         if (*(s32*)(this_ + 0x238) == 0) {
