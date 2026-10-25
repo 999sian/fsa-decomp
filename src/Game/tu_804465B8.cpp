@@ -96,14 +96,14 @@ extern "C" f32 fn_8043D57C(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern "C" u8* lbl_8053AED0;
 extern "C" void fn_804465B8(void* self_) {
-    u8* self;
-    int i;
-    u8* params;
     void** slot;
+    u8* params;
     s32 secs;
     s32 cs;
     s32 secsTens;
     s32 csTens;
+    int i;
+    u8* self;
     void* tex;
     void* obj;
 
@@ -122,54 +122,54 @@ extern "C" void fn_804465B8(void* self_) {
             obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x30));
             if (((u8*)obj)[0xb0] == 0) {
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x30));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x50));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x60));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x70));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x80));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x90));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0xa0));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0xb0));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
             }
         } else {
             obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x30));
             if (((u8*)obj)[0xb0] != 0) {
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x30));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x50));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x60));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x70));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x80));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x90));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0xa0));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0xb0));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
             }
         }
         if (self[0x30] & (u8)(1 << (i + 4))) {
             obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x40));
             if (((u8*)obj)[0xb0] == 0) {
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x40));
-                ((u8*)obj)[0xb0] = 1;
+                *((u8*)obj + 0xb0) = 1;
             }
         } else {
             obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x40));
             if (((u8*)obj)[0xb0] != 0) {
                 obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x40));
-                ((u8*)obj)[0xb0] = 0;
+                *((u8*)obj + 0xb0) = 0;
             }
         }
         obj = ((FsaVObj*)*(void**)(self + 4))->search(*(unsigned long long*)(params + 0x30));
@@ -328,10 +328,10 @@ extern "C" u8 lbl_80529DEC[];
 extern "C" void* fn_8044728C(void* param_1) {
     typedef void* (*SearchFn)(void*, unsigned long long);
     u8* self = (u8*)param_1;
-    void* screen;
     void** p;
     u8* params;
     int i;
+    void* screen;
     *(void**)self = (void*)lbl_804B1BE8;
     lbl_8053AF00 = (u32)self;
 
@@ -343,8 +343,7 @@ extern "C" void* fn_8044728C(void* param_1) {
     setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), lbl_80490400, 0x1100000, *(void**)(lbl_80529DEC + 0x10));
 
     p = (void**)self;
-    params = lbl_80490038;
-    for (i = 0; i < 4; i++, params += 0xc0, p++) {
+    for (i = 0, params = lbl_80490038; i < 4; i++, params += 0xc0) {
         void* obj = __nw__FUl(0x2c);
         if (obj != 0) {
             *(void**)obj = (void*)lbl_804AF86C;
@@ -358,6 +357,7 @@ extern "C" void* fn_8044728C(void* param_1) {
         }
         p[6] = obj;
         fn_80402F04(p[6], ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xb8)));
+        p++;
     }
 
     self[0x28] = 0;
@@ -371,4 +371,4 @@ extern "C" void* fn_8044728C(void* param_1) {
     self[0x30] = 0;
     return param_1;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
