@@ -17,10 +17,10 @@ static inline f32 zdcoSqrt(const f32 mag)
     if (mag > lbl_8053E9C0) {
         f64 xd = mag;
         f64 tmpd = __frsqrte(xd);
-        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
-        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
-        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
-        return mag * tmpd;
+        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (tmpd * tmpd * xd));
+        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (tmpd * tmpd * xd));
+        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (tmpd * tmpd * xd));
+        return (f32)(xd * tmpd);
     } else if (mag < lbl_8053E9E0) {
         return *(f32*)__float_nan;
     } else if (fpclassify(mag) == 1) {
@@ -102,7 +102,7 @@ extern "C" void fn_801B3FC4(u8* p) {
     case 0:
         if (*(s32*)(p + 0x25c) == 0) break;
         if ((u8)((Actor*)p)->v11()) {
-            s32 n = *(s32*)(p + 0x254);
+            int n = *(s32*)(p + 0x254);
             if (n != 0) fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
             *(u16*)(p + 0x94) = 1;
             break;
@@ -137,7 +137,7 @@ extern "C" void fn_801B3FC4(u8* p) {
     case 2:
         if (*(s32*)(p + 0x25c) == 0) break;
         if (!(u8)((Actor*)p)->v11()) {
-            s32 n = *(s32*)(p + 0x254);
+            int n = *(s32*)(p + 0x254);
             if (n != 0) fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
             *(u16*)(p + 0x94) = 1;
             break;
@@ -159,8 +159,9 @@ extern "C" void fn_801B3FC4(u8* p) {
         } else {
             s32 i;
             s32 cnt;
+            i = 0;
             cnt = 0;
-            for (i = 0; i < 4; i++) {
+            for (; i < 4; i++) {
                 if (fn_8023F264(i) && i == fn_8022EA0C(i)) {
                     s32 room = *(s32*)(p + 0x4);
                     if (room == fn_8023DE58(i) && !fn_80230188(i) &&
@@ -176,7 +177,7 @@ extern "C" void fn_801B3FC4(u8* p) {
             if (dist > lbl_8053E9C8) break;
         }
         if (*(s32*)(p + 0x258) == 0) {
-            s32 n = *(s32*)(p + 0x254);
+            int n = *(s32*)(p + 0x254);
             if (n != 0) fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
             p[0x11c] = 0;
             break;
@@ -252,7 +253,7 @@ extern "C" void fn_801B3FC4(u8* p) {
         fn_8022FE80(*(s32*)(p + 0x248), *(s32*)(p + 0x4), *(s32*)(p + 0x198), 0, 0);
         if (fn_80388CAC(*(s32*)(p + 0x248), *(s32*)(p + 0x198))) {
             if (*(s32*)(p + 0x250) == 3) {
-                s32 n;
+                int n;
                 fn_801F6884(fn_801F856C());
                 n = *(s32*)(p + 0x254);
                 if (n != 0) fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
@@ -273,7 +274,7 @@ extern "C" void fn_801B3FC4(u8* p) {
             }
         } else if (!(u8)((Actor*)p)->v11()) {
             s32 i;
-            s32 n;
+            int n;
             fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 0x4), 0, lbl_8053EA04, 0.0f);
             fn_801F0D20(p, 0x50);
             fn_801F6884(fn_801F856C());
