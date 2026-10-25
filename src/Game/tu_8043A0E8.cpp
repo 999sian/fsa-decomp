@@ -690,8 +690,8 @@ extern "C" f32 fn_8043D57C(u8* param_1) {
     f32 ret = lbl_80543C88;
     if (param_1[0x10b] != 0 && param_1[0x10c] == 0) {
         J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x40) + 4);
-        f32 h = lbl_80543CC4;
         f32 dy = pane->getBounds()->i.y - *(f32*)(*(u8**)(param_1 + 0x40) + 0xc);
+        f32 h = lbl_80543CC4;
         ret = (lbl_80543CE8 * (h - dy)) / h;
     }
     return ret;
