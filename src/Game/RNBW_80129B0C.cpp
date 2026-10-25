@@ -10,8 +10,8 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* manager, s32 kind);
 extern "C" void* fn_8013CC50(u32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
-extern u16 lbl_80465098[];
-extern u16 lbl_804650A4[];
+extern const u16 lbl_80465098[];
+extern const u16 lbl_804650A4[];
 extern f32 lbl_8053CB48;
 extern f32 lbl_8053CB4C;
 extern f32 lbl_8053CB50;
@@ -115,8 +115,8 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
 static inline void* rnbwEffect(u16 id, Actor* actor) {
     return fn_8013CC50(actor->field_04, &actor->field_0C, id, 0, -1, 0, 0, 1, lbl_8053CB48);
 }
-static inline void rnbwSpawn(Actor* actor, u16* ids) {
-    u16* table = ids;
+static inline void rnbwSpawn(Actor* actor, const u16* ids) {
+    const u16* table = ids;
     void** hp = (void**)actor;
     s32 i;
     for (i = 0; i < 5; i++, hp++, table++) {
@@ -198,7 +198,7 @@ extern "C" void fn_8012A008(void* this_) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
                 s32 i = 0;
                 void** hp = (void**)this_;
-                u16* idp = lbl_80465098;
+                const u16* idp = lbl_80465098;
                 do {
                     if (hp[0x8f] == 0) {
                         hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, *idp, 0, -1, 0, 0, 1, lbl_8053CB48);
@@ -213,7 +213,7 @@ extern "C" void fn_8012A008(void* this_) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
-                u16* idp = lbl_804650A4;
+                const u16* idp = lbl_804650A4;
                 void** hp = (void**)this_;
                 s32 i = 0;
                 do {
