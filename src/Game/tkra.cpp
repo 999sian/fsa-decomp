@@ -110,15 +110,17 @@ struct TKRA {
 
 inline u8 tkraRoomMode(char* p) {
     s32 room = *(s32*)(p + 4);
-    char* g = (char*)fn_802D6A9C();
-    return *(u8*)(g + room + 0x131df);
+    TkraG* g = fn_802D6A9C();
+    return g->arr[(u32)room];
 }
 
 struct TkraV2 { f32 x, y; };
-extern "C" void fn_802EB90C(char* p) {
+extern "C" void fn_802EB90C(char* this_) {
+    char* p = this_;
+    s32 i;
     JGeometry::TBox2f box;
-    f32 x = *(f32*)(p + 0xc);
     f32 y = *(f32*)(p + 0x10);
+    f32 x = *(f32*)(p + 0xc);
     if (tkraRoomMode(p)) { *(f32*)(p + 0x60)=-10.0f; *(f32*)(p + 0x64)=2.0f; *(f32*)(p + 0x68)=10.0f; *(f32*)(p + 0x6c)=5.0f; }
     else { *(f32*)(p + 0x60)=-6.0f; *(f32*)(p + 0x64)=0.0f; *(f32*)(p + 0x68)=6.0f; *(f32*)(p + 0x6c)=5.0f; }
     box.set(*(JGeometry::TBox2f*)(p + 0x60));
@@ -144,25 +146,25 @@ extern "C" void fn_802EB90C(char* p) {
         if (fn_8022F514(*(s32*)(p + 0x240))) *(s32*)(p + 0x248)=fn_8022F3DC(*(s32*)(p + 0x240));
         if (allowed == 1 && !fn_8023EFEC(*(s32*)(p + 0x240)) && *(s32*)(p + 0x240)==fn_8022EA0C(*(s32*)(p + 0x240)) &&
             fn_80309D6C(lbl_8053AD30,fn_8030AAF4(*(s32*)(p + 0x248)),0x100) != 0 &&
-            ((u8(*)(void*))(*(void***)p)[0x54/4])(p)) p[0x11c]=0;
+            ((TKRA*)p)->open()) p[0x11c]=0;
         break;
     }
     case 2:
         *(s32*)(p + 0x240)=*(s32*)(p + 0x244);
         *(s32*)(p + 0x248)=*(s32*)(p + 0x240);
         if (fn_8022F514(*(s32*)(p + 0x240))) *(s32*)(p + 0x248)=fn_8022F3DC(*(s32*)(p + 0x240));
-        for (s32 i=0; i<4; i++) {
+        for (i=0; i<4; i++) {
             JGeometry::TVec3f v(*fn_8023E724(i));
-            JGeometry::TVec3f pos;
+            JGeometry::TVec3f pos(v);
             pos.x=1.0f+v.x;
             pos.y=v.y-12.0f;
             pos.z=v.z;
             if ((u8)fn_8022F514(i)==1) {
-                if (i == *(s32*)(p + 0x244)) { u32 param = *(u32*)(p + 0x234) + (i << 24) + 0x80000000 + (*(u32*)(p + 0x244) << 26);
+                if (i == *(s32*)(p + 0x244)) { u32 param = 0x80000000 + (*(u32*)(p + 0x244) << 26) + ((i << 24) + *(u32*)(p + 0x234));
                     s32 room = fn_8023DE58(i);
                     ((TkraObj*)p)->ids[i] = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
             } else {
-                if (i == *(s32*)(p + 0x244)) { u32 param = *(u32*)(p + 0x234) + (i << 24) + 0x80000000 + (*(u32*)(p + 0x244) << 26);
+                if (i == *(s32*)(p + 0x244)) { u32 param = 0x80000000 + (*(u32*)(p + 0x244) << 26) + ((i << 24) + *(u32*)(p + 0x234));
                     s32 room = fn_8023DE58(i);
                     ((TkraObj*)p)->ids[i] = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
             }
@@ -174,7 +176,7 @@ extern "C" void fn_802EB90C(char* p) {
         *(s32*)(p + 0x240)=*(s32*)(p + 0x244);
         *(s32*)(p + 0x248)=*(s32*)(p + 0x240);
         if (fn_8022F514(*(s32*)(p + 0x240))) *(s32*)(p + 0x248)=fn_8022F3DC(*(s32*)(p + 0x240));
-        if (((u8(*)(void*))(*(void***)p)[0x54/4])(p)) p[0x11c]=0;
+        if (((TKRA*)p)->open()) p[0x11c]=0;
         break;
     case 4: break;
     }
