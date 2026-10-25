@@ -85,8 +85,8 @@ extern "C" void fn_8021C468(u8* this_) {
             *(f32*)(obj + 0x10) = pos[0];
             *(f32*)(obj + 0x14) = pos[1];
             f32* src2 = (f32*)fn_8023E724(*(s32*)(obj + 0x4));
-            f = lbl_8053FCFC;
             *(f32*)(obj + 0x18) = src2[0];
+            f = lbl_8053FCFC;
             *(f32*)(obj + 0x1c) = src2[1];
             *(f32*)(obj + 0x20) = src2[2];
             *(f32*)(obj + 0x24) = f;
@@ -120,3 +120,4 @@ extern "C" u8* fn_8021C5B0(u8* this_) {
     fn_8021CBA0(p + 0x30);
     return this_;
 }
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
