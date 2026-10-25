@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" u16 fn_80226850(void* a, s32 b);
 extern "C" void* fn_802D6A9C(void);
@@ -30,17 +31,18 @@ extern "C" void fn_802BD920(void)
 }
 
 extern "C" void fn_802BDCC0(u8* this_) {
+    s32 room;
     u32 ux;
     u32 uy;
     u16 ret;
     f32* o = (f32*)(this_ + 0x23c);
-    s32 room = *(s32*)(this_ + 4);
+    room = *(s32*)(this_ + 4);
     if (room < 8) {
         u8* mgr = (u8*)fn_802D6A9C();
         f32* box;
         if (room < 8) box = (f32*)(mgr + 0xcc);
         else box = (f32*)(mgr + 0xdc);
-        o[0] = box[0]; o[1] = box[1]; o[2] = box[2]; o[3] = box[3];
+        *(JGeometry::TBox2f*)o = *(JGeometry::TBox2f*)box;
     } else {
         JGeometry::TVec3<f32> p(*(Vec*)(this_ + 0xc));
         ux = (u32)p.x & ~7;
