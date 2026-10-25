@@ -93,9 +93,7 @@ extern "C" const f32 lbl_80540E7C;
 extern "C" const f32 lbl_80540E84;
 extern "C" void fn_802F86CC(u32 sobRenderer, Vec* pos, u32 sobResource, s32 spriteId,
                             f32 scaleX, f32 scaleY, SobDrawParams* drawParams);
-struct GXColor {
-    u8 r, g, b, a;
-};
+#include "dolphin/gx/GXStruct.h"
 
 extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, void* color, f32 size);
 extern "C" void* fn_801F856C();
