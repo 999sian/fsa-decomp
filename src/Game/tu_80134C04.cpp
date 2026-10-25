@@ -468,6 +468,19 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
     }
 }
 
+extern "C" void OSReport(const char* fmt, ...);
+extern "C" void* fn_80401E10(const char* name, s32 a, void* heap);
+extern f32 lbl_8053CD50;
+
+static inline void tu80134_heapReport(char* this_, const char* fmt) {
+    OSReport(fmt, (f32)(*(JKRHeap**)(this_ + 0x98))->getFreeSize() * lbl_8053CD50,
+             (f32)(*(JKRHeap**)(this_ + 0x98))->getTotalFreeSize() * lbl_8053CD50);
+}
+
+static inline void* tu80134_load(const char* name) {
+    return fn_80401E10(name, 0, *(void**)(lbl_80529DEC + 8));
+}
+
 extern "C" BOOL fn_80136320(char* this_) {
     if (lbl_8053AAF8 != 0) {
         s32 m = *(s32*)(this_ + 0x4c);
@@ -882,4 +895,177 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
     }
     return p;
 }
+
+extern u8 lbl_8049EF20[];
+extern u8* sManager__8JUTVideo;
+extern f32 lbl_8053CD80;
+extern f32 lbl_8053CD84;
+extern f32 lbl_8053CD8C;
+extern f32 lbl_8053CD90;
+extern f32 lbl_8053CDB8;
+extern f32 lbl_8053CDBC;
+extern "C" void* __ct__6MsgMgrFv(void*);
+extern "C" void* __ct__10J2DPictureFPC7ResTIMG(void*, const void*);
+extern "C" void* fn_8013BFEC(void*, void*);
+extern "C" void* fn_802ACBE8(void*);
+extern "C" void* fn_803DA8FC(void*);
+extern "C" void* fn_8044243C(void*);
+extern "C" void* fn_80440FDC(void*);
+extern "C" void* fn_80431D84(void*);
+extern "C" void* fn_804030C4(u32, void*);
+extern "C" void fn_8008C494(void*);
+extern "C" void fn_8008C484(void*);
+extern "C" void __ct__Q25JMath13TRandom_fast_FUl(void*, u32);
+extern "C" void* fn_80139300(char* this_) {
+    u8* base = (u8*)lbl_804652F0;
+    *(void**)this_ = lbl_8049EF20;
+    __ct__Q25JMath13TRandom_fast_FUl(this_ + 0xb4, 0);
+    lbl_8053AAF8 = this_;
+    *(s32*)(this_ + 0x9c) = *(s32*)(lbl_80529DEC + 4);
+    *(s32*)(this_ + 0x98) = *(s32*)(lbl_80529DEC + 8);
+    *(s32*)(this_ + 0xa0) = *(s32*)(lbl_80529DEC + 0xc);
+    *(s32*)(this_ + 0xa4) = *(s32*)(lbl_80529DEC + 0x14);
+    *(s32*)(this_ + 0xa8) = *(s32*)(lbl_80529DEC + 0x1c);
+    JKRHeap* heap = *(JKRHeap**)(this_ + 0x98);
+    heap->becomeCurrentHeap();
+
+    void* p = operator new(0x158, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = __ct__6MsgMgrFv(p);
+    }
+    *(void**)(this_ + 0x18) = p;
+
+    p = operator new(0x3c, *(JKRHeap**)(this_ + 0x98), 0);
+    void* q = 0;
+    if (p != 0) {
+        q = fn_8013BFEC(p, *(JKRHeap**)(this_ + 0x98));
+    }
+    lbl_8053AB10 = (char*)q;
+
+    *(s32*)(this_ + 8) = *(s32*)(lbl_80529DEC + 0x5c);
+    *(s32*)(this_ + 0xc) = *(s32*)(lbl_80529DEC + 0x60);
+
+    p = operator new(0x1c, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = fn_802ACBE8(p);
+    }
+    *(void**)(this_ + 0x10) = p;
+
+    p = operator new(0x24, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = fn_803DA8FC(p);
+    }
+    *(void**)(this_ + 0x34) = p;
+
+    p = operator new(0x28, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = fn_8044243C(p);
+    }
+    *(void**)(this_ + 0x38) = p;
+
+    p = operator new(0x14, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = fn_80440FDC(p);
+    }
+    *(void**)(this_ + 0x3c) = p;
+
+    p = operator new(0xf0, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = fn_80431D84(p);
+    }
+    *(void**)(this_ + 0x40) = p;
+
+    *(s32*)(this_ + 0xac) = 0;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(s32*)(this_ + 4) = 0;
+    *(s32*)(this_ + 0x1c) = 0;
+    *(s32*)(this_ + 0x28) = 0;
+    *(s32*)(this_ + 0x24) = 0;
+    *(s32*)(this_ + 0x2c) = 0;
+    *(s32*)(this_ + 0x30) = 0;
+    *(u8*)(this_ + 0xfd) = 0;
+    *(u8*)(this_ + 0x84) = 0;
+    *(s32*)(this_ + 0x54) = 0;
+    *(u8*)(this_ + 0x85) = 0;
+    *(s32*)(this_ + 0x74) = 0;
+    *(s32*)(this_ + 0x78) = 0;
+    *(u8*)(this_ + 0x86) = 0;
+    *(u8*)(this_ + 0x88) = 0;
+    *(u8*)(this_ + 0x94) = 0;
+    *(u8*)(this_ + 0x95) = 0;
+    *(u8*)(this_ + 0x96) = 0;
+    *(s32*)(this_ + 0x10c) = 0;
+    *(s32*)(this_ + 0x108) = 0;
+    *(s16*)(this_ + 0x7c) = 0;
+
+    u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+    p = operator new(0x158, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = fn_803A59E0(p);
+    }
+    *(void**)(this_ + 0x20) = p;
+    (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+    *(u8*)(this_ + 0x87) = 0;
+
+    void* tex = fn_804030C4(0x54494d47, base + 0x5e8);
+    p = operator new(0x168, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = __ct__10J2DPictureFPC7ResTIMG(p, tex);
+    }
+    *(void**)(this_ + 0xb8) = p;
+
+    u8 c1[4];
+    u8 c2[4];
+    c1[0] = 0xff;
+    c1[1] = 0xd2;
+    c1[2] = 0;
+    c1[3] = 0xff;
+    c2[0] = 0;
+    c2[1] = 0;
+    c2[2] = 0;
+    c2[3] = 0;
+    u32 t1 = *(u32*)c1;
+    u32 t2 = *(u32*)c2;
+    void* obj = *(void**)(this_ + 0xb8);
+    (*(void (**)(void*, void*, void*))((*(char**)obj) + 0x130))(obj, &t2, &t1);
+
+    obj = *(void**)(lbl_8053AAF8 + 0xa4);
+    tex = (*(void* (**)(void*, u32, s32))((*(char**)obj) + 0x18))(obj, 0x54494d47, 0);
+    p = operator new(0x168, *(JKRHeap**)(this_ + 0x98), 0);
+    if (p != 0) {
+        p = __ct__10J2DPictureFPC7ResTIMG(p, tex);
+    }
+    *(void**)(this_ + 0xbc) = p;
+
+    if (((s32 (*)(void))fn_80021840)() == 2) {
+        u16 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+        JGeometry::TBox2f boxA(lbl_8053CD90, lbl_8053CDB8, lbl_8053CD8C + (f32)w, lbl_8053CD80);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxA, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        *(void**)(this_ + 0xc0) = p;
+        JGeometry::TBox2f boxB(lbl_8053CD84, lbl_8053CDBC, lbl_8053CD8C + (f32)w, lbl_8053CD80);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxB, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        *(void**)(this_ + 0xc4) = p;
+    } else {
+        u16 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+        JGeometry::TBox2f boxC(lbl_8053CD90, lbl_8053CDB8, lbl_8053CD8C + (f32)w, lbl_8053CD80);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxC, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        *(void**)(this_ + 0xc0) = p;
+        JGeometry::TBox2f boxD(lbl_8053CD84, lbl_8053CDBC, lbl_8053CD8C + (f32)w, lbl_8053CD80);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxD, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        *(void**)(this_ + 0xc4) = p;
+    }
+
+    u32 colA[4];
+    colA[0] = 0xffff50ff;
+    colA[1] = 0xffff50ff;
+    colA[2] = 0x50502800;
+    colA[3] = 0x50502800;
+    obj = *(void**)(this_ + 0xc0);
+    (*(void (**)(void*, void*, void*))((*(char**)obj) + 0xac))(obj, &colA[3], &colA[1]);
+
+    fn_8008C494(base + 0x620);
+    fn_8008C484((void*)fn_80134C04);
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
