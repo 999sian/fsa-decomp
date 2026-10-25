@@ -23,8 +23,8 @@ extern "C" const char lbl_805432A0[];
 extern "C" const char lbl_805432A4[];
 extern void* lbl_8053AD30;
 extern void* lbl_8053AF80;
-extern "C" s32 fn_80309A9C(void* p, s32 a, s32 b);
-extern "C" s32 fn_80309D48(void* p, s32 a, s32 b);
+extern "C" u32 fn_80309A9C(void* p, s32 a, s32 b);
+extern "C" u32 fn_80309D48(void* p, s32 a, s32 b);
 extern "C" s32 fn_8030AAF4(s32 a);
 extern "C" void fn_803037D4(s32 i, s32 v);
 extern "C" void fn_80458880(void* m, s32 p, s32 v);
@@ -310,10 +310,8 @@ extern "C" void fn_80396884(void* this_) {
                     if (*(s32*)(self + 0x168) < 1) {
                         *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                         *(s16*)(self + 0x19c) = 1;
-                        if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                            s32 idx = *(s32*)(self + 0x168);
-                            u8* q = self + idx * 4;
-                            *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                        if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                            *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                         }
                         if (self[0x1aa] != 0) {
                             fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -324,10 +322,8 @@ extern "C" void fn_80396884(void* this_) {
                 } else if (self[0x1a0] == 3 && *(s32*)(self + 0x168) < 2) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
-                    if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                        s32 idx = *(s32*)(self + 0x168);
-                        u8* q = self + idx * 4;
-                        *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                    if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -338,10 +334,8 @@ extern "C" void fn_80396884(void* this_) {
             } else if (fn_80309A9C(lbl_8053AD30, 8, -1) != 0 && *(s32*)(self + 0x168) > 0) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
                 *(s16*)(self + 0x19c) = 1;
-                if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                    s32 idx = *(s32*)(self + 0x168);
-                    u8* q = self + idx * 4;
-                    *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -355,10 +349,8 @@ extern "C" void fn_80396884(void* this_) {
                     if (*(s32*)(self + 0x168) < 1) {
                         *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                         *(s16*)(self + 0x19c) = 1;
-                        if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                            s32 idx = *(s32*)(self + 0x168);
-                            u8* q = self + idx * 4;
-                            *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                        if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                            *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                         }
                         if (self[0x1aa] != 0) {
                             fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -369,10 +361,8 @@ extern "C" void fn_80396884(void* this_) {
                 } else if (self[0x1a0] == 3 && *(s32*)(self + 0x168) < 2) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
-                    if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                        s32 idx = *(s32*)(self + 0x168);
-                        u8* q = self + idx * 4;
-                        *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                    if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -383,15 +373,11 @@ extern "C" void fn_80396884(void* this_) {
             } else if (fn_80309A9C(lbl_8053AD30, 1, -1) != 0 && *(s32*)(self + 0x168) > 0) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
                 *(s16*)(self + 0x19c) = -1;
-                if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                    s32 idx = *(s32*)(self + 0x168);
-                    u8* q = self + idx * 4;
-                    *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                 }
-                if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                    s32 idx = *(s32*)(self + 0x168);
-                    u8* q = self + idx * 4;
-                    *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -406,10 +392,8 @@ extern "C" void fn_80396884(void* this_) {
                 if (*(s32*)(self + 0x168) < 1) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
-                    if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                        s32 idx = *(s32*)(self + 0x168);
-                        u8* q = self + idx * 4;
-                        *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                    if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -420,10 +404,8 @@ extern "C" void fn_80396884(void* this_) {
             } else if (self[0x1a0] == 3 && *(s32*)(self + 0x168) < 2) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                 *(s16*)(self + 0x19c) = 1;
-                if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                    s32 idx = *(s32*)(self + 0x168);
-                    u8* q = self + idx * 4;
-                    *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -434,10 +416,8 @@ extern "C" void fn_80396884(void* this_) {
         } else if (fn_80309D48(lbl_8053AD30, fn_8030AAF4(*(s32*)(self + 0x160)), 8) != 0 && *(s32*)(self + 0x168) > 0) {
             *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
             *(s16*)(self + 0x19c) = 1;
-            if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                s32 idx = *(s32*)(self + 0x168);
-                u8* q = self + idx * 4;
-                *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+            if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
             }
             if (self[0x1aa] != 0) {
                 fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -451,10 +431,8 @@ extern "C" void fn_80396884(void* this_) {
                 if (*(s32*)(self + 0x168) < 1) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
-                    if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                        s32 idx = *(s32*)(self + 0x168);
-                        u8* q = self + idx * 4;
-                        *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                    if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -465,10 +443,8 @@ extern "C" void fn_80396884(void* this_) {
             } else if (self[0x1a0] == 3 && *(s32*)(self + 0x168) < 2) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                 *(s16*)(self + 0x19c) = 1;
-                if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                    s32 idx = *(s32*)(self + 0x168);
-                    u8* q = self + idx * 4;
-                    *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+                if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -479,15 +455,11 @@ extern "C" void fn_80396884(void* this_) {
         } else if (fn_80309D48(lbl_8053AD30, fn_8030AAF4(*(s32*)(self + 0x160)), 1) != 0 && *(s32*)(self + 0x168) > 0) {
             *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
             *(s16*)(self + 0x19c) = -1;
-            if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                s32 idx = *(s32*)(self + 0x168);
-                u8* q = self + idx * 4;
-                *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+            if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
             }
-            if (*(s32*)(self + 0x148) + 0x10000 != 0xffff) {
-                s32 idx = *(s32*)(self + 0x168);
-                u8* q = self + idx * 4;
-                *(s32*)(self + 0x148) = *(s32*)(q + 0x13c);
+            if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
+                *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
             }
             if (self[0x1aa] != 0) {
                 fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -1747,9 +1719,8 @@ extern "C" void fn_8039ACD0(u8* param_1, s16 param_2) {
     buf[0] = 0;
     total = *(s32*)((u8*)lbl_8053AD78 + 0x44);
     hours = total / 3600;
-    mins = total / 60;
-    secs = mins % 60;
-    mins = mins / 60;
+    mins = (total / 60) % 60;
+    secs = total % 60;
     if (hours > 0) {
         if (hours > 99) {
             hours = 99;
@@ -1770,12 +1741,24 @@ extern "C" void fn_8039ACD0(u8* param_1, s16 param_2) {
         strcat(*(char**)(param_1 + 0x2c4), lbl_805432A0);
         *(s32*)(param_1 + 0x2d0) += 1;
     }
-    if (secs > 59) {
-        secs = 59;
-    }
     if (mins > 59) {
         mins = 59;
     }
+    tens = mins / 10;
+    ones = mins % 10;
+    if (tens > 0) {
+        buf[0] = tens + 0x30;
+        strcat(*(char**)(param_1 + 0x2c0), buf);
+        strcat(*(char**)(param_1 + 0x2c4), buf);
+        *(s32*)(param_1 + 0x2d0) += 1;
+    }
+    buf[0] = ones + 0x30;
+    strcat(*(char**)(param_1 + 0x2c0), buf);
+    strcat(*(char**)(param_1 + 0x2c4), buf);
+    *(s32*)(param_1 + 0x2d0) += 1;
+    strcat(*(char**)(param_1 + 0x2c0), lbl_805432A4);
+    strcat(*(char**)(param_1 + 0x2c4), lbl_805432A4);
+    *(s32*)(param_1 + 0x2d0) += 1;
 }
 
 // ---- small helpers near the end of the TU (0x803A2BC4-0x803A3258) ----
