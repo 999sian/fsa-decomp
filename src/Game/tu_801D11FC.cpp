@@ -8,7 +8,7 @@ struct PointTrail {
     s32 count;
     JGeometry::TVec2<f32> pts[16];
 
-    JGeometry::TVec2<f32> get(s32 i) {
+    JGeometry::TVec2<f32>& get(s32 i) {
         if (count <= i) {
             i = 0;
         }
