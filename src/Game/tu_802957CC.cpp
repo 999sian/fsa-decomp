@@ -1,5 +1,4 @@
 #include "types.h"
-#include "Game/ItemBase.h"
 extern "C" const f32 lbl_80540678;
 extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Box.h"
@@ -1536,7 +1535,7 @@ extern "C" void fn_8029A494(char* self) {
         }
         mode = -1;
         if (*(u8*)(self + 0x2b9) == 0) {
-            mode = HouseContactMode(self);
+            mode = HouseContactMode(self, room);
             if (mode == -1) {
                 box.i.x = *(f32*)(self + 0x80);
                 box.i.y = *(f32*)(self + 0x84);
@@ -1575,7 +1574,7 @@ extern "C" void fn_8029A494(char* self) {
         v.y += 8.0f;
         v.z = 0.0f;
         for (; i < 6; i++) {
-            if (!fn_802A1554(lbl_8053AC98, &v) || HitsRect(self, &v) == 1) {
+            if (!fn_802A1554(lbl_8053AC98, &v) || HouseHitsRect(self, &v, room, h) == 1) {
                 flag = 0;
                 break;
             }
