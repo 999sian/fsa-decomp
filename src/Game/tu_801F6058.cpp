@@ -236,7 +236,7 @@ void* operator new[](unsigned long size, JKRHeap* heap, int align);
 extern const char lbl_8046A048[];
 
 #define TBL_RES (*(TblResMgr**)((char*)lbl_8053AAF8 + 0xa4))
-#define READ4(p) ((u8)(p)[1] << 16 | (u8)(p)[0] << 24 | (u8)(p)[2] << 8 | (u8)(p)[3])
+#define READ4(p) (((p)[1] << 16 & 0x00ff0000) | ((p)[0] << 24) | ((p)[2] << 8 & 0x0000ff00) | ((p)[3] & 0xff))
 
 extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 	char* buf = TBL_RES->get(0x454e4d20, lbl_8046A048);
@@ -272,11 +272,12 @@ extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 		s32 col = 0;
 		s32 start = 0;
 		for (;; p++) {
-			if (*p == ',' || *p == '\n') {
+            char c=*p;
+			if (c == ',' || *p == '\n') {
 				if (col > 1) {
 					*(u32*)((char*)this_->colKeys + off - 8) = READ4(buf + start);
 				}
-				if (*p != ',') {
+				if (c != ',') {
 					break;
 				}
 				off += 4;
@@ -304,9 +305,11 @@ extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 					} else {
 						s32 v = 0;
 						for (s32 k = fs; k < i; k++) {
-							char digit = buf[k];
+							s32 digit = buf[k];
 							if (digit >= '0' && digit <= '9') {
-								v = (v * 10 + digit) - '0';
+								v *= 10;
+                                v += digit;
+                                v -= '0';
 							}
 						}
 						this_->table[(row - 1) * this_->cols + col - 2] = v;
