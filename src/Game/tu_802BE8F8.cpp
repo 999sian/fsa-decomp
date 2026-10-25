@@ -40,9 +40,10 @@ extern "C" s32 fn_8023AB94(const f32* box, u32 owner, f32* pos);
 extern "C" s32 fn_801F2718(void* this_, u32 code);
 extern "C" u32 fn_80226998(void* p, s32 layer);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 flag);
+#pragma opt_propagation off
 extern "C" void fn_802BE9E0(char* p) {
-    float pos[2];
-    float box[4];
+    JGeometry::TVec2<f32> pos;
+    JGeometry::TBox2<f32> box;
     if (*(s32*)(p + 0x248) == 0) {
         char* o = *(char**)(p + 0x23c);
         if (o != 0) {
@@ -53,48 +54,40 @@ extern "C" void fn_802BE9E0(char* p) {
     } else {
         *(s32*)(p + 0x248) -= 1;
     }
-    box[0] = *(float*)(p + 0x60);
-    box[1] = *(float*)(p + 0x64);
-    box[2] = *(float*)(p + 0x68);
-    box[3] = *(float*)(p + 0x6c);
-    pos[1] = lbl_80540C1C + *(float*)(p + 0x10);
-    pos[0] = lbl_80540C1C + *(float*)(p + 0xc);
-    box[0] += pos[0];
-    box[1] += pos[1];
-    box[2] += pos[0];
-    box[3] += pos[1];
+    box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+    pos.set(8.0f + *(float*)(p + 0xc), 8.0f + *(float*)(p + 0x10));
+    box.addPos(pos);
 
     switch (*(s32*)(p + 0x230)) {
     case 0:
-        if (*(u16*)(p + 0x94) != 0 || fn_8023AB94(box, *(u32*)(p + 4), pos) >= 0 ||
-            fn_801F2718(p, 0x46495245) >= 0) {
-            if ((u16)fn_80226998(p + 0xc, *(u32*)(p + 4)) == 0x3d ||
-                (u16)fn_80226998(p + 0xc, *(u32*)(p + 4)) == 0x1de) {
-                *(void**)(p + 0x234) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0xbd, 0, 0, 0, 0, 1, lbl_80540C20);
-                *(void**)(p + 0x238) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x54a, 0, 0, 0, 0, 1, lbl_80540C20);
-                ((void (*)(char*, s32, s32))(*(u32**)p)[12])(p, 0xff, 1);
-                fn_801F0E34(p, 0x30005, 0);
-                *(s32*)(p + 0xb0) = 0xc;
-                char* o = *(char**)(p + 0x23c);
-                if (o != 0) {
-                    *(u32*)(o + 0xf4) |= 1;
-                    *(s32*)(o + 0x24) = 1;
-                    *(void**)(p + 0x23c) = 0;
-                }
-                *(s32*)(p + 0x230) = 1;
-                *(s32*)(p + 0x24c) = *(s32*)(p + 0x244);
-                *(s32*)(p + 0x250) = 1;
-                *(u16*)(p + 0x94) = 0;
+        if ((*(u16*)(p + 0x94) != 0 || fn_8023AB94(&box.i.x, *(u32*)(p + 4), &pos.x) >= 0 ||
+             fn_801F2718(p, 0x46495245) >= 0) &&
+            ((u16)fn_80226998(p + 0xc, *(u32*)(p + 4)) == 0x3d ||
+             (u16)fn_80226998(p + 0xc, *(u32*)(p + 4)) == 0x1de)) {
+            *(void**)(p + 0x234) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0xbd, 0, 0, 0, 0, 1, 1.0f);
+            *(void**)(p + 0x238) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x54a, 0, 0, 0, 0, 1, 1.0f);
+            ((Actor*)p)->v10(0xff, 1);
+            fn_801F0E34(p, 0x30005, 0);
+            *(s32*)(p + 0xb0) = 0xc;
+            char* o = *(char**)(p + 0x23c);
+            if (o != 0) {
+                *(u32*)(o + 0xf4) |= 1;
+                *(s32*)(o + 0x24) = 1;
+                *(void**)(p + 0x23c) = 0;
             }
+            *(s32*)(p + 0x230) = 1;
+            *(s32*)(p + 0x24c) = *(s32*)(p + 0x244);
+            *(s32*)(p + 0x250) = 1;
+            *(u16*)(p + 0x94) = 0;
         }
         break;
     case 1:
         if (*(s32*)(p + 0x24c) != 0) {
             *(s32*)(p + 0x24c) -= 1;
         }
-        u8 r = ((u8 (*)(char*))(*(u32**)p)[13])(p);
+        u8 r = ((Actor*)p)->v11();
         if (r == 0 || (*(s32*)(p + 0x240) == 1 && *(s32*)(p + 0x24c) == 0)) {
-            *(void**)(p + 0x23c) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x57, 1, 0, 0, 0, 1, lbl_80540C20);
+            *(void**)(p + 0x23c) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x57, 1, 0, 0, 0, 1, 1.0f);
             *(s32*)(p + 0x248) = 0x28;
             char* o = *(char**)(p + 0x234);
             if (o != 0) {
@@ -108,7 +101,7 @@ extern "C" void fn_802BE9E0(char* p) {
                 *(s32*)(o + 0x24) = 1;
                 *(void**)(p + 0x238) = 0;
             }
-            ((void (*)(char*, s32, s32))(*(u32**)p)[12])(p, 0xff, 0);
+            ((Actor*)p)->v10(0xff, 0);
             *(s32*)(p + 0xb0) = 0xd;
             *(s32*)(p + 0x230) = 0;
             *(s32*)(p + 0x250) = 0;
@@ -116,7 +109,7 @@ extern "C" void fn_802BE9E0(char* p) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_802BED00(void* this_, short freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
