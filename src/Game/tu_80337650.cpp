@@ -136,8 +136,8 @@ extern "C" void fn_803376B0(u8* this_) {
 }
 
 extern "C" void fn_80337A08(u8* this_) {
-    s32 prev = *(s32*)(this_ + 0x248);
     s32 state = *(s32*)(this_ + 0x250);
+    s32 prev = *(s32*)(this_ + 0x248);
 
     switch (state) {
     case 5:
@@ -185,7 +185,7 @@ extern "C" void fn_80337A08(u8* this_) {
         s32 a2 = a * a;
         s32 b2 = b * b;
 
-        if (state >= 7 && state <= 15 && state != 14) {
+        if (state != 14 && state >= 7 && state < 16) {
             if (a > 0) {
                 *(s32*)(this_ + 0x248) = 0;
             } else {
@@ -231,22 +231,23 @@ extern "C" void fn_80337C88(char* this_) {
     s32 state = *(s32*)(this_ + 0x230);
     if (state != 2) {
         char* t = base + 0x100;
+        s32 idx = *(s32*)(this_ + 0x250);
         char* p = base + 0x194;
         s32 val;
-        if (*(s32*)(t + *(s32*)(this_ + 0x250) * 8) == 2) {
+        if (*(s32*)(t + idx * 8) == 2) {
             p = base + 0x180;
         }
         switch (state) {
         case 1:
-            val = *(s32*)(t + *(s32*)(this_ + 0x250) * 8 + 4) +
-                  *(s32*)(*(char**)(base + *(s32*)(this_ + 0x250) * 16 + 8) + *(s32*)(this_ + 0x248) * 16 + *(s32*)(this_ + 0x238) * 4);
+            val = *(s32*)(t + idx * 8 + 4) +
+                  *(s32*)(*(char**)(base + idx * 16 + 8) + *(s32*)(this_ + 0x248) * 16 + *(s32*)(this_ + 0x238) * 4);
             break;
         case 0:
         case 3:
         case 4:
         default:
-            val = *(s32*)(t + *(s32*)(this_ + 0x250) * 8 + 4) +
-                  *(s32*)(*(char**)(base + *(s32*)(this_ + 0x250) * 16 + 0xc) + *(s32*)(this_ + 0x248) * 16 + *(s32*)(this_ + 0x238) * 4);
+            val = *(s32*)(t + idx * 8 + 4) +
+                  *(s32*)(*(char**)(base + idx * 16 + 0xc) + *(s32*)(this_ + 0x248) * 16 + *(s32*)(this_ + 0x238) * 4);
             break;
         }
         if (*(s32*)(this_ + 0x250) == 2) {
@@ -292,9 +293,8 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(s32*)(this_ + 0x24c) = fn_8022FD8C(*(s32*)(this_ + 0x198));
             if (*(s32*)(this_ + 0x24c) >= 0 && lbl_80542078 == fn_8023E724(*(s32*)(this_ + 0x24c))[2] &&
                 fn_802300EC(*(s32*)(this_ + 0x24c))) {
-                V3 pos;
-                if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(s32*)(this_ + 0x198), *(u32*)(this_ + 4),
-                                (pos = *(V3*)(this_ + 0xc), &pos), 0)) {
+                V3 pos = *(V3*)(this_ + 0xc);
+                if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(s32*)(this_ + 0x198), *(u32*)(this_ + 4), &pos, 0)) {
                     *(s32*)(this_ + 0x230) = 4;
                 }
             }
@@ -310,9 +310,8 @@ extern "C" void fn_80337DEC(u8* this_) {
             if (!fn_802300EC(*(s32*)(this_ + 0x24c))) {
                 break;
             }
-            V3 pos;
-            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(s32*)(this_ + 0x198), *(u32*)(this_ + 4),
-                            (pos = *(V3*)(this_ + 0xc), &pos), 0)) {
+            V3 pos = *(V3*)(this_ + 0xc);
+            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(s32*)(this_ + 0x198), *(u32*)(this_ + 4), &pos, 0)) {
                 *(s32*)(this_ + 0x230) = 4;
                 break;
             }
@@ -331,13 +330,13 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 } else {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->idle;
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].idle;
                 }
                 break;
             default:
-                *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 break;
             }
         }
@@ -358,18 +357,18 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 2:
                 fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, lbl_8054206C, lbl_80542078);
-                *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 break;
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 } else {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->idle;
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].idle;
                 }
                 break;
             case 3:
             default:
-                *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 break;
             }
         }
@@ -382,7 +381,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x230) = 3;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+            *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
         } else if (*(s32*)(this_ + 0x240) <= 0 ||
                    (*(f32*)(this_ + 0xc) == *(f32*)(this_ + 0x24) && *(f32*)(this_ + 0x10) == *(f32*)(this_ + 0x28))) {
             *(V3*)(this_ + 0xc) = *(V3*)(this_ + 0x24);
@@ -391,7 +390,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(f32*)(this_ + 0x3c) = lbl_80542078;
             *(s32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->idle;
+            *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].idle;
         }
         break;
     case 4:
@@ -413,10 +412,6 @@ extern "C" void fn_80337DEC(u8* this_) {
 }
 
 extern "C" void fn_80338570(u8* this_) {
-    struct Pair {
-        f32 x;
-        f32 y;
-    };
     union {
         f32 f;
         u32 s;
@@ -429,8 +424,7 @@ extern "C" void fn_80338570(u8* this_) {
     *(f32*)(this_ + 0x44) = 0.0f;
     *(s32*)(this_ + 0x108) = 10000;
     *(s32*)(this_ + 0x23c) = 0;
-    *(Pair*)(this_ + 0x26c) = *(Pair*)(this_ + 0x24);
-    *(f32*)(this_ + 0x274) = *(f32*)(this_ + 0x2c);
+    *(JGeometry::TVec3f*)(this_ + 0x26c) = *(JGeometry::TVec3f*)(this_ + 0x24);
     g = lbl_8053AAF8;
     *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
     out.s = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
@@ -439,8 +433,7 @@ extern "C" void fn_80338570(u8* this_) {
     *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
     out.s = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + (f32)((s32)(7.0f * (out.f - 1.0f)) - 3);
-    *(Pair*)(this_ + 0x24) = *(Pair*)(this_ + 0xc);
-    *(f32*)(this_ + 0x2c) = *(f32*)(this_ + 0x14);
+    *(JGeometry::TVec3f*)(this_ + 0x24) = *(JGeometry::TVec3f*)(this_ + 0xc);
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x244) = 0;
@@ -468,12 +461,12 @@ extern "C" void fn_80338570(u8* this_) {
         *(s32*)(this_ + 0x254) = 0;
         if (fn_801F6758(this_ + 0x278, *(u32*)(this_ + 4), 0.0f) == 0) {
             *(s32*)(this_ + 0x230) = 1;
-            *(Pair*)(this_ + 0xc) = *(Pair*)(this_ + 0x278);
-            *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x280);
-            fn_80337A08(this_);
+            *(JGeometry::TVec3f*)(this_ + 0xc) = *(JGeometry::TVec3f*)(this_ + 0x278);
         }
     }
-    if (*(s32*)(this_ + 0x250) == 2) {
+    fn_80337A08(this_);
+    switch (*(s32*)(this_ + 0x250)) {
+    case 2:
         *(f32*)(this_ + 0x80) = -16.0f;
         *(f32*)(this_ + 0x84) = -16.0f;
         *(f32*)(this_ + 0x88) = 16.0f;
@@ -482,7 +475,9 @@ extern "C" void fn_80338570(u8* this_) {
         *(f32*)(this_ + 0x64) = -16.0f;
         *(f32*)(this_ + 0x68) = 16.0f;
         *(f32*)(this_ + 0x6c) = 8.0f;
-    } else {
+    *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[0];
+        break;
+    default:
         *(f32*)(this_ + 0x80) = -8.0f;
         *(f32*)(this_ + 0x84) = -8.0f;
         *(f32*)(this_ + 0x88) = 8.0f;
@@ -491,8 +486,12 @@ extern "C" void fn_80338570(u8* this_) {
         *(f32*)(this_ + 0x64) = -8.0f;
         *(f32*)(this_ + 0x68) = 8.0f;
         *(f32*)(this_ + 0x6c) = 8.0f;
-    }
     *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[0];
+    }
+
     *(u8*)(this_ + 0x194) = 1;
+}
+
+extern "C" void fn_803388BC(void) {
 }
 
