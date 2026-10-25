@@ -220,6 +220,7 @@ extern "C" void fn_801B9DD4(char* p, s32 state) {
         case 0:
             switch (cur) {
             case 2:
+                anim = 8;
                 break;
             case 3:
                 anim = 9;
@@ -315,7 +316,7 @@ extern "C" void fn_801B9DD4(char* p, s32 state) {
     *(s32*)(p + 0x248) = state;
 }
 static inline bool mira_chk(char* p, u32 f) { return *(s32*)(p + 0x230) & f; }
-static inline void mira_off(char* p, u32 f) { ((ItemBase*)p)->m230 &= ~f; }
+static inline void mira_off(char* p, u32 f) { ((volatile ItemBase*)p)->m230 &= ~f; }
 
 static inline void mira_pickNext(char* p) {
     if (fn_801D05F8(p, p + 0xc, lbl_8053EB74) < 0) {
@@ -340,7 +341,7 @@ extern "C" void fn_801B9A5C(char* p, u8 arg) {
     switch (*(s32*)(p + 0x248)) {
     case 0:
         if ((*(s32*)(p + 0x230) & 0x8000) && *(s32*)(p + 0x24c) >= 5) {
-            *(u32*)(p + 0x230) &= ~0x8000;
+            *(volatile u32*)(p + 0x230) &= ~0x8000;
         }
         if (arg) {
             s32 dir = fn_801CF1B0(p, 1, lbl_8053EB74, lbl_8053EB78);
@@ -360,9 +361,9 @@ extern "C" void fn_801B9A5C(char* p, u8 arg) {
     case 1:
         if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
             s32 flag = 0;
-            if (*(s32*)(p + 0x230) & 0x2000) {
+            if (*(u32*)(p + 0x230) & 0x2000) {
                 flag = 1;
-                *(u32*)(p + 0x230) &= ~0x2000;
+                *(volatile u32*)(p + 0x230) &= ~0x2000;
             }
             s32 dir = fn_801CF1B0(p, flag, lbl_8053EB74, lbl_8053EB78);
             if (dir == *(s32*)(p + 0x98)) {
