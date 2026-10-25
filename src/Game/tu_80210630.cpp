@@ -18,12 +18,12 @@ extern "C" char* lbl_8053AB10;
 
 extern "C" void fn_80210630(char* p, unsigned char flag, unsigned char a, unsigned char b, unsigned char c)
 {
+	void* tex;
+
+	tex = fn_804032E8(0x54494D47, lbl_804A61A8[*(int*)(p + 0x98) + (flag ? 4 : 0)]);
 	float v[3];
 	float mat[3][4];
 	DrawRec rec;
-	void* tex;
-
-	tex = fn_804032E8(0x54494D47, lbl_804A61A8[*(int*)(p + 0x98) + 4 * (flag != 0)]);
 	rec.b1c = a;
 	rec.b1d = b;
 	*(u8*)&rec.w14 = c;
@@ -40,6 +40,9 @@ extern "C" void fn_80210630(char* p, unsigned char flag, unsigned char a, unsign
 	mat[2][1] = lbl_8053FAC0;
 	mat[2][2] = lbl_8053FAC4 * *(float*)(p + 0x5c);
 	rec.w18 = mat;
+	v[0] = *(float*)(p + 0xc);
+	v[1] = *(float*)(p + 0x10);
+	v[2] = *(float*)(p + 0x14);
 	v[0] = v[0] + mat[0][0] * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 2) - lbl_8046A470[*(int*)(p + 0x98)]);
 	v[1] = v[1] + mat[1][1] * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 4) - lbl_8046A480[*(int*)(p + 0x98)]);
 	if (*(int*)(p + 4) < 8) {
@@ -97,6 +100,13 @@ extern "C" int fn_801D3CE4(void* p, float a, float b);
 extern "C" void* fn_801D72D4(void* p);
 extern "C" void* lbl_804C3128[];
 extern "C" void fn_80210A30(char* p, float* out);
+static inline void setBox(float* out, float x, float y)
+{
+	out[0] = -16.0f * x;
+	out[1] = -24.0f * y;
+	out[2] = 16.0f * x;
+	out[3] = 8.0f * y;
+}
 extern "C" void fn_80210990(char* p, int side, float* out)
 {
 	float y = *(float*)(p + 0x58);
