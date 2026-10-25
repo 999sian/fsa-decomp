@@ -2249,7 +2249,61 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
  * one word, 3 bytes, 3 words. */
 
 
-extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p6, u8 p7, f32 f6, f32 f7) {
+static inline void copySpriteRecord(Rec* dst, const Rec* src) {
+                u8  t2e = src->b2e;
+                u8  t2c = src->b2c;
+                u32 t30 = src->w30;
+                u32 t34 = src->w34;
+                u32 t18 = src->w18;
+                u32 t00 = src->w00;
+                u32 t04 = src->w04;
+                u32 t08 = src->w08;
+                u32 t0c = src->w0c;
+                u32 t10 = src->w10;
+                u32 t14 = src->w14;
+                u8  t1c = src->b1c;
+                u8  t1d = src->b1d;
+                u8  t1e = src->b1e;
+                u8  t1f = src->b1f;
+                u8  t20 = src->b20;
+                u8  t21 = src->b21;
+                u8  t22 = src->b22;
+                u8  t23 = src->b23;
+                u8  t24 = src->b24;
+                u8  t25 = src->b25;
+                u8  t26 = src->b26;
+                u32 t28 = src->w28;
+                u8  t2d = src->b2d;
+                u32 t38 = src->w38;
+                dst->b2c = t2c;
+                dst->b2e = t2e;
+                dst->w30 = t30;
+                dst->w00 = t00;
+                dst->w04 = t04;
+                dst->w08 = t08;
+                dst->w0c = t0c;
+                dst->w10 = t10;
+                dst->w14 = t14;
+                dst->w18 = t18;
+                dst->b1c = t1c;
+                dst->b1d = t1d;
+                dst->b1e = t1e;
+                dst->b1f = t1f;
+                dst->b20 = t20;
+                dst->b21 = t21;
+                dst->b22 = t22;
+                dst->b23 = t23;
+                dst->b24 = t24;
+                dst->b25 = t25;
+                dst->b26 = t26;
+                dst->w28 = t28;
+                dst->b2d = t2d;
+                dst->w34 = t34;
+                dst->w38 = t38;
+
+}
+
+extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32 p6, u8 p7, f32 f6, f32 f7) {
     Vec v14;
     f32 v98[3][4];
 
@@ -2327,18 +2381,11 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
             } else {
                 Rec rec2;
                 u8* buf = (u8*)&rec2;
-                u32 i;
+                u8 i;
                 rec2.w10 = -1;
                 rec2.w14 = -1;
-                for (i = 0; (u8)i < 0x10; i += 8) {
-                    buf[(u8)i] = i;
-                    buf[(u8)(i + 1)] = i + 1;
-                    buf[(u8)(i + 2)] = i + 2;
-                    buf[(u8)(i + 3)] = i + 3;
-                    buf[(u8)(i + 4)] = i + 4;
-                    buf[(u8)(i + 5)] = i + 5;
-                    buf[(u8)(i + 6)] = i + 6;
-                    buf[(u8)(i + 7)] = i + 7;
+                for (i = 0; i < 0x10; i++) {
+                    buf[i] = i;
                 }
                 rec2.w18 = 0;
                 rec2.w10 = -1;
