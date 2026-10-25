@@ -256,6 +256,7 @@ extern "C" void fn_80304C10(s32, const char*, u32, s32, s32);
 extern "C" void fn_802F9714(void*, void*, s32, s32, s32, s32);
 extern const char lbl_8053A138[8];
 extern const char lbl_804694C0[];
+#pragma opt_propagation off
 extern "C" void fn_801D6554(u8* p) {
     char rec[0x28];
     s32 i;
@@ -263,10 +264,11 @@ extern "C" void fn_801D6554(u8* p) {
     *(s32*)(p + 0x5dc) = *(u32*)(p + 0x90) & 0xf;
     if (*(s32*)(p + 0x5dc) != 0) *(s32*)(p + 0x5dc) += 7;
     u32 bits = *(u32*)(p + 0x90);
-    f32 x = (f32)((bits >> 21) & 0x1f8);
+    f32 unit = 8.0f;
     f32 y = (f32)((bits >> 13) & 0x1f8);
-    *(f32*)(p + 0x5e0) = 8.0f + x;
-    *(f32*)(p + 0x5e4) = 8.0f + y;
+    f32 x = (f32)((bits >> 21) & 0x1f8);
+    *(f32*)(p + 0x5e0) = unit + x;
+    *(f32*)(p + 0x5e4) = unit + y;
     *(u8*)(p + 0x5e8) = (*(u32*)(p + 0x90) >> 10) & 0x3f;
     *(u8*)(p + 0x5e9) = (*(u32*)(p + 0x90) >> 4) & 0x3f;
     fn_801E4790(p, 0);
@@ -303,8 +305,9 @@ extern "C" void fn_801D6554(u8* p) {
     *(s32*)(p + 0x5b8) = fn_801CD664(4);
     *(f32*)(p + 0x5bc) = *(f32*)(p + 0xc);
     *(f32*)(p + 0x5c0) = *(f32*)(p + 0x10);
+    f32 top = *(f32*)(p + 0x5e4);
     *(f32*)(p + 0x5ec) = 32.0f + (8.0f * (f32)*(u8*)(p + 0x5e8) + *(f32*)(p + 0x5e0));
-    *(f32*)(p + 0x5f0) = *(f32*)(p + 0x5e4);
+    *(f32*)(p + 0x5f0) = top;
     f32 bottom = -32.0f + *(f32*)(p + 0x5e4);
     *(f32*)(p + 0x5f4) = *(f32*)(p + 0x5ec);
     *(f32*)(p + 0x5f8) = bottom;
@@ -321,10 +324,10 @@ extern "C" void fn_801D6554(u8* p) {
     fn_802D7440(fn_802D6A9C(), 0);
     for (i = 0; i < 4; i++) fn_80304C10(i, lbl_804694C0, 0x6017000, 1, 0);
     void* mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
-    void* resource = ((void*(*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 'SCH ', lbl_804694C0);
+    void* resource = ((JKRArchive*)mgr)->getResource('SCH ', lbl_804694C0);
     fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), resource, 0, 0, 0x7000, 0);
 }
-
+#pragma opt_propagation reset
 extern "C" void* dtor_801D69FC(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
