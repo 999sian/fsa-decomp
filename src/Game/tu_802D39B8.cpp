@@ -46,6 +46,9 @@ struct RoomArrays {
 };
 
 extern char* lbl_8053AAF8;
+inline RoomArrays* roomArrays() {
+    return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+}
 extern char* lbl_8053AB10;
 extern u8 lbl_8050EC80[];
 extern u8 lbl_80529DEC[];
@@ -1940,17 +1943,23 @@ extern "C" void fn_802DEE2C(void) {
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 10; j++) {
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags178[i][j] = 0;
-            ((u64(*)[10])&(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[0])[i][j] = 0;
-            ((u64(*)[10])&(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[1])[i][j] = 0;
-            ((u64(*)[10])&(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[2])[i][j] = 0;
-            ((u64(*)[10])&(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[3])[i][j] = 0;
+            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[0][i][j] = 0;
+            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[1][i][j] = 0;
+            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[2][i][j] = 0;
+            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[3][i][j] = 0;
         }
     }
-    for (s32 i = 0; i < 32; i++) {
+    for (s32 i = 0; i < 32;) {
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->counters308[i] = 0;
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->values328[i] = 255;
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12F68[i] = 0;
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12FE8[i] = 0;
+        i++;
+        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->counters308[i] = 0;
+        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->values328[i] = 255;
+        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12F68[i] = 0;
+        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12FE8[i] = 0;
+        i++;
     }
     for (s32 i = 0; i < 8; i++) {
         for (s32 j = 0; j < 4; j++) (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags348[i][j] = 0;
