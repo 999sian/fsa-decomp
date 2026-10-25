@@ -4,6 +4,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JUtility/TColor.h"
 #include "Game/ItemBase.h"
+#include "Game/TlwpDrawParam.h"
 
 extern "C" double sin(double x);
 extern "C" double cos(double x);
@@ -140,23 +141,15 @@ extern "C" void fn_8018A930(char* this_) {
         void* res = fn_804032E8(0x42494750, lbl_804674C8);
         a = *(f32*)(this_ + 0x28c);
         {
-            f32 sx = (f32)sin(lbl_8053E0C8);
-            f32 sy = (f32)sin(a);
-            f32 sz = (f32)sin(lbl_8053E0C8);
-            f32 cx = (f32)cos(lbl_8053E0C8);
-            f32 cy = (f32)cos(a);
-            f32 cz = (f32)cos(lbl_8053E0C8);
+            const f32 sx = (f32)sin(lbl_8053E0C8);
+            const f32 sy = (f32)sin(a);
+            const f32 sz = (f32)sin(lbl_8053E0C8);
+            const f32 cx = (f32)cos(lbl_8053E0C8);
+            const f32 cy = (f32)cos(a);
+            const f32 cz = (f32)cos(lbl_8053E0C8);
             rec.b1d = 2;
             rec.b1c = 1;
-            mtx[0][0] = lbl_8053E0D0 * (cy * cz);
-            mtx[1][0] = lbl_8053E0D0 * (cy * sz);
-            mtx[2][0] = lbl_8053E0D0 * -sy;
-            mtx[0][1] = lbl_8053E0D0 * (cz * (sx * sy) - cx * sz);
-            mtx[1][1] = lbl_8053E0D0 * (sz * (sx * sy) + cx * cz);
-            mtx[2][1] = lbl_8053E0D0 * (sx * cy);
-            mtx[0][2] = lbl_8053E0D0 * (sy * (cx * cz) + sx * sz);
-            mtx[1][2] = lbl_8053E0D0 * (sy * (cx * sz) - sx * cz);
-            mtx[2][2] = lbl_8053E0D0 * (cx * cy);
+            bph2_fillMtx(mtx, lbl_8053E0D0, sx, sy, sz, cx, cy, cz);
         }
         ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x288);
         rec.w18 = mtx;
@@ -216,15 +209,7 @@ extern "C" void fn_8018A930(char* this_) {
             cx = (f32)cos(lbl_8053E0C8);
             cy = (f32)cos(lbl_8053E0C8);
             cz = (f32)cos(lbl_8053E0C8);
-            mtx[0][0] = s * (cy * cz);
-            mtx[1][0] = s * (cy * sz);
-            mtx[2][0] = s * -sy;
-            mtx[0][1] = s * (cz * (sx * sy) - cx * sz);
-            mtx[1][1] = s * (sz * (sx * sy) + cx * cz);
-            mtx[2][1] = s * (sx * cy);
-            mtx[0][2] = s * (sy * (cx * cz) + sx * sz);
-            mtx[1][2] = s * (sy * (cx * sz) - sx * cz);
-            mtx[2][2] = s * (cx * cy);
+            bph2_fillMtx(mtx, s, sx, sy, sz, cx, cy, cz);
         }
         rec.w18 = mtx;
         res = fn_804032E8(0x42494750, lbl_804A1D24[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)]);
