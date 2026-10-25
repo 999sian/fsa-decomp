@@ -4,6 +4,7 @@
 #include "Game/ItemBase.h"
 #define Vec SDKVec
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 #undef Vec
 
 class ActorResMgr {
@@ -56,8 +57,12 @@ extern "C" void fn_801555D8(char* self) {
     mtx[0][3] = lbl_8053D378;
     mtx[1][3] = lbl_8053D378;
     mtx[2][3] = lbl_8053D378;
-    if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 3 && *(u32*)(self + 0x90) == 2) {
-        rec.ids[2] = 4;
+    if (*(s32*)(lbl_80529DEC + 0x118) == 0) {
+        if (*(s32*)(lbl_80529DEC + 0x11c) == 3) {
+            if (*(u32*)(self + 0x90) == 2) {
+                rec.ids[2] = 4;
+            }
+        }
     }
     if (*(s32*)(self + 0x230) == 0xd) {
         f32 ay = *(f32*)(self + 0x29c);
@@ -139,6 +144,29 @@ extern "C" void fn_801555D8(char* self) {
     }
 }
 
+extern "C" void fn_802D6A9C(void);
+extern "C" void fn_802DCD0C(void);
+extern "C" void fn_80155B44(char* self) {
+    if (*(u16*)(self + 0x94) == 2) {
+        if (*(u16*)(self + 0x2aa) == 0xffff) {
+            fn_802D6A9C();
+            fn_802DCD0C();
+        }
+        return;
+    }
+    s32 st = *(s32*)(self + 0x230);
+    if (st == 0x8 || st == 0xb) {
+        return;
+    }
+    if (*(s32*)(self + 0x254) == 0) {
+        if (*(u32*)(self + 0x90) == 2) {
+            if (*(s32*)(self + 0x284) >= 0) {
+                return;
+            }
+        }
+    }
+}
+
 extern "C" s32 fn_80157C68(char* self) {
     if (*(s32*)(self + 0x230) == 0xd) {
         return 1;
@@ -181,11 +209,11 @@ extern "C" void fn_80157E20(char* self) {
     if (idx >= 0) {
         void* p = fn_801F666C(fn_801F856C(), idx);
         if (p != NULL) {
-            Vec v;
+            JGeometry::TVec3f v;
             v.x = 0.0f;
             v.y = 0.0f;
             v.z = 5.0f;
-            *(Vec*)((char*)p + 0x3c) = v;
+            *(JGeometry::TVec3f*)((char*)p + 0x3c) = v;
         }
         *(s32*)(self + 0x284) = -1;
     }
@@ -193,9 +221,7 @@ extern "C" void fn_80157E20(char* self) {
         s32 idx2 = *(s32*)(self + 0x280);
         if (idx2 >= 0) {
             void* p = fn_801F666C(fn_801F856C(), idx2);
-            if (p != NULL) {
-                *(s32*)((char*)p + 0x290) -= 1;
-            }
+            if (p != NULL) *(s32*)((char*)p + 0x290) -= 1;
         }
     }
 }
@@ -219,8 +245,7 @@ extern "C" void* fn_80157ED0(void* this_, s16 freeFlag) {
                 v.x = lbl_8053D378;
                 v.y = lbl_8053D378;
                 v.z = lbl_8053D39C;
-                Vec* dst = (Vec*)((char*)found + 0x3c);
-                *dst = v;
+                *(Vec*)((char*)found + 0x3c) = v;
             }
             *(s32*)(p + 0x284) = -1;
         }
