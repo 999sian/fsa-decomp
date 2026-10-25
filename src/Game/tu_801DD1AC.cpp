@@ -12,7 +12,12 @@ extern "C" void fn_801E62D4(void*);
 extern "C" void fn_801D9C58(void*, s32);
 extern const u8 lbl_8053F1C8;
 extern f32 lbl_8053F38C;
-extern f32 lbl_8053F3B4, lbl_8053F3B8, lbl_8053F3BC, lbl_8053F3C0, lbl_8053F3C4, lbl_8053F3C8;
+extern const f32 lbl_8053F3B4;
+extern const f32 lbl_8053F3B8;
+extern const f32 lbl_8053F3BC;
+extern const f32 lbl_8053F3C0;
+extern f32 lbl_8053F3C4;
+extern f32 lbl_8053F3C8;
 
 extern "C" u8 fn_801F37AC(void*, s32, void*, s32, s32, s32);
 extern "C" void fn_801CB538(s32, void*, s32, s32);
@@ -62,10 +67,10 @@ static inline void onPlayerHit(u8* p) {
         }
     }
 }
-extern f32 lbl_8053F3A4;
-extern f32 lbl_8053F3A8;
-extern f32 lbl_8053F3AC;
-extern f32 lbl_8053F3B0;
+extern const f32 lbl_8053F3A4;
+extern const f32 lbl_8053F3A8;
+extern const f32 lbl_8053F3AC;
+extern const f32 lbl_8053F3B0;
 extern "C" void fn_801D9C58(void*, s32);
 
 extern f32 lbl_8053F388;
@@ -155,6 +160,106 @@ extern "C" s32 fn_801DD28C(u8* this_) {
         break;
     }
     return result;
+}
+
+extern "C" u8 fn_801DD410(u8* p) {
+    u8 hit = 0;
+    s32 hitType;
+    f32 contact[2];
+    bool check = false;
+    switch (*(s32*)(p + 0x248)) {
+    case 4: case 6: case 7: check = true; break;
+    case 5: default: break;
+    }
+    if (check) {
+        f32 x0 = *(f32*)(p + 0x60);
+        f32 y0 = *(f32*)(p + 0x64);
+        f32 x1 = *(f32*)(p + 0x68);
+        f32 y1 = *(f32*)(p + 0x6c);
+        *(f32*)(p + 0x60) = lbl_8053F3A4;
+        *(f32*)(p + 0x64) = lbl_8053F3A8;
+        *(f32*)(p + 0x68) = lbl_8053F3AC;
+        *(f32*)(p + 0x6c) = lbl_8053F3B0;
+        if (fn_801F285C(p, 0, 0, 1, -1) >= 0) fn_801D9C58(p, 5);
+        *(f32*)(p + 0x60) = x0;
+        *(f32*)(p + 0x64) = y0;
+        *(f32*)(p + 0x68) = x1;
+        *(f32*)(p + 0x6c) = y1;
+    }
+    switch (*(s32*)(p + 0x248)) {
+    case 0x11: {
+        f32 x0 = *(f32*)(p + 0x60);
+        f32 y0 = *(f32*)(p + 0x64);
+        f32 x1 = *(f32*)(p + 0x68);
+        f32 y1 = *(f32*)(p + 0x6c);
+        *(f32*)(p + 0x60) = lbl_8053F3B4;
+        *(f32*)(p + 0x64) = lbl_8053F3B8;
+        *(f32*)(p + 0x68) = lbl_8053F3BC;
+        *(f32*)(p + 0x6c) = lbl_8053F3C0;
+        if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F38C &&
+            (*(u32*)(p + 0x230) & 0x2000) && fn_801DA904(p + 0x2a8)) {
+            f32 lo = *(f32*)(p + 0x60);
+            f32 hi = *(f32*)(p + 0x68);
+            *(f32*)(p + 0x60) = -hi;
+            *(f32*)(p + 0x68) = -lo;
+        }
+        for (s32 i = 0; i < 4; ++i) {
+            if (i == fn_801F285C(p, 0, &hitType, 1, i) && fn_80235448(i) &&
+                fn_801F37AC(p, 0, fn_8023E724(i), 0, hitType, i)) {
+                hit = 1;
+                break;
+            }
+        }
+        if (hit) {
+            *(s32*)(p + 0x108) = 0;
+            onPlayerHit(p);
+            fn_801D9C58(p, 19);
+        }
+        *(f32*)(p + 0x60) = x0;
+        *(f32*)(p + 0x64) = y0;
+        *(f32*)(p + 0x68) = x1;
+        *(f32*)(p + 0x6c) = y1;
+        if (!hit && *(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F38C &&
+            *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053F38C) {
+            for (s32 i = 0; i < 4; ++i) {
+                if (i == fn_801F285C(p, 0, &hitType, 1, i) && canHitPlayer(p, i)) {
+                    if (fn_801F37AC(p, fn_8023B6CC(i), fn_8023E724(i), 0, hitType, i)) hit = 1;
+                }
+            }
+            if (hit) {
+                onPlayerHit(p);
+                if (*(s32*)(p + 0x108) <= 0) fn_801D9C58(p, 19);
+            }
+        }
+        break;
+    }
+    case 11: case 12: case 13: case 14:
+        if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F38C &&
+            *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053F38C) {
+            u8 effect = 0;
+            for (s32 i = 0; i < 4; ++i) {
+                if (i == fn_801F285C(p, contact, &hitType, 1, i)) {
+                    fn_8023B6CC(i);
+                    if (canHitPlayer(p, i)) {
+                        if (fn_801F37AC(p, 0, fn_8023E724(i), 0, hitType, i)) hit = 1;
+                    } else {
+                        fn_80237948(i, p + 0xc);
+                        if (hitType == 1 && fn_801EAC20(p + 0x1dc, i)) {
+                            JGeometry::TVec3f pos(contact[0], contact[1], lbl_8053F38C);
+                            fn_801CB538(*(s32*)(p + 4), &pos, 0, 0);
+                            effect = 1;
+                        }
+                    }
+                }
+            }
+            if (effect) fn_801F0E34(p, 0x400d1, 0);
+            if (hit) onPlayerHit(p);
+        }
+        break;
+    default:
+        break;
+    }
+    return hit;
 }
 
 extern "C" void* fn_801F856C();
@@ -269,10 +374,10 @@ extern "C" s32 fn_8023AA18(f32* pos, s32 arg, f32* out);
 extern "C" s32 fn_8023AC74(f32* pos, s32 arg, f32* out);
 extern "C" s32 fn_8023AD54(f32* pos, s32 arg, f32* out);
 extern "C" void fn_801D9C58(void* this_, s32 state);
-extern f32 lbl_8053F3B0;
-extern f32 lbl_8053F3A8;
-extern f32 lbl_8053F3AC;
-extern f32 lbl_8053F3A4;
+extern const f32 lbl_8053F3B0;
+extern const f32 lbl_8053F3A8;
+extern const f32 lbl_8053F3AC;
+extern const f32 lbl_8053F3A4;
 extern "C" s32 fn_801DE018(char* this_) {
     s32 r = 0;
     s32 state = *(s32*)(this_ + 0x248);
@@ -315,8 +420,8 @@ skip:
 }
 
 extern f32 lbl_8053F398;
-extern f32 lbl_8053F3B4;
-extern f32 lbl_8053F3C0;
+extern const f32 lbl_8053F3B4;
+extern const f32 lbl_8053F3C0;
 extern f32 lbl_8053F3C8;
 extern f32 lbl_8053F3D8;
 extern f32 lbl_8053F3DC;
