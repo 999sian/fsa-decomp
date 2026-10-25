@@ -1009,46 +1009,19 @@ void Actor::v04() {
 extern "C" void fn_801F33C4(Actor* a) {
     a->field_17D = 0;
     if ((s32)a->field_174 > 0) {
-        a->field_174 = a->field_174 - 1;
-        Vec tmp;
-        Vec v;
-        {
-            register f32* s1 = (f32*)&a->field_30;
-            register f32* s2 = (f32*)&a->field_0C;
-            register f32* dst = (f32*)&v;
-            register f32* dst2 = (f32*)&tmp;
-            register f32 az, axy, dz, bz, dxy, bxy;
-            // clang-format off
-            __asm {
-                lfs    az,  8(s1)
-                psq_l  axy, 0(s1),  0, 0
-                stfs   az,  8(dst)
-                psq_l  bxy, 0(s2),  0, 0
-                psq_l  bz,  8(dst), 1, 0
-                psq_l  dz,  8(s2),  1, 0
-                ps_sub dxy, axy, bxy
-                psq_st axy, 0(dst), 0, 0
-                ps_sub dz,  bz,  dz
-                psq_st dxy, 0(dst), 0, 0
-                psq_st dz,  8(dst), 1, 0
-                lfs    az,  8(dst)
-                psq_st dxy, 0(dst2), 0, 0
-                stfs   az,  8(dst2)
-            }
-            // clang-format on
-        }
-        if (PSVECMag(&tmp) >= a->field_184) {
-            a->field_174 = 0;
-        }
-    } else {
-        if (a->field_17C != 0) {
-            a->field_0C.x = a->field_30.x;
-            a->field_0C.y = a->field_30.y;
-            a->field_04 = a->field_178;
-            a->field_17C = 0;
-            a->field_17D = 1;
-            a->field_174 = a->field_180;
-        }
+        a->field_174 -= 1;
+        JGeometry::TVec3<f32> tmp;
+        JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)&a->field_30);
+        v -= *(JGeometry::TVec3<f32>*)&a->field_0C;
+        tmp = v;
+        if (PSVECMag(&tmp) >= a->field_184) a->field_174 = 0;
+    } else if (a->field_17C != 0) {
+        a->field_0C.x = a->field_30.x;
+        a->field_0C.y = a->field_30.y;
+        a->field_04 = a->field_178;
+        a->field_17C = 0;
+        a->field_17D = 1;
+        a->field_174 = a->field_180;
     }
 }
 
