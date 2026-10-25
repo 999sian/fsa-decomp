@@ -14,6 +14,16 @@
 
 class Actor;
 
+struct StageRec {
+    u8 type;
+    u8 pad1[9];
+};
+
+struct StageTbl {
+    u8 pad0[0x60];
+    StageRec recs[1];
+};
+
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
@@ -107,8 +117,7 @@ bool fn_8028FC2C(char* p) {
     s32 iVar6 = S32(fn_802D6A9C(), 0x14);
     void* iVar7 = fn_802D6A9C();
     s32 iVar8 = (s32)fn_802D6A9C();
-    u8* base = (u8*)(iVar6 + iVar8);
-    s32 cVar1 = base[S32(iVar7, 0x18) * 10 + 0x60];
+    s32 cVar1 = ((u8 (*)[10])(iVar6 + iVar8 + 0x60))[S32(iVar7, 0x18)][0];
     s32 iVar2 = S32(p, 0x3b4) - 7;
     if (iVar4 == 0 && iVar5 == 0) {
         JGeometry::TVec3<f32> v(lbl_805405AC, lbl_805405B0, lbl_805405B4);
@@ -920,6 +929,93 @@ void fn_80293B1C(char* p) {
     U8(p, 0x458) = 0;
 }
 
+s32 fn_8024064C(char*);
+u8 fn_8022D75C(s32);
+void* fn_8023E724(s32);
+s32 fn_8023DE58(s32);
+u16 fn_8022461C(s32, s32);
+u8 fn_802265DC(f32*, int, int);
+bool fn_802684A4(char*, s32, f32*);
+bool fn_802DEABC(char*);
+void fn_80272160(char*, s32, char*, s32);
+void fn_8027EDDC(char*);
+void fn_80293B30(char* p) {
+    if (U8(p, 0x3fc) < 0x3a) {
+        goto tail;
+    }
+    U8(p, 0x3fc) = 0x3a;
+    U8(p, 0x3fd) = 0;
+    U8(p, 0x3fb) = 1;
+    fn_80241454(p, 0);
+    if (fn_80301CD0(PTR(p, 0x4))) {
+        goto tail;
+    }
+    if ((u8)fn_80240670(p)) {
+        if (fn_8022D75C(fn_8024064C(p))) {
+            return;
+        }
+        if (S32(p, 0xcf4) == 0x12) {
+            VEC(p, 0xcd4) = *(JGeometry::TVec3<f32>*)fn_8023E724(fn_8024064C(p));
+            S32(p, 0xce4) = fn_8023DE58(fn_8024064C(p));
+        }
+    }
+    if (S32(p, 0x3b4) < 8) {
+        VEC(p, 0xcb0) = VEC(p, 0x8);
+        U8(p, 0x124d) = 0;
+        if (!fn_80251AEC(p, 0x1f)) {
+            goto tail;
+        }
+    }
+    if ((u8)fn_80241E28(p, S32(p, 0xce4), (JGeometry::TVec3<f32>*)(p + 0xcd4))) {
+        if (fn_802486A0(p) == 5 && Player_IsLinked(p)) {
+            f32* v = (f32*)fn_8023E724(Player_GetLinkTargetIndex(p));
+            F32(p, 0xcd4) = v[0];
+            F32(p, 0xcd8) = v[1];
+            F32(p, 0xcdc) = v[2];
+        }
+        u16 mode = fn_8022461C((s32)(p + 0xcd4), S32(p, 0xce4));
+        if (!fn_802265DC((f32*)(p + 0xcd4), S32(p, 0xce4), 1) && mode != 3 && mode != 0xe) {
+            if (fn_802684A4(p, S32(p, 0xce4), (f32*)(p + 0xcd4))) {
+                if (S32(p, 0xce4) < 8) {
+                    VEC(p, 0xcd4) = VEC(p, 0x2c4);
+                } else {
+                    VEC(p, 0xcd4) = VEC(p, 0xcbc);
+                }
+            }
+        }
+    }
+    S32(p, 0x3b4) = S32(p, 0xce4);
+    VEC(p, 0x8) = VEC(p, 0xcd4);
+    if (fn_802DEABC(p) && S32(p, 0x3b4) <= 8) {
+        if (S32(p, 0xcf4) == 9 || (S32(p, 0xcf4) == 0x12 && !(u8)fn_80240670(p))) {
+            fn_80272160(p, 2, p + 8, 0x11);
+        }
+    } else if (S32(p, 0x3b4) > 8) {
+        if (S32(p, 0xcf4) == 9 || (S32(p, 0xcf4) == 0x12 && !(u8)fn_80240670(p))) {
+            fn_80272160(p, 2, p + 8, 0x11);
+        }
+    }
+    if (S32(p, 0xcf4) == 9) {
+        F32(p, 0x10) = lbl_805405B4;
+    } else if (S32(p, 0xcf4) == 0x24) {
+        F32(p, 0x10) = lbl_80540620;
+    } else {
+        s32 r30 = S32(p, 0x3b4);
+        if (U8(fn_802D6A9C(), r30 + 0x131df)) {
+            F32(p, 0x10) = lbl_805405B4;
+        } else if (S32(p, 0xce4) >= 8) {
+            F32(p, 0x10) = lbl_80540620;
+        } else {
+            F32(p, 0x10) = lbl_805405B4;
+        }
+    }
+    fn_8030BD3C((void*)S32(p, 0xbec), S32(p, 0x4));
+tail:
+    fn_8027EDDC(p);
+    VEC(p, 0x2f4) = VEC(p, 0x8);
+    F32(p, 0x2fc) = F32(p, 0x2fc) + lbl_805405A8;
+}
+
 void fn_80293E8C(char* p) {
     U8(p, 0x124d) = 1;
     F32(p, 0x10) = lbl_805405B4;
@@ -1319,10 +1415,9 @@ void fn_802953A0(char* p) {
     if (U8(p, 0x3fc) < 0x3c) {
         return;
     }
-    f32 x = F32(p, 0x34c);
-    f32 c = lbl_8054060C;
-    x = x - c;
-    F32(p, 0x34c) = x;
+    f32 v = F32(p, 0x34c);
+    v = v - lbl_8054060C;
+    F32(p, 0x34c) = v;
     if (F32(p, 0x34c) < lbl_80540618) {
         F32(p, 0x34c) = lbl_80540618;
     }
