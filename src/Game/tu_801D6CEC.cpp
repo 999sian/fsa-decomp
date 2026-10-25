@@ -95,6 +95,15 @@ extern "C" void fn_801D7DB4(u8* this_, f32 s);
 extern "C" void fn_801CD930(void* p, s32 v, s32 n);
 extern int __float_epsilon[];
 
+static inline void tu6cec_approach(f32* value, f32 dest, f32 time) {
+    if (time < *(f32*)__float_epsilon) {
+        *value = dest;
+    } else {
+        f32 rate = lbl_8053F174 / time;
+        *value = rate * (dest - *value) + *value;
+    }
+}
+
 struct Tu6CECVec { f32 x, y, z; };
 static inline void tu6cec_set(f32* d, f32 x, f32 y, f32 z) { d[0] = x; d[1] = y; d[2] = z; }
 
@@ -287,7 +296,11 @@ extern "C" void fn_801D6D38(char* p, Tu6CECVec2* in) {
     fn_801E4AB0(p + 0x14, 0x3c, 0x2000, y);
 }
 
+#pragma fp_contract on
 extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
+    int i;
+    s32 id;
+    s32 off;
     tu6cec_set(g->pos, src[0], lbl_8053F16C + src[1], src[2]);
     if (fn_801CD2F8(g->m40)) {
         g->pos[1] = lbl_8053F170 + src[1];
@@ -297,11 +310,11 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
     case 4:
         break;
     case 1: {
-        s32 id = g->ids[0];
-        if (id >= 0) {
-            char* a = (char*)fn_801F666C(fn_801F856C(), id);
+        off = g->ids[0];
+        if (off >= 0) {
+            char* a = (char*)fn_801F666C(fn_801F856C(), off);
             if (a != 0) {
-                *(Tu6CECVec*)(a + 0xc) = *(Tu6CECVec*)g->pos;
+                *(JGeometry::TVec3<f32>*)(a + 0xc) = *(JGeometry::TVec3<f32>*)g->pos;
             }
         }
         break;
@@ -315,17 +328,26 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
             if (t < *(f32*)__float_epsilon) {
                 g->m60 = lbl_8053F174;
             } else {
-                g->m60 += (lbl_8053F174 / t) * (lbl_8053F174 - g->m60);
+                f32 one = lbl_8053F174;
+                f32 old = g->m60;
+                f32 rate = one / t;
+                f32 delta = one - old;
+                g->m60 = rate * delta + old;
             }
             if (t < *(f32*)__float_epsilon) {
                 g->m5c = lbl_8053F178;
             } else {
-                g->m5c += (lbl_8053F174 / t) * (lbl_8053F178 - g->m5c);
+                f32 one = lbl_8053F174;
+                f32 dest = lbl_8053F178;
+                f32 rate = one / t;
+                f32 old = g->m5c;
+                f32 delta = dest - old;
+                g->m5c = rate * delta + old;
             }
         }
         break;
     case 3:
-        if (g->m58 != 0) {
+        if ((u8)g->m58 != 0) {
             fn_801CD930(&g->m56, 0, 0x20);
         } else {
             fn_801CD930(&g->m56, 0x100, 0x10);
@@ -333,20 +355,30 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
         g->m54 += g->m56;
         break;
     }
-    if (g->m44 >= 2 && g->m44 < 4) {
-        s32 off = 0;
-        for (int i = 0; i < 16; i++) {
-            s32 id = g->ids[i];
+    switch (g->m44) {
+    case 2:
+    case 3: {
+        off = 0;
+        for (i = 0; i < 16; i++) {
+            id = g->ids[i];
             if (id >= 0) {
                 char* a = (char*)fn_801F666C(fn_801F856C(), id);
                 if (a != 0) {
                     u16 ang = -(s16)(g->m54 + off);
+                    f32 z = g->pos[2];
+                    f32 radius = g->m5c;
+                    f32 center = lbl_8053F150;
+                    f32 py = g->pos[1];
+                    f32 px = g->pos[0];
                     f32 cs = JMath::sincosTable_.mTable[ang >> 5].first;
                     f32 sn = JMath::sincosTable_.mTable[ang >> 5].second;
-                    f32 x = g->pos[0] + (lbl_8053F150 * sn - g->m5c * cs);
-                    f32 y = g->pos[1] + (lbl_8053F150 * cs + g->m5c * sn);
-                    Tu6CECVec v = {x, y, g->pos[2]};
-                    *(Tu6CECVec*)(a + 0xc) = v;
+                    f32 x = px + (center * sn - radius * cs);
+                    f32 y = py + (center * cs + radius * sn);
+                    JGeometry::TVec3<f32> v;
+                    v.x = x;
+                    v.y = y;
+                    v.z = z;
+                    *(JGeometry::TVec3<f32>*)(a + 0xc) = v;
                     if (g->m44 == 2) {
                         fn_801D7DB4((u8*)a, g->m60);
                     }
@@ -355,8 +387,9 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
             off += 0xfff;
         }
     }
+    }
 }
-
+#pragma fp_contract reset
 extern "C" f32* fn_8023E724(s32 idx);
 extern "C" s32 fn_801CD664(s32 n);
 extern const f32 lbl_8053F174;
@@ -369,7 +402,7 @@ extern "C" void fn_801D70BC(Tu6CECGroup* g, Tu6CECVec p, s32 player) {
     if (fn_801CD2F8(g->m40)) {
         g->pos[1] = lbl_8053F170 + p.y;
     }
-    s32 id = g->ids[0];
+    long id = g->ids[0];
     if (id < 0) {
         return;
     }
@@ -387,18 +420,18 @@ extern "C" void fn_801D70BC(Tu6CECGroup* g, Tu6CECVec p, s32 player) {
             dx = lbl_8053F174;
             dy = lbl_8053F150;
         } else if (!(sq <= lbl_8053F158 * *(f32*)__float_epsilon)) {
-            sq = tu6cec_invSqrt(sq);
-            dx *= sq;
-            dy *= sq;
+            f32 inv = tu6cec_invSqrt(sq);
+            dx *= inv;
+            dy *= inv;
         }
         s16 ang = -(s16)(fn_801CD664(0xe39) - 0x71c);
-        f32 cs = JMASCos(ang);
+        register f32 cs = JMASCos(ang);
         f32 sn = JMASSin(ang);
         vx = dx * cs - dy * sn;
         vy = dx * sn + dy * cs;
     } else {
         s16 ang = fn_801CD664(0x10000);
-        vx = JMASSin(ang);
+        register vx = JMASSin(ang);
         vy = JMASCos(ang);
     }
     *(JGeometry::TVec3<f32>*)(a + 0x3c) = JGeometry::TVec3<f32>(vx * lbl_8053F188, vy * lbl_8053F188, lbl_8053F150);
@@ -410,11 +443,9 @@ extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801D72C0(char* this_, JGeometry::TVec3<f32>* src) {
     JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(this_ + 0x48);
     f32 y = lbl_8053F16C + src->y;
-    f32 x = src->x;
-    f32 z = src->z;
-    pos->x = x;
+    pos->x = src->x;
     pos->y = y;
-    pos->z = z;
+    pos->z = src->z;
     if (fn_801CD2F8(*(s32*)(this_ + 0x40))) {
         pos->y = lbl_8053F170 + src->y;
     }
@@ -435,11 +466,11 @@ extern "C" void fn_801D72C0(char* this_, JGeometry::TVec3<f32>* src) {
         f32 r = *(f32*)(this_ + 0x5c);
         f32 rc = r * sc[0];
         f32 rs = r * sc[1];
+        JGeometry::TVec3<f32> d;
         JGeometry::TVec3<f32> pt;
         pt.z = pos->z;
         pt.x = pos->x + (lbl_8053F150 * sc[1] - rc);
         pt.y = pos->y + (lbl_8053F150 * sc[0] + rs);
-        JGeometry::TVec3<f32> d;
         d.sub(pt, *pos);
         d.normalize();
         d.scale(lbl_8053F18C);
