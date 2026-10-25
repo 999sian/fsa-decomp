@@ -149,3 +149,5 @@ extern "C" void fn_8029C1D0(Actor* this_) {
     fn_802A3948(lbl_8053AC98, &this_->field_0C, 0, this_->field_04, 0x159);
 }
 
+
+
