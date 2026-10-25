@@ -2,6 +2,8 @@
 extern "C" const f32 lbl_80540678;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
+#include "dolphin/mtx.h"
 
 
 extern "C" char __vt__4HOUS[];
@@ -68,7 +70,9 @@ static inline s32 WarpDestination(const char* actor) {
 }
 static inline s32 HouseDestination(const char* actor) {
     s32 room = (*(const u32*)(actor + 0x90) >> 7) & 31;
-    return room ? room + 7 : 0;
+    s32 mask = -(room == 0);
+    s32 mapped = room + 7;
+    return mapped & ~mask;
 }
 
 static inline void CenterGrid(JGeometry::TVec3f& pos, f32 offset) {
@@ -365,6 +369,101 @@ extern "C" void fn_802961AC(void* p) {
             *(s32*)(self + 0x2c4) = 120;
             *(s32*)(self + 0x2c8) = 120;
             *(u8*)(self + 0x2ba) = 1;
+        }
+    }
+}
+
+extern "C" u8* lbl_8053AAF8;
+extern "C" void fn_802F6CF4(void* obj, JGeometry::TVec3f* pos, void* res, DrawRec* rec);
+extern "C" s32 fn_8023CB24(s32);
+extern "C" u8 fn_8023CA88(s32);
+extern "C" void fn_802965BC(char* self)
+{
+    const char* tbl = (const char*)lbl_8046C238;
+    if ((self[0x24c] != 0 || *(s32*)(self + 0x2ac) != 0) && self[0x2bb] != 1) {
+        DrawRec rec;
+        Mtx m;
+        const char* name;
+        const char* name2;
+        PSMTXTrans(m, *(f32*)(self + 0x60), *(f32*)(self + 0x64), 0.0f);
+        rec.w18 = m;
+        rec.b1d = -2;
+        if (self[0xc4]) {
+            rec.b20 = 0;
+            rec.b1d = fn_8023CB24(*(s32*)(self + 0xc8)) + 1;
+            rec.b1c = fn_8023CA88(*(s32*)(self + 0xc8));
+        }
+        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(self + 0xc);
+        if (*(s32*)(self + 0x244) == 0) {
+            name = tbl + 0xa0;
+            if (!self[0x2b6]) {
+                name = tbl + 0x90;
+            }
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c++;
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, tbl + 0xb0);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c--;
+        } else if (*(s32*)(self + 0x244) == 1) {
+            if (!self[0x2b7]) {
+                name = tbl + 0xc0;
+                name2 = tbl + 0xd0;
+            } else {
+                name = tbl + 0xe0;
+                name2 = tbl + 0xf0;
+            }
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c++;
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name2);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c--;
+            pos.y += 48.0f;
+            if (!self[0x2b6]) {
+                name = tbl + 0x100;
+                name2 = tbl + 0x110;
+            } else {
+                name = tbl + 0x120;
+                name2 = tbl + 0x130;
+            }
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c++;
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name2);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c--;
+        } else {
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, tbl + 0x140);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c++;
+            if (*(s32*)(self + 4) < 8) {
+                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, tbl + 0x150);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+            }
+            rec.b1c--;
         }
     }
 }
