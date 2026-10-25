@@ -400,6 +400,59 @@ extern "C" void fn_80362C44(char* self) {
 extern "C" void fn_8036335C(void) {
 }
 
+extern "C" void fn_80363360(char* self) {
+    if (*(s32*)(self + 0x248) == 0) {
+        s32 r = fn_801CD664(3);
+        if (r == 0) {
+            f32 zero = lbl_80542B0C;
+            *(f32*)(self + 0x44) = zero;
+            *(f32*)(self + 0x40) = zero;
+            *(f32*)(self + 0x3c) = zero;
+            *(s32*)(self + 0x264) = 0;
+            *(s32*)(self + 0x268) = 0;
+            *(s32*)(self + 0x248) = 0x20;
+        } else {
+            if (JMathInlineVEC::PSVECSquareMag((Vec*)(self + 0x3c)) <= lbl_80542B6C * *(f32*)__float_epsilon) {
+                *(s16*)(self + 0x240) = fn_801CD664(0x10000);
+            } else if (r == 1) {
+                *(s16*)(self + 0x240) += 0x1000;
+            } else {
+                *(s16*)(self + 0x240) -= 0x1000;
+            }
+            f32 speed = 0.3f;
+            *(f32*)(self + 0x3c) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].second;
+            *(f32*)(self + 0x40) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].first;
+            *(s32*)(self + 0x248) = 0x40;
+        }
+    }
+    if (PSVECDistance((Vec*)(self + 0xc), (Vec*)(self + 0x27c)) >= lbl_80542B84) {
+        *(s32*)(self + 0x248) = 0x80;
+        f32 a = JMath::atanTable_.atan2_(*(f32*)(self + 0x280) - *(f32*)(self + 0x10), *(f32*)(self + 0x27c) - *(f32*)(self + 0xc));
+        f32 speed = 0.3f;
+        a *= lbl_80542B50;
+        *(s16*)(self + 0x240) = (s32)a;
+        *(f32*)(self + 0x3c) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].second;
+        *(f32*)(self + 0x40) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].first;
+    }
+    if (!(JMathInlineVEC::PSVECSquareMag((Vec*)(self + 0x3c)) <= lbl_80542B6C * *(f32*)__float_epsilon)) {
+        f32 a = JMath::atanTable_.atan2_(*(f32*)(self + 0x40), *(f32*)(self + 0x3c));
+        a *= lbl_80542B50;
+        u16 angle = (s32)a;
+        if (angle >= 0x2000 && angle < 0x6000) *(s32*)(self + 0x23c) = 0;
+        else if (angle >= 0x6000 && angle < 0xa000) *(s32*)(self + 0x23c) = 2;
+        else if (angle >= 0xa000 && angle < 0xe000) *(s32*)(self + 0x23c) = 1;
+        else *(s32*)(self + 0x23c) = 3;
+        *(s32*)(self + 0x26c) = lbl_804745A8[*(s32*)(self + 0x23c)];
+        if (*(s32*)(self + 0x25c) == 0) {
+            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+            *(s32*)(self + 0x268) += 1;
+            if (*(s32*)(self + 0x268) >= 4) *(s32*)(self + 0x268) = 0;
+            *(s32*)(self + 0x264) = lbl_80474BC4[*(s32*)(self + 0x268)];
+        }
+        JMathInlineVEC::PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
+    }
+}
+
 extern "C" const f32 lbl_8050C088[];
 extern "C" const s32 lbl_804745B8[];
 extern "C" f32 lbl_80542B6C;
@@ -566,10 +619,12 @@ extern "C" f32 lbl_80542BA4;
 extern "C" f32 lbl_80542BA8;
 extern "C" f32 lbl_80542BAC;
 extern "C" f32 lbl_80542BB0;
+extern "C" f32 __fres(f32);
+#pragma opt_propagation off
 extern "C" void fn_80363FFC(char* self) {
     Vec v;
-    s32 rx;
-    s32 ry;
+    int rx;
+    int ry;
 
     if (0.0f == *(f32*)(self + 0x3c)) {
         rx = (s32)*(f32*)(self + 0xc);
@@ -587,12 +642,12 @@ extern "C" void fn_80363FFC(char* self) {
         }
     }
 
-    if (0.0f == *(f32*)(self + 0x44) && 0.0f == *(f32*)(self + 0x14)) {
-        u32 packed = (((u32)ry & 0x100) << 1) | ((u32)rx & 0x100) | ((u32)ry & 0xf0) | ((u32)rx >> 4 & 0xf);
-        *(u16*)(self + 0x27a) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(u32*)(self + 4), packed) & 0x3ff;
+    if (0.0f == *(volatile f32*)(self + 0x44) && 0.0f == *(f32*)(self + 0x14)) {
+        *(u16*)(self + 0x27a) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(u32*)(self + 4), ((((u32)ry & 0x100) << 1) | ((u32)rx & 0x100) | ((u32)ry & 0xf0) | ((u32)rx >> 4 & 0xf))) & 0x3ff;
         if (*(u16*)(self + 0x27a) == 0x1a8) {
+            f32 rise = lbl_80542B98;
             *(s32*)(self + 0x264) = 0;
-            *(f32*)(self + 0x44) = lbl_80542B98;
+            *(f32*)(self + 0x44) = rise;
         }
     } else {
         if (*(f32*)(self + 0x14) > 0.0f) {
@@ -615,10 +670,11 @@ extern "C" void fn_80363FFC(char* self) {
             radians *= lbl_80542B50;
             s32 ang = (s32)radians;
             dist = PSVECDistance((Vec*)(self + 0xc), &v);
-            ang += (s32)(lbl_80542BAC * (lbl_80542BB0 / (lbl_80542BA8 * dist)));
-            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[(u16)ang >> 5].second + v.x;
-            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[(u16)ang >> 5].first + v.y;
-            if ((u16)ang >= 0xe000) {
+            f32 inv = __fres(lbl_80542BA8 * dist);
+            int nextAng = ang + (s32)(lbl_80542BAC * (inv * lbl_80542BB0));
+            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[(u16)nextAng >> 5].second + v.x;
+            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[(u16)nextAng >> 5].first + v.y;
+            if ((u16)nextAng >= 0xe000) {
                 *(s32*)(self + 0x23c) = 0;
                 if (*(s32*)(self + 0x238) == 0) {
                     *(s32*)(self + 0x26c) = 0x32f;
@@ -631,12 +687,12 @@ extern "C" void fn_80363FFC(char* self) {
             *(f32*)(self + 0x40) = 0.0f;
             *(f32*)(self + 0x3c) = 0.0f;
         } else {
-            *(f32*)(self + 0x3c) = lbl_8050C028[0];
-            *(f32*)(self + 0x40) = lbl_8050C028[1];
-            *(f32*)(self + 0x44) = lbl_8050C028[2];
+            *(volatile f32*)(self + 0x3c) = lbl_8050C028[0];
+            *(volatile f32*)(self + 0x40) = ((volatile f32*)lbl_8050C028)[1];
+            *(volatile f32*)(self + 0x44) = ((volatile f32*)lbl_8050C028)[2];
         }
     }
-    PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
+    JMathInlineVEC::PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
 
     if (*(s32*)(self + 0x25c) == 0) {
         *(s32*)(self + 0x268) += 1;
@@ -647,7 +703,7 @@ extern "C" void fn_80363FFC(char* self) {
             *(s32*)(self + 0x264) = (s8)(*(u8**)(self + 0x274))[*(s32*)(self + 0x268)];
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80364340(char* self) {
     if (*(s32*)(self + 0x248) == 0) {
         JGeometry::TVec3<f32> offs;
