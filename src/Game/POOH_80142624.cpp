@@ -18,7 +18,7 @@ extern "C" Actor* fn_80142624(Actor* this_, s16 flag) {
     return this_;
 }
 
-extern "C" void fn_80158B5C(void* obj, s32 room, void* pos, GXColor color, f32 size);
+extern "C" void fn_80158B5C(void* obj, s32 room, f32 size, void* pos, GXColor color);
 extern const f32 lbl_8053CF28;
 extern const f32 lbl_8053CF2C;
 extern "C" void fn_801EFD34(Actor* this_, s32 id, void* idx, s32 n, f32 a, f32 b, f32 c);
@@ -33,7 +33,7 @@ public:
     virtual s32 getResource(u32, s32);
 };
 static inline void poohDrawShadow(Actor* p) {
-    fn_80158B5C(*(void**)((u8*)lbl_8053AB10+0x2c), *(s32*)((u8*)p+4), (u8*)p+0xc, JUtility::TColor(0,0,0,0x80), lbl_8053CF28);
+    fn_80158B5C(*(void**)((u8*)lbl_8053AB10+0x2c), *(s32*)((u8*)p+4), lbl_8053CF28, (u8*)p+0xc, JUtility::TColor(0,0,0,0x80));
 }
 extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 flag);
 extern "C" s32 lbl_8049F2B8[];
@@ -87,7 +87,9 @@ extern "C" void fn_80142684(Actor* this_) {
         *(u16*)((u8*)this_ + 0x94) != 8 && (*(s32*)((u8*)this_ + 0x230) == 1 || *(s32*)((u8*)this_ + 0x230) == 0)) {
         DrawRec rec;
         f32 mtx[12];
-        poohDrawShadow(this_);
+        GXColor color;
+        color.r=0; color.g=0; color.b=0; color.a=0x80;
+        fn_80158B5C(*(void**)((u8*)lbl_8053AB10+0x2c), *(s32*)((u8*)this_+4), lbl_8053CF28, (u8*)this_+0xc, color);
         ((u8*)&rec.w10)[3] = (u8)(s32)*(f32*)((u8*)this_ + 0x270);
         rec.w30 = 9;
         if (*(u16*)((u8*)this_ + 0x94) == 3 || *(u16*)((u8*)this_ + 0x94) == 7) {
