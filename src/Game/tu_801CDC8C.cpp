@@ -85,71 +85,69 @@ extern "C" void fn_801CDCD0(u8* this_, u32 id, const JGeometry::TVec3<f32>& pos,
 
 extern "C" s32 fn_801F3D94(void* this_, u8 flag);
 extern "C" s32 fn_801CD2F8(s32 room);
+#pragma opt_propagation off
 extern "C" void fn_801CDD58(ItemBase* this_) {
-    u8 bVar2;
-    ItemBase* self = this_;
-    s32 iVar1;
-    s32 iVar3;
-    u8 cVar6;
-    u8 uVar4;
-    if ((self->m230 & 0x400) == 0) {
-        self->m230 |= 0x400;
-        (*(void (***)(ItemBase*))self)[0x54 / 4](self);
+    s32 oldD8;
+
+    if ((this_->m230 & 0x400) == 0) {
+        *(volatile u32*)&this_->m230 |= 0x400;
+        this_->v19();
     }
-    self->m230 &= 0xffffffe0;
-    self->m240 = 0;
-    bVar2 = 1;
-    if (self->m230 & 0x80) {
-        bVar2 = 0;
-    }
-    *(f32*)((u8*)self + 0x234) = *(f32*)((u8*)self + 0x3c);
-    *(f32*)((u8*)self + 0x238) = *(f32*)((u8*)self + 0x40);
-    *(f32*)((u8*)self + 0x23c) = *(f32*)((u8*)self + 0x44);
-    if ((self->m230 & 0x200) != 0) {
-        *(u32*)((u8*)self + 0x108) = self->m244;
-    }
-    (*(void (***)(ItemBase*))self)[0x58 / 4](self);
-    iVar1 = *(s32*)((u8*)self + 0xd8);
-    iVar3 = fn_801F3D94(self, bVar2);
-    if (iVar3 != 0) {
-        self->m230 |= 1;
-    } else {
-        cVar6 = (*(u8 (***)(ItemBase*))self)[0x5c / 4](self);
-        if (cVar6 == 0) {
-            cVar6 = (*(u8 (***)(ItemBase*))self)[0x60 / 4](self);
-            if (cVar6 != 0) {
-                self->m230 |= 4;
-                (*(void (***)(ItemBase*))self)[0x70 / 4](self);
+    this_->m230 &= ~0x1f;
+    this_->m240 = 0;
+    {
+        s32 flag = 1;
+        if (this_->m230 & 0x80) {
+            flag = 0;
+        }
+        this_->m234 = *(f32*)((u8*)this_ + 0x3c);
+        this_->m238 = *(f32*)((u8*)this_ + 0x40);
+        this_->m23C = *(f32*)((u8*)this_ + 0x44);
+        if (this_->m230 & 0x200) {
+            *(u32*)((u8*)this_ + 0x108) = this_->m244;
+        }
+        this_->v20();
+        oldD8 = *(s32*)((u8*)this_ + 0xd8);
+        if (fn_801F3D94(this_, flag) != 0) {
+            this_->m230 |= 1;
+        } else if (this_->v21()) {
+            this_->m230 |= 2;
+            this_->v25();
+        } else if (this_->v22()) {
+            this_->m230 |= 4;
+            this_->v26();
+        }
+        if (!(u8)flag && *(s32*)((u8*)this_ + 0xd8) > 0 && *(s32*)((u8*)this_ + 0xf8) == 2) {
+            f32 vz = *(f32*)((u8*)this_ + 0x44);
+            if (vz > lbl_8053EFC4) {
+                *(f32*)((u8*)this_ + 0x44) = lbl_8053EFC4;
             }
-        } else {
-            self->m230 |= 2;
-            (*(void (***)(ItemBase*))self)[0x6c / 4](self);
         }
     }
-    if (!bVar2 && 0 < *(s32*)((u8*)self + 0xd8) && *(s32*)((u8*)self + 0xf8) == 2 && *(f32*)((u8*)self + 0x44) > lbl_8053EFC4) {
-        *(f32*)((u8*)self + 0x44) = lbl_8053EFC4;
+    if (this_->m230 & 0x200) {
+        *(u32*)((u8*)this_ + 0x108) = this_->m244;
     }
-    if ((self->m230 & 0x200) != 0) {
-        *(u32*)((u8*)self + 0x108) = self->m244;
+    if (oldD8 == 1 && *(s32*)((u8*)this_ + 0xd8) == 0) {
+        this_->v27();
     }
-    if (iVar1 == 1 && *(s32*)((u8*)self + 0xd8) == 0) {
-        (*(void (***)(ItemBase*))self)[0x74 / 4](self);
+    if ((this_->m230 & 0x800) == 0 && *(s32*)((u8*)this_ + 0x108) <= 0) {
+        *(volatile u32*)&this_->m230 |= 0x800;
+        this_->v28();
     }
-    if ((self->m230 & 0x800) == 0 && *(s32*)((u8*)self + 0x108) <= 0) {
-        self->m230 |= 0x800;
-        (*(void (***)(ItemBase*))self)[0x78 / 4](self);
+    this_->v36();
+    {
+        s32 flag2 = this_->v23();
+        u8 gate = (this_->m230 & 7) != 0;
+        if (!gate && (this_->m230 & 0x100) == 0) {
+            this_->m240 = this_->v24();
+        }
+        this_->v37(flag2);
     }
-    (*(void (***)(ItemBase*))self)[0x98 / 4](self);
-    uVar4 = (*(u8 (***)(ItemBase*))self)[0x64 / 4](self);
-    if ((self->m230 & 7) == 0 && (self->m230 & 0x100) == 0) {
-        self->m240 = (*(u8 (***)(ItemBase*))self)[0x68 / 4](self);
-    }
-    (*(void (***)(ItemBase*, u8))self)[0x9c / 4](self, uVar4);
-    if (fn_801CD2F8(*(s32*)((u8*)self + 4)) == 0) {
-        (*(void (***)(ItemBase*))self)[0xa0 / 4](self);
+    if (!(u8)fn_801CD2F8(*(s32*)((u8*)this_ + 4))) {
+        this_->v38();
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801CE00C(void) {}
 
 extern "C" f32 __fsels(f32 a, f32 b, f32 c);
