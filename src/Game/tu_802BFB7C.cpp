@@ -596,3 +596,5 @@ extern "C" void fn_802C0F20(char* p) {
     }
 }
 
+static void __sinit_tu_802BFB7C_cpp(void) {}
+
