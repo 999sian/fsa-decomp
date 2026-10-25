@@ -31,6 +31,7 @@ extern "C" void fn_80230EB8(s32 i, s32 id);
 extern "C" void fn_80230FD0(s32 i, s32 id);
 extern "C" u32 fn_80237810(s32 i);
 extern u8 lbl_8050DB0C[];
+extern u64 lbl_8048D320[];
 
 // Sub-object virtual slots 13 called by fn_8041918C.
 struct SubObj {
@@ -244,6 +245,95 @@ extern "C" void fn_8041C67C(u8* this_) {
 	}
 }
 
+extern "C" void fn_8041DD24(u8* this_) {
+    u64* p31;
+    u64* p30;
+    u64* p29;
+    u64* p28;
+    s32 n;
+    u8* base;
+    u8* self;
+    s32 cnt;
+    s32 i;
+
+    self = this_;
+    base = (u8*)lbl_8048D320;
+    if (self[0x28a] & 1) {
+        n = fn_80237810(0);
+        cnt = *(s32*)(lbl_80529DEC + 0xd8);
+        if (n > 0x20) {
+            n = 0x20;
+        }
+        if (n < 0) {
+            n = 0;
+        }
+        if (n < cnt) {
+            cnt = n;
+        }
+        if (cnt < 0) {
+            cnt = 0;
+        }
+        p31 = (u64*)(base + 0x148);
+        p30 = (u64*)(base + 0x188);
+        p29 = (u64*)(base + 0x1c8);
+        p28 = (u64*)(base + 0x208);
+        for (i = 0; i < 8; i++) {
+            if (cnt >= 4) {
+                SetPaneVisibleOfSub(self, *p31, 1);
+                SetPaneVisibleOfSub(self, *p30, 1);
+                PaneSetFloats(FindPaneOfSub(self, *p31), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                PaneSetFloats(FindPaneOfSub(self, *p30), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                SetPaneVisibleOfSub(self, *p29, 0);
+                SetPaneVisibleOfSub(self, *p28, 0);
+                n -= 4;
+                cnt -= 4;
+            } else {
+                if (cnt == 0) {
+                    SetPaneVisibleOfSub(self, *p31, 0);
+                    SetPaneVisibleOfSub(self, *p30, 0);
+                    if (n > 0) {
+                        SetPaneVisibleOfSub(self, *p29, 1);
+                        SetPaneVisibleOfSub(self, *p28, 1);
+                        n -= 4;
+                    } else {
+                        SetPaneVisibleOfSub(self, *p29, 0);
+                        SetPaneVisibleOfSub(self, *p28, 0);
+                    }
+                } else if (cnt == 1) {
+                    SetPaneVisibleOfSub(self, *p31, 1);
+                    SetPaneVisibleOfSub(self, *p30, 1);
+                    PaneSetFloats(FindPaneOfSub(self, *p31), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    PaneSetFloats(FindPaneOfSub(self, *p30), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneVisibleOfSub(self, *p29, 0);
+                    SetPaneVisibleOfSub(self, *p28, 0);
+                    n -= 4;
+                } else if (cnt == 2) {
+                    SetPaneVisibleOfSub(self, *p31, 1);
+                    SetPaneVisibleOfSub(self, *p30, 1);
+                    PaneSetFloats(FindPaneOfSub(self, *p31), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    PaneSetFloats(FindPaneOfSub(self, *p30), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneVisibleOfSub(self, *p29, 0);
+                    SetPaneVisibleOfSub(self, *p28, 0);
+                    n -= 4;
+                } else if (cnt == 3) {
+                    SetPaneVisibleOfSub(self, *p31, 1);
+                    SetPaneVisibleOfSub(self, *p30, 1);
+                    PaneSetFloats(FindPaneOfSub(self, *p31), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    PaneSetFloats(FindPaneOfSub(self, *p30), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneVisibleOfSub(self, *p29, 0);
+                    SetPaneVisibleOfSub(self, *p28, 0);
+                    n -= 4;
+                }
+                cnt = 0;
+            }
+            p31++;
+            p30++;
+            p29++;
+            p28++;
+        }
+    }
+}
+
 extern "C" void fn_8041E3B4(u8* this_, u32 idx) {
     u8 mask;
     u32 bit;
@@ -291,11 +381,11 @@ extern "C" void fn_8041E3B4(u8* this_, u32 idx) {
 }
 
 extern "C" void fn_8041E58C(u8* this_) {
-    s32 i;
+    u32* table;
     s32 j;
     s32 bit;
     s32 flag;
-    u32* table;
+    s32 i;
 
     table = (u32*)lbl_80529DEC;
     for (i = 0; i < 4; i++) {
@@ -356,7 +446,8 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
         }
     }
     if (val >= 1000 || val <= -1000) {
-        *(s16*)(this_ + i * 2 + 0x224) = (s16)((val < 0 ? -val : val) / 100);
+        s32 mag = val < 0 ? -val : val;
+        *(s16*)(this_ + i * 2 + 0x224) = (s16)(mag / 100);
         *(s16*)(this_ + i * 2 + 0x22C) = 0;
     } else {
         fn_80230FD0(i, 0x20034);
@@ -368,8 +459,7 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
     }
     u32* table = (u32*)lbl_80529DEC;
     table[0x3A + idx] = fn_80236100(idx);
-    u32* counts = (u32*)(this_ + idx * 4);
-    counts[0x1A8 / 4] = 0;
+    *(u32*)(this_ + idx * 4 + 0x1A8) = 0;
     this_[0x28B] |= (u8)(1 << idx);
 }
 
@@ -383,7 +473,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     bit = 1 << idx;
     mask = bit;
 
-    flag = lbl_80529DEC[0x239] & mask;
+    flag = (lbl_80529DEC[0x239] & mask) != 0;
     if (flag) {
         *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) = fn_80237774(idx);
         for (i = 0; i < 4; i++) {
@@ -391,7 +481,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                 *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
             }
         }
-        this_[0x28a] |= mask;
+        this_[0x28a] |= bit;
         *(s32*)(this_ + idx * 4 + 0x198) = 0;
         *(s16*)(this_ + idx * 2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
         *(s32*)(this_ + idx * 4 + 0x1e8) = *(s32*)(this_ + idx * 4 + 0x1d8);
@@ -399,43 +489,44 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
         *(s32*)(this_ + idx * 4 + 0x1f8) = fn_80237810(idx);
         lbl_80529DEC[0x239] &= ~mask;
     } else {
-        cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+        s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+        cnt = *slot;
         if (cnt < (s32)fn_80237774(idx)) {
             *(s32*)(this_ + idx * 4 + 0x198) += 1;
             if (*(s32*)(this_ + idx * 4 + 0x198) >= 10) {
-                *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) += 1;
+                *slot += 1;
                 for (i = 0; i < 4; i++) {
                     if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-                        *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+                        *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *slot;
                     }
                 }
-                this_[0x28a] |= mask;
+                this_[0x28a] |= bit;
                 *(s32*)(this_ + idx * 4 + 0x198) = 0;
                 fn_80230EB8(idx, 9);
             }
             if (this_[0x291] != 0) {
                 *(s16*)(this_ + idx * 2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
                 *(s32*)(this_ + idx * 4 + 0x1e8) = *(s32*)(this_ + idx * 4 + 0x1d8);
-                *(s32*)(this_ + idx * 4 + 0x1d8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+                *(s32*)(this_ + idx * 4 + 0x1d8) = *slot;
                 *(s32*)(this_ + idx * 4 + 0x1f8) = fn_80237810(idx);
             }
         } else if (cnt > (s32)fn_80237774(idx)) {
             lbl_80529DEC[0x24a] |= mask;
             *(s32*)(this_ + idx * 4 + 0x198) += 1;
             if (*(s32*)(this_ + idx * 4 + 0x198) >= 10) {
-                *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) -= 1;
+                *slot -= 1;
                 for (i = 0; i < 4; i++) {
                     if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-                        *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+                        *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *slot;
                     }
                 }
-                this_[0x28a] |= mask;
+                this_[0x28a] |= bit;
                 *(s32*)(this_ + idx * 4 + 0x198) = 0;
             }
             if (this_[0x291] != 0) {
                 *(s16*)(this_ + idx * 2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
                 *(s32*)(this_ + idx * 4 + 0x1e8) = *(s32*)(this_ + idx * 4 + 0x1d8);
-                *(s32*)(this_ + idx * 4 + 0x1d8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+                *(s32*)(this_ + idx * 4 + 0x1d8) = *slot;
                 *(s32*)(this_ + idx * 4 + 0x1f8) = fn_80237810(idx);
             }
         } else {
@@ -454,7 +545,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                 *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) = fn_80236100(idx);
                 fn_80230EB8(idx, 0x51);
             }
-            this_[0x28b] |= mask;
+            this_[0x28b] |= bit;
             *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
         }
     } else if (cnt > (s32)fn_80236100(idx)) {
@@ -467,7 +558,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                 *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) = fn_80236100(idx);
                 fn_80230EB8(idx, 0x51);
             }
-            this_[0x28b] |= mask;
+            this_[0x28b] |= bit;
             *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
         }
     } else {
