@@ -60,6 +60,24 @@ struct Unk80458408Obj {
         virtual JASTrack* v9(s32 idx);
 };
 
+static inline void updateAudioTracks(Unk80458408Obj* sound, s32 id) {
+    s32 i;
+    Unk80458408Obj* bank;
+    if (sound) {
+        switch (id) { case 0x100001a: break; default: return; }
+        bank=sound->v4();
+        if (bank) {
+            JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
+            for (i=0;i<16;i++) {
+                JASTrack* track=bank->v7(i);
+                if (track) {
+                    if (i==2 || i==7) track->mute(false);
+                    else track->mute(true);
+                }
+            }
+        }
+    }
+}
 struct Unk804580DCBank {
     char padEC[0xEC];
     Unk804580DCTrack** mEC;
@@ -936,6 +954,8 @@ extern "C" const f32 lbl_80543EC0;
 extern "C" u32 lbl_8053A250;
 extern "C" u32 lbl_8053A254;
 extern "C" void fn_80459674(u8* p) {
+    JAISoundID id;
+    JAISoundID startID;
     JAUSoundMgr* mgr;
     s32 i;
     Unk80458408Obj* bank;
@@ -951,7 +971,7 @@ extern "C" void fn_80459674(u8* p) {
     } else {
         if (p[0x69]==1) *(f32*)(p+0x54)=lbl_80543EB0;
         else if (p[0x8b]==1) {
-            JAISoundID id=-1;
+            id.setAnonymous();
             if (*(JAISound**)(p+0x80)) id=JAISoundID((*(JAISound**)(p+0x80))->getID());
             switch ((s32)(u32)id) {
             case 0x1000001: case 0x1000002: case 0x1000004:
@@ -966,8 +986,8 @@ extern "C" void fn_80459674(u8* p) {
     if (p[0x68] && *(s32*)(p+0x64)>=0) {
         if ((u32)*(s32*)(p+0x64)>=lbl_8053A25C) {
             if (p[4]==0) {
-                JAISoundID id=*(u32*)(p+0x5c);
-                ((JAUSoundMgr*)*(void**)(p+0x30))->startSound(id,(JAISoundHandle*)(p+0x80),0);
+                startID.mId.mFullId=*(u32*)(p+0x5c);
+                ((JAUSoundMgr*)*(void**)(p+0x30))->startSound(startID,(JAISoundHandle*)(p+0x80),0);
                 fn_8045815C(p,p[0x8b]);
                 switch (*(s32*)(p+0x5c)) {
                 case 0x100001a:
