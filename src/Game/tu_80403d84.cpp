@@ -136,8 +136,8 @@ struct Obj240 {
 };
 extern "C" f32 lbl_805438C8;
 
-static inline f32 paneHalfSpan(const f32* bounds) {
-	return (bounds[2] - bounds[0]) * 0.5f;
+static inline f32 paneSpan(const f32* bounds) {
+	return bounds[2] - bounds[0];
 }
 
 struct Slots208 {
