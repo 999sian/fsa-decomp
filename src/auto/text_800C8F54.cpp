@@ -60,6 +60,12 @@ public:
 };
 extern J3DIndTexMtxInfo j3dDefaultIndTexMtxInfo;
 
+struct J3DIndTexMtx : public J3DIndTexMtxInfo {
+    J3DIndTexMtx() { *(J3DIndTexMtxInfo*)this = j3dDefaultIndTexMtxInfo; }
+    J3DIndTexMtx(const J3DIndTexMtxInfo& info) { *(J3DIndTexMtxInfo*)this = info; }
+    ~J3DIndTexMtx() {}
+};
+
 class J3DFogInfo {
 public:
     J3DFogInfo& operator=(const J3DFogInfo&);
@@ -1306,22 +1312,24 @@ extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
 
 extern "C" void* __nw__FUl(u32);
 extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
+#pragma opt_propagation off
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
-    u16* ids = *(u16**)(p + 8);
-    u8* base = *(u8**)(p + 4);
+    u16* ids = ((J3DMaterialFactory*)p)->mMatRemapTable;
+    u8* base = (u8*)((J3DMaterialFactory*)p)->mInitData;
     void* ret;
-    u32 off = ids[idx] * 0x14c + 0x48;
-    off += b * 2;
-    if (*(u16*)(base + off) == 0xffff) {
-        return NULL;
+    u32 materialOffset = ids[idx] * 0x14c + 0x48;
+    u32 off = materialOffset + b * 2;
+    void* result = NULL;
+    if (*(u16*)(base + off) != 0xffff) {
+        ret = __nw__FUl(0x94);
+        if (ret != NULL) {
+            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, (u8*)((J3DMaterialFactory*)p)->unk_0C[9] + *(u16*)(base + off) * 0x64);
+        }
+        result = ret;
     }
-    ret = __nw__FUl(0x94);
-    if (ret != NULL) {
-        __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + off) * 0x64);
-    }
-    return ret;
+    return result;
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
     u8 b = *(u8*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 1);
     if (b != 0xff) {
@@ -1418,10 +1426,13 @@ extern "C" void* fn_800CB4C0(void* out, u8* e) {
     return out;
 }
 
+#pragma opt_propagation on
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + ids[idx] * 0x14c + 0x124 + stage * 2);
+    s32 offset = ids[idx] * 0x14c + 0x124;
+    offset += stage * 2;
+    u16 v = *(u16*)(base + offset);
     if (v != 0xffff) {
         u8* e = *(u8**)(p + 0x58) + v * 4;
         *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
@@ -1430,7 +1441,7 @@ extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u8* d = (u8*)&j3dDefaultTevSwapModeTable;
     *out = d[0] * 0x40 + d[1] * 0x10 + d[2] * 4 + d[3];
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
     u8* base = *(u8**)(p + 0xc);
     s32 off = idx * 0x138;
@@ -1569,8 +1580,8 @@ extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
 
 extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) {
     J3DNBTScale local;
-    u8* puVar5;
     u16 uVar4;
+    u8* puVar5;
 
     uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
     if (uVar4 != 0xffff) {
