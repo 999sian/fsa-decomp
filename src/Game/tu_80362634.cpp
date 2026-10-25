@@ -248,6 +248,7 @@ extern "C" void fn_80362680(char* self) {
 extern "C" f32 lbl_80474BB8[];
 extern "C" const char lbl_80474BD4[];
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
+#pragma opt_propagation off
 extern "C" void fn_803628D4(char* self) {
  JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
  Mtx mtxB;
@@ -275,7 +276,7 @@ extern "C" void fn_803628D4(char* self) {
  if (*(void**)(self+0x138)==0)
  fn_801EF830(*(s32*)(self+4),(f32*)(self+0xc),(u8*)&p,7,(u8*)lbl_80474BD4,id,0);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80362B14(char* self) {
     void* tex = fn_804032E8(0x54494d47, lbl_80474C10);
     if (*(s32*)(self + 4) < 8) {
