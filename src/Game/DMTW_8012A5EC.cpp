@@ -411,6 +411,7 @@ extern "C" f32 lbl_8053CBE4;
 extern "C" f32 lbl_8053CBE8;
 extern "C" f32 lbl_8053CB8C;
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
+extern "C" void fn_80119998(s32, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_8012B0D8(char* this_) {
     u8 result = fn_8012A5EC(this_);
     if (*(f32*)(this_ + 0x23c) == 260.0f + *(f32*)(this_ + 0x3f4) &&
