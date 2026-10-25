@@ -52,6 +52,12 @@ static inline void CallVfn24(char* obj, s32 arg) {
     (*(void (***)(char*, s32))obj)[24](obj, arg);
 }
 
+struct SpriteResources_80113B54 {
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void* v6(u32, void*);
+};
+
 struct Vec3_80113B54 {
     f32 x;
     f32 y;
@@ -114,16 +120,9 @@ extern "C" void fn_802F745C(void* a, void* b, s32 c, void* d);
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_8053C6A0;
 extern "C" void fn_80113790(char* self) {
+    JGeometry::TVec3<f32> vec;
     u8 buf[0x40];
     f32 mtx[3][4];
-    struct P {
-        f32 x;
-        f32 y;
-    };
-    struct V {
-        P xy;
-        f32 z;
-    } vec;
     s32 i;
 
     if (*(s32*)(self + 0x248) > 0) {
@@ -177,8 +176,7 @@ extern "C" void fn_80113790(char* self) {
         *(f32(**)[4])(buf + 0x18) = mtx;
         *(s8*)(buf + 0x1d) = -1;
         buf[0x2d] = 1;
-        vec.z = *(f32*)(self + 0x14);
-        vec.xy = *(P*)(self + 0xc);
+        vec = *(JGeometry::TVec3<f32>*)(self + 0xc);
         vec.z = lbl_8053C69C;
         if (*(s32*)(self + 4) < 8) {
             fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &vec, *(s32*)(self + 0x260), buf);
@@ -249,13 +247,15 @@ extern "C" void fn_8011395C(char* self) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80113B54(char* self, int arg) {
-    Vec3xy_80113B54 vec;
+    JGeometry::TVec3<f32> vec;
     u8 buf50[0x3c];
     u8 buf14[0x3c];
     int i;
     int idx;
     void* spr;
+    void* pos;
 
     *(s32*)(buf50 + 0x10) = -1;
     *(s32*)(buf50 + 0x14) = -1;
@@ -325,26 +325,28 @@ extern "C" void fn_80113B54(char* self, int arg) {
     *(s32*)(buf14 + 0x34) = 0;
     *(s32*)(buf14 + 0x38) = 2;
 
-    vec = *(Vec3xy_80113B54*)(self + 0xc);
-    vec.xy.y = *(f32*)(self + 0x28);
+    vec = *(JGeometry::TVec3<f32>*)(self + 0xc);
+    vec.y = *(f32*)(self + 0x28);
 
     if (arg == 0x1d6) {
         fn_801EF830(*(s32*)(self + 4), &vec, buf14, 7, lbl_80464968, arg + *(s32*)(self + 0x274), 0);
+        pos = self+0xc;
         idx = arg + *(s32*)(self + 0x274);
         if (*(s32*)(self + 4) < 8) {
             spr = ((void* (*)(void*, u32, void*))((void**)*(void**)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x534f4220, lbl_80464968);
-            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), self + 0xc, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
         }
     } else {
         fn_801EF830(*(s32*)(self + 4), &vec, buf14, 7, lbl_8046497C, arg + *(s32*)(self + 0x274), 0);
+        pos = self+0xc;
         idx = arg + *(s32*)(self + 0x274);
         if (*(s32*)(self + 4) < 8) {
             spr = ((void* (*)(void*, u32, void*))((void**)*(void**)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x534f4220, lbl_8046497C);
-            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), self + 0xc, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
         }
     }
 }
-
+#pragma opt_propagation on
 #if defined(VERSION_G4SE01)
 extern "C" int fn_80113E98(char* self) {
     switch (*(int*)(self + 0x23c)) {
