@@ -87,7 +87,8 @@ static inline bool tuInBox2(const JGeometry::TVec3f& v, const f32* box) {
 }
 
 static inline bool tuCheckHit2(u8* self, s32 idx, s32 room) {
-    if (room != fn_8023DE58(idx)) {
+    s32 r = fn_8023DE58(idx);
+    if (r != room) {
         return false;
     }
     for (s32 j = 0; j < 8; j++) {
