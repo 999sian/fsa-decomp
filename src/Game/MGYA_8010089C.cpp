@@ -87,7 +87,9 @@ public:
     s32 mB0;
     u8 padB4[0x10c - 0xb4];
     s32 m10C;
-    u8 pad110[0x230 - 0x110];
+    u8 pad110[0x198 - 0x110];
+    s32 m198;
+    u8 pad19C[0x230 - 0x19c];
     s32 m230;
     s32 m234;
     s32 m238;
@@ -139,8 +141,10 @@ extern "C" void fn_801008FC(MGYA* this_) {
             b = 1;
         }
         MGYA* m = this_->m290;
-        m->m260[pl] += a;
-        m->m268[pl] += b;
+        u16* p260 = m->m260;
+        p260[pl] += a;
+        u16* p268 = m->m268;
+        p268[pl] += b;
     }
 }
 
@@ -223,7 +227,13 @@ extern "C" void fn_80100A90(MGYA* this_) {
     fn_8013CC50(this_->m04, &this_->mPos, 0x1da, 0, 1, 0, 0, 1, lbl_8053C140);
 }
 
+#pragma dont_inline on
+extern "C" void fn_80100D28(MGYA* this_) {
+}
+#pragma dont_inline reset
+
 extern "C" void fn_80101B48(MGYA* this_) {
+    s32 i;
     if (this_->m90 & 0x10000) {
         DrawRec rec;
         if (this_->m244 == 1) {
@@ -243,7 +253,6 @@ extern "C" void fn_80101B48(MGYA* this_) {
             s32 m = t / 60;
             lbl_8053AF18[0x30] = m;
             lbl_8053AF18[0x31] = (t - m * 60) / lbl_8053C154;
-            s32 i;
             lbl_8053AF18[0x32] |= 0x10;
             for (i = 0; i < this_->m244; i++) {
                 lbl_8053AF18[0x32] |= (u8)(1 << i);
