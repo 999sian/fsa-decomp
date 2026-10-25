@@ -63,7 +63,8 @@ extern "C" BOOL fn_8022F478(s32 id);
 extern "C" BOOL fn_8022F514(s32 id);
 
 static inline bool IsPlayerBitSet(s32 id) {
-    return lbl_8053AAF8[0x82] & (u8)(1 << id);
+    bool set = lbl_8053AAF8[0x82] & (u8)(1 << id);
+    return set;
 }
 
 static inline void OffsetBox(f32* box, f32 x, f32 y) {
@@ -85,7 +86,7 @@ extern "C" void fn_801F71A4(f32* v, f32 cur, f32 target, f32 step);
 extern "C" void Actor_CreateByID(s32 mgr, s32 name, s32 room, f32* pos, s32 a, s32 b, s32 c);
 extern "C" void detach__5ActorFv(Actor* p);
 extern "C" void fn_803471A0(Actor* this_) {
-    s32 i;
+    int i;
     u8 flag;
     f32 box[4];
     Vec tmp;
@@ -131,10 +132,7 @@ extern "C" void fn_803471A0(Actor* this_) {
             box[1] = *(f32*)(p + 0x64);
             box[2] = *(f32*)(p + 0x68);
             box[3] = *(f32*)(p + 0x6c);
-            box[1] += *(f32*)(p + 0x10);
-            box[0] += *(f32*)(p + 0xc);
-            box[2] += *(f32*)(p + 0xc);
-            box[3] += *(f32*)(p + 0x10);
+            OffsetBox(box, *(f32*)(p + 0xc), *(f32*)(p + 0x10));
             if ((u8)fn_80233DA4(i) == 1) {
                 box[3] += lbl_80542448;
             }
