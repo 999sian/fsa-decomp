@@ -172,6 +172,11 @@ extern "C" s32 fn_801A4D1C(void* this_, void* a4, void* a5) {
     return fn_801A4754((u8*)target, a4, a5);
 }
 
+extern "C" s32 fn_8023AC74(void* a, s32 room, void* b);
+extern "C" s32 fn_8023B22C(void);
+extern "C" u8 fn_801EAC20(void* list, s32 idx);
+extern "C" s32 fn_8022F514(void* a);
+extern "C" s32 fn_8022F3DC(void* a);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" s32 fn_8023AA18(void* a, s32 room, void* b);
 extern "C" s32 fn_8023B520(void);
