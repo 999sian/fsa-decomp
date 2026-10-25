@@ -594,37 +594,13 @@ static inline bool kepoIsSwingState(s32 state) {
     return result;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80219AFC(u8* self, s32 state) {
-    bool a = false;
     s32 old = *(s32*)(self + 0x248);
-    switch (old) {
-    case 5:
-    case 11:
-        a = true;
-        break;
-    }
-    if (!a) {
-        bool b = false;
-        switch (state) {
-        case 5:
-        case 11:
-            b = true;
-            break;
-        }
-        if (b) {
-            fn_8021B5C4(self);
-        }
-    } else {
-        bool b = false;
-        switch (state) {
-        case 5:
-        case 11:
-            b = true;
-            break;
-        }
-        if (!b) {
-            fn_8021B5A0(self);
-        }
+    if (!kepoIsSwingState(old) && kepoIsSwingState(state)) {
+        fn_8021B5C4(self);
+    } else if (kepoIsSwingState(old) && !kepoIsSwingState(state)) {
+        fn_8021B5A0(self);
     }
 
     switch (*(s32*)(self + 0x248)) {
@@ -657,7 +633,7 @@ extern "C" void fn_80219AFC(u8* self, s32 state) {
         s32 room;
         u8* base;
         f32 out[2];
-        *(f32*)(self + 0x258) = 1.5f;
+        *(f32*)(self + 0x258) = lbl_8053FC94;
         room = *(s32*)(self + 4);
         base = (u8*)fn_802D6A9C();
         if (room < 8) {
@@ -665,11 +641,19 @@ extern "C" void fn_80219AFC(u8* self, s32 state) {
         } else {
             base += 0xdc;
         }
-        fn_801CBB98((f32*)base, self + 0x24, 60.0f,
-                    (*(u32*)(self + 0x230) & 0x2000) ? 0x5556 : -0x5556, out);
-        *(f32*)(self + 0xc) = out[0];
-        *(f32*)(self + 0x10) = out[1];
-        *(f32*)(self + 0x14) = 35.0f;
+        void* pos = self + 0x24;
+        s32 t = -0x5556;
+        if (*(u32*)(self + 0x230) & 0x2000) t = 0x5556;
+        fn_801CBB98((f32*)base, pos, lbl_8053FC98, t, out);
+        f32 z;
+        f32 x;
+        f32 y;
+        y = out[1];
+        x = out[0];
+        z = lbl_8053FC90;
+        *(f32*)(self + 0xc) = x;
+        *(f32*)(self + 0x10) = y;
+        *(f32*)(self + 0x14) = z;
     } break;
     case 5:
         *(f32*)(self + 0x258) = 0.0f;
@@ -696,8 +680,7 @@ extern "C" void fn_80219AFC(u8* self, s32 state) {
         s32 room;
         u8* base;
         s32 t;
-        u32 flags;
-        *(f32*)(self + 0x258) = 1.5f;
+        *(f32*)(self + 0x258) = lbl_8053FC94;
         fn_801D22DC(self + 0x270, 1, 0, 0);
         room = *(s32*)(self + 4);
         base = (u8*)fn_802D6A9C();
@@ -706,23 +689,23 @@ extern "C" void fn_80219AFC(u8* self, s32 state) {
         } else {
             base += 0xdc;
         }
-        flags = *(u32*)(self + 0x230);
-        if (flags & 0x10000) {
-            *(u32*)(self + 0x230) |= 0x2000;
+        if (*(u32*)(self + 0x230) & 0x10000) {
+            u32 flags = *(volatile u32*)(self + 0x230);
             t = -0x3556;
-        } else if (flags & 0x2000) {
+            *(u32*)(self + 0x230) = flags | 0x2000;
+        } else if (*(u32*)(self + 0x230) & 0x2000) {
             t = -0x2aaa;
         } else {
             t = 0x2aaa;
         }
-        fn_801CBB98((f32*)base, self + 0x24, 60.0f, t, (f32*)(self + 0x2bc));
+        fn_801CBB98((f32*)base, self + 0x24, lbl_8053FC98, t, (f32*)(self + 0x2bc));
     } break;
     }
 
     *(s32*)(self + 0x24c) = 0;
     *(s32*)(self + 0x248) = state;
 }
-
+#pragma opt_propagation reset
 struct KepoVec2 { f32 x, y; };
 extern "C" void fn_801D01A0(void* self, f32 speed, void* dir, KepoVec2* out);
 
