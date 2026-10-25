@@ -571,7 +571,6 @@ extern "C" void fn_80100D28(MGYA* this_) {
         break;
     }
 }
-#pragma dont_inline reset
 
 extern "C" void fn_80101B48(MGYA* this_) {
     s32 i;
