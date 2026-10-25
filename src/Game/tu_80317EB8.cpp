@@ -32,9 +32,6 @@ extern "C" s32 lbl_804AAF40[];
 extern "C" u8 lbl_8053A1B0[];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
-static inline bool sameRoom803190E0(s32 player, s32 room) {
-    return fn_8023DE58(player) == room;
-}
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
 static inline u8 activate803193B4(u8* self, s32 actor) {
     s32 slot = *(s32*)(self + 0x244);
