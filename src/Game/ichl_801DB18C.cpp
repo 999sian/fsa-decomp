@@ -450,15 +450,8 @@ static inline f32 ichlLen(const IchlV2& v) {
     return sq * inv;
 }
 static inline bool ichlIsZero(const IchlV2& v) {
-    f32 limit;
-    f32 square;
-    f32 yy;
-    f32 xx;
-    xx = v.x * v.x;
-    yy = v.y * v.y;
-    square = xx + yy;
-    limit = JGeometry::TUtilf::epsilon();
-    bool r = square <= limit;
+    const f32 square = v.squared();
+    bool r = square <= JGeometry::TUtilf::epsilon();
     return r;
 }
 
