@@ -31,26 +31,72 @@ extern "C" Actor* fn_80346E24(Actor* p, s16 n) {
 
 extern "C" double sin(double);
 extern "C" double cos(double);
+static inline void setDrawRotation(Mtx m, f32 angle, const f32 scale) {
+    f32 sx,sy,sz,cx,cy,cz;
+    sx=sin(lbl_80542438);
+    sy=sin(angle);
+    sz=sin(lbl_80542438);
+    cx=cos(lbl_80542438);
+    cy=cos(angle);
+    cz=cos(lbl_80542438);
+    f32 cxcz=cx*cz;
+    f32 sxsy=sx*sy;
+    f32 cxsz=cx*sz;
+    m[0][0]=scale*(cy*cz);
+    m[1][0]=scale*(cy*sz);
+    m[2][0]=scale*(-sy);
+    m[0][1]=scale*(sxsy*cz-cxsz);
+    m[1][1]=scale*(sxsy*sz+cxcz);
+    m[2][1]=scale*(sx*cy);
+    m[0][2]=scale*(cxcz*sy+sx*sz);
+    m[1][2]=scale*(cxsz*sy-sx*cz);
+    m[2][2]=scale*(cx*cy);
+}
+
 extern "C" void fn_801F06F0(Actor* a, void* p2, s32 idx, u8* ids, s32 p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(void* h, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 extern "C" void fn_80346E84(Actor* this_) {
-    u8* p = (u8*)this_;
-    s32 mode;
-    u8 ids[16];
-    u8 rec[0x3c];
-    f32 m[3][4];
-    s32 i;
-    f32 sa, sb, sc, ca, cb, cc;
-    f32 s;
-
-    if (*(s32*)(p + 0x230) == 4) {
-        if (*(s32*)(p + 0x260) == 0) {
-            return;
-        }
-        mode = -1;
-        for (i = 0; i < 16; i++) {
-            ids[i] = i;
-        }
+    Vec transform;
+    f32 sx;
+    f32 sy;
+    f32 sz;
+    f32 cy;
+    f32 cz;
+    u8* p=(u8*)this_;
+    if(*(s32*)(p+0x230)==4 && *(s32*)(p+0x260)==0) return;
+    DrawRec rec;
+    Mtx m;
+    s32 mode=7;
+    rec.b2d=1;
+    PSMTXIdentity(m);
+    transform.y=*(f32*)(p+0x268);
+    transform.x=*(f32*)(p+0x26c);
+    sx=sin(lbl_80542438);
+    sy=sin(transform.y);
+    sz=sin(lbl_80542438);
+    transform.z=cos(lbl_80542438);
+    cy=cos(transform.y);
+    cz=cos(lbl_80542438);
+    f32 cxcz=transform.z*cz;
+    f32 sxsy=sx*sy;
+    f32 cxsz=transform.z*sz;
+    m[0][0]=transform.x*(cy*cz);
+    m[1][0]=transform.x*(cy*sz);
+    m[2][0]=transform.x*(-sy);
+    m[0][1]=transform.x*(sxsy*cz-cxsz);
+    m[1][1]=transform.x*(sxsy*sz+cxcz);
+    m[2][1]=transform.x*(sx*cy);
+    m[0][2]=transform.x*(cxcz*sy+sx*sz);
+    m[1][2]=transform.x*(cxsz*sy-sx*cz);
+    m[2][2]=transform.x*(transform.z*cy);
+    rec.w18=m;
+    s32 state=*(s32*)(p+0x230);
+    if(state==3) mode=-1;
+    if(state==0 || state==3 || state==4) {
+        if(*(s32*)(p+0x24c)<0x100 && (*(s32*)(p+0x24c)&2)) return;
+        if(state==4) rec.b1d=3;
+        fn_801F06F0(this_,lbl_804720A0,0x2aa,rec.ids,mode,lbl_8054243C,lbl_8054243C);
+        fn_803075AC(*(void**)(p+0x198),*(s32*)(p+4),p+0xc,0x2aa,0,2,-1,0,0,0);
     }
 }
 
