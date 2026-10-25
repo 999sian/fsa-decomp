@@ -57,6 +57,13 @@ static inline f32 tzokRand01() {
     return out.f - one;
 }
 
+static inline bool tzokRoomActive(void* self) {
+    s32 room = *(s32*)((char*)self + 0x354);
+    bool active = false;
+    if (room != 0 && fn_802D7F40(fn_802D6A9C(), room)) active = true;
+    return active;
+}
+
 // ---- fn_802064E0.cpp ----
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7F40(void* record, s32 roomIdx);
@@ -356,8 +363,8 @@ extern "C" u8 fn_8022F9E4(s32 idx, void* a, s32 b, s32 c);
 extern "C" void fn_801F31C4(void* self, void* buf);
 extern "C" void fn_801CE0A4(void* self, s32 param);
 extern "C" void fn_8020FADC(void* self);
-extern "C" void fn_802051AC(void* this_, s32 param_2) {
-    char* p = (char*)this_;
+extern "C" void fn_802051AC(char* this_, int param_2) {
+    char* p = this_;
     s32 room;
     bool bVar1;
     if (*(u8*)(p + 0xc4) != 0 && *(s32*)(p + 0xc8) >= 0 && *(s32*)(p + 0xc8) < 4) {
@@ -391,11 +398,11 @@ extern "C" void fn_802051AC(void* this_, s32 param_2) {
     bVar1 = false;
     if (*(u16*)(p + 0x94) == 1 && !fn_801CD2F8(*(s32*)(p + 4))) {
         s32 r = *(s32*)(p + 4);
-        f32* box = (f32*)((u8*)fn_802D6A9C() + (r < 8 ? 0xcc : 0xdc));
+        u8* g = (u8*)fn_802D6A9C();
+        f32* box = (f32*)(g + (r < 8 ? 0xcc : 0xdc));
         f32 x = *(f32*)(p + 0xc);
-        f32 y = *(f32*)(p + 0x10);
         bool inside = false;
-        if (x >= box[0] && y >= box[1] && x < box[2] && y < box[3]) {
+        if (x >= box[0] && *(f32*)(p + 0x10) >= box[1] && x < box[2] && *(f32*)(p + 0x10) < box[3]) {
             inside = true;
         }
         if (!inside) {
@@ -404,13 +411,13 @@ extern "C" void fn_802051AC(void* this_, s32 param_2) {
     }
     if (!bVar1) {
         s32 st = *(s32*)(p + 0x248);
-        if (st != 9 && (st < 3 || st > 4)) {
+        switch (st) { case 3: case 4: case 9: break; default: {
             if (*(u8*)fn_80204638() == 0 && !fn_802064E0(p)) {
                 f32 buf[6];
                 fn_801F31C4(p, buf);
                 s32 i = 0;
                 do {
-                    if (fn_801CCFE4(i) && fn_8023DE58((void*)i) == *(s32*)(p + 4) &&
+                    if (fn_801CCFE4(i) && *(s32*)(p + 4) == fn_8023DE58((void*)i) &&
                         fn_80239C00(i, buf, *(s32*)(p + 4)) && fn_8022F9E4(i, *(void**)(p + 0x198), 1, 0)) {
                         fn_80205E0C((u8*)p, 3);
                         break;
@@ -418,6 +425,7 @@ extern "C" void fn_802051AC(void* this_, s32 param_2) {
                     i++;
                 } while (i < 4);
             }
+        }
         }
         fn_801CE0A4(p, param_2);
         fn_8020FADC(p);
@@ -687,15 +695,9 @@ extern "C" void fn_80206168(char* p) {
             if (obj == 0) {
                 continue;
             }
-            f32 c3 = 1.0f;
-            f32 c2 = 2.0f;
-            f32 c1 = 1.5f;
-            f32 c0 = -0.5f;
-            TzokVec3 v;
-            v.z = c0 * tzokRand01();
-            v.y = c1 * (c2 * tzokRand01() - c3);
-            v.x = c1 * (c2 * tzokRand01() - c3);
-            *(TzokVec3*)(obj + 0x3c) = v;
+            JGeometry::TVec3f v;
+            v.set(1.5f * (2.0f * tzokRand01() - 1.0f), 1.5f * (2.0f * tzokRand01() - 1.0f), -0.5f * tzokRand01());
+            *(JGeometry::TVec3f*)(obj + 0x3c) = v;
         }
     }
 }
