@@ -881,7 +881,7 @@ extern "C" bool fn_802D76A8(char* p, s32 bit) {
 
 extern "C" void fn_802D7704(char* p, s32 bit, u8 value, s32 index) {
     char* q = p + *(s32*)(p + 0x18) * 0x500;
-    q += *(s32*)(p + 0x14) * 0x80;
+    q = (char*)(*(s32*)(p + 0x14) * 0x80 + (u32)q);
     q = (char*)((u32)(q + 0x3548) + (bit / 32) * 4);
     *(u32*)q |= 1U << (bit % 32);
     if (value != 0) {
