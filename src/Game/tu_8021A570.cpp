@@ -216,4 +216,8 @@ void InitDefaultRecord(void* thisPtr) {
 }
 }
 
+#pragma exceptions off
+#include "JSystem/JAudio/System/JASHeapCtrl.h"
+#include "JSystem/JAudio/System/JASTrack.h"
+#pragma exceptions reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
