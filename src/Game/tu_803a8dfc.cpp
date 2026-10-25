@@ -11,8 +11,8 @@
 
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 extern "C" void fn_8013B414(void* a, f32* b, s32 c);
-extern char lbl_805433C0[];
-extern char lbl_805433C4[];
+extern const char lbl_805433C0;
+extern const char lbl_805433C4;
 extern char lbl_8047641C[];
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
 
@@ -174,6 +174,155 @@ extern "C" s32 fn_803A8DFC(void* this_, s32 self) {
         break;
     }
     return r;
+}
+
+extern "C" void fn_803A8F5C(void* this_) {
+    void* res;
+    s32 id;
+    s32 cur;
+    s32 shown;
+    s32 neg;
+    s32 d;
+    s32 a;
+    s32 v;
+    s32 i;
+    char* pos;
+    char* q;
+    char* p = (char*)this_;
+    fn_8013B490(lbl_8053AB10);
+    if (*(u8*)(p + 0x4c0) >= 2) {
+        q = p;
+        for (i = 0; i < *(s32*)(p + 0x454); i++) {
+            v = *(s32*)(q + 0x3e0);
+            shown = 0;
+            neg = v < 0;
+            a = v;
+            if (neg) {
+                a = -v;
+            }
+            *(u8*)(*(char**)(q + 0xa8) + 0xb0) = 0;
+            *(u8*)(*(char**)(q + 0xf8) + 0xb0) = 0;
+            d = (a % 10000) / 1000;
+            if (d != 0) {
+                *(u8*)(*(char**)(q + 0xb8) + 0xb0) = 1;
+                *(u8*)(*(char**)(q + 0x108) + 0xb0) = 1;
+                snprintf(((J2DTextBox*)*(char**)(q + 0xb8))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+                snprintf(((J2DTextBox*)*(char**)(q + 0x108))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+                if (neg) {
+                    *(u8*)(*(char**)(q + 0xa8) + 0xb0) = 1;
+                    *(u8*)(*(char**)(q + 0xf8) + 0xb0) = 1;
+                    snprintf(((J2DTextBox*)*(char**)(q + 0xa8))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                    snprintf(((J2DTextBox*)*(char**)(q + 0xf8))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                }
+                shown = 1;
+            } else {
+                *(u8*)(*(char**)(q + 0xb8) + 0xb0) = 0;
+                *(u8*)(*(char**)(q + 0x108) + 0xb0) = 0;
+            }
+            d = (a % 1000) / 100;
+            if (d != 0 || shown) {
+                *(u8*)(*(char**)(q + 0xc8) + 0xb0) = 1;
+                *(u8*)(*(char**)(q + 0x118) + 0xb0) = 1;
+                snprintf(((J2DTextBox*)*(char**)(q + 0xc8))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+                snprintf(((J2DTextBox*)*(char**)(q + 0x118))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+                if (!shown) {
+                    if (neg) {
+                        *(u8*)(*(char**)(q + 0xb8) + 0xb0) = 1;
+                        *(u8*)(*(char**)(q + 0x108) + 0xb0) = 1;
+                        snprintf(((J2DTextBox*)*(char**)(q + 0xb8))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                        snprintf(((J2DTextBox*)*(char**)(q + 0x108))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                    }
+                    shown = 1;
+                }
+            } else {
+                *(u8*)(*(char**)(q + 0xc8) + 0xb0) = 0;
+                *(u8*)(*(char**)(q + 0x118) + 0xb0) = 0;
+            }
+            d = (a % 100) / 10;
+            if (d != 0 || shown) {
+                *(u8*)(*(char**)(q + 0xd8) + 0xb0) = 1;
+                *(u8*)(*(char**)(q + 0x128) + 0xb0) = 1;
+                snprintf(((J2DTextBox*)*(char**)(q + 0xd8))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+                snprintf(((J2DTextBox*)*(char**)(q + 0x128))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+                if (!shown) {
+                    if (neg) {
+                        *(u8*)(*(char**)(q + 0xc8) + 0xb0) = 1;
+                        *(u8*)(*(char**)(q + 0x118) + 0xb0) = 1;
+                        snprintf(((J2DTextBox*)*(char**)(q + 0xc8))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                        snprintf(((J2DTextBox*)*(char**)(q + 0x118))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                    }
+                    shown = 1;
+                }
+            } else {
+                *(u8*)(*(char**)(q + 0xd8) + 0xb0) = 0;
+                *(u8*)(*(char**)(q + 0x128) + 0xb0) = 0;
+            }
+            d = a % 10;
+            snprintf(((J2DTextBox*)*(char**)(q + 0xe8))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+            snprintf(((J2DTextBox*)*(char**)(q + 0x138))->getStringPtr(), 2, (const char*)&lbl_805433C0, d);
+            if (!shown && neg) {
+                *(u8*)(*(char**)(q + 0xd8) + 0xb0) = 1;
+                *(u8*)(*(char**)(q + 0x128) + 0xb0) = 1;
+                snprintf(((J2DTextBox*)*(char**)(q + 0xd8))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+                snprintf(((J2DTextBox*)*(char**)(q + 0x128))->getStringPtr(), 2, (const char*)&lbl_805433C4);
+            }
+            q += 4;
+        }
+    }
+    cur = *(s32*)(p + 0x450);
+    ((J2DScreen*)*(void**)(p + 4 + cur * 4))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
+    {
+        f32 box[4];
+        box[0] = lbl_805433C8;
+        box[1] = lbl_805433C8;
+        box[2] = lbl_805433CC;
+        box[3] = lbl_805433D0;
+        fn_8013B414(lbl_8053AB10, box, 1);
+    }
+    {
+        char* q2 = p;
+        pos = p;
+        for (i = 0; i < *(s32*)(p + 0x454); i++) {
+            DrawRec rec;
+            rec.ids[7] = (u8)(i + 12);
+            if (*(u8*)(p + 0x4c0) >= 3) {
+                rec.b1c = 0xff;
+                rec.b1d = 0xff;
+            }
+            id = *(s32*)(q2 + 0x3c0);
+            res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec, lbl_805433D4, lbl_805433D4);
+            if (*(u8*)(p + 0x4db) & ((1 << i) & 0xff)) {
+                DrawRec rec2;
+                u8 b;
+                if (*(u8*)(p + 0x4db) & ((1 << (i + 4)) & 0xff)) {
+                    b = *(u8*)(p + 0x4dd);
+                } else {
+                    b = *(u8*)(p + 0x4dc);
+                }
+                rec2.w10 = (s32)(0xffffff00 | b);
+                rec2.ids[7] = 7;
+                if (*(u8*)(p + 0x4c0) >= 3) {
+                    rec2.b1c = 0xff;
+                    rec2.b1d = 0xff;
+                }
+                res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
+                fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec2, lbl_805433D4, lbl_805433D4);
+            }
+            q2 += 4;
+            pos += 12;
+        }
+    }
+    fn_8013B490(lbl_8053AB10);
+    cur = *(s32*)(p + 0x450);
+    ((J2DScreen*)*(void**)(p + 0x10 + cur * 4))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
+    ((J2DScreen*)*(void**)(p + 0x20))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
+    if (*(u8*)(p + 0x4c0) == 3 || *(u8*)(p + 0x4c0) == 4) {
+        *((u8*)lbl_8053AB10 + 0x20) = 1;
+        *((u8*)lbl_8053AB10 + 0x21) = 4;
+    }
+    ((void (*)(void*, u8))(*(void***)(p + 0x170))[9])(*(void**)(p + 0x170), *(u8*)(p + 0x4c2));
+    ((void (*)(void*, s32, s32, s32))(*(void***)(p + 0x170))[59])(*(void**)(p + 0x170), 0, 0, 0);
 }
 
 extern "C" void fn_803A97A0(void* this_) {
