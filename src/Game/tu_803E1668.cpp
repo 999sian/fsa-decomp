@@ -677,7 +677,6 @@ extern "C" void fn_803E8210(u8* p) {
     }
 }
 
-#pragma opt_common_subs off
 extern "C" void fn_803E831C(u8* p) {
     u8* tbl = (u8*)lbl_80477970;
     s32 i;
@@ -763,26 +762,40 @@ lo=0;group=0;lo2=lo;hi=10;
  ((f32*)p)[idx+0x61]=MenuSlide803E(d,lbl_80543694,lbl_805436F0);
  v=(f32)(10-(*(s16*)(p+0x254)-lo2))/lbl_805436F4;
  if(v<lbl_80543664)v=lbl_80543664;else if(v>lbl_80543668)v=lbl_80543668;
- u8* alpha=p+idx*5;u64* name=((u64*)(tbl+0x6d8))+idx*5;
+ s32 alphaOffset=idx*5;
+ u64* name=(u64*)(tbl+0x6d8);
+ u8* alpha=p+alphaOffset;
+ name+=idx*5;
  for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((s32)value);}
  }else{
  s32 idx=*id; s32 cell=idx*4+0x184;
  ((f32*)p)[idx+0x61]=lbl_80543694;
- u8* alpha=p+idx*5;u64* name=((u64*)(tbl+0x6d8))+idx*5;
+ s32 alphaOffset=idx*5;
+ u64* name=(u64*)(tbl+0x6d8);
+ u8* alpha=p+alphaOffset;
+ name+=idx*5;
  for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((s32)value);}
  }}}
  if(*(s16*)(p+0x254)>15){
  if(*(s16*)(p+0x254)<23){
  s32 d=*(s16*)(p+0x254)-15;
  ((f32*)(p+0x184))[*(s32*)(p+0x1b8)]=MenuSlideExit803E(d,lbl_80543694,lbl_805436E8);
+ s32 idx=*(s32*)(p+0x1b8);
  v=(f32)(8-(*(s16*)(p+0x254)-15))*lbl_805436EC;
  if(v<lbl_80543664)v=lbl_80543664;else if(v>lbl_80543668)v=lbl_80543668;
- s32 idx=*(s32*)(p+0x1b8);u8* alpha=p+idx*5;u64* name=((u64*)(tbl+0x6d8))+idx*5;
+ s32 alphaOffset=idx*5;
+ u64* name=(u64*)(tbl+0x6d8);
+ u8* alpha=p+alphaOffset;
+ name+=idx*5;
  for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((s32)value);}
  }else{
  s32 idx=*(s32*)(p+0x1b8);
  ((f32*)(p+0x184))[idx]=lbl_80543694;
- u8* alpha=p+idx*5;u64* name=((u64*)(tbl+0x6d8))+idx*5;
+ idx=*(s32*)(p+0x1b8);
+ s32 alphaOffset=idx*5;
+ u64* name=(u64*)(tbl+0x6d8);
+ u8* alpha=p+alphaOffset;
+ name+=idx*5;
  for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((s32)value);}
  }}
  }
@@ -829,7 +842,6 @@ lo=0;group=0;lo2=lo;hi=10;
  pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
  pane->v10(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
 }
-#pragma opt_common_subs reset
 
 extern "C" void fn_803E9034(u8* p) {
 	s32 n;
