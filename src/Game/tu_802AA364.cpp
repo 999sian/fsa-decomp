@@ -56,43 +56,40 @@ extern char lbl_8046C860[];
 extern float lbl_80540888;
 extern float lbl_8054088C;
 extern "C" void fn_802AA3C8(void* self) {
+    unsigned char* s = (unsigned char*)self;
     int* p = (int*)self;
     switch (p[0x8c]) {
     case 0:
-        if (((unsigned char (*)(void*))((void**)*(void**)self)[13])(self) == 1) {
-            float* pos = (float*)((unsigned char*)self + 0xc);
+        if (((Tu802AA364Actor*)self)->isReady() == 1) {
             float v[3];
-            fn_802A3948(lbl_8053AC98, pos, 0, p[1], 0x38);
-            v[0] = pos[0];
-            v[1] = pos[1] - lbl_80540888;
+            fn_802A3948(lbl_8053AC98, s + 0xc, 0, p[1], 0x38);
+            float y = *(float*)(s + 0x10) - lbl_80540888;
+            int r = p[1] + 1;
+            v[0] = *(float*)(s + 0xc);
+            v[1] = y;
             v[2] = lbl_8054088C;
-            fn_802A3948(lbl_8053AC98, v, 0, p[1] + 1, 0x39);
+            fn_802A3948(lbl_8053AC98, v, 0, r, 0x39);
             fn_801F0E34(self, 0x30016, 0);
             if (p[1] < 8) {
                 p[0x8c] = 2;
                 p[0x90] = 2;
             } else {
-                void* mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+                void* res = (*(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_8046C860);
                 fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0, 0, 0x40, 0xc0);
                 p[0x8c] = 1;
             }
         }
         break;
-    case 1: {
-        void* mgr = fn_802D6A9C();
-        unsigned char r = fn_802D800C(mgr, p[0x8d]);
-        if (r != 0) {
+    case 1:
+        if (fn_802D800C(fn_802D6A9C(), p[0x8d])) {
             fn_801F0D20(self, 3);
             p[0x8c] = 4;
         }
         break;
-    }
     case 2:
         p[0x90] = p[0x90] - 1;
         if (p[0x90] == 0) {
-            void* mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-            void* res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+            void* res = (*(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_8046C860);
             fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0xc0, 0, 0x40, 0xc0);
             fn_801F0E34(self, 0x30016, 0);
             p[0x8c] = 3;
@@ -102,8 +99,7 @@ extern "C" void fn_802AA3C8(void* self) {
     case 3:
         p[0x90] = p[0x90] - 1;
         if (p[0x90] == 0) {
-            void* mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-            void* res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+            void* res = (*(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_8046C860);
             fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0, 0, 0x40, 0xc0);
             p[0x8c] = 1;
             p[0x90] = 2;
@@ -113,26 +109,25 @@ extern "C" void fn_802AA3C8(void* self) {
         p[0x90] = p[0x90] - 1;
         if (p[0x90] == 0) {
             if (p[1] < 8) {
-                void* mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+                void* res = (*(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_8046C860);
                 fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0xc0, 0, 0x40, 0xc0);
                 p[0x8c] = 5;
                 p[0x90] = 2;
             } else {
-                float* pos = (float*)((unsigned char*)self + 0xc);
                 float v[3];
-                fn_802A3884(lbl_8053AC98, pos, 0, p[1], *(unsigned short*)((unsigned char*)self + 0x244));
-                v[0] = pos[0];
-                v[1] = pos[1] - lbl_80540888;
+                fn_802A3884(lbl_8053AC98, s + 0xc, 0, p[1], *(unsigned short*)(s + 0x244));
+                float y = *(float*)(s + 0x10) - lbl_80540888;
+                int r = p[1] + 1;
+                v[0] = *(float*)(s + 0xc);
+                v[1] = y;
                 v[2] = lbl_8054088C;
-                fn_802A3884(lbl_8053AC98, v, 0, p[1] + 1, 0);
-                void* mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+                fn_802A3884(lbl_8053AC98, v, 0, r, 0);
+                void* res = (*(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_8046C860);
                 fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0x180, 0, 0x40, 0xc0);
                 if (p[0x8f] == 0) {
                     fn_801F35AC(self);
                 } else {
-                    *(unsigned char*)((unsigned char*)self + 0x11c) = 0;
+                    s[0x11c] = 0;
                 }
             }
             fn_801F0E34(self, 0x30015, 0);
@@ -141,20 +136,20 @@ extern "C" void fn_802AA3C8(void* self) {
     case 5:
         p[0x90] = p[0x90] - 1;
         if (p[0x90] == 0) {
-            float* pos = (float*)((unsigned char*)self + 0xc);
             float v[3];
-            fn_802A3884(lbl_8053AC98, pos, 0, p[1], *(unsigned short*)((unsigned char*)self + 0x244));
-            v[0] = pos[0];
-            v[1] = pos[1] - lbl_80540888;
+            fn_802A3884(lbl_8053AC98, s + 0xc, 0, p[1], *(unsigned short*)(s + 0x244));
+            float y = *(float*)(s + 0x10) - lbl_80540888;
+            int r = p[1] + 1;
+            v[0] = *(float*)(s + 0xc);
+            v[1] = y;
             v[2] = lbl_8054088C;
-            fn_802A3884(lbl_8053AC98, v, 0, p[1] + 1, 0);
-            void* mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-            void* res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+            fn_802A3884(lbl_8053AC98, v, 0, r, 0);
+            void* res = (*(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_8046C860);
             fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0x180, 0, 0x40, 0xc0);
             if (p[0x8f] == 0) {
                 fn_801F35AC(self);
             } else {
-                *(unsigned char*)((unsigned char*)self + 0x11c) = 0;
+                s[0x11c] = 0;
             }
         }
         break;
