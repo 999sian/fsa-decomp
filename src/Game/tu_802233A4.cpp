@@ -204,6 +204,11 @@ void fn_802A20F0(void* mgr, JGeometry::TVec3<f32>* pos, s32 a, u32 room, s32 b, 
 void fn_80223AD8(void* this_, s32 state);
 void fn_802238CC(void* this_);
 
+static inline void SpawnCorner_802233A4(f32 x, f32 y, u32 room) {
+    JGeometry::TVec3<f32> v(x, y, 0.0f);
+    fn_802A20F0(lbl_8053AC98, &v, -1, room, 0, 0);
+}
+
 void fn_80223664(void* this_, u8 flag) {
     char* p = (char*)this_;
     switch (*(u32*)(p + 0x248)) {
@@ -280,36 +285,66 @@ void fn_80223664(void* this_, u8 flag) {
 
 void fn_802238CC(void* this_) {
     char* p = (char*)this_;
-    Rect_802233A4 r;
-    r.x0 = r.y0 = 1.0f;
-    r.x1 = r.y1 = -1.0f;
+    f32 x0, y0, x1, y1;
+    y0 = x0 = 1.0f;
+    y1 = x1 = -1.0f;
     if (*(s32*)(p + 0x248) == 5) {
-        r.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        y0 = x0 = -8.0f;
+        y1 = x1 = 8.0f;
         switch (*(s32*)(p + 0x98)) {
         case 0:
-            r.add(16.0f, 0.0f);
+            AddRect_802233A4(x0, y0, x1, y1, 16.0f, 0.0f);
             break;
         case 1:
-            r.add(-16.0f, 0.0f);
+            AddRect_802233A4(x0, y0, x1, y1, -16.0f, 0.0f);
             break;
         case 2:
-            r.add(0.0f, 16.0f);
+            AddRect_802233A4(x0, y0, x1, y1, 0.0f, 16.0f);
             break;
         case 3:
-            r.add(0.0f, -16.0f);
+            AddRect_802233A4(x0, y0, x1, y1, 0.0f, -16.0f);
             break;
         }
     }
-    if (r.x1 - r.x0 > 0.0f && r.y1 - r.y0 > 0.0f) {
-        r.add(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
-        JGeometry::TVec3<f32> a(r.x0, r.y0, 0.0f);
-        fn_802A20F0(lbl_8053AC98, &a, -1, *(u32*)(p + 0x4), 0, 0);
-        JGeometry::TVec3<f32> b(r.x1, r.y0, 0.0f);
-        fn_802A20F0(lbl_8053AC98, &b, -1, *(u32*)(p + 0x4), 0, 0);
-        JGeometry::TVec3<f32> c(r.x1, r.y1, 0.0f);
-        fn_802A20F0(lbl_8053AC98, &c, -1, *(u32*)(p + 0x4), 0, 0);
-        JGeometry::TVec3<f32> d(r.x0, r.y1, 0.0f);
-        fn_802A20F0(lbl_8053AC98, &d, -1, *(u32*)(p + 0x4), 0, 0);
+    if (x1 - x0 > 0.0f && y1 - y0 > 0.0f) {
+        f32 dx = *(f32*)(p + 0xc);
+        f32 dy = *(f32*)(p + 0x10);
+        x0 += dx;
+        y0 += dy;
+        x1 += dx;
+        y1 += dy;
+        {
+            JGeometry::TVec3<f32>* v;
+            JGeometry::TVec3<f32> a;
+            v = &a;
+            u32 room = *(u32*)(p + 0x4);
+            a.set(x0, y0, 0.0f);
+            fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
+        }
+        {
+            JGeometry::TVec3<f32>* v;
+            JGeometry::TVec3<f32> b;
+            v = &b;
+            u32 room = *(u32*)(p + 0x4);
+            b.set(x1, y0, 0.0f);
+            fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
+        }
+        {
+            JGeometry::TVec3<f32>* v;
+            JGeometry::TVec3<f32> c;
+            v = &c;
+            u32 room = *(u32*)(p + 0x4);
+            c.set(x1, y1, 0.0f);
+            fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
+        }
+        {
+            JGeometry::TVec3<f32>* v;
+            JGeometry::TVec3<f32> d;
+            v = &d;
+            u32 room = *(u32*)(p + 0x4);
+            d.set(x0, y1, 0.0f);
+            fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
+        }
     }
 }
 
