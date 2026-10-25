@@ -73,26 +73,43 @@ extern "C" void fn_8045A700(void* this_, JAISoundID* param_2, void* param_3) {
     }
 }
 
+static inline void setSoundInfo(void* this_, JAISoundID* param_2, void* param_3) {
+    JAISoundID typeSoundID;
+    JAISoundID soundID;
+    u32 id = param_2->id;
+    soundID.id = id;
+    void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
+    typeSoundID.id = id;
+    u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
+    if (data != 0) {
+        switch (typeID) {
+        case 0x10: *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
+        case 0x12: *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
+        case 0x11: *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
+        }
+    }
+}
+
 extern "C" void fn_8045A81C(void* this_, JAISoundID* param_2, void* param_3) {
-    if (param_3 != 0) {
+    char* p = (char*)param_3;
+    if (p != 0) {
         u32 id = param_2->id;
-        param_3 = (char*)param_3 + 0x10;
-        JAISoundID typeSoundID;
         JAISoundID soundID;
         soundID.id = id;
         void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
+        JAISoundID typeSoundID;
         typeSoundID.id = id;
         u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
         if (data != 0) {
             switch (typeID) {
             case 0x10:
-                *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
+                *(f32*)(p + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
                 break;
             case 0x12:
-                *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
+                *(f32*)(p + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
                 break;
             case 0x11:
-                *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
+                *(f32*)(p + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
                 break;
             }
         }
@@ -169,37 +186,44 @@ extern "C" u8 fn_8045AB44(void* param_1, JAISoundID* param_2) {
     return 0xff;
 }
 
-extern "C" u16 fn_8045ABC8(void* param_1, u8* param_2) {
-    JAISoundID soundID = *(JAISoundID*)param_2;
+extern "C" u16 fn_8045ABC8(void* param_1, JAISoundID* param_2) {
+    JAISoundID soundID;
+    soundID.id = param_2->id;
     void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)param_1 + 0xc), &soundID);
 
-    JAISoundID typeSoundID = *(JAISoundID*)param_2;
+    JAISoundID typeSoundID;
+    typeSoundID.id = param_2->id;
     u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)param_1 + 0xc), &typeSoundID);
 
     if (data != 0) {
-        if ((s32)typeID == 0x10) {
-            u16 result = 0xf0;
-            JAISoundID flagSoundID = *(JAISoundID*)param_2;
-            u32 flags = (*(u32 (**)(void*, JAISoundID*))(*(char**)param_1 + 0x50))(param_1, &flagSoundID);
-            if ((flags & 1) == 0) {
-                result = 0x8f0;
+        switch (typeID) {
+            case 0x10: {
+                u16 result = 0xf0;
+                JAISoundID flagSoundID;
+                flagSoundID.id = param_2->id;
+                u32 flags = (*(u32 (**)(void*, JAISoundID*))(*(char**)param_1 + 0x50))(param_1, &flagSoundID);
+                if ((flags & 1) == 0) {
+                    result = 0x8f0;
+                }
+                if ((flags & 2) == 0) {
+                    result += 0x400;
+                }
+                if ((flags & 4) == 0) {
+                    result += 0x200;
+                }
+                if ((flags & 0x20) != 0) {
+                    result += 0x100;
+                }
+                if ((flags & 0x800000) != 0) {
+                    result += 1;
+                }
+                if (((u8*)param_2)[1] == 6) {
+                    result &= 0xff7f;
+                }
+                return result;
             }
-            if ((flags & 2) == 0) {
-                result += 0x400;
-            }
-            if ((flags & 4) == 0) {
-                result += 0x200;
-            }
-            if ((flags & 0x20) != 0) {
-                result += 0x100;
-            }
-            if ((flags & 0x800000) != 0) {
-                result += 1;
-            }
-            if (param_2[1] == 6) {
-                result &= 0xff7f;
-            }
-            return result;
+            default:
+                break;
         }
     }
     return 0xffff;
