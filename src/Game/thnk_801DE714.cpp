@@ -93,8 +93,8 @@ extern f32 lbl_8053F484;
 extern f32 lbl_8053F48C;
 extern f32 lbl_8053F494;
 extern f32 lbl_8053EFBC;
-extern "C" void fn_801D01A0(void* this_, void* pos, void* out);
-extern "C" void fn_801D00B4(void* this_, s32 idx, void* out);
+extern "C" void fn_801D01A0(void* this_, void* pos, void* out, f32 speed = 0.0f);
+extern "C" void fn_801D00B4(void* this_, s32 idx, void* out, f32 speed = 0.0f);
 extern "C" void fn_801DE7AC(void* this_) {
     s32 flag;
     char* p = (char*)this_;
