@@ -476,7 +476,7 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
-    BOOL testBit(const s32 n) {
+    BOOL testBit(int n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
@@ -872,9 +872,19 @@ extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
         neg = true;
     }
     if (p->m2d6) {
-        if (!p->testBit(p->cur)) {
+        s32 index = p->cur;
+        BOOL bit;
+        if (index < 32) bit = (p->bits[0] & (s64)(1 << index)) ? TRUE : FALSE;
+        else if (index < 64) bit = (p->bits[1] & (s64)(1 << (index - 32))) ? TRUE : FALSE;
+        else bit = FALSE;
+        if (!bit) {
             MsgLayout* l = p->layout;
-            if (l->m16c == 0 || !p->testBit(p->cur)) {
+            if (l->m16c != 0) {
+                if (index < 32) bit = (p->bits[0] & (s64)(1 << index)) ? TRUE : FALSE;
+                else if (index < 64) bit = (p->bits[1] & (s64)(1 << (index - 32))) ? TRUE : FALSE;
+                else bit = FALSE;
+            } else bit = FALSE;
+            if (!bit) {
                 f32 base;
                 f32 pos;
                 if (!(l->font->flags & 0x40)) {
@@ -983,53 +993,35 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
         p->str2c0[p->m2d0++] = -2;
         p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10];
         p->str2c0[p->m2d0++] = -2;
-        if (p->layout->m1a1 != 0) {
-            s8 top = p->lineTab[p->layout->m15c];
-            u32 line = (u8)p->slotLine[p->slot];
-            if (line - top - 1 == 0) {
-                p->str2c0[p->m2d0++] = line + 0x20 - top;
-                break;
-            }
-        }
-        {
+        if (p->layout->m1a1 != 0 && (u8)p->slotLine[p->slot] - p->lineTab[p->layout->m15c] - 1 == 0) {
+            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x20 - p->lineTab[p->layout->m15c];
+        } else {
             p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x1f - p->lineTab[p->layout->m15c];
         }
         break;
     case 1:
         p->str2c0[p->m2d0++] = -2;
         {
-            s32 v = x + (s8)p->slotLine[p->slot + 0x10];
-            p->str2c0[p->m2d0++] = v + 0x40;
+            char c = x + (s8)p->slotLine[p->slot + 0x10];
+            p->str2c0[p->m2d0++] = c + 0x40;
         }
         p->str2c0[p->m2d0++] = -2;
-        if (p->layout->m1a1 != 0) {
-            s8 top = p->lineTab[p->layout->m15c];
-            u32 line = (u8)p->slotLine[p->slot];
-            if (line - top - 1 == 0) {
-                p->str2c0[p->m2d0++] = line + 0x60 - top;
-                break;
-            }
-        }
-        {
+        if (p->layout->m1a1 != 0 && (u8)p->slotLine[p->slot] - p->lineTab[p->layout->m15c] - 1 == 0) {
+            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x60 - p->lineTab[p->layout->m15c];
+        } else {
             p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x5f - p->lineTab[p->layout->m15c];
         }
         break;
     case 2:
         p->str2c0[p->m2d0++] = -2;
         {
-            s32 v = x + (s8)p->slotLine[p->slot + 0x10];
-            p->str2c0[p->m2d0++] = v + 0x80;
+            char c = x + (s8)p->slotLine[p->slot + 0x10];
+            p->str2c0[p->m2d0++] = c + 0x80;
         }
         p->str2c0[p->m2d0++] = -2;
-        if (p->layout->m1a1 != 0) {
-            s8 top = p->lineTab[p->layout->m15c];
-            u32 line = (u8)p->slotLine[p->slot];
-            if (line - top - 1 == 0) {
-                p->str2c0[p->m2d0++] = line + 0xa0 - top;
-                break;
-            }
-        }
-        {
+        if (p->layout->m1a1 != 0 && (u8)p->slotLine[p->slot] - p->lineTab[p->layout->m15c] - 1 == 0) {
+            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0xa0 - p->lineTab[p->layout->m15c];
+        } else {
             p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x9f - p->lineTab[p->layout->m15c];
         }
         break;
