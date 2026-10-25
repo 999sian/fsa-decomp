@@ -1,4 +1,5 @@
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 extern void* lbl_80557E40;
 extern void* lbl_80558260;
 
@@ -185,5 +186,5 @@ extern "C" void* fn_8039027C(void* this_) {
     return this_;
 }
 
-
+void __sinit_tu_8039003C_cpp(void) {}
 
