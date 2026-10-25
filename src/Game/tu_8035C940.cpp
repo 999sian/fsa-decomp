@@ -211,12 +211,19 @@ extern const f32 lbl_8054295C;
 extern const f32 lbl_80542960;
 extern const f32 lbl_80542964;
 extern const s16 lbl_80472798[];
-extern "C" void fn_8035CF50(Unk8035CD00* self) {
-    char* p = (char*)self;
+
+static inline void moveToward(char* p, JGeometry::TVec3<f32> target) {
     Vec d;
-    Vec v;
-    Vec w;
-    f32 mag;
+    d.x = target.x - *(f32*)(p + 0xc);
+    d.y = target.y - *(f32*)(p + 0x10);
+    d.z = lbl_80542930;
+    f32 mag = JMAFastVECMag(&d);
+    *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + d.x * *(f32*)(p + 0x254) / mag;
+    *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + d.y * *(f32*)(p + 0x254) / mag;
+}
+extern "C" void fn_8035CF50(Unk8035CD00* self) {
+    Vec d;
+    char* p = (char*)self;
     s16 prev;
 
     if (*(f32*)(p + 0x10) < lbl_80542948) {
@@ -240,7 +247,7 @@ extern "C" void fn_8035CF50(Unk8035CD00* self) {
     if (fn_8035C15C(p, 10) == 1) {
         fn_8035C1C4(p, 10, lbl_80472730[*(u32*)(p + 0x90) & 7]);
     }
-    if ((*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
+    if (((u32)*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
         if (*(f32*)(p + 0x268) < lbl_80542950) {
             *(f32*)(p + 0x268) = *(f32*)(p + 0x268) + lbl_80542954;
         }
@@ -253,14 +260,15 @@ extern "C" void fn_8035CF50(Unk8035CD00* self) {
         }
     }
     prev = *(s16*)(p + 0x260);
-    v = w = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
-    d.x = v.x - *(f32*)(p + 0xc);
-    d.y = v.y - *(f32*)(p + 0x10);
+    JGeometry::TVec3<f32> pos = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
+    JGeometry::TVec3<f32> cur = pos;
+    d.x = cur.x - *(f32*)(p + 0xc);
+    d.y = cur.y - *(f32*)(p + 0x10);
     d.z = lbl_80542930;
-    mag = JMAFastVECMag(&d);
+    f32 mag = JMAFastVECMag(&d);
     *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + d.x * *(f32*)(p + 0x254) / mag;
     *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + d.y * *(f32*)(p + 0x254) / mag;
-    if ((*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
+    if (((u32)*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
         s16 tbl = lbl_80472798[*(u32*)(p + 0x90) & 7];
         if ((u16)*(s16*)(p + 0x260) >= (u16)tbl && (u16)prev < (u16)tbl) {
             *(s32*)(p + 0x230) = 4;
