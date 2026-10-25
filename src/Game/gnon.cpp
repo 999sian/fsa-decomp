@@ -2,6 +2,7 @@
 // TU 80192038-80197070 (GNON). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "std/math.h"
+extern u8 lbl_804C1BD0[];
 #include "JSystem/JMath/JMath.h"
 extern u32 lbl_804C1BC0[];
 extern "C" u8 fn_8023F264(s32);
@@ -135,12 +136,8 @@ extern "C" void fn_801968C8(char* p) {
     *(s16*)(p + 0x2b6) = (s32)(65536.0f * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
     *(GnonVec*)(p + 0x2dc) = *(GnonVec*)(p + 0xc);
     *(GnonVec*)(p + 0x2e8) = *(GnonVec*)(p + 0xc);
-    *(f32*)(p + 0x54) = 1.0f;
-    *(f32*)(p + 0x58) = 1.0f;
-    *(f32*)(p + 0x5c) = 1.0f;
-    *(f32*)(p + 0x2d0) = 1.0f;
-    *(f32*)(p + 0x2d4) = 1.0f;
-    *(f32*)(p + 0x2d8) = 1.0f;
+    fn_80196D60((f32*)(p + 0x54), 1.0f, 1.0f, 1.0f);
+    fn_80196D60((f32*)(p + 0x2d0), 1.0f, 1.0f, 1.0f);
     *(f32*)(p + 0x2f4) = 0.0f;
     *(s32*)(p + 0x300) = 0;
     *(s32*)(p + 0x2fc) = -1;
@@ -198,7 +195,7 @@ extern "C" void fn_801968C8(char* p) {
     if (*(u32*)(p + 0x90) == 1 || (u32)(*(u32*)(p + 0x90) - 2) <= 1 || *(u32*)(p + 0x90) == 4) {
         *(s32*)(p + 0x25c) = *(u32*)(p + 0x90) - 1;
         ((u32*)tables)[*(s32*)(p + 0x25c)] = *(u32*)(p + 4);
-        ((GnonVec*)(tables + 0x10))[*(s32*)(p + 0x25c)] = *(GnonVec*)(p + 0xc);
+        fn_80196D70((f32*)((GnonVec*)(tables + 0x10) + *(s32*)(p + 0x25c)), (f32*)(p + 0xc));
         ((GnonVec*)(tables + 0x10))[*(s32*)(p + 0x25c)].y += 48.0f;
         *(s32*)(p + 0x230) = 40;
     }
