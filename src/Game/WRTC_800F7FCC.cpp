@@ -54,7 +54,7 @@ extern void* lbl_8053AF80;
 extern const f32 lbl_8053BFCC;
 extern const f32 lbl_8053C054;
 extern const f32 lbl_8053C058;
-extern f32 lbl_8053C05C;
+extern const f32 lbl_8053C05C;
 extern "C" const f32 lbl_8049C634[];
 extern f32 lbl_8053C014;
 extern f32 lbl_8053C01C;
