@@ -99,7 +99,7 @@ extern "C" void fn_802F86CC(u32 sobRenderer, Vec* pos, u32 sobResource, s32 spri
 #include "dolphin/gx/GXStruct.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
-extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, void* color, f32 size);
+extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, GXColor color, f32 size);
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 fn_801F7A08(void* a, u32 b);
@@ -169,7 +169,7 @@ extern "C" void fn_802CFE2C(Actor* p) {
         color[1] = 0;
         color[2] = 0;
         color[3] = 0x80;
-        fn_80158B5C(lbl_8053AB10->mFxMgr, p->field_04, &pos2, color, lbl_80540E84);
+        fn_80158B5C(lbl_8053AB10->mFxMgr, p->field_04, &pos2, *(GXColor*)color, lbl_80540E84);
     }
 }
 
