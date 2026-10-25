@@ -169,4 +169,4 @@ extern "C" Obj80447C30* fn_804485C4(Obj80447C30* self) {
     self->f2c = 0;
     return self;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
