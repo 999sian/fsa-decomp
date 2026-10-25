@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 extern "C" const f32 lbl_80540678;
+extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
@@ -1150,12 +1151,12 @@ extern "C" void fn_80299720(void* p) {
 }
 
 extern "C" void fn_80299AD0(char* self) {
-    char* col;
-    s32 j;
     s32 room;
     char* m;
     JGeometry::TBox2f* src;
     s32 d;
+    s32 j;
+    char* col;
     s32 i;
     s32 dir;
     u8 ok;
@@ -1180,7 +1181,19 @@ extern "C" void fn_80299AD0(char* self) {
     }
     dir = -1;
     if (*(u8*)(self + 0x2b9) == 0) {
-        dir = PushDirFromPlayer(self);
+        if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+            room = *(s32*)(self + 4);
+            if (fn_8023DE58(0) == room) {
+                d = fn_80238BC4(*(void**)(self + 0x198));
+                if (d >= 0 && d < 4) {
+                    *(s32*)(self + 0x2cc) = 1;
+                    goto gotPlayer;
+                }
+            }
+        }
+        d = -1;
+    gotPlayer:
+        dir = d;
         if (dir == -1) {
             box.i.x = *(f32*)(self + 0x80);
             box.i.y = *(f32*)(self + 0x84);
@@ -1218,13 +1231,17 @@ extern "C" void fn_80299AD0(char* self) {
     pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
     pt.pos.x += *(f32*)(self + 0x68);
     pt.pos.x += 8.0f;
-    x0 = (pt.area.i.x -= -32.0f);
-    y0 = (pt.area.i.y -= -32.0f);
-    x1 = (pt.area.f.x += -32.0f);
-    y1 = (pt.area.f.y += -32.0f);
+    pt.area.i.x -= -32.0f;
+    pt.area.i.y -= -32.0f;
+    pt.area.f.x += -32.0f;
+    pt.area.f.y += -32.0f;
     pt.pos.y += *(f32*)(self + 0x64);
     pt.pos.y += 8.0f;
     pt.pos.z = 0.0f;
+    x0 = pt.area.i.x;
+    y0 = pt.area.i.y;
+    x1 = pt.area.f.x;
+    y1 = pt.area.f.y;
     for (i = 0; i < 6; i++) {
         if (!fn_802A1554(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
             ok = 0;
@@ -1380,6 +1397,7 @@ extern "C" void fn_80299FB0(void* p) {
     s32 i;
     char* self = (char*)p;
     s32 j;
+    char* row;
     char* col;
     JGeometry::TBox2f area;
     JGeometry::TVec3f v;
@@ -1447,7 +1465,7 @@ extern "C" void fn_80299FB0(void* p) {
         fn_801F0E34(self, 0x30004, 0);
     }
     *(f32*)(self + 0x250) = -16.0f;
-    *(s32*)(self + 0x248) = 0;
+    *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
         gridBase = *(JGeometry::TVec3f*)(self + 0xc);
@@ -1457,9 +1475,9 @@ extern "C" void fn_80299FB0(void* p) {
         gridBase.y += lbl_80540678;
         gridBase.z = lbl_80540674;
         grid = gridBase;
-        for (i = 0; i < 6; i++, self += 0xc) {
+        for (row = self; i < 6; i++, row += 0xc) {
             grid.y = gridBase.y;
-            for (j = 0, col = self; j < 6; j++, col += 2) {
+            for (j = 0, col = row; j < 6; j++, col += 2) {
                 fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
                 fn_802A381C(lbl_8053AC98, &grid, 1, 0);
                 grid.y += lbl_8054067C;
@@ -1471,8 +1489,6 @@ extern "C" void fn_80299FB0(void* p) {
 
 extern "C" void fn_8029A494(char* self) {
     s32 mode;
-    u8 flag = 1;
-    s32 i = 0;
     s32 room;
     void* h;
     char* row;
@@ -1520,9 +1536,9 @@ extern "C" void fn_8029A494(char* self) {
         ((u32*)&zone)[1] = zoneSrc[1];
         ((u32*)&zone)[2] = zoneSrc[2];
         ((u32*)&zone)[3] = zoneSrc[3];
-        flag = 1;
-        i = 0;
-        f32 x0, step, y1, x1, y0;
+        u8 flag = 1;
+        s32 i = 0;
+        f32 y0, x1, y1, step, x0;
         x0 = zone.i.x - -32.0f;
         y0 = zone.i.y - -32.0f;
         x1 = zone.f.x + -32.0f;
@@ -1543,10 +1559,7 @@ extern "C" void fn_8029A494(char* self) {
                 flag = 0;
                 break;
             }
-            ok = 0;
-            if (v.x >= x0 && v.y >= y0 && v.x < x1 && v.y < y1) {
-                ok = 1;
-            }
+            ok = HouseInsideBounds(x0, y0, x1, y1, v);
             if (!ok) {
                 flag = 0;
                 break;
