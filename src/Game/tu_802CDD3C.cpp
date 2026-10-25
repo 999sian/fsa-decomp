@@ -22,7 +22,7 @@ extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" u32 fn_804032E8(u32 tag, void* id);
 extern "C" void fn_802F745C(void* mgr, void* pos, u32 tex, void* rec);
 extern "C" void PSMTXIdentity(f32 (*m)[4]);
-extern "C" const u8 lbl_80540E28[];
+extern "C" const u8 lbl_80540E28[0x40];
 extern "C" void* lbl_804A90F0[];
 extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
@@ -54,6 +54,8 @@ extern "C" void fn_802CDD9C(char* this_)
     Vec v;
     f32 mtx[3][4];
     u32 tex;
+    void** ids = lbl_804A90F0;
+    char* base = lbl_8046D920;
 
     if (*(s32*)(this_ + 0x230) == 1) {
         DrawRec rec;
@@ -90,13 +92,13 @@ extern "C" void fn_802CDD9C(char* this_)
 
         if (*(s32*)(this_ + 0x234) == 0x22) {
             if ((u8)((Actor*)this_)->v11() == 1) {
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x608);
+                tex = fn_804032E8(0x54494d47, base + 0x608);
             } else {
-                tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234)]);
+                tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234)]);
             }
             fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
         } else {
-            tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234)]);
+            tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234)]);
             fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
             new (&rec) DrawRec();
             rec.b1c = lbl_80540E28[*(s32*)(this_ + 0x238)] + 1;
@@ -114,28 +116,28 @@ extern "C" void fn_802CDD9C(char* this_)
                 rec.w10 = -0x6a;
                 rec.b2c = 0;
                 rec.b24 = 0;
-                tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234) + 0x51]);
+                tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234) + 0x51]);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x15:
                 rec.b2d = 1;
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x61c);
+                tex = fn_804032E8(0x54494d47, base + 0x61c);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x31:
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x628);
+                tex = fn_804032E8(0x54494d47, base + 0x628);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x33:
                 rec.b24 = 1;
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x634);
+                tex = fn_804032E8(0x54494d47, base + 0x634);
                 v.x = *(f32*)(this_ + 0xc);
                 v.y = *(f32*)(this_ + 0x10) - lbl_80540E30;
                 v.z = lbl_80540E34;
                 fn_802CDD9C_draw(this_, &v, tex, &rec);
                 break;
             case 0x34:
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x644);
+                tex = fn_804032E8(0x54494d47, base + 0x644);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x37:
@@ -143,21 +145,21 @@ extern "C" void fn_802CDD9C(char* this_)
             case 0x39:
                 rec.b2c = 0;
                 rec.b24 = 1;
-                tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234) + 0x29]);
+                tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234) + 0x29]);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x3e:
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x658);
+                tex = fn_804032E8(0x54494d47, base + 0x658);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x42:
                 rec.b24 = 1;
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x670);
+                tex = fn_804032E8(0x54494d47, base + 0x670);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             case 0x43:
                 rec.b24 = 1;
-                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x684);
+                tex = fn_804032E8(0x54494d47, base + 0x684);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
                 break;
             }
