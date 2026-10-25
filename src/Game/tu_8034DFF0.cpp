@@ -103,11 +103,9 @@ struct SobDrawParams {
     }
 };
 
-struct YnswVirt {
-    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
-    virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
-    virtual void v08(); virtual void v09(); virtual void v10(); virtual u8 v11();
-          virtual void v12(u8 a, s32 b); virtual u8 v13();
+struct YnswVirt : public Actor {
+    virtual void v12(u8 a, s32 b);
+    virtual u8 v13();
 };
 
 // YNSW ('YNSW') - Floor/Step Switch Actor.
@@ -153,9 +151,9 @@ extern "C" Actor* fn_8034DFF0(Actor* p, s16 freeFlag) {
 
 extern "C" void fn_8034E050(YnswActor* this_) {
     u8 used[4];
-    Vec pos[4];
-    Vec tmp;
     Vec target;
+    Vec tmp;
+    Vec pos[4];
     s32 i;
     s32 j;
     s32 k;
@@ -193,6 +191,176 @@ extern "C" void fn_8034E050(YnswActor* this_) {
         used[nearest] = 1;
         k++;
     }
+}
+
+extern "C" void fn_8034E49C(YnswActor* this_) {
+    f32 rect[4];
+    Vec v44;
+    Vec v38;
+    Vec v2c;
+    Vec v20;
+    Vec v14;
+    Vec v8;
+    s32 i;
+    s32 count = 0;
+    u8 flag;
+
+    rect[0] = this_->field_60 + this_->field_0C.x;
+    rect[1] = this_->field_64 + this_->field_0C.y + lbl_805425C4;
+    rect[2] = this_->field_68 + this_->field_0C.x;
+    rect[3] = this_->field_6C + this_->field_0C.y + lbl_805425C4;
+
+    switch (this_->mState) {
+    case 0:
+        for (i = 0; i < 4; i++) {
+            this_->mPlayerWasOn[i] = this_->mPlayerOn[i];
+            if (!fn_8023F264(i)) {
+                continue;
+            }
+            if (fn_8023EA28(i)) {
+                continue;
+            }
+            this_->mPlayerOn[i] = fn_8023B0F4(i, rect, this_->field_04, lbl_805425C8, 0);
+            if (this_->mPlayerOn[i] == 1) {
+                count++;
+            }
+        }
+
+        flag = 0;
+        if (fn_80138A30(lbl_8053AAF8) != 1) {
+            flag = 1;
+        } else if (fn_8022CAF8(0) == 2) {
+            flag = 1;
+        }
+
+        switch (count) {
+        case 0:
+            this_->mAnimFrame = 0;
+            this_->mSubTimer = 0;
+            break;
+        case 1:
+        case 2:
+        case 3:
+            if (this_->mPrevAnimFrame == 0) {
+                fn_801F0E34(this_, 0x5006E, 0);
+            }
+            this_->mAnimFrame = 1;
+            this_->mSubTimer = 0;
+            break;
+        case 4:
+            if (this_->mTimer != count) {
+                if (this_->mPrevAnimFrame == 0) {
+                    fn_801F0E34(this_, 0x5006E, 0);
+                }
+                this_->mAnimFrame = 1;
+                this_->mSubTimer = 5;
+            } else if (this_->mSubTimer <= 0 && !((YnswVirt*)this_)->v13()) {
+                if (!fn_8023077C()) {
+                    break;
+                }
+                v44.z = lbl_805425CC;
+                v44.y = lbl_805425CC;
+                v44.x = lbl_805425CC;
+                v44.y = lbl_804721C8[this_->mAnimFrame];
+                fn_8034E050(this_);
+                for (i = 0; i < 4; i++) {
+                    fn_80230498(i, &this_->mPlayerPos[i], 0xe8, 0xff, -0x80, -0x80, 1);
+                    fn_8022FFC4(i, &v44);
+                }
+                this_->mState = 2;
+                this_->mSubTimer = 0xf;
+                break;
+            }
+            if (flag == 1 && this_->mSubTimer > 0) {
+                this_->mSubTimer--;
+            }
+            break;
+        }
+
+        if (this_->mSwitchType == 0 && this_->mTimer == 4 && count < 4) {
+            ((YnswVirt*)this_)->v12(0xff, 0);
+        }
+        for (i = 0; i < 4; i++) {
+            if (!fn_8023F264(i)) {
+                continue;
+            }
+            if (fn_8023EA28(i)) {
+                continue;
+            }
+            v38.z = lbl_805425CC;
+            v38.y = lbl_805425CC;
+            v38.x = lbl_805425CC;
+            if (this_->mPlayerOn[i] == 1) {
+                v38.y = lbl_804721C8[this_->mAnimFrame];
+            }
+            if (lbl_804721C8[this_->mAnimFrame] != lbl_805425CC || this_->mPlayerWasOn[i] != this_->mPlayerOn[i]) {
+                fn_8022FFC4(i, &v38);
+            }
+        }
+        this_->mTimer = count;
+        break;
+    case 2:
+        if (this_->mSubTimer <= 0) {
+            for (i = 0; i < 4; i++) {
+                v2c = *fn_8023E724(i);
+                fn_80230498(i, &v2c, 0xe8, 0xff, -0x80, -0x80, 1);
+            }
+            fn_801F0E34(this_, 0x30009, 0);
+            this_->mAnimFrame = 2;
+            this_->mUnused248 = 0;
+            this_->mSubTimer = 0x1e;
+            this_->mState = 1;
+        }
+        for (i = 0; i < 4; i++) {
+            v20.z = lbl_805425CC;
+            v20.y = lbl_805425CC;
+            v20.x = lbl_805425CC;
+            v20.y = lbl_804721C8[this_->mAnimFrame];
+            fn_8022FFC4(i, &v20);
+        }
+        this_->mSubTimer--;
+        break;
+    case 1:
+        if (--this_->mSubTimer == 0) {
+            if (this_->mUnused248 >= 0xd) {
+                fn_801F0D20(this_, 3);
+                ((YnswVirt*)this_)->v12(0xff, 1);
+                this_->mSubTimer = 0xf;
+                this_->mState = 3;
+                break;
+            }
+            this_->mUnused248++;
+            this_->mSubTimer = lbl_804721D4[this_->mUnused248];
+            for (i = 0; i < 4; i++) {
+                v14 = *fn_8023E724(i);
+                fn_80230498(i, &v14, this_->mUnused248 + 0xdb, 0xff, -0x80, -0x80, 1);
+                if (this_->mUnused248 == 1) {
+                    fn_80230FD0(i, 0x10001);
+                }
+            }
+        }
+        break;
+    case 3:
+        if (--this_->mSubTimer < 0 && fn_80230534(0)) {
+            this_->mSubTimer = 0;
+            for (i = 0; i < 4; i++) {
+                v8.z = lbl_805425CC;
+                v8.y = lbl_805425CC;
+                v8.x = lbl_805425CC;
+                fn_8022FFC4(i, &v8);
+            }
+            if (this_->mSwitchType == 1) {
+                this_->mState = 4;
+            } else {
+                this_->mState = 0;
+            }
+        }
+        break;
+    case 4:
+        break;
+    }
+
+    this_->mPrevAnimFrame = this_->mAnimFrame;
 }
 
 extern "C" void Ynsw_Draw(YnswActor* this_) {
