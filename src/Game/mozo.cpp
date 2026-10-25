@@ -79,6 +79,14 @@ static inline void mozoRotScale(f32 m[3][4], f32 rx, const f32* pry, f32 rz, con
     m[2][2] = s * (cx * cy);
 }
 
+static inline f32 mozoRand01() {
+    u8* g = lbl_8053AAF8;
+    u32 x = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    *(u32*)(g + 0xb4) = x;
+    u32 bits = (x >> 9) | 0x3f800000;
+    return *(f32*)&bits - lbl_8053D7FC;
+}
+
 // MOZO draw (vtable slot 6)
 extern "C" void fn_80166BD0(u8* this_) {
     if (*(s32*)(this_ + 0x230) == 3) {
