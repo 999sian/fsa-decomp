@@ -392,8 +392,9 @@ extern const f32 lbl_80542614;
 extern const f32 lbl_80542620;
 extern u8 lbl_8053AD40;
 f32 lbl_8050AED8[8];
+#pragma opt_common_subs off
 extern "C" s32 fn_803506E0(u8* self) {
-    const f32* tbl;
+    const f32* __restrict tbl;
     s32 bit;
     s32 j;
     s32 flags;
@@ -447,7 +448,7 @@ extern "C" s32 fn_803506E0(u8* self) {
             dy2 = dy * dy;
             if (dx2 + dy2 < r2) {
                 p = (f32*)fn_8023E724(i);
-                if (p[2] == 0.0f) {
+                if (isOnGround(p[2])) {
                     if (m == 0) {
                         fn_801F0E34(self, 0x30009, 0);
                     }
