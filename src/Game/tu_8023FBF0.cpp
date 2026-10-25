@@ -1067,7 +1067,7 @@ inline BOOL isLinkOwnerCached(char* p) {
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
         return 1;
     }
-    if (getModeCached(p) == 4) {
+    if (getModeOwnerCached(p) == 4) {
         s32 v = linkIdx(p);
         return v != linkRank(p);
     }
