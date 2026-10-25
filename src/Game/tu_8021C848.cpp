@@ -2,24 +2,16 @@
 
 #include "types.h"
 
-struct AnimTables8021C848 {
-    int durations[7];
-    int frames0[4][1];
-    int frames1[4][7];
-    int frames2[4][2];
-};
-
 extern "C" char lbl_8046A688[];
 extern "C" int lbl_8053FD20;
 extern "C" int lbl_8053FD24;
 #pragma opt_propagation off
+#pragma peephole off
 extern "C" u8 fn_8021C848(int* param_1) {
-    int r;
-    int n;
     char* base = lbl_8046A688;
 
     if (*(u8*)(param_1 + 5) == 0) {
-        n = 0;
+        int n = 0;
         switch (param_1[0]) {
         case 0:
             n = 1;
@@ -38,7 +30,7 @@ extern "C" u8 fn_8021C848(int* param_1) {
             tbl = &lbl_8053FD20;
             break;
         case 1:
-            tbl = (int*)base;
+            tbl = (int*)(base + 0);
             break;
         case 2:
             tbl = &lbl_8053FD24;
@@ -54,7 +46,7 @@ extern "C" u8 fn_8021C848(int* param_1) {
         }
     }
 
-    r = 0;
+    int r = 0;
     switch (param_1[0]) {
     case 0:
         r = param_1[4];
@@ -78,6 +70,7 @@ extern "C" u8 fn_8021C848(int* param_1) {
     param_1[1] = r;
     return *(u8*)(param_1 + 5);
 }
+#pragma peephole reset
 extern "C" void fn_8021C9C4(int* param_1, int param_2)
 {
     int r = 0;
