@@ -110,7 +110,7 @@ bool fn_80244FFC(char*);
 f32 fn_80246F28(char*);
 static inline void decayPlayerSpeedBound(f32 minimum, f32& value) {
     value -= lbl_8054038C;
-    if (value < minimum) value = minimum;
+    if (minimum > value) value = minimum;
 }
 static inline void decayPlayerSpeed(f32& value, const f32 minimum) {
     value -= lbl_8054038C;
@@ -602,12 +602,12 @@ extern "C" void fn_80280074(char* p) {
         }
         speed = PSVECMag((Vec*)(p + 0x344));
         if (fn_80244FFC(p)) {
-            speed -= lbl_8054038C;
             f32 minimum = lbl_80540390;
+            speed -= lbl_8054038C;
             if (speed < minimum) speed = minimum;
         } else if (fn_80246F28(p) > lbl_80540360) {
-            speed -= lbl_8054038C;
             f32 minimum = lbl_8054036C;
+            speed -= lbl_8054038C;
             if (speed < minimum) speed = minimum;
         } else {
             speed -= lbl_8054038C;
@@ -635,8 +635,8 @@ extern "C" void fn_80280074(char* p) {
         speed += lbl_80540398;
     } else {
         speed = PSVECMag((Vec*)(p + 0x344));
-        speed -= lbl_8054038C;
         f32 minimum = lbl_80540390;
+        speed -= lbl_8054038C;
         if (speed < minimum) speed = minimum;
     }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
