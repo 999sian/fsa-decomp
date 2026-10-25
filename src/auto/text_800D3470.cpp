@@ -4504,10 +4504,12 @@ void J3DTexGenBlock4::initialize() {
 }
 
 // Keep regional definitions that were present before source-tree consolidation.
-#if defined(VERSION_G4SJ01)
+#if defined(VERSION_G4SJ01) || defined(VERSION_G4SE01)
 extern "C" void fn_800DF364(void* param_1, u8 param_2) {
     *(u8*)((u32)param_1 + 0xc) = param_2;
 }
+#endif
+#if defined(VERSION_G4SJ01)
 
 #endif
 #if defined(VERSION_G4SJ01) || defined(VERSION_G4SE01)
