@@ -1,6 +1,15 @@
 #include "types.h"
+
+static inline u8** copyActorPointers(u8** first, u8** last, u8** result) {
+    for (; first < last;) {
+        *result++ = *first++;
+    }
+    return result;
+}
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" void* fn_80119E5C(u8* self, s16 size);
@@ -131,9 +140,9 @@ extern "C" BOOL fn_801184F0(u8* self, u8 arg)
     extern u8 lbl_804BC4F8[];
     extern s8 lbl_8053AA91;
     extern const f32 lbl_8053C798;
-    u8** end;
-    u8** src;
     u8** dst;
+    u8** src;
+    u8** end;
     u8** it;
     u32 count;
     u32 n;
@@ -436,7 +445,7 @@ extern "C" void fn_80118E20(u8* self)
             u8* p = *(u8**)(lbl_8053AB10 + 0x30);
             if (p[0x284] == 0) {
                 p[0x284] = 1;
-                *(f32*)(p + 0x28c) = lbl_8053C79C;
+                *(f32*)(p + 0x28c) = 1.0f;
             }
         }
         if (self[1] == 0) {
@@ -486,30 +495,11 @@ extern "C" void fn_80118E20(u8* self)
                 *(u32*)(lbl_804BC504 + 0x28) = 0;
                 *(u32*)(lbl_804BC504 + 0x10) = 0;
 
-                end = *(u8***)(self + 0x14);
-                src = *(u8***)(self + 0x14);
                 dst = *(u8***)(self + 0x10);
-                count = ((u32)end + 3 - (u32)src) >> 2;
-                if (src < end) {
-                    if ((n = count >> 3) != 0) {
-                        do {
-                            dst[0] = src[0];
-                            dst[1] = src[1];
-                            dst[2] = src[2];
-                            dst[3] = src[3];
-                            dst[4] = src[4];
-                            dst[5] = src[5];
-                            dst[6] = src[6];
-                            dst[7] = src[7];
-                            src += 8;
-                            dst += 8;
-                        } while (--n != 0);
-                    }
-                    n = count & 7;
-                    while (n != 0) {
-                        *dst++ = *src++;
-                        n--;
-                    }
+                src = *(u8***)(self + 0x14);
+                end = *(u8***)(self + 0x14);
+                for (; src < end; ++src, ++dst) {
+                    *dst = *src;
                 }
                 for (it = dst; it != *(u8***)(self + 0x14); it++) {
                 }
@@ -591,6 +581,79 @@ extern "C" void* fn_8011921C(void)
         lbl_8053AA92 = 1;
     }
     return &lbl_804BC540;
+}
+
+extern "C" void fn_801192AC(u8* self, s16 param_2)
+{
+    u8** end;
+    u8** src;
+    u8** dst;
+    u8** it;
+    s32 count;
+    s32 n;
+
+    if (self != 0) {
+        dst = *(u8***)(self + 0x10);
+        src = end = *(u8***)(self + 0x14);
+        count = ((u32)end + 3 - (u32)src) >> 2;
+        if (src < end) {
+            if ((n = count >> 3) != 0) {
+                do {
+                    dst[0] = src[0];
+                    dst[1] = src[1];
+                    dst[2] = src[2];
+                    dst[3] = src[3];
+                    dst[4] = src[4];
+                    dst[5] = src[5];
+                    dst[6] = src[6];
+                    dst[7] = src[7];
+                    src += 8;
+                    dst += 8;
+                } while (--n != 0);
+            }
+            n = count & 7;
+            while (n != 0) {
+                *dst++ = *src++;
+                n--;
+            }
+        }
+        for (it = dst; it != *(u8***)(self + 0x14); it++) {
+        }
+        *(u8***)(self + 0x14) = dst;
+        if (self + 0xc != 0) {
+            dst = *(u8***)(self + 0x10);
+            src = end = *(u8***)(self + 0x14);
+            count = ((u32)end + 3 - (u32)src) >> 2;
+            if (src < end) {
+                if ((n = count >> 3) != 0) {
+                    do {
+                        dst[0] = src[0];
+                        dst[1] = src[1];
+                        dst[2] = src[2];
+                        dst[3] = src[3];
+                        dst[4] = src[4];
+                        dst[5] = src[5];
+                        dst[6] = src[6];
+                        dst[7] = src[7];
+                        src += 8;
+                        dst += 8;
+                    } while (--n != 0);
+                }
+                n = count & 7;
+                while (n != 0) {
+                    *dst++ = *src++;
+                    n--;
+                }
+            }
+            for (it = dst; it != *(u8***)(self + 0x14); it++) {
+            }
+            *(u8***)(self + 0x14) = dst;
+        }
+        __dl__FPv(*(void**)(self + 0x10));
+        if (param_2 > 0) {
+            __dl__FPv(self);
+        }
+    }
 }
 
 struct VObj {
@@ -829,27 +892,16 @@ extern "C" void fn_80119998(u8* self, u32 frames, u32 b, s32 mode, u32 d, u32 e,
     }
 }
 
-extern "C" void fn_80119D48(u8* self)
-{
-    struct VObj {
-        virtual void v00(void);
-        virtual void v04(void);
-        virtual void v08(void);
-        virtual void v0c(void);
-        virtual void* v10(u32 a, u32 b);
-    };
-    u8* p = self;
-    if (*(u32*)(self + 0x2c) == 0) {
-        VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
-        void* pic = __nw__FUl(0x168);
-        if (pic != 0) {
-            __ct__10J2DPictureFPC7ResTIMG(pic, res);
-        }
-        *(void**)(p + 0x2c) = pic;
+#pragma opt_propagation off
+extern "C" void fn_80119D48(u8* self) {
+    if (*(J2DPicture**)(self + 0x2c) == 0) {
+        JKRFileLoader* obj = *(JKRFileLoader**)(lbl_8053AAF8 + 0xa4);
+        const ResTIMG* res;
+        res = static_cast<const ResTIMG*>(obj->getResource(0x3f3f3f3f, (const char*)lbl_80539F10));
+        *(J2DPicture**)(self + 0x2c) = new J2DPicture(res);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_80119DD0(void)
 {
     extern s8 lbl_8053AA91;
@@ -889,5 +941,9 @@ extern "C" void* fn_80119E5C(u8* self, s16 size)
         }
     }
     return self;
+}
+
+extern "C" void fn_80119ED4(void)
+{
 }
 
