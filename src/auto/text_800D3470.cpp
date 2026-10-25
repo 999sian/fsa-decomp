@@ -601,6 +601,7 @@ void J3DTevBlock1::initialize()
 
 void J3DTevBlock2::initialize()
 {
+	GXColor kc;
 	mTexIndices[0] = 0xffff;
 	mTexIndices[1] = 0xffff;
 	mStageNum = 1;
@@ -612,13 +613,20 @@ void J3DTevBlock2::initialize()
 	mKColorSels[1] = 0xc;
 	mKAlphaSels[0] = 0x1c;
 	mKAlphaSels[1] = 0x1c;
-	*(u64*)&mColors[0] = *(u64*)&j3dDefaultTevColor;
-	*(u64*)&mColors[1] = *(u64*)&j3dDefaultTevColor;
-	*(u64*)&mColors[2] = *(u64*)&j3dDefaultTevColor;
-	mKColors[0] = (u32)*(u32*)&j3dDefaultTevKColor;
-	mKColors[1] = (u32)*(u32*)&j3dDefaultTevKColor;
-	mKColors[2] = (u32)*(u32*)&j3dDefaultTevKColor;
-	mKColors[3] = (u32)*(u32*)&j3dDefaultTevKColor;
+	*(u32*)&mColors[0] = *(u32*)&j3dDefaultTevColor;
+	*((u32*)&mColors[0] + 1) = *((u32*)&j3dDefaultTevColor + 1);
+	*(u32*)&mColors[1] = *(u32*)&j3dDefaultTevColor;
+	*((u32*)&mColors[1] + 1) = *((u32*)&j3dDefaultTevColor + 1);
+	*(u32*)&mColors[2] = *(u32*)&j3dDefaultTevColor;
+	*((u32*)&mColors[2] + 1) = *((u32*)&j3dDefaultTevColor + 1);
+	*(u32*)&kc = *(u32*)&j3dDefaultTevKColor;
+	mKColors[0] = kc;
+	*(u32*)&kc = *(u32*)&j3dDefaultTevKColor;
+	mKColors[1] = kc;
+	*(u32*)&kc = *(u32*)&j3dDefaultTevKColor;
+	mKColors[2] = kc;
+	*(u32*)&kc = *(u32*)&j3dDefaultTevKColor;
+	mKColors[3] = kc;
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
@@ -1474,10 +1482,10 @@ extern "C" void fn_800D800C(Unk800D800C* self) {
 }
 
 extern "C" void fn_800D80DC(u8* p) {
+    u8* addr;
     u8* saved;
     u8* tev;
     u8 count;
-    u8* addr;
     u32 j;
     u32 i;
 
@@ -1644,38 +1652,27 @@ extern "C" void fn_800D87B4(u8* self) {
 }
 
 extern "C" void fn_800D8884(u8* p) {
-    u16* s;
-    u8* r;
-    u8* q;
-    u32 i;
-    u8 n;
-    u8* saved;
-    u8* addr;
+    GDSetCurrOffset(*(u32*)(p + 4));
+    u8* start = GDGetCurrPointer();
+    u8 n = p[0x20];
 
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    saved = __GDCurrentDL->pDisplayListData;
-    n = p[0x20];
-
-    addr = p;
-    for (i = 0; i < 8; i++) {
-        if (*(u16*)(addr + 8) != 0xffff) {
-            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(p + i * 2 + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(p + i * 2 + 8));
         }
-        addr += 2;
     }
 
-    q = p;
-    for (i = 0; i < n; i += 2) {
-        r = p + (i + 1) * 4;
+    for (u32 i = 0; i < n; i += 2) {
+        u8* q = p + i * 4;
+        u8* r = p + (i + 1) * 4;
         J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)q[0x10], (GXTexMapID)q[0x11], (GXChannelID)q[0x12], (GXTexCoordID)r[0x10], (GXTexMapID)r[0x11], (GXChannelID)r[0x12]);
-        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (q[0x11] & 7) * 8);
+        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (q[0x11] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(q[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (r[0x11] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(r[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
-        q += 8;
     }
 
-    DCStoreRange(saved, (u32)(__GDCurrentDL->pDisplayListData - saved));
+    DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
 extern "C" void fn_800D89F0(Vtable800D8248* p) {
