@@ -20,9 +20,7 @@ extern "C" void fn_8022149C(void* this_, s32 param);
 
 // fn_80221160 - GENERIC default for vtable offset 0x74 (see
 // project_fsa_growing_area_extension.md). Thin wrapper: fn_8022149C(this, 0).
-extern "C" void fn_80221160(void* this_) {
-    fn_8022149C(this_, 0);
-}
+
 
 
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
@@ -167,6 +165,10 @@ extern "C" void fn_80220F54(void* this_) {
 
 extern "C" void fn_80221114(void* this_) {
     fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), JGeometry::TVec3<f32>(F32(this_, 0xc), F32(this_, 0x10), lbl_8053FE78));
+}
+
+extern "C" void fn_80221160(void* this_) {
+    fn_8022149C(this_, 0);
 }
 
 #pragma fp_contract off
