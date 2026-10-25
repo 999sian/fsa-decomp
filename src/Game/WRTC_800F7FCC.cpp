@@ -75,6 +75,14 @@ extern "C" void* fn_801F1184(void* this_);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
+static inline f32 WRTC_random() {
+    u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *rng = *rng * 0x19660d + 0x3c6ef35f;
+    union { u32 u; f32 f; } value;
+    value.u = (*rng >> 9) | 0x3f800000;
+    return value.f - lbl_8053BFCC;
+}
+
 // ---- from Game/fn_800F7FCC_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
