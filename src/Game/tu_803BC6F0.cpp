@@ -107,44 +107,22 @@ extern "C" u8 lbl_8050DB0C[];
 extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
-static inline s32 getSlotIcon(const u8* base, u32 slot) {
+static inline s32 getFileIcon(u32 slot) {
     s32 k = 0;
     s32 j;
     for (j = 0; j < 8; j++) {
         if (fn_803B8CAC(slot, j)) {
             k++;
         } else {
-            return ((const s32*)(base + 0x730))[k];
+            return ((const s32*)(lbl_804765D0 + 0x730))[k];
         }
     }
     return ((const s32*)(lbl_804765D0 + 0x730))[7];
 }
 
-static inline s32 getFileIcon(u32 slot) {
-    const s32* tbl = (const s32*)(lbl_804765D0 + 0x730);
-    s32 k = 0;
-    s32 j;
-    for (j = 0; j < 8; j++) {
-        if (fn_803B8CAC(slot, j)) {
-            k++;
-        } else {
-            return *(const s32*)(lbl_804765D0 + 0x730 + k * 4);
-        }
-    }
-    return tbl[7];
-}
-
 static inline BOOL isTimeSet(s64 t) {
     BOOL r = FALSE;
     if (t != 0) {
-        r = TRUE;
-    }
-    return r;
-}
-
-static inline BOOL hasTime(u64* t) {
-    BOOL r = FALSE;
-    if (*t != 0) {
         r = TRUE;
     }
     return r;
