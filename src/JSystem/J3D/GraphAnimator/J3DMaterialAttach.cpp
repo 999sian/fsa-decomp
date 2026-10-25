@@ -712,8 +712,8 @@ static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTex
 				}
 
 				if (texmtxid != 255 && mat->mTexGenBlock->getTexMtx((int)texmtxid) == nullptr) {
+					J3DTexMtx* mtx   = new J3DTexMtx(j3dDefaultTexMtxInfo);
 					allocationResult = JET_OutOfMemory;
-                    J3DTexMtx* mtx = new J3DTexMtx(j3dDefaultTexMtxInfo);
 					mat->mTexGenBlock->setTexMtx(texmtxid, mtx);
 				}
 			}
