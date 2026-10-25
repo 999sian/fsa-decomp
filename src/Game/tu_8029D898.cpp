@@ -92,9 +92,14 @@ static inline void fn_8029E9EC_sub(JGeometry::TVec2<f32>* pos, s32 room, u16 par
     }
 }
 // Replaces the room-0 tile at pos with tile `value` and refreshes it.
-static inline void SetTile0(JGeometry::TVec2<f32> pos, u16 value) {
+static inline void SetTile0(JGeometry::TVec2<f32>* pos, u16 value) {
+    JGeometry::TVec2<f32> t;
+    f32 y = pos->y;
+    f32 x = pos->x;
+    t.y = y;
+    t.x = x;
     void* mgr = lbl_8053AC98;
-    *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&pos, 0);
+    *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
     s32 idx = *(s32*)((char*)mgr + 0x20);
     fn_802D782C(fn_802D6A9C(), 1);
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, value);
