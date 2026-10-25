@@ -33,7 +33,7 @@ struct FsaParam {
 
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AB10;
-extern "C" f32 lbl_80541B70;
+extern "C" const f32 lbl_80541B70;
 extern "C" char lbl_8047184C[];
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_802F86CC(void*, void*, void*, f32, f32, s32, void*);
@@ -44,11 +44,11 @@ extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" void* fn_802D6A9C(void);
 extern "C" s32 lbl_80541B68;
 extern "C" s32 lbl_80541B6C;
-extern "C" f32 lbl_80541B74;
-extern "C" f32 lbl_80541B78;
-extern "C" f32 lbl_80541B7C;
-extern "C" f32 lbl_80541B80;
-extern "C" f32 lbl_80541B84;
+extern "C" const f32 lbl_80541B74;
+extern "C" const f32 lbl_80541B78;
+extern "C" const f32 lbl_80541B7C;
+extern "C" const f32 lbl_80541B80;
+extern "C" const f32 lbl_80541B84;
 extern "C" void fn_803239A0(char* this_) {
     u8 tbl[16];
     FsaParam p;
@@ -286,18 +286,18 @@ extern "C" s32 fn_803245DC(char* this_, s32 room, void* pos) {
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
-extern "C" f32 lbl_80541B74;
-extern "C" f32 lbl_80541B78;
-extern "C" f32 lbl_80541B7C;
-extern "C" f32 lbl_80541B80;
-extern "C" f32 lbl_80541B84;
+extern "C" const f32 lbl_80541B74;
+extern "C" const f32 lbl_80541B78;
+extern "C" const f32 lbl_80541B7C;
+extern "C" const f32 lbl_80541B80;
+extern "C" const f32 lbl_80541B84;
 extern "C" const f32 lbl_80541B90;
 extern "C" const f32 lbl_80541BB0;
-extern "C" f32 lbl_80541BB4;
-extern "C" f32 lbl_80541BB8;
-extern "C" f32 lbl_80541BBC;
-extern "C" f32 lbl_80541BC0;
-extern "C" f32 lbl_80541BC4;
+extern "C" const f32 lbl_80541BB4;
+extern "C" const f32 lbl_80541BB8;
+extern "C" const f32 lbl_80541BBC;
+extern "C" const f32 lbl_80541BC0;
+extern "C" const f32 lbl_80541BC4;
 extern "C" void fn_80324AC4(char* this_) {
     u32 bits;
     f32 frac;
