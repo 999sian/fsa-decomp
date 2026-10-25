@@ -1000,7 +1000,6 @@ extern "C" void fn_80261480(char* p) {
 extern "C" u8 lbl_8046B790[];
 extern "C" f32 lbl_8046B7B0[];
 #pragma opt_propagation off
-#pragma opt_common_subs off
 extern "C" void fn_8026152C(char* p, u8 flag) {
     bool inX;
     bool inY;
@@ -1008,8 +1007,8 @@ extern "C" void fn_8026152C(char* p, u8 flag) {
     inZ = false;
     inY = inZ;
     inX = inZ;
-    f32 neg;
     f32 eps;
+    f32 neg;
     f32 d;
     f32 machineEps = *(f32*)__float_epsilon;
     eps = lbl_8054017C * machineEps;
@@ -1062,11 +1061,11 @@ done:
     f32 x = pos->x;
     f32 y = pos->y;
     F32(p,0x2f4) = x;
+    f32 z = pos->z;
     F32(p,0x2f8) = y;
-    F32(p,0x2fc) = pos->z;
+    F32(p,0x2fc) = z;
     VEC(p, 0x2f4).add(VEC(p, 0x8));
 }
-#pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" void fn_8026173C(char* p) {
     p[0x121c] = 0;
@@ -1937,6 +1936,8 @@ extern "C" void fn_8026441C(char* p) {
 extern "C" void fn_80264768(char* p) {
     p[0x458] = 0;
 }
+
+
 
 extern "C" void fn_802636D4(char* p) {
     U8(p, 0x3fc)++;
