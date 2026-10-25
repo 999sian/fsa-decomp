@@ -6,6 +6,8 @@
 #include "Game/Actor.h"
 #undef Vec
 #include "Game/ItemBase.h"
+#include "std/math.h"
+#include "JSystem/JMath/JMath.h"
 
 extern const f32 lbl_80541D88;
 extern const f32 lbl_80541DFC;
