@@ -49,5 +49,3 @@ extern "C" void fn_80348698(s32* this_) {
     reinterpret_cast<Actor*>(this_)->v03();
 }
 
-void fn_80348780(void) {}
-
