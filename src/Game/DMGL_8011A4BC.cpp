@@ -1,6 +1,18 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 
+extern int __float_epsilon[];
+extern f32 lbl_8053C7B8;
+
+static void fadeChannel(u8* channel, s32 count, s32 target)
+{
+    if ((f32)count >= *(f32*)__float_epsilon) {
+        *channel = (u8)(s32)((lbl_8053C7B8 / (f32)count) * (f32)(target - *channel) + (f32)*channel);
+    } else {
+        *channel = (u8)target;
+    }
+}
+
 extern "C" void fn_8010DF58();
 extern "C" void fn_8010DF98();
 extern "C" void fn_801D2608(void* p, u32 a, u32 b);
@@ -103,7 +115,8 @@ extern "C" void fn_8011AD50(void* param_1) {
 
     fn_8010DF78();
     *(u8*)((u8*)fn_801902C0() + 0x7a8) = 1;
-    if (*(s32*)(p + 0x234) == 2) {
+    switch (*(s32*)(p + 0x234)) {
+    case 2:
         if (((u8 (*)(void*))(*(void***)param_1)[0x34 / 4])(param_1) != 0) {
             if (*(void**)(p + 0x254) == 0) {
                 *(void**)(p + 0x254) = fn_8013CC50(*(void**)(p + 4), p + 0xc, lbl_8053C7B8, 0x111, 0, 0, 0, 0, 1);
@@ -150,6 +163,10 @@ extern "C" void fn_8011AD50(void* param_1) {
                 *(s32*)(p + 0x234) = 3;
             }
         }
+        break;
+    case 1:
+    default:
+        break;
     }
     obj = *(void**)((u8*)lbl_8053AB10 + 0x30);
     if (*(u8*)((u8*)obj + 0x284) == 0) {
