@@ -1,4 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JMath/Inline.h"
+#include "JSystem/JMath/JMath.h"
 
 struct YasiDrawKey {
     s32 a, b;
