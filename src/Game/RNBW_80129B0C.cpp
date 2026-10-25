@@ -133,6 +133,26 @@ static inline void rnbwSpawn(Actor* actor, const u16* ids, s32& i) {
         }
     }
 }
+static inline void rnbwSpawn(s32& i, Actor* actor, const u16* ids) {
+    const u16* table = ids;
+    void** hp = (void**)actor;
+    for (i = 0; i < 5; i++, hp++, table++) {
+        if (hp[0x8f] == 0) {
+            u16 id = *table;
+            hp[0x8f] = rnbwEffect(id, actor);
+        }
+    }
+}
+static inline void rnbwSpawn(s32& i, const u16* ids, Actor* actor) {
+    const u16* table = ids;
+    void** hp = (void**)actor;
+    for (i = 0; i < 5; i++, hp++, table++) {
+        if (hp[0x8f] == 0) {
+            u16 id = *table;
+            hp[0x8f] = rnbwEffect(id, actor);
+        }
+    }
+}
 extern "C" void fn_80129B0C(void* this_) {
     JGeometry::TVec3f movement;
     JGeometry::TVec3f testPos;
@@ -193,7 +213,6 @@ extern "C" void fn_80129B0C(void* this_) {
     }
 }
 
-#pragma opt_common_subs off
 #pragma opt_propagation off
 extern "C" void fn_8012A008(void* this_) {
     s32 i;
@@ -206,36 +225,14 @@ extern "C" void fn_8012A008(void* this_) {
         case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
-                i = 0;
-                void** hp = (void**)this_;
-                const u16* idp = lbl_80465098;
-                do {
-                    if (hp[0x8f] == 0) {
-                        u16 id = *idp;
-                        hp[0x8f] = rnbwEffect(id, actor);
-                    }
-                    i++;
-                    hp++;
-                    idp++;
-                } while (i < 5);
+                rnbwSpawn(lbl_80465098, actor, i);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
-                i = 0;
-                void** hp = (void**)this_;
-                const u16* idp = lbl_804650A4;
-                do {
-                    if (hp[0x8f] == 0) {
-                        u16 id = *idp;
-                        hp[0x8f] = rnbwEffect(id, actor);
-                    }
-                    i++;
-                    hp++;
-                    idp++;
-                } while (i < 5);
+                rnbwSpawn(actor, lbl_804650A4, i);
             }
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_801F0E34(this_, 0x5004d, 0);
@@ -261,7 +258,6 @@ extern "C" void fn_8012A008(void* this_) {
     *(f32*)((char*)this_ + 0x8c) = *(f32*)((char*)this_ + 0x6c);
 }
 #pragma opt_propagation reset
-#pragma opt_common_subs reset
 extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
     s32 i;
     void* self = this_;
