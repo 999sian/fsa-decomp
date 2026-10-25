@@ -106,7 +106,7 @@ extern "C" void fn_801F0E34(char* this_, s32 anim, s32 flag);
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern "C" void fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
 extern "C" s32 fn_801F2618(char* this_, s32 a, s32 b);
-extern "C" void fn_801EEC98(char* this_, void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g);
+extern "C" void fn_801EEC98(char* this_, void* a, s32 b, void* c, s32 d, void* e, s32 f, s32 g);
 extern f32 lbl_8053D77C;
 extern f32 lbl_8053D778;
 extern f32 lbl_8053D780;
