@@ -193,7 +193,7 @@ extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5FF4(f32 x);
 extern "C" void fn_8013B1E8(void* mgr);
 static inline s32 Tu802F93F4_c5(s32 v) {
-    f32 f = (f32)v * lbl_80541518 + lbl_805414F8;
+    f32 f = __fmadds((f32)v, lbl_80541518, lbl_805414F8);
     s32 r = (s32)f;
     if (r < 0) {
         r = 0;
@@ -1336,79 +1336,64 @@ extern "C" void fn_802F91AC(void* self, f32* __restrict p, u8* o, u8* out, f32 f
     } else fn_8013B3F0(lbl_8053AB10);
 }
 
-extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff, s32 n, u8 flag) {
-    s32 size = n;
-    u32 k;
-    u32 cnt;
-    u8* d;
-    u16 v;
-    u16 o;
-    s32 a;
-    s32 b;
-    s32 c;
-
-    if (size == 0) {
-        if (checkCompressed__9JKRDecompFPUc(src) != 0) {
-            size = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff, u32 n, u8 flag) {
+    u8 swap = flag;
+    u32 offset = dstOff;
+    u8* self = this_;
+    u8* dst;
+    u32 index;
+    u8* __restrict slot;
+    u32 size;
+    if (n == 0) {
+        s32 result;
+        if (checkCompressed__9JKRDecompFPUc(src)) {
+            result = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
         } else {
-            u8* dec = *(u8**)((u8*)lbl_8053AAF8 + 0xa4);
-            size = (*(s32 (**)(u8*, u8*))(*(u8**)dec + 0x30))(dec, src);
+            result = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResSize(src);
         }
-        if (size < 0) {
-            size = 0x200;
+        if (result < 0) size = 0x200;
+        else size = result;
+    } else {
+        size = n;
+    }
+    index = idx * 4;
+    slot = self + index;
+    dst = *(u8**)(slot + 0x98) + offset;
+    u8* data;
+    if (checkCompressed__9JKRDecompFPUc(src)) {
+        decode__9JKRDecompFPUcPUcUlUl(src, *(u8**)(self + 0xf8), 0x8000, 0);
+        data = *(u8**)(self + 0xf8);
+    } else {
+        data = src;
+    }
+    u8* input = data + srcOff;
+    for (u32 k = 0; k < size; k += 2) {
+        u16 v;
+        if (k != 0 && !(k & 0x1f)) {
+            v = 0;
+        } else {
+            u16 t = (input[k + 1] << 8) | input[k];
+            v = (t & 0x3e0) | ((t & 31) << 10) | ((t >> 10) & 31) | 0x8000;
+            if (k == 0) v = 0;
         }
+        dst[k] = v >> 8;
+        dst[k+1] = v;
     }
-
-    if (checkCompressed__9JKRDecompFPUc(src) != 0) {
-        decode__9JKRDecompFPUcPUcUlUl(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
-        src = *(u8**)(this_ + 0xf8);
+    u8* output = *(u8**)(self + index + 0xc8) + offset;
+    u8* colors = *(u8**)(slot + 0x98) + offset;
+    for (u32 k = 0; k < size; k += 2) {
+        u16 v = (colors[k] << 8) | colors[k+1];
+        if (v & 0x8000) {
+            u8 a = Tu802F93F4_c5((v >> 10) & 31);
+            u8 b = Tu802F93F4_c5((v >> 5) & 31);
+            u8 c = Tu802F93F4_c5(v & 31);
+            if (swap) v = 0x8000 | (c << 10) | (a << 5) | b;
+            else v = 0x8000 | (a << 10) | (b << 5) | c;
+        }
+        output[k] = v >> 8;
+        output[k+1] = v;
     }
-
-    cnt = ((u32)size + 1) >> 1;
-    k = 0;
-    if (size != 0) {
-        do {
-            if (k == 0 || (k & 0x1f) != 0) {
-                u8 b1 = src[srcOff + k + 1];
-                u8 b0 = src[srcOff + k];
-                v = ((b1 >> 2) & 0x1f) | ((b0 & 0x1f) << 10) | (((b1 << 8) | b0) & 0x3e0) | 0x8000;
-                if (k == 0) {
-                    v = 0;
-                }
-            } else {
-                v = 0;
-            }
-            d = *(u8**)(this_ + idx * 4 + 0x98) + dstOff;
-            d[k] = v >> 8;
-            d[k + 1] = v;
-            k += 2;
-        } while (--cnt != 0);
-    }
-
-    cnt = ((u32)size + 1) >> 1;
-    k = 0;
-    if (size != 0) {
-        do {
-            u16* p = (u16*)(*(u8**)(this_ + idx * 4 + 0x98) + dstOff + k);
-            v = *p;
-            if (v & 0x8000) {
-                a = Tu802F93F4_c5((v >> 10) & 0x1f);
-                b = Tu802F93F4_c5((v >> 5) & 0x1f);
-                c = Tu802F93F4_c5(v & 0x1f);
-                if (flag == 0) {
-                    o = (c & 0xff) | ((a & 0x3f) << 10) | 0x8000 | ((b & 0xff) << 5);
-                } else {
-                    o = (b & 0xff) | ((c & 0x3f) << 10) | 0x8000 | ((a & 0xff) << 5);
-                }
-                v = o;
-            }
-            d = *(u8**)(this_ + idx * 4 + 0xc8) + dstOff;
-            d[k] = v >> 8;
-            d[k + 1] = v;
-            k += 2;
-        } while (--cnt != 0);
-    }
-    DCFlushRange(*(u8**)(this_ + idx * 4 + 0xc8) + dstOff, size);
+    DCFlushRange(output, size);
 }
 
 extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
