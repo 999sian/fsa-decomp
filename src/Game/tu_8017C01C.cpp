@@ -3,6 +3,16 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+struct PendingPositionRequest {
+    u8 pad[0x7f4];
+    u8 active;
+    u8 blocked;
+    u8 flag;
+    u8 pad7f7;
+    u32 state;
+    JGeometry::TVec3<f32> position;
+};
+
 extern void* lbl_8053AB10;
 extern f32 lbl_8053DDC8;
 extern f32 lbl_8053DD28;
