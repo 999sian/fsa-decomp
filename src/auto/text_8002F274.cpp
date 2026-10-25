@@ -117,7 +117,8 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
     }
 
     envt = list;
-    for (unsigned long i = 0; i < list[2]; i++, envt++) {
+    unsigned int i = 0;
+    while (i < list[2]) {
         unsigned long off = envt[3];
         if (off != 0) {
             unsigned long* p = (unsigned long*)(base + off);
@@ -132,8 +133,8 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
 
                 unsigned long effCount = *p++;
                 for (unsigned long j = 0; j < effCount; j++) {
-                    unsigned long* effectData = (unsigned long*)(base + *p++);
-                    int effectTag = *effectData++;
+                    int* effectData = (int*)(base + *p++);
+                    long effectTag = *effectData++;
                     char* fx = (char*)effectData;
                     JASInstEffect* effect;
                     switch (effectTag) {
@@ -194,10 +195,12 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
                         perc->setRelease(*(unsigned short*)(rec + 0xa));
 
                         unsigned long effCount = *(unsigned long*)(rec + 0xc);
-                        unsigned long* effp = (unsigned long*)(rec + 0x10);
+                        unsigned long* effp = (unsigned long*)(rec + 0xc);
+                        unsigned long effCountFromPointer = *effp++;
+                        effCount = effCountFromPointer;
                         for (unsigned long k = 0; k < effCount; k++) {
-                            unsigned long* effectData = (unsigned long*)(base + *effp++);
-                    int effectTag = *effectData++;
+                            int* effectData = (int*)(base + *effp++);
+                    long effectTag = *effectData++;
                     char* fx = (char*)effectData;
                     JASInstEffect* effect;
                     switch (effectTag) {
@@ -240,6 +243,8 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
             }
             }
         }
+        envt++;
+        i++;
     }
     return bank;
 }
@@ -404,10 +409,11 @@ extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key) {
     char* p;
     unsigned long* off = (unsigned long*)(data + 0x20);
     int i = 0;
+    int j;
     for (; i < 0x80; i++, off++) {
-        p = fn_80030454(data, off[1]);
-        if (p != 0) {
-            for (int j = 0; j < 2; j++, p += 4) {
+        char* q = fn_80030454(data, off[1]);
+        if (q != 0) {
+            for (j = 0, p = q; j < 2; j++, p += 4) {
                 if (fn_8003043C(data, *(unsigned long*)(p + 0x10)) == key) {
                     JASInst* inst = bank->getInst(i);
                     if (inst != 0) {
