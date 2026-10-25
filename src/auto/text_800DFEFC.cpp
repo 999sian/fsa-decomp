@@ -22,7 +22,7 @@ extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx
 extern "C" GXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" u32 lbl_80543F10;
 extern "C" u32 lbl_80543F14;
-extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no);
+extern "C" TevKColorWord fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DColorChan fn_800E09F0(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" void* fn_800E1300(const void* base, const void* offset);
 extern "C" void* fn_800CC040(const void* base, const void* offset);
