@@ -3140,7 +3140,7 @@ struct UnkMtx30 {
 
 extern "C" {
 void PSMTXIdentity(void* m);
-void fn_801EF574(void* a, void* b, f32* v, void* rec);
+
 extern void* lbl_8053AB10;
 }
 
