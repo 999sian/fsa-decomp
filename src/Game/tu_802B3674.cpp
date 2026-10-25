@@ -223,3 +223,5 @@ extern "C" void fn_802B5284(char* p) {
     }
 }
 
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
+
