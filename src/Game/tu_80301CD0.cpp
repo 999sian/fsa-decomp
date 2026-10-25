@@ -539,7 +539,7 @@ extern "C" void fn_80302C34(u8* __restrict p, s32 player, s32 index, s32 bits, u
     f32 pos[3];
     Slot_80301CD0* slot=(Slot_80301CD0*)p;
     u8 b3=p[3];
-    x=slot->f2|((b3&1)<<8);
+    x=((b3&1)<<8)|slot->f2;
     y=slot->f1;
     if(x!=0x180 && y!=0xe0 && (effect=lbl_8053ACFC)[(u32)index]<17) {
     if(x>=0x180) x|=-0x100;
