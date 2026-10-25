@@ -741,5 +741,4 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
     }
     return p;
 }
-#pragma peephole reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
