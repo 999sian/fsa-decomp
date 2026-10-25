@@ -93,11 +93,19 @@ static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
     return best;
 }
 
+static inline u8 tu801D3320_isFreeAt2(s32 room, const Vec3f& pos) {
+    u8 ok = 1;
+    if (fn_801CCBD0(&pos, room) || fn_801CCB1C(&pos, room)) {
+        ok = 0;
+    }
+    return ok;
+}
+
 static inline u8 tu801D3320_collect2(char* this_, u8* ids, u8* out) {
     u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
     u8 count = 0;
     for (int i = 0; i < n; i++) {
-        if (tu801D3320_isFreeAt(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]), *(s32*)(this_ + 0x4))) {
+        if (tu801D3320_isFreeAt2(*(s32*)(this_ + 0x4), fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]))) {
             count++;
             *out++ = ids[i];
         }
@@ -194,7 +202,7 @@ extern "C" void fn_801D3320(char* this_) {
         }
     }
     ((Vec3f*)(this_ + 0x32c))->add(d);
-    if (!tu801D3320_isFree((Vec3f*)(this_ + 0x32c), *(s32*)(this_ + 0x4)) || fn_801CAEF4(this_, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
+    if (!tu801D3320_isFreeT((Vec3f*)(this_ + 0x32c), this_) || fn_801CAEF4(this_, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
         if (b) {
             ((Vec3f*)(this_ + 0x32c))->set(cur);
             return;
