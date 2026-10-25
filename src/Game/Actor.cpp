@@ -196,6 +196,18 @@ extern f32 lbl_8053F740; /* 0.0 */
 extern f32 lbl_8053F744; /* 512.0 */
 extern f32 lbl_8053F74C; /* 0.5 */
 extern f32 lbl_8053F750; /* 3.0 */
+extern f32 lbl_8053F754;
+extern f32 lbl_8053F7B4;
+extern f32 lbl_8053F7B8;
+extern f32 lbl_8053F7BC;
+extern f32 lbl_8053F7C0;
+extern f32 lbl_8053F7C4;
+extern f32 lbl_8053F7C8;
+extern f32 lbl_8053F7CC;
+u8 fn_802258D4(void* pos, u32 room);
+u8 fn_80225614(void* pos, u32 room);
+void fn_801CB7A0(void* p);
+s32 fn_80237060(s32 i);
 extern f32 lbl_80539D44[]; /* FLT_EPSILON */
 extern "C" void* Registry_GetSlotValueOrFallback(void* a, u32 b);
 extern "C" u8 fn_802D7804(void* mgr, u32 id, u32 flags);
@@ -2120,14 +2132,14 @@ extern "C" void fn_801EEC98(void* unused, s32 idx, u16* angOut, s32* quadOut, f3
             }
 
             if (mode == 0) {
-                d = std::sqrtf(dx * dx + dy * dy);
+                d = fn_801EEC98_sqrt(dx * dx + dy * dy);
                 if (bestDist > d) {
                     bestDist = d;
                     bestIdx = i;
                     ang = (u16)(s32)(lbl_8053F770 * JMath::atanTable_.atan2_(-dx, -dy));
                 }
             } else if (mode == 2) {
-                d = std::sqrtf(dx * dx + dy * dy);
+                d = fn_801EEC98_sqrt(dx * dx + dy * dy);
                 if (bestDist == lbl_8053F754 || bestDist > d) {
                     bestDist = d;
                     bestIdx = i;
@@ -2137,7 +2149,7 @@ extern "C" void fn_801EEC98(void* unused, s32 idx, u16* angOut, s32* quadOut, f3
                 if (mode == 3 && i == sel) break;
                 if (bestPri1 >= fn_80236228(i)) break;
                 bestPri1 = fn_80236228(i);
-                d = std::sqrtf(dx * dx + dy * dy);
+                d = fn_801EEC98_sqrt(dx * dx + dy * dy);
                 bestDist = d;
                 bestIdx = i;
                 ang = (u16)(s32)(lbl_8053F770 * JMath::atanTable_.atan2_(-dx, -dy));
@@ -2145,7 +2157,7 @@ extern "C" void fn_801EEC98(void* unused, s32 idx, u16* angOut, s32* quadOut, f3
                 if (mode == 5 && i == sel) break;
                 if (bestPri2 >= fn_80237774(i)) break;
                 bestPri2 = fn_80237774(i);
-                d = std::sqrtf(dx * dx + dy * dy);
+                d = fn_801EEC98_sqrt(dx * dx + dy * dy);
                 bestDist = d;
                 bestIdx = i;
                 ang = (u16)(s32)(lbl_8053F770 * JMath::atanTable_.atan2_(-dx, -dy));
