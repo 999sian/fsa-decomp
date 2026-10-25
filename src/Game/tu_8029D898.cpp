@@ -1453,7 +1453,7 @@ struct WaveAnimationData {
     char first[0x14];
     char second[1];
 };
-extern const u8 lbl_8046C4A8[] = {
+static const u8 lbl_8046C4A8[] = {
     0,0,4,0,8,0,12,0,16,0,20,0,24,0,28,0,
     32,0,36,0,40,0,44,0,48,0,52,0,56,0,60,0
 };
@@ -1461,20 +1461,21 @@ extern "C" const char* fn_802D9C4C(void*);
 extern "C" void fn_802FA160(void*,void*,s32,s32,s32,s32);
 #pragma opt_propagation off
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_802A3A0C(char* p) {
-    const WaveAnimationData* base=(const WaveAnimationData*)lbl_8046C4A8;
+    const u8* base=lbl_8046C4A8;
     --*(s32*)(p+8);
     if (*(s32*)(p+8)==0) {
         *(s32*)(p+8)=10;
         *(s32*)(p+0xc)+=2;
         if (*(s32*)(p+0xc)>=16) *(s32*)(p+0xc)=0;
         if (*(s32*)((u8*)fn_802D6A9C()+0x40)==16) {
-            s32 offset=base->frames[*(s32*)(p+0xc)]+0x4000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->first);
+            s32 offset=((const u16*)base)[*(s32*)(p+0xc)]+0x4000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x170);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x3800,0x800);
         } else {
-            s32 offset=base->frames[*(s32*)(p+0xc)];
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->first);
+            s32 offset=((const u16*)base)[*(s32*)(p+0xc)];
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x170);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x3800,0x800);
         }
     }
@@ -1486,29 +1487,30 @@ extern "C" void fn_802A3A0C(char* p) {
         const char* name=fn_802D9C4C(fn_802D6A9C());
         char c=*name;
         if (c=='l') {
-            s32 offset=base->frames[*(s32*)(p+0x1c)]+0x2000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
+            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)]+0x2000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x5800,0x400);
             *(s32*)(p+0x18)=20;
         } else if (c=='s'||c=='w') {
-            s32 offset=base->frames[*(s32*)(p+0x1c)]+0x6000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
+            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)]+0x6000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x1c00,0x400);
         } else if (c=='k'||c=='v') {
             if (*(s32*)(p+0x1c)>=4) *(s32*)(p+0x1c)=0;
-            s32 offset=base->frames[*(s32*)(p+0x1c)]+0x1000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
+            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)]+0x1000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x5c00,0x400);
         } else if (*(s32*)((u8*)fn_802D6A9C()+0x40)==0x1b || *(const u8*)name=='y') {
             if (*(s32*)(p+0x1c)>=4) *(s32*)(p+0x1c)=0;
-            s32 offset=base->frames[*(s32*)(p+0x1c)*2]+0x4000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
+            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)*2]+0x4000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x5800,0x800);
         }
     }
 }
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_802A3D80(char* p) {
     *(s32*)(p + 0x8) = 10;
     *(s32*)(p + 0xc) = 0;
