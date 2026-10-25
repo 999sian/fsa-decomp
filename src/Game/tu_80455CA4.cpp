@@ -107,6 +107,7 @@ extern "C" void fn_80455F40(u8* param_1, void** param_2) {
                 writePort__8JASTrackFUlUs(track, 0xb, 1);
                 writePort__8JASTrackFUlUs(track, 9, 0x3c);
                 break;
+            case 1:
             default:
                 writePort__8JASTrackFUlUs(track, 9, 0);
                 writePort__8JASTrackFUlUs(track, 0xb, 0);
@@ -123,6 +124,7 @@ extern "C" void fn_80455F40(u8* param_1, void** param_2) {
                 writePort__8JASTrackFUlUs(track, 0xb, 1);
                 writePort__8JASTrackFUlUs(track, 9, 0x3c);
                 break;
+            case 1:
             default:
                 writePort__8JASTrackFUlUs(track, 9, 0);
                 writePort__8JASTrackFUlUs(track, 0xb, 0);
@@ -273,5 +275,32 @@ extern "C" void* fn_8045787C(char* param_1, s16 param_2)
     return param_1;
 }
 
+#pragma optimization_level 3
+WaveController::WaveController(s32 pos, s32 heap, const s32 handles)
+    : mSound((JGeometry::TVec3f*)pos, static_cast<u8>(static_cast<u16>(handles)), (JKRHeap*)heap) {
+    *(char**)((u8*)this + 8) = lbl_804B1E28;
+    *(char**)((u8*)this + 0x18) = lbl_804B1E28 + 0x24;
+    m31 = 1;
+    mPos = (JGeometry::TVec3f*)pos;
+    if ((JGeometry::TVec3f*)pos != NULL) {
+        mPosCopy.x = ((JGeometry::TVec3f*)pos)->x;
+        mPosCopy.y = ((JGeometry::TVec3f*)pos)->y;
+        mPosCopy.z = ((JGeometry::TVec3f*)pos)->z;
+        mSound.mSoundPos = &mPosCopy;
+    } else {
+        mSound.mSoundPos = NULL;
+    }
+    m44 = 0;
+    m45 = 0;
+    m50 = 0;
+    m51 = 0;
+    m52 = 0;
+    m4C = 1.0f;
+    m48 = 0.0f;
+    m54 = JAISoundID(0x400a5);
+    m58 = JAISoundID(0x3006d);
+    m30 = 0;
+}
+#pragma optimization_level reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
