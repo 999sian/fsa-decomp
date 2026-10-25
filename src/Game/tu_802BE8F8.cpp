@@ -1,5 +1,8 @@
 #include "dolphin/gx/GXStruct.h"
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
 extern "C" char lbl_804A8B78[];
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void*, int);
