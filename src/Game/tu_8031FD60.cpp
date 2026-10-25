@@ -33,7 +33,7 @@ extern "C" void fn_8031FDC0(void* this_) {
     u8* obj = (u8*)this_;
     JGeometry::TVec3<f32> pos(*(Vec*)(obj + 0x230));
 
-    if (((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
+    if ((u8)((Actor*)this_)->v11()) {
         return;
     }
     if (*(s32*)(obj + 0x240) == 0) {
