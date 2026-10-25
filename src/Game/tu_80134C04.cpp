@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JKernel/JKRHeap.h"
+#include "JSystem/JAudio/Interface/JAISound.h"
 void* operator new(unsigned long size, JKRHeap* heap, int align);
 
 extern "C" void fn_80139BE8(void* p);
@@ -654,72 +655,62 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
             __dl__FPv(*(void**)(p + 0x104));
         }
         if (*(void**)(p + 0x4) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x4)))[2])(*(void**)(p + 0x4), 1);
+            delete *(TuOwnedObject**)(p + 0x4);
             *(void**)(p + 0x4) = 0;
         }
-        if (*(void**)(p + 0x18) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x18)))[2])(*(void**)(p + 0x18), 1);
-            *(void**)(p + 0x18) = 0;
-        }
-        if (lbl_8053AB10 != 0) {
-            ((void (*)(void*, s32))(*(void***)lbl_8053AB10)[2])(lbl_8053AB10, 1);
-        }
-        if (*(void**)(p + 0x8) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x8)))[2])(*(void**)(p + 0x8), 1);
-        }
-        if (*(void**)(p + 0xc) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xc)))[2])(*(void**)(p + 0xc), 1);
-        }
-        if (*(void**)(p + 0x10) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x10)))[2])(*(void**)(p + 0x10), 1);
-        }
+        delete *(TuOwnedObject**)(p + 0x18);
+        *(void**)(p + 0x18) = 0;
+
+        delete (TuOwnedObject*)lbl_8053AB10;
+        delete *(TuOwnedObject**)(p + 0x8);
+
+        delete *(TuOwnedObject**)(p + 0xc);
+
+        delete *(TuOwnedObject**)(p + 0x10);
+
         if (*(void**)(p + 0x20) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x20)))[2])(*(void**)(p + 0x20), 1);
+            delete *(TuOwnedObject**)(p + 0x20);
             *(void**)(p + 0x20) = 0;
         }
         if (*(void**)(p + 0x28) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x28)))[2])(*(void**)(p + 0x28), 1);
+            delete *(TuOwnedObject**)(p + 0x28);
             *(void**)(p + 0x28) = 0;
         }
         if (*(void**)(p + 0x24) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x24)))[2])(*(void**)(p + 0x24), 1);
+            delete *(TuOwnedObject**)(p + 0x24);
             *(void**)(p + 0x28) = 0;
         }
         if (*(void**)(p + 0x2c) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x2c)))[2])(*(void**)(p + 0x2c), 1);
+            delete *(TuOwnedObject**)(p + 0x2c);
             *(void**)(p + 0x2c) = 0;
         }
         if (*(void**)(p + 0x30) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x30)))[2])(*(void**)(p + 0x30), 1);
+            delete *(TuOwnedObject**)(p + 0x30);
             *(void**)(p + 0x30) = 0;
         }
         if (*(void**)(p + 0x1c) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x1c)))[2])(*(void**)(p + 0x1c), 1);
+            delete *(TuOwnedObject**)(p + 0x1c);
             *(void**)(p + 0x1c) = 0;
         }
         fn_8007A298(*(void**)(lbl_80529DEC + 0x24));
         fn_8007A298(*(void**)(lbl_80529DEC + 0x38));
         fn_8007A298(*(void**)(lbl_80529DEC + 0x40));
         fn_8007A298(*(void**)(lbl_80529DEC + 0x44));
-        if (*(void**)(p + 0x34) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x34)))[2])(*(void**)(p + 0x34), 1);
-            *(void**)(p + 0x34) = 0;
-        }
-        if (*(void**)(p + 0x38) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x38)))[2])(*(void**)(p + 0x38), 1);
-            *(void**)(p + 0x38) = 0;
-        }
-        if (*(void**)(p + 0x3c) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x3c)))[2])(*(void**)(p + 0x3c), 1);
-            *(void**)(p + 0x3c) = 0;
-        }
-        if (*(void**)(p + 0x40) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0x40)))[2])(*(void**)(p + 0x40), 1);
-            *(void**)(p + 0x40) = 0;
-        }
-        ((void (*)(void*))(*(void***)(*(void**)(p + 0xa4)))[3])(*(void**)(p + 0xa4));
-        ((void (*)(void*))(*(void***)(*(void**)(p + 0xa8)))[3])(*(void**)(p + 0xa8));
-        ((void (*)(void*))(*(void***)(*(void**)(lbl_80529DEC + 0x20)))[3])(*(void**)(lbl_80529DEC + 0x20));
+        delete *(TuOwnedObject**)(p + 0x34);
+        *(void**)(p + 0x34) = 0;
+
+        delete *(TuOwnedObject**)(p + 0x38);
+        *(void**)(p + 0x38) = 0;
+
+        delete *(TuOwnedObject**)(p + 0x3c);
+        *(void**)(p + 0x3c) = 0;
+
+        delete *(TuOwnedObject**)(p + 0x40);
+        *(void**)(p + 0x40) = 0;
+
+        (*(TuVtable7**)(p + 0xa4))->v1();
+        (*(TuVtable7**)(p + 0xa8))->v1();
+        (*(TuVtable7**)(lbl_80529DEC + 0x20))->v1();
         fn_803007A0();
         sound = *(void**)(p + 0xa0);
         if (sound != 0) {
@@ -732,22 +723,18 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
             __dl__FPv(sound);
         }
         destroy__7JKRHeapFv(*(void**)(p + 0x9c));
-        if (*(void**)(p + 0xb8) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xb8)))[2])(*(void**)(p + 0xb8), 1);
-            *(void**)(p + 0xb8) = 0;
-        }
-        if (*(void**)(p + 0xbc) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xbc)))[2])(*(void**)(p + 0xbc), 1);
-            *(void**)(p + 0xbc) = 0;
-        }
-        if (*(void**)(p + 0xc0) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xc0)))[2])(*(void**)(p + 0xc0), 1);
-            *(void**)(p + 0xc0) = 0;
-        }
-        if (*(void**)(p + 0xc4) != 0) {
-            ((void (*)(void*, s32))(*(void***)(*(void**)(p + 0xc4)))[2])(*(void**)(p + 0xc4), 1);
-            *(void**)(p + 0xc4) = 0;
-        }
+        delete *(TuOwnedObject**)(p + 0xb8);
+        *(void**)(p + 0xb8) = 0;
+
+        delete *(TuOwnedObject**)(p + 0xbc);
+        *(void**)(p + 0xbc) = 0;
+
+        delete *(TuOwnedObject**)(p + 0xc0);
+        *(void**)(p + 0xc0) = 0;
+
+        delete *(TuOwnedObject**)(p + 0xc4);
+        *(void**)(p + 0xc4) = 0;
+
         destroy__7JKRHeapFv(*(void**)(p + 0x98));
         if (how > 0) {
             __dl__FPv(p);
