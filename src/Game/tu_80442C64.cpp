@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 #ifndef dtor_80084580
 #define dtor_80084580(p) (::operator delete(p))
 #endif
@@ -29,8 +30,11 @@ extern "C" void* fn_80442C64(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_80442CC4(u8* self) {
-    u32 room = *(u32*)(self + 0x90) >> 28;
+#pragma opt_lifetimes off
+extern "C" void fn_80442CC4(void* this_) {
+    s32 room;
+    u8* self = (u8*)this_;
+    room = *(u32*)(self + 0x90) >> 28;
     switch (*(s32*)(self + 0x230)) {
     case 0:
         if (fn_80309D24(lbl_8053AD30, fn_8030AAF4(room), 0x400) != 0) {
@@ -46,20 +50,20 @@ extern "C" void fn_80442CC4(u8* self) {
                 if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(room), 0x2) != 0) {
                     *(s32*)(self + 0x234) += 0x64;
                 } else if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(room), 0x1) != 0) {
-                    if (*(u32*)(self + 0x234) <= 0x64) {
-                        *(s32*)(self + 0x234) = 1;
-                    } else {
+                    if (*(u32*)(self + 0x234) > 0x64) {
                         *(s32*)(self + 0x234) -= 0x64;
+                    } else {
+                        *(s32*)(self + 0x234) = 1;
                     }
                 }
             } else {
                 if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(room), 0x2) != 0) {
                     *(s32*)(self + 0x234) += 0xa;
                 } else if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(room), 0x1) != 0) {
-                    if (*(u32*)(self + 0x234) <= 0xa) {
-                        *(s32*)(self + 0x234) = 1;
-                    } else {
+                    if (*(u32*)(self + 0x234) > 0xa) {
                         *(s32*)(self + 0x234) -= 0xa;
+                    } else {
+                        *(s32*)(self + 0x234) = 1;
                     }
                 }
             }
@@ -67,10 +71,10 @@ extern "C" void fn_80442CC4(u8* self) {
             if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(room), 0x2) != 0) {
                 *(s32*)(self + 0x234) += 1;
             } else if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(room), 0x1) != 0) {
-                if (*(u32*)(self + 0x234) <= 1) {
-                    *(s32*)(self + 0x234) = 1;
-                } else {
+                if (*(u32*)(self + 0x234) > 1) {
                     *(s32*)(self + 0x234) -= 1;
+                } else {
+                    *(s32*)(self + 0x234) = 1;
                 }
             }
         }
@@ -83,11 +87,14 @@ extern "C" void fn_80442CC4(u8* self) {
             }
         }
         break;
-    case 1:
+    case 1: {
         fn_8022FE80(room, *(s32*)(self + 4), *(s32*)(self + 0x198), 0, 0);
-        if (fn_8022FD8C(*(s32*)(self + 0x198)) == room) {
-            Tu80442Vec3 pos = *(Tu80442Vec3*)(self + 0xc);
-            if (fn_8038C678(room, *(s32*)(self + 0x234), *(s32*)(self + 0x198), *(s32*)(self + 4), &pos, 0x10)) {
+        s32 owner = fn_8022FD8C(*(s32*)(self + 0x198));
+        if (owner == room) {
+            s32 handle = *(s32*)(self + 0x198);
+            s32 area = *(s32*)(self + 4);
+            JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self + 0xc));
+            if (fn_8038C678(room, *(s32*)(self + 0x234), handle, area, &pos, 0x10)) {
                 *(s32*)(self + 0x230) = 2;
             } else {
                 lbl_8053AED0[room + 0x1f0] = 2;
@@ -95,6 +102,7 @@ extern "C" void fn_80442CC4(u8* self) {
             }
         }
         break;
+    }
     case 2:
         fn_8022FE80(room, *(s32*)(self + 4), *(s32*)(self + 0x198), 0, 0);
         if (fn_80388CAC(room, *(s32*)(self + 0x198))) {
@@ -104,7 +112,7 @@ extern "C" void fn_80442CC4(u8* self) {
         break;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_80443064(void* this_)
 {
     if (fn_802308E0(*(u32*)((u8*)this_ + 0x90) >> 28) == 0) {
