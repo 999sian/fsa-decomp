@@ -46,8 +46,8 @@ static inline void dmlkStoreBounds(u8* p, f32 x0, f32 x1, f32 y0, f32 y1) {
     *(f32*)(p + 0x25c) = y1;
 }
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
-    dmlkStoreBounds(p, pos[0] - lbl_8053C7F0, lbl_8053C7F0 + pos[0],
-                   pos[1] - lbl_8053C7E8, lbl_8053C7E8 + pos[1]);
+    dmlkStoreBounds(p, pos[0] + -lbl_8053C7F0, lbl_8053C7F0 + pos[0],
+                   pos[1] + -lbl_8053C7E8, lbl_8053C7E8 + pos[1]);
 }
 
 struct DMLKResMgr {
@@ -293,7 +293,7 @@ extern "C" void fn_8011B3F0(u8* p) {
     }
     switch (*(s32*)(p + 0x238)) {
     case 7: {
-        int elapsed = dmlkElapsed(*(int*)((u8*)fn_8011921C() + 8));
+        s32 elapsed = dmlkElapsed(*(s32*)((u8*)fn_8011921C() + 8));
         if (elapsed < 180) {
             dmlkRequestBounds(p);
             break;
@@ -349,8 +349,8 @@ extern "C" void fn_8011B3F0(u8* p) {
         if (view[0x840] == 0) {
             f32 zero;
             f32 step;
-            view[0x840] = 1;
             step = lbl_8053C7F8;
+            view[0x840] = 1;
             zero = lbl_8053C7FC;
             f32 x = *(f32*)(p + 0xc);
             *(f32*)(view + 0x84c) = x;
