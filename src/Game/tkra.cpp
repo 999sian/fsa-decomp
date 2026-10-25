@@ -116,6 +116,11 @@ inline u8 tkraRoomMode(char* p) {
 }
 
 struct TkraV2 { f32 x, y; };
+inline s32 tkraCreateItem(s32 player, JGeometry::TVec3f* pos, u32 param) {
+    s32 room = fn_8023DE58(player);
+    return Actor_CreateByID(fn_801F856C(), 'IMUP', room, pos, param, -1, -1);
+}
+
 inline void tkraCreateItems(char* p) {
     s32 i;
     char* out;
