@@ -54,12 +54,12 @@ struct RupyResMgr {
 };
 
 // Table lookups on RUPY's rodata (sound ids and message ids per rupee kind).
-static inline u16 rupyTblU16(const u8* tbl, s32 n) {
-    return ((const u16*)tbl)[n];
+static inline u16 rupyTblU16(const u8* tbl, u32 off, s32 n) {
+    return ((const u16*)((u32)tbl + off))[n];
 }
 
-static inline s32 rupyTblS32(const u8* tbl, s32 n) {
-    return ((const s32*)tbl)[n];
+static inline s32 rupyTblS32(const u8* tbl, u32 off, s32 n) {
+    return ((const s32*)((u32)tbl + off))[n];
 }
 
 // Actor vtable slot 13 (byte offset 0x34).
