@@ -40,9 +40,14 @@ class Unk80434370 {
 public:
     unsigned char pad[0x6b];
     unsigned char m_state;
+    void state0();
+    void state1();
 };
 typedef void (Unk80434370::*Unk80434370Fn)();
-extern Unk80434370Fn lbl_804B1690[];
+static Unk80434370Fn lbl_804B1690[2] = {
+    &Unk80434370::state0,
+    &Unk80434370::state1
+};
 
 extern "C" char* lbl_8053AB10;
 extern "C" float lbl_80543BC8;
@@ -57,7 +62,6 @@ extern "C" void* lbl_8053AED8;
 extern "C" const float lbl_80543BD8;
 extern "C" void fn_8013B490(void*);
 extern "C" void fn_80440EE8(void*);
-extern "C" Unk80434370Fn lbl_804B1690[];
 extern "C" u8 fn_80402940(void* obj, s32 type, f32 a, f32 b, s32 c);
 extern "C" u32 fn_80309A9C(void* pad, s32 mask, s32 a);
 extern "C" u32 fn_80309C4C(void* pad, s32 mask, s32 a);
