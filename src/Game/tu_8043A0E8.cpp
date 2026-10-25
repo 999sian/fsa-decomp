@@ -752,6 +752,9 @@ static inline bool tu8043_isFlagSet(u8 flags, u8 bit) {
 static inline BOOL tu8043_testFlag(u8 flags, u8 bit) {
     return (flags & bit) != 0;
 }
+static inline bool tu8043_checkBit(u8* p, s32 i) {
+    return p[0xde] & (u8)(1 << i);
+}
 extern "C" s32 fn_8043D67C(u8* param_1, u32 param_2, u32 param_3, u32 param_4) {
     char name[8];
     if (param_1[0x10a] != 0) {
@@ -764,7 +767,7 @@ extern "C" s32 fn_8043D67C(u8* param_1, u32 param_2, u32 param_3, u32 param_4) {
         fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
     } else if (param_2 == 0x1b5) {
         u8 bit = 1 << param_3;
-        if (tu8043_isFlagSet(param_1[0xde], bit)) {
+        if (tu8043_testFlag(param_1[0xde], bit)) {
             return 0;
         }
         param_1[0xde] |= bit;
