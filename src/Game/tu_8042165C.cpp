@@ -70,9 +70,9 @@ struct HeartPane {
     virtual void v10();
     virtual void v11();
     virtual void v12();
-    virtual void v13();
-    virtual void v14();
     virtual HeartPane* search(u64);
+    virtual void v14();
+    virtual void v15();
     virtual void v16();
     virtual void v17();
     virtual void v18();
