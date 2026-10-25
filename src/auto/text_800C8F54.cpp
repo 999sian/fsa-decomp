@@ -562,8 +562,10 @@ extern "C" void fn_800CBB9C(J3DNBTScaleInfo* out, u8* p, s32 idx);
 extern "C" void fn_800CB104(s32* out, u8* p, s32 idx, s32 no);
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 no);
 extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags) {
-    u32 nTev, nTexNo, nTex, colorFlag, texFlag, peFlag, indFlag;
-    u8 i, nInd;
+    u32 nTev, colorFlag, nTex, peFlag, texFlag, indFlag, nTexNo;
+    u8 nInd;
+    u8 swapAlpha;
+    u8 swapColor;
     J3DFogInfo fog;
     J3DIndTexMtxInfo imtx;
     J3DNBTScaleInfo nbtCopy, nbt;
@@ -572,12 +574,14 @@ extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial*
     unsigned int blend;
     u32 orderCopy, order, kcolor;
     s32 ambient, matcolor;
-    u32 indScale, indOrderCopy, indOrder, indStageCopy, indStage;
-    u16 zCopy, z, chanCopy, chan;
-    u8 kselCopy, ksel;
+    u32 indOrderCopy, indOrder, indScale, indStageCopy, indStage;
+    u16 chanCopy[2], zCopy[2], z[2], chan[2];
+    u8 kselCopy[4], ksel[4];
     if (self->mDisplayLists != 0) return fn_800CA7F0(self,material,idx,flags);
-    u8* init=(u8*)self->mInitData+self->mMatRemapTable[idx]*0x14c;
-    u32 stages=0, textures=0;
+    u16 remapped=self->mMatRemapTable[idx];
+    u8* init=(u8*)self->mInitData+remapped*0x14c;
+    u32 textures=0;
+    u32 stages=textures;
     if (init[4]!=0xff) stages=((u8*)self->unk_0C[16])[init[4]];
     for (u32 j=0; j<8; j++) {
         if (*(u16*)(init+0x84+j*2)!=0xffff) textures++;
@@ -590,10 +594,10 @@ extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial*
     nTexNo=nTev>8?8:nTev;
     if (init[3]!=0xff) nTex=((u8*)self->unk_0C[6])[init[3]];
     else nTex=0;
+    indFlag=(flags>>24)&1;
+    peFlag=flags&0x30000000;
     colorFlag=flags&0xc0000000;
     texFlag=nTex>4?0:flags&0x0c000000;
-    peFlag=flags&0x30000000;
-    indFlag=(flags>>24)&1;
     if (!material) {
         material=(J3DMaterial*)operator new(0x4c);
         if (material) {
@@ -610,111 +614,120 @@ extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial*
     *(void**)((u8*)material + 0x34)=createPEBlock__11J3DMaterialFUlUl(peFlag,((u8*)self->mInitData)[self->mMatRemapTable[idx]*0x14c]);
     *(u16*)((u8*)material+0x14)=idx;
     *(u32*)((u8*)material+0x10)=((u8*)self->mInitData)[self->mMatRemapTable[idx]*0x14c];
-    ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v18(fn_800CAF38((u8*)self,idx));
-    ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v27(fn_800CB28C((u8*)self,idx));
-    ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v15(fn_800CB15C((u8*)self,idx));
-    fn_800CBB9C(&nbt,(u8*)self,idx);
+    ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v18(((u8 (*)(const J3DMaterialFactory*, int))fn_800CAF38)(self,idx));
+    ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v27(((u8 (*)(const J3DMaterialFactory*, int))fn_800CB28C)(self,idx));
+    ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v15(((u8 (*)(const J3DMaterialFactory*, int))fn_800CB15C)(self,idx));
+    ((void (*)(void*, const J3DMaterialFactory*, int))fn_800CBB9C)(&nbt,self,idx);
     ((u32*)&nbtCopy)[0]=((u32*)&nbt)[0];
     ((u32*)&nbtCopy)[1]=((u32*)&nbt)[1];
     ((u32*)&nbtCopy)[2]=((u32*)&nbt)[2];
     ((u32*)&nbtCopy)[3]=((u32*)&nbt)[3];
     ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v22(&nbtCopy);
-    ((void (*)(void*,u8*,s32))fn_800CB8C8)(&fog,(u8*)self,idx);
+    ((void (*)(void*,const J3DMaterialFactory*,int))fn_800CB8C8)(&fog,self,idx);
     ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v10(&fog);
-    fn_800CBA08(alpha,(u8*)self,idx);
+    ((void (*)(void*, const J3DMaterialFactory*, int))fn_800CBA08)(alpha,self,idx);
     ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v14(alpha);
     fn_800CBA88(&blend,(void*)self,idx);
     ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v17(&blend);
-    fn_800CBACC(&z,(void*)self,idx);
-    zCopy=z;
-    ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v20(&zCopy);
+    fn_800CBACC(z,(void*)self,idx);
+    zCopy[0]=z[0];
+    ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v20(zCopy);
     ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v23(fn_800CBB2C((void*)self,idx));
-    ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v26(fn_800CBB64((u8*)self,idx));
-    ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v37(fn_800CB428((u8*)self,idx));
-    for(i=0;i<nTexNo;i++) {
-        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v19(i, fn_800CB2CC((u8*)self,idx,i));
+    ((J3DPEBlock*)*(void**)((u8*)material + 0x34))->v26(((u8 (*)(const J3DMaterialFactory*, int))fn_800CBB64)(self,idx));
+    ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v37(((u8 (*)(const J3DMaterialFactory*, int))fn_800CB428)(self,idx));
+    for(u8 i=0;i<nTexNo;i++) {
+        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v19(i,((u16 (*)(const J3DMaterialFactory*, int, int))fn_800CB2CC)(self,idx,i));
     }
-    for(i=0;i<nTev;i++) {
-        fn_800CB314(&order,(u8*)self,idx,i); orderCopy=order;
+    for(u8 i=0;i<nTev;i++) {
+        ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB314)(&order,self,idx,i); orderCopy=order;
         ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v22(i, &orderCopy);
     }
+    u32 no;
+    u16* swap;
+    u32 stageIndex;
+    u8* entry;
     u8* data=(u8*)self->mInitData;
     u16* remap=self->mMatRemapTable;
-    for(i=0;i<nTev;i++) {
-        u8* entry=data+remap[idx]*0x14c;
-        fn_800CB460(stage,(u8*)self,idx,i);
+    for(stageIndex=0;(u8)stageIndex<nTev;stageIndex++) {
+        entry=data+remap[idx]*0x14c;
+        ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB460)(stage,self,idx,(u8)stageIndex);
+        no=(u8)stageIndex;
         stageCopy[0]=stage[0];stageCopy[1]=stage[1];
-        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v40(i, stageCopy);
-        u16* swap=(u16*)(entry+0x104+i*2);
+        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v40(no, stageCopy);
+        swap=(u16*)(entry+0x104+no*2);
         if (*swap!=0xffff) {
-            u8 swapAlpha=((u8*)self->unk_0C[18])[*swap*4+1];
-            u8* st=((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v41(i);
+            swapAlpha=((u8*)self->unk_0C[18])[*swap*4+1];
+            u8* st=((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v41(no);
+            st[7]=(st[7]&~0xc)|(swapAlpha<<2);
             u8* swapTable=(u8*)self->unk_0C[18];
-            st[7]=(st[7]&0xf3)|(swapAlpha<<2);
-            u8 swapColor=swapTable[*swap*4];
-            st=((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v41(i);
-            st[7]=(st[7]&0xfc)|swapColor;
+            swapColor=swapTable[*swap*4];
+            st=((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v41(no);
+            st[7]=(st[7]&~3)|swapColor;
         }
     }
-    for(i=0;i<4;i++) {
-        fn_800CB3D0(&kcolor,(u8*)self,idx,i);
+    for(u8 i=0;i<4;i++) {
+        ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB3D0)(&kcolor,self,idx,i);
         ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v28(i, &kcolor);
     }
-    for(i=0;i<4;i++) {
-        fn_800CB360(color,(u8*)self,idx,i);
+    for(u8 i=0;i<4;i++) {
+        ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB360)(color,self,idx,i);
         ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v25(i, color);
     }
-    for(i=0;i<4;i++) {
-        fn_800CB520(&ksel,(u8*)self,idx,i);kselCopy=ksel;
-        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v45(i, &kselCopy);
+    for(u8 i=0;i<4;i++) {
+        ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB520)(ksel,self,idx,i);kselCopy[0]=ksel[0];
+        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v45(i, kselCopy);
     }
-    for(i=0;i<2;i++) {
-        fn_800CB104(&ambient,(u8*)self,idx,i);
+    for(u8 i=0;i<2;i++) {
+        ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB104)(&ambient,self,idx,i);
         ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v16(i, &ambient);
     }
-    for(i=0;i<2;i++) {
-        fn_800CAEE0(&matcolor,(int)self,idx,i);
+    for(u8 i=0;i<2;i++) {
+        ((void (*)(void*,const J3DMaterialFactory*,int,int))fn_800CAEE0)(&matcolor,self,idx,i);
         ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v13(i, &matcolor);
     }
-    for(i=0;i<4;i++) {
-        ((void (*)(void*,const void*,u32,u32))fn_800CAF70)(&chan,self,idx,i);
-        chanCopy=chan;
-        ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v21(i, &chanCopy);
+    for(u8 i=0;i<4;i++) {
+        ((void (*)(void*,const J3DMaterialFactory*,int,int))fn_800CAF70)(chan,self,idx,i);
+        chanCopy[0]=chan[0];
+        ((J3DColorBlock*)*(void**)((u8*)material + 0x24))->v21(i, chanCopy);
     }
-    for(i=0;i<nTex;i++) {
-        ((void (*)(u32*,u8*,s32,s32))fn_800CB194)(texCoord,(u8*)self,idx,i);
+    for(u8 i=0;i<nTex;i++) {
+        ((void (*)(u32*,const J3DMaterialFactory*,int,int))fn_800CB194)(texCoord,self,idx,i);
         texCoordCopy[0]=texCoord[0];*(u16*)&texCoordCopy[1]=*(u16*)&texCoord[1];
         ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v17(i, texCoordCopy);
     }
-    for(i=0;i<8;i++) {
-        ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v19(i, fn_800CB1F4((u8*)self,idx,i));
+    for(u8 i=0;i<8;i++) {
+        ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v19(i,((void* (*)(const J3DMaterialFactory*, int, int))fn_800CB1F4)(self,idx,i));
     }
     init=(u8*)self->mInitData+self->mMatRemapTable[idx]*0x14c;
-    for(i=0;i<nTev;i++) {
-        u8 v=init[0x9c+i];
-        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v31(i, v==0xff?0xc:v);
+    for(u8 i=0;i<nTev;i++) {
+        u32 no=i;
+        u8 v=init[0x9c+no];
+        if(v!=0xff) ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v31(no,v);
+        else ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v31(no,0xc);
     }
-    for(i=0;i<nTev;i++) {
-        u8 v=init[0xac+i];
-        ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v34(i, v==0xff?0x1c:v);
+    for(u8 i=0;i<nTev;i++) {
+        u32 no=i;
+        u8 v=init[0xac+no];
+        if(v!=0xff) ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v34(no,v);
+        else ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v34(no,0x1c);
     }
     if(self->unk_0C[0]) {
-        nInd=fn_800CB5BC((u8*)self,idx);
-        ((J3DIndBlock*)*(void**)((u8*)material + 0x30))->v7(fn_800CB5BC((u8*)self,idx));
-        for(i=0;i<nInd;i++) {
-            ((void (*)(void*,u8*,s32,s32))fn_800CB628)(&imtx,(u8*)self,idx,i);
+        nInd=((u8 (*)(const J3DMaterialFactory*, int))fn_800CB5BC)(self,idx);
+        ((J3DIndBlock*)*(void**)((u8*)material + 0x30))->v7(((u8 (*)(const J3DMaterialFactory*, int))fn_800CB5BC)(self,idx));
+        for(u8 i=0;i<nInd;i++) {
+            ((void (*)(void*,const J3DMaterialFactory*,int,int))fn_800CB628)(&imtx,self,idx,i);
             ((J3DIndBlock*)*(void**)((u8*)material + 0x30))->v13(i, &imtx);
         }
-        for(i=0;i<nInd;i++) {
-            fn_800CB5E4(&indOrder,(u8*)self,idx,i);indOrderCopy=indOrder;
+        for(u8 i=0;i<nInd;i++) {
+            ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB5E4)(&indOrder,self,idx,i);indOrderCopy=indOrder;
             ((J3DIndBlock*)*(void**)((u8*)material + 0x30))->v9(i, &indOrderCopy);
         }
-        for(i=0;i<nInd;i++) {
-            fn_800CB884((J3DIndTexCoordScaleInfo*)&indScale,(u8*)self,idx,i);
+        for(u8 i=0;i<nInd;i++) {
+            ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB884)((J3DIndTexCoordScaleInfo*)&indScale,self,idx,i);
             ((J3DIndBlock*)*(void**)((u8*)material + 0x30))->v16(i, &indScale);
         }
-        for(i=0;i<nTev;i++) {
-            fn_800CB6F0((J3DIndTevStage*)&indStage,(u8*)self,idx,i);indStageCopy=indStage;
+        for(u8 i=0;i<nTev;i++) {
+            ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB6F0)((J3DIndTevStage*)&indStage,self,idx,i);indStageCopy=indStage;
             ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v48(i, &indStageCopy);
         }
     }
@@ -1296,14 +1309,9 @@ extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
 }
 
 extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
-    s32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
-    off += 0x84;
-    s32 bb = b * 2;
-    off += bb;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off);
-    if (v != 0xffff) {
-        return (*(u16**)(p + 0x38))[v];
-    }
+    u8* data = (u8*)&((J3DMaterialInitData*)*(void**)(p + 4))[(*(u16**)(p + 8))[idx]] + 0x84;
+    u16 v = *(u16*)(data + b * 2);
+    if (v != 0xffff) return (*(u16**)(p + 0x38))[v];
     return 0xffff;
 }
 
