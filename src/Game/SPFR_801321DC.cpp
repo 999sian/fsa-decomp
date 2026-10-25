@@ -701,8 +701,7 @@ extern "C" void fn_801D1F14(void* a, f32 b);
 extern "C" s32 fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, f32 i);
 extern "C" void fn_80132454(char* a, s32 b);
 extern char lbl_8049EB80[];
-extern f32 lbl_8053CD28;
-extern f32 lbl_8053CD08;
+extern const f32 lbl_8053CD28;
 extern f32 lbl_8053CCF0;
 extern "C" void fn_801334CC(char* p) {
     JGeometry::TVec3<f32> pos;
@@ -729,7 +728,7 @@ extern "C" void fn_801334CC(char* p) {
     *(f32*)(p + 0x14) = lbl_8053CD08;
     *(u8*)(p + 0x11d) = 0;
     if (*(s32*)(p + 0x238) == 1) {
-        if ((*(s32(**)(char*))(**(char***)p + 0x34))(p)) {
+        if ((u8)((Actor*)p)->v11()) {
             *(u8*)(p + 0x11d) = 1;
             pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
             *(s32*)(p + 0x288) = fn_8013CC50(*(void**)(p + 0x4), &pos, 0x184, 0, -1, 0, 0, 1, lbl_8053CD00);
