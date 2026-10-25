@@ -1595,9 +1595,8 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
         if (lbl_8052AAD0.audioExist) {
             while (lbl_8052AAD0.mD8 < 0) {
                 readBuffer = (THPReadBuffer*)fn_8042E674();
-                s32 frameNumber = readBuffer->frameNumber;
-                s32 numFrames = lbl_8052AAD0.header.numFrames;
-                if ((lbl_8052AAD0.initReadFrame + frameNumber) % numFrames == numFrames - 1 &&
+                u32 remainder = (readBuffer->frameNumber + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames;
+                if (remainder == lbl_8052AAD0.header.numFrames - 1 &&
                     !(lbl_8052AAD0.playFlag & 1)) {
                     fn_8042E64C(readBuffer);
                 }
