@@ -15,10 +15,10 @@ extern const f32 lbl_805420F4;
 extern const f32 lbl_805420F8;
 
 struct State_80339820 { u8 pad[0xb4]; JMARandFast rnd; };
-static f32 fn_80339820_rnd() {
-    u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+static inline f32 fn_80339820_rnd(u8* game = lbl_8053AAF8) {
+    unsigned int* seed = (unsigned int*)(game + 0xb4);
     *seed = *seed * 0x19660d + 0x3c6ef35f;
-    u32 bits = (*seed >> 9) | 0x3f800000;
+    unsigned int bits = (*seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_805420EC;
 }
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -33,7 +33,7 @@ extern "C" Actor* fn_803397C0(Actor* p, s16 n) {
     return p;
 }
 
-#pragma opt_propagation off
+#pragma opt_propagation on
 extern "C" void fn_80339820(u8* this_) {
     JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
     bool skip = false;
@@ -62,13 +62,13 @@ extern "C" void fn_80339820(u8* this_) {
         break;
     }
     if (*(s32*)(this_ + 0x260) <= 1) {
-        if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F0) {
-            if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F4) {
+        if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F0) {
+            if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F4) {
                 Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), (f32*)&pos, 0x261400, -1, -1);
             } else {
-                if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F8) skip = true;
+                if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F8) skip = true;
                 if (skip) return;
-                if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F0) {
+                if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F0) {
                     Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
                 } else {
                     Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
