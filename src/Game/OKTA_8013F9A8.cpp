@@ -48,7 +48,7 @@ struct OktaBlk {
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_801EF574(u8* lbl, s32 idx, OktaVec3* pos, u8* arr);
 extern "C" void fn_803075AC(void* a, s32 room, void* c, void* d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern "C" void fn_801F02BC(u8* this_, u8* lbl, s32 idx, u8* arr, s32 a, s32 b, s32 c, f32 f1, f32 f2);
+extern "C" void fn_801F02BC(u8* this_, u8* lbl, u32 idx, u8* arr, u32 a, s32 b, u8 c, f32 f1, f32 f2);
 extern u8 lbl_80465A80[];
 extern u32 lbl_8049F1E0[];
 extern u32 lbl_8049F1C0[];
@@ -77,75 +77,72 @@ extern "C" void* fn_8013F9A8(void* this_, s16 freeFlag) {
     return this_;
 }
 
+#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_8013FA08(u8* this_) {
-    OktaVec3 pos;
-    OktaVec4 tmp;
+    DrawRec rec;
     f32 mtx[3][4];
-    u8 idx[0x10];
-    u32 sel;
+    s32 sel;
     f32 s;
     s32 iVar3;
     u8* iVar1;
 
-    for (u32 i = 0; (u8)i < 0x10; i += 8) {
-        idx[(u8)(i + 0)] = i + 0;
-        idx[(u8)(i + 1)] = i + 1;
-        idx[(u8)(i + 2)] = i + 2;
-        idx[(u8)(i + 3)] = i + 3;
-        idx[(u8)(i + 4)] = i + 4;
-        idx[(u8)(i + 5)] = i + 5;
-        idx[(u8)(i + 6)] = i + 6;
-        idx[(u8)(i + 7)] = i + 7;
-    }
-    OktaBlk blk = {-1, 0, 0, {0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1}, 3, {1, 0, 0}, -1, 0, 2};
 
-    mtx[0][3] = lbl_8053CE28;
-    mtx[1][3] = lbl_8053CE28;
-    mtx[2][3] = lbl_8053CE28;
-    idx[3] = this_[0x278];
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    rec.ids[3] = this_[0x278];
     if (*(s32*)(this_ + 0x230) == 2 || *(s32*)(this_ + 0x230) == 1) {
         sel = *(u32*)(this_ + 0x24c) + 2;
-    } else if (*(s32*)(this_ + 0x90) == 1) {
+    } else if (*(u32*)(this_ + 0x90) == 1) {
         sel = (*(u32*)(this_ + 0x234) >> 3) & 1;
     } else {
         sel = (*(u32*)(this_ + 0x234) >> 2) & 1;
     }
     s = *(f32*)(this_ + 0x260);
     mtx[0][0] = s;
-    mtx[0][1] = lbl_8053CE28;
-    mtx[0][2] = lbl_8053CE28;
-    mtx[1][0] = lbl_8053CE28;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
     mtx[1][1] = s;
-    mtx[1][2] = lbl_8053CE28;
-    mtx[2][0] = lbl_8053CE28;
-    mtx[2][1] = lbl_8053CE28;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
     mtx[2][2] = s;
-    blk.c = mtx;
+    rec.w18 = mtx;
 
     if (*(s32*)(this_ + 4) == 8) {
         iVar3 = 0;
         u8* p = (u8*)fn_802D6A9C();
-        tmp = *(OktaVec4*)(p + 0xcc);
-        pos = *(OktaVec3*)(this_ + 0xc);
+        OktaVec4 tmp = *(OktaVec4*)(p + 0xcc);
+        OktaVec3 pos;
+        pos.x = *(f32*)(this_ + 0xc);
+        pos.y = *(f32*)(this_ + 0x10);
+        pos.z = *(f32*)(this_ + 0x14);
         pos.x += tmp.x;
         pos.y += tmp.y;
-        if (*(s32*)(this_ + 0x90) == 1) {
+        if (*(u32*)(this_ + 0x90) == 1) {
             iVar3 = 0x446;
         }
-        fn_801EF574(lbl_80465A80, iVar3 + *(s32*)(this_ + 0x98) * 4 + sel, &pos, idx);
+        fn_801EF574(lbl_80465A80, iVar3 + *(u32*)(this_ + 0x98) * 4 + sel, &pos, (u8*)&rec);
         if (*(s32*)(this_ + 0x230) == 2 || *(s32*)(this_ + 0x230) == 1) {
             iVar1 = (u8*)lbl_8049F1E0[*(u32*)(this_ + 0x258)];
         } else {
-            iVar1 = (u8*)lbl_8049F1C0[*(s32*)(this_ + 0x98) * 2 + ((*(u32*)(this_ + 0x234) >> 3) & 1)];
+            u32 index = *(u32*)(this_ + 0x98) * 2;
+            u32 bit = (*(u32*)(this_ + 0x234) >> 3) & 1;
+            iVar1 = (u8*)lbl_8049F1C0[index + bit];
         }
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, iVar1 + 0x158, 0, 2, -1, 0, 0, 0);
-    } else if (*(s32*)(this_ + 0x90) == 1) {
-        fn_801F02BC(this_, lbl_80465A80, *(s32*)(this_ + 0x98) * 4 + sel + 0x446, idx, 7, 0, 0, lbl_8053CE2C, lbl_8053CE2C);
+    } else if (*(u32*)(this_ + 0x90) == 1) {
+        s32 index = *(s32*)(this_ + 0x98);
+        s32 frame = (s32)((char*)(index * 4) + sel);
+        fn_801F02BC(this_, lbl_80465A80, frame + 0x446, (u8*)&rec, 7, 0, 0, lbl_8053CE2C, lbl_8053CE2C);
     } else {
-        fn_801F02BC(this_, lbl_80465A80, *(s32*)(this_ + 0x98) * 4 + sel, idx, 7, 0, 0, lbl_8053CE2C, lbl_8053CE2C);
+        fn_801F02BC(this_, lbl_80465A80, (s32)((char*)(*(u32*)(this_ + 0x98) * 4) + sel), (u8*)&rec, 7, 0, 0, lbl_8053CE2C, lbl_8053CE2C);
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern const f32 lbl_8053CE30;
 extern u8* lbl_8053AB10;
 extern "C" void fn_8030C210(void* p);
