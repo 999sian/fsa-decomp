@@ -143,31 +143,26 @@ extern "C" void fn_80265D8C(char* p)
 
 extern "C" void fn_80265DB0(char* p)
 {
-    unsigned short v = *(unsigned short*)(p + 0x3c4);
-    if (v == 0x122 || (v >= 0xb7 && v < 0xbd) || *(int*)(p + 0x3b4) > 8) {
-        *(unsigned char*)(p + 0xca1) = 0;
-        return;
-    }
-    if (*(int*)(p + 0x3b4) == 8) {
-        *(unsigned char*)(p + 0xca1) = 0xff;
-        return;
-    }
-    if (fn_8025F448(p) != 0) {
-        s32* n = (s32*)(p + 0xd70);
-        if (*n < 0 || fn_8023DE58() != 8) {
-            if (*(unsigned char*)(p + 0xca1) >= 8) {
-                *(unsigned char*)(p + 0xca1) -= 8;
-                return;
-            }
-            *(unsigned char*)(p + 0xca1) = 0;
-            return;
-        }
-    }
-    if (*(unsigned char*)(p + 0xca1) <= 0xf7) {
-        *(unsigned char*)(p + 0xca1) += 8;
-        return;
-    }
-    *(unsigned char*)(p + 0xca1) = 0xff;
+ unsigned short v=*(unsigned short*)(p+0x3c4);
+ if(v==0x122 || (v>=0xb7 && v<0xbd) || *(int*)(p+0x3b4)>8) {
+  *(unsigned char*)(p+0xca1)=0;return;
+ }
+ if(*(int*)(p+0x3b4)==8) {
+  *(unsigned char*)(p+0xca1)=0xff;return;
+ }
+ if(fn_8025F448(p)!=0) {
+  int n=*(int*)(p+0xd70);
+  if(n<0 || fn_8023DE58(n)!=8) {
+   if(*(unsigned char*)(p+0xca1)>=8) {
+    *(unsigned char*)(p+0xca1)-=8;return;
+   }
+   *(unsigned char*)(p+0xca1)=0;return;
+  }
+ }
+ if(*(unsigned char*)(p+0xca1)<=0xf7) {
+  *(unsigned char*)(p+0xca1)+=8;return;
+ }
+ *(unsigned char*)(p+0xca1)=0xff;
 }
 
 extern "C" u8 Player_GetField_0x454(char* p);
