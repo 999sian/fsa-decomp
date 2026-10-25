@@ -64,6 +64,10 @@ extern "C" char lbl_80543B74;
 extern "C" char lbl_80543B7C;
 extern "C" char lbl_80543B84;
 extern "C" char lbl_80543B8C;
+extern "C" f32 lbl_80543B18;
+extern "C" f32 lbl_80543B28;
+extern "C" f32 lbl_80543B94;
+extern "C" f64 lbl_80543B10;
 
 void fn_8042EB14(T8042EB14* self) {
     self->timer = 0;
@@ -298,6 +302,52 @@ void fn_804310CC(T80431_Owner* self) {
     self->timer = 0;
     self->feb = 0;
     self->active = 0;
+}
+
+extern "C" s16 lbl_80543AE8[];
+extern "C" s16 lbl_80543AF0[];
+BOOL fn_80431174(T80431_Owner* self, u8 flag) {
+    if (self->screen->search('Pwcur01')->isVisible()) {
+        f32 y;
+        f32 x;
+        self->timer -= 1;
+        if (self->timer <= 0) {
+            T8042_Game* g = lbl_8053AAF8;
+            self->timer = (s32)(11.0f * g->rnd.get_ufloat_1()) + 10;
+            if (self->feb < 2) {
+                self->feb++;
+            } else {
+                self->feb = 0;
+            }
+        }
+        T80431_Pane* tb = (T80431_Pane*)self->screen->search('Twt01');
+        x = self->screen->search('Twt01')->getBounds()->i.x + (tb->sw - tb->w) * 0.5f;
+        tb = (T80431_Pane*)self->screen->search('Twt01');
+        y = self->screen->search('Twt01')->getBounds()->i.y + (tb->sh - tb->h) * 0.5f;
+        if (flag == 0) {
+            T80431_Pane* cur = (T80431_Pane*)self->screen->search('Pwcur01');
+            x += ((*(f32*)((char*)self + 0xbc) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w)) * 0.5f;
+        } else {
+            T80431_Pane* cur = (T80431_Pane*)self->screen->search('Pwcur01');
+            x += ((*(f32*)((char*)self + 0xc0) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w)) * 0.5f + (*(f32*)((char*)self + 0xd0) - *(f32*)((char*)self + 0xcc));
+        }
+        T80431_Pane* pcur = (T80431_Pane*)self->screen->search('Pwcur01');
+        f32 hdiff = pcur->sh - pcur->h;
+        f32 fa = ((T80431_Pane*)self->screen->search('Twt01'))->f118;
+        tb = (T80431_Pane*)self->screen->search('Twt01');
+        y += (fa - hdiff) * 0.5f + (((f32*)((char*)self + 0xd8))[flag] - (f32)*(s32*)((char*)self + 0xe4) * 0.5f - 1.0f) * tb->f118;
+        self->screen->search('Pwcur01')->move(x, y);
+        self->screen->search('Pwcur02')->move(x, y);
+        T80431_Pane* pa = (T80431_Pane*)self->screen->search('Pwcur01');
+        f32 hh = pa->sh - pa->h;
+        T80431_Pane* pb = (T80431_Pane*)self->screen->search('Pwcur01');
+        self->screen->search('Pwcur01')->rotate((pb->sw - pb->w) * 0.5f, hh * 0.5f, J2DROTATE_Z, (f32)lbl_80543AE8[self->feb]);
+        T80431_Pane* pa2 = (T80431_Pane*)self->screen->search('Pwcur02');
+        f32 hh2 = pa2->sh - pa2->h;
+        T80431_Pane* pb2 = (T80431_Pane*)self->screen->search('Pwcur02');
+        self->screen->search('Pwcur02')->rotate((pb2->sw - pb2->w) * 0.5f, hh2 * 0.5f, J2DROTATE_Z, (f32)lbl_80543AF0[self->feb]);
+    }
+    return FALSE;
 }
 
 void fn_804316EC(T80431_Owner* self) {
