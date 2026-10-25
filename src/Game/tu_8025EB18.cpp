@@ -1020,6 +1020,29 @@ extern "C" void fn_8026173C(char* p) {
     S32(p, 0xd84) = 20;
 }
 
+#include "JSystem/JGeometry/Box.h"
+extern JGeometry::TVec3<f32> lbl_8046B760[];
+extern const f32 lbl_80540184;
+extern const f64 lbl_80540190;
+extern const f32 lbl_80540198;
+extern "C" {
+u8 fn_8022D75C(s32);
+u8 fn_80234ECC(s32);
+u8 fn_80234BC0(s32);
+void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+u8 fn_80241E28(char*, s32, void*);
+void fn_80248004(char*, s32, s32);
+void* fn_8023E2A0(s32);
+s32 fn_8023E190(s32);
+u8 fn_8022BC38(s32, s32, void*);
+s32 fn_8022C5EC(s32, s32);
+void fn_8026E464(void*);
+u8 fn_802518AC(char*, s32);
+}
+
+extern "C" void fn_80261750(char* p) {
+}
+
 extern "C" void fn_80262188(char* p) {
     p[0x458] = 0;
     if (S32(p, 0x1248) != 0x33 && U8(p, 0xcfe) == 0)
@@ -1034,6 +1057,84 @@ extern "C" void fn_80262188(char* p) {
 
 extern "C" void fn_80262234(char* p) {
     fn_80258BBC(p);
+}
+
+extern "C" f32 fn_8022C6AC(s32);
+extern "C" f32 fn_8022C82C(s32);
+extern "C" f32 fn_8022C76C(s32);
+extern "C" u8 fn_8022C274(s32);
+extern "C" u8 fn_8022C310(s32);
+extern "C" void fn_80259778(char*);
+extern "C" u8 fn_80245938(char*);
+extern "C" s32 fn_802415CC(char*);
+extern "C" void fn_80262254(char* p) {
+    if (fn_8022C6AC(S32(p, 0x4)) > lbl_80540150) {
+        if (F32(p, 0x344) == lbl_80540150) {
+            F32(p, 0x344) = lbl_8054019C * fn_8022C82C(S32(p, 0x4));
+        } else {
+            bool skip = false;
+            if (F32(p, 0x344) > lbl_80540150) {
+                if (F32(p, 0x34c) >= lbl_80540150) {
+                    F32(p, 0x344) = lbl_805401A0 * fn_8022C82C(S32(p, 0x4)) + F32(p, 0x344);
+                } else {
+                    F32(p, 0x344) = lbl_805401A4 * fn_8022C82C(S32(p, 0x4)) + F32(p, 0x344);
+                }
+                if (F32(p, 0x344) > lbl_805401A8) {
+                    if (U8((char*)S32(p, 0xbf0), 0x48)) {
+                        F32(p, 0x344) = lbl_805401A8;
+                    }
+                    skip = true;
+                } else if (F32(p, 0x344) == lbl_805401A8) {
+                    skip = true;
+                }
+            }
+            if (!skip) {
+                if (F32(p, 0x34c) >= lbl_80540150) {
+                    F32(p, 0x344) = lbl_805401A0 * fn_8022C82C(S32(p, 0x4)) + F32(p, 0x344);
+                } else {
+                    F32(p, 0x344) = lbl_805401A4 * fn_8022C82C(S32(p, 0x4)) + F32(p, 0x344);
+                }
+                if (F32(p, 0x344) < lbl_805401AC) {
+                    if (U8((char*)S32(p, 0xbf0), 0x49)) {
+                        F32(p, 0x344) = lbl_805401AC;
+                    }
+                }
+            }
+        }
+
+        if (F32(p, 0x348) == lbl_80540150) {
+            F32(p, 0x348) = lbl_8054019C * -fn_8022C76C(S32(p, 0x4));
+        } else {
+            bool skip = false;
+            if (F32(p, 0x348) > lbl_80540150) {
+                if (F32(p, 0x34c) >= lbl_80540150) {
+                    F32(p, 0x348) = F32(p, 0x348) - lbl_805401A0 * fn_8022C76C(S32(p, 0x4));
+                } else {
+                    F32(p, 0x348) = F32(p, 0x348) - lbl_805401A4 * fn_8022C76C(S32(p, 0x4));
+                }
+                if (F32(p, 0x348) < lbl_805401A8) {
+                    if (U8((char*)S32(p, 0xbf0), 0x4a)) {
+                        F32(p, 0x348) = lbl_805401A8;
+                    }
+                    skip = true;
+                } else if (F32(p, 0x348) == lbl_805401A8) {
+                    skip = true;
+                }
+            }
+            if (!skip) {
+                if (F32(p, 0x34c) >= lbl_80540150) {
+                    F32(p, 0x348) = F32(p, 0x348) - lbl_805401A0 * fn_8022C76C(S32(p, 0x4));
+                } else {
+                    F32(p, 0x348) = F32(p, 0x348) - lbl_805401A4 * fn_8022C76C(S32(p, 0x4));
+                }
+                if (F32(p, 0x348) > lbl_805401AC) {
+                    if (U8((char*)S32(p, 0xbf0), 0x4b)) {
+                        F32(p, 0x348) = lbl_805401AC;
+                    }
+                }
+            }
+        }
+    }
 }
 
 extern "C" void fn_80262B6C(char* p) {
