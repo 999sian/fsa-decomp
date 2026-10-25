@@ -66,7 +66,7 @@ static PTMF lbl_804AE058[2] = {
     {0, -1, {(void*)fn_80369DDC}},
     {0, -1, {(void*)fn_80368CD8}}
 };
-Unk8036C300Func lbl_804AE070[2] = {
+static Unk8036C300Func lbl_804AE070[2] = {
     *(Unk8036C300Func*)&lbl_804AE058[0],
     *(Unk8036C300Func*)&lbl_804AE058[1]
 };
