@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern void* lbl_8053AAF8;
