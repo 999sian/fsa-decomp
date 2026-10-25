@@ -67,6 +67,20 @@ struct ICWLVec2 {
     f32 x, y;
 };
 
+struct ICWLResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* vf18(u32 type, const char* name);
+};
+
+struct ICWLPos {
+    f32 x, y, z;
+};
+
 struct ICWLBox {
     f32 x0, y0, x1, y1;
     void offset(f32 x, f32 y) {
