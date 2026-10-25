@@ -34,21 +34,20 @@ extern "C" void fn_803B7DCC(void* p);
 extern "C" void fn_803D8364(void);
 extern "C" void fn_803D82EC(void* p);
 extern void* lbl_8053AAF8;
-static inline u8 menuState(u8 state) {
-    return state;
+static inline u8 menuState() {
+    return *((u8*)lbl_8053ADA0 + 0x4c0);
 }
 
+#pragma peephole off
 extern "C" BOOL fn_80379F84(void* this_) {
     if (*((u8*)lbl_8053AAF8 + 0x7f) == 1 && *((u8*)lbl_8053AAF8 + 0x7e) == 1 && lbl_8053AD68 != 0 &&
         *(void**)((u8*)this_ + 4) != 0) {
-        u8 v = *((u8*)lbl_8053ADA0 + 0x4c0);
-        if (v != 5 && v != 8 && v != 7 && v != 9) {
-            return TRUE;
-        }
+        u32 v = *((u8*)lbl_8053ADA0 + 0x4c0);
+        if (v != 5 && (u8)v != 8 && (u8)v != 7 && (u8)v != 9) return TRUE;
     }
     return FALSE;
 }
-
+#pragma peephole reset
 extern u8 lbl_80529DEC[];
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80379FF4(void* this_) {
