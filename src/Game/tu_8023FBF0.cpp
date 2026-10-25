@@ -622,7 +622,7 @@ inline s32 countSharing2(char* p) {
 }
 inline BOOL playerSelected(char* p) {
     u8 bit = 1 << S32(p, 4);
-    return (U8(lbl_8053AAF8, 0x82) & bit) != 0;
+    return ((u32)U8(lbl_8053AAF8, 0x82) & bit) != 0;
 }
 
 inline s32 countSharing3(char* p) {
@@ -2179,7 +2179,7 @@ void fn_80247F58(char* p) {
 void fn_802520C0(char* p, s32* dir) {
  if (fn_8025F448(p)) return;
  if ((u8)playerSelected(p)) {
-  if ((u8)isLinkOwner3(p)) {
+  if ((u8)isLinkOwnerTransition(p)) {
    f32* pos = fn_8023E724(fn_8022EA0C(S32(p,4)));
    F32(p,8)=pos[0]; F32(p,0xc)=pos[1]; F32(p,0x10)=pos[2];
    S32(p,0x3b4)=fn_8023DE58(fn_8022EA0C(S32(p,4)));
