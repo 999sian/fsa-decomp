@@ -6,7 +6,7 @@
 
 
 static inline void bombSetRotation(Mtx m, f32 sx, f32 sy, f32 sz,
-                                  f32 cx, f32 cy, f32 cz, f32 s) {
+                                  f32 cz, f32 cy, f32 cx, f32 s) {
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
@@ -121,10 +121,10 @@ extern "C" void fn_80342368(Actor* actor) {
     if (*(s32*)(p + 0x23c) == 1) ((u8*)&rec)[0x14] = 150;
     if (*(s32*)(p + 0x230) == 6 && n < 10) {
         void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FBC);
-        ((BombDrawActor*)actor)->drawTexture(texture, &rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
+        bombDrawTexture(actor, texture, &rec, mode, height);
     } else {
         void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FCC);
-        ((BombDrawActor*)actor)->drawTexture(texture, &rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
+        bombDrawTexture(actor, texture, &rec, mode, height);
     }
     *(JGeometry::TVec3f*)(p + 0xc) = saved;
     if (*(s32*)(p + 0x230) == 6 && n < 10) {
