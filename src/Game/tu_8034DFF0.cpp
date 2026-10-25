@@ -163,46 +163,39 @@ extern "C" Actor* fn_8034DFF0(Actor* p, s16 freeFlag) {
 }
 
 extern "C" void fn_8034E050(YnswActor* this_) {
+    s32 n;
     u8 used[4];
-    Vec target;
-    Vec tmp;
-    Vec pos[4];
-    s32 i;
-    s32 j;
-    s32 k;
-    s32 nearest;
-    f32 minDist;
-    f32 offX;
-    f32 offZ;
-
-    for (i = 0; i < 4; i++) {
-        used[i] = 0;
-        pos[i] = *fn_8023E724(i);
+    JGeometry::TVec3f pos[4];
+    JGeometry::TVec3f tmp;
+    JGeometry::TVec3f target;
+    s32 i, j, k, nearest;
+    f32 minDist, offX, offZ;
+    for (n=0;n<4;n++) {
+        used[n]=0;
+        pos[n]=*(JGeometry::TVec3f*)fn_8023E724(n);
     }
-    nearest = -1;
-    minDist = lbl_805425B0;
-    k = 0;
-    for (j = 0; j < 2; j++) {
+    for (j=0;j<2;j++) {
         offX = lbl_805425A4 * (f32)j + lbl_805425A0;
         offZ = lbl_805425AC * (f32)j + lbl_805425A8;
-        tmp = this_->field_0C;
-        tmp.x += offX;
-        tmp.y += lbl_805425A4 * (f32)k + lbl_805425A0;
-        for (i = 0; i < 4; i++) {
-            if (used[i] == 0) {
-                f32 d = PSVECDistance(&tmp, &pos[i]);
-                if (minDist > d) {
-                    minDist = d;
-                    nearest = i;
+        for(k=0;k<2;k++) {
+            tmp = *(JGeometry::TVec3f*)&this_->field_0C;
+            tmp.x += offX;
+            tmp.y += lbl_805425A4 * (f32)k + lbl_805425A0;
+            nearest=-1;
+            minDist=lbl_805425B0;
+            for(i=0;i<4;i++) {
+                if (!used[i]) {
+                    f32 d=PSVECDistance(&tmp,&pos[i]);
+                    if(minDist>d) {minDist=d;nearest=i;}
                 }
             }
+            target = *(JGeometry::TVec3f*)&this_->field_0C;
+            target.x += offZ;
+            target.y += (lbl_805425AC*(f32)k+lbl_805425A8)+lbl_804721C8[this_->mAnimFrame];
+            JGeometry::TVec3f diff = target-pos[nearest];
+            *(JGeometry::TVec3f*)&this_->mPlayerPos[nearest] = target;
+            used[nearest]=1;
         }
-        target = this_->field_0C;
-        target.x += offZ;
-        target.y += (lbl_805425AC * (f32)k + lbl_805425A8) + lbl_804721C8[this_->mAnimFrame];
-        this_->mPlayerPos[nearest] = target;
-        used[nearest] = 1;
-        k++;
     }
 }
 
