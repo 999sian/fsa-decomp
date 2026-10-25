@@ -274,95 +274,93 @@ extern "C" void fn_80404648(u8* self) {
 typedef u8* (*SpawnFn)(void*, u32, u32, u32);
 extern "C" u8 fn_803B8EBC(s32);
 extern "C" void fn_80404D70(u8* self) {
+	u8* p;
 	*(s32*)(self + 0x370) = 0;
 	if (fn_803B8EBC(7)) {
 		for (s32 i = 1; i < 7; i++) {
 			switch (i) {
 			case 1:
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503231); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503232); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503233); it[0xb0] = 0; }
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503231ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503232ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503233ULL); p[0xb0] = 0;
 				break;
 			case 2:
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503331); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503332); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503333); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503334); it[0xb0] = 0; }
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503331ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503332ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503333ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503334ULL); p[0xb0] = 0;
 				break;
 			case 3:
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503431); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503432); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503433); it[0xb0] = 0; }
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503431ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503432ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503433ULL); p[0xb0] = 0;
 				break;
 			case 4:
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503531); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503532); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503533); it[0xb0] = 0; }
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503531ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503532ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503533ULL); p[0xb0] = 0;
 				break;
 			case 5:
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503631); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503632); it[0xb0] = 0; }
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503631ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503632ULL); p[0xb0] = 0;
 				break;
 			case 6:
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503731); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503732); it[0xb0] = 0; }
-				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503733); it[0xb0] = 0; }
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503731ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503732ULL); p[0xb0] = 0;
+				p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503733ULL); p[0xb0] = 0;
 				break;
 			}
 		}
-		u8* node = *(u8**)(self + 0xcc);
-		u8* sub = *(u8**)(node + 4);
-		sub[0xb0] = 1;
+		(*(u8**)(*(u8**)(self + 0xcc) + 4))[0xb0] = 1;
 		*(s32*)(self + 0x370) = 7;
 	} else {
 		for (s32 i = 0; i < 8; i++) {
-			if (!fn_803B8EBC(i)) {
+			if (fn_803B8EBC(i)) {
+				s32 n = i + 1;
+				if (lbl_8050EC80[lbl_8050EC80[0].selfIndex].pad1[0x82 - 0x14] & (u8)(1 << n)) {
+					switch (n) {
+					case 1:
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503231ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503232ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503233ULL); p[0xb0] = 0;
+						break;
+					case 2:
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503331ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503332ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503333ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503334ULL); p[0xb0] = 0;
+						break;
+					case 3:
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503431ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503432ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503433ULL); p[0xb0] = 0;
+						break;
+					case 4:
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503531ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503532ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503533ULL); p[0xb0] = 0;
+						break;
+					case 5:
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503631ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503632ULL); p[0xb0] = 0;
+						break;
+					case 6:
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503731ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503732ULL); p[0xb0] = 0;
+						p = (u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503733ULL); p[0xb0] = 0;
+						break;
+					}
+					*(s32*)(self + 0x378) += 200;
+					*(s32*)(self + 0x37c) += 200;
+				} else {
+					*(s32*)(self + 0x364) = n;
+				}
+				*(s32*)(self + 0x370) += 1;
+			} else {
 				return;
 			}
-			s32 n = i + 1;
-			if ((1 << n) & ((u8*)lbl_8050EC80)[*(s32*)((u8*)lbl_8050EC80 + 0x10) * 200 + 0x82]) {
-				switch (n) {
-				case 1:
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503231); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503232); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503233); it[0xb0] = 0; }
-					break;
-				case 2:
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503331); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503332); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503333); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503334); it[0xb0] = 0; }
-					break;
-				case 3:
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503431); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503432); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503433); it[0xb0] = 0; }
-					break;
-				case 4:
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503531); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503532); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503533); it[0xb0] = 0; }
-					break;
-				case 5:
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503631); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503632); it[0xb0] = 0; }
-					break;
-				case 6:
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503731); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503732); it[0xb0] = 0; }
-					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503733); it[0xb0] = 0; }
-					break;
-				}
-				*(s32*)(self + 0x378) += 200;
-				*(s32*)(self + 0x37c) += 200;
-			} else {
-				*(s32*)(self + 0x364) = n;
-			}
-			*(s32*)(self + 0x370) += 1;
 			if (i == 5) {
-				u8* node = *(u8**)(self + 0xcc);
-				u8* sub = *(u8**)(node + 4);
-				sub[0xb0] = 1;
+				(*(u8**)(*(u8**)(self + 0xcc) + 4))[0xb0] = 1;
 			}
 		}
 	}
@@ -1305,6 +1303,7 @@ extern "C" void fn_8042EB14(void*);
 extern "C" void __dl__FPv(void*);
 extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	if (self) {
+		void* zero = 0;
 		*(u8**)self = lbl_804B1288;
 		fn_8042EB14(lbl_8053AEC4);
 		u8* q = self;
@@ -1316,10 +1315,10 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 				*(void**)(q + 0x2f8) = 0;
 			}
 		}
-		q = self;
-		for (s32 i = 0; i < 3; i++, q += 4) {
-			if (*(void**)(q + 0x2ec)) (*(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc))->forceDeleteEmitter(*(JPABaseEmitter**)(q + 0x2ec));
-			*(void**)(q + 0x2ec) = 0;
+		u8* p = self;
+		for (s32 i = 0; i < 3; i++, p += 4) {
+			if (*(void**)(p + 0x2ec)) killEmitter((JPABaseEmitter**)(p + 0x2ec));
+			*(void**)(p + 0x2ec) = zero;
 		}
 		if (*(void**)(self + 0x308)) {
 			stopEmitter(*(void**)(self + 0x308));
@@ -1339,9 +1338,9 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		delSlot(self + 0x18);
 		u8* r = self;
 		for (s32 i = 0; i < 8; i++, r += 0x14) {
-			u8* p = r;
-			for (s32 j = 0; j < 3; j++, p += 4) {
-				delSlot(p + 0x28);
+			u8* p2 = r;
+			for (s32 j = 0; j < 3; j++, p2 += 4) {
+				delSlot(p2 + 0x28);
 			}
 		}
 		q = self;
@@ -1374,9 +1373,9 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		}
 		r = self;
 		for (s32 i = 0; i < 2; i++, r += 8) {
-			u8* p = r;
-			for (s32 j = 0; j < 2; j++, p += 4) {
-				delSlot(p + 0x228);
+			u8* p2 = r;
+			for (s32 j = 0; j < 2; j++, p2 += 4) {
+				delSlot(p2 + 0x228);
 			}
 		}
 		delSlot(self + 0x238);
@@ -1608,10 +1607,14 @@ extern "C" void fn_80405FC0(u8* self) {
 	f32 p2[3];
 	f32 p3[3];
 	u8* tbl = (u8*)&lbl_8048C1F8;
-	s32 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
-	f32 x1 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
-	f32 x2 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693032ULL));
-	f32 span = 384.0f * (0.5f * (x2 - x1)) / (f32)w;
+	f32 x1;
+	f32 x2;
+	f32 span;
+	s32 w;
+	w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+	x1 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
+	x2 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693032ULL));
+	span = 384.0f * (0.5f * (x2 - x1)) / (f32)w;
 	getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693033ULL));
 	getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
 
@@ -1661,8 +1664,9 @@ extern "C" void fn_80405FC0(u8* self) {
 				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), 0xe8, &rec, 1.0f, 1.0f);
 			}
 		} else if (st == 0x2) {
-			s32 id = ((s32*)(tbl + 0xa14))[(*(s32*)(self + 0x358) / 5) % 4];
-			fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), id, &rec, 1.0f, 1.0f);
+			s32 idx = (*(s32*)(self + 0x358) / 5) % 4;
+			s32* idTbl = (s32*)(tbl + 0xa14);
+			fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), idTbl[idx], &rec, 1.0f, 1.0f);
 		} else if (st == 0x4) {
 			((u8*)&rec)[0x13] = self[0x665];
 			fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), 0xe8, &rec, 1.0f, 1.0f);
