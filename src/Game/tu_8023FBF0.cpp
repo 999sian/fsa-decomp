@@ -1008,7 +1008,7 @@ inline s32 linkRank(char* p) {
     }
     return c + 1;
 }
-inline s32 countSharingCached(const char* p) {
+inline s32 countSharingCached(const char* __restrict p) {
     int linked;
     s32 me;
     s32 i;
@@ -1307,7 +1307,7 @@ BOOL fn_80240EF4(char* p) { STATE_OR2(p, 0x1240, 0x42, 0x43); }
 BOOL fn_80240F14(char* p) { return S32(p, 0x1240) == 0x41 ? 1 : 0; }
 
 s32 fn_8023513C(s32);
-s32 fn_80240F28(char* p) {
+s32 fn_80240F28(char* const p) {
     if (getModeCached(p) == 5) {
         if ((u8)isLinkOwnerCached(p)) {
             return fn_8023513C(fn_8022EA0C(S32(p, 0x4)));
