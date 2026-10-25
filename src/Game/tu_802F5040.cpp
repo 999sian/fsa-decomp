@@ -203,6 +203,10 @@ static inline s32 Tu802F93F4_c5(s32 v) {
     return r;
 }
 
+static inline u8 SwapNibble802F(const u32 b) {
+    return ((b & 0xf0) >> 4) | ((b & 0x0f) << 4);
+}
+
 extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     f32 t;
     s32 a;
@@ -1684,28 +1688,27 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
 
 #pragma opt_propagation on
 #pragma opt_lifetimes on
-extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
-    u8* out; u8* self; s32 index;
+extern "C" void fn_802FA160(u8* this_, const u8* src, u32 a, s32 idx, u8* dst, u32 size) {
+    u8* __restrict out; u8* self; s32 index;
     self=this_; index=idx; out=dst;
-    u32 len;
-    u8* base;
+    s32 len;
+    const u8* __restrict base;
     if(size==0) {
         s32 r;
-        if(JKRDecomp::checkCompressed(src)) r=(src[4]<<24)|(src[5]<<16)|(src[6]<<8)|src[7];
+        if(JKRDecomp::checkCompressed((u8*)src)) r=(src[4]<<24)|(src[5]<<16)|(src[6]<<8)|src[7];
         else r=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResSize(src);
         if(r<0) len=0x8000;
         else len=r;
     } else len=size;
     u32* __restrict table=(u32*)(self+index*4);
     out= (u8*)table[1]+(u32)out;
-    if(JKRDecomp::checkCompressed(src)) {
-        JKRDecomp::decode(src,*(u8**)(self+0xf8),0x8000,0);
+    if(JKRDecomp::checkCompressed((u8*)src)) {
+        JKRDecomp::decode((u8*)src,*(u8**)(self+0xf8),0x8000,0);
         base=*(u8**)(self+0xf8);
     } else base=src;
     base+=a;
-    for(u32 i=0;i<len;i++) {
-        u32 b=base[i];
-        out[i]=((b&240)>>4)|((b&15)<<4);
+    for(u32 i=0;i<(u32)len;i++) {
+        out[i]=(((u32)base[i]&240)>>4)|(((u32)base[i]&15)<<4);
     }
     DCFlushRange(out,len);
     if(index==1) {
