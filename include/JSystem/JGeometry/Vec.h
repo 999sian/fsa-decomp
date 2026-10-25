@@ -55,7 +55,11 @@ namespace JGeometry {
     class TVec2
     {
     public:
+#ifdef JGEOMETRY_VEC2_OUT_OF_LINE_CTOR
+        TVec2();
+#else
         TVec2() {}
+#endif
 
         template <typename TY>
         TVec2(TY X, TY Y) { set(X, Y); }
