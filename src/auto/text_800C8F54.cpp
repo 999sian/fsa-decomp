@@ -352,6 +352,9 @@ public:
 class J3DMaterial {
 public:
     void initialize();
+    void* mVtable;
+    u8 m04[0x3c];
+    u32 mCurrentMtx0, mCurrentMtx1;
 };
 class J3DLockedMaterial : public J3DMaterial {
 public:
@@ -1024,6 +1027,7 @@ void J3DMaterialFactory::modifyPatchedCurrentMtx(J3DMaterial* material, int idx)
     *(u32*)((u8*)material + 0x44) = buf[4][2] | (buf[5][2] << 6) | (buf[6][2] << 12) | (buf[7][2] << 18);
 }
 
+#pragma opt_propagation off
 extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial* material, int index, u32 flags)
 {
     u8* data;
@@ -1032,8 +1036,8 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
         material = (J3DMaterial*)operator new(0x4c);
         if (material != NULL) {
             *(void**)material = __vt__11J3DMaterial;
-            *(u32*)((u8*)material + 0x40) = 0x3CF3CF00;
-            *(u32*)((u8*)material + 0x44) = 0x00F3CF3C;
+            *(volatile u32*)((u8*)material + 0x40) = 0x3CF3CF00;
+            *(volatile u32*)((u8*)material + 0x44) = 0x00F3CF3C;
             material->initialize();
             *(void**)material = __vt__17J3DLockedMaterial;
             ((J3DLockedMaterial*)material)->initialize();
@@ -1069,18 +1073,31 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
             *pe = lbl_8049AA38;
         }
             *(void***)((u8*)material + 0x34) = pe;
+        const u8* __restrict modes = self->mPEModes;
         *(u16*)((u8*)material + 0x14) = idx;
-        *(u32*)((u8*)material + 0x10) = ((u8*)self->mPEModes)[idx];
+        *(u32*)((u8*)material + 0x10) = modes[idx];
     }
     data = (u8*)self->mCurrMtxInfo + idx * 8;
     *(u32*)((u8*)material + 0x40) = ((u32*)data)[0];
     *(u32*)((u8*)material + 0x44) = ((u32*)data)[1];
-    (*(J3DColorBlock**)((u8*)material + 0x24))->v31(((u16(*)[8])self->mPatchInfo)[idx][0]);
-    (*(J3DColorBlock**)((u8*)material + 0x24))->v32(((u16(*)[8])self->mPatchInfo)[idx][1]);
-    (*(J3DTexGenBlock**)((u8*)material + 0x28))->v25(((u16(*)[8])self->mPatchInfo)[idx][2]);
-    (*(J3DTevBlock**)((u8*)material + 0x2c))->v52(((u16(*)[8])self->mPatchInfo)[idx][3]);
-    (*(J3DTevBlock**)((u8*)material + 0x2c))->v53(((u16(*)[8])self->mPatchInfo)[idx][4]);
-    (*(J3DPEBlock**)((u8*)material + 0x34))->v29(((u16(*)[8])self->mPatchInfo)[idx][5]);
+    { const J3DMaterialPatchInfo* __restrict patch = (J3DMaterialPatchInfo*)self->mPatchInfo + idx;
+    (*(J3DColorBlock**)((u8*)material + 0x24))->v31(patch->color);
+    }
+    { const J3DMaterialPatchInfo* __restrict patch = (J3DMaterialPatchInfo*)self->mPatchInfo + idx;
+    (*(J3DColorBlock**)((u8*)material + 0x24))->v32(patch->colorSize);
+    }
+    { const J3DMaterialPatchInfo* __restrict patch = (J3DMaterialPatchInfo*)self->mPatchInfo + idx;
+    (*(J3DTexGenBlock**)((u8*)material + 0x28))->v25(patch->texGen);
+    }
+    { const J3DMaterialPatchInfo* __restrict patch = (J3DMaterialPatchInfo*)self->mPatchInfo + idx;
+    (*(J3DTevBlock**)((u8*)material + 0x2c))->v52(patch->tev);
+    }
+    { const J3DMaterialPatchInfo* __restrict patch = (J3DMaterialPatchInfo*)self->mPatchInfo + idx;
+    (*(J3DTevBlock**)((u8*)material + 0x2c))->v53(patch->tevSize);
+    }
+    { const J3DMaterialPatchInfo* __restrict patch = (J3DMaterialPatchInfo*)self->mPatchInfo + idx;
+    (*(J3DPEBlock**)((u8*)material + 0x34))->v29(patch->pe);
+    }
     if (*(void**)((u8*)material + 0x48) == NULL) {
         void** dl = (void**)operator new(0x10);
         if (dl != NULL) {
@@ -1091,11 +1108,11 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
         }
         *(void***)((u8*)material + 0x48) = dl;
         u32* piVar3 = (u32*)((u8*)self->mDisplayLists + idx * 8);
-        ((J3DDisplayListObj*)dl)->setSingleDisplayList((u8*)piVar3 + piVar3[0], piVar3[1]);
+        (*(J3DDisplayListObj**)((u8*)material + 0x48))->setSingleDisplayList((void*)(piVar3[0] + (u32)piVar3), piVar3[1]);
     }
     return material;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_800CAAA8(void) {
 }
 
