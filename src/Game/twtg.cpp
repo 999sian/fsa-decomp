@@ -1180,11 +1180,6 @@ static inline u8 twtgHasItem(s32 k) {
     return r != 0;
 }
 
-static inline bool twtgHasItemB(s32 k) {
-    u8* g = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-    return (u8)(1 << k) & g[0x7a];
-}
-
 extern "C" void fn_803167F4(char* p) {
     *(u32*)(p + 0x230) = *(u32*)(p + 0x90) & 3;
     *(s32*)(p + 0x234) = 0;
