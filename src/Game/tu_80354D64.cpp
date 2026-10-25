@@ -5,7 +5,7 @@ struct Actor;
 
 
 extern "C" char __vt__4MRTA[];
-extern "C" void fn_801EE434(void* p = 0);
+extern "C" void fn_801EE434(void* p);
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
 extern "C" void fn_801F0E34(void*, u32, u32);
