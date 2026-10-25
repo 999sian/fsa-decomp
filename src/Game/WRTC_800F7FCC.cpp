@@ -83,7 +83,8 @@ static inline f32 WRTC_random() {
     *rng = *rng * 0x19660d + 0x3c6ef35f;
     union { u32 u; f32 f; } value;
     value.u = (*rng >> 9) | 0x3f800000;
-    return value.f - lbl_8053BFCC;
+    result = value.f - one;
+    return result;
 }
 
 // ---- from Game/fn_800F7FCC_dtor.cpp
