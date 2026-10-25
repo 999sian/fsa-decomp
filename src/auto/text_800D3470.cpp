@@ -403,6 +403,13 @@ struct Unk800DE4D0 {
     u32 a[2];
     Unk800DE50C b[1];
 };
+struct Unk800D800C {
+    u8 _0[0x98];
+    GXColorS10 mTevColor[4];
+    GXColor mTevKColor[4];
+    u8 _c8[0xd4 - 0xc8];
+    s32 mDLOffset;
+};
 struct Unk800DE578 { u8 a, b, c, d; };
 struct Unk800DE5D0 {
     u8 _0[0x45];
@@ -1454,19 +1461,13 @@ extern "C" void fn_800D7F78(void* p) {
 }
 
 extern "C" void fn_800D800C(u8* self) {
-    u8* p = self;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0xd4);
     u8* start = __GDCurrentDL->pDisplayListData;
     for (u32 i = 0; i < 3; i++) {
-        GXColorS10 c = *(GXColorS10*)(p + 0x98);
-        J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
-        p += 8;
+        J3DGDSetTevColorS10(GXTevRegID(i + 1), ((GXColorS10*)(self + 0x98))[i]);
     }
-    p = self;
     for (u32 i = 0; i < 4; i++) {
-        GXColor c = *(GXColor*)(p + 0xb8);
-        J3DGDSetTevKColor(GXTevKColorID(i), c);
-        p += 4;
+        J3DGDSetTevKColor(GXTevKColorID(i), ((GXColor*)(self + 0xb8))[i]);
     }
     DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
 }
@@ -1620,9 +1621,9 @@ extern "C" void fn_800D8720(void* param_1) {
 }
 
 extern "C" void fn_800D87B4(u8* self) {
-    u8* start;
     u8* p;
     u32 i = 0;
+    u8* start;
     p = self;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0x90);
     start = __GDCurrentDL->pDisplayListData;
@@ -1752,21 +1753,22 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
+extern "C" void fn_800D8D58(Vtable800D8248* param_1, u32 param_4) {
+    Vtable800D8248* self = param_1;
     if ((param_4 >> 0x10) & 0xf) {
-        (*(void(**)(void))(*(int*)param_1 + 0x14))();
+        param_1->m5();
     }
     if (param_4 & 0x04000000) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x1c))(param_1);
+        self->m7();
     }
     if ((param_4 >> 0x14) & 0xf) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x20))(param_1);
+        self->m8();
         if (param_4 & 0x08000000) {
-            (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+            self->m9();
         }
     }
     if (param_4 & 0x01000000) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
+        self->m6();
     }
 }
 #else
