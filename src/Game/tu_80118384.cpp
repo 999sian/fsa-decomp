@@ -35,6 +35,23 @@ struct StaticVecAlloc {
     u8 m_00;
 };
 
+static inline void StaticVec_initVec(StaticVec* v, StaticVecAlloc alloc) {
+    v->m_0c = alloc.m_00;
+    v->m_10 = 0;
+    v->m_14 = 0;
+    v->m_18 = 0;
+    v->m_1c = (void*)JGadget::vector::extend_default;
+}
+
+static inline void StaticVec_init2(StaticVec* v, const StaticVecAlloc& alloc) {
+    v->m_00 = 0;
+    v->m_01 = 0;
+    v->m_02 = 0;
+    v->m_04 = 0x13;
+    v->m_08 = 0;
+    StaticVec_initVec(v, alloc);
+}
+
 static inline void StaticVec_init(StaticVec* v, StaticVecAlloc alloc) {
     v->m_00 = 0;
     v->m_01 = 0;
@@ -611,18 +628,8 @@ extern "C" void fn_801190E4(u8* self)
 
 extern "C" void* fn_8011921C(void)
 {
-    u8 v = lbl_8053AA90;
     if (lbl_8053AA92 == 0) {
-        lbl_804BC540.m_00 = 0;
-        lbl_804BC540.m_01 = 0;
-        lbl_804BC540.m_02 = 0;
-        lbl_804BC540.m_04 = 0x13;
-        lbl_804BC540.m_08 = 0;
-        lbl_804BC540.m_0c = v;
-        lbl_804BC540.m_10 = 0;
-        lbl_804BC540.m_14 = 0;
-        lbl_804BC540.m_18 = 0;
-        lbl_804BC540.m_1c = (void*)JGadget::vector::extend_default;
+        StaticVec_init(&lbl_804BC540, *(StaticVecAlloc*)&lbl_8053AA90);
         __register_global_object(&lbl_804BC540, fn_801192AC, lbl_804BC534);
         lbl_8053AA92 = 1;
     }
@@ -890,11 +897,13 @@ extern "C" void fn_80119D48(u8* self)
         virtual void v0c(void);
         virtual void* v10(u32 a, u32 b);
     };
+    u8* pic;
+    void* res;
     u8* p = self;
     if (*(u32*)(self + 0x2c) == 0) {
         VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
-        u8* pic = (u8*)__nw__FUl(0x168);
+        res = obj->v10(0x3f3f3f3f, lbl_80539F10);
+        pic = (u8*)__nw__FUl(0x168);
         if (pic != 0) {
             __ct__10J2DPictureFPC7ResTIMG(pic, res);
         }
