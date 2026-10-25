@@ -92,6 +92,10 @@ void fn_8030BD3C(void*, s32);
 void fn_803037D4(s32, s32);
 void fn_8045815C(void*, s32);
 void fn_8029E508(void*, void*, s32, s32);
+extern "C" void fn_8030C210(void* cam, JGeometry::TVec3<f32>* pos);
+extern u8* lbl_8053AB10;
+extern f32 lbl_80540640;
+s32 fn_80241544(char*);
 
 bool fn_8028FBA0(char* p) {
     JGeometry::TVec3<f32> position;
