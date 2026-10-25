@@ -4,6 +4,10 @@
 
 extern "C" void* fn_801F856C(void);
 extern "C" u8* fn_801F666C(void* mgr, s32 idx);
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" void detach__5ActorFv(void* this_);
+extern "C" void fn_80230534(s32 idx);
+extern "C" u8* lbl_8053AB10;
 extern "C" s32 fn_8022FE80(s32 a, void* b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_8038BD08(s32 a, u16 id, void* b, Vec* pos, s32 c);
 extern "C" void fn_80125C58(void* p, s32 x);
@@ -148,7 +152,9 @@ extern "C" void fn_80130C18(char* p) {
         }
     }
     u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
-    *(Vec*)(p + 0xc) = *(Vec*)(actor + 0xc);
+    Vec* src = (Vec*)(actor + 0xc);
+    Vec* dst = (Vec*)(p + 0xc);
+    *dst = *src;
     *(f32*)(p + 0x10) += lbl_8053CC90;
 }
 
