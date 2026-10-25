@@ -1039,11 +1039,11 @@ soundStarted:
 
 #include "JSystem/JAudio/JAUInitializer.h"
 #include "JSystem/JAudio/JAUAudioArchive.h"
-static inline void initAudienceBase(u8* p) {
-    *(void**)p = lbl_804954F8;
-    *(u32*)(p + 0x50) = 1;
-    PSMTXIdentity((MtxPtr)(p + 0x54));
-}
+class WaveController {
+public:
+    WaveController(s32 a, s32 b, s32 c);
+    u8 pad[0x5c];
+};
 #include "JSystem/JKernel/JKRArchive.h"
 extern "C" u32 lbl_8053A220;
 extern "C" u32 lbl_8053A224;
@@ -1129,7 +1129,8 @@ extern "C" void fn_80459AE4(u8* this_, JKRSolidHeap* heap, u32 size, void* data,
     FxSet fx = *(FxSet*)lbl_80491600;
     for (u8 i = 0; i < 4; i++) {
         JASDsp::FxlineConfig_* cfg = &fx.c[i];
-        JASDsp::setFXLine(i, new (heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)], cfg);
+        s16* buf = new (heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)];
+        JASDsp::setFXLine(i, buf, cfg);
     }
     void* w = operator new(0x5c);
     if (w) __ct__14WaveControllerFlll(w, 0, heap, 4);
