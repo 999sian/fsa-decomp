@@ -1760,41 +1760,24 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800D8D58(Vtable800D8248* param_1, u32 param_4) {
-    if ((param_4 >> 0x10) & 0xf) {
-        param_1->m5();
+extern "C" void fn_800D8D58(Vtable800D8248* self, u32 flags) {
+    if ((flags >> 16) & 0xf) self->m5();
+    if (flags & 0x04000000) self->m7();
+    if ((flags >> 20) & 0xf) {
+        self->m8();
+        if (flags & 0x08000000) self->m9();
     }
-    Vtable800D8248* p = param_1;
-    if (param_4 & 0x04000000) {
-        p->m7();
-    }
-    if ((param_4 >> 0x14) & 0xf) {
-        p->m8();
-        if (param_4 & 0x08000000) {
-            p->m9();
-        }
-    }
-    if (param_4 & 0x01000000) {
-        p->m6();
-    }
+    if (flags & 0x01000000) self->m6();
 }
 #else
-extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
-    if ((param_4 >> 0x10) & 0xf) {
-        (*(void(**)(void))(*(int*)param_1 + 0x14))();
+extern "C" void fn_800D8D58(Vtable800D8248* self, u32 flags) {
+    if ((flags >> 16) & 0xf) self->m5();
+    if (flags & 0x04000000) self->m7();
+    if ((flags >> 20) & 0xf) {
+        self->m8();
+        if (flags & 0x08000000) self->m9();
     }
-    if (param_4 & 0x04000000) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x1c))(param_1);
-    }
-    if ((param_4 >> 0x14) & 0xf) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x20))(param_1);
-        if (param_4 & 0x08000000) {
-            (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
-        }
-    }
-    if (param_4 & 0x01000000) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
-    }
+    if (flags & 0x01000000) self->m6();
 }
 #endif
 
