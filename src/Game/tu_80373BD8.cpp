@@ -141,8 +141,8 @@ extern "C" void fn_80374074(Actor* p) {
     else *(s32*)((u8*)p + 0x23c) = 7;
 }
 
-extern "C" f32 lbl_80542ED0;
-extern "C" f32 lbl_80542ED4;
+extern "C" const f32 lbl_80542ED0;
+extern "C" const f32 lbl_80542ED4;
 extern "C" f32 lbl_80542E88;
 extern "C" void fn_803744C4(u8* p) {
     f32 a = lbl_80542ED0;
