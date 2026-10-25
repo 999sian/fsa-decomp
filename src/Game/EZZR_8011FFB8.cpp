@@ -19,7 +19,7 @@ public:
     virtual void v19();
     virtual u8 v20();
     virtual void v21();
-    virtual u8 v22();
+    virtual void v22();
     virtual void v23();
     virtual void v24();
     virtual void v25(s32);
