@@ -539,15 +539,17 @@ extern "C" void fn_80361424(u8* param_1) {
     {
         u32 d = (u16)*(s16*)(param_1 + 0x254) - lbl_805429F8[*(s32*)(param_1 + 0x274)];
         u32 idx = (d >> 5) & 0x7ff;
+        f32 cos;
         f32 sin = sincosTable___5JMath[idx].sin;
-        f32 cos = sincosTable___5JMath[idx].cos;
+        cos = sincosTable___5JMath[idx].cos;
+        f32 negative;
         f32 zero = 0.0f;
         f32 one = 1.0f;
         mtx[2][1] = zero;
         mtx[1][1] = one;
         mtx[0][2] = sin;
         mtx[0][0] = cos;
-        mtx[2][0] = -sin;
+        mtx[2][0] = negative = -sin;
         mtx[2][2] = cos;
         mtx[1][2] = zero;
         mtx[1][0] = zero;
@@ -569,6 +571,25 @@ extern "C" void fn_80361424(u8* param_1) {
             fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, id, 0);
         }
     }
+}
+
+static inline void resetDrawRec(DrawRec& rec) {
+    for (u32 i = 0; (u8)i < 0x10; i += 8) {
+        rec.ids[(u8)i] = i;
+        rec.ids[(u8)(i + 1)] = i + 1;
+        rec.ids[(u8)(i + 2)] = i + 2;
+        rec.ids[(u8)(i + 3)] = i + 3;
+        rec.ids[(u8)(i + 4)] = i + 4;
+        rec.ids[(u8)(i + 5)] = i + 5;
+        rec.ids[(u8)(i + 6)] = i + 6;
+        rec.ids[(u8)(i + 7)] = i + 7;
+    }
+    rec.w10 = -1; rec.w14 = 0; rec.w18 = 0;
+    rec.b1c = 0; rec.b1d = 0; rec.b1e = 0; rec.b1f = 1;
+    rec.b20 = 1; rec.b21 = 0; rec.b22 = 0; rec.b23 = 0;
+    rec.b24 = 0; rec.b25 = 0; rec.b26 = 1; rec.w28 = 3;
+    rec.b2c = 1; rec.b2d = 0; rec.b2e = 0;
+    rec.w30 = -1; rec.w34 = 0; rec.w38 = 2;
 }
 
 extern "C" void fn_803616FC(u8* param_1) {
@@ -619,6 +640,7 @@ extern "C" void fn_803616FC(u8* param_1) {
 extern "C" char lbl_80474308[];
 extern "C" void fn_803616FC(u8* param_1);
 extern const f32 lbl_80542A40;
+#pragma opt_lifetimes off
 extern "C" void fn_80361A78(u8* param_1) {
     if (*(u8*)(param_1 + 0x2b0) != 0) {
         if (*(s32*)(param_1 + 0x270) == 0) {
@@ -652,7 +674,7 @@ extern "C" void fn_80361A78(u8* param_1) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_80361DAC(u8* param_1) {
     if (*(s32*)(param_1 + 0x280) != 0) {
         *(s32*)(param_1 + 0x280) = *(s32*)(param_1 + 0x280) - 1;
