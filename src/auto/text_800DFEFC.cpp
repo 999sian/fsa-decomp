@@ -19,7 +19,12 @@ struct TevKColorWord {
 	u32 mRGBA;
 };
 extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no);
-extern "C" GXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no);
+struct TevColorWords {
+	TevColorWords(u32 first, u32 second) { mWords[0] = first; mWords[1] = second; }
+	operator J3DGXColorS10() const { return J3DGXColorS10(*(const GXColorS10*)mWords); }
+	u32 mWords[2];
+};
+extern "C" TevColorWords fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" u32 lbl_80543F10;
 extern "C" u32 lbl_80543F14;
 extern "C" TevKColorWord fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no);
@@ -246,11 +251,14 @@ extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, 
 
 extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no)
 {
-	const J3DMaterialFactory_v21* factory = self;
-	J3DMaterialInitData_v21* initData = &factory->mInitData[factory->mMatRemapTable[idx]];
 	J3DTexMtx* texMtx = NULL;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTexMatrixIndex[no] != 0xffff) {
-		texMtx = new J3DTexMtx(factory->mTexMtxInfo[initData->mTexMatrixIndex[no]]);
+		J3DTexMtx* newMtx = (J3DTexMtx*)operator new(sizeof(J3DTexMtx));
+		if (newMtx != NULL) {
+			newMtx->mTexMtxInfo = self->mTexMtxInfo[initData->mTexMatrixIndex[no]];
+		}
+		texMtx = newMtx;
 	}
 	return texMtx;
 }
@@ -283,16 +291,17 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 	return J3DTevOrder();
 }
 
-extern "C" GXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
+extern "C" TevColorWords fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	u32 defaultColor[2];
 	defaultColor[0] = lbl_80543F10;
 	defaultColor[1] = lbl_80543F14;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTevColorIndex[no] != 0xffff) {
-		return *(GXColorS10*)&self->mTevColors[initData->mTevColorIndex[no]];
+		const u32* color = (const u32*)&self->mTevColors[initData->mTevColorIndex[no]];
+		return TevColorWords(color[0], color[1]);
 	}
-	return *(GXColorS10*)defaultColor;
+	return TevColorWords(defaultColor[0], defaultColor[1]);
 }
 
 extern "C" u32 lbl_80543F10;
