@@ -2824,14 +2824,9 @@ extern "C" bool fn_802DE93C() {
 extern "C" bool fn_802DE9A0() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
         char* q = *(char**)(lbl_8053AAF8 + 4);
-        if (*(s32*)(*(char**)(q + 0xC) + 4) == 2) {
-            if (*(s32*)(*(char**)(q + 0xC) + 8) == 3)
-                return true;
-        }
-        if (*(s32*)(*(char**)(q + 0xC) + 4) == 7) {
-            if (*(s32*)(*(char**)(q + 0xC) + 8) == 1)
-                return true;
-        }
+        if ((*(s32*)(*(char**)(q + 0xC) + 4) == 2 && *(s32*)(*(char**)(q + 0xC) + 8) == 3) ||
+            (*(s32*)(*(u32*)(q + 0xC) + 4) == 7 && *(s32*)(*(u32*)(q + 0xC) + 8) == 1))
+            return true;
         return false;
     }
     s32 index = *(s32*)(lbl_80529DEC + 0x12C) + *(s32*)(lbl_80529DEC + 0x128) * 4;
