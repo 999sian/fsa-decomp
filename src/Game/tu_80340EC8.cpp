@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 
 
@@ -21,32 +23,32 @@ extern "C" char lbl_80471EC8[];
 extern "C" const f32 lbl_805422C0;
 extern "C" void fn_80340EC8(u8* p) {
     if (*(s32*)(p + 0x230) == 8 || *(s32*)(p + 0x230) == 0xb) {
-        DrawRec rec;
+        register DrawRec rec;
         f32 m[3][4];
         PSMTXIdentity(m);
         rec.b2e = 0x40;
         if (*(s32*)(p + 0x230) == 8) {
             f32 f3 = *(f32*)(p + 0x250);
             m[0][0] = f3;
-            m[0][1] = lbl_805422C0;
-            m[0][2] = lbl_805422C0;
-            m[1][0] = lbl_805422C0;
             m[1][1] = lbl_805422B8 - lbl_805422BC * f3;
-            m[1][2] = lbl_805422C0;
-            m[2][0] = lbl_805422C0;
-            m[2][1] = lbl_805422C0;
-            m[2][2] = m[1][1];
-        } else {
-            f32 f3 = *(f32*)(p + 0x250);
-            m[0][0] = f3;
             m[0][1] = lbl_805422C0;
-            m[0][2] = lbl_805422C0;
             m[1][0] = lbl_805422C0;
-            m[1][1] = lbl_805422BC - f3;
+            m[0][2] = lbl_805422C0;
             m[1][2] = lbl_805422C0;
             m[2][0] = lbl_805422C0;
-            m[2][1] = lbl_805422C0;
             m[2][2] = m[1][1];
+            m[2][1] = lbl_805422C0;
+        } else {
+            register f32 f3 = *(f32*)(p + 0x250);
+            m[0][0] = f3;
+            m[1][1] = lbl_805422BC - f3;
+            m[0][1] = lbl_805422C0;
+            m[1][0] = lbl_805422C0;
+            m[0][2] = lbl_805422C0;
+            m[1][2] = lbl_805422C0;
+            m[2][0] = lbl_805422C0;
+            m[2][2] = m[1][1];
+            m[2][1] = lbl_805422C0;
         }
         rec.w18 = m;
         fn_801F06F0(p, lbl_80471EC8, *(s32*)(p + 0x23c), &rec, 7, lbl_805422C4, lbl_805422C4);
@@ -55,7 +57,39 @@ extern "C" void fn_80340EC8(u8* p) {
     }
 }
 
+extern "C" void fn_801F856C(void);
+extern "C" s32 fn_801F68E0(void);
+extern "C" void fn_803410DC(u8* p) {
+    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    if (*(u8*)(p + 0x255) == 1 && *(s32*)(p + 0x230) > 1) {
+        fn_801F856C();
+        fn_801F68E0();
+    }
+    switch (*(s32*)(p + 0x230)) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    default:
+        break;
+    }
+}
+
 extern "C" void fn_803418B8(Actor* p) {
+    struct Vec2f {
+        f32 x;
+        f32 y;
+    };
     *(s32*)((u8*)p + 0x240) = (*(u32*)((u8*)p + 0x90) >> 12) & 0xff;
     *(s32*)((u8*)p + 0x23c) = 0;
     *(s32*)((u8*)p + 0x244) = -1;
