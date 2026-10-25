@@ -131,6 +131,7 @@ extern const f64 lbl_805433E0;
 extern const f64 lbl_805433B8;
 extern "C" s32 fn_80388EEC(s32 i);
 extern "C" void fn_80458880(void* a, s32 b, s32 c);
+extern u8 lbl_80476270[];
 extern void* lbl_8053AF80;
 extern void* lbl_8053AD68;
 extern "C" void fn_80128C58(u8 a);
