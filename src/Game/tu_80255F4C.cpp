@@ -268,31 +268,41 @@ static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
     return hit;
 }
 
-#pragma opt_common_subs off
+#pragma opt_common_subs reset
 extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     u8* p = (u8*)a;
     s32 i;
     s32 room = *(s32*)(p + 0x4);
     Vec d;
     f32 len;
-    u32 ang;
 
     s32 actualRoom = fn_8023DE58(arg);
     if (actualRoom != room) {
         return 0;
     }
     for (i = 0; i < 8; i++) {
+        f32 squareY;
+        f32 squareX;
+        f32 sine;
+        f32 cosine;
+        f32 angle;
+        s32 ang;
+        const f32* trig;
         fn_8022E088(arg, i, &d);
         JMathInlineVEC::PSVECSubtract(&d, (Vec*)(p + 0xc), &d);
         d.z = 0.0f;
-        f32 angle = JMath::atanTable_.atan2_(d.y, d.x);
+        angle = JMath::atanTable_.atan2_(d.y, d.x);
         angle *= 10430.378f;
-        ang = (s32)angle;
-        ang = ang - *(s16*)(p + 0x238);
-        len = JGeometry::TUtilf::sqrt(d.x * d.x + d.y * d.y);
+        ang = (s32)angle - *(s16*)(p + 0x238);
+        squareX = d.x * d.x;
+        squareY = d.y * d.y;
+        len = JGeometry::TUtilf::sqrt(squareX + squareY);
         d.z = 0.0f;
-        d.x = len * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
-        d.y = len * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        trig = (const f32*)&JMath::sincosTable_.mTable[(u16)ang >> 5];
+        cosine = trig[1];
+        sine = trig[0];
+        d.x = len * cosine;
+        d.y = len * sine;
         u8 inside = 0;
         f32 minX = *(f32*)(p + 0x60);
         f32 minY = *(f32*)(p + 0x64);
