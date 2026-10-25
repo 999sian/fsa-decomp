@@ -1,4 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 extern const f32 lbl_805425CC;
 extern const f32 lbl_805425D0;
 extern const f32 lbl_805425D4;
@@ -215,10 +218,16 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
     s32 count = 0;
     u8 flag;
 
-    rect[0] = this_->field_60 + this_->field_0C.x;
-    rect[1] = this_->field_64 + this_->field_0C.y + lbl_805425C4;
-    rect[2] = this_->field_68 + this_->field_0C.x;
-    rect[3] = this_->field_6C + this_->field_0C.y + lbl_805425C4;
+    f32 px = this_->field_0C.x;
+    f32 py = this_->field_0C.y;
+    f32 r0 = this_->field_60 + px;
+    f32 r1 = this_->field_64 + py + lbl_805425C4;
+    f32 r2 = this_->field_68 + px;
+    f32 r3 = this_->field_6C + py + lbl_805425C4;
+    rect[0] = r0;
+    rect[1] = r1;
+    rect[2] = r2;
+    rect[3] = r3;
 
     switch (this_->mState) {
     case 0:
@@ -264,7 +273,7 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
                 }
                 this_->mAnimFrame = 1;
                 this_->mSubTimer = 5;
-            } else if (this_->mSubTimer <= 0 && !((YnswVirt*)this_)->v13()) {
+            } else if (this_->mSubTimer <= 0 && !((YnswVirtShort*)this_)->v13()) {
                 if (!fn_8023077C()) {
                     break;
                 }
@@ -288,7 +297,7 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
         }
 
         if (this_->mSwitchType == 0 && this_->mTimer == 4 && count < 4) {
-            ((YnswVirt*)this_)->v12(0xff, 0);
+            ((YnswVirtShort*)this_)->v12(0xff, 0);
         }
         for (i = 0; i < 4; i++) {
             if (!fn_8023F264(i)) {
@@ -312,8 +321,8 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
     case 2:
         if (this_->mSubTimer <= 0) {
             for (i = 0; i < 4; i++) {
-                v2c = *fn_8023E724(i);
-                fn_80230498(i, &v2c, 0xe8, 0xff, -0x80, -0x80, 1);
+                Vec tmp = *fn_8023E724(i);
+                fn_80230498(i, &tmp, 0xe8, 0xff, -0x80, -0x80, 1);
             }
             fn_801F0E34(this_, 0x30009, 0);
             this_->mAnimFrame = 2;
@@ -334,7 +343,7 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
         if (--this_->mSubTimer == 0) {
             if (this_->mUnused248 >= 0xd) {
                 fn_801F0D20(this_, 3);
-                ((YnswVirt*)this_)->v12(0xff, 1);
+                ((YnswVirtShort*)this_)->v12(0xff, 1);
                 this_->mSubTimer = 0xf;
                 this_->mState = 3;
                 break;
@@ -371,6 +380,9 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
     }
 
     this_->mPrevAnimFrame = this_->mAnimFrame;
+}
+
+extern "C" void fn_8034EBB8(void) {
 }
 
 extern "C" void Ynsw_Draw(YnswActor* this_) {
