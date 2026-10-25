@@ -203,10 +203,6 @@ static inline s32 Tu802F93F4_c5(s32 v) {
     return r;
 }
 
-static inline u8 SwapNibble802F(const u32 b) {
-    return ((b & 0xf0) >> 4) | ((b & 0x0f) << 4);
-}
-
 extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     f32 t;
     s32 a;
@@ -1708,7 +1704,8 @@ extern "C" void fn_802FA160(u8* this_, const u8* src, u32 a, s32 idx, u8* dst, u
     } else base=src;
     base+=a;
     for(u32 i=0;i<(u32)len;i++) {
-        out[i]=(((u32)base[i]&240)>>4)|(((u32)base[i]&15)<<4);
+        u32 b=base[i];
+        out[i]=((b&240)>>4)|((b&15)<<4);
     }
     DCFlushRange(out,len);
     if(index==1) {
