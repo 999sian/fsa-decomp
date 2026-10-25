@@ -3,6 +3,37 @@
 #include "JSystem/JMath/JMath.h"
 #include "Game/SinitPoolChain.h"
 
+// Trail of up to 16 points (count at +0x2a8 of fn_801D1974_obj).
+struct PointTrail {
+    s32 count;
+    JGeometry::TVec2<f32> pts[16];
+
+    JGeometry::TVec2<f32> get(s32 i) {
+        if (count <= i) {
+            i = 0;
+        }
+        return pts[i];
+    }
+    void removeFront() {
+        if (count >= 1) {
+            s32 n = count - 1;
+            for (s32 i = 0; i < n; i++) {
+                s32 j = i + 1;
+                pts[i].x = pts[j].x;
+                pts[i].y = pts[j].y;
+            }
+            count = n;
+        }
+    }
+    void add(const JGeometry::TVec2<f32>& p) {
+        if (count < 16) {
+            pts[count].x = p.x;
+            pts[count].y = p.y;
+            count++;
+        }
+    }
+};
+
 struct fn_801D1974_obj {
     void* vtbl;
     u8 pad04[0xc - 4];
