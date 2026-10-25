@@ -136,6 +136,10 @@ struct Obj240 {
 };
 extern "C" f32 lbl_805438C8;
 
+static inline f32 paneHalfSpan(const f32* bounds) {
+	return (bounds[2] - bounds[0]) * 0.5f;
+}
+
 struct Slots208 {
 	u8 pad0[0x208];
 	u8* slot[16]; // 0x208, indexed by the s32 at 0x340
@@ -1308,6 +1312,7 @@ extern "C" void appendChild__7J2DPaneFP7J2DPane(void*, void*);
 extern "C" void fn_8042EDAC(void*, s32, s32);
 extern "C" u8* getBounds__7J2DPaneFv(void*);
 extern u64 lbl_8048C4F8[];
+#pragma opt_lifetimes off
 extern "C" void fn_8040B93C(u8* self) {
 	Slots208* sl = (Slots208*)self;
 	if (fn_804446A4(*(void**)(self + 4))) {
@@ -1321,25 +1326,30 @@ extern "C" void fn_8040B93C(u8* self) {
 			{
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
-				(*(void (**)(void*, u8))(*(u8**)y + 0x24))(y, x[0x28]);
+				((Pane408*)y)->setAlpha(x[0x28]);
 			}
 			{
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				*(f32*)(self + 0x3b8) = *(f32*)(x + 0xc) - 400.0f;
 			}
 			f32 t;
+#pragma opt_propagation off
 			{
 				f32 base = *(f32*)(self + 0x3b8);
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
-				t = base - *(f32*)(x + 0xc);
+				f32 delta = *(f32*)(x + 0xc);
+				t = base - delta;
 				fn_80402E08(x, 0.0f, t);
 			}
 			{
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
-				f32 half = 0.5f;
-				f32 right = *(f32*)(y + 0x28);
-				f32 left = *(f32*)(y + 0x20);
+				f32 right;
+				f32 left;
+				f32 half;
+				half = lbl_805438C8;
+				right = *(f32*)(y + 0x28);
+				left = *(f32*)(y + 0x20);
 				*(f32*)(self + 0x3ac) = (right - left) * half + *(f32*)(y + 0x30);
 			}
 			{
@@ -1348,8 +1358,9 @@ extern "C" void fn_8040B93C(u8* self) {
 				f32 bh = *(f32*)(b + 4);
 				f32 base = *(f32*)(self + 0x3b8) + bh;
 				f32 height = *(f32*)(y + 0x2c) - *(f32*)(y + 0x24);
-				*(f32*)(self + 0x3b0) = t + (height * 0.5f + base);
+				*(f32*)(self + 0x3b0) = t + (base + height * lbl_805438C8);
 			}
+#pragma opt_propagation reset
 			if (self[0x662] == 0) {
 				*(s32*)(self + 0x350) = 0x11;
 			} else {
@@ -1381,7 +1392,7 @@ extern "C" void fn_8040B93C(u8* self) {
 		}
 	}
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_8040BC1C(T80403D84* self) {
 	u8* p = (u8*)self;
 	s16 t = *(s16*)(p + 0x41e) + 1;
