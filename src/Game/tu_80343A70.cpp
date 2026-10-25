@@ -58,9 +58,9 @@ extern "C" void fn_80343AD0(char* this_) {
     v07__5ActorFv(this_);
 }
 
-extern "C" f32 lbl_80542350;
-extern "C" f32 lbl_80542354;
-extern "C" f32 lbl_80542358;
+extern "C" const f32 lbl_80542350;
+extern "C" const f32 lbl_80542354;
+extern "C" const f32 lbl_80542358;
 extern "C" char lbl_80471FE0[];
 extern "C" void fn_801F06F0(void* this_, const char* tbl, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_80343B48(char* this_) {
@@ -92,6 +92,318 @@ extern "C" void fn_80343B48(char* this_) {
             }
         }
     }
+}
+
+extern "C" s32 fn_801F3D94(void*,s32);
+extern "C" s32 fn_801F2718(void*,u32);
+extern "C" void* fn_801F666C(void*,s32);
+extern "C" void fn_801F37AC(void*,u32,void*,s32,s32,s32);
+extern "C" s32 fn_801F82CC(void*,void*,u8,f32);
+extern "C" s32 fn_801F285C(void*,s32,s32,s32,s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" s32 fn_801F0E34(void*,u32,s32);
+extern "C" void fn_801F71A4(f32*,f32,f32,f32);
+extern "C" void fn_801F714C(u16*,u16,s32,s32);
+extern "C" u8 fn_801F2B7C(void*,s32,s32,s32);
+extern "C" u8 fn_8023A51C(s32);
+extern "C" f32 lbl_8054235C,lbl_80542360,lbl_80542364,lbl_80542368,lbl_8054236C,lbl_80542370,lbl_80542374;
+extern "C" f32 lbl_80542378,lbl_8054237C,lbl_80542380,lbl_80542384,lbl_80542388;
+extern "C" u8 fn_801F6758(void*,f32,s32);
+extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
+extern "C" void fn_80343D90(char* p) {
+    JGeometry::TVec3<f32> delta;
+    delta.x=delta.y=delta.z=lbl_80542350;
+    if(I7(p,0x230)==0) goto states;
+    if(I7(p,0x230)!=6 && I7(p,0x230)!=1) {
+        if(fn_801F3D94(p,1)==0) {
+            bool hit=false;
+            s32 id=fn_801F2718(p,0x48424d42);
+            if(id>=0) {
+                char* obj=(char*)fn_801F666C(fn_801F856C(),id);
+                if(obj && H7(obj,0x94)!=0) {
+                    JGeometry::TVec3<f32> pos=V7(p,0xc);
+                    pos-=V7(obj,0x3c);
+                    I7(p,0x274)=1;hit=true;
+                    fn_801F37AC(p,I7(obj,0x118),&pos,3,I7(obj,0x168),I7(obj,0x110));
+                }
+            }
+            if(!hit) {
+                id=fn_801F82CC(fn_801F856C(),p,B7(p,0x195),lbl_8054235C);
+                if(id>=0) {
+                    char* obj=(char*)fn_801F666C(fn_801F856C(),id);
+                    if(obj && I7(obj,0x168)==5) {
+                        JGeometry::TVec3<f32> pos=V7(p,0xc);
+                        pos-=V7(obj,0x3c);
+                        I7(p,0x274)=2;hit=true;
+                        fn_801F37AC(p,I7(obj,0x118),&pos,3,I7(obj,0x168),I7(obj,0x110));
+                    }
+                }
+            }
+            if(!hit) {
+                s32 player=fn_801F285C(p,0,0,1,-1);
+                if(player>=0) {
+                    I7(p,0x24c)=player;I7(p,0x238)=10;I7(p,0x108)=1;
+                    delta.x=F7(p,0x2a4)-F7(fn_8023E724(I7(p,0x24c)),0);
+                    delta.y=F7(p,0x2a8)-F7(fn_8023E724(I7(p,0x24c)),4);
+                    H7(p,0x2a2)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(delta.x,delta.y));
+                    H7(p,0x294)=H7(p,0x2a2);
+                    F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x294));
+                    F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x294));
+                    V7(p,0x2f8)=V7(p,0x34c);
+                    I7(p,0x230)=4;
+                }
+            }
+        } else {
+            V7(p,0x2a4)=V7(p,0xc);
+            if(I7(p,0x108)<=0) {fn_801F0E34(p,0x4007e,0);return;}
+        }
+    }
+    {
+        fn_801F0E34(p,0x4007e,0);
+        fn_801F71A4(&F7(p,0x2f8),F7(p,0x34c),lbl_80542354,lbl_80542368);
+        fn_801F71A4(&F7(p,0x2fc),F7(p,0x350),lbl_80542354,lbl_80542368);
+        V7(p,0x2a4)+=V7(p,0x2f8);
+        for(s32 i=1;i<7;i++) {
+            char* segment=p+i*12;
+            fn_801F71A4(&F7(segment,0x2f8),F7(segment,0x34c),lbl_80542354,lbl_80542368);
+            fn_801F71A4(&F7(segment,0x2fc),F7(segment,0x350),lbl_80542354,lbl_80542368);
+            V7(segment,0x2a4)+=V7(segment,0x2f8);
+        }
+        fn_801F714C(&H7(p,0x294),H7(p,0x2a2),4,0x400);
+        V7(p,0xc)=V7(p,0x2a4);
+        if(I7(p,0x230)!=4 && I7(p,0x230)!=5 && I7(p,0x230)!=6 && fn_801F2B7C(p,1,-1,1)) {
+            I7(p,0x250)++;
+            if(I7(p,0x250)>=5) {
+                lbl_8053AAF8->rnd.get_ufloat_1();
+                F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x2a2));
+                F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x2a2));
+                for(s32 i=1;i<7;i++){F7(p,0x34c+i*12)=lbl_80542350;F7(p,0x350+i*12)=lbl_80542350;}
+                I7(p,0x230)=6;return;
+            } else {
+                I7(p,0x238)=120;
+                F7(p,0x2f8)=F7(p,0x2fc)=F7(p,0x300)=lbl_80542350;
+                F7(p,0x34c)=F7(p,0x350)=F7(p,0x354)=lbl_80542350;
+                I7(p,0x24c)=-1;I7(p,0x244)=I7(p,0x24c);I7(p,0x230)=5;
+            }
+        }
+    }
+states:
+    switch(I7(p,0x230)) {
+    case 0:
+        switch(I7(p,0x270)) {
+        case 0:
+            for(s32 i=0;i<4;i++) {
+                if(fn_8023A51C(i)) {
+                    delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
+                    delta.y=F7(fn_8023E724(i),4)-F7(p,0x10);
+                    f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
+                    if(!(xx+yy>lbl_8054236C)) {
+                        I7(p,0x238)=60;
+                        for(s32 j=1;j<7;j++) {
+                            V7(p,0x2f8+j*12)=V7(p,0x2f8);
+                            H7(p,0x294+j*2)=(j*65536)/6;
+                            F7(p,0x2f8+j*12)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(p,0x294+j*2));
+                            F7(p,0x2fc+j*12)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(p,0x294+j*2));
+                        }
+                        I7(p,0x230)=1;return;
+                    }
+                }
+            } break;
+        case 1:
+            for(s32 i=0;i<4;i++) {
+                delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
+                delta.y=F7(fn_8023E724(i),4)-F7(p,0x10);
+                f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
+                if(!(xx+yy>lbl_80542374)) {
+                    I7(p,0x238)=120;
+                    for(s32 j=1;j<7;j++) {
+                        V7(p,0x2f8+j*12)=V7(p,0x2f8);
+                        H7(p,0x294+j*2)=(j*65536)/6;
+                        F7(p,0x2f8+j*12)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(p,0x294+j*2));
+                        F7(p,0x2fc+j*12)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(p,0x294+j*2));
+                    }
+                    I7(p,0x230)=1;return;
+                }
+            } break;
+        }
+        break;
+    case 1:
+        if(I7(p,0x238)<=0) {I7(p,0x238)=30;I7(p,0x230)=2;return;}
+        break;
+    case 2:case 3:
+        if(I7(p,0x238)<=0) {
+            f32 closest=lbl_80542378;
+            s32 id=-1;
+            s32 count=I7(fn_801F856C(),0x1008);
+            for(s32 i=0;i<count;i++) {
+                char* obj=*(char**)((char*)fn_801F856C()+8+i*4);
+                if(obj && (u32)I7(obj,0x1a0)==0x48424d42 && B7(obj,0x11c)==1 && I7(obj,0x90)!=1 && I7(obj,0x90)!=2 && I7(obj,0x90)!=4) {
+                    f32 distance=PSVECDistance((Vec*)(p+0xc),(Vec*)(obj+0xc));
+                    if(distance<closest) {id=I7(obj,0x198);closest=distance;}
+                }
+            }
+            I7(p,0x248)=id;
+            id=I7(p,0x248);
+            if(id>=0) {
+                char* obj=(char*)fn_801F666C(fn_801F856C(),id);
+                if(obj) {
+                    JGeometry::TVec3<f32> pos=V7(obj,0xc);
+                    delta.x=pos.x-F7(p,0xc);
+                    delta.y=pos.y-F7(p,0x10);
+        {
+            char* angles=p+2;
+            char* segment=p+12;
+            char* speeds=p+4;
+            for(s32 i=1;i<7;i++) {
+                if(I7(p,0x238)%10==0) {
+                    H7(angles,0x294)=(s16)(lbl_8054237C*lbl_8053AAF8->rnd.get_ufloat_1());
+                    f32 x,y;
+                    if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
+                        x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
+                    } else {
+                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                    }
+                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                }
+                F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                angles+=2;speeds+=4;segment+=12;
+            }
+        }
+
+                    if(PSVECMag(&delta)>lbl_80542384) {
+                        H7(p,0x2a2)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(delta.x,delta.y));
+                        F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x294));
+                        F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x294));
+                        I7(p,0x238)=5;
+                    } else {
+                        delta*=lbl_80542388;
+                        V7(p,0x34c)=delta;
+                        I7(p,0x238)=10;
+                    }
+                    if(pos.x>F7(p,676)) I7(p,596)=0;else I7(p,596)=2;
+                    if(pos.x>F7(p,688)) I7(p,600)=0;else I7(p,600)=2;
+                    if(pos.x>F7(p,700)) I7(p,604)=0;else I7(p,604)=2;
+                    if(pos.x>F7(p,712)) I7(p,608)=0;else I7(p,608)=2;
+                    if(pos.x>F7(p,724)) I7(p,612)=0;else I7(p,612)=2;
+                    if(pos.x>F7(p,736)) I7(p,616)=0;else I7(p,616)=2;
+                    if(pos.x>F7(p,748)) I7(p,620)=0;else I7(p,620)=2;
+                }
+            } else {
+                if(I7(p,0x230)==2) fn_801EEC98(p,I7(p,0x198),0,0,0,(s32*)(p+0x244),0,0);
+                else fn_801EEC98(p,I7(p,0x198),0,0,0,(s32*)(p+0x244),I7(p,0x24c),2);
+                if(I7(p,0x244)>=0) {
+                    delta.x=F7(fn_8023E724(I7(p,0x244)),0)-F7(p,0xc);
+                    delta.y=F7(fn_8023E724(I7(p,0x244)),4)-F7(p,0x10);
+                    H7(p,0x2a2)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(delta.x,delta.y));
+                }
+        {
+            char* angles=p+2;
+            char* segment=p+12;
+            char* speeds=p+4;
+            for(s32 i=1;i<7;i++) {
+                if(I7(p,0x238)%10==0) {
+                    H7(angles,0x294)=(s16)(lbl_8054237C*lbl_8053AAF8->rnd.get_ufloat_1());
+                    f32 x,y;
+                    if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
+                        x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
+                    } else {
+                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                    }
+                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                }
+                F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                angles+=2;speeds+=4;segment+=12;
+            }
+        }
+
+            }
+        }
+        if(I7(p,0x248)<0) {
+            if(I7(p,0x244)>=0) {
+                F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x294));
+                F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x294));
+                if(F7(fn_8023E724(I7(p,0x244)),0)>F7(p,0x2a4)) I7(p,0x254)=0;else I7(p,0x254)=2;
+                for(s32 i=1;i<7;i++) {
+                    if(F7(fn_8023E724(I7(p,0x244)),0)>F7(p,0x2a4+i*12)) I7(p,0x254+i*4)=0;else I7(p,0x254+i*4)=2;
+                }
+            } else {F7(p,0x34c)=lbl_80542350;F7(p,0x350)=lbl_80542350;}
+            if(I7(p,0x230)==3 && I7(p,0x244)!=I7(p,0x24c)) {
+                I7(p,0x230)=2;I7(p,0x238)=1;I7(p,0x24c)=-1;I7(p,0x244)=I7(p,0x24c);
+            }
+        }
+        if(I7(p,0x238)<=0) I7(p,0x238)=10;
+        break;
+    case 5:
+        if(I7(p,0x238)<=0) {I7(p,0x238)=0;I7(p,0x230)=2;return;}
+        {
+            char* angles=p+2;
+            char* segment=p+12;
+            char* speeds=p+4;
+            for(s32 i=1;i<7;i++) {
+                if(I7(p,0x238)%10==0) {
+                    H7(angles,0x294)=(s16)(lbl_8054237C*lbl_8053AAF8->rnd.get_ufloat_1());
+                    f32 x,y;
+                    if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
+                        x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
+                    } else {
+                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                    }
+                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                }
+                F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                angles+=2;speeds+=4;segment+=12;
+            }
+        }
+
+        break;
+    case 4:
+        if(I7(p,0x238)<=0) {I7(p,0x238)=0;I7(p,0x230)=3;return;}
+        {
+            char* angles=p+2;
+            char* segment=p+12;
+            char* speeds=p+4;
+            for(s32 i=1;i<7;i++) {
+                if(I7(p,0x238)%10==0) {
+                    H7(angles,0x294)=(s16)(lbl_8054237C*lbl_8053AAF8->rnd.get_ufloat_1());
+                    f32 x,y;
+                    if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
+                        x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
+                    } else {
+                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                    }
+                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                }
+                F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                angles+=2;speeds+=4;segment+=12;
+            }
+        }
+
+        break;
+    case 6:
+        if(fn_801F6758(p+0xc,lbl_80542384,I7(p,4))) {
+            bool all=true;
+            for(s32 i=1;i<7;i++) {
+                if(!fn_801F6758(p+0x2a4+i*12,lbl_80542384,I7(p,4))) {all=false;break;}
+            }
+            if(all) B7(p,0x11c)=0;
+        }
+        break;
+    }
+    I7(p,0x23c)--;
+    if(I7(p,0x23c)<=0) {
+        I7(p,0x240)++;
+        I7(p,0x240)&=1;
+        I7(p,0x23c)=2;
+    }
+    if(I7(p,0x238)>0) I7(p,0x238)--;
 }
 
 extern "C" void fn_803450AC(char* this_) {
