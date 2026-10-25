@@ -1,3 +1,5 @@
+#define GAME_ACTOR_USE_SDK_VEC
+#include "JSystem/JGeometry/Box.h"
 #include "Game/Actor.h"
 
 extern "C" s8 fn_802D800C(void*, s32);
