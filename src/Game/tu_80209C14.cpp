@@ -19,6 +19,24 @@ struct ItemResMgr {
     virtual void* getRes(s32 type, char* name);
 };
 
+union FobrWord {
+    u32 w;
+    u8 b[4];
+};
+
+struct FobrArgs {
+    u8 order[0x10];
+    FobrWord f10;
+    FobrWord f14;
+    void* ptr;
+    u8 b1c, b1d, b1e, b1f, b20, b21, b22, b23, b24, b25, b26;
+    u8 pad0;
+    u32 w28;
+    u8 b2c, b2d, b2e;
+    u8 pad1;
+    u32 x30, x34, x38;
+};
+
 
 extern void* lbl_804A5D60[];
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -320,8 +338,8 @@ extern "C" void fn_8020A384(u8* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
         if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
-            f32 b = lbl_8053F974;
             f32 a = lbl_8053F978;
+            f32 b = lbl_8053F974;
             *(f32*)(this_ + 0x60) = b;
             *(f32*)(this_ + 0x64) = b;
             *(f32*)(this_ + 0x68) = a;
@@ -378,8 +396,8 @@ extern "C" void fn_8020A384(u8* this_) {
                 break;
             case 3:
                 {
-                    f32 b = lbl_8053F974;
                     f32 a = lbl_8053F978;
+                    f32 b = lbl_8053F974;
                     *(f32*)(this_ + 0x60) = b;
                     *(f32*)(this_ + 0x64) = b;
                     *(f32*)(this_ + 0x68) = a;
@@ -473,11 +491,11 @@ extern "C" void fn_8020A384(u8* this_) {
                 fn_801D22DC(this_ + 0x270, 6, 0, 0);
                 fn_801F0E34(this_, 0x50039, 0);
                 break;
-            case 3:
-                fn_8020AA78(this_, 0xa);
-                break;
             case 6:
                 fn_801D22DC(this_ + 0x270, 3, 0, 0);
+                break;
+            case 3:
+                fn_8020AA78(this_, 0xa);
                 break;
             }
         }
@@ -508,8 +526,7 @@ extern "C" void fn_8020A384(u8* this_) {
             if (x < *(f32*)__float_epsilon) {
                 *(f32*)(this_ + 0x54) = lbl_8053F964;
             } else {
-                f32 k = lbl_8053F968 / x;
-                *(f32*)(this_ + 0x54) = k * (lbl_8053F964 - *(f32*)(this_ + 0x54)) + *(f32*)(this_ + 0x54);
+                *(f32*)(this_ + 0x54) = (lbl_8053F968 / x) * (lbl_8053F964 - *(f32*)(this_ + 0x54)) + *(f32*)(this_ + 0x54);
             }
             *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x54);
             *(f32*)(this_ + 0x5c) = *(f32*)(this_ + 0x54);
@@ -650,8 +667,7 @@ extern "C" void* fn_8020B0B8(char* this_) {
     return this_;
 }
 
-static void fn_8020B130(void) {
-}
+void fn_8020B130(void) {}
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if !defined(VERSION_G4SJ01)
@@ -688,7 +704,6 @@ extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_8020AE50(u8* this_) {
     s16 ang;
     s32 idx;
-    s32 state;
     void* actor;
     fn_801D0ED0(this_);
     *(f32*)(this_ + 0x60) = 1.0f;
@@ -710,8 +725,8 @@ extern "C" void fn_8020AE50(u8* this_) {
     *(s32*)(this_ + 0x2A8) = *(s32*)(this_ + 0x90);
     actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
     fn_801D2608(this_ + 0x270, lbl_804A5D38, 10);
-    state = *(s32*)((u8*)actor + 0x340);
-    if (state == 3) {
+    switch (*(s32*)((u8*)actor + 0x340)) {
+    case 3:
         *(s32*)(this_ + 0x248) = 3;
         fn_801D22DC(this_ + 0x270, 7, 0, 0);
         fn_801F0E34(this_, 0x50037, 0);
@@ -727,23 +742,26 @@ extern "C" void fn_8020AE50(u8* this_) {
         *(f32*)(this_ + 0x3C) = *(f32*)(this_ + 0x2B4);
         *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x2B8);
         *(f32*)(this_ + 0x44) = *(f32*)(this_ + 0x2BC);
-    } else if (state < 3) {
-        if (state == 0) {
-            *(s32*)(this_ + 0x248) = 6;
-            fn_801D22DC(this_ + 0x270, 5, 2, 0);
-            *(f32*)(this_ + 0x60) = -8.0f;
-            *(f32*)(this_ + 0x64) = -8.0f;
-            *(f32*)(this_ + 0x68) = 8.0f;
-            *(f32*)(this_ + 0x6C) = 8.0f;
-            *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
-            *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
-            *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
-            *(f32*)(this_ + 0x7C) = *(f32*)(this_ + 0x6C);
-        } else if (state > -1) {
+        break;
+    case 0:
+        *(s32*)(this_ + 0x248) = 6;
+        fn_801D22DC(this_ + 0x270, 5, 2, 0);
+        *(f32*)(this_ + 0x60) = -8.0f;
+        *(f32*)(this_ + 0x64) = -8.0f;
+        *(f32*)(this_ + 0x68) = 8.0f;
+        *(f32*)(this_ + 0x6C) = 8.0f;
+        *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x7C) = *(f32*)(this_ + 0x6C);
+        break;
+    default:
+        if (*(s32*)((u8*)actor + 0x340) > 0) {
             *(s32*)(this_ + 0x248) = 0;
             fn_801D22DC(this_ + 0x270, 0, 0, 0);
             fn_801F0E34(this_, 0x50037, 0);
         }
+        break;
     }
     *(s32*)(this_ + 0x24C) = 0;
     *(s32*)(this_ + 0x250) = -1;
