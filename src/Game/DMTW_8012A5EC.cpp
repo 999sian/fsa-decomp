@@ -901,6 +901,8 @@ extern f32 lbl_8053CC18;
 extern "C" void fn_8037AE00(s32);
 extern "C" s32 fn_80458F9C(s32 mgr, s32 handle);
 extern "C" void fn_80119998(s32, s32, s32, s32, s32, s32, s32, s32);
+#pragma opt_unroll_loops off
+#pragma opt_unroll_loops off
 extern "C" void fn_8012C914(char* this_) {
     s32 i;
     fn_8037AE00(lbl_8053AD70);
@@ -922,8 +924,7 @@ extern "C" void fn_8012C914(char* this_) {
         u32 off = (s16)lbl_804650D4[i] >> 2 & 0x3ff8;
         f32 sn = *(f32*)(sincosTable___5JMath + off);
         f32 cs = *(f32*)(sincosTable___5JMath + off + 4);
-        JGeometry::TVec3f offset(55.0f * cs, 35.0f * sn, 0.0f);
-        *(JGeometry::TVec3f*)(this_ + 0x25c + i * 12) = *(JGeometry::TVec3f*)(this_ + 0xc) + offset;
+        *(JGeometry::TVec3f*)(this_ + 0x25c + i * 12) = *(JGeometry::TVec3f*)(this_ + 0xc) + JGeometry::TVec3f(55.0f * cs, 35.0f * sn, 0.0f);
         *(s32*)(this_ + 0x2a4 + i * 4) = lbl_804650B0[i];
     }
     *(s32*)(this_ + 0x2bc) = 0;
@@ -970,7 +971,7 @@ extern "C" void fn_8012C914(char* this_) {
         *(f32*)(p + 0x1d8) = lbl_8053CB94;
     }
 }
-
+#pragma opt_unroll_loops reset
 extern "C" void fn_8012CBE4(void)
 {
     u8* p = lbl_8049E668;
