@@ -228,7 +228,13 @@ struct JijiTable {
     char res2[0x18];
 };
 extern const JijiTable lbl_804753C0;
-extern const s32 lbl_80475498[][4];
+static inline s32 jijiSpriteId(const JijiTable* t, u8* p) {
+    const s32* frames = (const s32*)t->frames;
+    s32 offset = *(s32*)(p + 0x264) * 16 + *(s32*)(p + 0x248) * 4;
+    s32 frame = *(s32*)(p + 0x238);
+    s32 bank = *(s32*)(p + 0x25c);
+    return bank + (frame + *(const s32*)((u32)frames + offset));
+}
 static inline s32 jijiFrame(const s32 (*fr)[4], u8* p) { return *(const s32*)((const u8*)fr + *(s32*)(p + 0x264) * 16 + *(s32*)(p + 0x248) * 4); }
 #define JIJI_FRAME(t, p) (*(s32*)((p) + 0x238) + ((const s32(*)[4])((const u8*)(t) + 0xd8))[*(s32*)((p) + 0x264)][*(s32*)((p) + 0x248)])
 extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
@@ -257,7 +263,7 @@ extern "C" void fn_8037B7F8(u8* this_) {
         DrawRec rec;
         ((u8*)&rec.w10)[3] = *(u8*)(this_ + 0x270);
         fn_801F06F0(this_, t->res0,
-                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     &rec, 7, 1.0f, 1.0f);
     } else if (*(s32*)(this_ + 0x258) == 0x23 && *(AnimEffectRec**)(this_ + 0x274) != 0 &&
                fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)) >= 0) {
@@ -266,21 +272,21 @@ extern "C" void fn_8037B7F8(u8* this_) {
                     *(s32*)(this_ + 0x25c) + fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)), 0, 2, -1, 0, 0, 0);
     } else if (*(s32*)(this_ + 0x260) == 0) {
         fn_801F06F0(this_, t->res0,
-                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, -1, 1.0f, 1.0f);
     } else if (*(s32*)(this_ + 0x260) == 1) {
         fn_801F06F0(this_, t->res2,
-                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 7, 1.0f, 1.0f);
         fn_80307AC8(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
-                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 0, -1);
     } else {
         fn_801F06F0(this_, t->res1,
-                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 7, 1.0f, 1.0f);
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
-                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 2, -1, 0, 0, 0);
     }
 }
