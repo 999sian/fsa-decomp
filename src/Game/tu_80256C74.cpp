@@ -28,7 +28,8 @@ extern const f32 lbl_80540108;
 
 static inline bool playerListBusy(u8* list) {
     for (s32 i = 0; i < 8; i++) {
-        if (list[0xb4] == 1 && i != 2 && (u32)(i - 4) > 1 && list[i + 0x48] == 1) return true;
+        if (list[0xb4] == 1) { if (i == 2 || (u32)(i - 4) <= 1) continue; }
+        if (list[i + 0x48] == 1) return true;
     }
     return false;
 }
@@ -854,6 +855,7 @@ extern "C" void fn_80258880(u8* p) {
 extern "C" void fn_8025888C(void) {
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_80258890(u8* p) {
     JGeometry::TVec3<f32> pos = V3(p, 0x8);
     pos.z = lbl_805400C4;
@@ -899,7 +901,9 @@ extern "C" void fn_80258890(u8* p) {
         }
         if (U8(p, 0x3fa) == 0xb) {
             U8(p, 0xb9e) = 1;
-            setPlayerBoxAround(BOX(p, 0x5cc), pos, lbl_805400E0);
+            const f32 extent = lbl_805400E0;
+            f32 right = extent + pos.x;
+            BOX(p, 0x5cc).set(pos.x - extent, pos.y - extent, right, extent + pos.y);
         }
         if (U8(p, 0x3fa) == 0xc) {
             S32(p, 0xba0) = fn_802A1844(lbl_8053AC98, &pos, S32(p, 0x4), S32(p, 0x3b4));
@@ -932,7 +936,7 @@ extern "C" void fn_80258890(u8* p) {
     U8(p, 0x3fa)++;
     fn_80268B3C(p);
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_80258BA8(u8* p) {
     U8(p, 0x458) = 0;
     U8(p, 0xb9f) = 0;
@@ -1620,24 +1624,18 @@ extern "C" void fn_8025AED0(u8* p) {
     }
     fn_80268B3C(p);
     if (U8(p, 0xafc) != 1) {
-        u8* list = PTR(p, 0xbf0);
-        bool busy = false;
-        for (s32 i=0; i<8; i++) {
-            if (U8(list,0xb4)==1 && i!=2 && (u32)(i-4)>1 && U8(list,i+0x48)==1) {busy=true;break;}
-        }
-        if (!busy) {
+        if (!playerListBusy(PTR(p,0xbf0))) {
             u8* obj=fn_801F666C(fn_801F856C(),S32(p,0x11f8));
             if (obj && S32(obj,4)==S32(p,0x3b4)) {
-                JGeometry::TVec3<f32> d(V3(obj,0xc)-V3(p,8));
-                JGeometry::TVec3<f32> v(d);
-                v.z=0.0f;
+                JGeometry::TVec3<f32> v(V3(obj,0xc)-V3(p,8));
+                v.z=lbl_805400C4;
                 v.normalize();
                 if (!v.isZero()) {
                     v.scale(lbl_80540114);
                     V3(p,8).add(v);
-                    F32(p,0x10)=0.0f;
-                    return;
+                    F32(p,0x10)=lbl_805400C4;
                 }
+                return;
             }
         }
     }
