@@ -173,8 +173,9 @@ extern "C" int fn_80378680(char* p) {
                 hit = 1;
             }
             if (hit) {
+                f32 zero = 0.0f;
                 JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(obj + 0x3c));
-                if (0.0f != v.x || 0.0f != v.y) {
+                if (v.x != zero || v.y != zero) {
                     *(int*)(obj + 0x108) = 0;
                 } else {
                     JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(obj + 0xc));
