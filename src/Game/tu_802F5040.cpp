@@ -1328,7 +1328,7 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-extern "C" void fn_802F91AC(void* self, f32* p, u8* o, u8* out, f32 f) {
+extern "C" void fn_802F91AC(void* self, f32* __restrict p, u8* o, u8* out, f32 f) {
     Mtx m;
     *out = 0;
     if ((o && *(void**)(o+0x18)) || (0.0f != p[2] && (!o || o[0x1f]))) {
@@ -1347,14 +1347,9 @@ extern "C" void fn_802F91AC(void* self, f32* p, u8* o, u8* out, f32 f) {
             m[0][2] *= s; m[1][2] *= s; m[2][2] *= s;
             m[0][3] *= s; m[1][3] *= s; m[2][3] *= s;
         }
-        f32 y = p[1] + f;
-        f32 z = p[2] + f;
-        f32 ty = m[1][3] + y;
-        f32 tx = m[0][3] + p[0];
-        f32 tz = m[2][3] + z;
-        m[1][3] = ty;
-        m[0][3] = tx;
-        m[2][3] = tz;
+        m[0][3] += p[0];
+        m[1][3] += p[1] + f;
+        m[2][3] += p[2] + f;
         fn_8013B3CC(lbl_8053AB10,m);
         *out = 1;
     } else fn_8013B3F0(lbl_8053AB10);
