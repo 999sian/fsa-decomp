@@ -111,7 +111,6 @@ extern "C" void fn_8033F748(u8* this_) {
 #pragma exceptions off
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
-#pragma exceptions reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 static u8 lbl_80509F64[0x94];
