@@ -1069,6 +1069,176 @@ extern "C" void fn_803068D0(Hdr_80301CD0* hdr) {
     }
 }
 
+extern "C" u32 fn_802340A0(s32);
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_8023188C(s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" u8 fn_8022BC38(s32,s32,void*);
+extern "C" u32 fn_8023D21C(s32,s32);
+extern "C" u8 fn_8023CEAC(s32,s32);
+extern "C" u32 fn_8023DAF4(s32,s32);
+extern "C" u8 fn_8023D644(s32,s32);
+extern "C" u32 fn_8023CBC0(s32);
+extern "C" s32 fn_8022BECC();
+extern "C" s8 fn_8023CA88(s32);
+extern "C" u8 fn_8023EA28(s32);
+extern "C" u8 fn_8023BCD4(s32);
+extern "C" u32 fn_8023CE10(s32);
+extern "C" u32 fn_8023CD74(s32);
+extern "C" s32 fn_803066F0(void*,s32,s32);
+extern "C" void fn_803064A8(void*,s32,s32,s32);
+extern "C" u64 fn_802D7AC4(void*,s32);
+static inline void packetSetX_80301CD0(Ctl4_80301CD0* packet,u32 value) { packet->x=value; }
+extern "C" void fn_80306A94(s32 ctx,s32 player) {
+    if(((u8*)lbl_8053AAF8)[0x82] & (u8)(1<<player))
+        ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
+    else ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=14;
+    fn_803085A4(ctx,player);
+    s32 owner=fn_8022EA0C(player);
+    u8* p=lbl_80506DE8+player*0x68;
+    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
+    for(s32 i=0;i<4;i++) {
+        u32 slot=fn_802340A0(i);
+        if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
+        {
+            if(fn_8022BC38(owner,fn_8023DE58(i),fn_8023E724(i))) goto valid;
+            if(fn_8023DE58(owner)<=8 && fn_8023DE58(i)<=8) goto valid;
+        }
+empty:
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=1;
+        p[slot*4+0xa]=0x80;
+        p[slot*4+9]=0xe0;
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->mode=0;
+        p[slot*4+8]=0;
+        goto nextPlayer;
+valid:
+        if(fn_8023DE58(i)<8) {
+            firstFlags->y |=1<<slot;
+            ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=fn_8023D21C(i,owner)>>8;
+            p[slot*4+0xa]=fn_8023D21C(i,owner);
+            p[slot*4+9]=fn_8023CEAC(i,owner);
+        } else {
+            ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=fn_8023DAF4(i,owner)>>8;
+            p[slot*4+0xa]=fn_8023DAF4(i,owner);
+            p[slot*4+9]=fn_8023D644(i,owner);
+        }
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->mode=fn_8023CBC0(i)>>8;
+        p[slot*4+8]=fn_8023CBC0(i);
+nextPlayer:;
+    }
+    if((((s32*)lbl_80506D48)[player]&1)==1) {
+        u8* state6=p+6;
+        Hi_80301CD0* flags7=(Hi_80301CD0*)(p+7);
+        for(s32 i=0;i<4;i++) {
+            u32 slot=fn_802340A0(i);
+            s32 mask=fn_8022BECC()<<slot;
+            u8 oldFlags=flags7->y;
+            ((volatile Hi_80301CD0*)flags7)->y=oldFlags|mask;
+            u8 state;
+            u8* game=(u8*)lbl_8053AAF8;
+            bool special;
+            if(*(s32*)(game+0x4c)==11) special=true;
+            else special=game[0x88]==2;
+            if(special) state=3;
+            else if(fn_8023CA88(slot)>0) {
+                s32 room=fn_8023DE58(i);
+                u16 flags=*(u16*)((u8*)fn_802D6A9C()+room*2+0x131b8);
+                if(((flags>>12)&3)==0) state=3;
+                else state=1;
+            } else if(fn_8023EA28(i)) state=1;
+            else state=0;
+            *state6 |=state<<(slot*2);
+            if(fn_8023BCD4(slot)<0xa0) flags7->lo |=1<<slot;
+        }
+    }
+    ((Ctl4_80301CD0*)(p+0xb))->y=fn_8023CE10(owner)>>5;
+    Ctl4_80301CD0* header0=(Ctl4_80301CD0*)(p+0xb);
+    header0->x=fn_8023CE10(owner)>>4;
+    ((Ctl4_80301CD0*)(p+0xf))->y=fn_8023CE10(owner);
+    Ctl4_80301CD0* header1=(Ctl4_80301CD0*)(p+0xf);
+    ((Ctl4_80301CD0*)(p+0x13))->y=fn_8023CD74(owner)>>5;
+    Ctl4_80301CD0* header2=(Ctl4_80301CD0*)(p+0x13);
+    header2->x=fn_8023CD74(owner)>>4;
+    ((Ctl4_80301CD0*)(p+0x17))->y=fn_8023CD74(owner);
+    Ctl4_80301CD0* header3=(Ctl4_80301CD0*)(p+0x17);
+    u8 active=0;
+    if(fn_8037F1E4(player)>=1 && fn_8037F1E4(player)<=5) active=1;
+    header1->x=active!=0;
+    active=0;
+    if(fn_8022F5B0(owner)) {
+        s32 room=fn_8023DE58(owner);
+        if(!fn_802D7804(fn_802D6A9C(),room,2)) active=1;
+    }
+    header3->x=active!=0;
+    s32 clearCount=lbl_80541618[lbl_8053AD08]-7;
+    u8* clear=p;
+    for(s32 remaining=clearCount;remaining>0;remaining--) {
+        ((Ctl3_80301CD0*)(clear+0x1b))->flag=1;
+        clear[0x1a]=0x80;
+        clear[0x19]=0xe0;
+        ((Ctl3_80301CD0*)(clear+0x1b))->mode=0;
+        clear[0x18]=0;
+        ((Ctl3_80301CD0*)(clear+0x1b))->yh=0;
+        ((Ctl3_80301CD0*)(clear+0x1b))->yl=0;
+        clear+=4;
+    }
+    s32 count=0;
+    if(fn_8023F264(player)) count=fn_803066F0((void*)ctx,player,lbl_80541618[lbl_8053AD08]-7);
+    if(fn_8023F264(player)) fn_803064A8((void*)ctx,player,lbl_80541618[lbl_8053AD08]-7-count,count);
+    for(s32 end=lbl_80541618[lbl_8053AD08]-8;end>0;end--) {
+        s32 i;
+        u8* q=p;
+        for(i=0;i<end;q+=4,i++) {
+            s32 a=fn_803074A4(((Slot_80301CD0*)(q+0x18))->type,((Slot_80301CD0*)(q+0x18))->id | (((Slot_80301CD0*)(q+0x18))->idHi<<8));
+            u8* nextSlot=p+(i+1)*4;
+            s32 b=fn_803074A4(((Slot_80301CD0*)(nextSlot+0x18))->type,q[0x1c] | (((Slot_80301CD0*)(nextSlot+0x18))->idHi<<8));
+            if(q[0x1d]!=0xe0 && (a<b || (a==b && q[0x19]<q[0x1d]))) {
+                u32 tmp=*(u32*)(q+0x18);
+                u32 other=*(u32*)(nextSlot+0x18);
+                *(u32*)(nextSlot+0x18)=tmp;
+                *(u32*)(q+0x18)=other;
+            }
+        }
+    }
+    if((((s32*)lbl_80506D48)[player]&1)==0) {
+        if(fn_8023DE58(owner)<8) {
+            u32 word=fn_802D7AC4(fn_802D6A9C(),8)&0xffffffffULL;
+            *(u32*)(p+lbl_80541618[lbl_8053AD08]*4-4)=tu80301_swapWord(word);
+        } else {
+            s32 room=fn_8023DE58(owner);
+            u32 word=fn_802D7AC4(fn_802D6A9C(),room)&0xffffffffULL;
+            *(u32*)(p+lbl_80541618[lbl_8053AD08]*4-4)=tu80301_swapWord(word);
+        }
+    } else {
+        if(fn_8023DE58(owner)<8) {
+            u32 word=fn_802D7AC4(fn_802D6A9C(),8)>>32;
+            *(u32*)(p+lbl_80541618[lbl_8053AD08]*4-4)=tu80301_swapWord(word);
+        } else {
+            s32 room=fn_8023DE58(owner);
+            u32 word=fn_802D7AC4(fn_802D6A9C(),room)>>32;
+            *(u32*)(p+lbl_80541618[lbl_8053AD08]*4-4)=tu80301_swapWord(word);
+        }
+    }
+    u32 sum=0;
+    MsgEntry_80301CD0* entry=&((MsgEntry_80301CD0*)(lbl_804FBC18+player*0x2380))[lbl_80504A18[player]];
+    if(entry->f118==0) {
+        int i;
+        u8* q;
+        int limit;
+        q=p+8;
+        limit=lbl_80541618[lbl_8053AD08]*4;
+        for(i=8;i<limit;i++) sum+=*q++;
+    } else {
+        int i;
+        u8* q;
+        int limit;
+        q=p+8;
+        limit=lbl_80541618[lbl_8053AD08]*4;
+        for(i=8;i<limit;i++) sum+=*q++;
+    }
+    p[0]=sum;
+}
+
 // fn_803074A4(a, b) - a range-dispatch classifier: returns a small
 // integer code (-1, 0, 1, 2, 3, or 4) based on which named range `b`
 // falls in, with the applicable range set selected by `a`.
