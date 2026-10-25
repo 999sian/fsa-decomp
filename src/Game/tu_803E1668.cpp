@@ -48,14 +48,6 @@ public:
     virtual void v14(); virtual void v18(); virtual void v1C(); virtual void v20();
     virtual void setAlpha(s32 a);
 };
-static inline void MenuGroupAlpha803E(u8* self, u64* names, u8* alpha, f32 scale) {
-    for(s32 i=0;i<5;i++,names++,alpha++) {
-        J2DPane* pane=(*(J2DPane**)(self+0xc))->search(*names);
-        f32 value=alpha[0x333];
-        value*=scale;
-        ((Pane803E4650*)pane)->setAlpha((s32)value);
-    }
-}
 class Screen803EDBF0 {
 public:
     virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
