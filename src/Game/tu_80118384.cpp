@@ -629,7 +629,7 @@ extern "C" void fn_801190E4(u8* self)
 extern "C" void* fn_8011921C(void)
 {
     if (lbl_8053AA92 == 0) {
-        StaticVec_init(&lbl_804BC540, *(StaticVecAlloc*)&lbl_8053AA90);
+        StaticVec_init2(&lbl_804BC540, *(StaticVecAlloc*)&lbl_8053AA90);
         __register_global_object(&lbl_804BC540, fn_801192AC, lbl_804BC534);
         lbl_8053AA92 = 1;
     }
