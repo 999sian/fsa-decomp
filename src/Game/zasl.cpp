@@ -39,6 +39,11 @@ extern const f32 lbl_8053F9EC;
 extern const f32 lbl_8053F9F0;
 extern const f32 lbl_8053F9F4;
 
+static inline s32 chooseDirection(void* actor, s32 direction, s32 current) {
+    if (current == direction) return fn_801CF720(actor, direction);
+    return fn_801CF798(actor, direction);
+}
+
 // ---- Zasl_ctor_8020CA34.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_801D0F40(void* this_);
@@ -74,24 +79,22 @@ extern "C" void fn_8020C138(u8* this_) {
     fn_801F06F0(this_, lbl_8046A3AC, *(u32*)(this_ + 0x280) + 0x2c9, &rec, 0, lbl_8053F9E8, lbl_8053F9E8);
 }
 
-extern "C" bool fn_8020C26C(void* p, void* a, void* b) {
+#pragma opt_propagation off
+extern "C" bool fn_8020C26C(void* this_, void* a, void* b) {
     bool ret;
-    void* l = 0;
-    u32 flags = *(u32*)((char*)p + 0x230);
-    if ((flags & 7) != 0) {
-        l = &lbl_8053F9E0;
-    }
+    void* l;
+    u8* p = (u8*)this_;
+    l = 0;
+    if ((*(u32*)(p + 0x230) & 7) != 0) l = &lbl_8053F9E0;
     ret = true;
     if (!fn_802265DC(b, a, 0)) {
-        u32 v = *(u32*)((char*)p + 0x198);
+        u32 v = *(u32*)(p + 0x198);
         u8* m = fn_8020D58C();
-        if (!fn_8020D6AC(m + m[1] * 0x784 + 4, a, b, v, l)) {
-            ret = false;
-        }
+        if (!fn_8020D6AC(m + m[1] * 0x784 + 4, a, b, v, l)) ret = false;
     }
     return ret;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801CE32C(void*);
 extern "C" void fn_801CE5D4(void*);
 extern "C" u8* fn_802D6A9C(void);
@@ -124,7 +127,7 @@ extern "C" void fn_8020C3D0(void* this_, bool b) {
     char* p = (char*)this_;
     char* g;
     s32 state;
-    s32 h;
+    int h;
     s32 off;
     u8* base;
     u32 seed;
@@ -316,8 +319,12 @@ extern "C" void fn_8020C878(void* this_) {
             }
             f32 x = *(f32*)(p + 0xc);
             f32 y = *(f32*)(p + 0x10);
+            f32 x0 = *(f32*)(p + 0x80) + x;
+            f32 x1 = *(f32*)(p + 0x88) + x;
+            f32 y1 = *(f32*)(p + 0x8c) + y;
+            f32 y0 = *(f32*)(p + 0x84) + y;
             bool bVar1 = false;
-            if (!(x + *(f32*)(p + 0x80) >= pf[0]) && !(y + *(f32*)(p + 0x84) >= pf[1]) && x + *(f32*)(p + 0x88) < pf[2] && y + *(f32*)(p + 0x8c) < pf[3]) {
+            if (!(x0 >= pf[0]) && !(y0 >= pf[1]) && x1 < pf[2] && y1 < pf[3]) {
                 bVar1 = true;
             }
             if (!bVar1) {
