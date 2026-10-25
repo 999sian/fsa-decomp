@@ -93,6 +93,11 @@ extern "C" u8 fn_803B90E4(u32 a, s32 b);
 extern "C" u8 fn_803B8CAC(u32 a, s32 b);
 extern "C" void fn_803B9B8C(void* a);
 extern "C" void fn_80402B10(void* a, s16 b, u8 c, f32 d);
+extern "C" s32 fn_803B933C(void* unused, void* slots, s32 idx);
+extern "C" void fn_803B9CCC(char* this_, void* src, u32 len, s32 offset);
+static inline void setFade(void* a, s16 b, s32 c, f32 d, f32 e) {
+    ((void (*)(void*, s16, s32, f32, f32))fn_80402B10)(a, b, c, d, e);
+}
 extern "C" void fn_80402628(void* a, s16 b, u8 c, s32 d);
 extern "C" void fn_804023D0(void* a, void* b, u8 c);
 extern "C" void fn_803B9D54(void* a, void* b, u32 c, void* d, u32 e, s32 f);
