@@ -936,7 +936,6 @@ extern "C" void fn_803C21A8(u8* this_) {
     this_[0x110] = 6;
 }
 
-extern u8 lbl_804765D0[];
 typedef void* (*KeyGetFn)(void* self, u64 key);
 typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 extern "C" void fn_803C3904(u8* this_) {
