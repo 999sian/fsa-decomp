@@ -1,5 +1,9 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
+#include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JKernel/JKRHeap.h"
+#include "dolphin/os/OSFastCast.h"
 
 struct FsaNode {
     virtual void v0(void);
@@ -144,6 +148,86 @@ extern "C" u8 fn_80402940(void*, s32, s32, f32, f32);
 extern "C" f32* getBounds__7J2DPaneFv(void*);
 extern "C" u64 lbl_80477180[][16];
 extern "C" u64 lbl_80477408[];
+
+struct FsaVtJ2D {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual void v7(void);
+    virtual void v8(void);
+    virtual void v9(void);
+    virtual void v10(void);
+    virtual void v11(void);
+    virtual void v12(void);
+    virtual void v13(void);
+    virtual void v14(void);
+    virtual void* search(u32, u32, u32);
+    virtual void v16(void);
+    virtual void v17(void);
+    virtual void v18(void);
+    virtual void v19(void);
+    virtual void v20(void);
+    virtual void v21(void);
+    virtual void v22(void);
+    virtual void v23(void);
+    virtual void set24(void*);
+    virtual void v25(void);
+    virtual void v26(void);
+    virtual void v27(void);
+    virtual void set28(void*);
+    virtual void v29(void);
+    virtual void v30(void);
+    virtual void v31(void);
+    virtual void v32(void);
+    virtual void v33(void);
+    virtual void v34(void);
+    virtual void v35(void);
+    virtual void v36(void);
+    virtual void v37(void);
+    virtual void v38(void);
+    virtual void set39(void*);
+    virtual void v40(void);
+    virtual void v41(void);
+    virtual void v42(void);
+    virtual void v43(void);
+    virtual void v44(void);
+    virtual void v45(void);
+    virtual void v46(void);
+    virtual void v47(void);
+    virtual void v48(void);
+    virtual void v49(void);
+    virtual void v50(void);
+    virtual void v51(void);
+    virtual void v52(void);
+    virtual void v53(void);
+    virtual void v54(void);
+    virtual void v55(void);
+    virtual void v56(void);
+    virtual void v57(void);
+    virtual void v58(void);
+    virtual void v59(void);
+    virtual void v60(void);
+    virtual void v61(void);
+    virtual void v62(void);
+    virtual void v63(void);
+    virtual void v64(void);
+    virtual void v65(void);
+    virtual void v66(void);
+    virtual void v67(void);
+    virtual void v68(void);
+    virtual void v69(void);
+    virtual void v70(void);
+    virtual void v71(void);
+    virtual void v72(void);
+    virtual void v73(void);
+    virtual void v74(void);
+    virtual void v75(void);
+    virtual void set76(void*, void*);
+};
 extern "C" void fn_803D7098(u8* param_1) {
     f32 f28;
     f32 f29;
@@ -584,6 +668,218 @@ extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
             __dl__FPv(param_1);
         }
     }
+    return param_1;
+}
+
+typedef void* (*FsaFind)(void*, u32, u32, u32);
+typedef void (*FsaSet1)(void*, void*);
+typedef void (*FsaSet2)(void*, void*, void*);
+extern "C" char lbl_804AF86C[];
+extern "C" void* lbl_8053AD78;
+extern "C" void* __nw__FUl(u32);
+extern "C" void fn_80402F04(void*, void*);
+extern "C" void* fn_80403144(u32, void*);
+extern "C" void* load__20J2DAnmLoaderDataBaseFPCv(void*);
+extern "C" void fn_803832BC(void*, u32, s32, s32, s32);
+extern "C" void __ct__9J2DScreenFv(void*);
+extern "C" void __ct__10J2DPictureFPC7ResTIMG(void*, void*);
+extern "C" u8* fn_803D901C(u8* param_1) {
+    u8* pic;
+    u8* sc;
+    u8* base = (u8*)lbl_80476F80;
+    u8* n;
+    u8* o;
+    u32 hi1[2];
+    u32 lo1[2];
+    u32 hi2[2];
+    u32 lo2[2];
+
+    *(void**)param_1 = lbl_804B03D8;
+    ((JKRHeap*)*(void**)((u8*)lbl_80529DEC + 8))->getTotalFreeSize();
+    lbl_8053ADC0 = param_1;
+
+    sc = (u8*)__nw__FUl(0x118);
+    if (sc != 0) {
+        __ct__9J2DScreenFv(sc);
+    }
+    *(void**)(param_1 + 4) = sc;
+    ((J2DScreen*)*(void**)(param_1 + 4))->setPriority((char*)base + 0x4d0, 0x1100000, (JKRArchive*)*(void**)((u8*)lbl_8053AD68 + 0x14));
+    sc = (u8*)__nw__FUl(0x118);
+    if (sc != 0) {
+        __ct__9J2DScreenFv(sc);
+    }
+    *(void**)(param_1 + 8) = sc;
+    ((J2DScreen*)*(void**)(param_1 + 8))->setPriority((char*)base + 0x4dc, 0x1100000, (JKRArchive*)*(void**)((u8*)lbl_8053AD68 + 0x14));
+
+    sc = fn_804030C4(0x54494D47, base + 0x4ec);
+    pic = (u8*)__nw__FUl(0x168);
+    if (pic != 0) {
+        __ct__10J2DPictureFPC7ResTIMG(pic, sc);
+    }
+    *(void**)(param_1 + 0x1c) = pic;
+    lo1[1] = 0;
+    hi1[1] = 0xff;
+    lo1[0] = 0;
+    hi1[0] = 0xff;
+    (*(FsaSet2*)(*(u8**)(param_1 + 0x1c) + 0x130))(*(void**)(param_1 + 0x1c), &lo1[1], &hi1[1]);
+    pic = (u8*)__nw__FUl(0x168);
+    if (pic != 0) {
+        __ct__10J2DPictureFPC7ResTIMG(pic, sc);
+    }
+    *(void**)(param_1 + 0x20) = pic;
+    lo2[1] = 0;
+    hi2[1] = 0xff;
+    lo2[0] = 0;
+    hi2[0] = 0xff;
+    (*(FsaSet2*)(*(u8**)(param_1 + 0x20) + 0x130))(*(void**)(param_1 + 0x20), &lo2[1], &hi2[1]);
+
+    o = *(u8**)(param_1 + 4);
+    sc = *(u8**)((u8*)lbl_8053AD78 + 0x154);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x6e6f0000, 0x54, 0x6e6f3031);
+    (*(FsaSet1*)(*(u8**)o + 0x9c))(o, sc);
+    o = *(u8**)(param_1 + 4);
+    sc = *(u8**)((u8*)lbl_8053AD78 + 0x154);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x65730000, 0x5479, 0x65733031);
+    (*(FsaSet1*)(*(u8**)o + 0x9c))(o, sc);
+    o = *(u8**)(param_1 + 4);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x65730000, 0x5479, 0x65733031);
+    fn_803832BC(((J2DTextBox*)o)->getStringPtr(), 0x10c, 0, 0, 0);
+    o = *(u8**)(param_1 + 4);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x6e6f0000, 0x54, 0x6e6f3031);
+    fn_803832BC(((J2DTextBox*)o)->getStringPtr(), 0x10d, 0, 0, 0);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x24) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x500000, 0x507965, 0x73623034);
+    fn_80402F04(*(void**)(param_1 + 0x24), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x28) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x6f620000, 0x506e, 0x6f623034);
+    fn_80402F04(*(void**)(param_1 + 0x28), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x2c) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x50610000, 0x50616363, 0x75723032);
+    fn_80402F04(*(void**)(param_1 + 0x2c), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x30) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x50740000, 0x5074746c, 0x626b3035);
+    fn_80402F04(*(void**)(param_1 + 0x30), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x34) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x4e0000, 0x4e6461, 0x74613033);
+    fn_80402F04(*(void**)(param_1 + 0x34), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x38) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x6c6b0000, 0x5062, 0x6c6b3033);
+    fn_80402F04(*(void**)(param_1 + 0x38), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x3c) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x6c6b0000, 0x5062, 0x6c6b3032);
+    fn_80402F04(*(void**)(param_1 + 0x3c), sc);
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x40) = n;
+    o = *(u8**)(param_1 + 4);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x6c6b0000, 0x5062, 0x6c6b3031);
+    fn_80402F04(*(void**)(param_1 + 0x40), sc);
+
+    o = *(u8**)(param_1 + 4);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x4e0000, 0x4e6461, 0x74613035);
+    o[0xb0] = 0;
+
+    n = (u8*)__nw__FUl(0x2c);
+    if (n != 0) {
+        *(void**)n = lbl_804AF86C;
+    }
+    *(void**)(param_1 + 0x44) = n;
+    o = *(u8**)(param_1 + 8);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x524f0000, 0, 0x524f4f54);
+    fn_80402F04(*(void**)(param_1 + 0x44), sc);
+
+    *(void**)(param_1 + 0x48) = *(void**)((u8*)lbl_8053AED8 + 8);
+
+    OSInitFastCast();
+
+    *(void**)(param_1 + 0xc) = fn_80403144(0x5343524e, base + 0x4fc);
+    *(void**)(param_1 + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(*(void**)(param_1 + 0xc));
+    o = *(u8**)(param_1 + 8);
+    sc = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x500000, 0x50306b, 0x616b3030);
+    (*(FsaSet1*)(*(u8**)sc + 0x60))(sc, *(void**)(param_1 + 0x10));
+    *(void**)(param_1 + 0x14) = fn_80403144(0x5343524e, base + 0x50c);
+    *(void**)(param_1 + 0x18) = load__20J2DAnmLoaderDataBaseFPCv(*(void**)(param_1 + 0x14));
+    o = *(u8**)(param_1 + 8);
+    (*(FsaSet1*)(*(u8**)o + 0x70))(o, *(void**)(param_1 + 0x18));
+
+    *(u32*)(param_1 + 0x4c) = 0;
+    *(u32*)(param_1 + 0x50) = 0;
+    *(u32*)(param_1 + 0x54) = 0;
+    *(f32*)(param_1 + 0x58) = lbl_80543534;
+    *(f32*)(param_1 + 0x5c) = lbl_80543534;
+    *(u32*)(param_1 + 0x60) = 0;
+    *(u32*)(param_1 + 0x64) = 0;
+    *(s16*)(param_1 + 0x74) = 0;
+    *(s16*)(param_1 + 0x68) = -1;
+    *(s16*)(param_1 + 0x6a) = -1;
+    *(s16*)(param_1 + 0x6c) = 0;
+    *(s16*)(param_1 + 0x6e) = 0;
+    *(s16*)(param_1 + 0x70) = 0;
+    *(s16*)(param_1 + 0x72) = 0;
+    param_1[0x76] = 2;
+    param_1[0x77] = 0;
+    param_1[0x78] = 0;
+    param_1[0x79] = 0;
+    param_1[0x7a] = 0;
+
+    o = *(u8**)(param_1 + 4);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0xffffffff, lbl_80476F80[0], lbl_80476F80[4]);
+    param_1[0x7b] = o[0xb2];
+    o = *(u8**)(param_1 + 4);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0xffffffff, lbl_80476F80[0x200], lbl_80476F80[0x204]);
+    param_1[0x7c] = o[0xb2];
+    o = *(u8**)(param_1 + 8);
+    o = (u8*)(*(FsaFind*)(*(u8**)o + 0x3c))(o, 0x500000, 0x507374, 0x61726c69);
+    param_1[0x7d] = o[0xb2];
+    param_1[0x7e] = 0;
+    param_1[0x7f] = 0;
+    param_1[0x80] = 0;
+    param_1[0x81] = 0;
     return param_1;
 }
 
