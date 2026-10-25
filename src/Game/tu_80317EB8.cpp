@@ -616,8 +616,9 @@ extern "C" void fn_803190E0(Actor* self)
     if (*(u32*)(p + 0x23c) == 1) {
         if (*(s32*)(p + 0x268) <= 0) {
             *(s32*)(p + 0x268) = 0x14;
-            int room;
-            if (*(s32*)(p + 0x234) < 0 || ((room = *(s32*)(p + 4)), (int)fn_8023DE58(*(s32*)(p + 0x234)) != room)) {
+            s32 room;
+            s32 playerRoom;
+            if (*(s32*)(p + 0x234) < 0 || ((room = *(s32*)(p + 4)), ((playerRoom = fn_8023DE58(*(s32*)(p + 0x234))), playerRoom != room))) {
                 fn_801EE558(self, &dir, &dist, 0);
             } else {
                 fn_801EE558(self, &dir, &dist, *(s32*)(p + 0x234) + 1);
