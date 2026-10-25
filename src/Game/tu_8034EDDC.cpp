@@ -13,8 +13,25 @@ extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8022F3DC(s32);
 extern const f32 lbl_80542618;
 extern const f32 lbl_80542604;
-extern "C" JGeometry::TBox2f lbl_8050ADF8[4];
-extern "C" JGeometry::TBox2f lbl_8050AE38[10];
+static JGeometry::TBox2f lbl_8050ADF8[4] = {
+    JGeometry::TBox2f(-31.0f, -31.0f, 31.0f, -17.0f),
+    JGeometry::TBox2f(-31.0f, 17.0f, 31.0f, 31.0f),
+    JGeometry::TBox2f(-31.0f, -31.0f, -17.0f, 31.0f),
+    JGeometry::TBox2f(17.0f, -31.0f, 31.0f, 17.0f),
+};
+static JGeometry::TBox2f lbl_8050AE38[10] = {
+    JGeometry::TBox2f(-14.0f, -6.0f, 0.0f, 22.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 6.0f),
+    JGeometry::TBox2f(-14.0f, -22.0f, 0.0f, -8.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 22.0f),
+    JGeometry::TBox2f(-22.0f, -14.0f, 6.0f, 0.0f),
+    JGeometry::TBox2f(-6.0f, 0.0f, 22.0f, 14.0f),
+    JGeometry::TBox2f(-14.0f, 8.0f, 0.0f, 22.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 22.0f),
+    JGeometry::TBox2f(-14.0f, -22.0f, 0.0f, 22.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, -8.0f),
+};
+
 extern const f32 lbl_8054261C;
 extern const f64 lbl_805425F8;
 extern const f32 lbl_805425D8;
