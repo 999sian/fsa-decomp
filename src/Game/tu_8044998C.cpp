@@ -177,6 +177,15 @@ static inline u8* Search(void* screen, void** tbl, int i) {
     return (u8*)((J2DScreenSearch*)screen)->search(*(u64*)&tbl[i]);
 }
 
+static inline void SetDigits(u8* self, void** tbl, int idx, int tens, int ones) {
+    void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[tens]);
+    Attach(Search(*(void**)(self + 4), tbl, idx), h);
+    Attach(Search(*(void**)(self + 4), tbl, idx + 2), h);
+    h = fn_804030C4(0x54494D47, lbl_804B1CA0[ones]);
+    Attach(Search(*(void**)(self + 4), tbl, idx + 4), h);
+    Attach(Search(*(void**)(self + 4), tbl, idx + 6), h);
+}
+
 extern "C" f32 fn_8043D514(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern void* lbl_8053AED0;
@@ -187,39 +196,40 @@ extern "C" void fn_8044998C(void* self_) {
     }
 
     if (self[0x13] & 1) {
-        if (((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] == 0) {
-            ((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] = 1;
+        if (Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] == 0) {
+            Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] = 1;
         }
     } else {
-        if (((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] != 0) {
-            ((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] = 0;
+        if (Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] != 0) {
+            Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] = 0;
         }
     }
 
-    if (((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] != 0) {
+    if (Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] != 0) {
         if (self[0x10] >= 100) {
             self[0x10] = 99;
         }
         s32 v = self[0x10];
+        s32 ones = v % 10;
         void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[v / 10]);
-        Attach(Create(*(void**)(self + 4), lbl_80490C40, 4), h);
-        Attach(Create(*(void**)(self + 4), lbl_80490C40, 6), h);
-        h = fn_804030C4(0x54494D47, lbl_804B1CA0[v % 10]);
-        Attach(Create(*(void**)(self + 4), lbl_80490C40, 8), h);
-        Attach(Create(*(void**)(self + 4), lbl_80490C40, 10), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C40, 4), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C40, 6), h);
+        h = fn_804030C4(0x54494D47, lbl_804B1CA0[ones]);
+        Attach(Search(*(void**)(self + 4), lbl_80490C40, 8), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C40, 10), h);
     }
 
     if (self[0x13] & 2) {
-        if (((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] == 0) {
-            ((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] = 1;
+        if (Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] == 0) {
+            Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] = 1;
         }
     } else {
-        if (((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] != 0) {
-            ((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] = 0;
+        if (Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] != 0) {
+            Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] = 0;
         }
     }
 
-    if (((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] != 0) {
+    if (Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] != 0) {
         if (self[0x11] >= 100) {
             self[0x11] = 99;
             self[0x12] = 99;
@@ -229,18 +239,20 @@ extern "C" void fn_8044998C(void* self_) {
         }
         s32 a = self[0x11];
         s32 b = self[0x12];
+        s32 aOnes = a % 10;
+        s32 bTens = b / 10;
         void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[a / 10]);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 8), h);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 10), h);
-        h = fn_804030C4(0x54494D47, lbl_804B1CA0[a % 10]);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 12), h);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 14), h);
-        h = fn_804030C4(0x54494D47, lbl_804B1CA0[b / 10]);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 16), h);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 18), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 8), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 10), h);
+        h = fn_804030C4(0x54494D47, lbl_804B1CA0[aOnes]);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 12), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 14), h);
+        h = fn_804030C4(0x54494D47, lbl_804B1CA0[bTens]);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 16), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 18), h);
         h = fn_804030C4(0x54494D47, lbl_804B1CA0[b % 10]);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 20), h);
-        Attach(Create(*(void**)(self + 4), lbl_80490C78, 22), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 20), h);
+        Attach(Search(*(void**)(self + 4), lbl_80490C78, 22), h);
     }
     self[0x13] = 0;
 }
