@@ -1214,6 +1214,11 @@ extern "C" const char lbl_805432CC[4];
 extern "C" const char lbl_805432D4[4];
 extern "C" const u32 lbl_80475D64[];
 extern "C" const char lbl_80475DC8[];
+
+static inline void msgSetColor(MsgLayout* layout, u32 color, char* buf) {
+    layout->m154 = color;
+    snprintf(buf, 30, lbl_80475DC8, color);
+}
 extern "C" const char lbl_805432BC[4];
 extern "C" const char lbl_805432C0[4];
 extern "C" const char lbl_805432C4[4];
@@ -1332,8 +1337,9 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
                 strcat(p->str2c0, lbl_805432D4);
                 strcat(p->str2c4, lbl_805432D4);
             }
+            u8 tag = data[4];
             p->m2d0 += *(s16*)(lbl_8050DB0C + 0x2ee);
-            fn_8039D0DC(p, data[4]);
+            fn_8039D0DC(p, tag);
         }
         return 1;
     case 0x20019:
@@ -1346,8 +1352,9 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
                 strcat(p->str2c0, lbl_805432D4);
                 strcat(p->str2c4, lbl_805432D4);
             }
+            u8 tag = data[0];
             p->m2d0 += *(s16*)(lbl_8050DB0C + 0x2ee);
-            fn_8039D0DC(p, data[0]);
+            fn_8039D0DC(p, tag);
         }
         return 1;
     case 0x20004:
@@ -1368,14 +1375,13 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
         return 1;
     case 0x2001e:
         if (p->cur > p->lineTab[p->layout->m15c] && data[0] < 5) {
-            p->layout->m154 = lbl_80475D64[data[0]];
-            snprintf(buf, 30, lbl_80475DC8, p->layout->m154);
+            snprintf(buf, 30, lbl_80475DC8, p->layout->m154 = ((const s32*)lbl_80475D64)[data[0]]);
             strcat(p->str2c0, buf);
-            if ((p->layout->font->flags & 0x40) == 0 && *((u8*)p->layout + 0x1a2) != 0) {
-                snprintf(buf, 30, lbl_80475DC8, -1);
+            if ((p->layout->font->flags & 0x40) != 0 || *((u8*)p->layout + 0x1a2) == 0) {
+                snprintf(buf, 30, lbl_80475DC8, 0xff);
                 strcat(p->str2c4, buf);
             } else {
-                snprintf(buf, 30, lbl_80475DC8, 0xff);
+                snprintf(buf, 30, lbl_80475DC8, -1);
                 strcat(p->str2c4, buf);
             }
             p->m2d0 += strlen(buf);
@@ -1471,7 +1477,7 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
     if (event != 0 && p->cur > p->lineTab[p->layout->m15c] && p->m2d6 != 0) {
         if (!p->testBit(p->cur)) {
             if (p->layout->m16c == 0 || !p->testBit(p->cur)) {
-                s32 n = 28 - ((s8*)p + p->cur)[0x265];
+                s32 n = 28 - p->lineTab[p->cur + 43];
                 if (n > 0 && n < 28) {
             p->str2c0[p->m2d0++] = 0xff;
             p->str2c0[p->m2d0++] = n + 208;
@@ -1582,10 +1588,15 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
         }
         return 1;
     case 0x1000b:
-    case 0x1000c:
         if (p->cur > p->lineTab[p->layout->m15c]) {
             p->str2c0[p->m2d0++] = 0x3c;
             p->str2c0[p->m2d0++] = 0x60;
+        }
+        return 1;
+    case 0x1000c:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0x80;
         }
         return 1;
     case 0x10010:
@@ -1686,7 +1697,7 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
     case 0x20016:
     {
         u8 tag;
-        if (p->cur > p->lineTab[p->layout->m15c] && ((tag = data[0]) <= 5 || tag == 11)) {
+        if (p->cur > p->lineTab[p->layout->m15c] && ((u32)(tag = data[0]) <= 5 || tag == 11)) {
             p->str2c0[p->m2d0++] = 0xfd;
             p->str2c0[p->m2d0++] = tag;
         }
