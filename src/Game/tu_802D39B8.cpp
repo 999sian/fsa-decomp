@@ -2903,16 +2903,20 @@ extern "C" bool fn_802DEBF8() {
 }
 
 extern "C" void fn_802DEC40(s32 index, s32 digit, u32 value) {
-    char* root = *(char**)(lbl_8053AAF8 + 4);
-    char* p = *(char**)(root + 0x0C);
-    index = index < 8 ? 0 : index - 7;
-    s32 shift = 60 - digit * 4;
+    u8* p;
+    u32 idx;
+    char* root;
+    s32 shift;
+    idx = index < 8 ? 0 : index - 7;
+    root = *(char**)(lbl_8053AAF8 + 4);
+    p = *(u8**)(root + 0x0C);
+    shift = 60 - digit * 4;
     u64 mask = (u64)15 << shift;
-    RoomArrays* base = (RoomArrays*)((u32*)root)[3];
-    base->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] &= mask ^ 0xFFFFFFFFFFFFFFFFULL;
+    RoomArrays* base = (RoomArrays*)*(u32*)(root + 0x0C);
+    base->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][idx] &= mask ^ 0xFFFFFFFFFFFFFFFFULL;
     u64 bits = (u64)value << shift;
     base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    base->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] |= bits;
+    base->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][idx] |= bits;
 }
 
 #pragma opt_propagation off
@@ -2993,7 +2997,7 @@ extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
-extern "C" void fn_802DF234(void) {
+extern "C" void __sinit_tu_802D39B8_cpp(void) {
     u32 base = (u32)lbl_804D4068;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
