@@ -24,9 +24,9 @@ extern u8* lbl_8053AB10;
 
 extern "C" char lbl_804ACC68[];
 extern u8* lbl_8053AAF8;
-extern f32 lbl_80542720;
-extern f32 lbl_80542724;
-extern f32 lbl_80542728;
+extern const f32 lbl_80542720;
+extern const f32 lbl_80542724;
+extern const f32 lbl_80542728;
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_803536C4(Actor* p, s16 n) {
     if (p) {
@@ -97,9 +97,7 @@ extern "C" void fn_80353724(u8* p) {
 }
 
 extern "C" void fn_80353A50(u8* p) {
-    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
-    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
-    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    ((JGeometry::TVec3f*)(p + 0xc))->add(*(JGeometry::TVec3f*)(p + 0x3c));
     if (*(f32*)(p + 0x254) - lbl_80542724 > *(f32*)(p + 0xc)) {
         ((Actor*)p)->detach();
     }
