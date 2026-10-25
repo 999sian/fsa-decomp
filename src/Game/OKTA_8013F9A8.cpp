@@ -1,6 +1,7 @@
 // OKTA_8013F9A8: .text 0x8013F9A8-0x80140E24 (actor OKTA)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "Game/ItemBase.h"
 
 // ---- from Game/fn_8013F9A8_dtor.cpp
 
