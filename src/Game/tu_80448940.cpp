@@ -1,6 +1,7 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" void fn_8013B490(void*);
@@ -21,7 +22,6 @@ extern u8* lbl_8053AED0;
 extern "C" f32 fn_8043D514(u8*);
 extern "C" f32 fn_8043D57C(u8*);
 extern "C" void fn_80402E08(void*, f32, f32);
-#pragma peephole on
 #pragma opt_propagation off
 extern "C" void fn_80448940(u8* self) {
     u8* ptr;
