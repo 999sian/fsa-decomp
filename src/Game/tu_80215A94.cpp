@@ -51,12 +51,7 @@ extern "C" void* Hrmn_InitSlotStateType3(void* obj);
 extern s32 lbl_8046A590[];
 extern void* lbl_8053AED0;
 extern u8 lbl_8050EC80[];
-struct HrmnSaveRecord {
-    u8 pad_0[0x78];
-    u8 m78;
-    u8 m79;
-    u8 pad_7A[0xC8 - 0x7A];
-};
+
 extern u8* lbl_8053AAF8;
 
 extern "C" u8 fn_8022F514(s32 idx);
