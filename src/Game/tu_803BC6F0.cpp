@@ -213,8 +213,6 @@ struct Obj9 {
     virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7();
-    virtual void v8();
     virtual void v9(s32 b);
 };
 
@@ -710,7 +708,7 @@ extern "C" void fn_803BF9C4(u8* p) {
     *(u8*)(*(u8**)(*(u8**)(p + 0x20) + 4) + 0xb0) = 1;
     *(u8*)(*(u8**)(*(u8**)(p + 0x34) + 4) + 0xb0) = 1;
     obj = *(void**)(*(u8**)(p + 0x50) + 4);
-    (*(VtSlot9**)obj)->v9(obj, 0);
+    ((Obj9*)obj)->v9(0);
     r = callVt3(p, 0x500000, 0x506663, 0x75723031);
     o = *(u8**)(p + 0x50);
     fn_804023D0(o, r, o[0x28]);
@@ -763,7 +761,7 @@ extern "C" void fn_803BF9C4(u8* p) {
     fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
     *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
     obj = *(void**)(*(u8**)(p + 0x20) + 4);
-    (*(VtSlot9**)obj)->v9(obj, *(u8*)(*(u8**)(p + 0x20) + 0x28));
+    ((Obj9*)obj)->v9(*(u8*)(*(u8**)(p + 0x20) + 0x28));
 
     for (i = 0; i < 9; i++) {
         obj = *(void**)(p + 4);
@@ -772,7 +770,7 @@ extern "C" void fn_803BF9C4(u8* p) {
     }
     *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
     obj = *(void**)(*(u8**)(p + 0x34) + 4);
-    (*(VtSlot9**)obj)->v9(obj, 0);
+    ((Obj9*)obj)->v9(0);
     r = callVt3(p, 0x50610000, 0x50616363, 0x75723031);
     o = *(u8**)(p + 0x34);
     fn_804023D0(o, r, o[0x28]);
@@ -784,7 +782,7 @@ extern "C" void fn_803BF9C4(u8* p) {
         fn_80402E08(*(void**)(q + 0x24), lbl_80543458, lbl_8054349C);
         *(s16*)(*(u8**)(q + 0x24) + 0x22) = 0;
         obj = *(void**)(*(u8**)(q + 0x24) + 4);
-        (*(VtSlot9**)obj)->v9(obj, 0);
+        ((Obj9*)obj)->v9(0);
         *(s16*)(*(u8**)(q + 0x24) + 0x26) = 0;
         switch (i) {
         case 0:
@@ -968,9 +966,9 @@ extern "C" void fn_803C05D8(u8* p) {
 
 extern "C" void fn_803C0A34(char* pc) {
     u8* p = (u8*)pc;
+    u8* base = (u8*)lbl_804765D0;
     u8* kp;
     s32 i;
-    u8* base = (u8*)lbl_804765D0;
     s32 idx;
     void** arr;
     f32 d;
@@ -1493,12 +1491,12 @@ extern "C" void fn_803C5190(u8* p) {
         if ((p[0x115] & ((1 << *(u32*)(p + 0xa4)) & 0xff)) != 0) {
             setFade(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), b, ((u8*)*(void**)(p + 0x20))[0x28], 0);
-            setKeyedB(p, 4, 0x20, base + 0x368, 9, 0x196);
+            setKeyedAt(p, 4, 0x20, base + 0x368, 9, 0x196);
             if (*(s16*)(p + 0xd8) == sum) {
                 fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
                 *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
                 ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 4))->v9(0);
-                setKeyedB(p, 4, 0x20, base + 0x368, 9, 0x196);
+                setKeyedAt(p, 4, 0x20, base + 0x368, 9, 0x196);
                 *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
             }
         } else {
@@ -1508,8 +1506,8 @@ extern "C" void fn_803C5190(u8* p) {
             fn_80402628(*(void**)(p + 0x18), b, ((u8*)*(void**)(p + 0x18))[0x28], 0);
             setFade(*(void**)(p + 0x1c), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x1c), b, ((u8*)*(void**)(p + 0x1c))[0x28], 0);
-            setKeyedB(p, 4, 0x14, base + 0x48, 0x51, 0x132);
-            setKeyedB(p, 8, 0x14, base + 0x2d0, 0x13, 0x183);
+            setKeyedAt(p, 4, 0x14, base + 0x48, 0x51, 0x132);
+            setKeyedAt(p, 8, 0x14, base + 0x2d0, 0x13, 0x183);
         }
         if (*(s16*)(p + 0xd8) == sum) {
             *(s32*)(p + 0x84) = 0x5f;
@@ -1553,7 +1551,7 @@ extern "C" void fn_803C5190(u8* p) {
     if (*(s16*)(p + 0xd8) > f) {
         setFade(*(void**)(p + 0x20), g, 0, lbl_80543498, lbl_80543458);
         fn_80402628(*(void**)(p + 0x20), g, 0, ((u8*)*(void**)(p + 0x20))[0x28]);
-        setKeyedB(p, 4, 0x20, base + 0x368, 9, 0x196);
+        setKeyedAt(p, 4, 0x20, base + 0x368, 9, 0x196);
     }
 
     if (*(s16*)(p + 0xd8) > lim) {
@@ -1982,13 +1980,13 @@ extern "C" void fn_803C9338(u8* p) {
 
 extern "C" f32 lbl_80543478;
 extern "C" void fn_803C9898(u8* p) {
-    s16 d = *(s16*)(lbl_8050DB0C + 0x1d6);
     s16 b = *(s16*)(lbl_8050DB0C + 0x1d2);
-    s16 c = *(s16*)(lbl_8050DB0C + 0x1d4);
+    s16 d = *(s16*)(lbl_8050DB0C + 0x1d6);
     s16 e = *(s16*)(lbl_8050DB0C + 0x1d8);
-    s32 sum = *(s16*)(lbl_8050DB0C + 0x1d0) + b;
-    s32 tot = c + d + e;
+    s16 c = *(s16*)(lbl_8050DB0C + 0x1d4);
     s16 a = *(s16*)(lbl_8050DB0C + 0x1d0);
+    s32 sum = a + b;
+    s32 tot = c + d + e;
     s16 mx = *(s16*)(lbl_8050DB0C + 0x1da);
     s16 g = *(s16*)(lbl_8050DB0C + 0x1dc);
     u8* base = (u8*)lbl_804765D0;
