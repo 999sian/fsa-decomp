@@ -39,9 +39,14 @@ extern const f32 lbl_8053F9EC;
 extern const f32 lbl_8053F9F0;
 extern const f32 lbl_8053F9F4;
 
-static inline s32 chooseDirection(void* actor, s32 direction, s32 current) {
-    if (current == direction) return fn_801CF720(actor, direction);
-    return fn_801CF798(actor, direction);
+static inline void chooseDirection(void* actor, s32 direction) {
+    char* p = (char*)actor;
+    s32 current = *(s32*)(p + 0x98);
+    if (current == direction) {
+        *(s32*)(p + 0x98) = fn_801CF720(actor, direction);
+    } else {
+        *(s32*)(p + 0x98) = fn_801CF798(actor, direction);
+    }
 }
 
 // ---- Zasl_ctor_8020CA34.cpp ----
