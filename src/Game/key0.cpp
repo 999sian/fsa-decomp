@@ -20,6 +20,13 @@
 #endif
 #include "JSystem/JGeometry/Vec.h"
 
+extern "C" s32 fn_8023F264(s32 a);
+extern "C" void* fn_8023E724(s32 a);
+extern "C" void fn_801F0E34(char* p, s32 a, s32 b);
+extern "C" void fn_801F2618(char* p, void* delta, s32 flags);
+extern "C" BOOL fn_801EE24C(char* p);
+extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
+extern "C" u8 fn_802DCD0C(void* mgr);
 extern const f32 lbl_80540C74;
 extern const f32 lbl_80540C8C;
 extern const f32 lbl_80540C98;
