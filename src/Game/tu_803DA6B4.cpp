@@ -95,11 +95,7 @@ extern "C" Tu803DA6B4Owner* fn_803DA878(Tu803DA6B4Owner* this_, s16 del) {
 extern "C" Tu803DA6B4Owner* fn_803DA8FC(Tu803DA6B4Owner* this_) {
     this_->vtbl = lbl_804B04F8;
     lbl_8053ADC8 = this_;
-    J2DScreen* screen = new J2DScreen();
-    if (screen == 0) {
-        return this_;
-    }
-    this_->mpSub = (Tu803DA6B4Sub*)screen;
+    this_->mpSub = (Tu803DA6B4Sub*)new J2DScreen();
     ((J2DScreen*)this_->mpSub)->setPriority(lbl_804774B4, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x20));
     this_->mpPane0 = ((J2DScreen*)this_->mpSub)->search(0x7072737374727431ULL);
     this_->mpPane1 = ((J2DScreen*)this_->mpSub)->search(0x7072737374727432ULL);
