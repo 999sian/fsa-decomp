@@ -72,6 +72,27 @@ extern void* sManager__8JUTVideo;
 extern "C" void fn_802FC80C(u8* this_);
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx);
 
+extern "C" GXColor lbl_805414F0;
+extern "C" GXColor lbl_80543F50;
+extern "C" u32 lbl_8046FA30[16];
+extern "C" const f32 lbl_8054157C;
+extern "C" const f32 lbl_80541580;
+extern "C" const f32 lbl_80541584;
+static inline void WarpTileQuad802F(u16 tile, f32 x, f32 y, f32 top, f32 bottom) {
+    u16 index=tile&0xfff;
+    GXWGFifo.f32=x+top;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
+    GXWGFifo.f32=x+lbl_80541510+top;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
+    GXWGFifo.f32=x+lbl_80541510+bottom;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
+    GXWGFifo.f32=x+bottom;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
+}
+static inline void PlainTileQuad802F(u16 tile, f32 x, f32 y) {
+    u16 index=tile&0xfff;
+    GXWGFifo.f32=x;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
+    GXWGFifo.f32=x+lbl_80541510;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
+    GXWGFifo.f32=x+lbl_80541510;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
+    GXWGFifo.f32=x;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
+}
+
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
 #include "sdk/stl/math.h"
 static inline void DrawTileQuad(u16 t, s32 px, s32 py, f32 ox, f32 oy, f32 oz) {
@@ -1727,6 +1748,110 @@ extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
             q += 0x10;
         }
     }
+}
+
+extern "C" void fn_802FA3FC(void* mgr) {
+    u8* p = (u8*)mgr;
+    char tex[0x48];
+    s32 c;
+    u8* cur;
+    s32 cnt;
+    f32 k;
+    s32 n;
+    s32 q;
+    s32 m;
+    s32 i;
+    s32 j;
+    s32 r;
+    s32 col;
+    s32 row;
+    s32 idx;
+    u8* buf;
+    u8* ent;
+    u16 key;
+    u8 flag;
+    f32 f27;
+    f32 f26;
+    f32 f25;
+    f32 f24;
+    f32 f23;
+    f32 f22;
+    f32 f21;
+    f32 f20;
+
+    k = lbl_80541518;
+    c = (s8)*(u8*)fn_802D9C4C(fn_802D6A9C());
+    tex[0x28] = 0;
+    storeTIMG__10JUTTextureFPC7ResTIMGUc(tex, ((Tu802F5040ResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x54494D47, (const char*)(lbl_8046F940 + 0x1888)), 0);
+    tex[0x3b] &= 2;
+    switch (c) {
+    case 0x62:
+        cur = p + 0xba8;
+        cnt = 6;
+        break;
+    case 0x63:
+        cur = p + 0x680;
+        cnt = 0x21;
+        break;
+    case 0x64:
+        cur = p + 0xc98;
+        cnt = 0x25;
+        break;
+    case 0x65:
+        k = lbl_80541560;
+        cur = p + 0x130;
+        cnt = 0x22;
+        break;
+    case 0x66:
+        cur = p + 0x1260;
+        cnt = 0x18;
+        break;
+    default:
+        cur = p + 0x130;
+        cnt = 0x22;
+        break;
+    }
+    fn_8013B438(lbl_8053AB10);
+    fn_8013B1E8(lbl_8053AB10);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
+    GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_ALPHA, GX_CH_ALPHA, GX_CH_ALPHA, GX_CH_RED);
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+    load__10JUTTextureF11_GXTexMapID(tex, GX_TEXMAP0);
+    for (n = 0; n < 2; n++) {
+        if (n == 0) {
+            f27 = *(f32*)(p + 0x2368);
+            f26 = *(f32*)(p + 0x236c);
+            buf = *(u8**)(p + 0x28);
+        } else {
+            f27 = *(f32*)(p + 0x2374);
+            f26 = *(f32*)(p + 0x2378);
+            buf = *(u8**)(p + 0x38);
+        }
+        if ((n == 0 && p[0x235c]) || (n == 1 && p[0x2361])) {
+            for (q = 0; q < 2; q++) {
+                for (m = 0; m < 2; m++) {
+                    for (row = 0; row < 16; row++) {
+                        for (col = 0; col < 16; col++) {
+                            idx = row * 16 + col;
+                            key = *(u16*)(buf + idx * 2);
+                            ent = cur;
+                            for (j = 0; j < cnt; j++) {
+                                if (*(u16*)ent == key) {
+                                    f25 = f27 + *(f32*)(ent + 0xc);
+                                    f24 = f26 + *(f32*)(ent + 0x10);
+                                    ent += 0x28;
+                                    break;
+                                }
+                                ent += 0x28;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    __dt__10JUTTextureFv(tex, -1);
 }
 
 extern "C" u32 lbl_8046F9F0[];
