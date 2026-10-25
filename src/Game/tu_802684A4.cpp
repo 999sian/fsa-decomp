@@ -18,7 +18,7 @@ extern "C" void* Actor_CreateByID(void*, u32, s32, JGeometry::TVec3<f32>*, s32, 
 extern "C" void* fn_801F666C(void*, void*);
 extern JGeometry::TVec3<f32> lbl_8046B998[];
 extern void* lbl_804A71A8[];
-extern JGeometry::TVec3<f32> lbl_8046BAE8[];
+extern const JGeometry::TVec3<f32> lbl_8046BAE8[];
 extern "C" u8 fn_80240B84(void*);
 extern "C" u8 fn_8025F448(void*);
 extern "C" u8 fn_8025F590(void*);
@@ -264,10 +264,12 @@ extern "C" void fn_80268BC4(u8* p) {
     clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (int k = 0; k < 8; k++) {
-        *(f32*)(p + 8) = lbl_8046BAE8[k].x;
+        f32 x = lbl_8046BAE8[k].x;
         f32 y = lbl_8046BAE8[k].y;
+        f32 z = lbl_8046BAE8[k].z;
+        *(f32*)(p + 8) = x;
         *(f32*)(p + 0xc) = y;
-        *(f32*)(p + 0x10) = lbl_8046BAE8[k].z;
+        *(f32*)(p + 0x10) = z;
         *(s32*)(p + 0x1c) = k;
         ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(*(u8**)(p + 4) + 8));
         u16 r27 = fn_8022461C((JGeometry::TVec3<f32>*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4));
