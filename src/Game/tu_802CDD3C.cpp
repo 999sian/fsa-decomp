@@ -28,7 +28,6 @@ extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
 extern "C" char sincosTable___5JMath[];
 extern "C" const f32 lbl_80540E30;
-extern "C" const u8 lbl_80540E28[];
 
 static inline void fn_802CDD9C_draw(char* this_, void* pos, u32 tex, void* rec)
 {
@@ -62,16 +61,16 @@ extern "C" void fn_802CDD9C(char* this_)
         rec.b1d = lbl_80540E28[*(s32*)(this_ + 0x23c)];
         rec.b24 = 1;
         if (*(s32*)(this_ + 0x234) >= 0x1b && *(s32*)(this_ + 0x234) <= 0x1e) {
+            PSMTXIdentity(mtx);
             s16 ang = *(s16*)(this_ + 0x248);
             f32 sx = *(f32*)(this_ + 0x24c);
             f32 sy = *(f32*)(this_ + 0x250);
             f32 sz = *(f32*)(this_ + 0x254);
             f32* tbl = (f32*)sincosTable___5JMath;
-            f32 s = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8));
-            f32 c = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8) + 4);
             f32 s0 = tbl[0];
+            f32 s = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8));
             f32 c0 = tbl[1];
-            PSMTXIdentity(mtx);
+            f32 c = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8) + 4);
             rec.w18 = mtx;
             mtx[0][0] = sx * (c * c0);
             mtx[0][1] = sy * ((s0 * s) * c0 - c0 * s0);
@@ -99,9 +98,69 @@ extern "C" void fn_802CDD9C(char* this_)
         } else {
             tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234)]);
             fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-            rec = DrawRec();
+            new (&rec) DrawRec();
             rec.b1c = lbl_80540E28[*(s32*)(this_ + 0x238)] + 1;
             rec.b1d = lbl_80540E28[*(s32*)(this_ + 0x23c)];
+            switch (*(s32*)(this_ + 0x234)) {
+            case 0:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+                rec.w34 = 1;
+                rec.w10 = -0x6a;
+                rec.b2c = 0;
+                rec.b24 = 0;
+                tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234) + 0x51]);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x15:
+                rec.b2d = 1;
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x61c);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x31:
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x628);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x33:
+                rec.b24 = 1;
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x634);
+                v.x = *(f32*)(this_ + 0xc);
+                v.y = *(f32*)(this_ + 0x10) - lbl_80540E30;
+                v.z = lbl_80540E34;
+                fn_802CDD9C_draw(this_, &v, tex, &rec);
+                break;
+            case 0x34:
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x644);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x37:
+            case 0x38:
+            case 0x39:
+                rec.b2c = 0;
+                rec.b24 = 1;
+                tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234) + 0x29]);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x3e:
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x658);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x42:
+                rec.b24 = 1;
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x670);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            case 0x43:
+                rec.b24 = 1;
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x684);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                break;
+            }
         }
     }
 }
