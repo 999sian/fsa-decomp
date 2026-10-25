@@ -104,10 +104,10 @@ extern "C" char lbl_8046C878[];
 extern "C" void fn_802AAEC0(int* param_1)
 {
     param_1[0x8d] = param_1[0x24] & 0xff;
-    if ((param_1[0x8d] == 0 && ((u8 (*)(int*))(*(int**)param_1)[13])(param_1)) ||
-        (param_1[0x8d] != 0 && ((u8*)fn_801F856C())[0x305c] == 1)) {
-        int* obj = *(int**)((u8*)lbl_8053AAF8 + 0xa4);
-        int ret = ((int (*)(int*, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+    if ((param_1[0x8d] == 0 && (u8)((Actor*)param_1)->v11()) ||
+        (param_1[0x8d] != 0 && fn_801F856C()[0x305c] == 1)) {
+        JKRFileLoader* obj = *(JKRFileLoader**)((u8*)lbl_8053AAF8 + 0xa4);
+        int ret = (int)obj->getResource(0x53434820, lbl_8046C878);
         fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0x180, 0, 0x40, 0xc0);
         fn_802D7920(fn_802D6A9C(), 0);
         *((u8*)param_1 + 0x11c) = 0;
