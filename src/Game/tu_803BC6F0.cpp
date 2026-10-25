@@ -191,6 +191,15 @@ static inline void drawTextRow(u8* p, u8* q, u8* t) {
     }
 }
 
+// Keyed loop: each entry's key from the lbl_804765D0 table feeds the virtual call on p+recvOff, then fn_804023D0 sets target.
+static inline void setKeyed(u8* p, s32 recvOff, void* target, u8* keys, s32 n, s32 flagOff) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        void* s = ((TextBoxVt15*)*(void**)(p + recvOff))->v15(*(void**)(p + recvOff), *(u64*)(keys + i * 8));
+        fn_804023D0(target, s, p[i + flagOff]);
+    }
+}
+
 struct PaneVt9 {
     void* v0;
     void* v1;
