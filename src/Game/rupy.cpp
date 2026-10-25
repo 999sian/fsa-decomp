@@ -50,6 +50,22 @@ struct RupyResMgr {
     virtual void* get(u32 type, const char* name);
 };
 
+// Actor vtable slot 13 (byte offset 0x34).
+struct RupySlot13 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual u8 slot13();
+};
+
 // ---- fn_8032AB80_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
@@ -541,6 +557,7 @@ extern "C" void fn_8032BFB0(char* p) {
     {
         f32 cx;
         f32 ang;
+        f32 s;
         f32 sx;
         f32 sy;
         f32 sz;
@@ -553,6 +570,7 @@ extern "C" void fn_8032BFB0(char* p) {
         cx = cos(lbl_80541D88);
         cy = cos(ang);
         cz = cos(lbl_80541D88);
+        s = scale;
         f32 sxsy = sx * sy;
         f32 cxsz = cx * sz;
         f32 cxcz = cx * cz;
@@ -563,15 +581,15 @@ extern "C" void fn_8032BFB0(char* p) {
         rec.w18 = mtx;
         rec.b2d = 1;
         rec.b20 = 0;
-        mtx[0][0] = scale * cycz;
-        mtx[1][0] = scale * cysz;
-        mtx[2][0] = scale * -sy;
-        mtx[0][1] = scale * (sxsy * cz - cxsz);
-        mtx[1][1] = scale * (sxsy * sz + cxcz);
-        mtx[2][1] = scale * (sx * cy);
-        mtx[0][2] = scale * (cxcz * sy + sxsz);
-        mtx[1][2] = scale * (cxsz * sy - sxcz);
-        mtx[2][2] = scale * (cx * cy);
+        mtx[0][0] = s * cycz;
+        mtx[1][0] = s * cysz;
+        mtx[2][0] = s * -sy;
+        mtx[0][1] = s * (sxsy * cz - cxsz);
+        mtx[1][1] = s * (sxsy * sz + cxcz);
+        mtx[2][1] = s * (sx * cy);
+        mtx[0][2] = s * (cxcz * sy + sxsz);
+        mtx[1][2] = s * (cxsz * sy - sxcz);
+        mtx[2][2] = s * (cx * cy);
     }
     st = *(s32*)(p + 0x230);
     if (st == 5 || st == 6) {
@@ -635,6 +653,9 @@ extern "C" void fn_8032BFB0(char* p) {
         fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, id, big != 0, 2, -1, 0, 0, 0);
     }
     *(JGeometry::TVec3<f32>*)(p + 0xc) = save;
+}
+
+extern "C" void fn_8032C664(char* p) {
 }
 
 // RUPY: small helpers.
