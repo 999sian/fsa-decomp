@@ -17,7 +17,8 @@ static inline unsigned long* BankChunk8002F34C(char* base, unsigned long tag) {
     unsigned long* chunk = (unsigned long*)(base + 0x20);
     while ((char*)chunk < end) {
         if (*chunk == tag) return chunk;
-        chunk = (unsigned long*)BankAlign8002F34C((unsigned long)((char*)chunk + chunk[1] + 8));
+        long address = (long)chunk + (long)chunk[1];
+        chunk = (unsigned long*)((address + 0xb) & ~3);
     }
     return 0;
 }
@@ -119,8 +120,8 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
     for (unsigned long i = 0; i < list[2]; i++, envt++) {
         unsigned long off = envt[3];
         if (off != 0) {
-            int tag = *(int*)(base + off);
-            unsigned long* p = (unsigned long*)(base + off + 4);
+            unsigned long* p = (unsigned long*)(base + off);
+            int tag = *p++;
             switch (tag) {
             case 0x496e7374: {
                 JASBasicInst* inst = new (heap, 0) JASBasicInst;
@@ -131,10 +132,10 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
 
                 unsigned long effCount = *p++;
                 for (unsigned long j = 0; j < effCount; j++) {
-                    char* fx = base + *p++;
+                    unsigned long* effectData = (unsigned long*)(base + *p++);
+                    int effectTag = *effectData++;
+                    char* fx = (char*)effectData;
                     JASInstEffect* effect;
-                    int effectTag = *(int*)fx;
-                    fx += 4;
                     switch (effectTag) {
                     case 0x52616e64: {
                         JASInstRand* rnd = new (heap, 0) JASInstRand;
@@ -195,10 +196,10 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
                         unsigned long effCount = *(unsigned long*)(rec + 0xc);
                         unsigned long* effp = (unsigned long*)(rec + 0x10);
                         for (unsigned long k = 0; k < effCount; k++) {
-                            char* fx = base + *effp++;
-                            JASInstEffect* effect;
-                            int effectTag = *(int*)fx;
-                    fx += 4;
+                            unsigned long* effectData = (unsigned long*)(base + *effp++);
+                    int effectTag = *effectData++;
+                    char* fx = (char*)effectData;
+                    JASInstEffect* effect;
                     switch (effectTag) {
                             case 0x52616e64: {
                                 JASInstRand* rnd = new (heap, 0) JASInstRand;
