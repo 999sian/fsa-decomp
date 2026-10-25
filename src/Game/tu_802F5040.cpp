@@ -1101,6 +1101,76 @@ if(ent && *(s32*)(ent+0x30)!=-1) fn_802F6800(this_,pos,0,0,0,(s32)tiles,ent);
 }
 }
 
+extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
+    u8* ent=(u8*)ptr;
+    u8* timg=(u8*)a;
+    f32* pos=(f32*)elem;
+    u8* this_=(u8*)base;
+    f32 origin[3];
+    u8 tex[0x40];
+    u8* img;
+    s32 useTex=0;
+    f32 w,h,f27,f26,f30,f31;
+    if(!this_[0x2364]) return;
+    if(ent && ent[0x21]) {if(fn_802F654C(this_,pos,0,0,(s32)timg,0,ent)) return;}
+    if(ent && ent[0x22]) {if(fn_802F6298(this_,(Vec*)pos,0,0,(s32)timg,0,ent)) return;}
+    storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex,timg,0);
+    tex[0x3b]&=2;
+    img=*(u8**)(tex+0x20);
+    w=(f32)*(u16*)(img+2);
+    h=(f32)*(u16*)(img+4);
+    if(ent && ent[0x24] && this_[0x2450]) {
+        useTex=1;
+        fn_8013B1E8(lbl_8053AB10);
+        load__10JUTTextureF11_GXTexMapID(tex,0);
+    }
+    fn_802F5040(pos,ent,origin);
+    f30=lbl_80541520*w;
+    f31=lbl_80541520*h;
+    f27=pos[0]-f30;
+    f26=pos[1]-f31;
+    if(ent && ent[0x23]) {
+        if(*(void**)(ent+0x18)) {
+            f27+=((f32*)*(u8**)(ent+0x18))[3];
+            f26+=((f32*)*(u8**)(ent+0x18))[7];
+        }
+    }
+    f27*=lbl_8054152C;
+    f26*=lbl_8054152C;
+    GXClearVtxDesc();
+    GXSetVtxDesc((GXAttr)9,(GXAttrType)1);
+    GXSetVtxDesc((GXAttr)11,(GXAttrType)1);
+    GXSetVtxDesc((GXAttr)13,(GXAttrType)1);
+    GXSetVtxDesc((GXAttr)14,(GXAttrType)1);
+    GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)9,(GXCompCnt)1,(GXCompType)4,0);
+    GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)11,(GXCompCnt)0,(GXCompType)5,0);
+    GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)13,(GXCompCnt)1,(GXCompType)4,0);
+    GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)14,(GXCompCnt)1,(GXCompType)4,0);
+    GXSetChanCtrl((GXChannelID)4,(GXBool)0,(GXColorSrc)0,(GXColorSrc)1,(GXLightID)0,(GXDiffuseFn)0,(GXAttnFn)2);
+    GXSetNumChans(1);
+    GXSetTevOrder((GXTevStageID)1,(GXTexCoordID)0xff,(GXTexMapID)0xff,(GXChannelID)4);
+    GXSetTevColorIn((GXTevStageID)1,(GXTevColorArg)0xf,(GXTevColorArg)0xc,(GXTevColorArg)0xa,(GXTevColorArg)0);
+    GXSetTevAlphaIn((GXTevStageID)1,(GXTevAlphaArg)7,(GXTevAlphaArg)6,(GXTevAlphaArg)5,(GXTevAlphaArg)0);
+    GXSetTevColorOp((GXTevStageID)1,(GXTevOp)0,(GXTevBias)2,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+    GXSetTevAlphaOp((GXTevStageID)1,(GXTevOp)0,(GXTevBias)2,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)1,(GXTevSwapSel)0,(GXTevSwapSel)0);
+    GXSetTevDirect((GXTevStageID)1);
+    GXSetNumTevStages(2);
+    if(useTex) {
+        GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);
+        GXSetNumTexGens(2);
+    }
+    GXSetTevOrder((GXTevStageID)2,(GXTexCoordID)1,(GXTexMapID)1,(GXChannelID)0xff);
+    GXSetTevColorIn((GXTevStageID)2,(GXTevColorArg)0xf,(GXTevColorArg)0,(GXTevColorArg)8,(GXTevColorArg)0xf);
+    GXSetTevAlphaIn((GXTevStageID)2,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)0);
+    GXSetTevColorOp((GXTevStageID)2,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+    GXSetTevAlphaOp((GXTevStageID)2,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)2,(GXTevSwapSel)0,(GXTevSwapSel)0);
+    GXSetTevDirect((GXTevStageID)2);
+    GXSetNumTevStages(3);
+    GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,0);
+}
+
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, void* ptr, f32 scaleX, f32 scaleY) {
     u8* data=(u8*)a;
     u8* ent=(u8*)ptr;
@@ -2023,12 +2093,12 @@ extern "C" void fn_802FAC10(u8*, s32, s32, s32, s32, u8, u8, s32*);
 #pragma opt_common_subs on
 extern "C" const f32 lbl_80541588,lbl_8054158C,lbl_80541590,lbl_80541594;
 extern "C" void fn_8030DFE8(void*,s32);
+#pragma opt_common_subs on
 #pragma opt_strength_reduction off
-#pragma opt_common_subs off
 extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, s32 effect, u8 opacity) {
     u8* regs=(u8*)registerPtr;
-    s32* rect=(s32*)rectData;
-    s32* viewport=(s32*)viewportData;
+    const s32* rect=(s32*)rectData;
+    const s32* viewport=(s32*)viewportData;
     JGeometry::TBox2<f32> box;
     box.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
     fn_8013B414(lbl_8053AB10,&box,0);
@@ -2036,20 +2106,22 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     GXSetScissor(viewport[0],viewport[1],viewport[2],viewport[3]);
     s32 scrollX=((regs[0xb]<<1)&0x1f0)|((regs[0xf]>>4)&15);
     s32 scrollY=((regs[0x13]<<1)&0x1f0)|((regs[0x17]>>4)&15);
-    s32* wave=0;
+    s32* wave=NULL;
     void* controller=fn_8022BCD4(player);
     if (enabled) {
         u8 special=0;
         if (((((regs[2]>>2)&7)-1)&7)==0 || self[0x134+player]!=0) special=1;
-        u16 color=((u16*)(self+0x114))[1+!special];
+        u16 color=((u16*)(self+0x114))[2-(special!=0)];
         fn_8013B3F0(lbl_8053AB10);
         JGeometry::TBox2<f32> bg;
         bg.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
         GXColor rgb;
         s32 red=color&0x7c00;
         rgb.r=(red>>7)|(red>>12);
-        rgb.g=((color>>2)&0xf8)|((color>>7)&7);
-        rgb.b=((color<<3)&0xf8)|((color>>2)&7);
+        s32 green=(color>>5)&31;
+        s32 blue=color&31;
+        rgb.g=(green<<3)|(green>>2);
+        rgb.b=(blue<<3)|(blue>>2);
         rgb.a=255;
         fn_8013B004(&bg,&rgb);
         if ((regs[0x17]>>3)&1) {
@@ -2059,7 +2131,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
                 s32 selector=6;
                 if ((u32)mode<=1 || self[0x134+player]) selector=5;
                 else if (((regs[2]>>6)&3)==3) selector=(regs[5]>>4)&3;
-                if (controller) wave=((s32*(*)(void*,s32,s32,u16))fn_8030B1E8)(controller,mode,selector,(u16)scrollY);
+                if (controller) wave=fn_8030B1E8(controller,mode,selector,(u16)scrollY);
                 fn_802FAC10(self,((regs[2]>>2)&7)-1,scrollX,scrollY,self[0x134+player],255,255,wave);
             }
         }
@@ -2148,14 +2220,13 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
         fn_8013B3F0(lbl_8053AB10);
         JGeometry::TBox2<f32> overlay;
         overlay.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
-        GXColor black;
-        black.r=0;black.g=0;black.b=0;black.a=255-opacity;
+        GXColor black={0,0,0,255-opacity};
         fn_8013B004(&overlay,&black);
     }
     fn_8030DFE8(*(void**)((u8*)lbl_8053AB10+0x24),1);
 }
-#pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
@@ -2324,6 +2395,30 @@ extern "C" void fn_802FC80C(u8* this_) {
             fn_802FC268(this_, this_ + 0x2368, 0, *(u32*)(this_ + 0x28));
         }
     }
+}
+
+extern "C" void fn_802FCE74(u8* this_) {
+    u8* p = this_;
+    p[0] = 0;
+}
+
+extern "C" void fn_802FDDD4(u8* this_) {
+    s32 counter;
+    s32 i;
+    s32 j;
+    *(s32*)(this_ + 0x2388) = *(s32*)(this_ + 0x2388) + 1;
+    if (*(s32*)(this_ + 0x2388) >= 2) {
+        *(s32*)(this_ + 0x2388) = 0;
+    }
+    counter = *(s32*)(this_ + 0x2388);
+    i = 0;
+    do {
+        j = 0;
+        do {
+            j++;
+        } while (j <= *(s32*)(this_ + 0x2380));
+        i++;
+    } while (i <= *(s32*)(this_ + 0x2384));
 }
 
 extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
@@ -2843,8 +2938,8 @@ extern "C" void fn_803003AC(void* p) {
     u8* b = (u8*)p;
     *(s32*)(b + 0x38) = -1;
     *(s32*)(b + 0x3c) = -1;
-    for (u8 i = 0; i < 0x10; i += 8) {
-        b[i + 0x28] = i;
+    for (int i = 0; (u8)i < 0x10; i += 8) {
+        b[(u8)(i + 0) + 0x28] = i + 0;
         b[(u8)(i + 1) + 0x28] = i + 1;
         b[(u8)(i + 2) + 0x28] = i + 2;
         b[(u8)(i + 3) + 0x28] = i + 3;
