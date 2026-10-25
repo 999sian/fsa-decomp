@@ -704,7 +704,7 @@ inline s32 getModeOwnerCached(const char* p) {
     return S32(p, 0x120c);
 }
 inline BOOL isLinkOwnerCached(char* p) {
-    s32 v;
+    int v;
     u8 bit = 1 << S32(p, 4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) return 1;
     if (getModeOwnerCached(p) == 4) {
