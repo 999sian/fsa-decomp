@@ -101,6 +101,27 @@ extern void* lbl_8053AEC0;
 extern "C" void fn_8043670C(void* p, s32 a);
 extern "C" void fn_80431A9C(void* mgr, s32 id, u8 v, s32 a);
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
+extern "C" void fn_802F86CC(void* a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_803E1668(u8* p) {
+    s32 i;
+    s32 j = 0;
+    s32 k;
+    f32 t;
+    f32 a;
+    f32 b;
+    if (*(s32*)(p + 0x220) >= 100) {
+        return;
+    }
+    for (i = 0; i < 4; i++) {
+        j += 8;
+    }
+    k = *(s32*)(p + 0x1bc);
+    a = (f32)k;
+    b = a - 1.0f;
+    t = b;
+    fn_802F86CC(p, t, a, j, 0, 0);
+}
+
 extern "C" void fn_803E29C8(u8* param_1) {
     fn_8043670C(*(void**)(param_1 + 0x5c), 0);
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
@@ -112,6 +133,7 @@ extern "C" void fn_803E2A0C(u8* param_1) {
     *(s32*)(param_1 + 0x1d4) = 0xd;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803E3320(u8* param_1) {
     s32 j = 0;
     s32 i;
@@ -157,7 +179,7 @@ extern "C" void fn_803E3320(u8* param_1) {
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
     *(s32*)(param_1 + 0x1d4) = 0xb;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_803E3548(u8* param_1) {
     *(s16*)(param_1 + 0x254) = 0;
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
@@ -534,6 +556,32 @@ extern "C" void fn_803E4940(u8* p) {
     }
 }
 
+extern const f32 lbl_805436CC;
+extern const f32 lbl_80543690;
+extern const f32 lbl_805436D4;
+extern const f32 lbl_805436D0;
+extern "C" void fn_803E51C4(u8* param_1) {
+    s32 i;
+    s32 v;
+    u8* flags = lbl_8053AAF8;
+    for (i = 0; i < 4; i++) {
+        u32 mask = 1 << (i + 4);
+        if (flags[0x82] & mask) {
+            v = *(s32*)(param_1 + 0x220 + i * 4);
+            if (v == 0) {
+                param_1[0x26b] &= ~(1 << i);
+            } else if (v < 0x24) {
+                f32 sq = (f32)(v * v);
+                s32 r = (s32)(lbl_80543690 * (sq / lbl_805436CC));
+                (void)r;
+            }
+        }
+    }
+    (void)lbl_805436D4;
+    (void)lbl_805436D0;
+    (void)lbl_80543664;
+}
+
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
@@ -642,6 +690,10 @@ extern "C" void fn_803E6A2C(u8* param_1) {
         }
         fn_80458880(lbl_8053AF80, 0xb, -1);
     }
+}
+
+void fn_803E6AB0(void)
+{
 }
 
 extern "C" void fn_803E8210(u8* p) {
@@ -753,7 +805,7 @@ lo=(long)group*10;hi=(int)group*10+10;offsets=p+group*4;lo2=group*30;bytes=p+gro
  for(i=0;i<5;i++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((u8)value);}
  }}}
  }else{
- s32 group;long lo;int hi;s32 lo2;
+ int group;long lo;int hi;s32 lo2;
 group=0;
  for(;group<2;group++,id++){
 lo=(long)group*10;hi=(int)group*10+10;lo2=group*30;
@@ -840,7 +892,7 @@ lo=(long)group*10;hi=(int)group*10+10;lo2=group*30;
  pane=(*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL);
  pane->move(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
  pane=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
- f64 h=getBounds__7J2DPaneFv(pane)[1];
+ f32 h=pane->getBounds()->i.y;
  pane=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
  pane->move(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
 }
@@ -1924,6 +1976,35 @@ extern "C" void* fn_803EDF94(u8* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_803EE254(u8* self) {
+    s32 i;
+    u8* base = lbl_80529DEC;
+    *(void**)self = lbl_804B0B00;
+    *(s32*)(self + 0x1b4) = 0;
+    *(s32*)(self + 0x1bc) = *(u8*)(base + 0x23c);
+    if (*(s32*)(self + 0x1bc) == 0) {
+        *(s32*)(self + 0x1b8) = 1;
+    } else {
+        *(s32*)(self + 0x1b8) = 0;
+    }
+    *(s32*)(self + 0x1d0) = 0;
+    *(u8*)(self + 0x264) = 0;
+    *(u8*)(self + 0x26b) = 0;
+    *(u8*)(self + 0x26c) = 0;
+    *(s32*)(self + 0x1d8) = 2;
+    *(s32*)(self + 0x1d4) = 2;
+    *(s32*)(self + 0x1dc) = 0;
+    for (i = 0; i < 4; i++) {
+        *(s32*)(self + 0x1e0 + i * 4) = 0;
+        *(s32*)(self + 0x1f0 + i * 4) = fn_80403414(i);
+        *(s32*)(self + 0x200 + i * 4) = fn_804033D4(i);
+        *(s32*)(self + 0x210 + i * 4) = fn_8040336C(i);
+        *(s32*)(self + 0x220 + i * 4) = 0;
+        *(s32*)(self + 0x1c0 + i * 4) = 0;
+        *(s16*)(self + 0x254 + i * 2) = 0;
+    }
 }
 
 extern "C" u32 lbl_804B06A0[];
