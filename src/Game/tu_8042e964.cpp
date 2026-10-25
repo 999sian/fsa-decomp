@@ -528,3 +528,106 @@ void* fn_80431C38(void* this_, s16 flag) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JKernel/JKRArchive.h"
+#include "stdio.h"
+extern "C" char lbl_8048F3AC[];
+extern "C" const char lbl_80543B20[];
+extern "C" f32 fn_80430518(void*,u8,s32,f32);
+extern "C" void fn_8042EF9C(T80431_Owner* self, char* out, s32 message, s32 count) {
+JUTFont::TWidth wa,wb,wc,wd,we;
+char chunk[3];
+char padding[16];
+f32 widths[10];
+char* resource=(char*)(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa8))->getResource(0x3f3f3f3f,lbl_8048F3AC);
+char* table=resource+0x20;
+char* text=table+*(s32*)(table+4)+*(s32*)(table+message*8+0x10)+8;
+f32 size=((J2DTextBox*)self->screen->search('Twt01'))->mFontSize.x;
+f32 scale=size/(f32)MessageFont()->getCellWidth();
+MessageFont()->getCellHeight();
+self->padea=0xff;
+self->lineCount=1;
+self->width=0.0f;
+self->choiceWidth[0]=0.0f;
+self->choiceWidth[1]=0.0f;
+self->choiceWidth[2]=0.0f;
+self->choiceWidth[3]=0.0f;
+f32 width=0.0f;
+f32 spaces=0.0f;
+for(int i=0;i<10;i++) widths[i]=0.0f;
+s32 idx=0;
+int code=0;
+u8 choice=0;
+u8 number=(u8)count;
+int digit=number+'0';
+char* p;
+while((p=text+idx,*p)!=0) {
+if(*p=='\n') {
+if(self->width<width) self->width=width;
+widths[self->lineCount-1]=width;
+self->lineCount++;
+idx++;
+width=0.0f;
+} else if(*p==0x1a) {
+if(p[2]==2) {
+int kind=p[4];
+if(kind==0 || kind==10 || kind==18 || kind==25) {
+if(choice==1) {self->choiceWidth[0]-=spaces; spaces=0.0f;}
+if(choice<2) {self->choiceX[choice]=width;self->choiceLine[choice]=(f32)self->lineCount;choice++;}
+} else if(kind==1 || kind==9 || kind==17 || kind==26) {
+if(choice==1) {self->choiceWidth[0]-=spaces; spaces=0.0f;}
+if(choice<2) {self->choiceX[choice]=width;self->choiceLine[choice]=(f32)self->lineCount;self->padea=choice;choice++;}
+}
+} else if(p[2]==3) {
+code=digit;
+MessageFont()->getWidthEntry(digit,&wa);
+width+=scale*(f32)(int)wa.w1;
+if(choice) {
+MessageFont()->getWidthEntry(digit,&wb);
+self->choiceWidth[choice-1]+=scale*(f32)(int)wb.w1;
+}
+f32 added=fn_80430518(self,(u8)p[5],number,scale);
+width+=added;
+if(choice) self->choiceWidth[choice-1]+=added;
+}
+idx+=p[1];
+} else {
+code=(u8)*p;
+idx++;
+if(MessageFont()->isLeadByte(code)) {code=(code<<8)|(u8)text[idx];idx++;}
+MessageFont()->getWidthEntry(code,&wc);
+width+=scale*(f32)(int)wc.w1;
+if(choice) {
+if(code==0x20 || (u32)code==0x8140) {
+MessageFont()->getWidthEntry(code,&wd);
+spaces+=scale*(f32)(int)wd.w1;
+}
+MessageFont()->getWidthEntry(code,&we);
+self->choiceWidth[choice-1]+=scale*(f32)(int)we.w1;
+}
+}
+}
+widths[self->lineCount-1]=width;
+if(self->width<width) self->width=width;
+self->choiceWidth[3]=width;
+self->lineCount=1;
+idx=0;
+chunk[0]=chunk[1]=chunk[2]=0;
+out[0]=0;
+int indent=(int)((428.0f-widths[self->lineCount-1])*0.5f+0.5f);
+if(indent>0) {snprintf(padding,15,lbl_80543B20,indent);strcat(out,padding);}
+while((p=text+idx,*p)!=0) {
+if(*p=='\n') {
+chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
+self->lineCount++;idx++;
+int indent=(int)((428.0f-widths[self->lineCount-1])*0.5f+0.5f);
+if(indent>0) {snprintf(padding,15,lbl_80543B20,indent);strcat(out,padding);}
+} else if(*p==0x1a) {
+if((u8)p[2]==3) {chunk[0]=digit;chunk[1]=0;code=digit;strcat(out,chunk);fn_80430368(self,(u8)p[5],number,out);}
+idx+=p[1];
+} else {
+if(MessageFont()->isLeadByte(code)) {chunk[0]=p[0];chunk[1]=p[1];chunk[2]=0;strcat(out,chunk);idx+=2;}
+else {chunk[0]=p[0];chunk[1]=0;strcat(out,chunk);idx++;}
+}
+}
+chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
+}
