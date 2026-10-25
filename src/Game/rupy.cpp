@@ -7,6 +7,15 @@
 #undef Vec
 #include "Game/ItemBase.h"
 
+// Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
+struct RupyResMgr {
+    virtual void r0();
+    virtual void r1();
+    virtual void r2();
+    virtual void r3();
+    virtual void* get(u32 type, const char* name);
+};
+
 // ---- fn_8032AB80_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
