@@ -7,6 +7,8 @@
 #include "JSystem/J2D/J2DScreen.h"
 #include <string.h>
 
+struct MessageEntry8042 { s32 offset; s32 size; };
+struct MessageTable8042 { s32 header[4]; MessageEntry8042 entries[1]; };
 struct T8042_PaneAnim {
     u8 pad0[0x22];
     s16 f22;
@@ -533,6 +535,8 @@ void* fn_80431C38(void* this_, s16 flag) {
 extern "C" char lbl_8048F3AC[];
 extern "C" const char lbl_80543B20[8];
 extern "C" f32 fn_80430518(void*,u8,s32,f32);
+extern "C" f32 lbl_80543B1C;
+#pragma opt_propagation off
 extern "C" void fn_8042EF9C(T80431_Owner* self, char* out, s32 message, s32 count) {
 JUTFont::TWidth wa,wb,wc,wd,we;
 char chunk[3];
@@ -557,17 +561,18 @@ for(int i=0;i<10;i++) widths[i]=0.0f;
 s32 idx=0;
 int code=0;
 u8 choice=0;
-u8 number=(u8)count;
-int digit=number+'0';
+count=(u8)count;
+int digit=count+'0';
 char* p;
-while((p=text+idx,*p)!=0) {
-if(*p=='\n') {
+char c;
+while((p=text+idx,c=*p)!=0) {
+if(c=='\n') {
 if(self->width<width) self->width=width;
 widths[self->lineCount-1]=width;
 self->lineCount++;
 idx++;
 width=0.0f;
-} else if(*p==0x1a) {
+} else if(c==0x1a) {
 if(p[2]==2) {
 int kind=p[4];
 if(kind==0 || kind==10 || kind==18 || kind==25) {
@@ -585,19 +590,19 @@ if(choice) {
 MessageFont()->getWidthEntry(digit,&wb);
 self->choiceWidth[choice-1]+=scale*(f32)(int)wb.w1;
 }
-f32 added=fn_80430518(self,(u8)p[5],number,scale);
+f32 added=fn_80430518(self,(u8)p[5],count,scale);
 width+=added;
 if(choice) self->choiceWidth[choice-1]+=added;
 }
 idx+=p[1];
 } else {
-code=(u8)*p;
+code=(u8)c;
 idx++;
 if(MessageFont()->isLeadByte(code)) {code=(code<<8)|(u8)text[idx];idx++;}
 MessageFont()->getWidthEntry(code,&wc);
 width+=scale*(f32)(int)wc.w1;
 if(choice) {
-if(code==0x20 || (u32)code==0x8140) {
+if(code==0x20 || code==0x8140) {
 MessageFont()->getWidthEntry(code,&wd);
 spaces+=scale*(f32)(int)wd.w1;
 }
@@ -613,16 +618,16 @@ self->lineCount=1;
 idx=0;
 chunk[0]=chunk[1]=chunk[2]=0;
 out[0]=0;
-int indent=(int)((428.0f-widths[self->lineCount-1])*0.5f+0.5f);
+int indent=(int)((lbl_80543B1C-widths[self->lineCount-1])*lbl_80543B18+lbl_80543B18);
 if(indent>0) {snprintf(padding,15,lbl_80543B20,indent);strcat(out,padding);}
 while((p=text+idx,*p)!=0) {
 if(*p=='\n') {
 chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
 self->lineCount++;idx++;
-int indent=(int)((428.0f-widths[self->lineCount-1])*0.5f+0.5f);
+int indent=(int)((lbl_80543B1C-widths[self->lineCount-1])*lbl_80543B18+lbl_80543B18);
 if(indent>0) {snprintf(padding,15,lbl_80543B20,indent);strcat(out,padding);}
-} else if(*p==0x1a) {
-if((u8)p[2]==3) {chunk[0]=digit;chunk[1]=0;code=digit;strcat(out,chunk);fn_80430368(self,(u8)p[5],number,out);}
+} else if(c==0x1a) {
+if((int)(u8)p[2]==3) {chunk[0]=digit;chunk[1]=0;code=digit;strcat(out,chunk);fn_80430368(self,(u8)p[5],count,out);}
 idx+=p[1];
 } else {
 if(MessageFont()->isLeadByte(code)) {chunk[0]=p[0];chunk[1]=p[1];chunk[2]=0;strcat(out,chunk);idx+=2;}
@@ -631,3 +636,4 @@ else {chunk[0]=p[0];chunk[1]=0;strcat(out,chunk);idx++;}
 }
 chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
 }
+#pragma opt_propagation reset
