@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 struct FsaVObj {
     virtual void v0(void);
@@ -334,10 +335,26 @@ extern u8 lbl_80476520[];
 extern u8 lbl_80476534[];
 extern void* lbl_8053AAF8;
 extern const f32 lbl_80543440;
+static inline void* createSoundController() {
+    void* controller = __nw__FUl(0x60);
+    if (controller != 0) {
+        fn_8045B46C(controller, 0, 0, 0, 8);
+    }
+    return controller;
+}
+
+static inline void* createWaveController(void* pos) {
+    void* controller = __nw__FUl(0x5c);
+    if (controller != 0) {
+        __ct__14WaveControllerFlll(controller, pos, 0, 8);
+    }
+    return controller;
+}
+
 extern "C" void* fn_803B8414(u8* this_) {
-    u32 local_14[2];
-    u32 local_c[2];
-    s32 i;
+    int i;
+    void* res;
+    void* pic;
     u8* tbl;
     *(void**)this_ = lbl_804AFAB0;
     __construct_array(this_ + 0xf8, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0xa);
@@ -350,31 +367,23 @@ extern "C" void* fn_803B8414(u8* this_) {
     for (i = 0; i < 0x32; i++) {
         *(s32*)(this_ + i * 4 + 0x24) = 0;
     }
-    void* res = fn_804030C4(0x54494d47, (const char*)lbl_80476534);
-    void* pic = __nw__FUl(0x168);
-    if (pic != 0) {
-        __ct__10J2DPictureFPC7ResTIMG(pic, res);
-    }
+    res = fn_804030C4(0x54494d47, (const char*)lbl_80476534);
+    pic = new J2DPicture((const ResTIMG*)res);
     *(void**)(this_ + 0x4) = pic;
-    local_c[0] = 0;
-    local_c[1] = 0;
-    local_14[0] = 0xff;
-    local_14[1] = 0xff;
-    obj = *(FsaVObj**)(this_ + 4);
-    obj->v76(&local_14[1], &local_c[1]);
+    ((J2DPicture*)*(void**)(this_ + 4))->setBlackWhite(JUtility::TColor(0xff), JUtility::TColor(0));
     *(f32*)(this_ + 0xec) = lbl_80543440;
     *(f32*)(this_ + 0xf0) = lbl_80543440;
     *(f32*)(this_ + 0xf4) = lbl_80543440;
-    void* m = __nw__FUl(0x60);
-    if (m != 0) {
-        fn_8045B46C(m, 0, 0, 0, 8);
+    pic = __nw__FUl(0x60);
+    if (pic != 0) {
+        fn_8045B46C(pic, 0, 0, 0, 8);
     }
-    *(void**)(this_ + 0x1c) = m;
-    void* wc = __nw__FUl(0x5c);
-    if (wc != 0) {
-        __ct__14WaveControllerFlll(wc, this_ + 0xec, 0, 8);
+    *(void**)(this_ + 0x1c) = pic;
+    pic = __nw__FUl(0x5c);
+    if (pic != 0) {
+        __ct__14WaveControllerFlll(pic, this_ + 0xec, 0, 8);
     }
-    *(void**)(this_ + 0x20) = wc;
+    *(void**)(this_ + 0x20) = pic;
     tbl = lbl_80529DEC;
     *(f32*)(this_ + 0xf8) = lbl_80543440;
     *(f32*)(this_ + 0xfc) = lbl_80543440;
