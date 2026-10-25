@@ -1627,6 +1627,49 @@ BOOL fn_802431B8(char* p) {
 }
 s32 fn_8024322C(char* p) { return S32(p, 0xd08); }
 
+inline bool padActive(char* p) {
+    bool ok;
+    s32 v;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+
+
+BOOL fn_80243234(char* p) {
+    s32 room=S32(p,0x3b4);
+    if((u8)fn_802D6A9C()[room+0x131df]==0) return 0;
+    if ((S32(p,0x3dc)==0 && (!padCheck(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034) ||
+        (S32(p,0x3dc)==1 && (!padCheck(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034)) {
+        S32(p,0x3e8)=3;
+        S32(p,0x3dc)=3;
+        return 1;
+    }
+    if(S32(p,0x3dc)==0 && (!padCheck(p) ? lbl_80540034 : fn_80309FCC(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034) goto ready;
+    if(S32(p,0x3dc)==1 && (!padCheck(p) ? lbl_80540034 : fn_80309FCC(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))<lbl_80540034) goto ready;
+    if(S32(p,0x3dc)==3 && (!padCheck(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034) goto ready;
+    return 0;
+ready:
+    return 1;
+}
+
 u8 fn_80243C64(char* p) {
     f32 f;
     if (!actionReady(p)) {
@@ -1671,30 +1714,6 @@ u32 fn_80309D6C(void*, s32, u32);
 f32 fn_80309D90(void*, s32);
 f32 fn_80309F20(void*, s32);
 f32 fn_80309FCC(void*, s32);
-inline bool padActive(char* p) {
-    bool ok;
-    s32 v;
-    if (U8(p, 0xc80) == 0) {
-        ok = false;
-    } else if (U8(p, 0xcee) != 0) {
-        ok = false;
-    } else if (U8(p, 0x1215) != 0) {
-        ok = false;
-    } else if (U8(p, 0xca0) == 0) {
-        ok = false;
-    } else if (U8(p, 0xce9) == 0) {
-        ok = false;
-    } else {
-        ok = true;
-    }
-    if (!ok) {
-        return false;
-    }
-    if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
-        return false;
-    }
-    return true;
-}
 #define PADF(fn, mask) fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask)
 BOOL fn_80244FFC(char* p) {
     if (!padActive(p)) {
