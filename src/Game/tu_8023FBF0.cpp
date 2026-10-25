@@ -634,13 +634,14 @@ s32 fn_8023FC2C(char* p) {
 
 inline s32 linkIdx(char* p) { return S32(p, 0xd60) >= 0 ? fn_80234004(S32(p, 0xd60)) : S32(p, 0x1224); }
 inline s32 linkRank(char* p) {
+    s32 c;
     s32 n;
     s32 linked = S32(p, 0xd60);
     if (linked < 0) {
         return 0;
     }
+    c = 0;
     n = S32(p, 0x4);
-    s32 c = 0;
     for (int i = 0; i < n; i++) {
         if (linked == fn_8022F3DC(i)) {
             c++;
