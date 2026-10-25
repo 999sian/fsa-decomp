@@ -166,15 +166,21 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
 
 extern "C" void fn_801BE3BC(char* this_) {
-    s32 id;
-    if ((*(u32*)(this_ + 0x230) & 0x2000) && (id = *(s32*)(this_ + 0x2b0)) != 0 &&
-        fn_802D800C(fn_802D6A9C(), id)) {
-        *(u32*)(this_ + 0x230) &= ~0x2000;
-        fn_801BE6C4(this_, 0);
+    s16 base;
+    s32 i;
+    s32 found;
+    if (*(u32*)(this_ + 0x230) & 0x2000) {
+        s32 id = *(s32*)(this_ + 0x2b0);
+        if (id != 0 && fn_802D800C(fn_802D6A9C(), id)) {
+            *(u32*)(this_ + 0x230) &= ~0x2000;
+            fn_801BE6C4(this_, 0);
+        }
     }
-    if (!(*(u32*)(this_ + 0x230) & 0x2000) && (id = *(s32*)(this_ + 0x2b4)) != 0 &&
-        fn_802D800C(fn_802D6A9C(), id)) {
-        *(u32*)(this_ + 0x230) |= 0x2000;
+    if (!(*(u32*)(this_ + 0x230) & 0x2000)) {
+        s32 id = *(s32*)(this_ + 0x2b4);
+        if (id != 0 && fn_802D800C(fn_802D6A9C(), id)) {
+            *(u32*)(this_ + 0x230) |= 0x2000;
+        }
     }
     u32 hidden = *(u32*)(this_ + 0x230) & 0x2000;
     if (hidden) {
@@ -196,17 +202,18 @@ extern "C" void fn_801BE3BC(char* this_) {
         }
         *(s16*)(this_ + 0x2a8) += 0x100;
         if (*(s32*)(this_ + 0x24c) >= 30) {
-            s16 a = *(s16*)(this_ + 0x2a8);
-            s16 base = JMAAtan2Radian(10.0f * JMASSin(a), 6.0f * JMASCos(a)) * 10430.378f;
-            s32 i;
-            s32 found = -1;
+            found = -1;
+            f32 rad = JMAAtan2Radian(10.0f * JMASSin(*(s16*)(this_ + 0x2a8)), 6.0f * JMASCos(*(s16*)(this_ + 0x2a8)));
+            rad *= 10430.378f;
+            base = rad;
             for (i = 0; i < 4; i++) {
                 if (fn_801D08B4(this_, i, this_ + 0xc, 16.0f * *(u8*)(this_ + 0x2ac))) {
                     f32 dy = fn_8023E724(i)->y - (-15.0f + *(f32*)(this_ + 0x10));
                     f32 dx = fn_8023E724(i)->x - *(f32*)(this_ + 0xc);
-                    s16 ang = JMAAtan2Radian(dx, dy) * 10430.378f;
-                    f32 diff = (s16)(base - ang);
-                    if (0.000030517578f * __fabsf(diff) <= 0.02f) {
+                    f32 arad = JMAAtan2Radian(dx, dy);
+                    arad *= 10430.378f;
+                    f32 d = __fabsf((f32)(s16)(base - (s16)arad));
+                    if (0.000030517578f * d <= 0.02f) {
                         found = i;
                         break;
                     }
