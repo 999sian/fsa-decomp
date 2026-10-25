@@ -195,13 +195,20 @@ struct OkamBox {
     u32 w[4];
 };
 
-static inline void okamSetBox(char* this_, const f32 l, const f32 t, const f32 r, const f32 b) {
+static inline void okamSetBox(char* this_, f32 l, f32 t, f32 r, f32 b) {
     f32 x = *(f32*)(this_ + 0x26c);
     f32 y = *(f32*)(this_ + 0x270);
     *(f32*)(this_ + 0x60) = l + x;
     *(f32*)(this_ + 0x64) = t + y;
     *(f32*)(this_ + 0x68) = r + x;
     *(f32*)(this_ + 0x6c) = b + y;
+}
+
+static inline void okamSetBox2(f32* box, f32 x, f32 y, f32 l, f32 t, f32 r, f32 b) {
+    box[0] = l + x;
+    box[1] = t + y;
+    box[2] = r + x;
+    box[3] = b + y;
 }
 
 extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
@@ -213,14 +220,14 @@ extern "C" u8 fn_80237948(s32 idx, f32* pos);
 extern "C" void fn_8013CC50(s32 handle, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
 extern "C" void fn_801AF1EC(char* this_) {
-    s32 i;
     s32 flag = -1;
     s32 res = -1;
+    s32 i = 0;
     f32 pos[2];
     s32 state;
 
     if (res < 0) {
-        for (i = 0; i < 4; i++) {
+        for (; i < 4; i++) {
             res = fn_801F285C(this_, 0, 0, 1, i);
         }
     }
