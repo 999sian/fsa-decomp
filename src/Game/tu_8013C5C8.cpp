@@ -46,15 +46,13 @@ struct EffSlotTable {
     EffSlot slots[0x400];
 };
 
-static inline u8 tu13_inPlay(u8* g) {
+static inline bool tu13_inPlay(u8* g) {
     if (g[0x7f] != 0) {
-        u8 hit = 0;
-        if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb) hit = 1;
-        return hit != 0;
+        u8 hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb);
+        return hit;
     } else {
-        u8 hit = 0;
-        if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc) hit = 1;
-        return hit != 0;
+        u8 hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc);
+        return hit;
     }
 }
 
@@ -584,8 +582,8 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
             }
             f32 off = (f32)((dy << 10) + (dz << 7));
             v[0] = pos[0];
-            v[1] = pos[1] + off;
             v[2] = pos[2] + off;
+            v[1] = pos[1] + off;
             v[2] += fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos) - pos[2];
             switch (effect) {
             case 0x558: case 0x559: case 0x55a: case 0x55b: case 0x55c: case 0x55d: case 0x55e:
@@ -685,20 +683,19 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
                 }
             }
             if (group == 0xff) {
-                EffSlot* slot = (EffSlot*)(*(u8**)(lbl_8053AB10 + 0x28) + 0x10);
-                for (s32 i = 0; i < 0x400; i++, slot++) {
-                    if (slot->used == 0) {
-                        slot->pos[0] = v[0];
-                        slot->pos[1] = v[1];
-                        slot->pos[2] = v[2];
-                        slot->id = effect;
-                        slot->used = 1;
+                EffSlotTable* tbl = *(EffSlotTable**)(lbl_8053AB10 + 0x28);
+                for (s32 i = 0; i < 0x400; i++) {
+                    if (tbl->slots[i].used == 0) {
+                        tbl->slots[i].pos[0] = v[0];
+                        tbl->slots[i].pos[1] = v[1];
+                        tbl->slots[i].pos[2] = v[2];
+                        tbl->slots[i].id = effect;
+                        tbl->slots[i].used = 1;
                         break;
                     }
                 }
             } else {
-                u8* mgr = *(u8**)(lbl_8053AB10 + 0x28);
-                if ((*(JPAResourceManager**)(mgr + 0x8))->getResUserWork(effect) & 1) {
+                if ((*(JPAResourceManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0x8))->getResUserWork(effect) & 1) {
                     cb = (JPAEmitterCallBack*)&lbl_8053AB18;
                 }
                 if (((*(JPAResourceManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0x8))->getResUserWork(effect) & 2) && group != 5) {
@@ -709,13 +706,8 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
             }
             if (em != 0) {
                 f32 k = lbl_8053CE20 * scale;
-                if (group == 2 || group == 4 || group == 5 || group == 8 || group == 10) {
-                    *(f32*)(em + 0x98) = scale;
-                    *(f32*)(em + 0x9c) = scale;
-                    *(f32*)(em + 0xa0) = scale;
-                    *(f32*)(em + 0xb0) = scale;
-                    *(f32*)(em + 0xb4) = scale;
-                } else {
+                switch (group) {
+                default: {
                     f32 m[3][4];
                     m[0][0] = scale;
                     m[0][1] = lbl_8053CE00;
@@ -730,11 +722,60 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
                     m[2][2] = lbl_8053CE00;
                     m[2][3] = v[2];
                     JPASetRMtxSTVecfromMtx(m, (f32 (*)[4])(em + 0x68), (JGeometry::TVec3<f32>*)(em + 0x98), (JGeometry::TVec3<f32>*)(em + 0xa4));
-                    *(f32*)(em + 0xb0) = *(f32*)(em + 0x98);
-                    *(f32*)(em + 0xb4) = *(f32*)(em + 0x9c);
+                    f32 sy = *(f32*)(em + 0x9c);
+                    f32 sx = *(f32*)(em + 0x98);
+                    *(f32*)(em + 0xb0) = sx;
+                    *(f32*)(em + 0xb4) = sy;
                     *(f32*)(em + 0xb0) = scale;
                     *(f32*)(em + 0xb4) = scale;
+                    break;
                 }
+                case 2:
+                case 4:
+                case 5:
+                case 8:
+                case 10:
+                    *(f32*)(em + 0x98) = scale;
+                    *(f32*)(em + 0x9c) = scale;
+                    *(f32*)(em + 0xa0) = scale;
+                    *(f32*)(em + 0xb0) = scale;
+                    *(f32*)(em + 0xb4) = scale;
+                    break;
+                }
+            }
+        } else {
+            switch (effect) {
+            case 0x172:
+                Actor_CreateByID(fn_801F856C(), 0x4b4d5249, (void*)mode, pos, 0, -1, -1);
+                break;
+            case 0x33a: case 0x33b:
+                Actor_CreateByID(fn_801F856C(), 0x4b4d5249, (void*)mode, pos, 2, -1, -1);
+                break;
+            case 0x19d:
+            case 0x24a:
+                Actor_CreateByID(fn_801F856C(), 0x444d4745, (void*)mode, pos, 0, -1, -1);
+                break;
+            case 0x174: case 0x175: case 0x176: case 0x177: case 0x178: case 0x179:
+            case 0x17c:
+            case 0x473:
+                Actor_CreateByID(fn_801F856C(), 0x444d4745, (void*)mode, pos, 1, -1, -1);
+                break;
+            case 0xff:
+                Actor_CreateByID(fn_801F856C(), 0x444d4745, (void*)mode, pos, 0x80, -1, -1);
+                break;
+            case 0x116:
+            case 0x24e: case 0x24f: case 0x250: case 0x251:
+            case 0x3d3: case 0x3d4:
+                em = (u8*)(*(JPAEmitterManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0xc))->createSimpleEmitterID(
+                    *(JGeometry::TVec3<f32>*)pos, effect, 6, 0, cb, pcb);
+                break;
+            case 0x15b:
+            case 0x3d0:
+                Actor_CreateByID(fn_801F856C(), 0x50454646, (void*)mode, pos, 0x2c, -1, 0);
+                break;
+            case 0x3cf:
+                Actor_CreateByID(fn_801F856C(), 0x50454646, (void*)mode, pos, 0x34, -1, 0);
+                break;
             }
         }
     }
