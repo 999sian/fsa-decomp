@@ -18,7 +18,6 @@ extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s
 extern "C" void v01__5ActorFv(void* this_);
 extern "C" u8* lbl_8053AB10;
 extern "C" void fn_802F745C(void* a, void* b, s32 c, void* d);
-extern f32 lbl_8053CC50;
 extern int __float_epsilon[];
 
 extern f32 lbl_8053CC54;
@@ -155,21 +154,25 @@ extern "C" void fn_8012E230(Actor* this_) {
     *(f32*)(p + 0x5c) = t;
 }
 
+extern "C" void v01__5ActorFv(void*);
 extern "C" void fn_8012E5A0(Actor* p) {
     v01__5ActorFv(p);
-    f32* box = (f32*)((char*)p + 0x60);
-    box[0] = lbl_8053CC58;
-    box[1] = lbl_8053CC5C;
-    box[2] = lbl_8053CC60;
-    box[3] = lbl_8053CC50;
-    box[4] = box[0];
-    box[5] = box[1];
-    box[6] = box[2];
-    box[7] = box[3];
-    box[8] = box[0];
-    box[9] = box[1];
-    box[10] = box[2];
-    box[11] = box[3];
+    f32 d = lbl_8053CC50;
+    f32 c = lbl_8053CC60;
+    f32 b = lbl_8053CC5C;
+    f32 a = lbl_8053CC58;
+    *(f32*)((char*)p + 0x60) = a;
+    *(f32*)((char*)p + 0x64) = b;
+    *(f32*)((char*)p + 0x68) = c;
+    *(f32*)((char*)p + 0x6c) = d;
+    *(f32*)((char*)p + 0x70) = *(f32*)((char*)p + 0x60);
+    *(f32*)((char*)p + 0x74) = *(f32*)((char*)p + 0x64);
+    *(f32*)((char*)p + 0x78) = *(f32*)((char*)p + 0x68);
+    *(f32*)((char*)p + 0x7c) = *(f32*)((char*)p + 0x6c);
+    *(f32*)((char*)p + 0x80) = *(f32*)((char*)p + 0x60);
+    *(f32*)((char*)p + 0x84) = *(f32*)((char*)p + 0x64);
+    *(f32*)((char*)p + 0x88) = *(f32*)((char*)p + 0x68);
+    *(f32*)((char*)p + 0x8c) = *(f32*)((char*)p + 0x6c);
     *(s32*)((char*)p + 0x108) = 1000;
     *(s32*)((char*)p + 0xb8) = 1;
     *(s32*)((char*)p + 0xf8) = 2;
