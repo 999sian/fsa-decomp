@@ -53,13 +53,9 @@ extern "C" void fn_802AC98C(u8* this_) {
             *(s32*)(this_ + 0x10) = 0xff;
         }
         fn_8013B490(lbl_8053AB10);
-        s32 a = 0;
-        s32 b = 0xff;
-        s32 c = 0;
-        s32 d = 0xff;
-        ((void (*)(void*, s32*, s32*))(*(void***)(*(u8**)(this_ + 4)))[0x130 / 4])(*(void**)(this_ + 4), &b, &a);
-        ((void (*)(void*, u8))(*(void***)(*(u8**)(this_ + 4)))[0x24 / 4])(*(void**)(this_ + 4), (u8)*(s32*)(this_ + 0x10));
-        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)(*(u8**)(this_ + 4)))[0xec / 4])(*(void**)(this_ + 4), 0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
+        (*(J2DPicture**)(this_ + 4))->setBlackWhite(JUtility::TColor(0xff), JUtility::TColor(0));
+        (*(J2DPicture**)(this_ + 4))->setAlpha(*(s32*)(this_ + 0x10));
+        (*(J2DPicture**)(this_ + 4))->draw(lbl_805408B8, lbl_805408B8, lbl_805408BC, lbl_805408C0, false, false, false);
     }
 }
 
