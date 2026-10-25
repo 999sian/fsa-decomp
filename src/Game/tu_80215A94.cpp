@@ -187,16 +187,18 @@ extern "C" void fn_80215B6C(HrmnTable* t, int idx) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80215BCC(const HrmnTable* t, int idx) {
     if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0((void*)t->mEntry[idx].mSub2)) {
+        u8* base = lbl_8050EC80;
         u8 a = t->mEntry[idx].m20;
         u8 b = t->mEntry[idx].m21;
-        lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x79] = a;
-        lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x78] = b;
+        base[*(s32*)(base + 0x10) * 0xc8 + 0x79] = a;
+        base[*(s32*)(base + 0x10) * 0xc8 + 0x78] = b;
         fn_802D7844(fn_802D6A9C(), 1, t->mEntry[idx].mA);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" int fn_80215C6C(HrmnTable* t, int idx) {
     int result = 0;
     int off = idx * 0x24;
