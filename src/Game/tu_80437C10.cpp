@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804B16E0[];
@@ -18,6 +19,8 @@ extern "C" void* fn_8013CC50(u32, void*, u16, s32, s32, s32, s32, s32, f32);
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
 extern "C" void fn_8043E7CC(void*, void*);
 extern "C" f32 lbl_80543C0C;
+extern "C" f32 lbl_80543C10;
+extern "C" f32 lbl_80543C14;
 extern "C" void fn_80437F78(u8* p) {
     f32* v = (f32*)fn_8023E724(0);
     *(f32*)(p + 0xc) = v[0];
@@ -38,7 +41,29 @@ extern "C" void fn_80437F78(u8* p) {
                     p[0x240 + i] = 1;
                     tmp.y -= *(f32*)(lbl_8050DB0C + 0x34);
                 }
+            } else {
+                if (out.y > (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) * lbl_80543C10) {
+                    p[0x240 + i] = 0;
+                    tmp.y += *(f32*)(lbl_8050DB0C + 0x34);
+                } else if (out.y < (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) * lbl_80543C14) {
+                    p[0x240 + i] = 1;
+                    tmp.y -= *(f32*)(lbl_8050DB0C + 0x34);
+                }
             }
+            *(Vec*)(cfg + 0x1c4) = tmp;
+            if (*(s32*)(p + 4) < 8) {
+                fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4);
+            }
+            if (*(void**)(p + 0x230 + i * 4) == 0) {
+                *(void**)(p + 0x230 + i * 4) = fn_8013CC50(*(u32*)(p + 4), cfg + 0x1c4, lbl_80543C00[i], 1, 1, 0, 0, 1, *(f32*)(lbl_8050DB0C + 0x30));
+                *(u32*)((u8*)*(void**)(p + 0x230 + i * 4) + 0xf4) |= 0x40;
+            } else {
+                fn_8013CB44(*(void**)(p + 0x230 + i * 4), cfg + 0x1c4, 1, 1, 1);
+            }
+            fn_8043E7CC(lbl_8053AED0, cfg + 0x1c4);
+        } else if (*(void**)(p + 0x230 + i * 4)) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x230 + i * 4));
+            *(void**)(p + 0x230 + i * 4) = 0;
         }
     }
 }
