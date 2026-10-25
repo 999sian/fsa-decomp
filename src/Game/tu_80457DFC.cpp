@@ -87,7 +87,7 @@ static inline void updateAudioTracksForStart(Unk80458408Obj* sound, s32 id) {
         if (bank) {
             JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
             for (i = 0; i < 16; i++) {
-                JASTrack* track = bank->v9(i);
+                JASTrack* track = bank->v7(i);
                 if (track) {
                     if (i == 2 || i == 7) track->mute(false);
                     else track->mute(true);
