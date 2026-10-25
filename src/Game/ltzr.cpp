@@ -333,25 +333,22 @@ extern "C" s32 fn_80340658(void) { return 0; }
 extern "C" s32 fn_80340660(void) { return 0; }
 
 extern "C" void fn_80340668(void* this_) {
-    f32 b;
-    f32 a = lbl_80542268;
-    b = lbl_805422AC;
-    u8 hit = 0;
-    u8* flags = (u8*)this_;
-    for (s32 i = 0; i < 4; i++) {
-        if (flags[0x2ac + i] != 0) {
-            f32 v[3];
-            v[0] = a;
-            v[1] = a;
-            v[2] = b;
-            fn_802314D8(i, v);
-            hit = 1;
-        }
-    }
-    if (hit == 1) {
-        fn_801F0E34(this_, 0x50082, 0);
-        (*(void (**)(void*))(*(char**)this_ + 0xa4))(this_);
-    }
+ f32 b;
+ f32 a=lbl_80542268;
+ b=lbl_805422AC;
+ u8 hit=0;
+ u8* flags=(u8*)this_;
+ for(s32 i=0;i<4;i++) {
+  if(flags[0x2ac+i]!=0) {
+   f32 v[3];v[0]=a;v[1]=a;v[2]=b;
+   fn_802314D8(i,v);
+   hit=1;
+  }
+ }
+ if(hit==1) {
+  fn_801F0E34(this_,0x50082,0);
+  ((Ltzr*)this_)->v39();
+ }
 }
 
 extern "C" u8 fn_80340734(void* this_) {
