@@ -115,9 +115,18 @@ extern "C" void* fn_80079FE8(void* this_, s16 deleteFlag) {
     return this_;
 }
 
-#pragma force_active on
-inline JKRFile::~JKRFile() {}
-#pragma force_active reset
+extern "C" void* __vt__7JKRFile[];
+extern "C" void __dt__11JKRDisposerFv(void*, s16);
+extern "C" void* __dt__7JKRFileFv(void* this_, s16 deleteFlag) {
+    if (this_ != nullptr) {
+        *(void**)this_ = __vt__7JKRFile;
+        __dt__11JKRDisposerFv(this_, 0);
+        if (deleteFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
 
 extern "C" bool fn_8007A398(u8* this_, s32 entryNum);
 extern "C" void* check_mount_already__10JKRArchiveFlP7JKRHeap(s32 entryNum, void* heap);
