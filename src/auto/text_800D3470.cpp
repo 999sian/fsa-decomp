@@ -1083,6 +1083,15 @@ extern "C" void fn_800D5E14(void* param) {
     __GDWrite((u8)val2);
 }
 
+extern "C" void fn_800D5F90(u8* p) {
+    GDOverflowCheck(lbl_80539E18);
+    J3DGDWriteXFCmdHdr(0x100e, 4);
+    ((J3DColorChan*)(p + 0x0e))->load();
+    ((J3DColorChan*)(p + 0x12))->load();
+    ((J3DColorChan*)(p + 0x10))->load();
+    ((J3DColorChan*)(p + 0x14))->load();
+}
+
 extern "C" void fn_800D6394(Vtable800D8248* param_1, u32 param_2)
 {
   if ((param_2 & 1) != 0) {
