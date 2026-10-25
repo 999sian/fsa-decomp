@@ -2092,7 +2092,7 @@ extern "C" void fn_803CE4CC(char* p) {
     s32 i;
     OSCalendarTime cal;
 
-    base = lbl_804765D0;
+    base = (u8*)lbl_804765D0;
     for (i = 0; i < 3; i++) {
         u8* rec = (u8*)lbl_8050EC80 + i * 0xc8;
         p[0x115] &= ~(u8)(1 << i);
