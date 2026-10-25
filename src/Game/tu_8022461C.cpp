@@ -669,7 +669,7 @@ normal:
 }
 
 extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
-    const int k = (u16)tileKindAt(pos, room);
+    s32 k = tileKindAt(pos, room) & 0xffff;
     if (k == 0 || k == 2 || k == 0x50) return 0;
     if (k == 0x22 && fn_802D6A9C()[0x170] == 0) return 0;
     if (mode == 1 && (k == 0xc || k == 0x39)) return 0;
