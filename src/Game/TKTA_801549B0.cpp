@@ -102,9 +102,12 @@ extern "C" void fn_80154A98(char* this_) {
 
     if (!(*(u32*)(this_ + 0x90) & 2)) {
         if (*(u32*)(this_ + 0x90) != 0) {
-            f32 sx = *(f32*)(this_ + 0x54);
-            f32 sy = *(f32*)(this_ + 0x58);
-            f32 sz = *(f32*)(this_ + 0x5c);
+            f32 sx;
+            f32 sy;
+            f32 sz;
+            sz = *(f32*)(this_ + 0x5c);
+            sy = *(f32*)(this_ + 0x58);
+            sx = *(f32*)(this_ + 0x54);
             mtx[0][0] = sx;
             mtx[0][1] = lbl_8053D330;
             mtx[0][2] = lbl_8053D330;
