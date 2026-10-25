@@ -87,9 +87,7 @@ extern "C" void fn_80124B60(void* this_) {
 }
 
 extern "C" void fn_80124B90(void* this_) {
-    typedef void (*method_t)(void*, int);
-    void** vt = (void**)*(int*)this_;
-    ((method_t)vt[27])(this_, 0x5);
+    ((OPGL*)this_)->v25(5);
 }
 
 extern "C" void fn_80124BC0(void* this_) {
