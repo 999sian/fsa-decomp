@@ -197,7 +197,80 @@ extern "C" void fn_803A9830(Menu_Main* p) {
     p->screens[p->cur]->animation();
 }
 
+extern "C" void fn_803AB494(void* this_) {
+    char* p = (char*)this_;
+    s32 rank[4];
+    s32 done[4];
+    s32 tot[4];
+    s32 i;
+    s32 k;
+    s32 mx;
+    s32 n;
+    s32 r;
 
+    if (lbl_804AF888[0x30 + *(u8*)(p + 0x4c3)] != -1) {
+        if (*(u8*)(p + 0x4c5) >= lbl_804AF888[0x30 + *(u8*)(p + 0x4c3)]) {
+            *(u8*)(p + 0x4c3) = *(u8*)(p + 0x4c3) + 1;
+        }
+        *(u8*)(p + 0x4c5) = *(u8*)(p + 0x4c5) + 1;
+    }
+    if (lbl_804AF888[0x11 + *(u8*)(p + 0x4c4)] != -1) {
+        if (*(u8*)(p + 0x4c6) >= lbl_804AF888[0x11 + *(u8*)(p + 0x4c4)]) {
+            *(u8*)(p + 0x4c4) = *(u8*)(p + 0x4c4) + 1;
+        }
+        *(u8*)(p + 0x4c6) = *(u8*)(p + 0x4c6) + 1;
+    }
+    k = 0;
+    for (i = 0; i < *(s32*)(p + 0x454); i++) {
+        if (*(u8*)(p + 0x4c8) != 0xff) {
+            if (i == *(u8*)(p + 0x4ac + k)) {
+                s32 v = lbl_804AF888[*(u8*)(p + 0x4c4)];
+                if (v == -1) {
+                    *(s32*)(p + 0x3c0 + i * 4) = 0x3e;
+                } else {
+                    *(s32*)(p + 0x3c0 + i * 4) = v + 0xdb;
+                }
+                if (*(u8*)(p + 0x4c8) > k) {
+                    k++;
+                }
+            } else {
+                *(s32*)(p + 0x3c0 + i * 4) = lbl_804AF888[0x22 + *(u8*)(p + 0x4c3)] + 0xbd;
+            }
+        } else {
+            *(s32*)(p + 0x3c0 + i * 4) = lbl_804AF888[0x22 + *(u8*)(p + 0x4c3)] + 0xbd;
+        }
+    }
+    if (lbl_804AF888[0x30 + *(u8*)(p + 0x4c3)] == -1 && lbl_804AF888[0x11 + *(u8*)(p + 0x4c4)] == -1) {
+        if (*(u8*)(p + 0x4c8) != 0xff) {
+            for (i = 0; i < *(s32*)(p + 0x454); i++) {
+                tot[i] = *(s32*)(p + 0x320 + i * 4) + *(s32*)(p + 0x340 + i * 4) + *(s32*)(p + 0x350 + i * 4) + *(s32*)(p + 0x360 + i * 4) + *(s32*)(p + 0x370 + i * 4) - *(s32*)(p + 0x380 + i * 4) + *(s32*)(p + 0x3a0 + i * 4) + *(s32*)(p + 0x3b0 + i * 4);
+                rank[i] = 0;
+                done[i] = 0;
+                if (tot[i] < -5000) {
+                    tot[i] = -5000;
+                }
+            }
+            r = 0;
+            do {
+                mx = -5001;
+                for (i = 0; i < *(s32*)(p + 0x454); i++) {
+                    if (done[i] == 0 && mx < tot[i]) {
+                        mx = tot[i];
+                    }
+                }
+                n = 0;
+                for (i = 0; i < *(s32*)(p + 0x454); i++) {
+                    if (done[i] == 0 && tot[i] == mx) {
+                        rank[i] = r;
+                        n++;
+                        done[i] = 1;
+                    }
+                }
+                r += n;
+            } while (r < *(s32*)(p + 0x454));
+        }
+    }
+}
 
 // ---- from src/Game/CountdownBlink_803AF604.cpp ----
 extern "C" void fn_80458880(void* p1, s32 p2, s32 p3);
@@ -366,6 +439,12 @@ struct GameResult {
     u8 winner[8][3];            // 0x1fc
     u8 pad214[0x243 - 0x214];
     u8 winMask;                 // 0x243
+
+    void setWinner(s32 m, s32 k, u8 v) {
+        if (m >= 0 && m < 8 && k >= 0 && k < 3) {
+            winner[m][k] = v;
+        }
+    }
 };
 
 extern const char* lbl_804AF980[];
