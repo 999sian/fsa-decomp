@@ -6,6 +6,7 @@
 #include "JSystem/J2D/J2DScreen.h"
 
 extern void* lbl_8053AAF8;
+extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 
 // ---- from src/Game/Dtor_lbl804AF860_803A7708.cpp ----
 // fn_803A7708 - actor@lbl_804AF860's destructor. Calls getTotalFreeSize__7JKRHeapFv on
