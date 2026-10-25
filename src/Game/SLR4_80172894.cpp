@@ -328,7 +328,12 @@ extern "C" void* fn_80174600(void* this_, s16 flag) {
     return this_;
 }
 
-extern u8 lbl_804A08C0[];
+f32 lbl_804A08C0[4][2] = {{-20.0f,-44.0f},{20.0f,-46.0f},{4.0f,-42.0f},{-8.0f,-10.0f}};
+static s32 slr4Idle[20] = {0,1,0,2,3,4,3,5,6,7,6,8,9,10,9,11,6,9,3,0};
+static s32 slr4Waits[4] = {8,12,8,12};
+static s32 slr4Attack[40] = {12,13,14,13,12,15,16,15,17,18,19,18,17,20,21,20,22,23,24,23,22,25,26,25,27,28,29,28,27,30,31,30,15,5,5,3,15,5,5,3};
+static s32 slr4Anim[24] = {33,32,33,34,35,36,38,37,38,39,40,41,43,42,43,44,45,46,49,47,48,49,50,51};
+static s32 slr4Times[6] = {3,30,2,2,2,5};
 struct Slr4AnimTables {
     f32 offsets[4][2];
     s32 idle[20];
@@ -363,19 +368,16 @@ extern "C" void fn_801746DC(void* this_) {
     switch (*(s32*)(p + 0x29c)) {
     case 0:
         if (*(s32*)(p + 0x240) == 0) {
-            s32* t = (s32*)(tbl + 0x70);
-            *(s32*)(p + 0x240) = t[*(s32*)(p + 0x264)];
-            t = (s32*)(tbl + 0x20);
-            *(s32*)(p + 0x280) = t[*(s32*)(p + 0x98) * 4 + *(s32*)(p + 0x264)];
+            *(s32*)(p + 0x240) = ((Slr4AnimTables*)tbl)->waitAt(*(s32*)(p+0x264));
+            *(s32*)(p + 0x280) = ((Slr4AnimTables*)tbl)->idleAt(*(s32*)(p+0x98)*4 + *(s32*)(p+0x264));
             *(s32*)(p + 0x264) += 1;
             *(volatile s32*)(p + 0x264) &= 3;
         }
         break;
     case 1:
         if (*(s32*)(p + 0x240) == 0) {
-            s32* t = (s32*)(tbl + 0x80);
-            *(s32*)(p + 0x240) = t[*(s32*)(p + 0x264)];
-            *(s32*)(p + 0x280) = t[*(s32*)(p + 0x98) * 8 + *(s32*)(p + 0x264)];
+            *(s32*)(p + 0x240) = ((Slr4AnimTables*)tbl)->attackAt(*(s32*)(p+0x264));
+            *(s32*)(p + 0x280) = ((Slr4AnimTables*)tbl)->attackAt(*(s32*)(p+0x98)*8 + *(s32*)(p+0x264));
             *(s32*)(p + 0x264) += 1;
             *(volatile s32*)(p + 0x264) &= 7;
             if (*(s32*)(p + 0x264) == 0) {
@@ -389,7 +391,7 @@ extern "C" void fn_801746DC(void* this_) {
                 *(u8*)(p + 0x2a4) = 1;
                 break;
             }
-            *(s32*)(p + 0x240) = ((s32*)(tbl + 0x180))[*(s32*)(p + 0x264)];
+            *(s32*)(p + 0x240) = ((Slr4AnimTables*)tbl)->timeAt(*(s32*)(p+0x264));
             if (*(s32*)(p + 4) >= 8 && *(s32*)(p + 0x23c) == 1) {
                 *(s32*)(p + 0x240) = (s32)(lbl_8053DAC8 * (f32)*(s32*)(p + 0x240));
             }
@@ -397,13 +399,13 @@ extern "C" void fn_801746DC(void* this_) {
                 Vec3f pos;
                 *(s32*)(p + 0x240) += 10;
                 pos = *(Vec3f*)(p + 0xc);
-                f32* offset = ((f32*)tbl)+*(s32*)(p+0x98)*2;
+                f32* offset = ((Slr4AnimTables*)tbl)->offsetAt(*(s32*)(p+0x98));
                 pos.x += offset[0];
                 pos.y += offset[1];
                 fn_8013CC50(*(u32*)(p + 4), &pos, 0xcb, 0, 3, 0, 0, 1, lbl_8053DAC0);
                 fn_8013CC50(*(u32*)(p + 4), &pos, 0xcc, 0, 3, 0, 0, 1, lbl_8053DAC0);
             }
-            *(s32*)(p + 0x280) = ((s32*)(tbl + 0x120))[*(s32*)(p + 0x98) * 6 + *(s32*)(p + 0x264)];
+            *(s32*)(p + 0x280) = ((Slr4AnimTables*)tbl)->animAt(*(s32*)(p+0x98)*6 + *(s32*)(p+0x264));
             *(s32*)(p + 0x264) += 1;
             if (*(s32*)(p + 0x264) == 6) {
                 *(s32*)(p + 0x240) += 0xf;
@@ -448,8 +450,8 @@ extern "C" void fn_801746DC(void* this_) {
                 *(u8*)(p + 0x2a4) = 1;
                 break;
             }
-            *(s32*)(p + 0x240) = ((s32*)(tbl + 0x180))[*(s32*)(p + 0x264)];
-            *(s32*)(p + 0x280) = ((s32*)(tbl + 0x120))[*(s32*)(p + 0x98) * 6 + *(s32*)(p + 0x264)];
+            *(s32*)(p + 0x240) = ((Slr4AnimTables*)tbl)->timeAt(*(s32*)(p+0x264));
+            *(s32*)(p + 0x280) = ((Slr4AnimTables*)tbl)->animAt(*(s32*)(p+0x98)*6 + *(s32*)(p+0x264));
             *(s32*)(p + 0x264) -= 1;
         }
         if (*(s32*)(p + 0x25c) == 0) {
