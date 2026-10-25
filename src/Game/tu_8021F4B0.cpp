@@ -39,8 +39,6 @@ static inline void setEmitterScale(void* emitter, float scale) {
 
 #pragma optimization_level 3
 extern "C" int fn_8021F4B0(char* self) {
-    int i;
-    void** p;
     int result = 0;
     *(int*)(self + 4) += 1;
     if (*(int*)(self + 4) < 0) *(int*)(self + 4) = 0;
@@ -54,8 +52,8 @@ extern "C" int fn_8021F4B0(char* self) {
             approachTimed((float*)(self + 8), *(float*)(self + 0x14), frames);
             approachTimed((float*)(self + 0xc), *(float*)(self + 0x18), frames);
             approachTimed((float*)(self + 0x10), *(float*)(self + 0x1c), frames);
-            i = 0;
-            p = (void**)self;
+            register int i = 0;
+            void** p = (void**)self;
             for (; i < 3; i++, p++) {
                 void* emitter = p[13];
                 if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
@@ -78,8 +76,8 @@ extern "C" int fn_8021F4B0(char* self) {
             approachTimed((float*)(self + 8), *(float*)(self + 0x20), frames);
             approachTimed((float*)(self + 0xc), *(float*)(self + 0x24), frames);
             approachTimed((float*)(self + 0x10), *(float*)(self + 0x28), frames);
-            i = 0;
-            p = (void**)self;
+            register int i = 0;
+            void** p = (void**)self;
             for (; i < 3; i++, p++) {
                 void* emitter = p[13];
                 if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
@@ -92,7 +90,7 @@ extern "C" int fn_8021F4B0(char* self) {
     case 5:
         result = 1;
         if (*(int*)(self + 4) >= 60) {
-            int i = 0;
+            register int i = 0;
             void** p = (void**)self;
             int null = i;
             do {
@@ -110,8 +108,8 @@ extern "C" int fn_8021F4B0(char* self) {
             float frames = 60 - *(int*)(self + 4);
             approachTimed((float*)(self + 0x10), *(float*)(self + 0x2c), frames);
             approachTimed((float*)(self + 0x30), lbl_8053FDDC, frames);
-            i = 0;
-            p = (void**)self;
+            register int i = 0;
+            void** p = (void**)self;
             for (; i < 3; i++, p++) {
                 void* emitter = p[13];
                 if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
@@ -119,7 +117,7 @@ extern "C" int fn_8021F4B0(char* self) {
             float scale = *(float*)(self + 0x30);
             setEmitterScale(((void**)self)[13], scale);
             setEmitterScale(((void**)self)[14], scale);
-            setEmitterScale(((void**)(self + 8))[13], scale);
+            setEmitterScale(((void**)self)[15], scale);
         }
         break;
     }
@@ -156,11 +154,11 @@ extern "C" unsigned short lbl_8053FDD0[3];
 extern "C" void fn_8021F9AC(char* this_, float* src) {
     void** p;
     int i;
-    float x = src[0];
+    float k3 = lbl_8053FDEC;
+    float k2 = lbl_8053FDF0;
     float k1 = lbl_8053FDE8;
     float y = src[1];
-    float k2 = lbl_8053FDF0;
-    float k3 = lbl_8053FDEC;
+    float x = src[0];
 
     *(float*)(this_ + 0x8) = x;
     *(float*)(this_ + 0xc) = y;
@@ -182,27 +180,15 @@ extern "C" void fn_8021F9AC(char* this_, float* src) {
     }
 }
 
+#pragma optimization_level 3
 extern "C" int* fn_8021FAB8(int* this_, short n) {
-    if (this_) {
-        int i = 0;
-        void** p = (void**)this_;
-        int null = i;
-        do {
-            if (p[0xd]) {
-                void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, p[0xd]);
-                p[0xd] = (void*)null;
-            }
-            i++;
-            p++;
-        } while (i < 3);
-        this_[1] = 0;
-        this_[0] = 0;
-        if (n > 0) operator delete(this_);
-    }
-    return this_;
+if (this_) {
+fn_8021F924(this_);
+if(n>0) operator delete(this_);
 }
-
+return this_;
+}
+#pragma optimization_level 4
 extern "C" const float lbl_8053FDD8;
 extern "C" const float lbl_8053FDDC;
 extern "C" void fn_8021FB44(char* p) {
