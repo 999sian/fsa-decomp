@@ -199,10 +199,17 @@ extern "C" s32 fn_8022F340(s32 p);
 // Mode test shared by the slot-remap checks in fn_80385960: mode 0xc only counts while b7f is clear.
 static inline bool fn_80385960_remapMode(void) {
     s32 mode = lbl_8053AAF8->mode;
+    u8 f = 0;
     if (lbl_8053AAF8->b7f == 0) {
-        return mode == 7 || mode == 8 || mode == 9 || mode == 0x16 || mode == 0xa || mode == 0xb || mode == 0xc;
+        if (mode == 7 || mode == 8 || mode == 9 || mode == 0x16 || mode == 0xa || mode == 0xb || mode == 0xc) {
+            f = 1;
+        }
+    } else {
+        if (mode == 7 || mode == 8 || mode == 9 || mode == 0x16 || mode == 0xa || mode == 0xb) {
+            f = 1;
+        }
     }
-    return mode == 7 || mode == 8 || mode == 9 || mode == 0x16 || mode == 0xa || mode == 0xb;
+    return f != 0;
 }
 
 static inline s32 fn_80385960_slot(s32 p) {
@@ -1631,6 +1638,28 @@ extern "C" u8 fn_8038470C(s32 p, s32 q) {
     return 0;
 }
 
+u8 fn_80385960(s32 param_1)
+{
+    s32 slot;
+    s32 idx;
+
+    slot = fn_80385960_slot(param_1);
+    if (((u8*)lbl_8053AD78->sub[fn_80385960_slot(slot)])[0x24] == 0) {
+        return 1;
+    }
+    idx = fn_80385960_slot(slot);
+    if (((u8*)lbl_8053AD78->sub[idx])[0x24] != 5) {
+        idx = fn_80385960_slot(slot);
+        if (((u8*)lbl_8053AD78->sub[idx])[0x24] != 8) {
+            return 0;
+        }
+    }
+    if (((u8*)lbl_8053AD78->sub[fn_80385960_slot(slot)])[0x40] == 0) {
+        return 0;
+    }
+    return 0;
+}
+
 extern "C" u8 fn_803908D0(void* sub);
 extern "C" u8 fn_80390BA8(void* sub);
 extern "C" s32 fn_80390BDC(void* sub);
@@ -1853,7 +1882,7 @@ extern "C" u8 fn_8038A984(s32 unused, s32 p, s32 q, u32 id, s32 val, u16 flags) 
     return 0;
 }
 
-extern "C" u32 fn_8038AD24(s32 a, u32 id, s32 p3, s32 room, JGeometry::TVec3<f32>* pos, u32 flags) {
+extern "C" u32 fn_8038AD24(s32 a, u32 id, s32 p3, s32 room, JGeometry::TVec3<f32>* pos, u16 flags) {
     s32 p = resolvePlayer(a);
     if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) {
         return 0;
