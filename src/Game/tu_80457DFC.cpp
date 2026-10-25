@@ -25,6 +25,13 @@ extern "C" const f32 lbl_80543EC4;
 extern "C" const f32 lbl_80543EC8;
 extern "C" const f32 lbl_80543ECC;
 
+struct Unk80459674MessageBase { u32 pad[2]; };
+struct Unk80459674Message : Unk80459674MessageBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3(JAISoundID id);
+};
 struct Unk804580DCTrack {
     virtual void v0();
     virtual void v1();
@@ -924,6 +931,9 @@ extern "C" const f32 lbl_80543EC0;
 extern "C" u32 lbl_8053A250;
 extern "C" u32 lbl_8053A254;
 extern "C" void fn_80459674(u8* p) {
+    s32 i;
+    Unk80458408Obj* bank;
+    JAUSoundMgr* mgr;
     if (p[0x6b]) --p[0x6b];
     if (p[0x7c]) {
         if (p[0x7c] && ((JASAudioReseter*)*(void**)(p+0x2c))->checkDone())
@@ -937,7 +947,7 @@ extern "C" void fn_80459674(u8* p) {
         if (p[0x69]==1) *(f32*)(p+0x54)=lbl_80543EB0;
         else if (p[0x8b]==1) {
             JAISoundID id=-1;
-            if (*(JAISound**)(p+0x80)) id=(*(JAISound**)(p+0x80))->getID();
+            if (*(JAISound**)(p+0x80)) id=JAISoundID((*(JAISound**)(p+0x80))->getID());
             switch ((s32)(u32)id) {
             case 0x1000001: case 0x1000002: case 0x1000004:
             case 0x100000d: case 0x1000023: case 0x100002d:
@@ -952,28 +962,29 @@ extern "C" void fn_80459674(u8* p) {
         if ((u32)*(s32*)(p+0x64)>=lbl_8053A25C) {
             if (p[4]==0) {
                 JAISoundID id=*(u32*)(p+0x5c);
-                ((Unk80458880Mgr*)*(void**)(p+0x30))->v3(&id,(Unk80458F04Sound**)(p+0x80),0);
+                ((JAUSoundMgr*)*(void**)(p+0x30))->startSound(id,(JAISoundHandle*)(p+0x80),0);
                 fn_8045815C(p,p[0x8b]);
                 switch (*(s32*)(p+0x5c)) {
                 case 0x100001a:
-                    if (*(Unk80458408Obj**)(p+0x80) && *(s32*)(p+0x5c)==0x100001a) {
-                        Unk80458408Obj* bank=(*(Unk80458408Obj**)(p+0x80))->v4();
+                    if (*(Unk80458408Obj**)(p+0x80)) {
+                        switch (*(s32*)(p+0x5c)) { case 0x100001a: break; default: goto soundStarted; }
+                        bank=(*(Unk80458408Obj**)(p+0x80))->v4();
                         if (bank) {
-                            BOOL irq=OSDisableInterrupts();
-                            for (s32 i=0;i<16;i++) {
+                            JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
+                            for (i=0;i<16;i++) {
                                 JASTrack* track=bank->v7(i);
                                 if (track) {
                                     if (i==2 || i==7) track->mute(false);
                                     else track->mute(true);
                                 }
                             }
-                            OSRestoreInterrupts(irq);
                         }
                     }
                     break;
                 case 0x100000d: case 0x1000021: case 0x1000024:
                     *(f32*)(p+0x4c)=lbl_80543EB4; break;
                 }
+soundStarted:
                 if (*(void**)(p+0x80)) {
                     ((JAISoundParamsMove*)(*(u8**)(p+0x80)+0x48))->moveVolume(*(f32*)(p+0x4c)**(f32*)(p+0x54),0);
                     if (p[0x8d]) (*(JAISound**)(p+0x80))->getTrack()->writePort(0,1);
@@ -984,7 +995,7 @@ extern "C" void fn_80459674(u8* p) {
             *(s32*)(p+0x64)=-1;
         } else ++*(s32*)(p+0x64);
     }
-    JAUSoundMgr* mgr=*(JAUSoundMgr**)(p+0x30);
+    mgr=*(JAUSoundMgr**)(p+0x30);
     mgr->calc(); mgr->mixOut();
     ++*(u32*)p;
     if (p[0x6c]) --p[0x6c];
