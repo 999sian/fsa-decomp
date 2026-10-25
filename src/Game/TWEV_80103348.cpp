@@ -30,6 +30,11 @@ struct TWEVVec {
     f32 z;
 };
 
+struct TWEVVec2 {
+    f32 x;
+    f32 y;
+};
+
 typedef f32 TWEVMtx[3][4];
 
 extern "C" double sin(double);
@@ -114,7 +119,8 @@ extern "C" void fn_80103348(void* this_) {
     param.h = 0;
     param.i = 2;
 
-    *(TWEVVec*)savedPos = *(TWEVVec*)(p + 0xc);
+    *(u64*)savedPos = *(u64*)(p + 0xc);
+    savedPos[2] = *(f32*)(p + 0x14);
     param.d[1] = -3;
     u32 id = fn_804032E8(0x54494d47, names + 0xc);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
