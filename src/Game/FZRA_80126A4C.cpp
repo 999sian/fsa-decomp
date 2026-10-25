@@ -253,6 +253,16 @@ static inline u8 fzraFollowRail(u8* p) {
     return 0;
 }
 
+extern "C" int __float_epsilon[];
+static inline void fzraApproach(f32* x, f32 goal, s32 n) {
+    f32 t = (f32)n;
+    if (t < *(f32*)__float_epsilon) {
+        *x = goal;
+    } else {
+        *x = (lbl_8053CAA4 / t) * (goal - *x) + *x;
+    }
+}
+
 static inline void fzraBob(u8* p) {
     JGeometry::TVec3f v(lbl_8053CAA8, lbl_8053CAA8, lbl_8053CAA8);
     *(s32*)(p + 0x248) += 600;
@@ -387,37 +397,11 @@ extern "C" void fn_80127088(void* this_) {
             fn_80126A4C(this_, 4);
         }
         break;
-    case 5: {
-        u8 done;
-        if (*(s32*)(p + 0x238) <= 0) {
-            done = 1;
-        } else {
-            JGeometry::TVec3f vel;
-            vel.x = lbl_8053CAA8;
-            vel.y = lbl_8053CAA8;
-            vel.z = lbl_8053CAA8;
-            *(f32*)(p + 0x260) = lbl_8053CAA4;
-            s16 ang = 0;
-            s32 id = *(s32*)(p + 0x4);
-            JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-            if (fn_800FDEA0(p + 0x2b4, &pos, (f32*)&vel, &id, &ang, 0x200, lbl_8053CAB0) == 3) {
-                done = 1;
-            } else {
-                ((JGeometry::TVec3f*)(p + 0x3c))->set(vel);
-                *(JGeometry::TVec3f*)(p + 0xc) += *(JGeometry::TVec3f*)(p + 0x3c);
-                s32 q = ClassifyBamAngleToQuadrant(ang);
-                if (q != *(s32*)(p + 0x284)) {
-                    fn_801D22DC(p + 0x27c, q, 2, 0);
-                    fn_801D1F14(p + 0x27c, lbl_8053CAA8);
-                }
-                done = 0;
-            }
-        }
-        if (done) {
+    case 5:
+        if (fzraFollowRail(p)) {
             fn_80126A4C(this_, 6);
         }
         break;
-    }
     case 6:
         *(s32*)(p + 0x240) += 1;
         if (*(s32*)(p + 0x240) >= 0x1e) {
@@ -432,19 +416,7 @@ extern "C" void fn_80127088(void* this_) {
         }
         break;
     case 8: {
-        JGeometry::TVec3f v(lbl_8053CAA8, lbl_8053CAA8, lbl_8053CAA8);
-        *(s32*)(p + 0x248) += 600;
-        if (*(s32*)(p + 0x248) >= 0x10000) {
-            *(s32*)(p + 0x248) = 0;
-        }
-        v.z = lbl_8053CAAC * JMath::sincosTable_.sinShort(*(s32*)(p + 0x248)) + lbl_8053CAAC;
-        *(f32*)(p + 0x14) = *(f32*)(p + 0x26c) + v.z;
-        if (*(u8*)(p + 0x258) != 0) {
-            v = *(JGeometry::TVec3f*)(p + 0xc);
-            v.x += lbl_8053CAA0;
-            fn_8013CB44(*(void**)(p + 0x37c), &v, 0, -1, 1);
-            fn_8013CB44(*(void**)(p + 0x380), &v, 0, -1, 1);
-        }
+        fzraBob(p);
         if (fn_801280F8(fn_801283E8())) {
             break;
         }
@@ -455,26 +427,13 @@ extern "C" void fn_80127088(void* this_) {
         }
         break;
     }
-    case 9: {
-        JGeometry::TVec3f v(lbl_8053CAA8, lbl_8053CAA8, lbl_8053CAA8);
-        *(s32*)(p + 0x248) += 600;
-        if (*(s32*)(p + 0x248) >= 0x10000) {
-            *(s32*)(p + 0x248) = 0;
-        }
-        v.z = lbl_8053CAAC * JMath::sincosTable_.sinShort(*(s32*)(p + 0x248)) + lbl_8053CAAC;
-        *(f32*)(p + 0x14) = *(f32*)(p + 0x26c) + v.z;
-        if (*(u8*)(p + 0x258) != 0) {
-            v = *(JGeometry::TVec3f*)(p + 0xc);
-            v.x += lbl_8053CAA0;
-            fn_8013CB44(*(void**)(p + 0x37c), &v, 0, -1, 1);
-            fn_8013CB44(*(void**)(p + 0x380), &v, 0, -1, 1);
-        }
+    case 9:
+        fzraBob(p);
         fn_8022FF8C(*(s32*)(p + 0x23c), box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 1, 0);
         if (fn_80388CAC(*(s32*)(p + 0x23c), *(s32*)(p + 0x198))) {
             fn_801281A4(fn_801283E8());
         }
         break;
-    }
     case 10:
         *(s32*)(p + 0x24c) += 1;
         *(s32*)(p + 0x254) -= 10;
@@ -497,13 +456,17 @@ extern "C" void fn_80127088(void* this_) {
         if (t < *(f32*)__float_epsilon) {
             *(s32*)(p + 0x254) = 0xff;
         } else {
-            *(s32*)(p + 0x254) = (s32)((lbl_8053CAA4 / t) * (f32)(0xff - *(s32*)(p + 0x254)) + (f32)*(s32*)(p + 0x254));
+            f32 inv = lbl_8053CAA4 / t;
+            *(s32*)(p + 0x254) = (s32)(inv * (f32)(0xff - *(s32*)(p + 0x254)) + (f32)*(s32*)(p + 0x254));
         }
+        f32 goal = *(f32*)(p + 0x270);
         f32 t2 = (f32)*(s32*)(p + 0x250);
         if (t2 < *(f32*)__float_epsilon) {
-            *(f32*)(p + 0xc) = *(f32*)(p + 0x270);
+            *(f32*)(p + 0xc) = goal;
         } else {
-            *(f32*)(p + 0xc) = (lbl_8053CAA4 / t2) * (*(f32*)(p + 0x270) - *(f32*)(p + 0xc)) + *(f32*)(p + 0xc);
+            f32 cur = *(f32*)(p + 0xc);
+            f32 inv = lbl_8053CAA4 / t2;
+            *(f32*)(p + 0xc) = inv * (goal - cur) + cur;
         }
         if (*(s32*)(p + 0x250) <= 0) {
             fn_80126A4C(this_, 0xe);
