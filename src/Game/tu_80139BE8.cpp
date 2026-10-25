@@ -403,11 +403,85 @@ extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 	return this_;
 }
 #pragma opt_propagation reset
-extern "C" void* fn_8013A538(u8* this_, JKRHeap* heap) {
-    u8* p = this_;
-    *(void**)p = &lbl_8049F080;
+extern "C" void* fn_8013A538(u8* p, JKRHeap* heap) {
+    *(void**)p = lbl_8049F080;
     lbl_8053AB00 = heap;
-    if ((p[0x0] = 0, 1)) {}
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(78480, heap, 0);
+        if (obj) obj = fn_802DE64C(obj);
+        *(void**)(p + 12) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(116, heap, 0);
+        if (obj) obj = __ct__9PlayerMgrFv(obj);
+        *(void**)(p + 4) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(12384, heap, 0);
+        if (obj) obj = fn_801F9078(obj, heap);
+        *(void**)(p + 8) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(40, heap, 0);
+        if (obj) obj = fn_802A3E2C(obj);
+        *(void**)(p + 16) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(704, heap, 0);
+        if (obj) obj = fn_8043F504(obj);
+        *(void**)(p + 20) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(96, heap, 0);
+        if (obj) obj = fn_80439C78(obj);
+        *(void**)(p + 24) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(16, heap, 0);
+        if (obj) obj = fn_8037B0B8(obj);
+        *(void**)(p + 28) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(2032, heap, 0);
+        if (obj) obj = fn_801917E0(obj, heap);
+        *(void**)(p + 32) = obj;
+    }
+    getTotalFreeSize__7JKRHeapFv(heap);
+    {
+        void* obj = __nw__FUlP7JKRHeapi(504, heap, 0);
+        if (obj) obj = fn_8016F0BC(obj, heap);
+        *(void**)(p + 36) = obj;
+    }
+    if ((*(s32*)(lbl_80529DEC + 0x118) == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) ||
+        (*(s32*)(lbl_80529DEC + 0x118) == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 2)) {
+        *(void**)(p + 0x30) = create__10JKRExpHeapFUlP7JKRHeapb(0x86470, heap, false);
+        if (*(void**)(p + 0x30) == 0) {
+            static s32 reported = 0;
+            if (reported == 0) {
+                reported = 1;
+                f32 total = (f32)getTotalFreeSize__7JKRHeapFv(heap) / 1024.0f;
+                OSReport(lbl_80465920, 585.9375, (f32)getFreeSize__7JKRHeapFv(heap) / 1024.0f, total);
+            }
+        } else {
+            OSReport(lbl_80465960);
+        }
+        becomeCurrentHeap__7JKRHeapFv(heap);
+        void* obj = __nw__FUlP7JKRHeapi(0x18, heap, 0);
+        if (obj) obj = fn_8044BDCC(obj);
+        *(void**)(p + 0x2c) = obj;
+    } else {
+        *(void**)(p + 0x30) = 0;
+        *(void**)(p + 0x2c) = 0;
+    }
     return p;
 }
 
