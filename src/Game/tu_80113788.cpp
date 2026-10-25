@@ -248,6 +248,14 @@ extern "C" void fn_8011395C(char* self) {
 }
 
 #pragma opt_propagation off
+static inline void drawSprite_80113B54(char* self, int arg, char* name, void* record) {
+    void* pos = self+0xc;
+    int idx = arg + *(s32*)(self+0x274);
+    if (*(s32*)(self+4) < 8) {
+        void* spr = (*(SpriteResources_80113B54**)((char*)lbl_8053AAF8+0xa4))->v6(0x534f4220, name);
+        fn_802F86CC(*(void**)((char*)lbl_8053AB10+0x20), pos, spr, idx, record, lbl_8053C690, lbl_8053C690);
+    }
+}
 extern "C" void fn_80113B54(char* self, int arg) {
     JGeometry::TVec3<f32> vec;
     u8 buf50[0x3c];
