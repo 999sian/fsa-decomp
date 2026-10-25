@@ -77,7 +77,7 @@ static inline f32 sykyRand01() {
 }
 static inline f32 sykyRandFrom(void* game, u32 multiplier = 0x19660d) {
     u32* seed = (u32*)((u8*)game + 0xb4);
-    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    *seed = *seed * multiplier + 0x3c6ef35f;
     u32 bits = (*seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053E460;
 }
