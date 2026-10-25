@@ -759,8 +759,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 me;
     s32 linked;
+    s32 me;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -5568,7 +5568,6 @@ extern "C" char __vt__19JPAParticleCallBack[];
 extern "C" char __vt__18JPAEmitterCallBack[];
 extern "C" void* __ct__6PlayerFi(u8* p, s32 idx) {
     void* obj;
-    s32 i = idx;
     PTR(p, 0x0) = lbl_804A6F38;
     __construct_array(p + 0x38, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0x31);
     __construct_array(p + 0x4e0, (void*)fn_8018E890, 0, 0x10, 3);
@@ -5599,18 +5598,18 @@ extern "C" void* __ct__6PlayerFi(u8* p, s32 idx) {
     PTR(p, 0x13a8) = __vt__18JPAEmitterCallBack;
     PTR(p, 0x13a8) = lbl_8049F140;
     S32(p, 0x13b4) = 0;
-    S32(p, 0x4) = i;
+    S32(p, 0x4) = idx;
     F32(p, 0x1258) = lbl_80540034;
     F32(p, 0x125c) = lbl_80540034;
     F32(p, 0x1260) = lbl_80540034;
     obj = __nw__FUl(0x60);
     if (obj) {
-        fn_8045B46C(obj, (char)i, p + 0x1258, 0, 8);
+        fn_8045B46C(obj, (s8)idx, p + 0x1258, 0, 8);
     }
     PTR(p, 0x1250) = obj;
     obj = __nw__FUl(0x60);
     if (obj) {
-        fn_8045B46C(obj, (char)i, 0, 0, 8);
+        fn_8045B46C(obj, (s8)idx, 0, 0, 8);
     }
     PTR(p, 0x1254) = obj;
     obj = __nw__FUl(0x2c0);
