@@ -1511,6 +1511,6 @@ extern "C" void* fn_80426DEC(u8* this_) {
     return this_;
 }
 
-extern "C" void __sinit_tu_8042165C_cpp(void) {}
+
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
