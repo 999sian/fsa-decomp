@@ -16,6 +16,11 @@ extern "C" void* fn_8039027C(void* p);
 extern "C" void fn_8013BE04(void*);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80139958(void);
+extern u32 lbl_804652F0[];
+extern void* lbl_8053AD80;
+extern u8 lbl_8050EC80[];
+extern "C" void fn_80158B3C(void*);
+extern "C" void fn_80390088(void*);
 struct TuOwnedObject {
     virtual ~TuOwnedObject();
 };
