@@ -342,7 +342,8 @@ void fn_8027EE84(char* p) {
 
 #pragma opt_propagation off
 void fn_8027EEB4(char* p) {
-    bool inX, inY, inZ;
+    bool inX, inY;
+    int inZ;
     void* input;
     u8 flag;
     f32 machineEps, eps, neg, d;
@@ -373,7 +374,8 @@ next:
         inY = inZ;
         inX = inZ;
         machineEps = *(f32*)__float_epsilon;
-        eps = lbl_8054035C * machineEps;
+        eps = machineEps;
+        eps *= lbl_8054035C;
         neg = -eps;
         d = F32(p, 0x8) - F32(p, 0x14);
         if (neg <= d && d <= eps) {
@@ -399,7 +401,7 @@ next:
                 inZ = true;
             }
         }
-        if (inZ && S32(input, 0xa0) == 0 && U8(p, 0x434) == 0) {
+        if ((u8)inZ && S32(input, 0xa0) == 0 && U8(p, 0x434) == 0) {
             fn_80251AEC(p, 0);
             U8(p, 0x3f8) = 0;
             goto finish;
@@ -2545,6 +2547,7 @@ void fn_80285388(void) {
 }
 
 void fn_8028538C(char* p) {
+    f32 inv; f32 scale;
     JGeometry::TVec3<f32> tmp;
     fn_8027FA08(p, (f32*)&tmp);
     if (lbl_80540360 == tmp.z && lbl_80540360 != F32(p, 0x10) && U8(p, 0x434) == 0) {
@@ -2559,26 +2562,25 @@ void fn_8028538C(char* p) {
     if (fn_802486A0(p) == 5 && U8(PTR(p, 0xbf0), 0xb4) != 0) {
         fn_802808E8(p, lbl_80540378);
     } else if (S32(p, 0x122c) <= 0) {
-        JGeometry::TVec3<f32> tmp2;
+        JGeometry::TVec3<f32> diff;
         JGeometry::TVec3<f32> dir;
+        JGeometry::TVec3<f32> tmp2;
         fn_8027FA08(p, (f32*)&tmp2);
-        dir = tmp2 - VEC(p, 0x8);
+        { JGeometry::TVec3<f32> work(tmp2); work.sub(VEC(p,0x8)); diff=work; }
+        dir=diff;
         dir.z = lbl_80540360;
-        if (dir.length() <= lbl_8054037C) {
-            dir.normalize();
-            dir.scale(lbl_8054037C);
+        if (dir.length() >= 0.5f) {
+            f32 sq=dir.squared();
+            if (!(sq <= JGeometry::TUtilf::epsilon())) { inv=JGeometry::TUtilf::inv_sqrt(sq);dir.scale(inv); }
+            scale=0.5f;
+            dir.scale(scale);
             VEC(p, 0x8) += dir;
         } else {
-            VEC(p, 0x8) = tmp2;
-            if (fn_802486A0(p) == 5) {
-                if (!Player_IsLinked(p)) {
-                    fn_80251AEC(p, 0);
-                }
-            } else if (fn_8022C6AC(S32(p, 0x4)) == lbl_80540360) {
-                fn_80251AEC(p, 0);
-            } else {
-                fn_80251AEC(p, 2);
-            }
+            VEC(p, 0x8).set(tmp2);
+            if(fn_802486A0(p)!=5) {
+                if(0.0f!=fn_8022C6AC(S32(p,4))) fn_80251AEC(p,2);
+                else fn_80251AEC(p,0);
+            } else if(!Player_IsLinked(p)) fn_80251AEC(p,0);
         }
     }
     fn_8027EB04(p);
