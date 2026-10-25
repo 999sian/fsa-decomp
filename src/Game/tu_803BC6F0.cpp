@@ -1038,7 +1038,7 @@ extern "C" void fn_803C05D8(u8* p) {
         fn_80402E08(*(void**)(p + 0x20), 600.0f, 0.0f);
         *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
         ((J2DPane*)*(void**)(*(u8**)(p + 0x20) + 4))->setAlpha(0);
-        q = lbl_80476938;
+        q = (u32*)lbl_80476938;
         for (i = 0; i < 9; i++) {
             fn_804023D0(*(void**)(p + 0x20), ((J2DPane*)*(void**)(p + 4))->search(*(u64*)q), p[0x196 + i]);
             q += 2;
