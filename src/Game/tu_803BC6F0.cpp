@@ -224,6 +224,16 @@ static inline void setKeyedAt(u8* p, s32 recvOff, s32 tgtOff, u8* keys, s32 n, s
     }
 }
 
+static inline void setKeyedB(u8* p, s32 recvOff, s32 tgtOff, u8* keys, s32 n, s32 flagOff) {
+    s32 i;
+    u8* k = keys;
+    for (i = 0; i < n; i++, k += 8) {
+        u64 key = *(u64*)k;
+        void* s = ((TextBoxVt15*)*(void**)(p + recvOff))->v15(*(void**)(p + recvOff), key);
+        fn_804023D0(*(void**)(p + tgtOff), s, p[i + flagOff]);
+    }
+}
+
 struct PaneVt9 {
     void* v0;
     void* v1;
@@ -1944,6 +1954,7 @@ extern "C" void fn_803C9898(u8* p) {
     s16 mx = *(s16*)(lbl_8050DB0C + 0x1da);
     s16 g = *(s16*)(lbl_8050DB0C + 0x1dc);
     u8* base = (u8*)lbl_804765D0;
+    u8* kp;
     s32 off;
     s32 row;
     s32 i;
@@ -1959,20 +1970,24 @@ extern "C" void fn_803C9898(u8* p) {
         if (((1 << *(s32*)(p + 0xa0)) & 0xff & p[0x115]) != 0) {
             ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), b, *(u8*)(*(u8**)(p + 0x20) + 0x28), 0);
+            kp = base + 0x368;
             for (i = 0; i < 9; i++) {
                 u8* obj = *(u8**)(p + 0x4);
-                void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(base + 0x368 + i * 8));
+                void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
                 fn_804023D0(*(void**)(p + 0x20), o, p[0x196 + i]);
+                kp += 8;
             }
             if (*(s16*)(p + 0xd8) == sum) {
                 fn_80402E08(*(void**)(p + 0x20), lbl_80543498,
                             *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc));
                 *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
                 ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 0x4))->v9(0);
+                kp = base + 0x368;
                 for (i = 0; i < 9; i++) {
                     u8* obj = *(u8**)(p + 0x4);
-                    void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(base + 0x368 + i * 8));
+                    void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
                     fn_804023D0(*(void**)(p + 0x20), o, p[0x196 + i]);
+                    kp += 8;
                 }
                 *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
             }
@@ -1983,15 +1998,19 @@ extern "C" void fn_803C9898(u8* p) {
             fn_80402628(*(void**)(p + 0x18), b, *(u8*)(*(u8**)(p + 0x18) + 0x28), 0);
             ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x1c), b, *(u8*)(*(u8**)(p + 0x1c) + 0x28), 0);
+            kp = base + 0x48;
             for (i = 0; i < 0x51; i++) {
                 u8* obj = *(u8**)(p + 0x4);
-                void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(base + 0x48 + i * 8));
+                void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
                 fn_804023D0(*(void**)(p + 0x14), o, p[0x132 + i]);
+                kp += 8;
             }
+            kp = base + 0x2d0;
             for (i = 0; i < 0x13; i++) {
                 u8* obj = *(u8**)(p + 0x8);
-                void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(base + 0x2d0 + i * 8));
+                void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
                 fn_804023D0(*(void**)(p + 0x14), o, p[0x183 + i]);
+                kp += 8;
             }
         }
         fn_803BC6F0((char*)p, *(u32*)(p + 0xa4), lbl_80543478 - (f32)(*(s16*)(p + 0xd8) - a) / (f32)b);
@@ -2033,10 +2052,12 @@ extern "C" void fn_803C9898(u8* p) {
     if (*(s16*)(p + 0xd8) > mx) {
         ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x20), g, 0, lbl_80543498, lbl_80543458);
         fn_80402628(*(void**)(p + 0x20), g, 0, *(u8*)(*(u8**)(p + 0x20) + 0x28));
+        kp = base + 0x368;
         for (i = 0; i < 9; i++) {
             u8* obj = *(u8**)(p + 0x4);
-            void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(base + 0x368 + i * 8));
+            void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
             fn_804023D0(*(void**)(p + 0x20), o, p[0x196 + i]);
+            kp += 8;
         }
     }
     if (*(s16*)(p + 0xd8) > tot) {
