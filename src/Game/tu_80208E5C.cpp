@@ -26,7 +26,7 @@ extern void* fn_801F856C();
 extern void* fn_801F666C(void*, s32);
 extern void fn_8020B434(void*);
 extern void fn_8020B3E4(void*, s32, s32, void*, s32);
-extern void* fn_80207AC0(void*);
+extern "C" void* fn_80207AC0(void*);
 extern f32 lbl_8053F918;
 extern f32 lbl_8053F91C;
 extern f32 lbl_8053F920;
@@ -111,8 +111,9 @@ extern "C" void fn_80209014(char* this_) {
     case 0: {
         if ((*(s32*)(this_ + 0x348) == 0 && *(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) ||
             ((FsaVObjX*)this_)->v11()) {
+            char* p;
             s32 i = 0;
-            char* p = this_;
+            p = this_;
             while (i < 4) {
                 void* a = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x2b0));
                 if (a != 0) {
@@ -135,16 +136,20 @@ extern "C" void fn_80209014(char* this_) {
             pf = (f32*)(p + 0xdc);
         }
         if (*(f32*)(this_ + 0xc) < *pf - lbl_8053F924 || *(f32*)(this_ + 0xc) > lbl_8053F924 + pf[2]) {
-            *(u8*)(this_ + 0x11c) = 0;
-            for (s32 j = 0; j < 4; j++) {
+            s32 zero = 0;
+            s32 j = zero;
+            *(u8*)(this_ + 0x11c) = zero;
+            for (; j < 4; j++) {
                 void* a = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2b0));
                 if (a != 0) {
-                    *(u8*)((char*)a + 0x11c) = 0;
+                    *(u8*)((char*)a + 0x11c) = zero;
                 }
                 this_ += 0x24;
             }
         }
     } break;
+    default:
+        break;
     }
 }
 
