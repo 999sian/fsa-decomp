@@ -218,8 +218,7 @@ extern "C" void fn_80367E24(u8* p) {
         if (actor != 0 && *(u32*)(actor + 0x1a0) == 'DCR2') {
             *(s32*)(p + 0x250) = i;
             *(u8**)(p + 0x254) = actor;
-            *(f64*)(p + 0x258) = *(f64*)(actor + 0xc);
-            *(f32*)(p + 0x260) = *(f32*)(actor + 0x14);
+            *(JGeometry::TVec3<f32>*)(p + 0x258) = *(JGeometry::TVec3<f32>*)(actor + 0xc);
             break;
         }
     }
