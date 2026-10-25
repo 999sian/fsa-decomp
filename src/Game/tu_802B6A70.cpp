@@ -19,9 +19,9 @@ extern "C" void* lbl_8053AAF8;
 
 /* 0x19660d/0x3c6ef35f LCG kept at lbl_8053AAF8+0xB4; returns a [0,1) float. */
 static inline f32 rand01() {
-    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *s = *s * 0x19660du + 0x3c6ef35fu;
-    u32 a = (*s >> 9) | 0x3f800000u;
+    u8* s = (u8*)lbl_8053AAF8;
+    *(u32*)(s + 0xb4) = *(u32*)(s + 0xb4) * 0x19660du + 0x3c6ef35fu;
+    u32 a = (*(u32*)(s + 0xb4) >> 9) | 0x3f800000u;
     return *(f32*)&a - 1.0f;
 }
 extern "C" u8 lbl_8046CAD0[];
@@ -46,6 +46,7 @@ extern "C" void* fn_802D9C4C(void* mgr);
 extern "C" u8 fn_802D7544(void* mgr, void* arg);
 extern "C" void fn_8029D8F0(void* mgr, const Vec3f& pos, s32 room, s32 n, s32 flag);
 extern "C" void* lbl_8053AC98;
+#pragma opt_lifetimes off
 extern "C" void fn_802B6A70(Actor* p) {
     s32 i;
     s32 c = **(char**)((char*)p + 0x248);
@@ -71,15 +72,7 @@ extern "C" void fn_802B6A70(Actor* p) {
             if (slot >= 0) {
                 Actor* e = fn_801F666C(fn_801F856C(), slot);
                 if (e) {
-                    JGeometry::TVec3f v;
-                    JGeometry::TVec3f* pv = &v;
-                    f32 z, x, y;
-                    z = 3.0f * rand01() + 3.0f;
-                    y = 2.0f - 4.0f * rand01();
-                    x = 2.0f - 4.0f * rand01();
-                    pv->z = z;
-                    pv->y = y;
-                    pv->x = x;
+                    JGeometry::TVec3f v(2.0f - 4.0f * rand01(), 2.0f - 4.0f * rand01(), 3.0f * rand01() + 3.0f);
                     *(JGeometry::TVec3f*)&e->field_3C = v;
                 }
             }
@@ -90,8 +83,7 @@ extern "C" void fn_802B6A70(Actor* p) {
     }
     p->field_11C = 0;
 }
-
-#pragma peephole on
+#pragma opt_lifetimes reset
 extern "C" void fn_802B6DAC(Actor* p) {
     u8* q;
     u8* tbl;
