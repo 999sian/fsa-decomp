@@ -16,7 +16,7 @@ extern const f32 lbl_8053F3B4;
 extern const f32 lbl_8053F3B8;
 extern const f32 lbl_8053F3BC;
 extern const f32 lbl_8053F3C0;
-extern const f32 lbl_8053F3C4;
+extern f32 lbl_8053F3C4;
 extern const f32 lbl_8053F3C8;
 
 extern "C" u8 fn_801F37AC(void*, s32, void*, s32, s32, s32);
@@ -164,6 +164,8 @@ extern "C" s32 fn_801DD28C(u8* this_) {
 
 extern "C" u8 fn_801DD410(u8* p) {
     u8 hit = 0;
+    s32 i;
+    u8 effect;
     s32 hitType;
     f32 contact[2];
     bool check = false;
@@ -203,7 +205,7 @@ extern "C" u8 fn_801DD410(u8* p) {
             *(f32*)(p + 0x60) = -hi;
             *(f32*)(p + 0x68) = -lo;
         }
-        for (s32 i = 0; i < 4; ++i) {
+        for (i = 0; i < 4; ++i) {
             if (i == fn_801F285C(p, 0, &hitType, 1, i) && fn_80235448(i) &&
                 fn_801F37AC(p, 0, fn_8023E724(i), 0, hitType, i)) {
                 hit = 1;
@@ -221,7 +223,7 @@ extern "C" u8 fn_801DD410(u8* p) {
         *(f32*)(p + 0x6c) = y1;
         if (!hit && *(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F38C &&
             *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053F38C) {
-            for (s32 i = 0; i < 4; ++i) {
+            for (i = 0; i < 4; ++i) {
                 if (i == fn_801F285C(p, 0, &hitType, 1, i) && canHitPlayer(p, i)) {
                     if (fn_801F37AC(p, fn_8023B6CC(i), fn_8023E724(i), 0, hitType, i)) hit = 1;
                 }
@@ -236,8 +238,8 @@ extern "C" u8 fn_801DD410(u8* p) {
     case 11: case 12: case 13: case 14:
         if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F38C &&
             *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053F38C) {
-            u8 effect = 0;
-            for (s32 i = 0; i < 4; ++i) {
+            effect = 0;
+            for (i = 0; i < 4; ++i) {
                 if (i == fn_801F285C(p, contact, &hitType, 1, i)) {
                     fn_8023B6CC(i);
                     if (canHitPlayer(p, i)) {
@@ -272,7 +274,7 @@ extern "C" u8 fn_801EAC54(void*, s32);
 extern "C" void fn_801CB538(s32, void*, s32, s32);
 extern "C" void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern f32 lbl_8053F3CC;
-extern const f32 lbl_8053F3C4;
+extern f32 lbl_8053F3C4;
 extern f64 lbl_8053F3D0;
 extern const u8 lbl_8053F1C8;
 static inline u8 canHitFire(u8* p, u8* other) {
