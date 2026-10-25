@@ -8,7 +8,7 @@ struct ActorE62 { u8 pad0[4]; u32 f4; u8 fC[4]; };
 extern "C" void fn_801EE434(void* handle);
 extern "C" void* fn_8013CC50(s32 id, void* pos, f32 scale, u16 kind, s32 a, s32 b, void* c, void* d, u8 e);
 extern "C" void fn_801CB71C(void* a, void* b, u32 c, u32 d);
-extern "C" f32 lbl_8053F5AC;
+extern "C" const f32 lbl_8053F5AC;
 extern "C" u32 fn_801DA938(void* p);
 extern "C" void* fn_804032E8(u32 id, u32 v);
 extern "C" u8 fn_801DA904(void* p);
