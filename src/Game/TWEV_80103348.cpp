@@ -39,7 +39,7 @@ extern f32 lbl_8053C1D0;
 extern f32 lbl_8053C1D4;
 extern f32 lbl_8053C1D8;
 
-static void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
+static inline void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
     f32 sa = sin(ax);
     f32 sb = sin(ay);
     f32 sc = sin(az);
