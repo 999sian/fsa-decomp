@@ -1462,10 +1462,13 @@ extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
     s32 j;
     s32 p;
     s32 q;
+    s32 r;
+    s32 c;
     f32 k;
     u16* lut;
     f32* pos = (f32*)arr;
     u16* idx = (u16*)v;
+    u16* lut2;
 
     k = lbl_80541598 * ((f32)a - lbl_80541520);
     PSMTXTrans(m, pos[0], pos[1] + k, pos[2] + k);
@@ -1486,6 +1489,32 @@ extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
                     cnt[(lut[w * 4 + 1] >> 10) & 0xf]++;
                     cnt[(lut[w * 4 + 2] >> 10) & 0xf]++;
                     cnt[(lut[w * 4 + 3] >> 10) & 0xf]++;
+                }
+            }
+        }
+    }
+
+    if (cnt[0] > 0) {
+        GXInitTexObjCI(&texObj, *(void**)(self + 4), 0x80, 0x200, GX_TF_C8, GX_CLAMP, GX_CLAMP, GX_FALSE, lbl_8046F9F0[0]);
+        GXLoadTexObj(&texObj, GX_TEXMAP0);
+        GXBegin(GX_QUADS, GX_VTXFMT0, cnt[0] * 4);
+        for (r = 0; r < 2; r++) {
+            for (c = 0; c < 16; c++) {
+                lut2 = *(u16**)(self + 0x24);
+                u16 t = lut2[(r * 2) * 16 + c];
+                if (((t >> 12) & 0xf) == cnt[0]) {
+                    f32 x = pos[0] + (f32)c;
+                    f32 y = pos[1] + (f32)r;
+                    GXWGFifo.u16 = (u16)(x);
+                    GXWGFifo.u16 = (u16)(x);
+                    GXWGFifo.u16 = (u16)(t & 0xfff);
+                    GXWGFifo.f32 = x * lbl_8054152C;
+                    GXWGFifo.f32 = y * lbl_8054152C;
+                    GXWGFifo.u16 = (u16)(y);
+                    GXWGFifo.u16 = (u16)(y);
+                    GXWGFifo.u16 = (u16)(t ^ 0x400);
+                    GXWGFifo.f32 = lbl_80541534 + x * lbl_8054152C;
+                    GXWGFifo.f32 = lbl_80541534 + y * lbl_8054152C;
                 }
             }
         }
@@ -1514,8 +1543,8 @@ extern "C" void fn_802FC80C(u8* this_) {
     GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xb, (GXCompCnt)0, (GXCompType)5, 0);
     GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xd, (GXCompCnt)1, (GXCompType)4, 0);
     GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xe, (GXCompCnt)1, (GXCompType)4, 0);
-    GXSetArray((GXAttr)9, ((void**)this_)[*(s32*)(this_ + 0x2388) + 0x40], 0xc);
-    GXSetArray((GXAttr)0xb, ((void**)this_)[*(s32*)(this_ + 0x2388) + 0x42], 4);
+    GXSetArray((GXAttr)9, ((void**)(this_ + 0x100))[*(s32*)(this_ + 0x2388)], 0xc);
+    GXSetArray((GXAttr)0xb, ((void**)(this_ + 0x108))[*(s32*)(this_ + 0x2388)], 4);
     GXSetArray((GXAttr)0xd, *(void**)(this_ + 0x110), 8);
     GXSetChanCtrl((GXChannelID)4, (GXBool)0, (GXColorSrc)0, (GXColorSrc)1, 0, (GXDiffuseFn)0, (GXAttnFn)2);
     GXSetNumChans(1);
@@ -1531,9 +1560,9 @@ extern "C" void fn_802FC80C(u8* this_) {
     if (this_[0xe450] != 0) {
         mgr = (u8*)lbl_8053AAF8;
         if (mgr[0x7f] != 0) {
-            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb);
+            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb) ? true : false;
         } else {
-            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb || *(s32*)(mgr + 0x4c) == 0xc);
+            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb || *(s32*)(mgr + 0x4c) == 0xc) ? true : false;
         }
         if (flag && *(void**)(mgr + 0x4) != NULL) {
             idx = *(s32*)((u8*)fn_802D6A9C() + 0x50);
