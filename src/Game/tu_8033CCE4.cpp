@@ -650,15 +650,14 @@ extern "C" void fn_8033DA78(UnkObj8033D4CC* this_) {
     }
 }
 
-extern f32 lbl_805421C4;
-extern f32 lbl_805421EC;
-extern f32 lbl_805421F0;
-extern f32 lbl_805421F4;
-extern f32 lbl_805421F8;
-extern f32 lbl_805421FC;
-extern f32 lbl_80542200;
-extern f32 lbl_80542204;
-extern f32 lbl_80542208;
+extern "C" const f32 lbl_805421EC;
+extern "C" const f32 lbl_805421F0;
+extern "C" const f32 lbl_805421F4;
+extern "C" const f32 lbl_805421F8;
+extern "C" const f32 lbl_805421FC;
+extern "C" const f32 lbl_80542200;
+extern "C" const f32 lbl_80542204;
+extern "C" const f32 lbl_80542208;
 extern s32 lbl_804ABC80;
 extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
 extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
