@@ -8,7 +8,7 @@ extern "C" void fn_80457C08(char* p, int v) {
     call(p, v);
 }
 
-void __sinit_tu_80457C08_cpp(void) {}
+static void __sinit_tu_80457C08_cpp(void) {}
 
 #pragma exceptions reset
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
