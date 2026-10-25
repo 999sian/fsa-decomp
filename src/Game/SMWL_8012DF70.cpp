@@ -4,7 +4,7 @@
 #include "Game/ItemBase.h"
 
 extern "C" char lbl_8049E8A0[];
-extern "C" f32 lbl_8053CC3C;
+extern "C" const f32 lbl_8053CC3C;
 extern "C" void __ct__5ActorFv(Actor*);
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_801EE434(void*);
