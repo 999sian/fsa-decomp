@@ -476,7 +476,6 @@ extern "C" void fn_8030E154(u8* p) {
     p[0x17d] = 0;
 }
 
-extern "C" void fn_8030CB10(u8* p, f32* v, f32 s);
 extern "C" void fn_8030E5BC(u8* p) {
     f32 v[4];
     *(f32*)(p + 0x154) = 0.0f;
