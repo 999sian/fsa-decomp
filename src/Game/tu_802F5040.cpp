@@ -162,6 +162,10 @@ struct Tu802F5040Effect {
     f32 b;
     JGeometry::TVec3<f32> direction;
 };
+struct Tu802F5040Effects {
+    u8 pad[0xbf9c];
+    Tu802F5040Effect entries[16];
+};
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
     u8* m_tbl[8];
@@ -584,81 +588,36 @@ extern "C" void fn_802F601C(u8* this_, f32* src, s32 type, f32* src2, f32 f1, f3
     s32 bestIdx;
     s32 slot;
     s32 i;
-    u8* e;
-    f32* v;
-    f32 mag;
-    f32 r;
-    f32 scale;
-
+    Tu802F5040Effect* e;
     p = this_;
     best = -1;
     bestIdx = 0;
     slot = -1;
-    for (i = 0; i < 16; i++) {
-        if (*(s32*)(p + 0xBF9C) == 0) {
-            slot = i;
-            break;
+    for (i=0; i<16; i++) {
+        if (*(s32*)(p+0xbf9c)==0) { slot=i; break; }
+        if (best < 0 || best > *(s32*)(p+0xbfac)) {
+            best=*(s32*)(p+0xbfac);
+            bestIdx=i;
         }
-        if (best < 0 || *(s32*)(p + 0xBFAC) < best) {
-            best = *(s32*)(p + 0xBFAC);
-            bestIdx = i;
-        }
-        p += 0x28;
+        p+=0x28;
     }
-    if (slot < 0) {
-        slot = bestIdx;
-    }
-
-    e = this_ + slot * 0x28 + 0xBF9C;
-    *(s32*)e = type;
-    *(f32*)(e + 0x4) = src[0];
-    *(f32*)(e + 0x8) = src[1];
-    *(f32*)(e + 0xC) = src[2];
-    *(f32*)(e + 0x14) = f1;
-    *(f32*)(e + 0x18) = f2;
-    if (type == 4) {
-        *(s32*)e = 5;
-        *(f32*)(e + 0x14) = -*(f32*)(e + 0x14);
-        *(s32*)(e + 0x10) = 1;
-        return;
-    }
-    if (type > 4) {
-        if (type == 6) {
-            *(s32*)(e + 0x10) = 300;
-            return;
-        }
-        if (type < 6) {
-            *(s32*)(e + 0x10) = 1;
-        }
-        return;
-    }
-    if (type == 2) {
-        *(s32*)(e + 0x10) = 0x3c;
-        return;
-    }
-    if (type > 2) {
-        *(s32*)(e + 0x10) = 0x12;
-        v = (f32*)(e + 0x1c);
-        v[0] = src2[0];
-        v[1] = src2[1];
-        v[2] = src2[2];
-        mag = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-        if (mag <= 32.0f * *(f32*)&__float_epsilon) {
-            return;
-        }
-        if (mag <= 0.0f) {
-            scale = mag;
-        } else {
-            r = (f32)__frsqrte(mag);
-            scale = (r * 0.5f) * (3.0f - mag * (r * r));
-        }
-        v[0] *= scale;
-        v[1] *= scale;
-        v[2] *= scale;
-        return;
-    }
-    if (type > 0) {
-        *(s32*)(e + 0x10) = 5;
+    if (slot<0) slot=bestIdx;
+    e=(Tu802F5040Effect*)(this_+(slot*0x28+0xbf9c));
+    e->type=type;
+    e->pos.set(*(JGeometry::TVec3<f32>*)src);
+    e->a=f1;
+    e->b=f2;
+    switch(type) {
+    case 1: e->timer=5; break;
+    case 2: e->timer=60; break;
+    case 3:
+        e->timer=18;
+        e->direction.set(*(JGeometry::TVec3<f32>*)src2);
+        e->direction.normalize();
+        break;
+    case 4: e->type=5; e->a=-e->a; e->timer=1; break;
+    case 5: e->timer=1; break;
+    case 6: e->timer=300; break;
     }
 }
 
