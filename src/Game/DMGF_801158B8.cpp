@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry.h"
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
@@ -219,8 +220,8 @@ extern "C" void fn_80115D8C(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<
                     len = r2 * ((0.5f * y2) * (3.0f - r2 * (y2 * y2)));
                 }
                 fn_801CD950(&len, lbl_8053C704, lbl_8053C708);
-                if (r2 > lbl_8053C6F4 * *(f32*)__float_epsilon) {
-                    if (r2 > 0.0f) {
+                if (!(r2 <= lbl_8053C6F4 * *(f32*)__float_epsilon)) {
+                    if (!(r2 <= 0.0f)) {
                         f32 y2 = (f32)__frsqrte(r2);
                         r2 = (0.5f * y2) * (3.0f - r2 * (y2 * y2));
                     }
