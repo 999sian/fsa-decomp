@@ -1215,10 +1215,7 @@ extern "C" const char lbl_805432D4[4];
 extern "C" const u32 lbl_80475D64[];
 extern "C" const char lbl_80475DC8[];
 
-static inline void msgSetColor(MsgLayout* layout, char* buf, const char* format, u32 color) {
-    layout->m154 = color;
-    snprintf(buf, 30, format, color);
-}
+
 extern "C" const char lbl_805432BC[4];
 extern "C" const char lbl_805432C0[4];
 extern "C" const char lbl_805432C4[4];
@@ -1226,6 +1223,7 @@ extern "C" const char lbl_805432C8[4];
 extern "C" const char lbl_805432CC[4];
 extern "C" const char lbl_805432D4[4];
 extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
+    char buf[30];
     if (p->layout->m1aa == 0) {
         switch (event) {
     case 0x0:
@@ -1373,10 +1371,8 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
     case 0x2001d:
         return 1;
     case 0x2001e:
-    {
-        char buf[30];
         if (p->cur > p->lineTab[p->layout->m15c] && data[0] < 5) {
-            snprintf(buf, 30, lbl_80475DC8, (int)(p->layout->m154 = lbl_80475D64[data[0]]));
+            snprintf(buf, 30, lbl_80475DC8, *(u32*)&p->layout->m154 = lbl_80475D64[data[0]]);
             strcat(p->str2c0, buf);
             if ((p->layout->font->flags & 0x40) != 0 || *((u8*)p->layout + 0x1a2) == 0) {
                 snprintf(buf, 30, lbl_80475DC8, 0xff);
@@ -1388,7 +1384,6 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
             p->m2d0 += strlen(buf);
         }
         return 1;
-    }
     case 0x2001f:
     case 0x20020:
     case 0x20021:
