@@ -149,8 +149,8 @@ inline s32 countSharing(const char* p) {
 }
 
 inline s32 countSharingH(const char* p) {
-s32 c;
 s32 i;
+s32 c;
 s32 linked;
 c = 0;
     for (i = 0; i < 4; i++) {
@@ -5125,7 +5125,7 @@ BOOL fn_8025190C(char* p, u8 v) {
 u8 fn_8025196C(char* p, s32 i) { return btn(p, i); }
 bool fn_8025197C(char* p, u8 all) {
     char* s = (char*)PTR(p, 0xbf0);
-    s32 i;
+    int i;
     for (i = 0; i < 8; i++) {
         if (!all && i >= 4) {
             return 0;
@@ -5133,7 +5133,7 @@ bool fn_8025197C(char* p, u8 all) {
         if (U8(s, 0xb4) == 1 && (i == 2 || i == 4 || i == 5)) {
             continue;
         }
-        if (U8(s, 0x48 + i) == 1) {
+        if (U8(s, (u32)i + 0x48) == 1) {
             return 1;
         }
     }
