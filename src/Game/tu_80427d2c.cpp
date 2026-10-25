@@ -798,12 +798,10 @@ extern "C" u8 fn_80428AC8(s32 frameNum, s32 playFlag, s32 audioTrack) {
                 return 0;
             }
             if (lbl_8052AAD0.header.numFrames > (u32)frameNum) {
-                u32* tbl = (u32*)lbl_8052ACA0;
-                u32 b = tbl[1];
-                u32 a = *tbl;
-                u32 mdo = lbl_8052AAD0.header.movieDataOffsets;
+                u32 a = lbl_8052ACA0[0];
+                u32 b = lbl_8052ACA0[1];
                 lbl_8052AAD0.initReadFrame = frameNum;
-                lbl_8052AAD0.initOffset = mdo + a;
+                lbl_8052AAD0.initOffset = lbl_8052AAD0.header.movieDataOffsets + a;
                 lbl_8052AAD0.initReadSize = b - a;
             } else {
                 return 0;
