@@ -4,6 +4,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -83,9 +84,9 @@ extern "C" void fn_801AAF44(char* p) {
         *(s32*)(p + 0xb0) = 0;
         return;
     }
-    f32 sx = *(f32*)(p + 0x3c);
-    f32 sy = *(f32*)(p + 0x40);
     f32 sz = *(f32*)(p + 0x44);
+    f32 sy = *(f32*)(p + 0x40);
+    f32 sx = *(f32*)(p + 0x3c);
     if (fn_801F2DB4(p, 'NULL', 'HBMB', 0)) {
         *(f32*)(p + 0x3c) = sx;
         *(f32*)(p + 0x40) = sy;
@@ -115,6 +116,112 @@ extern "C" void fn_801AAF44(char* p) {
     *(f32*)(p + 0x74) = lbl_8053E764;
     *(f32*)(p + 0x78) = lbl_8053E77C;
     *(f32*)(p + 0x7c) = lbl_8053E76C;
+    switch (*(s32*)(p + 0x230)) {
+    case 7: {
+        fn_80458FF0(lbl_8053AF80, 0x100004, 0, 0);
+        *(s32*)(p + 0x230) = 8;
+        *(s32*)(p + 0x234) = 0;
+        *(u32*)(lbl_8053AAF8 + 0xb4) = 0x19660d * *(u32*)(lbl_8053AAF8 + 0xb4) + 0x3c6ef35f;
+        union { f32 f; u32 s; } out;
+        out.s = (*(u32*)(lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+        *(s32*)(p + 0x23c) = (s32)(lbl_8053E780 * (out.f - lbl_8053E754)) + 0xc8;
+        *(s32*)(p + 0x244) = 0;
+        *(s32*)(p + 0x98) = *(s32*)(p + 0x260);
+        *(f32*)(p + 0x44) = lbl_8053E744;
+        *(f32*)(p + 0x40) = lbl_8053E744;
+        *(f32*)(p + 0x3c) = lbl_8053E744;
+        f32 a = lbl_8053E784 + lbl_8053E788 * (f32)(3 - *(s32*)(p + 0x258));
+        switch (*(s32*)(p + 0x98)) {
+        case 0:
+            *(f32*)(p + 0x264) = a;
+            *(f32*)(p + 0x268) = lbl_8053E744;
+            *(f32*)(p + 0x26c) = lbl_8053E744;
+            break;
+        case 1:
+            *(f32*)(p + 0x264) = -a;
+            *(f32*)(p + 0x268) = lbl_8053E744;
+            *(f32*)(p + 0x26c) = lbl_8053E744;
+            break;
+        case 2:
+            *(f32*)(p + 0x264) = lbl_8053E744;
+            *(f32*)(p + 0x268) = a;
+            *(f32*)(p + 0x26c) = lbl_8053E744;
+            break;
+        case 3:
+            *(f32*)(p + 0x264) = lbl_8053E744;
+            *(f32*)(p + 0x268) = -a;
+            *(f32*)(p + 0x26c) = lbl_8053E744;
+            break;
+        }
+        *(s32*)(p + 0x98) = 2;
+        *(s32*)(p + 0x238) = (s32)(lbl_8053E78C - lbl_8053E790 * (f32)(3 - *(s32*)(p + 0x258)));
+        *(s32*)(p + 0x230) = 9;
+        if (r31 & 0xff) {
+            *(s32*)(p + 0x260) ^= 1;
+            *(s32*)(p + 0x98) = *(s32*)(p + 0x260);
+            *(f32*)(p + 0x44) = lbl_8053E744;
+            *(f32*)(p + 0x40) = lbl_8053E744;
+            *(f32*)(p + 0x3c) = lbl_8053E744;
+            f32 b = lbl_8053E784 + lbl_8053E788 * (f32)(3 - *(s32*)(p + 0x258));
+            switch (*(s32*)(p + 0x98)) {
+            case 0:
+                *(f32*)(p + 0x264) = b;
+                *(f32*)(p + 0x268) = lbl_8053E744;
+                *(f32*)(p + 0x26c) = lbl_8053E744;
+                break;
+            case 1:
+                *(f32*)(p + 0x264) = -b;
+                *(f32*)(p + 0x268) = lbl_8053E744;
+                *(f32*)(p + 0x26c) = lbl_8053E744;
+                break;
+            case 2:
+                *(f32*)(p + 0x264) = lbl_8053E744;
+                *(f32*)(p + 0x268) = b;
+                *(f32*)(p + 0x26c) = lbl_8053E744;
+                break;
+            case 3:
+                *(f32*)(p + 0x264) = lbl_8053E744;
+                *(f32*)(p + 0x268) = -b;
+                *(f32*)(p + 0x26c) = lbl_8053E744;
+                break;
+            }
+            *(s32*)(p + 0x98) = 2;
+        }
+        if (*(s32*)(p + 0x238) == 0) {
+            f32 oldy = *(f32*)(p + 0x10);
+            f32 keepx = *(f32*)(p + 0xc);
+            f32 keepz = *(f32*)(p + 0x14);
+            *(f32*)(p + 0x10) = oldy + lbl_8053E794;
+            u16 angle = 0;
+            s32 n = 1;
+            s32 key = 0;
+            fn_801EEC98(p, *(void**)(p + 0x198), &angle, 0, 0, 0, 0, 4, oldy);
+            if (*(s32*)(p + 0x258) == 1) {
+                angle -= 0x2000;
+                n = 3;
+                key = 0x4f4b544d;
+            }
+            for (s32 i = 0; i < n; i++) {
+                s32 id = Actor_CreateByID(fn_801F856C(), 0x4f4b544d, *(s32*)(p + 0x4), p + 0xc, 4, -1, -1);
+                if (id >= 0) {
+                    char* na = (char*)fn_801F666C(fn_801F856C(), id);
+                    if (na != 0) {
+                        f32* tab = (f32*)((char*)sincosTable___5JMath + ((angle >> 5) << 3));
+                        *(f32*)(na + 0x3c) = lbl_8053E798 * tab[0];
+                        *(f32*)(na + 0x40) = lbl_8053E798 * tab[1];
+                        *(f32*)(na + 0x44) = lbl_8053E744;
+                        *(s32*)(na + 0x98) = ClassifyBamAngleToQuadrant(angle);
+                        *(s32*)(p + 0x238) = (s32)(lbl_8053E78C - lbl_8053E790 * (f32)(3 - *(s32*)(p + 0x258)));
+                    }
+                }
+                angle += 0x2000;
+            }
+            *(f32*)(p + 0xc) = keepx;
+            *(f32*)(p + 0x10) = oldy;
+            *(f32*)(p + 0x14) = keepz;
+        }
+    } break;
+    }
 }
 
 struct Handles_gnma { u8 pad[0x27c]; void* h[2]; };
