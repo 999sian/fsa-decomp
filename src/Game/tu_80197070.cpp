@@ -81,13 +81,6 @@ struct UnkDrawRec {
     s32 field_38;
 };
 
-struct DrawTables97070 {
-    s32 first[6];
-    s32 second[6];
-    u8 name0[0x14];
-    u8 name1[0x14];
-};
-
 static const s32 drawIndices0[6] = {0x1d0, 0x1e2, 0x1d6, 0x1dc, 0x1e8, 0x1ee};
 static const s32 drawIndices1[6] = {0x17f, 0x1cd, 0x199, 0x1b3, 0x1e7, 0x201};
 static const char drawName0[] = "enemy_both2_sob.bin";
