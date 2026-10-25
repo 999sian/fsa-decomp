@@ -161,7 +161,7 @@ extern "C" void fn_800F6820(char* this_) {
     v07__5ActorFv(this_);
 }
 #pragma opt_propagation reset
-extern "C" void fn_801F02BC(char* this_, void* anim, s32 idx, u8* tbl, s32 frame, s32 a, s32 b, f32 x, f32 y, f32 z);
+extern "C" void fn_801F02BC(char* this_, void* anim, s32 idx, u8* tbl, s32 frame, s32 a, s32 b, f32 x, f32 y);
 extern const f32 lbl_8053BF3C;
 extern const f32 lbl_8053BF40;
 extern const f32 lbl_8053BF44;
@@ -171,61 +171,17 @@ extern u8 lbl_8049C518[];
 extern u8 lbl_80463710[];
 extern u8 lbl_80463724[];
 extern "C" void fn_800F6AB4(char* this_) {
-    volatile struct {
-        s32 a;
-        s32 b;
-        f32* p;
-        u8 c[11];
-        s32 d;
-        u8 e[3];
-        s32 f;
-        s32 g;
-        s32 h;
-    } cfg;
+    DrawRec rec;
     f32 arr[12];
-    u8 tbl[16];
     s32* base = (s32*)lbl_8049C518;
-    cfg.a = -1;
-    cfg.b = -1;
-    for (u8 i = 0; i < 0x10; i += 8) {
-        tbl[i] = i;
-        tbl[(u8)(i + 1)] = (u8)(i + 1);
-        tbl[(u8)(i + 2)] = (u8)(i + 2);
-        tbl[(u8)(i + 3)] = (u8)(i + 3);
-        tbl[(u8)(i + 4)] = (u8)(i + 4);
-        tbl[(u8)(i + 5)] = (u8)(i + 5);
-        tbl[(u8)(i + 6)] = (u8)(i + 6);
-        tbl[(u8)(i + 7)] = (u8)(i + 7);
-    }
-    cfg.a = -1;
-    cfg.b = 0;
-    cfg.p = 0;
-    cfg.c[0] = 0;
-    cfg.c[1] = 0;
-    cfg.c[2] = 0;
-    cfg.c[3] = 1;
-    cfg.c[4] = 1;
-    cfg.c[5] = 0;
-    cfg.c[6] = 0;
-    cfg.c[7] = 0;
-    cfg.c[8] = 0;
-    cfg.c[9] = 0;
-    cfg.c[10] = 1;
-    cfg.d = 3;
-    cfg.e[0] = 1;
-    cfg.e[1] = 0;
-    cfg.e[2] = 0;
-    cfg.f = -1;
-    cfg.g = 0;
-    cfg.h = 2;
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
-        fn_801F02BC(this_, lbl_80463710, *(u8*)(this_ + 0x235) + base[*(u8*)(this_ + 0x234)], tbl, 0, 0, 0, lbl_8053BF30, lbl_8053BF30, 0.0f);
+        fn_801F02BC(this_, lbl_80463710, *(u8*)(this_ + 0x235) + base[*(u8*)(this_ + 0x234)], rec.ids, 0, 0, 0, lbl_8053BF30, lbl_8053BF30);
         return;
     case 2:
         *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x260);
         *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x264);
-        fn_801F02BC(this_, lbl_80463724, *(u8*)(this_ + 0x235) + (base + 8)[*(u8*)(this_ + 0x234)], tbl, 7, 0, 0, lbl_8053BF30, lbl_8053BF30, 0.0f);
+        fn_801F02BC(this_, lbl_80463724, *(u8*)(this_ + 0x235) + (base + 8)[*(u8*)(this_ + 0x234)], rec.ids, 7, 0, 0, lbl_8053BF30, lbl_8053BF30);
         *(f32*)(this_ + 0xc) -= *(f32*)(this_ + 0x260);
         *(f32*)(this_ + 0x10) -= *(f32*)(this_ + 0x264);
         break;
@@ -233,11 +189,11 @@ extern "C" void fn_800F6AB4(char* this_) {
         break;
     default:
         {
-            f32 f = lbl_8053BF30 + lbl_8053BF3C * ((f32)*(u32*)(this_ + 0x244) / lbl_8053BF40);
+            f32 f = lbl_8053BF30 + lbl_8053BF3C * ((f32)*(s32*)(this_ + 0x244) / lbl_8053BF40);
             if (f > lbl_8053BF44) {
                 f = lbl_8053BF44;
             }
-            cfg.p = arr;
+            rec.w18 = arr;
             arr[0] = f;
             arr[1] = lbl_8053BF48;
             arr[2] = lbl_8053BF48;
@@ -250,7 +206,7 @@ extern "C" void fn_800F6AB4(char* this_) {
             arr[9] = lbl_8053BF48;
             arr[10] = f;
             arr[11] = lbl_8053BF48;
-            fn_801F02BC(this_, lbl_80463724, *(u8*)(this_ + 0x235) + (base + 4)[*(u8*)(this_ + 0x234)], tbl, 7, 0, 0, lbl_8053BF30, lbl_8053BF30, f);
+            fn_801F02BC(this_, lbl_80463724, *(u8*)(this_ + 0x235) + (base + 4)[*(u8*)(this_ + 0x234)], rec.ids, 7, 0, 0, lbl_8053BF30, lbl_8053BF30);
         }
         break;
     }
