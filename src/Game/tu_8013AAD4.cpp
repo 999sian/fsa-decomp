@@ -16,6 +16,12 @@
 extern void* lbl_8053AB10;
 extern "C" s32 fn_8030DD20(void* subObj);
 extern const f32 lbl_8053CDE0;
+static inline void setSphereTransform(Mtx m, f32 r10, f32 r11, f32 r12, f32 r20, f32 r21, f32 r22, f32 tx, f32 ty, f32 tz) {
+    m[1][0]=r10; m[1][1]=r11; m[1][2]=r12;
+    m[2][0]=r20; m[2][1]=r21; m[2][2]=r22;
+    m[0][3]=tx; m[1][3]=ty; m[2][3]=tz;
+}
+
 
 
 struct AADGameState {
@@ -159,13 +165,12 @@ extern "C" void fn_8013AC54(Mtx mtx) {
     j3dSys.setViewMtx(mtx);
 }
 
-extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, Mtx mtx, f32 scale) {
-    struct MtxBox {
-        Mtx m;
-    };
+#pragma opt_lifetimes on
+#pragma opt_common_subs on
+extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, f32 (* __restrict mtx)[4], f32 scale) {
     Mtx m;
     Mtx tmp;
-    GXColor c = *color;
+    Vec translation;
     f32 off;
     m[0][0] = scale;
     m[0][1] = 0.0f;
@@ -180,38 +185,41 @@ extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, Mtx mtx, f32
     m[2][2] = 0.0f;
     m[2][3] = 0.0f;
     if (mtx) {
-        if (pos->z > 0.0f && a < 1) {
-            a++;
-            b--;
-        }
-        off = (f32)(a * 0x400 + b * 0x80);
-        *(MtxBox*)tmp = *(MtxBox*)mtx;
-        tmp[1][3] += off;
-        tmp[2][3] += off;
-        PSMTXConcat(tmp, m, m);
+        if(pos->z > 0.0f && a<1) { a++; b--; }
+        off=(f32)(a*0x400+b*0x80);
+        JMath::gekko_ps_copy12(tmp,mtx);
+        tmp[1][3]+=off;
+        tmp[2][3]+=off;
+        PSMTXConcat(tmp,m,m);
+        translation.x=pos->x;
+        translation.y=pos->y;
+        translation.z=pos->z;
     } else {
-        if (pos->z > 0.0f && a < 1) {
-            a++;
-            b--;
-        }
-        off = (f32)(a * 0x400 + b * 0x80);
-        m[0][3] += pos->x;
-        m[1][3] += pos->y + off;
-        m[2][3] += pos->z + off;
-        m[1][0] *= 0.5f;
-        m[1][1] *= 0.5f;
-        m[1][2] *= 0.5f;
-        m[2][0] *= 0.5f;
-        m[2][1] *= 0.5f;
-        m[2][2] *= 0.5f;
+        translation.z=pos->z;
+        if(translation.z>0.0f && a<1) { a++; b--; }
+        off=(f32)(a*0x400+b*0x80);
+        translation.x=pos->x;
+        translation.y=pos->y+off;
+        translation.z+=off;
     }
+    m[0][3] += translation.x;
+    m[1][3] += translation.y;
+    m[2][3] += translation.z;
+    m[1][0] *= lbl_8053CDE0;
+    m[1][1] *= lbl_8053CDE0;
+    m[1][2] *= lbl_8053CDE0;
+    m[2][0] *= lbl_8053CDE0;
+    m[2][1] *= lbl_8053CDE0;
+    m[2][2] *= lbl_8053CDE0;
+    fn_8030DFE8(*(void**)((char*)lbl_8053AB10+0x24),0);
+    ((void (*)(void*,Mtx))fn_8030DD20)(*(void**)((char*)lbl_8053AB10+0x24),m);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
-    GXSetChanCtrl(GX_COLOR0A0, GX_TRUE, GX_SRC_REG, GX_SRC_REG, (GXLightID)3, GX_DF_CLAMP, GX_AF_SPOT);
+    GXSetChanCtrl(GX_COLOR0A0, GX_TRUE, GX_SRC_REG, GX_SRC_REG, (GXLightID)3, GX_DF_CLAMP, (GXAttnFn)2);
     GXSetNumChans(1);
     GXSetNumTexGens(0);
-    GXSetTevColor(GX_TEVREG1, c);
+    GXSetTevColor(GX_TEVREG0, *color);
     GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
     GXSetTevColorIn(GX_TEVSTAGE0, (GXTevColorArg)0xf, (GXTevColorArg)2, (GXTevColorArg)10, (GXTevColorArg)0xf);
     GXSetTevAlphaIn(GX_TEVSTAGE0, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)1);
@@ -230,7 +238,8 @@ extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, Mtx mtx, f32
     GXSetCullMode(GX_CULL_BACK);
     GXDrawSphere1(2);
 }
-
+#pragma opt_common_subs reset
+#pragma opt_lifetimes reset
 extern "C" void fn_8013B004(f32* rect, GXColor* color) {
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
