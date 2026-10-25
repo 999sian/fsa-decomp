@@ -7,14 +7,16 @@
 
 static inline void bombSetRotation(Mtx m, const f32 sx, const f32 sy, const f32 sz,
                                   const f32 cx, const f32 cy, const f32 cz, const f32 s) {
+    const f32 cxcz = cx * cz;
+    const f32 cxsz = cx * sz;
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
-    m[0][1] = s * __fmsubs(sx * sy, cz, cx * sz);
-    m[1][1] = s * __fmadds(sx * sy, sz, cx * cz);
+    m[0][1] = s * __fmsubs(sx * sy, cz, cxsz);
+    m[1][1] = s * __fmadds(sx * sy, sz, cxcz);
     m[2][1] = s * (sx * cy);
-    m[0][2] = s * __fmadds(cx * cz, sy, sx * sz);
-    m[1][2] = s * __fmsubs(cx * sz, sy, sx * cz);
+    m[0][2] = s * __fmadds(cxcz, sy, sx * sz);
+    m[1][2] = s * __fmsubs(cxsz, sy, sx * cz);
     m[2][2] = s * (cx * cy);
 }
 class BombDrawActor : public Actor {
@@ -134,16 +136,7 @@ extern "C" void fn_80342368(Actor* actor) {
         cx = cos(lbl_805422EC);
         cy = cos(lbl_805422EC);
         cz = cos(lbl_805422EC);
-        f32 s = lbl_80542304;
-        mtx[0][0] = s * (cy * cz);
-        mtx[1][0] = s * (cy * sz);
-        mtx[2][0] = s * -sy;
-        mtx[0][1] = s * __fmsubs(sx * sy, cz, cx * sz);
-        mtx[1][1] = s * __fmadds(sx * sy, sz, cx * cz);
-        mtx[2][1] = s * (sx * cy);
-        mtx[0][2] = s * __fmadds(cx * cz, sy, sx * sz);
-        mtx[1][2] = s * __fmsubs(cx * sz, sy, sx * cz);
-        mtx[2][2] = s * (cx * cy);
+        bombSetRotation(mtx, sx, sy, sz, cx, cy, cz, lbl_80542304);
         rec.w18 = mtx;
         rec.b2c = 0;
         void* res = fn_804030C4('TIMG', lbl_804AC558[n]);
