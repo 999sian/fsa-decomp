@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/Actor.h"
 
+extern void* lbl_8053AAF8;
 extern "C" void* lbl_8053AC98;
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_80540BBC;
