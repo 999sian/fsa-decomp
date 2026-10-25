@@ -1,3 +1,6 @@
+#if defined(VERSION_G4SE01)
+#define JGEOMETRY_VEC2_OUT_OF_LINE_CTOR
+#endif
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
@@ -46,6 +49,118 @@ extern "C" void __dt__5ActorFv(Actor*, s16);
 extern "C" void __dl__FPv(void*);
 extern u8 lbl_8049FCA0[];
 extern const f32 lbl_8053D268;
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern char lbl_80465DBC[];
+extern char lbl_80465DD0[];
+extern "C" void fn_8014FD5C(Actor* actor)
+{
+    u8* base = (u8*)actor;
+    DrawRec rec;
+    f32 mtx[3][4];
+    s32 flag = 0;
+    s32 kind;
+    s32 m90;
+    s32 m230;
+    u16 state;
+    f32 sA, sB, cC, cA, cB, sC;
+
+    mtx[0][3] = lbl_8053D258;
+    mtx[1][3] = lbl_8053D258;
+    mtx[2][3] = lbl_8053D258;
+
+    state = *(u16*)(base + 0x94);
+    if (state == 2) {
+        return;
+    }
+    rec.ids[2] = *(u8*)(base + 0x234);
+    if (*(s32*)(base + 0x288) != 1 && *(s32*)(base + 0x288) != 3) {
+        if (*(s32*)(base + 0x90) == 2 || *(s32*)(base + 0x90) == 3 || *(s32*)(base + 0x90) == 1) {
+            rec.ids[8] = *(u8*)(base + 0x234);
+        }
+        if (*(u16*)(base + 0x94) >= 6 && *(u16*)(base + 0x94) <= 9) {
+            rec.ids[2] = 0xb;
+        }
+        if (*(s32*)(base + 0x230) == 0xe) {
+            f32 ang = *(f32*)(base + 0x294);
+            f32 s = *(f32*)(base + 0x298);
+            sA = sin(lbl_8053D258);
+            sB = sin(ang);
+            sC = sin(lbl_8053D258);
+            cA = cos(lbl_8053D258);
+            cB = cos(ang);
+            cC = cos(lbl_8053D258);
+            mtx[0][0] = s * (cB * cC);
+            mtx[1][0] = s * (cB * sC);
+            mtx[2][0] = s * -sB;
+            mtx[0][1] = s * (sA * sB * cC - cA * sC);
+            mtx[1][1] = s * (sA * sB * sC + cA * cC);
+            mtx[2][1] = s * (sA * cB);
+            mtx[0][2] = s * (cA * cC * sB + sA * sC);
+            mtx[1][2] = s * (cA * sC * sB - sA * cC);
+            mtx[2][2] = s * (cA * cB);
+            rec.w18 = mtx;
+            m90 = *(s32*)(base + 0x90);
+            if (m90 == 1) {
+                fn_801F02BC(actor, lbl_80465DBC, *(s32*)(base + 0x274) + 0x1f4, &rec, 0, 0, 0, lbl_8053D25C, lbl_8053D25C);
+                return;
+            }
+            if (m90 != 2 && m90 != 3) {
+                fn_801F02BC(actor, lbl_80465DD0, *(s32*)(base + 0x274) + 0x8f, &rec, 0, 0, 0, lbl_8053D25C, lbl_8053D25C);
+                return;
+            }
+        }
+    }
+
+    m90 = *(s32*)(base + 0x90);
+    if (m90 != 6) {
+        if (*(s32*)(base + 0x288) == 3) {
+            mtx[0][0] = *(f32*)(base + 0x54);
+            mtx[0][1] = lbl_8053D258;
+            mtx[0][2] = lbl_8053D258;
+            mtx[1][0] = lbl_8053D258;
+            mtx[1][1] = *(f32*)(base + 0x58);
+            mtx[1][2] = lbl_8053D258;
+            mtx[2][0] = lbl_8053D258;
+            mtx[2][1] = lbl_8053D258;
+            mtx[2][2] = *(f32*)(base + 0x5c);
+            rec.w18 = mtx;
+            flag = 1;
+        }
+    }
+
+    m230 = *(s32*)(base + 0x230);
+    if (m230 == 8) {
+        s32 x = *(s32*)(base + 0x248);
+        kind = 0;
+        if (x < 100) {
+            if (x >= 50) {
+                if ((x & 8) == 0) {
+                    kind = 1;
+                }
+            } else {
+                if ((x & 4) == 0) {
+                    kind = 1;
+                }
+            }
+        }
+        if (kind == 1) {
+            *((u8*)&rec + 0x14) = 0x50;
+        }
+    }
+    if (m230 == 9) {
+        mtx[0][0] = *(f32*)(base + 0x54);
+        mtx[0][1] = lbl_8053D258;
+        mtx[0][2] = lbl_8053D258;
+        mtx[1][0] = lbl_8053D258;
+        mtx[1][1] = *(f32*)(base + 0x58);
+        mtx[1][2] = lbl_8053D258;
+        mtx[2][0] = lbl_8053D258;
+        mtx[2][1] = lbl_8053D258;
+        mtx[2][2] = *(f32*)(base + 0x5c);
+        rec.w18 = mtx;
+    }
+}
+
 extern "C" s32 fn_801535B4(Actor* actor)
 {
     u8* base = (u8*)actor;
@@ -384,8 +499,13 @@ extern "C" void fn_801546D0(JGeometry::TVec3<f32>* vector,
 }
 
 #if defined(VERSION_G4SE01)
+#pragma dont_inline on
+#pragma force_active on
+template <>
 JGeometry::TVec2<f32>::TVec2() {
 }
+#pragma force_active reset
+#pragma dont_inline reset
 #else
 JGeometry::TVec2<f32>::TVec2() {
 }
