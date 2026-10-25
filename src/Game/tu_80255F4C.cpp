@@ -43,11 +43,6 @@ struct ShapeArg {
     s32 unk38;
 };
 
-struct JMathSinCos {
-    f32 sin;
-    f32 cos;
-};
-
 extern "C" u8 sincosTable___5JMath[];
 extern "C" f32 lbl_805400A0;
 extern "C" f32 lbl_805400A4;
@@ -157,8 +152,8 @@ extern "C" void fn_802561D0(Actor* a) {
             if ((*(u32*)(p + 0x90) >> 27) == 0 || a->v11() == 1) {
                 fn_8023DF68(i, *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18));
                 if ((*(s32*)(p + 0x90) & 0x7f) < 6) {
-                    JGeometry::TVec3<f32> v;
                     JGeometry::TVec3<f32> v2;
+                    JGeometry::TVec3<f32> v;
                     v = *(JGeometry::TVec3<f32>*)(p + 0xc) - *fn_8023E724(i);
                     v.z = 0.0f;
                     register unsigned ang = (s32)(JMath::atanTable_.atan2_(v.y, v.x) * 10430.378f);
