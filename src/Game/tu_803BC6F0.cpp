@@ -300,6 +300,12 @@ static inline void* keyObj(void* obj, u64 key) {
     return ((KeyLookupVt*)obj)->v15(key);
 }
 
+static inline void tu803C_max(s32* m, s32 v) {
+    if (*m < v) {
+        *m = v;
+    }
+}
+
 static inline void initPane(void* obj) {
     fn_80402E08(obj, lbl_80543458, lbl_80543458);
     *(s16*)((u8*)obj + 0x22) = 0;
@@ -2255,6 +2261,15 @@ extern "C" void fn_803C9F14(char* this_) {
     }
 }
 
+extern "C" void fn_803CABAC(u8* self) {
+    if (fn_80309C4C(lbl_8053AD30, 0x1100, 1) != 0) {
+        s32 state = *(s32*)(self + 0xa0);
+        if (state == 2) {
+        } else if (state >= 0) {
+        }
+    }
+}
+
 extern "C" void fn_803CBE38(char* p) {
     int r;
     r = fn_803B9A94(lbl_8051C1A0, *(u32*)(p + 0x5c), 0x258, *(u32*)(p + 0x60), 0x1d4c, 0);
@@ -2568,6 +2583,78 @@ extern "C" void fn_803CD2DC(u8* p) {
         fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723032ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
         fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723033ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
         fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723034ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    }
+}
+
+extern "C" void fn_803CD75C(u8* p) {
+    s32 i;
+    s32 sum = 0;
+    s16 b = *(s16*)(lbl_8050DB0C + 0x156);
+    s16 c = *(s16*)(lbl_8050DB0C + 0x154);
+    s16 d = *(s16*)(lbl_8050DB0C + 0x15a);
+    s16 e = *(s16*)(lbl_8050DB0C + 0x15c);
+    s16 f = *(s16*)(lbl_8050DB0C + 0x15e);
+    s16 g = *(s16*)(lbl_8050DB0C + 0x160);
+    s32 a = *(s16*)(lbl_8050DB0C + 0x158);
+    s32 m = c + b;
+    if (m < c + b + a * 2) {
+        m = c + b + a * 2;
+    }
+    if (m < d + e) {
+        m = d + e;
+    }
+    if (m < f + g) {
+        m = f + g;
+    }
+    *(s16*)(p + 0xd8) += 1;
+    if (*(s16*)(p + 0xd8) > c) {
+        setFade(*(void**)(p + 0x50), b, 0, lbl_80543494, lbl_80543458);
+    }
+    for (i = 0; i < 3; i++) {
+        if (*(s16*)(p + 0xd8) > c + sum) {
+            fn_80402940(*(void**)(p + 0x38 + (2 - i) * 4), b, lbl_805434A0, lbl_80543458, 0);
+            fn_80402628(*(void**)(p + 0x38 + (2 - i) * 4), b, 0, ((u8*)*(void**)(p + 0x38 + (2 - i) * 4))[0x28]);
+            setCell(p, 0x38, 2 - i, 0x780, p[0x125]);
+            setCell(p, 0x38, 2 - i, 0x768, p[0x126]);
+            setCell(p, 0x38, 2 - i, 0x750, p[0x127]);
+            setCell(p, 0x38, 2 - i, 0x6c8, p[0x128]);
+            setCell(p, 0x38, 2 - i, 0x6b0, p[0x129]);
+            setCell(p, 0x38, 2 - i, 0x698, p[0x12a]);
+            setCell(p, 0x38, 2 - i, 0x680, p[0x12b]);
+            setCell(p, 0x38, 2 - i, 0x668, p[0x12c]);
+            setCell(p, 0x38, 2 - i, 0x650, p[0x12d]);
+            setCell(p, 0x38, 2 - i, 0x638, p[0x12e]);
+            setCell(p, 0x38, 2 - i, 0x620, p[0x12f]);
+            setCell(p, 0x38, 2 - i, 0x608, p[0x130]);
+            setCell(p, 0x38, 2 - i, 0x5f0, p[0x131]);
+            setFade(*(void**)(p + 0x44 + i * 4), b, 0, lbl_80543494, lbl_80543458);
+            fn_80402628(*(void**)(p + 0x44 + i * 4), b, 0, ((u8*)*(void**)(p + 0x44 + i * 4))[0x28]);
+            setCell(p, 0x44, i, 0x5d8, p[0x118]);
+            setCell(p, 0x44, i, 0x5c0, p[0x119]);
+            setCell(p, 0x44, i, 0x5a8, p[0x11a]);
+            setCell(p, 0x44, i, 0x590, p[0x11b]);
+            setCell(p, 0x44, i, 0x578, p[0x11c]);
+            setCell(p, 0x44, i, 0x560, p[0x11d]);
+            setCell(p, 0x44, i, 0x548, p[0x11e]);
+            setCell(p, 0x44, i, 0x530, p[0x11f]);
+            setCell(p, 0x44, i, 0x518, p[0x120]);
+            setCell(p, 0x44, i, 0x500, p[0x121]);
+            setCell(p, 0x44, i, 0x4e8, p[0x122]);
+            setCell(p, 0x44, i, 0x4d0, p[0x123]);
+            setCell(p, 0x44, i, 0x4b8, p[0x124]);
+        }
+        sum += a;
+    }
+    if (*(s16*)(p + 0xd8) > d) {
+        fn_80402940(*(void**)(p + 0x54), e, lbl_8054345C, lbl_80543458, 0);
+        fn_80402628(*(void**)(p + 0x54), e, 0, ((u8*)*(void**)(p + 0x54))[0x28]);
+    }
+    if (*(s16*)(p + 0xd8) == f + 1) {
+        p[0x1a4] = 1;
+    }
+    if (*(s16*)(p + 0xd8) > m) {
+        p[0x112] = p[0x110];
+        p[0x110] = 5;
     }
 }
 
