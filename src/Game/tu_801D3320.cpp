@@ -35,6 +35,17 @@ static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
     return ok;
 }
 
+static inline u8 tu801D3320_contains(u8 id, u8* list, u8 n) {
+    u8 found = 0;
+    for (int i = 0; i < n; i++) {
+        if (id == list[i]) {
+            found = 1;
+            break;
+        }
+    }
+    return found;
+}
+
 static inline f32 tu801D3320_invSqrt(f32 x) {
     if (x <= lbl_8053F084) {
         return x;
@@ -50,6 +61,131 @@ static inline void tu801D3320_normalize(Vec3f& v) {
         return;
     }
     v.scale(tu801D3320_invSqrt(sq));
+}
+
+extern "C" void fn_801D3320(char* this_) {
+    u8 ids2[0x30];
+    u8 ids[0x30];
+    u8 free[0x30];
+    u8* s;
+    if (*(u32*)(this_ + 0x230) & 0x2000000) {
+        u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
+        u8 best = 0;
+        f32 bestD = lbl_8053F080;
+        for (int i = 0; i < n; i++) {
+            if (fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), ids[i])) {
+                Vec3f p;
+                p.set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]));
+                if (tu801D3320_isFree(&p, *(s32*)(this_ + 0x4))) {
+                    f32 dx = p.x - *(f32*)(this_ + 0xc);
+                    f32 dy = p.y - *(f32*)(this_ + 0x10);
+                    f32 d = dx * dx + dy * dy;
+                    if (d > bestD) {
+                        bestD = d;
+                        best = ids[i];
+                    }
+                }
+            }
+        }
+        s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+        if (best < s[2]) {
+            s[3] = best;
+        }
+        ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
+        return;
+    }
+
+    u8* out = free;
+    u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids2, 0x30);
+    u8 count = 0;
+    for (int i = 0; i < n; i++) {
+        s32 room = *(s32*)(this_ + 0x4);
+        Vec3f p = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids2[i]);
+        if (tu801D3320_isFree(&p, room)) {
+            count++;
+            *out++ = ids2[i];
+        }
+    }
+    u8 cnt = count;
+    u8 sel = free[fn_801CD664(cnt)];
+    s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+    if (sel < s[2]) {
+        s[3] = sel;
+    }
+    ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
+    if (count == 1) {
+        return;
+    }
+    u8 next = fn_801C976C(this_);
+    if (*(s32*)(this_ + 0x4) != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), next)) {
+        return;
+    }
+    u8 found = 0;
+    for (int i = 0; i < cnt; i++) {
+        if (next == free[i]) {
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        return;
+    }
+    Vec3f cur;
+    cur = *(Vec3f*)(this_ + 0x32c);
+    Vec3f nxt;
+    nxt = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), next);
+    if (fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), sel, next)) {
+        if (fn_801CF888(this_, &cur, &nxt, *(s32*)(this_ + 0x4))) {
+            return;
+        }
+    }
+    Vec3f d = nxt;
+    d.sub(cur);
+    d.z = lbl_8053F084;
+    if (d.squared() <= lbl_8053F088 * FLT_EPSILON) {
+        return;
+    }
+    Vec3f dir = d;
+    d.scale(((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
+    u8 a = fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), sel);
+    u8 b = fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), next);
+    if (a) {
+        if (d.squared() < lbl_8053F090) {
+            d.set(dir);
+            tu801D3320_normalize(d);
+            d.scale(lbl_8053F088);
+        }
+    } else if (b) {
+        f32 len = PSVECMag(&dir);
+        if (PSVECMag(&d) > len - lbl_8053F088) {
+            d.set(dir);
+            tu801D3320_normalize(d);
+            d.scale(len - lbl_8053F088);
+        }
+    }
+    ((Vec3f*)(this_ + 0x32c))->add(d);
+    if (!tu801D3320_isFree((Vec3f*)(this_ + 0x32c), *(s32*)(this_ + 0x4)) || fn_801CAEF4(this_, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
+        if (b) {
+            ((Vec3f*)(this_ + 0x32c))->set(cur);
+            return;
+        }
+        if (a) {
+            s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+            if (next < s[2]) {
+                s[3] = next;
+            }
+            ((Vec3f*)(this_ + 0x32c))->set(nxt);
+            return;
+        }
+        ((Vec3f*)(this_ + 0x32c))->set(cur);
+        if (fn_801CAEF4(this_, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
+            s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+            if (next < s[2]) {
+                s[3] = next;
+            }
+            ((Vec3f*)(this_ + 0x32c))->set(nxt);
+        }
+    }
 }
 
 void __sinit_tu_801D3320_cpp(void) {}
