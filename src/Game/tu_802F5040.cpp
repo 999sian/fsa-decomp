@@ -327,7 +327,7 @@ extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
 
 extern "C" f32 fn_802F5FF4(f32 x) {
     f32 a = lbl_805414FC;
-    f32 v = (x >= lbl_80541500) ? x : lbl_80541500;
+    f32 v = (x >= lbl_80541500) ? lbl_80541500 : x;
     return a / (a - v);
 }
 
