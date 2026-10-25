@@ -412,6 +412,7 @@ static inline u8 send80370764Message(s32 msg, u32 room, const JGeometry::TVec3<f
     return fn_8038BD08(0, msg, room, &copy, 0x22);
 }
 
+static inline s32 message80370764At(s32 index) { return lbl_80474F40[index]; }
 extern "C" void fn_80370764(char* self)
 {
 	fn_803703C8(self);
@@ -435,8 +436,7 @@ afterPlayerSetup:
 	{
 		JGeometry::TVec3<f32> pos;
         JGeometry::TVec3<f32>* p = fn_8023E724(0);
-        JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
-        pos = tgt - *p;
+        pos = JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4) - *p;
         if (PSVECMag((Vec*)&pos) > lbl_80542DF0) fn_8023DFF4(0, &pos);
 	if (!fn_802341D0(0)) {
         *(s32*)(self + 0x240) = 2;
@@ -446,13 +446,12 @@ afterPlayerSetup:
 		if (*(u8*)(self + 0x398) != 0 && *(s32*)(self + 0x240) == 0) {
 			if (fn_8022CAF8(0) == lbl_80474F30[*(s32*)(self + 0x394)]) {
 				if (((u8 (*)(int))fn_802300EC)(0)) {
-					pos.set(lbl_80542E04 * (f32)(s32)JUTVideo::getManager()->getFbWidth(), lbl_80542E04 * (f32)(s32)JUTVideo::getManager()->getEfbHeight(), 0.0f);
+					pos.set((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f, (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
 					fn_8022FE80(0, *(int*)(self + 0x4), *(int*)(self + 0x198), 1, 0);
 					s32 msg;
 					s32 n = *(s32*)(self + 0x394);
 					if (n < 3) {
-						*(s32*)(self + 0x394) = n + 1;
-                        msg = lbl_80474F40[n];
+						msg = lbl_80474F40[(*(s32*)(self + 0x394))++];
 					} else if (*(s32*)(self + 0x23c) < 0x168) {
 						*(s32*)(self + 0x394) = 4;
 						msg = 0x509;
@@ -461,8 +460,7 @@ afterPlayerSetup:
 						msg = 0x50a;
 					}
 					u32 room = *(u32*)(self + 0x4);
-                    JGeometry::TVec3<f32> copy(pos);
-					if (fn_8038BD08(0, msg, room, &copy, 0x22)) {
+                    if (((u8 (*)(s32, s32, u32, JGeometry::TVec3<f32>, s32))fn_8038BD08)(0, msg, room, pos, 0x22)) {
 						fn_8023077C();
 						*(s32*)(self + 0x230) = 8;
 					}
