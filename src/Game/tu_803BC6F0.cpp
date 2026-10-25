@@ -108,7 +108,7 @@ extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
 static inline s32 getFileIcon(u32 slot) {
-    s32 k = 0;
+    u32 k = 0;
     s32 j;
     for (j = 0; j < 8; j++) {
         if (fn_803B8CAC(slot, j)) {
@@ -2092,7 +2092,7 @@ extern "C" void fn_803CE4CC(char* p) {
                 if (isTimeSet(t)) {
                     OSTicksToCalendarTime(t, &cal);
                     snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])), 0x1e, (const char*)(base + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
-                    ((J2DPane*)*(void**)(p + 8))->search(*(const u64*)(base + i * 8))->show();
+                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->show();
                     ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->hide();
                     ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->show();
                     s32 icon;
@@ -2104,14 +2104,14 @@ extern "C" void fn_803CE4CC(char* p) {
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466336c76ULL)), icon, 0, 0, 0);
                 } else {
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])), 0x6a, 0, 0, 0);
-                    ((J2DPane*)*(void**)(p + 8))->search(*(const u64*)(base + i * 8))->hide();
+                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->hide();
                     ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->show();
                     ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->hide();
                 }
                 fn_803BDD44((u8*)p, i);
             } else {
                 fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])), 0x11d, 0, 0, 0);
-                ((J2DPane*)*(void**)(p + 8))->search(*(const u64*)(base + i * 8))->hide();
+                ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->hide();
                 ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->show();
                 ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->hide();
                 p[0x115] |= (u8)(1 << i);
@@ -2119,7 +2119,7 @@ extern "C" void fn_803CE4CC(char* p) {
             }
         } else {
             fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])), 0x6a, 0, 0, 0);
-            ((J2DPane*)*(void**)(p + 8))->search(*(const u64*)(base + i * 8))->hide();
+            ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->hide();
             ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->show();
             ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->hide();
             fn_803BDD44((u8*)p, i);
