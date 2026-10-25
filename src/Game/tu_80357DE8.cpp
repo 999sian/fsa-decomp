@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void __dt__5ActorFv(void* self, s32 del);
 extern "C" void __dl__FPv(void* p);
