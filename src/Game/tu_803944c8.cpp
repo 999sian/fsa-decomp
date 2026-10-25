@@ -476,7 +476,7 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
-    BOOL testBit(int n) {
+    BOOL testBit(const s32& n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
@@ -865,6 +865,8 @@ static inline void msgAppendChar(MsgProc* p, char* buf) {
 
 // NONMATCHING (99%): cur/layout register swap in the bit test (same as fn_8039D0DC).
 extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
+    s32 index;
+    MsgLayout* l;
     bool lead = false;
     bool neg = false;
     if (n < 0) {
@@ -872,19 +874,10 @@ extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
         neg = true;
     }
     if (p->m2d6) {
-        s32 index = p->cur;
-        BOOL bit;
-        if (index < 32) bit = (p->bits[0] & (s64)(1 << index)) ? TRUE : FALSE;
-        else if (index < 64) bit = (p->bits[1] & (s64)(1 << (index - 32))) ? TRUE : FALSE;
-        else bit = FALSE;
-        if (!bit) {
-            MsgLayout* l = p->layout;
-            if (l->m16c != 0) {
-                if (index < 32) bit = (p->bits[0] & (s64)(1 << index)) ? TRUE : FALSE;
-                else if (index < 64) bit = (p->bits[1] & (s64)(1 << (index - 32))) ? TRUE : FALSE;
-                else bit = FALSE;
-            } else bit = FALSE;
-            if (!bit) {
+        index = p->cur;
+        if (!p->testBit(index)) {
+            l = p->layout;
+            if (l->m16c == 0 || !p->testBit(index)) {
                 f32 base;
                 f32 pos;
                 if (!(l->font->flags & 0x40)) {
