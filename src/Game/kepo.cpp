@@ -580,6 +580,19 @@ extern "C" void fn_8043A608(u32 a);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801CBB98(f32* box, void* obj, f32 f, s32 t, f32* out);
 extern u32 lbl_8053AED0;
+extern const f32 lbl_8053FC94;
+extern const f32 lbl_8053FC98;
+static inline bool kepoIsSwingState(s32 state) {
+    bool result = false;
+    switch (state) {
+    case 5:
+    case 11:
+        result = true;
+        break;
+    }
+    return result;
+}
+
 extern "C" void fn_80219AFC(u8* self, s32 state) {
     bool a = false;
     s32 old = *(s32*)(self + 0x248);
