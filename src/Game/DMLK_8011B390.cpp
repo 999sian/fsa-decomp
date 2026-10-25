@@ -46,8 +46,8 @@ static inline void dmlkStoreBounds(u8* p, f32 x0, f32 x1, f32 y0, f32 y1) {
     *(f32*)(p + 0x25c) = y1;
 }
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
-    dmlkStoreBounds(p, pos[0] + -lbl_8053C7F0, lbl_8053C7F0 + pos[0],
-                   pos[1] + -lbl_8053C7E8, lbl_8053C7E8 + pos[1]);
+    dmlkStoreBounds(p, pos[0] - lbl_8053C7F0, lbl_8053C7F0 + pos[0],
+                   pos[1] - lbl_8053C7E8, lbl_8053C7E8 + pos[1]);
 }
 
 struct DMLKResMgr {
