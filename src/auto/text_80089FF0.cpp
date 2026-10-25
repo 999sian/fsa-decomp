@@ -320,6 +320,13 @@ static bool searchPartialModule(u32 addr, u32* id, u32* index, u32* offset, char
     return false;
 }
 
+static inline const char* exceptionPrefix(bool newline)
+{
+    const char* prefix = &lbl_8053B868;
+    if (!newline) prefix = &lbl_8053B87C;
+    return prefix;
+}
+
 static inline void searchNamePart(u8* src, u8* dst, int length)
 {
     for (u8* p = src; *p; p++) {
@@ -442,37 +449,22 @@ extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2)
     u32 x10;
     char buf[0x24];
     char work[0x100];
-    const char* prefix = param_2 ? (const char*)&lbl_8053B868 : (const char*)&lbl_8053B87C;
+    const char* prefix = (const char*)&lbl_8053B868;
+    if (!param_2) prefix = (const char*)&lbl_8053B87C;
     bool found = searchPartialModule(param_1, &id, &index, &offset, &name);
     if (found == true) {
-        char* p = name;
-        char* base = name;
-        for (; *p != '\0'; p++) {
-            if (*p == '\\') {
-                base = p;
-            }
-        }
-        if (*base == '\\') {
-            base++;
-        }
-        s32 i = 0;
-        char* out = buf;
-        while (*base != '\0' && i < 0x20 && *base != '.') {
-            i++;
-            *out++ = *base++;
-        }
-        *out = '\0';
+        searchNamePart((u8*)name, (u8*)buf, 32);
         lbl_8053A914->print_f(lbl_8045EC1C, prefix, buf, offset, index);
     }
-    param_2 = false;
+    const bool flag = false;
     if (lbl_8052E894.getFirstLink() != nullptr) {
-        bool ret;
+        u32 ret;
         if (found == true) {
-            ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
+            ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, flag);
         } else {
-            ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
+            ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, flag);
         }
-        if (ret == true) {
+        if ((u8)ret == true) {
             return 1;
         }
     }
