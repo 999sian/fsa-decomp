@@ -12,6 +12,69 @@ struct Tu803FResMgr {
     virtual void* vf18(u32 type, const void* name);
 };
 
+struct Tu803FVObj {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(s32 a);
+    virtual void v10();
+    virtual void v11(s32 a);
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15(s32 a, s32 b, s32 c);
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24();
+    virtual void v25();
+    virtual void v26();
+    virtual void v27();
+    virtual void v28();
+    virtual void v29();
+    virtual void v30();
+    virtual void v31();
+    virtual void v32();
+    virtual void v33();
+    virtual void v34();
+    virtual void v35();
+    virtual void v36();
+    virtual void v37();
+    virtual void v38();
+    virtual void v39();
+    virtual void v40();
+    virtual void v41();
+    virtual void v42();
+    virtual void v43();
+    virtual void v44();
+    virtual void v45();
+    virtual void v46();
+    virtual void v47();
+    virtual void v48();
+    virtual void v49();
+    virtual void v50();
+    virtual void v51();
+    virtual void v52();
+    virtual void v53();
+    virtual void v54();
+    virtual void v55();
+    virtual void v56();
+    virtual void v57();
+    virtual void v58();
+    virtual void v59(s32 a, s32 b, s32 c, f32 d, f32 e, f32 f, f32 g);
+};
+
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
 extern const f32 lbl_80543718;
 extern const f32 lbl_8054371C;
@@ -83,8 +146,9 @@ extern "C" void fn_803F0A54(u8* p) {
     f32 ratio = (f32)(*(J2DPane**)(p + 0xc))->search(*(u64*)(base + 0x708))->getAlpha() / (f32)p[0x335];
     if (*(s32*)(p + 0x210) < 0x64) {
         f32 alpha = lbl_80543718 * ratio;
+        s32 i;
         u64 (*tags)[4] = (u64 (*)[4])(base + 0xec0);
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (tags[*(s32*)(p + 0x1ac)][i] != 0) {
                 DrawRec rec;
                 rec.b26 = 0;
