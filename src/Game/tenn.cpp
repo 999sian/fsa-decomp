@@ -4,6 +4,8 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern const char lbl_804684E8[];
@@ -101,6 +103,54 @@ extern "C" void fn_801A0754(void* this_) {
     }
 }
 
+extern const f32 lbl_8053E508;
+extern const f32 lbl_8053E50C;
+extern const f64 lbl_8053E510;
+extern s32 lbl_8053AF28;
+extern const char* lbl_804A2BE4[];
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void fn_801EFD34(void* this_, void* res, DrawRec* rec, s32 n, f32 a, f32 b, f32 c);
+extern "C" void fn_801A0910(void* this_) {
+    DrawRec rec;
+    f32 m[3][4];
+    f32 saved;
+    f32 sx;
+    f32 sy;
+
+    saved = *(f32*)((char*)this_ + 0x10);
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    sy = *(f32*)((char*)this_ + 0x328);
+    sx = *(f32*)((char*)this_ + 0x324);
+    m[0][0] = sx;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = sy;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = sy;
+    rec.w18 = m;
+
+    *(f32*)((char*)this_ + 0x10) = saved + (*(f32*)((char*)this_ + 0x33c) - lbl_8053E500);
+    fn_801EFD34(this_, fn_804032E8(0x54494D47, lbl_804A2BE4[*(s32*)((char*)this_ + 0x264)]), &rec, 7, 0.0f, lbl_8053E504, 0.0f);
+    *(f32*)((char*)this_ + 0x10) = saved;
+
+    if (*(s32*)((char*)this_ + 0x2c4) >= 0) {
+        s32 t;
+        s32 q;
+        *(s16*)((char*)lbl_8053AF28 + 0x10) = (u8)*(s32*)((char*)this_ + 0x26c);
+        *(u8*)((char*)lbl_8053AF28 + 0x14) |= 1;
+        t = *(s32*)((char*)this_ + 0x2c4);
+        q = t / 60;
+        *(u8*)((char*)lbl_8053AF28 + 0x12) = t / 60;
+        *(u8*)((char*)lbl_8053AF28 + 0x13) = (s32)(lbl_8053E508 * (f32)(t - q * 60) / lbl_8053E50C);
+        *(u8*)((char*)lbl_8053AF28 + 0x14) |= 2;
+    }
+}
+
 // from src/Game/Tenn_update_801A0B8C.cpp
 extern "C" void fn_801A17B8(void* this_);
 extern "C" void fn_801A0F90(void* this_);
@@ -148,9 +198,7 @@ extern "C" void fn_801A0F90(void* this_) {
     char* o;
     f32 scale;
 
-    *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
-    *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + *(f32*)(p + 0x40);
-    *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + *(f32*)(p + 0x44);
+    ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
     fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), p + 0xc);
 
     {
@@ -169,7 +217,7 @@ L_904:
 L_90C:
     if (*(f32*)(p + 0x3c) != lbl_8053E4F0) goto L_974;
     if (*(f32*)(p + 0x40) != lbl_8053E4F0) goto L_974;
-    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = lbl_8053E4F0;
         *(f32*)(p + 0x44) = lbl_8053E518;
@@ -178,7 +226,7 @@ L_90C:
     }
     goto L_F58;
 L_974:
-    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = lbl_8053E4F0;
         *(f32*)(p + 0x44) = lbl_8053E51C;
@@ -225,11 +273,15 @@ L_A8C:
     }
     {
         s32 r0;
-        if (*(s32*)(p + 0x278) >= 0) {
-            u16 c = fn_8023CBC0(*(s32*)(p + 0x278));
-            r0 = (c >= 0x43 && c < 0x6f) ? 1 : 0;
-        } else {
+        if (*(s32*)(p + 0x278) < 0) {
             r0 = -1;
+        } else {
+            u16 c = fn_8023CBC0(*(s32*)(p + 0x278));
+            if (c >= 0x43 && c < 0x6f) {
+                r0 = 1;
+            } else {
+                r0 = 0;
+            }
         }
         if (r0 != 0) goto L_F58;
     }
@@ -254,13 +306,13 @@ L_A8C:
         u32 bits;
         f32 rf;
         *(u32*)(game + 0xb4) = seed;
-        bits = (seed >> 9) | 0x3f800000;
+        bits = (*(u32*)(game + 0xb4) >> 9) | 0x3f800000;
         rf = *(f32*)&bits - lbl_8053E4FC;
-        if (rf >= lbl_8053E544) ang += 0x600;
-        else ang -= 0x600;
+        if (rf < lbl_8053E544) ang -= 0x600;
+        else ang += 0x600;
     }
-    *(f32*)(p + 0x3c) = JMath::sincosTable_.mTable[ang >> 5].first * scale;
-    *(f32*)(p + 0x40) = JMath::sincosTable_.mTable[ang >> 5].second * scale;
+    *(f32*)(p + 0x3c) = *(f32*)((char*)JMath::sincosTable_.mTable + (((u16)ang >> 2) & 0x3ff8)) * scale;
+    *(f32*)(p + 0x40) = *(f32*)((char*)JMath::sincosTable_.mTable + (((u16)ang >> 2) & 0x3ff8) + 4) * scale;
     *(s32*)(p + 0x23c) = 0x1e;
     r29 = *(s32*)(p + 0x320);
     if (r29 < 0) goto L_E30;
@@ -291,11 +343,11 @@ L_D14:
     {
         f32 dx = *(f32*)(o + 0xc) - *(f32*)(p + 0xc);
         f32 dy = *(f32*)(o + 0x10) - *(f32*)(p + 0x10);
-        f32 a = JMath::atanTable_.atan2_(dx, dy) * lbl_8053E538;
+        f32 a = lbl_8053E538 * JMath::atanTable_.atan2_(dx, dy);
         s32 ai = (s32)a;
         ang = (u16)ai;
-        *(f32*)(p + 0x3c) = lbl_8053A0F8 * JMath::sincosTable_.mTable[ai >> 5].first;
-        *(f32*)(p + 0x40) = lbl_8053A0F8 * JMath::sincosTable_.mTable[ang >> 5].second;
+        *(f32*)(p + 0x3c) = lbl_8053A0F8 * *(f32*)((char*)JMath::sincosTable_.mTable + (((u16)ai >> 2) & 0x3ff8));
+        *(f32*)(p + 0x40) = lbl_8053A0F8 * *(f32*)((char*)JMath::sincosTable_.mTable + (((u16)ang >> 2) & 0x3ff8) + 4);
     }
     *(s32*)(p + 0x230) = 0x10;
     goto L_F58;
@@ -304,7 +356,7 @@ L_E30:
     goto L_F58;
 L_E38:
     r29 = fn_801F2718(this_, 0x54454e4e);
-    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = lbl_8053E4F0;
         *(f32*)(p + 0x44) = lbl_8053E51C;
@@ -320,7 +372,7 @@ L_E38:
     goto L_F58;
 L_ED4:
     fn_801F71A4((f32*)(p + 0x340), lbl_8053E4F0, lbl_8053E544, lbl_8053E518);
-    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = lbl_8053E4F0;
         *(f32*)(p + 0x44) = lbl_8053E51C;
@@ -328,7 +380,7 @@ L_ED4:
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E544;
     }
     if (*(s32*)(p + 0x23c) == 0) goto L_F50;
-    if (*(f32*)(p + 0x340) >= lbl_8053E4FC) goto L_F58;
+    if (!(*(f32*)(p + 0x340) < lbl_8053E4FC)) goto L_F58;
 L_F50:
     *(u8*)(p + 0x11c) = 0;
 L_F58:
@@ -357,6 +409,18 @@ L_1030:
     if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
     if (*(s32*)(p + 0x240) > 0) *(s32*)(p + 0x240) -= 1;
     if (*(s32*)(p + 0x244) > 0) *(s32*)(p + 0x244) -= 1;
+}
+
+extern "C" void fn_801A17B8(void* this_) {
+    char* p = (char*)this_;
+    fn_801F71A4((f32*)(p + 0x324), 0.0f, 0.0f, 0.0f);
+    fn_801F71A4((f32*)(p + 0x328), 0.0f, 0.0f, 0.0f);
+    fn_801F71A4((f32*)(p + 0x33c), 0.0f, 0.0f, 0.0f);
+    switch (*(s32*)(p + 0x230)) {
+        case 0xb: break;
+        case 0xc: break;
+        default: break;
+    }
 }
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
