@@ -732,6 +732,7 @@ extern "C" f32 fn_80247330(char*);
 extern "C" f32 fn_8024712C(char*);
 extern "C" u8 fn_802D6AC4(char*, s32);
 extern "C" void fn_802D6B24(char*, s32, u8);
+extern char* lbl_8053AC98;
 extern "C" u8 fn_80260C08(char* p) {
     if (fn_8022B1F8(p))
         return 0;
