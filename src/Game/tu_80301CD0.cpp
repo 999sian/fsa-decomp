@@ -104,7 +104,7 @@ struct MsgEntry_80301CD0 {
     char text[0x100];
     s32 f100;
     s32 f104;
-    s32 f108;
+    int f108;
     s32 f10c;
     s32 f110;
     s32 f114;
