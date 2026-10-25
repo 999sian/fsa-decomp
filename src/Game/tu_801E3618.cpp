@@ -37,7 +37,8 @@ extern "C" void fn_801D6D38(char* p, f32* d);
 extern "C" s32 fn_8023DE58(s32 i);
 // Whether player `player` is in room `room`.
 static inline BOOL PlayerInRoom(s32 player, s32 room) {
-    return fn_8023DE58(player) == room;
+    s32 r = fn_8023DE58(player);
+    return r == room;
 }
 extern "C" f32 lbl_8053F54C;
 extern "C" f32 lbl_8053F550;
@@ -260,8 +261,14 @@ extern "C" u8 fn_801E3B2C(char* this_) {
             rect[2] += lbl_8053F540;
             rect[3] += lbl_8053F540;
             for (k = 0; k < 4; k++) {
-                if (fn_8023F264(k) && !fn_80236B50(k) && !fn_80230188(k) && !fn_8022D75C(k) &&
-                    (room = *(s32*)(this_ + 4), fn_8023DE58(k) == room) && fn_80235448(k) &&
+                if (!fn_8023F264(k) || fn_80236B50(k) || fn_80230188(k) || fn_8022D75C(k)) {
+                    continue;
+                }
+                room = *(s32*)(this_ + 4);
+                if (fn_8023DE58(k) != room) {
+                    continue;
+                }
+                if (fn_80235448(k) &&
                     fn_8023E724(k)->z <= lbl_8053F544 && fn_8023E724(k)->z < fn_8023E578(k)->z &&
                     ItemBase_inArea(rect, &fn_8023E724(k)->x)) {
                     JGeometry::TVec3f* pl = fn_8023E724(k);
