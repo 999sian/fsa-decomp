@@ -496,7 +496,6 @@ end:
 extern "C" unsigned char fn_801F2618(char* a, float* out, unsigned int c);
 extern "C" int fn_801F11B4(char* a);
 extern "C" void* fn_802D6A9C(void);
-extern float lbl_80541E9C;
 extern "C" unsigned char fn_80332378(char* this_) {
     char* p = this_;
     unsigned char r;
@@ -537,7 +536,6 @@ extern "C" unsigned char fn_80332378(char* this_) {
 
 extern "C" void fn_803324A8(char* this_) {
     extern unsigned char* lbl_8053AAF8;
-    extern float lbl_80541E9C;
     extern float lbl_80541EBC;
     extern float lbl_80541ED0;
     extern float lbl_80541ED8;
