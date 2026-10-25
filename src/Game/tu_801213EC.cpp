@@ -279,6 +279,7 @@ extern "C" void fn_80121764(u8* self) {
 extern const f32 lbl_8053C9D8;
 extern "C" void fn_801217EC(u8* self, s32 flag) {
     if (self[0x332]) {
+        if (self[0x332]) {
         s32 i = 0;
         u8* p = self;
         for (; i < *(s32*)(self + 0x360); i++) {
@@ -296,9 +297,14 @@ extern "C" void fn_801217EC(u8* self, s32 flag) {
             }
             p += 4;
         }
-        s32 off = 0;
-        u8* q = self;
-        for (i = 0; i < *(s32*)(self + 0x360); i++) {
+        }
+        u8* q;
+        s32 off;
+        s32 i;
+        q = self;
+        i = 0;
+        off = 0;
+        for (; i < *(s32*)(self + 0x360); i++) {
             u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(q + 0x364));
             if (!actor) {
                 *(s32*)(q + 0x364) = -1;
