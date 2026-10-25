@@ -1,4 +1,21 @@
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" f32 lbl_80541E44;
+extern "C" s32 lbl_804AB810[];
+extern "C" char lbl_80471A50[];
+extern "C" void* lbl_8053AB10;
+extern "C" void fn_802F86CC(void*, void*, void*, s32, DrawRec*, f32, f32);
+extern "C" void fn_801F06F0(Actor*, void*, s32, DrawRec*, s32, f32, f32);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+struct FsaResourceManager {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void* getResource(u32, const char*);
+};
 
 
 extern "C" char lbl_804AB850[];
@@ -9,6 +26,76 @@ extern "C" float lbl_80541E40;
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" void* lbl_8053AAF8;
+extern "C" void fn_801F71A4(void* v, f32 target, f32 a, f32 b);
+extern "C" s32 fn_8023AF14(f32* box, u32 room, f32 z, u32 c);
+extern "C" void fn_801EEC98(Actor* p, void* h, u16* a, s32* b, f32* c, s32* d, u32 e, u32 f);
+extern "C" u8 fn_801F2618(Actor* p, u32 a, u32 b);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" u8 fn_80234ECC(s32 i);
+extern "C" void fn_802362C4(s32 i, void* f);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void fn_801F0E34(Actor* a, u32 code, u32 z);
+extern "C" void* lbl_804AB830[];
+extern "C" void fn_8032E3BC(Actor* p) {
+    u8 flag = 0;
+    u16 s8 = 0;
+    s32 i18 = 0;
+    f32 f14 = 0.0f;
+    s32 i1c = 0;
+    f32 box[4];
+    s32 r29;
+    f32 y = *(f32*)((char*)p + 0x10);
+    f32 x = *(f32*)((char*)p + 0xc);
+    if (*(u16*)((char*)p + 0x94) != 6) {
+        fn_801F71A4((char*)p + 0x3c, *(f32*)((char*)p + 0x26c), 0.3f, 1.0f);
+        fn_801F71A4((char*)p + 0x40, *(f32*)((char*)p + 0x270), 0.3f, 1.0f);
+    }
+    *(f32*)((char*)p + 0xc) += *(f32*)((char*)p + 0x3c);
+    *(f32*)((char*)p + 0x10) += *(f32*)((char*)p + 0x40);
+    *(f32*)((char*)p + 0x14) += *(f32*)((char*)p + 0x44);
+    box[0] = *(f32*)((char*)p + 0x60) + x;
+    box[1] = *(f32*)((char*)p + 0x64) + y;
+    box[2] = *(f32*)((char*)p + 0x68) + x;
+    box[3] = *(f32*)((char*)p + 0x6c) + y;
+    if (*(s32*)((char*)p + 0x230) == 4) {
+        r29 = fn_8023AF14(box, *(u32*)((char*)p + 0x4), *(f32*)((char*)p + 0x14), 0);
+        if (*(s32*)((char*)p + 0x230) != 0) {
+            fn_801EEC98(p, *(void**)((char*)p + 0x198), &s8, &i18, &f14, &i1c, 0, 0);
+            if (*(u16*)((char*)p + 0x94) == 6 && *(f32*)((char*)p + 0x14) == 0.0f) {
+                flag = fn_801F2618(p, 0, 0);
+            }
+        }
+        if (r29 >= 0) {
+            u16 sub = *(u16*)((char*)p + 0x94);
+            if (sub != 5 && sub != 6 && !(((f32*)fn_8023E724(r29))[2] >= 20.0f)) {
+                if (fn_80234ECC(r29)) {
+                    fn_802362C4(r29, lbl_804AB830[*(s32*)((char*)p + 0x264)]);
+                    *(s32*)((char*)p + 0x260) = r29;
+                    *(s32*)((char*)p + 0x230) = 1;
+                }
+            }
+        }
+    }
+    switch (*(s32*)((char*)p + 0x230)) {
+    case 0:
+        fn_801F71A4((char*)p + 0x14, 24.0f + 4.0f * sincosTable___5JMath[(u16)*(s32*)((char*)p + 0x250) >> 5].sin, 0.3f, 1.0f);
+        {
+            char* g = (char*)lbl_8053AAF8;
+            u32 s = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+            *(u32*)(g + 0xb4) = s;
+            u32 b = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+            *(s32*)((char*)p + 0x250) += (s32)(256.0f * (*(f32*)&b - 1.0f)) + 0x200;
+        }
+        break;
+    case 1:
+        *(s32*)((char*)p + 0x240) = 0;
+        *(s32*)((char*)p + 0x244) = 30;
+        *(s32*)((char*)p + 0x230) = 2;
+        break;
+    }
+}
+
 extern "C" u32 fn_8032EB28(char* p, void* a, void* b) {
     int t = (u16)fn_8022461C(b);
     if (t == 12 || t == 3 || t == 14) {
