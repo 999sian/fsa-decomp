@@ -107,7 +107,9 @@ extern "C" void fn_802C1674(char* p) {
         if (*(u8*)(p + 0x2af) != 0) {
             u16 tile = *(u16*)(p + 0x2a8);
             if (tile != 0xffff) {
-                key0RecordDropPoints(p, tile, *(u32*)(p + 0x23c) << 30, key0Point(p + 0x230), key0Point(p + 0xc));
+                Key0Pt pos = key0Point(p + 0xc);
+                Key0Pt key = key0Point(p + 0x230);
+                key0RecordDropPoints(p, tile, pos, key, *(u32*)(p + 0x23c) << 30);
                 *(u16*)(p + 0x2a8) = 0xffff;
                 *(u8*)(p + 0x2af) = 0;
             }
@@ -652,7 +654,7 @@ extern "C" s32 fn_8023BCD4(s32 a);
 extern "C" void fn_801F0E34(char* p, s32 a, s32 b);
 extern "C" void fn_801F0D20(char* p, s32 a);
 extern "C" void fn_801F355C(char* p);
-extern "C" void fn_801F2618(void);
+extern "C" void fn_801F2618(char* p, void* delta, s32 flags);
 extern "C" void fn_8030C210(s32 a, void* b);
 extern "C" void fn_802C2C30(char* p);
 extern "C" void fn_802C3AE4(char* p);
