@@ -5,7 +5,9 @@
 
 struct fn_801D1974_obj {
     void* vtbl;
-    u8 pad[0x2a8 - 4];
+    u8 pad04[0xc - 4];
+    JGeometry::TVec3<f32> m00c;
+    u8 pad[0x2a8 - 0x18];
     s32 m2a8;
     JGeometry::TVec2<f32> m2ac[16];
     f32 m32c;
@@ -81,30 +83,18 @@ extern "C" void fn_801D11FC(u8* this_)
     }
 }
 
-extern "C" s32 fn_801D12CC(u8* this_) {
+extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     s32 ret = 0;
+    u8 far_;
+    u8 lost;
     s32 idx;
-    s32 n;
-    s32 i;
-    s32 kind;
-    f32 dx;
-    f32 dy;
-    f32 k;
-    f32 px;
-    f32 py;
-    f32 sx;
-    f32 sy;
-    f32 tx;
-    f32 ty;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
-    JGeometry::TVec2<f32> q1;
-    JGeometry::TVec2<f32> q2;
 
-    if (*(s32*)(this_ + 0x338) >= 0 && fn_801D0B44(this_)) {
-        idx = *(s32*)(this_ + 0x338);
+    if (this_->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(this_, this_->m338)) {
+        idx = this_->m338;
         fn_8022E114(idx, &pos);
         if (fn_801F329C(this_, idx)) {
             fn_801CD150(&pos, &tmp);
@@ -119,104 +109,70 @@ extern "C" s32 fn_801D12CC(u8* this_) {
         p.x = v.x;
         p.y = v.y;
         p.z = lbl_8053F028;
-        if ((*(VirtFn**)this_)[19](this_, *(s32*)(this_ + 4), &p)) {
-            kind = (u16)fn_802265FC(&v, *(s32*)(this_ + 4));
-            if (kind < 0x2c) {
-                if (kind < 0x27) {
-                    *(s32*)(this_ + 0x2a8) = 0;
-                    return 0;
-                }
-            } else {
-                ret = 1;
-                if (!fn_801CF888(this_, this_ + 0xc, &v, *(s32*)(this_ + 4))) {
-                    *(s32*)(this_ + 0x2a8) = 0;
-                    *(f32*)(this_ + 0x32c) = v.x;
-                    *(f32*)(this_ + 0x330) = v.y;
-                    *(f32*)(this_ + 0x334) = lbl_8053F028;
-                    goto clear;
-                }
+        if ((*(VirtFn**)this_)[19](this_, *(s32*)((u8*)this_ + 4), &p)) {
+            s32 kind = fn_802265FC(&v, *(s32*)((u8*)this_ + 4));
+            if (kind >= 0x2c || kind < 0x27) {
+                this_->m2a8 = 0;
+                return 0;
             }
         }
-
-        dx = *(f32*)(this_ + 0x32c) - *(f32*)(this_ + 0xc);
-        dy = *(f32*)(this_ + 0x330) - *(f32*)(this_ + 0x10);
-        k = lbl_8053F02C + *(f32*)(this_ + 0x258);
-        if (*(s32*)(this_ + 0x2a8) >= 1 && dx * dx + dy * dy <= k * k) {
-            n = *(s32*)(this_ + 0x2a8) - 1;
-            for (i = 0; i < n; i++) {
-                ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[i].x = ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[i + 1].x;
-                ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[i].y = ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[i + 1].y;
+        ret = 1;
+        if (!fn_801CF888(this_, (u8*)this_ + 0xc, &v, *(s32*)((u8*)this_ + 4))) {
+            this_->m2a8 = 0;
+            ((JGeometry::TVec3<f32>*)&this_->m32c)->set(v.x, v.y, lbl_8053F028);
+        } else {
+            if (this_->m2a8 >= 1) {
+                f32 dx = this_->m32c - *(f32*)((u8*)this_ + 0xc);
+                f32 dy = this_->m330 - *(f32*)((u8*)this_ + 0x10);
+                f32 r = lbl_8053F02C + *(f32*)((u8*)this_ + 0x258);
+                f32 dx2 = dx * dx;
+                f32 dy2 = dy * dy;
+                if (dx2 + dy2 <= r * r) {
+                    this_->popPoint();
+                }
             }
-            *(s32*)(this_ + 0x2a8) = n;
-        }
-
-        {
-            u8 flagA;
-            u8 flagB;
-
-            flagA = 0;
-            flagB = 0;
-            n = *(s32*)(this_ + 0x2a8);
-            if (n == 0) {
-                flagB = 1;
+            far_ = 0;
+            lost = 0;
+            if (this_->m2a8 == 0) {
+                lost = 1;
             } else {
-                q1.x = *(f32*)(this_ + 0x2ac);
-                q1.y = *(f32*)(this_ + 0x2b0);
-                if (fn_801CF888(this_, &q1, &v, *(s32*)(this_ + 4))) {
-                    flagB = 1;
+                JGeometry::TVec2<f32> q1 = this_->point(this_->m2a8 - 1);
+                if (fn_801CF888(this_, &q1, &v, *(s32*)((u8*)this_ + 4))) {
+                    lost = 1;
                 } else {
-                    dx = v.x - q1.x;
-                    dy = v.y - q1.y;
-                    if (dx * dx + dy * dy >= lbl_8053F030) {
-                        flagA = 1;
-                        if (*(s32*)(this_ + 0x2a8) >= 2) {
-                            q2.x = *(f32*)(this_ + 0x2ac);
-                            q2.y = *(f32*)(this_ + 0x2b0);
-                            if (!fn_801CF888(this_, &q2, &v, *(s32*)(this_ + 4))) {
-                                if (*(s32*)(this_ + 0x2a8) > 0) {
-                                    *(s32*)(this_ + 0x2a8) = *(s32*)(this_ + 0x2a8) - 1;
+                    f32 ex = v.x - q1.x;
+                    f32 ey = v.y - q1.y;
+                    if (ex * ex + ey * ey >= lbl_8053F030) {
+                        far_ = 1;
+                        if (this_->m2a8 >= 2) {
+                            JGeometry::TVec2<f32> q2 = this_->point(this_->m2a8 - 2);
+                            if (!fn_801CF888(this_, &q2, &v, *(s32*)((u8*)this_ + 4))) {
+                                if (this_->m2a8 > 0) {
+                                    this_->m2a8--;
                                 }
                             }
                         }
                     }
                 }
             }
-
-            if (flagA || flagB) {
-                if (!flagA && *(s32*)(this_ + 0x2a8) >= 0x10) {
-                    *(s32*)(this_ + 0x2a8) = 0;
+            if (far_ || lost) {
+                if (this_->m2a8 >= 0x10) {
+                    this_->m2a8 = 0;
                     return 0;
                 }
-                if (flagB && *(s32*)(this_ + 0x24c) > 2) {
-                    sy = fn_8023E578(*(s32*)(this_ + 0x338))->y;
-                    ty = fn_8023E724(*(s32*)(this_ + 0x338))->y;
-                    py = v.y - (ty - sy);
-                    sx = fn_8023E578(*(s32*)(this_ + 0x338))->x;
-                    tx = fn_8023E724(*(s32*)(this_ + 0x338))->x;
-                    px = v.x - (tx - sx);
-                    if (*(s32*)(this_ + 0x2a8) < 0x10) {
-                        ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[*(s32*)(this_ + 0x2a8)].x = px;
-                        ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[*(s32*)(this_ + 0x2a8)].y = py;
-                        *(s32*)(this_ + 0x2a8) = *(s32*)(this_ + 0x2a8) + 1;
-                    }
+                if (lost && *(s32*)((u8*)this_ + 0x24c) > 2) {
+                    f32 y = v.y - (fn_8023E724(this_->m338)->y - fn_8023E578(this_->m338)->y);
+                    f32 x = v.x - (fn_8023E724(this_->m338)->x - fn_8023E578(this_->m338)->x);
+                    this_->pushPoint(JGeometry::TVec2<f32>(x, y));
                 } else {
-                    if (*(s32*)(this_ + 0x2a8) < 0x10) {
-                        ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[*(s32*)(this_ + 0x2a8)].x = v.x;
-                        ((JGeometry::TVec2<f32>*)(this_ + 0x2ac))[*(s32*)(this_ + 0x2a8)].y = v.y;
-                        *(s32*)(this_ + 0x2a8) = *(s32*)(this_ + 0x2a8) + 1;
-                    }
+                    this_->pushPoint(*(JGeometry::TVec2<f32>*)&v);
                 }
             }
+            ((JGeometry::TVec3<f32>*)&this_->m32c)->set(this_->point(0).x, this_->point(0).y, lbl_8053F028);
         }
-
-        *(f32*)(this_ + 0x32c) = *(f32*)(this_ + 0x2ac);
-        *(f32*)(this_ + 0x330) = *(f32*)(this_ + 0x2b0);
-        *(f32*)(this_ + 0x334) = lbl_8053F028;
     }
-
-clear:
     if (!ret) {
-        *(s32*)(this_ + 0x2a8) = 0;
+        this_->m2a8 = 0;
     }
     return ret;
 }
