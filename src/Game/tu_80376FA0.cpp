@@ -21,6 +21,9 @@ extern "C" void* lbl_8053AC98;
 extern "C" f32 lbl_80475178[];
 extern "C" f32 lbl_80475148[];
 extern "C" void fn_801F0D20(u8* self, s32 a);
+extern "C" void fn_8022E088(s32 i, s32 j, Vec* out);
+extern "C" void fn_8022DF48(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
 extern "C" s32 fn_80238BC4(u32 h);
 extern "C" s32 fn_80239108(u32 h);
 extern "C" void fn_80238E08(u32 h);
@@ -179,6 +182,64 @@ extern "C" void fn_803771AC(u8* this_) {
         pos->x += vel->x;
         pos->y += vel->y;
         pos->z += vel->z;
+        if (*(s32*)(this_ + 0x254) > 0) {
+            (*(s32*)(this_ + 0x254))--;
+            break;
+        }
+        if (*(s32*)(this_ + 0x254) != 0) {
+            break;
+        }
+        if (JMathInlineVEC::PSVECSquareMag(vel) <= 32.0f * FLT_EPSILON) {
+            if (*(s32*)(this_ + 0x25c) != 0) {
+                (*(s32*)(this_ + 0x25c))--;
+            }
+            if (*(s32*)(this_ + 0x25c) == 0) {
+                fn_801F0D20(this_, 3);
+            }
+        } else {
+            if (fn_80239108(*(u32*)(this_ + 0x198)) < 4) {
+                break;
+            }
+            if (PSVECDistance(pos, (Vec*)(this_ + 0x24)) >= 63.9) {
+                break;
+            }
+            if (*(s32*)(this_ + 0x260) >= 10) {
+                u32 h = *(u32*)(this_ + 0x198);
+                s32 idx = fn_80238BC4(h);
+                s32 r4 = *(s32*)(this_ + 0x258);
+                if (r4 == 0) {
+                    *(s32*)(this_ + 0x258) = idx + 1;
+                } else if (idx + 1 != r4) {
+                    break;
+                }
+                if (idx < 0 || idx >= 4) {
+                    break;
+                }
+                fn_80238E08(h);
+                Vec* v = (Vec*)((u8*)lbl_80475148 + idx * 0xc);
+                vel->x = v->x;
+                vel->y = v->y;
+                vel->z = v->z;
+                home->x = pos->x;
+                home->y = pos->y;
+                home->z = pos->z;
+                fn_801F0E34(this_, 0x30004, 0);
+                pos->x += vel->x;
+                pos->y += vel->y;
+                pos->z += vel->z;
+                if (idx == 0) {
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x31a, 1, 1, 0, 0, 1);
+                } else if (idx == 1) {
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x31b, 1, 1, 0, 0, 1);
+                } else if (idx == 2) {
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x31c, 1, 1, 0, 0, 1);
+                } else {
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x319, 1, 1, 0, 0, 1);
+                }
+            } else {
+                (*(s32*)(this_ + 0x260))++;
+            }
+        }
         break;
     }
     }
