@@ -81,17 +81,19 @@ struct OnofColor {
 struct OnofShadowMgr {
     void draw(u32 room, void* pos, OnofColor color, s32 flag, f32 scale);
 };
-extern "C" void fn_80158B5C(void* mgr, u32 room, void* pos, OnofColor color, s32 flag, f32 scale);
+extern "C" void fn_80158B5C(void* mgr, u32 room, void* pos, OnofColor color, int flag, f32 scale);
+#pragma peephole off
 extern "C" void fn_802CB1C4(char* p) {
     s32 st = *(s32*)(p + 0x238);
     if (st == 2 || st == 1) {
         u32 room = *(u32*)(p + 4);
         char* pos = p + 0xc;
-        OnofColor c(0, 0, 0, 0x80);
-        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, c, c.r, lbl_80540DA8);
+        OnofColor c;
+        c.r = 0; c.g = 0; c.b = 0; c.a = 0x80;
+        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, c, 0, lbl_80540DA8);
     }
 }
-
+#pragma peephole reset
 extern "C" void fn_802CB230(void* this_) {
     s32 r31;
     s32 ae;
