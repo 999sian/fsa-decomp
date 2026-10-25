@@ -5,6 +5,20 @@
 
 
 extern "C" char lbl_804AE7D8[];
+extern "C" void fn_80239914(f32* box, u32 room, u32 handle);
+extern "C" u8* fn_8020D58C(u32 handle);
+extern "C" void fn_8020D7D0(u8* p, u32 handle);
+extern "C" f32 PSVECDistance(const Vec* a, const Vec* b);
+extern "C" f32 fn_8033D4AC(f32 cur, f32 target, f32 speed);
+extern "C" void fn_801EE434(u32 p);
+extern "C" u32 fn_8013CC50(u32 room, Vec* pos, f32 scale, u32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_8013CB44(u32 h, Vec* pos, s32 a, s32 b, s32 c);
+extern "C" void fn_801F0E34(u8* self, u32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7584(void* a, void* b, u8 c);
+extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
+extern "C" void* lbl_8053AC98;
+extern "C" f32 lbl_80475178[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_80376FA0(Actor* this_, s16 flag) {
     if (this_ != 0) {
