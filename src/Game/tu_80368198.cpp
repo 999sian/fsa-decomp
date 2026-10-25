@@ -64,7 +64,7 @@ struct Vec3f {
 };
 typedef void (Unk8036C300::*Unk8036C300Func)();
 extern "C" void state0__11Unk8036C300Fv(void*);
-extern "C" void fn_80368CD8(void*);
+extern "C" void state1__11Unk8036C300Fv(void*);
 static Unk8036C300Func lbl_804AE070[2] = {
     &Unk8036C300::state0,
     &Unk8036C300::state1
