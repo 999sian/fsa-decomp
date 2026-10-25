@@ -129,6 +129,7 @@ extern "C" u8 fn_8024B24C(char*);
 extern "C" u8 fn_802466B4(char*);
 extern "C" u8 fn_8022C0A0(s32);
 extern f32 lbl_8054017C;
+extern const f32 lbl_805401E4;
 extern "C" int __float_epsilon[];
 extern u8 lbl_8046B790[];
 extern "C" f32 lbl_8046B7B0[];
