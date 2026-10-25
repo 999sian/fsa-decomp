@@ -766,11 +766,12 @@ extern "C" s32 fn_8043D67C(u8* param_1, u32 param_2, u32 param_3, u32 param_4) {
         }
         fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
     } else if (param_2 == 0x1b5) {
+        u8 flags = param_1[0xde];
         u8 bit = 1 << param_3;
-        if (tu8043_testFlag(param_1[0xde], bit)) {
+        if (tu8043_isFlagSet(flags, bit) & 1) {
             return 0;
         }
-        param_1[0xde] |= bit;
+        param_1[0xde] = flags | bit;
     }
     fn_80383E2C(param_2, name);
     if (name[0] == '*') {
