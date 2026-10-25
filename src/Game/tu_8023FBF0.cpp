@@ -1035,9 +1035,8 @@ inline s32 getModeCached(const char* p) {
     if (linked >= 0) return fn_8022CAF8(linked);
     return S32(p, 0x120c);
 }
-inline s32 countSharingOwnerCached(const char* p) {
+inline s32 countSharingOwnerCached(const char* p, s32& me) {
     s32 linked;
-    s32 me;
     s32 c;
     s32 i;
     c = 0;
@@ -1056,17 +1055,19 @@ inline s32 countSharingOwnerCached(const char* p) {
     }
     return c;
 }
-inline s32 getModeOwnerCached(const char* p) {
-    if (countSharingOwnerCached(p) <= 1) return 5;
+inline s32 getModeOwnerCached(const char* p, s32& me) {
+    if (countSharingOwnerCached(p, me) <= 1) return 5;
     s32 linked = S32(p, 0xd60);
     if (linked >= 0) return fn_8022CAF8(linked);
     return S32(p, 0x120c);
 }
 inline BOOL isLinkOwnerCached(char* p) {
+    s32 me;
     u8 bit = 1 << S32(p, 4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) return 1;
-    if (getModeOwnerCached(p) == 4) {
-        return linkIdx(p) != linkRank(p);
+    if (getModeOwnerCached(p, me) == 4) {
+        me = linkIdx(p);
+        return me != linkRank(p);
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
@@ -1307,7 +1308,7 @@ BOOL fn_80240EF4(char* p) { STATE_OR2(p, 0x1240, 0x42, 0x43); }
 BOOL fn_80240F14(char* p) { return S32(p, 0x1240) == 0x41 ? 1 : 0; }
 
 s32 fn_8023513C(s32);
-s32 fn_80240F28(char* const p) {
+s32 fn_80240F28(char* p) {
     if (getModeCached(p) == 5) {
         if ((u8)isLinkOwnerCached(p)) {
             return fn_8023513C(fn_8022EA0C(S32(p, 0x4)));
