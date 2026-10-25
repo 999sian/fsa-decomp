@@ -70,8 +70,10 @@ extern "C" void fn_80208EFC(char* this_) {
         f32 pos[2];
         if (*(s32*)(this_ + 0x344) == 0) {
             fn_80209640(this_ + 0x34c, pos);
-            *(f32*)(this_ + 0x3c) = pos[0];
-            *(f32*)(this_ + 0x40) = pos[1];
+            f32 y = pos[1];
+            f32 x = pos[0];
+            *(f32*)(this_ + 0x3c) = x;
+            *(f32*)(this_ + 0x40) = y;
             *(f32*)(this_ + 0x44) = lbl_8053F918;
         } else if (*(s32*)(this_ + 0x340) == 0) {
             *(f32*)(this_ + 0x3c) = lbl_8053F91C;
