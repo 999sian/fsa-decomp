@@ -1026,11 +1026,9 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, 
     if (arg < 0) {
         return;
     }
-    s32 slot;
-    s32 mapped;
     s32 player = *(s32*)(self + 0x344);
-    mapped = (player < 0 || player >= 4) ? -1 : fn_8022EA0C(player);
-    slot = mapped;
+    s32 mapped = (player < 0 || player >= 4) ? -1 : fn_8022EA0C(player);
+    s32 slot = mapped;
     for (s32 i = 0; i < 4; i++) {
         if (mapped == fn_8023ECF0(i)) {
             slot = i;
@@ -1049,7 +1047,7 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, 
         }
     }
     if (fn_802DCD0C(fn_802D6A9C())) {
-        ((SeekCalls*)self)->v33();
+        ((SeekCalls*)self)->v31();
         return;
     }
     bool ok = fn_8022D75C(arg) != 0;
@@ -1067,11 +1065,11 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, 
     }
     if (ok) {
         if (fn_8023E10C(arg) == 8) {
-            ((SeekCalls*)self)->v34();
+            ((SeekCalls*)self)->v32();
         } else {
             *(s32*)(self + 4) = fn_8023DE58(arg);
             self[0x331] = 0;
-            ((SeekCalls*)self)->v35();
+            ((SeekCalls*)self)->v33();
         }
         return;
     }
@@ -1079,7 +1077,7 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, 
     s32 quad = 0;
     s32 e = 0;
     f32 dist = lbl_8053C9B4;
-    ((ActorSlot40Calls*)self)->v40(&ang, &quad, &dist, &e, arg);
+    ((ActorSlot38Calls*)self)->v38(&ang, &quad, &dist, &e, arg);
     if (fn_80138A30(lbl_8053AAF8) == 1 && fn_8022CAF8(arg) == 5) {
         d = lbl_8053CA00 * d;
     }
@@ -1102,7 +1100,7 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, 
     }
     s32 room = *(s32*)(self + 4);
     if (((u8*)fn_802D6A9C())[room + 0x131df]) {
-        s32 r27 = ((CompanionCalls*)self)->v49() ? 0xc : 0;
+        s32 r27 = ((CompanionCalls*)self)->v47() ? 0xc : 0;
         s32 r29 = r27 + 8;
         if (fn_8022CAF8(arg) != 4) {
             r29 += (fn_8022E970(arg) - 1) * 12;
