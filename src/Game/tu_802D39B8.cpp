@@ -1121,21 +1121,6 @@ inline bool swordStage8328() {
     return false;
 }
 
-inline u32 spawnWord8328(const u8* p) {
-    return (u32)p[0]<<24 | (u32)p[1]<<16 | (u32)p[2]<<8 | p[3];
-}
-inline s32 spawnLayer8328(char* p, u8 layer, f32& x, f32& y) {
-    if (layer==0) {x=*(f32*)(p+0xcc);y=*(f32*)(p+0xd0);return 0;}
-    x=y=lbl_8054111C;
-    return layer+7;
-}
-#pragma opt_propagation off
-inline void spawnPos8328(JGeometry::TVec3<f32>& pos, u16 x, u16 y, f32 ox, f32 oy) {
-    pos.set(lbl_8054112C*x+ox,lbl_8054112C*y+oy,lbl_8054111C);
-}
-
-
-#pragma opt_propagation reset
 inline void readSpawnWord8328(u32& word, const u8* p) {
     word=(u32)p[0]<<24 | (u32)p[1]<<16 | (u32)p[2]<<8 | p[3];
 }
@@ -1263,13 +1248,13 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             offset=0;
             out=end;
             for (;;) {
-                u8* rec=data+offset;
+                u8* rec=&data[offset];
                 id=(u32)rec[0]<<24|(u32)rec[1]<<16|(u32)rec[2]<<8|(u32)rec[3];
                 if (id==0x20202020) break;
                 param=(u32)rec[7]<<24|(u32)rec[8]<<16|(u32)rec[9]<<8|(u32)rec[10];
                 u8 layer=rec[4];
-                u16 y;
-                u16 x;
+                register u16 y;
+                register u16 x;
                 x=rec[5];y=rec[6];
                 offset+=11;
                 bool first=false;
@@ -1280,8 +1265,9 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
                     f32 ox,oy;
                     if (layer==0) {ox=*(f32*)(p+0xcc);oy=*(f32*)(p+0xd0);room=0;}
                     else {ox=oy=lbl_8054111C;room=layer+7;}
-                    char* base=(char*)roomArrays();
-                    if (!(roomArrays()->flags3548[*(s32*)(base+0x18)][*(s32*)(base+0x14)][number/32] & (1<< (number%32)))) {
+                    RoomArrays* rooms=roomArrays();
+                    char* base=(char*)rooms;
+                    if (!(rooms->flags3548[*(s32*)(base+0x18)][*(s32*)(base+0x14)][number/32] & (1<< (number%32)))) {
                         JGeometry::TVec3<f32> pos;
             pos.set(lbl_8054112C*(u16)x+ox,lbl_8054112C*(u16)y+oy,lbl_8054111C);
                         *out++=Actor_CreateByID(fn_801F856C(),id,room,(f32*)&pos,param,number,-1);
