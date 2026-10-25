@@ -1234,8 +1234,12 @@ static inline s32 PushDirFromLink(char* self) {
 }
 
 // Push direction from a contact on the side box (sets 0x2cc to -1).
+static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box);
 static inline s32 PushDirFromContact(char* self) {
     JGeometry::TBox2f box;
+    return PushDirFromContact(self, box);
+}
+static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box) {
     box.set(*(JGeometry::TBox2f*)(self + 0x80));
     box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
     if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0 && fn_80238A68(*(void**)(self + 0x198)) >= 4) {
