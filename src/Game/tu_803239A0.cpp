@@ -299,13 +299,11 @@ extern "C" const f32 lbl_80541BBC;
 extern "C" const f32 lbl_80541BC0;
 extern "C" const f32 lbl_80541BC4;
 extern "C" void fn_80324AC4(char* this_) {
-    u32 bits;
-    f32 frac;
     s32 room;
     f32 b;
     f32 a;
-    f32 fa = lbl_80541BB0;
     f32 fb = lbl_80541B90;
+    f32 fa = lbl_80541BB0;
     *(u32*)(this_ + 0x98) = (*(u32*)(this_ + 0x90) >> 4) & 7;
     *(u16*)(this_ + 0x94) = (*(u32*)(this_ + 0x90) >> 8) & 3;
     *(u32*)(this_ + 0x90) = *(u32*)(this_ + 0x90) & 3;
@@ -354,23 +352,35 @@ extern "C" void fn_80324AC4(char* this_) {
     *(u32*)(this_ + 0x240) = 500;
     *(f32*)(this_ + 0x274) = lbl_80541B78;
     room = *(s32*)(this_ + 4);
-    *(u8*)(this_ + 0x278) = *((u8*)fn_802D6A9C() + room + 0x131df);
+    const u8* __restrict state = (u8*)fn_802D6A9C() + 0x10000;
+    *(u8*)(this_ + 0x278) = state[room + 0x31df];
     if (*(u16*)(this_ + 0x94) == 1) {
         room = *(s32*)(this_ + 4);
-        if (*((u8*)fn_802D6A9C() + room + 0x131df) == 0) {
-            *(u32*)((char*)lbl_8053AAF8 + 0xb4) = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-            bits = (*(u32*)((char*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-            frac = *(f32*)&bits - lbl_80541B70;
+        const u8* __restrict state2 = (u8*)fn_802D6A9C() + 0x10000;
+        if (state2[room + 0x31df] == 0) {
+            {
+            char* sys = (char*)lbl_8053AAF8;
+            *(u32*)(sys + 0xb4) = *(u32*)(sys + 0xb4) * 0x19660d + 0x3c6ef35f;
+            u32 bits = (*(u32*)(sys + 0xb4) >> 9) | 0x3f800000;
+            f32 frac = *(f32*)&bits - lbl_80541B70;
             *(f32*)(this_ + 0x44) = lbl_80541BB8 + lbl_80541BBC * frac;
+            }
         } else {
-            *(u32*)((char*)lbl_8053AAF8 + 0xb4) = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-            bits = (*(u32*)((char*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-            frac = *(f32*)&bits - lbl_80541B70;
+            u32 multiplier = 0x19660d;
+            {
+            char* sys = (char*)lbl_8053AAF8;
+            *(u32*)(sys + 0xb4) = *(u32*)(sys + 0xb4) * multiplier + 0x3c6ef35f;
+            u32 bits = (*(u32*)(sys + 0xb4) >> 9) | 0x3f800000;
+            f32 frac = *(f32*)&bits - lbl_80541B70;
             *(f32*)(this_ + 0x270) = lbl_80541BB8 + lbl_80541BBC * frac;
-            *(u32*)((char*)lbl_8053AAF8 + 0xb4) = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-            bits = (*(u32*)((char*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-            frac = *(f32*)&bits - lbl_80541B70;
+            }
+            {
+            char* sys = (char*)lbl_8053AAF8;
+            *(u32*)(sys + 0xb4) = *(u32*)(sys + 0xb4) * multiplier + 0x3c6ef35f;
+            u32 bits = (*(u32*)(sys + 0xb4) >> 9) | 0x3f800000;
+            f32 frac = *(f32*)&bits - lbl_80541B70;
             *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x40) - (lbl_80541BC0 + lbl_80541BC4 * frac);
+            }
         }
     } else if (*(u16*)(this_ + 0x94) == 0 && *(void**)(this_ + 0x26c) == 0) {
         *(void**)(this_ + 0x26c) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_80541B70, 0x35d, 0, 1, 0, 0, 1);
