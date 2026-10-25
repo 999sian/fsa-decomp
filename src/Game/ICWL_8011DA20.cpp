@@ -149,7 +149,7 @@ static inline bool icwlHitFire(u8* this_) {
     ICWLBox box;
     ICWLVec2 v;
     icwlGetBox(this_, &box);
-    v.x = v.y = lbl_8053C8B8;
+    v.y = v.x = lbl_8053C8B8;
     if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0 || fn_801F2718(this_, 0x46495245) >= 0) {
         return true;
     }
