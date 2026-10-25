@@ -59,11 +59,6 @@ s32 fn_801EA8C0(u8* param_1, u8* param_2);
 void qsort(void* base, size_t nmemb, size_t size, s32 (*compar)(void*, void*));
 }
 
-static inline u8* getActor(s32 id) {
-    u8* p = (u8*)fn_801F666C(fn_801F856C(), id);
-    return p;
-}
-
 extern "C" void* fn_801E9AFC(void) {
     if (lbl_8053AC50 == 0) {
         __construct_array(lbl_804CA358, (void*)fn_801E9B54, NULL, 0x78, 2);
@@ -77,13 +72,13 @@ extern "C" void fn_801E9B54(void) {
 
 extern "C" s32 fn_801E9B58(u8* param_1) {
     s32 iVar2;
-    s32 iVar3;
+    void* tmp;
 
     iVar2 = fn_801F7F58(fn_801F856C(), param_1, lbl_80469C78, *(s32*)(param_1 + 0x198), lbl_8053F65C);
     if (iVar2 >= 0 && iVar2 != *(s32*)(param_1 + 0x198)) {
-        iVar3 = (s32)fn_801F666C(fn_801F856C(), iVar2);
-        param_1 = (u8*)iVar3;
-        if (param_1 != NULL) {
+        tmp = fn_801F666C(fn_801F856C(), iVar2);
+        param_1 = (u8*)tmp;
+        if (tmp != NULL) {
             if (fn_801CC8E4() != 0) {
                 iVar2 = -1;
             } else if (*(u32*)(param_1 + 0x1a0) == 0x46495245) {
