@@ -15,6 +15,14 @@ extern "C" void fn_801F0E34(void* this_, u32 a, s32 b);
 
 extern "C" void* lbl_8053AB10;
 extern "C" void fn_80158B5C(void* mgr, u32 room, JGeometry::TVec3<f32>* pos, GXColor col, f32 t);
+static inline void drawShadow802B(u32 room, JGeometry::TVec3<f32>* pos, f32 size, u8 alpha) {
+    GXColor color;
+    color.r = 0;
+    color.g = 0;
+    color.b = 0;
+    color.a = alpha;
+    fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), room, pos, color, size);
+}
 extern "C" void fn_802B0CD8(void* this_) {
     char* p = (char*)this_;
     if (*((u8*)fn_802D6A9C() + 0x131f5) != 0) {
