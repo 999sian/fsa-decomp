@@ -488,7 +488,7 @@ struct MsgProc {
     }
     BOOL testBit(s32 n) {
         if (n < 32) {
-            return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
+            return (bits[0] & (s64)(1L << n)) ? TRUE : FALSE;
         } else if (n < 64) {
             return (bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
         }
@@ -993,40 +993,13 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
     }
     switch (p->slot) {
     case 0:
-        p->str2c0[p->m2d0++] = -2;
-        p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10];
-        p->str2c0[p->m2d0++] = -2;
-        if (p->layout->m1a1 != 0 && (u8)p->slotLine[p->slot] - p->lineTab[p->layout->m15c] - 1 == 0) {
-            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x20 - p->lineTab[p->layout->m15c];
-        } else {
-            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x1f - p->lineTab[p->layout->m15c];
-        }
+        p->putSlotPos(x, 0);
         break;
     case 1:
-        p->str2c0[p->m2d0++] = -2;
-        {
-            char c = x + (s8)p->slotLine[p->slot + 0x10];
-            p->str2c0[p->m2d0++] = c + 0x40;
-        }
-        p->str2c0[p->m2d0++] = -2;
-        if (p->layout->m1a1 != 0 && (u8)p->slotLine[p->slot] - p->lineTab[p->layout->m15c] - 1 == 0) {
-            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x60 - p->lineTab[p->layout->m15c];
-        } else {
-            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x5f - p->lineTab[p->layout->m15c];
-        }
+        p->putSlotPos(x, 0x40);
         break;
     case 2:
-        p->str2c0[p->m2d0++] = -2;
-        {
-            char c = x + (s8)p->slotLine[p->slot + 0x10];
-            p->str2c0[p->m2d0++] = c + 0x80;
-        }
-        p->str2c0[p->m2d0++] = -2;
-        if (p->layout->m1a1 != 0 && (u8)p->slotLine[p->slot] - p->lineTab[p->layout->m15c] - 1 == 0) {
-            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0xa0 - p->lineTab[p->layout->m15c];
-        } else {
-            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x9f - p->lineTab[p->layout->m15c];
-        }
+        p->putSlotPos(x, 0x80);
         break;
     }
     p->layout->slotTag[p->slot] = tag;
