@@ -1305,12 +1305,6 @@ extern "C" void fn_800FB32C(void* this_) {
 
 #pragma opt_propagation off
 extern "C" void fn_800FB6E0(void* this_, s32 mode) {
-    f32 zero;
-    f32 c;
-    f32 b;
-    f32 a;
-    f32 scale;
-    f32 multiplier;
     u8* p = (u8*)this_;
     u16 angle = 0;
     f32 distance = lbl_8053BFAC;
@@ -1345,17 +1339,18 @@ extern "C" void fn_800FB6E0(void* this_, s32 mode) {
         if (distance < lbl_8053C084) {
             *(u16*)(p + 0x262) = angle;
         } else {
+            f32 one;
             f32 random;
             f32 k;
-            f32 one;
             u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
             one = lbl_8053BFCC;
             k = lbl_8053C088;
             *rng = *rng * 0x19660d + 0x3c6ef35f;
             union { u32 u; f32 f; } value;
             value.u = (*rng >> 9) | 0x3f800000;
-            random = value.f - one;
-            *(u16*)(p + 0x262) += (s16)(0x2000 - (s32)(k * random));
+            random = value.f;
+            one = random - one;
+            *(u16*)(p + 0x262) += (s16)(0x2000 - (s32)(k * one));
         }
     }
     *(f32*)(p + 0x3c) = lbl_8053BFE8 * sincosTable___5JMath[((*(u16*)(p + 0x262) >> 5) & 0x7ff) * 2];
@@ -1371,19 +1366,14 @@ extern "C" void fn_800FB6E0(void* this_, s32 mode) {
     }
     *(u32*)(p + 0x238) |= 4;
     *(u32*)(p + 0x238) &= ~0x10;
-    multiplier = lbl_8053C08C;
-    a = lbl_8053C054;
-    b = lbl_8053C058;
-    c = lbl_8053C05C;
-    zero = lbl_8053BFAC;
-    scale = multiplier * *(f32*)(p + 0x26c);
-    a *= scale;
-    b *= scale;
-    c *= scale;
+    f32 scale = 1.4f * *(f32*)(p + 0x26c);
+    f32 a = -26.0f * scale;
+    f32 b = -50.0f * scale;
+    f32 c = 26.0f * scale;
     *(f32*)(p + 0x60) = a;
     *(f32*)(p + 0x64) = b;
     *(f32*)(p + 0x68) = c;
-    *(f32*)(p + 0x6c) = zero;
+    *(f32*)(p + 0x6c) = 0.0f;
     *(s32*)(p + 0x230) = 7;
     *(s32*)(p + 0x268) = 1;
     *(s32*)(p + 0x264) = 0;
@@ -1635,18 +1625,8 @@ extern "C" void fn_800FC4A8(void* this_) {
 extern f32 lbl_8053C094;
 #pragma opt_propagation off
 extern "C" void fn_800FC984(void* this_) {
-    unsigned char bVar1;
-    u8* self = (u8*)this_;
-    if (self[0x2ac] == 0) {
-        *(s32*)(self + 0xb0) = 4;
-        *(s32*)(self + 0x27c) = 1;
-        *(s32*)(self + 0x234) = 0;
-        *(s32*)(self + 0x230) = 8;
-        fn_801F0E34(this_, 0x40005, 0);
-        self[0x2ad] = bVar1 = 1;
-    } else {
-        bVar1 = 0;
-    }
+    u8* self=(u8*)this_;
+    u8 bVar1=wrtcStartIdle(this_);
     if (bVar1 == 0) {
         if (self[0x256] != 0) {
             self[0x256]--;
@@ -1657,16 +1637,7 @@ extern "C" void fn_800FC984(void* this_) {
             *(s32*)(self + 0xb0) = 4;
         }
         fn_800FA1A4(this_);
-        u8 bVar2;
-        if (*(u32*)(self + 0x268) != 0) {
-            *(s32*)(self + 0x268) += 0x2000;
-            if (*(u32*)(self + 0x268) > 0x20000) {
-                *(s32*)(self + 0x268) = 0;
-            }
-            bVar2 = 1;
-        } else {
-            bVar2 = 0;
-        }
+        u8 bVar2=wrtcStepFlash(this_);
         if (bVar2 == 1) {
             fn_801F3D94(this_, 1);
         } else {
@@ -1682,20 +1653,22 @@ extern "C" void fn_800FC984(void* this_) {
                     *(s32*)(self + 0x230) = 4;
                     *(s32*)(self + 0x234) = 0;
                     f32 one=lbl_8053BFCC;
-                    f32 scale=100.0f;
+                    f32 scale=lbl_8053C078;
                     f32 base=400.0f;
                     char* game=(char*)lbl_8053AAF8;
                     *(u32*)(game+0xb4)=*(u32*)(game+0xb4)*0x19660d+0x3c6ef35f;
                     union {u32 u; f32 f;} a;
                     a.u=(*(u32*)(game+0xb4)>>9)|0x3f800000;
                     s32 x=(s32)(scale*(a.f-one));
-                    *(s16*)(self+0x284)=(s32)(base+(f32)x);
+                    f32 fx=x;
+                    *(s16*)(self+0x284)=(s32)(base+fx);
                     game=(char*)lbl_8053AAF8;
                     *(u32*)(game+0xb4)=*(u32*)(game+0xb4)*0x19660d+0x3c6ef35f;
                     union {u32 u; f32 f;} b;
                     b.u=(*(u32*)(game+0xb4)>>9)|0x3f800000;
                     s32 y=(s32)(scale*(b.f-one));
-                    *(s16*)(self+0x286)=(s32)(base+(f32)y);
+                    f32 fy=y;
+                    *(s16*)(self+0x286)=(s32)(base+fy);
                     *(s16*)(self + 0x2b2) = 0x3000;
                     *(s16*)(self + 0x2b4) = 0x5000;
                 } else {
