@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801AE9C4-801AFB38 (OKAM). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // from src/Game/fn_801AE9C4_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
