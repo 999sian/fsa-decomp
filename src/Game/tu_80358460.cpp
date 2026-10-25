@@ -834,6 +834,38 @@ extern "C" void fn_8035AA54(u8* self) {
     }
 }
 
+extern "C" s8 fn_8035AC84(u8* self, s32 i) {
+    Vec8035A860 out;
+    u8* tbl = sincosTable___5JMath;
+    s32 j;
+    s16 ang;
+
+    if (fn_8022D75C((void*)i)) return 0;
+    if (fn_80230188((void*)i)) return 0;
+    if (*(s32*)(self + 0x4) != fn_8023DE58((void*)i)) return 0;
+    if (*(f32*)((u8*)fn_8023E724((void*)i) + 0x8) > lbl_8054286C) {
+        fn_8022DF48((void*)i);
+        return 0;
+    }
+    for (j = 0; j < 8; j++) {
+        ang = *(s16*)(self + 0x230);
+        if ((ang >= 0x3c00 && ang <= 0x4400) || (ang <= -0x3c00 && ang >= -0x4400)) return 0;
+        fn_8022E088((void*)i, j, &out);
+        out.x -= *(f32*)(self + 0xc);
+        out.y -= *(f32*)(self + 0x10);
+        out.z = lbl_8054286C;
+        if (out.x >= *(f32*)(self + 0x60) && out.y >= *(f32*)(self + 0x64) * __fabsf(*(f32*)(tbl + ((u16)ang >> 5) * 8 + 4)) && out.x < *(f32*)(self + 0x68) && out.y < *(f32*)(self + 0x6c) * __fabsf(*(f32*)(tbl + ((u16)ang >> 5) * 8 + 4))) {
+            fn_8022DF48((void*)i);
+            if (*(f32*)(self + 0x10) - *(f32*)((u8*)fn_8023E724((void*)i) + 0x4) == lbl_8054286C) {
+                *(f32*)(self + 0x240) += lbl_8054287C;
+                fn_8035A860(self, (void*)i, lbl_8054287C);
+                return lbl_8054287C >= lbl_8054286C ? -1 : 1;
+            }
+        }
+    }
+    return 0;
+}
+
 extern "C" bool fn_8022D75C(void*);
 extern "C" bool fn_80230188(void*);
 extern "C" s32 fn_8023DE58(void*);
@@ -923,4 +955,35 @@ extern "C" void fn_8035B0E0(u8* arg) {
         pos.x += lbl_80542870;
     }
 }
-
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __register_global_object(void*, void (*)(void*), void*);
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+struct StateTable8035B348 { Unk8035A1D4Func states[5]; };
+extern StateTable8035B348 lbl_804AD2D0;
+extern "C" u8 lbl_8050B9F8[];
