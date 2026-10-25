@@ -199,25 +199,16 @@ extern "C" s32 fn_8022F340(s32 p);
 // fn_80384C58 mode flag: explicit compare chain (no range merge), 0xc only while b7f is clear.
 static inline u8 fn_80384C58_flag(void) {
     u8 f = 0;
+    s32 m = lbl_8053AAF8->mode;
     if (lbl_8053AAF8->b7f != 0) {
-        if (lbl_8053AAF8->mode == 7) goto yes;
-        if (lbl_8053AAF8->mode == 8) goto yes;
-        if (lbl_8053AAF8->mode == 9) goto yes;
-        if (lbl_8053AAF8->mode == 0x16) goto yes;
-        if (lbl_8053AAF8->mode == 0xa) goto yes;
-        if (lbl_8053AAF8->mode == 0xb) goto yes;
+        if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 0xa || m == 0xb) {
+            f = 1;
+        }
     } else {
-        if (lbl_8053AAF8->mode == 7) goto yes;
-        if (lbl_8053AAF8->mode == 8) goto yes;
-        if (lbl_8053AAF8->mode == 9) goto yes;
-        if (lbl_8053AAF8->mode == 0x16) goto yes;
-        if (lbl_8053AAF8->mode == 0xa) goto yes;
-        if (lbl_8053AAF8->mode == 0xb) goto yes;
-        if (lbl_8053AAF8->mode == 0xc) goto yes;
+        if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 0xa || m == 0xb || m == 0xc) {
+            f = 1;
+        }
     }
-    return f;
-yes:
-    f = 1;
     return f;
 }
 
@@ -1675,17 +1666,15 @@ extern "C" u8 fn_8038470C(s32 p, s32 q) {
 
 extern "C" void fn_80230224(s32 i, s32 b);
 extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
-    s32 off;
-    u16 flags;
-    u8 c;
+    s32 a = fn_80384C58_slot(param_1);
+    s32 b;
+    s32 i;
+    s32 found;
     s32 tmp[4];
     s32 n;
-    s32 found;
-    s32 i;
-    s32 b;
-    s32 a;
+    u8 c;
+    u16 flags;
 
-    a = fn_80384C58_slot(param_1);
     b = fn_80384C58_slot(a);
     if (((u8*)lbl_8053AD78->sub[b])[0x24] == 0) {
         return 1;
@@ -1701,7 +1690,6 @@ extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
     if (((u8*)lbl_8053AD78->sub[b])[0x40] != 0) {
         return 0;
     }
-    off = a * 4;
     flags = *(u16*)((u8*)lbl_8053AD78->sub[a] + 0x28);
     if (((flags >> 2) & 1) == 0) {
         if ((flags & 0x800) == 0) {
