@@ -29,6 +29,9 @@ extern const f32 lbl_8053DB48;
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, s32 a, s32 b, s32 c);
 extern "C" void* fn_801F666C(void* base, s32 id);
+static inline void* slr4FindActor(s32 id) {
+    return fn_801F666C(fn_801F856C(), id);
+}
 extern "C" s32 fn_8023DE58(s32 a);
 extern u8 lbl_80529DEC[];
 extern const f32 lbl_8053DB4C;
@@ -138,7 +141,7 @@ extern "C" void fn_80172900(void* this_) {
 }
 
 extern "C" void fn_80172BC8(void* this_) {
-    char* p = (char*)this_;
+    register char* p = (char*)this_;
     DrawRec rec;
     f32 mtx[3][4];
     mtx[0][3] = lbl_8053DAB8;
@@ -149,29 +152,66 @@ extern "C" void fn_80172BC8(void* this_) {
         mtx[0][1] = lbl_8053DAB8;
         mtx[0][2] = lbl_8053DAB8;
         mtx[1][0] = lbl_8053DAB8;
-        mtx[1][1] = lbl_8053DABC;
         mtx[1][2] = lbl_8053DAB8;
+        mtx[1][1] = lbl_8053DABC;
         mtx[2][0] = lbl_8053DAB8;
-        mtx[2][1] = lbl_8053DAB8;
         mtx[2][2] = lbl_8053DABC;
+        mtx[2][1] = lbl_8053DAB8;
         if (*(s32*)(p + 0x23c) == 0) {
             mtx[0][0] = lbl_8053DAC0;
             mtx[0][1] = lbl_8053DAB8;
             mtx[0][2] = lbl_8053DAB8;
-            mtx[1][0] = lbl_8053DAB8;
             mtx[1][1] = lbl_8053DAC0;
+            mtx[1][0] = lbl_8053DAB8;
             mtx[1][2] = lbl_8053DAB8;
             mtx[2][0] = lbl_8053DAB8;
-            mtx[2][1] = lbl_8053DAB8;
             mtx[2][2] = lbl_8053DAC0;
+            mtx[2][1] = lbl_8053DAB8;
         }
         rec.w18 = mtx;
     }
-    s32 id = *(s32*)(p + 0x280) + 0x3fd;
+    register u32 id = *(s32*)(p + 0x280) + 0x3fd;
     if (*(s32*)(p + 4) < 8) {
         void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_80466808);
         fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_8053DAC0, lbl_8053DAC0, &rec);
     }
+}
+
+extern "C" void fn_8030C210(void* a, void* b);
+extern "C" void fn_8043E7CC(void* a);
+extern "C" void fn_801752D8(void* this_);
+extern "C" void fn_80175024(void* this_);
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" void fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" void fn_80174220(void* this_);
+extern void* lbl_8053AED0;
+extern "C" void fn_80172DC4(void* this_) {
+    char* p = (char*)this_;
+    if (lbl_8053AB60 == 1) {
+        *(f32*)(p + 0xc) = *(f32*)(p + 0x2b4);
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x2b8);
+        *(f32*)(p + 0x14) = *(f32*)(p + 0x2bc);
+        return;
+    }
+    fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), p + 0xc);
+    fn_8043E7CC(lbl_8053AED0);
+    if ((*(u32*)(p + 0x90) & 0xff) == 7) {
+        fn_80174220(this_);
+        return;
+    }
+    if (*(s32*)(p + 0x230) != 8 && *(s32*)(p + 0x230) != 9) {
+        fn_801752D8(this_);
+        fn_80175024(this_);
+    }
+    if (fn_801F3D94(this_, 1) != 0) {
+        fn_801F2618(this_, 0, 0);
+        if (*(s32*)(p + 0x23c) == 0) {
+            *(s32*)(p + 0x250) = 0x14;
+            return;
+        }
+    }
+    *(s32*)(p + 0x254) = 1;
+    *(s32*)(p + 0x250) = 0x3c;
 }
 
 extern "C" void fn_80174220(void* this_) {
@@ -620,16 +660,18 @@ extern "C" void fn_80174B44(void* this_) {
     }
 }
 
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_80175024(void* this_) {
     char* p = (char*)this_;
     if ((s32)(*(u32*)(p + 0x90) & 0xff) != 6) {
         void* obj;
-        s32 idx = *(s32*)(p + 0x238);
+        int idx = *(s32*)(p + 0x238);
         if (idx >= 0) {
             obj = fn_801F666C(fn_801F856C(), idx);
             if (obj == 0) {
                 s32 a = 7;
-                s32 room = *(s32*)(p + 0x4);
+                int room = *(s32*)(p + 0x4);
                 if (room >= 8) {
                     a = 8;
                     room = 0;
@@ -651,7 +693,18 @@ extern "C" void fn_80175024(void* this_) {
                         if (*(f32*)(p + 0x3c) < lbl_8053DB48 && *(f32*)(p + 0x40) < lbl_8053DB48) {
                             *(s16*)((char*)obj + 0x94) = 0;
                             if (*(s32*)(p + 0x4) >= 8 && *(s32*)(p + 0x23c) == 1) {
-                                *(Box4*)(p + 0x60) = lbl_804A0A58[*(s32*)(p + 0x98)];
+                                const Box4* __restrict table = lbl_804A0A58;
+                                s32 index = *(s32*)(p + 0x98);
+                                f32 a, b, c, d;
+                                a = table[index].a;
+                                const Box4* src = &table[index];
+                                d = src->d;
+                                c = src->c;
+                                b = src->b;
+                                *(f32*)(p + 0x60) = a;
+                                *(f32*)(p + 0x64) = b;
+                                *(f32*)(p + 0x68) = c;
+                                *(f32*)(p + 0x6c) = d;
                             }
                             fn_801F2B7C(p, -100, -1, 1);
                         } else {
@@ -704,19 +757,21 @@ extern "C" void fn_80175024(void* this_) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 extern "C" void fn_801752D8(void* this_) {
-    char* p = (char*)this_;
     char* q;
     char* e;
     s16 rot;
-    s32 cnt;
-    s32 i;
     s32 n;
+    s32 i;
+    s32 cnt;
+    char* p = (char*)this_;
     if (*(s32*)(p + 0x4) >= 8 && *(s32*)(p + 0x23c) == 1 && *(s32*)(lbl_80529DEC + 0x118) == 6) {
+        i = 0;
         cnt = 0;
         q = p;
-        for (i = 0; i < 4; i++, q += 4) {
+        for (; i < 4; i++, q += 4) {
             s32 id = *(s32*)(q + 0x2c0);
             if (id < 0) {
                 cnt++;
