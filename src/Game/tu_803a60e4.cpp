@@ -5,6 +5,8 @@
 #include "JSystem/JFramework/JFWDisplay.h"
 #include "JSystem/J2D/J2DScreen.h"
 
+extern void* lbl_8053AAF8;
+
 // ---- from src/Game/Dtor_lbl804AF860_803A7708.cpp ----
 // fn_803A7708 - actor@lbl_804AF860's destructor. Calls getTotalFreeSize__7JKRHeapFv on
 // a manager sub-object (lbl_80529DEC->0x8), then releases 8 embedded
