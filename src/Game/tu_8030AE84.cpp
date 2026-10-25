@@ -1,6 +1,7 @@
 #include "types.h"
 #include "sdk/stl/float.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // Reciprocal square root from frsqrte with one Newton step; x must be > 0.
 static inline f32 rsqrt_step(f32 x) {
@@ -110,6 +111,7 @@ extern "C" s32 fn_8030B110(u8* p, s32 id, f32* rect) {
     return 1;
 }
 
+#pragma opt_propagation off
 extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
     int id = fn_8022EA0C(*(int*)(p + 0x288));
     int x;
@@ -137,11 +139,17 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
         u8* a = fn_802D6A9C();
         u8* b = fn_802D6A9C();
         f32* pos = fn_8023E724(id);
-        x = (int)(pos[0] - *(f32*)(a + 0xcc) + *(f32*)(b + 0xdc));
+        f32 px = pos[0];
+        f32 ax = *(f32*)(a + 0xcc);
+        f32 bx = *(f32*)(b + 0xdc);
+        x = (int)(bx + (px - ax));
         a = fn_802D6A9C();
         b = fn_802D6A9C();
         pos = fn_8023E724(id);
-        y = (int)(pos[1] - *(f32*)(a + 0xd0) + *(f32*)(b + 0xe0));
+        f32 py = pos[1];
+        f32 ay = *(f32*)(a + 0xd0);
+        f32 by = *(f32*)(b + 0xe0);
+        y = (int)(by + (py - ay));
     }
 
     y -= 0x50;
@@ -174,7 +182,7 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
     *outY = y;
     return id;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8030B774(u8* p) {
     int x;
     int y;
@@ -189,17 +197,16 @@ extern "C" void fn_8030B774(u8* p) {
         }
         *(int*)(p + 0x2b4) = fn_8030B570(p, &x, &y);
         if (*(int*)(p + 0x2b4) != *(int*)(p + 0x2b0)) {
-            dy = (f32)(y - *(int*)(p + 0x294));
-            dx = (f32)(x - *(int*)(p + 0x290));
-            d2 = dx * dx + dy * dy;
+            JGeometry::TVec2<f32> delta;
+            delta.x = (f32)(x - *(int*)(p + 0x290));
+            delta.y = (f32)(y - *(int*)(p + 0x294));
+            dx = delta.x;
+            dy = delta.y;
+            d2 = delta.squared();
             if (sqrt_guard(d2) > 16.0f) {
-                if (!(d2 <= 32.0f * FLT_EPSILON)) {
-                    if (!(d2 <= 0.0f)) {
-                        d2 = rsqrt_step(d2);
-                    }
-                    dx *= d2;
-                    dy *= d2;
-                }
+                delta.normalize();
+                dx = delta.x;
+                dy = delta.y;
                 *(int*)(p + 0x290) = (int)(16.0f * dx + (f32)*(int*)(p + 0x290));
                 *(int*)(p + 0x294) = (int)(16.0f * dy + (f32)*(int*)(p + 0x294));
             } else {
