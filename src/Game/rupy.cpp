@@ -361,7 +361,7 @@ extern "C" s32 fn_8032B3F8(void* this_) {
 extern "C" u8 fn_8023A51C(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
 extern "C" void* fn_8023A478(s32 idx);
-extern "C" s32 fn_8030C2A8(void* a, void* b);
+extern "C" u8 fn_8030C2A8(void* a, void* b);
 extern "C" s32 fn_8023A240(void);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F8544(void* table, s32 kind, s32 room, void* pos, s32 flags);
