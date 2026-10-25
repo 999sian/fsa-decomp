@@ -1,5 +1,3 @@
-
-
 extern "C" char lbl_804A8118[];
 extern "C" void __dt__5ActorFv(void *, int);
 extern "C" void *fn_802AA364(void *self, short flags) {
@@ -208,5 +206,6 @@ extern "C" void fn_802AA868(void* self) {
     }
 }
 
-
+extern "C" void fn_802AA9D8(void) {
+}
 
