@@ -37,6 +37,85 @@ extern "C" u8 fn_8023F264(s32 i);
 extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 extern "C" void fn_801F0E34(Actor* a, u32 code, u32 z);
 extern "C" void* lbl_804AB830[];
+extern "C" void fn_8032DF94(Actor* p) {
+    DrawRec rec;
+    f32 m[3][4];
+    u8* self = (u8*)p;
+    s32 id;
+    f32 ss;
+    f32 cz;
+    f32 cs, a0, a1, a2, a3, a4, a5, a6, a7, a8;
+    f32 cc;
+    f32 sx;
+    f32 sy;
+    f32 sz;
+    f32 cx;
+    f32 cy;
+    f32 angle;
+    f32 scale;
+    rec.b2d = 1;
+    rec.b1d = 1;
+    s32 state = *(s32*)(self + 0x230);
+    if (state == 5 || state == 6) {
+        m[0][3] = lbl_80541E40;
+        m[1][3] = lbl_80541E40;
+        m[2][3] = lbl_80541E40;
+        angle = *(f32*)(self + 0x23c);
+        scale = *(f32*)(self + 0x238);
+        sx = sin(lbl_80541E40);
+        sy = sin(angle);
+        sz = sin(lbl_80541E40);
+        cx = cos(lbl_80541E40);
+        cy = cos(angle);
+        cz = cos(lbl_80541E40);
+        rec.w18 = m;
+        cc = cx * cz;
+        ss = sx * sy;
+        cs = cx * sz;
+        a0 = cy * cz;
+        a1 = cy * sz;
+        a2 = -sy;
+        a3 = ss * cz - cs;
+        a4 = ss * sz + cc;
+        a5 = sx * cy;
+        a6 = cc * sy + sx * sz;
+        a7 = cs * sy - sx * cz;
+        a8 = cx * cy;
+        m[0][0] = scale * a0;
+        m[1][0] = scale * a1;
+        m[2][0] = scale * a2;
+        m[0][1] = scale * a3;
+        m[1][1] = scale * a4;
+        m[2][1] = scale * a5;
+        m[0][2] = scale * a6;
+        m[1][2] = scale * a7;
+        m[2][2] = scale * a8;
+        id = *(s32*)(self + 0x24c) + lbl_804AB810[*(s32*)(self + 0x264)];
+        if (*(s32*)(self + 4) < 8) {
+            void* res = ((FsaResourceManager*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, lbl_80471A50);
+            fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), self + 0xc, res, id, &rec, lbl_80541E44, lbl_80541E44);
+        }
+        return;
+    }
+    if (state != 2) {
+        s32 flags = 2;
+        if (*(s32*)(self + 0x264) >= 4) flags = 0;
+        rec.b1d = 1;
+        if (*(f32*)(self + 0x14) != lbl_80541E40) rec.b1c = 1;
+        id = *(s32*)(self + 0x24c) + lbl_804AB810[*(s32*)(self + 0x264)];
+        fn_801F06F0(p, lbl_80471A50, id, &rec, flags, lbl_80541E44, lbl_80541E44);
+    } else {
+        rec.b2d = 1;
+        id = *(s32*)(self + 0x24c) + lbl_804AB810[*(s32*)(self + 0x264)];
+        if (*(s32*)(self + 4) < 8) {
+            void* res = ((FsaResourceManager*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, lbl_80471A50);
+            fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), self + 0xc, res, id, &rec, lbl_80541E44, lbl_80541E44);
+        }
+    }
+    fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc,
+        *(s32*)(self + 0x24c) + lbl_804AB810[*(s32*)(self + 0x264)], 0, 2, -1, 0, 0, 0);
+}
+
 extern "C" void fn_8032E3BC(Actor* p) {
     u8 flag = 0;
     u16 s8 = 0;
