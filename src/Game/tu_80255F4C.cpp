@@ -265,6 +265,7 @@ static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
     return hit;
 }
 
+#pragma opt_common_subs off
 extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     u8* p = (u8*)a;
     s32 i;
@@ -298,33 +299,7 @@ extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
             inside = 1;
         }
         if (inside) {
-            ResTIMG* image = *(ResTIMG**)(p + 0x23c);
-            u8 hit = 0;
-            s32 x = (s32)d.x + (image->mSizeX >> 1);
-            s32 y = (s32)d.y + (image->mSizeY >> 1);
-            if (x >= 0 && x < image->mSizeX && y >= 0 && y < image->mSizeY) {
-                switch (image->mTextureFormat) {
-                case 8:
-                    switch (image->mLutFormat) {
-                    case 2: {
-                        s32 blockX = x >> 3;
-                        s32 blockY = y >> 3;
-                        s32 width = (u16)(image->mSizeX + 7) & ~7;
-                        s32 offset = ((blockX + blockY * (width >> 3)) << 6) + ((y & 7) << 3) + (x & 7);
-                        u8 packed = ((u8*)image)[image->mImageDataOffset + (offset >> 1)];
-                        u8 index = (packed >> 4) & 7;
-                        if (x & 1) index = packed & 7;
-                        u16 color = *(u16*)((u8*)image + image->mPaletteOffset + index * 2);
-                        if (!(color & 0x8000) && (color & 0xf000) == 0x7000) hit = 1;
-                        break;
-                    }
-                    case 1:
-                        hit = 1;
-                        break;
-                    }
-                    break;
-                }
-            }
+            u8 hit = textureHit(*(ResTIMG**)(p + 0x23c), (s32)d.x, (s32)d.y);
             if (hit) {
             fn_8022DF48(arg);
             return 1;
