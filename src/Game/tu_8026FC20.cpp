@@ -1,7 +1,6 @@
 // TU 0x8026fc20-0x8027e5bc: player-class methods (Link object, see tu_8023FBF0).
 // A few small bodies originally from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
-#include <string.h>
 extern "C" const f32 lbl_805402D4;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
