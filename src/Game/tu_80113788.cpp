@@ -54,7 +54,7 @@ static inline void CallVfn24(char* obj, s32 arg) {
 
 struct SpriteResources_80113B54 {
     virtual void v0(); virtual void v1(); virtual void v2();
-    virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void v3();
     virtual void* v6(u32, void*);
 };
 
@@ -333,7 +333,7 @@ extern "C" void fn_80113B54(char* self, int arg) {
         pos = self+0xc;
         idx = arg + *(s32*)(self + 0x274);
         if (*(s32*)(self + 4) < 8) {
-            spr = ((void* (*)(void*, u32, void*))((void**)*(void**)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x534f4220, lbl_80464968);
+            spr = (*(SpriteResources_80113B54**)((char*)lbl_8053AAF8+0xa4))->v6(0x534f4220, lbl_80464968);
             fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
         }
     } else {
@@ -341,7 +341,7 @@ extern "C" void fn_80113B54(char* self, int arg) {
         pos = self+0xc;
         idx = arg + *(s32*)(self + 0x274);
         if (*(s32*)(self + 4) < 8) {
-            spr = ((void* (*)(void*, u32, void*))((void**)*(void**)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x534f4220, lbl_8046497C);
+            spr = (*(SpriteResources_80113B54**)((char*)lbl_8053AAF8+0xa4))->v6(0x534f4220, lbl_8046497C);
             fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos, spr, idx, buf50, lbl_8053C690, lbl_8053C690);
         }
     }
