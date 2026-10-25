@@ -700,7 +700,6 @@ extern char lbl_8049EB80[];
 extern f32 lbl_8053CD28;
 extern f32 lbl_8053CD08;
 extern f32 lbl_8053CCF0;
-extern f32 lbl_8053CD00;
 extern "C" void fn_801334CC(char* p) {
     JGeometry::TVec3<f32> pos;
     fn_8010DF98();
