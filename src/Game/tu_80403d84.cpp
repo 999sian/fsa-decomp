@@ -804,7 +804,7 @@ extern "C" void fn_804111C4(u8* self) {
 		fn_8037AA7C();
 	}
 	fn_8013B490(lbl_8053AB10);
-	(*(J2DScreen**)(self + 0x18))->b100 = 1;
+	*(u8*)(*(u8**)(self + 0x18) + 0x100) = 1;
 	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0x18), 0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
 	fn_80440EE8(lbl_8053AED8);
 }
@@ -1333,23 +1333,20 @@ extern "C" void fn_8040B93C(u8* self) {
 				*(f32*)(self + 0x3b8) = *(f32*)(x + 0xc) - 400.0f;
 			}
 			f32 t;
-#pragma opt_propagation off
 			{
 				f32 base = *(f32*)(self + 0x3b8);
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				f32 delta = *(f32*)(x + 0xc);
-				t = base - delta;
+				t = base;
+				t -= delta;
 				fn_80402E08(x, 0.0f, t);
 			}
 			{
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
-				f32 right;
-				f32 left;
-				f32 half;
-				half = lbl_805438C8;
-				right = *(f32*)(y + 0x28);
-				left = *(f32*)(y + 0x20);
+				f32 half = lbl_805438C8;
+				f32 right = *(f32*)(y + 0x28);
+				f32 left = *(f32*)(y + 0x20);
 				*(f32*)(self + 0x3ac) = (right - left) * half + *(f32*)(y + 0x30);
 			}
 			{
@@ -1360,7 +1357,6 @@ extern "C" void fn_8040B93C(u8* self) {
 				f32 height = *(f32*)(y + 0x2c) - *(f32*)(y + 0x24);
 				*(f32*)(self + 0x3b0) = t + (base + height * lbl_805438C8);
 			}
-#pragma opt_propagation reset
 			if (self[0x662] == 0) {
 				*(s32*)(self + 0x350) = 0x11;
 			} else {
