@@ -20,7 +20,7 @@ extern "C" u8 fn_802412A4(char* p);
 extern "C" u8 fn_80240670(char* p);
 extern "C" u8 fn_80240F28(char* p);
 extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
-extern "C" void fn_8024064C(void* p);
+extern "C" s32 fn_8024064C(void* p);
 extern "C" s32 fn_8023DE58(void* p);
 extern "C" s32 fn_8030AAF4(s32 i);
 extern "C" void* fn_8008E328(s32 slot);
@@ -293,3 +293,32 @@ extern "C" void fn_80286E10(u8* p) {
         fn_80248004((char*)p, 4, 1);
     }
 }
+
+extern "C" void fn_8027F16C(char* p);
+extern "C" s32 fn_80240888(char* p);
+extern "C" s32 fn_80248778(char* p);
+extern "C" void fn_802870C8(char* p) {
+    if (Player_GetField_0x454(p)) {
+        *(JGeometry::TVec3f*)(p + 8) = *(JGeometry::TVec3f*)(p + 0x32c);
+        if (*(u8*)(p + 0x455)) {
+            *(s32*)(p + 0x3b4) = 0;
+            *(u8*)(p + 0x455) = 0;
+            *(u8*)(p + 0x11e9) = 0;
+            if (*(u8*)(p + 0x1201) == 1) {
+                *(u8*)(p + 0x1201) = 0;
+            }
+            return;
+        }
+        fn_8027F16C(p);
+        *(u8*)(p + 0x1202) = 0;
+        *(s32*)(p + 0xca8) = 0;
+        return;
+    }
+    if (fn_802486A0(p) == 4) {
+        if (*(s32*)(p + 0x123c) == 1) {
+            if (fn_80240888(p) == fn_80248778(p)) {
+            }
+        }
+    }
+}
+
