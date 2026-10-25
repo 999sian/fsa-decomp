@@ -328,6 +328,19 @@ extern "C" void fn_802F53F4(u8* this_, s32 idx, u8* data) {
     }
 }
 
+#pragma opt_common_subs off
+static inline f32 sampleRendererHeight(u8* self, const f32 x, const f32 y) {
+    s32 iy; s32 ix;
+    ix=(s32)(0.125f*x); iy=(s32)(0.125f*y);
+    u8* table=self; table+=*(s32*)(self+0x2388)*4;
+    Vec (*grid)[65]=*(Vec(**)[65])(table+0x100);
+    u8* cell=(u8*)&grid[iy][ix];
+    f32 fx=0.125f*(x-lbl_80541510*(f32)ix);
+    f32 fy=0.125f*(y-lbl_80541510*(f32)iy);
+    return (1.0f-fy)*(*(f32*)(cell+8)*(1.0f-fx)+*(f32*)(cell+0x14)*fx)
+        + fy*((1.0f-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
+}
+
 extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos, u8** outEnt, MtxPtr mtx, u8* dst) {
     if (ent == NULL || *(s32*)(ent + 0x38) == 2) {
         if (fn_802F58A8(this_, src, mtx) != 0) {
@@ -382,12 +395,13 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
                     if (y>=loY && y<lbl_80541510*(f32)*(s32*)(this_+0x2384)+loY) {
                         f32 dx=x-loX; f32 dy=y-loY;
                         s32 iy; s32 ix;
-                        ix=(s32)(lbl_80541514*dx); iy=(s32)(lbl_80541514*dy);
-                        u8* cell=this_; cell+=*(s32*)(this_+0x2388)*4;
-                        cell=*(u8**)(cell+0x100)+(iy*0x30c+ix*0xc);
-                        f32 fx=lbl_80541514*(dx-lbl_80541510*(f32)ix);
-                        f32 fy=lbl_80541514*(dy-lbl_80541510*(f32)iy);
-                        height+= (lbl_80541518-fy)*(*(f32*)(cell+8)*(lbl_80541518-fx)+*(f32*)(cell+0x14)*fx) + fy*((lbl_80541518-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
+                        ix=(s32)(0.125f*dx); iy=(s32)(0.125f*dy);
+                        u8* table=this_; table+=*(s32*)(this_+0x2388)*4;
+                        Vec (*grid)[65]=*(Vec(**)[65])(table+0x100);
+                        u8* cell=(u8*)&grid[iy][ix];
+                        f32 fx=0.125f*(dx-lbl_80541510*(f32)ix);
+                        f32 fy=0.125f*(dy-lbl_80541510*(f32)iy);
+                        height+= (1.0f-fy)*(*(f32*)(cell+8)*(1.0f-fx)+*(f32*)(cell+0x14)*fx) + fy*((1.0f-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
                     }
                 }
             }
@@ -399,7 +413,7 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
         }
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
     f32 lx;
     f32 ly;
@@ -1325,6 +1339,7 @@ extern "C" void fn_802F91AC(void* self, f32* __restrict p, u8* o, u8* out, f32 f
     } else fn_8013B3F0(lbl_8053AB10);
 }
 
+#pragma opt_lifetimes off
 #pragma opt_common_subs on
 #pragma opt_propagation off
 extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff, u32 n, u8 flag) {
@@ -1377,11 +1392,10 @@ extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff,
     u8* output = ((u8**)(self + 0xc8))[entry] + dstOff;
     u8* colors = *(u8**)(slot + 0x98) + dstOff;
     for (k = 0; (u32)k < length; k += 2) {
-        u8 b;
         u16 v = (colors[k] << 8) | colors[k+1];
         if (v & 0x8000) {
             u8 a = Tu802F93F4_c5((v >> 10) & 31);
-            b = Tu802F93F4_c5((v >> 5) & 31);
+            u8 b = Tu802F93F4_c5((v >> 5) & 31);
             u8 c = Tu802F93F4_c5(v & 31);
             if (swap) v = 0x8000 | (c << 10) | (a << 5) | b;
             else v = 0x8000 | (a << 10) | (b << 5) | c;
@@ -1392,6 +1406,7 @@ extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff,
     DCFlushRange(output, length);
 }
 #pragma opt_propagation on
+#pragma opt_lifetimes on
 extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
     u8* base;
     u8* s;
