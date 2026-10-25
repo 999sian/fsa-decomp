@@ -47,6 +47,7 @@ struct fn_801D1974_obj {
     s32 m338;
     s16 m33c;
 
+    PointTrail& trail() { return *(PointTrail*)&m2a8; }
     JGeometry::TVec2<f32>& pointAt(s32 i) { return m2ac[i]; }
     JGeometry::TVec2<f32>& point(s32 i) {
         if (m2a8 <= i) {
