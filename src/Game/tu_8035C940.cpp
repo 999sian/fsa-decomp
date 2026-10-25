@@ -138,10 +138,11 @@ extern "C" void fn_8035CAF8(char* p)
 extern "C" JGeometry::TVec3<f32> fn_8035CD00(Unk8035CD00* p) {
     s16 old = p->m260;
     p->m260 += 0x400;
-    f32 y = 25.0f * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].first + (25.0f + (p->m268 - p->m25C));
-    f32 x = 25.0f * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].second + (5.0f + p->m264);
+    f32 y = lbl_80542938 * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].first + (lbl_80542938 + (p->m268 - p->m25C));
+    f32 x = lbl_80542938 * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].second + (lbl_8054293C + p->m264);
+    JGeometry::TVec3<f32> ret;
     JGeometry::TVec3<f32> pos(x, y, p->m14);
-    JGeometry::TVec3<f32> ret = pos;
+    ret = pos;
     if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) {
         if (p->m270 < 0) {
             p->m270 = -0x4000;
@@ -154,16 +155,21 @@ extern "C" JGeometry::TVec3<f32> fn_8035CD00(Unk8035CD00* p) {
 
 extern const f32 lbl_80542938;
 extern const f32 lbl_8054293C;
+#pragma opt_propagation off
 extern "C" JGeometry::TVec3<f32> fn_8035CDC0(char* p) {
-    s16 ang;
-    s16 old = *(s16*)(p + 0x260);
+    f32 radius;
+    f32 z;
+    f32 sine;
+    s16 old;
+    old = *(s16*)(p + 0x260);
     *(s16*)(p + 0x260) = old + 0x400;
-    ang = *(s16*)(p + 0x260);
-    JGeometry::TVec3<f32> pos(lbl_80542938 * JMath::sincosTable_.mTable[(u16)ang >> 5].second + (*(f32*)(p + 0x264) - lbl_8054293C),
-        lbl_80542938 * JMath::sincosTable_.mTable[(u16)ang >> 5].first + (*(f32*)(p + 0x268) + *(f32*)(p + 0x25c) - lbl_80542938),
-        *(f32*)(p + 0x14));
-    JGeometry::TVec3<f32> v = pos;
-    if (ang >= 0x4000 && old < 0x4000) {
+    z = *(f32*)(p + 0x14);
+    radius = lbl_80542938;
+    sine = JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x260) >> 5].first;
+    JGeometry::TVec3<f32> v = JGeometry::TVec3<f32>(radius * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x260) >> 5].second + (*(f32*)(p + 0x264) - lbl_8054293C),
+        radius * sine + (*(f32*)(p + 0x268) + *(f32*)(p + 0x25c) - radius),
+        z);
+    if (*(s16*)(p + 0x260) >= 0x4000 && old < 0x4000) {
         if (*(s16*)(p + 0x270) < 0) {
             *(s16*)(p + 0x270) = -0x4000;
         } else {
@@ -172,7 +178,7 @@ extern "C" JGeometry::TVec3<f32> fn_8035CDC0(char* p) {
     }
     return v;
 }
-
+#pragma opt_propagation reset
 extern "C" JGeometry::TVec3<f32> fn_8035CE78(Unk8035CD00* p) {
     if (p->m25C > lbl_80542940) {
         p->m25C -= lbl_80542944;
@@ -205,9 +211,8 @@ extern const f32 lbl_80542964;
 extern const s16 lbl_80472798[];
 extern "C" void fn_8035CF50(Unk8035CD00* self) {
     char* p = (char*)self;
-    Vec d;
     Vec v;
-    Vec w;
+    Vec d;
     f32 mag;
     s16 prev;
 
@@ -245,8 +250,7 @@ extern "C" void fn_8035CF50(Unk8035CD00* self) {
         }
     }
     prev = *(s16*)(p + 0x260);
-    w = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
-    v = w;
+    v = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
     d.x = v.x - *(f32*)(p + 0xc);
     d.y = v.y - *(f32*)(p + 0x10);
     d.z = lbl_80542930;
@@ -437,23 +441,24 @@ extern "C" void fn_8035D7BC(char* this_) {
         fn_801F06F0(p, base + 0xcc, lbl_80542954, lbl_80542954,
                     *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, -1);
         *(JGeometry::TVec3<f32>*)(p + 0xc) = saved;
-        f32 s = (lbl_80542974 - (*(f32*)(p + 0x14) - lbl_80542970)) * lbl_80542978;
+        f32 z = *(f32*)(p + 0x14);
+        f32 zero = lbl_80542930;
+        f32 s = (lbl_80542974 - (z - lbl_80542970)) * lbl_80542978;
         f32 m[3][4];
         m[0][0] = s;
-        m[0][1] = lbl_80542930;
-        m[0][2] = lbl_80542930;
-        m[0][3] = lbl_80542930;
-        m[1][0] = lbl_80542930;
+        m[0][1] = zero;
+        m[0][2] = zero;
+        m[0][3] = zero;
+        m[1][0] = zero;
         m[1][1] = s;
-        m[1][2] = lbl_80542930;
-        m[1][3] = lbl_80542930;
-        m[2][0] = lbl_80542930;
-        m[2][1] = lbl_80542930;
+        m[1][2] = zero;
+        m[1][3] = zero;
+        m[2][0] = zero;
+        m[2][1] = zero;
         m[2][2] = s;
-        m[2][3] = lbl_80542930;
+        m[2][3] = zero;
         rec.w18 = m;
         rec.b1d = 0;
-        f32 z = *(f32*)(p + 0x14);
         if (z < lbl_8054297C) {
             ((u8*)&rec.w10)[3] = (u8)(lbl_8054297C - z);
         } else {
