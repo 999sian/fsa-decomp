@@ -38,7 +38,7 @@ extern "C" u8* fn_801F666C(void*, s32);
 extern "C" s32 fn_801F3D94(void*, s32);
 extern "C" s32 fn_801F285C(void*, void*, void*, s32, s32);
 extern "C" u8 fn_802353AC(s32);
-extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
+extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8023B6CC(s32);
 extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
 extern "C" u8 fn_8022F514(s32);
@@ -81,7 +81,7 @@ extern "C" void fn_80348B40(u8* p) {
         }
     }
     if (B(p,0x265)==1) {
-        JGeometry::TVec3<f32>* pos=fn_8023E724(I(p,0x24c));
+        void* pos=fn_8023E724(I(p,0x24c));
         fn_801F37AC(p,fn_8023B6CC(I(p,0x24c)),pos,0,1,-1);
         s32 idx=I(p,0x250);
         if (idx>=0) {
@@ -104,7 +104,7 @@ extern "C" void fn_80348B40(u8* p) {
             if (I(p,0x244)>=0) {
                 if (fn_8023DE58(I(p,0x244))<8) {
                     V(p,0x274)=V(p,0x268);
-                    V(p,0x268)=*fn_8023E724(I(p,0x244));
+                    V(p,0x268)=*(JGeometry::TVec3<f32>*)fn_8023E724(I(p,0x244));
                     s32 rank=fn_8022E970(I(p,0x244));
                     switch (fn_8022CAF8(I(p,0x244))) {
                     case 0:
@@ -114,7 +114,7 @@ extern "C" void fn_80348B40(u8* p) {
                         switch(rank) {case 1:break;case 2:case 3:case 4:F(p,0x26c)+=lbl_80542494*(rank-1);break;}
                         break;
                     case 2:
-                        switch(rank) {case 2:F(p,0x268)+=lbl_80542494;break;
+                        switch(rank) {case 1:default:break;case 2:F(p,0x268)+=lbl_80542494;break;
                         case 3:case 4:F(p,0x268)+=lbl_80542494;F(p,0x26c)+=lbl_80542494;break;}
                         break;
                     case 3:
@@ -128,14 +128,15 @@ extern "C" void fn_80348B40(u8* p) {
                             }
                         }
                         break;
-                    case 4: V(p,0x268)=*fn_8023E724(fn_8022EA0C(I(p,0x244)));break;
+                    case 4: V(p,0x268)=*(JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(I(p,0x244)));break;
                     case 5:break;
                     }
                 }
             } else I(p,0x230)=4;
         } else if (owner) V(p,0x268)=V(owner,0xc);
     }
-    s16 steps=owner ? 14 : 14;
+    s16 steps=14;
+    if (owner) steps=14;
     V(p,0x28c)=V(p,0x280);
     s16 angle=*(s16*)(p+0x260)+(s32)((f32)(I(p,0x254)<<16)/(f32)steps);
     F(p,0x280)=F(p,0x25c)*JMath::sincosTable_.sinShort(angle)+F(p,0x268);
@@ -154,7 +155,7 @@ extern "C" void fn_80348B40(u8* p) {
         if (I(p,0x234)<=0) {I(p,0x234)=8;F(p,0x25c)=lbl_805424A4;I(p,0x230)=1;return;}
         F(p,0x298)=F(p,0x280)-F(p,0xc);
         F(p,0x29c)=F(p,0x284)-F(p,0x10);
-        if (V(p,0x298).length()>lbl_8054249C) {V(p,0x298).normalize();V(p,0x298)*=lbl_8054249C;}
+        if (V(p,0x298).length()>lbl_8054249C) {V(p,0x298).normalize();V(p,0x298).scale(lbl_8054249C);}
         break;
     case 1:
         if (I(p,0x244)>=0 && PSVECDistance(&V(p,0x280),&V(p,0xc))<lbl_80542494) {
@@ -165,7 +166,7 @@ extern "C" void fn_80348B40(u8* p) {
             if (PSVECDistance(&V(p,0xc),&V(p,0x268))>lbl_805424B0) speed=F(p,0x258);
             F(p,0x298)=F(p,0x280)-F(p,0xc);
             F(p,0x29c)=F(p,0x284)-F(p,0x10);
-            if (V(p,0x298).length()>speed) {V(p,0x298).normalize();V(p,0x298)*=speed;}
+            if (V(p,0x298).length()>speed) {V(p,0x298).normalize();V(p,0x298).scale(speed);}
         }
         if (F(p,0x268)>F(p,0xc)) I(p,0x248)=0;
         else I(p,0x248)=2;
@@ -177,7 +178,7 @@ extern "C" void fn_80348B40(u8* p) {
                 F(p,0x298)=F(p,0x280)-F(p,0xc);
                 F(p,0x29c)=F(p,0x284)-F(p,0x10);
                 V(p,0x298).normalize();
-                V(p,0x298)*=lbl_8054249C;
+                V(p,0x298).scale(lbl_8054249C);
             } else I(p,0x230)=1;
             if (I(p,0x230)==3) {
                 if (F(p,0x25c)>lbl_805424B8) {
@@ -194,8 +195,8 @@ extern "C" void fn_80348B40(u8* p) {
         if (I(p,0x234)<=0) I(p,0x234)=8;
         break;
     case 4:
-        if (fn_801F6758(p+0xc,I(p,4),lbl_80542498)
-            && fn_801F6758(p+0xc,I(p,4),lbl_80542498)==1) B(p,0x262)=1;
+        if (fn_801F6758(p+0xc,lbl_80542498,I(p,4))
+            && fn_801F6758(p+0xc,lbl_80542498,I(p,4))==1) B(p,0x262)=1;
         break;
     }
     I(p,0x238)--;
