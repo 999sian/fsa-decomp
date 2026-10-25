@@ -1,5 +1,6 @@
 #include "types.h"
 #include "sdk/stl/float.h"
+#include "JSystem/JGeometry/Box.h"
 struct GateBox {
     f32 x0, y0, x1, y1;
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
@@ -180,17 +181,19 @@ extern "C" s32 fn_8022F3DC(s32);
 extern "C" u8 fn_8022BC38(s32,s32,s32);
 extern "C" void fn_802348C4(s32,s32,s32);
 extern "C" void fn_802278A8(void* this_, f32* out) {
+    s32 b, c, d, e;
     u8* p = (u8*)this_;
     for (s32 i = 0; i < 4; i++) {
-        f32 y1, x1, y0, x0, x, y;
-        x0 = *(f32*)(p+0x60); out[0]=x0;
-        y0 = *(f32*)(p+0x64); out[1]=y0;
-        x1 = *(f32*)(p+0x68); out[2]=x1;
-        y1 = *(f32*)(p+0x6c); out[3]=y1;
-        y = *(f32*)(p+0x10);
-        x = *(f32*)(p+0xc);
-        y0+=y; x0+=x; x1+=x; y1+=y;
-        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
+        f32 y1,x1,y0,x0,x,y;
+        x0=*(f32*)(p+0x60); out[0]=x0;
+        y0=*(f32*)(p+0x64); out[1]=y0;
+        x1=*(f32*)(p+0x68); out[2]=x1;
+        y1=*(f32*)(p+0x6c); out[3]=y1;
+        y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
+        ((GateBox*)out)->x0 = x0+x;
+        ((GateBox*)out)->y0 = y0+y;
+        ((GateBox*)out)->x1 = x1+x;
+        ((GateBox*)out)->y1 = y1+y;
         if (!fn_8022D75C(i) && fn_8022D534(i)) { p[i+0x234]=1; continue; }
         if ((*(s32*)(p+0x90)&0x7f)==0x10) return;
         if (fn_8022F514(i)) {
@@ -219,30 +222,20 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             if (((*(s32*)(p+0x90)&0x7f)==4 || (*(s32*)(p+0x90)&0x7f)==0x20 || (*(s32*)(p+0x90)&0x7f)==0x24) &&
                 fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
             s32 kind=*(s32*)(p+0x90)&0x7f;
-            s32 room=(*(s32*)(p+0x90)>>24)&7;
-            s32 id=room+7; if (!room) id=room;
-            if (fn_802317F0(i,id,p+0xc,p+0x238,kind) &&
+            if (fn_802317F0(i,gateRoom(*(s32*)(p+0x90)),p+0xc,p+0x238,kind) &&
                 (*(s32*)(p+0x90)&0x7f)==4 && fn_8022F514(i)) {
                 s32 a=fn_8023DE58(i);
                 if (((GateRoomFlags*)fn_802D6A9C())->flag(a) || fn_8022CAF8(i)==4 || fn_8022CAF8(i)==5) continue;
-                int b;
-                int c;
-                b=fn_8023E724(i);
-                c=fn_8023DE58(i);
-                if (fn_8022BC38(fn_8022F3DC(i),c,b)) {
+                if (fn_8022BC38(fn_8022F3DC(i),fn_8023DE58(i),fn_8023E724(i))) {
                     fn_802381B8(fn_8022F3DC(i));
-                    int d;
-                    int e=fn_8023E724(i); d=fn_8023DE58(i);
-                    fn_802348C4(fn_8022F3DC(i),d,e);
+                    fn_802348C4(fn_8022F3DC(i),fn_8023DE58(i),fn_8023E724(i));
                 }
             }
         } else {
-            f32 x0=out[0], y0=out[1], x1=out[2], y1=out[3];
-            f32 expand=lbl_8053FF78;
-            out[0]=x0-expand;
-            out[1]=y0-expand;
-            out[2]=x1+expand;
-            out[3]=y1+expand;
+            f32 d,c,b,a,v;
+            a=out[0]; v=lbl_8053FF78; b=out[1]; c=out[2]; d=out[3];
+            a-=v; b-=v; c+=v; d+=v;
+            out[0]=a; out[1]=b; out[2]=c; out[3]=d;
             if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF74)) p[i+0x234]=0;
         }
     }
