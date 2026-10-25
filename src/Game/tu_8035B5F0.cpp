@@ -281,22 +281,20 @@ extern const f32 lbl_805428FC;
 extern const f32 lbl_80542900;
 extern "C" void* lbl_8053AAF8;
 extern "C" void fn_801365C8(void* a, s32 b);
+#pragma opt_lifetimes off
 extern "C" void fn_8035BE24(u8* p) {
-    f32 a;
     f32 b;
-    f32 c;
-    f32 sum;
+    f32 a;
     f32 diff;
+    f32 sum;
+    f32 c;
     u8* s;
-    s32 i;
+    s32 parent;
     s32 id;
     u8* q;
-    Vec off1;
-    Vec pos1;
-    Vec off2;
-    Vec pos2;
-    Vec off3;
-    Vec pos3;
+    s32 first;
+    s32 child;
+    s32 i;
 
     fn_801365C8(lbl_8053AAF8, 0);
     *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x24) + 0x179) = 1;
@@ -317,14 +315,11 @@ extern "C" void fn_8035BE24(u8* p) {
         *(f32*)(s + 0x1d8) = lbl_805428F4;
     }
 
-    off1.x = lbl_805428D4;
-    off1.y = lbl_805428F8;
-    off1.z = lbl_805428D4;
-    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), &off1, &pos1);
-    *(s32*)(p + 0x278) = Actor_CreateByID(fn_801F856C(), 0x455a4c44, *(u32*)(p + 0x4), &pos1, 0, -1, -1);
-    id = *(s32*)(p + 0x278);
-    if (id >= 0) {
-        void* found = fn_801F666C(fn_801F856C(), id);
+    const JGeometry::TVec3<f32>& pos1 = *(JGeometry::TVec3<f32>*)(p + 0xc) + JGeometry::TVec3<f32>(0.0f, lbl_805428F8, 0.0f);
+    *(s32*)(p + 0x278) = Actor_CreateByID(fn_801F856C(), 0x455a4c44, *(u32*)(p + 0x4), (void*)&pos1, 0, -1, -1);
+    first = *(s32*)(p + 0x278);
+    if (first >= 0) {
+        void* found = fn_801F666C(fn_801F856C(), first);
         *(s32*)((u8*)found + 0x23c) = *(s32*)(p + 0x198);
     }
 
@@ -332,41 +327,32 @@ extern "C" void fn_8035BE24(u8* p) {
     for (i = 0; i < 6; i++) {
         id = Actor_CreateByID(fn_801F856C(), 0x454d494b, *(u32*)(p + 0x4), p + 0xc, i, -1, -1);
         *(s32*)(q + 0x27c) = id;
-        if (id >= 0) {
-            void* found = fn_801F666C(fn_801F856C(), id);
+        child = *(s32*)(q + 0x27c);
+        if (child >= 0) {
+            void* found = fn_801F666C(fn_801F856C(), child);
             *(s32*)((u8*)found + 0x23c) = *(s32*)(p + 0x198);
         }
         q += 4;
     }
 
-    off2.x = lbl_805428FC;
-    off2.y = lbl_80542900;
-    off2.z = lbl_805428D4;
-    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), &off2, &pos2);
-    *(s32*)(p + 0x294) = Actor_CreateByID(fn_801F856C(), 0x454c4e4b, *(u32*)(p + 0x4), &pos2, *(s32*)(p + 0x278), -1, -1);
-    id = *(s32*)(p + 0x294);
-    if (id >= 0) {
-        void* found = fn_801F666C(fn_801F856C(), id);
+    parent = *(s32*)(p + 0x278);
+    const JGeometry::TVec3<f32>& pos2 = *(JGeometry::TVec3<f32>*)(p + 0xc) + JGeometry::TVec3<f32>(lbl_805428FC, lbl_80542900, lbl_805428D4);
+    *(s32*)(p + 0x294) = Actor_CreateByID(fn_801F856C(), 0x454c4e4b, *(u32*)(p + 0x4), (void*)&pos2, parent, -1, -1);
+    child = *(s32*)(p + 0x294);
+    if (child >= 0) {
+        void* found = fn_801F666C(fn_801F856C(), child);
         *(s32*)((u8*)found + 0x23c) = *(s32*)(p + 0x198);
     }
 
-    off3.x = lbl_805428D4;
-    off3.y = lbl_80542900;
-    off3.z = lbl_805428D4;
-    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), &off3, &pos3);
-    fn_80230498(0, &pos3, 0, 0xff, -0x80, -0x80, 1);
-    for (i = 1; i < 4; i++) {
-        Vec off;
-        Vec pos;
-        off.x = lbl_805428D4;
-        off.y = lbl_80542900;
-        off.z = lbl_805428D4;
-        JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), &off, &pos);
-        fn_80230498(i, &pos, 0, 0xff, -0x80, -0x80, 1);
+    const JGeometry::TVec3<f32>& pos3 = *(JGeometry::TVec3<f32>*)(p + 0xc) + JGeometry::TVec3<f32>(0.0f, lbl_80542900, 0.0f);
+    fn_80230498(0, (void*)&pos3, 0, 0xff, -0x80, -0x80, 1);
+    for (i = 0; i < 3; i++) {
+        const JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0xc) + JGeometry::TVec3<f32>(0.0f, lbl_80542900, 0.0f);
+        fn_80230498(i + 1, (void*)&pos, 0, 0xff, -0x80, -0x80, 1);
     }
     *(s32*)(p + 0x230) = 1;
 }
-
+#pragma opt_lifetimes reset
 extern "C" u32 fn_8035C15C(u8 *param_1, s32 param_2) {
   if (*(s32 *)(param_1 + 0x244) == 0) {
     s32 idx = *(s32 *)(param_1 + 0x24c);
@@ -510,13 +496,12 @@ extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
-#pragma opt_strength_reduction off
-#pragma peephole off
+#pragma optimization_level 4
 extern "C" void fn_8035C650(void) {
 StateTableCopy* __restrict src = (StateTableCopy*)lbl_804AD3A0;
-StateTableCopy* __restrict dst = src + 1;
+StateTableCopy* __restrict dst = (StateTableCopy*)((u8*)src + 0x60);
 char* base = lbl_8050BAF8;
-*dst = *src;
+*dst = static_cast<const StateTableCopy&>(*src);
 if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
 __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
 __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0);
@@ -563,5 +548,3 @@ __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPo
 __init__memPool___26JASPoolAllocObject_5JAISe = 1;
 }
 }
-#pragma peephole reset
-#pragma opt_strength_reduction reset
