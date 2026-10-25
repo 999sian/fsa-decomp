@@ -269,7 +269,7 @@ extern "C" u8* fn_803A59E0(u8* self) {
 
     tmp = fn_80403204(0x54494d47, names + 0x17c);
     *(J2DPicture**)(self + 0x8) = new J2DPicture((const ResTIMG*)tmp);
-    *(void**)(self + 0x48) = tuNewObj1c();
+    *(TObj1c**)(self + 0x48) = new TObj1c();
     tmp = fn_80403244(0x54494d47, names + 0x190);
     *(J2DPicture**)(self + 0xc) = new J2DPicture((const ResTIMG*)tmp);
     tmp = fn_80403244(0x54494d47, names + 0x1a8);
@@ -294,33 +294,26 @@ extern "C" u8* fn_803A59E0(u8* self) {
     *(void**)(self + 0x100) = create__12JKRSolidHeapFUlP7JKRHeapb(0x80000, tmp, 0);
     becomeCurrentHeap__7JKRHeapFv(*(void**)(self + 0x100));
 
-    {
-        u8* p = self;
-        for (s32 i = 0; i < 6; i++) {
-            fn_8016A3BC(*(void**)(tbl + 0x24), lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], 0, lbl_804AF7D8[i][2], 0, 0x10240000, *(void**)(self + 0x100),
-                        p + 0x104, p + 0x11c, 0, p + 0x134, 0);
-            if (*(void**)(p + 0x11c) != NULL) {
-                *(f32*)(*(u8**)(p + 0x11c) + 0x8) = lbl_805432E0;
-            }
-            if (*(void**)(p + 0x134) != NULL) {
-                *(f32*)(*(u8**)(p + 0x134) + 0x8) = lbl_805432E0;
-            }
-            p += 4;
+    for (s32 i = 0; i < 6; i++) {
+        fn_8016A3BC(*(void**)(tbl + 0x24), lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], 0, lbl_804AF7D8[i][2], 0, 0x10240000, *(void**)(self + 0x100),
+                    self + 0x104 + i * 4, self + 0x11c + i * 4, 0, self + 0x134 + i * 4, 0);
+        if (*(void**)(self + 0x11c + i * 4) != NULL) {
+            *(f32*)(*(u8**)(self + 0x11c + i * 4) + 0x8) = 0.0f;
+        }
+        if (*(void**)(self + 0x134 + i * 4) != NULL) {
+            *(f32*)(*(u8**)(self + 0x134 + i * 4) + 0x8) = 0.0f;
         }
     }
     adjustSize__12JKRSolidHeapFv(*(void**)(self + 0x100));
     becomeCurrentHeap__7JKRHeapFv(tmp);
 
     for (s32 i = 0; i < 4; i++) {
-        tmp = __nw__FUl(0x5c);
-        if (tmp != NULL) {
-            __ct__14WaveControllerFlll(tmp, 0, 0, 8);
-        }
-        *(void**)(self + 0xa8 + i * 0x1c) = tmp;
+        *(WaveController**)(self + 0xa8 + i * 0x1c) = new WaveController(0, 0, 8);
     }
 
     self[0x14c] = 0;
-    *(f32*)(self + 0x4c) = *(f32*)(self + 0x50) = lbl_805432E0;
+    *(f32*)(self + 0x50) = 0.0f;
+    *(f32*)(self + 0x4c) = 0.0f;
     *(s16*)(self + 0x6e) = 0;
     *(s16*)(self + 0x72) = 0;
     *(s16*)(self + 0x7a) = 0;
