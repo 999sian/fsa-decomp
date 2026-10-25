@@ -3,6 +3,47 @@
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JParticle/JPAEmitter.h"
+extern const f32 lbl_8053D59C;
+extern const f32 lbl_8053D5A0;
+extern const f32 lbl_8053D5EC;
+extern const f32 lbl_8053D5F0;
+extern const f32 lbl_8053D5F4;
+extern "C" void fn_801F0D20(void*,s32);
+extern const f32 lbl_8053D5A4;
+extern "C" s32 fn_8023B004(void*,s32);
+extern "C" void fn_80230FD0(s32,u32);
+extern "C" void fn_801F71A4(f32*,f32,f32,f32);
+extern "C" void fn_801F2B20(void*,s32);
+extern "C" u8 fn_801F2B7C(void*,s32,s32,s32);
+extern "C" u8 fn_8023F264(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" void fn_8023DFF4(s32,void*);
+extern "C" void fn_80239914(void*,s32,u32);
+extern "C" void fn_8013CB44(s32,void*,s32,s32,s32);
+extern u8 lbl_80466110[];
+extern u8 lbl_804A0310[];
+extern u8* lbl_8053AAF8;
+extern const f32 lbl_8053D5A8;
+extern const f32 lbl_8053D5AC;
+extern const f32 lbl_8053D5B0;
+extern const f32 lbl_8053D5B4;
+extern const f32 lbl_8053D5B8;
+extern const f32 lbl_8053D5BC;
+extern const f32 lbl_8053D5C0;
+extern const f32 lbl_8053D5C4;
+extern const f32 lbl_8053D5C8;
+extern const f32 lbl_8053D5CC;
+extern const f32 lbl_8053D5D0;
+extern const f32 lbl_8053D5D4;
+extern const f32 lbl_8053D5D8;
+extern const f32 lbl_8053D5DC;
+extern const f32 lbl_8053D5E0;
+extern const f32 lbl_8053D5E4;
+extern const f32 lbl_8053D5E8;
+extern const f32 lbl_8053D5F8;
+extern const f32 lbl_8053D5FC;
+
 
 // from src/Game/fn_8015F19C_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
