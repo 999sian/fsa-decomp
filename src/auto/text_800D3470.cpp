@@ -2329,23 +2329,9 @@ extern "C" void fn_800DB8F4(void* param_1) {
 }
 
 extern "C" void fn_800DB96C(u8* p) {
-    u8 p8 = p[0x34];
-    u32 f35 = p[0x35];
-    u32 f36 = p[0x36];
-    u32 f37 = p[0x37];
-    u32 f3b = p[0x3b];
-    u16 zID = *(u16*)(p + 0x38);
     GDOverflowCheck(0xf);
-    __GDWrite(0x61);
-    __GDWrite(0xfe);
-    __GDWrite(0);
-    __GDWrite(0xff);
-    __GDWrite(0xe7);
-    __GDWrite(0x61);
-    __GDWriteU32(0x41000000 | f37 << 12 | f36 << 5 | f35 << 8 | f3b << 2 | (p8 == 2) << 1 | (p8 == 1 || p8 == 3) | (p8 == 3) << 11);
-    u32 zMode = j3dZModeTable[zID * 3] | j3dZModeTable[zID * 3 + 1] << 1 | j3dZModeTable[zID * 3 + 2] << 4;
-    __GDWrite(0x61);
-    __GDWriteU32(0x40000000 | zMode);
+    ((J3DBlend*)(p + 0x34))->load(p[0x3b]);
+    ((J3DZMode*)(p + 0x38))->load();
 }
 
 extern "C" void fn_800DBC64(void* obj, u32 flags) {
