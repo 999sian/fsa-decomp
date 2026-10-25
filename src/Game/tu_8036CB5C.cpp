@@ -48,6 +48,50 @@ extern "C" Actor* fn_8036CB5C(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" u8 fn_80230534(s32);
+extern "C" void fn_80230FD0(s32, s32);
+extern "C" s32 lbl_80474E70[];
+extern "C" void fn_8036CBBC(Actor* this_) {
+    u8* p = (u8*)this_;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f hold;
+    JGeometry::TVec3f next;
+    s32 i;
+    if (*(s32*)(p+0x25c) >= 0) {
+        if (*(s32*)(p+0x25c) < 4) {
+            if (fn_8023077C()) {
+                *(s32*)(p+0x25c) = 4;
+                *(s32*)(p+0x258) = 50;
+                *(s32*)(p+0x260) = 0;
+                for (i=0;i<4;i++) {
+                    pos = *(JGeometry::TVec3f*)fn_8023E724(i);
+                    fn_80230498(i,pos+JGeometry::TVec3f(0.0f,7.0f,0.0f),0x2e2,0xff,-0x80,-0x80,1);
+                }
+            }
+        } else if (*(s32*)(p+0x260)==0 && *(s32*)(p+0x258)>30) {
+            for (i=0;i<4;i++) {
+                hold = *(JGeometry::TVec3f*)fn_8023E724(i);
+                fn_80230498(i,hold,0x2e2,0xff,-0x80,-0x80,1);
+            }
+        } else if (*(s32*)(p+0x260)<13) {
+            if (*(s32*)(p+0x258)==0) {
+                ++*(s32*)(p+0x260);
+                *(s32*)(p+0x258) = lbl_80474E70[*(s32*)(p+0x260)];
+                for(i=0;i<4;i++) {
+                    next = *(JGeometry::TVec3f*)fn_8023E724(i);
+                    fn_80230498(i,next,*(s32*)(p+0x260)+0xdb,0xff,-0x80,-0x80,1);
+                    if (*(s32*)(p+0x260)==1) fn_80230FD0(i,0x10001);
+                }
+                if (*(s32*)(p+0x260)==13) *(s32*)(p+0x258)=25;
+            }
+        } else if (*(s32*)(p+0x258)==0) {
+            if (fn_80230534(0)) *(s32*)(p+0x25c)=-1;
+        } else if (*(s32*)(p+0x258)==15) {
+            this_->v10(0xff,1);
+        }
+    }
+}
+
 extern "C" void fn_8036CE58(Actor* this_) {
     u8* p = (u8*)this_;
     s32 id = *(s32*)(p + 0x24c) + 0x147;
@@ -173,20 +217,22 @@ extern "C" void fn_8036D3D8(Actor* this_) {
     s32 i;
 
     if (((*(u32*)(p + 0x90) >> 4) & 3) == 0) {
+        f32 cd;
+        f32 cf;
+        cd = lbl_80542CD8;
+        cf = lbl_80542CF4;
         for (i = 0; i < 3; i++) {
-            Vec base = *(Vec*)(p + 0xC);
-            Vec off;
             Vec pos;
+            Vec off;
             u32 flags;
 
-            off.x = lbl_80542CF4 * (f32)(i + 1);
-            off.y = lbl_80542CD8;
-            off.z = lbl_80542CD8;
-            pos.x = base.x + off.x;
-            pos.y = base.y + off.y;
-            pos.z = base.z + off.z;
+            off.x = cf * (f32)(i + 1);
+            off.y = cd;
+            off.z = cd;
+            pos.x = *(f32*)(p + 0xC) + off.x;
+            pos.y = *(f32*)(p + 0x10) + off.y;
+            pos.z = *(f32*)(p + 0x14) + off.z;
             flags = (*(u32*)(p + 0x90) & 0xF800000F) | ((i + 1) << 4);
-            *(s32*)(p + 0x234 + i * 4) = -1;
             *(s32*)(p + 0x234 + i * 4) = Actor_CreateByID(fn_801F856C(), 0x50535732, *(s32*)(p + 4), &pos, flags, -1, -1);
             if (*(s32*)(p + 0x234 + i * 4) >= 0) {
                 *(s32*)((u8*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234 + i * 4)) + 0x230) = *(s32*)(p + 0x198);
