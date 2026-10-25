@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPicture.h"
 struct J2DScreen;
 struct J2DGrafContext;
 
@@ -46,6 +47,121 @@ static void Attach(void* o, void* handle) {
     (*(VFn**)o)[68](o, (u32)handle, 0);
 }
 
+extern "C" f32 fn_8043D514(void* a);
+extern "C" void fn_80402E08(void* a, f32 b, f32 c);
+extern "C" void* lbl_8053AED0;
+extern "C" void fn_8044A828(void* self_) {
+    u8* self = (u8*)self_;
+    void** p = (void**)self;
+    void* handle;
+    void* obj;
+    int i;
+
+    for (i = 0; i < 2; i++) {
+        fn_80402E08(p[2], lbl_80543DB8, fn_8043D514(lbl_8053AED0));
+        p++;
+    }
+    if (self[0x14] & 1) {
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[16], lbl_80490DB8[17]);
+        if (((u8*)obj)[0xb0] == 0) {
+            obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[16], lbl_80490DB8[17]);
+            ((u8*)obj)[0xb0] = 1;
+        }
+    } else {
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[16], lbl_80490DB8[17]);
+        if (((u8*)obj)[0xb0] != 0) {
+            obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[16], lbl_80490DB8[17]);
+            ((u8*)obj)[0xb0] = 0;
+        }
+    }
+
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[16], lbl_80490DB8[17]);
+    if (((u8*)obj)[0xb0] != 0) {
+        u16 v;
+
+        if (*(u16*)(self + 0x10) > 999) {
+            *(u16*)(self + 0x10) = 999;
+        }
+        v = *(u16*)(self + 0x10);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v / 100]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[4], lbl_80490DB8[5]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[6], lbl_80490DB8[7]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[(v % 100) / 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[8], lbl_80490DB8[9]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[10], lbl_80490DB8[11]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[12], lbl_80490DB8[13]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[14], lbl_80490DB8[15]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[16], lbl_80490DB8[17]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[18], lbl_80490DB8[19]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[20], lbl_80490DB8[21]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490DB8[22], lbl_80490DB8[23]);
+        Attach(obj, handle);
+    }
+
+    if (self[0x14] & 2) {
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[24], lbl_80490E00[25]);
+        if (((u8*)obj)[0xb0] == 0) {
+            obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[24], lbl_80490E00[25]);
+            ((u8*)obj)[0xb0] = 1;
+        }
+    } else {
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[24], lbl_80490E00[25]);
+        if (((u8*)obj)[0xb0] != 0) {
+            obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[24], lbl_80490E00[25]);
+            ((u8*)obj)[0xb0] = 0;
+        }
+    }
+
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[24], lbl_80490E00[25]);
+    if (((u8*)obj)[0xb0] != 0) {
+        u8 a;
+        u8 b;
+
+        if (self[0x12] > 99) {
+            self[0x12] = 99;
+            self[0x13] = 99;
+        }
+        if (self[0x13] > 99) {
+            self[0x13] = 99;
+        }
+        a = self[0x12];
+        b = self[0x13];
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[a / 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[8], lbl_80490E00[9]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[10], lbl_80490E00[11]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[a % 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[12], lbl_80490E00[13]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[14], lbl_80490E00[15]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[b / 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[16], lbl_80490E00[17]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[18], lbl_80490E00[19]);
+        Attach(obj, handle);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[b % 10]);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[20], lbl_80490E00[21]);
+        Attach(obj, handle);
+        obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m13(0x80490000, lbl_80490E00[22], lbl_80490E00[23]);
+        Attach(obj, handle);
+    }
+    self[0x14] = 0;
+}
+
 extern "C" void fn_8044AF90(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
@@ -55,45 +171,45 @@ extern "C" void fn_8044AF90(void* self_) {
 
 extern "C" void fn_8044AFD8(void* self_) {
     u8* self = (u8*)self_;
-    void* handle;
-    void* obj;
-
-    self[0x14] &= 0xFE;
-    handle = fn_804030C4(0x54494D47, *(u32*)lbl_804B1CD8);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[4], lbl_80490DB8[5]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[6], lbl_80490DB8[7]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[8], lbl_80490DB8[9]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[10], lbl_80490DB8[11]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[12], lbl_80490DB8[13]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[14], lbl_80490DB8[15]);
-    Attach(obj, handle);
-    self[0x14] &= 0xFD;
-    handle = fn_804030C4(0x54494D47, *(u32*)lbl_804B1CD8);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[8], lbl_80490E00[9]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[10], lbl_80490E00[11]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[12], lbl_80490E00[13]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[14], lbl_80490E00[15]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[16], lbl_80490E00[17]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[18], lbl_80490E00[19]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[20], lbl_80490E00[21]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[22], lbl_80490E00[23]);
-    Attach(obj, handle);
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[16], lbl_80490DB8[17]);
-    ((u8*)obj)[0xb0] = 0;
-    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[24], lbl_80490E00[25]);
-    ((u8*)obj)[0xb0] = 0;
+    ResTIMG* handle;
+    J2DPicture* obj;
+    self[0x14] &= 0xfe;
+    handle = (ResTIMG*)fn_804030C4(0x54494d47, lbl_804B1CD8[0]);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 4));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 6));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 8));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 10));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 12));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 14));
+    obj->changeTexture(handle, (u8)0);
+    self[0x14] &= ~2;
+    handle = (ResTIMG*)fn_804030C4(0x54494d47, lbl_804B1CD8[0]);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 8));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 10));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 12));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 14));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 16));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 18));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 20));
+    obj->changeTexture(handle, (u8)0);
+    obj = (J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490E00 + 22));
+    obj->changeTexture(handle, (u8)0);
+    (*(J2DPane**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 16))->hide();
+    u32 high = *(volatile u32*)(lbl_80490E00 + 24);
+    J2DPane* screen = *(J2DPane* volatile*)(self + 4);
+    u32 low = lbl_80490E00[25];
+    screen->search(((u64)high << 32) | low)->hide();
 }
 
 extern "C" void* fn_8044B3FC(VObj** param_1, short param_2) {
@@ -134,7 +250,7 @@ extern "C" void* fn_8044B4B8(VObj** param_1) {
         *(void**)a = lbl_804AF86C;
     }
     param_1[2] = a;
-    fn_80402F04(param_1[2], ((J2DScreenVT*)param_1[1])->m13(0x4e0000, 0x4e6461, 0x74613030));
+    fn_80402F04(param_1[2], ((J2DScreenVT*)param_1[1])->m13('N' << 16, 'Nda', 'ta00'));
     VObj* b = (VObj*)__nw__FUl(0x2c);
     if (b != 0) {
         *(void**)b = lbl_804AF86C;
