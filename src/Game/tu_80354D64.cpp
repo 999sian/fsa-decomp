@@ -152,6 +152,59 @@ extern "C" void fn_803554B8(void* this_)
     detach__5ActorFv(this_);
 }
 
+extern u8* lbl_8053AAF8;
+extern "C" char lbl_804722B0[];
+extern "C" u8 fn_8023CB24(s32);
+extern "C" u8 fn_8023CA88(s32);
+extern "C" void fn_801EFD34(void* this_, void* res, void* rec, s32 a, f32 x, f32 y, f32 z);
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, void* rec, s32 a, f32 sx, f32 sy);
+extern "C" void fn_80355610(char* this_) {
+    char* tbl = lbl_804722B0;
+    DrawRec rec;
+    f32 mtx[3][4];
+    JGeometry::TVec3f saved;
+    const char* name;
+
+    switch (*(s32*)(this_ + 0x2c8)) {
+    case 0:
+        rec.b1d = -1;
+        rec.b1c = 0;
+        switch (*(s32*)(this_ + 0x2c4)) {
+        case 0:
+            name = tbl + 0xa0;
+            break;
+        case 1:
+            name = tbl + 0xb4;
+            break;
+        }
+        if (*(u8*)(this_ + 0xc4) == 1) {
+            rec.b20 = 0;
+            rec.b1d = fn_8023CB24(*(s32*)(this_ + 0xc8)) + 1;
+            rec.b1c = fn_8023CA88(*(s32*)(this_ + 0xc8));
+        }
+        PSMTXIdentity(mtx);
+        if (*(s32*)(this_ + 0x2c0) == 1) {
+            f32 c = JMASCos(0x4000);
+            f32 s = JMASSin(0x4000);
+            mtx[1][1] = 1.0f;
+            mtx[0][0] = c;
+            mtx[0][2] = s;
+            mtx[2][0] = -s;
+            mtx[2][2] = c;
+            mtx[0][1] = mtx[1][0] = mtx[1][2] = mtx[2][1] = 0.0f;
+        }
+        rec.w18 = mtx;
+        saved = *(JGeometry::TVec3f*)(this_ + 0xc);
+        *(f32*)(this_ + 0x10) += 1.0f;
+        fn_801EFD34(this_, (*(MrtaResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('TIMG', name), &rec, 7, 0.0f, -1.0f, 0.0f);
+        *(JGeometry::TVec3f*)(this_ + 0xc) = saved;
+        break;
+    case 1:
+        fn_801F06F0(this_, tbl + 0xc8, 0x445, &rec, 3, 1.0f, 1.0f);
+        break;
+    }
+}
+
 extern "C" void* fn_80239914(f32* out, s32 room, s32 handle);
 extern "C" void* fn_8020D58C(s32 room);
 extern "C" void fn_8020D8C0(void* a, s32 b, s32 c, s32 d);
