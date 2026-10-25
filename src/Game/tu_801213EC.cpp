@@ -116,7 +116,11 @@ public:
 };
 
 struct CompanionSlots {
-    u8 pad[0x360];
+    u8 pad[0x333];
+    u8 field_333;
+    u8 pad334[0x10];
+    s32 field_344;
+    u8 pad348[0x18];
     s32 count;
     s32 handles[4];
 };
