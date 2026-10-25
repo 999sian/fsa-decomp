@@ -100,4 +100,4 @@ extern "C" void* fn_803394F8(void* this_, s16 freeFlag) {
     }
     return this_;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
