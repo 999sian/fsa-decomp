@@ -13,6 +13,12 @@ struct HudPlayerState {
 
 class J2DOrthoGraph {
 public:
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void setPort();
     void setOrtho(const JGeometry::TBox2<f32>&, f32, f32);
 };
 
