@@ -1,5 +1,6 @@
 #include "types.h"
 #include <math.h>
+static inline f32 maxMenuExtent(f32 x, f32 y) { return x >= y ? x : y; }
 extern const f32 lbl_80543D00;
 extern const f32 lbl_80543D04;
 extern const f32 lbl_80543D08;
@@ -1120,29 +1121,23 @@ static inline bool fn_8043DF8C_hit(f32 x, f32 y, f32 px, f32 py, f32 r) {
 }
 
 extern "C" void fn_8043DF8C(void* p, f32 x, f32 y) {
-    f32 out1[3];
-    f32 out2[3];
-    f32 in1[3];
-    f32 in2[3];
-    in1[0] = lbl_80543C88;
-    in1[1] = lbl_80543C88;
-    in1[2] = lbl_80543C88;
-    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), in1, 0, 0, out1);
-    in2[0] = lbl_80543CC0;
-    in2[1] = lbl_80543C88;
-    in2[2] = lbl_80543C88;
-    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), in2, 0, 0, out2);
-    f32 r = out2[0] - out1[0];
-    if (!fn_8043DF24(93.0f, 61.5f + fn_8043D514((u8*)lbl_8053AED0), x, y, r)) {
+    JGeometry::TVec3<f32> out1;
+    JGeometry::TVec3<f32> out2;
+    JGeometry::TVec3<f32> in1(0.0f, 0.0f, 0.0f);
+    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), &in1, 0, 0, &out1);
+    JGeometry::TVec3<f32> in2(lbl_80543CC0, 0.0f, 0.0f);
+    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), &in2, 0, 0, &out2);
+    f32 r = out2.x - out1.x;
+    if (!fn_8043DF8C_hit(93.0f, 61.5f + fn_8043D514((u8*)lbl_8053AED0), x, y, r)) {
         *((u8*)lbl_8053AED0 + 0xdc) |= 1;
     }
-    if (!fn_8043DF24(514.0f, 61.5f + fn_8043D514((u8*)lbl_8053AED0), x, y, r)) {
+    if (!fn_8043DF8C_hit(514.0f, 61.5f + fn_8043D514((u8*)lbl_8053AED0), x, y, r)) {
         *((u8*)lbl_8053AED0 + 0xdc) |= 2;
     }
-    if (!fn_8043DF24(93.0f, 407.5f + fn_8043D57C((u8*)lbl_8053AED0), x, y, r)) {
+    if (!fn_8043DF8C_hit(93.0f, 407.5f + fn_8043D57C((u8*)lbl_8053AED0), x, y, r)) {
         *((u8*)lbl_8053AED0 + 0xdc) |= 4;
     }
-    if (!fn_8043DF24(514.0f, 407.5f + fn_8043D57C((u8*)lbl_8053AED0), x, y, r)) {
+    if (!fn_8043DF8C_hit(514.0f, 407.5f + fn_8043D57C((u8*)lbl_8053AED0), x, y, r)) {
         *((u8*)lbl_8053AED0 + 0xdc) |= 8;
     }
 }
@@ -1152,9 +1147,7 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     Vec pa, pb;
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), a, 0, 0, &pa);
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, &pb);
-    f32 dy = FABS(pb.y - pa.y);
-    f32 r = FABS(pb.x - pa.x);
-    r = r >= dy ? r : dy;
+    f32 r = FABS(pb.x - pa.x) >= FABS(pb.y - pa.y) ? FABS(pb.x - pa.x) : FABS(pb.y - pa.y);
     f32 left1;
     f32 left2;
     f32 x = lbl_80543CB8 * (pa.x + pb.x);
