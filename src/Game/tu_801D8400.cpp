@@ -317,8 +317,7 @@ extern "C" s32 fn_801CD664(s32 n);
 struct T84List {
     T84List() : n(0) {}
     void add(s32 x) {
-        v[n] = x;
-        n++;
+        v[n++] = x;
     }
     s32 v[11];
     s32 n;
@@ -713,7 +712,7 @@ extern "C" void fn_801D9960(char* p) {
             }
             *(u16*)(p + 0x338) = fn_801CD664(61) + 60;
             bool turn = false;
-            bool left = turn;
+            bool left = false;
             f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
             f32 x = *(f32*)(p + 0xc);
             if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
