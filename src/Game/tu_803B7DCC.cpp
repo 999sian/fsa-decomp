@@ -5,7 +5,7 @@ struct FsaVObj {
     virtual void v1(void);
     virtual void v2(void);
     virtual void v3(void);
-    virtual void v4(void);
+    virtual void v4(u32 a, void* b);
     virtual void v5(void);
     virtual void v6(u32 a, void* b);
     virtual void v9(u8 b);
@@ -338,14 +338,15 @@ extern "C" void* fn_803B8414(u8* this_) {
     u32 local_14[2];
     u32 local_c[2];
     s32 i;
+    u8* tbl;
     *(void**)this_ = lbl_804AFAB0;
     __construct_array(this_ + 0xf8, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0xa);
     *(s32*)(this_ + 0x28c) = -1;
     *(s32*)(this_ + 0x290) = -1;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
     lbl_8053ADA8 = (s32)this_;
-    void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa8);
-    ((void (*)(void*, u32, void*))(*(void**)((u8*)*(void**)obj + 0x18)))(obj, 0x3f3f3f3f, lbl_80476520);
+    FsaVObj* obj = *(FsaVObj**)((u8*)lbl_8053AAF8 + 0xa8);
+    obj->v6(0x3f3f3f3f, lbl_80476520);
     *(s32*)(this_ + 0x24) = 0;
     *(s32*)(this_ + 0x28) = 0;
     *(s32*)(this_ + 0x2c) = 0;
@@ -407,7 +408,8 @@ extern "C" void* fn_803B8414(u8* this_) {
     local_c[1] = 0;
     local_14[0] = 0xff;
     local_14[1] = 0xff;
-    ((void (*)(void*, u32*, u32*))(*(void**)((u8*)*(void**)pic + 0x130)))(pic, &local_14[1], &local_c[1]);
+    obj = *(FsaVObj**)(this_ + 4);
+    obj->v76(&local_14[1], &local_c[1]);
     *(f32*)(this_ + 0xec) = lbl_80543440;
     *(f32*)(this_ + 0xf0) = lbl_80543440;
     *(f32*)(this_ + 0xf4) = lbl_80543440;
@@ -421,6 +423,7 @@ extern "C" void* fn_803B8414(u8* this_) {
         __ct__14WaveControllerFlll(wc, this_ + 0xec, 0, 8);
     }
     *(void**)(this_ + 0x20) = wc;
+    tbl = lbl_80529DEC;
     *(f32*)(this_ + 0xf8) = lbl_80543440;
     *(f32*)(this_ + 0xfc) = lbl_80543440;
     *(f32*)(this_ + 0x100) = lbl_80543440;
@@ -461,9 +464,9 @@ extern "C" void* fn_803B8414(u8* this_) {
     *(f32*)(this_ + 0x168) = lbl_80543440;
     *(f32*)(this_ + 0x16c) = lbl_80543440;
     *(s32*)(this_ + 0x194) = -1;
-    if (*(s32*)(lbl_80529DEC + 0x118) == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
-        *(s32*)(lbl_80529DEC + 0x118) = 7;
-        *(s32*)(lbl_80529DEC + 0x11c) = 3;
+    if (*(s32*)(tbl + 0x118) == 9 && *(s32*)(tbl + 0x11c) == 3) {
+        *(s32*)(tbl + 0x118) = 7;
+        *(s32*)(tbl + 0x11c) = 3;
     }
     return this_;
 }
