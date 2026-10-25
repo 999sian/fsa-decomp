@@ -125,13 +125,6 @@ extern f32 lbl_8053ED9C;
 extern f32 lbl_8053EDA0;
 extern f32 lbl_8053EDA4;
 
-static inline f32 inverseSqrt(const f32 value) {
-    if (value <= lbl_8053ED90) {
-        return value;
-    }
-    f32 r = __frsqrte(value);
-    return lbl_8053EDA0 * r * (lbl_8053EDA4 - value * (r * r));
-}
 #pragma opt_propagation off
 extern "C" s32 fn_801C0FEC(const u8* this_, const f32* param_2, f32* param_3) {
     f32 y;
