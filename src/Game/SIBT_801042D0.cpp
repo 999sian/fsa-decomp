@@ -31,31 +31,41 @@ extern const f32 lbl_8053C220;
 extern const f32 lbl_8053C224;
 extern "C" void fn_801EFD34(Actor* this_, void* res, u8* idx, s32 n, f32 a, f32 b, f32 c);
 extern "C" void* fn_804032E8(u32 type, const char* name);
+struct SIBTTextureNames { const char* first[9]; const char* third[9]; const char* second[9]; };
 extern const char* lbl_8049CA98[];
-extern "C" void fn_801042D0(Actor* this_) {
-    u8 idx[0x10];
-    f32 pos[3];
-    for (u32 i = 0; (u8)i < 0x10; i += 8) {
-        idx[(u8)(i + 0)] = i + 0;
-        idx[(u8)(i + 1)] = i + 1;
-        idx[(u8)(i + 2)] = i + 2;
-        idx[(u8)(i + 3)] = i + 3;
-        idx[(u8)(i + 4)] = i + 4;
-        idx[(u8)(i + 5)] = i + 5;
-        idx[(u8)(i + 6)] = i + 6;
-        idx[(u8)(i + 7)] = i + 7;
-    }
-    pos[0] = *(f32*)((u8*)this_ + 0xc);
-    pos[1] = *(f32*)((u8*)this_ + 0x10);
-    pos[2] = *(f32*)((u8*)this_ + 0x14);
-    void* tex = fn_804032E8(0x54494D47, lbl_8049CA98[*(s32*)((u8*)this_ + 0x238)]);
-    fn_801EFD34(this_, tex, idx, -1, lbl_8053C1F8, lbl_8053C1F8, lbl_8053C1F8);
-    *(f32*)((u8*)this_ + 0x10) = pos[1];
-}
-
 #pragma opt_propagation off
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
+extern "C" void fn_801042D0(Actor* this_) {
+    u8* names = (u8*)lbl_8049CA98;
+    DrawRec rec;
+    JGeometry::TVec3<f32> pos(this_->field_0C);
+    rec.b1d = -1;
+    rec.b24 = 1;
+    rec.b21 = 1;
+    const char** __restrict first = (const char**)(names + 0);
+    void* tex = fn_804032E8(0x54494D47, first[*(s32*)((u8*)this_ + 0x238)]);
+    fn_801EFD34(this_, tex, rec.ids, -1, lbl_8053C1F8, lbl_8053C1F8, lbl_8053C1F8);
+    if (*(s32*)((u8*)this_ + 0x234) != 1) {
+        this_->field_0C.y += lbl_8053C1FC * (f32)(lbl_8049C3B8[0] + lbl_80463E50[*(s32*)((u8*)this_ + 0x238)]) + *(f32*)((u8*)this_ + 0x240);
+        if (*(f32*)((u8*)this_ + 0x240) < lbl_8053C200) rec.b1d = 1;
+        else rec.b1d = 0;
+        const char** __restrict second = (const char**)(names + 0x48);
+        tex = fn_804032E8(0x54494D47, second[*(s32*)((u8*)this_ + 0x238)]);
+        fn_801EFD34(this_, tex, rec.ids, -1, lbl_8053C1F8, lbl_8053C1F8, lbl_8053C1F8);
+        this_->field_0C.y = pos.y;
+    }
+    if (*(s32*)((u8*)this_ + 0x238) == 5 && *(s32*)((u8*)this_ + 0x234) == 0) rec.b1d = 0;
+    else rec.b1d = 2;
+    this_->field_0C.y += lbl_8053C1FC * ((f32)lbl_8049C3B8[1] + lbl_80463E74[*(s32*)((u8*)this_ + 0x238)]);
+    const char** __restrict third = (const char**)(names + 0x24);
+    tex = fn_804032E8(0x54494D47, third[*(s32*)((u8*)this_ + 0x238)]);
+    fn_801EFD34(this_, tex, rec.ids, -1, lbl_8053C1F8, lbl_8053C1F8, lbl_8053C1F8);
+    this_->field_0C.y = pos.y;
+}
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_801045D8(Actor* this_) {
     u8* tbl = lbl_80463C30;
     f32 f31;
