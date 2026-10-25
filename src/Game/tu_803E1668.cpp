@@ -2,6 +2,17 @@
 #include "Game/FsaMenuAction.h"
 #include "JSystem/J2D/J2DPane.h"
 
+extern const f32 lbl_80543664;
+extern const f32 lbl_80543668;
+extern const f32 lbl_8054368C;
+extern const f32 lbl_805436F8;
+extern const f32 lbl_805436C0;
+extern const f32 lbl_805436B0;
+extern const f32 lbl_805436C4;
+extern const f32 lbl_80543694;
+extern const f32 lbl_805436FC;
+extern const f32 lbl_80543698;
+
 class Screen803E4650 {
 public:
     virtual void v08(); virtual void v0C();
