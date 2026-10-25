@@ -36,6 +36,14 @@ extern "C" u8* sManager__10JFWDisplay;
 extern "C" void fn_8013B438(void* p);
 extern "C" void fn_8013B490(void* p);
 extern "C" void fn_80427D2C(void* p, s32 a, s32 b, s32 c, s32 d);
+static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
+    (*(J2DScreen**)(self + 0x4))->search(0x506e7464)->setAlpha((u8)*(f32*)(self + 0x4c));
+    (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3031ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
+    (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3032ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
+    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->setAlpha((u8)(self[0x14e] * scale));
+    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727432ULL)->setAlpha((u8)(self[0x14f] * scale));
+    (*(J2DScreen**)(self + 0x4))->draw(0.0f, 0.0f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
 extern "C" void fn_803A44D8(u8* this_) {
     u8 col[4] = {0, 0, 0, 0};
     u8 copy[4];
