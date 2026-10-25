@@ -829,7 +829,7 @@ extern "C" void fn_80411230(u8* self) {
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if (slot == 10 && *(s32*)(self + 0x348) == 2 && *(s32*)(lbl_80529DEC + 0x120) < 7 &&
 	           !Tu411SlotDone(*(s32*)(lbl_80529DEC + 0x120)) && Tu411ShowState(*(s32*)(self + 0x350))) {
-		double x;
+		f32 x;
 		f32 y;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
 			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->show();
@@ -1042,7 +1042,7 @@ extern "C" void fn_80409450(void* p) {
 				*(u8*)(*(char**)(q + 0x2b8) + 0x44) = 0;
 				*(u8*)(*(char**)(q + 0x2b8) + 0x45) = 0;
 				cmd1 = 0x10001;
-				(*(void (**)(void*, u32*))(*(char**)(*(char**)(q + 0x2b8) + 8) + 0x14))(*(void**)(q + 0x2b8), &cmd1);
+				(*(SoundHolder**)(q + 0x2b8))->play(&cmd1);
 			}
 		} else if (*(s16*)((char*)p + 0x41e) == 0x1a) {
 			s32 i = 0;
@@ -1051,7 +1051,7 @@ extern "C" void fn_80409450(void* p) {
 				*(u8*)(*(char**)(q + 0x2b8) + 0x44) = 0;
 				*(u8*)(*(char**)(q + 0x2b8) + 0x45) = 0;
 				cmd2 = 0x2000e;
-				(*(void (**)(void*, u32*))(*(char**)(*(char**)(q + 0x2b8) + 8) + 0x14))(*(void**)(q + 0x2b8), &cmd2);
+				(*(SoundHolder**)(q + 0x2b8))->play(&cmd2);
 			}
 		}
 	}
@@ -1078,7 +1078,9 @@ extern "C" void fn_80409450(void* p) {
 		} else {
 			bits = 1 << (bb + st * 4);
 			row = &lbl_8050EC80[lbl_8050EC80[0].selfIndex];
-			bits &= *(u32*)((char*)row + 0x28);
+			u32 mask = *(u32*)((char*)row + 0x28);
+            u32 selected = bits & mask;
+            bits = selected;
 			bits = (-bits | bits) >> 31;
 		}
 		if ((s32)bits != 0) {
@@ -1854,6 +1856,12 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	return self;
 }
 
+extern "C" void* __nw__FUl(u32);
+extern "C" void* fn_804122F4_stub_unused;
+void fn_804122F4(u8* self) {
+	self[0] = 0;
+}
+
 struct Tbl8048C1F8 {
 	u8 pad[0x420];
 	u64 names[4][2]; // 0x420
@@ -1965,7 +1973,7 @@ extern "C" void fn_80405B10(T5B10* self, s32 key) {
 		if (self->f38c & (1 << (self->f340 * 4 + j))) n++;
 	}
 	if (n == 1) return;
-	if (self->f34c < n - 1 && key == *((u8*)t->next + self->f340 * 2 + self->f34c)) {
+	if (self->f34c < n - 1 && key == *((u8*)t->next + (self->f340 * 2 + self->f34c))) {
 		self->f34c++;
 		self->f348 = *(s32*)((u8*)t->vals + self->f340 * 12 + self->f34c * 4);
 		if (self->f65e == 1) {
@@ -1976,7 +1984,7 @@ extern "C" void fn_80405B10(T5B10* self, s32 key) {
 		}
 		fn_80458880(lbl_8053AF80, 0x26, -1);
 	}
-	if (self->f34c > 0 && key == *((u8*)t->prev + self->f340 * 2 + self->f34c - 1)) {
+	if (self->f34c > 0 && key == *((u8*)t->prev + (self->f340 * 2 + self->f34c - 1))) {
 		self->f34c--;
 		self->f348 = *(s32*)((u8*)t->vals + self->f340 * 12 + self->f34c * 4);
 		if (self->f65e == 1) {
