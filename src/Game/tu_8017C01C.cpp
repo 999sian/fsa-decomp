@@ -352,12 +352,4 @@ extern "C" void fn_8017ED08(void) {
 
 void __sinit_tu_8017C01C_cpp(void) {
 }
-struct PendingPositionRequest {
-    u8 pad[0x7f4];
-    u8 active;
-    u8 blocked;
-    u8 flag;
-    u8 pad7f7;
-    u32 state;
-    JGeometry::TVec3<f32> position;
-};
+
