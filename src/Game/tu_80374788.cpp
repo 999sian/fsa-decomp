@@ -65,15 +65,58 @@ extern "C" void fn_803747E8(Actor* this_) {
     fn_80307AC8(*(void**)((char*)this_ + 0x198), this_->field_04, (char*)this_ + 0xc, idx + 0x45, 0, 0, -1);
 }
 
+extern "C" f32 lbl_80542EE0;
+extern "C" f32 lbl_80542EE4;
+extern "C" f32 lbl_80542EE8;
+extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
+extern "C" u8* fn_8020D58C(s32 a);
+extern "C" void fn_8020D7D0(u8* rec, s32 handle);
+extern "C" void fn_80374BAC(Actor* this_) {
+    u8* p = (u8*)this_;
+    f32 box[4];
+
+    box[0] = *(f32*)(p + 0x60);
+    box[1] = *(f32*)(p + 0x64);
+    box[2] = *(f32*)(p + 0x68);
+    box[3] = *(f32*)(p + 0x6c);
+    box[0] += *(f32*)(p + 0xc);
+    box[2] += *(f32*)(p + 0xc);
+    box[1] += *(f32*)(p + 0x10);
+    box[3] += *(f32*)(p + 0x10);
+    if (*(s32*)(p + 0x244) != 0) {
+        box[0] -= lbl_80542EE0;
+        box[1] -= lbl_80542EE0;
+        box[2] += lbl_80542EE0;
+        box[3] += lbl_80542EE0;
+    } else {
+        box[0] -= lbl_80542ED8;
+        box[1] -= lbl_80542ED8;
+        box[2] += lbl_80542ED8;
+        box[3] += lbl_80542ED8;
+    }
+    fn_80239914(box, *(s32*)(p + 4), *(s32*)(p + 0x198));
+    if (*(s32*)(p + 0x244) != 0) {
+        box[0] -= lbl_80542EE4;
+        box[1] -= lbl_80542EE4;
+        box[2] += lbl_80542EE4;
+        box[3] += lbl_80542EE4;
+    } else {
+        box[0] -= lbl_80542EE8;
+        box[1] -= lbl_80542EE8;
+        box[2] += lbl_80542EE8;
+        box[3] += lbl_80542EE8;
+    }
+}
+
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F78F4(void* a, u32 b, s32 c);
 extern "C" void* fn_801F666C(void* a, s32 b);
 extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
 extern "C" u8* lbl_8053AAF8;
-extern "C" f32 lbl_80542EDC;
-extern "C" f32 lbl_80542F10;
-extern "C" f32 lbl_80542F14;
-extern "C" f32 lbl_80542F18;
+extern "C" const f32 lbl_80542EDC;
+extern "C" const f32 lbl_80542F10;
+extern "C" const f32 lbl_80542F14;
+extern "C" const f32 lbl_80542F18;
 extern "C" void fn_803754E8(Actor* this_) {
     s32 mask;
     u8* p = (u8*)this_;
