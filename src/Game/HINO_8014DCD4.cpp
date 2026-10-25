@@ -28,9 +28,9 @@ extern "C" void* fn_801F666C(void* reg, s32 id);
 extern "C" s32 fn_801F0E34(void* a, u32 code, u32 z);
 extern "C" f32 lbl_8053D1D4;
 extern "C" f32 lbl_8053D1EC;
-extern "C" f32 lbl_8053D1DC;
-extern "C" f32 lbl_8053D210;
-extern "C" f32 lbl_8053D21C;
+extern "C" const f32 lbl_8053D1DC;
+extern "C" const f32 lbl_8053D210;
+extern "C" const f32 lbl_8053D21C;
 extern "C" const f32 lbl_8053D250;
 extern "C" const f32 lbl_8053D254;
 
@@ -132,9 +132,9 @@ extern "C" void* fn_8014F7FC(u8* this_, int flag) {
 
 extern "C" void fn_8014F9FC(u8* this_) {
     f32 a = lbl_8053D250;
-    f32 c = lbl_8053D21C;
-    *(f32*)(this_ + 0x60) = a;
     f32 b = lbl_8053D254;
+    *(f32*)(this_ + 0x60) = a;
+    f32 c = lbl_8053D21C;
     *(f32*)(this_ + 0x64) = a;
     f32 d = lbl_8053D210;
     *(f32*)(this_ + 0x68) = b;
