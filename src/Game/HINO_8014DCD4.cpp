@@ -57,57 +57,64 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
 extern "C" void __dt__5ActorFv(void* this_, s32 in);
 int fn_8022F784(int index, int a0, const JGeometry::TVec3<f32>& a1);
-extern "C" void* fn_8014F7FC(u8* this_, s16 flag) {
-    s16 del = flag;
-    if (this_ != 0) {
-        *(void**)this_ = lbl_8049F9B4;
-        JGeometry::TVec3f v(lbl_8053D1D4, lbl_8053D1D4, lbl_8053D1D4);
-        if (*(s32*)(this_ + 0x98) == 2) {
-            v.x = lbl_8053D1D4;
+extern "C" void* fn_8014F7FC(u8* this_, int flag) {
+    s32 id;
+    u8* self = this_;
+    int del = flag;
+    JGeometry::TVec3f w;
+    JGeometry::TVec3f v;
+    if (self != 0) {
+        *(void**)self = lbl_8049F9B4;
+        v.z = 0.0f;
+        v.y = 0.0f;
+        v.x = 0.0f;
+        if (*(s32*)(self + 0x98) == 2) {
+            v.x = 0.0f;
             v.y = lbl_8053D1E0;
-            v.z = lbl_8053D1D4;
+            v.z = 0.0f;
         } else {
-            v.x = lbl_8053D1D4;
+            v.x = 0.0f;
             v.y = lbl_8053D1E4;
-            v.z = lbl_8053D1D4;
+            v.z = 0.0f;
         }
-        if (*(s32*)(this_ + 0x254) >= 0) {
-            f32 ox = *(f32*)(this_ + 0xc);
-            f32 oy = *(f32*)(this_ + 0x10);
-            f32 oz = *(f32*)(this_ + 0x14);
-            f32* t = (f32*)fn_8023E724(*(s32*)(this_ + 0x254));
-            *(f32*)(this_ + 0xc) = t[0];
-            *(f32*)(this_ + 0x10) = t[1];
-            *(f32*)(this_ + 0x14) = t[2];
-            if (fn_801F2618(this_, 0, 0)) {
-                f32 ang = JMath::atanTable_.atan2_(ox - *(f32*)(this_ + 0xc), oy - *(f32*)(this_ + 0x10));
+        if (*(s32*)(self + 0x254) >= 0) {
+            f32 ox = *(f32*)(self + 0xc);
+            f32 oy = *(f32*)(self + 0x10);
+            f32 oz = *(f32*)(self + 0x14);
+            f32* t = (f32*)fn_8023E724(*(s32*)(self + 0x254));
+            *(f32*)(self + 0xc) = t[0];
+            *(f32*)(self + 0x10) = t[1];
+            *(f32*)(self + 0x14) = t[2];
+            if (fn_801F2618(self, 0, 0)) {
+                f32 ang = JMath::atanTable_.atan2_(ox - *(f32*)(self + 0xc), oy - *(f32*)(self + 0x10));
                 s32 idx = (s32)(ang * lbl_8053D1E8);
-                u8* sc = (u8*)&JMath::sincosTable_ + ((idx >> 2) & 0x3ff8);
-                v.x = *(f32*)sc * lbl_8053D1EC;
-                v.y = *(f32*)(sc + 4) * lbl_8053D1EC;
+                v.x = lbl_8053D1EC * JMath::sincosTable_.sinShort(idx);
+                v.y = lbl_8053D1EC * JMath::sincosTable_.cosShort(idx);
             }
-            *(f32*)(this_ + 0xc) = ox;
-            *(f32*)(this_ + 0x10) = oy;
-            *(f32*)(this_ + 0x14) = oz;
-            fn_8022F784(*(s32*)(this_ + 0x254), *(s32*)(this_ + 0x198), v);
+            *(f32*)(self + 0xc) = ox;
+            *(f32*)(self + 0x10) = oy;
+            *(f32*)(self + 0x14) = oz;
+            fn_8022F784(*(s32*)(self + 0x254), *(s32*)(self + 0x198), v);
         }
-        s32 id = *(s32*)(this_ + 0x250);
+        id = *(s32*)(self + 0x250);
         if (id >= 0) {
             u8* p = (u8*)fn_801F666C(fn_801F856C(), id);
             if (p != 0) {
-                JGeometry::TVec3f w(lbl_8053D1D4, lbl_8053D1D4, lbl_8053D1D4);
+                w.y = 0.0f;
+                w.x = 0.0f;
+                w.z = 0.0f;
                 w.z = lbl_8053D1EC;
                 *(JGeometry::TVec3f*)(p + 0x3c) = w;
-                *(s32*)(this_ + 0x250) = -1;
-                fn_801F0E34(this_, 0x40008, 0);
+                *(s32*)(self + 0x250) = -1;
+                fn_801F0E34(self, 0x40008, 0);
             }
         }
-        __dt__5ActorFv(this_, 0);
-        if (del > 0) {
-            operator delete(this_);
+        __dt__5ActorFv(self, 0);
+        if ((s16)del > 0) {
+            operator delete(self);
         }
     }
-    return this_;
+    return self;
 }
 
 extern "C" void fn_8014F9FC(u8* this_) {
