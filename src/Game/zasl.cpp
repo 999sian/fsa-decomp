@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern char lbl_8046A3AC[];
@@ -76,14 +77,15 @@ extern "C" void fn_8020C138(u8* this_) {
 extern "C" bool fn_8020C26C(void* p, void* a, void* b) {
     bool ret;
     void* l = 0;
-    if ((*(u32*)((char*)p + 0x230) & 7) != 0) {
+    u32 flags = *(u32*)((char*)p + 0x230);
+    if ((flags & 7) != 0) {
         l = &lbl_8053F9E0;
     }
     ret = true;
     if (!fn_802265DC(b, a, 0)) {
-        void* v = *(void**)((char*)p + 0x198);
+        u32 v = *(u32*)((char*)p + 0x198);
         u8* m = fn_8020D58C();
-        if (!fn_8020D6AC(m + m[1] * 0x784 + 4, a, b, (u32)v, l)) {
+        if (!fn_8020D6AC(m + m[1] * 0x784 + 4, a, b, v, l)) {
             ret = false;
         }
     }
@@ -113,11 +115,11 @@ extern "C" void fn_8020C374(void* p) {
     char* c = (char*)p;
     s16 a = *(s16*)(c + 0x2ae);
     f32 r = *(f32*)(c + 0x254);
-    f32 x = r * JMASinShort(a);
-    f32 y = r * JMACosShort(a);
-    *(f32*)(c + 0x3c) = x;
-    *(f32*)(c + 0x40) = y;
-    (*(void (**)(void*))(*(char**)p + 0x84))(p);
+    f32 sn = JMASinShort(a);
+    f32 cs = JMACosShort(a);
+    *(f32*)(c + 0x3c) = r * sn;
+    *(f32*)(c + 0x40) = r * cs;
+    ((ItemBase*)p)->v31();
 }
 
 extern "C" void fn_8020C3D0(void* this_, bool b) {
@@ -303,7 +305,7 @@ extern "C" void fn_8020C878(void* this_) {
     fn_801D22DC(p + 0x270, 0, 2, 0);
     fn_801D1D60(p + 0x270);
     if (*(u32*)(p + 0x230) & 0x2000) {
-        if ((*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, *(s32*)(p + 4), p + 0xc)) {
+        if (((u8 (*)(void*, s32, void*))(*(void***)this_)[19])(this_, *(s32*)(p + 4), p + 0xc)) {
             detach__5ActorFv(this_);
         } else {
             s32 n = *(s32*)(p + 4);
@@ -317,12 +319,8 @@ extern "C" void fn_8020C878(void* this_) {
             f32 x = *(f32*)(p + 0xc);
             f32 y = *(f32*)(p + 0x10);
             bool bVar1 = false;
-            if (x + *(f32*)(p + 0x80) >= pf[0]) {
-            } else if (y + *(f32*)(p + 0x84) >= pf[1]) {
-            } else if (x + *(f32*)(p + 0x88) < pf[2]) {
-                if (y + *(f32*)(p + 0x8c) < pf[3]) {
-                    bVar1 = true;
-                }
+            if (!(x + *(f32*)(p + 0x80) >= pf[0]) && !(y + *(f32*)(p + 0x84) >= pf[1]) && x + *(f32*)(p + 0x88) < pf[2] && y + *(f32*)(p + 0x8c) < pf[3]) {
+                bVar1 = true;
             }
             if (!bVar1) {
                 detach__5ActorFv(this_);
