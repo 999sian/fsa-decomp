@@ -167,8 +167,7 @@ struct Tu802F5040Effects {
     Tu802F5040Effect entries[16];
 };
 struct Tu802F5040Tbl {
-    u8 pad0[4];
-    u8* m_buffers[9];
+    u8 pad0[0x28];
     u8* m_tbl[8];
 };
 
