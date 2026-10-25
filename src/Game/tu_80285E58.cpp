@@ -58,9 +58,9 @@ extern "C" void fn_802870C8(char* p = 0);
 extern "C" void fn_80265E88(char* p);
 void fn_8024CA20(char* p);
 extern "C" void fn_80285E58(char* p) {
-    s32* count = (s32*)(p + 0x11f4);
-    if (*count > 0) {
-        --*count;
+    s32 count = *(s32*)(p + 0x11f4);
+    if (count > 0) {
+        *(s32*)(p + 0x11f4) = count - 1;
         char* q = p;
         for (int i = 0; i < 80; i++) {
             *(s32*)(q + 0xdb0) = -1;
@@ -68,7 +68,7 @@ extern "C" void fn_80285E58(char* p) {
             q += 4;
         }
     } else {
-        fn_802870C8();
+        fn_802870C8(p);
     }
     fn_80265E88(p);
     fn_8024CA20(p);
