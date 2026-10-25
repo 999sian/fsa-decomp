@@ -1005,7 +1005,7 @@ extern "C" void fn_8035B0E0(u8* arg) {
     }
 }
 
-#pragma scheduling off
+#pragma opt_propagation off
 extern "C" void fn_8035B348(void) {
     u8* records = lbl_8050B9F8;
     StateTable8035B348* table = &lbl_804AD2D0;
