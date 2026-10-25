@@ -24,7 +24,7 @@ extern "C" f32 lbl_80543D4C;
 extern "C" f64 lbl_80543D50;
 extern "C" f64 lbl_80543D58;
 extern "C" u8 lbl_804AF86C[];
-extern "C" const u8 lbl_8050DB0C[];
+extern "C" u8 lbl_8050DB0C[];
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
