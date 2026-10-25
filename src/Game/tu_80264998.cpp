@@ -10,7 +10,7 @@ extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
 extern "C" unsigned char fn_8025F448(char* p);
-extern "C" int fn_8023DE58(int idx = 0);
+extern "C" int fn_8023DE58(int idx);
 extern "C" u16 fn_8022461C(void*, s32);
 extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 type, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
