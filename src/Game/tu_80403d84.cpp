@@ -616,8 +616,19 @@ extern "C" void fn_8042EB98(void* p);
 
 // States in which the "Pphu01" pointer pane is shown.
 static inline bool Tu411ShowState(s32 st) {
-	return st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 15) <= 3 ||
-	       (u32)(st - 20) <= 1 || st == 22;
+	if (st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 15) <= 3 ||
+	    (u32)(st - 20) <= 1 || st == 22) {
+		return true;
+	}
+	return false;
+}
+
+// Bit (idx * 4 + 3) of the current EC80 row's flag word at +0x28.
+static inline BOOL Tu411SlotDone(s32 idx) {
+	if (idx < 0 || idx > 7) {
+		return FALSE;
+	}
+	return ((1 << (idx * 4 + 3)) & *(u32*)((u8*)&lbl_8050EC80[lbl_8050EC80[0].selfIndex] + 0x28)) != 0;
 }
 
 extern "C" void fn_804111C4(u8* self) {
@@ -634,8 +645,11 @@ extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
 extern "C" void fn_80411230(u8* self) {
 	fn_8013B490(lbl_8053AB10);
 	s32 slot = *(s32*)(self + 0x340);
+	s32 st;
 	if (slot < 7 && !EC80Bit28(slot, 3) &&
-	    (Tu411ShowState(*(s32*)(self + 0x350)) || *(s32*)(self + 0x350) == 0x13)) {
+	    (Tu411ShowState(st = *(s32*)(self + 0x350)) || st == 0x13)) {
+		f32 y;
+		f32 x;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
 			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 1;
 		}
@@ -644,13 +658,15 @@ extern "C" void fn_80411230(u8* self) {
 		f32 h = p->y1 - p->y0;
 		p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
 		f32 w = p->x1 - p->x0;
-		f32 y = ((f32)lbl_8048C9DC[*(s32*)(self + 0x340)].y -
-		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[1]) - h * lbl_805438C8;
-		f32 x = ((f32)lbl_8048C9DC[*(s32*)(self + 0x340)].x -
-		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
+		y = ((f32)lbl_8048C9DC[*(s32*)(self + 0x340)].y -
+		     ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[1]) - h * lbl_805438C8;
+		x = ((f32)lbl_8048C9DC[*(s32*)(self + 0x340)].x -
+		     ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if (slot == 10 && *(s32*)(self + 0x348) == 2 && *(s32*)(lbl_80529DEC + 0x120) < 7 &&
 	           !EC80Bit28(*(s32*)(lbl_80529DEC + 0x120), 3) && Tu411ShowState(*(s32*)(self + 0x350))) {
+		f32 y;
+		f32 x;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
 			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 1;
 		}
@@ -661,10 +677,10 @@ extern "C" void fn_80411230(u8* self) {
 		s32 sx = *(s32*)(lbl_80529DEC + 0x120);
 		p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
 		f32 w = p->x1 - p->x0;
-		f32 y = ((f32)lbl_8048C9DC[sy].y -
-		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[1]) - h * lbl_805438C8;
-		f32 x = ((f32)lbl_8048C9DC[sx].x -
-		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
+		y = ((f32)lbl_8048C9DC[sy].y -
+		     ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[1]) - h * lbl_805438C8;
+		x = ((f32)lbl_8048C9DC[sx].x -
+		     ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 1) {
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 0;
@@ -679,7 +695,8 @@ extern "C" void fn_80411230(u8* self) {
 	box[3] = lbl_805438CC;
 	fn_8013B414(lbl_8053AB10, box, 1);
 	if (*(s32*)(self + 0x340) <= 7 || (*(s32*)(self + 0x340) == 10 && *(s32*)(self + 0x348) == 2)) {
-		if (Tu411ShowState(*(s32*)(self + 0x350)) || *(s32*)(self + 0x350) == 0x13) {
+		st = *(s32*)(self + 0x350);
+		if (Tu411ShowState(st) || st == 0x13) {
 			(*(s32*)(self + 0x358))++;
 			fn_804069E8(self);
 			if (*(s32*)(self + 0x350) != 0x13) {
@@ -696,6 +713,17 @@ extern "C" void fn_80411230(u8* self) {
 	}
 	if (*(s32*)(self + 0x350) == 0x11) {
 		fn_80406F68(self, *(f32*)(self + 0x3ac), *(f32*)(self + 0x3b0));
+		f32 box2[4];
+		box2[0] = lbl_80543898;
+		box2[1] = lbl_80543898;
+		box2[2] = lbl_805438C4;
+		box2[3] = lbl_805438CC;
+		fn_8013B414(lbl_8053AB10, box2, 1);
+	}
+	if (*(s32*)(self + 0x350) == 0x10) {
+		fn_80444650(*(void**)(self + 4));
+	} else if (*(s32*)(self + 0x350) == 0x12) {
+		fn_8042EB98(lbl_8053AEC4);
 	}
 }
 
