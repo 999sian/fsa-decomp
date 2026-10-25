@@ -177,17 +177,15 @@ void fn_8027E5BC(char* p, f32 f) {
 }
 #pragma opt_propagation reset
 void fn_8027E7E0(char* p) {
+    s32 area;
     s32 i;
     f32 minDist;
     if (S32(p, 0x11fc) >= 0) {
         if (!fn_80235580(S32(p, 0x11fc))) {
-            s32 area = S32(p, 0x3b4);
-            if (fn_8023DE58(S32(p, 0x11fc)) == area) {
-                JGeometry::TVec3<f32> a(*fn_8023E724(S32(p, 0x11fc)));
-                a.sub(VEC(p, 0x8));
-                JGeometry::TVec3<f32> d;
-                d = a;
-                if (!(PSVECMag(&d) > lbl_80540350)) {
+            area = S32(p, 0x3b4);
+            s32 room = fn_8023DE58(S32(p, 0x11fc));
+            if (room == area) {
+                if (!((*fn_8023E724(S32(p, 0x11fc)) - VEC(p, 0x8)).length() > lbl_80540350)) {
                     goto join;
                 }
             }
@@ -196,11 +194,7 @@ void fn_8027E7E0(char* p) {
     }
 join:
     if (S32(p, 0x11fc) >= 0) {
-        JGeometry::TVec3<f32> a(*fn_8023E724(S32(p, 0x11fc)));
-        a.sub(VEC(p, 0x8));
-        JGeometry::TVec3<f32> d;
-        d = a;
-        minDist = PSVECMag(&d);
+        minDist = (*fn_8023E724(S32(p, 0x11fc)) - VEC(p, 0x8)).length();
     } else {
         minDist = lbl_80540350;
     }
@@ -211,17 +205,9 @@ join:
         if (fn_802486A0(p) == 4 && fn_80248778(p) != fn_80240888(p)) {
             continue;
         }
-        JGeometry::TVec3<f32> a(*fn_8023E724(i));
-        a.sub(VEC(p, 0x8));
-        JGeometry::TVec3<f32> d;
-        d = a;
-        if (PSVECMag(&d) < minDist - lbl_80540354) {
+        if ((*fn_8023E724(i) - VEC(p, 0x8)).length() < minDist - lbl_80540354) {
             S32(p, 0x11fc) = i;
-            JGeometry::TVec3<f32> b(*fn_8023E724(i));
-            b.sub(VEC(p, 0x8));
-            JGeometry::TVec3<f32> e;
-            e = b;
-            minDist = PSVECMag(&e);
+            minDist = (*fn_8023E724(i) - VEC(p, 0x8)).length();
         }
     }
     if (S32(p, 0x11fc) < 0) {
@@ -229,11 +215,10 @@ join:
         S32(p, 0x3e8) = 2;
         return;
     }
-    JGeometry::TVec3<f32> a(*fn_8023E724(S32(p, 0x11fc)));
-    a.sub(VEC(p, 0x8));
-    JGeometry::TVec3<f32> d;
-    d = a;
-    s16 ang = (s16)(JMath::atanTable_.atan2_(d.y, d.x) * lbl_80540358);
+    JGeometry::TVec3<f32> d(*fn_8023E724(S32(p, 0x11fc)) - VEC(p, 0x8));
+    f32 angle = JMath::atanTable_.atan2_(d.y, d.x);
+    angle *= lbl_80540358;
+    s16 ang = (s16)angle;
     if (ang < -0x6000) {
         S32(p, 0x3dc) = 1;
         S32(p, 0x3e8) = 1;
