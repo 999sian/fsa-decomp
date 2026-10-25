@@ -84,6 +84,141 @@ extern "C" void fn_8015DEFC(char* this_) {
     }
 }
 
+extern "C" s32 fn_8013CC50(s32,void*,f32,s32,s32,s32,s32,s32,s32);
+extern "C" void fn_801F0E34(void*,u32,s32);
+extern "C" u8* fn_8020D58C();
+extern "C" void fn_8020D7D0(void*,s32);
+extern "C" s16 fn_801F6874(s32);
+extern const f32 lbl_8053D600;
+#pragma optimization_level 3
+extern "C" void fn_8015DF7C(void* this_) {
+ char* p=(char*)this_;
+ u8* base=lbl_80466110;
+ JGeometry::TVec2<f32> d;
+ JGeometry::TBox2f box;
+ JGeometry::TVec3<f32> pos;
+ box.set(*(JGeometry::TBox2f*)(p+0x60));
+ f32 y=*(f32*)(p+0x10);
+ f32 x=*(f32*)(p+0xc);
+ box.addPos(x,y);
+ if(*(s32*)(p+0x254)!=0){
+ s32 player=fn_8023B004(&box,*(s32*)(p+4));
+ if(player>=0){if(*(s32*)(p+0x244)==0){fn_801F0D20(p,3);fn_80230FD0(player,0x30009);*(s32*)(p+0x244)=1;}}
+ else *(s32*)(p+0x244)=0;
+ return;
+ }
+ if(*(s32*)(p+0x240)!=0){
+ f32 target=lbl_8053D59C;if(*(u16*)(p+0x94)==4)target=lbl_8053D5A0;
+ fn_801F71A4((f32*)(p+0x260),target,lbl_8053D5A4,lbl_8053D59C);
+ if(*(u16*)(p+0x94)!=4&&*(u16*)(p+0x94)!=5){
+ ((JGeometry::TBox2f*)(p+0x60))->set(((JGeometry::TBox2f*)(base+0x20))[*(s32*)(p+0x98)]);
+ if(*(s32*)(p+0x258)==1){((JGeometry::TVec2<f32>*)(p+0x60))->scale(lbl_8053D5A8);((JGeometry::TVec2<f32>*)(p+0x68))->scale(lbl_8053D5A8);}
+ if(*(f32*)(p+0x260)>lbl_8053D5AC){
+ fn_801F2B20(p,5);
+ if(!fn_801F2B7C(p,*(s32*)(p+0x114),-1,9)&&lbl_8053AAF8[0x7f]==1){
+ ((JGeometry::TBox2f*)(p+0x80))->set(((JGeometry::TBox2f*)(base+0x60))[*(s32*)(p+0x98)]);
+ if(*(s32*)(p+0x258)==1){((JGeometry::TVec2<f32>*)(p+0x80))->scale(lbl_8053D5A8);((JGeometry::TVec2<f32>*)(p+0x88))->scale(lbl_8053D5A8);}
+ box=*(JGeometry::TBox2f*)(p+0x80);box.addPos(x,y);
+ fn_80239914(&box,*(s32*)(p+4),*(u32*)(p+0x198));
+ }}
+ }else{
+ if(*(u16*)(p+0x94)==5){
+ ((JGeometry::TBox2f*)(p+0x60))->set(lbl_8053D5B0,lbl_8053D5B4,lbl_8053D5B8,lbl_8053D5BC);
+ ((JGeometry::TBox2f*)(p+0x80))->set(lbl_8053D5C0,lbl_8053D5C4,lbl_8053D5C8,lbl_8053D5B8);
+ }else{
+ ((JGeometry::TBox2f*)(p+0x60))->set(lbl_8053D5CC,lbl_8053D5CC,lbl_8053D5D0,lbl_8053D5D4);
+ ((JGeometry::TBox2f*)(p+0x80))->set(lbl_8053D5D8,lbl_8053D5D8,lbl_8053D5DC,lbl_8053D5E0);
+ }
+ box=*(JGeometry::TBox2f*)(p+0x60);box.addPos(x,y);
+ fn_801F2B20(p,5);
+ if(!fn_801F2B7C(p,*(s32*)(p+0x114),-1,9)){
+ for(s32 i=0;i<4;i++){
+ if(fn_8023F264(i)&&fn_8023DE58(i)!=8){
+ f32* src=fn_8023E724(i);d.set(src[0],src[1]);d.x-=*(f32*)(p+0xc);d.y-=*(f32*)(p+0x10);
+ if(d.squared()<lbl_8053D5E4){d.normalize();if(d.squared()>JGeometry::TUtilf::epsilon())d.scale(lbl_8053D5F8);pos.set(d.x,d.y,lbl_8053D5EC);fn_8023DFF4(i,&pos);}
+ }}}
+ }
+ }else{
+ fn_801F71A4((f32*)(p+0x260),lbl_8053D5EC,lbl_8053D5A4,lbl_8053D59C);
+ ((JGeometry::TBox2f*)(p+0x60))->set(lbl_8053D59C,lbl_8053D5FC,lbl_8053D59C,lbl_8053D5FC);
+ ((JGeometry::TBox2f*)(p+0x80))->set(lbl_8053D59C,lbl_8053D5FC,lbl_8053D59C,lbl_8053D5FC);
+ }
+
+ if(*(u16*)(p+0x94)!=4&&*(u16*)(p+0x94)!=5){
+ pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
+ JGeometry::TVec2<f32>* offset=(JGeometry::TVec2<f32>*)lbl_804A0310;
+ pos.x+=offset[*(s32*)(p+0x98)].x;pos.y+=offset[*(s32*)(p+0x98)].y;
+ if(*(f32*)(p+0x260)<lbl_8053D5A4){
+ JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x264);if(emitter)emitter->becomeInvalidEmitter();
+ if(*(s32*)(p+0x268)==0){
+ if(*(s32*)(p+0x264)!=0){
+ s32 id=0x1ad;if(*(s32*)(p+0x25c)==1)id=0x253;
+ *(s32*)(p+0x268)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
+ }else{
+ s32 id=0x1ae;if(*(s32*)(p+0x25c)==1)id=0x253;
+ *(s32*)(p+0x268)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
+ }
+ *(s32*)(p+0x264)=0;
+ }
+ if(*(s32*)(p+0x268)!=0){
+ s16 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
+ fn_8013CB44(*(s32*)(p+0x268),&pos,1,1,1);
+ JPAGetXYZRotateMtx(angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x268))->mGlobalRot);
+ }
+ }else{
+ JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x268);
+ if(emitter){emitter->becomeInvalidEmitter();*(s32*)(p+0x268)=0;}
+ if(*(s32*)(p+0x264)==0){
+ s32 id=0x1ac;if(*(s32*)(p+0x25c)==1)id=0x252;
+ *(s32*)(p+0x264)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
+ }
+ if(*(s32*)(p+0x264)!=0){
+ s16 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
+ fn_8013CB44(*(s32*)(p+0x264),&pos,1,1,1);
+ JPAGetXYZRotateMtx(angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x264))->mGlobalRot);
+ }
+ if(*(f32*)(p+0x60)!=lbl_8053D59C&&*(f32*)(p+0x68)!=lbl_8053D5FC){
+ s32 room=*(s32*)(p+0x198);u8* g=fn_8020D58C();fn_8020D7D0(g+4+g[0]*0x784,room);fn_801F0E34(p,0x30011,0);
+ }
+ }
+ if(++*(s32*)(p+0x24c)>10){
+ s32 count=5;if(*(f32*)(p+0x260)<lbl_8053D5A4)count=1;
+ for(s32 i=0;i<count;i++){
+ pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
+ s16 a=fn_801F6874(*(s32*)(p+0x98));
+ f32 distance=lbl_8053D5F8*(f32)i;
+ pos.x+=distance*JMath::sincosTable_.mTable[(u16)a>>5].first;
+ a=fn_801F6874(*(s32*)(p+0x98));
+ pos.y+=distance*JMath::sincosTable_.mTable[(u16)a>>5].second;
+ fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D59C,0x54d,1,1,0,0,1);
+ }
+ *(s32*)(p+0x24c)=0;
+ }
+ }else if(*(s32*)(p+0x264)!=0){
+ (*(JPABaseEmitter**)(p+0x264))->mGlobalPrmClr.a=(u8)(lbl_8053D600**(f32*)(p+0x260));
+ (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.x=*(f32*)(p+0x260);
+ (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.y=*(f32*)(p+0x260);
+ (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.x=*(f32*)(p+0x260);
+ (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.y=*(f32*)(p+0x260);
+ if(*(f32*)(p+0x260)>lbl_8053D5A4){
+ if(++*(s32*)(p+0x24c)>10){
+ for(s32 i=0,angle=0;i<8;i++,angle+=0x2000){
+ pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
+ f32 distance=*(u16*)(p+0x94)==5?lbl_8053D5B8:lbl_8053D5E0;
+ pos.x+=distance*JMath::sincosTable_.mTable[(u16)angle>>5].first;
+ pos.y+=distance*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+ fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D59C,0x54d,1,1,0,0,1);
+ }
+ *(s32*)(p+0x24c)=0;
+ }
+ if(*(f32*)(p+0x60)!=lbl_8053D59C&&*(f32*)(p+0x68)!=lbl_8053D5FC){
+ s32 room=*(s32*)(p+0x198);u8* g=fn_8020D58C();fn_8020D7D0(g+4+g[0]*0x784,room);fn_801F0E34(p,0x30011,0);
+ }
+ }
+ }
+}
+#pragma optimization_level 4
+
 struct FlmeColor {
     FlmeColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
     u8 r, g, b, a;
@@ -377,3 +512,4 @@ extern "C" void fn_8015EA2C(char* p) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
