@@ -2,14 +2,24 @@
 
 #include "types.h"
 
+struct AnimTables8021C848 {
+    int durations[7];
+    int frames0[4][1];
+    int frames1[4][7];
+    int frames2[4][2];
+};
+
 extern "C" char lbl_8046A688[];
 extern "C" int lbl_8053FD20;
 extern "C" int lbl_8053FD24;
+#pragma opt_propagation off
 extern "C" u8 fn_8021C848(int* param_1) {
+    int r;
+    int n;
     char* base = lbl_8046A688;
 
     if (*(u8*)(param_1 + 5) == 0) {
-        int n = 0;
+        n = 0;
         switch (param_1[0]) {
         case 0:
             n = 1;
@@ -44,23 +54,30 @@ extern "C" u8 fn_8021C848(int* param_1) {
         }
     }
 
-    int r = 0;
+    r = 0;
     switch (param_1[0]) {
     case 0:
-        r = *(int*)(base + 0x1c + param_1[4] * 4 + param_1[2] * 4);
+        r = param_1[4];
+        base += 0x1c;
+        r *= 4;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
     case 1:
-        r = *(int*)(base + 0x2c + param_1[4] * 0x1c + param_1[2] * 4);
+        r = param_1[4];
+        base += 0x2c;
+        r *= 0x1c;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
     case 2:
-        r = *(int*)(base + 0x9c + param_1[4] * 8 + param_1[2] * 4);
+        r = param_1[4];
+        base += 0x9c;
+        r *= 8;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
     }
     param_1[1] = r;
     return *(u8*)(param_1 + 5);
 }
-
-#pragma opt_propagation off
 extern "C" void fn_8021C9C4(int* param_1, int param_2)
 {
     int r = 0;
@@ -159,3 +176,29 @@ extern "C" void fn_8021CBA0(int* param_1)
     param_1[4] = 0;
     *(char*)(param_1 + 5) = 0;
 }
+
+extern "C" void __register_global_object(void*, void*, void*);
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" char lbl_804CE240[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" void fn_8021CBC0(void)
+{
+    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr,
+                                 (void*)__dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, lbl_804CE240);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack,
+                                 (void*)__dt__35JASMemPool_MultiThreaded_8JASTrackFv, lbl_804CE240 + 0xc);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+}
+
