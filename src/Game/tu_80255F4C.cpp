@@ -281,26 +281,19 @@ extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
         return 0;
     }
     for (i = 0; i < 8; i++) {
-        f32 squareY;
-        f32 squareX;
-        f32 sine;
-        f32 cosine;
-        f32 angle;
-        s32 ang;
-        const f32* trig;
         fn_8022E088(arg, i, &d);
         JMathInlineVEC::PSVECSubtract(&d, (Vec*)(p + 0xc), &d);
         d.z = 0.0f;
-        angle = JMath::atanTable_.atan2_(d.y, d.x);
+        f32 angle = JMath::atanTable_.atan2_(d.y, d.x);
         angle *= 10430.378f;
-        ang = (s32)angle - *(s16*)(p + 0x238);
-        squareX = d.x * d.x;
-        squareY = d.y * d.y;
+        s32 ang = (s32)angle - *(s16*)(p + 0x238);
+        const f32 squareX = d.x * d.x;
+        const f32 squareY = d.y * d.y;
         len = JGeometry::TUtilf::sqrt(squareX + squareY);
         d.z = 0.0f;
-        trig = (const f32*)&JMath::sincosTable_.mTable[(u16)ang >> 5];
-        cosine = trig[1];
-        sine = trig[0];
+        const f32* trig = (const f32*)&JMath::sincosTable_.mTable[(u16)ang >> 5];
+        const f32 cosine = trig[1];
+        const f32 sine = trig[0];
         d.x = len * cosine;
         d.y = len * sine;
         u8 inside = 0;
@@ -321,6 +314,7 @@ extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     }
     return 0;
 }
+#pragma opt_common_subs reset
 #pragma dont_inline reset
 
 extern char* lbl_8053AAF8;
