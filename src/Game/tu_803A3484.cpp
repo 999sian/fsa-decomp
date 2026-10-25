@@ -235,13 +235,6 @@ extern "C" void* create__12JKRSolidHeapFUlP7JKRHeapb(u32 size, void* parent, s32
 extern "C" void becomeCurrentHeap__7JKRHeapFv(void* heap);
 extern "C" void adjustSize__12JKRSolidHeapFv(void* heap);
 extern "C" void fn_8016A3BC(void* archive, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, void* heap, void* p0, void* p1, u32 g, void* p2, u32 h);
-static inline void* tuNewObj1c() {
-    void* p = __nw__FUl(0x1c);
-    if (p != NULL) {
-        fn_80428030(p);
-    }
-    return p;
-}
 struct TObj1c {
     TObj1c() { fn_80428030(this); }
     u8 pad[0x1c];
