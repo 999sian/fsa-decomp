@@ -329,16 +329,11 @@ static inline void t84PickTarget(char* p) {
                                             s32 l[12];
                   s32 n = 1;
           l[0] = 1;
-          l[n] = 2;
-          n++;
-          l[n] = 5;
-          n++;
-          l[n] = 6;
-          n++;
-          l[n] = 9;
-          n++;
-          l[n] = 10;
-          n++;
+          l[n++] = 2;
+          l[n++] = 5;
+          l[n++] = 6;
+          l[n++] = 9;
+          l[n++] = 10;
             if (n > 0) {
               *(u8*)(p + 0x334) = l[fn_801CD664(n)];
           } else {
