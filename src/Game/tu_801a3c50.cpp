@@ -5,6 +5,15 @@
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
 
+extern "C" s32 fn_8023AD54(void* box, s32 room, void* out);
+extern "C" s32 fn_8023B358(s32 id);
+extern "C" s32 fn_8023B5B4(s32 id);
+extern "C" void fn_80235B68(s32 id, s32 h);
+extern "C" void fn_801F3780(void* a, s32 v);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
+extern f32 lbl_8053E5E4;
+extern f32 lbl_8053E5E8;
+
 class SayaActor {
 public:
     virtual void v08(); virtual void v0C(); virtual void v10(); virtual void v14();
