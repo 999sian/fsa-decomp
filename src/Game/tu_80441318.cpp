@@ -72,6 +72,7 @@ extern "C" void __ptmf_scall(void* obj, s32 off);
 struct State_80441490 {};
 typedef void (State_80441490::*PMF80441490)();
 extern "C" PMF80441490 lbl_804B19BC[];
+#pragma opt_propagation off
 extern "C" void fn_80441490(u8* param_1) {
     u16 uVar2;
     u16 uVar3;
@@ -111,15 +112,17 @@ extern "C" void fn_80441490(u8* param_1) {
     } else if (*(u8*)(lbl_8053AD78 + 0xed) != 0) {
         s32 halfW;
         s32 halfH;
-        u8 flag = *(u8*)(lbl_8053AD78 + 0xee);
+        s32 v;
         uVar2 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
         uVar3 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
         halfW = (int)(uVar2 - 0x16d) / 2;
         *(s32*)(param_1 + 4) = *(s32*)(lbl_8053AD78 + 0x110);
         halfH = (int)(uVar3 - 0x105) / 2;
-        if (*(s32*)(param_1 + 4) >= 0) {
+        v = *(s32*)(param_1 + 4);
+        if (v >= 0) {
+            u8 flag = *(u8*)(lbl_8053AD78 + 0xee);
             u8* p = *(u8**)(lbl_8053AB10 + 0x20);
-            *(s32*)(p + 0x22c) = *(s32*)(param_1 + 4);
+            *(s32*)(p + 0x22c) = v;
             *(s32*)(p + 0x238) = halfW;
             *(s32*)(p + 0x23c) = halfH;
             *(s32*)(p + 0x240) = 0x16d;
@@ -130,14 +133,18 @@ extern "C" void fn_80441490(u8* param_1) {
         if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) {
             s32 halfW;
             s32 halfH;
+            u8* p;
+            s32 v;
             *(s32*)(param_1 + 4) = lbl_8053A160;
-            if (*(s32*)(param_1 + 4) >= 0) {
-                u8* p = *(u8**)(lbl_8053AB10 + 0x20);
-                uVar2 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
-                uVar3 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
-                halfW = (int)(uVar2 - 0x16d) / 2;
-                halfH = (int)(uVar3 - 0x105) / 2;
-                *(s32*)(p + 0x22c) = *(s32*)(param_1 + 4);
+            v = *(s32*)(param_1 + 4);
+            if (v >= 0) {
+                u8* mode = *(u8**)(sManager__8JUTVideo + 4);
+                u16 w = *(u16*)(mode + 4);
+                u16 h = *(u16*)(mode + 6);
+                p = *(u8**)(lbl_8053AB10 + 0x20);
+                halfW = (int)(w - 0x16d) / 2;
+                halfH = (int)(h - 0x105) / 2;
+                *(s32*)(p + 0x22c) = v;
                 *(s32*)(p + 0x238) = halfW;
                 *(s32*)(p + 0x23c) = halfH;
                 *(s32*)(p + 0x240) = 0x16d;
@@ -149,11 +156,11 @@ extern "C" void fn_80441490(u8* param_1) {
             if (fn_802DCD0C() == 1) {
                 param_1[0xe] = 0;
             }
-            __ptmf_scall(param_1, param_1[0xe] * 0xc);
+            (((State_80441490*)param_1)->*lbl_804B19BC[param_1[0xe]])();
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8044172C(void) {
 }
 
