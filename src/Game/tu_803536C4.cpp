@@ -12,6 +12,11 @@ struct FsaResourceManager {
 };
 
 extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, DrawRec*);
+struct SpriteTables {
+    s32 frames[8];
+    s32 bodyFrames[4];
+    char resourceName[1];
+};
 extern "C" s32 lbl_80472240[];
 extern f32 lbl_80542710;
 extern f32 lbl_80542714;
@@ -35,6 +40,7 @@ extern "C" Actor* fn_803536C4(Actor* p, s16 n) {
     return p;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80353724(u8* p) {
     s32* tbl = lbl_80472240;
     JGeometry::TVec3f top = *(Vec*)(p + 0xc);
@@ -67,7 +73,8 @@ extern "C" void fn_80353724(u8* p) {
             pos.y += lbl_80542710;
             break;
         }
-        frame = *(s32*)(p + 0x244) + tbl[*(s32*)(p + 0x24c)];
+        const s32* __restrict frames = tbl;
+        frame = *(s32*)(p + 0x244) + frames[*(s32*)(p + 0x24c)];
         if (*(s32*)(p + 4) < 8) {
             void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, (char*)tbl + 0x30);
             fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, frame, lbl_80542720, lbl_80542720, &rec);
@@ -87,13 +94,14 @@ extern "C" void fn_80353724(u8* p) {
         rec.ids[2] = 9;
         break;
     }
-    frame = tbl[8 + *(s32*)(p + 0x23c)] + 0xc0;
+    const s32* __restrict frames2 = tbl + 8;
+    frame = frames2[*(s32*)(p + 0x23c)] + 0xc0;
     if (*(s32*)(p + 4) < 8) {
         void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, (char*)tbl + 0x30);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, res, frame, lbl_80542720, lbl_80542720, &rec);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80353A50(u8* p) {
     ((JGeometry::TVec3f*)(p + 0xc))->add(*(JGeometry::TVec3f*)(p + 0x3c));
     if (*(f32*)(p + 0x254) - lbl_80542724 > *(f32*)(p + 0xc)) {
