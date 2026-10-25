@@ -5,6 +5,13 @@
 #undef Vec
 
 
+extern "C" u8 fn_8023077C();
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" void fn_80230498(s32, const JGeometry::TVec3f&, s32, s32, s32, s32, s32);
+extern "C" void fn_80230FD0(s32, u32);
+extern "C" u8 fn_80230534(s32);
+extern "C" const f32 lbl_80542E8C;
+extern "C" const s32 lbl_80475070[];
 extern "C" char lbl_804AE5C8[];
 extern "C" char lbl_804750AC[];
 extern "C" f32 lbl_80475060[];
