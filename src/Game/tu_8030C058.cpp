@@ -17,8 +17,6 @@ extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 
 struct Vec3f { f32 x, y, z; };
-
-static inline f32 screenBoundToFloat(u32 value) { return (f32)value; }
 extern "C" void GXSetZScaleOffset(f32 scale, f32 offset);
 
 static inline bool fn_8030C210_contains(u8* p, f32 x, f32 y) {
@@ -87,7 +85,8 @@ extern "C" u8 fn_8030C210(u8* p, f32* v) {
     return ret;
 }
 
-#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
     f32 pos[3];
     fn_8030C5F0(p, r4, 1, 0, pos);
@@ -98,7 +97,8 @@ extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
     }
     return ret;
 }
-#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 extern "C" void fn_8030C380(u8* p, f32* out) {
     f32 scale = lbl_805416C8;
     f32 x0 = *(f32*)(p + 0x164);
