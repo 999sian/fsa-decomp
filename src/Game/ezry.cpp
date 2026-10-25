@@ -179,9 +179,6 @@ struct EzrySaveRecord { u8 pad[0x87]; u8 flags; u8 tail[0x40]; };
 
 #define EZRY_RND() (((EzryRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1())
 
-static inline void EzryNotifyCount(void* mgr, const u8* count) {
-    fn_8043D67C(mgr, 0x339, 0, *count);
-}
 
 #pragma opt_lifetimes off
 extern "C" void fn_80161290(char* p) {
@@ -255,10 +252,13 @@ extern "C" void fn_80161290(char* p) {
     s32 st = *(s32*)(p + 0x230);
     if (st == 0 || st == 5) {
         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-            u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-            if (!(e[0x87] & 1)) {
-                e[0x87] |= 1;
-                u8* g = lbl_80529DEC;
+            register u32 flags;
+            register u8* g;
+            register u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+            flags = e[0x87];
+            if (!(flags & 1)) {
+                e[0x87] = flags | 1;
+                g = lbl_80529DEC;
                 fn_8043D67C(lbl_8053AED0, 0x339, 0, g[0x24f]);
             }
         }
