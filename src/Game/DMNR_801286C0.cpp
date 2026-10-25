@@ -33,8 +33,6 @@ extern "C" const s32 lbl_80464FC0[];
 
 extern "C" char lbl_8049E500[];
 struct DMNRSndObj {
-    virtual void v00();
-    virtual void v01();
     virtual void v02();
     virtual void v03();
     virtual void v04();
