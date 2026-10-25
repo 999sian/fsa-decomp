@@ -122,10 +122,10 @@ public:
     /* 0x12 */ virtual int v18(int a, f32* b);
     /* 0x13 */ virtual void v19();
     /* 0x14 */ virtual int v20();
-    /* 0x15 */ virtual void v21();
-    /* 0x16 */ virtual void v22();
-    /* 0x17 */ virtual void v23();
-    /* 0x18 */ virtual void v24();
+    /* 0x15 */ virtual u8 v21();
+    /* 0x16 */ virtual u8 v22();
+    /* 0x17 */ virtual s32 v23();
+    /* 0x18 */ virtual u8 v24();
     /* 0x19 */ virtual void v25();
     /* 0x1A */ virtual void v26();
     /* 0x1B */ virtual void v27();
@@ -138,7 +138,7 @@ public:
     /* 0x22 */ virtual void v34();
     /* 0x23 */ virtual void v35();
     /* 0x24 */ virtual void v36();
-    /* 0x25 */ virtual void v37();
+    /* 0x25 */ virtual void v37(u8 a);
     /* 0x26 */ virtual void v38();
 
     /* 0x004 */ u8 mActor[0x230 - 0x4]; // Actor fields (see  Actor.h)
