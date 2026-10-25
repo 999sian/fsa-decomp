@@ -121,7 +121,6 @@ extern "C" void fn_801E6234(char* this_) {
 extern "C" void fn_801E62D4(Actor* this_) {
     fn_8013CC50(this_->field_04, &this_->field_0C, 1.0f, 0x259, 0, 0, 0, 0, 1);
 }
-
 extern "C" void fn_801E631C(void* this_) {
     fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 1.0f, 0x25a, 0, 0, 0, 0, 1);
     fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 1.0f, 0x25b, 0, 0, 0, 0, 1);
