@@ -1595,6 +1595,69 @@ extern "C" s32 fn_803075AC(s32 caller, s32 room, const void* __restrict pos, s32
     }
     return ok;
 }
+
+#pragma opt_propagation on
+extern "C" s32 fn_80307830(s32 caller, s32 room, const void* __restrict pos, s32 id, u8 on, u8 mode, u8 b, u8 kind) {
+    s32 c;
+    int k;
+    int ok;
+    s32 i;
+    bool enabled;
+    int n;
+    register Elem28_80301CD0* base;
+    Elem28_80301CD0* e;
+
+    if (room < 8) {
+        return 0;
+    }
+    enabled=on!=0;
+    ok=0;
+    k=(kind&3)|4;
+    for (i = 0; i < 4; i++) {
+        s32 r = fn_8022EA0C(i);
+        if (((*((u8*)lbl_8053AAF8 + 0x82)) & (u8)(1 << i)) == 0) {
+            continue;
+        }
+        if (fn_8023DE58(r) != room) {
+            continue;
+        }
+        base = lbl_80504A38[i];
+        e=base;
+        n = 0;
+        for(;n<16;e++,n++) { if(e->f24==1 && e->f4==caller) break; }
+        if (n < 16) {
+            e->f8 = room;
+            *(JGeometry::TVec3<f32>*)&e->f10 = *(const JGeometry::TVec3<f32>*)pos;
+            ok = 1;
+            e->f1c = id;
+            e->f21 = enabled;
+            e->f22 = b;
+        } else {
+            e = base;
+            for (c = 0x10; c != 0; c--) {
+                if (e->f24 != 1) {
+                    e->f4=caller;
+                    e->f8=room;
+                    *(JGeometry::TVec3<f32>*)&e->f10 = *(const JGeometry::TVec3<f32>*)pos;
+                    e->f1c=id;
+                    e->f24=1;
+                    e->f0=1;
+                    if(mode) {
+                        if(kind==4) e->f20=3;
+                        else e->f20=(s32)k;
+                    } else e->f20=2;
+                    e->f21=enabled;
+                    e->f23=0;
+                    e->f22=b;
+                    ok=1;
+                    break;
+                }
+                ++e;
+            }
+        }
+    }
+    return ok;
+}
 #pragma opt_propagation reset
 // fn_80307AC8 - effect spawn dispatcher: ids below 0x45 go to the small
 // effect table (fn_80307830), others to the generic effect spawner.
