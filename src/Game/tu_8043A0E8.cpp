@@ -480,7 +480,8 @@ extern "C" void fn_8043BB84(u8* self)
     }
 }
 
-extern "C" s32 fn_8043CB24(FsaMenuNumber* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 f1, f32 f2, const f32 f3) {
+#pragma opt_strength_reduction off
+extern "C" s32 fn_8043CB24(FsaMenuNumber* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 f1, f32 f2, f32 f3) {
     u8 n = self->used;
     if (n < 10) {
         int count = p5;
@@ -523,7 +524,7 @@ extern "C" s32 fn_8043CB24(FsaMenuNumber* self, s32 value, u8 p3, u8 p4, u8 p5, 
     }
     return 0;
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_8043CDA0(u8* self) {
 	f32 x;
 	f32 y;
@@ -988,6 +989,7 @@ extern "C" void fn_804435E4(void* p);
 extern "C" void draw__7RupyNumFv(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 extern const f64 lbl_80543C98;
+#pragma inline_depth(0)
 extern "C" void fn_8043DC98(u8* param_1) {
     struct VObj {
         virtual void v00();
@@ -1105,15 +1107,12 @@ extern "C" void fn_8043DC98(u8* param_1) {
     }
     if (*(u8*)(param_1 + 0x257) != 0) {
         fn_8013B490(lbl_8053AB10);
-        void* screen = *(void**)(param_1 + 0xc);
-        u32 t3 = 0x74613035;
-        u32 t2 = 0x4E6461;
-        void* pane = ((VFn15)(*(void***)screen)[15])(screen, 0x4E0000, t2, t3);
-        ((VFn4)(*(void***)pane)[4])(pane, *(f32*)(param_1 + 0x110) + (f32)*(s16*)(lbl_8050DB0C + 0x2a2), *(f32*)(param_1 + 0x114) + (f32)*(s16*)(lbl_8050DB0C + 0x2a4));
+        J2DPane* pane = (*(J2DScreen**)(param_1 + 0xc))->search(0x004E646174613035ULL);
+        pane->move(*(f32*)(param_1 + 0x110) + (f32)*(s16*)(lbl_8050DB0C + 0x2a2), *(f32*)(param_1 + 0x114) + (f32)*(s16*)(lbl_8050DB0C + 0x2a4));
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(param_1 + 0xc), lbl_80543C88, lbl_80543C88, *(void**)((u8*)lbl_8053AB10 + 0x10));
     }
 }
-
+#pragma inline_depth(8)
 extern "C" u8 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
     f32 a = 94.0f;
     f32 b = 61.5f;
