@@ -112,13 +112,6 @@ extern "C" void fn_80170008(char* self) {
     *(f32*)(self + 0x14) = z;
 }
 
-struct Slr3VT {
-    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
-    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
-    virtual void v8(); virtual void v9(); virtual void v10();
-    virtual u8 check();
-};
-
 extern "C" void fn_801719C0(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x108) > 0) {
