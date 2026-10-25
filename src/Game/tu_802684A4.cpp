@@ -61,6 +61,14 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
     return in;
 }
 
+inline bool pointInRect(const Vec2f& p, const HitRect* r) {
+    bool in = false;
+    if (p.x >= r->x0 && p.y >= r->y0 && p.x < r->x1 && p.y < r->y1) {
+        in = true;
+    }
+    return in;
+}
+
 extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     for (s32 i = 0; i < 80; i++) {
         if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
@@ -274,6 +282,108 @@ extern "C" u8 fn_8026E5F8(u8* p, Vec2f* pos) {
         }
     }
     return 0;
+}
+
+extern "C" void fn_802381B8(void*);
+extern "C" u8 fn_80241230(void*);
+extern "C" u8 fn_80240F28(void*);
+extern "C" s32 fn_802415CC(void*);
+extern "C" u8 fn_8024F5E4(void*);
+extern "C" u8 fn_8026EB1C(u8* p, u16 param);
+extern "C" u16 fn_802265FC(Vec2f*, s32);
+extern "C" u16 fn_80226998(Vec2f*, s32);
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8 lbl_80529DEC[];
+extern Vec2f lbl_8046B9C8[];
+extern "C" void fn_8026E68C(u8* p, u16 key) {
+    u8* pl;
+    fn_802381B8(*(void**)(*(u8**)(p + 4) + 4));
+    if (fn_80241230(*(void**)(p + 4))) {
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+        return;
+    }
+    if (fn_80240F28(*(void**)(p + 4)) && fn_802415CC(*(void**)(p + 4)) >= 2) {
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+        return;
+    }
+    if (!fn_80240670(*(void**)(p + 4)) &&
+        (fn_8026EB1C(p, key) || fn_8024F5E4(*(void**)(p + 4)) || fn_80240F28(*(void**)(p + 4)) ||
+         (lbl_8053AAF8[0x7f] && *(s32*)(lbl_80529DEC + 0x118) == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 1))) {
+        Vec2f pos;
+        pos.x = *(f32*)(p + 8);
+        pos.y = *(f32*)(p + 0xc);
+        if (key == 0x12 || key == 0x13) {
+            pos.y += 16.0f;
+        }
+        bool found = false;
+        do {
+            pos.x += lbl_8046B9C8[key - 0x10].x;
+            pos.y += lbl_8046B9C8[key - 0x10].y;
+            s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
+            u8* base = fn_802D6A9C();
+            HitRect* r = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
+            if (!rectContains(*r, &pos)) {
+                break;
+            }
+            u16 t = fn_802265FC(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4));
+            if (t == 0 || t == 3 || t == 0xd || t == 0x39 || t == 0x3a) {
+                found = true;
+            }
+        } while (!found);
+        if (!found) {
+            if (key == 0x12 || key == 0x13) {
+                pos.x = *(f32*)(p + 8);
+                pos.y = *(f32*)(p + 0xc);
+                do {
+                    pos.x += lbl_8046B9C8[key - 0x10].x;
+                    pos.y += lbl_8046B9C8[key - 0x10].y;
+                    s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
+                    u8* base = fn_802D6A9C();
+                    HitRect* r = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
+                    if (!rectContains(*r, &pos)) {
+                        return;
+                    }
+                    u16 t = fn_802265FC(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4));
+                    if (t == 0 || t == 3 || t == 0xd || t == 0x39 || t == 0x3a) {
+                        found = true;
+                    }
+                } while (!found);
+            } else {
+                return;
+            }
+        }
+        pos.x = 8.0f + (f32)((u32)(s32)pos.x & ~0xf);
+        pos.y = 8.0f + (f32)((u32)(s32)pos.y & ~0xf);
+        if (fn_80226998(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4)) == 0x17e) {
+            pos.x += 8.0f;
+        } else if (fn_80226998(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4)) == 0x17f) {
+            pos.x -= 8.0f;
+        }
+        pl = *(u8**)(p + 4);
+        bool ok;
+        if (!pl[0xd64]) {
+            if (fn_80251AEC(pl, 0x38)) {
+                *(f32*)(pl + 0x324) = pos.x;
+                *(f32*)(pl + 0x328) = pos.y;
+                ok = true;
+                goto done;
+            }
+        } else {
+            if (fn_80251AEC(pl, 0x13)) {
+                *(f32*)(pl + 0x324) = pos.x;
+                *(f32*)(pl + 0x328) = pos.y;
+                ok = true;
+                goto done;
+            }
+        }
+        ok = false;
+    done:
+        if (ok && key == 0x11) {
+            (*(u8**)(p + 4))[0x441] = 1;
+        }
+    } else {
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    }
 }
 
 extern "C" u8 fn_80250D30(void*);
