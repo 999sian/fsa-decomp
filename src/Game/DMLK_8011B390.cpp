@@ -39,9 +39,12 @@ static inline void dmlkRequestBounds(u8* p) {
         view[0x7f6] = 0;
     }
 }
+static inline void dmlkStoreBounds(u8* p, const f32 x0, const f32 x1, const f32 y0, const f32 y1) {
+    ((JGeometry::TBox2f*)(p + 0x250))->set(x0, y0, x1, y1);
+}
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
-    ((JGeometry::TBox2f*)(p + 0x250))->set(pos[0] - lbl_8053C7F0,
-        pos[1] - lbl_8053C7E8, lbl_8053C7F0 + pos[0], lbl_8053C7E8 + pos[1]);
+    dmlkStoreBounds(p, pos[0] - lbl_8053C7F0, lbl_8053C7F0 + pos[0],
+                   pos[1] - lbl_8053C7E8, lbl_8053C7E8 + pos[1]);
 }
 
 struct DMLKResMgr {
@@ -287,9 +290,7 @@ extern "C" void fn_8011B3F0(u8* p) {
     }
     switch (*(s32*)(p + 0x238)) {
     case 7: {
-        s32 current = *(s32*)((u8*)fn_8011921C() + 8);
-        s32 start = lbl_80464AF8[7];
-        s32 elapsed = current - start;
+        s32 elapsed = dmlkElapsed(*(s32*)((u8*)fn_8011921C() + 8));
         if (elapsed < 180) {
             dmlkRequestBounds(p);
             break;
@@ -343,13 +344,15 @@ extern "C" void fn_8011B3F0(u8* p) {
     case 11:
         view = *(u8**)(lbl_8053AB10 + 0x24);
         if (view[0x840] == 0) {
-            view[0x840] = 1;
             f32 step = lbl_8053C7F8;
+            view[0x840] = 1;
             f32 zero = lbl_8053C7FC;
-            *(f32*)(view + 0x84c) = *(f32*)(p + 0xc);
-            *(f32*)(view + 0x844) = *(f32*)(p + 0xc);
-            *(f32*)(view + 0x850) = *(f32*)(p + 0x10);
-            *(f32*)(view + 0x848) = *(f32*)(p + 0x10);
+            f32 x = *(f32*)(p + 0xc);
+            *(f32*)(view + 0x84c) = x;
+            *(f32*)(view + 0x844) = x;
+            f32 y = *(f32*)(p + 0x10);
+            *(f32*)(view + 0x850) = y;
+            *(f32*)(view + 0x848) = y;
             *(f32*)(view + 0x854) = step;
             *(f32*)(view + 0x1d4) = zero;
             *(f32*)(view + 0x1d8) = zero;
