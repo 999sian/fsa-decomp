@@ -293,6 +293,11 @@ public:
     virtual void v46();
     virtual void v47();
     virtual void v48(u32, void*);
+    virtual void v49();
+    virtual void v50();
+    virtual void v51();
+    virtual void v52(u16);
+    virtual void v53(u16);
 };
 class J3DIndBlock {
 public:
