@@ -219,22 +219,30 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
     return 1;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8010C6E4(u8* this_) {
     v06__5ActorFv(this_);
     DrawRec rec;
     DrawRec shadow;
     JGeometry::TMtx34f matrix;
     JGeometry::TMtx34f shadowMatrix;
+    f32 sx;
+    f32 zero;
     if (!(((JGeometry::TVec3f*)(this_+0x54))->squared() <= JGeometry::TUtilf::epsilon())) {
-        matrix.mMtx[0][3]=0.0f; matrix.mMtx[1][3]=0.0f; matrix.mMtx[2][3]=0.0f;
-        matrix.mMtx[0][0]=*(f32*)(this_+0x54); matrix.mMtx[0][1]=0.0f; matrix.mMtx[0][2]=0.0f;
-        matrix.mMtx[1][0]=0.0f; matrix.mMtx[1][1]=*(f32*)(this_+0x58); matrix.mMtx[1][2]=0.0f;
-        matrix.mMtx[2][0]=0.0f; matrix.mMtx[2][1]=0.0f; matrix.mMtx[2][2]=*(f32*)(this_+0x5c);
+        zero=lbl_8053C490;
+        matrix.mMtx[0][3]=zero; matrix.mMtx[1][3]=zero; matrix.mMtx[2][3]=zero;
+        f32 sy=*(f32*)(this_+0x58);
+        sx=*(f32*)(this_+0x54);
+        f32 sz=*(f32*)(this_+0x5c);
+        matrix.mMtx[0][0]=sx; matrix.mMtx[0][1]=zero; matrix.mMtx[0][2]=zero;
+        matrix.mMtx[1][0]=zero; matrix.mMtx[1][1]=sy; matrix.mMtx[1][2]=zero;
+        matrix.mMtx[2][0]=zero; matrix.mMtx[2][1]=zero; matrix.mMtx[2][2]=sz;
         rec.w18=&matrix;
-        shadowMatrix.mMtx[0][3]=0.0f; shadowMatrix.mMtx[1][3]=lbl_8053C4D8* *(f32*)(this_+0x260); shadowMatrix.mMtx[2][3]=0.0f;
-        shadowMatrix.mMtx[0][0]=*(f32*)(this_+0x54); shadowMatrix.mMtx[0][1]=0.0f; shadowMatrix.mMtx[0][2]=0.0f;
-        shadowMatrix.mMtx[1][0]=0.0f; shadowMatrix.mMtx[1][1]=*(f32*)(this_+0x58); shadowMatrix.mMtx[1][2]=0.0f;
-        shadowMatrix.mMtx[2][0]=0.0f; shadowMatrix.mMtx[2][1]=0.0f; shadowMatrix.mMtx[2][2]=*(f32*)(this_+0x5c);
+        f32 ty=lbl_8053C4D8* *(f32*)(this_+0x260);
+        shadowMatrix.mMtx[0][3]=zero; shadowMatrix.mMtx[2][3]=zero; shadowMatrix.mMtx[1][3]=ty;
+        shadowMatrix.mMtx[0][0]=sx; shadowMatrix.mMtx[0][1]=zero; shadowMatrix.mMtx[0][2]=zero;
+        shadowMatrix.mMtx[1][0]=zero; shadowMatrix.mMtx[1][1]=sy; shadowMatrix.mMtx[1][2]=zero;
+        shadowMatrix.mMtx[2][0]=zero; shadowMatrix.mMtx[2][1]=zero; shadowMatrix.mMtx[2][2]=sz;
         shadow.w18=&shadowMatrix;
     }
     ((u8*)&shadow.w10)[3]=0x80;
@@ -242,12 +250,12 @@ extern "C" void fn_8010C6E4(u8* this_) {
     void* pos=this_+0xc;
     s32 frame=*(s32*)(this_+0x284)+0x165;
     if (*(s32*)(this_+4)<8) {
-        void* mgr=*(void**)((u8*)lbl_8053AAF8+0xa4);
-        void* res=((void*(*)(void*,u32,void*))(*(void***)mgr)[6])(mgr,'SOB ',lbl_80464334);
+        SHBLResourceMgr* mgr=*(SHBLResourceMgr**)((u8*)lbl_8053AAF8+0xa4);
+        void* res=mgr->get('SOB ',lbl_80464334);
         fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),pos,res,frame,&rec,lbl_8053C4D4,lbl_8053C4D4);
     }
 }
-
+#pragma opt_propagation reset
 extern f32 lbl_8053C4C4;
 extern f32 lbl_8053C4E4;
 extern "C" void v03__5ActorFv(void* this_);
