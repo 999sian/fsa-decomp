@@ -168,6 +168,18 @@ extern "C" void fn_801A96B4(void* this_) {
     fn_8013CB44(*(void**)(t + 0x2b8), t + 0xc, 0, 0, 1);
 
     switch (*(s32*)(t + 0x250)) {
+    case 4:
+        *(s32*)(t + 0x248) = 0x100;
+        break;
+    case 3:
+        *(s32*)(t + 0x248) = 0x200;
+        break;
+    case 2:
+        *(s32*)(t + 0x248) = 0x300;
+        break;
+    case 1:
+        *(s32*)(t + 0x248) = 0x400;
+        break;
     case 0:
         if (*(s32*)(t + 0x230) != 4) {
             if (*(s32*)(t + 0x2b8) != 0) {
@@ -176,18 +188,6 @@ extern "C" void fn_801A96B4(void* this_) {
             }
             *(s32*)(t + 0x230) = 3;
         }
-        break;
-    case 1:
-        *(s32*)(t + 0x248) = 0x400;
-        break;
-    case 2:
-        *(s32*)(t + 0x248) = 0x300;
-        break;
-    case 3:
-        *(s32*)(t + 0x248) = 0x200;
-        break;
-    case 4:
-        *(s32*)(t + 0x248) = 0x100;
         break;
     }
 
@@ -206,15 +206,15 @@ extern "C" void fn_801A96B4(void* this_) {
             c = fn_801F666C(fn_801F856C(), id);
             if (c != 0) {
                 v = (f32*)(t + 0x280 + i * 0xc);
-                ang = (s32)*(f32*)(t + 0x2b4) + (u16)(i * 0x4000);
                 if (*(u8*)(t + 0x26c) == 1) {
                     *(u8*)((char*)c + 0x26c) = 1;
                     *(s32*)(t + 0x238) = 50;
                 }
-                *(f32*)((char*)c + 0x2b4) = (f32)((u16)ang + 0x8000);
+                ang = (s32)*(f32*)(t + 0x2b4) + (u16)(i * 0x4000);
                 v[0] = *(f32*)(t + 0xc);
                 v[1] = *(f32*)(t + 0x10);
                 v[2] = *(f32*)(t + 0x14);
+                *(f32*)((char*)c + 0x2b4) = (f32)(s32)((u16)ang + 0x8000);
                 v[0] = v[0] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
                 v[1] = v[1] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
                 *(f32*)((char*)c + 0xc) = v[0];
@@ -224,17 +224,17 @@ extern "C" void fn_801A96B4(void* this_) {
         }
 
         switch (*(s32*)(t + 0x250)) {
-        case 1:
-            s = lbl_8053E700;
-            break;
-        case 2:
-            s = lbl_8053E6FC;
+        case 4:
+            s = lbl_8053E6F8;
             break;
         case 3:
             s = lbl_8053E6E8;
             break;
-        case 4:
-            s = lbl_8053E6F8;
+        case 2:
+            s = lbl_8053E6FC;
+            break;
+        case 1:
+            s = lbl_8053E700;
             break;
         }
         if (*(s32*)(t + 0x238) == 0) {
