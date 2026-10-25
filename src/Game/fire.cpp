@@ -446,11 +446,11 @@ extern f32 lbl_80540B64;
 extern f32 lbl_80540B78;
 extern f32 lbl_80540B7C;
 extern void* lbl_8053AB10;
-int fn_8022CCAC(void* p);
-int fn_80230188(void* p);
-void fn_803075AC(void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
-void fn_80158B5C(void* a, s32 b, f32* c, u32* d, f32 e);
-void fn_802BB1F8(char* p) {
+extern "C" u8 fn_8022CCAC(void* p);
+extern "C" u8 fn_80230188(void* p);
+extern "C" void fn_803075AC(void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern "C" void fn_80158B5C(void* a, s32 b, f32* c, u32* d, f32 e);
+extern "C" void fn_802BB1F8(char* p) {
     f32 v[3];
     u8 buf[4];
     u32 flags;
@@ -469,7 +469,7 @@ void fn_802BB1F8(char* p) {
     a = *(s32*)(p + 0x268) == 2;
     n = *(s32*)(p + 4);
     if (n >= 8) {
-        if (type == 5) {
+        if (type == 0 || type == 3 || type == 4 || type == 5) {
             fn_803075AC(*(void**)(p + 0x198), n, p + 0xc, *(s32*)(p + 0x26c) + *(s32*)(p + 0x270) + 0x109, a != 0, 2, -1, 1, 0, 0);
             return;
         }
@@ -480,19 +480,19 @@ void fn_802BB1F8(char* p) {
             if (fn_80230188(*(void**)(p + 0x260)) != 0) {
                 return;
             }
-            k = *(s32*)(p + 0x98);
-            if (k == 0) {
-                v[0] -= lbl_80540B64;
-            } else if (k == 1) {
-                v[0] += lbl_80540B64;
-            } else if (k == 2) {
-                v[1] += lbl_80540B64;
-            } else if (k == 3) {
-                v[1] -= lbl_80540B64;
-            }
-            fn_803075AC(*(void**)(p + 0x198), n, v, *(s32*)(p + 0x26c) + *(s32*)(p + 0x270) + 0xf1, a != 0, 2, -1, 1, 0, 0);
-            return;
         }
+        k = *(s32*)(p + 0x98);
+        if (k == 0) {
+            v[0] -= lbl_80540B64;
+        } else if (k == 1) {
+            v[0] += lbl_80540B64;
+        } else if (k == 2) {
+            v[1] -= lbl_80540B64;
+        } else if (k == 3) {
+            v[1] += lbl_80540B64;
+        }
+        fn_803075AC(*(void**)(p + 0x198), n, v, *(s32*)(p + 0x26c) + *(s32*)(p + 0x270) + 0xf1, a != 0, 2, -1, 1, 0, 0);
+        return;
     } else {
         k = *(s32*)(p + 0x98);
         if (k == 0) {
