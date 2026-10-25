@@ -25,6 +25,14 @@ u32 extend_default(u32, u32, u32);
 }
 }
 
+struct InsertVector {
+    u8 allocator;
+    u32* begin;
+    u32* end;
+    u32 capacity;
+    u32 (*extend)(u32, u32, u32);
+};
+
 struct StaticVec {
     u8 m_00;
     u8 m_01;
