@@ -73,7 +73,10 @@ extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 extern void* lbl_8053AAF8;
 static inline f32 tuRandFloat() {
-    return ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+    u8* g = (u8*)lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    return *(f32*)&bits - 1.0f;
 }
 extern "C" void fn_8013B490(void* obj);
 extern "C" void fn_80440EE8(void* obj);
@@ -129,8 +132,8 @@ extern "C" void fn_803A7280(char* p) {
     w = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL);
     (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x72) + *(s16*)(p + 0x74));
 
-    *(s16*)(p + 0x6a) = (s32)(11.0f * tuRandFloat()) + 10;
-    *(s16*)(p + 0x6c) = (s32)(11.0f * tuRandFloat()) + 10;
+    *(s16*)(p + 0x6a) = (s16)(11.0f * tuRandFloat()) + 10;
+    *(s16*)(p + 0x6c) = (s16)(11.0f * tuRandFloat()) + 10;
     *(s16*)(p + 0x6e) = 0;
     *(u8*)(p + 0x79) = 0;
     *(u8*)(p + 0x7a) = 10;
