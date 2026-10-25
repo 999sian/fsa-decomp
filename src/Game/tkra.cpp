@@ -68,6 +68,7 @@ extern const f32 lbl_805413D4;
 extern const f32 lbl_805413E8;
 
 #include "JSystem/JGeometry/Box.h"
+#include "Game/ItemBase.h"
 extern "C" s32 fn_8023AF14(void*, s32, s32, f32);
 extern "C" u16 fn_802F9908(void*, s32, u32);
 extern "C" s32 fn_80230CFC(s32);
@@ -90,7 +91,70 @@ inline u8 tkraRoomMode(char* p) {
 }
 
 struct TkraV2 { f32 x, y; };
-extern "C" void fn_802EB90C(char* p) {}
+extern "C" void fn_802EB90C(char* p) {
+    JGeometry::TBox2f box;
+    f32 x = *(f32*)(p + 0xc);
+    f32 y = *(f32*)(p + 0x10);
+    if (tkraRoomMode(p)) { *(f32*)(p + 0x60)=-10.0f; *(f32*)(p + 0x64)=2.0f; *(f32*)(p + 0x68)=10.0f; *(f32*)(p + 0x6c)=5.0f; }
+    else { *(f32*)(p + 0x60)=-6.0f; *(f32*)(p + 0x64)=0.0f; *(f32*)(p + 0x68)=6.0f; *(f32*)(p + 0x6c)=5.0f; }
+    box.set(*(JGeometry::TBox2f*)(p + 0x60));
+    box.addPos(x,y);
+    *(s32*)(p + 0x240)=fn_8023AF14(&box,*(s32*)(p + 4),0,0.0f);
+    switch (*(s32*)(p + 0x230)) {
+    case 0:
+        if ((u16)fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(p + 4), *(u32*)(p + 0x23c)) == 0x30) *(s32*)(p + 0x230)=1;
+        break;
+    case 1: {
+        u8 allowed = 0;
+        if (*(s32*)(p + 0x240) < 0) break;
+        if (tkraRoomMode(p)) {
+            if (fn_80230CFC(*(s32*)(p + 0x240)) == 3 || fn_80230CFC(*(s32*)(p + 0x240)) == 0 || fn_80230CFC(*(s32*)(p + 0x240)) == 1) allowed=1;
+        } else if (fn_80230CFC(*(s32*)(p + 0x240)) == 3) allowed=1;
+        if (allowed == 1) {
+            *(f32*)(p + 0x60)=-20.0f; *(f32*)(p + 0x64)=-18.0f; *(f32*)(p + 0x68)=20.0f; *(f32*)(p + 0x6c)=18.0f;
+            box.set(*(JGeometry::TBox2f*)(p + 0x60));
+            box.addPos(x,y);
+            fn_8022FEB8(&box,*(s32*)(p + 4),*(s32*)(p + 0x198),1,1);
+        }
+        *(s32*)(p + 0x248)=*(s32*)(p + 0x240);
+        if (fn_8022F514(*(s32*)(p + 0x240))) *(s32*)(p + 0x248)=fn_8022F3DC(*(s32*)(p + 0x240));
+        if (allowed == 1 && !fn_8023EFEC(*(s32*)(p + 0x240)) && *(s32*)(p + 0x240)==fn_8022EA0C(*(s32*)(p + 0x240)) &&
+            fn_80309D6C(lbl_8053AD30,fn_8030AAF4(*(s32*)(p + 0x248)),0x100) != 0 &&
+            ((u8(*)(void*))(*(void***)p)[0x54/4])(p)) p[0x11c]=0;
+        break;
+    }
+    case 2:
+        *(s32*)(p + 0x240)=*(s32*)(p + 0x244);
+        *(s32*)(p + 0x248)=*(s32*)(p + 0x240);
+        if (fn_8022F514(*(s32*)(p + 0x240))) *(s32*)(p + 0x248)=fn_8022F3DC(*(s32*)(p + 0x240));
+        for (s32 i=0; i<4; i++) {
+            JGeometry::TVec3f v(*fn_8023E724(i));
+            JGeometry::TVec3f pos;
+            pos.x=1.0f+v.x;
+            pos.y=v.y-12.0f;
+            pos.z=v.z;
+            if ((u8)fn_8022F514(i)==1) {
+                if (i == *(s32*)(p + 0x244)) { u32 param = *(u32*)(p + 0x234) + (i << 24) + 0x80000000 + (*(u32*)(p + 0x244) << 26);
+                    s32 room = fn_8023DE58(i);
+                    ((TkraObj*)p)->ids[i] = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
+            } else {
+                if (i == *(s32*)(p + 0x244)) { u32 param = *(u32*)(p + 0x234) + (i << 24) + 0x80000000 + (*(u32*)(p + 0x244) << 26);
+                    s32 room = fn_8023DE58(i);
+                    ((TkraObj*)p)->ids[i] = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
+            }
+        }
+        if (*(s32*)(p + 0x238)!=1) p[0x11c]=0;
+        else *(s32*)(p + 0x230)=4;
+        break;
+    case 3:
+        *(s32*)(p + 0x240)=*(s32*)(p + 0x244);
+        *(s32*)(p + 0x248)=*(s32*)(p + 0x240);
+        if (fn_8022F514(*(s32*)(p + 0x240))) *(s32*)(p + 0x248)=fn_8022F3DC(*(s32*)(p + 0x240));
+        if (((u8(*)(void*))(*(void***)p)[0x54/4])(p)) p[0x11c]=0;
+        break;
+    case 4: break;
+    }
+}
 
 extern "C" void fn_802EBDCC(char* this_) {
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xff;
