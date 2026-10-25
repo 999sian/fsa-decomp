@@ -4862,7 +4862,7 @@ extern "C" u8 fn_8022D930(s32);
 extern "C" u8 fn_8022DA68(s32);
 extern "C" s32 fn_80238CB4(s32);
 extern "C" char lbl_8046AE08[];
-inline s32 sharingMode50090(char* p) {
+inline s32 countSharing50090(char* p) {
     int me;
     s32 linked;
     s32 c;
@@ -4879,7 +4879,11 @@ inline s32 sharingMode50090(char* p) {
             }
         } else if (i == S32(p,0xd60)) c++;
     }
-    if (c <= 1) return 5;
+    return c;
+}
+inline s32 sharingMode50090(char* p) {
+    if (countSharing50090(p) <= 1) return 5;
+    s32 linked;
     linked = S32(p,0xd60);
     if (linked >= 0) return fn_8022CAF8(linked);
     return S32(p,0x120c);
