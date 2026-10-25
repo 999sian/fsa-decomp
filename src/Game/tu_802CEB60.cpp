@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 typedef JGeometry::TVec3<f32> YasiVec;
 extern "C" f32 lbl_80540E48;
@@ -13,7 +14,7 @@ extern "C" u8 fn_802DEB58();
 extern "C" u8 fn_802DEBF8();
 extern "C" s32 fn_801CD664(s32 range);
 extern "C" void fn_802CEC10(char* p);
-BOOL fn_802CF598(char* p);
+extern "C" BOOL fn_802CF598(char* p);
 void* fn_801F856C();
 void fn_801F0E34(void* a, u32 code, u32 z);
 s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
@@ -199,12 +200,13 @@ s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
 void fn_801F0E34(void* a, u32 code, u32 z);
 s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 extern f32 lbl_80540E58;
-BOOL fn_802CF598(char* p) {
+extern "C" BOOL fn_802CF598(char* p) {
     f32 x0 = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
     f32 y0 = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
     f32 x1 = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
     f32 y1 = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
     s32 room = *(s32*)(p + 0x4);
+    char* base;
     f32* o;
     s32 prev = -1;
     s32 id;
@@ -214,16 +216,16 @@ BOOL fn_802CF598(char* p) {
     f32 ox1;
     f32 oy1;
 
-    fn_802D6A9C();
+    base = (char*)fn_802D6A9C();
     if (room < 8) {
-        o = (f32*)(p + 0xcc);
+        o = (f32*)(base + 0xcc);
     } else {
-        o = (f32*)(p + 0xdc);
+        o = (f32*)(base + 0xdc);
     }
-    x0 -= o[0];
-    y0 -= o[1];
-    x1 -= o[0];
-    y1 -= o[1];
+    x0 += -o[0];
+    y0 += -o[1];
+    x1 += -o[0];
+    y1 += -o[1];
     for (;;) {
         id = fn_801F78F4(fn_801F856C(), 0x424c5a32, prev);
         prev = id;
@@ -237,17 +239,21 @@ BOOL fn_802CF598(char* p) {
         if (obj == NULL) {
             continue;
         }
-        fn_802D6A9C();
+        ox0 = *(f32*)(obj + 0x60) + *(f32*)(obj + 0xc);
+        oy0 = *(f32*)(obj + 0x64) + *(f32*)(obj + 0x10);
+        ox1 = *(f32*)(obj + 0x68) + *(f32*)(obj + 0xc);
+        oy1 = *(f32*)(obj + 0x6c) + *(f32*)(obj + 0x10);
         room = *(s32*)(obj + 0x4);
+        base = (char*)fn_802D6A9C();
         if (room < 8) {
-            o = (f32*)(obj + 0xcc);
+            o = (f32*)(base + 0xcc);
         } else {
-            o = (f32*)(obj + 0xdc);
+            o = (f32*)(base + 0xdc);
         }
-        ox0 = *(f32*)(obj + 0x60) + *(f32*)(obj + 0xc) - o[0];
-        oy0 = *(f32*)(obj + 0x64) + *(f32*)(obj + 0x10) - o[1];
-        ox1 = *(f32*)(obj + 0x68) + *(f32*)(obj + 0xc) - o[0];
-        oy1 = *(f32*)(obj + 0x6c) + *(f32*)(obj + 0x10) - o[1];
+        ox0 += -o[0];
+        oy0 += -o[1];
+        ox1 += -o[0];
+        oy1 += -o[1];
         if (ox0 > x0) {
             ox0 = x0;
         }
@@ -291,5 +297,5 @@ extern "C" void fn_802CFABC(char* p) {
     }
 }
 
-
+void fn_802CFBA8(void) {}
 
