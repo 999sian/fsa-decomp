@@ -25,6 +25,10 @@ extern const f32 lbl_80540108;
 
 #pragma auto_inline off
 
+static inline f32 playerInverseLength(const f32 value) {
+    return JGeometry::TUtilf::inv_sqrt(value);
+}
+
 static inline f32 playerVelocitySquared(const JGeometry::TVec3<f32>& velocity) {
     return velocity.squared();
 }
