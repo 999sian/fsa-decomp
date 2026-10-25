@@ -182,6 +182,13 @@ struct Rec3_80301CD0 {
     u8 lo : 2;
 };
 
+struct Rec5_80301CD0 {
+    u8 flag : 1;
+    u8 b6 : 1;
+    u8 two : 2;
+    u8 lo : 4;
+};
+
 struct Hi_80301CD0 {
     u8 y : 4;
     u8 lo : 4;
@@ -1673,10 +1680,10 @@ extern u8 lbl_8053ACFC[4];
 extern u16 lbl_8053AD14[4];
 extern "C" s32 fn_8030905C(s32 self) {
 *(void**)self=lbl_804AA8B8;
-for(int i=0;i<4;i++) {
+for(s32 i=0;i<4;i++) {
 lbl_80504A18[i]=0;
 lbl_80504A28[i]=0;
-for(int j=0;j<32;j++) {
+for(u32 j=0;j<32;j++) {
 MsgEntry_80301CD0* e=&((MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380))[j];
 e->f118=0;
 e->f119=0;
@@ -1688,8 +1695,8 @@ e->f10c=0;
 e->text[0]=0;
 }
 for(int j=0;j<0x2000;j++) ((u32*)(lbl_804DBC18+i*0x8000))[j]=0xcdcdcdcd;
-((u32*)lbl_80506D48)[i]=0;
 lbl_8053AD00[i]=0;
+((u32*)lbl_80506D48)[i]=0;
 ((u32*)lbl_80506D58)[i]=5;
 fn_8030801C(self,i);
 lbl_8053ACD4[i]=1;
@@ -1729,8 +1736,8 @@ lbl_80506DB8[i*4+3]=0;
 lbl_80506DC8[i*4+3]=0;
 for(int j=0;j<128;j++) ((u16*)(lbl_805071E8+i*0x100))[j]=0;
 lbl_8053AD0C[i]=0;
-lbl_8053AD04[i]=0;
 lbl_8053AD14[i]=0;
+lbl_8053AD04[i]=0;
 lbl_8053AD1C[i]=0;
 lbl_8053AD20[i]=0;
 lbl_8053AD24[i]=0;
