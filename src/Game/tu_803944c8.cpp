@@ -2154,6 +2154,29 @@ void fn_8039FE54(void* thisPtr) {
 void fn_8039FE6C(void) {}
 
 int fn_8039FE70(void) { return 1; }
+
+extern "C" u8 fn_803A313C(void*);
+extern "C" void fn_803A3114(void*);
+extern "C" void fn_803A30F0(void*);
+extern "C" void fn_803A30E4(void*);
+extern "C" s32 fn_8039FE78(u8* p, s32 event, const u8* data) {
+    if (!fn_803A313C(*(void**)(p + 0x60))) {
+        switch (event) {
+        case 0: *(s32*)(p + 0x58) = 1; return 1;
+        case 0x10000: case 0x10001: case 0x10002: case 0x10003:
+        case 0x10004: case 0x10005: case 0x10006: case 0x10007:
+        case 0x10008: case 0x10009: case 0x1000a: return 1;
+        case 0x20000: case 0x20019:
+            fn_803A3114(*(void**)(p+0x60)); return 1;
+        case 0x20001:
+            fn_803A3114(*(void**)(p+0x60));
+            fn_803A30F0(*(void**)(p+0x60));
+            fn_803A30E4(*(void**)(p+0x60)); return 1;
+        }
+    }
+    return 0;
+}
+
 }
 
 struct MsgFont {
@@ -2409,7 +2432,7 @@ extern "C" void fn_8039B3EC(u8* self, u8 kind, s32 flag) {
 
 // ---- small helpers near the end of the TU (0x803A2BC4-0x803A3258) ----
 extern "C" void* fn_802D6A9C(void);
-extern "C" void fn_802D7E5C(void* mgr, s32 a, s32 b);
+extern "C" u8 fn_802D7E5C(void* mgr, s32 a, s32 b);
 extern "C" void fn_802D7EB0(void* mgr, s32 a, s32 b, s32 c);
 extern "C" void fn_80138B7C(void* p);
 extern "C" void fn_8043D874(void* p, s32 a, s32 b, s32 c);
