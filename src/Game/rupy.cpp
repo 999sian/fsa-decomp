@@ -7,6 +7,34 @@
 #undef Vec
 #include "Game/ItemBase.h"
 
+extern const f32 lbl_80541D88;
+
+// Scaled rotation matrix (X, Y, Z angles) into the upper 3x3 of m.
+static inline void RupyRotScaleMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
+    f32 sx = sin(rx);
+    f32 sy = sin(ry);
+    f32 sz = sin(rz);
+    f32 cx = cos(rx);
+    f32 cy = cos(ry);
+    f32 cz = cos(rz);
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    f32 cycz = cy * cz;
+    f32 cysz = cy * sz;
+    m[0][0] = s * cycz;
+    m[1][0] = s * cysz;
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
 // Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
 struct RupyResMgr {
     virtual void r0();
@@ -449,6 +477,158 @@ case 3: *(JGeometry::TVec3f*)(this_ + 0x3c) = JGeometry::TVec3f(lbl_80541D88, lb
         ((Actor*)this_)->v10(0xff, 1);
     return;
 } while (++i < 4);
+}
+
+extern "C" void fn_802F86CC(void* a, void* pos, void* obj, s32 id, DrawRec* rec, f32 sx, f32 sy);
+extern "C" void fn_803075AC(void* h, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_801F06F0(void* actor, const char* res, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" s32 fn_8023CB24(s32 i);
+extern "C" s8 fn_8023CA88(s32 i);
+extern "C" u8 lbl_80471948[];
+extern const f32 lbl_80541DC4;
+extern const f32 lbl_80541DC8;
+extern const f32 lbl_80541DCC;
+extern const f32 lbl_80541DD0;
+extern "C" void fn_8032BFB0(char* p) {
+    u8* base = lbl_80471948;
+    s32 big;
+    const char* name;
+    s32 mode;
+    s32 id;
+    f32 scale;
+    s32 st = *(s32*)(p + 0x230);
+    if (st == 7) {
+        return;
+    }
+    if (st == 8) {
+        return;
+    }
+    if (st == 0xc) {
+        return;
+    }
+    if (st == 0xe) {
+        return;
+    }
+    if (st == 0x11 || *(u16*)(p + 0x94) == 0x24) {
+        return;
+    }
+    if (st == 0xa) {
+        if (lbl_80541D88 == *(f32*)(p + 0x238)) {
+            return;
+        }
+    } else if (st == 0xf || st == 0x10) {
+        if (*(s32*)(p + 4) < 8) {
+            return;
+        }
+    }
+    name = (const char*)(base + 0xe0);
+    scale = *(f32*)(p + 0x238);
+    big = 0;
+    if (*(s32*)(p + 0x268) >= 8) {
+        name = (const char*)(base + 0xf4);
+        big = 1;
+    }
+    DrawRec rec;
+    f32 mtx[3][4];
+    JGeometry::TVec3<f32> save;
+    PSMTXIdentity(mtx);
+    {
+        f32 cx;
+        f32 ang;
+        f32 sx;
+        f32 sy;
+        f32 sz;
+        f32 cy;
+        f32 cz;
+        ang = *(f32*)(p + 0x23c);
+        sx = sin(lbl_80541D88);
+        sy = sin(ang);
+        sz = sin(lbl_80541D88);
+        cx = cos(lbl_80541D88);
+        cy = cos(ang);
+        cz = cos(lbl_80541D88);
+        f32 sxsy = sx * sy;
+        f32 cxsz = cx * sz;
+        f32 cxcz = cx * cz;
+        f32 sxsz = sx * sz;
+        f32 sxcz = sx * cz;
+        f32 cycz = cy * cz;
+        f32 cysz = cy * sz;
+        rec.w18 = mtx;
+        rec.b2d = 1;
+        rec.b20 = 0;
+        mtx[0][0] = scale * cycz;
+        mtx[1][0] = scale * cysz;
+        mtx[2][0] = scale * -sy;
+        mtx[0][1] = scale * (sxsy * cz - cxsz);
+        mtx[1][1] = scale * (sxsy * sz + cxcz);
+        mtx[2][1] = scale * (sx * cy);
+        mtx[0][2] = scale * (cxcz * sy + sxsz);
+        mtx[1][2] = scale * (cxsz * sy - sxcz);
+        mtx[2][2] = scale * (cx * cy);
+    }
+    st = *(s32*)(p + 0x230);
+    if (st == 5 || st == 6) {
+        ((u8*)&rec.w10)[3] = (s32)((lbl_80541DC4 * (f32)*(s32*)(p + 0x24c)) / lbl_80541DC8);
+        id = *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268)];
+        if (*(s32*)(p + 4) >= 8) {
+            return;
+        }
+        void* obj = (*(RupyResMgr**)((u8*)lbl_8053AAF8 + 0xa4))->get('SOB ', name);
+        fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), p + 0xc, obj, id, &rec, lbl_80541D90, lbl_80541D90);
+        return;
+    }
+    if (*(u16*)(p + 0x94) != 2 && *(s32*)(p + 0x24c) < 0x100 && (*(s32*)(p + 0x24c) & 2) && *(s32*)(p + 4) >= 8) {
+        if (((u8*)lbl_8053AAF8)[0x96] != 1) {
+            return;
+        }
+    }
+    rec.b1d = 1;
+    if (*(s32*)(p + 4) < 8 && *(s32*)(p + 0x24c) < 0xe0) {
+        s32 t = *(s32*)(p + 0x24c) % 64;
+        if (t > 0x20) {
+            ((u8*)&rec.w10)[3] = (s32)(lbl_80541DC4 * (lbl_80541DCC - (f32)t) * lbl_80541DD0);
+        } else {
+            ((u8*)&rec.w10)[3] = (s32)(lbl_80541DC4 * (f32)t * lbl_80541DD0);
+        }
+    }
+    if (*(f32*)(p + 0x14) > lbl_80541D88) {
+        rec.b1c = 1;
+    } else if (*(u16*)(p + 0x94) == 0x23) {
+        rec.b1c = -1;
+    } else {
+        rec.b1c = 0;
+    }
+    mode = 7;
+    if (*(u16*)(p + 0x94) == 0x23) {
+        mode = -1;
+        ((u8*)&rec.w10)[3] = 0x7f;
+        ((u8*)&rec.w10)[0] = 0x7f;
+        ((u8*)&rec.w10)[1] = 0x7f;
+        ((u8*)&rec.w10)[2] = 0x7f;
+    } else if (*(s32*)(p + 0x230) == 3 || *(s32*)(p + 0x230) == 4) {
+        if (*(s32*)(p + 0x264) >= 0 && *(s32*)(p + 0x264) <= 3) {
+            rec.b1d = fn_8023CB24(*(s32*)(p + 0x264)) + 1;
+            rec.b1c = fn_8023CA88(*(s32*)(p + 0x264));
+            mode = -1;
+        }
+    }
+    if (*(s32*)(p + 0x230) == 0xd && *(f32*)(p + 0x14) > lbl_80541D88) {
+        rec.w30 = 0x11;
+    }
+    save = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x290);
+    fn_801F06F0(p, name, *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268)], &rec, mode, lbl_80541D90, lbl_80541D90);
+    id = *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268)];
+    if (*(s32*)(p + 0x268) >= 8) {
+        id = *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268) - 4];
+    }
+    if (*(s32*)(p + 0x230) == 0xb) {
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, id, big != 0, 2, -1, 1, 0, 0);
+    } else {
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, id, big != 0, 2, -1, 0, 0, 0);
+    }
+    *(JGeometry::TVec3<f32>*)(p + 0xc) = save;
 }
 
 // RUPY: small helpers.
