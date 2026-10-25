@@ -1136,6 +1136,10 @@ inline void spawnPos8328(JGeometry::TVec3<f32>& pos, u16 x, u16 y, f32 ox, f32 o
 
 
 #pragma opt_propagation reset
+inline void readSpawnWord8328(u32& word, const u8* p) {
+    word=(u32)p[0]<<24 | (u32)p[1]<<16 | (u32)p[2]<<8 | p[3];
+}
+
 extern "C" char* fn_802D8128(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
@@ -1227,15 +1231,18 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
         
         if (*(u8*)(lbl_8053AAF8+0x7f)==1) data=(u8*)lbl_804A9530[row][col];
         else data=(u8*)lbl_80541128;
-        s32 roomNo=((RoomArrays*)(p+*(s32*)(p+0x18)*10))->roomNumbers[0][*(s32*)(p+0x14)];
+        s32 cellIndex=*(s32*)(p+0x18)*10;
+        cellIndex+=*(s32*)(p+0x14);
+        s32 roomNo=((u8*)p)[cellIndex+0x60];
         if (roomNo==255) roomNo=0;
         char buf[32];
         tag=0x42202020;
         sprintf(buf,lbl_8046E820,(char*)data,roomNo/10,roomNo%10);
-        s32 a=((char*)data)[0]-0x20;
-        s32 b=((char*)data)[1]-0x20;
-        s32 c=((char*)data)[2];
-        a <<= 16; b <<= 8; a += b; a += c; tag += a; tag -= 0x20;
+        s32 c,b,a;
+        a=((char*)data)[0]-0x20;
+        b=((char*)data)[1]-0x20;
+        c=((char*)data)[2];
+        a <<= 16; b <<= 8; a += b; a += c; tag += a - 0x20;
         data=fn_804032E8(tag,buf);
         count=0;
         s32 ids[1025];
@@ -1256,12 +1263,14 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             offset=0;
             out=end;
             for (;;) {
-                const u8* rec=data+offset;
+                u8* rec=data+offset;
                 id=(u32)rec[0]<<24|(u32)rec[1]<<16|(u32)rec[2]<<8|(u32)rec[3];
                 if (id==0x20202020) break;
                 param=(u32)rec[7]<<24|(u32)rec[8]<<16|(u32)rec[9]<<8|(u32)rec[10];
-                u32 layer=rec[4];
-                u32 x=rec[5],y=rec[6];
+                u8 layer=rec[4];
+                u16 y;
+                u16 x;
+                x=rec[5];y=rec[6];
                 offset+=11;
                 bool first=false;
                 for (s32 j=0;j<6;j++) {
@@ -1269,7 +1278,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
                 }
                 if ((first && pass==0)||(!first && pass!=0)) {
                     f32 ox,oy;
-                    if ((u8)layer==0) {ox=*(f32*)(p+0xcc);oy=*(f32*)(p+0xd0);room=0;}
+                    if (layer==0) {ox=*(f32*)(p+0xcc);oy=*(f32*)(p+0xd0);room=0;}
                     else {ox=oy=lbl_8054111C;room=layer+7;}
                     char* base=(char*)roomArrays();
                     if (!(roomArrays()->flags3548[*(s32*)(base+0x18)][*(s32*)(base+0x14)][number/32] & (1<< (number%32)))) {
@@ -1286,11 +1295,12 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
                 }
             }
         }
+        s32 actorId;
         s32* next=ids;
         for (s32 i=0;i<count;i++,next++) {
-            s32 id=*next;
-            if (id>=0) {
-                Actor* actor=(Actor*)fn_801F666C(fn_801F856C(),id);
+            actorId=*next;
+            if (actorId>=0) {
+                Actor* actor=(Actor*)fn_801F666C(fn_801F856C(),actorId);
                 if (actor) actor->v02();
             }
         }
@@ -1337,6 +1347,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     }
     }
     {
+    s32 createdId;
     char* infoBase=p;
     char* posBase=p;
     for (s32 i=0;i<8;i++,infoBase+=4,posBase+=8) {
@@ -1346,8 +1357,8 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
         if (tileX==*(s32*)(p+0x14) && tileY==*(s32*)(p+0x18)) {
             JGeometry::TVec3<f32> pos;
             pos.set(*(f32*)(posBase+0x130e8),*(f32*)(posBase+0x130ec),lbl_8054111C);
-            s32 id=Actor_CreateByID(fn_801F856C(),0x4b455930,info&255,(f32*)&pos,((info>>24)&63)|0x980,-1,-1);
-            char* actor=fn_801F666C(fn_801F856C(),id);
+            createdId=Actor_CreateByID(fn_801F856C(),0x4b455930,info&255,(f32*)&pos,((info>>24)&63)|0x980,-1,-1);
+            char* actor=fn_801F666C(fn_801F856C(),createdId);
             *(f32*)(actor+0x230)=*(f32*)(posBase+0x13148);
             *(f32*)(actor+0x234)=*(f32*)(posBase+0x1314c);
             *(u32*)(actor+0x238)=*(u32*)(infoBase+0x13188);
