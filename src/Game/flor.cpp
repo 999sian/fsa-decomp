@@ -468,6 +468,12 @@ static inline void florFollowPosition(char* this_, JGeometry::TVec3<f32> a) {
     }
 }
 
+static inline void florApplyDelta(s32 room, JGeometry::TVec3<f32>& b, const JGeometry::TVec3<f32>& a) {
+    JGeometry::TVec3<f32> d;
+    d = b - a;
+    fn_8023DFF4(room, &d);
+}
+
 extern "C" void fn_8020EB08(char* this_) {
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> d;
