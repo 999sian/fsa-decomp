@@ -37,7 +37,9 @@ static int fpKind(f32 value)
         } else {
             kind = 1;
         }
-    } else if (exp < 0x7f800000 && exp == 0) {
+    } else if (exp > 0x7f800000) {
+        kind = 4;
+    } else if (exp == 0) {
         if ((bits & 0x7fffff) == 0) {
             kind = 3;
         } else {
@@ -257,21 +259,20 @@ extern "C" void fn_8008A4C4(unsigned int param_1)
 
 extern "C" void fn_8008A50C(JUTException* this_, OSContext* context)
 {
-    OSContext* ctx = context;
     char* fmt = lbl_8045E878;
     if (lbl_8053A914 != nullptr) {
         lbl_8053A914->print(fmt + 0x128);
         for (int i = 0; i < 10; i++) {
-            showFloatAt(fmt, (f32)ctx->fpr[i], i);
+            showFloatAt(fmt, (f32)context->fpr[i], i);
             lbl_8053A914->print(" ");
-            showFloatAt(fmt, (f32)ctx->fpr[i + 11], i + 11);
+            showFloatAt(fmt, (f32)context->fpr[i + 11], i + 11);
             lbl_8053A914->print(" ");
-            showFloatAt(fmt, (f32)ctx->fpr[i + 22], i + 22);
+            showFloatAt(fmt, (f32)context->fpr[i + 22], i + 22);
             lbl_8053A914->print("\n");
         }
-        showFloatAt(fmt, (f32)ctx->fpr[10], 10);
+        showFloatAt(fmt, (f32)context->fpr[10], 10);
         lbl_8053A914->print(" ");
-        showFloatAt(fmt, (f32)ctx->fpr[21], 21);
+        showFloatAt(fmt, (f32)context->fpr[21], 21);
         lbl_8053A914->print("\n");
     }
 }
