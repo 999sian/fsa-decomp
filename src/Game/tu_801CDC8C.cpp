@@ -1045,80 +1045,20 @@ extern "C" s16 fn_801D02E0(const u8* this_, const Vec& pos) {
 extern const f32 lbl_8053F000;
 extern const f32 lbl_8053F004;
 extern "C" s32 fn_801D0338(u8* this_, f32* pos, s16 ang) {
-    f32 best = lbl_8053F000;
-    s32 r27 = -1;
-    s32 i = 0;
-    u8 r30 = 0;
-    u32 r31;
-    if (fn_801CCFE4(i)) {
-        r31 = 0;
-        switch (*(u32*)(this_ + 0x1a0)) {
-        case 0x46414C4C:
-        case 0x46424745:
-        case 0x464C4F52:
-        case 0x48524D4E:
-        case 0x4B45504F:
-        case 0x4E415649:
-        case 0x534C4B32:
-        case 0x54494E4B:
-        case 0x545A4B4F: {
-            s32 room = *(s32*)(this_ + 4);
-            if (fn_8023DE58(i) == room) {
-                r31 = 1;
-            }
-            break;
-        }
-        default:
-            r31 = fn_801F320C(this_, i);
-            break;
-        }
-        if ((u8)r31) {
-            switch (*(u32*)(this_ + 0x1a0)) {
-            case 0x4E415649:
-            case 0x48524D4E:
-            case 0x464C4F52:
-            case 0x46414C4C:
-            case 0x4B45504F:
-            case 0x544E4452:
-            case 0x54494E4B:
-            case 0x545A4B4F:
-                r30 = 1;
-                break;
-            default:
-                if (fn_8022CAF8(i) == 4) {
-                    r30 = 1;
-                } else if (!fn_8022F514(i)) {
-                    r30 = 1;
-                }
-                break;
-            }
-        }
-    }
-    if (r30) {
-        u8* p = this_;
-        for (i = 0; i < 4; i++) {
-            f32 a = JMath::atanTable_.atan2_(*(f32*)(p + 0x1ac) - pos[0], *(f32*)(p + 0x1b0) - pos[1]);
-            s32 t = (s32)(a * lbl_8053EFEC);
-            s16 d = (s16)(ang - t);
-            f32 score = lbl_8053F004 * __fabs((f32)d);
-            if (score < best) {
-                best = score;
-                r27 = i;
-            }
-            p += 0xc;
-        }
-    }
-    return r27;
-}
-
-extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
-    f32 r2 = radius * radius;
-    f32 bestDist = *(f32*)__float_max;
-    s32 best = -1;
-    for (s32 i = 0; i < 4; i++) {
-        bool ok = false;
+    u32 match;
+    u8 ok;
+    u8* cursor;
+    s32 direction;
+    s32 best;
+    u32 i;
+    f32 bestDist = lbl_8053F000;
+    direction = ang;
+    best = -1;
+    cursor = this_;
+    for (i = 0; (s32)i < 4; i++, cursor += 12) {
+        ok = 0;
         if (fn_801CCFE4(i)) {
-            BOOL match = FALSE;
+            match = 0;
             switch (*(u32*)(this_ + 0x1a0)) {
             case 'KEPO':
             case 'FLOR':
@@ -1129,15 +1069,18 @@ extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
             case 'SLK2':
             case 'NAVI':
             case 'TZOK':
-                if (fn_8023DE58(i) == *(s32*)(this_ + 0x4)) {
+                { s32 room = *(s32*)(this_ + 4);
+                s32 roomId = fn_8023DE58(i);
+                if (roomId == room) {
                     match = TRUE;
+                }
                 }
                 break;
             default:
                 match = fn_801F320C(this_, i);
                 break;
             }
-            if (match) {
+            if ((u8)match) {
                 switch (*(u32*)(this_ + 0x1a0)) {
                 case 'NAVI':
                 case 'HRMN':
@@ -1160,12 +1103,15 @@ extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
             }
         }
         if (ok) {
-            JGeometry::TVec3<f32>* arr = (JGeometry::TVec3<f32>*)(this_ + 0x1ac);
-            f32 dx = arr[i].x - pos->x;
-            f32 dy = arr[i].y - pos->y;
-            f32 d2 = dx * dx + dy * dy;
-            if (d2 < bestDist && (radius == lbl_8053EFC4 || d2 <= r2)) {
-                bestDist = d2;
+            f32 a = JMath::atanTable_.atan2_(*(f32*)(cursor + 0x1ac) - pos[0], *(f32*)(cursor + 0x1b0) - pos[1]);
+            a *= lbl_8053EFEC;
+            s32 angle = (s32)a;
+            s16 delta = (s16)(direction - angle);
+            f32 difference = (f32)delta;
+            difference = __fabsf(difference);
+            f32 score = lbl_8053F004 * difference;
+            if (score < bestDist) {
+                bestDist = score;
                 best = i;
             }
         }
@@ -1173,7 +1119,80 @@ extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
     return best;
 }
 
-#pragma opt_lifetimes off
+#pragma opt_propagation on
+extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
+    u32 match;
+    u8 ok;
+    u8* cursor;
+    s32 best;
+    u32 i;
+    f32 r2 = radius * radius;
+    f32 bestDist = *(f32*)__float_max;
+    best = -1;
+    cursor = this_;
+    for (i = 0; (s32)i < 4; i++, cursor += 12) {
+        ok = 0;
+        if (fn_801CCFE4(i)) {
+            match = 0;
+            switch (*(u32*)(this_ + 0x1a0)) {
+            case 'KEPO':
+            case 'FLOR':
+            case 'FBGE':
+            case 'FALL':
+            case 'HRMN':
+            case 'TINK':
+            case 'SLK2':
+            case 'NAVI':
+            case 'TZOK':
+                { s32 room = *(s32*)(this_ + 4);
+                s32 roomId = fn_8023DE58(i);
+                if (roomId == room) {
+                    match = TRUE;
+                }
+                }
+                break;
+            default:
+                match = fn_801F320C(this_, i);
+                break;
+            }
+            if ((u8)match) {
+                switch (*(u32*)(this_ + 0x1a0)) {
+                case 'NAVI':
+                case 'HRMN':
+                case 'FLOR':
+                case 'FALL':
+                case 'KEPO':
+                case 'TNDR':
+                case 'TINK':
+                case 'TZOK':
+                    if (fn_8022CAF8(i) == 4) {
+                        ok = true;
+                    } else if (!fn_8022F514(i)) {
+                        ok = true;
+                    }
+                    break;
+                default:
+                    ok = true;
+                    break;
+                }
+            }
+        }
+        if (ok) {
+            const f32* __restrict record = (f32*)(cursor + 0x1ac);
+            const f32* __restrict point = (f32*)pos;
+            f32 dy = point[1];
+            dy = record[1] - dy;
+            f32 dx = record[0] - point[0];
+            f32 d2 = dx * dx + dy * dy;
+            if (d2 < bestDist && (lbl_8053EFC4 == radius || d2 <= r2)) {
+                bestDist = d2;
+                best = i;
+            }
+        }
+    }
+    return best;
+}
+#pragma opt_propagation reset
 extern "C" s32 fn_801D08B4(u8* this_, u32 id, f32 radius, f32* point) {
     u32 ok;
     u8 flag;
