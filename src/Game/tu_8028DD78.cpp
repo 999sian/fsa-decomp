@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/Actor.h"
 
 
 extern "C" char __vt__4RASN[];
