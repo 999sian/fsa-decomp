@@ -797,11 +797,13 @@ extern "C" u8 lbl_80539E94[4];
 extern "C" u8 lbl_80539E98[8];
 extern "C" u8 lbl_80539EA0[8];
 extern "C" void fn_801F0E34(void*, u32, s32);
+#pragma opt_propagation off
 extern "C" void fn_800FA6B0(void* p)
 {
     u8* self = (u8*)p;
 
-    if (*(s32*)(self + 0x280) != *(s32*)(self + 0x27c)) {
+    s32 previous = *(s32*)(self + 0x280);
+    if (previous != *(s32*)(self + 0x27c)) {
         *(s32*)(self + 0x280) = *(s32*)(self + 0x27c);
         self[0x27a] = 0;
         self[0x279] = 0;
@@ -830,7 +832,7 @@ extern "C" void fn_800FA6B0(void* p)
             self[0x279]++;
         }
         if (self[0x27a] == 0 && self[0x279] == 0) {
-            fn_801F0E34(p, 0x40027, 0);
+            fn_801F0E34(self, 0x40027, 0);
         }
         break;
     case 2:
@@ -871,7 +873,7 @@ extern "C" void fn_800FA6B0(void* p)
     }
     self[0x27a]++;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
 extern "C" void fn_800FA944(char* this_) {
     u32 st = *(u32*)(this_ + 0xb0);
