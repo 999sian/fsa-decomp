@@ -193,10 +193,10 @@ extern "C" void fn_802CF408(char* p) {
     }
 }
 
-void* fn_802D6A9C();
-void* fn_801F856C();
-void* fn_801F666C(void* mgr, s32 idx);
-s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
+extern "C" void* fn_802D6A9C();
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
 void fn_801F0E34(void* a, u32 code, u32 z);
 s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 extern f32 lbl_80540E58;
