@@ -15,7 +15,8 @@ struct FsaVObj {
     virtual void v8(void);
     virtual void v9(s32 a);
     virtual void v10(void);
-    virtual void v11(void);
+          virtual void v11(s32 a);
+
     virtual void v12(void);
     virtual void v13(void);
     virtual void v14(void);
@@ -187,6 +188,44 @@ extern "C" void fn_80438E10(u8* p, u8 flag)
     *(s32*)(p + 0x2c) = 0;
     *(s32*)(p + 0x30) = 0;
     *(u8*)(p + 0x5f) = 0;
+}
+
+extern "C" u32 fn_80438E94(u8* p) {
+    if (*(s32*)(p + 0x44) > 0) {
+        if (fn_801F666C(fn_801F856C(), *(s32*)(p + 0x44)) == 0) {
+            *(s32*)(p + 0x44) = -2;
+        }
+    }
+    switch (p[0x40]) {
+    case 0:
+        if (p[0x5a] == 0xff) {
+            if (((u8*)lbl_8053AAF8)[0x7f] == 1) {
+                if (lbl_80529DEC[0x24f] == 0) {
+                    p[0x5a] = 0;
+                } else {
+                    *(s32*)(p + 0x48) = 0;
+                    p[0x5a] = 1;
+                }
+            } else {
+                p[0x5a] = 0;
+            }
+        }
+        p[0x5b] = ((u8*)(*(void**)((u8*)lbl_8053AB10 + 0x2c)))[0xc];
+        if (p[0x5a] != 0) {
+            fn_80438C68(p);
+        } else {
+            *(s32*)(p + 0x44) = -2;
+            p[0x58] = 2;
+        }
+        if (p[0x58] == 2) {
+            u8 c = p[0x41];
+            if ((s32)p[0x42] < (s32)c - 2) {
+                p[0x42] += 2;
+            }
+        }
+        break;
+    }
+    return p[0x40];
 }
 
 extern "C" f32 lbl_80543C78;
