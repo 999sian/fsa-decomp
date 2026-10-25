@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
 
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* base, s32 id);
@@ -16,6 +17,108 @@ extern "C" s32 fn_802DE814(s32);
 extern "C" char* fn_802D6A9C();
 extern "C" void fn_80458FF0(void*, u32, s32, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern const char lbl_804667D8[];
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_80170008(char* self) {
+    f32 sasb, casc, cacc;
+    f32 sa, sb, sc, ca, cb, cc;
+    f32 rx, rz;
+    DrawRec rec;
+    f32 mtx[3][4];
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    f32 x = *(f32*)(self + 0xc);
+    f32 y = *(f32*)(self + 0x10);
+    f32 z = *(f32*)(self + 0x14);
+    if (*(u16*)(self + 0x94) == 5) {
+        return;
+    }
+    if ((*(u32*)(self + 0x90) >> 27) != 0) {
+        if (!(*(u8 (**)(void*))(*(char**)self + 0x34))(self)) {
+            return;
+        }
+    }
+    rec.ids[8] = *(u8*)(self + 0x274);
+    fn_801F06F0(self, lbl_804667D8, *(s32*)(self + 0x258) + 0x7f, &rec, 7, 1.0f, 1.0f);
+    if (*(s32*)(self + 0x244) == 0) {
+        rec.b1d = 1;
+    } else {
+        rec.b20 = 0;
+    }
+    rec.ids[6] = 6;
+    char* p = self;
+    for (s32 i = 0; i < 10; i++) {
+        mtx[0][0] = 0.5f;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = 0.5f;
+        mtx[1][2] = 0.0f;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = 0.5f;
+        rec.w18 = mtx;
+        *(f32*)(self + 0xc) = *(f32*)(p + 0x29c);
+        *(f32*)(self + 0x10) = *(f32*)(p + 0x2a0);
+        *(f32*)(self + 0x14) = *(f32*)(p + 0x2a4);
+        fn_801F06F0(self, lbl_804667D8, 0x83, &rec, 7, 1.0f, 1.0f);
+        p += 0xc;
+    }
+    *(f32*)(self + 0xc) = x;
+    *(f32*)(self + 0x10) = y;
+    *(f32*)(self + 0x14) = z;
+    if (*(s32*)(self + 0x244) == 0) {
+        rec.b1d = 2;
+    } else {
+        rec.b20 = 0;
+    }
+    f32 ang = *(f32*)(self + 0x278);
+    f32 s = *(f32*)(self + 0x27c);
+    rx = 0.0f;
+    rz = 0.0f;
+    sa = sin(rx);
+    sb = sin(ang);
+    sc = sin(rz);
+    ca = cos(rx);
+    cb = cos(ang);
+    cc = cos(rz);
+    cacc = ca * cc;
+    sasb = sa * sb;
+    casc = ca * sc;
+    mtx[0][0] = s * (cb * cc);
+    mtx[1][0] = s * (cb * sc);
+    mtx[2][0] = s * -sb;
+    mtx[0][1] = s * (sasb * cc - casc);
+    mtx[1][1] = s * (sasb * sc + cacc);
+    mtx[2][1] = s * (sa * cb);
+    mtx[0][2] = s * (cacc * sb + sa * sc);
+    mtx[1][2] = s * (casc * sb - sa * cc);
+    mtx[2][2] = s * (ca * cb);
+    rec.w30 = 0x11;
+    rec.w18 = mtx;
+    if (*(u16*)(self + 0x94) == 4) {
+        rec.ids[6] = *(u8*)(self + 0x274);
+        rec.b1d = 0;
+    }
+    *(f32*)(self + 0xc) = *(f32*)(self + 0x314);
+    *(f32*)(self + 0x10) = *(f32*)(self + 0x318);
+    *(f32*)(self + 0x14) = *(f32*)(self + 0x31c);
+    fn_801F06F0(self, lbl_804667D8, 0x82, &rec, 7, 1.0f, 1.0f);
+    *(f32*)(self + 0xc) = x;
+    *(f32*)(self + 0x10) = y;
+    *(f32*)(self + 0x14) = z;
+}
+
+struct Slr3VT {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10();
+    virtual u8 check();
+};
+
 extern "C" void fn_801719C0(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x108) > 0) {
