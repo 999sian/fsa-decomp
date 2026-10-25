@@ -2,7 +2,13 @@
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-struct Actor;
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#undef GAME_ACTOR_USE_SDK_VEC
+extern const f32 lbl_80542790;
+extern const JGeometry::TVec3f lbl_80472320[];
 
 
 extern "C" char __vt__4MRTA[];
