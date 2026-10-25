@@ -220,57 +220,56 @@ extern "C" s32 fn_8023CA88(s32 a);
 extern "C" void PSMTXIdentity(f32 m[12]);
 extern "C" double sin(double);
 extern "C" double cos(double);
+#pragma opt_propagation off
 extern "C" void fn_80325754(Actor* a) {
-    s32* w = (s32*)a;
-    f32* f = (f32*)a;
-    u8* b = (u8*)a;
+    s32 flag;
+    u8* p = (u8*)a;
+    s32 mode;
     DrawRec rec;
     f32 m[12];
-    s32 mode = 7;
-    s32 flag = 0;
     f32 ang;
     f32 sn;
     f32 cs;
 
-    if (f[5] == 0.0f && (s32)fn_8022461C((s32)&f[3], w[1]) == 0x39) {
+    flag = 0;
+    mode = 7;
+    if (*(f32*)(p + 0x14) == 0.0f && (s32)fn_8022461C((s32)(p + 0xc), *(s32*)(p + 4)) == 0x39) {
         mode = 0;
-        PSMTXIdentity(m);
-        ang = f[0x9f];
-        sn = sin(ang);
-        cs = cos(ang);
-        m[5] = 1.0f;
-        m[0] = cs;
-        m[2] = sn;
-        m[8] = -sn;
-        m[10] = cs;
-        m[9] = 0.0f;
-        m[6] = 0.0f;
-        m[4] = 0.0f;
-        m[1] = 0.0f;
-        rec.w18 = m;
-        rec.b1d = 1;
-        rec.b1c = 1;
-        if (w[0x8c] == 0) {
-            rec.b1d = 0;
-            rec.b1c = 0;
-        }
-        if (b[0xc4] != 0) {
-            rec.b20 = 0;
-            rec.b1d = fn_8023CB24(w[0x32]) + 1;
-            rec.b1c = fn_8023CA88(w[0x32]);
-            flag = 1;
-            mode = -1;
-        }
     }
-    if (w[0x8c] != 3) {
-        fn_801F06F0(a, lbl_80471870, w[0x94] + 0x8c, &rec, mode, 1.0f, 1.0f);
-        fn_803075AC((void*)w[0x66], w[1], &f[3], w[0x94] + 0x8c, 0, 2, -1, 0, 0, 0);
+    PSMTXIdentity(m);
+    ang = *(f32*)(p + 0x27c);
+    sn = sin(ang);
+    cs = cos(ang);
+    m[5] = 1.0f;
+    m[0] = cs;
+    m[2] = sn;
+    m[8] = -sn;
+    m[10] = cs;
+    m[1] = m[4] = m[6] = m[9] = 0.0f;
+    rec.w18 = m;
+    rec.b1d = 1;
+    rec.b1c = 1;
+    if (*(s32*)(p + 0x230) == 0) {
+        rec.b1d = 0;
+        rec.b1c = 0;
+    }
+    if (*(u8*)(p + 0xc4) != 0) {
+        rec.b20 = 0;
+        rec.b1d = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
+        rec.b1c = fn_8023CA88(*(s32*)(p + 0xc8));
+        flag = 1;
+        mode = -1;
+    }
+    if (*(s32*)(p + 0x230) != 3) {
+        fn_801F06F0((Actor*)p, lbl_80471870, *(s32*)(p + 0x250) + 0x8c, &rec, mode, 1.0f, 1.0f);
+    }
+    if (*(s32*)(p + 0x230) != 3) {
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x250) + 0x8c, 0, 2, -1, 0, 0, 0);
     } else {
-        fn_803075AC((void*)w[0x66], w[1], &f[3], w[0x94] + 0xe8, 0, 2, -1, flag, 0, 0);
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x250) + 0xe8, 0, 2, -1, flag, 0, 0);
     }
 }
-
-#pragma dont_inline on
+#pragma opt_propagation reset
 extern "C" void fn_80325A30(Actor* a) {
     s32* w = (s32*)a;
     f32* f = (f32*)a;
@@ -278,8 +277,9 @@ extern "C" void fn_80325A30(Actor* a) {
     f32 box[4];
     f32 p2[2];
     f32 out[3];
-    s32 mask;
     s32 i;
+    s32 room;
+    s32 mask;
 
     if (w[0x8c] == 1) {
         if (fn_8022F9E4(w[0x9b], w[0x66], 0, 0) == 1) {
@@ -327,8 +327,8 @@ extern "C" void fn_80325A30(Actor* a) {
                 }
             }
             break;
-        case 2: {
-            s32 room = w[1];
+        case 2:
+            room = w[1];
             if (((u8*)fn_802D6A9C())[room + 0x131df] == 0) {
                 if (b[0xc4] == 0) {
                     if (w[0x98] == 0) {
@@ -395,7 +395,6 @@ extern "C" void fn_80325A30(Actor* a) {
                 fn_801F2B20(a, 5);
             }
             break;
-        }
         case 3:
             f[0xf] = 0.0f;
             f[0x10] = 0.0f;
