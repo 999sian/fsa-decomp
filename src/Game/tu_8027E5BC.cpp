@@ -124,6 +124,7 @@ f32 fn_8022C6AC(s32);
 s32 fn_8023DE58(s32);
 void fn_8027EEB4(char*);
 void fn_80261480(char*);
+#pragma opt_propagation off
 void fn_8027E5BC(char* p, f32 f) {
     s32 area;
     if (!Player_GetField_0xce8(p)) {
@@ -131,7 +132,8 @@ void fn_8027E5BC(char* p, f32 f) {
         JGeometry::TVec3<f32> a(VEC(p, 0x3a4));
         a.sub(VEC(p, 0x398));
         d = a;
-        f = f * PSVECMag(&d) * lbl_80540348;
+        f32 speed = f * PSVECMag(&d);
+        f = speed * lbl_80540348;
     }
     if (F32(p, 0x3a4) > F32(p, 0x398)) {
         S32(p, 0x3dc) = 0;
@@ -151,7 +153,7 @@ void fn_8027E5BC(char* p, f32 f) {
     if (F32(p, 0x3a8) > F32(p, 0x39c)) {
         S32(p, 0x3dc) = 2;
         S32(p, 0x3e8) = 2;
-        if (Player_GetField_0xce8(p) && (S32(p, 0xcf4) == 0x15 || S32(p, 0xcf4) == 0x23) && (area = S32(p, 0x3b4), *((u8*)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0)) {
+        if (Player_GetField_0xce8(p) && (S32(p, 0xcf4) == 0x15 || S32(p, 0xcf4) == 0x23) && (area = S32(p, 0x3b4), *(u8*)((s32)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0)) {
             F32(p, 0xc) += f * lbl_8054034C;
         } else {
             F32(p, 0xc) += f;
@@ -162,7 +164,7 @@ void fn_8027E5BC(char* p, f32 f) {
     } else if (F32(p, 0x3a8) < F32(p, 0x39c)) {
         S32(p, 0x3dc) = 3;
         S32(p, 0x3e8) = 3;
-        if (Player_GetField_0xce8(p) && (S32(p, 0xcf4) == 0x15 || S32(p, 0xcf4) == 0x23) && (area = S32(p, 0x3b4), *((u8*)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0)) {
+        if (Player_GetField_0xce8(p) && (S32(p, 0xcf4) == 0x15 || S32(p, 0xcf4) == 0x23) && (area = S32(p, 0x3b4), *(u8*)((s32)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0)) {
             F32(p, 0xc) -= f * lbl_8054034C;
         } else {
             F32(p, 0xc) -= f;
@@ -172,7 +174,7 @@ void fn_8027E5BC(char* p, f32 f) {
         }
     }
 }
-
+#pragma opt_propagation reset
 void fn_8027E7E0(char* p) {
     s32 i;
     f32 minDist;
