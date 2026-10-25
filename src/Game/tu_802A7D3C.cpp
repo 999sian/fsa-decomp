@@ -32,8 +32,6 @@ extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void detach__5ActorFv(void* this_);
 
-inline void unusedS32(s32 v) {}
-
 // NonMatching: retail keeps a dead float->int conversion (fctiwz + stfd) of
 // "y - mgr->0xd0" in case 0 and a 0x30 frame; this version drops it.
 #pragma opt_dead_assignments off
