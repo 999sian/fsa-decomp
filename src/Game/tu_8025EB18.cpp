@@ -10,6 +10,12 @@
 #define F32(p, off) (*(f32*)((p) + (off)))
 #define VEC(p, off) (*(JGeometry::TVec3<f32>*)((p) + (off)))
 
+static inline bool isAttached(char* p) {
+    if (((S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4) || S32(p, 0xd68) >= 0) && U8(p, 0xd64) == 0)
+        return true;
+    return false;
+}
+
 static inline u8 isCarried(char* p) {
     return U8(p, 0xd64) == 1;
 }
@@ -719,10 +725,9 @@ extern "C" u8 fn_8025197C(char*, s32);
 #pragma opt_common_subs off
 extern "C" void fn_8026022C(char* p) {
  JGeometry::TVec3<f32> a,b;
- const JGeometry::TVec3<f32>& pos=(*(JGeometry::TVec3<f32>*)(p+8));
  a.set(lbl_8046B89C[(*(s32*)(p+0x3dc))]);
 
- a.add(pos); a.z=lbl_80540150; b.set(lbl_8046B8CC[(*(s32*)(p+0x3dc))]); b.add(pos);
+ a.add((*(JGeometry::TVec3<f32>*)(p+8))); a.z=lbl_80540150; b.set(lbl_8046B8CC[(*(s32*)(p+0x3dc))]); b.add((*(JGeometry::TVec3<f32>*)(p+8)));
  if((*(u8*)(p+0x1174))==0 && (*(u8*)(p+0xd64))==0 && (*(s32*)(p+0xd74))==0) {
  if(fn_8022BF68((*(s32*)(p+4)))) {
  if(!fn_802265DC(&b,(*(s32*)(p+0x3b4)),1) && !fn_802684A4(p,&b,(*(s32*)(p+0x3b4))) && !fn_8024B24C(p) &&
@@ -1133,11 +1138,7 @@ s32 fn_80230CFC(s32);
 void fn_802685D4(char*);
 }
 
-static inline bool isAttached(char* p) {
-    if (((S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4) || S32(p, 0xd68) >= 0) && U8(p, 0xd64) == 0)
-        return true;
-    return false;
-}
+
 
 static inline bool isAttachedPlayer(char* p) {
     if (S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4 && U8(p, 0xd64) == 0)
