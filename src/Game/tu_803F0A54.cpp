@@ -728,77 +728,64 @@ extern "C" void fn_803F358C(u8* p) {
 
 extern const f32 lbl_80543780;
 extern "C" void* getBounds__7J2DPaneFv(void* p);
+#pragma opt_propagation off
 extern "C" void fn_803F35B0(u8* p) {
-    u8* base;
-    u8* q4;
-    u32* pt30;
-    u32* pt29;
-    u32* pt28;
-    u8* q2;
+    u8* q;
+    u64* tA = (u64*)(lbl_80478A60 + 0x978);
+    u64* tB = (u64*)(lbl_80478A60 + 0x998);
+    u64* tC = (u64*)(lbl_80478A60 + 0x9b8);
+    u8* sp;
     s32 i;
-    s32 v;
-    s32 t;
-    f32 f31;
-    f32 f30;
-    f32* bounds;
-    void* obj;
-    void* pane;
+    s32 k;
+    s32 n;
+    f32 t;
+    f32 off;
+    f32 square;
+    J2DPane* pane;
+    i = 0;
+    q = p;
+    sp = p;
+    for (; i < 4; i++, q += 4, tA++, tB++, tC++, sp += 2) {
 
-    base = lbl_80478A60;
-    pt30 = (u32*)(base + 0x978);
-    pt29 = (u32*)(base + 0x998);
-    pt28 = (u32*)(base + 0x9b8);
-    q4 = p;
-    q2 = p;
-    for (i = 0; i < 4; i++) {
-        v = *(s32*)(q4 + 0x1d0);
-        if (v < 30) {
-            f31 = (f32)(v * v) / lbl_8054377C;
-        } else {
-            f31 = lbl_80543730 - (f32)((v - 30) * (v - 30)) / lbl_8054377C;
-        }
-        if (i <= *(s32*)(p + 0x1ac) + 1) {
-            if (*(s32*)(q4 + 0x1b0) < 4) {
-                obj = *(void**)(p + 0x10);
-                pane = ((void* (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, 0, pt30[0], pt30[1]);
-                ((void (*)(void*, s32))(*(void***)pane)[9])(pane, (s32)(lbl_80543780 * f31));
-            }
-            if (*(s32*)(q4 + 0x1b0) == 3) {
-                obj = *(void**)(p + 0x10);
-                pane = ((void* (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, 0, pt29[0], pt29[1]);
-                ((void (*)(void*, s32))(*(void***)pane)[9])(pane, (s32)(f31 * (f32)*(u8*)(p + 0x25a)));
-                obj = *(void**)(p + 0x10);
-                pane = ((void* (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, 0, pt28[0], pt28[1]);
-                ((void (*)(void*, s32))(*(void***)pane)[9])(pane, (s32)(f31 * (f32)*(u8*)(p + 0x25a)));
-            }
-        }
-        if (*(s32*)(p + 0x1c4) != 0xa) {
-            t = *(s16*)(q2 + 0x240);
-            if (t >= 5) {
-                t = 10 - t;
-            }
-            f30 = (lbl_80543784 * (f32)(t * t)) / lbl_80543788;
-            obj = *(void**)(p + 0x10);
-            pane = ((void* (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, t * t, pt29[0], pt29[1]);
-            bounds = (f32*)getBounds__7J2DPaneFv(pane);
-            f31 = *bounds;
-            obj = *(void**)(p + 0x10);
-            pane = ((void* (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, 0, pt29[0], pt29[1]);
-            ((void (*)(void*, f32, f32))(*(void***)pane)[4])(pane, f31, *(f32*)(p + 0x1a0) + f30);
-            if (*(s32*)(q4 + 0x1b0) >= 3) {
-                fn_80402E08(*(void**)(q4 + 0x64), lbl_8054372C, f30);
-            }
-        }
-        q4 += 4;
-        q2 += 2;
-        pt30 += 2;
-        pt29 += 2;
-        pt28 += 2;
+    n = *(s32*)(q + 0x1d0);
+    if (n < 30) {
+        square = n * n;
+        t = square / 900.0f;
+    } else {
+        n -= 30;
+        f32 one = 1.0f;
+        square = n * n;
+        t = one - square / 900.0f;
     }
-    draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x10), lbl_8054372C, lbl_8054372C, *(void**)((u8*)lbl_8053AB10 + 0x10));
+        if (i <= *(s32*)(p + 0x1ac) + 1) {
+            if (*(s32*)(q + 0x1b0) < 4) {
+                pane = (*(J2DPane**)(p + 0x10))->search(*tA);
+                ((Tu803FVObj*)pane)->v9((s32)(160.0f * t));
+            }
+            if (*(s32*)(q + 0x1b0) == 3) {
+                pane = (*(J2DPane**)(p + 0x10))->search(*tB);
+                ((Tu803FVObj*)pane)->v9((s32)(t * (f32)p[0x25a]));
+                pane = (*(J2DPane**)(p + 0x10))->search(*tC);
+                ((Tu803FVObj*)pane)->v9((s32)(t * (f32)p[0x25a]));
+            }
+        }
+            if (*(s32*)(p + 0x1c4) != 0xa) {
+                k = *(s16*)(sp + 0x240);
+                k = k < 5 ? k : 10 - k;
+                off = (5.0f * (f32)(k * k)) / 25.0f;
+                pane = (*(J2DPane**)(p + 0x10))->search(*tB);
+                t = ((f32*)getBounds__7J2DPaneFv(pane))[0];
+                pane = (*(J2DPane**)(p + 0x10))->search(*tB);
+                pane->move(t, *(f32*)(p + 0x1a0) + off);
+                if (*(s32*)(q + 0x1b0) >= 3) {
+                    fn_80402E08(*(void**)(q + 0x64), 0.0f, off);
+                }
+            }
+    }
+    draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x10), 0.0f, 0.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
     fn_80440EE8(lbl_8053AED8);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_803F38A4(u8* p) {
     s32 state = *(s32*)(p + 0x1c4);
     f32 f31;
@@ -1508,7 +1495,7 @@ extern "C" void fn_803FAA88(u8* p) {
     }
 }
 
-#pragma opt_common_subs reset
+#pragma opt_common_subs off
 extern "C" void fn_803FB6F4(u8* p) {
     s32 j;
     s32 i;
@@ -1585,7 +1572,7 @@ extern "C" void fn_803FB6F4(u8* p) {
         *(s32*)(p + 0x1d0) = 0;
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_80456154(void* p);
 extern "C" s32 fn_8030AAF4(s32 i);
 extern "C" u8 fn_8030A308(void* a, s32 b);
