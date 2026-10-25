@@ -1062,29 +1062,11 @@ inline s32 getModeOwnerCached(const char* p) {
     if (linked >= 0) return fn_8022CAF8(linked);
     return S32(p, 0x120c);
 }
-inline BOOL isOtherRankCached(char* p, int v) {
-    s32 c;
-    int i;
-    s32 linked;
-    s32 n;
-    s32 rank;
-    linked = S32(p, 0xd60);
-    if (linked < 0) rank = 0;
-    else {
-        c = 0;
-        n = S32(p, 4);
-        for (i = 0; i < n; i++) {
-            if (linked == fn_8022F3DC(i)) c++;
-        }
-        rank = c + 1;
-    }
-    return v != rank;
-}
 inline BOOL isLinkOwnerCached(char* p) {
     u8 bit = 1 << S32(p, 4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) return 1;
     if (getModeOwnerCached(p) == 4) {
-        return isOtherRankCached(p, linkIdx(p));
+        return linkIdx(p) != linkRank(p);
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
