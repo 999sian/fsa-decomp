@@ -235,7 +235,8 @@ struct J2DTevSwapModeTable {
 
     void setTevSwapModeTableInfo(const J2DTevSwapModeTableInfo& info)
     {
-        _00  = J2DCalcTevSwapTable(info.mR, info.mG, info.mB, info.mA);
+        u8 green = info.mG;
+        _00  = J2DCalcTevSwapTable(info.mR, green, info.mB, info.mA);
     }
 
     u8 getR() { return _00 >> 6 & 3; }
