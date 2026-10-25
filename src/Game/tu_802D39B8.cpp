@@ -1146,6 +1146,7 @@ inline bool swordStage8328() {
     return false;
 }
 
+#pragma opt_propagation off
 extern "C" char* fn_802D8128(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
@@ -1158,7 +1159,9 @@ extern "C" char* fn_802D8128(char* p, s32 index) {
                 name = lbl_804A9530[row][col];
             else
                 name = lbl_80541128;
-            s32 number = ((RoomArrays*)((s32)p + y * 10))->roomNumbers[0][x];
+            char* cell = p + y * 10;
+            char* cell2 = cell + x;
+            s32 number = ((RoomArrays*)cell2)->roomNumbers[0][0];
             if (number == 255)
                 number = 0;
             sprintf(p + 0x1321A, lbl_8046E7E8, name, number / 10, number % 10, index - 7);
@@ -1167,7 +1170,7 @@ extern "C" char* fn_802D8128(char* p, s32 index) {
     }
     return 0;
 }
-
+#pragma opt_propagation reset
 extern "C" char* fn_802D8228(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
