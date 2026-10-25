@@ -335,7 +335,7 @@ static inline s32 resolvePlayer(s32 p) {
 
 
 extern "C" u8 fn_80390818(void* p);
-extern "C" void fn_8037DF68(char* p) {
+extern "C" void __ct__9T37ConfigFv(char* p) {
     f32 f0 = lbl_805430CC;
     f32 f1 = lbl_805430C8;
     f32 f2 = lbl_805430C4;
@@ -749,15 +749,12 @@ static inline bool testBit(u8 bits, s32 n) {
 }
 
 extern "C" void fn_8038D4A8() {
-    s32 i;
-    s32 v;
-    for (i = 0; i < 4; i++) {
-        v = lbl_8053AD78->wfc[i];
-        if (v == -1) {
-            continue;
-        }
-        if (testBit(lbl_8053AAF8->b82, v) == true) {
-            fn_80390E68(lbl_8053AD78->sub[v]);
+    for (int i = 0; i < 4; i++) {
+        const Mgr* mgr = lbl_8053AD78;
+        int v;
+        v = mgr->wfc[i];
+        if (v != -1 && ((u32)(-((u32)lbl_8053AAF8->b82 & (u8)(1 << v)) | ((u32)lbl_8053AAF8->b82 & (u8)(1 << v))) >> 31) == 1) {
+            fn_80390E68(mgr->sub[v]);
         }
     }
     if (lbl_8053AD78->be4) {
@@ -1392,8 +1389,7 @@ extern "C" char lbl_804755C4[];
 MsgMgr::MsgMgr() {
     lbl_8053AD78 = (Mgr*)this;
     void* res = ((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755B0);
-    JUTResFont* font = new JUTResFont((ResFONT*)res, 0);
-    mFont = font;
+    mFont = new JUTResFont((ResFONT*)res, 0);
     mMsgData = ((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755C4);
     for (s32 i = 0; i < 4; i++) {
         mSub[i] = new MsgSub(i);
