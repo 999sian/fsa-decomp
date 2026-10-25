@@ -51,12 +51,13 @@ extern "C" Actor* fn_802B61C8(Actor* this_, s16 n) {
     return this_;
 }
 
+#pragma optimization_level 3
 extern "C" void fn_802B6228(char* p) {
-    int room = *(int*)(p + 4);
+    s32 room = *(s32*)(p + 4);
     if (room >= 8) {
         JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
         pos.z = lbl_80540A38;
-        Actor_CreateByID(((void* (*)())fn_801F856C)(), 0x4b4d5249, *(s32*)(p + 4), &pos, 0, -1, -1);
+        Actor_CreateByID(((void* (*)(Actor*, s32))fn_801F856C)((Actor*)p, room), 0x4b4d5249, *(s32*)(p + 4), &pos, 0, -1, -1);
     } else if (*(f32*)(p + 0x14) < lbl_80540A38 && fn_8022461C((Vec*)(p + 0xc)) == 0xd) {
         fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540A3C, 0x3d0, 0, 1, 0, 0, 1);
     } else {
@@ -66,7 +67,6 @@ extern "C" void fn_802B6228(char* p) {
     fn_801F0E34((Actor*)p, 0x30003, 0);
     *(u8*)(p + 0x11c) = 0;
 }
-
 extern "C" void fn_802B6358(void* this_) {
     fn_801F06F0(this_, lbl_8046CAB8, 0x29, 0, 0, lbl_80540A3C, lbl_80540A3C);
 }
