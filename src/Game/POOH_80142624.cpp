@@ -67,12 +67,6 @@ struct PoohGame {
     u8 pad[0xb4];
     PoohRandom rnd;
 };
-static inline s32 poohFacing(f32 x) {
-    s32 result = 0;
-    if (x < lbl_8053CF34) result = 1;
-    return result;
-}
-
 struct PoohSinCos {
     f32 s;
     f32 c;
@@ -125,6 +119,7 @@ extern "C" void fn_80142684(Actor* this_) {
 #pragma opt_lifetimes reset
 
 
+#pragma opt_lifetimes on
 extern "C" void fn_80143330(Actor* this_) {
     u8* p = (u8*)this_;
 
@@ -222,13 +217,11 @@ extern "C" void fn_80143330(Actor* this_) {
         break;
     }
 
-    s32 frame;
     s32 idx = 0;
     if (*(f32*)(p + 0x3c) < lbl_8053CF34) {
         idx = 1;
     }
-    frame = *(s32*)(p + 0x258);
-    *(s32*)(p + 0x25c) = lbl_8049F2B8[frame + idx * 8];
+    *(s32*)(p + 0x25c) = lbl_8049F2B8[idx * 8 + *(s32*)(p + 0x258)];
 }
-
+#pragma opt_lifetimes reset
 void __sinit_POOH_80142624_cpp(void) {}
