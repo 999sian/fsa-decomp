@@ -577,6 +577,45 @@ extern "C" void fn_80440EE8(void*);
 extern u8* lbl_8053AB10;
 extern void* lbl_8053AED8;
 
+// HUD pane reached through Screen411::search: move(x, y) at 0x10, setAlpha at 0x24.
+struct Pane411 {
+	virtual void v08(); virtual void v0c();
+	virtual void move(f32 x, f32 y); virtual void v14(); virtual void v18(); virtual void v1c();
+	virtual void v20();
+	virtual void setAlpha(int a); // 0x24
+	u8 pad4[0x20 - 4];
+	f32 x0, y0, x1, y1; // 0x20 bounds
+	u8 pad30[0xb0 - 0x30];
+	u8 visible; // 0xb0
+};
+struct Screen411 {
+	virtual void v08(); virtual void v0c();
+	virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1c();
+	virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2c();
+	virtual void v30(); virtual void v34(); virtual void v38();
+	virtual Pane411* search(u64 tag); // 0x3c
+};
+// Pane position table (x, y) per slot.
+struct PanePos411 {
+	s16 x;
+	s16 y;
+};
+extern "C" PanePos411 lbl_8048C9DC[];
+extern "C" u8* getBounds__7J2DPaneFv(void*);
+extern "C" void fn_8013B414(void* obj, f32* box, s32 flag);
+extern "C" void fn_804069E8(u8* self);
+extern "C" void fn_80405FC0(u8* self);
+extern "C" void fn_80406634(u8* self, s32 slot, s32 flag);
+extern "C" f32 lbl_80543898;
+extern "C" f32 lbl_805438C4;
+extern "C" f32 lbl_805438CC;
+
+// States in which the "Pphu01" pointer pane is shown.
+static inline bool Tu411ShowState(s32 st) {
+	return st == 2 || (st >= 3 && st <= 4) || (st >= 6 && st <= 9) || (st >= 15 && st <= 18) ||
+	       (st >= 20 && st <= 21) || st == 22;
+}
+
 extern "C" void fn_804111C4(u8* self) {
 	if (*(s32*)(self + 0x350) == 0x15) {
 		fn_8037AA7C();
@@ -1936,6 +1975,31 @@ extern "C" void fn_804083D8(u8* self) {
 			}
 		}
 		appendChild__7J2DPaneFP7J2DPane((*(Screen408**)(self + 0x10))->search(0x004E646174613031ULL), (*(PaneRef**)(self + 0x28 + *(s32*)(self + 0x340) * 0x14))->pane);
+	}
+}
+
+extern "C" void fn_8040873C(u8* self, void* p2) {
+	f32 scale = lbl_805438BC;
+	s32 x = (s32)p2;
+	s32 i;
+	u32* e;
+	u8* obj;
+	u8* tbl = (u8*)&lbl_8048C1F8;
+	if (*(s32*)(self + 0x340) == 7) {
+		e = (u32*)(tbl + 0x3d8);
+		for (i = 0; i < 9; i++) {
+			obj = *(u8**)(self + 0x14);
+			((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, x, e[0], e[1]);
+			x = (s32)((f32)self[0x642 + i] * scale);
+			((void (*)(void*, s32))(*(void***)obj)[9])(obj, x);
+			e += 2;
+		}
+		fn_80402E08(*(void**)(self + 0x120), lbl_80543898, lbl_80543898);
+		for (i = 0; i < 2; i++) {
+			u8* q = *(u8**)(self + 0x120 + i * 4);
+			((void (*)(void*, s32))(*(void***)(*(u8**)(q + 4)))[9])(*(void**)(q + 4), q[0x28]);
+		}
+		self[0x65e] = 1;
 	}
 }
 
