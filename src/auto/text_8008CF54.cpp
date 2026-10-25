@@ -80,7 +80,6 @@ struct JUTGamePad {
 };
 
 extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
-    s32 id = param_2;
     __ct__11JKRDisposerFv(this_);
     *(u32*)this_ = (u32)lbl_80499490;
     fn_8008D910(this_ + 0x18);
@@ -89,9 +88,9 @@ extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
     fn_8008DE64((u32*)(this_ + 0x68), (int)this_);
     __ct__10JSUPtrLinkFPv(this_ + 0x80, this_);
     this_[0x98] = 0;
-    *(s16*)(this_ + 0x7c) = (s16)id;
+    *(s16*)(this_ + 0x7c) = (s16)param_2;
     if (*(s16*)(this_ + 0x7c) >= 0) {
-        lbl_8053A924[id]++;
+        lbl_8053A924[param_2]++;
         fn_8008D0D4();
     }
     append__10JSUPtrListFP10JSUPtrLink((void*)lbl_8052E8A0, this_ + 0x80);
@@ -99,6 +98,7 @@ extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
     *(u32*)(this_ + 0x90) = 0;
     *(u32*)(this_ + 0x94) = 0;
     fn_8008D148((int)this_);
+    mr_dummy:
     return this_;
 }
 
@@ -161,15 +161,15 @@ extern "C" s32 lbl_80539D98;
 extern "C" u32 lbl_8053A928;
 extern "C" u32 fn_8008D15C(void)
 {
-    u8 buf[0x18];
-    u32 mask;
-    u8* link;
-    u32* entry;
-    f32* stickY;
-    f32* stickX;
-    u8* pad;
     u32 reset;
+    s8* pad;
+    u32* entry;
+    f32* stickX;
+    f32* stickY;
+    u32 mask;
     s32 i;
+    u8* link;
+    s8 buf[0x18];
 
     lbl_8053A930 = PADRead(lbl_8052EA28);
     switch (lbl_80539D9C) {
@@ -181,18 +181,18 @@ extern "C" u32 fn_8008D15C(void)
         break;
     }
 
-    reset = 0;
-    pad = (u8*)lbl_8052EA28;
+    pad = (s8*)lbl_8052EA28;
     entry = lbl_8052EA58;
     stickX = (f32*)lbl_8052EB18;
     stickY = (f32*)lbl_8052EB58;
+    reset = 0;
     for (i = 0; i < 4; i++) {
         mask = 0x80000000 >> i;
         if (pad[10] == 0) {
             u32 packed = fn_8008DAF8(stickX, pad[2], pad[3], lbl_80539D98, 0, entry[0]) << 24;
             packed |= fn_8008DAF8(stickY, pad[4], pad[5], lbl_80539D98, 1, entry[0]) << 16;
             fn_8008D94C(entry, (u16*)pad, packed);
-        } else if ((s8)pad[10] == -1) {
+        } else if (pad[10] == -1) {
             fn_8008DAF8(stickX, 0, 0, lbl_80539D98, 0, 0);
             fn_8008DAF8(stickY, 0, 0, lbl_80539D98, 1, 0);
             fn_8008D94C(entry, 0, 0);
@@ -214,7 +214,7 @@ extern "C" u32 fn_8008D15C(void)
         u8* sub = *(u8**)(*(u8**)link + 0x94);
         if (sub != 0 && sub[4] != 0) {
             u32 packed;
-            ((void (*)(u8*, u8*))(*(u32**)sub)[3])(sub, buf);
+            ((void (*)(u8*, s8*))(*(u32**)sub)[3])(sub, buf);
             packed = fn_8008DAF8((f32*)(*(u8**)link + 0x48), buf[2], buf[3], lbl_80539D98, 0, *(u32*)(*(u8**)link + 0x18)) << 24;
             packed |= fn_8008DAF8((f32*)(*(u8**)link + 0x58), buf[4], buf[5], lbl_80539D98, 1, *(u32*)(*(u8**)link + 0x18)) << 16;
             fn_8008D94C((u32*)(*(u8**)link + 0x18), (u16*)buf, packed);
@@ -495,32 +495,23 @@ extern "C" s32 fn_8008DAF8(f32 *param_1, s8 param_2, s8 param_3, s32 param_4, s3
 
 extern "C" u32 fn_8008DDB0(float *param_1, u32 param_2) {
     u32 result = param_2 & 0xf;
-    float f2 = *param_1;
-    float f1 = lbl_80539DA4;
-    
-    if (f2 <= -f1 || f2 >= f1) {
-        if (f2 <= -f1) {
-            result = (param_2 & 0xd) | 1;
-        } else {
-            result = (param_2 & 0xe) | 2;
-        }
-    } else {
-        result = param_2 & 0xc;
+
+    if (-lbl_80539DA4 < param_1[0] && param_1[0] < lbl_80539DA4) {
+        result &= ~3;
+    } else if (param_1[0] <= -lbl_80539DA0) {
+        result = (result & ~2) | 1;
+    } else if (param_1[0] >= lbl_80539DA0) {
+        result = (result & ~1) | 2;
     }
-    
-    f2 = param_1[1];
-    f1 = lbl_80539DA0;
-    
-    if (f2 <= -f1 || f2 >= f1) {
-        if (f2 <= -f1) {
-            result = (result & 0xfffffff7) | 4;
-        } else {
-            result = (result & 0xfffffffb) | 8;
-        }
-    } else {
-        result = result & 0xfffffff3;
+
+    if (-lbl_80539DA4 < param_1[1] && param_1[1] < lbl_80539DA4) {
+        result &= ~0xc;
+    } else if (param_1[1] <= -lbl_80539DA0) {
+        result = (result & ~8) | 4;
+    } else if (param_1[1] >= lbl_80539DA0) {
+        result = (result & ~4) | 8;
     }
-    
+
     return result;
 }
 
@@ -552,7 +543,8 @@ extern "C" void fn_8008DF30(int param_1, int param_2)
     if ((lbl_8053A938 & mask) != 0) {
         u8 control = (u8)param_2;
         s32 sign = (-(s32)control | (s32)control) >> 31;
-        u8 mode = (u8)(2 & sign);
+        s32 two = 2;
+        u8 mode = (u8)(two & sign);
         PADControlMotor(param_1, mode);
         lbl_8053A934[param_1] = 0;
     }
@@ -693,7 +685,7 @@ extern "C" void fn_8008E364(u32 param_1)
             if (obj != 0) {
                 s16 idx = *(s16*)(obj + 0x7c);
                 *(u32*)(obj + 0x6c) = 0;
-                if (lbl_8053A938 & lbl_80499470[idx]) {
+                if ((lbl_8053A938 & lbl_80499470[idx]) != 0) {
                     PADControlMotor(idx, 2);
                     lbl_8053A934[idx] = 0;
                 }
@@ -709,6 +701,26 @@ extern "C" void fn_8008E488(void *param_1, u32 param_2, u32 param_3, u32 param_4
     ((u32 *)param_1)[9] = param_2;
     ((u32 *)param_1)[10] = param_3;
     ((u32 *)param_1)[11] = param_4;
+}
+
+extern "C" u32 fn_8008E4A4(u32 mask) {
+    u32* p = lbl_80499480;
+    if (lbl_8053A928 & *p) {
+        mask &= *p ^ 0xffffffff;
+    }
+    p++;
+    if (lbl_8053A928 & *p) {
+        mask &= *p ^ 0xffffffff;
+    }
+    p++;
+    if (lbl_8053A928 & *p) {
+        mask &= *p ^ 0xffffffff;
+    }
+    p++;
+    if (lbl_8053A928 & *p) {
+        mask &= *p ^ 0xffffffff;
+    }
+    return PADRecalibrate(mask) != 0;
 }
 
 extern "C" void fn_8008E530(int param_1, int param_2, u32 param_3)
