@@ -259,8 +259,8 @@ static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
 return go;
 }
 static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
-            s32 i;
             s32 bit;
+            s32 i;
             for (i = go; i < 4; i++) {
                 bit = 1 << i;
                 if (*(u8*)(this_ + 0x345) & bit) {
