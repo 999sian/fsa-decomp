@@ -122,6 +122,14 @@ static inline u8 tu801D3320_collect(char* this_, u8* ids, u8 n, u8* out) {
     return count;
 }
 
+static inline u8 tu801D3320_pick(u8* list, int n) {
+    return list[fn_801CD664(n)];
+}
+
+static inline u8 tu801D3320_next(char* this_) {
+    return fn_801C976C(this_);
+}
+
 static inline u8 tu801D3320_contains(u8 id, u8* list, int n) {
     u8 found = 0;
     for (int i = 0; i < n; i++) {
@@ -155,15 +163,13 @@ extern "C" void fn_801D3320(char* this_) {
     u8 ids[0x30];
     u8 ids2[0x30];
     if (*(u32*)(this_ + 0x230) & 0x2000000) {
-        u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
-        u8 best = tu801D3320_farthest(this_, ids, n);
+        u8 best = tu801D3320_farthest2(this_, ids);
         tu801D3320_setCur(this_, best);
         ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
         return;
     }
 
-    u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids2, 0x30);
-    u8 count = tu801D3320_collect(this_, ids2, n, free);
+    u8 count = tu801D3320_collect2(this_, ids2, free);
     int cnt = count;
     u8 sel = free[fn_801CD664(cnt)];
     tu801D3320_setCur(this_, sel);
@@ -171,8 +177,9 @@ extern "C" void fn_801D3320(char* this_) {
     if (count == 1) {
         return;
     }
-    u8 next = fn_801C976C(this_);
+    s32 nextRaw = fn_801C976C(this_);
     s32 room = *(s32*)(this_ + 0x4);
+    u8 next = nextRaw;
     if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), next)) {
         return;
     }
