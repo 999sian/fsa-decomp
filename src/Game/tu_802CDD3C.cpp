@@ -22,7 +22,7 @@ extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" u32 fn_804032E8(u32 tag, void* id);
 extern "C" void fn_802F745C(void* mgr, void* pos, u32 tex, void* rec);
 extern "C" void PSMTXIdentity(f32 (*m)[4]);
-extern "C" u8 lbl_80540E28[];
+extern "C" const u8 lbl_80540E28[];
 extern "C" void* lbl_804A90F0[];
 extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
