@@ -55,6 +55,11 @@ struct T803FC46C;
 typedef void (T803FC46C::*PMF803FC46C)();
 extern PMF803FC46C lbl_804B0BDC[];
 
+struct FsaBlock156 {
+    u32 w[39];
+};
+extern "C" FsaBlock156 lbl_804B0B40[6];
+
 extern "C" void fn_803F1C18(u8* p) {
     fn_8043670C(*(void**)(p + 0x58), 1);
     *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
@@ -509,24 +514,23 @@ extern "C" void fn_803F35B0(u8* p) {
 }
 
 extern "C" void fn_803F5410(u8* p) {
+    s32 state = *(s32*)(p + 0x1c4);
     u8* base = lbl_80478A60;
     u8* q = p;
-    s32 state = *(s32*)(p + 0x1c4);
-    s32 x = *(s32*)(p + 0x1d0);
     f32 f30;
     f32 f3;
     if (state != 2) {
-        if (x < 0x1e) {
-            f3 = (f32)(s32)(x * x) / lbl_8054377C;
+        if (*(s32*)(p + 0x1d0) < 0x1e) {
+            f3 = (f32)(s32)(*(s32*)(p + 0x1d0) * *(s32*)(p + 0x1d0)) / lbl_8054377C;
         } else {
-            f3 = lbl_80543730 - (f32)(s32)((x - 0x1e) * (x - 0x1e)) / lbl_8054377C;
+            f3 = lbl_80543730 - (f32)(s32)((*(s32*)(p + 0x1d0) - 0x1e) * (*(s32*)(p + 0x1d0) - 0x1e)) / lbl_8054377C;
         }
         f30 = f3 * (f32)*(u8*)(p + 0x258);
     } else {
-        if (x < 0xf) {
-            f3 = (f32)(s32)(x * x) / lbl_8054378C;
+        if (*(s32*)(p + 0x1d0) < 0xf) {
+            f3 = (f32)(s32)(*(s32*)(p + 0x1d0) * *(s32*)(p + 0x1d0)) / lbl_8054378C;
         } else {
-            f3 = lbl_80543730 - (f32)(s32)((x - 0xf) * (x - 0xf)) / lbl_8054378C;
+            f3 = lbl_80543730 - (f32)(s32)((*(s32*)(p + 0x1d0) - 0xf) * (*(s32*)(p + 0x1d0) - 0xf)) / lbl_8054378C;
         }
         f30 = lbl_80543790 * f3;
     }
