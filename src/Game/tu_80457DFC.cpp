@@ -1040,15 +1040,6 @@ soundStarted:
 #include "JSystem/JAudio/JAUInitializer.h"
 #include "JSystem/JAudio/JAUAudioArchive.h"
 extern "C" void fn_8003C984(void*);
-static inline void constructAudience(u8* p) {
-    fn_8003C984(p);
-    *(void**)p = lbl_80495480;
-    *(void**)p = lbl_804954F8;
-    *(u32*)(p + 0x50) = 1;
-    PSMTXIdentity((MtxPtr)(p + 0x54));
-    *(void**)p = lbl_804954D8;
-    *(void**)p = lbl_804B2074;
-}
 struct FsaAudienceBase {
     FsaAudienceBase() {
         fn_8003C984(this);
@@ -1111,11 +1102,7 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     *(JAUSoundMgr**)(this_ + 0x30) = new ((JKRHeap*)heap, 0) JAUSoundMgr();
     *(u8**)(this_ + 0x34) = *(u8**)(this_ + 0x30) + 4;
     *(u8**)(this_ + 0x38) = *(u8**)(this_ + 0x30) + 0x728;
-    u8* au = (u8*)operator new(0x84, (JKRHeap*)heap, 0);
-    if (au) {
-        constructAudience(au);
-    }
-    *(u8**)(this_ + 0x3c) = au;
+    *(FsaAudience**)(this_ + 0x3c) = new ((JKRHeap*)heap, 0) FsaAudience();
     *(f32*)(*(u8**)(this_ + 0x3c) + 0x4) = lbl_8053A22C;
     *(f32*)(*(u8**)(this_ + 0x3c) + 0x8) = lbl_8053A230;
     *(f32*)(*(u8**)(this_ + 0x3c) + 0xc) = lbl_8053AF78;
