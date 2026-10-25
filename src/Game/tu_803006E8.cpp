@@ -148,6 +148,7 @@ extern "C" void fn_803007D0(void) {
     }
 }
 
+
 extern "C" s32 fn_80301A88(void* this_) {
     return OSResumeThread(*(void**)((char*)this_ + 0x28));
 }
