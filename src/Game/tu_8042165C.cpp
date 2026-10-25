@@ -574,10 +574,10 @@ extern "C" void fn_80425234(u8* this_, s32 i, s32 val, u8 flag) {
 
 // Copies player i's counter to every player linked to i.
 static inline void SyncLinkedCount(s32 i) {
-    s32* table = (s32*)lbl_80529DEC;
+    u8* table = lbl_80529DEC;
     for (s32 j = 0; j < 4; j++) {
         if (j != i && fn_8022F514(j) && fn_8022F3DC(j) == i) {
-            table[0x36 + j] = table[0x36 + i];
+            *(s32*)(table + j * 4 + 0xd8) = *(s32*)(table + i * 4 + 0xd8);
         }
     }
 }
