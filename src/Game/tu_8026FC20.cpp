@@ -5,6 +5,7 @@
 extern "C" const f32 lbl_805402D4;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JMath/JMath.h"
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
@@ -3027,11 +3028,15 @@ void fn_80279824(char* p) {
         U8(p, 0x11e9) = 1;
         s32 room = S32(p, 0x3b4);
         RoomRect r;
-        r = *(RoomRect*)roomOffset(room);
+        const u32* src = (const u32*)roomOffset(room);
+        ((u32*)&r)[0] = src[0];
+        ((u32*)&r)[1] = src[1];
+        ((u32*)&r)[2] = src[2];
+        ((u32*)&r)[3] = src[3];
         RoomRect* rp = &r;
-        rp->x0 -= -16.0f;
-        rp->y0 -= -16.0f;
-        rp->x1 += -16.0f;
+        rp->x0 -= lbl_805402D4;
+        rp->y0 -= lbl_805402D4;
+        rp->x1 += lbl_805402D4;
         landState(p);
     } else {
         if (F32(p, 0x10) <= 0.0f) {
@@ -3050,7 +3055,8 @@ void fn_80279824(char* p) {
             fn_8013CB44(PTR(p, 0x135c), p + 8, 0, -1, 1);
             break;
         }
-        JPAGetXYZRotateMtx(0, lbl_8046BC98[S32(p, 0x3dc)], 0, (f32(*)[4])((char*)PTR(p, 0x135c) + 0x68));
+        s32 rotation = lbl_8046BC98[S32(p, 0x3dc)];
+        JPAGetXYZRotateMtx(0, rotation, 0, (f32(*)[4])((char*)PTR(p, 0x135c) + 0x68));
     }
     if (PTR(p, 0x132c) != NULL) {
         F32(p, 0x1344) = F32(p, 0x8);
@@ -3064,7 +3070,9 @@ void fn_80279824(char* p) {
         F32(p, 0x1334) = F32(p, 0x1344);
         F32(p, 0x1338) = F32(p, 0x1348);
         F32(p, 0x133c) = F32(p, 0x134c);
-        JPAGetXYZRotateMtx(0, lbl_8046BC98[S32(p, 0x3dc)], 0, (f32(*)[4])((char*)PTR(p, 0x132c) + 0x68));
+        s16 x = 0;
+        s16 z = 0;
+        JPAGetXYZRotateMtx(x, lbl_8046BC98[S32(p, 0x3dc)], z, (f32(*)[4])((char*)PTR(p, 0x132c) + 0x68));
     }
     groundDustFx(p);
     if (S32(p, 0x11e4) == 0x17 || S32(p, 0x11e4) == 0x19) {
@@ -3669,10 +3677,8 @@ void fn_8027DEA0(char* p) {
     } else if (comboDirCount2(p) == 0) {
         if (comboFreeSlot(p) <= 2) {
             S32(p, 0x45c) = 2;
-        } else if (comboFreeSlot(p) == 3) {
-            S32(p, 0x45c) = 0;
         } else {
-            S32(p, 0x45c) = 1;
+            S32(p, 0x45c) = comboFreeSlot(p) == 3 ? 0 : 1;
         }
     } else {
         if (comboFreeSlot(p) <= 2) {
