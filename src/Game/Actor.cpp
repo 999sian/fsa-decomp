@@ -1723,11 +1723,7 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
     return m;
 }
 
-/* --- 0x801EF574 is parked at 62.56 %: its single fn_802F86CC call site orders the
- * arguments float-first, while the three call sites in the fn_801EF830 block (87.35 %)
- * order them pointer-first. C++ allows one declaration, so the two cannot coexist until
- * the retail stream settles which order is real. The body lives on its own work branch.
- * ------------------------------------------------------------------------ */
+
 
 
 
