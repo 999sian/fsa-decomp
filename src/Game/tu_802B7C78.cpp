@@ -2,7 +2,6 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
-#include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct SinCosEntry {
