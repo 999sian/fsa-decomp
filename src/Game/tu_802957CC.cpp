@@ -36,6 +36,18 @@ extern "C" u8 fn_8023B0F4(s32 idx, void* box, s32 room, s32 a, f32 f);
 extern "C" JGeometry::TVec3f lbl_8046C268[];
 extern "C" f32 lbl_8046C298[];
 
+struct HOUSLinks {
+    u8 unk_000[0x25c];
+    s32 outgoing[4];
+    s32 incoming[4];
+    s32 flames[4];
+    s32 doors[4];
+    s32 outgoingCount;
+    s32 incomingCount;
+    s32 flameCount;
+    s32 doorCount;
+};
+
 static inline s32 WarpDestination(u32 param) {
     s32 room = (param >> 24) & 7;
     s32 result = room + 7;
@@ -1146,11 +1158,12 @@ extern "C" void fn_8029AE58(char* p) {
     origin.y += 8.0f;
     origin.z = 0.0f;
     pos = origin;
+    s32 j;
     char* row = p;
     for (s32 i = 0; i < 6; i++) {
         pos.y = origin.y;
         char* col = row;
-        for (s32 j = 0; j < 6; j++, col += 2) {
+        for (j = 0; j < 6; j++, col += 2) {
             *(u16*)(col + 0x320) = fn_80226850(&pos, 1);
             *(u16*)(col + 0x368) = fn_80226850(&pos, 0);
             if (*(u8*)(p + 0x2b5) == 0) {
@@ -1182,13 +1195,12 @@ extern "C" void fn_8029AE58(char* p) {
         if (warp < 0) break;
         char* other = (char*)fn_801F666C(fn_801F856C(), warp);
         if (other && *(s32*)(other + 0x244) == *(s32*)((char*)fn_802D6A9C() + 0x14) && *(s32*)(other + 0x248) == *(s32*)((char*)fn_802D6A9C() + 0x18)) {
-            s32 dest = (*(u32*)(p + 0x90) >> 7) & 0x1f;
-            if (*(s32*)(other + 4) == ((dest + 7) & ~-(dest == 0)) && *(s32*)(p + 4) == WarpDestination(*(u32*)(other + 0x90))) {
+            if (*(s32*)(other + 4) == HouseDestination(*(u32*)(p + 0x90)) && *(s32*)(p + 4) == WarpDestination(*(u32*)(other + 0x90))) {
                 if (*(s32*)(p + 0x29c) < 4) {
                     *(s32*)(p + (*(s32*)(p + 0x29c) * 4 + 0x25c)) = warp;
                     *(s32*)(p + 0x29c) += 1;
                 }
-            } else if (((dest + 7) & ~-(dest == 0)) == WarpDestination(*(u32*)(other + 0x90)) && *(s32*)(p + 4) == *(s32*)(other + 4)) {
+            } else if (HouseDestination(*(u32*)(p + 0x90)) == WarpDestination(*(u32*)(other + 0x90)) && *(s32*)(p + 4) == *(s32*)(other + 4)) {
                 if (*(s32*)(p + 0x2a0) < 4) {
                     *(s32*)(p + (*(s32*)(p + 0x2a0) * 4 + 0x26c)) = warp;
                     *(s32*)(p + 0x2a0) += 1;
@@ -1204,7 +1216,7 @@ extern "C" void fn_8029AE58(char* p) {
         }
     }
     for (s32 i = 0; i < *(s32*)(p + 0x29c); i++) {
-        char* other = (char*)fn_801F666C(fn_801F856C(), ((s32*)(p + 0x25c))[i]);
+        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + i * 4 + 0x25c));
         if (other) {
             *(f32*)(p + 0x2dc + i * 8) = *(f32*)(other + 0xc);
             *(f32*)(p + 0x2e0 + i * 8) = *(f32*)(other + 0x10);
@@ -1225,9 +1237,10 @@ extern "C" void fn_8029AE58(char* p) {
         char* other = (char*)fn_801F666C(fn_801F856C(), door);
         if (other) {
             bool inside = false;
+            f32 y;
             f32 x = *(f32*)(other + 0xc);
             if (x >= left) {
-                f32 y = *(f32*)(other + 0x10);
+                y = *(f32*)(other + 0x10);
                 if (y >= top && x < right && y < bottom) inside = true;
             }
             if (inside) {
