@@ -15,10 +15,6 @@
 
 extern void* lbl_8053AB10;
 
-struct DrawBufferPair {
-    J3DDrawBuffer* opa;
-    J3DDrawBuffer* xlu;
-};
 
 struct AADGameState {
     u8 pad0[0x4c];
@@ -153,11 +149,9 @@ extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
 }
 
 extern "C" void fn_8013AC54(Mtx mtx) {
-    char* mgr = (char*)lbl_8053AB10;
-    J3DDrawBuffer* opa;
-    J3DDrawBuffer* xlu;
-    opa = *(J3DDrawBuffer**)(mgr + 0x8);
-    xlu = *(J3DDrawBuffer**)(mgr + 0xc);
+    J3DDrawBuffer* (&buffers)[2] = *(J3DDrawBuffer* (*)[2])((char*)lbl_8053AB10 + 8);
+    J3DDrawBuffer* opa = buffers[0];
+    J3DDrawBuffer* xlu = buffers[1];
     j3dSys.setDrawBuffer(opa, 0);
     j3dSys.setDrawBuffer(xlu, 1);
     j3dSys.setViewMtx(mtx);
