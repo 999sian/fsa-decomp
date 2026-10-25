@@ -168,6 +168,7 @@ extern "C" void fn_801220C4(void*);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void*, s32, s32, s32);
 extern "C" s32 fn_80123E80(u8*, s32);
+extern "C" void* fn_8022EA0C(void);
 extern "C" void fn_80124CA8(u8* p, u32 param) {
     *(u8*)(p + 0x330) = 0;
     *(u8*)(p + 0x335) = 0;
