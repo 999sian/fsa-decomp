@@ -580,18 +580,10 @@ extern "C" void fn_801E4618(char* param_1, f32* param_2, u8 param_3) {
 }
 
 extern "C" void fn_801E4758(u8* p) {
-    f32 a = lbl_8053F554;
-    f32 s = lbl_8053F0BC;
-    f32 b = lbl_8053F558;
-    a *= s;
-    b *= s;
-    f32 c = lbl_8053F510 * s;
-    f32 d = lbl_8053F55C * s;
-
-    *(f32*)(p + 0x80) = a;
-    *(f32*)(p + 0x84) = b;
-    *(f32*)(p + 0x88) = c;
-    *(f32*)(p + 0x8c) = d;
+    *(f32*)(p + 0x80) = lbl_8053F554 * lbl_8053F0BC;
+    *(f32*)(p + 0x84) = lbl_8053F558 * lbl_8053F0BC;
+    *(f32*)(p + 0x88) = lbl_8053F510 * lbl_8053F0BC;
+    *(f32*)(p + 0x8c) = lbl_8053F55C * lbl_8053F0BC;
 }
 
 extern "C" void fn_801E4790(u8* p, u8 flag) {
