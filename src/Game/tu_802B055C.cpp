@@ -13,7 +13,7 @@ extern const f32 lbl_80540994;
 extern const f32 lbl_80540998;
 extern const f32 lbl_8054099C;
 extern void* lbl_8053AB10;
-extern "C" void fn_80158B5C(void* mgr, void* room, void* pos, void* col, f32 size);
+extern "C" void fn_80158B5C(void* mgr, void* room, void* pos, GXColor col, f32 size);
 extern "C" void fn_802B055C(char* p) {
     if (*(s32*)(p + 0x254) == 0) {
         if (*(f32*)(p + 0x258) > lbl_80540990) {
