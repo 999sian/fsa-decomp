@@ -394,7 +394,7 @@ extern u8 lbl_8053AD40;
 f32 lbl_8050AED8[8];
 
 extern "C" s32 fn_803506E0(u8* self) {
-    const f32* __restrict tbl;
+    const f32* tbl;
     s32 bit;
     s32 j;
     s32 flags;
@@ -428,11 +428,10 @@ extern "C" s32 fn_803506E0(u8* self) {
         if (fn_8022F514(i) == 1 && fn_8022CAF8(i) == 5) {
             continue;
         }
-        tbl = lbl_8050AED8;
         for (j = 0; j < 4; j++) {
             bit = 1 << j;
-            x = tbl[0];
-            y = tbl[1];
+            x = lbl_8050AED8[j*2];
+            y = lbl_8050AED8[j*2+1];
             x += *(f32*)(self + 0xc);
             y += *(f32*)(self + 0x10);
             r2 = lbl_80542618;
@@ -447,15 +446,13 @@ extern "C" s32 fn_803506E0(u8* self) {
             dx2 = dx * dx;
             dy2 = dy * dy;
             if (dx2 + dy2 < r2) {
-                p = (f32*)fn_8023E724(i);
-                if (isOnGround(p[2])) {
+                if (0.0f == ((f32*)fn_8023E724(i))[2]) {
                     if (m == 0) {
                         fn_801F0E34(self, 0x30009, 0);
                     }
                     *(s32*)(self + 0x270) |= bit;
                 }
             }
-            tbl += 2;
         }
     }
 
