@@ -1527,7 +1527,7 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
 extern "C" void fn_802F99DC(Tu802F5040Tbl* this_, u8* src, u32 a, s32 idx, u32 dst, u32 size) {
     u8* buf;
     u8* base;
-    u8* d;
+    u16* d;
     u32 i;
     u32 len;
     if (size == 0) {
@@ -1547,14 +1547,15 @@ extern "C" void fn_802F99DC(Tu802F5040Tbl* this_, u8* src, u32 a, s32 idx, u32 d
     } else buf = src;
     base = buf + a;
     if (idx >= 0 && idx < 4) {
-        d = this_->m_tbl[idx] + (dst & ~1);
+        d = (u16*)this_->m_tbl[idx] + dst / 2;
     } else if (idx >= 4 && idx < 8) {
-        d = this_->m_tbl[idx] + (dst & ~1);
+        d = (u16*)this_->m_tbl[idx] + dst / 2;
     } else {
-        d = this_->m_tbl[idx] + (dst & ~1);
+        d = (u16*)this_->m_tbl[idx] + dst / 2;
     }
     for (i = 0; i < len; i += 2) {
-        *(u16*)(d + (i & ~1)) = (base[i + 1] << 8) | base[i];
+        u16 value = (base[i+1] << 8) | base[i];
+        d[i / 2] = value;
     }
 }
 #pragma opt_propagation reset
@@ -2345,6 +2346,7 @@ extern "C" void fn_802FC80C(u8* this_) {
     }
 }
 
+#pragma dont_inline on
 extern "C" void fn_802FCE74(u8* this_) {
     u8* p = this_;
     p[0] = 0;
@@ -2368,6 +2370,7 @@ extern "C" void fn_802FDDD4(u8* this_) {
         i++;
     } while (i <= *(s32*)(this_ + 0x2384));
 }
+#pragma dont_inline reset
 
 extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
     u8* p;
