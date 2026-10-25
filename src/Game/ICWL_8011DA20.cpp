@@ -105,9 +105,9 @@ static inline bool icwlHitPlayer(u8* this_) {
 }
 
 static inline bool icwlHitObject(u8* this_) {
+    f32 out[3];
     ICWLVec2 v;
     ICWLBox box;
-    ICWLVec2 out;
     s32 idx;
     v.x = lbl_8053C8B8;
     v.y = lbl_8053C8B8;
