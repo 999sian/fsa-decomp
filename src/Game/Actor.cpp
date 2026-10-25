@@ -2254,13 +2254,13 @@ static inline void copySpriteRecord(Rec* dst, const Rec* src) {
                 u8  t2c = src->b2c;
                 u32 t30 = src->w30;
                 u32 t34 = src->w34;
-                u32 t18 = src->w18;
                 u32 t00 = src->w00;
                 u32 t04 = src->w04;
                 u32 t08 = src->w08;
                 u32 t0c = src->w0c;
                 u32 t10 = src->w10;
                 u32 t14 = src->w14;
+                u32 t18 = src->w18;
                 u8  t1c = src->b1c;
                 u8  t1d = src->b1d;
                 u8  t1e = src->b1e;
