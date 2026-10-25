@@ -5,6 +5,14 @@ extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 #include "dolphin/mtx.h"
+#include "JSystem/JAudio/System/JASHeapCtrl.h"
+#include "JSystem/JAudio/System/JASTrack.h"
+class JASPoolObj3_FSA;
+class JASPoolObj4_FSA;
+class JAIStream;
+class JAISoundChild;
+class JAISeq;
+class JAISe;
 
 
 extern "C" char __vt__4HOUS[];
@@ -1979,4 +1987,7 @@ extern "C" void* fn_8029B484(void* p, s16 flag) {
     }
     return p;
 }
+
+extern "C" void fn_8029B538(void) {}
+
 #pragma dummy_never_used
