@@ -18,7 +18,7 @@ struct Obj8033D264 {
 #include "Game/ItemBase.h"
 
 extern "C" {
-extern f32 lbl_805421B0;
+extern const f32 lbl_805421B0;
 extern char lbl_804AC2D8[];
 void __dt__5ActorFv(void*, s32);
 extern JGeometry::TVec3f lbl_80471E28[];
@@ -226,15 +226,15 @@ extern "C" void fn_8033CD44(UnkObj8033CD44* this_) {
 }
 
 extern "C" bool fn_8033D264(UnkObj8033D264* self, u8 dir) {
-    f32 zero = lbl_805421B0;
+    s32 h;
     bool result = false;
+    JGeometry::TVec3f saved = self->mPos;
     const JGeometry::TVec3f& off = lbl_80471E28[dir];
     self->mOffset.x = off.x;
     self->mOffset.y = off.y;
     self->mOffset.z = off.z;
-    JGeometry::TVec3f saved = self->mPos;
     self->mPos.add(self->mOffset);
-    JGeometry::TVec3f out(zero, zero, zero);
+    JGeometry::TVec3f out(lbl_805421B0, lbl_805421B0, lbl_805421B0);
     if (fn_801F2618(self, &out, 0)) {
         switch (dir) {
         case 0:
@@ -267,7 +267,8 @@ extern "C" bool fn_8033D264(UnkObj8033D264* self, u8 dir) {
         for (int i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, rect, self->unk4, lbl_805421B0, 0)) {
                 if (fn_8022CAF8(i) != 5 || !fn_8022F478(i)) {
-                    if (fn_80238CB4(i) != self->unk198) result = false;
+                    h = self->unk198;
+                    if (fn_80238CB4(i) != h) result = false;
                 }
             }
         }
