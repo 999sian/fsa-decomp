@@ -23,7 +23,7 @@ extern "C" s32 fn_80239470(void*, u32, void*);
 extern "C" void fn_80239914(void*, u32, void*);
 extern "C" void* fn_8023E724(s32);
 extern "C" void fn_8023DFF4(s32, void*);
-extern "C" u8 fn_8023077C(Actor*);
+extern "C" u8 fn_8023077C(void);
 extern "C" void fn_801F0E34(Actor*, s32, s32);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
