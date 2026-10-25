@@ -2014,7 +2014,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
 extern "C" void fn_8013B414(void*, void*, s32);
 extern "C" void fn_8013B004(void*, const GXColor*);
 extern "C" void* fn_8022BCD4(s32);
-extern "C" s32* fn_8030B1E8(void*, s32, u16);
+extern "C" s32* fn_8030B1E8(void*, s32, s32, u16);
 extern "C" void fn_8030275C(u8*, s32, u8, u8);
 extern "C" void fn_803022C4(u8*, s32, u8, u8);
 extern "C" GXColor lbl_805414EC;
@@ -2023,7 +2023,8 @@ extern "C" void fn_802FAC10(u8*, s32, s32, s32, s32, u8, u8, s32*);
 #pragma opt_common_subs on
 extern "C" const f32 lbl_80541588,lbl_8054158C,lbl_80541590,lbl_80541594;
 extern "C" void fn_8030DFE8(void*,s32);
-#pragma opt_loop_invariants on
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, s32 effect, u8 opacity) {
     u8* regs=(u8*)registerPtr;
     s32* rect=(s32*)rectData;
@@ -2039,25 +2040,26 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     void* controller=fn_8022BCD4(player);
     if (enabled) {
         u8 special=0;
-        if (((((regs[2]>>2)&7)-1)&7)!=0 && self[0x134+player]!=0) special=1;
+        if (((((regs[2]>>2)&7)-1)&7)==0 || self[0x134+player]!=0) special=1;
         u16 color=((u16*)(self+0x114))[1+!special];
         fn_8013B3F0(lbl_8053AB10);
         JGeometry::TBox2<f32> bg;
         bg.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
         GXColor rgb;
-        rgb.r=((color&0x7c00)>>7)|((color&0x7c00)>>12);
+        s32 red=color&0x7c00;
+        rgb.r=(red>>7)|(red>>12);
         rgb.g=((color>>2)&0xf8)|((color>>7)&7);
         rgb.b=((color<<3)&0xf8)|((color>>2)&7);
         rgb.a=255;
         fn_8013B004(&bg,&rgb);
         if ((regs[0x17]>>3)&1) {
             u8* game=(u8*)lbl_8053AAF8;
-            if ((*(s32*)(game+0x4c)!=11 && game[0x88]==0) || RendererFadeAlpha802F()<255) {
+            if ((!RendererStage11_802F() && game[0x88]==0) || RendererFadeAlpha802F()<255) {
                 s32 mode=(regs[2]>>2)&7;
                 s32 selector=6;
-                if (mode>1 || self[0x134+player]) selector=5;
+                if ((u32)mode<=1 || self[0x134+player]) selector=5;
                 else if (((regs[2]>>6)&3)==3) selector=(regs[5]>>4)&3;
-                if (controller) wave=fn_8030B1E8(controller,selector,(u16)scrollY);
+                if (controller) wave=((s32*(*)(void*,s32,s32,u16))fn_8030B1E8)(controller,mode,selector,(u16)scrollY);
                 fn_802FAC10(self,((regs[2]>>2)&7)-1,scrollX,scrollY,self[0x134+player],255,255,wave);
             }
         }
@@ -2081,7 +2083,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
         fn_8013B3F0(lbl_8053AB10);
         if ((regs[0x17]>>3)&1) {
             u8* game=(u8*)lbl_8053AAF8;
-            if ((*(s32*)(game+0x4c)!=11 && game[0x88]==0) || RendererFadeAlpha802F()<255) {
+            if ((!RendererStage11_802F() && game[0x88]==0) || RendererFadeAlpha802F()<255) {
                 if (self[0x130+player]==1)
                     fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],128,255,wave);
                 else if (self[0x130+player]==2)
@@ -2152,7 +2154,8 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     }
     fn_8030DFE8(*(void**)((u8*)lbl_8053AB10+0x24),1);
 }
-#pragma opt_loop_invariants reset
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
