@@ -246,7 +246,7 @@ extern "C" s32 fn_80120F68(char* p) {
     if (state == 0 || state == 0xf) {
         return 3;
     }
-    r = ((u8 (*)(void*))(*(void***)p)[22])(p);
+    r = ((EZZR*)p)->v22();
     ret = 1;
     if (r) {
         ret = 2;
@@ -265,7 +265,6 @@ extern "C" bool fn_80120FC0(void* p) {
         return fn_80121DC8(p, fn_8012285C(p)) <= lbl_8053C9A8;
     case 0xd:
     case 0xe:
-    case 0xf:
     default:
         return false;
     }
