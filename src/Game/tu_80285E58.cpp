@@ -54,50 +54,18 @@ extern "C" void fn_8023105C(void);
 extern "C" void fn_802310F8(s32 h);
 extern void* lbl_8053AD30;
 extern f32 lbl_80540410;
-void fn_802870C8();
-void fn_80265E88(char* p);
-void fn_8024CA20(char* p);
-extern "C" void fn_802870C8();
+extern "C" void fn_802870C8(char* p = 0);
 extern "C" void fn_80265E88(char* p);
+void fn_8024CA20(char* p);
 extern "C" void fn_80285E58(char* p) {
-    char* q;
-    if (*(s32*)(p + 0x11f4) > 0) {
-        (*(s32*)(p + 0x11f4))--;
-        q = p;
-        for (int i = 0; i < 5; i++) {
+    s32* count = (s32*)(p + 0x11f4);
+    if (*count > 0) {
+        --*count;
+        char* q = p;
+        for (int i = 0; i < 80; i++) {
             *(s32*)(q + 0xdb0) = -1;
             *(s32*)(q + 0x1030) = -1;
-            *(s32*)(q + 0xdb4) = -1;
-            *(s32*)(q + 0x1034) = -1;
-            *(s32*)(q + 0xdb8) = -1;
-            *(s32*)(q + 0x1038) = -1;
-            *(s32*)(q + 0xdbc) = -1;
-            *(s32*)(q + 0x103c) = -1;
-            *(s32*)(q + 0xdc0) = -1;
-            *(s32*)(q + 0x1040) = -1;
-            *(s32*)(q + 0xdc4) = -1;
-            *(s32*)(q + 0x1044) = -1;
-            *(s32*)(q + 0xdc8) = -1;
-            *(s32*)(q + 0x1048) = -1;
-            *(s32*)(q + 0xdcc) = -1;
-            *(s32*)(q + 0x104c) = -1;
-            *(s32*)(q + 0xdd0) = -1;
-            *(s32*)(q + 0x1050) = -1;
-            *(s32*)(q + 0xdd4) = -1;
-            *(s32*)(q + 0x1054) = -1;
-            *(s32*)(q + 0xdd8) = -1;
-            *(s32*)(q + 0x1058) = -1;
-            *(s32*)(q + 0xddc) = -1;
-            *(s32*)(q + 0x105c) = -1;
-            *(s32*)(q + 0xde0) = -1;
-            *(s32*)(q + 0x1060) = -1;
-            *(s32*)(q + 0xde4) = -1;
-            *(s32*)(q + 0x1064) = -1;
-            *(s32*)(q + 0xde8) = -1;
-            *(s32*)(q + 0x1068) = -1;
-            *(s32*)(q + 0xdec) = -1;
-            *(s32*)(q + 0x106c) = -1;
-            q += 0x40;
+            q += 4;
         }
     } else {
         fn_802870C8();
@@ -152,7 +120,6 @@ extern "C" void fn_80286688(u8* p) {
 }
 
 extern "C" void fn_80286E10(u8* p) {
-    void* r30;
     s32 h29;
     s32 h28;
     s32 start;
@@ -237,8 +204,7 @@ extern "C" void fn_80286E10(u8* p) {
             if (fn_80234134() || fn_8023EA28(h29)) {
                 continue;
             }
-            r30 = fn_8023E724(h28);
-            if (fn_8022BC38(h29, fn_8023DE58((void*)h28), r30)) {
+            if (fn_8022BC38(h29, fn_8023DE58((void*)h28), fn_8023E724(h28))) {
                 break;
             }
         } while (start != *(s32*)(p + 0x1224));
