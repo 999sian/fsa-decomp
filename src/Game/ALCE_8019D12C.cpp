@@ -109,9 +109,169 @@ extern "C" void fn_8019D12C(char* this_) {
     if (*(s32*)(this_ + 0x240) > 0) {
         *(s32*)(this_ + 0x240) = *(s32*)(this_ + 0x240) - 1;
     }
-    char* sub = this_ + 8;
-    if (*(s32*)(this_ + 0x244) > 0) {
-        *(s32*)(sub + 0x23c) = *(s32*)(this_ + 0x244) - 1;
+    s32* sub = (s32*)(this_ + 8);
+    s32* w = (s32*)this_;
+    if (w[0x244 / 4] > 0) {
+        sub[0x23c / 4] = w[0x244 / 4] - 1;
+    }
+}
+
+extern "C" void fn_8019D2AC(char* this_) {
+    u8* base = (u8*)lbl_804C1E30;
+    s32 i;
+    u8* flags;
+    s32 off;
+    s32* words;
+    f32 pos[3];
+    u32 bits1;
+    u32 bits0;
+    f32 zero = lbl_8053E440;
+    char* st = *(char**)((char*)lbl_8053AB10 + 0x24);
+    pos[0] = -*(f32*)(st + 0x10);
+    pos[1] = -*(f32*)(st + 0x20);
+    pos[2] = zero;
+    switch (*(s32*)(this_ + 0x230)) {
+    case 3:
+        fn_80134FC4(lbl_8053AAF8, 1);
+        if (*(s32*)(this_ + 0x25c) == 0) {
+            if (*(s32*)(this_ + 0x238) != 3) {
+                fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x73, 1, 7, 0, 0, 1);
+                fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x74, 1, 7, 0, 0, 1);
+                fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x75, 1, 7, 0, 0, 1);
+                fn_801F0E34(this_, 0x30001, 0);
+            }
+            fn_8022ADE4();
+        }
+        *(s32*)(this_ + 0x25c) = *(s32*)(this_ + 0x25c) + 1;
+        if (*(s32*)(this_ + 0x25c) < 0x3c) {
+            return;
+        }
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x61, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x62, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x63, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x64, 1, 7, 0, 0, 1);
+        *(void**)(this_ + 0x260) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x45c, 1, 7, 0, 0, 1);
+        *(void**)(this_ + 0x264) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x45d, 1, 7, 0, 0, 1);
+        fn_8019DC5C(this_);
+        *(s32*)(this_ + 0x230) = 4;
+        return;
+    case 4:
+        *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x24c) + 1;
+        if (*(s32*)(this_ + 0x24c) == 2) {
+            fn_801F0E34(this_, 0x3005d, 0);
+            fn_80134DE4(lbl_8053AAF8, 2, 0);
+        }
+        if (*(s32*)(this_ + 0x24c) < 0x5a) {
+            fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, lbl_8053E448, lbl_8053E440);
+            return;
+        }
+        *(s32*)(this_ + 0x24c) = 2;
+        *(s32*)(this_ + 0x258) = 0;
+        *(s32*)(this_ + 0x230) = 5;
+        /* fall through */
+    case 5:
+        *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x24c) + 1;
+        if (*(s32*)(this_ + 0x24c) > 2) {
+            *(s32*)(this_ + 0x24c) = 0;
+            if (*(s32*)(this_ + 0x258) < *(s32*)(this_ + 0x250)) {
+                flags = base + 0x4000;
+                words = (s32*)(base + 0x3000);
+                off = 0;
+                for (i = 0; i < *(s32*)(this_ + 0x254); i++) {
+                    if (*flags == 1) {
+                        char* actor = *(char**)((char*)fn_801F856C() + off + 8);
+                        if (actor == 0) {
+                            flags[0] = 0;
+                            *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
+                            break;
+                        }
+                        if (words[0] == 4) {
+                            s32 r;
+                            f32* src = (f32*)(base + i * 12);
+                            pos[0] = src[0];
+                            pos[1] = src[1];
+                            pos[2] = src[2];
+                            fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x18, 1, 7, 0, 0, 1);
+                            fn_801EE4F0(actor);
+                            r = (s32)fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x19, 1, 7, 0, 0, 1);
+                            fn_801F0E34(this_, 0x3005e, 0);
+                            if (r != 0) {
+                                fn_8013C830(fn_8013C824(), *(s32*)(this_ + 0x234), (void*)r);
+                            }
+                            fn_801EE4F0(actor);
+                            fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x1a, 1, 7, 0, 0, 1);
+                            words[i] = words[i] - 1;
+                            break;
+                        }
+                        words[0] = words[0] - 1;
+                        if (words[0] < 1) {
+                            flags[0] = 0;
+                            *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
+                            fn_801F4694(actor);
+                            detach__5ActorFv(actor);
+                            break;
+                        }
+                    }
+                    flags++;
+                    words++;
+                    off += 4;
+                }
+            }
+        }
+        if (*(s32*)(this_ + 0x258) <= *(s32*)(this_ + 0x250)) {
+            *(s32*)(this_ + 0x254) = 0;
+            *(s32*)(this_ + 0x230) = 6;
+        }
+        return;
+    case 6:
+        if (*(s32*)(this_ + 0x258) < 0x32) {
+            *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x24c) + 1;
+            if (*(s32*)(this_ + 0x24c) < 3) {
+                return;
+            }
+            *(s32*)(this_ + 0x24c) = 0;
+            *(u32*)((char*)lbl_8053AAF8 + 0xb4) = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+            bits0 = (*(u32*)((char*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+            pos[0] = pos[0] + (lbl_8053E44C - lbl_8053E450 * (*(f32*)&bits0 - lbl_8053E444));
+            *(u32*)((char*)lbl_8053AAF8 + 0xb4) = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+            bits1 = (*(u32*)((char*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+            pos[1] = pos[1] + (lbl_8053E458 - lbl_8053E454 * (*(f32*)&bits1 - lbl_8053E444));
+            fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x18, 1, 7, 0, 0, 1);
+            fn_801F0E34(this_, 0x3005f, 0);
+            *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
+            return;
+        }
+        if (*(s32*)(this_ + 0x254) == 0) {
+            fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x65, 1, 7, 0, 0, 1);
+            fn_801F0E34(this_, 0x30090, 0);
+            {
+                char* a = *(char**)(this_ + 0x260);
+                if (a != 0) {
+                    *(u32*)(a + 0xf4) = *(u32*)(a + 0xf4) | 1;
+                    *(s32*)(a + 0x24) = 1;
+                    *(void**)(this_ + 0x260) = 0;
+                }
+                a = *(char**)(this_ + 0x264);
+                if (a != 0) {
+                    *(u32*)(a + 0xf4) = *(u32*)(a + 0xf4) | 1;
+                    *(s32*)(a + 0x24) = 1;
+                    *(void**)(this_ + 0x264) = 0;
+                }
+            }
+        }
+        *(s32*)(this_ + 0x254) = *(s32*)(this_ + 0x254) + 1;
+        if (*(s32*)(this_ + 0x254) < 0x32) {
+            return;
+        }
+        *(u8*)(this_ + 0x11c) = 0;
+        fn_80134FC4(lbl_8053AAF8, 0);
+        fn_8037AE30(lbl_8053AD70);
+        fn_8022ADCC();
+        *(s32*)(this_ + 0x248) = 0;
+        lbl_8053ABB0 = 0;
+        return;
+    default:
+        return;
     }
 }
 
@@ -280,7 +440,7 @@ extern "C" void fn_8019DF7C(char* this_) {
     f32 z = lbl_8053E440;
     u8* pb = lbl_804C1E30 + 0x4000;
     s32* pw = (s32*)(lbl_804C1E30 + 0x3000);
-    f32* pf = (f32*)(lbl_804C1E30 + 0);
+    f32* pf = (f32*)lbl_804C1E30;
 
     for (i = 0; i < 0x80; i++) {
         pf[2] = z;
@@ -368,79 +528,79 @@ extern void __construct_array(void*, void*, void*, u32, u32);
 extern void __register_global_object(void*, void*, void*);
 extern void __ct__17JASGenericMemPoolFv(void*);
 extern char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
-extern void* memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
 extern void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
 extern char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
-extern void* memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
 extern void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
 extern char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
-extern void* memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
 extern void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
 extern char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
-extern void* memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
 extern void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
 extern char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
-extern void* memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
 extern void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
 extern char __init__memPool___30JASPoolAllocObject_9JAIStream;
-extern void* memPool___30JASPoolAllocObject_9JAIStream;
+extern char memPool___30JASPoolAllocObject_9JAIStream[];
 extern void __dt__22JASMemPool_9JAIStreamFv(void*);
 extern char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
-extern void* memPool___35JASPoolAllocObject_13JAISoundChild;
+extern char memPool___35JASPoolAllocObject_13JAISoundChild[];
 extern void __dt__27JASMemPool_13JAISoundChildFv(void*);
 extern char __init__memPool___27JASPoolAllocObject_6JAISeq;
-extern void* memPool___27JASPoolAllocObject_6JAISeq;
+extern char memPool___27JASPoolAllocObject_6JAISeq[];
 extern void __dt__19JASMemPool_6JAISeqFv(void*);
 extern char __init__memPool___26JASPoolAllocObject_5JAISe;
-extern void* memPool___26JASPoolAllocObject_5JAISe;
+extern char memPool___26JASPoolAllocObject_5JAISe[];
 extern void __dt__18JASMemPool_5JAISeFv(void*);
 extern void __ct__Q29JGeometry8TVec3_f_Fv(void);
 extern "C" void fn_8019E13C(void) {
     u8* base = lbl_804C1E30;
     __construct_array(base, (void*)__ct__Q29JGeometry8TVec3_f_Fv, NULL, 0xc, 0x400);
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x4400);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object((void*)&memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, (void*)__dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x4400);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
-        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0x440c);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object((void*)&memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, (void*)__dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0x440c);
         __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
     }
     if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
-        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x4418);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object((void*)&memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, (void*)__dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x4418);
         __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
     }
     if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
-        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x4424);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object((void*)&memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, (void*)__dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x4424);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
     }
     if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
-        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x4430);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object((void*)&memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, (void*)__dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x4430);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
     }
     if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
-        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, base + 0x443c);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object((void*)&memPool___30JASPoolAllocObject_9JAIStream, (void*)__dt__22JASMemPool_9JAIStreamFv, base + 0x443c);
         __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
     }
     if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
-        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, base + 0x4448);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object((void*)&memPool___35JASPoolAllocObject_13JAISoundChild, (void*)__dt__27JASMemPool_13JAISoundChildFv, base + 0x4448);
         __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
     }
     if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
-        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, base + 0x4454);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object((void*)&memPool___27JASPoolAllocObject_6JAISeq, (void*)__dt__19JASMemPool_6JAISeqFv, base + 0x4454);
         __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
     }
     if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
-        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
-        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, base + 0x4460);
+        __ct__17JASGenericMemPoolFv((void*)&memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object((void*)&memPool___26JASPoolAllocObject_5JAISe, (void*)__dt__18JASMemPool_5JAISeFv, base + 0x4460);
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
