@@ -1,5 +1,7 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 
 
@@ -37,16 +39,7 @@ extern "C" f32 lbl_80542550;
 extern "C" f32 lbl_80542554;
 extern "C" int fn_8023EA28(int idx);
 extern "C" void fn_802314D8(s32 idx, Vec v);
-namespace JMath {
-    template <int N, typename T>
-    class TAtanTable {
-    public:
-        f32 atan2_(f32, f32) const;
-        f32 mTable[1024];
-        f32 mTable2[8];
-    };
-    extern const TAtanTable<1024, f32> atanTable_;
-}
+
 extern "C" Actor* fn_8034AA40(Actor* p, s16 n) {
     if (p) {
         *(void**)p = __vt__4NWOK;
@@ -60,18 +53,18 @@ extern "C" s32 fn_8034AAA0(u8* self) {
     struct Box {
         f32 x0, y0, x1, y1;
     };
-    f32 tmp[4];
+    volatile Box tmp;
     Box box;
     s32 count = 0;
     s32 idx = -1;
     s32 st;
     u8* p;
 
-    tmp[0] = lbl_80542528;
-    tmp[1] = lbl_8054252C;
-    tmp[2] = lbl_80542530;
-    tmp[3] = lbl_80542534;
-    box = *(Box*)tmp;
+    tmp.x0 = lbl_80542528;
+    tmp.y0 = lbl_8054252C;
+    tmp.x1 = lbl_80542530;
+    tmp.y1 = lbl_80542534;
+    box = *(Box*)&tmp;
 
     box.x0 += *(f32*)(self + 0xc);
     box.y0 += *(f32*)(self + 0x10);
@@ -115,21 +108,129 @@ extern "C" s32 fn_8034AAA0(u8* self) {
     return count;
 }
 
+extern "C" void fn_8034ACF4(u8* self) {
+    struct Box {
+        f32 x0, y0, x1, y1;
+    };
+    struct V3 {
+        f32 x, y, z;
+    };
+    f32 tmp[4];
+    s32 i;
+
+    tmp[0] = lbl_80542538;
+    tmp[1] = lbl_8054253C;
+    tmp[2] = lbl_80542540;
+    tmp[3] = lbl_80542544;
+    Box box = *(Box*)tmp;
+
+    box.x0 += *(f32*)(self + 0xc);
+    box.y0 += *(f32*)(self + 0x10);
+    box.x1 += *(f32*)(self + 0xc);
+    box.y1 += *(f32*)(self + 0x10);
+
+    for (i = 0; i < 4; i++) {
+        if ((u8)fn_8023EA28(i) == 1) {
+            self[0x288 + i] = 1;
+            *(V3*)(self + 0x290 + i * 0xc) = *(V3*)fn_8023E724(i);
+        } else if (self[0x288 + i] == 1) {
+            V3 p = *(V3*)fn_8023E724(i);
+            V3* vec = (V3*)(self + 0x290 + i * 0xc);
+            s32 st;
+            if (p.x > vec->x) {
+                st = 0;
+            } else if (p.x < vec->x) {
+                st = 1;
+            } else if (p.y > vec->y) {
+                st = 2;
+            } else {
+                st = 3;
+            }
+            *(s32*)(self + 0x260 + i * 4) = st;
+            self[0x288 + i] = 0;
+        }
+
+        V3 w = *(V3*)fn_8023E724(i);
+        if (w.z <= lbl_80542518) {
+            u8 inside = 0;
+            if (w.x >= box.x0 && w.y >= box.y0 && w.x < box.x1 && w.y < box.y1) {
+                inside = 1;
+            }
+            if (inside == 1) {
+                V3 v;
+                fn_8043D67C(lbl_8053AED0, 0x410, 0);
+                switch (*(s32*)(self + 0x260 + i * 4)) {
+                case 0:
+                    v.x = lbl_80542548;
+                    v.y = lbl_8054254C;
+                    v.z = lbl_80542550;
+                    break;
+                case 1:
+                    v.x = lbl_80542554;
+                    v.y = lbl_8054254C;
+                    v.z = lbl_80542550;
+                    break;
+                case 2:
+                    v.x = lbl_8054254C;
+                    v.y = lbl_80542548;
+                    v.z = lbl_80542550;
+                    break;
+                case 3:
+                    v.x = lbl_8054254C;
+                    v.y = lbl_80542554;
+                    v.z = lbl_80542550;
+                    break;
+                }
+                fn_802314D8(i, *(Vec*)&v);
+            }
+        }
+    }
+}
+
+#pragma opt_propagation off
 extern "C" void fn_8034AFE8(u8* p) {
+    char* tbl = lbl_804720E8;
     const char* str;
     s32 id;
-    char* tbl = lbl_804720E8;
     switch (*(s32*)(p + 0x244)) {
-    case 0:
+    case 0: {
+        char* base;
+        s32 off;
+        off = *(s32*)(p + 0x23c);
+        base = tbl + 0x10;
+        off *= 16;
+        s32 index = off + *(s32*)(p + 0x238) * 4;
         str = tbl + 0x7c;
-        id = ((s32(*)[4])(tbl + 0x10))[*(s32*)(p + 0x23c)][*(s32*)(p + 0x238)] + 0x218;
-        break;
-    case 1:
-        str = tbl + 0x90;
-        id = ((s32(*)[2])(tbl + 0x50))[*(s32*)(p + 0x23c)][*(s32*)(p + 0x238)] + 0x2e6;
+        id = *(s32*)(base + index) + 0x218;
         break;
     }
+    case 1: {
+        char* base;
+        s32 off;
+        off = *(s32*)(p + 0x23c);
+        base = tbl + 0x50;
+        off *= 8;
+        s32 index = off + *(s32*)(p + 0x238) * 4;
+        str = tbl + 0x90;
+        id = *(s32*)(base + index) + 0x2e6;
+        break;
+    }
+    }
     fn_801F06F0(p, str, id, lbl_80542518, lbl_80542518, 0, 0);
+}
+#pragma opt_propagation reset
+extern "C" void fn_8034B088(u8* self) {
+    s32 i;
+    s32 st;
+    s32 count;
+
+    if (*(s32*)(self + 0x230) == 6 || *(s32*)(self + 0x230) == 7) {
+        for (i = 0; i < 2; i++) {
+            st = 1 << i;
+        }
+    }
+    count = fn_8034AAA0(self);
+    fn_8034ACF4(self);
 }
 
 extern "C" void* fn_801F856C(void);
