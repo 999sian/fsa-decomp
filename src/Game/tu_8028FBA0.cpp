@@ -116,8 +116,8 @@ bool fn_8028FC2C(char* p) {
     s32 iVar5 = S32(fn_802D6A9C(), 0x8);
     s32 iVar6 = S32(fn_802D6A9C(), 0x14);
     void* iVar7 = fn_802D6A9C();
-    s32 iVar8 = (s32)fn_802D6A9C();
-    s32 cVar1 = ((u8 (*)[10])(iVar6 + iVar8 + 0x60))[S32(iVar7, 0x18)][0];
+    StageTbl* tbl = (StageTbl*)(iVar6 + (s32)fn_802D6A9C());
+    s32 cVar1 = tbl->recs[S32(iVar7, 0x18)].type;
     s32 iVar2 = S32(p, 0x3b4) - 7;
     if (iVar4 == 0 && iVar5 == 0) {
         JGeometry::TVec3<f32> v(lbl_805405AC, lbl_805405B0, lbl_805405B4);
