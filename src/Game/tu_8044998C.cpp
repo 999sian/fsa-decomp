@@ -166,6 +166,10 @@ static inline void* Create(void* obj, void** tbl, int i) {
     return ((TblVObj*)obj)->s15(tbl, tbl[i], tbl[i + 1]);
 }
 
+static inline void Hide(void* pane) {
+    ((bool*)pane)[0xb0] = false;
+}
+
 static inline void Attach(void* obj, void* handle) {
     ((TblVObj*)obj)->s68(handle, 0);
 }
@@ -248,13 +252,13 @@ extern "C" void fn_8044A06C(void* self_) {
     u8* self = (u8*)self_;
     void* handle;
 
-    self[0x13] &= 0xFE;
+    self[0x13] &= ~1;
     handle = fn_804030C4(0x54494D47, *(const char**)lbl_804B1CA0);
     Attach(Create(*(void**)(self + 4), lbl_80490C40, 4), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C40, 6), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C40, 8), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C40, 10), handle);
-    self[0x13] &= 0xFD;
+    self[0x13] &= ~2;
     handle = fn_804030C4(0x54494D47, *(const char**)lbl_804B1CA0);
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 8), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 10), handle);
@@ -265,7 +269,10 @@ extern "C" void fn_8044A06C(void* self_) {
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 20), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 22), handle);
     ((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] = 0;
-    ((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] = 0;
+    void* hi = *(void* volatile*)&lbl_80490C78[24];
+    TblVObj* screen = *(TblVObj* volatile*)(self + 4);
+    void* lo = lbl_80490C78[25];
+    ((u8*)screen->s15(lbl_80490C78, hi, lo))[0xb0] = 0;
 }
 
 extern "C" void* fn_8044A418(VObj** param_1, short param_2) {
