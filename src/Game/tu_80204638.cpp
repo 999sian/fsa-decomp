@@ -1,4 +1,5 @@
 #include "Game/esd/types.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" u8 fn_80204D44(u8* param_1);
