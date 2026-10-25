@@ -75,6 +75,7 @@ extern "C" void fn_801F0E34(void* actor, u32 a, s32 b);
 // colour bytes and the flag argument.
 struct OnofColor {
     u8 r, g, b, a;
+    OnofColor() {}
     OnofColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
 };
 struct OnofShadowMgr {
@@ -84,11 +85,10 @@ extern "C" void fn_80158B5C(void* mgr, u32 room, void* pos, OnofColor color, s32
 extern "C" void fn_802CB1C4(char* p) {
     s32 st = *(s32*)(p + 0x238);
     if (st == 2 || st == 1) {
-        u32 room = *(u32*)(p + 0x4);
+        u32 room = *(u32*)(p + 4);
         char* pos = p + 0xc;
-        s32 zero = 0;
         OnofColor c(0, 0, 0, 0x80);
-        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, c, zero, lbl_80540DA8);
+        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, c, c.r, lbl_80540DA8);
     }
 }
 
