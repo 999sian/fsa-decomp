@@ -636,7 +636,7 @@ extern "C" void fn_8022E088(s32 player, s32 idx, JGeometry::TVec3<f32>* out);
 extern "C" void fn_8022DF48(s32 player);
 extern const f32 lbl_80542600;
 extern const f32 lbl_80542604;
-static inline f32 tu8034_sqrtf(f32 x) {
+static inline f32 tu8034_sqrtf(f32 x) { // same shape as JGeometry::TUtilf::sqrt, on this file's literals
     if (x <= lbl_805425D8) {
         return x;
     }
@@ -681,11 +681,6 @@ extern "C" s32 fn_80351020(u8* this_, s32 player) {
 }
 
 extern "C" void fn_803511F0(u8* self) {
-    f32 dist;
-    f32 dx;
-    f32 dy;
-    f32 dx2;
-    f32 dy2;
     fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x97, 0, lbl_805425F0, -3, 0, 0, 1);
     fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x98, 0, lbl_805425F0, -3, 0, 0, 1);
     *(s32*)(self + 0x258) = 0xb;
@@ -696,12 +691,11 @@ extern "C" void fn_803511F0(u8* self) {
     *(s32*)(self + 0x248) = 0xa;
     *(s32*)(self + 0x274) = -1;
     *(s32*)(self + 0x268) = *(s32*)(self + 0x264);
-    dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
-    dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
-    dx2 = dx * dx;
-    dy2 = dy * dy;
-    dist = JGeometry::TUtilf::sqrt(dx2 + dy2);
-    if (dist > lbl_80542608) {
+    f32 dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
+    f32 dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
+    f32 dx2 = dx * dx;
+    f32 dy2 = dy * dy;
+    if (tu8034_sqrtf(dx2 + dy2) > lbl_80542608) {
         *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
         s32 kind = *(s32*)(self + 4);
         if (kind >= 8) {
