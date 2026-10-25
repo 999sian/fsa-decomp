@@ -428,6 +428,22 @@ extern "C" void* fn_8035D6F4(u8* this_, s16 freeFlag) {
     return this_;
 }
 
+static inline void t35Scale(f32 m[3][4], f32 s) {
+    f32 zero = lbl_80542930;
+    m[0][1] = zero;
+    m[0][2] = zero;
+    m[1][0] = zero;
+    m[1][2] = zero;
+    m[0][0] = s;
+    m[1][1] = s;
+    m[2][0] = zero;
+    m[2][1] = zero;
+    m[2][2] = s;
+    m[0][3] = zero;
+    m[1][3] = zero;
+    m[2][3] = zero;
+}
+
 extern "C" void fn_8035D7BC(char* this_) {
     char* base = (char*)lbl_80472718;
     char* p = this_;
@@ -449,21 +465,23 @@ extern "C" void fn_8035D7BC(char* this_) {
         fn_801F06F0(p, base + 0xcc, lbl_80542954, lbl_80542954,
                     *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, -1);
         *(JGeometry::TVec3<f32>*)(p + 0xc) = saved;
+        f32 height = lbl_80542974;
         f32 z = *(f32*)(p + 0x14);
-        f32 zero = lbl_80542930;
-        f32 s = (lbl_80542974 - (z - lbl_80542970)) * lbl_80542978;
+        f32 s = height - (z - lbl_80542970);
+        s = s * lbl_80542978;
         f32 m[3][4];
-        m[0][0] = s;
+        f32 zero = lbl_80542930;
         m[0][1] = zero;
         m[0][2] = zero;
-        m[0][3] = zero;
         m[1][0] = zero;
-        m[1][1] = s;
         m[1][2] = zero;
-        m[1][3] = zero;
+        m[0][0] = s;
+        m[1][1] = s;
         m[2][0] = zero;
         m[2][1] = zero;
         m[2][2] = s;
+        m[0][3] = zero;
+        m[1][3] = zero;
         m[2][3] = zero;
         rec.w18 = m;
         rec.b1d = 0;
