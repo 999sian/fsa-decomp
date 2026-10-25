@@ -3,6 +3,24 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 extern "C" u8 fn_801F6758(void* pos, u32 room, f32 r);
+extern "C" void fn_80239914(f32* box, u32 room, s32 id);
+extern "C" u8 fn_8023A30C(void);
+extern "C" void fn_8022FEB8(f32* box, u32 room, s32 id, s32 a, s32 b);
+extern "C" s32 fn_8022FD8C(s32 id);
+extern "C" f32* fn_8023E724(s32 i);
+extern "C" u8 fn_802300EC(s32 i);
+extern "C" u8 fn_8038C678(s32 i, s32 a, s32 id, u32 room, JGeometry::TVec3<f32>* pos, s32 b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void* mgr);
+extern "C" void fn_802D79E8(void* mgr, u32 room, s32 a, f32 x, f32 y);
+extern "C" u8 fn_80388CAC(s32 i, s32 id);
+extern "C" void fn_80337A08(u8* this_);
+extern "C" void fn_803376B0(u8* this_);
+extern f32 lbl_80542068;
+extern f32 lbl_8054206C;
+extern f32 lbl_80542070;
+extern f32 lbl_80542074;
+extern f32 lbl_80542078;
 
 extern char lbl_80471BB8[];
 extern u8* lbl_8053AAF8;
