@@ -32,6 +32,9 @@ extern "C" s32 lbl_804AAF40[];
 extern "C" u8 lbl_8053A1B0[];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
+static inline bool sameRoom803190E0(s32 player, s32 room) {
+    return fn_8023DE58(player) == room;
+}
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
 static inline u8 activate803193B4(u8* self, s32 actor) {
     s32 slot = *(s32*)(self + 0x244);
@@ -575,33 +578,29 @@ extern "C" void fn_80318D74(char* p) {
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
 extern "C" void fn_803190E0(Actor* self)
 {
-    Tu80317Rect rect;
-    Tu80317Vec3 pos;
-    u32 ang;
-    Tu80317Vec2 dir;
+    JGeometry::TBox2f rect;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f dir;
     f32 dist;
     s32 r;
+    u32 ang;
 
     u8* p = (u8*)self;
-    rect = *(Tu80317Rect*)(p + 0x60);
-    rect.x0 += *(f32*)(p + 0xc);
-    rect.y0 += *(f32*)(p + 0x10);
-    rect.x1 += *(f32*)(p + 0xc);
-    rect.y1 += *(f32*)(p + 0x10);
+    rect.set(*(JGeometry::TBox2f*)(p + 0x60));
+    rect.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
     fn_80239914(&rect, *(s32*)(p + 4), *(s32*)(p + 0x198));
-    *(u64*)&rect.x0 = *(u64*)(p + 0x248);
-    *(u64*)&rect.x1 = *(u64*)(p + 0x250);
-    rect.x0 += *(f32*)(p + 0xc);
-    rect.y0 += *(f32*)(p + 0x10);
-    rect.x1 += *(f32*)(p + 0xc);
-    rect.y1 += *(f32*)(p + 0x10);
+    rect = *(JGeometry::TBox2f*)(p + 0x248);
+    rect.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
 
     if (*(s32*)(p + 0x230) != 1) {
         fn_8022FEB8(&rect, *(s32*)(p + 4), *(s32*)(p + 0x198), 1, 0);
         r = fn_8022FD8C(*(s32*)(p + 0x198));
         if (r >= 0 && fn_802300EC()) {
-            pos = *(Tu80317Vec3*)(p + 0xc);
-            if (fn_8038C678(r, *(s32*)(p + 0x244), *(s32*)(p + 0x198), *(s32*)(p + 4), &pos, 0x10)) {
+            s32 kind = *(s32*)(p + 0x244);
+            s32 handle = *(s32*)(p + 0x198);
+            s32 room = *(s32*)(p + 4);
+            pos = *(JGeometry::TVec3f*)(p + 0xc);
+            if (fn_8038C678(r, kind, handle, room, &pos, 0x10)) {
                 *(s32*)(p + 0x234) = r;
                 *(s32*)(p + 0x230) = 1;
             }
@@ -614,32 +613,33 @@ extern "C" void fn_803190E0(Actor* self)
         }
     }
 
-    if (*(s32*)(p + 0x23c) == 1) {
-        if (*(s32*)(p + 0x268) > 0) {
-            *(s32*)(p + 0x268) = *(s32*)(p + 0x268) - 1;
-        } else {
+    if (*(u32*)(p + 0x23c) == 1) {
+        if (*(s32*)(p + 0x268) <= 0) {
             *(s32*)(p + 0x268) = 0x14;
-            if (*(s32*)(p + 0x234) < 0 || fn_8023DE58() != *(s32*)(p + 4)) {
+            int room;
+            if (*(s32*)(p + 0x234) < 0 || ((room = *(s32*)(p + 4)), (int)fn_8023DE58(*(s32*)(p + 0x234)) != room)) {
                 fn_801EE558(self, &dir, &dist, 0);
             } else {
                 fn_801EE558(self, &dir, &dist, *(s32*)(p + 0x234) + 1);
             }
-            if (dist >= 0.0f) {
-                *(s32*)(p + 0x264) = 2;
-            } else {
-                ang = (s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f) & 0xffff;
-                if (ang < 0x2000 || ang > 0xdfff) {
+            if (dist < 80.0f) {
+                f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                radians *= 10430.378f;
+                ang = (s32)radians & 0xffff;
+                if (ang < 0x2000 || ang >= 0xe000) {
                     *(s32*)(p + 0x264) = 3;
-                } else if (ang < 0x2000 || ang > 0x5fff) {
-                    if (ang < 0x6000 || ang > 0xa000) {
-                        *(s32*)(p + 0x264) = 0;
-                    } else {
-                        *(s32*)(p + 0x264) = 2;
-                    }
-                } else {
+                } else if (ang >= 0x2000 && ang < 0x6000) {
                     *(s32*)(p + 0x264) = 1;
+                } else if (ang >= 0x6000 && ang <= 0xa000) {
+                    *(s32*)(p + 0x264) = 2;
+                } else {
+                    *(s32*)(p + 0x264) = 0;
                 }
+            } else {
+                *(s32*)(p + 0x264) = 2;
             }
+        } else {
+            *(s32*)(p + 0x268) -= 1;
         }
         *(s32*)(p + 0x25c) = *(s32*)(p + 0x264) << 3;
     }
