@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/ResTIMG.h"
 #include "JSystem/JGeometry/Util.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Vec.h"
@@ -67,9 +68,9 @@ extern "C" void fn_80255FAC(Actor* param_1) {
     char* p = (char*)param_1;
     ShapeArg arg;
     f32 mtx[3][4];
-    f32 s0, c0, sa, ca, k;
-    u32 off;
     s32 i;
+    u32 off;
+    f32 s0, c0, sa, ca, k;
 
     arg.unk10 = -1;
     arg.unk14 = -1;
@@ -105,15 +106,15 @@ extern "C" void fn_80255FAC(Actor* param_1) {
     arg.unk34 = 0;
     arg.unk38 = 2;
 
-    s0 = *(f32*)((u8*)sincosTable___5JMath + 0);
-    c0 = *(f32*)((u8*)sincosTable___5JMath + 4);
+    s0 = *(f32*)(sincosTable___5JMath + 0);
+    c0 = *(f32*)(sincosTable___5JMath + 4);
     k = lbl_805400A4;
     mtx[0][3] = lbl_805400A0;
     mtx[1][3] = lbl_805400A0;
     mtx[2][3] = lbl_805400A0;
     off = ((u32)*(s16*)(p + 0x238) >> 2) & 0x3ff8;
-    sa = *(f32*)((u8*)sincosTable___5JMath + off);
-    ca = *(f32*)((u8*)sincosTable___5JMath + 4 + off);
+    sa = *(f32*)(sincosTable___5JMath + off);
+    ca = *(f32*)(sincosTable___5JMath + off + 4);
     arg.mtx = &mtx[0][0];
 
     mtx[0][0] = k * (ca * c0);
@@ -141,6 +142,7 @@ extern "C" s32 fn_802565BC(Actor* a, s32 arg);
 extern "C" void fn_8023DF68(s32 player, const JGeometry::TVec3<f32>& v);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
 extern "C" void fn_8023DFF4(s32 player, const JGeometry::TVec3<f32>& v);
+extern "C" f32 lbl_805400A8;
 extern "C" void fn_802561D0(Actor* a) {
     s32 i;
     u8* p = (u8*)a;
@@ -152,11 +154,11 @@ extern "C" void fn_802561D0(Actor* a) {
             if ((*(u32*)(p + 0x90) >> 27) == 0 || a->v11() == 1) {
                 fn_8023DF68(i, *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18));
                 if ((*(s32*)(p + 0x90) & 0x7f) < 6) {
-                    JGeometry::TVec3<f32> v2;
                     JGeometry::TVec3<f32> v;
+                    JGeometry::TVec3<f32> v2;
                     v = *(JGeometry::TVec3<f32>*)(p + 0xc) - *fn_8023E724(i);
                     v.z = 0.0f;
-                    register unsigned ang = (s32)(JMath::atanTable_.atan2_(v.y, v.x) * 10430.378f);
+                    register unsigned ang = (s32)(10430.378f * JMath::atanTable_.atan2_(v.y, v.x));
                     f32 len = JGeometry::TUtilf::sqrt(v.x * v.x + v.y * v.y);
                     ang = ang - 0x40;
                     v2.y = len * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
