@@ -365,6 +365,10 @@ class J3DDisplayListObj {
 public:
     void setSingleDisplayList(void*, u32);
 };
+struct J3DMaterialPatchInfo {
+    u16 color, colorSize, texGen, tev, tevSize, pe;
+    u32 reserved;
+};
 class J3DMaterialFactory {
 public:
     enum MaterialType {
@@ -1071,12 +1075,12 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
     data = (u8*)self->mCurrMtxInfo + idx * 8;
     *(u32*)((u8*)material + 0x40) = ((u32*)data)[0];
     *(u32*)((u8*)material + 0x44) = ((u32*)data)[1];
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x24))[31](*(void**)((u8*)material + 0x24), *(u16*)((u8*)self->mPatchInfo + idx * 16));
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x24))[32](*(void**)((u8*)material + 0x24), ((u16*)((u8*)self->mPatchInfo + idx * 16))[1]);
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x28))[25](*(void**)((u8*)material + 0x28), ((u16*)((u8*)self->mPatchInfo + idx * 16))[2]);
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x2c))[52](*(void**)((u8*)material + 0x2c), ((u16*)((u8*)self->mPatchInfo + idx * 16))[3]);
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x2c))[53](*(void**)((u8*)material + 0x2c), ((u16*)((u8*)self->mPatchInfo + idx * 16))[4]);
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x34))[29](*(void**)((u8*)material + 0x34), ((u16*)((u8*)self->mPatchInfo + idx * 16))[5]);
+    (*(J3DColorBlock**)((u8*)material + 0x24))->v31(((u16(*)[8])self->mPatchInfo)[idx][0]);
+    (*(J3DColorBlock**)((u8*)material + 0x24))->v32(((u16(*)[8])self->mPatchInfo)[idx][1]);
+    (*(J3DTexGenBlock**)((u8*)material + 0x28))->v25(((u16(*)[8])self->mPatchInfo)[idx][2]);
+    (*(J3DTevBlock**)((u8*)material + 0x2c))->v52(((u16(*)[8])self->mPatchInfo)[idx][3]);
+    (*(J3DTevBlock**)((u8*)material + 0x2c))->v53(((u16(*)[8])self->mPatchInfo)[idx][4]);
+    (*(J3DPEBlock**)((u8*)material + 0x34))->v29(((u16(*)[8])self->mPatchInfo)[idx][5]);
     if (*(void**)((u8*)material + 0x48) == NULL) {
         void** dl = (void**)operator new(0x10);
         if (dl != NULL) {
