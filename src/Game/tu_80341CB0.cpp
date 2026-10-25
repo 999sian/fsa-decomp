@@ -10,8 +10,8 @@ static inline void bombSetRotation(Mtx m, f32 sx, f32 sy, f32 sz,
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
-    m[1][1] = s * __fmadds(sx * sy, sz, cx * cz);
     m[0][1] = s * __fmsubs(sx * sy, cz, cx * sz);
+    m[1][1] = s * __fmadds(sx * sy, sz, cx * cz);
     m[2][1] = s * (sx * cy);
     m[0][2] = s * __fmadds(cx * cz, sy, sx * sz);
     m[1][2] = s * __fmsubs(cx * sz, sy, sx * cz);
