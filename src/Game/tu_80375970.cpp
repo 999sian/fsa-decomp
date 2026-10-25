@@ -1,3 +1,4 @@
+#include "Game/Actor.h"
 
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
@@ -103,7 +104,7 @@ extern "C" void fn_80375F3C(int param_1) {
     *(unsigned int*)(param_1 + 0x248) = *(unsigned int*)(param_1 + 0x90) >> 27;
     *(unsigned int*)(param_1 + 0x240) = (*(unsigned int*)(param_1 + 0x90) >> 25) & 3;
     *(unsigned int*)(param_1 + 0x238) = 0;
-    (*(void (***)(int, int, int))param_1)[12](param_1, 0xff, 0);
+    ((Actor*)param_1)->v10( 0xff, 0);
     *(unsigned char*)(param_1 + 0x244) = 0;
     *(unsigned int*)(param_1 + 0x234) = 0;
     *(unsigned int*)(param_1 + 0x230) = 0;
@@ -128,7 +129,7 @@ extern "C" void fn_80375F3C(int param_1) {
             mgr = fn_802D6A9C();
             if (fn_802D7888(mgr, *(unsigned int*)(param_1 + 0x248)) == 1) {
                 fn_802A3948(lbl_8053AC98, (void*)(param_1 + 0xc), 0, *(int*)(param_1 + 4), 0x35);
-                (*(void (***)(int, int, int))param_1)[12](param_1, 0xff, 1);
+                ((Actor*)param_1)->v10( 0xff, 1);
                 if (*(int*)(param_1 + 0x23c) == 4) {
                     *(unsigned int*)(param_1 + 0x234) = 2;
                 } else {
@@ -140,7 +141,7 @@ extern "C" void fn_80375F3C(int param_1) {
         fn_802A3884(lbl_8053AC98, (void*)(param_1 + 0xc), 0, *(int*)(param_1 + 4), 0xac);
     } else {
         fn_802A3948(lbl_8053AC98, (void*)(param_1 + 0xc), 0, *(int*)(param_1 + 4), 0x35);
-        (*(void (***)(int, int, int))param_1)[12](param_1, 0xff, 1);
+        ((Actor*)param_1)->v10( 0xff, 1);
         *(unsigned int*)(param_1 + 0x234) = 2;
         *(unsigned char*)(param_1 + 0x244) = 1;
     }
