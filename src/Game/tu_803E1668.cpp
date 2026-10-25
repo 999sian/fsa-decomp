@@ -678,7 +678,6 @@ extern "C" void fn_803E8210(u8* p) {
 }
 
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 extern "C" void fn_803E831C(u8* p) {
     u8* tbl = (u8*)lbl_80477970;
     s32 i;
