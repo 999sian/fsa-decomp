@@ -19,6 +19,7 @@ extern void* lbl_8049CC34[];
 
 extern const f32 lbl_8053FAFC;
 extern const f32 lbl_8053FB00;
+extern const f32 lbl_8053FAF8;
 extern const f32 lbl_8053FB14;
 extern void* lbl_804A6270[];
 extern "C" void fn_801D0F40(char* p);
@@ -377,12 +378,12 @@ extern "C" void fn_80211C94(char* p);
 
 // near-match (98.5%): r29/r30 swapped for the state-exit temps
 extern "C" void fn_8021148C(char* p) {
+    s32 id;
     u8 go;
     fn_80211EB0(p);
     fn_80211C94(p);
     switch (*(s32*)(p + 0x248)) {
     case 0: {
-        s32 id;
         go = 0;
         switch (*(s32*)(p + 0x2ac)) {
         case 1:
