@@ -83,7 +83,8 @@ struct J3DMaterialInitData {
     u8 _00[0x08];
     u16 mMatColorIndex[2];         // _08
     u16 mColorChanControlIndex[4]; // _0C
-    u8 _14[0xBC - 0x14];
+    u16 mAmbientColorIndex[2]; // _14
+    u8 _18[0xBC - 0x18];
     u16 mTevOrderInfoIndex[16]; // _BC
     u8 _DC[8];
     u16 mTevStageInfoIndex[16]; // _E4
@@ -1228,11 +1229,11 @@ extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags) {
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
     struct Col { s32 v; };
-    const J3DMaterialFactory* self = (const J3DMaterialFactory*)param_2;
+    u8* p = (u8*)param_2;
     Col def = *(Col*)&lbl_8053BC70;
-    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[param_3]];
-    if (initData->mMatColorIndex[param_4] != 0xffff) {
-        *param_1 = (*(s32**)((u8*)self + 0x10))[initData->mMatColorIndex[param_4]];
+    u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[param_3] * 0x14c + 8))[param_4];
+    if (i != 0xffff) {
+        *param_1 = (*(s32**)(p + 0x10))[i];
     } else {
         *(Col*)param_1 = def;
     }
@@ -1478,13 +1479,13 @@ struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
 };
 extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no) {
+    u32 dflt[1];
     u8* data = *(u8**)(p + 0xc) + idx * 0x138;
-    J3DIndTexCoordScale dflt;
+    dflt[0] = *(const u32*)&j3dDefaultIndTexCoordScaleInfo;
     if (data[0] == 1) {
-        s32 off = no * 4 + 0x68;
-        *out = *(J3DIndTexCoordScaleInfo*)(data + off);
+        *(u32*)out = *(u32*)(data + no * 4 + 0x68);
     } else {
-        *out = dflt;
+        *(u32*)out = dflt[0];
     }
 }
 
