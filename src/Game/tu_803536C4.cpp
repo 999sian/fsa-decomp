@@ -140,4 +140,4 @@ extern "C" void fn_80353B98(u8* p) {
     }
     *(s32*)(p + 0x230) = 0;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
