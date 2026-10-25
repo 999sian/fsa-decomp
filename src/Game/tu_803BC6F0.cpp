@@ -1177,7 +1177,7 @@ extern "C" void fn_803C61C4(u8* p) {
     s32 lo;
     s32 n;
 
-    tbl = lbl_804765D0;
+    tbl = (u8*)lbl_804765D0;
     A = *(s16*)(lbl_8050DB0C + 0x1e2);
     B = *(s16*)(lbl_8050DB0C + 0x1e4);
     C = *(s16*)(lbl_8050DB0C + 0x1e0);
@@ -2102,9 +2102,15 @@ extern "C" void fn_803CE4CC(char* p) {
                 if (isTimeSet(t)) {
                     OSTicksToCalendarTime(t, &cal);
                     snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((u64*)(base + 0x30))[i])), 0x1e, (char*)(base + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
-                    ((J2DPane*)*(void**)(p + 8))->search(((u64*)(base + 0x0))[i])->show();
-                    ((J2DPane*)*(void**)(p + 8))->search(((u64*)(base + 0x18))[i])->hide();
-                    ((J2DPane*)*(void**)(p + 8))->search(((u64*)(base + 0x30))[i])->show();
+                    {
+                        J2DPane* a = ((J2DPane*)*(void**)(p + 8))->search(((u64*)(base + 0x0))[i]);
+                        u64 ka = ((u64*)(base + 0x18))[i];
+                        a->show();
+                        J2DPane* b = ((J2DPane*)*(void**)(p + 8))->search(ka);
+                        u64 kb = ((u64*)(base + 0x30))[i];
+                        b->hide();
+                        ((J2DPane*)*(void**)(p + 8))->search(kb)->show();
+                    }
                     s32 icon;
                     icon = getFileIcon(0);
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466316c76ULL)), icon, 0, 0, 0);
