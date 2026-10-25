@@ -617,9 +617,7 @@ extern "C" u8 fn_80428448() {
     fn_804291F0((u8*)lbl_8053AEAC);
     u32 r;
     if (lbl_8052BECC[3] != 1) {
-        u32 tick = OSGetTick();
-        u32 q = tick / lbl_8052BECC[3];
-        r = tick - q * lbl_8052BECC[3];
+        r = OSGetTick() % lbl_8052BECC[3];
     } else {
         r = 0;
     }
@@ -1599,7 +1597,8 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
             while (lbl_8052AAD0.mD8 < 0) {
                 readBuffer = (THPReadBuffer*)fn_8042E674();
                 s32 frameNumber = readBuffer->frameNumber;
-                if ((lbl_8052AAD0.initReadFrame + frameNumber) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
+                s32 numFrames = lbl_8052AAD0.header.numFrames;
+                if ((lbl_8052AAD0.initReadFrame + frameNumber) % numFrames == numFrames - 1 &&
                     !(lbl_8052AAD0.playFlag & 1)) {
                     fn_8042E64C(readBuffer);
                 }
@@ -1709,6 +1708,7 @@ extern "C" void fn_8042AE74(ReadThreadObj* t, u32) {
     s32 size;
     s32 readFrame;
     s32 result;
+    s32 frameNumber;
     readFrame = 0;
     offset = lbl_8052AAD0.initOffset;
     size = lbl_8052AAD0.initReadSize;
@@ -1728,7 +1728,8 @@ extern "C" void fn_8042AE74(ReadThreadObj* t, u32) {
         fn_8042E70C((u32)readBuffer);
         offset += size;
         size = fn_8042AF54(readBuffer);
-        if ((readFrame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+        frameNumber = (readFrame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames;
+        if (frameNumber == lbl_8052AAD0.header.numFrames - 1) {
             if (lbl_8052AAD0.playFlag & 1) {
                 offset = lbl_8052AAD0.header.movieDataOffsets;
             } else {
@@ -2288,6 +2289,17 @@ extern "C" void fn_8042CC50(u32 param_1, u32 param_2, u32 param_3)
     fn_8042CD24();
 }
 
+extern "C" u32 __mfspr(u32);
+extern "C" void __mtspr(u32, u32);
+extern "C" void fn_8042CD38() {
+    u32 gqr5 = __mfspr(917);
+    u32 gqr6 = __mfspr(918);
+    lbl_8053AE68 = gqr5;
+    lbl_8053AE6C = gqr6;
+    __mtspr(917, 0x00070007);
+    __mtspr(918, 0x3d043d04);
+}
+
 extern "C" void fn_8042CD64() {
     u32 x;
     u8* ptr;
@@ -2697,6 +2709,133 @@ extern "C" s32 fn_8042DCC4(BitReader* r) {
     }
     r->w4++;
     return v;
+}
+
+struct BitReader;
+extern "C" void fn_8042DC88(BitReader* r, u8* p);
+extern "C" s32 fn_8042DCC4(BitReader* r);
+extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
+    s32 base;
+    s32 cnt;
+    s32 stride;
+    s16* outA;
+    s16* outB;
+    u8 br[8];
+    u8* bits;
+    s32 i;
+    s32 v;
+    s32 c;
+    s32 pa;
+    s32 pb;
+    s64 w;
+    s16 x1;
+    s16 x2;
+    u8 b8;
+    u8 b9;
+    s16* tp;
+    s16 out;
+
+    if (param_1 == 0 || param_2 == 0) {
+        return 0;
+    }
+    base = *(s32*)param_2;
+    bits = param_2 + 0x50;
+    cnt = *(s32*)(param_2 + 4);
+    if (param_3 == 1) {
+        stride = 1;
+        outA = param_1 + cnt;
+    } else {
+        outA = param_1 + 1;
+        stride = 2;
+    }
+    outB = param_1;
+    if (base == 0) {
+        fn_8042DC88((BitReader*)br, bits);
+        x1 = *(s16*)(param_2 + 0x48);
+        x2 = *(s16*)(param_2 + 0x4a);
+        for (i = 0; i < cnt; i++) {
+            v = fn_8042DCC4((BitReader*)br);
+            b8 = br[8];
+            b9 = br[9];
+            tp = (s16*)(param_2 + b8 * 4);
+            pa = (s32)tp[5] * x2;
+            pb = (s32)tp[4] * x1;
+            c = (v << b9) << 11;
+            w = ((s64)pa + (s64)pb + (s64)c) << 5;
+            if ((u16)w > 0x8000 || ((u16)w == 0x8000 && (w & 0x10000))) {
+                w += 0x10000;
+            }
+            if (w > 0x7fffffffLL) {
+                w = 0x7fffffffLL;
+            }
+            if (w < -0x80000000LL) {
+                w = -0x80000000LL;
+            }
+            out = (s16)(w >> 16);
+            *outA = out;
+            outA += stride;
+            *outB = out;
+            outB += stride;
+            x2 = x1;
+            x1 = out;
+        }
+    } else {
+        fn_8042DC88((BitReader*)br, bits);
+        x1 = *(s16*)(param_2 + 0x48);
+        x2 = *(s16*)(param_2 + 0x4a);
+        for (i = 0; i < cnt; i++) {
+            v = fn_8042DCC4((BitReader*)br);
+            b8 = br[8];
+            b9 = br[9];
+            tp = (s16*)(param_2 + b8 * 4);
+            pa = (s32)tp[5] * x2;
+            pb = (s32)tp[4] * x1;
+            c = (v << b9) << 11;
+            w = ((s64)pa + (s64)pb + (s64)c) << 5;
+            if ((u16)w > 0x8000 || ((u16)w == 0x8000 && (w & 0x10000))) {
+                w += 0x10000;
+            }
+            if (w > 0x7fffffffLL) {
+                w = 0x7fffffffLL;
+            }
+            if (w < -0x80000000LL) {
+                w = -0x80000000LL;
+            }
+            out = (s16)(w >> 16);
+            *outA = out;
+            outA += stride;
+            x2 = x1;
+            x1 = out;
+        }
+        fn_8042DC88((BitReader*)br, bits + base);
+        x1 = *(s16*)(param_2 + 0x4c);
+        x2 = *(s16*)(param_2 + 0x4e);
+        for (i = 0; i < cnt; i++) {
+            v = fn_8042DCC4((BitReader*)br);
+            b8 = br[8];
+            b9 = br[9];
+            tp = (s16*)(param_2 + b8 * 4);
+            pa = (s32)tp[0x15] * x2;
+            pb = (s32)tp[0x14] * x1;
+            c = (v << b9) << 11;
+            w = ((s64)pa + (s64)pb + (s64)c) << 5;
+            if ((u16)w > 0x8000 || ((u16)w == 0x8000 && (w & 0x10000))) {
+                w += 0x10000;
+            }
+            if (w > 0x7fffffffLL) {
+                w = 0x7fffffffLL;
+            }
+            if (w < -0x80000000LL) {
+                w = -0x80000000LL;
+            }
+            out = (s16)(w >> 16);
+            *outB = out;
+            outB += stride;
+            x2 = x1;
+            x1 = out;
+        }
+    }
+    return *(s32*)(param_2 + 4);
 }
 
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
