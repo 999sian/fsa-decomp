@@ -1,4 +1,8 @@
+#define Vec SDKVec
+#include "JSystem/JGeometry/Vec.h"
+#undef Vec
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 
 extern "C" void* fn_801F856C(void);
