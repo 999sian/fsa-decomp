@@ -1036,11 +1036,44 @@ inline s32 getModeCached(const char* p) {
     return S32(p, 0x120c);
 }
 inline BOOL isLinkOwnerCached(char* p) {
-    u8 bit = 1 << S32(p, 4);
+    u8 bit = 1 << S32(p, 0x4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
         return 1;
     }
-    if (getModeCached(p) == 4) {
+    s32 c = 0;
+    s32 me0 = S32(p, 0x4);
+    s32 i = c;
+    for (; i < 4; i++) {
+        if (i == me0) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    s32 mode;
+    if (c <= 1) {
+        mode = 5;
+    } else {
+        s32 linked = S32(p, 0xd60);
+        if (linked >= 0) {
+            mode = fn_8022CAF8(linked);
+        } else {
+            mode = S32(p, 0x120c);
+        }
+    }
+    if (mode == 4) {
         s32 v = linkIdx(p);
         return v != linkRank(p);
     }
