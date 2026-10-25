@@ -178,6 +178,12 @@ extern "C" void fn_8034EE3C(u8* self) {
     fn_80307AC8(*(u32*)(self + 0x198), *(u32*)(self + 4), self + 0xc, *(s32*)(self + 0x240) + 0x14, 0, 0, -1);
 }
 
+extern "C" void fn_8034F43C(char* p) {
+    if (*(s32*)(p + 0x230) == 4) {
+        *(s32*)(p + 0x230) = 4;
+    }
+}
+
 extern "C" void fn_8035001C(u8* self, u32 kind) {
     f32 x;
 
@@ -356,8 +362,7 @@ extern "C" s32 fn_80350530(u8* self) {
         dx2 = dx * dx;
         dy2 = dy * dy;
         if (dx2 + dy2 < r2) {
-            p = (f32*)fn_8023E724(i);
-            if (!(p[2] != lbl_805425D8)) {
+            if (lbl_805425D8 == ((f32*)fn_8023E724(i))[2]) {
                 if (prev == 0) {
                     fn_801F0E34(self, 0x30009, 0);
                     *(s32*)(self + 0x27c) = 0;
@@ -467,6 +472,161 @@ extern "C" s32 fn_803506E0(u8* self) {
     }
     *(s32*)(self + 0x268) = idx;
     return *(s32*)(self + 0x268);
+}
+
+extern const f32 lbl_80542610;
+extern const f32 lbl_80542624;
+extern "C" s32 fn_80351020(u8* this_, s32 player);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" s32 fn_8022CCAC(s32 i);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" s32 fn_8022F3DC(s32 i);
+extern "C" s32 fn_8022CAF8(s32 i);
+extern "C" u8 fn_80235580(s32 i);
+extern "C" s32 fn_80350974(u8* self) {
+    s32 cnt = 0;
+    s32 flag = 0;
+    s32 i;
+    s32 k;
+    s32 st;
+    s32 r;
+    Vec tmp;
+
+    self[0x283] = 0;
+    self[0x284] = 0;
+    self[0x285] = 0;
+    self[0x286] = 0;
+    if (*(s32*)(self + 0x230) == 7) {
+        return 0;
+    }
+    tmp.z = lbl_805425D8;
+    tmp.y = lbl_805425D8;
+    tmp.x = lbl_805425D8;
+
+    for (i = 0; i < 4; i++) {
+        if (*(s32*)(self + 0x258) == 4) {
+            f32 sv3 = *(f32*)(self + 0x8c);
+            f32 sv2 = *(f32*)(self + 0x88);
+            f32 sv1 = *(f32*)(self + 0x84);
+            f32 sv0 = *(f32*)(self + 0x80);
+            f32* p = (f32*)lbl_8050ADF8;
+            for (k = 0; k < 4; k++, p += 4) {
+                *(f32*)(self + 0x80) = p[0];
+                *(f32*)(self + 0x84) = p[1];
+                *(f32*)(self + 0x88) = p[2];
+                *(f32*)(self + 0x8c) = p[3];
+                r = fn_80351020(self, i);
+                self[i + 0x283] = r;
+                if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) > lbl_805425D8) {
+                    cnt++;
+                }
+            }
+            *(f32*)(self + 0x80) = sv0;
+            *(f32*)(self + 0x84) = sv1;
+            *(f32*)(self + 0x88) = sv2;
+            *(f32*)(self + 0x8c) = sv3;
+        } else if (*(s32*)(self + 0x258) >= 0x10 && *(s32*)(self + 0x258) <= 0x14) {
+            f32 sv3 = *(f32*)(self + 0x8c);
+            f32 sv2 = *(f32*)(self + 0x88);
+            f32 sv1 = *(f32*)(self + 0x84);
+            f32 sv0 = *(f32*)(self + 0x80);
+            f32* p = (f32*)((u8*)lbl_8050AE38 + (*(s32*)(self + 0x258) - 0x10) * 0x20);
+            for (k = 0; k < 2; k++, p += 4) {
+                *(f32*)(self + 0x80) = p[0];
+                *(f32*)(self + 0x84) = p[1];
+                *(f32*)(self + 0x88) = p[2];
+                *(f32*)(self + 0x8c) = p[3];
+                r = fn_80351020(self, i);
+                self[i + 0x283] = r;
+                if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) > lbl_805425D8) {
+                    cnt++;
+                }
+            }
+            *(f32*)(self + 0x80) = sv0;
+            *(f32*)(self + 0x84) = sv1;
+            *(f32*)(self + 0x88) = sv2;
+            *(f32*)(self + 0x8c) = sv3;
+        } else if (*(s32*)(self + 0x258) >= 6 && *(s32*)(self + 0x258) <= 9) {
+            r = fn_80351020(self, i);
+            self[i + 0x283] = r;
+            if (i == *(s32*)(self + 0x258) - 6) {
+                self[0x280] = r;
+            }
+        } else {
+            r = fn_80351020(self, i);
+            self[i + 0x283] = r;
+            if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) > lbl_805425D8) {
+                cnt++;
+            }
+        }
+    }
+
+    st = *(s32*)(self + 0x230);
+    if (*(s32*)(self + 0x258) >= 6 && *(s32*)(self + 0x258) <= 9) {
+        tmp = *(Vec*)(self + 0x3c);
+    } else if (st == 1 || st == 3) {
+        tmp = *(Vec*)(self + 0x3c);
+    } else if (*(s32*)(self + 0x258) == 5) {
+        if (st == 5) {
+            tmp.y = lbl_80542610;
+        } else if (st == 6) {
+            tmp.y = lbl_80542624;
+        }
+    } else if (*(s32*)(self + 0x258) == 0xc && PSVECMag((Vec*)(self + 0x3c)) > lbl_805425D8) {
+        tmp = *(Vec*)(self + 0x3c);
+    } else {
+        if (st == 5) {
+            tmp.y = lbl_80542610;
+        } else if (st == 6) {
+            tmp.y = lbl_80542624;
+        }
+    }
+
+    for (k = 0; k < 4; k++) {
+        if (self[k + 0x283] == 1) {
+            if ((u8)fn_80230188(k) != 1) {
+                if ((u8)fn_8022CCAC(k) == 1) {
+                    flag = 1;
+                }
+            }
+        }
+    }
+
+    if (*(s32*)(self + 0x258) == 5 && cnt == 0) {
+        f32 dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
+        f32 dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
+        if (dx * dx + dy * dy > lbl_8054261C) {
+            *(s32*)(self + 0x250) += 1;
+            if (*(s32*)(self + 0x250) > 0xf0) {
+                s32 room = *(s32*)(self + 4);
+                if (room < 8) {
+                    fn_8013CC50(room, self + 0xc, lbl_805425E8, 0x503, 1, 0, 0, 0, 1);
+                } else {
+                    Actor_CreateByID(fn_801F856C(), 0x4b4d5249, room, self + 0xc, 0x83, -1, -1);
+                    *(f32*)(self + 0x28c) = lbl_805425F0;
+                }
+            }
+        } else {
+            *(s32*)(self + 0x250) = 0;
+        }
+    } else {
+        *(s32*)(self + 0x250) = 0;
+    }
+    self[0x288] = flag;
+
+    for (k = 0; k < 4; k++) {
+        if (self[k + 0x283] == 1 && *(f32*)((u8*)fn_8023E724(k) + 8) > lbl_805425D8 && self[0x288] == 0 &&
+            PSVECSquareMag(&tmp) > *(f32*)__float_epsilon * lbl_80542614) {
+            if ((u8)fn_8022F478(k) != 0) {
+                if (self[fn_8022F3DC(k) + 0x283] == 1) {
+                    if (fn_8022CAF8(k) != 5 && fn_8022CAF8(k) != 4) {
+                        fn_80235580(k);
+                    }
+                }
+            }
+        }
+    }
+    return cnt;
 }
 
 extern const f32 lbl_80542628;
