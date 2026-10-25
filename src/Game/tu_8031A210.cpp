@@ -27,6 +27,10 @@ struct ActorRoomModes {
     u8 mode[16];
 };
 
+inline u8 actorRoomMode(s32 room) {
+    return fn_802D6A9C()->mode[(u32)room];
+}
+
 inline f32 actorRandomUnit() {
     union { u32 bits; f32 value; } out;
     u32* seed = (u32*)((char*)lbl_8053AAF8 + 0xb4);
