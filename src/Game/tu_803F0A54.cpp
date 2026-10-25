@@ -1638,8 +1638,6 @@ extern "C" void fn_804310CC(void* a);
 extern "C" void fn_803F267C(u8* p);
 extern "C" void fn_803FC5E4(u8* p, u8 flag) {
     s32 i;
-    void* obj;
-    void* sub;
 
     fn_804310CC(lbl_8053AEC0);
     if (flag) {
@@ -1662,41 +1660,27 @@ extern "C" void fn_803FC5E4(u8* p, u8 flag) {
         *(s32*)(p + 0x1c4) = 0;
 
         *(f32*)(p + 0x110) = lbl_80543770;
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x62620000, 0x506d6261, 0x62623037);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x108), *(f32*)(p + 0x10c) + *(f32*)(p + 0x110));
+        (*(J2DPane**)(p + 4))->search(0x506d626162623037ULL)->move(*(f32*)(p + 0x108), *(f32*)(p + 0x10c) + *(f32*)(p + 0x110));
 
         *(f32*)(p + 0x114) = lbl_80543768;
         fn_80402E08(*(void**)(p + 0x74), lbl_8054372C, *(f32*)(p + 0x114));
 
         *(f32*)(p + 0x130) = lbl_80543774;
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x70620000, 0x00506e6f, 0x70623038);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x118) + *(f32*)(p + 0x130), *(f32*)(p + 0x124));
+        (*(J2DPane**)(p + 4))->search(0x00506e6f70623038ULL)->move(*(f32*)(p + 0x118) + *(f32*)(p + 0x130), *(f32*)(p + 0x124));
 
         *(f32*)(p + 0x134) = lbl_80543774;
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x70620000, 0x00506e6f, 0x70623132);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x11c) + *(f32*)(p + 0x134), *(f32*)(p + 0x128));
+        (*(J2DPane**)(p + 4))->search(0x00506e6f70623132ULL)->move(*(f32*)(p + 0x11c) + *(f32*)(p + 0x134), *(f32*)(p + 0x128));
 
         *(f32*)(p + 0x138) = lbl_80543774;
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x70620000, 0x00506e6f, 0x70623136);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x120) + *(f32*)(p + 0x138), *(f32*)(p + 0x12c));
+        (*(J2DPane**)(p + 4))->search(0x00506e6f70623136ULL)->move(*(f32*)(p + 0x120) + *(f32*)(p + 0x138), *(f32*)(p + 0x12c));
 
         *(f32*)(p + 0x144) = lbl_80543778;
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x74610000, 0x004e6461, 0x74613032);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x13c) + *(f32*)(p + 0x144), *(f32*)(p + 0x140));
+        (*(J2DPane**)(p + 4))->search(0x004e646174613032ULL)->move(*(f32*)(p + 0x13c) + *(f32*)(p + 0x144), *(f32*)(p + 0x140));
 
         *(f32*)(p + 0x158) = lbl_80543778;
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x74610000, 0x004e6461, 0x74613035);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x148) + *(f32*)(p + 0x158), *(f32*)(p + 0x14c));
+        (*(J2DPane**)(p + 4))->search(0x004e646174613035ULL)->move(*(f32*)(p + 0x148) + *(f32*)(p + 0x158), *(f32*)(p + 0x14c));
 
-        obj = *(void**)(p + 4);
-        sub = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[15])(obj, 0x004e0000, 0x004e6461, 0x74613037);
-        ((void (*)(void*, f32, f32))(*(void***)sub)[4])(sub, *(f32*)(p + 0x150) + *(f32*)(p + 0x158), *(f32*)(p + 0x154));
+        (*(J2DPane**)(p + 4))->search(0x004e646174613037ULL)->move(*(f32*)(p + 0x150) + *(f32*)(p + 0x158), *(f32*)(p + 0x154));
 
         *(s32*)(p + 0x210) = 0;
         *(s32*)(p + 0x1d0) = 0;
