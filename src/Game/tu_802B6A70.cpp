@@ -180,21 +180,23 @@ extern "C" void fn_802B7044(Actor* p) {
         box[1] = p->field_64;
         box[2] = p->field_68;
         box[3] = p->field_6C;
-        box[0] += p->field_0C.x;
-        box[1] += p->field_0C.y;
-        box[2] += p->field_0C.x;
-        box[3] += p->field_0C.y;
+        f32 x = p->field_0C.x;
+        f32 y = p->field_0C.y;
+        box[0] += x;
+        box[1] += y;
+        box[2] += x;
+        box[3] += y;
         for (; i < 4; i++) {
             if (fn_8023F264(i) && fn_80236E3C(i) && fn_80239C00(i, box, p->field_04)) {
                 f32* pos = fn_8023E724(i);
-                f32 x = pos[0];
-                f32 y = pos[1];
+                f32 px = pos[0];
+                f32 py = pos[1];
                 s32 dir = fn_80230CFC(i);
                 f32* off = (f32*)(lbl_8046CAD0 + dir * 8);
-                x += off[0];
-                y += off[1];
+                px += off[0];
+                py += off[1];
                 u8 in = 0;
-                if (x >= box[0] && y >= box[1] && x < box[2] && y < box[3]) {
+                if (px >= box[0] && py >= box[1] && px < box[2] && py < box[3]) {
                     in = 1;
                 }
                 if (in == 1 && fn_8022F9E4(i, p->field_198, 1, 0)) {
@@ -217,24 +219,12 @@ extern "C" void fn_802B7044(Actor* p) {
     case 2:
         *(s32*)(b + 0x23c) -= 1;
         if (*(s32*)(b + 0x23c) == 0) {
-            Vec v1;
-            v1.x = p->field_0C.x - 8.0f;
-            v1.y = p->field_0C.y;
-            v1.z = p->field_0C.z;
-            fn_8029D8F0(lbl_8053AC98, (f32*)&v1, p->field_04, *(s32*)(b + 0x244), 0);
+            fn_8029D8F0(lbl_8053AC98, Vec3f(p->field_0C.x - 8.0f, p->field_0C.y, p->field_0C.z), p->field_04, *(s32*)(b + 0x244), 0);
             *(s32*)(b + 0x234) = 3;
             if (**(u8**)(b + 0x248) == 'u') {
-                Vec v2;
-                v2.x = p->field_0C.x;
-                v2.y = p->field_0C.y;
-                v2.z = p->field_0C.z;
-                *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, &v2, 1.0f, 0x280, 0, 0, 0, 0, 1);
+                *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, Vec3f(p->field_0C.x, p->field_0C.y, p->field_0C.z), 1.0f, 0x280, 0, 0, 0, 0, 1);
             } else {
-                Vec v3;
-                v3.x = p->field_0C.x;
-                v3.y = p->field_0C.y;
-                v3.z = p->field_0C.z;
-                *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, &v3, 1.0f, 0x27f, 0, 0, 0, 0, 1);
+                *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, Vec3f(p->field_0C.x, p->field_0C.y, p->field_0C.z), 1.0f, 0x27f, 0, 0, 0, 0, 1);
             }
             *(s32*)(b + 0x240) = 50;
         }
@@ -324,15 +314,7 @@ extern "C" void fn_802B7568(u8* p) {
     *(s32*)(p + 0x230) = 0;
     *(s32*)(p + 0x240) = 0;
     if (fn_802D7544(fn_802D6A9C(), *(void**)(p + 0x16c))) {
-        n = *(s32*)(p + 0x244);
-        room = *(s32*)(p + 4);
-        f32 y = *(f32*)(p + 0x10);
-        f32 z = *(f32*)(p + 0x14);
-        f32 x = *(f32*)(p + 0xc) - 8.0f;
-        vec[0] = x;
-        vec[1] = y;
-        vec[2] = z;
-        fn_8029D8F0(lbl_8053AC98, vec, room, n, 0);
+        fn_8029D8F0(lbl_8053AC98, Vec3f(*(f32*)(p + 0xc) - 8.0f, *(f32*)(p + 0x10), *(f32*)(p + 0x14)), *(s32*)(p + 4), *(s32*)(p + 0x244), 0);
         *(u8*)(p + 0x11c) = 0;
     }
 }
