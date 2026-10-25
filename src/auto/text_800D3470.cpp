@@ -706,8 +706,8 @@ extern "C" void fn_800D36E0(u32* param_1) {
 }
 
 extern "C" void fn_800D36EC(J3DTevBlockPatched* this_) {
+	J3DGXColor kcol = *(J3DGXColor*)&j3dDefaultTevKColor;
 	u32* src = (u32*)&j3dDefaultTevColor;
-	u32 kcol = *(u32*)&j3dDefaultTevKColor;
 	this_->mTexIndices[0] = 0xffff;
 	this_->mTexIndices[1] = 0xffff;
 	this_->mTexIndices[2] = 0xffff;
@@ -740,10 +740,10 @@ extern "C" void fn_800D36EC(J3DTevBlockPatched* this_) {
 	*(u32*)((u8*)&this_->mColors[1] + 4) = c1;
 	*(u32*)&this_->mColors[2] = c0;
 	*(u32*)((u8*)&this_->mColors[2] + 4) = c1;
-	this_->J3DTevBlockPatched::setTevKColor(0, *(J3DGXColor*)&kcol);
-	this_->J3DTevBlockPatched::setTevKColor(1, *(J3DGXColor*)&kcol);
-	this_->J3DTevBlockPatched::setTevKColor(2, *(J3DGXColor*)&kcol);
-	this_->J3DTevBlockPatched::setTevKColor(3, *(J3DGXColor*)&kcol);
+	this_->J3DTevBlockPatched::setTevKColor(0, kcol);
+	this_->J3DTevBlockPatched::setTevKColor(1, kcol);
+	this_->J3DTevBlockPatched::setTevKColor(2, kcol);
+	this_->J3DTevBlockPatched::setTevKColor(3, kcol);
 	this_->mKColorSels[0] = 0xc;
 	this_->mKColorSels[1] = 0xc;
 	this_->mKColorSels[2] = 0xc;
@@ -2492,11 +2492,11 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
     u32 i;
     u8* q;
     s16* s;
-    u8* w;
 
     *(u8*)(p + 0xd0) = src->m38();
 
-    for (i = 0, q = p; i < 8; i++) {
+    q = p;
+    for (i = 0; i < 8; i++) {
         *(s16*)(q + 8) = src->m20(i);
         q += 2;
     }
@@ -2519,17 +2519,23 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
         q += 4;
     }
 
-    for (i = 0, q = p, w = p; i < 8; i++) {
-        u8* b = src->m41(i);
-        *(u8*)(q + 0x39) = b[1];
-        *(u8*)(q + 0x3a) = b[2];
-        *(u8*)(q + 0x3b) = b[3];
-        *(u8*)(q + 0x3d) = b[5];
-        *(u8*)(q + 0x3e) = b[6];
-        *(u8*)(q + 0x3f) = b[7];
-        *(u32*)(w + 0x78) = *src->m49(i);
-        q += 8;
-        w += 4;
+    {
+        u8* w;
+        u32 j;
+        q = p;
+        w = p;
+        for (j = 0; j < 8; j++) {
+            u8* b = src->m41(j);
+            *(u8*)(q + 0x39) = b[1];
+            *(u8*)(q + 0x3a) = b[2];
+            *(u8*)(q + 0x3b) = b[3];
+            *(u8*)(q + 0x3d) = b[5];
+            *(u8*)(q + 0x3e) = b[6];
+            *(u8*)(q + 0x3f) = b[7];
+            *(u32*)(w + 0x78) = *src->m49(j);
+            q += 8;
+            w += 4;
+        }
     }
 }
 
