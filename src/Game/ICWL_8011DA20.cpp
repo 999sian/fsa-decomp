@@ -222,6 +222,8 @@ extern "C" void fn_8011E030(u8* this_) {
             *(s32*)(this_ + 0x234) = 2;
         }
         break;
+    case 2:
+        break;
     }
     f32 s = *(f32*)(this_ + 0x240);
     *(f32*)(this_ + 0x54) = s;
