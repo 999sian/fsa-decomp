@@ -169,4 +169,4 @@ extern "C" void fn_80313988(u8* p) {
     *(u16*)(p + 0x280) = 0xff;
     *(u16*)(p + 0x282) = 0xff;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
