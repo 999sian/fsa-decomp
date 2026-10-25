@@ -1369,8 +1369,8 @@ extern "C" void fn_800D7A4C(u8* p) {
     u32 i = 0;
     u8* tev;
     u8 count = p[0x58];
-    u32 j;
     u8* table;
+    u32 j;
     *(u32*)(p + 4) = GDGetCurrOffset();
     for (; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
@@ -1418,17 +1418,18 @@ extern "C" void fn_800D7A4C(u8* p) {
         __GDWrite(0x61);
         __GDWriteU32(v);
     }
+    u8* swapTable = (u8*)j3dTevSwapTableTable;
     for (i = 0; i < 4; i++) {
         s32 off = i * 4;
         u8* s = p + off;
         u32 sw = p[0x12a + i] * 4;
-        u8 t0 = j3dTevSwapTableTable[sw];
-        u8 t1 = j3dTevSwapTableTable[sw + 1];
+        u8 t0 = swapTable[sw];
+        u8 t1 = swapTable[sw + 1];
         u32 w = (s[0x10a] << 4) | t0 | (t1 << 2) | (s[0x11a] << 9) | (s[0x10b] << 14) | (s[0x11b] << 19);
         __GDWrite(0x61);
         __GDWriteU32((((off / 2) + 0xf6) << 24) | w);
-        u8 t2 = j3dTevSwapTableTable[sw + 2];
-        u8 t3 = j3dTevSwapTableTable[sw + 3];
+        u8 t2 = swapTable[sw + 2];
+        u8 t3 = swapTable[sw + 3];
         w = (s[0x10c] << 4) | t2 | (t3 << 2) | (s[0x11c] << 9) | (s[0x10d] << 14) | (s[0x11d] << 19);
         __GDWrite(0x61);
         __GDWriteU32((((off + 2) / 2 + 0xf6) << 24) | w);
@@ -4541,4 +4542,10 @@ void J3DPEBlockFull::initialize()
     mZCompLoc = 0xff;
     mDither = 1;
     mFogOffset = 0;
+}
+void J3DPEBlockFogOff::initialize() {
+    mAlphaComp.mAlphaCmpID = 0xffff;
+    mZMode.mZModeID = 0xffff;
+    mZCompLoc = 0xff;
+    mDither = 1;
 }
