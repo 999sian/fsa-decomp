@@ -441,8 +441,7 @@ inline void t84Row(char* p, s32 n, f32 x, f32 y) {
 #pragma opt_propagation reset
 struct T84 { u8 pad[0x2d4]; JGeometry::TVec2<f32> mTbl[12]; };
 
-#pragma opt_propagation off
-#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_801DA124(void* self) {
     char* a = (char*)self;
     char* game;
@@ -477,10 +476,7 @@ extern "C" void fn_801DA124(void* self) {
     }
     JGeometry::TVec2<f32> v(*(f32*)(a + 0xc), *(f32*)(a + 0x10));
     while (v.y < *(f32*)(area + 0xc)) {
-        JGeometry::TVec3<f32> pos;
-        pos.x = v.x;
-        pos.y = v.y;
-        pos.z = lbl_8053F1CC;
+        JGeometry::TVec3<f32> pos(v.x, v.y, lbl_8053F1CC);
         if (((T84Slot19*)a)->v17(*(u32*)(a + 4), &pos)) {
             fn_801CCCC4(&v);
             v.y += lbl_8053F228;
@@ -507,8 +503,7 @@ extern "C" void fn_801DA124(void* self) {
     fn_801DAF44(fn_801DAC6C(), *(u32*)(a + 0x198));
     fn_802D7440(fn_802D6A9C(), 0);
 }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_801DA994(void* p, s32 a, s32 b);
 extern "C" void fn_801E6394(void* this_);
 extern "C" void fn_801E631C(void* this_);
@@ -680,8 +675,8 @@ static inline s16 t84FaceAngle(char* p) {
 }
 
 static inline s32 t84FindPlayer(char* p) {
-    s32 pl;
     s32 found = -1;
+    s32 pl;
     JGeometry::TVec3<f32> v;
     t84FrontPos(p, &v);
     s16 ang = t84FaceAngle(p);
@@ -757,7 +752,7 @@ extern "C" BOOL fn_801D95F4(char* p) {
     JGeometry::TVec2<f32> dir;
     JGeometry::TVec3<f32> pos;
     t84FrontPos(p, &pos);
-    s32 id = Actor_CreateByID(fn_801F856C(), 0x424f4942, *(s32*)(p + 4), &pos, 0, -1, -1);
+    int id = Actor_CreateByID(fn_801F856C(), 0x424f4942, *(s32*)(p + 4), &pos, 0, -1, -1);
     if (id >= 0) {
         char* a = fn_801F666C(fn_801F856C(), id);
         if (a != NULL) {
@@ -771,7 +766,9 @@ extern "C" BOOL fn_801D95F4(char* p) {
                     dir.normalize();
                 }
             } else {
-                s16 ang = -t84FaceAngle(p);
+                s32 angle = -0x2000;
+                if (*(u32*)(p + 0x230) & 0x2000) angle = 0x2000;
+                s16 ang = -angle;
                 f32 sn = JMASSin(ang);
                 f32 cs = JMASCos(ang);
                 dir.x = lbl_8053F1CC * cs - lbl_8053F1D8 * sn;
