@@ -205,8 +205,10 @@ extern "C" s32 fn_8022CAF8(s32);
 // padActive() with the linked-player table walk expanded inline (no other helpers needed).
 inline bool padCheck(char* p) {
     bool ok;
+    s32 idx;
     s32 r;
     s32 cnt;
+    s32 c;
     s32 i;
     s32 linked;
     if (U8(p, 0xc80) == 0) {
@@ -1595,6 +1597,13 @@ s32 fn_8024322C(char* p) { return S32(p, 0xd08); }
 
 u8 fn_80243C64(char* p) {
     f32 f;
+    s32 i;
+    s32 c;
+    s32 t;
+    s32 linked;
+    s32 target;
+    s32 own;
+    bool ok;
     if (!actionReady(p)) {
         return 0;
     }
