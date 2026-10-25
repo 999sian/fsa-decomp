@@ -48,24 +48,15 @@ static inline void calcSeq(AnmSeqCtrl* this_) {
     s32 start = 0;
     s32 idx = start;
     for (; e->mFrame >= 0; e++, idx++) {
-        f32 prev;
-        s32 duration;
-        duration = e->_2;
-        prev = start;
-        start += duration;
+        f32 prev = (int)start;
+        start += e->_2;
         if (prev <= frame && frame < (f32)start) {
             this_->_10 = clampSeq(this_, e->mFrame);
             this_->_1C = idx;
             return;
         }
     }
-    s32 first;
-    s32 lo;
-    s32 hi;
-    hi = this_->mMax;
-    first = this_->mSeqs[this_->mCurSeq]->mFrame;
-    lo = this_->mMin;
-    this_->_10 = clampS32(first, lo, hi);
+    this_->_10 = clampS32(this_->mSeqs[this_->mCurSeq]->mFrame, this_->mMin, this_->mMax);
     this_->_1C = 0;
 }
 
