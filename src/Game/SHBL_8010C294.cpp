@@ -54,6 +54,14 @@ extern f32 lbl_8053C490;
 extern f32 lbl_8053C4D4;
 extern void* lbl_80539EE8[2];
 extern "C" void v06__5ActorFv(void* this_);
+class SHBLResourceMgr {
+public:
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10();
+    virtual void v14();
+    virtual void* get(u32 type, const void* name);
+};
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
 extern f32 lbl_8053C4E0;
@@ -212,17 +220,31 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
 }
 
 extern "C" void fn_8010C6E4(u8* this_) {
-    u8 idx[16];
-    s32 neg1;
-    s32 neg2;
-    s32 i;
     v06__5ActorFv(this_);
-    for (i = 0; i < 16; i++) {
-        idx[i] = i;
+    DrawRec rec;
+    DrawRec shadow;
+    JGeometry::TMtx34f matrix;
+    JGeometry::TMtx34f shadowMatrix;
+    if (!(((JGeometry::TVec3f*)(this_+0x54))->squared() <= JGeometry::TUtilf::epsilon())) {
+        matrix.mMtx[0][3]=0.0f; matrix.mMtx[1][3]=0.0f; matrix.mMtx[2][3]=0.0f;
+        matrix.mMtx[0][0]=*(f32*)(this_+0x54); matrix.mMtx[0][1]=0.0f; matrix.mMtx[0][2]=0.0f;
+        matrix.mMtx[1][0]=0.0f; matrix.mMtx[1][1]=*(f32*)(this_+0x58); matrix.mMtx[1][2]=0.0f;
+        matrix.mMtx[2][0]=0.0f; matrix.mMtx[2][1]=0.0f; matrix.mMtx[2][2]=*(f32*)(this_+0x5c);
+        rec.w18=&matrix;
+        shadowMatrix.mMtx[0][3]=0.0f; shadowMatrix.mMtx[1][3]=lbl_8053C4D8* *(f32*)(this_+0x260); shadowMatrix.mMtx[2][3]=0.0f;
+        shadowMatrix.mMtx[0][0]=*(f32*)(this_+0x54); shadowMatrix.mMtx[0][1]=0.0f; shadowMatrix.mMtx[0][2]=0.0f;
+        shadowMatrix.mMtx[1][0]=0.0f; shadowMatrix.mMtx[1][1]=*(f32*)(this_+0x58); shadowMatrix.mMtx[1][2]=0.0f;
+        shadowMatrix.mMtx[2][0]=0.0f; shadowMatrix.mMtx[2][1]=0.0f; shadowMatrix.mMtx[2][2]=*(f32*)(this_+0x5c);
+        shadow.w18=&shadowMatrix;
     }
-    neg1 = -1;
-    neg2 = -1;
-    if (*(f32*)(this_ + 0x5c) * *(f32*)(this_ + 0x5c) > 0.0f) {
+    ((u8*)&shadow.w10)[3]=0x80;
+    fn_801EF830(*(s32*)(this_+4),(f32*)(this_+0xc),(u8*)&shadow,0x407,(u8*)lbl_80464334,*(s32*)(this_+0x284)+0x165,0);
+    void* pos=this_+0xc;
+    s32 frame=*(s32*)(this_+0x284)+0x165;
+    if (*(s32*)(this_+4)<8) {
+        void* mgr=*(void**)((u8*)lbl_8053AAF8+0xa4);
+        void* res=((void*(*)(void*,u32,void*))(*(void***)mgr)[6])(mgr,'SOB ',lbl_80464334);
+        fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),pos,res,frame,&rec,lbl_8053C4D4,lbl_8053C4D4);
     }
 }
 
