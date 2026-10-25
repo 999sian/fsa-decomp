@@ -1,6 +1,9 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
+static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
+#include "JSystem/JGeometry/Box.h"
 extern "C" const JGeometry::TVec3<f32> lbl_8046BF38[];
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
@@ -548,6 +551,145 @@ void fn_8027F854(char* p, JGeometry::TVec3<f32>* out, s32 i) {
         out->y += lbl_80540368 * (f32)(fn_80248778(p) - fn_8022E8D4(i));
         break;
     case 5:
+        break;
+    }
+}
+
+void fn_8027FA08(char* p, f32* outp) {
+    JGeometry::TVec3<f32>& out = *(JGeometry::TVec3<f32>*)outp;
+    int area;
+    if (!Player_IsLinked(p) && U8(p, 0x1216)) {
+        out = VEC(p, 0x38);
+        return;
+    }
+    if (Player_IsLinked(p)) {
+        if (fn_8022DCD8(Player_GetLinkTargetIndex(p))) {
+            out = VEC(p, 0x8);
+            return;
+        }
+        area = S32(p, 0x3b4);
+        if (area != fn_8023DE58(Player_GetLinkTargetIndex(p))) {
+            out = VEC(p, 0x8);
+            return;
+        }
+        if (S32(p, 0x1240) == 0x46) {
+            out = VEC(p, 0x8);
+            return;
+        }
+        out = *fn_8023E724(Player_GetLinkTargetIndex(p));
+        if (fn_802486A0(p) == 5) {
+            out.z = F32(p, 0x10);
+        }
+    } else {
+        out = VEC(p, 0x8);
+    }
+    if (fn_802486A0(p) != 4 && Player_IsLinked(p) && fn_8023EA28(Player_GetLinkTargetIndex(p))) {
+        return;
+    }
+    if (U8(p, 0x1214) != 0) {
+        return;
+    }
+    switch (fn_802486A0(p)) {
+    case 3:
+        if (fn_80241284(p) && fn_80248970(p) >= 2) {
+            JGeometry::TVec3<f32> tmp(*Fairy_GetField_0x11b4Ptr(p));
+            out.x = lbl_80540368 * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x11c0) >> 5].second + tmp.x;
+            area = S32(p, 0x3b4);
+            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+                out.y = lbl_80540384 * -JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x11c0) >> 5].first + tmp.y;
+            } else {
+                out.y = lbl_80540368 * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x11c0) >> 5].first + tmp.y;
+            }
+            out.z = tmp.z;
+            return;
+        }
+        if (!Player_IsLinked(p)) {
+            return;
+        }
+        switch (Player_GetLinkTargetIndex(p)) {
+        case 0:
+            area = S32(p, 0x3b4);
+            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+                out.y -= lbl_80540384;
+            } else {
+                out.y += lbl_80540368;
+            }
+            break;
+        case 1:
+            out.x += lbl_80540368;
+            break;
+        case 2:
+            out.x -= lbl_80540368;
+            break;
+        case 3:
+            area = S32(p, 0x3b4);
+            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+                out.y += lbl_80540384;
+            } else {
+                out.y -= lbl_80540368;
+            }
+            break;
+        }
+        switch (S32(p, 0x4)) {
+        case 0:
+            area = S32(p, 0x3b4);
+            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+                out.y += lbl_80540384;
+            } else {
+                out.y -= lbl_80540368;
+            }
+            break;
+        case 1:
+            out.x -= lbl_80540368;
+            break;
+        case 2:
+            out.x += lbl_80540368;
+            break;
+        case 3:
+            area = S32(p, 0x3b4);
+            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+                out.y -= lbl_80540384;
+            } else {
+                out.y += lbl_80540368;
+            }
+            break;
+        }
+        break;
+    case 2:
+        out.x += lbl_80540368 * (f32)(fn_80248778(p) & 1);
+        area = S32(p, 0x3b4);
+        if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            out.y -= (lbl_80540368 * (f32)(fn_80248778(p) & 2)) * lbl_8054037C;
+        } else {
+            out.y += (lbl_80540368 * (f32)(fn_80248778(p) & 2)) * lbl_8054037C;
+        }
+        break;
+    case 0:
+        out.x += lbl_80540368 * (f32)fn_80248778(p);
+        break;
+    case 1:
+        area = S32(p, 0x3b4);
+        if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            out.y -= lbl_80540368 * (f32)fn_80248778(p);
+        } else {
+            out.y += lbl_80540368 * (f32)fn_80248778(p);
+        }
+        break;
+    case 5:
+        if (Player_IsLinked(p)) {
+            s32 s = fn_80248778(p);
+            JGeometry::TVec3<f32>* q = fn_8023E4E4(Player_GetLinkTargetIndex(p), s * 12);
+            out.x = q->x;
+            out.y = q->y;
+            out.z = q->z;
+        } else {
+            out = *fn_8023E724(S32(p, 0x4));
+        }
+        break;
+    case 4:
+        out.x = F32(p, 0x8);
+        out.y = F32(p, 0xc);
+        out.z = F32(p, 0x10);
         break;
     }
 }
@@ -1251,6 +1393,136 @@ void fn_8028211C(char* p) {
         U8(p, 0xce8) = 0;
     U8(p, 0xcea) = 0;
     if (S32(p, 0x3b4) < 8) fn_8024BAEC(p);
+}
+
+extern "C" void fn_8030BD3C(void*, s32);
+extern "C" const f32 lbl_805403C4, lbl_805403C8, lbl_805403CC, lbl_805403D0, lbl_805403D4, lbl_805403D8, lbl_805403DC, lbl_805403E0, lbl_805403E4, lbl_805403E8, lbl_805403EC, lbl_805403F0;
+extern "C" bool fn_80301CD0(s32);
+extern "C" void fn_80301D54(s32);
+extern "C" bool fn_8025190C(char*, u8);
+extern "C" bool fn_8025F684(char*);
+extern "C" bool fn_8022C3AC(s32);
+extern "C" void fn_80290D58(char*);
+extern "C" void fn_80282178(char* p) {
+s32 area;
+S32(p,0x394)++;
+if(S32(p,0x394)==0x48) fn_8024F0E8(p,0x10003);
+if(U8(p,0x3fc)) {
+if(!fn_80301CD0(S32(p,4))) {
+if(U8(p,0xcea)==1) {
+if(S32(p,0x3b4)<8) VEC(p,0xcb0)=VEC(p,8);
+S32(p,0x3b4)=S32(p,0xce4);
+VEC(p,8)=VEC(p,0xcd4);
+F32(p,0x10)=lbl_805403C4;
+fn_8030BD3C(PTR(p,0xbec),S32(p,4));
+area=S32(p,0x3b4);
+if(U8(fn_802D6A9C(),0x131df+area)) {
+if(F32(p,0x348)>lbl_805403C8) F32(p,0x348)=lbl_805403C8;
+else if(F32(p,0x348)<lbl_805403CC) F32(p,0x348)=lbl_805403CC;
+} else {
+f32 y=-F32(p,0x34c);
+F32(p,0x34c)=-F32(p,0x348);
+F32(p,0x348)=y;
+if(F32(p,0x34c)<lbl_805403D0) F32(p,0x34c)=lbl_805403D0;
+else if(F32(p,0x34c)>lbl_80540354) F32(p,0x34c)=lbl_80540354;
+}
+fn_80301D54(S32(p,4));
+U8(p,0xcea)=0;
+}
+U8(p,0x3fc)--;
+if(U8(p,0x3fc)==0) {
+fn_80290D58(p);
+if(S32(p,0x3b4)<8) fn_802F601C(PTR(lbl_8053AB10,0x20),p+8,1,0,lbl_8054036C,lbl_805403B4);
+fn_8013CC50(S32(p,0x3b4),p+8,0x17d,1,0,0,0,1,lbl_8054036C);
+U8(p,0x124d)=0;
+}
+}
+} else {
+VEC(p,8).add(VEC(p,8),VEC(p,0x344));
+VEC(p,8).add(VEC(p,8),VEC(p,0x380));
+if(U8(p,0xce8)==1) {
+if(S32(p,0xce4)<8) U8(p,0x3fc)=60;
+else U8(p,0x3fc)=20;
+U8(p,0x124d)=1;
+U8(p,0xcea)=1;
+}
+area=S32(p,0x3b4);
+if(U8(fn_802D6A9C(),0x131df+area)) {
+F32(p,0x348)+=lbl_80540398;
+if(F32(p,0x348)>lbl_805403D4) F32(p,0x348)=lbl_805403D4;
+area=S32(p,0x3b4);
+char* world=(char*)fn_802D6A9C();
+JGeometry::TBox2f box=*(JGeometry::TBox2f*)(world+(area<8?0xcc:0xdc));
+box.i.x-=lbl_805403D8; box.i.y-=lbl_805403D8;
+box.f.x+=lbl_805403D8; box.f.y+=lbl_805403D8;
+if(fn_8025190C(p,1)) {
+fn_80251AEC(p,0x4e);
+F32(p,0x10)=lbl_80540360;
+} else {
+if(F32(p,0x348)<=lbl_80540360 && (fn_802518AC(p,1) || !(F32(p,8)>=box.i.x && F32(p,0xc)>=box.i.y && F32(p,8)<box.f.x && F32(p,0xc)<box.f.y))) {
+if(fn_8025F684(p)) fn_80251AEC(p,0x12); else fn_80251AEC(p,0);
+F32(p,0x10)=lbl_80540360;
+} else F32(p,0x10)=lbl_805403C4;
+}
+} else {
+F32(p,0x34c)-=lbl_80540398;
+if(F32(p,0x34c)<lbl_805403DC) F32(p,0x34c)=lbl_805403DC;
+if(F32(p,0x10)<lbl_80540360) {
+if(fn_8025F684(p)) fn_80251AEC(p,0x12); else fn_80251AEC(p,0);
+F32(p,0x10)=lbl_80540360;
+}
+}
+
+if(F32(p,0x380) > lbl_80540360) {
+if(fn_8022C82C(S32(p,4)) > lbl_80540360) {
+F32(p,0x380) += lbl_805403B8;
+if(F32(p,0x380) > lbl_805403E0) F32(p,0x380)=lbl_805403E0;
+} else {
+F32(p,0x380) -= lbl_805403B8;
+if(F32(p,0x380) < lbl_805403B8) F32(p,0x380)=lbl_805403B8;
+}
+} else if(F32(p,0x380) < lbl_80540360) {
+if(fn_8022C82C(S32(p,4)) < lbl_80540360) {
+F32(p,0x380) -= lbl_805403B8;
+if(F32(p,0x380) < lbl_805403E4) F32(p,0x380)=lbl_805403E4;
+} else {
+F32(p,0x380) += lbl_805403B8;
+if(F32(p,0x380) > lbl_805403E8) F32(p,0x380)=lbl_805403E8;
+}
+} else F32(p,0x380) = lbl_805403EC * fn_8022C82C(S32(p,4));
+
+area=S32(p,0x3b4);
+if(!U8(fn_802D6A9C(),0x131df+area)) {
+
+if(F32(p,0x384) > lbl_80540360) {
+if(-fn_8022C76C(S32(p,4)) > lbl_80540360) {
+F32(p,0x384) += lbl_805403B8;
+if(F32(p,0x384) > lbl_805403E0) F32(p,0x384)=lbl_805403E0;
+} else {
+F32(p,0x384) -= lbl_805403B8;
+if(F32(p,0x384) < lbl_805403B8) F32(p,0x384)=lbl_805403B8;
+}
+} else if(F32(p,0x384) < lbl_80540360) {
+if(-fn_8022C76C(S32(p,4)) < lbl_80540360) {
+F32(p,0x384) -= lbl_805403B8;
+if(F32(p,0x384) < lbl_805403E4) F32(p,0x384)=lbl_805403E4;
+} else {
+F32(p,0x384) += lbl_805403B8;
+if(F32(p,0x384) > lbl_805403E8) F32(p,0x384)=lbl_805403E8;
+}
+} else F32(p,0x384) = lbl_805403EC * -fn_8022C76C(S32(p,4));
+
+}
+if(!U8(p,0xce8) && fn_8022C3AC(S32(p,4))) fn_80251AEC(p,5);
+}
+fn_802685D4(p);
+if(fn_8025F684(p)) {
+F32(p,0x2f4)=lbl_80540360;
+F32(p,0x2f8)=lbl_80540360;
+F32(p,0x2fc)=lbl_805403F0;
+VEC(p,0x2f4).add(VEC(p,0x2f4),VEC(p,8));
+if(F32(p,0x34c)<lbl_805403AC) U8(p,0x3f9)=1; else U8(p,0x3f9)=0;
+}
 }
 
 void fn_8028286C(char* p) {
