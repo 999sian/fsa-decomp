@@ -17,6 +17,12 @@ struct J2DScreen {
 extern "C" void __dl__FPv(void*);
 extern "C" void* fn_804030C4(u32 type, const char* name);
 extern "C" const char* lbl_804B1BC0[];
+struct ScreenTagEntry {
+    u8 pad[0x30];
+    u64 tag0;
+    u8 pad38[0x80];
+    u64 tag1;
+};
 extern "C" u8 lbl_80490038[];
 extern "C" u8 lbl_804B1BE8[];
 extern "C" u32 lbl_8053AF00;
