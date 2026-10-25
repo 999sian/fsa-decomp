@@ -319,6 +319,7 @@ struct Unk800DDA5C {
 #include "JSystem/J3D/J3DSys.h"
 #include "dolphin/gd.h"
 #include "JSystem/J3D/J3DTevBlock.h"
+extern "C" char __vt__12J3DTevBlock4[];
 #include "dolphin/os/OSCache.h"
 #include "JSystem/J3D/J3DPE.h"
 #include "JSystem/J3D/J3DInd.h"
