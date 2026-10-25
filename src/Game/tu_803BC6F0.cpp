@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
+#include "dolphin/os/OSTime.h"
 
 struct Tu803CE9ECObj {
     virtual void v0();
@@ -117,6 +118,10 @@ static inline s32 getFileIcon(u32 slot) {
         }
     }
     return ((s32*)(lbl_804765D0 + 0x730))[7];
+}
+
+static inline bool hasTime(u64* t) {
+    return *t != 0;
 }
 
 struct KeyObjVt {
@@ -2002,6 +2007,67 @@ extern "C" s32 fn_803CE4B0(void) {
         return *(s32*)(lbl_8053ADB0 + 0x1a8);
     }
     return 3;
+}
+
+extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
+extern "C" u8 fn_803BADAC(void* a);
+extern "C" void fn_803CE4CC(char* p) {
+    s32 i;
+    u8* rec;
+    u64* date;
+    u64* lv;
+    u64* fir;
+    OSCalendarTime cal;
+
+    rec = (u8*)lbl_8050EC80;
+    date = (u64*)(lbl_804765D0 + 0x30);
+    lv = (u64*)(lbl_804765D0 + 0x0);
+    fir = (u64*)(lbl_804765D0 + 0x18);
+    for (i = 0; i < 3; i++) {
+        u32 mask = 1 << i;
+        p[0x115] &= ~(u8)mask;
+        if (lbl_8053AAF8[0xff] != 0) {
+            if (fn_803BADAC(rec + 0x20)) {
+                if (*(u64*)(rec + 0x20) != 0) {
+                    OSTicksToCalendarTime(*(s64*)(rec + 0x20), &cal);
+                    snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(*date)), 0x1e, (char*)(lbl_804765D0 + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
+                    ((J2DPane*)*(void**)(p + 8))->search(*lv)->show();
+                    ((J2DPane*)*(void**)(p + 8))->search(*fir)->hide();
+                    ((J2DPane*)*(void**)(p + 8))->search(*date)->show();
+                    s32 icon;
+                    icon = getFileIcon(0);
+                    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466316c76ULL)), icon, 0, 0, 0);
+                    icon = getFileIcon(1);
+                    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466326c76ULL)), icon, 0, 0, 0);
+                    icon = getFileIcon(2);
+                    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466336c76ULL)), icon, 0, 0, 0);
+                } else {
+                    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(*fir)), 0x6a, 0, 0, 0);
+                    ((J2DPane*)*(void**)(p + 8))->search(*lv)->hide();
+                    ((J2DPane*)*(void**)(p + 8))->search(*fir)->show();
+                    ((J2DPane*)*(void**)(p + 8))->search(*date)->hide();
+                }
+                fn_803BDD44((u8*)p, i);
+            } else {
+                fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(*fir)), 0x11d, 0, 0, 0);
+                ((J2DPane*)*(void**)(p + 8))->search(*lv)->hide();
+                ((J2DPane*)*(void**)(p + 8))->search(*fir)->show();
+                ((J2DPane*)*(void**)(p + 8))->search(*date)->hide();
+                p[0x115] |= (u8)mask;
+                fn_803BD5E0((u8*)p, i);
+            }
+        } else {
+            fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(*fir)), 0x6a, 0, 0, 0);
+            ((J2DPane*)*(void**)(p + 8))->search(*lv)->hide();
+            ((J2DPane*)*(void**)(p + 8))->search(*fir)->show();
+            ((J2DPane*)*(void**)(p + 8))->search(*date)->hide();
+            fn_803BDD44((u8*)p, i);
+        }
+        date++;
+        lv++;
+        fir++;
+        rec += 0xc8;
+    }
 }
 
 extern "C" void* lbl_8053ACA8;
