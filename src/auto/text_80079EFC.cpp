@@ -358,7 +358,7 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* 
 
     switch (compression) {
     case 0: {
-        u8* data = (u8*)JKRHeap::alloc(size, 0x20, heap);
+        u8* data = (u8*)JKRAllocFromHeap(heap, size, 0x20);
         JKRAramToMainRam(aramAddr, data, size, EXPAND_SWITCH_DEFAULT, size, NULL, -1, NULL);
         *pBuf = data;
         return length;
@@ -370,7 +370,7 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* 
         JKRAramToMainRam(aramAddr, buf, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
         expandSize = (buf[4] << 0x18) | (buf[5] << 0x10) | (buf[6] << 8) | buf[7];
         length = (expandSize + 0x1f) & ~0x1f;
-        buf = (u8*)JKRHeap::alloc(length, 0x20, heap);
+        buf = (u8*)JKRAllocFromHeap(heap, length, 0x20);
         JKRAramToMainRam(aramAddr, buf, size, EXPAND_SWITCH_DECOMPRESS, length, heap, -1, &result);
         *pBuf = buf;
         return result;
