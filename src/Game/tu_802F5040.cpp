@@ -61,7 +61,7 @@ extern "C" f32 lbl_8054152C;
 extern "C" f32 lbl_80541534;
 extern "C" f32 lbl_80541520;
 extern "C" f32 lbl_80541598;
-extern "C" f32 lbl_80541510;
+extern "C" const f32 lbl_80541510;
 extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
 
