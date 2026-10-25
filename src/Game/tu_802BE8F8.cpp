@@ -1,4 +1,5 @@
 #include "dolphin/gx/GXStruct.h"
+#include "JSystem/JGeometry/Vec.h"
 extern "C" char lbl_804A8B78[];
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void*, int);
@@ -12,32 +13,21 @@ extern "C" float lbl_80540C18;
 extern "C" char* lbl_8053AB10;
 extern "C" void fn_80158B5C(void*, int, float*, GXColor, float = 0.0f);
 extern "C" void fn_802BE8F8(char* p) {
-    if (*(int*)(p + 0x250) == 0) {
-        if (*(float*)(p + 0x254) > lbl_80540C10) {
-            *(float*)(p + 0x254) -= lbl_80540C14;
-            if (*(float*)(p + 0x254) <= lbl_80540C10) {
-                *(float*)(p + 0x254) = lbl_80540C10;
-            }
-        } else {
-            *(float*)(p + 0x254) = lbl_80540C10;
-        }
-    } else {
-        if (*(float*)(p + 0x254) < lbl_80540C18) {
-            *(float*)(p + 0x254) += lbl_80540C14;
-        } else {
-            *(float*)(p + 0x254) = lbl_80540C18;
-        }
-    }
-    float pos[3];
-    GXColor color;
-    pos[1] = lbl_80540C1C + *(float*)(p + 0x10);
-    pos[0] = lbl_80540C1C + *(float*)(p + 0xc);
-    pos[2] = lbl_80540C10;
-    color.r = 0;
-    color.g = 0;
-    color.b = 0;
-    color.a = 0x80;
-    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(int*)(p + 4), pos, color, *(float*)(p + 0x254));
+ if (*(s32*)(p+0x250)==0) {
+  if (*(f32*)(p+0x254)>0.0f) {
+   *(f32*)(p+0x254)-=6.0f;
+   if (*(f32*)(p+0x254)<=0.0f) *(f32*)(p+0x254)=0.0f;
+  } else *(f32*)(p+0x254)=0.0f;
+ } else {
+  if (*(f32*)(p+0x254)<200.0f) *(f32*)(p+0x254)+=6.0f;
+  else *(f32*)(p+0x254)=200.0f;
+ }
+ f32 size=*(f32*)(p+0x254);
+ GXColor color;
+ JGeometry::TVec3<f32> pos(8.0f+*(f32*)(p+0xc),8.0f+*(f32*)(p+0x10),0.0f);
+ color.r=0; color.g=0; color.b=0; color.a=0x80;
+ int room=*(int*)(p+4);
+ fn_80158B5C(*(void**)(lbl_8053AB10+0x2c),room,&pos.x,color,size);
 }
 
 extern "C" float lbl_80540C20;
