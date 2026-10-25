@@ -455,7 +455,7 @@ extern "C" void fn_802984B0(void* p) {
 
     switch (*(s32*)(self + 0x2b0)) {
     case 0:
-        b1.set(*(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c));
+        b1.set(*(JGeometry::TBox2f*)(self + 0x60));
         b1.addPos(*(JGeometry::TVec2f*)(self + 0xc));
         b1.f.y -= 40.0f;
         fn_80239914(&b1, *(s32*)(self + 0x4), *(void**)(self + 0x198));
