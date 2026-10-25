@@ -64,7 +64,9 @@ struct HitRect {
 };
 
 struct HitRectTable {
-    u8 pad0[0x5fc];
+    u8 pad0[0x3b4];
+    s32 room;
+    u8 pad3b8[0x5fc - 0x3b8];
     HitRect rects[80];
     u8 padAFC[0xdb0 - 0xafc];
     s32 ids[80];
@@ -264,8 +266,9 @@ extern "C" void fn_80268BC4(u8* p) {
     clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (int k = 0; k < 8; k++) {
+        f32 x;
         f32 y;
-        f32 x = lbl_8046BAE8[k].x;
+        x = lbl_8046BAE8[k].x;
         y = lbl_8046BAE8[k].y;
         *(f32*)(p + 8) = x;
         f32 z = lbl_8046BAE8[k].z;
@@ -296,7 +299,7 @@ extern "C" void fn_80268BC4(u8* p) {
             }
             *(JGeometry::TVec3<f32>*)(p + 8) = saved;
         }
-        if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4))) {
+        if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), static_cast<int>(*(s32*)(*(u8**)(p + 4) + 0x3b4)))) {
             p[*(s32*)(p + 0x1c) + 0x28] = 1;
         } else if (fn_8026FC20(*(void**)(p + 4)) <= 0 && !fn_802DCD0C(fn_802D6A9C())) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
