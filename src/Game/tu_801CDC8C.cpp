@@ -1027,11 +1027,13 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
         dx *= scale;
         dz *= scale;
     }
-    out[0] = dx;
-    out[1] = dz;
     f32 ddx = pos[0] - *(f32*)(this_ + 0xc);
+    out[0] = dx;
     f32 ddz = pos[1] - *(f32*)(this_ + 0x10);
-    f32 dist = ddx * ddx + ddz * ddz;
+    out[1] = dz;
+    f32 a = ddx * ddx;
+    f32 b = ddz * ddz;
+    f32 dist = a + b;
     if (dist > lbl_8053EFC4) {
         f32 y = __frsqrte(dist);
         dist = y * dist;
@@ -1344,17 +1346,15 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
     return dx * dx + dz * dz;
 }
 
-static inline u8 roomFlag_801D0DD4(s32 room) {
-    return ((u8*)fn_802D6A9C())[0x131df + room];
-}
-
-extern "C" BOOL fn_801D0DD4(void* p) {
-    s32 off = *(s32*)((char*)p + 4);
-    u8* base = (u8*)fn_802D6A9C();
-    if (*(u8*)((u32)base + 0x10000 + off + 0x31df) != 0) {
-        return (*(u32*)((char*)p + 0x230) & 0x18) != 0;
+extern "C" BOOL fn_801D0DD4(char* this_) {
+    struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
+    s32 room = *(s32*)(this_ + 0x4);
+    TndrG* g = (TndrG*)fn_802D6A9C();
+    u8 flag = g->arr[room];
+    if (flag) {
+        return (*(u32*)(this_ + 0x230) & 0x18) != 0;
     }
-    return *(f32*)((char*)p + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
+    return *(f32*)(this_ + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
 }
 
 extern "C" void fn_801D0E58(char* p) {
