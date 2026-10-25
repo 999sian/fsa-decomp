@@ -93,34 +93,21 @@ extern "C" void fn_802CB1C4(char* p) {
 }
 
 extern "C" void fn_802CB230(void* this_) {
+    s32 r31;
     s32 ae;
     s32 r26;
     s32 r27;
-    s32 r28;
-    u8* p = (u8*)this_;
     s32 r30;
-    s32 r31;
+    u8* p = (u8*)this_;
+    s32 r28;
 
     OnofVec2 pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
-    f32 n0 = lbl_80540DB0;
-    f32 w0 = lbl_80540DAC;
-    *(f32*)(p + 0x60) = w0;
-    *(f32*)(p + 0x64) = w0;
-    *(f32*)(p + 0x68) = n0;
-    *(f32*)(p + 0x6c) = n0;
-    OnofBox2 box;
-    box.i.x = *(f32*)(p + 0x60);
-    box.i.y = *(f32*)(p + 0x64);
-    box.f.x = *(f32*)(p + 0x68);
-    box.f.y = *(f32*)(p + 0x6c);
+    OnofBox2* hb = (OnofBox2*)(p + 0x60);
+    hb->set(lbl_80540DAC, lbl_80540DAC, lbl_80540DB0, lbl_80540DB0);
+    OnofBox2 box(*hb);
     box.addPos(pos);
     ae = fn_8023AE34(&box, *(s32*)(p + 4), &pos);
-    f32 n1 = lbl_80540DB8;
-    f32 w1 = lbl_80540DB4;
-    *(f32*)(p + 0x60) = w1;
-    *(f32*)(p + 0x64) = w1;
-    *(f32*)(p + 0x68) = n1;
-    *(f32*)(p + 0x6c) = n1;
+    hb->set(lbl_80540DB4, lbl_80540DB4, lbl_80540DB8, lbl_80540DB8);
     box.i.x = *(f32*)(p + 0x60);
     box.i.y = *(f32*)(p + 0x64);
     box.f.x = *(f32*)(p + 0x68);
