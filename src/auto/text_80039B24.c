@@ -6,5 +6,4 @@
 
 template <>
 JASMemPool_MultiThreaded<JASChannel> JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
-void __sinit_text_80039B24_c(void) {
-}
+
