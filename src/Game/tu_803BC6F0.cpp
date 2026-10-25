@@ -196,6 +196,12 @@ static inline void setCell(u8* this_, s32 cell, s32 idx, s32 keyOff, u8 flag) {
     fn_804023D0(*(void**)(this_ + cell + idx * 4), o, flag);
 }
 
+static inline void setCellT(u8* this_, u8* tbl, s32 cell, s32 idx, s32 keyOff, u8 flag) {
+    u8* sub = *(u8**)(this_ + 8);
+    void* o = ((KeyGetFn)(*(void***)sub)[15])(sub, *(u64*)(tbl + keyOff + idx * 8));
+    fn_804023D0(*(void**)(this_ + cell + idx * 4), o, flag);
+}
+
 static inline void drawTextRow(u8* p, u8* q, u8* t) {
     s32 k;
     for (k = 0; k < 4; k++) {
@@ -1991,6 +1997,95 @@ extern "C" void fn_803C4330(char* p) {
         p[0x112] = p[0x110];
         p[0x110] = 0x26;
         fn_80458880(lbl_8053AF80, 0xb, -1);
+    }
+}
+
+extern "C" void fn_803C4628(u8* this_) {
+    s16 sVar2 = *(s16*)(lbl_8050DB0C + 0x208);
+    s16 sVar3 = *(s16*)(lbl_8050DB0C + 0x20a);
+    s32 iVar10 = sVar2 + sVar3;
+    s16 sVar11 = *(s16*)(lbl_8050DB0C + 0x210);
+    s32 iVar6 = *(s16*)(lbl_8050DB0C + 0x20c);
+    s32 iVar8 = *(s16*)(lbl_8050DB0C + 0x20e);
+    s32 iVar7 = *(s16*)(lbl_8050DB0C + 0x212);
+    s32 iVar5;
+    s32 cur;
+    void* obj;
+
+    if (sVar11 < iVar10) {
+        sVar11 = iVar10;
+    }
+    iVar5 = iVar6 + iVar8;
+    if (iVar5 < sVar11 + iVar7) {
+        iVar5 = sVar11 + iVar7;
+    }
+    *(s16*)(this_ + 0xd8) += 1;
+    if (*(s16*)(this_ + 0xd8) > sVar2 && *(s16*)(this_ + 0xd8) <= iVar10) {
+        cur = *(s32*)(this_ + 0xa4);
+        obj = *(void**)(this_ + 0x38 + cur * 4);
+        fn_80402940(obj, sVar3, *(f32*)((u8*)*(void**)(this_ + 0x38) + 0xc) - *(f32*)((u8*)obj + 0xc),
+                    *(f32*)((u8*)*(void**)(this_ + 0x40) + 0xc) - *(f32*)((u8*)obj + 0xc), 0);
+        obj = *(void**)(this_ + 0x38 + cur * 4);
+        fn_80402628(obj, sVar3, *(u8*)((u8*)obj + 0x28), 0);
+        setCell(this_, 0x38, cur, 0x780, *(u8*)(this_ + 0x125));
+        setCell(this_, 0x38, cur, 0x768, *(u8*)(this_ + 0x126));
+        setCell(this_, 0x38, cur, 0x750, *(u8*)(this_ + 0x127));
+        setCell(this_, 0x38, cur, 0x6c8, *(u8*)(this_ + 0x128));
+        setCell(this_, 0x38, cur, 0x6b0, *(u8*)(this_ + 0x129));
+        setCell(this_, 0x38, cur, 0x698, *(u8*)(this_ + 0x12a));
+        setCell(this_, 0x38, cur, 0x680, *(u8*)(this_ + 0x12b));
+        setCell(this_, 0x38, cur, 0x668, *(u8*)(this_ + 0x12c));
+        setCell(this_, 0x38, cur, 0x650, *(u8*)(this_ + 0x12d));
+        setCell(this_, 0x38, cur, 0x638, *(u8*)(this_ + 0x12e));
+        setCell(this_, 0x38, cur, 0x620, *(u8*)(this_ + 0x12f));
+        setCell(this_, 0x38, cur, 0x608, *(u8*)(this_ + 0x130));
+        setCell(this_, 0x38, cur, 0x5f0, *(u8*)(this_ + 0x131));
+    }
+    if (*(s16*)(this_ + 0xd8) == iVar10) {
+        obj = *(void**)(this_ + 0x38 + *(s32*)(this_ + 0xa4) * 4);
+        fn_80402E08(obj, lbl_80543498, *(f32*)((u8*)*(void**)(this_ + 0x38) + 0xc) - *(f32*)((u8*)obj + 0xc));
+        *(s16*)((u8*)obj + 0x20) = 0;
+        {
+            void* sub = *(void**)((u8*)obj + 4);
+            (*(VtSlot9**)sub)->v9(sub, 0);
+        }
+        cur = *(s32*)(this_ + 0xa4);
+        setCell(this_, 0x38, cur, 0x780, *(u8*)(this_ + 0x125));
+        setCell(this_, 0x38, cur, 0x768, *(u8*)(this_ + 0x126));
+        setCell(this_, 0x38, cur, 0x750, *(u8*)(this_ + 0x127));
+        setCell(this_, 0x38, cur, 0x6c8, *(u8*)(this_ + 0x128));
+        setCell(this_, 0x38, cur, 0x6b0, *(u8*)(this_ + 0x129));
+        setCell(this_, 0x38, cur, 0x698, *(u8*)(this_ + 0x12a));
+        setCell(this_, 0x38, cur, 0x680, *(u8*)(this_ + 0x12b));
+        setCell(this_, 0x38, cur, 0x668, *(u8*)(this_ + 0x12c));
+        setCell(this_, 0x38, cur, 0x650, *(u8*)(this_ + 0x12d));
+        setCell(this_, 0x38, cur, 0x638, *(u8*)(this_ + 0x12e));
+        setCell(this_, 0x38, cur, 0x620, *(u8*)(this_ + 0x12f));
+        setCell(this_, 0x38, cur, 0x608, *(u8*)(this_ + 0x130));
+        setCell(this_, 0x38, cur, 0x5f0, *(u8*)(this_ + 0x131));
+        *(s16*)(*(u8**)(this_ + 0x38 + cur * 4) + 0x26) = 0;
+        *(s32*)(this_ + 0x84) = 0x60;
+        ((void* (*)(void*, u32, u32, u32))(*(void***)(*(u8**)(this_ + 8)))[15])(*(void**)(this_ + 8), cur * 4, 0x54, 0x66743031);
+        {
+            char* s = getStringPtr__10J2DTextBoxCFv(0);
+            fn_803832BC(s, *(s32*)(this_ + 0x84), 0, 0, 0);
+        }
+        if (*(s32*)(this_ + 0x84) == 0x60 || *(s32*)(this_ + 0x84) == 0x64) {
+            *(s32*)(this_ + 0xb0) = 0x5a;
+        }
+        fn_803CE4CC((char*)this_);
+        *(s32*)(this_ + 0x80) = 0;
+    }
+    if (this_[0x115] & (u8)(1 << *(s32*)(this_ + 0xa4))) {
+        f32 t = (f32)(*(s16*)(this_ + 0xd8) - sVar2) / (f32)sVar3;
+        fn_803BC6F0((char*)this_, cur, lbl_80543478 - t);
+    }
+    if (iVar6 < *(s16*)(this_ + 0xd8)) {
+        setFade(*(void**)(this_ + 0x20), iVar8, 0, lbl_80543458, lbl_80543498);
+    }
+    if (iVar5 < *(s16*)(this_ + 0xd8)) {
+        this_[0x112] = this_[0x110];
+        this_[0x110] = 0x24;
     }
 }
 
@@ -3795,10 +3890,11 @@ tail:
 extern "C" void fn_804310CC(void* a);
 extern "C" void fn_803CF504(u8* p) {
     s32 i;
-    const u8* tbl = lbl_804765D0;
+    const u8* tbl;
     u8* q;
     u8* s50;
     *(s32*)(p + 0x1a8) = 3;
+    tbl = lbl_804765D0;
     fn_804310CC(lbl_8053AEC0);
     *(s32*)(p + 0x80) = 0;
     *(s32*)(p + 0x7c) = 0;
