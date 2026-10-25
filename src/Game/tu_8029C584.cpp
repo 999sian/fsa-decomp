@@ -210,8 +210,8 @@ extern "C" void fn_8029C9AC(void* this_) {
         }
         *(int*)(p + 0x238) = 0;
     } else {
-        TVec3f* src = (TVec3f*)fn_8023E724(*(int*)(p + 0x90) & 3);
-        *(TVec3f*)(p + 0xc) = *src;
+        float* src = fn_8023E724(*(int*)(p + 0x90) & 3);
+        JGeometry::setTVec3f(src, (float*)(p + 0xc));
         *(float*)(p + 0x14) += lbl_8054075C;
         if (*(int*)(p + 0x234) > 0) {
             char* base;
@@ -271,50 +271,24 @@ extern "C" void fn_8029C9AC(void* this_) {
                         dir = 3;
                     }
                 }
-            } else if (pad != 0 && *(unsigned char*)(p + 0x244) == 1 && fn_8022C9AC(*(int*)(p + 0x90) & 3) &&
-                       *(float*)(pad + 0x60) > lbl_80540760) {
-                short a = *(short*)(pad + 0x64);
-                if (a < -0x7000 || a >= 0x7000) {
-                    dir = 0;
-                } else if (a >= -0x5000 && a < -0x3000) {
-                    dir = 2;
-                } else if (a >= -0x1000 && a < 0x1000) {
-                    dir = 1;
-                } else if (a >= 0x3000 && a < 0x5000) {
-                    dir = 3;
-                }
             } else {
-                if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 1)) {
-                    fn_801F0D20(this_, 0x46);
-                    if (*(unsigned char*)(p + 0x24c) != 0) {
-                        *(int*)(p + 0x23c) = tbl[0][*(int*)(p + 0x23c)];
-                    } else {
-                        *(int*)(p + 0x23c) = tbl[1][*(int*)(p + 0x23c)];
-                    }
-                } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 2)) {
-                    fn_801F0D20(this_, 0x46);
-                    if (*(unsigned char*)(p + 0x24c) != 0) {
-                        *(int*)(p + 0x23c) = tbl[2][*(int*)(p + 0x23c)];
-                    } else {
-                        *(int*)(p + 0x23c) = tbl[3][*(int*)(p + 0x23c)];
-                    }
-                }
-                goto setAnim;
+                goto eBlock;
             }
+dirTest:
             if (dir >= 0) {
                 if (dir == 0) {
-                    if (*(unsigned char*)(p + 0x24c) != 0) {
-                        *(int*)(p + 0x23c) = 2;
-                    } else {
+                    if (*(unsigned char*)(p + 0x24c) == 0) {
                         *(int*)(p + 0x23c) = 1;
+                    } else {
+                        *(int*)(p + 0x23c) = 2;
                     }
                 } else if (dir == 1) {
                     *(int*)(p + 0x23c) = 1;
                 } else if (dir == 2) {
-                    if (*(unsigned char*)(p + 0x24c) != 0) {
-                        *(int*)(p + 0x23c) = 3;
-                    } else {
+                    if (*(unsigned char*)(p + 0x24c) == 0) {
                         *(int*)(p + 0x23c) = 0;
+                    } else {
+                        *(int*)(p + 0x23c) = 3;
                     }
                 } else {
                     *(int*)(p + 0x23c) = 0;
@@ -328,6 +302,41 @@ extern "C" void fn_8029C9AC(void* this_) {
                 }
                 *(int*)(p + 0x250) = 6;
                 *(int*)(p + 0x238) = 0;
+            }
+            goto setAnim;
+eBlock:
+            if (pad != 0 && *(unsigned char*)(p + 0x244) == 1 && fn_8022C9AC(*(int*)(p + 0x90) & 3) &&
+                *(float*)(pad + 0x60) > lbl_80540760) {
+                short a = *(short*)(pad + 0x64);
+                if (a < -0x7000 || a >= 0x7000) {
+                    dir = 0;
+                } else if (a >= -0x5000 && a < -0x3000) {
+                    dir = 2;
+                } else if (a >= -0x1000 && a < 0x1000) {
+                    dir = 1;
+                } else if (a >= 0x3000 && a < 0x5000) {
+                    dir = 3;
+                }
+                goto dirTest;
+            }
+            if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 1)) {
+                fn_801F0D20(this_, 0x46);
+                if (*(unsigned char*)(p + 0x24c) != 0) {
+                    const int* row = (const int*)((const char*)tbl + 0x0);
+                    *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
+                } else {
+                    const int* row = (const int*)((const char*)tbl + 0x18);
+                    *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
+                }
+            } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 2)) {
+                fn_801F0D20(this_, 0x46);
+                if (*(unsigned char*)(p + 0x24c) != 0) {
+                    const int* row = (const int*)((const char*)tbl + 0x30);
+                    *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
+                } else {
+                    const int* row = (const int*)((const char*)tbl + 0x48);
+                    *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
+                }
             }
 setAnim:
             if (*(unsigned char*)(p + 0x24c) != 0) {
@@ -394,15 +403,13 @@ extern "C" void fn_8029CFF8(void* this_) {
     int n;
     int i;
     void* a;
-    Vec v;
     if (fn_8022F514(*(int*)((char*)this_ + 0x90) & 3)) {
         *(unsigned char*)((char*)this_ + 0x11c) = 0;
         return;
     }
     fn_8022CF08(*(int*)((char*)this_ + 0x90) & 3);
     p = fn_8023E724(*(int*)((char*)this_ + 0x90) & 3);
-    v = *(Vec*)p;
-    *(Vec*)((char*)this_ + 0xc) = v;
+    JGeometry::setTVec3f(p, (float*)((char*)this_ + 0xc));
     *(float*)((char*)this_ + 0x14) += lbl_8054075C;
     *(int*)((char*)this_ + 0x108) = 0;
     *(int*)((char*)this_ + 0x234) = 1;
@@ -458,4 +465,4 @@ extern "C" void fn_8029CFF8(void* this_) {
         j += 4;
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
