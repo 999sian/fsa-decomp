@@ -611,7 +611,7 @@ extern "C" void fn_80371284(char* self)
 
 extern "C" void fn_803717CC(char* self)
 {
-	fn_803721F4();
+	fn_803721F4(self);
 	JGeometry::TBox2<f32> tmp(lbl_80542E1C, lbl_80542E28, lbl_80542E2C, lbl_80542E30);
 	JGeometry::TBox2<f32> area(tmp);
 	f32* pos = (f32*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
