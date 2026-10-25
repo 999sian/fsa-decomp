@@ -99,7 +99,9 @@ static inline s32 fn_802A02A8_Refresh(JGeometry::TVec2<f32>* pos, u32 room, u16 
 }
 
 static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
-    JGeometry::TVec2<f32> t = *pos;
+    JGeometry::TVec2<f32> t;
+    t.y=pos->y;
+    t.x=pos->x;
     void* mgr = lbl_8053AC98;
     *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
     s32 tile = *(s32*)((u8*)mgr + 0x20);
@@ -606,15 +608,12 @@ extern "C" void fn_8029E928(void* self, JGeometry::TVec2<f32>* pos, u32 room, u3
     }
 }
 
-extern "C" void fn_8029E9EC(void* p, JGeometry::TVec2<f32>* pos, s32 room, u16 param_4, s32 param_5, u8 param_6) {
-    u16 p4 = param_4;
-    JGeometry::TVec2<f32> v0;
-    v0.x = pos->x;
-    v0.y = pos->y;
+extern "C" void fn_8029E9EC(void* p, const JGeometry::TVec2<f32>* __restrict pos, s32 room, u16 param_4, s32 param_5, u8 param_6) {
+    JGeometry::TVec2<f32> v0=*pos;
     *(s32*)((u8*)p + 0x20) = fn_80226BC4(&v0, room);
     *(u16*)((u8*)p + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)p + 0x20));
     if (param_5 == 0) {
-        if (!((p4 < 0x21 || p4 > 0x25) && (u16)(p4 - 0x26) > 1 && p4 != 0x36 && p4 != 0x37)) {
+        if (!((param_4 < 0x21 || param_4 > 0x25) && (u16)(param_4 - 0x26) > 1 && param_4 != 0x36 && param_4 != 0x37)) {
             JGeometry::TVec2<f32> v2;
             s32 off = (param_6 & 0xff) * 8;
             v2.y = pos->y + *(f32*)(lbl_8046C508 + off + 4);
@@ -623,10 +622,10 @@ extern "C" void fn_8029E9EC(void* p, JGeometry::TVec2<f32>* pos, s32 room, u16 p
             *(u16*)((u8*)p + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)p + 0x20));
             fn_8029E9EC_sub(pos, room, *(u16*)((u8*)p + 0x24));
         } else {
-            fn_8029E9EC_sub(pos, room, p4);
+            fn_8029E9EC_sub(pos, room, param_4);
         }
     } else {
-        fn_8029E9EC_sub(pos, room, p4);
+        fn_8029E9EC_sub(pos, room, param_4);
     }
 }
 
