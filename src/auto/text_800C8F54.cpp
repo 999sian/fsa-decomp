@@ -483,7 +483,7 @@ struct TevColorWords {
 extern "C" TevColorWords fn_800CB360(const J3DMaterialFactory* self, int idx, int no);
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b);
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx);
-extern "C" J3DIndTexMtxInfo fn_800CB628(u8* p, s32 idx, s32 b);
+extern "C" J3DIndTexMtx fn_800CB628(u8* p, s32 idx, s32 b);
 extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage);
 extern "C" void fn_800CB6F0(J3DIndTevStage* out, u8* p, s32 idx, s32 stage);
 extern "C" void fn_800CAEE0(s32* param_1, int param_2, int param_3, int param_4);
@@ -1462,12 +1462,11 @@ extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
     *out = *defp;
 }
 
-extern "C" J3DIndTexMtxInfo fn_800CB628(u8* param_2, s32 param_3, s32 param_4) {
-    J3DIndTexMtxInfo local;
-    local = j3dDefaultIndTexMtxInfo;
-    u8* pcVar1 = *(u8**)(param_2 + 0xc) + param_3 * 0x138;
-    if (*pcVar1 == 1) {
-        local = *(J3DIndTexMtxInfo*)(pcVar1 + param_4 * 0x1c + 0x14);
+extern "C" J3DIndTexMtx fn_800CB628(u8* p, s32 idx, s32 stage) {
+    J3DIndTexMtx local;
+    u8* data = *(u8**)(p + 0xc) + idx * 0x138;
+    if (data[0] == 1) {
+        return J3DIndTexMtx(*(J3DIndTexMtxInfo*)(data + stage * 0x1c + 0x14));
     }
     return local;
 }
