@@ -359,7 +359,8 @@ void fn_8027EEB4(char* p) {
     }
     if (U8(PTR(p, 0xbf0), 0xb7) != 0) {
         f32 value = fn_8022C6AC(S32(p, 4));
-        if (value != 0.0f) goto next;
+        f32 zero = 0.0f;
+        if (value != zero) goto next;
         if (S32(PTR(p, 0xbf0), 0xa0) != 0) goto next;
         U8(p, 0x3f8) = 0;
         goto finish;
@@ -370,9 +371,9 @@ next:
     if (flag == 0) {
         inZ = false;
         inY = inZ;
-        inX = inY;
+        inX = inZ;
         machineEps = *(f32*)__float_epsilon;
-        eps = 32.0f * machineEps;
+        eps = lbl_8054035C * machineEps;
         neg = -eps;
         d = F32(p, 0x8) - F32(p, 0x14);
         if (neg <= d && d <= eps) {
@@ -2105,12 +2106,12 @@ void fn_80283E70(char* p) {
     } else {
         F32(p, 0x34c) -= lbl_80540398;
     }
-    if (!(F32(p, 0x10) > lbl_80540360)) {
+    if (F32(p, 0x10) <= 0.0f) {
         if ((U8(p, 0x43f) || U8(p, 0x441)) && F32(p, 0xc) < F32(p, 0x328)) {
             F32(p, 0xc) += F32(p, 0x328) - F32(p, 0xc);
             F32(p, 0x10) = lbl_80540364;
         } else {
-            F32(p, 0x10) = lbl_80540360;
+            F32(p, 0x10) = 0.0f;
             s32 flag = 0;
             if (U8(p, 0xcad) == 1) {
                 flag = 8;
