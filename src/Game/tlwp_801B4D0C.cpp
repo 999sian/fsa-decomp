@@ -116,7 +116,7 @@ extern TlwpData lbl_804A37E0;
 extern "C" char* fn_802D6A9C(void);
 extern "C" s32 fn_8013CC50(s32 room, TlwpVec* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 
-static inline void tlwpSet(TlwpVec* v, const f32 x, const f32 y, const f32 z) {
+static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -175,7 +175,7 @@ extern "C" void fn_801B6170(char* p) {
         TlwpVec* pos = (TlwpVec*)(p + 0xc);
         v.x = pos->x;
         v.y = pos->y;
-        tlwpLerp(&v, &r, pos->z, lbl_8053EA88);
+        tlwpLerp(&v, &r, lbl_8053EA88, pos->z);
         tlwpSet(&v, pos->x, pos->y, pos->z);
         v.x += lbl_8053EA8C;
         v.y += lbl_8053EA90;
