@@ -141,8 +141,8 @@ static inline TimerPicture* GetPicture(u8* this_, u64 key) {
 
 // Sets digit `pos` of player idx's timer (both picture layers) to texture tex.
 static inline void SetTimerDigit(u8* this_, u32 idx, s32 pos, u32 tex) {
-    GetPicture(this_, ((u64*)(lbl_8048E1B8 + 0xa28 + idx * 0x28))[pos])->changeTexture(tex, 0);
-    GetPicture(this_, ((u64*)(lbl_8048E1B8 + 0xac8 + idx * 0x28))[pos])->changeTexture(tex, 0);
+    GetPicture(this_, ((u64(*)[5])(lbl_8048E1B8 + 0xa28))[idx][pos])->changeTexture(tex, 0);
+    GetPicture(this_, ((u64(*)[5])(lbl_8048E1B8 + 0xac8))[idx][pos])->changeTexture(tex, 0);
 }
 
 // Virtual slot 68 of an object returned by SubObj::w13: calls (u32, 0).
@@ -378,12 +378,13 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
         s32 sel = 0;
         s32 t = ((s32*)(lbl_80529DEC + 0xe8))[idx];
         s32 j;
-        u32 s;
+        u32 name;
         if (t > 9999) {
             t = 9999;
         }
         if (t < 0) {
-            u64* key = (u64*)(base + 0xa28 + idx * 0x28);
+            s32 off = idx * 0x28;
+            u64* key = (u64*)(base + 0xa28 + off);
             u64* p = key;
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xff, 0x55, 0x41, 0xff));
@@ -393,43 +394,40 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
                 t = -5000;
             }
             t *= -1;
-            s = fn_804030C4(0x54494d47, (u32)(base + 0x1058));
+            u32 s = fn_804030C4(0x54494d47, (u32)(base + 0x1058));
             GetPicture(this_, *key)->changeTexture(s, 0);
-            GetPicture(this_, *(u64*)(base + 0xac8 + idx * 0x28))->changeTexture(s, 0);
-            ((u8*)GetPicture(this_, *(u64*)(base + 0xa28 + idx * 0x28 + 0x20)))[0xb0] = 1;
-            ((u8*)GetPicture(this_, *(u64*)(base + 0xac8 + idx * 0x28 + 0x20)))[0xb0] = 1;
+            GetPicture(this_, *(u64*)(base + 0xac8 + off))->changeTexture(s, 0);
+            ((u8*)GetPicture(this_, ((u64*)(base + 0xa28 + off))[4]))[0xb0] = 1;
+            ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + off))[4]))[0xb0] = 1;
             sel = 1;
         } else {
-            u64* p = (u64*)(base + 0xa28 + idx * 0x28);
+            s32 off = idx * 0x28;
+            u64* p = (u64*)(base + 0xa28 + off);
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(*(JUtility::TColor*)(this_ + 0x214), *(JUtility::TColor*)(this_ + 0x210));
                 p++;
             }
-            ((u8*)GetPicture(this_, *(u64*)(base + 0xa28 + idx * 0x28 + 0x20)))[0xb0] = 0;
-            ((u8*)GetPicture(this_, *(u64*)(base + 0xac8 + idx * 0x28 + 0x20)))[0xb0] = 0;
+            ((u8*)GetPicture(this_, ((u64*)(base + 0xa28 + off))[4]))[0xb0] = 0;
+            ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + off))[4]))[0xb0] = 0;
         }
-        s = fn_804030C4(0x54494d47, lbl_804B1434[t / 1000]);
+        name = lbl_804B1434[t / 1000];
         t %= 1000;
-        GetPicture(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel])->changeTexture(s, 0);
-        GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel])->changeTexture(s, 0);
-        s = fn_804030C4(0x54494d47, lbl_804B1434[t / 100]);
+        SetTimerDigit(this_, idx, sel, fn_804030C4(0x54494d47, name));
+        name = lbl_804B1434[t / 100];
         t %= 100;
-        GetPicture(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel + 1])->changeTexture(s, 0);
-        GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel + 1])->changeTexture(s, 0);
-        s = fn_804030C4(0x54494d47, lbl_804B1434[t / 10]);
+        SetTimerDigit(this_, idx, sel + 1, fn_804030C4(0x54494d47, name));
+        name = lbl_804B1434[t / 10];
         t %= 10;
-        GetPicture(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel + 2])->changeTexture(s, 0);
-        GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel + 2])->changeTexture(s, 0);
-        s = fn_804030C4(0x54494d47, lbl_804B1434[t]);
-        GetPicture(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel + 3])->changeTexture(s, 0);
-        GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel + 3])->changeTexture(s, 0);
+        SetTimerDigit(this_, idx, sel + 2, fn_804030C4(0x54494d47, name));
+        SetTimerDigit(this_, idx, sel + 3, fn_804030C4(0x54494d47, lbl_804B1434[t]));
     }
 }
 
-extern "C" void fn_80423804(u8* this_, s32 idx) {
+extern "C" void fn_80423804(u8* this_, u32 idx) {
+    s32 n;
     u8* base = lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
-        s32 n = fn_80237810(idx);
+        n = fn_80237810(idx);
         s32 cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         s32 k = cnt;
         if (n > 0x20) {
