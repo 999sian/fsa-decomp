@@ -322,22 +322,27 @@ extern "C" void fn_803DD760(void)
 
 extern "C" void fn_803DD764(void* self_) {
     u8* self = (u8*)self_;
-    f32 inc = lbl_8054360C;
-    f32 threshold = lbl_80543610;
+    f32 inc;
+    f32 threshold;
+    inc = lbl_8054360C;
     *(f32*)(self + 0x7c) += inc;
+    threshold = lbl_80543610;
     if (*(f32*)(self + 0x7c) >= threshold) {
         *(f32*)(self + 0x7c) = threshold;
         u32 arg = 0xb;
         DVDFileInfo fileInfo;
         if (fn_80457F80(lbl_8053AF80, &arg, -2) != 0) {
-            s16 v = *(s16*)(self + 0x98) - 1;
+            s16 v = *(s16*)(self + 0x98);
+            v -= 1;
             *(s16*)(self + 0x98) = v;
             if (v <= 0 && DVDOpen(lbl_80477898, &fileInfo) == 1) {
                 u8* base = lbl_80529DEC;
+                u8* dst;
+                u8* src;
                 u32 off;
-                for (off = 0; off < 16; off += 8) {
-                    u8* src = base + off;
-                    u8* dst = (u8*)(off - 0x7f900000);
+                for (off = 0; off != 16; off += 8) {
+                    src = base + off;
+                    dst = (u8*)(off - 0x7f900000);
                     dst[0] = src[0x216];
                     dst[1] = src[0x217];
                     dst[2] = src[0x218];
@@ -370,30 +375,29 @@ extern "C" void fn_803DD764(void* self_) {
 extern "C" void fn_803DD8E8(void* self_)
 {
     u8* self = (u8*)self_;
-    f32 field = *(f32*)(self + 0x78);
-    f32 threshold = lbl_80543610;
-    f32 inc = lbl_8054360C;
-    f32 t = field + inc;
+    f32 field;
+    f32 inc;
+    f32 threshold;
+    f32 t;
+    threshold = *(volatile const f32*)&lbl_80543610;
+    field = *(f32*)(self + 0x78);
+    inc = lbl_8054360C;
+    t = field + inc;
     *(f32*)(self + 0x78) = t;
-    if (!(*(f32*)(self + 0x78) >= threshold)) {
-        return;
-    }
+    if (!(*(f32*)(self + 0x78) >= threshold)) return;
     *(f32*)(self + 0x78) = threshold;
     *(f32*)(self + 0x7c) = lbl_80543604;
     s32 v = *(s16*)(self + 0x9a) + 1;
     *(s16*)(self + 0x9a) = v;
-    if ((s16)v > 100) {
-        *(int*)(self + 0x84) = 7;
-    }
+    if ((s16)v > 100) *(int*)(self + 0x84) = 7;
 }
 
 extern "C" void fn_803DD93C(void* self_)
 {
     u8* self = (u8*)self_;
     f32 threshold = lbl_80543610;
-    f32 inc = lbl_8054360C;
     f32 t = *(f32*)(self + 0x7c);
-    t = t + inc;
+    t = t + lbl_8054360C;
     *(f32*)(self + 0x7c) = t;
     if (!(*(f32*)(self + 0x7c) >= threshold)) {
         return;
@@ -1139,8 +1143,8 @@ extern "C" void fn_803DF810(u8* self) {
     }
 }
 
-extern "C" void fn_803DF9E8(void* self_) {
-    u8* self = (u8*)self_;
+#pragma opt_propagation off
+extern "C" void fn_803DF9E8(u8* self) {
     u8* p;
     s32 i;
     *(s32*)(self + 0x88) = 0;
@@ -1153,17 +1157,15 @@ extern "C" void fn_803DF9E8(void* self_) {
     *(s16*)(self + 0x98) = 0x3c;
     self[0xa1] = 0;
     for (i = 0, p = self; i < 2; i++, p += 4) {
-        void* a = *(void**)(p + 0x34);
-        *(u8*)(*(u8**)((u8*)a + 4) + 0xb0) = 1;
-        fn_80402E08(a, lbl_80543614, lbl_80543604);
+        *(u8*)(*(u8**)(*(u8**)(p + 0x34) + 4) + 0xb0) = 1;
+        fn_80402E08(*(void**)(p + 0x34), lbl_80543614, lbl_80543604);
         *(s16*)((u8*)*(void**)(p + 0x34) + 0x20) = 0;
-        void* b = *(void**)(p + 0x44);
-        *(u8*)(*(u8**)((u8*)b + 4) + 0xb0) = 1;
-        fn_80402E08(b, lbl_80543614, lbl_80543604);
+        *(u8*)(*(u8**)(*(u8**)(p + 0x44) + 4) + 0xb0) = 1;
+        fn_80402E08(*(void**)(p + 0x44), lbl_80543614, lbl_80543604);
         *(s16*)((u8*)*(void**)(p + 0x44) + 0x20) = 0;
     }
     *(u8*)(*(u8**)(*(u8**)(self + 0x30) + 4) + 0xb0) = 1;
-    fn_80402E08(*(void**)(self + 0x30), lbl_80543614, lbl_8054361C);
+    fn_80402E08(*(void**)(self + 0x30), lbl_80543604, lbl_8054361C);
     *(s16*)((u8*)*(void**)(self + 0x30) + 0x22) = 0;
     fn_80402E08(*(void**)(self + 0x5c), lbl_80543604, lbl_8054362C);
     *(s16*)((u8*)*(void**)(self + 0x5c) + 0x22) = 0;
@@ -1178,22 +1180,14 @@ extern "C" void fn_803DF9E8(void* self_) {
     *(u8*)(*(u8**)(*(u8**)(self + 0x50) + 4) + 0xb0) = 0;
     *(u8*)(*(u8**)(*(u8**)(self + 0x54) + 4) + 0xb0) = 0;
     *(u8*)(*(u8**)(*(u8**)(self + 0x58) + 4) + 0xb0) = 0;
-    void* mgr = *(void**)(self + 0x8);
-    void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, *(void**)(self + 0x5c), 0x50, 0x696d3031);
-    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
-    mgr = *(void**)(self + 0x8);
-    r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3032);
-    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
-    mgr = *(void**)(self + 0x8);
-    r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3131);
-    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
-    mgr = *(void**)(self + 0x8);
-    r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3132);
-    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+    (*(J2DScreen**)(self + 0x8))->search(0x50696d3031ULL)->setAlpha(0);
+    (*(J2DScreen**)(self + 0x8))->search(0x50696d3032ULL)->setAlpha(0);
+    (*(J2DScreen**)(self + 0x8))->search(0x50696d3131ULL)->setAlpha(0);
+    (*(J2DScreen**)(self + 0x8))->search(0x50696d3132ULL)->setAlpha(0);
     *(s32*)(self + 0x84) = 0;
     *(s32*)(self + 0x68) = 2;
 }
-
+#pragma opt_propagation reset
 extern "C" u8 lbl_804B0688[];
 extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 extern "C" char lbl_804AF86C[];
@@ -1442,9 +1436,9 @@ extern "C" void* fn_803DFF40(u8* self) {
     self[0xa1] = 0;
     for (i = 0; i < 50; i++) {
         if (i == 0) {
-            self[0xa3 + i] = (*(J2DScreen**)(self + 0x8))->search(((u64*)(names + 0x0))[i])->getAlpha();
+            self[0xa3 + i] = (*(J2DScreen**)(self + 0x8))->search(((FsaPaneKeys*)names)->keys[i])->getAlpha();
         } else {
-            self[0xa3 + i] = (*(J2DScreen**)(self + 0x4))->search(((u64*)(names + 0x0))[i])->getAlpha();
+            self[0xa3 + i] = (*(J2DScreen**)(self + 0x4))->search(((FsaPaneKeys*)names)->keys[i])->getAlpha();
         }
     }
     p = (u64*)(names + 0x190);
