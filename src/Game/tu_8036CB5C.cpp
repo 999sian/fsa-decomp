@@ -59,6 +59,12 @@ extern "C" void fn_8036CE58(Actor* this_) {
     fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0x24, *(s32*)(p + 0x24c) + 0x147, 0, 1, -1, 0, 0, 0);
 }
 
+inline void psw2ActivateGroup(Actor* p) {
+    for (s32 i=0; i<3; i++) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)((char*)p + 0x234 + i*4));
+        *(u8*)(other + 0x250) = 1;
+    }
+}
 inline bool psw2Ready(Actor* p) {
     char* member;
     s32 j;
@@ -70,11 +76,7 @@ inline bool psw2Ready(Actor* p) {
         char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(member + 0x234));
         if (*(f32*)(other + 0x254) < 8.0f) return false;
     }
-    member = (char*)p;
-    for (j=0; j<3; j++, member+=4) {
-        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(member + 0x234));
-        *(u8*)(other + 0x250) = 1;
-    }
+    psw2ActivateGroup(p);
     return true;
 }
 
