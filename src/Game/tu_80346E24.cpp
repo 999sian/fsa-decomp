@@ -63,7 +63,14 @@ extern "C" BOOL fn_8022F478(s32 id);
 extern "C" BOOL fn_8022F514(s32 id);
 
 static inline bool IsPlayerBitSet(s32 id) {
-    return (lbl_8053AAF8[0x82] & (u8)(1 << id)) != 0;
+    return lbl_8053AAF8[0x82] & (u8)(1 << id);
+}
+
+static inline void OffsetBox(f32* box, f32 x, f32 y) {
+    box[0] += x;
+    box[1] += y;
+    box[2] += x;
+    box[3] += y;
 }
 extern "C" BOOL fn_80235580(s32 id);
 extern "C" BOOL fn_8023EA28(s32 id);
@@ -146,11 +153,8 @@ extern "C" void fn_803471A0(Actor* this_) {
                     hit = 1;
                     flag = 1;
                 }
-            } else {
-                u8 on = (lbl_8053AAF8[0x82] & (u8)(1 << *(s32*)(p + 0x250))) != 0;
-                if (on || (u8)fn_8022F514(*(s32*)(p + 0x250))) {
-                    hit = 1;
-                }
+            } else if (IsPlayerBitSet(*(s32*)(p + 0x250)) || (u8)fn_8022F514(*(s32*)(p + 0x250))) {
+                hit = 1;
             }
             if (!hit) {
                 *(s32*)(p + 0x250) = -1;
