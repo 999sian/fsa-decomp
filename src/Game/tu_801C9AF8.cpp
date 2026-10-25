@@ -261,14 +261,14 @@ extern "C" void fn_802379E4(s32 idx, void* pos);
 extern "C" u8 fn_801F2740(void* p, s32 a);
 extern "C" void fn_801F3128(void* p, JGeometry::TVec2<f32>* out);
 extern "C" u8 fn_801F329C(void* p, s32 idx);
-extern "C" void fn_801CD0D0(JGeometry::TVec3f* in, JGeometry::TVec2<f32>* out);
+extern "C" void fn_801CD0D0(JGeometry::TVec3f* in, JGeometry::TVec3f* out);
 extern "C" void fn_80238548(s32 idx, s32 a, JGeometry::TVec2<f32>* pos, s32 b);
 
 static inline JGeometry::TVec2<f32> tuProject(const JGeometry::TVec2<f32>& pos) {
     JGeometry::TVec3f v(pos.x, pos.y, lbl_8053EF20);
-    JGeometry::TVec2<f32> t;
+    JGeometry::TVec3f t;
     fn_801CD0D0(&v, &t);
-    return t;
+    return JGeometry::TVec2<f32>(t.x, t.y);
 }
 
 // near-match (~96%): stack slot order and loop register allocation differ
