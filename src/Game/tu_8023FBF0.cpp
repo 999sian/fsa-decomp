@@ -1235,6 +1235,40 @@ void fn_80241DD0(char* p, s32 room, const JGeometry::TVec3<f32>& v) {
 void fn_80241E28(char* p, s32 a, const JGeometry::TVec3<f32>& v) {
     fn_8030B110(PTR(p, 0xbec), a, v);
 }
+
+extern "C" void fn_80241E64(void* p) {
+    DELETE_JPA(p, 0x1274);
+    DELETE_JPA(p, 0x128c);
+    DELETE_JPA(p, 0x12b0);
+    DELETE_JPA(p, 0x12b4);
+    DELETE_JPA(p, 0x12b8);
+    DELETE_JPA(p, 0x12bc);
+    DELETE_JPA(p, 0x12c4);
+    DELETE_JPA(p, 0x12c8);
+    DELETE_JPA(p, 0x12cc);
+    DELETE_JPA(p, 0x12e4);
+    DELETE_JPA(p, 0x1308);
+    DELETE_JPA(p, 0x132c);
+    DELETE_JPA(p, 0x1350);
+    DELETE_JPA(p, 0x1354);
+    DELETE_JPA(p, 0x1358);
+    DELETE_JPA(p, 0x136c);
+    DELETE_JPA(p, 0x1370);
+    DELETE_JPA(p, 0x135c);
+    DELETE_JPA(p, 0x1368);
+    DELETE_JPA(p, 0x1360);
+    DELETE_JPA(p, 0x1364);
+    DELETE_JPA(p, 0x1374);
+    DELETE_JPA(p, 0x1378);
+    DELETE_JPA(p, 0x137c);
+    DELETE_JPA(p, 0x1380);
+    DELETE_JPA(p, 0x1384);
+    DELETE_JPA(p, 0x1388);
+    DELETE_JPA(p, 0x138c);
+    DELETE_JPA(p, 0x1390);
+    DELETE_JPA(p, 0x1394);
+}
+
 char* fn_802422C4(char* p) { return (char*)PTR(p, 0xbf0) + 0x14; }
 void fn_80242560(char* p) {
     if (fn_8025F500(p) && S32(p, 0xd6c) == 'KEY0') {
