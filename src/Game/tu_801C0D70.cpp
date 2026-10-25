@@ -199,27 +199,16 @@ extern "C" s32 fn_801C11F0(char* this_) {
 }
 
 extern "C" s32 fn_801CD664(s32 n);
-extern "C" void fn_801C1224(char* this_, s32 param_2) {
-    struct VObj {
-        virtual void v00();
-        virtual void v01();
-        virtual void v02();
-        virtual void v03();
-        virtual void v04();
-        virtual void v05();
-        virtual void v06();
-        virtual void v07();
-        virtual void v08();
-    };
-    s32 count = *(s32*)(this_ + 0xc);
-    char* p = this_;
-    for (s32 i = 0; i < count; p += 4, i++) {
-        char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
-        if (obj != 0 && (*(u32*)(obj + 0x230) & 0x10000) == 0) {
-            *(s32*)(obj + 0x10c) = param_2;
-            ((VObj*)obj)->v07();
-        }
-    }
+extern "C" void fn_801C1224(const char* this_, s32 param_2) {
+ s32 count=*(const s32*)(this_+0xc);
+ const char* p=this_;
+ for(s32 i=0;i<count;p+=4,i++) {
+  char* obj=(char*)fn_801F666C(fn_801F856C(),*(const s32*)(p+0x10));
+  if(obj!=0 && (*(u32*)(obj+0x230)&0x10000)==0) {
+   *(s32*)(obj+0x10c)=param_2;
+   ((Actor*)obj)->v07();
+  }
+ }
 }
 
 extern "C" void fn_801C12B8(char* this_) {
