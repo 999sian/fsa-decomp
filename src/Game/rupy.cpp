@@ -444,15 +444,6 @@ case 3: *(JGeometry::TVec3f*)(this_ + 0x3c) = JGeometry::TVec3f(lbl_80541D88, lb
 
 // RUPY: small helpers.
 extern const f32 lbl_80541D88;
-// Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
-struct RupyResMgr {
-    virtual void r0();
-    virtual void r1();
-    virtual void r2();
-    virtual void r3();
-    virtual void* get(u32 type, const char* name);
-};
-
 extern "C" void fn_8032D534(char* p) {
     *(f32*)(p + 0x44) = lbl_80541D88;
     *(f32*)(p + 0x40) = lbl_80541D88;
