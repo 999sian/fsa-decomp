@@ -71,6 +71,19 @@ extern "C" void fn_8036CE58(Actor* this_) {
     fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0x24, *(s32*)(p + 0x24c) + 0x147, 0, 1, -1, 0, 0, 0);
 }
 
+inline bool psw2Ready(Actor* p) {
+    if ((p->field_90 >> 4) & 3) return false;
+    for (s32 i=0; i<3; i++) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)((char*)p + 0x234 + i*4));
+        if (*(f32*)(other + 0x254) < 8.0f) return false;
+    }
+    for (s32 i=0; i<3; i++) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)((char*)p + 0x234 + i*4));
+        *(u8*)(other + 0x250) = 1;
+    }
+    return true;
+}
+
 extern "C" void fn_8036CF1C(Actor* this_) {
     u8* p = (u8*)this_;
     f32 box[4];
