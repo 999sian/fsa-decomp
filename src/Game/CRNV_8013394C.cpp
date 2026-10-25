@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void fn_801EE434(void* obj);
 extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
@@ -6,16 +7,20 @@ void operator delete(void* p);
 extern "C" void* __vt__4CRNV[];
 extern void* lbl_8049CC34[];
 extern f32 lbl_8053CD30;
+#pragma opt_propagation off
 extern "C" void* fn_8013394C(u8* this_, s16 freeFlag) {
     if (this_ != 0) {
-        s32 i = 0;
-        u8* p = this_;
+        u32 zero;
+        s32 i;
+        u8* p;
         *(void**)this_ = __vt__4CRNV;
-        u32 zero = i;
+        zero = 0;
+        i = zero;
+        p = this_;
         do {
             fn_801EE434(*(void**)(p + 0x278));
-            *(void**)(p + 0x278) = (void*)zero;
             i++;
+            *(void**)(p + 0x278) = (void*)zero;
             p += 4;
         } while (i < 2);
         if (this_ + 0x240 != 0) {
@@ -24,13 +29,11 @@ extern "C" void* fn_8013394C(u8* this_, s16 freeFlag) {
             }
         }
         __dt__5ActorFv(this_, 0);
-        if (freeFlag > 0) {
-            operator delete(this_);
-        }
+        if (freeFlag > 0) operator delete(this_);
     }
     return this_;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801339EC(u8* this_) {
     struct Col {
