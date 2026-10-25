@@ -100,14 +100,14 @@ static inline u8 RendererFadeAlpha802F() {
 }
 static inline void ScreenMaskQuad802F(const s32* r) {
     s32 left=r[0],top=r[1],right=r[0]+r[2],bottom=r[1]+r[3];
-    GXWGFifo.f32=(f32)left;GXWGFifo.f32=(f32)top;GXWGFifo.f32=lbl_805414F8;
-    GXWGFifo.f32=lbl_80541574;GXWGFifo.f32=lbl_80541574;
-    GXWGFifo.f32=(f32)right;GXWGFifo.f32=(f32)top;GXWGFifo.f32=lbl_805414F8;
-    GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541574;
-    GXWGFifo.f32=(f32)right;GXWGFifo.f32=(f32)bottom;GXWGFifo.f32=lbl_805414F8;
-    GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541518;
-    GXWGFifo.f32=(f32)left;GXWGFifo.f32=(f32)bottom;GXWGFifo.f32=lbl_805414F8;
-    GXWGFifo.f32=lbl_80541574;GXWGFifo.f32=lbl_80541518;
+    GXWGFifo.f32=(f32)left;GXWGFifo.f32=(f32)top;GXWGFifo.f32=0.0f;
+    GXWGFifo.f32=-1.0f;GXWGFifo.f32=-1.0f;
+    GXWGFifo.f32=(f32)right;GXWGFifo.f32=(f32)top;GXWGFifo.f32=0.0f;
+    GXWGFifo.f32=1.0f;GXWGFifo.f32=-1.0f;
+    GXWGFifo.f32=(f32)right;GXWGFifo.f32=(f32)bottom;GXWGFifo.f32=0.0f;
+    GXWGFifo.f32=1.0f;GXWGFifo.f32=1.0f;
+    GXWGFifo.f32=(f32)left;GXWGFifo.f32=(f32)bottom;GXWGFifo.f32=0.0f;
+    GXWGFifo.f32=-1.0f;GXWGFifo.f32=1.0f;
 }
 
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
@@ -2018,6 +2018,7 @@ extern "C" void fn_802FAC10(u8*, s32, s32, s32, s32, u8, u8, s32*);
 #pragma opt_common_subs on
 extern "C" const f32 lbl_80541588,lbl_8054158C,lbl_80541590,lbl_80541594;
 extern "C" void fn_8030DFE8(void*,s32);
+#pragma opt_loop_invariants on
 extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, u8 effect, u8 opacity) {
     u8* regs=(u8*)registerPtr;
     s32* rect=(s32*)rectData;
@@ -2029,7 +2030,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     GXSetScissor(viewport[0],viewport[1],viewport[2],viewport[3]);
     s32 scrollX=((regs[0xb]<<1)&0x1f0)|((regs[0xf]>>4)&15);
     s32 scrollY=((regs[0x13]<<1)&0x1f0)|((regs[0x17]>>4)&15);
-    s32* wave=NULL;
+    s32* wave=0;
     void* controller=fn_8022BCD4(player);
     if (enabled) {
         u8 special=0;
@@ -2092,8 +2093,8 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
             JGeometry::TBox2<f32> overlay;
             overlay.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
             GXColor black;
-            black.r=black.g=black.b=0;
             black.a=RendererFadeAlpha802F();
+            black.r=0;black.g=0;black.b=0;
             fn_8013B004(&overlay,&black);
         }
     }
@@ -2146,7 +2147,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     }
     fn_8030DFE8(*(void**)((u8*)lbl_8053AB10+0x24),1);
 }
-#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
