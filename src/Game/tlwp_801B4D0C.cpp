@@ -116,7 +116,7 @@ extern TlwpData lbl_804A37E0;
 extern "C" char* fn_802D6A9C(void);
 extern "C" s32 fn_8013CC50(s32 room, TlwpVec* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 
-static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
+static inline void tlwpSet(TlwpVec* v, const f32 x, const f32 y, const f32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
