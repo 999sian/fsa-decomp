@@ -189,18 +189,10 @@ static inline void SetDigits(u8* self, void** tbl, int idx, int tens, int ones) 
 }
 
 static inline void SetDigits4(u8* self, void** tbl, int idx, int d0, int d1, int d3, int d2) {
-    void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[d0]);
-    Attach(Search(*(void**)(self + 4), tbl, idx), h);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 2), h);
-    h = fn_804030C4(0x54494D47, lbl_804B1CA0[d1]);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 4), h);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 6), h);
-    h = fn_804030C4(0x54494D47, lbl_804B1CA0[d2]);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 8), h);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 10), h);
-    h = fn_804030C4(0x54494D47, lbl_804B1CA0[d3]);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 12), h);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 14), h);
+    SetDigit(self, tbl, idx, d0);
+    SetDigit(self, tbl, idx + 4, d1);
+    SetDigit(self, tbl, idx + 8, d2);
+    SetDigit(self, tbl, idx + 12, d3);
 }
 
 extern "C" f32 fn_8043D514(void*);
