@@ -1051,6 +1051,8 @@ extern "C" void fn_801F33C4(Actor* a) {
 
 /* --- 0x801F285C: pick the collision slot overlapping the actor's bounds ------ */
 extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
+    s32 slot = d;
+    s32 r;
     f32 rect[4];
     f32 out8[2];
     f32 ta = a->field_60 + a->field_0C.x;
@@ -1061,43 +1063,24 @@ extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
     rect[1] = td;
     rect[2] = tc;
     rect[3] = tb;
-    s32 r = -1;
-    if (d >= 0) {
-        if (fn_8023B9CC(d, rect, a->field_04, out8, e)) {
-            r = d;
-        }
-    } else {
-        r = fn_8023B8E4(rect, a->field_04, out8);
-    }
+    r = -1;
+    if (slot >= 0) {
+        if (fn_8023B9CC(slot, rect, a->field_04, out8, e)) r = slot;
+    } else r = fn_8023B8E4(rect, a->field_04, out8);
     if (r == -1) {
-        if (d >= 0) {
-            if (fn_8023B848(d, rect, a->field_04, out8)) {
-                r = d;
-            }
-        } else {
-            r = fn_8023B768(rect, a->field_04, out8);
-        }
-        if (r != -1) {
-            if (c != 0) {
-                c[0] = 0;
-            }
-        }
-    } else {
-        if (c != 0) {
-            if (fn_80233DA4(r)) {
-                c[0] = 0;
-            } else {
-                c[0] = 1;
-            }
-        }
+        if (slot >= 0) {
+            if (fn_8023B848(slot, rect, a->field_04, out8)) r = slot;
+        } else r = fn_8023B768(rect, a->field_04, out8);
+        if (r != -1 && c != 0) c[0] = 0;
+    } else if (c != 0) {
+        if (fn_80233DA4(r)) c[0] = 0;
+        else c[0] = 1;
     }
     if (r != -1) {
         u32 id = a->field_04;
         if (((u8*)fn_802D6A9C())[id + 0x131df] == 0) {
             f32* p = (f32*)fn_8023E724(r);
-            if (__fabs(a->field_0C.z - p[2]) > lbl_8053F748) {
-                r = -1;
-            }
+            if (__fabs(a->field_0C.z - p[2]) > lbl_8053F748) r = -1;
         }
     }
     if (b != 0) {
@@ -1245,20 +1228,9 @@ void Actor::v07() {
  * the target symbol while allowing the real argument shape. */
 
 extern "C" void v08__5ActorFv(Actor* a, void* p, f32 dx, f32 dy) {
-    Vec v;
-    register f32 xy, z;
-    register Actor* t = a;
-    register void* d = &v;
     a->field_D8 = 0;
     a->field_188 = 0x12c;
-    // clang-format off
-    __asm {
-        psq_l  xy, 0xc(t),  0, 0
-        lfs    z,  0x14(t)
-        psq_st xy, 0x0(d),  0, 0
-        stfs   z,  0x8(d)
-    }
-    // clang-format on
+    JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)&a->field_0C);
     v.x += dx;
     v.y += dy;
     fn_8013CC50(a->field_04, &v, lbl_8053F774, 0x6d, (u32)p, 0, 0, 0, 1);
