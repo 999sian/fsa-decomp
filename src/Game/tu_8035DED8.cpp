@@ -230,18 +230,7 @@ extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
 extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
-#pragma pool_data on
-Unk8035E60CTable lbl_804AD660[] = {{ {
-    {0, -1, (void (*)())fn_8035E394},
-    {0, -1, (void (*)())fn_8035E274},
-    {0, -1, (void (*)())fn_8035E238},
-    {0, -1, (void (*)())fn_8035E070},
-    {0, -1, (void (*)())fn_8035DFE4},
-    {0, -1, (void (*)())fn_8035DF48}
-} }};
-#pragma section data_type ".data" ".data"
-Unk8035DA78Func lbl_804AD6A8[6] = {0};
-#pragma section data_type ".data" ".bss"
+extern Unk8035E60CTable lbl_804AD660[];
 extern "C" void fn_8035E60C(void) {
     static u32 c0[3], c1[3], c2[3], c3[3], c4[3], c5[3], c6[3], c7[3], c8[3];
     *(Unk8035DA78Func*)((u32)lbl_804AD660 + 0x48) = lbl_804AD660[0].f[0];
