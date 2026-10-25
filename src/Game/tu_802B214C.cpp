@@ -2,6 +2,17 @@
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
 
+extern "C" s32 lbl_805409D0[];
+extern "C" f32 lbl_805409EC;
+extern "C" f32 lbl_805409F0;
+extern "C" f32 lbl_805409F4;
+extern "C" f32 lbl_805409F8;
+extern "C" f32 lbl_805409FC;
+extern "C" f32 lbl_80540A00;
+extern "C" f32 lbl_80540A04;
+extern "C" f32 lbl_80540A08;
+extern "C" u8 sincosTable___5JMath[];
+
 struct Color4 {
     Color4(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
     u8 r, g, b, a;
