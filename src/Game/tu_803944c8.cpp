@@ -486,7 +486,7 @@ struct MsgProc {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
         }
     }
-    BOOL testBit(const s32& n) {
+    BOOL testBit(s32 n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
