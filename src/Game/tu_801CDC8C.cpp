@@ -824,58 +824,42 @@ extern "C" void fn_801CF888(ItemBase* this_, f32* a, f32* b, s32 idx) {
     fn_801CFA70(this_, pa, pb, idx);
 }
 
+#pragma fp_contract on
+#pragma opt_propagation off
 extern "C" u8 fn_801CFA70(ItemBase* this_, f32* a, f32* b, s32 idx) {
-    f32 vec[3];
+    
+    JGeometry::TVec3<f32> pos;
     u8* mgr = fn_802D6A9C();
+    s32 room = idx;
     f32* r;
-    if (idx < 8) {
-        r = (f32*)(mgr + 0xcc);
-    } else {
-        r = (f32*)(mgr + 0xdc);
+    if (idx < 8) r = (f32*)(mgr + 0xcc); else r = (f32*)(mgr + 0xdc);
+    if (a[0] < r[0] || a[1] < r[1] || a[0] >= r[2] || a[1] >= r[3] || b[0] < r[0] || b[1] < r[1] || b[0] >= r[2] || b[1] >= r[3]) return 1;
+    JGeometry::TVec2<f32> dir;
+    dir.x = b[0] - a[0];
+    dir.y = b[1] - a[1];
+    f32 len2 = dir.squared();
+    f32 len = JMAFastSqrt(len2);
+    if (len <= 0.0f) {
+        JGeometry::TVec3<f32> vec(a[0], a[1], 0.0f);
+        return this_->v17(room, &vec.x);
     }
-    if (a[0] < r[0] || a[1] < r[1] || a[0] >= r[2] || a[1] >= r[3] || b[0] < r[0] || b[1] < r[1] || b[0] >= r[2] || b[1] >= r[3]) {
-        return 1;
-    }
-    f32 dx = b[0] - a[0];
-    f32 dy = b[1] - a[1];
-    f32 len2 = dx * dx + dy * dy;
-    f32 len = sqrt(len2);
-    if (len <= lbl_8053EFC4) {
-        vec[0] = a[0];
-        vec[1] = a[1];
-        vec[2] = lbl_8053EFC4;
-        return this_->v17(idx, vec);
-    }
-    if (len2 > FLT_EPSILON * lbl_8053EFE0) {
-        f32 inv = 1.0f / sqrt(len2);
-        dx *= inv;
-        dy *= inv;
-    }
-    s32 n = (s32)(lbl_8053EFF8 * len) + 1;
-    dx *= lbl_8053EFDC;
-    dy *= lbl_8053EFDC;
-    f32 pos[3];
-    pos[0] = a[0];
-    pos[1] = a[1];
-    pos[2] = lbl_8053EFC4;
     u8 result = 0;
-    for (s32 i = 0; i < n; i++) {
-        if (this_->v17(idx, pos)) {
-            result = 1;
-            break;
-        }
-        pos[0] += dx;
-        pos[1] += dy;
+    dir.normalize();
+    int n = (int)(lbl_8053EFF8 * len) + 1;
+    dir.scale(lbl_8053EFDC);
+    pos.set(a[0], a[1], 0.0f);
+    for (int i = 0; i < n; i++) {
+        if (this_->v17(room, &pos.x)) { result = 1; break; }
+        pos.x += dir.x; pos.y += dir.y;
     }
-    if (result == 0) {
-        vec[0] = b[0];
-        vec[1] = b[1];
-        vec[2] = lbl_8053EFC4;
-        result = this_->v17(idx, vec);
+    if (!result) {
+        JGeometry::TVec3<f32> vec(b[0], b[1], 0.0f);
+        result = (*(u8 (***)(ItemBase*, s32, f32*))this_)[0x4c / 4](this_, room, &vec.x);
     }
     return result;
 }
-
+#pragma opt_propagation reset
+#pragma fp_contract off
 extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v);
 extern const f32 lbl_8053EFFC;
 extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
@@ -1010,38 +994,20 @@ z_axis:
 #pragma fp_contract on
 extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
     f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
-    f32 dz = rec[1] - *(f32*)(this_ + 0x10);
-    f32 dx = rec[0] - *(f32*)(this_ + 0xc);
-    f32 lenSq = dx * dx + dz * dz;
-    if (lenSq <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
-    } else {
-        f32 scale;
-        if (lenSq <= lbl_8053EFC4) {
-            scale = lenSq;
-        } else {
-            f32 y = __frsqrte(lenSq);
-            scale = lbl_8053EFE4 * y * (lbl_8053EFE8 - lenSq * (y * y));
-        }
-        dx *= scale;
-        dz *= scale;
-    }
+    JGeometry::TVec2<f32> delta(rec[0] - *(f32*)(this_ + 0xc), rec[1] - *(f32*)(this_ + 0x10));
+    delta.normalize();
     f32 ddx = rec[0] - *(f32*)(this_ + 0xc);
     f32 ddz = rec[1] - *(f32*)(this_ + 0x10);
+    out[0] = delta.x;
+    out[1] = delta.y;
     f32 a = ddx * ddx;
     f32 b = ddz * ddz;
-    f32 dist = a + b;
-    out[0] = dx;
-    out[1] = dz;
-    if (dist > lbl_8053EFC4) {
-        f32 y = __frsqrte(dist);
-        dist = y * dist;
-    }
-    if (dist < maxLen) {
-        maxLen = dist;
-    }
+    f32 dist = JMAFastSqrt(a + b);
+    if (dist < maxLen) maxLen = dist;
     out[0] *= maxLen;
     out[1] *= maxLen;
 }
+#pragma opt_propagation off
 #pragma fp_contract on
 extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
     JGeometry::TVec2<f32> delta(pos[0] - *(f32*)(this_ + 0xc), pos[1] - *(f32*)(this_ + 0x10));
@@ -1058,6 +1024,7 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
     out[1] *= maxLen;
 }
 #pragma fp_contract off
+#pragma opt_propagation reset
 extern "C" s16 fn_801D0280(const u8* this_, s32 idx) {
     const Vec* self = (const Vec*)(this_ + 0xc);
     f32 x = self->x;
@@ -1204,14 +1171,14 @@ extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
     return best;
 }
 
-#pragma fp_contract off
-extern "C" s32 fn_801D08B4(u8* this_, s32 id, f32 radius, f32* point) {
+#pragma opt_lifetimes off
+extern "C" s32 fn_801D08B4(u8* this_, u32 id, f32 radius, f32* point) {
+    u32 ok;
     u8 flag;
     s32 result;
-    s32 ok;
 
     result = 0;
-    if (id >= 0 && id < 4) {
+    if ((s32)id >= 0 && (s32)id < 4) {
         flag = 0;
         if (fn_801CCFE4(id)) {
             ok = 0;
@@ -1265,7 +1232,7 @@ extern "C" s32 fn_801D08B4(u8* this_, s32 id, f32 radius, f32* point) {
             f32 dx = record[0] - point[0];
             f32 distSq = dx * dx + dz * dz;
             u8 outside = 0;
-            if (!(distSq <= radiusSq)) {
+            if (distSq <= radiusSq) {
                 outside = 1;
             }
             if (outside) {
@@ -1275,7 +1242,7 @@ extern "C" s32 fn_801D08B4(u8* this_, s32 id, f32 radius, f32* point) {
     }
     return result;
 }
-#pragma fp_contract reset
+#pragma opt_lifetimes reset
 
 extern "C" u8 fn_801CCFE4(u32 id);
 extern "C" u32 fn_801F320C(u8* this_, u32 id);
