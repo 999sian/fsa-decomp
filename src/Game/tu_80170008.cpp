@@ -17,6 +17,14 @@ extern "C" s32 fn_802DE814(s32);
 extern "C" char* fn_802D6A9C();
 extern "C" void fn_80458FF0(void*, u32, s32, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
+
+struct Slr3VT {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10();
+    virtual u8 check();
+};
+
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern const char lbl_804667D8[];
