@@ -412,7 +412,7 @@ static inline f32 ltzrSqrt(f32 x) {
     return x * y;
 }
 
-static inline u8 ltzrPointInBox(f32 x, f32 y, f32 minx, f32 miny, f32 maxx, f32 maxy) {
+static inline u8 ltzrPointInBox(f32 minx, f32 miny, f32 maxx, f32 maxy, f32 x, f32 y) {
     u8 inside = 0;
     if (x >= minx && y >= miny && x < maxx && y < maxy) inside = 1;
     return inside;
