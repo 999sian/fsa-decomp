@@ -34,11 +34,7 @@ extern "C" void fn_803B7DCC(void* p);
 extern "C" void fn_803D8364(void);
 extern "C" void fn_803D82EC(void* p);
 extern void* lbl_8053AAF8;
-static inline u8 menuState() {
-    return *((u8*)lbl_8053ADA0 + 0x4c0);
-}
-
-#pragma peephole off
+#pragma opt_propagation off
 extern "C" BOOL fn_80379F84(void* this_) {
     if (*((u8*)lbl_8053AAF8 + 0x7f) == 1 && *((u8*)lbl_8053AAF8 + 0x7e) == 1 && lbl_8053AD68 != 0 &&
         *(void**)((u8*)this_ + 4) != 0) {
@@ -47,7 +43,7 @@ extern "C" BOOL fn_80379F84(void* this_) {
     }
     return FALSE;
 }
-#pragma peephole reset
+#pragma opt_propagation reset
 extern u8 lbl_80529DEC[];
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80379FF4(void* this_) {
