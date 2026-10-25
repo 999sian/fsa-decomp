@@ -27,8 +27,9 @@ struct ActorRoomModes {
     u8 mode[16];
 };
 
-inline u8 actorRoomMode(s32 room) {
-    return fn_802D6A9C()->mode[(u32)room];
+inline u8 actorRoomMode(u32 room) {
+    ActorRoomModes* g = fn_802D6A9C();
+    return g->mode[room];
 }
 
 inline f32 actorRandomUnit() {
@@ -40,6 +41,8 @@ inline f32 actorRandomUnit() {
 }
 
 extern "C" void fn_8031B994(Actor* p) {
+    char* g1;
+    u32 rawSeed;
     u32 b1;
     for (s32 i=0; i<1; i++) {
     *(u16*)((char*)p + 0x94) = (*(u32*)((char*)p + 0x90) >> 16) & 0xff;
@@ -81,13 +84,13 @@ extern "C" void fn_8031B994(Actor* p) {
     *(f32*)((char*)p + 0x2b4) = 0.0f;
     *(f32*)((char*)p + 0x2b0) = 0.0f;
     {
-        char* g = (char*)lbl_8053AAF8;
-        u32 s = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
-        *(u32*)(g + 0xb4) = s;
-        b1 = *(u32*)(g + 0xb4);
+        g1 = (char*)lbl_8053AAF8;
+        u32 s = *(u32*)(g1 + 0xb4) * 0x19660d + 0x3c6ef35f;
+        *(u32*)(g1 + 0xb4) = s;
     }
     }
-    b1 = (b1 >> 9) | 0x3f800000;
+    rawSeed = *(u32*)(g1 + 0xb4);
+    b1 = (rawSeed >> 9) | 0x3f800000;
             *(s32*)((char*)p + 0x27c) = (s32)(65536.0f * (*(f32*)&b1 - 1.0f));
     *(s32*)((char*)p + 0x230) = 0;
     *(s32*)((char*)p + 0x234) = *(s32*)((char*)p + 0x230);
@@ -105,7 +108,7 @@ extern "C" void fn_8031B994(Actor* p) {
     }
     {
         s32 room = *(s32*)((char*)p + 4);
-        if (((ActorRoomModes*)fn_802D6A9C())->mode[(u32)room] != 0) {
+        if (actorRoomMode(room) != 0) {
             *(f32*)((char*)p + 0x10) = *(f32*)((char*)p + 0x10) - *(f32*)((char*)p + 0x14);
             *(f32*)((char*)p + 0x14) = 0.0f;
             *(s32*)((char*)p + 0xb0) = 0x20000;
