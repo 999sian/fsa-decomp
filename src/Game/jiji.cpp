@@ -339,7 +339,7 @@ extern "C" void fn_8037C788(u8* this_) {
         fn_801EE558(this_, &dir, &dist, 0);
         if (dist < 100.0f) {
             f32 rad = JMAAtan2Radian(-dir.x, -dir.y);
-            u16 ang = (u16)(s32)(rad * 10430.378f);
+            u16 ang = (u16)(s32)(rad * lbl_8054304C);
             if (ang < 0x2000 || ang >= 0xe000) {
                 *(s32*)(this_ + 0x248) = 3;
             } else if (ang >= 0x2000 && ang < 0x6000) {
