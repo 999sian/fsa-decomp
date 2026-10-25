@@ -82,7 +82,6 @@ extern "C" void fn_802ACB58(u8* this_) {
   *(u32*)(this_ + 0x18) = 0;
 }
 
-extern void __dl__FPv(void*);
 extern char lbl_804A8390[];
 extern "C" void __dl__FPv(void*);
 extern void* lbl_8053ACA0;
