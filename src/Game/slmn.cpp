@@ -249,7 +249,7 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
-static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
+static inline u8 slmnCheckNear(char* this_, const f32 r, u8 go) {
             s32 i;
             for (i = go; i < 4; i++) {
                 if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
@@ -259,7 +259,7 @@ static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
             }
 return go;
 }
-static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
+static inline u8 slmnCheckTrack(char* this_, const f32 r, u8 go) {
             u32 bit;
             s32 i;
             for (i = go; i < 4; i++) {
@@ -284,10 +284,10 @@ static inline u8 slmnCheck(char* this_, u8 go) {
             go = TRUE;
             break;
         case 1:
-            go = slmnCheckNear(this_, go, r);
+            go = slmnCheckNear(this_, r, go);
             break;
         case 2:
-            go = slmnCheckTrack(this_, go, r);
+            go = slmnCheckTrack(this_, r, go);
             break;
         case 3:
             if (*(u16*)(this_ + 0x346) != fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4)) ||
