@@ -9,10 +9,6 @@ public:
 	void draw(f32, f32, const J2DGrafContext*);
 };
 
-class JFWDisplay {
-public:
-	static JFWDisplay* sManager;
-};
 
 // ---- from src/Game/fn_804007C4.cpp ----
 // vtable slot 2 (byte offset 8) - see [[reference_fsa_virtual_dispatch_codegen_trick]].
