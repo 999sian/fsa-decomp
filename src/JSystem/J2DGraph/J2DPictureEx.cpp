@@ -1138,3 +1138,9 @@ u8 J2DPictureEx::getUsableTlut(u8 id)
 
     return 0;
 }
+void J2DPictureEx::draw(f32 x, f32 y, f32 width, f32 height, bool p5, bool p6, bool p7)
+{
+    if (!isVisible()) {
+        return;
+    }
+}
