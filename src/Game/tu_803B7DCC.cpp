@@ -286,12 +286,27 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void* heap);
 extern "C" char lbl_804AFAB0[];
 extern "C" s32 lbl_8053ADA8;
 extern "C" void* fn_803B82FC(void* this_, s16 flag) {
+    struct Head {
+        u8 pad[8];
+    };
+    struct Obj : Head {
+        virtual void v00(s32 b);
+        virtual void v01(void);
+        virtual void v02(void);
+        virtual void v03(void);
+        virtual void v04(void);
+        virtual void v05(void);
+        virtual void v06(void);
+        virtual void v07(void);
+        virtual void v08(void);
+        virtual void v09(void);
+        virtual void v10(s32 b);
+    };
     void** p;
     s32 i;
-    void** a = (void**)this_;
-    if (a != 0) {
-        p = a;
-        *a = lbl_804AFAB0;
+    if (this_ != 0) {
+        p = (void**)this_;
+        *(void**)this_ = lbl_804AFAB0;
         for (i = 0; i < 50; i++) {
             if (p[9] != 0) {
                 void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
@@ -301,21 +316,21 @@ extern "C" void* fn_803B82FC(void* this_, s16 flag) {
             p++;
         }
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
-        FsaSubObj* p1 = (FsaSubObj*)a[1];
+        FsaSubObj* p1 = ((FsaSubObj**)this_)[1];
         if (p1 != 0) {
             p1->v00(1);
         }
-        a[1] = 0;
-        FsaSubObj* p7 = (FsaSubObj*)a[7];
+        ((void**)this_)[1] = 0;
+        Obj* p7 = ((Obj**)this_)[7];
         if (p7 != 0) {
             p7->v10(1);
         }
-        a[7] = 0;
-        FsaSubObj* p8 = (FsaSubObj*)a[8];
+        ((void**)this_)[7] = 0;
+        Obj* p8 = ((Obj**)this_)[8];
         if (p8 != 0) {
             p8->v10(1);
         }
-        a[8] = 0;
+        ((void**)this_)[8] = 0;
         lbl_8053ADA8 = 0;
         if (flag > 0) {
             __dl__FPv(this_);
