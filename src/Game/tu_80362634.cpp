@@ -9,6 +9,12 @@ extern "C" const s32 lbl_80474BC4[];
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
+struct ActorList80362634 {
+    u32 pad[2];
+    char* actors[0x400];
+    s32 count;
+};
+
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
 extern "C" const char lbl_80474BFC[];
 extern "C" const f32 lbl_80542B10;
@@ -622,6 +628,8 @@ extern "C" f32 lbl_80542BB0;
 extern "C" f32 __fres(f32);
 #pragma opt_propagation off
 extern "C" void fn_80363FFC(char* self) {
+    u32 index;
+    u16 nextAng;
     Vec v;
     int rx;
     int ry;
@@ -645,9 +653,8 @@ extern "C" void fn_80363FFC(char* self) {
     if (0.0f == *(volatile f32*)(self + 0x44) && 0.0f == *(f32*)(self + 0x14)) {
         *(u16*)(self + 0x27a) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(u32*)(self + 4), ((((u32)ry & 0x100) << 1) | ((u32)rx & 0x100) | ((u32)ry & 0xf0) | ((u32)rx >> 4 & 0xf))) & 0x3ff;
         if (*(u16*)(self + 0x27a) == 0x1a8) {
-            f32 rise = lbl_80542B98;
             *(s32*)(self + 0x264) = 0;
-            *(f32*)(self + 0x44) = rise;
+            *(f32*)(self + 0x44) = 3.0f;
         }
     } else {
         if (*(f32*)(self + 0x14) > 0.0f) {
@@ -671,9 +678,10 @@ extern "C" void fn_80363FFC(char* self) {
             s32 ang = (s32)radians;
             dist = PSVECDistance((Vec*)(self + 0xc), &v);
             f32 inv = __fres(lbl_80542BA8 * dist);
-            int nextAng = ang + (s32)(lbl_80542BAC * (inv * lbl_80542BB0));
-            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[(u16)nextAng >> 5].second + v.x;
-            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[(u16)nextAng >> 5].first + v.y;
+            nextAng = ang + (s32)(lbl_80542BAC * (inv * lbl_80542BB0));
+            index = (u16)nextAng >> 5;
+            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[index].second + v.x;
+            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[index].first + v.y;
             if ((u16)nextAng >= 0xe000) {
                 *(s32*)(self + 0x23c) = 0;
                 if (*(s32*)(self + 0x238) == 0) {
@@ -731,6 +739,7 @@ extern "C" void fn_80364340(char* self) {
 }
 
 extern "C" void fn_803645B4(char* self) {
+    JGeometry::TVec3<f32> v;
     if (*(s32*)(self + 0x248) != 0 && *(s32*)(self + 0x238) == 0) {
         return;
     }
@@ -743,15 +752,15 @@ extern "C" void fn_803645B4(char* self) {
             }
         }
         s32 count = *(s32*)((char*)fn_801F856C() + 0x1008);
-        s32 off = 0;
         s32 i = 0;
+        s32 off = 0;
         for (; i < count; off += 4, i++) {
             char* p = *(char**)((char*)fn_801F856C() + off + 8);
             if (p != NULL && *(u32*)(p + 0x1a0) == 0x52555059) {
-                Vec v = *(Vec*)(p + 0xc);
+                v = *(JGeometry::TVec3<f32>*)(p + 0xc);
                 v.y += lbl_80542BBC;
-                if (v.z == lbl_80542B0C) {
-                    if (PSVECDistance((Vec*)(self + 0xc), &v) < lbl_80542B58 &&
+                if (lbl_80542B0C == v.z) {
+                    if (PSVECDistance((Vec*)(self + 0xc), (Vec*)&v) < lbl_80542B58 &&
                         PSVECDistance((Vec*)(self + 0xc), &v) > lbl_80542BC0) {
                         *(s32*)(self + 0x238) = 1;
                         *(f32*)(self + 0x3c) = (v.x - *(f32*)(self + 0xc)) / lbl_80542B28;
@@ -760,7 +769,9 @@ extern "C" void fn_803645B4(char* self) {
                         *(s32*)(self + 0x264) = 0;
                         *(s32*)(self + 0x268) = 0;
                         *(s32*)(self + 0x25c) = 3;
-                        u16 ang = (s32)(JMath::atanTable_.atan2_(*(f32*)(self + 0x40), *(f32*)(self + 0x3c)) * lbl_80542B50);
+                        f32 angle = JMath::atanTable_.atan2_(*(f32*)(self + 0x40), *(f32*)(self + 0x3c));
+                        angle *= lbl_80542B50;
+                        u16 ang = (s32)angle;
                         if (ang >= 0x2000 && ang < 0x6000) {
                             *(s32*)(self + 0x23c) = 0;
                         } else if (ang >= 0x6000 && ang < 0xa000) {
@@ -796,7 +807,7 @@ extern "C" void fn_803645B4(char* self) {
             }
             *(s32*)(self + 0x25c) = lbl_80474B68[*(s32*)(self + 0x264)];
         }
-        Vec v = *(Vec*)(obj + 0xc);
+        v = *(JGeometry::TVec3<f32>*)(obj + 0xc);
         v.y += lbl_80542BBC;
         if (PSVECDistance((Vec*)(self + 0xc), &v) < lbl_80542BBC) {
             *(s32*)(self + 0x238) = 0;
