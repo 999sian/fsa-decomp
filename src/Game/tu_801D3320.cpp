@@ -203,7 +203,7 @@ static inline f32 tu801D3320_normalizeR(Vec3f& v) {
     }
     f32 inv = tu801D3320_invSqrt(sq);
     v.scale(inv);
-    return inv * sq;
+    return sq * inv;
 }
 
 extern "C" void fn_801D3320(char* this_) {
@@ -211,8 +211,7 @@ extern "C" void fn_801D3320(char* this_) {
     u8 ids[0x30];
     u8 ids2[0x30];
     if (*(u32*)(this_ + 0x230) & 0x2000000) {
-        u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
-        u8 best = tu801D3320_farthest4(this_, ids, n);
+        u8 best = tu801D3320_farthest2(this_, ids);
         tu801D3320_setCurI(this_, best);
         ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
         return;
@@ -221,7 +220,7 @@ extern "C" void fn_801D3320(char* this_) {
     u8 count = tu801D3320_collect2(this_, ids2, free);
     int cnt = count;
     int sel = free[fn_801CD664(cnt)];
-    tu801D3320_setCurI(this_, sel);
+    tu801D3320_setCur(this_, sel);
     ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
     if (count == 1) {
         return;
@@ -260,8 +259,8 @@ extern "C" void fn_801D3320(char* this_) {
             d.scale(lbl_8053F088);
         }
     } else if (b) {
-        f32 len = PSVECMag(&dir);
-        if (PSVECMag(&d) > len - lbl_8053F088) {
+        f32 len = dir.length();
+        if (d.length() > len - lbl_8053F088) {
             d.set(dir);
             tu801D3320_normalizeR(d);
             d.scale(len - lbl_8053F088);
