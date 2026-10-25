@@ -56,7 +56,7 @@ extern "C" f32 lbl_8053D1E8;
 extern "C" void* fn_8023E724(s32 i);
 extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
 extern "C" void __dt__5ActorFv(void* this_, s32 in);
-int fn_8022F784(int index, int a0, const JGeometry::TVec3<f32>& a1);
+extern "C" int fn_8022F784(int index, int a0, const JGeometry::TVec3<f32>& a1);
 extern "C" void* fn_8014F7FC(u8* this_, int flag) {
     s32 id;
     u8* self = this_;
