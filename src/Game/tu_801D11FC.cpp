@@ -27,7 +27,7 @@ struct fn_801D1974_obj {
         if (m2a8 >= 1) {
             s32 n = m2a8 - 1;
             for (s32 i = 0; i < n; i++) {
-                pointAt(i).set(pointAt(i + 1));
+                m2ac[i] = m2ac[i + 1];
             }
             m2a8 = n;
         }
