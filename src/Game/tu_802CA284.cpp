@@ -1,3 +1,4 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
@@ -39,27 +40,33 @@ extern "C" void fn_802CA284(u8* this_) {
             DrawRec rec;
             f32 mtx[3][4];
             u8* tag = (u8*)&rec.w10;
+            u32 hit = (lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0;
 
-            if (((lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0) == 1) {
+            if (hit == 1) {
                 switch (*(s32*)(p + 0x28c)) {
                 case 1: {
                     Vec pos;
                     void* tex;
+                    s32 idx;
 
-                    mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94; mtx[0][3] = lbl_80540D94;
-                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94; mtx[1][3] = lbl_80540D94;
-                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98; mtx[2][3] = lbl_80540D94;
                     rec.b1c = 0;
+                    mtx[0][3] = lbl_80540D94;
+                    mtx[1][3] = lbl_80540D94;
+                    mtx[2][3] = lbl_80540D94;
                     rec.b1d = 0;
                     rec.b2d = 0;
-                    tag[0] = lbl_80540D88[*(s32*)(p + 0x244)];
-                    tag[1] = lbl_80540D8C[*(s32*)(p + 0x244)];
-                    tag[2] = lbl_80540D90[*(s32*)(p + 0x244)];
+                    idx = *(s32*)(p + 0x244);
+                    tag[0] = lbl_80540D88[idx];
+                    tag[1] = lbl_80540D8C[idx];
+                    tag[2] = lbl_80540D90[idx];
                     tag[3] = this_[0x274 + i];
+                    mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
+                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
+                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
                     *(Vec*)(this_ + 0xc) = *fn_8023E724();
-                    tex = fn_804030C4(0x54494D47, lbl_804A8F50[*(s32*)(p + 0x244)]);
+                    tex = fn_804030C4(0x54494D47, lbl_804A8F50[idx]);
                     pos.x = *(f32*)(this_ + 0xc);
                     pos.y = *(f32*)(this_ + 0x10) - lbl_80540D9C;
                     pos.z = *(f32*)(this_ + 0x14);
@@ -72,16 +79,19 @@ extern "C" void fn_802CA284(u8* this_) {
                     Vec pos;
                     void* tex;
 
-                    mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94; mtx[0][3] = lbl_80540D94;
-                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94; mtx[1][3] = lbl_80540D94;
-                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98; mtx[2][3] = lbl_80540D94;
                     rec.b1c = 0;
+                    mtx[0][3] = lbl_80540D94;
+                    mtx[1][3] = lbl_80540D94;
+                    mtx[2][3] = lbl_80540D94;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = 0xf2;
                     tag[1] = 0x49;
                     tag[2] = 0x12;
                     tag[3] = this_[0x274 + i];
+                    mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
+                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
+                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
                     *(Vec*)(this_ + 0xc) = *fn_8023E724();
@@ -98,16 +108,19 @@ extern "C" void fn_802CA284(u8* this_) {
                     Vec pos;
                     void* tex;
 
-                    mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94; mtx[0][3] = lbl_80540D94;
-                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94; mtx[1][3] = lbl_80540D94;
-                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98; mtx[2][3] = lbl_80540D94;
                     rec.b1c = 0;
+                    mtx[0][3] = lbl_80540D94;
+                    mtx[1][3] = lbl_80540D94;
+                    mtx[2][3] = lbl_80540D94;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = 0xf2;
                     tag[1] = 0x49;
                     tag[2] = 0x12;
                     tag[3] = this_[0x274 + i];
+                    mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
+                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
+                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
                     *(Vec*)(this_ + 0xc) = *fn_8023E724();
@@ -128,16 +141,19 @@ extern "C" void fn_802CA284(u8* this_) {
                     Vec pos;
                     void* tex;
 
-                    mtx[0][0] = lbl_80540DA0; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94; mtx[0][3] = lbl_80540D94;
-                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540DA0; mtx[1][2] = lbl_80540D94; mtx[1][3] = lbl_80540D94;
-                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540DA0; mtx[2][3] = lbl_80540D94;
                     rec.b1c = 0;
+                    mtx[0][3] = lbl_80540D94;
+                    mtx[1][3] = lbl_80540D94;
+                    mtx[2][3] = lbl_80540D94;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = 0xff;
                     tag[1] = 0xff;
                     tag[2] = 0xff;
                     tag[3] = this_[0x274 + i];
+                    mtx[0][0] = lbl_80540DA0; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
+                    mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540DA0; mtx[1][2] = lbl_80540D94;
+                    mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540DA0;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
                     *(Vec*)(this_ + 0xc) = *fn_8023E724();
@@ -204,21 +220,19 @@ extern "C" Actor* fn_802CAEB0(Actor* self, s16 flag)
     if (self != 0) {
         *(u8**)p = lbl_804A8F74;
         SubObj802CA* s;
-        u8* q = p;
         for (int i = 0; i < 2; i++) {
-            s = *(SubObj802CA**)(q + 0x234);
+            s = *(SubObj802CA**)(p + 0x234 + i * 8);
             if (s != 0) {
                 s->f0f4 |= 1;
                 s->f24 = 1;
-                *(SubObj802CA**)(q + 0x234) = 0;
+                *(SubObj802CA**)(p + 0x234 + i * 8) = 0;
             }
-            s = *(SubObj802CA**)(q + 0x238);
+            s = *(SubObj802CA**)(p + 0x238 + i * 8);
             if (s != 0) {
                 s->f0f4 |= 1;
                 s->f24 = 1;
-                *(SubObj802CA**)(q + 0x238) = 0;
+                *(SubObj802CA**)(p + 0x238 + i * 8) = 0;
             }
-            q += 8;
         }
         __dt__5ActorFv(self, 0);
         if (flag > 0) {
