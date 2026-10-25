@@ -22,7 +22,7 @@ extern "C" f32 lbl_8053C7E0;
 extern "C" f32 lbl_8053C7E4;
 extern "C" const f32 lbl_8053C7E8;
 extern "C" f32 lbl_8053C7EC;
-extern "C" f32 lbl_8053C7F0;
+extern "C" const f32 lbl_8053C7F0;
 extern "C" f32 lbl_8053C7F4;
 extern "C" f32 lbl_8053C7F8;
 extern "C" f32 lbl_8053C7FC;
