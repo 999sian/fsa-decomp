@@ -1280,11 +1280,14 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f& box) {
 
 // Push direction from the linked player's input (sets 0x2cc to 1).
 static inline s32 PushDirFromLink(char* self) {
-    if (fn_80239108(*(void**)(self + 0x198)) >= 4 && *(s32*)(self + 4) == fn_8023DE58(0)) {
-        s32 dir = fn_80238BC4(*(void**)(self + 0x198));
-        if (dir >= 0 && dir < 4) {
-            *(s32*)(self + 0x2cc) = 1;
-            return dir;
+    if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+        s32 room = *(s32*)(self + 4);
+        if (fn_8023DE58(0) == room) {
+            s32 dir = fn_80238BC4(*(void**)(self + 0x198));
+            if (dir >= 0 && dir < 4) {
+                *(s32*)(self + 0x2cc) = 1;
+                return dir;
+            }
         }
     }
     return -1;
@@ -1318,6 +1321,9 @@ static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box) {
     return -1;
 }
 
+extern "C" const f32 lbl_80540670;
+extern "C" const f32 lbl_80540674;
+extern "C" const f32 lbl_8054067C;
 extern "C" void fn_80299FB0(void* p) {
     s32 mode;
     u8 found;
@@ -1356,14 +1362,14 @@ extern "C" void fn_80299FB0(void* p) {
     found = 1;
     v = *(JGeometry::TVec3f*)(self + 0xc);
     v.x += *(f32*)(self + 0x60);
-    v.x -= 8.0f;
-    area.i.x -= -32.0f;
-    area.i.y -= -32.0f;
-    area.f.x += -32.0f;
-    area.f.y += -32.0f;
+    v.x -= lbl_80540678;
+    area.i.x -= lbl_80540670;
+    area.i.y -= lbl_80540670;
+    area.f.x += lbl_80540670;
+    area.f.y += lbl_80540670;
     v.y += *(f32*)(self + 0x64);
-    v.y += 8.0f;
-    v.z = 0.0f;
+    v.y += lbl_80540678;
+    v.z = lbl_80540674;
     for (i = 0; i < 6; i++) {
         if (fn_802A1554(lbl_8053AC98, &v) && HitsRect(self, &v) == 1) {
             found = 0;
@@ -1377,7 +1383,7 @@ extern "C" void fn_80299FB0(void* p) {
             found = 0;
             break;
         }
-        v.y += 16.0f;
+        v.y += lbl_8054067C;
     }
     if (!fn_802957CC(p, 1)) {
         found = 0;
@@ -1398,18 +1404,18 @@ extern "C" void fn_80299FB0(void* p) {
         gridBase = *(JGeometry::TVec3f*)(self + 0xc);
         gridBase.x += *(f32*)(self + 0x60);
         gridBase.y += *(f32*)(self + 0x64);
-        gridBase.x += 8.0f;
-        gridBase.y += 8.0f;
-        gridBase.z = 0.0f;
+        gridBase.x += lbl_80540678;
+        gridBase.y += lbl_80540678;
+        gridBase.z = lbl_80540674;
         grid = gridBase;
         for (row = self; i < 6; i++, row += 0xc) {
             grid.y = gridBase.y;
             for (j = 0, col = row; j < 6; j++, col += 2) {
                 fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
                 fn_802A381C(lbl_8053AC98, &grid, 1, 0);
-                grid.y += 16.0f;
+                grid.y += lbl_8054067C;
             }
-            grid.x += 16.0f;
+            grid.x += lbl_8054067C;
         }
     }
 }
@@ -1564,9 +1570,8 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f* box) {
     }
     return -1;
 }
-extern "C" void fn_8029A974(void* p) {
+extern "C" void fn_8029A974(char* self) {
     s32 mode;
-    char* self;
     s32 i;
     u8 flag;
     s32 room;
@@ -1584,9 +1589,10 @@ extern "C" void fn_8029A974(void* p) {
     JGeometry::TVec3f copy;
     JGeometry::TVec3f pos;
 
-    self = (char*)p;
     vel = (JGeometry::TVec3f*)(self + 0x250);
-    if (vel->isZero()) {
+    f32 epsilon = lbl_805406A8 * FLT_EPSILON;
+    lenSq = JMathInlineVEC::PSVECSquareMag(vel);
+    if (lenSq <= epsilon) {
         if (*(u8*)(self + 0x2c0) == 1) {
             *(u8*)(self + 0x2c0) = 0;
             return;
