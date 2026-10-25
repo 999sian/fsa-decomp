@@ -274,7 +274,25 @@ void fn_80223664(void* this_, u8 flag) {
 void fn_802238CC(void* this_) {
     char* p = (char*)this_;
     Rect_802233A4 r;
-    CalcRect_802233A4(p, r);
+    r.x0 = r.y0 = 1.0f;
+    r.x1 = r.y1 = -1.0f;
+    if (*(s32*)(p + 0x248) == 5) {
+        r.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        switch (*(s32*)(p + 0x98)) {
+        case 0:
+            r.add(16.0f, 0.0f);
+            break;
+        case 1:
+            r.add(-16.0f, 0.0f);
+            break;
+        case 2:
+            r.add(0.0f, 16.0f);
+            break;
+        case 3:
+            r.add(0.0f, -16.0f);
+            break;
+        }
+    }
     if (r.x1 - r.x0 > 0.0f && r.y1 - r.y0 > 0.0f) {
         r.add(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
         JGeometry::TVec3<f32> a(r.x0, r.y0, 0.0f);
@@ -287,6 +305,94 @@ void fn_802238CC(void* this_) {
         fn_802A20F0(lbl_8053AC98, &d, -1, *(u32*)(p + 0x4), 0, 0);
     }
 }
+
+extern "C" void fn_801D22A0(void* anim, s32 idx, s32 a);
+extern "C" s32 fn_8013CC50(u32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" u8 fn_801CD2F8(s32 room);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7884(void* mgr, u32 kind, s32 room);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" void fn_8036D858(void* actor, JGeometry::TVec3<f32>* pos);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D79E8(void* mgr, s32 room, s32 a, f32 b, f32 c);
+extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
+extern "C" void fn_802F601C(void* h, JGeometry::TVec3<f32>* pos, f32 a, f32 b, s32 c, JGeometry::TVec3<f32>* dir);
+extern void* lbl_8053AAF8;
+extern void* lbl_8053AB10;
+extern "C" void fn_80223AD8(void* this_, s32 state) {
+    char* p = (char*)this_;
+    JGeometry::TVec3<f32> d;
+    JGeometry::TVec3<f32> n;
+    JGeometry::TVec3<f32> q;
+    JGeometry::TVec3<f32> pos6;
+    JGeometry::TVec3<f32> pos7;
+    JGeometry::TVec3<f32> tmp;
+    switch (state) {
+    case 5:
+        *(f32*)(p + 0x258) = 2.5f;
+        fn_801D22A0(p + 0x270, *(s32*)(p + 0x98) + 0x14, 2);
+        *(s32*)(p + 0x2bc) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x116, 0, 0, 0, 0, 1, 1.0f);
+        *(s32*)(p + 0x2c0) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x115, 0, 0, 0, 0, 1, 1.0f);
+        break;
+    case 6: {
+        *(f32*)(p + 0x258) = 0.0f;
+        JGeometry::TVec3<f32>* vel = (JGeometry::TVec3<f32>*)(p + 0x3c);
+        vel->set(-vel->x, -vel->y, 0.0f);
+        vel->normalize();
+        vel->scale(1.2f);
+        *(f32*)(p + 0x44) = 4.0f;
+        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 0xc, 0, 0);
+        if (!fn_801CD2F8(*(s32*)(p + 0x4))) {
+            s32 id = fn_801F7884(fn_801F856C(), 'LFGN', *(s32*)(p + 0x4));
+            if (id >= 0) {
+                void* a = fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    pos6 = *(JGeometry::TVec3<f32>*)(p + 0xc);
+                    fn_8036D858(a, &pos6);
+                }
+            }
+        }
+        fn_801F0E34(this_, 0x400eb, 0);
+        d.set(0.0f, 0.0f, 0.0f);
+        switch (*(s32*)(p + 0x98)) {
+        case 0:
+        case 1:
+            d.set(0.0f, -8.0f, 0.0f);
+            fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 0x4), 0, 0.0f, 4.0f);
+            break;
+        default:
+            fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 0x4), 0, 4.0f, 0.0f);
+            break;
+        }
+        fn_80134DE4(lbl_8053AAF8, 1, 0);
+        n.set(-vel->x, -vel->y, 0.0f);
+        n.normalize();
+        tmp = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        tmp += d;
+        q = tmp;
+        if (*(s32*)(p + 0x4) < 8) {
+            fn_802F601C(*(void**)((u8*)lbl_8053AB10 + 0x20), &q, 1.0f, 1.0f, 3, &n);
+        }
+        break;
+    }
+    case 7:
+    case 8:
+        *(f32*)(p + 0x254) = 0.0f;
+        *(f32*)(p + 0x258) = 0.0f;
+        *(f32*)(p + 0x3c) = 0.0f;
+        *(f32*)(p + 0x40) = 0.0f;
+        fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 0);
+        if (state == 7) {
+            pos7 = *(JGeometry::TVec3<f32>*)(p + 0xc);
+            *(s32*)(p + 0x2b8) = fn_8013CC50(*(s32*)(p + 0x4), &pos7, 0x565, 0, 1, 0, 0, 1, 0.5f);
+            fn_801F0E34(this_, 0x4000e, 0);
+        }
+        break;
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = state;
+}
+
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
