@@ -1566,24 +1566,17 @@ extern "C" void fn_800D8414(void* param_1) {
 }
 
 extern "C" void fn_800D84A8(u8* this_) {
-    u8* base;
-    u8* p;
-    u32 i;
-    u8* self;
-
-    self = this_;
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(self + 0x68);
-    base = __GDCurrentDL->pDisplayListData;
-    i = 0;
-    p = self;
-    for (; i < 3; i++, p += 8) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x68);
+    u8* base = __GDCurrentDL->pDisplayListData;
+    u8* p = this_;
+    for (u32 i = 0; i < 3; i++, p += 8) {
         J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0x14));
     }
-    i = 0;
-    p = self;
-    for (; i < 4; i++, p += 4) {
-        GXColor kcol = *(GXColor*)(p + 0x45);
-        J3DGDSetTevKColor((GXTevKColorID)i, kcol);
+    u32 j = 0;
+    u8* q = this_;
+    for (; j < 4; j++, q += 4) {
+        GXColor kcol = *(GXColor*)(q + 0x45);
+        J3DGDSetTevKColor((GXTevKColorID)j, kcol);
     }
     DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
 }
