@@ -85,7 +85,7 @@ static inline u8 tu801D3320_collect(char* this_, u8* ids, u8 n, u8* out) {
     return count;
 }
 
-static inline u8 tu801D3320_contains(u8 id, u8* list, u8 n) {
+static inline u8 tu801D3320_contains(u8 id, u8* list, int n) {
     u8 found = 0;
     for (int i = 0; i < n; i++) {
         if (id == list[i]) {
