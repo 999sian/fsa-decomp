@@ -538,18 +538,18 @@ inline bool actionReady(char* p) {
     if (!ok) {
         return false;
     }
-    if (countSharingH(p) > 1) {
-        if (S32(p, 0xd60) < 0) {
-            t = S32(p, 0x120c);
-        } else {
-            t = fn_8022CAF8(S32(p, 0xd60));
-        }
-    } else {
+    if (countSharingH(p) <= 1) {
         t = 5;
+    } else {
+        if (S32(p, 0xd60) >= 0) {
+            t = fn_8022CAF8(S32(p, 0xd60));
+        } else {
+            t = S32(p, 0x120c);
+        }
     }
     if (t == 4) {
         linked = S32(p, 0xd60);
-        target = (linked < 0) ? S32(p, 0x1224) : fn_80234004(linked);
+        target = (linked >= 0) ? fn_80234004(linked) : S32(p, 0x1224);
         own = 0;
         if (linked >= 0) {
             for (i = 0; i < S32(p, 0x4); i++) {
