@@ -662,64 +662,60 @@ extern "C" const f32 lbl_80542204;
 extern "C" const f32 lbl_80542208;
 extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
 extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
-    JGeometry::TVec3f v1;
-    JGeometry::TVec3f v2;
     self->m25c = (self->mSpawnParam >> 12) & 0xf;
     switch (self->m25c) {
     case 0:
     case 1:
     case 5:
-        v1.set(lbl_805421B0, lbl_805421C4, lbl_805421B0);
-        self->mPos.add(v1);
-        self->mRect[0] = lbl_805421EC;
-        self->mRect[1] = lbl_805421F0;
-        self->mRect[2] = lbl_805421F4;
-        self->mRect[3] = lbl_805421F8;
-        self->mRect2[0] = lbl_805421EC;
-        self->mRect2[1] = lbl_805421F0;
-        self->mRect2[2] = lbl_805421F4;
-        self->mRect2[3] = lbl_805421F8;
+        self->mPos.add(JGeometry::TVec3f(0.0f, 8.0f, 0.0f));
+        self->mRect[0] = -15.0f;
+        self->mRect[1] = -23.0f;
+        self->mRect[2] = 15.0f;
+        self->mRect[3] = 7.0f;
+        self->mRect2[0] = -15.0f;
+        self->mRect2[1] = -23.0f;
+        self->mRect2[2] = 15.0f;
+        self->mRect2[3] = 7.0f;
         self->m1a4 = 2;
         self->m260 = 2;
         break;
     case 2:
     case 3:
     case 6:
-        v2.set(lbl_805421B0, lbl_805421FC, lbl_805421B0);
-        self->mPos.add(v2);
-        self->mRect[0] = lbl_80542200;
-        self->mRect[1] = lbl_80542204;
-        self->mRect[2] = lbl_80542208;
-        self->mRect[3] = lbl_805421F4;
-        self->mRect2[0] = lbl_80542200;
-        self->mRect2[1] = lbl_80542204;
-        self->mRect2[2] = lbl_80542208;
-        self->mRect2[3] = lbl_805421F4;
+        self->mPos.add(JGeometry::TVec3f(0.0f, 16.0f, 0.0f));
+        self->mRect[0] = -31.0f;
+        self->mRect[1] = -47.0f;
+        self->mRect[2] = 31.0f;
+        self->mRect[3] = 15.0f;
+        self->mRect2[0] = -31.0f;
+        self->mRect2[1] = -47.0f;
+        self->mRect2[2] = 31.0f;
+        self->mRect2[3] = 15.0f;
         self->m1a4 = 4;
         self->m260 = 4;
         break;
     case 4:
-        self->mRect[0] = lbl_80542200;
-        self->mRect[1] = lbl_80542200;
-        self->mRect[2] = lbl_80542208;
-        self->mRect[3] = lbl_80542208;
-        self->mRect2[0] = lbl_80542200;
-        self->mRect2[1] = lbl_80542200;
-        self->mRect2[2] = lbl_80542208;
-        self->mRect2[3] = lbl_80542208;
+        self->mRect[0] = -31.0f;
+        self->mRect[1] = -31.0f;
+        self->mRect[2] = 31.0f;
+        self->mRect[3] = 31.0f;
+        self->mRect2[0] = -31.0f;
+        self->mRect2[1] = -31.0f;
+        self->mRect2[2] = 31.0f;
+        self->mRect2[3] = 31.0f;
         self->m1a4 = 4;
         self->m260 = 4;
         break;
     }
 
     self->mAnchor = self->mPos;
-    self->mVel.set(lbl_805421B0, lbl_805421B0, lbl_805421B0);
+    self->mVel.set(0.0f, 0.0f, 0.0f);
     self->m244 = 0;
     self->m248 = 0;
     self->m0b8 = 2;
     self->m234 = 0;
     self->m250 = 0;
-    self->m24c = ((s32*)&lbl_804ABC80)[0];
+    self->m24c = lbl_804ABC80[0];
     self->m254 = 2;
     self->m258 = -1;
     self->m272 = 0;
