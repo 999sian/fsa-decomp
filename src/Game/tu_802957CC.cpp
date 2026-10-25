@@ -68,7 +68,7 @@ static inline s32 WarpDestination(const char* actor) {
 }
 static inline s32 HouseDestination(const char* actor) {
     s32 room = (*(const u32*)(actor + 0x90) >> 7) & 31;
-    return (room + 7) & ~-(room == 0);
+    return room ? room + 7 : 0;
 }
 
 static inline void CenterGrid(JGeometry::TVec3f& pos, f32 offset) {
@@ -1168,8 +1168,7 @@ extern "C" void fn_8029A974(void* p) {
 extern "C" void fn_8029AE58(char* p) {
     JGeometry::TVec3f v;
     JGeometry::TVec3f pos;
-    JGeometry::TVec3f origin;
-    origin = *(JGeometry::TVec3f*)(p + 0xc);
+    JGeometry::TVec3f origin = *(JGeometry::TVec3f*)(p + 0xc);
     origin.x += *(f32*)(p + 0x60);
     origin.y += *(f32*)(p + 0x64);
     origin.x += lbl_80540678;
