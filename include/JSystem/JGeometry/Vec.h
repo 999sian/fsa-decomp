@@ -58,7 +58,10 @@ namespace JGeometry {
 #ifdef JGEOMETRY_VEC2_OUT_OF_LINE_CTOR
         TVec2();
 #else
-        TVec2() {}
+                  TVec2() {}
+#endif
+#ifdef JGEOMETRY_VEC2_SCALAR_COPY
+        TVec2(const TVec2& other) { set(other); }
 #endif
 
         template <typename TY>
