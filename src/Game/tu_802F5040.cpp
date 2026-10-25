@@ -580,14 +580,14 @@ extern f64 __frsqrte(f64);
 static inline f32 Tu802F5040_invSqrt(const f32 x) {
     if (x <= 0.0f) return x;
     f32 y = __frsqrte(x);
-    return 0.5f * y * (3.0f - x * (y * y));
+    y = 0.5f * y * (3.0f - x * (y * y));
+    return y;
 }
 static inline void Tu802F5040_setVec(f32* dst, f32 x, f32 y, f32 z) {
     dst[0] = x;
     dst[1] = y;
     dst[2] = z;
 }
-#pragma opt_common_subs off
 #pragma opt_propagation off
 extern "C" void fn_802F601C(Tu802F5040Effects* this_, f32* src, s32 type, f32* __restrict src2, f32 f1, f32 f2) {
     f32 r;
@@ -631,14 +631,10 @@ extern "C" void fn_802F601C(Tu802F5040Effects* this_, f32* src, s32 type, f32* _
     case 3:
         e->timer=18;
         e->direction.set(*(JGeometry::TVec3<f32>*)src2);
-        mag=e->direction.squared();
+        f32 squared=e->direction.squared();
+        mag=squared;
         if (mag <= JGeometry::TUtilf::epsilon()) return;
-        if (mag <= 0.0f) { scale=mag; }
-        else {
-            r=(f32)__frsqrte(mag);
-            r=0.5f*r*(3.0f-mag*(r*r));
-            scale=r;
-        }
+        scale=Tu802F5040_invSqrt(mag);
         e->direction.scale(scale);
         break;
     case 4: e->type=5; e->a=-e->a; e->timer=1; break;
@@ -647,7 +643,6 @@ extern "C" void fn_802F601C(Tu802F5040Effects* this_, f32* src, s32 type, f32* _
     }
 }
 #pragma opt_propagation reset
-#pragma opt_common_subs reset
 extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* src) {
     struct Quad {
         s32 v[4];
