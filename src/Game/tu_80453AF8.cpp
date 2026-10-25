@@ -184,13 +184,13 @@ extern "C" u8* fn_80454DEC(u8* p) {
     typedef void* (*Search)(void*, u64);
     typedef void (*SetColor)(void*, void*);
     typedef void (*SetAlpha)(void*, u8);
-    T80454DEC* self = (T80454DEC*)p;
+    int j;
+    int i;
     void* s;
+    T80454DEC* self = (T80454DEC*)p;
     *(void**)p = lbl_804B1DA8;
     lbl_8053AF48 = p;
-    s = __nw__FUl(0x118);
-    if (s) __ct__9J2DScreenFv(s);
-    self->screen = (J2DScreen*)s;
+    self->screen = new J2DScreen;
     setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+4), lbl_8049149C, 0x1100000, *(void**)(lbl_80529DEC+0x4c));
     self->left[0] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(0x506b656e633031ULL)) + 0);
     self->top[0] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(0x506b656e633031ULL)) + 4);
@@ -214,11 +214,10 @@ extern "C" u8* fn_80454DEC(u8* p) {
     if (s) *(void**)s = lbl_804AF86C;
     *(void**)(p+12) = s;
     fn_80402F04(*(void**)(p+12), self->screen->search(0x4e646174613031ULL));
-    for (int i=0; i<3; i++) {
-        s = __nw__FUl(0x2c);
-        if (s) *(void**)s = lbl_804AF86C;
-        ((void**)(p+0x10))[i] = s;
-        fn_80402F04(((void**)(p+0x10))[i], self->screen->search(((u64*)lbl_80491470)[i]));
+    for (i=0; i<3; i++) {
+        s = new T80454DEC_Entry;
+        self->entries[i] = s;
+        fn_80402F04(self->entries[i], self->screen->search(((u64*)lbl_80491470)[i]));
     }
     *(s16*)(p+0x1c) = 0;
     *(s16*)(p+0x1e) = 2;
@@ -228,13 +227,13 @@ extern "C" u8* fn_80454DEC(u8* p) {
     *(s16*)((u8*)*(void**)(p+8)+0x26) = 0;
     fn_80402E08(*(void**)(p+0xc), lbl_80543E44, lbl_80543E40);
     *(s16*)((u8*)*(void**)(p+0xc)+0x22) = 0;
-    for (int i=0; i<3; i++) {
-        if (i == *(s16*)(p+0x1c)) {
-            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255,237,160,255));
-            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39,16,0,0));
+    for (j=0; j<3; j++) {
+        if (j == *(s16*)(p+0x1c)) {
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[j]))->setWhite(JUtility::TColor(255,237,160,255));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[j]))->setBlack(JUtility::TColor(39,16,0,0));
         } else {
-            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167,76,42,255));
-            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0,0,0,0));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[j]))->setWhite(JUtility::TColor(167,76,42,255));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[j]))->setBlack(JUtility::TColor(0,0,0,0));
         }
     }
     p[0x55] = 0;
