@@ -93,12 +93,9 @@ int J3DModel::entryModelData(J3DModelData* pModelData, u32 mdlFlags, u32 mtxNum)
 
 int J3DModel::createShapePacket(J3DModelData* pModelData)
 {
-	if (pModelData->getShapeNum() != 0) {
-		mShapePackets = new J3DShapePacket[pModelData->getShapeNum()];
-
-		if (mShapePackets == nullptr) {
-			return JET_OutOfMemory;
-		}
+	u16 shapeNum = (u16)pModelData->getShapeNum();
+	if (shapeNum != 0) {
+		mShapePackets = new J3DShapePacket[shapeNum];
 
 		for (int i = 0; i < pModelData->getShapeNum(); i++) {
 			mShapePackets[i].setShape(pModelData->getShapeNodePointer(i));
@@ -111,14 +108,11 @@ int J3DModel::createShapePacket(J3DModelData* pModelData)
 
 int J3DModel::createMatPacket(J3DModelData* pModelData, u32 mdlFlags)
 {
+	u32 num = pModelData->getMaterialNum();
 	int ret = 0;
 
-	if (pModelData->getMaterialNum() != 0) {
-		mMatPackets = new J3DMatPacket[pModelData->getMaterialNum()];
-
-		if (mMatPackets == nullptr) {
-			return JET_OutOfMemory;
-		}
+	if (num != 0) {
+		mMatPackets = new J3DMatPacket[num];
 	}
 
 	u16 matNum = pModelData->getMaterialNum();
@@ -209,8 +203,8 @@ void J3DModel::calcMaterial()
 	mModelData->syncJ3DSysFlags();
 	j3dSys.setTexture(mModelData->getTexture());
 
-	u16 matNum = mModelData->getMaterialNum();
-	for (u16 i = 0; i < matNum; i++) {
+	register u16 matNum = mModelData->getMaterialNum();
+	for (u16 i = 0; (int)i < (u32)matNum; i++) {
 		j3dSys.setMatPacket(&mMatPackets[i]);
 
 		J3DMaterial* material = mModelData->getMaterialNodePointer(i);
@@ -227,13 +221,15 @@ void J3DModel::calcDiffTexMtx()
 	j3dSys.setModel(this);
 
 	u16 matNum = mModelData->getMaterialNum();
-	for (u16 i = 0; i < matNum; i++) {
+	u16 i = 0;
+	for (; i < matNum; i++) {
 		j3dSys.setMatPacket(&mMatPackets[i]);
 		J3DMaterial* materialNode = mModelData->getMaterialNodePointer(i);
 		materialNode->calcDiffTexMtx(getAnmMtx(materialNode->getJoint()->getJntNo()));
 	}
 
-	for (u16 i = 0; i < getModelData()->getShapeNum(); i++) {
+	u16 shapeNum = getModelData()->getShapeNum();
+	for (i = 0; i < shapeNum; i++) {
 		J3DShapePacket* shapePacket = getShapePacket(i);
 		J3DTexGenBlock* texGenBlock = mModelData->getShapeNodePointer(i)->getMaterial()->getTexGenBlock();
 
@@ -413,17 +409,15 @@ void J3DModel::calcBBoardMtx()
 
 void J3DModel::prepareShapePackets()
 {
-	u16 shapeNum = mModelData->getShapeNum();
-
-	for (u16 i = 0; i < shapeNum; i++) {
-		J3DShape* shapeNode         = mModelData->getShapeNodePointer(i);
-		J3DShapePacket* shapePacket = &mShapePackets[i];
-		shapePacket->setMtxBuffer(mMtxBuffer);
-
-		if (getMtxCalcMode() == 2) {
-			shapePacket->setBaseMtxPtr(&mInternalView);
-		} else {
-			shapePacket->setBaseMtxPtr(j3dSys.getViewMtx());
-		}
-	}
+    u16 shapeNum = mModelData->getShapeNum();
+    for (u16 i = 0; (unsigned)i < shapeNum; i++) {
+        J3DShape* shape = mModelData->getShapeNodePointer(i);
+        J3DShapePacket* shapePacket = &mShapePackets[i];
+        shapePacket->setMtxBuffer(mMtxBuffer);
+        if (getMtxCalcMode() == 2) {
+            shapePacket->setBaseMtxPtr(&mInternalView);
+        } else {
+            shapePacket->setBaseMtxPtr(j3dSys.getViewMtx());
+        }
+    }
 }
