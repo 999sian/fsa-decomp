@@ -145,7 +145,7 @@ inline void J3DGDSetNumTexGens(u8 numTexGens)
 
 inline void J3DGDSetAlphaCompare(GXCompare cmp0, u8 ref0, GXAlphaOp op, GXCompare cmp1, u8 ref1)
 {
-	J3DGDWriteBPCmd(ref1 << 8 | ref0 | cmp0 << 16 | cmp1 << 19 | op << 22 | 0xF3 << 24);
+	J3DGDWriteBPCmd(ref0 | ref1 << 8 | cmp0 << 16 | cmp1 << 19 | op << 22 | 0xF3 << 24);
 }
 
 inline void J3DGDSetBlendMode(GXBlendMode mode, GXBlendFactor srcFactor, GXBlendFactor dstFactor, GXLogicOp logicOp)
