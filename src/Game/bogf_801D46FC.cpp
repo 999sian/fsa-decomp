@@ -367,6 +367,7 @@ struct BogfRandom {
 };
 struct BogfGame { u8 pad[0xb4]; BogfRandom rnd; };
 static inline f32 bogfRand() { return lbl_8053AAF8->rnd.get_ufloat_1(); }
+static inline f32 bogfLerp(f32 a, f32 b, f32 t) { return a + t * (b - a); }
 static inline f32 bogfRandF(f32 s) { return s * lbl_8053AAF8->rnd.get_ufloat_1(); }
 static inline f32 bogfRandPM(f32 s) { return s * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8); }
 
@@ -502,8 +503,11 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
         *(s32*)(p + 0x5b0) = -1;
         *(s32*)(p + 0xb0) = 3;
         fn_801E4618(p, box, fn_801CD2F8(*(s32*)(p + 0x4)));
-        *(f32*)(p + 0x60c) = box[0].x + lbl_8053F0F8 * (box[1].x - box[0].x);
-        *(f32*)(p + 0x610) = box[0].y + lbl_8053F0F8 * (box[1].y - box[0].y);
+        JGeometry::TVec2<f32> c;
+        c.x = box[0].x + lbl_8053F0F8 * (box[1].x - box[0].x);
+        c.y = box[0].y + lbl_8053F0F8 * (box[1].y - box[0].y);
+        *(f32*)(p + 0x60c) = c.x;
+        *(f32*)(p + 0x610) = c.y;
         *(f32*)(p + 0x614) = lbl_8053F0C8;
         *(f32*)(p + 0x5bc) = box[0].x + (box[1].x - box[0].x) * bogfRand();
         *(f32*)(p + 0x5c0) = box[0].y + (box[1].y - box[0].y) * bogfRand();
@@ -545,8 +549,8 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
     case 13:
         *(f32*)(p + 0x258) = lbl_8053F0C8;
         if (*(s32*)(p + 0x508) == 3) {
-            *(u8*)(p + 0x51c) = 1;
-            *(u8*)(p + 0x5cf) = 0;
+            *(bool*)(p + 0x51c) = true;
+            *(bool*)(p + 0x5cf) = false;
             break;
         }
         /* fallthrough */
