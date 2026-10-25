@@ -62,6 +62,8 @@ extern "C" void fn_8011DA20(char* this_) {
 }
 
 struct ICWLVec2 {
+    ICWLVec2() {}
+    ICWLVec2(f32 x_, f32 y_) : x(x_), y(y_) {}
     f32 x, y;
 };
 
