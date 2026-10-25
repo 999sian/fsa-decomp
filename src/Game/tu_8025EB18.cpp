@@ -120,6 +120,45 @@ extern "C" void fn_80230D80(s32, JGeometry::TVec3<f32>*);
 extern "C" s32 fn_8023EF50(s32);
 extern "C" u8 fn_8022E438(s32, u32);
 extern "C" void fn_80230C6C(s32);
+extern "C" void fn_802808E8(char*, f32);
+extern "C" void fn_8027EB04(char*);
+extern "C" void fn_8027FA08(char*, JGeometry::TVec3<f32>*);
+extern "C" u8 fn_8022C13C(s32);
+extern "C" s32 fn_802416C4(char*);
+extern "C" u8 fn_8024B24C(char*);
+extern "C" u8 fn_802466B4(char*);
+extern "C" u8 fn_8022C0A0(s32);
+extern f32 lbl_8054017C;
+extern "C" int __float_epsilon[];
+extern u8 lbl_8046B790[];
+extern "C" f32 lbl_8046B7B0[];
+
+static inline void fn_80263C64_snap(char* p) {
+    f32 thr = lbl_8054017C * (*(f32*)__float_epsilon);
+    f32 nthr = -thr;
+    f32 dx = F32(p, 0x8) - F32(p, 0x14);
+    f32 dy = F32(p, 0xc) - F32(p, 0x18);
+    f32 dz = F32(p, 0x10) - F32(p, 0x1c);
+    if (nthr <= dx && dx <= thr && nthr <= dy && dy <= thr && nthr <= dz && dz <= thr) {
+        f32 x = F32(p, 0x368);
+        f32 y = F32(p, 0x36c);
+        f32 z = F32(p, 0x370);
+        if (x * x + y * y + z * z <= thr) {
+            U8(p, 0x3f8) = U8(p, 0x3f8) + 1;
+            if (U8(p, 0x3f8) >= 0x18) {
+                U8(p, 0x3f8) = 0;
+            }
+        } else {
+            U8(p, 0x3f8) = 0;
+        }
+        U8(p, 0x3f9) = lbl_8046B790[(S32(p, 0x3dc) << 3) + U8(p, 0x3f8) / 3];
+        char* e = (char*)lbl_8046B7B0 + U8(p, 0x3f9) * 0x14;
+        F32(p, 0x2f4) = F32(e, 0) + F32(p, 0x8);
+        F32(p, 0x2f8) = F32(e, 4) + F32(p, 0xc);
+        F32(p, 0x2fc) = F32(e, 8) + F32(p, 0x10);
+    }
+}
+
 extern JGeometry::TVec3<f32> lbl_8046B8FC[];
 extern JGeometry::TVec3<f32> lbl_8046B92C[];
 extern const f32 lbl_80540158;
