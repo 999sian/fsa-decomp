@@ -2,6 +2,17 @@
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+struct ScreenTransitionState {
+    void* vtable;
+    void* screen;
+    f32* pane;
+    void* other;
+    s16 timer;
+    s16 delay;
+    u8 index;
+    u8 state;
+};
+
 struct ScreenTransitionTable {
     f32 scale[7];
     s16 x[8];
@@ -96,21 +107,21 @@ extern "C" void fn_80402940(void* this_, s32 a, s32 b, f32 c, f32 d);
 extern "C" void fn_8040271C(void* this_, s32 a, f32 c, f32 d);
 extern u8 lbl_8048FB88[];
 extern f32 lbl_80543D64;
+#pragma opt_strength_reduction off
 extern "C" void fn_804434B8(void* this_) {
     char* p = (char*)this_;
-    *(s16*)(p + 0x10) = *(s16*)(p + 0x10) + 1;
+    *(s16*)(p + 0x10) += 1;
     {
-        char* tbl = (char*)lbl_8048FB88;
-        s16* t1 = (s16*)(tbl + 0x1c);
-        fn_80402B10(*(void**)(p + 0x8), 0x1e, 0, lbl_80543D60, t1[*(u8*)(p + 0x14)]);
-        fn_80402940(*(void**)(p + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x2c))[*(u8*)(p + 0x14)]);
-        fn_8040271C(*(void**)(p + 0x8), 0x1e, lbl_80543D64, ((f32*)tbl)[*(u8*)(p + 0x14)] / ((f32*)*(void**)(p + 0x8))[6]);
+    ScreenTransitionTable* tbl = (ScreenTransitionTable*)lbl_8048FB88;
+    fn_80402B10(*(void**)(p + 8), 30, 0, lbl_80543D60, tbl->x[*(u8*)(p + 0x14)]);
+    fn_80402940(*(void**)(p + 8), 30, 0, lbl_80543D60, tbl->y[*(u8*)(p + 0x14)]);
+    f32 height = ((f32*)*(void**)(p + 8))[6];
+    f32 scale = tbl->scale[*(u8*)(p + 0x14)];
+    fn_8040271C(*(void**)(p + 8), 30, lbl_80543D64, scale / height);
     }
-    if (*(s16*)(p + 0x10) >= 0x1e) {
-        *(u8*)(p + 0x15) = 2;
-    }
+    if (*(s16*)(p + 0x10) >= 30) *(u8*)(p + 0x15) = 2;
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_804435B8(void* this_) {
     char* p = (char*)this_;
     s32 v = *(s16*)(p + 0x10);
