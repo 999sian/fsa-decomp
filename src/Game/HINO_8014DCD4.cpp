@@ -51,9 +51,9 @@ extern "C" void fn_8014F76C(u8* this_) {
         u8* p = (u8*)fn_801F666C(fn_801F856C(), id);
         if (p != 0) {
             JGeometry::TVec3f v;
-            v.y = lbl_8053D1D4;
-            v.x = lbl_8053D1D4;
-            v.z = lbl_8053D1D4;
+            v.y = 0.0f;
+            v.x = 0.0f;
+            v.z = 0.0f;
             v.z = lbl_8053D1EC;
             *(JGeometry::TVec3f*)(p + 0x3c) = v;
             *(s32*)(this_ + 0x250) = -1;
