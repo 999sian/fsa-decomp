@@ -1097,7 +1097,7 @@ extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
     rec[0] = sum;
 }
 
-void fn_803085A4(s32 unused, s32 i)
+extern "C" void fn_803085A4(s32 unused, s32 i)
 {
     s32 r25;
     s32 r26;
