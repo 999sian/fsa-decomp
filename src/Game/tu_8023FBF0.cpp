@@ -4890,8 +4890,8 @@ inline s32 sharingMode50090(char* p) {
 }
 
 inline s32 countSharing50090R(const char* p, s32& linked, s32& me) {
-    int c;
-    int i;
+    s32 i;
+    s32 c;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 4)) c++;
