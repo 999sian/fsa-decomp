@@ -229,7 +229,7 @@ extern "C" void fn_80117074(void* p, s32 n) {
             pos.y = v->y;
             pos.z = v->z;
             pos.y += dy;
-            fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0x33a, 0, 0, 0, 0, 1, lbl_8053C754);
+
         }
         for (i = 0; i < 4; i++) {
             fn_80230BF4(i, 3);
