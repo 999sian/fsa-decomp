@@ -164,6 +164,54 @@ extern "C" BOOL fn_8028C364(u8* this_, u8 mode) {
     return TRUE;
 }
 
+extern "C" const f32 lbl_8046C1E0[][3];
+extern "C" const f32 lbl_8046C1B0[][3];
+extern "C" u8 fn_801F2618(void*, void*, s32);
+extern "C" u8 fn_8023B0F4(int, void*, s32, s32, f32);
+extern "C" int fn_8022CAF8(int);
+extern "C" u8 fn_8022F478(int);
+extern "C" u8 fn_8028C518(u8* this_, u8 mode) {
+    s32 handle;
+    int i;
+    u8 result = 0;
+    JGeometry::TVec3f old(*(JGeometry::TVec3f*)(this_ + 0xc));
+    JGeometry::TVec3f delta;
+    JGeometry::TBox2f box;
+    s32 kind = *(u32*)(this_ + 0x90) & 3;
+    if (kind == 3) return 1;
+    if (kind == 0) {
+        ((JGeometry::TVec3f*)(this_ + 0x3c))->set(lbl_8046C1E0[mode][0], lbl_8046C1E0[mode][1], lbl_8046C1E0[mode][2]);
+        *(JGeometry::TVec3f*)(this_ + 0x18) += *(JGeometry::TVec3f*)(this_ + 0x3c);
+    }
+    ((JGeometry::TVec3f*)(this_ + 0x3c))->set(lbl_8046C1B0[mode][0], lbl_8046C1B0[mode][1], lbl_8046C1B0[mode][2]);
+    *(JGeometry::TVec3f*)(this_ + 0xc) += *(JGeometry::TVec3f*)(this_ + 0x3c);
+    delta.set(0.0f,0.0f,0.0f);
+    if (fn_801F2618(this_, &delta, 0)) {
+        switch(mode) {
+        case 0: if(delta.x >= 0.0f) result = 1; break;
+        case 1: if(delta.x <= 0.0f) result = 1; break;
+        case 2: if(delta.y >= 0.0f) result = 1; break;
+        case 3: if(delta.y <= 0.0f) result = 1; break;
+        }
+    } else result = 1;
+    if (!result) {
+        box.set(*(JGeometry::TBox2f*)(this_ + 0x60));
+        result = 1;
+        box.addPos(*(JGeometry::TVec2<f32>*)(this_ + 0xc));
+        for(i=0;i<4;i++) {
+            if(fn_8023B0F4(i,&box,*(s32*)(this_+4),0,0.0f)) {
+                if(fn_8022CAF8(i)==5 && fn_8022F478(i)) continue;
+                handle = *(s32*)(this_+0x198);
+                int h = fn_80238CB4(i);
+                if(h != handle) result = 0;
+            }
+        }
+    }
+    *(JGeometry::TVec3f*)(this_+0xc) = old;
+    ((JGeometry::TVec3f*)(this_+0x3c))->set(0.0f,0.0f,0.0f);
+    return result;
+}
+
 extern "C" void fn_80239914(f32* rect, s32 room, s32 handle);
 extern "C" void fn_8020D7D0(void* a, s32 b, void* c);
 extern "C" void* fn_8020D58C(f32* a);
