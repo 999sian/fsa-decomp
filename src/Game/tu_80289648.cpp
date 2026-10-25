@@ -35,14 +35,6 @@ extern "C" s32 fn_8023DE58(s32 idx);
 extern "C" void fn_8022E088(s32 idx, s32 n, JGeometry::TVec3f* out);
 extern "C" void fn_8022DF48(s32 idx);
 extern "C" void fn_8023DF68(s32 idx, const JGeometry::TVec3f& v);
-static inline void fn_8023DF68(s32 idx, JGeometry::TVec3f* v) { fn_8023DF68(idx, *v); }
-
-static inline bool tuInBox(const JGeometry::TVec3f& v, f32 x0, f32 y0, f32 x1, f32 y1) {
-    if (v.x >= x0 && v.y >= y0 && v.x < x1 && v.y < y1) {
-        return true;
-    }
-    return false;
-}
 
 static inline void tuGetCenter(u8* self, JGeometry::TVec3f& c) {
     f32 y1;
