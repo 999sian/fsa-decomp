@@ -57,6 +57,7 @@ extern "C" Actor* fn_80337650(Actor* p, s16 n) {
     return p;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803376B0(u8* this_) {
     *(s32*)(this_ + 0x234) = *(s32*)(this_ + 0x234) - 1;
     if (*(s32*)(this_ + 0x234) > 0) {
@@ -74,40 +75,73 @@ extern "C" void fn_803376B0(u8* this_) {
     case 12:
     case 13:
     case 14: {
-        int mode = *(s32*)(this_ + 0x230);
-        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+        s32 mode = *(s32*)(this_ + 0x230);
+        if (mode == 0) goto idle1;
+        if (mode == 1) goto idle1;
+        if (mode == 3) goto idle1;
+        if (mode != 4) goto active1;
+        idle1: {
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
             *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
-        } else if (mode == 5) {
+            break;
+        }
+        active1:
+        if (mode == 5) {
+            s32 kind;
+            const AnimKindTbl* __restrict base;
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
-            *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+            kind = *(s32*)(this_ + 0x250);
+            base = (const AnimKindTbl*)lbl_80471BB8;
+            *(s32*)(this_ + 0x234) = base[kind].move[*(s32*)(this_ + 0x238)];
         }
         break;
     }
     case 2:
     case 3: {
-        int mode = *(s32*)(this_ + 0x230);
-        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+        s32 mode = *(s32*)(this_ + 0x230);
+        if (mode == 0) goto idle2;
+        if (mode == 1) goto idle2;
+        if (mode == 3) goto idle2;
+        if (mode != 4) goto active2;
+        idle2: {
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
             *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
-        } else if (mode == 5) {
+            break;
+        }
+        active2:
+        if (mode == 5) {
+            s32 kind;
+            const AnimKindTbl* __restrict base;
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
-            *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+            kind = *(s32*)(this_ + 0x250);
+            base = (const AnimKindTbl*)lbl_80471BB8;
+            *(s32*)(this_ + 0x234) = base[kind].move[*(s32*)(this_ + 0x238)];
         }
         break;
     }
     case 4: {
-        int mode = *(s32*)(this_ + 0x230);
-        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+        s32 mode = *(s32*)(this_ + 0x230);
+        if (mode == 0) goto idle3;
+        if (mode == 1) goto idle3;
+        if (mode == 3) goto idle3;
+        if (mode != 4) goto active3;
+        idle3: {
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
             *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
-        } else if (mode == 5) {
+            break;
+        }
+        active3:
+        if (mode == 5) {
             if (*(s32*)(this_ + 0x248) < 2) {
                 *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
                 *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
             } else {
+                s32 kind;
+                const AnimKindTbl* __restrict base;
                 *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
-                *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+                kind = *(s32*)(this_ + 0x250);
+                base = (const AnimKindTbl*)lbl_80471BB8;
+                *(s32*)(this_ + 0x234) = base[kind].move[*(s32*)(this_ + 0x238)];
             }
         }
         break;
@@ -115,26 +149,43 @@ extern "C" void fn_803376B0(u8* this_) {
     case 8:
     case 9:
     case 15: {
-        int mode = *(s32*)(this_ + 0x230);
-        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+        s32 mode = *(s32*)(this_ + 0x230);
+        if (mode == 0) goto idle4;
+        if (mode == 1) goto idle4;
+        if (mode == 3) goto idle4;
+        if (mode != 4) goto active4;
+        idle4: {
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
             *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
-        } else if (mode == 5) {
+            break;
+        }
+        active4:
+        if (mode == 5) {
+            s32 kind;
+            const AnimKindTbl* __restrict base;
             *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
-            *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+            kind = *(s32*)(this_ + 0x250);
+            base = (const AnimKindTbl*)lbl_80471BB8;
+            *(s32*)(this_ + 0x234) = base[kind].move[*(s32*)(this_ + 0x238)];
         }
         break;
     }
     }
 
     if (*(s32*)(this_ + 0x238) == 0) {
+        f32 one;
+        f32 random;
+        f32 range;
+        one = lbl_8054205C;
+        range = lbl_80542058;
         u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
         *seed = *seed * 0x19660du + 0x3c6ef35fu;
         u32 bits = (*seed >> 9) | 0x3f800000u;
-        *(s32*)(this_ + 0x234) += (s32)(lbl_80542058 * (*(f32*)&bits - lbl_8054205C));
+        random = *(f32*)&bits;
+        *(s32*)(this_ + 0x234) += (s32)(range * (random - one));
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80337A08(u8* this_) {
     s32 state = *(s32*)(this_ + 0x250);
     s32 prev = *(s32*)(this_ + 0x248);
