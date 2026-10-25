@@ -1226,11 +1226,10 @@ extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags) {
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
     struct Col { s32 v; };
-    u8* p = (u8*)param_2;
     Col def = *(Col*)&lbl_8053BC70;
-    u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[param_3] * 0x14c + 8))[param_4];
-    if (i != 0xffff) {
-        *param_1 = (*(s32**)(p + 0x10))[i];
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)((const J3DMaterialFactory*)param_2)->mInitData)[((const J3DMaterialFactory*)param_2)->mMatRemapTable[param_3]];
+    if (initData->mMatColorIndex[param_4] != 0xffff) {
+        *(Col*)param_1 = (*(Col**)(param_2 + 0x10))[initData->mMatColorIndex[param_4]];
     } else {
         *(Col*)param_1 = def;
     }
@@ -1257,10 +1256,11 @@ extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int
 extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
     s32 def = lbl_8053BC74;
     s32* pdef = &def;
+    s32 boff = b * 2;
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
     s32 idx = ids[a] * 0x14c + 0x14;
-    idx += b * 2;
+    idx += boff;
     u16 v = *(u16*)(base + idx);
     if (v != 0xffff) {
         *out = (*(s32**)(p + 0x1c))[v];
@@ -1338,7 +1338,7 @@ extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
 }
 
 struct FsaTevColorS10 {
-    s16 r, g, b, a;
+    u32 rg, ba;
 };
 extern u32 lbl_80543F08;
 extern u32 lbl_80543F0C;
@@ -1380,9 +1380,11 @@ extern "C" u8 fn_800CB428(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
-    J3DMaterialInitData* initData = &((J3DMaterialInitData*)*(void**)(p + 4))[(*(u16**)(p + 8))[idx]];
-    if (initData->mTevStageInfoIndex[b] != 0xffff) {
-        fn_800CB4C0(out, *(u8**)(p + 0x50) + initData->mTevStageInfoIndex[b] * 0x14);
+    idx = (*(u16**)(p + 8))[idx];
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)*(void**)(p + 4))[idx];
+    u16 v = initData->mTevStageInfoIndex[b];
+    if (v != 0xffff) {
+        fn_800CB4C0(out, *(u8**)(p + 0x50) + v * 0x14);
         return;
     }
     __ct__11J3DTevStageFv(out);
