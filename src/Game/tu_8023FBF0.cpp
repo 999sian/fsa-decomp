@@ -35,6 +35,7 @@ inline s32 getDA4(char* p) {
     return v;
 }
 
+extern "C" f32 lbl_80540088;
 extern "C" char* lbl_8053AAF8;
 extern "C" char lbl_804A6F38[];
 extern "C" char lbl_8049F140[];
