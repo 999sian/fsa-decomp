@@ -172,36 +172,69 @@ extern "C" u8 fn_802317F0(s32,s32,void*,void*,u32);
 extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" s32 fn_8022F3DC(s32);
-extern "C" void fn_80227530(void* this_, f32* out) {
-    FsaVec3 v0, v1, v2, v3;
-    f32* box = (f32*)((u8*)this_ + 0x60);
-    FsaVec3* bpos = (FsaVec3*)((u8*)this_ + 0xc);
-    fn_80226FC8(this_, 0);
-    out[0] = box[0];
-    out[1] = box[1];
-    out[2] = box[2];
-    out[3] = box[3];
-    out[0] = box[0] + bpos->x;
-    out[1] = box[1] + bpos->y;
-    out[2] = box[2] + bpos->x;
-    out[3] = box[3] + bpos->y;
-    if (*((u8*)lbl_8053AAF8 + 0x7e) != 0) {
-        return;
-    }
-    v0.x = bpos->x - lbl_8053FF70;
-    v0.y = bpos->y - lbl_8053FF70;
-    v0.z = lbl_8053FF74;
-    fn_802A3948(lbl_8053AC98, (f32*)&v0, 0, *(u32*)((u8*)this_ + 4), 0xc);
-    v1.x = bpos->x + lbl_8053FF70;
-    v1.y = bpos->y - lbl_8053FF70;
-    v1.z = lbl_8053FF74;
-    fn_802A3948(lbl_8053AC98, (f32*)&v1, 0, *(u32*)((u8*)this_ + 4), 0xc);
-    if (*((u8*)this_ + 0x255) == 0) {
-        fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, lbl_8053FF78, 0x3e3, 0, -2, 0, 0, 1);
-        *((u8*)this_ + 0x255) = 1;
+#pragma opt_propagation off
+static inline u8 gateTransition(const s32 player, u8* p) {
+    u32 param = *(u32*)(p+0x90);
+    u32 kind = param & 0x7f;
+    s32 room = (param >> 24) & 7;
+    s32 id = room + 7;
+    if (!room) id = room;
+    return fn_802317F0(player, id, p+0xc, p+0x238, kind);
+}
+extern "C" void fn_80227530(u8* p, f32* out) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        fn_80226FC8(p, i);
+        u8* global;
+        f32 y1,x1,y0,x0,x,y;
+        x0=*(f32*)(p+0x60); global=(u8*)lbl_8053AAF8; out[0]=x0;
+        y0=*(f32*)(p+0x64); out[1]=y0;
+        x1=*(f32*)(p+0x68); out[2]=x1;
+        y1=*(f32*)(p+0x6c); out[3]=y1;
+        y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
+        y0+=y; x0+=x; x1+=x; y1+=y;
+        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
+        if (global[0x7e] && !fn_8022C8EC(i)) {
+            s32 room=(*(u32*)(p+0x90)>>24)&7;
+            s32 id=room+7; if (!room) id=room;
+            s32 current=fn_8023DE58(i);
+            if (current!=id) continue;
+        }
+        if (fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF70)) {
+            if (p[i+0x234]==1) continue;
+            p[i+0x234]=1;
+            if (fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
+            if (fn_8022F514(i) && fn_8022CAF8(i)!=4) {
+                s32 player=fn_8022F3DC(i);
+                if (fn_802373EC(player)==1 && fn_8023725C(player)>=2 && fn_8023513C(player)) continue;
+            }
+            int mapRoom;
+            int rawRoom;
+            u32 param=*(u32*)(p+0x90);
+            rawRoom=(param>>24)&7;
+            u32 kind=param&0x7f;
+            mapRoom=rawRoom+7; if (!rawRoom) mapRoom=rawRoom;
+            if (fn_802317F0(i,mapRoom,p+0xc,p+0x238,kind) && p[0x254]==1) {
+                gateEffect(JGeometry::TVec3f(*(f32*)(p+0xc)-8.0f,*(f32*)(p+0x10)-8.0f,lbl_8053FF74),i,*(u32*)(p+4));
+                gateEffect(JGeometry::TVec3f(8.0f+*(f32*)(p+0xc),*(f32*)(p+0x10)-8.0f,lbl_8053FF74),i,*(u32*)(p+4));
+                gateEffect(JGeometry::TVec3f(*(f32*)(p+0xc)-8.0f,8.0f+*(f32*)(p+0x10),lbl_8053FF74),i,*(u32*)(p+4));
+                gateEffect(JGeometry::TVec3f(8.0f+*(f32*)(p+0xc),8.0f+*(f32*)(p+0x10),lbl_8053FF74),i,*(u32*)(p+4));
+                if (p[0x255]==0) {
+                    fn_8013CC50(*(u32*)(p+4),p+0xc,lbl_8053FF78,0x3e3,0,-2,0,0,1);
+                    p[0x255]=1;
+                }
+            }
+        } else {
+            f32 d,c,b,y1;
+            f32 a,x1,y0,x0,v;
+            x0=out[0]; v=lbl_8053FF78; y0=out[1]; x1=out[2];
+            a=x0-v; y1=out[3]; b=y0-v; c=x1+v; d=y1+v;
+            out[0]=a; out[1]=b; out[2]=c; out[3]=d;
+            if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF74)) p[i+0x234]=0;
+        }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_8022D75C(s32);
 extern "C" u8 fn_8022D534(s32);
 extern "C" u8 fn_8022F514(s32);
