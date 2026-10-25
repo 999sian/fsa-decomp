@@ -31,8 +31,8 @@ extern "C" Actor* fn_80346E24(Actor* p, s16 n) {
 
 extern "C" double sin(double);
 extern "C" double cos(double);
-static inline void setDrawRotation(Mtx m, f32 angle, const f32 scale) {
-    f32 sx,sy,sz,cx,cy,cz;
+static inline void setDrawRotation(Mtx m, f32 angle, f32 scale) {
+    f32 sz,sy,sx,cx,cy,cz;
     sx=sin(lbl_80542438);
     sy=sin(angle);
     sz=sin(lbl_80542438);
@@ -56,12 +56,6 @@ static inline void setDrawRotation(Mtx m, f32 angle, const f32 scale) {
 extern "C" void fn_801F06F0(Actor* a, void* p2, s32 idx, u8* ids, s32 p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(void* h, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 extern "C" void fn_80346E84(Actor* this_) {
-    Vec transform;
-    f32 sx;
-    f32 sy;
-    f32 sz;
-    f32 cy;
-    f32 cz;
     u8* p=(u8*)this_;
     if(*(s32*)(p+0x230)==4 && *(s32*)(p+0x260)==0) return;
     DrawRec rec;
@@ -69,26 +63,7 @@ extern "C" void fn_80346E84(Actor* this_) {
     s32 mode=7;
     rec.b2d=1;
     PSMTXIdentity(m);
-    transform.y=*(f32*)(p+0x268);
-    transform.x=*(f32*)(p+0x26c);
-    sx=sin(lbl_80542438);
-    sy=sin(transform.y);
-    sz=sin(lbl_80542438);
-    transform.z=cos(lbl_80542438);
-    cy=cos(transform.y);
-    cz=cos(lbl_80542438);
-    f32 cxcz=transform.z*cz;
-    f32 sxsy=sx*sy;
-    f32 cxsz=transform.z*sz;
-    m[0][0]=transform.x*(cy*cz);
-    m[1][0]=transform.x*(cy*sz);
-    m[2][0]=transform.x*(-sy);
-    m[0][1]=transform.x*(sxsy*cz-cxsz);
-    m[1][1]=transform.x*(sxsy*sz+cxcz);
-    m[2][1]=transform.x*(sx*cy);
-    m[0][2]=transform.x*(cxcz*sy+sx*sz);
-    m[1][2]=transform.x*(cxsz*sy-sx*cz);
-    m[2][2]=transform.x*(transform.z*cy);
+    setDrawRotation(m,*(f32*)(p+0x268),*(f32*)(p+0x26c));
     rec.w18=m;
     s32 state=*(s32*)(p+0x230);
     if(state==3) mode=-1;
