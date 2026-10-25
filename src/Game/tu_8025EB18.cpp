@@ -152,39 +152,6 @@ extern "C" int __float_epsilon[];
 extern u8 lbl_8046B790[];
 extern "C" f32 lbl_8046B7B0[];
 
-static inline bool hasCarriedActor(char* p) {
-    return U8(p, 0xd64) == 1;
-}
-
-static inline s32 attachActorState(u8 flag) {
-    s32 state = 0x12;
-    if (flag)
-        state = 0x11;
-    return state;
-}
-
-static inline u8 canAttachActor(char* p) {
-    if ((u8)fn_80270A8C(p))
-        return 0;
-    if (hasCarriedActor(p))
-        return 0;
-    if (isAttached(p))
-        return 0;
-    if (Player_GetField_0xce8(p))
-        return 0;
-    if (fn_80241230(p))
-        return 0;
-    if (fn_802412A4(p))
-        return 0;
-    if (Player_GetField_0x454(p))
-        return 0;
-    if (F32(p, 0x10) > lbl_80540150)
-        return 0;
-    if (S32(p, 0xd88) < 0 && Player_IsLinked(p) && fn_802486A0(p) == 5)
-        return 0;
-    return 1;
-}
-
 static inline void fn_80263C64_snap(char* p) {
     f32 thr = lbl_8054017C * (*(f32*)__float_epsilon);
     f32 nthr = -thr;
