@@ -18,9 +18,9 @@ extern const f32 lbl_80543194;
 extern const f32 lbl_80543198;
 extern const f32 lbl_8054318C;
 extern const f32 lbl_805431B4;
-extern "C" void add__7RupyNumFUcifQ28JUtility6TColor(RupyNum*, s32, int, f32, JUtility::TColor);
+extern "C" void add__7RupyNumFUcifQ28JUtility6TColor(RupyNum*, s32, JGeometry::TVec3f, f32, JUtility::TColor);
 static inline void screAdd(s32 n, JGeometry::TVec3f pos, JUtility::TColor color) {
-    add__7RupyNumFUcifQ28JUtility6TColor(lbl_8053AF50, n, (int)&pos, lbl_8054318C, color);
+    add__7RupyNumFUcifQ28JUtility6TColor(lbl_8053AF50, n, pos, lbl_8054318C, color);
 }
 
 extern "C" void fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
@@ -150,34 +150,31 @@ extern "C" void fn_80391F58(void* this_) {
 #pragma dont_inline reset
 
 extern "C" void fn_80393228(void* this_) {
-  u8* p = (u8*)this_;
-  u8 alpha = (u8)(s32)(255.0f * (*(s32*)(p + 0x230) / 90.0f));
-  s32 n = *(s32*)(p + 0x23c);
-  s32 type = *(s32*)(p + 0x238);
-  if (n < 10) {
-    if (*(s32*)(p + 4) < 8) {
-      JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-      JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
-      lbl_8053AF50->add(n, (int)&pos, 0.5f, color);
+    u8* p = (u8*)this_;
+    f32 alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
+    if (*(s32*)(p + 0x23c) < 10) {
+        if (*(s32*)(p + 4) < 8) {
+            JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(p + 0xc));
+            s32 type = *(s32*)(p+0x238);
+            screAdd(*(s32*)(p + 0x23c), pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+        }
+    } else if (*(s32*)(p + 0x23c) < 100) {
+        if (*(s32*)(p + 4) < 8) {
+            JGeometry::TVec3f pos(*(f32*)(p+0xc)-lbl_805431B4, *(f32*)(p+0x10), *(f32*)(p+0x14));
+            s32 type = *(s32*)(p+0x238);
+            screAdd(*(s32*)(p + 0x23c)/10, pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+        }
+        alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
+        if (*(s32*)(p + 4) < 8) {
+            JGeometry::TVec3f pos(lbl_805431B4+*(f32*)(p+0xc), *(f32*)(p+0x10), *(f32*)(p+0x14));
+            s32 type = *(s32*)(p+0x238);
+            screAdd(*(s32*)(p + 0x23c)%10, pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+        }
+    } else if (*(s32*)(p + 4) < 8) {
+        JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(p + 0xc));
+        s32 type = *(s32*)(p+0x238);
+        screAdd(10, pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
     }
-  } else if (n < 100) {
-    if (*(s32*)(p + 4) < 8) {
-      JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-      pos.x -= 8.333f;
-      JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
-      lbl_8053AF50->add(n / 10, (int)&pos, 0.5f, color);
-    }
-    if (*(s32*)(p + 4) < 8) {
-      JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-      pos.x += 8.333f;
-      JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
-      lbl_8053AF50->add(n - (n / 10) * 10, (int)&pos, 0.5f, color);
-    }
-  } else if (*(s32*)(p + 4) < 8) {
-    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-    JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
-    lbl_8053AF50->add(10, (int)&pos, 0.5f, color);
-  }
 }
 
 extern "C" void fn_80393514(void* this_) {
