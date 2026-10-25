@@ -493,10 +493,11 @@ extern "C" void fn_8028BB14(u8* this_) {
     s32 n, cnt, v;
     u8* tbl;
     f32* pt;
-    f32 fz;
 
-    *(f32*)(this_ + 0x64) = *(f32*)(this_ + 0x60) = lbl_805404F0;
-    *(f32*)(this_ + 0x6c) = *(f32*)(this_ + 0x68) = lbl_805404D8;
+    *(f32*)(this_ + 0x60) = lbl_805404F0;
+    *(f32*)(this_ + 0x64) = lbl_805404F0;
+    *(f32*)(this_ + 0x68) = lbl_805404D8;
+    *(f32*)(this_ + 0x6c) = lbl_805404D8;
     *(s32*)(this_ + 0x108) = 0;
     *(s32*)(this_ + 0x230) = 0;
     *(s32*)(this_ + 0xb0) = 3;
@@ -537,10 +538,9 @@ extern "C" void fn_8028BB14(u8* this_) {
     spawn = *(u32*)(this_ + 0x90);
     a = (spawn >> 13) & 0x1F8;
     if (a == 0 && ((spawn >> 5) & 0x1F8) == 0) {
-        fz = lbl_805404C0;
         *(f32*)(this_ + 0x268) = f31 + (*(f32*)(this_ + 0xc) - f2);
         *(f32*)(this_ + 0x26c) = f30 + (*(f32*)(this_ + 0x10) - f3);
-        *(f32*)(this_ + 0x270) = fz;
+        *(f32*)(this_ + 0x270) = lbl_805404C0;
     } else {
         b = (spawn >> 5) & 0x1F8;
         *(f32*)(this_ + 0x268) = lbl_805404D8 + ((f32)a + f31);
@@ -562,20 +562,19 @@ extern "C" void fn_8028BB14(u8* this_) {
     *(s32*)(this_ + 0x25c) = *(u32*)(this_ + 0x90) & 7;
     if (*(s32*)(this_ + 0x25c) == 6) {
         cnt = fn_80138A30(lbl_8053AAF8);
-        if (cnt < 2) {
-            *(s32*)(this_ + 0x25c) = 0;
-        } else {
+        if (cnt >= 2) {
             u8* g = (u8*)lbl_8053AAF8;
-            seed = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
-            *(u32*)(g + 0xb4) = seed;
+            *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
             seed = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
             *(s32*)(this_ + 0x25c) = (s32)((f32)cnt * (*(f32*)&seed - lbl_805404CC)) + 1;
+        } else {
+            *(s32*)(this_ + 0x25c) = 0;
         }
     } else if (*(s32*)(this_ + 0x25c) == 5) {
         this_[0x260] = 1;
     }
     if (*(s32*)(this_ + 0x16c) == -1) {
-        (*(void (***)(u8*))this_)[4](this_);
+        ((ItemBase*)this_)->v02();
     }
 }
 
