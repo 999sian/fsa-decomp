@@ -368,18 +368,20 @@ s32 fn_803B933C(void* unused, SaveSlot* slots, s32 idx) {
     memcpy(dst, &tmp, sizeof(SaveSlot));
     return 0;
 }
-#pragma opt_propagation reset
+#pragma opt_propagation off
 s32 fn_803B93E8(void* unused, SaveSlot* slots, SaveBig* bigs, s32 idx) {
-	SaveSlot tmp;
-	SaveBig big;
-	SaveSlot* dst = &slots[idx];
-	SaveBig* bdst = &bigs[idx];
-	initSlot(&tmp, &big);
-	memcpy(dst, &tmp, sizeof(SaveSlot));
-	memcpy(bdst, &big, sizeof(SaveBig));
-	return 0;
+    SaveBig* bdst;
+    SaveSlot* dst;
+    dst = &slots[idx];
+    bdst = &bigs[idx];
+    SaveSlot tmp;
+    SaveBig big;
+    initSlot(&tmp, &big);
+    memcpy(dst, &tmp, sizeof(SaveSlot));
+    memcpy(bdst, &big, sizeof(SaveBig));
+    return 0;
 }
-
+#pragma opt_propagation reset
 void fn_803B950C(SaveSlot* slot, SaveBig* big) {
 	initSlot(slot, big);
 }
