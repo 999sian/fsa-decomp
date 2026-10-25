@@ -55,7 +55,7 @@ extern "C" u8 lbl_8053A1B0[];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
-struct Tu80317WordPair { u32 first, second; void set(u32 a, u32 b) { first = a; second = b; } };
+struct Tu80317WordPair { u32 first, second; void set(u32 b, u32 a) { first = a; second = b; } };
 static inline u8 activate80317F18(u8* self, s32 idx) {
     s32 slot = *(s32*)(self + 0x244);
     s32 room = *(s32*)(self + 0x198);
@@ -114,8 +114,8 @@ extern "C" void fn_80317F18(Actor* this_)
 
     if ((fn_802D800C(fn_802D6A9C(), 0x1e) == 0 && *(s32*)(self + 0x264) == 2) || fn_802D800C(fn_802D6A9C(), 0x1e) == 1) {
         const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
-        *(Tu80317WordPair*)&rect = box[0];
-        *((Tu80317WordPair*)&rect + 1) = box[1];
+        ((Tu80317WordPair*)&rect)->set(box[0].first, box[0].second);
+        ((Tu80317WordPair*)&rect + 1)->set(box[1].first, box[1].second);
         rect.x0 += *(f32*)(self + 0xc);
         rect.y0 += *(f32*)(self + 0x10);
         rect.x1 += *(f32*)(self + 0xc);
