@@ -17,6 +17,13 @@ struct J2DScreen {
 extern "C" void __dl__FPv(void*);
 extern "C" void* fn_804030C4(u32 type, const char* name);
 extern "C" const char* lbl_804B1BC0[];
+struct Obj804465B8 {
+    void* vt;
+    J2DScreen* screen;
+    void* a[4];
+    void* b[4];
+    u8 flags[9];
+};
 struct ScreenTagEntry {
     u8 pad[0x30];
     u64 tag0;
@@ -344,7 +351,7 @@ extern "C" void* fn_8044728C(void* param_1) {
     typedef void* (*SearchFn)(void*, unsigned long long);
     u8* self = (u8*)param_1;
     void** p;
-    u8* params;
+    const ScreenTagEntry* params;
     int i;
     *(void**)self = (void*)lbl_804B1BE8;
     lbl_8053AF00 = (u32)self;
@@ -353,13 +360,13 @@ extern "C" void* fn_8044728C(void* param_1) {
     (*(J2DScreen**)(self + 4))->setPriority(lbl_80490400, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
 
     p = (void**)self;
-    for (i = 0, params = lbl_80490038; i < 4; i++, params += 0xc0) {
+    for (i = 0, params = (const ScreenTagEntry*)lbl_80490038; i < 4; i++, params++) {
         void* obj = __nw__FUl(0x2c);
         if (obj != 0) {
             *(void**)obj = (void*)lbl_804AF86C;
         }
         p[2] = obj;
-        u64 tag0 = *(u64*)(params + 0x30);
+        u64 tag0 = params->tag0;
         fn_80402F04(p[2], (*(J2DScreen**)(self + 4))->search(tag0));
 
         obj = __nw__FUl(0x2c);
@@ -367,7 +374,7 @@ extern "C" void* fn_8044728C(void* param_1) {
             *(void**)obj = (void*)lbl_804AF86C;
         }
         p[6] = obj;
-        u64 tag1 = *(u64*)(params + 0xb8);
+        u64 tag1 = params->tag1;
         fn_80402F04(p[6], (*(J2DScreen**)(self + 4))->search(tag1));
         p++;
     }
