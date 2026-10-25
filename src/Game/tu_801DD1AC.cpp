@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern f32 lbl_8053F388;
 extern f32 lbl_8053F38C;
@@ -54,9 +55,9 @@ extern "C" s32 fn_801DD1AC(u8* this_) {
 extern "C" s32 fn_801DD28C(u8* this_) {
     s32 result = 0;
     f32 x0 = lbl_8053F388;
-    f32 y0 = lbl_8053F388;
+    f32 y0 = x0;
     f32 x1 = lbl_8053F390;
-    f32 y1 = lbl_8053F390;
+    f32 y1 = x1;
     switch (*(s32*)(this_ + 0x248)) {
     case 9:
         x0 = lbl_8053F394;
