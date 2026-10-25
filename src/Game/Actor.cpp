@@ -1252,11 +1252,11 @@ extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c) {
 
 /* --- 0x801F2740: per-slot overlap test, returns a 4-bit slot mask ----------- */
 extern "C" u8 fn_801F2740(const Actor* a, s32 b) {
-    f32 rect[4];
-    rect[3] = a->field_6C + a->field_0C.y - a->field_0C.z;
-    rect[1] = a->field_64 + a->field_0C.y - a->field_0C.z;
-    rect[0] = a->field_60 + a->field_0C.x;
-    rect[2] = a->field_68 + a->field_0C.x;
+    JGeometry::TBox2<f32> rect;
+    rect.set(a->field_60 + a->field_0C.x,
+             a->field_64 + a->field_0C.y - a->field_0C.z,
+             a->field_68 + a->field_0C.x,
+             a->field_6C + a->field_0C.y - a->field_0C.z);
     u32 id;
     u32 acc = 0;
     s32 i;
@@ -1267,9 +1267,7 @@ extern "C" u8 fn_801F2740(const Actor* a, s32 b) {
         id = a->field_04;
         u8* mgr = (u8*)fn_802D6A9C();
         if (mgr[id + 0x131df] == 0) {
-            f32* p = (f32*)fn_8023E724(i);
-            f32 pz = p[2];
-            if (__fabs(pz - a->field_0C.z) > lbl_8053F748) {
+            if (__fabs(a->field_0C.z - ((f32*)fn_8023E724(i))[2]) > lbl_8053F748) {
                 continue;
             }
         }
@@ -1279,7 +1277,7 @@ extern "C" u8 fn_801F2740(const Actor* a, s32 b) {
         if (fn_8022D75C(i) != 0) {
             continue;
         }
-        if (fn_8023B190(i, rect, a->field_04) == 0) {
+        if (fn_8023B190(i, (f32*)&rect, a->field_04) == 0) {
             continue;
         }
         acc = (acc | (1 << i)) & 0xff;
@@ -1776,8 +1774,8 @@ extern "C" u32 fn_801EE24C(Actor* a) {
     pos.y -= d;
     d = warpRect(slot)[0];
     pos.x += d;
-    d = warpRect(slot)[1];
-    pos.y += d;
+    f32* w = warpRect(slot);
+    pos.y += w[1];
     pos.z = 200.0f;
     *(JGeometry::TVec3<f32>*)&a->field_0C = pos;
     a->field_04 = slot;
@@ -1806,8 +1804,8 @@ extern "C" int fn_801F11B4(Actor* a) {
                 a->field_0C.y = a->field_18.y;
                 s16 angle = fn_801F6874(a->field_98);
                 u32 idx = (u16)(angle - 0x8000) >> 5;
-                f32 dx = lbl_8053F7A4 * sincosTable___5JMath[idx].sin;
                 f32 dy = lbl_8053F7A4 * sincosTable___5JMath[idx].cos;
+                f32 dx = lbl_8053F7A4 * sincosTable___5JMath[idx].sin;
                 a->field_0C.x = a->field_0C.x + dx;
                 a->field_0C.y = a->field_0C.y + dy;
                 f32* rect = warpRect((s32)a->field_04);
