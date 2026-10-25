@@ -292,6 +292,26 @@ extern "C" void fn_801D8A30(char* p) {
     fn_801DE12C(p);
 }
 
+extern "C" u8 fn_801CD228(void* p);
+extern "C" void fn_801D8B28(void* this_) {
+    s32 state = *(s32*)((char*)this_ + 0x248);
+    if (state > 0x14) {
+        return;
+    }
+    switch (state) {
+    case 0:
+        if (fn_801CD228(*(void**)((char*)this_ + 0x4)) == 0) {
+            return;
+        }
+        break;
+    case 1:
+        fn_801D9C58((char*)this_, 1);
+        return;
+    default:
+        return;
+    }
+}
+
 extern "C" s32 fn_801CD664(s32 n);
 
 struct T84List {
@@ -307,14 +327,14 @@ struct T84List {
 static inline void t84PickTarget(char* p) {
     if (*(u8*)(p + 0x33f) == 3) {
                                             s32 l[12];
-        s32 n = 1;
-        l[0] = 1;
-        l[n++] = 2;
-        l[n++] = 5;
-        l[n++] = 6;
-        l[n++] = 9;
-        l[n++] = 10;
-          if (n > 0) {
+                  s32 n = 6;
+          l[0] = 1;
+          l[1] = 2;
+          l[2] = 5;
+          l[3] = 6;
+          l[4] = 9;
+          l[5] = 10;
+            if (n > 0) {
               *(u8*)(p + 0x334) = l[fn_801CD664(n)];
           } else {
               *(u8*)(p + 0x334) = 0;
@@ -415,8 +435,10 @@ inline void t84Row(char* p, s32 n, f32 x, f32 y) {
 }
 struct T84 { u8 pad[0x2d4]; JGeometry::TVec2<f32> mTbl[12]; };
 
-extern "C" void fn_801DA124(char* p) {
-    char* a = p;
+extern "C" void fn_801DA124(char* a) {
+    char* game;
+    char* area;
+    s32 room;
     fn_801D0ED0(a);
     *(f32*)(a + 0x60) = lbl_8053F1D8;
     *(f32*)(a + 0x64) = lbl_8053F1D8;
@@ -437,9 +459,8 @@ extern "C" void fn_801DA124(char* p) {
     *(s32*)(a + 0x244) = *(s32*)(a + 0x108);
     *(s32*)(a + 0x114) = 0;
     *(u8*)(a + 0x196) = 1;
-    s32 room = *(s32*)(a + 4);
-    char* game = (char*)fn_802D6A9C();
-    char* area;
+    room = *(s32*)(a + 4);
+    game = (char*)fn_802D6A9C();
     if (room < 8) {
         area = game + 0xcc;
     } else {
@@ -701,13 +722,13 @@ extern "C" void fn_801D9960(char* p) {
 
 extern "C" BOOL fn_801D95F4(char* p) {
     BOOL ok = FALSE;
+    JGeometry::TVec2<f32> dir;
     JGeometry::TVec3<f32> pos;
     t84FrontPos(p, &pos);
     s32 id = Actor_CreateByID(fn_801F856C(), 0x424f4942, *(s32*)(p + 4), &pos, 0, -1, -1);
     if (id >= 0) {
         char* a = fn_801F666C(fn_801F856C(), id);
         if (a != NULL) {
-            JGeometry::TVec2<f32> dir;
             s32 pl = t84FindPlayer(p);
             if (pl >= 0) {
                 dir.y = fn_8023E724(pl)->y - pos.y;
