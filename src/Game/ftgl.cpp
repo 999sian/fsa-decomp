@@ -83,9 +83,9 @@ extern const f32 lbl_805418D8;
 extern const f32 lbl_805418DC;
 extern const f32 lbl_805418E0;
 static inline s32 ftglNearestPlayer(char* p) {
+    s32 n = fn_80138A30(lbl_8053AAF8);
     s32 best = 0;
     f32 bestD = lbl_805418C0;
-    s32 n = fn_80138A30(lbl_8053AAF8);
     for (s32 j = 0; j < n; j++) {
         s32 id = fn_8022EA0C(j);
         s32 room = *(s32*)(p + 0x4);
