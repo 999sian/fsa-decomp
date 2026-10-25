@@ -14,6 +14,42 @@ extern "C" f32 lbl_8053C7D8;
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void fn_8010E074(u8*);
 
+extern "C" u8* lbl_8053AB10;
+extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" f32 lbl_8053C7DC;
+extern "C" f32 lbl_8053C7E0;
+extern "C" f32 lbl_8053C7E4;
+extern "C" f32 lbl_8053C7E8;
+extern "C" f32 lbl_8053C7EC;
+extern "C" f32 lbl_8053C7F0;
+extern "C" f32 lbl_8053C7F4;
+extern "C" f32 lbl_8053C7F8;
+extern "C" f32 lbl_8053C7FC;
+static inline void dmlkRequestBounds(u8* p) {
+    u8* view = *(u8**)(lbl_8053AB10 + 0x24);
+    if (view[0x7f5] == 0) {
+        view[0x7f4] = 1;
+        *(s32*)(view + 0x7f8) = 5;
+        *(f32*)(view + 0x808) = *(f32*)(p + 0x250);
+        *(f32*)(view + 0x80c) = *(f32*)(p + 0x254);
+        *(f32*)(view + 0x810) = *(f32*)(p + 0x258);
+        *(f32*)(view + 0x814) = *(f32*)(p + 0x25c);
+        view[0x7f6] = 0;
+    }
+}
+static inline void dmlkSetBounds(u8* p, const f32* pos) {
+    f32 x = pos[0];
+    f32 y = pos[1];
+    f32 x0 = x - lbl_8053C7F0;
+    f32 x1 = lbl_8053C7F0 + x;
+    f32 y0 = y - lbl_8053C7E8;
+    f32 y1 = lbl_8053C7E8 + y;
+    *(f32*)(p + 0x250) = x0;
+    *(f32*)(p + 0x254) = y0;
+    *(f32*)(p + 0x258) = x1;
+    *(f32*)(p + 0x25c) = y1;
+}
+
 struct DMLKResMgr {
     virtual void v0();
     virtual void v1();
