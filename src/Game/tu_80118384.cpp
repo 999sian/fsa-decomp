@@ -495,12 +495,10 @@ extern "C" void fn_80118E20(u8* self)
                 *(u32*)(lbl_804BC504 + 0x28) = 0;
                 *(u32*)(lbl_804BC504 + 0x10) = 0;
 
-                dst = *(u8***)(self + 0x10);
-                src = *(u8***)(self + 0x14);
                 end = *(u8***)(self + 0x14);
-                for (; src < end; ++src, ++dst) {
-                    *dst = *src;
-                }
+                src = *(u8***)(self + 0x14);
+                dst = *(u8***)(self + 0x10);
+                dst = copyActorPointers(src, end, dst);
                 for (it = dst; it != *(u8***)(self + 0x14); it++) {
                 }
                 *(u8***)(self + 0x14) = dst;
