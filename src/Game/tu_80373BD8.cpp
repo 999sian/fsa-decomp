@@ -105,10 +105,6 @@ extern "C" void fn_80373EC8(Actor* p) {
     }
 }
 
-extern "C" const f32 lbl_80542E8C;
-extern "C" const s32 lbl_80475070[];
-extern "C" void fn_80230FD0(s32, u32);
-extern "C" u8 fn_80230534(s32);
 extern "C" void fn_80373C38(Actor*);
 extern "C" s32 fn_80239470(void*, s32, s32);
 extern "C" s32 fn_80238A68(s32);
