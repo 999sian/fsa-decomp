@@ -5,6 +5,10 @@
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry.h"
 
+extern "C" u8* fn_802D6A9C(void);
+extern u8* lbl_8053AB10;
+extern struct BogfGame* lbl_8053AAF8;
+
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void dtor_801D7730(void* this_, s32 flag);
