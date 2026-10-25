@@ -446,6 +446,7 @@ extern "C" s32 fn_80121DB0(u8* self) {
 }
 
 #pragma fp_contract off
+#pragma fp_reorder on
 extern "C" f32 fn_80121DC8(u8* self, s32 player) {
     GameLowVec pos;
     pos = *fn_8023E724(player);
@@ -458,6 +459,7 @@ extern "C" f32 fn_80121DC8(u8* self, s32 player) {
     }
     return distance;
 }
+#pragma fp_reorder reset
 #pragma fp_contract reset
 
 extern "C" s32 fn_80121E40(u8* self) {
@@ -684,14 +686,13 @@ extern "C" void fn_80122548(u8* self) {
             idx = fn_8022EA0C(player);
         }
         GameLowVec pos = *fn_8023E724(idx);
-        u32 arg;
         player = *(s32*)(self + 0x344);
         if (player < 0 || player >= 4) {
-            arg = -1;
+            idx = -1;
         } else {
-            arg = player;
+            idx = fn_8022EA0C(player);
         }
-        *(s32*)(self + 0x98) = fn_80230CFC(fn_8022EA0C(arg));
+        *(s32*)(self + 0x98) = fn_80230CFC(idx);
         switch (*(s32*)(self + 0x98)) {
         case 0:
             pos.x -= lbl_8053C9BC;
@@ -715,7 +716,7 @@ extern "C" void fn_80122548(u8* self) {
         } else {
             idx = fn_8022EA0C(player);
         }
-        register s32 n = fn_80230CFC(idx);
+        s32 n = fn_80230CFC(idx);
         if (n < 0) {
             return;
         }
@@ -916,7 +917,7 @@ extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
     }
     u.w[1] = (fn_8022E970(*player) - 1) ^ 0x80000000;
     u.w[0] = 0x43300000;
-    n = (f32)(u.d - lbl_8053C9D0);
+    n = u.d - lbl_8053C9D0;
     t = lbl_8053C9C4 * n - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
@@ -952,8 +953,8 @@ extern "C" void fn_80122F6C(u8* self, f32* x, f32* y, s32* player) {
     }
     u.w[1] = (fn_8022E970(*player) - 1) ^ 0x80000000;
     u.w[0] = 0x43300000;
-    t = (f32)(u.d - lbl_8053C9D0);
-    t = lbl_8053C9C4 * t - lbl_8053C9C4;
+    n = (f32)(u.d - lbl_8053C9D0);
+    t = n * lbl_8053C9C4 - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = lbl_8053C9BC * t + offset;
