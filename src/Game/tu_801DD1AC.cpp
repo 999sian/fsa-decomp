@@ -14,6 +14,9 @@ extern const u8 lbl_8053F1C8;
 extern f32 lbl_8053F38C;
 extern f32 lbl_8053F3B4, lbl_8053F3B8, lbl_8053F3BC, lbl_8053F3C0, lbl_8053F3C4, lbl_8053F3C8;
 
+extern "C" u8 fn_801F37AC(void*, s32, void*, s32, s32, s32);
+extern "C" void fn_801CB538(s32, void*, s32, s32);
+
 static inline bool canHitPlayer(u8* p, s32 idx) {
     bool result = false;
     if (idx >= 0 && idx < 4 && !fn_80235448(idx)) {
