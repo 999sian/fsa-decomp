@@ -119,11 +119,22 @@ extern "C" const f32 lbl_80542EDC;
 extern "C" const f32 lbl_80542F10;
 extern "C" const f32 lbl_80542F14;
 extern "C" const f32 lbl_80542F18;
+
+// Game RNG at lbl_8053AAF8+0xb4 (JMath::TRandom_fast_ step), as a float in [0, 1).
+inline f32 t374RandF() {
+    u8* rng = (u8*)lbl_8053AAF8;
+    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+    union {
+        u32 i;
+        f32 f;
+    } bits;
+    bits.i = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+    return bits.f - lbl_80542ED8;
+}
 extern "C" void fn_803754E8(Actor* this_) {
     s32 mask;
     u8* p = (u8*)this_;
     s32 idx;
-    s32 rnd;
     s32 mode;
     union {
         u32 i;
@@ -152,13 +163,19 @@ extern "C" void fn_803754E8(Actor* this_) {
                 mask |= 1 << *(s32*)((u8*)o + 0x240);
             }
         }
-        do {
+        for (;;) {
             u8* rng = lbl_8053AAF8;
             *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
             bits.i = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-            rnd = (s32)(lbl_80542F10 * (bits.f - lbl_80542ED8) + lbl_80542ED8);
-            *(s32*)(p + 0x240) = rnd;
-        } while ((mask & 0x1e) != 0x1e && (mask & (1 << rnd)) != 0);
+            f32 r = bits.f - lbl_80542ED8;
+            *(s32*)(p + 0x240) = (s32)(lbl_80542F10 * r + lbl_80542ED8);
+            if ((mask & 0x1e) == 0x1e) {
+                break;
+            }
+            if (((1 << *(s32*)(p + 0x240)) & mask) == 0) {
+                break;
+            }
+        }
     } else {
         *(s32*)(p + 0x240) = mode;
     }
@@ -168,8 +185,7 @@ extern "C" void fn_803754E8(Actor* this_) {
     fy = (f32)((s32)*(f32*)(p + 0x10) / 16 * 16 + 8);
     *(f32*)(p + 0x28) = fy;
     *(f32*)(p + 0x10) = fy;
-    *(Vec*)(p + 0x230) = *(Vec*)(p + 0xc);
-    *(f32*)(p + 0x238) = *(f32*)(p + 0x14);
+    JGeometry::setTVec3f((f32*)(p + 0xc), (f32*)(p + 0x230));
     *(f32*)(p + 0x60) = lbl_80542F14;
     *(f32*)(p + 0x64) = lbl_80542F14;
     *(f32*)(p + 0x68) = lbl_80542F18;
@@ -184,9 +200,9 @@ extern "C" void fn_803754E8(Actor* this_) {
     *(u8*)(p + 0x248) = (*(u32*)(p + 0x90) >> 5) & 1;
     if (*(u8*)(p + 0x248) == 0 && fn_8028D4DC(p + 0xc, 0, *(s32*)(p + 0x16c)) != 0) {
         *(s32*)(p + 0x244) = 1;
-        (*(void (**)(void*, s32, s32))(*(u32*)p + 0x30))(p, 0xff, 1);
+        this_->v10(0xff, 1);
+        *(s32*)(p + 0x240) = 0;
     }
-    *(s32*)(p + 0x240) = 0;
     if (((*(u32*)(p + 0x90) >> 8) & 0xf) != 0) {
         *(s32*)(p + 0x244) = 1;
     }
