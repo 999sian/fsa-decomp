@@ -5,6 +5,7 @@
 #pragma auto_inline off
 
 struct Player;
+typedef u8 SameTeamResult;
 struct PlayerManager {
     void* vtable;
     Player* players[4];
@@ -421,25 +422,19 @@ static inline int p416C4(int i) {
 
 int fn_8022B334(int index)
 {
-    int state;
-
     if (lbl_8053AC90 == NULL) return 0;
-    if (isPlayerEnabled(index) && fn_80240AF0(lbl_8053AC90->players[index])) return 0;
-
-    state = isPlayerEnabled(index) ? fn_802486A0(lbl_8053AC90->players[index]) : 0;
-    if (state == 4) {
-        if (!fn_80257DB4(lbl_8053AC90->players[index])) return 0;
-    } else if (state == 5) {
-        if (isPlayerEnabled(index) && Player_IsLinked(lbl_8053AC90->players[index])) {
-            state = isPlayerEnabled(index) ? fn_802416C4(lbl_8053AC90->players[index]) : 0;
-            if (state != 7 || !fn_8024B24C(lbl_8053AC90->players[index])) return 0;
+    if (p40AF0(index)) return 0;
+    if (p486A0(index) == 4) {
+        if (!(u8)fn_80257DB4(lbl_8053AC90->players[index])) return 0;
+    } else if (p486A0(index) == 5) {
+        if (pIsLinkedU8(index)) {
+            if (p416C4(index) != 7 || !(u8)fn_8024B24C(lbl_8053AC90->players[index])) return 0;
         }
-        if (!fn_80257DB4(lbl_8053AC90->players[index])) return 0;
+        if (!(u8)fn_80257DB4(lbl_8053AC90->players[index])) return 0;
     } else {
-        int i;
-        for (i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (isPlayerEnabled(i) && (index == i || fn_8022E438(index, i))) {
-                if (!(isPlayerEnabled(i) && fn_80240AF0(lbl_8053AC90->players[i])) && !fn_80257DB4(lbl_8053AC90->players[i])) return 0;
+                if (!p40AF0(i) && !(u8)fn_80257DB4(lbl_8053AC90->players[i])) return 0;
             }
         }
     }
@@ -922,12 +917,10 @@ extern "C" u8 fn_8022E438(int a, int b)
     if (a == b) return 1;
     if ((u8)pIsLinked(a)) {
         if (b == pLinkTarget(a)) return 1;
-        a = pLinkTarget(a);
-        return a == pLinkTarget(b);
+        return (u8)(pLinkTarget(a) == pLinkTarget(b));
     }
     if ((u8)pIsLinked(b)) {
-        u8 r = pLinkTarget(b) == a;
-        return r;
+        return pLinkTarget(b) == a;
     }
     return 0;
 }
