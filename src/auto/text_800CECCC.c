@@ -10,7 +10,7 @@
 #include "JSystem/J3D/J3DAnmVisibilityFull.h"
 
 extern "C" void fn_800CF370(void** p);
-extern "C" void fn_800CF2B0(void** p);
+extern "C" void** fn_800CF2B0(void** p);
 extern "C" void** fn_800CF38C(void** p, short del);
 extern "C" void** fn_800CF314(void** p, short del);
 extern "C" void* fn_800CF3E8(void** self, unsigned char* data);
@@ -150,9 +150,10 @@ extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
     return 0;
 }
 
-extern "C" void fn_800CF2B0(void** p) {
+extern "C" void** fn_800CF2B0(void** p) {
     *p = lbl_8049AE38;
     *p = lbl_8049AE24;
+    return p;
 }
 
 extern "C" void** fn_800CF2CC(void** p, short del) {
