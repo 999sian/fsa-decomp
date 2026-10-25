@@ -21,7 +21,7 @@ extern "C" void fn_802F8F0C(void*, u8*);
 extern "C" void fn_802F91AC(void*, f32*, u8*, u8*, f32);
 extern "C" u8 lbl_8046F940[];
 extern "C" f32 lbl_80541548;
-extern "C" f32 lbl_8054154C;
+extern "C" const f32 lbl_8054154C;
 extern "C" f32 lbl_80541550;
 #include "JSystem/JKernel/JKRDecomp.h"
 #include <dolphin/mtx.h>
@@ -1053,6 +1053,109 @@ GXWGFifo.f32=u; GXWGFifo.f32=v2; GXWGFifo.f32=su; GXWGFifo.f32=ev;
 }
 if(ent && *(s32*)(ent+0x30)!=-1) fn_802F6800(this_,pos,0,0,0,(s32)tiles,ent);
 }
+}
+
+extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, void* ptr, f32 scaleX, f32 scaleY) {
+    u8* self=(u8*)base;
+    f32* pos=(f32*)elem;
+    u8* data=(u8*)a;
+    u8* ent=(u8*)ptr;
+    Mtx matrix;
+    f32 origin[3];
+    u8* resolved;
+    SpriteOam802F object;
+    u8 transformed;
+    u8* tables = lbl_8046F940;
+    if (!self[0x2364]) return;
+    if (ent && ent[0x21]) {
+        if (fn_802F654C(self,pos,(s32)data,frame,0,0,ent)) return;
+    }
+    if (ent && ent[0x22]) {
+        if (fn_802F6298(self,(Vec*)pos,(s32)data,frame,0,0,ent)) return;
+    }
+    u8* header = data + frame*2;
+    s32 start = header[2] | (header[3]<<8);
+    s32 count = ((header[4] | (header[5]<<8))-start)/6;
+    DrawRec record;
+    s32 lastPriority = -1;
+    s32 lastPalette = -1;
+    fn_802F5570(self,pos,ent,origin,&resolved,matrix,(u8*)&record);
+    f32 depth;
+    if (resolved) {
+        bool adjust;
+        if ((*(u8**)((u8*)lbl_8053AB10+0x20))[0xe461]) adjust = resolved[0x20]!=0;
+        else adjust = true;
+        if (adjust) adjust = origin[2] > lbl_805414F8;
+        s32 layer=(s8)resolved[0x1c];
+        s32 sub=(s8)resolved[0x1d];
+        if (adjust && layer<1) { layer++; sub--; }
+        depth=(layer<<10)+(sub<<7);
+    } else depth=lbl_805414F8;
+    fn_802F91AC(self,origin,resolved,&transformed,depth);
+    fn_802F8F0C(self,resolved);
+    s32 offsetY=lbl_80541548*(lbl_80541518-scaleY);
+    s32 offsetX=lbl_80541548*(lbl_80541518-scaleX);
+    u8* source = data + start + (count-1)*6;
+    for (s32 index=count-1;index>=0;index--,source-=6) {
+        object.y=source[0];
+        object.affine=source[1]&3;
+        object.mode=(source[1]>>2)&3;
+        object.mosaic=(source[1]>>4)&1;
+        object.color=(source[1]>>5)&1;
+        object.shape=(source[1]>>6)&3;
+        object.x=(s8)source[2];
+        if (index!=0) {
+            object.y+=offsetY;
+            object.x+=offsetX;
+        }
+        object.rotation=(source[3]>>1)&7;
+        object.flipX=(source[3]>>4)&1;
+        object.flipY=(source[3]>>5)&1;
+        object.size=(source[3]>>6)&3;
+        object.tile=source[4]|((source[5]&3)<<8);
+        object.priority=(source[5]>>2)&3;
+        if (resolved) object.palette=resolved[source[5]>>4];
+        else object.palette=source[5]>>4;
+        object.pad=0;
+        s32 priority=object.priority;
+        s32 palette=object.palette;
+        if (priority!=lastPriority || palette!=lastPalette) {
+            lastPriority=priority;
+            lastPalette=palette;
+            s32 bank=resolved?resolved[0x1e]:0;
+            GXLoadTlut((GXTlutObj*)(self+0x25c+bank*0x300+priority*0xc0+palette*0xc), ((GXTlut*)(tables+0x1640))[palette]);
+            u32 map=(((palette&1)<<2)|priority);
+            GXLoadTexObj((GXTexObj*)(self+0xb5c+(bank<<11)+(priority<<9)+(palette<<5)), ((GXTexMapID*)(tables+0x1620))[map]);
+            GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,((GXTexMapID*)(tables+0x1620))[map],GX_COLOR_NULL);
+        }
+        s32* size=(s32*)(tables+0x1680+object.shape*32+object.size*8);
+        f32 width=size[0]*8;
+        f32 height=size[1]*8;
+        f32 x;
+        if (object.x&0x100) x=(s16)(object.x|0xfe00);
+        else x=(u8)object.x;
+        f32 z=lbl_805414F8;
+        f32 y=-(f32)(s8)object.y;
+        if (!transformed) {
+            x+=origin[0];
+            z+=origin[1]+depth;
+            y+=origin[2]+depth;
+        }
+        f32 u=(lbl_80541510*(f32)(object.tile&31)+lbl_80541520)*lbl_8054154C;
+        f32 v=((lbl_80541510*(f32)(object.tile&0x3e0))*lbl_80541550+lbl_80541520)*lbl_8054154C;
+        f32 u2;
+        f32 v2;
+        if (object.flipX) {u2=u;u+=(width-lbl_80541518)*lbl_8054154C;}
+        else u2=u+(width-lbl_80541518)*lbl_8054154C;
+        if (object.flipY) {v2=v;v+=(height-lbl_80541518)*lbl_8054154C;}
+        else v2=v+(height-lbl_80541518)*lbl_8054154C;
+        GXBegin(GX_QUADS,GX_VTXFMT0,4);
+        GXWGFifo.f32=x; GXWGFifo.f32=z; GXWGFifo.f32=y; GXWGFifo.f32=u; GXWGFifo.f32=v;
+        GXWGFifo.f32=x+width*scaleX; GXWGFifo.f32=z; GXWGFifo.f32=y; GXWGFifo.f32=u2; GXWGFifo.f32=v;
+        GXWGFifo.f32=x+width*scaleX; GXWGFifo.f32=z; GXWGFifo.f32=y-height*scaleY; GXWGFifo.f32=u2; GXWGFifo.f32=v2;
+        GXWGFifo.f32=x; GXWGFifo.f32=z; GXWGFifo.f32=y-height*scaleY; GXWGFifo.f32=u; GXWGFifo.f32=v2;
+    }
+    if (ent && *(s32*)(ent+0x30)!=-1) fn_802F6800(self,pos,(s32)data,frame,0,0,ent);
 }
 
 extern GXColor lbl_805414F4;
