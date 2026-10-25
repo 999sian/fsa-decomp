@@ -1633,29 +1633,21 @@ extern "C" void fn_800D8720(void* param_1) {
 }
 
 #pragma opt_propagation reset
-extern "C" void fn_800D87B4(u8* self) {
-    u8* start;
-    u8* p;
-    unsigned int i;
-    u8* base;
-    i = 0;
-    base = self;
-    p = base;
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(base + 0x90);
-    start = __GDCurrentDL->pDisplayListData;
-    for (; i < 3; i++) {
-        GXColorS10 c = *(GXColorS10*)(p + 0x42);
-        J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
+extern "C" void fn_800D87B4(u8* this_) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x90);
+    u8* base = __GDCurrentDL->pDisplayListData;
+    u8* p = this_;
+    for (u32 i = 0; i < 3; i++) {
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0x42));
         p += 8;
     }
-    i = 0;
-    p = base;
+    u32 i = 0;
+    u8* q = this_;
     for (; i < 4; i++) {
-        GXColor c = *(GXColor*)(p + 0x62);
-        J3DGDSetTevKColor(GXTevKColorID(i), c);
-        p += 4;
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(q + 0x62));
+        q += 4;
     }
-    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+    DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
 }
 extern "C" void fn_800D8884(u8* p) {
     u8* q;
