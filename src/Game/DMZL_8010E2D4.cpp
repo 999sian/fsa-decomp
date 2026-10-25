@@ -47,6 +47,9 @@ extern "C" void fn_8010E2D4(void*, s32);
 extern "C" void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle);
 extern "C" void* fn_8011921C(void);
 extern "C" void* fn_8011871C(void* list, void* it, u32 tag);
+static inline void* DMZLFind(void* first, u32 tag) {
+    return fn_8011871C(fn_8011921C(), first, tag);
+}
 static inline void* DMZLFindTag(u32 tag) {
     void* first = *(void**)((u8*)fn_8011921C() + 0x10);
     return fn_8011871C(fn_8011921C(), first, tag);
@@ -550,8 +553,7 @@ extern "C" void fn_80111D44(u8* this_) {
         *(JGeometry::TVec3<f32>*)(this_ + 0x27c) = *(JGeometry::TVec3<f32>*)(*it + 0xc);
     }
 
-    void* first = *(void**)((u8*)fn_8011921C() + 0x10);
-    it = (u8**)fn_8011871C(fn_8011921C(), first, 0x444d4d44);
+    it = (u8**)DMZLFindTag(0x444d4d44);
     if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
         do {
             elem = *it;
