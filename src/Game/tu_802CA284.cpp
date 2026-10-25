@@ -31,30 +31,6 @@ extern "C" f32 lbl_80540D94;
 extern "C" f32 lbl_80540D98;
 extern "C" f32 lbl_80540D9C;
 extern "C" f32 lbl_80540DA0;
-
-struct SubObj802CA {
-    u8 pad[0x24];
-    s32 f24;
-    u8 pad2[0xf4 - 0x28];
-    u32 f0f4;
-};
-
-static inline void releaseSlots802CA(u8* p) {
-    SubObj802CA* s;
-
-    s = *(SubObj802CA**)(p + 0x234);
-    if (s != 0) {
-        s->f0f4 |= 1;
-        s->f24 = 1;
-        *(SubObj802CA**)(p + 0x234) = 0;
-    }
-    s = *(SubObj802CA**)(p + 0x238);
-    if (s != 0) {
-        s->f0f4 |= 1;
-        s->f24 = 1;
-        *(SubObj802CA**)(p + 0x238) = 0;
-    }
-}
 extern "C" void fn_802CA284(u8* this_) {
     u8* p;
     s32 i;
