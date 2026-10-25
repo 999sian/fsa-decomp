@@ -290,10 +290,10 @@ extern "C" s32 fn_801A4FB4(u8* this_) {
     if (*(u8*)(this_ + 0xD4) == 1) {
         switch (mode) {
         case 1:
-            vz = 5.0f + (1.0f - 2.0f * lbl_8053AAF8->rnd.get_ufloat_1());
+            vz = 5.0f + lbl_8053AAF8->rnd.get_sfloat_1();
             break;
         case 2:
-            vz = 2.0f + (1.0f - 2.0f * lbl_8053AAF8->rnd.get_ufloat_1());
+            vz = 2.0f + lbl_8053AAF8->rnd.get_sfloat_1();
             break;
         case 3:
             if (*(s32*)(this_ + 0x108) - 10 <= 0) {
