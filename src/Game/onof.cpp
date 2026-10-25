@@ -39,11 +39,11 @@ struct OnofBox2 {
 };
 
 extern const f32 lbl_80540DA8;
-extern f32 lbl_80540DAC;
-extern f32 lbl_80540DB0;
-extern f32 lbl_80540DB4;
-extern f32 lbl_80540DB8;
-extern f32 lbl_80540DBC;
+extern const f32 lbl_80540DAC;
+extern const f32 lbl_80540DB0;
+extern const f32 lbl_80540DB4;
+extern const f32 lbl_80540DB8;
+extern const f32 lbl_80540DBC;
 extern f32 lbl_80540DC0;
 extern f32 lbl_80540DC4;
 extern f32 lbl_80540DC8;
