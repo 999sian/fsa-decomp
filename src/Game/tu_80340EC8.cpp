@@ -8,8 +8,6 @@ extern "C" char lbl_804AC4D0[];
 extern "C" void* lbl_8053AAF8;
 extern "C" void fn_80138B7C(void* mgr);
 extern "C" void __dt__5ActorFv(Actor* self, s32 flag);
-s32 fn_802D6A9C(void);
-u8 fn_802D800C(s32, s32);
 extern f32 lbl_805422E0;
 extern f32 lbl_805422C4;
 extern "C" s32 fn_802D6A9C(void);
