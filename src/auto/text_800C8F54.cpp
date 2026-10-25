@@ -866,7 +866,7 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
         (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[22](*(void**)((u8*)material + 0x2c), i, &s38);
     }
     for (i = 0; i < 4; i++) {
-        fn_800CB3D0(&s30, (u8*)self, idx, i);
+        ((void (*)(u32*, u8*, s32, s32))fn_800CB3D0)(&s30, (u8*)self, idx, i);
         (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[28](*(void**)((u8*)material + 0x2c), i, &s30);
     }
     for (i = 0; i < 4; i++) {
@@ -1357,13 +1357,14 @@ extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
 }
 
 extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x94;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off + (b << 1));
-    if (v != 0xffff) {
-        *out = (*(u32**)(p + 0x48))[v];
-        return;
+    GXColor def = *(GXColor*)&lbl_8053BC78;
+    const J3DMaterialFactory* self = (const J3DMaterialFactory*)p;
+    J3DMaterialInitData* data = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (data->mTevKColorIndex[b] != 0xffff) {
+        *out = (*(u32**)(p + 0x48))[data->mTevKColorIndex[b]];
+    } else {
+        *out = *(u32*)&def;
     }
-    *out = lbl_8053BC78;
 }
 
 extern "C" u8 fn_800CB428(u8* p, s32 idx) {
