@@ -1,6 +1,4 @@
 #include "types.h"
-#include "Game/SinitPoolChain.h"
-#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct ScreenTransitionState {
     void* vtable;
@@ -237,14 +235,5 @@ extern "C" void* fn_80443760(void* this_) {
 }
 
 extern "C" void __sinit_tu_804432DC_cpp(void) {
-    JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_;
-    JASPoolAllocObject_MultiThreaded<JASTrack>::memPool_;
-    JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
-    JASPoolAllocObject<JASPoolObj3_FSA>::memPool_;
-    JASPoolAllocObject<JASPoolObj4_FSA>::memPool_;
-    JASPoolAllocObject<JAIStream>::memPool_;
-    JASPoolAllocObject<JAISoundChild>::memPool_;
-    JASPoolAllocObject<JAISeq>::memPool_;
-    JASPoolAllocObject<JAISe>::memPool_;
 }
 
