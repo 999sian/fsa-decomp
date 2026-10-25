@@ -338,7 +338,8 @@ static inline BOOL slmnPartAlive(SlmnPart* part) {
 }
 
 static inline void slmnCenter(Slmn* this_, f32* out) {
-    f32 sy; f32 sx; s32 id; s32 n; s32 i; char* a;
+    f32 sy; f32 sx; s32 id; Slmn* walker; s32 n; s32 i; char* a;
+    walker = this_;
     n = 0;
     sy = sx = lbl_8053F8E0;
     for (i = 0; i < 4; i++) {
@@ -416,7 +417,6 @@ extern "C" void fn_80208244(char* this_, s32 state) {
     f32 at[2];
     f32 step[2];
     f32 pos[2];
-    s32 i;
     switch (state) {
     case 1:
         break;
@@ -427,6 +427,7 @@ extern "C" void fn_80208244(char* this_, s32 state) {
         s32 dir;
         u8 n;
         Slmn* s;
+        s32 i;
         slmnCenter((Slmn*)this_, pos);
         dir = slmnPickDir(this_, pos);
         n = fn_801CD664(3) + 1;
@@ -444,6 +445,7 @@ extern "C" void fn_80208244(char* this_, s32 state) {
     }
     case 4: {
         Slmn* s;
+        s32 i;
         fn_80208520(this_, at, step);
         s = (Slmn*)this_;
         for (i = 0; i < 4; i++) {
