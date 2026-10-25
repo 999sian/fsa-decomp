@@ -50,8 +50,6 @@ struct SubObj {
     virtual void w11();
     virtual void w12();
     virtual SubObj* w13(u64 x);
-    virtual void w14();
-    virtual u8* w15(u64 name);
 };
 
 typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
