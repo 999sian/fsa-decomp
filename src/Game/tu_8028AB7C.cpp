@@ -21,7 +21,8 @@ static inline s32 platformRoom(const s32 param) {
 }
 extern "C" u8* fn_802D6A9C(void);
 extern "C" s32 fn_80138A30(void* game);
-extern "C" void fn_801F06F0(void* this_, const char* name, s32 id);
+#include "Game/ItemBase.h"
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* = 0, s32 = -1, f32 = 1.0f, f32 = 1.0f);
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" f32 lbl_805404C4;
@@ -388,6 +389,8 @@ extern "C" u8 fn_8028B850(u8* this_) {
     s32 i;
     s32 idx;
     s32 x;
+    s32 h;
+    s32 m;
 
     if (this_[0x250] == 0) {
         for (i = 0; i < 4; i++) {
@@ -407,7 +410,7 @@ extern "C" u8 fn_8028B850(u8* this_) {
         *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
         return 0;
     }
-    if ((*(u32*)(this_ + 0x90) >> 27) != 0 && !(*(u8 (***)(u8*))this_)[0x34 / 4](this_) &&
+    if ((*(u32*)(this_ + 0x90) >> 27) != 0 && !(*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_) &&
         *(s32*)(this_ + 0x24c) != 0 && *(s32*)(this_ + 0x24c) != 2 && *(s32*)(this_ + 0x24c) != 3) {
         return 0;
     }
@@ -419,13 +422,13 @@ extern "C" u8 fn_8028B850(u8* this_) {
         *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
         if (*(s32*)(this_ + 0x230) >= 0x258) {
             *(s32*)(this_ + 0x230) = 0;
-            return !this_[0x234];
+            return this_[0x234] == 0;
         }
         return this_[0x234];
     case 2:
-        return (*(u8 (***)(u8*))this_)[0x34 / 4](this_);
+        return (*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_);
     case 3:
-        return !(*(u8 (***)(u8*))this_)[0x34 / 4](this_);
+        return (*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_) == 0;
     case 4:
         if (*(s32*)(this_ + 0x230) >= 0x258) {
             return 1;
@@ -443,8 +446,10 @@ extern "C" u8 fn_8028B850(u8* this_) {
     case 8:
     case 9:
         idx = idx - 5;
-        x = idx ^ *(s32*)(this_ + 0x23c);
-        return (u32)((x >> 1) - (x & idx)) >> 31;
+        x = *(s32*)(this_ + 0x23c);
+        h = (idx ^ x) >> 1;
+        m = (idx ^ x) & idx;
+        return (u32)(h - m) >> 31;
     }
     return 1;
 }
