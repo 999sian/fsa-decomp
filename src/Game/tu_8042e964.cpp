@@ -531,7 +531,7 @@ void* fn_80431C38(void* this_, s16 flag) {
 #include "JSystem/JKernel/JKRArchive.h"
 #include "stdio.h"
 extern "C" char lbl_8048F3AC[];
-extern "C" const char lbl_80543B20[];
+extern "C" const char lbl_80543B20[8];
 extern "C" f32 fn_80430518(void*,u8,s32,f32);
 extern "C" void fn_8042EF9C(T80431_Owner* self, char* out, s32 message, s32 count) {
 JUTFont::TWidth wa,wb,wc,wd,we;
