@@ -23,6 +23,31 @@ extern char lbl_8045E0F8[];
 extern char lbl_8045E10C[];
 extern char lbl_8053B6D0[3];
 
+// Trimmed view of JKRArchive's vtable: slots 0..17 are placeholders, 18/19 are the expand-size virtuals.
+class JKRArchiveVirtView {
+public:
+    virtual void slot0();
+    virtual void slot1();
+    virtual void slot2();
+    virtual void slot3();
+    virtual void slot4();
+    virtual void slot5();
+    virtual void slot6();
+    virtual void slot7();
+    virtual void slot8();
+    virtual void slot9();
+    virtual void slot10();
+    virtual void slot11();
+    virtual void slot12();
+    virtual void slot13();
+    virtual void slot14();
+    virtual void slot15();
+    virtual void slot16();
+    virtual void slot17();
+    virtual void setExpandSize(void* entry, u32 size);
+    virtual u32 getExpandSize(void* entry);
+};
+
 extern void* lbl_80498BB0[];
 extern "C" bool fn_8007A398(u8* this_, s32 entryNum);
 extern "C" void* __ct__10JKRArchiveFlQ210JKRArchive10EMountMode(void* this_, s32 entryNum, s32 mountMode);
