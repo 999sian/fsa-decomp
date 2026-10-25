@@ -41,7 +41,7 @@ extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
 extern f32 lbl_8053C02C;
 extern f32 lbl_8053C030;
 extern f32 lbl_8053C034;
-extern f32 lbl_8053BFAC;
+extern const f32 lbl_8053BFAC;
 extern "C" void* lbl_8053AAF8;
 extern "C" s16 lbl_80463800[];
 extern "C" s16 lbl_804638C0[];
