@@ -1039,6 +1039,18 @@ extern "C" void fn_803F8FBC(u8* p) {
     }
 }
 
+static inline f32 menuSignedFloat_803F(s32 value) {
+    union { f64 d; struct { u32 hi,lo; } w; } cv;
+    cv.w.hi=0x43300000;
+    cv.w.lo=(u32)value^0x80000000;
+    return (f32)(cv.d-lbl_80543740);
+}
+static inline f32 menuAlphaFloat_803F(u32 value) {
+    union { f64 d; struct { u32 hi,lo; } w; } cv;
+    cv.w.hi=0x43300000;
+    cv.w.lo=value;
+    return (f32)(cv.d-lbl_80543738);
+}
 extern const f32 lbl_805437B0;
 extern const f32 lbl_805437B4;
 extern const f32 lbl_80543748;
