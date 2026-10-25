@@ -1,9 +1,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #define Vec ActorVec
 #include "Game/Actor.h"
-#pragma opt_common_subs off
 #include "Game/ItemBase.h"
-#pragma opt_common_subs reset
 
 
 extern "C" char lbl_804AE620[];
@@ -23,11 +21,11 @@ extern "C" char lbl_80475120[];
 extern "C" const f32 lbl_80542ED8;
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, void* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void fn_803747E8(Actor* this_) {
-    register DrawRec rec;
-    int idx = 0;
-    int type = *(s32*)((char*)this_ + 0x240);
+    DrawRec rec;
+    s32 idx = 0;
+    s32 type = *(s32*)((char*)this_ + 0x240);
     if (type != 0) {
         idx = type + 3;
         rec.b1d = -1;
