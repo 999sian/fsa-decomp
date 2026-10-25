@@ -57,17 +57,20 @@ extern "C" void fn_80377A38(u8* this_) {
     if (this_[0x265] == 0) {
         if ((u8)fn_8028D4DC((f32*)(this_ + 0xc), 3, *(void**)(this_ + 0x16c))) {
             *(s32*)(this_ + 0x244) = 1;
+            s32 j;
+            s32 i;
             Vec pos;
             f32 x = ((Vec*)(this_ + 0xc))->x;
             f32 y = ((Vec*)(this_ + 0xc))->y;
             f32 z = ((Vec*)(this_ + 0xc))->z;
             x -= 24.0f;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 pos.x = x;
                 pos.y = y;
                 pos.z = z;
-                for (s32 j = 0; j < 4; j++) {
-                    pos.y = y + lbl_80475178[j];
+                f32* offset = lbl_80475178;
+                for (j = 0; j < 4; j++, offset++) {
+                    pos.y = y + *offset;
                     fn_802A3948(lbl_8053AC98, &pos, 0, *(u32*)(this_ + 4), 0);
                 }
                 x += 16.0f;
@@ -79,8 +82,7 @@ extern "C" void fn_80377A38(u8* this_) {
     ((Vec*)(this_ + 0x3c))->x = 0.0f;
     ((Vec*)(this_ + 0x3c))->y = 0.0f;
     ((Vec*)(this_ + 0x3c))->z = 0.0f;
-    *(f64*)(this_ + 0x248) = *(f64*)(this_ + 0xc);
-    *(f32*)(this_ + 0x250) = ((Vec*)(this_ + 0xc))->z;
+    JGeometry::setTVec3f((f32*)(this_ + 0xc), (f32*)(this_ + 0x248));
     *(f32*)(this_ + 0x60) = -31.5f;
     *(f32*)(this_ + 0x64) = -31.5f;
     *(f32*)(this_ + 0x68) = 31.5f;
