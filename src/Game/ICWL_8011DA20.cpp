@@ -93,6 +93,13 @@ static inline void icwlGetBox2(u8* this_, ICWLBox* box, f32 x, f32 y) {
     box->y1 += y;
 }
 
+static inline void icwlKillEmitter(void** emitter) {
+    if (*emitter != 0) {
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *emitter);
+        *emitter = 0;
+    }
+}
+
 static inline bool icwlHitPlayer(u8* this_) {
     s32 idx = fn_801F285C(this_, 0, 0, 1, -1);
     if (idx >= 0) {
