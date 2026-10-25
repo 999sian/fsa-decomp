@@ -55,7 +55,7 @@ extern "C" u8 lbl_8053A1B0[];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
-struct Tu80317WordPair { u32 first, second; };
+struct Tu80317WordPair { u32 first, second; void set(u32 a, u32 b) { first = a; second = b; } };
 static inline u8 activate80317F18(u8* self, s32 idx) {
     s32 slot = *(s32*)(self + 0x244);
     s32 room = *(s32*)(self + 0x198);
@@ -95,6 +95,8 @@ extern "C" Actor* fn_80317EB8(Actor* param_1, s16 param_2)
     return param_1;
 }
 
+#pragma opt_strength_reduction off
+#pragma opt_propagation off
 extern "C" void fn_80317F18(Actor* this_)
 {
     u8* self = (u8*)this_;
@@ -111,8 +113,9 @@ extern "C" void fn_80317F18(Actor* this_)
     fn_80239914(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198));
 
     if ((fn_802D800C(fn_802D6A9C(), 0x1e) == 0 && *(s32*)(self + 0x264) == 2) || fn_802D800C(fn_802D6A9C(), 0x1e) == 1) {
-        *(u64*)&rect = *(u64*)(self + 0x248);
-        *((u64*)&rect + 1) = *(u64*)(self + 0x250);
+        const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
+        *(Tu80317WordPair*)&rect = box[0];
+        *((Tu80317WordPair*)&rect + 1) = box[1];
         rect.x0 += *(f32*)(self + 0xc);
         rect.y0 += *(f32*)(self + 0x10);
         rect.x1 += *(f32*)(self + 0xc);
@@ -122,25 +125,21 @@ extern "C" void fn_80317F18(Actor* this_)
             fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
             idx = fn_8022FD8C(*(s32*)(self + 0x198));
             if (idx >= 0 && fn_802300EC()) {
-                *(f64*)&vec = *(f64*)(self + 0xc);
-                vec.z = *(f32*)(self + 0x14);
-                if (fn_8038AD24(idx, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &vec, 0x10)) {
-                    *(s32*)(self + 0x234) = idx;
-                    *(s32*)(self + 0x230) = 1;
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
+                ok = activate80317F18(self, idx);
                 if (ok) {
                     if (fn_802D800C(fn_802D6A9C(), 0x1e) == 0) {
                         idx = *(s32*)(self + 0x258);
                         if (idx >= 0) {
                             u8* p = (u8*)fn_801F666C(fn_801F856C(), idx);
                             if (p != 0 && *(u32*)(p + 0x1a0) == 0x534e5043) {
-                                s32 k = *(s32*)(p + 0x238);
-                                if (k == 6 || k == 7 || k == 0 || k == 8) {
-                                    *(s32*)(p + 0x264) = 3;
-                                }
+                                u32 k = *(u32*)(p + 0x238);
+                                if (k == 6) goto activate1;
+                            if (k == 7) goto activate1;
+                            if (k == 0) goto activate1;
+                            if (k != 8) goto after1;
+                        activate1:
+                            *(s32*)(p + 0x264) = 3;
+                        after1:;
                             }
                         }
                     }
@@ -156,10 +155,14 @@ extern "C" void fn_80317F18(Actor* this_)
                     if (idx >= 0) {
                         u8* p = (u8*)fn_801F666C(fn_801F856C(), idx);
                         if (p != 0 && *(u32*)(p + 0x1a0) == 0x534e5043) {
-                            s32 k = *(s32*)(p + 0x238);
-                            if (k == 6 || k == 7 || k == 0 || k == 8) {
-                                *(s32*)(p + 0x264) = 2;
-                            }
+                            u32 k = *(u32*)(p + 0x238);
+                            if (k == 6) goto activate2;
+                            if (k == 7) goto activate2;
+                            if (k == 0) goto activate2;
+                            if (k != 8) goto after2;
+                        activate2:
+                            *(s32*)(p + 0x264) = 2;
+                        after2:;
                         }
                     }
                 }
@@ -181,7 +184,8 @@ extern "C" void fn_80317F18(Actor* this_)
         }
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_8031825C(Actor* this_) {
     u8* self = (u8*)this_;
     Tu80317Rect rect;
