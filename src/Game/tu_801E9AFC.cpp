@@ -71,18 +71,17 @@ extern "C" void fn_801E9B54(void) {
 }
 
 extern "C" s32 fn_801E9B58(u8* param_1) {
-    s32 iVar2;
-    void* tmp;
+    long iVar2;
+    void* iVar3;
 
     iVar2 = fn_801F7F58(fn_801F856C(), param_1, lbl_80469C78, *(s32*)(param_1 + 0x198), lbl_8053F65C);
     if (iVar2 >= 0 && iVar2 != *(s32*)(param_1 + 0x198)) {
-        tmp = fn_801F666C(fn_801F856C(), iVar2);
-        param_1 = (u8*)tmp;
-        if (tmp != NULL) {
+        iVar3 = fn_801F666C(fn_801F856C(), iVar2);
+        if ((unsigned short)iVar3 != NULL) {
             if (fn_801CC8E4() != 0) {
                 iVar2 = -1;
-            } else if (*(u32*)(param_1 + 0x1a0) == 0x46495245) {
-                fn_802BAA00(param_1);
+            } else if (*(u32*)((u8*)iVar3 + 0x1a0) == 0x46495245) {
+                fn_802BAA00(iVar3);
             }
         }
     }
@@ -91,23 +90,16 @@ extern "C" s32 fn_801E9B58(u8* param_1) {
 
 extern "C" void fn_801E9C00(s16 param_1, f32* param_2) {
     s16 sVar3;
-    u32 uVar2;
-    f32* pt;
+    u32 idx;
     f32 fx;
-    f32 fy;
-
     param_2[0] = lbl_8053F660;
     param_2[1] = lbl_8053F664;
     sVar3 = 0x2000;
-    if (param_1 < 0) {
-        sVar3 = -0x2000;
-    }
-    uVar2 = ((u32)(-(s32)(s16)(param_1 + sVar3)) >> 2) & 0x3ff8;
-    pt = (f32*)((u8*)sincosTable___5JMath + uVar2);
+    if (param_1 < 0) sVar3 = -0x2000;
+    idx = ((u32)(-(s32)(s16)(param_1 + sVar3)) >> 4) & 0xffe;
     fx = param_2[0];
-    fy = param_2[1];
-    param_2[0] = fx * pt[1] - fy * pt[0];
-    param_2[1] = fy * pt[1] + fx * pt[0];
+    param_2[0] = fx * sincosTable___5JMath[idx + 1] - param_2[1] * sincosTable___5JMath[idx];
+    param_2[1] = fx * sincosTable___5JMath[idx] + param_2[1] * sincosTable___5JMath[idx + 1];
 }
 
 extern "C" u8* fn_802D6A9C(void);
