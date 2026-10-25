@@ -2512,10 +2512,3 @@ extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-extern const f32 lbl_80543404;
-extern const f32 lbl_80543408;
-extern const f32 lbl_8054342C;
-extern const f32 lbl_80543428;
-extern const f32 lbl_80543430;
-extern const f64 lbl_805433E0;
-extern const f64 lbl_805433B8;
