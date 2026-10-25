@@ -80,6 +80,15 @@ extern "C" f32 lbl_8053FFEC;
 extern "C" f32 lbl_8053FFF0;
 extern "C" f32 lbl_8053FFF4;
 extern "C" f32 lbl_8053FFF8;
+
+static inline void sobDraw(u8* p, SobDrawParam* prm, s32 flag) {
+    if (*(s32*)(p + 4) < 8) {
+        SobResMgr* mgr = *(SobResMgr**)(lbl_8053AAF8 + 0xa4);
+        void* res = mgr->getRes(0x534F4220, lbl_8046ADF0);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, res, *(s32*)(p + 0x234), lbl_8053FFD8, lbl_8053FFD8, prm);
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, flag, 0, 0);
+    }
+}
 extern "C" void fn_8022A83C(u8* p) {
     s32 mode = (*(u32*)(p + 0x90) >> 2) & 0x3f;
     f32* src;
