@@ -132,15 +132,45 @@ extern "C" void fn_8030EC18(Actor* p) {
     }
 }
 
+extern "C" u8* fn_801F856C(void);
+extern "C" void fn_801F31C4(void* a, f32* box);
+extern "C" void fn_8030EDBC(u8* this_) {
+    f32 box[4];
+    f32 pb[4];
+    s32 i;
+    s32 n;
+    s32 off;
+    u8* mgr;
+    u8* other;
+
+    pb[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+    pb[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+    pb[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+    pb[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+    if (*(s32*)(this_ + 0x230) <= 6 && *(u8*)(this_ + 0xc4) == 0 && *(f32*)(this_ + 0x14) <= lbl_8054173C) {
+        mgr = fn_801F856C();
+        n = *(s32*)(mgr + 0x1008);
+        off = 0;
+        for (i = 0; i < n; i++) {
+            mgr = fn_801F856C();
+            other = *(u8**)(mgr + off + 8);
+            if (other != 0 && other[0x11c] != 0 && *(s32*)(other + 4) == *(s32*)(this_ + 4) &&
+                *(s32*)(other + 0x1a0) == 0x4f424c46) {
+                fn_801F31C4(other, box);
+            }
+            off += 4;
+        }
+    }
+}
+
 extern "C" f32 lbl_80471368[];
-extern "C" f32 lbl_8054173C;
-extern "C" f32 lbl_80541740;
-extern "C" f32 lbl_8054174C;
-extern "C" f32 lbl_80541760;
-extern "C" f32 lbl_80541768;
-extern "C" f32 lbl_8054176C;
-extern "C" f32 lbl_80541770;
-extern "C" f32 lbl_80541774;
+extern "C" const f32 lbl_80541740;
+extern "C" const f32 lbl_8054174C;
+extern "C" const f32 lbl_80541760;
+extern "C" const f32 lbl_80541768;
+extern "C" const f32 lbl_8054176C;
+extern "C" const f32 lbl_80541770;
+extern "C" const f32 lbl_80541774;
 extern "C" s32 fn_80230CFC(void*);
 extern "C" s32 fn_801F2618(void*, s32, s32);
 extern "C" void fn_8030F9E4(u8* this_) {
