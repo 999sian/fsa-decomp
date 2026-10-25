@@ -255,7 +255,7 @@ extern "C" void fn_80446DB0(void* self_) {
     void* tex;
     void* obj;
     self = (u8*)self_;
-    for (i = 0, params = lbl_80490038; i < 4; i++, params += 0xc0) {
+    for (i = 0, params = (u8*)lbl_80490038; i < 4; i++, params += 0xc0) {
         self[0x30] &= ~(u8)(1 << i);
         self[0x30] &= ~(u8)(1 << (i + 4));
         tex = fn_804030C4(0x54494D47, lbl_804B1BC0[0]);
@@ -346,37 +346,36 @@ extern "C" void fn_80402F04(void* a, void* b);
 extern "C" u8 lbl_804AF86C[];
 extern "C" char lbl_80490400[];
 extern "C" u8 lbl_80529DEC[];
-#pragma opt_propagation off
-extern "C" void* fn_8044728C(void* param_1) {
+#pragma opt_propagation on
+extern "C" Obj804465B8* fn_8044728C(Obj804465B8* param_1) {
     typedef void* (*SearchFn)(void*, unsigned long long);
     u8* self = (u8*)param_1;
+    Obj804465B8* object = (Obj804465B8*)param_1;
     void** p;
     const ScreenTagEntry* params;
     int i;
     *(void**)self = (void*)lbl_804B1BE8;
     lbl_8053AF00 = (u32)self;
 
-    *(J2DScreen**)(self + 4) = new J2DScreen();
-    (*(J2DScreen**)(self + 4))->setPriority(lbl_80490400, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
+    object->screen = new J2DScreen();
+    object->screen->setPriority(lbl_80490400, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
 
-    p = (void**)self;
-    for (i = 0, params = (const ScreenTagEntry*)lbl_80490038; i < 4; i++, params++) {
+    for (i = 0; i < 4; i++) {
         void* obj = __nw__FUl(0x2c);
         if (obj != 0) {
             *(void**)obj = (void*)lbl_804AF86C;
         }
-        p[2] = obj;
-        u64 tag0 = params->tag0;
-        fn_80402F04(p[2], (*(J2DScreen**)(self + 4))->search(tag0));
+        object->a[i] = obj;
+        u64 tag0 = ((const ScreenTagEntry*)lbl_80490038)[i].tag0;
+        fn_80402F04(object->a[i], object->screen->search(tag0));
 
         obj = __nw__FUl(0x2c);
         if (obj != 0) {
             *(void**)obj = (void*)lbl_804AF86C;
         }
-        p[6] = obj;
-        u64 tag1 = params->tag1;
-        fn_80402F04(p[6], (*(J2DScreen**)(self + 4))->search(tag1));
-        p++;
+        object->b[i] = obj;
+        u64 tag1 = ((const ScreenTagEntry*)lbl_80490038)[i].tag1;
+        fn_80402F04(object->b[i], object->screen->search(tag1));
     }
 
     self[0x28] = 0;
