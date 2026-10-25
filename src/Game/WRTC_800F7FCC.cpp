@@ -1069,16 +1069,43 @@ extern "C" void fn_800FC128(void* this_) {
     fn_801F3D94(this_, 1);
 }
 
-extern "C" void fn_800FC4A8(void* this_) {
+static inline bool wrtcStartIdle(void* this_) {
     u8* p = (u8*)this_;
-    u8 ready;
     if (p[0x2AC] == 0) {
         *(s32*)(p + 0xB0) = 4;
         *(s32*)(p + 0x27C) = 1;
         *(s32*)(p + 0x234) = 0;
         *(s32*)(p + 0x230) = 8;
         fn_801F0E34(this_, 0x40005, 0);
-        ready = p[0x2AD] = 1;
+        p[0x2AD] = 1;
+        return true;
+    }
+    return false;
+}
+
+static inline bool wrtcStepFlash(void* this_) {
+    u8* p = (u8*)this_;
+    if (*(u32*)(p + 0x268) != 0) {
+        *(u32*)(p + 0x268) += 0x2000;
+        if (*(u32*)(p + 0x268) > 0x20000) {
+            *(u32*)(p + 0x268) = 0;
+        }
+        return true;
+    }
+    return false;
+}
+
+extern "C" void fn_800FC4A8(void* this_) {
+    u8* p = (u8*)this_;
+    bool ready;
+    if (p[0x2AC] == 0) {
+        *(s32*)(p + 0xB0) = 4;
+        *(s32*)(p + 0x27C) = 1;
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x230) = 8;
+        fn_801F0E34(this_, 0x40005, 0);
+        p[0x2AD] = 1;
+        ready = 1;
     } else {
         ready = 0;
     }
@@ -1093,13 +1120,15 @@ extern "C" void fn_800FC4A8(void* this_) {
     } else {
         *(s32*)(p + 0xB0) = 4;
     }
-    u8 timeout;
+    bool timeout;
     if (*(u32*)(p + 0x268) != 0) {
         *(u32*)(p + 0x268) += 0x2000;
         if (*(u32*)(p + 0x268) > 0x20000) {
             *(u32*)(p + 0x268) = 0;
-            timeout = 1;
         }
+        timeout = 1;
+    } else {
+        timeout = 0;
     }
     if (timeout == 1) {
         fn_801F3D94(this_, 1);
@@ -1110,22 +1139,22 @@ extern "C" void fn_800FC4A8(void* this_) {
         if (*(u16*)(p + 0x2B0) > 0x400) {
             *(u16*)(p + 0x2B0) = 0x400;
         }
-        *(f32*)(p + 0x2A8) = *(f32*)(p + 0x2A8) + lbl_8053C098;
-        if (*(f32*)(p + 0x2A8) > lbl_8053BFF0) {
-            *(f32*)(p + 0x2A8) = lbl_8053BFF0;
+        *(f32*)(p + 0x2A8) = *(f32*)(p + 0x2A8) + 0.01f;
+        if (*(f32*)(p + 0x2A8) > 2.0f) {
+            *(f32*)(p + 0x2A8) = 2.0f;
         }
     } else if (*(s32*)(p + 0x234) < 0x64) {
         *(u16*)(p + 0x2B0) -= 0x10;
         if (*(u16*)(p + 0x2B0) < 0x40) {
             *(u16*)(p + 0x2B0) = 0x40;
         }
-        *(f32*)(p + 0x2A8) = *(f32*)(p + 0x2A8) - lbl_8053C09C;
-        if (*(f32*)(p + 0x2A8) < lbl_8053BFCC) {
-            *(f32*)(p + 0x2A8) = lbl_8053BFCC;
+        *(f32*)(p + 0x2A8) = *(f32*)(p + 0x2A8) - 0.03f;
+        if (*(f32*)(p + 0x2A8) < 1.0f) {
+            *(f32*)(p + 0x2A8) = 1.0f;
         }
     }
     *(u16*)(p + 0x2AE) += *(u16*)(p + 0x2B0);
-    f32 v = (f32)(*(u16*)(p + 0x2B0) - 0x40) / lbl_8053C0A0;
+    f32 v = (f32)(*(u16*)(p + 0x2B0) - 0x40) / 960.0f;
     *(f32*)((u8*)fn_801F1184(this_) + 0x48) = v;
     fn_801F0E34(this_, 0x4002F, 0);
     *(s32*)(p + 0x234) -= 1;
@@ -1134,15 +1163,15 @@ extern "C" void fn_800FC4A8(void* this_) {
         u32* rng = (u32*)((char*)lbl_8053AAF8 + 0xB4);
         *rng = *rng * 0x19660D + 0x3C6EF35F;
         u32 bits = (*rng >> 9) | 0x3F800000;
-        *(s32*)(p + 0x234) = (s32)(lbl_8053C0A4 + (f32)(s32)(lbl_8053C078 * (*(f32*)&bits - lbl_8053BFCC)));
+        *(s32*)(p + 0x234) = (s32)(200.0f + (f32)(s32)(100.0f * (*(f32*)&bits - 1.0f)));
     }
     *(u16*)(p + 0x260) = *(u16*)(p + 0x260) + 0x200;
-    *(f32*)(p + 0x14) = lbl_8053BFF4 * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x260) >> 2) & 0x3ff8)) + *(f32*)(p + 0x25C);
+    *(f32*)(p + 0x14) = 5.0f * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x260) >> 2) & 0x3ff8)) + *(f32*)(p + 0x25C);
     if (*(s32*)(p + 0x234) == 0x15E) {
         u32* rng = (u32*)((char*)lbl_8053AAF8 + 0xB4);
         *rng = *rng * 0x19660D + 0x3C6EF35F;
         u32 bits = (*rng >> 9) | 0x3F800000;
-        *(s32*)(p + 0x264) = (s32)(lbl_8053BFA0 * (*(f32*)&bits - lbl_8053BFCC));
+        *(s32*)(p + 0x264) = (s32)(3.0f * (*(f32*)&bits - 1.0f));
         switch (*(s32*)(p + 0x264)) {
         case 0:
             *(s32*)(p + 0x27C) = 5;
@@ -1168,8 +1197,8 @@ extern "C" void fn_800FC4A8(void* this_) {
         }
         *(u16*)(p + 0x262) += 0xB0;
     }
-    *(f32*)(p + 0xC) = lbl_8053C078 * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x262) >> 2) & 0x3ff8)) + *(f32*)(p + 0x23C);
-    *(f32*)(p + 0x10) = lbl_8053C048 * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x262) >> 2) & 0x3ff8) + 4) + *(f32*)(p + 0x240) - lbl_8053C048;
+    *(f32*)(p + 0xC) = 100.0f * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x262) >> 2) & 0x3ff8)) + *(f32*)(p + 0x23C);
+    *(f32*)(p + 0x10) = 50.0f * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x262) >> 2) & 0x3ff8) + 4) + *(f32*)(p + 0x240) - 50.0f;
     fn_801F3D94(this_, 1);
     if (*(s32*)(p + 0x234) == 0x244) {
         *(s32*)(p + 0x27C) = 0;
