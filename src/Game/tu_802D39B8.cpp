@@ -23,10 +23,7 @@ struct RoomArrays {
     u32 flags178[10][10];
     u8 counters308[32];
     u8 values328[32];
-    union {
-        u32 flags348[8][4];
-        u32 flags348Flat[32];
-    };
+    u32 flags348[8][4];
     u64 masks3C8[4][10][10];
     u64 flags1048[10][10][8];
     u16 values2948[8][64];
