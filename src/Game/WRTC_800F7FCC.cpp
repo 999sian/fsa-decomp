@@ -267,7 +267,7 @@ extern "C" void fn_800F8BAC(void* this_) {
         u8 pad19c[0x240 - 0x19c];
         WrtcOwner* mOwner;
         u8 pad244[3];
-        u8 mIdx;
+        s8 mIdx;
         u8 pad248;
         bool m249;
         u8 m24a;
@@ -283,12 +283,10 @@ extern "C" void fn_800F8BAC(void* this_) {
                 k = (f32)(((owner->m2ac >> 1) + 1) * -20) - 20.0f;
                 ang = owner->m2b4;
             }
-            f32 sn = JMath::sincosTable_.mTable[(ang >> 5) & 0x7ff].first;
-            f32 cs = JMath::sincosTable_.mTable[(ang >> 5) & 0x7ff].second;
-            JGeometry::TVec3<f32> res;
-            res.x = k * sn + owner->x;
-            res.y = k * cs + owner->y;
-            res.z = 10.0f + owner->z;
+            f32 fx = k * JMath::sincosTable_.mTable[(u32)(u16)ang >> 5].first + owner->x;
+            f32 fy = k * JMath::sincosTable_.mTable[(u32)(u16)ang >> 5].second + owner->y;
+            f32 fz = 10.0f + owner->z;
+            JGeometry::TVec3<f32> res(fx, fy, fz);
             return res;
         }
         static inline f32 quantize(f32 v) {
@@ -303,16 +301,17 @@ extern "C" void fn_800F8BAC(void* this_) {
             p1[2] += dz * scl;
         }
         static inline f32 dot(WrtcSub* self, const JGeometry::TVec3<f32>& b) {
-            return self->mVel.x * b.x + self->mVel.y * b.y + self->mVel.z * b.z;
+            f32 d = self->mVel.x * b.x + self->mVel.y * b.y;
+            return d + self->mVel.z * b.z;
         }
     };
     WrtcSub* self = (WrtcSub*)this_;
     WrtcOwner* owner = self->mOwner;
-    if (owner->m284[self->mIdx] != 0) {
+    if (owner->m284[(u8)self->mIdx] != 0) {
         JGeometry::TVec3<f32> targetPos;
         targetPos.set(H::calcPos(owner, self->mIdx));
-        self->m249 = true;
         f32 scl = 0.36f - 0.032f * (f32)((owner->m2ac >> 1) + 1);
+        self->m249 = true;
         self->mVel.set(self->mPos);
         H::lerpVec((f32*)&self->mPos, (const f32*)&targetPos, scl);
         self->mVel.sub(self->mPos);
@@ -444,6 +443,179 @@ extern "C" void fn_800F9170(void* this_) {
         return;
     }
     fn_801F0E34(this_, 0x50083, 0);
+}
+
+extern f32 lbl_8053BFD0;
+extern f32 lbl_8053BFD4;
+extern f32 lbl_8053C028;
+extern "C" void fn_800F953C(void* this_) {
+    u8* self = (u8*)this_;
+    u8* p;
+    s32 state;
+    u32 n;
+    u32 kind;
+    u32 step;
+    s32 ang;
+    s32 half;
+    f32 amp;
+    f32 sn;
+    f32 cs;
+    f32 rr;
+    f32 vx;
+    f32 vy;
+    f32 vz;
+    f32 k;
+    s32 flag;
+    WrtcVec out;
+
+    *(s32*)(self + 0xb0) = 0x80004;
+    self[0x1a8] = 1;
+    p = *(u8**)(self + 0x240);
+    state = *(s32*)(p + 0x230);
+    if (state == 3) {
+        n = p[0x2ac];
+        if (n < 8) {
+            kind = 0;
+            step = 0x2000;
+        } else if (n < 0x10) {
+            kind = 1;
+            step = 0x2000;
+        } else if (n < 0x15) {
+            kind = 2;
+            step = 0x3332;
+        } else if (n < 0x18) {
+            kind = 3;
+            step = 0x5554;
+        } else if (n < 0x1a) {
+            kind = 4;
+            step = 0x8000;
+        } else {
+            kind = 5;
+            step = 0x2000;
+        }
+        ang = (u16)(*(u16*)(p + 0x2ae) + n * step + kind * 0x1000);
+        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
+        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
+        rr = lbl_8049C634[kind];
+        amp = *(f32*)(p + 0x2a8);
+        vx = amp * (rr * sn) + *(f32*)(p + 0xc);
+        vy = amp * (rr * cs) + *(f32*)(p + 0x10);
+        vz = (f32)(kind * 13) + (lbl_8053BFFC + *(f32*)(p + 0x14));
+        p[0x2ac]++;
+        k = lbl_8053BFC0;
+        flag = 1;
+        out.x = vx;
+        out.y = vy;
+        out.z = vz;
+    } else if (state == 4) {
+        n = p[0x2ac];
+        half = (n >> 1) + 1;
+        if (n & 1) {
+            amp = lbl_8053BFF8 + (f32)(half * 20);
+            ang = *(s16*)(p + 0x2b2);
+        } else {
+            amp = (f32)(half * -20) - lbl_8053BFF8;
+            ang = *(s16*)(p + 0x2b4);
+        }
+        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
+        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
+        vx = amp * sn + *(f32*)(p + 0xc);
+        vy = amp * cs + *(f32*)(p + 0x10);
+        vz = lbl_8053BFFC + *(f32*)(p + 0x14);
+        p[0x2ac]++;
+        k = lbl_8053C00C;
+        flag = 1;
+        out.x = vx;
+        out.y = vy;
+        out.z = vz;
+    } else if (state == 1) {
+        n = p[0x2ac];
+        if (n < 8) {
+            kind = 0;
+            step = 0x2000;
+        } else if (n < 0x10) {
+            kind = 1;
+            step = 0x2000;
+        } else if (n < 0x15) {
+            kind = 2;
+            step = 0x3332;
+        } else if (n < 0x18) {
+            kind = 3;
+            step = 0x5554;
+        } else if (n < 0x1a) {
+            kind = 4;
+            step = 0x8000;
+        } else {
+            kind = 5;
+            step = 0x2000;
+        }
+        ang = (u16)(*(u16*)(p + 0x2ae) + n * step + kind * 0x1000);
+        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
+        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
+        rr = lbl_8049C634[kind];
+        amp = *(f32*)(p + 0x2a8);
+        vx = amp * (rr * sn) + *(f32*)(p + 0xc);
+        vy = amp * (rr * cs) + *(f32*)(p + 0x10);
+        vz = (f32)(kind * 13) + (lbl_8053BFFC + *(f32*)(p + 0x14));
+        p[0x2ac]++;
+        k = lbl_8053C028;
+        flag = 1;
+        out.x = vx;
+        out.y = vy;
+        out.z = vz;
+    } else {
+        n = p[0x2ac];
+        if (n < 8) {
+            kind = 0;
+            step = 0x2000;
+        } else if (n < 0x10) {
+            kind = 1;
+            step = 0x2000;
+        } else if (n < 0x15) {
+            kind = 2;
+            step = 0x3332;
+        } else if (n < 0x18) {
+            kind = 3;
+            step = 0x5554;
+        } else if (n < 0x1a) {
+            kind = 4;
+            step = 0x8000;
+        } else {
+            kind = 5;
+            step = 0x2000;
+        }
+        ang = (u16)(*(u16*)(p + 0x2ae) + n * step + kind * 0x1000);
+        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
+        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
+        rr = lbl_8049C634[kind];
+        amp = *(f32*)(p + 0x2a8);
+        vx = amp * (rr * sn) + *(f32*)(p + 0xc);
+        vy = amp * (rr * cs) + *(f32*)(p + 0x10);
+        vz = (f32)(kind * 13) + (lbl_8053BFFC + *(f32*)(p + 0x14));
+        p[0x2ac]++;
+        k = lbl_8053C00C;
+        flag = 0;
+        out.x = vx;
+        out.y = vy;
+        out.z = vz;
+    }
+    self[0x249] = flag;
+    if (fn_801F3D94(self, 1) == 0) {
+        s32 idx = fn_801F285C(self, 0, 0, 1, -1);
+        if (idx >= 0) {
+            f32 pos[2];
+            f32 sx = *(f32*)(self + 0xc);
+            f32 sy = *(f32*)(self + 0x10);
+            f32 sz = *(f32*)(self + 0x14);
+            pos[0] = sx;
+            pos[1] = sy;
+            fn_80238548(idx, 0, pos, 0x10);
+            *(f32*)(self + 0xc) = (f32)(s32)(lbl_8053BFD4 * (out.x - sx)) * lbl_8053BFD0 * k + sx;
+            *(f32*)(self + 0x10) = (f32)(s32)(lbl_8053BFD4 * (out.y - sy)) * lbl_8053BFD0 * k + sy;
+            *(f32*)(self + 0x14) = (f32)(s32)(lbl_8053BFD4 * (out.z - sz)) * lbl_8053BFD0 * k + sz;
+        }
+        fn_801F2B7C(self, 2, -1, 1);
+    }
 }
 
 extern "C" void fn_800F9C20(void* this_) {
@@ -655,45 +827,44 @@ extern f32 lbl_8053C058;
 extern f32 lbl_8053C05C;
 extern "C" void fn_800FA944(char* this_) {
     u32 st = *(u32*)(this_ + 0xb0);
-    if (st == 4 || st == 0x12) {
-        return;
-    }
-    if (*(u8*)(this_ + 0x256) != 0) {
-        return;
-    }
-    if (*(s32*)(this_ + 0xd8) == 0) {
-        this_[0x255]++;
-        this_[0x256] = 0x32;
-        if (*(u32*)(this_ + 0x268) == 0) {
-            *(u32*)(this_ + 0x268) = 1;
-        }
-        fn_801F37AC(this_, 0, this_ + 0xc, 3, 0, -1);
-        fn_801F0E34(this_, 0x40005, 0);
-        WrtcVec v(0.0f, 0.0f, 0.0f);
-        *(WrtcVec*)(this_ + 0x3c) = v;
-        if (*(u8*)(this_ + 0x2ad) != 0) {
-            if (*(s32*)(this_ + 0x230) != 9) {
-                *(s32*)(this_ + 0x230) = 9;
-                *(u32*)(this_ + 0x238) |= 1;
-                *(u32*)(this_ + 0x238) &= ~4;
-                *(f32*)(this_ + 0x3c) = 0.0f;
-                *(f32*)(this_ + 0x40) = 0.0f;
-                *(f32*)(this_ + 0x44) = 5.0f;
-                *(u32*)(this_ + 0x268) = 0;
-                *(u32*)(this_ + 0x264) = 0;
-                f32 s = *(f32*)(this_ + 0x26c);
-                *(f32*)(this_ + 0x60) = -26.0f * s;
-                *(f32*)(this_ + 0x64) = -50.0f * s;
-                *(f32*)(this_ + 0x68) = 26.0f * s;
-                *(f32*)(this_ + 0x6c) = 0.0f;
-                fn_801F0E34(this_, 0x40005, 0);
-                if (*(s32*)(this_ + 0x108) <= 10) {
-                    ((WrtcVT24*)this_)->v7();
+    if (st != 4 && st != 0x12) {
+        if (*(u8*)(this_ + 0x256) != 0) {
+        } else {
+            if (*(s32*)(this_ + 0xd8) == 0) {
+                this_[0x255]++;
+                this_[0x256] = 0x32;
+                if (*(u32*)(this_ + 0x268) == 0) {
+                    *(u32*)(this_ + 0x268) = 1;
                 }
+                fn_801F37AC(this_, 0, this_ + 0xc, 3, 0, -1);
+                fn_801F0E34(this_, 0x40005, 0);
+                WrtcVec v(lbl_8053BFAC, lbl_8053BFAC, lbl_8053BFAC);
+                *(WrtcVec*)(this_ + 0x3c) = v;
+                if (*(u8*)(this_ + 0x2ad) != 0) {
+                    if (*(s32*)(this_ + 0x230) != 9) {
+                        *(s32*)(this_ + 0x230) = 9;
+                        *(u32*)(this_ + 0x238) |= 1;
+                        *(u32*)(this_ + 0x238) &= ~4;
+                        *(f32*)(this_ + 0x3c) = 0.0f;
+                        *(f32*)(this_ + 0x40) = 0.0f;
+                        *(f32*)(this_ + 0x44) = 5.0f;
+                        *(u32*)(this_ + 0x268) = 0;
+                        *(u32*)(this_ + 0x264) = 0;
+                        f32 s = *(f32*)(this_ + 0x26c);
+                        *(f32*)(this_ + 0x60) = -26.0f * s;
+                        *(f32*)(this_ + 0x64) = -50.0f * s;
+                        *(f32*)(this_ + 0x68) = 26.0f * s;
+                        *(f32*)(this_ + 0x6c) = 0.0f;
+                        fn_801F0E34(this_, 0x40005, 0);
+                        if (*(s32*)(this_ + 0x108) <= 10) {
+                            ((WrtcVT24*)this_)->v7();
+                        }
+                    }
+                }
+            } else if (*(u8*)(this_ + 0x255) == 3) {
+                this_[0x2ad] = 1;
             }
         }
-    } else if (*(u8*)(this_ + 0x255) == 3) {
-        this_[0x2ad] = 1;
     }
 }
 
@@ -1722,6 +1893,31 @@ extern "C" void fn_800F8548(void* this_) {
         fn_801EFD34(this_, res, 0.0f, 0.0f, 0.0f, rec, 0);
     }
 }
+
+extern "C" s32 fn_801F8544(void*, u32, u32, f32*, u32);
+extern "C" void v07__5ActorFv(void*);
+extern const f32 lbl_8053BFEC;
+#pragma opt_propagation off
+extern "C" void fn_800F87E4(void* this_) {
+    u8* self = (u8*)this_;
+    s32 id;
+    if (self[0x247] == 0x14) id = 4;
+    else id = (u32)(lbl_8053BFEC * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) + 1;
+    id = fn_801F8544(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)(self + 0xc), id);
+    if (id >= 0) {
+        u8* actor = (u8*)fn_801F666C(fn_801F856C(), id);
+        JGeometry::TVec3<f32> vel;
+        vel.z = lbl_8053BFA0 + lbl_8053BFA0 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+        vel.y = lbl_8053BFF0 - lbl_8053BFA4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+        vel.x = lbl_8053BFF0 - lbl_8053BFA4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+        *(JGeometry::TVec3<f32>*)(actor + 0x3c) = vel;
+    }
+    if ((s32)(lbl_8053BFF4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) == 3)
+        Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(self + 4), (f32*)(self + 0xc), 0, -1, -1);
+    *(s32*)(self + 0x18c) = 0;
+    v07__5ActorFv(self);
+}
+#pragma opt_propagation reset
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JMath/Inline.h"
