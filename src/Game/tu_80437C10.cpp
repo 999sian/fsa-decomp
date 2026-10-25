@@ -38,6 +38,9 @@ extern "C" void fn_80437F78(u8* p) {
         if (lbl_80529DEC[0x236] & (u8)(1 << i)) {
             JGeometry::TVec3f tmp;
             JGeometry::TVec3f out;
+            JGeometry::TVec3f copy;
+            JGeometry::TVec3f effect;
+            JGeometry::TVec3f value;
             tmp = *(JGeometry::TVec3f*)(cfg + 0x1c4);
             fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4, 0, 0, &out);
             if (p[0x240 + i] == 0xff) {
@@ -57,7 +60,9 @@ extern "C" void fn_80437F78(u8* p) {
                     tmp.y -= *(f32*)(lbl_8050DB0C + 0x34);
                 }
             }
-            setMarkerPosition(cfg, tmp);
+            copy = tmp;
+            value = copy;
+            ((JGeometry::TVec3f*)(cfg + 0x1c4))->set(value);
             if (*(s32*)(p + 4) < 8) {
                 fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4);
             }
@@ -67,7 +72,7 @@ extern "C" void fn_80437F78(u8* p) {
             } else {
                 fn_8013CB44(*(void**)(p + 0x230 + i * 4), cfg + 0x1c4, 1, 1, 1);
             }
-            JGeometry::TVec3f effect(*(JGeometry::TVec3f*)(cfg + 0x1c4));
+            effect = *(JGeometry::TVec3f*)(cfg + 0x1c4);
             fn_8043E7CC(lbl_8053AED0, effect);
         } else if (*(void**)(p + 0x230 + i * 4)) {
             void* mgr = *(void**)((u8*)fn_8013C824() + 0xc);
