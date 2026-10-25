@@ -50,6 +50,8 @@ struct SubObj {
     virtual void w11();
     virtual void w12();
     virtual SubObj* w13(u64 x);
+    virtual void w14();
+    virtual u8* w15(u64 name);
 };
 
 typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
@@ -274,44 +276,51 @@ extern u8 lbl_8050EC80[];
 extern "C" void fn_80419C38(u8* self, s32 i, s32 v);
 extern "C" void fn_8041C67C(u8* this_) {
 	s32 i;
-	u64* p20 = &lbl_8048D320[0x15c];
+	u64* base = lbl_8048D320;
+	u8* self = this_;
+	SetPaneVisibleOfSub(self, 0x004E646174613133ULL, 0);
+	SetPaneVisibleOfSub(self, 0x506870316E693032ULL, 0);
+	SetPaneVisibleOfSub(self, 0x5068317069696233ULL, 0);
+	SetPaneVisibleOfSub(self, 0x004E646174613136ULL, 0);
+	SetPaneVisibleOfSub(self, 0x004E646174613032ULL, 0);
+	u64* p20 = &base[0x15c];
 	u64* p29 = p20;
-	u64* p28 = &lbl_8048D320[0x164];
-	u64* p27 = &lbl_8048D320[0x168];
-	u64* p26 = &lbl_8048D320[0x16c];
-	u64* p25 = &lbl_8048D320[0x170];
-	u64* p24 = &lbl_8048D320[0x178];
-	u64* p23 = &lbl_8048D320[0x17c];
-	u64* p22 = &lbl_8048D320[0x180];
-	u64* p21 = &lbl_8048D320[0x13b];
+	u64* p28 = &base[0x164];
+	u64* p27 = &base[0x168];
+	u64* p26 = &base[0x16c];
+	u64* p25 = &base[0x170];
+	u64* p24 = &base[0x178];
+	u64* p23 = &base[0x17c];
+	u64* p22 = &base[0x180];
+	u64* p21 = &base[0x13b];
 
 	for (i = 0; i < 4; i++) {
 		if (lbl_8053AAF8[0x82] & (1 << i)) {
-			((u8*)((SubObj*)*(u8**)(this_ + 0x18))->w13(*p29))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 0x18))->w13(*p28))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p27))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p26))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p25))[0xb0] = 1;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p24))[0xb0] = 1;
+			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p29))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p28))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p27))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p26))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p25))[0xb0] = 1;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p24))[0xb0] = 1;
 			if (lbl_8050EC80[*(u32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x88]) {
-				((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p23))[0xb0] = 1;
+				((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p23))[0xb0] = 1;
 			} else {
-				((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p23))[0xb0] = 0;
+				((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p23))[0xb0] = 0;
 			}
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p22))[0xb0] = 1;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(p21[0]))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(p21[1]))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(p21[2]))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(p21[3]))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p22))[0xb0] = 1;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[0]))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[1]))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[2]))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[3]))[0xb0] = 0;
 		} else {
-			((u8*)((SubObj*)*(u8**)(this_ + 0x18))->w13(*p29))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 0x18))->w13(*p28))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p27))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p26))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p25))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p24))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p23))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(this_ + 4))->w13(*p22))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p29))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p28))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p27))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p26))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p25))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p24))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p23))[0xb0] = 0;
+			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p22))[0xb0] = 0;
 		}
 		p29++;
 		p28++;
@@ -324,17 +333,17 @@ extern "C" void fn_8041C67C(u8* this_) {
 		p21 += 4;
 	}
 
-	u64* q22 = &lbl_8048D320[0x160];
+	u64* q22 = &base[0x160];
 	u32 s = fn_804030C4(0x54494d47, lbl_804B13C4);
 	for (i = 0; i < 4; i++) {
-		((void (*)(u8*, u32, u32))(*(u32**)((SubObj*)*(u8**)(this_ + 0x18))->w13(*p20))[68])((u8*)((SubObj*)*(u8**)(this_ + 0x18))->w13(*p20), s, 0);
+		((void (*)(u8*, u32, u32))(*(u32**)((SubObj*)*(u8**)(self + 0x18))->w13(*p20))[68])((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p20), s, 0);
 		p20++;
 		q22++;
 	}
 
 	for (i = 0; i < 4; i++) {
 		if (lbl_8053AAF8[0x82] & (1 << i)) {
-			fn_80419C38(this_, i, 1);
+			fn_80419C38(self, i, 1);
 		}
 	}
 }
@@ -733,10 +742,8 @@ extern "C" void fn_8041F720(u8* self) {
             if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
                 u8* p2 = self + 2 * i;
                 u8* p4 = self + 4 * i;
-                fn_8022EA0C(i);
-                if (fn_8023DE58(i) < 8) {
-                    u8* rec = lbl_8050EC80 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10);
-                    if (*(s16*)(p2 + 0x21a) > 0 && rec[0x88] != 0) {
+                if (fn_8023DE58(fn_8022EA0C(i)) < 8) {
+                    if (*(s16*)(p2 + 0x21a) > 0 && (lbl_8050EC80 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10))[0x88] != 0) {
                         fn_8022EA0C(i);
                         fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
                         u8* vp = *(u8**)(sManager__8JUTVideo + 4);
