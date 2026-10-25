@@ -2670,13 +2670,6 @@ inline bool rectIn(const RoomRect& r, const JGeometry::TVec2<f32>& v) {
     }
     return in;
 }
-inline bool rectInXY(const RoomRect& r, f32 x, f32 y) {
-    bool in = 0;
-    if (x >= r.x0 && y >= r.y0 && x < r.x1 && y < r.y1) {
-        in = 1;
-    }
-    return in;
-}
 inline void stopVel(char* p) {
     ((JGeometry::TVec3<f32>*)(p + 0x368))->set(F32(p, 0x344), F32(p, 0x348), 0.0f);
     F32(p, 0x344) = 0.0f;
