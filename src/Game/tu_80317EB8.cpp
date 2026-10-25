@@ -560,7 +560,6 @@ extern "C" void fn_80318D74(char* p) {
 }
 
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
-extern "C" s32 fn_8023DE58(void);
 extern "C" void fn_803190E0(Actor* self)
 {
     Tu80317Rect rect;
@@ -633,11 +632,13 @@ extern "C" void fn_803190E0(Actor* self)
     }
 }
 
+#pragma opt_strength_reduction off
+#pragma opt_propagation off
 extern "C" void fn_803193B4(Actor* this_)
 {
     u8* self = (u8*)this_;
     Tu80317Rect rect;
-    Tu80317Vec3 vec;
+    JGeometry::TVec3<f32> vec;
     s32 r;
     s32 idx;
     u32 type;
@@ -651,10 +652,18 @@ extern "C" void fn_803193B4(Actor* this_)
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
     if (*(s32*)(self + 0x264) == 2) {
-        *(s32*)&rect.x0 = *(s32*)(self + 0x248);
-        *(s32*)&rect.y0 = *(s32*)(self + 0x24c);
-        *(s32*)&rect.x1 = *(s32*)(self + 0x250);
-        *(s32*)&rect.y1 = *(s32*)(self + 0x254);
+        s32 b;
+        s32 a;
+        a = *(s32*)(self + 0x248);
+        b = *(s32*)(self + 0x24c);
+        *(s32*)&rect.x0 = a;
+        *(s32*)&rect.y0 = b;
+        s32 d;
+        s32 c;
+        c = *(s32*)(self + 0x250);
+        d = *(s32*)(self + 0x254);
+        *(s32*)&rect.x1 = c;
+        *(s32*)&rect.y1 = d;
         rect.x0 += *(f32*)(self + 0xc);
         rect.y0 += *(f32*)(self + 0x10);
         rect.x1 += *(f32*)(self + 0xc);
@@ -670,11 +679,13 @@ extern "C" void fn_803193B4(Actor* this_)
         if (!fn_802300EC()) {
             goto tail;
         }
-        vec = *(Tu80317Vec3*)(self + 0xc);
-        if (fn_8038C678(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 0x4), &vec, 0x10)) {
+        s32 slot = *(s32*)(self + 0x244);
+        s32 room = *(s32*)(self + 0x198);
+        s32 area = *(s32*)(self + 4);
+        vec = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        if (fn_8038C678(r, slot, room, area, &vec, 0x10)) {
             *(s32*)(self + 0x234) = r;
-            *(s32*)(self + 0x230) = 1;
-            ok = 1;
+            ok = (*(s32*)(self + 0x230) = 1);
         } else {
             ok = 0;
         }
@@ -694,12 +705,12 @@ extern "C" void fn_803193B4(Actor* this_)
             goto tail;
         }
         type = *(u32*)(obj + 0x238);
-        if (type == 6 || type == 7 || type == 0) {
-            goto mode1;
-        }
-        if (type == 8) {
-            *(s32*)(obj + 0x264) = 3;
-        }
+        if (type == 6) goto activate1;
+        if (type == 7) goto activate1;
+        if (type == 0) goto activate1;
+        if (type != 8) goto tail;
+    activate1:
+        *(s32*)(obj + 0x264) = 3;
         goto tail;
 
     mode1:
@@ -721,9 +732,12 @@ extern "C" void fn_803193B4(Actor* this_)
             goto tail;
         }
         type = *(u32*)(obj + 0x238);
-        if (type == 6 || type == 7 || type == 0 || type == 8) {
-            *(s32*)(obj + 0x264) = 2;
-        }
+        if (type == 6) goto activate2;
+        if (type == 7) goto activate2;
+        if (type == 0) goto activate2;
+        if (type != 8) goto tail;
+    activate2:
+        *(s32*)(obj + 0x264) = 2;
     }
 
 tail:
@@ -733,7 +747,8 @@ tail:
         *(s32*)(self + 0x25c) = *(s32*)(self + 0x25c) ^ 1;
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" s32 fn_802373EC(s32);
 extern "C" void fn_801F35AC(Actor* a);
 extern "C" void fn_80319658(Actor* this_)
