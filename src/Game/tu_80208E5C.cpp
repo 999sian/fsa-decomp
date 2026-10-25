@@ -1,4 +1,6 @@
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JKernel/JKRHeap.h"
 #include "Game/SinitPoolChain.h"
 
 struct FsaVObjX {
@@ -126,6 +128,8 @@ extern "C" void fn_80209014(char* this_) {
             }
             *(s32*)(this_ + 0x24c) = 0;
             *(s32*)(this_ + 0x248) = 1;
+        } else {
+            break;
         }
     } break;
     case 1: {
@@ -139,9 +143,8 @@ extern "C" void fn_80209014(char* this_) {
         }
         if (*(f32*)(this_ + 0xc) < *pf - lbl_8053F924 || *(f32*)(this_ + 0xc) > lbl_8053F924 + pf[2]) {
             s32 zero = 0;
-            s32 j = zero;
             *(u8*)(this_ + 0x11c) = zero;
-            for (; j < 4; j++) {
+            for (s32 j = zero; j < 4; j++) {
                 void* a = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2b0));
                 if (a != 0) {
                     *(u8*)((char*)a + 0x11c) = zero;
@@ -200,7 +203,10 @@ extern f32 lbl_8053F93C;
 extern f32 lbl_8053F940;
 extern f32 lbl_8053F944;
 extern "C" void fn_80209280(char* this_) {
-    f32 vec[2];
+    JGeometry::TVec3f pos;
+    s32 flag;
+    s32 i;
+    char* e;
     f32 dx;
     f32 dy;
     fn_801D0ED0(this_);
@@ -212,10 +218,10 @@ extern "C" void fn_80209280(char* this_) {
     if (*(s32*)(this_ + 0x340) >= 2 || *(s32*)(this_ + 0x340) < 0) {
         *(s32*)(this_ + 0x340) = fn_801CD664(2);
     }
-    *(s32*)(this_ + 0x344) = (*(u32*)(this_ + 0x90) >> 8) & 1;
-    *(s32*)(this_ + 0x348) = *(u32*)(this_ + 0x90) >> 27;
     f32 lo = lbl_8053F928;
     f32 hi = lbl_8053F92C;
+    *(s32*)(this_ + 0x344) = (*(u32*)(this_ + 0x90) >> 8) & 1;
+    *(s32*)(this_ + 0x348) = *(u32*)(this_ + 0x90) >> 27;
     *(f32*)(this_ + 0x60) = lo;
     *(f32*)(this_ + 0x64) = lo;
     *(f32*)(this_ + 0x68) = hi;
@@ -240,54 +246,55 @@ extern "C" void fn_80209280(char* this_) {
     *(f32*)(this_ + 0x254) = lbl_8053F918;
     *(f32*)(this_ + 0x258) = lbl_8053F918;
 
-    s32 flag = *(s32*)(this_ + 0x340) != 0;
+    flag = *(s32*)(this_ + 0x340) != 0;
     char* g = (char*)fn_802D6A9C();
-    f32 x4 = lbl_8053F930 * (*(f32*)(g + 0xd0) + *(f32*)(g + 0xd8));
-    f32 y2 = lbl_8053F930 * (*(f32*)(g + 0xcc) + *(f32*)(g + 0xd4));
+    JGeometry::TVec2f center;
+    center.y=lbl_8053F930 * (*(f32*)(g + 0xd0) + *(f32*)(g + 0xd8));
+    center.x=lbl_8053F930 * (*(f32*)(g + 0xcc) + *(f32*)(g + 0xd4));
     *(s32*)(this_ + 0x34c) = 0;
     switch (flag) {
-    case 1:
-        *(f32*)(this_ + 0x350) = lbl_8053F934 + *(f32*)(g + 0xd4);
-        break;
     case 0:
         *(f32*)(this_ + 0x350) = *(f32*)(g + 0xcc) - lbl_8053F934;
         break;
+    case 1:
+        *(f32*)(this_ + 0x350) = lbl_8053F934 + *(f32*)(g + 0xd4);
+        break;
     }
-    *(f32*)(this_ + 0x354) = x4 - lbl_8053F938;
+    *(f32*)(this_ + 0x354) = center.y - lbl_8053F938;
     *(s32*)(this_ + 0x358) = flag;
     *(s16*)(this_ + 0x35c) = -0x8000;
     *(s16*)(this_ + 0x35e) = 0x64;
     if (!flag) {
         *(s16*)(this_ + 0x35e) = -*(s16*)(this_ + 0x35e);
     }
-    *(f32*)(this_ + 0x360) = y2 - lbl_8053F93C;
-    *(f32*)(this_ + 0x364) = x4;
-    *(f32*)(this_ + 0x368) = y2 + lbl_8053F93C;
-    *(f32*)(this_ + 0x36c) = x4;
+    *(f32*)(this_ + 0x360) = center.x - lbl_8053F93C;
+    *(f32*)(this_ + 0x364) = center.y;
+    *(f32*)(this_ + 0x368) = center.x + lbl_8053F93C;
+    *(f32*)(this_ + 0x36c) = center.y;
 
-    vec[0] = *(f32*)(this_ + 0x350);
-    vec[1] = *(f32*)(this_ + 0x354);
-    *(f32*)(this_ + 0x24) = vec[0];
+    JGeometry::TVec2f vec(*(f32*)(this_+0x350),*(f32*)(this_+0x354));
+    *(f32*)(this_ + 0x24) = vec.x;
     if (*(s32*)(this_ + 0x344) == 0) {
-        *(f32*)(this_ + 0x28) = vec[1];
+        *(f32*)(this_ + 0x28) = vec.y;
     }
-    *(f32*)(this_ + 0x2c) = lbl_8053F940;
-    Vec pos = *(Vec*)(this_ + 0x24);
+    f32 height=lbl_8053F940;
+    *(f32*)(this_ + 0x2c) = height;
+    pos = *(JGeometry::TVec3f*)(this_ + 0x24);
     dx = lbl_8053F918;
     dy = dx;
     switch (*(s32*)(this_ + 0x2ac)) {
-    case 1:
-        pos.x -= lbl_8053F940;
+    case 0:
+        pos.x -= height;
         dx = lbl_8053F944;
         break;
-    case 0:
-        pos.y -= lbl_8053F940;
+    case 1:
+        pos.y -= height;
         dy = lbl_8053F944;
         break;
     }
 
-    char* e = this_;
-    for (s32 i = 0; i < 4; i++) {
+    e = this_;
+    for (i = 0; i < 4; i++) {
         *(s32*)(e + 0x2b0) = Actor_CreateByID(fn_801F856C(), 0x464f4252, *(u32*)(this_ + 4), &pos, *(u32*)(this_ + 0x198), -1, -1);
         void* a = fn_801F666C(fn_801F856C(), *(s32*)(e + 0x2b0));
         if (a != 0) {
@@ -456,3 +463,6 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         out[1] -= oldY;
     }
 }
+
+void fn_802099F0(void) {}
+
