@@ -42,8 +42,6 @@ public:
     virtual void slot13();
     virtual void slot14();
     virtual void slot15();
-    virtual void slot16();
-    virtual void slot17();
     virtual void setExpandSize(void* entry, u32 size);
     virtual u32 getExpandSize(void* entry);
 };
@@ -316,10 +314,10 @@ extern "C" void* fn_8007A6CC(u8* this_, u8* entry, u32* pSize) {
         }
         *(void**)(entry + 0x10) = data;
         if (compression == 2) {
-            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, entry, *pSize);
+            ((JKRArchiveVirtView*)this_)->setExpandSize(entry, *pSize);
         }
     } else if (compression == 2) {
-        *pSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, entry);
+        *pSize = ((JKRArchiveVirtView*)this_)->getExpandSize(entry);
     } else {
         *pSize = *(u32*)(entry + 0xc);
     }
