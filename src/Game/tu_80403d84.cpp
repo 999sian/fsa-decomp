@@ -2419,11 +2419,15 @@ extern "C" void fn_804083D8(u8* self) {
 		} else {
 			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f, 1.0f);
 			PaneRef* z=*(PaneRef**)(p+0x2c);
-            f32 h=z->h;
-            z->pane->resize(z->w,h);
+            J2DPane* pane=z->pane;
+            const volatile f32* size=&z->w;
+            f32 h=size[1];
+            pane->resize(size[0],h);
 			PaneRef* d=*(PaneRef**)(p+0x30);
-            f32 y=d->y;
-            d->pane->move(d->x,y);
+            J2DPane* paneD=d->pane;
+            const volatile f32* pos=&d->x;
+            f32 y=pos[1];
+            paneD->move(pos[0],y);
 			((J2DPicture*)(*(PaneRef**)(p + 0x28))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x328),*(JUtility::TColor*)(self+0x310));
 			((J2DPicture*)(*(PaneRef**)(p + 0x2c))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x32c),*(JUtility::TColor*)(self+0x314));
 			((J2DTextBox*)(*(PaneRef**)(p + 0x30))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x330),*(JUtility::TColor*)(self+0x318));
