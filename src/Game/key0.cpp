@@ -107,6 +107,7 @@ extern "C" void fn_802C1674(char* p) {
     }
 }
 
+#pragma peephole reset
 extern "C" void fn_802C1778(char* p) {
     if (*(s32*)(p + 0x4) < 8) {
         return;
