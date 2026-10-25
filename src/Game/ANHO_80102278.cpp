@@ -51,7 +51,7 @@ extern "C" void fn_80239914(void*,int,int);
 extern "C" void fn_8022FEB8(void*,int,int,int,int);
 extern "C" int fn_8022FD8C(int);
 extern "C" u8 fn_802300EC(int);
-extern "C" u8 fn_8038AD24(int,int,int,int,const JGeometry::TVec3<f32>&,int);
+extern "C" u8 fn_8038AD24(int,int,int,int,Vec,int);
 extern "C" void fn_802308E0(int);
 extern "C" void fn_801EE8F4(void*,void*,f32*,int);
 extern "C" u8 fn_803865B8(int);
@@ -84,6 +84,12 @@ extern "C" void fn_80102398(char* p) {
     pos.y -= lbl_8053C1B8;
     JGeometry::TVec3<f32> cam(*(Vec*)(p + 0xC));
     f32 box[4];
+    JGeometry::TVec3<f32> temp0, temp1, temp2;
+    JGeometry::TVec3<f32> dir;
+    int diffs[4];
+    JGeometry::TVec3<f32> dir2;
+    f32 dist;
+    f32 dist2;
     box[0] = *(f32*)(p + 0x60);
     box[1] = *(f32*)(p + 0x64);
     box[2] = *(f32*)(p + 0x68);
@@ -104,12 +110,12 @@ extern "C" void fn_80102398(char* p) {
         fn_8022FEB8(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 1, 0);
         *(s32*)(p + 0x23c) = fn_8022FD8C(*(s32*)(p + 0x198));
         if (*(s32*)(p + 0x23c) >= 0 && fn_802300EC(*(s32*)(p + 0x23c))) {
-            if (fn_8038AD24(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, *(s32*)(p + 0x198), *(s32*)(p + 0x4), JGeometry::TVec3<f32>(pos), 0)) {
+            s32 handle0 = *(s32*)(p+0x198);
+            s32 room0 = *(s32*)(p+4);
+            if (fn_8038AD24(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, handle0, room0, (temp0 = pos, temp0), 0)) {
                 for (int i = 0; i < 4; i++) fn_802308E0(i);
                 *(s32*)(p + 0x230) = 1;
                 *(s32*)(p + 0x244) = 0;
-                JGeometry::TVec3<f32> dir;
-                f32 dist;
                 fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
                 if (dist < lbl_8053C1BC) {
                     f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
@@ -215,7 +221,7 @@ extern "C" void fn_80102398(char* p) {
         if (*(s32*)(p + 0x244) > 50 && ((u8*)p)[0x250] == 1) {
             fn_8022FE80(0,fn_8023DE58(0),*(s32*)(p + 0x198),0,0);
             if (fn_8022FD8C(*(s32*)(p + 0x198)) == 0) {
-                fn_8038AD24(0,0x331,*(s32*)(p + 0x198),*(s32*)(p + 0x4),JGeometry::TVec3<f32>(pos),2);
+                fn_8038AD24(0,0x331,*(s32*)(p + 0x198),*(s32*)(p + 0x4),(temp1 = pos, temp1),2);
                 *(s32*)(p + 0x230)=6; *(s32*)(p + 0x244)=0; fn_8022B130();
             }
         }
@@ -226,7 +232,6 @@ extern "C" void fn_80102398(char* p) {
         if (fn_803865B8(0) && fn_80384C58(0,*(s32*)(p + 0x198))) {
             ((Actor*)p)->v10(255,1);
             *(s32*)(p + 0x230)=7; *(s32*)(p + 0x244)=0; fn_80230534(0);
-            int diffs[4];
             int best=-10000;
             char* q=p;
             for (int i=0;i<4;i++,q+=4) {
@@ -248,13 +253,11 @@ extern "C" void fn_80102398(char* p) {
         fn_8022FEB8(box, *(s32*)(p+4), *(s32*)(p+0x198), 1, 0);
         *(s32*)(p+0x23C)=fn_8022FD8C(*(s32*)(p+0x198));
         if (*(s32*)(p+0x23C)>=0 &&
-            fn_8038AD24(*(s32*)(p+0x23C),0x332,*(s32*)(p+0x198),*(s32*)(p+4),JGeometry::TVec3<f32>(pos),0)) {
+            fn_8038AD24(*(s32*)(p+0x23C),0x332,*(s32*)(p+0x198),*(s32*)(p+4),(temp2 = pos, temp2),0)) {
             *(s32*)(p+0x230)=8; *(s32*)(p+0x244)=0;
-                JGeometry::TVec3<f32> dir;
-                f32 dist;
-                fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
-                if (dist < lbl_8053C1BC) {
-                    f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                fn_801EE8F4(p, &dir2, &dist2, *(s32*)(p + 0x23c) + 1);
+                if (dist2 < lbl_8053C1BC) {
+                    f32 radians = JMath::atanTable_.atan2_(-dir2.x, -dir2.y);
                     u32 angle = (u16)(radians * lbl_8053C1C0);
                     if (angle < 0x2000 || angle >= 0xE000) ((u8*)p)[0x235] = 3;
                     else if (angle >= 0x2000 && angle < 0x6000) ((u8*)p)[0x235] = 1;
