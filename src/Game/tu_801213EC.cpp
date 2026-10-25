@@ -1344,6 +1344,41 @@ extern "C" s32 fn_80123E9C(u8* self, s32 arg, f32* data) {
     return v17__5ActorFiPf(self, arg, data);
 }
 
+extern "C" void v06__5ActorFv(void*);
+extern "C" void fn_801F02BC(void*, void*, s32, DrawRec*, s32, s32, s32, f32, f32);
+extern "C" void fn_80123F9C(u8* self) {
+    v06__5ActorFv(self);
+    if (self[0x332]) {
+        GameLowVec pos(*(GameLowVec*)(self + 0xc));
+        pos.y += -28.0f;
+        pos.x -= 6.0f * (f32)(*(s32*)(self + 0x360) - 1);
+        u8* p = self;
+        s32 i = 0;
+        for (; i < *(s32*)(self + 0x360); ++i) {
+            u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x364));
+            if (!actor) {
+                *(s32*)(p + 0x364) = -1;
+            } else {
+                if (i > 0) pos.x += 12.0f;
+                *(GameLowVec*)(actor + 0xc) = pos;
+            }
+            p += 4;
+        }
+    }
+    DrawRec rec;
+    if (self[0x333]) {
+        f32 angle = (f32)(*(s32*)(self + 0x354) * 60);
+        f32 alpha;
+        if (angle < 0.0f) {
+            alpha = -JMath::sincosTable_.mTable[(u16)(- (2048.0f / 360.0f) * angle) & 2047].first;
+        } else {
+            alpha = JMath::sincosTable_.mTable[(u16)((2048.0f / 360.0f) * angle) & 2047].first;
+        }
+        *((u8*)&rec.w10 + 3) = (u8)(255.0f * alpha);
+    }
+    fn_801F02BC(self, self + 0x384, *(s32*)(self + 0x338) + *(s32*)(self + 0x240), &rec, 0x407, 0, 0, 1.0f, 1.0f);
+}
+
 extern "C" void v03__5ActorFv(void* this_);
 extern "C" void fn_801217EC(u8* self, s32 flag);
 extern "C" void fn_801D1C18(void* p);
