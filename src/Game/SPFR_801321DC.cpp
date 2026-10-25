@@ -39,7 +39,7 @@ extern f32 lbl_8053CCF8;
 extern f32 lbl_8053CCFC;
 extern f32 lbl_8053CD04;
 extern f32 lbl_8053CD14;
-extern f32 lbl_8053CD08;
+extern const f32 lbl_8053CD08;
 extern f32 lbl_8053CD0C;
 extern f32 lbl_8053CD10;
 extern f32 lbl_8053CD24;
