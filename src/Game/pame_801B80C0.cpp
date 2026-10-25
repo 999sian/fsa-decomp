@@ -445,10 +445,11 @@ static inline u8 pameLanded(u8* this_, s32 st) {
     return r;
 }
 
-static inline s32 pameFirstPlayer(u8 mask) {
+static inline s32 pameFirstPlayer(s32 mask) {
     s32 r = -1;
+    u8 m = mask;
     for (s32 i = 0; i < 4; i++) {
-        if (mask & (1 << i)) {
+        if (m & (1 << i)) {
             r = i;
             break;
         }
@@ -547,7 +548,7 @@ extern "C" void fn_801B8C98(u8* this_, u8 hitWall) {
             fn_801CC350(this_ + 0x264, this_ + 0x3c);
             fn_801F0E34(this_, 0x4003c, 0);
         } else {
-            u32 hit = this_[0x240];
+            s32 hit = this_[0x240];
             if (hit != 0) {
             pl = pameFirstPlayer(hit);
             f32 ny = *(f32*)(this_ + 0x10) - fn_8023E724(pl)[1];
