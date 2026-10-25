@@ -59,7 +59,6 @@ extern "C" void fn_802D8050(void* mgr, s32 id, s32 state, s32 flag);
 extern const f32 lbl_8053CB3C;
 
 
-static inline void rnbwSetXY(JGeometry::TVec3f& out, f32 x, f32 y) { out.x = x; out.y = y; }
 static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos) {
     if (player < 0) return false;
     if ((s32)actor->field_04 != fn_8023DE58(player)) return false;
