@@ -2214,6 +2214,56 @@ extern "C" void fn_8042C39C(u8* info, s16* block) {
     *(u32*)(info + 0x6a0) = cw;
 }
 
+extern "C" void fn_8042C79C() {
+    u8 i;
+    s32 off;
+
+    LCQueueWait(3);
+    for (i = 0; i < *(u16*)(lbl_8053AE74 + 0x696); i++) {
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[0]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[1]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[2]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[3]);
+        fn_8042C1CC(lbl_8053AE74, (s16*)lbl_8052AAB8[4]);
+        fn_8042BD84(lbl_8053AE74, (s16*)lbl_8052AAB8[5]);
+        off = i * 16;
+        lbl_8053AE44 = lbl_8052AAAC[0];
+        lbl_8053AE60 = 0x280;
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x680] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[0], off);
+        fn_8042B8DC((void*)lbl_8052AAB8[1], off + 8);
+        fn_8042B430((void*)lbl_8052AAB8[2], off);
+        fn_8042B430((void*)lbl_8052AAB8[3], off + 8);
+        off = (u32)off >> 1;
+        lbl_8053AE44 = lbl_8052AAAC[1];
+        lbl_8053AE60 = 0x140;
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x686] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[4], off);
+        lbl_8053AE44 = lbl_8052AAAC[2];
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x68c] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[5], off);
+        if (lbl_8053AE74[0x6a9] != 0) {
+            --*(u16*)(lbl_8053AE74 + 0x6ac);
+            if (*(u16*)(lbl_8053AE74 + 0x6ac) == 0) {
+                *(u16*)(lbl_8053AE74 + 0x6ac) = *(u16*)(lbl_8053AE74 + 0x6aa);
+                *(u32*)(lbl_8053AE74 + 0x6a4) = ((*(u32*)(lbl_8053AE74 + 0x6a4) + 6) & ~7) + 1;
+                if (*(u32*)(lbl_8053AE74 + 0x6a4) > 0x20) {
+                    *(u32*)(lbl_8053AE74 + 0x6a4) = 0x21;
+                }
+                *(u16*)(lbl_8053AE74 + 0x684) = 0;
+                *(u16*)(lbl_8053AE74 + 0x68a) = 0;
+                *(u16*)(lbl_8053AE74 + 0x690) = 0;
+            }
+        }
+    }
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAAC[0], 0x2800);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAAC[1], 0xa00);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAAC[2], 0xa00);
+    *(u32*)(lbl_8053AE74 + 0x6b0) += 0x2800;
+    *(u32*)(lbl_8053AE74 + 0x6b4) += 0xa00;
+    *(u32*)(lbl_8053AE74 + 0x6b8) += 0xa00;
+}
+
 extern "C" void fn_8042C9F8() {
     u8 i;
     s32 off;
@@ -2302,41 +2352,42 @@ extern "C" void fn_8042CD38() {
     __mtspr(918, 0x3d043d04);
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8042CD64() {
     u32 x;
     u8* ptr;
     u32 low;
-    s32 i, off, k, j;
-
+    u8* aligned;
+    u32 i, off, k, j;
+    u32 dst;
     x = *(u32*)(lbl_8053AE74 + 0x6a4);
     ptr = *(u8**)(lbl_8053AE74 + 0x69c);
+    aligned = (u8*)((u32)ptr & ~3);
     low = (u32)ptr & 3;
-    if (x == 0x21) {
-        x = low * 8 + 1;
+    if (x != 0x21) {
+        *(u32*)(lbl_8053AE74 + 0x6a4) = x - (3 - low) * 8;
     } else {
-        x -= (3 - low) * 8;
+        *(u32*)(lbl_8053AE74 + 0x6a4) = low * 8 + 1;
     }
-    *(u32*)(lbl_8053AE74 + 0x6a4) = x;
-    *(u8**)(lbl_8053AE74 + 0x69c) = (u8*)((u32)ptr & ~3);
-    *(u32*)(lbl_8053AE74 + 0x6a0) = *(u32*)((u32)ptr & ~3);
-
+    *(u8**)(lbl_8053AE74 + 0x69c) = aligned;
+    *(u32*)(lbl_8053AE74 + 0x6a0) = *(u32*)aligned;
     off = 0;
-    for (i = 0; i < 4; i++) {
+    for (i=0;i<4;i++) {
         if (lbl_8053AE74[0x6a8] & (1 << i)) {
-            for (k = 0; k < 16; k++) {
-                lbl_8053AE74[0x300 + off + k] = 0xff;
-                for (j = 0; j < 5; j++) {
-                    if ((s32)((u32)k >> (4 - j)) <= *(s32*)(lbl_8053AE74 + off + j * 4 + 0x348)) {
-                        lbl_8053AE74[0x300 + off + k] = *(u8*)(*(s32*)(lbl_8053AE74 + off + j * 4 + 0x390) + *(s32*)(lbl_8053AE74 + off + 0x340) + (k >> (4 - j)));
-                        lbl_8053AE74[0x320 + off + k] = j + 1;
-                        break;
+            dst = off;
+            for (k=0;k<32;k++, dst++) {
+                lbl_8053AE74[0x300+off+k]=0xff;
+                for (j=0;j<5;j++) {
+                    if ((s32)(k>>(4-j)) <= *(s32*)(lbl_8053AE74+off+j*4+0x348)) {
+                        lbl_8053AE74[0x300+dst] = ((u8*)(*(s32*)(lbl_8053AE74+off+0x340) + *(s32*)(lbl_8053AE74+off+j*4+0x390)))[k>>(4-j)];
+                        lbl_8053AE74[0x320+dst] = j+1;
+                        j=99;
                     }
                 }
             }
         }
-        off += 0xe0;
+        off+=0xe0;
     }
-
     lbl_8053AE20 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x681] * 2) * 0xe0;
     lbl_8053AE24 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x687] * 2) * 0xe0;
     lbl_8053AE28 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x68d] * 2) * 0xe0;
@@ -2344,7 +2395,7 @@ extern "C" void fn_8042CD64() {
     lbl_8053AE30 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x688] * 2 + 1) * 0xe0;
     lbl_8053AE34 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x68e] * 2 + 1) * 0xe0;
 }
-
+#pragma opt_propagation reset
 extern u8* lbl_8053AE74;
 
 // ---- THP decoder (SDK THPDec.c, functions laid out in reverse) ----
