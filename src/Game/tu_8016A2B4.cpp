@@ -41,6 +41,20 @@ extern const f32 lbl_8053D944;
 extern const u32 lbl_80543F38;
 extern u8* lbl_8053AB10;
 extern u8* sManager__8JUTVideo;
+static inline void get8016B248Coords(JGeometry::TVec3<f32>& pos, JGeometry::TVec3<f32>& size) {
+    u8* screen = *(u8**)(lbl_8053AB10 + 0x20);
+    u8* camera = *(u8**)(lbl_8053AB10 + 0x24);
+    f32 sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+    f32 sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+    f32 k = lbl_8053D93C / *(f32*)(camera + 0x858);
+    u8* mode = *(u8**)(sManager__8JUTVideo + 4);
+    size.x = k * (lbl_8053D940 * (sx * (f32)(s32)*(u16*)(mode + 4)));
+    size.y = k * (lbl_8053D940 * (sy * (f32)(s32)*(u16*)(mode + 6)));
+    size.z = lbl_8053D944;
+    pos.x = -*(f32*)(camera + 0x10) * sx;
+    pos.y = -*(f32*)(camera + 0x20) * sy;
+    pos.z = lbl_8053D944;
+}
 extern "C" void fn_8013B460(void*);
 extern "C" void fn_8013B1E8(void*);
 extern "C" void load__10JUTTextureF11_GXTexMapID(void*, s32);
@@ -366,19 +380,17 @@ extern "C" void fn_8016ADE0(void* param_1) {
         u8* r7 = *(u8**)(sManager__8JUTVideo + 0x4);
         fw = (f32)(s32)*(u16*)(r7 + 0x4);
         fh = (f32)(s32)*(u16*)(r7 + 0x6);
-        f32 v = (f32)(*(s32*)(p + 0x1c0) & 0x7ff);
-        f32 fa = (f32)*(s32*)(r7_20 + 0x2380);
-        f32 fb = (f32)*(s32*)(r7_20 + 0x2384);
+        f32 f4 = lbl_8053D964 * (f32)(*(s32*)(p + 0x1c0) & 0x7ff);
+        sx = lbl_8053D938 / (f32)*(s32*)(r7_20 + 0x2380);
+        sy = lbl_8053D938 / (f32)*(s32*)(r7_20 + 0x2384);
         u8* r8 = *(u8**)(lbl_8053AB10 + 0x24);
-        sx = lbl_8053D938 / fa;
         k = lbl_8053D93C / *(f32*)(r8 + 0x858);
-        sy = lbl_8053D938 / fb;
-        f29 = -*(f32*)(r8 + 0x10) * sx;
-        f28 = -*(f32*)(r8 + 0x20) * sy;
         f31 = k * (lbl_8053D940 * (sx * (f32)(s32)*(u16*)(r7 + 0x4)));
         f30 = k * (lbl_8053D940 * (sy * (f32)(s32)*(u16*)(r7 + 0x6)));
-        f29 -= lbl_8053D964 * v;
-        f28 -= lbl_8053D964 * v;
+        f29 = -*(f32*)(r8 + 0x10) * sx;
+        f28 = -*(f32*)(r8 + 0x20) * sy;
+        f29 -= f4;
+        f28 -= f4;
         fn_8013B460(lbl_8053AB10);
         fn_8013B1E8(lbl_8053AB10);
         load__10JUTTextureF11_GXTexMapID(*(void**)(p + 0xf4), 0);
@@ -453,6 +465,53 @@ extern "C" void fn_8016B0B0(u8* self) {
     }
 }
 
+#pragma opt_propagation off
+extern "C" void fn_8016B248(u8* self) {
+    if (*(void**)(self + 0x120) != 0 && self[0x1ce] != 0) {
+        extern const f32 lbl_8053D978;
+        extern const f32 lbl_8053D97C;
+        JGeometry::TVec3<f32> pos;
+        JGeometry::TVec3<f32> size;
+        JGeometry::TVec3<f32> posScale(lbl_8053D940, lbl_8053D940, lbl_8053D93C);
+        JGeometry::TVec3<f32> sizeScale(lbl_8053D93C, lbl_8053D97C, lbl_8053D93C);
+        f32 fw, fh;
+        f32 k, sy, sx;
+        u8* screen = *(u8**)(lbl_8053AB10 + 0x20);
+        u8* camera = *(u8**)(lbl_8053AB10 + 0x24);
+        u8* mode = *(u8**)(sManager__8JUTVideo + 4);
+        fw = (f32)(s32)*(u16*)(mode + 4);
+        fh = (f32)(s32)*(u16*)(mode + 6);
+        sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+        sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+        k = lbl_8053D93C / *(f32*)(camera + 0x858);
+        pos.x = -*(f32*)(camera + 0x10) * sx;
+        pos.y = -*(f32*)(camera + 0x20) * sy;
+        pos.z = lbl_8053D944;
+        size.x = k * (lbl_8053D940 * (sx * (f32)(s32)*(u16*)(mode + 4)));
+        size.y = k * (lbl_8053D940 * (sy * (f32)(s32)*(u16*)(mode + 6)));
+        size.z = lbl_8053D944;
+        pos.x -= lbl_8053D950;
+        pos.y -= lbl_8053D940;
+        pos.mul(posScale);
+        pos.x += lbl_8053D940;
+        pos.y += lbl_8053D978;
+        size.mul(sizeScale);
+        fn_8013B460(lbl_8053AB10);
+        fn_8013B1E8(lbl_8053AB10);
+        load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x120), 0);
+        GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(lbl_8053D944, lbl_8053D944, lbl_8053D944);
+        GXTexCoord2f32(pos.x - size.x, pos.y - size.y);
+        GXPosition3f32(fw, lbl_8053D944, lbl_8053D944);
+        GXTexCoord2f32(pos.x + size.x, pos.y - size.y);
+        GXPosition3f32(fw, fh, lbl_8053D944);
+        GXTexCoord2f32(pos.x + size.x, pos.y + size.y);
+        GXPosition3f32(lbl_8053D944, fh, lbl_8053D944);
+        GXTexCoord2f32(pos.x - size.x, pos.y + size.y);
+    }
+}
+#pragma opt_propagation reset
 extern "C" void fn_8016B4D4(u8* self) {
     extern f32 lbl_8053D980;
     extern f32 lbl_8053D984;
