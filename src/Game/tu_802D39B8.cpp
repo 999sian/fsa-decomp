@@ -586,11 +586,16 @@ extern "C" bool fn_802D6AC4(char* p, s32 bit) {
 extern "C" void fn_802D6B24(char* p, s32 bit, u8 set) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
-    char* base = p + 0x10000;
     if (set) {
-        *(u32*)(base + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + (word << 2) - 0x298) |= 1U << shift;
+        char* q = (char*)((u32)(p + 0x10000) + *(s32*)(p + 0x18) * 0x500);
+        q = (char*)(*(s32*)(p + 0x14) * 0x80 + (u32)q);
+        q = (char*)((u32)(q - 0x298) + word * 4);
+        *(u32*)q |= 1U << shift;
     } else {
-        *(u32*)(base + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + (word << 2) - 0x298) &= (1U << shift) ^ 0xFFFFFFFF;
+        char* q = (char*)((u32)(p + 0x10000) + *(s32*)(p + 0x18) * 0x500);
+        q = (char*)(*(s32*)(p + 0x14) * 0x80 + (u32)q);
+        q = (char*)((u32)(q - 0x298) + word * 4);
+        *(u32*)q &= (1U << shift) ^ 0xFFFFFFFF;
     }
 }
 
