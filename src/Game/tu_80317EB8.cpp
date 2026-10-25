@@ -32,6 +32,18 @@ extern "C" u8 lbl_8053A1B0[];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
+static inline u8 activate803193B4(u8* self, s32 actor) {
+    s32 slot = *(s32*)(self + 0x244);
+    s32 room = *(s32*)(self + 0x198);
+    s32 area = *(s32*)(self + 4);
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
+    if (fn_8038C678(actor, slot, room, area, &pos, 0x10)) {
+        *(s32*)(self + 0x234) = actor;
+        *(s32*)(self + 0x230) = 1;
+        return 1;
+    }
+    return 0;
+}
 extern const f32 lbl_805418F8;
 extern const f32 lbl_805418FC;
 extern "C" void __dt__5ActorFv(void* p, int how);
