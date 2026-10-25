@@ -43,6 +43,8 @@ struct Vec8035A860 {
 };
 extern "C" unsigned char sincosTable___5JMath[];
 extern "C" u8 fn_8023F264(s32 i);
+extern "C" void fn_8022DF48(void*);
+extern "C" void fn_8022E088(void*, s32, Vec8035A860*);
 extern "C" s32 fn_8035AE9C(u8* self, void* obj);
 extern "C" void fn_801F317C(u8* self, f32* out);
 extern "C" u8* fn_801902C0(void);
@@ -888,8 +890,7 @@ extern "C" u32 lbl_8053A1B8[2];
 extern "C" void fn_8035B0E0(u8* arg) {
     u8* self = arg;
     int x;
-    u16 idx;
-    int y;
+    f32 step;
     *(void**)(self + 0x234) = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18(0x3f3f3f3f, lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f]);
     u16* size = *(u16**)(self + 0x234);
     ((JGeometry::TBox2f*)(self + 0x60))->set(-size[1] / 2, -size[2] / 2, size[1] / 2, size[2] / 2);
@@ -906,15 +907,15 @@ extern "C" void fn_8035B0E0(u8* arg) {
     *(s32*)(self+0x250)=0;
     *(s32*)(self+0x26c)=0;
     for (int i=0;i<8;i++) *(s32*)(self+0x25c+i*4)=0;
-    JGeometry::TVec3f pos;
     JGeometry::TVec3f offset(*(f32*)(self+0x60),*(f32*)(self+0x64),lbl_8054286C);
-    pos = *(JGeometry::TVec3f*)(self+0xc) + offset;
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(self+0xc);
+    pos += offset;
     JGeometry::TVec3f start = pos;
-    idx = lbl_80542868[0];
-    f32 step = lbl_80542870;
+    u16 idx = lbl_80542868[0];
+    step = lbl_80542870;
     *(s32*)(self+0x258)=0;
     for(;x<6;x++) {
-        for(y=0;y<6;y++) {
+        for(int y=0;y<6;y++) {
             fn_802A381C(lbl_8053AC98,(Vec8035A860*)&pos,*(s32*)(self+4),idx);
             pos.y += step;
         }
