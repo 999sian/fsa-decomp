@@ -335,5 +335,4 @@ extern "C" void fn_8034DBF4(Actor* a) {
     *(u8*)(p + 0x385) = 0;
     *(u8*)(p + 0x382) = 0;
 }
-
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
