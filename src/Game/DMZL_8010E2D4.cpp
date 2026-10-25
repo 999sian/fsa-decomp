@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 typedef f32 Mtx[3][4];
 typedef struct MtxBox {
@@ -500,6 +502,38 @@ void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle) {
     m[2][0] = t * x * z - s * y;
     m[2][1] = t * y * z + s * x;
     m[2][2] = t * (z * z) + c;
+}
+
+extern "C" void fn_8010F7EC(u8* this_, s32 param) {
+    SwbmDrawParam prm;
+    Mtx m;
+    prm.reset();
+    prm.m4D = *(u32*)(this_ + 0x24c);
+    if (*(s32*)(this_ + 0x238) == 0x2f) {
+        *(s32*)(this_ + 0x264) += 0x258;
+        if (*(s32*)(this_ + 0x264) >= 0x10000) {
+            *(s32*)(this_ + 0x264) -= 0x10000;
+        }
+        f32 s = sincosTable___5JMath[(u16)*(s32*)(this_ + 0x264) >> 5].sin;
+        m[0][0] = lbl_8053C550;
+        m[0][1] = lbl_8053C55C;
+        m[0][2] = lbl_8053C55C;
+        m[0][3] = lbl_8053C55C;
+        m[1][0] = lbl_8053C55C;
+        m[1][1] = lbl_8053C550;
+        m[1][2] = lbl_8053C55C;
+        m[1][3] = lbl_8053C55C;
+        m[2][0] = lbl_8053C55C;
+        m[2][1] = lbl_8053C55C;
+        m[2][2] = lbl_8053C550;
+        m[2][3] = lbl_8053C560 * s;
+        prm.mMtx = m;
+    }
+    if (param == 0x21b) {
+        fn_801F02BC(this_, lbl_8046464C, param + *(s32*)(this_ + 0x304), &prm, 0x407, 0, 0, lbl_8053C550, lbl_8053C550);
+    } else {
+        fn_801F02BC(this_, lbl_80464660, param + *(s32*)(this_ + 0x304), &prm, 0x407, 0, 0, lbl_8053C550, lbl_8053C550);
+    }
 }
 
 extern "C" void fn_8010F9F0(u8* p) {
