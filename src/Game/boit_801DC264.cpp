@@ -212,7 +212,11 @@ extern const f32 lbl_8053F34C;
 extern const f32 lbl_8053F350;
 extern const f32 lbl_8053F354;
 extern const f32 lbl_8053F358;
+static inline f32 boitRand() { return ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1(); }
+static inline f32 boitRandF(f32 scale) { return scale * boitRand(); }
+static inline f32 boitRandPM(f32 scale) { return scale * (lbl_8053F34C * boitRand() - lbl_8053F340); }
 
+#pragma opt_propagation off
 extern "C" bool fn_801DC3C4(u8* this_) {
     bool result = false;
     if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053F344
@@ -220,6 +224,7 @@ extern "C" bool fn_801DC3C4(u8* this_) {
     {
         for (s32 i = 0; i < 4; i++) {
             s32 v;
+            s32 id;
             if (fn_801F285C(this_, 0, &v, 1, i) == i) {
                 fn_8023B6CC(i);
                 if (fn_801F37AC(this_, 0, fn_8023E724(i), 0, v, i)) {
@@ -227,15 +232,18 @@ extern "C" bool fn_801DC3C4(u8* this_) {
                     this_[0x2a8]++;
                     s32 room = *(s32*)(this_ + 0x4);
                     u8 flag = *(u8*)((u8*)fn_802D6A9C() + 0x131df + room);
-                    s32 id = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(this_ + 0x4), this_ + 0xc, 2);
+                    u32 kind = 'RUPY' & 0xffff0000;
+                    id = fn_801F8544(fn_801F856C(), kind + 0x5059, *(s32*)(this_ + 0x4), this_ + 0xc, 2);
                     if (id >= 0) {
                         BoitRupy* rupy = (BoitRupy*)fn_801F666C(fn_801F856C(), id);
                         if (rupy != NULL) {
                             JGeometry::TVec3<f32> v2;
                             JGeometry::TVec3<f32> v1;
                             if (flag) {
-                                v1.set(lbl_8053F348 * (lbl_8053F34C * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1() - lbl_8053F340),
-                                       lbl_8053F350 - lbl_8053F34C * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1(),
+                                f32 c, b, a;
+                                a = lbl_8053F34C; b = lbl_8053F348; c = lbl_8053F350;
+                                v1.set(b * (a * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1() - lbl_8053F340),
+                                       c - a * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1(),
                                        lbl_8053F344);
                                 rupy->mVel = v1;
                             } else {
@@ -262,7 +270,7 @@ extern "C" bool fn_801DC3C4(u8* this_) {
     }
     return result;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801DC6B4(u8* this_) {
     fn_801D22A0(this_ + 0x270, 0, 2);
     if (this_[0x2a8] >= 10) {
