@@ -131,6 +131,11 @@ extern char* lbl_8053A1C8;
 extern void* sManager__8JUTVideo;
 extern f32 lbl_80542C64;
 extern f32 lbl_80542C68;
+extern f32 lbl_80542C7C;
+extern f32 lbl_80542C80;
+extern f32 lbl_80542C84;
+extern f32 lbl_80542C88;
+extern f32 lbl_80542CB4;
 extern "C" void fn_80368198(Sub8036C0EC* this_) {
     char* self = (char*)this_;
     s32 a;
@@ -195,25 +200,23 @@ extern "C" void fn_80368660(void* this_) {
     void* mgr;
     Vec3f* pos;
     Vec3f* vtx;
-    Vec3f sum;
-    Vec3f saved;
+    JGeometry::TVec3<f32> sum;
     EffArgs args;
     s32 idx;
-    s32 room;
     s32 st;
-    u8 i;
+    s32 i;
 
     args.f10.w = -1;
     args.f14.w = -1;
-    for (i = 0; i < 0x10; i += 8) {
-        args.order[i] = i;
-        args.order[i + 1] = i + 1;
-        args.order[i + 2] = i + 2;
-        args.order[i + 3] = i + 3;
-        args.order[i + 4] = i + 4;
-        args.order[i + 5] = i + 5;
-        args.order[i + 6] = i + 6;
-        args.order[i + 7] = i + 7;
+    for (u8 k = 0; k < 0x10; k += 8) {
+        args.order[(u8)(k)] = k;
+        args.order[(u8)(k + 1)] = k + 1;
+        args.order[(u8)(k + 2)] = k + 2;
+        args.order[(u8)(k + 3)] = k + 3;
+        args.order[(u8)(k + 4)] = k + 4;
+        args.order[(u8)(k + 5)] = k + 5;
+        args.order[(u8)(k + 6)] = k + 6;
+        args.order[(u8)(k + 7)] = k + 7;
     }
     args.f10.w = -1;
     args.f14.w = 0;
@@ -304,7 +307,7 @@ extern "C" void fn_80368660(void* this_) {
             }
         }
 
-        saved = *(Vec3f*)(self + 0xc);
+        JGeometry::TVec3<f32> saved(*(Vec*)(self + 0xc));
         vtx = (Vec3f*)(self + 0x2a8);
         pos = (Vec3f*)(self + 0xc);
         for (i = 0; i < 5; i++) {
@@ -317,16 +320,14 @@ extern "C" void fn_80368660(void* this_) {
                                 *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x1a0))[i],
                                 &args, 7, lbl_80542C58, lbl_80542C58);
                     if (((s32*)(self + 0x3bc))[i] != 0) {
-                        sum.x = vtx[i].x + lbl_80542C6C;
-                        sum.y = vtx[i].y + lbl_80542C6C;
-                        sum.z = vtx[i].z + lbl_80542C78;
-                        fn_8013CB44((void*)((s32*)(self + 0x3bc))[i], &sum, 0, -1, 1);
+                        JGeometry::TVec3<f32> off(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
+                        sum = off + JGeometry::TVec3<f32>(*(Vec*)&vtx[i]);
+                        fn_8013CB44((void*)((s32*)(self + 0x3bc))[i], (Vec3f*)&sum, 0, -1, 1);
                     }
                     if (((s32*)(self + 0x3d4))[i] != 0) {
-                        sum.x = vtx[i].x + lbl_80542C6C;
-                        sum.y = vtx[i].y + lbl_80542C6C;
-                        sum.z = vtx[i].z + lbl_80542C78;
-                        fn_8013CB44((void*)((s32*)(self + 0x3d4))[i], &sum, 0, -1, 1);
+                        JGeometry::TVec3<f32> off(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
+                        sum = off + JGeometry::TVec3<f32>(*(Vec*)&vtx[i]);
+                        fn_8013CB44((void*)((s32*)(self + 0x3d4))[i], (Vec3f*)&sum, 0, -1, 1);
                     }
                 }
             } else if (st >= 0x21) {
@@ -345,9 +346,8 @@ extern "C" void fn_80368660(void* this_) {
                     args.f10.b[1] = 0xff;
                     args.f10.b[2] = 0xff;
                     args.f10.b[3] = 0xff - *(s32*)(self + 0x24c);
-                    room = *(s32*)(self + 0x4);
                     idx = *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x18c))[i];
-                    if (room < 8) {
+                    if (*(s32*)(self + 0x4) < 8) {
                         mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
                         res = ((void* (*)(void*, u32, char*))(*(void***)mgr)[6])(mgr, 0x534F4220, lbl_80474C38 + 0x210);
                         fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos, res, idx, lbl_80542C58, lbl_80542C58, &args);
@@ -361,7 +361,64 @@ extern "C" void fn_80368660(void* this_) {
                 }
             }
         }
-        *pos = saved;
+        *pos = *(Vec3f*)&saved;
+    }
+}
+
+extern char lbl_80529DEC[];
+extern char lbl_8050EC80[];
+extern void* lbl_8053AD30;
+extern "C" void fn_8010DF78(void* p);
+extern "C" void* fn_8016A3AC(void);
+extern "C" void* fn_8013CC50(s32 room, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" s32 fn_80309C4C(void* p, s32 a, s32 b);
+extern "C" void fn_80387494(s32 a);
+extern "C" void fn_803676CC(void);
+extern "C" void detach__5ActorFv(void* self);
+void Unk8036C300::state0() {
+    char* self = (char*)this;
+    if (*(s32*)(self + 0x258) != 0) {
+        *(s32*)(self + 0x258) = *(s32*)(self + 0x258) - 1;
+    }
+    if (*(s32*)(self + 0x26c) != 0) {
+        *(s32*)(self + 0x26c) = *(s32*)(self + 0x26c) - 1;
+        if (*(s32*)(self + 0x26c) == 0) {
+            char* em = *(char**)(self + 0x398);
+            if (em != 0) {
+                *(u32*)(em + 0xf4) |= 1;
+                *(s32*)(em + 0x24) = 1;
+                *(s32*)(self + 0x398) = 0;
+            }
+        }
+    }
+    fn_8010DF78(self);
+    {
+        s32 idx = *(s32*)(lbl_80529DEC + 0x118);
+        s32 bit = *(s32*)(lbl_80529DEC + 0x11c);
+        s32 vis = 0;
+        if (idx >= 0 && idx <= 7) {
+            if (bit >= 0 && bit <= 3) {
+                u32 word = *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x28);
+                vis = (word & (1 << (bit + idx * 4))) != 0;
+            }
+        }
+        if (vis) {
+            s32 st = *(s32*)(self + 0x240);
+            if (st >= 5 && st <= 13) {
+                *(u8*)((char*)lbl_8053AAF8 + 0x85) = 2;
+                if (fn_80309C4C(lbl_8053AD30, 0x1000, -1) != 0) {
+                    *(s32*)(self + 0x240) = 0xd;
+                    fn_80387494(0);
+                    fn_8011921C();
+                    fn_801183BC();
+                    if (*(void**)(self + 0x230) != 0) {
+                        fn_803676CC();
+                        detach__5ActorFv(*(void**)(self + 0x230));
+                        *(s32*)(self + 0x230) = 0;
+                    }
+                }
+            }
+        }
     }
 }
 
