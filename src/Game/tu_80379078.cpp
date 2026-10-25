@@ -76,13 +76,13 @@ extern "C" u32 fn_804032E8(u32 tag, const char* name);
 extern "C" void fn_802F745C(void* mgr, void* pos, void* tex, LimtDrawParam* prm);
 extern "C" u8* lbl_8053AB10;
 extern "C" const char* lbl_804AE8E0[];
-extern "C" f32 __float_epsilon;
+extern "C" int __float_epsilon[];
 extern "C" void fn_803790D8(u8* this_) {
     LimtDrawParam prm;
     prm.reset();
     Vec* v = (Vec*)(this_ + 0x54);
     f32 lenSq = v->x * v->x + v->y * v->y + v->z * v->z;
-    if (lenSq > 32.0f * __float_epsilon) {
+    if (lenSq > 32.0f * *(f32*)__float_epsilon) {
         f32 mtx[3][4];
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
