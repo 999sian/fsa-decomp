@@ -954,8 +954,7 @@ extern "C" const f32 lbl_80543EC0;
 extern "C" u32 lbl_8053A250;
 extern "C" u32 lbl_8053A254;
 extern "C" void fn_80459674(u8* p) {
-    JAISoundID id;
-    JAISoundID startID;
+    volatile BOOL irq;
     JAUSoundMgr* mgr;
     s32 i;
     Unk80458408Obj* bank;
@@ -971,7 +970,7 @@ extern "C" void fn_80459674(u8* p) {
     } else {
         if (p[0x69]==1) *(f32*)(p+0x54)=lbl_80543EB0;
         else if (p[0x8b]==1) {
-            id.setAnonymous();
+            JAISoundID id=-1;
             if (*(JAISound**)(p+0x80)) id=JAISoundID((*(JAISound**)(p+0x80))->getID());
             switch ((s32)(u32)id) {
             case 0x1000001: case 0x1000002: case 0x1000004:
@@ -986,8 +985,8 @@ extern "C" void fn_80459674(u8* p) {
     if (p[0x68] && *(s32*)(p+0x64)>=0) {
         if ((u32)*(s32*)(p+0x64)>=lbl_8053A25C) {
             if (p[4]==0) {
-                startID.mId.mFullId=*(u32*)(p+0x5c);
-                ((JAUSoundMgr*)*(void**)(p+0x30))->startSound(startID,(JAISoundHandle*)(p+0x80),0);
+                JAISoundID id=*(u32*)(p+0x5c);
+                ((JAUSoundMgr*)*(void**)(p+0x30))->startSound(id,(JAISoundHandle*)(p+0x80),0);
                 fn_8045815C(p,p[0x8b]);
                 switch (*(s32*)(p+0x5c)) {
                 case 0x100001a:
@@ -995,7 +994,7 @@ extern "C" void fn_80459674(u8* p) {
                         switch (*(s32*)(p+0x5c)) { case 0x100001a: break; default: goto soundStarted; }
                         bank=(*(Unk80458408Obj**)(p+0x80))->v4();
                         if (bank) {
-                            JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
+                            irq=OSDisableInterrupts();
                             for (i=0;i<16;i++) {
                                 JASTrack* track=bank->v7(i);
                                 if (track) {
@@ -1003,6 +1002,7 @@ extern "C" void fn_80459674(u8* p) {
                                     else track->mute(true);
                                 }
                             }
+                            OSRestoreInterrupts(irq);
                         }
                     }
                     break;
@@ -1037,28 +1037,9 @@ soundStarted:
     p[0x75]=0;
 }
 
-extern "C" void __ct__18JAU_JASInitializerFv(void*);
-extern "C" void initJASystem__18JAU_JASInitializerFP12JKRSolidHeap(void*, JKRSolidHeap*);
-extern "C" void __ct__18JAU_JAIInitializerFv(void*);
-extern "C" void initJAInterface__18JAU_JAIInitializerFv(void*);
-extern "C" void* __nw__FUlP7JKRHeapi(u32, void*, s32);
-extern "C" void* __ct__15JASAudioReseterFv(void*);
+#include "JSystem/JAudio/JAUInitializer.h"
+#include "JSystem/JAudio/JAUAudioArchive.h"
 extern "C" void fn_80459AE4(u32 a, u32 b, u32 c, void* d, void* e) {
-    u8 jasInit[0x30];
-    u8 jaiInit[0x10];
-    u8* this_ = (u8*)a;
-    JKRSolidHeap* heap = (JKRSolidHeap*)b;
-
-    __ct__18JAU_JASInitializerFv(jasInit);
-    initJASystem__18JAU_JASInitializerFP12JKRSolidHeap(jasInit, heap);
-    __ct__18JAU_JAIInitializerFv(jaiInit);
-    initJAInterface__18JAU_JAIInitializerFv(jaiInit);
-
-    if (__nw__FUlP7JKRHeapi(0x10, heap, 0) != 0) {
-        *(void**)(this_ + 0x2c) = __ct__15JASAudioReseterFv(0);
-    } else {
-        *(void**)(this_ + 0x2c) = 0;
-    }
 }
 
 extern "C" void fn_8045A080(char* self)
