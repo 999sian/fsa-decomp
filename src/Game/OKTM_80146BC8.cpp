@@ -110,8 +110,8 @@ extern "C" void fn_80146C28(char* this_) {
             pos.x = p->x;
             pos.y = p->y;
             pos.z = p->z;
-            pos.x += cp->x;
-            pos.y += cp->y;
+            pos.x += *(f32*)&cp->x;
+            pos.y += *(f32*)&cp->y;
             fn_801EF574(lbl_80465BD8, 0x25, &pos, &rec);
             fn_801F02BC(this_, lbl_80465BEC, 0x317, &rec, 1, 0, 0, 1.0f, 1.0f);
         } else {
