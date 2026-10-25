@@ -140,3 +140,5 @@ extern "C" u32 fn_80218538(u8* p) {
     return ret;
 }
 
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
+
