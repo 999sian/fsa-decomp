@@ -9,7 +9,7 @@ extern float lbl_80543DA8;
 struct J2DGrafContext;
 struct J2DScreen;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, float, float, const J2DGrafContext*);
-extern "C" const u8 lbl_80490940[];
+extern "C" const u64 lbl_80490940[];
 extern "C" const u8 lbl_80490B00[];
 extern "C" u8 lbl_804B1C68[];
 extern "C" void* fn_804030C4(u32, u32);
@@ -21,18 +21,19 @@ extern u8* lbl_8053AED0;
 extern "C" f32 fn_8043D514(u8*);
 extern "C" f32 fn_8043D57C(u8*);
 extern "C" void fn_80402E08(void*, f32, f32);
-extern "C" void fn_80448940(void* self_) {
-    u8* self = (u8*)self_;
-    u8* entry;
+#pragma peephole on
+extern "C" void fn_80448940(u8* self_) {
     u8* ptr;
+    const u64* entry;
     int i;
+    u8* self = self_;
     J2DPane* pane;
     void* handle;
     int ones;
     fn_80402E08(*(void**)(self + 8), lbl_80543DA8, fn_8043D514(lbl_8053AED0));
-    entry = (u8*)lbl_80490940;
+    entry = lbl_80490940;
     ptr = self;
-    for (i = 0; i < 4; ++i, entry += 0x70, ptr += 4) {
+    for (i = 0; i < 4; ++i, ptr += 4, entry += 0x70) {
         if (i < 2) {
             fn_80402E08(*(void**)(ptr + 0xc), lbl_80543DA8, fn_8043D514(lbl_8053AED0));
             fn_80402E08(*(void**)(ptr + 0x1c), lbl_80543DA8, fn_8043D514(lbl_8053AED0));
@@ -41,70 +42,70 @@ extern "C" void fn_80448940(void* self_) {
             fn_80402E08(*(void**)(ptr + 0x1c), lbl_80543DA8, fn_8043D57C(lbl_8053AED0));
         }
         if (self[0x32] & (u8)(1 << i)) {
-            if (((u8*)(*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x30)))[0xb0] == 0) {
-                (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x30))->show();
-                (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x68))->show();
+            if (((u8*)(*(J2DScreen**)(self + 4))->search(entry[6]))[0xb0] == 0) {
+                (*(J2DScreen**)(self + 4))->search(entry[6])->show();
+                (*(J2DScreen**)(self + 4))->search(entry[13])->show();
             }
         } else {
-            if (((u8*)(*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x30)))[0xb0] != 0) {
-                (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x30))->hide();
-                (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x68))->hide();
+            if (((u8*)(*(J2DScreen**)(self + 4))->search(entry[6]))[0xb0] != 0) {
+                (*(J2DScreen**)(self + 4))->search(entry[6])->hide();
+                (*(J2DScreen**)(self + 4))->search(entry[13])->hide();
             }
         }
-        if (((u8*)(*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x30)))[0xb0] != 0) {
+        if (((u8*)(*(J2DScreen**)(self + 4))->search(entry[6]))[0xb0] != 0) {
             if (self[0x2c + i] >= 100) self[0x2c + i] = 99;
             int num = self[0x2c + i];
-            ones = num - (num / 10) * 10;
+            ones = num - (num / 10L) * 10L;
             handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[num / 10]);
-            pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x48));
+            pane = (*(J2DScreen**)(self + 4))->search(entry[9]);
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-            pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x50));
+            pane = (*(J2DScreen**)(self + 4))->search(entry[10]);
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
             handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[ones]);
-            pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x58));
+            pane = (*(J2DScreen**)(self + 4))->search(entry[11]);
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-            pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x60));
+            pane = (*(J2DScreen**)(self + 4))->search(entry[12]);
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
         }
     }
     if (self[0x32] & 0x10) {
-        if (((u8*)(*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60)))[0xb0] == 0)
-            (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60))->show();
+        if (((u8*)(*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x60)))[0xb0] == 0)
+            (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x60))->show();
     } else {
-        if (((u8*)(*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60)))[0xb0] != 0)
-            (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60))->hide();
+        if (((u8*)(*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x60)))[0xb0] != 0)
+            (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x60))->hide();
     }
-    if (((u8*)(*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60)))[0xb0] != 0) {
+    if (((u8*)(*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x60)))[0xb0] != 0) {
         if (self[0x30] >= 100) { self[0x30] = 99; self[0x31] = 99; }
         if (self[0x31] >= 100) self[0x31] = 99;
         int first = self[0x30];
-        int second = self[0x31];
+        s32 second = self[0x31];
         int tens = second / 10;
-        ones = first - (first / 10) * 10;
+        ones = first - (first / 10L) * 10L;
         handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[first / 10]);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x20));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x20));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x28));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x28));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
         handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[ones]);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x30));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x30));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x38));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x38));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
         handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[tens]);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x40));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x40));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x48));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x48));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
         handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[second % 10]);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x50));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x50));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x58));
+        pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x58));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     }
     self[0x32] = 0;
 }
-
+#pragma peephole reset
 extern "C" void fn_80449070(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
@@ -214,7 +215,7 @@ extern "C" void fn_80402F04(void* obj, J2DPane* pane);
 extern "C" u8 lbl_804AF86C[];
 extern "C" const char lbl_80490C30[];
 extern "C" u8 lbl_80529DEC[];
-extern "C" const u8 lbl_80490940[];
+extern "C" const u64 lbl_80490940[];
 extern "C" void* fn_804495B8(void* param_1) {
     void** result = (void**)param_1;
 
