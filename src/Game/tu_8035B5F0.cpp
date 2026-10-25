@@ -19,7 +19,7 @@ extern const f32 lbl_805428DC;
 
 
 extern u32 lbl_804AD3A0[48];
-struct StateTableCopy { u32 w0; u32 w1; u32 w2; u32 w3; u32 w4; u32 w5; u32 w6; u32 w7; u32 w8; u32 w9; u32 w10; u32 w11; u32 w12; u32 w13; u32 w14; u32 w15; u32 w16; u32 w17; u32 w18; u32 w19; u32 w20; u32 w21; u32 w22; u32 w23; };
+struct StateTableCopy { FsaStateEntry entry0; FsaStateEntry entry1; FsaStateEntry entry2; FsaStateEntry entry3; FsaStateEntry entry4; FsaStateEntry entry5; FsaStateEntry entry6; FsaStateEntry entry7; };
 extern const f32 lbl_805428E8;
 extern const f32 lbl_805428EC;
 extern u32 *lbl_804AD460[];
@@ -509,9 +509,13 @@ extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+#pragma opt_strength_reduction off
+#pragma peephole off
 extern "C" void fn_8035C650(void) {
+StateTableCopy* __restrict src = (StateTableCopy*)lbl_804AD3A0;
+StateTableCopy* __restrict dst = src + 1;
 char* base = lbl_8050BAF8;
-*(StateTableCopy*)(lbl_804AD3A0 + 24) = *(StateTableCopy*)lbl_804AD3A0;
+*dst = *src;
 if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
 __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
 __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0);
@@ -558,3 +562,5 @@ __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPo
 __init__memPool___26JASPoolAllocObject_5JAISe = 1;
 }
 }
+#pragma peephole reset
+#pragma opt_strength_reduction reset
