@@ -422,18 +422,18 @@ static inline int p416C4(int i) {
 int fn_8022B334(int index)
 {
     if (lbl_8053AC90 == NULL) return 0;
-    if (p40AF0(index)) return 0;
+    if ((u8)p40AF0(index)) return 0;
     if (p486A0(index) == 4) {
         if (!(u8)fn_80257DB4(lbl_8053AC90->players[index])) return 0;
     } else if (p486A0(index) == 5) {
-        if (pIsLinkedU8(index)) {
+        if ((u8)pIsLinked(index)) {
             if (p416C4(index) != 7 || !(u8)fn_8024B24C(lbl_8053AC90->players[index])) return 0;
         }
         if (!(u8)fn_80257DB4(lbl_8053AC90->players[index])) return 0;
     } else {
         for (int i = 0; i < 4; i++) {
             if (isPlayerEnabled(i) && (index == i || fn_8022E438(index, i))) {
-                if (!p40AF0(i) && !(u8)fn_80257DB4(lbl_8053AC90->players[i])) return 0;
+                if (!(u8)p40AF0(i) && !(u8)fn_80257DB4(lbl_8053AC90->players[i])) return 0;
             }
         }
     }
