@@ -580,8 +580,8 @@ extern f64 __frsqrte(f64);
 static inline f32 Tu802F5040_invSqrt(const f32 x) {
     if (x <= 0.0f) return x;
     f32 y = __frsqrte(x);
-    y = 0.5f * y * (3.0f - x * (y * y));
-    return y;
+    const f32 result = 0.5f * y * (3.0f - x * (y * y));
+    return result;
 }
 static inline void Tu802F5040_setVec(f32* dst, f32 x, f32 y, f32 z) {
     dst[0] = x;
