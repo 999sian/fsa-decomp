@@ -46,7 +46,7 @@ extern "C" void fn_801BEDBC(u8* this_) {
 
 inline void* lnbmMgr() { u8* m = fn_8020D58C(); return m + m[1] * 0x784 + 4; }
 
-inline BOOL lnbmCheckCollision(ItemBase* self, int room, f32* pos) {
+inline BOOL lnbmCheckCollision(f32* pos, int room, ItemBase* self) {
     s32 param;
     BOOL result = TRUE;
     if (!fn_802265DC(pos, (void*)room, 0)) {
@@ -58,7 +58,7 @@ inline BOOL lnbmCheckCollision(ItemBase* self, int room, f32* pos) {
     return result;
 }
 
-extern "C" BOOL fn_801BEE6C(ItemBase* this_, int a, f32* b) {
+extern "C" BOOL fn_801BEE6C(const ItemBase* this_, int a, f32* b) {
     switch ((u16)fn_8022461C(b)) {
     case 3:
     case 13:
@@ -67,7 +67,7 @@ extern "C" BOOL fn_801BEE6C(ItemBase* this_, int a, f32* b) {
     }
     BOOL result = TRUE;
     if (!fn_802265DC(b, (void*)a, 0)) {
-        this_ = *(ItemBase**)((u8*)this_ + 0x90);
+        this_ = *(const ItemBase**)((u8*)this_ + 0x90);
         if (!fn_8020D6AC(lnbmMgr(), (void*)a, b, (u32)this_, 0)) {
             result = FALSE;
         }
