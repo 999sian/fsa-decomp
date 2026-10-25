@@ -425,7 +425,7 @@ extern "C" void fn_80370764(char* self)
 		fn_8022CA6C(0, 5, 0);
 	}
 	*(s32*)(self + 0x23c) += 1;
-	((void (*)(char*))fn_803721F4)(self);
+	fn_803721F4(self);
 	{
 		JGeometry::TVec3<f32> pos;
         move80370764ToTarget(pos);
@@ -442,7 +442,7 @@ extern "C" void fn_80370764(char* self)
                     f32 half = lbl_80542E04;
                     pos.set(width * half, height * half, 0.0f);
 					fn_8022FE80(0, *(int*)(self + 0x4), *(int*)(self + 0x198), 1, 0);
-					s32 msg;
+					int msg;
 					s32 n = *(s32*)(self + 0x394);
 					if (n < 3) {
 						msg = lbl_80474F40[n];
@@ -819,8 +819,10 @@ extern "C" void fn_80371A2C(void* self_) {
     char* state;
     char* pp;
     f32* nearest;
+    JGeometry::TVec3<f32>* pick;
     int j;
     int i;
+    s32 idx;
     f32 best[4];
     best[0]=lbl_80542E40; best[1]=lbl_80542E40; best[2]=lbl_80542E40; best[3]=lbl_80542E40;
     JGeometry::TBox2<f32> box;
@@ -857,14 +859,15 @@ extern "C" void fn_80371A2C(void* self_) {
         if (*(s32*)(self+0x3ac)==0) {
             s32 j=fn_80370200((u8*)self);
             if (j!=-1) {
-                JGeometry::TVec3<f32>* __restrict p=(JGeometry::TVec3<f32>*)(self+0x294+j*12);
+                pick=(JGeometry::TVec3<f32>*)(self+0x294+j*12);
                 box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
-                box.i.x+=p->x; f32 x1=box.f.x+p->x; f32 y=p->y; box.i.y+=y; box.f.x=x1; box.f.y+=y;
+                box.i.x+=pick->x; box.i.y+=pick->y; box.f.x+=pick->x; box.f.y+=pick->y;
                 fn_8022FEB8((f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
-                s32 idx=fn_8022FD8C(*(s32*)(self+0x198));
+                idx=fn_8022FD8C(*(s32*)(self+0x198));
                 if(idx>=0 && fn_802300EC()) {
-                    pos=*p;
-                    if(fn_8038BD08(idx,lbl_80474F00[j],*(u32*)(self+4),&pos,0x22)) {
+                    s32 room=*(s32*)(self+4);
+                    pos=*pick;
+                    if(fn_8038BD08(idx,lbl_80474F00[j],room,&pos,0x22)) {
                         *(s32*)(self+0x3a4)=idx;
                         *(u8*)(self+0x3a8)=1;
                         *(s32*)(self+0x3a0)=j;
@@ -878,7 +881,7 @@ extern "C" void fn_80371A2C(void* self_) {
         if(j!=4 && j>=0) {
             Vec* __restrict p=(Vec*)(self+0x294+j*12);
             box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
-                box.i.x+=p->x; f32 x1=box.f.x+p->x; f32 y=p->y; box.i.y+=y; box.f.x=x1; box.f.y+=y;
+                box.i.x+=p->x; box.i.y+=p->y; box.f.x+=p->x; box.f.y+=p->y;
             fn_8022FF8C(*(s32*)(self+0x3a4),(f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
             if(fn_80388CAC(*(s32*)(self+0x3a4),*(s32*)(self+0x198))) {
                 *(s32*)(self+0x3a4)=-1;*(u8*)(self+0x3a8)=0;
