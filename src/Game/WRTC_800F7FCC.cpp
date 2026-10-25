@@ -52,7 +52,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern void* lbl_8053AF80;
 extern const f32 lbl_8053BFCC;
-extern f32 lbl_8053C054;
+extern const f32 lbl_8053C054;
 extern f32 lbl_8053C058;
 extern f32 lbl_8053C05C;
 extern "C" const f32 lbl_8049C634[];
