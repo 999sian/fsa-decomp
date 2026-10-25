@@ -31,6 +31,23 @@ struct StaticVec {
     void* m_1c;
 };
 
+struct StaticVecAlloc {
+    u8 m_00;
+};
+
+static inline void StaticVec_init(StaticVec* v, StaticVecAlloc alloc) {
+    v->m_00 = 0;
+    v->m_01 = 0;
+    v->m_02 = 0;
+    v->m_04 = 0x13;
+    v->m_08 = 0;
+    v->m_0c = alloc.m_00;
+    v->m_10 = 0;
+    v->m_14 = 0;
+    v->m_18 = 0;
+    v->m_1c = (void*)JGadget::vector::extend_default;
+}
+
 extern "C" StaticVec lbl_804BC540;
 extern "C" char lbl_804BC534[];
 extern "C" s8 lbl_8053AA92;
@@ -203,7 +220,9 @@ extern "C" BOOL fn_801186B0(u8* self, u32 param)
 extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
 {
     u8** begin = *(u8***)(self + 0x10);
+    u8** end;
     u32 count;
+    u8** it;
     if (begin == 0) {
         count = 0;
     } else {
@@ -212,18 +231,25 @@ extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
     if (count == 0) {
         return *(u8***)(self + 0x14);
     }
-    if (param_2 == *(u8***)(self + 0x14)) {
-        return *(u8***)(self + 0x14);
+    end = *(u8***)(self + 0x14);
+    if (param_2 == end) {
+        return end;
     }
-    volatile u32 b = param_3;
     volatile u32 a = param_3;
-    u8** it = param_2;
-    u8** end = *(u8***)(self + 0x14);
-    for (; it != end; it++) {
-        if (param_3 == *(u32*)(*it + 0x1a0)) {
-            break;
-        }
+    volatile u32 b = param_3;
+    it = param_2;
+    goto cond;
+inc:
+    it++;
+cond:
+    if (it == end) {
+        goto done;
     }
+    if (param_3 == *(u32*)(*it + 0x1a0)) {
+        goto done;
+    }
+    goto inc;
+done:
     return it;
 }
 
@@ -317,53 +343,53 @@ extern "C" void __dl__FPv(void*);
 extern "C" u32* fn_801189B0(u8* selfArg, void* positionArg, u32 amountArg) {
     u8* self = selfArg;
     u32 amount = amountArg;
-    void** result;
-    void** position = (void**)positionArg;
+    u32* result;
+    u32* position = (u32*)positionArg;
     u32 capacity;
     u32 needed;
-    void** buffer;
-    void** first;
-    void** last;
-    void** src;
-    void** dst;
-    void** split;
-    void** it;
-    void** volatile guard;
+    u32* buffer;
+    u32* first;
+    u32* last;
+    u32* src;
+    u32* dst;
+    u32* split;
+    u32* it;
+    u32* volatile guard;
     u8* volatile owner;
-    if (amount == 0) return (u32*)position;
-    first = *(void***)(self + 4);
-    needed = first == 0 ? 0 : ((s32)*(void***)(self + 8) - (s32)first) / 4;
+    if (amount == 0) return position;
+    first = *(u32**)(self + 4);
+    needed = first == 0 ? 0 : ((s32)*(u32**)(self + 8) - (s32)first) / 4;
     if (amount + needed <= *(u32*)(self + 0xc)) {
-        last = *(void***)(self + 8);
+        last = *(u32**)(self + 8);
         split = position + amount;
         if (split < last) {
             src = last - amount;
             dst = last;
-            void** end = last;
-            void** start = src;
+            u32* end = last;
+            u32* start = src;
             while (src < end) *dst++ = *src++;
             src = start;
-            dst = *(void***)(self + 8);
+            dst = *(u32**)(self + 8);
             while (src > position) *--dst = *--src;
             for (it = position; it != split; ++it) {}
-            *(void***)(self + 8) += amount;
-            return (u32*)position;
+            *(u32**)(self + 8) += amount;
+            return position;
         } else {
             src = position;
             dst = split;
             while (src < last) *dst++ = *src++;
-            for (it = position; it != *(void***)(self + 8); ++it) {}
+            for (it = position; it != *(u32**)(self + 8); ++it) {}
         }
-        *(void***)(self + 8) += amount;
-        return (u32*)position;
+        *(u32**)(self + 8) += amount;
+        return position;
     }
-    needed = first == 0 ? 0 : ((s32)*(void***)(self + 8) - (s32)first) / 4;
+    needed = first == 0 ? 0 : ((s32)*(u32**)(self + 8) - (s32)first) / 4;
     u32 newSize = needed + amount;
     capacity = ((u32(*)(u32,u32,u32))*(void**)(self + 0x10))(*(u32*)(self + 0xc), needed, amount);
     capacity = newSize > capacity ? newSize : capacity;
-    buffer = (void**)__nw__FUl(capacity * 4);
-    if (buffer == 0) return (u32*)*(void***)(self + 8);
-    src = *(void***)(self + 4);
+    buffer = (u32*)__nw__FUl(capacity * 4);
+    if (buffer == 0) return *(u32**)(self + 8);
+    src = *(u32**)(self + 4);
     dst = buffer;
     owner = self;
     guard = buffer;
@@ -371,17 +397,17 @@ extern "C" u32* fn_801189B0(u8* selfArg, void* positionArg, u32 amountArg) {
     result = dst;
     src = position;
     dst += amount;
-    last = *(void***)(self + 8);
+    last = *(u32**)(self + 8);
     while (src < last) *dst++ = *src++;
-    first = *(void***)(self + 4);
-    last = *(void***)(self + 8);
+    first = *(u32**)(self + 4);
+    last = *(u32**)(self + 8);
     for (it = first; it != last; ++it) {}
     guard = first;
-    *(void***)(self + 8) = buffer + (amount + (((s32)*(void** volatile*)(self + 8) - (s32)*(void** volatile*)(self + 4)) / 4));
-    *(void***)(self + 4) = buffer;
+    *(u32**)(self + 8) = buffer + (amount + (((s32)*(u32* volatile*)(self + 8) - (s32)*(u32* volatile*)(self + 4)) / 4));
+    *(u32**)(self + 4) = buffer;
     *(u32*)(self + 0xc) = capacity;
     __dl__FPv(first);
-    return (u32*)result;
+    return result;
 }
 
 extern "C" void fn_80118E20(u8* self)
@@ -864,6 +890,7 @@ extern "C" void fn_80119D48(u8* self)
         virtual void v0c(void);
         virtual void* v10(u32 a, u32 b);
     };
+    u8* p = self;
     if (*(u32*)(self + 0x2c) == 0) {
         VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
         void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
@@ -871,7 +898,7 @@ extern "C" void fn_80119D48(u8* self)
         if (pic != 0) {
             __ct__10J2DPictureFPC7ResTIMG(pic, res);
         }
-        *(u8**)(self + 0x2c) = pic;
+        *(u8**)(p + 0x2c) = pic;
     }
 }
 
