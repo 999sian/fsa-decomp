@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
 extern "C" void v03__5ActorFv(void*);
 extern "C" u8* fn_802D6A9C(void);
@@ -64,6 +65,84 @@ extern "C" void fn_80105654(char* p) {
     if (*(s32*)(p + 0x4) < 8) {
         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, id, p + 0x308);
     }
+}
+
+extern "C" void fn_801056E4(char* p) {
+    v03__5ActorFv(p);
+    s32 room = *(s32*)(p+4);
+    u8* flags = fn_802D6A9C() + 0x10000;
+    if(flags[room+0x31df]) {
+        f32 box[4];
+        box[0]=*(f32*)(p+0x60);
+        box[1]=*(f32*)(p+0x64);
+        box[2]=*(f32*)(p+0x68);
+        box[3]=*(f32*)(p+0x6c);
+        box[0]+=*(f32*)(p+0xc);
+        box[2]+=*(f32*)(p+0xc);
+        box[1]+=*(f32*)(p+0x10);
+        box[3]+=*(f32*)(p+0x10);
+        fn_80239914(box,*(s32*)(p+4),*(s32*)(p+0x198));
+    }
+    s32 bit=*(s32*)(p+0x368);
+    if(bit>0 && fn_802D800C(fn_802D6A9C(),bit)) {
+        p[0x11c]=0;
+        return;
+    }
+    switch(*(s32*)(p+0x370)) {
+    case 0:
+        if(*(s32*)(p+0x354)>0) {
+            JGeometry::TVec3f pos=*(JGeometry::TVec3f*)(p+0xc);
+            fn_800FE3EC(p+0x230,*(s32*)(p+0x354),&pos,*(s32*)(p+4));
+            if(*(s32*)(p+0x354)>0 && *(s32*)(p+0x364)>0) {
+                u8 current=fn_800FD894(p+0x230,-1,0,0);
+                s32 requested=*(s32*)(p+0x364);
+                if(requested<=current && (u8)requested < *(u8*)(p+0x232))
+                    *(u8*)(p+0x233)=(u8)requested;
+            }
+            *(s32*)(p+0x360)=0;
+            *(s32*)(p+0x370)=1;
+        }
+        break;
+    case 1:
+        if(*(s32*)(p+0x354)>0) {
+            JGeometry::TVec3f vel;
+            vel.set(lbl_8053C228,lbl_8053C228,lbl_8053C228);
+            s32 room=*(s32*)(p+4);
+            s32 out;
+            JGeometry::TVec3f pos=*(JGeometry::TVec3f*)(p+0xc);
+            s32 result=fn_800FDEA0(p+0x230,&pos,&vel,&room,&out,0x200, lbl_8053C240 * *(s32*)(p+0x358)+lbl_8053C234);
+            *(f32*)(p+0x3c)=vel.x;
+            *(f32*)(p+0x40)=vel.y;
+            *(f32*)(p+0x44)=vel.z;
+            *(JGeometry::TVec3f*)(p+0xc)+=*(JGeometry::TVec3f*)(p+0x3c);
+            if(result && fn_800FE21C(p+0x230,0xff)) {
+                *(s32*)(p+0x360)=0;
+                *(f32*)(p+0x44)=lbl_8053C228;
+                *(f32*)(p+0x40)=lbl_8053C228;
+                *(f32*)(p+0x3c)=lbl_8053C228;
+                *(s32*)(p+0x370)=2;
+            }
+        }
+        break;
+    case 2:
+        ++*(s32*)(p+0x360);
+        if(*(s32*)(p+0x360)>=60) {
+            *(s32*)(p+0x360)=0;
+            *(s32*)(p+0x370)=1;
+        }
+        break;
+    }
+    for(s32 i=0;i<4;i++) {
+        if((u8)fn_801053E8(p,i) && !fn_8022D75C(i) && !fn_80230188(i)) {
+            if(fn_8023E724(i)->z<=lbl_8053C228) {
+                JGeometry::TVec3f delta=*(JGeometry::TVec3f*)(p+0xc);
+                delta-=*(JGeometry::TVec3f*)(p+0x18);
+                JGeometry::TVec3f copy=delta;
+                fn_8023DF68(i,&copy);
+            }
+        }
+    }
+    fn_801D1C18(p+0x374);
 }
 
 extern "C" void fn_80105A34(char* p) {
