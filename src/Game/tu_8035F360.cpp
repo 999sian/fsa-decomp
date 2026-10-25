@@ -6,6 +6,12 @@
 
 
 extern "C" u8* lbl_804ADA98[];
+extern "C" u8 lbl_80472848[];
+extern "C" u8 lbl_804AD900[];
+extern "C" u8* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 fourcc, s32 room, void* pos, u32 param, s32 a, s32 b);
+extern "C" u8* fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_80230498(s32 index, const JGeometry::TVec3<f32>& pos, s32 a1, u8 a2, u8 a3, u8 a4, u8 a5);
 extern "C" void fn_80360914(u8* p);
 extern "C" u8 __vt__4EOWL[];
 extern "C" void __dt__5ActorFv(void* p, s32 flag);
@@ -45,7 +51,8 @@ extern "C" void fn_8035F9C8(u8* param_1) {
     if (*(f32*)(param_1 + 0x26c) > 3.0f) {
         *(f32*)(param_1 + 0x26c) = *(f32*)(param_1 + 0x26c) - 0.2f;
     }
-    s32 step = (s32)(65536.0f * (__fres(6.28318f * *(f32*)(param_1 + 0x26c)) * 1.3f));
+    f32 inv = __fres(6.28318f * *(f32*)(param_1 + 0x26c));
+    s32 step = (s32)(65536.0f * (1.3f * inv));
     *(s16*)(param_1 + 0x254) = *(s16*)(param_1 + 0x254) - step;
     *(f32*)(param_1 + 0x3c) = 1.3f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].cos;
     *(f32*)(param_1 + 0x40) = 1.3f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].sin;
@@ -81,17 +88,18 @@ extern "C" void fn_8035FB64(u8* param_1) {
     if (*(f32*)(param_1 + 0x26c) < 16.0f) {
         *(f32*)(param_1 + 0x26c) = *(f32*)(param_1 + 0x26c) + 0.2f;
     }
-    s32 step = (s32)(65536.0f * (1.75f / (6.28318f * *(f32*)(param_1 + 0x26c))));
+    s32 step = (s32)(65536.0f * (__fres(6.28318f * *(f32*)(param_1 + 0x26c)) * 1.75f));
     *(s16*)(param_1 + 0x254) = *(s16*)(param_1 + 0x254) - step;
     *(f32*)(param_1 + 0x3c) = 1.75f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].cos;
     *(f32*)(param_1 + 0x40) = 1.75f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].sin;
     *(f32*)(param_1 + 0x44) = 0.2f;
     *(JGeometry::TVec3<f32>*)(param_1 + 0xc) += *(JGeometry::TVec3<f32>*)(param_1 + 0x3c);
     *(s32*)(param_1 + 0x264) = *(s32*)(param_1 + 0x264) + (s16)step;
-    if (*(f32*)(param_1 + 0x26c) < 16.0f) {
-        fn_80360914(param_1);
-        *(f32*)(param_1 + 0x44) = 0.0f;
+    if (*(f32*)(param_1 + 0x26c) >= 16.0f) {
+        return;
     }
+    fn_80360914(param_1);
+    *(f32*)(param_1 + 0x44) = 0.0f;
 }
 
 extern "C" void fn_8035FCD8(u8* param_1) {
@@ -123,11 +131,12 @@ extern "C" s32 lbl_80474020[];
 extern "C" f32 lbl_80542A14;
 extern "C" void fn_8035FD6C(u8* param_1) {
   u8 done;
-  s32 tbl = *(s32*)(param_1 + 0x244);
   struct Entry {
     s32 m_0;
     u32 m_4;
   };
+  s32 tbl;
+  tbl = *(s32*)(param_1 + 0x244);
   if (*(s32*)(param_1 + 0x234) == 0) {
     s32 idx = *(s32*)(param_1 + 0x240);
     Entry* base = (Entry*)lbl_804ADA98[tbl];
@@ -213,9 +222,10 @@ extern "C" char lbl_804742F4[];
 extern "C" u16 lbl_805429F8[];
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_801EF830(s32 room, void* pos, DrawRec* rec, s32 mask, const char* name, s32 id, s32 e);
+extern "C" u16 lbl_805429F8[4];
 extern "C" void fn_80361424(u8* param_1) {
     DrawRec rec;
-    Mtx mtx;
+    f32 mtx[3][4];
     u8 sel = 0;
     s32 iVar2 = *(s32*)(param_1 + 0x250);
 
@@ -244,8 +254,21 @@ extern "C" void fn_80361424(u8* param_1) {
     rec.b1f = 0;
     {
         u32 d = (u16)*(s16*)(param_1 + 0x254) - lbl_805429F8[*(s32*)(param_1 + 0x274)];
-        const JMathSinCos* sc = &sincosTable___5JMath[(d >> 5) & 0x7ff];
-        PSMTXRotTrig(mtx, 'Y', sc->sin, sc->cos);
+        u32 idx = (d >> 5) & 0x7ff;
+        f32 sin = sincosTable___5JMath[idx].sin;
+        f32 cos = sincosTable___5JMath[idx].cos;
+        mtx[0][0] = cos;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = sin;
+        mtx[0][3] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = 1.0f;
+        mtx[1][2] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][0] = -sin;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = cos;
+        mtx[2][3] = 0.0f;
     }
     rec.w18 = mtx;
 
@@ -258,6 +281,88 @@ extern "C" void fn_80361424(u8* param_1) {
         s32 id = *(s32*)(param_1 + 0x23c) + 0x3e0;
         if (*(u32*)(param_1 + 0x138) == 0) {
             fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, id, 0);
+        }
+    }
+}
+
+extern "C" void fn_803616FC(u8* param_1) {
+    JGeometry::TVec3<f32> pos;
+    f32 mtx[3][4];
+
+    {
+        DrawRec rec;
+        rec.b1f = 0;
+        pos = *(JGeometry::TVec3<f32>*)(param_1 + 0xc);
+        fn_801F06F0(param_1, lbl_804742F4, 0x279, &rec, -1, 1.0f, 1.0f);
+        ((u8*)&rec)[0x13] = 0xc8;
+        if (*(u32*)(param_1 + 0x138) == 0) {
+            fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, 0x279, 0);
+        }
+    }
+    {
+        DrawRec rec;
+        f32 sin = sincosTable___5JMath[(*(s16*)(param_1 + 0x2a4) >> 5) & 0x7ff].sin;
+        f32 cos = sincosTable___5JMath[(*(s16*)(param_1 + 0x2a4) >> 5) & 0x7ff].cos;
+        mtx[0][0] = cos;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = sin;
+        mtx[0][3] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = 1.0f;
+        mtx[1][2] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][0] = -sin;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = cos;
+        mtx[2][3] = 0.0f;
+        rec.w18 = mtx;
+        rec.b1d = 1;
+        *(f32*)(param_1 + 0x10) += -21.0f;
+        fn_801F06F0(param_1, lbl_804742F4, 0x27a, &rec, -1, 1.0f, 1.0f);
+        *(f32*)(param_1 + 0x10) -= -21.0f;
+        ((u8*)&rec)[0x13] = 0xc8;
+        *(f32*)(param_1 + 0x10) += -10.5f;
+        if (*(u32*)(param_1 + 0x138) == 0) {
+            fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, 0x27a, 0);
+        }
+    }
+    *(f32*)(param_1 + 0x10) -= -10.5f;
+    *(JGeometry::TVec3<f32>*)(param_1 + 0xc) = pos;
+}
+
+extern "C" char lbl_80474308[];
+extern "C" void fn_803616FC(u8* param_1);
+extern const f32 lbl_80542A40;
+extern "C" void fn_80361A78(u8* param_1) {
+    if (*(u8*)(param_1 + 0x2b0) != 0) {
+        if (*(s32*)(param_1 + 0x270) == 0) {
+            if (*(s32*)(param_1 + 0x278) == 1) {
+                fn_803616FC(param_1);
+            } else if (*(s32*)(param_1 + 0x278) == 0) {
+                fn_80361424(param_1);
+            } else {
+                DrawRec rec;
+                rec.b1f = 0;
+                fn_801F06F0(param_1, lbl_804742F4, *(s32*)(param_1 + 0x23c) + 0x25c, &rec, -1, 1.0f, 1.0f);
+                *(u8*)((u8*)&rec + 0x13) = 200;
+                s32 id = *(s32*)(param_1 + 0x23c) + 0x25c;
+                if (*(u32*)(param_1 + 0x138) == 0) {
+                    fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, id, 0);
+                }
+            }
+        } else {
+            DrawRec rec;
+            rec.b1f = 0;
+            rec.b1c = *(u8*)(param_1 + 0x24c);
+            rec.b1d = *(u8*)(param_1 + 0x24d);
+            fn_801F06F0(param_1, lbl_80474308, *(s32*)(param_1 + 0x238) + *(s32*)(param_1 + 0x23c), &rec, -1, 1.0f, 1.0f);
+            if (*(s8*)(param_1 + 0x24c) < 0) {
+                rec.b1c = 0;
+            }
+            s32 id = *(s32*)(param_1 + 0x238) + *(s32*)(param_1 + 0x23c);
+            if (*(u32*)(param_1 + 0x138) == 0) {
+                fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_80474308, id, 0);
+            }
         }
     }
 }
