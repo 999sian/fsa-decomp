@@ -5521,11 +5521,11 @@ extern "C" void* __ct__6PlayerFi(u8* p, s32 idx) {
 } // extern "C"
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-BOOL fn_80244630(char* p) {
+extern "C" BOOL fn_80244630(char* p) {
     f32 f;
-    if (!padActive(p)) goto ret0;
+    if (!padActive(p)) return 0;
     if (S32(p, 0x3dc) == 0) {
-        f = !padActive(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+        f = !padActive6(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
         if (f > 0.0f) goto ret1;
     }
     if (S32(p, 0x3dc) == 1) {
