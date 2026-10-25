@@ -75,6 +75,18 @@ extern "C" void fn_80192038(ActorVt_gnon* this_) {
     this_->setShadow(2, 0.0f, 0.0f);
 }
 
+extern "C" void fn_801EFD34(void* this_, void* a, void* b, void* c, f32 x, f32 y, s32 z);
+extern "C" void fn_80192090(char* this_) {
+	u8 tbl[16];
+	s32 idx;
+	for (idx = 0; idx < 16; idx++) {
+		tbl[idx] = idx;
+	}
+	if (*(u32*)(this_ + 0x90) == 0x1f) {
+		return;
+	}
+}
+
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
@@ -136,8 +148,12 @@ extern "C" void fn_801968C8(char* p) {
     *(s16*)(p + 0x2b6) = (s32)(65536.0f * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
     *(GnonVec*)(p + 0x2dc) = *(GnonVec*)(p + 0xc);
     *(GnonVec*)(p + 0x2e8) = *(GnonVec*)(p + 0xc);
-    fn_80196D60((f32*)(p + 0x54), 1.0f, 1.0f, 1.0f);
-    fn_80196D60((f32*)(p + 0x2d0), 1.0f, 1.0f, 1.0f);
+    *(f32*)(p + 0x54) = 1.0f;
+    *(f32*)(p + 0x58) = 1.0f;
+    *(f32*)(p + 0x5c) = 1.0f;
+    *(f32*)(p + 0x2d0) = 1.0f;
+    *(f32*)(p + 0x2d4) = 1.0f;
+    *(f32*)(p + 0x2d8) = 1.0f;
     *(f32*)(p + 0x2f4) = 0.0f;
     *(s32*)(p + 0x300) = 0;
     *(s32*)(p + 0x2fc) = -1;
@@ -195,7 +211,7 @@ extern "C" void fn_801968C8(char* p) {
     if (*(u32*)(p + 0x90) == 1 || (u32)(*(u32*)(p + 0x90) - 2) <= 1 || *(u32*)(p + 0x90) == 4) {
         *(s32*)(p + 0x25c) = *(u32*)(p + 0x90) - 1;
         ((u32*)tables)[*(s32*)(p + 0x25c)] = *(u32*)(p + 4);
-        fn_80196D70((f32*)((GnonVec*)(tables + 0x10) + *(s32*)(p + 0x25c)), (f32*)(p + 0xc));
+        ((GnonVec*)(tables + 0x10))[*(s32*)(p + 0x25c)] = *(GnonVec*)(p + 0xc);
         ((GnonVec*)(tables + 0x10))[*(s32*)(p + 0x25c)].y += 48.0f;
         *(s32*)(p + 0x230) = 40;
     }
@@ -264,6 +280,7 @@ extern "C" void fn_80192BD8(char* this_) {
     }
 }
 
+extern "C" void fn_80192BD8(char* this_);
 extern "C" void fn_80196020(char* this_, s32 idx) {
     char* self = this_;
     if (idx < 0) {
