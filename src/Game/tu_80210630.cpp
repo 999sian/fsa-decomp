@@ -83,13 +83,13 @@ extern "C" void fn_802108BC(int param_1) {
     float c = lbl_8053FAE4 * *(float *)(param_1 + 0x58);
     float b2 = lbl_8053FADC * *(float *)(param_1 + 0x54);
     float a0 = lbl_8053FAE0 * *(float *)(param_1 + 0x54);
-    box[3] = d;
-    box[1] = c;
     box[0] = a0;
+    box[1] = c;
     box[2] = b2;
+    box[3] = d;
     box[0] += *(float *)(param_1 + 0xc);
-    box[2] += *(float *)(param_1 + 0xc);
     box[1] += *(float *)(param_1 + 0x10);
+    box[2] += *(float *)(param_1 + 0xc);
     box[3] += *(float *)(param_1 + 0x10);
     fn_80239914(box, *(unsigned int *)(param_1 + 0x4), *(unsigned int *)(param_1 + 0x198));
     unsigned int a = *(unsigned int *)(param_1 + 0x198);
@@ -132,14 +132,23 @@ extern "C" void fn_80210990(char* p, int side, float* out)
 	}
 }
 
-extern "C" void fn_80210A30(char* p, float* out)
-{
-	float y = *(float*)(p + 0x58);
-	float x = *(float*)(p + 0x54);
-	out[0] = x * -16.0f;
-	out[1] = y * -24.0f;
-	out[2] = x * 16.0f;
-	out[3] = y * 8.0f;
+extern "C" void fn_80210A30(char* p, float* out) {
+    float right;
+    float bottom;
+    float y;
+    float x;
+    float left;
+    float top;
+    y = *(float*)(p + 0x58);
+    x = *(float*)(p + 0x54);
+    left = lbl_8053FAE0;
+    top = lbl_8053FAE4;
+    right = lbl_8053FADC;
+    bottom = lbl_8053FAD8;
+    out[0] = left * x;
+    out[1] = top * y;
+    out[2] = right * x;
+    out[3] = bottom * y;
 }
 
 extern "C" bool fn_80210A6C(char* p)
