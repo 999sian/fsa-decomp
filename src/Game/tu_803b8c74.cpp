@@ -230,16 +230,12 @@ extern "C" u8 fn_803B90E4(s32 idx, s32 n) {
     }
 }
 #pragma peephole reset
-BOOL fn_803B9120(s32 n) {
-	if (n < 3) {
-		return TRUE;
-	}
-	u32 idx = lbl_8050EC80[0].selfIndex;
-	u32 f = lbl_8050EC80[idx].flags28;
-	if (!(f & 0x80000000)) {
-		return FALSE;
-	}
-	return TRUE;
+extern "C" u8 fn_803B9120(s32 n) {
+    if (n < 3) return 1;
+    switch (lbl_8050EC80[lbl_8050EC80[0].selfIndex].flags28 & 0x80000000) {
+    default: return 1;
+    case 0: return 0;
+    }
 }
 
 extern u32 lbl_80476548[];
