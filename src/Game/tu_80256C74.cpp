@@ -26,6 +26,13 @@ extern const f32 lbl_80540108;
 
 #pragma auto_inline off
 
+static inline bool playerListBusy(u8* list) {
+    for (s32 i = 0; i < 8; i++) {
+        if (list[0xb4] == 1 && i != 2 && (u32)(i - 4) > 1 && list[i + 0x48] == 1) return true;
+    }
+    return false;
+}
+
 static inline f32 playerVelocitySquared(const JGeometry::TVec3<f32>& velocity) {
     return velocity.squared();
 }
@@ -1601,21 +1608,39 @@ extern "C" void fn_8025AEC4(u8* p) {
 
 extern "C" void fn_8025AED0(u8* p) {
     U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
-    u32 phase = (U8(p, 0x3fc) >> 1) & 3;
+    s32 phase = (U8(p, 0x3fc) >> 1) & 3;
     if (phase == 0) {
-        S32(p, 0x3dc) = 0;
-        S32(p, 0x3e8) = 0;
+        S32(p, 0x3dc) = 0; S32(p, 0x3e8) = 0;
     } else if (phase == 1) {
-        S32(p, 0x3dc) = 2;
-        S32(p, 0x3e8) = 2;
+        S32(p, 0x3dc) = 2; S32(p, 0x3e8) = 2;
     } else if (phase == 2) {
-        S32(p, 0x3dc) = 1;
-        S32(p, 0x3e8) = 1;
+        S32(p, 0x3dc) = 1; S32(p, 0x3e8) = 1;
     } else {
-        S32(p, 0x3dc) = 3;
-        S32(p, 0x3e8) = 3;
+        S32(p, 0x3dc) = 3; S32(p, 0x3e8) = 3;
     }
     fn_80268B3C(p);
+    if (U8(p, 0xafc) != 1) {
+        u8* list = PTR(p, 0xbf0);
+        bool busy = false;
+        for (s32 i=0; i<8; i++) {
+            if (U8(list,0xb4)==1 && i!=2 && (u32)(i-4)>1 && U8(list,i+0x48)==1) {busy=true;break;}
+        }
+        if (!busy) {
+            u8* obj=fn_801F666C(fn_801F856C(),S32(p,0x11f8));
+            if (obj && S32(obj,4)==S32(p,0x3b4)) {
+                JGeometry::TVec3<f32> d(V3(obj,0xc)-V3(p,8));
+                JGeometry::TVec3<f32> v(d);
+                v.z=0.0f;
+                v.normalize();
+                if (!v.isZero()) {
+                    v.scale(lbl_80540114);
+                    V3(p,8).add(v);
+                    F32(p,0x10)=0.0f;
+                    return;
+                }
+            }
+        }
+    }
     U8(p, 0x124d) = 0;
     fn_80251AEC(p, 0);
 }
