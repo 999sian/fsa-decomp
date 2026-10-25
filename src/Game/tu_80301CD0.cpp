@@ -206,6 +206,10 @@ static inline s32 tu80301_rank(s32 mask, s32 player, s32 index) {
     }
     return rank;
 }
+static inline s32 tu80301_rankTables(s32 mask, s32 index, s32 ref, u8* ranks) {
+    if (((mask >> index) & 1) != ((mask >> ref) & 1)) return -1;
+    return ranks[index];
+}
 extern "C" s32 fn_803074A4(s32, s32);
 extern "C" void fn_80302C34(u8*, s32, s32, s32, u8);
 
@@ -364,6 +368,82 @@ extern "C" void fn_803022C4(u8* p, s32 player, u8 arg, u8 mode) {
         }
     }
 }
+
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
+extern "C" void fn_8030275C(u8* p, s32 player, u8 arg, u8 mode) {
+    s32 order[4];
+    order[0] = 0;
+    order[1] = 1;
+    order[2] = 2;
+    order[3] = 3;
+    s32 mask = (p[1] >> 4) & 15;
+    for (s32 n = 3; n > 0; --n) {
+        s32* a = order;
+        for (s32 j = n; j > 0; --j, ++a) {
+            s32 x = a[0];
+            s32 y = a[1];
+            if (tu80301_rank(mask, player, x) < tu80301_rank(mask, player, y) ||
+                (tu80301_rank(mask, player, x) == tu80301_rank(mask, player, y) &&
+                 p[x * 4 + 9] < p[y * 4 + 9])) {
+                a[0] = y;
+                a[1] = x;
+            }
+        }
+    }
+    u8* base = lbl_80506F88 + player * 0x98;
+    s32 left = 18;
+    s32 right = 18;
+    s32 count = 3;
+    u8* a = base + 0x48;
+    for (s32 i = 19; i > 0; --i) {
+        if ((a[3] & 1U) != 1U || a[2] != 0x80) break;
+        a -= 4;
+        --left;
+    }
+    a = base + 0x48;
+    for (s32 i = 19; i > 0; --i) {
+        if ((a[0x4f] & 1U) != 1U || a[0x4e] != 0x80) break;
+        a -= 4;
+        --right;
+    }
+    if (((p[2] >> 2) & 7U) <= 1U) mode = 1;
+    while (left >= 0 || right >= 0 || count >= 0) {
+        s32 rank = count >= 0 ? tu80301_rank((p[1] >> 4) & 15, player, order[count]) : 255;
+        s32 lr = left >= 0 ? fn_803074A4(base[left * 4 + 3] >> 5 & 7, base[left * 4] | ((base[left * 4 + 3] & 6) << 7)) : 255;
+        s32 rr = right >= 0 ? fn_803074A4(base[right * 4 + 0x4f] >> 5 & 7, base[right * 4 + 0x4c] | ((base[right * 4 + 0x4f] & 6) << 7)) : 255;
+        if (right >= 0 &&
+            (count < 0 || rr < rank || (rr == rank && p[order[count] * 4 + 9] >= base[right * 4 + 0x4d])) &&
+            (left < 0 || lr > rr || (lr == rr && base[left * 4 + 1] >= base[right * 4 + 0x4d]))) {
+            if (rr >= 2) right = 0;
+            else fn_80302F9C(base + right * 4 + 0x4c, arg, mode, lbl_80506D78[player]);
+            --right;
+            a = base + right * 4;
+            for (; right >= 0; --right) {
+                if ((a[0x4f] & 1U) != 1U || a[0x4e] != 0x80) break;
+                a -= 4;
+            }
+        } else if (left >= 0 &&
+            (count < 0 || lr < rank || (lr == rank && p[order[count] * 4 + 9] >= base[left * 4 + 1]))) {
+            if (lr >= 2) left = 0;
+            else fn_80302F9C(base + left * 4, arg, mode, lbl_80506D78[player]);
+            --left;
+            a = base + left * 4;
+            for (; left >= 0; --left) {
+                if ((a[3] & 1U) != 1U || a[2] != 0x80) break;
+                a -= 4;
+            }
+        } else {
+            s32 index = order[count];
+            s32 bits = (p[1] >> 4) & 15;
+            if (tu80301_rank(bits, player, index) >= 2) count = 0;
+            else fn_80302C34(p + index * 4 + 8, player, index, bits, arg);
+            --count;
+        }
+    }
+}
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 
 extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     const char* names;
@@ -1082,20 +1162,32 @@ extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
     for (; i < max; ++i) {
         ((u16*)(lbl_805071E8 + player * 0x100))[start + i] = 0;
     }
-    s32 n = lbl_80541618[lbl_8053AD08] - 2;
+    s32 n;
+    n = lbl_80541618[lbl_8053AD08] - 2;
     u8* rec = lbl_80506DE8 + player * 0x68;
+    u8 b0, b1, b2, b3;
+    s32 j;
+    u8* dst;
     u8* copyBase = lbl_805071E8 + player * 0x100;
-    u8* dst = rec;
-    s32 j = start * 2;
+    dst = rec;
+    j = start * 2;
     for (s32 k = n; k > 0; --k) {
         u16* src = (u16*)(copyBase + j);
         Slot_80301CD0 out;
-        u32 word = ((u32)src[1] << 16) | src[0];
+        u32 word;
+        u32 lo;
+        u32 hi = src[1];
+        lo = src[0];
+        word = (hi << 16) | lo;
         u8* bytes = (u8*)&word;
-        out.id = bytes[3];
-        out.f1 = bytes[2];
-        out.f2 = bytes[1];
-        ((u8*)&out)[3] = bytes[0];
+        b3 = bytes[3];
+        b2 = bytes[2];
+        b1 = bytes[1];
+        b0 = bytes[0];
+        out.id = b3;
+        out.f1 = b2;
+        out.f2 = b1;
+        ((u8*)&out)[3] = b0;
         *(u32*)(dst + 8) = *(u32*)&out;
         dst += 4;
         j += 4;
@@ -1103,13 +1195,19 @@ extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
     u32 sum = 0;
     MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + player * 0x2380))[lbl_80504A18[player]];
     if (e->f118 == 0) {
-        u8* p = rec + 8;
-        int limit = lbl_80541618[lbl_8053AD08] * 4;
-        for (int b = 8; b < limit; ++b) sum += *p++;
+        int b;
+        u8* p;
+        int limit;
+        p = rec + 8;
+        limit = lbl_80541618[lbl_8053AD08] * 4;
+        for (b = 8; b < limit; ++b) sum += *p++;
     } else {
-        u8* p = rec + 8;
-        int limit = lbl_80541618[lbl_8053AD08] * 4;
-        for (int b = 8; b < limit; ++b) sum += *p++;
+        int b;
+        u8* p;
+        int limit;
+        p = rec + 8;
+        limit = lbl_80541618[lbl_8053AD08] * 4;
+        for (b = 8; b < limit; ++b) sum += *p++;
     }
     rec[0] = sum;
 }
