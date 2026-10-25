@@ -30,7 +30,7 @@ static inline void* PrtcSpawnA(char* p, s32 id) {
     f32 pos[3];
     pos[1] = *(f32*)(p + 0x10) + *(f32*)(p + 0x248);
     pos[0] = *(f32*)(p + 0xc) + *(f32*)(p + 0x244);
-    pos[2] = lbl_805411A8;
+    pos[2] = 0.0f;
     return fn_8013CC50(*(s32*)(p + 4), pos, id, *(s32*)(p + 0x254), 0, 0, 0, 1, lbl_805411AC);
 }
 
