@@ -398,6 +398,27 @@ void fn_8022B278()
     }
 }
 
+static inline u8 p40AF0(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80240AF0(lbl_8053AC90->players[i]);
+}
+static inline int p486A0(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802486A0(lbl_8053AC90->players[i]);
+}
+static inline u8 pIsLinkedU8(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int p416C4(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802416C4(lbl_8053AC90->players[i]);
+}
+
 int fn_8022B334(int index)
 {
     int state;
@@ -886,6 +907,28 @@ int fn_8022E39C(int index, int a0)
 {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(index)) return ClaimField_0x11f4(lbl_8053AC90->players[index], a0);
+    return 0;
+}
+
+extern "C" u8 fn_8022E438(int a, int b)
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    if (a < 0) return 0;
+    if (a >= 4) return 0;
+    if (b < 0) return 0;
+    if (b >= 4) return 0;
+    if (!isPlayerEnabled(a)) return 0;
+    if (!isPlayerEnabled(b)) return 0;
+    if (a == b) return 1;
+    if ((u8)pIsLinked(a)) {
+        if (b == pLinkTarget(a)) return 1;
+        a = pLinkTarget(a);
+        return a == pLinkTarget(b);
+    }
+    if ((u8)pIsLinked(b)) {
+        u8 r = pLinkTarget(b) == a;
+        return r;
+    }
     return 0;
 }
 
