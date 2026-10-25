@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JGeometry/Vec.h"
+typedef Vec SDKVec;
 #define Vec ActorVec
 #include "Game/Actor.h"
 
