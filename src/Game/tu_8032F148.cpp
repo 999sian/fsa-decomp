@@ -3,6 +3,7 @@
 #include "std/math.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" s32 fn_8023DE58(s32 idx);
@@ -34,13 +35,14 @@ extern "C" u8 fn_80236B50(s32);
 extern "C" u8 fn_8022D534(s32);
 extern "C" void* fn_8023E724(s32);
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
+extern const f32 lbl_80541EB8;
 extern "C" void fn_8032F148(void* p1, s32 idx, u16* outAng, s32* outQuad, f32* outDist, s32* outFlag, s32 slot) {
+    s32 room;
     char* a = (char*)fn_801F666C(fn_801F856C(), idx);
     f32 dist = lbl_80541E98;
+    u32 ang = 0;
     s32 result = -1;
-    u16 ang = 0;
     s32 mode;
-    s32 room;
     f32 dx;
     f32 dy;
     f32 len;
@@ -64,29 +66,31 @@ extern "C" void fn_8032F148(void* p1, s32 idx, u16* outAng, s32* outQuad, f32* o
             dx = *(f32*)(a + 0xc) - ((f32*)fn_8023E724(slot))[0];
             dy = *(f32*)(a + 0x10) - ((f32*)fn_8023E724(slot))[1];
         } else {
-            u32 tmp[4];
+            JGeometry::TBox2<f32> tmp;
             s32 q = fn_8023DE58(slot);
             char* m = (char*)fn_802D6A9C();
-            s32 n = fn_8023DE58(slot);
-            if (q < 8) {
-                ((u32*)tmp)[0] = ((u32*)(m + 0xcc))[0];
-            }
-            dx = *(f32*)(a + 0xc) - (((f32*)fn_8023E724(slot))[0] - *(f32*)&tmp[0]);
-            dy = *(f32*)(a + 0x10) - (((f32*)fn_8023E724(slot))[1] - *(f32*)&tmp[1]);
+            const JGeometry::TBox2<f32>* box;
+            if (q < 8) box = (JGeometry::TBox2<f32>*)(m + 0xcc);
+            else box = (JGeometry::TBox2<f32>*)(m + 0xdc);
+            tmp = *box;
+            dx = *(f32*)(a + 0xc) - (((f32*)fn_8023E724(slot))[0] - ((f32*)&tmp)[0]);
+            dy = *(f32*)(a + 0x10) - (((f32*)fn_8023E724(slot))[1] - ((f32*)&tmp)[1]);
         }
         len = std::sqrtf(dx * dx + dy * dy);
         dist = len;
-        ang = (u16)(s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
+        f32 angle = JMath::atanTable_.atan2_(-dx, -dy);
+        angle *= lbl_80541EB8;
+        ang = (u32)(s32)angle & 0xffff;
         result = slot;
     }
-    if (result >= 0) {
-        if (outAng != 0) *outAng = ang;
-        if (outQuad != 0) *outQuad = ClassifyBamAngleToQuadrant(ang);
-        if (outDist != 0) *outDist = dist;
-        if (outFlag != 0) *outFlag = result;
-    } else {
+    if (result < 0) {
         if (outQuad != 0) *outQuad = -1;
         if (outFlag != 0) *outFlag = -1;
+    } else {
+        if (outAng != 0) *outAng = ang;
+        if (outQuad != 0) *outQuad = ClassifyBamAngleToQuadrant((u16)ang);
+        if (outDist != 0) *outDist = dist;
+        if (outFlag != 0) *outFlag = result;
     }
 }
 
@@ -193,6 +197,49 @@ extern "C" void fn_8032F96C(char* this_) {
         }
         return;
     }
+}
+
+extern "C" u8* fn_8020D58C();
+extern "C" u8 fn_8020D6AC(void*, int, void*, int, int);
+extern "C" u16 fn_80226850(void*, int);
+extern "C" u16 fn_8022461C(void*, int);
+extern const f32 lbl_80541F0C;
+extern "C" u8 fn_80331664(char* self, int room, f32* pos) {
+    int owner = *(int*)(self+0x198);
+    u8* slots = fn_8020D58C();
+    if (fn_8020D6AC(slots + slots[1]*0x784 + 4, room, pos, owner, 0) == 1) return 1;
+    if (fn_801F6758(pos, room, lbl_80541F0C)) return 1;
+    int tile = fn_80226850(pos, room);
+    if (tile == 0x19c || tile == 0x19d) return 1;
+    int kind = fn_8022461C(pos, room);
+    if (kind == 0x20 && *(f32*)(self+0x14) > lbl_80541EFC) return 0;
+    if (((u32)(kind-0x10) <= 6 || kind == 0x17) && *(f32*)(self+0x14) > lbl_80541EFC) {
+        *(int*)(self+0x270) = 300;
+        return 0;
+    }
+    if (kind == 0) {
+        *(f32*)(self+0x2b4) = lbl_80541E9C;
+        return 0;
+    }
+    u8 result = 0;
+    if (kind == 3 && tile != 0xc) {
+        result = 0;
+    } else if (kind != 0x27 && kind != 2 && kind != 0x39 &&
+        (kind != 0x28 || (int)pos[1] % 16 <= 4) &&
+        (kind != 0x29 || (int)pos[1] % 16 >= 12) &&
+        (kind != 0x2c || (int)pos[1] % 16 <= 4) &&
+        (kind != 0x2d || (int)pos[1] % 16 >= 12) &&
+        (kind != 0x2a || (int)pos[0] % 16 <= 4) &&
+        (kind != 0x2b || (int)pos[0] % 16 >= 12) &&
+        (kind != 0x2e || (int)pos[0] % 16 <= 4) &&
+        (kind != 0x2f || (int)pos[0] % 16 >= 12)) {
+        result = 1;
+    }
+    if (*(int*)(self+0x270) > 0) {
+        if (result == 1) --*(int*)(self+0x270);
+        return 0;
+    }
+    return result;
 }
 
 extern "C" void fn_803319B8(char* this_) {
