@@ -174,28 +174,17 @@ extern "C" const f32 lbl_80541774;
 extern "C" s32 fn_80230CFC(void*);
 extern "C" s32 fn_801F2618(void*, s32, s32);
 extern "C" void fn_8030F9E4(u8* this_) {
-    f32 f0 = lbl_8054173C;
-    f32 f1;
-    f32 f2;
-    f32 f3;
-    f32 f31;
-    s32 i = 0;
-    f3 = lbl_80541768;
-    *(f32*)(this_ + 0x3c) = f0;
-    f2 = lbl_8054176C;
-    *(f32*)(this_ + 0x40) = f0;
-    f1 = lbl_80541760;
-    *(f32*)(this_ + 0x44) = f0;
-    f0 = lbl_80541770;
-    *(f32*)(this_ + 0x60) = f3;
-    f31 = lbl_8054174C;
-    *(f32*)(this_ + 0x64) = f3;
-    *(f32*)(this_ + 0x68) = f2;
-    *(f32*)(this_ + 0x6c) = f2;
-    *(f32*)(this_ + 0x80) = f1;
-    *(f32*)(this_ + 0x84) = f1;
-    *(f32*)(this_ + 0x88) = f0;
-    *(f32*)(this_ + 0x8c) = f0;
+    *(f32*)(this_ + 0x3c) = lbl_8054173C;
+    *(f32*)(this_ + 0x40) = lbl_8054173C;
+    *(f32*)(this_ + 0x44) = lbl_8054173C;
+    *(f32*)(this_ + 0x60) = lbl_80541768;
+    *(f32*)(this_ + 0x64) = lbl_80541768;
+    *(f32*)(this_ + 0x68) = lbl_8054176C;
+    *(f32*)(this_ + 0x6c) = lbl_8054176C;
+    *(f32*)(this_ + 0x80) = lbl_80541760;
+    *(f32*)(this_ + 0x84) = lbl_80541760;
+    *(f32*)(this_ + 0x88) = lbl_80541770;
+    *(f32*)(this_ + 0x8c) = lbl_80541770;
     *(s32*)(this_ + 0x1a4) = 0;
     *(s32*)(this_ + 0xb8) = 2;
     *(s32*)(this_ + 0x230) = 0;
@@ -212,24 +201,21 @@ extern "C" void fn_8030F9E4(u8* this_) {
     *(s32*)(this_ + 0x24c) = 0;
     *(s32*)(this_ + 0x250) = 0;
     *(s32*)(this_ + 0x254) = 0;
+    s32 i = 0;
     while (fn_801F2618(this_, 0, 0) & 0xff) {
-        s32 idx = fn_80230CFC(*(void**)(this_ + 0x110)) ^ 1;
-        f32* v = (f32*)((u8*)lbl_80471368 + idx * 12);
-        f32 vx = v[0];
+        f32* v = &lbl_80471368[(fn_80230CFC(*(void**)(this_ + 0x110)) ^ 1) * 3];
         f32 vy = v[1];
+        f32 vx = v[0];
         i++;
-        *(f32*)(this_ + 0xc) += f31 * vx;
-        *(f32*)(this_ + 0x10) += f31 * vy;
+        *(f32*)(this_ + 0xc) += lbl_8054174C * vx;
+        *(f32*)(this_ + 0x10) += lbl_8054174C * vy;
         if (i > 8) {
             break;
         }
     }
-    f1 = lbl_80541774;
-    *(f32*)(this_ + 0x80) = f1;
-    *(f32*)(this_ + 0x84) = f1;
-    f0 = lbl_80541740;
-    *(f32*)(this_ + 0x88) = f0;
-    *(f32*)(this_ + 0x8c) = f0;
+    *(f32*)(this_ + 0x80) = lbl_80541774;
+    *(f32*)(this_ + 0x84) = lbl_80541774;
+    *(f32*)(this_ + 0x88) = lbl_80541740;
+    *(f32*)(this_ + 0x8c) = lbl_80541740;
 }
-
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
