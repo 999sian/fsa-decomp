@@ -57,7 +57,10 @@ static inline void calcSeq(AnmSeqCtrl* this_) {
             return;
         }
     }
-    this_->_10 = clampSeq(this_, this_->mSeqs[this_->mCurSeq]->mFrame);
+    s32 hi = this_->mMax;
+    s32 first = this_->mSeqs[this_->mCurSeq]->mFrame;
+    s32 lo = this_->mMin;
+    this_->_10 = clampS32(first, lo, hi);
     this_->_1C = 0;
 }
 
