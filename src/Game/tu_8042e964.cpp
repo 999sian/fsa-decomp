@@ -313,7 +313,7 @@ BOOL fn_80431174(T80431_Owner* self, u8 flag) {
         self->timer -= 1;
         if (self->timer <= 0) {
             T8042_Game* g = lbl_8053AAF8;
-            self->timer = (s32)(11.0f * g->rnd.get_ufloat_1()) + 10;
+            self->timer = (s32)(lbl_80543B94 * g->rnd.get_ufloat_1()) + 10;
             if (self->feb < 2) {
                 self->feb++;
             } else {
@@ -321,31 +321,31 @@ BOOL fn_80431174(T80431_Owner* self, u8 flag) {
             }
         }
         T80431_Pane* tb = (T80431_Pane*)self->screen->search('Twt01');
-        x = self->screen->search('Twt01')->getBounds()->i.x + (tb->sw - tb->w) * 0.5f;
+        x = self->screen->search('Twt01')->getBounds()->i.x + lbl_80543B18 * (tb->sw - tb->w);
         tb = (T80431_Pane*)self->screen->search('Twt01');
-        y = self->screen->search('Twt01')->getBounds()->i.y + (tb->sh - tb->h) * 0.5f;
+        y = self->screen->search('Twt01')->getBounds()->i.y + lbl_80543B18 * (tb->sh - tb->h);
         if (flag == 0) {
             T80431_Pane* cur = (T80431_Pane*)self->screen->search('Pwcur01');
-            x += ((*(f32*)((char*)self + 0xbc) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w)) * 0.5f;
+            x += lbl_80543B18 * ((*(f32*)((char*)self + 0xbc) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w));
         } else {
             T80431_Pane* cur = (T80431_Pane*)self->screen->search('Pwcur01');
-            x += ((*(f32*)((char*)self + 0xc0) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w)) * 0.5f + (*(f32*)((char*)self + 0xd0) - *(f32*)((char*)self + 0xcc));
+            x += lbl_80543B18 * ((*(f32*)((char*)self + 0xc0) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w)) + (*(f32*)((char*)self + 0xd0) - *(f32*)((char*)self + 0xcc));
         }
         T80431_Pane* pcur = (T80431_Pane*)self->screen->search('Pwcur01');
         f32 hdiff = pcur->sh - pcur->h;
         f32 fa = ((T80431_Pane*)self->screen->search('Twt01'))->f118;
         tb = (T80431_Pane*)self->screen->search('Twt01');
-        y += (fa - hdiff) * 0.5f + (((f32*)((char*)self + 0xd8))[flag] - (f32)*(s32*)((char*)self + 0xe4) * 0.5f - 1.0f) * tb->f118;
+        y += lbl_80543B18 * (fa - hdiff) + (((f32*)((char*)self + 0xd8))[flag] - lbl_80543B18 * (f32)*(s32*)((char*)self + 0xe4) - lbl_80543B28) * tb->f118;
         self->screen->search('Pwcur01')->move(x, y);
         self->screen->search('Pwcur02')->move(x, y);
         T80431_Pane* pa = (T80431_Pane*)self->screen->search('Pwcur01');
         f32 hh = pa->sh - pa->h;
         T80431_Pane* pb = (T80431_Pane*)self->screen->search('Pwcur01');
-        self->screen->search('Pwcur01')->rotate((pb->sw - pb->w) * 0.5f, hh * 0.5f, J2DROTATE_Z, (f32)lbl_80543AE8[self->feb]);
+        self->screen->search('Pwcur01')->rotate(lbl_80543B18 * (pb->sw - pb->w), lbl_80543B18 * hh, J2DROTATE_Z, (f32)lbl_80543AE8[self->feb]);
         T80431_Pane* pa2 = (T80431_Pane*)self->screen->search('Pwcur02');
         f32 hh2 = pa2->sh - pa2->h;
         T80431_Pane* pb2 = (T80431_Pane*)self->screen->search('Pwcur02');
-        self->screen->search('Pwcur02')->rotate((pb2->sw - pb2->w) * 0.5f, hh2 * 0.5f, J2DROTATE_Z, (f32)lbl_80543AF0[self->feb]);
+        self->screen->search('Pwcur02')->rotate(lbl_80543B18 * (pb2->sw - pb2->w), lbl_80543B18 * hh2, J2DROTATE_Z, (f32)lbl_80543AF0[self->feb]);
     }
     return FALSE;
 }
@@ -446,6 +446,42 @@ struct T80431C38 {
     Slot0* b[5];
 };
 extern s32 lbl_8053AEC0;
+
+struct T80431_Res {
+    void* vt;
+    u8* data;
+};
+
+struct T80431_Helper {
+    void* vt;
+    J2DScreen* screen;
+    void* objA;
+    void* objB;
+    s16 timer;
+    u8 flag;
+};
+
+struct T80431D84 {
+    void* vt;
+    T80431_Helper* helper;
+    J2DScreen* screen;
+    void* objC;
+    Slot0* a[5];
+    Slot0* b[5];
+    JGeometry::TVec2<s16> c[16];
+    JGeometry::TVec2<s16> d[16];
+    u8 pad0b8[0xe8 - 0xb8];
+    s16 timer;
+    u8 flag;
+};
+
+typedef void* (*VtSearch)(void*, u32, u32, u32);
+typedef void (*VtSet)(void*, void*);
+extern "C" void* __nw__FUl(u32 size);
+extern "C" void fn_80402F04(void* obj, void* pane);
+extern "C" u8 lbl_80529DEC[];
+extern "C" void* lbl_804AF86C[];
+extern void* lbl_8053AD78;
 
 void* fn_80431C38(void* this_, s16 flag) {
     if (this_ != 0) {
