@@ -116,6 +116,27 @@ extern "C" s32 fn_80346330(u8* this_) {
     return 0;
 }
 
+extern void* lbl_8053AAF8;
+extern const f32 lbl_805423A8;
+extern const f32 lbl_805423D0;
+extern const f32 lbl_805423D4;
+extern const f32 lbl_8054241C;
+extern const f32 lbl_80542420;
+extern const f32 lbl_80542424;
+extern const f32 lbl_80542428;
+extern "C" void fn_801F6758(void* pos, s32 room);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_802265FC(f32* pos, s32 room);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 arg, s32 a, s32 b);
+
+static inline f32 tuRandF() {
+    u8* g = (u8*)lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    return *(f32*)&bits - lbl_805423A8;
+}
+
 extern "C" s32 fn_803466C0(s32 param_1, s32 param_2, s32 param_3) {
     s32 r = (u16)fn_8022461C(param_3);
     if (r == 0xd || r == 0x3a) {
