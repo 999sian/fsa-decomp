@@ -1334,6 +1334,9 @@ extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
     *out = j3dDefaultTevOrderInfoNull;
 }
 
+struct FsaTevColorS10 {
+    s16 r, g, b, a;
+};
 extern u32 lbl_80543F08;
 extern u32 lbl_80543F0C;
 extern u32 lbl_8053BC78;
@@ -1374,10 +1377,9 @@ extern "C" u8 fn_800CB428(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
-    u8* data = (u8*)&((J3DMaterialInitData*)*(void**)(p + 4))[(*(u16**)(p + 8))[idx]] + 0xe4;
-    u16 v = *(u16*)(data + b * 2);
-    if (v != 0xffff) {
-        fn_800CB4C0(out, *(u8**)(p + 0x50) + v * 0x14);
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)*(void**)(p + 4))[(*(u16**)(p + 8))[idx]];
+    if (initData->mTevStageInfoIndex[b] != 0xffff) {
+        fn_800CB4C0(out, *(u8**)(p + 0x50) + initData->mTevStageInfoIndex[b] * 0x14);
         return;
     }
     __ct__11J3DTevStageFv(out);
