@@ -141,6 +141,14 @@ static inline void tu801D3320_normalize(Vec3f& v) {
     v.scale(tu801D3320_invSqrt(sq));
 }
 
+static inline f32 tu801D3320_normalizeR(Vec3f& v);
+
+static inline void tu801D3320_setLen(Vec3f& v, const Vec3f& src, f32 len) {
+    v.set(src);
+    tu801D3320_normalizeR(v);
+    v.scale(len);
+}
+
 static inline f32 tu801D3320_normalizeR(Vec3f& v) {
     f32 sq = v.squared();
     if (sq <= lbl_8053F088 * FLT_EPSILON) {
