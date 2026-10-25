@@ -9,7 +9,7 @@
 #define F32(p, off) (*(f32*)((p) + (off)))
 #define VEC(p, off) (*(JGeometry::TVec3<f32>*)((p) + (off)))
 
-static inline bool isCarried(char* p) {
+static inline int isCarried(char* p) {
     return U8(p, 0xd64) == 1;
 }
 
