@@ -349,6 +349,29 @@ extern "C" void* fn_8007A7F0(JKRAramArchive* this_, void* data, u32 compressedSi
     return data;
 }
 
+u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, u32 dstLength, int compression)
+{
+    u32 result;
+    u32 size = (length + 0x1f) & ~0x1f;
+    u32 alignedDstLength = dstLength & ~0x1f;
+
+    switch (compression) {
+    case 0:
+        if (size > alignedDstLength) {
+            size = alignedDstLength;
+        }
+        JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DEFAULT, alignedDstLength, NULL, -1, &result);
+        return result;
+    case 1:
+    case 2:
+        JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DECOMPRESS, alignedDstLength, NULL, -1, &result);
+        return result;
+    default:
+        JUTException::panic_f(lbl_8045E0F8, 0x28f, lbl_8053B6D0, lbl_8045E10C);
+        return 0;
+    }
+}
+
 u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* heap, int compression, u8** pBuf)
 {
     u32 result;
@@ -376,29 +399,6 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* 
         return result;
     default:
         JUTException::panic_f(lbl_8045E0F8, 0x2c9, lbl_8053B6D0, lbl_8045E10C);
-        return 0;
-    }
-}
-
-u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, u32 dstLength, int compression)
-{
-    u32 result;
-    u32 size = (length + 0x1f) & ~0x1f;
-    u32 alignedDstLength = dstLength & ~0x1f;
-
-    switch (compression) {
-    case 0:
-        if (size > alignedDstLength) {
-            size = alignedDstLength;
-        }
-        JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DEFAULT, alignedDstLength, NULL, -1, &result);
-        return result;
-    case 1:
-    case 2:
-        JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DECOMPRESS, alignedDstLength, NULL, -1, &result);
-        return result;
-    default:
-        JUTException::panic_f(lbl_8045E0F8, 0x28f, lbl_8053B6D0, lbl_8045E10C);
         return 0;
     }
 }
