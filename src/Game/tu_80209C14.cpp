@@ -102,7 +102,8 @@ extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec,
 extern "C" void fn_801EF830(s32 room, void* pos, DrawRec* rec, s32 a, char* name, s32 id, s32 e);
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
 extern "C" void fn_80209D54(u8* this_) {
-    if (JMathInlineVEC::PSVECSquareMag((const Vec*)(this_ + 0x54)) <= lbl_8053F960 * *(f32*)__float_epsilon) {
+    bool still = JMathInlineVEC::PSVECSquareMag((const Vec*)(this_ + 0x54)) <= lbl_8053F960 * *(f32*)__float_epsilon;
+    if (still) {
         return;
     }
 
@@ -128,7 +129,7 @@ extern "C" void fn_80209D54(u8* this_) {
     if ((*(u32*)(this_ + 0x230) & 0x80) == 0) {
         fn_801F06F0(this_, lbl_8046A354, id, &rec, 7, lbl_8053F968, lbl_8053F968);
     } else {
-        if (*(s32*)(this_ + 0x138) == 0) {
+        if (*(u32*)(this_ + 0x138) == 0) {
             fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &rec, 7, lbl_8046A354, id, 0);
         }
         if (*(s32*)(this_ + 4) < 8) {
@@ -634,7 +635,7 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
 extern "C" void* fn_8020B0B8(char* this_) {
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A5D60;
-    f32 zero = lbl_8053F964;
+    f32 zero = 0.0f;
     *(s32*)(this_ + 0x2a8) = -1;
     *(s32*)(this_ + 0x2ac) = 0;
     *(u8*)(this_ + 0x2b0) = 1;
