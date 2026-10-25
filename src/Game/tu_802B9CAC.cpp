@@ -46,6 +46,8 @@ struct ActorV {
 
 extern "C" ActorV::Vec2* fn_8023A478(s32 player);
 
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 static inline f32 distSq(const ActorV::Vec2& a, const ActorV::Vec2& b) {
     f32 dx = a.x - b.x;
     f32 dy = a.y - b.y;
@@ -53,17 +55,21 @@ static inline f32 distSq(const ActorV::Vec2& a, const ActorV::Vec2& b) {
     f32 dy2 = dy * dy;
     return dx2 + dy2;
 }
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 
 // NonMatching: one instruction short, retail materialises a dead
 // "addi r4, this, 0xc" (address of pos) after the fn_8023A478 call.
+#pragma peephole off
 extern "C" void fn_802B9D10(ActorV* this_) {
     s32 id;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023A51C(i) == 1) {
             id = this_->m04;
             if (id != fn_8023DE58(i)) continue;
-            const ActorV::Vec2& pos = this_->pos;
-            if (!(distSq(*fn_8023A478(i), pos) > 6400.0f)) {
+            ActorV::Vec2* a = fn_8023A478(i);
+            const ActorV::Vec2* pos = &this_->pos;
+            if (!(distSq(*a, *pos) > 6400.0f)) {
                 if (this_->m04 != 0) {
                     this_->s10(0xff, 1);
                     return;
@@ -76,7 +82,7 @@ extern "C" void fn_802B9D10(ActorV* this_) {
         }
     }
 }
-
+#pragma peephole reset
 extern "C" void fn_802B9E20(void) {}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
