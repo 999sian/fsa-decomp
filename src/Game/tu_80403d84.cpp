@@ -2,6 +2,10 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
+extern "C" u8 fn_8040271C(void*, s32, f32, f32);
+extern "C" void fn_80402628(void*, s32, s32, u8);
+extern "C" f32 lbl_8054391C;
 #include "JSystem/JMath/JMath.h"
 
 // J2D pane virtuals used by fn_8040E838: search at slot 0x3c, setAnimation at slot 0x60.
@@ -654,7 +658,7 @@ extern "C" void fn_80411230(u8* self) {
 		f32 y;
 		f32 x;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
-			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 1;
+			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->show();
 		}
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->setAlpha((int)((f32)self[0x65b] * *(f32*)(self + 0x3fc)));
 		Pane411* p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
@@ -668,10 +672,10 @@ extern "C" void fn_80411230(u8* self) {
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if (slot == 10 && *(s32*)(self + 0x348) == 2 && *(s32*)(lbl_80529DEC + 0x120) < 7 &&
 	           !Tu411SlotDone(*(s32*)(lbl_80529DEC + 0x120)) && Tu411ShowState(*(s32*)(self + 0x350))) {
-		f32 y;
 		f32 x;
+		f32 y;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
-			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 1;
+			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->show();
 		}
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->setAlpha((int)((f32)self[0x65b] * *(f32*)(self + 0x3fc)));
 		s32 sy = *(s32*)(lbl_80529DEC + 0x120);
@@ -686,7 +690,7 @@ extern "C" void fn_80411230(u8* self) {
 		     ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 1) {
-		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 0;
+		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->hide();
 	}
 	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0xc), lbl_80543898, lbl_80543898, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
 	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0x14), lbl_80543898, lbl_80543898, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
