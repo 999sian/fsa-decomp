@@ -873,7 +873,7 @@ struct HudResizePane {
     virtual void resize(f32 w, f32 h);
 };
 
-static inline bool HudBitSet(u8 flags, u8 mask) { return (flags & mask) != 0; }
+static inline BOOL HudBitSet(u8 flags, u8 mask) { return (flags & mask) != 0; }
 
 extern "C" void fn_80422824(u8* this_);
 extern "C" u8 fn_8023BD70(s32 i);
@@ -942,75 +942,88 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
 }
 
 extern "C" void fn_804257E4(u8* this_) {
-    u8* base = (u8*)lbl_8048E1B8;
+    u8 mask;
+    s32 sh;
+    u64* tv1;
+    u64* on1;
+    u64* off1;
+    u64* on2;
+    s32* counts;
+    u64* bars;
+    s32 bit;
+    u64* pos;
     s32 i;
     s32 j;
     s32 v;
+    u8* base = (u8*)lbl_8048E1B8;
 
-    for (i = 0; i < 4; i++) {
-        s32 bit = 1 << i;
-        u8 mask = bit;
-        bool on = (lbl_8053AAF8[0x82] & mask) != 0;
-        if (!on) {
+    pos = (u64*)(base + 0xdc8);
+    counts = (s32*)lbl_80529DEC;
+    on1 = pos;
+    tv1 = (u64*)(base + 0xda8);
+    off1 = (u64*)(base + 0xde8);
+    on2 = (u64*)(base + 0xec8);
+    bars = (u64*)(base + 0x148);
+    for (i = 0, sh = 0; i < 4; i++) {
+        bit = 1 << i;
+        mask = bit;
+        if (!HudBitSet(lbl_8053AAF8[0x82], mask)) {
             this_[0x25d] &= ~mask;
-        } else {
-            bool hit = (lbl_8053AED0[0xdd] & mask) != 0;
-            if (hit && !(this_[0x25c] & mask)) {
-                this_[0x25c] |= mask;
-                this_[0x25d] |= mask;
-            } else if (lbl_8053AED0[0xdc] & 0x10) {
-                this_[0x25d] &= ~mask;
-            } else if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) {
-                this_[0x25d] &= ~mask;
-            }
+        } else if (HudBitSet(lbl_8053AED0[0xdd], mask) && !(this_[0x25c] & mask)) {
+            this_[0x25c] |= mask;
+            this_[0x25d] |= mask;
+        } else if (lbl_8053AED0[0xdc] & 0x10) {
+            this_[0x25d] &= ~mask;
+        } else if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) {
+            this_[0x25d] &= ~mask;
         }
         if (lbl_8053AAF8[0x82] & mask) {
             fn_804253E0(this_, i);
-            if (((s32)lbl_8053AAF8[0x83] >> (i * 2) & 3) == 1) {
+            if ((lbl_8053AAF8[0x83] >> sh & 3U) == 1) {
                 if (fn_8023DE58(i) >= 8) {
                     if (!(this_[0x258] & mask)) {
                         this_[0x258] |= (u8)bit;
-                        GetKeyed(*(u8**)(this_ + 0x18), *(u64*)(base + 0xda8 + i * 8))[0xb0] = 1;
-                        GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xdc8 + i * 8))[0xb0] = 1;
-                        GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xde8 + i * 8))[0xb0] = 0;
+                        GetHeart(*(u8**)(this_ + 0x18), *tv1)[0xb0] = 1;
+                        GetHeart(*(u8**)(this_ + 4), *on1)[0xb0] = 1;
+                        GetHeart(*(u8**)(this_ + 4), *off1)[0xb0] = 0;
                     }
                 } else if (this_[0x258] & mask) {
                     this_[0x258] &= ~mask;
-                    GetKeyed(*(u8**)(this_ + 0x18), *(u64*)(base + 0xda8 + i * 8))[0xb0] = 0;
-                    GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xdc8 + i * 8))[0xb0] = 0;
-                    GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xde8 + i * 8))[0xb0] = 1;
+                    GetHeart(*(u8**)(this_ + 0x18), *tv1)[0xb0] = 0;
+                    GetHeart(*(u8**)(this_ + 4), *on1)[0xb0] = 0;
+                    GetHeart(*(u8**)(this_ + 4), *off1)[0xb0] = 1;
                 }
             }
             fn_80423DF0(this_, i);
-            if (((s32)lbl_8053AAF8[0x83] >> (i * 2) & 3) == 2) {
+            if ((lbl_8053AAF8[0x83] >> sh & 3U) == 2) {
                 if (!(this_[0x25a] & mask)) {
                     if (fn_8023BD70(i)) {
                         this_[0x25a] |= (u8)bit;
-                        GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8))[0xb0] = 1;
+                        GetHeart(*(u8**)(this_ + 4), *on2)[0xb0] = 1;
                     }
-                } else if (fn_80309D24(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0 || (this_[0x255] & mask)) {
+                } else if ((u32)fn_80309D24(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0 || (this_[0x255] & mask)) {
                     this_[0x25a] &= ~mask;
-                    GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8))[0xb0] = 0;
+                    GetHeart(*(u8**)(this_ + 4), *on2)[0xb0] = 0;
                 }
             }
             if (this_[0x255] & mask) {
-                v = *(s32*)(lbl_80529DEC + 0x108 + i * 4);
+                v = counts[0x42];
                 if (v > 0x180) {
                     v = 0x180;
                 }
                 if (v < 0) {
                     v = 0;
                 }
-                u64* key = (u64*)(base + 0x148 + i * 0x20);
+                u64* key = bars;
                 for (j = 0; j < 4; j++) {
                     if (v >= 0x60) {
-                        u8* pane = GetKeyed(*(u8**)(this_ + 4), *key);
-                        ((HudResizePane*)GetKeyed(*(u8**)(this_ + 4), *key))
+                        u8* pane = GetHeart(*(u8**)(this_ + 4), *key);
+                        ((HudResizePane*)GetHeart(*(u8**)(this_ + 4), *key))
                             ->resize(*(f32*)(this_ + 0xf4), *(f32*)(pane + 0x2c) - *(f32*)(pane + 0x24));
                         v -= 0x60;
                     } else {
-                        u8* pane = GetKeyed(*(u8**)(this_ + 4), *key);
-                        ((HudResizePane*)GetKeyed(*(u8**)(this_ + 4), *key))
+                        u8* pane = GetHeart(*(u8**)(this_ + 4), *key);
+                        ((HudResizePane*)GetHeart(*(u8**)(this_ + 4), *key))
                             ->resize(*(f32*)(this_ + 0xf4) * ((f32)v / lbl_80543A68), *(f32*)(pane + 0x2c) - *(f32*)(pane + 0x24));
                         v = 0;
                     }
@@ -1020,52 +1033,64 @@ extern "C" void fn_804257E4(u8* this_) {
             fn_80423248(this_, i);
             fn_80423804(this_, i);
         }
+        tv1++;
+        on1++;
+        off1++;
+        on2++;
+        counts++;
+        bars += 4;
+        sh += 2;
     }
 
     fn_80422824(this_);
-    for (i = 0; i < 4; i++) {
-        fn_80424148(this_, i, 0);
-        f32* f = (f32*)(this_ + 0xf8 + i * 4);
-        if ((*(u8**)(lbl_8053AB10 + 0x20))[i + 0x148] != 0) {
-            u64* key = (u64*)(base + 0xdc8 + i * 8);
-            s32 x = (s32)((J2DPane*)GetKeyed(*(u8**)(this_ + 4), *key))->getBounds()->i.x;
-            s32 y = (s32)((J2DPane*)GetKeyed(*(u8**)(this_ + 4), *key))->getBounds()->i.y;
-            u8* p = GetKeyed(*(u8**)(this_ + 4), *key);
-            f32 w = *(f32*)(p + 0x28) - *(f32*)(p + 0x20);
-            p = GetKeyed(*(u8**)(this_ + 4), *key);
-            f32 h = *(f32*)(p + 0x2c) - *(f32*)(p + 0x24);
-            u8* dst = *(u8**)(lbl_8053AB10 + 0x20) + i * 0x10;
-            *(s32*)(dst + 0x1d0) = x;
-            *(s32*)(dst + 0x1d4) = y;
-            *(s32*)(dst + 0x1d8) = (s32)w;
-            *(s32*)(dst + 0x1dc) = (s32)h;
-            if (i == 0 || i == 2) {
-                if (*f < lbl_80543A70) {
-                    *f = *f + lbl_80543A74;
+    {
+        u8* fp = this_;
+        s32 off = 0;
+        for (i = 0; i < 4; i++) {
+            fn_80424148(this_, i, 0);
+            if ((*(u8**)(lbl_8053AB10 + 0x20))[i + 0x148] != 0) {
+                s32 x = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.x;
+                s32 y = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.y;
+                u8* p = GetHeart(*(u8**)(this_ + 4), *pos);
+                f32 w = *(f32*)(p + 0x28) - *(f32*)(p + 0x20);
+                p = GetHeart(*(u8**)(this_ + 4), *pos);
+                f32 h = *(f32*)(p + 0x2c) - *(f32*)(p + 0x24);
+                u8* dst = *(u8**)(lbl_8053AB10 + 0x20) + off;
+                *(s32*)(dst + 0x1d0) = x;
+                *(s32*)(dst + 0x1d4) = y;
+                *(s32*)(dst + 0x1d8) = (s32)w;
+                *(s32*)(dst + 0x1dc) = (s32)h;
+                if (i == 0 || i == 2) {
+                    if (*(f32*)(fp + 0xf8) < lbl_80543A70) {
+                        *(f32*)(fp + 0xf8) = *(f32*)(fp + 0xf8) + lbl_80543A74;
+                    } else {
+                        *(f32*)(fp + 0xf8) = lbl_80543A78;
+                    }
                 } else {
-                    *f = lbl_80543A78;
+                    if (*(f32*)(fp + 0xf8) > lbl_80543A7C) {
+                        *(f32*)(fp + 0xf8) = *(f32*)(fp + 0xf8) - lbl_80543A74;
+                    } else {
+                        *(f32*)(fp + 0xf8) = lbl_80543A80;
+                    }
                 }
             } else {
-                if (*f > lbl_80543A7C) {
-                    *f = *f - lbl_80543A74;
+                if (i == 0 || i == 2) {
+                    if (*(f32*)(fp + 0xf8) < lbl_80543A74) {
+                        *(f32*)(fp + 0xf8) = lbl_80543A40;
+                    } else {
+                        *(f32*)(fp + 0xf8) = *(f32*)(fp + 0xf8) - lbl_80543A74;
+                    }
                 } else {
-                    *f = lbl_80543A80;
+                    if (*(f32*)(fp + 0xf8) > lbl_80543A84) {
+                        *(f32*)(fp + 0xf8) = lbl_80543A40;
+                    } else {
+                        *(f32*)(fp + 0xf8) = *(f32*)(fp + 0xf8) + lbl_80543A74;
+                    }
                 }
             }
-        } else {
-            if (i == 0 || i == 2) {
-                if (*f < lbl_80543A74) {
-                    *f = lbl_80543A40;
-                } else {
-                    *f = *f - lbl_80543A74;
-                }
-            } else {
-                if (*f > lbl_80543A84) {
-                    *f = lbl_80543A40;
-                } else {
-                    *f = *f + lbl_80543A74;
-                }
-            }
+            off += 0x10;
+            fp += 4;
+            pos++;
         }
     }
 
@@ -1159,39 +1184,41 @@ extern "C" void fn_80425F6C(u8* self) {
 }
 #pragma opt_propagation off
 extern "C" void fn_804263A8(u8* this_) {
-    s32 i;
-    const u64* firstKeys;
-    const u64* key9;
-    const u64* key8;
-    const u64* key7;
-    s32 shift;
-    const u64* key6;
-    const u64* key5;
-    const u64* key4;
-    const u64* key3;
-    const u64* key2;
-    const u64* key0;
-    const u64* key1;
-    const u8* base = lbl_8048E1B8;
-    u8* saves;
-
-
     u8* config = lbl_80529DEC;
+    const u8* base = lbl_8048E1B8;
     u8* words = this_;
     u8* halves = this_;
+    const u64* key1;
+    const u64* key0;
+    const u64* key2;
+    const u64* key3;
+    const u64* key4;
+    const u64* key5;
+    const u64* key6;
+    s32 shift;
+    const u64* key7;
+    const u64* key8;
+    const u64* key9;
+    const u64* firstKeys;
+    s32 i;
+    u8* saves;
     for (i = 0; i < 4; i++, words += 4, halves += 2, config += 4) {
-        u8 mask = 1 << i;
-        BOOL active = (lbl_8053AAF8[0x82] & mask) != 0;
+        u8 mask;
+        u8* controller;
+        u8* game = lbl_8053AAF8;
+        mask = 1 << i;
+        BOOL active = (game[0x82] & mask) != 0;
         if (!active) {
             this_[0x25d] &= ~mask;
         } else {
-            BOOL changed = (lbl_8053AED0[0xdd] & mask) != 0;
+            controller = lbl_8053AED0;
+            BOOL changed = (controller[0xdd] & mask) != 0;
             if (changed && !(this_[0x25c] & mask)) {
                 this_[0x25c] |= mask;
                 this_[0x25d] |= mask;
-            } else if (lbl_8053AED0[0xdc] & 0x10) {
+            } else if (controller[0xdc] & 0x10) {
                 this_[0x25d] &= ~mask;
-            } else if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) {
+            } else if (*(s32*)(game + 0x4c) == 0xb) {
                 this_[0x25d] &= ~mask;
             }
         }
@@ -1290,10 +1317,11 @@ extern "C" void fn_804263A8(u8* this_) {
     }
 
     {
-        for (i = 0; i < 4; i++) {
+        const u64* otherKeys = (const u64*)(base + 0xd88);
+        for (i = 0; i < 4; ++i, ++firstKeys, ++otherKeys) {
             u32 tag = fn_804030C4(0x54494D47, lbl_804B145C[0]);
-            ((TimerPicture*)GetHeart(*(u8**)(this_ + 0x18), firstKeys[i]))->changeTexture(tag, 0);
-            ((TimerPicture*)GetHeart(*(u8**)(this_ + 0x18), *(const u64*)(base + 0xd88 + i * 8)))->changeTexture(tag, 0);
+            ((TimerPicture*)(*(HeartPane**)(this_ + 0x18))->search(*firstKeys))->changeTexture(tag, 0);
+            ((TimerPicture*)(*(HeartPane**)(this_ + 0x18))->search(*otherKeys))->changeTexture(tag, 0);
         }
     }
 
