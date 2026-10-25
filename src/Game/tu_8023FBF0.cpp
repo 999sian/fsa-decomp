@@ -260,13 +260,13 @@ inline bool padCheck(char* p) {
         } else {
             cnt = 0;
             for (i = 0; i < S32(p, 0x4); i++) {
-                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+                linked = S32(p, 0xd60);
+                if (linked == fn_8022F3DC(i)) {
                     cnt++;
                 }
             }
-            cnt++;
         }
-        if (idx != cnt) {
+        if (idx != (S32(p, 0xd60) < 0 ? 0 : cnt + 1)) {
             return false;
         }
     }
@@ -1621,13 +1621,6 @@ s32 fn_8024322C(char* p) { return S32(p, 0xd08); }
 
 u8 fn_80243C64(char* p) {
     f32 f;
-    s32 i;
-    s32 c;
-    s32 t;
-    s32 linked;
-    s32 target;
-    s32 own;
-    bool ok;
     if (!actionReady(p)) {
         return 0;
     }
