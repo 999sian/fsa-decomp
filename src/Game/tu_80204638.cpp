@@ -47,89 +47,81 @@ extern "C" const f32 lbl_8053F838;
 extern "C" const f32 lbl_8053F83C;
 extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y);
 #pragma fp_contract off
-extern "C" u32 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
-    f32 local[2];
-    f32 best;
-    f32 dx;
-    f32 dy;
-    f32 d;
-    s32 i;
-    s32 idx;
-    u8* p;
-    s32 count;
-    u32 ret;
-
-    count = *(s32*)(param_1 + 0x54);
-    if (count >= 10) {
+extern "C" u8 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
+    struct V2 {
+        V2(f32 X, f32 Y) { x = X; y = Y; }
+        f32 x, y;
+    };
+    struct Finder {
+        static s32 find(u8* self, f32* pos) {
+            s32 count = *(volatile s32*)(self + 0x54);
+            s32 idx = 0;
+            if (count > 1) {
+                f32 best = *(f32*)__float_max;
+                u8* p;
+                s32 i;
+                for (i = 0, p = self; i < count; p += 0xc, i++) {
+                    f32 dy = *(f32*)(p + 0x5c) - pos[1];
+                    f32 dx = *(f32*)(p + 0x58) - pos[0];
+                    f32 d = dx * dx + dy * dy;
+                    if (d < best) {
+                        best = d;
+                        idx = i;
+                    }
+                }
+            }
+            return idx;
+        }
+    };
+    u8 ret;
+    if (*(s32*)(param_1 + 0x54) >= 10) {
         return 0;
     }
     ret = 0;
-    if (count >= 1) {
-        local[0] = param_3[0];
-        local[1] = param_3[1];
-        idx = 0;
-        count = *(s32*)(param_1 + 0x54);
-        if (count > 1) {
-            best = *(f32*)__float_max;
-            p = param_1;
-            for (i = 0; i < count; i++, p += 0xc) {
-                dy = *(f32*)(p + 0x5c) - param_3[1];
-                dx = *(f32*)(p + 0x58) - param_3[0];
-                d = dx * dx + dy * dy;
-                if (d < best) {
-                    best = d;
-                    idx = i;
-                }
-            }
-        }
-        ret = fn_801CB85C(param_1 + idx * 0xc + 0x58, param_2, local, lbl_8053F838, lbl_8053F83C);
-        if ((ret & 0xff) != 0) {
-            param_3[0] = local[0];
-            param_3[1] = local[1];
+    if (*(s32*)(param_1 + 0x54) >= 1) {
+        V2 local(param_3[0], param_3[1]);
+        s32 idx = Finder::find(param_1, param_3);
+        ret = fn_801CB85C(param_1 + idx * 0xc + 0x58, param_2, &local.x, lbl_8053F838, lbl_8053F83C);
+        if (ret) {
+            param_3[0] = local.x;
+            param_3[1] = local.y;
         }
     }
-    p = param_1 + *(s32*)(param_1 + 0x54) * 0xc + 0x58;
-    ((f32*)p)[0] = param_3[0];
-    ((f32*)p)[1] = param_3[1];
-    ((f32*)p)[2] = param_3[2];
+    f32* q = (f32*)(param_1 + *(s32*)(param_1 + 0x54) * 0xc + 0x58);
+    q[0] = param_3[0];
+    q[1] = param_3[1];
+    q[2] = param_3[2];
     *(s32*)(param_1 + 0x54) = *(s32*)(param_1 + 0x54) + 1;
     return ret;
 }
 #pragma fp_contract on
 extern "C" void fn_80204834(u8* param_1) {
-    u8 zero = 0;
-    for (int i = 0; i < 2; i++) {
-        u8* p;
-        p = *(u8**)(param_1 + 0x4);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x8);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0xc);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x10);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x14);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x18);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x1c);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x20);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x24);
-        if (p) p[0x11c] = zero;
-        p = *(u8**)(param_1 + 0x28);
-        if (p) p[0x11c] = zero;
+    for (u32 i = 0; i < 2; i++) {
+        for (u32 j = 4; j <= 0x28; j += 4) {
+            u8* p = *(u8**)(param_1 + j);
+            if (p) {
+                p[0x11c] = 0;
+            }
+        }
         param_1 += 0x28;
     }
 }
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802048F4(u8* param_1) {
+    u8** slot;
+    u8* row;
+    u8* p;
+    s32 i;
+    s32 j;
     u8* mgr = (u8*)fn_802D6A9C();
-    for (s32 i = 0; i < 10; i++) {
-        for (s32 j = 0; j < 2; j++) {
-            u8* p = *(u8**)(param_1 + i * 8 + j * 4 + 4);
+    i = 0;
+    row = param_1;
+    for (; i < 10; i++) {
+        j = 0;
+        slot = (u8**)row;
+        for (; j < 2; j++) {
+            p = slot[1];
             if (p != NULL && p[0x11c] != 0 && *(s32*)(p + 4) == 0) {
                 bool inside = false;
                 if (*(f32*)(p + 0xc) >= *(f32*)(mgr + 0xcc) && *(f32*)(p + 0x10) >= *(f32*)(mgr + 0xd0) &&
@@ -140,7 +132,9 @@ extern "C" void fn_802048F4(u8* param_1) {
                     p[0x11c] = 0;
                 }
             }
+            slot++;
         }
+        row += 8;
     }
 }
 
