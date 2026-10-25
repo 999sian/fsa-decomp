@@ -17,6 +17,9 @@ struct PlayerModeTbl {
     s32 ids[4];                          // 0x60
     JGeometry::TVec3<f32> ofsA[4];       // 0x70
     JGeometry::TVec3<f32> ofsB[4];       // 0xa0
+
+    static const JGeometry::TVec3<f32>& get(const JGeometry::TVec3<f32>* tbl, s32 i) { return tbl[i]; }
+    static s32 getId(const s32* tbl, s32 i) { return tbl[i]; }
 };
 
 static inline void copyPlayerDirection(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& in) {
