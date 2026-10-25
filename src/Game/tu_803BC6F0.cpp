@@ -1502,7 +1502,7 @@ extern "C" void fn_803C92B8(char* p) {
 extern "C" f32 lbl_805434AC;
 extern "C" void fn_803C9338(u8* p) {
     u8* tbl = lbl_8050DB0C;
-    u8* base = lbl_804765D0;
+    u8* base = (u8*)lbl_804765D0;
     s16 a = *(s16*)(tbl + 0x1ec);
     s16 b = *(s16*)(tbl + 0x1ee);
     s16 c = *(s16*)(tbl + 0x1f0);
