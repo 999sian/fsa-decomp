@@ -966,7 +966,7 @@ extern "C" void fn_803C05D8(u8* p) {
 
 extern "C" void fn_803C0A34(char* pc) {
     u8* p = (u8*)pc;
-    u8* base = (u8*)lbl_804765D0;
+    u8* base;
     u8* kp;
     s32 i;
     s32 idx;
@@ -974,8 +974,8 @@ extern "C" void fn_803C0A34(char* pc) {
     f32 d;
     u8* o;
 
-    kp = base + 0x3b0;
-    for (i = 0; i < 8; i++, kp += 8) {
+    base = (u8*)lbl_804765D0;
+    for (i = 0, kp = base + 0x3b0; i < 8; i++, kp += 8) {
         if (fn_803B90E4(*(u32*)(p + 0xa0), i)) {
             o = (u8*)keyObj(*(void**)(p + 4), *(u64*)(kp + 0x10));
             o[0xb0] = 0;
@@ -998,8 +998,11 @@ extern "C" void fn_803C0A34(char* pc) {
     }
 
     fn_803CE4CC((char*)p);
-    *(s32*)(p + 0x80) = 0;
-    fn_80402E08(*(void**)(p + 0x14), lbl_80543458, lbl_80543458);
+    {
+        f32 zero = lbl_80543458;
+        *(s32*)(p + 0x80) = 0;
+        fn_80402E08(*(void**)(p + 0x14), zero, zero);
+    }
     *(s16*)(*(u8**)(p + 0x14) + 0x22) = 0;
     stopPane(*(void**)(*(u8**)(p + 0x14) + 4));
     fn_80402E08(*(void**)(p + 0x18), lbl_80543458, lbl_80543458);
@@ -1009,12 +1012,10 @@ extern "C" void fn_803C0A34(char* pc) {
     *(s16*)(*(u8**)(p + 0x1c) + 0x22) = 0;
     stopPane(*(void**)(*(u8**)(p + 0x1c) + 4));
 
-    kp = base + 0x48;
-    for (i = 0; i < 0x51; i++, kp += 8) {
+    for (i = 0, kp = base + 0x48; i < 0x51; i++, kp += 8) {
         fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 4), *(u64*)kp), p[0x132 + i]);
     }
-    kp = base + 0x2d0;
-    for (i = 0; i < 0x13; i++, kp += 8) {
+    for (i = 0, kp = base + 0x2d0; i < 0x13; i++, kp += 8) {
         fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)kp), p[0x183 + i]);
     }
 
@@ -1980,13 +1981,13 @@ extern "C" void fn_803C9338(u8* p) {
 
 extern "C" f32 lbl_80543478;
 extern "C" void fn_803C9898(u8* p) {
-    s16 b = *(s16*)(lbl_8050DB0C + 0x1d2);
     s16 d = *(s16*)(lbl_8050DB0C + 0x1d6);
-    s16 e = *(s16*)(lbl_8050DB0C + 0x1d8);
+    s16 b = *(s16*)(lbl_8050DB0C + 0x1d2);
     s16 c = *(s16*)(lbl_8050DB0C + 0x1d4);
-    s16 a = *(s16*)(lbl_8050DB0C + 0x1d0);
-    s32 sum = a + b;
+    s16 e = *(s16*)(lbl_8050DB0C + 0x1d8);
+    s32 sum = *(s16*)(lbl_8050DB0C + 0x1d0) + b;
     s32 tot = c + d + e;
+    s16 a = *(s16*)(lbl_8050DB0C + 0x1d0);
     s16 mx = *(s16*)(lbl_8050DB0C + 0x1da);
     s16 g = *(s16*)(lbl_8050DB0C + 0x1dc);
     u8* base = (u8*)lbl_804765D0;
@@ -1996,6 +1997,7 @@ extern "C" void fn_803C9898(u8* p) {
     s32 row;
     s32 i;
     u8* q;
+    u32 unset;
     if (mx < sum) {
         mx = sum;
     }
