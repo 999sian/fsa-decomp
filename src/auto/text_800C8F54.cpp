@@ -82,7 +82,9 @@ extern J3DColorChanInfo j3dDefaultColorChanInfo;
 struct J3DMaterialInitData {
     u8 _00[0x0C];
     u16 mColorChanControlIndex[4]; // _0C
-    u8 _14[0x14C - 0x14];
+    u8 _14[0xE4 - 0x14];
+    u16 mTevStageInfoIndex[16]; // _E4
+    u8 _104[0x14C - 0x104];
 };
 
 inline u16 calcColorChanID(u16 enable, u8 matSrc, u32 lightMask, u8 diffuseFn, GXAttnFn attnFn, u8 ambSrc)
@@ -1253,13 +1255,14 @@ extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int
 
 extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
     s32 def = lbl_8053BC74;
+    s32* pdef = &def;
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
     u16 v = *(u16*)(base + ids[a] * 0x14c + 0x14 + b * 2);
     if (v != 0xffff) {
         *out = (*(s32**)(p + 0x1c))[v];
     } else {
-        *out = def;
+        *out = *pdef;
     }
 }
 
@@ -1318,10 +1321,11 @@ extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
 extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
-    u8* base;
-    u32 i = ids[idx] * 0x14c + 0xbc;
-    base = *(u8**)(p + 4);
-    i = i + b * 2;
+    idx = idx * 2;
+    u32 o = b * 2;
+    u8* base = *(u8**)(p + 4);
+    u32 i = *(u16*)((u8*)ids + idx) * 0x14c + 0xbc;
+    i = i + o;
     u16 v = *(u16*)(base + i);
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x40))[v];
@@ -1370,9 +1374,8 @@ extern "C" u8 fn_800CB428(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
-    u16* tbl = *(u16**)(p + 8);
-    u32 off = tbl[idx] * 0x14c;
-    u16 v = *(u16*)(*(u8**)(p + 4) + (off + 0xe4 + b * 2));
+    u8* data = (u8*)&((J3DMaterialInitData*)*(void**)(p + 4))[(*(u16**)(p + 8))[idx]] + 0xe4;
+    u16 v = *(u16*)(data + b * 2);
     if (v != 0xffff) {
         fn_800CB4C0(out, *(u8**)(p + 0x50) + v * 0x14);
         return;
