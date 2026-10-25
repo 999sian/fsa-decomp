@@ -1447,16 +1447,7 @@ extern "C" void fn_802A3948(char* self, const JGeometry::TVec2<f32>* __restrict 
     }
 }
 
-struct WaveAnimationData {
-    u16 frames[16];
-    u8 pad[0x150];
-    char first[0x14];
-    char second[1];
-};
-static const u8 lbl_8046C4A8[] = {
-    0,0,4,0,8,0,12,0,16,0,20,0,24,0,28,0,
-    32,0,36,0,40,0,44,0,48,0,52,0,56,0,60,0
-};
+extern const u8 lbl_8046C4A8[];
 extern "C" const char* fn_802D9C4C(void*);
 extern "C" void fn_802FA160(void*,void*,s32,s32,s32,s32);
 #pragma opt_propagation off
