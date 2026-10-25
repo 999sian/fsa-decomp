@@ -344,17 +344,22 @@ int Actor::v17(int a, f32* b) {
 }
 
 /* --- slot 18: bounds check b against the manager's world rect (0x801F165C) -- */
+#pragma opt_propagation off
 int Actor::v18(int a, f32* b) {
+    f32 y;
+    f32 x;
+    int result;
+    f32* rect;
     void* mgr = fn_802D6A9C();
-    f32* rect = (a < 8) ? reinterpret_cast<f32*>(static_cast<u8*>(mgr) + 0xcc)
+    rect = (a < 8) ? reinterpret_cast<f32*>(static_cast<u8*>(mgr) + 0xcc)
                         : reinterpret_cast<f32*>(static_cast<u8*>(mgr) + 0xdc);
-    int result = 0;
-    if ((u8)v17(a, b) != 0 || b[1] < rect[1] || b[0] < rect[0] || b[0] >= rect[2] || b[1] >= rect[3]) {
+    result = 0;
+    if ((u8)v17(a, b) != 0 || (x = b[0]) < rect[0] || (y = b[1]) < rect[1] || x >= rect[2] || y >= rect[3]) {
         result = 1;
     }
     return result;
 }
-
+#pragma opt_propagation reset
 extern u32 lbl_80469F78[];
 extern f32 lbl_8053F740;
 extern f32 lbl_8053F7A4;
@@ -1185,6 +1190,7 @@ extern "C" u8 fn_801F2FAC(Actor* a) {
 }
 
 /* --- 0x801F305C: same sweep, but emit the default record when nothing hit --- */
+#pragma opt_strength_reduction off
 extern "C" u32 fn_801F305C(Actor* a) {
     u32 i;
     u32 acc;
@@ -1200,7 +1206,7 @@ extern "C" u32 fn_801F305C(Actor* a) {
     }
     return (u8)acc;
 }
-
+#pragma opt_strength_reduction reset
 /* --- 0x801F32F4: fill the four field_1AC bounds from the collision slots ---- */
 extern "C" void fn_801F32F4(Actor* a) {
     u8 ok = 0;
@@ -1355,45 +1361,25 @@ extern "C" u32 fn_801F2A10(Actor* a, s32 b, u32 p3, u32 p4, u32 p5) {
 
 /* --- v04 (0x801F5790): per-slot ground/overlap prologue --------------------- */
 void Actor::v04() {
-    f32 z = field_0C.z;
-    if (z <= 16.0f) {
-        if (field_68 - field_60 > 0.0f) {
-            if (field_6C - field_64 > 0.0f) {
-                f32 y = field_0C.y;
-                f32 x = field_0C.x;
-                f32 rect[4];
-                rect[2] = field_68 + x;
-                rect[0] = field_60 + x;
-                rect[1] = field_64 + y - z;
-                rect[3] = field_6C + y - z;
-                s32 id;
-                s32 i;
-                for (i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) == 0) {
-                        continue;
-                    }
-                    id = field_04;
-                    if (id != fn_8023DE58(i)) {
-                        continue;
-                    }
-                    f32* p = (f32*)fn_8023E724(i);
-                    f32 x2 = 12.0f + p[0];
-                    f32 x1 = -12.0f + p[0];
-                    f32 y2 = (12.0f + p[1]) - p[2];
-                    f32 y1 = (-28.0f + p[1]) - p[2];
-                    f32 r0 = rect[0];
-                    f32 r1 = rect[1];
-                    f32 r2 = rect[2];
-                    f32 r3 = rect[3];
-                    if (r0 < x1) r0 = x1;
-                    if (r1 < y1) r1 = y1;
-                    if (r2 > x2) r2 = x2;
-                    if (r3 > y2) r3 = y2;
-                    if (r2 >= r0 && r3 >= r1) {
-                        fn_802397B4(rect, field_04, field_198);
-                        return;
-                    }
-                }
+    if (field_0C.z <= 16.0f && field_68 - field_60 > 0.0f && field_6C - field_64 > 0.0f) {
+        JGeometry::TBox2<f32> rect;
+        rect.set(field_60 + field_0C.x, field_64 + field_0C.y - field_0C.z,
+                 field_68 + field_0C.x, field_6C + field_0C.y - field_0C.z);
+        s32 id;
+        s32 i;
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i) == 0) {
+                continue;
+            }
+            id = field_04;
+            if (id != (s32)fn_8023DE58(i)) {
+                continue;
+            }
+            f32* p = (f32*)fn_8023E724(i);
+            JGeometry::TBox2<f32> box = rect;
+            if (box.intersect(JGeometry::TBox2<f32>(-12.0f + p[0], -28.0f + p[1] - p[2], 12.0f + p[0], 12.0f + p[1] - p[2]))) {
+                fn_802397B4((f32*)&rect, field_04, field_198);
+                return;
             }
         }
     }
