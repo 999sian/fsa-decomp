@@ -663,10 +663,10 @@ struct MsgProc {
         secs = sec;
     }
     void setInfo(s16 c, s16 d, s32 a, s32 b) {
-        m21c = b;
         m222 = c;
         m224 = d;
         m218 = a;
+        m21c = b;
     }
     void setSlotPos(u8 i, s32 x) {
         MsgLayout* l = layout;
