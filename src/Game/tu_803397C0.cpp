@@ -15,9 +15,9 @@ extern const f32 lbl_805420F4;
 extern const f32 lbl_805420F8;
 
 struct State_80339820 { u8 pad[0xb4]; JMARandFast rnd; };
-static inline f32 fn_80339820_rnd(u8* game = lbl_8053AAF8) {
+static inline f32 fn_80339820_rnd(u8* game = lbl_8053AAF8, u32 factor = 0x19660d) {
     unsigned int* seed = (unsigned int*)(game + 0xb4);
-    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    *seed = *seed * factor + 0x3c6ef35f;
     unsigned int bits = (*seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_805420EC;
 }
@@ -62,13 +62,13 @@ extern "C" void fn_80339820(u8* this_) {
         break;
     }
     if (*(s32*)(this_ + 0x260) <= 1) {
-        if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F0) {
-            if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F4) {
+        if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F0) {
+            if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F4) {
                 Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), (f32*)&pos, 0x261400, -1, -1);
             } else {
-                if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F8) skip = true;
+                if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F8) skip = true;
                 if (skip) return;
-                if (((State_80339820*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_805420F0) {
+                if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F0) {
                     Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
                 } else {
                     Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
