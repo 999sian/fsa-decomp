@@ -240,6 +240,9 @@ public:
     virtual void v20();
     virtual void v21();
     virtual void v22(void*);
+    virtual void v23();
+    virtual void v24();
+    virtual void v25(u16);
 };
 class J3DTevBlock {
 public:
