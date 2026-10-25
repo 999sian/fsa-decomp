@@ -480,7 +480,7 @@ struct MsgProc {
         str2c0[m2d0++] = -2;
         str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0 && (u8)(s8)slotLine[slot] - lineTab[layout->m15c] - 1 == 0) {
+        if (layout->m1a1 != 0 && lineRow(lineTab[layout->m15c], slotLine[slot]) == 0) {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
         } else {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
