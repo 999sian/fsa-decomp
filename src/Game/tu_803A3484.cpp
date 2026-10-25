@@ -55,6 +55,7 @@ extern "C" void fn_803A44D8(u8* this_) {
 }
 
 static inline void setPair4c(u8* p, f32 v) {
+    p[0x14c] = 0;
     *(f32*)(p + 0x50) = v;
     *(f32*)(p + 0x4c) = v;
 }
