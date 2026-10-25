@@ -15,6 +15,13 @@ extern "C" void __dl__FPv(void*);
 extern "C" void __dla__FPv(void*);
 extern "C" u8 lbl_804AA858[];
 extern "C" void fn_803004C0(void);
+struct Tu802F5040ResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* getResource(u32 type, const char* name);
+};
 extern "C" void fn_803003AC(void* p);
 extern "C" void fn_803003A8(void);
 extern "C" void fn_8030029C(u8* p);
@@ -1816,6 +1823,104 @@ extern "C" void* fn_802FFBF8(void* self, s16 flag) {
             __dl__FPv(p);
         }
     }
+    return p;
+}
+
+extern "C" int sprintf(char* buf, const char* fmt, ...);
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void* fn_8043395C(void* p);
+extern "C" char lbl_804711D4[];
+extern "C" char lbl_804711E4[];
+extern "C" void* fn_802FFDEC(void* self, JKRHeap* heap) {
+    u8* p = (u8*)self;
+    s32 i;
+    char name[32];
+
+    *(u8**)p = lbl_804AA858;
+    __construct_array(p + 0x150, (void*)fn_803004C0, 0, 0x10, 4);
+    __construct_array(p + 0x190, (void*)fn_803004C0, 0, 0x10, 4);
+    __construct_array(p + 0x1d0, (void*)fn_803004C0, 0, 0x10, 4);
+    __construct_array(p + 0x2398, (void*)fn_803003AC, 0, 0x9c, 0x100);
+    __construct_array(p + 0xbf9c, (void*)fn_803003A8, 0, 0x28, 0x10);
+    __construct_array(p + 0xc220, (void*)fn_8030029C, 0, 0x88, 0x20);
+    __construct_array(p + 0xd324, (void*)fn_8030029C, 0, 0x88, 0x20);
+    heap->getTotalFreeSize();
+    {
+        u8* q;
+        for (i = 0, q = p; i < 2; i++, q += 4) {
+            *(void**)(q + 4) = ::operator new[](0x8000, heap, 0x20);
+        }
+    }
+    {
+        u8* q;
+        for (i = 0, q = p; i < 3; i++, q += 4) {
+            *(void**)(q + 0xc) = ::operator new[](0x200, heap, 0x20);
+            *(void**)(q + 0x18) = ::operator new[](0x200, heap, 0x20);
+        }
+    }
+    *(void**)(p + 0x24) = ::operator new[](0x2000, heap, 0x20);
+    {
+        u8* q;
+        for (i = 0, q = p; i < 4; i++, q += 4) {
+            *(void**)(q + 0x28) = ::operator new[](0x2000, heap, 0x20);
+            *(void**)(q + 0x38) = ::operator new[](0x2000, heap, 0x20);
+        }
+    }
+    {
+        u8* q;
+        for (i = 0, q = p; i < 16; i++, q += 4) {
+            *(void**)(q + 0x48) = ::operator new[](0x2000, heap, 0x20);
+        }
+    }
+    {
+        u8* q;
+        for (i = 0, q = p; i < 4; i++, q += 4) {
+            *(void**)(q + 0x88) = ::operator new[](0x8000, heap, 0x20);
+        }
+    }
+    {
+        u8* q;
+        for (i = 0, q = p; i < 12; i++, q += 4) {
+            *(void**)(q + 0x98) = ::operator new[](0x200, heap, 0x20);
+            *(void**)(q + 0xc8) = ::operator new[](0x200, heap, 0x20);
+        }
+    }
+    *(void**)(p + 0xf8) = ::operator new[](0x8000, heap, 0x20);
+    {
+        u8* q;
+        s32 j;
+        for (j = 0, q = p; j < 2; j++, q += 4) {
+            *(JGeometry::TVec3<f32>**)(q + 0x100) = new (heap, 0) JGeometry::TVec3<f32>[0x1081];
+            *(JUtility::TColor**)(q + 0x108) = new (heap, 0) JUtility::TColor[0x1081];
+        }
+    }
+    *(JGeometry::TVec2<f32>**)(p + 0x110) = new (heap, 0) JGeometry::TVec2<f32>[0x1000];
+    {
+        s32 j;
+        u8* q;
+        for (j = 0, q = p; j < 4; j++, q += 4) {
+            *(void**)(q + 0x11c) = ::operator new(0x68, heap, 0);
+        }
+    }
+    {
+        s32 j;
+        u8* q;
+        for (j = 0, q = p; j < 10; j++, q += 4) {
+            sprintf(name, lbl_804711D4, j == 0 ? 1 : j);
+            *(JUTTexture**)(q + 0xe428) = new (heap, 0) JUTTexture((ResTIMG*)((void* (*)(void*, u32, const char*))(
+                *(void***)*(void**)((u8*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((u8*)lbl_8053AAF8 + 0xa4), 0x3f3f3f3f, name));
+        }
+    }
+    *(JUTTexture**)(p + 0xe454) = new (heap, 0) JUTTexture((ResTIMG*)((void* (*)(void*, u32, const char*))(
+        *(void***)*(void**)((u8*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((u8*)lbl_8053AAF8 + 0xa4), 0x3f3f3f3f, lbl_804711E4));
+    {
+        void* o = ::operator new(0xb0, heap, 0);
+        if (o != NULL) {
+            o = fn_8043395C(o);
+        }
+        *(void**)(p + 0xfc) = o;
+    }
+    *(void**)(p + 0x238c) = ::operator new[](0x100, heap, 0x20);
     return p;
 }
 
