@@ -81,7 +81,7 @@ extern "C" void fn_801D47D8(void)
 extern "C" void fn_801D4C70(u8* this_);
 extern "C" void fn_801E4D74(void* this_);
 extern "C" bool fn_801CD2F8(s32 id);
-typedef void BogfActor;
+typedef u8 BogfActor;
 extern "C" void fn_801D5D84(BogfActor* this_, s32 state);
 extern "C" void fn_80217CD8(void* p);
 
