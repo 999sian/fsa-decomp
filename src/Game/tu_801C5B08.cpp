@@ -24,7 +24,8 @@ struct Unk801C5B08 {
     u32 field_524;
     u8 unk_528[0x590 - 0x528];
     s32 field_590;
-    u8 unk_594[0x598 - 0x594];
+    u8 unk_594[0x597 - 0x594];
+    u8 field_597;
     u8 field_598;
     u8 field_599;
     u8 field_59A;
@@ -63,7 +64,8 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
         u8 flag;
         s32 d = fn_801D05F8(p, &self->field_0C, self->field_5AC);
         if (d < 0) {
-            if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE6C) {
+            f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+            if (r < lbl_8053EE6C) {
                 fn_801C3B7C(p, 0xf);
             } else {
                 fn_801C3B7C(p, 0x11);
@@ -77,7 +79,8 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
                     s32 off = self->field_04;
                     u8* base = fn_802D6A9C();
                     if (base[0x10000 + off + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
-                        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+                        f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+                        if (r < lbl_8053EE70) {
                             self->field_33C = 0x4000;
                         } else {
                             self->field_33C = -0x4000;
@@ -108,7 +111,8 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
                             } else {
                                 f32 diff = (f32)(s16)(self->field_33C - fn_801D02E0(p, &v));
                                 if (lbl_8053EE78 * fabs(diff) > lbl_8053EE7C) {
-                                    if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE80) {
+                                    f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+                                    if (r < lbl_8053EE80) {
                                         flag = 1;
                                     }
                                 }
@@ -146,25 +150,27 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern f32 lbl_8053EE94;
 
     s32 off = *(s32*)(this_ + 4);
-    u8* base = fn_802D6A9C();
-    u8 cVar6 = base[0x10000 + off + 0x31df];
+    u8 cVar6 = fn_802D6A9C()[0x10000 + off + 0x31df];
     if (flag != 0) {
         *(u8*)(this_ + 0x595) = 0;
-        if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, off) != 0) {
+        if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) != 0) {
             fn_801D11FC(this_);
         } else {
-            s32 k = *(s32*)(this_ + 0x98);
-            if (k == 1) {
+            switch (*(s32*)(this_ + 0x98)) {
+            case 1:
                 *(s16*)(this_ + 0x33c) = 0x4000;
-            } else if (k == 0) {
+                break;
+            case 0:
                 *(s16*)(this_ + 0x33c) = -0x4000;
-            } else {
+                break;
+            default: {
                 f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
                 if (r >= lbl_8053EE70) {
                     *(s16*)(this_ + 0x33c) = -0x4000;
                 } else {
                     *(s16*)(this_ + 0x33c) = 0x4000;
                 }
+            }
             }
         }
     } else {
@@ -176,7 +182,7 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
             *(u8*)(this_ + 0x595) = 0;
             *(u8*)(this_ + 0x596) = fn_801CD664(0x15) + 0x14;
             pf = (f32*)(this_ + state * 0xc + 0x1ac);
-            if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, off) != 0) {
+            if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) != 0) {
                 dx = *(f32*)(this_ + 0xc) - pf[0];
                 dy = *(f32*)(this_ + 0x10) - pf[1];
                 a = *(s16*)(this_ + 0x33c);
@@ -187,8 +193,8 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
                 fn_801CD930(this_ + 0x33c, a, 0xaaa);
             } else {
                 a = *(s16*)(this_ + 0x33c);
-                if (lbl_8053EE78 * (f32)(a + 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, off) != 1) {
-                    if (lbl_8053EE78 * (f32)(a - 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, off) != 1) {
+                if (lbl_8053EE78 * (f32)(a + 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) != 1) {
+                    if (lbl_8053EE78 * (f32)(a - 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) != 1) {
                         f32 r1 = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
                         if (r1 >= lbl_8053EE7C) {
                             if (*(f32*)(this_ + 0xc) >= pf[0]) {
