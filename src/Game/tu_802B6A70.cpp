@@ -38,6 +38,9 @@ extern "C" s32 fn_801F8544(void* mgr, u32 tag, u32 id, f32* pos, s32 n);
 extern "C" Actor* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 param, s32 a, s32 b);
 extern "C" s32 lbl_8046CAF0[];
+extern const f32 lbl_80540A7C;
+extern const f32 lbl_80540A80;
+extern const f32 lbl_80540A84;
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_802D9C4C(void* mgr);
 extern "C" u8 fn_802D7544(void* mgr, void* arg);
@@ -68,13 +71,16 @@ extern "C" void fn_802B6A70(Actor* p) {
             if (slot >= 0) {
                 Actor* e = fn_801F666C(fn_801F856C(), slot);
                 if (e) {
-                    Vec v;
-                    Vec* pv = &v;
-                    f32 z = rand01();
-                    pv->z = 3.0f * z + 3.0f;
-                    pv->y = 2.0f - 4.0f * rand01();
-                    pv->x = 2.0f - 4.0f * rand01();
-                    e->field_3C = v;
+                    JGeometry::TVec3f v;
+                    JGeometry::TVec3f* pv = &v;
+                    f32 z, x, y;
+                    z = 3.0f * rand01() + 3.0f;
+                    y = 2.0f - 4.0f * rand01();
+                    x = 2.0f - 4.0f * rand01();
+                    pv->z = z;
+                    pv->y = y;
+                    pv->x = x;
+                    *(JGeometry::TVec3f*)&e->field_3C = v;
                 }
             }
             i++;
