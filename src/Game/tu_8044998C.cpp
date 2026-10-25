@@ -195,6 +195,10 @@ static inline void SetDigits4(u8* self, void** tbl, int idx, int d0, int d1, int
     SetDigit(self, tbl, idx + 12, d3);
 }
 
+static inline void SetTime(u8* self, void** tbl, int idx, int a, int b) {
+    SetDigits4(self, tbl, idx, a / 10, a % 10, b % 10, b / 10);
+}
+
 extern "C" f32 fn_8043D514(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern void* lbl_8053AED0;
