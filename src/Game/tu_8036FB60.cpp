@@ -394,7 +394,6 @@ extern "C" void fn_803706AC(char* self)
 	}
 }
 
-#pragma opt_lifetimes off
 static inline void move80370764ToTarget(JGeometry::TVec3<f32>& pos) {
     JGeometry::TVec3<f32>* p = fn_8023E724(0);
     JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
@@ -426,7 +425,7 @@ extern "C" void fn_80370764(char* self)
 		fn_8022CA6C(0, 5, 0);
 	}
 	*(s32*)(self + 0x23c) += 1;
-	fn_803721F4(self);
+	((void (*)(char*))fn_803721F4)(self);
 	{
 		JGeometry::TVec3<f32> pos;
         move80370764ToTarget(pos);
@@ -829,7 +828,7 @@ extern "C" void fn_80371A2C(void* self_) {
     nearest=best;
     state=self;
     pp=self;
-    for (j=0;j<4;j++,nearest++,state+=4,pp+=12) {
+    for (j=0;j<4;j++,state+=4,pp+=12,nearest++) {
         if (*(s32*)(state+0x330)==0) {
             tp=self;
             for (i=0;i<4;i++,tp+=12) {
@@ -860,7 +859,7 @@ extern "C" void fn_80371A2C(void* self_) {
             if (j!=-1) {
                 JGeometry::TVec3<f32>* __restrict p=(JGeometry::TVec3<f32>*)(self+0x294+j*12);
                 box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
-                box.i.x+=p->x; box.f.x+=p->x; box.i.y+=p->y; box.f.y+=p->y;
+                box.i.x+=p->x; f32 x1=box.f.x+p->x; f32 y=p->y; box.i.y+=y; box.f.x=x1; box.f.y+=y;
                 fn_8022FEB8((f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
                 s32 idx=fn_8022FD8C(*(s32*)(self+0x198));
                 if(idx>=0 && fn_802300EC()) {
@@ -879,7 +878,7 @@ extern "C" void fn_80371A2C(void* self_) {
         if(j!=4 && j>=0) {
             Vec* __restrict p=(Vec*)(self+0x294+j*12);
             box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
-                box.i.x+=p->x; box.f.x+=p->x; box.i.y+=p->y; box.f.y+=p->y;
+                box.i.x+=p->x; f32 x1=box.f.x+p->x; f32 y=p->y; box.i.y+=y; box.f.x=x1; box.f.y+=y;
             fn_8022FF8C(*(s32*)(self+0x3a4),(f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
             if(fn_80388CAC(*(s32*)(self+0x3a4),*(s32*)(self+0x198))) {
                 *(s32*)(self+0x3a4)=-1;*(u8*)(self+0x3a8)=0;
