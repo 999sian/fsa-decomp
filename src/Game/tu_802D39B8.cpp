@@ -49,6 +49,9 @@ extern char* lbl_8053AAF8;
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
+inline u16* roomValueColumn(int i) {
+    return &roomArrays()->values2948[0][i];
+}
 extern char* lbl_8053AB10;
 extern u8 lbl_8050EC80[];
 extern u8 lbl_80529DEC[];
@@ -318,27 +321,10 @@ extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
 }
 
 extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
-    char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    s32 n = 0;
-    s32 off = 0;
-    s32 k = 16;
-    s32 row;
     index = index < 8 ? 0 : index - 7;
-    row = index << 7;
-    do {
-        if (value == *(u16*)(row + (p + off + 0x2948))) return n;
-        off += 2;
-        n++;
-        if (value == *(u16*)(row + (p + off + 0x2948))) return n;
-        off += 2;
-        n++;
-        if (value == *(u16*)(row + (p + off + 0x2948))) return n;
-        off += 2;
-        n++;
-        if (value == *(u16*)(row + (p + off + 0x2948))) return n;
-        off += 2;
-        n++;
-    } while (--k != 0);
+    for (int i = 0; i < 64; ++i) {
+        if ((&roomArrays()->values2948[0][i])[index * 64] == value) return i;
+    }
     return -1;
 }
 
