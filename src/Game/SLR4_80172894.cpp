@@ -1,5 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
@@ -215,13 +217,14 @@ extern "C" void fn_80172DC4(void* this_) {
     *(s32*)(p + 0x250) = 0x3c;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_80174220(void* this_) {
-    char* p = (char*)this_;
+    char* p = static_cast<char*>(this_);
     s32 idx = *(s32*)(p + 0x98);
     s32 n = idx;
     s32 id;
     s32 i;
-    f32 oy, oz, ox;
+    f32 ox, oy, oz;
     if ((s32)(u8)*(u32*)(p + 0x90) == 8 && *(s32*)(p + 0x23c) != 0) {
         n = idx + 4;
     }
@@ -234,13 +237,12 @@ extern "C" void fn_80174220(void* this_) {
         *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_804A0AD8[*(s32*)(p + 0x98) * 2 + 1];
     }
     {
-        const Box4* __restrict base = lbl_804A0B10;
-        f32 a0 = base[n].a;
-        const Box4* __restrict b = &base[n];
+        const f32* __restrict b = (const f32*)lbl_804A0B10 + n * 4;
+        f32 a0 = ((const f32*)lbl_804A0B10)[n * 4];
         f32 a1, a2, a3;
-        a3 = b->d;
-        a2 = b->c;
-        a1 = b->b;
+        a3 = b[3];
+        a2 = b[2];
+        a1 = b[1];
         *(f32*)(p + 0x60) = a0;
         *(f32*)(p + 0x64) = a1;
         *(f32*)(p + 0x68) = a2;
@@ -266,13 +268,18 @@ extern "C" void fn_80174220(void* this_) {
             if (slot < 0) continue;
             if (fn_80235448()) continue;
             {
-                f32 t = lbl_8053DAC8;
-                f32 py = *(f32*)(p + 0x10);
-                f32 y0 = *(f32*)(p + 0x64) + py;
-                f32 y1 = *(f32*)(p + 0x6c) + py;
-                f32 px = *(f32*)(p + 0xc);
-                f32 x0 = *(f32*)(p + 0x60) + px;
-                f32 x1 = *(f32*)(p + 0x68) + px;
+                f32 px, py, t, x0, y0, x1, y1;
+                py = *(f32*)(p + 0x10);
+                y0 = *(f32*)(p + 0x64);
+                y0 += py;
+                y1 = *(f32*)(p + 0x6c);
+                y1 += py;
+                px = *(f32*)(p + 0xc);
+                x0 = *(f32*)(p + 0x60);
+                x0 += px;
+                x1 = *(f32*)(p + 0x68);
+                x1 += px;
+                t = 0.5f;
                 v.set(t * (x0 - x1) + x1, t * (y0 - y1) + y1);
             }
             if (!fn_80237948(slot, (f32*)&v)) continue;
@@ -292,7 +299,7 @@ extern "C" void fn_80174220(void* this_) {
     *(f32*)(p + 0x10) = oy;
     *(f32*)(p + 0x14) = oz;
 }
-
+#pragma opt_common_subs reset
 extern "C" void* fn_801F666C(void* a, s32 b);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 b);
 extern "C" void fn_80458FF0(void* a, u32 b, s32 c, s32 d);
