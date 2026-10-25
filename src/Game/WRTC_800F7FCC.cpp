@@ -587,7 +587,7 @@ struct ActorVT10 {
 struct ActorVT11 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
-    virtual void v8(); virtual void v9(); virtual void v10();
+    virtual void v8();
     virtual bool v11(f32 a, f32 b, f32 c);
 };
 extern "C" void* fn_802D6A9C(void);
@@ -630,11 +630,12 @@ extern "C" void fn_801F6884(void* mgr);
 extern "C" void fn_80458FF0(void* p, u32 a, s32 b, s32 c);
 extern "C" void fn_8030C210(void* cam, void* pos);
 extern "C" void fn_800FABC0(char* this_) {
+    f32 z = *(f32*)(this_ + 0x14);
     *(f32*)(this_ + 0x70) = -21.0f;
-    *(f32*)(this_ + 0x74) = -35.0f + *(f32*)(this_ + 0x14);
+    *(f32*)(this_ + 0x74) = -35.0f + z;
     *(f32*)(this_ + 0x78) = 22.0f;
-    *(f32*)(this_ + 0x7c) = -2.0f + *(f32*)(this_ + 0x14);
-    if (((u8 (*)(void*, f32, f32, f32))(*(void***)this_)[11])(this_, 0.0f, -20.0f, 50.0f)) {
+    *(f32*)(this_ + 0x7c) = -2.0f + z;
+    if (((ActorVT11*)this_)->v11(0.0f, -20.0f, 50.0f)) {
         return;
     }
     if (!(*(u32*)(this_ + 0x238) & 1)) {
@@ -653,7 +654,7 @@ extern "C" void fn_800FABC0(char* this_) {
         *(u16*)(this_ + 0x2ae) += *(u16*)(this_ + 0x2b0);
         *(f32*)(this_ + 0x2a8) = 1.0f;
         *(u16*)(this_ + 0x260) += 0x200;
-        *(f32*)(this_ + 0x14) = 5.0f * sincosTable___5JMath[(*(u16*)(this_ + 0x260) >> 5) * 2] + *(f32*)(this_ + 0x25c);
+        *(f32*)(this_ + 0x14) = 5.0f * sincosTable___5JMath[((u32)*(u16*)(this_ + 0x260) >> 5) * 2] + *(f32*)(this_ + 0x25c);
         switch (*(u8*)(this_ + 0x254)) {
         case 0: {
             char* cam = *(char**)(lbl_8053AB10 + 0x30);
@@ -662,8 +663,10 @@ extern "C" void fn_800FABC0(char* this_) {
                 *(f32*)(cam + 0x28c) = 0.05f;
             }
             char* cam2 = *(char**)(lbl_8053AB10 + 0x24);
-            f32 y = *(f32*)(this_ + 0x10) - 20.0f;
-            f32 x = *(f32*)(this_ + 0xc);
+            f32 x;
+            f32 y;
+            y = *(f32*)(this_ + 0x10) - 20.0f;
+            x = *(f32*)(this_ + 0xc);
             if (*(u8*)(cam2 + 0x7f5) == 0) {
                 *(u8*)(cam2 + 0x7f4) = 1;
                 *(s32*)(cam2 + 0x7f8) = 4;
