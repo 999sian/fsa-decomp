@@ -80,11 +80,18 @@ static inline bool canReleaseCarried(char* p, u8 flag) {
         goto blocked;
     if (S32(p, 0xd6c) == 'KEY0' && (u32)(state - 0x1e) <= 1)
         goto blocked;
-    if (flag == 1 && !isCarriedByPlayer(p, flag) && (state == 0x4c || state == 0x4d))
+    if (flag != 1)
+        goto allowed;
+    if (isCarriedByPlayer(p, flag))
+        goto allowed;
+    if (state == 0x4c)
         goto blocked;
-    return true;
+    if (state != 0x4d)
+        goto allowed;
 blocked:
     return false;
+allowed:
+    return true;
 }
 
 extern "C" s32 fn_8024189C(char*);
@@ -386,31 +393,14 @@ extern "C" void fn_8025F698(char* p, u8 check) {
     u8 flag = U8(p, 0xd64);
     if (flag == 0)
         return;
-    if (check) {
-        s32 state = S32(p, 0x1244);
-        if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2)
-            goto blocked;
-        switch ((u8)(flag == 1)) {
-        case 0: break;
-        default:
-            if (!isCarriedByPlayer(p, flag) && (u32)(state - 0x20) <= 5) goto blocked;
-            break;
-        }
-        if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1)
-            goto blocked;
-        if (flag != 1) goto allowed;
-        if (isCarriedByPlayer(p, flag)) goto allowed;
-        if (state == 0x4c) goto blocked;
-        if (state != 0x4d) goto allowed;
-    blocked:
+    if (check && !canReleaseCarried(p, flag))
         return;
-    }
-allowed:
     u8 notify = 1;
     if (U32(p, 0xd6c) == 'NULL')
         notify = 0;
     if (isCarriedByPlayer(p, flag)) {
-        JGeometry::TVec3<f32> dir = lbl_8046B8FC[S32(p, 0x3dc)];
+        JGeometry::TVec3<f32> dir;
+        dir.set(lbl_8046B8FC[S32(p, 0x3dc)]);
         dir.scale(lbl_80540154);
         JGeometry::TVec3<f32> vel;
         s32 st = S32(p, 0x1244);
@@ -427,7 +417,7 @@ allowed:
                 if (t == 3 || t == 0xe || t == 0x3a)
                     count++;
             }
-            vel = lbl_8046B8FC[S32(p, 0x3dc)];
+            vel.set(lbl_8046B8FC[S32(p, 0x3dc)]);
             if (count >= 2) {
                 s32 d = S32(p, 0x3dc);
                 if (d == 0 || d == 1) {
@@ -447,7 +437,8 @@ allowed:
     } else {
         char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
         if (actor) {
-            JGeometry::TVec3<f32> v = lbl_8046B92C[S32(p, 0x3dc)];
+            JGeometry::TVec3<f32> v;
+            v.set(lbl_8046B92C[S32(p, 0x3dc)]);
             u32 kind = U32(actor, 0x1a0);
             if (kind == 'CRTL' || kind == 'BMTY') {
                 v.scale(lbl_80540160);
