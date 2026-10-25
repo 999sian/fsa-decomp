@@ -3,6 +3,7 @@
 // swapped vs f2/f0 when computing the room-centre position).
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- shared declarations
 extern "C" void __dt__5ActorFv(void* this_, int flag);
