@@ -303,7 +303,7 @@ extern "C" void fn_801D2608(void*, void*, s32);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1F14(void*, f32);
 extern "C" void* fn_802D6A9C(void);
-extern "C" void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
+extern "C" void* fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f);
 extern "C" char lbl_8049DA00[];
 extern "C" f32 lbl_8053C750;
 extern "C" f32 lbl_8053C754;
