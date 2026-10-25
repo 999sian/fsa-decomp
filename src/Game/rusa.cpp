@@ -56,6 +56,7 @@ static inline u8 Rusa_IsActive(char* p) {
 
 extern const f32 lbl_8053FB04;
 
+extern "C" f32 __fsels(f32, f32, f32);
 static inline void Rusa_CalcPush(char* p, const JGeometry::TVec3f* v, JGeometry::TVec3f* out) {
     out->set(0.0f, 0.0f, 0.0f);
     if (v->z <= 0.0f && *(s32*)(p + 0x248) != 0) {
@@ -272,10 +273,13 @@ extern "C" void fn_80210D90(char* p) {
 }
 
 // near-match: register allocation differs
-extern "C" void fn_80210E90(char* p, const JGeometry::TVec3f* v, JGeometry::TVec3f* out) {
+#pragma opt_propagation on
+#pragma opt_common_subs on
+extern "C" void fn_80210E90(char* __restrict p, const JGeometry::TVec3f* v, JGeometry::TVec3f* out) {
     Rusa_CalcPush(p, v, out);
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern "C" BOOL fn_80211000(char* p, const f32* v) {
     BOOL r = FALSE;
     if (v[2] <= 0.0f && *(s32*)(p + 0x248) != 0) {
