@@ -83,8 +83,9 @@ extern const f32 lbl_805418D8;
 extern const f32 lbl_805418DC;
 extern const f32 lbl_805418E0;
 static inline void ftglFacePlayers(char* p) {
+    s32 room;
     for (s32 i = 0; i < 4; i++) {
-        s32 room = *(s32*)(p + 0x4);
+        room = *(s32*)(p + 0x4);
         s32 r = fn_8023DE58(i);
         if (r == room && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
             s32 side = fn_8023E724(i)->x > *(f32*)(p + 0xc) ? 1 : 0;
@@ -146,33 +147,8 @@ extern "C" void fn_80317378(char* p) {
         break;
     case 1:
         if (fn_801F68E0(fn_801F856C()) != 0) {
-            for (s32 i = 0; i < 4; i++) {
-                s32 room = *(s32*)(p + 0x4);
-                s32 r = fn_8023DE58(i);
-                if (r == room && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
-                    s32 side = fn_8023E724(i)->x > *(f32*)(p + 0xc) ? 1 : 0;
-                    fn_80230498(i, fn_8023E724(i), side + 0x3c, 0xff, -0x80, -0x80, 1);
-                    fn_80230BF4(i, side);
-                }
-            }
-            s32 n = fn_80138A30(lbl_8053AAF8);
-            s32 j;
-            s32 id;
-            s32 best = 0;
-            f32 bestD = lbl_805418C0;
-            for (j = 0; j < n; j++) {
-                id = fn_8022EA0C(j);
-                s32 room = *(s32*)(p + 0x4);
-                s32 r = fn_8023DE58(id);
-                if (r == room) {
-                    f32 d = PSVECSquareDistance((Vec*)(p + 0xc), fn_8023E724(id));
-                    if (d < bestD) {
-                        bestD = d;
-                        best = id;
-                    }
-                }
-            }
-            *(s32*)(p + 0x234) = best;
+            ftglFacePlayers(p);
+            *(s32*)(p + 0x234) = ftglNearestPlayer(p);
             *(s32*)(p + 0x238) = 0x3c;
             *(s32*)(p + 0x230) = 2;
             fn_801F0E34(p, 0x50050, 0);
