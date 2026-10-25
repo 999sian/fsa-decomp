@@ -1088,7 +1088,6 @@ extern "C" u32 fn_8023CD74(s32);
 extern "C" s32 fn_803066F0(void*,s32,s32);
 extern "C" void fn_803064A8(void*,s32,s32,s32);
 extern "C" u64 fn_802D7AC4(void*,s32);
-static inline void packetSetX_80301CD0(Ctl4_80301CD0* packet,u32 value) { packet->x=value; }
 extern "C" void fn_80306A94(s32 ctx,s32 player) {
     if(((u8*)lbl_8053AAF8)[0x82] & (u8)(1<<player))
         ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
@@ -1127,8 +1126,8 @@ valid:
 nextPlayer:;
     }
     if((((s32*)lbl_80506D48)[player]&1)==1) {
-        u8* state6=p+6;
         Hi_80301CD0* flags7=(Hi_80301CD0*)(p+7);
+        u8* state6=p+6;
         for(s32 i=0;i<4;i++) {
             u32 slot=fn_802340A0(i);
             s32 mask=fn_8022BECC()<<slot;
@@ -1161,13 +1160,13 @@ nextPlayer:;
     header2->x=fn_8023CD74(owner)>>4;
     ((Ctl4_80301CD0*)(p+0x17))->y=fn_8023CD74(owner);
     Ctl4_80301CD0* header3=(Ctl4_80301CD0*)(p+0x17);
-    u8 active=0;
-    if(fn_8037F1E4(player)>=1 && fn_8037F1E4(player)<=5) active=1;
+    bool active=false;
+    if(fn_8037F1E4(player)>=1 && fn_8037F1E4(player)<=5) active=true;
     header1->x=active!=0;
-    active=0;
+    active=false;
     if(fn_8022F5B0(owner)) {
         s32 room=fn_8023DE58(owner);
-        if(!fn_802D7804(fn_802D6A9C(),room,2)) active=1;
+        if(!fn_802D7804(fn_802D6A9C(),room,2)) active=true;
     }
     header3->x=active!=0;
     s32 clearCount=lbl_80541618[lbl_8053AD08]-7;
