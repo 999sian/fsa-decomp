@@ -687,8 +687,8 @@ extern "C" void fn_80364340(char* self) {
             return;
         }
         *(s32*)(self + 0x248) = fn_801CD664(0x32) + 0x3c;
-        *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
         offs.z = lbl_80542B4C;
+        *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
         u32 type = fn_801CD664(8) | 0x250000;
         temp = *(JGeometry::TVec3<f32>*)(self + 0xc);
         temp.add(offs);
