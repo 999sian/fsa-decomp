@@ -20,7 +20,8 @@ struct FsaVObj {
     virtual void v12(void);
     virtual void v13(void);
     virtual void v14(void);
-    virtual void v15(void);
+          virtual J2DPane* v15(s32 a, s32 b, s32 c);
+
     virtual void v16(void);
           virtual J2DPane* v17(s32 a, s32 b, s32 c);
 
@@ -195,6 +196,7 @@ extern "C" void fn_80438E10(u8* p, u8 flag)
 
 extern "C" u32 fn_80438E94(u8* p) {
     f32 pos[3];
+    s32 i;
     if (*(s32*)(p + 0x44) > 0) {
         if (fn_801F666C(fn_801F856C(), *(s32*)(p + 0x44)) == 0) {
             *(s32*)(p + 0x44) = -2;
@@ -254,10 +256,66 @@ extern "C" u32 fn_80438E94(u8* p) {
             break;
         }
         break;
+    case 2:
+        if (*(s32*)(p + 0x44) == -2) {
+            if (fn_80309C4C(lbl_8053AD30, 0x1100, -1) != 0) {
+                f32 vec[3];
+                vec[0] = lbl_80543C44; vec[1] = lbl_80543C44; vec[2] = lbl_80543C44;
+                if (*(void**)(p + 0x2c) == 0) {
+                    *(void**)(p + 0x2c) = fn_8013CC50(0, vec, 0x568, 0, 0, 0, 0, 1, lbl_80543C4C);
+                }
+                if (*(void**)(p + 0x2c) != 0) {
+                    *(u32*)((u8*)*(void**)(p + 0x2c) + 0xf4) |= 0x40;
+                }
+                if (*(void**)(p + 0x30) == 0) {
+                    *(void**)(p + 0x30) = fn_8013CC50(0, vec, 0x566, 0, 0, 0, 0, 1, lbl_80543C4C);
+                }
+                if (*(void**)(p + 0x30) != 0) {
+                    *(u32*)((u8*)*(void**)(p + 0x30) + 0xf4) |= 0x40;
+                }
+                p[0x40] = 4;
+                p[0x42] = 0;
+                fn_80458880(lbl_8053AF80, 0x48, -1);
+                fn_80458880(lbl_8053AF80, 0xc, -1);
+            }
+        }
+        break;
+    case 3:
+        if ((s32)p[0x42] < *(s16*)(lbl_8050DB0C + 0x5c)) {
+            p[0x42] += 1;
+        }
+        break;
+    case 4:
+        if ((s32)p[0x42] < *(s16*)(lbl_8050DB0C + 0x5e)) {
+            p[0x42] += 1;
+        }
+        break;
     case 5:
         p[0x40] = 7;
         lbl_80529DEC[0x237] = 7;
         ((FsaVObj*)*(void**)(p + 4))->v17(0x74610000, 0x4e6461, 0x74613031)->animationTransform();
+        break;
+    case 6:
+        *(s32*)(p + 0x3c) += 1;
+        if (*(s32*)(p + 0x3c) >= *(s16*)(*(u8**)(p + 8) + 6) - 1) {
+            for (i = 0; i < 8; i++) {
+                if (*(void**)(p + 0xc + i * 4) != 0) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0xc + i * 4));
+                }
+                *(void**)(p + 0xc + i * 4) = 0;
+            }
+            if (*(void**)(p + 0x2c) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x2c));
+            }
+            *(void**)(p + 0x2c) = 0;
+            if (*(void**)(p + 0x30) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x30));
+            }
+            *(void**)(p + 0x30) = 0;
+            *(s32*)(p + 0x3c) = 0;
+            p[0x42] = 0;
+            p[0x40] = 6;
+        }
         break;
     }
     if (*(s16*)(p + 0x54) < *(s16*)(lbl_8050DB0C + 0x9c)) {
