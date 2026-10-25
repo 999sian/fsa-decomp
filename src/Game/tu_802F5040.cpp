@@ -204,14 +204,6 @@ static inline s32 Tu802F93F4_c5(s32 v) {
     return r;
 }
 
-static inline void SwapSpriteNibbles802F(const u8* src, u8* dst, u32 size) {
-    for (u32 i = 0; i < size; i++) {
-        u8 b = src[i];
-        dst[i] = ((b & 0xf0) >> 4) | ((b & 0x0f) << 4);
-    }
-    DCFlushRange(dst, size);
-}
-
 extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     f32 t;
     s32 a;
@@ -1691,6 +1683,8 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     DCFlushRange(d, len);
 }
 
+#pragma opt_propagation on
+#pragma opt_lifetimes on
 extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
     u8* out; u8* self; s32 index;
     self=this_; index=idx; out=dst;
@@ -1712,16 +1706,15 @@ extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
     base+=a;
     for(u32 i=0;i<len;i++) {
         u32 b=base[i];
-        out[i]=((b&15)<<4)|(b>>4);
+        out[i]=((b&240)>>4)|((b&15)<<4);
     }
     DCFlushRange(out,len);
     if(index==1) {
         u8* p=*(u8**)(self+8)+0x200;
         u8* q=*(u8**)(self+0x238c);
-        for(s32 i=0;i<0x100;i++) *q++=*p++;
+        for(u32 i=0;i<0x100;i++) *q++=*p++;
     }
 }
-
 extern "C" void fn_802FA3FC(void* mgr) {
     u8* p = (u8*)mgr;
     char tex[0x48];
