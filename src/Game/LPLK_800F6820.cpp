@@ -1,6 +1,7 @@
 // LPLK_800F6820: .text 0x800F6820-0x800F7FCC (actor LPLK)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 
 // ---- from Game/fn_800F7C4C_dtor.cpp
@@ -94,9 +95,10 @@ extern "C" char* fn_801F666C(void* base, s32 id);
 extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, u32 a, s32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void v07__5ActorFv(void* this_);
 
+#pragma opt_propagation off
 extern "C" void fn_800F6820(char* this_) {
-    s32 room;
     s32 kind;
+    int room;
     JGeometry::TVec3<f32> pos;
     BOOL big;
     kind = *(s32*)(this_ + 0x4);
@@ -115,7 +117,7 @@ extern "C" void fn_800F6820(char* this_) {
     }
     room = kind;
     while (*(s32*)(this_ + 0x244) > 0) {
-        if (!big) {
+        if (big == 0) {
             if (*(s32*)(this_ + 0x244) >= 200) {
                 kind = 3;
                 *(s32*)(this_ + 0x244) -= 50;
@@ -145,10 +147,11 @@ extern "C" void fn_800F6820(char* this_) {
         if (id >= 0) {
             char* a = fn_801F666C(fn_801F856C(), id);
             if (a != 0) {
-                f32 vz = lbl_8053BF38 * lbl_8053AAF8->rnd.get() + lbl_8053BF38;
-                f32 vy = lbl_8053BF34 - lbl_8053AAF8->rnd.get();
-                f32 vx = lbl_8053BF34 - lbl_8053AAF8->rnd.get();
-                JGeometry::TVec3<f32> v(vx, vy, vz);
+                JGeometry::TVec3<f32> v;
+                f32 r = lbl_8053AAF8->rnd.get();
+                v.z = lbl_8053BF38 * r + lbl_8053BF38;
+                v.y = lbl_8053BF34 - lbl_8053AAF8->rnd.get();
+                v.x = lbl_8053BF34 - lbl_8053AAF8->rnd.get();
                 *(JGeometry::TVec3<f32>*)(a + 0x3c) = v;
             }
         }
@@ -156,6 +159,107 @@ extern "C" void fn_800F6820(char* this_) {
     fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_80539E70[*(u8*)(this_ + 0x234)], 0, 0, 0, 0, 1, lbl_8053BF30);
     *(s32*)(this_ + 0x18c) = 0;
     v07__5ActorFv(this_);
+}
+#pragma opt_propagation reset
+extern "C" void fn_801F02BC(char* this_, void* anim, s32 idx, u8* tbl, s32 frame, s32 a, s32 b, f32 x, f32 y, f32 z);
+extern const f32 lbl_8053BF3C;
+extern const f32 lbl_8053BF40;
+extern const f32 lbl_8053BF44;
+extern const s32 lbl_8053BF50[];
+extern const s32 lbl_8053BF48_tbl[];
+extern u8 lbl_8049C518[];
+extern u8 lbl_80463710[];
+extern u8 lbl_80463724[];
+extern "C" void fn_800F6AB4(char* this_) {
+    volatile struct {
+        s32 a;
+        s32 b;
+        f32* p;
+        u8 c[11];
+        s32 d;
+        u8 e[3];
+        s32 f;
+        s32 g;
+        s32 h;
+    } cfg;
+    f32 arr[12];
+    u8 tbl[16];
+    s32* base = (s32*)lbl_8049C518;
+    cfg.a = -1;
+    cfg.b = -1;
+    for (u8 i = 0; i < 0x10; i += 8) {
+        tbl[i] = i;
+        tbl[(u8)(i + 1)] = (u8)(i + 1);
+        tbl[(u8)(i + 2)] = (u8)(i + 2);
+        tbl[(u8)(i + 3)] = (u8)(i + 3);
+        tbl[(u8)(i + 4)] = (u8)(i + 4);
+        tbl[(u8)(i + 5)] = (u8)(i + 5);
+        tbl[(u8)(i + 6)] = (u8)(i + 6);
+        tbl[(u8)(i + 7)] = (u8)(i + 7);
+    }
+    cfg.a = -1;
+    cfg.b = 0;
+    cfg.p = 0;
+    cfg.c[0] = 0;
+    cfg.c[1] = 0;
+    cfg.c[2] = 0;
+    cfg.c[3] = 1;
+    cfg.c[4] = 1;
+    cfg.c[5] = 0;
+    cfg.c[6] = 0;
+    cfg.c[7] = 0;
+    cfg.c[8] = 0;
+    cfg.c[9] = 0;
+    cfg.c[10] = 1;
+    cfg.d = 3;
+    cfg.e[0] = 1;
+    cfg.e[1] = 0;
+    cfg.e[2] = 0;
+    cfg.f = -1;
+    cfg.g = 0;
+    cfg.h = 2;
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        fn_801F02BC(this_, lbl_80463710, *(u8*)(this_ + 0x235) + base[*(u8*)(this_ + 0x234)], tbl, 0, 0, 0, lbl_8053BF30, lbl_8053BF30, 0.0f);
+        return;
+    case 2:
+        *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x260);
+        *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x264);
+        fn_801F02BC(this_, lbl_80463724, *(u8*)(this_ + 0x235) + (base + 8)[*(u8*)(this_ + 0x234)], tbl, 7, 0, 0, lbl_8053BF30, lbl_8053BF30, 0.0f);
+        *(f32*)(this_ + 0xc) -= *(f32*)(this_ + 0x260);
+        *(f32*)(this_ + 0x10) -= *(f32*)(this_ + 0x264);
+        break;
+    case 4:
+        break;
+    default:
+        {
+            f32 f = lbl_8053BF30 + lbl_8053BF3C * ((f32)*(u32*)(this_ + 0x244) / lbl_8053BF40);
+            if (f > lbl_8053BF44) {
+                f = lbl_8053BF44;
+            }
+            cfg.p = arr;
+            arr[0] = f;
+            arr[1] = lbl_8053BF48;
+            arr[2] = lbl_8053BF48;
+            arr[3] = lbl_8053BF48;
+            arr[4] = lbl_8053BF48;
+            arr[5] = lbl_8053BF30;
+            arr[6] = lbl_8053BF48;
+            arr[7] = lbl_8053BF48;
+            arr[8] = lbl_8053BF48;
+            arr[9] = lbl_8053BF48;
+            arr[10] = f;
+            arr[11] = lbl_8053BF48;
+            fn_801F02BC(this_, lbl_80463724, *(u8*)(this_ + 0x235) + (base + 4)[*(u8*)(this_ + 0x234)], tbl, 7, 0, 0, lbl_8053BF30, lbl_8053BF30, f);
+        }
+        break;
+    }
+}
+
+extern "C" void fn_800F6D80(u8* self) {
+    *(s32*)(self + 0x24c) += 1;
+    s32 st = *(s32*)(self + 0x230);
+    (void)st;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
