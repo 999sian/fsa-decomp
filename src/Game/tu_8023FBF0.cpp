@@ -550,10 +550,10 @@ inline bool actionReady(char* p) {
     if (t == 4) {
         linked = S32(p, 0xd60);
         target = (linked >= 0) ? fn_80234004(linked) : S32(p, 0x1224);
-        own = 0;
         if (linked >= 0) {
+            own = 0;
             for (i = 0; i < S32(p, 0x4); i++) {
-                if (linked == fn_8022F3DC(i)) {
+                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
                     own++;
                 }
             }
