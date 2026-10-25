@@ -147,6 +147,7 @@ extern "C" void fn_8022249C(void* this_) {
 // ---- fn_802224D0 / fn_80222668 / fn_80222730 / fn_802229EC ----
 #include "JSystem/JGeometry.h"
 
+union ZslaRandomFloat { f32 f; u32 s; };
 struct ZslaRandom {
     u32 seed;
     f32 get_ufloat_1() {
@@ -270,9 +271,9 @@ void fn_80222730(void* this_) {
     }
     f32 halfW = 0.5f * (rect[2] - rect[0]);
     f32 height = 64.0f + (32.0f + (rect[3] - rect[1]));
+    s32 n = (s32)(0.0625f * halfW) + 1;
     f32 x = *(f32*)(p + 0xc) - 0.5f * halfW;
     f32 baseY = rect[1] - 32.0f;
-    s32 n = (s32)(0.0625f * halfW) + 1;
     for (s32 i = 0; i < n; i++) {
         f32 dy = 15.0f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f);
         f32 dx = 7.0f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f);
