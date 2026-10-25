@@ -649,7 +649,7 @@ inline s32 linkRank(char* p) {
     return c + 1;
 }
 inline s32 countSharingCached(const char* __restrict p) {
-    int linked;
+    s32 linked;
     s32 me;
     s32 i;
     s32 c;
