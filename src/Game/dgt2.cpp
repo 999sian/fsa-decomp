@@ -54,6 +54,8 @@ extern f32 lbl_8053E1DC;
 extern f32 lbl_8053E1E0;
 extern char lbl_804674F0[];
 
+struct Dgt2Vec { f32 x; f32 y; f32 z; };
+
 static void dgt2Rot(f32 (*m)[4], f32 th) {
     f32 sA = sin(lbl_8053E1D8);
     f32 sT = sin(th);
