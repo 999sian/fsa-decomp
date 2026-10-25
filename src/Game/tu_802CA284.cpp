@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" u8 lbl_804A8F74[];
@@ -47,7 +48,6 @@ extern "C" void fn_802CA284(u8* this_) {
                 case 1: {
                     Vec pos;
                     void* tex;
-                    s32 idx;
 
                     rec.b1c = 0;
                     mtx[0][3] = lbl_80540D94;
@@ -55,10 +55,9 @@ extern "C" void fn_802CA284(u8* this_) {
                     mtx[2][3] = lbl_80540D94;
                     rec.b1d = 0;
                     rec.b2d = 0;
-                    idx = *(s32*)(p + 0x244);
-                    tag[0] = lbl_80540D88[idx];
-                    tag[1] = lbl_80540D8C[idx];
-                    tag[2] = lbl_80540D90[idx];
+                    tag[0] = lbl_80540D88[*(s32*)(p + 0x244)];
+                    tag[1] = lbl_80540D8C[*(s32*)(p + 0x244)];
+                    tag[2] = lbl_80540D90[*(s32*)(p + 0x244)];
                     tag[3] = this_[0x274 + i];
                     mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
@@ -66,7 +65,7 @@ extern "C" void fn_802CA284(u8* this_) {
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
                     *(Vec*)(this_ + 0xc) = *fn_8023E724();
-                    tex = fn_804030C4(0x54494D47, lbl_804A8F50[idx]);
+                    tex = fn_804030C4(0x54494D47, lbl_804A8F50[*(s32*)(p + 0x244)]);
                     pos.x = *(f32*)(this_ + 0xc);
                     pos.y = *(f32*)(this_ + 0x10) - lbl_80540D9C;
                     pos.z = *(f32*)(this_ + 0x14);
