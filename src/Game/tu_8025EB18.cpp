@@ -1035,11 +1035,14 @@ void fn_80248004(char*, s32, s32);
 void* fn_8023E2A0(s32);
 s32 fn_8023E190(s32);
 u8 fn_8022BC38(s32, s32, void*);
-s32 fn_8022C5EC(s32, s32);
+u32 fn_8022C5EC(s32, s32);
 void fn_8026E464(void*);
 u8 fn_802518AC(char*, s32);
 void fn_8024BAEC(char*);
 void fn_80231194(s32);
+void fn_8030BD3C(void*, s32);
+s32 fn_80230CFC(s32);
+void fn_802685D4(char*);
 }
 
 static inline bool isAttached(char* p) {
@@ -1064,8 +1067,10 @@ static inline u8 isSideView(s32 room) {
 }
 
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& v) {
+    f32 x;
+    f32 y;
     bool in = false;
-    if (v.x >= b.i.x && v.y >= b.i.y && v.x < b.f.x && v.y < b.f.y) {
+    if ((x = v.x) >= b.i.x && (y = v.y) >= b.i.y && x < b.f.x && y < b.f.y) {
         in = true;
     }
     return in;
@@ -1084,16 +1089,40 @@ static inline bool anyBtn(char* p) {
     return false;
 }
 
-extern "C" void fn_80261750(char* p) {
-    if (isAttached(p)) {
-        if (isAttachedPlayer(p)) {
-            if (!fn_8023EFEC(S32(p, 0xd70))) {
+extern "C" void fn_802685D4(char*);
+extern "C" void fn_80261750(void* this_) {
+    u8 flag31;
+    char* p = (char*)this_;
+    s32 area;
+    s32 id = S32(p, 0xd70);
+    bool attached;
+    if (((id >= 0 && id < 4) || S32(p, 0xd68) >= 0) && U8(p, 0xd64) == 0)
+        attached = true;
+    else
+        attached = false;
+    if (attached) {
+        bool attachedPlayer;
+        if (id >= 0 && id < 4 && U8(p, 0xd64) == 0)
+            attachedPlayer = true;
+        else
+            attachedPlayer = false;
+        if (attachedPlayer) {
+            if (!fn_8023EFEC(id)) {
                 if (F32(p, 0x10) <= lbl_80540164) {
-                    VEC(p, 0xd78).zero();
+                    f32 zero = lbl_80540150;
+                    F32(p, 0xd78) = zero;
+                    F32(p, 0xd7c) = zero;
+                    F32(p, 0xd80) = zero;
                 } else {
-                    VEC(p, 0xd78).set(lbl_8046B760[S32(p, 0x3dc)]);
-                    fn_8024F0E8(p, 0x20014);
+                    const JGeometry::TVec3<f32>& v = lbl_8046B760[S32(p, 0x3dc)];
+                    f32 y = v.y;
+                    f32 x = v.x;
+                    F32(p, 0xd78) = x;
+                    f32 z = v.z;
+                    F32(p, 0xd7c) = y;
+                    F32(p, 0xd80) = z;
                 }
+                fn_8024F0E8(p, 0x20014);
                 S32(p, 0xd70) = -1;
                 S32(p, 0xd58) = 5;
             } else {
@@ -1102,10 +1131,14 @@ extern "C" void fn_80261750(char* p) {
                     S32(p, 0x3b4) = fn_8023DE58(S32(p, 0xd70));
                 }
                 VEC(p, 0x8) = *(JGeometry::TVec3<f32>*)fn_8023E7B0(S32(p, 0xd70));
-                f32* o = roomOffset(fn_8023DE58(S32(p, 0xd70)));
+                s32 idx = fn_8023DE58(S32(p, 0xd70));
+                char* r = fn_802D6A9C();
+                f32* o = idx < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
                 f32 ox = o[0];
                 f32 oy = o[1];
-                o = roomOffset(S32(p, 0x3b4));
+                s32 idx2 = S32(p, 0x3b4);
+                r = fn_802D6A9C();
+                o = idx2 < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
                 f32 x = o[0];
                 f32 y = o[1];
                 F32(p, 0x8) += x - ox;
@@ -1127,7 +1160,8 @@ extern "C" void fn_80261750(char* p) {
                         S32(p, 0xce0) = S32(p, 0x3b8);
                         VEC(p, 0xcd4) = VEC(p, 0x8);
                         S32(p, 0xce4) = S32(p, 0x3b4);
-                        if (isSideView(S32(p, 0x3b4))) {
+                        s32 room = S32(p, 0x3b4);
+                        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + room + 0x31df)) {
                             if (fn_802486A0(p) != 5 && fn_802486A0(p) != 4) {
                                 fn_80248004(p, 5, 0);
                             }
@@ -1146,6 +1180,11 @@ extern "C" void fn_80261750(char* p) {
                     }
                 }
             }
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_80243194(p, i) && i != S32(p, 4)) {
+                    fn_80230C6C(i);
+                }
+            }
         } else {
             char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
             if (actor) {
@@ -1158,19 +1197,24 @@ extern "C" void fn_80261750(char* p) {
                     U8(p, 0x3fc) += 1;
                 }
             } else {
+                f32 zero = lbl_80540150;
                 S32(p, 0xd68) = -1;
-                VEC(p, 0xd78).zero();
+                F32(p, 0xd78) = zero;
+                F32(p, 0xd7c) = zero;
+                F32(p, 0xd80) = zero;
             }
-            fn_8026E464((void*)S32(p, 0xbf0));
-            S32((char*)S32(p, 0xbf0), 0xa0) = 0;
         }
+        fn_8026E464((void*)S32(p, 0xbf0));
+        S32((char*)S32(p, 0xbf0), 0xa0) = 0;
     } else {
         fn_8027221C(p, 4);
-        u8 flag31 = 0;
+        flag31 = 0;
         VEC(p, 0x8) += VEC(p, 0xd78);
         F32(p, 0xd80) -= lbl_80540190;
+        area = S32(p, 0x3b4);
+        char* world = fn_802D6A9C();
         JGeometry::TBox2f box;
-        JGeometry::TBox2f* bounds = (JGeometry::TBox2f*)roomOffset(S32(p, 0x3b4));
+        JGeometry::TBox2f* bounds = area < 8 ? (JGeometry::TBox2f*)(world + 0xcc) : (JGeometry::TBox2f*)(world + 0xdc);
         ((u32*)&box)[0] = ((u32*)bounds)[0];
         ((u32*)&box)[1] = ((u32*)bounds)[1];
         ((u32*)&box)[2] = ((u32*)bounds)[2];
@@ -1180,14 +1224,16 @@ extern "C" void fn_80261750(char* p) {
         box.i.y -= m;
         box.f.x += m;
         box.f.y += m;
-        if (isSideView(S32(p, 0x3b4))) {
+        area = S32(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
             if (!playerBoxContains(box, VEC(p, 0x8))) {
                 F32(p, 0x10) = lbl_80540150;
                 flag31 = 1;
             }
         }
         if (F32(p, 0x10) <= lbl_80540150) {
-            if (isSideView(S32(p, 0x3b4))) {
+            area = S32(p, 0x3b4);
+            if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
                 if (flag31 || fn_802518AC(p, 1)) {
                     F32(p, 0x10) = lbl_80540150;
                 } else {
@@ -1197,9 +1243,12 @@ extern "C" void fn_80261750(char* p) {
                 }
             }
             if (F32(p, 0x10) <= lbl_80540150) {
-                VEC(p, 0x368).set(F32(p, 0xd78), F32(p, 0xd7c), lbl_80540150);
-                VEC(p, 0xd78).zero();
-                F32(p, 0x10) = lbl_80540150;
+                f32 zero = lbl_80540150;
+                VEC(p, 0x368).set(F32(p, 0xd78), F32(p, 0xd7c), zero);
+                F32(p, 0xd78) = zero;
+                F32(p, 0xd7c) = zero;
+                F32(p, 0xd80) = zero;
+                F32(p, 0x10) = zero;
                 if (U8(lbl_8053AAF8, 0x7e) != 0 && !(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4))) && S32(p, 0xd60) < 0) {
                     fn_80251AEC(p, 1);
                 } else {
@@ -1207,29 +1256,33 @@ extern "C" void fn_80261750(char* p) {
                 }
             }
         } else if (fn_802466B4(p) && fn_80251AEC(p, 7)) {
+            f32 zero = lbl_80540150;
             VEC(p, 0x344).set(VEC(p, 0xd78));
-            VEC(p, 0x368).set(F32(p, 0xd78), F32(p, 0xd7c), lbl_80540150);
-            VEC(p, 0xd78).zero();
-        } else {
-            if (isSideView(S32(p, 0x3b4))) {
-                char* bf0 = (char*)S32(p, 0xbf0);
-                bool hit;
-                if (U8(bf0, 0x49) == 1) {
-                    hit = true;
-                } else if (U8(bf0, 0x48) == 1) {
-                    hit = true;
-                } else {
-                    hit = false;
-                }
-                if (hit) {
-                    F32(p, 0xd78) = -F32(p, 0xd78) * lbl_80540178;
-                }
+            VEC(p, 0x368).set(F32(p, 0xd78), F32(p, 0xd7c), zero);
+            F32(p, 0xd78) = zero;
+            F32(p, 0xd7c) = zero;
+            F32(p, 0xd80) = zero;
+            fn_802685D4(p);
+        }
+        area = S32(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
+            char* bf0 = (char*)S32(p, 0xbf0);
+            bool hit;
+            if (U8(bf0, 0x49) == 1) {
+                hit = true;
+            } else if (U8(bf0, 0x48) == 1) {
+                hit = true;
             } else {
-                if (anyBtn(p)) {
-                    f32 scale = lbl_80540178;
-                    F32(p, 0xd78) = -F32(p, 0xd78) * scale;
-                    F32(p, 0xd7c) = -F32(p, 0xd7c) * scale;
-                }
+                hit = false;
+            }
+            if (hit) {
+                F32(p, 0xd78) = -F32(p, 0xd78) * lbl_80540178;
+            }
+        } else {
+            if (anyBtn(p)) {
+                f32 scale = lbl_80540178;
+                F32(p, 0xd78) = -F32(p, 0xd78) * scale;
+                F32(p, 0xd7c) = -F32(p, 0xd7c) * scale;
             }
         }
     }
