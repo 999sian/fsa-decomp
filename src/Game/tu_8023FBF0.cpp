@@ -906,7 +906,7 @@ inline BOOL isLinkOwner3(char* p) {
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
-inline BOOL isMode4OtherLink(char* p) {
+inline bool isMode4OtherLink(char* p) {
     s32 me;
     if (getModeLO(p, me) == 4) {
         s32 v = linkIdx(p);
