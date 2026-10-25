@@ -98,21 +98,28 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
 #include "JSystem/JAudio/Interface/JAISeMgr.h"
-static inline void** startWave8045(u8* p, const JAISoundID& id) {
-    return (void**)fn_80456334(p, (u32*)&id, 0);
+static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, const f32 width, const f32 half) {
+    f32 epsilon = 1.0f - ((f32*)&__float_epsilon)[0];
+    f32 value = random->get_ufloat_1();
+    value *= width;
+    value -= half * epsilon;
+    return 1.0f + value;
 }
+#pragma opt_common_subs off
 #pragma opt_propagation reset
 extern "C" void* fn_8045B154(u8* p, JAISoundID soundID) {
     u32* param_2 = (u32*)&soundID;
-    JAISeMgr* mgr;
-    s32 kind;
+    void* mgr;
+    s32 id;
+    u32 kind;
     void** h;
-    kind = ((u8*)param_2)[1];
-    mgr = *(JAISeMgr**)((u8*)lbl_8053AF80 + 0x34);
+    id = *(s32*)param_2;
+    kind = *param_2 >> 16;
+    mgr = *(void**)((u8*)lbl_8053AF80 + 0x34);
     s32 i;
     JAISoundID sid;
 
-    switch ((u32)soundID) {
+    switch (id) {
     case 0x20037: {
         ((JAUSoundObject*)p)->startSound(JAISoundID(0x10002));
         break;
@@ -158,7 +165,8 @@ extern "C" void* fn_8045B154(u8* p, JAISoundID soundID) {
         }
     }
 
-    h = (void**)startWave8045(p, JAISoundID(*param_2));
+    const JAISoundID& request = JAISoundID(*param_2);
+    h = (void**)fn_80456334(p, (u32*)&request, 0);
     if (h == NULL) {
         return NULL;
     }
@@ -168,29 +176,30 @@ extern "C" void* fn_8045B154(u8* p, JAISoundID soundID) {
             __ct__Q25JMath13TRandom_fast_FUl(&lbl_8053AF8C, 0);
             lbl_8053AF88 = 1;
         }
-        s32 pitchIndex = *(s8*)(p + 0x5c);
+        int pitchIndex = *(s8*)(p + 0x5c);
         if (pitchIndex >= 0 && pitchIndex < 4) {
-            if (kind == 1) {
+            if ((u8)kind == 1) {
                 movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[pitchIndex], 0);
             } else if ((u8)kind == 2) {
                 f32 v;
-                f32 one;
                 f32 width;
-                f32 half;
                 f32 eps;
-                one = 1.0f;
-                eps = one - ((f32*)&__float_epsilon)[0];
+                f32 half;
+                f32 one;
+                eps = 1.0f - ((f32*)&__float_epsilon)[0];
                 width = 0.03f;
                 half = 0.015f;
                 v = ((JMath::TRandom_fast_*)&lbl_8053AF8C)->get_ufloat_1();
                 v = width * v;
                 v -= half * eps;
+                one = 1.0f;
                 movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, one + v, 0);
             }
         }
     }
     return h;
 }
+#pragma opt_common_subs reset
 extern "C" char* fn_8045B46C(char* p, unsigned char value, long a, long b, long c) {
     __ct__14WaveControllerFlll(p, a, b, c);
     *(void**)(p + 8) = lbl_804B20F8;
