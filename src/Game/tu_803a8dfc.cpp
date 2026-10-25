@@ -1923,8 +1923,8 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
     }
     if (p->timer > start && p->timer <= start + dur + gap * (p->count - 1)) {
         s32 off = 0;
-        u64 (*r3)[3] = tbl->p3;
-        u64 (*r2)[2] = tbl->p2;
+        u64 (*r3)[3] = (u64 (*)[3])tbl->p3;
+        u64 (*r2)[2] = (u64 (*)[2])tbl->p2;
         for (s32 i = 0; i < p->count; i++, r3++, r2++) {
             if (p->timer >= start + off) {
                 s32 d = p->timer - (start + off);
@@ -1960,8 +1960,10 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
     s32 t1;
     s32 t2;
     s32 dist;
-    f32 off;
+    s32 d;
     f32 x;
+    f32 a;
+    f32 off;
     p->timer++;
     t1 = *(s16*)(lbl_8050DB0C + 0x25a);
     t2 = *(s16*)(lbl_8050DB0C + 0x25c);
@@ -1970,17 +1972,17 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
     if (p->timer <= end) {
         if (p->timer <= t1) {
             off = (f32)dist * ((f32)(p->timer * p->timer) / (f32)(t1 * t1));
-            for (s32 i = 0; i < p->count; i++) {
+            for (int i = 0; i < p->count; i++) {
                 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
                 p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, p->y424 + off);
             }
-        } else {
-            s32 d = p->timer - t1;
+        } else if (p->timer <= end) {
+            d = p->timer - t1;
             off = ((f32)dist + 40.0f) * ((f32)(d * d) / (f32)(t2 * t2));
             for (s32 i = 0; i < p->count; i++) {
                 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
                 p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, (p->y424 + (f32)dist) - off);
-                f32 a = 1.0f - (f32)(p->timer - t1) / (f32)t2;
+                a = 1.0f - (f32)(p->timer - t1) / (f32)t2;
                 if (p->cur < 2) {
                     for (s32 k = 0; k < 2; k++) {
                         p->screens[p->cur]->search(lbl_804762D0[i].tag[k])->setAlpha((u8)(p->alpha[k] * a));
@@ -2252,10 +2254,14 @@ extern "C" void fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_80458FF0(void* mgr, u32 id, s32 a, s32 b);
 extern void* sManager__8JUTVideo;
 extern "C" void fn_803B6768(void* this_) {
+    s32* c320 = (s32*)this_;
+    s16* c460 = (s16*)this_;
+    u8* c2f0 = (u8*)this_;
+    s32 i;
     u8* p = (u8*)this_;
     s32 count = 0;
-    for (s32 i = 0; i < 4; i++) {
-        if (((u8*)lbl_8053AAF8)[0x82] & (1 << i)) {
+    for (i = 0; i < 4; i++) {
+        if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) {
             count++;
         }
     }
@@ -2277,20 +2283,20 @@ extern "C" void fn_803B6768(void* this_) {
         break;
     }
     {
-        J2DPane* pane = *(J2DPane**)(p + 0x70);
-        pane->move(*(f32*)pane->getBounds(), *(f32*)(p + 0x3f4));
+        f32 x = *(f32*)(*(J2DPane**)(p + 0x70))->getBounds();
+        (*(J2DPane**)(p + 0x70))->move(x, *(f32*)(p + 0x3f4));
     }
     {
-        J2DPane* pane = *(J2DPane**)(p + 0x8c);
-        pane->move(*(f32*)pane->getBounds(), *(f32*)(p + 0x3f8));
+        f32 x = *(f32*)(*(J2DPane**)(p + 0x8c))->getBounds();
+        (*(J2DPane**)(p + 0x8c))->move(x, *(f32*)(p + 0x3f8));
     }
     {
-        J2DPane* pane = *(J2DPane**)(p + 0x94);
-        pane->move(*(f32*)pane->getBounds(), *(f32*)(p + 0x400));
+        f32 x = *(f32*)(*(J2DPane**)(p + 0x94))->getBounds();
+        (*(J2DPane**)(p + 0x94))->move(x, *(f32*)(p + 0x400));
     }
     {
-        J2DPane* pane = *(J2DPane**)(p + 0x90);
-        pane->move(*(f32*)pane->getBounds(), *(f32*)(p + 0x3fc));
+        f32 x = *(f32*)(*(J2DPane**)(p + 0x90))->getBounds();
+        (*(J2DPane**)(p + 0x90))->move(x, *(f32*)(p + 0x3fc));
     }
     *(u8*)(p + 0x4c2) = 0;
     *(s32*)(p + 0x440) = 1;
@@ -2306,39 +2312,43 @@ extern "C" void fn_803B6768(void* this_) {
     *(u8*)(p + 0x4db) = 0;
     *(u8*)(p + 0x4dc) = 0;
     *(u8*)(p + 0x4dd) = 0xff;
-    for (s32 i = 0; i < 4; i++) {
-        *(s32*)(p + 0x320 + i * 4) = 0;
-        *(s32*)(p + 0x350 + i * 4) = 0;
-        *(s32*)(p + 0x340 + i * 4) = 0;
-        *(s32*)(p + 0x350 + i * 4) = 0;
-        *(s32*)(p + 0x360 + i * 4) = 0;
-        *(s32*)(p + 0x370 + i * 4) = 0;
-        *(s32*)(p + 0x380 + i * 4) = 0;
-        *(s32*)(p + 0x390 + i * 4) = 0;
-        *(s32*)(p + 0x3a0 + i * 4) = 0;
-        *(s32*)(p + 0x3b0 + i * 4) = 0;
-        *(s32*)(p + 0x3c0 + i * 4) = 0x3e;
-        *(s32*)(p + 0x3d0 + i * 4) = 0;
-        *(s32*)(p + 0x3e0 + i * 4) = 0;
+    c320 = (s32*)p;
+    c460 = (s16*)p;
+    c2f0 = p;
+    i = 0;
+    for (; i < 4; i++, c320++, c460++, c2f0 += 12) {
+        *(s32*)((u8*)c320 + 0x320) = 0;
+        *(s32*)((u8*)c320 + 0x350) = 0;
+        *(s32*)((u8*)c320 + 0x340) = 0;
+        *(s32*)((u8*)c320 + 0x350) = 0;
+        *(s32*)((u8*)c320 + 0x360) = 0;
+        *(s32*)((u8*)c320 + 0x370) = 0;
+        *(s32*)((u8*)c320 + 0x380) = 0;
+        *(s32*)((u8*)c320 + 0x390) = 0;
+        *(s32*)((u8*)c320 + 0x3a0) = 0;
+        *(s32*)((u8*)c320 + 0x3b0) = 0;
+        *(s32*)((u8*)c320 + 0x3c0) = 0x3e;
+        *(s32*)((u8*)c320 + 0x3d0) = 0;
+        *(s32*)((u8*)c320 + 0x3e0) = 0;
         *(u8*)(p + 0x4ac + i) = 0;
         *(u8*)(p + 0x4b0 + i) = 0;
         *(u8*)(p + 0x4b4 + i) = 0xff;
         *(u8*)(p + 0x4b8 + i) = 0xff;
         *(u8*)(p + 0x4bc + i) = 0xff;
-        *(s16*)(p + 0x460 + i * 2) = 0;
+        *(s16*)((u8*)c460 + 0x460) = 0;
         if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) {
-            J2DPane* pane = *(J2DPane**)(p + 0x158 + i * 4);
+            J2DPane* pane = *(J2DPane**)((u8*)c320 + 0x158);
             f32 width = *(f32*)((u8*)pane + 0x28) - *(f32*)((u8*)pane + 0x20);
             f32 x0 = *(f32*)pane->getBounds();
             f32 cx = *(f32*)(*(J2DPane**)(p + 0x168))->getBounds() + x0;
             u16 texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
-            *(f32*)(p + 0x2f0 + i * 12) = 256.0f * (width * 0.5f + cx) / (f32)texW;
+            *(f32*)(c2f0 + 0x2f0) = 256.0f * (width * 0.5f + cx) / (f32)texW;
 
             u16 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
             f32 h = *(f32*)((u8*)pane + 0x2c) - *(f32*)((u8*)pane + 0x24);
             f32 y = *(f32*)pane->getBounds() + h;
-            *(f32*)(p + 0x2f4 + i * 12) = 192.0f * (*(f32*)(p + 0x3f0) + y - 526.0f - 18.0f) / (f32)texH;
-            *(f32*)(p + 0x2f8 + i * 12) = 0.0f;
+            *(f32*)(c2f0 + 0x2f4) = 192.0f * (*(f32*)(p + 0x3f0) + y - 526.0f - 18.0f) / (f32)texH;
+            *(f32*)(c2f0 + 0x2f8) = 0.0f;
         }
     }
     *(u8*)(p + 0x4c3) = 0;
@@ -2502,3 +2512,10 @@ extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+extern const f32 lbl_80543404;
+extern const f32 lbl_80543408;
+extern const f32 lbl_8054342C;
+extern const f32 lbl_80543428;
+extern const f32 lbl_80543430;
+extern const f64 lbl_805433E0;
+extern const f64 lbl_805433B8;
