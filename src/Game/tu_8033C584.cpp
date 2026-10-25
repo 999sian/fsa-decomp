@@ -45,9 +45,7 @@ extern "C" void fn_8033C720(u8* this_) {
     fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x248), lbl_8054217C, lbl_80542180);
     fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x24c), lbl_8054217C, lbl_80542180);
     fn_801F71A4((f32*)(this_ + 0x14), *(f32*)(this_ + 0x250), lbl_80542184, lbl_80542180);
-    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
-    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
-    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    ((JGeometry::TVec3<f32>*)(this_ + 0xc))->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
     if (*(u8**)(this_ + 0x254) != 0) {
         u8* e = *(u8**)(this_ + 0x254);
         *(f32*)(e + 0xa4) = *(f32*)(this_ + 0xc);
@@ -60,36 +58,40 @@ extern "C" void fn_8033C720(u8* this_) {
         *(f32*)(e + 0xa8) = *(f32*)(this_ + 0x10);
         *(f32*)(e + 0xac) = *(f32*)(this_ + 0x14);
     }
-    if (*(s32*)(this_ + 0x230) == 0) {
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
         if (*(s32*)(this_ + 0x234) % 5 == 0) {
             dx = *(f32*)(this_ + 0xc) - fn_8023E724(*(void**)(this_ + 0x240))[0];
             dy = *(f32*)(this_ + 0x10) - fn_8023E724(*(void**)(this_ + 0x240))[1];
-            *(s16*)(this_ + 0x244) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * lbl_80542188);
-            *(f32*)(this_ + 0x248) = lbl_8054218C * JMath::sincosTable_.mTable[(u16)*(s16*)(this_ + 0x244) >> 5].first;
-            *(f32*)(this_ + 0x24c) = lbl_8054218C * JMath::sincosTable_.mTable[(u16)*(s16*)(this_ + 0x244) >> 5].second;
+            f32 ang = JMath::atanTable_.atan2_(-dx, -dy);
+            *(s16*)(this_ + 0x244) = (s16)(ang * lbl_80542188);
         }
-        if (*(s32*)(this_ + 0x234) % 4 == 0) {
-            *(s32*)(this_ + 0x23c) += 1;
-            if (*(s32*)(this_ + 0x23c) > 2) {
-                *(s32*)(this_ + 0x23c) = 0;
-            }
-        }
-        *(s32*)(this_ + 0x238) -= 1;
-        if (*(s32*)(this_ + 0x238) <= 0) {
-            u8* e = *(u8**)(this_ + 0x254);
-            if (e != 0) {
-                *(u32*)(e + 0xf4) |= 1;
-                *(s32*)(e + 0x24) = 1;
-            }
-            e = *(u8**)(this_ + 0x258);
-            if (e != 0) {
-                *(u32*)(e + 0xf4) |= 1;
-                *(s32*)(e + 0x24) = 1;
-            }
-            detach__5ActorFv(this_);
-        }
-        *(s32*)(this_ + 0x234) += 1;
+        f32 speed = lbl_8054218C;
+        *(f32*)(this_ + 0x248) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(this_ + 0x244) >> 5].first;
+        *(f32*)(this_ + 0x24c) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(this_ + 0x244) >> 5].second;
+        break;
     }
+    if (*(s32*)(this_ + 0x234) % 4 == 0) {
+        *(s32*)(this_ + 0x23c) += 1;
+        if (*(s32*)(this_ + 0x23c) > 2) {
+            *(s32*)(this_ + 0x23c) = 0;
+        }
+    }
+    *(s32*)(this_ + 0x238) -= 1;
+    if (*(s32*)(this_ + 0x238) <= 0) {
+        u8* e = *(u8**)(this_ + 0x254);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+        }
+        e = *(u8**)(this_ + 0x258);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+        }
+        detach__5ActorFv(this_);
+    }
+    *(s32*)(this_ + 0x234) += 1;
 }
 
 extern "C" void fn_8033C968(u8* this_) {
