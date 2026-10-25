@@ -239,6 +239,7 @@ extern const f32 lbl_80541414;
 extern const f32 lbl_80541418;
 
 
+#pragma fp_relax on
 static inline f32 gnefSqrt(f32 x) {
     if (x > lbl_80541400) {
         f64 y = __frsqrte(x);
