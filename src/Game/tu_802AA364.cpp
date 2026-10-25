@@ -174,7 +174,7 @@ extern "C" void fn_802AA868(void* self) {
     float vec[3];
     int room;
     unsigned char cVar;
-    void* mgr;
+    Tu802AA364ResMgr* mgr;
     void* res;
 
     p[0x8d] = ((unsigned int)p[0x24] >> 22) & 0x1f;
@@ -184,18 +184,26 @@ extern "C" void fn_802AA868(void* self) {
     *(unsigned short*)((unsigned char*)self + 0x244) = fn_802F9908(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), p[1], room);
     cVar = fn_802D800C(fn_802D6A9C(), p[0x8d]);
     if (cVar != 0) {
+        float x;
+        float y;
+        float z;
+        int r;
         fn_802A3884(lbl_8053AC98, f + 3, 0, p[1], *(unsigned short*)((unsigned char*)self + 0x244));
-        vec[0] = f[3];
-        vec[1] = f[4] - lbl_80540888;
-        vec[2] = lbl_8054088C;
-        fn_802A3884(lbl_8053AC98, vec, 0, p[1] + 1, 0);
-        mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-        res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+        x = f[3];
+        y = f[4] - lbl_80540888;
+        z = lbl_8054088C;
+        r = p[1] + 1;
+        vec[0] = x;
+        vec[1] = y;
+        vec[2] = z;
+        fn_802A3884(lbl_8053AC98, vec, 0, r, 0);
+        mgr = *(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4);
+        res = mgr->get(0x53434820, lbl_8046C860);
         fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0x180, 0, 0x40, 0xc0);
         ((unsigned char*)self)[0x11c] = 0;
     } else {
-        mgr = *(void**)((unsigned char*)lbl_8053AAF8 + 0xa4);
-        res = ((void* (*)(void*, unsigned int, void*))((void**)*(void**)mgr)[6])(mgr, 0x53434820, lbl_8046C860);
+        mgr = *(Tu802AA364ResMgr**)((unsigned char*)lbl_8053AAF8 + 0xa4);
+        res = mgr->get(0x53434820, lbl_8046C860);
         fn_802FA160(*(void**)((unsigned char*)lbl_8053AB10 + 0x20), res, 0, 0, 0x40, 0xc0);
     }
 }
