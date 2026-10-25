@@ -271,17 +271,70 @@ extern "C" void fn_801E90C4(char* p) {
     }
 }
 
-extern "C" f32 __fsels(f32, f32, f32);
+static inline JGeometry::TVec2<f32> sampleFsobPath(char* p, u8 seg, s32 ti) {
+    JGeometry::TVec2<f32> out;
+        switch ((u8)ti) {
+        case 0: {
+            char* q = p + seg * 8;
+            out.x = *(f32*)(q + 0x2b0);
+            out.y = *(f32*)(q + 0x2b4);
+            break;
+        }
+        case 16: {
+            char* q = p + seg * 8;
+            out.x = *(f32*)(q + 0x2b8);
+            out.y = *(f32*)(q + 0x2bc);
+            break;
+        }
+        default: {
+            f32 p0x;
+            f32 p0y;
+            if (seg == 0) {
+                p0x = *(f32*)(p + 0x2b0);
+                p0y = *(f32*)(p + 0x2b4);
+            } else {
+                char* q = p + seg * 8;
+                p0x = *(f32*)(q + 0x2a8);
+                p0y = *(f32*)(q + 0x2ac);
+            }
+            u8 count = *(u8*)(p + 0x2ad);
+            char* q = p + seg * 8;
+            f32 p2x = *(f32*)(q + 0x2b8);
+            f32 p2y = *(f32*)(q + 0x2bc);
+            f32 p1x = *(f32*)(q + 0x2b0);
+            f32 p1y = *(f32*)(q + 0x2b4);
+            f32 p3x;
+            f32 p3y;
+            if (seg == count - 2) {
+                p3x = p2x;
+                p3y = p2y;
+            } else {
+                p3x = *(f32*)(q + 0x2c0);
+                p3y = *(f32*)(q + 0x2c4);
+            }
+            f32 u = 0.0625f * (f32)(u8)ti;
+            out.y = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
+            out.x = fn_801CD6D8(p0x, p1x, p2x, p3x, u);
+            break;
+        }
+        }
+
+    return out;
+}
+
 extern "C" void fn_801E9224(char* p) {
     if (*(u32*)(p + 0x230) & 0x4000) {
         return;
     }
-    u8 done = 0;
+    u8 seg;
+    u8 done;
+    u8 next;
+    done = 0;
     f32 zero = lbl_8053F5FC;
     f32 rem = lbl_8053F60C;
     rem = __fsel(rem, rem, zero);
     while (rem > zero) {
-        u8 seg = *(u8*)(p + 0x3b0);
+        seg = *(u8*)(p + 0x3b0);
         s32 ti = (s32)*(f32*)(p + 0x3b4);
         f32 ay;
         f32 ax;
@@ -332,7 +385,7 @@ extern "C" void fn_801E9224(char* p) {
         }
 
         seg = *(u8*)(p + 0x3b0);
-        u8 next = (u8)((s32)*(f32*)(p + 0x3b4) + 1);
+        next = (u8)((s32)*(f32*)(p + 0x3b4) + 1);
         if (next >= 16) {
             if (seg >= *(u8*)(p + 0x2ad) - 2) {
                 done = 1;
@@ -390,12 +443,13 @@ extern "C" void fn_801E9224(char* p) {
         }
         }
 
-        f32 abx = bx - ax;
-        f32 aby = by - ay;
-        f32 dx = bx - *(f32*)(p + 0xc);
-        f32 dy = by - *(f32*)(p + 0x10);
-        f32 len2 = dx * dx + dy * dy;
-        f32 len = JGeometry::TUtil<f32>::sqrt(len2);
+        JGeometry::TVec2<f32> d;
+        JGeometry::TVec2<f32> ab;
+        ab.x = bx - ax;
+        ab.y = by - ay;
+        d.x = bx - *(f32*)(p + 0xc);
+        d.y = by - *(f32*)(p + 0x10);
+        f32 len = d.length();
         if (rem >= len) {
             *(f32*)(p + 0xc) = bx;
             *(f32*)(p + 0x10) = by;
@@ -411,16 +465,11 @@ extern "C" void fn_801E9224(char* p) {
                 *(u8*)(p + 0x3b0) = seg;
             }
         } else {
-            if (!(len2 <= JGeometry::TUtil<f32>::epsilon())) {
-                len2 = JGeometry::TUtil<f32>::inv_sqrt(len2);
-                dx *= len2;
-                dy *= len2;
-            }
-            dx *= rem;
-            dy *= rem;
-            *(f32*)(p + 0xc) += dx;
-            *(f32*)(p + 0x10) += dy;
-            f32 abLen = JGeometry::TUtil<f32>::sqrt(abx * abx + aby * aby);
+            d.normalize();
+            d.scale(rem);
+            *(f32*)(p + 0xc) += d.x;
+            *(f32*)(p + 0x10) += d.y;
+            f32 abLen = ab.length();
             *(f32*)(p + 0x3b4) += rem * (1.0f / abLen);
             return;
         }
