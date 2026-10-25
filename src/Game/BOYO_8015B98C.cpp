@@ -3,6 +3,26 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+#include <math.h>
+
+static inline f64 sqrtStep(f64 tmpd, f32 mag) {
+    return tmpd * 0.5 * (3.0 - mag * (tmpd * tmpd));
+}
+static inline f32 dolsqrtfull(f32 mag) {
+    if (mag > 0.0f) {
+        f64 tmpd = __frsqrte(mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        return mag * tmpd;
+    } else if (mag < 0.0) {
+        return NAN;
+    } else if (fpclassify(mag) == 1) {
+        return NAN;
+    } else {
+        return mag;
+    }
+}
 
 // ---- from Game/fn_8015B98C_dtor.cpp
 
