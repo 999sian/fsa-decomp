@@ -15,7 +15,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" int fn_801F78F4(void* mgr, unsigned int code, int idx);
 extern "C" void* fn_801F666C(void* mgr, int idx);
 extern "C" unsigned char fn_801F6758(void* pos, int idx, float margin);
-extern float lbl_80541EEC;
+extern const float lbl_80541EEC;
 extern "C" int fn_8013CC50(int, char*, float, int, int, int, int, int, int);
 extern "C" void fn_8013CB44(void*, void*, int, int, int);
 extern float lbl_80541EBC;
