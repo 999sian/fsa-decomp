@@ -413,62 +413,42 @@ extern "C" void* fn_80444B68(void* this_) {
     menu->screen->setPriority(lbl_8048FBEC, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x34));
 
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[0] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[0], menu->screen->search(0x004e646174613031ULL));
-        fn_80402E08(*(void**)(self + 8), lbl_80543D78, lbl_80543D84);
-    }
+    menu->panes[0] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[0], menu->screen->search(0x004e646174613031ULL));
+    fn_80402E08(*(void**)(self + 8), lbl_80543D78, lbl_80543D84);
     *(u16*)(*(u8**)(self + 8) + 0x22) = 0;
 
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[1] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[1], menu->screen->search(0x000050626c61636bULL));
-    }
+    menu->panes[1] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[1], menu->screen->search(0x000050626c61636bULL));
     tb = *(void**)(*(u8**)(self + 0xc) + 4);
     ((J2DPane*)tb)->setAlpha(0);
     *(u16*)(*(u8**)(self + 0xc) + 0x26) = 0;
 
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[2] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[2], menu->screen->search(0x00506f6375723031ULL));
-    }
+    menu->panes[2] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[2], menu->screen->search(0x00506f6375723031ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[3] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[3], menu->screen->search(0x00506f6375723032ULL));
-    }
+    menu->panes[3] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[3], menu->screen->search(0x00506f6375723032ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[4] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[4], menu->screen->search(0x00506f6375723033ULL));
-    }
+    menu->panes[4] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[4], menu->screen->search(0x00506f6375723033ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[5] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[5], menu->screen->search(0x00506f6375723034ULL));
-    }
+    menu->panes[5] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[5], menu->screen->search(0x00506f6375723034ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[6] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[6], menu->screen->search(0x00506f6375723035ULL));
-    }
+    menu->panes[6] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[6], menu->screen->search(0x00506f6375723035ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[7] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[7], menu->screen->search(0x00506f6375723036ULL));
-    }
+    menu->panes[7] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[7], menu->screen->search(0x00506f6375723036ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[8] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[8], menu->screen->search(0x0050746375723032ULL));
-    }
+    menu->panes[8] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[8], menu->screen->search(0x0050746375723032ULL));
     p = new MenuPane80444B68;
-    if (p != 0) {
-        menu->panes[9] = (MenuPane80444B68*)p;
-        fn_80402F04(menu->panes[9], menu->screen->search(0x0050746375723034ULL));
-    }
+    menu->panes[9] = (MenuPane80444B68*)p;
+    fn_80402F04(menu->panes[9], menu->screen->search(0x0050746375723034ULL));
 
     *(u8*)(*(u8**)(*(u8**)(self + 0x10) + 4) + 0xb0) = 0;
     *(u8*)(*(u8**)(*(u8**)(self + 0x14) + 4) + 0xb0) = 0;
@@ -478,20 +458,16 @@ extern "C" void* fn_80444B68(void* this_) {
     *(u8*)(*(u8**)(*(u8**)(self + 0x24) + 4) + 0xb0) = 0;
 
     font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-    tb = menu->screen->search(0x000000546d6d3035ULL);
-    menu->colors[0] = ((J2DTextBox*)tb)->getBlack();
+    menu->colors[0] = ((J2DTextBox*)menu->screen->search(0x000000546d6d3035ULL))->getBlack();
 
     font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-    tb = menu->screen->search(0x000000546d6d3035ULL);
-    menu->colors[1] = ((J2DTextBox*)tb)->getWhite();
+    menu->colors[1] = ((J2DTextBox*)menu->screen->search(0x000000546d6d3035ULL))->getWhite();
 
     font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-    tb = menu->screen->search(0x000000546d6d3033ULL);
-    menu->colors[2] = ((J2DTextBox*)tb)->getBlack();
+    menu->colors[2] = ((J2DTextBox*)menu->screen->search(0x000000546d6d3033ULL))->getBlack();
 
     font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-    tb = menu->screen->search(0x000000546d6d3033ULL);
-    menu->colors[3] = ((J2DTextBox*)tb)->getWhite();
+    menu->colors[3] = ((J2DTextBox*)menu->screen->search(0x000000546d6d3033ULL))->getWhite();
 
     font = *(void**)((u8*)lbl_8053AD78 + 0x154);
     tb = menu->screen->search(0x000000546d6d3031ULL);
