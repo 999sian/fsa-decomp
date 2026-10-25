@@ -216,7 +216,9 @@ static inline s32 fzraTryTalk(u8* p, s32 msg) {
     }
     JGeometry::TVec3f v = *(JGeometry::TVec3f*)(p + 0xc);
     v.y -= lbl_8053CAB4;
-    if (fn_8038AD24(r, msg, *(s32*)(p + 0x198), *(s32*)(p + 0x4), v, 0x28)) {
+    s32 h = *(s32*)(p + 0x198);
+    s32 room = *(s32*)(p + 0x4);
+    if (fn_8038AD24(r, msg, h, room, v, 0x28)) {
         return r;
     }
     return -1;
