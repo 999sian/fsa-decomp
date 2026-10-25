@@ -196,6 +196,31 @@ struct GameState {
 extern GameState* lbl_8053AAF8;
 extern "C" s32 fn_8022F340(s32 p);
 
+// fn_80384C58 mode flag: explicit compare chain (no range merge), 0xc only while b7f is clear.
+static inline u8 fn_80384C58_flag(void) {
+    u8 f = 0;
+    if (lbl_8053AAF8->b7f == 0) {
+        if (lbl_8053AAF8->mode == 0xc) f = 1;
+    }
+    if (lbl_8053AAF8->mode == 7) f = 1;
+    if (lbl_8053AAF8->mode == 8) f = 1;
+    if (lbl_8053AAF8->mode == 9) f = 1;
+    if (lbl_8053AAF8->mode == 0x16) f = 1;
+    if (lbl_8053AAF8->mode == 0xa) f = 1;
+    if (lbl_8053AAF8->mode == 0xb) f = 1;
+    return f;
+}
+
+static inline s32 fn_80384C58_slot(s32 p) {
+    if (fn_80384C58_flag()) {
+        s32 r = fn_8022F340(p);
+        if (r >= 0 && r < 4) {
+            return r;
+        }
+    }
+    return p;
+}
+
 // Mode test shared by the slot-remap checks in fn_80385960: mode 0xc only counts while b7f is clear.
 static inline bool fn_80385960_remapMode(void) {
     s32 mode = lbl_8053AAF8->mode;
@@ -1634,6 +1659,64 @@ extern "C" u8 fn_8038470C(s32 p, s32 q) {
         fn_80390E40(lbl_8053AD78->sub[i], id, 1);
         setActive(i, 6);
         return 1;
+    }
+    return 0;
+}
+
+extern "C" void fn_80230224(s32 i, s32 b);
+extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
+    s32 slot = fn_80385960_slot(param_1);
+    s32 idx;
+    s32 i;
+    u8 c;
+    u16 flags;
+    s32 tmp[4];
+
+    idx = fn_80385960_slot(slot);
+    if (((u8*)lbl_8053AD78->sub[idx])[0x24] == 0) {
+        return 1;
+    }
+    idx = fn_80385960_slot(slot);
+    if (((u8*)lbl_8053AD78->sub[idx])[0x24] != 5) {
+        idx = fn_80385960_slot(slot);
+        if (((u8*)lbl_8053AD78->sub[idx])[0x24] != 8) {
+            return 0;
+        }
+    }
+    idx = fn_80385960_slot(slot);
+    if (((u8*)lbl_8053AD78->sub[idx])[0x40] == 0) {
+        flags = *(u16*)((u8*)lbl_8053AD78->sub[slot] + 0x28);
+        if (((flags >> 2) & 1) == 0) {
+            if ((flags & 0x800) == 0) {
+                c = fn_8022FB1C(param_1, param_2);
+            } else {
+                c = 1;
+            }
+            if (c != 0) {
+                idx = fn_80385960_slot(param_1);
+                flags = *(u16*)((u8*)lbl_8053AD78->sub[idx] + 0x28);
+                if (((flags >> 3) & 1) == 0 && (flags & 0x80) == 0) {
+                    if (lbl_8053AAF8->b7e == 1) {
+                        fn_8023061C(idx, 0);
+                    } else {
+                        for (i = 0; i < 4; i++) {
+                            tmp[i] = -1;
+                            if (fn_8023F264(i)) {
+                                tmp[i] = i;
+                            }
+                        }
+                        for (i = 0; i < 4; i++) {
+                            if (tmp[i] >= 0) {
+                                fn_80230224(tmp[i], 0);
+                            }
+                        }
+                    }
+                }
+                fn_802D46D8(fn_802D6A9C(), param_1, *(u32*)((u8*)lbl_8053AD78->sub[slot] + 0x20), 1);
+                fn_803895EC(0, param_1, param_2, 1, 1);
+                return 1;
+            }
+        }
     }
     return 0;
 }
