@@ -1,6 +1,10 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#define Vec SDKVec
 #include "JSystem/JGeometry/Vec.h"
+#undef Vec
+#include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 extern "C" void* fn_801283E8(void);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
@@ -39,6 +43,12 @@ extern const f32 lbl_8053CAA4;
 extern const f32 lbl_8053CAA8;
 extern "C" void fn_80126A4C(void* this_, s32 state) {
     u8* p = (u8*)this_;
+    JGeometry::TVec3f vel;
+    JGeometry::TVec3f pos5;
+    JGeometry::TVec3f pos11;
+    JGeometry::TVec3f out;
+    JGeometry::TVec3f pos2;
+    JGeometry::TVec3f pos8;
     *(s32*)(p + 0x230) = state;
     switch (state) {
     case 0:
@@ -55,8 +65,8 @@ extern "C" void fn_80126A4C(void* this_, s32 state) {
         fn_8012824C();
         break;
     case 5: {
-        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-        fn_800FE3EC(p + 0x2b4, *(s32*)(p + 0x238), &pos, *(s32*)(p + 4));
+        pos5 = *(JGeometry::TVec3f*)(p + 0xc);
+        fn_800FE3EC(p + 0x2b4, *(s32*)(p + 0x238), &pos5, *(s32*)(p + 4));
         break;
     }
     case 6:
@@ -89,12 +99,12 @@ extern "C" void fn_80126A4C(void* this_, s32 state) {
         *(f32*)(p + 0x88) = *(f32*)(p + 0x68);
         *(f32*)(p + 0x8c) = *(f32*)(p + 0x6c);
         if (*(u8*)(p + 0x258) != 0) {
-            JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-            pos.x = pos.x + q3;
-            *(void**)(p + 0x37c) = fn_8013CC50(*(s32*)(p + 4), &pos, 0x183, 0, -1, 0, 0, 1, lbl_8053CAA4);
-            *(void**)(p + 0x380) = fn_8013CC50(*(s32*)(p + 4), &pos, 0x184, 0, -1, 0, 0, 1, lbl_8053CAA4);
+            pos8 = *(JGeometry::TVec3f*)(p + 0xc);
+            pos8.x = pos8.x + q3;
+            *(void**)(p + 0x37c) = fn_8013CC50(*(s32*)(p + 4), &pos8, 0x183, 0, -1, 0, 0, 1, lbl_8053CAA4);
+            *(void**)(p + 0x380) = fn_8013CC50(*(s32*)(p + 4), &pos8, 0x184, 0, -1, 0, 0, 1, lbl_8053CAA4);
         }
-        s32 kind = ((s32 (*)(void*))(*(void***)this_)[15])(this_);
+        s32 kind = ((ItemBase*)this_)->v13();
         void* mgr = fn_802D6A9C();
         fn_802D8050(mgr, kind, 1, 0xff);
         fn_801283E8();
@@ -111,19 +121,17 @@ extern "C" void fn_80126A4C(void* this_, s32 state) {
         fn_801F0E34(this_, 0x40090, 0);
         break;
     case 11: {
-        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-        fn_800FE3EC(p + 0x2b4, *(s32*)(p + 0x238), &pos, *(s32*)(p + 4));
-        JGeometry::TVec3f vel;
+        pos11 = *(JGeometry::TVec3f*)(p + 0xc);
+        fn_800FE3EC(p + 0x2b4, *(s32*)(p + 0x238), &pos11, *(s32*)(p + 4));
         vel.x = lbl_8053CAA8;
         vel.y = lbl_8053CAA8;
         vel.z = lbl_8053CAA8;
         *(f32*)(p + 0x260) = lbl_8053CAA4;
-        s32 n = fn_800FD894(p + 0x2b4, -1, 0, 0);
-        JGeometry::TVec3f pos2 = *(JGeometry::TVec3f*)(p + 0xc);
-        JGeometry::TVec3f out;
-        fn_800FDC70(&out, p + 0x2b4, &pos2, 1, (u8)(n - 1));
+        u8 n = fn_800FD894(p + 0x2b4, -1, 0, 0) - 1;
+        pos2 = *(JGeometry::TVec3f*)(p + 0xc);
+        fn_800FDC70(&out, p + 0x2b4, &pos2, 1, n);
         vel = out;
-        *(JGeometry::TVec3f*)(p + 0x3c) = vel;
+        ((JGeometry::TVec3f*)(p + 0x3c))->set(vel);
         *(JGeometry::TVec3f*)(p + 0xc) += *(JGeometry::TVec3f*)(p + 0x3c);
         *(f32*)(p + 0x264) = *(f32*)(p + 0xc);
         *(f32*)(p + 0x268) = *(f32*)(p + 0x10);
@@ -149,8 +157,8 @@ extern "C" void fn_80126A4C(void* this_, s32 state) {
         break;
     case 15:
         if (fn_801F7A08(fn_801F856C(), 0x53504652) < 0) {
-            s32 kind = ((s32 (*)(void*))(*(void***)this_)[15])(this_);
-            Actor_CreateByID(fn_801F856C(), 0x53504652, *(s32*)(p + 4), p + 0x270, kind << 27, -1, -1);
+            s32 kind = ((ItemBase*)this_)->v13() << 27;
+            Actor_CreateByID(fn_801F856C(), 0x53504652, *(s32*)(p + 4), p + 0x270, kind, -1, -1);
             fn_801283E8();
             fn_80128074();
         }
