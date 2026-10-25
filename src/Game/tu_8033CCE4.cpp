@@ -86,6 +86,11 @@ struct UnkObj8033D4CC {
     u8 m272;
 };
 
+extern "C" void fn_8033D4CC(UnkObj8033D4CC* self);
+extern "C" int __float_epsilon[];
+extern "C" f32 lbl_805421C4;
+extern s32 lbl_804ABC80;
+
 struct UnkObj8033D264 {
     u8 pad0[4];
     int unk4;
@@ -140,15 +145,16 @@ extern "C" void fn_8033CD44(UnkObj8033CD44* this_) {
     u8* base = (u8*)lbl_80471E28;
     const char* name;
     s32 id;
+    s32 state = this_->state;
 
-    switch (this_->state) {
+    switch (state) {
     case 0:
     case 1:
     case 5:
-        if (this_->state == 0) {
+        if (state == 0) {
             name = (const char*)(base + 0x30);
             id = lbl_804ABCA0[0][this_->unk250] + 0x475;
-        } else if (this_->state == 1) {
+        } else if (state == 1) {
             name = (const char*)(base + 0x44);
             id = 0x1c1;
         } else {
@@ -160,23 +166,27 @@ extern "C" void fn_8033CD44(UnkObj8033CD44* this_) {
         return;
     case 2:
     case 6:
-        name = (const char*)(base + 0x44);
-        if (this_->state == 2) {
+        if (state == 2) {
+            f32 b0 = lbl_805421B0;
+            f32 ac = lbl_805421AC;
+            f32 x;
+            f32 a8 = lbl_805421A8;
+            f32 a4 = lbl_805421A4;
             id = lbl_804ABCA0[this_->unk254][this_->unk250] + 0x3b4;
             for (s32 j = 0; j < 2; j++) {
-                f32 x = lbl_805421A8 * (f32)j + lbl_805421A4;
+                x = a8 * (f32)j + a4;
                 for (s32 i = 0; i < 2; i++) {
-                    f32 y = lbl_805421A8 * (f32)i + lbl_805421AC;
+                    f32 y = a8 * (f32)i + ac;
                     JGeometry::TVec3f saved = this_->mPos;
-                    this_->mPos.add(JGeometry::TVec3f(x, y, lbl_805421B0));
-                    fn_801F06F0(this_, name, id, NULL, 3, lbl_805421A0, lbl_805421A0);
+                    this_->mPos.add(JGeometry::TVec3f(x, y, b0));
+                    fn_801F06F0(this_, (const char*)(base + 0x44), id, NULL, 3, lbl_805421A0, lbl_805421A0);
                     this_->mPos = saved;
                 }
             }
         } else {
             JGeometry::TVec3f saved = this_->mPos;
             this_->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421A4, lbl_805421B0));
-            fn_801F06F0(this_, name, 0x37d, NULL, 3, lbl_805421A0, lbl_805421A0);
+            fn_801F06F0(this_, (const char*)(base + 0x44), 0x37d, NULL, 3, lbl_805421A0, lbl_805421A0);
             this_->mPos = saved;
         }
         {
@@ -421,10 +431,14 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
             }
         }
 
-        rect[0] = self->mRect[0] + self->mPos.x;
-        rect[1] = self->mRect[1] + self->mPos.y;
-        rect[2] = self->mRect[2] + self->mPos.x;
-        rect[3] = self->mRect[3] + self->mPos.y;
+        rect[0] = self->mRect[0];
+        rect[1] = self->mRect[1];
+        rect[2] = self->mRect[2];
+        rect[3] = self->mRect[3];
+        rect[0] += self->mPos.x;
+        rect[2] += self->mPos.x;
+        rect[1] += self->mPos.y;
+        rect[3] += self->mPos.y;
         if (self->m25c != 0) {
             if (self->m25c != 2) {
                 return;
@@ -450,5 +464,206 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
         self->m254 = fn_80230CFC(self->m258);
         self->m254 ^= 1;
     }
+}
+
+extern f32 lbl_805421C0;
+extern f32 lbl_805421DC;
+extern f32 lbl_805421E0;
+extern f32 lbl_805421E4;
+extern f32 lbl_805421E8;
+void* fn_8020D58C(s32);
+void fn_8020D7D0(void*, s32);
+void fn_80239914(f32*, s32, s32);
+void fn_801EE434(s32);
+void fn_801F0D20(void*, s32, s32);
+void fn_8013CB44(s32, s32, s32, s32);
+s32 fn_80388CAC(s32, s32);
+extern "C" void fn_8033DA78(UnkObj8033D4CC* this_) {
+    f32 f30;
+    f32 f31;
+    f32 box[4];
+    f32 box2[4];
+    f32 d;
+    f32 t;
+    box[0] = this_->mRect[0];
+    box[1] = this_->mRect[1];
+    box[2] = this_->mRect[2];
+    box[3] = this_->mRect[3];
+    box[0] = box[0] + this_->mPos.x;
+    box[2] = box[2] + this_->mPos.x;
+    box[1] = box[1] + this_->mPos.y;
+    box[3] = box[3] + this_->mPos.y;
+    fn_80239914(box, this_->room, this_->mHandle);
+    if (this_->m25c != 0 && this_->m25c != 2) {
+        u8* p = (u8*)fn_8020D58C(this_->mHandle);
+        fn_8020D7D0(p + p[0] * 0x784 + 4, this_->mHandle);
+    }
+    switch (this_->m234) {
+    case 0:
+        d = PSVECDistance(&this_->mPos, &this_->mAnchor);
+        if (d < lbl_805421DC) {
+            f30 = lbl_805421E0;
+        } else {
+            t = (f32)(this_->m260 * 16) - lbl_805421C0;
+            f30 = (d >= t) ? lbl_805421E4 : lbl_805421C0;
+        }
+        d = PSVECDistance(&this_->mPos, &this_->mPrev);
+        if (d < f30) {
+            f32 lim = lbl_805421E8;
+            if (!(this_->mPos.x <= this_->mAnchor.x + lim) && !(this_->mPos.x >= this_->mAnchor.x - lim)) {
+                this_->mPos.x = this_->mAnchor.x;
+            } else if (this_->mPos.x >= this_->mPrev.x) {
+                this_->mPos.x = this_->mPrev.x + (f30 + lbl_805421C8);
+            } else {
+                this_->mPos.x = this_->mPrev.x - (f30 + lbl_805421C8);
+            }
+            if (this_->mPos.y <= this_->mAnchor.y + lim || this_->mPos.y >= this_->mAnchor.y - lim) {
+                if (this_->mPos.y >= this_->mPrev.y) {
+                    this_->mPos.y = this_->mPrev.y + (f30 + lbl_805421C8);
+                } else {
+                    this_->mPos.y = this_->mPrev.y - (f30 + lbl_805421C8);
+                }
+            } else {
+                this_->mPos.y = this_->mAnchor.y;
+            }
+            this_->mPrev = this_->mPos;
+            this_->mVel.x = 0.0f;
+            this_->mVel.y = 0.0f;
+            this_->mVel.z = 0.0f;
+            this_->m272 = 0;
+            if (this_->m230 != 0) {
+                fn_801EE434(this_->m230);
+            }
+            if (((this_->mSpawnParam >> 16) & 1) == 0) {
+                d = PSVECDistance(&this_->mPos, &this_->mAnchor);
+                t = (f32)(this_->m260 * 16) - lbl_805421C8;
+                if (!(d >= t)) {
+                    this_->m244 = -1;
+                    ((void (*)(void*, s32, s32))(*(void**)(*(u32*)this_ + 0x30)))(this_, 0xff, 1);
+                    if (this_->m25c != 4) {
+                        fn_801F0D20(this_, 3, 0);
+                    }
+                } else {
+                    this_->m244 = 8;
+                    this_->m248 = 0x1e;
+                }
+            } else {
+                this_->m244 = 8;
+                this_->m248 = 0x1e;
+            }
+        } else if (this_->m265 != 0) {
+            box2[0] = this_->mRect[0] + this_->mPos.x;
+            box2[1] = this_->mRect[1] + this_->mPos.y;
+            box2[2] = this_->mRect[2] + this_->mPos.x;
+            box2[3] = this_->mRect[3] + this_->mPos.y;
+            if (this_->m25c == 0) {
+                fn_8022FEB8(box, this_->room, this_->mHandle, 1, 0);
+            }
+        }
+        break;
+    case 1:
+        if (this_->m230 != 0) {
+            fn_8013CB44(this_->m230, 0, 0, 1);
+        }
+        break;
+    }
+}
+
+extern f32 lbl_805421C4;
+extern f32 lbl_805421EC;
+extern f32 lbl_805421F0;
+extern f32 lbl_805421F4;
+extern f32 lbl_805421F8;
+extern f32 lbl_805421FC;
+extern f32 lbl_80542200;
+extern f32 lbl_80542204;
+extern f32 lbl_80542208;
+extern s32 lbl_804ABC80;
+extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
+extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
+    f32 r0, r1, r2, r3;
+    self->m25c = (self->mSpawnParam >> 12) & 0xf;
+    switch (self->m25c) {
+    case 0:
+    case 1:
+    case 5:
+        r0 = lbl_805421EC;
+        r1 = lbl_805421F0;
+        r2 = lbl_805421F4;
+        r3 = lbl_805421F8;
+        self->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421C4, lbl_805421B0));
+        self->mRect[0] = r0;
+        self->mRect[1] = r1;
+        self->mRect[2] = r2;
+        self->mRect[3] = r3;
+        self->mRect2[0] = r0;
+        self->mRect2[1] = r1;
+        self->mRect2[2] = r2;
+        self->mRect2[3] = r3;
+        self->m1a4 = 2;
+        self->m260 = 2;
+        break;
+    case 2:
+    case 3:
+    case 6:
+        r0 = lbl_80542200;
+        r1 = lbl_80542204;
+        r2 = lbl_80542208;
+        r3 = lbl_805421F4;
+        self->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421FC, lbl_805421B0));
+        self->mRect[0] = r0;
+        self->mRect[1] = r1;
+        self->mRect[2] = r2;
+        self->mRect[3] = r3;
+        self->mRect2[0] = r0;
+        self->mRect2[1] = r1;
+        self->mRect2[2] = r2;
+        self->mRect2[3] = r3;
+        self->m1a4 = 4;
+        self->m260 = 4;
+        break;
+    case 4:
+        r0 = lbl_80542200;
+        r1 = lbl_80542208;
+        self->mRect[0] = r0;
+        self->mRect[1] = r0;
+        self->mRect[2] = r1;
+        self->mRect[3] = r1;
+        self->mRect2[0] = r0;
+        self->mRect2[1] = r0;
+        self->mRect2[2] = r1;
+        self->mRect2[3] = r1;
+        self->m1a4 = 4;
+        self->m260 = 4;
+        break;
+    }
+
+    self->mAnchor = self->mPos;
+    self->mVel.set(lbl_805421B0, lbl_805421B0, lbl_805421B0);
+    self->m234 = 0;
+    self->m244 = 0;
+    self->m248 = 0;
+    self->m250 = 0;
+    self->m254 = 2;
+    self->m258 = -1;
+    self->m0b8 = 2;
+    self->m24c = lbl_804ABC80;
+    self->m272 = 0;
+    self->m268 = (self->mSpawnParam & 0xfff) + 0x12b;
+    self->m265 = 0;
+    self->m264 = (self->mSpawnParam >> 17) & 1;
+    if (self->m264 == 0 && fn_8028D4DC(&self->mPos, self->m260 - 1, self->m16c)) {
+        self->m265 = 1;
+        ((void (*)(void*, s32, s32))(*(void***)self)[12])(self, 0xff, 1);
+    }
+
+    self->mPrev = self->mPos;
+    self->m270 = 1;
+    if (self->m25c == 0 || self->m25c == 2) {
+        self->m270 = 0;
+    }
+    self->m26c = 0;
+    self->m271 = 0;
+    self->m230 = 0;
 }
 
