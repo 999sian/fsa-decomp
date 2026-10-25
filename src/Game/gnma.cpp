@@ -40,6 +40,9 @@ extern const f32 lbl_8053E78C;
 extern const f32 lbl_8053E790;
 extern const f32 lbl_8053E798;
 extern const f32 lbl_8053E7A0;
+extern const f32 lbl_8053E7A8;
+extern const f32 lbl_8053E7AC;
+extern "C" s32 fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8030C210(void* a, void* b);
 extern "C" s32 fn_801F3D94(void* p, s32 n);
 extern "C" u32 fn_801F2618(void* p, s32 a, s32 b);
@@ -280,6 +283,29 @@ extern "C" void fn_801AAF44(char* p) {
             *(s32*)(p + 0x230) = 8;
         }
         break;
+    }
+}
+
+extern "C" void fn_801AB6A8(void* this_) {
+    char* p = (char*)this_;
+    f32 y = *(f32*)(p + 0x10);
+    f32 x = *(f32*)(p + 0xc);
+    f32 a = *(f32*)(p + 0x64) + y;
+    f32 b = *(f32*)(p + 0x6c) + y;
+    f32 c = *(f32*)(p + 0x60) + x;
+    f32 d = *(f32*)(p + 0x68) + x;
+    if (fn_801F3D94(p, 1) != 0) {
+        fn_801F2618(p, 0, 0);
+        return;
+    }
+    if (*(s32*)(p + 0x108) < 1000) {
+        void (**vt)(char*) = *(void (***)(char*))p;
+        vt[9](p);
+        return;
+    }
+    u32 r30 = *(u32*)(p + 0x4);
+    if (fn_802D6A9C()[r30 + 0x131df] != 0) {
+        return;
     }
 }
 
