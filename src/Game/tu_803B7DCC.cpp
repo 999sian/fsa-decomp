@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "types.h"
 #include "JSystem/J2D/J2DPicture.h"
 
@@ -161,6 +162,8 @@ extern "C" void fn_803B7F6C(u8* this_) {
         break;
     case 2:
         switch (this_[0x295]) {
+        case 0:
+            break;
         case 1:
             *(s32*)(this_ + 0x280) -= 1;
             if (*(s32*)(this_ + 0x280) > 0) {
@@ -168,10 +171,6 @@ extern "C" void fn_803B7F6C(u8* this_) {
                 this_[0x295] = 2;
                 this_[0x29b] = 1;
             }
-            break;
-        case 0:
-            break;
-        default:
             break;
         }
         break;
