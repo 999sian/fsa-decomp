@@ -1,5 +1,8 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#define Vec SDKVec
+#include "JSystem/JGeometry/Vec.h"
+#undef Vec
 #include "Game/Actor.h"
 
 extern "C" void fn_8011B878(u8* this_, s32 id);
@@ -87,6 +90,8 @@ extern "C" void fn_8011BDEC(u8* this_) {
             fn_8011B878(this_, 12);
         }
         break;
+    default:
+        break;
     case 1:
         if (*(s32*)((u8*)fn_8011921C() + 4) == 0x11) {
             if (v == lbl_80464AF8[14]) {
@@ -132,8 +137,8 @@ extern "C" u8* lbl_8053AAF8;
 extern "C" u8* lbl_8053AB10;
 extern "C" f32 lbl_8053C7F8;
 extern "C" void fn_8011C118(u8* this_) {
-    s32 i;
     u8 buf[0x3c];
+    s32 i;
 
     fn_8010DF58(this_);
     *(s32*)(buf + 0x10) = -1;
@@ -171,12 +176,15 @@ extern "C" void fn_8011C118(u8* this_) {
     *(s32*)(buf + 0x38) = 2;
     buf[0x2e] = 0x40;
 
+    u8* p280 = *(u8**)(this_ + 0x280);
     if (*(s32*)(this_ + 0x138) == 0) {
-        fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, buf, 7, lbl_80464B84, *(u8**)(this_ + 0x280), 0);
+        fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, buf, 7, lbl_80464B84, p280, 0);
     }
+    u8* pos = this_ + 0xc;
+    s32 p280b = *(s32*)(this_ + 0x280);
     if (*(s32*)(this_ + 4) < 8) {
         void* res = (*(DMLKResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_80464B84);
-        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, *(s32*)(this_ + 0x280), lbl_8053C7F8, lbl_8053C7F8, 0);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, p280b, lbl_8053C7F8, lbl_8053C7F8, 0);
     }
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x280), 0, 1, -1, 0, 0, 0);
 }
