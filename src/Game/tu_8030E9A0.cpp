@@ -173,7 +173,10 @@ extern "C" const f32 lbl_80541770;
 extern "C" const f32 lbl_80541774;
 extern "C" s32 fn_80230CFC(void*);
 extern "C" s32 fn_801F2618(void*, s32, s32);
+#pragma opt_propagation off
 extern "C" void fn_8030F9E4(u8* this_) {
+    f32 vy;
+    f32 vx;
     *(f32*)(this_ + 0x3c) = lbl_8054173C;
     *(f32*)(this_ + 0x40) = lbl_8054173C;
     *(f32*)(this_ + 0x44) = lbl_8054173C;
@@ -204,8 +207,8 @@ extern "C" void fn_8030F9E4(u8* this_) {
     s32 i = 0;
     while (fn_801F2618(this_, 0, 0) & 0xff) {
         f32* v = &lbl_80471368[(fn_80230CFC(*(void**)(this_ + 0x110)) ^ 1) * 3];
-        f32 vy = v[1];
-        f32 vx = v[0];
+        vy = v[1];
+        vx = v[0];
         i++;
         *(f32*)(this_ + 0xc) += lbl_8054174C * vx;
         *(f32*)(this_ + 0x10) += lbl_8054174C * vy;
@@ -218,4 +221,5 @@ extern "C" void fn_8030F9E4(u8* this_) {
     *(f32*)(this_ + 0x88) = lbl_80541740;
     *(f32*)(this_ + 0x8c) = lbl_80541740;
 }
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
