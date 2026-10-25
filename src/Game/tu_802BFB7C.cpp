@@ -289,6 +289,68 @@ extern "C" void fn_802C0570(char* p) {
     }
 }
 
+extern "C" f32 lbl_80540C60;
+extern "C" f32 lbl_80540C68;
+extern "C" s32 fn_8023AF14(f32* box, s32 room, s32 zero);
+extern "C" void fn_8022FE80(s32 a, s32 room, s32 handle, s32 d, s32 e);
+extern "C" BOOL fn_80388CAC(s32 a, s32 b);
+extern "C" BOOL fn_8023061C(s32 a, s32 b);
+extern "C" BOOL fn_80230534(s32 a);
+extern "C" void fn_801F35AC(char* p);
+extern "C" void fn_8038AD24(s32 a, s32 b, s32 c, s32 d, void* e, s32 f);
+extern "C" void fn_8013CC50(s32 room, void* pos, f32 f, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(char* p, s32 id, s32 zero);
+extern "C" BOOL fn_802DE9A0(void);
+extern "C" BOOL fn_802DEB58(void);
+extern "C" BOOL fn_802DE7CC(void);
+extern "C" BOOL fn_802D46D8(u8* mgr, s32 a, s32 b, s32 c);
+extern "C" s32 fn_8022CAF8(s32 a);
+extern "C" BOOL fn_8022F478(s32 a);
+extern "C" BOOL fn_8022C0A0(s32 a);
+extern "C" BOOL fn_8023E8F0(s32 a);
+extern "C" void fn_802C0570(char* p);
+extern "C" BOOL fn_802BFF30(u8* this_, s32 room);
+extern "C" void fn_802C07DC(char* p) {
+    f32 box[4];
+    Vec3f zero;
+    Vec3f vec;
+    s32 hit;
+    s32 room;
+    u8* mgr;
+    s32 state;
+
+    box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+    box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+    box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+    box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+    fn_8023AF14(box, *(s32*)(p + 4), 0);
+    if (*(s32*)(p + 0x248) != 0) {
+        if (*(s32*)(p + 0x250) == 0) {
+            *(s32*)(p + 0x24c) += 8;
+            if (*(s32*)(p + 0x24c) > 0xfe) {
+                *(s32*)(p + 0x24c) = 0xff;
+                *(s32*)(p + 0x250) = 1;
+            }
+        } else {
+            *(s32*)(p + 0x24c) -= 8;
+            if (*(s32*)(p + 0x24c) < 0x3c) {
+                *(s32*)(p + 0x250) = 0;
+            }
+        }
+        *(s32*)(p + 0x248) -= 1;
+        if (*(s32*)(p + 0x248) == 0) {
+            *(s32*)(p + 0x24c) = 0xff;
+            *(s32*)(p + 0x250) = 1;
+        }
+    }
+    hit = 0;
+    state = *(s32*)(p + 0x230);
+    switch (state) {
+    case 0:
+        break;
+    }
+}
+
 extern "C" void fn_802C0EE0(char* p) {
     f32 z = lbl_80540C40;
     *(f32*)(p + 0x44) = z;
