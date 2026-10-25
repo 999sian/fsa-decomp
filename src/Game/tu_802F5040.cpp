@@ -723,26 +723,22 @@ extern "C" u8 fn_802F6298(u8* self, Vec* __restrict pos, s32 a, s32 b, s32 c, s3
     return ret;
 }
 
-extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* src) {
-    u8 ret = 0;
+extern "C" u8 fn_802F654C(u8* self, f32* __restrict pos, s32 a, s32 b, s32 c, s32 d, u8* src) {
+    struct Quad {
+        s32 v[4];
+    };
+    BOOL ret = FALSE;
     s32 n = *(s32*)(self + 0xd320);
     if (n < 0x20) {
         u8* e = self + n * 0x88 + 0xc220;
-        f32 z = pos[2];
-        f32 y = pos[1];
-        f32 x = pos[0];
-        *(f32*)(e + 0x0) = x;
-        *(f32*)(e + 0x4) = y;
-        *(f32*)(e + 0x8) = z;
+        u8 i;
+        *(Vec*)e = *(Vec*)pos;
         *(s32*)(e + 0xc) = a;
         *(s32*)(e + 0x10) = b;
         *(s32*)(e + 0x14) = c;
         *(s32*)(e + 0x18) = d;
         if (src != NULL) {
-            *(s32*)(e + 0x1c) = *(s32*)(src + 0x0);
-            *(s32*)(e + 0x20) = *(s32*)(src + 0x4);
-            *(s32*)(e + 0x24) = *(s32*)(src + 0x8);
-            *(s32*)(e + 0x28) = *(s32*)(src + 0xc);
+            *(Quad*)(e + 0x1c) = *(Quad*)src;
             e[0x2c] = src[0x10];
             e[0x2d] = src[0x11];
             e[0x2e] = src[0x12];
@@ -771,20 +767,13 @@ extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
             *(s32*)(e + 0x50) = *(s32*)(src + 0x34);
             *(s32*)(e + 0x54) = *(s32*)(src + 0x38);
             e[0x3d] = 0;
-            if (*(void**)(src + 0x18) != NULL) {
-                *(Tu802F5040Mtx*)(e + 0x58) = *(Tu802F5040Mtx*)(*(u8**)(src + 0x18));
-                *(void**)(e + 0x34) = e + 0x58;
+            if (*(u8**)(src + 0x18) != NULL) {
+                JMath::gekko_ps_copy12(e + 0x58, *(u8**)(src + 0x18));
+                *(u8**)(e + 0x34) = e + 0x58;
             }
         } else {
-            for (u8 i = 0; i < 0x10; i += 8) {
-                e[0x1c + i] = i;
-                e[0x1c + i + 1] = i + 1;
-                e[0x1c + i + 2] = i + 2;
-                e[0x1c + i + 3] = i + 3;
-                e[0x1c + i + 4] = i + 4;
-                e[0x1c + i + 5] = i + 5;
-                e[0x1c + i + 6] = i + 6;
-                e[0x1c + i + 7] = i + 7;
+            for (i = 0; i < 0x10; i++) {
+                e[i + 0x1c] = i;
             }
             *(s32*)(e + 0x2c) = -1;
             *(s32*)(e + 0x30) = 0;
@@ -808,8 +797,8 @@ extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
             *(s32*)(e + 0x50) = 0;
             *(s32*)(e + 0x54) = 2;
         }
-        ret = 1;
-        *(s32*)(self + 0xd320) += 1;
+        ret = TRUE;
+        *(s32*)(self + 0xd320) = *(s32*)(self + 0xd320) + 1;
     }
     return ret;
 }
