@@ -92,6 +92,64 @@ static inline s32 PushDirFromPull(char* self) {
     return -1;
 }
 
+struct PushProbe {
+    PushProbe() {}
+    JGeometry::TVec3f pos;
+    JGeometry::TBox2f area;
+};
+
+extern "C" void* lbl_8053AC98;
+extern "C" void* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(void* a, s32 room, void* v, void* h, s32 c);
+extern "C" void* fn_802D6A9C();
+
+// Whether the six cells along the block's right edge are free to push into.
+static inline u8 PushPathClearRight(char* self) {
+    s32 room = *(s32*)(self + 4);
+    char* m = (char*)fn_802D6A9C();
+    JGeometry::TBox2f* src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
+    u8 ok = 1;
+    PushProbe pt;
+    pt.area = *src;
+    pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
+    pt.pos.x += *(f32*)(self + 0x68);
+    pt.pos.x += 8.0f;
+    f32 x0 = pt.area.i.x - -32.0f;
+    f32 y0 = pt.area.i.y - -32.0f;
+    f32 x1 = pt.area.f.x + -32.0f;
+    f32 y1 = pt.area.f.y + -32.0f;
+    pt.area.i.x = x0;
+    pt.area.i.y = y0;
+    pt.area.f.x = x1;
+    pt.area.f.y = y1;
+    pt.pos.y += *(f32*)(self + 0x64);
+    pt.pos.y += 8.0f;
+    pt.pos.z = 0.0f;
+    for (s32 i = 0; i < 6; i++) {
+        if (!fn_802A1554(lbl_8053AC98, &pt)) {
+            ok = 0;
+            break;
+        }
+        void* h = *(void**)(self + 0x198);
+        s32 r = *(s32*)(self + 4);
+        char* base = (char*)fn_8020D58C();
+        if (fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, r, &pt, h, 0) == 1) {
+            ok = 0;
+            break;
+        }
+        bool in = false;
+        if (pt.pos.x >= x0 && pt.pos.y >= y0 && pt.pos.x < x1 && pt.pos.y < y1) {
+            in = true;
+        }
+        if (!in) {
+            ok = 0;
+            break;
+        }
+        pt.pos.y += 16.0f;
+    }
+    return ok;
+}
+
 struct HOUSLinks {
     u8 unk_000[0x25c];
     s32 outgoing[4];
@@ -1071,22 +1129,20 @@ extern "C" void fn_80299AD0(void* p) {
         JGeometry::TVec3f pos;
         JGeometry::TBox2f area;
     };
-    s32 dir;
-    u8 ok;
-    s32 i;
-    char* self = (char*)p;
+    char* col;
     s32 j;
     s32 room;
     char* m;
     char* row;
-    char* col;
     JGeometry::TBox2f* src;
+    char* self = (char*)p;
+    s32 i;
+    u8 ok;
+    s32 dir;
     f32 x0;
     f32 y0;
     f32 x1;
     f32 y1;
-    JGeometry::TVec3f gridBase;
-    JGeometry::TVec3f grid;
     Probe pt;
 
     if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= 32.0f * FLT_EPSILON)) {
@@ -1157,6 +1213,7 @@ extern "C" void fn_80299AD0(void* p) {
         *(f32*)(self + 0x250) = 16.0f;
         *(s32*)(self + 0x248) = 0;
         if (*(u8*)(self + 0x24c) == 0) {
+            JGeometry::TVec3f gridBase;
             *(u8*)(self + 0x24c) = 1;
             gridBase = *(JGeometry::TVec3f*)(self + 0xc);
             gridBase.x += *(f32*)(self + 0x60);
@@ -1164,7 +1221,7 @@ extern "C" void fn_80299AD0(void* p) {
             gridBase.x += 8.0f;
             gridBase.y += 8.0f;
             gridBase.z = 0.0f;
-            grid = gridBase;
+            JGeometry::TVec3f grid(gridBase);
             for (i = 0, row = self; i < 6; i++, row += 0xc) {
                 grid.y = gridBase.y;
                 for (j = 0, col = row; j < 6; j++, col += 2) {
@@ -1271,6 +1328,9 @@ extern "C" void fn_80299FB0(void* p) {
     char* col;
     JGeometry::TBox2f area;
     JGeometry::TVec3f v;
+    JGeometry::TBox2f box;
+    JGeometry::TVec3f grid;
+    JGeometry::TVec3f gridBase;
 
     if (!((JGeometry::TVec3f*)(self + 0x250))->isZero()) {
         return;
@@ -1286,7 +1346,7 @@ extern "C" void fn_80299FB0(void* p) {
     if (*(u8*)(self + 0x2b9) == 0) {
         mode = PushDirFromLink(self);
         if (mode == -1) {
-            mode = PushDirFromContact(self);
+            mode = PushDirFromContact(self, box);
         }
     }
     if (mode != 1) {
@@ -1335,8 +1395,6 @@ extern "C" void fn_80299FB0(void* p) {
     *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
-        JGeometry::TVec3f grid;
-        JGeometry::TVec3f gridBase;
         gridBase = *(JGeometry::TVec3f*)(self + 0xc);
         gridBase.x += *(f32*)(self + 0x60);
         gridBase.y += *(f32*)(self + 0x64);
@@ -1356,11 +1414,10 @@ extern "C" void fn_80299FB0(void* p) {
     }
 }
 
-extern "C" void fn_8029A494(void* p) {
+extern "C" void fn_8029A494(char* self) {
     s32 mode;
     u8 flag;
     s32 i;
-    char* self;
     s32 room;
     void* h;
     char* row;
@@ -1376,7 +1433,6 @@ extern "C" void fn_8029A494(void* p) {
     JGeometry::TVec3f grid;
     JGeometry::TVec3f pos;
 
-    self = (char*)p;
     vel = (JGeometry::TVec3f*)(self + 0x250);
     lenSq = JMathInlineVEC::PSVECSquareMag(vel);
     if (lenSq <= lbl_805406A8 * FLT_EPSILON) {
@@ -1410,10 +1466,16 @@ extern "C" void fn_8029A494(void* p) {
         ((u32*)&zone)[2] = zoneSrc[2];
         ((u32*)&zone)[3] = zoneSrc[3];
         flag = 1;
-        zone.i.x -= -32.0f;
-        zone.i.y -= -32.0f;
-        zone.f.x += -32.0f;
-        zone.f.y += -32.0f;
+        f32 x0, step, y1, x1, y0;
+        x0 = zone.i.x - -32.0f;
+        y0 = zone.i.y - -32.0f;
+        x1 = zone.f.x + -32.0f;
+        y1 = zone.f.y + -32.0f;
+        zone.i.x = x0;
+        zone.i.y = y0;
+        zone.f.x = x1;
+        zone.f.y = y1;
+        step = 16.0f;
         v = *(JGeometry::TVec3f*)(self + 0xc);
         v.x += *(f32*)(self + 0x60);
         v.x += 8.0f;
@@ -1421,25 +1483,21 @@ extern "C" void fn_8029A494(void* p) {
         v.y += 8.0f;
         v.z = 0.0f;
         for (i = 0; i < 6; i++) {
-            if (!fn_802A1554(lbl_8053AC98, &v)) {
-                flag = 0;
-                break;
-            }
-            if (HitsRect(self, &v) == 1) {
+            if (!fn_802A1554(lbl_8053AC98, &v) || HitsRect(self, &v) == 1) {
                 flag = 0;
                 break;
             }
             ok = 0;
-            if (v.x >= zone.i.x && v.y >= zone.i.y && v.x < zone.f.x && v.y < zone.f.y) {
+            if (v.x >= x0 && v.y >= y0 && v.x < x1 && v.y < y1) {
                 ok = 1;
             }
             if (!ok) {
                 flag = 0;
                 break;
             }
-            v.x += 16.0f;
+            v.x += step;
         }
-        if (!fn_802957CC(p, 2)) {
+        if (!fn_802957CC(self, 2)) {
             flag = 0;
         }
         if (flag != 1) {
@@ -1450,7 +1508,7 @@ extern "C" void fn_8029A494(void* p) {
             *(f32*)(self + 0x40) = 0.32f;
             *(u8*)(self + 0x2b8) = 1;
         }
-            fn_801F0E34(p, 0x30004, 0);
+            fn_801F0E34(self, 0x30004, 0);
             *(f32*)(self + 0x254) = 16.0f;
             *(s32*)(self + 0x248) = 0;
             if (*(u8*)(self + 0x24c) != 0) {
@@ -1464,10 +1522,9 @@ extern "C" void fn_8029A494(void* p) {
         pos.y += 8.0f;
         pos.z = 0.0f;
         grid = pos;
-        row = self;
-        for (i = 0; i < 6; i++, row += 0xc) {
+        for (i = 0; i < 6; i++, self += 0xc) {
             grid.y = pos.y;
-            for (j = 0, col = row; j < 6; j++, col += 2) {
+            for (j = 0, col = self; j < 6; j++, col += 2) {
                 fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
                 fn_802A381C(lbl_8053AC98, &grid, 1, 0);
                 grid.y += 16.0f;
@@ -1508,9 +1565,9 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f* box) {
     return -1;
 }
 extern "C" void fn_8029A974(void* p) {
-    int mode;
+    s32 mode;
     char* self;
-    int i;
+    s32 i;
     u8 flag;
     s32 room;
     void* h;
@@ -1529,9 +1586,7 @@ extern "C" void fn_8029A974(void* p) {
 
     self = (char*)p;
     vel = (JGeometry::TVec3f*)(self + 0x250);
-    f32 epsilon = lbl_805406A8 * FLT_EPSILON;
-    lenSq = vel->squared();
-    if (lenSq <= epsilon) {
+    if (vel->isZero()) {
         if (*(u8*)(self + 0x2c0) == 1) {
             *(u8*)(self + 0x2c0) = 0;
             return;
