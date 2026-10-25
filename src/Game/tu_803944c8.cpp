@@ -2225,7 +2225,7 @@ extern "C" void fn_802372F8(s32,s32,s32);
 extern "C" s32 fn_802373EC(s32);
 extern "C" void fn_80237524(s32,s32);
 extern "C" s32 fn_80237810(s32);
-extern "C" void* fn_8023E724(s32);
+extern "C" Vec* fn_8023E724(s32);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" u32 fn_8023EEB4(s32);
 extern "C" s32 fn_8023ECF0(s32);
