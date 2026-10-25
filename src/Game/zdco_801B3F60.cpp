@@ -16,9 +16,9 @@ static inline f32 zdcoSqrt(f32 mag)
 {
     if (mag > lbl_8053E9C0) {
         f64 tmpd = __frsqrte(mag);
-        tmpd = tmpd * lbl_8053E9D0 * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
-        tmpd = tmpd * lbl_8053E9D0 * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
-        tmpd = tmpd * lbl_8053E9D0 * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
+        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
+        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
+        tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
         return mag * tmpd;
     } else if (mag < lbl_8053E9E0) {
         return *(f32*)__float_nan;
