@@ -198,7 +198,15 @@ J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32
 	return material;
 }
 
-
+extern "C" TevKColorWord fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	GXColor dflt = j3dDefaultColInfo;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mMatColorIndex[no] != 0xffff) {
+		return TevKColorWord(*(u32*)&self->mColorData[initData->mMatColorIndex[no]]);
+	}
+	return TevKColorWord(*(u32*)&dflt);
+}
 
 u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
 {
