@@ -204,13 +204,12 @@ extern "C" Actor* fn_8012E6EC(Actor* p, s16 n) {
     return p;
 }
 
-extern "C" void* fn_8012E780(Actor* p) {
+extern "C" Actor* fn_8012E780(Actor* p) {
     __ct__5ActorFv(p);
-    f32 initial = lbl_8053CC3C;
     *(void**)p = lbl_8049E8A0;
     *(s32*)((char*)p + 0x230) = 0;
     *(s32*)((char*)p + 0x234) = 0;
-    *(f32*)((char*)p + 0x238) = initial;
+    *(f32*)((char*)p + 0x238) = lbl_8053CC3C;
     *(s32*)((char*)p + 0x23c) = 0;
     *(s32*)((char*)p + 0x240) = 0;
     *(s32*)((char*)p + 0x244) = 0;
