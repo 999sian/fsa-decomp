@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 /* Actor with the 0x18 bytes of members that follow the base (size 0x250). */
 struct ActorExt : Actor {
@@ -30,6 +31,10 @@ extern "C" Actor* fn_802A8220(Actor* param_1, s16 param_2)
 extern "C" void fn_802A8280(void)
 {
     return;
+}
+
+extern "C" void fn_802A8284(u8* this_) {
+    this_[0] = 0;
 }
 
 extern "C" void fn_802A92FC(ActorExt* param_1)
@@ -64,4 +69,5 @@ extern "C" void fn_802A92FC(ActorExt* param_1)
         param_1->m24C = 0x28;
     }
 }
+
 
