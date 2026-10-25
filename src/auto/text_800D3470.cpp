@@ -732,9 +732,14 @@ extern "C" void fn_800D36EC(J3DTevBlockPatched* this_) {
 	this_->mStages[6].mBPCommand2 = 0xcd;
 	this_->mStages[7].mBPCommand1 = 0xce;
 	this_->mStages[7].mBPCommand2 = 0xcf;
-	*(u64*)&this_->mColors[0] = *(u64*)src;
-	*(u64*)&this_->mColors[1] = *(u64*)src;
-	*(u64*)&this_->mColors[2] = *(u64*)src;
+	u32 c0 = src[0];
+	u32 c1 = src[1];
+	*(u32*)&this_->mColors[0] = c0;
+	*(u32*)((u8*)&this_->mColors[0] + 4) = c1;
+	*(u32*)&this_->mColors[1] = c0;
+	*(u32*)((u8*)&this_->mColors[1] + 4) = c1;
+	*(u32*)&this_->mColors[2] = c0;
+	*(u32*)((u8*)&this_->mColors[2] + 4) = c1;
 	this_->J3DTevBlockPatched::setTevKColor(0, *(J3DGXColor*)&kcol);
 	this_->J3DTevBlockPatched::setTevKColor(1, *(J3DGXColor*)&kcol);
 	this_->J3DTevBlockPatched::setTevKColor(2, *(J3DGXColor*)&kcol);
@@ -2773,7 +2778,9 @@ extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
             u32 type = *((u8*)*(void**)(tex + 0x38) + 1) & 0x3f;
             *(u16*)(stage + 0xc) = stage[0xa];
             switch (type) {
-            case 0:
+            case 1:
+            case 6:
+            case 7:
                 if ((j3dSys.mFlags & 8) == 0) {
                     PSMTXConcat(j3dSys.mViewMtx, mtx, m);
                 } else {
@@ -2784,14 +2791,16 @@ extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
                 m[2][3] = 0.0f;
                 (*(J3DTexMtx**)(tex + 0x38))->calc(m);
                 break;
-            case 1:
+            case 2:
+            case 8:
                 if ((j3dSys.mFlags & 4) == 0) {
                     (*(J3DTexMtx**)(tex + 0x38))->calc(mtx);
                 } else {
                     (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
-            case 2:
+            case 3:
+            case 9:
                 if ((j3dSys.mFlags & 4) == 0) {
                     PSMTXConcat(j3dSys.mViewMtx, mtx, m);
                     (*(J3DTexMtx**)(tex + 0x38))->calc(m);
@@ -2799,7 +2808,9 @@ extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
                     (*(J3DTexMtx**)(tex + 0x38))->calc(j3dSys.mViewMtx);
                 }
                 break;
-            case 3:
+            case 5:
+            case 10:
+            case 11:
                 if ((j3dSys.mFlags & 8) == 0) {
                     PSMTXCopy(mtx, m);
                     m[0][3] = 0.0f;
@@ -2810,14 +2821,8 @@ extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
                     (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
+            case 0:
             case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
             default:
                 (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 break;
