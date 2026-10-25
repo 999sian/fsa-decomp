@@ -2383,7 +2383,17 @@ extern "C" void fn_80408114(u8* __restrict self) {
         }
     }
 }
-#pragma peephole reset
+#pragma opt_common_subs off
+static inline void restorePaneSize(PaneRef* p) {
+    const f32 h=p->h;
+    const f32 w=p->w;
+    p->pane->resize(w,h);
+}
+static inline void restorePanePosition(PaneRef* p) {
+    const f32 y=p->y;
+    const f32 x=p->x;
+    p->pane->move(x,y);
+}
 extern "C" void fn_804083D8(u8* self) {
 	u8* p = self;
 	f32 t;
@@ -2395,14 +2405,14 @@ extern "C" void fn_804083D8(u8* self) {
 	for (int i = 0; i < 8; i++, p += 0x14) {
 		if (i == *(s32*)(self + 0x340)) {
 			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f / sx, 1.0f / sy);
-			((J2DPane*)(*(PaneRef**)(p + 0x2c))->pane)->resize(72.0f, 36.0f);
+			(*(PaneRef**)(p + 0x2c))->pane->resize(72.0f, 36.0f);
 			t = *(f32*)((u8*)getBounds__7J2DPaneFv((*(PaneRef**)(p + 0x28))->pane) + 4);
 			yX = (*(PaneRef**)(p + 0x28))->y;
 			yY = (*(PaneRef**)(p + 0x30))->y;
-			f32* bounds=(f32*)getBounds__7J2DPaneFv((*(PaneRef**)(p+0x28))->pane);
+			f32 boundX=*(f32*)getBounds__7J2DPaneFv((*(PaneRef**)(p+0x28))->pane);
             PaneRef* dest=*(PaneRef**)(p+0x30);
             PaneRef* from=*(PaneRef**)(p+0x28);
-            ((J2DPane*)dest->pane)->move(dest->x+(from->x-bounds[0]),yY+(yX-t));
+            dest->pane->move(dest->x+(from->x-boundX),yY+(yX-t));
 			((J2DPicture*)(*(PaneRef**)(p + 0x28))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x334),*(JUtility::TColor*)(self+0x31c));
 			((J2DPicture*)(*(PaneRef**)(p + 0x2c))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x338),*(JUtility::TColor*)(self+0x320));
 			((J2DTextBox*)(*(PaneRef**)(p + 0x30))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x33c),*(JUtility::TColor*)(self+0x324));
@@ -2410,10 +2420,10 @@ extern "C" void fn_804083D8(u8* self) {
 			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f, 1.0f);
 			PaneRef* z=*(PaneRef**)(p+0x2c);
             f32 h=z->h;
-            ((J2DPane*)z->pane)->resize(z->w,h);
+            z->pane->resize(z->w,h);
 			PaneRef* d=*(PaneRef**)(p+0x30);
             f32 y=d->y;
-            ((J2DPane*)d->pane)->move(d->x,y);
+            d->pane->move(d->x,y);
 			((J2DPicture*)(*(PaneRef**)(p + 0x28))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x328),*(JUtility::TColor*)(self+0x310));
 			((J2DPicture*)(*(PaneRef**)(p + 0x2c))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x32c),*(JUtility::TColor*)(self+0x314));
 			((J2DTextBox*)(*(PaneRef**)(p + 0x30))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x330),*(JUtility::TColor*)(self+0x318));
@@ -2430,7 +2440,7 @@ extern "C" void fn_804083D8(u8* self) {
         appendChild__7J2DPaneFP7J2DPane(parent,(*(PaneRef**)(selected+0x28))->pane);
 	}
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8040873C(u8* self, void* p2) {
 	f32 scale = lbl_805438BC;
 	s32 x = (s32)p2;
