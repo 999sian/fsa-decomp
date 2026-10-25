@@ -18,7 +18,7 @@ extern "C" Actor* fn_80142624(Actor* this_, s16 flag) {
     return this_;
 }
 
-extern "C" void fn_80158B5C(void* obj, s32 room, void* pos, JUtility::TColor color, f32 size);
+extern "C" void fn_80158B5C(void* obj, s32 room, void* pos, GXColor color, f32 size);
 extern const f32 lbl_8053CF28;
 extern const f32 lbl_8053CF2C;
 extern "C" void fn_801EFD34(Actor* this_, s32 id, void* idx, s32 n, f32 a, f32 b, f32 c);
@@ -77,6 +77,7 @@ static inline f32 poohRand01() {
     PoohGame* g = (PoohGame*)lbl_8053AAF8;
     return g->rnd.get_ufloat_1();
 }
+#pragma opt_common_subs off
 extern "C" void fn_80142684(Actor* this_) {
     s32 idx;
     f32 scale;
@@ -86,7 +87,7 @@ extern "C" void fn_80142684(Actor* this_) {
         *(u16*)((u8*)this_ + 0x94) != 8 && (*(s32*)((u8*)this_ + 0x230) == 1 || *(s32*)((u8*)this_ + 0x230) == 0)) {
         DrawRec rec;
         f32 mtx[12];
-        fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(s32*)((u8*)this_+4), (u8*)this_+0xc, JUtility::TColor(0,0,0,0x80), lbl_8053CF28);
+        poohDrawShadow(this_);
         ((u8*)&rec.w10)[3] = (u8)(s32)*(f32*)((u8*)this_ + 0x270);
         rec.w30 = 9;
         if (*(u16*)((u8*)this_ + 0x94) == 3 || *(u16*)((u8*)this_ + 0x94) == 7) {
@@ -99,23 +100,23 @@ extern "C" void fn_80142684(Actor* this_) {
             mtx[0] = scale;
             mtx[1] = 0.0f;
             mtx[2] = 0.0f;
-            mtx[3] = 0.0f;
             mtx[4] = 0.0f;
             mtx[5] = 1.0f;
             mtx[6] = 0.0f;
-            mtx[7] = 0.0f;
             mtx[8] = 0.0f;
             mtx[9] = 0.0f;
             mtx[10] = 1.0f;
+            mtx[3] = 0.0f;
+            mtx[7] = 0.0f;
             mtx[11] = 0.0f;
             rec.w18 = mtx;
-            fn_801EFD34(this_, (*(s32 (**)(void*, u32, s32))(*(u32*)(*(u32*)((u8*)lbl_8053AAF8 + 0xa4)) + 0x18))(*(void**)((u8*)lbl_8053AAF8 + 0xa4), 0x54494d47, lbl_8049F318[idx]), &rec, 7, 0.0f, lbl_8053CF38, 0.0f);
+            fn_801EFD34(this_, (*(PoohResMgr**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x54494d47, lbl_8049F318[idx]), &rec, 7, 0.0f, lbl_8053CF38, 0.0f);
         } else {
             fn_801F06F0(this_, lbl_80465B50, *(s32*)((u8*)this_ + 0x25c) + 0x84, &rec, 7, 1.0f, 1.0f);
         }
     }
 }
-
+#pragma opt_common_subs reset
 
 
 extern "C" void fn_80143330(Actor* this_) {
