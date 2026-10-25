@@ -194,8 +194,7 @@ extern "C" void fn_80117074(void* p, s32 n) {
             pos = *fn_8023E724(i);
             pos.x += dx;
             pos.y += dy;
-            fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0xcb, 0, 0, 0, 0, 1, lbl_8053C754);
-            fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0xcc, 0, 0, 0, 0, 1, lbl_8053C754);
+
         }
         for (i = 0; i < 4; i++) {
             u8* e = *(u8**)((char*)p + 0x288 + i * 4);
