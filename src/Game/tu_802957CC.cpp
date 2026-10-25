@@ -71,6 +71,12 @@ static inline s32 HouseDestination(const char* actor) {
     return (room + 7) & ~-(room == 0);
 }
 
+static inline void CenterGrid(JGeometry::TVec3f& pos, f32 offset) {
+    pos.x += offset;
+    pos.y += offset;
+    pos.z = 0.0f;
+}
+
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
     s32 room;
