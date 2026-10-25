@@ -334,10 +334,10 @@ extern "C" void fn_802B2F44(Actor* param_1)
     *(u32*)(p + 0x248) = *(u32*)(p + 0x90) & 0x7f;
     *(u32*)(p + 0x24c) = (*(u32*)(p + 0x90) >> 12) & 0x1f;
     *(u32*)(p + 0x240) = (*(u32*)(p + 0x90) >> 7) & 0x1f;
-    if (*(s32*)(p + 0x240) != 0) {
-        *(s32*)(p + 0x25c) = 1;
-    } else {
+    if (*(s32*)(p + 0x240) == 0) {
         *(s32*)(p + 0x25c) = 0;
+    } else {
+        *(s32*)(p + 0x25c) = 1;
     }
     *(f32*)(p + 0x278) = 0.0f;
     *(f32*)(p + 0x274) = 0.0f;
@@ -357,38 +357,18 @@ extern "C" void fn_802B2F44(Actor* param_1)
         *(f32*)(p + 0x88) = 6.0f;
         *(f32*)(p + 0x8c) = 6.0f;
         switch (*(s32*)(p + 0x248)) {
-        case 0: {
-            Vec v;
-            v.y = 0.0f;
-            v.x = 1.0f;
-            v.z = 0.0f;
-            *(Vec*)(p + 0x3c) = v;
+        case 0:
+            *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(1.0f, 0.0f, 0.0f);
             break;
-        }
-        case 1: {
-            Vec v;
-            v.y = 0.0f;
-            v.x = -1.0f;
-            v.z = 0.0f;
-            *(Vec*)(p + 0x3c) = v;
+        case 1:
+            *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(-1.0f, 0.0f, 0.0f);
             break;
-        }
-        case 2: {
-            Vec v;
-            v.y = 0.0f;
-            v.x = 1.0f;
-            v.z = 0.0f;
-            *(Vec*)(p + 0x3c) = v;
+        case 2:
+            *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(0.0f, 1.0f, 0.0f);
             break;
-        }
-        case 3: {
-            Vec v;
-            v.y = 0.0f;
-            v.x = -1.0f;
-            v.z = 0.0f;
-            *(Vec*)(p + 0x3c) = v;
+        case 3:
+            *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(0.0f, -1.0f, 0.0f);
             break;
-        }
         }
     }
     *(s32*)(p + 0x230) = 0;
