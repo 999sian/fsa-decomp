@@ -188,7 +188,7 @@ static inline void SetDigits(u8* self, void** tbl, int idx, int tens, int ones) 
     SetDigit(self, tbl, idx + 4, ones);
 }
 
-static inline void SetDigits4(u8* self, void** tbl, int idx, int d2, int d1, int d3, int d0) {
+static inline void SetDigits4(u8* self, void** tbl, int idx, int d0, int d1, int d3, int d2) {
     SetDigit(self, tbl, idx, d0);
     SetDigit(self, tbl, idx + 4, d1);
     SetDigit(self, tbl, idx + 8, d2);
