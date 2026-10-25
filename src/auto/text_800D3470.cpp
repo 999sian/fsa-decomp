@@ -3566,8 +3566,9 @@ extern "C" void fn_800DE388(Actor* a, u32 v);
 extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 
 extern "C" J3DTevBlock4* fn_800DE390(J3DTevBlock4* this_, s16 flags) {
-    if (this_ != 0) {
-        this_->J3DTevBlock4::~J3DTevBlock4();
+    if (this_) {
+        *(void**)this_ = __vt__12J3DTevBlock4;
+        this_->J3DTevBlock::~J3DTevBlock();
         if (flags > 0) {
             __dl__FPv(this_);
         }
