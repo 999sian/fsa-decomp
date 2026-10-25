@@ -49,14 +49,6 @@ static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
     *(f32*)(self + 0x6c) = y1;
 }
 
-static inline bool tuInBox3(const JGeometry::TVec3f& v, f32 x0, f32 y0, f32 x1, f32 y1) {
-    bool ret = false;
-    if (v.x >= x0 && v.y >= y0 && v.x < x1 && v.y < y1) {
-        ret = true;
-    }
-    return ret;
-}
-
 static inline bool tuInBox2(const JGeometry::TVec3f& v, const f32* box) {
     f32 x0 = box[0];
     f32 y0 = box[1];
