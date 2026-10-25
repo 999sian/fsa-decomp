@@ -31,8 +31,8 @@ extern "C" f32 lbl_8053D1EC;
 extern "C" f32 lbl_8053D1DC;
 extern "C" f32 lbl_8053D210;
 extern "C" f32 lbl_8053D21C;
-extern "C" f32 lbl_8053D250;
-extern "C" f32 lbl_8053D254;
+extern "C" const f32 lbl_8053D250;
+extern "C" const f32 lbl_8053D254;
 
 struct HinoRandom {
     u32 seed;
