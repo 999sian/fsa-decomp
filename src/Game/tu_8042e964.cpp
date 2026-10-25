@@ -536,15 +536,24 @@ extern "C" char lbl_8048F3AC[];
 extern "C" const char lbl_80543B20[8];
 extern "C" f32 fn_80430518(void*,u8,s32,f32);
 extern "C" f32 lbl_80543B1C;
-#pragma opt_propagation off
-extern "C" void fn_8042EF9C(T80431_Owner* self, char* out, s32 message, s32 count) {
+extern "C" f32 lbl_80543AF8;
+#pragma opt_propagation reset
+extern "C" void fn_8042EF9C(T80431_Owner* self_, char* out, s32 message, s32 count) {
+int code;
+char* p;
+int digit;
+s32 idx;
+char* text;
+u8 choice;
+T80431_Owner* self=self_;
 JUTFont::TWidth wa,wb,wc,wd,we;
 char chunk[3];
 char padding[16];
 f32 widths[10];
 char* resource=(char*)(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa8))->getResource(0x3f3f3f3f,lbl_8048F3AC);
 char* table=resource+0x20;
-char* text=table+*(s32*)(table+4)+*(s32*)(table+message*8+0x10)+8;
+MessageTable8042* mt=(MessageTable8042*)table;
+text=table+mt->header[1]+mt->entries[message].offset+8;
 f32 size=((J2DTextBox*)self->screen->search('Twt01'))->mFontSize.x;
 f32 scale=size/(f32)MessageFont()->getCellWidth();
 MessageFont()->getCellHeight();
@@ -558,14 +567,13 @@ self->choiceWidth[3]=0.0f;
 f32 width=0.0f;
 f32 spaces=0.0f;
 for(int i=0;i<10;i++) widths[i]=0.0f;
-s32 idx=0;
-int code=0;
-u8 choice=0;
-count=(u8)count;
-int digit=count+'0';
-char* p;
-char c;
-while((p=text+idx,c=*p)!=0) {
+idx=0;
+code=0;
+choice=0;
+count &= 0xff;
+digit=count+'0';
+while((p=text+idx,*p)!=0) {
+int c=*p;
 if(c=='\n') {
 if(self->width<width) self->width=width;
 widths[self->lineCount-1]=width;
@@ -574,7 +582,7 @@ idx++;
 width=0.0f;
 } else if(c==0x1a) {
 if(p[2]==2) {
-int kind=p[4];
+char kind=p[4];
 if(kind==0 || kind==10 || kind==18 || kind==25) {
 if(choice==1) {self->choiceWidth[0]-=spaces; spaces=0.0f;}
 if(choice<2) {self->choiceX[choice]=width;self->choiceLine[choice]=(f32)self->lineCount;choice++;}
@@ -598,7 +606,9 @@ idx+=p[1];
 } else {
 code=(u8)c;
 idx++;
-if(MessageFont()->isLeadByte(code)) {code=(code<<8)|(u8)text[idx];idx++;}
+if(MessageFont()->isLeadByte(code)) {int next=(u8)text[idx];
+code <<=8;
+code |=next;idx++;}
 MessageFont()->getWidthEntry(code,&wc);
 width+=scale*(f32)(int)wc.w1;
 if(choice) {
@@ -618,13 +628,14 @@ self->lineCount=1;
 idx=0;
 chunk[0]=chunk[1]=chunk[2]=0;
 out[0]=0;
-int indent=(int)((lbl_80543B1C-widths[self->lineCount-1])*lbl_80543B18+lbl_80543B18);
+int indent=(int)(0.5f*(428.0f-widths[self->lineCount-1])+0.5f);
 if(indent>0) {snprintf(padding,15,lbl_80543B20,indent);strcat(out,padding);}
 while((p=text+idx,*p)!=0) {
-if(*p=='\n') {
+int c=*p;
+if(c=='\n') {
 chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
 self->lineCount++;idx++;
-int indent=(int)((lbl_80543B1C-widths[self->lineCount-1])*lbl_80543B18+lbl_80543B18);
+int indent=(int)(0.5f*(428.0f-widths[self->lineCount-1])+0.5f);
 if(indent>0) {snprintf(padding,15,lbl_80543B20,indent);strcat(out,padding);}
 } else if(c==0x1a) {
 if((int)(u8)p[2]==3) {chunk[0]=digit;chunk[1]=0;code=digit;strcat(out,chunk);fn_80430368(self,(u8)p[5],count,out);}
@@ -636,4 +647,3 @@ else {chunk[0]=p[0];chunk[1]=0;strcat(out,chunk);idx++;}
 }
 chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
 }
-#pragma opt_propagation reset
