@@ -451,7 +451,9 @@ afterPlayerSetup:
 					s32 msg;
 					s32 n = *(s32*)(self + 0x394);
 					if (n < 3) {
-						msg = message80370764At((*(s32*)(self + 0x394))++);
+						s32 next = n + 1;
+                        msg = lbl_80474F40[n];
+                        *(s32*)(self + 0x394) = next;
 					} else if (*(s32*)(self + 0x23c) < 0x168) {
 						*(s32*)(self + 0x394) = 4;
 						msg = 0x509;
