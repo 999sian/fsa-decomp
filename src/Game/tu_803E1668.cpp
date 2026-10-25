@@ -24,7 +24,7 @@ extern const f32 lbl_805436BC;
 extern const f32 lbl_805436C8;
 extern const f64 lbl_80543678;
 extern const f64 lbl_80543670;
-static inline f32 MenuSlideExit803E(s32 elapsed, f32 magnitude, const f32 multiplier) {
+static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 multiplier) {
     f32 square=(f32)(elapsed*elapsed);
     return magnitude*(square*multiplier);
 }
