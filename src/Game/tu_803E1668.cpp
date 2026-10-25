@@ -1883,8 +1883,8 @@ extern "C" void fn_803EDBF0(u8* param_1, u8 param_2) {
 }
 
 extern "C" void* fn_803EDF94(u8* param_1, s16 param_2) {
+    int firstIndex;
     u8* p;
-    s32 i;
 
     if (param_1 != 0) {
         *(void**)param_1 = lbl_804B0B00;
@@ -1910,7 +1910,7 @@ extern "C" void* fn_803EDF94(u8* param_1, s16 param_2) {
         *(void**)(param_1 + 0x14) = 0;
 
         p = param_1;
-        for (i = 0; i < 4; i++, p += 4) {
+        for (firstIndex = 0; firstIndex < 4; firstIndex++, p += 4) {
             if (*(void**)(p + 0x18) != 0) {
                 ((T803EDF94Obj*)*(void**)(p + 0x18))->v08(1);
             }
@@ -1935,7 +1935,7 @@ extern "C" void* fn_803EDF94(u8* param_1, s16 param_2) {
         *(void**)(param_1 + 0x64) = 0;
 
         p = param_1;
-        for (i = 0; i < 4; i++, p += 4) {
+        for (int i = 0; i < 4; i++, p += 4) {
             if (*(void**)(p + 0x68) != 0) {
                 ((T803EDF94Obj*)*(void**)(p + 0x68))->v08(1);
             }
@@ -1952,9 +1952,9 @@ extern "C" void* fn_803EDF94(u8* param_1, s16 param_2) {
         *(void**)(param_1 + 0x60) = 0;
 
         p = param_1;
-        for (i = 0; i < 4; i++, p += 4) {
+        for (int i = 0; i < 4; i++, p += 4) {
             if (*(void**)(p + 0x7c) != 0) {
-                ((void (*)(void*, s32))((*(void***)((u8*)*(void**)(p + 0x7c) + 8))[12]))(*(void**)(p + 0x7c), 1);
+                ((T803EDF94Late*)*(void**)(p + 0x7c))->v30(1);
             }
             *(void**)(p + 0x7c) = 0;
         }
