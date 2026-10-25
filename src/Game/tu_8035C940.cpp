@@ -112,10 +112,10 @@ extern "C" void fn_8035CAF8(char* p)
     if (fn_8035C15C(p, 10) == 1) {
         Unk8035CD00* q = (Unk8035CD00*)p;
         fn_8035C1C4(p, 10, lbl_80472730[*(u32*)(p + 0x90) & 7]);
-        s16 ang = q->m260;
+        u16 idx = (u16)q->m260 >> 5;
         f32 z = q->m14;
-        f32 y = q->m25C * sincosTable___5JMath[(u16)ang >> 5].sin + q->m268;
-        f32 x = q->m258 * sincosTable___5JMath[(u16)ang >> 5].cos + q->m264;
+        f32 y = q->m25C * sincosTable___5JMath[idx].sin + q->m268;
+        f32 x = q->m258 * sincosTable___5JMath[idx].cos + q->m264;
         JGeometry::TVec3<f32> pos(x, y, z);
         JGeometry::TVec3<f32> cur = pos;
         Vec v;
@@ -135,24 +135,28 @@ extern "C" void fn_8035CAF8(char* p)
     }
 }
 
+#pragma opt_propagation off
 extern "C" JGeometry::TVec3<f32> fn_8035CD00(Unk8035CD00* p) {
-    s16 old = p->m260;
-    p->m260 += 0x400;
-    f32 y = lbl_80542938 * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].first + (lbl_80542938 + (p->m268 - p->m25C));
-    f32 x = lbl_80542938 * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].second + (lbl_8054293C + p->m264);
+    f32 sine;
+    f32 z;
+    f32 radius;
+    s16 old;
+    old = p->m260;
+    p->m260 = old + 0x400;
+    z = p->m14;
+    radius = lbl_80542938;
+    sine = JMath::sincosTable_.mTable[(u16)p->m260 >> 5].first;
     JGeometry::TVec3<f32> ret;
-    JGeometry::TVec3<f32> pos(x, y, p->m14);
+    JGeometry::TVec3<f32> pos(JMath::sincosTable_.mTable[(u16)p->m260 >> 5].second * radius + (lbl_8054293C + p->m264),
+        sine * radius + (radius + (p->m268 - p->m25C)), z);
     ret = pos;
     if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) {
-        if (p->m270 < 0) {
-            p->m270 = -0x4000;
-        } else {
-            p->m270 = -0x8000;
-        }
+        if (p->m270 < 0) p->m270 = -0x4000;
+        else p->m270 = -0x8000;
     }
     return ret;
 }
-
+#pragma opt_propagation reset
 extern const f32 lbl_80542938;
 extern const f32 lbl_8054293C;
 #pragma opt_propagation off
@@ -180,26 +184,24 @@ extern "C" JGeometry::TVec3<f32> fn_8035CDC0(char* p) {
 }
 #pragma opt_propagation reset
 extern "C" JGeometry::TVec3<f32> fn_8035CE78(Unk8035CD00* p) {
-    if (p->m25C > lbl_80542940) {
-        p->m25C -= lbl_80542944;
-    }
+    f32 sine;
+    f32 radius;
+    if (p->m25C > lbl_80542940) p->m25C -= lbl_80542944;
     s16 old = p->m260;
     p->m260 += 0x140;
     JGeometry::TVec3<f32> ret;
     JGeometry::TVec3<f32> pos;
     pos.z = p->m14;
     u16 idx = (u16)p->m260 >> 5;
-    pos.y = p->m25C * JMath::sincosTable_.mTable[idx].first + p->m268;
+    sine = JMath::sincosTable_.mTable[idx].first;
+    radius = p->m25C;
+    pos.y = sine * radius + p->m268;
     pos.x = p->m258 * JMath::sincosTable_.mTable[idx].second + p->m264;
     ret = pos;
-    if (p->m260 >= 0x4000 && old < 0x4000) {
-        p->m270 |= 1;
-    } else if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) {
-        p->m270 |= 2;
-    }
+    if (p->m260 >= 0x4000 && old < 0x4000) p->m270 |= 1;
+    else if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) p->m270 |= 2;
     return ret;
 }
-
 typedef Vec (Unk8035CD00::*Unk8035CD00Func)();
 extern Unk8035CD00Func lbl_804AD594[];
 extern const f32 lbl_80542948;
@@ -361,12 +363,16 @@ extern "C" void fn_8035D4B8(char* p) {
                 *(s32*)(p + 0x244) = 3;
             } else {
                 *(s32*)(p + 0x248) = 8;
-                *(s32*)(p + 0x24c) = 0;
-                *(s32*)(p + 0x230) = 2;
-                *(u32*)(p + 0x234) = lbl_80472780[*(u32*)(p + 0x90) & 7] + 0x128;
-                *(s32*)(p + 0x238) = 0;
+                goto reset;
             }
         }
+        return;
+    reset:
+        *(s32*)(p + 0x248) = 8;
+        *(s32*)(p + 0x24c) = 0;
+        *(s32*)(p + 0x230) = 2;
+        *(u32*)(p + 0x234) = lbl_80472780[*(u32*)(p + 0x90) & 7] + 0x128;
+        *(s32*)(p + 0x238) = 0;
     } else if (state == 4) {
         s32 timer = *(s32*)(p + 0x244);
         if (timer == 0) {
