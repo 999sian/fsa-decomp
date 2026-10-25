@@ -1,6 +1,7 @@
 // TU 0x802e0ab4-0x802e1b40 (actor PRTC).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" u8 fn_802DEBA0(void);
 
@@ -80,7 +81,7 @@ extern "C" void fn_802E0AB8(void* this_) {
         return;
     } else if (state < 0) {
         return;
-    } else if (!((u8 (*)(void*))((void**)(*(void**)this_))[13])(this_)) {
+    } else if (!((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
         return;
     } else {
         switch (*(s32*)(p + 0x250)) {
