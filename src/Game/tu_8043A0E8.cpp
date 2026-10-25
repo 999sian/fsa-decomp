@@ -79,8 +79,6 @@ extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 
 struct Fn8043EED8_Obj {
-    virtual void v00();
-    virtual void v01();
     virtual void v02(s32 how);
 };
 
@@ -1237,7 +1235,7 @@ extern "C" void fn_8043E80C(u8* param_1, s32 param_2, s32 param_3, u32 param_4, 
     f32 y;
     f32 sx;
     f32 sy;
-    if ((lbl_80543CE4 == param_8) | (lbl_80543CD4 == param_8) | (lbl_80543CE0 == param_8)) {
+    if ((lbl_80543CE0 == param_8) | (lbl_80543CD4 == param_8) | (lbl_80543CE4 == param_8)) {
         sx = lbl_80543D14;
         sy = sx;
     } else if (param_8 > lbl_80543CCC) {
@@ -1255,8 +1253,10 @@ extern "C" void fn_8043E80C(u8* param_1, s32 param_2, s32 param_3, u32 param_4, 
     y = (lbl_80543D24 + param_7) - sy * lbl_80543CB8;
     switch ((u32)param_2) {
     case 0: {
+        u32 a = param_4;
+        u32 b = param_5;
         void* obj;
-        fn_8043E80C_pair(param_1, 0x258, param_4, param_5);
+        fn_8043E80C_pair(param_1, 0x258, a, b);
         obj = *(void**)(param_1 + 0x258);
         ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
         obj = *(void**)(param_1 + 0x258);
