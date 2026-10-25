@@ -271,8 +271,7 @@ extern "C" void fn_801E90C4(char* p) {
     }
 }
 
-static inline JGeometry::TVec2<f32> sampleFsobPath(char* p, u8 seg, s32 ti) {
-    JGeometry::TVec2<f32> out;
+static inline void sampleFsobPath(char* p, u8 seg, s32 ti, JGeometry::TVec2<f32>& out) {
         switch ((u8)ti) {
         case 0: {
             char* q = p + seg * 8;
@@ -319,7 +318,6 @@ static inline JGeometry::TVec2<f32> sampleFsobPath(char* p, u8 seg, s32 ti) {
         }
         }
 
-    return out;
 }
 
 extern "C" void fn_801E9224(char* p) {
