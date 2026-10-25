@@ -202,15 +202,15 @@ extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, f32 (* __res
         translation.y=pos->y+off;
         translation.z+=off;
     }
-    m[0][3] += translation.x;
-    m[1][3] += translation.y;
-    m[2][3] += translation.z;
     m[1][0] *= lbl_8053CDE0;
     m[1][1] *= lbl_8053CDE0;
     m[1][2] *= lbl_8053CDE0;
     m[2][0] *= lbl_8053CDE0;
     m[2][1] *= lbl_8053CDE0;
     m[2][2] *= lbl_8053CDE0;
+    m[0][3] += translation.x;
+    m[1][3] += translation.y;
+    m[2][3] += translation.z;
     fn_8030DFE8(*(void**)((char*)lbl_8053AB10+0x24),0);
     ((void (*)(void*,Mtx))fn_8030DD20)(*(void**)((char*)lbl_8053AB10+0x24),m);
     GXClearVtxDesc();
