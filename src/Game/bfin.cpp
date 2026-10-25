@@ -347,4 +347,6 @@ extern "C" void fn_803D6D74(void* thisObj) {
 	*(s32*)((u8*)&lbl_80529DEC + 0x1a8) = -1;
 }
 
+#pragma exceptions off
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#pragma exceptions reset
