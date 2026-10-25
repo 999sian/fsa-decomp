@@ -23,6 +23,9 @@ extern "C" void __dt__5ActorFv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" u8 fn_8023F264(s32 i);
 extern "C" u8 fn_8022F514(s32 a);
+extern "C" u8 fn_80235274(s32 a);
+extern "C" void fn_80238548(s32, s32, void*, s32);
+extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
 extern "C" s32 fn_8023DE58(s32 x);
 extern "C" void* fn_8023E724(s32 i);
 extern "C" u8 fn_802317F0(s32 i, s32 a, void* b, void* c, s32 d);
@@ -336,12 +339,13 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 extern "C" void fn_80295C40(void* p) {
-    s32 i;
+    int i;
     s32 n;
     char* pc;
     char* q;
     void* obj;
     s32 k;
+    s32 j;
 
     for (i = 0; i < 4; i++) {
         if (fn_8023F264(i) != 0 && fn_8022F514(i) == 0) {
@@ -390,7 +394,7 @@ extern "C" void fn_80295C40(void* p) {
     } while (--k);
 
     q = (char*)p;
-    for (i = 0; i < *(s32*)((char*)p + 0x2a4); i++) {
+    for (j = 0; j < *(s32*)((char*)p + 0x2a4); j++) {
         obj = fn_801F666C(fn_801F856C(), *(s32*)(q + 0x27c));
         if (obj != 0) {
             *(u8*)((char*)obj + 0x11c) = 0;
