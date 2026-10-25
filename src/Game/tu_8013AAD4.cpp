@@ -14,6 +14,8 @@
 
 
 extern void* lbl_8053AB10;
+extern "C" s32 fn_8030DD20(void* subObj);
+extern const f32 lbl_8053CDE0;
 
 
 struct AADGameState {
@@ -522,19 +524,30 @@ extern "C" void fn_8013BBE0(u8* this_) {
     JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
     (*(J2DGrafContext**)(this_ + 0x14))->place(box);
     (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
-    if (lbl_8053AAF8->b7f) {
-        if (lbl_8053AAF8->mode == 12) {
+    s32 mode;
+    u8 b7f = lbl_8053AAF8->b7f;
+    if (b7f) {
+        mode = lbl_8053AAF8->mode;
+        if (mode == 12) {
             this_[0x39] = 0;
             return;
         }
+    } else {
+        mode = lbl_8053AAF8->mode;
     }
-    if (!isEventMode()) {
+    bool ev;
+    if (b7f) {
+        ev = evModeA(mode) != 0;
+    } else {
+        ev = evModeB(mode) != 0;
+    }
+    if (!ev) {
         this_[0x39] = 1;
     } else {
         u8 r = 0;
         if (this_[0x38] >= 0xff) {
             bool ok = true;
-            if (lbl_8053AAF8->mode != 11 && !fn_80239D38()) {
+            if (mode != 11 && !fn_80239D38()) {
                 ok = false;
             }
             if (ok) {
