@@ -1,5 +1,14 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#define I6(p,o) (*(s32*)((char*)(p)+(o)))
+#define F6(p,o) (*(f32*)((char*)(p)+(o)))
+#define B6(p,o) (*(u8*)((char*)(p)+(o)))
+#define H6(p,o) (*(u16*)((char*)(p)+(o)))
+#define V6(p,o) (*(JGeometry::TVec3<f32>*)((char*)(p)+(o)))
+
 #include "Game/TlwpDrawParam.h"
 
 extern "C" const f32 lbl_80541B3C;
@@ -53,6 +62,107 @@ extern "C" void fn_801F06F0(void*, void*, s32, void*, s32, f32, f32);
 extern "C" void fn_803075AC(s32, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void fn_80320374(char* p) {
+    s32 t;
+    s32 room;
+    s32 kind;
+    u16 st;
+    f32 v[3];
+    void* mgr;
+
+    t = ((u16 (*)(f32*, s32))fn_8022461C)((f32*)(p + 0xc), *(s32*)(p + 4));
+    if (t == 3 && *(f32*)(p + 0x14) < lbl_80541AD8) {
+        *(f32*)(p + 0x2b8) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0xc) & 0xfff0);
+        *(f32*)(p + 0x2bc) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0x10) & 0xfff0);
+        *(s32*)(p + 0x2a8) = 1;
+        *(f32*)(p + 0x14) = lbl_80541AE0;
+        *(f32*)(p + 0x3c) = lbl_80541AE0;
+        *(f32*)(p + 0x40) = lbl_80541AE0;
+        *(f32*)(p + 0x44) = lbl_80541AE0;
+        return;
+    }
+    if (t == 0xe && *(f32*)(p + 0x14) < lbl_80541AD8) {
+        fn_802DEB58();
+        if (fn_802DE9A0() == 0) {
+            *(f32*)(p + 0x2b8) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0xc) & 0xfff0);
+            *(f32*)(p + 0x2bc) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0x10) & 0xfff0);
+            *(s32*)(p + 0x2a8) = 1;
+            *(u8*)(p + 0x2ac) = 1;
+            *(f32*)(p + 0x14) = lbl_80541AE0;
+            *(f32*)(p + 0x3c) = lbl_80541AE0;
+            *(f32*)(p + 0x40) = lbl_80541AE0;
+            *(f32*)(p + 0x44) = lbl_80541AE0;
+            return;
+        }
+        fn_801F0E34(p, 0x5005f, 0);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE4, 0x2a9, -1, 1, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE4, 0x2aa, 0, 0, 0, 0, 1);
+        detach__5ActorFv(p);
+        return;
+    }
+    if ((t == 0xd && *(f32*)(p + 0x14) < lbl_80541AD8) || t == 0x3b) {
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE4, 0x3d0, 0, 1, 0, 0, 1);
+        detach__5ActorFv(p);
+        return;
+    }
+    room = *(s32*)(p + 4);
+    if (room >= 8) {
+        mgr = fn_801F856C();
+        v[0] = *(f32*)(p + 0xc);
+        v[1] = *(f32*)(p + 0x10);
+        v[2] = lbl_80541AE0;
+        Actor_CreateByID(mgr, 0x4b4d5249, room, v, 0, -1, -1);
+    } else {
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE8, 0x564, 2, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AEC, 0x503, 1, 0, 0, 0, 1);
+    }
+    fn_801F0E34(p, 0x30003, 0);
+    st = *(u16*)(p + 0x94);
+    if (st == 2) {
+        detach__5ActorFv(p);
+        return;
+    }
+    if (st >= 4) {
+        detach__5ActorFv(p);
+        return;
+    }
+    kind = *(s32*)(p + 0x264);
+    if (kind < 2) {
+        kind = *(s32*)(p + 0x294);
+    }
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+        if (*(u8*)(lbl_8053AAF8 + 0x7e) == 1) {
+            if (kind == 8) {
+                if (fn_802DE814() == 0 && *(u8*)(p + 0x2ad) == 1) kind = 3;
+            } else if (kind == 4) {
+                if (fn_802DE814() == 0 && fn_80138A30(lbl_8053AAF8) == 2) kind = 3;
+            }
+        }
+        if (kind == 7) {
+            if (fn_802DE814() == 1 || fn_80237810(fn_8022F340(*(s32*)(p + 0x23c))) != 16) kind = 6;
+        }
+        if (kind == 2) {
+            if (fn_802D7948(fn_802D6A9C()) != 0 || *(s32*)(p + 4) >= 8) kind = 6;
+        }
+    }
+    if ((u32)kind > 8) {
+        detach__5ActorFv(p);
+        return;
+    }
+    switch (kind) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+        break;
+    }
+}
+
 extern "C" void fn_80320D18(char* p) {
     if (*(s32*)(p + 0x230) == 0 && *(s32*)(p + 0x278) <= 180) {
         if ((*(s32*)(p + 0x278) & 2) == 0) return;
