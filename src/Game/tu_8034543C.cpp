@@ -137,29 +137,6 @@ static inline f32 tuRandF() {
     return *(f32*)&bits - lbl_805423A8;
 }
 
-static inline s32 tuCollectTiles(u8* self, u16* tiles, f32 x0, f32 y0, s32 w, s32 h) {
-    s32 n = 0;
-    s32 col = 1;
-    for (s32 x = 16; x < w; x += 16, col++) {
-        f32 fx = (f32)x + x0;
-        s32 v = col + 0x20;
-        for (s32 y = 16; y < h; y += 16, v += 0x20) {
-            f32 pos[2];
-            pos[0] = fx;
-            pos[1] = (f32)y + y0;
-            s32 t = (u16)fn_802265FC(pos, *(s32*)(self + 0x4));
-            if (t == 0xd || t == 0x3a) {
-                if (n >= 713) {
-                    return 0;
-                }
-                tiles[n] = v;
-                n++;
-            }
-        }
-    }
-    return n;
-}
-
 static inline void tuSetVec(Vec* v, f32 x, f32 y, f32 z) {
     v->x = x;
     v->y = y;
