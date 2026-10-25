@@ -108,16 +108,17 @@ extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
 static inline s32 getFileIcon(u32 slot) {
+    const s32* tbl = (const s32*)(lbl_804765D0 + 0x730);
     s32 k = 0;
     s32 j;
     for (j = 0; j < 8; j++) {
         if (fn_803B8CAC(slot, j)) {
             k++;
         } else {
-            return ((s32*)(lbl_804765D0 + 0x730))[k];
+            return ((const s32*)(lbl_804765D0 + 0x730))[k];
         }
     }
-    return ((s32*)(lbl_804765D0 + 0x730))[7];
+    return tbl[7];
 }
 
 static inline BOOL isTimeSet(s64 t) {
