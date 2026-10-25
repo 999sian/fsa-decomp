@@ -32,6 +32,8 @@ extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void detach__5ActorFv(void* this_);
 
+inline void unusedS32(s32 v) {}
+
 // NonMatching: retail keeps a dead float->int conversion (fctiwz + stfd) of
 // "y - mgr->0xd0" in case 0 and a 0x30 frame; this version drops it.
 extern "C" void fn_802A7D40(u8* this_) {
@@ -41,9 +43,9 @@ extern "C" void fn_802A7D40(u8* this_) {
         (*(s32*)(this_ + 0x234))--;
         if (*(s32*)(this_ + 0x234) == 0) {
             *(s32*)(this_ + 0x230) = 1;
-            switch ((s32)(*(u32*)(this_ + 0x90) & 0xff)) {
+            switch ((u8)*(u32*)(this_ + 0x90)) {
             case 1:
-                s32 dy = *(f32*)(this_ + 0x10) - *(f32*)(mgr + 0xd0);
+                volatile s32 dy = *(f32*)(this_ + 0x10) - *(f32*)(mgr + 0xd0);
                 break;
             }
         }
@@ -58,8 +60,8 @@ extern "C" void fn_802A7D40(u8* this_) {
         if (*(s32*)(this_ + 0x234) == 0) {
             if (*(u8**)(this_ + 0x238) == NULL) {
                 Vec3 v;
-                v.y = 24.0f + *(f32*)(this_ + 0x10);
                 v.x = 16.0f + *(f32*)(this_ + 0xc);
+                v.y = 24.0f + *(f32*)(this_ + 0x10);
                 v.z = *(f32*)(this_ + 0x14);
                 *(u8**)(this_ + 0x238) = fn_8013CC50(*(u32*)(this_ + 4), &v, 0x173, 1, 0, 0, 0, 1, 1.0f);
                 *(s32*)(this_ + 0x230) = 3;
