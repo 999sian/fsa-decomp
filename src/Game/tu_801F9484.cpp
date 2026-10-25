@@ -1404,11 +1404,7 @@ extern void* lbl_8049E500[];
 extern void* lbl_8049DD68[];
 
 // Sub-object (ctor fn_801D267C, dtor 0x80105D80; holds a J3DFrameCtrl at +0x24).
-struct AnimSub {
-    AnimSub() { fn_801D267C(this); }
-    ~AnimSub(); /* 0x80105D80 */
-    u8 pad[0x38];
-};
+#include "Game/AnimSub.h"
 struct AnimSubRaw {
     u8 pad[0x38];
 };
