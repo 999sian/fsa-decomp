@@ -210,4 +210,4 @@ extern "C" void fn_8021FB44(char* p) {
     *(int*)(p + 0x3c) = 0;
 }
 
-void fn_8021FB94(void) {}
+void __sinit_tu_8021F4B0_cpp(void) {}
