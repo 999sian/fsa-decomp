@@ -143,6 +143,8 @@ GXWGFifo.f32=u2; GXWGFifo.f32=v2; GXWGFifo.f32=eu; GXWGFifo.f32=ev;
 GXWGFifo.f32=vx; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=oz;
 GXWGFifo.f32=u; GXWGFifo.f32=v2; GXWGFifo.f32=su; GXWGFifo.f32=ev;
 }
+struct Tu802F5040Ids { u8 ids[16]; };
+
 struct Tu802F5040Rect {
     s32 m00;
     s32 m04;
@@ -326,13 +328,14 @@ extern "C" void fn_802F53F4(u8* this_, s32 idx, u8* data) {
     }
 }
 
-extern "C" void fn_802F5570(u8* this_, f32* src, u8* ent, f32* outPos, u8** outEnt, MtxPtr mtx, u8* dst) {
+extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos, u8** outEnt, MtxPtr mtx, u8* dst) {
     if (ent == NULL || *(s32*)(ent + 0x38) == 2) {
-        if (fn_802F58A8(this_, src, mtx) != 0 && ent != NULL) {
-            *(u32*)(dst + 0x0) = *(u32*)(ent + 0x0);
-            *(u32*)(dst + 0x4) = *(u32*)(ent + 0x4);
-            *(u32*)(dst + 0x8) = *(u32*)(ent + 0x8);
-            *(u32*)(dst + 0xc) = *(u32*)(ent + 0xc);
+        if (fn_802F58A8(this_, src, mtx) != 0) {
+            if (ent != NULL) {
+            u32 b; u32 a; a=*(u32*)(ent+0); b=*(u32*)(ent+4);
+            *(u32*)(dst+0)=a; *(u32*)(dst+4)=b;
+            { u32 c=*(u32*)(ent+8); u32 d=*(u32*)(ent+12);
+            *(u32*)(dst+8)=c; *(u32*)(dst+12)=d; }
             dst[0x10] = ent[0x10];
             dst[0x11] = ent[0x11];
             dst[0x12] = ent[0x12];
@@ -363,51 +366,41 @@ extern "C" void fn_802F5570(u8* this_, f32* src, u8* ent, f32* outPos, u8** outE
             if (*(MtxPtr*)(dst + 0x18) != NULL) {
                 PSMTXConcat(*(MtxPtr*)(dst + 0x18), mtx, mtx);
                 *(MtxPtr*)(dst + 0x18) = mtx;
-                *outEnt = dst;
-            } else {
-                *outEnt = ent;
             }
+            }
+            *outEnt = dst;
         } else {
             *outEnt = ent;
         }
-        outPos[0] = src[0];
-        outPos[1] = src[1];
-        outPos[2] = src[2];
+        f32 x; f32 y; y=src[1]; x=src[0]; outPos[0]=x; f32 z=src[2]; outPos[1]=y; outPos[2]=z;
     } else {
-        f32 fVar3 = src[2];
-        f32 fVar4 = fVar3;
-        if (*(s32*)(ent + 0x38) == 1 && 0 < *(s32*)(this_ + 0xc21c)) {
-            f32 fVar5 = src[0];
-            f32 fVar6 = *(f32*)(this_ + 0x2368);
-            if (fVar6 <= fVar5 && fVar5 < lbl_80541510 * (f32)*(s32*)(this_ + 0x2380) + fVar6) {
-                f32 fVar7 = src[1];
-                f32 fVar8 = *(f32*)(this_ + 0x236c);
-                if (fVar8 <= fVar7 && fVar7 < lbl_80541510 * (f32)*(s32*)(this_ + 0x2384) + fVar8) {
-                    u32 uVar1 = (u32)(lbl_80541514 * (fVar5 - fVar6));
-                    u32 uVar2 = (u32)(lbl_80541514 * (fVar7 - fVar8));
-                    u8* cell = *(u8**)(this_ + *(s32*)(this_ + 0x2388) * 4 + 0x100) + uVar2 * 0x30c + uVar1 * 0xc;
-                    f32 fx = lbl_80541514 * ((fVar5 - fVar6) - lbl_80541510 * (f32)uVar1);
-                    f32 fy = lbl_80541514 * ((fVar7 - fVar8) - lbl_80541510 * (f32)uVar2);
-                    f32 a = *(f32*)(cell + 0x8);
-                    f32 b = *(f32*)(cell + 0x14);
-                    f32 c = *(f32*)(cell + 0x314);
-                    f32 d = *(f32*)(cell + 0x320);
-                    f32 r0 = a * (lbl_80541518 - fx) + b * fx;
-                    f32 r1 = c * (lbl_80541518 - fx) + d * fx;
-                    fVar4 = fVar3 + ((lbl_80541518 - fy) * r0 + fy * r1);
-                    fVar3 = fVar3 + fVar4;
-                    *outEnt = ent;
-                    outPos[0] = src[0];
-                    outPos[1] = src[1];
-                    outPos[2] = fVar3;
-                    return;
+        if (*(s32*)(ent+0x38)==1) {
+            f32 z=src[2], height=z;
+            if (*(s32*)(this_+0xc21c)>0) {
+                f32 loX; f32 x;
+                x=src[0]; loX=*(f32*)(this_+0x2368);
+                if (x>=loX && x<lbl_80541510*(f32)*(s32*)(this_+0x2380)+loX) {
+                    f32 loY; f32 y;
+                    y=src[1];loY=*(f32*)(this_+0x236c);
+                    if (y>=loY && y<lbl_80541510*(f32)*(s32*)(this_+0x2384)+loY) {
+                        f32 one; f32 step; f32 dy; f32 dx;
+                        dx=x-loX; dy=y-loY; step=lbl_80541514; one=lbl_80541518;
+                        s32 iy; s32 ix;
+                        ix=(s32)(step*dx); iy=(s32)(step*dy);
+                        u8* cell=this_; cell+=*(s32*)(this_+0x2388)*4;
+                        cell=*(u8**)(cell+0x100)+(iy*0x30c+ix*0xc);
+                        f32 fx=step*(dx-lbl_80541510*(f32)ix);
+                        f32 fy=step*(dy-lbl_80541510*(f32)iy);
+                        height+= (one-fy)*(*(f32*)(cell+8)*(one-fx)+*(f32*)(cell+0x14)*fx) + fy*((one-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
+                    }
                 }
             }
+            f32 x; f32 y; y=src[1]; x=src[0]; outPos[0]=x; outPos[1]=y; outPos[2]=z+height;
+            *outEnt=ent;
+        } else {
+            f32 x; f32 y; y=src[1]; x=src[0]; outPos[0]=x; f32 z=src[2];outPos[1]=y;outPos[2]=z;
+            *outEnt=ent;
         }
-        outPos[0] = src[0];
-        outPos[1] = src[1];
-        outPos[2] = fVar3;
-        *outEnt = ent;
     }
 }
 
@@ -1336,14 +1329,18 @@ extern "C" void fn_802F91AC(void* self, f32* __restrict p, u8* o, u8* out, f32 f
     } else fn_8013B3F0(lbl_8053AB10);
 }
 
+#pragma opt_common_subs on
+#pragma opt_propagation off
 extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff, u32 n, u8 flag) {
     u8 swap = flag;
-    u32 offset = dstOff;
     u8* self = this_;
-    u8* dst;
     u32 index;
-    u8* __restrict slot;
+    u8* dst;
+    u8* slot;
     u32 size;
+    u32 entry = idx;
+
+
     if (n == 0) {
         s32 result;
         if (checkCompressed__9JKRDecompFPUc(src)) {
@@ -1356,9 +1353,9 @@ extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff,
     } else {
         size = n;
     }
-    index = idx * 4;
+    index = entry * 4;
     slot = self + index;
-    dst = *(u8**)(slot + 0x98) + offset;
+    dst = *(u8**)(slot + 0x98) + dstOff;
     u8* data;
     if (checkCompressed__9JKRDecompFPUc(src)) {
         decode__9JKRDecompFPUcPUcUlUl(src, *(u8**)(self + 0xf8), 0x8000, 0);
@@ -1366,22 +1363,24 @@ extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff,
     } else {
         data = src;
     }
+    u32 length = size;
+    s32 k;
     u8* input = data + srcOff;
-    for (u32 k = 0; k < size; k += 2) {
+    for (k = 0; (u32)k < size; k += 2) {
         u16 v;
         if (k != 0 && !(k & 0x1f)) {
             v = 0;
         } else {
             u16 t = (input[k + 1] << 8) | input[k];
-            v = (t & 0x3e0) | ((t & 31) << 10) | ((t >> 10) & 31) | 0x8000;
+            v = ((t & 31) << 10) | (t & 0x3e0) | ((t >> 10) & 31) | 0x8000;
             if (k == 0) v = 0;
         }
         dst[k] = v >> 8;
         dst[k+1] = v;
     }
-    u8* output = *(u8**)(self + index + 0xc8) + offset;
-    u8* colors = *(u8**)(slot + 0x98) + offset;
-    for (u32 k = 0; k < size; k += 2) {
+    u8* output = ((u8**)(self + 0xc8))[entry] + dstOff;
+    u8* colors = *(u8**)(slot + 0x98) + dstOff;
+    for (k = 0; (u32)k < length; k += 2) {
         u16 v = (colors[k] << 8) | colors[k+1];
         if (v & 0x8000) {
             u8 a = Tu802F93F4_c5((v >> 10) & 31);
@@ -1393,9 +1392,9 @@ extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff,
         output[k] = v >> 8;
         output[k+1] = v;
     }
-    DCFlushRange(output, size);
+    DCFlushRange(output, length);
 }
-
+#pragma opt_propagation on
 extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
     u8* base;
     u8* s;
