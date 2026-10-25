@@ -1,7 +1,5 @@
 #include "types.h"
-#pragma exceptions off
 #include "Game/SinitPoolChain.h"
-#pragma exceptions on
 #include "JSystem/JGeometry/Vec.h"
 #ifndef dtor_80084580
 #define dtor_80084580(p) (::operator delete(p))
