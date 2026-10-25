@@ -73,9 +73,9 @@ extern const f32 lbl_8053F3AC;
 extern const f32 lbl_8053F3B0;
 extern "C" void fn_801D9C58(void*, s32);
 
-extern f32 lbl_8053F388;
+extern const f32 lbl_8053F388;
 extern const f32 lbl_8053F38C;
-extern f32 lbl_8053F390;
+extern const f32 lbl_8053F390;
 extern f32 lbl_8053F394;
 extern f32 lbl_8053F398;
 extern f32 lbl_8053F39C;
