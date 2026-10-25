@@ -20,6 +20,7 @@ extern "C" f32 lbl_805417CC;
 extern "C" f32 lbl_805417D0;
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AF80;
+extern "C" void* lbl_8053AC98;
 extern "C" f32 lbl_805417E0;
 
 
@@ -111,6 +112,120 @@ extern "C" void fn_8031179C(u8* p) {
 extern "C" void fn_80311C58(u8* this_) {
     fn_801F06F0(this_, lbl_80471488, 0x386, 0, 0, lbl_805417C4, lbl_805417C4);
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, 0x386, 0, 2, -1, 0, 0, 0);
+}
+
+extern "C" void fn_80311CD0(u8* p) {
+    f32 box[4];
+    f32 pos[3];
+    Vec pv;
+    Vec sv;
+    u8* rng;
+    u32 seed;
+    u32 bits;
+    f32 fx, fy, fx1, fy1, fx2, fy2;
+    f32 r1, r2;
+    s32 r28, r30, r29;
+    s32 state;
+    s32 found;
+    void* h;
+    s32 room;
+
+    box[0] = *(f32*)(p + 0x60);
+    box[1] = *(f32*)(p + 0x64);
+    box[2] = *(f32*)(p + 0x68);
+    box[3] = *(f32*)(p + 0x6c);
+    box[0] += *(f32*)(p + 0xc);
+    box[2] += *(f32*)(p + 0xc);
+    box[1] += *(f32*)(p + 0x10);
+    box[3] += *(f32*)(p + 0x10);
+    h = *(void**)(p + 0x198);
+    room = *(s32*)(p + 4);
+    fn_80239914(p, room, h);
+
+    state = *(s32*)(p + 0x24c);
+    switch (state) {
+    case 0:
+        fn_8022FEB8(box, room, h, 1, 0);
+        r29 = fn_8022FD8C(h);
+        if (r29 < 0) {
+            break;
+        }
+        if (!fn_802300EC()) {
+            break;
+        }
+        if (fn_802D800C(fn_802D6A9C(), 0x14)) {
+            pv = *(Vec*)(p + 0xc);
+            if (fn_8038C678(r29, 0x834, h, room, &pv, 0x28)) {
+                *(s32*)(p + 0x254) = r29;
+                *(s32*)(p + 0x24c) = 3;
+            }
+            break;
+        }
+        rng = (u8*)lbl_8053AAF8;
+        fx = *(f32*)(p + 0x230) + lbl_805417B8;
+        fy = *(f32*)(p + 0x234) + lbl_805417BC;
+        fx1 = *(f32*)(p + 0x238) - lbl_805417BC;
+        fy1 = *(f32*)(p + 0x23c) - lbl_805417BC;
+        seed = *(u32*)(rng + 0xb4);
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        *(u32*)(rng + 0xb4) = seed;
+        bits = (seed >> 9) | 0x3f800000;
+        r1 = *(f32*)&bits - lbl_805417C4;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        *(u32*)(rng + 0xb4) = seed;
+        bits = (seed >> 9) | 0x3f800000;
+        r2 = *(f32*)&bits - lbl_805417C4;
+        fx2 = lbl_805417C0 * r1 + fx;
+        fy2 = lbl_805417C8 * r2 + fy;
+        found = 0;
+        for (r30 = 0; r30 < 0x14 && !found; r30++) {
+            for (r28 = 0; r28 < 0x1a && !found; r28++) {
+                pos[0] = fx2;
+                pos[1] = fy2;
+                pos[2] = lbl_805417CC;
+                if (fn_80226850(pos, 0) == 0x1b0) {
+                    pos[0] = (f32)(__cvt_fp2unsigned(pos[0]) & ~0xf);
+                    pos[1] = (f32)(__cvt_fp2unsigned(pos[1]) & ~0xf);
+                    *(f32*)(p + 0x240) = pos[0];
+                    *(f32*)(p + 0x244) = pos[1];
+                    *(f32*)(p + 0x248) = pos[2];
+                    sv.x = pos[0];
+                    sv.y = pos[1];
+                    sv.z = pos[2];
+                    *(Vec*)((u8*)fn_802D6A9C() + 0x13280) = sv;
+                    found = 1;
+                    break;
+                }
+                fx2 = fx2 + lbl_805417D0;
+                if (fx2 >= fx1) {
+                    fx2 = fx;
+                }
+            }
+            fy2 = fy2 + lbl_805417D0;
+            if (fy2 >= fy1) {
+                fy2 = fy;
+            }
+        }
+        if (fn_8038C678(r29, 0x84f, h, room, &pv, 0x28)) {
+            *(s32*)(p + 0x254) = r29;
+            *(s32*)(p + 0x24c) = 3;
+        }
+        break;
+    case 1:
+        fn_8022FF8C(*(s32*)(p + 0x250), box, room, h, 1, 0);
+        if (fn_80388CAC(*(s32*)(p + 0x250), h)) {
+            *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + lbl_805417E0;
+            *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + lbl_805417E0;
+            p[0x258] = 0;
+            p[0x259] = 1;
+            *(s32*)(p + 0x24c) = 2;
+        }
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    }
 }
 
 extern "C" Actor* fn_803122F8(Actor* p, s16 n) {
