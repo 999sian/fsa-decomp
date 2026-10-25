@@ -261,25 +261,22 @@ extern "C" u8 fn_801E3B2C(char* this_) {
             rect[2] += lbl_8053F540;
             rect[3] += lbl_8053F540;
             for (k = 0; k < 4; k++) {
-                if (!fn_8023F264(k) || fn_80236B50(k) || fn_80230188(k) || fn_8022D75C(k)) {
-                    continue;
-                }
-                room = *(s32*)(this_ + 4);
-                if (fn_8023DE58(k) != room) {
-                    continue;
-                }
-                if (fn_80235448(k) &&
-                    fn_8023E724(k)->z <= lbl_8053F544 && fn_8023E724(k)->z < fn_8023E578(k)->z &&
-                    ItemBase_inArea(rect, &fn_8023E724(k)->x)) {
-                    JGeometry::TVec3f* pl = fn_8023E724(k);
-                    f32 dy = *(f32*)(this_ + 0x10) - pl->y;
-                    f32 dx = *(f32*)(this_ + 0xc) - pl->x;
-                    *(u8*)(this_ + 0x5d1) = lbl_8053F0C4;
-                    f32 a = JMath::atanTable_.atan2_(dx, dy);
-                    *(s16*)(this_ + 0x5d2) = (s16)(a * lbl_8053F548);
-                    fn_80217A74(this_ + 0x448);
-                    fn_801F0E34(this_, 0x40062, 0);
-                    break;
+                if (fn_8023F264(k) && !fn_80236B50(k) && !fn_80230188(k) && !fn_8022D75C(k)) {
+                    room = *(s32*)(this_ + 4);
+                    s32 pr = fn_8023DE58(k);
+                    if (pr == room && fn_80235448(k) &&
+                        fn_8023E724(k)->z <= lbl_8053F544 && fn_8023E724(k)->z < fn_8023E578(k)->z &&
+                        ItemBase_inArea(rect, &fn_8023E724(k)->x)) {
+                        JGeometry::TVec3f* pl = fn_8023E724(k);
+                        f32 dy = *(f32*)(this_ + 0x10) - pl->y;
+                        f32 dx = *(f32*)(this_ + 0xc) - pl->x;
+                        *(u8*)(this_ + 0x5d1) = lbl_8053F0C4;
+                        f32 a = JMath::atanTable_.atan2_(dx, dy);
+                        *(s16*)(this_ + 0x5d2) = (s16)(a * lbl_8053F548);
+                        fn_80217A74(this_ + 0x448);
+                        fn_801F0E34(this_, 0x40062, 0);
+                        break;
+                    }
                 }
             }
         }
