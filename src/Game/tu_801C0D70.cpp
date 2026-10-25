@@ -3,7 +3,7 @@
 #include "types.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
-#include "JSystem/JGeometry/Util.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern s8 lbl_8053AC10[8];
 static u16 lbl_804C7E70[0x30];
