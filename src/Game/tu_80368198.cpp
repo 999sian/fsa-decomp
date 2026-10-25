@@ -76,6 +76,7 @@ extern "C" void __dt__13Base_8010E074Fv(void* this_, int how);
 extern "C" void fn_8036A65C(void* this_);
 extern "C" void fn_801F0E34(void* self, u32 msg, s32 flag);
 extern "C" void fn_8010DF58(void* this_);
+extern "C" void fn_801F06F0(void* self, void* tbl, s32 idx, EffArgs* args, s32 n, f32 a, f32 b);
 extern "C" void fn_803683AC(void* this_);
 extern "C" void fn_8036A894(void* this_);
 extern "C" void fn_8036AC58(void* this_, void* param);
