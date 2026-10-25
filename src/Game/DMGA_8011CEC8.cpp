@@ -36,6 +36,105 @@ extern "C" void fn_802DCD1C(void* a, void* b);
 extern "C" void fn_802D9CB0(void);
 extern "C" void fn_80118384(void);
 #include "JSystem/JGeometry/Vec.h"
+static inline void setDMGAState(s32 state, void* this_) {
+    char* p;
+    u32 mode;
+    s32 i;
+    p = (char*)this_;
+    mode = state;
+    switch (mode) {
+    case 0:
+    case 5:
+    case 8:
+        break;
+    case 1: {
+        fn_801186B0(fn_8011921C(), 0x11);
+        for (i = 0; i < 4; i++) {
+            fn_80230BF4(i, 3);
+            fn_80230498(i, fn_8023E724(i), 0x3f, 0, -0x80, -0x80, 1);
+        }
+        {
+            u8* ret = (u8*)fn_8011921C();
+            ret[2] = 1;
+        }
+        fn_80458FF0(lbl_8053AF80, 0x100001B, 0, 0);
+        break;
+    }
+    case 2: {
+        s32 pair[2];
+        f32 f = lbl_8053C860;
+        *(f32*)(p + 0x23C) = f;
+        *(f32*)(p + 0x238) = f;
+        p[0x230] = 0;
+        pair[0] = 0;
+        pair[1] = -1;
+        fn_802DCD1C(fn_802D6A9C(), pair);
+        break;
+    }
+    case 3:
+        *(f32*)(p + 0x238) = lbl_8053C860;
+        p[0x230] = 1;
+        break;
+    case 4:
+        *(f32*)(p + 0x238) = lbl_8053C8A0;
+        break;
+    case 6: {
+        s32 j;
+        for (j = 0; j < 4; j++) {
+            f32 z[3];
+            f32* q;
+            u8* ret = (u8*)fn_8011921C();
+            u8* r = (u8*)fn_8011871C(ret, *(s32*)(ret + 0x10), 0x444d4c4b);
+            if (r == *(u8**)((u8*)fn_8011921C() + 0x14)) {
+                z[0] = lbl_8053C860;
+                z[1] = lbl_8053C860;
+                z[2] = lbl_8053C860;
+                q = z;
+            } else {
+                q = (f32*)(*(u8**)r + 0x24);
+            }
+            fn_80230498(j, q, 0x3f, 0, -0x80, -0x80, 1);
+        }
+        {
+            JGeometry::TVec3<f32> v;
+            f32 a[3];
+            f32* q;
+            u8* ret = (u8*)fn_8011921C();
+            u8* r = (u8*)fn_8011871C(ret, *(s32*)(ret + 0x10), 0x444d4c4b);
+            if (r == *(u8**)((u8*)fn_8011921C() + 0x14)) {
+                a[0] = lbl_8053C860;
+                a[1] = lbl_8053C860;
+                a[2] = lbl_8053C860;
+                q = a;
+            } else {
+                q = (f32*)(*(u8**)r + 0x24);
+            }
+            v = *(JGeometry::TVec3<f32>*)q;
+            fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x33f, 0, 0, 0, 0, 1);
+            fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x340, 0, 0, 0, 0, 1);
+            fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x341, 0, 0, 0, 0, 1);
+            fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x342, 0, 0, 0, 0, 1);
+        }
+        fn_801F0E34(p, 0x30079, 0);
+        break;
+    }
+    case 7: {
+        for (i = 0; i < 4; i++) {
+            fn_80230BF4(i, 3);
+            fn_80230498(i, fn_8023E724(i), 0x3f, 0xff, -0x80, -0x80, 1);
+        }
+        break;
+    }
+    case 9:
+        fn_802D6A9C();
+        fn_802D9CB0();
+        fn_8011921C();
+        fn_80118384();
+        ((Actor*)p)->detach();
+        break;
+    }
+    *(s32*)(p + 0x234) = state;
+}
 
 extern char lbl_8049DD68[];
 extern char lbl_8049CC34[];
@@ -128,10 +227,11 @@ extern "C" void fn_8011CF48(void* this_) {
     }
 }
 
-#pragma opt_propagation off
-extern "C" void fn_8011D1B8(void* this_, s32 state) {
+#pragma opt_common_subs off
+extern "C" void fn_8011D1B8(void* const this_, const s32 state) {
     char* p;
-    s32 mode;
+    u32 mode;
+    s32 i;
     p = (char*)this_;
     mode = state;
     switch (mode) {
@@ -140,7 +240,6 @@ extern "C" void fn_8011D1B8(void* this_, s32 state) {
     case 8:
         break;
     case 1: {
-        s32 i;
         fn_801186B0(fn_8011921C(), 0x11);
         for (i = 0; i < 4; i++) {
             fn_80230BF4(i, 3);
@@ -212,7 +311,6 @@ extern "C" void fn_8011D1B8(void* this_, s32 state) {
         break;
     }
     case 7: {
-        s32 i;
         for (i = 0; i < 4; i++) {
             fn_80230BF4(i, 3);
             fn_80230498(i, fn_8023E724(i), 0x3f, 0xff, -0x80, -0x80, 1);
@@ -229,7 +327,7 @@ extern "C" void fn_8011D1B8(void* this_, s32 state) {
     }
     *(s32*)(p + 0x234) = state;
 }
-#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern "C" u8 fn_8011D4B4(int param_1) {
     return *(int*)(param_1 + 0x234) == 9;
 }
