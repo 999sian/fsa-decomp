@@ -8,7 +8,25 @@ extern "C" void __dl__FPv(void* p);
 extern "C" void fn_80338AE0(void) {
 }
 
+extern "C" void fn_801F0E34(void* obj, u32 a, u32 b);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_80338AE4(void* this_) {
+    u8* p = (u8*)this_;
+    fn_801F0E34(p, 0x5003b, 0);
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (fn_80230188(i) != 0) {
+            s32 st = *(s32*)(p + 0x230);
+            if (st == 2 || st == 3) {
+                fn_8023E724(i);
+            }
+        }
+    }
+}
+
 extern "C" u32 fn_8013CC50(u32 a, void* pos, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, f32 h);
+extern "C" u32 fn_8013CC50(u32, void*, s32, s32, s32, s32, s32, s32, f32);
 extern "C" void fn_80339374(u8* p) {
     *(u16*)(p + 0x94) = *(u32*)(p + 0x90) & 0xf;
     *(u32*)(p + 0x108) = 10000;
@@ -39,11 +57,23 @@ extern "C" void fn_80339374(u8* p) {
     *(u8*)(p + 0x263) = 0;
 
     if (*(u32*)(p + 0x264) == 0) {
-        f32 pos[3] = { *(f32*)(p + 0xc), 16.0f + *(f32*)(p + 0x10), *(f32*)(p + 0x14) };
+        f32 pos[3];
+        f32 z = *(f32*)(p + 0x14);
+        f32 y = 16.0f + *(f32*)(p + 0x10);
+        f32 x = *(f32*)(p + 0xc);
+        pos[0] = x;
+        pos[1] = y;
+        pos[2] = z;
         *(u32*)(p + 0x264) = fn_8013CC50(*(u32*)(p + 4), pos, 0x4e0, 1, 2, 0, 0, 1, 1.0f);
     }
     if (*(u32*)(p + 0x268) == 0) {
-        f32 pos[3] = { *(f32*)(p + 0xc), 16.0f + *(f32*)(p + 0x10), *(f32*)(p + 0x14) };
+        f32 pos[3];
+        f32 z = *(f32*)(p + 0x14);
+        f32 y = 16.0f + *(f32*)(p + 0x10);
+        f32 x = *(f32*)(p + 0xc);
+        pos[0] = x;
+        pos[1] = y;
+        pos[2] = z;
         *(u32*)(p + 0x268) = fn_8013CC50(*(u32*)(p + 4), pos, 0x4e1, 1, 2, 0, 0, 1, 1.0f);
     }
     *(f32*)(p + 0x60) = -47.0f;
