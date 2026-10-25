@@ -11,10 +11,6 @@ extern "C" s32 fn_801CD664(s32 n);
 
 struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
 extern "C" u8 fn_800FD5E8(void* ring, u8 i);
-static inline void tndrSetCursor(void* ring, u8 index) {
-    u8* slot = (u8*)ring;
-    if (index < slot[2]) slot[3] = index;
-}
 extern "C" s32 fn_800FE25C(void* ring, u8 i);
 extern "C" u8 fn_801CC9F8(void* p, s32 room);
 extern "C" u16 fn_8022461C(void* p, s32 room);
@@ -458,12 +454,17 @@ extern "C" void fn_801C844C(char* p) {
     JGeometry::TVec3<f32> nextA;
     JGeometry::TVec3<f32> nextB;
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
-    u8 pairA[2];
-    u8 pairB[2];
-    u32 a;
-    u8 b;
-    u8 c;
+    u32 bitsSecond;
+    u32 bitsThird;
+    u32 bitsFirst;
+    u8 pairB1;
+    u8 pairB0;
+    u8 pairA1;
+    u8 pairA0;
     u8 x;
+    u8 c;
+    u8 b;
+    u32 a;
     u8* slot;
     s32 room;
     fn_800FE2E4(GetCurrentSlotPtr(p + 0x358), &pos, *(s32*)(p + 4));
@@ -480,21 +481,22 @@ extern "C" void fn_801C844C(char* p) {
             c = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
             slot = (u8*)GetCurrentSlotPtr(p + 0x358);
             if ((u8)a < slot[2]) slot[3] = a;
-            if (&pairA[0] != 0) pairA[0] = c;
-            if (&pairA[1] != 0) pairA[1] = b;
+            if (&pairA0 != 0) pairA0 = c;
+            if (&pairA1 != 0) pairA1 = b;
             f32 one = lbl_8053EEC8;
             f32 threshold = lbl_8053EED8;
             u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
             *seed = *seed * 0x19660d + 0x3c6ef35f;
-            u32 bits = (*seed >> 9) | 0x3f800000;
-            if (*(f32*)&bits - one < threshold) {
-                x = pairA[1];
+            bitsFirst = (*seed >> 9) | 0x3f800000;
+            f32 random = *(f32*)&bitsFirst - one;
+            if (threshold > random) {
+                x = pairA1;
                 room = *(s32*)(p + 4);
-                if (room != fn_800FE25C(GetCurrentSlotPtr(p + 0x358), x)) x = pairA[0];
+                if (room != fn_800FE25C(GetCurrentSlotPtr(p + 0x358), x)) x = pairA0;
             } else {
-                x = pairA[0];
+                x = pairA0;
                 room = *(s32*)(p + 4);
-                if (room != fn_800FE25C(GetCurrentSlotPtr(p + 0x358), x)) x = pairA[1];
+                if (room != fn_800FE25C(GetCurrentSlotPtr(p + 0x358), x)) x = pairA1;
             }
             slot = (u8*)GetCurrentSlotPtr(p + 0x358);
             if ((u8)x < slot[2]) slot[3] = x;
@@ -510,8 +512,8 @@ extern "C" void fn_801C844C(char* p) {
     f32 threshold = lbl_8053EF00;
     u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
     *seed = *seed * 0x19660d + 0x3c6ef35f;
-    u32 bits = (*seed >> 9) | 0x3f800000;
-    if (*(f32*)&bits - one >= threshold) return;
+    bitsSecond = (*seed >> 9) | 0x3f800000;
+    if (!(threshold > *(f32*)&bitsSecond - one)) return;
     a = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), 1);
     b = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
@@ -521,29 +523,30 @@ extern "C" void fn_801C844C(char* p) {
     c = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
     if ((u8)a < slot[2]) slot[3] = a;
-    if (&pairB[1] != 0) pairB[1] = c;
-    if (&pairB[0] != 0) pairB[0] = b;
+    if (&pairB1 != 0) pairB1 = c;
+    if (&pairB0 != 0) pairB0 = b;
     one = lbl_8053EEC8;
     threshold = lbl_8053EED8;
     seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
     *seed = *seed * 0x19660d + 0x3c6ef35f;
-    u32 bits2 = (*seed >> 9) | 0x3f800000;
-    if (*(f32*)&bits2 - one < threshold) {
+    bitsThird = (*seed >> 9) | 0x3f800000;
+    f32 random = *(f32*)&bitsThird - one;
+    if (threshold > random) {
         room = *(s32*)(p + 4);
-        if (room == fn_800FE25C(GetCurrentSlotPtr(p + 0x358), pairB[1])) {
-            nextA = fn_800FE294(GetCurrentSlotPtr(p + 0x358), pairB[1]);
+        if (room == fn_800FE25C(GetCurrentSlotPtr(p + 0x358), pairB1)) {
+            nextA = fn_800FE294(GetCurrentSlotPtr(p + 0x358), pairB1);
             if (!fn_801CF888(p, p + 0xc, &nextA, *(s32*)(p + 4))) {
-                x = pairB[1];
+                x = pairB1;
                 slot = (u8*)GetCurrentSlotPtr(p + 0x358);
                 if (x < slot[2]) slot[3] = x;
             }
         }
     } else {
         room = *(s32*)(p + 4);
-        if (room == fn_800FE25C(GetCurrentSlotPtr(p + 0x358), pairB[0])) {
-            nextB = fn_800FE294(GetCurrentSlotPtr(p + 0x358), pairB[0]);
+        if (room == fn_800FE25C(GetCurrentSlotPtr(p + 0x358), pairB0)) {
+            nextB = fn_800FE294(GetCurrentSlotPtr(p + 0x358), pairB0);
             if (!fn_801CF888(p, p + 0xc, &nextB, *(s32*)(p + 4))) {
-                x = pairB[0];
+                x = pairB0;
                 slot = (u8*)GetCurrentSlotPtr(p + 0x358);
                 if (x < slot[2]) slot[3] = x;
             }
