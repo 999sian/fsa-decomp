@@ -44,7 +44,8 @@ static inline void tu801D3320_setCurI(char* this_, int i) {
 
 static inline u8 tu801D3320_isFreeAt(const Vec3f& pos, s32 room) {
     u8 ok = 1;
-    if (fn_801CCBD0(&pos, room) || fn_801CCB1C(&pos, room)) {
+    s32 r = room;
+    if (fn_801CCBD0(&pos, r) || fn_801CCB1C(&pos, r)) {
         ok = 0;
     }
     return ok;
@@ -52,7 +53,8 @@ static inline u8 tu801D3320_isFreeAt(const Vec3f& pos, s32 room) {
 
 static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
     u8 ok = 1;
-    if (fn_801CCBD0(pos, room) || fn_801CCB1C(pos, room)) {
+    s32 r = room;
+    if (fn_801CCBD0(pos, r) || fn_801CCB1C(pos, r)) {
         ok = 0;
     }
     return ok;
