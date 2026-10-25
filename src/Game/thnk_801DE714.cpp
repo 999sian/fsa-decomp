@@ -96,81 +96,76 @@ extern f32 lbl_8053EFBC;
 extern "C" void fn_801D01A0(void* this_, void* pos, void* out, f32 speed = 0.0f);
 extern "C" void fn_801D00B4(void* this_, s32 idx, void* out, f32 speed = 0.0f);
 extern "C" void fn_801DE7AC(void* this_) {
-    s32 flag;
-    char* p = (char*)this_;
-    f32 zero;
-    f32 local8;
-    f32 localC;
-    flag = fn_801CCF7C();
-    zero = lbl_8053F480;
-    *(f32*)(p + 0x3c) = zero;
-    *(f32*)(p + 0x40) = zero;
-    if (*(s32*)(p + 0x248) != 0xa) {
-        *(f32*)(p + 0x44) = zero;
+    f32 v[2];
+    s32 flag = fn_801CCF7C();
+    f32 zero = lbl_8053F480;
+    *(f32*)((char*)this_ + 0x3c) = zero;
+    *(f32*)((char*)this_ + 0x40) = zero;
+    if (*(s32*)((char*)this_ + 0x248) != 0xa) {
+        *(f32*)((char*)this_ + 0x44) = zero;
     }
-    if (*(s32*)(p + 0x248) != 0) {
-        if (zero != *(f32*)(p + 0x254) && (u8)flag == 0) {
-            local8 = zero;
-            localC = zero;
-            if (*(u32*)(p + 0x230) & 0x4000) {
-                fn_801D01A0(this_, p + 0x2c4, &local8);
-            } else if (*(u32*)(p + 0x230) & 0x20000) {
-                if (*(s32*)(p + 0x2a8) >= 0) {
-                    fn_801D00B4(this_, *(s32*)(p + 0x2a8), &local8);
+    if (*(s32*)((char*)this_ + 0x248) != 0) {
+        if (lbl_8053F480 != *(f32*)((char*)this_ + 0x254) && (flag & 0xff) == 0) {
+            v[0] = lbl_8053F480;
+            v[1] = lbl_8053F480;
+            if (*(u32*)((char*)this_ + 0x230) & 0x4000) {
+                fn_801D01A0(this_, (char*)this_ + 0x2c4, v, *(f32*)((char*)this_ + 0x254));
+            } else if (*(u32*)((char*)this_ + 0x230) & 0x20000) {
+                if (*(s32*)((char*)this_ + 0x2a8) >= 0) {
+                    fn_801D00B4(this_, *(s32*)((char*)this_ + 0x2a8), v, *(f32*)((char*)this_ + 0x254));
                 }
             } else {
                 void* found = 0;
-                s32 idx = *(s32*)(p + 0x2ac);
+                s32 idx = *(s32*)((char*)this_ + 0x2ac);
                 if (idx >= 0) {
                     found = fn_801F666C(fn_801F856C(), idx);
                 }
                 if (found == 0) {
-                    idx = *(s32*)(p + 0x2b0);
+                    idx = *(s32*)((char*)this_ + 0x2b0);
                     if (idx >= 0) {
                         found = fn_801F666C(fn_801F856C(), idx);
                     }
                 }
                 if (found == 0) {
-                    idx = *(s32*)(p + 0x2b4);
+                    idx = *(s32*)((char*)this_ + 0x2b4);
                     if (idx >= 0) {
                         found = fn_801F666C(fn_801F856C(), idx);
                     }
                 }
                 if (found != 0) {
-                    fn_801D01A0(this_, (char*)found + 0xc, &local8);
-                    *(f32*)(p + 0x3c) = local8;
-                    *(f32*)(p + 0x40) = localC;
+                    fn_801D01A0(this_, (char*)found + 0xc, v, *(f32*)((char*)this_ + 0x254));
                 }
             }
+            *(f32*)((char*)this_ + 0x3c) = v[0];
+            *(f32*)((char*)this_ + 0x40) = v[1];
         }
-        switch (*(s32*)(p + 0x248)) {
+        switch (*(s32*)((char*)this_ + 0x248)) {
         case 2:
-            if ((u8)flag == 0) {
-                *(f32*)(p + 0x44) = lbl_8053F484;
+            if ((flag & 0xff) == 0) {
+                *(f32*)((char*)this_ + 0x44) = lbl_8053F484;
             }
             break;
         case 4:
-            if ((u8)flag == 0) {
-                if (*(u32*)(p + 0x230) & 0x80000) {
-                    *(f32*)(p + 0x44) = lbl_8053F488;
-                } else if (*(s32*)(p + 0x2bc) >= 0) {
-                    *(f32*)(p + 0x44) = lbl_8053F48C;
+            if ((flag & 0xff) == 0) {
+                if (*(u32*)((char*)this_ + 0x230) & 0x80000) {
+                    *(f32*)((char*)this_ + 0x44) = lbl_8053F488;
                 } else {
-                    *(f32*)(p + 0x44) = lbl_8053F490;
+                    *(f32*)((char*)this_ + 0x44) = *(s32*)((char*)this_ + 0x2bc) >= 0 ? lbl_8053F48C : lbl_8053F490;
                 }
             }
             break;
         case 10: {
-            f32 v = *(f32*)(p + 0x44) + lbl_8053F494;
-            *(f32*)(p + 0x44) = v;
-            if (v < -lbl_8053EFBC) {
-                *(f32*)(p + 0x44) = -lbl_8053EFBC;
+            f32 cur = *(f32*)((char*)this_ + 0x44) + lbl_8053F494;
+            f32 lim = -lbl_8053EFBC;
+            *(f32*)((char*)this_ + 0x44) = cur;
+            if (*(f32*)((char*)this_ + 0x44) < lim) {
+                *(f32*)((char*)this_ + 0x44) = lim;
             }
             break;
         }
         case 18:
-            if ((u8)flag == 0) {
-                *(f32*)(p + 0x44) = lbl_8053F494;
+            if ((flag & 0xff) == 0) {
+                *(f32*)((char*)this_ + 0x44) = lbl_8053F494;
             }
             break;
         }
@@ -972,19 +967,15 @@ extern "C" void fn_801E1AB4(void* this_, u8 flag) {
     } else {
         u8* obj = 0;
         s32 idx = *(s32*)(p + 0x2ac);
-        if (idx >= 0) {
-            obj = (u8*)fn_801F666C(fn_801F856C(), idx);
-        }
-        if (obj == 0) {
+        if (idx >= 0 && (obj = (u8*)fn_801F666C(fn_801F856C(), idx)) != 0) {
+        } else {
             idx = *(s32*)(p + 0x2b0);
-            if (idx >= 0) {
-                obj = (u8*)fn_801F666C(fn_801F856C(), idx);
-            }
-        }
-        if (obj == 0) {
-            idx = *(s32*)(p + 0x2b4);
-            if (idx >= 0) {
-                obj = (u8*)fn_801F666C(fn_801F856C(), idx);
+            if (idx >= 0 && (obj = (u8*)fn_801F666C(fn_801F856C(), idx)) != 0) {
+            } else {
+                idx = *(s32*)(p + 0x2b4);
+                if (idx >= 0) {
+                    obj = (u8*)fn_801F666C(fn_801F856C(), idx);
+                }
             }
         }
         pos[0] = *(f32*)(obj + 0xc);
@@ -1043,6 +1034,8 @@ extern "C" bool fn_801E1D9C(void* thisObj) {
 	return result;
 }
 
+#ifndef THNK_IDLE_SUB_DEFINED
+#define THNK_IDLE_SUB_DEFINED
 static inline u8 thnk_isIdleSub(void* this_) {
     u8 r = 0;
     switch (*(s32*)((char*)this_ + 0x278)) {
@@ -1052,6 +1045,7 @@ static inline u8 thnk_isIdleSub(void* this_) {
     }
     return r;
 }
+#endif
 
 extern "C" u8 fn_801E1CF8(void* this_) {
     char* p = (char*)this_;
