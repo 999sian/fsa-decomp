@@ -684,9 +684,10 @@ extern "C" void fn_80212288(char* p) {
         } else {
             *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x390);
         }
-        *(f32*)(p + 0x39c) = *(f32*)(p + 0x39c) - lbl_8053FB00;
-        if (*(f32*)(p + 0x39c) < lbl_8053FB44) {
-            *(f32*)(p + 0x39c) = lbl_8053FB44;
+        f32 lo = lbl_8053FB44;
+        *(f32*)(p + 0x39c) -= lbl_8053FB00;
+        if (*(f32*)(p + 0x39c) < lo) {
+            *(f32*)(p + 0x39c) = lo;
         }
         *(f32*)(p + 0x3a0) = lbl_8053FB00 * *(f32*)(p + 0x394) + lbl_8053FB00;
     } else {
