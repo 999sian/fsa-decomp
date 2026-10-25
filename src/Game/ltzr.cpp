@@ -115,25 +115,38 @@ extern "C" void fn_8033FA00(char* p) {
 }
 
 extern "C" void fn_8033FC4C(Mtx m, f32* scale, f32* rot, f32* trans) {
-    f32 sx = sin(rot[0]);
-    f32 sy = sin(rot[1]);
-    f32 sz = sin(rot[2]);
-    f32 cx = cos(rot[0]);
-    f32 cy = cos(rot[1]);
-    f32 cz = cos(rot[2]);
+    f32 cz;
+    f32 cy;
+    f32 cx;
+    f32 sz;
+    f32 sy;
+    f32 sx;
+    sx = sin(rot[0]);
+    sy = sin(rot[1]);
+    sz = sin(rot[2]);
+    cx = cos(rot[0]);
+    cy = cos(rot[1]);
+    cz = cos(rot[2]);
+    f32 cysz = cy * sz;
+    f32 cycz = cy * cz;
+    f32 sxcy = sx * cy;
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
     f32 sxsz = sx * sz;
-    m[0][0] = scale[0] * (cy * cz);
-    m[1][0] = scale[0] * (cy * sz);
-    m[2][0] = scale[0] * -sy;
-    m[0][1] = scale[1] * (sxsy * cz - cxsz);
-    m[1][1] = scale[1] * (sxsy * sz + cxcz);
-    m[2][1] = scale[1] * (sx * cy);
-    m[0][2] = scale[2] * (cxcz * sy + sxsz);
-    m[1][2] = scale[2] * (cxsz * sy - sx * cz);
-    m[2][2] = scale[2] * (cx * cy);
+    f32 sxcz = sx * cz;
+    f32 s0 = scale[0];
+    f32 s1 = scale[1];
+    f32 s2 = scale[2];
+    m[0][0] = s0 * cycz;
+    m[1][0] = s0 * cysz;
+    m[2][0] = s0 * -sy;
+    m[0][1] = s1 * (sxsy * cz - cxsz);
+    m[1][1] = s1 * (sxsy * sz + cxcz);
+    m[2][1] = s1 * sxcy;
+    m[0][2] = s2 * (cxcz * sy + sxsz);
+    m[1][2] = s2 * (cxsz * sy - sxcz);
+    m[2][2] = s2 * (cx * cy);
     m[0][3] = trans[0];
     m[1][3] = trans[1];
     m[2][3] = trans[2];
@@ -385,6 +398,88 @@ extern "C" u8 fn_80340734(void* this_) {
         }
     }
     return found;
+}
+
+extern "C" u8 fn_801F2740(void*, s32);
+extern "C" void fn_8022DC3C(s32);
+extern "C" void fn_8023DF68(s32, const JGeometry::TVec3<f32>&);
+extern const f32 lbl_80542290;
+extern const f32 lbl_80542294;
+static inline f32 ltzrSqrt(f32 x) {
+    if (x <= lbl_80542268) return x;
+    f32 y = __frsqrte(x);
+    y = lbl_80542290 * y * (lbl_80542294 - x * (y * y));
+    return x * y;
+}
+
+extern "C" void fn_803408BC(char* p) {
+    JGeometry::TVec3<f32> movement;
+    JGeometry::TVec3<f32> pt;
+    JGeometry::TVec3<f32> delta;
+    if (*(u8*)(p + 0x2b0)) {
+        *(u16*)(p + 0x2b2) += 0x800;
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x28) + JMath::sincosTable_.mTable[(u32)*(u16*)(p + 0x2b2) >> 5].first;
+        if (*(u16*)(p + 0x2b2) == 0) *(u8*)(p + 0x2b0) = 0;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        s32 room;
+        u8 hit;
+        room = *(s32*)(p + 4);
+        if (room != fn_8023DE58(i)) {
+            hit = 0;
+        } else {
+            for (s32 j = 0; j < 8; j++) {
+                fn_8022E088(i, j, (f32*)&pt);
+                pt.sub(*(JGeometry::TVec3<f32>*)(p + 0xc));
+                pt.z = lbl_80542268;
+                f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
+                s32 a = (s32)(ang * lbl_8054228C);
+                f32 len = pt.x * pt.x + pt.y * pt.y;
+                if (len <= lbl_80542268) {
+                } else {
+                    f32 inv = __frsqrte(len);
+                    inv = lbl_80542290 * inv * (lbl_80542294 - len * (inv * inv));
+                    len = len * inv;
+                }
+                f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
+                f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
+                pt.z = lbl_80542268;
+                pt.y = len * sy;
+                pt.x = len * cy;
+                f32 minx = *(f32*)(p + 0x60);
+                f32 miny = *(f32*)(p + 0x64);
+                f32 maxx = *(f32*)(p + 0x68);
+                f32 maxy = *(f32*)(p + 0x6c);
+                u8 inside = 0;
+                if (pt.x >= minx && pt.y >= miny && pt.x < maxx && pt.y < maxy) inside = 1;
+                if (inside) {
+                    fn_8022DF48(i);
+                    hit = 1;
+                    goto found;
+                }
+            }
+            hit = 0;
+        }
+found:
+        if (fn_80233E40(i)) {
+            if ((fn_801F2740(p, -1) & (1 << i)) && (*(u32*)(p + 0x90) & 1)) {
+                fn_8022DC3C(i);
+            }
+        } else {
+            if (hit && *(f32*)(p + 0x14) <= lbl_80542268) {
+                delta = *(JGeometry::TVec3<f32>*)(p + 0xc);
+                delta.sub(*(JGeometry::TVec3<f32>*)(p + 0x18));
+                movement = delta;
+                fn_8023DF68(i, movement);
+            }
+            if (fn_8023E724(i)[2] > *(f32*)(p + 0x14)) hit = 0;
+            if (hit != *(u8*)(p + 0x2ac + i)) {
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, lbl_8054229C, 0x54e, -1, -2, 0, 0, 1);
+                *(u8*)(p + 0x2b0) = 1;
+            }
+            *(u8*)(p + 0x2ac + i) = hit;
+        }
+    }
 }
 
 extern "C" void fn_80340BC8(char* p) {
