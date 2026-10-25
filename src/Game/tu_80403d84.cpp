@@ -587,6 +587,9 @@ struct Pane411 {
 	f32 x0, y0, x1, y1; // 0x20 bounds
 	u8 pad30[0xb0 - 0x30];
 	u8 visible; // 0xb0
+
+	void show() { visible = 1; }
+	void hide() { visible = 0; }
 };
 struct Screen411 {
 	virtual void v08(); virtual void v0c();
@@ -646,7 +649,7 @@ extern "C" void fn_80411230(u8* self) {
 	fn_8013B490(lbl_8053AB10);
 	s32 slot = *(s32*)(self + 0x340);
 	s32 st;
-	if (slot < 7 && !EC80Bit28(slot, 3) &&
+	if (slot < 7 && !Tu411SlotDone(slot) &&
 	    (Tu411ShowState(st = *(s32*)(self + 0x350)) || st == 0x13)) {
 		f32 y;
 		f32 x;
@@ -664,7 +667,7 @@ extern "C" void fn_80411230(u8* self) {
 		     ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if (slot == 10 && *(s32*)(self + 0x348) == 2 && *(s32*)(lbl_80529DEC + 0x120) < 7 &&
-	           !EC80Bit28(*(s32*)(lbl_80529DEC + 0x120), 3) && Tu411ShowState(*(s32*)(self + 0x350))) {
+	           !Tu411SlotDone(*(s32*)(lbl_80529DEC + 0x120)) && Tu411ShowState(*(s32*)(self + 0x350))) {
 		f32 y;
 		f32 x;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
