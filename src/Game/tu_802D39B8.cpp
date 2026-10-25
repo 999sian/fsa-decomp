@@ -787,9 +787,9 @@ extern "C" void fn_802D7310(char* p, s32 bit, u8 set) {
 }
 
 extern "C" bool fn_802D7384(char* p, s32 bit) {
-    s32 word = bit / 32;
-    s32 shift = bit % 32;
-    const u32 flags = ((const u32*)(p + 0x12F68))[word];
+    int word = bit / 32;
+    int shift = bit % 32;
+    u32 flags = ((u32*)(p + 0x12F68))[word];
     return (flags & (1 << shift)) != 0;
 }
 
@@ -859,10 +859,12 @@ extern "C" void fn_802D7584(char* p, s32 index, u8 value) {
 }
 
 extern "C" bool fn_802D75BC(char* p, s32 bit) {
-    char* q = p + *(s32*)(p + 0x18) * 0x500;
-    q += *(s32*)(p + 0x14) * 0x80;
-    q += (bit / 32) * 4;
-    return (*(u32*)(q + 0x6768) & (1U << (bit % 32))) != 0;
+    u32 (*flags)[10][32] = (u32 (*)[10][32])(p + 0x6768);
+    u32* w = &flags[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][bit / 32];
+    if (*w & (1 << (bit % 32))) {
+        return true;
+    }
+    return false;
 }
 
 extern "C" void fn_802D7618(char* p, s32 bit) {
