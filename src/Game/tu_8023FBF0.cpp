@@ -4858,6 +4858,78 @@ u8 fn_80250030(char* p, s32 v) {
     return 0;
 }
 
+extern "C" u8 fn_8022D930(s32);
+extern "C" u8 fn_8022DA68(s32);
+extern "C" s32 fn_80238CB4(s32);
+extern "C" char lbl_8046AE08[];
+inline s32 sharingMode50090(char* p) {
+    int me;
+    s32 linked;
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 4)) c++;
+        else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) c++;
+            } else {
+                me = S32(p, 4);
+                if (me == fn_8022F3DC(i)) c++;
+            }
+        } else if (i == S32(p,0xd60)) c++;
+    }
+    if (c <= 1) return 5;
+    linked = S32(p,0xd60);
+    if (linked >= 0) return fn_8022CAF8(linked);
+    return S32(p,0x120c);
+}
+
+u8 fn_80250090(char* p) {
+    if (F32(p, 0x10) > 0.0f) {
+        S32(p, 0xd9c) = -1;
+        S32(p, 0xd98) = 0;
+        return 0;
+    }
+    if (getMode3(p) == 5 && S32(p, 0xd60) >= 0) {
+        S32(p, 0xd9c) = -1;
+        S32(p, 0xd98) = 0;
+        return 0;
+    }
+    if (S32(p, 0xd9c) >= 0 && fn_8022D930(S32(p, 0xd9c))) {
+        S32(p, 0xd98) = 3;
+        return 1;
+    }
+    JGeometry::TBox2<f32> box(lbl_80540084, lbl_80540084, lbl_80540030, lbl_80540030);
+    box.addPos(*(JGeometry::TVec2<f32>*)(p + 8));
+    f32 xoff = F32(lbl_8046AE08, S32(p,0x3dc)*8);
+    f32 yoff = ((f32*)(lbl_8046AE08 + S32(p,0x3dc)*8))[1];
+    box.i.x += xoff; box.i.y += yoff; box.f.x += xoff; box.f.y += yoff;
+    for (s32 i = 0; i < 4; i++) {
+        if (i == S32(p, 4) || !fn_8022DA68(i)) continue;
+        if (!fn_8023B0F4(i, &box, S32(p, 0x3b4), 0, 0.0f)) continue;
+        f32 f;
+        if (S32(p, 0x3dc) == 0) {
+            f = !padActive(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            if (f <= 0.0f) continue;
+        } else if (S32(p, 0x3dc) == 1) {
+            f = !padActive6(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            if (f >= 0.0f) continue;
+        } else if (S32(p, 0x3dc) == 2) {
+            f = !padActive6(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            if (f >= 0.0f) continue;
+        } else if (S32(p, 0x3dc) == 3) {
+            f = !padActive6(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            if (f <= 0.0f) continue;
+        }
+        if (fn_80238CB4(i) >= 0) S32(p, 0xd94) = fn_80238CB4(i);
+        S32(p, 0xd9c) = i;
+        S32(p, 0xd98) = 3;
+        return 1;
+    }
+    return S32(p, 0xd98) > 0;
+}
+
 int fn_80250ACC(char* p) {
     s32 linked;
     s32 s2;
