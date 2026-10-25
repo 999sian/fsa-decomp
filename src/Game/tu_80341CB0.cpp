@@ -163,4 +163,29 @@ extern "C" Actor* fn_803437B0(Actor* p, s16 n) {
     }
     return p;
 }
-
+class BombDrawActor : public Actor {
+public:
+    virtual void drawTexture(void* texture, DrawRec* rec, s32 mode, f32 x, f32 y, f32 z);
+};
+class BombResourceMgr {
+public:
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* getResource(u32 type, const char* name);
+};
+extern const char lbl_80471FBC[];
+extern const char lbl_80471FCC[];
+extern const char* lbl_804AC558[];
+extern const f32 lbl_805422EC;
+extern const f32 lbl_805422F0;
+extern const f32 lbl_805422F4;
+extern const f32 lbl_805422F8;
+extern const f32 lbl_805422FC;
+extern const f32 lbl_80542300;
+extern const f32 lbl_80542304;
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void* fn_804030C4(u32 type, const char* name);
+extern "C" void fn_802F745C(void* mgr, void* pos, void* res, DrawRec* rec);
