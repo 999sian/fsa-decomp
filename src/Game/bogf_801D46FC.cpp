@@ -78,6 +78,11 @@ extern "C" void fn_801D47D8(void)
 {
 }
 
+extern "C" u8 fn_801CD228(s32 id);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F68E0(void);
+extern "C" void fn_801F6884(void* p);
+extern "C" u8 fn_801D0B44(u8* this_, s32 i);
 extern "C" void fn_801D4C70(u8* this_);
 extern "C" void fn_801E4D74(void* this_);
 extern "C" bool fn_801CD2F8(s32 id);
