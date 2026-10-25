@@ -225,67 +225,70 @@ extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s3
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8029DB2C(void* p, u32 a, u32 room, s32 flag, u32 v1, u32 v2, u32 v3, u32 v4, u16 v5, u16 v6) {
-    u32 r = room;
+    u32 a1;
+    u32 n;
+    u32 a0;
     if (flag == 0) {
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, r, (u16)v1);
-        r += 1;
-        if ((r & 0xf) == 0) {
-            r += 0xf0;
+        a0 = a;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a0, room, (u16)v1);
+        room += 1;
+        if ((room & 0xf) == 0) {
+            room += 0xf0;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, r, (u16)v2);
-        r += 1;
-        if ((r & 0xf) == 0) {
-            r += 0xf0;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a0, room, (u16)v2);
+        room += 1;
+        if ((room & 0xf) == 0) {
+            room += 0xf0;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, r, (u16)v3);
-        r += 1;
-        if ((r & 0xf) == 0) {
-            r += 0xf0;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a0, room, (u16)v3);
+        room += 1;
+        if ((room & 0xf) == 0) {
+            room += 0xf0;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, r, (u16)v4);
-        r += 1;
-        if ((r & 0xf) == 0) {
-            r += 0xf0;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a0, room, (u16)v4);
+        room += 1;
+        if ((room & 0xf) == 0) {
+            room += 0xf0;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, r, v5);
-        r += 1;
-        if ((r & 0xf) == 0) {
-            r += 0xf0;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a0, room, v5);
+        room += 1;
+        if ((room & 0xf) == 0) {
+            room += 0xf0;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, r, v6);
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a0, room, v6);
     } else {
-        u32 n;
-        u32 b = a;
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), b, r, (u16)v1);
-        n = r + 0x10;
-        if ((r & 0x100) != (n & 0x100)) {
-            n = r + 0x110;
+        a1 = a;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a1, room, (u16)v1);
+        n = room + 0x10;
+        if ((s32)(room & 0x100) != (s32)(n & 0x100)) {
+            n = room + 0x110;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), b, n, (u16)v2);
-        r = n + 0x10;
-        if ((n & 0x100) != (r & 0x100)) {
-            r = n + 0x110;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a1, n, (u16)v2);
+        room = n + 0x10;
+        if ((s32)(n & 0x100) != (s32)(room & 0x100)) {
+            room = n + 0x110;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), b, r, (u16)v3);
-        n = r + 0x10;
-        if ((r & 0x100) != (n & 0x100)) {
-            n = r + 0x110;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a1, room, (u16)v3);
+        n = room + 0x10;
+        if ((s32)(room & 0x100) != (s32)(n & 0x100)) {
+            n = room + 0x110;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), b, n, (u16)v4);
-        r = n + 0x10;
-        if ((n & 0x100) != (r & 0x100)) {
-            r = n + 0x110;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a1, n, (u16)v4);
+        room = n + 0x10;
+        if ((s32)(n & 0x100) != (s32)(room & 0x100)) {
+            room = n + 0x110;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), b, r, v5);
-        n = r + 0x10;
-        if ((r & 0x100) != (n & 0x100)) {
-            n = r + 0x110;
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a1, room, v5);
+        n = room + 0x10;
+        if ((s32)(room & 0x100) != (s32)(n & 0x100)) {
+            n = room + 0x110;
         }
-        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), b, n, v6);
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a1, n, v6);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8029DD50(void* p, s32 a, s32 room, s32 flag, s32 c, s32 v1, s32 v2, s32 v3) {
     s32 rm = room;
     s32 w1 = v1;
