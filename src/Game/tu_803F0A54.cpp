@@ -101,7 +101,7 @@ extern "C" void fn_803F2580(u8* p) {
 
 static inline void tu803F_setAlphas(u8* p, u64* tags, u8* alphas, s32 n, f32 a) {
     for (s32 i = 0; i < n; i++) {
-        (*(J2DPane**)(p + 0xc))->search(tags[i])->setAlpha((u8)(a * (f32)alphas[i]));
+        (*(J2DPane**)(p + 0xc))->search(tags[i])->setAlpha((u8)((f32)alphas[i] * a));
     }
 }
 
@@ -709,7 +709,7 @@ extern const f32 lbl_805437C4;
 extern "C" void fn_803F8354(u8* p) {
     u8* base = lbl_80478A60;
     f32 a;
-    *(s16*)(p + 0x240) += 1;
+    (*(s16*)(p + 0x240))++;
     if (*(s16*)(p + 0x240) > 0) {
         if (*(s16*)(p + 0x240) < 0x19) {
             *(f32*)(p + 0x164) = lbl_80543754 * ((f32)((0x19 - *(s16*)(p + 0x240)) * (0x19 - *(s16*)(p + 0x240))) / lbl_805437C0);
@@ -733,8 +733,9 @@ extern "C" void fn_803F8354(u8* p) {
             *(f32*)(p + 0x168) = lbl_8054372C;
         }
     }
+    s32 s = 0;
     for (s32 k = 0; k < 3; k++) {
-        if (*(s16*)(p + 0x240) > k * 10) {
+        if (*(s16*)(p + 0x240) > s) {
             if (*(s16*)(p + 0x240) < k * 10 + 15) {
                 s32 d = 15 - (*(s16*)(p + 0x240) - k * 10);
                 *(f32*)(p + 0x184 + k * 4) = lbl_8054375C * ((f32)(d * d) / lbl_8054378C);
@@ -750,6 +751,7 @@ extern "C" void fn_803F8354(u8* p) {
                 tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, lbl_80543730);
             }
         }
+        s += 10;
     }
     if (*(s16*)(p + 0x240) > 0) {
         if (*(s16*)(p + 0x240) < 15) {
