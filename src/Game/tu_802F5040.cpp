@@ -10,6 +10,10 @@ extern "C" void __dt__10JUTTextureFv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" void __dla__FPv(void*);
 extern "C" u8 lbl_804AA858[];
+extern "C" void fn_803004C0(void);
+extern "C" void fn_803003AC(void* p);
+extern "C" void fn_803003A8(void);
+extern "C" void fn_8030029C(u8* p);
 
 extern "C" f32 lbl_805414F8;
 extern "C" f32 lbl_80541500;
@@ -821,6 +825,81 @@ extern "C" void fn_802F91AC(f32 f, f32* p, u8* o, u8* out) {
     *out = 1;
 }
 
+extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff, s32 n, u8 flag) {
+    s32 size = n;
+    u32 k;
+    u32 cnt;
+    u8* d;
+    u16 v;
+    u16 o;
+    s32 a;
+    s32 b;
+    s32 c;
+
+    if (size == 0) {
+        if (checkCompressed__9JKRDecompFPUc(src) != 0) {
+            size = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+        } else {
+            u8* dec = *(u8**)((u8*)lbl_8053AAF8 + 0xa4);
+            size = (*(s32 (**)(u8*, u8*))(*(u8**)dec + 0x30))(dec, src);
+        }
+        if (size < 0) {
+            size = 0x200;
+        }
+    }
+
+    if (checkCompressed__9JKRDecompFPUc(src) != 0) {
+        decode__9JKRDecompFPUcPUcUlUl(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
+        src = *(u8**)(this_ + 0xf8);
+    }
+
+    cnt = ((u32)size + 1) >> 1;
+    k = 0;
+    if (size != 0) {
+        do {
+            if (k == 0 || (k & 0x1f) != 0) {
+                u8 b1 = src[srcOff + k + 1];
+                u8 b0 = src[srcOff + k];
+                v = ((b1 >> 2) & 0x1f) | ((b0 & 0x1f) << 10) | (((b1 << 8) | b0) & 0x3e0) | 0x8000;
+                if (k == 0) {
+                    v = 0;
+                }
+            } else {
+                v = 0;
+            }
+            d = *(u8**)(this_ + idx * 4 + 0x98) + dstOff;
+            d[k] = v >> 8;
+            d[k + 1] = v;
+            k += 2;
+        } while (--cnt != 0);
+    }
+
+    cnt = ((u32)size + 1) >> 1;
+    k = 0;
+    if (size != 0) {
+        do {
+            u16* p = (u16*)(*(u8**)(this_ + idx * 4 + 0x98) + dstOff + k);
+            v = *p;
+            if (v & 0x8000) {
+                a = Tu802F93F4_c5((v >> 10) & 0x1f);
+                b = Tu802F93F4_c5((v >> 5) & 0x1f);
+                c = Tu802F93F4_c5(v & 0x1f);
+                if (flag == 0) {
+                    o = (c & 0xff) | ((a & 0x3f) << 10) | 0x8000 | ((b & 0xff) << 5);
+                } else {
+                    o = (b & 0xff) | ((c & 0x3f) << 10) | 0x8000 | ((a & 0xff) << 5);
+                }
+                v = o;
+            }
+            d = *(u8**)(this_ + idx * 4 + 0xc8) + dstOff;
+            d[k] = v >> 8;
+            d[k + 1] = v;
+            k += 2;
+        } while (--cnt != 0);
+    }
+    DCFlushRange(*(u8**)(this_ + idx * 4 + 0xc8) + dstOff, size);
+}
+
 extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
     u8* base;
     u8* s;
@@ -1555,6 +1634,110 @@ extern "C" void fn_802FF568(u8* this_) {
                 return;
             }
             k += 2;
+        }
+    }
+}
+
+extern "C" f32 lbl_80541528;
+extern "C" f32 lbl_8054152C;
+extern "C" f32 lbl_80541530;
+extern "C" f32 lbl_80541538;
+extern "C" f32 lbl_8054153C;
+extern "C" f32 lbl_80541610;
+extern "C" f32 lbl_80541614;
+extern "C" void fn_802FF798(void* mgr) {
+    u8* this_ = (u8*)mgr;
+    s32 i;
+    s32 j;
+    s32 n;
+    u8* p;
+
+    for (i = 0; i < 4; i++) {
+        this_[0x235c + i] = 0;
+        this_[0x2360 + i] = 0;
+    }
+    this_[0x2364] = 0;
+    this_[0x2365] = 1;
+    *(f32*)(this_ + 0x2368) = *(f32*)(this_ + 0x236c) = *(f32*)(this_ + 0x2370) = 0.0f;
+    *(f32*)(this_ + 0x2374) = *(f32*)(this_ + 0x2378) = *(f32*)(this_ + 0x237c) = 0.0f;
+    *(s32*)(this_ + 0x2380) = 0x40;
+    *(s32*)(this_ + 0x2384) = 0x40;
+    p = this_;
+    for (i = 0; i < 0x20; i++) {
+        for (j = 0; j < 8; j++) {
+            *(s32*)(p + 0x2398 + j * 0x9c) = 0;
+        }
+        p += 0x4e0;
+    }
+    this_[0xbf98] = 0;
+    *(s32*)(this_ + 0x2388) = 0;
+    for (int k = 0; k < 0x10; k++) {
+        *(s32*)(this_ + 0xbf9c + k * 0x28) = 0;
+    }
+    for (i = 0; i < 0x40; i++) {
+        for (j = 0; j < 0x10; j++) {
+            n = i * 0x10 + j;
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2] = 0.0078125f * (8.0f * (f32)j + 0.501f);
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1] = 0.001953125f * (8.0f * (f32)i + 0.501f);
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x800] = 6.98f / 128.0f + ((f32*)*(u8**)(this_ + 0x110))[n * 2];
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x801] = ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1];
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x1000] = ((f32*)*(u8**)(this_ + 0x110))[n * 2];
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x1001] = 6.98f / 512.0f + ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1];
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x1800] = 6.98f / 128.0f + ((f32*)*(u8**)(this_ + 0x110))[n * 2];
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x1801] = 6.98f / 512.0f + ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1];
+        }
+    }
+    *(s32*)(this_ + 0xc21c) = 0;
+    *(s32*)(this_ + 0xd320) = 0;
+    *(s32*)(this_ + 0xe424) = 0;
+    fn_802FDDD4(this_);
+    for (i = 0; i < 4; i++) {
+        s32 x;
+        s32 y;
+        this_[0x12c + i] = 0;
+        *(s32*)(this_ + 0x138 + i * 4) = 0;
+        this_[0x148 + i] = 0;
+        this_[0x14c + i] = 0;
+        this_[0x210 + i] = 0;
+        if (i & 2) {
+            y = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) - 0x90;
+        } else {
+            y = 0x48;
+        }
+        if (i & 1) {
+            x = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4) - 0x60;
+        } else {
+            x = 0x18;
+        }
+        *(s32*)(this_ + 0x1d0 + i * 0x10) = x;
+        *(s32*)(this_ + 0x1d4 + i * 0x10) = y;
+        *(s32*)(this_ + 0x1d8 + i * 0x10) = 0x48;
+        *(s32*)(this_ + 0x1dc + i * 0x10) = 0x48;
+        this_[0x217 + i] = 0;
+    }
+    this_[0x216] = 0;
+    this_[0x214] = 0;
+    this_[0x215] = 0;
+    *(s32*)(this_ + 0x22c) = -1;
+    *(s32*)(this_ + 0x230) = -1;
+    *(s32*)(this_ + 0x234) = 0;
+    this_[0x248] = 0;
+    this_[0xe450] = 1;
+    this_[0xe451] = 1;
+    *(f32*)(this_ + 0xe458) = 1.8f;
+    *(f32*)(this_ + 0xe45c) = -0.25f;
+    *(s32*)(this_ + 0x2390) = 0;
+    *(s32*)(this_ + 0x2394) = 0;
+    this_[0xe461] = 1;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 4; j++) {
+            for (n = 0; n < 0x10; n++) {
+                GXInitTlutObj((GXTlutObj*)(this_ + 0x25c + i * 0x300 + j * 0xc0 + n * 0xc),
+                              *(u8**)(this_ + 0xc8 + (i * 4 + j) * 4) + n * 0x20, (GXTlutFmt)2, 0x10);
+                GXInitTexObjCI((GXTexObj*)(this_ + 0xb5c + i * 0x800 + j * 0x200 + n * 0x20),
+                               *(void**)(this_ + 0x88 + j * 4), 0x100, 0x100, (GXCITexFmt)8, (GXTexWrapMode)0,
+                               (GXTexWrapMode)0, 0, ((u32*)lbl_8046F940)[n]);
+            }
         }
     }
 }
