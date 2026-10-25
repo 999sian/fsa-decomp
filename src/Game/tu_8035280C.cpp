@@ -1,4 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804ACBF0[];
@@ -20,20 +23,40 @@ extern "C" void fn_8035286C(void)
     return;
 }
 
+extern "C" char* lbl_8053AB10;
+extern "C" char* lbl_8053AAF8;
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void fn_80352870(char* p)
+{
+    char* sub;
+    s32 state = *(s32*)(p + 0x230);
+    if (state != 0 && state != 7) {
+        sub = *(char**)(lbl_8053AB10 + 0x30);
+        if (*(u8*)(sub + 0x284) == 0) {
+            *(u8*)(sub + 0x284) = 1;
+            *(f32*)(sub + 0x28c) = 1.0f;
+        }
+        *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x216) = 1;
+        *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x17d) = 1;
+    }
+}
+
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_8018330C(u32* out);
 extern "C" void fn_8035335C(char* p) {
     char* mgr;
     u32 buf;
-    u32 b;
-    u32 a;
+    register long a;
+    int b;
     *(u32*)(p + 0x234) = 0;
     *(u32*)(p + 0x238) = 0;
     mgr = (char*)fn_802D6A9C();
-    a = *(u32*)(mgr + 0xcc);
     b = *(u32*)(mgr + 0xd0);
-    *(u32*)(p + 0x26c) = a;
+    a = *(u32*)(mgr + 0xcc);
     *(u32*)(p + 0x270) = b;
+    *(u32*)(p + 0x26c) = a;
     a = *(u32*)(mgr + 0xd4);
     b = *(u32*)(mgr + 0xd8);
     *(u32*)(p + 0x274) = a;
@@ -52,5 +75,8 @@ extern "C" void fn_8035335C(char* p) {
     *(f32*)(p + 0x264) = 0.0f;
     *(f32*)(p + 0x268) = 0.0f;
     *(f32*)(p + 0x260) = 0.0f;
+}
+
+extern "C" void fn_803534A0(void) {
 }
 
