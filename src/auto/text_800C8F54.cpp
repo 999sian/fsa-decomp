@@ -293,6 +293,7 @@ extern "C" void __construct_array(void* p, void* ctor, void* dtor, u32 size, u32
 extern "C" void initialize__21J3DTexGenBlockPatchedFv(void* p);
 extern "C" void __ct__11J3DTexCoordFv(void* self);
 extern "C" void __ct__11J3DTevOrderFv(void* self);
+extern "C" void __ct__11J3DTevStageFv(void* self);
 extern "C" void __ct__14J3DIndTevStageFv(void* self);
 extern "C" void __ct__13J3DGXColorS10Fv(void* self);
 extern "C" void __ct__10J3DGXColorFv(void* self);
