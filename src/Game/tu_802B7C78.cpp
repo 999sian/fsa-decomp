@@ -466,6 +466,4 @@ extern "C" void fn_802B8C44(u8* this_) {
     fn_8043D67C(lbl_8053AED0, 0x197, 0, 0);
 }
 
-static void __sinit_tu_802B7C78_cpp(void) {
-}
 
