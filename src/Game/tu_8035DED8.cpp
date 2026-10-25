@@ -5,7 +5,12 @@
 struct Unk8035DA78;
 typedef void (Unk8035DA78::*Unk8035DA78Func)();
 extern Unk8035DA78Func lbl_804AD6A8[];
-struct Unk8035E60CTable { Unk8035DA78Func f[6]; };
+struct Unk8035E60CTable {
+    Unk8035DA78Func f[6];
+    void copy(const Unk8035E60CTable& other) {
+        for (int i = 0; i < 6; ++i) f[i] = other.f[i];
+    }
+};
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, int id);
 extern "C" void fn_8035C1C4(void* self, int a, int b);
@@ -198,5 +203,87 @@ extern "C" void fn_8035E5DC(int param_1) {
     *(int*)(p + 0x248) = 0;
     *(int*)(p + 0x24c) = 0;
     *(int*)(p + 0x250) = 0x274;
+}
+
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __register_global_object(void*, void (*)(void*), void*);
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+extern Unk8035E60CTable lbl_804AD660[];
+extern "C" void fn_8035E60C(void) {
+    static u32 c0[3], c1[3], c2[3], c3[3], c4[3], c5[3], c6[3], c7[3], c8[3];
+    for (int i = 0; i < 6; i++) {
+        lbl_804AD6A8[i] = lbl_804AD660[0].f[i];
+    }
+    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, c0);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, c1);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+    if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, c2);
+        __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, c3);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, c4);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
+    }
+    if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, c5);
+        __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
+    }
+    if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, c6);
+        __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
+    }
+    if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, c7);
+        __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
+    }
+    if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, c8);
+        __init__memPool___26JASPoolAllocObject_5JAISe = 1;
+    }
 }
 
