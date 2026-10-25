@@ -177,13 +177,15 @@ static inline u8* Search(void* screen, void** tbl, int i) {
     return (u8*)((J2DScreenSearch*)screen)->search(*(u64*)&tbl[i]);
 }
 
-static inline void SetDigits(u8* self, void** tbl, int idx, int tens, int ones) {
-    void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[tens]);
+static inline void SetDigit(u8* self, void** tbl, int idx, int digit) {
+    void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[digit]);
     Attach(Search(*(void**)(self + 4), tbl, idx), h);
     Attach(Search(*(void**)(self + 4), tbl, idx + 2), h);
-    h = fn_804030C4(0x54494D47, lbl_804B1CA0[ones]);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 4), h);
-    Attach(Search(*(void**)(self + 4), tbl, idx + 6), h);
+}
+
+static inline void SetDigits(u8* self, void** tbl, int idx, int tens, int ones) {
+    SetDigit(self, tbl, idx, tens);
+    SetDigit(self, tbl, idx + 4, ones);
 }
 
 static inline void SetDigits4(u8* self, void** tbl, int idx, int d0, int d1, int d3, int d2) {
@@ -245,7 +247,7 @@ extern "C" void fn_8044998C(void* self_) {
         if (self[0x12] >= 100) {
             self[0x12] = 99;
         }
-        SetDigits4(self, lbl_80490C78, 8, self[0x11] / 10, self[0x11] % 10, self[0x12] / 10, self[0x12] % 10);
+        SetDigits4(self, lbl_80490C78, 8, self[0x11] / 10, self[0x11] % 10, self[0x12] % 10, self[0x12] / 10);
     }
     self[0x13] = 0;
 }
