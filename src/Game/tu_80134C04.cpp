@@ -150,6 +150,7 @@ extern "C" void fn_80458658(void*, s32);
 extern "C" void fn_80021840(void);
 extern "C" void fn_802AC8AC(void*, s32);
 extern void* lbl_8053ACA0;
+extern void* lbl_8053ACA8;
 
 extern "C" void fn_80134CC0(void* this_, s32 v) { *(s32*)((char*)this_ + 0x108) = v; }
 
@@ -697,6 +698,60 @@ extern "C" void fn_801367E0(char* this_, s32 a) {
         fn_802AC980(lbl_8053ACA0);
     }
     *(s32*)(this_ + 0x4c) = a;
+}
+
+extern "C" void fn_803A44D8(void*);
+extern "C" void fn_8013B4F8(void*);
+extern "C" void fn_803DF624(void*);
+extern "C" void fn_803CEED4(void*);
+extern "C" void fn_8013BB64(void*);
+extern "C" void fn_8013BB18(void*);
+extern "C" void fn_803A8664(void*);
+extern "C" void fn_8013B71C(void*);
+extern "C" void fn_8013B618(void*);
+extern "C" void fn_803A71F0(void*);
+extern "C" void fn_8039013C(void*);
+extern "C" void fn_80390108(void*);
+extern void* lbl_8053AD88;
+extern void* lbl_8053ADD0;
+extern void* lbl_8053ADB0;
+extern void* lbl_8053AD98;
+extern void* lbl_8053AD90;
+extern "C" void fn_80136828(void* this_) {
+    char* t = (char*)this_;
+    j3dSys.drawInit();
+    switch (*(s32*)(t + 0x4c)) {
+    case 0:
+        if (lbl_8053AD88 != 0) {
+            fn_803A44D8(lbl_8053AD88);
+        }
+        fn_8013B4F8(lbl_8053AB10);
+        break;
+    case 1:
+        fn_803DF624(lbl_8053ADD0);
+        break;
+    case 2:
+        fn_803CEED4(lbl_8053ADB0);
+        break;
+    case 3:
+        fn_8013BB64(lbl_8053AB10);
+        fn_8013BB18(lbl_8053AB10);
+        fn_803A8664(lbl_8053AD98);
+        fn_8013B71C(lbl_8053AB10);
+        fn_8013B618(lbl_8053AB10);
+        break;
+    case 4:
+        fn_803A71F0(lbl_8053AD90);
+        break;
+    case 5:
+        fn_8013BB64(lbl_8053AB10);
+        fn_8013BB18(lbl_8053AB10);
+        fn_8039013C(lbl_8053AD80);
+        fn_8013B71C(lbl_8053AB10);
+        fn_8013B618(lbl_8053AB10);
+        fn_80390108(lbl_8053AD80);
+        break;
+    }
 }
 
 extern "C" void* fn_8030AAF4(s32);
