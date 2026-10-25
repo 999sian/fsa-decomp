@@ -1023,6 +1023,9 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(u8*)(self + 0x270) = 1;
     }
 }
+
+
+
 struct StateMethodData80317 { s32 adjustment; s32 offset; void* function; };
 typedef void (Actor::*StateMethod80317)();
 union StateMethodConstant80317 { StateMethodData80317 raw; StateMethod80317 method; };
