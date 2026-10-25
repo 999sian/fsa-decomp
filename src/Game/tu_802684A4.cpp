@@ -28,6 +28,8 @@ extern "C" void fn_8026B81C(u8*, u16);
 extern "C" void fn_8026C350(u8*, u16);
 extern "C" void fn_8026E1E0(u8*);
 extern "C" u8* fn_802D6A9C();
+extern "C" u16 fn_802265FC(struct Vec2f*, s32);
+extern "C" u16 fn_80226850(struct Vec2f*, s32);
 
 struct Vec2f {
     void set(const Vec2f& o) {
