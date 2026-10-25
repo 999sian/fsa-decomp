@@ -1,5 +1,6 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct PukuResMgr {
     virtual void v0();
@@ -35,22 +36,22 @@ extern "C" void fn_802AF38C(Actor* thisObj) {
 	DrawRec rec;
 	s32 flag = *(s32*)(p + 0x23c) != 0;
 	if (*(s32*)(p + 0x238) == 2) {
-		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, 0x1c2, flag, 2, -1, 1, 0, 0);
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, 0x1c2, flag != 0, 2, -1, 1, 0, 0);
 	} else if (*(s32*)(p + 0x238) == 3) {
-		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2d5, flag, 2, -1, 1, 0, 0);
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2d5, flag != 0, 2, -1, 1, 0, 0);
 	} else if (*(s32*)(p + 0x238) == 4) {
-		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2ee, flag, 2, -1, 1, 0, 0);
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2ee, flag != 0, 2, -1, 1, 0, 0);
 	} else if (*(s32*)(p + 0x238) == 5) {
-		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2f7, flag, 2, -1, 1, 0, 0);
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x2f7, flag != 0, 2, -1, 1, 0, 0);
 	} else if (*(s32*)(p + 0x238) == 6) {
-		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x129, flag, 2, -1, 1, 0, 0);
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x129, flag != 0, 2, -1, 1, 0, 0);
 	} else {
 		s32 frame = *(s32*)(p + 0x234) + 0x70;
 		if (*(s32*)(p + 4) < 8) {
 			void* res = lbl_8053AAF8->res->get(0x534F4220, lbl_8046CA50);
 			fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), p + 0xc, res, frame, 1.0f, 1.0f, &rec);
 		}
-		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, frame, flag, 2, -1, 1, 0, 0);
+		fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234) + 0x70, flag != 0, 2, -1, 1, 0, 0);
 	}
 }
 
@@ -107,3 +108,13 @@ extern "C" void fn_802AF78C(Actor* thisObj) {
 	}
 	*(s32*)(p + 0x240) = 0;
 }
+
+extern "C" void __register_global_object(void* obj, void* dtor, void* reg);
+extern "C" void fn_802AF7EC(void) {
+	static u8 __init__memPool_58[1];
+	if (__init__memPool_58[0] == 0) {
+		__register_global_object(&JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_, 0, 0);
+		__init__memPool_58[0] = 1;
+	}
+}
+
