@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Util.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -270,14 +271,16 @@ extern "C" void fn_801E90C4(char* p) {
     }
 }
 
+extern "C" f32 __fsels(f32, f32, f32);
 extern "C" void fn_801E9224(char* p) {
     if (*(u32*)(p + 0x230) & 0x4000) {
         return;
     }
     u8 done = 0;
-    f32 rem = 0.5f;
-    rem = rem >= 0.0f ? rem : 0.0f;
-    while (rem > 0.0f) {
+    f32 zero = lbl_8053F5FC;
+    f32 rem = lbl_8053F60C;
+    rem = __fsel(rem, rem, zero);
+    while (rem > zero) {
         u8 seg = *(u8*)(p + 0x3b0);
         s32 ti = (s32)*(f32*)(p + 0x3b4);
         f32 ay;
@@ -308,10 +311,10 @@ extern "C" void fn_801E9224(char* p) {
             }
             u8 count = *(u8*)(p + 0x2ad);
             char* q = p + seg * 8;
-            f32 p1x = *(f32*)(q + 0x2b0);
-            f32 p1y = *(f32*)(q + 0x2b4);
             f32 p2x = *(f32*)(q + 0x2b8);
             f32 p2y = *(f32*)(q + 0x2bc);
+            f32 p1x = *(f32*)(q + 0x2b0);
+            f32 p1y = *(f32*)(q + 0x2b4);
             f32 p3x;
             f32 p3y;
             if (seg == count - 2) {
@@ -331,11 +334,11 @@ extern "C" void fn_801E9224(char* p) {
         seg = *(u8*)(p + 0x3b0);
         u8 next = (u8)((s32)*(f32*)(p + 0x3b4) + 1);
         if (next >= 16) {
-            if (seg < *(u8*)(p + 0x2ad) - 2) {
+            if (seg >= *(u8*)(p + 0x2ad) - 2) {
+                done = 1;
+            } else {
                 seg++;
                 next -= 16;
-            } else {
-                done = 1;
             }
         }
 
@@ -367,10 +370,10 @@ extern "C" void fn_801E9224(char* p) {
             }
             u8 count = *(u8*)(p + 0x2ad);
             char* q = p + seg * 8;
-            f32 p1x = *(f32*)(q + 0x2b0);
-            f32 p1y = *(f32*)(q + 0x2b4);
             f32 p2x = *(f32*)(q + 0x2b8);
             f32 p2y = *(f32*)(q + 0x2bc);
+            f32 p1x = *(f32*)(q + 0x2b0);
+            f32 p1y = *(f32*)(q + 0x2b4);
             f32 p3x;
             f32 p3y;
             if (seg == count - 2) {
@@ -392,11 +395,11 @@ extern "C" void fn_801E9224(char* p) {
         f32 dx = bx - *(f32*)(p + 0xc);
         f32 dy = by - *(f32*)(p + 0x10);
         f32 len2 = dx * dx + dy * dy;
-        f32 len = sqrt(len2);
+        f32 len = JGeometry::TUtil<f32>::sqrt(len2);
         if (rem >= len) {
             *(f32*)(p + 0xc) = bx;
             *(f32*)(p + 0x10) = by;
-            *(f32*)(p + 0x14) = 0.0f;
+            *(f32*)(p + 0x14) = zero;
             if (done) {
                 *(u32*)(p + 0x230) |= 0x4000;
                 *(u8*)(p + 0x3b0) = *(u8*)(p + 0x2ad) - 2;
@@ -408,16 +411,16 @@ extern "C" void fn_801E9224(char* p) {
                 *(u8*)(p + 0x3b0) = seg;
             }
         } else {
-            if (len2 > FLT_EPSILON * 32.0f) {
-                f32 inv = 1.0f / sqrt(len2);
-                dx *= inv;
-                dy *= inv;
+            if (!(len2 <= JGeometry::TUtil<f32>::epsilon())) {
+                len2 = JGeometry::TUtil<f32>::inv_sqrt(len2);
+                dx *= len2;
+                dy *= len2;
             }
             dx *= rem;
             dy *= rem;
             *(f32*)(p + 0xc) += dx;
             *(f32*)(p + 0x10) += dy;
-            f32 abLen = sqrt(abx * abx + aby * aby);
+            f32 abLen = JGeometry::TUtil<f32>::sqrt(abx * abx + aby * aby);
             *(f32*)(p + 0x3b4) += rem * (1.0f / abLen);
             return;
         }
