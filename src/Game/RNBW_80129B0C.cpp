@@ -60,10 +60,11 @@ extern const f32 lbl_8053CB3C;
 static inline bool rnbwContains(Actor* actor, s32 player) {
     if (player < 0) return false;
     if (actor->field_04 != fn_8023DE58(player)) return false;
-    f32 x0 = actor->field_60;
-    f32 y0 = actor->field_64;
-    f32 x1 = actor->field_68;
-    f32 y1 = actor->field_6C;
+    f32 y1, x1, y0, x0;
+    x0 = actor->field_60;
+    y0 = actor->field_64;
+    x1 = actor->field_68;
+    y1 = actor->field_6C;
     for (s32 j = 0; j < 8; j++) {
         JGeometry::TVec3f pos;
         fn_8022E088(player, j, &pos);
@@ -92,6 +93,8 @@ extern "C" void fn_80129B0C(void* this_) {
     case 0:
         if ((u8)actor->v11()) {
             *(s32*)((char*)this_ + 0x238) = 1;
+            switch (*(s32*)((char*)this_ + 0x238)) {
+            case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39f, 0, -1, 0, 0, 1);
                 s32 i = 0;
@@ -127,9 +130,33 @@ extern "C" void fn_80129B0C(void* this_) {
                 fn_801F0E34(this_, 0x5004d, 0);
                 *(s32*)((char*)this_ + 0x234) = 0;
             }
+            break;
+            case 0:
+            default:
+                break;
+            }
         }
         break;
     case 1:
+        for (s32 i = 0; i < 4; i++) {
+            if (rnbwContains(actor, i)) {
+                JGeometry::TVec3f delta(*(JGeometry::TVec3f*)&actor->field_0C);
+                delta -= *(JGeometry::TVec3f*)&actor->field_18;
+                JGeometry::TVec3f movement(delta);
+                fn_8023DF68(i, &movement);
+            }
+        }
+        if (*(s32*)((char*)this_ + 0x234) >= 0) {
+            (*(s32*)((char*)this_ + 0x234))++;
+            if (*(s32*)((char*)this_ + 0x234) >= 420) {
+                fn_801F0E34(this_, 0x5004e, 0);
+                *(s32*)((char*)this_ + 0x234) = -1;
+            }
+        }
+        {
+            s32 id = *(s32*)((char*)this_ + 0x230);
+            if (id >= 0) fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
+        }
         break;
     }
 }
