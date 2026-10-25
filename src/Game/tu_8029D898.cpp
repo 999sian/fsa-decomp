@@ -1,10 +1,6 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
 
-static inline void copyWavePosition(JGeometry::TVec2<f32>* p, f32 x, f32 y) {
-    p->y = y;
-    p->x = x;
-}
 
 class WaveController {
 public:
