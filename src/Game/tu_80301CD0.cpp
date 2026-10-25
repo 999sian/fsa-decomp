@@ -180,6 +180,15 @@ struct Hdr_80301CD0 {
     Slot_80301CD0 slots[19];
 };
 
+static inline s32 tu80301_rank(s32 mask, s32 player, s32 index) {
+    if (((mask >> index) & 1) != ((mask >> ((s32*)lbl_80506DD8)[player]) & 1)) {
+        return -1;
+    }
+    return lbl_80506DA8[player * 4 + index];
+}
+extern "C" s32 fn_803074A4(s32, s32);
+extern "C" void fn_80302C34(u8*, s32, s32, s32, u8);
+
 extern "C" u8 fn_80301CD0(void* p) {
     s32 i = fn_8022F340();
     if (lbl_8053ACE8[i] != 0 &&
@@ -846,11 +855,12 @@ extern "C" s32 fn_803074A4(s32 a, s32 b) {
 	}
 }
 
-extern "C" s32 fn_803075AC(u32 caller, s32 room, void* pos, s32 id, bool on, s32 mode, s32 target, s32 kind, bool b, s32 d) {
+extern "C" s32 fn_803075AC(s32 caller, s32 room, void* pos, s32 id, bool on, s32 mode, s32 target, u8 kind, bool b, u8 d) {
     s32 ok = 0;
     s32 i;
     s32 n;
     s32 c;
+    Elem28_80301CD0* base;
     Elem28_80301CD0* e;
 
     if (room < 8 && room != -1) {
@@ -864,7 +874,8 @@ extern "C" s32 fn_803075AC(u32 caller, s32 room, void* pos, s32 id, bool on, s32
         if (target != i && (target >= 0 || fn_8023DE58(r) != room)) {
             continue;
         }
-        e = lbl_80505438[i];
+        base = lbl_80505438[i];
+        e = base;
         n = 0;
         c = 5;
         do {
@@ -901,7 +912,7 @@ extern "C" s32 fn_803075AC(u32 caller, s32 room, void* pos, s32 id, bool on, s32
             e->f21 = on;
             e->f22 = b;
         } else {
-            e = lbl_80505438[i];
+            e = base;
             for (c = 0x28; c != 0; c--) {
                 if (e->f24 == 0) {
                     e->f0 = mode;
