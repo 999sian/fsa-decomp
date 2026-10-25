@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 struct J2DScreen {
     J2DScreen();
     u8 pad[0x118];
@@ -157,8 +158,7 @@ extern void* lbl_8053AED0;
 extern "C" void fn_8044998C(void* self_) {
     u8* self = (u8*)self_;
     for (int i = 0; i < 2; i++) {
-        f32 f = fn_8043D514(lbl_8053AED0);
-        fn_80402E08(((void**)self)[2 + i], lbl_80543DB0, f);
+        fn_80402E08(((void**)self)[2 + i], lbl_80543DB0, fn_8043D514(lbl_8053AED0));
     }
 
     if (self[0x13] & 1) {
@@ -172,10 +172,10 @@ extern "C" void fn_8044998C(void* self_) {
     }
 
     if (((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] != 0) {
-        if (self[0x10] > 99) {
+        if (self[0x10] >= 100) {
             self[0x10] = 99;
         }
-        u32 v = self[0x10];
+        s32 v = self[0x10];
         void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[v / 10]);
         Attach(Create(*(void**)(self + 4), lbl_80490C40, 4), h);
         Attach(Create(*(void**)(self + 4), lbl_80490C40, 6), h);
@@ -195,15 +195,15 @@ extern "C" void fn_8044998C(void* self_) {
     }
 
     if (((u8*)Create(*(void**)(self + 4), lbl_80490C78, 24))[0xb0] != 0) {
-        if (self[0x11] > 99) {
+        if (self[0x11] >= 100) {
             self[0x11] = 99;
             self[0x12] = 99;
         }
-        if (self[0x12] > 99) {
+        if (self[0x12] >= 100) {
             self[0x12] = 99;
         }
-        u32 a = self[0x11];
-        u32 b = self[0x12];
+        s32 a = self[0x11];
+        s32 b = self[0x12];
         void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[a / 10]);
         Attach(Create(*(void**)(self + 4), lbl_80490C78, 8), h);
         Attach(Create(*(void**)(self + 4), lbl_80490C78, 10), h);
@@ -269,14 +269,15 @@ extern "C" void* fn_8044A418(VObj** param_1, short param_2) {
 }
 
 extern "C" void* fn_8044A4D4(void** param_1) {
+    u32 a1 = 0x4e0000;
     *param_1 = lbl_804B1CC8;
     lbl_8053AF20 = (int)param_1;
     param_1[1] = new J2DScreen();
     setPriority__9J2DScreenFPCcUlP10JKRArchive((J2DScreen*)param_1[1], lbl_80490DA8, 0x1100000, lbl_80529DEC[4]);
     param_1[2] = new VObj2();
-    fn_80402F04(param_1[2], ((J2DScreenVt2*)param_1[1])->m12(0x4e0000, 0x4e6461, 0x74613030));
+    fn_80402F04(param_1[2], ((J2DScreenVt2*)param_1[1])->m12(a1, a1 + 0x6461, 0x74613030));
     param_1[3] = new VObj2();
-    fn_80402F04(param_1[3], ((J2DScreenVt2*)param_1[1])->m12(0x4e0000, 0x4e6461, 0x74613031));
+    fn_80402F04(param_1[3], ((J2DScreenVt2*)param_1[1])->m12(a1, a1 + 0x6461, 0x74613031));
     ((u8*)param_1)[0x10] = 0;
     ((u8*)param_1)[0x11] = 0;
     ((u8*)param_1)[0x12] = 0;
