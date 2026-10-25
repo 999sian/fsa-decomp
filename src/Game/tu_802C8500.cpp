@@ -57,7 +57,8 @@ extern "C" s32 fn_802C8500(f32 a, f32 b, f32 c) {
 extern "C" s32 fn_802C8530(u8* p) {
     s32 idx = -1;
     s32 id = *(s32*)(p + 4);
-    if (*((u8*)fn_802D6A9C() + 0x131df + id) != 0) {
+    u8* mgr = (u8*)fn_802D6A9C() + 0x10000;
+    if (mgr[id + 0x31df] != 0) {
         return 0;
     }
     for (;;) {
@@ -71,8 +72,8 @@ extern "C" s32 fn_802C8530(u8* p) {
         if (e != NULL) {
             JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(e + 0xc);
             if (*(s32*)(p + 4) == *(s32*)(e + 4) &&
-                ((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, lbl_80540D58 + *(f32*)(p + 0xc), v.x, lbl_80540D58) &&
-                ((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, lbl_80540D58 + *(f32*)(p + 0x10), v.y, lbl_80540D58) &&
+                (u8)((ActorV*)p)->s54(lbl_80540D58 + *(f32*)(p + 0xc), v.x, lbl_80540D58) &&
+                (u8)((ActorV*)p)->s54(lbl_80540D58 + *(f32*)(p + 0x10), v.y, lbl_80540D58) &&
                 ((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, *(f32*)(p + 0x14), v.z, lbl_80540D58) &&
                 fn_802C1970(e, *(s32*)(p + 4), p + 0xc)) {
                 fn_802C2B64(e);
@@ -276,12 +277,7 @@ extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 id);
 extern "C" void fn_802F9974(void* mgr, s32 room, s32 id, u16 frame);
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AB10;
-extern "C" void fn_802C8F28(char* this_) {
-    u8 buf1[8];
-    u8 buf2[8];
-    f32 pos[2];
-    f32 y;
-    u8 n = fn_80138A30(lbl_8053AAF8);
+static inline s32 key0InitialCheck(char* this_, u32 n) {
     s32 go = 0;
     s32 mode = *(s32*)(this_ + 0x248);
     if (mode == 0) {
@@ -295,6 +291,31 @@ extern "C" void fn_802C8F28(char* this_) {
             go = 1;
         }
     } else if (mode == 3) {
+        if (n >= 2) {
+            go = 1;
+        }
+    }
+    return go;
+}
+
+extern "C" void fn_802C8F28(char* this_) {
+    u8 buf1[8];
+    u8 buf2[8];
+    f32 pos[2];
+    f32 y;
+    u32 n = (u8)fn_80138A30(lbl_8053AAF8);
+    s32 go = 0;
+    if (*(s32*)(this_ + 0x248) == 0) {
+        go = 1;
+    } else if (*(s32*)(this_ + 0x248) == 1) {
+        if (n >= 3) {
+            go = 1;
+        }
+    } else if (*(s32*)(this_ + 0x248) == 2) {
+        if (n >= 4) {
+            go = 1;
+        }
+    } else if (*(s32*)(this_ + 0x248) == 3) {
         if (n >= 2) {
             go = 1;
         }
@@ -343,17 +364,21 @@ extern "C" void fn_802C8F28(char* this_) {
         } else if (*(s32*)(this_ + 0x234) == 0x3ee || *(s32*)(this_ + 0x234) == 0x3ef) {
             *(s32*)(this_ + 0x240) = 3;
         }
-        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && ((ActorV*)this_)->v13() == 1) {
+        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && ((ActorV*)this_)->s2C() == 1) {
             *(u8*)(this_ + 0x24c) = 0;
         }
-        if (*(s32*)(this_ + 0x23c) == 2 && ((ActorV*)this_)->v13() == 0) {
+        if (*(s32*)(this_ + 0x23c) == 2 && ((ActorV*)this_)->s2C() == 0) {
             *(s32*)(this_ + 0x230) = 3;
-            if (*(s32*)(this_ + 0x234) == *(u16*)(this_ + 0x254) && *(s32*)(this_ + 0x234) == 0x9e) {
-                *(u16*)(this_ + 0x254) = 0xdc;
+            if (*(u16*)(this_ + 0x254) == *(s32*)(this_ + 0x234)) {
+                switch (*(s32*)(this_ + 0x234)) {
+                case 0x9e:
+                    *(u16*)(this_ + 0x254) = 0xdc;
+                    break;
+                }
             }
-            ((ActorV*)this_)->v05();
+            ((ActorV*)this_)->s0C();
         } else if (*(u8*)(this_ + 0x11c) != 0) {
-            ((ActorV*)this_)->v05();
+            ((ActorV*)this_)->s0C();
         }
     } else {
         *(u8*)(this_ + 0x11c) = 0;
