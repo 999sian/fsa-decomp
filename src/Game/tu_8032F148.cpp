@@ -700,7 +700,6 @@ extern "C" s32 fn_801A46FC(s32 h, void* p, void* q);
 extern float lbl_80541F28;
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
-    extern float lbl_80541E9C;
     extern float lbl_80541EBC;
     extern float lbl_80541F28;
     extern float lbl_80541F14;
