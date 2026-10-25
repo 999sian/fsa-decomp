@@ -86,7 +86,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
 }
 
 extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, const int type) {
-    for (int i = 0; i < 80; i++) {
+    for (u32 i = 0; i < 80; i++) {
         if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
             t->hits[i] = t->ids[i];
             return 1;
@@ -266,8 +266,8 @@ extern "C" void fn_80268BC4(u8* p) {
     clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (int k = 0; k < 8; k++) {
-        f32 x;
         f32 y;
+        f32 x;
         x = lbl_8046BAE8[k].x;
         y = lbl_8046BAE8[k].y;
         *(f32*)(p + 8) = x;
@@ -299,7 +299,7 @@ extern "C" void fn_80268BC4(u8* p) {
             }
             *(JGeometry::TVec3<f32>*)(p + 8) = saved;
         }
-        if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), static_cast<int>(*(s32*)(*(u8**)(p + 4) + 0x3b4)))) {
+        if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), ((HitRectTable*)*(u8**)(p + 4))->room)) {
             p[*(s32*)(p + 0x1c) + 0x28] = 1;
         } else if (fn_8026FC20(*(void**)(p + 4)) <= 0 && !fn_802DCD0C(fn_802D6A9C())) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
