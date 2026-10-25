@@ -631,12 +631,7 @@ extern "C" void fn_801F6884(void* mgr);
 extern "C" void fn_80458FF0(void* p, u32 a, s32 b, s32 c);
 extern "C" void fn_8030C210(void* cam, void* pos);
 extern "C" void fn_800FABC0(char* this_) {
-    f32 b = -35.0f + *(f32*)(this_ + 0x14);
-    f32 d = -2.0f + *(f32*)(this_ + 0x14);
-    *(f32*)(this_ + 0x70) = -21.0f;
-    *(f32*)(this_ + 0x74) = b;
-    *(f32*)(this_ + 0x78) = 22.0f;
-    *(f32*)(this_ + 0x7c) = d;
+    ((JGeometry::TBox2<f32>*)(this_ + 0x70))->set(-21.0f, -35.0f + *(f32*)(this_ + 0x14), 22.0f, -2.0f + *(f32*)(this_ + 0x14));
     if (((ActorVT11*)this_)->v11(0.0f, -20.0f, 50.0f)) {
         return;
     }
