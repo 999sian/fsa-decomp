@@ -152,8 +152,8 @@ static inline void SetTimerDigitAt(u8* this_, u64* a, u64* b, u32 pos, u32 tex) 
 }
 
 static inline void SetTimerDigit(u8* this_, u8* base, u32 idx, u32 pos, u32 tex) {
-    GetPicture(this_, ((u64*)(base + 0xa28) + idx * 5)[pos])->changeTexture(tex, 0);
-    GetPicture(this_, ((u64*)(base + 0xac8) + idx * 5)[pos])->changeTexture(tex, 0);
+    GetPicture(this_, ((u64*)(base + 0xa28 + idx * 0x28))[pos])->changeTexture(tex, 0);
+    GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[pos])->changeTexture(tex, 0);
 }
 
 // Virtual slot 68 of an object returned by SubObj::w13: calls (u32, 0).
