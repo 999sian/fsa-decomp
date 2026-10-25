@@ -273,13 +273,39 @@ extern "C" void fn_80168E78(char* this_) {
                 -1, 0, 0, 0);
 }
 
+extern "C" u8 fn_8022F478(s32 idx);
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" s32 fn_8022F3DC(s32 idx);
+extern "C" void fn_80169030(Actor* this_) {
+    u8* self = (u8*)this_;
+    s32 idx = *(s32*)(self + 0x90);
+    u8 r;
+    f32 d;
+    f32* vel;
+
+    r = fn_8022F478(idx);
+    if (r != 1) {
+        return;
+    }
+    r = fn_8022F514(*(s32*)(self + 0x90));
+    if (r != 1) {
+        return;
+    }
+    idx = fn_8022F3DC(*(s32*)(self + 0x90));
+    if (*(s32*)(self + 0x23c) == 0) {
+        d = *(f32*)(self + 0x3c) - *(f32*)(self + 0x364);
+        if (__fabs(d) > 0.0f) {
+            fn_801F71A4(self + 0x3c, *(f32*)(self + 0x364), 0.0f, 0.0f);
+        } else {
+            *(f32*)(self + 0x364) = 0.0f;
+        }
+    }
+}
+
 extern "C" void fn_80169DCC(char* this_) {
     char* p;
     s32 i;
-    f32 x;
-    f32 y;
-    f32 lenSq;
-    const JMathSinCos* sc;
+    JGeometry::TVec2<f32> dir;
 
     *(s32*)(this_ + 0x98) = (*(u32*)(this_ + 0x90) >> 4) & 7;
     *(s32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 8) & 1;
@@ -330,27 +356,21 @@ extern "C" void fn_80169DCC(char* this_) {
     *(f32*)(this_ + 0x40) = 0.0f;
     *(f32*)(this_ + 0x3c) = 0.0f;
     fn_8016890C(this_, this_ + 0xc, *(s32*)(this_ + 4), this_ + 0x370);
-    sc = &sincosTable___5JMath[(u16)lbl_804A0718[*(s32*)(this_ + 0x98)] >> 5];
-    y = 1000.0f * sc->cos;
-    x = 1000.0f * sc->sin;
-    lenSq = x * x + y * y;
-    if (!(lenSq <= 32.0f * FLT_EPSILON)) {
-        lenSq = bomeInvSqrt(lenSq);
-        x *= lenSq;
-        y *= lenSq;
-    }
+    dir.x = JMASSin(lbl_804A0718[*(s32*)(this_ + 0x98)]) * 1000.0f;
+    dir.y = JMASCos(lbl_804A0718[*(s32*)(this_ + 0x98)]) * 1000.0f;
+    dir.normalize();
     if (*(s32*)(this_ + 0x25c) != 0) {
-        *(f32*)(this_ + 0x3c) = 9.0f * x;
-        *(f32*)(this_ + 0x40) = 9.0f * y;
+        *(f32*)(this_ + 0x3c) = 9.0f * dir.x;
+        *(f32*)(this_ + 0x40) = 9.0f * dir.y;
     } else {
-        *(f32*)(this_ + 0x3c) = 6.0f * x;
-        *(f32*)(this_ + 0x40) = 6.0f * y;
+        *(f32*)(this_ + 0x3c) = 6.0f * dir.x;
+        *(f32*)(this_ + 0x40) = 6.0f * dir.y;
     }
     *(s16*)(this_ + 0x94) = 0;
     *(s32*)(this_ + 0x23c) = 4;
     if (*(s32*)(this_ + 0x98) > 3) {
-        *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x3c) * 1.2f;
-        *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x40) * 1.2f;
+        *(f32*)(this_ + 0x3c) *= 1.2f;
+        *(f32*)(this_ + 0x40) *= 1.2f;
     }
     *(s32*)(this_ + 0x254) = 0;
     *(u8*)(this_ + 0x260) = 0;
