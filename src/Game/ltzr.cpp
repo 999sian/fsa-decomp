@@ -420,11 +420,15 @@ static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, 
                 f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
                 s32 a = (s32)(ang * lbl_8054228C);
                 f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
+                f32 vx;
+                f32 vy;
                 f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
                 f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
+                vy = len * sy;
+                vx = len * cy;
                 pt.z = lbl_80542268;
-                pt.y = len * sy;
-                pt.x = len * cy;
+                pt.y = vy;
+                pt.x = vx;
                 f32 minx = *(f32*)(p + 0x60);
                 f32 miny = *(f32*)(p + 0x64);
                 f32 maxx = *(f32*)(p + 0x68);
@@ -457,33 +461,8 @@ extern "C" void fn_803408BC(char* p) {
         if (current != room) {
             hit = 0;
         } else {
-            for (s32 j = 0; j < 8; j++) {
-                fn_8022E088(i, j, (f32*)&pt);
-                pt.sub(*(JGeometry::TVec3<f32>*)(p + 0xc));
-                pt.z = lbl_80542268;
-                f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
-                s32 a = (s32)(ang * lbl_8054228C);
-                f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
-                f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
-                f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
-                pt.z = lbl_80542268;
-                pt.y = len * sy;
-                pt.x = len * cy;
-                f32 minx = *(f32*)(p + 0x60);
-                f32 miny = *(f32*)(p + 0x64);
-                f32 maxx = *(f32*)(p + 0x68);
-                f32 maxy = *(f32*)(p + 0x6c);
-                u8 inside = 0;
-                if (pt.x >= minx && pt.y >= miny && pt.x < maxx && pt.y < maxy) inside = 1;
-                if (inside) {
-                    fn_8022DF48(i);
-                    hit = 1;
-                    goto found;
-                }
-            }
-            hit = 0;
+            ltzrCheckContacts(p, i, pt, hit);
         }
-found:
         if (fn_80233E40(i)) {
             if ((fn_801F2740(p, -1) & (1 << i)) && (*(u32*)(p + 0x90) & 1)) {
                 fn_8022DC3C(i);
