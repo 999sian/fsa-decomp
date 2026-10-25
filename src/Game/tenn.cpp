@@ -24,6 +24,8 @@ extern s32 lbl_8053ABC0;
 extern u8 lbl_8053ABC4;
 extern u8 lbl_8053ABC5;
 extern f32 lbl_8053A0F8;
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AB10;
 
 // from src/Game/fn_801A0710.cpp
 extern "C" void fn_801A0910(void* this_);
