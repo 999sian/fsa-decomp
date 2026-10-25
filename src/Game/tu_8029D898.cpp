@@ -689,11 +689,14 @@ extern "C" void fn_8029EDB8(u8* self, JGeometry::TVec3<f32>* pos, s32 h, s32 idx
     (void)y;
 }
 
-extern "C" u32 fn_802A01F0(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
+extern "C" u32 fn_802A01F0(char* self, const volatile JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
+    f32 x;
+    f32 y;
+    y = pos->y;
+    x = pos->x;
     JGeometry::TVec2<f32> p;
-    const JGeometry::TVec2<f32>& in = *pos;
-    p.y = in.y;
-    p.x = in.x;
+    p.y = y;
+    p.x = x;
     *(s32*)(self + 0x20) = fn_80226BC4(&p, room);
     *(u16*)(self + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)(self + 0x20));
     u32 ret = 0;
