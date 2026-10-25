@@ -249,16 +249,6 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
-#pragma opt_lifetimes off
-static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
-            for (s32 i = go; i < 4; i++) {
-                if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
-                    go = TRUE;
-                    break;
-                }
-            }
-return go;
-}
 static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
             s32 bit;
             s32 i;
@@ -283,7 +273,14 @@ static inline u8 slmnCheck(char* this_, u8 go) {
             go = TRUE;
             break;
         case 1:
-            go = slmnCheckNear(this_, go, r);
+
+            for (s32 j = go; j < 4; j++) {
+                if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
+                    go = TRUE;
+                    break;
+                }
+            }
+
             break;
         case 2:
             go = slmnCheckTrack(this_, go, r);
@@ -298,7 +295,6 @@ static inline u8 slmnCheck(char* this_, u8 go) {
     return go;
 }
 
-#pragma opt_lifetimes reset
 #pragma opt_lifetimes off
 extern "C" void fn_80207F14(char* this_) {
     fn_80207A60(this_);
