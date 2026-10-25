@@ -121,6 +121,20 @@ struct Pane_803B1B60 {
     virtual void v24(s32 a);
 };
 
+struct PaneVt_803B38E8 {
+    virtual void v08(); virtual void v0C(); virtual void v10(); virtual void v14();
+    virtual void v18(); virtual void v1C(); virtual void v20(); virtual void v24();
+    virtual void v28(); virtual void v2C(); virtual void v30(); virtual void v34();
+    virtual void v38(); virtual void v3C(); virtual void v40(); virtual void v44();
+    virtual void v48(); virtual void v4C(); virtual void v50(); virtual void v54();
+    virtual void v58(); virtual void v5C(); virtual void v60(); virtual void v64();
+    virtual void v68(); virtual void v6C(); virtual void v70(); virtual void v74();
+    virtual void v78(); virtual void v7C(); virtual void v80(); virtual void v84();
+    virtual void v88(); virtual void v8C(); virtual void v90(); virtual void v94();
+    virtual void v98(); virtual void v9C(s32 a);
+};
+extern void* lbl_8053AD78;
+
 struct Scr_803B1B60 {
     virtual void v08();
     virtual void v0C();
@@ -2685,36 +2699,54 @@ extern "C" void fn_803B35F8(void* this_, u32 kind) {
 }
 
 extern "C" void fn_803B38E8(void* this_) {
-    u8* p = (u8*)this_;
-    Scr_803B1B60* scr;
-    Pane_803B1B60* pane;
-    f32 f31;
     u8* src;
+    u8* p = (u8*)this_;
+    f32 f31;
     s32 i;
     s32 j;
 
-    scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-    *(void**)(p + 0x30) = scr->v3C(0x00005072616e3132ULL);
-    scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-    *(void**)(p + 0x34) = scr->v3C(0x00005072616e3232ULL);
+    *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
+    *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
     f31 = getBounds__7J2DPaneFv(*(void**)(p + 0x30))[1];
-    scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-    pane = scr->v3C(0x4e64617461723031ULL);
-    *(f32*)(p + 0x42c) = getBounds__7J2DPaneFv(pane)[1] - f31;
+    *(f32*)(p + 0x42c) = getBounds__7J2DPaneFv(((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723031ULL))[1] - f31;
     f31 = getBounds__7J2DPaneFv(*(void**)(p + 0x30))[1];
-    scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-    pane = scr->v3C(0x4e64617461723231ULL);
-    *(f32*)(p + 0x430) = getBounds__7J2DPaneFv(pane)[1] - f31;
-    scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-    *(void**)(p + 0x40) = scr->v3C(0x00005072616e3131ULL);
-    scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-    *(void**)(p + 0x44) = scr->v3C(0x00005072616e3231ULL);
+    *(f32*)(p + 0x430) = getBounds__7J2DPaneFv(((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723231ULL))[1] - f31;
+    *(void**)(p + 0x40) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3131ULL);
+    *(void**)(p + 0x44) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3231ULL);
     for (i = 0; i < 2; i++) {
         src = *(u8**)(p + 0x40 + i * 4);
         for (j = 0; j < 16; j++) {
             p[0x46c + i * 16 + j] = src[0x150 + j];
         }
     }
+    *(void**)(p + 0x50) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723031ULL);
+    *(void**)(p + 0x54) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723132ULL);
+    *(void**)(p + 0x60) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723231ULL);
+    *(void**)(p + 0x64) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723232ULL);
+    *(void**)(p + 0xa8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653131ULL);
+    *(void**)(p + 0xb8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653132ULL);
+    *(void**)(p + 0xc8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653133ULL);
+    *(void**)(p + 0xd8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653134ULL);
+    *(void**)(p + 0xe8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653135ULL);
+    *(void**)(p + 0xf8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3131ULL);
+    *(void**)(p + 0x108) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3132ULL);
+    *(void**)(p + 0x118) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3133ULL);
+    *(void**)(p + 0x128) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3134ULL);
+    *(void**)(p + 0x138) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3135ULL);
+    *(void**)(p + 0xac) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653231ULL);
+    *(void**)(p + 0xbc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653232ULL);
+    *(void**)(p + 0xcc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653233ULL);
+    *(void**)(p + 0xdc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653234ULL);
+    *(void**)(p + 0xec) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653235ULL);
+    *(void**)(p + 0xfc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3231ULL);
+    *(void**)(p + 0x10c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3232ULL);
+    *(void**)(p + 0x11c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3233ULL);
+    *(void**)(p + 0x12c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3234ULL);
+    *(void**)(p + 0x13c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3235ULL);
+    *(void**)(p + 0x148) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x00506c7465737431ULL);
+    *(void**)(p + 0x14c) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x00506c7477737432ULL);
+    *(void**)(p + 0x158) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743031ULL);
+    *(void**)(p + 0x15c) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743032ULL);
 }
 
 extern "C" void fn_803B38E8(void* this_);
