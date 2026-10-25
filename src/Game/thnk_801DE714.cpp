@@ -22,8 +22,6 @@ extern "C" s32 fn_801CD664(s32 n);
 extern "C" u8 fn_801CD2F8(s32 owner);
 extern "C" void* fn_8023E724(s32 idx);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
-#ifndef THNK_IDLE_SUB_DEFINED
-#define THNK_IDLE_SUB_DEFINED
 static inline u8 thnk_isIdleSub(void* this_) {
     u8 r = 0;
     switch (*(s32*)((char*)this_ + 0x278)) {
@@ -33,7 +31,6 @@ static inline u8 thnk_isIdleSub(void* this_) {
     }
     return r;
 }
-#endif
 
 static inline u8 thnkShouldReset(void* this_) {
     char* p = (char*)this_;
