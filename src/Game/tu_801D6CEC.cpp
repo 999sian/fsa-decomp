@@ -274,15 +274,87 @@ extern "C" void fn_801D6D38(char* p, Tu6CECVec2* in) {
     if (sq <= lbl_8053F158 * *(f32*)__float_epsilon) {
         x = lbl_8053F150;
         y = lbl_8053F15C;
-    } else if (!(sq <= lbl_8053F158 * *(f32*)__float_epsilon)) {
-        sq = Tu6CECUtil::inv_sqrt(sq);
-        x = x * sq;
-        y = y * sq;
+    } else {
+        f32 sq2 = x * x + y * y;
+        if (!(sq2 <= lbl_8053F158 * *(f32*)__float_epsilon)) {
+            f32 inv = tu6cec_invSqrt(sq2);
+            x *= inv;
+            y *= inv;
+        }
     }
-    x *= lbl_8053F168;
-    y *= lbl_8053F168;
+    tu6cec_scale(x, y, lbl_8053F168);
     fn_801E4AB0(p, 0x3c, 0x2000, x);
     fn_801E4AB0(p + 0x14, 0x3c, 0x2000, y);
+}
+
+extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
+    tu6cec_set(g->pos, src[0], lbl_8053F16C + src[1], src[2]);
+    if (fn_801CD2F8(g->m40)) {
+        g->pos[1] = lbl_8053F170 + src[1];
+    }
+    switch (g->m44) {
+    case 0:
+    case 4:
+        break;
+    case 1: {
+        s32 id = g->ids[0];
+        if (id >= 0) {
+            char* a = (char*)fn_801F666C(fn_801F856C(), id);
+            if (a != 0) {
+                *(Tu6CECVec*)(a + 0xc) = *(Tu6CECVec*)g->pos;
+            }
+        }
+        break;
+    }
+    case 2:
+        g->m64++;
+        if (g->m64 >= 0x2d) {
+            g->m44 = 3;
+        } else {
+            f32 t = (f32)(0x2d - g->m64);
+            if (t < *(f32*)__float_epsilon) {
+                g->m60 = lbl_8053F174;
+            } else {
+                g->m60 += (lbl_8053F174 / t) * (lbl_8053F174 - g->m60);
+            }
+            if (t < *(f32*)__float_epsilon) {
+                g->m5c = lbl_8053F178;
+            } else {
+                g->m5c += (lbl_8053F174 / t) * (lbl_8053F178 - g->m5c);
+            }
+        }
+        break;
+    case 3:
+        if (g->m58 != 0) {
+            fn_801CD930(&g->m56, 0, 0x20);
+        } else {
+            fn_801CD930(&g->m56, 0x100, 0x10);
+        }
+        g->m54 += g->m56;
+        break;
+    }
+    if (g->m44 >= 2 && g->m44 < 4) {
+        s32 off = 0;
+        for (int i = 0; i < 16; i++) {
+            s32 id = g->ids[i];
+            if (id >= 0) {
+                char* a = (char*)fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    u16 ang = -(s16)(g->m54 + off);
+                    f32 cs = JMath::sincosTable_.mTable[ang >> 5].first;
+                    f32 sn = JMath::sincosTable_.mTable[ang >> 5].second;
+                    f32 x = g->pos[0] + (lbl_8053F150 * sn - g->m5c * cs);
+                    f32 y = g->pos[1] + (lbl_8053F150 * cs + g->m5c * sn);
+                    Tu6CECVec v = {x, y, g->pos[2]};
+                    *(Tu6CECVec*)(a + 0xc) = v;
+                    if (g->m44 == 2) {
+                        fn_801D7DB4((u8*)a, g->m60);
+                    }
+                }
+            }
+            off += 0xfff;
+        }
+    }
 }
 
 extern "C" f32* fn_8023E724(s32 idx);
