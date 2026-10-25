@@ -215,13 +215,13 @@ extern "C" void fn_803734B4(Actor* this_) {
     }
 }
 
-extern "C" f32 lbl_80542E50;
-extern "C" f32 lbl_80542E58;
-extern "C" f32 lbl_80542E5C;
-extern "C" f32 lbl_80542E60;
-extern "C" f32 lbl_80542E64;
-extern "C" f32 lbl_80542E6C;
-extern "C" f32 lbl_80542E84;
+extern "C" const f32 lbl_80542E50;
+extern "C" const f32 lbl_80542E58;
+extern "C" const f32 lbl_80542E5C;
+extern "C" const f32 lbl_80542E60;
+extern "C" const f32 lbl_80542E64;
+extern "C" const f32 lbl_80542E6C;
+extern "C" const f32 lbl_80542E84;
 extern "C" void fn_803738DC(Actor* this_) {
     f32 c = lbl_80542E60;
     f32 b = lbl_80542E5C;
