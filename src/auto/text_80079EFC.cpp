@@ -301,33 +301,29 @@ extern "C" void* fn_8007A6CC(u8* this_, u8* entry, u32* pSize) {
     return *(void**)(entry + 0x10);
 }
 
-extern "C" void* fn_8007A7F0(void* this_, void* data, u32 compressedSize, void* entry, u32* pSize) {
-    u32* sizeOut = pSize;
-    u32 fileSize;
-    u32 maxSize = compressedSize;
-    void* destination = data;
-    u8* fileEntry = (u8*)entry;
-    fileSize = *(u32*)(fileEntry + 0xc);
-    if (fileSize > maxSize) fileSize = maxSize;
-    u32 flag = *(u32*)(fileEntry + 4);
+extern "C" void* fn_8007A7F0(JKRAramArchive* this_, void* data, u32 compressedSize, JKRArchive::SDIFileEntry* fileEntry, u32* pSize) {
+    u32 fileSize = fileEntry->mSize;
+    if (fileSize > compressedSize) {
+        fileSize = compressedSize;
+    }
+    u32 flag = fileEntry->mFlag;
     int compression;
     if ((flag >> 24 & 4) == 0) compression = 0;
     else if (flag >> 24 & 0x80) compression = 2;
     else compression = 1;
-    if (*(void**)(fileEntry + 0x10) == nullptr) {
+    if (fileEntry->mData == nullptr) {
         u8* block = *(u8**)((u8*)this_ + 0x64);
-        fileSize = JKRAramArchive::fetchResource_subroutine(*(u32*)(fileEntry + 8) + *(u32*)(block + 0x14), fileSize, (u8*)destination, maxSize & ~0x1f, compression);
+        fileSize = JKRAramArchive::fetchResource_subroutine(fileEntry->mDataOffset + *(u32*)(block + 0x14), fileSize, (u8*)data, compressedSize & ~0x1f, compression);
     } else {
         if (compression == 2) {
-            u32 (*getSize)(void*, void*) = *(u32 (**)(void*, void*))(*(u8**)this_ + 0x4c);
-            u32 expandSize = getSize(this_, fileEntry);
+            u32 expandSize = this_->getExpandSize(fileEntry);
             if (expandSize != 0) fileSize = expandSize;
         }
-        if (fileSize > maxSize) fileSize = maxSize;
-        JKRHeap::copyMemory(destination, *(void**)(fileEntry + 0x10), fileSize);
+        if (fileSize > compressedSize) fileSize = compressedSize;
+        JKRHeap::copyMemory(data, fileEntry->mData, fileSize);
     }
-    if (sizeOut != nullptr) *sizeOut = fileSize;
-    return destination;
+    if (pSize != nullptr) *pSize = fileSize;
+    return data;
 }
 
 u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, u32 dstLength, int compression)
