@@ -12,6 +12,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Box.h"
 #include "Game/ItemBase.h"
+#include "Game/ActorDrawRec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Util.h"
 #include "std/math.h"
