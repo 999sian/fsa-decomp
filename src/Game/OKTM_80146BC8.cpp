@@ -3,6 +3,19 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+struct OktmVec3 {
+    f32 x;
+    f32 y;
+    f32 z;
+
+    OktmVec3& operator+=(const OktmVec3& o) {
+        x += o.x;
+        y += o.y;
+        z += o.z;
+        return *this;
+    }
+};
+
 extern "C" void* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(void* entry, s32 a, void* b, s32 d, s32 e);
 extern "C" u16 fn_8022461C(void* a, s32 b);
@@ -108,7 +121,7 @@ extern "C" void fn_80146C28(char* this_) {
     case 5: {
         s32 id = *(s32*)(this_ + 0x24c) + 0x4c;
         if (*(s32*)(this_ + 0x4) < 8) {
-            void* res = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->vf18('SOB ', lbl_80465BEC);
+            void* res = ((ResMgrFsa*)(*(ResMgr**)(lbl_8053AAF8 + 0xa4)))->vf18('SOB ', lbl_80465BEC);
             fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, 1.0f, 1.0f, &rec);
         }
         break;
