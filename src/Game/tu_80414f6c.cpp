@@ -37,7 +37,7 @@ struct T804170EC_Color {
 extern s32 lbl_8053AE00;
 extern u64 lbl_8048CD50[];
 extern f32 lbl_805439C8;
-extern f32 lbl_805439CC;
+extern const f32 lbl_805439CC;
 extern f32 lbl_805439D4;
 extern f32 lbl_805439DC;
 
@@ -204,6 +204,78 @@ extern "C" void fn_80416BD0(void* this_) {
 
 void TU80414F6C::fn_804170B0() {
     (((TU80414F6C*)lbl_8053AE00)->*lbl_804B1354[f109])();
+}
+
+extern "C" void fn_804170EC(void* this_) {
+    u8* p = (u8*)this_;
+    f32 f31;
+    f32 f30;
+    s32 idx;
+    T804170EC_Color clr = {0, 0, 0, 0};
+
+    *(T804170EC_Color*)((u8*)sManager__10JFWDisplay + 0x8) = clr;
+    idx = *(s32*)(p + 0x10) + *(s32*)(p + 0xc) * 5;
+    fn_8013B490(lbl_8053AB10);
+
+    if (*(u8*)(p + 0x109) != 0) {
+        if (idx < 0xa) {
+            *(s32*)(p + 0x14) += 1;
+            if (*(s32*)(p + 0x14) >= 0x1e) {
+                *(s32*)(p + 0x14) = 0;
+            }
+            if (*(s32*)(p + 0x14) < 0xa) {
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 1;
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 0;
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 0;
+            } else if (*(s32*)(p + 0x14) < 0x14) {
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 0;
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 1;
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 0;
+            } else {
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 0;
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 0;
+                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 1;
+            }
+            idx = 0;
+        } else {
+            *(s32*)(p + 0x14) += 1;
+            if (*(s32*)(p + 0x14) >= 0x3c) {
+                *(s32*)(p + 0x14) = 0;
+            }
+            if (*(s32*)(p + 0x14) < 0x1e) {
+                f31 = (f32)(*(s32*)(p + 0x14) * *(s32*)(p + 0x14)) / lbl_805439E8;
+            } else {
+                f31 = lbl_805439B8 - (f32)((*(s32*)(p + 0x14) - 0x1e) * (*(s32*)(p + 0x14) - 0x1e)) / lbl_805439E8;
+            }
+            *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 0;
+            *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 0;
+            *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 0;
+            idx = (s32)(f31 * (f32)*(u8*)(p + 0x108));
+        }
+
+        if (*(s32*)(p + 0x18) > 0) {
+            s32 t = *(s32*)(p + 0x18) < 5 ? *(s32*)(p + 0x18) : 10 - *(s32*)(p + 0x18);
+            if (*(s32*)(p + 0x18) < 10) {
+                *(s32*)(p + 0x18) += 1;
+            } else {
+                *(s32*)(p + 0x18) = 0;
+            }
+            f30 = lbl_805439EC * (f32)(t * t) / lbl_805439D8;
+            f31 = (*(J2DScreen**)(p + 0x24))->search(0x004E646174613035ULL)->getBounds()->i.x;
+            (*(J2DScreen**)(p + 0x24))->search(0x004E646174613035ULL)->move(f31, *(f32*)(p + 0x4) + f30);
+            f31 = (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->getBounds()->i.x;
+            (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->move(f31, *(f32*)(p + 0x8) + f30);
+            (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723031ULL)->setAlpha(idx);
+            (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->setAlpha(idx);
+        }
+
+        (*(J2DScreen**)(p + 0x24))->draw(lbl_805439CC, lbl_805439CC, lbl_8053AB10->ctx);
+    }
+
+    if (*(u8*)(p + 0x109) == 2) {
+        fn_8042EB98(lbl_8053AEC4);
+        fn_80440EE8(lbl_8053AED8);
+    }
 }
 
 // actor@lbl_804B1378: destructor (0x1E0). Resets the vtable pointer, then
