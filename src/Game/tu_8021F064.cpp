@@ -24,24 +24,25 @@ ActorGroup_8021F064* fn_8021F064() {
     return &sInstance;
 }
 
-bool fn_8021F094(ActorGroup_8021F064* g) {
+#pragma opt_lifetimes off
+extern "C" bool fn_8021F094(const ActorGroup_8021F064* g) {
     s32 n = g->mCount;
-    if (n <= 0) {
-        return false;
-    }
-    ActorGroup_8021F064* p = g;
+    if (n <= 0) return false;
+    const ActorGroup_8021F064* p = g;
     bool result = true;
-    for (s32 i = 0; i < n; i++) {
+    s32 i = 0;
+    while (i < n) {
         void* actor = fn_801F666C(fn_801F856C(), p->mIds[0]);
         if (actor != NULL && !fn_8021D794(actor)) {
             result = false;
             break;
         }
-        p = (ActorGroup_8021F064*)((s32*)p + 1);
+        p = (const ActorGroup_8021F064*)((const s32*)p + 1);
+        i++;
     }
     return result;
 }
-
+#pragma opt_lifetimes reset
 void fn_8021F130(ActorGroup_8021F064* g) {
     register void* actor;
     int i;
@@ -62,32 +63,26 @@ void fn_8021F130(ActorGroup_8021F064* g) {
     }
 }
 
+#pragma opt_lifetimes off
 void fn_8021F1F0(ActorGroup_8021F064* g, s32 id) {
     bool found;
     s32* ptr;
-    s32 i;
-    if (g->mCount <= 0) {
-        return;
-    }
+    u32 i;
+    if (g->mCount <= 0) return;
     ptr = g->mIds;
     found = false;
-    if (g->mCount <= 0) {
-        return;
-    }
+    if (g->mCount <= 0) return;
     i = found;
-    for (; i < g->mCount; i++, ptr++) {
+    for (; (s32)i < g->mCount; i++, ptr++) {
         if (!found) {
-            if (id == *ptr) {
-                found = true;
-            }
+            if (id == *ptr) found = true;
         } else {
-            *(ptr - 1) = *ptr;
+            ptr[-1] = *ptr;
         }
     }
-    if (found) {
-        g->mCount--;
-    }
+    if (found) g->mCount--;
 }
+#pragma opt_lifetimes reset
 }
 
 // ---- GrowableArray_PushBack_8021F25C.cpp ----
