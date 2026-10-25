@@ -9,7 +9,8 @@
 
 extern "C" char lbl_804AE574[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
-extern "C" f32 lbl_80542E54;
+extern "C" const f32 lbl_80542E50;
+extern "C" const f32 lbl_80542E54;
 extern "C" s32 lbl_80475024[];
 extern "C" u8 fn_8023077C(void);
 extern "C" u8 fn_80230534(s32 i);
@@ -30,8 +31,6 @@ extern "C" Actor* fn_80373138(Actor* this_, s16 del) {
 extern "C" void fn_80373198(Actor* this_) {
     u8* p = (u8*)this_;
     s32 i;
-    Vec v;
-    Vec off;
     s32 state = *(s32*)(p + 0x24c);
     if (state < 0) {
         return;
@@ -43,23 +42,18 @@ extern "C" void fn_80373198(Actor* this_) {
         *(s32*)(p + 0x24c) = 4;
         *(s32*)(p + 0x248) = 0x32;
         *(s32*)(p + 0x250) = 0;
-        off.x = 0.0f;
-        off.y = lbl_80542E54;
-        off.z = 0.0f;
         for (i = 0; i < 4; i++) {
             Vec* src = fn_8023E724(i);
-            v.x = src->x + off.x;
-            v.y = src->y + off.y;
-            v.z = src->z + off.z;
-            fn_80230498(i, &v, 0x2e2, 0xff, -0x80, -0x80, 1);
+            JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)src + JGeometry::TVec3<f32>(0.0f, lbl_80542E54, 0.0f);
+            fn_80230498(i, (Vec*)&v, 0x2e2, 0xff, -0x80, -0x80, 1);
         }
         return;
     }
     if (*(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x248) > 0x1e) {
         for (i = 0; i < 4; i++) {
             Vec* src = fn_8023E724(i);
-            v = *src;
-            fn_80230498(i, &v, 0x2e2, 0xff, -0x80, -0x80, 1);
+            JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)src;
+            fn_80230498(i, (Vec*)&v, 0x2e2, 0xff, -0x80, -0x80, 1);
         }
         return;
     }
@@ -80,8 +74,8 @@ extern "C" void fn_80373198(Actor* this_) {
     *(s32*)(p + 0x248) = lbl_80475024[*(s32*)(p + 0x250)];
     for (i = 0; i < 4; i++) {
         Vec* src = fn_8023E724(i);
-        v = *src;
-        fn_80230498(i, &v, *(s32*)(p + 0x250) + 0xdb, 0xff, -0x80, -0x80, 1);
+        JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)src;
+        fn_80230498(i, (Vec*)&v, *(s32*)(p + 0x250) + 0xdb, 0xff, -0x80, -0x80, 1);
         if (*(s32*)(p + 0x250) == 1) {
             fn_80230FD0(i, 0x10001);
         }
