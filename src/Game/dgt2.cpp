@@ -2,6 +2,7 @@
 // TU 8018EB94-801902C0 (DGT2). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" JMathSinCos sincosTable___5JMath[];
@@ -177,10 +178,9 @@ struct Dgt2Links { u8 pad[0x3c0]; Dgt2Child* child[3]; };
 // Release the three linked child actors.
 extern "C" void fn_8018EB94(void* this_) {
     char* p = (char*)this_;
-    f32 z;
     DrawRec rec;
     f32 mtx[3][4];
-    z = *(f32*)(p + 0x14);
+    f32 z = *(f32*)(p + 0x14);
     if ((*(u32*)(p + 0x240) & 1) != 0) {
         u8* r = (u8*)&rec;
         r[0x17] = 0;
@@ -230,6 +230,104 @@ extern "C" void fn_8018EB94(void* this_) {
 
     *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x288);
     *(f32*)(p + 0x14) = z;
+}
+
+extern "C" s32 fn_801F3D94(void* a, s32 b);
+extern "C" u8 fn_801F305C(void* a);
+extern "C" u8 fn_801F2618(void* a, s32 b, s32 c);
+extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
+extern "C" void fn_801F2B7C(void* a, s32 hit, s32 b, s32 c);
+extern "C" void fn_801F0E34(void* a, s32 flags, s32 b);
+extern "C" s32 fn_8013CC50(s32 room, void* v, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" void fn_8013CB44(void* v, s32 a, s32 b, s32 c);
+extern "C" void fn_801EEC98(void* a, void* h, u16* out, s32 x6, s32 x7, s32 x8, s32 x9, s32 x10);
+extern s32 lbl_80539FE0[];
+extern s32 lbl_80539FD8[];
+extern f32 lbl_8053E1E4;
+extern f32 lbl_8053E1E8;
+extern f32 lbl_8053E1EC;
+extern "C" void fn_8018F2DC(void* this_) {
+    s32 found = 0;
+    char* p = (char*)this_;
+    Dgt2Vec vel0 = *(Dgt2Vec*)(p + 0x3c);
+    Dgt2Vec pos0 = *(Dgt2Vec*)(p + 0xc);
+    f32 z0 = pos0.z;
+
+    if (*(s32*)(p + 0x234) > 0) {
+        *(s32*)(p + 0x234) = *(s32*)(p + 0x234) - 1;
+    }
+    if (*(s32*)(p + 0x238) > 0) {
+        *(s32*)(p + 0x238) = *(s32*)(p + 0x238) - 1;
+    }
+    if (*(s32*)(p + 0x23c) > 0) {
+        *(s32*)(p + 0x23c) = *(s32*)(p + 0x23c) - 1;
+    }
+    if (*(s32*)(p + 0x240) > 0) {
+        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
+    }
+    if (*(s32*)(p + 0x244) > 0) {
+        *(s32*)(p + 0x244) = *(s32*)(p + 0x244) - 1;
+    }
+
+    if (*(s32*)(p + 0x230) == 0) {
+        char* q = p;
+        s32 i;
+        for (i = 0; i < 3; i++, q += 0xc) {
+            *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(q + 0x288);
+            if (fn_801F3D94(p, 1) != 0 || fn_801F305C(p)) {
+                fn_801F2618(p, 0, 0);
+                found = 1;
+                break;
+            }
+        }
+
+        if (found == 0) {
+            *(Dgt2Vec*)(p + 0xc) = pos0;
+            *(f32*)(p + 0x14) = z0;
+            fn_801F71A4(p + 0x3c, *(f32*)(p + 0x27c), *(f32*)(p + 0x268), *(f32*)(p + 0x26c));
+            fn_801F71A4(p + 0x40, *(f32*)(p + 0x280), *(f32*)(p + 0x268), *(f32*)(p + 0x26c));
+
+            *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+            *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+            *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+
+            fn_801F2B7C(p, *(s32*)(p + 0x114), -1, 1);
+            if (fn_801F2618(p, 0, 0) && *(s32*)(p + 0x238) == 0) {
+                *(s32*)(p + 0x98) = (*(s32*)(p + 0x98) + 8) & 0xf;
+                if (*(s32*)(p + 0x264) == *(s32*)(p + 0x98)) {
+                    *(s32*)(p + 0x98) = (*(s32*)(p + 0x98) + (*(s32*)(p + 0x254) << 2)) & 0xf;
+                }
+                *(s32*)(p + 0x264) = *(s32*)(p + 0x260);
+                *(s32*)(p + 0x260) = *(s32*)(p + 0x98);
+                *(s32*)(p + 0x25c) = *(s32*)(p + 0x98);
+                *(s32*)(p + 0x238) = 8;
+                *(s32*)(p + 0x23c) = 8;
+
+                u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+                *seed = *seed * 0x19660du + 0x3c6ef35fu;
+                u32 bits = (*seed >> 9) | 0x3f800000u;
+                if (*(f32*)&bits - lbl_8053E1E0 < lbl_8053E1DC) {
+                    *(s32*)(p + 0x254) = *(s32*)(p + 0x254) * -1;
+                }
+
+                fn_801F0E34(p, 0x4000b, 0);
+                dgt2SetVel(p);
+                *(Dgt2Vec*)(p + 0x3c) = *(Dgt2Vec*)(p + 0x27c);
+                *(f32*)(p + 0x44) = *(f32*)(p + 0x284);
+            }
+        }
+
+        for (s32 j = 0x12; j >= 0; j--) {
+            *(Dgt2Vec*)(p + 0x2d0 + (j + 1) * 12) = *(Dgt2Vec*)(p + 0x2d0 + j * 12);
+            *(f32*)(p + 0x2e4 + j * 12) = z0;
+        }
+        *(f32*)(p + 0x14) = z0;
+        dgt2CopyPos(p + 0x2d0, p);
+
+        if (found != 0) {
+            fn_801F0E34(p, 0x4000b, 0);
+        }
+    }
 }
 
 extern "C" void fn_8018FAB4(Dgt2Links* this_) {
