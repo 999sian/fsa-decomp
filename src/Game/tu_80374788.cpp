@@ -1,6 +1,9 @@
 #include "JSystem/JGeometry/Vec.h"
 #define Vec ActorVec
 #include "Game/Actor.h"
+#pragma opt_common_subs off
+#include "Game/ItemBase.h"
+#pragma opt_common_subs reset
 
 
 extern "C" char lbl_804AE620[];
@@ -20,53 +23,19 @@ extern "C" char lbl_80475120[];
 extern "C" const f32 lbl_80542ED8;
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, void* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
+#pragma opt_common_subs off
 extern "C" void fn_803747E8(Actor* this_) {
-    char rec[0x3C];
-    u8 i;
-
-    *(s32*)(rec + 0x10) = -1;
-    *(s32*)(rec + 0x14) = -1;
-    for (i = 0; i < 0x10; i += 8) {
-        rec[(u8)(i)] = i;
-        rec[(u8)(i + 1)] = i + 1;
-        rec[(u8)(i + 2)] = i + 2;
-        rec[(u8)(i + 3)] = i + 3;
-        rec[(u8)(i + 4)] = i + 4;
-        rec[(u8)(i + 5)] = i + 5;
-        rec[(u8)(i + 6)] = i + 6;
-        rec[(u8)(i + 7)] = i + 7;
-    }
-    *(s32*)(rec + 0x10) = -1;
-    *(s32*)(rec + 0x14) = 0;
-    *(s32*)(rec + 0x18) = 0;
-    rec[0x1c] = 0;
-    rec[0x1d] = 0;
-    rec[0x1e] = 0;
-    rec[0x1f] = 1;
-    rec[0x20] = 1;
-    rec[0x21] = 0;
-    rec[0x22] = 0;
-    rec[0x23] = 0;
-    rec[0x24] = 0;
-    rec[0x25] = 0;
-    rec[0x26] = 1;
-    *(s32*)(rec + 0x28) = 3;
-    rec[0x2c] = 1;
-    rec[0x2d] = 0;
-    rec[0x2e] = 0;
-    *(s32*)(rec + 0x30) = -1;
-    *(s32*)(rec + 0x34) = 0;
-    *(s32*)(rec + 0x38) = 2;
-
-    s32 idx = 0;
-    if (*(s32*)((char*)this_ + 0x240) != 0) {
-        idx = *(s32*)((char*)this_ + 0x240) + 3;
-        rec[0x1d] = -1;
-        fn_801F06F0(this_, lbl_80475120, idx + 0x45, rec, 0, lbl_80542ED8, lbl_80542ED8);
+    register DrawRec rec;
+    int idx = 0;
+    int type = *(s32*)((char*)this_ + 0x240);
+    if (type != 0) {
+        idx = type + 3;
+        rec.b1d = -1;
+        fn_801F06F0(this_, lbl_80475120, idx + 0x45, &rec, 0, lbl_80542ED8, lbl_80542ED8);
     }
     fn_80307AC8(*(void**)((char*)this_ + 0x198), this_->field_04, (char*)this_ + 0xc, idx + 0x45, 0, 0, -1);
 }
-
+#pragma opt_common_subs reset
 extern "C" f32 lbl_80542EE0;
 extern "C" f32 lbl_80542EE4;
 extern "C" f32 lbl_80542EE8;
