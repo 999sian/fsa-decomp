@@ -1,20 +1,8 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
 
-extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
-extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
-extern "C" f64 __ps_add(f64 a, f64 b);
-
-/* paired-single Vec add, same code as JMathInlineVEC::PSVECAdd */
-static inline void PSVECAdd(const Vec* a, const Vec* b, Vec* d) {
-    f64 axy = __psq_l((void*)a, 0, 0, 0);
-    f64 bxy = __psq_l((void*)b, 0, 0, 0);
-    f64 az = __psq_l((void*)a, 8, 1, 0);
-    f64 bz = __psq_l((void*)b, 8, 1, 0);
-    __psq_st(__ps_add(axy, bxy), (void*)d, 0, 0, 0);
-    __psq_st(__ps_add(az, bz), (void*)d, 8, 1, 0);
-}
-
-
+extern "C" void fn_80230498(s32, const JGeometry::TVec3f&, s32, s32, s32, s32, s32);
 extern "C" char lbl_804AE230[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u8* lbl_8053AAF8;
