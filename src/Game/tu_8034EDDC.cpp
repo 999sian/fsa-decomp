@@ -636,6 +636,14 @@ extern "C" void fn_8022E088(s32 player, s32 idx, JGeometry::TVec3<f32>* out);
 extern "C" void fn_8022DF48(s32 player);
 extern const f32 lbl_80542600;
 extern const f32 lbl_80542604;
+static inline f32 tu8034_sqrtf(f32 x) {
+    if (x <= lbl_805425D8) {
+        return x;
+    }
+    f32 y = __frsqrte(x);
+    y = lbl_80542600 * y * (lbl_80542604 - (x * (y * y)));
+    return x * y;
+}
 extern "C" s32 fn_80351020(u8* this_, s32 player) {
     s32 room = *(s32*)(this_ + 4);
     if (room != fn_8023DE58(player)) {
@@ -643,18 +651,19 @@ extern "C" s32 fn_80351020(u8* this_, s32 player) {
     }
     f32 scale = lbl_80542628;
     f32 margin = lbl_8054262C;
+    f32 zero = 0.0f;
     for (s32 i = 0; i < 8; i++) {
         JGeometry::TVec3f pt;
         fn_8022E088(player, i, &pt);
         pt -= *(JGeometry::TVec3f*)(this_ + 0xc);
-        pt.z = 0.0f;
+        pt.z = zero;
         f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
         s32 idx = (s32)(ang * scale);
         f32 len = JGeometry::TUtilf::sqrt(pt.x * pt.x + pt.y * pt.y);
         u8* sc = (u8*)&JMath::sincosTable_ + ((idx >> 2) & 0x3ff8);
         pt.x = *(f32*)(sc + 4) * len;
         pt.y = *(f32*)sc * len;
-        pt.z = 0.0f;
+        pt.z = zero;
         f32 x0 = *(f32*)(this_ + 0x80) - margin;
         f32 y0 = *(f32*)(this_ + 0x84) - margin;
         f32 x1 = *(f32*)(this_ + 0x88) + margin;
@@ -672,6 +681,11 @@ extern "C" s32 fn_80351020(u8* this_, s32 player) {
 }
 
 extern "C" void fn_803511F0(u8* self) {
+    f32 dist;
+    f32 dx;
+    f32 dy;
+    f32 dx2;
+    f32 dy2;
     fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x97, 0, lbl_805425F0, -3, 0, 0, 1);
     fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x98, 0, lbl_805425F0, -3, 0, 0, 1);
     *(s32*)(self + 0x258) = 0xb;
@@ -682,19 +696,12 @@ extern "C" void fn_803511F0(u8* self) {
     *(s32*)(self + 0x248) = 0xa;
     *(s32*)(self + 0x274) = -1;
     *(s32*)(self + 0x268) = *(s32*)(self + 0x264);
-    f32 dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
-    f32 dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
-    f32 dx2 = dx * dx;
-    f32 dy2 = dy * dy;
-    f32 d2 = dx2 + dy2;
-    if (d2 <= lbl_805425D8) {
-        f32 y = __frsqrte(d2);
-        y = lbl_80542600 * y * (lbl_80542604 - (d2 * (y * y)));
-        d2 = d2 * y;
-    } else {
-        d2 = d2;
-    }
-    if (d2 > lbl_80542608) {
+    dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
+    dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
+    dx2 = dx * dx;
+    dy2 = dy * dy;
+    dist = JGeometry::TUtilf::sqrt(dx2 + dy2);
+    if (dist > lbl_80542608) {
         *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
         s32 kind = *(s32*)(self + 4);
         if (kind >= 8) {
