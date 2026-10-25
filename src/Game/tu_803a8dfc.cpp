@@ -482,8 +482,9 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
                 p->state[i] = 0xbd;
             }
         }
-        s32 sub = ((GameResult*)lbl_80529DEC)->sub;
-        s32 mode = ((GameResult*)lbl_80529DEC)->mode;
+        GameResult* res = (GameResult*)lbl_80529DEC;
+        s32 mode = res->mode;
+        s32 sub = res->sub;
         s32 k = sub;
         switch (mode) {
         case 0:
@@ -507,19 +508,16 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
             break;
         }
         if (p->m4c8 == 0) {
-            ((GameResult*)lbl_80529DEC)->wins[p->ids[0]]++;
-            ((GameResult*)lbl_80529DEC)->winMask = 0;
-            ((GameResult*)lbl_80529DEC)->winMask = 1 << p->ids[0];
-            if (((GameResult*)lbl_80529DEC)->mode >= 0 && ((GameResult*)lbl_80529DEC)->mode < 8 && k >= 0 && k < 3) {
-                ((GameResult*)lbl_80529DEC)->winner[((GameResult*)lbl_80529DEC)->mode][k] = p->ids[0];
-            }
+            GameResult* g = (GameResult*)lbl_80529DEC;
+            g->wins[p->ids[0]]++;
+            g->winMask = 0;
+            g->winMask = 1 << p->ids[0];
+            g->setWinner(res->mode, k, p->ids[0]);
             if (p->m4c8 != 0xff) {
                 fn_80458880(lbl_8053AF80, 0x11, -1);
             }
         } else {
-            if (mode >= 0 && mode < 8 && sub >= 0 && sub < 3) {
-                ((GameResult*)lbl_80529DEC)->winner[mode][sub] = 0xff;
-            }
+            GameResult_setWinner(mode, sub, 0xff);
             fn_80458880(lbl_8053AF80, 0x2b, -1);
         }
         fn_80458880(lbl_8053AF80, 0x2c, -1);
