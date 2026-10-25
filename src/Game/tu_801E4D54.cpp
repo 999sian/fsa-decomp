@@ -1,6 +1,7 @@
 #include "types.h"
 #include "sdk/stl/float.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void fn_801E4D54(u8* this_) {
     *(u32*)(this_ + 0x230) &= ~0x4000;
@@ -38,39 +39,88 @@ extern "C" s32 fn_80238548(s32 i, s32 b, f32* p, s32 d);
 extern "C" void fn_8023DFF4(s32 i, f32* v);
 extern "C" void fn_8022CD48(s32 i);
 extern "C" void fn_801E5754(u8* this_) {
+    s32 j;
     s32 i;
     u8* p;
-    f32 pv[3];
-    f32 pv2[3];
-    f32 dx;
-    f32 dy;
-    f32 dz;
-    f32* v;
-    f32 out[3];
-    if (this_[0x2a8] != 0) {
-        for (i = 0; i < 4; i++) {
-            p = this_ + 0x2a8 + i * 0x18;
-            if (fn_8023F264(i) == 0 || fn_80236B50(i) != 0 || fn_8022D75C(i) != 0) {
-                fn_80230224(i, 0);
-            } else if (fn_8023DE58(i) != *(s32*)(this_ + 4)) {
+    u8* q;
+    s32 room;
+    JGeometry::TVec3<f32> pv;
+    JGeometry::TVec3<f32> sum;
+    JGeometry::TVec3<f32> out;
+    f32 xy[2];
+    f32 dx, dy;
+    u8 first, second;
+    s32 result;
+    for (i = 0, q = this_; i < 4; i++, q += 0x18) {
+        if (q[0x2a8] != 0) {
+            if (!(u8)fn_8023F264(i) || (u8)fn_80236B50(i) || (u8)fn_8022D75C(i)) goto clear_slot;
+            room = *(s32*)(this_ + 4);
+            s32 playerRoom = fn_8023DE58(i);
+            if (playerRoom != room) {
+clear_slot:
+                p = q + 0x2a8;
                 fn_801D789C(p);
                 p[0] = 0;
-                if (fn_80230188(i) != 0) {
-                    fn_80230224(i, 0);
-                }
+                if ((u8)fn_80230188(i)) fn_80230224(i, 0);
             }
         }
     }
-    for (i = 0; i < 4; i++) {
-        p = this_ + i * 0x18;
+    for (j = 0, p = this_; j < 4; j++, p += 0x18) {
         if (*(s32*)(p + 0x2ac) > 0) {
-            *(s32*)(p + 0x2ac) -= 1;
+            if (*(s32*)(p + 0x2ac) > 0) --*(volatile s32*)(p + 0x2ac);
             continue;
         }
-        if (p[0x2a8] == 0) {
-            if (fn_801D08B4(this_, i, this_ + 0xc, *(f32*)(this_ + 0x47c)) == 0) {
-                continue;
+        if (!p[0x2a8] && !(u8)fn_801D08B4(this_, j, this_ + 0xc, *(f32*)(this_ + 0x47c))) continue;
+        dy = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x1c);
+        dx = *(f32*)(this_ + 0xc) - *(f32*)(this_ + 0x18);
+        f32* v = fn_8023E724(j);
+        pv.x = v[0]; pv.y = v[1]; pv.z = v[2];
+        if (p[0x2a8]) {
+            pv.x += dx; pv.y += dy;
+            if (*(u32*)(this_ + 0x230) & 0x4000) {
+                ++*(volatile s32*)(p + 0x2b0);
+                if (*(s32*)(p + 0x2b0) % 40 == 0) fn_80236074(j, 10, 0);
             }
+        }
+        fn_801EB00C(this_ + 0x464, &pv.x, &out.x);
+        if (out.z > lbl_8053F578) {
+            if ((*(u32*)(this_ + 0x230) & 0x4000) && !(u8)fn_80230188(j) &&
+                (u8)fn_802300EC(j) && !(u8)fn_80236BEC(j)) {
+                fn_80230C6C(j); fn_80230AD4(j); p[0x2a8] = 1;
+                fn_8021BD18(p + 0x2b4, fn_80230CFC(j));
+            }
+            if (!(u8)fn_80230188(j)) {
+                if ((*(u32*)(this_ + 0x230) & 0x4000) && !(u8)fn_80236BEC(j)) {
+                    out.x += dx; out.y += dy;
+                    fn_8023DFF4(j, &out.x); fn_8022CD48(j);
+                }
+            } else {
+                sum.x = pv.x; sum.y = pv.y; sum.z = pv.z;
+                sum.add(out);
+                fn_8021BCBC(p + 0x2b4);
+                fn_80230498(j, &sum.x, *(s32*)(p + 0x2b4), 255, -128, -128, 0);
+                fn_8022CB94(j);
+                first = 0; second = 0; result = 0;
+                xy[0] = pv.x; xy[1] = pv.y;
+                xy[0] -= out.x; xy[1] -= out.y;
+                if (!(*(u32*)(this_ + 0x230) & 0x4000)) {
+                    first = 1;
+                    result = fn_80238548(j, 0, xy, 25);
+                } else if (sum.z > *(f32*)(this_ + 0x478)) {
+                    second = 1;
+                    result = fn_80238548(j, *(s32*)(this_ + 0x114), xy, 23);
+                }
+                if (first || second) {
+                    fn_80230224(j, 0);
+                    fn_801D789C(p + 0x2a8);
+                    p[0x2a8] = 0;
+                    if ((u8)result) *(s32*)(p + 0x2ac) = 120;
+                    else *(s32*)(p + 0x2ac) = 30;
+                }
+            }
+        } else if ((*(u32*)(this_ + 0x230) & 0x4000) && !(fn_8023E724(j)[2] >= *(f32*)(this_ + 0x478)) &&
+                   !(u8)fn_80236BEC(j)) {
+            fn_8023DFF4(j, &out.x); fn_8022CD48(j);
         }
     }
 }
