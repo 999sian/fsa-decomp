@@ -1169,20 +1169,22 @@ extern "C" char* fn_802D8128(char* p, s32 index) {
     }
     return 0;
 }
-#pragma opt_propagation reset
+#pragma opt_propagation off
 extern "C" char* fn_802D8228(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
         s32 y = *(s32*)(p + 0x18);
         if (y >= 0 && y < 10) {
-            s32 b = *(s32*)(p + 8);
-            s32 a = *(s32*)(p + 4);
             const char* name;
+            s32 col = *(s32*)(p + 8);
+            s32 row = *(s32*)(p + 4);
             if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1)
-                name = lbl_804A9530[a][b];
+                name = lbl_804A9530[row][col];
             else
                 name = lbl_80541128;
-            s32 number = ((RoomArrays*)(p + (u32)(y * 10)))->roomNumbers[0][x];
+            char* cell = p + y * 10;
+            char* cell2 = cell + x;
+            s32 number = ((RoomArrays*)cell2)->roomNumbers[0][0];
             if (number == 255)
                 number = 0;
             sprintf(p + 0x131FA, lbl_8046E804, name, number / 10, number % 10, index - 7);
@@ -1191,7 +1193,7 @@ extern "C" char* fn_802D8228(char* p, s32 index) {
     }
     return 0;
 }
-
+#pragma opt_propagation on
 extern "C" u8* fn_804032E8(u32, const char*);
 extern "C" char* fn_801E9AFC();
 extern "C" void fn_801EA384(char*, u8);
@@ -2913,17 +2915,22 @@ extern "C" void fn_802DEC40(s32 index, s32 digit, u32 value) {
     base->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] |= bits;
 }
 
+#pragma opt_propagation off
 extern "C" u32 fn_802DED40(s32 index, s32 digit) {
-    index = index < 8 ? 0 : index - 7;
-    s32 shift = 60 - digit * 4;
-    char* root = *(char**)(lbl_8053AAF8 + 4);
-    char* p = *(char**)(root + 0x0C);
+    s32 idx;
+    char* p;
+    char* root;
+    s32 shift;
+    idx = index < 8 ? 0 : index - 7;
+    shift = 60 - digit * 4;
+    root = *(char* volatile*)(lbl_8053AAF8 + 4);
+    p = *(char* volatile*)(root + 0x0C);
     u64 mask = (u64)15 << shift;
-    RoomArrays* rooms = *(RoomArrays**)(root + 0x0C);
-    u64 value = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
-    return (value & mask) >> shift;
+    RoomArrays* rooms = *(RoomArrays**)(root + (unsigned short)0x0C);
+    u64 value = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][idx];
+    return (mask & value) >> shift;
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_802DEDFC(s32 value) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     return fn_802DCE5C(p, value);
