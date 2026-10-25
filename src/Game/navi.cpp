@@ -76,6 +76,10 @@ extern const f32 lbl_8053FD88;
 extern const f32 lbl_8053FD58;
 extern const f32 lbl_8053FD60;
 extern const f32 lbl_8053FD5C;
+static inline void navi_setColor(s32 i, s32 c) {
+    NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+    fn_80230498(i, &v, c + 0x3c, 0xff, -0x80, -0x80, 1);
+}
 extern char* lbl_8053AB10;
 extern "C" void fn_801D01A0(void* self, f32 speed, void* dir, void* out);
 extern int __float_max[];
@@ -445,9 +449,9 @@ extern "C" void fn_8021DC44(char* p) {
 }
 
 extern "C" void fn_8021DFAC(char* p, s32 state) {
-    s32 room;
-    s32 j;
+    s32 c;
     s32 i;
+    s32 j;
     switch (state) {
     case 0:
         break;
@@ -455,15 +459,12 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         fn_801F3604(p);
         if (*(u32*)(p + 0x230) & 0x2000) {
             for (i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
-                    room = *(s32*)(p + 4);
-                    if (fn_8023DE58(i) == room) {
-                        NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
-                        for (j = 0; j < 4; j++) {
-                            fn_8013CC50(*(s32*)(p + 4), &v, lbl_8046A78C[i][j], 0, 0, 0, 0, 1, lbl_8053FD5C);
-                        }
-                        fn_80230FD0(i, 0x20063);
+                if (fn_8023F264(i) && navi_eq(fn_8023DE58(i), *(s32*)(p + 4))) {
+                    NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+                    for (j = 0; j < 4; j++) {
+                        fn_8013CC50(*(s32*)(p + 4), &v, lbl_8046A78C[i][j], 0, 0, 0, 0, 1, lbl_8053FD5C);
                     }
+                    fn_80230FD0(i, 0x20063);
                 }
             }
         }
@@ -471,12 +472,9 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
     case 2:
         if (*(u32*)(p + 0x230) & 0x2000) {
             for (i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
-                    room = *(s32*)(p + 4);
-                    if (fn_8023DE58(i) == room) {
-                        NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
-                        fn_80230498(i, &v, fn_80230CFC(i) + 0x3c, 0xff, -0x80, -0x80, 1);
-                    }
+                if (fn_8023F264(i) && navi_eq(fn_8023DE58(i), *(s32*)(p + 4))) {
+                    NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+                    fn_80230498(i, &v, fn_80230CFC(i) + 0x3c, 0xff, -0x80, -0x80, 1);
                 }
             }
         }
@@ -546,21 +544,17 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
     case 6:
         if (*(u32*)(p + 0x230) & 0x2000) {
             for (i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
-                    room = *(s32*)(p + 4);
-                    if (fn_8023DE58(i) == room) {
-                        s32 c;
-                        if (*(u32*)(p + 0x230) & 0x4000) {
-                            c = 3;
-                        } else if (fn_8022F514(i)) {
-                            c = fn_80230CFC(fn_8022F3DC(i));
-                        } else {
-                            c = fn_801CD354(fn_801D0020(p, p + 0xc, i, 0));
-                        }
-                        fn_80230BF4(i, c);
-                        NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
-                        fn_80230498(i, &v, c + 0x3c, 0xff, -0x80, -0x80, 1);
+                if (fn_8023F264(i) && navi_eq(fn_8023DE58(i), *(s32*)(p + 4))) {
+                    if (*(u32*)(p + 0x230) & 0x4000) {
+                        c = 3;
+                    } else if (fn_8022F514(i)) {
+                        c = fn_80230CFC(fn_8022F3DC(i));
+                    } else {
+                        c = fn_801CD354(fn_801D0020(p, p + 0xc, i, 0));
                     }
+                    fn_80230BF4(i, c);
+                    NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+                    fn_80230498(i, &v, c + 0x3c, 0xff, -0x80, -0x80, 1);
                 }
             }
         }
