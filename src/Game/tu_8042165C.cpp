@@ -140,6 +140,11 @@ static inline TimerPicture* GetPicture(u8* this_, u64 key) {
 }
 
 // Sets digit `pos` of player idx's timer (both picture layers) to texture tex.
+static inline void SetTimerDigitAt(u8* this_, u64* a, u64* b, s32 pos, u32 tex) {
+    GetPicture(this_, a[pos])->changeTexture(tex, 0);
+    GetPicture(this_, b[pos])->changeTexture(tex, 0);
+}
+
 static inline void SetTimerDigit(u8* this_, u32 idx, s32 pos, u32 tex) {
     GetPicture(this_, ((u64(*)[5])(lbl_8048E1B8 + 0xa28))[idx][pos])->changeTexture(tex, 0);
     GetPicture(this_, ((u64(*)[5])(lbl_8048E1B8 + 0xac8))[idx][pos])->changeTexture(tex, 0);
@@ -424,10 +429,9 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
 }
 
 extern "C" void fn_80423804(u8* this_, u32 idx) {
-    s32 n;
     u8* base = lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
-        n = fn_80237810(idx);
+        s32 n = fn_80237810(idx);
         s32 cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         s32 k = cnt;
         if (n > 0x20) {
@@ -443,11 +447,10 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
             k = 0;
         }
 
-        u32 off = idx * 0x40;
-        u64* a = (u64*)(base + 0x228 + off);
-        u64* b = (u64*)(base + 0x328 + off);
-        u64* c = (u64*)(base + 0x428 + off);
-        u64* d = (u64*)(base + 0x528 + off);
+        u64* a = (u64*)(base + 0x228 + (idx << 6));
+        u64* b = (u64*)(base + 0x328 + (idx << 6));
+        u64* c = (u64*)(base + 0x428 + (idx << 6));
+        u64* d = (u64*)(base + 0x528 + (idx << 6));
         for (s32 j = 0; j < 8; j++) {
             if (k >= 4) {
                 SetSub(GetSub(this_, *a), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
