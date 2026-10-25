@@ -22,7 +22,7 @@ extern "C" void fn_8021BD18(void* subObj, s32 arg);
 extern "C" void fn_801D789C(void* child);
 extern "C" s32 fn_801CD664(s32 id);
 extern "C" void fn_801E4D54(void* this_);
-extern "C" void fn_801E4618(void* this_, JGeometry::TVec2<f32>* out, s32 id);
+extern "C" void fn_801E4618(void* this_, JGeometry::TVec2<f32>* out, u8 id);
 extern "C" void fn_801D7638(void* p);
 extern "C" void fn_801D76B4(void* p);
 extern "C" void fn_80217A74(void* p);
