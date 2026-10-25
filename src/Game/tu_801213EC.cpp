@@ -188,7 +188,29 @@ extern const f32 lbl_8053C9E8;
 extern const f32 lbl_8053C9EC;
 extern const f32 lbl_8053C9F4;
 extern const f32 lbl_8053C9F8;
+extern const f32 lbl_8053C9FC;
+extern const f32 lbl_8053CA00;
+extern "C" const void* fn_8023E4E4(s32, s32);
+extern "C" u8 fn_8023EA28(s32);
+extern "C" u16 fn_802265FC(void*, s32);
+extern "C" u8 fn_802DCD0C(void*);
 }
+
+// Actor slot 40 call with a u16 angle, a quadrant, a distance, an index and the target.
+class ActorSlot40Calls {
+public:
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+    virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+    virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+    virtual void v40(u16*, s32*, f32*, s32*, s32);
+};
 
 extern "C" s32 fn_801213EC() { return 0; }
 extern "C" s32 fn_801213F4() { return 0; }
@@ -645,11 +667,14 @@ extern "C" void fn_80122548(u8* self) {
             idx = fn_8022EA0C(player);
         }
         GameLowVec pos = *fn_8023E724(idx);
+        u32 arg;
         player = *(s32*)(self + 0x344);
         if (player < 0 || player >= 4) {
-            player = -1;
+            arg = -1;
+        } else {
+            arg = player;
         }
-        *(s32*)(self + 0x98) = fn_80230CFC(fn_8022EA0C(player));
+        *(s32*)(self + 0x98) = fn_80230CFC(fn_8022EA0C(arg));
         switch (*(s32*)(self + 0x98)) {
         case 0:
             pos.x -= lbl_8053C9BC;
@@ -673,7 +698,7 @@ extern "C" void fn_80122548(u8* self) {
         } else {
             idx = fn_8022EA0C(player);
         }
-        s32 n = fn_80230CFC(idx);
+        register s32 n = fn_80230CFC(idx);
         if (n < 0) {
             return;
         }
@@ -935,14 +960,18 @@ extern "C" void fn_80122F6C(u8* self, f32* x, f32* y, s32* player) {
 }
 
 extern "C" void fn_8012309C(u8* self, s16* ang, s32* quad, f32* z, s32* outIdx, s32 e) {
+    s32 idx;
+    f32 ox;
+    f32 oy;
+
     if (self[0x334] != 0) {
         fn_801EEC98(self, *(s32*)(self + 0x198), (s32*)ang, quad, z, (f32*)outIdx, e, 2);
         self[0x334] = 0;
         return;
     }
-    f32 ox = 0.0f;
-    f32 oy = 0.0f;
-    s32 idx = e;
+    idx = e;
+    ox = 0.0f;
+    oy = 0.0f;
     switch (fn_8022CAF8(e)) {
     case 0:
         ((CompanionCalls*)self)->v41(&ox, &oy, &idx);
