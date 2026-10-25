@@ -363,7 +363,7 @@ extern "C" void fn_801DBCEC(char* p) {
 
 #include "JSystem/JGeometry/Vec.h"
 typedef JGeometry::TVec2<f32> IchlV2;
-extern "C" u8 fn_801DACAC(void* singleton, IchlV2* out);
+extern "C" u8 fn_801DACAC(void* singleton, void* out);
 extern const f32 lbl_8053F300;
 
 static inline void ichlSub(IchlV2& out, const IchlV2& a, const IchlV2& b) {
@@ -488,7 +488,7 @@ extern "C" void fn_801DB9CC(char* p) {
                 rx = -rx;
                 ry = -ry;
             }
-            *(s16*)(p + 0x2dc) = JMAAtan2Radian(rx, ry) * lbl_8053F308;
+            *(s16*)(p + 0x2dc) = lbl_8053F308 * JMAAtan2Radian(rx, ry);
             *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
         }
     }
@@ -507,8 +507,8 @@ extern "C" void fn_801DB9CC(char* p) {
     *(f32*)(p + 0x2c4) = *(f32*)(p + 0x2bc);
     *(f32*)(p + 0x2c8) = *(f32*)(p + 0x2c0);
     if (*(s32*)(p + 0x16c) == -1) {
-        IchlV2 tmp;
-        if (fn_801DACAC(fn_801DAC6C(), &tmp)) {
+        IchlVec3 tmp;
+        if (fn_801DACAC(fn_801DAC6C(), (IchlV2*)&tmp)) {
             *(f32*)(p + 0x2cc) = *(f32*)(p + 0x2c4);
             *(f32*)(p + 0x2d0) = *(f32*)(p + 0x2c8);
             *(f32*)(p + 0x2cc) -= tmp.x;
