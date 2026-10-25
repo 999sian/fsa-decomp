@@ -27,9 +27,24 @@ extern "C" f32 lbl_8053F090;
 extern "C" f32 lbl_8053F094;
 extern "C" f32 lbl_8053F098;
 
-static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
+static inline void tu801D3320_setCur(char* this_, u8 i) {
+    u8* s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+    if (i < s[2]) {
+        s[3] = i;
+    }
+}
+
+static inline u8 tu801D3320_isFreeAt(const Vec3f& pos, s32 room) {
     u8 ok = 1;
     if (fn_801CCBD0(&pos, room) || fn_801CCB1C(&pos, room)) {
+        ok = 0;
+    }
+    return ok;
+}
+
+static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
+    u8 ok = 1;
+    if (fn_801CCBD0(pos, room) || fn_801CCB1C(pos, room)) {
         ok = 0;
     }
     return ok;
