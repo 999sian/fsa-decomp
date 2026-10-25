@@ -187,7 +187,7 @@ extern "C" s32 fn_8023AF14(f32*, u32, s32, f32);
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" void fn_801F0D20(void*, s32);
 extern "C" void fn_8043D67C(void*, s32, s32, s32);
-extern "C" void fn_8043E7CC(void*, Vec);
+extern "C" void fn_8043E7CC(void*, JGeometry::TVec3f);
 extern "C" void fn_8030C210(void*, Vec*);
 extern void* lbl_8053AED0;
 
@@ -246,7 +246,7 @@ extern "C" void fn_802AFCE8(YajiActor* p) {
         case 1: {
             p->mAlpha += lbl_80540968[p->mFadeDirection];
             fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &p->field_0C);
-            Vec pos = p->field_0C;
+            JGeometry::TVec3f pos(p->field_0C);
             fn_8043E7CC(lbl_8053AED0, pos);
             if ((u8)p->v11()) {
                 yajiAdvancePulse(p);
@@ -283,7 +283,7 @@ extern "C" void fn_802AFCE8(YajiActor* p) {
         case 1: {
             p->mAlpha += lbl_80540968[p->mFadeDirection];
             fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &p->field_0C);
-            Vec pos = p->field_0C;
+            JGeometry::TVec3f pos(p->field_0C);
             fn_8043E7CC(lbl_8053AED0, pos);
             if ((u8)p->v11()) {
                 yajiAdvancePulse(p);
