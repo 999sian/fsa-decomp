@@ -2817,25 +2817,12 @@ s32 fn_802527B0(char* p, s32* out) {
     return 0;
 }
 
-extern "C" f32 lbl_80540034;
 void fn_80248604(char* p) {
-    if (U8(p, 0x1216) != 0) {
-        return;
-    }
-    if (U8(p, 0x454) != 0) {
-        fn_8024B2E0(p);
-        return;
-    }
-    PlayerTrail* t = (PlayerTrail*)p;
-    s32 i = 0;
-    for (; i < 0x31; i++) {
-        t->pos[i].x = t->x;
-        t->pos[i].y = t->y;
-        t->pos[i].z = t->z;
-        if (t->z > 0.0f) {
-            t->onGround[i] = true;
+    if (U8(p, 0x1216) == 0) {
+        if (U8(p, 0x454) != 0) {
+            fn_8024B2E0(p);
         } else {
-            t->onGround[i] = false;
+            resetTrail(p);
         }
     }
 }
@@ -3694,15 +3681,14 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
 
 BOOL fn_8024D058(char* p, u8 on) {
     if (on) {
-        int zero = 0;
-        U8(p, 0x454) = zero;
+        int i = 0;
+        U8(p, 0x454) = i;
         if (U8(p, 0x1216) == 0) {
             if (U8(p, 0x454) != 0) {
                 fn_8024B2E0(p);
             } else {
-                int i;
                 char* q = p;
-                for (i = zero; i < 0x31; i++) {
+                for (; i < 0x31; i++) {
                     F32(q, 0x38) = F32(p, 0x8);
                     F32(q, 0x3c) = F32(p, 0xc);
                     F32(q, 0x40) = F32(p, 0x10);
@@ -5259,6 +5245,21 @@ void fn_80252F80(char* p, const JGeometry::TVec3<f32>& pos, s32 a, s32 b, u8 c) 
     U8(p, 0xd04) = c;
 }
 void EmptyHook_80252FBC(void) {}
+
+void fn_80252FC0(char* p) {
+    if (U8(p, 0x121f) || U8(p, 0xce8) || U8(p, 0x454)) {
+        return;
+    }
+    if (fn_80270A8C(p)) {
+        return;
+    }
+    if (fn_8025F448(p)) {
+        return;
+    }
+    if (S32(p, 0x1240) == 0xe) {
+        return;
+    }
+}
 
 void fn_80253E6C(char* p) {
     if (U8(p, 0xcac) != 0) {
