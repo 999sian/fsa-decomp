@@ -77,15 +77,6 @@ extern "C" void fn_802B7CD8(void* this_) {
 }
 
 #pragma opt_common_subs on
-struct ChaseVec2 : JGeometry::TVec2f {
-    ChaseVec2(const JGeometry::TVec2f& other) { set(other); }
-    ChaseVec2(const ChaseVec2& other) { set(other); }
-};
-static inline ChaseVec2 subtractChasePos(ChaseVec2 result, const JGeometry::TVec2f& b) {
-    result.x-=b.x;
-    result.y-=b.y;
-    return result;
-}
 
 #pragma opt_lifetimes off
 extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
