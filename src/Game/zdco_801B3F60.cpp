@@ -6,6 +6,7 @@ extern const f32 lbl_8053E9EC;
 extern const f32 lbl_8053E9C0;
 #include "std/math.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 extern const f64 lbl_8053E9D0;
@@ -168,7 +169,7 @@ extern "C" void fn_801B3FC4(u8* p) {
                         !fn_8022DCD8(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
                         f32 dx = fn_8023E724(i)->x - *(f32*)(p + 0xc);
                         f32 dy = fn_8023E724(i)->y - *(f32*)(p + 0x10);
-                        if (zdcoSqrt(dx * dx + dy * dy) < lbl_8053E9E8) cnt++;
+                        if (std::sqrtf(dx * dx + dy * dy) < lbl_8053E9E8) cnt++;
                     }
                 }
             }
