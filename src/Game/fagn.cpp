@@ -363,6 +363,4 @@ extern "C" void fn_80184A50(char* this_) {
     *(s32*)(this_ + 0x230) = 0;
 }
 
-#pragma exceptions off
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-#pragma exceptions reset
