@@ -22,7 +22,7 @@ struct FsaVObj {
     virtual void v14(void);
     virtual void v15(void);
     virtual void v16(void);
-          virtual void v17(s32 a, s32 b);
+          virtual J2DPane* v17(s32 a, s32 b, s32 c);
 
     virtual void v18(void);
     virtual void v19(void);
