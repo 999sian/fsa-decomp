@@ -99,19 +99,16 @@ extern "C" void fn_801158B8(u8* this_) {
     args.x30 = -1;
     args.x34 = 0;
     args.x38 = 2;
-    PSMTXTrans(mtx, lbl_8053C6D0, lbl_8053C6D0, lbl_8053C6D0);
-    register f32 zero = lbl_8053C6D0;
-    f32 s = lbl_8053C6D4;
-    f32 t = lbl_8053C6D8;
-    mtx[0][0] = s;
-    mtx[0][1] = zero;
-    mtx[0][2] = zero;
-    mtx[1][0] = zero;
-    mtx[1][1] = t;
-    mtx[1][2] = zero;
-    mtx[2][0] = zero;
-    mtx[2][2] = s;
-    mtx[2][1] = zero;
+    PSMTXTrans(mtx, 0.0f, 0.0f, 0.0f);
+    mtx[0][0] = 64.0f;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[1][1] = 1.0f;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
+    mtx[2][2] = 64.0f;
     args.f14.b[0] = 0;
     args.f14.b[1] = 0;
     args.f14.b[2] = 0;
@@ -121,7 +118,7 @@ extern "C" void fn_801158B8(u8* this_) {
     args.b1d = 3;
     args.b2d = 1;
     pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
-    pos.z = zero;
+    pos.z = 0.0f;
     void* tgt = *(void**)(this_ + 0x32c);
     if (*(s32*)(this_ + 4) < 8) {
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos.x, tgt, &args);
@@ -159,25 +156,25 @@ extern "C" void fn_80115BC4(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<
     JGeometry::TVec3<f32> dir;
     JGeometry::TVec3<f32> b;
 
-    dir.zero();
-    if (!(a->z <= lbl_8053C6E4)) {
+    dir.set(0.0f, 0.0f, 0.0f);
+    if (a->z <= lbl_8053C6E4) {
         f32 dx = a->x - *(f32*)(p + 0xc);
         f32 dy = a->y - *(f32*)(p + 0x10);
         f32 dx2 = dx * dx;
         f32 dy2 = dy * dy;
         f32 dist = JMAFastSqrt(dx2 + dy2);
-        if (!(dist <= lbl_8053C6DC)) {
+        if (dist <= lbl_8053C6DC) {
             f32 t = (dist - lbl_8053C6DC) * lbl_8053C6E8;
             if (t > lbl_8053C6D8) {
                 t = lbl_8053C6D8;
-            } else if (t < lbl_8053C6D0) {
-                t = lbl_8053C6D0;
+            } else if (t < 0.0f) {
+                t = 0.0f;
             }
-            f32 w = t * lbl_8053C6F0 + lbl_8053C6EC;
+            t = t * lbl_8053C6F0 + lbl_8053C6EC;
             dir.sub(*(JGeometry::TVec3<f32>*)(p + 0xc), *a);
             dir.z = 0.0f;
             dir.normalize();
-            dir.scale((dist < w) ? dist : w);
+            dir.scale((dist < t) ? dist : t);
         }
     }
     fn_80115D8C(p, a, &b);
