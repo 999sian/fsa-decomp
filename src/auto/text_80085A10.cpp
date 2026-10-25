@@ -207,7 +207,8 @@ extern "C" int fn_80085DEC(char* this_, u32 param_2, u32 param_3) {
 
 extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
     if (param_3 == 1) {
-        fn_80085F0C();
+        extern s32 fn_80085F0C(char*, s32);
+        fn_80085F0C((char*)param_1, param_2);
     } else if (param_2 >= 0) {
         fn_8008603C(param_1, param_3);
     } else {
@@ -469,10 +470,8 @@ extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
 #pragma peephole off
 extern "C" void fn_80086724(char* p, s32 index) {
     extern u8 lbl_8053B770[8];
-    if (index < 0) return;
-    if ((u32)index < *(u32*)(p + 0x70)) {
-        (*(u8**)(p + 0x78))[index / 8] |= lbl_8053B770[index & 7];
-    }
+    if (index < 0 || (u32)index >= *(u32*)(p + 0x70)) return;
+    (*(u8**)(p + 0x78))[index / 8] |= *((index & 7) + lbl_8053B770);
 }
 #pragma peephole reset
 extern "C" void JUTWarningConsole_f(const char*, ...);
@@ -527,10 +526,10 @@ extern "C" u32 fn_80086890(void* self_) {
 
 extern "C" u32 getTotalFreeSize__7JKRHeapFv(void *heap);
 extern "C" void fn_8008693C(int param_1, int *param_2, int param_3) {
-    int *start;
     int *end;
-    int sum;
     u32 n;
+    int sum;
+    int *start;
     u32 cnt;
 
     param_2[5] = param_3;
@@ -554,12 +553,12 @@ extern "C" void fn_8008693C(int param_1, int *param_2, int param_3) {
                 start += 8;
             } while (--cnt != 0);
         }
-        cnt = n & 7;
-        if (cnt != 0) {
+        n &= 7;
+        if (n != 0) {
             do {
                 sum += *start;
                 start++;
-            } while (--cnt != 0);
+            } while (--n != 0);
         }
     }
     param_2[1] = sum;
