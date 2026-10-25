@@ -181,7 +181,7 @@ struct Hdr_80301CD0 {
     Slot_80301CD0 slots[19];
 };
 
-static inline s32 tu80301_rank(s32 mask, s32 player, s32 index) {
+static inline int tu80301_rank(int mask, int player, int index) {
     s32 rank;
     if (((mask >> index) & 1) != ((mask >> ((s32*)lbl_80506DD8)[player]) & 1)) {
         rank = -1;
