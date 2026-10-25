@@ -2,6 +2,10 @@
 #include "JSystem/JKernel/JKRDecomp.h"
 #include <dolphin/mtx.h>
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JKernel/JKRHeap.h"
+#include "JSystem/JUtility/JUTTexture.h"
+#include "JSystem/JUtility/TColor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" s32 checkCompressed__9JKRDecompFPUc(u8*);
 extern "C" void decode__9JKRDecompFPUcPUcUlUl(u8*, u8*, u32, u32);
