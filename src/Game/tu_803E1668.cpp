@@ -159,7 +159,6 @@ extern "C" void fn_803E3564(u8* p) {
     char* a;
     char* b;
     char* c;
-    void* g;
     Pane803E4650* pane;
 
     a = getStringPtr__10J2DTextBoxCFv((Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5468 << 32) | 0x616e3031));
@@ -180,11 +179,11 @@ extern "C" void fn_803E3564(u8* p) {
         fn_803832BC(b, 0x11b, 0, 0, 0);
         fn_803832BC(a, 0x11b, 0, 0, 0);
         fn_803832BC(c, 0xf7, 0, 0, 0);
-        g = fn_804031C4(0x54494d47, base + 0xfd8);
+        void* g = fn_804031C4(0x54494d47, base + 0xfd8);
         pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
-        ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+        ((Picture803E3CB0*)pane)->changeTexture(g, 0);
         pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
-        ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+        ((Picture803E3CB0*)pane)->changeTexture(g, 0);
         pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x507374 << 32) | 0x61623034);
         ((u8*)pane)[0xb0] = 0;
     } else {
@@ -196,23 +195,23 @@ extern "C" void fn_803E3564(u8* p) {
         pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5063 << 32) | 0x6f6e3032);
         ((u8*)pane)[0xb0] = 1;
         if (*(s32*)(p + 0x1bc) == 1) {
-            g = fn_804031C4(0x54494d47, base + 0xfec);
+            void* g = fn_804031C4(0x54494d47, base + 0xfec);
             pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
-            ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+            ((Picture803E3CB0*)pane)->changeTexture(g, 0);
             pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
-            ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+            ((Picture803E3CB0*)pane)->changeTexture(g, 0);
         } else if (*(s32*)(p + 0x1bc) == 2) {
-            g = fn_804031C4(0x54494d47, base + 0x1000);
+            void* g = fn_804031C4(0x54494d47, base + 0x1000);
             pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
-            ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+            ((Picture803E3CB0*)pane)->changeTexture(g, 0);
             pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
-            ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+            ((Picture803E3CB0*)pane)->changeTexture(g, 0);
         } else {
-            g = fn_804031C4(0x54494d47, base + 0x1014);
+            void* g = fn_804031C4(0x54494d47, base + 0x1014);
             pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
-            ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+            ((Picture803E3CB0*)pane)->changeTexture(g, 0);
             pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
-            ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
+            ((Picture803E3CB0*)pane)->changeTexture(g, 0);
         }
         pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x507374 << 32) | 0x61623034);
         ((u8*)pane)[0xb0] = 1;
