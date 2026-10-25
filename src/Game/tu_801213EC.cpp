@@ -404,7 +404,7 @@ extern "C" s32 fn_80121BB8(u8* self, f32* pt) {
     GameLowVec pos(*(GameLowVec*)(self + 0xC));
     pos.x += pt[0];
     pos.y += pt[1];
-    JGeometry::TVec2<f32> p2(pos.x, pos.y);
+    JGeometry::TVec2<f32> p2 = *(JGeometry::TVec2<f32>*)&pos;
     s32 r31 = fn_800FDEA0(self + 0x268, (f32*)&p2, &vel, &player, &angle, 0x200);
     *(f32*)(self + 0x3C) = vel.x;
     *(f32*)(self + 0x40) = vel.y;
@@ -817,18 +817,17 @@ extern "C" s32 fn_80122898(u8* self, s32 msg) {
     return -1;
 }
 
+#pragma opt_propagation off
 extern "C" u8 fn_801229E4(u8* self) {
     JGeometry::TVec2<f32> position;
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
     box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
-    f32 c = lbl_8053C9B4;
-    position.set(c, c);
-    if (fn_8023AE34((f32*)&box, *(u32*)(self + 4), (f32*)&position) >= 0) {
-        return 1;
-    }
+    position.x = lbl_8053C9B4;
+    position.y = position.x;
+    if (fn_8023AE34((f32*)&box, *(u32*)(self + 4), (f32*)&position) >= 0) return 1;
     return fn_8023AB94((f32*)&box, *(u32*)(self + 4), (f32*)&position) >= 0;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80122A9C(u8* self, f32* x, f32* y, s32* player) {
     f32 offset = lbl_8053C9B4;
     if (((CompanionCalls*)self)->v47()) {
