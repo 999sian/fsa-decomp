@@ -2321,26 +2321,13 @@ extern "C" void fn_800DB360(u8* p) {
     GDOverflowCheck(0x55);
     J3DGDSetFog((GXFogType)p[4], *(f32*)(p + 8), *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(GXColor*)(p + 0x18));
     J3DGDSetFogRangeAdj(p[5], *(u16*)(p + 6), (GXFogAdjTable*)(p + 0x1c));
-    u16 alphaID = *(u16*)(p + 0x30);
-    u32 comp0 = j3dAlphaCmpTable[alphaID * 3];
-    u32 op = j3dAlphaCmpTable[alphaID * 3 + 1];
-    u32 comp1 = j3dAlphaCmpTable[alphaID * 3 + 2];
-    u32 alpha = p[0x33] << 8 | p[0x32] | comp0 << 16 | comp1 << 19 | op << 22;
-    __GDWrite(0x61);
-    __GDWriteU32(0xF3000000 | alpha);
-    __GDWrite(0x61);
-    __GDWriteU32(0xFE00FFE7);
-    __GDWrite(0x61);
-    u8 p8 = p[0x34];
-    __GDWriteU32(0x41000000 | p[0x37] << 12 | p[0x36] << 5 | p[0x35] << 8 | p[0x3b] << 2 | (p8 == 2) << 1 | (p8 == 1 || p8 == 3) | (p8 == 3) << 11);
-    u16 zID = *(u16*)(p + 0x38);
-    u32 zMode = j3dZModeTable[zID * 3] | j3dZModeTable[zID * 3 + 1] << 1 | j3dZModeTable[zID * 3 + 2] << 4;
-    __GDWrite(0x61);
-    __GDWriteU32(0x40000000 | zMode);
-    __GDWrite(0x61);
-    __GDWriteU32(0xFE000040);
-    __GDWrite(0x61);
-    __GDWriteU32(0x43000000 | p[0x3a] << 6);
+    J3DAlphaComp* a = (J3DAlphaComp*)(p + 0x30);
+    u8 ref1 = a->mRef1;
+    u8 ref0 = a->mRef0;
+    J3DGDSetAlphaCompare((GXCompare)a->getComp0(), ref0, (GXAlphaOp)a->getOp(), (GXCompare)a->getComp1(), ref1);
+    ((J3DBlend*)(p + 0x34))->load(p[0x3b]);
+    ((J3DZMode*)(p + 0x38))->load();
+    J3DGDSetZCompLoc(p[0x3a]);
 }
 
 extern "C" void fn_800DB844(void* param_1) {
