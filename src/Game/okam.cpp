@@ -202,13 +202,7 @@ static inline void okamSetBox(char* this_, f32 l, f32 t, f32 r, f32 b) {
     *(f32*)(this_ + 0x64) = t + y;
     *(f32*)(this_ + 0x68) = r + x;
     *(f32*)(this_ + 0x6c) = b + y;
-}
 
-static inline void okamSetBox2(f32* box, f32 x, f32 y, f32 l, f32 t, f32 r, f32 b) {
-    box[0] = l + x;
-    box[1] = t + y;
-    box[2] = r + x;
-    box[3] = b + y;
 }
 
 extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
