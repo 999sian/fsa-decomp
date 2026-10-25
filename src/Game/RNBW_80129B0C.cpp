@@ -112,6 +112,9 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
     return false;
 }
 
+static inline void* rnbwEffect(u16 id, Actor* actor) {
+    return fn_8013CC50(actor->field_04, &actor->field_0C, id, 0, -1, 0, 0, 1, lbl_8053CB48);
+}
 static inline void rnbwSpawn(Actor* actor, u16* ids) {
     u16* table = ids;
     void** hp = (void**)actor;
@@ -127,6 +130,7 @@ extern "C" void fn_80129B0C(void* this_) {
     JGeometry::TVec3f movement;
     JGeometry::TVec3f testPos;
     JGeometry::TVec3f delta;
+    s32 id;
     Actor* actor = (Actor*)this_;
     actor->Actor::v03();
     s32 state = *(s32*)((char*)this_ + 0x238);
@@ -175,7 +179,7 @@ extern "C" void fn_80129B0C(void* this_) {
             }
         }
         {
-            int id = *(s32*)((char*)this_ + 0x230);
+            id = *(s32*)((char*)this_ + 0x230);
             if (id >= 0) fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
         }
         break;
