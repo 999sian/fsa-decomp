@@ -6,8 +6,8 @@
 
 extern "C" const f32 lbl_8053FA0C;
 extern "C" u16 fn_8022461C(void* p, u32 b);
-static inline u16 getGroundType(Actor* actor) {
-    return fn_8022461C(&actor->field_0C, actor->field_04);
+static inline u16 getGroundType(u32 room, void* pos) {
+    return fn_8022461C(pos, room);
 }
 extern "C" u8 fn_801CD2F8(u32 o);
 extern "C" u8 fn_802DEB58();
@@ -134,8 +134,9 @@ extern "C" void fn_8020CF7C(u8* o) {
     fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x48d, 0, 0, 0, 0, 1, lbl_8053FA08);
 }
 
+#pragma optimization_level 2
 extern "C" void fn_8020CFC4(u8* o) {
-    switch (fn_8022461C(o + 0xc, *(u32*)(o + 4))) {
+    switch (fn_8022461C((void*)((u32)o + 0xc), *(u32*)((u32)o + 4))) {
     case 0xd:
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x3d0, 0, 1, 0, 0, 1, lbl_8053FA0C);
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x15b, 0, 1, 0, 0, 1, lbl_8053FA08);
@@ -160,7 +161,7 @@ extern "C" void fn_8020CFC4(u8* o) {
         break;
     }
 }
-
+#pragma optimization_level reset
 extern const f32 lbl_8053FA08;
 extern "C" u16 fn_8022461C(void* p, u32 b);
 extern "C" u8 fn_80224B88(void* p, u32 b);
