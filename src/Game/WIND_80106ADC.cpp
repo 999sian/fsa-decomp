@@ -183,7 +183,7 @@ struct WIND_Box {
 };
 
 struct WIND_Vec {
-    void set(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
+    void set(const f32 ax, const f32 ay, const f32 az) { x = ax; y = ay; z = az; }
     void set2(f32 ax, f32 ay, f32 az) { z = az; x = ax; y = ay; }
     f32 x, y, z;
 };
@@ -197,7 +197,10 @@ extern "C" void fn_80106EE0(u8* this_) {
     WIND_Box b = *(WIND_Box*)(fn_802D6A9C() + 0xCC);
     f32 x1 = b.x1;
     f32 y1 = b.y1;
-    pos.set(0.5f * (b.x0 - x1) + x1, 0.5f * (b.y0 - y1) + y1, 0.0f);
+    JGeometry::TVec2<f32> center;
+    center.x = 0.5f * (b.x0 - x1) + x1;
+    center.y = 0.5f * (b.y0 - y1) + y1;
+    pos.set(center.x, center.y, 0.0f);
     switch (state) {
     case 0:
         *(void**)(this_ + 0x240) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x505, 0, 0, 0, 0, 1, 1.0f);
