@@ -1,14 +1,6 @@
 #include "types.h"
 #include <math.h>
 static inline f32 maxMenuExtent(f64 x, f64 y) { f32 a = x; f32 b = y; return a >= b ? a : b; }
-struct FsaU32Pair {
-    u32 a;
-    u32 b;
-};
-static inline void fn_8043E80C_pairv(u8* self, u32 off, FsaU32Pair p) {
-    void* obj = *(void**)(self + off);
-    ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &p.a, &p.b);
-}
 static inline void fn_8043E80C_pair(u8* self, u32 off, u32 c1, u32 c2) {
     void* obj = *(void**)(self + off);
     ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &c1, &c2);
