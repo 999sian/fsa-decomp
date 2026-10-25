@@ -1,5 +1,4 @@
 #include "Game/Actor.h"
-struct BF474Table { u16 values[6]; };
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802F9974(void* mgr, s32 id, s32 n, s32 flag);
@@ -53,7 +52,7 @@ extern "C" void fn_802BF474(Actor* this_) {
     u32 k;
     s32 y;
     u8* self = (u8*)this_;
-    const u16* __restrict tbl = (const u16*)lbl_8046D470;
+    const u16* tbl = lbl_8046D470;
     u16 ret;
     u32 a;
     u8 offset;
@@ -69,7 +68,8 @@ extern "C" void fn_802BF474(Actor* this_) {
             fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4), *(s32*)(self + 0x24c), 0x30);
             break;
         case 1: {
- const u16* __restrict t = tbl+0;
+ const u16* __restrict t;
+ t = &tbl[0];
             fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4), *(s32*)(self + 0x24c),
                         t[*(s32*)(self + 0x23c)]);
             break;
