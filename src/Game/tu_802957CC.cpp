@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 extern "C" const f32 lbl_80540678;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
