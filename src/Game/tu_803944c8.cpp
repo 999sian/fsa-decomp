@@ -670,7 +670,7 @@ struct MsgProc {
     }
     void setSlotPos(u8 i, s32 x) {
         MsgLayout* l = layout;
-        s32 y = lineRow(lineTab[l->m15c], slotLine[i]);
+        s32 y = slotLine[i] - lineTab[l->m15c] - 1;
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
