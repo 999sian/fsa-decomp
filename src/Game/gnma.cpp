@@ -11,6 +11,7 @@ extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_80138B7C(void* game);
 extern "C" void fn_801AB6A8(void* this_);
+extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_801AAF44(char* this_);
 extern void* lbl_804A307C[];
 extern char* lbl_8053AAF8;
@@ -80,7 +81,8 @@ extern "C" void fn_801AAF44(char* p) {
         return;
     }
     if (*(s32*)(p + 0x108) < 1000) {
-        ((void (**)(char*))*(void**)p)[9](p);
+        void (**vt)(char*) = *(void (***)(char*))p;
+        vt[9](p);
         *(s32*)(p + 0xb0) = 0;
         return;
     }
@@ -242,6 +244,42 @@ extern "C" void fn_801AAF44(char* p) {
             *(s32*)(p + 0x248) ^= 1;
         }
     } break;
+    case 8:
+    case 9:
+    case 10:
+    case 12:
+        break;
+    case 11:
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x244) = 0;
+        *(s32*)(p + 0x230) = 11;
+        if (*(s32*)(p + 0x234) == 0) {
+            *(s32*)(p + 0x234) = 12;
+            *(s32*)(p + 0x250) = *(s32*)(p + 0x244) + 0x10;
+            *(s32*)(p + 0x244) = *(s32*)(p + 0x244) + 1;
+            if (*(s32*)(p + 0x244) > 2) {
+                *(u32*)(p + 0xb0) = 0xa040010;
+                *(s32*)(p + 0x248) = 1;
+                *(s32*)(p + 0x230) = 8;
+            }
+        }
+        break;
+    case 13:
+        *(u32*)(p + 0xb0) = 0xa040004;
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x244) = 2;
+        *(s32*)(p + 0x230) = 13;
+        if (*(s32*)(p + 0x234) == 0) {
+            *(s32*)(p + 0x234) = 12;
+            *(s32*)(p + 0x250) = *(s32*)(p + 0x244) + 0x10;
+            *(s32*)(p + 0x244) = *(s32*)(p + 0x244) - 1;
+            if (*(s32*)(p + 0x244) >= 0) {
+                break;
+            }
+            *(s32*)(p + 0x248) = 0;
+            *(s32*)(p + 0x230) = 8;
+        }
+        break;
     }
 }
 
