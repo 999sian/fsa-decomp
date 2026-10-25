@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/Actor.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 #ifndef dtor_80084580
@@ -28,24 +29,32 @@ extern "C" int fn_80230CFC(int);
 extern "C" f32* fn_8023E724(int);
 extern "C" bool fn_8022DB04(int);
 extern "C" void fn_8029B7C0(void* this_) {
-    u8* self = (u8*)this_;
-    s32 owner = *(s32*)(self + 4);
-    f32 left = *(f32*)(self + 0x60);
-    f32 top = *(f32*)(self + 0x64);
-    f32 right = *(f32*)(self + 0x68);
-    f32 bottom = *(f32*)(self + 0x6c);
-    s32 count = 0;
+    s32 owner;
+    s32 count;
     s32 i;
+    f32 left;
+    f32 top;
+    f32 right;
+    f32 bottom;
+    u8* self;
 
+    self = (u8*)this_;
+    left = *(f32*)(self + 0x60);
+    top = *(f32*)(self + 0x64);
+    right = *(f32*)(self + 0x68);
+    bottom = *(f32*)(self + 0x6c);
     left += *(f32*)(self + 0xc);
     top += *(f32*)(self + 0x10);
     right += *(f32*)(self + 0xc);
     bottom += *(f32*)(self + 0x10);
+    count = 0;
 
     for (i = 0; i < 4; i++) {
-        if (fn_8023DE58(i) == owner && fn_8022DB04(i)) {
-            u32 flags = *(u32*)(self + 0x90);
-            s32 mode = (flags >> 17) & 3;
+        owner = *(s32*)(self + 4);
+        int room = fn_8023DE58(i);
+        if (room != owner) continue;
+        if (fn_8022DB04(i)) {
+            s32 mode = (*(u32*)(self + 0x90) >> 17) & 3;
             if (fn_80230CFC(i) == mode) {
                 f32* pos = fn_8023E724(i);
                 BOOL inside = pos[0] >= left && pos[1] >= top && pos[0] < right && pos[1] < bottom;
@@ -57,16 +66,12 @@ extern "C" void fn_8029B7C0(void* this_) {
     }
 
     {
-        u32 flags = *(u32*)(self + 0x90);
-        s32 need = 1;
-        s32 t = (flags >> 22) & 0x1f;
-        if (t) {
-            need = t;
-        }
+        int t = (*(u32*)(self + 0x90) >> 22) & 0x1f;
+        int need = t ? t : 1;
         if (count >= need) {
-            ((void (*)(void*, int, int))(*(void***)this_)[12])(this_, 0xff, 1);
+            ((Actor*)this_)->v10( 0xff, 1);
         } else {
-            ((void (*)(void*, int, int))(*(void***)this_)[12])(this_, 0xff, 0);
+            ((Actor*)this_)->v10( 0xff, 0);
         }
     }
 }
