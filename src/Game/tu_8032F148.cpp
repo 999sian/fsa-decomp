@@ -204,7 +204,7 @@ extern "C" u8 fn_8020D6AC(void*, int, void*, int, int);
 extern "C" u16 fn_80226850(void*, int);
 extern "C" u16 fn_8022461C(void*, int);
 extern const f32 lbl_80541F0C;
-extern "C" u8 fn_80331664(char* self, int room, f32* pos) {
+extern "C" BOOL fn_80331664(char* self, int room, f32* pos) {
     int owner = *(int*)(self+0x198);
     u8* slots = fn_8020D58C();
     if (fn_8020D6AC(slots + slots[1]*0x784 + 4, room, pos, owner, 0) == 1) return 1;
