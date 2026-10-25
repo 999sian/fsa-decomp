@@ -139,6 +139,112 @@ u8 fn_804045F8(void*, s32 bit) {
 	return 0;
 }
 
+extern "C" void* lbl_8053AF80;
+extern "C" u8 lbl_8048C2F8[];
+extern "C" f32 lbl_805438C0;
+extern "C" f32 lbl_80543898;
+extern "C" void fn_80402E08(void* p, f32 a, f32 b);
+extern "C" void fn_804023D0(void* p, void* q, u8 b);
+extern "C" void fn_80404648(u8* self) {
+	if (*(u32*)(self + 0x38c) & 0x10) {
+		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x26) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x20) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x24) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x26) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x20) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = 0;
+		for (s32 i = 0; i < 3; i++) {
+			u8* p = self + i * 0x18;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x26) = 0;
+		}
+		*(s16*)(*(u8**)(self + 0x228) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x22c) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x230) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x234) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x238) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x23c) + 0x22) = 0;
+		*(s16*)(self + 0x41e) = 0;
+
+		s32 state = *(s32*)(self + 0x340);
+		if (state < 8) {
+			s32 i = state * 4;
+			u8* p = self + state * 16;
+			u8* q = lbl_8048C2F8 + state * 64;
+			while (i < *(s32*)(self + 0x340) * 4 + 4) {
+				*(s16*)(*(u8**)(p + 0x128) + 0x26) = 0;
+				u8* obj = *(u8**)(*(u8**)(p + 0x128) + 4);
+				((void (*)(void*, s32))(*(void***)obj)[9])(obj, 0);
+				void* o = *(void**)(self + 0x10);
+				void* r = ((void* (*)(void*, u64))(*(void***)o)[15])(o, *(u64*)(q + 8));
+				fn_804023D0(*(void**)(p + 0x128), r, *(u8*)(self + 0x641));
+				p += 4;
+				q += 0x10;
+				i++;
+			}
+			u8* r29 = self + *(s32*)(self + 0x340) * 12;
+			i = *(s32*)(self + 0x340) * 3;
+			while (i < *(s32*)(self + 0x340) * 3 + 3) {
+				*(s16*)(*(u8**)(r29 + 0x1a8) + 0x26) = 0;
+				u8* obj = *(u8**)(*(u8**)(r29 + 0x1a8) + 4);
+				((void (*)(void*, s32))(*(void***)obj)[9])(obj, 0);
+				r29 += 4;
+				i++;
+			}
+			*(s16*)(*(u8**)(self + *(s32*)(self + 0x340) * 4 + 0x208) + 0x26) = 0;
+			u8* obj = *(u8**)(*(u8**)(self + *(s32*)(self + 0x340) * 4 + 0x208) + 4);
+			((void (*)(void*, s32))(*(void***)obj)[9])(obj, 0);
+		}
+
+		for (s32 j = 0; j < 8; j++) {
+			u8* base = self + j * 0x14;
+			fn_80402E08(*(void**)(base + 0x28), lbl_805438C0, lbl_80543898);
+			*(s16*)(*(u8**)(base + 0x28) + 0x20) = 0;
+			for (s32 k = 0; k < 3; k++) {
+				u8* obj = *(u8**)(base + 0x28 + k * 4);
+				((void (*)(void*, s32))(*(void***)obj)[9])(obj, 0);
+				*(s16*)(*(u8**)(base + 0x28 + k * 4) + 0x26) = 0;
+			}
+		}
+
+		void* o = *(void**)(self + 0x10);
+		u8* it = ((u8* (*)(void*, u64))(*(void***)o)[15])(o, 0x004E646174613130ULL);
+		it[0xb0] = 0;
+		*(s32*)(self + 0x350) = 0x13;
+	} else {
+		*(u32*)(self + 0x668) = 4;
+		fn_80458880(lbl_8053AF80, 0xb, -1);
+	}
+}
+
 typedef u8* (*SpawnFn)(void*, u32, u32, u32);
 extern "C" u8 fn_803B8EBC(s32);
 extern "C" void fn_80404D70(u8* self) {
@@ -370,7 +476,7 @@ extern "C" void fn_8040E3A0(u8* self) {
 	f32 dx = tx - *(f32*)(self + 0x394);
 	f32 tz = lbl_8048C95C[idx * 2 + 1];
 	f32 dz = tz - *(f32*)(self + 0x398);
-	f32 speed = 3.4f + (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f;
+	f32 speed = (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f + 3.4f;
 	f32 dist = std::sqrtf(dx * dx + dz * dz);
 
 	if (*(u8*)(self + 0x664)) {
@@ -400,7 +506,7 @@ extern "C" void fn_8040E3A0(u8* self) {
 	if (*(f32*)(self + 0x394) == tx) {
 		*(s32*)(self + 0x360) = 0x10;
 	} else {
-		s32 raw = (s32)(JMath::atanTable_.atan2_(-dx, -dz) * 10430.378f);
+		s32 raw = (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dz));
 		u16 ang = raw;
 		if (ang < 0x2000 || ang >= 0xe000) {
 			*(s32*)(self + 0x360) = 0x18;
@@ -727,13 +833,13 @@ extern "C" void fn_8040B93C(u8* self) {
 			{
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
-				*(f32*)(self + 0x3ac) = (*(f32*)(y + 0x28) - *(f32*)(y + 0x20)) * 0.5f + *(f32*)(y + 0x30);
+				*(f32*)(self + 0x3ac) = lbl_805438C8 * (*(f32*)(y + 0x28) - *(f32*)(y + 0x20)) + *(f32*)(y + 0x30);
 			}
 			{
 				u8* y = *(u8**)(sl->slot[*(s32*)(self + 0x340)] + 4);
 				u8* b = getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(lbl_8048C4F8[*(s32*)(self + 0x340)]));
 				f32 bh = *(f32*)(b + 4);
-				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * 0.5f + (bh + *(f32*)(self + 0x3b8)));
+				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * lbl_805438C8 + (bh + *(f32*)(self + 0x3b8)));
 			}
 			if (self[0x662] == 0) {
 				*(s32*)(self + 0x350) = 0x11;
@@ -1231,9 +1337,8 @@ extern u8 lbl_80543888[];
 extern u8 lbl_8048C90C[];
 extern u8 lbl_8048C924[];
 extern "C" void fn_80405D00(u8* self, s32 param) {
-	s32 idx;
-	s32 count = 0;
 	s32 i;
+	s32 count = 0;
 	for (i = 0; i < 4; i++) {
 		if (*(u32*)(self + 0x38c) & (1 << (*(s32*)(self + 0x340) * 4 + i))) {
 			count++;
@@ -1270,7 +1375,7 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 			}
 		}
 	} else {
-		idx = *(s32*)(self + 0x348);
+		s32 idx = *(s32*)(self + 0x348);
 		if (idx < count - 1 && (&lbl_8048C90C[state * 3])[idx] == param) {
 			*(s32*)(self + 0x348) = idx + 1;
 			*(s32*)(self + 0x34c) = *(s32*)(self + 0x348);
