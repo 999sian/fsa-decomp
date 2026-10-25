@@ -13,7 +13,7 @@ extern "C" u8* lbl_8053AAF8;
 extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, DrawRec* e, f32 f, f32 g);
 extern "C" void fn_801F06F0(Actor* p, void* b, s32 c, DrawRec* d, s32 e, f32 f, f32 g);
 extern "C" void fn_803075AC(void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern "C" s32 fn_8023CB24(s32 a = 0);
+extern "C" s32 fn_8023CB24(s32 a);
 extern "C" s32 fn_8023CA88(s32 a);
 
 typedef f32 Mtx[3][4];
@@ -42,13 +42,14 @@ extern "C" Actor* fn_8031C050(Actor* p, s16 n) {
 }
 
 extern "C" void fn_8031C0B0(Actor* p) {
+    JGeometry::TVec3<f32> old;
     DrawRec rec;
     f32 m[3][4];
     u8* self = (u8*)p;
     s32 id;
     f32 ss;
     f32 cz;
-    f32 cs, a0, a1, a2, a3, a4, a5, a6, a7, a8;
+    f32 cs;
     f32 cc;
     f32 sx;
     f32 sy;
@@ -78,24 +79,15 @@ extern "C" void fn_8031C0B0(Actor* p) {
         cc = cx * cz;
         ss = sx * sy;
         cs = cx * sz;
-        a0 = cy * cz;
-        a1 = cy * sz;
-        a2 = -sy;
-        a3 = ss * cz - cs;
-        a4 = ss * sz + cc;
-        a5 = sx * cy;
-        a6 = cc * sy + sx * sz;
-        a7 = cs * sy - sx * cz;
-        a8 = cx * cy;
-        m[0][0] = scale * a0;
-        m[1][0] = scale * a1;
-        m[2][0] = scale * a2;
-        m[0][1] = scale * a3;
-        m[1][1] = scale * a4;
-        m[2][1] = scale * a5;
-        m[0][2] = scale * a6;
-        m[1][2] = scale * a7;
-        m[2][2] = scale * a8;
+        m[0][0] = scale * (cy * cz);
+        m[1][0] = scale * (cy * sz);
+        m[2][0] = scale * -sy;
+        m[0][1] = scale * (ss * cz - cs);
+        m[1][1] = scale * (ss * sz + cc);
+        m[2][1] = scale * (sx * cy);
+        m[0][2] = scale * (cc * sy + sx * sz);
+        m[1][2] = scale * (cs * sy - sx * cz);
+        m[2][2] = scale * (cx * cy);
         id = *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)];
         if (*(s32*)(self + 4) < 8) {
             void* res = ((FsaResourceManager*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x534F4220, lbl_804716F0);
@@ -109,7 +101,7 @@ extern "C" void fn_8031C0B0(Actor* p) {
         if (*(f32*)(self + 0x14) > lbl_805419B8) {
             rec.b1c = 1;
         }
-        JGeometry::TVec3<f32> old(*(JGeometry::TVec3<f32>*)(self + 0xc));
+        old = *(JGeometry::TVec3<f32>*)(self + 0xc);
         *(JGeometry::TVec3<f32>*)(self + 0xc) += *(JGeometry::TVec3<f32>*)(self + 0x294);
         fn_801F06F0(p, lbl_804716F0, *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)], &rec, 7, lbl_805419BC, lbl_805419BC);
         fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc,
@@ -117,7 +109,7 @@ extern "C" void fn_8031C0B0(Actor* p) {
         *(JGeometry::TVec3<f32>*)(self + 0xc) = old;
     } else {
         if (*(s32*)(self + 0x264) >= 0 && *(s32*)(self + 0x264) <= 3) {
-            rec.b1d = fn_8023CB24() + 1;
+            rec.b1d = fn_8023CB24(*(s32*)(self + 0x264)) + 1;
             rec.b1c = fn_8023CA88(*(s32*)(self + 0x264));
         }
         rec.b2d = 1;
