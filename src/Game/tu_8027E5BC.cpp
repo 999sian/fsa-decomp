@@ -108,6 +108,10 @@ extern const JGeometry::TVec3<f32> lbl_8046BED8[];
 bool fn_80245238(char*);
 bool fn_80244FFC(char*);
 f32 fn_80246F28(char*);
+static inline void decayPlayerSpeedBound(const f32 minimum, f32& value) {
+    value -= lbl_8054038C;
+    if (value < minimum) value = minimum;
+}
 static inline void decayPlayerSpeed(f32& value, const f32 minimum) {
     value -= lbl_8054038C;
     if (value < minimum) value = minimum;
@@ -598,12 +602,12 @@ extern "C" void fn_80280074(char* p) {
         }
         speed = PSVECMag((Vec*)(p + 0x344));
         if (fn_80244FFC(p)) {
-            f32 minimum = lbl_80540390;
             speed -= lbl_8054038C;
+            f32 minimum = lbl_80540390;
             if (speed < minimum) speed = minimum;
         } else if (fn_80246F28(p) > lbl_80540360) {
-            f32 minimum = lbl_8054036C;
             speed -= lbl_8054038C;
+            f32 minimum = lbl_8054036C;
             if (speed < minimum) speed = minimum;
         } else {
             speed -= lbl_8054038C;
@@ -631,8 +635,8 @@ extern "C" void fn_80280074(char* p) {
         speed += lbl_80540398;
     } else {
         speed = PSVECMag((Vec*)(p + 0x344));
-        f32 minimum = lbl_80540390;
         speed -= lbl_8054038C;
+        f32 minimum = lbl_80540390;
         if (speed < minimum) speed = minimum;
     }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
@@ -688,24 +692,15 @@ void fn_802804E0(char* p) {
     }
     speed = PSVECMag((Vec*)(p + 0x344));
     if (S32(p, 0x430) > 0) {
-        speed -= lbl_8054038C;
-        if (speed < lbl_80540360) {
-            speed = lbl_80540360;
-        }
+        decayPlayerSpeed(speed, lbl_80540360);
     } else if (U8(p, 0x3ff) == 0) {
         if (fn_80245238(p)) {
             U8(p, 0x3ff) = 1;
             fn_8024F0E8(p, 0x20039);
         } else if (fn_80244FFC(p)) {
-            speed -= lbl_8054038C;
-            if (speed < lbl_80540390) {
-                speed = lbl_80540390;
-            }
+            decayPlayerSpeed(speed, lbl_80540390);
         } else if (fn_80246F28(p) > lbl_80540360) {
-            speed -= lbl_8054038C;
-            if (speed < lbl_8054036C) {
-                speed = lbl_8054036C;
-            }
+            decayPlayerSpeed(speed, lbl_8054036C);
         } else {
             speed -= lbl_8054038C;
             if (speed < lbl_80540360) {
@@ -721,10 +716,7 @@ void fn_802804E0(char* p) {
             } else if (st < 16) {
                 speed += lbl_8054039C;
             } else {
-                speed -= lbl_8054038C;
-                if (speed < lbl_80540390) {
-                    speed = lbl_80540390;
-                }
+                decayPlayerSpeed(speed, lbl_80540390);
             }
         }
         if (U8(p, 0x3ff) >= 0x21) {
