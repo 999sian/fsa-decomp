@@ -88,9 +88,14 @@ struct DrawTables97070 {
     u8 name1[0x14];
 };
 
+static const s32 drawIndices0[6] = {0x1d0, 0x1e2, 0x1d6, 0x1dc, 0x1e8, 0x1ee};
+static const s32 drawIndices1[6] = {0x17f, 0x1cd, 0x199, 0x1b3, 0x1e7, 0x201};
+static const char drawName0[] = "enemy_both2_sob.bin";
+static const char drawName1[] = "enemy_gc_sob.bin";
+
 extern u8 lbl_80468428[];
 extern "C" void fn_80197070(u8* this_) {
-    u8* tbl = lbl_80468428;
+    DrawTables97070* tbl = (DrawTables97070*)lbl_80468428;
     switch (*(s32*)(this_ + 0x90)) {
     case 0: {
         DrawRec local;
@@ -104,7 +109,7 @@ extern "C" void fn_80197070(u8* this_) {
             if (*(s32*)(this_ + 0x230) == 0x15) {
                 p5 = -1;
             }
-            fn_801F06F0(this_, tbl + 0x30, (void*)(idx + *(s32*)(this_ + 0x254)), &local, (void*)p5,
+            fn_801F06F0(this_, tbl->name0, (void*)(idx + *(s32*)(this_ + 0x254)), &local, (void*)p5,
                         lbl_8053E370, lbl_8053E370);
         }
         break;
@@ -114,13 +119,13 @@ extern "C" void fn_80197070(u8* this_) {
             DrawRec local;
             local.b1d = 5;
             local.w30 = 0x11;
-            s32* table = (s32*)tbl;
+            s32* table = tbl->first;
             s32 total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
-            fn_801F02BC(this_, tbl + 0x30, (void*)total, &local, (void*)-1, 0, 0, lbl_8053E370, lbl_8053E370);
+            fn_801F02BC(this_, tbl->name0, (void*)total, &local, (void*)-1, 0, 0, lbl_8053E370, lbl_8053E370);
             ((u8*)&local.w10)[3] = (u8)(s32)*(f32*)(this_ + 0x270);
             total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
         if (*(u32*)(this_ + 0x138) == 0) {
-                fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl + 0x30,
+                fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl->name0,
                             total, 0);
             }
         }
@@ -130,12 +135,13 @@ extern "C" void fn_80197070(u8* this_) {
         DrawRec local;
         local.b1f = 0;
         local.b1d = 5;
-        s32* table = (s32*)(tbl + 0x18);
+        s32* table = tbl->second;
         s32 total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
-        fn_801F06F0(this_, tbl + 0x44, (void*)total, &local, (void*)-1, lbl_8053E370, lbl_8053E370);
+        fn_801F06F0(this_, tbl->name1, (void*)total, &local, (void*)-1, lbl_8053E370, lbl_8053E370);
         ((u8*)&local.w10)[3] = (u8)(s32)*(f32*)(this_ + 0x270);
+        total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
         if (*(u32*)(this_ + 0x138) == 0) {
-            fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl + 0x44,
+            fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl->name1,
                         total, 0);
         }
         break;
