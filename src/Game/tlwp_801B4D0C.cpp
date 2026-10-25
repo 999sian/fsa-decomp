@@ -43,50 +43,7 @@ extern "C" void* fn_801B609C(void* this_, short how) {
     return this_;
 }
 
-struct TlwpDrawKey {
-    s32 a, b;
-    TlwpDrawKey() { a = -1; b = -1; }
-};
-struct TlwpDrawParam {
-    u8 map[16];      // 0x00
-    TlwpDrawKey key; // 0x10
-    void* c;         // 0x18
-    u8 palette;      // 0x1c
-    u8 color;        // 0x1d
-    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
-    s32 blend;       // 0x28
-    u8 f2c, f2d, f2e;
-    s32 g;           // 0x30
-    s32 h;           // 0x34
-    s32 i;           // 0x38
-
-    TlwpDrawParam() {
-        for (u8 n = 0; n < 16; n++) {
-            map[n] = n;
-        }
-        key.a = -1;
-        key.b = 0;
-        c = 0;
-        palette = 0;
-        color = 0;
-        f1e = 0;
-        f1f = 1;
-        f20 = 1;
-        f21 = 0;
-        f22 = 0;
-        f23 = 0;
-        f24 = 0;
-        f25 = 0;
-        f26 = 1;
-        blend = 3;
-        f2c = 1;
-        f2d = 0;
-        f2e = 0;
-        g = -1;
-        h = 0;
-        i = 2;
-    }
-};
+#include "Game/TlwpDrawParam.h"
 struct TlwpSave { u8 pad[0x10]; s32 cur; u8 pad2[0x7a - 0x14]; u8 mask; };
 extern TlwpSave lbl_8050EC80;
 extern const char lbl_804690F8[];
@@ -247,30 +204,7 @@ extern "C" double cos(double);
 extern const char lbl_8046910C[];
 extern const f32 lbl_8053EA14;
 
-static inline void tlwpRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
-    f32 sz, sy, sx, cz, cy, cx;
-    sx = sin(ax);
-    sy = sin(ay);
-    sz = sin(az);
-    cx = cos(ax);
-    cy = cos(ay);
-    cz = cos(az);
-    m[0][0] = s * (cy * cz);
-    m[1][0] = s * (cy * sz);
-    m[2][0] = s * -sy;
-    f32 sxcz, sxsz, cxcz, cxsz, sxsy;
-    sxsy = sx * sy;
-    cxsz = cx * sz;
-    cxcz = cx * cz;
-    sxsz = sx * sz;
-    sxcz = sx * cz;
-    m[0][1] = s * (sxsy * cz - cxsz);
-    m[1][1] = s * (sxsy * sz + cxcz);
-    m[2][1] = s * (sx * cy);
-    m[0][2] = s * (cxcz * sy + sxsz);
-    m[1][2] = s * (cxsz * sy - sxcz);
-    m[2][2] = s * (cx * cy);
-}
+
 
 extern "C" void fn_801B4EC8(char* p) {
     TlwpDrawParam param;
@@ -316,16 +250,18 @@ extern "C" void fn_801B5228(char* p) {
     switch (*(s32*)(p + 0x230)) {
     case 8: {
         *(s32*)(p + 0x98) = d->kind[*(s32*)(p + 0x250) - 1];
+        char* q = p;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
                 room = *(s32*)(p + 0x4);
                 if (room == fn_8023DE58(i)) {
-                    *(TlwpVec*)(p + i * 0xc + 0x264) = *fn_8023E724(i);
+                    *(TlwpVec*)(q + 0x264) = *fn_8023E724(i);
                     if (i == 0) {
-                        *(f32*)(p + i * 0xc + 0x268) += lbl_8053EA2C;
+                        *(f32*)(q + 0x268) += lbl_8053EA2C;
                     }
                 }
             }
+            q += 0xc;
         }
         *(f32*)(p + 0x25c) = lbl_8053EA30;
         *(s32*)(p + 0x230) = 9;
