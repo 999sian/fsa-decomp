@@ -48,6 +48,19 @@ extern "C" s32 fn_80388EEC(s32 idx);
 extern "C" void fn_80458880(void* obj, s32 id, s32 v);
 extern void* lbl_8053AF80;
 extern u8 lbl_8050DB0C[];
+extern u8 lbl_8050EC80[];
+extern void* lbl_8053AD30;
+extern void* sManager__8JUTVideo;
+extern const f32 lbl_805433E8;
+extern const f32 lbl_805433CC;
+extern const f32 lbl_805433D4;
+extern const f32 lbl_805433D0;
+extern const f32 lbl_805433FC;
+extern const f32 lbl_80543400;
+extern const f32 lbl_805433EC;
+extern const f32 lbl_805433F0;
+extern const f32 lbl_805433F4;
+extern const f32 lbl_805433F8;
 
 struct VPane_803B14F8 {
     virtual void v00();
@@ -2643,9 +2656,9 @@ extern u8 lbl_8050EC80[];
 extern "C" u32 fn_80309D6C(void*, s32, s32);
 extern "C" void fn_803B236C(void*);
 extern "C" void fn_803AA1F8(void* this_) {
-    register u8* q1;
-    register s32 n;
-    register s32 i;
+    u8* q1;
+    s32 n;
+    s32 i;
     u8* q2;
     u8* q3;
     u8* v;
