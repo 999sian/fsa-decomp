@@ -95,11 +95,12 @@ extern "C" void fn_8035F9C8(u8* param_1) {
     if (*(f32*)(param_1 + 0x26c) > 3.0f) {
         *(f32*)(param_1 + 0x26c) = *(f32*)(param_1 + 0x26c) - 0.2f;
     }
+    f32 speed = 1.3f;
     f32 inv = __fres(6.28318f * *(f32*)(param_1 + 0x26c));
-    s32 step = (s32)(65536.0f * (inv * 1.3f));
+    s32 step = (s32)(65536.0f * (inv * speed));
     *(s16*)(param_1 + 0x254) = *(s16*)(param_1 + 0x254) - step;
-    *(f32*)(param_1 + 0x3c) = 1.3f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].cos;
-    *(f32*)(param_1 + 0x40) = 1.3f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].sin;
+    *(f32*)(param_1 + 0x3c) = speed * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].cos;
+    *(f32*)(param_1 + 0x40) = speed * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].sin;
     *(f32*)(param_1 + 0x44) = -0.2f;
     *(JGeometry::TVec3<f32>*)(param_1 + 0xc) += *(JGeometry::TVec3<f32>*)(param_1 + 0x3c);
     *(s32*)(param_1 + 0x264) = *(s32*)(param_1 + 0x264) + (s16)step;
