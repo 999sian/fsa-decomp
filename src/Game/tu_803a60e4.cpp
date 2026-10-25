@@ -69,6 +69,9 @@ extern "C" s32 fn_803A65EC() {
     return 5;
 }
 
+extern "C" void fn_80402E08(void* a, f32 b, f32 c);
+extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
+extern void* lbl_8053AAF8;
 extern "C" void fn_8013B490(void* obj);
 extern "C" void fn_80440EE8(void* obj);
 struct Game8053AB10 { u8 pad[0x10]; J2DGrafContext* graf; };
