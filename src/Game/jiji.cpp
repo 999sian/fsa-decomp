@@ -228,6 +228,7 @@ struct JijiTable {
     char res2[0x18];
 };
 extern const JijiTable lbl_804753C0;
+extern const s32 lbl_80475498[][4];
 static inline s32 jijiFrame(const s32 (*fr)[4], u8* p) { return *(const s32*)((const u8*)fr + *(s32*)(p + 0x264) * 16 + *(s32*)(p + 0x248) * 4); }
 #define JIJI_FRAME(t, p) (*(s32*)((p) + 0x238) + ((const s32(*)[4])((const u8*)(t) + 0xd8))[*(s32*)((p) + 0x264)][*(s32*)((p) + 0x248)])
 extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
