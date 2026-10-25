@@ -120,13 +120,25 @@ extern "C" void fn_8013B490(void* p);
 extern void* lbl_8053AB10;
 extern u8 lbl_8050DB0C[];
 
-// NONMATCHING (98.4%): float operand order and the clamp temp register.
+static inline s32 msgDrawClampCount(s32 count, s32 limit) {
+    if (count > limit) count = 0;
+    return count;
+}
+static inline u32 msgDrawColorAlpha(u32 color, u8 alpha) {
+    return (color & 0xffffff00) | alpha;
+}
+// NONMATCHING: integer temporary registers.
+#pragma opt_propagation on
 extern "C" void fn_80394690(MsgDraw* w) {
     if (w->dirty) {
         render__Q28JMessage8TControlFv(w->control);
         w->dirty = 0;
     }
-    f32 off = 60.0f + 0.5f * ((3.0f - (f32)w->m164) * ((J2DTextBox*)w->screen->search('Tm01'))->mLineSpacing);
+    J2DTextBox* tb = (J2DTextBox*)w->screen->search('Tm01');
+    f32 n = 3.0f - (f32)w->m164;
+    f32 spacing = tb->mLineSpacing;
+    f32 off = n * spacing;
+    off = 0.5f * off + 60.0f;
     if (w->hidden == 0) {
         char buf1[0x100];
         char buf2[0x100];
@@ -134,11 +146,14 @@ extern "C" void fn_80394690(MsgDraw* w) {
         strcpy(buf1, w->text1);
         strcpy(buf2, w->text2);
         if (strlen(w->suffix) != 0) {
-            s32 cur = *(s32*)(w->m10 + 0x4c);
-            s32 max = *(s16*)(lbl_8050DB0C + 0x4c);
+            s32 c2;
+            s32 max;
+            s32 cur;
+            cur = *(s32*)(w->m10 + 0x4c);
+            max = *(s16*)(lbl_8050DB0C + 0x4c);
             buf1[w->len] = 0;
             buf2[w->len] = 0;
-            s32 c2 = cur;
+            c2 = cur;
             if (cur > max) {
                 c2 = 0;
             }
@@ -158,7 +173,7 @@ extern "C" void fn_80394690(MsgDraw* w) {
         w->screen->draw(0.0f, 0.0f, *(const J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
     }
 }
-
+#pragma opt_propagation reset
 // ---- fn_80395480: cursor/icon "pop" animation ----
 extern "C" const f32 lbl_80475DA0[5];
 extern "C" const f32 lbl_80475DB4[5];
