@@ -235,30 +235,101 @@ extern "C" void fn_80256410(Actor* param_1)
 extern "C" void fn_8022E088(s32 idx, s32 i, Vec* out);
 extern "C" void fn_8022DF48(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
+static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
+            u8 hit = 0;
+            x += (u32)image->mSizeX >> 1;
+            y += (u32)image->mSizeY >> 1;
+            if (x >= 0 && x < image->mSizeX && y >= 0 && y < image->mSizeY) {
+                switch (image->mTextureFormat) {
+                case 8:
+                    switch (image->mLutFormat) {
+                    case 2: {
+                        s32 blockX = x >> 3;
+                        s32 blockY = y >> 3;
+                        s32 width = (u16)(image->mSizeX + 7) & ~7;
+                        s32 offset = ((blockX + blockY * (width >> 3)) << 6) + ((y & 7) << 3) + (x & 7);
+                        u8 packed = ((u8*)image)[image->mImageDataOffset + (offset >> 1)];
+                        u8 index = (packed >> 4) & 7;
+                        if (x & 1) index = packed & 7;
+                        u16 color = *(u16*)((u8*)image + image->mPaletteOffset + index * 2);
+                        if ((color & 0x8000) || (color & 0xf000) == 0x7000) hit = 1;
+                        break;
+                    }
+                    case 1:
+                        hit = 1;
+                        break;
+                    }
+                    break;
+                }
+            }
+    return hit;
+}
+
 #pragma dont_inline on
 extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     u8* p = (u8*)a;
-    s32 room = *(s32*)(p + 0x4);
     s32 i;
+    s32 room = *(s32*)(p + 0x4);
     Vec d;
     f32 len;
-    s32 ang;
+    u32 ang;
 
-    if (fn_8023DE58(arg) != room) {
+    s32 actualRoom = fn_8023DE58(arg);
+    if (actualRoom != room) {
         return 0;
     }
     for (i = 0; i < 8; i++) {
         fn_8022E088(arg, i, &d);
         JMathInlineVEC::PSVECSubtract(&d, (Vec*)(p + 0xc), &d);
         d.z = 0.0f;
-        ang = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * 10430.378f);
+        f32 angle = JMath::atanTable_.atan2_(d.y, d.x);
+        angle *= 10430.378f;
+        ang = (s32)angle;
         ang = ang - *(s16*)(p + 0x238);
         len = JGeometry::TUtilf::sqrt(d.x * d.x + d.y * d.y);
+        d.z = 0.0f;
         d.x = len * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
         d.y = len * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-        if (d.x >= *(f32*)(p + 0x60) && d.y >= *(f32*)(p + 0x64) && d.x < *(f32*)(p + 0x68) && d.y < *(f32*)(p + 0x6c)) {
+        u8 inside = 0;
+        f32 minX = *(f32*)(p + 0x60);
+        f32 minY = *(f32*)(p + 0x64);
+        f32 maxX = *(f32*)(p + 0x68);
+        f32 maxY = *(f32*)(p + 0x6c);
+        if (d.x >= minX && d.y >= minY && d.x < maxX && d.y < maxY) {
+            inside = 1;
+        }
+        if (inside) {
+            ResTIMG* image = *(ResTIMG**)(p + 0x23c);
+            u8 hit = 0;
+            s32 x = (s32)d.x + (image->mSizeX >> 1);
+            s32 y = (s32)d.y + (image->mSizeY >> 1);
+            if (x >= 0 && x < image->mSizeX && y >= 0 && y < image->mSizeY) {
+                switch (image->mTextureFormat) {
+                case 8:
+                    switch (image->mLutFormat) {
+                    case 2: {
+                        s32 blockX = x >> 3;
+                        s32 blockY = y >> 3;
+                        s32 width = (u16)(image->mSizeX + 7) & ~7;
+                        s32 offset = ((blockX + blockY * (width >> 3)) << 6) + ((y & 7) << 3) + (x & 7);
+                        u8 packed = ((u8*)image)[image->mImageDataOffset + (offset >> 1)];
+                        u8 index = (packed >> 4) & 7;
+                        if (x & 1) index = packed & 7;
+                        u16 color = *(u16*)((u8*)image + image->mPaletteOffset + index * 2);
+                        if (!(color & 0x8000) && (color & 0xf000) == 0x7000) hit = 1;
+                        break;
+                    }
+                    case 1:
+                        hit = 1;
+                        break;
+                    }
+                    break;
+                }
+            }
+            if (hit) {
             fn_8022DF48(arg);
             return 1;
+            }
         }
     }
     return 0;
