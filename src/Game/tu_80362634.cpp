@@ -94,12 +94,10 @@ static bool fn_80364340_isBadPos(Vec* p) {
 }
 
 static bool fn_80364340_isBadPos(Vec* p, Vec& v1) {
-    if (p->x < lbl_80542B20) {
-    } else if (p->x > lbl_80542B24) {
+    if (p->x < lbl_80542B20 || p->x > lbl_80542B24) {
         return true;
     }
-    if (p->y < lbl_80542B28) {
-    } else if (p->y > lbl_80542B2C) {
+    if (p->y < lbl_80542B28 || p->y > lbl_80542B2C) {
         return true;
     }
     if (p->x + p->y < lbl_80542B30) {
@@ -677,11 +675,14 @@ extern "C" void fn_80364340(char* self) {
     if (*(s32*)(self + 0x248) == 0) {
         JGeometry::TVec3<f32> offs;
         JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        JGeometry::TVec3<f32> spawn;
+        Vec check;
+        JGeometry::TVec3<f32> temp;
         offs.x = (f32)fn_801CD664(0x17c) - lbl_80542BB4;
         offs.y = (f32)fn_801CD664(0x17c) - lbl_80542BB8;
         offs.z = lbl_80542B0C;
         ((JGeometry::TVec3<f32>*)(self + 0xc))->add(offs);
-        if (fn_80364340_isBadPos((Vec*)(self + 0xc))) {
+        if (fn_80364340_isBadPos((Vec*)(self + 0xc), check)) {
             *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
             return;
         }
@@ -689,9 +690,9 @@ extern "C" void fn_80364340(char* self) {
         *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
         offs.z = lbl_80542B4C;
         u32 type = fn_801CD664(8) | 0x250000;
-        JGeometry::TVec3<f32> temp = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        temp = *(JGeometry::TVec3<f32>*)(self + 0xc);
         temp.add(offs);
-        JGeometry::TVec3<f32> spawn = temp;
+        spawn = temp;
         Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)&spawn, type, -1, -1);
     }
 }
