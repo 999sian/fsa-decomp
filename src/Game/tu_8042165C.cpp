@@ -182,6 +182,13 @@ static inline u8* CallPair(u8* this_, u32 a, u32 b) {
     return ((PairCallFn)(*(void***)sub)[15])(sub, a, b);
 }
 
+static inline u8* FindHudPane(u8* self, const u64* tag) {
+    HeartPane* pane = *(HeartPane**)(self + 4);
+    return pane->search(*tag);
+}
+static inline bool HudHasFlag(u8* self, u32 mask) {
+    return (self[0x259] & (u8)mask) != 0;
+}
 extern u64 lbl_8048F158[];
 extern u32 lbl_804B1434[];
 extern "C" s32 fn_802366CC(void);
@@ -718,32 +725,33 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
 }
 
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_80423DF0(u8* self, s32 player) {
-    const u8* tbl;
-    u8 mask;
-    s32 idx;
-    s32 i;
-    u8* this_;
-    const u64* pair2;
     s32 j;
+    const u64* pair2;
+    u32 bit;
+    u8* this_ = self;
+    s32 i = player;
+    s32 idx = -1;
+    const u8* tbl = lbl_8048E1B8;
+    u8 mask;
+    bit = 1 << i;
+    mask = bit;
     const u64* pair;
-    i = player;
-    this_ = self;
-    mask = 1 << i;
-    idx = -1;
-    tbl = lbl_8048E1B8;
     bool set = (this_[0x259] & mask) != 0;
     if (!set && !fn_80230188(i)) {
         fn_8022EA0C(i);
         if (fn_8023BE0C() && !(lbl_8053AED0[0x255] & mask)) {
             this_[0x259] |= mask;
-            pair = (const u64*)(tbl + 0xe28) + i;
-            GetSub(this_, *pair)[0xb0] = 1;
+            const u64* __restrict tab = (const u64*)(tbl + 0xe28);
+        pair = tab + i;
+            GetHeart(*(u8**)(this_ + 4), *pair)[0xb0] = 1;
         }
     } else if ((u32)fn_80309D24(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0 || (lbl_8053AED0[0x255] & mask) != 0 || fn_80230188(i)) {
         this_[0x259] &= ~mask;
-        pair = (const u64*)(tbl + 0xe28) + i;
-        GetSub(this_, *pair)[0xb0] = 0;
+        const u64* __restrict tab = (const u64*)(tbl + 0xe28);
+        pair = tab + i;
+        GetHeart(*(u8**)(this_ + 4), *pair)[0xb0] = 0;
     }
 
     switch (fn_802373EC(i)) {
@@ -790,11 +798,11 @@ extern "C" void fn_80423DF0(u8* self, s32 player) {
         pair2 = (const u64*)(tbl + 0x868) + i * 12;
         for (j = 0; j < 0xc; j++) {
             if (j == idx) {
-                GetSub(this_, *pair)[0xb0] = 1;
-                GetSub(this_, *pair2)[0xb0] = 1;
+                GetHeart(*(u8**)(this_ + 4), *pair)[0xb0] = 1;
+                GetHeart(*(u8**)(this_ + 4), *pair2)[0xb0] = 1;
             } else {
-                GetSub(this_, *pair)[0xb0] = 0;
-                GetSub(this_, *pair2)[0xb0] = 0;
+                GetHeart(*(u8**)(this_ + 4), *pair)[0xb0] = 0;
+                GetHeart(*(u8**)(this_ + 4), *pair2)[0xb0] = 0;
             }
             pair++;
             pair2++;
@@ -802,19 +810,20 @@ extern "C" void fn_80423DF0(u8* self, s32 player) {
         if (fn_8023725C(i) == 2) {
             pair = (const u64*)(tbl + 0x688) + i * 3;
             for (j = 0; j < 3; j++) {
-                GetSub(this_, *pair)[0xb0] = 1;
+                GetHeart(*(u8**)(this_ + 4), *pair)[0xb0] = 1;
                 pair++;
             }
         } else {
             pair = (const u64*)(tbl + 0x688) + i * 3;
             for (j = 0; j < 3; j++) {
-                GetSub(this_, *pair)[0xb0] = 0;
+                GetHeart(*(u8**)(this_ + 4), *pair)[0xb0] = 0;
                 pair++;
             }
         }
     }
 }
 #pragma opt_propagation reset
+#pragma opt_lifetimes reset
 extern "C" void fn_8043D57C(void);
 extern "C" void fn_8043D514(void);
 extern "C" void fn_80402E08(void);
