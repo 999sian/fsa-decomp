@@ -19,6 +19,22 @@ extern "C" void GXSetAlphaUpdate(u8);
 extern "C" u8* sManager__8JUTVideo;
 extern u8* lbl_8053AB10;
 
+struct EffSlot {
+    u16 id;
+    u16 used;
+    f32 pos[3];
+};
+
+static inline bool tu13_inPlay(u8* g) {
+    u8 hit = 0;
+    if (g[0x7f] != 0) {
+        hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb);
+    } else {
+        hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc);
+    }
+    return hit;
+}
+
 // ---- from Game/dtor_8013C5C8.cpp
 
 extern "C" void fn_800EB208(void* this_, s32 flag);
@@ -43,13 +59,9 @@ extern "C" void fn_8013C628(u8* this_, u8* actor) {
         u8* g = (u8*)lbl_8053AAF8;
         u8 hit = 0;
         if (g[0x7f] != 0) {
-            if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb) {
-                hit = 1;
-            }
+            hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb);
         } else {
-            if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc) {
-                hit = 1;
-            }
+            hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc);
         }
         if (hit && *(s32*)(g + 0x4c) != 0xc && g[0x94] == 0) {
             *(s32*)(this_ + 0xc) += 1;
@@ -63,7 +75,7 @@ extern "C" void fn_8013C628(u8* this_, u8* actor) {
                     void* m = fn_801F856C();
                     Actor_CreateByID(m, 0x50454646, b, a, id & 3, -1, id);
                 }
-            } else if (state >= 0 && state < 1) {
+            } else if (state == 0) {
                 if (*(s32*)(this_ + 0xc) >= 8) {
                     *(s32*)(this_ + 0xc) = 0;
                     u32 id = *(u32*)(this_ + 0x4);
@@ -130,8 +142,9 @@ extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(u8* this_) {
     PSMTXIdentity(info2[0]);
     PSMTXIdentity(info2[1]);
     PSMTXCopy(*(u8**)(lbl_8053AB10 + 0x10) + 0x80, info[0]);
-    u8* mode = *(u8**)((u8*)sManager__8JUTVideo + 4);
-    C_MTXLightOrtho(info[1], 0.0f, (f32)*(s16*)(mode + 6), 0.0f, (f32)*(s16*)(mode + 4), 0.5f, 0.5f, 0.5f, 0.5f);
+    s32 w = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
+    s32 h = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+    C_MTXLightOrtho(info[1], 0.0f, (f32)h, 0.0f, (f32)w, 0.5f, 0.5f, 0.5f, 0.5f);
     draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), info, 5);
     fn_8013B438(lbl_8053AB10);
     GXSetAlphaUpdate(0);
@@ -192,20 +205,19 @@ extern "C" void fn_8013DC1C(void* this_) {
 extern "C" void fn_8013DC44(u8* this_) {
     bool bVar2 = false;
     u8 flag = 0;
-    if (*((u8*)lbl_8053AAF8 + 0x7f) != 0) {
-        s32 t = *(s32*)((u8*)lbl_8053AAF8 + 0x4c);
-        if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb) flag = 1;
+    u8* g = (u8*)lbl_8053AAF8;
+    if (g[0x7f] != 0) {
+        if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb) flag = 1;
     } else {
-        s32 t = *(s32*)((u8*)lbl_8053AAF8 + 0x4c);
-        if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb || t == 0xc) flag = 1;
+        if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc) flag = 1;
     }
-    if (!flag || *(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xc) {
+    if (!flag || *(s32*)(g + 0x4c) == 0xc) {
         bVar2 = true;
     } else if (fn_802DCD0C(fn_802D6A9C()) == 0) {
         bVar2 = true;
     }
     if (bVar2) {
-        if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xb) {
+        if (*(s32*)(g + 0x4c) != 0xb) {
             calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 0);
             calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 1);
             calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 2);
@@ -251,7 +263,7 @@ extern "C" void* fn_8013F3E4(u8* this_, void* heap) {
     void* res = __nw__FUlP7JKRHeapi(0x14, *(void**)(this_ + 0x4), 0);
     if (res != 0) {
         void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* tex = (*(void* (**)(void*, u32, const char*))(**(u8***)((u8*)lbl_8053AAF8 + 0xa4) + 0x18))(obj, 0x3f3f3f3f, base + 0xb8);
+        void* tex = ((void* (*)(void*, u32, const char*))((*(void***)obj)[6]))(obj, 0x3f3f3f3f, base + 0xb8);
         res = __ct__18JPAResourceManagerFPCvP7JKRHeap(res, tex, *(void**)(this_ + 0x4));
     }
     *(void**)(this_ + 0x8) = res;
@@ -356,7 +368,7 @@ extern "C" void fn_8013F758(void) {
     char* base = lbl_804BEC38;
     lbl_8053AB18 = __vt__18JPAEmitterCallBack;
     lbl_8053AB18 = lbl_8049F184;
-    __register_global_object(&lbl_8053AB18, (void*)fn_8013F6F8, base);
+    __register_global_object(&lbl_8053AB18, (void*)fn_8013F6F8, lbl_804BEC38 + 0);
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x18);
