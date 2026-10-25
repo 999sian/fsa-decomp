@@ -251,7 +251,7 @@ static inline JPAEmitterCallBack* tu13_effCallBack() {
     if (!lbl_8053AB1C) {
         lbl_8053AB20 = __vt__18JPAEmitterCallBack;
         lbl_8053AB20 = lbl_8049F15C;
-        __register_global_object(&lbl_8053AB20, (void*)fn_8013C86C, lbl_804BEC38 + 0xc);
+        __register_global_object(&lbl_8053AB20, (void*)fn_8013C86C, lbl_804BEC44);
         lbl_8053AB1C = 1;
     }
     return (JPAEmitterCallBack*)&lbl_8053AB20;
@@ -263,9 +263,10 @@ static inline void tu13_addEmitter(EffEmitterSet* set, u16 id, u8 group, s32 fla
     pos[0] = lbl_8053CE00;
     pos[1] = lbl_8053CE00;
     pos[2] = lbl_8053CE00;
-    set->emitters[set->count] = set->mgr->createSimpleEmitterID(*(JGeometry::TVec3<f32>*)pos, id, group, 0, cb, 0);
-    *(s32*)((u8*)set->emitters[set->count] + 0x24) = 0;
-    *(u32*)((u8*)set->emitters[set->count] + 0xf4) |= 1;
+    JPABaseEmitter*& em = set->emitters[set->count];
+    em = set->mgr->createSimpleEmitterID(*(JGeometry::TVec3<f32>*)pos, id, group, 0, cb, 0);
+    *(s32*)((u8*)em + 0x24) = 0;
+    *(u32*)((u8*)em + 0xf4) |= 1;
     set->ids[set->count] = id;
     set->flags[set->count] = flag;
     set->count++;
