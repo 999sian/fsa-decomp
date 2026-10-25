@@ -3049,10 +3049,7 @@ extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
 
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
-        typedef void (*FuncPtr)(void);
-        register void* vtable = *(void**)obj;
-        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
-        fn();
+        ((Vtable800D8248*)obj)->m5();
     }
 }
 
