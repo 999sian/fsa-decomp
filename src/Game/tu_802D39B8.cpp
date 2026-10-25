@@ -1019,15 +1019,18 @@ extern "C" u64 fn_802D7AC4(char* p, s32 index) {
     return rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index - 7];
 }
 
+#pragma opt_propagation off
 extern "C" u32 fn_802D7B34(char* p, s32 index, s32 digit) {
-    index = index < 8 ? 0 : index - 7;
-    s32 shift = 60 - digit * 4;
+    s32 shift;
+    s32 idx;
+    idx = index < 8 ? 0 : index - 7;
+    shift = 60 - digit * 4;
     u64 mask = (u64)15 << shift;
     RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    u64 value = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
+    u64 value = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][idx];
     return (mask & value) >> shift;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802D7BE8(char* p, s32 index, s32 bit, u32 value) {
     index = index < 8 ? 0 : index - 7;
     RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
