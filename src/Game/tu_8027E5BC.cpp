@@ -105,6 +105,11 @@ extern const JGeometry::TVec3<f32> lbl_8046BED8[];
 bool fn_80245238(char*);
 bool fn_80244FFC(char*);
 f32 fn_80246F28(char*);
+static inline f32 decayPlayerSpeed(f32 value, const f32 minimum) {
+    value -= lbl_8054038C;
+    if (value < minimum) value = minimum;
+    return value;
+}
 u8 Player_GetField_0xce8(char* p);
 void fn_8027FA08(char*, f32*);
 bool fn_80275D9C(char*);
@@ -546,10 +551,9 @@ void fn_8027F854(char* p, JGeometry::TVec3<f32>* out, s32 i) {
 }
 
 extern "C" void fn_80280074(char* p) {
-    f32 speed;
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> step;
-    u8 linked = Player_IsLinked(p);
+    bool linked = Player_IsLinked(p);
     if (fn_802486A0(p) == 4 && fn_80248778(p) == fn_80240888(p)) {
         linked = false;
     }
@@ -557,8 +561,8 @@ extern "C" void fn_80280074(char* p) {
         fn_8027FA08(p, (f32*)&a);
         step = a - VEC(p, 0x8);
         step.z = lbl_80540360;
-        speed = step.length();
-        if (speed >= lbl_80540388) {
+        f32 length = step.length();
+        if (length >= lbl_80540388) {
             step.normalize();
             step.scale(lbl_80540388);
             VEC(p, 0x8) += step;
@@ -583,6 +587,7 @@ extern "C" void fn_80280074(char* p) {
     if (fn_80246B10(p, 0x40)) {
         return;
     }
+    f32 speed;
     if (U8(p, 0x3ff) == 0) {
         if (fn_80245238(p)) {
             U8(p, 0x3ff) = 1;
@@ -591,18 +596,20 @@ extern "C" void fn_80280074(char* p) {
         }
         speed = PSVECMag((Vec*)(p + 0x344));
         if (fn_80244FFC(p)) {
+            f32 minimum = lbl_80540390;
             speed -= lbl_8054038C;
-            if (speed < lbl_80540390) speed = lbl_80540390;
+            if (speed < minimum) speed = minimum;
         } else if (fn_80246F28(p) > lbl_80540360) {
+            f32 minimum = lbl_8054036C;
             speed -= lbl_8054038C;
-            if (speed < lbl_8054036C) speed = lbl_8054036C;
+            if (speed < minimum) speed = minimum;
         } else {
             speed -= lbl_8054038C;
             if (speed < lbl_80540360) speed = lbl_80540360;
         }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
-        f32 x = direction.x;
         f32 y = direction.y;
+        f32 x = direction.x;
         F32(p, 0x344) = x;
         f32 z = direction.z;
         F32(p, 0x348) = y;
@@ -622,12 +629,13 @@ extern "C" void fn_80280074(char* p) {
         speed += lbl_80540398;
     } else {
         speed = PSVECMag((Vec*)(p + 0x344));
+        f32 minimum = lbl_80540390;
         speed -= lbl_8054038C;
-        if (speed < lbl_80540390) speed = lbl_80540390;
+        if (speed < minimum) speed = minimum;
     }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
-        f32 x = direction.x;
         f32 y = direction.y;
+        f32 x = direction.x;
         F32(p, 0x344) = x;
         f32 z = direction.z;
         F32(p, 0x348) = y;
@@ -1751,25 +1759,19 @@ void fn_80284978(char* p) {
     JGeometry::TVec3<f32> a2;
     u32 kind;
     bool moved;
-    char* tbl = (char*)lbl_8046BDA8;
-    JGeometry::TVec3<f32>* src = (JGeometry::TVec3<f32>*)(tbl + 0x70) + S32(p, 0x3dc);
-    JGeometry::TVec3<f32>* src2 = (JGeometry::TVec3<f32>*)(tbl + 0xa0) + S32(p, 0x3dc);
-    tmp.x = src->x;
-    tmp.y = src->y;
-    tmp.z = src->z;
-    tmp2.x = src2->x;
-    tmp2.y = src2->y;
-    tmp2.z = src2->z;
+    PlayerModeTbl* tbl = (PlayerModeTbl*)lbl_8046BDA8;
+    tmp = tbl->ofsA[S32(p, 0x3dc)];
+    tmp2 = tbl->ofsB[S32(p, 0x3dc)];
     tmp.add(VEC(p, 0x8));
     tmp2.add(VEC(p, 0x8));
     kind = fn_8022461C((char*)&tmp, S32(p, 0x3b4));
     if (!fn_802265DC((f32*)&tmp, S32(p, 0x3b4), 1) || (u16)kind == 0xe || (u16)kind == 0x39 || (u16)kind == 0xd) {
-        if (!fn_802684A4(p, (f32*)&tmp, S32(p, 0x3b4)) && !fn_8024F63C(p)) {
+        if (!(u8)fn_802684A4(p, (f32*)&tmp, S32(p, 0x3b4)) && !fn_8024F63C(p)) {
             fn_80251AEC(p, 0);
             goto tail;
         }
     }
-    if (!fn_802265DC((f32*)&tmp2, S32(p, 0x3b4), 1) || fn_802684A4(p, (f32*)&tmp2, S32(p, 0x3b4))) {
+    if (fn_802265DC((f32*)&tmp2, S32(p, 0x3b4), 1) || (u8)fn_802684A4(p, (f32*)&tmp2, S32(p, 0x3b4))) {
         fn_80251AEC(p, 0);
         goto tail;
     }
@@ -1797,18 +1799,18 @@ void fn_80284978(char* p) {
                 VEC(p, 0x8).add(VEC(actor, 0x3c));
             } else if (!fn_802456FC(p)) {
                 fn_80251AEC(p, 0);
-            } else if (fn_802456FC(p) && fn_80246D1C(p, ((s32*)(tbl + 0x60))[S32(p, 0x3dc)])) {
+            } else if (fn_802456FC(p) && (u32)fn_80246D1C(p, tbl->ids[S32(p, 0x3dc)]) != 0) {
                 fn_80251AEC(p, 0xd);
             }
         } else {
             S32(p, 0xda4) = -1;
-            if (fn_802456FC(p) && fn_80246D1C(p, ((s32*)(tbl + 0x60))[S32(p, 0x3dc)])) {
+            if (fn_802456FC(p) && (u32)fn_80246D1C(p, tbl->ids[S32(p, 0x3dc)]) != 0) {
                 fn_80251AEC(p, 0xd);
             }
         }
     } else if (!fn_802456FC(p)) {
         fn_80251AEC(p, 0);
-    } else if (fn_802456FC(p) && fn_80246D1C(p, ((s32*)(tbl + 0x60))[S32(p, 0x3dc)])) {
+    } else if (fn_802456FC(p) && (u32)fn_80246D1C(p, tbl->ids[S32(p, 0x3dc)]) != 0) {
         fn_80251AEC(p, 0xd);
     }
     if (fn_8024FEFC(p) || moved) {
