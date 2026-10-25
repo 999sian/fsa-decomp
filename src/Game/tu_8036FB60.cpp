@@ -658,6 +658,80 @@ extern "C" void fn_803717CC(char* self)
 	}
 }
 
+extern "C" char lbl_8050C870[];
+extern "C" char lbl_8050C8A0[];
+extern s8 lbl_8053AD61;
+extern s8 lbl_8053AD62;
+extern "C" const s32 lbl_80474EE0[];
+extern "C" const s32 lbl_80474EF0[];
+extern "C" void fn_80371D50(void* this_, s32 id)
+{
+	s32 i;
+	*(s32*)((char*)this_ + 0x238) = 0x80;
+	*(u8*)((char*)this_ + 0x398) = 0;
+	char* self = (char*)this_;
+	switch (id) {
+	case 3:
+		if (!lbl_8053AD61) {
+			((JGeometry::TVec3<f32>*)lbl_8050C870)[0] = JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f);
+			((JGeometry::TVec3<f32>*)lbl_8050C870)[1] = JGeometry::TVec3<f32>(-16.0f, 16.0f, 0.0f);
+			((JGeometry::TVec3<f32>*)lbl_8050C870)[2] = JGeometry::TVec3<f32>(16.0f, 16.0f, 0.0f);
+			((JGeometry::TVec3<f32>*)lbl_8050C870)[3] = JGeometry::TVec3<f32>(0.0f, 32.0f, 0.0f);
+			lbl_8053AD61 = 1;
+		}
+		for (i = 0; i < 4; i++) {
+			*(JGeometry::TVec3<f32>*)(self + 0x2c4 + i * 0xc) = *(JGeometry::TVec3<f32>*)(self + 0xc) + ((JGeometry::TVec3<f32>*)lbl_8050C870)[i];
+			*(JGeometry::TVec3<f32>*)(self + 0x2f4 + i * 0xc) = JGeometry::TVec3<f32>(
+				(*(f32*)(self + 0x2c4 + i * 0xc) - *(f32*)(self + 0x294 + i * 0xc)) / 10.0f,
+				(*(f32*)(self + 0x2c8 + i * 0xc) - *(f32*)(self + 0x298 + i * 0xc)) / 10.0f,
+				0.0f);
+			*(s32*)(self + 0x350 + i * 4) = lbl_80474EE0[i];
+			*(s32*)(self + 0x340 + i * 4) = lbl_80474EF0[i];
+		}
+		break;
+	case 1:
+		for (i = 0; i < 4; i++) {
+			*(JGeometry::TVec3<f32>*)(self + 0x2c4 + i * 0xc) = *(JGeometry::TVec3<f32>*)(self + 0xc) + JGeometry::TVec3<f32>(16.0f * i, 0.0f, 0.0f);
+			*(JGeometry::TVec3<f32>*)(self + 0x2f4 + i * 0xc) = JGeometry::TVec3<f32>(
+				(*(f32*)(self + 0x2c4 + i * 0xc) - *(f32*)(self + 0x294 + i * 0xc)) / 10.0f,
+				(*(f32*)(self + 0x2c8 + i * 0xc) - *(f32*)(self + 0x298 + i * 0xc)) / 10.0f,
+				0.0f);
+			*(s32*)(self + 0x350 + i * 4) = 0x388;
+			*(s32*)(self + 0x340 + i * 4) = 0;
+		}
+		break;
+	case 2:
+		for (i = 0; i < 4; i++) {
+			*(JGeometry::TVec3<f32>*)(self + 0x2c4 + i * 0xc) = *(JGeometry::TVec3<f32>*)(self + 0xc) + JGeometry::TVec3<f32>(0.0f, 16.0f * i, 0.0f);
+			*(JGeometry::TVec3<f32>*)(self + 0x2f4 + i * 0xc) = JGeometry::TVec3<f32>(
+				(*(f32*)(self + 0x2c4 + i * 0xc) - *(f32*)(self + 0x294 + i * 0xc)) / 10.0f,
+				(*(f32*)(self + 0x2c8 + i * 0xc) - *(f32*)(self + 0x298 + i * 0xc)) / 10.0f,
+				0.0f);
+			*(s32*)(self + 0x350 + i * 4) = 0x38e;
+			*(s32*)(self + 0x340 + i * 4) = 2;
+		}
+		break;
+	case 0:
+		if (!lbl_8053AD62) {
+			((JGeometry::TVec3<f32>*)lbl_8050C8A0)[0] = JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f);
+			((JGeometry::TVec3<f32>*)lbl_8050C8A0)[1] = JGeometry::TVec3<f32>(16.0f, 0.0f, 0.0f);
+			((JGeometry::TVec3<f32>*)lbl_8050C8A0)[2] = JGeometry::TVec3<f32>(0.0f, 16.0f, 0.0f);
+			((JGeometry::TVec3<f32>*)lbl_8050C8A0)[3] = JGeometry::TVec3<f32>(16.0f, 16.0f, 0.0f);
+			lbl_8053AD62 = 1;
+		}
+		for (i = 0; i < 4; i++) {
+			*(JGeometry::TVec3<f32>*)(self + 0x2c4 + i * 0xc) = *(JGeometry::TVec3<f32>*)(self + 0xc) + ((JGeometry::TVec3<f32>*)lbl_8050C8A0)[i];
+			*(JGeometry::TVec3<f32>*)(self + 0x2f4 + i * 0xc) = JGeometry::TVec3<f32>(
+				(*(f32*)(self + 0x2c4 + i * 0xc) - *(f32*)(self + 0x294 + i * 0xc)) / 10.0f,
+				(*(f32*)(self + 0x2c8 + i * 0xc) - *(f32*)(self + 0x298 + i * 0xc)) / 10.0f,
+				0.0f);
+			*(s32*)(self + 0x350 + i * 4) = 0x391;
+			*(s32*)(self + 0x340 + i * 4) = 3;
+		}
+		break;
+	}
+}
+
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
 extern "C" const char lbl_80474ED0[];
 extern "C" f32 lbl_80542E38;
