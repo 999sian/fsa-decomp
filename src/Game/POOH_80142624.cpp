@@ -18,7 +18,7 @@ extern "C" Actor* fn_80142624(Actor* this_, s16 flag) {
     return this_;
 }
 
-extern "C" void fn_80158B5C(void* obj, s32 room, void* pos, GXColor color, f32 size);
+extern "C" void fn_80158B5C(void* obj, s32 room, void* pos, JUtility::TColor color, f32 size);
 extern const f32 lbl_8053CF28;
 extern const f32 lbl_8053CF2C;
 extern "C" void fn_801EFD34(Actor* this_, s32 id, void* idx, s32 n, f32 a, f32 b, f32 c);
