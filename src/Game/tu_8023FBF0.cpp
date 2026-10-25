@@ -1611,6 +1611,72 @@ extern "C" void fn_80241E64(void* p) {
 }
 
 char* fn_802422C4(char* p) { return (char*)PTR(p, 0xbf0) + 0x14; }
+
+void fn_802422D0(char* p) {
+    if (fn_80270A8C(p) && !fn_8025F448(p)) {
+        fn_80270948(p, (const TrailPos*)fn_8023E724(lbl_8053A190));
+    } else {
+        JGeometry::TBox2<f32> box;
+        box = *(JGeometry::TBox2<f32>*)(fn_802D6A9C() + 0xcc);
+        if (S32(p, 0x3b4) < 8) {
+            bool inside = false;
+            if (F32(p, 8) >= box.i.x && F32(p, 0xc) >= box.i.y &&
+                F32(p, 8) < box.f.x && F32(p, 0xc) < box.f.y) {
+                inside = true;
+            }
+            if (inside) goto positioned;
+        }
+        {
+            F32(p, 8) = fn_8023E724(lbl_8053A190)[0];
+            F32(p, 0xc) = fn_8023E724(lbl_8053A190)[1];
+            S32(p, 0x3b4) = 0;
+        }
+    }
+positioned:
+    V3(p, 0x2c4) = V3(p, 8);
+    V3(p, 0xcb0) = V3(p, 0x2c4);
+    V3(p, 0xd1c) = V3(p, 0xcb0);
+    F32(p, 0x344) = 0.0f;
+    F32(p, 0x348) = 0.0f;
+    F32(p, 0x34c) = 0.0f;
+    F32(p, 0x368) = 0.0f;
+    F32(p, 0x36c) = 0.0f;
+    F32(p, 0x370) = 0.0f;
+    S32(p, 0xd54) = 10;
+    if (U8(p, 0x1216) == 0) {
+        if (U8(p, 0x454) != 0) {
+            fn_8024B2E0(p);
+        } else {
+            s32 i;
+            PlayerTrail* tr = (PlayerTrail*)p;
+            for (i = 0; i < 0x31; i++) {
+                tr->pos[i].x = F32(p, 8);
+                tr->pos[i].y = F32(p, 0xc);
+                tr->pos[i].z = F32(p, 0x10);
+                if (F32(p, 0x10) > 0.0f) tr->onGround[i] = 1;
+                else tr->onGround[i] = 0;
+            }
+        }
+    }
+    if (fn_8025F500(p) && S32(p, 0xd6c) == 'KEY0') {
+        void* a = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+        if (a != NULL) {
+            TrailPos pos = V3(p, 8);
+            fn_802C1D30(a, &pos, S32(p, 0x3b4));
+        }
+    } else {
+        s32 id = S32(p, 0xd88);
+        if (id >= 0) {
+            char* a = getActor(id);
+            if (a != NULL && S32(a, 0x1a0) == 'KEY0') {
+                TrailPos pos = V3(p, 8);
+                fn_802C1D30(a, &pos, S32(p, 0x3b4));
+            }
+        }
+    }
+    S32(p, 0x122c) = 5;
+}
+
 void fn_80242560(char* p) {
     if (fn_8025F500(p) && S32(p, 0xd6c) == 'KEY0') {
         void* a = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
@@ -1962,7 +2028,7 @@ BOOL fn_80245238(char* p) {
         return 1;
     }
     s32 room = S32(p, 0x3b4);
-    if (U8(fn_802D6A9C(), room + 0x131df) != 0 && PADF(fn_80309D6C, 0x200)) {
+    if (U8(fn_802D6A9C() + 0x131df, room) != 0 && PADF(fn_80309D6C, 0x200)) {
         return 1;
     }
     return 0;
@@ -4111,13 +4177,13 @@ void fn_8024E0A0(char* this_) {
                   S32(lbl_8053AAF8, 0x4C) == 0xC) ? 1 : 0;
         }
         if (!ok) {
-            return;
+            goto updatePosition;
         }
         if (fn_80270A8C(this_)) {
-            return;
+            goto updatePosition;
         }
         if (U8(this_, 0x454) != 0) {
-            return;
+            goto updatePosition;
         }
         s32 v;
         if (S32(this_, 0xD60) >= 0) {
@@ -4128,29 +4194,33 @@ void fn_8024E0A0(char* this_) {
             v = S32(this_, 0xBFC);
         }
         if (v > 4) {
-            return;
+            goto updatePosition;
         }
         if (S32(this_, 0xD60) >= 0) {
-            return;
+            goto updatePosition;
         }
         if ((u8)fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(this_, 0x11EC))) && fn_8030381C(S32(this_, 0x4))) {
             fn_803037D4(S32(this_, 0x4), 6);
-            return;
+            goto updatePosition;
         }
         if (S32(this_, 0x3B4) >= 8) {
             fn_8030381C(S32(this_, 0x4));
         }
         fn_80458880(lbl_8053AF80, 5, (s8)S32(this_, 0x4));
+    }
+updatePosition:
         if (S32(this_, 0x3B4) < 8) {
             V3(this_, 0x1258) = V3(this_, 0x8);
         } else {
+            char* q;
             char* src;
             if (S32(this_, 0x3B4) == 8) {
                 char* m = fn_802D6A9C();
                 f32 mx = F32(m, 0xCC);
                 f32 my = F32(m, 0xD0);
+                s32 n = S32(this_, 0x3B4);
                 char* r = fn_802D6A9C();
-                char* q = (S32(this_, 0x3B4) < 8) ? r + 0xCC : r + 0xDC;
+                q = (n < 8) ? r + 0xCC : r + 0xDC;
                 f32 qx = F32(q, 0);
                 f32 qy = F32(q, 4);
                 F32(this_, 0x1268) = F32(this_, 0x8);
@@ -4162,11 +4232,10 @@ void fn_8024E0A0(char* this_) {
             } else {
                 src = this_ + 0x8;
             }
-            *(JGeometry::TVec3<f32>*)(this_ + 0x1258) = *(JGeometry::TVec3<f32>*)src;
+            V3(this_, 0x1258) = V3(src, 0);
         }
         fn_80456154(PTR(this_, 0x1250));
         fn_80456154(PTR(this_, 0x1254));
-    }
 }
 
 void fn_8024E344(char* p) {
