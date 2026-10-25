@@ -43,7 +43,7 @@ static inline s32 clampSeq(AnmSeqCtrl* this_, s32 f) {
 }
 
 static inline void calcSeq(AnmSeqCtrl* __restrict this_) {
-    s32 duration;
+    s16 duration;
     f32 frame = this_->mCtrl.mFrame;
     SeqEntry* __restrict e = this_->mSeqs[this_->mCurSeq];
     int start = 0;
