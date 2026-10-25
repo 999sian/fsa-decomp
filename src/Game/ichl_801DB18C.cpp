@@ -452,8 +452,8 @@ static inline f32 ichlLen(const IchlV2& v) {
 static inline bool ichlIsZero(const IchlV2& v) {
     f32 limit;
     f32 square;
-    square = v.squared();
     limit = JGeometry::TUtilf::epsilon();
+    square = v.squared();
     bool r = square <= limit;
     return r;
 }
@@ -475,16 +475,28 @@ extern "C" void fn_801DB9CC(char* p) {
         if (!ichlIsZero(v)) {
             f32 rx, ry;
             if (v.x < lbl_8053F2E4) {
-                f32 c = JMath::sincosTable_.mTable[0x600].second;
-                f32 sn = JMath::sincosTable_.mTable[0x600].first;
-                ry = __fmadds(v.x, sn, v.y * c);
-                rx = __fmsubs(v.x, c, v.y * sn);
+                f32 yc;
+                f32 ys;
+                f32 c;
+                f32 sn;
+                c = JMath::sincosTable_.mTable[0x600].second;
+                sn = JMath::sincosTable_.mTable[0x600].first;
+                yc = v.y * c;
+                ys = v.y * sn;
+                ry = __fmadds(v.x, sn, yc);
+                rx = __fmsubs(v.x, c, ys);
                 *(u32*)(p + 0x230) |= 0x2000;
             } else {
-                f32 c = JMath::sincosTable_.mTable[0x200].second;
-                f32 sn = JMath::sincosTable_.mTable[0x200].first;
-                ry = __fmadds(v.x, sn, v.y * c);
-                rx = __fmsubs(v.x, c, v.y * sn);
+                f32 yc;
+                f32 ys;
+                f32 c;
+                f32 sn;
+                c = JMath::sincosTable_.mTable[0x200].second;
+                sn = JMath::sincosTable_.mTable[0x200].first;
+                yc = v.y * c;
+                ys = v.y * sn;
+                ry = __fmadds(v.x, sn, yc);
+                rx = __fmsubs(v.x, c, ys);
                 *(u32*)(p + 0x230) &= ~0x2000;
             }
             if (fn_801CD664(2) == 0) {
@@ -498,11 +510,12 @@ extern "C" void fn_801DB9CC(char* p) {
             *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
         }
     }
-    f32 sy;
+    f32 r;
     f32 sx;
+    f32 sy;
     s16 ang = *(s16*)(p + 0x2dc);
     sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-    f32 r = *(f32*)(p + 0x2d4);
+    r = *(f32*)(p + 0x2d4);
     sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
     sx = -sx;
     sy = -sy;
