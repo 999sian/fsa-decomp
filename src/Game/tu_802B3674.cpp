@@ -185,35 +185,21 @@ extern "C" void fn_802B3AB8(char* this_) {
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern char lbl_804A8638[];
 extern "C" void* fn_802B51C0(void* this_, s16 how) {
-    if (this_) {
-        *(void**)this_ = lbl_804A8638;
-        char* p = fn_8016A3AC();
-        p[0x1ee] = 0;
-        void* h0 = *(void**)((char*)this_ + 0x234);
-        if (h0) {
-            fn_801EE434(h0);
-        }
-        void* h1 = *(void**)((char*)this_ + 0x238);
-        if (h1) {
-            fn_801EE434(h1);
-        }
-        void* h2 = *(void**)((char*)this_ + 0x23c);
-        if (h2) {
-            fn_801EE434(h2);
-        }
-        SubObj* sub = *(SubObj**)((char*)this_ + 0x230);
-        if (sub != NULL) {
-            SubObj* s2 = sub;
-            if (s2 != NULL) {
-                s2->vt->fn12(s2, 1);
-            }
-        }
-        __dt__5ActorFv(this_, 0);
-        if (how > 0) {
-            ::operator delete(this_);
-        }
-    }
-    return this_;
+ if(this_) {
+  *(void**)this_=lbl_804A8638;
+  char* p=fn_8016A3AC();p[0x1ee]=0;
+  void* h0=*(void**)((char*)this_+0x234);
+  if(h0) fn_801EE434(h0);
+  void* h1=*(void**)((char*)this_+0x238);
+  if(h1) fn_801EE434(h1);
+  void* h2=*(void**)((char*)this_+0x23c);
+  if(h2) fn_801EE434(h2);
+  SubObject* sub=*(SubObject**)((char*)this_+0x230);
+  if(sub) delete sub;
+  __dt__5ActorFv(this_,0);
+  if(how>0) ::operator delete(this_);
+ }
+ return this_;
 }
 
 extern "C" void fn_802B5284(char* p) {
