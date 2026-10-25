@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "sdk/stl/float.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
@@ -97,17 +99,108 @@ extern "C" Actor* fn_801688AC(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" u16 fn_80226850(Vec* p, s32 room);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_8016890C(void* this_, void* pos, s32 room, void* out) {
+    Vec p;
+    u32 ux;
+    u32 uy;
+    s32 i;
+    u16 ret;
+    f32* o = (f32*)out;
+
+    if (room == 0) {
+        u8* mgr = (u8*)fn_802D6A9C();
+        f32* box;
+        if (room < 8) {
+            box = (f32*)(mgr + 0xcc);
+        } else {
+            box = (f32*)(mgr + 0xdc);
+        }
+        o[0] = box[0];
+        o[1] = box[1];
+        o[2] = box[2];
+        o[3] = box[3];
+    } else {
+        p = *(Vec*)pos;
+        ux = (u32)p.x & ~7;
+        uy = (u32)p.y & ~7;
+
+        p.x = (f32)ux;
+        p.y = (f32)uy;
+        p.z = 0.0f;
+        if (p.x < 16.0f) {
+            p.x = 16.0f;
+        } else {
+            for (i = 0; i < 0x40; i++) {
+                ret = fn_80226850(&p, room);
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+                    break;
+                }
+                p.x += 8.0f;
+            }
+        }
+        o[2] = p.x;
+
+        p.x = (f32)ux;
+        if (p.x < 8.0f) {
+            p.x = 0.0f;
+        } else {
+            for (i = 0; i < 0x40; i++) {
+                ret = fn_80226850(&p, room);
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+                    p.x += 8.0f;
+                    break;
+                }
+                p.x -= 8.0f;
+            }
+        }
+        o[0] = p.x;
+
+        p.x = (f32)ux;
+        p.y = (f32)uy;
+        if (p.y < 16.0f) {
+            p.y = 16.0f;
+        } else {
+            for (i = 0; i < 0x40; i++) {
+                ret = fn_80226850(&p, room);
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+                    break;
+                }
+                p.y += 8.0f;
+            }
+        }
+        o[3] = p.y;
+
+        p.y = (f32)uy;
+        if (p.y < 8.0f) {
+            p.y = 0.0f;
+        } else {
+            for (i = 0; i < 0x40; i++) {
+                ret = fn_80226850(&p, room);
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+                    p.y += 8.0f;
+                    break;
+                }
+                p.y -= 8.0f;
+            }
+        }
+        o[1] = p.y;
+    }
+}
+
 extern "C" s32 fn_80168C38(char* this_) {
-    f32 rel[2];
-    Vec d;
     f32 box[4];
+    Vec d;
+    f32 rel[2];
     Vec* ptr;
     f32 px;
     f32 py;
-    s32 found = -1;
+    s32 found;
     s32 i;
 
     ptr = (Vec*)fn_8023E724(*(s32*)(this_ + 0x90));
+    found = -1;
     rel[0] = ptr->x;
     rel[1] = ptr->y;
     px = *(f32*)(this_ + 0xc);
