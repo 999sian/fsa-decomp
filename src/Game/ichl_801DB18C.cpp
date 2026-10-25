@@ -445,7 +445,7 @@ static inline f32 ichlSq(const IchlV2& v) {
 static inline f32 ichlLen(const IchlV2& v) {
     return JGeometry::TUtilf::sqrt(ichlSq(v));
 }
-static inline bool ichlIsZero(IchlV2 v) {
+static inline bool ichlIsZero(const IchlV2& v) {
     bool r = ichlSq(v) <= JGeometry::TUtilf::epsilon();
     return r;
 }
