@@ -48,6 +48,7 @@ extern void* sManager__8JUTVideo;
 extern "C" void fn_802FC80C(u8* this_);
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx);
 
+static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
 struct Tu802F5040Rect {
     s32 m00;
     s32 m04;
@@ -881,6 +882,118 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
         s += 16;
         d += 16;
     } while (--n);
+}
+
+extern "C" u32 lbl_80471020[];
+extern "C" f32 lbl_80541528, lbl_80541530, lbl_80541538, lbl_8054153C;
+extern "C" void fn_802F6CF4(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
+u8* this_=(u8*)base;
+f32* pos=(f32*)elem;
+u8* tiles=(u8*)a;
+u8* ent=(u8*)ptr;
+f32 origin[3];
+GXTexObj texObj;
+int counts[16];
+GXTlutObj tlut[16];
+int i,row,col,y,x;
+u8* mgr;
+bool flag;
+s32 idx;
+if(this_[0x2364]) {
+if(ent && ent[0x21]) {if(fn_802F654C(this_,pos,0,0,0,(s32)tiles,ent)) return;}
+if(ent && ent[0x22]) {if(fn_802F6298(this_,(Vec*)pos,0,0,0,(s32)tiles,ent)) return;}
+fn_8013B1E8(lbl_8053AB10);
+fn_802F5040(pos,ent,origin);
+GXClearVtxDesc();
+GXSetVtxDesc((GXAttr)9,(GXAttrType)1);
+GXSetVtxDesc((GXAttr)13,(GXAttrType)1);
+GXSetVtxDesc((GXAttr)14,(GXAttrType)1);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)9,(GXCompCnt)1,(GXCompType)4,0);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)13,(GXCompCnt)1,(GXCompType)4,0);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)14,(GXCompCnt)1,(GXCompType)4,0);
+GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);
+GXSetNumTexGens(2);
+    if (this_[0xe450] != 0) {
+        mgr = (u8*)lbl_8053AAF8;
+        if (mgr[0x7f] != 0) {
+            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb) ? true : false;
+        } else {
+            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb || *(s32*)(mgr + 0x4c) == 0xc) ? true : false;
+        }
+        if (flag && *(void**)(mgr + 0x4) != NULL) {
+            idx = *(s32*)((u8*)fn_802D6A9C() + 0x50);
+        } else {
+            idx = 0;
+        }
+        load__10JUTTextureF11_GXTexMapID(((void**)(this_ + 0xE428))[idx], 1);
+        GXSetTevOrder((GXTevStageID)1, (GXTexCoordID)1, (GXTexMapID)1, (GXChannelID)0xff);
+        GXSetTevColorIn((GXTevStageID)1, (GXTevColorArg)0xf, (GXTevColorArg)0, (GXTevColorArg)8, (GXTevColorArg)0xf);
+        GXSetTevAlphaIn((GXTevStageID)1, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)0);
+        GXSetTevColorOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevAlphaOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevSwapMode((GXTevStageID)1, (GXTevSwapSel)0, (GXTevSwapSel)0);
+        GXSetTevDirect((GXTevStageID)1);
+
+GXSetNumTevStages(2);
+}
+for(i=0;i<16;i++) {
+GXInitTlutObj(&tlut[i],*(u8**)(this_+0x18)+i*0x20,(GXTlutFmt)2,16);
+GXLoadTlut(&tlut[i],lbl_80471020[i]);
+}
+for(int n=0;n<16;n++) counts[n]=0;
+for(row=0;row<16;row++) {
+for(col=0;col<16;col++) {
+u16 tile=tiles[(row*16+col)*2]|tiles[(row*16+col)*2+1]<<8;
+if(tile) {
+u16* list=*(u16**)(this_+0x24);
+for(int dy=0;dy<2;dy++) { for(int dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++; }
+}
+}
+}
+for(i=0;i<16;i++) {
+if(counts[i]>0) {
+GXInitTexObjCI(&texObj,*(void**)(this_+4),128,512,(GXCITexFmt)8,(GXTexWrapMode)0,(GXTexWrapMode)0,0,lbl_80471020[i]);
+GXLoadTexObj(&texObj,(GXTexMapID)0);
+GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,counts[i]*4);
+for(row=0;row<16;row++) {
+for(col=0;col<16;col++) {
+u16 tile=tiles[(row*16+col)*2]|tiles[(row*16+col)*2+1]<<8;
+if(tile) {
+for(y=0;y<2;y++) {
+for(x=0;x<2;x++) {
+u16 t=(*(u16**)(this_+0x24))[tile*4+y*2+x];
+if(((t>>12)&15)==i) {
+s32 px=(col*2+x)*8;
+s32 py=(row*2+y)*8;
+f32 u=(8.0f*(f32)(int)(t&15)+0.501f)*0.0078125f;
+f32 v=(8.0f*(f32)(int)((t>>4)&63)+0.501f)*0.001953125f;
+f32 su=(f32)px*0.0078125f+lbl_805414F8;
+f32 sv=(f32)py*0.0078125f+lbl_805414F8;
+f32 eu=0.0625f+su;
+f32 ev=0.0625f+sv;
+f32 vx=(f32)px+origin[0];
+f32 vy=(f32)py+origin[1];
+f32 u2,v2;
+if(t&0x400) {u2=u;u+=6.98f/128.0f;} else u2=u+6.98f/128.0f;
+if(t&0x800) {v2=v;v+=6.98f/512.0f;} else v2=v+6.98f/512.0f;
+GXWGFifo.f32=vx; GXWGFifo.f32=vy; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=u; GXWGFifo.f32=v; GXWGFifo.f32=su; GXWGFifo.f32=sv;
+GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=u2; GXWGFifo.f32=v; GXWGFifo.f32=eu; GXWGFifo.f32=sv;
+GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=u2; GXWGFifo.f32=v2; GXWGFifo.f32=eu; GXWGFifo.f32=ev;
+GXWGFifo.f32=vx; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=u; GXWGFifo.f32=v2; GXWGFifo.f32=su; GXWGFifo.f32=ev;
+}
+}
+}
+}
+}
+}
+}
+}
+if(ent && *(s32*)(ent+0x30)!=-1) fn_802F6800(this_,pos,0,0,0,(s32)tiles,ent);
+}
 }
 
 extern GXColor lbl_805414F4;
