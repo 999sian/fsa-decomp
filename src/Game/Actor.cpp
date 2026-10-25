@@ -1001,17 +1001,11 @@ extern "C" void fn_801F3518(Actor* a) {
 
 /* --- 0x801F317C: write four derived coordinates --------------------------- */
 extern "C" void fn_801F317C(const Actor* a, f32* out) {
-    f32 y = a->field_0C.y;
-    f32 x = a->field_0C.x;
-    f32 z = a->field_0C.z;
-    f32 w = a->field_7C.x + y;
-    f32 t = a->field_70.y + y;
-    f32 p = a->field_70.x + x;
-    f32 q = a->field_70.z + x;
-    out[0] = p;
-    out[1] = t - z;
-    out[2] = q;
-    out[3] = w - z;
+    ((JGeometry::TBox2<f32>*)out)->set(
+        a->field_70.x + a->field_0C.x,
+        a->field_70.y + a->field_0C.y - a->field_0C.z,
+        a->field_70.z + a->field_0C.x,
+        a->field_7C.x + a->field_0C.y - a->field_0C.z);
 }
 
 /* --- 0x801F355C: release the actor's area slot (does not clear field_11C) --- */
