@@ -541,10 +541,7 @@ extern "C" void fn_8008DF30(int param_1, int param_2)
 {
     u32 mask = lbl_80499470[param_1];
     if ((lbl_8053A938 & mask) != 0) {
-        u8 control = (u8)param_2;
-        s32 sign = (-(s32)control | (s32)control) >> 31;
-        s32 two = 2;
-        u8 mode = (u8)(two & sign);
+        u8 mode = (u8)param_2 ? 2 : 0;
         PADControlMotor(param_1, mode);
         lbl_8053A934[param_1] = 0;
     }
