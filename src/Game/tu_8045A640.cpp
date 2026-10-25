@@ -71,33 +71,12 @@ extern "C" void fn_8045A700(void* this_, JAISoundID* param_2, void* param_3) {
     }
 }
 
-static inline void setSoundInfo(void* this_, JAISoundID* param_2, void* param_3) {
-    JAISoundID typeSoundID;
-    JAISoundID soundID;
-    u32 id = param_2->mId.mFullId;
-    soundID.mId.mFullId = id;
-    void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), soundID);
-    typeSoundID.mId.mFullId = id;
-    u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), typeSoundID);
-    if (data != 0) {
-        switch (typeID) {
-        case 0x10: *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
-        case 0x12: *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
-        case 0x11: *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
-        }
-    }
-}
-
 extern "C" void fn_8045A81C(void* this_, JAISoundID* param_2, void* param_3) {
     char* p = (char*)param_3;
     if (p) p += 0x10;
-    JAISoundID typeSoundID;
-    JAISoundID soundID;
-    int id = param_2->mId.mFullId;
-    soundID.mId.mFullId = id;
-    void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), soundID);
-    typeSoundID.mId.mFullId = id;
-    u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), typeSoundID);
+    u32 id = param_2->mId.mFullId;
+    void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), JAISoundID(id));
+    u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), JAISoundID(id));
     if (data != 0) {
         switch (typeID) {
         case 0x10: *(f32*)(p + 0x3c) = ((u8*)data)[2] / lbl_80543ED8; break;
