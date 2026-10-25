@@ -1011,10 +1011,13 @@ ASM u32 __TRK_get_MSR(void) {
  * @note Size: 0x8
  */
 #ifdef __MWERKS__ // clang-format off
-asm void __TRK_set_MSR(register u32 v)
+ASM void __TRK_set_MSR(register u32 newMSR)
 {
-	mtmsr v
+#ifdef __MWERKS__ // clang-format off
+	nofralloc
+	mtmsr newMSR
 	blr
+#endif // clang-format on
 }
 #endif // clang-format on
 
