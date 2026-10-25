@@ -253,6 +253,7 @@ extern "C" void fn_80157FB0(char* self) {
     if (*(s32*)(self + 0x280) == 0) {
         *(s32*)(self + 0x280) = -1;
     }
+    for (s32 once = 0; once < 1; ++once) {
     *(s32*)(self + 0x25c) = 0;
     *(s32*)(self + 0x260) = 0;
     *(s32*)(self + 0x264) = 0;
@@ -273,8 +274,12 @@ extern "C" void fn_80157FB0(char* self) {
     *(s32*)(self + 0x274) = 0;
     *(s32*)(self + 0x278) = 0;
     *(f32*)(self + 0x298) = 1.0f;
-    *(f32*)(self + 0x2ac) = *(f32*)(self + 0x2b0) = *(f32*)(self + 0x2b4) = 0.0f;
-    *(f32*)(self + 0x3c) = *(f32*)(self + 0x40) = *(f32*)(self + 0x44) = 0.0f;
+    *(f32*)(self + 0x2b4) = 0.0f;
+    *(f32*)(self + 0x2b0) = 0.0f;
+    *(f32*)(self + 0x2ac) = 0.0f;
+    *(f32*)(self + 0x44) = 0.0f;
+    *(f32*)(self + 0x40) = 0.0f;
+    *(f32*)(self + 0x3c) = 0.0f;
     rng = (char*)lbl_8053AAF8;
     *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
     frand = *(f32*)&(bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000);
@@ -288,6 +293,7 @@ extern "C" void fn_80157FB0(char* self) {
     *(u32*)(self + 0xb0) = 0x12205;
     if (*(u16*)(self + 0x94) == 2 || *(u32*)(self + 0x90) == 3) {
         *(u32*)(self + 0xb0) = 0x4000000;
+    }
     }
     *(s32*)(self + 0x290) = 0;
     if (*(u32*)(self + 0x90) == 2 && *(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
