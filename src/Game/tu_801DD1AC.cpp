@@ -60,7 +60,7 @@ static inline void onPlayerHit(u8* p) {
         ++p[0x33f];
         if (p[0x33f] >= lbl_8053F1C8) {
             f32 vx = *(f32*)(p + 0x3c);
-            f32 scale = lbl_8053F3C4;
+            f32 scale = 2.0f;
             *(f32*)(p + 0x3c) = vx * scale;
             *(f32*)(p + 0x40) *= scale;
             fn_801D9C58(p, 15);
