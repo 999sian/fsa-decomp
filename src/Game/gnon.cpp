@@ -4,6 +4,7 @@
 #include "std/math.h"
 extern u8 lbl_804C1BD0[];
 #include "JSystem/JMath/JMath.h"
+static inline f32 gnonRandom(JMARandFast* random) { return random->get_ufloat_1(); }
 extern u32 lbl_804C1BC0[];
 extern "C" u8 fn_8023F264(s32);
 extern "C" void* fn_8023E724(s32);
@@ -28,7 +29,8 @@ void fn_80196E00(void) {
 	p[0xdc] |= 0x10;
 }
 
-
+void fn_80196E14(void) {
+}
 
 }
 
@@ -283,11 +285,13 @@ extern "C" void fn_80192BD8(char* this_) {
 extern "C" void fn_80192BD8(char* this_);
 extern "C" void fn_80196020(char* this_, s32 idx) {
     char* self = this_;
-    if (idx < 0) {
+    s32 i = idx;
+    if (i < 0) {
         return;
     }
     if (*(s32*)(self + 0x268) < 0) {
         u8* h;
+        char* base;
         h = *(u8**)(self + 0x328);
         if (h != 0) {
             *(u32*)(h + 0xf4) |= 1;
@@ -300,32 +304,33 @@ extern "C" void fn_80196020(char* this_, s32 idx) {
             *(s32*)(h + 0x24) = 1;
             *(u8**)(self + 0x32c) = 0;
         }
+        base = self + 8;
         h = *(u8**)(self + 0x330);
         if (h != 0) {
             *(u32*)(h + 0xf4) |= 1;
             *(s32*)(h + 0x24) = 1;
-            *(u8**)(self + 0x330) = 0;
+            *(u8**)(base + 0x328) = 0;
         }
         h = *(u8**)(self + 0x334);
         if (h != 0) {
             *(u32*)(h + 0xf4) |= 1;
             *(s32*)(h + 0x24) = 1;
-            *(u8**)(self + 0x334) = 0;
+            *(u8**)(base + 0x32c) = 0;
         }
         h = *(u8**)(self + 0x338);
         if (h != 0) {
             *(u32*)(h + 0xf4) |= 1;
             *(s32*)(h + 0x24) = 1;
-            *(u8**)(self + 0x338) = 0;
+            *(u8**)(base + 0x330) = 0;
         }
-        *(s32*)(self + 0x328) = fn_8013CC50(*(u32*)(self + 4), fn_8023E724(idx), 0x2a6, 0, 0, 0, 0, 1, lbl_8053E298);
-        *(s32*)(self + 0x32c) = fn_8013CC50(*(u32*)(self + 4), fn_8023E724(idx), 0x2a7, 0, 0, 0, 0, 1, lbl_8053E298);
+        *(s32*)(self + 0x328) = fn_8013CC50(*(u32*)(self + 4), fn_8023E724(i), 0x2a6, 0, 0, 0, 0, 1, lbl_8053E298);
+        *(s32*)(self + 0x32c) = fn_8013CC50(*(u32*)(self + 4), fn_8023E724(i), 0x2a7, 0, 0, 0, 0, 1, lbl_8053E298);
     }
-    if (fn_8022F3DC(idx) >= 0) {
-        idx = fn_8022F3DC(idx);
+    if (fn_8022F3DC(i) >= 0) {
+        i = fn_8022F3DC(i);
     }
-    fn_8022CA6C(idx, 5, 0);
-    if (fn_802317F0(idx, lbl_804C1BC0[idx], fn_8023E724(idx), lbl_804C1BD0 + idx * 12, 6)) {
+    fn_8022CA6C(i, 5, 0);
+    if (fn_802317F0(i, lbl_804C1BC0[i], fn_8023E724(i), lbl_804C1BD0 + i * 12, 6)) {
         *(f32*)(self + 0x2a8) = lbl_8053E298;
         *(s32*)(self + 0x234) = 100;
         *(s32*)(self + 0x230) = 0x22;
@@ -334,13 +339,10 @@ extern "C" void fn_80196020(char* this_, s32 idx) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80196208(char* this_, s32 mode) {
     s32 best = -1;
     s32 i;
-    union {
-        f32 f;
-        u32 s;
-    } out;
     *(s32*)(this_ + 0x2fc) = -1;
     for (i = 0; i < 4; i++) {
         if (!fn_8023F264(i)) continue;
@@ -350,24 +352,21 @@ extern "C" void fn_80196208(char* this_, s32 mode) {
         if (fn_8022DCD8(i)) continue;
         if ((mode == 0 && fn_80237774(i) >= best) || (mode == 1 && fn_80236228(i) >= best)) {
             if ((mode == 0 && best == fn_80237774(i)) || (mode == 1 && best == fn_80236228(i))) {
-                u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-                *seed = *seed * 0x19660d + 0x3c6ef35f;
-                out.s = (*seed >> 9) | 0x3f800000;
-                if (out.f - lbl_8053E298 < lbl_8053E284) continue;
-                if (mode == 0) best = fn_80237774(i);
-                if (mode == 1) best = fn_80236228(i);
-                {
-                    f32 dx = ((f32*)fn_8023E724(i))[0] - *(f32*)(this_ + 0xc);
-                    f32 dy = ((f32*)fn_8023E724(i))[1] - *(f32*)(this_ + 0x10);
-                    f32 d = std::sqrtf(dx * dx + dy * dy);
-                    *(f32*)(this_ + 0x2f4) = d;
-                    *(s16*)(this_ + 0x304) = (s16)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053E360);
-                }
-                *(s32*)(this_ + 0x2fc) = i;
+                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.5f) continue;
             }
+            if (mode == 0) best = fn_80237774(i);
+            if (mode == 1) best = fn_80236228(i);
+            f32 dx = ((f32*)fn_8023E724(i))[0] - *(f32*)(this_ + 0xc);
+            f32 dy = ((f32*)fn_8023E724(i))[1] - *(f32*)(this_ + 0x10);
+            f32 d = std::sqrtf(dx * dx + dy * dy);
+            *(f32*)(this_ + 0x2f4) = d;
+            f32 angle = JMath::atanTable_.atan2_(dx, dy);
+            angle *= 10430.3779296875f;
+            *(s16*)(this_ + 0x304) = (s16)angle;
+            *(s32*)(this_ + 0x2fc) = i;
         }
     }
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
