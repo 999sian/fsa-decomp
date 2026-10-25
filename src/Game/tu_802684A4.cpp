@@ -61,22 +61,6 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
     return in;
 }
 
-inline bool pointInRect(const Vec2f& p, const HitRect* r) {
-    bool in = false;
-    if (p.x >= r->x0 && p.y >= r->y0 && p.x < r->x1 && p.y < r->y1) {
-        in = true;
-    }
-    return in;
-}
-
-inline bool pointInRect(const f32& x, const f32& y, const HitRect* r) {
-    bool in = false;
-    if (x >= r->x0 && y >= r->y0 && x < r->x1 && y < r->y1) {
-        in = true;
-    }
-    return in;
-}
-
 extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     for (s32 i = 0; i < 80; i++) {
         if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
@@ -330,13 +314,7 @@ extern "C" void fn_8026E68C(u8* p, u16 key) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
             u8* base = fn_802D6A9C();
             HitRect* r = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-            bool in = false;
-            if (pos.x >= r->x0) {
-                if (pos.y >= r->y0 && pos.x < r->x1 && pos.y < r->y1) {
-                    in = true;
-                }
-            }
-            if (!in) {
+            if (!rectContains(*r, &pos)) {
                 break;
             }
             u16 t = fn_802265FC(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4));
@@ -354,13 +332,7 @@ extern "C" void fn_8026E68C(u8* p, u16 key) {
                     s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
                     u8* base = fn_802D6A9C();
                     HitRect* r = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-                    bool in = false;
-                    if (pos.x >= r->x0) {
-                        if (pos.y >= r->y0 && pos.x < r->x1 && pos.y < r->y1) {
-                            in = true;
-                        }
-                    }
-                    if (!in) {
+                    if (!rectContains(*r, &pos)) {
                         return;
                     }
                     u16 t = fn_802265FC(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4));
