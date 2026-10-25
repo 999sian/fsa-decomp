@@ -119,18 +119,6 @@ extern "C" const f32 lbl_80542EDC;
 extern "C" const f32 lbl_80542F10;
 extern "C" const f32 lbl_80542F14;
 extern "C" const f32 lbl_80542F18;
-
-// Game RNG at lbl_8053AAF8+0xb4 (JMath::TRandom_fast_ step), as a float in [0, 1).
-inline f32 t374RandF() {
-    u8* rng = (u8*)lbl_8053AAF8;
-    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-    union {
-        u32 i;
-        f32 f;
-    } bits;
-    bits.i = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-    return bits.f - lbl_80542ED8;
-}
 extern "C" void fn_803754E8(Actor* this_) {
     s32 mask;
     u8* p = (u8*)this_;
