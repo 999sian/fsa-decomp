@@ -1,5 +1,32 @@
 
 
+extern "C" const float lbl_8053FDD8;
+extern "C" const float lbl_8053FDDC;
+extern "C" void* fn_8013C824();
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+extern int __float_epsilon[];
+extern "C" void fn_8013CB44(void*, void*, void*, void*, int);
+
+static inline void approachTimed(float* value, float target, float frames) {
+    if (frames < *(float*)__float_epsilon) {
+        *value = target;
+    } else {
+        *value += (lbl_8053FDD8 / frames) * (target - *value);
+    }
+}
+
+static inline void setEmitterScale(void* emitter, float scale) {
+    if (emitter) {
+        char* p = (char*)emitter;
+        *(float*)(p + 0x98) = scale;
+        *(float*)(p + 0x9c) = scale;
+        *(float*)(p + 0xa0) = scale;
+        *(float*)(p + 0xb0) = scale;
+        *(float*)(p + 0xb4) = scale;
+    }
+}
+
+
 extern "C" void fn_8021F914(int* p, int v) {
     p[1] = 0;
     p[0] = v;
@@ -99,24 +126,3 @@ extern "C" void fn_8021FB44(char* p) {
 }
 
 void fn_8021FB94(void) {}
-extern int __float_epsilon[];
-extern "C" void fn_8013CB44(void*, void*, void*, void*, int);
-
-static inline void approachTimed(float* value, float target, float frames) {
-    if (frames < *(float*)__float_epsilon) {
-        *value = target;
-    } else {
-        *value += (lbl_8053FDD8 / frames) * (target - *value);
-    }
-}
-
-static inline void setEmitterScale(void* emitter, float scale) {
-    if (emitter) {
-        char* p = (char*)emitter;
-        *(float*)(p + 0x98) = scale;
-        *(float*)(p + 0x9c) = scale;
-        *(float*)(p + 0xa0) = scale;
-        *(float*)(p + 0xb0) = scale;
-        *(float*)(p + 0xb4) = scale;
-    }
-}
