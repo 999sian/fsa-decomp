@@ -727,14 +727,8 @@ extern "C" void fn_8040F16C(u8* self) {
 }
 
 struct J2DGrafContext;
-enum J2DRotateAxis { J2DROTATE_Z = 'z' };
-struct J2DPane {
-	void rotate(f32, f32, J2DRotateAxis, f32);
-};
-struct J2DScreen {
-	u8 pad[0x100];
-	u8 b100;
-};
+#include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/J2D/J2DScreen.h"
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
 extern "C" void fn_8037AA7C();
 extern "C" void fn_8013B490(void*);
