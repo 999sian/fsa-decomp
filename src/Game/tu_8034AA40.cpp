@@ -262,7 +262,6 @@ extern "C" void fn_8034C358(void) {
     }
 }
 
-#pragma opt_propagation off
 extern "C" void fn_8034C464(Actor* self) {
     u8* p = (u8*)self;
     Vec d;
