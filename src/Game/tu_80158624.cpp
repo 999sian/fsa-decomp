@@ -211,11 +211,6 @@ extern "C" void GXSetCullMode(s32 mode);
 extern "C" void GXBegin(s32 prim, s32 fmt, s32 nverts);
 #pragma opt_propagation off
 extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
-    f32 s0;
-    f32 s1;
-    f32 x;
-    f32 y;
-    f32 z;
     if (kind >= 8) {
         return;
     }
@@ -223,11 +218,11 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
         if (*(u32*)(p + 0x4) == 0xFFFFFF00) {
             return;
         }
-        fn_8013B438(lbl_8053AB10);
-        GXClearVtxDesc();
-        GXSetVtxDesc(9, 1);
-        GXSetVtxDesc(0xd, 1);
     }
+    fn_8013B438(lbl_8053AB10);
+    GXClearVtxDesc();
+    GXSetVtxDesc(9, 1);
+    GXSetVtxDesc(0xd, 1);
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
     GXSetVtxAttrFmt(0, 0xd, 1, 4, 0);
     GXSetChanCtrl(4, 0, 0, 0, 0, 0, 2);
@@ -264,19 +259,44 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
     GXSetCullMode(0);
     load__10JUTTextureF11_GXTexMapID(*(char**)(p + 0x8), 0);
     GXBegin(0x80, 0, 4);
-    x = pos[0];
-    y = pos[1];
-    z = pos[2];
-    s1 = 0.0f;
+    volatile f32* fifo = (volatile f32*)0xCC008000;
+    f32 s0;
+    f32 right;
+    f32 s1;
+    f32 left;
+    f32 z;
+    f32 y;
+    f32 front;
+    f32 x;
     s0 = 1.0f;
-    GXPosition3f32(x - size, y, z + size);
-    GXTexCoord2f32(s1, s1);
-    GXPosition3f32(x + size, y, z + size);
-    GXTexCoord2f32(s0, s1);
-    GXPosition3f32(x + size, y, z - size);
-    GXTexCoord2f32(s0, s0);
-    GXPosition3f32(x - size, y, z - size);
-    GXTexCoord2f32(s1, s0);
+    s1 = 0.0f;
+    x = pos[0];
+    z = pos[2];
+    left = x - size;
+    y = pos[1];
+    front = z + size;
+    right = x + size;
+    *fifo = left;
+    *fifo = y;
+    *fifo = front;
+    *fifo = s1;
+    *fifo = s1;
+    z -= size;
+    *fifo = right;
+    *fifo = y;
+    *fifo = front;
+    *fifo = s0;
+    *fifo = s1;
+    *fifo = right;
+    *fifo = y;
+    *fifo = z;
+    *fifo = s0;
+    *fifo = s0;
+    *fifo = left;
+    *fifo = y;
+    *fifo = z;
+    *fifo = s1;
+    *fifo = s0;
 }
 #pragma opt_propagation reset
 extern "C" char lbl_804BFB60[];
