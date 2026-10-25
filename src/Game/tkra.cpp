@@ -90,6 +90,8 @@ inline u8 tkraRoomMode(char* p) {
 }
 
 struct TkraV2 { f32 x, y; };
+extern "C" void fn_802EB90C(char* p) {}
+
 extern "C" void fn_802EBDCC(char* this_) {
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xff;
     *(s32*)(this_ + 0x238) = (*(u32*)(this_ + 0x90) >> 8) & 0xf;
