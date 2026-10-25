@@ -43,6 +43,26 @@ extern "C" void fn_80357E48(void)
 {
 }
 
+static inline bool actorsOverlap(Actor* a, Actor* b)
+{
+    if (b != NULL) {
+        f32 boxA[4];
+        f32 boxB[4];
+        fn_801F31C4(a, boxA);
+        fn_801F31C4(b, boxB);
+        const f32* __restrict p = boxA;
+        f32 x0 = p[0], y0 = p[1], x1 = p[2], y1 = p[3];
+        if (x0 <= boxB[0]) x0 = boxB[0];
+        if (y0 <= boxB[1]) y0 = boxB[1];
+        if (x1 >= boxB[2]) x1 = boxB[2];
+        if (y1 >= boxB[3]) y1 = boxB[3];
+        bool overlap = false;
+        if (x1 >= x0 && y1 >= y0) overlap = true;
+        return overlap;
+    }
+    return false;
+}
+
 extern "C" void fn_80357E4C(Actor* self)
 {
     s32 hit = -1;
@@ -60,18 +80,18 @@ extern "C" void fn_80357E4C(Actor* self)
                     fn_801F31C4(self, boxA);
                     fn_801F31C4(other, boxB);
                     f32 x0 = boxA[0];
+                    f32 y0 = boxA[1];
+                    f32 x1 = boxA[2];
+                    f32 y1 = boxA[3];
                     if (x0 <= boxB[0]) {
                         x0 = boxB[0];
                     }
-                    f32 y0 = boxA[1];
                     if (y0 <= boxB[1]) {
                         y0 = boxB[1];
                     }
-                    f32 x1 = boxA[2];
                     if (x1 >= boxB[2]) {
                         x1 = boxB[2];
                     }
-                    f32 y1 = boxA[3];
                     if (y1 >= boxB[3]) {
                         y1 = boxB[3];
                     }
@@ -95,11 +115,7 @@ extern "C" void fn_80357E4C(Actor* self)
     case 2:
     case 3: {
         Vec saved = self->field_0C;
-        if (state == 3) {
-            self->field_0C.y -= 40.0f;
-        } else if (state == 2) {
-            self->field_0C.x -= 40.0f;
-        }
+        switch (state) { case 2: self->field_0C.x -= 40.0f; break; case 3: self->field_0C.y -= 40.0f; break; }
         for (s32 pass = 0; pass < 2; pass++) {
             hit = -1;
             s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
@@ -112,18 +128,18 @@ extern "C" void fn_80357E4C(Actor* self)
                         fn_801F31C4(self, boxA);
                         fn_801F31C4(other, boxB);
                         f32 x0 = boxA[0];
+                    f32 y0 = boxA[1];
+                    f32 x1 = boxA[2];
+                        f32 y1 = boxA[3];
                         if (x0 <= boxB[0]) {
                             x0 = boxB[0];
                         }
-                        f32 y0 = boxA[1];
                         if (y0 <= boxB[1]) {
                             y0 = boxB[1];
                         }
-                        f32 x1 = boxA[2];
                         if (x1 >= boxB[2]) {
                             x1 = boxB[2];
                         }
-                        f32 y1 = boxA[3];
                         if (y1 >= boxB[3]) {
                             y1 = boxB[3];
                         }
@@ -143,12 +159,7 @@ extern "C" void fn_80357E4C(Actor* self)
                 self->detach();
                 break;
             }
-            state = *(s32*)((u8*)self + 0x234);
-            if (state == 3) {
-                self->field_0C.y += 80.0f;
-            } else if (state >= 2) {
-                self->field_0C.x += 80.0f;
-            }
+            switch (*(s32*)((u8*)self + 0x234)) { case 2: self->field_0C.x += 80.0f; break; case 3: self->field_0C.y += 80.0f; break; }
         }
         self->field_0C = saved;
         break;
