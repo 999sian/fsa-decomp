@@ -79,12 +79,14 @@ extern "C" void fn_8020D8C0(unsigned char* p, float* box, unsigned int b, unsign
 extern "C" void fn_802108BC(int param_1) {
     float box[4];
     fn_801CE0A4();
-    float y = *(float *)(param_1 + 0x58);
-    float x = *(float *)(param_1 + 0x54);
-    box[3] = lbl_8053FAD8 * y;
-    box[1] = lbl_8053FAE4 * y;
-    box[0] = lbl_8053FAE0 * x;
-    box[2] = lbl_8053FADC * x;
+    float d = lbl_8053FAD8 * *(float *)(param_1 + 0x58);
+    float c = lbl_8053FAE4 * *(float *)(param_1 + 0x58);
+    float b2 = lbl_8053FADC * *(float *)(param_1 + 0x54);
+    float a0 = lbl_8053FAE0 * *(float *)(param_1 + 0x54);
+    box[3] = d;
+    box[1] = c;
+    box[0] = a0;
+    box[2] = b2;
     box[0] += *(float *)(param_1 + 0xc);
     box[2] += *(float *)(param_1 + 0xc);
     box[1] += *(float *)(param_1 + 0x10);
@@ -100,13 +102,6 @@ extern "C" int fn_801D3CE4(void* p, float a, float b);
 extern "C" void* fn_801D72D4(void* p);
 extern "C" void* lbl_804C3128[];
 extern "C" void fn_80210A30(char* p, float* out);
-static inline void setBox(float* out, float x, float y)
-{
-	out[0] = x * -16.0f;
-	out[1] = y * -24.0f;
-	out[2] = x * 16.0f;
-	out[3] = y * 8.0f;
-}
 static inline void getBox(char* p, float* out)
 {
 	float y = *(float*)(p + 0x58);
@@ -123,16 +118,16 @@ extern "C" void fn_80210990(char* p, int side, float* out)
 	getBox(p, out);
 	switch (side) {
 	case 0:
-		out[2] -= 8.0f * x;
+		out[2] = out[2] - x * 8.0f;
 		break;
 	case 1:
-		out[0] += 8.0f * x;
+		out[0] = out[0] + x * 8.0f;
 		break;
 	case 2:
-		out[3] -= 8.0f * y;
+		out[3] = out[3] - y * 8.0f;
 		break;
 	case 3:
-		out[1] += 8.0f * y;
+		out[1] = out[1] + y * 8.0f;
 		break;
 	}
 }
