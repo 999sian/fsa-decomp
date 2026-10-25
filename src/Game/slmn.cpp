@@ -420,6 +420,7 @@ extern "C" void fn_80208520(char* this_, f32* out, f32* step) {
     out[1] = y;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80208244(char* this_, s32 state) {
     f32 at[2];
     f32 step[2];
@@ -431,18 +432,29 @@ extern "C" void fn_80208244(char* this_, s32 state) {
         *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
         break;
     case 3: {
-        s32 dir;
-        u8 n;
-        Slmn* s;
         s32 i;
+        Slmn* s;
+        u8 n;
+        s32 dir;
         slmnCenter((Slmn*)this_, pos);
-        dir = slmnPickDir(this_, pos);
-        n = fn_801CD664(3) + 1;
-        *(u8*)(this_ + 0x34a) += n;
+        s32 player = fn_801D05F8(this_, pos, lbl_8053F8E0);
+        if (player < 0) {
+            dir = fn_801CD664(4);
+        } else {
+            u8 flag = FALSE;
+            if (lbl_8053AAF8->rnd.get_ufloat_1() < lbl_8053F8FC) flag = TRUE;
+            dir = fn_801D0020(this_, pos, player, flag);
+        }
+        {
+            u8 amount = fn_801CD664(3) + 1;
+            *(u8*)(this_ + 0x34a) += amount;
+            n = amount;
+        }
+        i = 0;
         s = (Slmn*)this_;
-        for (i = 0; i < 4; i++) {
-            if (!s->parts[i].inactive && !s->parts[i].dead) {
-                void* a = fn_801F666C(fn_801F856C(), s->parts[i].id);
+        for (; i < 4; i++, s = (Slmn*)((u8*)s + 0x24)) {
+            if (!s->parts[0].inactive && !s->parts[0].dead) {
+                void* a = fn_801F666C(fn_801F856C(), s->parts[0].id);
                 if (a != 0) {
                     fn_80209D20(a, dir, n);
                 }
@@ -451,13 +463,14 @@ extern "C" void fn_80208244(char* this_, s32 state) {
         break;
     }
     case 4: {
-        Slmn* s;
         s32 i;
+        Slmn* s;
         fn_80208520(this_, at, step);
+        i = 0;
         s = (Slmn*)this_;
-        for (i = 0; i < 4; i++) {
-            if (!s->parts[i].inactive && !s->parts[i].dead) {
-                void* a = fn_801F666C(fn_801F856C(), s->parts[i].id);
+        for (; i < 4; i++, s = (Slmn*)((u8*)s + 0x24)) {
+            if (!s->parts[0].inactive && !s->parts[0].dead) {
+                void* a = fn_801F666C(fn_801F856C(), s->parts[0].id);
                 if (a != 0) {
                     fn_80209CF4(a, at);
                 }
@@ -476,5 +489,5 @@ extern "C" void fn_80208244(char* this_, s32 state) {
     *(s32*)(this_ + 0x24c) = 0;
     *(s32*)(this_ + 0x248) = state;
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
