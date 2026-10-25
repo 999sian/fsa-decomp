@@ -31,7 +31,7 @@ extern SwingGame* lbl_8053AAF8;
 s32 fn_801CD664(s32 range);
 }
 
-static inline void Swing_Choose(SwingRecord* r) {
+static inline void Swing_Choose(SwingRecord* r, s32 zero = 0) {
     if (!r->mLocked) {
         if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.9f) {
             r->mState = 1;
@@ -141,10 +141,10 @@ extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
                             result = true;
                         }
                     } else {
-                        int zero = 0;
+                        bool zero = false;
                         r->mAngle = zero;
                         Swing_Choose(r);
-                        r->mTimer6 = 0;
+                        r->mTimer6 = zero;
                     }
                 }
             } else if (r->mTimer6 == 0) {
