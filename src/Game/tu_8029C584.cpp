@@ -18,9 +18,7 @@ struct TVec3f {
     float x, y, z;
 };
 
-struct Vec {
-    float x, y, z;
-};
+#include "JSystem/JGeometry/Vec.h"
 
 struct Vec2 {
     float x, y;
@@ -214,9 +212,8 @@ extern "C" void fn_8029C9AC(void* this_) {
         }
         *(int*)(p + 0x238) = 0;
     } else {
-        float* src = fn_8023E724(*(int*)(p + 0x90) & 3);
-        *(Vec2*)(p + 0xc) = *(Vec2*)src;
-        *(float*)(p + 0x14) = src[2];
+        TVec3f* src = (TVec3f*)fn_8023E724(*(int*)(p + 0x90) & 3);
+        *(TVec3f*)(p + 0xc) = *src;
         *(float*)(p + 0x14) += lbl_8054075C;
         if (*(int*)(p + 0x234) > 0) {
             char* base;
@@ -396,17 +393,18 @@ extern "C" void fn_8029CFF8(void* this_) {
     float* p;
     int j;
     int count;
-    int i;
     int n;
+    int i;
     void* a;
+    Vec v;
     if (fn_8022F514(*(int*)((char*)this_ + 0x90) & 3)) {
         *(unsigned char*)((char*)this_ + 0x11c) = 0;
         return;
     }
     fn_8022CF08(*(int*)((char*)this_ + 0x90) & 3);
     p = fn_8023E724(*(int*)((char*)this_ + 0x90) & 3);
-    *(Vec2*)((char*)this_ + 0xc) = *(Vec2*)p;
-    *(float*)((char*)this_ + 0x14) = p[2];
+    v = *(Vec*)p;
+    *(Vec*)((char*)this_ + 0xc) = v;
     *(float*)((char*)this_ + 0x14) += lbl_8054075C;
     *(int*)((char*)this_ + 0x108) = 0;
     *(int*)((char*)this_ + 0x234) = 1;
