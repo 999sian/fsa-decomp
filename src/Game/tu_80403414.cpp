@@ -3,53 +3,11 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 
-// ---- per-player setting accessors (two banks, picked by lbl_8053AAF8->0x7f) ----
-extern char* lbl_8053AAF8;
-struct T34Settings {
-    u8 pad0[0x68];
-    s32 m68[4];
-    s32 m78[4];
-    s32 m88[4];
-    s32 m98[4];
-    s32 mA8[4];
-    s32 mB8[4];
-};
-extern T34Settings lbl_80529DEC;
-
-extern "C" s32 fn_80403414(s32 i) {
-    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
-        return lbl_80529DEC.m68[i];
-    }
-    return lbl_80529DEC.m98[i];
-}
-
-extern "C" void fn_80403454(s32 i, s32 v) {
-    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
-        lbl_80529DEC.m88[i] = v;
-    } else {
-        lbl_80529DEC.mB8[i] = v;
-    }
-}
-
-extern "C" void fn_80403494(s32 i, s32 v) {
-    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
-        lbl_80529DEC.m78[i] = v;
-    } else {
-        lbl_80529DEC.mA8[i] = v;
-    }
-}
-
-extern "C" void fn_804034D4(s32 i, s32 v) {
-    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
-        lbl_80529DEC.m68[i] = v;
-    } else {
-        lbl_80529DEC.m98[i] = v;
-    }
-}
-
-// ---- fn_80403680: reset ----
 struct T34Vec { f32 x, y, z; };
 struct T34Mgr {
+    T34Mgr();
+    ~T34Mgr();
+
     u8 pad0[4];
     s32 m4[24];
     s32 m64;
@@ -112,6 +70,45 @@ struct T34Mgr {
     u8 m253;
     u8 m254;
 };
+
+// The TU's global manager; constructed and registered by this TU's __sinit.
+T34Mgr lbl_80529DEC;
+
+// ---- per-player setting accessors (two banks, picked by lbl_8053AAF8->0x7f) ----
+extern char* lbl_8053AAF8;
+
+extern "C" s32 fn_80403414(s32 i) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        return lbl_80529DEC.m68[i];
+    }
+    return lbl_80529DEC.m98[i];
+}
+
+extern "C" void fn_80403454(s32 i, s32 v) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        lbl_80529DEC.m88[i] = v;
+    } else {
+        lbl_80529DEC.mB8[i] = v;
+    }
+}
+
+extern "C" void fn_80403494(s32 i, s32 v) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        lbl_80529DEC.m78[i] = v;
+    } else {
+        lbl_80529DEC.mA8[i] = v;
+    }
+}
+
+extern "C" void fn_804034D4(s32 i, s32 v) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        lbl_80529DEC.m68[i] = v;
+    } else {
+        lbl_80529DEC.m98[i] = v;
+    }
+}
+
+// ---- fn_80403680: reset ----
 
 struct T34SaveSlot { u8 pad[0x10]; s32 cur; u8 pad1[0x28 - 0x14]; u32 flags; u8 pad2[0xc8 - 0x2c]; };
 extern T34SaveSlot lbl_8050EC80[];
