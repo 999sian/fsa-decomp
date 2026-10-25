@@ -108,7 +108,8 @@ extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* 
     u8 res = fn_800FE090(ring, &p, &target);
     f32 dx = target.x - pos->x;
     f32 dy = target.y - pos->y;
-    ang = (s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053C0D0);
+    f32 rad = JMath::atanTable_.atan2_(dx, dy);
+    ang = (s32)(rad * lbl_8053C0D0);
     s32 out;
     if (id != NULL) {
         s32 nodeId = ring->mNodes[ring->mCur]->mId;
@@ -124,16 +125,16 @@ extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* 
     } else {
         s16 diff;
         s32 cur;
-        cur = (s32)(JMath::atanTable_.atan2_(vel[0], vel[1]) * lbl_8053C0D0);
+        f32 rad2 = JMath::atanTable_.atan2_(vel[0], vel[1]);
+        cur = (s32)(rad2 * lbl_8053C0D0);
         diff = ang - cur;
         if (diff >= 0) {
             if (diff > (s16)maxTurn) {
                 ang = cur + maxTurn;
+            } else {
             }
-        } else {
-            if (diff < -(s16)maxTurn) {
-                ang = cur - maxTurn;
-            }
+        } else if (diff < -(s16)maxTurn) {
+            ang = cur - maxTurn;
         }
         out = ang;
     }
@@ -265,8 +266,8 @@ extern "C" BOOL fn_800FD5E8(RailRing* ring, u8 i) {
     u8 size = ring->mSize;
     u32 mode = ((RailNode**)ring)[size]->mFlags & 3;
     if (i == 0xff) {
-        s32 n;
         u8 cur = ring->mCur;
+        s32 n;
         if (ring->mDir == 0) {
             n = cur + 1;
         } else {
@@ -285,13 +286,13 @@ extern "C" BOOL fn_800FD5E8(RailRing* ring, u8 i) {
                 return FALSE;
             }
         }
-        if ((cur == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[cur])->mId != ((u8)n == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[(u8)n])->mId) {
+        if (((u8)n == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[(u8)n])->mId != (cur == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[cur])->mId) {
             return TRUE;
         }
         return FALSE;
     }
     s32 next = i + 1;
-    s16 prev = i - 1;
+    s32 prev = i - 1;
     if (next == size) {
         if (mode == 1) {
             next = 0;
@@ -475,30 +476,37 @@ extern "C" u8 fn_800FD894(RailRing* ring, s32 id, u8* out, s32 max) {
 }
 
 extern "C" RailVec fn_800FD998(RailRing* ring, RailVec* pos, s32 X, s32 n, u8 i) {
+    RailVec d;
+    RailVec prev;
+    RailVec mid;
+    RailVec nodeCopy;
+    RailVec v;
     RailVec node;
-    if (i == 0xff) {
-        node = ring->mNodes[ring->mCur]->mPos;
-    } else {
-        node = ring->mNodes[i]->mPos;
-    }
-    RailVec mid = (node + *pos) * 0.5f;
-    RailVec d = node;
-    d -= *pos;
+    if (i == 0xff) node = ring->mNodes[ring->mCur]->mPos;
+    else node = ring->mNodes[i]->mPos;
+    nodeCopy = node;
+    mid.add(*pos, nodeCopy);
+    mid.scale(0.5f);
+    d.sub(nodeCopy, *pos);
     f32 half = PSVECMag(&d) * 0.5f;
-    if (n == 0) {
+    if (n == 0) return d;
+    if (X == 0) {
+        d.zero();
         return d;
     }
-    if (X == 0) {
-        RailVec zero(0.0f, 0.0f, 0.0f);
-        return zero;
-    }
     u16 step = 0x8000 / n;
-    RailVec v = *pos;
-    v -= mid;
+    v.sub(*pos, mid);
     v.normalize();
-    f32 cosX = JMath::sincosTable_.mTable[(u16)(X * step) >> 5].second;
-    f32 cosX1 = JMath::sincosTable_.mTable[(u16)((X - 1) * step) >> 5].second;
-    return v * (half * cosX) - v * (half * cosX1);
+    f32 vx = v.x;
+    f32 vy = v.y;
+    f32 vz = v.z;
+    d.set(vx, vy, vz);
+    f32 scale = half * JMath::sincosTable_.mTable[(u16)(X * step) >> 5].second;
+    d.scale(scale);
+    prev.set(vx, vy, vz);
+    f32 oldScale = half * JMath::sincosTable_.mTable[(u16)((X - 1) * step) >> 5].second;
+    prev.scale(oldScale);
+    return d - prev;
 }
 
 extern "C" RailVec fn_800FDC70(RailRing* ring, RailVec* pos, s32 n, u8 i) {
