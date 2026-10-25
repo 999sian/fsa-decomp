@@ -375,6 +375,7 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, 
 u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* heap, int compression, u8** pBuf)
 {
     u32 result;
+    u32 expandSize;
     u8* buf;
     u32 size = (length + 0x1f) & ~0x1f;
 
