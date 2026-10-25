@@ -118,6 +118,9 @@ struct Tu802F5040Tbl {
 extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF798(void* mgr);
 extern "C" void fn_8013B438(void* mgr);
+extern "C" void* fn_802D9C4C(void*);
+extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
+extern "C" f32 lbl_80541560;
 extern "C" void fn_80432750(void* obj, u32 flag, f32 a, f32 b, f32 c, f32 d);
 extern "C" void fn_80432638(void* obj);
 extern "C" u8 fn_80301D30(s32 i);
