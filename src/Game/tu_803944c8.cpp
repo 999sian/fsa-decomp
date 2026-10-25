@@ -19,6 +19,13 @@ extern void* lbl_8053AD78;
 extern u8 lbl_8050EC80[];
 extern f32 lbl_805431E4;
 extern "C" const char lbl_80543298[];
+extern void* lbl_8053AD30;
+extern void* lbl_8053AF80;
+extern "C" s32 fn_80309A9C(void* p, s32 a, s32 b);
+extern "C" s32 fn_80309D48(void* p, s32 a, s32 b);
+extern "C" s32 fn_8030AAF4(s32 a);
+extern "C" void fn_803037D4(s32 i, s32 v);
+extern "C" void fn_80458880(void* m, s32 p, s32 v);
 extern "C" void fn_803944C8(void* this_, s32 a, u8 b, u8 c) {
     *(u8*)((char*)this_ + 0x3b1) = 1;
     *(s32*)((char*)lbl_8053AD78 + 0x48) = a;
@@ -1004,6 +1011,99 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
     p->slot++;
 }
 
+extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
+    MsgLayout* l = p->layout;
+    l->m3ab = 0;
+    char* src = (char*)&l->m3ab;
+    if (p->layout->m1aa == 0) {
+        char nl[2];
+        nl[1] = 0;
+        if (ch == 10) {
+            p->cur++;
+            if (p->cur <= p->lineTab[p->layout->m15c] + 1) {
+                return;
+            }
+            p->m2d6 = 1;
+            nl[0] = (char)ch;
+            strcat(p->str2c0, nl);
+            strcat(p->str2c4, nl);
+            p->m2d0++;
+        }
+        if (p->cur <= p->lineTab[p->layout->m15c]) {
+            return;
+        }
+        if (p->m2d6 != 0) {
+            if (!p->testBit(p->cur)) {
+                if (!(p->layout->m16c != 0 && p->testBit(p->cur))) {
+                    f32 fa;
+                    f32 fb;
+                    if ((p->layout->font->flags & 0x40) == 0) {
+                        fa = p->layout->baseE8;
+                        fb = p->posA[p->cur];
+                    } else {
+                        fa = p->layout->baseF0;
+                        fb = p->posA[p->cur] + (p->posB[p->cur] - lbl_805431E8);
+                    }
+                    s32 w = (s32)((fa - fb) * lbl_805431E4 + lbl_805431E4);
+                    if (w > 0) {
+                        snprintf(lbl_8050E518, 0xf, lbl_80543298, w);
+                        strcat(p->str2c0, lbl_8050E518);
+                        strcat(p->str2c4, lbl_8050E518);
+                        p->m2d0 += strlen(lbl_8050E518);
+                    }
+                }
+                p->m2d6 = 0;
+            }
+        }
+        if (ch == 10) {
+            return;
+        }
+        char c1 = (char)(ch >> 8);
+        s32 has2 = c1 != 0;
+        if (has2) {
+            ch &= 0xff;
+            p->m2d0++;
+            src[0] = c1;
+        }
+        p->m2d0++;
+        src[has2] = (char)ch;
+        s32 n = p->m2d0 - (has2 + 1);
+        if (n != p->layout->m170) {
+            p->layout->m170 = n;
+        }
+        strcat(p->str2c0, src);
+        strcat(p->str2c4, src);
+        return;
+    }
+    if (ch == 10) {
+        p->cur++;
+        if (p->cur <= p->lineTab[p->layout->m15c] + 1) {
+            return;
+        }
+        p->str2c0[p->m2d0++] = -1;
+        p->str2c0[p->m2d0++] = -16;
+        p->m2d6 = 1;
+        return;
+    }
+    if (p->cur <= p->lineTab[p->layout->m15c]) {
+        return;
+    }
+    if (p->m2d6 != 0) {
+        if (!p->testBit(p->cur)) {
+            if (!(p->layout->m16c != 0 && p->testBit(p->cur))) {
+                s32 d = -p->lineTab[p->cur + 0x2b];
+                s32 i = d + 0x1c;
+                if (i > 0 && i < 0x1c) {
+                    p->str2c0[p->m2d0++] = -1;
+                    p->str2c0[p->m2d0++] = (char)(d - 0x14);
+                }
+            }
+        }
+        p->m2d6 = 0;
+    }
+    msgPutWide(p, ch);
+}
+
 extern "C" void fn_8039934C(MsgMeasure* m, s32 a, s32 b) {
     f32 ratio = m->fontW / (f32)m->font->getCellWidth();
     if (a > 0) {
@@ -1345,8 +1445,8 @@ extern "C" void fn_8039A540(void* thisObj) {
 
 extern "C" void fn_8039A638(MsgProc* p, s16 n) {
     char buf[8];
-    u8 bVar1;
-    u8 bVar2;
+    s32 bVar1;
+    s32 bVar2;
     u8* e;
 
     buf[2] = 0;
@@ -1358,9 +1458,9 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
 
     if (n == 0) {
         if (p->m2d6 != 0) {
-            if (!p->testBit(p->cur)) {
+            if (p->testBit(p->cur) == FALSE) {
                 MsgLayout* l = p->layout;
-                if (l->m16c == 0 || !p->testBit(p->cur)) {
+                if (l->m16c == 0 || p->testBit(p->cur) == FALSE) {
                     MsgFontInfo* font = l->font;
                     f32 fVar3;
                     f32 fVar4;
@@ -1387,8 +1487,9 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
         if (bVar1 > 99) {
             bVar1 = 99;
         }
-        if (bVar1 / 10 != 0) {
-            buf[0] = bVar1 / 10 + '0';
+        s32 q = bVar1 / 10;
+        if (q != 0) {
+            buf[0] = q + '0';
             msgAppendChar(p, buf);
         }
         buf[0] = bVar1 % 10 + '0';
@@ -1400,7 +1501,8 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
         if (bVar2 > 99) {
             bVar2 = 99;
         }
-        buf[0] = bVar2 / 10 + '0';
+        s32 q2 = bVar2 / 10;
+        buf[0] = q2 + '0';
         msgAppendChar(p, buf);
         buf[0] = bVar2 % 10 + '0';
         msgAppendChar(p, buf);
@@ -1411,8 +1513,9 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
         if (bVar1 > 99) {
             bVar1 = 99;
         }
-        if (bVar1 / 10 != 0) {
-            msgPutWide(p, bVar1 / 10 + '0');
+        s32 q = bVar1 / 10;
+        if (q != 0) {
+            msgPutWide(p, q + '0');
         }
         msgPutWide(p, bVar1 % 10 + '0');
         p->str2c0[p->m2d0++] = 0x39;
@@ -1420,7 +1523,8 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
         if (bVar2 > 99) {
             bVar2 = 99;
         }
-        msgPutWide(p, bVar2 / 10 + '0');
+        s32 q2 = bVar2 / 10;
+        msgPutWide(p, q2 + '0');
         msgPutWide(p, bVar2 % 10 + '0');
         p->str2c0[p->m2d0++] = 0x3c;
         p->str2c0[p->m2d0++] = 0xa0;
