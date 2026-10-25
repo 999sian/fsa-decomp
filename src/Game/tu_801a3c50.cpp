@@ -169,7 +169,7 @@ extern "C" s32 fn_801A4754(void* this_, void* a4, void* a5);
 extern "C" s32 fn_801A4D1C(void* this_, void* a4, void* a5) {
     void* base = fn_801F856C();
     void* target = fn_801F666C(base, (u32)this_);
-    return fn_801A4754(target, a4, a5);
+    return fn_801A4754((u8*)target, a4, a5);
 }
 
 extern "C" u8* fn_802D6A9C(void);
