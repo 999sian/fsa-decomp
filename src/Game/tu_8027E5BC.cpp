@@ -2,6 +2,10 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
+static inline void applyPlayerGravity(f32* velocity, const f32 gravity, const f32 terminal) {
+    *velocity -= gravity;
+    if (*velocity < terminal) *velocity = terminal;
+}
 static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -z; v[1] = -y; }
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
@@ -1336,8 +1340,10 @@ void fn_80281E98(char* p) {
     if (U8(p, 0x3fc) != 0) {
         U8(p, 0x3fc)--;
     } else {
-        F32(p, 0x348) -= lbl_805403B8;
-        if (F32(p, 0x348) <= lbl_805403AC) {
+        f32 x = F32(p, 0x348);
+        x -= lbl_805403B8;
+        F32(p, 0x348) = x;
+        if (lbl_805403AC >= F32(p, 0x348)) {
             F32(p, 0x348) = lbl_805403AC;
         }
         if (F32(p, 0x344) > lbl_80540360) {
@@ -2003,21 +2009,22 @@ void fn_80283D2C(char* p) {
     if (U8(p, 0x440) != 0) {
         F32(p, 0x2c4) = F32(p, 0x8);
         F32(p, 0x2c8) = F32(p, 0xc);
-        F32(p, 0x2cc) = F32(p, (int)0x10);
+        F32(p, 0x2cc) = F32(p, 0x10);
     }
     if (S32(p, 0xcf4) != 0x24) {
         U8(p, 0xce8) = 0;
         if (U8(p, 0x43f) == 0) {
             if (fn_802486A0(p) != 4 && !Player_IsLinked(p)) {
-                register s32 id;
-                register s32 i = 0;
+                s32 found;
+                s32 id;
+                s32 i = 0;
                 id = S32(p, 0x4);
                 do {
-                    s32 found = fn_8022F3DC(i);
+                    found = fn_8022F3DC(i);
                     if (found == id) {
                         fn_802384BC(i);
                     }
-                    i += 1;
+                    i++;
                 } while (i < 4);
             }
             if ((u16)fn_8022461C(p + 0x8, S32(p, 0x3b4)) == 0xd) {
@@ -2160,10 +2167,15 @@ void fn_80284328(char* p) {
     F32(p, 0xc8c) = lbl_8054036C;
 }
 
+extern const f32 lbl_80540398;
+extern const f32 lbl_80540404;
+#pragma opt_propagation off
 void fn_8028434C(char* p) {
-    f32 d = lbl_80540404;
-    f32 c = lbl_80540398;
     VEC(p, 8).add(VEC(p, 0x344));
+    f32 d;
+    f32 c;
+    d = lbl_80540404;
+    c = lbl_80540398;
     F32(p, 0x34c) -= c;
     if (F32(p, 0x34c) < d) F32(p, 0x34c) = d;
     if (F32(p, 0x34c) < lbl_80540360 && F32(p, 0x10) <= lbl_80540360) {
@@ -2175,7 +2187,7 @@ void fn_8028434C(char* p) {
             fn_80251AEC(p, 12);
     }
 }
-
+#pragma opt_propagation reset
 void fn_80284430(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
