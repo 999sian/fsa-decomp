@@ -10,6 +10,8 @@ extern "C" s32 fn_8022F340(s32 p);
 extern "C" u8* sManager__8JUTVideo;
 extern "C" u8* lbl_8053AB10;
 extern "C" void fn_80441318(u8* param_1) {
+    u8* obj;
+    int v;
     s32 r = fn_80231A50();
     if (r < 0) {
         s32 n = *(s32*)(param_1 + 8);
@@ -22,12 +24,12 @@ extern "C" void fn_80441318(u8* param_1) {
         *(s32*)(param_1 + 4) = fn_8022F340(r);
         *(s32*)(param_1 + 8) = 0;
     }
-    s32 v = *(s32*)(param_1 + 4);
+    v = *(int*)(param_1 + 4);
     if (v >= 0) {
-        u8* mode = *(u8**)(*(u8**)sManager__8JUTVideo + 4);
-        u8* obj = *(u8**)(lbl_8053AB10 + 0x20);
+        u8* mode = *(u8**)(sManager__8JUTVideo + 4);
         u16 w = *(u16*)(mode + 4);
         u16 h = *(u16*)(mode + 6);
+        obj = *(u8**)(lbl_8053AB10 + 0x20);
         *(s32*)(obj + 0x22c) = v;
         *(s32*)(obj + 0x238) = (w - 0x16d) / 2;
         *(s32*)(obj + 0x23c) = (h - 0x105) / 2;
@@ -57,6 +59,97 @@ extern "C" void fn_80441444(u8* param_1) {
 }
 
 extern "C" void fn_8044148C(void) {
+}
+
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AD78;
+extern "C" u8 lbl_80529DEC[];
+extern "C" s32 lbl_8053A160;
+extern "C" u8 fn_802DCD0C(void);
+extern "C" s32 fn_8023DE58(s32 n);
+extern "C" s32 fn_80138A30(u8* p);
+extern "C" void __ptmf_scall(void* obj, s32 off);
+extern "C" u8 lbl_804B19BC[];
+extern "C" void fn_80441490(u8* param_1) {
+    u16 uVar2;
+    u16 uVar3;
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 0) {
+        s32 halfW;
+        s32 halfH;
+        s32 count = 0;
+        s32 i;
+        *(s32*)(param_1 + 4) = -1;
+        uVar2 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+        uVar3 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+        halfW = (int)(uVar2 - 0x16d) / 2;
+        halfH = (int)(uVar3 - 0x105) / 2;
+        if (*(s32*)(lbl_80529DEC + 0x1a8) >= 0 && *(s32*)(lbl_80529DEC + 0x1a8) < 4) {
+            if (fn_8023DE58(*(s32*)(lbl_80529DEC + 0x1a8)) >= 8) {
+                *(s32*)(param_1 + 4) = *(s32*)(lbl_80529DEC + 0x1a8);
+            }
+        } else if (*(s32*)(lbl_80529DEC + 0x1a8) == 4) {
+            for (i = 0; i < 4; i++) {
+                if ((*(u8*)(lbl_8053AAF8 + 0x82) & (u8)(1 << i)) != 0 && fn_8023DE58(i) >= 8) {
+                    count++;
+                }
+            }
+            if (count == fn_80138A30(lbl_8053AAF8)) {
+                *(s32*)(param_1 + 4) = 0;
+            }
+        }
+        if (*(s32*)(param_1 + 4) >= 0) {
+            u8* p = *(u8**)(lbl_8053AB10 + 0x20);
+            *(s32*)(p + 0x22c) = *(s32*)(param_1 + 4);
+            *(s32*)(p + 0x238) = halfW;
+            *(s32*)(p + 0x23c) = halfH;
+            *(s32*)(p + 0x240) = 0x16d;
+            *(s32*)(p + 0x244) = 0x105;
+            *(s32*)(p + 0x234) = 0;
+        }
+    } else if (*(u8*)(lbl_8053AD78 + 0xed) != 0) {
+        s32 halfW;
+        s32 halfH;
+        u8 flag = *(u8*)(lbl_8053AD78 + 0xee);
+        uVar2 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+        uVar3 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+        halfW = (int)(uVar2 - 0x16d) / 2;
+        *(s32*)(param_1 + 4) = *(s32*)(lbl_8053AD78 + 0x110);
+        halfH = (int)(uVar3 - 0x105) / 2;
+        if (*(s32*)(param_1 + 4) >= 0) {
+            u8* p = *(u8**)(lbl_8053AB10 + 0x20);
+            *(s32*)(p + 0x22c) = *(s32*)(param_1 + 4);
+            *(s32*)(p + 0x238) = halfW;
+            *(s32*)(p + 0x23c) = halfH;
+            *(s32*)(p + 0x240) = 0x16d;
+            *(s32*)(p + 0x244) = 0x105;
+            *(s32*)(p + 0x234) = flag;
+        }
+    } else {
+        if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) {
+            s32 halfW;
+            s32 halfH;
+            *(s32*)(param_1 + 4) = lbl_8053A160;
+            if (*(s32*)(param_1 + 4) >= 0) {
+                u8* p = *(u8**)(lbl_8053AB10 + 0x20);
+                uVar2 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+                uVar3 = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+                halfW = (int)(uVar2 - 0x16d) / 2;
+                halfH = (int)(uVar3 - 0x105) / 2;
+                *(s32*)(p + 0x22c) = *(s32*)(param_1 + 4);
+                *(s32*)(p + 0x238) = halfW;
+                *(s32*)(p + 0x23c) = halfH;
+                *(s32*)(p + 0x240) = 0x16d;
+                *(s32*)(p + 0x244) = 0x105;
+                *(s32*)(p + 0x234) = 0;
+            }
+        } else {
+            fn_802D6A9C();
+            if (fn_802DCD0C() == 1) {
+                param_1[0xe] = 0;
+            }
+            __ptmf_scall(param_1, param_1[0xe] * 0xc);
+        }
+    }
 }
 
 extern "C" void fn_8044172C(void) {
