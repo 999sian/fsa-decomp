@@ -22,7 +22,7 @@ extern "C" void fn_802F91AC(void*, f32*, u8*, u8*, f32);
 extern "C" u8 lbl_8046F940[];
 extern "C" f32 lbl_80541548;
 extern "C" const f32 lbl_8054154C;
-extern "C" f32 lbl_80541550;
+extern "C" const f32 lbl_80541550;
 #include "JSystem/JKernel/JKRDecomp.h"
 #include <dolphin/mtx.h>
 #include "JSystem/JMath/Inline.h"
