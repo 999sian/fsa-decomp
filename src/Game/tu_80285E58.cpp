@@ -248,7 +248,7 @@ extern "C" void fn_80286E10(u8* p) {
     if (fn_80230188(h)) {
         return;
     }
-    if (*(f32*)((u8*)fn_8023E724(h) + 0x8) <= lbl_80540410) {
+    if (!(*(f32*)((u8*)fn_8023E724(h) + 0x8) <= lbl_80540410)) {
         return;
     }
     if (fn_8023EA28(h)) {
