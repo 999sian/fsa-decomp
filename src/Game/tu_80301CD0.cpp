@@ -4,6 +4,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
 extern "C" u8 fn_8022F5B0(s32);
 extern "C" void fn_803085A4(s32,s32);
 
@@ -526,6 +527,58 @@ extern "C" void fn_8030275C(u8* in, s32 slot, u8 a0, u8 m0) {
         }
     }
 }
+
+#pragma opt_propagation off
+extern "C" void fn_80302C34(u8* __restrict p, s32 player, s32 index, s32 bits, u8 flag) {
+    u8* effect;
+    s32 off;
+    s32 x;
+    s32 y;
+    s32 id;
+    DrawRec rec;
+    f32 mtx[3][4];
+    f32 pos[3];
+    Slot_80301CD0* slot=(Slot_80301CD0*)p;
+    u8 b3=p[3];
+    x=slot->f2|((b3&1)<<8);
+    y=slot->f1;
+    if(x!=0x180 && y!=0xe0 && (effect=lbl_8053ACFC)[(u32)index]<17) {
+    if(x>=0x180) x|=-0x100;
+    if(y>=0xe0) y|=-0x100;
+    off=player*4;
+    id=slot->id|(slot->idHi<<8);
+    if(lbl_80506DC8[off+index]!=0) ((u8*)&rec.w10)[3]=0xa0;
+    if((((u8)bits >> index)&1)!=0) {
+        for(int i=0;i<16;i++) rec.ids[i]=7;
+    } else rec.ids[7]=index+12;
+    if(fn_80237060(index)>=2) rec.ids[10]=6;
+    f32 fy;
+    f32 fx;
+    fx=x;
+    fy=y;
+    pos[0]=fx;
+    pos[1]=fy;
+    pos[2]=0.0f;
+    u32 n=effect[index];
+    if(n!=0) {
+        f32 step=0.0625f;
+        PSMTXScale(mtx,1.0f-0.75f*(f32)n*step,1.0f,(f32)n*step+1.0f);
+    } else if(lbl_80506DB8[off+index]==1) PSMTXScale(mtx,1.0f,1.0f,0.5f);
+    else PSMTXScale(mtx,1.0f,1.0f,1.0f);
+    rec.b2c=0;
+    rec.b26=0;
+    rec.b2d=0;
+    if(flag==0) rec.w34=2;
+    rec.b1f=0;
+    rec.w38=0;
+    rec.w18=mtx;
+    void* obj=*(void**)((u8*)lbl_8053AAF8+0xa4);
+    void* res=((JKRFileLoader*)obj)->getResource(0x534f4220,(const char*)lbl_80471208);
+    fn_802F86CC(*(void**)(lbl_8053AB10+0x20),pos,res,id,1.0f,1.0f,&rec);
+    }
+}
+#pragma opt_propagation reset
+
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 
