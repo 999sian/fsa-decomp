@@ -30,7 +30,7 @@ extern f32 lbl_80542DE8;
 extern f32 lbl_80542DEC;
 extern f32 lbl_80542DF0;
 extern s32 lbl_80474F30[];
-extern s32 lbl_80474F40[];
+extern const s32 lbl_80474F40[];
 
 struct FSAPoolBlock {
 	u32 mWord[36];
@@ -451,7 +451,7 @@ afterPlayerSetup:
 					s32 msg;
 					s32 n = *(s32*)(self + 0x394);
 					if (n < 3) {
-						msg = lbl_80474F40[(*(s32*)(self + 0x394))++];
+						msg = message80370764At((*(s32*)(self + 0x394))++);
 					} else if (*(s32*)(self + 0x23c) < 0x168) {
 						*(s32*)(self + 0x394) = 4;
 						msg = 0x509;
