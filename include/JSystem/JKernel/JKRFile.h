@@ -7,7 +7,11 @@
 class JKRFile : JKRDisposer {
 public:
     JKRFile() : JKRDisposer(), mFileOpen(false) {}
-    virtual ~JKRFile() {}                                                // 8
+    #ifdef JKRFILE_OUT_OF_LINE_DTOR
+      virtual ~JKRFile();
+#else
+      virtual ~JKRFile() {}                                                // 8
+#endif
     virtual bool open(const char *fileName) = 0;                         // C
     virtual void close() = 0;                                            // 10
     virtual s32 readData(void *addr, s32 length, s32 offset) = 0;        // 14
