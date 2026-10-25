@@ -10,6 +10,14 @@
 extern const f32 lbl_80542790;
 extern const JGeometry::TVec3f lbl_80472320[];
 
+struct MrtaResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* getRes(u32 type, const char* name);
+};
+
 
 extern "C" char __vt__4MRTA[];
 extern "C" void fn_801EE434(void* p);
@@ -24,57 +32,53 @@ extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c);
 extern "C" u8 fn_8023B0F4(s32 idx, void* box, s32 a2, s32 a3, f32 f);
 extern "C" void* fn_8023E724(s32 i);
 extern "C" const Vec lbl_804722F0[];
+#pragma opt_propagation off
 extern "C" s32 fn_80354D64(Actor* this_, u8 arg2) {
-    u8* p = (u8*)this_;
-    Vec saved;
-    f32 out[3];
-    f32 box[4];
+    JGeometry::TVec3f saved;
+    JGeometry::TVec3f out;
+    JGeometry::TBox2f box;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f offset;
     s32 hit = 0;
     s32 i;
-
-    saved = *(Vec*)(p + 0xc);
-    *(Vec*)(p + 0x3c) = lbl_804722F0[arg2];
-    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
-
-    out[0] = 0.0f;
-    out[1] = 0.0f;
-    out[2] = 0.0f;
-    if (fn_801F2618(this_, out, 0)) {
+    saved = *(JGeometry::TVec3f*)&this_->field_0C;
+    this_->field_3C = lbl_804722F0[arg2];
+    *(JGeometry::TVec3f*)&this_->field_0C += *(JGeometry::TVec3f*)&this_->field_3C;
+    out.x = 0.0f;
+    out.y = 0.0f;
+    out.z = 0.0f;
+    if (fn_801F2618(this_, &out.x, 0)) {
         switch (arg2) {
-        case 0:
-            if (out[0] >= 0.0f) hit = 1;
-            break;
-        case 1:
-            if (out[0] <= 0.0f) hit = 1;
-            break;
-        case 2:
-            if (out[1] >= 0.0f) hit = 1;
-            break;
-        case 3:
-            if (out[1] <= 0.0f) hit = 1;
-            break;
+        case 0: if (out.x >= 0.0f) hit = true; break;
+        case 1: if (out.x <= 0.0f) hit = true; break;
+        case 2: if (out.y >= 0.0f) hit = true; break;
+        case 3: if (out.y <= 0.0f) hit = true; break;
         }
     } else {
-        hit = 1;
+        hit = true;
     }
-
-    if (!hit) {
+    if (!(u8)hit) {
+        box.set(*(JGeometry::TBox2f*)&this_->field_60);
+        box.addPos(*(JGeometry::TVec2f*)&this_->field_0C);
+        hit = true;
         for (i = 0; i < 4; i++) {
-            box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
-            box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
-            box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
-            box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
-            if (fn_8023B0F4(i, box, *(s32*)(p + 4), 0, 0.0f)) {
-                fn_8023E724(i);
+            if (fn_8023B0F4(i, &box, this_->field_04, 0, 0.0f)) {
+                pos = *(JGeometry::TVec3f*)fn_8023E724(i);
+                offset.set(lbl_80472320[arg2]);
+                pos += offset;
+                if ((u8)this_->v17(this_->field_04, &pos.x) == 1) {
+                    hit = false;
+                }
             }
         }
     }
-
-    *(Vec*)(p + 0xc) = saved;
-    *(Vec*)(p + 0x3c) = lbl_804722F0[0];
+    *(JGeometry::TVec3f*)&this_->field_0C = saved;
+    this_->field_3C.x = 0.0f;
+    this_->field_3C.y = 0.0f;
+    this_->field_3C.z = 0.0f;
     return hit;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_8035533C(void* this_, s32 param2, f32* param3) {
     u8* p = (u8*)this_;
     if (*(s32*)(p + 0x230) == 0) {
