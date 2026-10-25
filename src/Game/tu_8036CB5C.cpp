@@ -60,8 +60,8 @@ extern "C" void fn_8036CE58(Actor* this_) {
 }
 
 inline void psw2ActivateGroup(Actor* p) {
-    char* member;
     s32 i;
+    char* member;
     member = (char*)p;
     for (i=0; i<3; i++, member+=4) {
         char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(member + 0x234));
