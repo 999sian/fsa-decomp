@@ -2,6 +2,17 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/J2D/J2DGrafContext.h"
+
+class J2DScreen {
+public:
+	void draw(f32, f32, const J2DGrafContext*);
+};
+
+class JFWDisplay {
+public:
+	static JFWDisplay* sManager;
+};
 
 // ---- from src/Game/fn_804007C4.cpp ----
 // vtable slot 2 (byte offset 8) - see [[reference_fsa_virtual_dispatch_codegen_trick]].
@@ -222,10 +233,10 @@ struct SubB {
 
 // fn_804009CC - constructor of the game object at lbl_804B0F50.
 extern "C" void* fn_804009CC(void* this_) {
-	*(void**)this_ = lbl_804B0F50;
 	u8* p = (u8*)this_;
-	lbl_8053AAF0 = p;
 	u8* cfg = lbl_80529DEC;
+	lbl_8053AAF0 = p;
+	*(void**)this_ = lbl_804B0F50;
 	if (cfg[0x223] == 1) {
 		p[0x7a] = 1;
 		cfg[0x223] = 0;
