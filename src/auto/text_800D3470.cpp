@@ -4544,3 +4544,11 @@ extern "C" void fn_800DF0B8(GXColor* param_1, int param_2, const GXColor* param_
 struct Rgb3_800DE210 {
     u8 r, g, b;
 };
+void J3DPEBlockFull::initialize()
+{
+    mAlphaComp.mAlphaCmpID = 0xffff;
+    mZMode.mZModeID = 0xffff;
+    mZCompLoc = 0xff;
+    mDither = 1;
+    mFogOffset = 0;
+}
