@@ -19,6 +19,7 @@ extern "C" void fn_80440D78(void* a, void* b);
 extern "C" void fn_80440CE4(void* a, void* b);
 extern "C" void fn_80402F04(void* a, void* b);
 extern "C" void* __nw__FUl(u32 size);
+extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 static inline void fn_803A7898_child(char* p, s32 off, u64 key) {
     void* obj = __nw__FUl(0x2c);
     if (obj != 0) {
