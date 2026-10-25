@@ -106,17 +106,20 @@ int J3DModel::createShapePacket(J3DModelData* pModelData)
 
 int J3DModel::createMatPacket(J3DModelData* pModelData, u32 mdlFlags)
 {
-	u32 num = pModelData->getMaterialNum();
-	int ret = 0;
+	u32 matNum;
+	J3DMaterial* materialNode;
+	u16 i;
+	J3DMatPacket* matPacket;
 
+	u32 num = pModelData->getMaterialNum();
 	if (num != 0) {
 		mMatPackets = new J3DMatPacket[num];
 	}
 
-	u16 matNum = pModelData->getMaterialNum();
-	for (u16 i = 0; i < matNum; i++) {
-		J3DMaterial* materialNode   = pModelData->getMaterialNodePointer(i);
-		J3DMatPacket* matPacket     = mMatPackets + i;
+	matNum = pModelData->getMaterialNum();
+	for (i = 0; i < matNum; i++) {
+		materialNode                = pModelData->getMaterialNodePointer(i);
+		matPacket                   = mMatPackets + i;
 		J3DShapePacket* shapePacket = mShapePackets + materialNode->getShape()->getIndex();
 
 		matPacket->setMaterial(materialNode);
@@ -129,53 +132,32 @@ int J3DModel::createMatPacket(J3DModelData* pModelData, u32 mdlFlags)
 			matPacket->lock();
 		}
 
-		if (mdlFlags & 0x20000) {
-			J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
-			matPacket->setDisplayListObj(dlobj);
-		} else {
-			if (pModelData->getModelDataType() == 1) {
-				if (mdlFlags & 0x40000) {
-					J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
-					matPacket->setDisplayListObj(dlobj);
-				} else {
-					J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
-					ret                      = dlobj->single_To_Double();
-					if (ret != JET_Success)
-						return ret;
-
-					matPacket->setDisplayListObj(dlobj);
-				}
-			} else if (mdlFlags & 0x80000) {
-				if (mdlFlags & 0x40000) {
-					ret = materialNode->newSingleSharedDisplayList(materialNode->countDLSize());
-					if (ret != JET_Success)
-						return ret;
-
-					J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
-					matPacket->setDisplayListObj(dlobj);
-				} else {
-					ret = materialNode->newSharedDisplayList(materialNode->countDLSize());
-					if (ret != JET_Success)
-						return ret;
-
-					J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
-					ret                      = dlobj->single_To_Double();
-					if (ret != JET_Success)
-						return ret;
-
-					matPacket->setDisplayListObj(dlobj);
-				}
+		if (mdlFlags & 0x80000) {
+			matPacket->setDisplayListObj(materialNode->getSharedDisplayListObj());
+		} else if (pModelData->getModelDataType() == 1) {
+			if (mdlFlags & 0x40000) {
+				matPacket->setDisplayListObj(materialNode->getSharedDisplayListObj());
 			} else {
-				if (mdlFlags & 0x40000) {
-					ret = matPacket->newSingleDisplayList(materialNode->countDLSize());
-					if (ret != JET_Success)
-						return ret;
-				} else {
-					ret = matPacket->newDisplayList(materialNode->countDLSize());
-					if (ret != JET_Success)
-						return ret;
-				}
+				J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
+				int ret                  = dlobj->single_To_Double();
+				if (ret != JET_Success)
+					return ret;
+				matPacket->setDisplayListObj(dlobj);
 			}
+		} else if (mdlFlags & 0x20000) {
+			if (mdlFlags & 0x40000) {
+				materialNode->newSingleSharedDisplayList(materialNode->countDLSize());
+				matPacket->setDisplayListObj(materialNode->getSharedDisplayListObj());
+			} else {
+				materialNode->newSharedDisplayList(materialNode->countDLSize());
+				J3DDisplayListObj* dlobj = materialNode->getSharedDisplayListObj();
+				dlobj->single_To_Double();
+				matPacket->setDisplayListObj(dlobj);
+			}
+		} else if (mdlFlags & 0x40000) {
+			matPacket->newSingleDisplayList(materialNode->countDLSize());
+		} else {
+			matPacket->newDisplayList(materialNode->countDLSize());
 		}
 	}
 
@@ -216,30 +198,25 @@ void J3DModel::calcMaterial()
 
 void J3DModel::calcDiffTexMtx()
 {
-	j3dSys.setModel(this);
-
-	u16 matNum = mModelData->getMaterialNum();
-	u16 i = 0;
-	for (; i < matNum; i++) {
-		j3dSys.setMatPacket(&mMatPackets[i]);
-		J3DMaterial* materialNode = mModelData->getMaterialNodePointer(i);
-		materialNode->calcDiffTexMtx(getAnmMtx(materialNode->getJoint()->getJntNo()));
-	}
-
-	u16 shapeNum = getModelData()->getShapeNum();
-	u16 j;
-	for (i = 0; i < shapeNum; i++) {
-		J3DShapePacket* shapePacket = getShapePacket(i);
-		J3DTexGenBlock* texGenBlock = mModelData->getShapeNodePointer(i)->getMaterial()->getTexGenBlock();
-
-		for (j = 0; (int)j < 8; j++) {
-			J3DTexMtx* texMtxNode   = texGenBlock->getTexMtx(j);
-			J3DTexMtxObj* texMtxObj = shapePacket->getTexMtxObj();
-			if (texMtxNode != nullptr && texMtxObj != nullptr) {
-				PSMTXCopy(texMtxNode->getMtx(), texMtxObj->mTexMtx[j]);
-			}
-		}
-	}
+ j3dSys.setModel(this);
+ unsigned int matNum = mModelData->getMaterialNum();
+ u16 i;
+ for (i = 0; i < matNum; i++) {
+  j3dSys.setMatPacket(&mMatPackets[i]);
+  J3DMaterial* materialNode = mModelData->getMaterialNodePointer(i);
+  materialNode->calcDiffTexMtx(getAnmMtx(materialNode->getJoint()->getJntNo()));
+ }
+ unsigned int shapeNum = getModelData()->getShapeNum();
+ for (i = 0; i < shapeNum; i++) {
+  J3DShapePacket* shapePacket = getShapePacket(i);
+  J3DTexGenBlock* texGenBlock = mModelData->getShapeNodePointer(i)->getMaterial()->getTexGenBlock();
+  for (u16 j = 0; (int)j < 8; j++) {
+   J3DTexMtx* texMtxNode = texGenBlock->getTexMtx(j);
+   J3DTexMtxObj* texMtxObj = shapePacket->getTexMtxObj();
+   if (texMtxNode != nullptr && texMtxObj != nullptr)
+    PSMTXCopy(texMtxNode->getMtx(), texMtxObj->mTexMtx[j]);
+  }
+ }
 }
 
 void J3DModel::calcAnmMtx()
