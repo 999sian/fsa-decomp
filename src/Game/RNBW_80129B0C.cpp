@@ -122,7 +122,7 @@ static inline void rnbwSpawn(Actor* actor, u16* ids) {
     for (i = 0; i < 5; i++, hp++, table++) {
         if (hp[0x8f] == 0) {
             u16 id = *table;
-            hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, id, 0, -1, 0, 0, 1, lbl_8053CB48);
+            hp[0x8f] = rnbwEffect(id, actor);
         }
     }
 }
