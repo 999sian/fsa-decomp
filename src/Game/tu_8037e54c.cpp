@@ -1471,6 +1471,80 @@ extern "C" u8 fn_8038B8A8(s32 unused, s32 p, s32 q, u32 id, u32 flags) {
     return 0;
 }
 
+extern "C" u8 fn_8038BD08(s32 a, s32 id, s32 room, JGeometry::TVec3<f32>* pos, s32 flags) {
+    s32 p = resolvePlayer(a);
+    if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) {
+        return 0;
+    }
+    id = fn_80383EB0(p, id);
+    u16 flags16 = (u16)flags;
+    if (!(flags & 0x20)) {
+        if (fn_802D46D8(fn_802D6A9C(), p, id, 0) == 1) {
+            return 0;
+        }
+    } else if (fn_802D46D8(fn_802D6A9C(), p, id, 0) == 1) {
+        s32 q = resolvePlayer(p);
+        Inf1* inf = &lbl_8053AD78->p8->inf;
+        u8* e = (u8*)inf + (inf->size + inf->entries[id].offset + 8);
+        if (e[0] == 0x1a && e[2] == 2 && e[4] == 5) {
+            id = fn_80383EB0(q, *(s32*)(e + 5));
+        }
+    }
+    if (lbl_8053AAF8->b7e == 0 || (flags16 & 0x40)) {
+        if (room < 8) {
+            JGeometry::TVec3<f32> v(*pos);
+            return fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags);
+        }
+        if (!fn_8022C8EC(0)) {
+            f32 in[2];
+            f32 out[3];
+            in[0] = lbl_805430F8;
+            in[1] = lbl_805430FC;
+            fn_8030C4A0(*(u8**)(lbl_8053AB10 + 0x24), in, 1, out);
+            JGeometry::TVec3<f32> v(*(Vec*)out);
+            return fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags);
+        }
+    } else {
+        s32 q = resolvePlayer(p);
+        Inf1* inf = &lbl_8053AD78->p8->inf;
+        u8* e = (u8*)inf + (inf->size + inf->entries[id].offset + 8);
+        bool hit = false;
+        if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x1f) {
+            hit = true;
+        } else if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x2f && ((u8*)lbl_8053AD78)[0xed] == 0 && fn_80138A30(lbl_8053AAF8) >= 2 && fn_8023DE58(fn_8022EA0C(q)) >= 8) {
+            ((u8*)lbl_8053AD78)[0xed] = 1;
+            *(s32*)((u8*)lbl_8053AD78 + 0x110) = q;
+            ((u8*)lbl_8053AD78)[0xee] = e[5];
+            hit = true;
+        }
+        if (hit) {
+            if (fn_80389964((s32)lbl_8053AD78, p, id, flags)) {
+                JGeometry::TVec3<f32> v(*pos);
+                if (fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags)) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+    }
+    s32 q3 = resolvePlayer(p);
+    if (fn_80303750(q3)) {
+        u32 i = 0;
+        u32 hitSlot = 0;
+        do {
+            if ((lbl_8053AAF8->b82 & (u8)(1 << i)) && fn_80390818(lbl_8053AD78->sub[i]) == 1) {
+                hitSlot = 1;
+                break;
+            }
+            i++;
+        } while (i < 4);
+        if (!hitSlot) {
+            JGeometry::TVec3<f32> v(*pos);
+            return fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags);
+        }
+    }
+    return fn_8038B8A8((s32)lbl_8053AD78, p, a, id, flags);
+}
 
 struct Vec3Raw { f32 x, y, z; };
 extern void* lbl_8053AF80;
@@ -1546,14 +1620,14 @@ extern "C" u8 fn_80390894(void* sub, u32 v);
 extern "C" void fn_80390B64(void* sub);
 extern "C" u8 fn_802D46D8(void* cfg, s32 index, u32 bit, u8 set);
 extern "C" void OSReport(const char* fmt, ...);
+#pragma optimization_level 4
 extern "C" u8 fn_803865B8(s32 p) {
-    s32 i = resolvePlayer(p);
-    bool bVar4 = false;
-    bool bVar5 = false;
-    bool bVar6 = false;
+    const s32 i = resolvePlayer(p);
+    bool bVar5;
     u8 bVar15;
     u16 uVar2;
-    if (lbl_8053AD78->be7 & (u8)(1 << resolvePlayer(i))) {
+    BOOL done = (lbl_8053AD78->be7 & (u8)(1 << resolvePlayer(i))) != 0;
+    if (done & 1) {
         return 1;
     }
     if (lbl_8053AD78->hf0[i] > 0) {
@@ -1566,15 +1640,17 @@ extern "C" u8 fn_803865B8(s32 p) {
     }
     if (isActive(i) != 5) {
         if (isActive(i) != 8) {
-            return 0;
+            goto L_fail;
         }
     }
+    bool bVar4 = false;
+    u8 bVar6 = 0;
     if (fn_803908D0(lbl_8053AD78->sub[i]) == 0) {
         return 0;
     }
     if (fn_80390BA8(lbl_8053AD78->sub[i]) != 0xff) {
-        bVar4 = fn_80390BA8(lbl_8053AD78->sub[i]) == 0;
-        if (fn_80390BDC(lbl_8053AD78->sub[i]) == 0) {
+        if (fn_80390BA8(lbl_8053AD78->sub[i]) == 0) bVar4 = true;
+        if ((u32)fn_80390BDC(lbl_8053AD78->sub[i]) == 0) {
             bVar6 = true;
         }
     }
@@ -1606,27 +1682,23 @@ extern "C" u8 fn_803865B8(s32 p) {
             }
         }
         uVar2 = *(u16*)((u8*)lbl_8053AD78->sub[i] + 0x28);
-        if ((((uVar2 >> 5) & 1) == 0 || (uVar2 & 0x1000) != 0) && !bVar6) {
-            return 0;
+        if ((((uVar2 >> 5) & 1) == 0 || (uVar2 & 0x1000) != 0) && bVar6 != 1) {
+            goto L_fail;
         }
     L_1920c:
         if (((*(u16*)((u8*)lbl_8053AD78->sub[i] + 0x28)) >> 12 & 1) == 1) {
             return 1;
         }
         bVar15 = fn_80390894(lbl_8053AD78->sub[i], *(u32*)((u8*)lbl_8053AD78->sub[resolvePlayer(i)] + 0x2c));
-        if (bVar15 == 2) {
-            fn_80458880(lbl_8053AF80, 0x5a, -1);
-        } else if (bVar15 < 2 && bVar15 != 0) {
-            fn_80458880(lbl_8053AF80, 0x59, -1);
-        }
+        switch(bVar15){case 1: fn_80458880(lbl_8053AF80,0x59,-1);break;case 2:fn_80458880(lbl_8053AF80,0x5a,-1);break;}
         if (((*(u16*)((u8*)lbl_8053AD78->sub[i] + 0x28)) >> 12 & 1) == 0) {
             fn_802D46D8(fn_802D6A9C(), i, *(u32*)((u8*)lbl_8053AD78->sub[i] + 0x20), 1);
         }
-        if (fn_80390C38(lbl_8053AD78->sub[i]) == -1) {
-            lbl_8053AD78->hf0[i] = 2;
-            return 0;
-        }
+        if ((u32)fn_80390C38(lbl_8053AD78->sub[i]) != 0xffffffff) {
         fn_8038470C(i, fn_80390C38(lbl_8053AD78->sub[i]));
+        return 0;
+        }
+        lbl_8053AD78->hf0[i] = 2;
         return 0;
     }
     if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0) {
@@ -1655,25 +1727,24 @@ extern "C" u8 fn_803865B8(s32 p) {
             goto L_194d0;
         }
     }
-    if (!bVar6) {
-        return 0;
+    if (bVar6 != 1) {
+        goto L_fail;
     }
 L_194d0:
     OSReport("====>%d, %d\n", i, (*(u16*)((u8*)lbl_8053AD78->sub[i] + 0x28) >> 8) & 1);
     fn_80390B64(lbl_8053AD78->sub[i]);
     bVar15 = fn_80390894(lbl_8053AD78->sub[i], *(u32*)((u8*)lbl_8053AD78->sub[resolvePlayer(i)] + 0x2c));
-    if (bVar15 == 2) {
-        fn_80458880(lbl_8053AF80, 0x5a, -1);
-    } else if (bVar15 < 2 && bVar15 != 0) {
-        fn_80458880(lbl_8053AF80, 0x59, -1);
-    }
+    switch(bVar15){case 1: fn_80458880(lbl_8053AF80,0x59,-1);break;case 2:fn_80458880(lbl_8053AF80,0x5a,-1);break;}
     if (isActive(i) == 5) {
         setActive(i, 2);
     } else {
         setActive(i, 7);
     }
     return 0;
+L_fail:
+    return 0;
 }
+#pragma optimization_level 3
 
 extern "C" u8 fn_8022FCF0(s32 q, s32 v);
 extern "C" void fn_8022FC54(s32 q, s32 v);
