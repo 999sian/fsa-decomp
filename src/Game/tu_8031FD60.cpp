@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 
 
@@ -17,6 +19,69 @@ extern "C" void* fn_8031FD60(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern f64 lbl_80541AA8;
+extern f32 lbl_80541A98;
+extern f32 lbl_80541A9C;
+extern f32 lbl_80541AB0;
+extern f32 lbl_80541AB4;
+extern f32 lbl_80541AB8;
+extern "C" void* fn_801F856C(void);
+extern "C" void Actor_CreateByID(void* manager, s32 procName, u32 param, Vec* pos, u32 flags, s32 r8, s32 r9);
+extern "C" void fn_8031FDC0(void* this_) {
+    u8* obj = (u8*)this_;
+    JGeometry::TVec3<f32> pos(*(Vec*)(obj + 0x230));
+
+    if (((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
+        return;
+    }
+    if (*(s32*)(obj + 0x240) == 0) {
+        switch (*(s32*)(obj + 0x248)) {
+        case 0:
+            pos.x += lbl_80541A98;
+            break;
+        case 1:
+            pos.x -= lbl_80541A98;
+            break;
+        case 2:
+            pos.y += lbl_80541A9C;
+            break;
+        case 3:
+            pos.y -= lbl_80541A9C;
+            break;
+        }
+        if (*(u32*)(obj + 0x248) >= 2) {
+            if (*(u8*)(obj + 0x254) == 0) {
+                u8* rng = lbl_8053AAF8;
+                *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+                u32 bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+                f32 r = *(f32*)&bits - 1.0f;
+                if (r <= *(f32*)(obj + 0x23c)) {
+                    pos.x = pos.x + lbl_80541AA8;
+                    *(f32*)(obj + 0x23c) = lbl_80541AB0;
+                } else {
+                    pos.x = pos.x - lbl_80541AA8;
+                    *(f32*)(obj + 0x23c) = lbl_80541AB4;
+                }
+            } else {
+                if (*(u32*)(obj + 0x248) == 2) {
+                    pos.y -= lbl_80541AB8;
+                } else {
+                    pos.y += lbl_80541AB8;
+                }
+            }
+        }
+        Actor_CreateByID(fn_801F856C(), 0x46495245, *(u32*)(obj + 4), &pos, *(u32*)(obj + 0x24c) & 0xF80101FF, -1, -1);
+    }
+    if (*(s32*)(obj + 0x240) <= 0) {
+        u8* rng = lbl_8053AAF8;
+        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+        u32 bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+        *(s32*)(obj + 0x240) = *(u8*)(obj + 0x244) + (s32)((f32)(int)*(u8*)(obj + 0x245) * (*(f32*)&bits - 1.0f));
+    } else {
+        (*(s32*)(obj + 0x240))--;
+    }
 }
 
 extern "C" void fn_80320024(void* this_) {
