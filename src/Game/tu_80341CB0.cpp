@@ -5,8 +5,8 @@
 #include "Game/ItemBase.h"
 
 
-static inline void bombSetRotation(Mtx m, const f32 sx, const f32 sy, const f32 sz,
-                                  const f32 cx, const f32 cy, const f32 cz, const f32 s) {
+static inline void bombSetRotation(Mtx m, f32 sx, f32 sy, f32 sz,
+                                  f32 cx, f32 cy, f32 cz, f32 s) {
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
