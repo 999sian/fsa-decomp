@@ -397,30 +397,36 @@ extern "C" void fn_8045815C(u8* this_, u8 mode) {
 
 extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
     Unk80458408Obj* obj = *(Unk80458408Obj**)(this_ + 0x80);
-    if (obj != NULL && param_2 == 0x100001a) {
-        Unk80458408Obj* bank = obj->v4();
-        if (bank != NULL) {
-            s32 i;
-            BOOL enabled = OSDisableInterrupts();
-            for (i = 0; i < 0x10; i++) {
-                JASTrack* track = bank->v7(i);
-                if (track != NULL) {
-                    if (param_3 != 0) {
-                        if (i == 2) {
-                            track->mute(TRUE);
-                        } else {
-                            track->mute(FALSE);
-                        }
-                    } else {
-                        if (i == 2 || i == 7) {
-                            track->mute(FALSE);
-                        } else {
-                            track->mute(TRUE);
+    if (obj != NULL) {
+        switch (param_2) {
+        case 0x100001a:
+            {
+                Unk80458408Obj* bank = obj->v4();
+                if (bank != NULL) {
+                    s32 i;
+                    volatile BOOL enabled = OSDisableInterrupts();
+                    for (i = 0; i < 0x10; i++) {
+                        JASTrack* track = bank->v7(i);
+                        if (track != NULL) {
+                            if (param_3 != 0) {
+                                if (i == 2) {
+                                    track->mute(TRUE);
+                                } else {
+                                    track->mute(FALSE);
+                                }
+                            } else {
+                                if (i == 2 || i == 7) {
+                                    track->mute(FALSE);
+                                } else {
+                                    track->mute(TRUE);
+                                }
+                            }
                         }
                     }
+                    OSRestoreInterrupts(enabled);
                 }
             }
-            OSRestoreInterrupts(enabled);
+            break;
         }
     }
 }
@@ -480,12 +486,13 @@ extern "C" void fn_80458508(u8* this_, u8 mode) {
 }
 
 extern "C" void fn_80458658(u8* this_, bool flag) {
+    f32 volume;
     this_[0x8a] = flag;
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(3)->pause(flag);
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(4)->pause(flag);
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(5)->pause(flag);
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(6)->pause(flag);
-    f32 volume = lbl_80543EB4;
+    volume = lbl_80543EB4;
     if (flag) {
         volume = lbl_80543EB0;
     }
@@ -1138,9 +1145,9 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     struct FxSet { JASDsp::FxlineConfig_ c[4]; };
     FxSet fx = *(FxSet*)lbl_80491600;
     for (u8 i = 0; i < 4; i++) {
-        JASDsp::FxlineConfig_* cfg = &fx.c[i];
-        s16* buf = new ((JKRHeap*)heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)];
-        JASDsp::setFXLine(i, buf, cfg);
+        JASDsp::FxlineConfig_& cfg = fx.c[i];
+        s16* buf = new ((JKRHeap*)heap, 0x20) s16[(cfg.mBufCount * 0xa0) / sizeof(s16)];
+        JASDsp::setFXLine(i, buf, &cfg);
     }
     *(WaveController**)(this_ + 0x14) = new WaveController(0, heap, 4);
     for (int k = 0; k < 4; k++) {
