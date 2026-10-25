@@ -45,6 +45,8 @@ private:
 };
 
 extern "C" void* lbl_804AAD60[];
+extern "C" u32 lbl_804AAC58[];
+extern "C" u8 lbl_80507EF8[];
 
 class Twtg : public Actor {
 public:
