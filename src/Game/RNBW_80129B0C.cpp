@@ -112,7 +112,17 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
     return false;
 }
 
+static inline void rnbwSpawn(Actor* actor, u16* ids) {
+    for (s32 i = 0; i < 5; i++) {
+        if (((void**)actor)[0x8f + i] == 0) {
+            ((void**)actor)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, ids[i], 0, -1, 0, 0, 1);
+        }
+    }
+}
 extern "C" void fn_80129B0C(void* this_) {
+    JGeometry::TVec3f movement;
+    JGeometry::TVec3f testPos;
+    JGeometry::TVec3f delta;
     Actor* actor = (Actor*)this_;
     actor->Actor::v03();
     s32 state = *(s32*)((char*)this_ + 0x238);
@@ -124,34 +134,24 @@ extern "C" void fn_80129B0C(void* this_) {
             case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39f, 0, -1, 0, 0, 1);
-                s32 i = 0;
-                void** hp = (void**)this_;
-                u16* idp = lbl_80465098;
-                do {
-                    if (hp[0x8f] == 0) {
-                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                for (s32 i = 0; i < 5; i++) {
+                    if (((void**)this_)[0x8f + i] == 0) {
+                        u16 id = lbl_80465098[i];
+                        ((void**)this_)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, id, 0, -1, 0, 0, 1);
                     }
-                    i++;
-                    idp++;
-                    hp++;
-                } while (i < 5);
+                }
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x3a0, 0, -1, 0, 0, 1);
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39b, 0, -1, 0, 0, 1);
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39c, 0, -1, 0, 0, 1);
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39d, 0, -1, 0, 0, 1);
                 fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39e, 0, -1, 0, 0, 1);
             } else {
-                u16* idp = lbl_804650A4;
-                void** hp = (void**)this_;
-                s32 i = 0;
-                do {
-                    if (hp[0x8f] == 0) {
-                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                for (s32 i = 0; i < 5; i++) {
+                    if (((void**)this_)[0x8f + i] == 0) {
+                        u16 id = lbl_804650A4[i];
+                        ((void**)this_)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, id, 0, -1, 0, 0, 1);
                     }
-                    i++;
-                    idp++;
-                    hp++;
-                } while (i < 5);
+                }
             }
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_801F0E34(this_, 0x5004d, 0);
@@ -166,10 +166,10 @@ extern "C" void fn_80129B0C(void* this_) {
         break;
     case 1:
         for (s32 i = 0; i < 4; i++) {
-            if (rnbwContains(actor, i)) {
-                JGeometry::TVec3f delta(*(JGeometry::TVec3f*)&actor->field_0C);
+            if (rnbwContains(actor, i, testPos)) {
+                delta = *(JGeometry::TVec3f*)&actor->field_0C;
                 delta -= *(JGeometry::TVec3f*)&actor->field_18;
-                JGeometry::TVec3f movement(delta);
+                movement = delta;
                 fn_8023DF68(i, &movement);
             }
         }
