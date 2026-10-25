@@ -25,6 +25,11 @@ extern "C" const f32 lbl_80543EC4;
 extern "C" const f32 lbl_80543EC8;
 extern "C" const f32 lbl_80543ECC;
 
+static inline JAISoundID currentAudioID(JAISoundHandle* handle) {
+    JAISoundID id=-1;
+    if (*handle) id=JAISoundID(handle->getSound()->getID());
+    return id;
+}
 struct Unk80459674MessageBase { u32 pad[2]; };
 struct Unk80459674Message : Unk80459674MessageBase {
     virtual void v0();
@@ -931,9 +936,9 @@ extern "C" const f32 lbl_80543EC0;
 extern "C" u32 lbl_8053A250;
 extern "C" u32 lbl_8053A254;
 extern "C" void fn_80459674(u8* p) {
+    JAUSoundMgr* mgr;
     s32 i;
     Unk80458408Obj* bank;
-    JAUSoundMgr* mgr;
     if (p[0x6b]) --p[0x6b];
     if (p[0x7c]) {
         if (p[0x7c] && ((JASAudioReseter*)*(void**)(p+0x2c))->checkDone())
@@ -1006,9 +1011,7 @@ soundStarted:
     if (p[0x75]) {
         ++*(u32*)(p+0x78);
         if (*(u32*)(p+0x78)>45) {
-            JAISoundID id=0x30089;
-            u8* obj=*(u8**)(p+0x28);
-            ((void(*)(void*,JAISoundID*))(*(void***)(obj+8))[5])(obj,&id);
+            ((Unk80459674Message*)*(void**)(p+0x28))->v3(JAISoundID(0x30089));
         }
     } else *(u32*)(p+0x78)=0;
     p[0x75]=0;
