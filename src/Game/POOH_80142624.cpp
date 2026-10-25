@@ -26,7 +26,15 @@ extern "C" void fn_801F06F0(Actor* this_, void* res, s32 id, void* idx, s32 n, f
 extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AAF8;
 extern "C" s32 lbl_8049F318[];
-extern "C" void* lbl_80465B50;
+extern "C" char lbl_80465B50[];
+class PoohResMgr {
+public:
+    virtual void v08(); virtual void v0C(); virtual void v10(); virtual void v14();
+    virtual s32 getResource(u32, s32);
+};
+static inline void poohDrawShadow(Actor* p) {
+    fn_80158B5C(*(void**)((u8*)lbl_8053AB10+0x2c), *(s32*)((u8*)p+4), (u8*)p+0xc, JUtility::TColor(0,0,0,0x80), lbl_8053CF28);
+}
 extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 flag);
 extern "C" s32 lbl_8049F2B8[];
 extern "C" const f32 sincosTable___5JMath[];
@@ -70,7 +78,6 @@ static inline f32 poohRand01() {
     return g->rnd.get_ufloat_1();
 }
 extern "C" void fn_80142684(Actor* this_) {
-    f32 mtx[12];
     s32 idx;
     f32 scale;
 
@@ -78,6 +85,7 @@ extern "C" void fn_80142684(Actor* this_) {
          (u8)this_->v11() != 0) &&
         *(u16*)((u8*)this_ + 0x94) != 8 && (*(s32*)((u8*)this_ + 0x230) == 1 || *(s32*)((u8*)this_ + 0x230) == 0)) {
         DrawRec rec;
+        f32 mtx[12];
         fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(s32*)((u8*)this_+4), (u8*)this_+0xc, JUtility::TColor(0,0,0,0x80), lbl_8053CF28);
         ((u8*)&rec.w10)[3] = (u8)(s32)*(f32*)((u8*)this_ + 0x270);
         rec.w30 = 9;
