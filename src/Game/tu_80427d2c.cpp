@@ -2603,87 +2603,67 @@ extern "C" void fn_8042DA10() {
 }
 
 extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
-    u8* pcVar2;
-    u8* pbVar3;
-    u8 bVar1;
-    u8 bVar4;
-    u8 cVar6;
+    u8 marker;
+    u8 found;
+    u8 status;
     u32 p;
-
-    if (data != NULL) {
-        if (p1 != NULL && p2 != NULL && p3 != NULL) {
-            if (p4 != NULL) {
-                if ((PPCMfhid2() & 0x10000000) != 0) {
-                    if (lbl_8053AE78 != 0) {
-                        *(volatile u32*)&lbl_8053AE70 = (u32)p4;
-                        p = ((u32)p4 + 0x1f) & ~0x1f;
-                        lbl_8053AE74 = (u8*)p;
-                        lbl_8053AE70 = p + 0x6bc;
-                        DCZeroRange((void*)p, 0x6bc);
-                        *(u32*)(lbl_8053AE74 + 0x6a4) = 0x21;
-                        *(u16*)(lbl_8053AE74 + 0x698) = 0;
-                        *(u8**)(lbl_8053AE74 + 0x69c) = data;
-                        bVar4 = 0;
-                        do {
-                            pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                            *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + 1;
-                            if (*pcVar2 != 0xff) {
-                                return 3;
-                            }
-                            while (**(u8**)(lbl_8053AE74 + 0x69c) == 0xff) {
-                                *(u8**)(lbl_8053AE74 + 0x69c) = *(u8**)(lbl_8053AE74 + 0x69c) + 1;
-                            }
-                            pbVar3 = *(u8**)(lbl_8053AE74 + 0x69c);
-                            *(u8**)(lbl_8053AE74 + 0x69c) = pbVar3 + 1;
-                            bVar1 = *pbVar3;
-                            if (bVar1 <= 0xd7) {
-                                if (bVar1 == 0xc4) {
-                                    cVar6 = fn_8042D20C();
-                                } else if (bVar1 == 0xc0) {
-                                    cVar6 = fn_8042D8D4();
-                                } else {
-                                    return 0xb;
-                                }
-                                if (cVar6 != 0) {
-                                    return cVar6;
-                                }
-                            } else if (bVar1 >= 0xd8 && bVar1 <= 0xdf) {
-                                if (bVar1 == 0xdd) {
-                                    fn_8042CF9C();
-                                } else if (bVar1 == 0xdb) {
-                                    cVar6 = fn_8042D3E4();
-                                    if (cVar6 != 0) {
-                                        return cVar6;
-                                    }
-                                } else if (bVar1 == 0xda) {
-                                    cVar6 = fn_8042D7B8();
-                                    if (cVar6 != 0) {
-                                        return cVar6;
-                                    }
-                                    bVar4 = 1;
-                                } else if (bVar1 != 0xd8) {
-                                    return 0xb;
-                                }
-                            } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
-                                pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                                *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
-                            } else {
-                                return 0xb;
-                            }
-                        } while (!bVar4);
-                        fn_8042DA10();
-                        fn_8042CC50((u32)p1, (u32)p2, (u32)p3);
-                        return 0;
-                    }
-                    return 0x1d;
-                }
-                return 0x1c;
+    if (!data) goto badData;
+    if (!p1 || !p2 || !p3) goto badPlanes;
+    if (!p4) goto badWork;
+    if (!(PPCMfhid2() & 0x10000000)) goto badHid;
+    if (!lbl_8053AE78) goto badInit;
+    *(volatile u32*)&lbl_8053AE70 = (u32)p4;
+    p = ((u32)p4 + 31) & ~31;
+    lbl_8053AE74 = (u8*)p;
+    lbl_8053AE70 = p + 0x6bc;
+    DCZeroRange((void*)p, 0x6bc);
+    __THPInfo->cnt = 0x21;
+    __THPInfo->decompressedY = 0;
+    __THPInfo->file = data;
+    found=0;
+    do {
+        if (*__THPInfo->file++ != 0xff) goto badMarker;
+        while (*__THPInfo->file == 0xff) __THPInfo->file++;
+        marker=*__THPInfo->file++;
+        if (marker<=0xd7) {
+            if (marker==0xc4) {
+                status=fn_8042D20C();
+                if (status) goto badStatus;
+            } else if (marker==0xc0) {
+                status=fn_8042D8D4();
+                if (status) goto badStatus;
+            } else goto badType;
+        } else if (marker>=0xd8 && marker<=0xdf) {
+            if (marker==0xdd) fn_8042CF9C();
+            else if (marker==0xdb) {
+                status=fn_8042D3E4();
+                if (status) goto badStatus;
+            } else if (marker==0xda) {
+                status=fn_8042D7B8();
+                if (status) goto badStatus;
+                found=1;
+            } else {
+                if (marker==0xd8) goto nextMarker;
+                goto badType;
             }
-            return 0x1a;
+        } else if (marker>=0xe0) {
+            if ((marker>=0xe0 && marker<=0xef) || marker==0xfe) {
+                __THPInfo->file += (__THPInfo->file[0]<<8) | __THPInfo->file[1];
+            } else goto badType;
         }
-        return 0x1b;
-    }
-    return 0x19;
+nextMarker:;
+    } while (!found);
+    fn_8042DA10();
+    fn_8042CC50((u32)p1,(u32)p2,(u32)p3);
+    return 0;
+badData: return 0x19;
+badPlanes: return 0x1b;
+badWork: return 0x1a;
+badType: return 0xb;
+badMarker: return 3;
+badStatus: return status;
+badHid: return 0x1c;
+badInit: return 0x1d;
 }
 
 struct BitReader { u8* p; s32 w4; u8 b8; u8 b9; };
