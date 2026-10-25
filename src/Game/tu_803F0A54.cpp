@@ -106,6 +106,23 @@ static inline void tu803F_setAlphas(u8* p, u64* tags, u8* alphas, s32 n, f32 a) 
     }
 }
 
+static inline void tu803F_fade(u8* p, s32 start, s32 len, f32* out, f32 scale, f32 div, f32 adiv, u64* tags, u8* alphas, s32 n) {
+    if (*(s16*)(p + 0x240) < start + len) {
+        s32 d = len - (*(s16*)(p + 0x240) - start);
+        *out = scale * ((f32)(d * d) / div);
+        f32 a = (f32)(*(s16*)(p + 0x240) - start) / adiv;
+        if (a < lbl_8054372C) {
+            a = lbl_8054372C;
+        } else if (a > lbl_80543730) {
+            a = lbl_80543730;
+        }
+        tu803F_setAlphas(p, tags, alphas, n, a);
+    } else {
+        *out = lbl_8054372C;
+        tu803F_setAlphas(p, tags, alphas, n, lbl_80543730);
+    }
+}
+
 extern "C" void fn_803F2660(u8* p) {
     *(s16*)(p + 0x240) = 0;
     *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
@@ -711,21 +728,19 @@ extern "C" void fn_803F8354(u8* p) {
     u8* base = lbl_80478A60;
     f32 a;
     (*(s16*)(p + 0x240))++;
-    if (0 < *(s16*)(p + 0x240)) {
-        if (*(s16*)(p + 0x240) < 0x19) {
-            *(f32*)(p + 0x164) = lbl_80543754 * ((f32)((0x19 - *(s16*)(p + 0x240)) * (0x19 - *(s16*)(p + 0x240))) / lbl_805437C0);
-            a = (f32)*(s16*)(p + 0x240) / lbl_80543788;
-            if (a < lbl_8054372C) {
-                a = lbl_8054372C;
-            } else if (a > lbl_80543730) {
-                a = lbl_80543730;
-            }
-            tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, a);
-        } else {
-            *(f32*)(p + 0x164) = lbl_8054372C;
+    if (*(s16*)(p + 0x240) <= 0) {
+    } else if (*(s16*)(p + 0x240) < 0x19) {
+        *(f32*)(p + 0x164) = lbl_80543754 * ((f32)((0x19 - *(s16*)(p + 0x240)) * (0x19 - *(s16*)(p + 0x240))) / lbl_805437C0);
+        a = (f32)*(s16*)(p + 0x240) / lbl_80543788;
+        if (a < lbl_8054372C) {
+            a = lbl_8054372C;
+        } else if (a > lbl_80543730) {
             a = lbl_80543730;
-            tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, a);
         }
+        tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, a);
+    } else {
+        *(f32*)(p + 0x164) = lbl_8054372C;
+        tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, lbl_80543730);
     }
     if (*(s16*)(p + 0x240) > 0x19) {
         if (*(s16*)(p + 0x240) < 0x2d) {
@@ -750,26 +765,24 @@ extern "C" void fn_803F8354(u8* p) {
                 tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, a);
             } else {
                 *(f32*)(p + 0x184 + k * 4) = lbl_8054372C;
-                a = lbl_80543730;
-                tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, a);
+                tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, lbl_80543730);
             }
         }
         s += 10;
     }
-    if (0 < *(s16*)(p + 0x240)) {
-        if (*(s16*)(p + 0x240) < 15) {
-            *(f32*)(p + 0x198) = lbl_80543760 * ((f32)((15 - *(s16*)(p + 0x240)) * (15 - *(s16*)(p + 0x240))) / lbl_8054378C);
-            a = (f32)*(s16*)(p + 0x240) / lbl_805437C4;
-            if (a < lbl_8054372C) {
-                a = lbl_8054372C;
-            } else if (a > lbl_80543730) {
-                a = lbl_80543730;
-            }
-            tu803F_setAlphas(p, (u64*)(base + 0x708), p + 0x335, 26, a);
-        } else {
-            *(f32*)(p + 0x198) = lbl_8054372C;
-            tu803F_setAlphas(p, (u64*)(base + 0x708), p + 0x335, 26, lbl_80543730);
+    if (*(s16*)(p + 0x240) <= 0) {
+    } else if (*(s16*)(p + 0x240) < 15) {
+        *(f32*)(p + 0x198) = lbl_80543760 * ((f32)((15 - *(s16*)(p + 0x240)) * (15 - *(s16*)(p + 0x240))) / lbl_8054378C);
+        a = (f32)*(s16*)(p + 0x240) / lbl_805437C4;
+        if (a < lbl_8054372C) {
+            a = lbl_8054372C;
+        } else if (a > lbl_80543730) {
+            a = lbl_80543730;
         }
+        tu803F_setAlphas(p, (u64*)(base + 0x708), p + 0x335, 26, a);
+    } else {
+        *(f32*)(p + 0x198) = lbl_8054372C;
+        tu803F_setAlphas(p, (u64*)(base + 0x708), p + 0x335, 26, lbl_80543730);
     }
     if (*(s16*)(p + 0x240) >= 0x4b) {
         *(s16*)(p + 0x240) = 0;
