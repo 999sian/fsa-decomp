@@ -28,7 +28,7 @@ extern "C" char lbl_8053F9E0;
 extern "C" void fn_8020C6E8(void* this_);
 extern "C" s32 fn_801CD664(s32);
 extern "C" s32 fn_801CF6B8(void*);
-extern "C" s32 fn_801CF798(void*, s32);
+extern "C" s32 fn_801CF798(void*, s32, s32);
 extern "C" s32 fn_801D0280(void*, s32);
 extern "C" bool fn_801D0DD4(void*);
 extern "C" bool fn_801CC9F8(void*, s32);
@@ -38,16 +38,6 @@ extern char* lbl_8053AAF8;
 extern const f32 lbl_8053F9EC;
 extern const f32 lbl_8053F9F0;
 extern const f32 lbl_8053F9F4;
-
-static inline void chooseDirection(void* actor, s32 direction) {
-    char* p = (char*)actor;
-    s32 current = *(s32*)(p + 0x98);
-    if (current == direction) {
-        *(s32*)(p + 0x98) = fn_801CF720(actor, direction);
-    } else {
-        *(s32*)(p + 0x98) = fn_801CF798(actor, direction);
-    }
-}
 
 // ---- Zasl_ctor_8020CA34.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -128,11 +118,12 @@ extern "C" void fn_8020C374(void* p) {
     ((ItemBase*)p)->v31();
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8020C3D0(void* this_, bool b) {
     char* p = (char*)this_;
     char* g;
-    s32 state;
-    int h;
+    int state;
+    register s32 h;
     s32 off;
     u8* base;
     u32 seed;
@@ -165,7 +156,7 @@ extern "C" void fn_8020C3D0(void* this_, bool b) {
                 if (h == 3) {
                     *(s32*)(p + 0x98) = fn_801CF720(this_, 3);
                 } else {
-                    *(s32*)(p + 0x98) = fn_801CF798(this_, 3);
+                    *(s32*)(p + 0x98) = fn_801CF798(this_, 3, h);
                 }
             } else {
                 *(s32*)(p + 0x98) = fn_801CF720(this_, *(s32*)(p + 0x98));
@@ -222,7 +213,7 @@ extern "C" void fn_8020C3D0(void* this_, bool b) {
         fn_801F0E34(this_, 0x5004f, 0);
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" s32 fn_8023F264(s32);
 extern "C" s32 fn_8022D75C(s32);
 extern "C" s32 fn_8022F478(s32);
