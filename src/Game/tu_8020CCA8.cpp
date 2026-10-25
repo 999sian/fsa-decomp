@@ -15,6 +15,9 @@ extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
 
 
 extern "C" u8* fn_8013CC50(u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+static inline void spawnEffect(u32 owner, void* pos, f32 scale, s32 id) {
+    fn_8013CC50(owner, pos, id, 0, 0, 0, 0, 1, scale);
+}
 extern "C" bool fn_801E1D9C();
 extern "C" u8 fn_801E1D7C(u8* o);
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
@@ -130,13 +133,13 @@ extern "C" void fn_8020CCA8(u8* o0) {
     }
 }
 
-extern "C" void fn_8020CF7C(u8* o) {
-    fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x48d, 0, 0, 0, 0, 1, lbl_8053FA08);
-}
-
 #pragma optimization_level 2
+extern "C" void fn_8020CF7C(Actor* o) {
+    fn_8013CC50(o->field_04, &o->field_0C, 0x48d, 0, 0, 0, 0, 1, lbl_8053FA08);
+}
+#pragma optimization_level 4
 extern "C" void fn_8020CFC4(u8* o) {
-    switch (fn_8022461C((void*)((u32)o + 0xc), *(u32*)((u32)o + 4))) {
+    switch (getGroundType(*(u32*)(o + 4), o + 0xc)) {
     case 0xd:
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x3d0, 0, 1, 0, 0, 1, lbl_8053FA0C);
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x15b, 0, 1, 0, 0, 1, lbl_8053FA08);
