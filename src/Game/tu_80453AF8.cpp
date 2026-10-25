@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 
 extern "C" void* lbl_8053AF48;
@@ -166,6 +167,11 @@ extern "C" void* fn_80454CD8(void* this_, s16 flag) {
 
 extern "C" u8 lbl_80529DEC[];
 extern "C" void* lbl_804AF86C[];
+struct T80454DEC_Entry {
+    void* vtable;
+    u8 fields[0x28];
+    T80454DEC_Entry() { vtable = lbl_804AF86C; }
+};
 extern "C" void fn_80402F04(void* a, void* b);
 extern "C" void* __nw__FUl(u32 size);
 extern "C" void* getBounds__7J2DPaneFv(void* self);
@@ -178,84 +184,57 @@ extern "C" u8* fn_80454DEC(u8* p) {
     typedef void* (*Search)(void*, u64);
     typedef void (*SetColor)(void*, void*);
     typedef void (*SetAlpha)(void*, u8);
+    T80454DEC* self = (T80454DEC*)p;
     void* s;
     *(void**)p = lbl_804B1DA8;
     lbl_8053AF48 = p;
     s = __nw__FUl(0x118);
     if (s) __ct__9J2DScreenFv(s);
-    *(void**)(p + 4) = s;
+    self->screen = (J2DScreen*)s;
     setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+4), lbl_8049149C, 0x1100000, *(void**)(lbl_80529DEC+0x4c));
-    *(f32*)(p+0x24) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x506b656e633031ULL)) + 0);
-    *(f32*)(p+0x30) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x506b656e633031ULL)) + 4);
-    *(f32*)(p+0x3c) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x506b656e633032ULL)) + 0);
-    *(f32*)(p+0x48) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x506b656e633032ULL)) + 4);
-    f32 left = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(*(u64*)lbl_80491470)) + 0) - *(f32*)(p+0x24);
-    f32 right = *(f32*)(p+0x3c) - *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(*(u64*)lbl_80491470)) + 8);
-    *(f32*)(p+40) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[1])) + 0) - left;
-    *(f32*)(p+52) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[1])) + 4);
-    *(f32*)(p+64) = right + *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[1])) + 8);
-    *(f32*)(p+76) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[1])) + 4);
-    *(f32*)(p+44) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[2])) + 0) - left;
-    *(f32*)(p+56) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[2])) + 4);
-    *(f32*)(p+68) = right + *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[2])) + 8);
-    *(f32*)(p+80) = *(f32*)((u8*)getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[2])) + 4);
+    self->left[0] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(0x506b656e633031ULL)) + 0);
+    self->top[0] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(0x506b656e633031ULL)) + 4);
+    self->right[0] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(0x506b656e633032ULL)) + 0);
+    self->bottom[0] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(0x506b656e633032ULL)) + 4);
+    f32 left = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(*(u64*)lbl_80491470)) + 0) - self->left[0];
+    f32 right = self->right[0] - *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(*(u64*)lbl_80491470)) + 8);
+    self->left[1] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[1])) + 0) - left;
+    self->top[1] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[1])) + 4);
+    self->right[1] = right + *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[1])) + 8);
+    self->bottom[1] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[1])) + 4);
+    self->left[2] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[2])) + 0) - left;
+    self->top[2] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[2])) + 4);
+    self->right[2] = right + *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[2])) + 8);
+    self->bottom[2] = *(f32*)((u8*)getBounds__7J2DPaneFv(self->screen->search(((u64*)lbl_80491470)[2])) + 4);
     s = __nw__FUl(0x2c);
     if (s) *(void**)s = lbl_804AF86C;
     *(void**)(p+8) = s;
-    fn_80402F04(*(void**)(p+8), (*(J2DScreen**)(p+4))->search(0x50626c61636bULL));
+    fn_80402F04(*(void**)(p+8), self->screen->search(0x50626c61636bULL));
     s = __nw__FUl(0x2c);
     if (s) *(void**)s = lbl_804AF86C;
     *(void**)(p+12) = s;
-    fn_80402F04(*(void**)(p+12), (*(J2DScreen**)(p+4))->search(0x4e646174613031ULL));
+    fn_80402F04(*(void**)(p+12), self->screen->search(0x4e646174613031ULL));
     for (int i=0; i<3; i++) {
         s = __nw__FUl(0x2c);
         if (s) *(void**)s = lbl_804AF86C;
         ((void**)(p+0x10))[i] = s;
-        fn_80402F04(((void**)(p+0x10))[i], (*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[i]));
+        fn_80402F04(((void**)(p+0x10))[i], self->screen->search(((u64*)lbl_80491470)[i]));
     }
     *(s16*)(p+0x1c) = 0;
     *(s16*)(p+0x1e) = 2;
     *(s16*)(p+0x20) = 0;
     void* pane = *(void**)((u8*)*(void**)(p+8)+4);
-    ((SetAlpha)(*(void***)pane)[9])(pane,0);
+    ((J2DPane*)pane)->setAlpha(0);
     *(s16*)((u8*)*(void**)(p+8)+0x26) = 0;
     fn_80402E08(*(void**)(p+0xc), lbl_80543E44, lbl_80543E40);
     *(s16*)((u8*)*(void**)(p+0xc)+0x22) = 0;
     for (int i=0; i<3; i++) {
         if (i == *(s16*)(p+0x1c)) {
-            u32 c1; u8 c1bytes[4];
-            c1bytes[0] = 255;
-            c1bytes[1] = 237;
-            c1bytes[2] = 160;
-            c1bytes[3] = 255;
-            c1 = *(u32*)c1bytes;
-            pane = (*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[i]);
-            ((SetColor)(*(void***)pane)[75])(pane,&c1);
-            u32 c2; u8 c2bytes[4];
-            c2bytes[0] = 39;
-            c2bytes[1] = 16;
-            c2bytes[2] = 0;
-            c2bytes[3] = 0;
-            c2 = *(u32*)c2bytes;
-            pane = (*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[i]);
-            ((SetColor)(*(void***)pane)[74])(pane,&c2);
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255,237,160,255));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39,16,0,0));
         } else {
-            u32 c3; u8 c3bytes[4];
-            c3bytes[0] = 167;
-            c3bytes[1] = 76;
-            c3bytes[2] = 42;
-            c3bytes[3] = 255;
-            c3 = *(u32*)c3bytes;
-            pane = (*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[i]);
-            ((SetColor)(*(void***)pane)[75])(pane,&c3);
-            u32 c4; u8 c4bytes[4];
-            c4bytes[0] = 0;
-            c4bytes[1] = 0;
-            c4bytes[2] = 0;
-            c4bytes[3] = 0;
-            c4 = *(u32*)c4bytes;
-            pane = (*(J2DScreen**)(p+4))->search(((u64*)lbl_80491470)[i]);
-            ((SetColor)(*(void***)pane)[74])(pane,&c4);
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167,76,42,255));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0,0,0,0));
         }
     }
     p[0x55] = 0;
