@@ -1573,3 +1573,4 @@ extern "C" void fn_8012140C(void) {
 extern "C" void fn_80121410(void) {
 }
 #endif
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
