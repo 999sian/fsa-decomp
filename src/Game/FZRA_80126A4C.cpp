@@ -7,6 +7,8 @@
 #include "Game/ItemBase.h"
 
 extern "C" void* fn_801283E8(void);
+extern "C" u8 fn_802D800C(void* mgr, s32 kind);
+extern "C" void fn_801D1F14(void* p, f32 f);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_800FE3EC(void* a, s32 b, void* c, s32 d);
