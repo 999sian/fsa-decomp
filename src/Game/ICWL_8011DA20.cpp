@@ -100,6 +100,11 @@ static inline void icwlKillEmitter(void** emitter) {
     }
 }
 
+static inline void icwlRelease(u32 handle) {
+    u8* base = (u8*)fn_8020D58C();
+    fn_8020D7D0(base + 4 + base[0] * 0x784, handle);
+}
+
 static inline bool icwlHitPlayer(u8* this_) {
     s32 idx = fn_801F285C(this_, 0, 0, 1, -1);
     if (idx >= 0) {
@@ -158,6 +163,8 @@ extern "C" void fn_8011E030(u8* this_) {
     icwlGetBox(this_, &box);
 
     switch (*(s32*)(this_ + 0x234)) {
+    default:
+        break;
     case 0:
         fn_80239914(&box, *(s32*)(this_ + 0x4), *(u32*)(this_ + 0x198));
         if (icwlHitPlayer(this_)) {
@@ -216,8 +223,6 @@ extern "C" void fn_8011E030(u8* this_) {
             detach__5ActorFv(this_);
             *(s32*)(this_ + 0x234) = 2;
         }
-        break;
-    default:
         break;
     }
     f32 s = *(f32*)(this_ + 0x240);
