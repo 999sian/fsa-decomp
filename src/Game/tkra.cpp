@@ -52,6 +52,12 @@ extern const f32 lbl_805413B0;
 extern const f32 lbl_805413B4;
 extern const f32 lbl_805413B8;
 extern const f32 lbl_805413BC;
+extern "C" void* fn_801F856C();
+static inline void tkraSpawnItem(s32 player, JGeometry::TVec3f* pos, u32 hi, s32 kind) {
+    u32 param = kind + hi;
+    s32 room = fn_8023DE58(player);
+    Actor_CreateByID(fn_801F856C(), 'IMUP', room, pos, param, -1, -1);
+}
 struct TkraObj {
     u8 pad[0x24c];
     s32 ids[4];
@@ -70,6 +76,147 @@ extern "C" u8 fn_802EB27C(TkraObj* p) {
         }
     }
     return found;
+}
+
+extern "C" u8 fn_802EB314(char* p) {
+    u8 ret;
+    u8 ok;
+    u32 bits;
+    int i;
+    f32 dy;
+    f32 dx;
+    ret = 0;
+    ok = 0;
+    if (lbl_8053AAF8[0x7e] == 1) {
+        if (fn_802308E0(*(s32*)(p + 0x240)) == 1) {
+            ok = 1;
+        }
+    } else if (fn_8023077C() == 1) {
+        fn_8037AE30(lbl_8053AD70);
+        ok = 1;
+    }
+    if (ok == 1) {
+        if (lbl_8053AAF8[0x7e] == 1) {
+            s32 bit;
+            s32 x = *(s32*)(lbl_80529DEC + 0x118);
+            s32 y = *(s32*)(lbl_80529DEC + 0x11c);
+            if (x < 0 || x > 7) {
+                bit = 0;
+            } else if (y < 0 || y > 3) {
+                bit = 0;
+            } else {
+                u8* saves = lbl_8050EC80;
+                u32 mask = 1u << (y + x * 4);
+                s32 slot = *(s32*)(saves + 0x10);
+                bit = mask & *(u32*)(saves + 0x28 + 0xc8 * slot);
+                bit = bit != 0;
+            }
+            if (bit != 0) {
+                s32 k = *(s32*)(p + 0x234);
+                if (k <= 2 || k == 0x2f) {
+                    s32 n = fn_80138A30(lbl_8053AAF8);
+                    if (*(s32*)(p + 0x240) == fn_801F6058(fn_801F856C(), n - 1)) {
+                        s32 chance = 20;
+                        if (fn_80138A30(lbl_8053AAF8) == 3) {
+                            chance = 30;
+                        } else if (fn_80138A30(lbl_8053AAF8) == 4) {
+                            chance = 50;
+                        }
+                        if (fn_801CD664(100) <= chance) {
+                            *(s32*)(p + 0x234) = 0x20;
+                        }
+                    }
+                }
+            }
+        }
+        dx = lbl_805413B0;
+        dy = lbl_805413B4;
+        for (i = 0, bits = 0; i < 4; i++, bits += 0x1000000) {
+            JGeometry::TVec3f v;
+            JGeometry::TVec3f pos;
+            v = *fn_8023E724(i);
+            pos = v;
+            pos.x = dx + v.x;
+            pos.y = v.y - dy;
+            pos.z = v.z;
+            s32 k = *(s32*)(p + 0x234);
+            if (k >= 0x30) {
+                if (lbl_8053AAF8[0x7e] == 1) {
+                    if ((u8)fn_8022F514(i) == 1) {
+                        if (*(s32*)(p + 0x248) == fn_8022F3DC(i)) {
+                            if (i == *(s32*)(p + 0x240)) {
+                                s32 room;
+                                u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                                param = *(s32*)(p + 0x234) + param;
+                                room = fn_8023DE58(i);
+                                Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
+                            } else {
+                                u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                                param += 0x10000000;
+                                param = *(s32*)(p + 0x234) + param;
+                                s32 room = fn_8023DE58(i);
+                                Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
+                            }
+                        }
+                    } else if (i == *(s32*)(p + 0x248)) {
+                        if (i == *(s32*)(p + 0x240)) {
+                            u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                            param = *(s32*)(p + 0x234) + param;
+                            s32 room = fn_8023DE58(i);
+                            Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
+                        } else {
+                            u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                            param += 0x10000000;
+                            param = *(s32*)(p + 0x234) + param;
+                            s32 room = fn_8023DE58(i);
+                            Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
+                        }
+                    }
+                } else {
+                    s32 pl = *(s32*)(p + 0x240);
+                    if (i == pl) {
+                        s32 room = fn_8023DE58(i);
+                        Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, k + (bits + ((u32)pl << 26)), -1, -1);
+                    } else {
+                        s32 room = fn_8023DE58(i);
+                        u32 param = bits + ((u32)pl << 26);
+                        param += 0x10000000;
+                        Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, k + param, -1, -1);
+                    }
+                }
+            } else {
+                if ((u8)fn_8022F514(i) == 1 && *(s32*)(p + 0x248) == fn_8022F3DC(i)) {
+                    if (i == *(s32*)(p + 0x240)) {
+                        u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                        param += 0x800000;
+                        param = *(s32*)(p + 0x234) + param;
+                        s32 room = fn_8023DE58(i);
+                        Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
+                    }
+                } else if (i == *(s32*)(p + 0x248) && i == *(s32*)(p + 0x240)) {
+                    u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                    param += 0x800000;
+                    param = *(s32*)(p + 0x234) + param;
+                    s32 room = fn_8023DE58(i);
+                    Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
+                }
+            }
+        }
+        if (*(s32*)(p + 0x238) == 0) {
+            fn_80230FD0(*(s32*)(p + 0x240), 0x20013);
+            fn_802A3948(lbl_8053AC98, p + 0x25c, 0, *(s32*)(p + 4), 0x10);
+            s32 r = fn_802D4C10(fn_802D6A9C(), *(s32*)(p + 4), *(u32*)(p + 0x23c));
+            if (r != -1) {
+                fn_802D7D00(fn_802D6A9C(), *(s32*)(p + 4), r, 1);
+            }
+            JGeometry::TVec3f a(lbl_805413B8 + *(f32*)(p + 0x25c), lbl_805413B8 + *(f32*)(p + 0x260), lbl_805413BC);
+            fn_8013CC50(*(s32*)(p + 4), &a, 0xd0, 0, 0, 0, 0, 1, lbl_805413B0);
+            JGeometry::TVec3f b(lbl_805413B8 + *(f32*)(p + 0x25c), lbl_805413B8 + *(f32*)(p + 0x260), lbl_805413BC);
+            fn_8013CC50(*(s32*)(p + 4), &b, 0xd1, 1, 0, 0, 0, 1, lbl_805413B0);
+        }
+        ret = 1;
+    }
+    return ret;
 }
 
 // ---- Tkra_EmptyHook.cpp ----
