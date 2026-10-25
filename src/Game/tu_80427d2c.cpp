@@ -622,7 +622,7 @@ extern "C" u8 fn_80428448() {
         r = 0;
     }
     lbl_8053AEB0 = r;
-    if (!((u8 (*)(s32, s32))fn_80428AC8)(0, 0)) {
+    if (!fn_80428AC8(0, 0, r)) {
         return 0;
     }
     return 1;
