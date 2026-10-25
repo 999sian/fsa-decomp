@@ -20,6 +20,14 @@ static inline void setRotX90(Mtx m) {
     m[0][1] = m[1][0] = m[0][2] = m[2][0] = 0.0f;
 }
 
+static inline f32 calcLayerOffset(f32 z, s32 a, s32 b) {
+    if (z > 0.0f && a < 1) {
+        a++;
+        b--;
+    }
+    return (f32)(a * 0x400 + b * 0x80);
+}
+
 static inline void setRotX(Mtx m, f32 angle) {
     f32 s = sin(angle);
     f32 c = cos(angle);
@@ -67,15 +75,19 @@ extern "C" void fn_801902D0(u8* p) {
         virtual void v3();
         virtual void* getRes(u32 type, const char* name);
     };
-    s32 i;
+    f32 off;
+    f32 x;
+    f32 y;
+    f32 z;
     u8* cur;
+    s32 i;
     cur = p;
     for (i = 0; i < 7; i++, cur += 0x60) {
         if (cur[0x64] != 0) {
             JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(cur + 8);
-            f32 x = *(f32*)(cur + 0x20);
-            f32 y = *(f32*)(cur + 0x30);
-            f32 z = *(f32*)(cur + 0x40);
+            x = *(f32*)(cur + 0x20);
+            y = *(f32*)(cur + 0x30);
+            z = *(f32*)(cur + 0x40);
             s32 a = *(s32*)(cur + 0x5c);
             s32 b = *(s32*)(cur + 0x60);
             Mtx m;
@@ -84,7 +96,7 @@ extern "C" void fn_801902D0(u8* p) {
                 a++;
                 b--;
             }
-            f32 off = (f32)(a * 0x400 + b * 0x80);
+            off = (f32)(a * 0x400 + b * 0x80);
             m[0][3] = 0.0f;
             m[1][3] = 0.0f;
             m[2][3] = 0.0f;
@@ -93,7 +105,7 @@ extern "C" void fn_801902D0(u8* p) {
             r[0][3] = 0.0f;
             r[1][3] = 0.0f;
             r[2][3] = 0.0f;
-            setRotX(r, lbl_8053E214);
+            setRotX90(r);
             PSMTXConcat(m, r, m);
             m[0][3] = x;
             m[1][3] = y + off;
@@ -173,7 +185,7 @@ extern "C" void fn_801902D0(u8* p) {
             JGeometry::TVec3<f32> v(1.0f, 0.7f, -1.0f);
             Mtx m;
             PSMTXTrans(m, *(f32*)(cur + 0x4ac), *(f32*)(cur + 0x4b0), *(f32*)(cur + 0x4b4));
-            setRotX(m, lbl_8053E214);
+            setRotX90(m);
             v.scale(1.5f);
             fn_8013ABCC(*(void**)(cur + 0x4c0), &v, m);
         }
@@ -195,15 +207,18 @@ extern "C" void fn_801902D0(u8* p) {
     for (i = 0; i < *(s32*)(p + 0x79c); i++, cur += 0x18) {
         if (*(void**)(cur + 0x62c) != NULL) {
             JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
-            DrawRec rec;
             Mtx m;
+            DrawRec rec;
             PSMTXTrans(m, *(f32*)(cur + 0x61c), *(f32*)(cur + 0x620), *(f32*)(cur + 0x624));
             m[1][3] -= 1024.0f;
             m[2][3] -= 1024.0f;
             if (cur[0x628] != 0) {
                 v.scale(0.33333334f);
             }
-            JGeometry::TVec3<f32> pos(*(f32*)(cur + 0x61c), *(f32*)(cur + 0x620), *(f32*)(cur + 0x624));
+            JGeometry::TVec3<f32> pos;
+            pos.x = *(f32*)(cur + 0x61c);
+            pos.y = *(f32*)(cur + 0x620);
+            pos.z = *(f32*)(cur + 0x624);
             if (cur[0x628] != 0) {
                 pos.x -= 16.0f;
                 pos.y -= 16.0f;
@@ -211,7 +226,7 @@ extern "C" void fn_801902D0(u8* p) {
                 pos.x -= 48.0f;
                 pos.y -= 48.0f;
             }
-            rec.b1c = -1;
+            *(s8*)&rec.b1c = -1;
             rec.b1d = -1;
             fn_8013ABCC(*(void**)(cur + 0x62c), &v, m);
             fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos,
@@ -223,8 +238,7 @@ extern "C" void fn_801902D0(u8* p) {
         Mtx m;
         PSMTXTrans(m, 0.5f * (*(f32*)(o + 0xcc) + *(f32*)(o + 0xd4)),
                    0.5f * (*(f32*)(o + 0xd0) + *(f32*)(o + 0xd8)) + 1024.0f, 1024.0f);
-        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
-        fn_8013ABCC(*(void**)(p + 0x7ac), &v, m);
+        fn_8013ABCC(*(void**)(p + 0x7ac), &JGeometry::TVec3<f32>(1.0f, 1.0f, -1.0f), m);
     }
     if (*(void**)(p + 0x7c4) != NULL && *(s32*)(p + 0x7bc) > 0 &&
         *(s32*)(p + 0x7bc) < *(s16*)(*(u8**)(p + 0x7c8) + 6)) {
@@ -232,8 +246,7 @@ extern "C" void fn_801902D0(u8* p) {
         Mtx m;
         PSMTXTrans(m, 0.5f * (*(f32*)(o + 0xcc) + *(f32*)(o + 0xd4)),
                    0.5f * (*(f32*)(o + 0xd0) + *(f32*)(o + 0xd8)) + 1024.0f, 1024.0f);
-        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
-        fn_8013ABCC(*(void**)(p + 0x7c4), &v, m);
+        fn_8013ABCC(*(void**)(p + 0x7c4), &JGeometry::TVec3<f32>(1.0f, 1.0f, -1.0f), m);
     }
     if (*(void**)(p + 0x7e0) != NULL && p[0x7ec] != 0) {
         JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
