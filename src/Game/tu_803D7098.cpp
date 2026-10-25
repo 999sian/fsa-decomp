@@ -100,7 +100,7 @@ struct FsaSlots {
 struct FsaPaneRef {
     void* unknown;
     FsaSlots* pane;
-    void setAlpha(const f32 alpha) { pane->v7((s32)alpha); }
+    void setAlpha(const f32& alpha) { pane->v7((s32)alpha); }
 };
 
 struct FsaNodeB {
@@ -437,8 +437,8 @@ extern "C" void fn_803D8364(u8* param_1) {
             if (lbl_80543534 == f31) {
                 if (param_1[0x79] != param_1[0x78]) {
                     param_1[0x79] = param_1[0x78];
-                    u8* o = *(u8* volatile*)(param_1 + 0x2c);
-                    (*(FsaSlots**)(o + 4))->v7((s32)f30);
+                    FsaPaneRef* o = *(FsaPaneRef**)(param_1 + 0x2c);
+                    o->setAlpha(f30);
                 }
             }
         }
