@@ -599,26 +599,6 @@ u8 fn_804149C0(void) {
 	return lbl_8050EC80[idx].field87 & 1;
 }
 
-struct E720;
-void fn_8040ED20(u8* self);
-void fn_8040E838(u8* self);
-void fn_8040E720(E720* self);
-void fn_8040E3A0(u8* self);
-void fn_8040D3D0(u8* self);
-void fn_8040CE90(u8* self);
-void fn_8040C950(u8* self);
-void fn_8040BC1C(u8* self);
-void fn_80409FDC(u8* self);
-void fn_8040B93C(u8* self);
-void fn_8040B5A0(u8* self);
-void fn_8040B388(u8* self);
-void fn_804096E8(u8* self);
-void fn_80409450(void* p);
-void fn_80409330(u8* self);
-void fn_80403F50(u8* self);
-void fn_8040F16C(u8* self);
-void fn_8040E298(u8* self);
-
 }
 
 // The state handlers are member functions of the menu object in the original: tables of
