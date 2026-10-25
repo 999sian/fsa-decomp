@@ -1096,7 +1096,7 @@ extern "C" u8 fn_80388EEC(s32 p) {
 
 extern f32 lbl_805430D0;
 extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3);
-extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f32 x, f32 y, f32 w, f32 h) {
+extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, const JUtility::TColor* __restrict color, f32 x, f32 y, f32 w, f32 h) {
     if (!lbl_8053AD78->be4) {
         if (lbl_8053AD78->w3c != id) {
             lbl_8053AD78->w3c = id;
@@ -1105,18 +1105,19 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f
         }
         f32 scale = w / lbl_805430D0;
         f32 len = lbl_8053AD78->f6c * scale;
-        f32 total = len + (s32)JUTVideo::getManager()->getFbWidth();
+        f32 total = (s32)JUTVideo::getManager()->getFbWidth();
+        total += len;
         ((J2DTextBox*)lbl_8053AD78->p4)->setFontSize(w, h);
         ((J2DTextBox*)lbl_8053AD78->p4)->setFontColor(*color, *color);
         lbl_8053AD78->w7c = lines;
         if (lbl_8053AD78->w7c == 0) {
-            lbl_8053AD78->f70 = x - lbl_8053AD78->f6c * scale * lbl_805430BC;
-            lbl_8053AD78->f78 = lbl_805430C8;
+            lbl_8053AD78->f70 = x - lbl_8053AD78->f6c * scale * 0.5f;
+            lbl_8053AD78->f78 = 0.0f;
         } else {
             lbl_8053AD78->f70 = (s32)JUTVideo::getManager()->getFbWidth();
             lbl_8053AD78->f78 = total / lbl_8053AD78->w7c;
         }
-        lbl_8053AD78->f74 = y - h * lbl_805430BC;
+        lbl_8053AD78->f74 = y - h * 0.5f;
         lbl_8053AD78->be5 = flag;
         lbl_8053AD78->be4 = 1;
         return 1;
@@ -1432,8 +1433,14 @@ extern "C" u8 fn_802D800C(void* p, u8 id);
 extern "C" void fn_802D8050(void* p, u8 id, s32 on, s32 v);
 extern "C" s32 fn_80138A30(void* p);
 extern u8 lbl_8053ACD8;
+#pragma opt_lifetimes on
+#pragma opt_propagation on
 extern "C" void fn_8038D570() {
     s32 i;
+    s32 j;
+    s32 k;
+    u8 id;
+    s32 n;
     lbl_8053AD78->be7 = 0;
     for (i = 0; i < 4; i++) {
         if (testBit(lbl_8053AAF8->b82, i) == true) {
@@ -1443,8 +1450,8 @@ extern "C" void fn_8038D570() {
     }
     if (lbl_8053AD78->be4) {
         if (lbl_8053AD78->w7c == 0) {
-            for (i = 0; i < 4; i++) {
-                if ((lbl_8053AD78->be5 & (1 << i)) && fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100)) {
+            for (j = 0; j < 4; j++) {
+                if ((lbl_8053AD78->be5 & (1 << j)) && fn_80309D6C(lbl_8053AD30, fn_8030AAF4(j), 0x100)) {
                     lbl_8053AD78->be4 = 0;
                 }
             }
@@ -1453,8 +1460,10 @@ extern "C" void fn_8038D570() {
             lbl_8053AD78->f70 -= lbl_8053AD78->f78;
             if (lbl_8053AD78->w7c == 0) {
                 lbl_8053AD78->be4 = false;
-                for (i = 0; i < 4; i++) {
-                    if ((lbl_8053AD78->be5 & (1 << i)) && fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100)) {
+            }
+            {
+                for (k = 0; k < 4; k++) {
+                    if ((lbl_8053AD78->be5 & (1 << k)) && fn_80309D6C(lbl_8053AD30, fn_8030AAF4(k), 0x100)) {
                         lbl_8053AD78->be4 = 0;
                     }
                 }
@@ -1475,26 +1484,24 @@ extern "C" void fn_8038D570() {
         if (mn + h * 60 > m->w48) {
             if (m->beb) {
                 if (!fn_802D800C(fn_802D6A9C(), m->bea)) {
-                    u8 id = lbl_8053AD78->bea;
-                    fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
+                    t = lbl_8053AD78->bea;
+                    fn_802D8050(fn_802D6A9C(), t, 1, 0xff);
                 }
             } else {
                 if (fn_802D800C(fn_802D6A9C(), m->bea) == 1) {
-                    u8 id = lbl_8053AD78->bea;
-                    fn_802D8050(fn_802D6A9C(), id, 0, 0xff);
+                    t = lbl_8053AD78->bea;
+                    fn_802D8050(fn_802D6A9C(), t, 0, 0xff);
                 }
             }
         }
     }
     if (lbl_8053AD78->bed) {
-        for (i = 0; i < fn_80138A30(lbl_8053AAF8); i++) {
-            (&lbl_8053ACD8)[i] = 1;
+        for (n = 0; n < fn_80138A30(lbl_8053AAF8); n++) {
+            (&lbl_8053ACD8)[n] = 1;
         }
     }
     lbl_8053AD78->be8 = 0;
 }
-
-
 extern "C" u8 fn_8022FA80(s32 p);
 extern "C" u8 fn_80230188(s32 p);
 extern "C" u8 fn_8022E438(s32 p, s32 q);
