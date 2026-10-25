@@ -61,23 +61,6 @@ static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
     *(f32*)(self + 0x6c) = y1;
 }
 
-static inline bool tuCheckHit(u8* self, s32 idx) {
-    s32 room = *(s32*)(self + 0x4);
-    if (fn_8023DE58(idx) == room) {
-        for (s32 j = 0; j < 8; j++) {
-            JGeometry::TVec3f v;
-            fn_8022E088(idx, j, &v);
-            v -= *(JGeometry::TVec3f*)(self + 0xc);
-            v.z = 0.0f;
-            if (tuInBox(v, *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c))) {
-                fn_8022DF48(idx);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 static inline bool tuInBox2(const JGeometry::TVec3f& v, const f32* box) {
     f32 x0 = box[0];
     f32 y0 = box[1];
