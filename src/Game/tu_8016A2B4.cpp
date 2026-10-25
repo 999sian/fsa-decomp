@@ -9,6 +9,7 @@ extern "C" void* fn_800CECCC(const void*, u32);
 #include "Game/SinitPoolChain.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "dolphin/gx.h"
 
 struct ActorVObj8016B0B0 {
     virtual void v00();
@@ -177,6 +178,68 @@ extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const ch
     }
 }
 
+extern const f32 lbl_8053D954;
+#pragma opt_propagation off
+extern "C" void fn_8016A7DC(void* self, void* obj, const Vec* offset, s32 idx, u8 flagA, u8 flagB, f32 scaleA, f32 scaleB) {
+    f32 one;
+    f32 z;
+    f32 zero;
+    if (idx == 1) {
+        u8* p = lbl_8053AAF8;
+        bool bVar1;
+        if (*(s32*)(p + 0x4c) == 0xb) {
+            bVar1 = 1;
+        } else {
+            bVar1 = p[0x88] == 2;
+        }
+        if (bVar1) {
+            return;
+        }
+    }
+    u8* q = *(u8**)(lbl_8053AB10 + 0x24);
+    z = lbl_8053D950 * (f32)(idx << 10);
+    JGeometry::TVec3<f32> v;
+    if (flagA) {
+        f32 a = -*(f32*)(q + 0x10);
+        f32 b = a * scaleA;
+        v.x = (a - b) + (f32)((s32)(b * lbl_8053D954) << 9);
+    } else {
+        v.x = lbl_8053D944;
+    }
+    if (flagB) {
+        f32 a = -*(f32*)(q + 0x20);
+        f32 b = a * scaleA;
+        v.y = (a - b) + (f32)((s32)(b * lbl_8053D954) << 9);
+    } else {
+        v.y = lbl_8053D944;
+    }
+    v.y = v.y + z;
+    v.z = z;
+    JMathInlineVEC::PSVECAdd(&v, offset, &v);
+    zero = lbl_8053D944;
+    one = lbl_8053D93C;
+    Mtx m;
+    m[0][0] = one;
+    m[0][1] = zero;
+    m[0][2] = zero;
+    m[0][3] = v.x;
+    m[1][0] = zero;
+    m[1][1] = zero;
+    m[1][2] = one;
+    m[1][3] = v.y;
+    m[2][0] = zero;
+    m[2][1] = one;
+    m[2][2] = zero;
+    m[2][3] = v.z;
+    *(f32*)((u8*)obj + 0x18) = scaleB;
+    *(f32*)((u8*)obj + 0x1c) = one;
+    *(f32*)((u8*)obj + 0x20) = scaleB;
+    PSMTXCopy(m, (MtxPtr)((u8*)obj + 0x24));
+    ((ActorVObj8016B0B0*)obj)->v02();
+    ((ActorVObj8016B0B0*)obj)->v01();
+    ((ActorVObj8016B0B0*)obj)->v05();
+}
+#pragma opt_propagation reset
 extern "C" void fn_8016A9EC(u8* self) {
     if (self[0x1DD]) {
         Vec offset;
@@ -287,45 +350,53 @@ extern "C" void fn_8016AD84(u8* self) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8016ADE0(void* param_1) {
+    struct ColorHelper {
+        static inline GXColor make(u8 a) {
+            GXColor c = *(GXColor*)&lbl_80543F38;
+            c.a = a;
+            return c;
+        }
+    };
     u8* p = (u8*)param_1;
     if (p[0x1ec] != 0) {
-        u8* r8 = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 f31, f30, f29, f28, fw, fh;
+        u8* r7_20 = *(u8**)(lbl_8053AB10 + 0x20);
         u8* r7 = *(u8**)(sManager__8JUTVideo + 0x4);
-        u32 a = *(u32*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2380);
-        u32 b = *(u32*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2384);
-        f32 fa = (f32)a;
-        f32 fb = (f32)b;
-        f32 fw = (f32)*(u16*)(r7 + 0x4);
-        f32 fh = (f32)*(u16*)(r7 + 0x6);
-        f32 v = (f32)(*(u32*)(p + 0x1c0) & 0x7ff);
+        fw = (f32)(s32)*(u16*)(r7 + 0x4);
+        fh = (f32)(s32)*(u16*)(r7 + 0x6);
+        f32 v = (f32)(*(s32*)(p + 0x1c0) & 0x7ff);
+        f32 fa = (f32)*(s32*)(r7_20 + 0x2380);
+        f32 fb = (f32)*(s32*)(r7_20 + 0x2384);
+        u8* r8 = *(u8**)(lbl_8053AB10 + 0x24);
         f32 sx = lbl_8053D938 / fa;
-        f32 sy = lbl_8053D938 / fb;
         f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
-        f32 f4 = lbl_8053D964 * v;
-        f32 f29 = -*(f32*)(r8 + 0x10) * sx - f4;
-        f32 f28 = -*(f32*)(r8 + 0x20) * sy - f4;
-        f32 f31 = k * (lbl_8053D940 * (sx * fw));
-        f32 f30 = k * (lbl_8053D940 * (sy * fh));
-        GXColor color = *(GXColor*)&lbl_80543F38;
+        f32 sy = lbl_8053D938 / fb;
+        f29 = -*(f32*)(r8 + 0x10) * sx;
+        f28 = -*(f32*)(r8 + 0x20) * sy;
+        f31 = k * (lbl_8053D940 * (sx * (f32)(s32)*(u16*)(r7 + 0x4)));
+        f30 = k * (lbl_8053D940 * (sy * (f32)(s32)*(u16*)(r7 + 0x6)));
+        f29 -= lbl_8053D964 * v;
+        f28 -= lbl_8053D964 * v;
         fn_8013B460(lbl_8053AB10);
         fn_8013B1E8(lbl_8053AB10);
         load__10JUTTextureF11_GXTexMapID(*(void**)(p + 0xf4), 0);
-        color.a = p[0x1ec];
-        GXSetTevColor((GXTevRegID)1, color);
+        GXSetTevColor((GXTevRegID)1, ColorHelper::make(p[0x1ec]));
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXSetZCompLoc(GX_FALSE);
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-        GXPosition3f32(0.0f, 0.0f, 0.0f);
+        GXPosition3f32(lbl_8053D944, lbl_8053D944, lbl_8053D944);
         GXTexCoord2f32(f29 - f31, f28 - f30);
-        GXPosition3f32(fw, 0.0f, 0.0f);
+        GXPosition3f32(fw, lbl_8053D944, lbl_8053D944);
         GXTexCoord2f32(f29 + f31, f28 - f30);
-        GXPosition3f32(fw, fh, 0.0f);
+        GXPosition3f32(fw, fh, lbl_8053D944);
         GXTexCoord2f32(f29 + f31, f28 + f30);
-        GXPosition3f32(0.0f, fh, 0.0f);
+        GXPosition3f32(lbl_8053D944, fh, lbl_8053D944);
         GXTexCoord2f32(f29 - f31, f28 + f30);
     }
 }
+#pragma opt_propagation reset
 
 extern "C" void fn_8016B054(u8* self) {
     if (self[0x1D3]) {
@@ -343,6 +414,7 @@ extern "C" void fn_8016B0B0(u8* self) {
     extern const f32 lbl_8053D96C;
     extern const f32 lbl_8053D970;
     extern const f32 lbl_8053D974;
+    extern const f64 lbl_8053D948;
     if (self[0x1CF]) {
         u8* p = *(u8**)(lbl_8053AB10 + 0x24);
         f32 scale = lbl_8053D968 / *(f32*)(p + 0x858);
@@ -350,9 +422,15 @@ extern "C" void fn_8016B0B0(u8* self) {
             if (*(u8**)(self + 0x3C + i * 4) == NULL) continue;
             if (i == 3 && self[0x1D0] == 0) continue;
             if ((i == 1 || i == 2) && self[0x1D0] != 0) continue;
-            f32 fi = (f32)i;
-            f32 f4 = lbl_8053D96C - lbl_8053D970 * fi;
             Mtx m;
+            union {
+                f64 d;
+                u32 w[2];
+            } magic;
+            magic.w[0] = 0x43300000;
+            magic.w[1] = (u32)i ^ 0x80000000;
+            f32 fi = magic.d - lbl_8053D948;
+            f32 f4 = lbl_8053D96C - lbl_8053D970 * fi;
             m[0][0] = lbl_8053D93C;
             m[0][1] = lbl_8053D944;
             m[0][2] = lbl_8053D944;
@@ -369,9 +447,9 @@ extern "C" void fn_8016B0B0(u8* self) {
             *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x1C) = scale;
             *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x20) = scale;
             PSMTXCopy(m, (MtxPtr)(*(u8**)(self + 0x3C + i * 4) + 0x24));
-            ((void (*)(void*))((void**)*(void**)(*(u8**)(self + 0x3C + i * 4)))[4])(*(u8**)(self + 0x3C + i * 4));
-            ((void (*)(void*))((void**)*(void**)(*(u8**)(self + 0x3C + i * 4)))[3])(*(u8**)(self + 0x3C + i * 4));
-            ((void (*)(void*))((void**)*(void**)(*(u8**)(self + 0x3C + i * 4)))[7])(*(u8**)(self + 0x3C + i * 4));
+            ((ActorVObj8016B0B0*)*(void**)(self + 0x3C + i * 4))->v02();
+            ((ActorVObj8016B0B0*)*(void**)(self + 0x3C + i * 4))->v01();
+            ((ActorVObj8016B0B0*)*(void**)(self + 0x3C + i * 4))->v05();
         }
     }
 }
@@ -1199,8 +1277,7 @@ extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
             if (*(void**)(p + 0x158) != 0) {
                 void* obj = *(void**)(p + 0x158);
                 if (obj != 0) {
-                    void (**vt)(void*, s32) = *(void (***)(void*, s32))((u8*)obj + 8);
-                    vt[12](obj, 1);
+                    (*(void (***)(void*, s32))((u8*)obj + 8))[12](obj, 1);
                 }
             }
             p += 0x1c;
