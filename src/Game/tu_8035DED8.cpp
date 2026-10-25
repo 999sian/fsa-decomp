@@ -241,7 +241,7 @@ Unk8035E60CTable lbl_804AD660[2] = {{ {
     {0, -1, (void (*)())fn_8035DFE4},
     {0, -1, (void (*)())fn_8035DF48}
 } }};
-Unk8035DA78Func lbl_804AD6A8[6] = {0};
+#define lbl_804AD6A8 (lbl_804AD660[1].f)
 extern "C" void fn_8035E60C(void) {
     static u32 c0[3], c1[3], c2[3], c3[3], c4[3], c5[3], c6[3], c7[3], c8[3];
     lbl_804AD660[1].f[0] = lbl_804AD660[0].f[0];
