@@ -243,6 +243,7 @@ extern "C" s32 fn_801F7A6C(ActorPool* pool) {
     return n;
 }
 
+#pragma peephole off
 extern "C" s32 fn_801F7AB8(ActorPool* pool, u32 type, s32 exceptId) {
     s32 n = 0;
     s32 i;
@@ -257,7 +258,7 @@ extern "C" s32 fn_801F7AB8(ActorPool* pool, u32 type, s32 exceptId) {
     }
     return n;
 }
-
+#pragma peephole reset
 extern "C" void fn_801F7B18(ActorPool* pool) {
     fn_802D6A9C();
     for (s32 i = 0; i < 4; i++) {
@@ -311,7 +312,7 @@ extern "C" void fn_801F7CAC(u8* mgr) {
     }
     n = *(s32*)(mgr + 0x1008);
     it = mgr;
-    for (i = 0; i < n; i++, it += 4) {
+    for (i = 0; i < n; it += 4, i++) {
         u8* a = *(u8**)(it + 8);
         if (a == NULL || a[0x11c] == 0 || *(s32*)(a + 4) != 0) {
             continue;
@@ -430,8 +431,9 @@ extern "C" BOOL fn_801F84C4(LinkPool* pool, LinkActor* actor) {
     return added;
 }
 
+#pragma opt_common_subs off
 extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* count, s32 max) {
-    int n = pool->mCount;
+    s32 n = pool->mCount;
     *count = 0;
     for (s32 i = 0; i < n; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->mType == 'RAIL' &&
@@ -446,7 +448,7 @@ extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* coun
     }
     return TRUE;
 }
-
+#pragma opt_common_subs reset
 extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     s32 id = -1;
     f32 best = 1000000.0f;
@@ -474,10 +476,10 @@ extern "C" s32 fn_801F778C(ActorPool* pool, u32 type, f32* pos, f32* outDist) {
     f32 best = 1000000.0f;
     for (s32 i = 0; i < pool->mCount; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType) {
-            f32 dy = pos[1] - pool->mActors[i]->mY;
             f32 dx = pos[0] - pool->mActors[i]->mX;
-            f32 dy2 = dy * dy;
+            f32 dy = pos[1] - pool->mActors[i]->mY;
             f32 dx2 = dx * dx;
+            f32 dy2 = dy * dy;
             f32 d = dx2 + dy2;
             if (d < best) {
                 id = pool->mActors[i]->mId;
@@ -545,21 +547,23 @@ extern "C" s32 fn_801F750C(const ActorPool* pool, s32 param, s32 exceptId) {
     return id;
 }
 
-extern "C" s32 fn_801F7274(ActorPool* pool, s32 param, PoolActor** out, s32 exceptId) {
+#pragma opt_propagation off
+extern "C" s32 fn_801F7274(const ActorPool* pool, s32 param, PoolActor** out, s32 exceptId) {
     s32 count = pool->mCount;
+    PoolActor** cur = (PoolActor**)pool;
     s32 n = 0;
-    for (s32 i = 0; i < count; i++) {
-        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
-            exceptId != pool->mActors[i]->mId && pool->mActors[i]->mZ <= 16.0f &&
-            fn_801CC9B0(pool->mActors[i]))
-        {
+    s32 i;
+    for (i = 0; i < count; cur++, i++) {
+        PoolActor* a = cur[2];
+        if (a != NULL && a->mActive && param == a->mParam &&
+            exceptId != a->mId && a->mZ <= 16.0f && fn_801CC9B0(a)) {
             n++;
-            *out++ = pool->mActors[i];
+            *out++ = cur[2];
         }
     }
     return n;
 }
-
+#pragma opt_propagation reset
 struct Rect4 { f32 x0, y0, x1, y1; };
 
 static inline u8 rectContains(Rect4* rect, f32* p) {
@@ -612,35 +616,40 @@ extern "C" void fn_801F8658(ActorPool* pool) {
 }
 
 extern "C" void fn_801F871C(void* actorPoolBase) {
-    u8* base = (u8*)actorPoolBase;
-    s32 nPending = 0;
-    u8 bVar8 = 0;
+    s32 nPending;
+    u8 bVar8;
     u8 cVar13;
+    u8* base = (u8*)actorPoolBase;
     s32 i;
     s32 j;
     u8* slot;
     u8* a;
-    u8* g = (u8*)lbl_8053AAF8;
 
+    nPending = 0;
     fn_801F6068();
     base[0x3040] = 0;
-    for (i = 0; i < 0x20; i++) {
-        s32* p = (s32*)(base + 0x201c + i * 0x80);
-        p[0] = -1; p[1] = -1; p[2] = -1; p[3] = -1;
-        p[4] = -1; p[5] = -1; p[6] = -1; p[7] = -1;
-        p[8] = -1; p[9] = -1; p[10] = -1; p[11] = -1;
-        p[12] = -1; p[13] = -1; p[14] = -1; p[15] = -1;
-        p[16] = -1; p[17] = -1; p[18] = -1; p[19] = -1;
-        p[20] = -1; p[21] = -1; p[22] = -1; p[23] = -1;
-        p[24] = -1; p[25] = -1; p[26] = -1; p[27] = -1;
-        p[28] = -1; p[29] = -1; p[30] = -1; p[31] = -1;
+    {
+        u8* q = base;
+        s32 neg = -1;
+        for (i = 0; i < 0x20; i++) {
+            *(s32*)(q + 0x201c) = neg; *(s32*)(q + 0x2020) = neg; *(s32*)(q + 0x2024) = neg; *(s32*)(q + 0x2028) = neg;
+            *(s32*)(q + 0x202c) = neg; *(s32*)(q + 0x2030) = neg; *(s32*)(q + 0x2034) = neg; *(s32*)(q + 0x2038) = neg;
+            *(s32*)(q + 0x203c) = neg; *(s32*)(q + 0x2040) = neg; *(s32*)(q + 0x2044) = neg; *(s32*)(q + 0x2048) = neg;
+            *(s32*)(q + 0x204c) = neg; *(s32*)(q + 0x2050) = neg; *(s32*)(q + 0x2054) = neg; *(s32*)(q + 0x2058) = neg;
+            *(s32*)(q + 0x205c) = neg; *(s32*)(q + 0x2060) = neg; *(s32*)(q + 0x2064) = neg; *(s32*)(q + 0x2068) = neg;
+            *(s32*)(q + 0x206c) = neg; *(s32*)(q + 0x2070) = neg; *(s32*)(q + 0x2074) = neg; *(s32*)(q + 0x2078) = neg;
+            *(s32*)(q + 0x207c) = neg; *(s32*)(q + 0x2080) = neg; *(s32*)(q + 0x2084) = neg; *(s32*)(q + 0x2088) = neg;
+            *(s32*)(q + 0x208c) = neg; *(s32*)(q + 0x2090) = neg; *(s32*)(q + 0x2094) = neg; *(s32*)(q + 0x2098) = neg;
+            q += 0x80;
+        }
     }
+    bVar8 = 0;
     *(s32*)(base + 0x301c) = 0;
-    if ((g[0x7f] != 0 && (fn_80239D38() != 0 || fn_80134CC8(lbl_8053AAF8) != 0)) || lbl_80529DEC[0x240] != 0) {
+    if ((((u8*)lbl_8053AAF8)[0x7f] != 0 && (fn_80239D38() != 0 || fn_80134CC8(lbl_8053AAF8) != 0)) || lbl_80529DEC[0x240] != 0) {
         bVar8 = 1;
     }
-    cVar13 = g[0x94];
-    if (g[0x96] != 0) {
+    cVar13 = ((u8*)lbl_8053AAF8)[0x94];
+    if (((u8*)lbl_8053AAF8)[0x96] != 0) {
         cVar13 = 1;
     }
     fn_8020D58C();
@@ -655,9 +664,10 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
     }
     fn_802D6A9C();
     if (fn_802DCD0C() != 0) {
+        u8* pa = base;
+        u8* ph = base;
         for (i = 0; i < 0x400; i++) {
-            slot = base + i * 4;
-            a = *(u8**)(slot + 8);
+            a = *(u8**)(pa + 8);
             if (a != 0) {
                 if (a[0x11c] != 0) {
                     u8 need = (a[0x11e] != 0 || a[0xc4] != 0 || a[0xcc] != 0);
@@ -669,20 +679,20 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                         ((ActorSlot2*)a)->destroy(0);
                         fn_801EE508(a);
                     }
-                    fn_80456154(*(void**)(slot + 0x100c));
-                    a = *(u8**)(slot + 8);
+                    fn_80456154(*(void**)(ph + 0x100c));
+                    a = *(u8**)(pa + 8);
                     if (*(void**)(a + 8) == 0 && a[0x1a8] == 1) {
                         nPending++;
                     }
                 }
-                a = *(u8**)(slot + 8);
-                if (a[0x11c] == 0 && *(void**)(slot + 8) != 0) {
-                    fn_80456120(*(void**)(slot + 0x100c));
-                    a = *(u8**)(slot + 8);
+                a = *(u8**)(pa + 8);
+                if (a[0x11c] == 0 && *(void**)(pa + 8) != 0) {
+                    fn_80456120(*(void**)(ph + 0x100c));
+                    a = *(u8**)(pa + 8);
                     if (a != 0) {
                         ((ActorSlot2*)a)->destroy(1);
                     }
-                    *(void**)(slot + 8) = 0;
+                    *(void**)(pa + 8) = 0;
                     if (i + 1 == *(s32*)(base + 0x1008)) {
                         j = *(s32*)(base + 0x1008) - 2;
                         while (j >= 0) {
@@ -693,6 +703,8 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                     }
                 }
             }
+            pa += 4;
+            ph += 4;
         }
     } else {
         for (i = 0; i < 0x400; i++) {
@@ -706,7 +718,7 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                         if (*(void**)(a + 8) == 0 && a[0x1a8] == 1) {
                             nPending++;
                         }
-                        if (g[0x88] == 2 && *(u32*)(a + 0x1a0) == 0x5357444c) {
+                        if (((u8*)lbl_8053AAF8)[0x88] == 2 && *(u32*)(a + 0x1a0) == 0x5357444c) {
                             bVar1 = 0;
                         }
                     }
@@ -759,7 +771,15 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                             *(s32*)(base + 0x1008) = j + 1;
                         }
                     }
-                } else if (a[0x1a8] != 0 && a[0x196] == 0 && a[0x88] > 0.0f) {
+                } else if (a[0x1a8] != 0 && a[0x196] == 0 && *(f32*)(a + 0x88) - *(f32*)(a + 0x80) > lbl_8053F828 &&
+                           *(f32*)(a + 0x8c) - *(f32*)(a + 0x84) > lbl_8053F828 && *(s32*)(a + 0x108) > 0) {
+                    u8* act = a;
+                    void* handle = *(void**)(act + 0x198);
+                    s32 room = *(s32*)(act + 4);
+                    u8* sys = (u8*)fn_8020D58C();
+                    if (fn_8020D6AC(sys + sys[1] * 0x784 + 4, room, handle, (s32)(act + 0xc), 0)) {
+                        ((ActorSlot2*)act)->destroy(0);
+                    }
                 }
             }
         }
@@ -821,7 +841,8 @@ extern "C" void fn_801F7E88(ActorPool* pool) {
 extern "C" s32 fn_801F7F58(ActorPool* pool, PoolActor* a, u32* types, s32 excludeId, f32 f) {
     s32 param = a->mParam;
     s32 result = -1;
-    u8 kind = ((u8*)fn_802D6A9C())[param + 0x131df];
+    u8* base = (u8*)fn_802D6A9C();
+    u8 kind = base[param + 0x131df];
     s32 count = pool->mCount;
     for (s32 i = 0; i < count; i++) {
         PoolActor* p = pool->mActors[i];
@@ -839,10 +860,10 @@ extern "C" s32 fn_801F7F58(ActorPool* pool, PoolActor* a, u32* types, s32 exclud
                     f32 v1 = pos[1];
                     f32 v2 = pos[2];
                     f32 v3 = pos[3];
-                    if (v0 <= other[0]) v0 = other[0];
-                    if (v1 <= other[1]) v1 = other[1];
-                    if (v2 >= other[2]) v2 = other[2];
-                    if (v3 >= other[3]) v3 = other[3];
+                    if (pos[0] <= other[0]) v0 = other[0];
+                    if (pos[1] <= other[1]) v1 = other[1];
+                    if (pos[2] >= other[2]) v2 = other[2];
+                    if (pos[3] >= other[3]) v3 = other[3];
                     bool hit = false;
                     if (v2 >= v0 && v3 >= v1) {
                         hit = true;
@@ -869,8 +890,8 @@ extern "C" s32 fn_801F8108(Actor* self, u32 type, s32 handle, f32 radius) {
     u8* slot;
     s32 room;
     u32 types[2];
-    f32 boxA[4];
     f32 boxB[4];
+    f32 boxA[4];
 
     room = self->field_04;
     pool = *(u8**)(*(u8**)((u8*)lbl_8053AAF8 + 4) + 8);
@@ -881,7 +902,7 @@ extern "C" s32 fn_801F8108(Actor* self, u32 type, s32 handle, f32 radius) {
     slot = pool;
     for (i = 0; i < *(s32*)(pool + 0x1008); i++, slot += 4) {
         Actor* e = *(Actor**)(slot + 8);
-        if (e == NULL || e->field_11C == 0 || (s32)e->field_04 != room || handle == e->field_198) {
+        if (e == NULL || e->field_11C == 0 || (s32)e->field_04 != (s32)self->field_04 || handle == e->field_198) {
             continue;
         }
         if (near == 0) {
@@ -894,10 +915,10 @@ extern "C" s32 fn_801F8108(Actor* self, u32 type, s32 handle, f32 radius) {
             if (*p == e->field_1A0) {
                 fn_801F31C4(self, boxA);
                 fn_801F31C4(e, boxB);
-                f32 x0 = boxA[0];
-                f32 y0 = boxA[1];
-                f32 x1 = boxA[2];
                 f32 y1 = boxA[3];
+                f32 x1 = boxA[2];
+                f32 y0 = boxA[1];
+                f32 x0 = boxA[0];
                 if (x0 <= boxB[0]) x0 = boxB[0];
                 if (y0 <= boxB[1]) y0 = boxB[1];
                 if (x1 >= boxB[2]) x1 = boxB[2];
@@ -920,15 +941,18 @@ extern "C" void fn_801F31C4(const Actor* a, f32* out);
 extern "C" s32 fn_801F82CC(void* mgr, Actor* a, u8 c, f32 f) {
     f32 other[4];
     f32 pos[4];
+    s32 id;
     s32 result = -1;
     fn_801F31C4(a, pos);
-    s32 id = a->field_04;
-    u8 kind = ((u8*)fn_802D6A9C())[id + 0x131df];
+    id = a->field_04;
+    u8* tbl = (u8*)fn_802D6A9C();
+    u8 kind = tbl[id + 0x131df];
     PoolActor* p = *(PoolActor**)((u8*)mgr + 0x2018);
     while (p != NULL) {
         if (*((u8*)p + 0x11c) != 0 && p->mParam == (s32)a->field_04 && *((u8*)p + 0xc4) == 0) {
             if (c != 0 || p->mType != 0x4152494A) {
-                if (kind != 0 || __fabs(a->field_0C.z - p->mZ) <= f) {
+                if (kind == 0 && __fabs(a->field_0C.z - p->mZ) > f) {
+                } else {
                     fn_801F31C4((Actor*)p, other);
                     f32 v0 = other[0];
                     f32 v1 = other[1];
@@ -939,7 +963,7 @@ extern "C" s32 fn_801F82CC(void* mgr, Actor* a, u8 c, f32 f) {
                     if (other[2] >= pos[2]) v2 = pos[2];
                     if (other[3] >= pos[3]) v3 = pos[3];
                     u8 hit = 0;
-                    if (v3 <= v1 && v0 <= v2) {
+                    if (v0 <= v2 && v3 <= v1) {
                         hit = 1;
                     }
                     if (hit) {
@@ -1037,6 +1061,185 @@ extern "C" BOOL fn_801F68E0(u8* self) {
     return FALSE;
 }
 
+extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c);
+extern f32 lbl_8053F80C;
+extern f32 lbl_8053F810;
+extern f32 lbl_8053F814;
+extern f32 lbl_8053F818;
+extern f32 lbl_8053F81C;
+extern "C" void fn_801F6A4C(void* pool) {
+	u8* b;
+	u8* a;
+	s32 k;
+	s32 retry;
+	s32 i;
+	s32 j;
+	u8* self = (u8*)pool;
+	for (i = 0; i <= *(s32*)(self + 0x301c); i++) {
+		s32 handle = *(s32*)(self + 0x201c + i * 4);
+		if (handle == -1) {
+			continue;
+		}
+		u8* ap = (u8*)lbl_8053AAF8->m4->m8;
+		a = NULL;
+		if (handle >= 0) {
+			s32 idx = *(s32*)(ap + 0x2014);
+			if (idx >= 0) {
+				u8* c = *(u8**)(ap + 8 + idx * 4);
+				if (c != NULL && c[0x11c] != 0 && handle == *(s32*)(c + 0x198)) {
+					a = c;
+				}
+			}
+			if (a == NULL) {
+				s32 cnt = *(s32*)(ap + 0x1008);
+				for (k = 0; k < cnt; k++) {
+					u8* c = *(u8**)(ap + 8 + k * 4);
+					if (c != NULL && c[0x11c] != 0 && handle == *(s32*)(c + 0x198)) {
+						a = c;
+						break;
+					}
+				}
+			}
+		}
+		if (a == NULL || a[0x11c] == 0) {
+			continue;
+		}
+
+		f32 bx[4];
+		*(u32*)&bx[0] = *(u32*)(a + 0x60);
+		*(u32*)&bx[1] = *(u32*)(a + 0x64);
+		*(u32*)&bx[2] = *(u32*)(a + 0x68);
+		*(u32*)&bx[3] = *(u32*)(a + 0x6c);
+		bx[0] += *(f32*)(a + 0xc);
+		bx[1] += *(f32*)(a + 0x10);
+		bx[2] += *(f32*)(a + 0xc);
+		bx[3] += *(f32*)(a + 0x10);
+		*(s32*)(a + 0x9c) = -1;
+
+		for (j = 0; j < *(s32*)(self + 0x301c); j++) {
+			s32 hb = *(s32*)(self + 0x201c + j * 4);
+			b = NULL;
+			ap = (u8*)lbl_8053AAF8->m4->m8;
+			if (hb >= 0) {
+				s32 idx = *(s32*)(ap + 0x2014);
+				if (idx >= 0) {
+					u8* c = *(u8**)(ap + 8 + idx * 4);
+					if (c != NULL && c[0x11c] != 0 && hb == *(s32*)(c + 0x198)) {
+						b = c;
+					}
+				}
+				if (b == NULL) {
+					s32 cnt = *(s32*)(ap + 0x1008);
+					for (k = 0; k < cnt; k++) {
+						u8* c = *(u8**)(ap + 8 + k * 4);
+						if (c != NULL && c[0x11c] != 0 && hb == *(s32*)(c + 0x198)) {
+							b = c;
+							break;
+						}
+					}
+				}
+			}
+			if (b == NULL || b[0x11c] == 0) {
+				continue;
+			}
+			if (*(s32*)(a + 4) != *(s32*)(b + 4)) {
+				continue;
+			}
+			if (*(s32*)(a + 0x198) == *(s32*)(b + 0x198)) {
+				continue;
+			}
+			if (*(s32*)(a + 0xbc) > *(s32*)(b + 0xbc)) {
+				continue;
+			}
+
+			f32 bb[4];
+			*(u32*)&bb[0] = *(u32*)(b + 0x60);
+			*(u32*)&bb[1] = *(u32*)(b + 0x64);
+			*(u32*)&bb[2] = *(u32*)(b + 0x68);
+			*(u32*)&bb[3] = *(u32*)(b + 0x6c);
+			bb[0] += *(f32*)(b + 0xc);
+			bb[1] += *(f32*)(b + 0x10);
+			bb[2] += *(f32*)(b + 0xc);
+			bb[3] += *(f32*)(b + 0x10);
+
+			if ((*(u32*)(a + 0xb8) & 0xff) == 2) {
+				f32 mn0 = bx[0] <= bb[0] ? bx[0] : bb[0];
+				f32 mn1 = bx[1] <= bb[1] ? bx[1] : bb[1];
+				f32 mx2 = bx[2] >= bb[2] ? bx[2] : bb[2];
+				f32 mx3 = bx[3] >= bb[3] ? bx[3] : bb[3];
+				if (mx2 < mn0 && mx3 < mn1) {
+					*(s32*)(a + 0x9c) = *(s32*)(b + 0x198);
+					break;
+				}
+				continue;
+			}
+
+			retry = 0;
+			for (;;) {
+				f32 mn0 = bx[0] <= bb[0] ? bx[0] : bb[0];
+				f32 mn1 = bx[1] <= bb[1] ? bx[1] : bb[1];
+				f32 mx2 = bx[2] >= bb[2] ? bx[2] : bb[2];
+				f32 mx3 = bx[3] >= bb[3] ? bx[3] : bb[3];
+				if (!(mx2 < mn0 && mx3 < mn1)) {
+					break;
+				}
+				if (retry >= 8) {
+					break;
+				}
+				*(s32*)(a + 0x9c) = *(s32*)(b + 0x198);
+				f32 tp[3];
+				*(u32*)&tp[0] = *(u32*)(a + 0xc);
+				*(u32*)&tp[1] = *(u32*)(a + 0x10);
+				tp[2] = *(f32*)(a + 0x14);
+				f32 dx = *(f32*)(a + 0xc) - *(f32*)(b + 0xc);
+				f32 dy = *(f32*)(a + 0x10) - *(f32*)(b + 0x10);
+				*(u32*)&bx[0] = *(u32*)(a + 0x60);
+				*(u32*)&bx[1] = *(u32*)(a + 0x64);
+				*(u32*)&bx[2] = *(u32*)(a + 0x68);
+				*(u32*)&bx[3] = *(u32*)(a + 0x6c);
+
+				f32 ang = JMath::atanTable_.atan2_(dx, dy);
+				s32 ai = (s32)(ang * lbl_8053F80C);
+				u32 seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+				*(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
+				u32 bits = (seed >> 9) | 0x3f800000;
+				f32 rf = *(f32*)&bits - lbl_8053F818;
+				s32 ri = (s32)(lbl_8053F810 - lbl_8053F814 * rf);
+				s32 si = ai + ri;
+				f32 sn = JMath::sincosTable_[(u16)si >> 5].first;
+				f32 cs = JMath::sincosTable_[(u16)si >> 5].second;
+				tp[0] = tp[0] + sn;
+				tp[1] = tp[1] + cs;
+
+				if (*(u32*)(b + 0x1a0) == 0x424f594f) {
+					f32 ang2 = JMath::atanTable_.atan2_(dx, dy);
+					s32 i2 = (s32)(ang2 * lbl_8053F80C);
+					f32 c2 = JMath::sincosTable_[(u16)i2 >> 5].second;
+					f32 ang3 = JMath::atanTable_.atan2_(dx, c2);
+					s32 i3 = (s32)(ang3 * lbl_8053F80C);
+					f32 s3 = JMath::sincosTable_[(u16)i3 >> 5].first;
+					*(f32*)(a + 0x3c) = lbl_8053F81C * s3;
+					*(f32*)(a + 0x40) = lbl_8053F81C * c2;
+					*(u16*)(b + 0x94) = 1;
+				}
+
+				if (fn_801F23BC(a, *(u32*)(a + 4), tp, a + 0xc, a + 0x80, NULL, NULL, 0)) {
+					retry = 100;
+				} else {
+					*(f32*)(a + 0xc) = tp[0];
+					*(f32*)(a + 0x10) = tp[1];
+					*(f32*)(a + 0x14) = tp[2];
+					retry++;
+					bx[0] += *(f32*)(a + 0xc);
+					bx[1] += *(f32*)(a + 0x10);
+					bx[2] += *(f32*)(a + 0xc);
+					bx[3] += *(f32*)(a + 0x10);
+				}
+			}
+		}
+	}
+}
+
 extern "C" s32 fn_801F732C(ActorPool* pool, s32 param, f32* center, f32* pos, s32 exceptId, f32 radius) {
     f32 r2 = radius * radius;
     f32 best = FLT_MAX;
@@ -1092,6 +1295,7 @@ extern "C" void fn_801F8E4C(u8* pool) {
     PoolSlots* p = (PoolSlots*)pool;
     u32 off;
     u32 i;
+    s32 j;
     i = 0;
     off = i;
     for (; i < 0x400; i++, off += 4) {
@@ -1103,7 +1307,6 @@ extern "C" void fn_801F8E4C(u8* pool) {
             }
             s->mActors[0] = 0;
             if ((s32)(i + 1) == p->mCount) {
-                s32 j;
                 for (j = p->mCount - 2; j >= 0; j--) {
                     if (p->mActors[j] != 0) {
                         break;
@@ -1198,41 +1401,41 @@ extern "C" u8* fn_801F9078(u8* self, JKRHeap* heap) {
 	}
 	u32 n = flag ? 0x200 : 0x400;
 	*(char**)(self + 4) = fn_80085A10(n, (n << 10) + 0x1a8, 0x20, heap, 0);
-	u8* p = self;
+	s32* p = (s32*)self;
 	for (s32 i = 0x20; i > 0; i--) {
-		*(s32*)(p + 0x8) = 0;
-		*(s32*)(p + 0xc) = 0;
-		*(s32*)(p + 0x10) = 0;
-		*(s32*)(p + 0x14) = 0;
-		*(s32*)(p + 0x18) = 0;
-		*(s32*)(p + 0x1c) = 0;
-		*(s32*)(p + 0x20) = 0;
-		*(s32*)(p + 0x24) = 0;
-		*(s32*)(p + 0x28) = 0;
-		*(s32*)(p + 0x2c) = 0;
-		*(s32*)(p + 0x30) = 0;
-		*(s32*)(p + 0x34) = 0;
-		*(s32*)(p + 0x38) = 0;
-		*(s32*)(p + 0x3c) = 0;
-		*(s32*)(p + 0x40) = 0;
-		*(s32*)(p + 0x44) = 0;
-		*(s32*)(p + 0x48) = 0;
-		*(s32*)(p + 0x4c) = 0;
-		*(s32*)(p + 0x50) = 0;
-		*(s32*)(p + 0x54) = 0;
-		*(s32*)(p + 0x58) = 0;
-		*(s32*)(p + 0x5c) = 0;
-		*(s32*)(p + 0x60) = 0;
-		*(s32*)(p + 0x64) = 0;
-		*(s32*)(p + 0x68) = 0;
-		*(s32*)(p + 0x6c) = 0;
-		*(s32*)(p + 0x70) = 0;
-		*(s32*)(p + 0x74) = 0;
-		*(s32*)(p + 0x78) = 0;
-		*(s32*)(p + 0x7c) = 0;
-		*(s32*)(p + 0x80) = 0;
-		*(s32*)(p + 0x84) = 0;
-		p += 0x80;
+		p[2] = 0;
+		p[3] = 0;
+		p[4] = 0;
+		p[5] = 0;
+		p[6] = 0;
+		p[7] = 0;
+		p[8] = 0;
+		p[9] = 0;
+		p[10] = 0;
+		p[11] = 0;
+		p[12] = 0;
+		p[13] = 0;
+		p[14] = 0;
+		p[15] = 0;
+		p[16] = 0;
+		p[17] = 0;
+		p[18] = 0;
+		p[19] = 0;
+		p[20] = 0;
+		p[21] = 0;
+		p[22] = 0;
+		p[23] = 0;
+		p[24] = 0;
+		p[25] = 0;
+		p[26] = 0;
+		p[27] = 0;
+		p[28] = 0;
+		p[29] = 0;
+		p[30] = 0;
+		p[31] = 0;
+		p[32] = 0;
+		p[33] = 0;
+		p += 32;
 	}
 	f32 zero = lbl_8053F828;
 	lbl_804CABD8[0] = zero;
