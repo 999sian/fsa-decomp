@@ -99,5 +99,4 @@ extern "C" void* fn_8044C260(u8* this_) {
     return this_;
 }
 
-extern "C" void __sinit_tu_8044C028_cpp(void) {}
 
