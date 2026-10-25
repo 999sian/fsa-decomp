@@ -6,6 +6,7 @@ static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
 #include "string.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 extern "C" const JGeometry::TVec3<f32> lbl_8046BF38[];
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
@@ -2639,4 +2640,7 @@ void fn_802859C4(char* p) {
 }
 
 void fn_80285C28(char* p) { U8(p, 0x458) = 0; }
+
+extern "C" void __sinit_tu_8027E5BC_cpp(void) {}
+
 }
