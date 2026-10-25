@@ -46,6 +46,12 @@ struct EffSlotTable {
     EffSlot slots[0x400];
 };
 
+static inline void tu13_setVec(f32* v, f32 x, f32 y, f32 z) {
+    v[0] = x;
+    v[1] = y;
+    v[2] = z;
+}
+
 static inline bool tu13_inPlay(u8* g) {
     if (g[0x7f] != 0) {
         u8 hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb);
@@ -571,8 +577,9 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
     u8* em = 0;
     if (scale > lbl_8053CE00) {
         if (mode == 0) {
-            f32 v[3];
             u8 group;
+            f32 v[3];
+            JPAEmitterCallBack* callback = cb;
             if (snap) {
                 snap = pos[2] > lbl_8053CE00;
             }
@@ -582,9 +589,10 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
             }
             f32 off = (f32)((dy << 10) + (dz << 7));
             v[0] = pos[0];
-            v[2] = pos[2] + off;
             v[1] = pos[1] + off;
-            v[2] += fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos) - pos[2];
+            v[2] = pos[2] + off;
+            f32 h = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos);
+            v[2] = v[2] + (h - pos[2]);
             switch (effect) {
             case 0x558: case 0x559: case 0x55a: case 0x55b: case 0x55c: case 0x55d: case 0x55e:
             case 0x48e: case 0x48f: case 0x490: case 0x491: case 0x492: case 0x493: case 0x494: case 0x495:
@@ -685,29 +693,29 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
             if (group == 0xff) {
                 EffSlotTable* tbl = *(EffSlotTable**)(lbl_8053AB10 + 0x28);
                 for (s32 i = 0; i < 0x400; i++) {
-                    if (tbl->slots[i].used == 0) {
-                        tbl->slots[i].pos[0] = v[0];
-                        tbl->slots[i].pos[1] = v[1];
-                        tbl->slots[i].pos[2] = v[2];
-                        tbl->slots[i].id = effect;
-                        tbl->slots[i].used = 1;
+                    EffSlot& s = tbl->slots[i];
+                    if (s.used == 0) {
+                        s.pos[0] = v[0];
+                        s.pos[1] = v[1];
+                        s.pos[2] = v[2];
+                        s.id = effect;
+                        s.used = 1;
                         break;
                     }
                 }
             } else {
                 if ((*(JPAResourceManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0x8))->getResUserWork(effect) & 1) {
-                    cb = (JPAEmitterCallBack*)&lbl_8053AB18;
+                    callback = (JPAEmitterCallBack*)&lbl_8053AB18;
                 }
                 if (((*(JPAResourceManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0x8))->getResUserWork(effect) & 2) && group != 5) {
                     group = 1;
                 }
                 em = (u8*)(*(JPAEmitterManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0xc))->createSimpleEmitterID(
-                    *(JGeometry::TVec3<f32>*)v, effect, group, 0, cb, pcb);
+                    *(JGeometry::TVec3<f32>*)v, effect, group, 0, callback, pcb);
             }
             if (em != 0) {
                 f32 k = lbl_8053CE20 * scale;
-                switch (group) {
-                default: {
+                if (group != 2 && group != 4 && group != 5 && group != 8 && group != 10) {
                     f32 m[3][4];
                     m[0][0] = scale;
                     m[0][1] = lbl_8053CE00;
@@ -728,19 +736,12 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
                     *(f32*)(em + 0xb4) = sy;
                     *(f32*)(em + 0xb0) = scale;
                     *(f32*)(em + 0xb4) = scale;
-                    break;
-                }
-                case 2:
-                case 4:
-                case 5:
-                case 8:
-                case 10:
+                } else {
                     *(f32*)(em + 0x98) = scale;
                     *(f32*)(em + 0x9c) = scale;
                     *(f32*)(em + 0xa0) = scale;
                     *(f32*)(em + 0xb0) = scale;
                     *(f32*)(em + 0xb4) = scale;
-                    break;
                 }
             }
         } else {
