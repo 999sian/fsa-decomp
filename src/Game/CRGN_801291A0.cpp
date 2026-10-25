@@ -1,5 +1,14 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+extern "C" void* fn_802D6A9C(void);
+extern "C" s32 Actor_CreateByID(void*, u32, u32, f32*, u32, s32, s32);
+extern "C" void fn_801F0E34(Actor*, u32, s32);
+extern void* lbl_8053AAF8;
+extern const f32 lbl_8053CB24;
+extern const f32 lbl_8053CB28;
 #include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049E5B8[];
@@ -106,29 +115,26 @@ extern "C" void fn_801296FC(CRGNState* p) {
     s32* a;
     s32* b;
     s32* c;
+    s32 v;
 
     p->field234 = p->flags90 & 0xf;
     p->flags280 |= 2;
-    p->list248[0] = 10;
-    p->list248[1] = 10;
-    p->list248[2] = 10;
-    p->list248[3] = 10;
-    p->list248[4] = 10;
-    p->list248[5] = 10;
-    p->list248[6] = 10;
-    p->list248[7] = 10;
-    p->list248[8] = 10;
-    p->list248[9] = 10;
-    for (i = 10; i < 11; i++) {
+    for (i = 0; i < 10; i++) {
         p->list248[i] = 10;
     }
+    i = 10;
+    do {
+        p->list248[i] = 10;
+        i++;
+    } while (i < 11);
     a = lbl_80465000;
     b = lbl_80465000 + 11;
     c = lbl_80465000 + 22;
     for (i = 0; i < 11; i++) {
-        if ((p->flags90 >> a[i]) & 1) {
+        if (((p->flags90 >> a[i]) & 1) == 1) {
+            v = c[i];
             p->flags280 |= 1 << b[i];
-            p->list248[p->count240] = c[i];
+            p->list248[p->count240] = v;
             p->count240++;
         }
     }
@@ -137,12 +143,12 @@ extern "C" void fn_801296FC(CRGNState* p) {
     p->list270[2] = 1;
     p->list270[3] = 1;
     for (i = 0; i < 4; i++) {
-        if ((p->flags90 >> lbl_80465000[33 + i]) & 1) {
+        if (((p->flags90 >> lbl_80465000[33 + i]) & 1) == 1) {
             p->list270[p->count244] = i;
             p->count244++;
         }
     }
-    p->list248[0] = 150;
+    p->field238 = 150;
 }
 
 #pragma dont_inline reset
