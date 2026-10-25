@@ -141,38 +141,36 @@ extern "C" void fn_80172BC8(void* this_) {
     char* p = (char*)this_;
     DrawRec rec;
     f32 mtx[3][4];
-    f32 zero = lbl_8053DAB8;
-    mtx[0][3] = zero;
-    mtx[1][3] = zero;
-    mtx[2][3] = zero;
+    mtx[0][3] = lbl_8053DAB8;
+    mtx[1][3] = lbl_8053DAB8;
+    mtx[2][3] = lbl_8053DAB8;
     if (*(u32*)(p + 0x90) != 7) {
-        f32 one = lbl_8053DABC;
-        mtx[0][0] = one;
-        mtx[0][1] = zero;
-        mtx[0][2] = zero;
-        mtx[1][0] = zero;
-        mtx[1][1] = one;
-        mtx[1][2] = zero;
-        mtx[2][0] = zero;
-        mtx[2][1] = zero;
-        mtx[2][2] = one;
+        mtx[0][0] = lbl_8053DABC;
+        mtx[0][1] = lbl_8053DAB8;
+        mtx[0][2] = lbl_8053DAB8;
+        mtx[1][0] = lbl_8053DAB8;
+        mtx[1][1] = lbl_8053DABC;
+        mtx[1][2] = lbl_8053DAB8;
+        mtx[2][0] = lbl_8053DAB8;
+        mtx[2][1] = lbl_8053DAB8;
+        mtx[2][2] = lbl_8053DABC;
         if (*(s32*)(p + 0x23c) == 0) {
             mtx[0][0] = lbl_8053DAC0;
-            mtx[0][1] = zero;
-            mtx[0][2] = zero;
-            mtx[1][0] = zero;
+            mtx[0][1] = lbl_8053DAB8;
+            mtx[0][2] = lbl_8053DAB8;
+            mtx[1][0] = lbl_8053DAB8;
             mtx[1][1] = lbl_8053DAC0;
-            mtx[1][2] = zero;
-            mtx[2][0] = zero;
-            mtx[2][1] = zero;
+            mtx[1][2] = lbl_8053DAB8;
+            mtx[2][0] = lbl_8053DAB8;
+            mtx[2][1] = lbl_8053DAB8;
             mtx[2][2] = lbl_8053DAC0;
-            rec.w18 = mtx;
         }
-        s32 id = *(s32*)(p + 0x280) + 0x3fd;
-        if (*(s32*)(p + 4) < 8) {
-            void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_80466808);
-            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_8053DAC0, lbl_8053DAC0, &rec);
-        }
+        rec.w18 = mtx;
+    }
+    s32 id = *(s32*)(p + 0x280) + 0x3fd;
+    if (*(s32*)(p + 4) < 8) {
+        void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_80466808);
+        fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_8053DAC0, lbl_8053DAC0, &rec);
     }
 }
 
@@ -189,10 +187,10 @@ extern "C" void fn_80174220(void* this_) {
     if (n < 4) {
         f32 x = *(f32*)(p + 0xc);
         ox = *(f32*)(p + 0xc);
-        *(f32*)(p + 0xc) = x + lbl_804A0AD8[idx * 2];
         oy = *(f32*)(p + 0x10);
         oz = *(f32*)(p + 0x14);
-        *(f32*)(p + 0x10) = oy + lbl_804A0AD8[*(s32*)(p + 0x98) * 2 + 1];
+        *(f32*)(p + 0xc) = x + lbl_804A0AD8[idx * 2];
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_804A0AD8[*(s32*)(p + 0x98) * 2 + 1];
     }
     {
         Box4* b = &lbl_804A0B10[n];
@@ -226,14 +224,14 @@ extern "C" void fn_80174220(void* this_) {
             if (fn_80235448()) continue;
             {
                 f32 t = lbl_8053DAC8;
-                f32 px = *(f32*)(p + 0xc);
                 f32 py = *(f32*)(p + 0x10);
-                f32 x0 = *(f32*)(p + 0x60) + px;
-                f32 x1 = *(f32*)(p + 0x68) + px;
                 f32 y0 = *(f32*)(p + 0x64) + py;
                 f32 y1 = *(f32*)(p + 0x6c) + py;
-                v[0] = t * (x0 - x1) + x1;
+                f32 px = *(f32*)(p + 0xc);
+                f32 x0 = *(f32*)(p + 0x60) + px;
+                f32 x1 = *(f32*)(p + 0x68) + px;
                 v[1] = t * (y0 - y1) + y1;
+                v[0] = t * (x0 - x1) + x1;
             }
             if (!fn_80237948(slot, v)) continue;
             fn_80230FD0(slot, 0x20002);
@@ -331,6 +329,20 @@ extern "C" void* fn_80174600(void* this_, s16 flag) {
 }
 
 extern u8 lbl_804A08C0[];
+struct Slr4AnimTables {
+    f32 offsets[4][2];
+    s32 idle[20];
+    s32 waits[4];
+    s32 attack[40];
+    s32 anim[24];
+    s32 times[6];
+    s32 idleAt(s32 n) { return idle[n]; }
+    s32 waitAt(s32 n) { return waits[n]; }
+    s32 attackAt(s32 n) { return attack[n]; }
+    s32 animAt(s32 n) { return anim[n]; }
+    s32 timeAt(s32 n) { return times[n]; }
+    f32* offsetAt(s32 n) { return offsets[n]; }
+};
 extern const f32 lbl_8053DB10;
 extern "C" void fn_801746DC(void* this_) {
     char* tbl = (char*)lbl_804A08C0;
@@ -355,7 +367,8 @@ extern "C" void fn_801746DC(void* this_) {
             *(s32*)(p + 0x240) = t[*(s32*)(p + 0x264)];
             t = (s32*)(tbl + 0x20);
             *(s32*)(p + 0x280) = t[*(s32*)(p + 0x98) * 4 + *(s32*)(p + 0x264)];
-            *(s32*)(p + 0x264) = (*(s32*)(p + 0x264) + 1) & 3;
+            *(s32*)(p + 0x264) += 1;
+            *(volatile s32*)(p + 0x264) &= 3;
         }
         break;
     case 1:
@@ -363,7 +376,8 @@ extern "C" void fn_801746DC(void* this_) {
             s32* t = (s32*)(tbl + 0x80);
             *(s32*)(p + 0x240) = t[*(s32*)(p + 0x264)];
             *(s32*)(p + 0x280) = t[*(s32*)(p + 0x98) * 8 + *(s32*)(p + 0x264)];
-            *(s32*)(p + 0x264) = (*(s32*)(p + 0x264) + 1) & 7;
+            *(s32*)(p + 0x264) += 1;
+            *(volatile s32*)(p + 0x264) &= 7;
             if (*(s32*)(p + 0x264) == 0) {
                 *(u8*)(p + 0x2a4) = 1;
             }
@@ -382,9 +396,10 @@ extern "C" void fn_801746DC(void* this_) {
             if (*(s32*)(p + 0x264) == 1) {
                 Vec3f pos;
                 *(s32*)(p + 0x240) += 10;
-                pos.x = *(f32*)(p + 0xc) + ((f32*)tbl)[*(s32*)(p + 0x98) * 2];
-                pos.y = *(f32*)(p + 0x10) + ((f32*)tbl)[*(s32*)(p + 0x98) * 2 + 1];
-                pos.z = *(f32*)(p + 0x14);
+                pos = *(Vec3f*)(p + 0xc);
+                f32* offset = ((f32*)tbl)+*(s32*)(p+0x98)*2;
+                pos.x += offset[0];
+                pos.y += offset[1];
                 fn_8013CC50(*(u32*)(p + 4), &pos, 0xcb, 0, 3, 0, 0, 1, lbl_8053DAC0);
                 fn_8013CC50(*(u32*)(p + 4), &pos, 0xcc, 0, 3, 0, 0, 1, lbl_8053DAC0);
             }
@@ -398,23 +413,23 @@ extern "C" void fn_801746DC(void* this_) {
                 switch (*(s32*)(p + 0x98)) {
                 case 0:
                     *(f32*)(p + 0x3c) = lbl_8053DB10;
-                    *(f32*)(p + 0x40) = lbl_8053DAB8;
-                    *(f32*)(p + 0x44) = lbl_8053DAB8;
+                    *(f32*)(p + 0x40) = 0.0f;
+                    *(f32*)(p + 0x44) = 0.0f;
                     break;
                 case 1:
                     *(f32*)(p + 0x3c) = -lbl_8053DB10;
-                    *(f32*)(p + 0x40) = lbl_8053DAB8;
-                    *(f32*)(p + 0x44) = lbl_8053DAB8;
+                    *(f32*)(p + 0x40) = 0.0f;
+                    *(f32*)(p + 0x44) = 0.0f;
                     break;
                 case 2:
-                    *(f32*)(p + 0x3c) = lbl_8053DAB8;
+                    *(f32*)(p + 0x3c) = 0.0f;
                     *(f32*)(p + 0x40) = lbl_8053DB10;
-                    *(f32*)(p + 0x44) = lbl_8053DAB8;
+                    *(f32*)(p + 0x44) = 0.0f;
                     break;
                 case 3:
-                    *(f32*)(p + 0x3c) = lbl_8053DAB8;
+                    *(f32*)(p + 0x3c) = 0.0f;
                     *(f32*)(p + 0x40) = -lbl_8053DB10;
-                    *(f32*)(p + 0x44) = lbl_8053DAB8;
+                    *(f32*)(p + 0x44) = 0.0f;
                     break;
                 }
             }
@@ -691,9 +706,12 @@ extern "C" void fn_80175024(void* this_) {
 
 extern "C" void fn_801752D8(void* this_) {
     char* p = (char*)this_;
-    s32 i;
-    s32 cnt;
     char* q;
+    char* e;
+    s16 rot;
+    s32 cnt;
+    s32 i;
+    s32 n;
     if (*(s32*)(p + 0x4) >= 8 && *(s32*)(p + 0x23c) == 1 && *(s32*)(lbl_80529DEC + 0x118) == 6) {
         cnt = 0;
         q = p;
@@ -718,9 +736,9 @@ extern "C" void fn_801752D8(void* this_) {
         if (*(s32*)(p + 0x260) == 0 && cnt == 4) {
             s32 room = *(s32*)(p + 0x4);
             if (room == fn_8023DE58(0)) {
-                s32 n = 0;
-                s16 rot = 0;
-                char* e = p;
+                n = 0;
+                rot = 0;
+                e = p;
                 for (i = 0; i < 4; i++, e += 4) {
                     *(s32*)(e + 0x2c0) = Actor_CreateByID(fn_801F856C(), 0x4b455448, *(u32*)(p + 0x4), p + 0xc, 4, -1, -1);
                     s32 id = *(s32*)(e + 0x2c0);
