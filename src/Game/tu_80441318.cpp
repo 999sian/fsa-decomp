@@ -171,6 +171,8 @@ extern "C" void fn_80441778(void* p) {
     *(u8*)((u8*)p + 0xe) = 0;
     *(u8*)((u8*)p + 0xf) = 0;
     *(s32*)((u8*)p + 0x4) = -1;
-    *(s32*)((u8*)p + 0x8) = 0;
+    	*(s32*)((u8*)p + 0x8) = 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
