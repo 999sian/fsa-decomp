@@ -141,6 +141,16 @@ static inline void tu801D3320_normalize(Vec3f& v) {
     v.scale(tu801D3320_invSqrt(sq));
 }
 
+static inline f32 tu801D3320_normalizeR(Vec3f& v) {
+    f32 sq = v.squared();
+    if (sq <= lbl_8053F088 * FLT_EPSILON) {
+        return lbl_8053F084;
+    }
+    f32 inv = tu801D3320_invSqrt(sq);
+    v.scale(inv);
+    return inv * sq;
+}
+
 extern "C" void fn_801D3320(char* this_) {
     u8 free[0x30];
     u8 ids[0x30];
@@ -184,21 +194,21 @@ extern "C" void fn_801D3320(char* this_) {
         return;
     }
     Vec3f dir = d;
-    d.scale(((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
+    d *= ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
     u8 a = fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), sel);
     u8 b = fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), next);
     if (a) {
         if (d.squared() < lbl_8053F090) {
             d.set(dir);
             tu801D3320_normalize(d);
-            d.scale(lbl_8053F088);
+            d *= lbl_8053F088;
         }
     } else if (b) {
         f32 len = PSVECMag(&dir);
         if (PSVECMag(&d) > len - lbl_8053F088) {
             d.set(dir);
             tu801D3320_normalize(d);
-            d.scale(len - lbl_8053F088);
+            d *= len - lbl_8053F088;
         }
     }
     ((Vec3f*)(this_ + 0x32c))->add(d);
