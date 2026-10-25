@@ -129,8 +129,12 @@ extern "C" void* fn_8014F7FC(u8* this_, int flag) {
     return self;
 }
 
-#pragma opt_propagation on
+#pragma opt_propagation off
 extern "C" void fn_8014F9FC(u8* this_) {
+    f32 lim;
+    f32 result;
+    f32 one;
+    f32 random;
     f32 a = lbl_8053D250;
     f32 c = lbl_8053D21C;
     *(f32*)(this_ + 0x60) = a;
@@ -163,9 +167,9 @@ extern "C" void fn_8014F9FC(u8* this_) {
     }
     *(s32*)(this_ + 0xbc) = 3;
     *(s32*)(this_ + 0xb8) = 1;
-    f32 one = lbl_8053D1D0;
+    one = lbl_8053D1D0;
     *(s32*)(this_ + 0x98) = 2;
-    f32 lim = lbl_8053D1DC;
+    lim = lbl_8053D1DC;
     HinoRandom* rnd = &lbl_8053AAF8->rnd;
     rnd->seed = rnd->seed * 0x19660d + 0x3c6ef35f;
     union {
@@ -173,7 +177,9 @@ extern "C" void fn_8014F9FC(u8* this_) {
         u32 s;
     } u;
     u.s = (rnd->seed >> 9) | 0x3f800000;
-    if (u.f - one < lim) {
+    random = u.f;
+    result = random - one;
+    if (result < lim) {
         *(s32*)(this_ + 0x98) = 3;
     }
     *(s16*)(this_ + 0x26c) = 0;
@@ -189,4 +195,5 @@ extern "C" void fn_8014F9FC(u8* this_) {
     *(s32*)(this_ + 0x254) = -1;
     *(s32*)(this_ + 0x230) = 0;
 }
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
