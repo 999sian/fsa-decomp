@@ -784,6 +784,7 @@ extern "C" void fn_801C887C(char* this_) {
     }
 }
 #pragma opt_lifetimes reset
+#pragma dont_inline on
 extern "C" void fn_801C8B50(char* this_) {
     *(s32*)(this_ + 0x2a8) = 0;
     *(u32*)(this_ + 0x230) &= 0xffffefff;
@@ -792,6 +793,7 @@ extern "C" void fn_801C8B50(char* this_) {
     *(s16*)(this_ + 0x33c) = fn_801D02E0(this_, this_ + 0x32c);
     *(u32*)(this_ + 0x230) &= 0xfffdffff;
 }
+#pragma dont_inline reset
 
 extern "C" void fn_801C8BC4(char* this_, u8 param_2) {
     u8 buf[0x30];
