@@ -1029,7 +1029,7 @@ extern "C" void fn_801F33C4(Actor* a) {
 
 /* --- 0x801F285C: pick the collision slot overlapping the actor's bounds ------ */
 extern "C" s32 fn_801F285C(register Actor* a, register f32* b, register u32* c, register u32 e, register s32 d) {
-    int id;
+    u32 id;
     s32 r;
     const s32 slot = d;
     JGeometry::TBox2<f32> bounds;
@@ -1586,7 +1586,7 @@ extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
 namespace ATU3 {
 
 /* Tail half: resolve one slot and publish it (retail has this inlined). */
-static s32 slotTail(Actor* a, u32 code, u32 z) {
+static inline s32 slotTail(Actor* const a, const u32 code, const u32 z) {
     u8* p = (u8*)Registry_GetSlotValueOrFallback(
         *reinterpret_cast<void**>(static_cast<u8*>(
             *reinterpret_cast<void**>(static_cast<u8*>(lbl_8053AAF8) + 4)) + 8),
@@ -1685,7 +1685,8 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
             return 0;
         }
     }
-    return slotTail(a, code, z);
+    s32 result = slotTail(a, code, z);
+    return result;
 }
 }  // namespace ATU3
 
@@ -1864,6 +1865,7 @@ s32 id = (s32)a->field_04; u8 same = 0; if (ee8f4_eq(fn_8023DE58(i), id) || ee8f
  * entry for a->field_18C to pick a name/count, then spawns local[0+i] actors
  * (local[4+i] name) per row and scatters each one on a ring. */
 
+#pragma opt_strength_reduction off
 extern "C" void fn_801F52A4(Actor* a) {
     u32 rnd1Bits;
     u32 rnd2Bits;
@@ -1872,7 +1874,11 @@ extern "C" void fn_801F52A4(Actor* a) {
     u32 name[2];
     u32 param[2];
     u32 count[2];
-    int i;
+    u32 n;
+    u32* pp;
+    u32* np;
+    u32* cp;
+    s32 i;
     u32 j;
     s32 id;
     s32 idx = a->field_18C;
@@ -1888,20 +1894,20 @@ extern "C" void fn_801F52A4(Actor* a) {
 
     switch (options[(s32)(8.0f * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1())]) {
     case 1:
-        count[0] = 1;
         name[0] = 0x48415254;
+        count[0] = 1;
         break;
     case 2:
-        count[0] = 2;
         name[0] = 0x48415254;
+        count[0] = 2;
         break;
     case 3:
-        count[0] = 1;
         name[0] = 0x52555059;
+        count[0] = 1;
         break;
     case 4:
-        count[0] = 1;
         name[0] = 0x52555059;
+        count[0] = 1;
         param[0] = 1;
         break;
     case 5:
@@ -1925,12 +1931,12 @@ extern "C" void fn_801F52A4(Actor* a) {
         param[0] = 5;
         break;
     case 9:
-        count[0] = 5;
         name[0] = 0x52555059;
+        count[0] = 5;
         break;
     case 10:
-        count[0] = 10;
         name[0] = 0x52555059;
+        count[0] = 10;
         break;
     case 11:
         name[0] = 0x52555059;
@@ -1950,32 +1956,35 @@ extern "C" void fn_801F52A4(Actor* a) {
         param[1] = 1;
         break;
     }
+    pp = param;
+    np = name;
+    cp = count;
     f32 x = a->field_0C.x;
     f32 zero = lbl_8053F740;
     f32 scale = lbl_8053F7DC;
     f32 dy = a->field_0C.y - a->field_0C.z;
-    for (i = 0; i < 2 && name[i] != 0x4e554c4c; i++) {
-        u32 n = count[i];
-        param[i] |= 0x261e00;
+    for (i = 0; i < 2 && *np != 0x4e554c4c; pp++, np++, cp++, i++) {
+        n = *cp;
+        *pp |= 0x261e00;
         f32 spread = scale * (f32)i;
         for (j = 0; j < n; j++) {
             p1.x = x;
             p1.y = dy;
             p1.z = zero;
-            id = Actor_CreateByID(fn_801F856C(), name[i], a->field_04, (f32*)&p1, param[i], -1, -1);
-            if (id >= 0 && count[i] > 1) {
+            id = Actor_CreateByID(fn_801F856C(), *np, a->field_04, (f32*)&p1, *pp, -1, -1);
+            if (id >= 0 && *cp > 1) {
                 void* child = fn_801F666C(fn_801F856C(), id);
                 if (child != 0) {
                     JGeometry::setTVec3f(&p1.x, &p2.x);
-                    f32 step = spread / (f32)count[i];
+                    f32 step = spread / (f32)*cp;
                     f32 astep = step;
-                    if (astep < zero) {
+                    if (astep < 0.0f) {
                         astep = -astep;
                     }
                     p2.x += lbl_8053F7B0 *
                             sincosTable___5JMath[((s32)(lbl_8053F7E0 * astep) & 0x7ff)].cos;
                     f32 s;
-                    if (step < zero) {
+                    if (step < 0.0f) {
                         s = -sincosTable___5JMath[((s32)(lbl_8053F7E4 * step) & 0x7ff)].sin;
                     } else {
                         s = sincosTable___5JMath[((s32)(lbl_8053F7E0 * step) & 0x7ff)].sin;
@@ -1987,7 +1996,7 @@ extern "C" void fn_801F52A4(Actor* a) {
         }
     }
 }
-
+#pragma opt_strength_reduction reset
 /* ==== atu7 fn_801F23BC (append block) ==== */
 static inline void ATU7_setTVec3f(register const f32* src, register f32* dst) {
     register f32 xy, z;
@@ -2074,6 +2083,7 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32
 
 
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7) {
+    f32 z = pos[2];
     if ((s32)mask == -1) {
         return;
     }
@@ -2107,7 +2117,6 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     Vec v20;
     Vec v14;
     Vec v8;
-    f32 z = pos[2];
     args.f10.w = -1;
     args.f14.w = -1;
     for (u8 i = 0; i < 0x10; i++) {
