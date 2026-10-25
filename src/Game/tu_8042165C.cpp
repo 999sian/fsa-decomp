@@ -1,9 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
 
-static inline f32 hudVideoWidth(u8* mode) { return (f32)(s32)*(u16*)(mode + 4); }
-static inline f32 hudVideoHeight(u8* mode) { return (f32)(s32)*(u16*)(mode + 6); }
-
 struct HudPlayerState {
     u8 pad[0x89];
     u8 visible;
@@ -737,15 +734,8 @@ extern "C" void fn_80425F6C(u8* self) {
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                 video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                #pragma fp_contract off
-                f32 normY = point.y / (f32)(s32)*(u16*)(video + 6);
-                f32 normX = point.x / (f32)(s32)*(u16*)(video + 4);
-                f32 scaledY = height * normY;
-                f32 scaledX = width * normX;
-                #pragma fp_contract on
-                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)scaledY - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                f32 x = (f32)scaledX - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
-                #pragma fp_contract off
+                f32 y = (f32)(int)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
                 JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                 graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
@@ -761,16 +751,9 @@ extern "C" void fn_80425F6C(u8* self) {
                     fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                     video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                    #pragma fp_contract off
-                f32 normY = point.y / (f32)(s32)*(u16*)(video + 6);
-                    f32 normX = point.x / (f32)(s32)*(u16*)(video + 4);
-                    f32 scaledY = height * normY;
-                    f32 scaledX = width * normX;
-                    #pragma fp_contract on
-                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)scaledY - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                    f32 x = (f32)scaledX - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
-                    #pragma fp_contract off
-                JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
+                    f32 y = (f32)(int)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                    f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                    JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                     graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                     (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
                     (*(J2DScreen**)(screens + 0x2c))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
