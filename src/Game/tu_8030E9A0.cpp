@@ -31,7 +31,7 @@ extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u16 fn_8022461C(f32* pos, u32 room);
 extern "C" u16 fn_80226850(f32* pos, u32 room);
 extern "C" u8* fn_802D6A9C(void);
-extern "C" f32 lbl_8054173C;
+extern "C" const f32 lbl_8054173C;
 extern "C" Actor* fn_8030E9A0(Actor* p, s16 n) {
     if (p) {
         *(void**)p = lbl_804AA9F0;
