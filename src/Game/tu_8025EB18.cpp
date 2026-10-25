@@ -1669,55 +1669,55 @@ extern "C" void fn_80263078(char* p) {
 extern "C" void fn_802632A4(void) {}
 
 extern "C" void fn_802632A8(char* p) {
-    U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
+    U8(p, 0x3fc)++;
     if (U8(p, 0x3fc) < 8) {
         U8(p, 0x3fd) = 0;
-        return;
-    }
-    if (U8(p, 0x3fc) < 10) {
+    } else if (U8(p, 0x3fc) < 10) {
         U8(p, 0x3fd) = 1;
-        return;
-    }
-    if (U8(p, 0x3fc) < 11) {
+    } else if (U8(p, 0x3fc) < 11) {
         U8(p, 0x3fd) = 2;
-        return;
-    }
-    if (U8(p, 0x3fc) < 12) {
-        bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-        U8(p, 0x3fd) = held ? 4 : 3;
-        return;
-    }
-    U8(p, 0x3fc) = 12;
-    if (!fn_80251AEC(p, 0)) {
-        return;
-    }
-    bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-    if (held) {
-        U8(p, 0x3fd) = 4;
-        return;
-    }
-    U8(p, 0x3fd) = 3;
-    char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
-    if (actor == 0) {
-        return;
-    }
-    JGeometry::TVec3<f32> zero(0.0f, 0.0f, 0.0f);
-    fn_801F3708(actor, &zero);
-    S32(p, 0xd70) = -1;
-    S32(p, 0xd68) = -1;
-    U8(p, 0xd64) = 0;
-    S32(p, 0xd6c) = 0x4e554c4c;
-    S32(p, 0xd74) = 3;
-    VEC(p, 0x2f4) = lbl_8046B580[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
-    F32(p, 0x2f4) += F32(p, 0x8);
-    F32(p, 0x2f8) += F32(p, 0xc);
-    F32(p, 0x2fc) += F32(p, 0x10);
-    if (fn_8025EB18(p)) {
-        if (VEC(p, 0x35c).length() < lbl_80540188) {
-            VEC(p, 0x35c) = lbl_8046B580[S32(p, 0x3dc) * 5 + 3];
-            F32(p, 0x364) = lbl_80540150;
-            PSVECNormalize(&VEC(p, 0x35c), &VEC(p, 0x35c));
+    } else if (U8(p, 0x3fc) < 12) {
+        if (isCarriedByPlayer(p)) U8(p, 0x3fd) = 4;
+        else U8(p, 0x3fd) = 3;
+    } else {
+        U8(p, 0x3fc) = 12;
+        if (fn_80251AEC(p, 0)) {
+            if (isCarriedByPlayer(p)) {
+                U8(p, 0x3fd) = 4;
+            } else {
+                U8(p, 0x3fd) = 3;
+                char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+                if (actor) {
+                    JGeometry::TVec3<f32> zero(0.0f, 0.0f, 0.0f);
+                    fn_801F3708(actor, &zero);
+                }
+            }
+            S32(p, 0xd70) = -1;
+            S32(p, 0xd68) = -1;
+            U8(p, 0xd64) = 0;
+            S32(p, 0xd6c) = 0x4e554c4c;
+            S32(p, 0xd74) = 3;
         }
+    }
+    const volatile Vec* a = &lbl_8046B580[S32(p, 0x3dc)*5 + U8(p, 0x3fd)];
+    f32 ax = a->x;
+    f32 ay = a->y;
+    F32(p, 0x2f4) = ax;
+    f32 az = a->z;
+    F32(p, 0x2f8) = ay;
+    F32(p, 0x2fc) = az;
+    VEC(p, 0x2f4).add(VEC(p, 0x8));
+    if (fn_8025EB18(p) && VEC(p, 0x35c).length() < lbl_80540188) {
+        const volatile Vec* b = &lbl_8046B580[S32(p, 0x3dc)*5 + 3];
+        f32 bx = b->x;
+        f32 by = b->y;
+        F32(p, 0x35c) = bx;
+        f32 bz = b->z;
+        F32(p, 0x360) = by;
+        F32(p, 0x364) = bz;
+        F32(p, 0x364) = 0.0f;
+        VEC(p, 0x35c).normalize();
+        VEC(p, 0x35c).scale(lbl_805401E0);
     }
     fn_80268B3C(p);
 }
