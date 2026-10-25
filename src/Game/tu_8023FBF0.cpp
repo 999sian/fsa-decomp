@@ -906,16 +906,6 @@ inline BOOL isLinkOwner3(char* p) {
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
-inline bool isMode4OtherLink(char* p) {
-    s32 me;
-    if (getModeLO(p, me) == 4) {
-        s32 v = linkIdx(p);
-        if (v != linkRank2(p)) {
-            return true;
-        }
-    }
-    return false;
-}
 inline BOOL isLinkOwnerTransition(char* p) {
     s32 me;
     u8 bit = 1 << S32(p, 4);
