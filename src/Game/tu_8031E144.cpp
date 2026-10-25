@@ -30,7 +30,9 @@ extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, DrawRec* rec
 extern "C" void fn_801EF830(s32 idx, void* pos, DrawRec* rec, u32 mask, const char* name, s32 id, s32 p7);
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* prm);
 extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10);
-static inline void setDrawMatrix(f32 mtx[3][4], f32 s, f32 ay) {
+static inline void setDrawMatrix(f32 mtx[3][4], f32 s, const char* p) {
+    PSMTXIdentity(mtx);
+    f32 ay = *(const f32*)(p + 0x23c);
     f32 sx, sy, sz, cx, cy, cz;
     sx = sin(lbl_80541A20);
     sy = sin(ay);
@@ -51,6 +53,8 @@ static inline void setDrawMatrix(f32 mtx[3][4], f32 s, f32 ay) {
 
 extern "C" void fn_8031E144(Actor* p) {
     char* c = (char*)p;
+    f32 sz, sy, sx, s, ay, cx, cy, cz;
+    f32 sx2, sy2, sz2, s2, cx2, ay2, cy2, cz2;
     DrawRec rec;
     const char* name = lbl_80471718;
     s32 id = 0x89;
@@ -63,14 +67,6 @@ extern "C" void fn_8031E144(Actor* p) {
     s32 state = *(s32*)(c + 0x230);
     if (state == 2 || state == 3) {
         f32 mtx[3][4];
-    f32 cz;
-    f32 sz;
-    f32 sy;
-    f32 sx;
-    f32 s;
-    f32 ay;
-    f32 cy;
-    f32 cx;
         s = *(f32*)(c + 0x238) * *(f32*)(c + 0x240);
         PSMTXIdentity(mtx);
         ay = *(f32*)(c + 0x23c);
@@ -99,14 +95,6 @@ extern "C" void fn_8031E144(Actor* p) {
     }
     rec.b1d = 0;
     f32 mtx2[3][4];
-    f32 cz2;
-    f32 sx2;
-    f32 sy2;
-    f32 sz2;
-    f32 s2;
-    f32 cx2;
-    f32 ay2;
-    f32 cy2;
     PSMTXIdentity(mtx2);
     ay2 = *(f32*)(c + 0x23c);
     s2 = *(f32*)(c + 0x240);
