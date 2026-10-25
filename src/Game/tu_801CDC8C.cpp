@@ -614,9 +614,9 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
 #pragma fp_contract reset
 
 #pragma fp_contract off
-extern "C" s32 fn_801CF0F4(u8* this_) {
-    f32 x = *(f32*)(this_ + 0x3c);
-    f32 a = JMath::atanTable_.atan2_(x, *(f32*)(this_ + 0x40));
+extern "C" s32 fn_801CF0F4(const u8* this_) {
+    const f32 x = *(const f32*)(this_ + 0x3c);
+    f32 a = JMath::atanTable_.atan2_(x, *(const f32*)(this_ + 0x40));
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
@@ -1012,12 +1012,12 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
 }
 #pragma fp_contract on
 extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
-    f32 dz = pos[1] - *(f32*)(this_ + 0x10);
+    f32 scale;
     f32 dx = pos[0] - *(f32*)(this_ + 0xc);
+    f32 dz = pos[1] - *(f32*)(this_ + 0x10);
     f32 lenSq = dx * dx + dz * dz;
     if (lenSq <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
     } else {
-        f32 scale;
         if (lenSq <= lbl_8053EFC4) {
             scale = lenSq;
         } else {
@@ -1028,8 +1028,8 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
         dz *= scale;
     }
     f32 ddx = pos[0] - *(f32*)(this_ + 0xc);
-    out[0] = dx;
     f32 ddz = pos[1] - *(f32*)(this_ + 0x10);
+    out[0] = dx;
     out[1] = dz;
     f32 a = ddx * ddx;
     f32 b = ddz * ddz;
