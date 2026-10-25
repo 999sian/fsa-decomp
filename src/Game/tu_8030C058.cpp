@@ -9,6 +9,10 @@
 extern u8* lbl_8053AB10;
 extern f32 lbl_805416C8;
 extern f32 lbl_805416D8;
+extern f32 lbl_805416E8;
+extern f32 lbl_805416EC;
+extern f32 lbl_8054171C;
+extern f32 lbl_80541718;
 
 extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out);
 extern "C" void* fn_802D6A9C(void);
