@@ -18,6 +18,9 @@ struct MenuParticles8044 {
 };
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
+static inline J2DPane* MenuSearch8044(J2DPane* screen, const u64* tags, s32 index) {
+    return screen->search(tags[index]);
+}
 #include "JSystem/J2D/J2DPicture.h"
 
 
@@ -142,12 +145,13 @@ extern f32 lbl_80543E04;
 extern "C" u8 fn_8044CB00(u8* p) { return p[0x140]; }
 
 extern "C" void fn_8044CB08(u8* self, s32 index) {
-    u8* data = (u8*)lbl_80490FC8;
+    MenuTables8044* data = (MenuTables8044*)lbl_80490FC8;
+    MenuParticles8044* menu = (MenuParticles8044*)self;
     u64* a;
     u64* b;
     s32 i;
-    f32 height;
     f32 width;
+    f32 height;
     f32 origin;
     if (index < 0) return;
     if (index > 6) return;
@@ -156,54 +160,54 @@ extern "C" void fn_8044CB08(u8* self, s32 index) {
     self[0x137] = 2;
     *(s16*)(self + 0x134) = 0;
     self[0x138] = index;
-    a = (u64*)data;
-    b = (u64*)(data + 0x18);
+    a = data->picture;
+    b = data->window;
     for (i = 0; i < 3; i++, a++, b++) {
         ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*a))->setBlackWhite(JUtility::TColor(0, 0, 0, self[0x157]), JUtility::TColor(100, 100, 100, self[0x15f]));
         ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setBlackWhite(JUtility::TColor(80, 80, 80, self[0x147]), JUtility::TColor(80, 80, 80, self[0x14f]));
         ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setContentsColor(JUtility::TColor(150, 150, 150, self[0x167]), JUtility::TColor(150, 150, 150, self[0x16b]), JUtility::TColor(150, 150, 150, self[0x16f]), JUtility::TColor(150, 150, 150, self[0x173]));
         (*(J2DPane**)(self + 4))->search(*b)->setAlpha(200);
     }
-    ((u8*)(*(J2DPane**)(self+4))->search(((u64*)(data+0x168))[self[0x138]]))[0xb0] = 0;
-    ((u8*)(*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]]))[0xb0] = 0;
-    (*(J2DPane**)(self+4))->search(((u64*)(data+0x1a0))[self[0x138]])->setAlpha(0);
-    (*(J2DPane**)(self+4))->search(((u64*)(data+0x1d8))[self[0x138]])->setAlpha(0);
+    ((u8*)(*(J2DPane**)(self+4))->search(data->hide168[self[0x138]]))[0xb0] = 0;
+    ((u8*)(*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]))[0xb0] = 0;
+    (*(J2DPane**)(self+4))->search(data->alpha1a0[self[0x138]])->setAlpha(0);
+    (*(J2DPane**)(self+4))->search(data->alpha1d8[self[0x138]])->setAlpha(0);
 
-    if (*(void**)(self + 0x6c + self[0x138]*4) == 0) {
+    if (menu->first[self[0x138]] == 0) {
         f32 pos[3];
-        J2DPane* pane = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]]);
+        J2DPane* pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
         height = pane->mBounds.f.y - pane->mBounds.i.y;
-        origin = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]])->getBounds()->i.y;
+        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.y;
         height = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.y + origin + height * lbl_80543E00;
-        pane = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]]);
+        pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
         width = pane->mBounds.f.x - pane->mBounds.i.x;
-        origin = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]])->getBounds()->i.x;
+        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.x;
         pos[0] = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.x + origin + width * lbl_80543E00;
         pos[1] = height;
         pos[2] = lbl_80543DFC;
-        *(void**)(self + 0x6c + self[0x138]*4) = fn_8013CC50(0, pos, ((u16*)(data+0x3e8))[self[0x138]], 0,0,0,0,1,lbl_80543E04);
+        menu->first[self[0x138]] = fn_8013CC50(0, pos, data->particle3e8[self[0x138]], 0,0,0,0,1,lbl_80543E04);
     }
 
-    if (*(void**)(self + 0x88 + self[0x138]*4) == 0) {
+    if (menu->second[self[0x138]] == 0) {
         f32 pos[3];
-        J2DPane* pane = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]]);
+        J2DPane* pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
         height = pane->mBounds.f.y - pane->mBounds.i.y;
-        origin = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]])->getBounds()->i.y;
+        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.y;
         height = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.y + origin + height * lbl_80543E00;
-        pane = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]]);
+        pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
         width = pane->mBounds.f.x - pane->mBounds.i.x;
-        origin = (*(J2DPane**)(self+4))->search(((u64*)(data+0x210))[self[0x138]])->getBounds()->i.x;
+        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.x;
         pos[0] = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.x + origin + width * lbl_80543E00;
         pos[1] = height;
         pos[2] = lbl_80543DFC;
-        *(void**)(self + 0x88 + self[0x138]*4) = fn_8013CC50(0, pos, ((u16*)(data+0x3f8))[self[0x138]], 0,0,0,0,1,lbl_80543E04);
+        menu->second[self[0x138]] = fn_8013CC50(0, pos, data->particle3f8[self[0x138]], 0,0,0,0,1,lbl_80543E04);
     }
-    *(u32*)((u8*)*(void**)(self+0x6c+self[0x138]*4)+0xf4) |= 1;
-    *(u32*)((u8*)*(void**)(self+0x6c+self[0x138]*4)+0xf4) |= 2;
-    *(u32*)((u8*)*(void**)(self+0x6c+self[0x138]*4)+0xf4) |= 4;
-    *(u32*)((u8*)*(void**)(self+0x88+self[0x138]*4)+0xf4) |= 1;
-    *(u32*)((u8*)*(void**)(self+0x88+self[0x138]*4)+0xf4) |= 2;
-    *(u32*)((u8*)*(void**)(self+0x88+self[0x138]*4)+0xf4) |= 4;
+    *(u32*)((u8*)menu->first[self[0x138]]+0xf4) |= 1;
+    *(u32*)((u8*)menu->first[self[0x138]]+0xf4) |= 2;
+    *(u32*)((u8*)menu->first[self[0x138]]+0xf4) |= 4;
+    *(u32*)((u8*)menu->second[self[0x138]]+0xf4) |= 1;
+    *(u32*)((u8*)menu->second[self[0x138]]+0xf4) |= 2;
+    *(u32*)((u8*)menu->second[self[0x138]]+0xf4) |= 4;
     ((u8*)(*(J2DPane**)(self+4))->search(0x5063756c3031ULL))[0xb0] = 0;
 }
 
