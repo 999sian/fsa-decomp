@@ -476,6 +476,184 @@ extern "C" s16 fn_801CB7CC(s16 angle) {
     return 0xc000 - t;
 }
 
+extern const f32 lbl_8053EF84;
+extern const f32 lbl_8053EF88;
+extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y) {
+    f32* pa = (f32*)a;
+    f32* pb = (f32*)b;
+    f32 dirY = c[1] - pa[1];
+    f32 dirX = c[0] - pa[0];
+    f32 dv2 = dirY * dirY + dirX * dirX;
+    u8 moved = 0;
+    u8 aim = 0;
+    if (dv2 <= lbl_8053EF78 * *(f32*)__float_epsilon) {
+        moved = 1;
+        if (pb[1] * pb[1] + pb[0] * pb[0] <= lbl_8053EF78 * *(f32*)__float_epsilon) {
+            if (fn_801CD664(2) == 0) {
+                f32 sn = JMath::sincosTable_.mTable[0x700].first;
+                f32 cs = JMath::sincosTable_.mTable[0x700].second;
+                dirX = lbl_8053EF7C * cs - lbl_8053EF60 * sn;
+                dirY = lbl_8053EF7C * sn + lbl_8053EF60 * cs;
+            } else {
+                f32 sn = JMath::sincosTable_.mTable[0x100].first;
+                f32 cs = JMath::sincosTable_.mTable[0x100].second;
+                dirX = lbl_8053EF7C * cs - lbl_8053EF60 * sn;
+                dirY = lbl_8053EF7C * sn + lbl_8053EF60 * cs;
+            }
+        } else {
+            aim = 1;
+        }
+    } else if (dv2 <= x * x) {
+        moved = 1;
+        aim = 1;
+    }
+    if (aim) {
+        s16 ang1 = (s16)(JMath::atanTable_.atan2_(pb[0], pb[1]) * lbl_8053EF84);
+        s16 ang2 = (s16)(JMath::atanTable_.atan2_(dirX, dirY) * lbl_8053EF84);
+        s16 diff = ang1 - ang2;
+        if (__fabsf((f32)diff) * lbl_8053EF88 > lbl_8053EF8C) {
+            f32 dMinus = (f32)(s16)(ang2 - (s16)(ang1 - 0x4000));
+            f32 dPlus = (f32)(s16)(ang2 - (s16)(ang1 + 0x4000));
+            s16 ang = (s16)(ang1 + 0x4000);
+            if (__fabsf(dPlus) * lbl_8053EF88 < __fabsf(dMinus) * lbl_8053EF88) {
+                ang = (s16)(ang1 - 0x4000);
+            }
+            dirX = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+            dirY = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+        }
+    }
+    if (moved) {
+        f32 len2 = dirY * dirY + dirX * dirX;
+        if (len2 > lbl_8053EF78 * *(f32*)__float_epsilon) {
+            f32 inv = JGeometry::TUtilf::inv_sqrt(len2);
+            dirX *= inv;
+            dirY *= inv;
+        }
+        dirX *= y;
+        dirY *= y;
+        c[0] += dirX;
+        c[1] += dirY;
+    }
+    return moved;
+}
+
+extern "C" void fn_801CBB98(f32* box, f32* pt, u16 ang, f32* out, f32 d) {
+    bool ok = false;
+    out[0] = pt[0];
+    out[1] = pt[1];
+    if (pt[0] < box[0] && pt[1] < box[1] && pt[0] < box[2] && pt[1] < box[3]) {
+        ok = true;
+    }
+    if (!ok) {
+        return;
+    }
+    f32 sn = *(f32*)((u8*)&JMath::sincosTable_ + ((u16)ang >> 2 & 0x3ff8));
+    f32 cs = *(f32*)((u8*)&JMath::sincosTable_ + ((u16)ang >> 2 & 0x3ff8) + 4);
+    if (fabs(sn) > *(f32*)__float_epsilon) {
+        out[1] = (cs > lbl_8053EF7C) ? box[3] + d : box[1] - d;
+        return;
+    }
+    if (fabs(cs) > *(f32*)__float_epsilon) {
+        out[0] = (cs > lbl_8053EF7C) ? box[2] + d : box[0] - d;
+        return;
+    }
+    if (ang <= 0x4000) {
+        f32 dx = box[2] - pt[0];
+        f32 dy = box[3] - pt[1];
+        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
+        if (ang < t && fabs(cs) > *(f32*)__float_epsilon) {
+            out[0] = pt[0] + fabs(dy) * fabs((lbl_8053EF60 / cs) * sn);
+            out[1] = box[3];
+        } else {
+            u16 comp = 0x4000 - ang;
+            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
+            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
+            out[0] = box[2];
+            out[1] = pt[1];
+            if (fabs(s2) > *(f32*)__float_epsilon) {
+                out[1] = pt[1] + fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
+            }
+        }
+        out[0] += d * sn;
+        out[1] += d * cs;
+        return;
+    }
+    if (ang <= 0x8000) {
+        s16 c = (s16)(0x8000 - ang);
+        u16 uc = (u16)c;
+        f32 sc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8));
+        f32 cc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8) + 4);
+        f32 dx = box[2] - pt[0];
+        f32 dy = box[1] - pt[1];
+        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
+        if (t < ang && fabs(cc) > *(f32*)__float_epsilon) {
+            out[0] = pt[0] + fabs(pt[1] - box[1]) * fabs((lbl_8053EF60 / cc) * sc);
+            out[1] = box[1];
+        } else {
+            u16 comp = 0x4000 - uc;
+            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
+            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
+            out[0] = box[2];
+            out[1] = pt[1];
+            if (fabs(s2) > *(f32*)__float_epsilon) {
+                out[1] = pt[1] - fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
+            }
+        }
+        out[0] += d * sc;
+        out[1] -= d * cc;
+        return;
+    }
+    if (ang <= 0xC000) {
+        s16 c = (s16)(ang - 0x8000);
+        u16 uc = (u16)c;
+        f32 sc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8));
+        f32 cc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8) + 4);
+        f32 dx = box[0] - pt[0];
+        f32 dy = box[1] - pt[1];
+        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
+        if (ang < t && fabs(cc) > *(f32*)__float_epsilon) {
+            out[0] = pt[0] - fabs(dy) * fabs((lbl_8053EF60 / cc) * sc);
+            out[1] = box[1];
+        } else {
+            u16 comp = 0x4000 - uc;
+            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
+            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
+            out[0] = box[0];
+            out[1] = pt[1];
+            if (fabs(s2) > *(f32*)__float_epsilon) {
+                out[1] = pt[1] - fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
+            }
+        }
+        out[0] -= d * sc;
+        out[1] -= d * cc;
+        return;
+    }
+    {
+        s16 c = (s16)(0x10000 - ang);
+        u16 uc = (u16)c;
+        f32 sc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8));
+        f32 cc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8) + 4);
+        f32 dx = box[0] - pt[0];
+        f32 dy = box[3] - pt[1];
+        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
+        if (t < ang && fabs(cc) > *(f32*)__float_epsilon) {
+            out[0] = pt[0] - fabs(dy) * fabs((lbl_8053EF60 / cc) * sc);
+            out[1] = box[3];
+        } else {
+            u16 comp = 0x4000 - uc;
+            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
+            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
+            out[0] = box[0];
+            out[1] = pt[1];
+            if (fabs(s2) > *(f32*)__float_epsilon) {
+                out[1] = pt[1] + fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
+            }
+        }
+        out[0] -= d * sc;
+        out[1] += d * cc;
+    }
+}
+
 extern "C" s32 fn_801CC29C(const f32* a, const f32* b, f32* out) {
     s32 result = 0;
     out[0] = lbl_8053EF7C;
@@ -501,6 +679,41 @@ extern "C" s32 fn_801CC29C(const f32* a, const f32* b, f32* out) {
         result = 1;
     }
     return result;
+}
+
+extern "C" void fn_801CC350(const JGeometry::TVec3f* normal, JGeometry::TVec3f* v) {
+    f32 z = v->z;
+    f32 y = v->y;
+    f32 x = v->x;
+    JGeometry::TVec3f a(x, y, lbl_8053EF7C);
+    f32 limit = lbl_8053EF78 * *(f32*)__float_epsilon;
+    if (a.squared() <= limit) {
+        v->x = -x;
+        v->y = -y;
+        v->z = z;
+        return;
+    }
+    JGeometry::TVec3f n(normal->x, normal->y, lbl_8053EF7C);
+    if (n.squared() <= limit) {
+        v->x = -x;
+        v->y = -y;
+        v->z = z;
+        return;
+    }
+    n.normalize();
+    JGeometry::TVec3f r;
+    C_VECReflect(&a, &n, &r);
+    if (__fabsf(r.x) < lbl_8053EF94 && __fabsf(r.y) < lbl_8053EF94) {
+        v->x = -a.x;
+        v->y = -a.y;
+        v->z = z;
+        return;
+    }
+    f32 mag = a.length();
+    r.scale(mag);
+    v->x = r.x;
+    v->y = r.y;
+    v->z = z;
 }
 
 extern "C" u8 fn_8023F264(s32 idx);
@@ -755,7 +968,8 @@ extern "C" s32 fn_801CD580(s32 exclude) {
     s32 list[3];
     s32 n = 0;
     s32* p = list;
-    for (s32 i = 0; i < 4; i++) {
+    s32 i = n;
+    for (; i < 4; i++) {
         if (i != exclude) {
             *p++ = i;
             n++;
@@ -796,9 +1010,10 @@ extern "C" f32 fn_801CB270(const char* name, GXTexObj* tex, GXTlutObj* tlut) {
 extern "C" s32 fn_801CD398(s32 a, s32 b) {
     if (a == b) {
         s32 list[3];
-        s32 n = 0;
         s32* p = list;
-        for (s32 i = 0; i < 4; i++) {
+        s32 i = 0;
+        s32 n = i;
+        for (; i < 4; i++) {
             if (i != a) {
                 *p++ = i;
                 n++;
@@ -820,3 +1035,4 @@ extern "C" s32 fn_801CD398(s32 a, s32 b) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
