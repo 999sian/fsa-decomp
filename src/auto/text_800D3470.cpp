@@ -1345,16 +1345,16 @@ extern "C" void fn_800D7524(u8* p) {
         v = *(u32*)(p + 0x80 + i * 4) | ((i + 0x10) << 24);
         J3DGDWriteBPCmd(v);
     }
-    for (u32 k = 0; k < 4; k++) {
-        s32 st = k * 4;
+    for (int j = 0; j < 4; j++) {
+        int st = j * 4;
         J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)p[0x72], (GXTevKAlphaSel)p[0x76],
                                              (GXTevKColorSel)p[0x73], (GXTevKAlphaSel)p[0x77],
-                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4],
-                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4 + 1]);
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + j] * 4],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + j] * 4 + 1]);
         J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st + 2), (GXTevKColorSel)p[0x74], (GXTevKAlphaSel)p[0x78],
                                              (GXTevKColorSel)p[0x75], (GXTevKAlphaSel)p[0x79],
-                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4 + 2],
-                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4 + 3]);
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + j] * 4 + 2],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + j] * 4 + 3]);
     }
 }
 
@@ -2273,7 +2273,10 @@ extern "C" void fn_800DA8F8(void) {
 
 extern "C" void fn_800DABCC(u8* p) {
     GDOverflowCheck(0x1e);
-    ((J3DAlphaComp*)(p + 4))->load();
+    J3DAlphaComp* a = (J3DAlphaComp*)(p + 4);
+    u8 ref1 = a->mRef1;
+    u8 ref0 = a->mRef0;
+    J3DGDSetAlphaCompare((GXCompare)a->getComp0(), ref0, (GXAlphaOp)a->getOp(), (GXCompare)a->getComp1(), ref1);
     ((J3DBlend*)(p + 8))->load(p[0xf]);
     ((J3DZMode*)(p + 0xc))->load();
     J3DGDSetZCompLoc(p[0xe]);
