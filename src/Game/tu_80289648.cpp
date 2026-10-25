@@ -79,7 +79,7 @@ static inline bool tuCheckHit2(u8* self, s32 idx, s32 room) {
         fn_8022E088(idx, j, &v);
         v -= *(JGeometry::TVec3f*)(self + 0xc);
         v.z = 0.0f;
-        if (tuInBox2(v, (f32*)(self + 0x60))) {
+        if (tuInBox3(v, *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c))) {
             fn_8022DF48(idx);
             return true;
         }
