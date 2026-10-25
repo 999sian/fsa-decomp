@@ -11,9 +11,6 @@ extern "C" s32 fn_80230CFC(s32 i);
 extern "C" u8 fn_801F2618(char* p, s32 a, s32 b);
 
 extern "C" const f32 lbl_80541AE0;
-static inline void makeDrawMtx(f32 m[3][4], const f32 scale, f32 angle) {
-    tlwpRotMtx(m, lbl_80541AE0, angle, lbl_80541AE0, scale);
-}
 extern "C" void* lbl_804AB308[];
 extern "C" const f32 lbl_80541ADC;
 extern "C" const f32 lbl_80541AE4;
@@ -55,6 +52,8 @@ extern "C" u8 lbl_8047182C[];
 extern "C" void fn_801F06F0(void*, void*, s32, void*, s32, f32, f32);
 extern "C" void fn_803075AC(s32, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80320D18(char* p) {
+    f32 scale;
+    f32 angle;
     if (*(s32*)(p + 0x230) == 0 && *(s32*)(p + 0x278) <= 180) {
         if ((*(s32*)(p + 0x278) & 2) == 0) return;
     }
@@ -75,8 +74,6 @@ extern "C" void fn_80320D18(char* p) {
     rec.palette = 1;
     if (*(s32*)(p + 0x2a8) == 1) {
         PSMTXIdentity(m);
-        f32 angle;
-        f32 scale;
         angle = *(f32*)(p + 0x238);
         scale = *(f32*)(p + 0x234);
         tlwpRotMtx(m, lbl_80541AE0, angle, lbl_80541AE0, scale);
