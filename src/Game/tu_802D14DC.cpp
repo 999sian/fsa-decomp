@@ -81,6 +81,8 @@ struct VObj_802D {
     virtual void m5();
     virtual void m6();
     virtual void m7();
+    virtual void m8();
+    virtual void m9();
 };
 
 extern "C" void fn_802D14DC(VObj_802D* p) {
