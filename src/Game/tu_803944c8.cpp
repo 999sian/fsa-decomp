@@ -690,7 +690,7 @@ struct MsgProc {
     static s32 lineRow(s8 top, u8 line) {
         return line - top - 1;
     }
-    BOOL testBit(s32 n) {
+    BOOL testBit(int n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
@@ -2242,12 +2242,12 @@ extern "C" const u8 lbl_80475D24[];
 extern "C" const u8 lbl_80475D44[];
 extern "C" const u32 lbl_805431D0[2];
 #pragma dont_inline on
-extern "C" s32 fn_8039FE78(void* this_,s32 event,u8* payload){
+extern "C" s32 fn_8039FE78(MsgCounter& object,s32 event,u8* payload){
 u8* data=payload;
-MsgCounter* p = (MsgCounter*)this_;
+MsgCounter* p = &object;
 u32 byte0;
-u32 byte1;
 u32 byte2;
+u32 byte1;
 u32 byte3;
 u32 byte4;
 u32 byte5;
@@ -2255,7 +2255,7 @@ u32 byte6;
 u32 byte9;
 s32 args[5];
 if(!fn_803A313C(p->m60)){
-switch(event){
+switch((int)event){
 case 0x0:
 {
 
@@ -2482,13 +2482,12 @@ return 1;
 }
 case 0x2000e:
 {
-u8 n;
-s32 value;
+u32 n;
 n = data[0];
 if (n == 0) {
-    value = fn_80237810(fn_803A30BC(p->m60));
-    fn_80236554(fn_803A30BC(p->m60), value,0);
-} else fn_80236554(fn_803A30BC(p->m60), n << 2,0);
+    n = fn_80237810(fn_803A30BC(p->m60));
+    fn_80236554(fn_803A30BC(p->m60), (s32)n,0);
+} else fn_80236554(fn_803A30BC(p->m60), (u8)n << 2,0);
 return 1;
 }
 case 0x2000f:
@@ -2697,7 +2696,6 @@ case 0x20024:
 u8 kind;
 s32 i;
 u32 param;
-Vec* pos;
 s32 room;
 s32 obj;
 byte0 =data[0];
@@ -2714,9 +2712,9 @@ for(i =0;i<4;i++){
     if(fn_8018A614(i)){
         if((u32)i==(u32)args[0] || byte0==5){
             param =(fn_8022EA0C(i)<<12)|0x100|kind;
-            pos =fn_8023E724(fn_8022EA0C(i));
+            Vec& pos = *fn_8023E724(fn_8022EA0C(i));
             room =fn_8023DE58(fn_8022EA0C(i));
-            obj =fn_80154310('TKRA',room,pos,param,-1,-1);
+            obj =fn_80154310('TKRA',room,&pos,param,-1,-1);
             fn_803A3084(p->m60,i,obj);
         }
     }
@@ -2810,14 +2808,13 @@ case 0x20032:
 {
 s32 a;
 u32 param;
-Vec* pos;
 s32 room;
 if(fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)))!=0){
     a =fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)));
     param =(fn_8023725C(fn_8022EA0C(fn_803A30BC(p->m60)))<<22)|a;
-    pos =fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
+    Vec& pos = *fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
     room =fn_8023DE58(fn_8022EA0C(fn_803A30BC(p->m60)));
-    fn_80154310('LSTI',room,pos,param,-1,-1);
+    fn_80154310('LSTI',room,&pos,param,-1,-1);
     fn_802372F8(fn_8022EA0C(fn_803A30BC(p->m60)),0,1);
 }
 return 1;
@@ -2892,7 +2889,7 @@ return 1;
 }
 }
 }else{
-switch(event){
+switch((int)event){
 case 0x0:
 {
 
@@ -3126,13 +3123,12 @@ return 1;
 }
 case 0x2000e:
 {
-u8 n;
-s32 value;
+u32 n;
 n = data[0];
 if (n == 0) {
-    value = fn_80237810(fn_803A30BC(p->m60));
-    fn_80236554(fn_803A30BC(p->m60), value,0);
-} else fn_80236554(fn_803A30BC(p->m60), n << 2,0);
+    n = fn_80237810(fn_803A30BC(p->m60));
+    fn_80236554(fn_803A30BC(p->m60), (s32)n,0);
+} else fn_80236554(fn_803A30BC(p->m60), (u8)n << 2,0);
 return 1;
 }
 case 0x2000f:
@@ -3340,7 +3336,6 @@ case 0x20024:
 u8 kind;
 s32 i;
 u32 param;
-Vec* pos;
 s32 room;
 s32 obj;
 byte0 =data[0];
@@ -3357,9 +3352,9 @@ for(i =0;i<4;i++){
     if(fn_8018A614(i)){
         if((u32)i==(u32)args[0] || byte0==5){
             param =(fn_8022EA0C(i)<<12)|0x100|kind;
-            pos =fn_8023E724(fn_8022EA0C(i));
+            Vec& pos = *fn_8023E724(fn_8022EA0C(i));
             room =fn_8023DE58(fn_8022EA0C(i));
-            obj =fn_80154310('TKRA',room,pos,param,-1,-1);
+            obj =fn_80154310('TKRA',room,&pos,param,-1,-1);
             fn_803A3084(p->m60,i,obj);
         }
     }
@@ -3453,14 +3448,13 @@ case 0x20032:
 {
 s32 a;
 u32 param;
-Vec* pos;
 s32 room;
 if(fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)))!=0){
     a =fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)));
     param =(fn_8023725C(fn_8022EA0C(fn_803A30BC(p->m60)))<<22)|a;
-    pos =fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
+    Vec& pos = *fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
     room =fn_8023DE58(fn_8022EA0C(fn_803A30BC(p->m60)));
-    fn_80154310('LSTI',room,pos,param,-1,-1);
+    fn_80154310('LSTI',room,&pos,param,-1,-1);
     fn_802372F8(fn_8022EA0C(fn_803A30BC(p->m60)),0,1);
 }
 return 1;
