@@ -10,6 +10,7 @@
 #undef PSVECMag
 #undef Vec
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 
@@ -1027,40 +1028,25 @@ extern "C" void fn_801F33C4(Actor* a) {
  * exact. */
 
 /* --- 0x801F285C: pick the collision slot overlapping the actor's bounds ------ */
-#pragma scheduling on
-static inline void actorCollisionBounds(const Actor* a, f32* rect) {
-    f32 ta = a->field_60 + a->field_0C.x;
-    f32 tb = a->field_6C + a->field_0C.y - a->field_0C.z;
-    f32 tc = a->field_68 + a->field_0C.x;
-    f32 td = a->field_64 + a->field_0C.y - a->field_0C.z;
-    rect[0] = ta;
-    rect[1] = td;
-    rect[2] = tc;
-    rect[3] = tb;
-}
-
-extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
-    u32 id;
+extern "C" s32 fn_801F285C(register Actor* a, register f32* b, register u32* c, register u32 e, register s32 d) {
+    int id;
     s32 r;
-    s32 slot = d;
-    f32 rect[4];
+    const s32 slot = d;
+    JGeometry::TBox2<f32> bounds;
     f32 out8[2];
-    f32 ta = a->field_60 + a->field_0C.x;
-    f32 tb = a->field_6C + a->field_0C.y - a->field_0C.z;
-    f32 tc = a->field_68 + a->field_0C.x;
-    f32 td = a->field_64 + a->field_0C.y - a->field_0C.z;
-    rect[0] = ta;
-    rect[1] = td;
-    rect[2] = tc;
-    rect[3] = tb;
+    bounds.set(
+        a->field_60 + a->field_0C.x,
+        a->field_64 + a->field_0C.y - a->field_0C.z,
+        a->field_68 + a->field_0C.x,
+        a->field_6C + a->field_0C.y - a->field_0C.z);
     r = -1;
     if (slot >= 0) {
-        if (fn_8023B9CC(slot, rect, a->field_04, out8, e)) r = slot;
-    } else r = fn_8023B8E4(rect, a->field_04, out8);
+        if (fn_8023B9CC(slot, (f32*)&bounds, a->field_04, out8, e)) r = slot;
+    } else r = fn_8023B8E4((f32*)&bounds, a->field_04, out8);
     if (r == -1) {
         if (slot >= 0) {
-            if (fn_8023B848(slot, rect, a->field_04, out8)) r = slot;
-        } else r = fn_8023B768(rect, a->field_04, out8);
+            if (fn_8023B848(slot, (f32*)&bounds, a->field_04, out8)) r = slot;
+        } else r = fn_8023B768((f32*)&bounds, a->field_04, out8);
         if (r != -1 && c != 0) c[0] = 0;
     } else if (c != 0) {
         if (fn_80233DA4(r)) c[0] = 0;
@@ -1070,7 +1056,7 @@ extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
         id = a->field_04;
         u8* manager = (u8*)fn_802D6A9C();
         if ((manager + 0x10000)[id + 0x31df] == 0) {
-            f32* p = (f32*)fn_8023E724(r);
+            volatile f32* p = (f32*)fn_8023E724(r);
             f32 z = p[2];
             if (__fabs(a->field_0C.z - z) > lbl_8053F748) r = -1;
         }
