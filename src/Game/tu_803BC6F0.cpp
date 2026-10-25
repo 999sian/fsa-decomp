@@ -117,7 +117,7 @@ static inline s32 getSlotIcon(const u8* base, u32 slot) {
             return ((const s32*)(base + 0x730))[k];
         }
     }
-    return ((const s32*)(base + 0x730))[7];
+    return ((const s32*)(lbl_804765D0 + 0x730))[7];
 }
 
 static inline s32 getFileIcon(u32 slot) {
