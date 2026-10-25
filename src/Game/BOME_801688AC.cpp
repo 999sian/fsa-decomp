@@ -30,7 +30,7 @@ s32 fn_8022CAF8(s32 idx);
 s32 fn_8022E23C(s32 idx, void* p);
 void fn_8022CC20(s32 idx);
 u8 fn_8022F514(s32 idx);
-void fn_8023DFF4(s32 idx);
+void fn_8023DFF4(s32 idx, Vec* pos = 0);
 }
 
 struct SwbmDrawParam {
