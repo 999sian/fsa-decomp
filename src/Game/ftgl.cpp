@@ -96,7 +96,8 @@ static inline void ftglFacePlayers(char* p) {
 }
 
 static inline s32 ftglPickTarget(char* p) {
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         s32 room = *(s32*)(p + 0x4);
         s32 r = fn_8023DE58(i);
         if (r == room && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
@@ -181,8 +182,7 @@ extern "C" void fn_80317378(char* p) {
         break;
     case 1:
         if (fn_801F68E0(fn_801F856C()) != 0) {
-            ftglFacePlayers(p);
-            *(s32*)(p + 0x234) = ftglNearestPlayer(p);
+            *(s32*)(p + 0x234) = ftglPickTarget(p);
             *(s32*)(p + 0x238) = 0x3c;
             *(s32*)(p + 0x230) = 2;
             fn_801F0E34(p, 0x50050, 0);
