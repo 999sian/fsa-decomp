@@ -213,6 +213,22 @@ public:
     virtual void v40(u16*, s32*, f32*, s32*, s32);
 };
 
+// Same call at slot 38: the vtable pointer here skips two entries of the view above.
+class ActorSlot38Calls {
+public:
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+    virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+    virtual void v36(); virtual void v37();
+    virtual void v38(u16*, s32*, f32*, s32*, s32);
+};
+
 extern "C" s32 fn_801213EC() { return 0; }
 extern "C" s32 fn_801213F4() { return 0; }
 extern "C" s32 fn_801213FC() { return 0; }
@@ -1003,6 +1019,173 @@ extern "C" void fn_8012309C(u8* self, s16* ang, s32* quad, f32* z, s32* outIdx, 
         *ang = (s16)(a * 10430.4f);
         *quad = ClassifyBamAngleToQuadrant(*ang);
         *outIdx = e;
+    }
+}
+
+extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, f32 d) {
+    if (arg < 0) {
+        return;
+    }
+    s32 slot;
+    s32 mapped;
+    s32 player = *(s32*)(self + 0x344);
+    mapped = (player < 0 || player >= 4) ? -1 : fn_8022EA0C(player);
+    slot = mapped;
+    for (s32 i = 0; i < 4; i++) {
+        if (mapped == fn_8023ECF0(i)) {
+            slot = i;
+            break;
+        }
+    }
+    if (fn_80234E30(slot) || fn_80235448(mapped)) {
+        self[0x11d] = 0;
+    } else {
+        s32 p2 = *(s32*)(self + 0x344);
+        s32 m2 = (p2 < 0 || p2 >= 4) ? -1 : fn_8022EA0C(p2);
+        if (fn_8023BCD4(m2)) {
+            self[0x11d] = 1;
+        } else {
+            self[0x11d] = 0;
+        }
+    }
+    if (fn_802DCD0C(fn_802D6A9C())) {
+        ((SeekCalls*)self)->v33();
+        return;
+    }
+    bool ok = fn_8022D75C(arg) != 0;
+    if (!ok) {
+        s32 found = -1;
+        if (fn_8023E98C(arg)) {
+            for (s32 k = 0; k < 4; k++) {
+                if (fn_8023ED8C(k) && fn_8023ECF0(k) == arg && fn_8022D75C(k)) {
+                    found = k;
+                    break;
+                }
+            }
+        }
+        ok = found >= 0;
+    }
+    if (ok) {
+        if (fn_8023E10C(arg) == 8) {
+            ((SeekCalls*)self)->v34();
+        } else {
+            *(s32*)(self + 4) = fn_8023DE58(arg);
+            self[0x331] = 0;
+            ((SeekCalls*)self)->v35();
+        }
+        return;
+    }
+    u16 ang = 0;
+    s32 quad = 0;
+    s32 e = 0;
+    f32 dist = lbl_8053C9B4;
+    ((ActorSlot40Calls*)self)->v40(&ang, &quad, &dist, &e, arg);
+    if (fn_80138A30(lbl_8053AAF8) == 1 && fn_8022CAF8(arg) == 5) {
+        d = lbl_8053CA00 * d;
+    }
+    if (dist >= d) {
+        fn_801CD950((f32*)(self + 0x380), c, a);
+    } else {
+        fn_801CD950((f32*)(self + 0x380), lbl_8053C9B4, b);
+    }
+    f32 scale = *(f32*)(self + 0x380);
+    *(f32*)(self + 0x3c) = scale * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+    *(f32*)(self + 0x40) = scale * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    GameLowVec* pos = (GameLowVec*)(self + 0xc);
+    GameLowVec* vel = (GameLowVec*)(self + 0x3c);
+    *pos += *vel;
+    pos->z = lbl_8053C9B4;
+    f32 speed = PSVECMag(vel) / c;
+    *(f32*)(self + 0x37c) = speed;
+    if (*(f32*)(self + 0x37c) >= lbl_8053C9F8) {
+        *(f32*)(self + 0x37c) = lbl_8053C9F8;
+    }
+    s32 room = *(s32*)(self + 4);
+    if (((u8*)fn_802D6A9C())[room + 0x131df]) {
+        s32 r27 = ((CompanionCalls*)self)->v49() ? 0xc : 0;
+        s32 r29 = r27 + 8;
+        if (fn_8022CAF8(arg) != 4) {
+            r29 += (fn_8022E970(arg) - 1) * 12;
+        }
+        if (r29 >= 0x30) {
+            r29 = 0x30;
+        }
+        bool useA = true;
+        if (fn_8023EA28(arg)) {
+            if (fn_802265FC(self + 0xc, 0)) {
+                s32 slot2 = arg;
+                for (s32 k = 0; k < 4; k++) {
+                    if (fn_8023ECF0(k) == arg) {
+                        slot2 = k;
+                        break;
+                    }
+                }
+                useA = fn_80234E30(slot2) || fn_80235448(arg);
+            }
+            if (useA) {
+                *pos = *(GameLowVec*)fn_8023E4E4(arg, r29);
+            } else {
+                pos->x = ((GameLowVec*)fn_8023E4E4(arg, r29))->x;
+                pos->y = pos->y + lbl_8053C9FC;
+            }
+        } else {
+            *pos = *(GameLowVec*)fn_8023E4E4(arg, r29);
+        }
+        f32 dx = pos->x - fn_8023E724(arg)->x;
+        f32 dy = pos->y - fn_8023E724(arg)->y;
+        f32 ang2 = JMath::atanTable_.atan2_(-dx, -dy);
+        quad = ClassifyBamAngleToQuadrant((u16)(s32)(ang2 * lbl_8053C9F0));
+        GameLowVec diff = *pos - *(GameLowVec*)(self + 0x18);
+        if (PSVECMag(&diff) >= lbl_8053C9F8) {
+            *(f32*)(self + 0x380) = lbl_8053C9C4;
+            *(f32*)(self + 0x37c) = lbl_8053C9C4;
+        }
+    }
+    s32 mapped2 = *(s32*)(self + 0x344);
+    mapped2 = (mapped2 < 0 || mapped2 >= 4) ? -1 : fn_8022EA0C(mapped2);
+    s32 slot3 = mapped2;
+    for (s32 k = 0; k < 4; k++) {
+        if (mapped2 == fn_8023ECF0(k)) {
+            slot3 = k;
+            break;
+        }
+    }
+    if (fn_80234E30(slot3) || fn_80235448(mapped2)) {
+        s32 p3 = *(s32*)(self + 0x344);
+        s32 m3 = (p3 < 0 || p3 >= 4) ? -1 : fn_8022EA0C(p3);
+        *pos = *(GameLowVec*)fn_8023E724(m3);
+    }
+    if (*(f32*)(self + 0x380) <= lbl_8053C9B4) {
+        if (quad >= 0) {
+            *(s32*)(self + 0x374) += 1;
+            if (*(s32*)(self + 0x374) >= 10) {
+                *(s32*)(self + 0x374) = 10;
+            }
+            if (*(s32*)(self + 0x374) >= 10) {
+                *(s32*)(self + 0x374) = 0;
+                *(s32*)(self + 0x98) = quad;
+                s32 anim = quad + 5;
+                if (anim != *(s32*)(self + 0x238)) {
+                    fn_801D22DC(self + 0x230, anim, 2, 0);
+                    fn_801D1F14(self + 0x230, lbl_8053C9B4);
+                }
+            }
+        }
+    } else {
+        if (quad >= 0) {
+            *(s32*)(self + 0x374) += 1;
+            if (*(s32*)(self + 0x374) >= 10) {
+                *(s32*)(self + 0x374) = 10;
+            }
+            if (*(s32*)(self + 0x374) >= 10) {
+                *(s32*)(self + 0x374) = 0;
+                *(s32*)(self + 0x98) = quad;
+                if (quad != *(s32*)(self + 0x238)) {
+                    fn_801D22DC(self + 0x230, quad, 2, 0);
+                    fn_801D1F14(self + 0x230, lbl_8053C9B4);
+                }
+            }
+        }
     }
 }
 
