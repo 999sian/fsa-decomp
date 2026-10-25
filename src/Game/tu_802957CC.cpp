@@ -377,8 +377,15 @@ extern "C" s32 fn_8023CB24(s32);
 extern "C" u8 fn_8023CA88(s32);
 extern "C" void fn_802965BC(void* this_)
 {
-    const char* tbl = (const char*)lbl_8046C238;
+    struct ResMgr {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void* getRes(u32 type, const char* name);
+    };
     u8* self = (u8*)this_;
+    const char* tbl = (const char*)lbl_8046C238;
     if ((self[0x24c] != 0 || *(s32*)(self + 0x2ac) != 0) && self[0x2bb] != 1) {
         DrawRec rec;
         Mtx m;
@@ -399,15 +406,11 @@ extern "C" void fn_802965BC(void* this_)
                 name = tbl + 0x90;
             }
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, name), &rec);
             }
             rec.b1c++;
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, tbl + 0xb0);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, tbl + 0xb0), &rec);
             }
             rec.b1c--;
         } else if (*(s32*)(self + 0x244) == 1) {
@@ -419,15 +422,11 @@ extern "C" void fn_802965BC(void* this_)
                 name2 = tbl + 0xf0;
             }
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, name), &rec);
             }
             rec.b1c++;
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name2);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, name2), &rec);
             }
             rec.b1c--;
             pos.y += 48.0f;
@@ -439,28 +438,21 @@ extern "C" void fn_802965BC(void* this_)
                 name2 = tbl + 0x130;
             }
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, name), &rec);
             }
             rec.b1c++;
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, name2);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, name2), &rec);
             }
             rec.b1c--;
         } else {
+            name = tbl + 0x140;
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, tbl + 0x140);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, name), &rec);
             }
             rec.b1c++;
             if (*(s32*)(self + 4) < 8) {
-                void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, const char*))(*(void***)mgr)[6])(mgr, 0x534d5020, tbl + 0x150);
-                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, res, &rec);
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, tbl + 0x150), &rec);
             }
             rec.b1c--;
         }
