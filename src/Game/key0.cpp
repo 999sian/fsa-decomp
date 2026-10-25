@@ -662,7 +662,7 @@ extern const f32 lbl_8046D560[];
 extern "C" u8 fn_80239C00(s32 player, void* rect, s32 room);
 extern "C" s32 fn_80230CFC(s32 player);
 extern "C" u8 fn_8022F6E8(s32 player, s32 id);
-extern "C" u8 fn_801F2740(char* p, s32 flags);
+extern "C" u32 fn_801F2740(char* p, s32 flags);
 extern "C" void detach__5ActorFv(char* p);
 extern "C" u8 fn_802DE9A0();
 extern "C" u8 fn_802DEB58();
@@ -682,7 +682,8 @@ extern "C" void fn_802C3AE4(char* p) {
     rect[0]=*(f32*)(p+0x60); rect[1]=*(f32*)(p+0x64); rect[2]=*(f32*)(p+0x68); rect[3]=*(f32*)(p+0x6c);
     f32 py = *(f32*)(p+0x10), px = *(f32*)(p+0xc);
     rect[1] += py; rect[0] += px; rect[2] += px; rect[3] += py;
-    for (s32 i=0; i<4; i++) {
+    s32 i;
+    for (i=0; i<4; i++) {
         if ((u8)fn_8023F264(i) && fn_80239C00(i, rect, *(s32*)(p+4))) {
             s32 kind = *(s32*)(p+0x280);
             if (kind==3 || kind==5 || kind==4) {
@@ -721,17 +722,17 @@ extern "C" void fn_802C3AE4(char* p) {
         *(u8*)(p+0x2b5)=1;
         tile=fn_8022461C(p+0xc,*(s32*)(p+4));
         if (tile==0xd || tile==0x3b) {
-            s32 i;
-            for (i=0; i<4; i++,mask<<=1) {
+            s32 player;
+            for (player=0; player<4; player++,mask<<=1) {
                 if (hit&mask) break;
             }
-            if (fn_8022F6E8(i,*(s32*)(p+0x198))==1) {
-                *(s32*)(p+0x29c)=i;
+            if (fn_8022F6E8(player,*(s32*)(p+0x198))==1) {
+                *(s32*)(p+0x29c)=player;
                 *(s32*)(p+0x240)=10;
                 *(u8*)(p+0x2b2)=0;
             }
         } else {
-            for (s32 i=0; i<4; i++,mask<<=1) {
+            for (i=0; i<4; i++,mask<<=1) {
                 if (hit&mask) {
                     JGeometry::TVec3<f32> pos(*(Vec*)fn_8023E724(i));
                     s32 dx=(s32)(f32)__fabs(*(f32*)(p+0xc)-pos.x);
@@ -747,7 +748,7 @@ extern "C" void fn_802C3AE4(char* p) {
                         }
                     }
                     const s32 room2=*(s32*)(p+4);
-                    if (*((u8*)fn_802D6A9C()+room2+0x131df)) {
+                    if (key0RoomFlag(room2)) {
                         if (*(f32*)(p+0xc)>pos.x) *(f32*)(p+0xc)+=(15-dx)>>1;
                         else *(f32*)(p+0xc)-=(15-dx)>>1;
                     } else if ((dy>=0 && dy<=15 && dir==3) || dir==2) {
@@ -760,7 +761,7 @@ extern "C" void fn_802C3AE4(char* p) {
                         }
                     }
                     const s32 room=*(s32*)(p+4);
-                    if (*((u8*)fn_802D6A9C()+room+0x131df)) *(u8*)(p+0x2ae)=0;
+                    if (key0RoomFlag(room)) *(u8*)(p+0x2ae)=0;
                     *(s32*)(p+0x23c)=i;
                 }
             }
@@ -824,7 +825,7 @@ extern "C" void fn_802C3AE4(char* p) {
 done:
     if (handled!=1) {
         s32 room=*(s32*)(p+4);
-        if (*((u8*)fn_802D6A9C()+room+0x131df)) {
+        if (key0RoomFlag(room)) {
             *(u8*)(p+0x2b2)=0;
             fn_802C2154((u8*)p);
         }
