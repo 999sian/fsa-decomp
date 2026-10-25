@@ -450,7 +450,7 @@ static inline f32 ichlLen(const IchlV2& v) {
     return sq * refined;
 }
 static inline bool ichlIsZero(const IchlV2& v) {
-    const f32 square = v.squared();
+    const f64 square = v.squared();
     bool r = square <= JGeometry::TUtilf::epsilon();
     return r;
 }
