@@ -354,27 +354,23 @@ extern "C" void fn_802BAE78(char* p) {
         if (st == 0) {
             *(f32*)(p + 0xc) = (f32)(s32)(__cvt_fp2unsigned(*(f32*)(p + 0xc)) & ~0xF);
             *(f32*)(p + 0x10) = (f32)(s32)(__cvt_fp2unsigned(*(f32*)(p + 0x10)) & ~0xF);
-            mode = *(s32*)(p + 0x98);
-            if (mode != 2) {
-                if (mode < 2) {
-                    if (mode != 0) {
-                        if (mode > 0) {
-                            *(f32*)(p + 0xc) = *(f32*)(p + 0xc) - lbl_80540B50;
-                            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_80540B50;
-                        }
-                    } else {
-                        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + lbl_80540B60;
-                        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_80540B50;
-                    }
-                } else {
-                    if (mode < 4) {
-                        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + lbl_80540B50;
-                        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - lbl_80540B50;
-                    }
-                }
-            } else {
-                *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + lbl_80540B50;
-                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_80540B64;
+            switch (*(s32*)(p + 0x98)) {
+            case 0:
+                *(f32*)(p + 0xc) += 24.0f;
+                *(f32*)(p + 0x10) += 8.0f;
+                break;
+            case 1:
+                *(f32*)(p + 0xc) -= 8.0f;
+                *(f32*)(p + 0x10) += 8.0f;
+                break;
+            case 2:
+                *(f32*)(p + 0xc) += 8.0f;
+                *(f32*)(p + 0x10) += 16.0f;
+                break;
+            case 3:
+                *(f32*)(p + 0xc) += 8.0f;
+                *(f32*)(p + 0x10) -= 8.0f;
+                break;
             }
             if (*(s32*)(p + 0x264) == 0) {
                 if (*(s32*)(p + 4) < 8) {
@@ -402,10 +398,11 @@ extern "C" void fn_802BAE78(char* p) {
             kind = 4;
         }
         if (*(s32*)(p + 0x264) == 5 && *(u8*)(p + 0x291) == 0) {
-            if (*(s32*)(p + 4) < 8) {
-                fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x19d, 0, 0, 0, 0, 1, lbl_80540B68);
+            r30 = *(s32*)(p + 4);
+            if (r30 < 8) {
+                fn_8013CC50(r30, p + 0xc, 0x19d, 0, 0, 0, 0, 1, lbl_80540B68);
             } else {
-                Actor_CreateByID(fn_801F856C(), 'KMRI', *(s32*)(p + 4), p + 0xc, 6, -1, -1);
+                Actor_CreateByID(fn_801F856C(), 'KMRI', r30, p + 0xc, 6, -1, -1);
             }
         } else {
             r30 = *(s32*)(p + 0x260);
@@ -414,7 +411,7 @@ extern "C" void fn_802BAE78(char* p) {
                                  (*(s32*)(p + 0x98) << 4) | (kind << 6) | 0xf, -1, -1);
             } else {
                 Actor_CreateByID(fn_801F856C(), 'BLZE', *(s32*)(p + 4), p + 0xc,
-                                 r30 | (*(s32*)(p + 0x98) << 4) | (kind << 6), -1, *(s32*)(p + 0x110));
+                                 r30 | ((*(s32*)(p + 0x98) << 4) | (kind << 6)), -1, *(s32*)(p + 0x110));
             }
         }
     } else {
@@ -451,21 +448,22 @@ extern "C" u8 fn_80230188(void* p);
 extern "C" void fn_803075AC(void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern "C" void fn_80158B5C(void* a, s32 b, f32* c, u32* d, f32 e);
 extern "C" void fn_802BB1F8(char* p) {
-    f32 v[3];
+    JGeometry::TVec3<f32> v;
     u8 buf[4];
     u32 flags;
     s32 type;
-    s32 n;
     s32 a;
+    s32 n;
     s32 k;
 
     type = *(s32*)(p + 0x264);
-    if (type == 5 || type == 6) {
+    if (type == 5) {
         return;
     }
-    v[0] = *(f32*)(p + 0xc);
-    v[1] = *(f32*)(p + 0x10);
-    v[2] = *(f32*)(p + 0x14);
+    if (type == 6) {
+        return;
+    }
+    *(JGeometry::TVec3<f32>*)&v = *(JGeometry::TVec3<f32>*)(p + 0xc);
     a = *(s32*)(p + 0x268) == 2;
     n = *(s32*)(p + 4);
     if (n >= 8) {
@@ -474,35 +472,47 @@ extern "C" void fn_802BB1F8(char* p) {
             return;
         }
         if (type == 1) {
-            if (fn_8022CCAC(*(void**)(p + 0x260)) != 0) {
+            if (fn_8022CCAC(*(void**)(p + 0x260))) {
                 return;
             }
-            if (fn_80230188(*(void**)(p + 0x260)) != 0) {
+            if (fn_80230188(*(void**)(p + 0x260))) {
                 return;
             }
         }
         k = *(s32*)(p + 0x98);
-        if (k == 0) {
-            v[0] -= lbl_80540B64;
-        } else if (k == 1) {
-            v[0] += lbl_80540B64;
-        } else if (k == 2) {
-            v[1] -= lbl_80540B64;
-        } else if (k == 3) {
-            v[1] += lbl_80540B64;
+        switch (k) {
+        case 0:
+            v.x -= lbl_80540B64;
+            break;
+        case 1:
+            v.x += lbl_80540B64;
+            break;
+        case 2:
+            v.y -= lbl_80540B64;
+            break;
+        case 3:
+            v.y += lbl_80540B64;
+            break;
         }
-        fn_803075AC(*(void**)(p + 0x198), n, v, *(s32*)(p + 0x26c) + *(s32*)(p + 0x270) + 0xf1, a != 0, 2, -1, 1, 0, 0);
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), &v, *(s32*)(p + 0x26c) + *(s32*)(p + 0x270) + 0xf1, a != 0, 2, -1, 1, 0, 0);
         return;
     } else {
         k = *(s32*)(p + 0x98);
-        if (k == 0) {
-            v[0] -= lbl_80540B78;
-            v[1] -= lbl_80540B50;
-        } else if (k == 1) {
-            v[0] += lbl_80540B78;
-            v[1] -= lbl_80540B50;
-        } else if (k == 2) {
-            v[1] -= lbl_80540B50;
+        switch (k) {
+        case 0:
+            v.x -= lbl_80540B78;
+            v.y -= lbl_80540B50;
+            break;
+        case 1:
+            v.x += lbl_80540B78;
+            v.y -= lbl_80540B50;
+            break;
+        case 2:
+            v.y -= lbl_80540B50;
+            break;
+        case 3:
+        default:
+            break;
         }
     }
     buf[0] = 0;
@@ -510,7 +520,7 @@ extern "C" void fn_802BB1F8(char* p) {
     buf[2] = 0;
     buf[3] = 0x80;
     flags = *(u32*)buf;
-    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), n, v, &flags, lbl_80540B7C);
+    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), n, (f32*)&v, &flags, lbl_80540B7C);
 }
 
 extern "C" void fn_802BB468(char* p) {
