@@ -34,11 +34,14 @@ static inline void stpnRelease() {
 // NONMATCHING (99.3%): retail puts n in r31 and the byte offset in r30.
 extern "C" void fn_802ED140(void* this_) {
     s32 n = fn_801F856C()->count;
-    for (s32 i = 0; i < n; i++) {
-        void* a = fn_801F856C()->actors[i];
+    s32 off;
+    s32 i;
+    for (i = 0, off = 0; i < n; i++) {
+        void* a = *(void**)((char*)fn_801F856C() + 8 + off);
         if (a != 0 && *(u32*)((char*)a + 0x1a0) == 0x49544d53) {
             fn_802AC09C(a);
         }
+        off += 4;
     }
     fn_80134FBC(lbl_8053AAF8, 0);
     fn_80458658(lbl_8053AF80, 0);
