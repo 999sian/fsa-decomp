@@ -1,6 +1,11 @@
 // Player collision-cache and state helpers, retail 0x80256C74-0x8025EB18.
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
+extern "C" void fn_8024B298(void*, s32, void*);
+extern "C" u8 fn_8022C3AC(u32);
+extern "C" u8 fn_80243234(void*);
+extern "C" void fn_802685D4(void*);
+
 extern "C" f32 fn_8022C6AC(u32);
 extern "C" u8 fn_8022C310(u32);
 extern "C" u8 fn_8024B24C(void*);
@@ -916,6 +921,98 @@ extern "C" void fn_80258BBC(u8* p) {
     }
     U8(p, 0xb79) = 0;
     U8(p, 0x1204) = 0;
+}
+
+extern "C" void fn_80258BE8(u8* p) {
+ if (fn_8022C6AC(U32(p,4)) > lbl_805400C4) {
+if (lbl_805400C4 == F32(p,0x344)) {
+ F32(p,0x344) = lbl_805400E4 * fn_8022C82C(PTR(p,4));
+} else if (F32(p,0x344) > lbl_805400C4) {
+ if (F32(p,0x34c) >= lbl_805400C4) F32(p,0x344) += lbl_805400E8 * fn_8022C82C(PTR(p,4));
+ else F32(p,0x344) += lbl_805400EC * fn_8022C82C(PTR(p,4));
+ if (F32(p,0x344) <= lbl_805400F0 || U8(PTR(p,0xbf0),0x48)) F32(p,0x344) = lbl_805400F0;
+} else if (F32(p,0x344) < lbl_805400C4) {
+ if (F32(p,0x34c) >= lbl_805400C4) F32(p,0x344) += lbl_805400E8 * fn_8022C82C(PTR(p,4));
+ else F32(p,0x344) += lbl_805400EC * fn_8022C82C(PTR(p,4));
+ if (F32(p,0x344) >= lbl_805400F4 || U8(PTR(p,0xbf0),0x49)) F32(p,0x344) = lbl_805400F4;
+}
+if (lbl_805400C4 == F32(p,0x348)) {
+ F32(p,0x348) = lbl_805400E4 * -fn_8022C76C(PTR(p,4));
+} else if (F32(p,0x348) > lbl_805400C4) {
+ if (F32(p,0x34c) >= lbl_805400C4) F32(p,0x348) -= lbl_805400E8 * fn_8022C76C(PTR(p,4));
+ else F32(p,0x348) -= lbl_805400EC * fn_8022C76C(PTR(p,4));
+ if (F32(p,0x348) <= lbl_805400F0 || U8(PTR(p,0xbf0),0x4a)) F32(p,0x348) = lbl_805400F0;
+} else if (F32(p,0x348) < lbl_805400C4) {
+ if (F32(p,0x34c) >= lbl_805400C4) F32(p,0x348) -= lbl_805400E8 * fn_8022C76C(PTR(p,4));
+ else F32(p,0x348) -= lbl_805400EC * fn_8022C76C(PTR(p,4));
+ if (F32(p,0x348) >= lbl_805400F4 || U8(PTR(p,0xbf0),0x4b)) F32(p,0x348) = lbl_805400F4;
+}
+f32 savedZ = F32(p,0x34c);
+ F32(p,0x34c)=lbl_805400C4;
+ f32 mag=V3(p,0x344).length();
+ if(mag>=lbl_805400F8)mag=lbl_805400F8;
+ V3(p,0x344).normalize(); V3(p,0x344).scale(mag);
+ F32(p,0x34c)=savedZ;
+ } else {
+ f32 sq=F32(p,0x344)*F32(p,0x344)+F32(p,0x348)*F32(p,0x348);
+ if (!(sq<=lbl_805400D8 * *(f32*)__float_epsilon)) {
+ f32 savedZ=F32(p,0x34c);
+ F32(p,0x34c)=lbl_805400C4;
+ f32 mag=V3(p,0x344).length();
+ if(fn_8022C274(U32(p,4))) {
+ if(savedZ>=lbl_805400C4) {
+ mag+=lbl_805400E8; if(mag>=lbl_805400F8)mag=lbl_805400F8;
+ }else {mag+=lbl_805400EC;if(mag>=lbl_805400F8)mag=lbl_805400F8;}
+ }else {mag-=lbl_80540100;if(mag<=lbl_805400F0)mag=lbl_805400F0;}
+ V3(p,0x344).normalize(); V3(p,0x344).scale(mag);
+ F32(p,0x34c)=savedZ;
+ }
+ }
+ if(V3(p,0x344).squared()<=lbl_805400D8 * *(f32*)__float_epsilon) {
+ if(F32(p,0x10)<=lbl_805400C4 || U8(p,0x3fa)<1) goto afterPhysics;
+ }
+ F32(p,0x34c)-=lbl_80540104;
+ if(F32(p,0x34c)<lbl_80540108)F32(p,0x34c)=lbl_80540108;
+ {
+ f32 oldHeight=F32(p,0x10);
+ s32 room=S32(p,0x3b4);
+ u8* rooms=(u8*)fn_802D6A9C();
+ if(rooms[0x131df+room]) {
+ F32(p,8)+=F32(p,0x344);F32(p,0xc)-=F32(p,0x34c);
+ F32(p,0x10)=lbl_805400C0;
+ if(F32(p,0x34c)<lbl_805400C4 && U8(PTR(p,0xbf0),0x4a)) {
+ F32(p,0x368)=F32(p,0x344);F32(p,0x36c)=F32(p,0x348);F32(p,0x370)=lbl_805400C4;
+ V3(p,0x344).zero();F32(p,0x10)=lbl_805400C4;
+ if (oldHeight > lbl_805400C4) {
+ if ((fn_8024B24C(p) || U8(p, 0x1204)) && fn_802486A0(p) == 5 && !Player_IsLinked(p)) {
+ for (s32 i = 0; i < 4; ++i) {
+ if (fn_80243194(p, i) && i != S32(p, 4)) fn_8023E690(i, p + 8);
+ } fn_8024BAEC(p);
+ } }
+ }
+ }else {
+ V3(p,8)+=V3(p,0x344);
+ if(F32(p,0x34c)<lbl_805400C4 && F32(p,0x10)<=lbl_805400C4) {
+ F32(p,0x10)=lbl_805400C4;
+ F32(p,0x368)=F32(p,0x344);F32(p,0x36c)=F32(p,0x348);F32(p,0x370)=lbl_805400C4;
+ V3(p,0x344).zero();
+ if (oldHeight > lbl_805400C4) {
+ if ((fn_8024B24C(p) || U8(p, 0x1204)) && fn_802486A0(p) == 5 && !Player_IsLinked(p)) {
+ for (s32 i = 0; i < 4; ++i) {
+ if (fn_80243194(p, i) && i != S32(p, 4)) fn_8023E690(i, p + 8);
+ } fn_8024BAEC(p);
+ } }
+ }
+ }
+ }
+ afterPhysics:
+ if(U8(p,0xb79)==0 && F32(p,0x10)>lbl_805400C4 && fn_802415CC(p)>=2 && fn_8022C310(U32(p,4))) {
+ U8(p,0x3fb)=0;U8(p,0x3fa)=0;U8(p,0x3fc)=0;F32(p,0x34c)=lbl_8054010C;U8(p,0xb79)=1;
+ }
+ if(U8(p,0x3fa)<4) U8(p,0x3fb)=0;
+ else if(U8(p,0x3fa)<9) U8(p,0x3fb)=1;
+ else if(U8(p,0x3fa)<13) U8(p,0x3fb)=2;
+ else if(U8(p,0x3fa)<17) U8(p,0x3fb)=3;
 }
 
 extern "C" void fn_8027EB04(void*);
