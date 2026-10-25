@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
 
@@ -17,36 +19,37 @@ extern "C" const f32 lbl_8053F5A0;
 extern "C" const f32 lbl_8053F5A4;
 extern "C" const f32 lbl_8053F5A8;
 extern "C" void fn_801E5FC8(u8* this_) {
-    u8 buf[16];
-    volatile struct {
-        s32 a;
-        s32 b;
-        f32* m;
-        u8 c[11];
-        s32 d;
-        u8 e[4];
-        s32 f;
-        s32 g;
-        s32 h;
-    } req;
-    f32 mtx[12];
     void* p;
     u32 id = fn_801DA938(this_ + 0x2a8);
     p = fn_804032E8(0x49434542, id);
     if (p != 0) {
+        u8 buf[16];
+        volatile struct {
+            s32 a;
+            u8 b[4];
+            f32* m;
+            u8 c[11];
+            s32 d;
+            u8 e[4];
+            s32 f;
+            s32 g;
+            s32 h;
+        } req;
+        f32 mtx[12];
         req.a = -1;
-        req.b = -1;
+        *(s32*)req.b = -1;
         for (u8 i = 0; i < 16; i += 8) {
-            buf[i] = i;
-            buf[i + 1] = i + 1;
-            buf[i + 2] = i + 2;
-            buf[i + 3] = i + 3;
-            buf[i + 4] = i + 4;
-            buf[i + 5] = i + 5;
-            buf[i + 6] = i + 6;
-            buf[i + 7] = i + 7;
+            buf[(u8)i] = i;
+            buf[(u8)(i + 1)] = i + 1;
+            buf[(u8)(i + 2)] = i + 2;
+            buf[(u8)(i + 3)] = i + 3;
+            buf[(u8)(i + 4)] = i + 4;
+            buf[(u8)(i + 5)] = i + 5;
+            buf[(u8)(i + 6)] = i + 6;
+            buf[(u8)(i + 7)] = i + 7;
         }
-        req.b = 0;
+        req.a = -1;
+        *(s32*)req.b = 0;
         req.m = 0;
         req.c[0] = 0;
         req.c[1] = 0;
@@ -83,17 +86,18 @@ extern "C" void fn_801E5FC8(u8* this_) {
         }
         fn_801DAC6C();
         u8 r = fn_801DAD2C();
-        req.b = 0;
-        fn_801EFD34(this_, p, buf, -1, lbl_8053F5A0, *(s32*)(this_ + 0x248) >= 8 ? 0.0f : lbl_8053F5A0, lbl_8053F5A0);
+        req.b[0] += r;
+        req.b[1] += r;
+        req.b[2] += r;
+        fn_801EFD34(this_, p, buf, -1, lbl_8053F5A0, *(s32*)(this_ + 0x248) >= 8 ? lbl_8053F5AC : lbl_8053F5A0, lbl_8053F5A0);
     }
 }
 
 extern "C" void fn_801E61C4(char* this_) {
     f32 v[3];
-    f32 y = *(f32*)(this_ + 0x10) + lbl_8053F5AC;
+    f32 y = lbl_8053F5AC + *(f32*)(this_ + 0x10);
     f32 z = *(f32*)(this_ + 0x14);
-    f32 x = *(f32*)(this_ + 0xc);
-    v[0] = x;
+    v[0] = *(f32*)(this_ + 0xc);
     v[1] = y;
     v[2] = z;
     fn_801CB71C(this_ + 0x2c8, v, 0, 0);
@@ -102,7 +106,9 @@ extern "C" void fn_801E61C4(char* this_) {
 
 extern "C" void fn_801E6234(char* this_) {
     f32 v[3];
-    f32 y = lbl_8053F5AC + *(f32*)(this_ + 0x10);
+    f32 k = lbl_8053F5AC;
+    f32 w = *(f32*)(this_ + 0x10);
+    f32 y = k + w;
     f32 z = *(f32*)(this_ + 0x14);
     f32 x = *(f32*)(this_ + 0xc);
     v[0] = x;
@@ -112,16 +118,15 @@ extern "C" void fn_801E6234(char* this_) {
     *(void**)(this_ + 0x2cc) = fn_8013CC50(*(u32*)(this_ + 4), v, 0x25d, 0, 0, 0, 0, 1, 1.0f);
 }
 
-extern "C" void fn_801E62D4(void* this_) {
-    s32 id = *(s32*)((u8*)this_ + 4);
-    u8* pos = (u8*)this_ + 0xc;
+extern "C" void fn_801E62D4(u8* this_) {
+    s32 id = *(s32*)(this_ + 4);
+    u8* pos = this_ + 0xc;
     fn_8013CC50(id, pos, 0x259, 0, 0, 0, 0, 1, 1.0f);
 }
 
-extern "C" void fn_801E631C(u8* this_) {
-    u32 id = *(u32*)(this_ + 4);
-    fn_8013CC50(id, this_ + 0xc, 0x25a, 0, 0, 0, 0, 1, 1.0f);
-    fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x25b, 0, 0, 0, 0, 1, 1.0f);
+extern "C" void fn_801E631C(void* this_) {
+    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 0x25a, 0, 0, 0, 0, 1, 1.0f);
+    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 0x25b, 0, 0, 0, 0, 1, 1.0f);
 }
 
 extern "C" void fn_801E6394(char* this_) {
