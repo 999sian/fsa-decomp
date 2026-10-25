@@ -1074,10 +1074,10 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     {
         u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        if (arc && arc->getResource(0x54494d47, (const char*)lbl_8053DA04)) {
+        if (arc && arc->getResource(0x54494d47, 0)) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)lbl_8053DA04);
+                void* res = arc->getResource(0x54494d47, 0);
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
