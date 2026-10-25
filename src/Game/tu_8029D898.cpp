@@ -347,30 +347,27 @@ extern "C" void fn_8029DEBC(void* p, s32 a, s32 room, s32 flag, s32 c, s32 value
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8029DF80(void* p, s32 x, u32 y, s32 a, s32 b, s32 c, s32 d) {
-    s32 n = x;
-    u32 yy = y;
-    s32 bb = b;
-    s32 cc = c;
-    s32 dd = d;
+    s32 bb;
+    s32 cc;
+    s32 dd;
+    u32 yy;
+    s32 xx;
+    s32 n;
+    xx = x; yy = y; bb = b; cc = c; dd = d; n = xx;
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)a);
     n++;
-    if ((n & 0xf) == 0) {
-        n += 0xf0;
-    }
+    if ((n & 0xf) == 0) n += 0xf0;
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)bb);
-    n = x + 0x10;
-    if ((x & 0x100) != (n & 0x100)) {
-        n = x + 0x110;
-    }
+    n = xx + 0x10;
+    if ((xx & 0x100) != (n & 0x100)) n = xx + 0x110;
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)cc);
-    n++;
-    if ((n & 0xf) == 0) {
-        n += 0xf0;
-    }
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)dd);
+    s32 last = n + 1;
+    if ((last & 0xf) == 0) last += 0xf0;
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, last, (u16)dd);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8029E050(void* self, JGeometry::TVec2<f32>* pos, u32 room, s32 a, s32 b, s32 c, s32 d)
 {
     JGeometry::TVec2<f32> q = *pos;
