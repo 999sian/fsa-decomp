@@ -60,7 +60,7 @@ extern "C" void fn_801F349C(u8* obj, s32 n, f32* v);
 extern "C" f32 lbl_805404D0;
 extern "C" f64 lbl_805404E0;
 extern void* lbl_8053AED0;
-extern "C" void* lbl_8046C100;
+extern "C" const u8 lbl_8046C100[12];
 extern "C" void fn_8028AE2C(u8* this_) {
     s32 idx;
     u8 prev;
