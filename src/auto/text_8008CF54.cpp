@@ -80,26 +80,27 @@ struct JUTGamePad {
 };
 
 extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
-    __ct__11JKRDisposerFv(this_);
-    *(u32*)this_ = (u32)lbl_80499490;
-    fn_8008D910(this_ + 0x18);
-    fn_8008DADC((u32*)(this_ + 0x48));
-    fn_8008DADC((u32*)(this_ + 0x58));
-    fn_8008DE64((u32*)(this_ + 0x68), (int)this_);
-    __ct__10JSUPtrLinkFPv(this_ + 0x80, this_);
-    this_[0x98] = 0;
-    *(s16*)(this_ + 0x7c) = (s16)param_2;
-    if (*(s16*)(this_ + 0x7c) >= 0) {
-        lbl_8053A924[param_2]++;
+    u8* self = this_;
+    s32 id = param_2;
+    __ct__11JKRDisposerFv(self);
+    *(u32*)self = (u32)lbl_80499490;
+    fn_8008D910(self + 0x18);
+    fn_8008DADC((u32*)(self + 0x48));
+    fn_8008DADC((u32*)(self + 0x58));
+    fn_8008DE64((u32*)(self + 0x68), (int)self);
+    __ct__10JSUPtrLinkFPv(self + 0x80, self);
+    *(u8*)(self + 0x98) = 0;
+    *(s16*)(self + 0x7c) = (s16)id;
+    if (*(s16*)(self + 0x7c) >= 0) {
+        lbl_8053A924[id]++;
         fn_8008D0D4();
     }
-    append__10JSUPtrListFP10JSUPtrLink((void*)lbl_8052E8A0, this_ + 0x80);
-    fn_8008D538(this_);
-    *(u32*)(this_ + 0x90) = 0;
-    *(u32*)(this_ + 0x94) = 0;
-    fn_8008D148((int)this_);
-    mr_dummy:
-    return this_;
+    append__10JSUPtrListFP10JSUPtrLink((void*)lbl_8052E8A0, self + 0x80);
+    fn_8008D538(self);
+    *(u32*)(self + 0x90) = 0;
+    *(u32*)(self + 0x94) = 0;
+    fn_8008D148((int)self);
+    return self;
 }
 
 extern "C" void* dtor_8008D028(void* this_, s16 freeFlag) {
@@ -261,11 +262,10 @@ extern "C" void fn_8008D424(int param_1)
 
 extern "C" void fn_8008D4CC(int param_1, int param_2, s64 param_3)
 {
-    if (param_3 >= (((s64)lbl_8053A948 << 32) | (u32)lbl_8053A94C)) {
+    if (param_3 >= *(s64*)&lbl_8053A948) {
         lbl_8053A951 = 1;
         u32 func_ptr = lbl_8053A93C;
         lbl_8053A954 = *(s16*)(param_1 + 0x7c);
-
         if (func_ptr != 0) {
             ((void (*)(int, u32))(func_ptr))(*(s16*)(param_1 + 0x7c), lbl_8053A940);
         }
