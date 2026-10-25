@@ -7,6 +7,9 @@
 
 extern void* lbl_8053AAF8;
 extern "C" void fn_80402E08(void* a, f32 b, f32 c);
+extern f32 lbl_8054335C;
+extern f32 lbl_80543360;
+extern f32 lbl_80543364;
 
 // ---- from src/Game/Dtor_lbl804AF860_803A7708.cpp ----
 // fn_803A7708 - actor@lbl_804AF860's destructor. Calls getTotalFreeSize__7JKRHeapFv on
@@ -63,6 +66,70 @@ extern "C" void* fn_803A7708(void* this_, s16 flag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_803A60E4(char* p) {
+    s16 v = *(s16*)(p + 0x6e);
+    if (v == 0) {
+        if (--*(s16*)(p + 0x6c) > 0) {
+            return;
+        }
+        u8* g = (u8*)lbl_8053AAF8;
+        *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+        u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+        *(s16*)(p + 0x6c) = (s32)(11.0f * (*(f32*)&bits - 1.0f)) + 10;
+        if (*(s16*)(p + 0x74) == -6) {
+            *(s16*)(p + 0x74) = 6;
+        } else {
+            *(s16*)(p + 0x74) = -6;
+        }
+        f32 h = (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL)->getHeight();
+        J2DPane* w = (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL);
+        (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x70) + *(s16*)(p + 0x74));
+        h = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->getHeight();
+        w = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL);
+        (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x72) + *(s16*)(p + 0x74));
+    } else {
+        if (v == 1 || v == -1) {
+            *(s16*)(p + 0x74) = 0;
+            f32 h = (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL)->getHeight();
+            J2DPane* w = (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL);
+            (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x70) + *(s16*)(p + 0x74));
+            h = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->getHeight();
+            w = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL);
+            (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x72) + *(s16*)(p + 0x74));
+        }
+        v = *(s16*)(p + 0x6e);
+        if (v < 0) {
+            s32 x;
+            if (v > -5) {
+                x = -v;
+            } else {
+                if (v == -10) {
+                    *(s16*)(p + 0x6e) = 0;
+                }
+                x = v + 10;
+            }
+            fn_80402E08(*(void**)(p + 0x24), -5.0f * (f32)*(s32*)(p + 0x64) / 25.0f, *(f32*)(p + 0x60) * (f32)(x * x));
+            if (*(s16*)(p + 0x6e) != 0) {
+                --*(s16*)(p + 0x6e);
+            }
+        } else if (v > 0) {
+            s32 x;
+            if (v < 5) {
+                x = v;
+            } else {
+                if (v == 10) {
+                    *(s16*)(p + 0x6e) = 0;
+                }
+                x = 10 - v;
+            }
+            fn_80402E08(*(void**)(p + 0x28), 5.0f * (f32)*(s32*)(p + 0x64) / 25.0f, *(f32*)(p + 0x60) * (f32)(x * x));
+            if (*(s16*)(p + 0x6e) != 0) {
+                ++*(s16*)(p + 0x6e);
+            }
+        }
+    }
 }
 
 extern "C" s32 fn_803A65EC() {
