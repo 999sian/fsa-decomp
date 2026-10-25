@@ -1,6 +1,22 @@
 // Player collision-cache and state helpers, retail 0x80256C74-0x8025EB18.
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
+extern "C" f32 fn_8022C6AC(u32);
+extern "C" u8 fn_8022C310(u32);
+extern "C" u8 fn_8024B24C(void*);
+extern "C" s32 fn_802486A0(void*);
+extern "C" u8 fn_80243194(void*, s32);
+extern "C" void fn_8023E690(s32, void*);
+extern "C" void fn_8024BAEC(void*);
+extern const f32 lbl_805400E4;
+extern const f32 lbl_805400E8;
+extern const f32 lbl_805400EC;
+extern const f32 lbl_805400F0;
+extern const f32 lbl_805400F4;
+extern const f32 lbl_805400F8;
+extern const f32 lbl_80540100;
+extern const f32 lbl_80540108;
+
 
 #pragma auto_inline off
 
@@ -1510,7 +1526,7 @@ extern "C" void fn_8025B368(u8* p) {
 }
 
 extern "C" void fn_8025B3F0(u8* p) {
-    u8* base = (u8*)lbl_8046AF00;
+    const Tu80256Tables* tbl = (const Tu80256Tables*)lbl_8046AF00;
     s32 limit = 0x30;
     if (fn_8022B244()) {
         limit = 0x19;
@@ -1520,10 +1536,7 @@ extern "C" void fn_8025B3F0(u8* p) {
         U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
         if (U8(p, 0x3fc) == limit) {
             U8(p, 0xb9b) = 1;
-            const JGeometry::TVec3<f32>& t = *(const JGeometry::TVec3<f32>*)(base + 0x190 + S32(p, 0x3dc) * 12);
-            F32(p, 0x12a4) = t.x;
-            F32(p, 0x12a8) = t.y;
-            F32(p, 0x12ac) = t.z;
+            tu8025_copyVec(&V3(p, 0x12a4), tbl->a, S32(p, 0x3dc));
             V3(p, 0x12a4) += V3(p, 0x8);
             s32 room = S32(p, 0x3b4);
             if (room < 8) {
@@ -1619,15 +1632,9 @@ extern "C" void fn_8025B3F0(u8* p) {
         }
     }
     if (U8(p, 0xb9b) == 1) {
-        const JGeometry::TVec3<f32>& t = *(const JGeometry::TVec3<f32>*)(base + 0x1c0 + (S32(p, 0x3dc) + 4) * 12);
-        F32(p, 0x5c0) = t.x;
-        F32(p, 0x5c4) = t.y;
-        F32(p, 0x5c8) = t.z;
+        tu8025_copyVec(&V3(p, 0x5c0), tbl->b, S32(p, 0x3dc) + 4);
     } else {
-        const JGeometry::TVec3<f32>& t = *(const JGeometry::TVec3<f32>*)(base + 0x1c0 + S32(p, 0x3dc) * 12);
-        F32(p, 0x5c0) = t.x;
-        F32(p, 0x5c4) = t.y;
-        F32(p, 0x5c8) = t.z;
+        tu8025_copyVec(&V3(p, 0x5c0), tbl->b, S32(p, 0x3dc));
     }
     V3(p, 0x5c0) += V3(p, 0x8);
     F32(p, 0x5c8) = lbl_805400C4;
@@ -1662,7 +1669,7 @@ extern "C" void fn_8025B3F0(u8* p) {
         F32(p, 0x5b8) += F32(p, 0x5c0);
         F32(p, 0x5bc) += F32(p, 0x5c4);
         JGeometry::TVec3<f32> v;
-        v.set(*(const JGeometry::TVec3<f32>*)(base + 0x220 + S32(p, 0x3dc) * 12));
+        tu8025_copyVec(&v, tbl->c, S32(p, 0x3dc));
         v += V3(p, 0x8);
         fn_802A1D44(lbl_8053AC98, &v, U32(p, 0x4), S32(p, 0x3b4));
         f32 scale = lbl_805400D4;
