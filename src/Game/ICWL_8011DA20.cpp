@@ -97,9 +97,7 @@ static inline bool icwlHitPlayer(u8* this_) {
     s32 idx = fn_801F285C(this_, 0, 0, 1, -1);
     if (idx >= 0) {
         fn_801F0E34(this_, 0x400D1, 0);
-        ICWLVec2 v;
-        v.x = *(f32*)(this_ + 0xc);
-        v.y = *(f32*)(this_ + 0x10);
+        ICWLVec2 v(((f32*)(this_ + 0xc))[0], ((f32*)(this_ + 0xc))[1]);
         fn_802379E4(idx, &v);
         return true;
     }
