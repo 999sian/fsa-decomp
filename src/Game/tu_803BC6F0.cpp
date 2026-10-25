@@ -180,7 +180,6 @@ struct TextBoxVt15 {
     void* (*v15)(void* a, u64 b);
 };
 
-extern u8 lbl_804765D0[];
 typedef void* (*KeyGetFn)(void* self, u64 key);
 typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 
