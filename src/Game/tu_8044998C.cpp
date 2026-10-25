@@ -268,11 +268,11 @@ extern "C" void fn_8044A06C(void* self_) {
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 18), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 20), handle);
     Attach(Create(*(void**)(self + 4), lbl_80490C78, 22), handle);
-    ((u8*)Create(*(void**)(self + 4), lbl_80490C40, 12))[0xb0] = 0;
+    Hide(Create(*(void**)(self + 4), lbl_80490C40, 12));
     void* hi = *(void* volatile*)&lbl_80490C78[24];
     TblVObj* screen = *(TblVObj* volatile*)(self + 4);
     void* lo = lbl_80490C78[25];
-    ((u8*)screen->s15(lbl_80490C78, hi, lo))[0xb0] = 0;
+    Hide(screen->s15(lbl_80490C78, hi, lo));
 }
 
 extern "C" void* fn_8044A418(VObj** param_1, short param_2) {
