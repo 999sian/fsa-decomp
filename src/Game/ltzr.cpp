@@ -412,20 +412,49 @@ static inline f32 ltzrSqrt(f32 x) {
     return x * y;
 }
 
+static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, u8& hit) {
+            for (s32 j = 0; j < 8; j++) {
+                fn_8022E088(i, j, (f32*)&pt);
+                pt.sub(*(JGeometry::TVec3<f32>*)(p + 0xc));
+                pt.z = lbl_80542268;
+                f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
+                s32 a = (s32)(ang * lbl_8054228C);
+                f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
+                f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
+                f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
+                pt.z = lbl_80542268;
+                pt.y = len * sy;
+                pt.x = len * cy;
+                f32 minx = *(f32*)(p + 0x60);
+                f32 miny = *(f32*)(p + 0x64);
+                f32 maxx = *(f32*)(p + 0x68);
+                f32 maxy = *(f32*)(p + 0x6c);
+                u8 inside = 0;
+                if (pt.x >= minx && pt.y >= miny && pt.x < maxx && pt.y < maxy) inside = 1;
+                if (inside) {
+                    fn_8022DF48(i);
+                    hit = 1;
+                    return;
+                }
+            }
+            hit = 0;
+}
+
 extern "C" void fn_803408BC(char* p) {
     JGeometry::TVec3<f32> movement;
     JGeometry::TVec3<f32> pt;
     JGeometry::TVec3<f32> delta;
     if (*(u8*)(p + 0x2b0)) {
         *(u16*)(p + 0x2b2) += 0x800;
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x28) + JMath::sincosTable_.mTable[(u32)*(u16*)(p + 0x2b2) >> 5].first;
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x28) + JMath::sincosTable_.mTable[(u32)(*(u16*)(p + 0x2b2) & 0xffe0) >> 5].first;
         if (*(u16*)(p + 0x2b2) == 0) *(u8*)(p + 0x2b0) = 0;
     }
     for (s32 i = 0; i < 4; i++) {
         s32 room;
         u8 hit;
         room = *(s32*)(p + 4);
-        if (room != fn_8023DE58(i)) {
+        s32 current = fn_8023DE58(i);
+        if (current != room) {
             hit = 0;
         } else {
             for (s32 j = 0; j < 8; j++) {
@@ -434,13 +463,7 @@ extern "C" void fn_803408BC(char* p) {
                 pt.z = lbl_80542268;
                 f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
                 s32 a = (s32)(ang * lbl_8054228C);
-                f32 len = pt.x * pt.x + pt.y * pt.y;
-                if (len <= lbl_80542268) {
-                } else {
-                    f32 inv = __frsqrte(len);
-                    inv = lbl_80542290 * inv * (lbl_80542294 - len * (inv * inv));
-                    len = len * inv;
-                }
+                f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
                 f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
                 f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
                 pt.z = lbl_80542268;
