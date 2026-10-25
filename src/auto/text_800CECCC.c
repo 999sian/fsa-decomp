@@ -9,9 +9,10 @@
 #include "JSystem/J3D/J3DAnmTextureSRTKey.h"
 #include "JSystem/J3D/J3DAnmVisibilityFull.h"
 
-static inline void InitAnmLoaderBase(void** p) {
+static inline void** InitAnmLoaderBase(void** p) {
     extern void* lbl_8049AE38[];
     *p = lbl_8049AE38;
+    return p;
 }
 extern "C" void fn_800CF370(void** p);
 extern "C" void fn_800CF2B0(void** p);
@@ -184,7 +185,7 @@ extern "C" void** fn_800CF314(void** p, short del) {
 
 #pragma peephole off
 extern "C" void fn_800CF370(void** p) {
-    *p = lbl_8049AE38;
+    InitAnmLoaderBase(p);
     *p = lbl_8049AE10;
 }
 #pragma peephole reset
