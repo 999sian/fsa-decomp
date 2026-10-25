@@ -21,6 +21,23 @@ struct TVec3fAdd {
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c);
 extern "C" void* fn_802D6A9C(void);
+extern const f32 lbl_80541BC8;
+extern const f64 lbl_80541BD8;
+extern const f32 lbl_80541BE0;
+extern const f32 lbl_80541BE4;
+extern const f32 lbl_80541BE8;
+extern const f32 lbl_80541BEC;
+extern const f32 lbl_80541BF0;
+static inline void turtleReflect(Actor* a) {
+    u8* p = (u8*)a;
+    if (*(f32*)(p + 0x234) > 0.0f) {
+        if (a->field_3C.x > 0.0f) a->field_3C.x = -a->field_3C.x;
+        else *(f32*)(p + 0x234) = -*(f32*)(p + 0x234);
+    } else {
+        if (a->field_3C.x > 0.0f) *(f32*)(p + 0x234) = -*(f32*)(p + 0x234);
+        else a->field_3C.x = -a->field_3C.x;
+    }
+}
 extern "C" Actor* fn_8032500C(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AB464;
