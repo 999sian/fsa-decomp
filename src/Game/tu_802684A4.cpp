@@ -74,8 +74,8 @@ struct HitRectTable {
 
 
 inline bool rectContains(const HitRect& r, const Vec2f* p) {
-    f32 y;
     f32 x;
+    f32 y;
     bool in = false;
     if ((x = p->x) >= r.x0 && (y = p->y) >= r.y0 && x < r.x1 && y < r.y1) {
         in = true;
@@ -261,21 +261,7 @@ extern "C" u8 fn_80268BC4(u8* p) {
     }
     *(s32*)(p + 0xb0) = 0;
     do {
-    p[0x9a] = 0;
-    *(s32*)(p + 0x1c) = 0;
-    for (i = 0; i < 8; i++) {
-        p[0x20 + i] = 0;
-        p[0x28 + i] = 0;
-        p[0x38 + i] = 0;
-        p[0x50 + i] = 0;
-        p[0x58 + i] = 0;
-        p[0x60 + i] = 0;
-        p[0x68 + i] = 0;
-        p[0x70 + i] = 0;
-        p[0x78 + i] = 0;
-        p[0x80 + i] = 0;
-        p[0x88 + i] = 0;
-    }
+    clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (i = 0; i < 8; i++) {
         *(f32*)(p + 8) = lbl_8046BAE8[i].x;
@@ -288,20 +274,16 @@ extern "C" u8 fn_80268BC4(u8* p) {
         if (fn_8025F590(*(void**)(p + 4)) && *(s32*)(*(u8**)(p + 4) + 0x3b4) == 8 && fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70)) < 8) {
             JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(p + 8);
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
-            u8* base = fn_802D6A9C();
-            HitRect* o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
+            HitRect* o = roomRect(room);
             (*(f32*)(p + 8)) -= o->x0;
             room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
-            base = fn_802D6A9C();
-            o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
+            o = roomRect(room);
             (*(f32*)(p + 0xc)) -= o->y0;
             room = fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70));
-            base = fn_802D6A9C();
-            o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
+            o = roomRect(room);
             (*(f32*)(p + 8)) += o->x0;
             room = fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70));
-            base = fn_802D6A9C();
-            o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
+            o = roomRect(room);
             (*(f32*)(p + 0xc)) += o->y0;
             room = fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70));
             if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), room)) {
