@@ -35,6 +35,24 @@ static inline u8 thnk_isIdleSub(void* this_) {
 }
 #endif
 
+static inline u8 thnkShouldReset(void* this_) {
+    char* p = (char*)this_;
+    s32 state = *(s32*)(p + 0x248);
+    u8 hit = 0;
+    switch (state) {
+    case 0: case 7:
+    case 0xf: case 0x10: case 0x11: case 0x12:
+        break;
+    default:
+        if (!(*(u32*)(p + 0x230) & 0x4000) && *(u16*)(p + 0x2cc) == 0 && thnk_isIdleSub(this_)) {
+            if (*(u32*)(p + 0x230) & 0x20000) {
+                if (*(u32*)(p + 0x230) & 0x100000) hit = 1;
+            } else if (*(s32*)(p + 0x2bc) < 0) hit = 1;
+        }
+    }
+    return hit;
+}
+
 extern "C" void fn_801E1300(void* this_);
 extern "C" s32 fn_8023DE58(s32 idx);
 extern "C" u8 fn_801CD290(s32 owner);
@@ -751,8 +769,8 @@ extern "C" void fn_801E1300(void* this_) {
         }
     }
     {
-        u8 hit = 0;
         s32 state = *(s32*)(p + 0x248);
+        u8 hit = 0;
         if (state == 7) {
             goto done;
         }
@@ -769,15 +787,7 @@ extern "C" void fn_801E1300(void* this_) {
             goto done;
         }
         {
-            s32 s = *(s32*)(p + 0x278);
-            u8 near = 0;
-            if (s < 0xd) {
-                if (s < 3 && s >= 0) {
-                    near = 1;
-                }
-            } else if (s < 0x11) {
-                near = 1;
-            }
+            u8 near = thnk_isIdleSub(this_);
             if (near != 0) {
                 if (*(u32*)(p + 0x230) & 0x20000) {
                     if (*(u32*)(p + 0x230) & 0x100000) {
