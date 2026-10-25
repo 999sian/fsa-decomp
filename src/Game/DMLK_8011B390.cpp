@@ -40,7 +40,7 @@ static inline void dmlkRequestBounds(u8* p) {
 }
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
     ((JGeometry::TBox2f*)(p + 0x250))->set(pos[0] - lbl_8053C7F0,
-        pos[1] - lbl_8053C7E8, lbl_8053C7F0 + pos[0], lbl_8053C7E8 + pos[1]);
+        pos[1] - lbl_8053C7E8, lbl_8053C7F0 + pos[0], pos[1] + lbl_8053C7E8);
 }
 
 struct DMLKResMgr {
