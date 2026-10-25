@@ -1,7 +1,16 @@
 #include "types.h"
+struct JKRArchive;
 struct J2DScreen {
-    u8 pad[0x100];
+    J2DScreen();
+    void setPriority(const char*, unsigned long, JKRArchive*);
+    virtual void vf00(); virtual void vf04(); virtual void vf08(); virtual void vf0C();
+    virtual void vf10(); virtual void vf14(); virtual void vf18(); virtual void vf1C();
+    virtual void vf20(); virtual void vf24(); virtual void vf28(); virtual void vf2C();
+    virtual void vf30();
+    virtual void* search(u64);
+    u8 pad[0xfc];
     u8 b100;
+    u8 tail[0x17];
 };
 
 
@@ -325,6 +334,7 @@ extern "C" u8 lbl_804AF86C[];
 extern "C" u8 lbl_80490038[];
 extern "C" char lbl_80490400[];
 extern "C" u8 lbl_80529DEC[];
+#pragma opt_propagation off
 extern "C" void* fn_8044728C(void* param_1) {
     typedef void* (*SearchFn)(void*, unsigned long long);
     u8* self = (u8*)param_1;
@@ -349,14 +359,16 @@ extern "C" void* fn_8044728C(void* param_1) {
             *(void**)obj = (void*)lbl_804AF86C;
         }
         p[2] = obj;
-        fn_80402F04(p[2], ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x30)));
+        u64 tag0 = *(u64*)(params + 0x30);
+        fn_80402F04(p[2], (*(FsaVObj**)(self + 4))->search(tag0));
 
         obj = __nw__FUl(0x2c);
         if (obj != 0) {
             *(void**)obj = (void*)lbl_804AF86C;
         }
         p[6] = obj;
-        fn_80402F04(p[6], ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xb8)));
+        u64 tag1 = *(u64*)(params + 0xb8);
+        fn_80402F04(p[6], (*(FsaVObj**)(self + 4))->search(tag1));
         p++;
     }
 
@@ -371,4 +383,5 @@ extern "C" void* fn_8044728C(void* param_1) {
     self[0x30] = 0;
     return param_1;
 }
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
