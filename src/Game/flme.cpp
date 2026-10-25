@@ -92,7 +92,7 @@ extern "C" s16 fn_801F6874(s32);
 extern const f32 lbl_8053D600;
 extern "C" void fn_8015DF7C(void* this_) {
  char* p=(char*)this_;
- u8* base=lbl_80466110;
+ u8* base=(u8*)lbl_80466110;
  JGeometry::TVec2<f32> d;
  JGeometry::TBox2f box;
  JGeometry::TVec3<f32> pos;
@@ -135,7 +135,7 @@ extern "C" void fn_8015DF7C(void* this_) {
  for(s32 i=0;i<4;i++){
  if(fn_8023F264(i)&&fn_8023DE58(i)!=8){
  f32* src=fn_8023E724(i);d.set(src[0],src[1]);d.x-=*(f32*)(p+0xc);d.y-=*(f32*)(p+0x10);
- if(d.squared()<lbl_8053D5E4){d.normalize();if(d.squared()>JGeometry::TUtilf::epsilon())d.scale(lbl_8053D5F8);pos.set(d.x,d.y,lbl_8053D5EC);fn_8023DFF4(i,&pos);}
+ if(d.squared()<lbl_8053D5E4){d.normalize();if(!(d.squared()<=JGeometry::TUtilf::epsilon()))d.scale(lbl_8053D5F8);pos.set(d.x,d.y,lbl_8053D5EC);fn_8023DFF4(i,&pos);}
  }}}
  }
  }else{
@@ -150,38 +150,39 @@ extern "C" void fn_8015DF7C(void* this_) {
  pos.x+=offset[*(s32*)(p+0x98)].x;pos.y+=offset[*(s32*)(p+0x98)].y;
  if(*(f32*)(p+0x260)<lbl_8053D5A4){
  JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x264);if(emitter)emitter->becomeInvalidEmitter();
- if(*(s32*)(p+0x268)==0){
- if(*(s32*)(p+0x264)!=0){
+ if(*(u32*)(p+0x268)==0){
+ if(*(u32*)(p+0x264)!=0){
  s32 id=0x1ad;if(*(s32*)(p+0x25c)==1)id=0x253;
- *(s32*)(p+0x268)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
+ *(u32*)(p+0x268)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
  }else{
  s32 id=0x1ae;if(*(s32*)(p+0x25c)==1)id=0x253;
- *(s32*)(p+0x268)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
+ *(u32*)(p+0x268)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
  }
- *(s32*)(p+0x264)=0;
+ *(u32*)(p+0x264)=0;
  }
- if(*(s32*)(p+0x268)!=0){
- s16 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
- fn_8013CB44(*(s32*)(p+0x268),&pos,1,1,1);
- JPAGetXYZRotateMtx(angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x268))->mGlobalRot);
+ if(*(u32*)(p+0x268)!=0){
+ s32 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
+ fn_8013CB44(*(u32*)(p+0x268),&pos,1,1,1);
+ JPAGetXYZRotateMtx((s16)angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x268))->mGlobalRot);
  }
  }else{
  JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x268);
- if(emitter){emitter->becomeInvalidEmitter();*(s32*)(p+0x268)=0;}
- if(*(s32*)(p+0x264)==0){
+ if(emitter){emitter->becomeInvalidEmitter();*(u32*)(p+0x268)=0;}
+ if(*(u32*)(p+0x264)==0){
  s32 id=0x1ac;if(*(s32*)(p+0x25c)==1)id=0x252;
- *(s32*)(p+0x264)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
+ *(u32*)(p+0x264)=fn_8013CC50(*(s32*)(p+4),&pos,lbl_8053D5F0*(f32)*(s32*)(p+0x258)+lbl_8053D59C,id,1,1,0,0,1);
  }
- if(*(s32*)(p+0x264)!=0){
- s16 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
- fn_8013CB44(*(s32*)(p+0x264),&pos,1,1,1);
- JPAGetXYZRotateMtx(angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x264))->mGlobalRot);
+ if(*(u32*)(p+0x264)!=0){
+ s32 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
+ fn_8013CB44(*(u32*)(p+0x264),&pos,1,1,1);
+ JPAGetXYZRotateMtx((s16)angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x264))->mGlobalRot);
  }
- if(*(f32*)(p+0x60)!=lbl_8053D59C&&*(f32*)(p+0x68)!=lbl_8053D5FC){
+ if(lbl_8053D59C!=*(f32*)(p+0x60)&&lbl_8053D5FC!=*(f32*)(p+0x68)){
  s32 room=*(s32*)(p+0x198);u8* g=fn_8020D58C();fn_8020D7D0(g+4+g[0]*0x784,room);fn_801F0E34(p,0x30011,0);
  }
  }
- if(++*(s32*)(p+0x24c)>10){
+ *(s32*)(p+0x24c)+=1;
+ if(*(s32*)(p+0x24c)>10){
  s32 count=5;if(*(f32*)(p+0x260)<lbl_8053D5A4)count=1;
  for(s32 i=0;i<count;i++){
  pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
@@ -194,14 +195,15 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  *(s32*)(p+0x24c)=0;
  }
- }else if(*(s32*)(p+0x264)!=0){
+ }else if(*(u32*)(p+0x264)!=0){
  (*(JPABaseEmitter**)(p+0x264))->mGlobalPrmClr.a=(u8)(lbl_8053D600**(f32*)(p+0x260));
  (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.x=*(f32*)(p+0x260);
  (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.y=*(f32*)(p+0x260);
  (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.x=*(f32*)(p+0x260);
  (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.y=*(f32*)(p+0x260);
  if(*(f32*)(p+0x260)>lbl_8053D5A4){
- if(++*(s32*)(p+0x24c)>10){
+ *(s32*)(p+0x24c)+=1;
+ if(*(s32*)(p+0x24c)>10){
  for(s32 i=0,angle=0;i<8;i++,angle+=0x2000){
  pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
  f32 distance=*(u16*)(p+0x94)==5?lbl_8053D5B8:lbl_8053D5E0;
@@ -211,7 +213,7 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  *(s32*)(p+0x24c)=0;
  }
- if(*(f32*)(p+0x60)!=lbl_8053D59C&&*(f32*)(p+0x68)!=lbl_8053D5FC){
+ if(lbl_8053D59C!=*(f32*)(p+0x60)&&lbl_8053D5FC!=*(f32*)(p+0x68)){
  s32 room=*(s32*)(p+0x198);u8* g=fn_8020D58C();fn_8020D7D0(g+4+g[0]*0x784,room);fn_801F0E34(p,0x30011,0);
  }
  }
