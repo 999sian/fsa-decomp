@@ -2,6 +2,7 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Util.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -35,6 +36,8 @@ extern "C" void fn_801E801C(char* p) {
 static s8 lbl_8053AC44;
 static f32 lbl_8053AC40;
 extern "C" void fn_801E8B1C(void* p0, f32* pos, s16 a, s16 b, f32 scale, f32 tilt) {
+    f32 px = pos[0];
+    f32 py = pos[1];
     if (lbl_8053AC44 == 0) {
         lbl_8053AC44 = 1;
         lbl_8053AC40 = -256.0f;
@@ -57,17 +60,15 @@ extern "C" void fn_801E8B1C(void* p0, f32* pos, s16 a, s16 b, f32 scale, f32 til
     f32 sq = JMath::sincosTable_.mTable[(u16)(-q) >> 5].first;
     f32 cq = JMath::sincosTable_.mTable[(u16)(-q) >> 5].second;
     f32 f = 2.0f * ic;
-    f32 c1 = cA * cq;
-    f32 c2 = cA * sq;
-    f32 X = (sA * sq + c1) * f;
-    f32 Y = (sA * cq - c2) * f;
-    *(volatile f32*)0xCC008000 = pos[0] + Y;
-    *(volatile f32*)0xCC008000 = lbl_8053AC40 + (pos[1] + X);
+    f32 X = (sA * sq + cA * cq) * f;
+    f32 Y = (sA * cq - cA * sq) * f;
+    *(volatile f32*)0xCC008000 = px + Y;
+    *(volatile f32*)0xCC008000 = lbl_8053AC40 + (py + X);
     *(volatile f32*)0xCC008000 = lbl_8053AC40;
     *(volatile f32*)0xCC008000 = 1.0f;
     *(volatile f32*)0xCC008000 = scale * k;
-    *(volatile f32*)0xCC008000 = pos[0] - Y;
-    *(volatile f32*)0xCC008000 = lbl_8053AC40 + (pos[1] - X);
+    *(volatile f32*)0xCC008000 = px - Y;
+    *(volatile f32*)0xCC008000 = lbl_8053AC40 + (py - X);
     *(volatile f32*)0xCC008000 = lbl_8053AC40;
     *(volatile f32*)0xCC008000 = 0.0f;
     *(volatile f32*)0xCC008000 = scale * k;
