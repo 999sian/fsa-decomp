@@ -15,7 +15,7 @@ extern "C" Actor* fn_80374788(Actor* p, s16 n) {
 }
 
 extern "C" char lbl_80475120[];
-extern "C" f32 lbl_80542ED8;
+extern "C" const f32 lbl_80542ED8;
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, void* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 extern "C" void fn_803747E8(Actor* this_) {
