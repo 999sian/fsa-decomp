@@ -108,13 +108,6 @@ extern "C" s32 fn_80238A68(s32 handle);
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
 extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 arg);
 extern "C" f32 lbl_80474F98[];
-static inline void fn_803734B4_tick(Actor* this_) {
-    u8* p = (u8*)this_;
-    if (*(s32*)(p + 0x248) > 0) {
-        *(s32*)(p + 0x248) -= 1;
-        fn_80373198(this_);
-    }
-}
 extern "C" void fn_803734B4(Actor* this_) {
     u8* p = (u8*)this_;
     f32 box[4];
@@ -125,7 +118,7 @@ extern "C" void fn_803734B4(Actor* this_) {
     *(f32*)(p + 0x40) = 0.0f;
     *(f32*)(p + 0x44) = 0.0f;
     if (*(s32*)(p + 0x248) > 0) {
-        *(s32*)(p + 0x248) = *(s32*)(p + 0x248) - 1;
+        *(s32*)(p + 0x248) -= 1;
         fn_80373198(this_);
     }
     cnt = 0;
@@ -219,6 +212,7 @@ extern "C" void fn_803734B4(Actor* this_) {
     } else {
         *(s32*)(p + 0x23c) = 4;
     }
+    return;
 }
 
 extern "C" f32 lbl_80542E50;
