@@ -86,10 +86,6 @@ extern "C" void fn_803410DC(u8* p) {
 }
 
 extern "C" void fn_803418B8(Actor* p) {
-    struct Vec2f {
-        f32 x;
-        f32 y;
-    };
     *(s32*)((u8*)p + 0x240) = (*(u32*)((u8*)p + 0x90) >> 12) & 0xff;
     *(s32*)((u8*)p + 0x23c) = 0;
     *(s32*)((u8*)p + 0x244) = -1;
@@ -114,11 +110,10 @@ extern "C" void fn_803418B8(Actor* p) {
         u8* base = (u8*)fn_802D6A9C();
         if ((base + idx + 0x10000)[0x31df] == 1) {
             *(f32*)((u8*)p + 0x10) = *(f32*)((u8*)p + 0x10) + lbl_805422E0;
-            *(f64*)((u8*)p + 0x24) = *(f64*)((u8*)p + 0xc);
-            *(f32*)((u8*)p + 0x2c) = *(f32*)((u8*)p + 0x14);
-            *(f32*)((u8*)p + 0x250) = lbl_805422C4;
+            JGeometry::setTVec3f((f32*)((u8*)p + 0xc), (f32*)((u8*)p + 0x24));
         }
     }
+    *(f32*)((u8*)p + 0x250) = lbl_805422C4;
     if (fn_802D800C(fn_802D6A9C(), *(s32*)((u8*)p + 0x248)) == 0 && ((u8*)lbl_8053AAF8)[0x7f] == 1) {
         *(u8*)((u8*)p + 0x255) = 1;
     } else {
