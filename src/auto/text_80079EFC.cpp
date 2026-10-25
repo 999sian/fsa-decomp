@@ -115,7 +115,9 @@ extern "C" void* fn_80079FE8(void* this_, s16 deleteFlag) {
     return this_;
 }
 
-JKRFile::~JKRFile() {}
+#pragma force_active on
+inline JKRFile::~JKRFile() {}
+#pragma force_active reset
 
 extern "C" bool fn_8007A398(u8* this_, s32 entryNum);
 extern "C" void* check_mount_already__10JKRArchiveFlP7JKRHeap(s32 entryNum, void* heap);
