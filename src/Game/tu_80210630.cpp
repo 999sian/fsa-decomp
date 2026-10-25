@@ -104,8 +104,8 @@ extern "C" void* lbl_804C3128[];
 extern "C" void fn_80210A30(char* p, float* out);
 static inline void getBox(char* p, float* out)
 {
-    float right;
     float bottom;
+    float right;
     float y;
     float x;
     float left;
