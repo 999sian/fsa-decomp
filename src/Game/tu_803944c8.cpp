@@ -668,7 +668,7 @@ struct MsgProc {
         m218 = a;
         m21c = b;
     }
-    void setSlotPos(u8 i, s32 x) {
+    void setSlotPos(const u8 i, const s32 x) {
         MsgLayout* l = layout;
         s32 y = slotLine[i] - lineTab[l->m15c] - 1;
         l->slotX[i] = (f32)x + slotOfs[i];
