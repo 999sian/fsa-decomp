@@ -48,10 +48,6 @@ public:
     virtual void v14(); virtual void v18(); virtual void v1C(); virtual void v20();
     virtual void setAlpha(s32 a);
 };
-static inline void MenuMoveCursor803E(u8* self, const f32 height) {
-    J2DPane* pane=(*(J2DPane**)(self+0xc))->search(0x50736375726f3032ULL);
-    pane->move(*(f32*)(self+0x1a4)+((f32*)(self+0x184))[*(s32*)(self+0x1b8)],height);
-}
 class Screen803EDBF0 {
 public:
     virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
@@ -844,7 +840,7 @@ lo=(long)group*10;hi=(int)group*10+10;lo2=group*30;
  pane=(*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL);
  pane->move(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
  pane=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
- f32 h=getBounds__7J2DPaneFv(pane)[1];
+ f64 h=getBounds__7J2DPaneFv(pane)[1];
  pane=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
  pane->move(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
 }
