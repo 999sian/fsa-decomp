@@ -829,7 +829,6 @@ lo=0;group=0;lo2=lo;hi=10;
  pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
  pane->v10(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
 }
-#pragma opt_lifetimes reset
 #pragma opt_common_subs reset
 
 extern "C" void fn_803E9034(u8* p) {
