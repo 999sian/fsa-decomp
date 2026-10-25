@@ -45,12 +45,9 @@ extern "C" JAUSoundMgr* __dt__11JAUSoundMgrFv(JAUSoundMgr* this_, s16 freeFlag) 
 }
 
 extern "C" void fn_8003B0B0(float* v) {
-    float a = lbl_8053B298;
-    float b = lbl_8053B29C;
-    v[0] = a;
-    float c = lbl_8053B2A0;
-    v[2] = a;
-    v[1] = b;
-    v[3] = c;
-    v[4] = b;
+    v[0] = 1.0f;
+    v[2] = 1.0f;
+    v[1] = 0.0f;
+    v[3] = 0.5f;
+    v[4] = 0.0f;
 }
