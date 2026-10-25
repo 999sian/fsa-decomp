@@ -46,6 +46,12 @@ extern "C" void GXSetColorUpdate(s32 enable);
 extern "C" void GXSetAlphaUpdate(s32 enable);
 extern "C" void GXSetCullMode(s32 mode);
 extern "C" void GXBegin(s32 prim, s32 fmt, s32 nverts);
+struct FscVec3 {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
 extern "C" void PSMTXMultVec(void* m, void* src, void* dst);
 extern "C" double sin(double x);
 extern "C" double cos(double x);
@@ -60,13 +66,13 @@ static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
 extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
     if (*(u8*)(p + 0xc) < 0xff) {
         u32 tevColor;
-        s32 i;
-        f32 ang;
-        f32 s;
-        f32 c;
-        f32 m[3][4];
-        f32 src[3];
         f32 dst[3];
+        f32 src[3];
+        f32 m[3][4];
+        f32 c;
+        f32 s;
+        f32 ang;
+        s32 i;
 
         fn_8013B438(lbl_8053AB10);
         GXClearVtxDesc();
@@ -126,13 +132,13 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
     }
 
     {
-        s32 i;
-        f32 ang;
-        f32 s;
-        f32 c;
-        f32 m[3][4];
-        f32 src[3];
         f32 dst[3];
+        f32 src[3];
+        f32 m[3][4];
+        f32 c;
+        f32 s;
+        f32 ang;
+        s32 i;
 
         GXBegin(0xa0, 0, 0x22);
         GXPosition3f32(pos2[0], pos2[1], pos2[2]);
