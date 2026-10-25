@@ -15,6 +15,8 @@ struct Obj8033D264 {
     s32 x198;
 };
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
 extern "C" {
@@ -661,58 +663,47 @@ extern "C" const f32 lbl_80542208;
 extern s32 lbl_804ABC80;
 extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
 extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
-    f32 r0, r1, r2, r3;
     self->m25c = (self->mSpawnParam >> 12) & 0xf;
     switch (self->m25c) {
     case 0:
     case 1:
     case 5:
-        r0 = lbl_805421EC;
-        r1 = lbl_805421F0;
-        r2 = lbl_805421F4;
-        r3 = lbl_805421F8;
         self->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421C4, lbl_805421B0));
-        self->mRect[0] = r0;
-        self->mRect[1] = r1;
-        self->mRect[2] = r2;
-        self->mRect[3] = r3;
-        self->mRect2[0] = r0;
-        self->mRect2[1] = r1;
-        self->mRect2[2] = r2;
-        self->mRect2[3] = r3;
+        self->mRect[0] = lbl_805421EC;
+        self->mRect[1] = lbl_805421F0;
+        self->mRect[2] = lbl_805421F4;
+        self->mRect[3] = lbl_805421F8;
+        self->mRect2[0] = lbl_805421EC;
+        self->mRect2[1] = lbl_805421F0;
+        self->mRect2[2] = lbl_805421F4;
+        self->mRect2[3] = lbl_805421F8;
         self->m1a4 = 2;
         self->m260 = 2;
         break;
     case 2:
     case 3:
     case 6:
-        r0 = lbl_80542200;
-        r1 = lbl_80542204;
-        r2 = lbl_80542208;
-        r3 = lbl_805421F4;
         self->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421FC, lbl_805421B0));
-        self->mRect[0] = r0;
-        self->mRect[1] = r1;
-        self->mRect[2] = r2;
-        self->mRect[3] = r3;
-        self->mRect2[0] = r0;
-        self->mRect2[1] = r1;
-        self->mRect2[2] = r2;
-        self->mRect2[3] = r3;
+        self->mRect[0] = lbl_80542200;
+        self->mRect[1] = lbl_80542204;
+        self->mRect[2] = lbl_80542208;
+        self->mRect[3] = lbl_805421F4;
+        self->mRect2[0] = lbl_80542200;
+        self->mRect2[1] = lbl_80542204;
+        self->mRect2[2] = lbl_80542208;
+        self->mRect2[3] = lbl_805421F4;
         self->m1a4 = 4;
         self->m260 = 4;
         break;
     case 4:
-        r0 = lbl_80542200;
-        r1 = lbl_80542208;
-        self->mRect[0] = r0;
-        self->mRect[1] = r0;
-        self->mRect[2] = r1;
-        self->mRect[3] = r1;
-        self->mRect2[0] = r0;
-        self->mRect2[1] = r0;
-        self->mRect2[2] = r1;
-        self->mRect2[3] = r1;
+        self->mRect[0] = lbl_80542200;
+        self->mRect[1] = lbl_80542200;
+        self->mRect[2] = lbl_80542208;
+        self->mRect[3] = lbl_80542208;
+        self->mRect2[0] = lbl_80542200;
+        self->mRect2[1] = lbl_80542200;
+        self->mRect2[2] = lbl_80542208;
+        self->mRect2[3] = lbl_80542208;
         self->m1a4 = 4;
         self->m260 = 4;
         break;
@@ -720,14 +711,14 @@ extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
 
     self->mAnchor = self->mPos;
     self->mVel.set(lbl_805421B0, lbl_805421B0, lbl_805421B0);
-    self->m234 = 0;
     self->m244 = 0;
     self->m248 = 0;
+    self->m0b8 = 2;
+    self->m234 = 0;
     self->m250 = 0;
+    self->m24c = lbl_804ABC80;
     self->m254 = 2;
     self->m258 = -1;
-    self->m0b8 = 2;
-    self->m24c = lbl_804ABC80;
     self->m272 = 0;
     self->m268 = (self->mSpawnParam & 0xfff) + 0x12b;
     self->m265 = 0;
