@@ -147,6 +147,28 @@ extern "C" s32 fn_8013D5B0(void* this_) {
     return fn_800EC188(*(void**)((char*)this_ + 0xc));
 }
 
+extern "C" void fn_8013D5D4(u8* this_) {
+    f32 b[3][4];
+    f32 a[3][4];
+    f32 d[3][4];
+    f32 c[3][4];
+    u8* self = this_;
+    PSMTXIdentity(a);
+    PSMTXIdentity(b);
+    fn_8013B490(lbl_8053AB10);
+    PSMTXIdentity(c);
+    PSMTXIdentity(d);
+    PSMTXCopy(*(u8**)(lbl_8053AB10 + 0x10) + 0x80, a);
+    s32 w = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
+    s32 h = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+    C_MTXLightOrtho(b, 0.0f, (f32)w, 0.0f, (f32)h, 0.5f, 0.5f, 0.5f, 0.5f);
+    if (!fn_80134CC8(lbl_8053AAF8)) {
+        draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(self + 0xc), a, 2);
+        draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(self + 0xc), a, 8);
+        draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(self + 0xc), a, 10);
+    }
+}
+
 extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(u8* this_) {
     if (fn_80134CC8(lbl_8053AAF8)) {
         return;
@@ -390,14 +412,20 @@ extern "C" void OSReport(const char*, ...);
 extern char lbl_80465980[];
 extern "C" void fn_8013F584(void);
 extern "C" void* fn_8013F3E4(u8* this_, void* heap) {
+    struct ResMgr {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void* load(u32, const char*);
+    };
     char* base = lbl_80465980;
     *(void**)this_ = lbl_8049F178;
     __construct_array(this_ + 0x10, (void*)fn_8013F584, 0, 0x10, 0x400);
     *(void**)(this_ + 0x4) = create__12JKRSolidHeapFUlP7JKRHeapb(-1, heap, 0);
     void* res = __nw__FUlP7JKRHeapi(0x14, *(void**)(this_ + 0x4), 0);
     if (res != 0) {
-        void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* tex = ((void* (*)(void*, u32, const char*))((*(void***)obj)[6]))(obj, 0x3f3f3f3f, base + 0xb8);
+        void* tex = (*(ResMgr**)((u8*)lbl_8053AAF8 + 0xa4))->load(0x3f3f3f3f, base + 0xb8);
         res = __ct__18JPAResourceManagerFPCvP7JKRHeap(res, tex, *(void**)(this_ + 0x4));
     }
     *(void**)(this_ + 0x8) = res;
@@ -569,13 +597,15 @@ extern "C" u8 fn_8013CAA4(u8* this_, f32 angle) {
     if (this_ != 0) {
     f32 m[3][4];
     Vec3_ axis;
+    f32 sum = angle;
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
     axis.x = 0.0f;
     axis.y = 1.0f;
     axis.z = 1.0f;
-    fn_8010F668(m, &axis, angle + kPI);
+    sum = sum + kPI;
+    fn_8010F668(m, &axis, sum);
     m[0][0] *= -1.0f;
     m[0][1] *= -1.0f;
     m[0][2] *= -1.0f;
