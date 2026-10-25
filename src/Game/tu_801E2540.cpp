@@ -80,6 +80,7 @@ extern "C" u8 fn_801E1D7C(u8* this_);
 extern "C" void fn_8023B6CC(s32 id);
 extern "C" void fn_802379E4(s32 id, void* pos);
 extern "C" u8 lbl_8053AC30;
+#pragma opt_propagation off
 extern "C" s32 fn_801E2610(u8* this_) {
     s32 ret = 0;
     s32 id = fn_801F285C(this_, 0, 0, 1, -1);
@@ -91,7 +92,8 @@ extern "C" s32 fn_801E2610(u8* this_) {
             if (*(s32*)(this_ + 0x248) == 0xc && *(s32*)(this_ + 0x24c) >= 6 && !fn_801E1DE8(this_)) {
                 fn_801E1594(this_, 0xd);
             } else if (fn_801E1CF8(this_) && (*(u32*)(this_ + 0x230) & 0x10000) == 0) {
-                *(u32*)(this_ + 0x230) |= 0x10000;
+                u32* flags = (u32*)(this_ + 0x230);
+                *flags |= 0x10000;
                 fn_801F0E34(this_, 0x4003d, 0);
                 lbl_8053AC30++;
                 if (lbl_8053AC30 >= 5) {
@@ -127,7 +129,7 @@ extern "C" s32 fn_801E2610(u8* this_) {
     }
     return ret;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_801F82CC(void* p, u8* this_, u8 kind, f32 r);
 extern "C" u8 fn_801CC8E4(void* p);
 extern "C" const f32 lbl_8053F4E4;
@@ -143,7 +145,7 @@ extern "C" s32 fn_801E284C(u8* this_) {
         p = (u8*)fn_801F666C(fn_801F856C(), id);
         if (p != 0) {
             id = *(s32*)(this_ + 4);
-            if (*(fn_802D6A9C() + 0x131df + id) == 0 && *(f32*)(this_ + 0x14) > lbl_8053F4E8 && fn_801CC8E4(p)) {
+            if (fn_802D6A9C()[id + 0x131df] == 0 && *(f32*)(this_ + 0x14) > lbl_8053F4E8 && fn_801CC8E4(p)) {
                 ok = 0;
             } else if (!fn_801E1CF8(this_)) {
                 ok = 1;
@@ -160,8 +162,9 @@ extern "C" s32 fn_801E284C(u8* this_) {
                 if (*(s32*)(this_ + 0x248) == 0xc && *(s32*)(this_ + 0x24c) >= 6 && !fn_801E1DE8(this_)) {
                     fn_801E1594(this_, 0xd);
                 } else if (fn_801E1CF8(this_) && (*(u32*)(this_ + 0x230) & 0x10000) == 0) {
-                    *(u32*)(this_ + 0x230) |= 0x10000;
+                    u32 flags = *(u32*)(this_ + 0x230);
                     fn_801F0E34(this_, 0x4003d, 0);
+                    *(u32*)(this_ + 0x230) = flags | 0x10000;
                     lbl_8053AC30++;
                     if (lbl_8053AC30 >= 5) {
                         lbl_8053AC30 = 0;
@@ -186,6 +189,7 @@ extern "C" s32 fn_801E284C(u8* this_) {
     return ret;
 }
 
+#pragma opt_propagation off
 extern "C" s32 fn_801E2A98(u8* this_) {
     f32 a50[3];
     JGeometry::TVec3<f32> a44;
@@ -215,7 +219,7 @@ extern "C" s32 fn_801E2A98(u8* this_) {
     if (b30 || b28 || (u8)b26) {
         if (*(s32*)(this_ + 0x248) == 0xc && *(s32*)(this_ + 0x24c) >= 6 && !fn_801E1DE8(this_)) {
             fn_801E1594(this_, 0xd);
-        } else if (fn_801E1CF8(this_) && (*(u32*)(this_ + 0x230) & 0x10000) == 0) {
+        } else if (fn_801E1CF8(this_) && (*(volatile u32*)(this_ + 0x230) & 0x10000) == 0) {
             *(u32*)(this_ + 0x230) |= 0x10000;
             fn_801F0E34(this_, 0x4003d, 0);
             lbl_8053AC30++;
@@ -250,7 +254,7 @@ extern "C" s32 fn_801E2A98(u8* this_) {
             v28.y = a50[1];
             v28.z = a50[2];
         } else {
-            v28 = *(JGeometry::TVec3<f32>*)(this_ + 0xc) - a44;
+            v28.set(*(JGeometry::TVec3<f32>*)(this_ + 0xc) - a44);
             if (b30) {
                 mode = 3;
             }
@@ -261,7 +265,7 @@ extern "C" s32 fn_801E2A98(u8* this_) {
     }
     return b26;
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_801E1DB4(u8* this_);
 extern "C" u8 fn_801D0DD4(u8* this_);
 extern "C" const f32 lbl_8053F4D8;
@@ -319,15 +323,28 @@ extern "C" void fn_801E2D88(u8* this_) {
 }
 
 extern "C" void fn_801E2EE4(u8* this_) {
-    f32 x = *(f32*)(this_ + 0xc);
+    f32 rect[4];
     f32 y = *(f32*)(this_ + 0x10);
-    fn_802397B4(&JGeometry::TBox2<f32>(x - lbl_8053F4D0, y - lbl_8053F4D0, lbl_8053F4D0 + x, lbl_8053F4D0 + y), *(u32*)(this_ + 4), *(s32*)(this_ + 0x198));
+    f32 c = lbl_8053F4D0;
+    f32 x = *(f32*)(this_ + 0xc);
+    u32 room = *(u32*)(this_ + 4);
+    s32 h = *(s32*)(this_ + 0x198);
+    rect[3] = c + y;
+    rect[2] = c + x;
+    rect[0] = x - c;
+    rect[1] = y - c;
+    fn_802397B4(rect, room, h);
 }
 
 extern "C" s32 fn_801E2F40(u8* this_) {
-    int result = 0;
-    switch ((u16)fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4))) {
-    case 3: case 13: case 14: result = 1; break;
+    s32 result = 0;
+    u16 kind = fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4));
+    switch (kind) {
+    case 3:
+    case 13:
+    case 14:
+        result = 1;
+        break;
     }
     return result;
 }
