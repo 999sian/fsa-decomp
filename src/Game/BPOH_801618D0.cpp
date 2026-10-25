@@ -1,4 +1,9 @@
 #include "types.h"
+#include "Game/TlwpDrawParam.h"
+extern const f32 lbl_8053D6E0;
+extern const f32 lbl_8053D6E4;
+extern const char lbl_80466274[];
+extern "C" void fn_801F02BC(void*, const char*, s32, TlwpDrawParam*, s32, s32, s32, f32, f32);
 #include "Game/SinitPoolChain.h"
 struct BPOHV {
     virtual void v0();
@@ -30,6 +35,141 @@ extern const float lbl_8053D6C0;
 extern const float lbl_8053D6D0;
 extern const float lbl_8053D6BC;
 extern const float lbl_8053D6C4;
+extern "C" u8 lbl_804661E0[];
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
+extern "C" void load__10JUTTextureF11_GXTexMapID(char* self, s32 id);
+extern "C" void __dt__10JUTTextureFv(void* self, s32 flags);
+extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out);
+extern "C" u32 lbl_8053D6B8;
+extern "C" u32 lbl_80543F30;
+extern "C" void fn_801618D0(char* this_, f32* pos, u8* ent) {
+    char* names = (char*)lbl_804661E0;
+    char tex0[0x40];
+    char tex1[0x40];
+    char tex2[0x40];
+    f32 out[3];
+    f32 w;
+    f32 h;
+    void* timg;
+
+    timg = fn_804032E8(0x42504F48, names + 0x60);
+    *(void**)(tex0 + 0x28) = nullptr;
+    storeTIMG__10JUTTextureFPC7ResTIMGUc(tex0, timg, 0);
+    tex0[0x3b] &= 2;
+    timg = fn_804032E8(0x42504F48, names + 0x74);
+    *(void**)(tex1 + 0x28) = nullptr;
+    storeTIMG__10JUTTextureFPC7ResTIMGUc(tex1, timg, 0);
+    tex1[0x3b] &= 2;
+    timg = fn_804032E8(0x42504F48, names + 0x84);
+    *(void**)(tex2 + 0x28) = nullptr;
+    storeTIMG__10JUTTextureFPC7ResTIMGUc(tex2, timg, 0);
+    tex2[0x3b] &= 2;
+
+    w = (f32)(s32) * (u16*)(*(char**)(tex0 + 0x20) + 0x2);
+    h = (f32)(s32) * (u16*)(*(char**)(tex0 + 0x20) + 0x4);
+    fn_802F5040(pos, ent, out);
+
+    GXClearVtxDesc();
+    GXSetVtxDesc((GXAttr)9, (GXAttrType)1);
+    GXSetVtxDesc((GXAttr)0xd, (GXAttrType)1);
+    GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)9, (GXCompCnt)1, (GXCompType)4, 0);
+    GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xd, (GXCompCnt)1, (GXCompType)4, 0);
+    GXSetChanCtrl((GXChannelID)4, (GXBool)0, (GXColorSrc)0, (GXColorSrc)0, (GXLightID)0, (GXDiffuseFn)0, (GXAttnFn)2);
+    GXSetNumChans(1);
+    GXSetTexCoordGen2((GXTexCoordID)0, (GXTexGenType)1, (GXTexGenSrc)4, 0x3c, (GXBool)0, 0x7d);
+    GXSetNumTexGens(1);
+    load__10JUTTextureF11_GXTexMapID(tex0, 0);
+    load__10JUTTextureF11_GXTexMapID(tex1, 1);
+    load__10JUTTextureF11_GXTexMapID(tex2, 2);
+
+    GXSetTevOrder((GXTevStageID)0, (GXTexCoordID)0, (GXTexMapID)0, (GXChannelID)0xff);
+    GXSetTevColorIn((GXTevStageID)0, (GXTevColorArg)2, (GXTevColorArg)0xe, (GXTevColorArg)8, (GXTevColorArg)0xf);
+    GXSetTevColorOp((GXTevStageID)0, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)0, (GXTevAlphaArg)4, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7);
+    GXSetTevAlphaOp((GXTevStageID)0, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)0, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevKColorSel((GXTevStageID)0, (GXTevKColorSel)0xc);
+    GXSetTevKAlphaSel((GXTevStageID)0, (GXTevKAlphaSel)0x1c);
+    GXSetTevOrder((GXTevStageID)1, (GXTexCoordID)0, (GXTexMapID)1, (GXChannelID)0xff);
+    GXSetTevColorIn((GXTevStageID)1, (GXTevColorArg)0xf, (GXTevColorArg)0, (GXTevColorArg)8, (GXTevColorArg)0xf);
+    GXSetTevColorOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)1, (GXTevAlphaArg)7, (GXTevAlphaArg)6, (GXTevAlphaArg)0, (GXTevAlphaArg)7);
+    GXSetTevAlphaOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)1, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevKColorSel((GXTevStageID)1, (GXTevKColorSel)0xc);
+    GXSetTevKAlphaSel((GXTevStageID)1, (GXTevKAlphaSel)0x1c);
+    GXSetTevOrder((GXTevStageID)2, (GXTexCoordID)0, (GXTexMapID)2, (GXChannelID)0xff);
+    GXSetTevColorIn((GXTevStageID)2, (GXTevColorArg)0xf, (GXTevColorArg)4, (GXTevColorArg)8, (GXTevColorArg)0);
+    GXSetTevColorOp((GXTevStageID)2, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)2, (GXTevAlphaArg)7, (GXTevAlphaArg)2, (GXTevAlphaArg)4, (GXTevAlphaArg)0);
+    GXSetTevAlphaOp((GXTevStageID)2, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)2, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevKColorSel((GXTevStageID)2, (GXTevKColorSel)0xc);
+    GXSetTevKAlphaSel((GXTevStageID)2, (GXTevKAlphaSel)0x1c);
+    GXSetTevOrder((GXTevStageID)3, (GXTexCoordID)0xff, (GXTexMapID)0xff, (GXChannelID)0xff);
+    GXSetTevColorIn((GXTevStageID)3, (GXTevColorArg)0xf, (GXTevColorArg)0, (GXTevColorArg)6, (GXTevColorArg)0xe);
+    GXSetTevAlphaIn((GXTevStageID)3, (GXTevAlphaArg)7, (GXTevAlphaArg)0, (GXTevAlphaArg)3, (GXTevAlphaArg)6);
+    GXSetTevColorOp((GXTevStageID)3, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaOp((GXTevStageID)3, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)3, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevKColorSel((GXTevStageID)3, (GXTevKColorSel)0xd);
+    GXSetTevKAlphaSel((GXTevStageID)3, (GXTevKAlphaSel)0x1d);
+    GXSetTevDirect((GXTevStageID)3);
+    GXSetNumTevStages(4);
+    GXSetBlendMode((GXBlendMode)1, (GXBlendFactor)4, (GXBlendFactor)5, (GXLogicOp)0xf);
+    GXSetZCompLoc((GXBool)0);
+    GXSetAlphaCompare((GXCompare)4, 0, (GXAlphaOp)0, (GXCompare)7, 0);
+    GXSetColorUpdate((GXBool)1);
+    GXSetCullMode((GXCullMode)0);
+
+    GXSetTevColor((GXTevRegID)1, *(GXColor*)(this_ + 0x2f4));
+    GXSetTevKColor((GXTevKColorID)0, *(GXColor*)(this_ + 0x2f8));
+    GXSetTevColor((GXTevRegID)2, *(GXColor*)(this_ + 0x2fc));
+    if (ent != nullptr) {
+        GXSetTevColor((GXTevRegID)3, *(GXColor*)(ent + 0x10));
+        GXSetTevKColor((GXTevKColorID)1, *(GXColor*)(ent + 0x14));
+    } else {
+        GXSetTevColor((GXTevRegID)3, *(GXColor*)&lbl_8053D6B8);
+        GXSetTevKColor((GXTevKColorID)1, *(GXColor*)&lbl_80543F30);
+    }
+
+    out[0] -= lbl_8053D6BC * w;
+    out[2] -= lbl_8053D6BC * h;
+    GXBegin((GXPrimitive)0x80, (GXVtxFmt)0, 4);
+    f32 x0 = out[0];
+    *(volatile f32*)0xCC008000 = x0;
+    f32 zero = lbl_8053D6C0;
+    f32 x1 = x0 + w;
+    f32 y = out[1];
+    *(volatile f32*)0xCC008000 = y;
+    f32 z0 = out[2];
+    f32 z1 = z0 + h;
+    *(volatile f32*)0xCC008000 = z1;
+    *(volatile f32*)0xCC008000 = zero;
+    *(volatile f32*)0xCC008000 = zero;
+    *(volatile f32*)0xCC008000 = x1;
+    *(volatile f32*)0xCC008000 = y;
+    *(volatile f32*)0xCC008000 = z1;
+    f32 one = lbl_8053D6C4;
+    *(volatile f32*)0xCC008000 = one;
+    *(volatile f32*)0xCC008000 = zero;
+    *(volatile f32*)0xCC008000 = x1;
+    *(volatile f32*)0xCC008000 = y;
+    *(volatile f32*)0xCC008000 = z0;
+    *(volatile f32*)0xCC008000 = one;
+    *(volatile f32*)0xCC008000 = one;
+    *(volatile f32*)0xCC008000 = x0;
+    *(volatile f32*)0xCC008000 = y;
+    *(volatile f32*)0xCC008000 = z0;
+    *(volatile f32*)0xCC008000 = zero;
+    *(volatile f32*)0xCC008000 = one;
+
+    __dt__10JUTTextureFv(tex2, -1);
+    __dt__10JUTTextureFv(tex1, -1);
+    __dt__10JUTTextureFv(tex0, -1);
+}
+
 extern "C" void fn_80161F20(char* this_) {
     fn_801F0E34(this_, 0x40015, 0);
     ((BPOHV*)this_)->setAnim(7, lbl_8053D6C0, lbl_8053D6D0);
