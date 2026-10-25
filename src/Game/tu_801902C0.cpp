@@ -26,9 +26,140 @@ extern "C" u8 fn_802DCD0C(void);
 extern "C" u8 fn_80239D38(void);
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8* lbl_8053AEC8;
+extern "C" void* lbl_8053AB10;
+extern "C" const char lbl_80467508[];
+extern "C" f32 lbl_8053E214;
 
 extern "C" void* fn_801902C0(void) {
     return *(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x20);
+}
+
+extern "C" void fn_8013ABCC(void* obj, Vec* pos, Mtx mtx);
+extern "C" void fn_801902D0(u8* p) {
+    s32 i;
+    u8* cur;
+    cur = p;
+    for (i = 0; i < 7; i++, cur += 0x60) {
+        if (cur[0x64] != 0) {
+            JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(cur + 8);
+            f32 z = *(f32*)(cur + 0x40);
+            f32 x = *(f32*)(cur + 0x20);
+            f32 y = *(f32*)(cur + 0x30);
+            s32 a = *(s32*)(cur + 0x5c);
+            s32 b = *(s32*)(cur + 0x60);
+            Mtx m;
+            Mtx r;
+            if (z > 0.0f && a < 1) {
+                a++;
+                b--;
+            }
+            f32 off = (f32)(a * 0x400 + b * 0x80);
+            m[0][3] = 0.0f;
+            m[1][3] = 0.0f;
+            m[2][3] = 0.0f;
+            PSMTXScale(m, 1.0f, 0.70710677f, 0.70710677f);
+            PSMTXConcat(m, (MtxPtr)(cur + 0x14), m);
+            r[0][3] = 0.0f;
+            r[1][3] = 0.0f;
+            r[2][3] = 0.0f;
+            setRotX(r, 1.5707964f);
+            PSMTXConcat(m, r, m);
+            m[0][3] = x;
+            m[1][3] = y + off;
+            m[2][3] = z + off;
+            v.x = -v.x;
+            fn_8013ABCC(*(void**)(cur + 0x44), &v, m);
+        }
+    }
+    if (*(void**)(p + 0x2b4) != NULL && p[0x2c0] != 0) {
+        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+        Mtx m;
+        PSMTXTrans(m, *(f32*)(p + 0x2a8), *(f32*)(p + 0x2ac), *(f32*)(p + 0x2b0));
+        v.scale(10.24f);
+        m[1][3] += 2048.0f;
+        m[2][3] += 2048.0f;
+        fn_8013ABCC(*(void**)(p + 0x2b8), &v, m);
+        m[1][3] -= 2048.0f;
+        m[2][3] -= 2048.0f;
+        fn_8013ABCC(*(void**)(p + 0x2b4), &v, m);
+    }
+    if (*(void**)(p + 0x2d0) != NULL && p[0x2dc] != 0) {
+        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+        Mtx m;
+        PSMTXTrans(m, *(f32*)(p + 0x2c4), *(f32*)(p + 0x2c8), *(f32*)(p + 0x2cc));
+        if (!(*(s32*)(lbl_80529DEC + 0x118) == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) &&
+            !(*(s32*)(lbl_80529DEC + 0x118) == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 2)) {
+            m[1][3] += 1024.0f;
+            m[2][3] += 1024.0f;
+        }
+        v.scale(10.24f);
+        fn_8013ABCC(*(void**)(p + 0x2d0), &v, m);
+    }
+    if (*(void**)(p + 0x2ec) != NULL && p[0x2fc] != 0) {
+        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+        Mtx m;
+        PSMTXTrans(m, *(f32*)(p + 0x2e0), *(f32*)(p + 0x2e4), *(f32*)(p + 0x2e8));
+        m[1][3] -= 256.0f;
+        m[2][3] -= 256.0f;
+        v.scale(10.24f);
+        fn_8013ABCC(*(void**)(p + 0x2ec), &v, m);
+    }
+    if (*(void**)(p + 0x30c) != NULL && p[0x31c] != 0) {
+        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+        Mtx m;
+        PSMTXTrans(m, *(f32*)(p + 0x300), *(f32*)(p + 0x304), *(f32*)(p + 0x308));
+        m[1][3] -= 256.0f;
+        m[2][3] -= 256.0f;
+        v.scale(10.24f);
+        fn_8013ABCC(*(void**)(p + 0x30c), &v, m);
+    }
+    if (*(void**)(p + 0x32c) != NULL && p[0x33c] != 0) {
+        JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+        Mtx m;
+        PSMTXTrans(m, *(f32*)(p + 0x320), *(f32*)(p + 0x324), *(f32*)(p + 0x328));
+        m[1][3] -= 256.0f;
+        m[2][3] -= 256.0f;
+        v.scale(10.24f);
+        fn_8013ABCC(*(void**)(p + 0x32c), &v, m);
+    }
+    cur = p;
+    for (i = 0; i < *(s32*)(p + 0x4a8); i++, cur += 0x24) {
+        if (*(void**)(cur + 0x358) != NULL) {
+            JGeometry::TVec3<f32> v;
+            Mtx m;
+            PSMTXTrans(m, *(f32*)(cur + 0x340), *(f32*)(cur + 0x344), *(f32*)(cur + 0x348));
+            m[1][3] -= 256.0f;
+            m[2][3] -= 256.0f;
+            f32 s = 16.0f * *(f32*)(cur + 0x34c) / 10.0f;
+            v.x = v.y = v.z = s;
+            v.z = -s;
+            fn_8013ABCC(*(void**)(cur + 0x358), &v, m);
+        }
+    }
+    cur = p;
+    for (i = 0; i < *(s32*)(p + 0x5ec); i++, cur += 0x28) {
+        if (*(void**)(cur + 0x4c0) != NULL) {
+            JGeometry::TVec3<f32> v(1.0f, 0.7f, -1.0f);
+            Mtx m;
+            PSMTXTrans(m, *(f32*)(cur + 0x4ac), *(f32*)(cur + 0x4b0), *(f32*)(cur + 0x4b4));
+            setRotX(m, 1.5707964f);
+            v.scale(1.5f);
+            fn_8013ABCC(*(void**)(cur + 0x4c0), &v, m);
+        }
+    }
+    cur = p;
+    for (i = 0; i < *(s32*)(p + 0x618); i++, cur += 0x14) {
+        if (*(void**)(cur + 0x5fc) != NULL) {
+            JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+            Mtx m;
+            PSMTXTrans(m, *(f32*)(cur + 0x5f0), *(f32*)(cur + 0x5f4), *(f32*)(cur + 0x5f8));
+            m[0][3] -= 256.0f;
+            m[1][3] += 768.0f;
+            m[2][3] += 1024.0f;
+            v.scale(10.24f);
+            fn_8013ABCC(*(void**)(cur + 0x5fc), &v, m);
+        }
+    }
 }
 
 extern "C" void fn_80190DC8(u8* p) {
