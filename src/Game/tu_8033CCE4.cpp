@@ -638,12 +638,12 @@ extern "C" void fn_8033DA78(UnkObj8033D4CC* this_) {
             if (this_->m272 == 0) {
                 if (this_->m25c == 0) {
                     this_->m250 = (this_->m250 + 1) & 3;
-                    this_->m24c = (&lbl_804ABC80)[this_->m250];
+                    this_->m24c = ((s32*)&lbl_804ABC80)[this_->m250];
                 } else if (this_->m25c == 2) {
                     this_->m24c--;
                     if (this_->m24c <= 0) {
                         this_->m250 = (this_->m250 + 1) & 3;
-                        this_->m24c = (&lbl_804ABC80)[this_->m250];
+                        this_->m24c = ((s32*)&lbl_804ABC80)[this_->m250];
                     }
                 }
             }
@@ -660,7 +660,6 @@ extern "C" const f32 lbl_805421FC;
 extern "C" const f32 lbl_80542200;
 extern "C" const f32 lbl_80542204;
 extern "C" const f32 lbl_80542208;
-extern s32 lbl_804ABC80;
 extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
 extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
     self->m25c = (self->mSpawnParam >> 12) & 0xf;
