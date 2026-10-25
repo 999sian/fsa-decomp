@@ -198,14 +198,7 @@ J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32
 	return material;
 }
 
-extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
-{
-	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
-	if (initData->mMatColorIndex[no] != 0xffff) {
-		return J3DGXColor(self->mColorData[initData->mMatColorIndex[no]]);
-	}
-	return J3DGXColor();
-}
+
 
 u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
 {
@@ -280,6 +273,18 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 		return J3DTevOrder(self->mTevOrderInfo[initData->mTevOrderInfoIndex[no]]);
 	}
 	return J3DTevOrder();
+}
+
+extern "C" GXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	u32 defaultColor[2];
+	defaultColor[0] = lbl_80543F10;
+	defaultColor[1] = lbl_80543F14;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mTevColorIndex[no] != 0xffff) {
+		return *(GXColorS10*)&self->mTevColors[initData->mTevColorIndex[no]];
+	}
+	return *(GXColorS10*)defaultColor;
 }
 
 extern "C" u32 lbl_80543F10;
