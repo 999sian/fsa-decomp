@@ -102,7 +102,7 @@ extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
 extern "C" f32 lbl_80543494;
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
-extern "C" u8 lbl_804765D0[];
+extern "C" const u8 lbl_804765D0[];
 extern "C" u8 lbl_8050DB0C[];
 extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
