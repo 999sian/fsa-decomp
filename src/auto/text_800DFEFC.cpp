@@ -294,7 +294,15 @@ extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx
 
 
 
-// fn_800E0DF8 (newTevKColor) goes here
+extern "C" GXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	GXColor defaultColor = j3dDefaultTevKColor;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mTevKColorIndex[no] != 0xffff) {
+		return self->mTevKColors[initData->mTevKColorIndex[no]];
+	}
+	return defaultColor;
+}
 
 u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
 {
