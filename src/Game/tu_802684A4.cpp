@@ -69,9 +69,9 @@ inline bool pointInRect(const Vec2f& p, const HitRect* r) {
     return in;
 }
 
-inline bool pointInRect(const f32& x, f32 y, const HitRect* r) {
+inline bool pointInRect(const f32& x, const f32& y, const HitRect* r) {
     bool in = false;
-    if (x >= r->x0 && y >= r->y0 && x < r->x1 && y < r->y1) {
+    if (!(x < r->x0 || y < r->y0 || x >= r->x1 || y >= r->y1)) {
         in = true;
     }
     return in;
