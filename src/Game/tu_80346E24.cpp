@@ -31,7 +31,7 @@ extern "C" Actor* fn_80346E24(Actor* p, s16 n) {
 
 extern "C" double sin(double);
 extern "C" double cos(double);
-static inline void setDrawRotation(Mtx m, f32 angle, f32 scale) {
+static inline void setDrawRotation(Mtx m, f32 angle, const f32& scale) {
     f32 sz,sy,sx,cx,cy,cz;
     sx=sin(lbl_80542438);
     sy=sin(angle);
@@ -63,7 +63,9 @@ extern "C" void fn_80346E84(Actor* this_) {
     s32 mode=7;
     rec.b2d=1;
     PSMTXIdentity(m);
-    setDrawRotation(m,*(f32*)(p+0x268),*(f32*)(p+0x26c));
+    f32 angle=*(f32*)(p+0x268);
+    f32 scale=*(f32*)(p+0x26c);
+    setDrawRotation(m,angle,scale);
     rec.w18=m;
     s32 state=*(s32*)(p+0x230);
     if(state==3) mode=-1;
