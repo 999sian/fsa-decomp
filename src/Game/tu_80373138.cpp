@@ -4,6 +4,7 @@
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JKernel/JKRArchive.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804AE574[];
@@ -250,4 +251,5 @@ extern "C" void fn_803738DC(Actor* this_) {
     *(s32*)((u8*)this_ + 0x24c) = -1;
     *(s32*)((u8*)this_ + 0x250) = 0;
 }
+
 
