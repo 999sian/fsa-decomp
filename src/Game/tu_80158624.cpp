@@ -287,12 +287,7 @@ extern "C" void fn_80158E88(void) {
     u32 c2;
     u32 c3;
     u32 c4;
-    f32 x;
-    f32 z;
-
-    x = lbl_8053D454;
-    z = lbl_8053D458;
-    GXInitLightPos(lbl_804BFB60, x, x, z);
+    GXInitLightPos(lbl_804BFB60, lbl_8053D454, lbl_8053D454, lbl_8053D458);
     GXInitLightAttn(lbl_804BFB60, lbl_8053D43C, lbl_8053D440, lbl_8053D440, lbl_8053D43C, lbl_8053D440, lbl_8053D440);
     c1 = lbl_8053D420;
     GXInitLightColor(lbl_804BFB60, &c1);
