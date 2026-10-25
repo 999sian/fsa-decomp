@@ -53,6 +53,7 @@ extern char* lbl_8053AAF8;
 extern JGeometry::TVec3<f32> lbl_8046B490[20];
 extern JGeometry::TVec3<f32> lbl_8046B580[];
 extern const f32 lbl_80540188;
+extern const f32 lbl_805401E0;
 extern "C" void fn_801F3708(char*, JGeometry::TVec3<f32>*);
 
 extern "C" bool fn_8025EB18(char* p) {
@@ -573,6 +574,49 @@ extern "C" void fn_80262B8C(char* p) {
     fn_80283D2C(p);
 }
 
+extern const f32 lbl_80540178;
+extern const f32 lbl_805401CC;
+extern const f32 lbl_805401BC;
+extern const f32 lbl_805401C0;
+extern const f32 lbl_805401D0;
+extern const f32 lbl_805401B8;
+extern const f32 lbl_805401C4;
+extern "C" void fn_80262BAC(char* p) {
+    if (U32(p, 0xd6c) == 0x4e495741 && U8(p, 0x441) == 0) {
+        f32 d = F32(p, 0x324) - F32(p, 0x8);
+        if (d >= lbl_80540178) {
+            F32(p, 0x8) += lbl_80540178;
+        } else if (d <= lbl_805401CC) {
+            F32(p, 0x8) -= lbl_80540178;
+        } else if (d != lbl_80540150) {
+            F32(p, 0x8) = F32(p, 0x324);
+            F32(p, 0x34c) -= lbl_805401BC;
+            if (F32(p, 0x34c) <= lbl_80540150)
+                F32(p, 0x34c) = lbl_80540150;
+            F32(p, 0x10) += F32(p, 0x34c);
+            s32 ang = (s32)(lbl_805401D0 * d);
+            F32(p, 0x10) += lbl_805401B8 * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        } else {
+            F32(p, 0x34c) -= lbl_805401BC;
+            if (F32(p, 0x34c) <= lbl_805401C0)
+                F32(p, 0x34c) = lbl_805401C0;
+            F32(p, 0x10) += F32(p, 0x34c);
+            if (F32(p, 0x10) <= lbl_80540150)
+                F32(p, 0x10) = lbl_80540150;
+        }
+        if (fn_80251AEC(p, 0x12)) {
+            U8(p, 0xce8) = 0;
+            F32(p, 0x2f4) = lbl_80540150;
+            F32(p, 0x2f8) = lbl_80540150;
+            F32(p, 0x2fc) = lbl_805401C4;
+            VEC(p, 0x2f4) += VEC(p, 0x8);
+            return;
+        }
+        if (F32(p, 0x10) >= lbl_80540150)
+            VEC(p, 0x8) += VEC(p, 0x344);
+    }
+}
+
 extern "C" void fn_80263078(char* p) {
     JGeometry::TVec3<f32> pos;
     fn_8028414C(p);
@@ -634,6 +678,60 @@ extern "C" void fn_80263078(char* p) {
 }
 
 extern "C" void fn_802632A4(void) {}
+
+extern "C" void fn_802632A8(char* p) {
+    U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
+    if (U8(p, 0x3fc) < 8) {
+        U8(p, 0x3fd) = 0;
+        return;
+    }
+    if (U8(p, 0x3fc) < 10) {
+        U8(p, 0x3fd) = 1;
+        return;
+    }
+    if (U8(p, 0x3fc) < 11) {
+        U8(p, 0x3fd) = 2;
+        return;
+    }
+    if (U8(p, 0x3fc) < 12) {
+        bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+        U8(p, 0x3fd) = held ? 4 : 3;
+        return;
+    }
+    U8(p, 0x3fc) = 12;
+    if (!fn_80251AEC(p, 0)) {
+        return;
+    }
+    bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+    if (held) {
+        U8(p, 0x3fd) = 4;
+        return;
+    }
+    U8(p, 0x3fd) = 3;
+    char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+    if (actor == 0) {
+        return;
+    }
+    JGeometry::TVec3<f32> zero(0.0f, 0.0f, 0.0f);
+    fn_801F3708(actor, &zero);
+    S32(p, 0xd70) = -1;
+    S32(p, 0xd68) = -1;
+    U8(p, 0xd64) = 0;
+    S32(p, 0xd6c) = 0x4e554c4c;
+    S32(p, 0xd74) = 3;
+    VEC(p, 0x2f4) = lbl_8046B580[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
+    F32(p, 0x2f4) += F32(p, 0x8);
+    F32(p, 0x2f8) += F32(p, 0xc);
+    F32(p, 0x2fc) += F32(p, 0x10);
+    if (fn_8025EB18(p)) {
+        if (VEC(p, 0x35c).length() < lbl_80540188) {
+            VEC(p, 0x35c) = lbl_8046B580[S32(p, 0x3dc) * 5 + 3];
+            F32(p, 0x364) = lbl_80540150;
+            PSVECNormalize(&VEC(p, 0x35c), &VEC(p, 0x35c));
+        }
+    }
+    fn_80268B3C(p);
+}
 
 extern "C" void fn_802635C8(char* p) {
     p[0x458] = 0;
@@ -859,8 +957,7 @@ extern "C" void fn_8026441C(char* p) {
         }
     }
     if (iVar6 >= 0) {
-        JGeometry::TVec3<f32> v = lbl_8046B250[iVar6 + S32(p, 0x3dc) * 4];
-        VEC(p, 0x2f4) = v;
+        VEC(p, 0x2f4) = lbl_8046B250[iVar6 + S32(p, 0x3dc) * 4];
         VEC(p, 0x2f4) += VEC(p, 0x8);
     }
     fn_8025EB18(p);
@@ -951,3 +1048,4 @@ extern "C" void fn_802636D4(char* p) {
 
 #endif
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
