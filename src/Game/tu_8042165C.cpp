@@ -182,7 +182,7 @@ static inline u8* CallPair(u8* this_, u32 a, u32 b) {
     return ((PairCallFn)(*(void***)sub)[15])(sub, a, b);
 }
 
-static inline u8* FindHudPane(u8* self, const u64* tag) {
+static inline u8* FindHudPane(u8* self, const u64* __restrict tag) {
     HeartPane* pane = *(HeartPane**)(self + 4);
     return pane->search(*tag);
 }
