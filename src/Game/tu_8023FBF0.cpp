@@ -3535,20 +3535,20 @@ extern "C" void fn_8024F0E8(char* p, s32 id) {
         U8(PTR(p, 0x1254), 0x45) = 0;
         u32 sound = id;
         void* obj = PTR(p, 0x1254);
-        ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
+        ((PlayerSoundHandle*)obj)->play(&sound);
     } else if (fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 0x800)) {
         if (S32(p, 0x3b4) < 8) {
             U8(PTR(p, 0x1250), 0x44) = 0;
             U8(PTR(p, 0x1250), 0x45) = 0;
             u32 sound = id;
             void* obj = PTR(p, 0x1250);
-            ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
+            ((PlayerSoundHandle*)obj)->play(&sound);
         } else {
             U8(PTR(p, 0x1254), 0x44) = 1;
             U8(PTR(p, 0x1254), 0x45) = 0;
             u32 sound = id;
             void* obj = PTR(p, 0x1254);
-            ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
+            ((PlayerSoundHandle*)obj)->play(&sound);
         }
     } else if (S32(p, 0x3b4) < 8) {
         U8(PTR(p, 0x1250), 0x44) = 0;
@@ -3556,26 +3556,29 @@ extern "C" void fn_8024F0E8(char* p, s32 id) {
         else U8(PTR(p, 0x1250), 0x45) = 0;
         u32 sound = id;
         void* obj = PTR(p, 0x1250);
-        ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
+        ((PlayerSoundHandle*)obj)->play(&sound);
     } else if (S32(p, 0x3b4) == 8) {
         U8(PTR(p, 0x1250), 0x44) = 1;
         U8(PTR(p, 0x1250), 0x45) = 3;
         u32 sound = id;
         void* obj = PTR(p, 0x1250);
-        ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
-    } else if (S32(p, 0x3b4) < S32(fn_802D6A9C(), 0x54)) {
+        ((PlayerSoundHandle*)obj)->play(&sound);
+    } else {
+        char* manager = fn_802D6A9C();
+        if (S32(p, 0x3b4) < S32(manager, 0x54)) {
         U8(PTR(p, 0x1254), 0x44) = 1;
         if (fn_802D7948(fn_802D6A9C()) == 1) U8(PTR(p, 0x1254), 0x45) = 2;
         else U8(PTR(p, 0x1254), 0x45) = 1;
         u32 sound = id;
         void* obj = PTR(p, 0x1254);
-        ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
+        ((PlayerSoundHandle*)obj)->play(&sound);
     } else {
         U8(PTR(p, 0x1254), 0x44) = 1;
         U8(PTR(p, 0x1254), 0x45) = 2;
         u32 sound = id;
         void* obj = PTR(p, 0x1254);
-        ((void (*)(void*, u32*))(*(void***)( (char*)obj + 8))[5])(obj, &sound);
+        ((PlayerSoundHandle*)obj)->play(&sound);
+        }
     }
 }
 
