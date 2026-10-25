@@ -996,22 +996,32 @@ extern "C" void fn_80261480(char* p) {
     }
 }
 
-extern "C" f32 lbl_8054017C;
+
 extern "C" u8 lbl_8046B790[];
 extern "C" f32 lbl_8046B7B0[];
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_8026152C(char* p, u8 flag) {
-    u8 inX = 0;
-    u8 inY = 0;
-    u8 inZ = 0;
-    f32 eps = *(f32*)__float_epsilon * lbl_8054017C;
-    f32 d = F32(p, 0x8) - F32(p, 0x14);
-    if (-eps <= d && d <= eps) {
+    bool inX;
+    bool inY;
+    bool inZ;
+    inZ = false;
+    inY = inZ;
+    inX = inZ;
+    f32 neg;
+    f32 eps;
+    f32 d;
+    f32 machineEps = *(f32*)__float_epsilon;
+    eps = lbl_8054017C * machineEps;
+    neg = -eps;
+    d = F32(p, 0x8) - F32(p, 0x14);
+    if (neg <= d && d <= eps) {
         inX = 1;
     }
     if (inX) {
         inX = 0;
         d = F32(p, 0xc) - F32(p, 0x18);
-        if (-eps <= d && d <= eps) {
+        if (neg <= d && d <= eps) {
             inX = 1;
         }
         if (inX) {
@@ -1021,7 +1031,7 @@ extern "C" void fn_8026152C(char* p, u8 flag) {
     if (inY) {
         inY = 0;
         d = F32(p, 0x10) - F32(p, 0x1c);
-        if (-eps <= d && d <= eps) {
+        if (neg <= d && d <= eps) {
             inY = 1;
         }
         if (inY) {
@@ -1035,25 +1045,29 @@ extern "C" void fn_8026152C(char* p, u8 flag) {
         }
     }
     U8(p, 0x3f8)++;
-    if (flag == 0) {
-        if (U8(p, 0x3f8) >= 0x18) {
+    if (flag != 0) {
+        if (U8(p, 0x3f8) >= 0x30) {
             U8(p, 0x3f8) = 0;
         }
-    } else if (U8(p, 0x3f8) >= 0x30) {
+    } else if (U8(p, 0x3f8) >= 0x18) {
         U8(p, 0x3f8) = 0;
     }
 done:
-    if (flag == 0) {
-        U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 3 + S32(p, 0x3dc) * 8];
+    if (flag != 0) {
+        U8(p, 0x3f9) = (lbl_8046B790 + S32(p, 0x3dc) * 8)[U8(p, 0x3f8) / 6];
     } else {
-        U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 6 + S32(p, 0x3dc) * 8];
+        U8(p, 0x3f9) = (lbl_8046B790 + S32(p, 0x3dc) * 8)[U8(p, 0x3f8) / 3];
     }
-    s32 idx = U8(p, 0x3f9) * 5;
-    F32(p, 0x2f4) = ((f32*)lbl_8046B7B0)[idx] + F32(p, 0x8);
-    F32(p, 0x2f8) = ((f32*)lbl_8046B7B0)[idx + 1] + F32(p, 0xc);
-    F32(p, 0x2fc) = ((f32*)lbl_8046B7B0)[idx + 2] + F32(p, 0x10);
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)((char*)lbl_8046B7B0 + U8(p, 0x3f9) * 0x14);
+    f32 x = pos->x;
+    f32 y = pos->y;
+    F32(p,0x2f4) = x;
+    F32(p,0x2f8) = y;
+    F32(p,0x2fc) = pos->z;
+    VEC(p, 0x2f4).add(VEC(p, 0x8));
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_8026173C(char* p) {
     p[0x121c] = 0;
     S32(p, 0xd84) = 20;
