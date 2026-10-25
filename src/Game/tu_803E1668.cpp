@@ -271,103 +271,80 @@ public:
 };
 extern "C" void fn_803E3CB0(u8* p) {
     u8* base = lbl_80477970;
-    s32 i;
-    s32 j;
+    u8 v;
+    u64* b;
+    u64* tA;
+    u64* tB;
+    u64* tC;
     u8* q;
-    u8* tA;
-    u8* tB;
-    u8* tC;
-    u8* b;
     if (*(s32*)(p + 0x1bc) == 1) {
         void* g = fn_804031C4(0x54494d47, base + 0xfec);
-        void* t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3032ULL);
-        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
-        t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3031ULL);
-        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+        ((Picture803E3CB0*)(*(J2DPane**)(p + 8))->search(0x50746e3032ULL))->changeTexture(g, 0);
+        ((Picture803E3CB0*)(*(J2DPane**)(p + 8))->search(0x50746e3031ULL))->changeTexture(g, 0);
     } else if (*(s32*)(p + 0x1bc) == 2) {
         void* g = fn_804031C4(0x54494d47, base + 0x1000);
-        void* t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3032ULL);
-        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
-        t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3031ULL);
-        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+        ((Picture803E3CB0*)(*(J2DPane**)(p + 8))->search(0x50746e3032ULL))->changeTexture(g, 0);
+        ((Picture803E3CB0*)(*(J2DPane**)(p + 8))->search(0x50746e3031ULL))->changeTexture(g, 0);
     } else {
         void* g = fn_804031C4(0x54494d47, base + 0x1014);
-        void* t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3032ULL);
-        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
-        t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3031ULL);
-        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+        ((Picture803E3CB0*)(*(J2DPane**)(p + 8))->search(0x50746e3032ULL))->changeTexture(g, 0);
+        ((Picture803E3CB0*)(*(J2DPane**)(p + 8))->search(0x50746e3031ULL))->changeTexture(g, 0);
     }
     {
-        char* s1 = getStringPtr__10J2DTextBoxCFv(((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x54746b673031ULL));
-        char* s2 = getStringPtr__10J2DTextBoxCFv(((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x54746b673032ULL));
+        char* s1 = getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(p + 8))->search(0x54746b673031ULL));
+        char* s2 = getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(p + 8))->search(0x54746b673032ULL));
         fn_803832BC(s1, 0x3e, 0, 0, 0);
         fn_803832BC(s2, 0x3e, 0, 0, 0);
     }
-    {
-        void* o;
-        *(f32*)(p + 0xa0) = -300.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x4e646174613033ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0x98), *(f32*)(p + 0x9c) + *(f32*)(p + 0xa0));
-        *(f32*)(p + 0xac) = -100.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x4e646174613035ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xa4), *(f32*)(p + 0xa8) + *(f32*)(p + 0xac));
-        *(f32*)(p + 0xb8) = -200.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x4e646174613036ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xb0), *(f32*)(p + 0xb4) + *(f32*)(p + 0xb8));
-        *(f32*)(p + 0xbc) = -200.0f;
-        fn_80402E08(*(void**)(p + 0x78), 0.0f, *(f32*)(p + 0xbc));
-        *(f32*)(p + 0xe0) = 200.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3032ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
-        *(f32*)(p + 0xe4) = 200.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3132ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
-        *(f32*)(p + 0xe8) = 200.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3232ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
-        *(f32*)(p + 0xec) = 200.0f;
-        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3332ULL);
-        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xcc), *(f32*)(p + 0xdc) + *(f32*)(p + 0xec));
-    }
-    tA = base + 0x840;
-    tB = base + 0x8e0;
-    tC = base + 0x8c0;
+    *(f32*)(p + 0xa0) = -300.0f;
+    (*(J2DPane**)(p + 8))->search(0x4e646174613033ULL)->move(*(f32*)(p + 0x98), *(f32*)(p + 0x9c) + *(f32*)(p + 0xa0));
+    *(f32*)(p + 0xac) = -100.0f;
+    (*(J2DPane**)(p + 8))->search(0x4e646174613035ULL)->move(*(f32*)(p + 0xa4), *(f32*)(p + 0xa8) + *(f32*)(p + 0xac));
+    *(f32*)(p + 0xb8) = -200.0f;
+    (*(J2DPane**)(p + 8))->search(0x4e646174613036ULL)->move(*(f32*)(p + 0xb0), *(f32*)(p + 0xb4) + *(f32*)(p + 0xb8));
+    *(f32*)(p + 0xbc) = -200.0f;
+    fn_80402E08(*(void**)(p + 0x78), 0.0f, *(f32*)(p + 0xbc));
+    *(f32*)(p + 0xe0) = 200.0f;
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3032ULL)->move(*(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
+    *(f32*)(p + 0xe4) = 200.0f;
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3132ULL)->move(*(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
+    *(f32*)(p + 0xe8) = 200.0f;
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3232ULL)->move(*(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
+    *(f32*)(p + 0xec) = 200.0f;
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3332ULL)->move(*(f32*)(p + 0xcc), *(f32*)(p + 0xdc) + *(f32*)(p + 0xec));
     q = p;
-    for (i = 0; i < 4; i++) {
+    tA = (u64*)(base + 0x840);
+    tB = (u64*)(base + 0x8e0);
+    tC = (u64*)(base + 0x8c0);
+    for (s32 i = 0; i < 4; i++) {
         if (i <= *(s32*)(p + 0x1bc)) {
-            u8* a = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tA);
-            a[0xb0] = 1;
-            b = tB + 0x10;
-            for (j = 2; j < 4; j++) {
-                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)b);
-                c[0xb0] = 1;
-                b += 8;
+            J2DPane* o = (*(J2DPane**)(p + 8))->search(*tA);
+            v = 1;
+            b = tB + 2;
+            ((u8*)o)[0xb0] = v;
+            for (s32 j = 2; j < 4; j++) {
+                ((u8*)(*(J2DPane**)(p + 8))->search(*b))[0xb0] = v;
+                b++;
             }
-            {
-                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tC);
-                ((void (**)(void*, s32))*(void**)c)[9](c, 0xff);
-            }
+            (*(J2DPane**)(p + 8))->search(*tC)->setAlpha(0xff);
             *(s32*)(q + 0x230) = *(s16*)(*(u8**)(q + 0x38) + 6);
             *(s32*)(q + 0x240) = *(s16*)(*(u8**)(q + 0x48) + 6);
         } else {
-            u8* a = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tA);
-            a[0xb0] = 0;
-            b = tB + 0x10;
-            for (j = 2; j < 4; j++) {
-                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)b);
-                c[0xb0] = 0;
-                b += 8;
+            J2DPane* o = (*(J2DPane**)(p + 8))->search(*tA);
+            v = 0;
+            b = tB + 2;
+            ((u8*)o)[0xb0] = v;
+            for (s32 j = 2; j < 4; j++) {
+                ((u8*)(*(J2DPane**)(p + 8))->search(*b))[0xb0] = v;
+                b++;
             }
-            {
-                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tC);
-                ((void (**)(void*, s32))*(void**)c)[9](c, 0x80);
-            }
+            (*(J2DPane**)(p + 8))->search(*tC)->setAlpha(0x80);
             *(s32*)(q + 0x230) = 0;
             *(s32*)(q + 0x240) = 0;
         }
-        tA += 8;
-        tB += 0x20;
-        tC += 8;
+        tA++;
+        tB += 4;
+        tC++;
         q += 4;
     }
     *(s16*)(p + 0x254) = 0;
