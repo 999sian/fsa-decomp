@@ -182,10 +182,13 @@ struct Hdr_80301CD0 {
 };
 
 static inline s32 tu80301_rank(s32 mask, s32 player, s32 index) {
+    s32 rank;
     if (((mask >> index) & 1) != ((mask >> ((s32*)lbl_80506DD8)[player]) & 1)) {
-        return -1;
+        rank = -1;
+    } else {
+        rank = lbl_80506DA8[player * 4 + index];
     }
-    return lbl_80506DA8[player * 4 + index];
+    return rank;
 }
 extern "C" s32 fn_803074A4(s32, s32);
 extern "C" void fn_80302C34(u8*, s32, s32, s32, u8);
@@ -281,7 +284,7 @@ extern "C" void fn_803022C4(u8* p, s32 player, u8 arg, u8 mode) {
     order[2] = 2;
     order[3] = 3;
     s32* cur = order + 3;
-    s32 mask = p[1] >> 4;
+    s32 mask = (p[1] >> 4) & 15;
     for (s32 n = 3; n > 0; --n) {
         s32* a = order;
         for (s32 j = n; j > 0; --j, ++a) {
@@ -301,45 +304,43 @@ extern "C" void fn_803022C4(u8* p, s32 player, u8 arg, u8 mode) {
     s32 count = 3;
     u8* a = base + 0x48;
     for (s32 i = 19; i > 0; --i) {
-        if ((a[3] & 1) != 1 || a[2] != 0x80) break;
+        if ((a[3] & 1U) != 1U || a[2] != 0x80) break;
         a -= 4;
         --left;
     }
     a = base + 0x48;
     for (s32 i = 19; i > 0; --i) {
-        if ((a[0x4f] & 1) != 1 || a[0x4e] != 0x80) break;
+        if ((a[0x4f] & 1U) != 1U || a[0x4e] != 0x80) break;
         a -= 4;
         --right;
     }
-    if (((p[2] >> 2) & 7) <= 1) mode = 1;
+    if (((p[2] >> 2) & 7U) <= 1U) mode = 1;
     while (left >= 0 || right >= 0 || count >= 0) {
-        s32 rank = count >= 0 ? tu80301_rank(p[1] >> 4, player, *cur) : 255;
-        s32 lr = left >= 0 ? fn_803074A4(base[left * 4 + 3] >> 5, base[left * 4] | ((base[left * 4 + 3] & 6) << 7)) : 255;
-        s32 rr = right >= 0 ? fn_803074A4(base[right * 4 + 0x4f] >> 5, base[right * 4 + 0x4c] | ((base[right * 4 + 0x4f] & 6) << 7)) : 255;
+        s32 rank = count >= 0 ? tu80301_rank((p[1] >> 4) & 15, player, *cur) : 255;
+        s32 lr = left >= 0 ? fn_803074A4(base[left * 4 + 3] >> 5 & 7, base[left * 4] | ((base[left * 4 + 3] & 6) << 7)) : 255;
+        s32 rr = right >= 0 ? fn_803074A4(base[right * 4 + 0x4f] >> 5 & 7, base[right * 4 + 0x4c] | ((base[right * 4 + 0x4f] & 6) << 7)) : 255;
         if (right >= 0 &&
             (count < 0 || rr < rank || (rr == rank && p[*cur * 4 + 9] >= base[right * 4 + 0x4d])) &&
             (left < 0 || lr > rr || (lr == rr && base[left * 4 + 1] >= base[right * 4 + 0x4d]))) {
-            if (rr >= 2) fn_80302F9C(base + right * 4 + 0x4c, arg, mode, ((f32*)(lbl_80506D48 + 0x30))[player]);
+            if (rr >= 2) fn_80302F9C(base + right * 4 + 0x4c, arg, mode, lbl_80506D78[player]);
             --right;
             a = base + right * 4;
-            for (s32 i = right; i >= 0; --i) {
-                if ((a[0x4f] & 1) != 1 || a[0x4e] != 0x80) break;
+            for (; right >= 0; --right) {
+                if ((a[0x4f] & 1U) != 1U || a[0x4e] != 0x80) break;
                 a -= 4;
-                --right;
             }
         } else if (left >= 0 &&
             (count < 0 || lr < rank || (lr == rank && p[*cur * 4 + 9] >= base[left * 4 + 1]))) {
-            if (lr >= 2) fn_80302F9C(base + left * 4, arg, mode, ((f32*)(lbl_80506D48 + 0x30))[player]);
+            if (lr >= 2) fn_80302F9C(base + left * 4, arg, mode, lbl_80506D78[player]);
             --left;
             a = base + left * 4;
-            for (s32 i = left; i >= 0; --i) {
-                if ((a[3] & 1) != 1 || a[2] != 0x80) break;
+            for (; left >= 0; --left) {
+                if ((a[3] & 1U) != 1U || a[2] != 0x80) break;
                 a -= 4;
-                --left;
             }
         } else {
             s32 index = *cur;
-            s32 bits = p[1] >> 4;
+            s32 bits = (p[1] >> 4) & 15;
             if (tu80301_rank(bits, player, index) >= 2)
                 fn_80302C34(p + index * 4 + 8, player, index, bits, arg);
             --cur;
