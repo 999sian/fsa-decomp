@@ -1,6 +1,7 @@
 // TU 0x8020b354-0x8020c0a8 (actor FOBR).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 struct JMathSinCos { f32 first; f32 second; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 
@@ -89,8 +90,8 @@ extern "C" const f32 lbl_8053F9C4;
 extern "C" void fn_8020B434(u8* this_) {
     if (*(s32*)(this_ + 0x248) == 1) {
         fn_801F0E34(this_, 0x400d8, 0);
-        const JMathSinCos* tbl = sincosTable___5JMath;
         f32 a = lbl_8053F9B8;
+        const JMathSinCos* tbl = sincosTable___5JMath;
         f32 b = lbl_8053F9BC;
         *(f32*)(this_ + 0x60) = a;
         *(f32*)(this_ + 0x64) = a;
@@ -100,7 +101,7 @@ extern "C" void fn_8020B434(u8* this_) {
         *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
         *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
         *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
-        u32 idx = (((*(u16*)(this_ + 0x94) & 3) << 14) - 0x6000) >> 5 & 0x7ff;
+        s32 idx = (((*(u16*)(this_ + 0x94) & 3) << 14) - 0x6000) >> 5 & 0x7ff;
         f32 s = lbl_8053F9C0;
         *(f32*)(this_ + 0x3c) = tbl[idx].first * s;
         *(f32*)(this_ + 0x40) = tbl[idx].second * s;
@@ -206,8 +207,8 @@ extern "C" void fn_8020B798(u8* param_1) {
         vec[0] = *(f32*)(param_1 + 0xc);
         vec[2] = lbl_8053F9C4;
         vec[1] = y;
-        f32 t = lbl_8053F9D0 + box[1];
-        vec[1] = (t - y) >= 0.0f ? t : y;
+        f32 t = box[1] + lbl_8053F9D0;
+        vec[1] = (y - t) > 0.0f ? y : t;
         fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), vec);
     }
 }
@@ -361,12 +362,16 @@ extern "C" const f32 lbl_8053F9DC;
 extern char lbl_8053A170[8];
 extern "C" void fn_8020BD00(void* this_) {
     char* p = (char*)this_;
+    f32 k;
     s32 kind;
     char* record;
     f32* r;
-    f32 sumY;
-    f32 k;
     f32 sumX;
+    f32 sumY;
+    f32 a0;
+    f32 a1;
+    f32 a2;
+    f32 a3;
 
     fn_801D0ED0(this_);
     *(f32*)(p + 0x60) = lbl_8053F9B8;
@@ -397,8 +402,12 @@ extern "C" void fn_8020BD00(void* this_) {
     record = (char*)fn_802D6A9C();
     r = (f32*)((kind < 8) ? (record + 0xcc) : (record + 0xdc));
     k = lbl_8053F9DC;
-    sumY = r[1] + r[3];
-    sumX = r[0] + r[2];
+    a0 = r[0];
+    a2 = r[2];
+    a1 = r[1];
+    a3 = r[3];
+    sumX = a0 + a2;
+    sumY = a1 + a3;
     *(f32*)(p + 0xc) = k * sumX;
     *(f32*)(p + 0x10) = k * sumY;
     *(f32*)(p + 0x14) = lbl_8053F9C4;
