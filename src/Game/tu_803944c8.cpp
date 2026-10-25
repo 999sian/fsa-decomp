@@ -478,9 +478,9 @@ struct MsgProc {
     }
     void putSlotPos(s32 x, s32 base) {
         str2c0[m2d0++] = -2;
-        str2c0[m2d0++] = base + (x + (s8)slotLine[slot + 0x10]);
+        str2c0[m2d0++] = slotCol(x) + base;
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0 && lineRow(slotLine[slot]) == 0) {
+        if (layout->m1a1 != 0 && lineRow((s8)slotLine[slot]) == 0) {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
         } else {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
