@@ -41,6 +41,13 @@ struct ActorV {
     u8 pad08[4];
     struct Vec2 {
         f32 x, y;
+        f32 distSqTo(const Vec2& o) const {
+            f32 dx = x - o.x;
+            f32 dy = y - o.y;
+            f32 dx2 = dx * dx;
+            f32 dy2 = dy * dy;
+            return dx2 + dy2;
+        }
     } pos;
 };
 
