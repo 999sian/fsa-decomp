@@ -17,11 +17,11 @@ extern "C" void fn_802D79E8(void* mgr, u32 room, s32 a, f32 x, f32 y);
 extern "C" u8 fn_80388CAC(s32 i, s32 id);
 extern "C" void fn_80337A08(u8* this_);
 extern "C" void fn_803376B0(u8* this_);
-extern f32 lbl_80542068;
-extern f32 lbl_8054206C;
-extern f32 lbl_80542070;
-extern f32 lbl_80542074;
-extern f32 lbl_80542078;
+extern const f32 lbl_80542068;
+extern const f32 lbl_8054206C;
+extern const f32 lbl_80542070;
+extern const f32 lbl_80542074;
+extern const f32 lbl_80542078;
 
 extern char lbl_80471BB8[];
 extern u8* lbl_8053AAF8;
