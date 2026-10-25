@@ -169,10 +169,9 @@ extern "C" void fn_8021F9AC(char* this_, const volatile float* src) {
     *(int*)(this_ + 0x4) = 0;
     *(int*)(this_ + 0x0) = 1;
     p = (void**)this_;
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++, p++) {
         unsigned short kind = lbl_8053FDD0[i];
-        p[0xd] = fn_8013CC50(0, this_ + 0x8, *(float*)(this_ + 0x30), kind, 0, 0, 0, 0, 1);
-        p++;
+        p[0xd] = fn_8013CC50(0, this_ + 0x8, kind, 0, 0, 0, 0, 1, *(float*)(this_ + 0x30));
     }
 }
 
