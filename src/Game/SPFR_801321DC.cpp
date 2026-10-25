@@ -732,9 +732,9 @@ extern "C" void fn_801334CC(char* p) {
             *(u8*)(p + 0x11d) = 1;
             pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
             *(s32*)(p + 0x288) = fn_8013CC50(*(void**)(p + 0x4), &pos, 0x184, 0, -1, 0, 0, 1, lbl_8053CD00);
+            fn_80132454(p, 2);
         }
     }
-    fn_80132454(p, 2);
 }
 
 extern "C" void* fn_80133624(char* p, s16 flag) {
