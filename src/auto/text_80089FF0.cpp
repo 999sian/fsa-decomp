@@ -32,7 +32,8 @@ static inline bool findModuleAddress(u32 addr, u32* id, u32* index, u32* offset,
     if (addr == 0) return false;
     for (u32* module = *(u32**)0x800030c8; module; module = (u32*)module[1]) {
         u32* section = (u32*)module[4];
-        for (u32 i = 0; i < module[3]; i++, section += 2) {
+        u32 count = module[3];
+        for (u32 i = 0; i < count; i++, section += 2) {
             u32 size = section[1];
             if (size) {
                 u32 start = section[0] & ~1;
@@ -508,109 +509,65 @@ extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2)
     return 0;
 }
 
+#pragma opt_loop_invariants off
 extern "C" void fn_8008B214(JUTException* this_, u32* param_2)
 {
     char* base = lbl_8045E878;
-    bool found = false;
-
-    if (lbl_8053A914 != nullptr)
-    {
+    if (lbl_8053A914 != nullptr) {
+        bool found = false;
         lbl_8053A914->print(base + 0x3bc);
-        for (s32 i = 0; i < 0x1f; i++)
-        {
-            u32 addr = param_2[i];
-            if (addr > 0x7fffffff && addr < 0x83000000)
-            {
+        for (s32 i = 0; i < 0x1f; i++, param_2++) {
+            u32 addr = *param_2;
+            if (addr >= 0x80000000 && addr <= 0x82ffffff) {
                 found = true;
                 lbl_8053A914->print_f(base + 0x3e8, i, addr);
-                u32 flag = 1;
-                bool ok = false;
-                if (addr >= 0x80000000 && addr <= 0x82ffffff)
-                {
-                    char name[0x20];
-                    u32 sectionBase = 0;
-                    s32 sectionIndex = 0;
-                    u32 sectionOffset = 0;
-                    char* mapName = nullptr;
-                    u32* module;
-                    if (addr != 0)
-                    {
-                        for (module = *(u32**)0x800030c8; module != nullptr && !ok; module = (u32*)module[1])
-                        {
-                            u32* section = (u32*)module[4];
-                            for (s32 j = 0; j < (s32)module[3]; j++)
-                            {
-                                u32 start = section[0] & 0xfffffffe;
-                                if (section[1] != 0 && start <= addr && addr < start + section[1])
-                                {
-                                    sectionBase = *module;
-                                    sectionIndex = j;
-                                    sectionOffset = addr - start;
-                                    mapName = (char*)module[5];
-                                    ok = true;
-                                    break;
-                                }
-                                section += 2;
-                            }
-                        }
-                    }
-                    if (ok)
-                    {
-                        char* p = mapName;
-                        char* last = mapName;
-                        for (; *p != 0; p++)
-                        {
-                            if (*p == '\\')
-                            {
-                                last = p;
-                            }
-                        }
-                        if (*last == '\\')
-                        {
-                            last++;
-                        }
-                        s32 n = 0;
+                bool ok;
+                u8 flag = 1;
+                if (addr < 0x80000000 || addr > 0x82ffffff) {
+                    ok = false;
+                } else {
+                    u32 outB, outA;
+                    u32 sectionOffset;
+                    u32 sectionIndex;
+                    u32 sectionBase;
+                    char* mapName;
+                    char name[0x24];
+                    char buf[0x100];
+                    char* zero = &lbl_8053B868;
+                    bool mapped = findModuleAddress(addr, &sectionBase, &sectionIndex, &sectionOffset, &mapName);
+                    if (mapped == true) {
+                        u8* last = (u8*)mapName;
+                        u8* p = (u8*)mapName;
+                        while (*p) { if (*p == '\\') last = p; p++; }
                         char* out = name;
-                        while (*last != 0 && n < 0x20 && *last != '.')
-                        {
-                            n++;
-                            *out++ = *last++;
+                        if (*last == '\\') last++;
+                        s32 n = 0;
+                        while (*last && n < 0x20) {
+                            if (*last == '.') break;
+                            n++; *out++ = *last++;
                         }
                         *out = 0;
-                        lbl_8053A914->print_f(base + 0x3a4, 0, name, sectionOffset, sectionIndex);
+                        lbl_8053A914->print_f(base + 0x3a4, zero, name, sectionOffset, sectionIndex);
                         flag = 0;
                     }
-                    if (lbl_8052E894.getFirstLink() != nullptr)
-                    {
-                        if (ok)
-                        {
-                            ok = fn_8008C528(name, sectionOffset, sectionIndex, 0, 0, 0, 0x100, 1, flag) == 1;
-                        }
+                    if (lbl_8052E894.getFirstLink()) {
+                        u8 result;
+                        if (mapped == true)
+                            result = fn_8008C528(name, sectionOffset, sectionIndex, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag);
                         else
-                        {
-                            ok = fn_8008C528(nullptr, addr, -1, 0, 0, 0, 0x100, 1, flag) == 1;
-                        }
-                    }
-                    else
-                    {
-                        ok = false;
-                    }
+                            result = fn_8008C528(0, addr, -1, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag);
+                        if (result == 1) ok = true; else ok = false;
+                    } else ok = false;
                 }
-                if (!ok)
-                {
-                    lbl_8053A914->print(base + 0x3f8);
-                }
+                if (!ok) lbl_8053A914->print(base + 0x3f8);
                 JUTConsoleManager::sManager->drawDirect(true);
                 fn_8008C308(this_->mPrintWaitTime1);
             }
         }
-        if (!found)
-        {
-            lbl_8053A914->print(base + 0x40c);
-        }
+        if (!found) lbl_8053A914->print(base + 0x40c);
     }
 }
-
+#pragma opt_loop_invariants reset
 extern "C" void fn_8008A50C(JUTException* this_, OSContext* context);
 static BOOL FindModuleSection(u32 addr, u32* moduleId, s32* sectionIndex, u32* sectionOffset, char** mapName);
 extern "C" void fn_8008B508(JUTException* this_, s32 param_2, u16 param_3, OSContext* param_4, u32 param_5, u32 param_6)
