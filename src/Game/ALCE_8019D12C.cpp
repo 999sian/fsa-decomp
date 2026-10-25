@@ -283,7 +283,7 @@ extern "C" void fn_8019D2AC(char* this_) {
 extern "C" void fn_8019D958(char* this_) {
     s32 room;
     s32 i;
-    f32 zero = lbl_8053E440;
+    f32 zero = 0.0f;
     char* st = *(char**)((char*)lbl_8053AB10 + 0x24);
     f32 pos[3];
     pos[0] = -*(f32*)(st + 0x10);
@@ -334,7 +334,7 @@ extern "C" void fn_8019D958(char* this_) {
     }
 }
 
-#pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_8019DC5C(char* this_) {
     s32 n;
     char* actor;
@@ -345,22 +345,22 @@ extern "C" void fn_8019DC5C(char* this_) {
     u8* flags;
     f32* pos;
     u32* words;
-    u8* base;
+    register ALCEWork* base;
     s32 i;
     s32 type;
     s32 id;
     s32 j;
 
-    base = lbl_804C1E30;
+    base = (ALCEWork*)lbl_804C1E30;
+    words = base->words;
+    flags = base->flags;
+    pos = base->positions[0];
     n = *(s32*)((char*)fn_801F856C() + 0x1008);
-    words = (u32*)(base + 0x3000);
-    flags = base + 0x4000;
-    pos = (f32*)(base + 0);
     pw = words;
     pf = flags;
     pp = pos;
-    off = 0;
-    for (i = 0; i < n; i++) {
+    i = 0;
+    for (off = 0; i < n; i++) {
         actor = *(char**)((char*)fn_801F856C() + off + 8);
         if (actor != 0 && *(s32*)(actor + 4) == *(s32*)(this_ + 4) && *(u8*)(actor + 0x1a8) == 1 && *(u8*)(actor + 0x196) == 0) {
             *pw = *(u32*)(actor + 0x16c);
@@ -413,7 +413,7 @@ extern "C" void fn_8019DC5C(char* this_) {
         words++;
     }
 }
-#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 extern "C" void* fn_8019DEB4(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A2AB0;
