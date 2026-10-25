@@ -9,6 +9,11 @@ struct Tu803CE9ECObj {
 typedef void (Tu803CE9ECObj::*Tu803CE9ECFn)();
 extern Tu803CE9ECFn lbl_804AFD70[];
 
+struct MenuSlots24 {
+    u8 pad0[0x24];
+    u8* slot[2];
+};
+
 struct Tu803Blk {
     u32 w[0x78];
 };
@@ -675,10 +680,10 @@ extern "C" void fn_803BE3D8(void* a) {
     }
 }
 
-#pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 extern "C" void fn_803BF3BC(u8* this_) {
-    int i;
     const u64* __restrict tbl;
+    int i;
     void* o;
 
     *(u8*)(*(u8**)(*(u8**)(this_ + 0x20) + 4) + 0xb0) = 1;
@@ -707,8 +712,7 @@ extern "C" void fn_803BF3BC(u8* this_) {
         ((PaneVirtVt*)o)->v9(0);
         tbl = lbl_80476938;
         for (i = 0; i < 9; i++) {
-            fn_804023D0(*(void**)(this_ + 0x20), ((KeyLookupVt*)*(void**)(this_ + 0x4))->v15(*tbl), this_[0x196 + i]);
-            tbl++;
+            fn_804023D0(*(void**)(this_ + 0x20), ((KeyLookupVt*)*(void**)(this_ + 0x4))->v15(tbl[i]), this_[0x196 + i]);
         }
         *(u16*)(*(u8**)(this_ + 0x20) + 0x26) = 0;
     }
@@ -725,7 +729,7 @@ extern "C" void fn_803BF3BC(u8* this_) {
     this_[0x112] = this_[0x110];
     this_[0x110] = 0x22;
 }
-#pragma opt_strength_reduction reset
+#pragma opt_lifetimes reset
 extern "C" void fn_803BF698(u8* p) {
     u32 v;
     void* r;
