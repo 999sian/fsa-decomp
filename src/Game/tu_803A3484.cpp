@@ -221,7 +221,12 @@ static inline void* tuNewObj1c() {
     }
     return p;
 }
+struct TObj1c {
+    TObj1c() { fn_80428030(this); }
+    u8 pad[0x1c];
+};
 extern "C" u8* fn_803A59E0(u8* self) {
+    void* tmp;
     char* names = lbl_80475F58;
     *(void**)self = lbl_804AF820;
     __construct_array(self + 0x90, (void*)fn_8016FDE0, NULL, 0x1c, 4);
@@ -236,25 +241,21 @@ extern "C" u8* fn_803A59E0(u8* self) {
     self[0x14e] = (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->getAlpha();
     self[0x14f] = (*(J2DScreen**)(self + 0x4))->search(0x7072737374727432ULL)->getAlpha();
 
-    const ResTIMG* res = (const ResTIMG*)fn_80403204(0x54494d47, names + 0x17c);
-    *(J2DPicture**)(self + 0x8) = new J2DPicture(res);
-    void* obj = __nw__FUl(0x1c);
-    if (obj != NULL) {
-        fn_80428030();
-    }
-    *(void**)(self + 0x48) = obj;
-    res = (const ResTIMG*)fn_80403244(0x54494d47, names + 0x190);
-    *(J2DPicture**)(self + 0xc) = new J2DPicture(res);
-    res = (const ResTIMG*)fn_80403244(0x54494d47, names + 0x1a8);
-    *(J2DPicture**)(self + 0x10) = new J2DPicture(res);
-    res = (const ResTIMG*)fn_80403244(0x54494d47, names + 0x1c0);
-    *(J2DPicture**)(self + 0x14) = new J2DPicture(res);
-    res = (const ResTIMG*)fn_80403244(0x54494d47, names + 0x1d4);
-    *(J2DPicture**)(self + 0x18) = new J2DPicture(res);
-    res = (const ResTIMG*)fn_80403244(0x54494d47, names + 0x1e8);
-    *(J2DPicture**)(self + 0x1c) = new J2DPicture(res);
-    res = (const ResTIMG*)fn_804030C4(0x54494d47, names + 0x1fc);
-    *(J2DPicture**)(self + 0x20) = new J2DPicture(res);
+    tmp = fn_80403204(0x54494d47, names + 0x17c);
+    *(J2DPicture**)(self + 0x8) = new J2DPicture((const ResTIMG*)tmp);
+    *(void**)(self + 0x48) = tuNewObj1c();
+    tmp = fn_80403244(0x54494d47, names + 0x190);
+    *(J2DPicture**)(self + 0xc) = new J2DPicture((const ResTIMG*)tmp);
+    tmp = fn_80403244(0x54494d47, names + 0x1a8);
+    *(J2DPicture**)(self + 0x10) = new J2DPicture((const ResTIMG*)tmp);
+    tmp = fn_80403244(0x54494d47, names + 0x1c0);
+    *(J2DPicture**)(self + 0x14) = new J2DPicture((const ResTIMG*)tmp);
+    tmp = fn_80403244(0x54494d47, names + 0x1d4);
+    *(J2DPicture**)(self + 0x18) = new J2DPicture((const ResTIMG*)tmp);
+    tmp = fn_80403244(0x54494d47, names + 0x1e8);
+    *(J2DPicture**)(self + 0x1c) = new J2DPicture((const ResTIMG*)tmp);
+    tmp = fn_804030C4(0x54494d47, names + 0x1fc);
+    *(J2DPicture**)(self + 0x20) = new J2DPicture((const ResTIMG*)tmp);
     (*(J2DPicture**)(self + 0x20))->setBlackWhite(JUtility::TColor(0x08, 0x18, 0x28, 0xff), JUtility::TColor(0, 0, 0, 0));
 
     if (lbl_80529DEC[0x249] != 0) {
@@ -263,35 +264,37 @@ extern "C" u8* fn_803A59E0(u8* self) {
         *(s16*)(self + 0x68) = 0xff;
     }
     self[0x150] = 0;
-    u8* oldHeap = sCurrentHeap__7JKRHeap;
-    *(void**)(self + 0x100) = create__12JKRSolidHeapFUlP7JKRHeapb(0x80000, oldHeap, 0);
+    tmp = sCurrentHeap__7JKRHeap;
+    *(void**)(self + 0x100) = create__12JKRSolidHeapFUlP7JKRHeapb(0x80000, tmp, 0);
     becomeCurrentHeap__7JKRHeapFv(*(void**)(self + 0x100));
 
-    for (s32 i = 0; i < 6; i++) {
-        fn_8016A3BC(*(void**)(tbl + 0x24), lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], 0, lbl_804AF7D8[i][2], 0, 0x10240000, *(void**)(self + 0x100),
-                    self + 0x104 + i * 4, self + 0x11c + i * 4, 0, self + 0x134 + i * 4, 0);
-        if (*(void**)(self + 0x11c + i * 4) != NULL) {
-            *(f32*)(*(u8**)(self + 0x11c + i * 4) + 0x8) = lbl_805432E0;
-        }
-        if (*(void**)(self + 0x134 + i * 4) != NULL) {
-            *(f32*)(*(u8**)(self + 0x134 + i * 4) + 0x8) = lbl_805432E0;
+    {
+        u8* p = self;
+        for (s32 i = 0; i < 6; i++) {
+            fn_8016A3BC(*(void**)(tbl + 0x24), lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], 0, lbl_804AF7D8[i][2], 0, 0x10240000, *(void**)(self + 0x100),
+                        p + 0x104, p + 0x11c, 0, p + 0x134, 0);
+            if (*(void**)(p + 0x11c) != NULL) {
+                *(f32*)(*(u8**)(p + 0x11c) + 0x8) = lbl_805432E0;
+            }
+            if (*(void**)(p + 0x134) != NULL) {
+                *(f32*)(*(u8**)(p + 0x134) + 0x8) = lbl_805432E0;
+            }
+            p += 4;
         }
     }
     adjustSize__12JKRSolidHeapFv(*(void**)(self + 0x100));
-    becomeCurrentHeap__7JKRHeapFv(oldHeap);
+    becomeCurrentHeap__7JKRHeapFv(tmp);
 
     for (s32 i = 0; i < 4; i++) {
-        void* wc = __nw__FUl(0x5c);
-        if (wc != NULL) {
-            __ct__14WaveControllerFlll(wc, 0, 0, 8);
+        tmp = __nw__FUl(0x5c);
+        if (tmp != NULL) {
+            __ct__14WaveControllerFlll(tmp, 0, 0, 8);
         }
-        *(void**)(self + 0xa8 + i * 0x1c) = wc;
+        *(void**)(self + 0xa8 + i * 0x1c) = tmp;
     }
 
-    f32 zero = lbl_805432E0;
     self[0x14c] = 0;
-    *(f32*)(self + 0x50) = zero;
-    *(f32*)(self + 0x4c) = zero;
+    *(f32*)(self + 0x4c) = *(f32*)(self + 0x50) = lbl_805432E0;
     *(s16*)(self + 0x6e) = 0;
     *(s16*)(self + 0x72) = 0;
     *(s16*)(self + 0x7a) = 0;
