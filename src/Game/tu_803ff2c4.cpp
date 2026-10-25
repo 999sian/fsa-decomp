@@ -4,6 +4,14 @@
 #include "types.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 
+struct _GXRenderModeObj;
+extern "C" u32 OSGetProgressiveMode();
+extern "C" u8 lbl_8048C17C[];
+extern "C" u8 lbl_8048C1B8[];
+extern "C" u8* sManager__8JUTVideo;
+extern "C" u8* sManager__10JFWDisplay;
+extern "C" void setRenderMode__8JUTVideoFPC16_GXRenderModeObj(void* self, const _GXRenderModeObj* mode);
+
 class J2DScreen {
 public:
 	void draw(f32, f32, const J2DGrafContext*);
