@@ -238,16 +238,20 @@ extern "C" void fn_801E9C74(u8* param) {
 extern "C" const f32 lbl_8053F668;
 extern "C" const f32 lbl_8053F66C;
 extern "C" const f32 lbl_8053F670;
+#pragma opt_strength_reduction off
 extern "C" void fn_801EA108(u8* param_1, f32* pos, s16 angle, f32 z) {
     f32 cx, cy;
+    f32 t;
+    f32 ox;
+    f32 oy;
     f32 u0 = lbl_8053F660;
     f32 u1 = lbl_8053F668;
-    f32 ox = u0;
-    f32 oy = lbl_8053F66C;
-    f32 t;
     s32 a;
+    u8* sinBase;
     u8* cosBase;
 
+    ox = u0;
+    oy = lbl_8053F66C;
     if (angle < 0) {
         t = u0;
         ox = -u0;
@@ -256,20 +260,21 @@ extern "C" void fn_801EA108(u8* param_1, f32* pos, s16 angle, f32 z) {
         oy = -oy;
     }
     a = -angle;
-    cosBase = (u8*)sincosTable___5JMath + 4;
-    cx = pos[0] + (oy * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - ox * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8)));
-    cy = pos[1] + (oy * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8)) + ox * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)));
+    sinBase = (u8*)sincosTable___5JMath;
+    cosBase = sinBase + 4;
+    cx = pos[0] + (oy * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - ox * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8)));
+    cy = pos[1] + (oy * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8)) + ox * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)));
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-    GXPosition3f32(cx + (lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F670 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F670 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
+    GXPosition3f32(cx + (lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F670 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F670 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
     GXTexCoord2f32(u0, lbl_8053F660);
-    GXPosition3f32(cx + (lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F670 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F664 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
+    GXPosition3f32(cx + (lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F670 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F664 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
     GXTexCoord2f32(u1, lbl_8053F660);
-    GXPosition3f32(cx + (lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F664 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F664 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
+    GXPosition3f32(cx + (lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F664 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F664 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
     GXTexCoord2f32(u1, lbl_8053F668);
-    GXPosition3f32(cx + (lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F664 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F670 * *(f32*)((u8*)sincosTable___5JMath + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
+    GXPosition3f32(cx + (lbl_8053F670 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)) - lbl_8053F664 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8))), z + (cy + (lbl_8053F670 * *(f32*)(sinBase + ((u32)a >> 2 & 0x3ff8)) + lbl_8053F664 * *(f32*)(cosBase + ((u32)a >> 2 & 0x3ff8)))), z);
     GXTexCoord2f32(u0, lbl_8053F668);
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_801EA304(u8* param_1) {
     GXLoadTlut((GXTlutObj*)(param_1 + 0x160), 0);
     GXLoadTexObj((GXTexObj*)(param_1 + 0x114), GX_TEXMAP0);
@@ -281,16 +286,15 @@ extern "C" void fn_801EA344(u8* param_1) {
 }
 
 extern "C" void fn_801EA384(u8* param_1, u8 param_2) {
-    s32 i;
-    u8* tex;
     u8* tlut;
+    u8* tex;
     u8* out;
 
     if (param_2) {
         tlut = param_1;
         tex = param_1;
         out = param_1;
-        for (i = 0; i < 3; i++) {
+        for (s32 i = 0; i < 3; i++) {
             *(f32*)(out + 0x178) = fn_801CB270(lbl_804A5610[i], (GXTexObj*)(tex + 0xf4), (GXTlutObj*)(tlut + 0x154));
             tlut += 0xc;
             tex += 0x20;
@@ -382,7 +386,7 @@ extern "C" s32 fn_801EA6D8(u8* param_1, u8 param_2, s32 param_3) {
 extern "C" void fn_801E8EB4(void* p, s32 a, s32 b, void* c);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void fn_801EA75C(u8* self, u8 idx, u16 flag, s32 p4, s32 p5, f32* p6) {
-    int i;
+    s32 i;
     s32 count;
     s32 id;
     f32 pos[3];
@@ -410,7 +414,7 @@ extern "C" void fn_801EA75C(u8* self, u8 idx, u16 flag, s32 p4, s32 p5, f32* p6)
             *(void**)(self + *(s32*)(self + 0x60) * 12) = fn_801F666C(fn_801F856C(), id);
             if (*(void**)(self + *(s32*)(self + 0x60) * 12) != NULL) {
                 if (flag & 0xff) {
-                    *(u16*)(*(u8**)(self + *(s32*)(self + 0x60) * 12) + 0x94) = flag & 0xff;
+                    *(u16*)(*(u8**)(self + i * 12) + 0x94) = flag & 0xff;
                 }
                 fn_801E8EB4(*(void**)(self + *(s32*)(self + 0x60) * 12), p4, p5, p6);
                 *(s32*)(self + 0x60) = *(s32*)(self + 0x60) + 1;
@@ -428,4 +432,7 @@ extern "C" s32 fn_801EA8C0(u8* param_1, u8* param_2) {
     }
     return result;
 }
+
+
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
