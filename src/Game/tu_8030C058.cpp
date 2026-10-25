@@ -2,6 +2,7 @@
 #include "dolphin/gx.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/JMath/Inline.h"
 
 extern u8* lbl_8053AB10;
 extern f32 lbl_805416C8;
@@ -330,22 +331,25 @@ extern f32 lbl_805416D8;
 extern f32 lbl_805416E8;
 extern f32 lbl_80541714;
 extern "C" void fn_80459624(char* self, f32* pos, f32 (*mtx)[4], int idx);
+extern "C" f64 __ps_add(f64 a, f64 b);
+extern "C" f64 __ps_muls0(f64 a, f64 b);
 extern "C" void fn_8030E154(u8* p) {
-    f32 rect[4];
-    f32 v[4];
     f32 s;
+    f32 v[4];
+    f32 rect[4];
+    Vec c;
+    Vec b;
+    Vec a;
     u8* g;
     f32 t;
-    f32 t2;
-    Vec pos;
+    f32 half;
 
     rect[0] = *(f32*)(p + 0x154);
     rect[1] = *(f32*)(p + 0x158);
     rect[2] = *(f32*)(p + 0x15c);
     rect[3] = *(f32*)(p + 0x160);
 
-    g = lbl_8053AAF8;
-    if (g[0x7e]) {
+    if (lbl_8053AAF8[0x7e]) {
         if (p[0x179]) {
             *(s32*)(p + 0x174) = 3;
         } else {
@@ -368,11 +372,11 @@ extern "C" void fn_8030E154(u8* p) {
     p[0x178] = 0;
     p[0x17a] = 0;
     p[0x17b] = 0;
-    if (*(f32*)(p + 0x1b4) == lbl_805416C8 && *(f32*)(p + 0x1b8) == lbl_805416C8 && *(f32*)(p + 0x1bc) == lbl_805416C8 && *(f32*)(p + 0x1c0) == lbl_805416C8) {
+    if (lbl_805416C8 == *(f32*)(p + 0x1b4) && lbl_805416C8 == *(f32*)(p + 0x1b8) && lbl_805416C8 == *(f32*)(p + 0x1bc) && lbl_805416C8 == *(f32*)(p + 0x1c0)) {
         p[0x7f5] = 0;
     }
 
-    s32 state = *(s32*)(p + 0x174);
+    u8* entry = lbl_804AA8E8 + *(s32*)(p + 0x174) * 0x24;
     if (p[0x17c]) {
         f32 dx = rect[2] - rect[0];
         f32 dy = rect[3] - rect[1];
@@ -382,74 +386,74 @@ extern "C" void fn_8030E154(u8* p) {
         rect[3] = rect[3] + dy;
     }
     if (!p[0x17d]) {
-        fn_8030CD18(p, rect, lbl_804AA8E8 + state * 0x24, (s32)(p + 0x1b4), (u8*)v, (u8*)&s);
-    }
+        fn_8030CD18(p, rect, entry, (s32)(p + 0x1b4), (u8*)v, (u8*)&s);
 
-    if (p[0x1e8]) {
-        s32 n = *(s32*)(p + 0x1ec);
-        t = (f32)n / lbl_80541720;
-        t2 = t * t;
-        v[0] = t2 * v[0] + (lbl_805416D8 - t2) * *(f32*)(p + 0x1a0);
-        v[1] = t2 * v[1] + (lbl_805416D8 - t2) * *(f32*)(p + 0x1a4);
-        v[2] = t2 * v[2] + (lbl_805416D8 - t2) * *(f32*)(p + 0x1a8);
-        v[3] = t2 * v[3] + (lbl_805416D8 - t2) * *(f32*)(p + 0x1ac);
-        s = t2 * s + (lbl_805416D8 - t2) * *(f32*)(p + 0x1b0);
-        if (n == 0) {
-            p[0x1e8] = 0;
-            g = *(u8**)(lbl_8053AB10 + 0x20);
-            if (g[0x235c]) {
+        if (p[0x1e8]) {
+            t = (f32)*(s32*)(p + 0x1ec) / lbl_80541720;
+            t = t * t;
+            v[0] = t * v[0] + (lbl_805416D8 - t) * *(f32*)(p + 0x1a0);
+            v[1] = t * v[1] + (lbl_805416D8 - t) * *(f32*)(p + 0x1a4);
+            v[2] = t * v[2] + (lbl_805416D8 - t) * *(f32*)(p + 0x1a8);
+            v[3] = t * v[3] + (lbl_805416D8 - t) * *(f32*)(p + 0x1ac);
+            s = t * s + (lbl_805416D8 - t) * *(f32*)(p + 0x1b0);
+            if (*(s32*)(p + 0x1ec) == 0) {
+                p[0x1e8] = 0;
                 g = *(u8**)(lbl_8053AB10 + 0x20);
-                g[0x2360] = 0;
-            }
-            g = *(u8**)(lbl_8053AB10 + 0x20);
-            if (g[0x235d]) {
+                if (g[0x235c]) {
+                    g[0x2360] = 0;
+                }
                 g = *(u8**)(lbl_8053AB10 + 0x20);
-                g[0x2361] = 0;
-            }
-            g = *(u8**)(lbl_8053AB10 + 0x20);
-            if (g[0x235e]) {
+                if (g[0x235d]) {
+                    g[0x2361] = 0;
+                }
                 g = *(u8**)(lbl_8053AB10 + 0x20);
-                g[0x2362] = 0;
-            }
-            g = *(u8**)(lbl_8053AB10 + 0x20);
-            if (g[0x235f]) {
+                if (g[0x235e]) {
+                    g[0x2362] = 0;
+                }
                 g = *(u8**)(lbl_8053AB10 + 0x20);
-                g[0x2363] = 0;
+                if (g[0x235f]) {
+                    g[0x2363] = 0;
+                }
+                fn_802DCDF4((char*)fn_802D6A9C());
+                *(f32*)(p + 0x154) = *(f32*)(p + 0x190);
+                *(f32*)(p + 0x158) = *(f32*)(p + 0x194);
+                *(f32*)(p + 0x15c) = *(f32*)(p + 0x198);
+                *(f32*)(p + 0x160) = *(f32*)(p + 0x19c);
+                *(f32*)(p + 0x1b4) = *(f32*)(p + 0x1b8) = lbl_805416C8;
+                *(f32*)(p + 0x1bc) = *(f32*)(p + 0x1c0) = lbl_805416C8;
+            } else {
+                (*(s32*)(p + 0x1ec))--;
             }
-            fn_802D6A9C();
-            fn_802DCDF4((char*)fn_802D6A9C());
-            *(f32*)(p + 0x154) = *(f32*)(p + 0x190);
-            *(f32*)(p + 0x158) = *(f32*)(p + 0x194);
-            *(f32*)(p + 0x15c) = *(f32*)(p + 0x198);
-            *(f32*)(p + 0x160) = *(f32*)(p + 0x19c);
-            *(f32*)(p + 0x1b4) = lbl_805416C8;
-            *(f32*)(p + 0x1b8) = lbl_805416C8;
-            *(f32*)(p + 0x1bc) = lbl_805416C8;
-            *(f32*)(p + 0x1c0) = lbl_805416C8;
-        } else {
-            *(s32*)(p + 0x1ec) = n - 1;
         }
-    }
 
-    if (p[0x17e]) {
-        v[0] = *(f32*)(p + 0x180);
-        v[1] = *(f32*)(p + 0x184);
-        v[2] = *(f32*)(p + 0x188);
-        v[3] = *(f32*)(p + 0x18c);
-        *(f32*)(p + 0x1b4) = lbl_805416C8;
-        *(f32*)(p + 0x1b8) = lbl_805416C8;
-        *(f32*)(p + 0x1bc) = lbl_805416C8;
-        *(f32*)(p + 0x1c0) = lbl_805416C8;
-        s = lbl_805416E8 * (v[1] + v[3]) + lbl_80541714;
-        p[0x17e] = 0;
+        if (p[0x17e]) {
+            *(f32*)(p + 0x1b4) = *(f32*)(p + 0x1b8) = lbl_805416C8;
+            *(f32*)(p + 0x1bc) = *(f32*)(p + 0x1c0) = lbl_805416C8;
+            v[0] = *(f32*)(p + 0x180);
+            v[1] = *(f32*)(p + 0x184);
+            v[2] = *(f32*)(p + 0x188);
+            v[3] = *(f32*)(p + 0x18c);
+            s = lbl_805416E8 * (v[1] + v[3]) + lbl_80541714;
+            p[0x17e] = 0;
+        }
         fn_8030CB10(p, v, s);
-    }
 
-    *(f32*)(p + 0x858) = (f32)JUTVideo::getManager()->getRenderMode()->fbWidth / (v[2] - v[0]);
-    pos.x = (v[0] + v[2]) * lbl_805416E8;
-    pos.y = (v[1] + v[1]) * lbl_805416E8;
-    pos.z = (s + s) * lbl_805416E8;
-    fn_80459624((char*)lbl_8053AF80, (f32*)&pos, (f32(*)[4])(p + 0x4), 0);
+        *(f32*)(p + 0x858) = (f32)JUTVideo::getManager()->getRenderMode()->fbWidth / (v[2] - v[0]);
+        half = lbl_805416E8;
+        b.x = v[0];
+        b.y = v[1];
+        b.z = s;
+        a.x = v[2];
+        a.y = v[1];
+        a.z = s;
+        f64 z = __ps_add(__psq_l(&b, 8, 1, 0), __psq_l(&a, 8, 1, 0));
+        __psq_st(z, &c, 8, 1, 0);
+        __psq_st(__ps_muls0(z, half), &c, 8, 1, 0);
+        f64 xy = __ps_add(__psq_l(&b, 0, 0, 0), __psq_l(&a, 0, 0, 0));
+        __psq_st(xy, &c, 0, 0, 0);
+        __psq_st(__ps_muls0(xy, half), &c, 0, 0, 0);
+        fn_80459624((char*)lbl_8053AF80, (f32*)&c, (f32(*)[4])(p + 0x4), 0);
+    }
     *(s32*)(p + 0x7f0) = 0;
     p[0x7f4] = 0;
     p[0x7f5] = 0;
