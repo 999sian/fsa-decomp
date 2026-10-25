@@ -413,8 +413,8 @@ static inline f32 ltzrSqrt(f32 x) {
 }
 
 static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, u8& hit) {
-            f32 vy;
             f32 vx;
+            f32 vy;
             f32 maxy;
             f32 maxx;
             f32 miny;
