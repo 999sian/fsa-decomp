@@ -785,12 +785,9 @@ extern "C" s32 fn_80122834(u8* self) {
     return 0;
 }
 
-extern "C" s32 fn_8012285C(u8* self) {
-    s32* p = (s32*)(self + 0x344);
-    s32 player = *p;
-    if (player < 0 || player >= 4) {
-        return -1;
-    }
+extern "C" s32 fn_8012285C(const u8* self) {
+    s32 player = *(const s32*)(self + 0x344);
+    if (player < 0 || player >= 4) return -1;
     return fn_8022EA0C(player);
 }
 
@@ -1276,12 +1273,11 @@ extern "C" void fn_80123D30(u8* self) {
 }
 
 extern "C" s32 fn_80123D88(u8* self) {
-    s32 mapped;
-    s32 player;
     if (self[0x333]) {
         return 0;
     }
-    player = *(s32*)(self + 0x344);
+    s32 player = *(s32*)(self + 0x344);
+    s32 mapped;
     if (player < 0 || player >= 4) {
         mapped = -1;
     } else {
