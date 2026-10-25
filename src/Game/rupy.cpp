@@ -5,6 +5,7 @@
 #define Vec ActorVec
 #include "Game/Actor.h"
 #undef Vec
+#include "Game/ItemBase.h"
 
 // ---- fn_8032AB80_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
