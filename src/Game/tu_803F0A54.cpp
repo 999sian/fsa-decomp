@@ -696,7 +696,7 @@ extern "C" s32 fn_804317AC(void* p);
 extern "C" s32 fn_80431740(void* p);
 extern "C" void fn_8013CC50(s32 a, f32* v, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, f32 h);
 extern "C" u8* sManager__8JUTVideo;
-extern "C" u8 lbl_80479238[];
+extern "C" u64 lbl_80479238[];
 extern const f32 lbl_80543720;
 extern const f32 lbl_80543728;
 extern const f32 lbl_80543730;
