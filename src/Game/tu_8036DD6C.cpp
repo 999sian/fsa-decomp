@@ -85,68 +85,59 @@ extern const f32 lbl_80542D54;
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_802D9C4C(void);
 extern "C" void fn_8036DFF8(u8* this_) {
-    struct XY {
-        f32 x;
-        f32 y;
-    };
-    XY probe;
     u16 pk = *(u32*)(this_ + 0x90) & 0x3ff;
     u32 tile;
     if (pk == 0x1e1) {
-        *(XY*)(this_ + 0x244) = *(XY*)(this_ + 0xc);
-        *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x14);
+        *(JGeometry::TVec3<f32>*)(this_ + 0x244) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
         *(f32*)(this_ + 0xc) += lbl_80542D4C;
         *(f32*)(this_ + 0x10) += lbl_80542D50;
         *(u16*)(this_ + 0x240) = pk;
         goto tail;
     } else if (pk == 0x1e2) {
-        probe.x = *(f32*)(this_ + 0xc) - lbl_80542D4C;
-        probe.y = *(f32*)(this_ + 0x10);
-        tile = fn_80226BC4((f32*)&probe, *(s32*)(this_ + 4));
+        JGeometry::TVec2<f32> probe0;
+        probe0.set(*(f32*)(this_ + 0xc) - lbl_80542D4C, *(f32*)(this_ + 0x10));
+        tile = fn_80226BC4((f32*)&probe0, *(s32*)(this_ + 4));
         pk = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 4), tile) & 0x3ff;
         if (pk == 0x1e1) {
             this_[0x11c] = 0;
             return;
         }
-        *(XY*)(this_ + 0x244) = *(XY*)(this_ + 0xc);
-        *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x14);
+        *(JGeometry::TVec3<f32>*)(this_ + 0x244) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
         *(f32*)(this_ + 0x10) += lbl_80542D50;
         *(u16*)(this_ + 0x240) = pk;
         goto tail;
     } else if (pk == 0x1f1) {
-        probe.x = *(f32*)(this_ + 0xc);
-        probe.y = *(f32*)(this_ + 0x10) - lbl_80542D4C;
-        tile = fn_80226BC4((f32*)&probe, *(s32*)(this_ + 4));
+        JGeometry::TVec2<f32> probe1;
+        probe1.set(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - lbl_80542D4C);
+        tile = fn_80226BC4((f32*)&probe1, *(s32*)(this_ + 4));
         pk = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 4), tile) & 0x3ff;
         if (pk == 0x1e1) {
             this_[0x11c] = 0;
             return;
         }
-        *(XY*)(this_ + 0x244) = *(XY*)(this_ + 0xc);
-        *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x14);
+        *(JGeometry::TVec3<f32>*)(this_ + 0x244) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
         *(f32*)(this_ + 0xc) += lbl_80542D4C;
         *(f32*)(this_ + 0x10) += lbl_80542D54;
         *(u16*)(this_ + 0x240) = pk;
         goto tail;
     } else {
-        probe.x = *(f32*)(this_ + 0xc) - lbl_80542D4C;
-        probe.y = *(f32*)(this_ + 0x10);
-        tile = fn_80226BC4((f32*)&probe, *(s32*)(this_ + 4));
+        JGeometry::TVec2<f32> probe2;
+        probe2.set(*(f32*)(this_ + 0xc) - lbl_80542D4C, *(f32*)(this_ + 0x10));
+        tile = fn_80226BC4((f32*)&probe2, *(s32*)(this_ + 4));
         pk = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 4), tile) & 0x3ff;
         if (pk == 0x1f1) {
             this_[0x11c] = 0;
             return;
         }
-        probe.x = *(f32*)(this_ + 0xc) - lbl_80542D4C;
-        probe.y = *(f32*)(this_ + 0x10) - lbl_80542D4C;
-        tile = fn_80226BC4((f32*)&probe, *(s32*)(this_ + 4));
+        JGeometry::TVec2<f32> probe3;
+        probe3.set(*(f32*)(this_ + 0xc) - 16.0f, *(f32*)(this_ + 0x10) - 16.0f);
+        tile = fn_80226BC4((f32*)&probe3, *(s32*)(this_ + 4));
         pk = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 4), tile) & 0x3ff;
         if (pk == 0x1e2) {
             this_[0x11c] = 0;
             return;
         }
-        *(XY*)(this_ + 0x244) = *(XY*)(this_ + 0xc);
-        *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x14);
+        *(JGeometry::TVec3<f32>*)(this_ + 0x244) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
         *(f32*)(this_ + 0x10) += lbl_80542D54;
         *(u16*)(this_ + 0x240) = pk;
         goto tail;
@@ -167,14 +158,13 @@ tail:
         } else if (c == 'u') {
             *(s32*)(this_ + 0x234) = 3;
             *(s32*)(this_ + 0x23c) = 0x50070;
-        } else if (c == '1') {
-            if (((char*)*(char**)(this_ + 0x238))[1] != 'b') {
-                *(s32*)(this_ + 0x234) = 0;
-                *(s32*)(this_ + 0x23c) = 0x50046;
-            }
+        } else if (c != '1' || ((u8*)*(char**)(this_ + 0x238))[1] != 'b') {
+            *(s32*)(this_ + 0x234) = 0;
+            *(s32*)(this_ + 0x23c) = 0x50046;
+        } else {
+            this_[0x11c] = 0;
         }
     }
-    this_[0x11c] = 0;
     this_[0x250] = 0;
     this_[0x230] = 0;
 }
