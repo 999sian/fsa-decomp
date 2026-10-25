@@ -50,6 +50,12 @@ struct FsaStateEntry {
 };
 extern FsaStateEntry lbl_804ADA50[];
 struct JMathSinCos { f32 sin; f32 cos; };
+struct FsaCurEntry {
+    s32 key;
+    f32 radius;
+    JGeometry::TVec3<f32> pos;
+    u8 type;
+};
 extern "C" s32 lbl_804742A8[];
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" u8 fn_8035F3C0(u8* p);
