@@ -95,14 +95,6 @@ extern "C" void fn_801D7DB4(u8* this_, f32 s);
 extern "C" void fn_801CD930(void* p, s32 v, s32 n);
 extern int __float_epsilon[];
 
-static inline void tu6cec_approach(f32* value, f32 dest, f32 time) {
-    if (time < *(f32*)__float_epsilon) {
-        *value = dest;
-    } else {
-        f32 rate = lbl_8053F174 / time;
-        *value = rate * (dest - *value) + *value;
-    }
-}
 
 struct Tu6CECVec { f32 x, y, z; };
 static inline void tu6cec_set(f32* d, f32 x, f32 y, f32 z) { d[0] = x; d[1] = y; d[2] = z; }
@@ -296,11 +288,11 @@ extern "C" void fn_801D6D38(char* p, Tu6CECVec2* in) {
     fn_801E4AB0(p + 0x14, 0x3c, 0x2000, y);
 }
 
-#pragma fp_contract on
+#pragma opt_lifetimes off
 extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
-    int i;
-    s32 id;
     s32 off;
+    s32 id;
+    int i;
     tu6cec_set(g->pos, src[0], lbl_8053F16C + src[1], src[2]);
     if (fn_801CD2F8(g->m40)) {
         g->pos[1] = lbl_8053F170 + src[1];
@@ -324,13 +316,15 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
         if (g->m64 >= 0x2d) {
             g->m44 = 3;
         } else {
+            f32 rate;
+            f32 old;
             f32 t = (f32)(0x2d - g->m64);
             if (t < *(f32*)__float_epsilon) {
                 g->m60 = lbl_8053F174;
             } else {
                 f32 one = lbl_8053F174;
-                f32 old = g->m60;
-                f32 rate = one / t;
+                old = g->m60;
+                rate = one / t;
                 f32 delta = one - old;
                 g->m60 = rate * delta + old;
             }
@@ -339,8 +333,8 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
             } else {
                 f32 one = lbl_8053F174;
                 f32 dest = lbl_8053F178;
-                f32 rate = one / t;
-                f32 old = g->m5c;
+                rate = one / t;
+                old = g->m5c;
                 f32 delta = dest - old;
                 g->m5c = rate * delta + old;
             }
@@ -358,16 +352,20 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
     switch (g->m44) {
     case 2:
     case 3: {
+        i = 0;
         off = 0;
-        for (i = 0; i < 16; i++) {
+        for (; i < 16; i++) {
             id = g->ids[i];
             if (id >= 0) {
                 char* a = (char*)fn_801F666C(fn_801F856C(), id);
                 if (a != 0) {
                     u16 ang = -(s16)(g->m54 + off);
-                    f32 z = g->pos[2];
-                    f32 radius = g->m5c;
-                    f32 center = lbl_8053F150;
+                    f32 center;
+                    f32 radius;
+                    f32 z;
+                    z = g->pos[2];
+                    radius = g->m5c;
+                    center = lbl_8053F150;
                     f32 py = g->pos[1];
                     f32 px = g->pos[0];
                     f32 cs = JMath::sincosTable_.mTable[ang >> 5].first;
@@ -389,7 +387,7 @@ extern "C" void fn_801D6E20(Tu6CECGroup* g, const f32* src) {
     }
     }
 }
-#pragma fp_contract reset
+#pragma opt_lifetimes reset
 extern "C" f32* fn_8023E724(s32 idx);
 extern "C" s32 fn_801CD664(s32 n);
 extern const f32 lbl_8053F174;
