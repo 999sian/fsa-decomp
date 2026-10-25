@@ -220,6 +220,21 @@ extern "C" void fn_80268B3C(u8* p) {
     }
 }
 
+static inline void clearProbeFlags(u8* p) {
+    p[0x9a] = 0;
+    *(s32*)(p + 0x1c) = 0;
+    for (s32 i = 0; i < 8; i++) {
+        p[0x20+i] = 0; p[0x28+i] = 0; p[0x38+i] = 0;
+        p[0x50+i] = 0; p[0x58+i] = 0; p[0x60+i] = 0;
+        p[0x68+i] = 0; p[0x70+i] = 0; p[0x78+i] = 0;
+        p[0x80+i] = 0; p[0x88+i] = 0;
+    }
+}
+static inline HitRect* roomRect(s32 room) {
+    u8* base = fn_802D6A9C();
+    if (room < 8) return (HitRect*)(base + 0xcc);
+    return (HitRect*)(base + 0xdc);
+}
 extern "C" u8 fn_80268BC4(u8* p) {
     JGeometry::TVec2<f32> v;
     s32 i;
