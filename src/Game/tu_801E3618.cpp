@@ -41,20 +41,23 @@ extern "C" f32 lbl_8053F534;
 extern "C" f32 lbl_8053F538;
 extern "C" f32 lbl_8053F53C;
 extern "C" u8 fn_801E3618(u8* p, void* obj, f32* pos) {
-    u8 flag = 1;
-    u8 ret = 0;
+    u8 flag;
+    s32 idx;
+    int ret = 0;
+    f32 y2;
+    f32 x2;
     f32 x1;
     f32 y1;
-    f32 x2;
-    f32 y2;
 
-    if (fn_801CD2F8(obj)) {
+    u8 inRoom = fn_801CD2F8(obj);
+    flag = 1;
+    if (inRoom) {
         x1 = *(f32*)(p + 0x5e0);
         y1 = *(f32*)(p + 0x5e4);
         x2 = lbl_8053F510 * (f32)*(u8*)(p + 0x5e8) + x1;
         y2 = lbl_8053F510 * (f32)*(u8*)(p + 0x5e9) + y1;
     } else {
-        s32 idx = *(s32*)(p + 0x5d8);
+        idx = *(s32*)(p + 0x5d8);
         u8* base = (u8*)fn_802D6A9C();
         f32* q;
         if (idx < 8) {
@@ -74,7 +77,9 @@ extern "C" u8 fn_801E3618(u8* p, void* obj, f32* pos) {
             y2 = q[3] - lbl_8053F524;
         }
     }
-    if (pos[0] < x1 || pos[1] < y1 || x2 <= pos[0] || y2 <= pos[1]) {
+    f32 px = pos[0];
+    f32 py;
+    if (px < x1 || (py = pos[1]) < y1 || px >= x2 || py >= y2) {
         flag = 0;
     }
     if (!flag) {
@@ -348,32 +353,33 @@ extern "C" u8 fn_801E3B2C(char* this_) {
     return ret;
 }
 
+#pragma opt_propagation off
+#pragma opt_common_subs on
 extern "C" u8 fn_801E4094(char* this_) {
     u8 ret = 0;
     s32 state = *(s32*)(this_ + 0x248);
     u8 ok = 1;
-    if (state < 9) {
-        if (state != 5 && (state >= 5 || state >= 0)) {
-            ok = 0;
-        }
-    } else if (state < 0x1b) {
-        if (state >= 0x15) {
-            ok = 0;
-        }
+    switch (state) {
+    case 0: case 1: case 2: case 3: case 4:
+    case 6: case 7: case 8:
+    case 21: case 22: case 23: case 24: case 25: case 26:
+        ok = 0;
+        break;
     }
     if (ok && !(*(u32*)(this_ + 0x230) & 0x2000)) {
-        f32 x1 = *(f32*)(this_ + 0x60);
-        f32 y1;
-        f32 x2 = *(f32*)(this_ + 0x68);
-        f32 y2;
+        f32 x1, y1, x2, y2;
+        x2 = *(f32*)(this_ + 0x68);
+        x1 = *(f32*)(this_ + 0x60);
         if (x2 - x1 > lbl_8053F530) {
-            y1 = *(f32*)(this_ + 0x64);
             y2 = *(f32*)(this_ + 0x6c);
+            y1 = *(f32*)(this_ + 0x64);
             if (y2 - y1 > lbl_8053F530) {
-                *(f32*)(this_ + 0x60) *= lbl_8053F54C;
-                *(f32*)(this_ + 0x64) *= lbl_8053F54C;
-                *(f32*)(this_ + 0x68) *= lbl_8053F54C;
-                *(f32*)(this_ + 0x6c) *= lbl_8053F54C;
+                f32 value = *(volatile f32*)(this_ + 0x60);
+                value *= 1.5f;
+                *(f32*)(this_ + 0x60) = value;
+                *(f32*)(this_ + 0x64) *= 1.5f;
+                *(f32*)(this_ + 0x68) *= 1.5f;
+                *(f32*)(this_ + 0x6c) *= 1.5f;
                 s32 id = fn_801F82CC(fn_801F856C(), this_, *(u8*)(this_ + 0x195), lbl_8053F550);
                 *(f32*)(this_ + 0x60) = x1;
                 *(f32*)(this_ + 0x64) = y1;
@@ -386,8 +392,8 @@ extern "C" u8 fn_801E4094(char* this_) {
                         d.sub(*(JGeometry::TVec3f*)(obj + 0x3c));
                         ret = fn_801F37AC(this_, 0, &d, 2, *(s32*)(obj + 0x168), *(s32*)(obj + 0x110));
                         if (ret) {
-                            f32 zero = lbl_8053F530;
                             *(u8*)(obj + 0x164) = 1;
+                            f32 zero = 0.0f;
                             *(s32*)(this_ + 0xf8) = 0;
                             *(f32*)(this_ + 0x3c) = zero;
                             *(f32*)(this_ + 0x40) = zero;
@@ -400,13 +406,12 @@ extern "C" u8 fn_801E4094(char* this_) {
                             fn_801E4D54(this_);
                             fn_80217A74(this_ + 0x448);
                             f32 out[2];
-                            f32 pt[2];
+                            JGeometry::TVec2f pt;
                             fn_801F3128(this_, out);
-                            pt[0] = out[0] - *(f32*)(obj + 0xc);
-                            pt[1] = out[1] - (*(f32*)(obj + 0x10) - *(f32*)(obj + 0x14));
-                            fn_801D6D38(this_ + 0x52c, pt);
+                            pt.set(out[0] - *(f32*)(obj + 0xc), out[1] - (*(f32*)(obj + 0x10) - *(f32*)(obj + 0x14)));
+                            fn_801D6D38(this_ + 0x52c, (f32*)&pt);
                             *(u8*)(this_ + 0x5cd) += 1;
-                            if (*(u8*)(this_ + 0x5cd) >= *(u8*)(this_ + 0x5cc)) {
+                            if ((s32)*(u8*)(this_ + 0x5cd) >= (s32)*(u8*)(this_ + 0x5cc)) {
                                 fn_801D5D84(this_, 6);
                             }
                         }
@@ -417,7 +422,8 @@ extern "C" u8 fn_801E4094(char* this_) {
     }
     return ret;
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_801F317C(char* this_, void* out);
 extern "C" s32 fn_8023AE34(void* a, s32 b, void* c);
 extern "C" u8 fn_801CC730(s32 a, s32 b, s32 c);
