@@ -7,7 +7,7 @@ extern "C" void* fn_8013C824();
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_8050DB0C[];
-extern "C" u16 lbl_80543C00[];
+extern "C" const u16 lbl_80543C00[4];
 extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AED0;
 extern "C" void* sManager__8JUTVideo;
