@@ -906,6 +906,14 @@ inline BOOL isLinkOwner3(char* p) {
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
+inline BOOL isMode4OtherLink(char* p) {
+    s32 me;
+    if (getModeLO(p, me) == 4) {
+        s32 v = linkIdx(p);
+        return v != linkRank2(p);
+    }
+    return 0;
+}
 inline BOOL isLinkOwnerTransition(char* p) {
     s32 me;
     u8 bit = 1 << S32(p, 4);
@@ -5009,104 +5017,30 @@ u8 fn_80250090(char* p) {
     return S32(p, 0xd98) > 0;
 }
 
+#pragma opt_lifetimes off
 int fn_80250ACC(char* p) {
-    s32 linked;
-    s32 s2;
-    s32 c;
-    s32 i;
-    s32 s;
-
-    c = 0;
-    i = c;
-    for (; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            if ((linked = S32(p, 0xd60)) >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                linked = S32(p, 0x4);
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    if (c <= 1) {
-        s = 5;
-    } else if (S32(p, 0xd60) >= 0) {
-        s = fn_8022CAF8(S32(p, 0xd60));
-    } else {
-        s = S32(p, 0x120c);
-    }
-    if (s == 4) {
-        if (S32(p, 0xd60) >= 0) {
-            s2 = fn_80234004(S32(p, 0xd60));
-        } else {
-            s2 = S32(p, 0x1224);
-        }
-        if (S32(p, 0xd60) < 0) {
-            c = 0;
-        } else {
-            s32 cnt = 0;
-            i = cnt;
-            for (; i < S32(p, 0x4); i++) {
-                linked = S32(p, 0xd60);
-                if (linked == fn_8022F3DC(i)) {
-                    cnt++;
-                }
-            }
-            c = cnt + 1;
-        }
-        if (s2 != c) {
+    s32 me;
+    BOOL other;
+    if (getModeLO(p, me) == 4) {
+        s32 v = linkIdx(p);
+        other = v != linkRank2(p);
+        if (other) {
             return 0;
         }
     }
-
-    i = 0;
-    c = i;
-    for (; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            if ((linked = S32(p, 0xd60)) >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                linked = S32(p, 0x4);
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    if (c <= 1) {
-        s = 5;
-    } else if (S32(p, 0xd60) >= 0) {
-        s = fn_8022CAF8(S32(p, 0xd60));
-    } else {
-        s = S32(p, 0x120c);
-    }
-    if (s == 5 && S32(p, 0xd60) >= 0) {
+    if (getMode2(p) == 5 && S32(p, 0xd60) >= 0) {
         return 0;
     }
     if (S32(p, 0xd60) >= 0) {
-        if (S32(PTR(p, 0xbf0), 0xa0) > 0x11) {
+        if (S32(PTR(p, 0xbf0), 0xa0) >= 0x12) {
             return 1;
         }
-    } else if (S32(PTR(p, 0xbf0), 0xa0) > 0x13) {
+    } else if (S32(PTR(p, 0xbf0), 0xa0) >= 0x14) {
         return 1;
     }
     return 0;
 }
-
+#pragma opt_lifetimes reset
 u8 fn_80250D30(char* p) {
     bool bVar1;
     s32 mode;
