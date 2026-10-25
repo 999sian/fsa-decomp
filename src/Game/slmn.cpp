@@ -366,12 +366,6 @@ static inline void slmnCenter(Slmn* this_, f32* out) {
     }
 }
 
-static inline u8 slmnAddSteps(char* this_) {
-    u8 n = fn_801CD664(3) + 1;
-    *(u8*)(this_ + 0x34a) += n;
-    return n;
-}
-
 static inline s32 slmnPickDir(char* this_, f32* pos) {
     s32 player = fn_801D05F8(this_, pos, lbl_8053F8E0);
     if (player < 0) {
