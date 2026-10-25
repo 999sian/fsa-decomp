@@ -32,8 +32,9 @@ static inline void dgt2SetVel(char* p) {
     *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * dgt2Cos(*(s32*)(p + 0x98));
 }
 
-static inline void dgt2SetPoint(char* dst, char* p, s32 a) {
+static inline void dgt2SetPoint(char* dst, char* p, s32 d) {
     dgt2CopyPos(dst, p);
+    s32 a = (*(s32*)(p + 0x98) + d) & 0xf;
     *(f32*)(dst + 0x0) += 6.0f * dgt2Sin(a);
     *(f32*)(dst + 0x4) += 6.0f * dgt2Cos(a);
 }
