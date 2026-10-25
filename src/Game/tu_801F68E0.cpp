@@ -500,8 +500,8 @@ extern "C" u8 fn_801CC910(PoolActor* actor);
 extern "C" u8 fn_801CC960(PoolActor* actor);
 extern "C" u8 fn_801CC9B0(PoolActor* actor);
 
-extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
-    const int count = pool->mCount;
+extern "C" s32 fn_801F7464(const ActorPool* pool, s32 param, s32 exceptId) {
+    s32 count = pool->mCount;
     PoolActor** cur = (PoolActor**)pool;
     s32 id = -1;
     s32 i;
