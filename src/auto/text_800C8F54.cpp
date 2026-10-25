@@ -1327,14 +1327,9 @@ extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
 
 extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
-    const u16* ids = *(const u16**)(p + 8);
-    unsigned int off = ids[idx] * 0x14c;
-    unsigned int i = off + 0xbc;
-    const u8* base = *(const u8**)(p + 4);
-    i += b * 2;
-    u16 v = *(const u16*)(base + i);
-    if (v != 0xffff) {
-        *out = (*(const u32**)(p + 0x40))[v];
+    J3DMaterialInitData* data = &(*(J3DMaterialInitData**)(p + 4))[(*(u16**)(p + 8))[idx]];
+    if (data->mTevOrderInfoIndex[b] != 0xffff) {
+        *out = (*(u32**)(p + 0x40))[data->mTevOrderInfoIndex[b]];
         return;
     }
     *out = j3dDefaultTevOrderInfoNull;
