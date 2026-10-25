@@ -963,7 +963,6 @@ extern "C" void fn_8035151C(u8* self) {
     }
 }
 
-extern "C" char lbl_8050ADF8[];
 extern "C" const f32 lbl_80542630;
 extern "C" const f32 lbl_80542634;
 extern "C" const f32 lbl_8054265C;
