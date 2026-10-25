@@ -23,9 +23,10 @@ extern "C" f32 lbl_80543C0C;
 extern "C" f32 lbl_80543C10;
 extern "C" f32 lbl_80543C14;
 
-static inline void setMarkerPosition(u8* cfg, JGeometry::TVec3f pos) {
+static inline void setMarkerPosition(u8* cfg, const JGeometry::TVec3f& pos) {
     JGeometry::TVec3f copy(pos);
-    ((JGeometry::TVec3f*)(cfg + 0x1c4))->set(copy);
+    JGeometry::TVec3f value(copy);
+    ((JGeometry::TVec3f*)(cfg + 0x1c4))->set(value);
 }
 extern "C" void fn_80437F78(u8* p) {
     f32* v = (f32*)fn_8023E724(0);
