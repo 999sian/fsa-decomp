@@ -151,9 +151,21 @@ extern "C" void* fn_801F856C(void);
 extern "C" void Actor_CreateByID(void* a, u32 id, void* rec, void* d, s32 e, s32 f, s32 g);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D6F38(void* a, void* b, void* c, s32 d, s32 e);
+static inline s32 itemRecipient(s32 room) {
+    s32 result = room;
+    if ((u8)fn_8022F514(room)) result = fn_8022F3DC(room);
+    return result;
+}
+
 extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
-    s32 selected = room;
+    u32 offset;
+    u32 roomBits;
+    s32 i;
+    s32 selected;
+    s32 index;
+    const u32* table;
     s32 original = room;
+    selected = original;
     if ((u8)fn_8022F514(original)) selected = fn_8022F3DC(original);
     if (lbl_8053AAF8[0x7e] == 1) {
         if (!(u8)fn_802308E0(selected)) return 0;
@@ -161,25 +173,32 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
         if (!(u8)fn_8023077C()) return 0;
         fn_8037AE30(lbl_8053AD70);
     }
-    s32 index = *(s32*)(this_ + 0x238);
+    index = *(s32*)(this_ + 0x238);
     if (*(s32*)(this_ + 0x23c) == 2) index += 11;
-    u32 offset = 0;
-    for (s32 i = 0; i < 4; i++, offset += 0x1000000) {
+    f32 yOffset;
+    f32 xOffset;
+    xOffset = lbl_80540C38;
+    yOffset = lbl_80540C3C;
+    table = lbl_8046D4F0;
+    roomBits = (u32)room << 26;
+    i = 0;
+    offset = 0;
+    for (; i < 4; i++, offset += 0x1000000) {
         JGeometry::TVec3<f32> source(*(Vec*)fn_8023E724(i));
         Vec pos;
-        pos.x = lbl_80540C38 + source.x;
-        pos.y = source.y - lbl_80540C3C;
+        pos.x = xOffset + source.x;
+        pos.y = source.y - yOffset;
         pos.z = source.z;
         if (lbl_8053AAF8[0x7e] == 1) {
             if ((u8)fn_8022F514(i) == 1) {
                 if (selected == fn_8022F3DC(i)) {
                     if (i == room) {
-                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + offset;
+                u32 param = table[index] + roomBits + offset;
                 s32 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + 0x30000000 + offset;
+                u32 param = table[index] + roomBits + 0x30000000 + offset;
                 s32 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
@@ -187,12 +206,12 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
                 }
             } else if (i == selected) {
                 if (i == room) {
-                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + offset;
+                u32 param = table[index] + roomBits + offset;
                 s32 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + 0x30000000 + offset;
+                u32 param = table[index] + roomBits + 0x30000000 + offset;
                 s32 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
@@ -200,12 +219,12 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
             }
         } else {
             if (i == room) {
-                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + offset;
+                u32 param = table[index] + roomBits + offset;
                 s32 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + 0x30000000 + offset;
+                u32 param = table[index] + roomBits + 0x30000000 + offset;
                 s32 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
