@@ -455,6 +455,7 @@ extern "C" void fn_801C7EE4(char* this_) {
 }
 
 extern "C" void fn_801C844C(char* p);
+extern "C" f32 lbl_8053EEFC;
 extern "C" void fn_801C7F98(char* this_) {
     JGeometry::TVec3<f32> va;
     JGeometry::TVec3<f32> vb;
@@ -470,9 +471,8 @@ extern "C" void fn_801C7F98(char* this_) {
     u8 b2;
     u8 c2;
     u8* s;
-    s32 room;
-    u8 x;
-    s32 t;
+    f32 ax;
+    f32 ay;
 
     fn_801C844C(this_);
     fn_801C8C84(this_, 0, 0);
@@ -488,8 +488,7 @@ extern "C" void fn_801C7F98(char* this_) {
     fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
     c1 = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
     s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-    t = a1;
-    if ((u8)t < s[2]) {
+    if ((u8)(s8)a1 < s[2]) {
         s[3] = a1;
     }
     if (&cb != 0) {
@@ -499,14 +498,14 @@ extern "C" void fn_801C7F98(char* this_) {
         ca = b1;
     }
     if (*(u32*)(this_ + 0x230) & 0x2000000) {
-        room = *(s32*)(this_ + 0x4);
+        s32 room = *(s32*)(this_ + 0x4);
         if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), cb)) {
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             s[1] = 1;
             return;
         }
-        room = *(s32*)(this_ + 0x4);
-        if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), ca)) {
+        s32 room2 = *(s32*)(this_ + 0x4);
+        if (room2 != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), ca)) {
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             s[1] = 0;
             return;
@@ -527,8 +526,7 @@ extern "C" void fn_801C7F98(char* this_) {
         fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
         c2 = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
         s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-        t = a2;
-        if ((u8)t < s[2]) {
+        if ((u8)(s8)a2 < s[2]) {
             s[3] = a2;
         }
         if (&p8 != 0) {
@@ -537,25 +535,21 @@ extern "C" void fn_801C7F98(char* this_) {
         if (&p9 != 0) {
             p9 = b2;
         }
-        f32 one = lbl_8053EEC8;
-        f32 thr = lbl_8053EED8;
-        u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-        *seed = *seed * 0x19660d + 0x3c6ef35f;
-        u32 bits = (*seed >> 9) | 0x3f800000;
-        if (*(f32*)&bits - one < thr) {
-            x = p9;
-            room = *(s32*)(this_ + 4);
-            if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), x)) {
-                x = p8;
+        JMARandFast* rnd = (JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4);
+        if (rnd->get_ufloat_1() < 0.5f) {
+            c2 = p9;
+            s32 room = *(s32*)(this_ + 4);
+            if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c2)) {
+                c2 = p8;
             }
         } else {
-            x = p8;
-            room = *(s32*)(this_ + 4);
-            if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), x)) {
-                x = p9;
+            c2 = p8;
+            s32 room = *(s32*)(this_ + 4);
+            if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c2)) {
+                c2 = p9;
             }
         }
-        if (ca == x) {
+        if (ca == c2) {
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             s[1] = 1;
         } else {
@@ -566,12 +560,14 @@ extern "C" void fn_801C7F98(char* this_) {
     }
     va = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ca);
     vb = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), cb);
-    f32 ax = va.x - *(f32*)(this_ + 0x32c);
-    f32 ay = va.y - *(f32*)(this_ + 0x330);
-    f32 db = __fabsf((f32)(s16)(ang - (s32)(10430.378f * JMAAtan2Radian(vb.x - *(f32*)(this_ + 0x32c), vb.y - *(f32*)(this_ + 0x330)))));
-    f32 da = __fabsf((f32)(s16)(ang - (s32)(10430.378f * JMAAtan2Radian(ax, ay))));
-    if (lbl_8053EEE0 * da < lbl_8053EEE0 * db) {
-        room = *(s32*)(this_ + 4);
+    ay = va.y - *(f32*)(this_ + 0x330);
+    ax = va.x - *(f32*)(this_ + 0x32c);
+    f32 tb = JMAAtan2Radian(vb.x - *(f32*)(this_ + 0x32c), vb.y - *(f32*)(this_ + 0x330));
+    f32 db = __fabsf((f32)(s16)(ang - (s32)(tb * lbl_8053EEFC)));
+    f32 ta = JMAAtan2Radian(ax, ay);
+    f32 da = __fabsf((f32)(s16)(ang - (s32)(ta * lbl_8053EEFC)));
+    if (0.000030517578f * da < 0.000030517578f * db) {
+        s32 room = *(s32*)(this_ + 4);
         if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), cb)) {
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             s[1] = 1;
@@ -580,7 +576,7 @@ extern "C" void fn_801C7F98(char* this_) {
             s[1] = 0;
         }
     } else {
-        room = *(s32*)(this_ + 4);
+        s32 room = *(s32*)(this_ + 4);
         if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), ca)) {
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             s[1] = 0;
