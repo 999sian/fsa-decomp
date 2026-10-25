@@ -61,6 +61,79 @@ extern "C" void fn_8011DA20(char* this_) {
     }
 }
 
+struct ICWLVec2 {
+    f32 x, y;
+};
+
+struct ICWLBox {
+    f32 x0, y0, x1, y1;
+    void offset(f32 x, f32 y) {
+        x0 += x;
+        y0 += y;
+        x1 += x;
+        y1 += y;
+    }
+};
+
+static inline bool icwlHitPlayer(u8* this_) {
+    s32 idx = fn_801F285C(this_, 0, 0, 1, -1);
+    if (idx >= 0) {
+        fn_801F0E34(this_, 0x400D1, 0);
+        ICWLVec2 v;
+        v.x = *(f32*)(this_ + 0xc);
+        v.y = *(f32*)(this_ + 0x10);
+        fn_802379E4(idx, &v);
+        return true;
+    }
+    return false;
+}
+
+static inline bool icwlHitObject(u8* this_) {
+    ICWLVec2 v;
+    ICWLBox box;
+    ICWLVec2 out;
+    s32 idx;
+    v.x = lbl_8053C8B8;
+    v.y = lbl_8053C8B8;
+    box = *(ICWLBox*)(this_ + 0x70);
+    box.offset(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+    if (fn_8023AA18(&box, *(s32*)(this_ + 0x4), &v) >= 0) {
+        return true;
+    }
+    idx = fn_8023AE34(&box, *(s32*)(this_ + 0x4), &v);
+    if (idx >= 0) {
+        fn_801CC820(idx, 0);
+        return true;
+    }
+    idx = fn_8023AC74(&box, *(s32*)(this_ + 0x4), &v);
+    if (idx >= 0) {
+        fn_801CC538(idx, &v, &out, 0);
+        return true;
+    }
+    idx = fn_8023AD54(&box, *(s32*)(this_ + 0x4), &v);
+    if (idx >= 0) {
+        fn_801CC640(idx, 0, 0);
+        return true;
+    }
+    return false;
+}
+
+static inline bool icwlHitFire(u8* this_) {
+    ICWLVec2 v;
+    ICWLBox box;
+    box = *(ICWLBox*)(this_ + 0x60);
+    box.offset(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+    v.x = lbl_8053C8B8;
+    v.y = lbl_8053C8B8;
+    if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0) {
+        return true;
+    }
+    if (fn_801F2718(this_, 0x46495245) >= 0) {
+        return true;
+    }
+    return false;
+}
+
 extern "C" void fn_8011E030(u8* this_) {
     f32 box[4];
     f32 vec[2];
