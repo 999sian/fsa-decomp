@@ -222,7 +222,6 @@ static inline void moveToward(char* p, JGeometry::TVec3<f32> target) {
     *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + d.y * *(f32*)(p + 0x254) / mag;
 }
 extern "C" void fn_8035CF50(Unk8035CD00* self) {
-    Vec d;
     char* p = (char*)self;
     s16 prev;
 
@@ -261,13 +260,7 @@ extern "C" void fn_8035CF50(Unk8035CD00* self) {
     }
     prev = *(s16*)(p + 0x260);
     JGeometry::TVec3<f32> pos = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
-    JGeometry::TVec3<f32> cur = pos;
-    d.x = cur.x - *(f32*)(p + 0xc);
-    d.y = cur.y - *(f32*)(p + 0x10);
-    d.z = lbl_80542930;
-    f32 mag = JMAFastVECMag(&d);
-    *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + d.x * *(f32*)(p + 0x254) / mag;
-    *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + d.y * *(f32*)(p + 0x254) / mag;
+    moveToward(p, pos);
     if (((u32)*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
         s16 tbl = lbl_80472798[*(u32*)(p + 0x90) & 7];
         if ((u16)*(s16*)(p + 0x260) >= (u16)tbl && (u16)prev < (u16)tbl) {
