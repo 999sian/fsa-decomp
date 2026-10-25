@@ -196,8 +196,8 @@ extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c) {
     }
     u32 off = (u8)(r - 1) * 12;
     Vec v;
-    v.x = 16.0f * (*(f32*)((u8*)lbl_8046C150 + off) * (f32)(a + 1));
-    v.y = 16.0f * (*(f32*)((u8*)lbl_8046C150 + off + 4) * (f32)(a + 1));
+    v.x = 16.0f * ((f32)(a + 1) * *(f32*)(lbl_8046C150 + off));
+    v.y = 16.0f * ((f32)(a + 1) * *(f32*)(lbl_8046C150 + off + 4));
     v.z = 0.0f;
     JMathInlineVEC::PSVECAdd((Vec*)this_, &v, (Vec*)this_);
     return 1;
@@ -410,7 +410,7 @@ extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
-extern "C" void fn_8028DB54(void) {
+extern "C" void __sinit_tu_8028C068_cpp(void) {
     char* base = lbl_804D0168;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
