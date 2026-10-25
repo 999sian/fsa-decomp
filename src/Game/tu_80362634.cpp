@@ -84,11 +84,10 @@ static bool fn_80364340_isBadPos(Vec* p) {
     if (PSVECDistance(p, &v1) < lbl_80542B40) {
         return true;
     }
-    Vec v2;
-    v2.x = lbl_80542B44;
-    v2.y = lbl_80542B48;
-    v2.z = lbl_80542B0C;
-    if (PSVECDistance(p, &v2) < lbl_80542B40) {
+    v1.x = lbl_80542B44;
+    v1.y = lbl_80542B48;
+    v1.z = lbl_80542B0C;
+    if (PSVECDistance(p, &v1) < lbl_80542B40) {
         return true;
     }
     return false;
