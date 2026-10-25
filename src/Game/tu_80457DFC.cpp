@@ -295,12 +295,10 @@ extern "C" void fn_8045815C(u8* this_, u8 mode) {
     if (self->m80 != NULL || self->m84 != NULL) {
         id = -1;
         if (self->m80 != NULL) {
-            s32 a = self->m80->mID;
-            id = a;
+            id = self->m80->mID;
         }
         if (self->m84 != NULL) {
-            s32 b = self->m84->mID;
-            id = b;
+            id = self->m84->mID;
         }
         if (id != 0x1000002 && id != 0x1000023 && id != 0x100002D && id != 0x1000001) {
             if (self->m80 != NULL) {
@@ -757,16 +755,16 @@ extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
         return;
     }
     switch (id) {
-    case 0x100000c:
-    case 0x100001c:
-        *(s32*)(this_ + 0x70) = 0;
+    case 0x1000028:
+        this_[0x89] = 1;
+        param_3 = 1;
         break;
     case 0x1000019:
         param_3 = 1;
         break;
-    case 0x1000028:
-        this_[0x89] = 1;
-        param_3 = 1;
+    case 0x100000c:
+    case 0x100001c:
+        *(s32*)(this_ + 0x70) = 0;
         break;
     }
     if (this_[0x68] == 1 && param_3 == 0 && *(void**)(this_ + 0x80) != NULL) {
@@ -921,6 +919,90 @@ extern "C" void fn_80459624(char* self, f32* pos, Mtx mtx, int idx)
     PSMTXCopy(mtx, (f32(*)[4])(*(char**)(self + 0x3c) + idx * 0x30 + 0x54));
 }
 
+extern "C" u8 fn_8045A0D8();
+extern "C" const f32 lbl_80543EC0;
+extern "C" u32 lbl_8053A250;
+extern "C" u32 lbl_8053A254;
+extern "C" void fn_80459674(u8* p) {
+    if (p[0x6b]) --p[0x6b];
+    if (p[0x7c]) {
+        if (p[0x7c] && ((JASAudioReseter*)*(void**)(p+0x2c))->checkDone())
+            ((JAUSoundMgr*)*(void**)(p+0x30))->stop();
+    }
+    if (*(void**)(p+0x84)) {
+        *(f32*)(p+0x54)=lbl_80543EB0;
+        if (*(void**)(p+0x80))
+            ((JAISoundParamsMove*)(*(u8**)(p+0x80)+0x48))->moveVolume(*(f32*)(p+0x4c)**(f32*)(p+0x54),lbl_8053A250);
+    } else {
+        if (p[0x69]==1) *(f32*)(p+0x54)=lbl_80543EB0;
+        else if (p[0x8b]==1) {
+            JAISoundID id=-1;
+            if (*(JAISound**)(p+0x80)) id=(*(JAISound**)(p+0x80))->getID();
+            switch ((s32)(u32)id) {
+            case 0x1000001: case 0x1000002: case 0x1000004:
+            case 0x100000d: case 0x1000023: case 0x100002d:
+                *(f32*)(p+0x54)=lbl_80543EB4; break;
+            default: *(f32*)(p+0x54)=lbl_80543EC0; break;
+            }
+        } else *(f32*)(p+0x54)=lbl_80543EB4;
+        if (*(void**)(p+0x80))
+            ((JAISoundParamsMove*)(*(u8**)(p+0x80)+0x48))->moveVolume(*(f32*)(p+0x4c)**(f32*)(p+0x54),lbl_8053A254);
+    }
+    if (p[0x68] && *(s32*)(p+0x64)>=0) {
+        if ((u32)*(s32*)(p+0x64)>=lbl_8053A25C) {
+            if (p[4]==0) {
+                JAISoundID id=*(u32*)(p+0x5c);
+                ((Unk80458880Mgr*)*(void**)(p+0x30))->v3(&id,(Unk80458F04Sound**)(p+0x80),0);
+                fn_8045815C(p,p[0x8b]);
+                switch (*(s32*)(p+0x5c)) {
+                case 0x100001a:
+                    if (*(Unk80458408Obj**)(p+0x80) && *(s32*)(p+0x5c)==0x100001a) {
+                        Unk80458408Obj* bank=(*(Unk80458408Obj**)(p+0x80))->v4();
+                        if (bank) {
+                            BOOL irq=OSDisableInterrupts();
+                            for (s32 i=0;i<16;i++) {
+                                JASTrack* track=bank->v7(i);
+                                if (track) {
+                                    if (i==2 || i==7) track->mute(false);
+                                    else track->mute(true);
+                                }
+                            }
+                            OSRestoreInterrupts(irq);
+                        }
+                    }
+                    break;
+                case 0x100000d: case 0x1000021: case 0x1000024:
+                    *(f32*)(p+0x4c)=lbl_80543EB4; break;
+                }
+                if (*(void**)(p+0x80)) {
+                    ((JAISoundParamsMove*)(*(u8**)(p+0x80)+0x48))->moveVolume(*(f32*)(p+0x4c)**(f32*)(p+0x54),0);
+                    if (p[0x8d]) (*(JAISound**)(p+0x80))->getTrack()->writePort(0,1);
+                }
+            }
+            *(u32*)(p+0x58)=*(u32*)(p+0x5c);
+            *(u32*)(p+0x5c)=0;
+            *(s32*)(p+0x64)=-1;
+        } else ++*(s32*)(p+0x64);
+    }
+    JAUSoundMgr* mgr=*(JAUSoundMgr**)(p+0x30);
+    mgr->calc(); mgr->mixOut();
+    ++*(u32*)p;
+    if (p[0x6c]) --p[0x6c];
+    if (p[0x6a]) { fn_80458880(p,0x48,-1); p[0x6a]=0; }
+    if (p[0x6d] && !p[0x8e] && !fn_8045A0D8()) --p[0x6d];
+    if (p[0x89] && !*(void**)(p+0x80)) p[0x89]=0;
+    if (!*(void**)(p+0x80)) { *(u32*)(p+0x58)=0; *(u32*)(p+0x5c)=0; *(u32*)(p+0x60)=0; }
+    if (p[0x75]) {
+        ++*(u32*)(p+0x78);
+        if (*(u32*)(p+0x78)>45) {
+            JAISoundID id=0x30089;
+            u8* obj=*(u8**)(p+0x28);
+            ((void(*)(void*,JAISoundID*))(*(void***)(obj+8))[5])(obj,&id);
+        }
+    } else *(u32*)(p+0x78)=0;
+    p[0x75]=0;
+}
+
 extern "C" void __ct__18JAU_JASInitializerFv(void*);
 extern "C" void initJASystem__18JAU_JASInitializerFP12JKRSolidHeap(void*, JKRSolidHeap*);
 extern "C" void __ct__18JAU_JAIInitializerFv(void*);
@@ -967,10 +1049,12 @@ extern "C" void fn_8045A080(char* self)
     *(f32*)(self + 0x10) = lbl_80543EB0;
 }
 
+#pragma dont_inline on
 extern "C" u8 fn_8045A0D8()
 {
     return *(u8*)(lbl_8053AAF8 + 0x96);
 }
+#pragma dont_inline reset
 
 extern "C" void fn_8045A0E4(int count)
 {
@@ -1077,5 +1161,72 @@ extern "C" void** fn_8045A338(void** p, short del) {
         }
     }
     return p;
+}
+
+extern "C" const f32 lbl_80543ED0;
+extern "C" int __float_epsilon[];
+extern "C" void fn_8045A3D8(char* p1, JASSoundParams* p2, Unk8045A3D8Src* p3, s32 p4) {
+    s32* idx = (s32*)p3 + p4;
+    char* o = (char*)idx[6];
+    if (o != 0) {
+        JASSoundParams sp;
+        f32 t;
+        if ((p3->m10 >> 2) & 1) {
+            t = *(f32*)(o + 0x20);
+            if (t > *(f32*)(p1 + 0x4)) {
+                sp.mVolume = *(f32*)(p1 + 0xc);
+            } else if (t < *(f32*)(p1 + 0x8)) {
+            } else {
+                f32 v = *(f32*)(p1 + 0x44) * (t - *(f32*)(p1 + 0x8)) + 1.0f;
+                sp.mVolume = v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
+            }
+        }
+        if ((p3->m11 >> 6) & 1) {
+            t = *(f32*)(o + 0x1c);
+            if (t > *(f32*)(p1 + 0x14)) {
+                sp.mDolby = *(f32*)(p1 + 0x18);
+            } else if (t < *(f32*)(p1 + 0x10)) {
+                sp.mDolby = *(f32*)(p1 + 0x20);
+            } else if (t < 0.0f) {
+                sp.mDolby = *(f32*)(p1 + 0x3c) * t + *(f32*)(p1 + 0x1c);
+            } else {
+                sp.mDolby = *(f32*)(p1 + 0x40) * t + *(f32*)(p1 + 0x1c);
+            }
+        } else {
+            sp.mDolby = *(f32*)(p1 + 0x1c);
+        }
+        if ((p3->m11 >> 7) & 1) {
+            if ((p3->m11 & 1) == 0 || (p3->m11 & 2) != 0) {
+                if (*(s32*)(p1 + 0x50) > 2) {
+                    sp.mPan = (p4 & 1) ? 1.0f : 0.0f;
+                } else {
+                    f32 r;
+                    if (*(f32*)(o + 0x20) <= lbl_80543ED0 * *(f32*)__float_epsilon) {
+                        r = 0.0f;
+                    } else {
+                        r = *(f32*)(o + 0x14) / *(f32*)(o + 0x20);
+                    }
+                    sp.mPan = r * *(f32*)(p1 + 0x2c) + 0.5f;
+                }
+                p3->m11 |= 2;
+            } else {
+                sp.mPan = 0.5f;
+                sp.mPitch = 1.0f;
+            }
+        }
+        if ((p3->m10 >> 1) & 1) {
+            t = *(f32*)(o + 0x20);
+            if (t > *(f32*)(p1 + 0x4)) {
+                sp.mFxMix = *(f32*)(p1 + 0x28);
+            } else if (t < *(f32*)(p1 + 0x8)) {
+                sp.mFxMix = *(f32*)(p1 + 0x24);
+            } else {
+                sp.mFxMix = *(f32*)(p1 + 0x4c) * (t - *(f32*)(p1 + 0x8)) + *(f32*)(p1 + 0x24);
+            }
+        } else {
+            sp.mFxMix = 0.0f;
+        }
+        p3->v3(p4)->combine(*p2, sp);
+    }
 }
 
