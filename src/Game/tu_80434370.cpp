@@ -231,7 +231,7 @@ extern "C" int fn_804366B8(Unk80434370* param_1)
 }
 
 extern "C" const float lbl_80543BDC;
-extern "C" float lbl_80543BE0;
+extern "C" const float lbl_80543BE0;
 extern "C" float lbl_80543BF8;
 extern "C" void rotate__7J2DPaneFff13J2DRotateAxisf(void*,f32,f32,u32,f32);
 extern "C" void fn_80402E08(void*,f32,f32);
