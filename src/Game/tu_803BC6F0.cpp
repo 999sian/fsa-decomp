@@ -115,6 +115,7 @@ extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 extern "C" const u8 lbl_804765D0[];
 extern "C" u8 lbl_8050DB0C[];
 extern "C" f32 lbl_8054349C;
+extern "C" void fn_803BC6F0(char* this_, u32 a, f32 t);
 extern "C" f32 lbl_80543478;
 extern "C" f32 lbl_805434A0;
 extern "C" f32 lbl_8054345C;
