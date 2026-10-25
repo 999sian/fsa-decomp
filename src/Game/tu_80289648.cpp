@@ -205,8 +205,8 @@ extern "C" void fn_80289A88(Actor* this_) {
     u8* t = *(u8**)(self + 0x240);
     f32 sh = (f32)*(u16*)(t + 4);
     f32 sw = (f32)*(u16*)(t + 2);
-    f32 b = *(f32*)(self + 0x23c);
     f32 a = *(f32*)(self + 0x238);
+    f32 b = *(f32*)(self + 0x23c);
     JGeometry::TVec3f newC;
     tuGetCenter(self, newC);
     *(f32*)(self + 0x230) = a / sw;
@@ -225,15 +225,14 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053A198;
 extern "C" void fn_80289F6C(Actor* this_) {
     u8* self = (u8*)this_;
-    s32 mode;
-    s32 a;
     u8* t;
+    u32 v;
 
-    if (((*(u32*)(self + 0x90) >> 7) & 0x1f) == 0) {
-        *(u32*)(self + 0x90) |= 0x80;
+    if (((*(volatile u32*)(self + 0x90) >> 7) & 0x1f) == 0) {
+        *(volatile u32*)(self + 0x90) |= 0x80;
     }
-    if (((*(u32*)(self + 0x90) >> 17) & 0x1f) == 0) {
-        *(u32*)(self + 0x90) |= 0x20000;
+    if (((*(volatile u32*)(self + 0x90) >> 17) & 0x1f) == 0) {
+        *(volatile u32*)(self + 0x90) |= 0x20000;
     }
     {
         ObjSlots* o = *(ObjSlots**)((u8*)lbl_8053AAF8 + 0xa4);
@@ -241,28 +240,37 @@ extern "C" void fn_80289F6C(Actor* this_) {
     }
     *(s32*)(self + 0x108) = 0;
 
-    mode = (*(u32*)(self + 0x90) >> 12) & 0x1f;
-    switch (mode) {
+    switch ((s32)((*(u32*)(self + 0x90) >> 12) & 0x1f)) {
+    case 0:
+        break;
     case 1:
         *(f32*)(self + 0xc) += 16.0f;
+        break;
+    case 2:
         break;
     case 3:
         *(f32*)(self + 0x10) += 16.0f;
         break;
     }
 
-    a = (*(u32*)(self + 0x90) >> 7) & 0x1f;
-    if (mode < 2) {
+    v = *(u32*)(self + 0x90);
+    if ((s32)((v >> 12) & 0x1f) < 2) {
         *(f32*)(self + 0x238) = 0.0f;
-        *(f32*)(self + 0x23c) = 16.0f * a;
+        *(f32*)(self + 0x23c) = 16.0f * (s32)((v >> 7) & 0x1f);
     } else {
-        *(f32*)(self + 0x238) = 16.0f * a;
+        *(f32*)(self + 0x238) = 16.0f * (s32)((v >> 7) & 0x1f);
         *(f32*)(self + 0x23c) = 0.0f;
     }
 
     t = *(u8**)(self + 0x240);
-    *(f32*)(self + 0x230) = *(f32*)(self + 0x238) / (f32)*(u16*)(t + 2);
-    *(f32*)(self + 0x234) = *(f32*)(self + 0x23c) / (f32)*(u16*)(t + 4);
+    {
+        f32 w = *(u16*)(t + 2);
+        f32 h = *(u16*)(t + 4);
+        f32 x = *(f32*)(self + 0x238);
+        f32 y = *(f32*)(self + 0x23c);
+        *(f32*)(self + 0x230) = x / w;
+        *(f32*)(self + 0x234) = y / h;
+    }
     *(u8*)(self + 0x244) = 0;
 }
 
