@@ -196,7 +196,6 @@ extern "C" void fn_8030C210(void* a, void* b);
 extern "C" void fn_801D1C18(void* p);
 inline s32 opgaSpawn(u8* this_, u16 kind) {
     f32 b8[4];
-    JGeometry::TVec3f pos;
     b8[0] = *(f32*)(this_ + 0x60);
     b8[1] = *(f32*)(this_ + 0x64);
     b8[2] = *(f32*)(this_ + 0x68);
@@ -209,7 +208,7 @@ inline s32 opgaSpawn(u8* this_, u16 kind) {
     s32 player = fn_8022FD8C(*(s32*)(this_ + 0x198));
     if (player < 0) return -1;
     if (!fn_802300EC()) return -1;
-    pos = *(JGeometry::TVec3f*)(this_ + 0xc);
+    JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
     pos.y -= lbl_8053CA74;
     if (fn_8038AD24(player, kind, *(s32*)(this_ + 0x198), *(s32*)(this_ + 4), pos, 0x28)) return player;
     return -1;
