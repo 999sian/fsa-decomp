@@ -13,8 +13,6 @@ struct SobResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* getRes(u32 type, const char* name);
 };
 
@@ -80,6 +78,39 @@ extern "C" Actor* fn_8022979C(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_802297FC(Actor* this_) {
+    u8* p = (u8*)this_;
+    SobDrawParam prm;
+    prm.reset();
+    switch ((*(u32*)(p + 0x90) >> 2) & 0x3f) {
+    case 0:
+        sobDraw(p, 0, 1);
+        break;
+    case 1:
+        sobDraw(p, 0, 0);
+        break;
+    case 2:
+    case 3:
+        sobDraw(p, 0, 1);
+        break;
+    case 4:
+    case 14:
+        sobDraw(p, 0, 1);
+        break;
+    case 5:
+        prm.m4C = 2;
+        prm.m5D = 1;
+        sobDraw(p, &prm, 1);
+        break;
+    case 6:
+    case 8:
+    case 7:
+    case 9:
+        sobDraw(p, 0, 1);
+        break;
+    }
 }
 
 extern "C" u8 fn_8022F514(u32 idx);
