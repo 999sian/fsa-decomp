@@ -27,6 +27,7 @@ extern f32 lbl_80543A30;
 
 
 extern u8* lbl_8053AAF8;
+extern u8 lbl_8050EC80[];
 extern u8 lbl_80529DEC[];
 extern "C" u32 fn_80237774(s32 i);
 extern "C" u8 fn_8022F514(s32 i);
@@ -931,33 +932,39 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     }
 }
 
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_8041EDB0(u8* self) {
     u64* tags = lbl_8048D320;
-    s32 i;
+    int i;
+    u64* a;
+    u64* b;
+    u64* c;
+    u64* paneTag;
     if (lbl_8053AAF8[0x7e] == 0) {
         fn_8041E3B4(self,0);
         fn_8041E8B4(self,0);
-        if ((lbl_8053AAF8[0x83]&3)==2) {
+        if ((u32)(lbl_8053AAF8[0x83]&3)==2) {
             fn_8041DD24(self);
             fn_8041D18C(self,0);
             fn_8041CC04(self);
         }
         fn_8041A868(self,0);
         if ((*(u8**)(lbl_8053AB10+0x20))[0x14c]) (*(u8**)(lbl_8053AB10+0x20))[0x217]=1;
-        if (*(s32*)(lbl_8053AAF8+0x4c)!=11 && fn_80236B50(0) && fn_80237774(0)==0) {
+        if (*(s32*)(lbl_8053AAF8+0x4c)!=11 && fn_80236B50(0) && (s32)fn_80237774(0)==0) {
             if ((s8)self[0x292]>=2) {
                 if (!lbl_8053AEC8[0x5d]) lbl_8053AEC8[0x5d]=1;
             } else self[0x292]++;
         } else self[0x292]=0;
     } else {
-        u64* paneTag = tags + 0x168;
-        u64* a = tags+0x164;
-        u64* b = paneTag;
-        u64* c = tags+0x16c;
+        paneTag = tags + 0x168;
+        a = tags+0x164;
+        b = paneTag;
+        c = tags+0x16c;
         for (i=0;i<4;i++,a++,b++,c++) {
             fn_8041E3B4(self,i);
             u8 mask = 1<<i;
-            if (lbl_8053AAF8[0x82]&mask) {
+            if (HudPlayerActive8041(i)==1) {
                 fn_8041E8B4(self,i);
                 if ((*(u8**)(lbl_8053AB10+0x20))[0x14c+i]) {
                     if (!(self[0x28c]&mask)) {
@@ -979,8 +986,8 @@ extern "C" void fn_8041EDB0(u8* self) {
         fn_8041B69C(self);
         u8* cursor = self;
         s32 offset = 0;
-        for (i=0;i<4;i++,cursor+=4,paneTag++,offset+=0x10) {
-            if (lbl_8053AAF8[0x82] & (u8)(1<<i)) {
+        for (i=0;i<4;i++,offset+=0x10,cursor+=4,paneTag++) {
+            if (HudPlayerActive8041(i)) {
                 fn_80419C38(self,i,0);
                 u8* state=*(u8**)(lbl_8053AB10+0x20);
                 if (state[0x214] && i==*(s32*)(state+0x230)) state[0x217+i]=1;
@@ -1014,11 +1021,11 @@ extern "C" void fn_8041EDB0(u8* self) {
         }
     }
     if (self[0x291]) {
-        for(i=0;i<4;i++) if (lbl_8053AAF8[0x82]&(u8)(1<<i)) {
+        for(i=0;i<4;i++) if (HudPlayerActive8041(i)) {
             fn_80419570(self,i);
             fn_8041918C(self,i);
         }
-        for(i=0;i<4;i++) if (lbl_8053AAF8[0x82]&(u8)(1<<i)) fn_80418D08(self,i,0);
+        for(i=0;i<4;i++) if (HudPlayerActive8041(i)) fn_80418D08(self,i,0);
     }
     self[0x28a]=0; self[0x28b]=0; self[0x289]=0;
     if (*(void**)(self+0x50)) fn_80441490(*(void**)(self+0x50));
@@ -1027,15 +1034,23 @@ extern "C" void fn_8041EDB0(u8* self) {
         if (!self[0x298]) self[0x298]=1;
     } else if (self[0x298]==1) self[0x298]=0;
     s32 stage=*(s32*)(lbl_80529DEC+0x118);
-    if ((stage==9 && *(s32*)(lbl_80529DEC+0x11c)==3) ||
-       ((stage==0 || stage==1 || stage==2 || stage==4 || stage==5 || stage==10) && *(s32*)(lbl_80529DEC+0x11c)==2)) {
-        if (lbl_8053AAF8[0x82]&(u8)(1<<0)) (*(u8**)(lbl_8053AB10+0x20))[0x217]=1;
-        if (lbl_8053AAF8[0x82]&(u8)(1<<1)) (*(u8**)(lbl_8053AB10+0x20))[0x218]=1;
-        if (lbl_8053AAF8[0x82]&(u8)(1<<2)) (*(u8**)(lbl_8053AB10+0x20))[0x219]=1;
-        if (lbl_8053AAF8[0x82]&(u8)(1<<3)) (*(u8**)(lbl_8053AB10+0x20))[0x21a]=1;
+    if (stage==9 && *(s32*)(lbl_80529DEC+0x11c)==3) {
+        for (s32 player=0;player<4;player++) {
+            if (lbl_8053AAF8[0x82] & (u8)(1<<player)) (*(u8**)(lbl_8053AB10+0x20))[0x217+player]=1;
+        }
+    } else if ((stage==0 && *(s32*)(lbl_80529DEC+0x11c)==2) ||
+        (stage==1 && *(s32*)(lbl_80529DEC+0x11c)==2) ||
+        (stage==2 && *(s32*)(lbl_80529DEC+0x11c)==2) ||
+        (stage==4 && *(s32*)(lbl_80529DEC+0x11c)==2) ||
+        (stage==5 && *(s32*)(lbl_80529DEC+0x11c)==2) ||
+        (stage==10 && *(s32*)(lbl_80529DEC+0x11c)==2)) {
+        for (s32 player=0;player<4;player++) {
+            if (lbl_8053AAF8[0x82] & (u8)(1<<player)) (*(u8**)(lbl_8053AB10+0x20))[0x217+player]=1;
+        }
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_8013B490(void*);
 extern "C" void fn_8044148C(void);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
