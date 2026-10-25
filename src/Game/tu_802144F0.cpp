@@ -345,6 +345,7 @@ extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
     }
 }
 
+#pragma peephole off
 extern "C" void fn_80214E50(u8* this_) {
     if (*(u8**)(this_ + 0) == 0) {
         JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(*(u8**)(this_ + 0x34) + 0xc));
