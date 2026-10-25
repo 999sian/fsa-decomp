@@ -1,5 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" double sin(double x);
 extern "C" double cos(double x);
@@ -39,6 +41,80 @@ extern "C" Actor* fn_8031C050(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" void fn_8031C0B0(Actor* p) {
+    u8* self = (u8*)p;
+    DrawRec rec;
+    Mtx m;
+    s32 state;
+    s32 id;
+    void* res;
+    f32 sx, sy, sz, cx, cy, cz, sc;
+    f32 oldX, oldY, oldZ;
+
+    state = *(s32*)(self + 0x230);
+    if (state == 8 || state == 9) {
+        return;
+    }
+    if (state == 5 || state == 6 || state == 7) {
+        PSMTXIdentity(m);
+        sx = sin(lbl_805419B8);
+        sy = sin(*(f32*)(self + 0x23c));
+        sz = sin(lbl_805419B8);
+        cx = cos(lbl_805419B8);
+        cy = cos(*(f32*)(self + 0x23c));
+        cz = cos(lbl_805419B8);
+        sc = *(f32*)(self + 0x238);
+        rec.w18 = m;
+        m[0][0] = sc * (cy * cz);
+        m[1][0] = sc * (cy * sz);
+        m[2][0] = sc * -sy;
+        m[0][1] = sc * ((sx * sy) * cz - cx * sz);
+        m[1][1] = sc * ((sx * sy) * sz + cx * cz);
+        m[2][1] = sc * (sx * cy);
+        m[0][2] = sc * ((cx * cz) * sy + sx * sz);
+        m[1][2] = sc * ((cx * sz) * sy - sx * cz);
+        m[2][2] = sc * (cx * cy);
+        id = *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)];
+        if (*(s32*)(self + 4) < 8) {
+            res = ((FsaResourceManager*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x534F4220, lbl_804716F0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), self + 0xc, res, id, &rec, lbl_805419BC, lbl_805419BC);
+        }
+        return;
+    }
+    if (state == 2) {
+        return;
+    }
+    rec.b1d = 0;
+    rec.w30 = 0x11;
+    if (*(f32*)(self + 0x14) > lbl_805419B8) {
+        rec.b1c = 1;
+        oldX = *(f32*)(self + 0xc);
+        oldY = *(f32*)(self + 0x10);
+        oldZ = *(f32*)(self + 0x14);
+        *(f32*)(self + 0xc) = *(f32*)(self + 0xc) + *(f32*)(self + 0x294);
+        *(f32*)(self + 0x10) = *(f32*)(self + 0x10) + *(f32*)(self + 0x298);
+        *(f32*)(self + 0x14) = *(f32*)(self + 0x14) + *(f32*)(self + 0x29c);
+        id = *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)];
+        fn_801F06F0(p, lbl_804716F0, id, &rec, 7, lbl_805419BC, lbl_805419BC);
+        fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc, id, 0, 2, -1, 0, 0, 0);
+        *(f32*)(self + 0xc) = oldX;
+        *(f32*)(self + 0x10) = oldY;
+        *(f32*)(self + 0x14) = oldZ;
+        return;
+    }
+    if (*(s32*)(self + 0x264) >= 0 && *(s32*)(self + 0x264) <= 3) {
+        rec.b1d = fn_8023CB24() + 1;
+        rec.b1c = fn_8023CA88(*(s32*)(self + 0x264));
+        rec.b2d = 1;
+        id = *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)];
+        if (*(s32*)(self + 4) < 8) {
+            res = ((FsaResourceManager*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x534F4220, lbl_804716F0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), self + 0xc, res, id, &rec, lbl_805419BC, lbl_805419BC);
+        }
+        fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc, id, 0, 2, -1, 0, 0, 0);
+    }
 }
 
 extern "C" s32 fn_8031DAB0(Actor* p, s32 unused, void* pos) {
