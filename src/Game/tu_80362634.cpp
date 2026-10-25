@@ -311,6 +311,97 @@ extern "C" void fn_80363F7C(char* self) {
     ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
 }
 
+extern "C" u32 fn_802F9908(void* obj, u32 room, u32 flags);
+extern "C" const s32 lbl_80474598[];
+extern "C" const f32 lbl_8050C028[];
+extern "C" f32 lbl_80542B94;
+extern "C" f32 lbl_80542B98;
+extern "C" f32 lbl_80542B9C;
+extern "C" f32 lbl_80542BA0;
+extern "C" f32 lbl_80542BA4;
+extern "C" f32 lbl_80542BA8;
+extern "C" f32 lbl_80542BAC;
+extern "C" f32 lbl_80542BB0;
+extern "C" void fn_80363FFC(char* self) {
+    Vec v;
+    s32 rx;
+    s32 ry;
+
+    if (lbl_80542B0C == *(f32*)(self + 0x3c)) {
+        rx = (s32)*(f32*)(self + 0xc);
+        if (*(f32*)(self + 0x40) < lbl_80542B0C) {
+            ry = (s32)(*(f32*)(self + 0x10) - lbl_80542B94);
+        } else {
+            ry = (s32)(lbl_80542B94 + *(f32*)(self + 0x10));
+        }
+    } else {
+        ry = (s32)*(f32*)(self + 0x10);
+        if (*(f32*)(self + 0x3c) < lbl_80542B0C) {
+            rx = (s32)(*(f32*)(self + 0xc) - lbl_80542B94);
+        } else {
+            rx = (s32)(lbl_80542B94 + *(f32*)(self + 0xc));
+        }
+    }
+
+    if (*(f32*)(self + 0x44) == lbl_80542B0C && *(f32*)(self + 0x14) == lbl_80542B0C) {
+        u32 packed = ((u32)rx & 0x100) | (((u32)ry & 0x100) << 1) | ((u32)ry & 0xf0) | ((u32)rx >> 4 & 0xf);
+        *(u16*)(self + 0x27a) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(u32*)(self + 4), packed) & 0x3ff;
+        if (*(u16*)(self + 0x27a) == 0x1a8) {
+            *(f32*)(self + 0x44) = lbl_80542B98;
+            *(s32*)(self + 0x264) = 0;
+        }
+    } else {
+        if (*(f32*)(self + 0x14) > lbl_80542B0C) {
+            *(f32*)(self + 0x44) = *(f32*)(self + 0x44) - lbl_80542B9C;
+        } else {
+            *(f32*)(self + 0x14) = lbl_80542B0C;
+            *(f32*)(self + 0x44) = lbl_80542B0C;
+        }
+        *(s32*)(self + 0x264) = 0;
+        *(s32*)(self + 0x25c) = 1;
+    }
+
+    v.x = lbl_80542BA0;
+    v.y = lbl_80542BA4;
+    v.z = lbl_80542B0C;
+    if (*(f32*)(self + 0xc) >= lbl_80542BA0) {
+        if (*(f32*)(self + 0x10) < lbl_80542BA4) {
+            f32 dist;
+            s32 ang = (s32)(JMath::atanTable_.atan2_(*(f32*)(self + 0x10) - lbl_80542BA4, *(f32*)(self + 0xc) - lbl_80542BA0) * lbl_80542B50);
+            dist = PSVECDistance((Vec*)(self + 0xc), &v);
+            ang += (s32)(lbl_80542BAC * (lbl_80542BB0 / (lbl_80542BA8 * dist)));
+            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[(u16)ang >> 5].second + v.x;
+            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[(u16)ang >> 5].first + v.y;
+            if ((u16)ang >= 0xe000) {
+                *(s32*)(self + 0x23c) = 0;
+                if (*(s32*)(self + 0x238) == 0) {
+                    *(s32*)(self + 0x26c) = 0x32f;
+                } else {
+                    *(s32*)(self + 0x26c) = 0x33b;
+                }
+                *(s32*)(self + 0x26c) += lbl_80474598[*(s32*)(self + 0x23c)];
+            }
+            *(f32*)(self + 0x44) = lbl_80542B0C;
+            *(f32*)(self + 0x40) = lbl_80542B0C;
+            *(f32*)(self + 0x3c) = lbl_80542B0C;
+        } else {
+            *(f32*)(self + 0x3c) = lbl_8050C028[0];
+            *(f32*)(self + 0x40) = lbl_8050C028[1];
+            *(f32*)(self + 0x44) = lbl_8050C028[2];
+        }
+    }
+    PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
+
+    if (*(s32*)(self + 0x25c) == 0) {
+        *(s32*)(self + 0x268) += 1;
+        if ((s8)(*(u8**)(self + 0x270))[*(s32*)(self + 0x268)] < 0) {
+            *(s32*)(self + 0x268) = 0;
+            *(s32*)(self + 0x25c) = (s8)(*(u8**)(self + 0x270))[*(s32*)(self + 0x268)];
+            *(s32*)(self + 0x264) = (s8)(*(u8**)(self + 0x274))[*(s32*)(self + 0x268)];
+        }
+    }
+}
+
 extern "C" void fn_80364340(char* self) {
     if (*(s32*)(self + 0x248) == 0) {
         JGeometry::TVec3<f32> offs;
@@ -427,41 +518,34 @@ extern "C" void fn_80364900(char* self) {
             *(s32*)(self + 0x264) = 0;
             *(s32*)(self + 0x268) = 0;
             *(s32*)(self + 0x26c) = 0x2b1;
-            *(f32*)(self + 0x44) = lbl_80542BC4;
+            *(f32*)(self + 0x44) = 5.0f;
             *(f32*)(self + 0x3c) = 0.0f;
             return;
         }
-        {
-            f32 zero = lbl_80542B0C;
-            *(s32*)(self + 0x25c) = lbl_80474A98[*(s32*)(self + 0x268)];
-            if (*(f32*)(self + 0x3c) < zero) {
-                *(s32*)(self + 0x264) = lbl_80474AD8[*(s32*)(self + 0x268) + 16];
-            } else {
-                *(s32*)(self + 0x264) = lbl_80474AD8[*(s32*)(self + 0x268)];
-            }
+        *(s32*)(self + 0x25c) = lbl_80474A98[*(s32*)(self + 0x268)];
+        if (*(f32*)(self + 0x3c) < 0.0f) {
+            *(s32*)(self + 0x264) = lbl_80474AD8[*(s32*)(self + 0x268) + 16];
+        } else {
+            *(s32*)(self + 0x264) = lbl_80474AD8[*(s32*)(self + 0x268)];
         }
         return;
     }
-    {
-        f32 zero = lbl_80542B0C;
-        *(f32*)(self + 0x44) -= lbl_80542B8C;
-        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
-        if (!(*(f32*)(self + 0x14) < zero)) {
-            return;
-        }
+    *(f32*)(self + 0x44) -= 0.5f;
+    ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
+    if (*(f32*)(self + 0x14) < 0.0f) {
         *(s32*)(self + 0x238) = 0;
-        *(f32*)(self + 0x14) = zero;
-        *(f32*)(self + 0x44) = zero;
+        *(f32*)(self + 0x14) = 0.0f;
+        *(f32*)(self + 0x44) = 0.0f;
         *(s32*)(self + 0x26c) = 0x38e;
         *(s32*)(self + 0x25c) = 4;
         if (*(s32*)(self + 0x23c) == 3) {
             *(s32*)(self + 0x23c) = 2;
-            *(f32*)(self + 0x3c) = lbl_80542BC8;
+            *(f32*)(self + 0x3c) = -0.8f;
             *(s32*)(self + 0x264) = 5;
             *(s32*)(self + 0x25c) = 4;
         } else {
             *(s32*)(self + 0x23c) = 3;
-            *(f32*)(self + 0x3c) = lbl_80542B54;
+            *(f32*)(self + 0x3c) = 0.8f;
             *(s32*)(self + 0x26c) = 0x38e;
             *(s32*)(self + 0x264) = 0;
         }
