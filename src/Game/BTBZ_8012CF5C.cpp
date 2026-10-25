@@ -35,7 +35,7 @@ struct BTBZ_Box {
 
 struct BTBZ_Vec {
     BTBZ_Vec() {}
-    void set(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
+    void set(const f32 ax, const f32 ay, const f32 az) { x = ax; y = ay; z = az; }
     f32 x, y, z;
 };
 
@@ -81,9 +81,9 @@ extern "C" void fn_8012CF5C(u8* this_) {
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
-        if (((s32 (*)(u8*))((*(void***)this_)[0x3C / 4]))(this_) == 0) {
+        if ((*(s32 (**)(u8*))(*(u8**)this_ + 0x3C))(this_) == 0) {
             BTBZ_setState(this_, 1);
-        } else if (((u8 (*)(u8*))((*(void***)this_)[0x34 / 4]))(this_)) {
+        } else if ((*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_)) {
             BTBZ_setState(this_, 1);
             if (*(u8*)(this_ + 0x231) != 0) {
                 fn_801F0D20(this_, 6);
@@ -91,8 +91,8 @@ extern "C" void fn_8012CF5C(u8* this_) {
         }
         break;
     case 1:
-        if (((s32 (*)(u8*))((*(void***)this_)[0x3C / 4]))(this_) > 0 &&
-            !((u8 (*)(u8*))((*(void***)this_)[0x34 / 4]))(this_)) {
+        if ((*(s32 (**)(u8*))(*(u8**)this_ + 0x3C))(this_) > 0 &&
+            !(*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_)) {
             BTBZ_setState(this_, 0);
         }
         fn_801F0E34(this_, 0x30032, 0);
@@ -136,12 +136,14 @@ extern "C" void fn_8012D6E8(u8* this_) {
     if (*(void**)(this_ + 0x23C) == 0) {
         BTBZ_Vec pos;
         BTBZ_Box b = *(BTBZ_Box*)(fn_802D6A9C() + 0xCC);
-        f32 half = 0.5f;
-        pos.set(half * (b.x0 - b.x1) + b.x1, half * (b.y0 - b.y1) + b.y1, 0.0f);
+        f32 y, x;
+        x = 0.5f * (b.x0 - b.x1) + b.x1;
+        y = 0.5f * (b.y0 - b.y1) + b.y1;
+        pos.set(x, y, 0.0f);
         *(void**)(this_ + 0x23C) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x58, 1, 0, 0, 0, 1, 1.0f);
-        if (*(u8**)(this_ + 0x23C) != 0) {
-            *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) |= 1;
-        }
+    }
+    if (*(u8**)(this_ + 0x23C) != 0) {
+        *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) |= 1;
     }
 }
 
