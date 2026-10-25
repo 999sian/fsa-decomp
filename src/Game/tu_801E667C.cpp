@@ -77,7 +77,9 @@ extern "C" void fn_80458F04(void* mgr, s32 v);
 extern "C" void fn_801D22DC(void* this_, s32 a, s32 b, s32 c);
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_802D9FF4(void* mgr, s32 a, s32 b);
+#pragma opt_strength_reduction off
 #pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_801E67C4(s32* this_, s32 flag)
 {
     s32 j;
@@ -92,17 +94,17 @@ extern "C" void fn_801E67C4(s32* this_, s32 flag)
         count = fn_80138A30(lbl_8053AAF8);
         for (i = 0; i < count; i++) {
             if (fn_8023F264(i) != 0 && fn_8022F514(i) == 0) {
-                *(u8*)((u32)this_ + (i + 0xc)) = 1;
+                ((State_801E667C*)this_)->active[i] = 1;
             }
             for (j = i + 1; j < 4; j++) {
                 if (fn_8023F264(j) != 0 && fn_8022F514(j) != 0 && fn_8022F3DC(j) == i && fn_802349EC(j) == 0) {
-                    *(u8*)((u32)this_ + (j + 0xc)) = 1;
+                    ((State_801E667C*)this_)->active[j] = 1;
                 }
             }
         }
-        for (i = 0; i < 4; i++) {
-            if (*(u8*)((u32)this_ + (i + 0xc)) != 0) {
-                fn_80230498(i, (s32)fn_8023E724(i), 0x3e, 0xff, -0x80, -0x80, 1);
+        for (s32 k = 0; k < 4; k++) {
+            if (((State_801E667C*)this_)->active[k] != 0) {
+                fn_80230498(k, (s32)fn_8023E724(k), 0x3e, 0xff, -0x80, -0x80, 1);
             }
         }
         fn_80458F9C(lbl_8053AF80, 0);
@@ -110,23 +112,25 @@ extern "C" void fn_801E67C4(s32* this_, s32 flag)
         break;
     case 2:
         fn_801D22DC(this_ + 4, 0, 0, 0);
-        for (i = 0; i < 4; i++) {
-            if (*(u8*)((u32)this_ + (i + 0xc)) != 0) {
-                fn_80230FD0(i, 0x10001);
+        for (s32 k = 0; k < 4; k++) {
+            if (((State_801E667C*)this_)->active[k] != 0) {
+                fn_80230FD0(k, 0x10001);
             }
         }
         break;
     case 3:
-        for (i = 0; i < 4; i++) {
-            if (*(u8*)((u32)this_ + (i + 0xc)) != 0) {
-                f32* p = (f32*)fn_8023E724(i);
+        for (s32 k = 0; k < 4; k++) {
+            if (((State_801E667C*)this_)->active[k] != 0) {
+                f32* p = (f32*)fn_8023E724(k);
                 f32 pos[3];
-                pos[0] = p[0] + lbl_8053F5B0;
-                pos[1] = p[1] + lbl_8053F5B4;
+                pos[0] = p[0];
+                pos[1] = p[1];
                 pos[2] = p[2];
-                fn_8013CC50(fn_8023DE58(i), pos, lbl_8053F5B8, 0xcb, 1, 0, 0, 0, 1);
-                fn_8013CC50(fn_8023DE58(i), pos, lbl_8053F5B8, 0xcc, 1, 0, 0, 0, 1);
-                fn_80230FD0(i, 0x2000e);
+                pos[0] += lbl_8053F5B0;
+                pos[1] += lbl_8053F5B4;
+                fn_8013CC50(fn_8023DE58(k), pos, lbl_8053F5B8, 0xcb, 1, 0, 0, 0, 1);
+                fn_8013CC50(fn_8023DE58(k), pos, lbl_8053F5B8, 0xcc, 1, 0, 0, 0, 1);
+                fn_80230FD0(k, 0x2000e);
             }
         }
         break;
@@ -141,7 +145,9 @@ extern "C" void fn_801E67C4(s32* this_, s32 flag)
     this_[1] = 0;
     this_[0] = flag;
 }
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_801E6A84(s32* this_, s32 val) {
     if (this_[0] == 0) {
         this_[2] = val;
