@@ -1867,6 +1867,8 @@ extern "C" void fn_8042B1DC() {
     *(u32*)(lbl_8053AE74 + 0x6b8) += (uVar1 >> 4) * 0x40;
 }
 
+
+
 extern "C" void fn_8042BD84(u8* info, s16* block) {
     s32 t;
     s16 dc;
@@ -2098,6 +2100,117 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
     }
 }
 
+extern "C" void fn_8042C39C(u8* info, s16* block) {
+    s32 t;
+    s32 k;
+    s32 cnt;
+    u32 cw;
+    u32 code;
+    s32 idx;
+    s32 sym;
+    s32 size;
+    s32 run;
+    s16 dc;
+    s16 diff;
+    u8* tbl = (u8*)lbl_8053AE2C;
+
+    __dcbz(block, 0);
+    t = fn_8042BF54(info, lbl_8053AE20);
+    __dcbz(block, 32);
+    diff = 0;
+    __dcbz(block, 64);
+
+    if (t) {
+        s32 cnt2 = *(s32*)(info + 0x6a4);
+        s32 tmp = 33 - cnt2;
+        u32 cw2 = *(u32*)(info + 0x6a0);
+        s32 v = t - tmp;
+        u32 c;
+        if (v <= 0) {
+            *(s32*)(info + 0x6a4) = cnt2 + t;
+            c = (cw2 << (cnt2 - 1)) >> (32 - t);
+        } else {
+            u32* p;
+            c = cw2 << (cnt2 - 1);
+            p = *(u32**)(info + 0x69c);
+            cw2 = *++p;
+            *(u32*)(info + 0x6a0) = cw2;
+            c += cw2 >> tmp;
+            *(u32**)(info + 0x69c) = p;
+            *(s32*)(info + 0x6a4) = v + 1;
+            c >>= 32 - t;
+        }
+        diff = c;
+        if (__cntlzw(diff) > 32 - t) {
+            diff = c + (-1 << t) + 1;
+        }
+    }
+
+    __dcbz(block, 96);
+    dc = *(s16*)(info + 0x684) + diff;
+    *(s16*)(info + 0x684) = dc;
+    block[0] = dc;
+
+    k = 1;
+    cnt = *(s32*)(info + 0x6a4);
+    cw = *(u32*)(info + 0x6a0);
+    while (k < 64) {
+        idx = (s32)((cw << (cnt + 4)) | (cw >> (32 - (cnt + 4)))) & 0x1f;
+        if (cnt < 0x1d && tbl[idx] != 0xff) {
+            sym = tbl[idx];
+            cnt += tbl[idx + 0x20];
+        } else {
+            s32 l = 5;
+            do {
+                l++;
+                code = (cw << (cnt + 4)) | (cw >> (32 - (cnt + 4)));
+            } while (l < 0x21 && (s32)code > *(s32*)(tbl + 0x58 + l * 4));
+            sym = tbl[(s32)(code + *(s32*)(tbl + 0x8c + l * 4)) + *(s32*)(tbl + 0x40)];
+            cnt += l;
+        }
+        size = sym & 15;
+        run = sym >> 4;
+        if (size) {
+            k += run;
+            t = size;
+            {
+                s32 cnt2 = cnt;
+                s32 tmp = 33 - cnt2;
+                s32 v = t - tmp;
+                u32 c;
+                if (v <= 0) {
+                    *(s32*)(info + 0x6a4) = cnt2 + t;
+                    c = (cw << (cnt2 - 1)) >> (32 - t);
+                } else {
+                    u32* p;
+                    c = cw << (cnt2 - 1);
+                    p = *(u32**)(info + 0x69c);
+                    cw = *++p;
+                    *(u32*)(info + 0x6a0) = cw;
+                    c += cw >> tmp;
+                    *(u32**)(info + 0x69c) = p;
+                    *(s32*)(info + 0x6a4) = v + 1;
+                    c >>= 32 - t;
+                }
+                if (__cntlzw(c) > 32 - t) {
+                    c += (-1 << t) + 1;
+                }
+                block[lbl_8048F270[k]] = c;
+            }
+            cnt = *(s32*)(info + 0x6a4);
+            cw = *(u32*)(info + 0x6a0);
+        } else {
+            if (run != 15) {
+                break;
+            }
+            k += 15;
+        }
+        k++;
+    }
+    *(s32*)(info + 0x6a4) = cnt;
+    *(u32*)(info + 0x6a0) = cw;
+}
+
 extern "C" void fn_8042C9F8() {
     u8 i;
     s32 off;
@@ -2180,7 +2293,6 @@ extern "C" void fn_8042CD64() {
     u8* ptr;
     u32 low;
     s32 i, off, k, j;
-    u32 idx;
 
     x = *(u32*)(lbl_8053AE74 + 0x6a4);
     ptr = *(u8**)(lbl_8053AE74 + 0x69c);
@@ -2197,12 +2309,12 @@ extern "C" void fn_8042CD64() {
     off = 0;
     for (i = 0; i < 4; i++) {
         if (lbl_8053AE74[0x6a8] & (1 << i)) {
-            for (idx = 0; idx < 32; idx++) {
-                lbl_8053AE74[0x300 + off + idx] = 0xff;
+            for (k = 0; k < 16; k++) {
+                lbl_8053AE74[0x300 + off + k] = 0xff;
                 for (j = 0; j < 5; j++) {
-                    if ((s32)(idx >> (4 - j)) <= *(s32*)(lbl_8053AE74 + off + j * 4 + 0x348)) {
-                        lbl_8053AE74[0x300 + off + idx] = *(u8*)(*(s32*)(lbl_8053AE74 + off + j * 4 + 0x390) + *(s32*)(lbl_8053AE74 + off + 0x340) + (idx >> (4 - j)));
-                        lbl_8053AE74[0x320 + off + idx] = j + 1;
+                    if ((s32)((u32)k >> (4 - j)) <= *(s32*)(lbl_8053AE74 + off + j * 4 + 0x348)) {
+                        lbl_8053AE74[0x300 + off + k] = *(u8*)(*(s32*)(lbl_8053AE74 + off + j * 4 + 0x390) + *(s32*)(lbl_8053AE74 + off + 0x340) + (k >> (4 - j)));
+                        lbl_8053AE74[0x320 + off + k] = j + 1;
                         break;
                     }
                 }
@@ -2477,7 +2589,6 @@ extern "C" void fn_8042DA10() {
 }
 
 extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
-    u8* ctx;
     u8* pcVar2;
     u8* pbVar3;
     u8 bVar1;
@@ -2500,17 +2611,16 @@ extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
                         *(u8**)(lbl_8053AE74 + 0x69c) = data;
                         bVar4 = 0;
                         do {
-                            ctx = lbl_8053AE74;
-                            pcVar2 = *(u8**)(ctx + 0x69c);
-                            *(u8**)(ctx + 0x69c) = pcVar2 + 1;
+                            pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
+                            *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + 1;
                             if (*pcVar2 != 0xff) {
                                 return 3;
                             }
-                            while (**(u8**)(ctx + 0x69c) == 0xff) {
-                                *(u8**)(ctx + 0x69c) = *(u8**)(ctx + 0x69c) + 1;
+                            while (**(u8**)(lbl_8053AE74 + 0x69c) == 0xff) {
+                                *(u8**)(lbl_8053AE74 + 0x69c) = *(u8**)(lbl_8053AE74 + 0x69c) + 1;
                             }
-                            pbVar3 = *(u8**)(ctx + 0x69c);
-                            *(u8**)(ctx + 0x69c) = pbVar3 + 1;
+                            pbVar3 = *(u8**)(lbl_8053AE74 + 0x69c);
+                            *(u8**)(lbl_8053AE74 + 0x69c) = pbVar3 + 1;
                             bVar1 = *pbVar3;
                             if (bVar1 <= 0xd7) {
                                 if (bVar1 == 0xc4) {
@@ -2541,9 +2651,8 @@ extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
                                     return 0xb;
                                 }
                             } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
-                                ctx = lbl_8053AE74;
-                                pcVar2 = *(u8**)(ctx + 0x69c);
-                                *(u8**)(ctx + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
+                                pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
+                                *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
                             } else {
                                 return 0xb;
                             }
