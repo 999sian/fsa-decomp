@@ -70,14 +70,14 @@ static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
 }
 
 static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
-    u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
+    int n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
     u8 best = 0;
     f32 bestD = lbl_8053F080;
     for (int i = 0; i < n; i++) {
         if (fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), ids[i])) {
             Vec3f p;
             p.set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]));
-            if (tu801D3320_isFreeT(&p, this_)) {
+            if (tu801D3320_isFree(&p, *(s32*)(this_ + 0x4))) {
                 f32 dx = p.x - *(f32*)(this_ + 0xc);
                 f32 dy = p.y - *(f32*)(this_ + 0x10);
                 f32 dx2 = dx * dx;
@@ -212,7 +212,7 @@ extern "C" void fn_801D3320(char* this_) {
     u8 ids2[0x30];
     if (*(u32*)(this_ + 0x230) & 0x2000000) {
         u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
-        u8 best = tu801D3320_farthest3(this_, ids, n);
+        u8 best = tu801D3320_farthest4(this_, ids, n);
         tu801D3320_setCurI(this_, best);
         ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
         return;
@@ -221,7 +221,7 @@ extern "C" void fn_801D3320(char* this_) {
     u8 count = tu801D3320_collect2(this_, ids2, free);
     int cnt = count;
     int sel = free[fn_801CD664(cnt)];
-    tu801D3320_setCur(this_, sel);
+    tu801D3320_setCurI(this_, sel);
     ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
     if (count == 1) {
         return;
