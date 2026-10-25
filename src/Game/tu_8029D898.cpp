@@ -1,6 +1,13 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
 
+static inline JGeometry::TVec2<f32> makeWavePosition(f32 x, f32 y) {
+    JGeometry::TVec2<f32> p;
+    p.y = y;
+    p.x = x;
+    return p;
+}
+
 class WaveController {
 public:
     WaveController(s32 a, s32 b, s32 c);
