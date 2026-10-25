@@ -47,6 +47,10 @@ extern "C" void fn_8010E2D4(void*, s32);
 extern "C" void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle);
 extern "C" void* fn_8011921C(void);
 extern "C" void* fn_8011871C(void* list, void* it, u32 tag);
+static inline void* DMZLFindTag(u32 tag) {
+    void* first = *(void**)((u8*)fn_8011921C() + 0x10);
+    return fn_8011871C(fn_8011921C(), first, tag);
+}
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void __dl__FPv(void*);
@@ -539,32 +543,27 @@ extern "C" void fn_80111D44(u8* this_) {
     u8** it;
     u8* elem;
     s32 idx;
-    Vec tmp;
 
     list = (u8*)fn_8011921C();
     it = (u8**)fn_8011871C(list, *(void**)(list + 0x10), 0x444d474c);
     if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
-        elem = *it;
-        tmp = *(Vec*)(elem + 0xc);
-        *(Vec*)(this_ + 0x27c) = tmp;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x27c) = *(JGeometry::TVec3<f32>*)(*it + 0xc);
     }
 
-    list = (u8*)fn_8011921C();
-    it = (u8**)fn_8011871C(fn_8011921C(), *(void**)(list + 0x10), 0x444d4d44);
+    void* first = *(void**)((u8*)fn_8011921C() + 0x10);
+    it = (u8**)fn_8011871C(fn_8011921C(), first, 0x444d4d44);
     if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
         do {
             elem = *it;
             idx = *(s32*)(elem + 0x234);
             if (idx < 6) {
-                tmp = *(Vec*)(elem + 0xc);
-                *(Vec*)(this_ + 0x288 + idx * 12) = tmp;
+                *(JGeometry::TVec3<f32>*)(this_ + 0x288 + idx * 12) = *(JGeometry::TVec3<f32>*)(elem + 0xc);
             }
             it++;
         } while (it != *(u8***)((u8*)fn_8011921C() + 0x14));
     }
 
-    tmp = *(Vec*)(this_ + 0xc);
-    *(Vec*)(this_ + 0x2d0) = tmp;
+    *(JGeometry::TVec3<f32>*)(this_ + 0x2d0) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
 }
 
 extern "C" void fn_8010DF98(void*);
