@@ -360,7 +360,7 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
     char* base = lbl_8045E878;
 
     if (lbl_8053A914 != nullptr) {
-        if (error < 0x11) {
+        if (0x11 > error) {
             lbl_8053A914->print_f(base + 0x1c4, lbl_804993D0[error]);
         } else {
             lbl_8053A914->print_f(base + 0x1e4);
@@ -838,11 +838,15 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
     {
         pad_enabled = true;
     }
+    else if (this_->mGamePad)
+    {
+        pad_enabled = true;
+    }
     else
     {
-        pad_enabled = this_->mGamePad != nullptr;
+        pad_enabled = false;
     }
-    bool is_pad_enabled = !pad_enabled;
+    bool is_pad_enabled = pad_enabled ? false : true;
     if (!lbl_8053A900->mDirectPrint->isActive())
     {
         return;
@@ -859,17 +863,17 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
 
     if (param_1 < OS_ERROR_MAX)
     {
-        lbl_8053A914->print_f(base + 0x488, this_->mFrameMemory);
+        lbl_8053A914->print_f(base + 0x488, this_->getFrameMemory());
     }
     else
     {
-        lbl_8053A914->print_f(base + 0x4c0, this_->mFrameMemory);
+        lbl_8053A914->print_f(base + 0x4c0, this_->getFrameMemory());
     }
 
     int post_callback_executed = false;
     while (true)
     {
-        fn_8008AD78((u32)this_, param_1, param_2, param_3, param_4);
+        ((void (*)(JUTException*, u16, OSContext*, u32, u32))fn_8008AD78)(this_, param_1, param_2, param_3, param_4);
         JUTConsoleManager::sManager->drawDirect(true);
         fn_8008C308(this_->mPrintWaitTime0);
 
@@ -920,7 +924,7 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
             break;
         }
 
-        lbl_8053A914->mOutput &= 1;
+        lbl_8053A914->setOutput(lbl_8053A914->getOutput() & 1);
     }
 
     if (!is_pad_enabled)
@@ -939,13 +943,13 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
             bool draw = false;
             if (trigger == 0x100)
             {
-                lbl_8053A914->scroll(lbl_8053A914->mMaxLines);
+                lbl_8053A914->scrollToLastLine();
                 draw = true;
             }
 
             if (trigger == 0x200)
             {
-                lbl_8053A914->scroll(-lbl_8053A914->mMaxLines);
+                lbl_8053A914->scrollToFirstLine();
                 draw = true;
             }
 
@@ -989,7 +993,7 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
 
     while (true)
     {
-        lbl_8053A914->scroll(-lbl_8053A914->mMaxLines);
+        lbl_8053A914->scrollToFirstLine();
         JUTConsoleManager::sManager->drawDirect(true);
         fn_8008C308(2000);
 
@@ -997,24 +1001,22 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
         int used_line;
         u32 height;
     next:
-        for (u32 i = lbl_8053A914->mHeight; i > 0; i--)
+        for (u32 i = lbl_8053A914->getHeight(); i > 0; i--)
         {
             lbl_8053A914->scroll(1);
             JUTConsoleManager::sManager->drawDirect(true);
 
-            height = lbl_8053A914->mHeight;
+            height = lbl_8053A914->getHeight();
             JUTConsole* console = lbl_8053A914;
             line_offset = console->getLineOffset();
             used_line = console->getUsedLine();
             if ((used_line - height) + 1U <= line_offset)
-            {
                 break;
-            }
             fn_8008C308(0x14);
         }
 
         fn_8008C308(3000);
-        height = lbl_8053A914->mHeight;
+        height = lbl_8053A914->getHeight();
         JUTConsole* console = lbl_8053A914;
         line_offset = console->getLineOffset();
         used_line = console->getUsedLine();
