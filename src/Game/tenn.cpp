@@ -109,6 +109,7 @@ extern "C" void fn_8022AF2C(void);
 extern "C" void fn_80138B7C(void* game);
 extern "C" void fn_80458508(void* snd, s32 a);
 extern char* lbl_8053AAF8;
+extern void* lbl_8053AB10;
 extern void* lbl_8053AF80;
 
 struct Handles_tenn { u8 pad[0x344]; void* h[4]; };
@@ -136,6 +137,142 @@ extern "C" void* fn_801A2F90(char* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_801A3068(char* this_) {
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(s32*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x258) = 0;
+    *(s32*)(this_ + 0x25c) = 0;
+    *(s32*)(this_ + 0x260) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x2c8) = 0;
+    *(s32*)(this_ + 0x2cc) = 0;
+    *(s32*)(this_ + 0x2d0) = 0;
+    *(s32*)(this_ + 0x2d4) = 0;
+    *(s32*)(this_ + 0x2d8) = 0;
+    *(s32*)(this_ + 0x2dc) = 0;
+    *(s32*)(this_ + 0x2e0) = 0;
+    *(s32*)(this_ + 0x2e4) = 0;
+    *(s32*)(this_ + 0x2e8) = 0;
+    *(s32*)(this_ + 0x2ec) = 0;
+    *(s32*)(this_ + 0x2f0) = 0;
+    *(s32*)(this_ + 0x2f4) = 0;
+    *(s32*)(this_ + 0x2f8) = 0;
+    *(s32*)(this_ + 0x2fc) = 0;
+    *(s32*)(this_ + 0x300) = 0;
+    *(s32*)(this_ + 0x304) = 0;
+    *(s32*)(this_ + 0x308) = 0;
+    *(s32*)(this_ + 0x30c) = 0;
+    *(s32*)(this_ + 0x310) = 0;
+    *(s32*)(this_ + 0x314) = 0;
+    *(s32*)(this_ + 0x28c) = 0;
+    *(s32*)(this_ + 0x27c) = -1;
+    *(s32*)(this_ + 0x29c) = 0;
+    *(s32*)(this_ + 0x2ac) = 0;
+    *(u8*)(this_ + 0x2bc) = 0;
+    *(s32*)(this_ + 0x344) = 0;
+    *(s32*)(this_ + 0x290) = 0;
+    *(s32*)(this_ + 0x280) = -1;
+    *(s32*)(this_ + 0x2a0) = 0;
+    *(s32*)(this_ + 0x2b0) = 0;
+    *(u8*)(this_ + 0x2bd) = 0;
+    *(s32*)(this_ + 0x348) = 0;
+    *(s32*)(this_ + 0x294) = 0;
+    *(s32*)(this_ + 0x284) = -1;
+    *(s32*)(this_ + 0x2a4) = 0;
+    *(s32*)(this_ + 0x2b4) = 0;
+    *(u8*)(this_ + 0x2be) = 0;
+    *(s32*)(this_ + 0x34c) = 0;
+    *(s32*)(this_ + 0x298) = 0;
+    *(s32*)(this_ + 0x288) = -1;
+    *(s32*)(this_ + 0x2a8) = 0;
+    *(s32*)(this_ + 0x2b8) = 0;
+    *(u8*)(this_ + 0x2bf) = 0;
+    *(s32*)(this_ + 0x350) = 0;
+    *(s32*)(this_ + 0x31c) = 0;
+    *(s32*)(this_ + 0x2c4) = -1;
+    *(s32*)(this_ + 0x318) = 0;
+    *(s32*)(this_ + 0x264) = 0;
+    *(s32*)(this_ + 0x268) = 0;
+    *(f32*)(this_ + 0x33c) = lbl_8053E4F0;
+    *(f32*)(this_ + 0x324) = lbl_8053E4FC;
+    *(f32*)(this_ + 0x328) = lbl_8053E4FC;
+    *(f32*)(this_ + 0x32c) = lbl_8053E4FC;
+    *(f32*)(this_ + 0x330) = lbl_8053E4FC;
+    *(f32*)(this_ + 0x334) = lbl_8053E4FC;
+    *(f32*)(this_ + 0x338) = lbl_8053E4FC;
+    *(f32*)(this_ + 0x340) = lbl_8053E594;
+    *(s32*)(this_ + 0x278) = -1;
+    *(s32*)(this_ + 0x2c0) = 0;
+    *(s32*)(this_ + 0x320) = -1;
+    *(s32*)(this_ + 0x26c) = 0;
+    *(u8*)(this_ + 0x270) = 0;
+    *(s32*)(this_ + 0x274) = *(s32*)(this_ + 0x90) & 0xf;
+
+    switch (*(s32*)(this_ + 0x274)) {
+    case 0:
+        if (*(s32*)(this_ + 0x238) == 0) {
+            *(s32*)(this_ + 0x264) = lbl_804A2B90[*(s32*)(this_ + 0x248) + *(s32*)(this_ + 0x98) * 4];
+            if ((*(s32*)(this_ + 0x248) & 1) == 0) {
+                *(s32*)(this_ + 0x238) = 12;
+            } else {
+                *(s32*)(this_ + 0x238) = 10;
+            }
+            *(s32*)(this_ + 0x248) = *(s32*)(this_ + 0x248) + 1;
+            *(s32*)(this_ + 0x248) = *(s32*)(this_ + 0x248) & 3;
+        }
+        *(s32*)(this_ + 0xb0) = 0xa040004;
+        *(f32*)(this_ + 0x60) = lbl_8053E598;
+        *(f32*)(this_ + 0x64) = lbl_8053E59C;
+        *(f32*)(this_ + 0x68) = lbl_8053E5A0;
+        *(f32*)(this_ + 0x6c) = lbl_8053E5A4;
+        *(f32*)(this_ + 0x70) = lbl_8053E5A8;
+        *(f32*)(this_ + 0x74) = lbl_8053E554;
+        *(f32*)(this_ + 0x78) = lbl_8053E5AC;
+        *(f32*)(this_ + 0x7c) = lbl_8053E53C;
+        *(s32*)(this_ + 0x98) = 2;
+        lbl_8053ABC0 = 0;
+        lbl_8053ABC5 = 0;
+        lbl_8053ABC4 = 0;
+        lbl_8053A0F8 = lbl_8053E4F8;
+        u8 cVar4 = (*(u8 (**)(char*))(*(s32*)this_ + 0x34))(this_);
+        if (cVar4 != 0) {
+            *(s32*)(this_ + 0x230) = 0xb;
+        } else {
+            *(s32*)(this_ + 0x230) = 0;
+        }
+        break;
+    case 1:
+        *(s32*)(this_ + 0x108) = 10000;
+        *(f32*)(this_ + 0x60) = lbl_8053E554;
+        *(f32*)(this_ + 0x64) = lbl_8053E554;
+        *(f32*)(this_ + 0x68) = lbl_8053E53C;
+        *(f32*)(this_ + 0x6c) = lbl_8053E53C;
+        *(f32*)(this_ + 0x80) = lbl_8053E504;
+        *(f32*)(this_ + 0x84) = lbl_8053E504;
+        *(f32*)(this_ + 0x88) = lbl_8053E4F8;
+        *(f32*)(this_ + 0x8c) = lbl_8053E4F8;
+        *(s32*)(this_ + 0x230) = 0xe;
+        break;
+    case 2:
+        *(s32*)(this_ + 0x108) = 10000;
+        *(f32*)(this_ + 0x60) = lbl_8053E554;
+        *(f32*)(this_ + 0x64) = lbl_8053E554;
+        *(f32*)(this_ + 0x68) = lbl_8053E53C;
+        *(f32*)(this_ + 0x6c) = lbl_8053E53C;
+        *(f32*)(this_ + 0x80) = lbl_8053E504;
+        *(f32*)(this_ + 0x84) = lbl_8053E504;
+        *(f32*)(this_ + 0x88) = lbl_8053E4F8;
+        *(f32*)(this_ + 0x8c) = lbl_8053E4F8;
+        *(s32*)(this_ + 0x230) = 0x12;
+        break;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
