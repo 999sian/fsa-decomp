@@ -51,25 +51,97 @@ extern "C" Actor* fn_8032500C(Actor* p, s16 n) {
 
 extern "C" void fn_8032506C(Actor* a) {
     u8* p = (u8*)a;
-    TVec3fAdd* pos = (TVec3fAdd*)&a->field_0C;
-    TVec3fAdd* vel = (TVec3fAdd*)&a->field_3C;
     f32 out[3];
-    u8 r;
-
-    if (((u8*)fn_802D6A9C())[a->field_04 + 0x131df] == 0) {
-        *pos += *vel;
-        r = fn_801F2618(a, out, 0);
-        if (r != 1) {
-            return;
-        }
-        if (out[0] != 0.0f) {
+    JGeometry::TVec3f stepX;
+    JGeometry::TVec3f stepY;
+    JGeometry::TVec3f stepVertical;
+    JGeometry::TVec3f stepHorizontal;
+    s32 room = a->field_04;
+    u8* flags = (u8*)fn_802D6A9C() + 0x10000;
+    if (flags[room + 0x31df] == 0) {
+        *(JGeometry::TVec3f*)&a->field_0C += *(JGeometry::TVec3f*)&a->field_3C;
+        if (fn_801F2618(a, out, 0) != 1) return;
+        if (0.0f != out[0]) {
             if (p[0x275] != 0) {
-                a->field_3C.x = a->field_3C.x * 0.5;
+                a->field_3C.x *= lbl_80541BD8;
                 a->field_3C.y = -a->field_3C.x;
                 p[0x275] = 0;
             } else {
                 a->field_3C.x = -a->field_3C.x;
             }
+        } else {
+            if (p[0x275] != 0) {
+                a->field_3C.y *= lbl_80541BD8;
+                a->field_3C.x = a->field_3C.y;
+                p[0x275] = 0;
+            } else {
+                a->field_3C.y = -a->field_3C.y;
+            }
+        }
+        return;
+    }
+    if (p[0x276] == 1) {
+        if (*(s32*)(p + 0x260) != 1) return;
+        stepX.set(a->field_3C.x, 0.0f, 0.0f);
+        *(JGeometry::TVec3f*)&a->field_0C += stepX;
+        if (fn_801F2618(a, 0, 0)) {
+            turtleReflect(a);
+            a->field_3C.y = 0.0f;
+            p[0x276] = 0;
+        }
+        if (p[0x276] == 1) {
+            a->field_3C.y += *(f32*)(p + 0x234);
+            stepY.set(0.0f, a->field_3C.y, 0.0f);
+            *(JGeometry::TVec3f*)&a->field_0C += stepY;
+            if (fn_801F2618(a, 0, 0)) {
+                a->field_3C.y = 0.0f;
+                p[0x277] = 0;
+                return;
+            }
+            if (*(s32*)(p + 0x24c) <= 0 && p[0x277] == 0) {
+                if (a->field_3C.x < 0.0f) {
+                    if (*(f32*)(p + 0x234) > 0.0f) a->field_3C.x = -a->field_3C.x;
+                    a->field_3C.y = lbl_80541BE0;
+                    if (*(s32*)(p + 0x270) == 1) *(f32*)(p + 0x234) = lbl_80541BE4;
+                    else *(f32*)(p + 0x234) = lbl_80541BE8;
+                } else {
+                    if (*(f32*)(p + 0x234) < 0.0f) a->field_3C.x = -a->field_3C.x;
+                    a->field_3C.y = 0.0f;
+                    if (*(s32*)(p + 0x270) == 1) *(f32*)(p + 0x234) = lbl_80541BEC;
+                    else *(f32*)(p + 0x234) = lbl_80541BF0;
+                }
+                p[0x276] = 0;
+            }
+        }
+    } else {
+        if (*(s32*)(p + 0x260) != 1) return;
+        stepVertical.set(0.0f, a->field_3C.x, 0.0f);
+        *(JGeometry::TVec3f*)&a->field_0C += stepVertical;
+        if (fn_801F2618(a, 0, 0)) {
+            turtleReflect(a);
+            a->field_3C.y = 0.0f;
+            p[0x276] = 1;
+        }
+        if (p[0x276] == 0) {
+            a->field_3C.y += *(f32*)(p + 0x234);
+            stepHorizontal.set(a->field_3C.y, 0.0f, 0.0f);
+            *(JGeometry::TVec3f*)&a->field_0C += stepHorizontal;
+            if (fn_801F2618(a, 0, 0)) {
+                a->field_3C.y = 0.0f;
+                return;
+            }
+            if (a->field_3C.x < 0.0f) {
+                if (*(f32*)(p + 0x234) > 0.0f) a->field_3C.x = -a->field_3C.x;
+                a->field_3C.y = 0.0f;
+                if (*(s32*)(p + 0x270) == 1) *(f32*)(p + 0x234) = lbl_80541BE4;
+                else *(f32*)(p + 0x234) = lbl_80541BE8;
+            } else {
+                if (*(f32*)(p + 0x234) < 0.0f) a->field_3C.x = -a->field_3C.x;
+                a->field_3C.y = 0.0f;
+                if (*(s32*)(p + 0x270) == 1) *(f32*)(p + 0x234) = lbl_80541BEC;
+                else *(f32*)(p + 0x234) = lbl_80541BF0;
+            }
+            p[0x276] = 1;
         }
     }
 }
