@@ -22,7 +22,6 @@ struct Tu80333958ResMgr {
 
 struct Tu80333E8CSelf {
     virtual ~Tu80333E8CSelf();
-    virtual void v2();
     virtual void v3();
     virtual void v4();
     virtual void v5();
