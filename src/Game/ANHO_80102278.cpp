@@ -44,7 +44,7 @@ extern "C" void fn_801022D8(char* p) {
 extern const f32 lbl_8053C1B8;
 extern const f32 lbl_8053C1BC;
 extern const f32 lbl_8053C1C0;
-extern const u8 lbl_80539EB8[];
+extern const u8 lbl_80539EB8[2];
 extern char* lbl_8053AB10;
 extern char* lbl_8053AF80;
 extern "C" void fn_80239914(void*,int,int);
@@ -112,7 +112,8 @@ extern "C" void fn_80102398(char* p) {
                 f32 dist;
                 fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
                 if (dist < lbl_8053C1BC) {
-                    u32 angle = (u16)(lbl_8053C1C0 * JMath::atanTable_.atan2_(-dir.x, -dir.y));
+                    f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                    u32 angle = (u16)(radians * lbl_8053C1C0);
                     if (angle < 0x2000 || angle >= 0xE000) ((u8*)p)[0x235] = 3;
                     else if (angle >= 0x2000 && angle < 0x6000) ((u8*)p)[0x235] = 1;
                     else if (angle >= 0x6000 && angle <= 0xA000) ((u8*)p)[0x235] = 2;
@@ -141,14 +142,16 @@ extern "C" void fn_80102398(char* p) {
                 } else {
                     fn_8038470C(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32F : 0x32F);
                     *(s32*)(p + 0x230) = 3; *(s32*)(p + 0x244) = 0;
-                    for (int i=0;i<4;i++) {
-                        ((s32*)(p+0x254))[i] = fn_802373EC(i);
-                        ((s32*)(p+0x264))[i] = fn_8023725C(i);
+                    char* q=p;
+                    for (int i=0;i<4;i++,q+=4) {
+                        *(s32*)(q+0x254) = fn_802373EC(i);
+                        *(s32*)(q+0x264) = fn_8023725C(i);
                         fn_802372F8(i,9,2);
                     }
-                    for (int i=0;i<4;i++) {
+                    q=p;
+                    for (int i=0;i<4;i++,q+=4) {
                         if (!fn_8022F514(i)) fn_8023619C(i,-100);
-                        ((s32*)(p+0x274))[i] = fn_80236100(i);
+                        *(s32*)(q+0x274) = fn_80236100(i);
                     }
                 }
                 break;
@@ -225,16 +228,18 @@ extern "C" void fn_80102398(char* p) {
             *(s32*)(p + 0x230)=7; *(s32*)(p + 0x244)=0; fn_80230534(0);
             int diffs[4];
             int best=-10000;
-            for (int i=0;i<4;i++) {
+            char* q=p;
+            for (int i=0;i<4;i++,q+=4) {
                 diffs[i]=0;
                 if (!fn_8022F514(i)) {
-                    diffs[i]=fn_80236100(i)-((s32*)(p+0x274))[i];
+                    diffs[i]=fn_80236100(i)-*(s32*)(q+0x274);
                     if (diffs[i]>best) best=diffs[i];
                 }
             }
-            for (int i=0;i<4;i++) {
+            q=p;
+            for (int i=0;i<4;i++,q+=4) {
                 if (!fn_8022F514(i) && best != diffs[i])
-                    fn_802372F8(i, ((s32*)(p+0x254))[i], ((s32*)(p+0x264))[i]);
+                    fn_802372F8(i, *(s32*)(q+0x254), *(s32*)(q+0x264));
             }
             fn_80458FF0(lbl_8053AF80,*(s32*)(p+0x248),1,0);
         }
@@ -249,7 +254,8 @@ extern "C" void fn_80102398(char* p) {
                 f32 dist;
                 fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
                 if (dist < lbl_8053C1BC) {
-                    u32 angle = (u16)(lbl_8053C1C0 * JMath::atanTable_.atan2_(-dir.x, -dir.y));
+                    f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                    u32 angle = (u16)(radians * lbl_8053C1C0);
                     if (angle < 0x2000 || angle >= 0xE000) ((u8*)p)[0x235] = 3;
                     else if (angle >= 0x2000 && angle < 0x6000) ((u8*)p)[0x235] = 1;
                     else if (angle >= 0x6000 && angle <= 0xA000) ((u8*)p)[0x235] = 2;
