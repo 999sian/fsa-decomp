@@ -888,7 +888,8 @@ extern "C" bool fn_802D76A8(char* p, s32 bit) {
 
 extern "C" void fn_802D7704(char* p, s32 bit, u8 value, s32 index) {
     char* q = p + *(s32*)(p + 0x18) * 0x500;
-    q += *(s32*)(p + 0x14) * 0x80;
+    s32 row = *(s32*)(p + 0x14) * 0x80;
+    q = q + row;
     q += (bit / 32) * 4;
     *(u32*)(q + 0x3548) |= 1U << (bit % 32);
     if (value != 0) {
@@ -1077,16 +1078,12 @@ extern "C" u8 fn_802D7E5C(char*, u8 index, s32 bit) {
 extern "C" void fn_802D7EB0(char*, u8 index, s32 bit, u8 set) {
     if (set) {
         char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-        u32 m = 1U << bit;
-        u32* e = (u32*)(p + index * 0x320);
-        e[0xF3] |= m;
-        e[0xF2] |= (s32)m >> 31;
+        RoomMaskEntry* e = (RoomMaskEntry*)(p + 0x3C8);
+        e[index].flags |= 1 << bit;
     } else {
         char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-        u32 m = ~(1U << bit);
-        u32* e = (u32*)(p + index * 0x320);
-        e[0xF3] &= m;
-        e[0xF2] &= 0;
+        RoomMaskEntry* e = (RoomMaskEntry*)(p + 0x3C8);
+        e[index].flags &= (1U << bit) ^ 0xFFFFFFFF;
     }
 }
 
@@ -2828,10 +2825,14 @@ extern "C" bool fn_802DE93C() {
 extern "C" bool fn_802DE9A0() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
         char* q = *(char**)(lbl_8053AAF8 + 4);
-        if (*(s32*)(*(char**)(q + 0xC) + 4) == 2 && *(s32*)(*(char**)(q + 0xC) + 8) == 3)
-            return true;
-        if (*(s32*)(*(char**)(q + 0xC) + 4) == 7 && *(s32*)(*(char**)(q + 0xC) + 8) == 1)
-            return true;
+        if (*(s32*)(*(char**)(q + 0xC) + 4) == 2) {
+            if (*(s32*)(*(char**)(q + 0xC) + 8) == 3)
+                return true;
+        }
+        if (*(s32*)(*(char**)(q + 0xC) + 4) == 7) {
+            if (*(s32*)(*(char**)(q + 0xC) + 8) == 1)
+                return true;
+        }
         return false;
     }
     s32 index = *(s32*)(lbl_80529DEC + 0x12C) + *(s32*)(lbl_80529DEC + 0x128) * 4;
@@ -2841,8 +2842,9 @@ extern "C" bool fn_802DE9A0() {
 }
 
 extern "C" bool fn_802DEA34() {
-    if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* root = *(char**)(lbl_8053AAF8 + 4);
+    char* root = lbl_8053AAF8;
+    if (*(u8*)(root + 0x7F) != 0) {
+        root = *(char**)(root + 4);
         char* p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 6 && *(s32*)(p + 8) == 0)
             return true;
@@ -2859,15 +2861,16 @@ extern "C" bool fn_802DEA34() {
 
 extern "C" bool fn_802DEABC() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        register char* root = *(char**)(lbl_8053AAF8 + 4);
+        char* p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 0)
             return true;
-        p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        p = *(char**)(root + (unsigned short)0x0C);
         if (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 2)
             return true;
         return false;
     }
-    s32 index = *(s32*)(lbl_80529DEC + 0x12C) + *(s32*)(lbl_80529DEC + 0x128) * 4;
+    long index = *(s32*)(lbl_80529DEC + 0x12C) + *(s32*)(lbl_80529DEC + 0x128) * 4;
     if (index == 4 || index == 9)
         return true;
     return false;
