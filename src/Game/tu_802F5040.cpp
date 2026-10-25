@@ -31,6 +31,10 @@ extern "C" f32 lbl_80541500;
 extern "C" f32 lbl_805414FC;
 extern "C" f64 lbl_80541508;
 extern "C" f64 lbl_80541558;
+extern "C" f32 lbl_8054152C;
+extern "C" f32 lbl_80541534;
+extern "C" f32 lbl_80541520;
+extern "C" f32 lbl_80541598;
 extern "C" f32 lbl_80541510;
 extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
@@ -293,6 +297,131 @@ extern "C" void fn_802F5570(u8* this_, f32* src, u8* ent, f32* outPos, u8** outE
         outPos[2] = fVar3;
         *outEnt = ent;
     }
+}
+
+extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
+    f32 lx;
+    f32 ly;
+    f32 dx;
+    f32 dy;
+    f32 fx;
+    f32 fy;
+    u8* cell;
+    u32 ix;
+    u32 iy;
+    s32 i;
+    s32 ret;
+    f32 r0[3];
+    f32 r1[3];
+    f32 p[3];
+    f32 tx[3];
+    f32 tz[3];
+    f32 up[3];
+    f32 c1[3];
+    f32 c2[3];
+    f32 n2[3];
+    f32 n[3];
+    f32 mag;
+    f32 sc;
+    f32 r;
+    f32* m;
+
+    ret = 0;
+    if (0 < *(s32*)(this_ + 0xc21c)) {
+        lx = *(f32*)(this_ + 0x2368);
+        ly = *(f32*)(this_ + 0x236c);
+        if (src[0] >= lx && src[0] < lbl_80541510 * (f32)*(s32*)(this_ + 0x2380) + lx) {
+            if (src[1] >= ly && src[1] < lbl_80541510 * (f32)*(s32*)(this_ + 0x2384) + ly) {
+                dx = src[0] - lx;
+                dy = src[1] - ly;
+                ix = (u32)(lbl_80541514 * dx);
+                iy = (u32)(lbl_80541514 * dy);
+                cell = *(u8**)(this_ + *(s32*)(this_ + 0x2388) * 4 + 0x100) + iy * 0x30c + ix * 0xc;
+                fx = lbl_80541514 * (dx - lbl_80541510 * (f32)ix);
+                fy = lbl_80541514 * (dy - lbl_80541510 * (f32)iy);
+
+                for (i = 0; i < 3; i++) {
+                    f32 v00 = *(f32*)(cell + i * 4);
+                    f32 v10 = *(f32*)(cell + 0xc + i * 4);
+                    f32 v01 = *(f32*)(cell + 0x30c + i * 4);
+                    f32 v11 = *(f32*)(cell + 0x318 + i * 4);
+                    r0[i] = v00 + fx * (v10 - v00);
+                    r1[i] = v01 + fx * (v11 - v01);
+                    p[i] = r0[i] + fy * (r1[i] - r0[i]);
+                    tx[i] = (v10 - v00) + fy * ((v11 - v01) - (v10 - v00));
+                    tz[i] = (v01 - v00) + fx * ((v11 - v10) - (v01 - v00));
+                }
+                up[0] = lbl_805414F8;
+                up[1] = lbl_80541518;
+                up[2] = lbl_805414F8;
+
+                PSVECCrossProduct((Vec*)tz, (Vec*)up, (Vec*)c1);
+                mag = c1[0] * c1[0] + c1[1] * c1[1] + c1[2] * c1[2];
+                if (mag > 32.0f * *(f32*)&__float_epsilon) {
+                    if (mag <= 0.0f) {
+                        sc = mag;
+                    } else {
+                        r = (f32)__frsqrte(mag);
+                        sc = (r * 0.5f) * (3.0f - mag * (r * r));
+                    }
+                    for (i = 0; i < 3; i++) {
+                        c1[i] *= sc;
+                    }
+                }
+                for (i = 0; i < 3; i++) {
+                    c1[i] *= (lbl_80541518 - fy);
+                }
+
+                PSVECCrossProduct((Vec*)tx, (Vec*)up, (Vec*)c2);
+                mag = c2[0] * c2[0] + c2[1] * c2[1] + c2[2] * c2[2];
+                if (mag > 32.0f * *(f32*)&__float_epsilon) {
+                    if (mag <= 0.0f) {
+                        sc = mag;
+                    } else {
+                        r = (f32)__frsqrte(mag);
+                        sc = (r * 0.5f) * (3.0f - mag * (r * r));
+                    }
+                    for (i = 0; i < 3; i++) {
+                        c2[i] *= sc;
+                    }
+                }
+                for (i = 0; i < 3; i++) {
+                    c2[i] *= fy;
+                    n2[i] = c1[i] + c2[i];
+                }
+
+                PSVECCrossProduct((Vec*)up, (Vec*)n2, (Vec*)n);
+                mag = n[0] * n[0] + n[1] * n[1] + n[2] * n[2];
+                if (mag > 32.0f * *(f32*)&__float_epsilon) {
+                    if (mag <= 0.0f) {
+                        sc = mag;
+                    } else {
+                        r = (f32)__frsqrte(mag);
+                        sc = (r * 0.5f) * (3.0f - mag * (r * r));
+                    }
+                    for (i = 0; i < 3; i++) {
+                        n[i] *= sc;
+                    }
+                }
+
+                m = (f32*)mtx;
+                m[0] = n[0];
+                m[1] = lbl_805414F8;
+                m[2] = n2[0];
+                m[3] = p[0] - dx;
+                m[4] = n[1];
+                m[5] = lbl_80541518;
+                m[6] = n2[1];
+                m[7] = p[1] - dy;
+                m[8] = n[2];
+                m[9] = lbl_805414F8;
+                m[10] = n2[2];
+                m[11] = p[2];
+                ret = 1;
+            }
+        }
+    }
+    return ret;
 }
 
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
@@ -1317,6 +1446,48 @@ extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
             q[15] = p[15];
             p += 0x10;
             q += 0x10;
+        }
+    }
+}
+
+extern "C" u32 lbl_8046F9F0[];
+extern "C" f32 lbl_80541520;
+extern "C" f32 lbl_80541598;
+extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
+    Mtx m;
+    GXTlutObj tlut[16];
+    GXTexObj texObj;
+    s32 cnt[16] = {0};
+    s32 i;
+    s32 j;
+    s32 p;
+    s32 q;
+    f32 k;
+    u16* lut;
+    f32* pos = (f32*)arr;
+    u16* idx = (u16*)v;
+
+    k = lbl_80541598 * ((f32)a - lbl_80541520);
+    PSMTXTrans(m, pos[0], pos[1] + k, pos[2] + k);
+    fn_8013B3CC(lbl_8053AB10, m);
+
+    for (i = 0; i < 16; i++) {
+        GXInitTlutObj(&tlut[i], *(u8**)(self + 0x18) + i * 0x20, GX_TL_RGB5A3, 16);
+        GXLoadTlut(&tlut[i], lbl_8046F9F0[i]);
+    }
+
+    lut = *(u16**)(self + 0x24);
+    for (p = 0; p < 2; p++) {
+        for (q = 0; q < 2; q++) {
+            for (j = 0; j < 16; j++) {
+                u16 w = idx[(p * 2 + q) * 16 + j];
+                if (w != 0) {
+                    cnt[(lut[w * 4 + 0] >> 10) & 0xf]++;
+                    cnt[(lut[w * 4 + 1] >> 10) & 0xf]++;
+                    cnt[(lut[w * 4 + 2] >> 10) & 0xf]++;
+                    cnt[(lut[w * 4 + 3] >> 10) & 0xf]++;
+                }
+            }
         }
     }
 }
