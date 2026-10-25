@@ -54,9 +54,9 @@ extern "C" void fn_8023105C(void);
 extern "C" void fn_802310F8(s32 h);
 extern void* lbl_8053AD30;
 extern f32 lbl_80540410;
-extern "C" void fn_802870C8(char* p = 0);
+extern "C" void fn_802870C8(char* p);
 extern "C" void fn_80265E88(char* p);
-void fn_8024CA20(char* p);
+extern "C" void fn_8024CA20(char* p);
 extern "C" void fn_80285E58(char* p) {
     s32 count = *(s32*)(p + 0x11f4);
     if (count > 0) {
