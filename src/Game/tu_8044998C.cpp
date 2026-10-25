@@ -186,7 +186,7 @@ static inline void SetDigits(u8* self, void** tbl, int idx, int tens, int ones) 
     Attach(Search(*(void**)(self + 4), tbl, idx + 6), h);
 }
 
-static inline void SetDigits4(u8* self, void** tbl, int idx, int d0, int d1, int d2, int d3) {
+static inline void SetDigits4(u8* self, void** tbl, int idx, int d0, int d1, int d3, int d2) {
     void* h = fn_804030C4(0x54494D47, lbl_804B1CA0[d0]);
     Attach(Search(*(void**)(self + 4), tbl, idx), h);
     Attach(Search(*(void**)(self + 4), tbl, idx + 2), h);
@@ -245,8 +245,7 @@ extern "C" void fn_8044998C(void* self_) {
         if (self[0x12] >= 100) {
             self[0x12] = 99;
         }
-        SetDigits(self, lbl_80490C78, 8, self[0x11] / 10, self[0x11] % 10);
-        SetDigits(self, lbl_80490C78, 16, self[0x12] / 10, self[0x12] % 10);
+        SetDigits4(self, lbl_80490C78, 8, self[0x11] / 10, self[0x11] % 10, self[0x12] / 10, self[0x12] % 10);
     }
     self[0x13] = 0;
 }
