@@ -397,8 +397,7 @@ extern "C" void fn_803706AC(char* self)
 #pragma opt_lifetimes off
 static inline void move80370764ToTarget() {
     JGeometry::TVec3<f32>* p = fn_8023E724(0);
-    JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
-    JGeometry::TVec3<f32> d = tgt - *p;
+    JGeometry::TVec3<f32> d = JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4) - *p;
     if (PSVECMag((Vec*)&d) > lbl_80542DF0) fn_8023DFF4(0, &d);
 }
 static inline void move80370764ToTarget(JGeometry::TVec3<f32>& pos) {
@@ -418,12 +417,7 @@ extern "C" void fn_80370764(char* self)
 	}
 	for (int i = 0; i < 4; i++) {
 		if (fn_8023E854(i)) {
-			JGeometry::TVec3<f32>* p = fn_8023E724(0);
-			JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
-			JGeometry::TVec3<f32> d = tgt - *p;
-			if (PSVECMag((Vec*)&d) > lbl_80542DF0) {
-				fn_8023DFF4(0, &d);
-			}
+			move80370764ToTarget();
 			break;
 		}
 	}
@@ -433,12 +427,8 @@ extern "C" void fn_80370764(char* self)
 	*(s32*)(self + 0x23c) += 1;
 	fn_803721F4(self);
 	{
-		JGeometry::TVec3<f32>* p = fn_8023E724(0);
-		JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
-		JGeometry::TVec3<f32> pos = tgt - *p;
-		if (PSVECMag((Vec*)&pos) > lbl_80542DF0) {
-			fn_8023DFF4(0, &pos);
-		}
+		JGeometry::TVec3<f32> pos;
+        move80370764ToTarget(pos);
 	if (!fn_802341D0(0)) {
         *(s32*)(self + 0x240) = 2;
         return;
@@ -817,6 +807,86 @@ extern "C" void fn_803717CC(char* self)
 		}
 	}
 }
+
+extern const f32 lbl_80542E40;
+extern const f32 lbl_80542DE4;
+extern s32 lbl_80474F00[];
+extern "C" void fn_80371A2C(void* self_) {
+    char* self=(char*)self_;
+    char* tp;
+    Vec* p;
+    char* state;
+    char* pp;
+    f32* nearest;
+    int j;
+    int i;
+    f32 best[4];
+    best[0]=lbl_80542E40; best[1]=lbl_80542E40; best[2]=lbl_80542E40; best[3]=lbl_80542E40;
+    JGeometry::TBox2<f32> box;
+    JGeometry::TVec3<f32> pos;
+    nearest=best;
+    state=self;
+    pp=self;
+    for (j=0;j<4;j++,pp+=12,nearest++,state+=4) {
+        if (*(s32*)(state+0x330)==0) {
+            tp=self;
+            for (i=0;i<4;i++,tp+=12) {
+                
+                p=(Vec*)(pp+0x294);
+                f32 d=PSVECDistance((Vec*)(tp+0x264),p);
+                if (d < *nearest) {
+                    *nearest=d;
+                    u32 ang=(u16)(JMath::atanTable_.atan2_(*(f32*)(tp+0x268)-*(f32*)(pp+0x298),*(f32*)(tp+0x264)-p->x)*lbl_80542DE4);
+                    s32 anim,dir;
+                    if (ang>=0x2000 && ang<0x6000) {anim=0x38e;dir=2;}
+                    else if (ang>=0x6000 && ang<0xa000) {anim=0x38b;dir=1;}
+                    else if (ang>=0xa000 && ang<0xe000) {anim=0x391;dir=3;}
+                    else {anim=0x388;dir=0;}
+                    if (anim!=*(s32*)(state+0x350)) {
+                        *(s32*)(state+0x330)=30;
+                        *(s32*)(state+0x350)=anim;
+                        *(s32*)(state+0x340)=dir;
+                    }
+                }
+            }
+        }
+    }
+    if (*(u8*)(self+0x3a8)==0) {
+        if (*(s32*)(self+0x3ac)==0) {
+            s32 j=fn_80370200((u8*)self);
+            if (j!=-1) {
+                JGeometry::TVec3<f32>* p=(JGeometry::TVec3<f32>*)(self+0x294+j*12);
+                box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
+                box.i.x+=p->x; box.f.x+=p->x; box.i.y+=p->y; box.f.y+=p->y;
+                fn_8022FEB8((f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+                s32 idx=fn_8022FD8C(*(s32*)(self+0x198));
+                if(idx>=0 && fn_802300EC()) {
+                    pos=*p;
+                    if(fn_8038BD08(idx,lbl_80474F00[j],*(u32*)(self+4),&pos,0x22)) {
+                        *(s32*)(self+0x3a4)=idx;
+                        *(u8*)(self+0x3a8)=1;
+                        *(s32*)(self+0x3a0)=j;
+                        fn_8023077C();
+                    }
+                }
+            }
+        }
+    } else {
+        s32 j=*(s32*)(self+0x3a0);
+        if(j!=4 && j>=0) {
+            Vec* p=(Vec*)(self+0x294+j*12);
+            box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
+                box.i.x+=p->x; box.f.x+=p->x; box.i.y+=p->y; box.f.y+=p->y;
+            fn_8022FF8C(*(s32*)(self+0x3a4),(f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+            if(fn_80388CAC(*(s32*)(self+0x3a4),*(s32*)(self+0x198))) {
+                *(s32*)(self+0x3a4)=-1;*(u8*)(self+0x3a8)=0;
+                fn_80230534(0);
+                *(s32*)(self+0x3ac)=3;*(s32*)(self+0x3a0)=-1;
+            }
+        }
+    }
+}
+
 #pragma opt_propagation reset
 extern "C" char lbl_8050C870[];
 extern "C" char lbl_8050C8A0[];
