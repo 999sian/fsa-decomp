@@ -395,17 +395,18 @@ extern "C" void fn_803706AC(char* self)
 }
 
 #pragma opt_lifetimes off
-static inline void move80370764ToTarget() {
-    JGeometry::TVec3<f32>* p = fn_8023E724(0);
-    JGeometry::TVec3<f32> d = JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4) - *p;
-    if (PSVECMag((Vec*)&d) > lbl_80542DF0) fn_8023DFF4(0, &d);
-}
 static inline void move80370764ToTarget(JGeometry::TVec3<f32>& pos) {
     JGeometry::TVec3<f32>* p = fn_8023E724(0);
     JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
     pos = tgt - *p;
     if (PSVECMag((Vec*)&pos) > lbl_80542DF0) fn_8023DFF4(0, &pos);
 }
+static inline void move80370764ToTarget() {
+    JGeometry::TVec3<f32>* p = fn_8023E724(0);
+    JGeometry::TVec3<f32> d = JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4) - *p;
+    if (PSVECMag((Vec*)&d) > lbl_80542DF0) fn_8023DFF4(0, &d);
+}
+
 
 extern "C" void fn_80370764(char* self)
 {
@@ -437,9 +438,9 @@ extern "C" void fn_80370764(char* self)
 		if (*(u8*)(self + 0x398) != 0 && *(s32*)(self + 0x240) == 0) {
 			if (fn_8022CAF8(0) == lbl_80474F30[*(s32*)(self + 0x394)]) {
 				if (((u8 (*)(int))fn_802300EC)(0)) {
-					f32 half = lbl_80542E04;
-                    f32 width = (f32)(s32)JUTVideo::getManager()->getFbWidth();
+					f32 width = (f32)(s32)JUTVideo::getManager()->getFbWidth();
                     f32 height = (f32)(s32)JUTVideo::getManager()->getEfbHeight();
+                    f32 half = lbl_80542E04;
                     pos.set(width * half, height * half, 0.0f);
 					fn_8022FE80(0, *(int*)(self + 0x4), *(int*)(self + 0x198), 1, 0);
 					s32 msg;
@@ -454,8 +455,9 @@ extern "C" void fn_80370764(char* self)
 						*(s32*)(self + 0x394) = 5;
 						msg = 0x50a;
 					}
-					JGeometry::TVec3<f32> copy(pos);
-					if (fn_8038BD08(0, msg, *(u32*)(self + 0x4), &copy, 0x22)) {
+					u32 room = *(u32*)(self + 0x4);
+                    JGeometry::TVec3<f32> copy(pos);
+					if (fn_8038BD08(0, msg, room, &copy, 0x22)) {
 						fn_8023077C();
 						*(s32*)(self + 0x230) = 8;
 					}
@@ -827,7 +829,7 @@ extern "C" void fn_80371A2C(void* self_) {
     nearest=best;
     state=self;
     pp=self;
-    for (j=0;j<4;j++,pp+=12,nearest++,state+=4) {
+    for (j=0;j<4;j++,nearest++,state+=4,pp+=12) {
         if (*(s32*)(state+0x330)==0) {
             tp=self;
             for (i=0;i<4;i++,tp+=12) {
@@ -836,7 +838,8 @@ extern "C" void fn_80371A2C(void* self_) {
                 f32 d=PSVECDistance((Vec*)(tp+0x264),p);
                 if (d < *nearest) {
                     *nearest=d;
-                    u32 ang=(u16)(JMath::atanTable_.atan2_(*(f32*)(tp+0x268)-*(f32*)(pp+0x298),*(f32*)(tp+0x264)-p->x)*lbl_80542DE4);
+                    f32 angle=JMath::atanTable_.atan2_(*(f32*)(tp+0x268)-*(f32*)(pp+0x298),*(f32*)(tp+0x264)-p->x);
+                    u32 ang=(u16)(angle*lbl_80542DE4);
                     s32 anim,dir;
                     if (ang>=0x2000 && ang<0x6000) {anim=0x38e;dir=2;}
                     else if (ang>=0x6000 && ang<0xa000) {anim=0x38b;dir=1;}
@@ -855,7 +858,7 @@ extern "C" void fn_80371A2C(void* self_) {
         if (*(s32*)(self+0x3ac)==0) {
             s32 j=fn_80370200((u8*)self);
             if (j!=-1) {
-                JGeometry::TVec3<f32>* p=(JGeometry::TVec3<f32>*)(self+0x294+j*12);
+                JGeometry::TVec3<f32>* __restrict p=(JGeometry::TVec3<f32>*)(self+0x294+j*12);
                 box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
                 box.i.x+=p->x; box.f.x+=p->x; box.i.y+=p->y; box.f.y+=p->y;
                 fn_8022FEB8((f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
@@ -874,7 +877,7 @@ extern "C" void fn_80371A2C(void* self_) {
     } else {
         s32 j=*(s32*)(self+0x3a0);
         if(j!=4 && j>=0) {
-            Vec* p=(Vec*)(self+0x294+j*12);
+            Vec* __restrict p=(Vec*)(self+0x294+j*12);
             box.set(*(JGeometry::TBox2<f32>*)(self+0x60));
                 box.i.x+=p->x; box.f.x+=p->x; box.i.y+=p->y; box.f.y+=p->y;
             fn_8022FF8C(*(s32*)(self+0x3a4),(f32*)&box,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
