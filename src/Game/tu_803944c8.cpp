@@ -476,6 +476,16 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
+    void putSlotPos(s32 x, s32 base) {
+        str2c0[m2d0++] = -2;
+        str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
+        str2c0[m2d0++] = -2;
+        if (layout->m1a1 != 0 && (u8)slotLine[slot] - lineTab[layout->m15c] - 1 == 0) {
+            str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
+        } else {
+            str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
+        }
+    }
     BOOL testBit(const s32& n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
