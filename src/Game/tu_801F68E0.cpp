@@ -501,22 +501,20 @@ extern "C" u8 fn_801CC960(PoolActor* actor);
 extern "C" u8 fn_801CC9B0(PoolActor* actor);
 
 extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
-    s32 count = pool->mCount;
+    const int count = pool->mCount;
     PoolActor** cur = (PoolActor**)pool;
     s32 id = -1;
-    s32 i = 0;
-    while (i < count) {
+    s32 i;
+    for (i = 0; i < count; cur++, i++) {
         PoolActor* a = cur[2];
         if (a != NULL && a->mActive && param == a->mParam && exceptId != a->mId && fn_801CC960(a)) {
             id = pool->mActors[i]->mId;
             break;
         }
-        cur++;
-        i++;
     }
     return id;
 }
-
+#pragma scheduling reset
 extern "C" s32 fn_801F750C(ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
     s32 id = -1;
