@@ -103,10 +103,10 @@ static inline void rnbwSpawn(Actor* actor, const u16* ids) {
     }
 }
 static inline void rnbwSpawn(const u16* ids, Actor* actor) {
-    s32 i;
     const u16* table = ids;
     void** hp = (void**)actor;
-    for (i = 0; i < 5; i++, hp++, table++) {
+    s32 i = 0;
+    for (; i < 5; i++, hp++, table++) {
         if (hp[0x8f] == 0) {
             u16 id = *table;
             hp[0x8f] = rnbwEffect(id, actor);
@@ -225,14 +225,14 @@ extern "C" void fn_8012A008(void* this_) {
         case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
-                rnbwSpawn(lbl_80465098, actor, i);
+                rnbwSpawn(i, actor, lbl_80465098);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
-                rnbwSpawn(actor, lbl_804650A4, i);
+                rnbwSpawn(i, lbl_804650A4, actor);
             }
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_801F0E34(this_, 0x5004d, 0);
