@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" f32 lbl_8053C67C;
 extern "C" f32 lbl_8053C684;
@@ -201,8 +202,8 @@ extern "C" void fn_8011395C(char* self) {
     float v0[3];
     float v1[3];
     PSMTXTrans(mtx.m, *(float*)(self + 0xc), *(float*)(self + 0x10), *(float*)(self + 0x14));
-    v0[1] = lbl_8053C69C;
     v0[0] = lbl_8053C690;
+    v0[1] = lbl_8053C69C;
     v0[2] = lbl_8053C69C;
     fn_8010F668(mtx.m, v0, lbl_8053C6A4);
     rot.m[2][3] = lbl_8053C69C; rot.m[1][3] = lbl_8053C69C; rot.m[0][3] = lbl_8053C69C;
@@ -217,18 +218,17 @@ extern "C" void fn_8011395C(char* self) {
     if (*(u8*)(self + 0x234) != 0) {
         (*(int*)(self + 0x24c))++;
     }
-    int state = *(int*)(self + 0x240);
     int* lim = (int*)(tbl + 0xf8);
-    switch (state) {
+    switch (*(int*)(self + 0x240)) {
     case 0:
     case 2:
-        if (*(int*)(self + 0x24c) >= lim[state]) {
+        if (*(int*)(self + 0x24c) >= lim[*(int*)(self + 0x240)]) {
             int* rst = (int*)(tbl + 0xec);
-            *(int*)(self + 0x24c) = rst[state];
+            *(int*)(self + 0x24c) = rst[*(int*)(self + 0x240)];
         }
         break;
     case 1:
-        if (*(int*)(self + 0x24c) >= lim[state]) {
+        if (*(int*)(self + 0x24c) >= lim[*(int*)(self + 0x240)]) {
             *(int*)(self + 0x240) = 2;
         }
         break;
