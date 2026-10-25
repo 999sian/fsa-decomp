@@ -7,46 +7,36 @@ extern "C" void fn_801EE434(void*);
 extern "C" const f32 lbl_805409A0;
 extern "C" const f32 lbl_805409A4;
 extern "C" const f32 lbl_80540990;
-extern f32 lbl_80540994;
-extern f32 lbl_80540998;
-extern f32 lbl_8054099C;
+extern const f32 lbl_80540994;
+extern const f32 lbl_80540998;
+extern const f32 lbl_8054099C;
 extern void* lbl_8053AB10;
 extern "C" void fn_80158B5C(void* mgr, void* room, void* pos, void* col, f32 size);
 extern "C" void fn_802B055C(char* p) {
-    struct {
-        f32 x, y, z;
-    } vec;
-    struct Col4 {
-        u8 r, g, b, a;
-    } col;
-    struct Col4 tmp;
-
     if (*(s32*)(p + 0x254) == 0) {
         if (*(f32*)(p + 0x258) > lbl_80540990) {
             *(f32*)(p + 0x258) -= lbl_80540994;
-            if (*(f32*)(p + 0x258) <= lbl_80540990) {
+            if (*(f32*)(p + 0x258) <= lbl_80540990)
                 *(f32*)(p + 0x258) = lbl_80540990;
-            }
         } else {
             *(f32*)(p + 0x258) = lbl_80540990;
         }
     } else {
-        if (*(f32*)(p + 0x258) < lbl_80540998) {
+        if (*(f32*)(p + 0x258) < lbl_80540998)
             *(f32*)(p + 0x258) += lbl_80540994;
-        } else {
+        else
             *(f32*)(p + 0x258) = lbl_80540998;
-        }
     }
-
-    vec.x = *(f32*)(p + 0xc) + lbl_8054099C;
-    vec.y = *(f32*)(p + 0x10) + lbl_8054099C;
-    vec.z = lbl_80540990;
-    col.r = 0;
-    col.g = 0;
-    col.b = 0;
-    col.a = 0x80;
-    tmp = col;
-    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), &vec, &tmp, *(f32*)(p + 0x258));
+    GXColor color;
+    f32 pos[3];
+    pos[1] = lbl_8054099C + *(f32*)(p + 0x10);
+    pos[0] = lbl_8054099C + *(f32*)(p + 0xc);
+    pos[2] = lbl_80540990;
+    color.r = 0;
+    color.g = 0;
+    color.b = 0;
+    color.a = 0x80;
+    ((void (*)(void*, void*, void*, GXColor, f32))fn_80158B5C)(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), pos, color, *(f32*)(p + 0x258));
 }
 
 extern "C" void* fn_802B0998(void* this_, s16 freeFlag) {
