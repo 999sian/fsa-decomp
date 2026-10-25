@@ -153,6 +153,7 @@ extern "C" void fn_801CDD58(ItemBase* this_) {
 extern "C" void fn_801CE00C(void) {}
 
 extern "C" f32 __fsels(f32 a, f32 b, f32 c);
+#pragma fp_relax on
 extern "C" void fn_801CE010(u8* this_, f32* out) {
     s32 idx = *(s32*)(this_ + 0x4);
     u8* mgr = fn_802D6A9C();
@@ -167,9 +168,10 @@ extern "C" void fn_801CE010(u8* this_, f32* out) {
     out[1] = y0;
     out[2] = lbl_8053EFC4;
     f32 lim = lbl_8053EFC8 + r[1];
-    out[1] = __fsel(lim - out[1], lim, out[1]);
+    f32 y = out[1];
+    out[1] = __fsel(lim - y, lim, y);
 }
-
+#pragma fp_relax reset
 extern "C" void fn_801CE0A4(ItemBase* this_) {
     if ((this_->m230 & 7) == 0) {
         this_->m24C++;
@@ -377,11 +379,14 @@ extern "C" u16 fn_802265FC(f32* pos, s32 room);
 extern "C" void fn_801CE800(u8* this_) {
     f32 pos[2];
     f32 out[2];
-    if (!(*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053EFC4)) {
-        return;
-    }
-    if (!(*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053EFC4)) {
-        return;
+    {
+        f32 zero = lbl_8053EFC4;
+        if (!(*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > zero)) {
+            return;
+        }
+        if (!(*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > zero)) {
+            return;
+        }
     }
     f32 y = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
     pos[0] = *(f32*)(this_ + 0xc);
@@ -393,11 +398,9 @@ extern "C" void fn_801CE800(u8* this_) {
             bVar1 = true;
         }
         break;
-    case 1:
-        bVar1 = true;
-        break;
     case 2:
         break;
+    case 1:
     default:
         bVar1 = true;
         break;
@@ -783,6 +786,46 @@ extern "C" s32 fn_801CF798(u8* this_, s32 idx, s32 dir) {
     return arr[1 - i];
 }
 
+extern const f32 lbl_8053EFF4;
+extern "C" u8 fn_801CFA70(ItemBase* this_, f32* a, f32* b, s32 idx);
+extern "C" void fn_801CF888(ItemBase* this_, f32* a, f32* b, s32 idx) {
+    f32 pa[2];
+    f32 pb[2];
+    if (fn_801CFA70(this_, a, b, idx)) {
+        return;
+    }
+    f32 dy = b[1] - a[1];
+    f32 dx = b[0] - a[0];
+    f32 len2 = dy * dy;
+    len2 += dx * dx;
+    if (len2 <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
+        return;
+    }
+    if (len2 > lbl_8053EFC4) {
+        f32 r = (f32)__frsqrte(len2);
+        f32 rr = r * r;
+        f32 inv = (lbl_8053EFE4 * r) * (lbl_8053EFE8 - len2 * rr);
+        dx *= inv;
+        dy *= inv;
+    }
+    f32 sn = JMath::sincosTable_.mTable[1536].first;
+    f32 cs = JMath::sincosTable_.mTable[1536].second;
+    f32 vx = (dx * cs - dy * sn) * lbl_8053EFF4;
+    f32 vy = (dx * sn + dy * cs) * lbl_8053EFF4;
+    pa[0] = a[0] + vx;
+    pa[1] = a[1] + vy;
+    pb[0] = b[0] + vx;
+    pb[1] = b[1] + vy;
+    if (fn_801CFA70(this_, pa, pb, idx)) {
+        return;
+    }
+    pa[0] = a[0] - vx;
+    pa[1] = a[1] - vy;
+    pb[0] = b[0] - vx;
+    pb[1] = b[1] - vy;
+    fn_801CFA70(this_, pa, pb, idx);
+}
+
 extern "C" u8 fn_801CFA70(ItemBase* this_, f32* a, f32* b, s32 idx) {
     f32 vec[3];
     u8* mgr = fn_802D6A9C();
@@ -955,22 +998,14 @@ extern "C" s32 fn_801D0020(u8* this_, f32* pos, s32 idx, u8 flag) {
     f32 ax = __fabsf(rec[0] - pos[0]);
     f32 az = __fabsf(rec[1] - pos[1]);
     if (ax > az) {
-        if (flag == 0) {
-            goto x_axis;
-        }
+        if (flag == 0) goto x_axis;
     }
-    if (ax <= az || flag != 1) {
-        goto z_axis;
-    }
+    if (!(ax <= az) || flag != 1) goto z_axis;
 x_axis:
-    if (pos[0] < rec[0]) {
-        return 0;
-    }
+    if (pos[0] < rec[0]) return 0;
     return 1;
 z_axis:
-    if (pos[1] < rec[1]) {
-        return 2;
-    }
+    if (pos[1] < rec[1]) return 2;
     return 3;
 }
 
@@ -1345,17 +1380,16 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
     return dx * dx + dz * dz;
 }
 
-extern "C" BOOL fn_801D0DD4(char* this_) {
-    struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
-    s32 room = *(s32*)(this_ + 0x4);
-    TndrG* g = (TndrG*)fn_802D6A9C();
-    u8 flag = g->arr[room];
-    if (flag) {
-        return (*(u32*)(this_ + 0x230) & 0x18) != 0;
+#pragma opt_propagation off
+extern "C" BOOL fn_801D0DD4(ItemBase* this_) {
+    s32 room = *(volatile s32*)this_->mActor;
+    u8* g = fn_802D6A9C();
+    if (g[0x131df + room] != 0) {
+        return (this_->m230 & 0x18) != 0;
     }
-    return *(f32*)(this_ + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
+    return *(f32*)(this_->mActor + 0x10) <= lbl_8053EFC4 ? TRUE : FALSE;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801D0E58(char* p) {
     f32 v[2];
     fn_801CCD34((f32*)(p + 0xc), v);
