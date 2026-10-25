@@ -1118,13 +1118,15 @@ extern "C" void fn_800D6404(void* param) {
 extern "C" void fn_800D6580(u8* p) {
     GDOverflowCheck(lbl_80539E18);
     J3DGDWriteXFCmdHdr(0x100e, 4);
-    writeChanCtrl(*(u16*)(p + 0x16));
-    writeChanCtrl(*(u16*)(p + 0x1a));
-    writeChanCtrl(*(u16*)(p + 0x18));
-    writeChanCtrl(*(u16*)(p + 0x1c));
+    ((J3DColorChan*)(p + 0x16))->load();
+    ((J3DColorChan*)(p + 0x1a))->load();
+    ((J3DColorChan*)(p + 0x18))->load();
+    ((J3DColorChan*)(p + 0x1c))->load();
+    u8* current = p;
     for (u32 i = 0; i < 8; i++) {
-        J3DLightObj* light = ((J3DLightObj**)(p + 0x20))[i];
+        J3DLightObj* light = *(J3DLightObj**)(current + 0x20);
         if (light != NULL) light->load(i);
+        current += 4;
     }
 }
 
