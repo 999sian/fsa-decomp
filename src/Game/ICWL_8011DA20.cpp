@@ -102,6 +102,11 @@ struct ICWLBox {
     }
 };
 
+static inline void icwlDrawSprite(void* pos, const char* name, s32 id, DrawRec* rec) {
+    void* res = (*(ICWLResMgr**)((u8*)lbl_8053AAF8 + 0xa4))->vf18(0x534f4220, name);
+    fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, id, rec, lbl_8053C8BC, lbl_8053C8BC);
+}
+
 static inline void icwlGetBox(u8* this_, ICWLBox* box) {
     *box = *(ICWLBox*)(this_ + 0x60);
     box->x0 += *(f32*)(this_ + 0xc);
