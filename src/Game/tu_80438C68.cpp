@@ -23,7 +23,7 @@ struct FsaVObj {
           virtual J2DPane* v15(s32 a, s32 b, s32 c);
 
     virtual void v16(void);
-          virtual J2DPane* v17(s32 a, s32 b, s32 c);
+          virtual void v17(void);
 
     virtual void v18(void);
     virtual void v19(void);
@@ -195,8 +195,10 @@ extern "C" void fn_80438E10(u8* p, u8 flag)
 }
 
 extern "C" u32 fn_80438E94(u8* p) {
-    f32 pos[3];
+    u8 c;
     s32 i;
+    u8* q;
+    f32 pos[3];
     if (*(s32*)(p + 0x44) > 0) {
         if (fn_801F666C(fn_801F856C(), *(s32*)(p + 0x44)) == 0) {
             *(s32*)(p + 0x44) = -2;
@@ -224,14 +226,14 @@ extern "C" u32 fn_80438E94(u8* p) {
             p[0x58] = 2;
         }
         if (p[0x58] == 2) {
-            u8 c = p[0x41];
+            c = p[0x41];
             if ((s32)p[0x42] < (s32)c - 2) {
                 p[0x42] += 2;
-                ((FsaVObj*)*(void**)(p + 4))->v17(0, 0, 0x50626c6b);
-                ((FsaVObj*)*(void**)(p + 4))->v11(p[0x42]);
+                ((FsaVObj*)*(void**)(p + 4))->v15(0, 0, 0x50626c6b);
+                ((FsaVObj*)*(void**)(p + 4))->v9(p[0x42]);
             } else {
-                ((FsaVObj*)*(void**)(p + 4))->v17(0x50620000, 0, 0x50626c6b);
-                ((FsaVObj*)*(void**)(p + 4))->v11(c);
+                ((FsaVObj*)*(void**)(p + 4))->v15(0x50620000, 0, 0x50626c6b);
+                ((FsaVObj*)*(void**)(p + 4))->v9(c);
                 p[0x40] = 1;
                 *(s16*)(p + 0x56) = 1;
                 fn_80458F9C(lbl_8053AF80, 0x14);
@@ -251,6 +253,76 @@ extern "C" u32 fn_80438E94(u8* p) {
             }
             if (*(void**)(p + 0xc) != 0) {
                 *(u32*)((u8*)*(void**)(p + 0xc) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 1:
+            pos[0] = lbl_80543C50; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x10) == 0) {
+                *(void**)(p + 0x10) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x10) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x10) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 2:
+            pos[0] = lbl_80543C54; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x14) == 0) {
+                *(void**)(p + 0x14) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x14) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x14) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 3:
+            pos[0] = lbl_80543C58; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x18) == 0) {
+                *(void**)(p + 0x18) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x18) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x18) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 4:
+            pos[0] = lbl_80543C5C; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x1c) == 0) {
+                *(void**)(p + 0x1c) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x1c) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x1c) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 5:
+            pos[0] = lbl_80543C60; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x20) == 0) {
+                *(void**)(p + 0x20) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x20) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x20) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 6:
+            pos[0] = lbl_80543C64; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x24) == 0) {
+                *(void**)(p + 0x24) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x24) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x24) + 0xf4) |= 0x40;
+            }
+            fn_80458880(lbl_8053AF80, 0xd, -1);
+            break;
+        case 7:
+            pos[0] = lbl_80543C68; pos[1] = lbl_80543C40; pos[2] = lbl_80543C44;
+            if (*(void**)(p + 0x28) == 0) {
+                *(void**)(p + 0x28) = fn_8013CC50(0, pos, 0x567, 0, 0, 0, 0, 1, lbl_80543C4C);
+            }
+            if (*(void**)(p + 0x28) != 0) {
+                *(u32*)((u8*)*(void**)(p + 0x28) + 0xf4) |= 0x40;
             }
             fn_80458880(lbl_8053AF80, 0xd, -1);
             break;
@@ -293,16 +365,24 @@ extern "C" u32 fn_80438E94(u8* p) {
     case 5:
         p[0x40] = 7;
         lbl_80529DEC[0x237] = 7;
-        ((FsaVObj*)*(void**)(p + 4))->v17(0x74610000, 0x4e6461, 0x74613031)->animationTransform();
+        *(f32*)(*(u8**)(p + 8) + 8) = (f32)*(s32*)(p + 0x3c);
+        ((FsaVObj*)*(void**)(p + 4))->v15(0x74610000, 0x4e6461, 0x74613031)->animationTransform();
+        for (i = 0, q = p; i < 8; i++, q += 4) {
+            if (*(void**)(q + 0xc) != 0 && (*(u32*)(*(u8**)(q + 0xc) + 0xf4) & 8) != 0 &&
+                (*(u32*)(*(u8**)(q + 0xc) + 0xd0) + *(u32*)(*(u8**)(q + 0xc) + 0xdc)) == 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(q + 0xc));
+                *(void**)(q + 0xc) = 0;
+            }
+        }
         break;
     case 6:
         *(s32*)(p + 0x3c) += 1;
         if (*(s32*)(p + 0x3c) >= *(s16*)(*(u8**)(p + 8) + 6) - 1) {
-            for (i = 0; i < 8; i++) {
-                if (*(void**)(p + 0xc + i * 4) != 0) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0xc + i * 4));
+            for (i = 0, q = p; i < 8; i++, q += 4) {
+                if (*(void**)(q + 0xc) != 0) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(q + 0xc));
                 }
-                *(void**)(p + 0xc + i * 4) = 0;
+                *(void**)(q + 0xc) = 0;
             }
             if (*(void**)(p + 0x2c) != 0) {
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x2c));
