@@ -1,6 +1,7 @@
 // TWEV_80103348: .text 0x80103348-0x801042D0 (actor TWEV)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" s32 fn_8013CC50(void*, void*, f32, s32, s32, s32, s32, s32, s32);
