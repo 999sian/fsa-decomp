@@ -3,7 +3,11 @@
 extern "C" void fn_801D4F64(void);
 extern "C" void fn_801CEBD0(void);
 
-#include "Game/Actor.h"
+#define Vec SDKVec
+#define PSMTXIdentity SDK_PSMTXIdentity
+#include "JSystem/JGeometry/Vec.h"
+#undef PSMTXIdentity
+#undef Vec
 #include "Game/ItemBase.h"
 
 extern "C" void* fn_804032E8(unsigned int tag, void* id);
