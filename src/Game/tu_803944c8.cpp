@@ -670,7 +670,7 @@ struct MsgProc {
     }
     void setSlotPos(u8 i, s32 x) {
         MsgLayout* l = layout;
-        s32 y = slotLine[i] - lineTab[l->m15c] - 1;
+        s32 y = lineRow(lineTab[l->m15c], slotLine[i]);
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
@@ -1978,28 +1978,38 @@ extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
 }
 
 // NONMATCHING (97%): register coloring of cur/layout and slot index.
+#pragma opt_propagation off
 extern "C" void fn_8039D0DC(MsgProc* p, u8 tag) {
+    MsgLayout* l;
+    int cur;
     s32 x = 0;
-    if (!p->testBit(p->cur)) {
-        MsgLayout* l = p->layout;
-        if (l->m16c == 0 || !p->testBit(p->cur)) {
+    cur = p->cur;
+    if (!p->testBit(cur)) {
+        l = p->layout;
+        if (l->m16c == 0 || !p->testBit(cur)) {
+            f32 half;
+            f32 delta;
+            f32 offset;
             f32 base;
             f32 pos;
             if (!(l->font->flags & 0x40)) {
                 base = l->baseE8;
-                pos = p->posA[p->cur];
+                pos = p->posA[cur];
             } else {
                 base = l->baseF0;
-                pos = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+                offset = p->posB[cur] - 3.0f;
+                pos = p->posA[cur] + offset;
             }
-            x = 0.5f * (base - pos) + 0.5f;
+            delta = base - pos;
+            half = 0.5f;
+            x = delta * half + half;
         }
     }
     p->setSlotPos(p->slot, x);
     p->layout->slotTag[p->slot] = tag;
     p->slot++;
 }
-
+#pragma opt_propagation reset
 // ---- fn_80396FDC: message-system owner destructor ----
 struct MsgVObj {
     virtual ~MsgVObj();
