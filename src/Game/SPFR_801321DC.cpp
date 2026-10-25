@@ -7,7 +7,7 @@ extern "C" void* fn_8011921C(void);
 extern "C" void fn_80132454(char* a, s32 b);
 extern "C" s32 lbl_80465204[];
 extern const char lbl_80465270[];
-extern f32 lbl_8053CD00;
+extern const f32 lbl_8053CD00;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, struct SPFR_DrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern "C" void fn_8022FE80(s32 a, s32 b, void* c, s32 d, s32 e);
 extern "C" void fn_8022FEB8(void* box, s32 room, void* handle, s32 a, s32 b);
