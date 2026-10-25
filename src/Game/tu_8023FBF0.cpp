@@ -1062,7 +1062,7 @@ inline s32 getModeOwnerCached(const char* p) {
     if (linked >= 0) return fn_8022CAF8(linked);
     return S32(p, 0x120c);
 }
-inline BOOL isOtherRankCached(char* p, s32 v) {
+inline BOOL isOtherRankCached(char* p, int v) {
     s32 c;
     int i;
     s32 linked;
