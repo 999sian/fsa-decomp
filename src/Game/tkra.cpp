@@ -130,8 +130,7 @@ inline void tkraCreateItems(char* p) {
         f32 dx = lbl_805413B0;
         out = p;
         f32 dy = lbl_805413B4;
-        i=0; bits=0;
-        do {
+        for (i=0, bits=0UL; i<4; i++, bits+=0x1000000, out+=4) {
             v = *fn_8023E724(i);
             pos = v;
             pos.x=dx+v.x;
@@ -148,9 +147,8 @@ inline void tkraCreateItems(char* p) {
                     s32 room = fn_8023DE58(i);
                     *(s32*)(out + 0x24c) = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
             }
-            bits += 0x1000000;
-            out += 4;
-        } while (++i < 4);
+        }
+
 }
 
 extern "C" void fn_802EB90C(char* this_) {
