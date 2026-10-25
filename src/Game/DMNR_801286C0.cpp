@@ -33,6 +33,12 @@ extern "C" const s32 lbl_80464FC0[];
 
 extern "C" char lbl_8049E500[];
 struct DMNRSndObj {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
     virtual s32 v06(u32 a, void* b);
 };
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
@@ -293,9 +299,8 @@ extern "C" void fn_80128CCC(char* p) {
 #pragma dont_inline reset
 extern "C" void fn_80128F10(char* p) {
     fn_8010DF98();
-    void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-    s32 (*fn)(void*, s32, void*) = (s32 (*)(void*, s32, void*))(*(void***)obj)[6];
-    *(s32*)(p + 0x23c) = fn(obj, 0x3f3f3f3f, lbl_80539F38);
+    DMNRSndObj* obj = *(DMNRSndObj**)((u8*)lbl_8053AAF8 + 0xa4);
+    *(s32*)(p + 0x23c) = obj->v06(0x3f3f3f3f, lbl_80539F38);
     fn_802D7440(fn_802D6A9C(), 0);
     fn_80128728(p, 0);
 }
