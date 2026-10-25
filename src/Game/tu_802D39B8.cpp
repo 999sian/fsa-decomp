@@ -2877,14 +2877,14 @@ extern "C" bool fn_802DEB58() {
 }
 
 extern "C" bool fn_802DEBA0() {
+    char* p;
+    char* root;
     if (*(u8*)(lbl_8053AAF8 + 0x7F) == 0)
         return false;
-    char* root = *(char**)(lbl_8053AAF8 + 4);
-    if (*(s32*)(*(char**)(root + 0x0C) + 4) == 9) {
-        if (*(s32*)(*(char**)(root + 0x0C) + 8) == 3)
-            return true;
-    }
-    if (*(s32*)(*(char**)(root + 0x0C) + 4) >= 13)
+    root = *(char**)(lbl_8053AAF8 + 4);
+    p = *(char* volatile*)(root + 0x0C);
+    if ((*(s32*)(p + 4) == 9 && *(s32*)(p + 8) == 3) ||
+        *(s32*)(*(char* volatile*)(root + 0x0C) + 4) >= 13)
         return true;
     return false;
 }
