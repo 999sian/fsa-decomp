@@ -1061,7 +1061,7 @@ extern "C" void fn_8008C494(char* param_1) {
     }
 }
 
-extern "C" bool fn_8008C608(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9);
+extern "C" bool fn_8008C608(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, int param_7, u32 param_8, u8 param_9);
 extern JSUPtrList lbl_8052E894;
 extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9) {
     char buf[80];
@@ -1083,7 +1083,7 @@ extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4
 
 extern "C" char lbl_8045ED8C[];
 #pragma opt_propagation off
-extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outStartArg, u32 outSizeArg, u32 nameArg, u32 capacityArg, u32 printArg, u8 headerArg) {
+extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outStartArg, u32 outSizeArg, u32 nameArg, int capacityArg, u32 printArg, u8 headerArg) {
     u32 print = printArg;
     u32 name = nameArg;
     u32 outSize = outSizeArg;
@@ -1102,6 +1102,7 @@ extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outS
     if (!file.fopen(path)) return 0;
     char line[0x200];
     char sectionName[16];
+    path = line+30;
     found = 0;
     for (;;) {
         sectionNo++;
@@ -1110,11 +1111,12 @@ extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outS
             s32 length = file.fgets(line, sizeof(line));
             if (length < 0) break;
             if (line[0] != '.') continue;
-            char* src = line+1;
             char* dst = sectionName;
+            char* src = line+1;
             s32 n = 0;
-            while (*src) {
-                *dst = *src;
+            char c;
+            while ((c = *src) != 0) {
+                *dst = c;
                 if (*src == ' ' || n == 15) break;
                 dst++; n++; src++;
             }
@@ -1137,13 +1139,13 @@ extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outS
             if (outStart) *(u32*)outStart=start;
             if (outSize) *(u32*)outSize=size;
             if (name) {
-                const u8* src = (u8*)line+30;
+                const u8* src = (u8*)path;
                 u8* dst = (u8*)name;
                 u32 n = 0;
                 while (n < capacity-1) {
                     u32 c = *src;
                     if (c < 32 && c != 9) break;
-                    if ((c==' ' || c=='\t') && n != 0) {
+                    if ((c==' ' || c==(u32)9) && n != 0) {
                         if (dst[-1] != ' ') { *dst=' '; dst++; n++; }
                     } else { *dst++=c; n++; }
                     src++;
