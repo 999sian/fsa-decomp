@@ -14,6 +14,8 @@ extern "C" void __dt__10JUTTextureFv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" void __dla__FPv(void*);
 extern "C" u8 lbl_804AA858[];
+extern "C" void* fn_802D6A9C();
+extern "C" void load__10JUTTextureF11_GXTexMapID(void*,s32);
 extern "C" void fn_803004C0(void);
 struct Tu802F5040ResMgr {
     virtual void v0();
