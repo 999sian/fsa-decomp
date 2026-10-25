@@ -32,6 +32,12 @@ static inline void dgt2SetVel(char* p) {
     *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * dgt2Cos(*(s32*)(p + 0x98));
 }
 
+static inline void dgt2SetPoint(char* dst, char* p, s32 a) {
+    dgt2CopyPos(dst, p);
+    *(f32*)(dst + 0x0) += 6.0f * dgt2Sin(a);
+    *(f32*)(dst + 0x4) += 6.0f * dgt2Cos(a);
+}
+
 // from src/Game/fn_8018FB24_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -106,8 +112,7 @@ extern "C" void fn_8018FBB8(void* this_) {
     *(s32*)(p + 0x25c) = *(s32*)(p + 0x98);
     *(s32*)(p + 0x260) = *(s32*)(p + 0x98);
     *(s32*)(p + 0x264) = -1;
-    *(f32*)(p + 0x27c) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].sin;
-    *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].cos;
+    dgt2SetVel(p);
     *(f32*)(p + 0x284) = 0.0f;
     *(s32*)(p + 0x23c) = 8;
     *(f32*)(p + 0x44) = 0.0f;
@@ -130,14 +135,15 @@ extern "C" void fn_8018FBB8(void* this_) {
     *(s32*)(p + 0xb0) = 0x12202;
     *(s32*)(p + 0x230) = 0;
 
-    *(f32*)(p + 0x27c) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].sin;
-    *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].cos;
+    dgt2SetVel(p);
     dgt2CopyPos(p + 0x2ac, p);
-    *(f32*)(p + 0x2ac) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) - 2) & 0xf)].sin + *(f32*)(p + 0x2ac);
-    *(f32*)(p + 0x2b0) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) - 2) & 0xf)].cos + *(f32*)(p + 0x2b0);
+    s32 a = (*(s32*)(p + 0x98) - 2) & 0xf;
+    *(f32*)(p + 0x2ac) += 6.0f * dgt2Sin(a);
+    *(f32*)(p + 0x2b0) += 6.0f * dgt2Cos(a);
     dgt2CopyPos(p + 0x2b8, p);
-    *(f32*)(p + 0x2b8) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) + 2) & 0xf)].sin + *(f32*)(p + 0x2b8);
-    *(f32*)(p + 0x2bc) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) + 2) & 0xf)].cos + *(f32*)(p + 0x2bc);
+    a = (*(s32*)(p + 0x98) + 2) & 0xf;
+    *(f32*)(p + 0x2b8) += 6.0f * dgt2Sin(a);
+    *(f32*)(p + 0x2bc) += 6.0f * dgt2Cos(a);
 }
 
 struct Dgt2Child { u8 pad[0x24]; s32 dead; u8 pad2[0xf4 - 0x28]; u32 flags; };
