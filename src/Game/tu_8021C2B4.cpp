@@ -3,9 +3,7 @@
 #include "JSystem/JGeometry/Vec.h"
 
 
-extern f32 lbl_8053FCFC;
-void fn_8021CBA0(void* p);
-extern "C" f32 lbl_8053FCFC;
+extern "C" const f32 lbl_8053FCFC;
 extern "C" void fn_8021CBA0(void* p);
 extern f32 lbl_8053FD18;
 extern "C" u8 fn_8023F264(s32 idx);
