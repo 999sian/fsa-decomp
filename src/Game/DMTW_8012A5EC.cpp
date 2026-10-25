@@ -51,6 +51,7 @@ struct FsaBlock84 {
 };
 
 extern "C" u8 fn_8012A5EC(void*);
+extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8022FE80(int, int, int, u8, u8);
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
 extern "C" void fn_8011921C();
@@ -77,10 +78,15 @@ extern "C" u8 fn_8012A5EC(void* this_)
 
     switch (*(s32*)(p + 0x230)) {
     case 0:
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 9:
         *(f32*)(p + 0x23c) = 154.0f + *(f32*)(p + 0x3f4) - 270.0f;
         *(f32*)(p + 0x248) = 186.0f;
         break;
-    case 1:
+    case 2:
         lim = 260.0f + *(f32*)(p + 0x3f4);
         if (*(f32*)(p + 0x23c) > lim) {
             *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) - *(f32*)(p + 0x244);
@@ -93,20 +99,20 @@ extern "C" u8 fn_8012A5EC(void* this_)
             *(f32*)(p + 0x248) = 85.0f;
         }
         break;
-    case 2:
+    case 4:
         lim = 0.5f + *(f32*)(p + 0x3f4);
-        if (*(f32*)(p + 0x23c) >= lim) {
+        if (*(f32*)(p + 0x23c) < lim) {
             *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) - *(f32*)(p + 0x244);
         } else {
             *(f32*)(p + 0x23c) = lim;
         }
-        if (*(f32*)(p + 0x248) >= 0.0f) {
+        if (*(f32*)(p + 0x248) < 0.0f) {
             *(f32*)(p + 0x248) = *(f32*)(p + 0x248) - *(f32*)(p + 0x24c);
         } else {
             *(f32*)(p + 0x248) = 0.0f;
         }
         break;
-    case 3:
+    case 6:
         lim = 260.0f + *(f32*)(p + 0x3f4);
         if (*(f32*)(p + 0x23c) > lim) {
             *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) - *(f32*)(p + 0x244);
@@ -119,14 +125,14 @@ extern "C" u8 fn_8012A5EC(void* this_)
             *(f32*)(p + 0x248) = 85.0f;
         }
         break;
-    default:
+    case 8:
         lim = -16.0f + *(f32*)(p + 0x3f4);
         if (*(f32*)(p + 0x23c) > lim) {
             *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) - *(f32*)(p + 0x244);
         } else {
             *(f32*)(p + 0x23c) = lim;
         }
-        if (*(f32*)(p + 0x248) >= 0.0f) {
+        if (*(f32*)(p + 0x248) < 0.0f) {
             *(f32*)(p + 0x248) = *(f32*)(p + 0x248) - *(f32*)(p + 0x24c);
         } else {
             *(f32*)(p + 0x248) = 0.0f;
@@ -135,24 +141,13 @@ extern "C" u8 fn_8012A5EC(void* this_)
     }
 
     a = *(f32*)(p + 0x238) + *(f32*)(p + 0x3fc);
-    c = *(f32*)(p + 0x248);
     b = *(f32*)(p + 0x23c) + *(f32*)(p + 0x400);
+    c = *(f32*)(p + 0x248);
     obj = *(u8**)((u8*)lbl_8053AB10 + 0x24);
     obj[0x179] = 1;
     d = b - c;
     e = c + b;
-    if (*(f32*)(p + 0x3fc) == 0.0f && *(f32*)(p + 0x400) == 0.0f && *(s32*)(p + 0x230) != 0 && *(s32*)(p + 0x230) != 1) {
-        obj = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        if (obj[0x7f5] == 0) {
-            obj[0x7f4] = 1;
-            *(s32*)(obj + 0x7f8) = 5;
-            *(f32*)(obj + 0x808) = a;
-            *(f32*)(obj + 0x80c) = d;
-            *(f32*)(obj + 0x810) = a;
-            *(f32*)(obj + 0x814) = e;
-            obj[0x7f6] = 0;
-        }
-    } else {
+    if (!(*(f32*)(p + 0x3fc) == 0.0f && *(f32*)(p + 0x400) == 0.0f && *(s32*)(p + 0x230) != 0 && *(s32*)(p + 0x230) != 1)) {
         obj = *(u8**)((u8*)lbl_8053AB10 + 0x24);
         if (obj[0x840] == 0) {
             obj[0x840] = 1;
@@ -164,12 +159,23 @@ extern "C" u8 fn_8012A5EC(void* this_)
             *(f32*)(obj + 0x1d4) = 0.0f;
             *(f32*)(obj + 0x1d8) = 0.0f;
         }
+    } else {
+        obj = *(u8**)((u8*)lbl_8053AB10 + 0x24);
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = a;
+            *(f32*)(obj + 0x80c) = d;
+            *(f32*)(obj + 0x810) = a;
+            *(f32*)(obj + 0x814) = e;
+            obj[0x7f6] = 0;
+        }
     }
 
     obj = *(u8**)((u8*)lbl_8053AB10 + 0x24);
     vec.x = -*(f32*)(obj + 0x10);
-    vec.z = 0.0f;
     vec.y = -*(f32*)(obj + 0x20);
+    vec.z = 0.0f;
     return PSVECDistance((Vec*)(p + 0x238), &vec) < 0.05f;
 }
 
@@ -454,13 +460,13 @@ extern void* __vt__4DMTW[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void* fn_8012C4F8(u32* this_, s16 freeFlag) {
-    s32 i;
+    int i;
     u32* p;
     u32* a;
     if (this_ != NULL) {
         *(void**)this_ = __vt__4DMTW;
         p = this_;
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i != 2; i++) {
             a = (u32*)p[0xe2];
             if (a != NULL) {
                 a[0x3d] |= 0x100;
@@ -671,6 +677,58 @@ extern "C" void fn_8012C914(char* this_) {
         *(f32*)(p + 0x854) = lbl_8053CB90;
         *(f32*)(p + 0x1d4) = lbl_8053CB94;
         *(f32*)(p + 0x1d8) = lbl_8053CB94;
+    }
+}
+
+extern "C" void fn_8012CBE4(void)
+{
+    u8* p = lbl_8049E668;
+    JGeometry::TVec3<f32>* base = lbl_804BD790;
+    *(FsaBlock84*)(p + 0x84) = *(FsaBlock84*)p;
+    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, (u8*)base + 0x60);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, (u8*)base + 0x6c);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+    if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, (u8*)base + 0x78);
+        __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, (u8*)base + 0x84);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, (u8*)base + 0x90);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
+    }
+    if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, (u8*)base + 0x9c);
+        __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
+    }
+    if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, (u8*)base + 0xa8);
+        __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
+    }
+    if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, (u8*)base + 0xb4);
+        __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
+    }
+    if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, (u8*)base + 0xc0);
+        __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
 
