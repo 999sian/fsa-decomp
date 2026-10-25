@@ -334,7 +334,7 @@ extern "C" void fn_801AF1EC(char* this_) {
     }
 }
 
-static inline f32 okamAbs(f32 x) { return __fabs(x); }
+static inline double okamAbs(double x) { return __fabs(x); }
 
 struct OkamDrawParam {
     OkamDrawParam() : m40(-1), m44(-1) {
@@ -413,6 +413,7 @@ extern "C" u8 fn_801F23BC(char* this_, s32 room, f32* pos, f32* other, f32* box,
 extern "C" void fn_801AEB8C(char* this_) {
     f32 hitA[3];
     f32 hitB[3];
+    s32 room;
     s32 i;
 
     if (fn_801F3D94(this_, 1)) {
@@ -450,10 +451,10 @@ extern "C" void fn_801AEB8C(char* this_) {
         }
         for (i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
-                s32 room = *(s32*)(this_ + 4);
+                room = *(s32*)(this_ + 4);
                 if (room == fn_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) && !fn_80230188(i) && !fn_8022DCD8(i)) {
-                    f32 dx = __fabs(*(f32*)(this_ + 0xc) - fn_8023E724(i)[0]);
-                    f32 dy = __fabs(*(f32*)(this_ + 0x10) - fn_8023E724(i)[1]);
+                    f32 dx = okamAbs(*(f32*)(this_ + 0xc) - fn_8023E724(i)[0]);
+                    f32 dy = okamAbs(*(f32*)(this_ + 0x10) - fn_8023E724(i)[1]);
                     s32 vert = *(u32*)(this_ + 0x98) & 2;
                     if (((!vert && dy < 16.0f) || (vert && dx < 16.0f)) &&
                         !fn_801F23BC(this_, *(s32*)(this_ + 4), (f32*)(this_ + 0xc), fn_8023E724(i), (f32*)(this_ + 0x70), hitA, hitB, 0) &&
