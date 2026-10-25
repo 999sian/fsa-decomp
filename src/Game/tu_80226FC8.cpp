@@ -1,6 +1,15 @@
 #include "types.h"
 #include "sdk/stl/float.h"
 #include "JSystem/JGeometry/Box.h"
+static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(actor + 0xc);
+    *box = *(JGeometry::TBox2f*)(actor + 0x60);
+    box->addPos(pos.x, pos.y);
+    box->i.y -= pos.z;
+    pos.z *= 0.5f;
+    box->f.y -= pos.z;
+}
+
 struct GateBox {
     f32 x0, y0, x1, y1;
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
@@ -113,36 +122,51 @@ extern "C" void fn_80226FC8(void* this_, s32 idx) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
-    s32 found = -1;
-    s32 room = *(s32*)((u8*)this_ + 0x4);
-    u8 flag = ((u8*)fn_802D6A9C())[room + 0x131df];
-    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
-    for (s32 i = 0; i < count; i++) {
-        u8* a = (u8*)(*(void**)((u8*)fn_801F856C() + i * 4 + 8));
-        if (a == 0 || a[0x11c] == 0 || *(s32*)(a + 0x4) != room || *(s32*)(a + 0x198) == handle) {
-            continue;
-        }
-        if (flag == 0) {
-            if (__fabs(*(f32*)((u8*)this_ + 0x14) - *(f32*)(a + 0x14)) > eps) {
-                continue;
-            }
-            found = *(s32*)(a + 0x198);
-            break;
-        }
+    u8 flag;
+    s32 count;
+    s32 offset;
+    s32 found;
+    s32 i;
+    s32 room = *(s32*)((u8*)this_ + 4);
+    found = -1;
+    flag = ((GateRoomFlags*)fn_802D6A9C())->flag(room);
+    count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+    for (i = 0, offset = 0; i < count; i++, offset += 4) {
+        u8* a = *(u8**)((u8*)fn_801F856C() + offset + 8);
+        if (a == 0 || a[0x11c] == 0 || *(s32*)(a + 4) != *(s32*)((u8*)this_ + 4) || handle == *(s32*)(a + 0x198)) continue;
+        if (flag == 0 && __fabs(*(f32*)((u8*)this_ + 0x14) - *(f32*)(a + 0x14)) > eps) continue;
         for (u32* t = types; *t != 0x4e554c4c; t++) {
             if (*t == *(u32*)(a + 0x1a0)) {
-                found = *(s32*)(a + 0x198);
-                break;
+                GateBox box = *(GateBox*)((u8*)this_ + 0x60);
+                JGeometry::TVec3f pos = *(JGeometry::TVec3f*)((u8*)this_ + 0xc);
+                JGeometry::TVec3f otherPos = *(JGeometry::TVec3f*)(a + 0xc);
+                GateBox other = *(GateBox*)(a + 0x60);
+                box.translate(pos.x, pos.y);
+                box.y0 -= pos.z;
+                pos.z *= 0.5f;
+                box.y1 -= pos.z;
+                other.translate(otherPos.x, otherPos.y);
+                other.y0 -= otherPos.z;
+                otherPos.z *= 0.5f;
+                other.y1 -= otherPos.z;
+                f32 x0 = ((JGeometry::TBox2f*)&box)->i.x;
+                f32 y0 = ((JGeometry::TBox2f*)&box)->i.y;
+                f32 x1 = ((JGeometry::TBox2f*)&box)->f.x;
+                f32 y1 = ((JGeometry::TBox2f*)&box)->f.y;
+                if (x0 <= ((JGeometry::TBox2f*)&other)->i.x) x0 = ((JGeometry::TBox2f*)&other)->i.x;
+                if (y0 <= ((JGeometry::TBox2f*)&other)->i.y) y0 = ((JGeometry::TBox2f*)&other)->i.y;
+                if (x1 >= ((JGeometry::TBox2f*)&other)->f.x) x1 = ((JGeometry::TBox2f*)&other)->f.x;
+                if (y1 >= ((JGeometry::TBox2f*)&other)->f.y) y1 = ((JGeometry::TBox2f*)&other)->f.y;
+                if (x1 >= x0 && y1 >= y0) { found = *(s32*)(a + 0x198); break; }
             }
         }
-        if (found >= 0) {
-            break;
-        }
+        if (found >= 0) break;
     }
     return found;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80227530(void* this_, f32* out) {
     FsaVec3 v0, v1, v2, v3;
     f32* box = (f32*)((u8*)this_ + 0x60);
