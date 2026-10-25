@@ -116,17 +116,17 @@ int ReturnZero_80218F88(void) { return 0; }
 // produced byte-identical LOGIC but a 4-byte-shorter, differently
 // laid out object.
 extern "C" bool fn_80219E04(void* thisObj) {
-	s32 v = *(s32*)((char*)thisObj + 0x248);
-	bool result = false;
-	switch (v) {
-		case 2:
-			if (*(s32*)((char*)thisObj + 0x2b4) == 3) { result = true; }
-			break;
-		case 6: case 7: case 8: case 9: case 10:
-			result = true;
-			break;
-	}
-	return result;
+    s32 v = *(s32*)((char*)thisObj + 0x248);
+    bool result = false;
+    switch (v) {
+    case 2:
+        if (*(s32*)((char*)thisObj + 0x2b4) == 3) { result = true; }
+        break;
+    case 6: case 7: case 8: case 9: case 10:
+        result = true;
+        break;
+    }
+    return result;
 }
 
 extern u8 lbl_80529DEC[];
