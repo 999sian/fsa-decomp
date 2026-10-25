@@ -1,11 +1,5 @@
 #include "types.h"
-struct FsaMenuActionBase { u32 unk_0[2]; };
-struct FsaMenuAction : FsaMenuActionBase {
-    virtual void v00();
-    virtual void v01();
-    virtual void v02();
-    virtual void setAction(u32*);
-};
+#include "Game/FsaMenuAction.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DPicture.h"
 
