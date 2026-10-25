@@ -11,6 +11,11 @@ struct FsaMenuAction : FsaMenuActionBase {
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DPicture.h"
 
+static inline void setOptionTexture(u8* p, const ResTIMG* image) {
+    ((J2DPicture*)(*(J2DPane**)(p + 0xc))->search(0x506e6f703032ULL))->changeTexture(image, 0);
+    ((J2DPicture*)(*(J2DPane**)(p + 0xc))->search(0x506e6f703031ULL))->changeTexture(image, 0);
+}
+
 extern "C" void* lbl_8053AD30;
 extern "C" void* fn_80309C4C(void* a, s32 b, s32 c);
 extern "C" void* fn_80309A9C(void* a, s32 b, s32 c);
@@ -712,8 +717,8 @@ extern "C" void fn_803F8FBC(u8* p) {
     void* r;
     u32 t1;
     u32 t2;
-    f32 v1[3];
-    f32 v2[3];
+    JGeometry::TVec3f v1;
+    JGeometry::TVec3f v2;
 
     switch (p[0x25c]) {
     case 0:
@@ -771,7 +776,7 @@ extern "C" void fn_803F8FBC(u8* p) {
                 ((u8*)*(void**)(q + 0x78))[0x44] = 0;
                 ((u8*)*(void**)(q + 0x78))[0x45] = 0;
                 t1 = 0x10001;
-                ((void (*)(void*, u32*))(*(void***)(*(u8**)(q + 0x78) + 8))[5])(*(void**)(q + 0x78), &t1);
+                (*(FsaMenuAction**)(q + 0x78))->setAction(&t1);
             } else if (*(s32*)(q + 0x210) == 0x24) {
                 r = (*(J2DPane**)(p + 8))->search(*ent);
                 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
@@ -787,15 +792,11 @@ extern "C" void fn_803F8FBC(u8* p) {
                 ((u8*)*(void**)(q + 0x78))[0x44] = 0;
                 ((u8*)*(void**)(q + 0x78))[0x45] = 0;
                 t2 = 0x2000E;
-                ((void (*)(void*, u32*))(*(void***)(*(u8**)(q + 0x78) + 8))[5])(*(void**)(q + 0x78), &t2);
-                v1[0] = lbl_805437CC + *(f32*)(p + 0x88);
-                v1[1] = *(f32*)(p + 0x8c) - lbl_805437C8;
-                v1[2] = *(f32*)(p + 0x90);
-                fn_8013CC50(0, v1, 0xcb, 1, 0, 0, 0, 1, lbl_80543730);
-                v2[0] = lbl_805437CC + *(f32*)(p + 0x88);
-                v2[1] = *(f32*)(p + 0x8c) - lbl_805437C8;
-                v2[2] = *(f32*)(p + 0x90);
-                fn_8013CC50(0, v2, 0xcc, 1, 0, 0, 0, 1, lbl_80543730);
+                (*(FsaMenuAction**)(q + 0x78))->setAction(&t2);
+                v1.set(lbl_805437CC + *(f32*)(p + 0x88), *(f32*)(p + 0x8c) - lbl_805437C8, *(f32*)(p + 0x90));
+                fn_8013CC50(0, &v1.x, 0xcb, 1, 0, 0, 0, 1, lbl_80543730);
+                v2.set(lbl_805437CC + *(f32*)(p + 0x88), *(f32*)(p + 0x8c) - lbl_805437C8, *(f32*)(p + 0x90));
+                fn_8013CC50(0, &v2.x, 0xcc, 1, 0, 0, 0, 1, lbl_80543730);
             }
         } else {
             *(s32*)(q + 0x210) = 0;
