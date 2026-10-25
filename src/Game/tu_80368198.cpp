@@ -62,7 +62,7 @@ struct Vec3f {
 typedef void (Unk8036C300::*Unk8036C300Func)();
 extern "C" void fn_80369DDC(void*);
 extern "C" void fn_80368CD8(void*);
-PTMF lbl_804AE058[2] = {
+static PTMF lbl_804AE058[2] = {
     {0, -1, {(void*)fn_80369DDC}},
     {0, -1, {(void*)fn_80368CD8}}
 };
