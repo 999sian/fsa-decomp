@@ -361,25 +361,23 @@ extern "C" void fn_801EA594(u8* param_1) {
 }
 
 extern "C" s32 fn_801EA6D8(u8* param_1, u8 param_2, s32 param_3) {
+    FsaSlot* s = (FsaSlot*)param_1;
     u8* entry;
     s32 result = -1;
     s32 i;
     s32 count;
-    u8* p;
 
     if (param_2 == 0) {
-        u8* slot = param_1 + *(s32*)(param_1 + 0x74) * 4;
-        *(s32*)(slot + 0x64) = param_3;
-        *(s32*)(param_1 + 0x74) = *(s32*)(param_1 + 0x74) + 1;
+        s->unk64[s->unk74] = param_3;
+        s->unk74++;
     } else {
-        count = *(s32*)(param_1 + 0x60);
+        count = s->count;
         entry = param_1;
         for (i = 0; i < count; i++) {
             if (param_2 == entry[4]) {
-                *(s32*)(param_1 + i * 0xc + 8) = param_3;
-                p = *(u8**)(param_1 + i * 0xc);
-                if (p != NULL) {
-                    result = *(s32*)(p + 0x198);
+                s->entries[i].id = param_3;
+                if (s->entries[i].actor != NULL) {
+                    result = *(s32*)((u8*)s->entries[i].actor + 0x198);
                 }
                 break;
             }
