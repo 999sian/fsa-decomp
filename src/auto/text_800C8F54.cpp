@@ -84,7 +84,9 @@ struct J3DMaterialInitData {
     u16 mMatColorIndex[2];         // _08
     u16 mColorChanControlIndex[4]; // _0C
     u16 mAmbientColorIndex[2]; // _14
-    u8 _18[0xBC - 0x18];
+    u8 _18[0x94 - 0x18];
+    u16 mTevKColorIndex[4]; // _94
+    u8 _9C[0xBC - 0x9C];
     u16 mTevOrderInfoIndex[16]; // _BC
     u8 _DC[8];
     u16 mTevStageInfoIndex[16]; // _E4
@@ -1258,18 +1260,13 @@ extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int
 }
 
 extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
-    s32 def = lbl_8053BC74;
-    s32* pdef = &def;
-    s32 boff = b * 2;
-    u16* ids = *(u16**)(p + 8);
-    u8* base = *(u8**)(p + 4);
-    s32 idx = ids[a] * 0x14c + 0x14;
-    idx += boff;
-    u16 v = *(u16*)(base + idx);
-    if (v != 0xffff) {
-        *out = (*(s32**)(p + 0x1c))[v];
+    GXColor def = *(GXColor*)&lbl_8053BC74;
+    const J3DMaterialFactory* self = (const J3DMaterialFactory*)p;
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[a]];
+    if (initData->mAmbientColorIndex[b] != 0xffff) {
+        *out = (*(s32**)(p + 0x1c))[initData->mAmbientColorIndex[b]];
     } else {
-        *out = *pdef;
+        *out = *(s32*)&def;
     }
 }
 
@@ -1478,17 +1475,17 @@ extern const J3DIndTexCoordScaleInfo j3dDefaultIndTexCoordScaleInfo;
 struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
 };
+#pragma opt_lifetimes off
 extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no) {
-    u32 dflt[1];
+    J3DIndTexCoordScale dflt;
     u8* data = *(u8**)(p + 0xc) + idx * 0x138;
-    dflt[0] = *(const u32*)&j3dDefaultIndTexCoordScaleInfo;
     if (data[0] == 1) {
         *(u32*)out = *(u32*)(data + no * 4 + 0x68);
     } else {
-        *(u32*)out = dflt[0];
+        *(u32*)out = *(u32*)&dflt;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" J3DFogInfo fn_800CB8C8(u8* p, s32 idx)
 {
     J3DFogInfo fog;
