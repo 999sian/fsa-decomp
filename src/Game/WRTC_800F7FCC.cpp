@@ -2,6 +2,12 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "Game/ItemBase.h"
+extern "C" void* fn_804032E8(u32 fourcc, u32 id);
+extern "C" void fn_801EFD34(void*, void*, f32, f32, f32, void*, s32);
+extern const f32 lbl_8053C038;
+extern const f32 lbl_8053C03C;
+extern const f32 lbl_8053C040;
+extern const u32 lbl_8049C5D0[];
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
 
