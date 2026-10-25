@@ -57,7 +57,7 @@ extern "C" void fn_804310CC(void* a);
 extern "C" void fn_80402E08(void* a, f32 x, f32 y);
 extern "C" u32 fn_80403084(u32 a, void* b);
 extern "C" u8 lbl_80491488[];
-extern "C" u32 lbl_80491470[];
+extern "C" const u32 lbl_80491470[];
 extern "C" void fn_80402E08(void* p, f32 x, f32 y);
 extern "C" void fn_80454A6C(void* this_) {
     typedef void (*VFn2)(void*, s32);
