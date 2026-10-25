@@ -238,8 +238,7 @@ extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b
 extern f32 lbl_80543054;
 #pragma opt_propagation off
 extern "C" void fn_8037B7F8(u8* this_) {
-    const JijiTable& table = lbl_804753C0;
-    const JijiTable* t = &table;
+    const JijiTable* t = &lbl_804753C0;
     if (*(s32*)(this_ + 0x230) == 5 && *(AnimEffectRec**)(this_ + 0x274) != 0) {
         u32 snd = fn_80316E74(*(AnimEffectRec**)(this_ + 0x274), *(s32*)(this_ + 0x244));
         if (snd != 0xffffffff) {
@@ -258,7 +257,7 @@ extern "C" void fn_8037B7F8(u8* this_) {
         DrawRec rec;
         ((u8*)&rec.w10)[3] = *(u8*)(this_ + 0x270);
         fn_801F06F0(this_, t->res0,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (((u32)*(s32*)(this_ + 0x264) << 4) + ((u32)*(s32*)(this_ + 0x248) << 2)))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     &rec, 7, 1.0f, 1.0f);
     } else if (*(s32*)(this_ + 0x258) == 0x23 && *(AnimEffectRec**)(this_ + 0x274) != 0 &&
                fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)) >= 0) {
@@ -267,27 +266,29 @@ extern "C" void fn_8037B7F8(u8* this_) {
                     *(s32*)(this_ + 0x25c) + fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)), 0, 2, -1, 0, 0, 0);
     } else if (*(s32*)(this_ + 0x260) == 0) {
         fn_801F06F0(this_, t->res0,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (((u32)*(s32*)(this_ + 0x264) << 4) + ((u32)*(s32*)(this_ + 0x248) << 2)))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, -1, 1.0f, 1.0f);
     } else if (*(s32*)(this_ + 0x260) == 1) {
         fn_801F06F0(this_, t->res2,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (((u32)*(s32*)(this_ + 0x264) << 4) + ((u32)*(s32*)(this_ + 0x248) << 2)))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 7, 1.0f, 1.0f);
         fn_80307AC8(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (((u32)*(s32*)(this_ + 0x264) << 4) + ((u32)*(s32*)(this_ + 0x248) << 2)))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 0, -1);
     } else {
         fn_801F06F0(this_, t->res1,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (((u32)*(s32*)(this_ + 0x264) << 4) + ((u32)*(s32*)(this_ + 0x248) << 2)))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 7, 1.0f, 1.0f);
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (((u32)*(s32*)(this_ + 0x264) << 4) + ((u32)*(s32*)(this_ + 0x248) << 2)))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 2, -1, 0, 0, 0);
     }
 }
 #pragma opt_propagation reset
 struct JijiAnimEntry { u16 a, b; };
 extern "C" void fn_801EE558(void* this_, JGeometry::TVec3<f32>* dir, f32* dist, s32 p);
+
+extern f32 lbl_8054304C;
 
 extern "C" void fn_8037C788(u8* this_) {
     f32 dist;
@@ -338,7 +339,7 @@ extern "C" void fn_8037C788(u8* this_) {
         fn_801EE558(this_, &dir, &dist, 0);
         if (dist < 100.0f) {
             f32 rad = JMAAtan2Radian(-dir.x, -dir.y);
-            u16 ang = rad * 10430.378f;
+            u16 ang = (u16)(s32)(rad * 10430.378f);
             if (ang < 0x2000 || ang >= 0xe000) {
                 *(s32*)(this_ + 0x248) = 3;
             } else if (ang >= 0x2000 && ang < 0x6000) {
