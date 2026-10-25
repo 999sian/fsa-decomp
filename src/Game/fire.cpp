@@ -300,61 +300,49 @@ char* fn_801F666C(void* obj, s32 idx);
 extern "C" s32 fn_801F78F4(void*, u32, s32);
 extern "C" char* fn_801F666C(void*, s32);
 extern "C" BOOL fn_802BACE4(char* p) {
-    s32 idx;
-    char* obj;
-    u8 hit;
-    f32 x0;
-    f32 y0;
-    f32 x1;
-    f32 y1;
-    f32 ox0;
-    f32 oy0;
-    f32 ox1;
-    f32 oy1;
-
     if (*(s32*)(p + 0x264) != 0) {
         return FALSE;
     }
-    x0 = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
-    x1 = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
-    y0 = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
-    y1 = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
-
-    idx = -1;
+    f32 x0 = *(f32*)(p + 0x60);
+    f32 y0 = *(f32*)(p + 0x64);
+    f32 x1 = *(f32*)(p + 0x68);
+    f32 y1 = *(f32*)(p + 0x6c);
+    f32 px = *(f32*)(p + 0xc);
+    f32 py = *(f32*)(p + 0x10);
+    x0 += px;
+    y0 += py;
+    x1 += px;
+    y1 += py;
+    s32 idx = -1;
     for (;;) {
         idx = fn_801F78F4(fn_801F856C(), 'ICEB', idx);
         if (idx < 0) {
             return FALSE;
         }
-        obj = fn_801F666C(fn_801F856C(), idx);
-        if (obj != NULL && *(s32*)(p + 4) == *(s32*)(obj + 4)) {
-            ox0 = *(f32*)(obj + 0x60) + *(f32*)(obj + 0xc);
-            ox1 = *(f32*)(obj + 0x68) + *(f32*)(obj + 0xc);
-            oy0 = *(f32*)(obj + 0x64) + *(f32*)(obj + 0x10);
-            oy1 = *(f32*)(obj + 0x6c) + *(f32*)(obj + 0x10);
-            if (ox0 <= x0) {
-            } else {
-                ox0 = x0;
-            }
-            if (oy0 <= y0) {
-            } else {
-                oy0 = y0;
-            }
-            if (ox1 >= x1) {
-            } else {
-                ox1 = x1;
-            }
-            if (oy1 >= y1) {
-            } else {
-                oy1 = y1;
-            }
-            hit = 0;
-            if (ox1 >= ox0 && oy1 >= oy0) {
-                hit = 1;
-            }
-            if (hit) {
-                return TRUE;
-            }
+        char* o = fn_801F666C(fn_801F856C(), idx);
+        if (o == NULL || *(s32*)(p + 4) != *(s32*)(o + 4)) {
+            continue;
+        }
+        f32 ox0 = *(f32*)(o + 0x60);
+        f32 oy0 = *(f32*)(o + 0x64);
+        f32 ox1 = *(f32*)(o + 0x68);
+        f32 oy1 = *(f32*)(o + 0x6c);
+        f32 opx = *(f32*)(o + 0xc);
+        f32 opy = *(f32*)(o + 0x10);
+        ox0 += opx;
+        oy0 += opy;
+        ox1 += opx;
+        oy1 += opy;
+        if (ox0 <= x0) ox0 = x0;
+        if (oy0 <= y0) oy0 = y0;
+        if (ox1 >= x1) ox1 = x1;
+        if (oy1 >= y1) oy1 = y1;
+        bool hit = false;
+        if (ox1 >= ox0 && oy1 >= oy0) {
+            hit = true;
+        }
+        if (hit) {
+            return TRUE;
         }
     }
 }
@@ -526,6 +514,28 @@ void fn_802BB1F8(char* p) {
     buf[3] = 0x80;
     flags = *(u32*)buf;
     fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), n, v, &flags, lbl_80540B7C);
+}
+
+extern "C" void fn_802BB468(char* p) {
+    s32 state = *(s32*)(p + 0x238);
+    if (state == 4) {
+        *(s32*)(p + 0x25c) = *(s32*)(p + 0x25c) + 1;
+        if (*(s32*)(p + 0x25c) > 0xf) {
+            *(u8*)(p + 0x11c) = 0;
+        }
+    } else if (state < 4) {
+        if (state == 0) {
+            if (*(s32*)(p + 0x278) != *(s32*)(p + 4)) {
+                *(s32*)(p + 0x278) = *(s32*)(p + 4);
+            }
+        }
+    } else if (state < 6) {
+        if (*(s32*)(p + 0x25c) == 0) {
+            fn_801F0E34(p, 0x3002e, 0);
+        } else {
+            *(s32*)(p + 0x25c) = *(s32*)(p + 0x25c) - 1;
+        }
+    }
 }
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
