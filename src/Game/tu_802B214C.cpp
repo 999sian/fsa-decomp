@@ -198,17 +198,6 @@ extern "C" void fn_802B2728(Actor* param_1)
 
 extern "C" f32 lbl_80540A0C;
 extern "C" f32 lbl_80540A10;
-extern "C" s32 lbl_805409D0[];
-extern "C" f32 lbl_805409EC;
-extern "C" f32 lbl_805409F0;
-extern "C" f32 lbl_805409F4;
-extern "C" f32 lbl_805409F8;
-extern "C" f32 lbl_805409FC;
-extern "C" f32 lbl_80540A00;
-extern "C" f32 lbl_80540A04;
-extern "C" f32 lbl_80540A08;
-extern "C" u8 sincosTable___5JMath[];
-extern "C" int __float_epsilon[];
 extern "C" f32 lbl_80540A14;
 extern "C" f32 lbl_80540A08;
 extern "C" f32 lbl_805409DC;
