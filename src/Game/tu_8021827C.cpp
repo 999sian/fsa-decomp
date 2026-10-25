@@ -12,30 +12,29 @@ extern "C" u8 fn_8022BA58(s32 room, f32* pos);
 extern "C" bool fn_8030C2A8(u8* p, f32* v);
 extern "C" bool fn_801E1DE8(void* this_);
 extern "C" void fn_801F0E34(void* p, u32 id, s32 flag);
+#pragma opt_propagation off
 extern "C" void fn_8021827C(u8* p) {
     u8 buf[0x10];
     if (*(s32*)(p + 0x248) != 0) {
         s32 kind = *(s32*)(p + 4);
         u8* mgr = fn_802D6A9C();
         f32* b;
-        if (kind < 8) {
-            b = (f32*)(mgr + 0xcc);
-        } else {
-            b = (f32*)(mgr + 0xdc);
-        }
+        if (kind < 8) b = (f32*)(mgr + 0xcc);
+        else b = (f32*)(mgr + 0xdc);
         if (b[1] < *(f32*)(p + 0x10) && *(f32*)(p + 0x10) < b[3]) {
-            f32 hi = *(f32*)(p + 0xc);
-            f32 min = *(f32*)(p + 0x60);
-            f32 max = *(f32*)(p + 0x68);
+            f32 hi;
+            f32 min;
+            f32 max;
+            max = *(const volatile f32*)(p + 0x68);
+            min = *(const volatile f32*)(p + 0x60);
+            hi = *(const f32*)(p + 0xc);
             f32 lo = hi;
             if (max - min > lbl_8053FC40) {
                 lo = hi + min;
                 hi = hi + max;
             }
             bool in = false;
-            if (b[0] < lo && hi < b[2]) {
-                in = true;
-            }
+            if (b[0] < lo && hi < b[2]) in = true;
             if (in) {
                 fn_801CE010(p, buf);
                 fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), buf);
@@ -43,7 +42,7 @@ extern "C" void fn_8021827C(u8* p) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8021835C(u8* p) {
     if (*(s32*)(p + 0x248) == 1) {
         JGeometry::TVec3<f32> v;
