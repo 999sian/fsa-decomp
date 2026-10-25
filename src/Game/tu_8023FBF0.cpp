@@ -218,6 +218,14 @@ inline bool inOtherRoom(char* p) {
     return r;
 }
 
+struct PlayerSoundHandle {
+    u8 _0[8];
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void play(u32*);
+};
+
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 
