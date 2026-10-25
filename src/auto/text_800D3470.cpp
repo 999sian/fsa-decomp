@@ -987,6 +987,18 @@ extern "C" void fn_800D516C(void* param) {
     DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
+extern "C" void fn_800D5318(u8* p) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 0x1c);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    if (start + lbl_80539E18 > __GDCurrentDL->end) GDOverflowed();
+    J3DGDWriteXFCmdHdr(0x100e, 4);
+    ((J3DColorChan*)(p + 0x0e))->load();
+    ((J3DColorChan*)(p + 0x12))->load();
+    ((J3DColorChan*)(p + 0x10))->load();
+    ((J3DColorChan*)(p + 0x14))->load();
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
 extern "C" void fn_800D5750(Vtable800D8248* obj)
 {
   obj->m3();
@@ -1024,29 +1036,19 @@ extern "C" void fn_800D579C(void* param) {
 extern "C" void fn_800D5948(u8* p) {
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 0x48);
     u8* start = __GDCurrentDL->pDisplayListData;
-    if (start + lbl_80539E18 > __GDCurrentDL->end) {
-        GDOverflowed();
-    }
-
-    __GDWrite(0x10);
-    __GDWrite(0x00);
-    __GDWrite(0x03);
-    __GDWrite(0x10);
-    __GDWrite(0x0e);
-
-    writeChanCtrl(*(u16*)(p + 0x16));
-    writeChanCtrl(*(u16*)(p + 0x1a));
-    writeChanCtrl(*(u16*)(p + 0x18));
-    writeChanCtrl(*(u16*)(p + 0x1c));
-
-    for (int i = 0; i < 8; i++) {
+    if (start + lbl_80539E18 > __GDCurrentDL->end) GDOverflowed();
+    J3DGDWriteXFCmdHdr(0x100e, 4);
+    ((J3DColorChan*)(p + 0x16))->load();
+    ((J3DColorChan*)(p + 0x1a))->load();
+    ((J3DColorChan*)(p + 0x18))->load();
+    ((J3DColorChan*)(p + 0x1c))->load();
+    for (u32 i = 0; i < 8; i++) {
         J3DLightObj* light = *(J3DLightObj**)(p + 0x20);
         if (light != NULL) {
             light->load(i);
         }
         p += 4;
     }
-
     DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
 }
 
