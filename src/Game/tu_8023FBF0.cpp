@@ -1008,6 +1008,17 @@ inline s32 linkRank(char* p) {
     }
     return c + 1;
 }
+inline BOOL isLinkOwnerCached(char* p) {
+    u8 bit = 1 << S32(p, 4);
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
+        return 1;
+    }
+    if (getMode(p) == 4) {
+        s32 v = linkIdx(p);
+        return v != linkRank(p);
+    }
+    return ((u32)S32(p, 0xd60) >> 31) ^ 1;
+}
 BOOL fn_80240670(char* p) {
     u8 bit = 1 << S32(p, 0x4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
@@ -5012,11 +5023,9 @@ u8 fn_80250090(char* p) {
 #pragma opt_lifetimes off
 int fn_80250ACC(char* p) {
     s32 me;
-    BOOL other;
     if (getModeLO(p, me) == 4) {
-        s32 v = linkIdx(p);
-        other = v != linkRank2(p);
-        if (other) {
+        me = linkIdx(p);
+        if (me != linkRank2(p)) {
             return 0;
         }
     }
