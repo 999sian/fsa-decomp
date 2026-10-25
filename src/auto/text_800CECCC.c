@@ -206,12 +206,11 @@ extern "C" void fn_800CF8CC(void** self, void* data);
 extern "C" void fn_800CF970(void** self, const unsigned char* data);
 extern "C" void fn_800CFA04(void** self, const void* data);
 extern "C" void* fn_800CF3E8(void** self, unsigned char* data) {
-    u32 count = *(u32*)(data + 0xc);
-    s32 tag;
+    const u32 count = *(const u32*)(data + 0xc);
     unsigned char* entry = data + 0x20;
     u32 i;
     for (i = 0; i < count; i++) {
-        tag = *(s32*)entry;
+        s32 tag = *(s32*)entry;
         switch (tag) {
         case 0x414e4631:
             fn_800CF650(self, entry);
@@ -238,9 +237,9 @@ extern "C" void* fn_800CF3E8(void** self, unsigned char* data) {
 }
 
 extern "C" void fn_800CF510(void* param_1, unsigned char* param_2, unsigned char* param_3) {
-    u32 count = *(u32*)(param_3 + 0xc);
+    unsigned int count = *(unsigned int*)(param_3 + 0xc);
     unsigned char* chunk = param_3 + 0x20;
-    u32 i;
+    unsigned int i;
     for (i = 0; i < count; i++) {
         switch (*(s32*)chunk) {
         case 0x414e4631:
@@ -330,14 +329,22 @@ extern "C" void fn_800CF8CC(void** self, void* data)
 }
 
 extern "C" void fn_800CF8F4(void* param_1, void* anm_, void* data_) {
-    unsigned char* anm = (unsigned char*)anm_;
-    const J3DAnmVisibilityFullData* data = (const J3DAnmVisibilityFullData*)data_;
-    u8 attr = data->mAttribute;
-    *(s16*)(anm + 6) = data->mTotalFrameCount;
-    u16 info1 = data->mExtraInfo1;
+    u8 attr;
+    s16 frame;
+    u16 info1;
+    u16 info2;
+    f32 zero;
+    unsigned char* anm;
+    const J3DAnmVisibilityFullData* data;
+    zero = lbl_8053BC80;
+    data = (const J3DAnmVisibilityFullData*)data_;
+    attr = data->mAttribute;
+    anm = (unsigned char*)anm_;
+    frame = data->mTotalFrameCount;
+    *(s16*)(anm + 6) = frame;
+    info1 = data->mExtraInfo1;
     anm[4] = attr;
-    u16 info2 = data->mExtraInfo2;
-    f32 zero = lbl_8053BC80;
+    info2 = data->mExtraInfo2;
     *(f32*)(anm + 8) = zero;
     *(u16*)(anm + 12) = info1;
     *(u16*)(anm + 14) = info2;
@@ -400,8 +407,9 @@ extern "C" void fn_800D0270(void** self, void* data);
 extern "C" void fn_800CFEC8(void** self, void* data);
 extern "C" void fn_800D0424(void** self, const void* data);
 extern "C" void* fn_800CFB9C(void** self, unsigned char* data) {
-    unsigned int count = *(unsigned int*)(data + 0xc);
-    unsigned char* chunk = data + 0x20;
+    unsigned char* base = data;
+    unsigned int count = *(unsigned int*)(base + 0xc);
+    unsigned char* chunk = base + 0x20;
     unsigned int i;
     for (i = 0; i < count; i++) {
         switch (*(unsigned int*)chunk) {
@@ -434,6 +442,7 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
     void fn_800D044C(void**, void*, const void*);
     u32 count = *(u32*)(param_3 + 0xc);
     unsigned char* p = param_3 + 0x20;
+    u32 tag = 0x54524b31;
     for (u32 i = 0; i < count; i++) {
         switch (*(u32*)p) {
         case 0x414e4b31:
@@ -571,7 +580,7 @@ extern "C" void fn_800D0204(void* param_1, unsigned char* anm, const unsigned ch
     *(float**)(anm + 0xc) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x14));
 }
 
-void fn_800D0298(void* self, void* res, void* data);
+extern "C" void fn_800D0298(void* self, void* res, void* data);
 extern "C" void fn_800D0298(void*, void*, void*);
 extern "C" void fn_800D0270(void** self, void* data)
 {
