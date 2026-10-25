@@ -15,7 +15,7 @@ extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, DrawRec*);
 struct SpriteTables {
     s32 frames[8];
     s32 bodyFrames[4];
-    char resourceName[1];
+    char resourceName[24];
 };
 extern "C" s32 lbl_80472240[];
 extern f32 lbl_80542710;
@@ -42,16 +42,16 @@ extern "C" Actor* fn_803536C4(Actor* p, s16 n) {
 
 #pragma opt_propagation off
 extern "C" void fn_80353724(u8* p) {
-    s32* tbl = lbl_80472240;
+    const SpriteTables* tbl = (SpriteTables*)lbl_80472240;
     JGeometry::TVec3f top = *(Vec*)(p + 0xc);
     DrawRec rec;
-    s32 frame;
+    int frame;
     rec.b2d = 1;
     rec.b1c = 2;
     rec.b1d = 1;
     if (*(s32*)(p + 0x24c) < 8) {
         JGeometry::TVec3f pos = *(Vec*)(p + 0xc);
-        pos.x -= lbl_80542710;
+        pos.x -= 8.0f;
         switch (*(s32*)(p + 0x24c)) {
         case 2:
         case 3:
@@ -73,10 +73,11 @@ extern "C" void fn_80353724(u8* p) {
             pos.y += lbl_80542710;
             break;
         }
-        const s32* __restrict frames = tbl;
-        frame = *(s32*)(p + 0x244) + frames[*(s32*)(p + 0x24c)];
+        int index = *(s32*)(p + 0x24c);
+        const s32* __restrict frames = tbl->frames;
+        frame = *(s32*)(p + 0x244) + frames[index];
         if (*(s32*)(p + 4) < 8) {
-            void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, (char*)tbl + 0x30);
+            void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, tbl->resourceName);
             fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, frame, lbl_80542720, lbl_80542720, &rec);
         }
     }
@@ -94,10 +95,11 @@ extern "C" void fn_80353724(u8* p) {
         rec.ids[2] = 9;
         break;
     }
-    const s32* __restrict frames2 = tbl + 8;
-    frame = frames2[*(s32*)(p + 0x23c)] + 0xc0;
+    int index = *(s32*)(p + 0x23c);
+    const s32* __restrict frames2 = tbl->bodyFrames;
+    frame = frames2[index] + 0xc0;
     if (*(s32*)(p + 4) < 8) {
-        void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, (char*)tbl + 0x30);
+        void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, tbl->resourceName);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, res, frame, lbl_80542720, lbl_80542720, &rec);
     }
 }
