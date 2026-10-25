@@ -577,50 +577,77 @@ extern "C" f32 fn_802F5FF4(f32 x) {
 #include "JSystem/JMath/JMath.h"
 extern f64 __frsqrte(f64);
 
+static inline f32 Tu802F5040_invSqrt(const f32 x) {
+    if (x <= 0.0f) return x;
+    f32 y = __frsqrte(x);
+    return 0.5f * y * (3.0f - x * (y * y));
+}
 static inline void Tu802F5040_setVec(f32* dst, f32 x, f32 y, f32 z) {
     dst[0] = x;
     dst[1] = y;
     dst[2] = z;
 }
-extern "C" void fn_802F601C(u8* this_, f32* src, s32 type, f32* src2, f32 f1, f32 f2) {
+#pragma opt_common_subs off
+#pragma opt_propagation off
+extern "C" void fn_802F601C(Tu802F5040Effects* this_, f32* src, s32 type, f32* __restrict src2, f32 f1, f32 f2) {
+    f32 r;
+    f32 scale;
+    f32 mag;
+    f32 z;
+    f32 y;
+    f32 x;
     u8* p;
     s32 best;
     s32 bestIdx;
     s32 slot;
     s32 i;
     Tu802F5040Effect* e;
-    p = this_;
+    u8* q;
+    p = (u8*)this_;
     best = -1;
     bestIdx = 0;
     slot = -1;
     for (i=0; i<16; i++) {
-        if (*(s32*)(p+0xbf9c)==0) { slot=i; break; }
-        if (best < 0 || best > *(s32*)(p+0xbfac)) {
-            best=*(s32*)(p+0xbfac);
+        q=p+0x10000;
+        if (*(s32*)(q-0x4064)==0) { slot=i; break; }
+        if (best < 0 || best > *(s32*)(q-0x4054)) {
+            best=*(s32*)(q-0x4054);
             bestIdx=i;
         }
         p+=0x28;
     }
     if (slot<0) slot=bestIdx;
-    e=(Tu802F5040Effect*)(this_+(slot*0x28+0xbf9c));
+    x=src[0];
+    y=src[1];
+    z=src[2];
+    e=&this_->entries[slot];
     e->type=type;
-    e->pos.set(*(JGeometry::TVec3<f32>*)src);
+    e->pos.set(x,y,z);
     e->a=f1;
     e->b=f2;
     switch(type) {
-    case 1: e->timer=5; break;
     case 2: e->timer=60; break;
+    case 1: e->timer=5; break;
     case 3:
         e->timer=18;
         e->direction.set(*(JGeometry::TVec3<f32>*)src2);
-        e->direction.normalize();
+        mag=e->direction.squared();
+        if (mag <= JGeometry::TUtilf::epsilon()) return;
+        if (mag <= 0.0f) { scale=mag; }
+        else {
+            r=(f32)__frsqrte(mag);
+            r=0.5f*r*(3.0f-mag*(r*r));
+            scale=r;
+        }
+        e->direction.scale(scale);
         break;
     case 4: e->type=5; e->a=-e->a; e->timer=1; break;
     case 5: e->timer=1; break;
     case 6: e->timer=300; break;
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* src) {
     struct Quad {
         s32 v[4];
