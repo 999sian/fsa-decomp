@@ -99,13 +99,14 @@ static inline u8 RendererFadeAlpha802F() {
     return lbl_8053AEC8 ? lbl_8053AEC8[0x5c] : 0;
 }
 static inline void ScreenMaskQuad802F(const s32* r) {
-    GXWGFifo.f32=(f32)r[0];GXWGFifo.f32=(f32)r[1];GXWGFifo.f32=lbl_805414F8;
+    s32 left=r[0],top=r[1],right=r[0]+r[2],bottom=r[1]+r[3];
+    GXWGFifo.f32=(f32)left;GXWGFifo.f32=(f32)top;GXWGFifo.f32=lbl_805414F8;
     GXWGFifo.f32=lbl_80541574;GXWGFifo.f32=lbl_80541574;
-    GXWGFifo.f32=(f32)(r[0]+r[2]);GXWGFifo.f32=(f32)r[1];GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=(f32)right;GXWGFifo.f32=(f32)top;GXWGFifo.f32=lbl_805414F8;
     GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541574;
-    GXWGFifo.f32=(f32)(r[0]+r[2]);GXWGFifo.f32=(f32)(r[1]+r[3]);GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=(f32)right;GXWGFifo.f32=(f32)bottom;GXWGFifo.f32=lbl_805414F8;
     GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541518;
-    GXWGFifo.f32=(f32)r[0];GXWGFifo.f32=(f32)(r[1]+r[3]);GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=(f32)left;GXWGFifo.f32=(f32)bottom;GXWGFifo.f32=lbl_805414F8;
     GXWGFifo.f32=lbl_80541574;GXWGFifo.f32=lbl_80541518;
 }
 
@@ -2028,7 +2029,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     GXSetScissor(viewport[0],viewport[1],viewport[2],viewport[3]);
     s32 scrollX=((regs[0xb]<<1)&0x1f0)|((regs[0xf]>>4)&15);
     s32 scrollY=((regs[0x13]<<1)&0x1f0)|((regs[0x17]>>4)&15);
-    s32* wave=0;
+    s32* wave=NULL;
     void* controller=fn_8022BCD4(player);
     if (enabled) {
         u8 special=0;
