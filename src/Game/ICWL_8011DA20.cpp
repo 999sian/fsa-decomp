@@ -29,7 +29,7 @@ extern u32 lbl_80464BE8[];
 extern "C" void v03__5ActorFv(void* this_);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_80239914(void* box, u32 a, u32 b);
-extern "C" s32 fn_8023AA18(void* box, s32 room);
+extern "C" s32 fn_8023AA18(void* box, s32 room, void* vec = 0);
 extern "C" s32 fn_8023AB94(void* box, s32 room, void* vec);
 extern "C" s32 fn_8023AC74(void* box, s32 room, void* vec);
 extern "C" s32 fn_8023AD54(void* box, s32 room, void* vec);
@@ -51,6 +51,148 @@ extern "C" void fn_8020D7D0(void* entry, u32 handle);
 extern "C" s32 fn_801CD950(void* value, f32 target, f32 step);
 extern "C" s32 fn_8013CC50(u32 room, void* pos, f32 scale, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 extern "C" void fn_801D1C18(void* p);
+extern "C" void v06__5ActorFv(void* this_);
+extern "C" void fn_8011DA20(char* this_) {
+    v06__5ActorFv(this_);
+    u8 tbl[16];
+    s32 i;
+    for (i = 0; i < 16; i++) {
+        tbl[i] = (u8)i;
+    }
+}
+
+extern "C" void fn_8011E030(u8* this_) {
+    f32 box[4];
+    f32 vec[2];
+    f32 box2[4];
+    f32 vec2[2];
+    f32 box3[4];
+    f32 vec3[2];
+    s32 idx;
+    s32 done;
+    f32 scale;
+    u8* emitter;
+    u8* base;
+
+    v03__5ActorFv(this_);
+    box[0] = *(f32*)(this_ + 0x60);
+    box[1] = *(f32*)(this_ + 0x64);
+    box[2] = *(f32*)(this_ + 0x68);
+    box[3] = *(f32*)(this_ + 0x6c);
+    box[0] += *(f32*)(this_ + 0xc);
+    box[2] += *(f32*)(this_ + 0xc);
+    box[1] += *(f32*)(this_ + 0x10);
+    box[3] += *(f32*)(this_ + 0x10);
+
+    done = 0;
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+        fn_80239914(box, *(s32*)(this_ + 0x4), *(u32*)(this_ + 0x198));
+        idx = fn_801F285C(this_, 0, 0, 1, -1);
+        if (idx >= 0) {
+            fn_801F0E34(this_, 0x400D1, 0);
+            vec[0] = *(f32*)(this_ + 0xc);
+            vec[1] = *(f32*)(this_ + 0x10);
+            fn_802379E4(idx, vec);
+            done = 1;
+        }
+        if (!done) {
+            vec2[0] = lbl_8053C8B8;
+            vec2[1] = lbl_8053C8B8;
+            box2[0] = *(f32*)(this_ + 0x70) + *(f32*)(this_ + 0xc);
+            box2[1] = *(f32*)(this_ + 0x74) + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+            box2[2] = *(f32*)(this_ + 0x78) + *(f32*)(this_ + 0xc);
+            box2[3] = *(f32*)(this_ + 0x7C) + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+            if (fn_8023AA18(box2, *(s32*)(this_ + 0x4)) >= 0) {
+                done = 1;
+            } else {
+                idx = fn_8023AE34(box2, *(s32*)(this_ + 0x4), vec2);
+                if (idx >= 0) {
+                    fn_801CC820(idx, 0);
+                    done = 1;
+                } else {
+                    idx = fn_8023AC74(box2, *(s32*)(this_ + 0x4), vec2);
+                    if (idx >= 0) {
+                        fn_801CC538(idx, vec2, vec3, 0);
+                        done = 1;
+                    } else {
+                        idx = fn_8023AD54(box2, *(s32*)(this_ + 0x4), vec2);
+                        if (idx >= 0) {
+                            fn_801CC640(idx, 0, 0);
+                            done = 1;
+                        }
+                    }
+                }
+            }
+        }
+        if (!done) {
+            box3[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+            box3[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+            box3[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+            box3[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+            vec3[0] = lbl_8053C8B8;
+            vec3[1] = lbl_8053C8B8;
+            if (fn_8023AB94(box3, *(s32*)(this_ + 0x4), vec3) >= 0 || fn_801F2718(this_, 0x46495245) >= 0) {
+                if (*(void**)(this_ + 0x100) != 0) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x100));
+                    *(void**)(this_ + 0x100) = 0;
+                }
+                if (*(void**)(this_ + 0x104) != 0) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x104));
+                    *(void**)(this_ + 0x104) = 0;
+                }
+                if (*(s32*)(this_ + 0x4) == 0) {
+                    scale = lbl_8053C8BC;
+                    if (*(s32*)(this_ + 0x230) == 1) {
+                        scale = lbl_8053C8C0;
+                    }
+                    *(void**)(this_ + 0x27C) = (void*)fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, scale, 0x28D, 1, 0, 0, 0, 1);
+                    fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, scale, 0x28E, 1, 0, 0, 0, 1);
+                    fn_801F0E34(this_, 0x30061, 0);
+                    *(s32*)(this_ + 0x234) = 1;
+                } else {
+                    base = (u8*)fn_8020D58C();
+                    fn_8020D7D0(base + 4 + base[0] * 0x784, *(u32*)(this_ + 0x198));
+                }
+                done = 1;
+            }
+        }
+        break;
+    case 1:
+        break;
+    default:
+        return;
+    }
+
+    if (!done && fn_801CD950(this_ + 0x240, lbl_8053C8D4, lbl_8053C8D8) == 0) {
+        emitter = *(u8**)(this_ + 0x27C);
+        if (emitter != 0) {
+            *(u32*)(emitter + 0xF4) |= 1;
+            *(s32*)(emitter + 0x24) = 1;
+        }
+        switch (*(s32*)(this_ + 0x238)) {
+        case 1:
+            fn_801F0D20(this_, 3);
+            break;
+        case 2:
+            fn_801F0D20(this_, 0x42);
+            break;
+        case 3:
+            fn_801F0D20(this_, 6);
+            break;
+        }
+        if (*(s32*)(this_ + 0x23C) != 0) {
+            Actor_CreateByID(fn_801F856C(), lbl_80464BE8[*(s32*)(this_ + 0x23C)], *(s32*)(this_ + 0x4), this_ + 0xc, lbl_80464C0C[*(s32*)(this_ + 0x23C)], -1, -1);
+            detach__5ActorFv(this_);
+            *(s32*)(this_ + 0x234) = 2;
+            *(f32*)(this_ + 0x54) = *(f32*)(this_ + 0x240);
+            *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x240);
+            *(f32*)(this_ + 0x5C) = *(f32*)(this_ + 0x240);
+            fn_801D1C18(this_ + 0x244);
+        }
+    }
+}
+
 extern "C" void fn_8011E4FC(u8* this_) {
     v01__5ActorFv(this_);
     *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x90) & 0xF;
