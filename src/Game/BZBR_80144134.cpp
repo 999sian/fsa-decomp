@@ -15,7 +15,7 @@ struct BzbrGame;
 extern BzbrGame* lbl_8053AAF8;
 
 // Scaled rotation about Y (x/z angles zero) into a 3x4 matrix.
-static inline void bzbrRotYMtx(f32 (*m)[4], f32 s, f32 ang) {
+static inline void bzbrRotYMtx(f32 (*m)[4], f32 ang, f32 s) {
     f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
     f32 rx = 0.0f;
     sx = sin(rx);
