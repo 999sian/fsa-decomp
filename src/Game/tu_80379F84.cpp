@@ -34,8 +34,8 @@ extern "C" void fn_803B7DCC(void* p);
 extern "C" void fn_803D8364(void);
 extern "C" void fn_803D82EC(void* p);
 extern void* lbl_8053AAF8;
-static inline bool isBlockedState(u8 state) {
-    return state == 8 || state == 7 || state == 9;
+static inline u8 menuState(u8 state) {
+    return state;
 }
 
 extern "C" BOOL fn_80379F84(void* this_) {
