@@ -51,6 +51,15 @@ static inline u8 tu801D3320_isFreeAt(const Vec3f& pos, s32 room) {
     return ok;
 }
 
+static inline u8 tu801D3320_isFreeT(Vec3f* pos, char* this_) {
+    u8 ok = 1;
+    s32 room = *(s32*)(this_ + 0x4);
+    if (fn_801CCBD0(pos, room) || fn_801CCB1C(pos, room)) {
+        ok = 0;
+    }
+    return ok;
+}
+
 static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
     u8 ok = 1;
     s32 r = room;
