@@ -15,6 +15,16 @@ static inline void approachTimed(float* value, float target, float frames) {
     }
 }
 
+static inline void updateEmitters(char* self) {
+    int i = 0;
+    void** p = (void**)self;
+    do {
+        if (p[13]) fn_8013CB44(p[13], self + 8, 0, 0, 1);
+        i++;
+        p++;
+    } while (i < 3);
+}
+
 static inline void setEmitterScale(void* emitter, float scale) {
     if (emitter) {
         char* p = (char*)emitter;
@@ -27,6 +37,95 @@ static inline void setEmitterScale(void* emitter, float scale) {
 }
 
 
+#pragma optimization_level 3
+extern "C" int fn_8021F4B0(char* self) {
+    int i;
+    void** p;
+    int result = 0;
+    *(int*)(self + 4) += 1;
+    if (*(int*)(self + 4) < 0) *(int*)(self + 4) = 0;
+    switch (*(int*)self) {
+    case 1:
+        if (*(int*)(self + 4) >= 240) {
+            *(int*)(self + 4) = 0;
+            *(int*)self = 2;
+        } else {
+            float frames = 240 - *(int*)(self + 4);
+            approachTimed((float*)(self + 8), *(float*)(self + 0x14), frames);
+            approachTimed((float*)(self + 0xc), *(float*)(self + 0x18), frames);
+            approachTimed((float*)(self + 0x10), *(float*)(self + 0x1c), frames);
+            i = 0;
+            p = (void**)self;
+            for (; i < 3; i++, p++) {
+                void* emitter = p[13];
+                if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
+            }
+        }
+        break;
+    case 2:
+        if (*(int*)(self + 4) >= 60) {
+            *(int*)(self + 4) = 0;
+            *(int*)self = 3;
+        }
+        break;
+    case 3:
+        if (*(int*)(self + 4) >= 120) {
+            *(int*)(self + 4) = 0;
+            result = 1;
+            *(int*)self = 4;
+        } else {
+            float frames = 120 - *(int*)(self + 4);
+            approachTimed((float*)(self + 8), *(float*)(self + 0x20), frames);
+            approachTimed((float*)(self + 0xc), *(float*)(self + 0x24), frames);
+            approachTimed((float*)(self + 0x10), *(float*)(self + 0x28), frames);
+            i = 0;
+            p = (void**)self;
+            for (; i < 3; i++, p++) {
+                void* emitter = p[13];
+                if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
+            }
+        }
+        break;
+    case 4:
+        result = 1;
+        break;
+    case 5:
+        result = 1;
+        if (*(int*)(self + 4) >= 60) {
+            int i = 0;
+            void** p = (void**)self;
+            int null = i;
+            do {
+                if (p[13]) {
+                    void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, p[13]);
+                    p[13] = (void*)null;
+                }
+                i++;
+                p++;
+            } while (i < 3);
+            *(int*)(self + 4) = 0;
+            *(int*)self = 0;
+        } else {
+            float frames = 60 - *(int*)(self + 4);
+            approachTimed((float*)(self + 0x10), *(float*)(self + 0x2c), frames);
+            approachTimed((float*)(self + 0x30), lbl_8053FDDC, frames);
+            i = 0;
+            p = (void**)self;
+            for (; i < 3; i++, p++) {
+                void* emitter = p[13];
+                if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
+            }
+            float scale = *(float*)(self + 0x30);
+            setEmitterScale(((void**)self)[13], scale);
+            setEmitterScale(((void**)self)[14], scale);
+            setEmitterScale(((void**)(self + 8))[13], scale);
+        }
+        break;
+    }
+    return result;
+}
+#pragma optimization_level 4
 extern "C" void fn_8021F914(int* p, int v) {
     p[1] = 0;
     p[0] = v;
