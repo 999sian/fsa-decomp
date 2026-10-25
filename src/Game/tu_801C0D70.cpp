@@ -1,6 +1,7 @@
 // Game TU 801C0D70-801C1768 (unnamed). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "Game/Actor.h"
 
 extern s8 lbl_8053AC10[8];
 static u16 lbl_804C7E70[0x30];
@@ -119,9 +120,9 @@ extern f32 lbl_8053ED98;
 extern f32 lbl_8053ED9C;
 extern f32 lbl_8053EDA0;
 extern f32 lbl_8053EDA4;
-extern "C" s32 fn_801C0FEC(u8* this_, f32* param_2, f32* param_3) {
-    f32 x = param_2[0];
+extern "C" s32 fn_801C0FEC(u8* this_, const f32* param_2, f32* param_3) {
     f32 y = param_2[1];
+    f32 x = param_2[0];
     s32 idx = *(s32*)(this_ + 0x50);
     s32 ret = 0;
     param_3[0] = x;
@@ -133,17 +134,22 @@ extern "C" s32 fn_801C0FEC(u8* this_, f32* param_2, f32* param_3) {
             f32 dx = param_2[0] - *(f32*)(obj + 0xc);
             f32 lenSq = dx * dx + dz * dz;
             if (lenSq <= lbl_8053ED94) {
-            } else {
                 ret = 1;
                 if (param_2[1] <= *(f32*)(obj + 0x10)) {
+                    if (param_2[0] < *(f32*)(obj + 0xc)) {
+                        param_3[0] = *(f32*)(obj + 0xc) - lbl_8053ED98;
+                    } else {
+                        param_3[0] = lbl_8053ED98 + *(f32*)(obj + 0xc);
+                    }
+                } else {
                     if (lenSq <= lbl_8053ED9C * *(f32*)__float_epsilon) {
                     } else {
                         f32 s;
                         if (lenSq <= lbl_8053ED90) {
+                            s = lenSq;
+                        } else {
                             f32 r = __frsqrte(lenSq);
                             s = lbl_8053EDA0 * r * (lbl_8053EDA4 - lenSq * (r * r));
-                        } else {
-                            s = lenSq;
                         }
                         dx *= s;
                         dz *= s;
@@ -152,10 +158,6 @@ extern "C" s32 fn_801C0FEC(u8* this_, f32* param_2, f32* param_3) {
                     param_3[1] = *(f32*)(obj + 0x10);
                     param_3[0] += dx * lbl_8053ED98;
                     param_3[1] += dz * lbl_8053ED98;
-                } else if (param_2[0] < *(f32*)(obj + 0xc)) {
-                    param_3[0] = *(f32*)(obj + 0xc) - lbl_8053ED98;
-                } else {
-                    param_3[0] = lbl_8053ED98 + *(f32*)(obj + 0xc);
                 }
             }
         }
@@ -264,23 +266,18 @@ extern "C" void fn_801C1374(u16* this_, u8 param_2) {
 }
 
 extern "C" void fn_801C1440(char* this_, s32 param_2) {
-    u8 found = 0;
+    s32 found = 0;
     s32* p = (s32*)(this_ + 0x10);
-    s32 i;
+    int i;
     if (*(s32*)(this_ + 0xc) <= 0) return;
-    i = found;
-    for (; i < *(s32*)(this_ + 0xc); i++, p++) {
-        if (!found) {
-            if (param_2 == *p) {
-                found = 1;
-            }
+    for (i = found; i < *(s32*)(this_ + 0xc); i++, p++) {
+        if (!(u8)found) {
+            if (param_2 == *p) found = 1;
         } else {
             p[-1] = *p;
         }
     }
-    if (found) {
-        *(s32*)(this_ + 0xc) = *(s32*)(this_ + 0xc) - 1;
-    }
+    if ((u8)found) --*(s32*)(this_ + 0xc);
 }
 
 extern "C" void* fn_802D6A9C(void);
