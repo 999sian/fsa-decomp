@@ -65,11 +65,43 @@ extern char memPool___30JASPoolAllocObject_9JAIStream[];
 extern char memPool___35JASPoolAllocObject_13JAISoundChild[];
 extern char memPool___27JASPoolAllocObject_6JAISeq[];
 extern char memPool___26JASPoolAllocObject_5JAISe[];
-extern "C" void fn_803B961C(void) {
-	u8* __restrict base = (u8*)lbl_8050EC60;
+static inline void initializeRows(u8* p) {
 	s32 i = 0;
 	u8* r;
-	u8* p = base + 0x20;
+
+	u8* q;
+	q = p;
+	*(void**)p = lbl_804AFB30;
+	*(u32*)(p + 0x10) = i;
+	*(u32*)(p + 0xc) = i;
+	*(u32*)(p + 0x8) = i;
+	do {
+		r = p + 0x20;
+		memset(r, 0, 0xc8);
+		memset(q + 0x280, 0, 0x9c4);
+		i++;
+		r[0x5c] = 1;
+		r[0x59] = 0x32;
+		p += 0xc8;
+		*(u32*)(r + 0x8) |= 0x4;
+		*(u32*)(r + 0x8) |= 0x40;
+		*(u32*)(r + 0x8) |= 0x400;
+		*(u32*)(r + 0x8) |= 0x4000;
+		*(u32*)(r + 0x8) |= 0x40000;
+		*(u32*)(r + 0x8) |= 0x400000;
+		*(u32*)(r + 0x8) |= 0x4000000;
+		*(u32*)(r + 0x8) |= 0x20000000;
+		r[0x68] = 1;
+		r[0x69] = 1;
+		q += 0x9c4;
+	} while (i < 3);
+}
+
+extern "C" void fn_803B961C(void) {
+	u8* base = (u8*)lbl_8050EC60;
+	s32 i = 0;
+	u8* r;
+	u8* __restrict p = base + 0x20;
 	u8* q;
 	q = p;
 	*(void**)p = lbl_804AFB30;
@@ -97,8 +129,8 @@ extern "C" void fn_803B961C(void) {
 		q += 0x9c4;
 	} while (i < 3);
 	__register_global_object(base + 0x20, (void*)fn_803B94C4, base);
-	fn_803B9160(base + 0x200c);
-	__register_global_object(base + 0x200c, (void*)fn_803B95D4, base + 0x2000);
+	void* object = fn_803B9160(base + 0x200c);
+	__register_global_object(object, (void*)fn_803B95D4, base + 0x2000);
 	if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
 		__ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
 		__register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, (void*)__dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x20e8);
