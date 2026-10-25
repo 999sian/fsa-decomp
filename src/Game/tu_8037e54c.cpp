@@ -692,7 +692,7 @@ extern "C" void* fn_8038D90C(void* this_, s16 flag) {
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804AF32C[];
 
-extern "C" void* fn_8038DBF0(void* this_, s16 freeFlag) {
+extern "C" void* __dt__9T37ConfigFv(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804AF32C;
         if (freeFlag > 0) {
