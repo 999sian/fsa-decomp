@@ -1094,6 +1094,10 @@ void fn_802408C8(char* p, s32 a, const JGeometry::TVec3<f32>& v) {
     }
 }
 u8 fn_80233EDC(s32);
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 bool fn_80240B84(char* p) {
     struct H {
         static inline s32 countSharing(char* p) {
@@ -1139,12 +1143,16 @@ bool fn_80240B84(char* p) {
                 return 1;
             }
             if (getMode(p) == 4) {
-                s32 n;
-                s32 linked;
-                s32 v;
-                s32 i;
                 s32 c;
-                v = linkIdx(p);
+                s32 i;
+                s32 v;
+                s32 linked;
+                s32 n;
+                if (S32(p, 0xd60) >= 0) {
+                    v = fn_80234004(S32(p, 0xd60));
+                } else {
+                    v = S32(p, 0x1224);
+                }
                 linked = S32(p, 0xd60);
                 s32 rank;
                 if (linked < 0) {
@@ -1173,6 +1181,10 @@ bool fn_80240B84(char* p) {
     }
     return r;
 }
+#pragma opt_lifetimes reset
+#pragma opt_strength_reduction reset
+#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 u8 fn_80240AD4(char* p) {
     if (U8(p, 0xce8) != 0) {
         return 0;
@@ -1421,6 +1433,7 @@ void fn_80241B44(char* p, f32* out) {
     }
 }
 
+#pragma opt_propagation off
 u32 fn_80241BA0(char* p, s32 room, f32* rect, u8 mode) {
     if (8 > room) {
         if (mode == 1) {
@@ -1472,17 +1485,21 @@ u32 fn_80241BA0(char* p, s32 room, f32* rect, u8 mode) {
         }
     }
     f32 buf[4];
-    f32 a = rect[0];
-    f32 b = rect[1];
-    f32 c = rect[2];
-    register f32 d = rect[3];
+    f32 d;
+    f32 c;
+    f32 b;
+    f32 a;
+    a = rect[0];
+    b = rect[1];
+    c = rect[2];
+    d = rect[3];
     buf[0] = a;
-    buf[2] = c;
     buf[1] = b;
+    buf[2] = c;
     buf[3] = d;
     return fn_8030AF10(PTR(p, 0xbec), room, buf);
 }
-
+#pragma opt_propagation reset
 void fn_80241DD0(char* p, s32 room, const JGeometry::TVec3<f32>& v) {
     if (room < 8) {
         fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &v);
@@ -2885,7 +2902,8 @@ s32 fn_802527B0(char* p, s32* out) {
     return 0;
 }
 
-void fn_80248604(char* p) {
+#pragma opt_common_subs off
+void fn_80248604(char* const p) {
     if (U8(p, 0x1216) == 0) {
         if (U8(p, 0x454) != 0) {
             fn_8024B2E0(p);
@@ -2894,17 +2912,25 @@ void fn_80248604(char* p) {
         }
     }
 }
-#pragma opt_lifetimes off
+#pragma opt_common_subs reset
 BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
-    s32 v;
     if (S32(p, 0x1240) != 0) {
         return 0;
     }
-    if (anim == 0xe8 && getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) {
-        S16(p, 0x450) = 0x1c5;
-    } else if (anim >= 0) {
-        S16(p, 0x450) = anim;
+    if (anim == 0xe8) {
+        s32 v;
+        if (getMode2(p) == 4) {
+            v = linkIdx(p);
+            if (v != linkRank2(p)) {
+                S16(p, 0x450) = 0x1c5;
+                goto done;
+            }
+        }
     }
+    if (anim >= 0) {
+        S16(p, 0x450) = (s16)anim;
+    }
+done:
     U8(p, 0xca2) = flag;
     U8(p, 0x456) = 1;
     return 1;
