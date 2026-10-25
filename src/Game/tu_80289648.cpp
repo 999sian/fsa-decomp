@@ -80,8 +80,8 @@ static inline bool tuInBox2(const JGeometry::TVec3f& v, const f32* box) {
     return ret;
 }
 
-static inline bool tuCheckHit2(u8* self, s32 idx, int room) {
-    if (fn_8023DE58(idx) != room) {
+static inline bool tuCheckHit2(u8* self, s32 idx, s32 room) {
+    if (room != fn_8023DE58(idx)) {
         return false;
     }
     for (s32 j = 0; j < 8; j++) {
@@ -225,8 +225,8 @@ extern "C" void fn_80289A88(Actor* this_) {
     JGeometry::TVec3f newC;
     newC.z = 0.0f;
     u8* t = *(u8**)(self + 0x240);
-    f32 sw = (f32)*(u16*)(t + 2);
     f32 sh = (f32)*(u16*)(t + 4);
+    f32 sw = (f32)*(u16*)(t + 2);
     f32 a = *(f32*)(self + 0x238);
     f32 b = *(f32*)(self + 0x23c);
     newC.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
