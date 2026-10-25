@@ -17,17 +17,44 @@ extern f32 lbl_8053C4BC;
 extern f32 lbl_8053C4F0;
 extern f32 lbl_8053C4F4;
 extern f32 lbl_8053C490;
+extern f32 lbl_8053C4D4;
 extern void* lbl_80539EE8[2];
+extern "C" void v06__5ActorFv(void* this_);
+extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
+extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
+extern f32 lbl_8053C4E0;
+extern f32 lbl_8053C4D8;
+extern void* lbl_8053AAF8;
+extern void* lbl_8053AB10;
+extern void* lbl_8053AAF8;
+extern void* lbl_80464334[];
+extern "C" void fn_8010C6E4(u8* this_) {
+    u8 idx[16];
+    s32 neg1;
+    s32 neg2;
+    s32 i;
+    v06__5ActorFv(this_);
+    for (i = 0; i < 16; i++) {
+        idx[i] = i;
+    }
+    neg1 = -1;
+    neg2 = -1;
+    if (*(f32*)(this_ + 0x5c) * *(f32*)(this_ + 0x5c) > 0.0f) {
+    }
+}
+
 extern "C" void fn_8010D55C(u8* this_) {
     f32 t;
     v01__5ActorFv(this_);
     *(s32*)(this_ + 0x234) = *(s32*)(this_ + 0x90) & 0xf;
-    if (((*(s32*)(this_ + 0x90)) >> 4 & 0xf) == 1) {
+    switch ((*(s32*)(this_ + 0x90) >> 4) & 0xf) {
+    case 1:
         *(f32*)(this_ + 0x260) = lbl_8053C4A4;
         t = *(f32*)(this_ + 0x260);
         *(f32*)(this_ + 0x54) = t;
         *(f32*)(this_ + 0x58) = t;
         *(f32*)(this_ + 0x5c) = t;
+        break;
     }
     *(s32*)(this_ + 0x258) = (*(s32*)(this_ + 0x90) >> 8) & 0xff;
     *(s32*)(this_ + 0x25c) = (*(s32*)(this_ + 0x90) >> 16) & 0xff;
