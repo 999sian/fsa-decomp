@@ -165,11 +165,11 @@ struct MsgPop {
 // NONMATCHING (99.9%): add operand order for the cumulative durations.
 extern "C" void fn_80395480(MsgPop* self, J2DPane* pane) {
     s16* dur = (s16*)(lbl_8050DB0C + 0x286);
+    s32 t4 = dur[0] + dur[1] + dur[2] + dur[3] + dur[4];
     s32 t0 = dur[0];
-    s32 t1 = t0 + dur[1];
+    s32 t1 = dur[0] + dur[1];
     s32 t2 = t1 + dur[2];
     s32 t3 = t2 + dur[3];
-    s32 t4 = t3 + dur[4];
     self->timer++;
     if (pane->getAlpha() < self->alpha) {
         if (self->timer == 10) {
@@ -476,7 +476,7 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
-    BOOL testBit(s32 n) {
+    BOOL testBit(const s32 n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
@@ -1078,9 +1078,9 @@ extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
         return;
     }
     s32 x = 0;
-    if (!p->testBit((int)p->cur)) {
+    if (!p->testBit(p->cur)) {
         MsgLayout* l = p->layout;
-        if (l->m16c == 0 || !p->testBit((int)p->cur)) {
+        if (l->m16c == 0 || !p->testBit(p->cur)) {
             f32 base;
             f32 pos;
             if (!(l->font->flags & 0x40)) {
