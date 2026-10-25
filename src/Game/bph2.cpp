@@ -637,11 +637,19 @@ extern "C" void fn_8018E30C(char* this_, s32 state) {
     pos[1] = *(f32*)(this_ + 0x10);
     pos[2] = *(f32*)(this_ + 0x14);
     pos[0] = pos[0] - lbl_8053E190;
-    if (*(s32*)(this_ + 0x26c) != 1 && state >= 0 && *(s32*)(this_ + 0x268) != state) {
+    switch (*(s32*)(this_ + 0x26c)) {
+    default:
+        if (state >= 0 && *(s32*)(this_ + 0x268) != state) {
         *(s32*)(this_ + 0x268) = state;
         *(u8*)(this_ + 0x27a) = 0;
         *(s32*)(this_ + 0x234) = 0;
         *(s32*)(this_ + 0x264) = 0;
+            break;
+        }
+    case 1:
+        return;
+    }
+    {
         switch (*(s32*)(this_ + 0x268)) {
         case 0:
             *(s32*)(this_ + 0x270) = 0;
@@ -781,11 +789,11 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x2e4) = *(f32*)(this_ + 0x14);
     *(s32*)(this_ + 0x254) = -1;
     *(u8*)(this_ + 0x196) = 1;
-    *(f32*)(this_ + 0x294) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x298) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x2b8) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x2bc) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x2c0) = lbl_8053E18C;
+    *(f32*)(this_ + 0x294) = 1.0f;
+    *(f32*)(this_ + 0x298) = 1.0f;
+    *(f32*)(this_ + 0x2b8) = 1.0f;
+    *(f32*)(this_ + 0x2bc) = 1.0f;
+    *(f32*)(this_ + 0x2c0) = 3.0f;
     *(u8*)(this_ + 0x27a) = 0;
     *(f32*)(this_ + 0x28c) = zero;
     *(f32*)(this_ + 0x284) = 100.0f;
