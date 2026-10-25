@@ -423,7 +423,7 @@ end:
     *(s32*)(p + 4) = *(s32*)(p + 4) + 1;
 }
 
-extern "C" f32 lbl_8053E218;
+extern "C" const f32 lbl_8053E218;
 extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void fn_8019169C(u8* param_1) {
     *(u8*)(param_1 + 0x64) = 0;
