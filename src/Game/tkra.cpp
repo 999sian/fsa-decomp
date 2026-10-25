@@ -53,10 +53,17 @@ extern const f32 lbl_805413B4;
 extern const f32 lbl_805413B8;
 extern const f32 lbl_805413BC;
 extern "C" void* fn_801F856C();
-static inline void tkraSpawnItem(s32 player, JGeometry::TVec3f* pos, u32 hi, s32 kind) {
-    u32 param = kind + hi;
-    s32 room = fn_8023DE58(player);
-    Actor_CreateByID(fn_801F856C(), 'IMUP', room, pos, param, -1, -1);
+static inline u8 tkraCanOpen(char* p) {
+    u8 ok = 0;
+    if (lbl_8053AAF8[0x7e] == 1) {
+        if (fn_802308E0(*(s32*)(p + 0x240)) == 1) {
+            ok = 1;
+        }
+    } else if (fn_8023077C() == 1) {
+        fn_8037AE30(lbl_8053AD70);
+        ok = 1;
+    }
+    return ok;
 }
 struct TkraObj {
     u8 pad[0x24c];
@@ -79,10 +86,11 @@ extern "C" u8 fn_802EB27C(TkraObj* p) {
 }
 
 extern "C" u8 fn_802EB314(char* p) {
-    u8 ret;
-    u8 ok;
     u32 bits;
     int i;
+    s32 k;
+    u8 ok;
+    u8 ret;
     f32 dy;
     f32 dx;
     ret = 0;
@@ -112,7 +120,7 @@ extern "C" u8 fn_802EB314(char* p) {
                 bit = bit != 0;
             }
             if (bit != 0) {
-                s32 k = *(s32*)(p + 0x234);
+                k = *(s32*)(p + 0x234);
                 if (k <= 2 || k == 0x2f) {
                     s32 n = fn_80138A30(lbl_8053AAF8);
                     if (*(s32*)(p + 0x240) == fn_801F6058(fn_801F856C(), n - 1)) {
@@ -139,7 +147,7 @@ extern "C" u8 fn_802EB314(char* p) {
             pos.x = dx + v.x;
             pos.y = v.y - dy;
             pos.z = v.z;
-            s32 k = *(s32*)(p + 0x234);
+            k = *(s32*)(p + 0x234);
             if (k >= 0x30) {
                 if (lbl_8053AAF8[0x7e] == 1) {
                     if ((u8)fn_8022F514(i) == 1) {
@@ -212,7 +220,7 @@ extern "C" u8 fn_802EB314(char* p) {
             JGeometry::TVec3f a(lbl_805413B8 + *(f32*)(p + 0x25c), lbl_805413B8 + *(f32*)(p + 0x260), lbl_805413BC);
             fn_8013CC50(*(s32*)(p + 4), &a, 0xd0, 0, 0, 0, 0, 1, lbl_805413B0);
             JGeometry::TVec3f b(lbl_805413B8 + *(f32*)(p + 0x25c), lbl_805413B8 + *(f32*)(p + 0x260), lbl_805413BC);
-            fn_8013CC50(*(s32*)(p + 4), &b, 0xd1, 1, 0, 0, 0, 1, lbl_805413B0);
+            fn_8013CC50(*(s32*)(p + 4), &b, 0xd1, 0, 1, 0, 0, 1, lbl_805413B0);
         }
         ret = 1;
     }
