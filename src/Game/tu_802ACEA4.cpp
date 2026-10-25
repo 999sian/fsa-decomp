@@ -190,6 +190,3 @@ extern "C" void fn_802AEE10(Actor* a) {
     *(s32*)(p + 0x230) = 0;
 }
 
-extern "C" void fn_802AF108(void) {
-}
-
