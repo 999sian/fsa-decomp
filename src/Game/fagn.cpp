@@ -28,11 +28,7 @@ extern "C" void fn_801F5790(void* this_);
 // and project_fsa_80212af0_callers_closed.md) - a third class's
 // vtable-slot-0x18 override doing the identical "repel from RUSA
 // zones, then chain to the generic slot-0x18 default" pattern.
-extern "C" void fn_80184A14(void* this_) {
-    void* registry = fn_80212AC0();
-    fn_80212AF0(registry, (char*)this_ + 0xc);
-    fn_801F5790(this_);
-}
+
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, f32 sx, f32 sy, s32 a, s32 b);
 
 // FAGN draw (vtable slot 6)
@@ -53,37 +49,7 @@ struct FagnGame { u8 pad[0xb4]; FagnRandom rnd; };
 extern FagnGame* lbl_8053AAF8;
 
 // FAGN init (vtable slot 1)
-extern "C" void fn_80184A50(char* this_) {
-    *(f32*)(this_ + 0x60) = -8.0f;
-    *(f32*)(this_ + 0x64) = -8.0f;
-    *(f32*)(this_ + 0x68) = 8.0f;
-    *(f32*)(this_ + 0x6c) = 8.0f;
-    *(f32*)(this_ + 0x80) = -8.0f;
-    *(f32*)(this_ + 0x84) = -8.0f;
-    *(f32*)(this_ + 0x88) = 8.0f;
-    *(f32*)(this_ + 0x8c) = 8.0f;
-    *(s32*)(this_ + 0x240) = 0;
-    *(s32*)(this_ + 0x244) = 0;
-    *(s32*)(this_ + 0x248) = 0;
-    *(s32*)(this_ + 0x234) = 0;
-    *(s32*)(this_ + 0x238) = 0;
-    *(s32*)(this_ + 0x23c) = 0;
-    FagnGame* g = lbl_8053AAF8;
-    *(s32*)(this_ + 0x98) = (s32)(3.99f * g->rnd.get_ufloat_1());
-    *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x98) * 4;
-    *(f32*)(this_ + 0x260) = 0.0f;
-    *(f32*)(this_ + 0x25c) = 0.0f;
-    *(f32*)(this_ + 0x258) = 0.0f;
-    *(f32*)(this_ + 0x44) = 0.0f;
-    *(f32*)(this_ + 0x40) = 0.0f;
-    *(f32*)(this_ + 0x3c) = 0.0f;
-    *(u32*)(this_ + 0xb0) = 0x11101;
-    *(s32*)(this_ + 0xb8) = 1;
-    *(u8*)(this_ + 0x195) = 1;
-    *(f32*)(this_ + 0x254) = 0.0f;
-    *(f32*)(this_ + 0x250) = 1.0f;
-    *(s32*)(this_ + 0x230) = 0;
-}
+
 
 extern "C" s32 fn_801F3D94(void* self, s32 a);
 extern "C" u8 fn_801F305C(void* self);
@@ -358,5 +324,44 @@ extern "C" void fn_801840E0(char* this_) {
     }
 }
 
+extern "C" void fn_80184A14(void* this_) {
+    void* registry = fn_80212AC0();
+    fn_80212AF0(registry, (char*)this_ + 0xc);
+    fn_801F5790(this_);
+}
+
+extern "C" void fn_80184A50(char* this_) {
+    *(f32*)(this_ + 0x60) = -8.0f;
+    *(f32*)(this_ + 0x64) = -8.0f;
+    *(f32*)(this_ + 0x68) = 8.0f;
+    *(f32*)(this_ + 0x6c) = 8.0f;
+    *(f32*)(this_ + 0x80) = -8.0f;
+    *(f32*)(this_ + 0x84) = -8.0f;
+    *(f32*)(this_ + 0x88) = 8.0f;
+    *(f32*)(this_ + 0x8c) = 8.0f;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    FagnGame* g = lbl_8053AAF8;
+    *(s32*)(this_ + 0x98) = (s32)(3.99f * g->rnd.get_ufloat_1());
+    *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x98) * 4;
+    *(f32*)(this_ + 0x260) = 0.0f;
+    *(f32*)(this_ + 0x25c) = 0.0f;
+    *(f32*)(this_ + 0x258) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    *(u32*)(this_ + 0xb0) = 0x11101;
+    *(s32*)(this_ + 0xb8) = 1;
+    *(u8*)(this_ + 0x195) = 1;
+    *(f32*)(this_ + 0x254) = 0.0f;
+    *(f32*)(this_ + 0x250) = 1.0f;
+    *(s32*)(this_ + 0x230) = 0;
+}
+
+#pragma exceptions off
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-#include "JSystem/JMath/JMath.h"
+#pragma exceptions reset
