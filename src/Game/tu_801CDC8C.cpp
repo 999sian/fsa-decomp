@@ -172,11 +172,10 @@ extern "C" void fn_801CE010(u8* this_, f32* out) {
 
 extern "C" void fn_801CE0A4(ItemBase* this_) {
     if ((this_->m230 & 7) == 0) {
-        this_->m24C = this_->m24C + 1;
-        if (this_->m24C < 0) {
-            this_->m24C = 0;
-        }
-        this_->v34();
+        this_->m24C++;
+        if (this_->m24C < 0) this_->m24C = 0;
+        void (**vtable)(ItemBase*) = *(void (***)(ItemBase*))this_;
+        vtable[36](this_);
         this_->v35();
     }
 }
@@ -227,8 +226,7 @@ extern "C" void fn_801CE2BC(ItemBase* this_) {
     if (this_->m24C < 0) {
         this_->m24C = 0;
     }
-    void (**vtable)(ItemBase*) = *(void (***)(ItemBase*))this_;
-    vtable[0x90 / 4](this_);
+    (*(void (***)(ItemBase*))this_)[0x90 / 4](this_);
     this_->v35();
 }
 
@@ -455,12 +453,11 @@ extern "C" u8 fn_801CC8E4(void);
 extern "C" u8 fn_801F37AC(u8* a, u32 b, f32* c, u32 d, u32 e, u32 f);
 extern "C" u8 fn_801CEA60(u8* this_) {
     u8 result = 0;
-    u8* obj = 0;
     if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053EFC4 &&
         *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053EFC4) {
         s32 idx = fn_801F82CC(fn_801F856C(), this_, this_[0x195], lbl_8053EFE0);
         if (idx >= 0 && idx != *(s32*)(this_ + 0x198)) {
-            obj = (u8*)fn_801F666C(fn_801F856C(), idx);
+            u8* obj = (u8*)fn_801F666C(fn_801F856C(), idx);
             if (obj != 0) {
                 if (fn_801CC8E4()) {
                     result = 0;
@@ -469,9 +466,9 @@ extern "C" u8 fn_801CEA60(u8* this_) {
                     vec -= *(JGeometry::TVec3f*)(obj + 0x3c);
                     result = fn_801F37AC(this_, *(u32*)(obj + 0x118), (f32*)&vec, 0, *(u32*)(obj + 0x168), *(u32*)(obj + 0x110));
                 }
-                if (result != 0) {
-                    obj[0x164] = 1;
-                }
+            }
+            if (result != 0) {
+                obj[0x164] = 1;
             }
         }
     }
