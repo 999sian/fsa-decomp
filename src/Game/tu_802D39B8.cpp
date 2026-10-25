@@ -48,10 +48,6 @@ struct RoomArrays {
 };
 
 extern char* lbl_8053AAF8;
-static inline BOOL roomPlayerFlag(s32 index) {
-    u8 mask = 1 << index;
-    return (*(u8*)(lbl_8053AAF8 + 0x82) & mask) != 0;
-}
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
@@ -218,7 +214,7 @@ extern const char lbl_8046E7B8[];
 extern const char lbl_8046E7C8[];
 #pragma opt_propagation on
 extern "C" void fn_802D3D48(char* p) {
-    u32 index;
+    s32 index;
     s32 column;
     u8* text;
     *(s32*)(*(char**)(*(char**)(lbl_8053AAF8+4)+0xC)+0x1328C)=0;
@@ -327,16 +323,17 @@ extern "C" void fn_802D3D48(char* p) {
             u32 flag=(*(u8*)(lbl_8053AAF8+0x82) & (u8)(1<<i))!=0;
             if (flag==1) count++;
         }
-        s32 two=0;
-        for (s32 i=0, shift=0;i<count;i++,shift+=2) {
-            if (((*(u8*)(lbl_8053AAF8+0x83)>>shift)&3)==2) two++;
+        int two=0;
+        int shift=0;
+        for (int i=0;i<count;i++,shift+=2) {
+            if (((*(u8*)(lbl_8053AAF8+0x83)>>shift)&3u)==2u) two++;
         }
         s32 line=*(s32*)(p+8)+*(s32*)(p+4)*4;
         if (two!=0) text=fn_80403328(lbl_8046E7B8);
         else text=fn_80403328(lbl_8046E7C8);
         *(s32*)(p+0x14)=1;
         *(s32*)(p+0x18)=1;
-        u32 cursor=0;
+        s32 cursor=0;
         if (line!=0) {
             do {
                 for (;;) {
