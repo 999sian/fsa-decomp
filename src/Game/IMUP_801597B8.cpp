@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 class FSAVirtBase {
 public:
@@ -169,6 +170,9 @@ extern "C" void fn_80159C28(char* this_) {
             flag = 1;
         }
         DrawRec rec;
+        rec.b1d = 1;
+        rec.b1c = 1;
+        rec.b2d = 1;
         s32 id = *(s32*)(this_ + 0x234);
         if (id != 0x2f) {
             if (id <= 7) {
@@ -179,10 +183,17 @@ extern "C" void fn_80159C28(char* this_) {
                 fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + lbl_804A01A0[*(s32*)(this_ + 0x234) - 4], flag != 0, 2, -1, 1, 0, 0);
             } else if (id >= 0x10 && id <= 0x19) {
                 s32 n = id + 0x1d;
-                Vec3f pos = *(Vec3f*)(this_ + 0xc);
+                f32 y = *(f32*)(this_ + 0x10);
+                f32 x = *(f32*)(this_ + 0xc);
+                f32 z = *(f32*)(this_ + 0x14);
+                Vec3f pos;
+                pos.xy.x = x;
+                pos.xy.y = y;
+                pos.z = z;
                 if (*(s32*)(this_ + 4) < 8) {
-                    FSAObjMgr* obj = *(FSAObjMgr**)(lbl_8053AAF8 + 0xa4);
-                    void* model = obj->m6(0x534f4220, lbl_804660B8);
+                    void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
+                    void** vt = *(void***)obj;
+                    void* model = ((void* (*)(void*, u32, const char*))vt[6])(obj, 0x534f4220, lbl_804660B8);
                     fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, n, 1.0f, 1.0f, &rec);
                 }
                 fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x1d, 0, 2, -1, 1, 0, 0);
@@ -210,19 +221,33 @@ extern "C" void fn_80159C28(char* this_) {
             } else if (id != 0x2e) {
                 if (id < 0x40) {
                     s32 n = id + 0x11;
-                    Vec3f pos = *(Vec3f*)(this_ + 0xc);
+                    f32 y = *(f32*)(this_ + 0x10);
+                    f32 x = *(f32*)(this_ + 0xc);
+                    f32 z = *(f32*)(this_ + 0x14);
+                    Vec3f pos;
+                    pos.xy.x = x;
+                    pos.xy.y = y;
+                    pos.z = z;
                     if (*(s32*)(this_ + 4) < 8) {
-                        FSAObjMgr* obj = *(FSAObjMgr**)(lbl_8053AAF8 + 0xa4);
-                        void* model = obj->m6(0x534f4220, lbl_804660B8);
+                        void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
+                        void** vt = *(void***)obj;
+                        void* model = ((void* (*)(void*, u32, const char*))vt[6])(obj, 0x534f4220, lbl_804660B8);
                         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, n, 1.0f, 1.0f, &rec);
                     }
                     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x11, 0, 2, -1, 1, 0, 0);
                 } else {
                     s32 n = id + 0x1cd;
-                    Vec3f pos = *(Vec3f*)(this_ + 0xc);
+                    f32 y = *(f32*)(this_ + 0x10);
+                    f32 x = *(f32*)(this_ + 0xc);
+                    f32 z = *(f32*)(this_ + 0x14);
+                    Vec3f pos;
+                    pos.xy.x = x;
+                    pos.xy.y = y;
+                    pos.z = z;
                     if (*(s32*)(this_ + 4) < 8) {
-                        FSAObjMgr* obj = *(FSAObjMgr**)(lbl_8053AAF8 + 0xa4);
-                        void* model = obj->m6(0x534f4220, lbl_804660B8);
+                        void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
+                        void** vt = *(void***)obj;
+                        void* model = ((void* (*)(void*, u32, const char*))vt[6])(obj, 0x534f4220, lbl_804660B8);
                         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, n, 1.0f, 1.0f, &rec);
                     }
                     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x1cd, 0, 2, -1, 1, 0, 0);
