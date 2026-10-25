@@ -171,7 +171,5 @@ extern "C" void fn_8044BDCC(u8* p)
     p[0x16] = 0;
 }
 
-void __sinit_tu_8044B80C_cpp(void) {}
-
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
