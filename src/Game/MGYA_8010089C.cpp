@@ -73,7 +73,7 @@ public:
     virtual void v24();
     virtual void v28();
     virtual void v2C();
-    virtual void v30();
+    virtual void v30(s32, s32);
     virtual u8 v34();
     s32 m04;
     u8 pad08[4];
