@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
 
 
 extern "C" char lbl_804A8170[];
@@ -30,6 +31,68 @@ extern "C" void fn_802AAC5C(void)
     return;
 }
 
+extern "C" void fn_802AAC60(int* param_1)
+{
+    int iVar2;
+    u8 cVar3;
+    int obj;
+    int ret;
+
+    switch (param_1[0x8c]) {
+    case 0:
+        param_1[0x8e] = param_1[0x8e] - 1;
+        if (param_1[0x8e] == 0) {
+            obj = *(int*)((u8*)lbl_8053AAF8 + 0xa4);
+            ret = ((int (*)(int, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+            fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0, 0, 0x40, 0xc0);
+            param_1[0x8c] = 1;
+            fn_801F0E34(param_1, 0x30015, 0);
+        }
+        /* fall through */
+    case 1:
+        iVar2 = param_1[0x8d];
+        if (iVar2 == 0) {
+            cVar3 = ((u8 (*)(int*))(*(int**)param_1)[13])(param_1);
+            if (cVar3 != 0) {
+                fn_801F0D20(param_1, 3);
+                param_1[0x8c] = 2;
+                param_1[0x8e] = 8;
+            }
+        } else {
+            if (((u8*)fn_801F856C())[0x305c] == 1) {
+                fn_801F0D20(param_1, 3);
+                param_1[0x8e] = 8;
+                param_1[0x8c] = 2;
+            }
+        }
+        break;
+    case 2:
+        param_1[0x8e] = param_1[0x8e] - 1;
+        if (param_1[0x8e] == 0) {
+            obj = *(int*)((u8*)lbl_8053AAF8 + 0xa4);
+            ret = ((int (*)(int, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+            fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0xc0, 0, 0x40, 0xc0);
+            param_1[0x8c] = 3;
+            fn_801F0E34(param_1, 0x30016, 0);
+            param_1[0x8e] = 2;
+        }
+        break;
+    case 3:
+        param_1[0x8e] = param_1[0x8e] - 1;
+        if (param_1[0x8e] == 0) {
+            obj = *(int*)((u8*)lbl_8053AAF8 + 0xa4);
+            ret = ((int (*)(int, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+            fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0x180, 0, 0x40, 0xc0);
+            fn_802D7920(fn_802D6A9C(), 0);
+            *((u8*)param_1 + 0x11c) = 0;
+        }
+        break;
+    default:
+        *((u8*)param_1 + 0x11c) = 0;
+        break;
+    }
+}
+
 extern int* lbl_8053AAF8;
 extern int* lbl_8053AB10;
 extern char lbl_8046C878[];
@@ -37,21 +100,22 @@ u8* fn_801F856C(void);
 void fn_802FA160(int, int, int, int, int, int);
 int fn_802D6A9C(void);
 void fn_802D7920(int, int);
+extern "C" char lbl_8046C878[];
 extern "C" void fn_802AAEC0(int* param_1)
 {
-  param_1[0x8d] = param_1[0x24] & 0xff;
-  if ((param_1[0x8d] == 0 && ((u8 (*)(int*))(*(void***)param_1)[13])(param_1)) ||
-      (param_1[0x8d] != 0 && ((u8*)fn_801F856C())[0x305c] == 1)) {
-    void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-    int ret = ((int (*)(void*, int, void*))(*(void***)obj)[6])(obj, 0x53434820, lbl_8046C878);
-    fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0x180, 0, 0x40, 0xc0);
-    fn_802D7920(fn_802D6A9C(), 0);
-    *((u8*)param_1 + 0x11c) = 0;
-  } else {
-    fn_802D7920(fn_802D6A9C(), 1);
-    param_1[0x8c] = 0;
-    param_1[0x8e] = 0xf;
-  }
+    param_1[0x8d] = param_1[0x24] & 0xff;
+    if ((param_1[0x8d] == 0 && ((u8 (*)(int*))(*(int**)param_1)[13])(param_1)) ||
+        (param_1[0x8d] != 0 && ((u8*)fn_801F856C())[0x305c] == 1)) {
+        int* obj = *(int**)((u8*)lbl_8053AAF8 + 0xa4);
+        int ret = ((int (*)(int*, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+        fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0x180, 0, 0x40, 0xc0);
+        fn_802D7920(fn_802D6A9C(), 0);
+        *((u8*)param_1 + 0x11c) = 0;
+    } else {
+        fn_802D7920(fn_802D6A9C(), 1);
+        param_1[0x8c] = 0;
+        param_1[0x8e] = 0xf;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
