@@ -282,17 +282,6 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 
 extern "C" u32 lbl_80543F10;
 extern "C" u32 lbl_80543F14;
-extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
-{
-	u32 defaultColor[2];
-	defaultColor[0] = lbl_80543F10;
-	defaultColor[1] = lbl_80543F14;
-	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
-	if (initData->mTevColorIndex[no] != 0xffff) {
-		return *(J3DGXColorS10*)&self->mTevColors[initData->mTevColorIndex[no]];
-	}
-	return *(J3DGXColorS10*)defaultColor;
-}
 
 extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
 {
