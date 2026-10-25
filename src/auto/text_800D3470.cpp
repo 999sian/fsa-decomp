@@ -3243,8 +3243,8 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
-    *(u8*)(param_1 + param_2 + 0x10a) = param_3;
+extern "C" void fn_800DDD64(s32 offset, u8* p, u8 value) {
+    p[offset + 0x10a] = value;
 }
 #else
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
@@ -4509,10 +4509,11 @@ extern "C" void fn_800DF364(void* param_1, u8 param_2) {
     *(u8*)((u32)param_1 + 0xc) = param_2;
 }
 
+#endif
+#if defined(VERSION_G4SJ01) || defined(VERSION_G4SE01)
 extern "C" u8 fn_800DF36C(void* param_1) {
-return *(u8*)((u32)param_1 + 0xc);
+    return *((u8*)param_1 + 0xc);
 }
-
 #endif
 #if defined(VERSION_G4SJ01) || defined(VERSION_G4SE01)
 extern "C" void fn_800DF358(void* param_1, u8* param_2) {
