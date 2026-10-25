@@ -135,7 +135,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
 extern "C" void fn_8023E724(s32);
 extern "C" s32 fn_801F2718(void*, u32);
-extern "C" void fn_8030C210(void*);
+extern "C" void fn_8030C210(void*, ...);
 extern "C" void fn_801A0F90(void* this_) {
     char* p = (char*)this_;
     s32 r31 = 0;
