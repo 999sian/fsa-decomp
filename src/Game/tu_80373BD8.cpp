@@ -1,6 +1,7 @@
 #include "Game/Actor.h"
 #define Vec SDKVec
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 #undef Vec
 
 
@@ -24,11 +25,10 @@ extern "C" Actor* fn_80373BD8(Actor* p, s16 n) {
 }
 
 extern "C" void fn_80373EC8(Actor* p) {
-    Vec saved = p->field_0C;
-    f32 angle = *(f32*)((u8*)p + 0x244);
     f32 period = lbl_80542E90;
-    f32 q = (f32)(s32)(angle / period);
-    f32 rem = angle - period * q;
+    JGeometry::TVec3f saved = *(JGeometry::TVec3f*)((u8*)p + 0xc);
+    f32 angle = *(f32*)((u8*)p + 0x244);
+    f32 rem = angle - period * (f32)(s32)(angle / period);
     s32 idx;
     if (rem < lbl_80542E94) {
         idx = 0;
@@ -39,24 +39,27 @@ extern "C" void fn_80373EC8(Actor* p) {
     } else {
         idx = 3;
     }
+    f32 step = lbl_80475060[idx];
     p->field_0C.y -= angle;
-    p->field_0C.y += lbl_80475060[idx];
+    p->field_0C.y += step;
     fn_801F06F0(p, lbl_804750AC, *(s32*)((u8*)p + 0x23c) + 0x469, 0, -1, lbl_80542E94, lbl_80542E94);
     if (idx == 0) {
-        p->field_0C = saved;
+        *(JGeometry::TVec3f*)((u8*)p + 0xc) = saved;
     } else {
-        Vec off;
+        JGeometry::TVec3f off;
         off.x = lbl_80542E88;
         off.y = *(f32*)((u8*)p + 0x244);
         off.z = lbl_80542E88;
-        p->field_0C.x = saved.x - off.x;
-        p->field_0C.y = saved.y - off.y;
-        p->field_0C.z = saved.z - off.z;
+        *(JGeometry::TVec3f*)((u8*)p + 0xc) = saved - off;
         fn_801F06F0(p, lbl_804750AC, idx + 0x469, 0, -1, lbl_80542E94, lbl_80542E94);
-        p->field_0C = saved;
+        *(JGeometry::TVec3f*)((u8*)p + 0xc) = saved;
     }
 }
 
+extern "C" const f32 lbl_80542E8C;
+extern "C" const s32 lbl_80475070[];
+extern "C" void fn_80230FD0(s32, u32);
+extern "C" u8 fn_80230534(s32);
 extern "C" void fn_80373C38(Actor*);
 extern "C" s32 fn_80239470(void*, s32, s32);
 extern "C" s32 fn_80238A68(s32);
@@ -144,33 +147,30 @@ extern "C" void fn_80374074(Actor* p) {
 extern "C" const f32 lbl_80542ED0;
 extern "C" const f32 lbl_80542ED4;
 extern "C" const f32 lbl_80542E88;
+#pragma optimization_level 3
 extern "C" void fn_803744C4(u8* p) {
-    f32 a = lbl_80542ED0;
-    f32 b = lbl_80542ED4;
-    f32 z = lbl_80542E88;
-    *(f32*)(p + 0x60) = a;
-    *(f32*)(p + 0x64) = a;
-    *(f32*)(p + 0x68) = b;
-    *(f32*)(p + 0x6c) = b;
-    *(f32*)(p + 0x80) = z;
-    *(f32*)(p + 0x84) = z;
-    *(f32*)(p + 0x88) = z;
-    *(f32*)(p + 0x8c) = z;
+    *(f32*)(p + 0x60) = lbl_80542ED0;
+    *(f32*)(p + 0x64) = lbl_80542ED0;
+    *(f32*)(p + 0x68) = lbl_80542ED4;
+    *(f32*)(p + 0x6c) = lbl_80542ED4;
+    *(f32*)(p + 0x80) = lbl_80542E88;
+    *(f32*)(p + 0x84) = lbl_80542E88;
+    *(f32*)(p + 0x88) = lbl_80542E88;
+    *(f32*)(p + 0x8c) = lbl_80542E88;
     *(s32*)(p + 0x108) = 0;
     *(s32*)(p + 0x23c) = 0;
-    u8 r = (*(u8 (**)(u8*))(*(u8**)p + 0x34))(p);
+    u32 r = ((Actor*)p)->v11();
     p[0x254] = r;
     p[0x240] = r;
-    z = lbl_80542E88;
-    *(f32*)(p + 0x244) = z;
-    *(f32*)(p + 0x3c) = z;
-    *(f32*)(p + 0x40) = z;
-    *(f32*)(p + 0x44) = z;
+    *(f32*)(p + 0x244) = lbl_80542E88;
+    *(f32*)(p + 0x3c) = lbl_80542E88;
+    *(f32*)(p + 0x40) = lbl_80542E88;
+    *(f32*)(p + 0x44) = lbl_80542E88;
     *(s32*)(p + 0x248) = 0;
     *(s32*)(p + 0x24c) = -1;
     *(s32*)(p + 0x250) = 0;
 }
-
+#pragma optimization_level 4
 extern "C" void fn_80374564(void) {
 }
 
