@@ -50,6 +50,12 @@ extern "C" void fn_801EF830(u32 id, void* pos, u32 a, u32 b, void* tbl, u32 c, u
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, u32 a, f32 x, f32 y);
 extern "C" void fn_801ED828(void* p);
 extern "C" void fn_80215ECC(void* p);
+extern "C" void fn_801ECB08(char* p, s32 state);
+extern "C" void fn_8022FEB8(f32* rect, u32 a, u32 b, u32 c, u32 d);
+extern "C" void* fn_8022FD8C(void* h);
+extern "C" s32 fn_8038AD24(void* obj, u32 snd, u32 a, f32* vals, u32 c);
+extern "C" s32 fn_803865B8(void* obj);
+extern "C" s32 fn_80384C58(void* obj, void* b);
 extern char* lbl_8053AAF8;
 extern char* lbl_8053AB10;
 extern u8 lbl_804A5620[];
