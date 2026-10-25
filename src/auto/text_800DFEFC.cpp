@@ -79,12 +79,13 @@ u16 J3DMaterialFactory_v21::countUniqueMaterials()
 
 J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32 flags) const
 {
+	J3DMaterial* material = pMaterial;
 	J3DMaterialInitData_v21* initData = &mInitData[mMatRemapTable[idx]];
-	u32 numTevStages = 0;
+	u32 numTextures = 0;
+	u32 numTevStages = numTextures;
 	if (initData->mNumTevStagesIndex != 0xff) {
 		numTevStages = mTevStageNums[initData->mNumTevStagesIndex];
 	}
-	u32 numTextures = 0;
 	if (initData->mTextureIndex[0] != 0xffff) { numTextures++; }
 	if (initData->mTextureIndex[1] != 0xffff) { numTextures++; }
 	if (initData->mTextureIndex[2] != 0xffff) { numTextures++; }
@@ -93,102 +94,104 @@ J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32
 	if (initData->mTextureIndex[5] != 0xffff) { numTextures++; }
 	if (initData->mTextureIndex[6] != 0xffff) { numTextures++; }
 	if (initData->mTextureIndex[7] != 0xffff) { numTextures++; }
-	u32 numStages;
 	if (numTevStages != numTextures && numTextures != 0) {
-		numStages = numTevStages > numTextures ? numTevStages : numTextures;
+		if (numTevStages > numTextures) {
+			numTextures = numTevStages;
+		}
 	} else {
-		numStages = numTevStages;
+		numTextures = numTevStages;
 	}
 	u32 tevStageNum = (flags >> 16) & 0x1f;
-	if (numStages > tevStageNum) {
-		tevStageNum = numStages;
+	if (numTextures > tevStageNum) {
+		tevStageNum = numTextures;
 	}
 	u32 texNoNum = tevStageNum > 8 ? 8 : tevStageNum;
-	u8 texGenNum = 0;
+	u32 texGenNum;
 	if (initData->mNumTexGensIndex != 0xff) {
 		texGenNum = mTexGenNums[initData->mNumTexGensIndex];
+	} else {
+		texGenNum = 0;
 	}
+	u32 texGenFlag;
 	u32 colorFlag = flags & 0xc0000000;
-	u32 texGenFlag = texGenNum > 4 ? 0 : flags & 0x0c000000;
+	texGenFlag = texGenNum > 4 ? 0 : flags & 0x0c000000;
 	u32 peFlag = flags & 0x30000000;
 	u32 indFlag = (flags >> 24) & 1;
-	if (pMaterial == NULL) {
-		pMaterial = new J3DMaterial;
+	if (material == NULL) {
+		material = new J3DMaterial;
 	}
-	pMaterial->mColorBlock = J3DMaterial::createColorBlock(colorFlag);
-	pMaterial->mTexGenBlock = J3DMaterial::createTexGenBlock(texGenFlag);
-	pMaterial->mTevBlock = J3DMaterial::createTevBlock((u16)tevStageNum);
-	pMaterial->mIndBlock = J3DMaterial::createIndBlock(indFlag);
-	pMaterial->mPEBlock = J3DMaterial::createPEBlock(peFlag, mInitData[mMatRemapTable[idx]].mPixelEngineMode);
-	pMaterial->mIndex = idx;
-	pMaterial->mMaterialMode = mInitData[mMatRemapTable[idx]].mPixelEngineMode;
+	material->mColorBlock = J3DMaterial::createColorBlock(colorFlag);
+	material->mTexGenBlock = J3DMaterial::createTexGenBlock(texGenFlag);
+	material->mTevBlock = J3DMaterial::createTevBlock((u16)tevStageNum);
+	material->mIndBlock = J3DMaterial::createIndBlock(indFlag);
+	material->mPEBlock = J3DMaterial::createPEBlock(peFlag, mInitData[mMatRemapTable[idx]].mPixelEngineMode);
+	material->mIndex = idx;
+	material->mMaterialMode = mInitData[mMatRemapTable[idx]].mPixelEngineMode;
 
-	pMaterial->mColorBlock->setColorChanNum(newColorChanNum(idx));
-	pMaterial->mColorBlock->setCullMode(newCullMode(idx));
-	pMaterial->mTexGenBlock->setTexGenNum(newTexGenNum(idx));
-	pMaterial->mTexGenBlock->setNBTScale(newNBTScale(idx));
-	J3DFog fog;
-	fog.setFogInfo(fn_800E0F84(this, idx));
-	pMaterial->mPEBlock->setFog(fog);
-	pMaterial->mPEBlock->setAlphaComp(newAlphaComp(idx));
-	pMaterial->mPEBlock->setBlend(fn_800E1144(this, idx));
-	pMaterial->mPEBlock->setZMode(newZMode(idx));
-	pMaterial->mPEBlock->setZCompLoc(newZCompLoc(idx));
-	pMaterial->mPEBlock->setDither(newDither(idx));
-	pMaterial->mTevBlock->setTevStageNum(newTevStageNum(idx));
+	material->mColorBlock->setColorChanNum(newColorChanNum(idx));
+	material->mColorBlock->setCullMode(newCullMode(idx));
+	material->mTexGenBlock->setTexGenNum(newTexGenNum(idx));
+	material->mTexGenBlock->setNBTScale(newNBTScale(idx));
+	material->mPEBlock->setFog(fn_800E0F84(this, idx));
+	material->mPEBlock->setAlphaComp(newAlphaComp(idx));
+	material->mPEBlock->setBlend(fn_800E1144(this, idx));
+	material->mPEBlock->setZMode(newZMode(idx));
+	material->mPEBlock->setZCompLoc(newZCompLoc(idx));
+	material->mPEBlock->setDither(newDither(idx));
+	material->mTevBlock->setTevStageNum(newTevStageNum(idx));
 
 	for (u8 i = 0; i < texNoNum; i++) {
-		pMaterial->mTevBlock->setTexNo(i, newTexNo(idx, i));
+		material->mTevBlock->setTexNo(i, newTexNo(idx, i));
 	}
 	for (u8 i = 0; i < tevStageNum; i++) {
-		pMaterial->mTevBlock->setTevOrder(i, fn_800E0D3C(this, idx, i));
+		material->mTevBlock->setTevOrder(i, fn_800E0D3C(this, idx, i));
 	}
 	for (u8 i = 0; i < tevStageNum; i++) {
 		J3DMaterialInitData_v21* data = &mInitData[mMatRemapTable[idx]];
-		pMaterial->mTevBlock->setTevStage(i, newTevStage(idx, i));
+		material->mTevBlock->setTevStage(i, newTevStage(idx, i));
 		if (data->mTevSwapModeInfoIndex[i] != 0xffff) {
-			pMaterial->mTevBlock->getTevStage(i)->setTexSel(mTevSwapModeInfo[data->mTevSwapModeInfoIndex[i]].mTexSel);
-			pMaterial->mTevBlock->getTevStage(i)->setRasSel(mTevSwapModeInfo[data->mTevSwapModeInfoIndex[i]].mRasSel);
+			material->mTevBlock->getTevStage(i)->setTexSel(mTevSwapModeInfo[data->mTevSwapModeInfoIndex[i]].mTexSel);
+			material->mTevBlock->getTevStage(i)->setRasSel(mTevSwapModeInfo[data->mTevSwapModeInfoIndex[i]].mRasSel);
 		}
 	}
 	for (u8 i = 0; i < 4; i++) {
-		pMaterial->mTevBlock->setTevKColor(i, fn_800E0DF8(this, idx, i));
+		material->mTevBlock->setTevKColor(i, fn_800E0DF8(this, idx, i));
 	}
 	for (u8 i = 0; i < 4; i++) {
-		pMaterial->mTevBlock->setTevColor(i, fn_800E0D88(this, idx, i));
+		material->mTevBlock->setTevColor(i, fn_800E0D88(this, idx, i));
 	}
 	for (u8 i = 0; i < 4; i++) {
-		pMaterial->mTevBlock->setTevSwapModeTable(i, newTevSwapModeTable(idx, i));
+		material->mTevBlock->setTevSwapModeTable(i, newTevSwapModeTable(idx, i));
 	}
 	for (u8 i = 0; i < 2; i++) {
-		pMaterial->mColorBlock->setMatColor(i, fn_800E0960(this, idx, i));
+		material->mColorBlock->setMatColor(i, fn_800E0960(this, idx, i));
 	}
 	for (u8 i = 0; i < 4; i++) {
-		pMaterial->mColorBlock->setColorChan(i, J3DColorChan(fn_800E09F0(this, idx, i)));
+		material->mColorBlock->setColorChan(i, J3DColorChan(fn_800E09F0(this, idx, i)));
 	}
 	for (u8 i = 0; i < texGenNum; i++) {
 		J3DTexCoord texCoord(fn_800E0BBC(this, idx, i));
-		pMaterial->mTexGenBlock->setTexCoord(i, &texCoord);
+		material->mTexGenBlock->setTexCoord(i, &texCoord);
 	}
 	for (u8 i = 0; i < 8; i++) {
-		pMaterial->mTexGenBlock->setTexMtx(i, fn_800E0C1C(this, idx, i));
+		material->mTexGenBlock->setTexMtx(i, fn_800E0C1C(this, idx, i));
 	}
 	J3DMaterialInitData_v21* data = &mInitData[mMatRemapTable[idx]];
 	for (u8 i = 0; i < tevStageNum; i++) {
 		if (data->mTevKColorSels[i] != 0xff) {
-			pMaterial->mTevBlock->setTevKColorSel(i, data->mTevKColorSels[i]);
+			material->mTevBlock->setTevKColorSel(i, data->mTevKColorSels[i]);
 		} else {
-			pMaterial->mTevBlock->setTevKColorSel(i, 0xc);
+			material->mTevBlock->setTevKColorSel(i, 0xc);
 		}
 	}
 	for (u8 i = 0; i < tevStageNum; i++) {
 		if (data->mTevKAlphaSels[i] != 0xff) {
-			pMaterial->mTevBlock->setTevKAlphaSel(i, data->mTevKAlphaSels[i]);
+			material->mTevBlock->setTevKAlphaSel(i, data->mTevKAlphaSels[i]);
 		} else {
-			pMaterial->mTevBlock->setTevKAlphaSel(i, 0x1c);
+			material->mTevBlock->setTevKAlphaSel(i, 0x1c);
 		}
 	}
-	return pMaterial;
+	return material;
 }
 
 extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
@@ -291,15 +294,7 @@ extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx
 
 
 
-extern "C" GXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
-{
-	GXColor defaultColor = j3dDefaultTevKColor;
-	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
-	if (initData->mTevKColorIndex[no] != 0xffff) {
-		return self->mTevKColors[initData->mTevKColorIndex[no]];
-	}
-	return defaultColor;
-}
+// fn_800E0DF8 (newTevKColor) goes here
 
 u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
 {
@@ -326,6 +321,16 @@ J3DTevSwapModeTable J3DMaterialFactory_v21::newTevSwapModeTable(int idx, int sta
         return J3DTevSwapModeTable(mTevSwapModeTableInfo[initData->mTevSwapModeTableIndex[stage]]);
     }
     return J3DTevSwapModeTable(j3dDefaultTevSwapModeTable);
+}
+
+extern "C" J3DFog fn_800E0F84(const J3DMaterialFactory_v21* self, int idx)
+{
+	J3DFog fog;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mFogInfoIndex != 0xffff) {
+		fog.setFogInfo(self->mFogInfo[initData->mFogInfoIndex]);
+	}
+	return fog;
 }
 
 // fn_800E0F84 (newFog) goes here
