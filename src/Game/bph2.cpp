@@ -37,6 +37,18 @@ extern s32 lbl_80539FCC;
 static inline f32 bph2_sinf(f32 x) { return (f32)sin(x); }
 static inline f32 bph2_cosf(f32 x) { return (f32)cos(x); }
 
+static inline void bph2_fillMtx(f32 m[3][4], f32 s, f32 sx, f32 sy, f32 sz, f32 cx, f32 cy, f32 cz) {
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * ((sx * sy) * cz - cx * sz);
+    m[1][1] = s * ((sx * sy) * sz + cx * cz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * ((cx * cz) * sy + sx * sz);
+    m[1][2] = s * ((cx * sz) * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
+}
+
 static inline void bph2_drawShadow(s32 room, f32* pos, f32 alpha, f32 size) {
     fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, JUtility::TColor(0, 0, 0, (s32)(lbl_8053E0E8 * alpha)), size);
 }
