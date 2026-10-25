@@ -873,6 +873,8 @@ struct HudResizePane {
     virtual void resize(f32 w, f32 h);
 };
 
+static inline bool HudBitSet(u8 flags, u8 mask) { return (flags & mask) != 0; }
+
 extern "C" void fn_80422824(u8* this_);
 extern "C" u8 fn_8023BD70(s32 i);
 extern "C" void fn_80441490(void* p);
@@ -937,6 +939,151 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
             t[0x200 / 2] = w - 1;
         }
     }
+}
+
+extern "C" void fn_804257E4(u8* this_) {
+    u8* base = (u8*)lbl_8048E1B8;
+    s32 i;
+    s32 j;
+    s32 v;
+
+    for (i = 0; i < 4; i++) {
+        s32 bit = 1 << i;
+        u8 mask = bit;
+        bool on = (lbl_8053AAF8[0x82] & mask) != 0;
+        if (!on) {
+            this_[0x25d] &= ~mask;
+        } else {
+            bool hit = (lbl_8053AED0[0xdd] & mask) != 0;
+            if (hit && !(this_[0x25c] & mask)) {
+                this_[0x25c] |= mask;
+                this_[0x25d] |= mask;
+            } else if (lbl_8053AED0[0xdc] & 0x10) {
+                this_[0x25d] &= ~mask;
+            } else if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) {
+                this_[0x25d] &= ~mask;
+            }
+        }
+        if (lbl_8053AAF8[0x82] & mask) {
+            fn_804253E0(this_, i);
+            if (((s32)lbl_8053AAF8[0x83] >> (i * 2) & 3) == 1) {
+                if (fn_8023DE58(i) >= 8) {
+                    if (!(this_[0x258] & mask)) {
+                        this_[0x258] |= (u8)bit;
+                        GetKeyed(*(u8**)(this_ + 0x18), *(u64*)(base + 0xda8 + i * 8))[0xb0] = 1;
+                        GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xdc8 + i * 8))[0xb0] = 1;
+                        GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xde8 + i * 8))[0xb0] = 0;
+                    }
+                } else if (this_[0x258] & mask) {
+                    this_[0x258] &= ~mask;
+                    GetKeyed(*(u8**)(this_ + 0x18), *(u64*)(base + 0xda8 + i * 8))[0xb0] = 0;
+                    GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xdc8 + i * 8))[0xb0] = 0;
+                    GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xde8 + i * 8))[0xb0] = 1;
+                }
+            }
+            fn_80423DF0(this_, i);
+            if (((s32)lbl_8053AAF8[0x83] >> (i * 2) & 3) == 2) {
+                if (!(this_[0x25a] & mask)) {
+                    if (fn_8023BD70(i)) {
+                        this_[0x25a] |= (u8)bit;
+                        GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8))[0xb0] = 1;
+                    }
+                } else if (fn_80309D24(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0 || (this_[0x255] & mask)) {
+                    this_[0x25a] &= ~mask;
+                    GetKeyed(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8))[0xb0] = 0;
+                }
+            }
+            if (this_[0x255] & mask) {
+                v = *(s32*)(lbl_80529DEC + 0x108 + i * 4);
+                if (v > 0x180) {
+                    v = 0x180;
+                }
+                if (v < 0) {
+                    v = 0;
+                }
+                u64* key = (u64*)(base + 0x148 + i * 0x20);
+                for (j = 0; j < 4; j++) {
+                    if (v >= 0x60) {
+                        u8* pane = GetKeyed(*(u8**)(this_ + 4), *key);
+                        ((HudResizePane*)GetKeyed(*(u8**)(this_ + 4), *key))
+                            ->resize(*(f32*)(this_ + 0xf4), *(f32*)(pane + 0x2c) - *(f32*)(pane + 0x24));
+                        v -= 0x60;
+                    } else {
+                        u8* pane = GetKeyed(*(u8**)(this_ + 4), *key);
+                        ((HudResizePane*)GetKeyed(*(u8**)(this_ + 4), *key))
+                            ->resize(*(f32*)(this_ + 0xf4) * ((f32)v / lbl_80543A68), *(f32*)(pane + 0x2c) - *(f32*)(pane + 0x24));
+                        v = 0;
+                    }
+                    key++;
+                }
+            }
+            fn_80423248(this_, i);
+            fn_80423804(this_, i);
+        }
+    }
+
+    fn_80422824(this_);
+    for (i = 0; i < 4; i++) {
+        fn_80424148(this_, i, 0);
+        f32* f = (f32*)(this_ + 0xf8 + i * 4);
+        if ((*(u8**)(lbl_8053AB10 + 0x20))[i + 0x148] != 0) {
+            u64* key = (u64*)(base + 0xdc8 + i * 8);
+            s32 x = (s32)((J2DPane*)GetKeyed(*(u8**)(this_ + 4), *key))->getBounds()->i.x;
+            s32 y = (s32)((J2DPane*)GetKeyed(*(u8**)(this_ + 4), *key))->getBounds()->i.y;
+            u8* p = GetKeyed(*(u8**)(this_ + 4), *key);
+            f32 w = *(f32*)(p + 0x28) - *(f32*)(p + 0x20);
+            p = GetKeyed(*(u8**)(this_ + 4), *key);
+            f32 h = *(f32*)(p + 0x2c) - *(f32*)(p + 0x24);
+            u8* dst = *(u8**)(lbl_8053AB10 + 0x20) + i * 0x10;
+            *(s32*)(dst + 0x1d0) = x;
+            *(s32*)(dst + 0x1d4) = y;
+            *(s32*)(dst + 0x1d8) = (s32)w;
+            *(s32*)(dst + 0x1dc) = (s32)h;
+            if (i == 0 || i == 2) {
+                if (*f < lbl_80543A70) {
+                    *f = *f + lbl_80543A74;
+                } else {
+                    *f = lbl_80543A78;
+                }
+            } else {
+                if (*f > lbl_80543A7C) {
+                    *f = *f - lbl_80543A74;
+                } else {
+                    *f = lbl_80543A80;
+                }
+            }
+        } else {
+            if (i == 0 || i == 2) {
+                if (*f < lbl_80543A74) {
+                    *f = lbl_80543A40;
+                } else {
+                    *f = *f - lbl_80543A74;
+                }
+            } else {
+                if (*f > lbl_80543A84) {
+                    *f = lbl_80543A40;
+                } else {
+                    *f = *f + lbl_80543A74;
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
+            fn_8042215C(this_, i);
+            fn_80421D78(this_, i);
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
+            fn_80421A34(this_, i, 0);
+        }
+    }
+    fn_80441490(*(void**)(this_ + 0xf0));
+    this_[0x255] = 0;
+    this_[0x256] = 0;
+    this_[0x257] = 0;
 }
 
 extern "C" void fn_80425F24(u8* this_) {
@@ -1012,28 +1159,34 @@ extern "C" void fn_80425F6C(u8* self) {
 }
 #pragma opt_propagation off
 extern "C" void fn_804263A8(u8* this_) {
-    const u8* base = lbl_8048E1B8;
-    const u64* key1;
-    const u64* key0;
-    const u64* key2;
-    const u64* key3;
-    const u64* key4;
-    const u64* key5;
-    const u64* key6;
-    s32 shift;
-    const u64* key7;
-    const u64* key8;
-    const u64* key9;
-    const u64* firstKeys;
     s32 i;
+    const u64* firstKeys;
+    const u64* key9;
+    const u64* key8;
+    const u64* key7;
+    s32 shift;
+    const u64* key6;
+    const u64* key5;
+    const u64* key4;
+    const u64* key3;
+    const u64* key2;
+    const u64* key0;
+    const u64* key1;
+    const u8* base = lbl_8048E1B8;
+    u8* saves;
 
-    for (i = 0; i < 4; i++) {
+
+    u8* config = lbl_80529DEC;
+    u8* words = this_;
+    u8* halves = this_;
+    for (i = 0; i < 4; i++, words += 4, halves += 2, config += 4) {
         u8 mask = 1 << i;
         BOOL active = (lbl_8053AAF8[0x82] & mask) != 0;
         if (!active) {
             this_[0x25d] &= ~mask;
         } else {
-            if ((u32)((lbl_8053AED0[0xdd] & mask) != 0) && !(this_[0x25c] & mask)) {
+            BOOL changed = (lbl_8053AED0[0xdd] & mask) != 0;
+            if (changed && !(this_[0x25c] & mask)) {
                 this_[0x25c] |= mask;
                 this_[0x25d] |= mask;
             } else if (lbl_8053AED0[0xdc] & 0x10) {
@@ -1043,30 +1196,30 @@ extern "C" void fn_804263A8(u8* this_) {
             }
         }
 
-        *(u32*)(lbl_80529DEC + 0xd8 + i * 4) = fn_80237774(i);
-        *(u32*)(lbl_80529DEC + 0xe8 + i * 4) = fn_80236100(i);
-        *(u32*)(lbl_80529DEC + 0x108 + i * 4) = fn_802375B0(i);
-        *(s32*)(this_ + 0x158 + i * 4) = 0x180;
-        *(s32*)(this_ + 0x168 + i * 4) = 0;
-        *(s32*)(this_ + 0x178 + i * 4) = 0;
-        *(s32*)(this_ + 0x188 + i * 4) = 0;
-        *(f32*)(this_ + 0xf8 + i * 4) = lbl_80543A40;
-        *(f32*)(this_ + 0x108 + i * 4) = lbl_80543A40;
-        *(f32*)(this_ + 0x118 + i * 4) = lbl_80543A40;
-        *(f32*)(this_ + 0x128 + i * 4) = lbl_80543A40;
-        *(f32*)(this_ + 0x138 + i * 4) = lbl_80543A40;
+        *(u32*)(config + 0xd8) = fn_80237774(i);
+        *(u32*)(config + 0xe8) = fn_80236100(i);
+        *(u32*)(config + 0x108) = fn_802375B0(i);
+        *(s32*)(words + 0x158) = 0x180;
+        *(s32*)(words + 0x168) = 0;
+        *(s32*)(words + 0x178) = 0;
+        *(s32*)(words + 0x188) = 0;
+        *(f32*)(words + 0xf8) = lbl_80543A40;
+        *(f32*)(words + 0x108) = lbl_80543A40;
+        *(f32*)(words + 0x118) = lbl_80543A40;
+        *(f32*)(words + 0x128) = lbl_80543A40;
+        *(f32*)(words + 0x138) = lbl_80543A40;
         this_[0x251 + i] = i;
         this_[0x24d + i] = 0xff;
-        *(u16*)(this_ + 0x1f0 + i * 2) = 0;
-        *(s32*)(this_ + 0x198 + i * 4) = 0;
-        *(s32*)(this_ + 0x1a8 + i * 4) = 0;
-        *(s32*)(this_ + 0x1b8 + i * 4) = 0;
-        *(s32*)(this_ + 0x1c8 + i * 4) = 0;
-        *(u16*)(this_ + 0x1e8 + i * 2) = 0;
-        *(u16*)(this_ + 0x1f8 + i * 2) = 0;
-        *(u16*)(this_ + 0x200 + i * 2) = 0;
-        *(s32*)(this_ + 0x1d8 + i * 4) = 0;
-        *(u16*)(this_ + 0x208 + i * 2) = 0;
+        *(u16*)(halves + 0x1f0) = 0;
+        *(s32*)(words + 0x198) = 0;
+        *(s32*)(words + 0x1a8) = 0;
+        *(s32*)(words + 0x1b8) = 0;
+        *(s32*)(words + 0x1c8) = 0;
+        *(u16*)(halves + 0x1e8) = 0;
+        *(u16*)(halves + 0x1f8) = 0;
+        *(u16*)(halves + 0x200) = 0;
+        *(s32*)(words + 0x1d8) = 0;
+        *(u16*)(halves + 0x208) = 0;
     }
 
     for (i = 0; i < 4; i++) {
@@ -1089,6 +1242,7 @@ extern "C" void fn_804263A8(u8* this_) {
     *(s32*)(this_ + 0x150) = -2;
     *(s32*)(this_ + 0x154) = -2;
 
+    saves = lbl_8050EC80;
     key0 = firstKeys;
     key1 = (const u64*)(base + 0xda8);
     key2 = (const u64*)(base + 0xdc8);
@@ -1107,7 +1261,7 @@ extern "C" void fn_804263A8(u8* this_) {
             ((u8*)GetHeart(*(u8**)(this_ + 4), *key3))[0xb0] = 1;
             ((u8*)GetHeart(*(u8**)(this_ + 4), *key4))[0xb0] = 0;
             ((u8*)GetHeart(*(u8**)(this_ + 4), *key5))[0xb0] = 1;
-            if (lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x89] != 0) {
+            if (lbl_8050EC80[*(s32*)(saves + 0x10) * 0xc8 + 0x89] != 0) {
                 ((u8*)GetHeart(*(u8**)(this_ + 4), *key6))[0xb0] = 1;
             } else {
                 ((u8*)GetHeart(*(u8**)(this_ + 4), *key6))[0xb0] = 0;
