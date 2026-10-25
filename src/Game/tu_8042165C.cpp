@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JUtility/TColor.h"
 
 struct HudPlayerState {
     u8 pad[0x89];
@@ -941,7 +942,9 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
     }
 }
 
-extern "C" void fn_804257E4(u8* this_) {
+extern "C" void fn_804257E4(void* obj) {
+    u8* this_ = (u8*)obj;
+    u8* base = (u8*)lbl_8048E1B8;
     u8 mask;
     s32 sh;
     u64* tv1;
@@ -951,25 +954,21 @@ extern "C" void fn_804257E4(u8* this_) {
     s32* counts;
     u64* bars;
     s32 bit;
-    u64* pos;
-    s32 i;
-    s32 j;
-    s32 v;
-    u8* base = (u8*)lbl_8048E1B8;
+    u64* pos = (u64*)(base + 0xdc8);
 
-    pos = (u64*)(base + 0xdc8);
     counts = (s32*)lbl_80529DEC;
     on1 = pos;
     tv1 = (u64*)(base + 0xda8);
     off1 = (u64*)(base + 0xde8);
     on2 = (u64*)(base + 0xec8);
     bars = (u64*)(base + 0x148);
-    for (i = 0, sh = 0; i < 4; i++) {
+    sh = 0;
+    for (s32 i = 0; i < 4; i++) {
         bit = 1 << i;
         mask = bit;
-        if (!HudBitSet(lbl_8053AAF8[0x82], mask)) {
+        if (HudBitSet(lbl_8053AAF8[0x82], mask) == FALSE) {
             this_[0x25d] &= ~mask;
-        } else if (HudBitSet(lbl_8053AED0[0xdd], mask) && !(this_[0x25c] & mask)) {
+        } else if (HudBitSet(lbl_8053AED0[0xdd], mask) != FALSE && !(this_[0x25c] & mask)) {
             this_[0x25c] |= mask;
             this_[0x25d] |= mask;
         } else if (lbl_8053AED0[0xdc] & 0x10) {
@@ -1007,15 +1006,16 @@ extern "C" void fn_804257E4(u8* this_) {
                 }
             }
             if (this_[0x255] & mask) {
-                v = counts[0x42];
+                u64* key;
+                s32 j;
+                s32 v = counts[0x42];
                 if (v > 0x180) {
                     v = 0x180;
                 }
                 if (v < 0) {
                     v = 0;
                 }
-                u64* key = bars;
-                for (j = 0; j < 4; j++) {
+                for (j = 0, key = bars; j < 4; j++) {
                     if (v >= 0x60) {
                         u8* pane = GetHeart(*(u8**)(this_ + 4), *key);
                         ((HudResizePane*)GetHeart(*(u8**)(this_ + 4), *key))
@@ -1044,13 +1044,16 @@ extern "C" void fn_804257E4(u8* this_) {
 
     fn_80422824(this_);
     {
-        u8* fp = this_;
-        s32 off = 0;
-        for (i = 0; i < 4; i++) {
-            fn_80424148(this_, i, 0);
-            if ((*(u8**)(lbl_8053AB10 + 0x20))[i + 0x148] != 0) {
-                s32 x = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.x;
-                s32 y = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.y;
+        s32 x;
+        s32 y;
+        s32 off;
+        u8* fp;
+        s32 k;
+        for (k = 0, fp = this_, off = 0; k < 4; k++) {
+            fn_80424148(this_, k, 0);
+            if ((*(u8**)(lbl_8053AB10 + 0x20))[k + 0x148] != 0) {
+                x = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.x;
+                y = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.y;
                 u8* p = GetHeart(*(u8**)(this_ + 4), *pos);
                 f32 w = *(f32*)(p + 0x28) - *(f32*)(p + 0x20);
                 p = GetHeart(*(u8**)(this_ + 4), *pos);
@@ -1060,7 +1063,7 @@ extern "C" void fn_804257E4(u8* this_) {
                 *(s32*)(dst + 0x1d4) = y;
                 *(s32*)(dst + 0x1d8) = (s32)w;
                 *(s32*)(dst + 0x1dc) = (s32)h;
-                if (i == 0 || i == 2) {
+                if (k == 0 || k == 2) {
                     if (*(f32*)(fp + 0xf8) < lbl_80543A70) {
                         *(f32*)(fp + 0xf8) = *(f32*)(fp + 0xf8) + lbl_80543A74;
                     } else {
@@ -1074,7 +1077,7 @@ extern "C" void fn_804257E4(u8* this_) {
                     }
                 }
             } else {
-                if (i == 0 || i == 2) {
+                if (k == 0 || k == 2) {
                     if (*(f32*)(fp + 0xf8) < lbl_80543A74) {
                         *(f32*)(fp + 0xf8) = lbl_80543A40;
                     } else {
@@ -1094,15 +1097,15 @@ extern "C" void fn_804257E4(u8* this_) {
         }
     }
 
-    for (i = 0; i < 4; i++) {
-        if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
-            fn_8042215C(this_, i);
-            fn_80421D78(this_, i);
+    for (s32 n = 0; n < 4; n++) {
+        if (lbl_8053AAF8[0x82] & (u8)(1 << n)) {
+            fn_8042215C(this_, n);
+            fn_80421D78(this_, n);
         }
     }
-    for (i = 0; i < 4; i++) {
-        if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
-            fn_80421A34(this_, i, 0);
+    for (s32 m = 0; m < 4; m++) {
+        if (lbl_8053AAF8[0x82] & (u8)(1 << m)) {
+            fn_80421A34(this_, m, 0);
         }
     }
     fn_80441490(*(void**)(this_ + 0xf0));
