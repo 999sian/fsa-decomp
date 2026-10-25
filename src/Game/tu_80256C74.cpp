@@ -72,6 +72,7 @@ extern const f32 lbl_8054011C;
 extern const f32 lbl_80540120;
 extern u16 lbl_8046B200[][4];
 extern int __float_epsilon[];
+extern "C" const JGeometry::TVec3<f32> lbl_8046AF00[];
 extern u8* lbl_8053AED0;
 extern u8* lbl_8053AC98;
 
