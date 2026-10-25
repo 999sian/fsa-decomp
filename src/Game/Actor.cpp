@@ -385,6 +385,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     }
     return (u8)r30;
 }
+#pragma dont_inline reset
 
 /* --- 0x801EE434: release a collision object back to its pool (or reactivate
  * it if it is still on-screen).  Operates on the collision object, not the
@@ -1637,9 +1638,10 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
     f32 v[3];
     f32 rect[4];
     f32 out[2];
-    s32 i;
-    s32 j;
+    u32 id;
+    int i;
     u8 mask = 0;
+    int j;
     f32 vA = a->field_60 + a->field_0C.x;
     f32 vD = a->field_6C + a->field_0C.y - a->field_0C.z;
     f32 vC = a->field_68 + a->field_0C.x;
@@ -1650,7 +1652,7 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
     rect[3] = vD;
     for (i = mask; i < 4; i++) {
         if (i == c) continue;
-        u32 id = a->field_04;
+        id = a->field_04;
         u8* mgr = (u8*)fn_802D6A9C();
         if (mgr[id + 0x131df] == 0) {
             f32 pz = ((f32*)fn_8023E724(i))[2];
@@ -1661,7 +1663,7 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
         if (fn_8023B190(i, rect, a->field_04) == 0) continue;
         mask = (u8)(mask | (1 << i));
     }
-    u8 m = mask;
+    s32 m = (u8)mask;
     if (m != 0) {
         f32 y1 = a->field_6C + a->field_0C.y - a->field_0C.z;
         f32 x0 = a->field_60 + a->field_0C.x;
@@ -1671,9 +1673,9 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
         f32 cz = lbl_8053F74C * (y0 - y1) + y1;
         for (j = 0; j < 4; j++) {
             if ((m & (1 << j)) == 0) continue;
-            u8 hit = 0;
-            if (fn_8023DE58(j) < 8 && (s32)a->field_04 == 8) hit = 1;
-            if (hit) {
+            mask = 0;
+            if (fn_8023DE58(j) < 8 && (s32)a->field_04 == 8) mask = 1;
+            if (mask) {
                 v[0] = cx;
                 v[1] = cz;
                 v[2] = lbl_8053F740;
@@ -2521,71 +2523,62 @@ static inline void ATU7_setTVec3f(register const f32* src, register f32* dst) {
         stfs   z,  8(dst)
     }
 }
+extern f32 lbl_8053F7A8;
 extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c) {
+    JGeometry::TVec3f pos(*(JGeometry::TVec3f*)f18);
     u8 more = 1;
-    u32 ret = 0;
-    Vec pos;
-    Vec delta;
-    pos = *(Vec*)f18;
+    u8 ret = 0;
     f32 w = ((f32*)p80)[2] - ((f32*)p80)[0];
     f32 h = ((f32*)p80)[3] - ((f32*)p80)[1];
-    if (w > 0.01f) {
-        if (h > 0.01f) {
-            f32 r, nr;
-            Vec src;
-            if (w < h) h = w;
-            r = h;
-            if (r > 8.0f) r = 8.0f;
-            r -= 0.01f;
-            r *= 0.5f;
-            nr = -r;
-            src = *(Vec*)f0C;
-            while (more != 0) {
-                u8 okx = 0;
-                u8 oky = 0;
-                delta.x = src.x - pos.x;
-                delta.y = src.y - pos.y;
-                delta.z = src.z - pos.z;
-                if (delta.x > r) {
-                    delta.y = delta.y * (r / delta.x);
-                    delta.x = r;
-                } else if (delta.x < nr) {
-                    delta.y = delta.y * (nr / delta.x);
-                    delta.x = nr;
-                } else {
-                    okx = 1;
-                }
-                if (delta.y > r) {
-                    delta.x = delta.x * (r / delta.y);
-                    delta.y = r;
-                } else if (delta.y < nr) {
-                    delta.x = delta.x * (nr / delta.y);
-                    delta.y = nr;
-                } else {
-                    oky = 1;
-                }
-                if (okx != 0 && oky != 0) {
-                    pos = *(Vec*)f0C;
-                    more = 0;
-                } else {
-                    pos.x += delta.x;
-                    pos.y += delta.y;
-                    pos.z += delta.z;
-                }
-                u8 ok = fn_801F172C(a, id, &pos, p80, out2, c);
-                if (ok != 0) {
-                    if (out1 != 0) {
-                        ret = 1;
-                        more = 0;
-                        out1[0] = pos.x;
-                        out1[1] = pos.y;
-                        out1[2] = pos.z;
-                    }
+    if (w > lbl_8053F7A8 && h > lbl_8053F7A8) {
+        f32 r, nr;
+        if (w < h) h = w;
+        r = h;
+        if (r > lbl_8053F7A4) r = lbl_8053F7A4;
+        r -= lbl_8053F7A8;
+        r *= lbl_8053F74C;
+        nr = -r;
+        while (more != 0) {
+            JGeometry::TVec3f delta;
+            u8 okx = 0;
+            u8 oky = 0;
+            delta.sub(*(JGeometry::TVec3f*)f0C, pos);
+            if (delta.x > r) {
+                delta.y = delta.y * (r / delta.x);
+                delta.x = r;
+            } else if (delta.x < nr) {
+                delta.y = delta.y * (nr / delta.x);
+                delta.x = nr;
+            } else {
+                okx = 1;
+            }
+            if (delta.y > r) {
+                delta.x = delta.x * (r / delta.y);
+                delta.y = r;
+            } else if (delta.y < nr) {
+                delta.x = delta.x * (nr / delta.y);
+                delta.y = nr;
+            } else {
+                oky = 1;
+            }
+            if (okx != 0 && oky != 0) {
+                pos.set(*(JGeometry::TVec3f*)f0C);
+                more = 0;
+            } else {
+                pos.add(delta);
+            }
+            if (fn_801F172C(a, id, (Vec*)&pos, p80, out2, c) != 0) {
+                ret = 1;
+                more = 0;
+                if (out1 != 0) {
+                    out1[0] = pos.x;
+                    out1[1] = pos.y;
+                    out1[2] = pos.z;
                 }
             }
         }
     }
-    return (u8)ret;
+    return ret;
 }
 /* --- 0x801EF830: spawn the actor's effect / model ---------------------------
  * Guards on the actor slot, picks the effect id from the collision kind, then
