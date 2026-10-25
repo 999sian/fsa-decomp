@@ -388,12 +388,12 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* 
     case 1:
     case 2:
         u8 header[64];
-        u8* headerPtr = (u8*)(((u32)header + 0x1f) & ~0x1f);
-        JKRAramToMainRam(aramAddr, headerPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
-        length = (headerPtr[4] << 0x18) | (headerPtr[5] << 0x10) | (headerPtr[6] << 8) | headerPtr[7];
-        length = (length + 0x1f) & ~0x1f;
-        buf = (u8*)JKRHeap::alloc(length, 0x20, heap);
-        JKRAramToMainRam(aramAddr, buf, size, EXPAND_SWITCH_DECOMPRESS, length, heap, -1, &result);
+        buf = (u8*)(((u32)header + 0x1f) & ~0x1f);
+        JKRAramToMainRam(aramAddr, buf, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
+        expandSize = (buf[4] << 0x18) | (buf[5] << 0x10) | (buf[6] << 8) | buf[7];
+        expandSize = (expandSize + 0x1f) & ~0x1f;
+        buf = (u8*)JKRHeap::alloc(expandSize, 0x20, heap);
+        JKRAramToMainRam(aramAddr, buf, size, EXPAND_SWITCH_DECOMPRESS, expandSize, heap, -1, &result);
         *pBuf = buf;
         return result;
     default:
