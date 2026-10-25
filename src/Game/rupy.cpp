@@ -8,6 +8,7 @@
 #include "Game/ItemBase.h"
 
 extern const f32 lbl_80541D88;
+extern const f32 lbl_80541DFC;
 
 // Scaled rotation matrix (X, Y, Z angles) into the upper 3x3 of m.
 static inline void RupyRotScaleMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
