@@ -3055,8 +3055,7 @@ void fn_80279824(char* p) {
             fn_8013CB44(PTR(p, 0x135c), p + 8, 0, -1, 1);
             break;
         }
-        s32 rotation = lbl_8046BC98[S32(p, 0x3dc)];
-        JPAGetXYZRotateMtx(0, rotation, 0, (f32(*)[4])((char*)PTR(p, 0x135c) + 0x68));
+        ((JPABaseEmitter*)PTR(p, 0x135c))->setGlobalRotation(JGeometry::TVec3s((s32)0, lbl_8046BC98[S32(p, 0x3dc)], (s32)0));
     }
     if (PTR(p, 0x132c) != NULL) {
         F32(p, 0x1344) = F32(p, 0x8);
@@ -3070,9 +3069,7 @@ void fn_80279824(char* p) {
         F32(p, 0x1334) = F32(p, 0x1344);
         F32(p, 0x1338) = F32(p, 0x1348);
         F32(p, 0x133c) = F32(p, 0x134c);
-        s16 x = 0;
-        s16 z = 0;
-        JPAGetXYZRotateMtx(x, lbl_8046BC98[S32(p, 0x3dc)], z, (f32(*)[4])((char*)PTR(p, 0x132c) + 0x68));
+        ((JPABaseEmitter*)PTR(p, 0x132c))->setGlobalRotation(JGeometry::TVec3s((s32)0, lbl_8046BC98[S32(p, 0x3dc)], (s32)0));
     }
     groundDustFx(p);
     if (S32(p, 0x11e4) == 0x17 || S32(p, 0x11e4) == 0x19) {
