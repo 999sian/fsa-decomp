@@ -1028,7 +1028,19 @@ extern "C" void fn_801F33C4(Actor* a) {
 
 /* --- 0x801F285C: pick the collision slot overlapping the actor's bounds ------ */
 #pragma scheduling on
+static inline void actorCollisionBounds(const Actor* a, f32* rect) {
+    f32 ta = a->field_60 + a->field_0C.x;
+    f32 tb = a->field_6C + a->field_0C.y - a->field_0C.z;
+    f32 tc = a->field_68 + a->field_0C.x;
+    f32 td = a->field_64 + a->field_0C.y - a->field_0C.z;
+    rect[0] = ta;
+    rect[1] = td;
+    rect[2] = tc;
+    rect[3] = tb;
+}
+
 extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
+    u32 id;
     s32 r;
     s32 slot = d;
     f32 rect[4];
@@ -1055,10 +1067,12 @@ extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
         else c[0] = 1;
     }
     if (r != -1) {
-        u32 id = a->field_04;
-        if (((u8*)fn_802D6A9C())[id + 0x131df] == 0) {
+        id = a->field_04;
+        u8* manager = (u8*)fn_802D6A9C();
+        if ((manager + 0x10000)[id + 0x31df] == 0) {
             f32* p = (f32*)fn_8023E724(r);
-            if (__fabs(a->field_0C.z - p[2]) > lbl_8053F748) r = -1;
+            f32 z = p[2];
+            if (__fabs(a->field_0C.z - z) > lbl_8053F748) r = -1;
         }
     }
     if (b != 0) {
