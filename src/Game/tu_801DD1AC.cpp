@@ -83,41 +83,44 @@ extern f32 lbl_8053F3A0;
 extern "C" u8 fn_801DA904(void* p);
 extern "C" s32 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" s32 fn_801DD1AC(u8* this_) {
-    s32 result = 0;
+    long result = 0;
     if (!(*(u32*)(this_ + 0x230) & 0x1000)) {
         if (*(f32*)(this_ + 0xc) < *(f32*)(this_ + 0x2d4)) {
             *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x2d4);
             result = 1;
-            f32 b = lbl_8053F38C;
-            f32 a = lbl_8053F388;
-            *(f32*)(this_ + 0x264) = a;
-            *(f32*)(this_ + 0x268) = b;
-            *(f32*)(this_ + 0x26c) = b;
+            *(f32*)(this_ + 0x264) = lbl_8053F388;
+            *(f32*)(this_ + 0x268) = lbl_8053F38C;
+            *(f32*)(this_ + 0x26c) = lbl_8053F38C;
         } else if (*(f32*)(this_ + 0x2ec) < *(f32*)(this_ + 0xc)) {
             *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x2ec);
             result = 1;
-            f32 b = lbl_8053F38C;
-            f32 a = lbl_8053F390;
-            *(f32*)(this_ + 0x264) = a;
-            *(f32*)(this_ + 0x268) = b;
-            *(f32*)(this_ + 0x26c) = b;
+            *(f32*)(this_ + 0x264) = lbl_8053F390;
+            *(f32*)(this_ + 0x268) = lbl_8053F38C;
+            *(f32*)(this_ + 0x26c) = lbl_8053F38C;
         }
         if (*(f32*)(this_ + 0x10) > *(f32*)(this_ + 0x2d0)) {
             *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x2d0);
             result = 1;
-            f32 b = lbl_8053F390;
-            f32 a = lbl_8053F38C;
-            *(f32*)(this_ + 0x264) = a;
-            *(f32*)(this_ + 0x268) = b;
-            *(f32*)(this_ + 0x26c) = a;
-        } else if (*(s32*)(this_ + 0x248) < 0x11 && *(s32*)(this_ + 0x248) > 10 && *(f32*)(this_ + 0x10) < *(f32*)(this_ + 0x2d8)) {
-            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x2d8);
-            result = 1;
-            f32 b = lbl_8053F388;
-            f32 a = lbl_8053F38C;
-            *(f32*)(this_ + 0x264) = a;
-            *(f32*)(this_ + 0x268) = b;
-            *(f32*)(this_ + 0x26c) = a;
+            *(f32*)(this_ + 0x264) = lbl_8053F38C;
+            *(f32*)(this_ + 0x268) = lbl_8053F390;
+            *(f32*)(this_ + 0x26c) = lbl_8053F38C;
+        } else {
+            switch (*(s32*)(this_ + 0x248)) {
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+                if (*(f32*)(this_ + 0x10) < *(f32*)(this_ + 0x2d8)) {
+                    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x2d8);
+                    result = 1;
+                    *(f32*)(this_ + 0x264) = lbl_8053F38C;
+                    *(f32*)(this_ + 0x268) = lbl_8053F388;
+                    *(f32*)(this_ + 0x26c) = lbl_8053F38C;
+                }
+                break;
+            }
         }
     }
     return result;
