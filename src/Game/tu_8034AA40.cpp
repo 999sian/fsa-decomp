@@ -262,18 +262,17 @@ extern "C" void fn_8034C358(void) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8034C464(Actor* self) {
     u8* p = (u8*)self;
     Vec d;
     f32 len;
     s32 i;
-    u16 ang;
+    u32 ang;
 
     *(s32*)(p + 0x230) = 0;
-    *(s32*)(p + 0xb0) = 0x1000;
-    *(f32*)(p + 0x3c) = 0.0f;
-    *(f32*)(p + 0x40) = 0.0f;
-    *(f32*)(p + 0x44) = 0.0f;
+    self->field_B0 = 0x1000;
+    ((JGeometry::TVec3f*)(p + 0x3c))->set(0.0f, 0.0f, 0.0f);
     *(s32*)(p + 0x108) = 10000;
     *(s32*)(p + 0x238) = 0;
     *(s32*)(p + 0x234) = 0;
@@ -291,29 +290,28 @@ extern "C" void fn_8034C464(Actor* self) {
     p[0x28d] = 0;
     p[0x28e] = 0;
     for (i = 0; i < 4; i++) {
-        Vec tmp;
+
         *(s32*)(p + 0x274 + i * 4) = 0;
         p[0x284 + i] = 0;
         *(s32*)(p + 0x260 + i * 4) = -1;
         p[0x288 + i] = 0;
-        tmp = *(Vec*)fn_8023E724(i);
-        *(Vec*)(p + 0x290 + i * 12) = tmp;
+        *(JGeometry::TVec3f*)(p + 0x290 + i * 12) = *(JGeometry::TVec3f*)fn_8023E724(i);
     }
     *(f32*)(p + 0xc) = (f32)((s32)*(f32*)(p + 0xc) / 16) * 16.0f + 8.0f;
     *(f32*)(p + 0x10) = (f32)((s32)*(f32*)(p + 0x10) / 16) * 16.0f + 8.0f;
     fn_801EE558(self, &d, &len, 0);
     if (len < 100.0f) {
-        ang = (u16)(10430.4f * JMath::atanTable_.atan2_(-d.x, -d.y));
-        if (ang >= 0x2000 && ang < 0xe000) {
-            if (ang >= 0x2000 && ang < 0x6000) {
-                *(s32*)(p + 0x23c) = 1;
-            } else if (ang >= 0x6000 && ang <= 0xa000) {
-                *(s32*)(p + 0x23c) = 2;
-            } else {
-                *(s32*)(p + 0x23c) = 0;
-            }
-        } else {
+        f32 angle = JMath::atanTable_.atan2_(-d.x, -d.y);
+        angle *= lbl_8054255C;
+        ang = (u16)angle;
+        if (ang < 0x2000 || ang >= 0xe000) {
             *(s32*)(p + 0x23c) = 3;
+        } else if (ang >= 0x2000 && ang < 0x6000) {
+            *(s32*)(p + 0x23c) = 1;
+        } else if (ang >= 0x6000 && ang <= 0xa000) {
+            *(s32*)(p + 0x23c) = 2;
+        } else {
+            *(s32*)(p + 0x23c) = 0;
         }
     } else {
         if (*(s32*)(p + 0x230) == 0xd) {
@@ -340,6 +338,7 @@ extern "C" void fn_8034C464(Actor* self) {
         *(s32*)(p + 0x230) = 0xb;
     }
 }
+#pragma opt_propagation reset
 
 void fn_8034C72C(void) {}
 
