@@ -98,6 +98,18 @@ extern "C" void fn_802D1508(char* this_, int a, int b) {
     fn_801F132C(this_, a, b, this_ + 0x248);
 }
 
+extern "C" void fn_802D152C(char* p) {
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    if (*(s32*)(p + 0x234) == 0) {
+        pos.z = 0.0f;
+        s32 kind = *(s32*)(p + 4);
+        if (kind >= 8) {
+            void* mgr = fn_801F856C();
+            Actor_CreateByID(mgr, 0x4b4d5249, kind, &pos, 0, -1, -1);
+        }
+    }
+}
+
 extern "C" void fn_802D1DB4(char* p) {
     s32 flag = 7;
     YasiDrawParam param;
@@ -309,4 +321,4 @@ extern "C" void fn_802D27A8(void* this_) {
 
 extern "C" void fn_802D2880(void) {
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
