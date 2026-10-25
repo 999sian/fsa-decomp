@@ -107,7 +107,7 @@ extern "C" void fn_8031B994(Actor* p) {
         *(s32*)((char*)p + 0xb0) = 0x20000;
     }
     {
-        s32 room = *(s32*)((char*)p + 4);
+        u32 room = *(u32*)((char*)p + 4);
         if (actorRoomMode(room) != 0) {
             *(f32*)((char*)p + 0x10) = *(f32*)((char*)p + 0x10) - *(f32*)((char*)p + 0x14);
             *(f32*)((char*)p + 0x14) = 0.0f;
