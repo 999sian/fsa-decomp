@@ -67,8 +67,8 @@ extern "C" void fn_80214994(void* this_)
 		}
 	} else {
 		if (*(void**)(p + 0x18) != 0) {
-			s32 a = 0;
 			s32 b = 1;
+			s32 a = 0;
 			if (v.z > lbl_8053FBC0) {
 				a = b;
 				b = 0;
@@ -140,9 +140,11 @@ extern "C" void fn_80214CE4(u8* this_) {
         pos.y += -24.0f;
         s32 lo = 1;
         s32 hi = 0;
+        s32 t;
         if (pos.z > 0.0f) {
-            hi = lo;
-            lo = 0;
+            t = lo;
+            lo = hi;
+            hi = t;
         }
         f32 off = (hi << 10) + (lo << 7);
         f32 x = pos.x;
@@ -154,13 +156,9 @@ extern "C" void fn_80214CE4(u8* this_) {
         z += d;
         *(f32*)(this_ + 0x10) = z;
         fn_8013CB44(*(void**)(this_ + 0), &pos, 0, 1, 1);
-        bool del = false;
-        if (*(u32*)(*(u8**)(this_ + 0) + 0xf4) & 0x8) {
-            if (*(s32*)(*(u8**)(this_ + 0) + 0xd0) + *(s32*)(*(u8**)(this_ + 0) + 0xdc) == 0) {
-                del = true;
-            }
-        }
-        if (del && *(u8**)(this_ + 0) != 0) {
+        u8* e = *(u8**)(this_ + 0);
+        bool del = (*(u32*)(e + 0xf4) & 0x8) != 0 && *(s32*)(e + 0xd0) + *(s32*)(e + 0xdc) == 0;
+        if (del && e != 0) {
             void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
             forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(this_ + 0));
             *(u8**)(this_ + 0) = 0;
@@ -306,7 +304,8 @@ void fn_80214578(u8* this_) {
 void fn_802146A4(u8* this_) {
     u8* o = *(u8**)(this_ + 0x34);
     s32 f = 0;
-    if (*(u32*)(o + 0x524) & 0x400) {
+    u32 flags = *(u32*)(o + 0x524);
+    if (flags & 0x400) {
         f = 1;
     }
     fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x416, 0, f - 1, 0, 0, 1);
@@ -319,24 +318,25 @@ extern "C" void fn_801CDCD0(u8* o, u32 owner, void* pos, s32 id);
 extern const u16 lbl_8053FB90[3];
 extern const u16 lbl_8053FB98[3];
 extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
+    typedef u8* (*SpawnFn)(u32, void*, s32, s32, s32, s32, s32, s32, f32);
     s32 f = 0;
     if (*(u32*)(*(u8**)(this_ + 0x34) + 0x524) & 0x400) {
         f = 1;
     }
     if (*(s32*)(fn_801C0D70(*(u8**)(this_ + 0x34)) + 0x50) >= 0) {
-        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d6, 0, f, 0, 0, 1);
-        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d7, 0, f, 0, 0, 1);
-        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d8, 0, f, 0, 0, 1);
-        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d9, 0, f, 0, 0, 1);
+        ((SpawnFn)fn_8013CC50)(owner, pos, 0x1d6, 0, f, 0, 0, 1, lbl_8053FBA4);
+        ((SpawnFn)fn_8013CC50)(owner, pos, 0x1d7, 0, f, 0, 0, 1, lbl_8053FBA4);
+        ((SpawnFn)fn_8013CC50)(owner, pos, 0x1d8, 0, f, 0, 0, 1, lbl_8053FBA4);
+        ((SpawnFn)fn_8013CC50)(owner, pos, 0x1d9, 0, f, 0, 0, 1, lbl_8053FBA4);
         fn_801F0E34(*(void**)(this_ + 0x34), 0x400d6, 0);
     } else {
         const u16* ids = lbl_8053FB90;
         if (flag) {
             ids = lbl_8053FB98;
         }
-        fn_8013CC50(lbl_8053FBA4, owner, pos, ids[0], 0, f - 1, 0, 0, 1);
-        fn_8013CC50(lbl_8053FBA4, owner, pos, ids[1], 0, f, 0, 0, 1);
-        fn_8013CC50(lbl_8053FBA4, owner, pos, ids[2], 0, f, 0, 0, 1);
+        ((SpawnFn)fn_8013CC50)(owner, pos, ids[0], 0, f - 1, 0, 0, 1, lbl_8053FBA4);
+        ((SpawnFn)fn_8013CC50)(owner, pos, ids[1], 0, f, 0, 0, 1, lbl_8053FBA4);
+        ((SpawnFn)fn_8013CC50)(owner, pos, ids[2], 0, f, 0, 0, 1, lbl_8053FBA4);
         s32 id = 0x40048;
         if (flag) {
             id = 0x4004e;
@@ -345,6 +345,7 @@ extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80214E50(u8* this_) {
     if (*(u8**)(this_ + 0) == 0) {
         JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(*(u8**)(this_ + 0x34) + 0xc));
@@ -352,7 +353,9 @@ extern "C" void fn_80214E50(u8* this_) {
         s32 lo;
         s32 hi = 0;
         lo = 1;
-        selectPositionOffsets(pos.z, hi, lo);
+        if (pos.z > 0.0f) {
+            hi = lo--;
+        }
         f32 off = (hi << 10) + (lo << 7);
         f32 x = pos.x;
         f32 y = pos.y + off;
@@ -367,7 +370,7 @@ extern "C" void fn_80214E50(u8* this_) {
         if (e != 0) *(u32*)(e + 0xf4) |= 0x40;
     }
 }
-
+#pragma opt_propagation reset
 void* dtor_80214F9C(void* this_, s16 flag) {
     u8* p = (u8*)this_;
     if (p != 0) {
