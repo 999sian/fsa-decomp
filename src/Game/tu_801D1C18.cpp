@@ -48,7 +48,8 @@ static inline void calcSeq(AnmSeqCtrl* this_) {
     int start = 0;
     s32 idx = start;
     for (; e->mFrame >= 0; e++, idx++) {
-        f32 prev = (int)start;
+        s32 previous = start;
+        const f32 prev = previous;
         start += e->_2;
         if (prev <= frame && frame < (f32)start) {
             this_->_10 = clampSeq(this_, e->mFrame);
