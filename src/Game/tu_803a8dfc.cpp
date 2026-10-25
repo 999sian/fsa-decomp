@@ -442,7 +442,8 @@ struct GameResult {
 
     void setWinner(s32 m, s32 k, u8 v) {
         if (m >= 0 && m < 8 && k >= 0 && k < 3) {
-            winner[m][k] = v;
+            u8* row = winner[m];
+            row[k] = v;
         }
     }
 };
