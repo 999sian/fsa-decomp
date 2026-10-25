@@ -693,11 +693,12 @@ extern "C" void fn_803226EC(char* p) {
 
 extern "C" void fn_80322964(char* p) {
     Vec saved;
+    Vec* sp;
     u8 mask;
     u8 bit;
     s32 i;
-    s32 ix;
     s32 iy;
+    s32 ix;
     s32 dir;
     f32 adj;
 
@@ -705,32 +706,41 @@ extern "C" void fn_80322964(char* p) {
     *(f32*)(p + 0x64) = lbl_80541B3C;
     *(f32*)(p + 0x68) = lbl_80541B40;
     *(f32*)(p + 0x6c) = lbl_80541B40;
-    saved = *(Vec*)(p + 0xc);
+    sp = &saved;
+    *(JGeometry::TVec3f*)sp = *(JGeometry::TVec3f*)(p + 0xc);
 
     mask = fn_801F2740(p);
     if (mask != 0) {
         bit = 1;
         for (i = 0; i < 4; i++) {
             if (mask & bit) {
-                Vec d = *(Vec*)fn_8023E724(i);
-                ix = (s32)__fabsf(((Vec*)(p + 0xc))->x - d.x);
-                iy = (s32)__fabsf(((Vec*)(p + 0xc))->y - d.y);
+                Vec d;
+                Vec* dp = &d;
+                *(JGeometry::TVec3f*)dp = *(JGeometry::TVec3f*)fn_8023E724(i);
+                ix = (s32)__fabsf(((Vec*)(p + 0xc))->x - dp->x);
+                iy = (s32)__fabsf(((Vec*)(p + 0xc))->y - dp->y);
                 dir = fn_80230CFC(i);
                 if (ix >= 0 && ix <= 15) {
-                    if (dir == 1) {
+                    switch (dir) {
+                    case 0:
+                        break;
+                    case 1:
                         adj = (f32)((15 - ix) >> 1);
-                        if (((Vec*)(p + 0xc))->x > d.x) {
+                        if (((Vec*)(p + 0xc))->x > dp->x) {
                             ((Vec*)(p + 0xc))->x += adj;
                         } else {
                             ((Vec*)(p + 0xc))->x -= adj;
                         }
+                        break;
+                    default:
+                        break;
                     }
                 }
                 if (*(u8*)((char*)fn_802D6A9C() + *(s32*)(p + 4) + 0x131df) == 0) {
                     if (iy >= 0 && iy <= 15) {
                         if (dir == 2) {
                             adj = (f32)((15 - iy) >> 1);
-                            if (((Vec*)(p + 0xc))->y > d.y) {
+                            if (((Vec*)(p + 0xc))->y > dp->y) {
                                 ((Vec*)(p + 0xc))->y += adj;
                             } else {
                                 ((Vec*)(p + 0xc))->y -= adj;
@@ -746,7 +756,7 @@ extern "C" void fn_80322964(char* p) {
         }
     }
     if (fn_801F2618(p, 0, 0) == 1) {
-        *(Vec*)(p + 0xc) = saved;
+        *(JGeometry::TVec3f*)(p + 0xc) = *(JGeometry::TVec3f*)sp;
         *(f32*)(p + 0x60) = lbl_80541B44;
         *(f32*)(p + 0x64) = lbl_80541B44;
         *(f32*)(p + 0x68) = lbl_80541ADC;
@@ -1085,7 +1095,7 @@ extern "C" void fn_80323434(char* p) {
         *(s32*)(p + 0x230) = 7;
     }
     if (*(s32*)(p + 0x230) == 0) {
-        if ((*(u8 (**)(char*, s32, char*))(*(s32*)p + 0x4c))(p, *(s32*)(p + 4), p + 0xc) == 1) {
+        if ((u8)((Actor*)p)->v17(*(s32*)(p + 4), (f32*)(p + 0xc)) == 1) {
             *(u8*)(p + 0x11c) = 0;
         }
     }
