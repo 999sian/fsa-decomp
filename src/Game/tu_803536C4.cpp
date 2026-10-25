@@ -1,5 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct FsaResourceManager {
     virtual void v00();
@@ -33,6 +35,65 @@ extern "C" Actor* fn_803536C4(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" void fn_80353724(u8* p) {
+    Vec top = *(Vec*)(p + 0xc);
+    DrawRec rec;
+    s32* tbl = lbl_80472240;
+    s32 frame;
+    rec.b2d = 1;
+    rec.b1c = 2;
+    rec.b1d = 1;
+    if (*(s32*)(p + 0x24c) < 8) {
+        Vec pos = *(Vec*)(p + 0xc);
+        pos.x -= lbl_80542710;
+        switch (*(s32*)(p + 0x24c)) {
+        case 2:
+        case 3:
+            pos.y += lbl_80542714;
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            pos.y += lbl_80542718;
+            break;
+        }
+        switch (*(s32*)(p + 0x23c)) {
+        case 1:
+        case 3:
+            pos.y += lbl_8054271C;
+            break;
+        case 2:
+            pos.y += lbl_80542710;
+            break;
+        }
+        frame = *(s32*)(p + 0x244) + tbl[*(s32*)(p + 0x24c)];
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, (char*)tbl + 0x30);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, frame, lbl_80542720, lbl_80542720, &rec);
+        }
+    }
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+        rec.ids[2] = 2;
+        break;
+    case 1:
+        rec.ids[2] = 3;
+        break;
+    case 2:
+        rec.ids[2] = 4;
+        break;
+    case 3:
+        rec.ids[2] = 9;
+        break;
+    }
+    frame = tbl[8 + *(s32*)(p + 0x23c)] + 0xc0;
+    if (*(s32*)(p + 4) < 8) {
+        void* res = (*(FsaResourceManager**)(lbl_8053AAF8 + 0xA4))->getResource(0x534F4220, (char*)tbl + 0x30);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, res, frame, lbl_80542720, lbl_80542720, &rec);
+    }
 }
 
 extern "C" void fn_80353A50(u8* p) {
