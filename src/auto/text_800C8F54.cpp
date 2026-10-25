@@ -468,7 +468,11 @@ struct TevKColorWord {
     u32 mRGBA;
 };
 extern "C" TevKColorWord fn_800CB3D0(const J3DMaterialFactory* self, int idx, int no);
-extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b);
+struct TevColorWords {
+    TevColorWords(u32 first, u32 second) { mWords[0] = first; mWords[1] = second; }
+    u32 mWords[2];
+};
+extern "C" TevColorWords fn_800CB360(const J3DMaterialFactory* self, int idx, int no);
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b);
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx);
 extern "C" J3DIndTexMtxInfo fn_800CB628(u8* p, s32 idx, s32 b);
@@ -874,7 +878,7 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
         (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[28](*(void**)((u8*)material + 0x2c), i, &s30);
     }
     for (i = 0; i < 4; i++) {
-        fn_800CB360(&s5c, (u8*)self, idx, i);
+        ((void (*)(u32*, u8*, s32, s32))fn_800CB360)(&s5c, (u8*)self, idx, i);
         (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[25](*(void**)((u8*)material + 0x2c), i, &s5c);
     }
     for (i = 0; i < nStages; i++) {
@@ -1345,19 +1349,15 @@ extern u32 lbl_80543F0C;
 extern u32 lbl_8053BC78;
 extern "C" void* fn_800CB4C0(void* out, u8* e);
 extern "C" void __ct__11J3DTevStageFv(void* self);
-extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
-    FsaTevColorS10 def = *(FsaTevColorS10*)&lbl_80543F08;
-    u8* base = *(u8**)(p + 4);
-    u16* ids = *(u16**)(p + 8);
-    u32 off = ids[idx] * 0x14c + 0xdc;
-    off += b * 2;
-    u16 v = *(u16*)(base + off);
-    if (v != 0xffff) {
-        FsaTevColorS10 e = ((FsaTevColorS10*)*(u8**)(p + 0x44))[v];
-        *(FsaTevColorS10*)out = e;
-        return;
+extern "C" TevColorWords fn_800CB360(const J3DMaterialFactory* self, int idx, int no) {
+    u32 defaultColor[2];
+    defaultColor[0] = lbl_80543F08;
+    defaultColor[1] = lbl_80543F0C;
+    J3DMaterialInitData* data = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (((u16*)data->_DC)[no] != 0xffff) {
+        return ((TevColorWords*)self->unk_0C[14])[((u16*)data->_DC)[no]];
     }
-    *(FsaTevColorS10*)out = def;
+    return *(TevColorWords*)defaultColor;
 }
 
 extern "C" TevKColorWord fn_800CB3D0(const J3DMaterialFactory* self, int idx, int no) {
