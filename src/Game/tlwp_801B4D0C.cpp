@@ -114,7 +114,7 @@ struct TlwpData {
 };
 extern TlwpData lbl_804A37E0;
 extern "C" char* fn_802D6A9C(void);
-extern "C" s32 fn_8013CC50(s32 room, TlwpVec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_8013CC50(s32 room, TlwpVec* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 
 static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
     v->x = x;
@@ -329,6 +329,27 @@ extern "C" void fn_801B5228(char* p) {
         *(s32*)(p + 0x234) = d->timer[*(s32*)(p + 0x98)][*(s32*)(p + 0x240)];
         (*(s32*)(p + 0x240))++;
         *(s32*)(p + 0x240) &= 3;
+    }
+}
+
+extern "C" void fn_801B56A0(void* this_) {
+    char* p = (char*)this_;
+    f32 box[4];
+    TlwpVec pos = *(TlwpVec*)(p + 0xc);
+    box[0] = *(f32*)(p + 0x60) + pos.x;
+    box[1] = *(f32*)(p + 0x64) + pos.x;
+    box[2] = *(f32*)(p + 0x68) + pos.x;
+    box[3] = *(f32*)(p + 0x6c) + pos.y;
+    TlwpSave* save = (TlwpSave*)((u8*)&lbl_8050EC80 + lbl_8050EC80.cur * 0xc8);
+    u8 m = 1 << *(s32*)(p + 0x254);
+    if (!(save->mask & m)) {
+        return;
+    }
+    if (*(s32*)(p + 0x230) == 5 || *(s32*)(p + 0x230) == 6) {
+        *(s32*)(p + 0x230) = 6;
+    }
+    if (*(s32*)(p + 0x230) == 7) {
+        return;
     }
 }
 
