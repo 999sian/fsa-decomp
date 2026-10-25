@@ -494,7 +494,7 @@ struct MsgProc {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
-            return (bits[1] & (s64)(1L << (n - 32))) ? TRUE : FALSE;
+            return (bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
         }
         return FALSE;
     }
