@@ -223,10 +223,10 @@ extern "C" u16 fn_8045ABC8(void* param_1, JAISoundID* param_2) {
 }
 
 extern "C" u32 fn_8045ACDC(void* param_1, u8* param_2) {
-    if (param_2[0] == 0x1) {
-        u32 tmp = *(u32*)param_2;
-        u32 (*fn)(void*, void*) = *(u32 (**)(void*, void*))((char*)(*(void**)param_1) + 0x4c);
-        return (fn(param_1, &tmp) & 0xff) - 1;
+    if (param_2[0] == 1) {
+        JAISoundID soundID;
+        soundID.mId.mFullId = *(u32*)param_2;
+        return ((JAUSoundTableInfo*)param_1)->getTypeID(soundID) - 1;
     }
     return param_2[1];
 }
