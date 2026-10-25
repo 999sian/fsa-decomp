@@ -11,6 +11,8 @@ extern char lbl_80465B80[];
 extern s32 lbl_8049F408[];
 extern s32 lbl_8049F418[];
 extern char* lbl_8053AB10;
+struct BzbrGame;
+extern BzbrGame* lbl_8053AAF8;
 
 // Resource manager at game+0xa4; slot 6 looks a resource up by type and name.
 struct BzbrResMgr {
