@@ -23,8 +23,8 @@ struct PlayerModeTbl {
 };
 
 static inline void copyPlayerDirection(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& in) {
-    f32 y = in.y;
-    f32 x = in.x;
+    const f32 x = in.x;
+    const f32 y = in.y;
     out.x = x;
     f32 z = in.z;
     out.y = y;
@@ -692,15 +692,15 @@ void fn_802804E0(char* p) {
     }
     speed = PSVECMag((Vec*)(p + 0x344));
     if (S32(p, 0x430) > 0) {
-        decayPlayerSpeed(speed, lbl_80540360);
+        decayPlayerSpeedBound(lbl_80540360, speed);
     } else if (U8(p, 0x3ff) == 0) {
         if (fn_80245238(p)) {
             U8(p, 0x3ff) = 1;
             fn_8024F0E8(p, 0x20039);
         } else if (fn_80244FFC(p)) {
-            decayPlayerSpeed(speed, lbl_80540390);
+            decayPlayerSpeedBound(lbl_80540390, speed);
         } else if (fn_80246F28(p) > lbl_80540360) {
-            decayPlayerSpeed(speed, lbl_8054036C);
+            decayPlayerSpeedBound(lbl_8054036C, speed);
         } else {
             speed -= lbl_8054038C;
             if (speed < lbl_80540360) {
@@ -716,7 +716,7 @@ void fn_802804E0(char* p) {
             } else if (st < 16) {
                 speed += lbl_8054039C;
             } else {
-                decayPlayerSpeed(speed, lbl_80540390);
+                decayPlayerSpeedBound(lbl_80540390, speed);
             }
         }
         if (U8(p, 0x3ff) >= 0x21) {
@@ -1754,8 +1754,15 @@ void fn_80284978(char* p) {
     u32 kind;
     bool moved;
     PlayerModeTbl* tbl = (PlayerModeTbl*)lbl_8046BDA8;
-    tmp = tbl->ofsA[S32(p, 0x3dc)];
-    tmp2 = tbl->ofsB[S32(p, 0x3dc)];
+    JGeometry::TVec3<f32>* arrA = tbl->ofsA;
+    JGeometry::TVec3<f32>* arrB = tbl->ofsB;
+    s32 mode = S32(p, 0x3dc);
+    tmp.x = arrA[mode].x;
+    tmp.y = arrA[mode].y;
+    tmp.z = arrA[mode].z;
+    tmp2.x = arrB[mode].x;
+    tmp2.y = arrB[mode].y;
+    tmp2.z = arrB[mode].z;
     tmp.add(VEC(p, 0x8));
     tmp2.add(VEC(p, 0x8));
     kind = fn_8022461C((char*)&tmp, S32(p, 0x3b4));
