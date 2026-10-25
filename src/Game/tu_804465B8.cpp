@@ -331,7 +331,6 @@ extern "C" void __ct__9J2DScreenFv(void* self);
 extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* pane, const char* name, unsigned long id, void* archive);
 extern "C" void fn_80402F04(void* a, void* b);
 extern "C" u8 lbl_804AF86C[];
-extern "C" u8 lbl_80490038[];
 extern "C" char lbl_80490400[];
 extern "C" u8 lbl_80529DEC[];
 #pragma opt_propagation off
@@ -341,16 +340,11 @@ extern "C" void* fn_8044728C(void* param_1) {
     void** p;
     u8* params;
     int i;
-    void* screen;
     *(void**)self = (void*)lbl_804B1BE8;
     lbl_8053AF00 = (u32)self;
 
-    screen = __nw__FUl(0x118);
-    if (screen != 0) {
-        __ct__9J2DScreenFv(screen);
-    }
-    *(void**)(self + 4) = screen;
-    setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), lbl_80490400, 0x1100000, *(void**)(lbl_80529DEC + 0x10));
+    *(J2DScreen**)(self + 4) = new J2DScreen();
+    (*(J2DScreen**)(self + 4))->setPriority(lbl_80490400, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
 
     p = (void**)self;
     for (i = 0, params = lbl_80490038; i < 4; i++, params += 0xc0) {
@@ -360,7 +354,7 @@ extern "C" void* fn_8044728C(void* param_1) {
         }
         p[2] = obj;
         u64 tag0 = *(u64*)(params + 0x30);
-        fn_80402F04(p[2], (*(FsaVObj**)(self + 4))->search(tag0));
+        fn_80402F04(p[2], (*(J2DScreen**)(self + 4))->search(tag0));
 
         obj = __nw__FUl(0x2c);
         if (obj != 0) {
@@ -368,7 +362,7 @@ extern "C" void* fn_8044728C(void* param_1) {
         }
         p[6] = obj;
         u64 tag1 = *(u64*)(params + 0xb8);
-        fn_80402F04(p[6], (*(FsaVObj**)(self + 4))->search(tag1));
+        fn_80402F04(p[6], (*(J2DScreen**)(self + 4))->search(tag1));
         p++;
     }
 
