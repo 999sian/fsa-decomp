@@ -455,13 +455,128 @@ u32 fn_8040F474(void) {
 extern "C" void fn_80408114(u8* self);
 extern "C" void fn_8040732C(u8* self);
 extern "C" void fn_80409014(u8* self);
-extern "C" void fn_804108B4(T80403D84* self) {
-	s32 state = self->state;
-	fn_80408114((u8*)self);
-	if (state == 0x16) {
+extern "C" u8* lbl_8053AD78;
+extern "C" void fn_804108B4(u8* self) {
+	s32 st;
+	s32 i;
+	s32 m;
+	s16 c;
+	f32 a, f30, f31, y;
+	u8* obj;
+	u8* sub;
+	Tu80403Pane* pane;
+
+	(((PtmfObj*)lbl_8053ADF8)->*lbl_804B10F8[*(s32*)(self + 0x350)])();
+	(((PtmfObj*)lbl_8053ADF8)->*lbl_804B1230[self[0x659]])();
+	fn_80408114(self);
+	st = *(s32*)(self + 0x350);
+	if (st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 0xf) <= 3 || (u32)(st - 0x14) <= 1 || st == 0x16) {
+		fn_8040732C(self);
+		if (self[0x65c] == 0) {
+			a = *(f32*)(self + 0x3fc) + lbl_80543988;
+			*(f32*)(self + 0x3fc) = a;
+			if (a >= lbl_805438BC) {
+				*(f32*)(self + 0x3fc) = lbl_805438BC;
+				self[0x65c] = 1;
+			}
+		} else if (self[0x65c] == 1) {
+			a = *(f32*)(self + 0x3fc) - lbl_8054398C;
+			*(f32*)(self + 0x3fc) = a;
+			if (a <= lbl_80543990) {
+				*(f32*)(self + 0x3fc) = lbl_80543990;
+				self[0x65c] = 2;
+			}
+		} else {
+			a = *(f32*)(self + 0x3fc) + lbl_8054398C;
+			*(f32*)(self + 0x3fc) = a;
+			if (a >= lbl_805438BC) {
+				*(f32*)(self + 0x3fc) = lbl_805438BC;
+				self[0x65c] = 1;
+			}
+		}
+		a = *(f32*)(self + 0x400);
+		if (a >= lbl_805438BC) {
+			*(f32*)(self + 0x400) = lbl_805438BC;
+		} else {
+			*(f32*)(self + 0x400) = a + lbl_80543988;
+			if (*(f32*)(self + 0x400) > lbl_805438BC) *(f32*)(self + 0x400) = lbl_805438BC;
+		}
+	} else {
+		self[0x65c] = 0;
+		if (*(f32*)(self + 0x3fc) > lbl_80543898) {
+			a = *(f32*)(self + 0x3fc) - lbl_805438BC / (f32)*(s16*)(lbl_8050DB0C + 0x2b2);
+			*(f32*)(self + 0x3fc) = a;
+			if (a < lbl_80543898) *(f32*)(self + 0x3fc) = lbl_80543898;
+		} else {
+			*(f32*)(self + 0x3fc) = lbl_80543898;
+		}
+		if (*(f32*)(self + 0x400) > lbl_80543898) {
+			a = *(f32*)(self + 0x400) - lbl_805438BC / (f32)*(s16*)(lbl_8050DB0C + 0x2b2);
+			*(f32*)(self + 0x400) = a;
+			if (a < lbl_80543898) *(f32*)(self + 0x400) = lbl_80543898;
+		} else {
+			*(f32*)(self + 0x400) = lbl_80543898;
+		}
 	}
-	fn_8040732C((u8*)self);
-	fn_80409014((u8*)self);
+	if (lbl_80529DEC[0x23f]) {
+		fn_80409014(self);
+	} else if (*(u32*)(self + 0x38c) & 0x10) {
+		fn_80409014(self);
+	}
+	if (*(s32*)(self + 0x350) == 0x16) {
+		*(s32*)(self + 0x668) = 7;
+		lbl_80529DEC[0x242] = 0;
+		*(u8*)(lbl_8053AD78 + 0xe9) = 0;
+		*(s32*)(lbl_8053AD78 + 0x44) = 0;
+		lbl_80529DEC[0x242] = 0;
+	}
+	if (self[0x65d]) {
+		for (i = 0; i < 0xf; i++) {
+			fn_80402628(((u8**)(self + 0x278))[i], 0x14, 0, ((u8**)(self + 0x278))[i][0x28]);
+		}
+	} else {
+		for (i = 0; i < 0xf; i++) {
+			fn_80402628(((u8**)(self + 0x278))[i], 0x14, ((u8**)(self + 0x278))[i][0x28], 0);
+		}
+	}
+	if (self[0x65e]) {
+		fn_80402940(*(void**)(self + 0x120), 0x14, lbl_8054389C, lbl_80543898, 0);
+		for (i = 0; i < 2; i++) {
+			fn_80402628(((u8**)(self + 0x120))[i], 0x14, 0, ((u8**)(self + 0x120))[i][0x28]);
+		}
+	} else {
+		fn_80402940(*(void**)(self + 0x120), 0xf, lbl_80543898, lbl_8054389C, 0);
+		for (i = 0; i < 2; i++) {
+			fn_80402628(((u8**)(self + 0x120))[i], 0xf, ((u8**)(self + 0x120))[i][0x28], 0);
+		}
+	}
+	i = *(s32*)(self + 0x340);
+	if (i < 8) {
+		y = ((f32*)getBounds__7J2DPaneFv(((Tu80403Pane*)*(void**)(self + 0x10))->search(*(u64*)(lbl_8048C658 + i * 0x18))))[1];
+		f30 = *(f32*)(self + 0x408) + y;
+		y = ((f32*)getBounds__7J2DPaneFv(((Tu80403Pane*)*(void**)(self + 0x10))->search(*(u64*)(lbl_8048C658 + *(s32*)(self + 0x340) * 0x18))))[0];
+		f31 = *(f32*)(self + 0x404) + y;
+		pane = ((Tu80403Pane*)*(void**)(self + 0x10))->search(0x506C766375ULL);
+		(*(void (**)(void*, f32, f32))(*(u8**)pane + 0x10))(pane, f31, f30);
+	}
+	st = *(s32*)(self + 0x350);
+	if (st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 0xf) <= 3 || (u32)(st - 0x14) <= 1 || st == 0x16) {
+		if (*(s16*)(self + 0x42e) != 0) {
+			*(s16*)(self + 0x42e) = *(s16*)(self + 0x42e) + 1;
+			if (*(s16*)(self + 0x42e) >= 0x3c) *(s16*)(self + 0x42e) = 0;
+		}
+		if (*(s16*)(self + 0x42e) < 0x1e) {
+			f30 = (f32)(*(s16*)(self + 0x42e) * *(s16*)(self + 0x42e)) / lbl_80543994;
+		} else {
+			a = (f32)*(s16*)(self + 0x42e) - lbl_80543974;
+			f30 = lbl_805438BC - (a * a) / lbl_80543994;
+		}
+		pane = ((Tu80403Pane*)*(void**)(self + 0x10))->search(0x506C766375ULL);
+		(*(void (**)(void*, s32))(*(u8**)pane + 0x24))(pane, (s32)(lbl_80543998 * f30));
+	} else {
+		pane = ((Tu80403Pane*)*(void**)(self + 0x10))->search(0x506C766375ULL);
+		(*(void (**)(void*, s32))(*(u8**)pane + 0x24))(pane, 0);
+	}
 }
 
 void fn_8041499C(u8* dst, const u8* src) {
@@ -663,6 +778,10 @@ extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
 extern "C" void fn_80444650(void* p);
 extern "C" void fn_8042EB98(void* p);
 
+static inline f32 Tu411Center(s16 coordinate, f32 bounds, const f32 extent) {
+    return ((f32)coordinate - bounds) - extent * lbl_805438C8;
+}
+
 // States in which the "Pphu01" pointer pane is shown.
 static inline bool Tu411ShowState(s32 st) {
 	if (st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 15) <= 3 ||
@@ -714,7 +833,7 @@ extern "C" void fn_80411230(u8* self) {
 		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
 	} else if (slot == 10 && *(s32*)(self + 0x348) == 2 && *(s32*)(lbl_80529DEC + 0x120) < 7 &&
 	           !Tu411SlotDone(*(s32*)(lbl_80529DEC + 0x120)) && Tu411ShowState(*(s32*)(self + 0x350))) {
-		f32 x;
+		double x;
 		f32 y;
 		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
 			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->show();
@@ -1113,6 +1232,14 @@ extern "C" void fn_804096E8(u8* self) {
     }
     if (*(s16*)(self+0x41e)>=0) fn_80458880(lbl_8053AF80,0x54,-1);
 }
+
+extern "C" void fn_80409FDC(char* this_) {
+    s32 idx = *(s32*)(this_ + 0x340);
+    if (idx > 7) {
+        return;
+    }
+}
+
 #pragma opt_common_subs reset
 extern "C" u32 fn_80309C4C(void*, s32, s32);
 extern "C" s32 fn_8042EC7C(void*);
@@ -1245,6 +1372,17 @@ extern "C" void fn_8040B93C(u8* self) {
 				self[0x65d] = 1;
 			}
 			*(s32*)(self + 0x350) = 0xf;
+		}
+	}
+}
+
+extern "C" void fn_8040BC1C(T80403D84* self) {
+	u8* p = (u8*)self;
+	s16 t = *(s16*)(p + 0x41e) + 1;
+	*(s16*)(p + 0x41e) = t;
+	if (*(s32*)(p + 0x340) == 7) {
+		if (*(s16*)(p + 0x41e) >= 15) {
+			*(u8*)(p + 0x640) = 1;
 		}
 	}
 }
