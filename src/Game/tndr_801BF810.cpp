@@ -291,18 +291,6 @@ extern "C" const f32 lbl_8053ED7C;
 extern "C" void fn_801CD8E4(f32* value, f32 target, f32 rate, f32 eps);
 extern "C" f32 fn_801D0DA0(void* actor, s32 idx, void* pos);
 #pragma opt_dead_assignments off
-static inline JGeometry::TVec2<f32> tndrSubtract(JGeometry::TVec2<f32> a, const JGeometry::TVec2<f32>& b) {
-    JGeometry::TVec2<f32>& result = a;
-    result.x -= b.x;
-    result.y -= b.y;
-    return result;
-}
-static inline JGeometry::TVec2<f32> tndrAdd(JGeometry::TVec2<f32> a, const JGeometry::TVec2<f32>& b) {
-    JGeometry::TVec2<f32>& result = a;
-    result.add(b);
-    return result;
-}
-
 #pragma optimization_level 3
 extern "C" void fn_801C0634(char* this_) {
     JGeometry::TVec2<f32> delta;
