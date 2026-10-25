@@ -11,6 +11,14 @@ extern "C" const JGeometry::TVec3<f32> lbl_8046BF38[];
 
 #pragma auto_inline off
 
+// Per-mode player tables at lbl_8046BDA8.
+struct PlayerModeTbl {
+    u8 pad0[0x60];
+    s32 ids[4];                          // 0x60
+    JGeometry::TVec3<f32> ofsA[4];       // 0x70
+    JGeometry::TVec3<f32> ofsB[4];       // 0xa0
+};
+
 static inline void copyPlayerDirection(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& in) {
     f32 x = in.x;
     f32 y = in.y;
@@ -716,14 +724,7 @@ void fn_802804E0(char* p) {
         }
     }
     const JGeometry::TVec3<f32>& direction = lbl_8046BED8[S32(p, 0x3e8)];
-    {
-        f32 x = direction.x;
-        f32 y = direction.y;
-        F32(p, 0x344) = x;
-        f32 z = direction.z;
-        F32(p, 0x348) = y;
-        F32(p, 0x34c) = z;
-    }
+    copyPlayerDirection(VEC(p, 0x344), direction);
     VEC(p, 0x344).scale(speed);
     VEC(p, 0x8) += VEC(p, 0x344);
 }
