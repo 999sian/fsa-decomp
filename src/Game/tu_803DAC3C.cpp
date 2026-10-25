@@ -966,7 +966,6 @@ extern "C" void fn_803DEC44(u8* self)
     }
 }
 
-#pragma opt_propagation off
 extern "C" void fn_803DF2B4(u8* self) {
     u64* tbl = lbl_804774C8;
     s32 k;
