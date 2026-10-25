@@ -91,13 +91,17 @@ extern "C" void fn_8040271C(void* this_, s32 a, f32 c, f32 d);
 extern u8 lbl_8048FB88[];
 extern f32 lbl_80543D64;
 extern "C" void fn_804434B8(void* this_) {
-    char* tbl = (char*)lbl_8048FB88;
-    *(s16*)((char*)this_ + 0x10) = *(s16*)((char*)this_ + 0x10) + 1;
-    fn_80402B10(*(void**)((char*)this_ + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x1c))[*(u8*)((char*)this_ + 0x14)]);
-    fn_80402940(*(void**)((char*)this_ + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x2c))[*(u8*)((char*)this_ + 0x14)]);
-    fn_8040271C(*(void**)((char*)this_ + 0x8), 0x1e, lbl_80543D64, ((f32*)tbl)[*(u8*)((char*)this_ + 0x14)] / ((f32*)*(void**)((char*)this_ + 0x8))[6]);
-    if (*(s16*)((char*)this_ + 0x10) >= 0x1e) {
-        *(u8*)((char*)this_ + 0x15) = 2;
+    char* p = (char*)this_;
+    *(s16*)(p + 0x10) = *(s16*)(p + 0x10) + 1;
+    {
+        char* tbl = (char*)lbl_8048FB88;
+        s16* t1 = (s16*)(tbl + 0x1c);
+        fn_80402B10(*(void**)(p + 0x8), 0x1e, 0, lbl_80543D60, t1[*(u8*)(p + 0x14)]);
+        fn_80402940(*(void**)(p + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x2c))[*(u8*)(p + 0x14)]);
+        fn_8040271C(*(void**)(p + 0x8), 0x1e, lbl_80543D64, ((f32*)tbl)[*(u8*)(p + 0x14)] / ((f32*)*(void**)(p + 0x8))[6]);
+    }
+    if (*(s16*)(p + 0x10) >= 0x1e) {
+        *(u8*)(p + 0x15) = 2;
     }
 }
 
@@ -124,9 +128,9 @@ struct T80443638;
 typedef void (T80443638::*PMF80443638)();
 extern PMF80443638 lbl_804B1AC4[];
 extern "C" void fn_80443638(T80443638* this_) {
-    u8 state = *(u8*)((char*)this_ + 0x15);
-    bool notThree = state != 3;
-    if (notThree) {
+    u32 state = *(u8*)((char*)this_ + 0x15);
+    u32 notThree = (3 - state) | (state - 3);
+    if (notThree >> 31) {
         (((T80443638*)lbl_8053AEF0)->*lbl_804B1AC4[state])();
     }
 }
@@ -202,14 +206,17 @@ extern "C" void* fn_80443760(void* this_) {
     u32 e = 0x500000;
     u32 d = e + 0x6d61;
     fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(e, d, f));
-
-    self[0x14] = 0;
-    *(s16*)(self + 0x10) = 0;
-    *(s16*)(self + 0x12) = 0;
-    self[0x15] = 3;
-    return this_;
 }
 
 extern "C" void fn_80443894(void) {
+    JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_;
+    JASPoolAllocObject_MultiThreaded<JASTrack>::memPool_;
+    JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
+    JASPoolAllocObject<JASPoolObj3_FSA>::memPool_;
+    JASPoolAllocObject<JASPoolObj4_FSA>::memPool_;
+    JASPoolAllocObject<JAIStream>::memPool_;
+    JASPoolAllocObject<JAISoundChild>::memPool_;
+    JASPoolAllocObject<JAISeq>::memPool_;
+    JASPoolAllocObject<JAISe>::memPool_;
 }
 
