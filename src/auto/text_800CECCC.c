@@ -150,12 +150,14 @@ extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
     return 0;
 }
 
+#pragma peephole off
 extern "C" void** fn_800CF2B0(void** p) {
-    *p = lbl_8049AE38;
+    register void* vt = lbl_8049AE38;
+    *p = vt;
     *p = lbl_8049AE24;
     return p;
 }
-
+#pragma peephole reset
 extern "C" void** fn_800CF2CC(void** p, short del) {
     if (p != 0) {
         *p = &lbl_8049AE38;
@@ -181,8 +183,10 @@ extern "C" void** fn_800CF314(void** p, short del) {
 
 #pragma peephole off
 extern "C" void fn_800CF370(void** p) {
-    *(void* volatile*)p = lbl_8049AE38;
-    *p = lbl_8049AE10;
+    void* base = static_cast<void*>(&lbl_8049AE38);
+    void* derived = static_cast<void*>(&lbl_8049AE10);
+    *p = base;
+    *p = derived;
 }
 #pragma peephole reset
 extern "C" void** fn_800CF38C(void** p, short del) {
@@ -326,6 +330,18 @@ extern "C" void fn_800CF828(void* param_1, void* param_2, void* param_3) {
 extern "C" void fn_800CF8CC(void** self, void* data)
 {
     fn_800CF8F4(self, self[1], data);
+}
+
+extern "C" void fn_800CF8F4(void* param_1, void* anm_, void* data_) {
+    unsigned char* anm = (unsigned char*)anm_;
+    const J3DAnmVisibilityFullData* data = (const J3DAnmVisibilityFullData*)data_;
+    *(short*)(anm + 6) = data->mTotalFrameCount;
+    anm[4] = data->mAttribute;
+    *(float*)(anm + 8) = 0.0f;
+    *(unsigned short*)(anm + 12) = data->mExtraInfo1;
+    *(unsigned short*)(anm + 14) = data->mExtraInfo2;
+    *(J3DAnmVisibilityFullTable**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmVisibilityFullTable>(data, (void*)data->mTableOffset);
+    *(unsigned char**)(anm + 0x14) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)data->mValuesOffset);
 }
 
 extern "C" void fn_800CF998(void*, unsigned char*, const unsigned char*);
@@ -687,9 +703,9 @@ extern "C" void* fn_800D0620(void* param_1, short param_2)
         ((void**)param_1)[0] = &lbl_8049AE5C;
         if (param_1 != 0) {
             ((void**)param_1)[0] = &__vt__15J3DAnmTransform;
-        }
-        if (param_1 != 0) {
-            ((void**)param_1)[0] = &__vt__10J3DAnmBase;
+            if (param_1 != 0) {
+                ((void**)param_1)[0] = &__vt__10J3DAnmBase;
+            }
         }
         if (param_2 > 0) {
             __dl__FPv(param_1);
