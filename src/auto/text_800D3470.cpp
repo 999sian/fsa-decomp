@@ -826,16 +826,11 @@ extern "C" void fn_800D3E98(void* param) {
 
     *(s32*)((char*)param + 0x1c) = GDGetCurrOffset();
 
-    __GDWrite(0x10);
-    __GDWrite(0x00);
-    __GDWrite(0x03);
-    __GDWrite(0x10);
-    __GDWrite(0x0e);
-
-    writeChanCtrl(*(u16*)((char*)param + 0xe));
-    writeChanCtrl(*(u16*)((char*)param + 0x12));
-    writeChanCtrl(*(u16*)((char*)param + 0x10));
-    writeChanCtrl(*(u16*)((char*)param + 0x14));
+    J3DGDWriteXFCmdHdr(0x100e, 4);
+    ((J3DColorChan*)((char*)param + 0x0e))->load();
+    ((J3DColorChan*)((char*)param + 0x12))->load();
+    ((J3DColorChan*)((char*)param + 0x10))->load();
+    ((J3DColorChan*)((char*)param + 0x14))->load();
 }
 
 extern "C" u32 lbl_8053A9FC;
@@ -1372,9 +1367,10 @@ extern "C" void fn_800D7524(u8* p) {
 extern "C" void fn_800D7A4C(u8* p) {
     u8* addr = p;
     u32 i = 0;
-    u32 j;
-    u8 count = p[0x58];
     u8* tev;
+    u8 count = p[0x58];
+    u32 j;
+    u8* table;
     *(u32*)(p + 4) = GDGetCurrOffset();
     for (; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
@@ -1383,12 +1379,13 @@ extern "C" void fn_800D7A4C(u8* p) {
         addr += 2;
     }
     tev = p;
+    table = (u8*)&sTexCoordScaleTable__6J3DSys;
     for (j = 0; j < count; j += 2) {
         u8* next = p + (j + 1) * 4;
         J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
-        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
+        u16* s = (u16*)(table + (tev[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
-        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x19] & 7) * 8);
+        s = (u16*)(table + (next[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(next[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         tev += 8;
     }
