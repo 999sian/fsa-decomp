@@ -1,4 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 
 extern "C" char lbl_804AC100[];
@@ -27,6 +30,118 @@ extern "C" Actor* fn_803397C0(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_80339820(u8* this_) {
+    f32 pos[3];
+    pos[0] = *(f32*)(this_ + 0xc);
+    pos[1] = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
+    pos[2] = lbl_805420E8;
+    switch (*(s32*)(this_ + 0x24c)) {
+    case 1:
+        switch (*(s32*)(this_ + 0x260)) {
+        case 0x6b:
+            *(s32*)(this_ + 0x260) = 2;
+            break;
+        case 0x75:
+            *(s32*)(this_ + 0x260) = 4;
+            break;
+        default:
+            *(s32*)(this_ + 0x260) = 1;
+            break;
+        }
+        break;
+    case 5:
+        if (*(s32*)(this_ + 0x260) < 0x45) {
+            *(s32*)(this_ + 0x260) -= 0x40;
+        } else {
+            *(s32*)(this_ + 0x260) -= 0x45;
+        }
+        break;
+    }
+    if (*(s32*)(this_ + 0x260) <= 1) {
+        if (fn_80339820_rnd() < lbl_805420F0) {
+            if (fn_80339820_rnd() < lbl_805420F4) {
+                Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), pos, 0x261400, -1, -1);
+            } else if (fn_80339820_rnd() >= lbl_805420F8) {
+                if (fn_80339820_rnd() < lbl_805420F0) {
+                    Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), pos, 0, -1, -1);
+                } else {
+                    Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), pos, 0, -1, -1);
+                }
+            }
+        }
+    } else if (*(s32*)(this_ + 0x260) == 2) {
+        Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), pos, 0, -1, -1);
+    } else if (*(s32*)(this_ + 0x260) == 4) {
+        Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), pos, 0, -1, -1);
+    }
+}
+
+extern "C" void fn_801F06F0(u8* a, void* res, s32 id, void* rec, s32 p5, f32 sx, f32 sy);
+extern "C" void fn_801EFD34(u8* a, void* res, void* rec, s32 n, f32 x, f32 y, f32 z);
+extern "C" void PSMTXIdentity(f32 m[3][4]);
+extern "C" void fn_80339AEC(u8* self) {
+    f32 m1[3][4];
+    f32 m2[3][4];
+    u8 tbl[16];
+    s32 neg1;
+    s32 zero;
+    s32 zero2;
+    u8 flags[11];
+    s32 three;
+    u8 flags2[3];
+    s32 neg2;
+    s32 zero3;
+    s32 two;
+    f32 v1[3];
+    f32 v2[3];
+    f32 v3[3];
+    f32 v4[3];
+    for (u8 i = 0; i < 16; i += 8) {
+        tbl[i] = i;
+        tbl[i + 1] = i + 1;
+        tbl[i + 2] = i + 2;
+        tbl[i + 3] = i + 3;
+        tbl[i + 4] = i + 4;
+        tbl[i + 5] = i + 5;
+        tbl[i + 6] = i + 6;
+        tbl[i + 7] = i + 7;
+    }
+    neg1 = -1;
+    zero = 0;
+    zero2 = 0;
+    flags[0] = 0;
+    flags[1] = 0;
+    flags[2] = 0;
+    flags[3] = 1;
+    flags[4] = 1;
+    flags[5] = 0;
+    flags[6] = 0;
+    flags[7] = 0;
+    flags[8] = 0;
+    flags[9] = 0;
+    flags[10] = 1;
+    three = 3;
+    neg2 = -1;
+    two = 2;
+    PSMTXIdentity(m2);
+    PSMTXIdentity(m1);
+    flags[0] = 1;
+    flags[1] = 1;
+}
+
+extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
+extern "C" s32 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" const f32 lbl_80542110;
+extern "C" void fn_8033A658(u8* this_) {
+    fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x27c), lbl_805420EC, lbl_80542110);
+    fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x280), lbl_805420EC, lbl_80542110);
+    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0xc) + *(f32*)(this_ + 0x3c);
+    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x44);
+    if (*(s32*)(this_ + 0x230) == 2 && *(s32*)(this_ + 0x238) >= *(s32*)(this_ + 0x264)) {
+        fn_801F2618(this_, 0, 0);
+    }
 }
 
 extern "C" void* fn_8020D58C(void);
