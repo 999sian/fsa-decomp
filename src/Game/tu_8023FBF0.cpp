@@ -3752,7 +3752,7 @@ void fn_8024CA20(char* p) {
 
 void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
     if (S32(p, 0xd50) <= 0 && (S32(p, 0xd44) < 0 || S32(p, 0xd44) == a3) && S32(p, 0xd3c) < 0) {
-        if (!(u8)isLinkOwner(p) && a2 == S32(p, 0x3b4) && !fn_8025F448(p) && U8(p, 0xce8) == 0) {
+        if (!(u8)isLinkOwner3(p) && a2 == S32(p, 0x3b4) && !fn_8025F448(p) && U8(p, 0xce8) == 0) {
             if (U8(p, 0x454) == 0) {
                 bool bVar1 = false;
                 if (S32(p, 0x1240) == 0xb || S32(p, 0x1244) == 0xb) {
@@ -3763,8 +3763,8 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
                 }
             }
             if (a5 != 1 || S32(p, 0x3dc) == 3) {
-                U8(p, 0xd4e) = a4;
                 S32(p, 0xd3c) = a3;
+                U8(p, 0xd4e) = a4;
             }
         }
     }
