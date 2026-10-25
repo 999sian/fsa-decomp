@@ -46,7 +46,7 @@ extern "C" TzokRng* lbl_8053AAF8;
 
 static inline f32 tzokRand01() {
     TzokRng* g = lbl_8053AAF8;
-    f32 one = lbl_8053F870;
+    f32 one = 1.0f;
     union {
         f32 f;
         u32 s;
