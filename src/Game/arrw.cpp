@@ -212,6 +212,7 @@ static inline BOOL arrwTick(char* p) {
 extern "C" BOOL fn_8016636C(char* p, s32 room, void* pos) {
     u32 id = *(u32*)(p + 0x198);
     u8* mgr = fn_8020D58C();
+    int roomLater = room;
     if (fn_8020D6AC(mgr + 4 + mgr[1] * 0x784, room, pos, id, lbl_804662E8) == 1) {
         return TRUE;
     }
@@ -258,7 +259,7 @@ extern "C" BOOL fn_8016636C(char* p, s32 room, void* pos) {
             }
             return arrwTick(p);
         }
-        if (fn_80226850(pos, room) == 0x3a || fn_80226850(pos, room) == 0x3d) {
+        if (fn_80226850(pos, roomLater) == 0x3a || fn_80226850(pos, roomLater) == 0x3d) {
             *(u8*)(p + 0x238) = 0;
             return FALSE;
         }
