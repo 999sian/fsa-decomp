@@ -1609,7 +1609,7 @@ inline bool padActiveC(char* p) {
 }
 BOOL fn_80245B74(char* p) {
     if (!padActiveC(p)) {
-        register return 0;
+        return 0;
     }
     if (U8(p, 0x456) != 0) {
         return 0;
