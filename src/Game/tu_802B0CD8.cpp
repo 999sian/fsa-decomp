@@ -15,13 +15,9 @@ extern "C" void fn_801F0E34(void* this_, u32 a, s32 b);
 
 extern "C" void* lbl_8053AB10;
 extern "C" void fn_80158B5C(void* mgr, u32 room, JGeometry::TVec3<f32>* pos, GXColor col, f32 t);
+#include "JSystem/JUtility/TColor.h"
 static inline void drawShadow802B(u32 room, JGeometry::TVec3<f32>* pos, f32 size, u8 alpha) {
-    GXColor color;
-    color.r = 0;
-    color.g = 0;
-    color.b = 0;
-    color.a = alpha;
-    fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), room, pos, color, size);
+    fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), room, pos, JUtility::TColor(0, 0, 0, alpha), size);
 }
 extern "C" void fn_802B0CD8(void* this_) {
     char* p = (char*)this_;
@@ -54,23 +50,13 @@ extern "C" void fn_802B0CD8(void* this_) {
     case 0: {
         if (*(u8*)(p + 0x248) == 1) {
             JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc) + 8.0f, *(f32*)(p + 0x10) + 8.0f, 0.0f);
-            GXColor col;
-            col.r = 0;
-            col.g = 0;
-            col.b = 0;
-            col.a = 0x80;
-            fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
+            drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0x80);
         }
         break;
     }
     case 1: {
         JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - 4.0f, *(f32*)(p + 0x14));
-        GXColor col;
-        col.r = 0;
-        col.g = 0;
-        col.b = 0;
-        col.a = 0xc8;
-        fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
+        drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0xc8);
         break;
     }
     case 2: {
@@ -78,12 +64,7 @@ extern "C" void fn_802B0CD8(void* this_) {
             u8* mgr = (u8*)*(void**)((u8*)lbl_8053AB10 + 0x2c);
             mgr[0xd] = 1;
             JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc) + 8.0f, *(f32*)(p + 0x10) + 8.0f, 0.0f);
-            GXColor col;
-            col.r = 0;
-            col.g = 0;
-            col.b = 0;
-            col.a = 0x80;
-            fn_80158B5C(mgr, *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
+            drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0x80);
         }
         break;
     }
@@ -91,12 +72,7 @@ extern "C" void fn_802B0CD8(void* this_) {
         u8* mgr = (u8*)*(void**)((u8*)lbl_8053AB10 + 0x2c);
         mgr[0xd] = 1;
         JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - 4.0f, *(f32*)(p + 0x14));
-        GXColor col;
-        col.r = 0;
-        col.g = 0;
-        col.b = 0;
-        col.a = 0xc8;
-        fn_80158B5C(mgr, *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
+        drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0xc8);
         break;
     }
     default:
