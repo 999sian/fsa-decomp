@@ -1864,6 +1864,12 @@ s32 id = (s32)a->field_04; u8 same = 0; if (ee8f4_eq(fn_8023DE58(i), id) || ee8f
  * entry for a->field_18C to pick a name/count, then spawns local[0+i] actors
  * (local[4+i] name) per row and scatters each one on a ring. */
 
+static inline f32 ActorDropRandom() {
+    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 1013904223;
+    u32 bits = (*seed >> 9) | 0x3f800000;
+    return *(f32*)&bits - 1.0f;
+}
 extern "C" void fn_801F52A4(Actor* a) {
     u32 rnd1Bits;
     u32 rnd2Bits;
