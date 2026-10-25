@@ -1,4 +1,7 @@
+#include "JSystem/JGeometry/Vec.h"
+#define Vec ActorVec
 #include "Game/Actor.h"
+#undef Vec
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
 
@@ -201,12 +204,102 @@ extern "C" void fn_802B2728(Actor* param_1)
 {
     if (*(s32*)((u8*)param_1 + 0x25c) != 0) {
         DrawRec rec;
-        DrawRec* recp = &rec;
 
-        fn_801F06F0(param_1, lbl_8046CA80, *(s32*)((u8*)param_1 + 0x258) + 0x78, NULL, 1, lbl_805409D8, lbl_805409D8);
+        fn_801F06F0(param_1, lbl_8046CA80, *(s32*)((u8*)param_1 + 0x258) + 0x78, rec.w18, 1, lbl_805409D8, lbl_805409D8);
         fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(u32*)((u8*)param_1 + 4), (u8*)param_1 + 0xc, Color4(0, 0, 0, 0x80), lbl_805409E8);
         fn_803075AC(*(u32*)((u8*)param_1 + 0x198), *(u32*)((u8*)param_1 + 4), (u8*)param_1 + 0xc, *(s32*)((u8*)param_1 + 0x258) + 0x78, 0, 2, -1, 0, 0, 0);
     }
+}
+
+extern "C" void fn_802B28E4(Actor* param_1)
+{
+    u8* p = (u8*)param_1;
+    VecOp* pos = (VecOp*)(p + 0xc);
+    VecOp* vel = (VecOp*)(p + 0x3c);
+    VecOp hit;
+    s32 r;
+    s32 cnt;
+
+    cnt = *(s32*)(p + 0x250) - 1;
+    *(s32*)(p + 0x250) = cnt;
+    if (cnt == 0) {
+        if (*(s32*)(p + 0x240) == 2) {
+            s32 st = *(s32*)(p + 0x248);
+            if (st == 0) {
+            } else if (st == 3) {
+                if (*(s32*)(p + 0x24c) == 0) {
+                } else if (st == 1) {
+                }
+            } else if (st == 1) {
+                if (++*(s32*)(p + 0x258) >= 5) {
+                    *(s32*)(p + 0x258) = 0;
+                    *(s32*)(p + 0x250) = 4;
+                }
+            } else if (st == 2 && *(s32*)(p + 0x24c) == 1) {
+                if (--*(s32*)(p + 0x258) < 0) {
+                    *(s32*)(p + 0x258) = 4;
+                }
+            }
+        }
+        *(s32*)(p + 0x250) = 4;
+    }
+
+    switch (*(s32*)(p + 0x240)) {
+    case 0:
+        *(s32*)(p + 0x244) += lbl_805409D0[*(s32*)(p + 0x248)];
+        *(f32*)(p + 0xc) = lbl_805409EC * *(f32*)(sincosTable___5JMath + (((u16)*(s32*)(p + 0x244) >> 2) & 0x3ff8)) + *(f32*)(p + 0x234);
+        *(f32*)(p + 0x10) = lbl_805409EC * *(f32*)(sincosTable___5JMath + (((u16)*(s32*)(p + 0x244) >> 2) & 0x3ff8) + 4) + *(f32*)(p + 0x238);
+        *(s32*)(p + 0x25c) = 0;
+        r = ((s32 (*)(Actor*))(*(void***)param_1)[14])(param_1);
+        if (r >= 6) {
+            p[0x11c] = 0;
+        } else {
+            r = ((s32 (*)(Actor*))(*(void***)param_1)[14])(param_1);
+            if (r >= 3) {
+                *(s32*)(p + 0x25c) = 1;
+            }
+            r = ((s32 (*)(Actor*))(*(void***)param_1)[14])(param_1);
+            if (r == 3 && (*(u32*)(p + 0x90) & 0xf) == 0) {
+                *(s32*)(p + 0x25c) = 0;
+            }
+        }
+        if (*(s32*)(p + 0x254) != 0) {
+            *(s32*)(p + 0x254) -= 1;
+        } else if (*(s32*)(p + 0x25c) != 0) {
+            *(f32*)(p + 0x60) = lbl_805409F0;
+            *(f32*)(p + 0x64) = lbl_805409F0;
+            *(f32*)(p + 0x68) = lbl_805409F4;
+            *(f32*)(p + 0x6c) = lbl_805409F4;
+            if (fn_801F2B7C(param_1, *(s32*)(p + 0x114), -1, 1)) {
+                *(s32*)(p + 0x248) ^= 1;
+                *(s32*)(p + 0x254) = 0x28;
+            }
+        }
+        break;
+    case 1:
+        fn_801F71A4(p + 0x3c, *(f32*)(p + 0x260), lbl_805409F8, *(f32*)(p + 0x26c));
+        fn_801F71A4(p + 0x40, *(f32*)(p + 0x264), lbl_805409F8, *(f32*)(p + 0x26c));
+        fn_801F71A4(p + 0x26c, lbl_805409D8, lbl_805409FC, lbl_805409FC);
+        *pos += *vel;
+        if (fn_801F2618(param_1, &hit, 0)) {
+            if (hit.x != lbl_805409DC) {
+                *(f32*)(p + 0x260) = (hit.x >= lbl_805409DC) ? lbl_805409D8 : lbl_805409E0;
+            }
+            if (hit.y != lbl_805409DC) {
+                *(f32*)(p + 0x264) = (hit.y >= lbl_805409DC) ? lbl_805409D8 : lbl_805409E0;
+            }
+        }
+        if (fn_801F2B7C(param_1, *(s32*)(p + 0x114), -1, 1)) {
+            *(f32*)(p + 0x260) = (*(f32*)(p + 0x260) >= lbl_805409DC) ? lbl_805409E0 : lbl_805409D8;
+            *(f32*)(p + 0x264) = (*(f32*)(p + 0x264) >= lbl_805409DC) ? lbl_805409E0 : lbl_805409D8;
+        }
+        break;
+    case 2:
+        break;
+    }
+
+    fn_802B21EC(param_1);
+    fn_801F2B7C(param_1, *(s32*)(p + 0x114), -1, 1);
 }
 
 extern "C" f32 lbl_80540A0C;
