@@ -60,8 +60,8 @@ struct fn_801D1974_obj {
             s32 n = m2a8 - 1;
             for (s32 i = 0; i < n; i++) {
                 s32 j = i + 1;
-                m2ac[i].x = m2ac[j].x;
-                m2ac[i].y = m2ac[j].y;
+                trail().pts[i].x = m2ac[j].x;
+                trail().pts[i].y = m2ac[j].y;
             }
             m2a8 = n;
         }
@@ -156,14 +156,14 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
             this_->m2a8 = 0;
             ((JGeometry::TVec3<f32>*)&this_->m32c)->set(v.x, v.y, lbl_8053F028);
         } else {
-            if (this_->m2a8 >= 1) {
+            if (this_->trail().count >= 1) {
                 f32 dx = this_->m32c - this_->m00c.x;
                 f32 dy = this_->m330 - this_->m00c.y;
                 f32 r = lbl_8053F02C + *(f32*)((u8*)this_ + 0x258);
                 f32 dx2 = dx * dx;
                 f32 dy2 = dy * dy;
                 if (dx2 + dy2 <= r * r) {
-                    this_->popPoint();
+                    this_->trail().removeFront();
                 }
             }
             far_ = 0;
