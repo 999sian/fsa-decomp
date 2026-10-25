@@ -1121,10 +1121,6 @@ inline bool swordStage8328() {
     return false;
 }
 
-inline void readSpawnWord8328(u32& word, const u8* p) {
-    word=(u32)p[0]<<24 | (u32)p[1]<<16 | (u32)p[2]<<8 | p[3];
-}
-
 extern "C" char* fn_802D8128(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
