@@ -597,7 +597,7 @@ static inline void SyncLinkedCount(s32 i) {
     u8* table = lbl_80529DEC;
     for (s32 j = 0; j < 4; j++) {
         if (j != i && fn_8022F514(j) && fn_8022F3DC(j) == i) {
-            ((s32*)(table + 0xd8))[j] = ((s32*)(table + 0xd8))[i];
+            *(s32*)(table + j * 4 + 0xd8) = *(s32*)(table + i * 4 + 0xd8);
         }
     }
 }
@@ -737,14 +737,10 @@ extern "C" void fn_80425F6C(u8* self) {
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                 video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                f32 normY = point.y / (f32)(s32)*(u16*)(video + 6);
-                f32 normX = point.x / (f32)(s32)*(u16*)(video + 4);
-                f32 scaledY = height * normY;
-                f32 scaledX = width * normX;
-                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)scaledY - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                f32 x = (f32)scaledX - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
-                JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
-                graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
+                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                
+                graph->setOrtho(JGeometry::TBox2<f32>(lbl_80543A40, lbl_80543A40, right, bottom), lbl_80543A88, lbl_80543A8C);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
                 (*(J2DScreen**)(screens + 8))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
                 *(s16*)(halfwords + 0x208) = 0;
@@ -758,14 +754,10 @@ extern "C" void fn_80425F6C(u8* self) {
                     fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                     video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                    f32 normY = point.y / (f32)(s32)*(u16*)(video + 6);
-                    f32 normX = point.x / (f32)(s32)*(u16*)(video + 4);
-                    f32 scaledY = height * normY;
-                    f32 scaledX = width * normX;
-                    f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)scaledY - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                    f32 x = (f32)scaledX - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
-                    JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
-                    graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
+                    f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                    f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                    
+                    graph->setOrtho(JGeometry::TBox2<f32>(lbl_80543A40, lbl_80543A40, right, bottom), lbl_80543A88, lbl_80543A8C);
                     (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
                     (*(J2DScreen**)(screens + 0x2c))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
                 }
