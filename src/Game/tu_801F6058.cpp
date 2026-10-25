@@ -236,7 +236,7 @@ void* operator new[](unsigned long size, JKRHeap* heap, int align);
 extern const char lbl_8046A048[];
 
 #define TBL_RES (*(TblResMgr**)((char*)lbl_8053AAF8 + 0xa4))
-#define READ4(p) ((u32)(u8)(p)[1] << 16 | (u32)(u8)(p)[0] << 24 | (u32)(u8)(p)[2] << 8 | (u32)(u8)(p)[3])
+#define READ4(p) ((u8)(p)[1] << 16 | (u8)(p)[0] << 24 | (u8)(p)[2] << 8 | (u8)(p)[3])
 
 extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 	char* buf = TBL_RES->get(0x454e4d20, lbl_8046A048);
@@ -261,10 +261,10 @@ extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 		}
 	}
 	this_->rows--;
-	this_->rowKeys = (u32*)new (heap, 0) u8[((u32)this_->rows + 0x1f) >> 5];
-	this_->rowNames = (char**)new (heap, 0) u8[((u32)this_->rows + 0x1f) >> 5];
-	this_->colKeys = (u32*)new (heap, 0) u8[((u32)this_->cols + 0x1f) >> 5];
-	this_->table = (s32*)new (heap, 0) u8[((u32)(this_->rows * this_->cols) + 0x1f) >> 5];
+	this_->rowKeys = (u32*)new (heap, 0) u32[((u32)this_->rows + 0x1f) & ~31U];
+	this_->rowNames = (char**)new (heap, 0) u32[((u32)this_->rows + 0x1f) & ~31U];
+	this_->colKeys = (u32*)new (heap, 0) u32[((u32)this_->cols + 0x1f) & ~31U];
+	this_->table = (s32*)new (heap, 0) u32[((u32)(this_->rows * this_->cols) + 0x1f) & ~31U];
 	{
 		char* p = buf;
 		s32 off = 0;
@@ -304,23 +304,23 @@ extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 					} else {
 						s32 v = 0;
 						for (s32 k = fs; k < i; k++) {
-							c = buf[k];
-							if (c >= '0' && c <= '9') {
-								v = v * 10 + (c - '0');
+							char digit = buf[k];
+							if (digit >= '0' && digit <= '9') {
+								v = (v * 10 + digit) - '0';
 							}
 						}
 						this_->table[(row - 1) * this_->cols + col - 2] = v;
 					}
 				}
-				if (c == '\n') {
-					fs = i + 1;
-					col = 0;
-					roff += 4;
-					row++;
-				} else {
-					col++;
-					fs = i + 1;
-				}
+				if (c == ',' || c == 0) {
+                    col++;
+                    fs = i + 1;
+                } else if (c == '\n') {
+                    fs = i + 1;
+                    col = 0;
+                    roff += 4;
+                    row++;
+                }
 			}
 		}
 	}
