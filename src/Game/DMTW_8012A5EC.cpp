@@ -916,8 +916,13 @@ static inline void initDmtwCamera(f32 x, f32 lo, f32 hi) {
         *(f32*)(p + 0x1d8) = lbl_8053CB94;
     }
 }
-#pragma opt_propagation off
-#pragma opt_unroll_loops off
+static inline void initDmtwPosition(char* self, s32 i) {
+    u32 off = (s32)lbl_804650D4[i] >> 2 & 0x3ff8;
+    f32 sn = *(f32*)(sincosTable___5JMath + off);
+    f32 cs = *(f32*)(sincosTable___5JMath + off + 4);
+    *(JGeometry::TVec3f*)(self + 0x25c + i*12) = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(55.0f*cs,35.0f*sn,0.0f);
+    *(s32*)(self + 0x2a4 + i*4) = lbl_804650B0[i];
+}
 extern "C" void fn_8012C914(char* this_) {
     s32 i;
     fn_8037AE00(lbl_8053AD70);
