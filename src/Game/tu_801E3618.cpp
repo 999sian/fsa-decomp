@@ -4,6 +4,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" const f32 lbl_8053F0BC;
 extern "C" const f32 lbl_8053F510;
@@ -88,32 +89,28 @@ extern "C" u8 fn_801E3618(u8* p, void* obj, f32* pos) {
     return ret;
 }
 
+#pragma opt_propagation off
 extern "C" u8 fn_801E376C(char* this_) {
     u8 ret = 0;
     s32 state = *(s32*)(this_ + 0x248);
     u8 ok = 1;
-    if (state < 9) {
-        if (state == 5 || (state < 5 && state < 0)) {
-            ok = 0;
-        }
-    } else if (state >= 0x1b || state < 0x15) {
+    switch (state) {
+    case 0: case 1: case 2: case 3: case 4:
+    case 6: case 7: case 8:
+    case 0x15: case 0x16: case 0x17: case 0x18: case 0x19: case 0x1a:
         ok = 0;
+        break;
     }
     if (ok && !(*(u32*)(this_ + 0x230) & 0x1000) && !(*(u32*)(this_ + 0x230) & 0x2000)) {
         if (*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053F530 &&
             *(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053F530) {
-            f32 rect[4];
-            f32 box[4];
+            JGeometry::TBox2f rect;
+            JGeometry::TBox2f box;
             f32 d[2];
             if (fn_801CD2F8(*(void**)(this_ + 4))) {
-                f32 cy = (f32)*(u8*)(this_ + 0x5e9);
-                f32 cx = (f32)*(u8*)(this_ + 0x5e8);
-                f32 y = *(f32*)(this_ + 0x5e4);
-                f32 x = *(f32*)(this_ + 0x5e0);
-                rect[0] = x;
-                rect[1] = y;
-                rect[2] = lbl_8053F510 * cx + x;
-                rect[3] = lbl_8053F510 * cy + y;
+                rect.set(*(f32*)(this_ + 0x5e0), *(f32*)(this_ + 0x5e4),
+                    16.0f * (f32)*(u8*)(this_ + 0x5e8) + *(f32*)(this_ + 0x5e0),
+                    16.0f * (f32)*(u8*)(this_ + 0x5e9) + *(f32*)(this_ + 0x5e4));
             } else {
                 s32 idx = *(s32*)(this_ + 0x5d8);
                 u8* base = (u8*)fn_802D6A9C();
@@ -124,52 +121,26 @@ extern "C" u8 fn_801E376C(char* this_) {
                     q = (f32*)(base + 0xdc);
                 }
                 if (*(u32*)(this_ + 0x230) & 0x2000) {
-                    rect[3] = q[3] - lbl_8053F51C;
-                    rect[2] = q[2] - lbl_8053F514;
-                    rect[0] = lbl_8053F514 + q[0];
-                    rect[1] = lbl_8053F518 + q[1];
+                    rect.set(160.0f + q[0], 80.0f + q[1], q[2] - 160.0f, q[3] - 112.0f);
                 } else {
-                    rect[3] = q[3] - lbl_8053F524;
-                    rect[2] = q[2] - lbl_8053F518;
-                    rect[0] = lbl_8053F518 + q[0];
-                    rect[1] = lbl_8053F520 + q[1];
+                    rect.set(80.0f + q[0], 128.0f + q[1], q[2] - 80.0f, q[3] - 96.0f);
                 }
             }
-            box[0] = *(f32*)(this_ + 0x80);
-            box[1] = *(f32*)(this_ + 0x84);
-            box[2] = *(f32*)(this_ + 0x88);
-            box[3] = *(f32*)(this_ + 0x8c);
-            box[0] += *(f32*)(this_ + 0xc);
-            box[1] += *(f32*)(this_ + 0x10);
-            box[2] += *(f32*)(this_ + 0xc);
-            box[3] += *(f32*)(this_ + 0x10);
-            ret = fn_801CC29C(rect, box, d);
+            box.set(*(JGeometry::TBox2f*)(this_ + 0x80));
+            box.addPos(*(JGeometry::TVec2<f32>*)(this_ + 0xc));
+            int result = fn_801CC29C((f32*)&rect, (f32*)&box, d);
             *(f32*)(this_ + 0xc) += d[0];
             *(f32*)(this_ + 0x10) += d[1];
             if (this_ + 0x264 != NULL) {
-                f32 lenSq = d[0] * d[0] + d[1] * d[1];
-                if (lenSq <= lbl_8053F534 * FLT_EPSILON) {
-                } else {
-                    f32 scale;
-                    if (lenSq <= lbl_8053F530) {
-                        scale = lenSq;
-                    } else {
-                        f32 y = __frsqrte(lenSq);
-                        scale = lbl_8053F538 * y * (lbl_8053F53C - lenSq * (y * y));
-                    }
-                    d[0] *= scale;
-                    d[1] *= scale;
-                }
-                f32* n = (f32*)(this_ + 0x264);
-                n[0] = d[0];
-                n[1] = d[1];
-                n[2] = lbl_8053F530;
+                ((JGeometry::TVec2<f32>*)d)->normalize();
+                ((JGeometry::TVec3f*)(this_ + 0x264))->set(d[0], d[1], 0.0f);
             }
+            ret = result;
         }
     }
     return ret;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_801E3A4C(u8* p) {
     s32 ret = 0;
     s32 state = *(s32*)(p + 0x248);
