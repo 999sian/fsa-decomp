@@ -62,6 +62,7 @@ extern "C" u8 fn_80239718(s32 idx, s32 handle);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D79E8(void* mgr, s32 room, s32 zero, f32 a, f32 b);
 extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z);
+#pragma opt_propagation off
 extern "C" void fn_80328E7C(Actor* this_) {
     BOOL blocked;
     s32 i;
@@ -72,70 +73,59 @@ extern "C" void fn_80328E7C(Actor* this_) {
     f32 rect[4];
     f32 out[2];
 
-    rect[0] = *(f32*)(p + 0x60) + pos->x;
-    rect[1] = *(f32*)(p + 0x64) + pos->y;
-    rect[2] = *(f32*)(p + 0x68) + pos->x;
-    rect[3] = *(f32*)(p + 0x6C) + pos->y;
+    f32 py = pos->y;
+    f32 px = pos->x;
+    rect[0] = *(f32*)(p+0x60);
+    rect[1] = *(f32*)(p+0x64);
+    rect[2] = *(f32*)(p+0x68);
+    rect[3] = *(f32*)(p+0x6c);
+    rect[0] += px; rect[1] += py; rect[2] += px; rect[3] += py;
     p[0x238] = 0;
     p[0x239] = 0;
     p[0x23A] = 0;
     p[0x23B] = 0;
     JMathInlineVEC::PSVECAdd(pos, vel, pos);
     blocked = fn_801F2618(this_, 0, 0);
-    for (i = 0; i < 4; i++) {
+    for (i=0;i<4;i++) {
         if (fn_8023F264(i) && !fn_8023EA28(i)) {
-            if (((f32*)fn_8023E724(i))[1] > pos->y) {
-                if (pos->x - lbl_80541CE4 < ((f32*)fn_8023E724(i))[0]) {
-                    if (lbl_80541CE4 + pos->x > ((f32*)fn_8023E724(i))[0]) {
-                        if (*(s32*)(p + 0x230) == 1 && !blocked) {
-                            if (fn_8023B190(i, rect, *(s32*)(p + 0x4))) {
-                                out[0] = lbl_80541CE8 * (rect[0] - rect[2]) + rect[2];
-                                out[1] = lbl_80541CE8 * (rect[1] - rect[3]) + rect[3];
-                                fn_80238548(i, *(s32*)(p + 0x114), out, 0x14);
-                                if (!done) {
-                                    done = 1;
-                                    fn_802399D8(i, rect, *(s32*)(p + 0x4), *(s32*)(p + 0x198));
-                                    p[0x238 + i] = fn_80239718(i, *(s32*)(p + 0x198));
-                                    if (*(s32*)(p + 0x230) == 0) {
-                                        if (pos->x - lbl_80541CEC < ((f32*)fn_8023E724(i))[0]) {
-                                            if (lbl_80541CEC + pos->x > ((f32*)fn_8023E724(i))[0]) {
-                                                *(s32*)(p + 0x230) = 1;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (((f32*)fn_8023E724(i))[1] > pos->y &&
+                pos->x - lbl_80541CE4 < ((f32*)fn_8023E724(i))[0] &&
+                lbl_80541CE4 + pos->x > ((f32*)fn_8023E724(i))[0] &&
+                *(s32*)(p+0x230)==1 && !blocked &&
+                fn_8023B190(i,rect,*(s32*)(p+4))) {
+                f32 k = lbl_80541CE8;
+                f32 rx = rect[2];
+                f32 ry = rect[3];
+                out[0]=k*(rect[0]-rx)+rx;
+                out[1]=k*(rect[1]-ry)+ry;
+                fn_80238548(i,*(s32*)(p+0x114),out,0x14);
+                if (!done) done=1;
             }
+            fn_802399D8(i,rect,*(s32*)(p+4),*(s32*)(p+0x198));
+            p[0x238+i]=fn_80239718(i,*(s32*)(p+0x198));
+        }
+        if (*(s32*)(p+0x230)==0) {
+            if (pos->x-lbl_80541CEC < ((f32*)fn_8023E724(i))[0] &&
+                lbl_80541CEC+pos->x > ((f32*)fn_8023E724(i))[0]) *(s32*)(p+0x230)=1;
         }
     }
-    switch (*(s32*)(p + 0x230)) {
-    case 0:
-        break;
+    switch (*(s32*)(p+0x230)) {
+    case 0: break;
     case 1:
-        if (blocked == 0) {
-            if (done == 1) {
-                fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 0x4), 0, lbl_80541CF0, lbl_80541CF4);
-                fn_801F0E34(this_, 0x3000F, 0);
-                *(s32*)(p + 0x230) = 2;
-                *(s32*)(p + 0x234) = 100;
-            }
-        } else {
-            *(s32*)(p + 0x234) -= 1;
-            if (*(s32*)(p + 0x234) <= 0) {
-                *(s32*)(p + 0x230) = 3;
-            }
+        if (blocked || done == 1) {
+            fn_802D79E8(fn_802D6A9C(),*(s32*)(p+4),0,lbl_80541CF0,lbl_80541CF4);
+            fn_801F0E34(this_,0x3000f,0);
+            *(s32*)(p+0x230)=2; *(s32*)(p+0x234)=100;
         }
         break;
     case 2:
-        if (pos->y <= *(f32*)(p + 0x240)) {
-            pos->y = *(f32*)(p + 0x240);
-            *(s32*)(p + 0x230) = 0;
-        }
+        --*(s32*)(p+0x234);
+        if (*(s32*)(p+0x234)<=0) *(s32*)(p+0x230)=3;
         break;
     case 3:
+        if (pos->y <= *(f32*)(p+0x240)) {
+            pos->y=*(f32*)(p+0x240); *(s32*)(p+0x230)=0;
+        }
         break;
     }
     if (*(s32*)(p + 0x230) == 1) {
@@ -148,7 +138,7 @@ extern "C" void fn_80328E7C(Actor* this_) {
         vel->y = lbl_80541CF4;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" const f32 lbl_80541D04;
 extern "C" const f32 lbl_80541D08;
 extern "C" const f32 lbl_80541D0C;
