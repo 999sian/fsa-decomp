@@ -252,10 +252,8 @@ static inline u8 textureHit(const ResTIMG* image, int px, int py) {
                         s32 blockX = x >> 3;
                         s32 blockY = y >> 3;
                         s32 width = (u16)(image->mSizeX + 7) & ~7;
-                        s32 offset = (x & 7) + (((y & 7) << 3) + ((blockX + blockY * (width >> 3)) << 6));
-                        u32 sampleOffset = image->mImageDataOffset;
-                        sampleOffset += offset >> 1;
-                        u8 packed = ((u8*)image)[sampleOffset];
+                        s32 offset = ((blockX + blockY * (width >> 3)) << 6) + ((y & 7) << 3) + (x & 7);
+                        u8 packed = ((u8*)image)[image->mImageDataOffset + (offset >> 1)];
                         u8 index = (packed >> 4) & 7;
                         if (x & 1) index = packed & 7;
                         u16 color = *(u16*)((u8*)image + image->mPaletteOffset + index * 2);
