@@ -66,6 +66,7 @@ extern const f32 lbl_805424B4;
 extern const f32 lbl_805424B8;
 extern "C" u8 fn_801F6758(void*, f32, s32);
 #pragma opt_common_subs off
+#pragma opt_propagation on
 extern "C" void fn_80348B40(u8* p) {
     u8* owner=fn_801F666C(fn_801F856C(),I(p,0x250));
     if (B(p,0x262)==1) return;
@@ -207,6 +208,7 @@ extern "C" void fn_80348B40(u8* p) {
     }
     if (I(p,0x234)>0) I(p,0x234)--;
 }
+#pragma opt_propagation reset
 #pragma opt_common_subs reset
 extern "C" void fn_80349628(u8* this_) {
     *(s32*)(this_ + 0x108) = 8;
@@ -250,4 +252,4 @@ extern "C" void fn_80349628(u8* this_) {
     *(f32*)(this_ + 0x6c) = 8.0f;
     *(s32*)(this_ + 0x230) = 0;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
