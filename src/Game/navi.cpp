@@ -42,7 +42,7 @@ extern "C" void* fn_8021ED04(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8021DFAC(void* this_, s32 state);
+extern "C" void fn_8021DFAC(char* p, s32 state);
 extern "C" void fn_801CE120(void* this_);
 extern "C" void fn_801D0F40(void* this_);
 struct NaviVec {
