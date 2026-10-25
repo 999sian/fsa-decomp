@@ -1,5 +1,24 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry.h"
+#include <dolphin/mtx.h>
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+
+static inline void setRotX(Mtx m, f32 angle) {
+    f32 s = sin(angle);
+    f32 c = cos(angle);
+    m[0][0] = 1.0f;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = c;
+    m[1][2] = -s;
+    m[2][0] = 0.0f;
+    m[2][1] = s;
+    m[2][2] = c;
+}
 
 extern "C" void* lbl_8053AAF8;
 extern "C" void fn_802D6A9C(void);
@@ -272,14 +291,15 @@ extern "C" void* __nw__FUl(u32 size);
 extern "C" void __ct__14WaveControllerFlll(void* self, s32 a, s32 b, s32 c);
 extern "C" int sprintf(char* s, const char* format, ...);
 extern "C" void fn_8016A3BC(void* archive, const void* a, const void* b, const void* c, const void* d, const void* e, u32 f, void* heap, void* p0, void* p1, const void* g, void* p2, void* h);
+extern "C" const char lbl_80467508[];
 extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
-    void* wc;
-    s32 i;
-    u8* elem;
+    u8* arc;
+    const char* str;
     char nameA[32];
     char nameB[32];
     char nameC[32];
 
+    str = lbl_80467508;
     __construct_array(param_1 + 0x8, (void*)fn_80191E10, 0, 0x60, 7);
     __construct_array(param_1 + 0x340, (void*)fn_80191E0C, 0, 0x24, 10);
     __construct_array(param_1 + 0x4ac, (void*)fn_80191E08, 0, 0x28, 8);
@@ -288,68 +308,82 @@ extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
     *(void**)param_1 = create__12JKRSolidHeapFUlP7JKRHeapb(-1, param_2, false);
     becomeCurrentHeap__7JKRHeapFv(*(void**)param_1);
 
-    elem = param_1;
-    for (i = 0; i < 7; i++) {
-        sprintf(nameA, "suisyo_%d.bmd", i + 1);
-        sprintf(nameB, "suisyo_%d.btk", i + 1);
-        sprintf(nameC, "suisyo_%d.brk", i + 1);
-        if (((void* (*)(void*, u32, const char*))(*(void***)*(void**)(lbl_80529DEC + 0x10))[6])(*(void**)(lbl_80529DEC + 0x10), 0x4a334420, nameA) == 0) {
-            sprintf(nameA, "suisyo_op.bmd", i + 1);
-            sprintf(nameB, "suisyo_op.btk", i + 1);
-            sprintf(nameC, "suisyo_op.brk", i + 1);
+    arc = lbl_80529DEC;
+    {
+        u8* elem = param_1;
+        for (s32 i = 0; i < 7; i++) {
+            sprintf(nameA, str + 0x10, i + 1);
+            sprintf(nameB, str + 0x20, i + 1);
+            sprintf(nameC, str + 0x30, i + 1);
+            if (((void* (*)(void*, u32, const char*))(*(void***)*(void**)(arc + 0x10))[6])(*(void**)(arc + 0x10), 0x4a334420, nameA) == 0) {
+                sprintf(nameA, str + 0x40);
+                sprintf(nameB, str + 0x50);
+                sprintf(nameC, str + 0x60);
+            }
+            fn_8016A3BC(*(void**)(arc + 0x10), nameA, nameB, 0, nameC, 0, 0x20240000, *(void**)param_1, elem + 0x44, elem + 0x48, 0, elem + 0x4c, 0);
+            elem += 0x60;
         }
-        fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), nameA, nameB, 0, nameC, 0, 0x20240000, *(void**)param_1, elem + 0x44, elem + 0x48, 0, elem + 0x4c, 0);
-        elem += 0x60;
     }
 
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "taki_a.bmd", "taki_a.btk", 0, 0, 0, 0x20240000, *(void**)param_1, param_1 + 0x2b4, param_1 + 0x2bc, 0, 0, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "niji_a.bmd", 0, 0, 0, 0, 0x20240000, *(void**)param_1, param_1 + 0x2b8, 0, 0, 0, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "taki_b.bmd", "taki_b.btk", 0, 0, 0, 0x20240000, *(void**)param_1, param_1 + 0x2d0, param_1 + 0x2d8, 0, 0, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "osiro_mon.bmd", "osiro_mon.btk", 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x2ec, param_1 + 0x2f0, 0, 0, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "osiro_tobira.bmd", "osiro_tobira.btk", 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x30c, param_1 + 0x310, 0, 0, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "osiro_mado.bmd", "osiro_mado.btk", 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x32c, param_1 + 0x330, 0, 0, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0x70, str + 0x7c, 0, 0, 0, 0x20240000, *(void**)param_1, param_1 + 0x2b4, param_1 + 0x2bc, 0, 0, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0x88, 0, 0, 0, 0, 0x20240000, *(void**)param_1, param_1 + 0x2b8, 0, 0, 0, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0x94, str + 0xa0, 0, 0, 0, 0x20240000, *(void**)param_1, param_1 + 0x2d0, param_1 + 0x2d8, 0, 0, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0xac, str + 0xbc, 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x2ec, param_1 + 0x2f0, 0, 0, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0xcc, str + 0xe0, 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x30c, param_1 + 0x310, 0, 0, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0xf4, str + 0x104, 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x32c, param_1 + 0x330, 0, 0, 0);
 
-    elem = param_1;
-    for (i = 0; i < 10; i++) {
-        fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "suna.bmd", "suna.btk", 0, "suna.brk", 0, 0x240000, *(void**)param_1, elem + 0x358, elem + 0x35c, 0, elem + 0x360, 0);
-        elem += 0x24;
+    {
+        u8* elem = param_1;
+        for (s32 i = 0; i < 10; i++) {
+            fn_8016A3BC(*(void**)(arc + 0x10), str + 0x114, str + 0x120, 0, str + 0x12c, 0, 0x240000, *(void**)param_1, elem + 0x358, elem + 0x35c, 0, elem + 0x360, 0);
+            elem += 0x24;
+        }
     }
 
-    elem = param_1;
-    for (i = 0; i < 8; i++) {
-        fn_8016A3BC(*(void**)(lbl_80529DEC + 0x14), "ak_magicCircle.bmd", "ak_magicCircle.btk", "ak_magicCircleApp.btk", "ak_magicCircle.brk", "ak_magicCircleColor.brk", 0x20240000, *(void**)param_1, elem + 0x4c0, elem + 0x4c4, elem + 0x4c8, elem + 0x4cc, elem + 0x4d0);
-        elem += 0x28;
+    {
+        u8* elem = param_1;
+        for (s32 i = 0; i < 8; i++) {
+            fn_8016A3BC(*(void**)(arc + 0x14), str + 0x138, str + 0x14c, str + 0x160, str + 0x178, str + 0x18c, 0x20240000, *(void**)param_1, elem + 0x4c0, elem + 0x4c4, elem + 0x4c8, elem + 0x4cc, elem + 0x4d0);
+            elem += 0x28;
+        }
     }
 
-    elem = param_1;
-    for (i = 0; i < 2; i++) {
-        fn_8016A3BC(*(void**)(lbl_80529DEC + 0x14), "mekakusi.bmd", "mekakusi.btk", 0, 0, 0, 0x01240000, *(void**)param_1, elem + 0x5fc, elem + 0x600, 0, 0, 0);
-        elem += 0x14;
+    {
+        u8* elem = param_1;
+        for (s32 i = 0; i < 2; i++) {
+            fn_8016A3BC(*(void**)(arc + 0x14), str + 0x1a4, str + 0x1b4, 0, 0, 0, 0x01240000, *(void**)param_1, elem + 0x5fc, elem + 0x600, 0, 0, 0);
+            elem += 0x14;
+        }
     }
 
-    elem = param_1;
-    for (i = 0; i < 16; i++) {
-        fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "unk_0x1c4.bmd", "unk_0x1d4.bmd", 0, 0, 0, 0x240000, *(void**)param_1, elem + 0x62c, elem + 0x630, 0, 0, 0);
-        elem += 0x18;
+    {
+        u8* elem = param_1;
+        for (s32 i = 0; i < 16; i++) {
+            fn_8016A3BC(*(void**)(arc + 0x10), str + 0x1c4, str + 0x1d4, 0, 0, 0, 0x240000, *(void**)param_1, elem + 0x62c, elem + 0x630, 0, 0, 0);
+            elem += 0x18;
+        }
     }
 
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "unknown_0x1e4.bmd", "unknown_0x1f8.bmd", 0, "unknown_0x20c.bmd", 0, 0x240000, *(void**)param_1, param_1 + 0x7ac, param_1 + 0x7b0, 0, param_1 + 0x7b4, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "unknown_0x220.bmd", 0, 0, "unknown_0x234.bmd", 0, 0x10220000, *(void**)param_1, param_1 + 0x7c4, 0, 0, param_1 + 0x7c8, 0);
-    fn_8016A3BC(*(void**)(lbl_80529DEC + 0x10), "unk_0x248.bmd", "unk_0x258.bmd", 0, "unk_0x268.bmd", 0, 0x10240000, *(void**)param_1, param_1 + 0x7e0, param_1 + 0x7e4, 0, param_1 + 0x7e8, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0x1e4, str + 0x1f8, 0, str + 0x20c, 0, 0x240000, *(void**)param_1, param_1 + 0x7ac, param_1 + 0x7b0, 0, param_1 + 0x7b4, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0x220, 0, 0, str + 0x234, 0, 0x10220000, *(void**)param_1, param_1 + 0x7c4, 0, 0, param_1 + 0x7c8, 0);
+    fn_8016A3BC(*(void**)(arc + 0x10), str + 0x248, str + 0x258, 0, str + 0x268, 0, 0x10240000, *(void**)param_1, param_1 + 0x7e0, param_1 + 0x7e4, 0, param_1 + 0x7e8, 0);
 
     adjustSize__12JKRSolidHeapFv(*(void**)param_1);
     becomeCurrentHeap__7JKRHeapFv(param_2);
 
-    wc = __nw__FUl(0x5c);
-    if (wc != 0) {
-        __ct__14WaveControllerFlll(wc, 0, 0, 8);
+    {
+        void* wc;
+        wc = __nw__FUl(0x5c);
+        if (wc != 0) {
+            __ct__14WaveControllerFlll(wc, 0, 0, 8);
+        }
+        *(void**)(param_1 + 0x7b8) = wc;
+        wc = __nw__FUl(0x5c);
+        if (wc != 0) {
+            __ct__14WaveControllerFlll(wc, 0, 0, 8);
+        }
+        *(void**)(param_1 + 0x7cc) = wc;
     }
-    *(void**)(param_1 + 0x7b8) = wc;
-    wc = __nw__FUl(0x5c);
-    if (wc != 0) {
-        __ct__14WaveControllerFlll(wc, 0, 0, 8);
-    }
-    *(void**)(param_1 + 0x7cc) = wc;
     return param_1;
 }
 
