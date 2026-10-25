@@ -2,6 +2,18 @@
 // TU 80175684-801769D8 (STAL). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_801F3D94(void* a, s32 b);
+extern "C" u8 fn_801F2618(void* a, f32* out, u32 c);
+extern "C" void fn_801F0E34(void* a, s32 id, s32 z);
+extern "C" u32 fn_801F305C(void* a);
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern "C" void fn_801EEC98(void* unused, s32 idx, u16* angOut, s32* quadOut, f32* distOut, s32* idxOut, s32 sel, s32 mode);
+extern "C" u8 fn_801F2B7C(void* a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_8023F264(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" u8 fn_8022C3AC(s32 i);
 
 // from src/Game/fn_80175684_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
