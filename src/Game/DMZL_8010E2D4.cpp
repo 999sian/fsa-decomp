@@ -117,7 +117,7 @@ extern const f32 lbl_8053C594;
 extern const f32 lbl_8053C5A0;
 
 static inline f32 DMZLShiftY(const f32 y, const f32 offset) { return y + offset; }
-static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1, f32 weight = lbl_8053C550, f32 speed = lbl_8053C5D0) {
+static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
     u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     if (obj[0x840] == 0) {
         obj[0x840] = 1;
@@ -125,9 +125,9 @@ static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f3
         *(f32*)(obj + 0x848) = y0;
         *(f32*)(obj + 0x84c) = x1;
         *(f32*)(obj + 0x850) = y1;
-        *(f32*)(obj + 0x854) = weight;
-        *(f32*)(obj + 0x1d4) = speed;
-        *(f32*)(obj + 0x1d8) = speed;
+        *(f32*)(obj + 0x854) = lbl_8053C550;
+        *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+        *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
     }
 }
 static inline void DMZLSetBoxAlt(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
