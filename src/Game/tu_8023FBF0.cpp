@@ -2152,6 +2152,8 @@ void fn_80247F58(char* p) {
         fn_80272160(p, 0, p + 0x8, 0x12);
     }
 }
+void fn_802520C0(char* p, s32* dir) {}
+
 void fn_8025250C(char* p) {
     s32 i;
     s32 cnt;
