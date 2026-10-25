@@ -401,26 +401,43 @@ extern "C" void fn_8016B8AC(u8* self) {
     }
 }
 
+extern "C" void fn_8016B910(u8* self) {
+    if (self[0x1C9]) {
+        if (*(void**)(self + 0x108) == 0) {
+            if (self[0x1CA] && *(void**)(self + 0x10C) != 0) {
+                J3DModel* dummy = 0;
+                (void)dummy;
+            }
+        } else {
+            if (self[0x1CA]) {
+                fn_8013B460(lbl_8053AB10);
+            }
+        }
+    }
+}
+
 extern "C" void fn_8016C2FC(u8* self) {
     extern f32 lbl_8053D980;
     extern f32 lbl_8053D984;
     extern const u32 lbl_8053D918;
+    extern const u32 lbl_8053D91C;
+    extern const u32 lbl_8053D920;
     if (self[0x1C8] == 0 || *(void**)(self + 0x104) == 0) return;
     u8* r3 = lbl_8053AB10;
-    u8* r7 = *(u8**)(r3 + 0x20);
-    u8* r8 = *(u8**)(r3 + 0x24);
-    u32 a = *(u32*)(r7 + 0x2380);
-    u32 b = *(u32*)(r7 + 0x2384);
+    u8* r6 = *(u8**)(r3 + 0x20);
+    u8* r7 = *(u8**)(r3 + 0x24);
+    s32 a = *(s32*)(r6 + 0x2380);
+    s32 b = *(s32*)(r6 + 0x2384);
     u8* vid = *(u8**)(sManager__8JUTVideo + 0x4);
     f32 sx = lbl_8053D938 / (f32)a;
-    f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
+    f32 k = lbl_8053D93C / *(f32*)(r7 + 0x858);
     f32 sy = lbl_8053D938 / (f32)b;
     f32 fw = (f32)*(u16*)(vid + 0x4);
     f32 fh = (f32)*(u16*)(vid + 0x6);
     f32 hx = k * (lbl_8053D940 * (sx * fw));
     f32 hy = k * (lbl_8053D940 * (sy * fh));
-    f32 cx = -*(f32*)(r8 + 0x10) * sx;
-    f32 cy = -*(f32*)(r8 + 0x20) * sy;
+    f32 cx = -*(f32*)(r7 + 0x10) * sx;
+    f32 cy = -*(f32*)(r7 + 0x20) * sy;
     fn_8013B460(r3);
     fn_8013B1E8(r3);
     load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x104), 0);
@@ -434,6 +451,119 @@ extern "C" void fn_8016C2FC(u8* self) {
     GXTexCoord2f32(cx + hx, cy + hy);
     GXPosition3f32(0.0f, fh, 0.0f);
     GXTexCoord2f32(cx - hx, cy + hy);
+    fn_8013B460(r3);
+    fn_8013B1E8(r3);
+    load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0xF4), 0);
+    GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+    GXSetTevColor(GX_TEVREG1, *(GXColor*)&lbl_8053D918);
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXSetZCompLoc(GX_FALSE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(cx - hx, cy - hy);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(cx + hx, cy - hy);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(cx + hx, cy + hy);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(cx - hx, cy + hy);
+    GXSetTevColor(GX_TEVREG1, *(GXColor*)&lbl_8053D91C);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(cx - hx, cy - hy);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(cx + hx, cy - hy);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(cx + hx, cy + hy);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(cx - hx, cy + hy);
+    GXSetTevColor(GX_TEVREG1, *(GXColor*)&lbl_8053D920);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(cx - hx, cy - hy);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(cx + hx, cy - hy);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(cx + hx, cy + hy);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(cx - hx, cy + hy);
+}
+
+extern "C" void fn_8016CB14(void* param_1) {
+    u8* p = (u8*)param_1;
+    if (p[0x1c7] != 0) {
+        u8* r8 = *(u8**)(lbl_8053AB10 + 0x24);
+        u8* r7 = *(u8**)(sManager__8JUTVideo + 0x4);
+        u32 a = *(u32*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2380);
+        u32 b = *(u32*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2384);
+        f32 fa = (f32)a;
+        f32 fb = (f32)b;
+        f32 fw = (f32)*(u16*)(r7 + 0x4);
+        f32 fh = (f32)*(u16*)(r7 + 0x6);
+        f32 v1 = (f32)(*(u32*)(p + 0x1c0) & 0xfff);
+        f32 v2 = (f32)(*(u32*)(p + 0x1c0) & 0x3ff);
+        f32 sx = lbl_8053D938 / fa;
+        f32 sy = lbl_8053D938 / fb;
+        f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
+        f32 f4 = lbl_8053D940 * v1;
+        f32 f29 = -*(f32*)(r8 + 0x10) * sx - f4;
+        f32 f28 = -*(f32*)(r8 + 0x20) * sy - f4;
+        f32 f31 = k * (lbl_8053D940 * (sx * fw));
+        f32 f30 = k * (lbl_8053D940 * (sy * fh));
+        fn_8013B460(lbl_8053AB10);
+        fn_8013B1E8(lbl_8053AB10);
+        GXClearVtxDesc();
+        GXSetVtxDesc((GXAttr)9, GX_DIRECT);
+        GXSetVtxDesc((GXAttr)13, GX_DIRECT);
+        GXSetVtxDesc((GXAttr)14, GX_DIRECT);
+        GXSetVtxDesc((GXAttr)15, GX_DIRECT);
+        GXSetVtxAttrFmt(GX_VTXFMT0, (GXAttr)9, GX_POS_XYZ, GX_F32, 0);
+        GXSetVtxAttrFmt(GX_VTXFMT0, (GXAttr)13, GX_TEX_ST, GX_F32, 0);
+        GXSetVtxAttrFmt(GX_VTXFMT0, (GXAttr)14, GX_TEX_ST, GX_F32, 0);
+        GXSetVtxAttrFmt(GX_VTXFMT0, (GXAttr)15, GX_TEX_ST, GX_F32, 0);
+        GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0, GX_FALSE, GX_PTTEXMTX0);
+        GXSetTexCoordGen2(GX_TEXCOORD1, GX_TG_MTX2x4, GX_TG_TEX1, GX_TEXMTX0, GX_FALSE, GX_PTTEXMTX0);
+        GXSetTexCoordGen2(GX_TEXCOORD2, GX_TG_MTX2x4, GX_TG_TEX2, GX_TEXMTX0, GX_FALSE, GX_PTTEXMTX0);
+        GXSetNumTexGens(3);
+        load__10JUTTextureF11_GXTexMapID(*(void**)(p + 0xfc), 0);
+        load__10JUTTextureF11_GXTexMapID(*(void**)(p + 0xf4), 1);
+        load__10JUTTextureF11_GXTexMapID(*(void**)(p + 0x100), 2);
+        GXSetNumIndStages(2);
+        GXSetIndTexOrder(GX_INDTEXSTAGE0, GX_TEXCOORD2, GX_TEXMAP2);
+        GXSetIndTexOrder(GX_INDTEXSTAGE1, GX_TEXCOORD2, GX_TEXMAP2);
+        GXSetTevIndWarp(GX_TEVSTAGE0, GX_INDTEXSTAGE0, GX_TRUE, GX_FALSE, GX_ITM_1);
+        GXSetTevIndWarp(GX_TEVSTAGE1, GX_INDTEXSTAGE1, GX_TRUE, GX_FALSE, GX_ITM_1);
+        GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
+        GXSetTevOrder(GX_TEVSTAGE1, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR_NULL);
+        GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
+        GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+        GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+        GXSetNumTevStages(2);
+        GXColor color = *(GXColor*)&lbl_80543F38;
+        color.a = p[0x1ec];
+        GXSetTevColor(GX_TEVREG1, color);
+        GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+        GXSetZCompLoc(GX_FALSE);
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(0.0f, 0.0f, 0.0f);
+        GXTexCoord2f32(f29 - f31, f28 - f30);
+        GXTexCoord2f32(f29 - f31, f28 - f30);
+        GXTexCoord2f32(f29 - f31, f28 - f30);
+        GXPosition3f32(fw, 0.0f, 0.0f);
+        GXTexCoord2f32(f29 + f31, f28 - f30);
+        GXTexCoord2f32(f29 + f31, f28 - f30);
+        GXTexCoord2f32(f29 + f31, f28 - f30);
+        GXPosition3f32(fw, fh, 0.0f);
+        GXTexCoord2f32(f29 + f31, f28 + f30);
+        GXTexCoord2f32(f29 + f31, f28 + f30);
+        GXTexCoord2f32(f29 + f31, f28 + f30);
+        GXPosition3f32(0.0f, fh, 0.0f);
+        GXTexCoord2f32(f29 - f31, f28 + f30);
+        GXTexCoord2f32(f29 - f31, f28 + f30);
+        GXTexCoord2f32(f29 - f31, f28 + f30);
+    }
 }
 
 extern "C" void fn_8016D284(u8* self) {
@@ -463,6 +593,59 @@ extern "C" void fn_8016D33C(u8* self) {
         offset.y = lbl_8053D958;
         offset.z = lbl_8053D944;
         fn_8016A7DC(self, *(void**)(self + 4), &offset, -1, 1, 1, lbl_8053D940, lbl_8053D960);
+    }
+}
+
+extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
+    u8* g;
+    u8* p;
+    u8* base = (u8*)a1;
+    s32 i;
+    Vec neg;
+    u32 seed;
+    u32 bits;
+
+    neg.x = -*(f32*)(base + 0xc);
+    neg.y = -*(f32*)(base + 0x1c);
+    neg.z = lbl_8053D944;
+
+    if ((u8)a4) {
+        if (*(s32*)a6 > 0) {
+            (*(s32*)a6)--;
+        } else {
+            g = (u8*)lbl_8053AAF8;
+            seed = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+            *(u32*)(g + 0xb4) = seed;
+            bits = (seed >> 9) | 0x3f800000;
+            *(s32*)a6 = (s32)(lbl_8053D9BC * (*(f32*)&bits - lbl_8053D93C));
+            p = (u8*)a5;
+            for (i = 0; i < 4; i++, p += 0x1c) {
+                if (*(s32*)(p + 0x14) == 0) {
+                    f32 ry, rx;
+                    Vec z;
+                    *(s32*)(p + 0x14) = 0x3c;
+                    *(u16*)(p + 0x10) = 0x288;
+                    seed = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+                    *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
+                    bits = (seed >> 9) | 0x3f800000;
+                    ry = *(f32*)&bits - lbl_8053D93C;
+                    seed = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+                    *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
+                    bits = (seed >> 9) | 0x3f800000;
+                    rx = *(f32*)&bits - lbl_8053D93C;
+                    *(f32*)(p + 0x4) = lbl_8053D9C0 * rx - lbl_8053D9C4;
+                    *(f32*)(p + 0x8) = lbl_8053D9C8 * ry + lbl_8053D970;
+                    *(f32*)(p + 0xc) = lbl_8053D944;
+                    z.x = lbl_8053D944;
+                    z.y = lbl_8053D944;
+                    z.z = lbl_8053D944;
+                    *(void**)p = fn_8013CC50(0, &z, *(u16*)(p + 0x10), 0, 0, 0, 0, 1, lbl_8053D9CC);
+                    if (*(void**)p != 0) {
+                        *(u32*)((u8*)*(void**)p + 0xf4) |= 0x40;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -733,6 +916,231 @@ extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern u8 lbl_80529DEC[];
+extern u8 lbl_80466368[];
+extern u8 lbl_804A0790[];
+extern u8 lbl_8053DA04[];
+extern "C" void fn_8016FDE0(void);
+extern "C" void __construct_array(void*, void*, void*, u32, u32);
+extern "C" void* __nw__FUlP7JKRHeapi(u32, JKRHeap*, s32);
+extern "C" void* __nw__FUl(u32);
+extern "C" void __ct__14WaveControllerFlll(void*, s32, s32, s32);
+extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
+extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
+    u32 strs = (u32)lbl_80466368;
+    __construct_array(self + 0x140, (void*)fn_8016FDE0, 0, 0x1c, 4);
+    *(JKRSolidHeap**)self = JKRSolidHeap::create(0xffffffff, heap, false);
+    (*(JKRHeap**)self)->becomeCurrentHeap();
+    u8* tbl = lbl_80529DEC;
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0xb4), (const char*)(strs + 0xc0), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 4), (J3DAnmTextureSRTKey**)(self + 8), 0, 0, 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0xcc), (const char*)(strs + 0xdc), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0xc), (J3DAnmTextureSRTKey**)(self + 0x10), 0, 0, 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0xec), (const char*)(strs + 0xfc), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0x14), (J3DAnmTextureSRTKey**)(self + 0x18), 0, 0, 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x10c), (const char*)(strs + 0x118), 0, (const char*)(strs + 0x124), 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0x1c), (J3DAnmTextureSRTKey**)(self + 0x20), 0, (J3DAnmTevRegKey**)(self + 0x24), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x130), (const char*)(strs + 0x144), 0, (const char*)(strs + 0x158), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0x28), (J3DAnmTextureSRTKey**)(self + 0x2c), 0, (J3DAnmTevRegKey**)(self + 0x30), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x16c), (const char*)(strs + 0x17c), 0, (const char*)(strs + 0x18c), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0x90), (J3DAnmTextureSRTKey**)(self + 0x94), 0, (J3DAnmTevRegKey**)(self + 0x98), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x19c), (const char*)(strs + 0x1b4), 0, (const char*)(strs + 0x1cc), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0x9c), (J3DAnmTextureSRTKey**)(self + 0xa0), 0, (J3DAnmTevRegKey**)(self + 0xa4), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x1e4), (const char*)(strs + 0x1f8), 0, (const char*)(strs + 0x20c), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0xa8), (J3DAnmTextureSRTKey**)(self + 0xac), 0, (J3DAnmTevRegKey**)(self + 0xb0), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x220), (const char*)(strs + 0x238), 0, (const char*)(strs + 0x250), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0xb4), (J3DAnmTextureSRTKey**)(self + 0xb8), 0, (J3DAnmTevRegKey**)(self + 0xbc), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x268), (const char*)(strs + 0x278), 0, 0, 0, 0x1240000, *(JKRHeap**)self, (J3DModel**)(self + 0x34), (J3DAnmTextureSRTKey**)(self + 0x38), 0, 0, 0);
+    u8* tbl2 = lbl_80529DEC;
+    fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x288), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
+    *(void**)(self + 0xf0) = 0;
+    if (*(void**)(self + 0xec) == 0) {
+        fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x294), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
+    }
+    if (*(void**)(self + 0xec) == 0) {
+        fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x2a0), (const char*)(strs + 0x2ac), 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), (J3DAnmTextureSRTKey**)(self + 0xf0), 0, 0, 0);
+    }
+    if (*(void**)(self + 0xec) == 0) {
+        fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x2b8), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
+    }
+    if (*(void**)(self + 0xec) == 0) {
+        fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x2c4), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
+    }
+    {
+        const char** ent = (const char**)lbl_804A0790;
+        u8* p = self;
+        for (s32 i = 0; i < 6; i++) {
+            fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), ent[0], ent[1], 0, ent[2], 0, 0x10240000, *(JKRHeap**)self, (J3DModel**)(p + 0x3c), (J3DAnmTextureSRTKey**)(p + 0x54), 0, (J3DAnmTevRegKey**)(p + 0x6c), 0);
+            ent += 3;
+            p += 4;
+        }
+    }
+    fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x2d0), (const char*)(strs + 0x2e4), 0, (const char*)(strs + 0x2f8), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0x84), (J3DAnmTextureSRTKey**)(self + 0x88), 0, (J3DAnmTevRegKey**)(self + 0x8c), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x30c), (const char*)(strs + 0x320), 0, (const char*)(strs + 0x334), 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0xc0), (J3DAnmTextureSRTKey**)(self + 0xc4), 0, (J3DAnmTevRegKey**)(self + 0xc8), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x348), (const char*)(strs + 0x358), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0xcc), (J3DAnmTextureSRTKey**)(self + 0xd0), 0, 0, 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x368), (const char*)(strs + 0x378), 0, (const char*)(strs + 0x388), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0xd4), (J3DAnmTextureSRTKey**)(self + 0xd8), 0, (J3DAnmTevRegKey**)(self + 0xdc), 0);
+    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x398), (const char*)(strs + 0x3a8), 0, (const char*)(strs + 0x3b8), 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0xe0), (J3DAnmTextureSRTKey**)(self + 0xe4), 0, (J3DAnmTevRegKey**)(self + 0xe8), 0);
+    ((JKRSolidHeap*)*(void**)self)->adjustSize();
+    heap->becomeCurrentHeap();
+    {
+        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        if (tex) {
+            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3c8));
+            *(void**)(tex + 0x28) = 0;
+            storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+            tex[0x3b] &= 2;
+        }
+        *(u8**)(self + 0xf4) = tex;
+    }
+    {
+        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        if (tex) {
+            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3d8));
+            *(void**)(tex + 0x28) = 0;
+            storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+            tex[0x3b] &= 2;
+        }
+        *(u8**)(self + 0xf8) = tex;
+    }
+    {
+        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        if (tex) {
+            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3e4));
+            *(void**)(tex + 0x28) = 0;
+            storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+            tex[0x3b] &= 2;
+        }
+        *(u8**)(self + 0xfc) = tex;
+    }
+    {
+        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        if (tex) {
+            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3f4));
+            *(void**)(tex + 0x28) = 0;
+            storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+            tex[0x3b] &= 2;
+        }
+        *(u8**)(self + 0x100) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x40c))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x40c));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x104) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x418))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x418));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x108) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x424))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x424));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x10c) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x434))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x434));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x110) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, 0)) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, 0);
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x114) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x440))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x440));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x118) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x450))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x450));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x11c) = tex;
+    }
+    {
+        u8* tex = 0;
+        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x460))) {
+            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (tex) {
+                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x460));
+                *(void**)(tex + 0x28) = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
+                tex[0x3b] &= 2;
+            }
+        }
+        *(u8**)(self + 0x120) = tex;
+    }
+    {
+        s32 i = 0;
+        u8* p = self;
+        do {
+            void* w = __nw__FUl(0x5c);
+            if (w) {
+                __ct__14WaveControllerFlll(w, 0, 0, 8);
+            }
+            i++;
+            *(void**)(p + 0x158) = w;
+            p += 0x1c;
+        } while (i < 4);
+    }
+    return self;
 }
 
 extern "C" void fn_8016FDE0(void) {
