@@ -140,7 +140,10 @@ extern "C" s32 fn_802BFBDC(char* p, s32 a, s32 b) {
 extern "C" u32 fn_8022F514(s32 a);
 extern "C" s32 fn_8022F3DC(s32 a);
 extern "C" BOOL fn_802308E0(s32 a);
-extern "C" BOOL fn_8023077C(s32 a);
+extern "C" u8 fn_8023077C(void);
+extern "C" void* lbl_8053AD70;
+extern "C" const u32 lbl_8046D4F0[];
+extern "C" const f32 lbl_80540C3C;
 extern "C" void fn_8037AE30(void* a);
 extern "C" void* fn_8023E724(s32 a);
 extern "C" s32 fn_8023DE58(s32 a);
@@ -366,7 +369,7 @@ extern "C" void fn_802C07DC(char* p) {
                                 fn_8022FE80(*(s32*)(p + 0x25c), *(s32*)(p + 4), *(s32*)(p + 0x198), 0, 0);
                                 *(s32*)(p + 0x230) = 2;
                             }
-                        } else if (fn_8023077C(0) == 1) {
+                        } else if (fn_8023077C() == 1) {
                             fn_8022FE80(*(s32*)(p + 0x25c), *(s32*)(p + 4), *(s32*)(p + 0x198), 0, 0);
                             *(s32*)(p + 0x230) = 2;
                         }
