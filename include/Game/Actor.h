@@ -4,9 +4,13 @@
 #include "types.h"
 
 /* Basic vector/rotation tuple used all over the game side. */
+#ifdef GAME_ACTOR_USE_SDK_VEC
+#include "dolphin/mtx.h"
+#else
 struct Vec {
     f32 x, y, z;
 };
+#endif
 
 /* Small POD living at Actor+0x1DC. 0x14 bytes of flags/ids followed by 16
  * words the Actor constructor sets to -1 (sub_801EAD68). */
