@@ -284,14 +284,114 @@ extern "C" void fn_80362B14(char* self) {
 extern "C" void fn_80362B74(char* self) {
     Vec saved;
     s32 i;
-
-    fn_801F06F0(self, lbl_80474BFC, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), 0, 7, lbl_80542B10, lbl_80542B10);
+    fn_801F06F0(self, lbl_80474BFC, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), 0, 7, 1.0f, 1.0f);
     JGeometry::setTVec3f((f32*)(self + 0xc), (f32*)&saved);
     for (i = 0; i < 3; i++) {
         JGeometry::setTVec3f((f32*)(self + 0x27c + i * 0xc), (f32*)(self + 0xc));
-        fn_801F06F0(self, lbl_80474BFC, *(s32*)(self + 0x2e8 + i * 4) + *(s32*)(self + 0x264), 0, 7, lbl_80542B10, lbl_80542B10);
+        fn_801F06F0(self, lbl_80474BFC, *(s32*)(self + 0x2e8 + i * 4) + *(s32*)(self + 0x264), 0, 7, 1.0f, 1.0f);
     }
     JGeometry::setTVec3f((f32*)&saved, (f32*)(self + 0xc));
+}
+
+extern "C" void fn_80362C44(char* self) {
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
+    s32 handled = 0;
+    switch (*(u32*)(self + 0x238)) {
+    case 0:
+        if (*(s32*)(self + 0x248) == 0) {
+            *(s32*)(self + 0x26c) = 0x9b;
+            *(f32*)(self + 0x3c) = lbl_80542B60;
+            *(f32*)(self + 0x40) = lbl_80542B0C;
+            *(f32*)(self + 0x44) = lbl_80542B0C;
+            *(f32*)(self + 0x2f8) = lbl_80542B0C;
+            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+            *(s32*)(self + 0x238) += 1;
+        }
+        break;
+    case 1:
+        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
+        if (*(s32*)(self + 0x25c) == 0) {
+            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+            *(s32*)(self + 0x264) = (*(s32*)(self + 0x264) + 1) & 7;
+        }
+        *(f32*)(self + 0x2f8) += *(f32*)(self + 0x3c);
+        if (*(f32*)(self + 0x2f8) >= lbl_80542B64) {
+            *(s32*)(self + 0x238) += 1;
+            *(f32*)(self + 0x3c) = lbl_80542B0C;
+            *(f32*)(self + 0x40) = lbl_80542B68;
+            *(f32*)(self + 0x44) = lbl_80542B0C;
+            *(s32*)(self + 0x26c) = 0xb3;
+            *(f32*)(self + 0x2f8) = lbl_80542B0C;
+        }
+        break;
+    case 2:
+        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
+        if (*(s32*)(self + 0x25c) == 0) {
+            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+            *(s32*)(self + 0x264) = (*(s32*)(self + 0x264) + 1) & 7;
+        }
+        *(f32*)(self + 0x2f8) += fabs(*(f32*)(self + 0x40));
+        if (*(f32*)(self + 0x2f8) >= lbl_80542B64) {
+            *(s32*)(self + 0x238) += 1;
+            *(s32*)(self + 0x264) = 0;
+            *(s32*)(self + 0x248) = 0x3c;
+            *(f32*)(self + 0x44) = lbl_80542B0C;
+            *(f32*)(self + 0x40) = lbl_80542B0C;
+            *(f32*)(self + 0x3c) = lbl_80542B0C;
+        }
+        break;
+    case 3:
+        if (*(s32*)(self + 0x248) == 0) {
+            *(s32*)(self + 0x248) = 0x5c;
+            *(u8*)(*(char**)(self + 0x2fc) + 0x294) = 1;
+            *(s32*)(self + 0x238) += 1;
+        }
+        break;
+    case 4:
+        if (*(s32*)(self + 0x248) == 0) {
+            *(s32*)(self + 0x238) += 1;
+        }
+        break;
+    case 5: {
+        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
+        if (*(s32*)(self + 0x25c) == 0) {
+            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+            *(s32*)(self + 0x264) = (*(s32*)(self + 0x264) + 1) & 7;
+        }
+        *(f32*)(self + 0x2f8) += fabs(*(f32*)(self + 0x40));
+        if (*(f32*)(self + 0x2f8) >= lbl_80542B58) {
+            *(s32*)(self + 0x248) = 0x12c;
+            s32 i;
+            for (i = 0; i < 4; i++) {
+                void* em = self;
+                (void)em;
+            }
+            *(s32*)(self + 0x238) += 1;
+            handled = 1;
+        }
+        break;
+    }
+    case 6: {
+        f32 t = *(f32*)(self + 0x250);
+        if (t > lbl_80542B0C) {
+            *(f32*)(self + 0x250) = t - *(f32*)(self + 0x254);
+            if (*(f32*)(self + 0x250) <= lbl_80542B0C) {
+                *(f32*)(self + 0x250) = lbl_80542B0C;
+                *(f32*)(self + 0x254) = lbl_80542B0C;
+            }
+            handled = 1;
+        }
+        break;
+    }
+    case 7:
+        pos.z = lbl_80542B0C;
+        break;
+    default:
+        break;
+    }
+    if (!handled) {
+        *(JGeometry::TVec3<f32>*)(*(char**)(self + 0x2fc) + 0xc) = pos;
+    }
 }
 
 extern "C" void fn_8036335C(void) {
@@ -767,6 +867,7 @@ extern "C" f32 lbl_80542B50;
 extern "C" f32 lbl_80542B58;
 extern "C" const s32 lbl_80474320[];
 extern "C" const s32 lbl_80474450[];
+#pragma opt_propagation off
 extern "C" void fn_80364D0C(char* self) {
     s32 idx = *(s32*)(self + 0x24c);
     if (idx < 0) {
@@ -786,7 +887,7 @@ extern "C" void fn_80364D0C(char* self) {
         if (p == NULL) {
             *(s32*)(self + 0x24c) = -1;
         } else {
-            if (!(PSVECDistance((Vec*)(self + 0xc), (Vec*)(p + 0xc)) >= lbl_80542B58)) {
+            if (PSVECDistance((Vec*)(self + 0xc), (Vec*)(p + 0xc)) >= lbl_80542B58) {
                 *(s32*)(self + 0x23c) = 0;
             } else {
                 f32 angle = JMath::atanTable_.atan2_(*(f32*)(p + 0x10) - *(f32*)(self + 0x10),
@@ -814,7 +915,7 @@ extern "C" void fn_80364D0C(char* self) {
         *(u32*)(self + 0x264) ^= 1;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80364F00(char* this_) {
     if (*(s32*)(this_ + 0x25c) != 0) {
         return;
@@ -1047,6 +1148,31 @@ extern "C" void fn_80365AF0(Unk80365AB8* self) {
         }
         (self->*lbl_804ADC38[*(s32*)((u8*)self + 0x234)])();
     }
+}
+
+extern "C" void fn_80365B5C(char* self) {
+    s32 kind = (s32)(*(u32*)(self + 0x90) & 0x1f);
+    *(s32*)(self + 0x234) = kind;
+    *(s32*)(self + 0x238) = (s32)((*(u32*)(self + 0x90) >> 20) & 0x7f);
+    *(s32*)(self + 0x23c) = (s32)((*(u32*)(self + 0x90) >> 18) & 0x3);
+    *(u8*)(self + 0x230) = (u8)((*(u32*)(self + 0x90) >> 12) & 0x3f);
+    *(s32*)(self + 0x248) = 0;
+    *(s32*)(self + 0x24c) = -1;
+    *(s32*)(self + 0x25c) = 0;
+    *(s32*)(self + 0x260) = 0;
+    *(s32*)(self + 0x264) = 0;
+    *(s32*)(self + 0x268) = 0;
+    *(s32*)(self + 0x26c) = 0;
+    *(s32*)(self + 0x270) = 0;
+    *(s32*)(self + 0x274) = 0;
+    *(u8*)(self + 0x278) = 0;
+    *(s32*)(self + 0x300) = 0;
+    *(s32*)(self + 0x304) = 0;
+    *(s32*)(self + 0x308) = 0;
+    *(s32*)(self + 0x30c) = 0;
+    *(s32*)(self + 0x310) = 0;
+    *(s32*)(self + 0x314) = 0;
+    *(s32*)(self + 0x318) = 0;
 }
 
 extern "C" char lbl_804ADF28[];
