@@ -70,7 +70,6 @@ inline void psw2ActivateGroup(Actor* p) {
 }
 inline bool psw2Ready(Actor* p) {
     char* member;
-    s32 j;
     s32 i;
     if ((p->field_90 >> 4) & 3) return false;
     i = 0;
@@ -85,6 +84,7 @@ inline bool psw2Ready(Actor* p) {
 
 extern "C" void fn_8036CF1C(Actor* this_) {
     u8* p = (u8*)this_;
+    int i;
     JGeometry::TBox2f box = *(JGeometry::TBox2f*)(p + 0x60);
     JGeometry::TVec3f pos;
     JGeometry::TVec3f playerPos;
@@ -120,7 +120,7 @@ extern "C" void fn_8036CF1C(Actor* this_) {
                         *(s32*)(p + 0x258)=50;
                         *(s32*)(p + 0x25c)=4;
                         *(s32*)(p + 0x260)=0;
-                        for (int i=0;i<4;i++) {
+                        for (i=0;i<4;i++) {
                             pos=*(JGeometry::TVec3f*)fn_8023E724(i);
                             fn_80230498(i,pos+JGeometry::TVec3f(0.0f,7.0f,0.0f),0x2e2,0xff,-0x80,-0x80,1);
                         }
