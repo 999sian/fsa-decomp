@@ -322,16 +322,6 @@ static inline void initPane(void* obj) {
     *(s16*)((u8*)obj + 0x22) = 0;
     stopPane(*(void**)((u8*)obj + 4));
 }
-static inline void tu803C_syncIcons(u8* p, const u8* base) {
- s32 i; const u8* k;
- for(i=0,k=base+0x3b0;i<8;i++,k+=8) {
-  if(fn_803B90E4(*(u32*)(p+0xa4),i)) ((J2DPane*)*(void**)(p+4))->search(*(const u64*)(k+0x10))->hide();
-  else ((J2DPane*)*(void**)(p+4))->search(*(const u64*)(k+0x10))->show();
- }
- *(u32*)(p+0xa8)=*(u32*)(p+0xa4);
- u8* q=p;
- for(i=0;i<8;i++,q+=4) *(u32*)(q+0xb8)=fn_803B8CAC(*(u32*)(p+0xa4),i);
-}
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     u8* base = (u8*)lbl_804765D0;
@@ -1246,7 +1236,8 @@ extern "C" void fn_803C1340(u8* p) {
     p[0x110] = 0x14;
 }
 
-extern "C" void fn_803C1734(u8* p) {
+extern "C" void fn_803C1734(u8* this_) {
+ u8* p=this_;
  u8* base=(u8*)lbl_804765D0;
  {u8* k;s32 i;k=base+0x3b0;
  for(i=0;i<8;i++,k+=8){
