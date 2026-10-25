@@ -87,6 +87,9 @@ struct VScreen_803B14F8 {
     virtual VPane_803B14F8* v3C(s32 a, s32 b);
 };
 
+extern const f32 lbl_80543424;
+extern "C" u8 fn_80389BF0(s32 i, s32 id);
+
 struct Pane_803B1B60 {
     virtual void v00();
     virtual void v04();
