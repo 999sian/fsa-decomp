@@ -1,4 +1,11 @@
 #include "types.h"
+#include "JSystem/J3D/J3DModel.h"
+#include "JSystem/J3D/J3DMaterialAnm.h"
+#include "JSystem/J3D/J3DModelLoader.h"
+#include "JSystem/J3D/J3DSys.h"
+#include "JSystem/JKernel/JKRArchive.h"
+#include "JSystem/JKernel/JKRHeap.h"
+extern "C" void* fn_800CECCC(const void*, u32);
 #include "Game/SinitPoolChain.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
@@ -192,7 +199,42 @@ extern "C" void fn_8016AD84(u8* self) {
 }
 
 extern "C" void fn_8016ADE0(void* param_1) {
-    if (((u8*)param_1)[0x1ec] != 0) {
+    u8* p = (u8*)param_1;
+    if (p[0x1ec] != 0) {
+        u8* r8 = *(u8**)(lbl_8053AB10 + 0x24);
+        u8* r7 = *(u8**)(sManager__8JUTVideo + 0x4);
+        u32 a = *(u32*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2380);
+        u32 b = *(u32*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2384);
+        f32 fa = (f32)a;
+        f32 fb = (f32)b;
+        f32 fw = (f32)*(u16*)(r7 + 0x4);
+        f32 fh = (f32)*(u16*)(r7 + 0x6);
+        f32 v = (f32)(*(u32*)(p + 0x1c0) & 0x7ff);
+        f32 sx = lbl_8053D938 / fa;
+        f32 sy = lbl_8053D938 / fb;
+        f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
+        f32 f4 = lbl_8053D964 * v;
+        f32 f29 = -*(f32*)(r8 + 0x10) * sx - f4;
+        f32 f28 = -*(f32*)(r8 + 0x20) * sy - f4;
+        f32 f31 = k * (lbl_8053D940 * (sx * fw));
+        f32 f30 = k * (lbl_8053D940 * (sy * fh));
+        GXColor color = *(GXColor*)&lbl_80543F38;
+        fn_8013B460(lbl_8053AB10);
+        fn_8013B1E8(lbl_8053AB10);
+        load__10JUTTextureF11_GXTexMapID(*(void**)(p + 0xf4), 0);
+        color.a = p[0x1ec];
+        GXSetTevColor((GXTevRegID)1, color);
+        GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+        GXSetZCompLoc(GX_FALSE);
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(0.0f, 0.0f, 0.0f);
+        GXTexCoord2f32(f29 - f31, f28 - f30);
+        GXPosition3f32(fw, 0.0f, 0.0f);
+        GXTexCoord2f32(f29 + f31, f28 - f30);
+        GXPosition3f32(fw, fh, 0.0f);
+        GXTexCoord2f32(f29 + f31, f28 + f30);
+        GXPosition3f32(0.0f, fh, 0.0f);
+        GXTexCoord2f32(f29 - f31, f28 + f30);
     }
 }
 
@@ -213,11 +255,10 @@ extern "C" void fn_8016B0B0(u8* self) {
     extern const f32 lbl_8053D970;
     extern const f32 lbl_8053D974;
     if (self[0x1CF]) {
-        u8* cur = self;
         u8* p = *(u8**)(lbl_8053AB10 + 0x24);
         f32 scale = lbl_8053D968 / *(f32*)(p + 0x858);
-        for (s32 i = 0; i < 6; i++, cur += 4) {
-            if (*(u8**)(cur + 0x3C) == NULL) continue;
+        for (s32 i = 0; i < 6; i++) {
+            if (*(u8**)(self + 0x3C + i * 4) == NULL) continue;
             if (i == 3 && self[0x1D0] == 0) continue;
             if ((i == 1 || i == 2) && self[0x1D0] != 0) continue;
             f32 fi = (f32)i;
@@ -235,15 +276,53 @@ extern "C" void fn_8016B0B0(u8* self) {
             m[2][1] = lbl_8053D93C;
             m[2][2] = 0.0f;
             m[2][3] = f4;
-            *(f32*)(*(u8**)(cur + 0x3C) + 0x18) = scale;
-            *(f32*)(*(u8**)(cur + 0x3C) + 0x1C) = scale;
-            *(f32*)(*(u8**)(cur + 0x3C) + 0x20) = scale;
-            PSMTXCopy(m, (MtxPtr)(*(u8**)(cur + 0x3C) + 0x24));
-            ((void (**)(void*))*(void**)*(u8**)(cur + 0x3C))[4](*(u8**)(cur + 0x3C));
-            ((void (**)(void*))*(void**)*(u8**)(cur + 0x3C))[3](*(u8**)(cur + 0x3C));
-            ((void (**)(void*))*(void**)*(u8**)(cur + 0x3C))[7](*(u8**)(cur + 0x3C));
+            *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x18) = scale;
+            *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x1C) = scale;
+            *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x20) = scale;
+            PSMTXCopy(m, (MtxPtr)(*(u8**)(self + 0x3C + i * 4) + 0x24));
+            ((void (*)(void*))((void**)*(void**)(*(u8**)(self + 0x3C + i * 4)))[4])(*(u8**)(self + 0x3C + i * 4));
+            ((void (*)(void*))((void**)*(void**)(*(u8**)(self + 0x3C + i * 4)))[3])(*(u8**)(self + 0x3C + i * 4));
+            ((void (*)(void*))((void**)*(void**)(*(u8**)(self + 0x3C + i * 4)))[7])(*(u8**)(self + 0x3C + i * 4));
         }
     }
+}
+
+extern "C" void fn_8016B4D4(u8* self) {
+    extern f32 lbl_8053D980;
+    extern f32 lbl_8053D984;
+    if (self[0x1CC] == 0 || *(void**)(self + 0x110) == 0) {
+        if (self[0x1CD] == 0) return;
+        if (*(void**)(self + 0x118) == 0) return;
+    }
+    u8* r3 = lbl_8053AB10;
+    u8* r7 = *(u8**)(r3 + 0x20);
+    u8* r8 = *(u8**)(r3 + 0x24);
+    u32 a = *(u32*)(r7 + 0x2380);
+    u32 b = *(u32*)(r7 + 0x2384);
+    u8* vid = *(u8**)(sManager__8JUTVideo + 0x4);
+    f32 sx = lbl_8053D938 / (f32)a;
+    f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
+    f32 sy = lbl_8053D938 / (f32)b;
+    f32 fw = (f32)*(u16*)(vid + 0x4);
+    f32 fh = (f32)*(u16*)(vid + 0x6);
+    f32 v = (f32)(*(u32*)(self + 0x1c0) & 0xfff);
+    f32 hx = k * (lbl_8053D940 * (sx * fw));
+    f32 hy = k * (lbl_8053D940 * (sy * fh));
+    f32 cx = -*(f32*)(r8 + 0x10) * sx - lbl_8053D980 * v;
+    f32 cy = -*(f32*)(r8 + 0x20) * sy - lbl_8053D984 * v;
+    fn_8013B460(r3);
+    fn_8013B1E8(r3);
+    load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x114), 0);
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(cx - hx, cy - hy);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(cx + hx, cy - hy);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(cx + hx, cy + hy);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(cx - hx, cy + hy);
 }
 
 extern "C" void fn_8016B8AC(u8* self) {
@@ -251,6 +330,41 @@ extern "C" void fn_8016B8AC(u8* self) {
         JGeometry::TVec3<f32> offset(lbl_8053D958, lbl_8053D958 + *(f32*)(self + 0x1E4), lbl_8053D944);
         fn_8016A7DC(self, *(void**)(self + 0x34), &offset, 1, 1, 0, lbl_8053D93C, lbl_8053D988);
     }
+}
+
+extern "C" void fn_8016C2FC(u8* self) {
+    extern f32 lbl_8053D980;
+    extern f32 lbl_8053D984;
+    extern const u32 lbl_8053D918;
+    if (self[0x1C8] == 0 || *(void**)(self + 0x104) == 0) return;
+    u8* r3 = lbl_8053AB10;
+    u8* r7 = *(u8**)(r3 + 0x20);
+    u8* r8 = *(u8**)(r3 + 0x24);
+    u32 a = *(u32*)(r7 + 0x2380);
+    u32 b = *(u32*)(r7 + 0x2384);
+    u8* vid = *(u8**)(sManager__8JUTVideo + 0x4);
+    f32 sx = lbl_8053D938 / (f32)a;
+    f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
+    f32 sy = lbl_8053D938 / (f32)b;
+    f32 fw = (f32)*(u16*)(vid + 0x4);
+    f32 fh = (f32)*(u16*)(vid + 0x6);
+    f32 hx = k * (lbl_8053D940 * (sx * fw));
+    f32 hy = k * (lbl_8053D940 * (sy * fh));
+    f32 cx = -*(f32*)(r8 + 0x10) * sx;
+    f32 cy = -*(f32*)(r8 + 0x20) * sy;
+    fn_8013B460(r3);
+    fn_8013B1E8(r3);
+    load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x104), 0);
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(cx - hx, cy - hy);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(cx + hx, cy - hy);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(cx + hx, cy + hy);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(cx - hx, cy + hy);
 }
 
 extern "C" void fn_8016D284(u8* self) {
@@ -288,25 +402,12 @@ extern "C" void fn_8016D33C(u8* self) {
 extern "C" void fn_8016DA6C(u8* self) {
     bool enabled;
     if (lbl_8053AAF8[0x7F]) {
-        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         u8 selected = 0;
-        if (mode == 7) selected = 1;
-        if (mode == 8) selected = 1;
-        if (mode == 9) selected = 1;
-        if (mode == 22) selected = 1;
-        if (mode == 10) selected = 1;
-        if (mode == 11) selected = 1;
+        if (*(s32*)(lbl_8053AAF8 + 0x4C) == 7 || *(s32*)(lbl_8053AAF8 + 0x4C) == 8 || *(s32*)(lbl_8053AAF8 + 0x4C) == 9 || *(s32*)(lbl_8053AAF8 + 0x4C) == 22 || *(s32*)(lbl_8053AAF8 + 0x4C) == 10 || *(s32*)(lbl_8053AAF8 + 0x4C) == 11) selected = 1;
         enabled = selected;
     } else {
-        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         u8 selected = 0;
-        if (mode == 7) selected = 1;
-        if (mode == 8) selected = 1;
-        if (mode == 9) selected = 1;
-        if (mode == 22) selected = 1;
-        if (mode == 10) selected = 1;
-        if (mode == 11) selected = 1;
-        if (mode == 12) selected = 1;
+        if (*(s32*)(lbl_8053AAF8 + 0x4C) == 7 || *(s32*)(lbl_8053AAF8 + 0x4C) == 8 || *(s32*)(lbl_8053AAF8 + 0x4C) == 9 || *(s32*)(lbl_8053AAF8 + 0x4C) == 22 || *(s32*)(lbl_8053AAF8 + 0x4C) == 10 || *(s32*)(lbl_8053AAF8 + 0x4C) == 11 || *(s32*)(lbl_8053AAF8 + 0x4C) == 12) selected = 1;
         enabled = selected;
     }
     if (enabled) {
@@ -340,8 +441,8 @@ extern "C" void fn_8016DB60(u8* self) {
     extern void fn_8016AA48(u8*);
     bool enabled;
     if (lbl_8053AAF8[0x7F]) {
-        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         u8 selected = 0;
+        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         if (mode == 7) selected = 1;
         if (mode == 8) selected = 1;
         if (mode == 9) selected = 1;
@@ -350,8 +451,8 @@ extern "C" void fn_8016DB60(u8* self) {
         if (mode == 11) selected = 1;
         enabled = selected;
     } else {
-        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         u8 selected = 0;
+        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         if (mode == 7) selected = 1;
         if (mode == 8) selected = 1;
         if (mode == 9) selected = 1;
@@ -491,8 +592,9 @@ extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void __dl__FPv(void*);
 extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
     if (this_ != 0) {
+        u8* p;
         s32 i = 0;
-        u8* p = (u8*)this_;
+        p = (u8*)this_;
         for (; i < 4; i++) {
             void* emitter = *(void**)(p + 0x140);
             if (emitter != 0) {
@@ -501,7 +603,8 @@ extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
             if (*(void**)(p + 0x158) != 0) {
                 void* obj = *(void**)(p + 0x158);
                 if (obj != 0) {
-                    (*(void (***)(void*, s32))((u8*)obj + 8))[12](obj, 1);
+                    void (**vt)(void*, s32) = *(void (***)(void*, s32))((u8*)obj + 8);
+                    vt[12](obj, 1);
                 }
             }
             p += 0x1c;
