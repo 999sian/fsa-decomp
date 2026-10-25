@@ -73,9 +73,7 @@ extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 extern void* lbl_8053AAF8;
 static inline f32 tuRandFloat() {
-    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660du + 0x3c6ef35fu;
-    u32 bits = (*(u32*)((u8*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000u;
-    return *(f32*)&bits - 1.0f;
+    return ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
 }
 extern "C" void fn_8013B490(void* obj);
 extern "C" void fn_80440EE8(void* obj);
