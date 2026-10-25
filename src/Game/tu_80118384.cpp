@@ -173,10 +173,10 @@ extern "C" BOOL fn_801184F0(u8* self, u8 arg)
         *(u32*)(lbl_804BC504 + 0x28) = 0;
         *(u32*)(lbl_804BC504 + 0x10) = 0;
     }
+    end = src = *(u8***)(self + 0x14);
     dst = *(u8***)(self + 0x10);
-    src = end = *(u8***)(self + 0x14);
     count = ((u32)end + 3 - (u32)src) >> 2;
-    if (src < end) {
+    if ((u32)src < (u32)end) {
         if ((n = count >> 3) != 0) {
             do {
                 dst[0] = src[0];
@@ -587,7 +587,7 @@ extern "C" void* fn_8011921C(void)
 {
     if (lbl_8053AA92 == 0) {
         StaticVec_init2(&lbl_804BC540, *(StaticVecAlloc*)&lbl_8053AA90);
-        __register_global_object(&lbl_804BC540, fn_801192AC, lbl_804BC534);
+        __register_global_object(&lbl_804BC540, (void (*)(void*))fn_801192AC, lbl_804BC534);
         lbl_8053AA92 = 1;
     }
     return &lbl_804BC540;
