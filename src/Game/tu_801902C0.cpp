@@ -99,7 +99,7 @@ extern "C" void fn_801902D0(u8* p) {
             z = *(f32*)(cur + 0x40);
             Mtx m;
             Mtx r;
-            f32 off = calcLayerOffset(z, *(s32*)(cur + 0x5c), *(s32*)(cur + 0x60));
+            f32 off = calcLayerOffset(z, cur);
             m[0][3] = 0.0f;
             m[1][3] = 0.0f;
             m[2][3] = 0.0f;
