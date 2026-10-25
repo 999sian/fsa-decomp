@@ -14,6 +14,8 @@ extern const f32 lbl_80543D10;
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 
+static inline f32 scaleMenuExtent(f32 extent, f32 scale) { return extent * scale; }
+
 struct FsaMenuNumber {
     u8 unk_0x0[0x118];
     f32 x[10];
@@ -480,22 +482,22 @@ extern "C" void fn_8043BB84(u8* self)
     }
 }
 
-extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 f1, f32 f2, f32 f3) {
-    u8 n = self[0x252];
+extern "C" s32 fn_8043CB24(FsaMenuNumber* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 f1, f32 f2, const f32 f3) {
+    u8 n = self->used;
     if (n < 10) {
         int count = p5;
         f32 b = (f32)(count % 2);
         f32 a = (f32)(p5 / 2);
-        ((FsaMenuNumber*)(self + n * 4))->x[0] = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - (lbl_80543CC0 * a) * f3;
-        ((FsaMenuNumber*)(self + self[0x252] * 4))->y[0] = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
-        ((FsaMenuNumber*)(self + self[0x252] * 4))->scale[0] = f3;
-        self[0x244 + self[0x252]] = p3;
-        self[0x226 + self[0x252]] = p5;
-        self[0x1f4 + self[0x252]] = 0xff;
-        self[0x1fe + self[0x252]] = 0xff;
-        self[0x208 + self[0x252]] = 0xff;
-        self[0x212 + self[0x252]] = 0xff;
-        self[0x21c + self[0x252]] = 0xff;
+        self->x[n] = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - (lbl_80543CC0 * a) * f3;
+        self->y[self->used] = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
+        self->scale[self->used] = f3;
+        self->type[self->used] = p3;
+        self->count[self->used] = p5;
+        self->digits[0][self->used] = 0xff;
+        self->digits[1][self->used] = 0xff;
+        self->digits[2][self->used] = 0xff;
+        self->digits[3][self->used] = 0xff;
+        self->digits[4][self->used] = 0xff;
         int pow = 1;
         u8 flag = 0;
         if (p6) flag = 1;
@@ -503,22 +505,22 @@ extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 
         if (value > pow-1) value=pow-1;
         if (value<0) value=0;
         pow /= 10;
-        u8* d=self;
+        u8* d=(u8*)self;
         for (int i=count-1; i>0; i--) {
             int digit=value/pow;
             value-=digit*pow;
-            if (!flag && digit==0) d[self[0x252]+0x1f4]=0xff;
+            if (!flag && digit==0) d[self->used+0x1f4]=0xff;
             else {
                 if (!flag) flag=1;
-                d[self[0x252]+0x1f4]=digit;
+                d[self->used+0x1f4]=digit;
             }
             d+=10;
             pow/=10;
         }
-        (self+count*10)[self[0x252]+0x1ea]=value;
+        self->digits[count-1][self->used]=value;
         if (p4>5) p4=5;
-        self[0x23a+self[0x252]]=p4;
-        self[0x252]++;
+        self->level[self->used]=p4;
+        self->used++;
         return 1;
     }
     return 0;
