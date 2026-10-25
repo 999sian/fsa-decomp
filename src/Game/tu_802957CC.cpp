@@ -188,13 +188,6 @@ struct HOUSLinks {
     s32 doorCount;
 };
 
-struct HOUSEffects {
-    u8 unk_000[0x2fc];
-    s32 effects[2][2];
-    u8 unk_30c[4];
-    s32 effects2[4];
-};
-
 
 static inline s32 WarpDestination(const char* actor) {
     s32 room = (*(const u32*)(actor + 0x90) >> 24) & 7;
