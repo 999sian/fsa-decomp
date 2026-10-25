@@ -53,7 +53,7 @@ extern "C" void fn_802AC98C(u8* this_) {
         s32 b = 0xff;
         s32 c = 0;
         s32 d = 0xff;
-        ((void (*)(void*, s32*, s32*))(*(void***)(*(u8**)(this_ + 4)))[0x130 / 4])(*(void**)(this_ + 4), &b, &a);
+        ((void (*)(void*, s32*, s32*))(*(void***)(*(u8**)(this_ + 4)))[0x130 / 4])(*(void**)(this_ + 4), &d, &c);
         ((void (*)(void*, u8))(*(void***)(*(u8**)(this_ + 4)))[0x24 / 4])(*(void**)(this_ + 4), (u8)*(s32*)(this_ + 0x10));
         ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)(*(u8**)(this_ + 4)))[0xec / 4])(*(void**)(this_ + 4), 0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
     }
@@ -67,10 +67,10 @@ typedef void (*FnByte)(void*, u8);
 typedef void (*FnFloats)(void*, s32, s32, s32, f32, f32, f32, f32);
 extern "C" void fn_802ACA64(u8* this_)
 {
-    s32 a[2];
     s32 b[2];
-    s32 c[2];
+    s32 a[2];
     s32 d[2];
+    s32 c[2];
     void* obj;
 
     fn_8013B490(lbl_8053AB10);
@@ -105,18 +105,17 @@ extern char lbl_804A8390[];
 extern "C" void __dl__FPv(void*);
 extern void* lbl_8053ACA0;
 extern char lbl_8046C8A0[];
-extern void* fn_804030C4(u32, void*);
-extern void* __nw__FUl(u32);
-extern void __ct__10J2DPictureFPC7ResTIMG(void*, void*);
+extern "C" void* fn_804030C4(u32, void*);
+extern "C" void* __nw__FUl(u32);
+extern "C" void __ct__10J2DPictureFPC7ResTIMG(void*, void*);
 extern "C" void* fn_802ACB68(void* this_, short param_2) {
   if (this_ != (void*)0) {
     *(void**)this_ = (void*)lbl_804A8390;
     void** ptr_field = (void**)((u8*)this_ + 4);
     if (*ptr_field != (void*)0) {
       void** obj = (void**)*ptr_field;
-      void** vtable = (void**)obj[0];
       typedef void (*Func)(void*, int);
-      Func func = (Func)vtable[2];
+      Func func = *(Func*)((u8*)obj[0] + 8);
       func((void*)obj, 1);
     }
     *(u32*)((u8*)this_ + 4) = 0;
@@ -127,27 +126,24 @@ extern "C" void* fn_802ACB68(void* this_, short param_2) {
   return this_;
 }
 
-extern "C" void* fn_802ACBE8(void* param_1) {
-    void* uVar1;
-    void* iVar2;
+extern "C" void* fn_802ACBE8(void* this_) {
+    *(void**)this_ = (void*)lbl_804A8390;
+    lbl_8053ACA0 = this_;
     
-    *(void**)param_1 = (void*)lbl_804A8390;
-    lbl_8053ACA0 = param_1;
+    void* res = fn_804030C4(0x54494d47, (void*)lbl_8046C8A0);
+    void* picture = __nw__FUl(0x168);
     
-    uVar1 = fn_804030C4(0x54494d47, (void*)lbl_8046C8A0);
-    iVar2 = __nw__FUl(0x168);
-    
-    if (iVar2 != 0) {
-        __ct__10J2DPictureFPC7ResTIMG(iVar2, uVar1);
-        *(void**)((char*)param_1 + 4) = iVar2;
+    if (picture != 0) {
+        __ct__10J2DPictureFPC7ResTIMG(picture, res);
+        *(void**)((char*)this_ + 4) = picture;
     }
     
-    *(u32*)((char*)param_1 + 0xc) = 0;
-    *(u32*)((char*)param_1 + 0x10) = 0;
-    *(u32*)((char*)param_1 + 0x14) = 0;
-    *(u32*)((char*)param_1 + 0x18) = 0;
+    *(u32*)((char*)this_ + 0xc) = 0;
+    *(u32*)((char*)this_ + 0x10) = 0;
+    *(u32*)((char*)this_ + 0x14) = 0;
+    *(u32*)((char*)this_ + 0x18) = 0;
     
-    return param_1;
+    return this_;
 }
 
 
