@@ -216,13 +216,6 @@ static inline void Rusa_Exit(char* p) {
     }
 }
 
-static inline void Rusa_SubClamp(f32* v, f32 d, f32 lo) {
-    *v -= d;
-    if (lo > *v) {
-        *v = lo;
-    }
-}
-
 static inline void Rusa_SetScale(char* p, f32 s) {
     *(f32*)(p + 0x54) = s;
     *(f32*)(p + 0x58) = s;
