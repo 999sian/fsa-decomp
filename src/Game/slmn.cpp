@@ -250,17 +250,15 @@ extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
 static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
-            s32 bit;
             s32 i;
             for (i = go; i < 4; i++) {
-                bit = 1 << i;
-                if (*(u8*)(this_ + 0x345) & bit) {
+                if (*(u8*)(this_ + 0x345) & (1 << i)) {
                     if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
                         go = TRUE;
                         break;
                     }
                 } else if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
-                    *(u8*)(this_ + 0x345) |= bit;
+                    *(u8*)(this_ + 0x345) |= (1 << i);
                 }
             }
 return go;
