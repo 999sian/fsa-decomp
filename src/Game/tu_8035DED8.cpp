@@ -5,11 +5,9 @@
 struct Unk8035DA78;
 typedef void (Unk8035DA78::*Unk8035DA78Func)();
 extern Unk8035DA78Func lbl_804AD6A8[];
-struct Unk8035E60CTable {
+union Unk8035E60CTable {
+    struct Entry { s32 adjustment; s32 offset; void (*function)(); } raw[6];
     Unk8035DA78Func f[6];
-    void copy(const Unk8035E60CTable& other) {
-        for (int i = 0; i < 6; ++i) f[i] = other.f[i];
-    }
 };
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, int id);
@@ -237,7 +235,8 @@ extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern Unk8035E60CTable lbl_804AD660[];
 extern "C" void fn_8035E60C(void) {
     static u32 c0[3], c1[3], c2[3], c3[3], c4[3], c5[3], c6[3], c7[3], c8[3];
-    for (int i = 0; i < 6; i++) {
+    lbl_804AD660[1].f[0] = lbl_804AD660[0].f[0];
+    for (int i = 1; i < 6; ++i) {
         lbl_804AD6A8[i] = lbl_804AD660[0].f[i];
     }
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
