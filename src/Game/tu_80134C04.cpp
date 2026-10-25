@@ -19,7 +19,8 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80139958(void);
 struct TuSceneSound {
     u8 unk_00[0x80];
-    JAISoundHandle handles[2];
+    JAISoundHandle handle80;
+    JAISoundHandle handle84;
 };
 
 struct TuOwnedObject {
