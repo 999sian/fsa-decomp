@@ -1,3 +1,14 @@
+#define Vec SDKVec
+#define PSVECMag SDK_PSVECMag
+#define PSMTXScale SDK_PSMTXScale
+#define PSMTXConcat SDK_PSMTXConcat
+#define PSMTXIdentity SDK_PSMTXIdentity
+#include "JSystem/JGeometry/Vec.h"
+#undef PSMTXIdentity
+#undef PSMTXConcat
+#undef PSMTXScale
+#undef PSVECMag
+#undef Vec
 #include "Game/Actor.h"
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
@@ -293,9 +304,8 @@ int Actor::v17(int a, f32* b) {
     int result = 1;
     if (fn_802265DC(b, a, 0) == 0) {
         s32 region = field_198;
-        void* base = fn_8020D58C();
-        u8 idx = static_cast<u8*>(base)[1];
-        if (fn_8020D6AC(static_cast<u8*>(base) + idx * 0x784 + 4, a, b, region, 0) == 0) {
+        u8* base = static_cast<u8*>(fn_8020D58C());
+        if (fn_8020D6AC(base + 4 + base[1] * 0x784, a, b, region, 0) == 0) {
             result = 0;
         }
     }
@@ -593,8 +603,9 @@ extern "C" void fn_801F317C(const Actor* a, f32* out) {
     f32 y = a->field_0C.y;
     f32 x = a->field_0C.x;
     f32 z = a->field_0C.z;
+    f32 t = a->field_70.y + y;
     out[0] = a->field_70.x + x;
-    out[1] = a->field_70.y + y - z;
+    out[1] = t - z;
     out[2] = a->field_70.z + x;
     out[3] = a->field_7C.x + y - z;
 }
@@ -633,24 +644,26 @@ extern "C" void fn_801F26CC(Actor* a, u32 b) {
 }
 
 /* --- 0x801F3128: midpoint of the two derived edge points ------------------- */
+extern "C" void fn_801F31C4(const Actor* a, f32* out);
 extern "C" void fn_801F3128(Actor* a, f32* out) {
-    f32 a1 = a->field_64 + a->field_0C.y - a->field_0C.z;
-    f32 b0 = a->field_68 + a->field_0C.x;
-    f32 b1 = a->field_6C + a->field_0C.y - a->field_0C.z;
-    f32 a0 = a->field_60 + a->field_0C.x;
-    out[0] = 0.5f * (a0 - b0) + b0;
-    out[1] = 0.5f * (a1 - b1) + b1;
+    f32 x0 = a->field_60 + a->field_0C.x;
+    f32 y0 = a->field_64 + a->field_0C.y - a->field_0C.z;
+    f32 x1 = a->field_68 + a->field_0C.x;
+    f32 y1 = a->field_6C + a->field_0C.y - a->field_0C.z;
+    out[0] = 0.5f * (x0 - x1) + x1;
+    out[1] = 0.5f * (y0 - y1) + y1;
 }
 
 /* --- 0x801F31C4: four derived coordinates (field_60 band) ------------------ */
 extern "C" void fn_801F31C4(const Actor* a, f32* out) {
-    f32 y = a->field_0C.y;
-    f32 x = a->field_0C.x;
-    f32 z = a->field_0C.z;
-    out[0] = a->field_60 + x;
-    out[1] = a->field_64 + y - z;
-    out[2] = a->field_68 + x;
-    out[3] = a->field_6C + y - z;
+    f32 x0 = a->field_60 + a->field_0C.x;
+    f32 y0 = a->field_64 + a->field_0C.y - a->field_0C.z;
+    f32 x1 = a->field_68 + a->field_0C.x;
+    f32 y1 = a->field_6C + a->field_0C.y - a->field_0C.z;
+    out[0] = x0;
+    out[1] = y0;
+    out[2] = x1;
+    out[3] = y1;
 }
 
 /* --- 0x801F2DB4: submit/refresh a record code against the actor ------------ */
@@ -802,10 +815,11 @@ extern "C" u8 fn_801F2FAC(Actor* a) {
 extern "C" u32 fn_801F305C(Actor* a) {
     u32 i;
     u32 acc = 0;
-    for (i = acc; (s32)i < 4; i++) {
+    i = 0;
+    for (; (s32)i < 4; i++) {
         u32 buf[2];
         if ((s32)i == (s32)fn_801F285C(a, 0, buf, 1, i)) {
-            acc = (acc | fn_801F37AC(a, fn_8023B6CC(i), fn_8023E724(i), 0, buf[0], i)) & 0xff;
+            acc = (fn_801F37AC(a, fn_8023B6CC(i), fn_8023E724(i), 0, buf[0], i) | acc) & 0xff;
         }
     }
     if ((u8)acc == 0) {
@@ -868,8 +882,8 @@ extern "C" u8 fn_801F2740(const Actor* a, s32 b) {
     f32 rect[4];
     rect[3] = a->field_6C + a->field_0C.y - a->field_0C.z;
     rect[1] = a->field_64 + a->field_0C.y - a->field_0C.z;
-    rect[0] = a->field_60 + a->field_0C.x;
     rect[2] = a->field_68 + a->field_0C.x;
+    rect[0] = a->field_60 + a->field_0C.x;
     u32 id;
     u32 acc = 0;
     s32 i;
@@ -881,7 +895,8 @@ extern "C" u8 fn_801F2740(const Actor* a, s32 b) {
         u8* mgr = (u8*)fn_802D6A9C();
         if (mgr[id + 0x131df] == 0) {
             f32* p = (f32*)fn_8023E724(i);
-            if (__fabs(p[2] - a->field_0C.z) > lbl_8053F748) {
+            f32 pz = p[2];
+            if (__fabs(pz - a->field_0C.z) > lbl_8053F748) {
                 continue;
             }
         }
@@ -938,13 +953,17 @@ extern "C" void fn_801F0D20(Actor* a, u32 p) {
 /* --- 0x801F2A10: does any slot overlap the actor's bounds rect? ------------- */
 extern "C" u32 fn_801F2A10(Actor* a, s32 b, u32 p3, u32 p4, u32 p5) {
     f32 rect[4];
-    rect[0] = a->field_60 + a->field_0C.x;
+    u32 id;
+    s32 i;
+    rect[3] = a->field_6C + a->field_0C.y - a->field_0C.z;
     rect[1] = a->field_64 + a->field_0C.y - a->field_0C.z;
     rect[2] = a->field_68 + a->field_0C.x;
-    rect[3] = a->field_6C + a->field_0C.y - a->field_0C.z;
-    for (u32 i = 0; i < 4; i++) {
-        u32 id = a->field_04;
-        if (((u8*)fn_802D6A9C())[id + 0x131df] == 0) {
+    rect[0] = a->field_60 + a->field_0C.x;
+    for (i = 0; i < 4; i++) {
+        u8* buf;
+        id = a->field_04;
+        buf = (u8*)fn_802D6A9C();
+        if (buf[id + 0x131df] == 0) {
             f32* p = (f32*)fn_8023E724(i);
             if (__fabs(a->field_0C.z - p[2]) > lbl_8053F748) {
                 continue;
@@ -963,7 +982,8 @@ extern "C" u32 fn_801F2A10(Actor* a, s32 b, u32 p3, u32 p4, u32 p5) {
 
 /* --- v04 (0x801F5790): per-slot ground/overlap prologue --------------------- */
 void Actor::v04() {
-    if (field_0C.z <= 16.0f) {
+    f32 z = field_0C.z;
+    if (z <= 16.0f) {
         if (field_68 - field_60 > 0.0f) {
             if (field_6C - field_64 > 0.0f) {
                 f32 y = field_0C.y;
@@ -971,8 +991,8 @@ void Actor::v04() {
                 f32 rect[4];
                 rect[2] = field_68 + x;
                 rect[0] = field_60 + x;
-                rect[1] = field_64 + y - field_0C.z;
-                rect[3] = field_6C + y - field_0C.z;
+                rect[1] = field_64 + y - z;
+                rect[3] = field_6C + y - z;
                 s32 id;
                 s32 i;
                 for (i = 0; i < 4; i++) {
@@ -984,8 +1004,8 @@ void Actor::v04() {
                         continue;
                     }
                     f32* p = (f32*)fn_8023E724(i);
-                    f32 x1 = -12.0f + p[0];
                     f32 x2 = 12.0f + p[0];
+                    f32 x1 = -12.0f + p[0];
                     f32 y2 = (12.0f + p[1]) - p[2];
                     f32 y1 = (-28.0f + p[1]) - p[2];
                     f32 r0 = rect[0];
@@ -1081,7 +1101,6 @@ extern "C" void fn_801F33C4(Actor* a) {
 extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
     f32 rect[4];
     f32 out8[2];
-    s32 r = -1;
     f32 ta = a->field_60 + a->field_0C.x;
     f32 tb = a->field_6C + a->field_0C.y - a->field_0C.z;
     f32 tc = a->field_68 + a->field_0C.x;
@@ -1090,6 +1109,7 @@ extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
     rect[1] = td;
     rect[2] = tc;
     rect[3] = tb;
+    s32 r = -1;
     if (d >= 0) {
         if (fn_8023B9CC(d, rect, a->field_04, out8, e)) {
             r = d;
@@ -1313,7 +1333,8 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
     f32 v[3];
     f32 rect[4];
     f32 out[2];
-    s32 i, j;
+    s32 i;
+    s32 j;
     u8 mask = 0;
     f32 vA = a->field_60 + a->field_0C.x;
     f32 vD = a->field_6C + a->field_0C.y - a->field_0C.z;
@@ -1323,7 +1344,7 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
     rect[1] = vB;
     rect[2] = vC;
     rect[3] = vD;
-    for (i = 0; i < 4; i++) {
+    for (i = mask; i < 4; i++) {
         if (i == c) continue;
         u32 id = a->field_04;
         u8* mgr = (u8*)fn_802D6A9C();
@@ -1336,7 +1357,7 @@ extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, void* d) {
         if (fn_8023B190(i, rect, a->field_04) == 0) continue;
         mask = (u8)(mask | (1 << i));
     }
-    u32 m = mask;
+    u8 m = mask;
     if (m != 0) {
         f32 y1 = a->field_6C + a->field_0C.y - a->field_0C.z;
         f32 x0 = a->field_60 + a->field_0C.x;
@@ -1429,10 +1450,15 @@ extern "C" u32 fn_801EE24C(Actor* a) {
     if (slot != 0) {
         slot += 7;
     }
-    pos.x = pos.x - warpRect((s32)a->field_04)[0];
-    pos.y = pos.y - warpRect((s32)a->field_04)[1];
-    pos.x = pos.x + warpRect(slot)[0];
-    pos.y = pos.y + warpRect(slot)[1];
+    f32 d;
+    d = warpRect((s32)a->field_04)[0];
+    pos.x -= d;
+    d = warpRect((s32)a->field_04)[1];
+    pos.y -= d;
+    d = warpRect(slot)[0];
+    pos.x += d;
+    d = warpRect(slot)[1];
+    pos.y += d;
     pos.z = 200.0f;
     atu5SetVec3f((const f32*)&pos, (f32*)((u8*)a + 0xc));
     a->field_04 = slot;
@@ -1566,8 +1592,8 @@ inline f32 blkSqrt(f32 x) {
 } // namespace
 
 extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
-    bool first = true;
     s32 slot = 0;
+    bool first = true;
     Actor* aa = a;
     Vec best;
     Vec p;
@@ -1692,7 +1718,6 @@ static s32 slotTail(Actor* a, u32 code, u32 z) {
 
 /* Dispatch half: guards, then the four slot-sound blocks. */
 extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
-    s32 i;
     if ((s32)a->field_04 >= 8) {
         if (fn_8022BB48(a->field_04, &a->field_0C) == 0) {
             return 0;
@@ -1701,7 +1726,7 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
     if ((s32)a->field_04 >= 8) {
         if (((u8*)lbl_8053AAF8)[0x7e] != 0 || ((((u32)((u8*)lbl_8053AAF8)[0x83]) & 3) != 2)) {
             if (code - 0x30000 == 9) {
-                for (i = 0; i < 4; i++) {
+                for (s32 i = 0; i < 4; i++) {
                     if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
                         continue;
                     }
@@ -1715,7 +1740,7 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
                 }
                 return 0;
             } else if (code - 0x30000 == 4) {
-                for (i = 0; i < 4; i++) {
+                for (s32 i = 0; i < 4; i++) {
                     if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
                         continue;
                     }
@@ -1729,7 +1754,7 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
                 }
                 return 0;
             } else if (code - 0x30000 == 0x22) {
-                for (i = 0; i < 4; i++) {
+                for (s32 i = 0; i < 4; i++) {
                     if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
                         continue;
                     }
@@ -1743,7 +1768,7 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
                 }
                 return 0;
             } else if (code - 0x30000 == 0x4b) {
-                for (i = 0; i < 4; i++) {
+                for (s32 i = 0; i < 4; i++) {
                     if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
                         continue;
                     }
@@ -2103,42 +2128,26 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32
     u32 ret = 0;
     Vec pos;
     Vec delta;
+    pos = *(Vec*)f18;
     f32 w = ((f32*)p80)[2] - ((f32*)p80)[0];
     f32 h = ((f32*)p80)[3] - ((f32*)p80)[1];
-    ATU7_setTVec3f((const f32*)f18, (f32*)&pos);
     if (w > 0.01f) {
         if (h > 0.01f) {
-            register f32 z, xy;
-            register f32 nr, r;
+            f32 r, nr;
+            Vec src;
             if (w < h) h = w;
             r = h;
             if (r > 8.0f) r = 8.0f;
             r -= 0.01f;
             r *= 0.5f;
             nr = -r;
-            {
-                register f32* f = (f32*)f0C;
-                __asm {
-                    psq_l xy, 0x0(f), 0, 0
-                    psq_l z,  0x8(f), 1, 0
-                }
-            }
+            src = *(Vec*)f0C;
             while (more != 0) {
                 u8 okx = 0;
                 u8 oky = 0;
-                register f32 dz, az, dxy, axy;
-                {
-                    register f32* pd = (f32*)&pos;
-                    register f32* dd = (f32*)&delta;
-                    __asm {
-                        psq_l  axy, 0x0(pd), 0, 0
-                        psq_l  az,  0x8(pd), 1, 0
-                        ps_sub dxy, xy, axy
-                        ps_sub dz,  z,  az
-                        psq_st dxy, 0x0(dd), 0, 0
-                        psq_st dz,  0x8(dd), 1, 0
-                    }
-                }
+                delta.x = src.x - pos.x;
+                delta.y = src.y - pos.y;
+                delta.z = src.z - pos.z;
                 if (delta.x > r) {
                     delta.y = delta.y * (r / delta.x);
                     delta.x = r;
@@ -2161,21 +2170,9 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32
                     pos = *(Vec*)f0C;
                     more = 0;
                 } else {
-                    register f32 dz, az, dxy, axy;
-                    {
-                        register f32* pd = (f32*)&pos;
-                        register f32* dd = (f32*)&delta;
-                        __asm {
-                            psq_l  axy, 0x0(pd), 0, 0
-                            psq_l  dxy, 0x0(dd), 0, 0
-                            psq_l  az,  0x8(pd), 1, 0
-                            psq_l  dz,  0x8(dd), 1, 0
-                            ps_add dxy, axy, dxy
-                            ps_add dz,  az,  dz
-                            psq_st dxy, 0x0(pd), 0, 0
-                            psq_st dz,  0x8(pd), 1, 0
-                        }
-                    }
+                    pos.x += delta.x;
+                    pos.y += delta.y;
+                    pos.z += delta.z;
                 }
                 u8 ok = fn_801F172C(a, id, &pos, p80, out2, c);
                 if (ok != 0) {
@@ -2188,7 +2185,6 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32
                     }
                 }
             }
-
         }
     }
     return (u8)ret;
@@ -2236,6 +2232,7 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     Vec v20;
     Vec v14;
     Vec v8;
+    f32 z = pos[2];
     args.f10.w = -1;
     args.f14.w = -1;
     for (u8 i = 0; i < 0x10; i++) {
@@ -2263,8 +2260,8 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     args.x34 = 0;
     args.x38 = 2;
     args.f10.b[3] = 0xdf;
-    if (pos[2] > lbl_8053F740) {
-        f32 t = (f32)args.f10.b[3] - lbl_8053F74C * pos[2];
+    if (z > lbl_8053F740) {
+        f32 t = (f32)args.f10.b[3] - lbl_8053F74C * z;
         f32 m = lbl_8053F778;
         if (m >= t) {
             m = t;
@@ -2303,11 +2300,11 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
             if (o != 0) {
                 f32 x = *(f32*)(o + 0xc);
                 f32 y = *(f32*)(o + 0x1c);
-                f32 z = *(f32*)(o + 0x2c);
+                f32 zz = *(f32*)(o + 0x2c);
                 PSMTXConcat(mtx, o, mtx);
                 mtx[0][3] = x;
                 mtx[1][3] = y;
-                mtx[2][3] = z;
+                mtx[2][3] = zz;
             }
         }
         args.f10.b[0] = 0;
@@ -2352,8 +2349,8 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
 
 
 extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p6, u8 p7, f32 f6, f32 f7) {
-    Vec v98;
     Vec v14;
+    f32 v98[3][4];
 
     if (p4 != 0 && ((u8*)p4)[0x13] == 0) {
         return;
@@ -2361,9 +2358,9 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
     if ((s32)a->field_04 <= 8) {
         if (p6 != 0) {
             if (p6 == 2) {
-                PSMTXScale(&v98, lbl_8053F774, lbl_8053F774, lbl_8053F74C);
+                PSMTXScale(v98, lbl_8053F774, lbl_8053F774, lbl_8053F74C);
             } else {
-                PSMTXScale(&v98, lbl_8053F7A0, lbl_8053F7A0, lbl_8053F7A0);
+                PSMTXScale(v98, lbl_8053F7A0, lbl_8053F7A0, lbl_8053F7A0);
             }
             if (p4 != 0) {
                 u8  t2e = p4->b2e;
@@ -2418,9 +2415,9 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
                 rec.w34 = t34;
                 rec.w38 = t38;
                 if (rec.w18 != 0) {
-                    PSMTXConcat(&v98, &v98, &v98);
+                    PSMTXConcat(v98, v98, v98);
                 }
-                rec.w18 = (u32)&v98;
+                rec.w18 = (u32)v98;
                 fn_801F06F0(a, p2, p3, &rec, p5, f6, f7);
             } else {
                 Rec rec2;
@@ -2459,7 +2456,7 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
                 rec2.w30 = -1;
                 rec2.w34 = 0;
                 rec2.w38 = 2;
-                rec2.w18 = (u32)&v98;
+                rec2.w18 = (u32)v98;
                 fn_801F06F0(a, p2, p3, &rec2, p5, f6, f7);
             }
         } else {
@@ -2470,17 +2467,7 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
         u32 n = a->field_D8;
         u32 flag = 1;
         u32 mode = 0;
-        register Vec* d = &v14;
-        register Actor* s = a;
-        register f32 z, xy;
-        // clang-format off
-        __asm {
-            psq_l  xy, 0xc(s), 0, 0
-            lfs    z,  0x14(s)
-            psq_st xy, 0(d),   0, 0
-            stfs   z,  8(d)
-        }
-        // clang-format on
+        v14 = a->field_0C;
         if ((s32)n > 0) {
             u32 m = a->field_DC;
             if ((s32)n > (s32)(m - 0x19) || (s32)m < 0x19) {
@@ -2737,7 +2724,6 @@ extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* 
     for (u8 i = 0; i < 0x10; i++) {
         local.field_00[i] = i;
     }
-    s32 d8 = static_cast<s32>(a->field_D8);
     *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
     *reinterpret_cast<u32*>(&local.field_14) = 0;
     local.field_18 = 0;
@@ -2760,7 +2746,7 @@ extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* 
     local.field_34 = 0;
     local.field_38 = 2;
 
-    if (d8 > 0) {
+    if (static_cast<s32>(a->field_D8) > 0) {
         if (p4 != 0) {
             local = *reinterpret_cast<const UnkDrawRec*>(p4);
         }
@@ -2818,20 +2804,9 @@ extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* 
     } else if (static_cast<s32>(a->field_04) == 8 && static_cast<u8*>(p2)[6] != 'g') {
         u8* mgr = static_cast<u8*>(fn_802D6A9C());
         Vec pos;
-        register f32* dst = reinterpret_cast<f32*>(&pos);
-        pos.z = a->field_0C.z;
-        {
-            register Actor* t = a;
-            register f32 xy;
-            // clang-format off
-            __asm {
-                psq_l  xy, 0xc(t), 0, 0
-                psq_st xy, 0x0(dst), 0, 0
-            }
-            // clang-format on
-        }
+        pos = a->field_0C;
         pos.x += *reinterpret_cast<f32*>(mgr + 0xCC);
         pos.y += *reinterpret_cast<f32*>(mgr + 0xD0);
-        fn_801EF574(p2, p3, dst, &local);
+        fn_801EF574(p2, p3, reinterpret_cast<f32*>(&pos), &local);
     }
 }
