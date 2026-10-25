@@ -418,6 +418,8 @@ extern "C" f32 lbl_8053C6C0;
 extern "C" f32 lbl_8053C6C4;
 extern "C" f32 lbl_8053C6C8;
 extern "C" f32 lbl_8053C6CC;
+extern "C" s32 lbl_8053AD30;
+extern "C" char lbl_8050EC80[];
 extern "C" void fn_8010DF78(void* p);
 extern "C" void fn_8030C210(void* p, void* v);
 extern "C" void fn_80458FF0(void* a, u32 b, s32 c, s32 d);
