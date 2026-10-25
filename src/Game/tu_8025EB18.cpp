@@ -1,6 +1,8 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 #pragma auto_inline off
 
