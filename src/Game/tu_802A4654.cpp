@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "Game/ItemBase.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, DrawRec*);
 
@@ -26,6 +27,11 @@ extern "C" u8* lbl_8053AB10;
 extern "C" u8* lbl_8053AAF8;
 extern "C" const s32 lbl_8046C658[][4];
 extern "C" const s32 lbl_8046C6C8[][4];
+struct GoalDrawOffsets {
+    s32 x[7][4];
+    s32 y[7][4];
+};
+
 struct Unk802A4780 {
     u8 pad00[4];
     s32 m04;
@@ -61,6 +67,51 @@ extern "C" void fn_802A4654(Unk802A4654* this_) {
     this_->mPos.x = x;
     this_->mPos.y = y;
     this_->mPos.z = z;
+}
+
+#pragma opt_loop_invariants off
+#pragma opt_common_subs off
+extern "C" void fn_802A4780(Unk802A4780* this_) {
+    Unk802A4780* a = this_;
+    const s32 (*data)[4] = lbl_8046C658;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f pos2;
+    s32 i;
+    s32 id;
+    if (a->m230 >= 2 && a->m230 < 9) {
+        DrawRec rec;
+        const s32 (*yt)[4] = data + 7;
+        const s32 (*xt)[4] = (const s32 (*)[4])((const char*)data + 0);
+        for (i = 0; i < 4; i++) {
+            rec.b1d = -1;
+            id = a->m250 + 0x10d;
+            f32 y = (f32)yt[a->m234][i];
+            f32 x = (f32)xt[a->m234][i];
+            pos.set(a->mPos.x + x, a->mPos.y + y, a->mPos.z);
+            if (a->m04 < 8) {
+                fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos,
+                            ((Unk802A4780ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->vf18(0x534F4220, (const char*)data + 0x1bc),
+                            id, 1.0f, 1.0f, &rec);
+            }
+        }
+        for (i = 0; i < 4; i++) {
+            if (a->m254[i] >= 0) {
+                rec.b1d = -1;
+                id = a->m250 + 0x10a;
+                pos2.set(a->m264[i].x, a->m264[i].y, a->m264[i].z);
+                if (a->m04 < 8) {
+                    fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos2,
+                                ((Unk802A4780ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->vf18(0x534F4220, (const char*)data + 0x1bc),
+                                id, 1.0f, 1.0f, &rec);
+                }
+            }
+        }
+    }
+}
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
+void fn_802A4A4C(void)
+{
 }
 
 extern "C" void* fn_802A64E8(void* this_, short how) {
@@ -110,6 +161,7 @@ extern "C" void fn_802A6600(void* this_) {
     s32 total = 0;
     s32 i;
     u32 flags;
+    u32 field;
 
     *(f32*)(self + 0x60) = -3.0f;
     *(f32*)(self + 0x64) = -3.0f;
@@ -170,8 +222,8 @@ extern "C" void fn_802A6600(void* this_) {
     if ((flags >> 7) & 1) {
         *(f32*)(self + 0xc) = *(f32*)(self + 0xc) + lbl_805407E8;
     }
-    flags = (flags >> 7) & 0x1f;
-    if (flags & 2) {
+    field = (flags >> 7) & 0x1f;
+    if (field & 2) {
         *(f32*)(self + 0x10) = *(f32*)(self + 0x10) + lbl_805407E8;
     }
     fn_802D752C(fn_802D6A9C(), 1);
@@ -179,16 +231,24 @@ extern "C" void fn_802A6600(void* this_) {
     fn_8022ADE4();
     total = 0;
     for (i = 0; i < 4; i++) {
-        if ((lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0) {
+        u32 r = lbl_8053AAF8[0x82] & (u8)(1 << i);
+        if (((-r | r) >> 31) == 1) {
             total += fn_80236228(i);
         }
     }
     *(s32*)(self + 0x314) = 0;
     *(s32*)(self + 0x318) = 0;
     *(s32*)(self + 0x31c) = 1;
-    while (total >= 1000) {
+    for (;;) {
+        if (total < 1000) {
+            break;
+        }
         total -= 1000;
         *(s32*)(self + 0x314) += 1;
     }
+}
+
+extern "C" void fn_802A6828(void) {
+    JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_.__ct();
 }
 
