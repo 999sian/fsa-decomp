@@ -616,6 +616,72 @@ extern "C" u8 fn_802600A0(char* p, u32 id) {
     return 1;
 }
 
+extern JGeometry::TVec3<f32> lbl_8046B86C[];
+
+extern "C" u8 fn_802604CC(char* p) {
+    if (fn_8022B1F8(p))
+        return 0;
+    if (fn_8022AF10(p))
+        return 0;
+    if (fn_802486A0(p) != 4 && Player_IsLinked(p))
+        return 0;
+    if (U8(lbl_8053AAF8, 0x7e) == 0 && fn_802486A0(p) != 4)
+        return 0;
+    if (!fn_8022C0A0(S32(p, 4)))
+        return 0;
+    JGeometry::TVec3<f32> base = VEC(p, 8);
+    base += lbl_8046B86C[S32(p, 0x3dc)];
+    for (s32 i = 0; i < 4; i++) {
+        if (i == S32(p, 4))
+            continue;
+        if (!fn_8023F264(i))
+            continue;
+        if (fn_8023EFEC(i))
+            continue;
+        if (fn_8023EA28(i))
+            continue;
+        if (fn_80233DA4(i))
+            continue;
+        if (fn_80230188(i))
+            continue;
+        if (fn_80236AB4(i))
+            continue;
+        if (fn_802354E4(i))
+            continue;
+        if (fn_8022D894(i))
+            continue;
+        if (S32(p, 0x3b4) == 8 && fn_8023DE58(i) < 8 && fn_8022CAF8(i) != 4 && fn_8022F514(i))
+            continue;
+        if (fn_802486A0(p) != 4 && fn_8022E438(S32(p, 4), i) && fn_80246F28(p) > 0)
+            continue;
+        s32 room = fn_8023DE58(i);
+        char* a = fn_802D6A9C();
+        if (room < 8)
+            a += 0xcc;
+        else
+            a += 0xdc;
+        s32 id = S32(p, 0x3b4);
+        char* b = fn_802D6A9C();
+        if (id < 8)
+            b += 0xcc;
+        else
+            b += 0xdc;
+        JGeometry::TVec3<f32> v;
+        v.x = F32(p, 8) - F32(b, 0) + F32(a, 0);
+        v.y = F32(p, 0xc) - F32(b, 4) + F32(a, 4);
+        v.z = 0.0f;
+        if (fn_802260DC(&v, fn_8023DE58(i), 1))
+            continue;
+        if (fn_802684A4(p, &v, fn_8023DE58(i)))
+            continue;
+        if (fn_802265FC(&v, fn_8023DE58(i)) != 0x20)
+            continue;
+        if (!fn_80239C9C(i, &v, S32(p, 0x3b4)))
+            continue;
+    }
+    return 0;
+}
+
 extern "C" void fn_80261468(char* p) {
     if (S32(p, 0xd74) > 0)
         --S32(p, 0xd74);
