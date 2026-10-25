@@ -43,6 +43,13 @@ static inline u8 HitsRect(char* self, void* pos) {
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
 }
 
+// Scroll bounds of the screen (TV or GBA) this actor's room is on.
+static inline JGeometry::TBox2f* RoomBounds(char* self) {
+    s32 room = *(s32*)(self + 4);
+    char* m = (char*)fn_802D6A9C();
+    return (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
+}
+
 extern "C" u8 fn_802957CC(void* p, u8 mode) {
     struct Probe {
         Probe() {}
