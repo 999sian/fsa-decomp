@@ -1,4 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern void* lbl_804AE948[];
@@ -18,50 +21,67 @@ extern "C" void* fn_80379870(void* this_, s16 freeFlag) {
 
 extern "C" u8 fn_803798D0(void* this_) {
     u8* self = (u8*)this_;
-    f32 x0 = *(f32*)(self + 0x60) + *(f32*)(self + 0xc);
-    f32 y0 = *(f32*)(self + 0x64) + *(f32*)(self + 0x10);
-    f32 x1 = *(f32*)(self + 0x68) + *(f32*)(self + 0xc);
-    f32 y1 = *(f32*)(self + 0x6c) + *(f32*)(self + 0x10);
-    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+    s32 count;
+    s32 off;
     s32 i;
-    for (i = 0; i < count; i++) {
+    x0 = *(f32*)(self + 0x60);
+    y0 = *(f32*)(self + 0x64);
+    x1 = *(f32*)(self + 0x68);
+    y1 = *(f32*)(self + 0x6c);
+    x0 += *(f32*)(self + 0xc);
+    y0 += *(f32*)(self + 0x10);
+    x1 += *(f32*)(self + 0xc);
+    y1 += *(f32*)(self + 0x10);
+    count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+    i = 0;
+    off = 0;
+    for (; i < count; i++) {
         u8* other;
         u32 id;
+        u8 ok;
         f32 ox0, oy0, ox1, oy1;
         if (i == *(s32*)(self + 0x198)) {
             continue;
         }
-        other = *(u8**)((u8*)fn_801F856C() + i * 4 + 8);
-        if (other == NULL) {
-            continue;
-        }
-        id = *(u32*)(other + 0x1a0);
-        if (id != 0x484F5553 && id != 0x4D525441) {
-            continue;
-        }
-        ox0 = *(f32*)(other + 0x60) + *(f32*)(other + 0xc);
-        oy0 = *(f32*)(other + 0x64) + *(f32*)(other + 0x10);
-        ox1 = *(f32*)(other + 0x68) + *(f32*)(other + 0xc);
-        oy1 = *(f32*)(other + 0x6c) + *(f32*)(other + 0x10);
-        if (ox0 <= x0) {
+        other = *(u8**)((u8*)fn_801F856C() + off + 8);
+        if (other != NULL) {
+            id = *(u32*)(other + 0x1a0);
+            if (id == 0x484F5553 || id == 0x4D525441) {
+                ox0 = *(f32*)(other + 0x60) + *(f32*)(other + 0xc);
+                oy0 = *(f32*)(other + 0x64) + *(f32*)(other + 0x10);
+                ox1 = *(f32*)(other + 0x68) + *(f32*)(other + 0xc);
+                oy1 = *(f32*)(other + 0x6c) + *(f32*)(other + 0x10);
+                if (ox0 <= x0) {
+                } else {
+                    ox0 = x0;
+                }
+                if (oy0 <= y0) {
+                } else {
+                    oy0 = y0;
+                }
+                if (x1 <= ox1) {
+                } else {
+                    ox1 = x1;
+                }
+                if (y1 <= oy1) {
+                } else {
+                    oy1 = y1;
+                }
+                ok = ox1 < ox0 && oy1 < oy0;
+            } else {
+                ok = 0;
+            }
         } else {
-            ox0 = x0;
+            ok = 0;
         }
-        if (oy0 <= y0) {
-        } else {
-            oy0 = y0;
-        }
-        if (x1 <= ox1) {
-        } else {
-            ox1 = x1;
-        }
-        if (y1 <= oy1) {
-        } else {
-            oy1 = y1;
-        }
-        if (ox1 < ox0 && oy1 < oy0) {
+        if (ok) {
             return 1;
         }
+        off += 4;
     }
     return 0;
 }
@@ -76,24 +96,22 @@ struct Quad {
 extern "C" const Quad lbl_804752C0[4];
 extern "C" const Quad lbl_80475300[4];
 extern "C" void fn_80379A90(Actor* this_) {
-    u8* self = (u8*)this_;
-    Vec* pos = &this_->field_0C;
-    f32 rect[4];
     u8 ok;
-    if (*(s32*)(self + 0x234) == 0 || (u8)this_->v11()) {
-        switch (*(s32*)(self + 0x230)) {
+    f32 rect[4];
+    if (*(s32*)((u8*)this_ + 0x234) == 0 || (u8)this_->v11()) {
+        switch (*(s32*)((u8*)this_ + 0x230)) {
         case 0:
             if (!fn_803798D0(this_)) {
                 return;
             }
             break;
         case 1: {
-            Vec saved = *pos;
+            Vec saved = this_->field_0C;
             ok = 0;
             if (fn_801F2618(this_, 0, 0)) {
                 ok = 1;
             }
-            *pos = saved;
+            this_->field_0C = saved;
             if (!ok) {
                 return;
             }
@@ -101,16 +119,16 @@ extern "C" void fn_80379A90(Actor* this_) {
         }
         }
         {
-            f32* t = (f32*)((u8*)lbl_80475340 + ((((this_->field_90 & 3) + *(s32*)(self + 0x230) * 4) * 16) & 0xff0));
+            f32* t = (f32*)((u8*)lbl_80475340 + ((((this_->field_90 & 3) + *(s32*)((u8*)this_ + 0x230) * 4) * 16) & 0xff0));
             rect[0] = t[0];
             rect[1] = t[1];
             rect[2] = t[2];
             rect[3] = t[3];
-            rect[0] += pos->x;
-            rect[2] += pos->x;
-            rect[1] += pos->y;
-            rect[3] += pos->y;
-            fn_80239914(rect, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+            rect[0] += this_->field_0C.x;
+            rect[2] += this_->field_0C.x;
+            rect[1] += this_->field_0C.y;
+            rect[3] += this_->field_0C.y;
+            fn_80239914(rect, *(s32*)((u8*)this_ + 0x4), *(void**)((u8*)this_ + 0x198));
         }
     }
 }
@@ -171,5 +189,8 @@ extern "C" void fn_80379BD8(Actor* this_) {
             *(f32*)(self + 0x10) += 8.0f;
         }
     }
+}
+
+extern "C" void fn_80379D60(void) {
 }
 
