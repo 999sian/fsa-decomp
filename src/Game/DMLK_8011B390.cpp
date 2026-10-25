@@ -39,18 +39,8 @@ static inline void dmlkRequestBounds(u8* p) {
     }
 }
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
-    f32 halfWidth = lbl_8053C7F0;
-    f32 x = pos[0];
-    f32 halfHeight = lbl_8053C7E8;
-    f32 y = pos[1];
-    f32 x0 = x - halfWidth;
-    f32 x1 = halfWidth + x;
-    f32 y0 = y - halfHeight;
-    f32 y1 = halfHeight + y;
-    *(f32*)(p + 0x250) = x0;
-    *(f32*)(p + 0x254) = y0;
-    *(f32*)(p + 0x258) = x1;
-    *(f32*)(p + 0x25c) = y1;
+    ((JGeometry::TBox2f*)(p + 0x250))->set(pos[0] - lbl_8053C7F0,
+        pos[1] - lbl_8053C7E8, lbl_8053C7F0 + pos[0], lbl_8053C7E8 + pos[1]);
 }
 
 struct DMLKResMgr {
