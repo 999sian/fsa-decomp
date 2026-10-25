@@ -4,6 +4,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" char lbl_8049E8A0[];
 extern "C" const f32 lbl_8053CC3C;
@@ -23,35 +24,42 @@ extern "C" void fn_802F745C(void* a, void* b, s32 c, void* d);
 extern int __float_epsilon[];
 
 extern const f32 lbl_8053CC54;
+#pragma optimization_level 4
+#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_8012DF70(Actor* this_) {
     u8* p = (u8*)this_;
     this_->Actor::v06();
     DrawRec rec;
-    DrawRec rec2;
+    volatile DrawRec rec2;
     f32 box[3][4];
-    f32 x = *(f32*)(p + 0x54);
-    f32 y = *(f32*)(p + 0x58);
-    f32 z = *(f32*)(p + 0x5c);
-    if (z * z + x * x + y * y > lbl_8053CC50 * *(f32*)__float_epsilon) {
-        box[0][0] = x;
-        box[0][1] = 0.0f;
-        box[0][2] = 0.0f;
-        box[0][3] = 0.0f;
-        box[1][0] = 0.0f;
-        box[1][1] = y;
-        box[1][2] = 0.0f;
-        box[1][3] = lbl_8053CC50 * (1.0f - *(f32*)(p + 0x238));
-        box[2][0] = 0.0f;
-        box[2][1] = 0.0f;
-        box[2][2] = z;
-        box[2][3] = 0.0f;
+    if (!(((JGeometry::TVec3<f32>*)(p + 0x54))->squared() <= lbl_8053CC50 * *(f32*)__float_epsilon)) {
+        box[0][3] = lbl_8053CC54;
+        box[1][3] = lbl_8053CC54;
+        box[2][3] = lbl_8053CC54;
+        box[0][0] = *(f32*)(p + 0x54);
+        box[0][1] = lbl_8053CC54;
+        box[0][2] = lbl_8053CC54;
+        box[1][0] = lbl_8053CC54;
+        box[1][1] = *(f32*)(p + 0x58);
+        box[1][2] = lbl_8053CC54;
+        box[2][0] = lbl_8053CC54;
+        box[2][1] = lbl_8053CC54;
+        box[2][2] = *(f32*)(p + 0x5c);
+        f32 height = lbl_8053CC50 * (lbl_8053CC3C - *(f32*)(p + 0x238));
+        box[0][3] = lbl_8053CC54;
+        box[2][3] = lbl_8053CC54;
+        box[1][3] = height;
         rec.w18 = box;
     }
     if (*(s32*)(p + 0x4) < 8) {
         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, *(s32*)(p + 0x23c), &rec);
     }
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void v03__5ActorFv(void* this_);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
@@ -71,22 +79,29 @@ extern "C" f32 lbl_8053CC44;
 extern "C" f32 lbl_8053CC48;
 extern "C" f32 lbl_8053CC4C;
 extern "C" void fn_801EE434(void* p);
+#pragma opt_propagation off
 extern "C" void fn_8012E230(Actor* this_) {
     u8* p = (u8*)this_;
     v03__5ActorFv(this_);
     f32 box[4];
-    Vec vec;
+    JGeometry::TVec3f vec;
     f32 pos[2];
     box[0] = *(f32*)(p + 0x60);
     box[1] = *(f32*)(p + 0x64);
     box[2] = *(f32*)(p + 0x68);
     box[3] = *(f32*)(p + 0x6c);
-    box[0] = box[0] + *(f32*)(p + 0xc);
-    box[2] = box[2] + *(f32*)(p + 0xc);
-    box[1] = box[1] + *(f32*)(p + 0x10);
-    box[3] = box[3] + *(f32*)(p + 0x10);
+    f32 x = *(f32*)(p+0xc);
+    f32 x0=box[0]+x;
+    f32 x1=box[2]+x;
+    box[0]=x0;
+    f32 y=*(f32*)(p+0x10);
+    f32 y0=box[1]+y;
+    box[2]=x1;
+    f32 y1=box[3]+y;
+    box[1]=y0; box[3]=y1;
     fn_80239914(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198));
     switch (*(s32*)(p + 0x230)) {
+    default: break;
     case 0:
         fn_801F0E34(this_, 0x50069, 0);
         fn_801F2DB4(this_, 0x4e554c4c, 0x4e554c4c, 0);
@@ -98,11 +113,12 @@ extern "C" void fn_8012E230(Actor* this_) {
             pos[0] = *(f32*)(p + 0xc);
             pos[1] = y;
             fn_802379E4(snd, pos);
-            s32 found = fn_801F2718(this_, 0x46495245);
+        }
+        s32 found = fn_801F2718(this_, 0x46495245);
             if (found <= 0) {
                 ok = 0;
             } else {
-                if (fn_801F666C(fn_801F856C(), found) == 0) {
+                if ((u32)fn_801F666C(fn_801F856C(), found) == 0) {
                     ok = 0;
                 } else {
                     if (fn_802BA9F8() == 1) {
@@ -112,14 +128,11 @@ extern "C" void fn_8012E230(Actor* this_) {
                     }
                 }
             }
-        } else {
-            ok = 0;
-        }
         if (!ok) {
             *(s32*)(p + 0x234) = 0;
         } else {
             if (*(s32*)(p + 0x234) == 0) {
-                vec = *(Vec*)(p + 0xc);
+                vec = *(JGeometry::TVec3f*)(p + 0xc);
                 vec.y = vec.y + lbl_8053CC38;
                 fn_8013CC50(*(s32*)(p + 0x4), &vec, 0x28d, 0, 0, 0, 0, 1, *(f32*)(p + 0x238));
                 fn_8013CC50(*(s32*)(p + 0x4), &vec, 0x28e, 0, 0, 0, 0, 1, *(f32*)(p + 0x238));
@@ -139,9 +152,11 @@ extern "C" void fn_8012E230(Actor* this_) {
         break;
     case 1:
         p[0x11d] = 0;
-        u8 done = 0;
-        if (*(f32*)(p + 0x238) < lbl_8053CC40 || fn_801CD950((f32*)(p + 0x238), lbl_8053CC40, lbl_8053CC44) == 0) {
-            done = fn_801CD950((f32*)(p + 0x238), lbl_8053CC48, lbl_8053CC4C) == 0;
+        u8 done;
+        if (*(f32*)(p+0x238)>=lbl_8053CC40 && fn_801CD950((f32*)(p+0x238),lbl_8053CC40,lbl_8053CC44)!=0) {
+            done=0;
+        } else {
+            if (fn_801CD950((f32*)(p+0x238),lbl_8053CC48,lbl_8053CC4C)==0) done=1; else done=0;
         }
         if (done) {
             *(s32*)(p + 0x230) = 2;
@@ -155,7 +170,7 @@ extern "C" void fn_8012E230(Actor* this_) {
     *(f32*)(p + 0x58) = t;
     *(f32*)(p + 0x5c) = t;
 }
-
+#pragma opt_propagation reset
 extern "C" void v01__5ActorFv(void*);
 #pragma opt_propagation off
 extern "C" void fn_8012E5A0(Actor* p) {
