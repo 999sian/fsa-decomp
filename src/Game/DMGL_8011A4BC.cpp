@@ -7,10 +7,11 @@ extern void* lbl_8053AB10;
 
 static void fadeChannel(u8* channel, s32 count, s32 target)
 {
-    if ((f32)count < *(f32*)__float_epsilon) {
+    f32 fCount = (f32)count;
+    if (fCount < *(f32*)__float_epsilon) {
         *channel = (u8)target;
     } else {
-        *channel = (u8)(s32)((lbl_8053C7B8 / (f32)count) * (f32)(target - *channel) + (f32)*channel);
+        *channel = (u8)(s32)((lbl_8053C7B8 / fCount) * (f32)(target - *channel) + (f32)*channel);
     }
 }
 
@@ -34,17 +35,8 @@ extern "C" void fn_8011A4BC(void* self)
 {
     u8* p = (u8*)self;
     s32 state = *(s32*)(p + 0x234);
-    if (state == 2) {
-        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
-        if (*(s32*)(p + 0x240) < 1) {
-            *(s32*)(p + 0x240) = 0;
-        }
-        fadeChannel(p + 0x244, *(s32*)(p + 0x240), 0x9f);
-        fadeChannel(p + 0x245, *(s32*)(p + 0x240), 0xaf);
-        fadeChannel(p + 0x246, *(s32*)(p + 0x240), 0xff);
-        fadeChannel(p + 0x247, *(s32*)(p + 0x240), 0);
-        fadeChannel(p + 0x248, *(s32*)(p + 0x240), 0xff);
-    } else if (state == 1) {
+    switch (state) {
+    case 1:
         *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
         if (*(s32*)(p + 0x240) < 1) {
             *(s32*)(p + 0x240) = 0;
@@ -54,6 +46,18 @@ extern "C" void fn_8011A4BC(void* self)
         fadeChannel(p + 0x246, *(s32*)(p + 0x240), 0xff);
         fadeChannel(p + 0x247, *(s32*)(p + 0x240), 0);
         fadeChannel(p + 0x248, *(s32*)(p + 0x240), 0xff);
+        break;
+    case 2:
+        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
+        if (*(s32*)(p + 0x240) < 1) {
+            *(s32*)(p + 0x240) = 0;
+        }
+        fadeChannel(p + 0x244, *(s32*)(p + 0x240), 0x9f);
+        fadeChannel(p + 0x245, *(s32*)(p + 0x240), 0xaf);
+        fadeChannel(p + 0x246, *(s32*)(p + 0x240), 0xff);
+        fadeChannel(p + 0x247, *(s32*)(p + 0x240), 0);
+        fadeChannel(p + 0x248, *(s32*)(p + 0x240), 0xff);
+        break;
     }
     u8* obj = *(u8**)((u8*)lbl_8053AB10 + 0x2c);
     obj[4] = p[0x244];
