@@ -127,13 +127,18 @@ extern "C" u8 fn_8024FEFC(char*);
 extern "C" u8 fn_80240DAC(char*);
 extern "C" u8 fn_80240D8C(char*);
 extern f32 lbl_80540428;
+static inline f32 linkedSqrt(const f32 x) {
+    if (x <= 0.0f) return x;
+    f32 y = __frsqrte(x);
+    y = 0.5f * y * (3.0f - x * (y * y));
+    return x * y;
+}
+
 static inline f32 linkedDistanceXY(const JGeometry::TVec3f& v) {
     return JGeometry::TUtilf::sqrt(v.x * v.x + v.y * v.y);
 }
 
 extern "C" void fn_8028676C(char* p) {
-    f32 blen;
-    f32 alen;
     JGeometry::TVec3f saved;
     fn_8027FA08(p, &saved);
     if (!Player_IsLinked(p)) {
@@ -156,9 +161,9 @@ extern "C" void fn_8028676C(char* p) {
         fn_8022BC38(Player_GetLinkTargetIndex(p), *(s32*)(p + 0x3b4), p + 8)) {
         if (!fn_80234ECC(Player_GetLinkTargetIndex(p))) {
             const JGeometry::TVec3f& a = *(JGeometry::TVec3f*)fn_8023E724(Player_GetLinkTargetIndex(p)) - saved;
-            alen = JGeometry::TUtilf::sqrt(a.x * a.x + a.y * a.y);
+            const f32 alen = JGeometry::TUtilf::sqrt(a.x * a.x + a.y * a.y);
             const JGeometry::TVec3f& b = *(JGeometry::TVec3f*)(p + 8) - saved;
-            blen = JGeometry::TUtilf::sqrt(b.x * b.x + b.y * b.y);
+            const f32 blen = JGeometry::TUtilf::sqrt(b.x * b.x + b.y * b.y);
             if (alen <= blen) {
                 ++*(s32*)(p + 0x1228);
                 if (*(s32*)(p + 0x1238) > 0) --*(s32*)(p + 0x1238);
