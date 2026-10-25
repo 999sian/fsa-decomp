@@ -235,6 +235,7 @@ extern "C" void fn_801F0E34(void* actor, u32 msg, s32 arg);
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 
+extern f32 lbl_80543054;
 extern "C" void fn_8037B7F8(u8* this_) {
     const JijiTable* t = &lbl_804753C0;
     if (*(s32*)(this_ + 0x230) == 5 && *(AnimEffectRec**)(this_ + 0x274) != 0) {
@@ -288,6 +289,7 @@ extern "C" void fn_801EE558(void* this_, JGeometry::TVec3<f32>* dir, f32* dist, 
 
 extern "C" void fn_8037C788(u8* this_) {
     f32 dist;
+    JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32> dir;
     *(s32*)(this_ + 0x230) = 0;
     *(u32*)(this_ + 0x250) = (*(u32*)(this_ + 0x90) & 0xfff) + 0x12b;
@@ -333,7 +335,8 @@ extern "C" void fn_8037C788(u8* this_) {
         *(s32*)(this_ + 0x24c) = 20;
         fn_801EE558(this_, &dir, &dist, 0);
         if (dist < 100.0f) {
-            u16 ang = 10430.378f * JMAAtan2Radian(-dir.x, -dir.y);
+            f32 rad = JMAAtan2Radian(-dir.x, -dir.y);
+            u16 ang = rad * 10430.378f;
             if (ang < 0x2000 || ang >= 0xe000) {
                 *(s32*)(this_ + 0x248) = 3;
             } else if (ang >= 0x2000 && ang < 0x6000) {
@@ -556,7 +559,9 @@ extern "C" void fn_8037C788(u8* this_) {
         break;
     }
     if (*(AnimEffectRec**)(this_ + 0x274) != 0) {
-        fn_80316E50(*(AnimEffectRec**)(this_ + 0x274), *(s32*)(this_ + 4), JGeometry::TVec3<f32>(*(JGeometry::TVec3<f32>*)(this_ + 0xc)));
+        s32 room = *(s32*)(this_ + 4);
+        pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+        fn_80316E50(*(AnimEffectRec**)(this_ + 0x274), room, pos);
     }
     *(s32*)(this_ + 0x278) = 0;
 }
