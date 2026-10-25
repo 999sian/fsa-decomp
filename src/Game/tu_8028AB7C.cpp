@@ -10,8 +10,8 @@ extern "C" u8 fn_80303750(s32 i);
 extern "C" u8 fn_8028B850(u8* this_);
 extern "C" const f32 lbl_805404CC;
 extern "C" const f32 lbl_805404C0;
-extern "C" f32 lbl_805404D8;
-extern "C" f32 lbl_805404F0;
+extern "C" const f32 lbl_805404D8;
+extern "C" const f32 lbl_805404F0;
 extern void* lbl_8053AAF8;
 static inline s32 platformRoom(const s32 param) {
     s32 value = (param >> 24) & 7;
