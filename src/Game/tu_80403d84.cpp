@@ -1506,7 +1506,7 @@ extern "C" void fn_8040CE90(u8* self) {
 	}
 }
 
-#ifndef JSYSTEM_J2D_J2DPANE_H
+#ifndef _JSYSTEM_J2D_J2DPANE_H
 struct J2DTextBox {
 	char* getStringPtr() const;
 };
