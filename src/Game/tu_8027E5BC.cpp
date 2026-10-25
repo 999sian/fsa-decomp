@@ -202,8 +202,10 @@ join:
         if (i == S32(p, 0x4)) {
             continue;
         }
-        if (fn_802486A0(p) == 4 && fn_80248778(p) != fn_80240888(p)) {
-            continue;
+        if (fn_802486A0(p) == 4) {
+            s32 state = fn_80248778(p);
+            s32 current = fn_80240888(p);
+            if (current != state) continue;
         }
         if ((*fn_8023E724(i) - VEC(p, 0x8)).length() < minDist - lbl_80540354) {
             S32(p, 0x11fc) = i;
