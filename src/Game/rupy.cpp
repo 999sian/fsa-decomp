@@ -11,12 +11,18 @@ extern const f32 lbl_80541D88;
 
 // Scaled rotation matrix (X, Y, Z angles) into the upper 3x3 of m.
 static inline void RupyRotScaleMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
-    f32 sx = sin(rx);
-    f32 sy = sin(ry);
-    f32 sz = sin(rz);
-    f32 cx = cos(rx);
-    f32 cy = cos(ry);
-    f32 cz = cos(rz);
+    f32 cz;
+    f32 cy;
+    f32 sz;
+    f32 sy;
+    f32 sx;
+    f32 cx;
+    sx = sin(rx);
+    sy = sin(ry);
+    sz = sin(rz);
+    cx = cos(rx);
+    cy = cos(ry);
+    cz = cos(rz);
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
