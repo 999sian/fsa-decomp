@@ -16,7 +16,7 @@
 extern void* lbl_8053AB10;
 extern "C" s32 fn_8030DD20(void* subObj);
 extern const f32 lbl_8053CDE0;
-static inline void setSphereTransform(Mtx m, f32 r10, f32 r11, f32 r12, f32 r20, f32 r21, f32 r22, f32 tx, f32 ty, f32 tz) {
+static inline void setSphereTransform(Mtx m, f32 tz, f32 ty, f32 tx, f32 r22, f32 r21, f32 r20, f32 r12, f32 r11, f32 r10) {
     m[1][0]=r10; m[1][1]=r11; m[1][2]=r12;
     m[2][0]=r20; m[2][1]=r21; m[2][2]=r22;
     m[0][3]=tx; m[1][3]=ty; m[2][3]=tz;
