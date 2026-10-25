@@ -87,6 +87,38 @@ struct VScreen_803B14F8 {
     virtual VPane_803B14F8* v3C(s32 a, s32 b);
 };
 
+struct Pane_803B1B60 {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void move(f32 x, f32 y);
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24(s32 a);
+};
+
+struct Scr_803B1B60 {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual Pane_803B1B60* v3C(u64 name);
+};
+
 // Maps another player's index to a compact slot excluding `self`.
 extern "C" s32 fn_803A8DFC(void* this_, s32 self) {
     s32 r = 0;
