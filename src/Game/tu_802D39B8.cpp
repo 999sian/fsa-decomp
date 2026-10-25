@@ -1117,15 +1117,17 @@ extern "C" void fn_802F9DA8(void*,void*,int,int,int,int,int);
 extern "C" void fn_802F9BE8(void*,void*,int,int,int);
 extern "C" void fn_802F9714(void*,void*,int,int,int,int);
 extern "C" void fn_802F93F4(void*,void*,int,int,int,int,int);
+#pragma opt_propagation off
 extern "C" void fn_802D92F0(char* p) {
     extern const char lbl_8046E148[];
     const char* fmt = lbl_8046E148;
+    const char* const resourceName = fmt + 0x760;
     const char* name;
     char buf[32];
     char cl[32];
     char cl2[32];
-    { void* res = (*(JKRArchive**)(lbl_8053AAF8 + 0xA4))->getResource(0x53434820, fmt + 0x760); fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 24576, 0); }
-    { void* res = (*(JKRArchive**)(lbl_8053AAF8 + 0xA4))->getResource(0x53434820, (const char*)((u32)fmt + 0x760)); fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), res, 0, 1, 24576, 0); }
+    { void* res = (*(JKRArchive**)(lbl_8053AAF8 + 0xA4))->getResource(0x53434820, resourceName); fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 24576, 0); }
+    { void* res = (*(JKRArchive**)(lbl_8053AAF8 + 0xA4))->getResource(0x53434820, &fmt[0x760]); fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), res, 0, 1, 24576, 0); }
     s32 index = *(s32*)(p + 0x40);
     if (index >= 0 && index < 28)
         name = lbl_804A9660[index];
@@ -1188,7 +1190,7 @@ extern "C" void fn_802D92F0(char* p) {
     { void* res = (*(JKRArchive**)(lbl_8053AAF8 + 0xA4))->getResource(0x53434C20, fmt + 0x838); fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 11, 0, 0, 0); }
     *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
 }
-
+#pragma opt_propagation reset
 extern "C" const char* fn_802D9C1C(char* p) {
     s32 index = *(s32*)(p + 0x44);
     if (index >= 0 && index < 16)
