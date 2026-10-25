@@ -151,19 +151,23 @@ extern "C" void* fn_801F856C(void);
 extern "C" void Actor_CreateByID(void* a, u32 id, void* rec, void* d, s32 e, s32 f, s32 g);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D6F38(void* a, void* b, void* c, s32 d, s32 e);
-static inline s32 itemRecipient(s32 room) {
-    s32 result = room;
-    if ((u8)fn_8022F514(room)) result = fn_8022F3DC(room);
-    return result;
+static inline void createRoomItem(s32 player, Vec* position, u32 param) {
+    s32 destination = fn_8023DE58(player);
+    void* manager = fn_801F856C();
+    Actor_CreateByID(manager, 0x494D5550, (void*)destination, position, param, -1, -1);
 }
 
+#pragma opt_propagation off
 extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
+    u32 tableOffset;
     u32 offset;
     u32 roomBits;
     s32 i;
     s32 selected;
+    const u8* table;
     s32 index;
-    const u32* table;
+    u32 param;
+    s32 destination;
     s32 original = room;
     selected = original;
     if ((u8)fn_8022F514(original)) selected = fn_8022F3DC(original);
@@ -179,7 +183,8 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
     f32 xOffset;
     xOffset = lbl_80540C38;
     yOffset = lbl_80540C3C;
-    table = lbl_8046D4F0;
+    tableOffset = index * 4;
+    table = (const u8*)lbl_8046D4F0;
     roomBits = (u32)room << 26;
     i = 0;
     offset = 0;
@@ -193,55 +198,70 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
             if ((u8)fn_8022F514(i) == 1) {
                 if (selected == fn_8022F3DC(i)) {
                     if (i == room) {
-                u32 param = table[index] + roomBits + offset;
-                s32 destination = fn_8023DE58(i);
+                param = *(const u32*)(table + tableOffset);
+                param += roomBits;
+                param = offset + param;
+                destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                u32 param = table[index] + roomBits + 0x30000000 + offset;
-                s32 destination = fn_8023DE58(i);
+                param = *(const u32*)(table + tableOffset);
+                param += roomBits;
+                param += 0x30000000;
+                param = offset + param;
+                destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             }
                 }
             } else if (i == selected) {
                 if (i == room) {
-                u32 param = table[index] + roomBits + offset;
-                s32 destination = fn_8023DE58(i);
+                param = *(const u32*)(table + tableOffset);
+                param += roomBits;
+                param = offset + param;
+                destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                u32 param = table[index] + roomBits + 0x30000000 + offset;
-                s32 destination = fn_8023DE58(i);
+                param = *(const u32*)(table + tableOffset);
+                param += roomBits;
+                param += 0x30000000;
+                param = offset + param;
+                destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             }
             }
         } else {
             if (i == room) {
-                u32 param = table[index] + roomBits + offset;
-                s32 destination = fn_8023DE58(i);
+                param = *(const u32*)(table + tableOffset);
+                param += roomBits;
+                param = offset + param;
+                destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                u32 param = table[index] + roomBits + 0x30000000 + offset;
-                s32 destination = fn_8023DE58(i);
+                param = *(const u32*)(table + tableOffset);
+                param += roomBits;
+                param += 0x30000000;
+                param = offset + param;
+                destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             }
         }
     }
     if (*(s32*)(this_ + 0x244) >= 0) {
-        s32 value = *(s32*)(this_ + 0x270);
-        void* handle = *(void**)(this_ + 0x264);
-        u32 pair[2];
-        pair[0] = *(u32*)(this_ + 0x268);
-        pair[1] = *(u32*)(this_ + 0x26c);
-        fn_802D6F38(fn_802D6A9C(), handle, pair, value, 0);
+        void* handle;
+        s32 value;
+        value = *(s32*)(this_ + 0x270);
+        handle = *(void**)(this_ + 0x264);
+        Vec2f pair = *(Vec2f*)(this_ + 0x268);
+        fn_802D6F38(fn_802D6A9C(), handle, &pair, value, 0);
     }
     return 1;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802C0278(char* p) {
     s32 iVar1;
     u8* buf;
