@@ -34,7 +34,7 @@ static inline void* PrtcSpawnA(char* p, s32 id) {
     f32 y2 = *(f32*)(p + 0x248);
     pos[0] = x + x2;
     pos[1] = y + y2;
-    pos[2] = 0.0f;
+    pos[2] = lbl_805411A8;
     return fn_8013CC50(*(s32*)(p + 4), pos, id, *(s32*)(p + 0x254), 0, 0, 0, 1, lbl_805411AC);
 }
 
