@@ -28,33 +28,36 @@ extern "C" void fn_802D7844(void* mgr, s32 flag, s32 idx);
 extern void* lbl_8053AAF8;
 extern u32 lbl_80543F18;
 extern "C" void fn_801003F4(s32* this_) {
+    s32* p;
     s32 k = 0;
     u32 used = lbl_80543F18;
     s32 count = fn_80138A30(lbl_8053AAF8);
-    s32* p = this_;
     s32 i;
+    p = this_;
     for (i = 0; i < count; i++) {
-        if (*p == 0) {
+        if (p[0x94] == 0) {
             fn_802D7844(fn_802D6A9C(), 1, i);
         } else {
             fn_802D7844(fn_802D6A9C(), 0, i);
         }
         p++;
     }
+    s32* out = this_;
     for (; k != count; k++) {
-        s32 best = 1000000;
-        s32 idx = -1;
         s32* q = this_;
         u8* f = (u8*)&used;
+        s32 best = 1000000;
+        s32 idx = -1;
         for (s32 j = 0; j < count; j++) {
-            if (best > *q && *f == 0) {
-                best = *q;
+            if (best > q[0x94] && *f == 0) {
+                best = q[0x94];
                 idx = j;
             }
             q++;
             f++;
         }
-        this_[0x99 + k] = idx;
+        out[0x99] = idx;
+        out++;
         ((u8*)&used)[idx] = 1;
     }
     this_[0x9d] = 0;
@@ -79,30 +82,45 @@ extern "C" void fn_801003F4(s32* this_) {
     }
 }
 
+extern u8* lbl_8053AF00;
+extern f32 lbl_8053C110;
+extern f32 lbl_8053C118;
+extern u8 lbl_80463B8C[];
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
+extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
+
+static inline void fsaSetTimeSlot(Actor* this_, s32 idx) {
+    s32 v = *(s32*)((u8*)this_ + 0x250 + idx * 4);
+    lbl_8053AF00[0x30] |= (u8)(1 << idx);
+    lbl_8053AF00[0x2c + idx] = (u8)(v / 60);
+    lbl_8053AF00[0x28 + idx] = (u8)((f32)(v % 60) / lbl_8053C110);
+}
+
 extern f32 lbl_8053C134;
 extern f32 lbl_8053C138;
-extern "C" void fn_801005C4(u8* this_) {
+extern "C" void fn_801005C4(Actor* this_) {
     f32 f1 = lbl_8053C134;
     f32 f0 = lbl_8053C138;
-    *(f32*)(this_ + 0x60) = f1;
-    *(f32*)(this_ + 0x64) = f1;
-    *(f32*)(this_ + 0x68) = f0;
-    *(f32*)(this_ + 0x6c) = f0;
-    this_[0x235] = 2;
-    *(s32*)(this_ + 0x23c) = 0;
-    this_[0x234] = 0;
-    *(s32*)(this_ + 0x240) = -1;
-    this_[0x236] = 0;
-    this_[0x239] = (*(u32*)(this_ + 0x90) >> 0x16) & 0x1f;
-    *(s32*)(this_ + 0x230) = 0;
-    *(s32*)(this_ + 0x248) = 0;
-    *(s32*)(this_ + 0x260) = 600;
-    if (((u8 (*)(u8*))(*(void***)this_)[13])(this_)) {
-        *(s32*)(this_ + 0x230) = 8;
-        *(s32*)(this_ + 0x248) = 0;
+    *(f32*)((u8*)this_ + 0x60) = f1;
+    *(f32*)((u8*)this_ + 0x64) = f1;
+    *(f32*)((u8*)this_ + 0x68) = f0;
+    *(f32*)((u8*)this_ + 0x6c) = f0;
+    ((u8*)this_)[0x235] = 2;
+    *(s32*)((u8*)this_ + 0x23c) = 0;
+    ((u8*)this_)[0x234] = 0;
+    *(s32*)((u8*)this_ + 0x240) = -1;
+    ((u8*)this_)[0x236] = 0;
+    ((u8*)this_)[0x239] = (*(u32*)((u8*)this_ + 0x90) >> 0x16) & 0x1f;
+    *(s32*)((u8*)this_ + 0x230) = 0;
+    *(s32*)((u8*)this_ + 0x248) = 0;
+    *(s32*)((u8*)this_ + 0x260) = 600;
+    if ((u8)this_->v11()) {
+        *(s32*)((u8*)this_ + 0x230) = 8;
+        *(s32*)((u8*)this_ + 0x248) = 0;
     } else {
-        *(s32*)(this_ + 0x230) = 0;
-        *(s32*)(this_ + 0x248) = 0;
+        *(s32*)((u8*)this_ + 0x230) = 0;
+        *(s32*)((u8*)this_ + 0x248) = 0;
     }
 }
 
