@@ -196,12 +196,10 @@ struct OkamBox {
 };
 
 static inline void okamSetBox(char* this_, f32 l, f32 t, f32 r, f32 b) {
-    f32 x = *(f32*)(this_ + 0x26c);
-    f32 y = *(f32*)(this_ + 0x270);
-    *(f32*)(this_ + 0x60) = x + l;
-    *(f32*)(this_ + 0x64) = y + t;
-    *(f32*)(this_ + 0x68) = x + r;
-    *(f32*)(this_ + 0x6c) = y + b;
+    *(f32*)(this_ + 0x60) = l + *(f32*)(this_ + 0x26c);
+    *(f32*)(this_ + 0x64) = t + *(f32*)(this_ + 0x270);
+    *(f32*)(this_ + 0x68) = r + *(f32*)(this_ + 0x26c);
+    *(f32*)(this_ + 0x6c) = b + *(f32*)(this_ + 0x270);
 }
 
 extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
