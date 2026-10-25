@@ -266,8 +266,10 @@ extern "C" void fn_80268BC4(u8* p) {
     clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (int k = 0; k < 8; k++) {
-        f32 x = lbl_8046BAE8[k].x;
-        const f32 y = lbl_8046BAE8[k].y;
+        register f32 x;
+        register f32 y;
+        x = lbl_8046BAE8[k].x;
+        y = lbl_8046BAE8[k].y;
         *(f32*)(p + 8) = x;
         f32 z = lbl_8046BAE8[k].z;
         *(f32*)(p + 0xc) = y;
@@ -297,7 +299,8 @@ extern "C" void fn_80268BC4(u8* p) {
             }
             *(JGeometry::TVec3<f32>*)(p + 8) = saved;
         }
-        if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4))) {
+        HitRectTable* table = (HitRectTable*)*(u8**)(p + 4);
+        if ((u8)fn_802684A4(table, (Vec2f*)(p + 8), table->room)) {
             p[*(s32*)(p + 0x1c) + 0x28] = 1;
         } else if (fn_8026FC20(*(void**)(p + 4)) <= 0 && !fn_802DCD0C(fn_802D6A9C())) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
@@ -342,7 +345,7 @@ void SetField_0x98(void* thisPtr) {
 }
 
 
-extern JGeometry::TVec3<f32> lbl_8046BA88[];
+extern const JGeometry::TVec3<f32> lbl_8046BA88[];
 extern Vec2f lbl_8046BA68[];
 extern "C" s32 fn_80248778(void*);
 
@@ -354,10 +357,7 @@ struct Obj8026942C {
 };
 
 extern "C" void fn_8026942C(Obj8026942C* o, s32 idx, JGeometry::TVec3<f32>* out) {
-    out->x = lbl_8046BA88[idx].x;
-    f32 y = lbl_8046BA88[idx].y;
-    out->y = y;
-    out->z = lbl_8046BA88[idx].z;
+    out->set(lbl_8046BA88[idx]);
     out->add(*(JGeometry::TVec3<f32>*)(o->player + 8));
 }
 
@@ -372,6 +372,54 @@ extern "C" void fn_8026947C(Obj8026942C* o, JGeometry::TVec3<f32>* out) {
             out->y += lbl_8046BA68[fn_80248778(o->player)].y;
         }
     }
+}
+
+extern "C" void fn_80269574(u8* self)
+{
+    if (self[0x38] == 1) {
+        return;
+    }
+    self[0x38] = 1;
+}
+
+extern "C" void fn_8026B81C(u8* p, u16 k) {
+    switch (k) {
+    case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+    case 0x08: case 0x09: case 0x0A: case 0x0B: case 0x0C: case 0x0D: case 0x0E: case 0x0F:
+    case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15: case 0x16: case 0x17:
+    case 0x18: case 0x19: case 0x1A: case 0x1B: case 0x1C: case 0x1D: case 0x1E: case 0x1F:
+    case 0x20: case 0x21: case 0x22: case 0x23: case 0x24: case 0x25: case 0x26: case 0x27:
+    case 0x28: case 0x29: case 0x2A: case 0x2B: case 0x2C: case 0x2D: case 0x2E: case 0x2F:
+    case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37:
+    case 0x38: case 0x39: case 0x3A: case 0x3B: case 0x3C: case 0x3D: case 0x3E: case 0x3F:
+    case 0x40: case 0x41: case 0x42: case 0x43: case 0x44: case 0x45: case 0x46: case 0x47:
+    case 0x48: case 0x49: case 0x4A: case 0x4B: case 0x4C: case 0x4D: case 0x4E: case 0x4F:
+    case 0x50: case 0x51: case 0x52: case 0x53: case 0x54: case 0x55: case 0x56: case 0x57:
+    case 0x58: case 0x59: case 0x5A: case 0x5B: case 0x5C: case 0x5D: case 0x5E: case 0x5F:
+    case 0x60:
+        *(u8*)(p + *(s32*)(p + 0x1c) + 0x38) = 1;
+        break;
+    }
+}
+
+extern "C" u8 fn_802413F0(void*);
+extern "C" u8 fn_802DEB58(void*);
+extern "C" void fn_8026E68C(u8*, u16);
+extern "C" void fn_8026C350(u8* p, u16 param) {
+    if (fn_8026FC20(*(void**)(p + 4)) >= 1) {
+        if (param >= 0x10 && param < 0x14) {
+            p[0xb8] = 1;
+        }
+        return;
+    }
+    switch (param) {
+    default:
+        break;
+    }
+    if (fn_80226850((Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4)) == 0x6) {
+        return;
+    }
+    ;
 }
 
 extern "C" u8 fn_80240670(void*);
