@@ -110,7 +110,7 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
         *(f32*)(this_ + 0x288) = src[1] - *(f32*)(this_ + 0x10);
     }
     len2 = *(f32*)(this_ + 0x284) * *(f32*)(this_ + 0x284) + *(f32*)(this_ + 0x288) * *(f32*)(this_ + 0x288);
-    if (len2 <= lbl_80540AB8 * __float_epsilon) {
+    if (len2 <= lbl_80540AB8 * *(f32*)&__float_epsilon) {
         goto tail;
     }
     if (len2 <= lbl_80540ABC) {
