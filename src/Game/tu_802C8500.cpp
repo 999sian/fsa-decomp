@@ -22,7 +22,7 @@ public:
     virtual void s40();
     virtual void s44();
     virtual void s48();
-    virtual void s4C();
+    virtual void s4C(s32 flag);
     virtual void s50();
     virtual void s54(s32 flag);
     virtual void s58();
