@@ -37,7 +37,7 @@ extern "C" u8 fn_802D800C(void* mgr, s32 id);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" void fn_801BD8C0(void* obj, const JGeometry::TVec3<f32>& pos, s32 angle);
-extern f32 lbl_8053EC70;
+extern const f32 lbl_8053EC70;
 
 static inline s16 ezmrGetSpeed(u8* this_) {
     s32 sw = *(s32*)(this_ + 0x2f0);
@@ -93,6 +93,7 @@ static inline s32 ezmrCreate(s32 room, void* pos, u32 flag) {
     return Actor_CreateByID(fn_801F856C(), 0x46424f42, room, pos, flag, -1, -1);
 }
 
+#pragma opt_propagation off
 extern "C" void fn_801BD348(u8* this_) {
     fn_801D0ED0(this_);
     if (!((*(u32*)(this_ + 0x90) >> 17) & 1)) {
@@ -171,5 +172,5 @@ extern "C" void fn_801BD348(u8* this_) {
         p += 4;
     }
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
