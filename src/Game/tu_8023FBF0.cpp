@@ -275,7 +275,12 @@ inline bool padCheck(char* p) {
             return false;
         }
     }
-    return U8(p, 0x11ea) != 0;
+    if (U8(p, 0x11ea) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    return ok;
 }
 
 inline f32* roomOffset(s32 room) {
