@@ -63,19 +63,20 @@ extern "C" void fn_80230498(s32 idx, Vec* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_802303FC(s32 idx, Vec* v, s32 a);
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
 extern "C" s32 fn_80130370(u8* p) {
-    s32 ret = 1;
-    s32 i;
     u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
     if (actor == NULL) {
         return 0;
     }
-    Vec pos = *(Vec*)(actor + 0xc);
-    pos.x = pos.x + lbl_8053CC78;
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(actor + 0xc);
+    s32 ret = 1;
+    s32 i = 0;
     pos.y = pos.y + lbl_8053CC7C;
+    pos.x = pos.x + lbl_8053CC78;
     pos.x = pos.x + lbl_8053CC80;
-    for (i = 0; i < 4; i++) {
-        Vec v = *fn_8023E724(i);
-        u16 angle = (u16)(JMath::atanTable_.atan2_(pos.x - v.x, pos.y - v.y) * lbl_8053CC84);
+    for (; i < 4; i++) {
+        JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
+        s32 raw = (s32)(JMath::atanTable_.atan2_(pos.x - v.x, pos.y - v.y) * lbl_8053CC84);
+        u16 angle = (u16)raw;
         s32 quad = ClassifyBamAngleToQuadrant(angle);
         bool a = true;
         bool b = true;
@@ -98,8 +99,8 @@ extern "C" s32 fn_80130370(u8* p) {
     return ret;
 }
 
-#pragma dont_inline on
-extern "C" s32 fn_8013056C(char* p, u16 id, s32 mode, s32 val) {
+#pragma dont_inline reset
+extern "C" s32 fn_8013056C(char* p, s32 id, s32 mode, s32 val) {
     u8* actor;
     Vec pos;
     s32 which = *(s32*)(p + 0x238);
@@ -107,8 +108,9 @@ extern "C" s32 fn_8013056C(char* p, u16 id, s32 mode, s32 val) {
         which = *(s32*)(p + 0x234);
     }
     fn_8022FE80(0, *(void**)(p + 4), which, 1, 0);
-    pos = *(Vec*)(p + 0xc);
-    if (fn_8038BD08(0, id, *(void**)(p + 4), &pos, 0x22) != 0) {
+    void* room = *(void**)(p + 4);
+    JGeometry::setTVec3f((const f32*)(p + 0xc), (f32*)&pos);
+    if (fn_8038BD08(0, (u16)id, room, &pos, 0x22) != 0) {
         switch (mode) {
         case 0:
             actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
@@ -140,8 +142,6 @@ extern "C" s32 fn_8013056C(char* p, u16 id, s32 mode, s32 val) {
     }
     return -1;
 }
-#pragma dont_inline reset
-
 extern const f32 lbl_8053CC88;
 extern const f32 lbl_8053CC8C;
 extern "C" u8 lbl_8049EA58[];
