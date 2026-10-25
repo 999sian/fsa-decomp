@@ -285,6 +285,9 @@ extern "C" bool fn_80230188(void*);
 extern "C" s32 fn_8023DE58(void*);
 extern "C" void fn_8022DF48(void*);
 extern "C" void fn_8022E088(void*, s32, Vec8035A860*);
+extern "C" bool fn_8022F514(void*);
+extern "C" void fn_8023DF68(s32, Vec8035A860*);
+extern "C" void fn_802314D8(s32, f32*);
 extern "C" s32 fn_8035AE9C(u8* self, void* obj) {
     Vec8035A860 d;
     Vec8035A860* pos;
