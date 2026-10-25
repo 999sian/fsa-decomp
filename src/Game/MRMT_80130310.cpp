@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 
@@ -43,21 +45,6 @@ extern const f32 lbl_8053CC7C;
 extern const f32 lbl_8053CC80;
 extern const f32 lbl_8053CC84;
 
-namespace JMath {
-template <int length, typename T>
-struct TAtanTable;
-template <>
-struct TAtanTable<1024, f32> {
-    f32 atan2_(f32, f32) const;
-};
-extern const TAtanTable<1024, f32> atanTable_;
-
-struct TSinCosPair {
-    f32 first;
-    f32 second;
-};
-extern const TSinCosPair sincosTable_[2048] __attribute__((aligned(32)));
-}
 extern "C" void* fn_80130310(void* this_, short how) {
     if (this_) {
         *(void**)this_ = lbl_8049EA88;
@@ -92,11 +79,11 @@ extern "C" s32 fn_80130370(u8* p) {
         s32 quad = ClassifyBamAngleToQuadrant(angle);
         bool a = true;
         bool b = true;
-        if (fn_801CD950(&v.x, pos.x, JMath::sincosTable_[angle >> 5].first)) {
+        if (fn_801CD950(&v.x, pos.x, JMath::sincosTable_.mTable[angle >> 5].first)) {
             ret = 0;
             a = false;
         }
-        if (fn_801CD950(&v.y, pos.y, JMath::sincosTable_[angle >> 5].second)) {
+        if (fn_801CD950(&v.y, pos.y, JMath::sincosTable_.mTable[angle >> 5].second)) {
             ret = 0;
             b = false;
         }
@@ -228,13 +215,14 @@ extern "C" void fn_801306BC(u8* p) {
         }
         *(s32*)(p + 0x248) += 1;
         if (*(s32*)(p + 0x248) >= 0x3c) {
-            if (*(s32*)(p + 0x244) < 4) {
-                u8* e = lbl_8049EA58 + *(s32*)(p + 0x244) * 12;
+            if (*(s32*)(p + 0x244) >= 4) {
+                setState(p, 5);
+            } else {
+                s32 off = *(s32*)(p + 0x244) * 12;
+                u8* e = lbl_8049EA58 + off;
                 if (fn_8013056C((char*)p, *(u16*)e, *(s32*)(e + 4), *(s32*)(e + 8)) >= 0) {
                     setState(p, 4);
                 }
-            } else {
-                setState(p, 5);
             }
         }
         break;
@@ -252,16 +240,18 @@ extern "C" void fn_801306BC(u8* p) {
         } else {
             fn_80388EEC(0);
             s32 which = 0;
-            u8* e = lbl_8049EA58 + *(s32*)(p + 0x244) * 12;
-            s32 mode = *(s32*)(e + 4);
-            if (mode == 1) {
+            s32 off = *(s32*)(p + 0x244) * 12;
+            u8* e = lbl_8049EA58 + off;
+            switch (*(s32*)(e + 4)) {
+            case 1:
                 which = *(s32*)(p + 0x238);
-            } else if (mode < 1) {
-                if (mode >= 0) {
-                    which = *(s32*)(p + 0x234);
-                }
-            } else if (mode < 3) {
+                break;
+            case 0:
+                which = *(s32*)(p + 0x234);
+                break;
+            case 2:
                 which = *(s32*)(p + 0x238);
+                break;
             }
             u8* h = fn_801F666C(fn_801F856C(), which);
             if (h != NULL) {
@@ -275,6 +265,8 @@ extern "C" void fn_801306BC(u8* p) {
         }
         break;
     }
+    case 5:
+        break;
     }
 }
 
@@ -297,9 +289,7 @@ extern "C" void fn_80130C18(char* p) {
         }
     }
     u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
-    Vec* src = (Vec*)(actor + 0xc);
-    Vec* dst = (Vec*)(p + 0xc);
-    *dst = *src;
+    *(Vec*)(p + 0xc) = *(Vec*)(actor + 0xc);
     *(f32*)(p + 0x10) += lbl_8053CC90;
 }
 
