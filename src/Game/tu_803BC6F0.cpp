@@ -1,8 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
 
-static inline int squareTimer(int value) { return value * value; }
-
 struct VtSlot9 {
     void* v0;
     void* v1;
@@ -633,17 +631,15 @@ extern "C" void fn_803C02CC(u8* p) {
 }
 
 extern "C" void fn_803C05D8(u8* p) {
-    u32* tbl = lbl_80476980;
     s32 i;
     u8* q;
 
     for (i = 0; i < 8; i++) {
         if (fn_803B90E4(*(u32*)(p + 0xa0), i)) {
-            ((J2DPane*)*(void**)(p + 4))->search(*(u64*)(tbl + 4))->hide();
+            ((J2DPane*)*(void**)(p + 4))->search(((u64*)lbl_80476980)[i + 2])->hide();
         } else {
-            ((J2DPane*)*(void**)(p + 4))->search(*(u64*)(tbl + 4))->show();
+            ((J2DPane*)*(void**)(p + 4))->search(((u64*)lbl_80476980)[i + 2])->show();
         }
-        tbl += 2;
     }
 
     *(u32*)(p + 0xa8) = *(u32*)(p + 0xa0);
@@ -684,10 +680,10 @@ extern "C" void fn_803C05D8(u8* p) {
         fn_80402E08(*(void**)(p + 0x20), 600.0f, 0.0f);
         *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
         ((J2DPane*)*(void**)(*(u8**)(p + 0x20) + 4))->setAlpha(0);
-        u32* pair = lbl_80476938;
+        u64* pair = (u64*)lbl_80476938;
         for (s32 j = 0; j < 9; j++) {
-            fn_804023D0(*(void**)(p + 0x20), ((J2DPane*)*(void**)(p + 4))->search(*(u64*)pair), p[0x196 + j]);
-            pair += 2;
+            fn_804023D0(*(void**)(p + 0x20), ((J2DPane*)*(void**)(p + 4))->search(*pair), p[0x196 + j]);
+            pair++;
         }
         *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
     } else {
