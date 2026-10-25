@@ -16,6 +16,10 @@ extern "C" void* fn_8039027C(void* p);
 extern "C" void fn_8013BE04(void*);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80139958(void);
+struct TuOwnedObject {
+    virtual ~TuOwnedObject();
+};
+
 struct TuVtable7 {
     virtual void v0(s32 flags);
     virtual void v1();
