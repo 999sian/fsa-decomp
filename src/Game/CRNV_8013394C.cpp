@@ -14,8 +14,8 @@ extern "C" void* fn_8013394C(u8* this_, s16 freeFlag) {
         u32 zero = i;
         do {
             fn_801EE434(*(void**)(p + 0x278));
-            i++;
             *(void**)(p + 0x278) = (void*)zero;
+            i++;
             p += 4;
         } while (i < 2);
         if (this_ + 0x240 != 0) {
@@ -31,6 +31,41 @@ extern "C" void* fn_8013394C(u8* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801339EC(u8* this_) {
+    struct Col {
+        u8 r, g, b, a;
+        Col(u8 r_, u8 g_, u8 b_, u8 a_) {
+            r = r_;
+            g = g_;
+            b = b_;
+            a = a_;
+        }
+    };
+    static Col tbl[6] = {
+        Col(0xdc, 0x1e, 0xdc, 0xff),
+        Col(0xff, 0x41, 0x37, 0xff),
+        Col(0x1e, 0xa0, 0xbe, 0xff),
+        Col(0x4b, 0xff, 0x2d, 0xff),
+        Col(0xc8, 0xa0, 0x28, 0xff),
+        Col(0x2d, 0x78, 0xff, 0xff),
+    };
+    s32 i = 0;
+    u8* p = this_;
+    do {
+        if (*(void**)(p + 0x278) != NULL) {
+            fn_8013CB44(*(void**)(p + 0x278), this_ + 0xc, 0, 0, 1);
+            u8* obj = *(u8**)(p + 0x278);
+            Col e = tbl[*(s32*)(this_ + 0x234)];
+            obj[0xbc] = e.r;
+            obj[0xbd] = e.g;
+            obj[0xbe] = e.b;
+        }
+        i++;
+        p += 4;
+    } while (i < 2);
+}
+
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F7A08(void* pool, s32 type);
 extern "C" void* fn_801F666C(void* reg, s32 id);
@@ -40,11 +75,11 @@ extern "C" void detach__5ActorFv(void* actor);
 extern f32 lbl_8053CD34;
 extern "C" s32 fn_80133B58(void) {
     s32 ret = 1;
-    char* actor;
-    s32 id;
-    bool ok;
     s32 i;
     void** slot;
+    bool ok;
+    s32 id;
+    char* actor;
 
     id = fn_801F7A08(fn_801F856C(), 0x43524e56);
     while (id != -1) {
@@ -83,6 +118,49 @@ extern "C" s32 fn_80133B58(void) {
     return ret;
 }
 
+extern "C" void v06__5ActorFv(void* this_);
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, void* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern const char lbl_804652D8[];
+extern s32 lbl_804652C0[];
+extern "C" void fn_80133C6C(u8* this_) {
+    u8 buf[0x3c];
+    v06__5ActorFv(this_);
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = -1;
+    for (u8 i = 0; i < 0x10; i += 8) {
+        buf[i] = i;
+        buf[(u8)(i + 1)] = i + 1;
+        buf[(u8)(i + 2)] = i + 2;
+        buf[(u8)(i + 3)] = i + 3;
+        buf[(u8)(i + 4)] = i + 4;
+        buf[(u8)(i + 5)] = i + 5;
+        buf[(u8)(i + 6)] = i + 6;
+        buf[(u8)(i + 7)] = i + 7;
+    }
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = 0;
+    *(s32*)(buf + 0x18) = 0;
+    buf[0x1c] = 0;
+    buf[0x1d] = 0;
+    buf[0x1e] = 0;
+    buf[0x1f] = 1;
+    buf[0x20] = 1;
+    buf[0x21] = 0;
+    buf[0x22] = 0;
+    buf[0x23] = 0;
+    buf[0x24] = 0;
+    buf[0x25] = 0;
+    buf[0x26] = 1;
+    *(s32*)(buf + 0x28) = 3;
+    buf[0x2c] = 1;
+    buf[0x2d] = 0;
+    buf[0x2e] = 0;
+    *(s32*)(buf + 0x30) = -1;
+    *(s32*)(buf + 0x34) = 0;
+    *(s32*)(buf + 0x38) = 2;
+    fn_801F02BC(this_, lbl_804652D8, lbl_804652C0[*(s32*)(this_ + 0x234)] + *(s32*)(this_ + 0x250), buf, 7, 0, 0, lbl_8053CD30, lbl_8053CD30);
+}
+
 extern "C" void v01__5ActorFv(void* this_);
 extern "C" void fn_801D2608(void*, void*, s32);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
@@ -90,16 +168,18 @@ extern "C" void fn_801D1F14(void*, f32);
 extern "C" s32 fn_8013CC50(s32 id, void* p, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern u8 lbl_80539F50[8];
 extern f32 lbl_8053CD30;
-extern f32 lbl_8053CD48;
-extern f32 lbl_8053CD4C;
+extern const f32 lbl_8053CD48;
+extern const f32 lbl_8053CD4C;
 extern "C" void fn_8013416C(u8* param_1)
 {
     v01__5ActorFv(param_1);
+    f32 f0 = lbl_8053CD4C;
+    f32 f1 = lbl_8053CD48;
     *(s32*)(param_1 + 0x234) = *(u32*)(param_1 + 0x90) & 0x1f;
-    *(f32*)(param_1 + 0x60) = lbl_8053CD48;
-    *(f32*)(param_1 + 0x64) = lbl_8053CD48;
-    *(f32*)(param_1 + 0x68) = lbl_8053CD4C;
-    *(f32*)(param_1 + 0x6c) = lbl_8053CD4C;
+    *(f32*)(param_1 + 0x60) = f1;
+    *(f32*)(param_1 + 0x64) = f1;
+    *(f32*)(param_1 + 0x68) = f0;
+    *(f32*)(param_1 + 0x6c) = f0;
     *(f32*)(param_1 + 0x70) = *(f32*)(param_1 + 0x60);
     *(f32*)(param_1 + 0x74) = *(f32*)(param_1 + 0x64);
     *(f32*)(param_1 + 0x78) = *(f32*)(param_1 + 0x68);
@@ -111,10 +191,10 @@ extern "C" void fn_8013416C(u8* param_1)
     fn_801D2608(param_1 + 0x240, lbl_80539F50, 1);
     fn_801D22DC(param_1 + 0x240, 0, 2, 0);
     fn_801D1F14(param_1 + 0x240, lbl_8053CD34);
-    if (*(s32*)(param_1 + 0x278) == 0) {
+    if (*(u32*)(param_1 + 0x278) == 0) {
         *(s32*)(param_1 + 0x278) = fn_8013CC50(*(s32*)(param_1 + 4), param_1 + 0xc, lbl_8053CD30, 0x32c, 0, 0, 0, 0, 1);
     }
-    if (*(s32*)(param_1 + 0x27c) == 0) {
+    if (*(u32*)(param_1 + 0x27c) == 0) {
         *(s32*)(param_1 + 0x27c) = fn_8013CC50(*(s32*)(param_1 + 4), param_1 + 0xc, lbl_8053CD30, 0x183, 0, 0, 0, 0, 1);
     }
 }
