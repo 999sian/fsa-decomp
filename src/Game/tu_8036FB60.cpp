@@ -8,6 +8,10 @@ extern const TAtanTable<1024, f32> atanTable_;
 #include "JSystem/JUtility/JUTVideo.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Box.h"
+extern "C" const f32 lbl_80542DC0;
+extern "C" void fn_80371D50(void*, s32);
+extern "C" void fn_80458880(void*, s32, s32);
+extern "C" void fn_8037B374(void*, JGeometry::TVec3<f32>*, s32);
 
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
 extern "C" void fn_8022FEB8(f32* box, s32 a, s32 b, s32 c, s32 d);
