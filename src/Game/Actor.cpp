@@ -186,7 +186,7 @@ extern "C" u32 lbl_80543F40;
 extern "C" u32 lbl_80543F44;
 extern "C" u32 lbl_80543F48;
 extern "C" u32 lbl_80543F4C;
-extern "C" f32 lbl_80469D48[];
+extern "C" const f32 lbl_80469D48[];
 extern "C" u32 lbl_80469D78[];
 extern "C" f32 lbl_8053F7B0;
 extern "C" f32 lbl_8053F7DC;
@@ -1867,8 +1867,8 @@ s32 id = (s32)a->field_04; u8 same = 0; if (ee8f4_eq(fn_8023DE58(i), id) || ee8f
 extern "C" void fn_801F52A4(Actor* a) {
     u32 rnd1Bits;
     u32 rnd2Bits;
-    Vec p1;
-    Vec p2;
+    JGeometry::TVec3f p1;
+    JGeometry::TVec3f p2;
     u32 name[2];
     u32 param[2];
     u32 count[2];
@@ -1967,47 +1967,29 @@ extern "C" void fn_801F52A4(Actor* a) {
         param[i] |= 0x26001e00;
         f32 spread = scale * (f32)i;
         for (j = 0; j < n; j++) {
-            register f32 xy, z;
-            register f32* src = (f32*)&p1;
-            register f32* dst = (f32*)&p2;
             p1.x = x;
             p1.y = dy;
             p1.z = zero;
             id = Actor_CreateByID(fn_801F856C(), name[i], a->field_04, (f32*)&p1, param[i], -1, -1);
             if (id >= 0 && n > 1) {
-                register void* child = fn_801F666C(fn_801F856C(), id);
+                void* child = fn_801F666C(fn_801F856C(), id);
                 if (child != 0) {
-                    // clang-format off
-                    __asm {
-                        psq_l  xy, 0(src), 0, 0
-                        lfs    z,  8(src)
-                        psq_st xy, 0(dst), 0, 0
-                        stfs   z,  8(dst)
-                    }
-                    // clang-format on
+                    JGeometry::setTVec3f(&p1.x, &p2.x);
                     f32 step = spread / (f32)n;
                     f32 astep = step;
                     if (astep < zero) {
                         astep = -astep;
                     }
                     p2.x += lbl_8053F7B0 *
-                            lbl_8052EBC0[((s32)(lbl_8053F7E0 * astep) & 0x7ff) * 2 + 1];
+                            sincosTable___5JMath[((s32)(lbl_8053F7E0 * astep) & 0x7ff)].cos;
                     f32 s;
                     if (step < zero) {
-                        s = -lbl_8052EBC0[((s32)(lbl_8053F7E4 * step) & 0x7ff) * 2];
+                        s = -sincosTable___5JMath[((s32)(lbl_8053F7E4 * step) & 0x7ff)].sin;
                     } else {
-                        s = lbl_8052EBC0[((s32)(lbl_8053F7E0 * step) & 0x7ff) * 2];
+                        s = sincosTable___5JMath[((s32)(lbl_8053F7E0 * step) & 0x7ff)].sin;
                     }
                     p2.y += lbl_8053F7B0 * s;
-                    register f32* out = (f32*)((u8*)child + 0xc);
-                    z = p2.z;
-                    // clang-format off
-                    __asm {
-                        psq_l  xy, 0(dst), 0, 0
-                        psq_st xy, 0(out), 0, 0
-                        stfs   z,  8(out)
-                    }
-                    // clang-format on
+                    JGeometry::setTVec3f(&p2.x, (f32*)((u8*)child + 0xc));
                 }
             }
         }
@@ -2319,8 +2301,8 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
                 rec.b2d = t2d;
                 rec.w34 = t34;
                 rec.w38 = t38;
-                if (((EffArgs*)p4)->ptr != 0) {
-                    PSMTXConcat(((EffArgs*)p4)->ptr, v98, v98);
+                if (p4->w18 != 0) {
+                    PSMTXConcat((void*)p4->w18, v98, v98);
                 }
                 rec.w18 = (u32)v98;
                 fn_801F06F0(a, p2, p3, &rec, p5, f6, f7);
@@ -2362,12 +2344,12 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
         }
     }
     if ((s32)a->field_04 >= 8) {
-        u32 n = a->field_D8;
-        u32 flag = 1;
-        u32 mode = 0;
+        s32 n = a->field_D8;
+        s32 flag = 1;
+        s32 mode = 0;
         *(JGeometry::TVec3f*)&v14 = *(JGeometry::TVec3f*)&a->field_0C;
         if ((s32)n > 0) {
-            u32 m = a->field_DC;
+            s32 m = a->field_DC;
             if ((s32)n > (s32)(m - 0x19) || (s32)m < 0x19) {
                 if (n & 2) {
                     flag = 0;
