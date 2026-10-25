@@ -129,6 +129,13 @@ struct HeartPane {
     virtual void setColor(JUtility::TColor color);
 };
 
+static inline void RankColors(u8* obj, JUtility::TColor a, JUtility::TColor b, JUtility::TColor c, JUtility::TColor d) {
+    ((JUtility::TColor*)(obj+0x150))->setRGBA(a);
+    ((JUtility::TColor*)(obj+0x154))->setRGBA(b);
+    ((JUtility::TColor*)(obj+0x158))->setRGBA(c);
+    ((JUtility::TColor*)(obj+0x15c))->setRGBA(d);
+}
+
 static inline u8* GetHeart(u8* obj, u64 key) { return ((HeartPane*)obj)->search(key); }
 static inline void SetHeart(u8* obj, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) { ((HeartPane*)obj)->set(a,b,c,d,e,f,g,h); }
 extern u8 lbl_8050EC80[];
