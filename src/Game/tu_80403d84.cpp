@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
 extern "C" u8 fn_8040271C(void*, s32, f32, f32);
 extern "C" void fn_80402628(void*, s32, s32, u8);
