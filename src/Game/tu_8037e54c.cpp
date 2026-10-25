@@ -168,6 +168,8 @@ extern GameState* lbl_8053AAF8;
 extern "C" s32 fn_8022F340(s32 p);
 extern "C" void fn_80390850(void* p);
 extern u8 lbl_80529DEC[];
+extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
+extern "C" char* strcat(char* dst, const char* src);
 extern "C" f32 fn_80381560(u8 type, s32 num, f32 scale);
 extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale);
 extern f32 lbl_805430E8;
