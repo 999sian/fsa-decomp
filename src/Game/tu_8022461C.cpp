@@ -633,33 +633,29 @@ extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
     return FALSE;
 }
 
-struct TileRoomFlags {
-    u8 pad[0x131df];
-    u8 flags[16];
+struct TileStageMap {
+    u8 pad[0x60];
+    u8 cells[10][10];
 };
 
-static inline bool tileStageIsSpecial(const f32* pos) {
-    s32 base = *(s32*)(fn_802D6A9C() + 0x14);
-    u8* g2 = fn_802D6A9C();
-    u8* h = fn_802D6A9C();
-    s32 address = base + (s32)h;
-    s32 value = *(u8*)(address + *(s32*)(g2 + 0x18) * 10 + 0x60);
-    return value == 0x10 && pos[1] > lbl_8053FF50;
-}
-
-static inline u32 tileKindAt(const f32* pos, u32 room) {
+static inline u32 tileKindAt(const f32* pos, s32 room) {
     u16 tile = lbl_8046CB88[tileAtOrdered(pos, room)];
-    if (((TileRoomFlags*)fn_802D6A9C())->flags[room] != 0) {
+    if (fn_802D6A9C()[room + 0x131df] != 0) {
         if (tile == 0) return 2;
         if (tile == 0x61) return 0;
         return tile;
     }
-    if (tile == 0xe && (u8)lbl_8053AAF8[0x7f] != 0 &&
-        ((*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) ||
-         (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3 && tileStageIsSpecial(pos)))) {
-        return 0x51;
+    if (tile != 0xe || (u8)lbl_8053AAF8[0x7f] == 0) return tile;
+    if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
+    } else {
+        if (*(s32*)(fn_802D6A9C() + 4) != 7 || *(s32*)(fn_802D6A9C() + 8) != 3) return tile;
+        s32 x = *(s32*)(fn_802D6A9C() + 0x14);
+        u8* g2 = fn_802D6A9C();
+        u8* h = fn_802D6A9C();
+        s32 value = ((TileStageMap*)h)->cells[*(s32*)(g2 + 0x18)][x];
+        if (value != 0x10 || pos[1] <= lbl_8053FF50) return tile;
     }
-    return tile;
+    return 0x51;
 }
 
 extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
