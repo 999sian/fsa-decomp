@@ -1,4 +1,15 @@
 #include "types.h"
+#include "Game/ItemBase.h"
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
+extern "C" void fn_801F02BC(void* a, const char* name, s32 id, DrawRec* rec, s32 p5, s32 p6, s32 p7, f32 f6, f32 f7);
+extern void* lbl_8053AAF8;
+extern void* lbl_8053AB10;
+extern char lbl_80464C30[];
+extern char lbl_80464C44[];
+extern const f32 lbl_8053C8C4;
+extern const f32 lbl_8053C8C8;
+extern const f32 lbl_8053C8CC;
+extern const f32 lbl_8053C8D0;
 
 extern "C" void __ct__5ActorFv(void* this_);
 extern "C" void fn_801D267C(void* anim);
