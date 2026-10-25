@@ -43,26 +43,6 @@ extern "C" void fn_80357E48(void)
 {
 }
 
-static inline bool actorsOverlap(Actor* a, Actor* b)
-{
-    if (b != NULL) {
-        f32 boxA[4];
-        f32 boxB[4];
-        fn_801F31C4(a, boxA);
-        fn_801F31C4(b, boxB);
-        const f32* __restrict p = boxA;
-        f32 x0 = p[0], y0 = p[1], x1 = p[2], y1 = p[3];
-        if (x0 <= boxB[0]) x0 = boxB[0];
-        if (y0 <= boxB[1]) y0 = boxB[1];
-        if (x1 >= boxB[2]) x1 = boxB[2];
-        if (y1 >= boxB[3]) y1 = boxB[3];
-        bool overlap = false;
-        if (x1 >= x0 && y1 >= y0) overlap = true;
-        return overlap;
-    }
-    return false;
-}
-
 extern "C" void fn_80357E4C(Actor* self)
 {
     s32 hit = -1;
