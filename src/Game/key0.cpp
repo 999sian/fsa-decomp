@@ -73,6 +73,14 @@ static inline u8 key0RoomFlag(s32 room) {
     return base[room + 0x131df];
 }
 
+extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
+static inline void key0RecordMoving(char* p, u32 packed) {
+    Key0Pt key = key0Point(p + 0x230);
+    Key0Pt pos = key0Point(p + 0xc);
+    u32 id = *(u32*)(p + 0x238);
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+}
+
 static inline void key0Register(char* p) {
     u32 id = *(u32*)(p + 0x238);
     fn_802D6C10(fn_802D6A9C(), Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), id);
