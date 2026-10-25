@@ -958,14 +958,19 @@ extern "C" void fn_80372400(char* self) {
     }
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8037251C(char* self)
 {
+    char* dst;
+    char* tp;
+    char* op;
+    s32 i;
 	if (*(s32*)(self + 0x238) != 0) {
 		*(s32*)(self + 0x238) = *(s32*)(self + 0x238) - 1;
 	}
 	*(s32*)(self + 0x39c) = fn_8022EA0C(0);
-	char* dst = self;
-	for (s32 i = 0; i < 4; i++) {
+	dst = self;
+	for (i = 0; i < 4; i++) {
 		*(JGeometry::TVec3<f32>*)(dst + 0x264) = *fn_8023E724(i);
 		dst += 0xc;
 	}
@@ -1001,11 +1006,12 @@ extern "C" void fn_8037251C(char* self)
 		*(s32*)(self + 0x370) = *(s32*)(self + 0x370) ^ 1;
 	}
 
-	JGeometry::TBox2<f32> orig = *(JGeometry::TBox2<f32>*)(self + 0x60);
-	JGeometry::TBox2<f32> box = orig;
-	char* tp = self;
-	char* op = self;
-	for (s32 i = 0; i < 4; i++) {
+	JGeometry::TBox2<f32> box;
+	box.set(*(JGeometry::TBox2<f32>*)(self + 0x60));
+	JGeometry::TBox2<f32> orig = box;
+	tp = self;
+	op = self;
+	for (i = 0; i < 4; i++) {
 		if (*(s32*)(tp + 0x330) != 0) {
 			*(s32*)(tp + 0x330) = *(s32*)(tp + 0x330) - 1;
 		}
@@ -1018,9 +1024,9 @@ extern "C" void fn_8037251C(char* self)
 	box.addPos(*(JGeometry::TVec2<f32>*)(self + 0x324));
 	fn_80239914(&box, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
 	box = orig;
-	(((FSAObj*)self)->*lbl_804AE420[*(s32*)(self + 0x230)])(box);
+	(((FSAObj*)self)->*((FSAStateUpdateFn*)lbl_804AE420)[*(s32*)(self + 0x230)])();
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_803727D0(char* self)
 {
 	struct VObj { virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07(); virtual void v08(); virtual void v09(); virtual void v10(); virtual u8 v11(); };
