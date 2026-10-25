@@ -184,20 +184,20 @@ static inline f32 hrmn_clamp(f32 t) {
 }
 
 extern "C" void fn_801EC7B8(char* p) {
+    s32 id = *(s32*)(p + 0x4);
     u8 flags[4];
     f32 vals[4];
     flags[0] = 0;
     vals[0] = lbl_8053F6B8;
+    u8* fbase = flags;
     flags[1] = 0;
     vals[1] = lbl_8053F6B8;
+    f32* vbase = vals;
+    s32 count = 0;
     flags[2] = 0;
     vals[2] = lbl_8053F6B8;
     flags[3] = 0;
     vals[3] = lbl_8053F6B8;
-    s32 id = *(s32*)(p + 0x4);
-    u8* fbase = flags;
-    f32* vbase = vals;
-    s32 count = 0;
     u8* cfg = fn_802D6A9C();
     f32* r;
     if (id < 8) {
@@ -207,6 +207,7 @@ extern "C" void fn_801EC7B8(char* p) {
     }
     u8* fp = fbase;
     f32* vp = vbase;
+    f32 px;
     f32 xLim = lbl_8053F6C8 + r[0];
     f32 yLim = lbl_8053F6CC * (r[1] + r[3]);
     for (s32 i = 0; i < *(s32*)(p + 0x2a8); i++, fp++, vp++) {
@@ -214,7 +215,7 @@ extern "C" void fn_801EC7B8(char* p) {
             s32 myId = *(s32*)(p + 0x4);
             if (fn_8023DE58(i) == myId && fn_8023E724(i)[1] > yLim && fn_8023E724(i)[0] < xLim) {
                 *fp = 1;
-                f32 px = fn_8023E724(i)[0];
+                px = fn_8023E724(i)[0];
                 f32 d = lbl_8053F6D0 * (px - fn_8023E578(i)[0]);
                 f32 t = lbl_8053F6B8;
                 f32 x = px - d;
@@ -265,6 +266,164 @@ extern "C" void fn_801EC7B8(char* p) {
         fn_801F0D20(p, 0x3b);
         fn_801ECB08(p, 0xb);
     }
+}
+
+extern "C" void* fn_801D0020(void* p, void* pos, s32 a, s32 b);
+extern "C" void* fn_80119DD0(void);
+extern "C" void fn_80119998(void* a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void fn_80458F9C(void* a, s32 b);
+extern "C" void fn_80458FF0(void* a, s32 b, s32 c, s32 d);
+extern "C" void fn_802D8050(void* cfg, s32 id, s32 a, s32 b);
+extern "C" u8 fn_80236B50(s32 i);
+extern "C" void fn_8023764C(s32 i, s32 a);
+extern "C" void fn_8022B064(void);
+extern "C" void fn_8022AF78(void);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" u8 fn_8022F514(s32 i);
+extern "C" s32 fn_8022F3DC(s32 i);
+extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230BF4(s32 i, s32 a);
+extern "C" void fn_802160F4(void* p);
+extern "C" void fn_801ED968(void* p);
+extern "C" void fn_80230534(s32 a);
+extern "C" void fn_8021600C(void* p);
+extern "C" s32 fn_80215E58(void* p, s32 a);
+extern "C" void fn_80138B7C(void* p);
+extern void* lbl_8053AF80;
+extern const f32 lbl_8053F6D4;
+extern const f32 lbl_8053F6D8;
+extern const f32 lbl_8053F6DC;
+extern const f32 lbl_8053F6E0;
+extern "C" void fn_801ECB08(char* p, s32 state) {
+    s32 rem;
+    s32 i;
+    f32* r;
+    s32 n;
+    s32* out;
+    f32 pos7[3];
+    s32 order[4];
+    s32 pool[4];
+    f32 pos13[3];
+    switch (state) {
+    case 0:
+        *(s32*)(p + 0x2b0) = -1;
+        *(u8*)(p + 0x2b4) = 0;
+        *(u32*)(p + 0x230) &= ~0x2000;
+        break;
+    case 1:
+    case 2:
+        *(void**)(p + 0x98) = fn_801D0020(p, p + 0xc, *(s32*)(p + 0x2b0), 0);
+        break;
+    case 6:
+        fn_80119998(fn_80119DD0(), 0x78, 0, 2, 0, 0, 0, 0);
+        fn_80458F9C(lbl_8053AF80, 0x3c);
+        break;
+    case 7: {
+        rem = *(s32*)(p + 0x2ac);
+        if (rem != 0) {
+            fn_802D8050(fn_802D6A9C(), rem, 1, 0xff);
+        }
+        for (rem = 0; rem < *(s32*)(p + 0x2a8); rem++) {
+            if (fn_80236B50(rem)) {
+                fn_8023764C(rem, 4);
+            }
+        }
+        fn_8022B064();
+        rem = *(s32*)(p + 0x4);
+        u8* cfg = fn_802D6A9C();
+        if (rem < 8) {
+            r = (f32*)(cfg + 0xcc);
+        } else {
+            r = (f32*)(cfg + 0xdc);
+        }
+        n = *(s32*)(p + 0x2a8);
+        out = order;
+        pool[0] = order[0] = i = 0;
+        order[1] = 1;
+        pool[1] = 1;
+        order[2] = 2;
+        pool[2] = 2;
+        order[3] = 3;
+        pool[3] = 3;
+        if (n >= 2) {
+            if (n > 1) {
+                rem = n;
+                for (; i < n; i++, rem--) {
+                    s32 j = fn_801CD664(rem);
+                    *out = pool[j];
+                    for (; j < rem - 1; j++) {
+                        pool[j] = pool[j + 1];
+                    }
+                    out++;
+                }
+            }
+        }
+        for (rem = 0; rem < 4; rem++) {
+            s32 id;
+            if (fn_8022F514(rem)) {
+                id = fn_8022F3DC(rem);
+            } else {
+                id = rem;
+            }
+            f32 y = lbl_8053F6D4 * (lbl_8053F6D8 + (f32)order[id]) + r[1];
+            pos7[0] = lbl_8053F6DC + r[0];
+            pos7[1] = y;
+            pos7[2] = lbl_8053F6C0;
+            fn_80230498(rem, pos7, 0x356, 0xff, -0x80, -0x80, 1);
+            fn_80230BF4(rem, 0);
+        }
+        *(s32*)(p + 0x98) = 2;
+        fn_802160F4(p + 0x2b8);
+        break;
+    }
+    case 9:
+        fn_801ED968(p + 0x2b6);
+        break;
+    case 10:
+        fn_80230534(0);
+        fn_801F0D20(p, 0x3a);
+        fn_80458FF0(lbl_8053AF80, 0x1000007, 1, 0);
+        fn_8021600C(p + 0x2b8);
+        break;
+    case 11: {
+        s32 res = fn_80215E58(p + 0x2b8, 0);
+        if (res >= 0) {
+            *(s32*)(p + 0x2b0) = res;
+        }
+        break;
+    }
+    case 12:
+        fn_80119998(fn_80119DD0(), 0x78, 0, 2, 0, 0, 0, 0);
+        fn_80458F9C(lbl_8053AF80, 0x3c);
+        break;
+    case 13: {
+        n = *(s32*)(p + 0x2ac);
+        if (n != 0) {
+            fn_802D8050(fn_802D6A9C(), n, 0, 0xff);
+        }
+        fn_8022AF78();
+        for (rem = 0; rem < 4; rem++) {
+            s32 id;
+            if (fn_8022F514(rem)) {
+                id = fn_8022F3DC(rem);
+            } else {
+                id = rem;
+            }
+            f32 y = lbl_8053F6E0 + *(f32*)(p + 0x10);
+            pos13[0] = lbl_8053F6D4 * (f32)id + *(f32*)(p + 0xc);
+            pos13[1] = y;
+            pos13[2] = lbl_8053F6C0;
+            fn_80230498(rem, pos13, 0x3f, 0xff, -0x80, -0x80, 1);
+            fn_80230BF4(rem, 3);
+        }
+        fn_80138B7C(lbl_8053AAF8);
+        break;
+    }
+    case 16:
+        break;
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = state;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
