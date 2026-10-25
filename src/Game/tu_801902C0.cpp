@@ -42,7 +42,16 @@ extern "C" u8 lbl_80529DEC[];
 extern "C" u8* lbl_8053AEC8;
 extern "C" void* lbl_8053AB10;
 extern "C" const char lbl_80467508[];
-extern "C" f32 lbl_8053E214;
+extern "C" void fn_8013ABCC(void* obj, Vec* pos, Mtx mtx);
+
+static inline void drawAtScreenCenter(void* obj) {
+    u8* o = fn_802D6A9C();
+    Mtx m;
+    PSMTXTrans(m, 0.5f * (*(f32*)(o + 0xcc) + *(f32*)(o + 0xd4)),
+               0.5f * (*(f32*)(o + 0xd0) + *(f32*)(o + 0xd8)) + 1024.0f, 1024.0f);
+    JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
+    fn_8013ABCC(obj, &v, m);
+}
 
 extern "C" void* fn_801902C0(void) {
     return *(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x20);
