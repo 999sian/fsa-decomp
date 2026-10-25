@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "dolphin/os/OSTime.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 struct Tu803CE9ECObj {
     virtual void v0();
@@ -320,6 +321,16 @@ static inline void initPane(void* obj) {
     fn_80402E08(obj, lbl_80543458, lbl_80543458);
     *(s16*)((u8*)obj + 0x22) = 0;
     stopPane(*(void**)((u8*)obj + 4));
+}
+static inline void tu803C_syncIcons(u8* p, const u8* base) {
+ s32 i; const u8* k;
+ for(i=0,k=base+0x3b0;i<8;i++,k+=8) {
+  if(fn_803B90E4(*(u32*)(p+0xa4),i)) ((J2DPane*)*(void**)(p+4))->search(*(const u64*)(k+0x10))->hide();
+  else ((J2DPane*)*(void**)(p+4))->search(*(const u64*)(k+0x10))->show();
+ }
+ *(u32*)(p+0xa8)=*(u32*)(p+0xa4);
+ u8* q=p;
+ for(i=0;i<8;i++,q+=4) *(u32*)(q+0xb8)=fn_803B8CAC(*(u32*)(p+0xa4),i);
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
@@ -1235,6 +1246,94 @@ extern "C" void fn_803C1340(u8* p) {
     p[0x110] = 0x14;
 }
 
+extern "C" void fn_803C1734(u8* p) {
+ u8* base=(u8*)lbl_804765D0;
+ {u8* k;s32 i;k=base+0x3b0;
+ for(i=0;i<8;i++,k+=8){
+ if(fn_803B90E4(*(u32*)(p+0xa4),i)) ((J2DPane*)*(void**)(p+4))->search(*(u64*)(k+0x10))->hide();
+ else ((J2DPane*)*(void**)(p+4))->search(*(u64*)(k+0x10))->show();
+ }
+ }
+ *(u32*)(p+0xa8)=*(u32*)(p+0xa4);
+ {u8* q;s32 i;q=p;
+ for(i=0;i<8;i++,q+=4) *(u32*)(q+0xb8)=fn_803B8CAC(*(u32*)(p+0xa4),i);}
+((J2DPane*)*(void**)(*(u8**)(p+0x14)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x18)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x1c)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x34)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x24)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x28)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x2c)+4))->show();
+((J2DPane*)*(void**)(*(u8**)(p+0x30)+4))->show();
+if(*(u64*)(lbl_8050EC80+*(u32*)(p+0xa4)*200+0x20)==0) {
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623031ULL))->setBlackWhite(JUtility::TColor(0x50,0x50,0x50,0),JUtility::TColor(0xb4,0xb4,0xb4,0xff));
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623032ULL))->setBlackWhite(JUtility::TColor(0x50,0x50,0x50,0),JUtility::TColor(0xb4,0xb4,0xb4,0xff));
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623031ULL))->setBlackWhite(JUtility::TColor(0x50,0x50,0x50,0),JUtility::TColor(0xb4,0xb4,0xb4,0xff));
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623032ULL))->setBlackWhite(JUtility::TColor(0x50,0x50,0x50,0),JUtility::TColor(0xb4,0xb4,0xb4,0xff));
+} else {
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+}
+stopPane(*(void**)(*(u8**)(p+0x50)+4));
+fn_804023D0(*(void**)(p+0x50),((J2DPane*)*(void**)(p+8))->search(0x50666375723031ULL),(*(u8**)(p+0x50))[0x28]);
+fn_804023D0(*(void**)(p+0x50),((J2DPane*)*(void**)(p+8))->search(0x50666375723032ULL),(*(u8**)(p+0x50))[0x28]);
+fn_804023D0(*(void**)(p+0x50),((J2DPane*)*(void**)(p+8))->search(0x50666375723033ULL),(*(u8**)(p+0x50))[0x28]);
+fn_804023D0(*(void**)(p+0x50),((J2DPane*)*(void**)(p+8))->search(0x50666375723034ULL),(*(u8**)(p+0x50))[0x28]);
+*(s16*)(*(u8**)(p+0x50)+0x26)=0;
+*(s16*)(*(u8**)(p+0x38)+0x20)=0;
+*(s16*)(*(u8**)(p+0x38)+0x22)=0;
+*(s16*)(*(u8**)(p+0x38)+0x26)=0;
+*(s16*)(*(u8**)(p+0x44)+0x20)=0;
+*(s16*)(*(u8**)(p+0x44)+0x22)=0;
+*(s16*)(*(u8**)(p+0x44)+0x26)=0;
+*(s16*)(*(u8**)(p+0x3c)+0x20)=0;
+*(s16*)(*(u8**)(p+0x3c)+0x22)=0;
+*(s16*)(*(u8**)(p+0x3c)+0x26)=0;
+*(s16*)(*(u8**)(p+0x48)+0x20)=0;
+*(s16*)(*(u8**)(p+0x48)+0x22)=0;
+*(s16*)(*(u8**)(p+0x48)+0x26)=0;
+*(s16*)(*(u8**)(p+0x40)+0x20)=0;
+*(s16*)(*(u8**)(p+0x40)+0x22)=0;
+*(s16*)(*(u8**)(p+0x40)+0x26)=0;
+*(s16*)(*(u8**)(p+0x4c)+0x20)=0;
+*(s16*)(*(u8**)(p+0x4c)+0x22)=0;
+*(s16*)(*(u8**)(p+0x4c)+0x26)=0;
+fn_80402E08(*(void**)(p+0x14),0.0f,1.0f);
+*(s16*)(*(u8**)(p+0x14)+0x20)=0;
+stopPane(*(void**)(*(u8**)(p+0x14)+4));
+fn_80402E08(*(void**)(p+0x18),0.0f,1.0f);
+*(s16*)(*(u8**)(p+0x18)+0x20)=0;
+stopPane(*(void**)(*(u8**)(p+0x18)+4));
+fn_80402E08(*(void**)(p+0x1c),0.0f,1.0f);
+*(s16*)(*(u8**)(p+0x1c)+0x20)=0;
+stopPane(*(void**)(*(u8**)(p+0x1c)+4));
+{u8* k;s32 i;i=0;k=base+0x48;for(;i<81;i++,k+=8){fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+4))->search(*(u64*)k),p[i+0x132]);}}
+{u8* k;s32 i;i=0;k=base+0x2d0;for(;i<19;i++,k+=8){fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+8))->search(*(u64*)k),p[i+0x183]);}}
+*(s16*)(*(u8**)(p+0x14)+0x26)=0;
+*(s16*)(*(u8**)(p+0x18)+0x26)=0;
+*(s16*)(*(u8**)(p+0x1c)+0x26)=0;
+stopPane(*(void**)(*(u8**)(p+0x34)+4));
+fn_804023D0(*(void**)(p+0x34),((J2DPane*)*(void**)(p+8))->search(0x5061636375723031ULL),(*(u8**)(p+0x34))[0x28]);
+*(s16*)(*(u8**)(p+0x34)+0x26)=0;
+{u8* q;s32 i;q=p;for(i=0;i<4;i++,q+=4){
+fn_80402E08(*(void**)(q+0x24),1.0f,lbl_8054349C);
+*(s16*)(*(u8**)(q+0x24)+0x22)=0;
+stopPane(*(void**)(*(u8**)(q+0x24)+4));
+switch(i){
+case 0:{s32 j;u8* kp;j=0;kp=base+0x7f8;for(;j<4;j++,kp+=8){fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[j+0x19f]);}break;}
+case 1:{u8* kp;s32 j;j=0;kp=base+0x7d8;for(;j<4;j++,kp+=8){fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[j+0x19f]);}break;}
+case 2:{u8* kp;s32 j;j=0;kp=base+0x7b8;for(;j<4;j++,kp+=8){fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[j+0x19f]);}break;}
+case 3:{u8* kp;s32 j;j=0;kp=base+0x798;for(;j<4;j++,kp+=8){fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[j+0x19f]);}break;}
+}
+*(s16*)(*(u8**)(q+0x24)+0x26)=0;}}
+fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x547374723031ULL)),280,0,0,0);
+fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x54636f703031ULL)),281,0,0,0);
+fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x5464656c3031ULL)),282,0,0,0);
+fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x546261633031ULL)),283,0,0,0);
+*(s16*)(p+0xd8)=0;*(s16*)(p+0xda)=0;p[0x112]=p[0x110];p[0x110]=0x12;}
+
 extern "C" void fn_803C21A8(u8* this_) {
     void* o;
     u32 state;
@@ -1943,6 +2042,99 @@ extern "C" void fn_803C579C(char* this_) {
     }
 }
 
+extern "C" void fn_803C5808(u8* p) {
+    s32 list[2];
+    s32 off;
+    s32 thr;
+    s32* lp;
+    s32 a = *(s16*)(lbl_8050DB0C + 0x17c);
+    s32 b = *(s16*)(lbl_8050DB0C + 0x17e);
+    s32 c = *(s16*)(lbl_8050DB0C + 0x180);
+    s32 d = *(s16*)(lbl_8050DB0C + 0x182);
+    s32 e = *(s16*)(lbl_8050DB0C + 0x184);
+
+    thr = a + (b + c);
+    if (thr < d + e) {
+        thr = d + e;
+    }
+    {
+        s32 f = *(s16*)(lbl_8050DB0C + 0x186);
+        s32 g = *(s16*)(lbl_8050DB0C + 0x188);
+        s32 h = *(s16*)(lbl_8050DB0C + 0x18a);
+        if (thr < f + (g + h * 3)) {
+            thr = f + (g + h * 3);
+        }
+    }
+
+    lp = list;
+    if (*(s32*)(p + 0xa4) != 0) {
+        *lp = 0;
+        lp++;
+    }
+    if (*(s32*)(p + 0xa4) != 1) {
+        *lp = 1;
+        lp++;
+    }
+    if (*(s32*)(p + 0xa4) != 2) {
+        *lp = 2;
+    }
+
+    *(s16*)(p + 0xd8) = *(s16*)(p + 0xd8) + 1;
+    lp = list;
+    off = 0;
+    do {
+        if (*(s16*)(p + 0xd8) > a + off) {
+            s32 k = *lp;
+            setFade(*(void**)(p + k * 4 + 0x38), b, 0, lbl_80543458, lbl_80543498);
+            fn_80402628(*(void**)(p + k * 4 + 0x38), b, *(u8*)(*(u8**)(p + k * 4 + 0x38) + 0x28), 0);
+            setCell(p, 0x38, k, 0x780, p[0x125]);
+            setCell(p, 0x38, k, 0x768, p[0x126]);
+            setCell(p, 0x38, k, 0x750, p[0x127]);
+            setCell(p, 0x38, k, 0x6c8, p[0x128]);
+            setCell(p, 0x38, k, 0x6b0, p[0x129]);
+            setCell(p, 0x38, k, 0x698, p[0x12a]);
+            setCell(p, 0x38, k, 0x680, p[0x12b]);
+            setCell(p, 0x38, k, 0x668, p[0x12c]);
+            setCell(p, 0x38, k, 0x650, p[0x12d]);
+            setCell(p, 0x38, k, 0x638, p[0x12e]);
+            setCell(p, 0x38, k, 0x620, p[0x12f]);
+            setCell(p, 0x38, k, 0x608, p[0x130]);
+            setCell(p, 0x38, k, 0x5f0, p[0x131]);
+
+            setFade(*(void**)(p + k * 4 + 0x44), b, 0, lbl_80543458, lbl_80543498);
+            fn_80402628(*(void**)(p + k * 4 + 0x44), b, *(u8*)(*(u8**)(p + k * 4 + 0x44) + 0x28), 0);
+            setCell(p, 0x44, k, 0x5d8, p[0x118]);
+            setCell(p, 0x44, k, 0x5c0, p[0x119]);
+            setCell(p, 0x44, k, 0x5a8, p[0x11a]);
+            setCell(p, 0x44, k, 0x590, p[0x11b]);
+            setCell(p, 0x44, k, 0x578, p[0x11c]);
+            setCell(p, 0x44, k, 0x560, p[0x11d]);
+            setCell(p, 0x44, k, 0x548, p[0x11e]);
+            setCell(p, 0x44, k, 0x530, p[0x11f]);
+            setCell(p, 0x44, k, 0x518, p[0x120]);
+            setCell(p, 0x44, k, 0x500, p[0x121]);
+            setCell(p, 0x44, k, 0x4e8, p[0x122]);
+            setCell(p, 0x44, k, 0x4d0, p[0x123]);
+            setCell(p, 0x44, k, 0x4b8, p[0x124]);
+        }
+        lp++;
+        off += c;
+    } while (lp < list + 2);
+
+    if (*(s32*)(p + 0xa4) != 0 && *(s16*)(p + 0xd8) > a) {
+        fn_80402940(*(void**)(p + *(s32*)(p + 0xa4) * 4 + 0x38), b, lbl_80543458,
+                    *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(*(u8**)(p + *(s32*)(p + 0xa4) * 4 + 0x38) + 0xc), 0);
+        fn_80402940(*(void**)(p + *(s32*)(p + 0xa4) * 4 + 0x44), b, lbl_80543458,
+                    *(f32*)(*(u8**)(p + 0x44) + 0xc) - *(f32*)(*(u8**)(p + *(s32*)(p + 0xa4) * 4 + 0x44) + 0xc), 0);
+    }
+
+    if (*(s16*)(p + 0xd8) > d) {
+        setFade(*(void**)(p + 0x20), e, 0, lbl_80543498, lbl_80543458);
+        fn_80402628(*(void**)(p + 0x20), e, 0, *(u8*)(*(u8**)(p + 0x20) + 0x28));
+        setKeyedAt(p, 4, 0x20, (u8*)lbl_804765D0 + 0x368, 9, 0x196);
+    }
+}
+
 extern "C" void fn_803C61C4(u8* p) {
     s16 sVar;
     s16 E;
@@ -2575,6 +2767,96 @@ extern "C" void fn_803CABAC(u8* self) {
     }
 }
 
+#pragma optimization_level 3
+extern "C" void fn_803CB3DC(u8* p) {
+ u8* tbl = lbl_8050DB0C;
+ u8* base = (u8*)lbl_804765D0;
+ s32 b = *(s16*)(tbl+0x17e);
+ s32 c = *(s16*)(tbl+0x180);
+ s32 a = *(s16*)(tbl+0x17c);
+ s32 lim = b+c;
+ lim = a+lim;
+ s32 d = *(s16*)(tbl+0x182);
+ s32 e = *(s16*)(tbl+0x184);
+ s32 f = *(s16*)(tbl+0x186);
+ s32 g = *(s16*)(tbl+0x188);
+ s32 h = *(s16*)(tbl+0x18a);
+ if(lim<d+e) lim=d+e;
+ s32 tail=g+h*3;
+ tail=f+tail;
+ if(lim<tail) lim=tail;
+ s32 ids[2]; s32* id=ids; s32* dst=id;
+ for(s32 j=0;j<3;j++){if(j!=*(s32*)(p+0xa4)) *dst++=j;}
+ *(s16*)(p+0xd8)+=1;
+ s32 off; s32 i;
+ i=0;off=0;
+ for(;i<2;i++,off+=c,id++) {
+ if(*(s16*)(p+0xd8)>a+off) {
+ setFade(*(void**)(p+0x38+*id*4),b,0,lbl_80543458,lbl_80543498);
+ fn_80402628(*(void**)(p+0x38+*id*4),b,(*(u8**)(p+0x38+*id*4))[0x28],0);
+ s32 idx=*id;
+void* first56=((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x780)+(u32)idx*8));
+s32 cell56=idx*4+0x38;
+fn_804023D0(*(void**)(p+cell56),first56,p[0x125]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x768)+(u32)idx*8)),p[0x126]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x750)+(u32)idx*8)),p[0x127]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x6c8)+(u32)idx*8)),p[0x128]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x6b0)+(u32)idx*8)),p[0x129]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x698)+(u32)idx*8)),p[0x12a]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x680)+(u32)idx*8)),p[0x12b]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x668)+(u32)idx*8)),p[0x12c]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x650)+(u32)idx*8)),p[0x12d]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x638)+(u32)idx*8)),p[0x12e]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x620)+(u32)idx*8)),p[0x12f]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x608)+(u32)idx*8)),p[0x130]);
+fn_804023D0(*(void**)(p+cell56),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x5f0)+(u32)idx*8)),p[0x131]);
+setFade(*(void**)(p+0x44+*id*4),b,0,lbl_80543458,lbl_80543498);
+ fn_80402628(*(void**)(p+0x44+*id*4),b,(*(u8**)(p+0x44+*id*4))[0x28],0);
+ idx=*id;
+void* first68=((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x5d8)+(u32)idx*8));
+s32 cell68=idx*4+0x44;
+fn_804023D0(*(void**)(p+cell68),first68,p[0x118]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x5c0)+(u32)idx*8)),p[0x119]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x5a8)+(u32)idx*8)),p[0x11a]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x590)+(u32)idx*8)),p[0x11b]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x578)+(u32)idx*8)),p[0x11c]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x560)+(u32)idx*8)),p[0x11d]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x548)+(u32)idx*8)),p[0x11e]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x530)+(u32)idx*8)),p[0x11f]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x518)+(u32)idx*8)),p[0x120]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x500)+(u32)idx*8)),p[0x121]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x4e8)+(u32)idx*8)),p[0x122]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x4d0)+(u32)idx*8)),p[0x123]);
+fn_804023D0(*(void**)(p+cell68),((J2DPane*)*(void**)(p+8))->search(*(u64*)((u8*)(base+0x4b8)+(u32)idx*8)),p[0x124]);
+}}
+ if(*(s32*)(p+0xa4)!=0 && *(s16*)(p+0xd8)>a){
+ fn_80402940(*(void**)(p+0x38+*(s32*)(p+0xa4)*4),b,lbl_80543458,*(f32*)(*(u8**)(p+0x38)+0xc)-*(f32*)(*(u8**)(p+0x38+*(s32*)(p+0xa4)*4)+0xc) ,0);
+ fn_80402940(*(void**)(p+0x44+*(s32*)(p+0xa4)*4),b,lbl_80543458,*(f32*)(*(u8**)(p+0x44)+0xc)-*(f32*)(*(u8**)(p+0x44+*(s32*)(p+0xa4)*4)+0xc),0);
+ }
+ if(*(s16*)(p+0xd8)>d){
+ setFade(*(void**)(p+0x14),e,0,lbl_80543498,lbl_80543458);
+ fn_80402628(*(void**)(p+0x14),e,0,(*(u8**)(p+0x14))[0x28]);
+ setFade(*(void**)(p+0x18),e,0,lbl_80543498,lbl_80543458);
+ fn_80402628(*(void**)(p+0x18),e,0,(*(u8**)(p+0x18))[0x28]);
+ setFade(*(void**)(p+0x1c),e,0,lbl_80543498,lbl_80543458);
+ fn_80402628(*(void**)(p+0x1c),e,0,(*(u8**)(p+0x1c))[0x28]);
+ {s32 k;u8* kp; k=0;kp=base+0x48;for(;k<0x51;k++,kp+=8)fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+4))->search(*(u64*)kp),p[k+0x132]);}
+ {s32 k;u8* kp; k=0;kp=base+0x2d0;for(;k<0x13;k++,kp+=8)fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[k+0x183]);}
+ }
+ off=0;u8* q=p;
+ for(s32 row=0;row<4;row++,off+=h,q+=4){
+ if(*(s16*)(p+0xd8)>f+off){
+ fn_80402940(*(void**)(q+0x24),g,lbl_80543458,lbl_8054349C,0);
+ fn_80402628(*(void**)(q+0x24),g,0,(*(u8**)(q+0x24))[0x28]);
+ switch(row){
+ case 0:{s32 k;u8* kp; k=0;kp=base+0x7f8;for(;k<4;k++,kp+=8)fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[k+0x19f]);}break;
+ case 1:{s32 k;u8* kp; k=0;kp=base+0x7d8;for(;k<4;k++,kp+=8)fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[k+0x19f]);}break;
+ case 2:{s32 k;u8* kp; k=0;kp=base+0x7b8;for(;k<4;k++,kp+=8)fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[k+0x19f]);}break;
+ case 3:{s32 k;u8* kp; k=0;kp=base+0x798;for(;k<4;k++,kp+=8)fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[k+0x19f]);}break;
+ }}}
+ if(*(s16*)(p+0xd8)>lim){p[0x112]=p[0x110];p[0x110]=0x13;}
+}
+#pragma optimization_level reset
 extern "C" void fn_803CBE38(char* p) {
     int r;
     r = fn_803B9A94(lbl_8051C1A0, *(u32*)(p + 0x5c), 0x258, *(u32*)(p + 0x60), 0x1d4c, 0);
