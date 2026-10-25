@@ -236,6 +236,9 @@ extern "C" void fn_803771AC(u8* this_) {
                 } else {
                     *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x319, 1, 1, 0, 0, 1);
                 }
+                if (*(u32*)(this_ + 0x230) != 0) {
+                    fn_8013CB44(*(u32*)(this_ + 0x230), pos, 0, 0, 1);
+                }
             } else {
                 (*(s32*)(this_ + 0x260))++;
             }
@@ -302,3 +305,4 @@ extern "C" void fn_80377A38(u8* this_) {
     *(s32*)(this_ + 0x23c) = 0;
     *(s32*)(this_ + 0x240) = 0;
 }
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
