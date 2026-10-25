@@ -1,4 +1,6 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JUtility/JUTVideo.h"
 
 
 extern "C" void* fn_80119E5C(u8* self, s16 size);
@@ -625,31 +627,15 @@ extern "C" void fn_801194C4(u8* self) {
         fn_8013B490(lbl_8053AB10);
         switch (*(s32*)(self + 0x24)) {
         case 1:
-            {
-                s32 hi[2];
-                s32 lo[2];
-                lo[1] = 0;
-                hi[1] = -1;
-                lo[0] = 0;
-                hi[0] = -1;
-                ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x2c))[76])(*(void**)(self + 0x2c), &hi[1], &lo[1]);
-            }
+            (*(J2DPicture**)(self + 0x2c))->setBlackWhite(JUtility::TColor(0xffffffff), JUtility::TColor(0));
             break;
         case 0:
         default:
-            {
-                s32 hi[2];
-                s32 lo[2];
-                lo[1] = 0;
-                hi[1] = 0xff;
-                lo[0] = 0;
-                hi[0] = 0xff;
-                ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x2c))[76])(*(void**)(self + 0x2c), &hi[1], &lo[1]);
-            }
+            (*(J2DPicture**)(self + 0x2c))->setBlackWhite(JUtility::TColor(0xff), JUtility::TColor(0));
             break;
         }
-        ((void (*)(void*, s32))(*(void***)*(void**)(self + 0x2c))[9])(*(void**)(self + 0x2c), (s32)*(f32*)(self + 0x14));
-        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)*(void**)(self + 0x2c))[59])(*(void**)(self + 0x2c), 0, 0, 0, lbl_8053C798, lbl_8053C798, (f32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4), (f32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6));
+        (*(J2DPicture**)(self + 0x2c))->setAlpha(*(f32*)(self + 0x14));
+        (*(J2DPicture**)(self + 0x2c))->draw(0.0f, 0.0f, (int)JUTVideo::getManager()->getFbWidth(), (int)JUTVideo::getManager()->getEfbHeight(), false, false, false);
     }
 }
 
