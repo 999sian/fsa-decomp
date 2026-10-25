@@ -371,8 +371,12 @@ static inline void ichlSub(IchlV2& out, const IchlV2& a, const IchlV2& b) {
     out.y = a.y - b.y;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_801DB6C8(char* p) {
-    IchlV2 t;
+    f32 tx;
+    f32 ty;
+    f32 oldx;
+    f32 oldy;
     if (*(s32*)(p + 0x16c) == -1) {
         IchlV2 tmp;
         if (fn_801DACAC(fn_801DAC6C(), &tmp)) {
@@ -383,8 +387,10 @@ extern "C" void fn_801DB6C8(char* p) {
         }
     }
     if (*(s32*)(p + 0x2a8) == -1) {
-        t.y = *(f32*)(p + 0x2c8) + *(f32*)(p + 0x2b8);
-        t.x = *(f32*)(p + 0x2c4) + *(f32*)(p + 0x2b4);
+        tx = *(f32*)(p + 0x2c4);
+        ty = *(f32*)(p + 0x2c8);
+        tx += *(f32*)(p + 0x2b4);
+        ty += *(f32*)(p + 0x2b8);
     } else {
         IchlV2 rec = *(IchlV2*)(p + *(s32*)(p + 0x2a8) * 0xc + 0x1ac);
         IchlV2 d;
@@ -397,11 +403,16 @@ extern "C" void fn_801DB6C8(char* p) {
             d.normalize();
         }
         d.scale(*(f32*)(p + 0x2d4));
-        t.x = rec.x + d.x + *(f32*)(p + 0x2b4);
-        t.y = rec.y + d.y + *(f32*)(p + 0x2b8);
+        tx = rec.x + d.x;
+        ty = rec.y + d.y;
+        tx += *(f32*)(p + 0x2b4);
+        ty += *(f32*)(p + 0x2b8);
     }
     IchlV2 m;
-    ichlSub(m, t, *(IchlV2*)(p + 0x2bc));
+    oldy = *(f32*)(p + 0x2c0);
+    oldx = *(f32*)(p + 0x2bc);
+    m.x = tx - oldx;
+    m.y = ty - oldy;
     if (!(m.squared() <= JGeometry::TUtilf::epsilon())) {
         f32 mx = *(f32*)(p + 0x2e0);
         f32 len = m.length();
@@ -419,7 +430,7 @@ extern "C" void fn_801DB6C8(char* p) {
         *(s16*)(p + 0x2dc) += *(s16*)(p + 0x2de);
     }
 }
-
+#pragma opt_propagation reset
 extern const f32 lbl_8053F308;
 extern const f32 lbl_8053F30C;
 extern const f32 lbl_8053F310;
@@ -434,13 +445,14 @@ static inline f32 ichlSq(const IchlV2& v) {
 static inline f32 ichlLen(const IchlV2& v) {
     return JGeometry::TUtilf::sqrt(ichlSq(v));
 }
-static inline bool ichlIsZero(const IchlV2& v) {
+static inline bool ichlIsZero(IchlV2 v) {
     bool r = ichlSq(v) <= JGeometry::TUtilf::epsilon();
     return r;
 }
 
 extern const f32 lbl_8053F2FC;
 extern int __float_epsilon[];
+#pragma opt_propagation off
 extern "C" void fn_801DB9CC(char* p) {
     if (fn_801CD664(2) == 0) {
         *(u32*)(p + 0x230) &= ~0x2000;
@@ -476,12 +488,18 @@ extern "C" void fn_801DB9CC(char* p) {
             *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
         }
     }
+    f32 sy;
+    f32 sx;
     s16 ang = *(s16*)(p + 0x2dc);
     f32 r = *(f32*)(p + 0x2d4);
+    sx = -JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+    sy = -JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    sx *= r;
+    sy *= r;
     *(f32*)(p + 0x2bc) = *(f32*)(p + 0xc);
     *(f32*)(p + 0x2c0) = *(f32*)(p + 0x10);
-    *(f32*)(p + 0x2bc) += -JMath::sincosTable_.mTable[(u16)ang >> 5].first * r;
-    *(f32*)(p + 0x2c0) += -JMath::sincosTable_.mTable[(u16)ang >> 5].second * r;
+    *(f32*)(p + 0x2bc) += sx;
+    *(f32*)(p + 0x2c0) += sy;
     *(f32*)(p + 0x2c4) = *(f32*)(p + 0x2bc);
     *(f32*)(p + 0x2c8) = *(f32*)(p + 0x2c0);
     if (*(s32*)(p + 0x16c) == -1) {
@@ -492,7 +510,6 @@ extern "C" void fn_801DB9CC(char* p) {
             *(f32*)(p + 0x2cc) -= tmp.x;
             *(f32*)(p + 0x2d0) -= tmp.y;
         }
-    }
     switch (fn_801CD664(3)) {
     case 0:
         *(f32*)(p + 0x2b0) = lbl_8053F314;
@@ -500,15 +517,15 @@ extern "C" void fn_801DB9CC(char* p) {
     case 1:
         *(f32*)(p + 0x2b0) = lbl_8053F318;
         break;
-    case 2:
+    default:
         *(f32*)(p + 0x2b0) = lbl_8053F31C;
         break;
-    default:
+    }
+    } else {
         *(f32*)(p + 0x2b0) = lbl_8053F2E4;
-        break;
     }
 }
-#pragma fp_contract on
+#pragma opt_propagation reset
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "sdk/stl/math.h"
