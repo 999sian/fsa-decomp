@@ -78,7 +78,7 @@ extern "C" void fn_8020F80C(void* self, char* p)
             mtx[2][2] = -1.0f;
             rec.w18 = mtx;
             mode = 2;
-            *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x14) - lbl_8046A238[*(s32*)(this_ + 0x350)].f;
+            *(f32*)(this_ + 0x14) -= lbl_8046A238[*(s32*)(this_ + 0x350)].f;
         }
     }
     if (*(s32*)(this_ + 4) < 8) {
