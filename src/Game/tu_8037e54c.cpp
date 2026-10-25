@@ -702,6 +702,8 @@ extern "C" void* __dt__9T37ConfigFv(void* this_, s16 freeFlag) {
     return this_;
 }
 
+
+
 extern "C" u8 fn_8038A984(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f);
 extern "C" u32 fn_803846BC(u32 id) {
     u32 i;
