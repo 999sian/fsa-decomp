@@ -101,7 +101,7 @@ extern "C" void fn_803F2580(u8* p) {
 
 static inline void tu803F_setAlphas(u8* p, u64* tags, u8* alphas, s32 n, f32 a) {
     for (s32 i = 0; i < n; i++) {
-        (*(J2DPane**)(p + 0xc))->search(tags[i])->setAlpha((u8)((f32)alphas[i] * a));
+        (*(J2DPane**)(p + 0xc))->search(tags[i])->setAlpha((u8)(a * (f32)alphas[i]));
     }
 }
 
@@ -719,14 +719,10 @@ extern "C" void fn_803F8354(u8* p) {
             } else if (a > lbl_80543730) {
                 a = lbl_80543730;
             }
-            for (s32 i = 0; i < 20; i++) {
-                (*(J2DPane**)(p + 0xc))->search(((u64*)(base + 0x5f0))[i])->setAlpha((u8)((f32)p[0x312 + i] * a));
-            }
+            tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, a);
         } else {
             *(f32*)(p + 0x164) = lbl_8054372C;
-            for (s32 i = 0; i < 20; i++) {
-                (*(J2DPane**)(p + 0xc))->search(((u64*)(base + 0x5f0))[i])->setAlpha((u8)((f32)p[0x312 + i] * lbl_80543730));
-            }
+            tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, lbl_80543730);
         }
     }
     if (*(s16*)(p + 0x240) > 0x19) {
@@ -748,14 +744,10 @@ extern "C" void fn_803F8354(u8* p) {
                 } else if (a > lbl_80543730) {
                     a = lbl_80543730;
                 }
-                for (s32 j = 0; j < 5; j++) {
-                    (*(J2DPane**)(p + 0xc))->search(((u64*)(base + 0x690))[k * 5 + j])->setAlpha((u8)((f32)p[0x326 + k * 5 + j] * a));
-                }
+                tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, a);
             } else {
                 *(f32*)(p + 0x184 + k * 4) = lbl_8054372C;
-                for (s32 j = 0; j < 5; j++) {
-                    (*(J2DPane**)(p + 0xc))->search(((u64*)(base + 0x690))[k * 5 + j])->setAlpha((u8)((f32)p[0x326 + k * 5 + j] * lbl_80543730));
-                }
+                tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, lbl_80543730);
             }
         }
     }
@@ -768,14 +760,10 @@ extern "C" void fn_803F8354(u8* p) {
             } else if (a > lbl_80543730) {
                 a = lbl_80543730;
             }
-            for (s32 i = 0; i < 26; i++) {
-                (*(J2DPane**)(p + 0xc))->search(((u64*)(base + 0x708))[i])->setAlpha((u8)((f32)p[0x335 + i] * a));
-            }
+            tu803F_setAlphas(p, (u64*)(base + 0x708), p + 0x335, 26, a);
         } else {
             *(f32*)(p + 0x198) = lbl_8054372C;
-            for (s32 i = 0; i < 26; i++) {
-                (*(J2DPane**)(p + 0xc))->search(((u64*)(base + 0x708))[i])->setAlpha((u8)((f32)p[0x335 + i] * lbl_80543730));
-            }
+            tu803F_setAlphas(p, (u64*)(base + 0x708), p + 0x335, 26, lbl_80543730);
         }
     }
     if (*(s16*)(p + 0x240) >= 0x4b) {
