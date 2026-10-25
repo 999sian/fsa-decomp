@@ -58,6 +58,23 @@ struct J2DScreenVt2 {
     virtual u32 m12(u32, u32, u32) = 0;
 };
 
+struct J2DScreenSearch {
+    virtual ~J2DScreenSearch();
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void* search(u64 tag) = 0;
+};
+
 extern "C" {
 extern char lbl_80490DA8[];
 extern void* lbl_80529DEC[];
