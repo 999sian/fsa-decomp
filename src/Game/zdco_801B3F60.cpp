@@ -4,6 +4,27 @@
 extern const f32 lbl_8053EA08;
 extern const f32 lbl_8053E9EC;
 extern const f32 lbl_8053E9C0;
+#include "std/math.h"
+extern const f64 lbl_8053E9D0;
+extern const f64 lbl_8053E9D8;
+extern const f64 lbl_8053E9E0;
+
+static inline f32 zdcoSqrt(f32 mag)
+{
+    if (mag > lbl_8053E9C0) {
+        f64 tmpd = __frsqrte(mag);
+        tmpd = tmpd * lbl_8053E9D0 * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
+        tmpd = tmpd * lbl_8053E9D0 * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
+        tmpd = tmpd * lbl_8053E9D0 * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
+        return mag * tmpd;
+    } else if (mag < lbl_8053E9E0) {
+        return *(f32*)__float_nan;
+    } else if (fpclassify(mag) == 1) {
+        return *(f32*)__float_nan;
+    } else {
+        return mag;
+    }
+}
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
