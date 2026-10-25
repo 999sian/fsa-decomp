@@ -638,24 +638,29 @@ struct TileStageMap {
     u8 cells[10][10];
 };
 
-static inline u32 tileKindAt(const f32* pos, s32 room) {
+static inline u32 tileKindAt(const f32* pos, u32 room) {
     u16 tile = lbl_8046CB88[tileAtOrdered(pos, room)];
-    if (fn_802D6A9C()[room + 0x131df] != 0) {
+    u32 flags = (u32)fn_802D6A9C() + 0x131df;
+    if (*(u8*)(flags + room) != 0) {
         if (tile == 0) return 2;
         if (tile == 0x61) return 0;
         return tile;
     }
-    if (tile != 0xe || (u8)lbl_8053AAF8[0x7f] == 0) return tile;
-    if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
-    } else {
-        if (*(s32*)(fn_802D6A9C() + 4) != 7 || *(s32*)(fn_802D6A9C() + 8) != 3) return tile;
-        s32 x = *(s32*)(fn_802D6A9C() + 0x14);
-        u8* g2 = fn_802D6A9C();
-        u8* h = fn_802D6A9C();
-        s32 value = ((TileStageMap*)h)->cells[*(s32*)(g2 + 0x18)][x];
-        if (value != 0x10 || pos[1] <= lbl_8053FF50) return tile;
+    if (tile == 0xe && (u8)lbl_8053AAF8[0x7f] != 0) {
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) goto special;
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
+            s32 x = *(s32*)(fn_802D6A9C() + 0x14);
+            u8* g2 = fn_802D6A9C();
+            u8* h = fn_802D6A9C();
+            s32 value = ((TileStageMap*)h)->cells[*(s32*)(g2 + 0x18)][x];
+            if (value == 0x10 && pos[1] > lbl_8053FF50) goto special;
+        }
     }
+    goto normal;
+special:
     return 0x51;
+normal:
+    return tile;
 }
 
 extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
