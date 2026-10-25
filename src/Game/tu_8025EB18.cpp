@@ -9,7 +9,7 @@
 #define F32(p, off) (*(f32*)((p) + (off)))
 #define VEC(p, off) (*(JGeometry::TVec3<f32>*)((p) + (off)))
 
-static inline u8 isCarried(char* p) {
+static inline bool isCarried(char* p) {
     return U8(p, 0xd64) == 1;
 }
 
@@ -347,30 +347,25 @@ extern "C" int fn_8025F684(char* p) {
     return (u8)(U8(p, 0xd64) == 1);
 }
 
+#pragma opt_common_subs off
 extern "C" bool fn_8025FCC8(char* p) {
     s32 state = S32(p, 0x1244);
-    if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2) {
-        return false;
-    }
-    u8 flag = U8(p, 0xd64);
-    if ((u8)(flag == 1)) {
-        bool carrying = (u8)(flag == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-        if (!carrying && (u32)(state - 0x20) <= 5) {
-            return false;
-        }
-    }
-    if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1) {
-        return false;
-    }
-    if (flag == 1) {
-        bool carrying = (u8)(flag == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-        if (!carrying && (state == 0x4c || state == 0x4d)) {
-            return false;
-        }
-    }
+    if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2)
+        goto blocked;
+    if (isCarried(p) && !isCarriedByPlayer(p) && (u32)(state - 0x20) <= 5)
+        goto blocked;
+    if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1)
+        goto blocked;
+    if (U8(p, 0xd64) != 1) goto allowed;
+    if (isCarriedByPlayer(p)) goto allowed;
+    if (state == 0x4c) goto blocked;
+    if (state != 0x4d) goto allowed;
+blocked:
+    return false;
+allowed:
     return true;
 }
-
+#pragma opt_common_subs reset
 extern "C" char* fn_8023E7B0(s32);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" char* fn_802D6A9C();
