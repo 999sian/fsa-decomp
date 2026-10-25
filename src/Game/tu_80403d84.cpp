@@ -612,8 +612,8 @@ extern "C" f32 lbl_805438CC;
 
 // States in which the "Pphu01" pointer pane is shown.
 static inline bool Tu411ShowState(s32 st) {
-	return st == 2 || (st >= 3 && st <= 4) || (st >= 6 && st <= 9) || (st >= 15 && st <= 18) ||
-	       (st >= 20 && st <= 21) || st == 22;
+	return st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 15) <= 3 ||
+	       (u32)(st - 20) <= 1 || st == 22;
 }
 
 extern "C" void fn_804111C4(u8* self) {
@@ -624,6 +624,75 @@ extern "C" void fn_804111C4(u8* self) {
 	(*(J2DScreen**)(self + 0x18))->b100 = 1;
 	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0x18), 0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
 	fn_80440EE8(lbl_8053AED8);
+}
+
+extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
+extern "C" void fn_80411230(u8* self) {
+	fn_8013B490(lbl_8053AB10);
+	s32 slot = *(s32*)(self + 0x340);
+	if (slot < 7 && !EC80Bit28(slot, 3) &&
+	    (Tu411ShowState(*(s32*)(self + 0x350)) || *(s32*)(self + 0x350) == 0x13)) {
+		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
+			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 1;
+		}
+		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->setAlpha((int)((f32)self[0x65b] * *(f32*)(self + 0x3fc)));
+		Pane411* p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
+		f32 h = p->y1 - p->y0;
+		p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
+		f32 w = p->x1 - p->x0;
+		f32 y = ((f32)lbl_8048C9DC[*(s32*)(self + 0x340)].y -
+		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[1]) - h * lbl_805438C8;
+		f32 x = ((f32)lbl_8048C9DC[*(s32*)(self + 0x340)].x -
+		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
+		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
+	} else if (slot == 10 && *(s32*)(self + 0x348) == 2 && *(s32*)(lbl_80529DEC + 0x120) < 7 &&
+	           !EC80Bit28(*(s32*)(lbl_80529DEC + 0x120), 3) && Tu411ShowState(*(s32*)(self + 0x350))) {
+		if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 0) {
+			(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 1;
+		}
+		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->setAlpha((int)((f32)self[0x65b] * *(f32*)(self + 0x3fc)));
+		s32 sy = *(s32*)(lbl_80529DEC + 0x120);
+		Pane411* p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
+		f32 h = p->y1 - p->y0;
+		s32 sx = *(s32*)(lbl_80529DEC + 0x120);
+		p = (*(Screen411**)(self + 0x10))->search(0x507068753031ULL);
+		f32 w = p->x1 - p->x0;
+		f32 y = ((f32)lbl_8048C9DC[sy].y -
+		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[1]) - h * lbl_805438C8;
+		f32 x = ((f32)lbl_8048C9DC[sx].x -
+		         ((f32*)getBounds__7J2DPaneFv((*(Screen411**)(self + 0x10))->search(0x4E646174613036ULL)))[0]) - w * lbl_805438C8;
+		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->move(x, y);
+	} else if ((*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible == 1) {
+		(*(Screen411**)(self + 0x10))->search(0x507068753031ULL)->visible = 0;
+	}
+	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0xc), lbl_80543898, lbl_80543898, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0x14), lbl_80543898, lbl_80543898, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+	draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 0x10), lbl_80543898, lbl_80543898, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+	f32 box[4];
+	box[0] = lbl_80543898;
+	box[1] = lbl_80543898;
+	box[2] = lbl_805438C4;
+	box[3] = lbl_805438CC;
+	fn_8013B414(lbl_8053AB10, box, 1);
+	if (*(s32*)(self + 0x340) <= 7 || (*(s32*)(self + 0x340) == 10 && *(s32*)(self + 0x348) == 2)) {
+		if (Tu411ShowState(*(s32*)(self + 0x350)) || *(s32*)(self + 0x350) == 0x13) {
+			(*(s32*)(self + 0x358))++;
+			fn_804069E8(self);
+			if (*(s32*)(self + 0x350) != 0x13) {
+				if (self[0x663]) {
+					fn_80406634(self, *(s32*)(self + 0x340) - 1, 1);
+				} else {
+					fn_80405FC0(self);
+					if (*(s32*)(self + 0x350) == 4) {
+						fn_80406634(self, *(s32*)(self + 0x340), 0);
+					}
+				}
+			}
+		}
+	}
+	if (*(s32*)(self + 0x350) == 0x11) {
+		fn_80406F68(self, *(f32*)(self + 0x3ac), *(f32*)(self + 0x3b0));
+	}
 }
 
 extern "C" {
