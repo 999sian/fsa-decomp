@@ -1,4 +1,6 @@
 #include "Game/SinitPoolChain.h"
+#include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Matrix.h"
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
@@ -221,6 +223,53 @@ extern "C" void fn_8010C6E4(u8* this_) {
     neg1 = -1;
     neg2 = -1;
     if (*(f32*)(this_ + 0x5c) * *(f32*)(this_ + 0x5c) > 0.0f) {
+    }
+}
+
+extern f32 lbl_8053C4C4;
+extern f32 lbl_8053C4E4;
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" s32 fn_8023AB94(f32* box, s32 room, u8* out);
+extern "C" void fn_801F2DB4(void* this_, u32 a, s32 b, u32 c);
+extern "C" void fn_8010CA44(u8* this_) {
+    f32 box[4];
+    u8 buf[0x74];
+    v03__5ActorFv(this_);
+    *(f32*)(this_ + 0x26c) = lbl_8053C4D4;
+    box[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+    box[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+    box[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+    box[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+    s32 st = *(s32*)(this_ + 0x238);
+    if (st != 0xc && st != 0xd) {
+        if (fn_8023AB94(box, *(s32*)(this_ + 4), buf) >= 0) {
+            fn_8010C294(this_, 0xc);
+        }
+    }
+    switch (*(u32*)(this_ + 0x238)) {
+    case 0: {
+        fn_801F2DB4(this_, 0x4e554c4c, 0, 0x4e554c4c);
+        *(f32*)(this_ + 0x26c) = lbl_8053C490;
+        u16 a;
+        f32 c;
+        s32 b;
+        s32 d;
+        fn_801EEC98(this_, *(void**)(this_ + 0x198), &a, &b, &c, &d, 0, 0);
+        if (d >= 0 && c < lbl_8053C4C4) {
+            *(s32*)(this_ + 0x23c) = d;
+            fn_8010C294(this_, 1);
+        }
+        break;
+    }
+    case 1:
+        *(f32*)(this_ + 0x26c) = lbl_8053C4E4;
+        *(s32*)(this_ + 0x24c) += 1;
+        if (*(s32*)(this_ + 0x24c) >= 0x32) {
+            fn_8010C294(this_, 2);
+        }
+        break;
+    default:
+        break;
     }
 }
 
