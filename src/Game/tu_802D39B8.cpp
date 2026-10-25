@@ -931,6 +931,51 @@ extern "C" char* fn_802D8228(char* p, s32 index) {
     return 0;
 }
 
+inline char* roomTextB(char* p, s32 index) {
+    s32 x = *(s32*)(p + 0x14);
+    if (x >= 0 && x < 10) {
+        s32 y = *(s32*)(p + 0x18);
+        if (y >= 0 && y < 10) {
+            s32 b = *(s32*)(p + 8);
+            s32 a = *(s32*)(p + 4);
+            const char* name;
+            if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1)
+                name = lbl_804A9530[a][b];
+            else
+                name = lbl_80541128;
+            s32 number = ((RoomArrays*)(p + y * 10))->roomNumbers[0][x];
+            if (number == 255)
+                number = 0;
+            sprintf(p + 0x131FA, lbl_8046E804, name, number / 10, number % 10, index - 7);
+            return p + 0x131FA;
+        }
+    }
+    return 0;
+}
+
+inline char* roomTextA(char* p, s32 index) {
+    s32 x = *(s32*)(p + 0x14);
+    if (x >= 0 && x < 10) {
+        s32 y = *(s32*)(p + 0x18);
+        if (y >= 0 && y < 10) {
+            const char* name;
+            s32 col = *(s32*)(p + 8);
+            s32 row = *(s32*)(p + 4);
+            if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1)
+                name = lbl_804A9530[row][col];
+            else
+                name = lbl_80541128;
+            char* cell = p + y * 10;
+            s32 number = ((RoomArrays*)cell)->roomNumbers[0][x];
+            if (number == 255)
+                number = 0;
+            sprintf(p + 0x1321A, lbl_8046E7E8, name, number / 10, number % 10, index - 7);
+            return p + 0x1321A;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_802D8D50(char* this_, u8 flag) {
     extern void fn_802D4CCC(char* p, s32 index);
     extern void fn_802F6BBC(char* base, s32 src, s32 dst);
@@ -941,108 +986,154 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     extern const f32 lbl_80541144;
     extern const f32 lbl_80541148;
 
-    const char* fmt = lbl_8046E148;
-    const char* name = lbl_80540FDC;
-    s32 number = 0;
+    char* tbl;
+    const char* fmt;
+    s32 tens;
+    const char* name;
+    s32 ones;
+    s32 key;
+    s32 number;
     char buf32[32];
-    char buf104[104];
+    char buf104[32];
 
+    fmt = lbl_8046E148;
+    name = lbl_80540FDC;
+    number = 0;
     *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0xc) + 0x5c) = 0;
-    s32 x = *(s32*)(this_ + 0x14);
-    s32 y = *(s32*)(this_ + 0x18);
-    if (x >= 0 && x < 10) {
-        if (y >= 0 && y < 10) {
-            s32 col = *(s32*)(this_ + 8);
-            s32 row = *(s32*)(this_ + 4);
-            if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                name = lbl_804A9530[row][col];
-            } else {
-                name = lbl_80541128;
-            }
-            number = ((u8*)(this_ + y * 10))[x + 0x60];
-            if (number == 0xff) {
-                number = 0;
+    {
+        s32 x = *(s32*)(this_ + 0x14);
+        if (x >= 0 && x < 10) {
+            s32 y = *(s32*)(this_ + 0x18);
+            if (y >= 0 && y < 10) {
+                s32 col = *(s32*)(this_ + 8);
+                s32 row = *(s32*)(this_ + 4);
+                if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+                    name = lbl_804A9530[row][col];
+                } else {
+                    name = lbl_80541128;
+                }
+                number = ((u8*)(this_ + y * 10))[x + 0x60];
+                if (number == 0xff) {
+                    number = 0;
+                }
             }
         }
     }
-    s32 key = (name[0] - 0x20) * 0x10000 + (name[1] - 0x20) * 0x100 + name[2] + 0x4d202020 - 0x20;
-    sprintf(buf104, fmt + 0x6f0, name, number / 10, number % 10);
-    sprintf(buf32, fmt + 0x70c, name, number / 10, number % 10);
+    tens = number / 10;
+    ones = number % 10;
+    key = ((name[0] - 0x20) << 16) + ((name[1] - 0x20) << 8) + name[2] + 0x4d202020 - 0x20;
+    sprintf(buf104, fmt + 0x6f0, name, tens, ones);
+    sprintf(buf32, fmt + 0x70c, name, tens, ones);
     if (flag != 0) {
         fn_802F6BBC(*(char**)(lbl_8053AB10 + 0x20), 0, 4);
         fn_802F6BBC(*(char**)(lbl_8053AB10 + 0x20), 1, 5);
     }
 
-    char* tbl = (char*)lbl_80529DEC;
-    char* src1 = ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, buf104);
-    fn_802F99DC(*(char**)(lbl_8053AB10 + 0x20), src1, 0, 0, 0, 0);
-    char* src2 = ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, buf32);
-    fn_802F99DC(*(char**)(lbl_8053AB10 + 0x20), src2, 0, 1, 0, 0);
+    tbl = (char*)lbl_80529DEC;
+    {
+        char* base = *(char**)(lbl_8053AB10 + 0x20);
+        fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, buf104), 0, 0, 0, 0);
+    }
+    {
+        char* base = *(char**)(lbl_8053AB10 + 0x20);
+        fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, buf32), 0, 1, 0, 0);
+    }
 
     *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x235c) = 1;
     *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x235d) = 1;
     fn_802D4CCC(this_, 0);
 
-    bool bVar5 = false;
-    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
-        char* q = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0xc);
-        bVar5 = (*(s32*)(q + 4) == 9 && *(s32*)(q + 8) == 3) || *(s32*)(q + 4) >= 0xd;
+    bool skip;
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 0) {
+        skip = false;
+    } else {
+        char* g4 = *(char**)(lbl_8053AAF8 + 4);
+        if ((*(s32*)(*(char**)(g4 + 0xc) + 4) == 9 && *(s32*)(*(char**)(g4 + 0xc) + 8) == 3) ||
+            *(s32*)(*(char**)(g4 + 0xc) + 4) >= 0xd) {
+            skip = true;
+        } else {
+            skip = false;
+        }
     }
-    if (!bVar5) {
+    if (!skip) {
         for (s32 i = 0; i < 7; i++) {
-            char* s1 = 0;
-            char* s2 = 0;
-            if (x >= 0 && x < 10) {
-                if (y >= 0 && y < 10) {
-                    s32 col = *(s32*)(this_ + 8);
-                    s32 row = *(s32*)(this_ + 4);
-                    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                        name = lbl_804A9530[row][col];
-                    } else {
-                        name = lbl_80541128;
+            char* s1;
+            char* s2;
+            {
+                s32 x = *(s32*)(this_ + 0x14);
+                if (x >= 0 && x < 10) {
+                    s32 y = *(s32*)(this_ + 0x18);
+                    if (y >= 0 && y < 10) {
+                        s32 col = *(s32*)(this_ + 8);
+                        s32 row = *(s32*)(this_ + 4);
+                        const char* nm;
+                        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+                            nm = lbl_804A9530[row][col];
+                        } else {
+                            nm = lbl_80541128;
+                        }
+                        s32 no = ((u8*)this_)[y * 10 + x + 0x60];
+                        if (no == 0xff) {
+                            no = 0;
+                        }
+                        sprintf(this_ + 0x131fa, fmt + 0x6bc, nm, no / 10, no % 10, i + 1);
+                        s1 = this_ + 0x131fa;
+                        goto have1;
                     }
-                    number = ((u8*)(this_ + y * 10))[x + 0x60];
-                    if (number == 0xff) {
-                        number = 0;
-                    }
-                    sprintf(this_ + 0x131fa, fmt + 0x6bc, name, number / 10, number % 10, i + 1);
-                    s1 = this_ + 0x131fa;
                 }
+                s1 = 0;
             }
-            if (x >= 0 && x < 10) {
-                if (y >= 0 && y < 10) {
-                    s32 col = *(s32*)(this_ + 8);
-                    s32 row = *(s32*)(this_ + 4);
-                    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                        name = lbl_804A9530[row][col];
-                    } else {
-                        name = lbl_80541128;
+        have1:
+            {
+                s32 x = *(s32*)(this_ + 0x14);
+                if (x >= 0 && x < 10) {
+                    s32 y = *(s32*)(this_ + 0x18);
+                    if (y >= 0 && y < 10) {
+                        s32 col = *(s32*)(this_ + 8);
+                        s32 row = *(s32*)(this_ + 4);
+                        const char* nm;
+                        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+                            nm = lbl_804A9530[row][col];
+                        } else {
+                            nm = lbl_80541128;
+                        }
+                        s32 no = ((u8*)this_)[y * 10 + x + 0x60];
+                        if (no == 0xff) {
+                            no = 0;
+                        }
+                        sprintf(this_ + 0x1321a, fmt + 0x6a0, nm, no / 10, no % 10, i + 1);
+                        s2 = this_ + 0x1321a;
+                        goto have2;
                     }
-                    number = ((u8*)(this_ + y * 10))[x + 0x60];
-                    if (number == 0xff) {
-                        number = 0;
-                    }
-                    sprintf(this_ + 0x1321a, fmt + 0x6a0, name, number / 10, number % 10, i + 1);
-                    s2 = this_ + 0x1321a;
                 }
+                s2 = 0;
             }
+        have2:
             if (s1 != 0) {
-                char* a1 = ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, s1);
-                fn_802F99DC(*(char**)(lbl_8053AB10 + 0x20), a1, 0, i + 8, 0, 0);
-                char* a2 = ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, s2);
-                fn_802F99DC(*(char**)(lbl_8053AB10 + 0x20), a2, 0, i + 0x10, 0, 0);
+                {
+                    char* base = *(char**)(lbl_8053AB10 + 0x20);
+                    fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, s1), 0, i + 8, 0, 0);
+                }
+                {
+                    char* base = *(char**)(lbl_8053AB10 + 0x20);
+                    fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, s2), 0, i + 0x10, 0, 0);
+                }
             }
             fn_802D4CCC(this_, i + 8);
         }
     }
 
-    *(f32*)(this_ + 0xcc) = lbl_80541144 * (f32)*(s32*)(this_ + 0x14);
-    *(f32*)(this_ + 0xd0) = lbl_80541140 * (f32)*(s32*)(this_ + 0x18);
-    *(f32*)(this_ + 0xd4) = lbl_80541144 + *(f32*)(this_ + 0xcc);
-    *(f32*)(this_ + 0xd8) = lbl_80541140 + *(f32*)(this_ + 0xd0);
+    f32 l = lbl_80541144 * (f32)*(s32*)(this_ + 0x14);
+    f32 t = lbl_80541140 * (f32)*(s32*)(this_ + 0x18);
+    *(f32*)(this_ + 0xcc) = l;
+    *(f32*)(this_ + 0xd0) = t;
+    *(f32*)(this_ + 0xd4) = lbl_80541144 + l;
+    *(f32*)(this_ + 0xd8) = lbl_80541140 + t;
     char* base = *(char**)(lbl_8053AB10 + 0x20);
-    *(s32*)(base + 0x2380) = (s32)((*(f32*)(this_ + 0xd4) - *(f32*)(this_ + 0xcc)) * lbl_80541148);
-    *(s32*)(base + 0x2384) = (s32)((*(f32*)(this_ + 0xd8) - *(f32*)(this_ + 0xd0)) * lbl_80541148);
+    s32 w = (s32)(lbl_80541148 * (*(f32*)(this_ + 0xd4) - *(f32*)(this_ + 0xcc)));
+    s32 h = (s32)(lbl_80541148 * (*(f32*)(this_ + 0xd8) - *(f32*)(this_ + 0xd0)));
+    *(s32*)(base + 0x2380) = w;
+    *(s32*)(base + 0x2384) = h;
 }
 
 extern "C" const char* fn_802D9C1C(char* p) {
