@@ -25,6 +25,10 @@ extern const f32 lbl_80540108;
 
 #pragma auto_inline off
 
+static inline f32 playerVelocitySquared(const JGeometry::TVec3<f32>& velocity) {
+    return velocity.squared();
+}
+
 #define U8(p, o) (*(u8*)((u8*)(p) + (o)))
 #define U32(p, o) (*(u32*)((u8*)(p) + (o)))
 #define S32(p, o) (*(s32*)((u8*)(p) + (o)))
@@ -923,7 +927,10 @@ extern "C" void fn_80258BBC(u8* p) {
     U8(p, 0x1204) = 0;
 }
 
+#pragma opt_common_subs off
+#pragma opt_propagation on
 extern "C" void fn_80258BE8(u8* p) {
+ f32 speedSquared;
  if (fn_8022C6AC(U32(p,4)) > lbl_805400C4) {
 if (lbl_805400C4 == F32(p,0x344)) {
  F32(p,0x344) = lbl_805400E4 * fn_8022C82C(PTR(p,4));
@@ -954,11 +961,14 @@ f32 savedZ = F32(p,0x34c);
  V3(p,0x344).normalize(); V3(p,0x344).scale(mag);
  F32(p,0x34c)=savedZ;
  } else {
- f32 sq=F32(p,0x344)*F32(p,0x344)+F32(p,0x348)*F32(p,0x348);
+ JGeometry::TVec3<f32>& velocity = V3(p,0x344);
+ f32 xSquared=velocity.x*velocity.x;
+ f32 ySquared=velocity.y*velocity.y;
+ f32 sq=xSquared+ySquared;
  if (!(sq<=lbl_805400D8 * *(f32*)__float_epsilon)) {
  f32 savedZ=F32(p,0x34c);
  F32(p,0x34c)=lbl_805400C4;
- f32 mag=V3(p,0x344).length();
+ f32 mag=velocity.length();
  if(fn_8022C274(U32(p,4))) {
  if(savedZ>=lbl_805400C4) {
  mag+=lbl_805400E8; if(mag>=lbl_805400F8)mag=lbl_805400F8;
@@ -968,8 +978,9 @@ f32 savedZ = F32(p,0x34c);
  F32(p,0x34c)=savedZ;
  }
  }
- if(V3(p,0x344).squared()<=lbl_805400D8 * *(f32*)__float_epsilon) {
- if(F32(p,0x10)<=lbl_805400C4 || U8(p,0x3fa)<1) goto afterPhysics;
+ speedSquared=V3(p,0x344).squared();
+ if(speedSquared<=lbl_805400D8 * *(f32*)__float_epsilon) {
+ if(!(F32(p,0x10)>lbl_805400C4) || U8(p,0x3fa)<1) goto afterPhysics;
  }
  F32(p,0x34c)-=lbl_80540104;
  if(F32(p,0x34c)<lbl_80540108)F32(p,0x34c)=lbl_80540108;
@@ -981,8 +992,8 @@ f32 savedZ = F32(p,0x34c);
  F32(p,8)+=F32(p,0x344);F32(p,0xc)-=F32(p,0x34c);
  F32(p,0x10)=lbl_805400C0;
  if(F32(p,0x34c)<lbl_805400C4 && U8(PTR(p,0xbf0),0x4a)) {
- F32(p,0x368)=F32(p,0x344);F32(p,0x36c)=F32(p,0x348);F32(p,0x370)=lbl_805400C4;
- V3(p,0x344).zero();F32(p,0x10)=lbl_805400C4;
+ V3(p,0x368).set(F32(p,0x344),F32(p,0x348),lbl_805400C4);
+ F32(p,0x344)=lbl_805400C4;F32(p,0x348)=lbl_805400C4;F32(p,0x34c)=lbl_805400C4;F32(p,0x10)=lbl_805400C4;
  if (oldHeight > lbl_805400C4) {
  if ((fn_8024B24C(p) || U8(p, 0x1204)) && fn_802486A0(p) == 5 && !Player_IsLinked(p)) {
  for (s32 i = 0; i < 4; ++i) {
@@ -994,8 +1005,8 @@ f32 savedZ = F32(p,0x34c);
  V3(p,8)+=V3(p,0x344);
  if(F32(p,0x34c)<lbl_805400C4 && F32(p,0x10)<=lbl_805400C4) {
  F32(p,0x10)=lbl_805400C4;
- F32(p,0x368)=F32(p,0x344);F32(p,0x36c)=F32(p,0x348);F32(p,0x370)=lbl_805400C4;
- V3(p,0x344).zero();
+ V3(p,0x368).set(F32(p,0x344),F32(p,0x348),lbl_805400C4);
+ F32(p,0x344)=lbl_805400C4;F32(p,0x348)=lbl_805400C4;F32(p,0x34c)=lbl_805400C4;
  if (oldHeight > lbl_805400C4) {
  if ((fn_8024B24C(p) || U8(p, 0x1204)) && fn_802486A0(p) == 5 && !Player_IsLinked(p)) {
  for (s32 i = 0; i < 4; ++i) {
@@ -1013,8 +1024,42 @@ f32 savedZ = F32(p,0x34c);
  else if(U8(p,0x3fa)<9) U8(p,0x3fb)=1;
  else if(U8(p,0x3fa)<13) U8(p,0x3fb)=2;
  else if(U8(p,0x3fa)<17) U8(p,0x3fb)=3;
+ else if(U8(p,0x3fa)<21) U8(p,0x3fb)=4;
+ else if(U8(p,0x3fa)<25) U8(p,0x3fb)=5;
+ else if(U8(p,0x3fa)<29) U8(p,0x3fb)=6;
+ else if(U8(p,0x3fa)<33) U8(p,0x3fb)=7;
+ else if(F32(p,0x10)<=lbl_805400C4) {
+ F32(p,0x10)=lbl_805400C4;
+ if(fn_8022C310(U32(p,4))) {
+ U8(p,0x3fb)=0;U8(p,0x3fa)=0;U8(p,0x3fc)=0;
+ F32(p,0x34c)=lbl_8054010C;U8(p,0xb79)=0;
+ if(fn_8024B24C(p) && fn_802486A0(p)==5 && !Player_IsLinked(p)) {
+ for(s32 i=0;i<4;++i) if(fn_80243194(p,i) && i!=S32(p,4))fn_8023E690(i,p+8);
+ fn_8024BAEC(p);
+ }
+ if(fn_8024B24C(p))U8(p,0x1204)=1;else U8(p,0x1204)=0;
+ } else {
+ U8(p,0x3fb)=0;U8(p,0x3fc)++;
+ if(U8(p,0x3fc)>=3)fn_80251AEC(p,0);
+ }
+ }else U8(p,0x3fb)=7;
+ if(U8(p,0x3fa)>=8) {
+ s32 room=S32(p,0x3b4);
+ u8* rooms=(u8*)fn_802D6A9C();
+ if(rooms[0x131df+room] && F32(p,0x34c)<lbl_805400C4 && F32(p,0x10)<=lbl_805400D4) {
+ JGeometry::TVec3<f32> pos;
+ fn_8024B298(p,2,&pos);pos.y+=lbl_805400C8;
+ if(fn_8022461C(&pos,S32(p,0x3b4))!=2)fn_80251AEC(p,0);
+ }
+ }
+ if(U8(p,0x458)==0 && U8(p,0x3fa)>=8 && fn_8022C3AC(U32(p,4))) {
+ if(fn_80243234(p))fn_80251AEC(p,7);else fn_80251AEC(p,5);
+ }
+ U8(p,0x3fa)++;
+ fn_802685D4(p);
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern "C" void fn_8027EB04(void*);
 extern "C" void fn_8024F0E8(void*, s32);
 extern "C" u8 fn_8024B24C(void*);
