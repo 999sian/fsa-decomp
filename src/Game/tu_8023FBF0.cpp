@@ -1682,87 +1682,7 @@ BOOL fn_80245B74(char* p) {
 }
 
 BOOL fn_80245FEC(char* p) {
-    bool ok;
-    s32 linked;
-    s32 me;
-    s32 k;
-    s32 c;
-    s32 i;
-    s32 j;
-    s32 cnt;
-    s32 mode;
-    s32 ret;
-
-    if (U8(p, 0xc80) == 0) {
-        ok = false;
-    } else if (U8(p, 0xcee) != 0) {
-        ok = false;
-    } else if (U8(p, 0x1215) != 0) {
-        ok = false;
-    } else if (U8(p, 0xca0) == 0) {
-        ok = false;
-    } else if (U8(p, 0xce9) == 0) {
-        ok = false;
-    } else {
-        ok = true;
-    }
-    if (!ok) {
-        return 0;
-    }
-    i = c = 0;
-    for (; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    if (c <= 1) {
-        mode = 5;
-    } else if (S32(p, 0xd60) >= 0) {
-        mode = fn_8022CAF8(S32(p, 0xd60));
-    } else {
-        mode = S32(p, 0x120c);
-    }
-    if (mode == 4) {
-        if (S32(p, 0xd60) >= 0) {
-            k = fn_80234004(S32(p, 0xd60));
-        } else {
-            k = S32(p, 0x1224);
-        }
-        if (S32(p, 0xd60) < 0) {
-            cnt = 0;
-        } else {
-            cnt = 0;
-            for (j = cnt; j < S32(p, 0x4); j++) {
-                linked = S32(p, 0xd60);
-                if (linked == fn_8022F3DC(j)) {
-                    cnt++;
-                }
-            }
-            cnt++;
-        }
-        if (k != cnt) {
-            ok = false;
-        } else {
-            ok = U8(p, 0x11ea) != 0;
-        }
-    } else {
-        ok = U8(p, 0x11ea) != 0;
-    }
-    if (!ok) {
+    if (!padActive(p)) {
         return 0;
     }
     if (U8(p, 0x456) != 0) {
@@ -1771,8 +1691,7 @@ BOOL fn_80245FEC(char* p) {
     if (S32(p, 0x11f0) > 0) {
         return 0;
     }
-    ret = fn_80309D24(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), 0x100);
-    return (-ret | ret) >> 31;
+    return PADF(fn_80309D24, 0x100) != 0;
 }
 
 PAD_GATED(80246228, fn_80309D6C, 0x100)
