@@ -85,7 +85,7 @@ static inline bool rnbwContains(Actor* actor, s32 player) {
     return false;
 }
 
-static inline void rnbwSetXY(JGeometry::TVec3f& out, const f32 x, const f32 y) { out.x = x; out.y = y; }
+static inline void rnbwSetXY(JGeometry::TVec3f& out, f32 x, f32 y) { out.x = x; out.y = y; }
 static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos) {
     if (player < 0) return false;
     if ((s32)actor->field_04 != fn_8023DE58(player)) return false;
