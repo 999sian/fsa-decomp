@@ -53,7 +53,7 @@ static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
 
 static inline bool tuCheckHit(u8* self, s32 idx) {
     s32 room = *(s32*)(self + 0x4);
-    if (fn_8023DE58(idx) != room) {
+    if (room != fn_8023DE58(idx)) {
         return false;
     }
     for (s32 j = 0; j < 8; j++) {
@@ -175,9 +175,10 @@ extern "C" void fn_80289A88(Actor* this_) {
         }
     }
 
-    f32 cx = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
-    f32 cy = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
-    JGeometry::TVec3f oldC(cx, cy, 0.0f);
+    JGeometry::TVec3f oldC;
+    oldC.z = 0.0f;
+    oldC.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
+    oldC.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
     switch ((s32)((*(u32*)(self + 0x90) >> 12) & 0x1f)) {
     case 0:
         tuSetBox(self, 0.0f, 3.0f, *(f32*)(self + 0x238), *(f32*)(self + 0x23c) - 3.0f);
@@ -193,18 +194,20 @@ extern "C" void fn_80289A88(Actor* this_) {
         break;
     }
 
+    JGeometry::TVec3f newC;
+    newC.z = 0.0f;
     u8* t = *(u8**)(self + 0x240);
-    *(f32*)(self + 0x230) = *(f32*)(self + 0x238) / (f32)*(u16*)(t + 2);
-    *(f32*)(self + 0x234) = *(f32*)(self + 0x23c) / (f32)*(u16*)(t + 4);
-    cx = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
-    cy = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
-    JGeometry::TVec3f newC(cx, cy, 0.0f);
+    f32 sw = (f32)*(u16*)(t + 2);
+    f32 sh = (f32)*(u16*)(t + 4);
+    *(f32*)(self + 0x230) = *(f32*)(self + 0x238) / sw;
+    *(f32*)(self + 0x234) = *(f32*)(self + 0x23c) / sh;
+    newC.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
+    newC.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
 
     for (s32 i = 0; i < 4; i++) {
         if (tuCheckHit(self, i)) {
             if (!(newC - oldC).isZero()) {
-                JGeometry::TVec3f d(newC - oldC);
-                fn_8023DF68(i, &d);
+                fn_8023DF68(i, newC - oldC);
             }
         }
     }
