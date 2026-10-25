@@ -364,7 +364,7 @@ public:
     u8* mPEModes;        // _84
 };
 
-extern volatile s32 lbl_8053BC70;
+extern s32 lbl_8053BC70;
 
 template <typename T>
 T* JSUConvertOffsetToPtr(const void* ptr, const void* offset)
@@ -1346,17 +1346,18 @@ extern u32 lbl_8053BC78;
 extern "C" void* fn_800CB4C0(void* out, u8* e);
 extern "C" void __ct__11J3DTevStageFv(void* self);
 extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
-    u32 def[2] = {lbl_80543F08, lbl_80543F0C};
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xdc;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
+    FsaTevColorS10 def = *(FsaTevColorS10*)&lbl_80543F08;
+    u8* base = *(u8**)(p + 4);
+    u16* ids = *(u16**)(p + 8);
+    u32 off = ids[idx] * 0x14c + 0xdc;
+    off += b * 2;
+    u16 v = *(u16*)(base + off);
     if (v != 0xffff) {
-        u32* e = (u32*)(*(u8**)(p + 0x44) + v * 8);
-        out[0] = e[0];
-        out[1] = e[1];
+        FsaTevColorS10 e = ((FsaTevColorS10*)*(u8**)(p + 0x44))[v];
+        *(FsaTevColorS10*)out = e;
         return;
     }
-    out[0] = def[0];
-    out[1] = def[1];
+    *(FsaTevColorS10*)out = def;
 }
 
 extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
