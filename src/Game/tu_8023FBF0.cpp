@@ -4913,13 +4913,39 @@ inline s32 sharingMode50090R(char* p, s32& linked, s32& me) {
     return S32(p,0x120c);
 }
 
+inline s32 countSharing50090I(char* p, s32& linked, int& me) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 4)) c++;
+        else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) c++;
+            } else {
+                me = S32(p, 4);
+                if (me == fn_8022F3DC(i)) c++;
+            }
+        } else if (i == S32(p,0xd60)) c++;
+    }
+    return c;
+}
+inline s32 sharingMode50090I(char* p, s32& linked, int& me) {
+    if (countSharing50090I(p,linked,me) <= 1) return 5;
+    linked = S32(p,0xd60);
+    if (linked >= 0) return fn_8022CAF8(linked);
+    return S32(p,0x120c);
+}
+
 u8 fn_80250090(char* p) {
+    s32 linked;
+    s32 me;
     if (F32(p, 0x10) > 0.0f) {
         S32(p, 0xd9c) = -1;
         S32(p, 0xd98) = 0;
         return 0;
     }
-    if (sharingMode50090(p) == 5 && S32(p, 0xd60) >= 0) {
+    if (sharingMode50090R(p,linked,me) == 5 && S32(p, 0xd60) >= 0) {
         S32(p, 0xd9c) = -1;
         S32(p, 0xd98) = 0;
         return 0;
