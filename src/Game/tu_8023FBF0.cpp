@@ -518,12 +518,12 @@ void SetField_0x98(void*, s32);
 u8 fn_80243C64(char*);
 
 inline bool actionReady(char* p) {
-    s32 t;
-    s32 i;
-    s32 own;
-    s32 linked;
-    s32 target;
     bool ok;
+    s32 target;
+    s32 linked;
+    s32 own;
+    s32 i;
+    s32 t;
     if (U8(p, 0xc80) == 0) {
         ok = false;
     } else if (U8(p, 0xcee) != 0) {
