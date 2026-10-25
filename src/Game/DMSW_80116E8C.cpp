@@ -320,7 +320,7 @@ extern "C" void fn_80117F34(char* p) {
     pos[0] = lbl_8053C750 * (box.a - box.c) + box.c;
     pos[1] = lbl_8053C750 * (box.b - box.d) + box.d;
     pos[2] = lbl_8053C75C;
-    *(void**)(p + 0x2a8) = fn_8013CC50(*(s32*)(p + 4), pos, lbl_8053C754, 0x33e, 0, 0, 0, 0, 1);
+    *(void**)(p + 0x2a8) = fn_8013CC50(*(s32*)(p + 4), pos, 0x33e, 0, 0, 0, 0, 1, lbl_8053C754);
 }
 
 extern "C" void* fn_80118018(char* p, s16 flag) {
