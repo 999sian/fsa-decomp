@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "dolphin/gx/GXStruct.h"
 
 extern "C" char lbl_804A84C8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -15,6 +16,10 @@ extern "C" void fn_802B055C(char* p) {
     struct {
         f32 x, y, z;
     } vec;
+    struct Col4 {
+        u8 r, g, b, a;
+    } col;
+    struct Col4 tmp;
 
     if (*(s32*)(p + 0x254) == 0) {
         if (*(f32*)(p + 0x258) > lbl_80540990) {
@@ -36,6 +41,12 @@ extern "C" void fn_802B055C(char* p) {
     vec.x = *(f32*)(p + 0xc) + lbl_8054099C;
     vec.y = *(f32*)(p + 0x10) + lbl_8054099C;
     vec.z = lbl_80540990;
+    col.r = 0;
+    col.g = 0;
+    col.b = 0;
+    col.a = 0x80;
+    tmp = col;
+    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), &vec, &tmp, *(f32*)(p + 0x258));
 }
 
 extern "C" void* fn_802B0998(void* this_, s16 freeFlag) {
