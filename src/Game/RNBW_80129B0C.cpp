@@ -127,9 +127,9 @@ static inline void rnbwSpawn(Actor* actor, const u16* ids) {
     }
 }
 static inline void rnbwSpawn(const u16* ids, Actor* actor) {
-    const u16* table = ids;
-    void** hp = (void**)actor;
     s32 i;
+    void** hp = (void**)actor;
+    const u16* table = ids;
     for (i = 0; i < 5; i++, hp++, table++) {
         if (hp[0x8f] == 0) {
             u16 id = *table;
@@ -153,7 +153,7 @@ extern "C" void fn_80129B0C(void* this_) {
             case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
-                rnbwSpawn(actor, lbl_80465098);
+                rnbwSpawn(lbl_80465098, actor);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
