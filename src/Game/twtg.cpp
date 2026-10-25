@@ -995,8 +995,8 @@ extern void* lbl_8053AF80;
 extern u8 lbl_80529DEC[];
 
 struct TwtgOrd { u8 pad[0x244]; s32 order[4]; };
-static inline s32 twtgOrder(char* p, s32 index) {
-    return ((TwtgOrd*)p)->order[index];
+static inline s32 twtgOrder(TwtgOrd* p) {
+    return p->order[0];
 }
 extern "C" void fn_80315864(char* p) {
     TwtgBox b;
