@@ -2483,9 +2483,9 @@ void fn_80285098(char* p) {
     tmp.y = src->y;
     tmp.z = src->z;
     tmp.add(VEC(p, 0x8));
-    kind = fn_8022461C(p, S32(p, 0x3b4));
-    if (fn_802265DC((f32*)&tmp, S32(p, 0x3b4), 1) && (u16)kind != 0xe && (u16)kind != 0x39) {
-        if ((u16)kind == 0xd && !fn_802684A4(p, (f32*)&tmp, S32(p, 0x3b4)) && !fn_80250090(p)) {
+    kind = fn_8022461C((char*)&tmp, S32(p, 0x3b4));
+    if (!fn_802265DC((f32*)&tmp, S32(p, 0x3b4), 1) || (u16)kind == 0xe || (u16)kind == 0x39 || (u16)kind == 0xd) {
+        if (!(u8)fn_802684A4(p, (f32*)&tmp, S32(p, 0x3b4)) && !fn_80250090(p)) {
             fn_80251AEC(p, 0);
             goto tail;
         }
@@ -2507,10 +2507,8 @@ void fn_80285098(char* p) {
     fn_80275D9C(p);
     if (fn_80246B10(p, 0x40) == 0) {
         mode = S32(p, 0x3dc);
-        if (mode != 0) {
-            if (mode == 1) {
-                F32(p, 0x8) += lbl_80540378 * fn_8022C82C(S32(p, 0x4));
-            }
+        if (mode == 0 || mode == 1) {
+            F32(p, 0x8) += lbl_80540378 * fn_8022C82C(S32(p, 0x4));
         } else {
             F32(p, 0xc) += lbl_80540378 * -fn_8022C76C(S32(p, 0x4));
         }
@@ -2530,9 +2528,9 @@ void fn_80285098(char* p) {
         U8(p, 0x3f8) = 0;
     }
     if (U8(p, 0x3f8) >= 0x40) {
-        U8(p, 0x3f9) = lbl_8046C098[S32(p, 0x3dc) * 8 + ((U8(p, 0x3f8) - 0x40) >> 3)];
+        U8(p, 0x3f9) = (lbl_8046C098 + S32(p,0x3dc)*8)[(U8(p,0x3f8)-0x40)/8];
     } else {
-        U8(p, 0x3f9) = lbl_8046C098[S32(p, 0x3dc) * 8 + ((U8(p, 0x3f8) >> 3) & 0x1f)];
+        U8(p, 0x3f9) = (lbl_8046C098 + S32(p,0x3dc)*8)[U8(p,0x3f8)/8];
     }
     if (U8(p, 0x3f8) == 0x10) {
         fn_8024F0E8(p, 0x10012);
