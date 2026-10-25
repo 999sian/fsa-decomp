@@ -1,4 +1,11 @@
 #include "types.h"
+struct WaveSubBase { u8 pad[8]; };
+struct WaveSub : WaveSubBase {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9();
+    virtual void release(s32 how);
+};
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry.h"
 #include <dolphin/mtx.h>
@@ -419,8 +426,8 @@ end:
 extern "C" f32 lbl_8053E218;
 extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void fn_8019169C(u8* param_1) {
-    f32 fzero = lbl_8053E218;
     *(u8*)(param_1 + 0x64) = 0;
+    f32 fzero = lbl_8053E218;
     *(f32*)(param_1 + 0x50) = fzero;
     *(s32*)(param_1 + 0x58) = 0;
     *(u8*)(param_1 + 0xc4) = 0;
@@ -465,13 +472,13 @@ extern "C" void** fn_80191744(void** param_1, s16 param_2) {
         if (param_1[499] != NULL) {
             void* obj = param_1[499];
             if (obj != NULL) {
-                ((void (**)(void*, int))(*(void***)((u8*)obj + 8)))[12](obj, 1);
+                ((void (*)(void*, int))((void**)*(void***)((u8*)obj + 8))[12])(obj, 1);
             }
         }
         if (param_1[0x1ee] != NULL) {
             void* obj = param_1[0x1ee];
             if (obj != NULL) {
-                ((void (**)(void*, int))(*(void***)((u8*)obj + 8)))[12](obj, 1);
+                ((void (*)(void*, int))((void**)*(void***)((u8*)obj + 8))[12])(obj, 1);
             }
         }
         destroy__7JKRHeapFv(*param_1);
