@@ -905,7 +905,7 @@ int fn_8022E39C(int index, int a0)
     return 0;
 }
 
-extern "C" SameTeamResult fn_8022E438(int a, int b)
+extern "C" bool fn_8022E438(int a, int b)
 {
     if (lbl_8053AC90 == NULL) return 0;
     if (a < 0) return 0;
