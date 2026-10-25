@@ -403,7 +403,15 @@ void MemCardMenu::fn_803D3214() {
         self->f54 = 0x7a;
         self->f2177 = 0;
         lbl_8053AAF8[0xff] = 1;
-        stampSave();
+        lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
+        u8* e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+        if (!(e[0x85] & 1)) {
+            e[0x85] |= 1;
+        }
+        if (((SaveEntry*)((u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8 + 0x20))->f8 & 1) {
+            e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+            e[0x85] |= 2;
+        }
         u64 serial;
         CARDGetSerialNo(lbl_8051C1A0.chan, &serial);
         lbl_8050EC80.id = serial;
