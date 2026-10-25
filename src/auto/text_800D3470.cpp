@@ -1221,11 +1221,11 @@ extern "C" void fn_800D6C40(u8* this_) {
     DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
 }
 
-extern "C" void fn_800D6CEC(void* r3, u32 r4) {
-    if ((r4 >> 8) & 0xf) {
-        (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
-        if (r4 & (1 << 12)) {
-            (*(void(**)(void*))(*(void***)r3 + 0xb))(r3);
+extern "C" void fn_800D6CEC(Vtable800D8248* p, u32 flags) {
+    if ((flags >> 8) & 0xf) {
+        p->m8();
+        if (flags & 0x1000) {
+            p->m9();
         }
     }
 }
