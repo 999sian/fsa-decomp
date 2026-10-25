@@ -22,6 +22,11 @@ extern "C" void fn_8043E7CC(void*, void*);
 extern "C" f32 lbl_80543C0C;
 extern "C" f32 lbl_80543C10;
 extern "C" f32 lbl_80543C14;
+
+static inline void setMarkerPosition(u8* cfg, JGeometry::TVec3f pos) {
+    JGeometry::TVec3f copy(pos);
+    ((JGeometry::TVec3f*)(cfg + 0x1c4))->set(copy);
+}
 extern "C" void fn_80437F78(u8* p) {
     f32* v = (f32*)fn_8023E724(0);
     *(f32*)(p + 0xc) = v[0];
@@ -29,10 +34,10 @@ extern "C" void fn_80437F78(u8* p) {
     *(f32*)(p + 0x14) = v[2];
     for (int i = 0; i < 4; i++) {
         u8* cfg = lbl_80529DEC + i * 12;
-        if (lbl_80529DEC[0x236] & (1 << i)) {
-            Vec tmp;
-            Vec out;
-            tmp = *(Vec*)(cfg + 0x1c4);
+        if (lbl_80529DEC[0x236] & (u8)(1 << i)) {
+            JGeometry::TVec3f out;
+            JGeometry::TVec3f tmp;
+            tmp = *(JGeometry::TVec3f*)(cfg + 0x1c4);
             fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4, 0, 0, &out);
             if (p[0x240 + i] == 0xff) {
                 if (out.y > (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) * lbl_80543C0C) {
@@ -51,7 +56,7 @@ extern "C" void fn_80437F78(u8* p) {
                     tmp.y -= *(f32*)(lbl_8050DB0C + 0x34);
                 }
             }
-            *(Vec*)(cfg + 0x1c4) = tmp;
+            *(JGeometry::TVec3f*)(cfg + 0x1c4) = tmp;
             if (*(s32*)(p + 4) < 8) {
                 fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4);
             }
@@ -61,7 +66,8 @@ extern "C" void fn_80437F78(u8* p) {
             } else {
                 fn_8013CB44(*(void**)(p + 0x230 + i * 4), cfg + 0x1c4, 1, 1, 1);
             }
-            fn_8043E7CC(lbl_8053AED0, cfg + 0x1c4);
+            JGeometry::TVec3f effect(*(JGeometry::TVec3f*)(cfg + 0x1c4));
+            fn_8043E7CC(lbl_8053AED0, &effect);
         } else if (*(void**)(p + 0x230 + i * 4)) {
             forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x230 + i * 4));
             *(void**)(p + 0x230 + i * 4) = 0;
