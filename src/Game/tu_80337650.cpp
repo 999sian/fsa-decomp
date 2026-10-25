@@ -21,6 +21,8 @@ struct AnimKindTbl {
     s32* a08;
     s32* a0c;
 };
+extern char lbl_80471BB8[];
+static inline AnimKindTbl* GetAnimKind(s32 kind) { return (AnimKindTbl*)(lbl_80471BB8 + (kind << 4)); }
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802DCD0C(void* mgr);
 extern "C" void fn_802D79E8(void* mgr, u32 room, s32 a, f32 x, f32 y);
@@ -263,9 +265,15 @@ extern "C" void fn_80337DEC(u8* this_) {
     box.f.x += lbl_80542074;
     if (*(s32*)(this_ + 0x254) == 1 &&
         (*(s32*)(this_ + 0x230) == 0 || *(s32*)(this_ + 0x230) == 4 || *(s32*)(this_ + 0x230) == 1)) {
-        box.addPos(*(f32*)(this_ + 0x26c), *(f32*)(this_ + 0x270));
+        box.i.x += *(f32*)(this_ + 0x26c);
+        box.f.x += *(f32*)(this_ + 0x26c);
+        box.i.y += *(f32*)(this_ + 0x270);
+        box.f.y += *(f32*)(this_ + 0x270);
     } else {
-        box.addPos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+        box.i.x += *(f32*)(this_ + 0xc);
+        box.f.x += *(f32*)(this_ + 0xc);
+        box.i.y += *(f32*)(this_ + 0x10);
+        box.f.y += *(f32*)(this_ + 0x10);
     }
     if (*(s32*)(this_ + 0x230) != 2) {
         fn_80239914((f32*)&box, *(u32*)(this_ + 4), *(s32*)(this_ + 0x198));
@@ -321,13 +329,13 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = *((s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1];
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 } else {
-                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].idle;
                 }
                 break;
             default:
-                *(s32*)(this_ + 0x234) = *((s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1];
+                *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 break;
             }
         }
@@ -348,18 +356,18 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 2:
                 fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, lbl_8054206C, lbl_80542078);
-                *(s32*)(this_ + 0x234) = *((s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1];
+                *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 break;
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = *((s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1];
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 } else {
-                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
+                    *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].idle;
                 }
                 break;
             case 3:
             default:
-                *(s32*)(this_ + 0x234) = *((s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1];
+                *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
                 break;
             }
         }
@@ -372,7 +380,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x230) = 3;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = *((s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1];
+            *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].move;
         } else if (*(s32*)(this_ + 0x240) <= 0 ||
                    (*(f32*)(this_ + 0xc) == *(f32*)(this_ + 0x24) && *(f32*)(this_ + 0x10) == *(f32*)(this_ + 0x28))) {
             *(V3*)(this_ + 0xc) = *(V3*)(this_ + 0x24);
@@ -381,7 +389,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(f32*)(this_ + 0x3c) = lbl_80542078;
             *(s32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
+            *(s32*)(this_ + 0x234) = *((AnimKindTbl*)lbl_80471BB8)[*(s32*)(this_ + 0x250)].idle;
         }
         break;
     case 4:
