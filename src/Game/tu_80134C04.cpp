@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/J3D/J3DSys.h"
 void* operator new(unsigned long size, JKRHeap* heap, int align);
 
 extern "C" void fn_80139BE8(void* p);
