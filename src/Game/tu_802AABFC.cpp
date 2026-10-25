@@ -7,10 +7,10 @@ extern "C" void __dt__5ActorFv(Actor*, s32);
 extern int* lbl_8053AAF8;
 extern int* lbl_8053AB10;
 extern char lbl_8046C878[];
-u8* fn_801F856C(void);
-void fn_802FA160(int, int, int, int, int, int);
-int fn_802D6A9C(void);
-void fn_802D7920(int, int);
+extern "C" u8* fn_801F856C(void);
+extern "C" void fn_802FA160(int, int, int, int, int, int);
+extern "C" int fn_802D6A9C(void);
+extern "C" void fn_802D7920(int, int);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
 extern "C" void fn_801F0D20(void* this_, s32 id);
 
