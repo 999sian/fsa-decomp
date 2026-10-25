@@ -199,9 +199,17 @@ extern "C" void fn_801840E0(char* this_) {
                 *(f32*)(this_ + 0x40) = 0.0f;
                 *(f32*)(this_ + 0x3c) = 0.0f;
             }
-            *(s32*)(this_ + 0x238) = (s32)(100.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 50;
+            FagnGame* randomGame0 = lbl_8053AAF8;
+            union { f32 f; u32 s; } random0;
+            randomGame0->rnd.seed = randomGame0->rnd.seed * 0x19660d + 0x3c6ef35f;
+            random0.s = (randomGame0->rnd.seed >> 9) | 0x3f800000;
+            *(s32*)(this_ + 0x238) = (s32)(100.0f * (random0.f - 1.0f)) + 50;
             if (!hitWall) {
-                if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.7f) {
+                FagnGame* randomGame1 = lbl_8053AAF8;
+                union { f32 f; u32 s; } random1;
+                randomGame1->rnd.seed = randomGame1->rnd.seed * 0x19660d + 0x3c6ef35f;
+                random1.s = (randomGame1->rnd.seed >> 9) | 0x3f800000;
+                if ((random1.f - 1.0f) < 0.7f) {
                     if (dir != -1) {
                         if (*(s32*)(this_ + 0x98) == dir) {
                             break;
@@ -215,13 +223,21 @@ extern "C" void fn_801840E0(char* this_) {
             }
             if (turn) {
                 if (!(*(s32*)(this_ + 0x98) & 2)) {
-                    if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) {
+                    FagnGame* randomGame2 = lbl_8053AAF8;
+                    union { f32 f; u32 s; } random2;
+                    randomGame2->rnd.seed = randomGame2->rnd.seed * 0x19660d + 0x3c6ef35f;
+                    random2.s = (randomGame2->rnd.seed >> 9) | 0x3f800000;
+                    if ((random2.f - 1.0f) < 0.5f) {
                         *(s32*)(this_ + 0x98) = 2;
                     } else {
                         *(s32*)(this_ + 0x98) = 3;
                     }
                 } else {
-                    if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) {
+                    FagnGame* randomGame3 = lbl_8053AAF8;
+                    union { f32 f; u32 s; } random3;
+                    randomGame3->rnd.seed = randomGame3->rnd.seed * 0x19660d + 0x3c6ef35f;
+                    random3.s = (randomGame3->rnd.seed >> 9) | 0x3f800000;
+                    if ((random3.f - 1.0f) < 0.5f) {
                         *(s32*)(this_ + 0x98) = 0;
                     } else {
                         *(s32*)(this_ + 0x98) = 1;
@@ -231,8 +247,12 @@ extern "C" void fn_801840E0(char* this_) {
         }
         fagnSetDir(this_, 0.7f, -0.7f);
         if (*(s32*)(this_ + 0x234) == 0) {
-            *(s32*)(this_ + 0x24c) = lbl_804A1808[*(u32*)(this_ + 0x98) * 4 + *(u32*)(this_ + 0x240)];
-            *(s32*)(this_ + 0x234) = lbl_804A1848[*(u32*)(this_ + 0x98) * 4 + *(u32*)(this_ + 0x240)];
+            int d = *(s32*)(this_ + 0x98);
+            int frame = *(s32*)(this_ + 0x240);
+            *(s32*)(this_ + 0x24c) = lbl_804A1808[(d << 2) + frame];
+            d = *(s32*)(this_ + 0x98);
+            frame = *(s32*)(this_ + 0x240);
+            *(s32*)(this_ + 0x234) = lbl_804A1848[(d << 2) + frame];
             *(s32*)(this_ + 0x240) += 1;
             *(s32*)(this_ + 0x240) &= 3;
         }
@@ -271,22 +291,28 @@ extern "C" void fn_801840E0(char* this_) {
             *(f32*)(this_ + 0x44) = 5.0f;
             break;
         case 2: {
+            f32 zero;
             f32 sp = *(f32*)(this_ + 0x254);
-            *(f32*)(this_ + 0x258) = 0.0f;
+            zero = 0.0f;
+            *(f32*)(this_ + 0x258) = zero;
             *(f32*)(this_ + 0x25c) = sp;
-            *(f32*)(this_ + 0x260) = 0.0f;
-            *(f32*)(this_ + 0x3c) = 0.0f;
-            *(f32*)(this_ + 0x40) = 0.3f * *(f32*)(this_ + 0x254);
+            *(f32*)(this_ + 0x260) = zero;
+            f32 velocity = 0.3f * *(f32*)(this_ + 0x254);
+            *(f32*)(this_ + 0x3c) = zero;
+            *(f32*)(this_ + 0x40) = velocity;
             *(f32*)(this_ + 0x44) = 5.0f;
             break;
         }
         case 3: {
+            f32 zero;
             f32 sp = -*(f32*)(this_ + 0x254);
-            *(f32*)(this_ + 0x258) = 0.0f;
+            zero = 0.0f;
+            *(f32*)(this_ + 0x258) = zero;
             *(f32*)(this_ + 0x25c) = sp;
-            *(f32*)(this_ + 0x260) = 0.0f;
-            *(f32*)(this_ + 0x3c) = 0.0f;
-            *(f32*)(this_ + 0x40) = -(0.3f * *(f32*)(this_ + 0x254));
+            *(f32*)(this_ + 0x260) = zero;
+            f32 velocity = -(0.3f * *(f32*)(this_ + 0x254));
+            *(f32*)(this_ + 0x3c) = zero;
+            *(f32*)(this_ + 0x40) = velocity;
             *(f32*)(this_ + 0x44) = 5.0f;
             break;
         }
@@ -313,7 +339,11 @@ extern "C" void fn_801840E0(char* this_) {
                 *(f32*)(this_ + 0x44) = 0.0f;
                 *(f32*)(this_ + 0x40) = 0.0f;
                 *(f32*)(this_ + 0x3c) = 0.0f;
-                *(s32*)(this_ + 0x23c) = (s32)(100.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 50;
+                FagnGame* randomGame4 = lbl_8053AAF8;
+                union { f32 f; u32 s; } random4;
+                randomGame4->rnd.seed = randomGame4->rnd.seed * 0x19660d + 0x3c6ef35f;
+                random4.s = (randomGame4->rnd.seed >> 9) | 0x3f800000;
+                *(s32*)(this_ + 0x23c) = (s32)(100.0f * (random4.f - 1.0f)) + 50;
                 *(s32*)(this_ + 0x230) = 0;
             }
         }
@@ -329,3 +359,4 @@ extern "C" void fn_801840E0(char* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
