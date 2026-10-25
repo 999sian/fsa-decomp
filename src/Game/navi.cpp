@@ -525,7 +525,7 @@ extern "C" void GrowableArray_PushBack(void* arr, void* item);
 extern "C" void detach__5ActorFv(void* this_);
 extern u8 lbl_80529DEC[];
 extern u8 lbl_8050EC80[];
-extern u8 lbl_8046A7AC[];
+extern const u8 lbl_8046A7AC[];
 extern u8 lbl_8053A188[1];
 extern const f32 lbl_8053FDC8;
 struct NaviRGB { u8 r, g, b; };
@@ -651,12 +651,12 @@ extern "C" void fn_8021E8D0(char* p) {
             *(void**)(p + 0x2d4) = e;
             e = *(void**)(p + 0x2d0);
             if (e != 0) {
-                const u8* colors = lbl_8046A7AC;
-                s32 i = *(u8*)(p + 0x2ac) * 3;
-                u8 red = colors[i];
-                u8 green = colors[i + 1];
+                const NaviRGB* colors = (const NaviRGB*)lbl_8046A7AC;
+                int i = *(u8*)(p + 0x2ac);
+                u8 red = colors[i].r;
+                u8 green = colors[i].g;
                 ((u8*)e)[0xbc] = red;
-                u8 blue = colors[i + 2];
+                u8 blue = colors[i].b;
                 ((u8*)e)[0xbd] = green;
                 ((u8*)e)[0xbe] = blue;
             }
