@@ -242,8 +242,8 @@ static inline u8 textureHit(const ResTIMG* image, s32 px, s32 py) {
             u8 hit = 0;
             u32 halfY = (u32)image->mSizeY >> 1;
             u32 halfX = (u32)image->mSizeX >> 1;
-            x += halfX;
-            y += halfY;
+            x = px + halfX;
+            y = py + halfY;
             if (x >= 0 && x < image->mSizeX && y >= 0 && y < image->mSizeY) {
                 switch (image->mTextureFormat) {
                 case 8:
