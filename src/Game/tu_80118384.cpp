@@ -228,31 +228,21 @@ extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
     u8** end;
     u32 count;
     u8** it;
-    if (begin == 0) {
-        count = 0;
-    } else {
-        count = ((int)*(u8***)(self + 0x14) - (int)begin) / 4;
-    }
-    if (count == 0) {
-        return *(u8***)(self + 0x14);
-    }
+    if (begin == 0) count = 0;
+    else count = ((int)*(u8***)(self + 0x14) - (int)begin) / 4;
+    if (count == 0) return *(u8***)(self + 0x14);
     end = *(u8***)(self + 0x14);
-    if (param_2 == end) {
-        return end;
-    }
-    volatile u32 a = param_3;
-    volatile u32 b = param_3;
+    if (param_2 == end) return end;
+    volatile u32 values[2];
+    values[0] = param_3;
+    values[1] = param_3;
     it = param_2;
     goto cond;
 inc:
     it++;
 cond:
-    if (it == end) {
-        goto done;
-    }
-    if (param_3 == *(u32*)(*it + 0x1a0)) {
-        goto done;
-    }
+    if (it == end) goto done;
+    if (param_3 == *(u32*)(*it + 0x1a0)) goto done;
     goto inc;
 done:
     return it;
