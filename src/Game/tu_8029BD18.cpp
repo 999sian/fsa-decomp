@@ -60,7 +60,7 @@ extern "C" void fn_8029BDC0(Actor* this_) {
     box[3] += this_->field_0C.y;
     fn_80239914(box, this_->field_04, this_->field_198);
 
-    if (PSVECDistance(&this_->field_0C, (Vec*)((u8*)this_ + 0x230)) >= 15.9f) {
+    if (PSVECDistance((SDKVec*)&this_->field_0C, (SDKVec*)((u8*)this_ + 0x230)) >= 15.9f) {
         f32 f = this_->field_24.x;
         if (this_->field_0C.x <= f + 15.5f && this_->field_0C.x >= f - 15.5f) {
             this_->field_0C.x = f;
