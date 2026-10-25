@@ -140,6 +140,7 @@ struct T85ResMgr {
     virtual void* get(u32 type, const char* name);
 };
 extern char* lbl_8053AB10;
+extern const char lbl_804761A0[];
 extern char* lbl_8053AF80;
 extern "C" void fn_802FF798(void* mgr);
 extern "C" void fn_802F9714(void* mgr, void* res, s32 a, s32 b, s32 c, s32 d);
@@ -154,10 +155,13 @@ extern "C" void fn_80458090(void* obj);
 
 #define T85_RES (*(T85ResMgr**)((char*)lbl_8053AAF8[0] + 0xa4))
 
+#pragma opt_lifetimes off
 extern "C" void* fn_803A8884(void* this_) {
-    *(void**)this_ = lbl_804AF878;
+    void* o;
+    void** self = (void**)this_;
+    self[0] = lbl_804AF878;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
-    *(s32*)((char*)this_ + 0xc) = 4;
+    *(s32*)((char*)self + 0xc) = 4;
     if (lbl_80529DEC[0x242] == 0) {
         lbl_80529DEC[0x242] = 1;
         fn_802FF798(*(void**)(lbl_8053AB10 + 0x20));
@@ -168,18 +172,18 @@ extern "C" void* fn_803A8884(void* this_) {
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), T85_RES->get('SCL ', "cu_cl_obj_base_scl.szs"), 0, 2, 0, 0, 0);
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), T85_RES->get('SCH ', "gals_sch.szs"), 0, 3, 0, 0);
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), T85_RES->get('SCL ', "cu_cl_obj_base_scl.szs"), 0, 3, 0, 0, 0);
+        *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
     }
-    *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
-    void* o = __nw__FUl(0x364);
+    o = __nw__FUl(0x364);
     if (o != NULL) {
         fn_803EE254(o);
     }
-    *(void**)((char*)this_ + 0x4) = o;
+    self[1] = o;
     o = __nw__FUl(0x354);
     if (o != NULL) {
         fn_803FCBC4(o);
     }
-    *(void**)((char*)this_ + 0x8) = o;
+    self[2] = o;
     if (*(u32*)(lbl_8053AF80 + 0x58) != 0x100001a) {
         fn_80458FF0(lbl_8053AF80, 0x100001a, 0, 0);
         fn_80458408(lbl_8053AF80, 0x100001a, 1);
@@ -194,5 +198,5 @@ extern "C" void* fn_803A8884(void* this_) {
     lbl_8053AD98 = this_;
     return this_;
 }
-
+#pragma opt_lifetimes reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
