@@ -1,6 +1,13 @@
 // TWEV_80103348: .text 0x80103348-0x801042D0 (actor TWEV)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "Game/Actor.h"
+extern "C" void fn_801F0E34(void*, u32, s32);
+extern "C" void fn_80134DE4(void*, s32, s32);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D8050(void*, u32, s32, s32);
+extern void* lbl_8053AAF8;
+extern f32 lbl_8053C1E8;
 
 struct TWEVParam {
     u8 buf[16];
