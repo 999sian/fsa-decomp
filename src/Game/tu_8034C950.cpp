@@ -132,19 +132,51 @@ extern "C" void fn_8034CC98(Actor* a) {
         param.color = fn_8023CB24(a->field_C8) + 1;
         param.palette = fn_8023CA88(a->field_C8);
     }
-    *(f64*)&saved = *(f64*)&a->field_0C;
-    saved.z = a->field_0C.z;
+    JGeometry::setTVec3f(&a->field_0C.x, &saved.x);
     a->field_0C.y += 8.0f;
     flag = 7;
     if (*(s32*)((u8*)a + 0x230) == 0) {
         flag = -1;
-        fn_80307AC8(a->field_198, a->field_04, 0, 0xc, 0, 0, -1);
+        fn_80307AC8(a->field_198, a->field_04, &a->field_0C, 0xc, 0, 0, -1);
     } else {
-        fn_803075AC(a->field_198, a->field_04, 0, 0x2b, 0, 2, -1, 1, 0, 0);
+        fn_803075AC(a->field_198, a->field_04, &a->field_0C, 0x2b, 0, 2, -1, 1, 0, 0);
     }
     fn_801F06F0(a, lbl_804721B0, 0x2b, &param, flag, 1.0f, 1.0f);
-    *(f64*)&a->field_0C = *(f64*)&saved;
-    a->field_0C.z = saved.z;
+    JGeometry::setTVec3f(&saved.x, &a->field_0C.x);
+}
+
+extern f32 lbl_8054257C;
+extern f32 lbl_80542580;
+extern f32 lbl_80542570;
+extern "C" void fn_80239914(f32* out, s32 room, void* pos);
+extern "C" void fn_8020D8C0(void* a, s32 b, void* c, s32 d);
+extern "C" void* fn_8020D58C(void* a);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" s32 fn_80230CFC(s32 i);
+extern "C" s32 fn_8022C004(s32 i);
+extern "C" u8 fn_8023E8F0(s32 i);
+extern "C" u8 fn_8023188C(s32 i);
+extern "C" u8 fn_802319B4(s32 i, s32 j);
+extern "C" u8 fn_80234D94(s32 i);
+extern "C" void fn_8034CEB0(Actor* a) {
+    u8* p = (u8*)a;
+    f32 box[4];
+    f32 tmp[4];
+    s32 i;
+    s32 state;
+    for (i = 0; i < 4; i++) {
+        box[i] = 0.0f;
+    }
+    box[0] = *(f32*)(p + 0x80) + *(f32*)(p + 0xc);
+    box[1] = *(f32*)(p + 0x84) + *(f32*)(p + 0x10);
+    box[2] = *(f32*)(p + 0x88) + *(f32*)(p + 0xc);
+    box[3] = *(f32*)(p + 0x8c) + *(f32*)(p + 0x10);
+    state = *(s32*)(p + 0x230);
+    if (state == 1) {
+    } else if (state >= 2) {
+    } else if (state == 0) {
+    }
 }
 
 extern "C" void* fn_801F856C(void);
