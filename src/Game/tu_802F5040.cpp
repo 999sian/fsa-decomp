@@ -1268,6 +1268,7 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
 
 extern GXColor lbl_805414F4;
 extern GXColor lbl_80543F60;
+#pragma opt_propagation off
 extern "C" void fn_802F8F0C(void*, u8* p) {
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -1300,8 +1301,10 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
         GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     }
     if (p != NULL) {
-        u8 zc = *(u8*)(p + 0x2c);
-        GXSetZMode(*(u8*)(p + 0x26), (GXCompare)*(s32*)(p + 0x28), zc);
+        u8 enable = p[0x26];
+        u8 update = p[0x2c];
+        GXCompare compare = *(GXCompare*)(p + 0x28);
+        GXSetZMode(enable, compare, update);
     } else {
         GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
     }
@@ -1316,7 +1319,7 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
     }
     GXSetCullMode(GX_CULL_NONE);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802F91AC(void* self, f32* __restrict p, u8* o, u8* out, f32 f) {
     Mtx m;
     *out = 0;
@@ -1691,86 +1694,31 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
 }
 
 extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
-    u8* base;
-    u8* s;
-    u8* d;
-    u32 i;
     u32 len;
-    s32 n;
-    u8* p;
-    u8* q;
-    if (size == 0) {
+    u8* base;
+    if(size==0) {
         s32 r;
-        if (JKRDecomp::checkCompressed(src)) {
-            r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
-        } else {
-            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
-        }
-        if (r < 0) {
-            len = 0x8000;
-        } else {
-            len = r;
-        }
-    } else {
-        len = size;
+        if(JKRDecomp::checkCompressed(src)) r=(src[4]<<24)|(src[5]<<16)|(src[6]<<8)|src[7];
+        else r=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResSize(src);
+        if(r<0) len=0x8000;
+        else len=r;
+    } else len=size;
+    u32* table=(u32*)(this_+idx*4);
+    dst= (u8*)table[1]+(u32)dst;
+    if(JKRDecomp::checkCompressed(src)) {
+        JKRDecomp::decode(src,*(u8**)(this_+0xf8),0x8000,0);
+        base=*(u8**)(this_+0xf8);
+    } else base=src;
+    base+=a;
+    for(u32 i=0;i<len;i++) {
+        u8 b=base[i];
+        dst[i]=(b<<4)|(b>>4);
     }
-    dst += *(u32*)(this_ + idx * 4 + 0x4);
-    if (JKRDecomp::checkCompressed(src)) {
-        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
-        base = *(u8**)(this_ + 0xf8);
-    } else {
-        base = src;
-    }
-    base += a;
-    i = 0;
-    if (len != 0) {
-        if (len > 8) {
-            for (n = len - 8; n > 0; n -= 8) {
-                s = base + i;
-                d = dst + i;
-                d[0] = (s[0] >> 4) | (s[0] << 4);
-                d[1] = (s[1] >> 4) | (s[1] << 4);
-                d[2] = (s[2] >> 4) | (s[2] << 4);
-                d[3] = (s[3] >> 4) | (s[3] << 4);
-                d[4] = (s[4] >> 4) | (s[4] << 4);
-                d[5] = (s[5] >> 4) | (s[5] << 4);
-                d[6] = (s[6] >> 4) | (s[6] << 4);
-                d[7] = (s[7] >> 4) | (s[7] << 4);
-                i += 8;
-            }
-        }
-        s = base + i;
-        d = dst + i;
-        for (n = len - i; n > 0; n--) {
-            u8 b = *s++;
-            *d++ = (b >> 4) | (b << 4);
-        }
-    }
-    DCFlushRange(dst, len);
-    if (idx == 1) {
-        p = *(u8**)(this_ + 8) + 0x200;
-        q = *(u8**)(this_ + 0x238c);
-        for (n = 0x10; n > 0; n--) {
-            q[0] = p[0];
-            q[1] = p[1];
-            q[2] = p[2];
-            q[3] = p[3];
-            q[4] = p[4];
-            q[5] = p[5];
-            q[6] = p[6];
-            q[7] = p[7];
-            q[8] = p[8];
-            q[9] = p[9];
-            q[10] = p[10];
-            q[11] = p[11];
-            q[12] = p[12];
-            q[13] = p[13];
-            q[14] = p[14];
-            q[15] = p[15];
-            p += 0x10;
-            q += 0x10;
-        }
+    DCFlushRange(dst,len);
+    if(idx==1) {
+        u8* p=*(u8**)(this_+8)+0x200;
+        u8* q=*(u8**)(this_+0x238c);
+        for(s32 i=0;i<0x100;i++) q[i]=p[i];
     }
 }
 
@@ -2355,12 +2303,13 @@ extern "C" void fn_802FDDD4(u8* this_) {
 }
 #pragma dont_inline reset
 
+#pragma opt_propagation off
 extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
     u8* p;
     s32 i;
-    f32 ratio;
-    f32 s;
     f32 v;
+    f32 s;
+    f32 ratio;
     MtxPtr orig;
     Mtx m;
     s32 j;
@@ -2379,23 +2328,25 @@ extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
             p[0x23d6] = p[0x2432];
             p[0x23d7] = (u8)(int)((f32)p[0x2433] * ratio);
             v = *(f32*)(p + 0x23a0);
-            if (lbl_80541518 != v) {
-                orig = *(MtxPtr*)(p + 0x23d8);
-                s = v - (v - lbl_80541518) * ratio;
-                PSMTXCopy(orig, m);
-                for (j = 0; j < 12; j++) {
-                    ((f32*)m)[j] *= s;
-                }
+            if (1.0f != v) {
+                const void* __restrict src = *(MtxPtr*)(p + 0x23d8);
+                orig = (MtxPtr)src;
+                ratio = v - (v - 1.0f) * ratio;
+                JMath::gekko_ps_copy12(m, src);
+                m[0][0] *= ratio; m[1][0] *= ratio; m[2][0] *= ratio;
+                m[0][1] *= ratio; m[1][1] *= ratio; m[2][1] *= ratio;
+                m[0][2] *= ratio; m[1][2] *= ratio; m[2][2] *= ratio;
+                m[0][3] *= ratio; m[1][3] *= ratio; m[2][3] *= ratio;
                 *(MtxPtr*)(p + 0x23d8) = m;
             }
-            if (*(s32*)(p + 0x23b0) != 0) {
-                fn_802F86CC(base, p + 0x23a4, *(s32*)(p + 0x23b0), *(u32*)(p + 0x23b4), p + 0x23c0, lbl_80541518, lbl_80541518);
-            } else if (*(s32*)(p + 0x23b8) != 0) {
+            if (*(u32*)(p + 0x23b0) != 0) {
+                fn_802F86CC(base, p + 0x23a4, *(s32*)(p + 0x23b0), *(u32*)(p + 0x23b4), p + 0x23c0, 1.0f, 1.0f);
+            } else if (*(u32*)(p + 0x23b8) != 0) {
                 fn_802F745C(base, p + 0x23a4, *(s32*)(p + 0x23b8), p + 0x23c0);
-            } else if (*(s32*)(p + 0x23bc) != 0) {
+            } else if (*(u32*)(p + 0x23bc) != 0) {
                 fn_802F6CF4(base, p + 0x23a4, *(s32*)(p + 0x23bc), p + 0x23c0);
             }
-            if (lbl_80541518 != *(f32*)(p + 0x23a0)) {
+            if (1.0f != *(f32*)(p + 0x23a0)) {
                 *(MtxPtr*)(p + 0x23d8) = orig;
             }
         }
@@ -2403,7 +2354,7 @@ extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
         p -= 0x9c;
     } while (i >= 0);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802FF0EC(u8* p) {
     bool bVar2 = false;
     s32 i = 0;
