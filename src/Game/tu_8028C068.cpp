@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
 
 struct YasiDrawKey {
     s32 a, b;
