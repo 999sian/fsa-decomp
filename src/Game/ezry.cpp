@@ -107,6 +107,44 @@ extern "C" void fn_80160650(char* p) {
     }
 }
 
+extern "C" void fn_8016088C(char* p) {
+    if (*(u8*)(p + 0x268) != 0) {
+        return;
+    }
+    if ((*(u32*)(p + 0x90) >> 27) == 0) {
+        return;
+    }
+    if (!((EzryVis*)p)->isVisible()) {
+        return;
+    }
+    *(u8*)(p + 0x268) = 1;
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+        u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+        if (!(rec[0x87] & 1)) {
+            rec[0x87] |= 1;
+            fn_8043D67C(lbl_8053AED0, 0x339, 0, lbl_80529DEC[0x24f]);
+        }
+    }
+    *(u32*)(p + 0xb0) = 0x20000;
+    if (*(void**)(p + 0x290) == 0) {
+        *(void**)(p + 0x290) = fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x183, 0, 0, 0, 0, 1, lbl_8053D670);
+    }
+    if (*(void**)(p + 0x294) != 0) {
+        return;
+    }
+    *(void**)(p + 0x294) = fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x184, 0, 0, 0, 0, 1, lbl_8053D670);
+    if (*(s32*)(p + 0x258) != 2) {
+        fn_801F71A4(p + 0x3c, *(f32*)(p + 0x278), lbl_8053D674, lbl_8053D678);
+        fn_801F71A4(p + 0x40, *(f32*)(p + 0x27c), lbl_8053D674, lbl_8053D678);
+        fn_801F71A4(p + 0x14, *(f32*)(p + 0x280), lbl_8053D67C, lbl_8053D678);
+    }
+    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    fn_8013CB44(*(void**)(p + 0x290), (f32*)(p + 0xc), 0, 0, 1);
+    fn_8013CB44(*(void**)(p + 0x294), (f32*)(p + 0xc), 0, 0, 1);
+}
+
 struct EzryRandom {
     u32 seed;
     u32 get() {
@@ -137,6 +175,7 @@ extern const f32 lbl_8053D6B0;
 extern const f32 lbl_8053D6B4;
 
 struct EzryTimers { u8 pad[0x234]; s32 t[4]; };
+struct EzrySaveRecord { u8 pad[0x87]; u8 flags; u8 tail[0x40]; };
 
 #define EZRY_RND() (((EzryRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1())
 
@@ -213,9 +252,11 @@ extern "C" void fn_80161290(char* p) {
         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
             u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
             if (!(e[0x87] & 1)) {
-                e[0x87] |= 1;
                 u8* g = lbl_80529DEC;
-                fn_8043D67C(lbl_8053AED0, 0x339, 0, g[0x24f]);
+                e[0x87] |= 1;
+                void* mgr = lbl_8053AED0;
+                s32 count = g[0x24f];
+                fn_8043D67C(mgr, 0x339, 0, count);
             }
         }
     }
