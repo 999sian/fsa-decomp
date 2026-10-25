@@ -68,7 +68,9 @@ static inline s32 WarpDestination(const char* actor) {
 }
 static inline s32 HouseDestination(const char* actor) {
     int room = (*(const u32*)(actor + 0x90) >> 7) & 31;
-    return (room + 7) & ~-(room == 0);
+    s32 converted = room + 7;
+    s32 isZero = room == 0;
+    return converted & ~-isZero;
 }
 
 static inline void CenterGrid(JGeometry::TVec3f& pos, f32 offset) {
