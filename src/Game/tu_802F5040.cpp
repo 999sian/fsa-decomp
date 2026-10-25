@@ -49,6 +49,32 @@ extern "C" void fn_802FC80C(u8* this_);
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx);
 
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
+#include "sdk/stl/math.h"
+static inline void DrawTileQuad(u16 t, s32 px, s32 py, f32 ox, f32 oy, f32 oz) {
+f32 vx=(f32)px+ox;
+f32 vy=(f32)py+oy;
+f32 u=(f32)(int)(t&15);
+f32 v=(f32)(int)((t>>4)&63);
+u=8.0f*u+0.501f;
+v=8.0f*v+0.501f;
+u*=0.0078125f;
+v*=0.001953125f;
+f32 su=__fmadds((f32)px,0.0078125f,0.0f);
+f32 sv=__fmadds((f32)py,0.0078125f,0.0f);
+f32 eu=0.0625f+su;
+f32 ev=0.0625f+sv;
+f32 u2,v2;
+if(t&0x400) {u2=u;u+=6.98f/128.0f;} else u2=u+6.98f/128.0f;
+if(t&0x800) {v2=v;v+=6.98f/512.0f;} else v2=v+6.98f/512.0f;
+GXWGFifo.f32=vx; GXWGFifo.f32=vy; GXWGFifo.f32=oz;
+GXWGFifo.f32=u; GXWGFifo.f32=v; GXWGFifo.f32=su; GXWGFifo.f32=sv;
+GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy; GXWGFifo.f32=oz;
+GXWGFifo.f32=u2; GXWGFifo.f32=v; GXWGFifo.f32=eu; GXWGFifo.f32=sv;
+GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=oz;
+GXWGFifo.f32=u2; GXWGFifo.f32=v2; GXWGFifo.f32=eu; GXWGFifo.f32=ev;
+GXWGFifo.f32=vx; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=oz;
+GXWGFifo.f32=u; GXWGFifo.f32=v2; GXWGFifo.f32=su; GXWGFifo.f32=ev;
+}
 struct Tu802F5040Rect {
     s32 m00;
     s32 m04;
@@ -955,6 +981,9 @@ if(counts[i]>0) {
 GXInitTexObjCI(&texObj,*(void**)(this_+4),128,512,(GXCITexFmt)8,(GXTexWrapMode)0,(GXTexWrapMode)0,0,lbl_80471020[i]);
 GXLoadTexObj(&texObj,(GXTexMapID)0);
 GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,counts[i]*4);
+f32 oz=origin[2];
+f32 ox=origin[0];
+f32 oy=origin[1];
 for(row=0;row<16;row++) {
 for(col=0;col<16;col++) {
 u16 tile=tiles[(row*16+col)*2]|tiles[(row*16+col)*2+1]<<8;
@@ -965,24 +994,28 @@ u16 t=(*(u16**)(this_+0x24))[tile*4+y*2+x];
 if(((t>>12)&15)==i) {
 s32 px=(col*2+x)*8;
 s32 py=(row*2+y)*8;
-f32 u=(8.0f*(f32)(int)(t&15)+0.501f)*0.0078125f;
-f32 v=(8.0f*(f32)(int)((t>>4)&63)+0.501f)*0.001953125f;
-f32 su=(f32)px*0.0078125f+lbl_805414F8;
-f32 sv=(f32)py*0.0078125f+lbl_805414F8;
+f32 vx=(f32)px+ox;
+f32 vy=(f32)py+oy;
+f32 u=(f32)(int)(t&15);
+f32 v=(f32)(int)((t>>4)&63);
+u=8.0f*u+0.501f;
+v=8.0f*v+0.501f;
+u*=0.0078125f;
+v*=0.001953125f;
+f32 su=__fmadds((f32)px,0.0078125f,0.0f);
+f32 sv=__fmadds((f32)py,0.0078125f,0.0f);
 f32 eu=0.0625f+su;
 f32 ev=0.0625f+sv;
-f32 vx=(f32)px+origin[0];
-f32 vy=(f32)py+origin[1];
 f32 u2,v2;
 if(t&0x400) {u2=u;u+=6.98f/128.0f;} else u2=u+6.98f/128.0f;
 if(t&0x800) {v2=v;v+=6.98f/512.0f;} else v2=v+6.98f/512.0f;
-GXWGFifo.f32=vx; GXWGFifo.f32=vy; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=vx; GXWGFifo.f32=vy; GXWGFifo.f32=oz;
 GXWGFifo.f32=u; GXWGFifo.f32=v; GXWGFifo.f32=su; GXWGFifo.f32=sv;
-GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy; GXWGFifo.f32=oz;
 GXWGFifo.f32=u2; GXWGFifo.f32=v; GXWGFifo.f32=eu; GXWGFifo.f32=sv;
-GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=oz;
 GXWGFifo.f32=u2; GXWGFifo.f32=v2; GXWGFifo.f32=eu; GXWGFifo.f32=ev;
-GXWGFifo.f32=vx; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=origin[2];
+GXWGFifo.f32=vx; GXWGFifo.f32=vy+8.0f; GXWGFifo.f32=oz;
 GXWGFifo.f32=u; GXWGFifo.f32=v2; GXWGFifo.f32=su; GXWGFifo.f32=ev;
 }
 }
@@ -2321,4 +2354,5 @@ extern "C" u8 memPool___26JASPoolAllocObject_5JAISe[0x10];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" u8 lbl_804D69B8[];
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "sdk/stl/math.h"
 
