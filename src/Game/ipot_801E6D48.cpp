@@ -169,6 +169,8 @@ extern "C" s32 fn_801E6FAC(char* p) {
 #include "JSystem/JMath/JMath.h"
 struct IpotGame { u8 pad[0xb4]; JMARandFast rnd; };
 extern IpotGame* lbl_8053AAF8;
+static inline f32 ipotRandF(f32 scale) { return scale * lbl_8053AAF8->rnd.get_ufloat_1(); }
+static inline f32 ipotRandPM(f32 scale) { return scale * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f); }
 
 struct RupyDrop {
     u32 param;
