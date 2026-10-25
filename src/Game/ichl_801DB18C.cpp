@@ -449,9 +449,9 @@ static inline f32 ichlLen(const IchlV2& v) {
     f32 refined = (0.5f * inv) * __fnmsubs(sq, inv * inv, 3.0f);
     return sq * refined;
 }
-static inline bool ichlIsZero(const IchlV2& v) {
-    const f64 square = v.squared();
-    bool r = square <= JGeometry::TUtilf::epsilon();
+static inline BOOL ichlIsZero(const IchlV2& v) {
+    const f32 square = v.squared();
+    BOOL r = square <= JGeometry::TUtilf::epsilon();
     return r;
 }
 
