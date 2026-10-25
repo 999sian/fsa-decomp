@@ -119,27 +119,46 @@ struct PointF {
 
 extern "C" void fn_802C9BCC(u8* this_) {
     u8 hit = 0;
-    u8* g = (u8*)lbl_8053AAF8;
-    f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-    f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
-    f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
-    f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+    f32 x;
+    f32 y = *(f32*)(this_ + 0x10);
+    y0 = *(f32*)(this_ + 0x64);
+    y1 = *(f32*)(this_ + 0x6c);
+    y0 += y;
+    y1 += y;
+    x = *(f32*)(this_ + 0xc);
+    x0 = *(f32*)(this_ + 0x60);
+    x1 = *(f32*)(this_ + 0x68);
+    x0 += x;
+    x1 += x;
     s32 i;
 
-    if (g[0x7e] == 1) {
+    if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
         for (i = 0; i < 4; i++) {
-            u8 on = (g[0x82] & (u8)(1 << i)) != 0;
+            u8 on = (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) != 0;
             if (on == 1) {
-                PointF pt = *(PointF*)fn_8023E724(fn_8022EA0C(i));
-                if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+                JGeometry::TVec3f pt(*(Vec*)fn_8023E724(fn_8022EA0C(i)));
+                bool inside = pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1;
+                if (inside) {
+                    hit = 1;
+                    break;
+                }
+            } else {
+                JGeometry::TVec3f pt(*(Vec*)fn_8023E724(fn_8022EA0C(i)));
+                bool inside = pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1;
+                if (inside) {
                     hit = 1;
                     break;
                 }
             }
         }
     } else {
-        PointF pt = *(PointF*)fn_8023E724(fn_8022EA0C(0));
-        if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+        JGeometry::TVec3f pt(*(Vec*)fn_8023E724(fn_8022EA0C(0)));
+        bool inside = pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1;
+                if (inside) {
             hit = 1;
         }
     }
@@ -156,8 +175,8 @@ extern "C" void fn_802C9BCC(u8* this_) {
             fn_8013CC50(*(void**)(this_ + 0x4), this_ + 0xc, lbl_80540D74, 0x503, 1, 0, 0, 0, 1);
             fn_801F0E34(this_, 0x30003, 0);
             *(u8*)(this_ + 0x240) = 0;
+            *(u8*)(this_ + 0x11c) = 0;
         }
-        *(u8*)(this_ + 0x11c) = 0;
         if (*(u8*)(this_ + 0x241)) {
             *(s32*)(this_ + 0x244) -= 12;
             if (*(s32*)(this_ + 0x244) < 0) {
@@ -185,6 +204,8 @@ extern "C" void fn_802C9BCC(u8* this_) {
         if (hit) {
             *(s32*)(this_ + 0x230) = 1;
         }
+        break;
+    case 4:
         break;
     }
 }
