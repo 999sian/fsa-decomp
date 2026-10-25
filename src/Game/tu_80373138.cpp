@@ -3,6 +3,7 @@
 #define Vec ActorVec
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JKernel/JKRArchive.h"
 
 
 extern "C" char lbl_804AE574[];
@@ -94,12 +95,11 @@ extern "C" u8* lbl_8053AAF8;
 extern "C" u8* lbl_8053AB10;
 extern "C" void fn_802F745C(u8*, u8*, u32, s32);
 extern "C" void fn_80373434(u8* this_) {
-    u8* obj = *(u8**)(lbl_8053AAF8 + 0xa4);
-    u32* vtbl = *(u32**)obj;
-    u32 val = ((u32*)lbl_804AE560)[*(s32*)(this_ + 0x23c)];
-    u32 r = ((u32 (*)(u8*, u32, u32))vtbl[6])(obj, 0x54494d47, val);
+    JKRArchive* obj = *(JKRArchive**)(lbl_8053AAF8 + 0xa4);
+    const char* val = ((const char**)lbl_804AE560)[*(s32*)(this_ + 0x23c)];
+    void* r = obj->getResource('TIMG', val);
     if (*(s32*)(this_ + 4) < 8) {
-        fn_802F745C(*(u8**)(lbl_8053AB10 + 0x20), this_ + 0xc, r, 0);
+        fn_802F745C(*(u8**)(lbl_8053AB10 + 0x20), this_ + 0xc, (u32)r, 0);
     }
 }
 
@@ -120,6 +120,7 @@ extern "C" void fn_803734B4(Actor* this_) {
     if (*(s32*)(p + 0x248) > 0) {
         *(s32*)(p + 0x248) -= 1;
         fn_80373198(this_);
+    } else {
     }
     cnt = 0;
     box[0] = -32.0f;
@@ -212,7 +213,6 @@ extern "C" void fn_803734B4(Actor* this_) {
     } else {
         *(s32*)(p + 0x23c) = 4;
     }
-    return;
 }
 
 extern "C" f32 lbl_80542E50;
@@ -223,9 +223,9 @@ extern "C" f32 lbl_80542E64;
 extern "C" f32 lbl_80542E6C;
 extern "C" f32 lbl_80542E84;
 extern "C" void fn_803738DC(Actor* this_) {
-    f32 a = lbl_80542E58;
-    f32 b = lbl_80542E5C;
     f32 c = lbl_80542E60;
+    f32 b = lbl_80542E5C;
+    f32 a = lbl_80542E58;
     this_->field_60 = a;
     this_->field_64 = b;
     this_->field_68 = c;
