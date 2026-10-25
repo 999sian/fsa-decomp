@@ -223,9 +223,9 @@ static inline u8 fallAlpha(char* this_) {
         alpha = 0xff;
         break;
     default: {
-                    f32 limit;
+                    f32 delta;
             f32 t;
-            f32 delta;
+            f32 limit;
             delta = *(f32*)(this_ + 0x14);
             limit = lbl_8053EC00;
             t = lbl_8053EC04;
