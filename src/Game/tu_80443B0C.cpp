@@ -7,6 +7,10 @@ extern "C" void* lbl_804B1B60[];
 struct FsaBlock48 {
     u32 w[12];
 };
+
+static inline void copyFsaBlock48(FsaBlock48* dst, const FsaBlock48* src) {
+    *dst = *src;
+}
 extern "C" void __dl__FPv(void* p);
 extern const f32 lbl_80543D78;
 extern "C" void fn_8013B490(void*);
@@ -34,10 +38,10 @@ extern void* lbl_8053AD30;
 extern "C" void fn_80443B0C(void* unused, s8* dst, s32 idx, s32 num) {
     void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa8);
     u8* data = (u8*)((void* (*)(void*, u32, void*))(*(void***)obj)[6])(obj, 0x3f3f3f3f, lbl_8048FBD0) + 0x20;
-    s32 top = num / 10000;
-    s8* text = (s8*)(data + *(u32*)(data + 4) + *(u32*)(data + idx * 8 + 0x10) + 8);
-    s32 in = 0;
     s32 out = 0;
+    s32 in = 0;
+    s8* text = (s8*)(data + *(u32*)(data + 4) + *(u32*)(data + idx * 8 + 0x10) + 8);
+    s32 top = num / 10000;
     s8 c = text[in];
     while (c != 0) {
         s8* p = text + in;
@@ -106,12 +110,10 @@ extern "C" void fn_80443DAC(u8* this_) {
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
             for (i = 0; i < 6; i++) {
-                f32 k = lbl_80543D78;
-                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), k, k);
+                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), lbl_80543D78, lbl_80543D78);
             }
             for (i = 0; i < 2; i++) {
-                f32 k = lbl_80543D78;
-                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), k, k);
+                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), lbl_80543D78, lbl_80543D78);
             }
             fn_80458880(lbl_8053AF80, 0, -1);
         }
@@ -129,12 +131,10 @@ extern "C" void fn_80443DAC(u8* this_) {
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &b, &a);
             for (i = 0; i < 6; i++) {
-                f32 k = lbl_80543D78;
-                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), k, *(f32*)(this_ + 0x40));
+                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), lbl_80543D78, *(f32*)(this_ + 0x40));
             }
             for (i = 0; i < 2; i++) {
-                f32 k = lbl_80543D78;
-                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), k, *(f32*)(this_ + 0x40));
+                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), lbl_80543D78, *(f32*)(this_ + 0x40));
             }
             fn_80458880(lbl_8053AF80, 0, -1);
         }
@@ -159,12 +159,10 @@ extern "C" void fn_80443DAC(u8* this_) {
         tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
         ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
         for (i = 0; i < 6; i++) {
-            f32 k = lbl_80543D78;
-            fn_80402E08(*(void**)(this_ + 0x10 + i * 4), k, k);
+            fn_80402E08(*(void**)(this_ + 0x10 + i * 4), lbl_80543D78, lbl_80543D78);
         }
         for (i = 0; i < 2; i++) {
-            f32 k = lbl_80543D78;
-            fn_80402E08(*(void**)(this_ + 0x28 + i * 4), k, k);
+            fn_80402E08(*(void**)(this_ + 0x28 + i * 4), lbl_80543D78, lbl_80543D78);
         }
         *(u16*)(*(u8**)(this_ + 0x8) + 0x22) = 0;
         this_[0x4d] = 3;
@@ -533,11 +531,12 @@ extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void*, void*);
+#pragma opt_strength_reduction off
 extern "C" void fn_80445338(void) {
-    u8* base = lbl_8052CD00;
     u8* p = lbl_804B1B00;
-    u8* dst = p + 0x30;
-    *(FsaBlock48*)dst = *(FsaBlock48*)p;
+    u8* base = lbl_8052CD00;
+    FsaBlock48* __restrict dst = (FsaBlock48*)(p + 0x30);
+    *dst = *(FsaBlock48*)p;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
@@ -584,4 +583,4 @@ extern "C" void fn_80445338(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+#pragma opt_strength_reduction reset
