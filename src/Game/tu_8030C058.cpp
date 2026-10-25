@@ -3,6 +3,7 @@
 #include "dolphin/mtx.h"
 #include "JSystem/JUtility/JUTVideo.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern u8* lbl_8053AB10;
 extern f32 lbl_805416C8;
@@ -83,14 +84,9 @@ extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
     f32 pos[3];
     fn_8030C5F0(p, r4, 1, 0, pos);
     bool ret = false;
-    if (pos[0] >= (f32)(u32)(*(u32*)(p + 0x144) + 0xe)) {
-        if (pos[0] < (f32)(u32)(*(u32*)(p + 0x14c) - 0xe)) {
-            if (pos[1] >= (f32)(u32)(*(u32*)(p + 0x148) + 0xe)) {
-                if (pos[1] < (f32)(u32)(*(u32*)(p + 0x150) - 0xe)) {
-                    ret = true;
-                }
-            }
-        }
+    if (pos[0] >= (f32)(u32)(*(u32*)(p + 0x144) + 0xe) && pos[0] < (f32)(u32)(*(u32*)(p + 0x14c) - 0xe) &&
+        pos[1] >= (f32)(u32)(*(u32*)(p + 0x148) + 0xe) && pos[1] < (f32)(u32)(*(u32*)(p + 0x150) - 0xe)) {
+        ret = true;
     }
     return ret;
 }
@@ -108,6 +104,10 @@ extern "C" void fn_8030C380(u8* p, f32* out) {
     out[1] = y0 + (scale * (y1 - y0)) / (f32)h;
     out[2] = scale;
     JUTVideo::sManager->getBounds(w, h);
+    x0 = *(f32*)(p + 0x164);
+    y0 = *(f32*)(p + 0x168);
+    x1 = *(f32*)(p + 0x16c);
+    y1 = *(f32*)(p + 0x170);
     out[3] = x0 + ((f32)w * (x1 - x0)) / (f32)w;
     out[4] = y0 + ((f32)h * (y1 - y0)) / (f32)h;
     out[5] = scale;
@@ -119,9 +119,9 @@ extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
         u32 b = *(u32*)(p + 0x148);
         u32 c = *(u32*)(p + 0x14c);
         u32 d = *(u32*)(p + 0x150);
+        f32 y1 = *(f32*)(p + 0x168);
         f32 x1 = *(f32*)(p + 0x164);
         f32 x2 = *(f32*)(p + 0x16c);
-        f32 y1 = *(f32*)(p + 0x168);
         f32 y2 = *(f32*)(p + 0x170);
         f32 tx = (in[0] - (f32)a) * (x2 - x1) / (f32)(c - a);
         f32 ty = (in[1] - (f32)b) * (y2 - y1) / (f32)(d - b);
@@ -129,11 +129,11 @@ extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
         out[1] = y1 + ty;
         out[2] = 0.0f;
     } else {
-        const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         f32 x1 = *(f32*)(p + 0x164);
-        f32 x2 = *(f32*)(p + 0x16c);
         f32 y1 = *(f32*)(p + 0x168);
+        f32 x2 = *(f32*)(p + 0x16c);
         f32 y2 = *(f32*)(p + 0x170);
+        const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         f32 w = (f32)(s32)rm->fbWidth;
         f32 h = (f32)(s32)rm->efbHeight;
         out[0] = x1 + in[0] * (x2 - x1) / w;
