@@ -62,36 +62,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 
-static bool fn_80364340_isBadPos(Vec* p) {
-    if (p->x < lbl_80542B20) {
-    } else if (p->x > lbl_80542B24) {
-        return true;
-    }
-    if (p->y < lbl_80542B28) {
-    } else if (p->y > lbl_80542B2C) {
-        return true;
-    }
-    if (p->x + p->y < lbl_80542B30) {
-        return true;
-    }
-    if (p->x > lbl_80542B34 && p->y < lbl_80542B38) {
-        return true;
-    }
-    Vec v1;
-    v1.x = lbl_80542B3C;
-    v1.y = lbl_80542B38;
-    v1.z = lbl_80542B0C;
-    if (PSVECDistance(p, &v1) < lbl_80542B40) {
-        return true;
-    }
-    v1.x = lbl_80542B44;
-    v1.y = lbl_80542B48;
-    v1.z = lbl_80542B0C;
-    if (PSVECDistance(p, &v1) < lbl_80542B40) {
-        return true;
-    }
-    return false;
-}
+
 
 static bool fn_80364340_isBadPos(Vec* p, Vec& v1) {
     if (p->x < lbl_80542B20 || p->x > lbl_80542B24) {
