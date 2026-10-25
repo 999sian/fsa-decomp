@@ -17,7 +17,7 @@ extern "C" void fn_802D79E8(void*, s32, s32, f32, f32);
 
 extern u8 lbl_804C1E30[];
 extern "C" void* fn_801F856C(void);
-extern "C" void fn_801EE4F0(void*);
+extern "C" f32 fn_801EE4F0(void*);
 extern "C" void* fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" void* fn_8013C824(void);
 extern "C" void fn_8013C830(void*, s32, void*);
