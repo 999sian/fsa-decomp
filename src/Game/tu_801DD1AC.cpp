@@ -120,7 +120,7 @@ static inline u8 canHitFire(u8* p, u8* other) {
         switch (*(s32*)(p + 0x248)) {
         case 12: result = 1; break;
         case 11: case 13: case 14:
-            if (*(f32*)(other + 0x40) < lbl_8053F38C) result = 1;
+            if (*(f32*)(other + 0x40) < 0.0f) result = 1;
             else if (*(u32*)(p + 0x230) & 0x2000) {
                 if (*(f32*)(other + 0x3c) < lbl_8053F3D0) result = 1;
             } else if (*(f32*)(other + 0x3c) > lbl_8053F3D0) result = 1;
