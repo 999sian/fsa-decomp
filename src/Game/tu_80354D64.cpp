@@ -292,14 +292,11 @@ extern "C" void fn_80356268(void* this_) {
 extern "C" Actor* fn_80356514(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = __vt__4MRTA;
-        if (*(void**)((char*)p + 0x2e0) != 0) {
-            fn_801EE434();
-        }
+        void* emitter = *(void**)((char*)p + 0x2e0);
+        if (emitter != 0) fn_801EE434(emitter);
         __dt__5ActorFv(p, 0);
         s32 v = n;
-        if (v > 0) {
-            operator delete(p);
-        }
+        if (v > 0) operator delete(p);
     }
     return p;
 }
