@@ -77,6 +77,24 @@ extern "C" f32 lbl_8053C758;
 extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
 extern "C" void fn_8030C210(void* p, void* q);
 extern "C" void* fn_8011921C(void);
+extern "C" void* fn_80119DD0(void);
+extern "C" void fn_80119998(void* a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void fn_80234810(void);
+extern "C" void fn_802382D0(s32, s32);
+extern "C" void fn_80458FF0(void* a, s32 b, s32 c, s32 d);
+extern "C" void* lbl_8053AF80;
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
+extern "C" void fn_80230FD0(s32 player, s32 id);
+extern "C" void fn_80230BF4(s32 a, s32 b);
+extern "C" void fn_80230498(s32 i, JGeometry::TVec3<f32>* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80118454(void*);
+extern "C" void fn_801183BC(void*);
+extern "C" void fn_801D22DC(void*, s32, s32, s32);
+extern "C" void fn_801D1F14(void*, f32);
+extern "C" void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
+extern "C" u16 lbl_8053C740[];
+extern "C" f32 lbl_8053C788;
+extern "C" f32 lbl_8053C790;
 
 struct Vec3 {
 	f32 x, y, z;
@@ -94,10 +112,7 @@ extern "C" void fn_80116E8C(char* p) {
 
 	switch (*(s32*)(p + 0x234)) {
 	case 9: {
-		struct Vec2 {
-			f32 x, y;
-		} xy = *(Vec2*)(p + 0xc);
-		f32 z = *(f32*)(p + 0x14);
+		JGeometry::TVec3<f32> xy = *(JGeometry::TVec3<f32>*)(p + 0xc);
 		xy.y += *(f32*)(p + 0x240);
 		fn_801CD950((f32*)(p + 0x240), lbl_8053C74C + *(f32*)(p + 0x10), lbl_8053C750);
 		u8* mgr = *(u8**)(lbl_8053AB10 + 0x24);
@@ -115,9 +130,7 @@ extern "C" void fn_80116E8C(char* p) {
 	}
 	case 10:
 	case 11: {
-		struct Vec2 {
-			f32 x, y;
-		} xy = *(Vec2*)(p + 0xc);
+		JGeometry::TVec3<f32> xy = *(JGeometry::TVec3<f32>*)(p + 0xc);
 		xy.y += *(f32*)(p + 0x240);
 		u8* mgr = *(u8**)(lbl_8053AB10 + 0x24);
 		if (mgr[0x840] == 0) {
