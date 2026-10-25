@@ -80,12 +80,12 @@ static inline bool hitContains(const HitBox& b, const JGeometry::TVec2<f32>& p) 
 // NONMATCHING: register allocation (retail gives the params r28-r31).
 extern "C" bool fn_8020D6AC(HitRectList* l, s32 kind, const JGeometry::TVec2<f32>& pos, s32 exclude, const u32* names) {
     bool hit = false;
+    s32 i = 0;
     s32 n = l->count;
-    for (s32 i = 0; i < n; i++) {
-        HitRect* r = &l->rects[i];
-        if (r->kind == kind) {
-            s32 id = r->actorId;
-            if (id != exclude && hitContains(r->box, pos)) {
+    for (; i < n; i++) {
+        if (l->rects[i].kind == kind) {
+            s32 id = l->rects[i].actorId;
+            if (id != exclude && hitContains(l->rects[i].box, pos)) {
                 hit = true;
                 if (names != 0) {
                     u8* a = fn_801F666C(fn_801F856C(), id);
@@ -120,8 +120,14 @@ extern "C" void fn_8020D7D0(HitRectList* l, s32 actorId) {
 
 // NONMATCHING: retail keeps box.i.x in f3 and reloads the other fields.
 extern "C" void fn_8020D8C0(HitRectList* l, const HitBox& b, s32 kind, s32 actorId) {
-    if (l->count < 80 && b.getWidth() > 0.0f && b.getHeight() > 0.0f) {
-        l->rects[l->count].box.set(b);
+    const volatile f32* v = (const volatile f32*)&b;
+    if (l->count < 80 && v[2] - b.i.x > 0.0f && v[3] - v[1] > 0.0f) {
+        f32 y1, x1, y0, x0;
+        x0 = b.i.x;
+        y0 = b.i.y;
+        x1 = b.f.x;
+        y1 = b.f.y;
+        l->rects[l->count].box.set(x0, y0, x1, y1);
         l->rects[l->count].kind = kind;
         l->rects[l->count].actorId = actorId;
         l->count++;
