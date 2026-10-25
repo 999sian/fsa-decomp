@@ -2115,32 +2115,21 @@ extern "C" void fn_800D9F10(void* p) {
 
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
+#pragma opt_common_subs off
 extern "C" void fn_800D9FE4(void* param_1, u32 param_2) {
-    u32* gd = (u32*)&__GDCurrentDL;
-    u32 cur = *(u32*)gd;
-    gd[2] = cur + param_2;
-    
-    u32 dl_ptr = gd[2];
-    gd = (u32*)&__GDCurrentDL;
-    u32 cur_dl = gd[2];
-    
     u32 i = 0;
+    GDSetCurrOffset(param_2);
+    u8* start = GDGetCurrPointer();
     while (1) {
-        if (!isTexNoReg((void*)cur_dl)) {
-            break;
-        }
-        u16 tex_no = getTexNoReg((void*)cur_dl);
-        loadTexNo(i, tex_no);
+        u8* cur = GDGetCurrPointer();
+        if (!isTexNoReg(cur)) break;
+        u16 tex = getTexNoReg(cur);
+        loadTexNo(i, tex);
         i++;
-        gd = (u32*)&__GDCurrentDL;
-        cur_dl = gd[2];
     }
-    
-    gd = (u32*)&__GDCurrentDL;
-    u32 dl_end = gd[2];
-    DCStoreRange((void*)dl_ptr, dl_end - dl_ptr);
+    DCStoreRange(start, GDGetCurrPointer() - start);
 }
-
+#pragma opt_common_subs reset
 void J3DGDSetIndTexMtx(GXIndTexMtxID, f32 (*)[3], s8);
 void J3DGDSetIndTexCoordScale(GXIndTexStageID, GXIndTexScale, GXIndTexScale, GXIndTexScale, GXIndTexScale);
 void J3DGDSetIndTexOrder(u32, GXTexCoordID, GXTexMapID, GXTexCoordID, GXTexMapID, GXTexCoordID, GXTexMapID, GXTexCoordID, GXTexMapID);
