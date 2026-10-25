@@ -19,6 +19,14 @@ struct FsaMenuNumber {
     f32 x[10];
     f32 y[10];
     f32 scale[10];
+    u8 unk_0x190[0x64];
+    u8 digits[5][10];
+    u8 count[10];
+    u8 unk_0x230[10];
+    u8 level[10];
+    u8 type[10];
+    u8 unk_0x24e[4];
+    u8 used;
 };
 
 struct FsaBlock48 {
@@ -478,9 +486,9 @@ extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 
         int count = p5;
         f32 b = (f32)(count % 2);
         f32 a = (f32)(p5 / 2);
-        ((f32*)(self + n * 4))[0x46] = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - (lbl_80543CC0 * a) * f3;
-        ((f32*)(self + self[0x252] * 4))[0x50] = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
-        ((f32*)(self + self[0x252] * 4))[0x5a] = f3;
+        ((FsaMenuNumber*)(self + n * 4))->x[0] = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - (lbl_80543CC0 * a) * f3;
+        ((FsaMenuNumber*)(self + self[0x252] * 4))->y[0] = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
+        ((FsaMenuNumber*)(self + self[0x252] * 4))->scale[0] = f3;
         self[0x244 + self[0x252]] = p3;
         self[0x226 + self[0x252]] = p5;
         self[0x1f4 + self[0x252]] = 0xff;
@@ -507,7 +515,7 @@ extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 
             d+=10;
             pow/=10;
         }
-        self[count*10+self[0x252]+0x1ea]=value;
+        (self+count*10)[self[0x252]+0x1ea]=value;
         if (p4>5) p4=5;
         self[0x23a+self[0x252]]=p4;
         self[0x252]++;
