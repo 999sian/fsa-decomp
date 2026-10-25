@@ -24,21 +24,6 @@ extern "C" s32 fn_8023CB24(s32 holder);
 extern "C" u8 fn_8023CA88(s32 holder);
 extern "C" void fn_801F02BC(void* this_, void* table, u32 size, void* buf, s32 flag, f32 f1, f32 f2, u32 a, u32 b);
 
-struct Unk802D3488Buf {
-    u8 buf[0x10];
-    s32 a;
-    s32 b;
-    s32 c;
-    u8 d[11];
-    s32 e;
-    u8 f;
-    u8 g;
-    u8 h;
-    s32 i;
-    s32 j;
-    s32 k;
-};
-
 struct YasiDrawKey {
     s32 a, b;
     YasiDrawKey() { a = -1; b = -1; }
