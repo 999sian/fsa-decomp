@@ -341,11 +341,6 @@ extern "C" void fn_803F1C70(u8* p) {
     }
 }
 
-static inline s32 tu803F_clearTimer(u8* p) {
-    s32 zero = 0;
-    *(s16*)(p + 0x240) = zero;
-    return zero;
-}
 extern "C" void fn_803F2580(u8* p) {
     s32 j;
     s32 i;
@@ -956,7 +951,8 @@ extern "C" void fn_803F726C(u8* p) {
     }
 }
 
-#pragma opt_lifetimes off
+#pragma opt_propagation on
+#pragma opt_lifetimes on
 extern "C" void fn_803F8050(u8* p) {
     s32 t = *(s16*)(p + 0x240);
 
@@ -1008,6 +1004,7 @@ extern "C" void fn_803F8050(u8* p) {
         *(s32*)(p + 0x1d0) = 0;
     }
 }
+#pragma opt_propagation reset
 #pragma opt_lifetimes reset
 extern const f32 lbl_805437C0;
 extern const f32 lbl_805437C4;
