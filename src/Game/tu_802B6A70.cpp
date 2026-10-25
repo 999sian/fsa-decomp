@@ -179,8 +179,9 @@ extern "C" void fn_802B7044(Actor* p) {
         box[1] = p->field_64;
         box[2] = p->field_68;
         box[3] = p->field_6C;
-        f32 x = p->field_0C.x;
+        f32 x;
         f32 y = p->field_0C.y;
+        x = p->field_0C.x;
         box[0] += x;
         box[1] += y;
         box[2] += x;
@@ -218,7 +219,9 @@ extern "C" void fn_802B7044(Actor* p) {
     case 2:
         *(s32*)(b + 0x23c) -= 1;
         if (*(s32*)(b + 0x23c) == 0) {
-            fn_8029D8F0(lbl_8053AC98, Vec3f(p->field_0C.x - 8.0f, p->field_0C.y, p->field_0C.z), p->field_04, *(s32*)(b + 0x244), 0);
+            s32 n = *(s32*)(b + 0x244);
+            s32 room = p->field_04;
+            fn_8029D8F0(lbl_8053AC98, Vec3f(p->field_0C.x - 8.0f, p->field_0C.y, p->field_0C.z), room, n, 0);
             *(s32*)(b + 0x234) = 3;
             if (**(u8**)(b + 0x248) == 'u') {
                 *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, Vec3f(p->field_0C.x, p->field_0C.y, p->field_0C.z), 1.0f, 0x280, 0, 0, 0, 0, 1);
