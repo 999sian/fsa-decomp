@@ -468,25 +468,19 @@ extern "C" void fn_8019169C(u8* param_1) {
 }
 
 extern "C" void** fn_80191744(void** param_1, s16 param_2) {
-    if (param_1 != NULL) {
-        if (param_1[499] != NULL) {
-            void* obj = param_1[499];
-            if (obj != NULL) {
-                ((void (*)(void*, int))((void**)*(void***)((u8*)obj + 8))[12])(obj, 1);
-            }
-        }
-        if (param_1[0x1ee] != NULL) {
-            void* obj = param_1[0x1ee];
-            if (obj != NULL) {
-                ((void (*)(void*, int))((void**)*(void***)((u8*)obj + 8))[12])(obj, 1);
-            }
-        }
-        destroy__7JKRHeapFv(*param_1);
-        if (param_2 > 0) {
-            operator delete(param_1);
-        }
-    }
-    return param_1;
+if(param_1 != NULL) {
+if(param_1[499] != NULL) {
+WaveSub* obj=(WaveSub*)param_1[499];
+if(obj != NULL) obj->release(1);
+}
+if(param_1[0x1ee] != NULL) {
+WaveSub* obj=(WaveSub*)param_1[0x1ee];
+if(obj != NULL) obj->release(1);
+}
+destroy__7JKRHeapFv(*param_1);
+if(param_2>0) operator delete(param_1);
+}
+return param_1;
 }
 
 extern "C" void fn_80191E00(void);
