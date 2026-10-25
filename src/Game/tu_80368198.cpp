@@ -1,6 +1,7 @@
 
 
 #include "types.h"
+#include "PowerPC_EABI_Support/Runtime/MWCPlusPlusLib.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
