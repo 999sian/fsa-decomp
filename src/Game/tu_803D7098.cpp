@@ -20,11 +20,10 @@ struct FsaNode {
     virtual FsaNode* v15(u64);
 };
 
-typedef FsaNode* (*FsaGetFn)(void* self, u64 key);
-
-static inline FsaNode* fsaGet(u8* obj, u64 key) {
-    return ((FsaGetFn)(*(void***)obj)[15])(obj, key);
-}
+struct FsaVt15 {
+    void* v[15];
+    FsaNode* (*v15)(void* a, u64 b);
+};
 
 struct FsaSlots {
     virtual void v0(void);
