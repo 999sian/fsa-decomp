@@ -2,6 +2,16 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "Game/SinitPoolChain.h"
 
+struct DgtlEffMgr {
+    u8 pad[0xc];
+    JPAEmitterManager* mgr;
+};
+
+struct DgtlObj {
+    u8 pad[0x7c0];
+    JPABaseEmitter* eff[2];
+};
+
 struct TWEVParam {
     u8 buf[16];
     s32 a;
@@ -61,6 +71,117 @@ extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
 extern "C" void fn_80134DE4(u8* a, s32 b, s32 c);
+extern "C" u32 fn_804032E8(u32 tag, void* name);
+extern "C" void fn_801EFD34(void* this_, u32 id, void* param, s32 n, f32 a, f32 b, f32 c);
+extern "C" void fn_801F02BC(void* this_, void* name, s32 id, f32 a, f32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" char lbl_80465D30[];
+extern "C" void* lbl_8049F698[];
+extern "C" u8 lbl_80539F60[];
+extern "C" s32 lbl_8053AB34;
+extern "C" const f32 lbl_8053D0B8;
+extern "C" const f32 lbl_8053D0BC;
+extern "C" void fn_80147B50(void* this_) {
+    char* p = (char*)this_;
+    TWEVParam param;
+    TWEVMtx mtx;
+    s32 i;
+    s32 mode;
+
+    param.a = -1;
+    param.b = -1;
+    for (i = 0; (u8)i < 16; i += 8) {
+        param.buf[(u8)i] = i;
+        param.buf[(u8)(i + 1)] = i + 1;
+        param.buf[(u8)(i + 2)] = i + 2;
+        param.buf[(u8)(i + 3)] = i + 3;
+        param.buf[(u8)(i + 4)] = i + 4;
+        param.buf[(u8)(i + 5)] = i + 5;
+        param.buf[(u8)(i + 6)] = i + 6;
+        param.buf[(u8)(i + 7)] = i + 7;
+    }
+    param.a = -1;
+    param.b = 0;
+    param.c = 0;
+    param.d[0] = 0;
+    param.d[1] = 0;
+    param.d[2] = 0;
+    param.d[3] = 1;
+    param.d[4] = 1;
+    param.d[5] = 0;
+    param.d[6] = 0;
+    param.d[7] = 0;
+    param.d[8] = 0;
+    param.d[9] = 0;
+    param.d[10] = 1;
+    param.e = 3;
+    param.f[0] = 1;
+    param.f[1] = 0;
+    param.f[2] = 0;
+    param.g = -1;
+    param.h = 0;
+    param.i = 2;
+    mtx[0][3] = lbl_8053D0B0;
+    mtx[1][3] = lbl_8053D0B0;
+    mtx[2][3] = lbl_8053D0B0;
+    param.d[1] = 1;
+
+    mode = *(u32*)(p + 0x90);
+    if (mode == 2 || mode == 3) {
+        if (lbl_8053AB34 == 1) {
+            fn_801F02BC(this_, lbl_80465D30, 0x176, lbl_8053D0B4, lbl_8053D0B4, 0, -1, 1, 0);
+        }
+    } else {
+        f32 x0 = *(f32*)(p + 0xc);
+        f32 y0 = *(f32*)(p + 0x10);
+        f32 z0 = *(f32*)(p + 0x14);
+        *(f32*)(p + 0xc) = *(f32*)(p + 0x314);
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x318);
+        *(f32*)(p + 0x14) = *(f32*)(p + 0x31c);
+        f32 ang = (f32)*(u16*)(p + 0x2ba) / lbl_8053D0B8;
+        fn_80147B50_rotMtx(mtx, lbl_8053D0B0, ang, lbl_8053D0B0, lbl_8053D0B4);
+        param.c = mtx;
+        u32 id = fn_804032E8(0x44454754, lbl_8049F698[8 + *(s32*)(p + 0x278)]);
+        fn_801EFD34(this_, id, &param, -1, lbl_8053D0B0, lbl_8053D0B0, lbl_8053D0B0);
+
+        char* pa = p + 0x30;
+        char* pb = p + 8;
+        for (s32 r24 = 4; r24 >= 0; r24--, pa -= 12, pb -= 2) {
+            param.d[1] = 6 - r24;
+            mtx[0][3] = lbl_8053D0B0;
+            mtx[1][3] = lbl_8053D0B0;
+            mtx[2][3] = lbl_8053D0B0;
+            *(f32*)(p + 0xc) = *(f32*)(pa + 0x2cc);
+            *(f32*)(p + 0x10) = *(f32*)(pa + 0x2d0);
+            *(f32*)(p + 0x14) = *(f32*)(pa + 0x2d4);
+            f32 sc = lbl_8053D0B4 - lbl_8053D0BC * (f32)r24;
+            f32 a2 = (f32)*(u16*)(pb + 0x2ae) / lbl_8053D0B8;
+            fn_80147B50_rotMtx(mtx, lbl_8053D0B0, a2, lbl_8053D0B0, sc);
+            param.c = mtx;
+            id = fn_804032E8(0x44454754, lbl_8049F698[3 + *(s32*)(p + 0x25c)]);
+            fn_801EFD34(this_, id, &param, -1, lbl_8053D0B0, lbl_8053D0B0, lbl_8053D0B0);
+        }
+
+        *(f32*)(p + 0xc) = x0;
+        *(f32*)(p + 0x10) = y0;
+        *(f32*)(p + 0x14) = z0;
+        param.d[1] = 7;
+        mtx[0][3] = lbl_8053D0B0;
+        mtx[1][3] = lbl_8053D0B0;
+        mtx[2][3] = lbl_8053D0B0;
+        f32 ang2 = (f32)*(u16*)(p + 0x284) / lbl_8053D0B8;
+        fn_80147B50_rotMtx(mtx, lbl_8053D0B0, ang2, lbl_8053D0B0, lbl_8053D0B4);
+        param.c = mtx;
+        id = fn_804032E8(0x44454754, lbl_8049F698[lbl_80539F60[*(s32*)(p + 0x258)]]);
+        fn_801EFD34(this_, id, &param, -1, lbl_8053D0B0, lbl_8053D0B0, lbl_8053D0B0);
+    }
+}
+
+extern "C" void fn_8014821C(char* this_) {
+    if (*(s32*)(this_ + 0x90) == 1) {
+        *(s32*)(this_ + 0x108) = 0x2710;
+    }
+}
+
 extern "C" void* fn_80149A10(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = __vt__4DGTL;
