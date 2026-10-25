@@ -103,9 +103,8 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
         u16 angle = radians;
         f32 radius = JGeometry::TUtilf::sqrt(pos.x * pos.x + pos.y * pos.y);
         pos.z = 0.0f;
-        f32 y = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
         pos.x = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
-        pos.y = y;
+        pos.y = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
         bool hit = false;
         if (pos.x >= x0 && pos.y >= y0 && pos.x < x1 && pos.y < y1) hit = true;
         if (hit) {
