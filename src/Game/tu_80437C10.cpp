@@ -30,12 +30,7 @@ extern "C" const f32 lbl_80543C08;
 extern "C" void* fn_804030C4(u32, const char*);
 extern "C" void fn_802F745C(void*, void*, void*, TlwpDrawParam*);
 #pragma opt_lifetimes off
-static inline void draw37C10(u8* self, void* pos, void* res, TlwpDrawParam* rec) {
-    if (*(s32*)(self + 4) < 8) {
-        fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, rec);
-    }
-}
-
+#pragma opt_lifetimes on
 extern "C" void fn_80437C10(u8* self) {
     const char** tex0;
     u8* cfg;
@@ -54,12 +49,12 @@ extern "C" void fn_80437C10(u8* self) {
             f32 cz;
             f32 cs, a0, a1, a2, a3, a4, a5, a6, a7, a8;
             f32 cc;
-            f32 sy;
+            f32 sx;
             f32 cx;
             f32 sz;
             f32 cy;
             f32 scale;
-            f32 sx;
+            f32 sy;
             TlwpDrawParam rec;
             f32 mtx[3][4];
             scale = *(f32*)(settings + 0x30);
