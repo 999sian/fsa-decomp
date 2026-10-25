@@ -322,6 +322,44 @@ extern "C" void fn_803D7098(u8* param_1) {
     fn_80402E08(*(void**)(param_1 + 0x44), *(f32*)(param_1 + 0x58), *(f32*)(param_1 + 0x5c));
 }
 
+extern "C" void fn_80431174(void*, u8);
+extern "C" s32 fn_80309C4C(void*, s32, s32);
+extern "C" void fn_80458880(void*, s32, s32);
+extern "C" void* lbl_8053AD30;
+void fn_803D75B0(u8* self)
+{
+    if (self[0x80] == 1) {
+        fn_80431174(lbl_8053AEC0, self[0x78]);
+        switch (self[0x7f]) {
+        case 0:
+            if (fn_80309C4C(lbl_8053AD30, 1, -1) != 0) {
+                if (self[0x78] != 0) {
+                    self[0x78]--;
+                    self[0x79] = self[0x78];
+                    *(s16*)(self + 0x6e) = 1;
+                    fn_80458880(lbl_8053AF80, 0x26, -1);
+                }
+            }
+            break;
+        case 2:
+            if (fn_80309C4C(lbl_8053AD30, 2, -1) != 0) {
+                if (self[0x78] < 1) {
+                    self[0x78]++;
+                    self[0x79] = self[0x78];
+                    *(s16*)(self + 0x6e) = 1;
+                    fn_80458880(lbl_8053AF80, 0x26, -1);
+                }
+            }
+            break;
+        case 4:
+            break;
+        default:
+            break;
+        }
+        return;
+    }
+}
+
 extern "C" void fn_803D82EC(u8* param_1) {
     FsaSlots* obj;
 
@@ -682,9 +720,9 @@ extern "C" void fn_803832BC(void*, u32, s32, s32, s32);
 extern "C" void __ct__9J2DScreenFv(void*);
 extern "C" void __ct__10J2DPictureFPC7ResTIMG(void*, void*);
 extern "C" u8* fn_803D901C(u8* param_1) {
-    u8* pic;
-    u8* sc;
     u8* base = (u8*)lbl_80476F80;
+    u8* sc;
+    u8* pic;
     u8* n;
     u8* o;
     u32 hi1[2];
@@ -911,7 +949,7 @@ extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
-void fn_803D9720(void) {
+void __sinit_tu_803D7098_cpp(void) {
     char* base = lbl_80528168;
 
     if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
