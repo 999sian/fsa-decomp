@@ -1038,7 +1038,6 @@ extern "C" void fn_803DF2B4(u8* self) {
         *(s32*)(self + 0x90) = 1;
     }
 }
-#pragma opt_propagation reset
 extern void* lbl_8053AB10;
 extern void* lbl_8053AED8;
 extern void (J2DScreen::*lbl_804B0628[])();
