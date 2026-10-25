@@ -27,27 +27,66 @@ extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" f32 lbl_805404C4;
 extern "C" f32 lbl_805404C8;
-extern "C" void fn_8028AB7C(u8* this_) {
-    f32 m[12];
-    u8 idx[16];
-    s32 i;
-    f32 ang;
-    f32 s0, s1, s2, c0, c1, c2;
+static inline void platformRotScale(f32 m[3][4], f32 sc, f32 ry) {
+    f32 cz, cy, sz, sy, sx, cx;
+    sx = sin(lbl_805404C0);
+    sy = sin(ry);
+    sz = sin(lbl_805404C0);
+    cx = cos(lbl_805404C0);
+    cy = cos(ry);
+    cz = cos(lbl_805404C0);
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 sxcz = sx * cz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    m[0][3] = lbl_805404C0;
+    m[1][3] = lbl_805404C0;
+    m[2][3] = lbl_805404C0;
+    m[2][2] = sc * (cx * cy);
+    m[0][0] = sc * (cy * cz);
+    m[1][0] = sc * (cy * sz);
+    m[2][0] = sc * -sy;
+    m[0][1] = sc * (sxsy * cz - cxsz);
+    m[1][1] = sc * (sxsy * sz + cxcz);
+    m[2][1] = sc * (sx * cy);
+    m[0][2] = sc * (cxcz * sy + sxsz);
+    m[1][2] = sc * (cxsz * sy - sxcz);
+}
 
-    if (*(f32*)(this_ + 0x240) <= lbl_805404C0) {
-        return;
-    }
-    for (i = 0; i < 16; i++) {
-        idx[i] = i;
-    }
-    ang = lbl_805404C4 * (lbl_805404C8 * (lbl_805404CC - *(f32*)(this_ + 0x240)));
-    s0 = sin(ang);
-    s1 = sin(ang);
-    s2 = sin(ang);
-    c0 = cos(ang);
-    c1 = cos(ang);
-    c2 = cos(ang);
-    fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x25c) + 0x129);
+extern "C" void fn_8028AB7C(u8* this_) {
+    if (*(f32*)(this_ + 0x240) <= 0.0f) return;
+    DrawRec rec;
+    f32 m[3][4];
+    f32 sc; f32 ry; f32 sx; f32 sy; f32 sz; f32 cx; f32 cy; f32 sxsy; f32 cz;
+    rec.b1d = -1;
+    sc = *(f32*)(this_ + 0x240);
+    ry = lbl_805404C4 * (lbl_805404C8 * (lbl_805404CC - sc));
+    sx = sin(lbl_805404C0);
+    sy = sin(ry);
+    sz = sin(lbl_805404C0);
+    cx = cos(lbl_805404C0);
+    cy = cos(ry);
+    cz = cos(lbl_805404C0);
+    sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    m[0][3] = lbl_805404C0;
+    m[1][3] = lbl_805404C0;
+    m[2][3] = lbl_805404C0;
+    m[0][0] = sc * (cy * cz);
+    m[1][0] = sc * (cy * sz);
+    m[2][0] = sc * -sy;
+    m[0][1] = sc * (sxsy * cz - cxsz);
+    m[1][1] = sc * (sxsy * sz + cxcz);
+    m[2][1] = sc * (sx * cy);
+    m[0][2] = sc * (cxcz * sy + sxsz);
+    m[1][2] = sc * (cxsz * sy - sxcz);
+    m[2][2] = sc * (cx * cy);
+    rec.w18 = m;
+    fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x25c) + 0x129, &rec, -1, lbl_805404CC, lbl_805404CC);
 }
 
 extern "C" void detach__5ActorFv(void* this_);
