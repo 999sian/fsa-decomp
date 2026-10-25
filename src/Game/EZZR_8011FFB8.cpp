@@ -246,7 +246,7 @@ extern "C" s32 fn_80120F68(char* p) {
     if (state == 0 || state == 0xf) {
         return 3;
     }
-    r = ((EZZR*)p)->v22();
+    r = ((EZZR*)p)->v20();
     ret = 1;
     if (r) {
         ret = 2;
