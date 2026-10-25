@@ -7,6 +7,23 @@
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JParticle/JPAEmitter.h"
+#include "Game/ItemBase.h"
+
+extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
+extern "C" void fn_8013B414(void* a, f32* b, s32 c);
+extern char lbl_805433C0[];
+extern char lbl_805433C4[];
+extern char lbl_8047641C[];
+
+struct SprMgr_803A8F5C {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void* v18(s32 kind, char* name);
+};
 
 struct MsgRandom {
     u32 seed;
@@ -2198,6 +2215,104 @@ extern "C" void fn_803B14F8(void* this_) {
     (void)d; (void)f29; (void)cnt;
     if (r21 != *(s32*)(p + 0x454)) {
         r21 = 0;
+    }
+}
+
+extern "C" void fn_803B1B60(void* this_) {
+    u8* p = (u8*)this_;
+    s32 a = *(s16*)(lbl_8050DB0C + 0x244);
+    s32 d = *(s16*)(lbl_8050DB0C + 0x24a);
+    s32 b = *(s16*)(lbl_8050DB0C + 0x246);
+    s32 c = *(s16*)(lbl_8050DB0C + 0x248);
+    s32 r29;
+    s32 r23;
+    s32 r28;
+    s32 r24;
+    s32 t;
+    s32 cur;
+    f32 f28;
+    f32 f29;
+    f32 f2;
+    Pane_803B1B60* pane;
+    Scr_803B1B60* scr;
+    s32 i;
+
+    if (*(s32*)(p + 0x440) > 0) {
+        *(s32*)(p + 0x440) -= 1;
+    }
+    r29 = 0x96 - a;
+    r23 = 0x96 - d;
+    r28 = r23 - a;
+    r24 = r29 - b;
+    t = *(s32*)(p + 0x440);
+
+    if (t == 0) {
+        if (*(s32*)(p + 0x450) == 1) {
+            if (p[0x4b8] == 0xff) {
+                if (fn_80389BF0(0, 0x106)) p[0x4b8] = 1;
+            }
+            if (p[0x4b9] == 0xff) {
+                if (fn_80389BF0(1, 0x107)) p[0x4b9] = 1;
+            }
+            if (p[0x4ba] == 0xff) {
+                if (fn_80389BF0(2, 0x108)) p[0x4ba] = 1;
+            }
+            p[0x4bb] = 1;
+        } else {
+            if (p[0x4b8] == 0xff) {
+                if (fn_80389BF0(0, 0xe2)) p[0x4b8] = 1;
+            }
+            if (p[0x4b9] == 0xff) {
+                if (fn_80389BF0(1, 0xe3)) p[0x4b9] = 1;
+            }
+            if (p[0x4ba] == 0xff) {
+                if (fn_80389BF0(2, 0xe4)) p[0x4ba] = 1;
+            }
+            if (p[0x4bb] == 0xff) {
+                if (fn_80389BF0(3, 0xe5)) p[0x4bb] = 1;
+            }
+        }
+        if (p[0x4b8] == 1 && p[0x4b9] == 1 && p[0x4ba] == 1 && p[0x4b8] == 1) {
+            for (i = 0; i < *(s32*)(p + 0x454); i++) {
+                p[0x4b8 + i] = 0xff;
+                *(s16*)(p + 0x460 + i * 2) = 0;
+            }
+            *(s32*)(p + 0x440) = 0x96;
+            p[0x4c1] = 3;
+        }
+        return;
+    }
+
+    cur = *(s32*)(p + 0x450);
+    if (t < r29) {
+        if (t < r24) {
+            return;
+        }
+        scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
+        pane = scr->v3C(0x00506d6d776b3032ULL);
+        f28 = getBounds__7J2DPaneFv(pane)[0];
+        scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
+        pane = scr->v3C(0x00506d6d776b3032ULL);
+        pane->move(f28, f28);
+        return;
+    }
+
+    scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
+    pane = scr->v3C(0x00506d6d776b3032ULL);
+    f28 = getBounds__7J2DPaneFv(pane)[0];
+    scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
+    pane = scr->v3C(0x00506d6d776b3032ULL);
+    f2 = (*(f32*)(p + 0x41c) - lbl_80543424) + (lbl_80543424 + (f32)c) * (lbl_805433D4 - (f32)((t - r29) * (t - r29)) / (f32)(a * a));
+    pane->move(f28, f2);
+
+    f29 = lbl_805433D4 - (f32)(t - r29) / (f32)a;
+    if (cur >= 2) {
+        return;
+    }
+    for (i = 0; i < 13; i++) {
+        scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
+        pane = scr->v3C(*(u64*)((u8*)&lbl_80476208 + i * 8));
+        pane->v24((s32)(((f32)p[0x4c9 + i] - lbl_805433B8) * f29));
     }
 }
 
