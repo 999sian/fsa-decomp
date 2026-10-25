@@ -172,12 +172,12 @@ extern "C" void fn_801003F4(s32* this_) {
 extern const f32 lbl_8053C134;
 extern const f32 lbl_8053C138;
 extern "C" void fn_801005C4(Actor* this_) {
-    f32 f1 = lbl_8053C134;
-    f32 f0 = lbl_8053C138;
-    *(f32*)((u8*)this_ + 0x60) = f1;
-    *(f32*)((u8*)this_ + 0x64) = f1;
-    *(f32*)((u8*)this_ + 0x68) = f0;
-    *(f32*)((u8*)this_ + 0x6c) = f0;
+    f32 b = lbl_8053C138;
+    f32 a = lbl_8053C134;
+    *(f32*)((u8*)this_ + 0x60) = a;
+    *(f32*)((u8*)this_ + 0x64) = a;
+    *(f32*)((u8*)this_ + 0x68) = b;
+    *(f32*)((u8*)this_ + 0x6c) = b;
     ((u8*)this_)[0x235] = 2;
     *(s32*)((u8*)this_ + 0x23c) = 0;
     ((u8*)this_)[0x234] = 0;
