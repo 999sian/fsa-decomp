@@ -596,8 +596,9 @@ extern "C" void fn_80425234(u8* this_, s32 i, s32 val, u8 flag) {
 
 // Copies player i's counter to every player linked to i.
 static inline void SyncLinkedCount(s32 i) {
+    s32 j;
     u8* table = lbl_80529DEC;
-    for (s32 j = 0; j < 4; j++) {
+    for (j = 0; j < 4; j++) {
         if (j != i && fn_8022F514(j) && fn_8022F3DC(j) == i) {
             *(s32*)(table + j * 4 + 0xd8) = *(s32*)(table + i * 4 + 0xd8);
         }
@@ -648,7 +649,7 @@ static inline void StepCount2(u8* this_, s32 i) {
 }
 
 extern "C" void fn_804253E0(u8* this_, s32 i) {
-    s32* p = (s32*)(lbl_80529DEC + i * 4 + 0xd8);
+    s32* p = &((s32*)(lbl_80529DEC + 0xd8))[i];
     s32 cur = *p;
     if (cur < (s32)fn_80237774(i)) {
         ((s32*)(this_ + 0x168))[i] = ((s32*)(this_ + 0x168))[i] + 1;
@@ -735,8 +736,8 @@ extern "C" void fn_80425F6C(u8* self) {
             if (*(s16*)(halfwords + 0x1e8) > 0 && ((HudPlayerState*)lbl_8050EC80)[*(s32*)(states + 0x10)].visible != 0) {
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                 video = *(u8**)(sManager__8JUTVideo + 4);
-                f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
-                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                const f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                const f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
                 JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
