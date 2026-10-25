@@ -249,25 +249,17 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
-static inline u8 slmnCheck(char* this_, u8 go) {
-        f32 r;
-        s32 j;
-        s32 i;
-        r = lbl_8053F8E4 * *(u8*)(this_ + 0x344);
-        switch (*(s32*)(this_ + 0x340)) {
-        case 0:
-            go = TRUE;
-            break;
-        case 1:
-            for (j = go; j < 4; j++) {
-                if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
+static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
+            for (s32 i = go; i < 4; i++) {
+                if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
                     go = TRUE;
                     break;
                 }
             }
-            break;
-        case 2:
-            for (i = go; i < 4; i++) {
+return go;
+}
+static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
+            for (s32 i = go; i < 4; i++) {
                 s32 bit = 1 << i;
                 if (*(u8*)(this_ + 0x345) & bit) {
                     if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
@@ -278,6 +270,20 @@ static inline u8 slmnCheck(char* this_, u8 go) {
                     *(u8*)(this_ + 0x345) |= bit;
                 }
             }
+return go;
+}
+static inline u8 slmnCheck(char* this_, u8 go) {
+        f32 r;
+        r = lbl_8053F8E4 * *(u8*)(this_ + 0x344);
+        switch (*(s32*)(this_ + 0x340)) {
+        case 0:
+            go = TRUE;
+            break;
+        case 1:
+            go = slmnCheckNear(this_, go, r);
+            break;
+        case 2:
+            go = slmnCheckTrack(this_, go, r);
             break;
         case 3:
             if (*(u16*)(this_ + 0x346) != fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4)) ||
@@ -290,7 +296,6 @@ static inline u8 slmnCheck(char* this_, u8 go) {
 }
 
 extern "C" void fn_80207F14(char* this_) {
-    f32 r;
     fn_80207A60(this_);
     switch (*(s32*)(this_ + 0x248)) {
     case 1:
@@ -298,42 +303,7 @@ extern "C" void fn_80207F14(char* this_) {
     case 3:
         break;
     case 0: {
-        u8 go = FALSE;
-        {
-        r = lbl_8053F8E4 * *(u8*)(this_ + 0x344);
-        switch (*(s32*)(this_ + 0x340)) {
-        case 0:
-            go = TRUE;
-            break;
-        case 1:
-            for (int j = go; j < 4; j++) {
-                if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
-                    go = TRUE;
-                    break;
-                }
-            }
-            break;
-        case 2:
-            for (int i = go; i < 4; i++) {
-                int bit = 1 << i;
-                if (*(u8*)(this_ + 0x345) & bit) {
-                    if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
-                        go = TRUE;
-                        break;
-                    }
-                } else if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
-                    *(u8*)(this_ + 0x345) |= bit;
-                }
-            }
-            break;
-        case 3:
-            if (*(u16*)(this_ + 0x346) != fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4)) ||
-                *(u16*)(this_ + 0x348) != fn_80226850(this_ + 0xc, *(s32*)(this_ + 0x4))) {
-                go = TRUE;
-            }
-            break;
-        }
-        }
+        u8 go = slmnCheck(this_, FALSE);
         if (go) {
             slmnSpawn(this_);
             fn_80208244(this_, 1);
