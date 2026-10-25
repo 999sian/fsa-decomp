@@ -108,6 +108,17 @@ s32 fn_80230498(s32, const void*, s32, s32, s32, s32, s32);
 u8 fn_802DCE5C(char*, s32);
 }
 
+struct FsaActorList {
+    u8 pad0[8];
+    u8* actors[0x400];
+    s32 count;
+    s32 getCount() const { return count; }
+    u8* getActor(s32 index) const { return actors[index]; }
+};
+static inline FsaActorList* getActorList() {
+    return (FsaActorList*)fn_801F856C();
+}
+
 extern "C" void fn_802D39B8(char* p, s32 index, s32 value) {
     ((s32*)(p + 0x131A8))[index] = value;
 }
@@ -189,11 +200,12 @@ extern "C" void fn_802D3A18(char* p) {
     }
 }
 
-extern "C" bool fn_802D46D8(char*, s32 index, u32 bit, u8 set) {
-    u32 word = bit / 32;
+extern "C" bool fn_802D46D8(char*, int index, unsigned int bit, u8 set) {
+    unsigned int word = bit / 32;
     if (!set) {
         RoomArrays* p = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-        return (lbl_8046E1CC[bit % 32] & p->flags2D48[index][word]) != 0;
+        RoomArrays* row = (RoomArrays*)((char*)p + index * 0x200);
+        return (lbl_8046E1CC[bit % 32] & row->flags2D48[0][word]) != 0;
     }
     RoomArrays* p = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     p->flags2D48[index][word] |= lbl_8046E1CC[bit % 32];
@@ -323,7 +335,7 @@ extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
 extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
     index = index < 8 ? 0 : index - 7;
     for (int i = 0; i < 64; ++i) {
-        if (roomValueColumn(i)[index * 64] == value) return i;
+        if (((u16*)roomArrays() + i)[index * 64 + 0x14a4] == value) return i;
     }
     return -1;
 }
