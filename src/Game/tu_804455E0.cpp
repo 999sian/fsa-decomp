@@ -1,5 +1,6 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct fn_804461D0_Self {
     void* vt;
@@ -35,6 +36,91 @@ struct fn_804460AC_Obj {
     virtual void Release(int);
 };
 
+extern "C" u8* lbl_8053AED0;
+extern "C" f32 fn_8043D514(u8*);
+extern "C" f32 fn_8043D57C(u8*);
+extern "C" void fn_80402E08(void*, f32, f32);
+extern "C" void fn_804455E0(void* self_) {
+    void** ptr = (void**)self_;
+    u64* row = lbl_8048FC08;
+    int s;
+    int d;
+    int sTens;
+    int dTens;
+    int i;
+    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
+    void* anm;
+    for (i = 0; i < 4; i++, row += 24, ptr++) {
+        if (i < 2) {
+            fn_80402E08(ptr[2], lbl_80543D88, fn_8043D514(lbl_8053AED0));
+            fn_80402E08(ptr[6], lbl_80543D88, fn_8043D514(lbl_8053AED0));
+            fn_80402E08(ptr[10], lbl_80543D88, fn_8043D514(lbl_8053AED0));
+        } else {
+            fn_80402E08(ptr[2], lbl_80543D88, fn_8043D57C(lbl_8053AED0));
+            fn_80402E08(ptr[6], lbl_80543D88, fn_8043D57C(lbl_8053AED0));
+            fn_80402E08(ptr[10], lbl_80543D88, fn_8043D57C(lbl_8053AED0));
+        }
+        if (self->g & (u8)(1 << i)) {
+            if (((u8*)self->screen->search(row[23]))[0xb0] == 0) {
+                u8* pane = (u8*)self->screen->search(row[8]);
+                pane[0xb0] = 1;
+                pane = (u8*)self->screen->search(row[23]);
+                pane[0xb0] = 1;
+            }
+        } else {
+            if (((u8*)self->screen->search(row[23]))[0xb0] != 0) {
+                u8* pane = (u8*)self->screen->search(row[8]);
+                pane[0xb0] = 0;
+                pane = (u8*)self->screen->search(row[23]);
+                pane[0xb0] = 0;
+            }
+        }
+        if (((u8*)self->screen->search(row[23]))[0xb0] != 0) {
+            if (self->d[i] >= 100) {
+                self->d[i] = 99;
+            }
+            int e = self->e[i];
+            d = self->d[i];
+            s = e % 60;
+            sTens = s / 10;
+            dTens = d / 10;
+            anm = fn_804030C4(0x54494D47, lbl_804B1B78[e / 60]);
+            SetAnimation(self->screen->search(row[13]), anm);
+            SetAnimation(self->screen->search(row[14]), anm);
+            anm = fn_804030C4(0x54494D47, lbl_804B1B78[sTens]);
+            SetAnimation(self->screen->search(row[15]), anm);
+            SetAnimation(self->screen->search(row[16]), anm);
+            anm = fn_804030C4(0x54494D47, lbl_804B1B78[s % 10]);
+            SetAnimation(self->screen->search(row[17]), anm);
+            SetAnimation(self->screen->search(row[18]), anm);
+            anm = fn_804030C4(0x54494D47, lbl_804B1B78[dTens]);
+            SetAnimation(self->screen->search(row[19]), anm);
+            SetAnimation(self->screen->search(row[20]), anm);
+            anm = fn_804030C4(0x54494D47, lbl_804B1B78[d % 10]);
+            SetAnimation(self->screen->search(row[21]), anm);
+            SetAnimation(self->screen->search(row[22]), anm);
+        }
+        if (self->g & (u8)(1 << (i + 4))) {
+            if (((u8*)self->screen->search(row[1]))[0xb0] == 0) {
+                ((u8*)self->screen->search(row[1]))[0xb0] = 1;
+            }
+        } else {
+            if (((u8*)self->screen->search(row[1]))[0xb0] != 0) {
+                ((u8*)self->screen->search(row[1]))[0xb0] = 0;
+            }
+        }
+        if (((u8*)self->screen->search(row[1]))[0xb0] != 0) {
+            u8 f = self->f[i];
+            if (f >= 1 && f <= 4) {
+                anm = fn_804030C4(0x54494D47, lbl_804B1BA0[f - 1]);
+                SetAnimation(self->screen->search(row[0]), anm);
+                SetAnimation(self->screen->search(row[1]), anm);
+            }
+        }
+    }
+    self->g = 0;
+}
+
 extern "C" void fn_80445CDC(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
@@ -43,13 +129,13 @@ extern "C" void fn_80445CDC(void* self_) {
 }
 
 extern "C" void fn_80445D24(void* self_) {
-    void* anm;
-    u32 tag = 0x54494D47;
+    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
+    u64* row = lbl_8048FC08;
+    int i = 0;
     u32* p2 = lbl_804B1BA0;
     u32* p1 = lbl_804B1B78;
-    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
-    int i = 0;
-    u64* row = lbl_8048FC08;
+    u32 tag = 0x54494D47;
+    void* anm;
     for (; i < 4; i++, row += 24) {
         self->g &= ~(u8)(1 << i);
         self->g &= ~(u8)(1 << (i + 4));
