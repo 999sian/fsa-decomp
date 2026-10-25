@@ -4862,33 +4862,6 @@ extern "C" u8 fn_8022D930(s32);
 extern "C" u8 fn_8022DA68(s32);
 extern "C" s32 fn_80238CB4(s32);
 extern "C" char lbl_8046AE08[];
-inline s32 countSharing50090(char* p) {
-    register s32 linked;
-    register int me;
-    s32 c;
-    s32 i;
-    c = 0;
-    for (i = 0; i < 4; i++) {
-        if (i == S32(p, 4)) c++;
-        else if (fn_8022F514(i)) {
-            if ((linked = S32(p, 0xd60)) >= 0) {
-                if (linked == fn_8022F3DC(i)) c++;
-            } else {
-                me = S32(p, 4);
-                if (me == fn_8022F3DC(i)) c++;
-            }
-        } else if (i == S32(p,0xd60)) c++;
-    }
-    return c;
-}
-inline s32 sharingMode50090(char* p) {
-    if (countSharing50090(p) <= 1) return 5;
-    s32 linked;
-    linked = S32(p,0xd60);
-    if (linked >= 0) return fn_8022CAF8(linked);
-    return S32(p,0x120c);
-}
-
 inline s32 countSharing50090R(const char* p, s32& linked, s32& me) {
     s32 c;
     s32 i;
@@ -4938,8 +4911,8 @@ inline s32 sharingMode50090I(char* p, s32& linked, int& me) {
 }
 
 u8 fn_80250090(char* p) {
-    s32 me;
-    s32 linked;
+    register s32 me;
+    register s32 linked;
     if (F32(p, 0x10) > 0.0f) {
         S32(p, 0xd9c) = -1;
         S32(p, 0xd98) = 0;
