@@ -199,16 +199,25 @@ extern "C" s32 fn_8022F340(s32 p);
 // fn_80384C58 mode flag: explicit compare chain (no range merge), 0xc only while b7f is clear.
 static inline u8 fn_80384C58_flag(void) {
     u8 f = 0;
-    s32 m = lbl_8053AAF8->mode;
     if (lbl_8053AAF8->b7f != 0) {
-        if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 0xa || m == 0xb) {
-            f = 1;
-        }
+        if (lbl_8053AAF8->mode == 7) goto yes;
+        if (lbl_8053AAF8->mode == 8) goto yes;
+        if (lbl_8053AAF8->mode == 9) goto yes;
+        if (lbl_8053AAF8->mode == 0x16) goto yes;
+        if (lbl_8053AAF8->mode == 0xa) goto yes;
+        if (lbl_8053AAF8->mode == 0xb) goto yes;
     } else {
-        if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 0xa || m == 0xb || m == 0xc) {
-            f = 1;
-        }
+        if (lbl_8053AAF8->mode == 7) goto yes;
+        if (lbl_8053AAF8->mode == 8) goto yes;
+        if (lbl_8053AAF8->mode == 9) goto yes;
+        if (lbl_8053AAF8->mode == 0x16) goto yes;
+        if (lbl_8053AAF8->mode == 0xa) goto yes;
+        if (lbl_8053AAF8->mode == 0xb) goto yes;
+        if (lbl_8053AAF8->mode == 0xc) goto yes;
     }
+    return f;
+yes:
+    f = 1;
     return f;
 }
 
