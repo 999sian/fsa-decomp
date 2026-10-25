@@ -68,6 +68,23 @@ static inline bool tuCheckHit(u8* self, s32 idx) {
     return false;
 }
 
+static inline bool tuCheckHit2(u8* self, s32 idx, s32 room) {
+    if (fn_8023DE58(idx) != room) {
+        return false;
+    }
+    for (s32 j = 0; j < 8; j++) {
+        JGeometry::TVec3f v;
+        fn_8022E088(idx, j, &v);
+        v -= *(JGeometry::TVec3f*)(self + 0xc);
+        v.z = 0.0f;
+        if (tuInBox(v, *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c))) {
+            fn_8022DF48(idx);
+            return true;
+        }
+    }
+    return false;
+}
+
 extern "C" Actor* fn_80289648(Actor* p, s16 n)
 {
     if (p != NULL) {
