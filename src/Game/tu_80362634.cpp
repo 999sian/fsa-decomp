@@ -150,6 +150,7 @@ extern "C" void fn_80362634(char* self) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80362680(char* self) {
     const char* names = (const char*)lbl_80474320;
     struct {
@@ -221,19 +222,16 @@ extern "C" void fn_80362680(char* self) {
         }
     }
     if (*(u8*)(self + 0x278) == 1) {
-        f32 a = lbl_80542B0C;
-        vecs[0] = lbl_80542B5C;
-        vecs[5] = lbl_80542B10;
-        vecs[10] = lbl_80542B10;
-        vecs[1] = a;
-        vecs[2] = a;
-        vecs[3] = a;
-        vecs[4] = a;
-        vecs[6] = a;
-        vecs[7] = a;
-        vecs[8] = a;
-        vecs[9] = a;
-        vecs[11] = a;
+        f32 b;
+        f32 c;
+        f32 a;
+        a = lbl_80542B0C;
+        b = lbl_80542B10;
+        c = lbl_80542B5C;
+        vecs[3] = a; vecs[7] = a; vecs[11] = a;
+        vecs[0] = c; vecs[1] = a; vecs[2] = a;
+        vecs[4] = a; vecs[5] = b; vecs[6] = a;
+        vecs[8] = a; vecs[9] = a; vecs[10] = b;
         p.unk_0x18 = vecs;
     }
     if (*(s32*)(self + 0x258) == 0) {
@@ -244,7 +242,7 @@ extern "C" void fn_80362680(char* self) {
         fn_801F06F0(self, names + 0x8dc, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" f32 lbl_80474BB8[];
 extern "C" const char lbl_80474BD4[];
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
