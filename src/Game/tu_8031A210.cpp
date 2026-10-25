@@ -21,6 +21,11 @@ extern "C" Actor* fn_8031A210(Actor* p, s16 n) {
     return p;
 }
 
+struct ActorRoomModes {
+    u8 pad_0x0[0x131df];
+    u8 mode[16];
+};
+
 inline f32 actorRandomUnit() {
     union { u32 bits; f32 value; } out;
     u32* seed = (u32*)((char*)lbl_8053AAF8 + 0xb4);
@@ -30,6 +35,8 @@ inline f32 actorRandomUnit() {
 }
 
 extern "C" void fn_8031B994(Actor* p) {
+    u32 b1;
+    for (s32 i=0; i<1; i++) {
     *(u16*)((char*)p + 0x94) = (*(u32*)((char*)p + 0x90) >> 16) & 0xff;
     *(s32*)((char*)p + 0x270) = *(u32*)((char*)p + 0x90) & 7;
     *(s32*)((char*)p + 0x274) = (*(u32*)((char*)p + 0x90) >> 12) & 1;
@@ -72,9 +79,10 @@ extern "C" void fn_8031B994(Actor* p) {
         char* g = (char*)lbl_8053AAF8;
         u32 s = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
         *(u32*)(g + 0xb4) = s;
-        u32 b = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
-        *(s32*)((char*)p + 0x27c) = (s32)(65536.0f * (*(f32*)&b - 1.0f));
+        b1 = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     }
+    }
+            *(s32*)((char*)p + 0x27c) = (s32)(65536.0f * (*(f32*)&b1 - 1.0f));
     *(s32*)((char*)p + 0x230) = 0;
     *(s32*)((char*)p + 0x234) = *(s32*)((char*)p + 0x230);
     {
@@ -91,7 +99,7 @@ extern "C" void fn_8031B994(Actor* p) {
     }
     {
         s32 room = *(s32*)((char*)p + 4);
-        if (*(char*)(fn_802D6A9C() + room + 0x131df) != 0) {
+        if (*(u8*)(fn_802D6A9C() + (u32)room + 0x131df) != 0) {
             *(f32*)((char*)p + 0x10) = *(f32*)((char*)p + 0x10) - *(f32*)((char*)p + 0x14);
             *(f32*)((char*)p + 0x14) = 0.0f;
             *(s32*)((char*)p + 0xb0) = 0x20000;
