@@ -129,16 +129,17 @@ extern "C" void* fn_80085C50(void* param_1, s16 param_2) {
 
 extern "C" void fn_80085CB8(char* p) {
     extern u8 lbl_8053B770[8];
-    u8* data = *(u8**)(p + 0x78);
+    u8* data;
     s32 i;
+    data = *(u8**)(p + 0x78);
     for (i = 0; i < *(s32*)(p + 0x70) / 8; i++) {
         *data++ = 0;
     }
     if (*(s32*)(p + 0x70) & 7) {
-        s32 start;
+        u8* src;
         u32 rem;
         u32 blocks;
-        u8* src;
+        s32 start;
         *data = 0;
         start = *(s32*)(p + 0x70) & 7;
         src = lbl_8053B770 + start;
@@ -288,7 +289,7 @@ extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
     s32 bit;
 
     for (p = end - 1; p >= base - 1; p--) {
-        u32 word = (p == base - 1) ? 0xffffffff : *p;
+        u32 word = (p != base - 1) ? *p : 0xffffffff;
         if (word == 0) {
             if (!inRun) {
                 runStart = ((s32)p - (s32)base) / 4 * 32 + 31;
@@ -357,15 +358,16 @@ extern u8 lbl_8053B770[8];
 extern "C" void fn_80086438(u8* param_1) {
     extern u8 lbl_8053B770[8];
     s32 i;
-    s32 n;
+    u32 n;
     u8* p;
     u8* src;
+    u8 zero;
 
     i = 0;
     p = *(u8**)(param_1 + 0x78);
-    n = i;
+    zero = i;
     for (; i < *(s32*)(param_1 + 0x70) / 8; i++) {
-        *p++ = n;
+        *p++ = zero;
     }
     if (*(s32*)(param_1 + 0x70) & 7) {
         *p = 0;
@@ -459,28 +461,28 @@ extern "C" int fn_8008668C(int param_1, u32 param_2) {
 }
 
 extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
-    if ((s32)param_2 < 0 || param_2 >= *(u32*)(param_1 + 0x70)) {
-        return 0;
-    }
-
-    s32 idx = (s32)param_2 / 8;
-    u8* data = *(u8**)(param_1 + 0x78);
-    u8 byte_val = data[idx];
-    u8 mask = lbl_8053B770[param_2 & 7];
-    u8 res = byte_val & mask;
-
+    if ((s32)param_2 < 0 || param_2 >= *(u32*)(param_1 + 0x70)) return 0;
+    u8 res = lbl_8053B770[param_2 & 7] & (*(u8**)(param_1 + 0x78))[(s32)param_2 / 8];
     return (u8)((u32)(-(s32)res | res) >> 31);
 }
 
+#pragma peephole off
+extern "C" void fn_80086724(char* p, s32 index) {
+    extern u8 lbl_8053B770[8];
+    if (index < 0) return;
+    if ((u32)index < *(u32*)(p + 0x70)) {
+        (*(u8**)(p + 0x78))[index / 8] |= lbl_8053B770[index & 7];
+    }
+}
+#pragma peephole reset
 extern "C" void JUTWarningConsole_f(const char*, ...);
 extern "C" char lbl_8045E820[];
 extern "C" s32 fn_80086764(char* p) {
-    s32 sum = 0;
-    s32 n = *(s32*)(p + 0x70);
+    s32 n = (*(s32*)(p + 0x70) + 7) / 8;
     u8* data = *(u8**)(p + 0x78);
+    s32 sum = 0;
     s32 i;
 
-    n = (n + 7) / 8;
     for (i = 0; i < n; i++, data++) {
         u8 bits = *data;
         if (bits != 0xff) {
