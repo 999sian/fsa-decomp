@@ -1047,19 +1047,6 @@ extern "C" bool fn_801E1D9C(void* thisObj) {
 	return result;
 }
 
-#ifndef THNK_IDLE_SUB_DEFINED
-#define THNK_IDLE_SUB_DEFINED
-static inline u8 thnk_isIdleSub(void* this_) {
-    u8 r = 0;
-    switch (*(s32*)((char*)this_ + 0x278)) {
-    case 0: case 1: case 2:
-    case 0xd: case 0xe: case 0xf: case 0x10:
-        r = 1;
-    }
-    return r;
-}
-#endif
-
 extern "C" u8 fn_801E1CF8(void* this_) {
     char* p = (char*)this_;
     u8 r = 0;
