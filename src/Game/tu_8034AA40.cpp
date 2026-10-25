@@ -16,7 +16,7 @@ extern "C" f32 lbl_80542534;
 extern "C" s32 lbl_80472158[];
 extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
-extern "C" void fn_8043D67C(void* snd, s32 a, s32 b, ...);
+extern "C" void fn_8043D67C(void* snd, s32 a, s32 b, s32 c = 0);
 extern "C" void fn_80458508(void* obj, s32 a);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F78F4(void* pool, u32 type, s32 afterId);
@@ -112,9 +112,6 @@ extern "C" void fn_8034ACF4(u8* self) {
     struct Box {
         f32 x0, y0, x1, y1;
     };
-    struct V3 {
-        f32 x, y, z;
-    };
     f32 tmp[4];
     s32 i;
 
@@ -132,33 +129,31 @@ extern "C" void fn_8034ACF4(u8* self) {
     for (i = 0; i < 4; i++) {
         if ((u8)fn_8023EA28(i) == 1) {
             self[0x288 + i] = 1;
-            *(V3*)(self + 0x290 + i * 0xc) = *(V3*)fn_8023E724(i);
+            *(JGeometry::TVec3f*)(self + 0x290 + i * 0xc) = *(JGeometry::TVec3f*)fn_8023E724(i);
         } else if (self[0x288 + i] == 1) {
-            V3 p = *(V3*)fn_8023E724(i);
-            V3* vec = (V3*)(self + 0x290 + i * 0xc);
-            s32 st;
+            JGeometry::TVec3f p = *(JGeometry::TVec3f*)fn_8023E724(i);
+            JGeometry::TVec3f* vec = (JGeometry::TVec3f*)(self + 0x290 + i * 0xc);
             if (p.x > vec->x) {
-                st = 0;
+                *(s32*)(self + 0x260 + i * 4) = 0;
             } else if (p.x < vec->x) {
-                st = 1;
+                *(s32*)(self + 0x260 + i * 4) = 1;
             } else if (p.y > vec->y) {
-                st = 2;
+                *(s32*)(self + 0x260 + i * 4) = 2;
             } else {
-                st = 3;
+                *(s32*)(self + 0x260 + i * 4) = 3;
             }
-            *(s32*)(self + 0x260 + i * 4) = st;
             self[0x288 + i] = 0;
         }
 
-        V3 w = *(V3*)fn_8023E724(i);
-        if (w.z <= lbl_80542518) {
+        JGeometry::TVec3f w = *(JGeometry::TVec3f*)fn_8023E724(i);
+        if (w.z <= 0.0f) {
             u8 inside = 0;
             if (w.x >= box.x0 && w.y >= box.y0 && w.x < box.x1 && w.y < box.y1) {
                 inside = 1;
             }
             if (inside == 1) {
-                V3 v;
-                fn_8043D67C(lbl_8053AED0, 0x410, 0);
+                JGeometry::TVec3f v;
+                fn_8043D67C(lbl_8053AED0, 0x410, 0, 0);
                 switch (*(s32*)(self + 0x260 + i * 4)) {
                 case 0:
                     v.x = lbl_80542548;
