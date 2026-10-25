@@ -211,3 +211,4 @@ extern "C" void fn_8021FB44(char* p) {
 }
 
 void __sinit_tu_8021F4B0_cpp(void) {}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
