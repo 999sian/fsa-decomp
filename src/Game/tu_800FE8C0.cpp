@@ -24,24 +24,28 @@ static const u8 sSeq8[4] = {0x0C, 2, 0x3C, 0xFE};
 static const u8 sSeq9[2] = {0x19, 0xFE};
 
 // NonMatching: 99.9%, only r4/r5 swapped in the prologue (op load vs table base).
+#pragma opt_propagation off
+struct AnimSeqTables {
+    s32 frame0[4];
+    s32 frame1[4];
+    u8 seq1[9];
+    u8 pad29[3];
+    s32 frame2[4];
+    s32 frame3[4];
+    s32 frame4[4];
+    u8 seq4[10];
+    u8 pad66[2];
+    u8 ofs4[10];
+    u8 pad72[2];
+    s32 frame5[4];
+    u8 frame6[4][12];
+    u8 seq6[13];
+    u8 padC1[3];
+    s32 frame9[4];
+};
+extern "C" const AnimSeqTables lbl_80463AA0;
+
 extern "C" void fn_800FE8C0(AnimSeq* a) {
-    static const s32 sFrame0[4] = {0x3C, 0x3D, 0x3E, 0x3F};
-    static const s32 sFrame1[4] = {0x00, 0x08, 0x10, 0x18};
-    static const u8 sSeq1[9] = {3, 3, 3, 3, 3, 3, 3, 3, 0xFF};
-    static const s32 sFrame2[4] = {0x20, 0x27, 0x2E, 0x35};
-    static const s32 sFrame3[4] = {0x252, 0x256, 0x25A, 0x25E};
-    static const s32 sFrame4[4] = {0xF1, 0xF9, 0x101, 0x109};
-    static const u8 sSeq4[10] = {3, 6, 6, 3, 3, 3, 6, 0x50, 3, 0xFE};
-    static const u8 sOfs4[10] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 0};
-    static const s32 sFrame5[4] = {0xA7, 0xAB, 0xAF, 0xB3};
-    static const u8 sFrame6[4][12] = {
-        {0x08, 0x09, 0x0A, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x0B},
-        {0x0C, 0x0D, 0x0E, 0x04, 0x05, 0x06, 0x07, 0x00, 0x01, 0x02, 0x03, 0x0F},
-        {0x10, 0x11, 0x12, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x00, 0x01, 0x13},
-        {0x14, 0x15, 0x16, 0x06, 0x07, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x17},
-    };
-    static const u8 sSeq6[13] = {4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0xFE};
-    static const s32 sFrame9[4] = {0x6F, 0x77, 0x7F, 0x87};
     if (a->op != a->prevOp) {
         a->prevOp = a->op;
         a->timer = 0;
@@ -51,38 +55,38 @@ extern "C" void fn_800FE8C0(AnimSeq* a) {
     const u8* seq = 0;
     switch (a->op) {
     case 0:
-        a->frame = sFrame0[a->dir];
+        a->frame = lbl_80463AA0.frame0[a->dir];
         seq = sSeq0 + a->idx;
         a->frame += a->idx;
         break;
     case 1:
-        a->frame = sFrame1[a->dir];
-        seq = sSeq1 + a->idx;
+        a->frame = lbl_80463AA0.frame1[a->dir];
+        seq = lbl_80463AA0.seq1 + a->idx;
         a->frame += a->idx;
         break;
     case 2:
-        a->frame = sFrame2[a->dir];
+        a->frame = lbl_80463AA0.frame2[a->dir];
         seq = sSeq2 + a->idx;
         a->frame += a->idx;
         break;
     case 3:
-        a->frame = sFrame3[a->dir];
+        a->frame = lbl_80463AA0.frame3[a->dir];
         seq = sSeq3 + a->idx;
         a->frame += a->idx;
         break;
     case 4:
-        a->frame = sFrame4[a->dir];
-        seq = sSeq4 + a->idx;
-        a->frame += sOfs4[a->idx];
+        a->frame = lbl_80463AA0.frame4[a->dir];
+        seq = lbl_80463AA0.seq4 + a->idx;
+        a->frame += lbl_80463AA0.ofs4[a->idx];
         break;
     case 5:
-        a->frame = sFrame5[a->dir];
+        a->frame = lbl_80463AA0.frame5[a->dir];
         seq = sSeq5 + a->idx;
         a->frame += a->idx;
         break;
     case 6:
-        a->frame = sFrame6[a->dir][a->idx] + 0x8F;
-        seq = sSeq6 + a->idx;
+        a->frame = lbl_80463AA0.frame6[a->dir][a->idx] + 0x8F;
+        seq = lbl_80463AA0.seq6 + a->idx;
         break;
     case 7:
         a->frame = 0x36A;
@@ -95,7 +99,7 @@ extern "C" void fn_800FE8C0(AnimSeq* a) {
         a->frame += a->idx;
         break;
     case 9:
-        a->frame = sFrame9[a->dir];
+        a->frame = lbl_80463AA0.frame9[a->dir];
         seq = sSeq9 + a->idx;
         a->frame += a->idx;
         break;
@@ -112,7 +116,7 @@ extern "C" void fn_800FE8C0(AnimSeq* a) {
     }
     a->timer++;
 }
-
+#pragma opt_propagation reset
 // ---- from Game/fn_800FEB78.cpp
 
 
