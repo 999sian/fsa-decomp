@@ -1023,4 +1023,17 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(u8*)(self + 0x270) = 1;
     }
 }
-
+struct StateMethodData80317 { s32 adjustment; s32 offset; void* function; };
+typedef void (Actor::*StateMethod80317)();
+union StateMethodConstant80317 { StateMethodData80317 raw; StateMethod80317 method; };
+StateMethodConstant80317 lbl_804AAE68 = {{0, -1, (void*)fn_80319658}};
+StateMethodConstant80317 stateMethod80317_1 = {{0, -1, (void*)fn_803190E0}};
+StateMethodConstant80317 stateMethod80317_2 = {{0, -1, (void*)fn_80318D74}};
+StateMethodConstant80317 stateMethod80317_3 = {{0, -1, (void*)fn_80318B84}};
+StateMethodConstant80317 stateMethod80317_4 = {{0, -1, (void*)fn_803187F4}};
+StateMethodConstant80317 stateMethod80317_5 = {{0, -1, (void*)fn_803185A8}};
+StateMethodConstant80317 stateMethod80317_6 = {{0, -1, (void*)fn_8031825C}};
+StateMethodConstant80317 stateMethod80317_7 = {{0, -1, (void*)fn_80317F18}};
+StateMethodConstant80317 stateMethod80317_8 = {{0, -1, (void*)fn_803193B4}};
+StateMethod80317 lbl_804AAED4[9] = {lbl_804AAE68.method, stateMethod80317_1.method, stateMethod80317_2.method, stateMethod80317_3.method, stateMethod80317_4.method, stateMethod80317_5.method, stateMethod80317_6.method, stateMethod80317_7.method, stateMethod80317_8.method};
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
