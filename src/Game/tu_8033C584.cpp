@@ -45,12 +45,71 @@ extern "C" void fn_8033C584(u8* this_) {
     fn_803075AC(*(void**)(this_ + 0x198), *(void**)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x23c) + 0x5e, 0, 2, -1, 0, 0, 0);
 }
 
-extern "C" void fn_8033C968(u8* this_) {
-    f32 zero = lbl_80542190;
-    f32 f3 = lbl_8054218C;
-    f32 f2 = lbl_80542194;
-    f32 f0 = lbl_80542198;
+extern "C" f32 lbl_8054217C;
+extern "C" f32 lbl_80542180;
+extern "C" f32 lbl_80542184;
+extern "C" f32 lbl_80542188;
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern "C" f32* fn_8023E724(void* p);
+extern "C" void detach__5ActorFv(void* p);
+extern "C" void fn_8033C720(u8* this_) {
+    f32 dx;
+    f32 dy;
+    fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x248), lbl_8054217C, lbl_80542180);
+    fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x24c), lbl_8054217C, lbl_80542180);
+    fn_801F71A4((f32*)(this_ + 0x14), *(f32*)(this_ + 0x250), lbl_80542184, lbl_80542180);
+    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
+    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
+    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    if (*(u8**)(this_ + 0x254) != 0) {
+        u8* e = *(u8**)(this_ + 0x254);
+        *(f32*)(e + 0xa4) = *(f32*)(this_ + 0xc);
+        *(f32*)(e + 0xa8) = *(f32*)(this_ + 0x10);
+        *(f32*)(e + 0xac) = *(f32*)(this_ + 0x14);
+    }
+    if (*(u8**)(this_ + 0x258) != 0) {
+        u8* e = *(u8**)(this_ + 0x258);
+        *(f32*)(e + 0xa4) = *(f32*)(this_ + 0xc);
+        *(f32*)(e + 0xa8) = *(f32*)(this_ + 0x10);
+        *(f32*)(e + 0xac) = *(f32*)(this_ + 0x14);
+    }
+    if (*(s32*)(this_ + 0x230) == 0) {
+        if (*(s32*)(this_ + 0x234) % 5 == 0) {
+            dx = *(f32*)(this_ + 0xc) - fn_8023E724(*(void**)(this_ + 0x240))[0];
+            dy = *(f32*)(this_ + 0x10) - fn_8023E724(*(void**)(this_ + 0x240))[1];
+            *(s16*)(this_ + 0x244) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * lbl_80542188);
+            *(f32*)(this_ + 0x248) = lbl_8054218C * JMath::sincosTable_.mTable[(u16)*(s16*)(this_ + 0x244) >> 5].first;
+            *(f32*)(this_ + 0x24c) = lbl_8054218C * JMath::sincosTable_.mTable[(u16)*(s16*)(this_ + 0x244) >> 5].second;
+        }
+        if (*(s32*)(this_ + 0x234) % 4 == 0) {
+            *(s32*)(this_ + 0x23c) += 1;
+            if (*(s32*)(this_ + 0x23c) > 2) {
+                *(s32*)(this_ + 0x23c) = 0;
+            }
+        }
+        *(s32*)(this_ + 0x238) -= 1;
+        if (*(s32*)(this_ + 0x238) <= 0) {
+            u8* e = *(u8**)(this_ + 0x254);
+            if (e != 0) {
+                *(u32*)(e + 0xf4) |= 1;
+                *(s32*)(e + 0x24) = 1;
+            }
+            e = *(u8**)(this_ + 0x258);
+            if (e != 0) {
+                *(u32*)(e + 0xf4) |= 1;
+                *(s32*)(e + 0x24) = 1;
+            }
+            detach__5ActorFv(this_);
+        }
+        *(s32*)(this_ + 0x234) += 1;
+    }
+}
 
+extern "C" void fn_8033C968(u8* this_) {
+    f32 zero = 0.0f;
+    f32 f3 = 5.0f;
+    f32 f2 = 10.0f;
+    f32 f0 = -3.0f;
     *(u32*)(this_ + 0x240) = *(u32*)(this_ + 0x90) & 3;
     *(u32*)(this_ + 0x108) = 8;
     *(u32*)(this_ + 0x23c) = 0;
