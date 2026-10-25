@@ -960,6 +960,7 @@ void fn_802938B8(char* p) {
 
 s32 Player_GetLinkTargetIndex(char*);
 s32 fn_80237774(s32);
+#pragma opt_propagation off
 void fn_80293900(char* p) {
   s32 r;
   if (U8(p, 0x3fc) < 0x3c) {
@@ -987,12 +988,18 @@ void fn_80293900(char* p) {
   U8(p, 0x3fc)++;
   fn_80241454(p, 1);
   {
-    f32 t = F32(p, 0x10);
-    f32 c = lbl_8054061C;
-    f32 z = lbl_805405B4;
-    t = t - c;
-    F32(p, 0x10) = t;
-    if (!(F32(p, 0x10) <= z)) {
+    f32 z;
+    f32 c1;
+    f32 c2;
+    f32 c3;
+    f32 t;
+    t = F32(p, 0x10);
+    c1 = lbl_8054061C;
+    z = lbl_805405B4;
+    c2 = t - c1;
+    F32(p, 0x10) = c2;
+    c3 = F32(p, 0x10);
+    if (c3 <= z) {
       F32(p, 0x10) = z;
       U8(p, 0x124d) = 0;
       if (Player_IsLinked(p)) {
@@ -1013,24 +1020,21 @@ void fn_80293900(char* p) {
       }
     }
   }
-  {
-    s32 state = (U8(p, 0x3fc) >> 2) & 3;
-    if (state == 0) {
-      S32(p, 0x3dc) = 2;
-      S32(p, 0x3e8) = 2;
-    } else if (state == 1) {
-      S32(p, 0x3dc) = 1;
-      S32(p, 0x3e8) = 1;
-    } else if (state == 2) {
-      S32(p, 0x3dc) = 3;
-      S32(p, 0x3e8) = 3;
-    } else {
-      S32(p, 0x3dc) = 0;
-      S32(p, 0x3e8) = 0;
-    }
+  if (((U8(p, 0x3fc) >> 2) & 3) == 0) {
+    S32(p, 0x3dc) = 2;
+    S32(p, 0x3e8) = 2;
+  } else if (((U8(p, 0x3fc) >> 2) & 3) == 1) {
+    S32(p, 0x3dc) = 1;
+    S32(p, 0x3e8) = 1;
+  } else if (((U8(p, 0x3fc) >> 2) & 3) == 2) {
+    S32(p, 0x3dc) = 3;
+    S32(p, 0x3e8) = 3;
+  } else {
+    S32(p, 0x3dc) = 0;
+    S32(p, 0x3e8) = 0;
   }
 }
-
+#pragma opt_propagation reset
 void fn_80293B1C(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
