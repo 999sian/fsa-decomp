@@ -98,17 +98,21 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
 #include "JSystem/JAudio/Interface/JAISeMgr.h"
-static inline void* startWave8045(u8* p, const JAISoundID& id) {
-    return fn_80456334(p, (u32*)&id, 0);
+static inline void** startWave8045(u8* p, const JAISoundID& id) {
+    return (void**)fn_80456334(p, (u32*)&id, 0);
 }
-extern "C" void* fn_8045B154(u8* p, u32* param_2) {
-    s32 id = *(s32*)param_2;
-    u8 kind = ((u8*)param_2)[1];
+#pragma opt_propagation reset
+extern "C" void* fn_8045B154(u8* p, JAISoundID soundID) {
+    u32* param_2 = (u32*)&soundID;
+    JAISeMgr* mgr;
+    s32 kind;
     void** h;
-    void* mgr = *(void**)((u8*)lbl_8053AF80 + 0x34);
+    kind = ((u8*)param_2)[1];
+    mgr = *(JAISeMgr**)((u8*)lbl_8053AF80 + 0x34);
     s32 i;
+    JAISoundID sid;
 
-    switch (id) {
+    switch ((u32)soundID) {
     case 0x20037: {
         ((JAUSoundObject*)p)->startSound(JAISoundID(0x10002));
         break;
@@ -140,12 +144,12 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     }
     }
 
-    if (kind == 1) {
+    if ((u8)kind == 1) {
         s32 count = *(s32*)(p + 4);
-        for (i = 0; i < count; i++) {
-            void* snd = ((void**)*(void**)p)[i];
+        for (i = 0; count > 0; count--, i += 4) {
+            void* snd = *(void**)((u8*)*(void**)p + i);
             if (snd != NULL) {
-                JAISoundID sid = ((JAISound*)snd)->getID();
+                sid = ((JAISound*)snd)->getID();
                 if (sid.mId.mBytes.mGroupId == 1 && sid != 0x10009 && sid != 0x1000d) {
                     stop__8JAISoundFUl(snd, 0);
                     break;
@@ -154,10 +158,7 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
         }
     }
 
-    {
-        u32 f = *param_2;
-        h = (void**)fn_80456334(p, &f, 0);
-    }
+    h = (void**)startWave8045(p, JAISoundID(*param_2));
     if (h == NULL) {
         return NULL;
     }
@@ -167,23 +168,29 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
             __ct__Q25JMath13TRandom_fast_FUl(&lbl_8053AF8C, 0);
             lbl_8053AF88 = 1;
         }
-        s8 pitchIndex = *(s8*)(p + 0x5c);
+        s32 pitchIndex = *(s8*)(p + 0x5c);
         if (pitchIndex >= 0 && pitchIndex < 4) {
             if (kind == 1) {
                 movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[pitchIndex], 0);
-            } else if (kind == 2) {
+            } else if ((u8)kind == 2) {
                 f32 v;
-                u32 bits;
-                lbl_8053AF8C = lbl_8053AF8C * 0x19660d + 0x3c6ef35f;
-                bits = (lbl_8053AF8C >> 9) | 0x3f800000;
-                v = *(f32*)&bits - 1.0f;
-                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, 1.0f + (0.03f * v - 0.015f * (1.0f - ((f32*)&__float_epsilon)[0])), 0);
+                f32 one;
+                f32 width;
+                f32 half;
+                f32 eps;
+                one = 1.0f;
+                eps = one - ((f32*)&__float_epsilon)[0];
+                width = 0.03f;
+                half = 0.015f;
+                v = ((JMath::TRandom_fast_*)&lbl_8053AF8C)->get_ufloat_1();
+                v = width * v;
+                v -= half * eps;
+                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, one + v, 0);
             }
         }
     }
     return h;
 }
-
 extern "C" char* fn_8045B46C(char* p, unsigned char value, long a, long b, long c) {
     __ct__14WaveControllerFlll(p, a, b, c);
     *(void**)(p + 8) = lbl_804B20F8;
