@@ -759,12 +759,11 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 linked;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
+            s32 linked = S32(p, 0xd60);
             if (linked >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
