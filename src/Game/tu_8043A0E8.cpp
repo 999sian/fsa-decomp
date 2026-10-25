@@ -456,7 +456,7 @@ extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
     param_1[0x10d] = 0;
 }
 
-void fn_8043ACE4(u8* self)
+extern "C" void fn_8043ACE4(u8* self)
 {
     switch (*(s32*)(self + 0x1d0)) {
     case 0x3:
