@@ -593,46 +593,41 @@ static inline void resetDrawRec(DrawRec& rec) {
 }
 
 extern "C" void fn_803616FC(u8* param_1) {
-    JGeometry::TVec3<f32> pos;
+    DrawRec rec;
     f32 mtx[3][4];
-
-    {
-        DrawRec rec;
-        rec.b1f = 0;
-        pos = *(JGeometry::TVec3<f32>*)(param_1 + 0xc);
-        fn_801F06F0(param_1, lbl_804742F4, 0x279, &rec, -1, 1.0f, 1.0f);
-        ((u8*)&rec)[0x13] = 0xc8;
-        if (*(u32*)(param_1 + 0x138) == 0) {
-            fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, 0x279, 0);
-        }
-    }
-    {
-        DrawRec rec;
-        f32 sin = sincosTable___5JMath[(*(s16*)(param_1 + 0x2a4) >> 5) & 0x7ff].sin;
-        f32 cos = sincosTable___5JMath[(*(s16*)(param_1 + 0x2a4) >> 5) & 0x7ff].cos;
-        mtx[0][0] = cos;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = sin;
-        mtx[0][3] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = 1.0f;
-        mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
-        mtx[2][0] = -sin;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = cos;
-        mtx[2][3] = 0.0f;
-        rec.w18 = mtx;
-        rec.b1d = 1;
-        *(f32*)(param_1 + 0x10) += -21.0f;
-        fn_801F06F0(param_1, lbl_804742F4, 0x27a, &rec, -1, 1.0f, 1.0f);
-        *(f32*)(param_1 + 0x10) -= -21.0f;
-        ((u8*)&rec)[0x13] = 0xc8;
-        *(f32*)(param_1 + 0x10) += -10.5f;
-        if (*(u32*)(param_1 + 0x138) == 0) {
-            fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, 0x27a, 0);
-        }
-    }
+    JGeometry::TVec3<f32> pos;
+    rec.b1f = 0;
+    pos = *(JGeometry::TVec3<f32>*)(param_1 + 0xc);
+    fn_801F06F0(param_1, lbl_804742F4, 0x279, &rec, -1, 1.0f, 1.0f);
+    ((u8*)&rec)[0x13] = 0xc8;
+    if (*(u32*)(param_1 + 0x138) == 0)
+        fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, 0x279, 0);
+    resetDrawRec(rec);
+    rec.b1f = 0;
+    rec.b1d = 1;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    f32 cos;
+    f32 sin = sincosTable___5JMath[(*(s16*)(param_1 + 0x2a4) >> 5) & 0x7ff].sin;
+    cos = sincosTable___5JMath[(*(s16*)(param_1 + 0x2a4) >> 5) & 0x7ff].cos;
+    mtx[1][1] = 1.0f;
+    mtx[0][2] = sin;
+    mtx[0][0] = cos;
+    mtx[2][0] = -sin;
+    mtx[2][2] = cos;
+    mtx[2][1] = 0.0f;
+    mtx[1][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[0][1] = 0.0f;
+    rec.w18 = mtx;
+    *(f32*)(param_1 + 0x10) += -21.0f;
+    fn_801F06F0(param_1, lbl_804742F4, 0x27a, &rec, -1, 1.0f, 1.0f);
+    *(f32*)(param_1 + 0x10) -= -21.0f;
+    ((u8*)&rec)[0x13] = 0xc8;
+    *(f32*)(param_1 + 0x10) += -10.5f;
+    if (*(u32*)(param_1 + 0x138) == 0)
+        fn_801EF830(*(s32*)(param_1 + 4), param_1 + 0xc, &rec, 0x407, lbl_804742F4, 0x27a, 0);
     *(f32*)(param_1 + 0x10) -= -10.5f;
     *(JGeometry::TVec3<f32>*)(param_1 + 0xc) = pos;
 }
