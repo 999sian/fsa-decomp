@@ -99,6 +99,33 @@ extern "C" void fn_80164640(char* this_) {
     }
 }
 
+extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" u8 fn_80237948(s32 r, f32* p);
+extern "C" void fn_8013CC50(void* snd, void* pos, f32 vol, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_801F0E34(char* this_, s32 anim, s32 flag);
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern "C" void fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
+extern "C" s32 fn_801F2618(char* this_, s32 a, s32 b);
+extern "C" void fn_801EEC98(char* this_, void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g);
+extern f32 lbl_8053D77C;
+extern f32 lbl_8053D778;
+extern f32 lbl_8053D780;
+extern "C" void fn_80164834(char* this_) {
+    s32 i;
+    s32 hit;
+    s32 r;
+    f32 pos[3];
+    f32 vel[3];
+    f32 pt[2];
+    f32 v;
+
+    *(s32*)(this_ + 0x108) = 0x3e8;
+    if (fn_801F285C(this_, 0, 0, 0, 0) < 0) {
+        return;
+    }
+    return;
+}
+
 // TRAP init (vtable slot 1)
 extern "C" void fn_801650AC(char* this_) {
     *(f32*)(this_ + 0x60) = -6.0f;
