@@ -109,7 +109,8 @@ extern "C" void fn_8010F668(Mtx m, Vec3f* v, f32 f);
 struct Obj8036C750 {
     u8 pad0[0x294];
     s32 a294[5];
-    u8 pad2a8[0x2f8 - 0x2a8];
+    JGeometry::TVec3<f32> trail[6];
+    u8 pad2f0[8];
     s32 a2f8[6];
     u8 pad310[0x35c - 0x310];
     s32 a35c[7];
@@ -193,7 +194,45 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
         }
     }
 }
-#pragma opt_dead_assignments reset
+
+#pragma opt_common_subs off
+extern "C" void fn_803683AC(void* this_) {
+    char* self = (char*)this_;
+    char* tbl = lbl_80474C38;
+    DrawRec rec;
+    JGeometry::TVec3<f32> saved(*(Vec*)(self + 0xc));
+    if (*(s32*)(self + 0x260) != 0) {
+        --*(s32*)(self + 0x260);
+    }
+    if (*(s32*)(self + 0x260) == 0) {
+        ++*(s32*)(self + 0x264);
+        if (*(s32*)(self + 0x264) >= 6) *(s32*)(self + 0x264) = 0;
+        *(s32*)(self + 0x260) = 1;
+    }
+    const s32* first = (s32*)(tbl + 0x1b4);
+    const s32* second = (s32*)(tbl + 0x1cc);
+    for (s32 i = 0; i < 6; i++) {
+        s32 state = ((s32*)(self + 0x2f8))[i];
+        if (state == 0) {
+            *(JGeometry::TVec3<f32>*)(self + 0xc) = ((JGeometry::TVec3<f32>*)(self + 0x2a8))[i];
+            ((u8*)&rec.w10)[3] = 0xff;
+            fn_801F06F0(self, tbl + 0x210, first[i] + 8, (EffArgs*)&rec, 7, lbl_80542C58, lbl_80542C58);
+        } else if (state != 1 && state != 4) {
+            *(JGeometry::TVec3<f32>*)(self + 0xc) = ((JGeometry::TVec3<f32>*)(self + 0x2a8))[i];
+            ((u8*)&rec.w10)[3] = 0xff;
+            fn_801F06F0(self, tbl + 0x224, *(s32*)(self + 0x264) + second[i], (EffArgs*)&rec, -1, lbl_80542C58, lbl_80542C58);
+            f32 z = ((JGeometry::TVec3<f32>*)(self + 0x2a8))[i].z;
+            if (z < lbl_80542C68) ((u8*)&rec.w10)[3] = 255 - (s32)z;
+            else ((u8*)&rec.w10)[3] = 0;
+            s32 id = *(s32*)(self + 0x264) + second[i];
+            if (*(u32*)(self + 0x138) == 0) {
+                fn_801EF830(*(s32*)(self + 4), self + 0xc, (u8*)&rec, 0x407, (u8*)(tbl + 0x224), id, 0);
+            }
+        }
+    }
+    *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
+}
+#pragma opt_common_subs reset
 extern f32 lbl_80542C78;
 extern "C" void fn_801F06F0(void* self, void* tbl, s32 idx, EffArgs* args, s32 n, f32 a, f32 b);
 extern "C" void fn_8013CB44(void* obj, Vec3f* v, s32 a, s32 b, s32 c);
