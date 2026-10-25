@@ -53,7 +53,7 @@ extern "C" void fn_80197EB0(u8*);
 extern "C" void fn_801979C4(u8*);
 extern "C" void fn_801976E8(u8*);
 extern "C" void fn_801F06F0(u8* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
-extern "C" void fn_801F02BC(u8* a, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, f32 f8, f32 f9);
+extern "C" void fn_801F02BC(u8* a, void* p2, void* p3, void* p4, void* p5, s32 p6, s32 p7, f32 f8, f32 f9);
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
 
 struct UnkDrawRec {
@@ -86,37 +86,11 @@ extern "C" void fn_80197070(u8* this_) {
     u8* tbl = lbl_80468428;
     switch (*(s32*)(this_ + 0x90)) {
     case 0: {
-        UnkDrawRec local;
-        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
-        *reinterpret_cast<u32*>(&local.field_14) = 0xFFFFFFFF;
-        for (u8 i = 0; i < 0x10; i++) {
-            local.field_00[i] = i;
-        }
-        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+        DrawRec local;
         u32 idx = 0x9b;
         s32 p5 = 7;
-        *reinterpret_cast<u32*>(&local.field_14) = 0;
-        local.field_18 = 0;
-        local.field_1C = 0;
-        local.field_1D = 0;
-        local.field_1E = 0;
-        local.field_1F = 1;
-        local.field_20 = 1;
-        local.field_21 = 0;
-        local.field_22 = 0;
-        local.field_23 = 0;
-        local.field_24 = 0;
-        local.field_25 = 0;
-        local.field_26 = 1;
-        local.field_28 = 3;
-        local.field_2C = 1;
-        local.field_2D = 0;
-        local.field_2E = 0;
-        local.field_30 = -1;
-        local.field_34 = 0;
-        local.field_38 = 2;
         if (*(s32*)(this_ + 0x23c) == 0 || (*(u32*)(this_ + 0x23c) & 2) != 0) {
-            local.field_1F = 0;
+            local.b1f = 0;
             if (*(u8*)(this_ + 0x268) == 1) {
                 idx = 0x274;
             }
@@ -130,80 +104,28 @@ extern "C" void fn_80197070(u8* this_) {
     }
     case 2: {
         if (*(s32*)(this_ + 0x24c) == 0) {
-            UnkDrawRec local;
-            *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
-            *reinterpret_cast<u32*>(&local.field_14) = 0xFFFFFFFF;
-            for (u8 i = 0; i < 0x10; i++) {
-                local.field_00[i] = i;
-            }
-            local.field_1D = 0;
-            local.field_30 = -1;
-            *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
-            *reinterpret_cast<u32*>(&local.field_14) = 0;
-            local.field_18 = 0;
-            local.field_1C = 0;
-            local.field_1E = 0;
-            local.field_1F = 1;
-            local.field_20 = 1;
-            local.field_21 = 0;
-            local.field_22 = 0;
-            local.field_23 = 0;
-            local.field_24 = 0;
-            local.field_25 = 0;
-            local.field_26 = 1;
-            local.field_28 = 3;
-            local.field_2C = 1;
-            local.field_2D = 0;
-            local.field_2E = 0;
-            local.field_34 = 0;
-            local.field_38 = 2;
-            local.field_1D = 5;
-            local.field_30 = 0x11;
+            DrawRec local;
+            local.b1d = 5;
+            local.w30 = 0x11;
             s32 total = *(s32*)(this_ + 0x254) + *(s32*)(tbl + *(u16*)(this_ + 0x94) * 4);
             fn_801F02BC(this_, tbl + 0x30, (void*)total, &local, (void*)-1, 0, 0, lbl_8053E370, lbl_8053E370);
-            local.field_00[0x13] = (u8)(s32)*(f32*)(this_ + 0x270);
-            if (*(s32*)(this_ + 0x138) == 0) {
-                fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), local.field_00, 0x407, tbl + 0x30,
+            ((u8*)&local.w10)[3] = (u8)(s32)*(f32*)(this_ + 0x270);
+            if (*(u32*)(this_ + 0x138) == 0) {
+                fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl + 0x30,
                             *(s32*)(this_ + 0x254) + *(s32*)(tbl + *(u16*)(this_ + 0x94) * 4), 0);
             }
         }
         break;
     }
     case 3: {
-        UnkDrawRec local;
-        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
-        *reinterpret_cast<u32*>(&local.field_14) = 0xFFFFFFFF;
-        for (u8 i = 0; i < 0x10; i++) {
-            local.field_00[i] = i;
-        }
-        local.field_1F = 1;
-        local.field_1D = 0;
-        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
-        *reinterpret_cast<u32*>(&local.field_14) = 0;
-        local.field_18 = 0;
-        local.field_1C = 0;
-        local.field_1E = 0;
-        local.field_20 = 1;
-        local.field_21 = 0;
-        local.field_22 = 0;
-        local.field_23 = 0;
-        local.field_24 = 0;
-        local.field_25 = 0;
-        local.field_26 = 1;
-        local.field_28 = 3;
-        local.field_2C = 1;
-        local.field_2D = 0;
-        local.field_2E = 0;
-        local.field_30 = -1;
-        local.field_34 = 0;
-        local.field_38 = 2;
-        local.field_1F = 0;
-        local.field_1D = 5;
+        DrawRec local;
+        local.b1f = 0;
+        local.b1d = 5;
         s32 total = *(s32*)(this_ + 0x254) + *(s32*)(tbl + 0x18 + *(u16*)(this_ + 0x94) * 4);
         fn_801F06F0(this_, tbl + 0x44, (void*)total, &local, (void*)-1, lbl_8053E370, lbl_8053E370);
-        local.field_00[0x13] = (u8)(s32)*(f32*)(this_ + 0x270);
-        if (*(s32*)(this_ + 0x138) == 0) {
-            fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), local.field_00, 0x407, tbl + 0x44,
+        ((u8*)&local.w10)[3] = (u8)(s32)*(f32*)(this_ + 0x270);
+        if (*(u32*)(this_ + 0x138) == 0) {
+            fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl + 0x44,
                         *(s32*)(this_ + 0x254) + *(s32*)(tbl + 0x18 + *(u16*)(this_ + 0x94) * 4), 0);
         }
         break;
