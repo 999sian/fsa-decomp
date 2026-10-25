@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" void* lbl_8053AF48;
@@ -13,6 +14,85 @@ extern "C" void* lbl_804B1DA8[];
 extern "C" void* lbl_8053AF80;
 extern "C" void fn_80459274(void* a);
 extern "C" void __dl__FPv(void* p);
+
+struct FsaVt80454A6C {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual void v7(void);
+    virtual void v8(void);
+    virtual void v9(s32);
+    virtual void v10(void);
+    virtual void v11(void);
+    virtual void v12(void);
+    virtual void v13(void);
+    virtual void v14(void);
+    virtual void* v15(u32, u32, u32);
+    virtual void v16(void);
+    virtual void v17(void);
+    virtual void v18(void);
+    virtual void v19(void);
+    virtual void v20(void);
+    virtual void v21(void);
+    virtual void v22(void);
+    virtual void v23(void);
+    virtual void v24(void);
+    virtual void v25(void);
+    virtual void v26(void);
+    virtual void v27(void);
+    virtual void v28(void);
+    virtual void v29(void);
+    virtual void v30(void);
+    virtual void v31(void);
+    virtual void v32(void);
+    virtual void v33(void);
+    virtual void v34(void);
+    virtual void v35(void);
+    virtual void v36(void);
+    virtual void v37(void);
+    virtual void v38(void);
+    virtual void v39(void);
+    virtual void v40(void);
+    virtual void v41(void);
+    virtual void v42(void);
+    virtual void v43(void);
+    virtual void v44(void);
+    virtual void v45(void);
+    virtual void v46(void);
+    virtual void v47(void);
+    virtual void v48(void);
+    virtual void v49(void);
+    virtual void v50(void);
+    virtual void v51(void);
+    virtual void v52(void);
+    virtual void v53(void);
+    virtual void v54(void);
+    virtual void v55(void);
+    virtual void v56(void);
+    virtual void v57(void);
+    virtual void v58(void);
+    virtual void v59(void);
+    virtual void v60(void);
+    virtual void v61(void);
+    virtual void v62(void);
+    virtual void v63(void);
+    virtual void v64(void);
+    virtual void v65(void);
+    virtual void v66(void);
+    virtual void v67(void);
+    virtual void v68(u32, u32);
+    virtual void v69(void);
+    virtual void v70(void);
+    virtual void v71(void);
+    virtual void v72(void);
+    virtual void v73(void);
+    virtual void v74(void*);
+    virtual void v75(void*);
+};
 
 struct Slot0 {
     virtual void slot0(s32 arg);
@@ -46,6 +126,14 @@ extern "C" s32 fn_80453AF8(void) {
     return 9;
 }
 
+extern "C" void fn_80453B14(u8* this_) {
+    *(s32*)(this_ + 0x58) = 9;
+    switch (*(s16*)(this_ + 0x1e)) {
+    default:
+        break;
+    }
+}
+
 extern "C" void fn_80454A00(u8* p) {
     fn_8013B490(lbl_8053AB10);
     draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 4), 1.0f, 1.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
@@ -61,28 +149,19 @@ extern "C" u8 lbl_80491488[];
 extern "C" const u32 lbl_80491470[];
 extern "C" void fn_80402E08(void* p, f32 x, f32 y);
 extern "C" void fn_80454A6C(void* this_) {
-    typedef void (*VFn2)(void*, s32);
-    typedef void* (*VFn4)(void*, u32, u32, u32);
-    typedef void (*VFnPtr)(void*, void*);
-    typedef void (*VFn3)(void*, u32, u32);
-
     fn_804310CC(lbl_8053AEC0);
     *(s16*)((u8*)this_ + 0x1c) = 0;
     *(s16*)((u8*)this_ + 0x1e) = 2;
     *(s16*)((u8*)this_ + 0x20) = 0;
-    void* p8 = *(void**)((u8*)this_ + 0x8);
-    void* p4 = *(void**)((u8*)p8 + 0x4);
-    void** vt = *(void***)p4;
-    ((VFn2)vt[9])(p4, 0);
+    ((void (*)(void*, s32))(*(void***)*(void**)((u8*)*(void**)((u8*)this_ + 0x8) + 0x4))[9])(*(void**)((u8*)*(void**)((u8*)this_ + 0x8) + 0x4), 0);
     *(s16*)((u8*)*(void**)((u8*)this_ + 0x8) + 0x26) = 0;
     fn_80402E08(*(void**)((u8*)this_ + 0xc), 0.0f, -480.0f);
     *(s16*)((u8*)*(void**)((u8*)this_ + 0xc) + 0x22) = 0;
     u32 uVar1 = fn_80403084(0x54494d47, lbl_80491488);
-    void* o = *(void**)((u8*)this_ + 0x4);
-    o = ((VFn4)(*(void***)o)[15])(o, 0x73630000, 0x50, 0x73633031);
-    ((VFn3)(*(void***)o)[68])(o, uVar1, 0);
+    void* o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0x73630000, 0x50, 0x73633031);
+    ((void (*)(void*, u32, u32))(*(void***)o)[68])(o, uVar1, 0);
 
-    const u32* p = lbl_80491470;
+    u32* p = (u32*)lbl_80491470;
     for (s32 i = 0; i < 3; i++, p += 2) {
         if (i == *(s16*)((u8*)this_ + 0x1c)) {
             u32 c1;
@@ -92,9 +171,8 @@ extern "C" void fn_80454A6C(void* this_) {
             col1[2] = 0xa0;
             col1[3] = 0xff;
             c1 = *(u32*)col1;
-            o = *(void**)((u8*)this_ + 0x4);
-            o = ((VFn4)(*(void***)o)[15])(o, 0xff, p[0], p[1]);
-            ((VFnPtr)(*(void***)o)[75])(o, &c1);
+            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0xff, p[0], p[1]);
+            ((void (*)(void*, void*))(*(void***)o)[75])(o, &c1);
             u32 c2;
             u8 col2[4];
             col2[0] = 0x27;
@@ -102,9 +180,8 @@ extern "C" void fn_80454A6C(void* this_) {
             col2[2] = 0;
             col2[3] = 0;
             c2 = *(u32*)col2;
-            o = *(void**)((u8*)this_ + 0x4);
-            o = ((VFn4)(*(void***)o)[15])(o, 0x27, p[0], p[1]);
-            ((VFnPtr)(*(void***)o)[74])(o, &c2);
+            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0x27, p[0], p[1]);
+            ((void (*)(void*, void*))(*(void***)o)[74])(o, &c2);
         } else {
             u32 c3;
             u8 col3[4];
@@ -113,9 +190,8 @@ extern "C" void fn_80454A6C(void* this_) {
             col3[2] = 0x2a;
             col3[3] = 0xff;
             c3 = *(u32*)col3;
-            o = *(void**)((u8*)this_ + 0x4);
-            o = ((VFn4)(*(void***)o)[15])(o, 0x4c, p[0], p[1]);
-            ((VFnPtr)(*(void***)o)[74])(o, &c3);
+            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0x4c, p[0], p[1]);
+            ((void (*)(void*, void*))(*(void***)o)[74])(o, &c3);
             u32 z;
             u8 zero[4];
             zero[0] = 0;
@@ -123,9 +199,8 @@ extern "C" void fn_80454A6C(void* this_) {
             zero[2] = 0;
             zero[3] = 0;
             z = *(u32*)zero;
-            o = *(void**)((u8*)this_ + 0x4);
-            o = ((VFn4)(*(void***)o)[15])(o, 0, p[0], p[1]);
-            ((VFnPtr)(*(void***)o)[74])(o, &z);
+            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0, p[0], p[1]);
+            ((void (*)(void*, void*))(*(void***)o)[74])(o, &z);
         }
     }
     *(s32*)((u8*)this_ + 0x58) = 9;
@@ -239,5 +314,8 @@ extern "C" u8* fn_80454DEC(u8* p) {
     p[0x55] = 0;
     p[0x54] = 1;
     return p;
+}
+
+extern "C" void fn_804553E8(void) {
 }
 
