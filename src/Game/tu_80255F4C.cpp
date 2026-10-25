@@ -265,7 +265,6 @@ static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
     return hit;
 }
 
-#pragma dont_inline on
 extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     u8* p = (u8*)a;
     s32 i;
