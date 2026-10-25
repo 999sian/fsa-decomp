@@ -1,5 +1,6 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JKernel/JKRArchive.h"
 #include "JSystem/JMath/Inline.h"
 
 struct Vec3f {
@@ -81,6 +82,7 @@ extern "C" void fn_802B6A70(Actor* p) {
     p->field_11C = 0;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802B6DAC(Actor* p) {
     u8 buf[0x3c];
     u8* q;
@@ -88,6 +90,7 @@ extern "C" void fn_802B6DAC(Actor* p) {
     s32 i;
     void* mgr;
     void* obj;
+    s32 c;
 
     tbl = lbl_8046CAD0;
     if (*(s32*)((char*)p + 0x234) == 1 || *(s32*)((char*)p + 0x234) >= 3) {
@@ -128,7 +131,7 @@ extern "C" void fn_802B6DAC(Actor* p) {
         buf[0x1c] = 0;
         buf[0x1d] = 1;
 
-        int c = **(char**)((char*)p + 0x248);
+        c = **(char**)((char*)p + 0x248);
         if (c == 'r' || c == 's' || c == 'y') {
             mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
             obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x30);
@@ -148,7 +151,7 @@ extern "C" void fn_802B6DAC(Actor* p) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_8023F264(s32);
 extern "C" u8 fn_80236E3C(s32);
 extern "C" u8 fn_80239C00(s32, void*, u32);
