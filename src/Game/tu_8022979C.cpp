@@ -58,8 +58,8 @@ struct SobDrawParam {
 };
 
 static inline void sobDraw(u8* p, SobDrawParam* prm, s32 flag) {
-    s32 id = *(s32*)(p + 0x234);
     u8* pos = p + 0xc;
+    s32 id = *(s32*)(p + 0x234);
     if (*(s32*)(p + 4) < 8) {
         SobResMgr* mgr = *(SobResMgr**)(lbl_8053AAF8 + 0xa4);
         void* res = mgr->getRes(0x534F4220, lbl_8046ADF0);
@@ -94,6 +94,8 @@ extern "C" void fn_802297FC(Actor* this_) {
         sobDraw(p, 0, 0);
         break;
     case 2:
+        sobDraw(p, 0, 1);
+        break;
     case 3:
         sobDraw(p, 0, 1);
         break;
@@ -107,8 +109,14 @@ extern "C" void fn_802297FC(Actor* this_) {
         sobDraw(p, &prm, 1);
         break;
     case 6:
-    case 8:
+        sobDraw(p, 0, 1);
+        break;
     case 7:
+        sobDraw(p, 0, 1);
+        break;
+    case 8:
+        sobDraw(p, 0, 1);
+        break;
     case 9:
         sobDraw(p, 0, 1);
         break;
