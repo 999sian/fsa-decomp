@@ -334,6 +334,8 @@ extern "C" void fn_801AF1EC(char* this_) {
     }
 }
 
+static inline f32 okamAbs(f32 x) { return __fabs(x); }
+
 struct OkamDrawParam {
     OkamDrawParam() : m40(-1), m44(-1) {
         for (u8 i = 0; i < 16; i++) {
@@ -396,6 +398,134 @@ extern "C" void fn_801AEA24(u8* self) {
     prm.reset();
     void* tex = ((OkamGame*)lbl_8053AAF8)->mRes->getRes('TIMG', lbl_804A33D0[*(s32*)(self + 0x24c)]);
     fn_801EFD34(self, tex, *(f32*)(self + 0x26c), *(f32*)(self + 0x270), 0.0f, &prm, -1);
+}
+
+extern "C" s32 fn_801F3D94(char* this_, s32 a);
+extern "C" void fn_801F71A4(f32* v, f32 target, f32 step, f32 limit);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" u8 fn_80235580(s32 i);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" u8 fn_8022DCD8(s32 i);
+extern "C" f32* fn_8023E724(s32 i);
+extern "C" u8 fn_801F23BC(char* this_, s32 room, f32* pos, f32* other, f32* box, f32* a, f32* b, s32 c);
+extern "C" void fn_801AEB8C(char* this_) {
+    f32 hitA[3];
+    f32 hitB[3];
+    s32 i;
+
+    if (fn_801F3D94(this_, 1)) {
+        fn_801F2618(this_, 0, 0);
+        return;
+    }
+    fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x260), 0.3f, 1.0f);
+    fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x264), 0.3f, 1.0f);
+    fn_801F71A4((f32*)(this_ + 0x26c), *(f32*)(this_ + 0x278), 0.5f, 1.0f);
+    fn_801F71A4((f32*)(this_ + 0x270), *(f32*)(this_ + 0x27c), 0.5f, 1.0f);
+    *(JGeometry::TVec3f*)(this_ + 0xc) += *(JGeometry::TVec3f*)(this_ + 0x3c);
+    fn_801AF1EC(this_);
+    u8 hit = fn_801F2618(this_, 0, 0);
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        *(s32*)(this_ + 0x244) = -1;
+        *(f32*)(this_ + 0x268) = 0.0f;
+        *(f32*)(this_ + 0x264) = 0.0f;
+        *(f32*)(this_ + 0x260) = 0.0f;
+        *(f32*)(this_ + 0x44) = 0.0f;
+        *(f32*)(this_ + 0x40) = 0.0f;
+        *(f32*)(this_ + 0x3c) = 0.0f;
+        *(s32*)(this_ + 0x238) = 0;
+        *(s32*)(this_ + 0x230) = 1;
+    case 1:
+        if (hit) {
+            if (*(s32*)(this_ + 0x244) != 0 && *(s32*)(this_ + 0x258) != 0 && *(s32*)(this_ + 0x258) != 4) {
+                *(s32*)(this_ + 0x230) = 2;
+            }
+            *(f32*)(this_ + 0x260) *= -1.0f;
+            *(f32*)(this_ + 0x264) *= -1.0f;
+            *(f32*)(this_ + 0x3c) *= -1.0f;
+            *(f32*)(this_ + 0x40) *= -1.0f;
+            break;
+        }
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i)) {
+                s32 room = *(s32*)(this_ + 4);
+                if (room == fn_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) && !fn_80230188(i) && !fn_8022DCD8(i)) {
+                    f32 dx = __fabs(*(f32*)(this_ + 0xc) - fn_8023E724(i)[0]);
+                    f32 dy = __fabs(*(f32*)(this_ + 0x10) - fn_8023E724(i)[1]);
+                    s32 vert = *(u32*)(this_ + 0x98) & 2;
+                    if (((!vert && dy < 16.0f) || (vert && dx < 16.0f)) &&
+                        !fn_801F23BC(this_, *(s32*)(this_ + 4), (f32*)(this_ + 0xc), fn_8023E724(i), (f32*)(this_ + 0x70), hitA, hitB, 0) &&
+                        (*(s32*)(this_ + 0x244) < 0 || *(s32*)(this_ + 0x244) == i)) {
+                        if (*(s32*)(this_ + 0x238) == 0) {
+                            *(s32*)(this_ + 0x244) = i;
+                            fn_801F0E34(this_, 0x400d3, 0);
+                            if (*(s32*)(this_ + 0x250) == 0) {
+                                if (fn_8023E724(i)[0] > *(f32*)(this_ + 0xc)) {
+                                    *(f32*)(this_ + 0x260) = 0.7f;
+                                } else {
+                                    *(f32*)(this_ + 0x260) = -0.7f;
+                                }
+                            } else {
+                                if (fn_8023E724(i)[1] > *(f32*)(this_ + 0x10)) {
+                                    *(f32*)(this_ + 0x264) = 0.7f;
+                                } else {
+                                    *(f32*)(this_ + 0x264) = -0.7f;
+                                }
+                            }
+                            if (*(s32*)(this_ + 0x250) == 0) {
+                                fn_801AF7D0(this_, 1);
+                            } else {
+                                fn_801AF7D0(this_, 5);
+                            }
+                            u32* seed = (u32*)((char*)lbl_8053AAF8 + 0xb4);
+                            *seed = *seed * 0x19660d + 0x3c6ef35f;
+                            union { f32 f; u32 u; } r;
+                            r.u = (*seed >> 9) | 0x3f800000;
+                            *(s32*)(this_ + 0x238) = (s32)(50.0f * (r.f - 1.0f)) + 0x32;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (*(s32*)(this_ + 0x244) == i) {
+                if (*(s32*)(this_ + 0x258) == 0 || *(s32*)(this_ + 0x258) == 4) {
+                    *(s32*)(this_ + 0x230) = 0;
+                } else {
+                    *(s32*)(this_ + 0x230) = 2;
+                }
+                break;
+            }
+        }
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x250) == 0) {
+            fn_801AF7D0(this_, 3);
+        } else {
+            fn_801AF7D0(this_, 7);
+        }
+        *(f32*)(this_ + 0x268) = 0.0f;
+        *(f32*)(this_ + 0x264) = 0.0f;
+        *(f32*)(this_ + 0x260) = 0.0f;
+        *(f32*)(this_ + 0x44) = 0.0f;
+        *(f32*)(this_ + 0x40) = 0.0f;
+        *(f32*)(this_ + 0x3c) = 0.0f;
+        *(s32*)(this_ + 0x230) = 3;
+    case 3:
+        if (*(u8*)(this_ + 0x25c) == 1) {
+            *(s32*)(this_ + 0x230) = 0;
+        }
+        break;
+    }
+    fn_801AF678(this_);
+    char* t = this_;
+    for (s32 k = 0; k < 3; k++) {
+        if (*(s32*)(t + 0x234) > 0) {
+            *(s32*)(t + 0x234) = *(s32*)(t + 0x234) - 1;
+        }
+        t += 4;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
