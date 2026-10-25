@@ -195,6 +195,15 @@ struct OkamBox {
     u32 w[4];
 };
 
+static inline void okamSetBox(char* this_, f32 l, f32 t, f32 r, f32 b) {
+    f32 x = *(f32*)(this_ + 0x26c);
+    f32 y = *(f32*)(this_ + 0x270);
+    *(f32*)(this_ + 0x60) = l + x;
+    *(f32*)(this_ + 0x64) = t + y;
+    *(f32*)(this_ + 0x68) = r + x;
+    *(f32*)(this_ + 0x6c) = b + y;
+}
+
 extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_801EEC98(char* this_, s32 handle, s32 a, s32* out, s32 b, s32 c, s32 d, s32 e);
@@ -234,10 +243,7 @@ extern "C" void fn_801AF1EC(char* this_) {
             *(f32*)(this_ + 0x68) = 7.0f + a;
             *(f32*)(this_ + 0x6c) = 18.0f + b;
         }
-        *(s32*)(this_ + 0x80) = *(s32*)(this_ + 0x60);
-        *(s32*)(this_ + 0x84) = *(s32*)(this_ + 0x64);
-        *(s32*)(this_ + 0x88) = *(s32*)(this_ + 0x68);
-        *(s32*)(this_ + 0x8c) = *(s32*)(this_ + 0x6c);
+        *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
     case 2: {
@@ -266,10 +272,7 @@ extern "C" void fn_801AF1EC(char* this_) {
         *(f32*)(this_ + 0x64) = -7.0f + b;
         *(f32*)(this_ + 0x68) = 28.0f + a;
         *(f32*)(this_ + 0x6c) = 7.0f + b;
-        *(s32*)(this_ + 0x80) = *(s32*)(this_ + 0x60);
-        *(s32*)(this_ + 0x84) = *(s32*)(this_ + 0x64);
-        *(s32*)(this_ + 0x88) = *(s32*)(this_ + 0x68);
-        *(s32*)(this_ + 0x8c) = *(s32*)(this_ + 0x6c);
+        *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
     }
@@ -299,10 +302,7 @@ extern "C" void fn_801AF1EC(char* this_) {
         *(f32*)(this_ + 0x64) = -28.0f + b;
         *(f32*)(this_ + 0x68) = 7.0f + a;
         *(f32*)(this_ + 0x6c) = 28.0f + b;
-        *(s32*)(this_ + 0x80) = *(s32*)(this_ + 0x60);
-        *(s32*)(this_ + 0x84) = *(s32*)(this_ + 0x64);
-        *(s32*)(this_ + 0x88) = *(s32*)(this_ + 0x68);
-        *(s32*)(this_ + 0x8c) = *(s32*)(this_ + 0x6c);
+        *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
     }
