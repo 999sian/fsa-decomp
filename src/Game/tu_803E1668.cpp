@@ -81,6 +81,13 @@ extern PMF803ED83C lbl_804B0754[];
 extern "C" void* lbl_8053AD30;
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_804B0B00[];
+class T803EDF94Late : public FsaMenuActionBase {
+public:
+    virtual void v00(); virtual void v04(); virtual void v08();
+    virtual void v0c(); virtual void v10(); virtual void v14();
+    virtual void v18(); virtual void v1c(); virtual void v20();
+    virtual void v24(); virtual void v30(s32);
+};
 class T803EDF94Obj {
 public:
     virtual void v08(s32 a);
