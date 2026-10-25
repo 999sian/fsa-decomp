@@ -704,8 +704,10 @@ extern "C" void fn_80138B7C(char* this_) {
     }
 }
 
+struct ResFONT;
 class J2DTextBox {
 public:
+    J2DTextBox(u64 tag, const JGeometry::TBox2f& box, const ResFONT* font, const char* str, s16 len, s32 hb, s32 vb);
     char* getStringPtr() const;
 };
 extern "C" char* strcpy(char*, const char*);
