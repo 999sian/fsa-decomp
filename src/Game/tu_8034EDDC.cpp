@@ -1,4 +1,8 @@
 #include "types.h"
+
+static inline bool isOnGround(f32 z) {
+    return 0.0f == z;
+}
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Util.h"
 #include "JSystem/JMath/JMath.h"
@@ -185,42 +189,45 @@ extern "C" void fn_8034F43C(char* p) {
 }
 
 extern "C" void fn_8035001C(u8* self, u32 kind) {
-    f32 x;
-
     switch (kind) {
-    case 0:
-        x = (f32)*(s32*)(self + 0x260);
+    case 0: {
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * x;
         *(f32*)(self + 0x40) = lbl_805425D8;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    case 1:
-        x = (f32)*(s32*)(self + 0x260);
+    }
+    case 1: {
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * -x;
         *(f32*)(self + 0x40) = lbl_805425D8;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    case 2:
-        x = (f32)*(s32*)(self + 0x260);
+    }
+    case 2: {
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_805425D8;
         *(f32*)(self + 0x40) = lbl_80542600 * x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    case 3:
-        x = (f32)*(s32*)(self + 0x260);
+    }
+    case 3: {
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_805425D8;
         *(f32*)(self + 0x40) = lbl_80542600 * -x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    case 4:
-        x = (f32)*(s32*)(self + 0x260);
+    }
+    case 4: {
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * x;
         *(f32*)(self + 0x40) = lbl_80542600 * x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
+    }
     case 5: {
         f32 y = (f32)*(s32*)(self + 0x260);
-        x = (f32)*(s32*)(self + 0x260);
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * -x;
         *(f32*)(self + 0x40) = lbl_80542600 * y;
         *(f32*)(self + 0x44) = lbl_805425D8;
@@ -228,18 +235,19 @@ extern "C" void fn_8035001C(u8* self, u32 kind) {
     }
     case 6: {
         f32 y = (f32)*(s32*)(self + 0x260);
-        x = (f32)*(s32*)(self + 0x260);
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * x;
         *(f32*)(self + 0x40) = lbl_80542600 * -y;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
     }
-    case 7:
-        x = (f32)*(s32*)(self + 0x260);
+    case 7: {
+        f32 x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * -x;
         *(f32*)(self + 0x40) = lbl_80542600 * -x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
+    }
     default:
         *(f32*)(self + 0x3c) = lbl_805425D8;
         *(f32*)(self + 0x40) = lbl_805425D8;
@@ -268,14 +276,13 @@ extern "C" s32 fn_80350274(s32 param_1, s32 param_2, s32 param_3) {
 
 extern "C" s32 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" s32 fn_803502CC(u8* self) {
-    s32 i;
-    f32* p;
-    s32 j;
-    u8* base;
     f32 s0 = *(f32*)(self + 0x80);
     f32 s1 = *(f32*)(self + 0x84);
     f32 s2 = *(f32*)(self + 0x88);
     f32 s3 = *(f32*)(self + 0x8c);
+    s32 i;
+    f32* p;
+    s32 j;
 
     if (*(s32*)(self + 0x258) == 4) {
         p = (f32*)lbl_8050ADF8;
@@ -300,10 +307,9 @@ extern "C" s32 fn_803502CC(u8* self) {
             p += 4;
         }
     } else if (*(s32*)(self + 0x258) >= 0x10 && *(s32*)(self + 0x258) <= 0x14) {
-        base = (u8*)lbl_8050AE38 + (*(s32*)(self + 0x258) - 0x10) * 0x20;
         j = 0;
         for (i = 0; i < 2; i++) {
-            p = (f32*)(base + j);
+            p = (f32*)((u8*)lbl_8050AE38 + (*(s32*)(self + 0x258) - 0x10) * 0x20 + j);
             *(f32*)(self + 0x80) = p[0];
             *(f32*)(self + 0x84) = p[1];
             *(f32*)(self + 0x88) = p[2];
@@ -387,7 +393,7 @@ extern const f32 lbl_80542620;
 extern u8 lbl_8053AD40;
 f32 lbl_8050AED8[8];
 extern "C" s32 fn_803506E0(u8* self) {
-    f32* tbl;
+    const f32* tbl;
     s32 bit;
     s32 j;
     s32 flags;
@@ -403,15 +409,15 @@ extern "C" s32 fn_803506E0(u8* self) {
     f32* p;
     s32 idx;
 
-    if (!(s8)lbl_8053AD40) {
-        lbl_8050AED8[0] = lbl_80542614;
-        lbl_8050AED8[1] = lbl_805425D8;
-        lbl_8050AED8[2] = lbl_80542620;
-        lbl_8050AED8[3] = lbl_805425D8;
-        lbl_8050AED8[4] = lbl_805425D8;
-        lbl_8050AED8[5] = lbl_80542614;
-        lbl_8050AED8[6] = lbl_805425D8;
-        lbl_8050AED8[7] = lbl_80542620;
+    if (!*(s8*)&lbl_8053AD40) {
+        lbl_8050AED8[0] = 32.0f;
+        lbl_8050AED8[1] = 0.0f;
+        lbl_8050AED8[2] = -32.0f;
+        lbl_8050AED8[3] = 0.0f;
+        lbl_8050AED8[4] = 0.0f;
+        lbl_8050AED8[5] = 32.0f;
+        lbl_8050AED8[6] = 0.0f;
+        lbl_8050AED8[7] = -32.0f;
         lbl_8053AD40 = 1;
     }
 
@@ -424,8 +430,10 @@ extern "C" s32 fn_803506E0(u8* self) {
         tbl = lbl_8050AED8;
         for (j = 0; j < 4; j++) {
             bit = 1 << j;
-            x = tbl[0] + *(f32*)(self + 0xc);
-            y = tbl[1] + *(f32*)(self + 0x10);
+            x = tbl[0];
+            y = tbl[1];
+            x += *(f32*)(self + 0xc);
+            y += *(f32*)(self + 0x10);
             r2 = lbl_80542618;
             m = flags & bit;
             if (m != 0) {
@@ -439,7 +447,7 @@ extern "C" s32 fn_803506E0(u8* self) {
             dy2 = dy * dy;
             if (dx2 + dy2 < r2) {
                 p = (f32*)fn_8023E724(i);
-                if (p[2] == lbl_805425D8) {
+                if (p[2] == 0.0f) {
                     if (m == 0) {
                         fn_801F0E34(self, 0x30009, 0);
                     }
@@ -451,26 +459,27 @@ extern "C" s32 fn_803506E0(u8* self) {
     }
 
     flags = *(s32*)(self + 0x270);
+    if ((flags & 1) && ((flags >> 1) & 1)) flags &= 12;
+    if (((flags >> 2) & 1) && ((flags >> 3) & 1)) flags &= 3;
     if (flags == 1) {
-        idx = 0;
+        *(s32*)(self + 0x268) = 0;
     } else if (flags == 2) {
-        idx = 1;
+        *(s32*)(self + 0x268) = 1;
     } else if (flags == 4) {
-        idx = 2;
+        *(s32*)(self + 0x268) = 2;
     } else if (flags == 8) {
-        idx = 3;
+        *(s32*)(self + 0x268) = 3;
     } else if (flags == 5) {
-        idx = 4;
+        *(s32*)(self + 0x268) = 4;
     } else if (flags == 6) {
-        idx = 5;
+        *(s32*)(self + 0x268) = 5;
     } else if (flags == 9) {
-        idx = 6;
+        *(s32*)(self + 0x268) = 6;
     } else if (flags == 10) {
-        idx = 7;
+        *(s32*)(self + 0x268) = 7;
     } else {
-        idx = -1;
+        *(s32*)(self + 0x268) = -1;
     }
-    *(s32*)(self + 0x268) = idx;
     return *(s32*)(self + 0x268);
 }
 
