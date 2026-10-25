@@ -111,16 +111,16 @@ static inline void getBox(char* p, float* out)
 {
 	float y = *(float*)(p + 0x58);
 	float x = *(float*)(p + 0x54);
-	out[0] = x * -16.0f;
-	out[1] = y * -24.0f;
-	out[2] = x * 16.0f;
-	out[3] = y * 8.0f;
+	out[0] = -16.0f * x;
+	out[1] = -24.0f * y;
+	out[2] = 16.0f * x;
+	out[3] = 8.0f * y;
 }
 extern "C" void fn_80210990(char* p, int side, float* out)
 {
 	float y = *(float*)(p + 0x58);
 	float x = *(float*)(p + 0x54);
-	setBox(out, x, y);
+	getBox(p, out);
 	switch (side) {
 	case 0:
 		out[2] -= 8.0f * x;
