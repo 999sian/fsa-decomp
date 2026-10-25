@@ -2,10 +2,6 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
-static inline void applyPlayerGravity(f32* velocity, f32 terminal, f32 gravity) {
-    *velocity -= gravity;
-    if (*velocity < terminal) *velocity = terminal;
-}
 static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -z; v[1] = -y; }
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
@@ -2171,8 +2167,11 @@ extern const f32 lbl_80540398;
 extern const f32 lbl_80540404;
 #pragma opt_propagation off
 void fn_8028434C(char* p) {
+    f32 c = lbl_80540398;
+    f32 d = lbl_80540404;
     VEC(p, 8).add(VEC(p, 0x344));
-    applyPlayerGravity(&F32(p, 0x34c), lbl_80540398, lbl_80540404);
+    F32(p, 0x34c) -= c;
+    if (F32(p, 0x34c) < d) F32(p, 0x34c) = d;
     if (F32(p, 0x34c) < lbl_80540360 && F32(p, 0x10) <= lbl_80540360) {
         F32(p, 0x10) = lbl_80540360;
         U8(p, 0x124d) = 0;
