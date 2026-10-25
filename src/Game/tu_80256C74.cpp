@@ -95,6 +95,7 @@ extern const f32 lbl_80540148;
 extern "C" f32 fn_8022C82C(void*);
 extern "C" f32 fn_8022C76C(void*);
 extern const JGeometry::TVec3<f32> lbl_8046B010[];
+extern const JGeometry::TVec3<f32> lbl_8046B040[];
 extern const f32 lbl_80540130;
 extern const JGeometry::TVec3<f32> lbl_8046AFE0[];
 extern "C" void* fn_802D6A9C();
@@ -1236,22 +1237,19 @@ extern "C" void fn_8025A15C(u8* p) {
             break;
         case 1:
             pos.x -= lbl_80540110;
-            box.i.set(pos.x - lbl_80540118, pos.y - lbl_80540114);
-            box.f.set(pos.x, lbl_80540114 + pos.y);
+            box.set(pos.x - lbl_80540118, pos.y - lbl_80540114, pos.x, lbl_80540114 + pos.y);
             BOX(p, 0x580).set(box);
             break;
         case 2:
             pos.x += lbl_805400E0;
             pos.y += lbl_8054011C;
-            box.i.set(pos.x - lbl_80540114, pos.y);
-            box.f.set(lbl_80540114 + pos.x, pos.y + lbl_80540118);
+            box.set(pos.x - lbl_80540114, pos.y, lbl_80540114 + pos.x, pos.y + lbl_80540118);
             BOX(p, 0x580).set(box);
             break;
         case 3:
             pos.x -= lbl_805400E0;
             pos.y -= lbl_80540120;
-            box.i.set(pos.x - lbl_80540114, pos.y - lbl_80540118);
-            box.f.set(lbl_80540114 + pos.x, pos.y);
+            box.set(pos.x - lbl_80540114, pos.y - lbl_80540118, lbl_80540114 + pos.x, pos.y);
             BOX(p, 0x580).set(box);
             break;
         }
@@ -1524,6 +1522,31 @@ extern "C" void fn_8025BDD8(u8* p) {
         S32(p, 0x12c0) = -1;
     }
     S32(p, 0x40c) = 0;
+}
+
+extern "C" void fn_8025BEB0(u8* p) {
+    u8 st = U8(p, 0x3fa);
+    if (st < 3) {
+        U8(p, 0x3fa) = st + 1;
+        U8(p, 0x3fb) = 0;
+        return;
+    }
+    if (st < 6) {
+        U8(p, 0x3fa) = st + 1;
+        U8(p, 0x3fb) = 1;
+        return;
+    }
+    if (st != 6) {
+        return;
+    }
+    if (U8(p, 0x3fc) < 0x30) {
+        U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
+        if (U8(p, 0x3fc) != 0x30) {
+            return;
+        }
+        u32 fx = U32(p, 0x3dc);
+        (void)fx;
+    }
 }
 
 extern "C" void fn_8025C79C(u8* p) {
