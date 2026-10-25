@@ -97,6 +97,7 @@ extern u32 lbl_8053AF8C;
 extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
+#include "JSystem/JAudio/Interface/JAISeMgr.h"
 extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     s32 id = *(s32*)param_2;
     u8 kind = ((u8*)param_2)[1];
@@ -106,8 +107,7 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
 
     switch (id) {
     case 0x20037: {
-        u32 d = 0x10002;
-        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &d);
+        ((JAUSoundObject*)p)->startSound(JAISoundID(0x10002));
         break;
     }
     case 0x20036:
@@ -123,8 +123,7 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
         break;
     }
     case 0x20029: {
-        u32 b = 0x10009;
-        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &b);
+        ((JAUSoundObject*)p)->startSound(JAISoundID(0x10009));
         break;
     }
     case 0x20032: {
