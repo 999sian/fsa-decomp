@@ -62,6 +62,7 @@ extern "C" s32 fn_801CD354(s32 a);
 extern "C" void fn_80230BF4(s32 a, s32 b);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
 extern u16 lbl_8046A78C[4][4];
+static inline bool navi_eq(s32 a, s32 b) { return a == b; }
 extern const u8 lbl_8053FD50[6];
 extern "C" void fn_801CE120(void* this_);
 extern "C" void fn_801D0F40(void* this_);
@@ -444,9 +445,9 @@ extern "C" void fn_8021DC44(char* p) {
 }
 
 extern "C" void fn_8021DFAC(char* p, s32 state) {
-    s32 i;
-    s32 j;
     s32 room;
+    s32 j;
+    s32 i;
     switch (state) {
     case 0:
         break;
@@ -491,11 +492,12 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         fn_801F3604(p);
         *(f32*)(p + 0x2bc) = lbl_8053FD5C;
         u8 flag = 0;
-        if (*(s32*)(p + 0x2b4) >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
+        s32 idx = *(s32*)(p + 0x2b4);
+        if (idx >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
             flag = 1;
         }
         if (flag) {
-            f32* q = (f32*)fn_8023E724(*(s32*)(p + 0x2b4));
+            f32* q = (f32*)fn_8023E724(idx);
             *(f32*)(p + 0x2c8) = q[0];
             *(f32*)(p + 0x2cc) = q[1];
         } else {
@@ -503,25 +505,32 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
             *(f32*)(p + 0x2cc) = *(f32*)(p + 0x28);
         }
         f32 t[2];
-        t[0] = *(f32*)(p + 0x2c8);
-        t[1] = *(f32*)(p + 0x2cc);
-        t[0] = t[0] + JMath::sincosTable_.mTable[0x600].first * *(f32*)(p + 0x2bc);
-        t[1] = t[1] + JMath::sincosTable_.mTable[0x600].second * *(f32*)(p + 0x2bc);
-        *(f32*)(p + 0x2c0) = t[0];
-        *(f32*)(p + 0x2c4) = t[1];
+        f32* o = t;
+        o[0] = *(f32*)(p + 0x2c8);
+        o[1] = *(f32*)(p + 0x2cc);
+        f32 dx = JMath::sincosTable_.mTable[0x600].first * *(f32*)(p + 0x2bc);
+        f32 dz = JMath::sincosTable_.mTable[0x600].second * *(f32*)(p + 0x2bc);
+        o[0] += dx;
+        o[1] += dz;
+        *(f32*)(p + 0x2c0) = o[0];
+        *(f32*)(p + 0x2c4) = o[1];
         *(f32*)(p + 0xc) = *(f32*)(p + 0x2c0);
         *(f32*)(p + 0x10) = *(f32*)(p + 0x2c4);
         *(f32*)(p + 0x14) = lbl_8053FD58;
+        s32 st = *(s32*)(p + 0x248);
         s32 f = 0;
-        switch (*(s32*)(p + 0x248)) {
+        s32 rm = *(s32*)(p + 4);
+        switch (st) {
         case 9: f = 1; break;
         }
-        *(void**)(p + 0x2d0) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x32c, 0, -1, 0, 0, f, lbl_8053FD5C);
+        *(void**)(p + 0x2d0) = fn_8013CC50(rm, p + 0xc, 0x32c, 0, -1, 0, 0, f, lbl_8053FD5C);
         f = 0;
-        switch (*(s32*)(p + 0x248)) {
+        st = *(s32*)(p + 0x248);
+        rm = *(s32*)(p + 4);
+        switch (st) {
         case 9: f = 1; break;
         }
-        *(void**)(p + 0x2d4) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x184, 0, -1, 0, 0, f, lbl_8053FD5C);
+        *(void**)(p + 0x2d4) = fn_8013CC50(rm, p + 0xc, 0x184, 0, -1, 0, 0, f, lbl_8053FD5C);
         void* e = *(void**)(p + 0x2d0);
         if (e != 0) {
             int k = *(u8*)(p + 0x2ac) * 3;
@@ -559,11 +568,12 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
     case 7: {
         *(f32*)(p + 0x2bc) = lbl_8053FDA0;
         u8 flag = 0;
-        if (*(s32*)(p + 0x2b4) >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
+        s32 idx = *(s32*)(p + 0x2b4);
+        if (idx >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
             flag = 1;
         }
         if (flag) {
-            f32* q = (f32*)fn_8023E724(*(s32*)(p + 0x2b4));
+            f32* q = (f32*)fn_8023E724(idx);
             *(f32*)(p + 0x2c8) = q[0];
             *(f32*)(p + 0x2cc) = q[1];
         } else {
