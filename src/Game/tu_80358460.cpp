@@ -8,6 +8,7 @@ public:
     virtual void* vf18(u32, u32);
 };
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 struct Actor;
 
@@ -24,6 +25,7 @@ extern "C" const f32 lbl_80542880;
 extern "C" const f32 lbl_80542884;
 extern "C" const f32 lbl_8054288C;
 extern "C" u8* lbl_8053AC98;
+extern "C" u8* lbl_8053AAF8;
 extern "C" const u16 lbl_80542868[];
 extern "C" const f32 lbl_80542870;
 struct Vec8035A860 {
@@ -325,34 +327,38 @@ extern "C" s32 fn_8035AE9C(u8* self, void* obj) {
 
 extern "C" u32 lbl_8053A1B8[2];
 extern "C" u32 lbl_8053A1B8[2];
-extern "C" void fn_8035B0E0(u8* self) {
+extern "C" void fn_8035B0E0(u8* arg) {
+    u8* self = arg;
+    int x;
     *(void**)(self + 0x234) = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18(0x3f3f3f3f, lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f]);
     u16* size = *(u16**)(self + 0x234);
-    u16 w = size[1], h = size[2];
-    *(f32*)(self + 0x60) = -w / 2;
-    *(f32*)(self + 0x64) = -h / 2;
-    *(f32*)(self + 0x68) = w / 2;
-    *(f32*)(self + 0x6c) = h / 2;
-    *(s32*)(self + 0x108) = 0;
-    *(s16*)(self + 0x230) = 0;
-    *(s16*)(self + 0x238) = 0;
-    *(s16*)(self + 0x23a) = 0;
-    *(s16*)(self + 0x23c) = 0;
+    ((JGeometry::TBox2f*)(self + 0x60))->set(-size[1] / 2, -size[2] / 2, size[1] / 2, size[2] / 2);
+    x = 0;
+    *(s32*)(self + 0x108) = x;
+    *(s16*)(self + 0x230) = x;
+    *(s16*)(self + 0x238) = x;
+    *(s16*)(self + 0x23a) = x;
+    *(s16*)(self + 0x23c) = x;
     *(s16*)(self + 0x23e) = 24;
     *(f32*)(self + 0x240) = lbl_8054286C;
-    self[0x244] = 0; self[0x245] = 0; self[0x24e] = 0;
+    self[0x244] = x; self[0x245] = x; self[0x24e] = x;
     for (int i=0;i<4;i++) {self[0x246+i]=0; self[0x24a+i]=0;}
     *(s32*)(self+0x250)=0;
     *(s32*)(self+0x26c)=0;
     for (int i=0;i<8;i++) *(s32*)(self+0x25c+i*4)=0;
-    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(self+0xc) + JGeometry::TVec3f(*(f32*)(self+0x60),*(f32*)(self+0x64),lbl_8054286C);
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f offset(*(f32*)(self+0x60),*(f32*)(self+0x64),lbl_8054286C);
+    pos = *(JGeometry::TVec3f*)(self+0xc) + offset;
     JGeometry::TVec3f start = pos;
+
+
     u16 idx = lbl_80542868[0];
+    f32 step = lbl_80542870;
     *(s32*)(self+0x258)=0;
-    for(int x=0;x<6;x++) {
+    for(;x<6;x++) {
         for(int y=0;y<6;y++) {
             fn_802A381C(lbl_8053AC98,(Vec8035A860*)&pos,*(s32*)(self+4),idx);
-            pos.y += lbl_80542870;
+            pos.y += step;
         }
         pos.y = start.y;
         pos.x += lbl_80542870;
