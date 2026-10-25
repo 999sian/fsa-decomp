@@ -69,6 +69,14 @@ inline bool pointInRect(const Vec2f& p, const HitRect* r) {
     return in;
 }
 
+inline bool pointInRect(f32 x, f32 y, const HitRect* r) {
+    bool in = false;
+    if (x >= r->x0 && y >= r->y0 && x < r->x1 && y < r->y1) {
+        in = true;
+    }
+    return in;
+}
+
 extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     for (s32 i = 0; i < 80; i++) {
         if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
