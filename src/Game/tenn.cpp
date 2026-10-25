@@ -2,6 +2,7 @@
 // TU 801A0710-801A35AC (TENN). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern const char lbl_804684E8[];
