@@ -915,32 +915,6 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
     }
 }
 
-struct J2DPane {
-    JGeometry::TBox2<f32>* getBounds();
-};
-
-// Pane reached through GetKeyed: resize(w, h) at vtable 0x18.
-struct HudResizePane {
-    virtual void r00();
-    virtual void r01();
-    virtual void r02();
-    virtual void r03();
-    virtual void resize(f32 w, f32 h);
-};
-
-extern "C" void fn_80422824(u8* this_);
-extern "C" void fn_80423248(u8* this_, u32 idx);
-extern "C" void fn_80423804(u8* this_, u32 idx);
-extern "C" u8 fn_8023BD70(s32 i);
-extern "C" void fn_80441490(void* p);
-extern const f32 lbl_80543A68;
-extern const f32 lbl_80543A70;
-extern const f32 lbl_80543A74;
-extern const f32 lbl_80543A78;
-extern const f32 lbl_80543A7C;
-extern const f32 lbl_80543A80;
-extern const f32 lbl_80543A84;
-
 extern "C" void fn_80425F24(u8* this_) {
     fn_8013B490(lbl_8053AB10);
     (*(J2DScreen**)(this_ + 0x18))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
