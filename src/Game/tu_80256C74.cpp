@@ -1165,10 +1165,19 @@ extern "C" void fn_8025A0B0(u8* p) {
 
 extern "C" u8 fn_8023B400(s32);
 extern const f32 lbl_80540128;
+static inline bool tu8025_eq1(f32 a, f32 b, f32 eps) {
+    bool equal = false;
+    f32 d = a - b;
+    if (-eps <= d && d <= eps) {
+        equal = true;
+    }
+    return equal;
+}
+
 static inline bool tu8025_eq2(u8* a, u8* b, f32 eps) {
     bool equal = false;
-    if (JGeometry::TUtil<f32>::epsilonEquals(F32(a, 0x0), F32(b, 0x0), eps) &&
-        JGeometry::TUtil<f32>::epsilonEquals(F32(a, 0x4), F32(b, 0x4), eps)) {
+    if (tu8025_eq1(F32(a, 0x0), F32(b, 0x0), eps) &&
+        tu8025_eq1(F32(a, 0x4), F32(b, 0x4), eps)) {
         equal = true;
     }
     return equal;
@@ -1238,17 +1247,7 @@ extern "C" void fn_8025A15C(u8* p) {
         }
         if (U8(p, 0xb84) != 0) {
             fn_802808E8(p, lbl_80540124);
-            f32 eps = lbl_805400D8 * *(f32*)__float_epsilon;
-            bool xy = false;
-            if (JGeometry::TUtil<f32>::epsilonEquals(F32(p, 0x8), F32(p, 0x14), eps) &&
-                JGeometry::TUtil<f32>::epsilonEquals(F32(p, 0xc), F32(p, 0x18), eps)) {
-                xy = true;
-            }
-            bool all = false;
-            if (xy && JGeometry::TUtil<f32>::epsilonEquals(F32(p, 0x10), F32(p, 0x1c), eps)) {
-                all = true;
-            }
-            if (all) {
+            if (tu8025_eq3(p + 0x8, p + 0x14, lbl_805400D8 * *(f32*)__float_epsilon)) {
                 U8(p, 0x3f8) = 0;
             } else {
                 U8(p, 0x3f8)++;
@@ -1258,21 +1257,21 @@ extern "C" void fn_8025A15C(u8* p) {
             }
             u8 c = U8(p, 0x3f8);
             if (c < 4) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8];
             } else if (c < 6) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 1);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 1];
             } else if (c < 10) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 2);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 2];
             } else if (c < 14) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 3);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 3];
             } else if (c < 18) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 4);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 4];
             } else if (c < 20) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 5);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 5];
             } else if (c < 24) {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 6);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 6];
             } else {
-                U8(p, 0x3f9) = *((base + 0x250) + S32(p, 0x3dc) * 8 + 7);
+                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 7];
             }
             if (!fn_80247594(p, 1)) {
                 U8(p, 0xb84) = 0;
@@ -1333,12 +1332,14 @@ extern "C" void fn_8025A15C(u8* p) {
                     case 3:
                         break;
                     }
-                    for (s32 i = 0; i < 3; i++) {
-                        if (S32(p, 0xb1c + i * 4) < 0) {
+                    s32 i;
+                    u8* q;
+                    for (i = 0, q = p; i < 3; i++, q += 4) {
+                        if (S32(q, 0xb1c) < 0) {
                             s32 owner = S32(p, 0x4);
-                            S32(p, 0xb1c + i * 4) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos2, ((S32(p, 0x3dc) & 3) << 4) | 0x1000 | (owner & 3), -1, owner);
-                            if (S32(p, 0xb1c + i * 4) >= 0) {
-                                S32(p, 0xb5c + i * 4) = S32(p, 0x3b4);
+                            S32(q, 0xb1c) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos2, ((S32(p, 0x3dc) & 3) << 4) | 0x1000 | (owner & 3), -1, owner);
+                            if (S32(q, 0xb1c) >= 0) {
+                                S32(p + i * 4, 0xb5c) = S32(p, 0x3b4);
                                 U8(p, 0xb78) = 1;
                                 break;
                             }
