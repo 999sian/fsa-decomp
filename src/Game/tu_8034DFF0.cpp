@@ -103,9 +103,19 @@ struct SobDrawParams {
     }
 };
 
-struct YnswVirt : public Actor {
-    virtual void v12(u8 a, s32 b);
-    virtual u8 v13();
+struct YnswVirt {
+    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
+    virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
+    virtual void v08(); virtual void v09(); virtual void v10(); virtual u8 v11();
+          virtual void v12(u8 a, s32 b); virtual u8 v13();
+};
+
+// Same as YnswVirt without v10/v11: v12 lands at vtable +0x30 (the implicit slots take 0x00-0x04).
+struct YnswVirtShort {
+    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
+    virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
+    virtual void v08(); virtual void v09();
+          virtual void v12(u8 a, s32 b); virtual u8 v13();
 };
 
 // YNSW ('YNSW') - Floor/Step Switch Actor.
