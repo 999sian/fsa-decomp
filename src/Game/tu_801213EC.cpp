@@ -371,11 +371,11 @@ extern "C" void fn_80121ABC(u8* self) {
     lbl_8053AAA0 = 0;
     ((CompanionCalls*)self)->v29();
     if (self[0x332]) {
-        u8* p = self;
+        CompanionSlots* slots = (CompanionSlots*)self;
         GameLowVec position(*(GameLowVec*)(self + 0xC));
         position.x -= lbl_8053C9BC;
-        CompanionSlots* slots = (CompanionSlots*)self;
         s32 i = 0;
+        u8* p = self;
         for (; i < slots->count; i++) {
             position.x += lbl_8053C9B0;
             *(s32*)(p + 0x364) = Actor_CreateByID(fn_801F856C(), 'LIMT',
@@ -786,7 +786,8 @@ extern "C" s32 fn_80122834(u8* self) {
 }
 
 extern "C" s32 fn_8012285C(u8* self) {
-    s32 player = *(s32*)(self + 0x344);
+    s32* p = (s32*)(self + 0x344);
+    s32 player = *p;
     if (player < 0 || player >= 4) {
         return -1;
     }
@@ -820,9 +821,9 @@ extern "C" s32 fn_80122898(u8* self, s32 msg) {
 
 extern "C" u8 fn_801229E4(u8* self) {
     JGeometry::TVec2<f32> position;
-    f32 c = lbl_8053C9B4;
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
     box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
+    f32 c = lbl_8053C9B4;
     position.set(c, c);
     if (fn_8023AE34((f32*)&box, *(u32*)(self + 4), (f32*)&position) >= 0) {
         return 1;
@@ -1022,7 +1023,7 @@ extern "C" void fn_8012309C(u8* self, s16* ang, s32* quad, f32* z, s32* outIdx, 
     }
 }
 
-extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, f32 d) {
+extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 d, f32 unused, f32 c) {
     if (arg < 0) {
         return;
     }
@@ -1275,11 +1276,12 @@ extern "C" void fn_80123D30(u8* self) {
 }
 
 extern "C" s32 fn_80123D88(u8* self) {
+    s32 mapped;
+    s32 player;
     if (self[0x333]) {
         return 0;
     }
-    s32 player = *(s32*)(self + 0x344);
-    s32 mapped;
+    player = *(s32*)(self + 0x344);
     if (player < 0 || player >= 4) {
         mapped = -1;
     } else {
