@@ -670,7 +670,8 @@ struct MsgProc {
     }
     void setSlotPos(u8 i, s32 x) {
         MsgLayout* l = layout;
-        s32 y = slotLine[i] - lineTab[l->m15c] - 1;
+        s8 top = lineTab[l->m15c];
+        s32 y = slotLine[i] - top - 1;
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
@@ -1982,7 +1983,7 @@ extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
 extern "C" void fn_8039D0DC(MsgProc* p, u8 tag) {
     MsgLayout* l;
     int cur;
-    s32 x = 0;
+    int x = 0;
     cur = p->cur;
     if (!p->testBit(cur)) {
         l = p->layout;
