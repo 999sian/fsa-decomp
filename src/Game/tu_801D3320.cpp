@@ -77,7 +77,7 @@ static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
         if (fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), ids[i])) {
             Vec3f p;
             p.set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]));
-            if (tu801D3320_isFree(&p, *(s32*)(this_ + 0x4))) {
+            if (tu801D3320_isFreeT(&p, this_)) {
                 f32 dx = p.x - *(f32*)(this_ + 0xc);
                 f32 dy = p.y - *(f32*)(this_ + 0x10);
                 f32 dx2 = dx * dx;
