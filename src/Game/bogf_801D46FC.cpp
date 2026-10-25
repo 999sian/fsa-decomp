@@ -804,9 +804,9 @@ extern "C" void fn_801D4ED4(u8* this_) {
             s16 ang = *(s16*)(this_ + 0x5d2);
             const f32* __restrict table = (const f32*)JMath::sincosTable_.mTable;
             f32 s = table[((u16)ang >> 5)*2];
+            f32 k = lbl_8053F104;
             f32 c = table[((u16)ang >> 5)*2 + 1];
-            *(f32*)(this_ + 0x3c) = lbl_8053F104 * s;
-            *(f32*)(this_ + 0x40) = lbl_8053F104 * c;
+            ((JGeometry::TVec2f*)(this_ + 0x3c))->set(k * s, k * c);
         }
     }
     switch (*(s32*)(this_ + 0x248)) {
@@ -844,7 +844,7 @@ extern "C" void fn_801D4ED4(u8* this_) {
         }
         bool done = false;
         JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0x5bc), *(f32*)(this_ + 0x5c0), 0.0f);
-        bool ok = ((bool (*)(void*, s32, void*))((void**)(*(void**)this_))[19])(this_, *(s32*)(this_ + 0x4), &pos);
+        u8 ok = ((ItemBase*)this_)->v17(*(s32*)(this_ + 0x4), (f32*)&pos);
         if (ok) {
             *(f32*)(this_ + 0x5bc) = x0;
             done = true;
