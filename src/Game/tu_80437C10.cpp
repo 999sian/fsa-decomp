@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/TlwpDrawParam.h"
 
 
 extern "C" char lbl_804B16E0[];
@@ -23,6 +24,91 @@ extern "C" f32 lbl_80543C0C;
 extern "C" f32 lbl_80543C10;
 extern "C" f32 lbl_80543C14;
 
+extern "C" const char* lbl_804B16C0[];
+extern "C" const char* lbl_804B16D0[];
+extern "C" const f32 lbl_80543C08;
+extern "C" void* fn_804030C4(u32, const char*);
+extern "C" void fn_802F745C(void*, void*, void*, TlwpDrawParam*);
+#pragma opt_lifetimes off
+static inline void draw37C10(u8* self, void* pos, void* res, TlwpDrawParam* rec) {
+    if (*(s32*)(self + 4) < 8) {
+        fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, rec);
+    }
+}
+
+extern "C" void fn_80437C10(u8* self) {
+    const char** tex0;
+    u8* cfg;
+    const char** tex1;
+    u8* globals = lbl_80529DEC;
+    tex0 = (const char**)lbl_804B16C0;
+    tex1 = (const char**)lbl_804B16D0;
+    cfg = globals;
+    u8* settings = lbl_8050DB0C;
+    int i;
+    for (i = 0; i < 4; i++, cfg += 12, tex1++, tex0++) {
+        u8 mask = (u8)(1 << i);
+        u32 active = (bool)(globals[0x236] & mask);
+        if (active != 0U) {
+            f32 ss;
+            f32 cz;
+            f32 cs, a0, a1, a2, a3, a4, a5, a6, a7, a8;
+            f32 cc;
+            f32 sy;
+            f32 cx;
+            f32 sz;
+            f32 cy;
+            f32 scale;
+            f32 sx;
+            TlwpDrawParam rec;
+            f32 mtx[3][4];
+            scale = *(f32*)(settings + 0x30);
+            rec.color = 2;
+            rec.palette = 2;
+            rec.f2d = 1;
+            sx = sin(lbl_80543C08);
+            sy = sin(lbl_80543C08);
+            sz = sin(lbl_80543C08);
+            cx = cos(lbl_80543C08);
+            cy = cos(lbl_80543C08);
+            cz = cos(lbl_80543C08);
+            cc = cx * cz;
+            ss = sx * sy;
+            cs = cx * sz;
+            a0 = cy * cz;
+            a1 = cy * sz;
+            a2 = -sy;
+            a3 = ss * cz - cs;
+            a4 = ss * sz + cc;
+            a5 = sx * cy;
+            a6 = cc * sy + sx * sz;
+            a7 = cs * sy - sx * cz;
+            a8 = cx * cy;
+            mtx[0][0] = scale * a0;
+            mtx[1][0] = scale * a1;
+            mtx[2][0] = scale * a2;
+            mtx[0][1] = scale * a3;
+            mtx[1][1] = scale * a4;
+            mtx[2][1] = scale * a5;
+            mtx[0][2] = scale * a6;
+            mtx[1][2] = scale * a7;
+            mtx[2][2] = scale * a8;
+            mtx[0][3] = lbl_80543C08;
+            mtx[1][3] = lbl_80543C08;
+            mtx[2][3] = lbl_80543C08;
+            rec.c = mtx;
+            if (self[0x240 + i] == 0) {
+                void* res = fn_804030C4('TIMG', *tex0);
+                if (*(s32*)(self + 4) < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), cfg + 0x1c4, res, &rec);
+            } else if (self[0x240 + i] == 1) {
+                void* res = fn_804030C4('TIMG', *tex1);
+                if (*(s32*)(self + 4) < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), cfg + 0x1c4, res, &rec);
+            }
+            globals[0x236] &= ~mask;
+        } else self[0x240 + i] = 0xff;
+    }
+}
+#pragma opt_lifetimes reset
 extern "C" void fn_80437F78(u8* p) {
     f32* v = (f32*)fn_8023E724(0);
     *(f32*)(p + 0xc) = v[0];
