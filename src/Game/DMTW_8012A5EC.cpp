@@ -425,20 +425,6 @@ extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 
 extern u8 lbl_8053CB64[];
 extern f32 lbl_8053CB8C;
 extern f32 lbl_8053CBB0;
-extern "C" s8 lbl_8053AAB1;
-extern "C" JGeometry::TVec3<f32> lbl_804BD7C0[4];
-extern "C" f32 lbl_8053CB9C;
-extern "C" f32 lbl_8053CBC4;
-extern "C" f32 lbl_8053CBC8;
-extern "C" f32 lbl_8053CBCC;
-extern "C" f32 lbl_8053CBD0;
-extern "C" f32 lbl_8053CBD4;
-extern "C" f32 lbl_8053CBD8;
-extern "C" f32 lbl_8053CBDC;
-extern "C" f32 lbl_8053CBE0;
-extern "C" f32 lbl_8053CBE4;
-extern "C" f32 lbl_8053CBE8;
-extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
 extern "C" void fn_8012BC40(char* this_) {
     u8 result = fn_8012A5EC(this_);
     if (*(f32*)(this_ + 0x23c) == 279.0f + *(f32*)(this_ + 0x3f4) && 105.0f == *(f32*)(this_ + 0x248) && result == 1) {
