@@ -84,25 +84,6 @@ struct MCPaneHolder {
     u8 f28;
 };
 
-struct FsaScreenVt {
-    virtual void s00();
-    virtual void s04();
-    virtual void s08();
-    virtual void s0c();
-    virtual void s10();
-    virtual void s14();
-    virtual void s18();
-    virtual void s1c();
-    virtual void s20();
-    virtual void s24();
-    virtual void s28();
-    virtual void s2c();
-    virtual void s30();
-    virtual void s34();
-    virtual void s38();
-    virtual void* search3(u32 a, u32 b, u32 c);
-};
-
 struct MemCardMenu;
 typedef void (MemCardMenu::*MCStateFn)();
 extern MemCardMenu* lbl_8053ADB8;
