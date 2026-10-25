@@ -53,6 +53,15 @@ struct RupyResMgr {
     virtual void* get(u32 type, const char* name);
 };
 
+// Table lookups on RUPY's rodata (sound ids and message ids per rupee kind).
+static inline u16 rupyTblU16(const u8* tbl, s32 n) {
+    return ((const u16*)tbl)[n];
+}
+
+static inline s32 rupyTblS32(const u8* tbl, s32 n) {
+    return ((const s32*)tbl)[n];
+}
+
 // Actor vtable slot 13 (byte offset 0x34).
 struct RupySlot13 {
     virtual void v0();
@@ -658,7 +667,354 @@ extern "C" void fn_8032BFB0(char* p) {
     *(JGeometry::TVec3<f32>*)(p + 0xc) = save;
 }
 
-extern "C" void fn_8032C664(char* p) {
+extern const f32 lbl_80541DE0;
+extern const f32 lbl_80541DE4;
+extern const f32 lbl_80541DE8;
+extern const f32 lbl_80541DEC;
+extern const f32 lbl_80541DF0;
+extern const f32 lbl_80541DF4;
+extern const f32 lbl_80541DF8;
+extern const f32 lbl_80541E18;
+extern "C" u8 fn_801F6758(void* pos, s32 room, f32 r);
+extern "C" void fn_8032B7C0(void* p);
+extern "C" u8 fn_801F2618(void* a, s32 b, s32 c);
+extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
+extern "C" void fn_801F714C(void* a, u16 b, s32 c, s32 d);
+extern "C" void fn_8030C210(void* a, void* b);
+extern "C" s32 fn_8022F340(s32 a);
+extern "C" void fn_801F3604(void* a);
+extern "C" u8 fn_8023F264(s32 a);
+extern "C" void fn_8032C664(u8* p) {
+    struct RupyTbl {
+        s32 frame[12];
+        u16 se[4][12];
+        s32 ids[2][12];
+    };
+    RupyTbl* base = (RupyTbl*)lbl_80471948;
+    s32 i;
+    s32 room;
+    u8* tbl;
+    f32 dx;
+    f32 dy;
+    *(JGeometry::TVec3f*)(p + 0x29c) = *(JGeometry::TVec3f*)(p + 0xc);
+    if (*(s32*)(p + 0x230) != 0x11 && *(s32*)(p + 0x230) != 0xf && *(s32*)(p + 0x230) != 0x10) {
+        *(JGeometry::TVec3f*)(p + 0xc) += *(JGeometry::TVec3f*)(p + 0x3c);
+    }
+    if (*(u16*)(p + 0x94) != 1 && fn_801F6758(p + 0xc, *(s32*)(p + 4), lbl_80541DE0) == 1) {
+        p[0x11c] = 0;
+    }
+    fn_8032B7C0(p);
+    switch (*(s32*)(p + 0x230)) {
+    case 0x11:
+        if (*(s32*)(p + 0x278) <= 0) {
+            *(s32*)(p + 0x230) = *(s32*)(p + 0x234);
+        }
+        (*(s32*)(p + 0x278))--;
+        return;
+    case 0:
+        if (((JGeometry::TVec3f*)(p + 0x3c))->squared() > lbl_80541DE4) {
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541DE8, base->se[0][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        }
+        if (*(u16*)(p + 0x94) == 0x22) {
+            if (fn_801F6758(p + 0xc, *(s32*)(p + 4), lbl_80541DEC)) {
+                *(f32*)(p + 0x3c) = lbl_80541D88;
+                *(f32*)(p + 0x40) = lbl_80541D88;
+            }
+            fn_801F2618(p, 0, 0);
+        }
+        if (p[0x17d] == 1 && p[0x280] == 1) {
+            fn_801F0D20(p, 0x42);
+            p[0x280] = 0;
+        }
+        if ((u8)fn_8032B3F8(p) == 0) {
+            break;
+        }
+        if (p[0x27d] != 0) {
+            break;
+        }
+    case 1:
+        if ((u8)fn_8032B0A4(p) != 0) {
+            break;
+        }
+        fn_801F71A4(p + 0x298, lbl_80541DF0 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x270) >> 5].first + lbl_80541DB4, lbl_80541DE4, lbl_80541DE4);
+        *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * rupyRand01()) + 0x200;
+        for (i = 0; i < 4; i++) {
+            if (fn_80230188(i) == 0) {
+                (*(s32*)(p + 0x24c))--;
+                break;
+            }
+        }
+        room = *(s32*)(p + 4);
+        tbl = (u8*)fn_802D6A9C() + 0x10000;
+        if (tbl[room + 0x31df] != 0) {
+            if (p[0x27e] == 0 && *(s32*)(p + 0x230) == 1) {
+                *(s32*)(p + 0x230) = 0;
+            }
+        } else if (*(f32*)(p + 0x14) > lbl_80541D88) {
+            *(s32*)(p + 0x230) = 0;
+            *(s32*)(p + 0x260) = 1;
+        }
+        if (*(s32*)(p + 0x24c) <= 0) {
+            detach__5ActorFv(p);
+        }
+        break;
+    case 0xf:
+        fn_801F0E34(p, 0x5006d, 0);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se[1][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se[2][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se[3][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        *(s32*)(p + 0x230) = 0x10;
+    case 0x10: {
+        s32 t = *(s32*)(p + 0x274);
+        if (t <= 0) {
+            if (p[0x27d] != 0) {
+                *(s32*)(p + 0x230) = 9;
+            } else {
+                *(s32*)(p + 0x230) = 0;
+                room = *(s32*)(p + 4);
+                tbl = (u8*)fn_802D6A9C() + 0x10000;
+                if (tbl[room + 0x31df] == 1) {
+                    *(f32*)(p + 0x40) = lbl_80541DB4;
+                }
+            }
+            *(f32*)(p + 0x238) = lbl_80541D90;
+            *(s32*)(p + 0xb0) = 0x20000;
+            if (*(s32*)(p + 0x268) >= 4) {
+                *(s32*)(p + 0xb0) = 0x2000a;
+            }
+        } else if (t > 0) {
+            *(s32*)(p + 0x274) = t - 1;
+        }
+        break;
+    }
+    case 2:
+        for (i = 0; i < 4; i++) {
+            if (fn_80230188(i) == 0) {
+                (*(s32*)(p + 0x24c))--;
+                break;
+            }
+        }
+        if (fn_801F2618(p, 0, 0) || *(s32*)(p + 0x24c) <= 0) {
+            detach__5ActorFv(p);
+        }
+        break;
+    case 3:
+        *(f32*)(p + 0x44) = lbl_80541D88;
+        *(f32*)(p + 0x40) = lbl_80541D88;
+        *(f32*)(p + 0x3c) = lbl_80541D88;
+        if (*(s32*)(p + 0x268) >= 4 && *(s32*)(p + 0x264) >= 0 && *(s32*)(p + 4) >= 8 &&
+            ((u8*)lbl_8053AAF8)[0x7e] == 1) {
+            fn_8043D67C(lbl_8053AED0, base->ids[1][*(s32*)(p + 0x268) - 4], fn_8022F340(*(s32*)(p + 0x264)), 0);
+        }
+        fn_801F3604(p);
+        *(s32*)(p + 0x250) = 0;
+        *(f32*)(p + 0x44) = lbl_80541DB4;
+        *(s32*)(p + 0x24c) = 0x212;
+        *(s32*)(p + 0x230) = 4;
+    case 4:
+        *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_80541DAC;
+        if (*(f32*)(p + 0x14) <= lbl_80541D88 && *(f32*)(p + 0x44) < lbl_80541D88) {
+            *(f32*)(p + 0x44) = lbl_80541D88;
+            *(f32*)(p + 0x40) = lbl_80541D88;
+            *(f32*)(p + 0x3c) = lbl_80541D88;
+            *(f32*)(p + 0x14) = lbl_80541D88;
+        }
+        if (p[0x282] == 0 && *(s32*)(p + 0x264) >= 0) {
+            if (fn_8023F264(*(s32*)(p + 0x264))) {
+                *(f32*)(p + 0xc) = ((f32*)fn_8023E724(*(s32*)(p + 0x264)))[0];
+                *(f32*)(p + 0x10) = ((f32*)fn_8023E724(*(s32*)(p + 0x264)))[1] - lbl_80541DF8;
+                *(f32*)(p + 0x14) = ((f32*)fn_8023E724(*(s32*)(p + 0x264)))[2];
+            }
+        } else {
+            s32 idx = *(s32*)(p + 0x264);
+            if (idx >= 0) {
+                u8* o = (u8*)fn_801F666C(fn_801F856C(), idx);
+                if (o != 0) {
+                    *(f32*)(p + 0xc) = *(f32*)(o + 0xc);
+                    *(f32*)(p + 0x10) = *(f32*)(o + 0x10) - lbl_80541DF8;
+                }
+            }
+        }
+        for (i = 0; i < 4; i++) {
+            if (fn_80230188(i) == 0) {
+                (*(s32*)(p + 0x24c))--;
+                break;
+            }
+        }
+        if (*(s32*)(p + 0x24c) <= 0x1f4) {
+            p[0x11c] = 0;
+        }
+        break;
+    case 6:
+        for (i = 0; i < 4; i++) {
+            if (fn_80230188(i) == 0) {
+                (*(s32*)(p + 0x24c))--;
+                break;
+            }
+        }
+        if (*(s32*)(p + 0x24c) <= 0) {
+            detach__5ActorFv(p);
+        }
+        break;
+    case 5:
+        detach__5ActorFv(p);
+        break;
+    case 7:
+    case 8:
+        fn_8032BB90((char*)p);
+        break;
+    case 0xb:
+        if (*(u16*)(p + 0x94) == 0) {
+            *(s32*)(p + 0xb0) = 0x20000;
+            if (*(s32*)(p + 0x268) >= 4) {
+                *(s32*)(p + 0xb0) = 0x2000a;
+            }
+            room = *(s32*)(p + 4);
+            tbl = (u8*)fn_802D6A9C() + 0x10000;
+            if (tbl[room + 0x31df] != 0 && *(f32*)(p + 0x14) > lbl_80541D88) {
+                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+                *(f32*)(p + 0x14) = lbl_80541D88;
+            }
+            *(s32*)(p + 0x230) = 0;
+        }
+        break;
+    case 9:
+        if (p[0x280] == 1) {
+            fn_801F0D20(p, 0x42);
+            p[0x280] = 0;
+        }
+        if ((u8)fn_8032B0A4(p) != 0) {
+            break;
+        }
+        if (*(s32*)(p + 0x274) > 0) {
+            (*(s32*)(p + 0x274))--;
+        }
+        if (*(u16*)(p + 0x94) != 0x23 && *(u16*)(p + 0x94) != 0x24) {
+            fn_801F71A4(p + 0x298, lbl_80541DF0 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x270) >> 5].first + lbl_80541DB4, lbl_80541DE4, lbl_80541DE4);
+            *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * rupyRand01()) + 0x200;
+        }
+        room = *(s32*)(p + 4);
+        tbl = (u8*)fn_802D6A9C() + 0x10000;
+        if (tbl[room + 0x31df] != 0 && p[0x27e] == 0) {
+            *(s32*)(p + 0x230) = 0;
+        }
+        break;
+    case 0xa:
+        if (((RupySlot13*)p)->slot13()) {
+            *(s32*)(p + 0x24c) = 0x30c;
+            p[0x27d] = 1;
+            *(s32*)(p + 0x230) = 0xf;
+        }
+        break;
+    case 0xc:
+        if (((RupySlot13*)p)->slot13()) {
+            if (*(s32*)(p + 0x268) >= 4) {
+                room = *(s32*)(p + 4);
+                if (room >= 8) {
+                    Actor_CreateByID(fn_801F856C(), 0x52534e50, room, p + 0xc, 0, -1, -1);
+                }
+            }
+            *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyRand01()) + 0x3c;
+            if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
+                *(s32*)(p + 0x24c) = 0x3d9;
+            } else {
+                *(s32*)(p + 0x24c) = 0x325;
+            }
+            *(s32*)(p + 0xb0) = 0x20000;
+            if (*(s32*)(p + 0x268) >= 4) {
+                *(s32*)(p + 0xb0) = 0x2000a;
+            }
+            *(s32*)(p + 0x230) = 0;
+        }
+        break;
+    case 0xe:
+        *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyRand01()) + 0x3c;
+        if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
+            *(s32*)(p + 0x24c) = 0x3d9;
+        } else {
+            *(s32*)(p + 0x24c) = 0x325;
+        }
+        *(s32*)(p + 0xb0) = 0x20000;
+        if (*(s32*)(p + 0x268) >= 4) {
+            *(s32*)(p + 0xb0) = 0x2000a;
+        }
+        *(s32*)(p + 0x230) = 0;
+        break;
+    case 0xd: {
+        s32 idx = *(s32*)(p + 0x26c);
+        if (idx >= 0) {
+            u8* o = (u8*)fn_801F666C(fn_801F856C(), idx);
+            if (o == 0 || o[0x11c] == 0) {
+                *(s32*)(p + 0x26c) = -1;
+                break;
+            }
+            dy = *(f32*)(p + 0x10) - *(f32*)(p + 0x14) - *(f32*)(o + 0x10);
+            dx = *(f32*)(p + 0xc) - *(f32*)(o + 0xc);
+            if (std::sqrtf(dx * dx + dy * dy) < lbl_80541D98) {
+                s32 j = *(s32*)(o + 0x26c);
+                if (j >= 0) {
+                    u8* o2 = (u8*)fn_801F666C(fn_801F856C(), j);
+                    if (o2 != 0) {
+                        (*(s32*)(o2 + 0x2c0))++;
+                    }
+                }
+                detach__5ActorFv(p);
+                break;
+            }
+            *(s32*)(p + 0x258) += (s32)(lbl_80541DF4 * rupyRand01()) + 0x200;
+            fn_801F71A4(p + 0x14, lbl_80541D98 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x258) >> 5].first + lbl_80541DF8, lbl_80541DAC, lbl_80541DBC);
+            if (*(f32*)(p + 0x14) < lbl_80541DF8) {
+                break;
+            }
+            fn_801F714C(p + 0x240, (u16)(*(u16*)(p + 0x242) + (s32)(lbl_80541E18 * JMath::atanTable_.atan2_(-dx, -dy))), 1, 0x1000);
+            fn_801F714C(p + 0x242, 0, 1, 0x500);
+            *(f32*)(p + 0x3c) = lbl_80541DBC * JMath::sincosTable_.mTable[(u32)*(u16*)(p + 0x240) >> 5].first;
+            *(f32*)(p + 0x40) = lbl_80541DBC * JMath::sincosTable_.mTable[(u32)*(u16*)(p + 0x240) >> 5].second;
+        } else {
+            *(f32*)(p + 0x44) = lbl_80541D88;
+            *(f32*)(p + 0x40) = lbl_80541D88;
+            *(f32*)(p + 0x3c) = lbl_80541D88;
+            *(s32*)(p + 0x230) = 0;
+            *(u16*)(p + 0x94) = 0;
+        }
+        for (i = 0; i < 4; i++) {
+            if (fn_80230188(i) == 0) {
+                (*(s32*)(p + 0x24c))--;
+                break;
+            }
+        }
+        if (*(s32*)(p + 0x24c) <= 0) {
+            detach__5ActorFv(p);
+        }
+        break;
+    }
+    }
+    fn_8032ABE0(p);
+    {
+        s32 st = *(s32*)(p + 0x230);
+        if (st != 7 && st != 8 && st != 0xa && st != 0xc && st != 0xe && *(s32*)(p + 4) < 8 &&
+            *(s32*)(p + 0x268) >= 3 && p[0x281] == 0) {
+            JGeometry::TVec3f v(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14), lbl_80541D88);
+            fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), &v);
+        }
+    }
+    (*(s32*)(p + 0x250))--;
+    if (*(s32*)(p + 0x250) <= 0) {
+        if (*(s32*)(p + 0x24c) >= 0x100) {
+            (*(s32*)(p + 0x254))++;
+            *(s32*)(p + 0x254) &= 3;
+            if (*(s32*)(p + 0x254) == 0) {
+                *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyRand01()) + 0x3c;
+            } else {
+                *(s32*)(p + 0x250) = 2;
+            }
+        } else {
+            *(s32*)(p + 0x254) = 0;
+        }
+    }
+    if (((u8*)lbl_8053AAF8)[0xfe] == 0 && fn_802DEBA0() == 0) {
+        p[0x11c] = 0;
+    }
 }
 
 // RUPY: small helpers.
