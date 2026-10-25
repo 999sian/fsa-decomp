@@ -4053,8 +4053,7 @@ void fn_8024E500(char* p) {
     if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && getItem(p) != 0) {
         s32 idx = S32(p, 0x4);
         s32 item = getItem(p);
-        s32 lvl = getItemLevel(p);
-        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | ((idx << 17) | (lvl << 22)), -1, -1);
+        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | ((getItemLevel(p) << 22) | (idx << 17)), -1, -1);
         setItem(p, 0, 1);
     }
 }
