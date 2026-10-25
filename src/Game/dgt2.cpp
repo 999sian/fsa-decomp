@@ -19,6 +19,19 @@ static inline u32 dgt2Idx(s32 m) {
     return ((u32)(s32)(4000.0f * (f32)m) >> 5) & 0x7ff;
 }
 
+static inline f32 dgt2Sin(s32 m) {
+    return sincosTable___5JMath[(u16)(s32)(4000.0f * m) >> 5].sin;
+}
+
+static inline f32 dgt2Cos(s32 m) {
+    return sincosTable___5JMath[(u16)(s32)(4000.0f * m) >> 5].cos;
+}
+
+static inline void dgt2SetVel(char* p) {
+    *(f32*)(p + 0x27c) = *(f32*)(p + 0x278) * dgt2Sin(*(s32*)(p + 0x98));
+    *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * dgt2Cos(*(s32*)(p + 0x98));
+}
+
 // from src/Game/fn_8018FB24_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
