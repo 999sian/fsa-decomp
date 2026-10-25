@@ -1,5 +1,8 @@
 // TU 0x8021693C-0x80217374.
 #include "types.h"
+#include "JSystem/JGeometry/Box.h"
+extern const f32 lbl_8053FC00;
+extern const f32 lbl_8053FC04;
 #include "Game/SinitPoolChain.h"
 
 struct TuBox {
@@ -25,18 +28,23 @@ extern "C" f32* fn_8023E724(int i);
 extern "C" u8 fn_80239B64(int i, f32* rect, int a, int b, int c, int d);
 
 extern "C" u8 fn_8021693C(TuBox* box, u32 param2) {
-    u8 result = 0;
     u8 mask = param2 & 0xff;
+    u8 result;
     if (mask == 0) {
         return 0;
     }
+    result = 0;
     if (box->mMaxX - box->mMinX > 0.0f && box->mMaxY - box->mMinY > 0.0f) {
-        TuObj* obj = (TuObj*)box->mData;
         f32 rect[4];
-        rect[0] = box->mMinX + obj->mField0C;
-        rect[1] = box->mMinY + (obj->mField10 - obj->mField14);
-        rect[2] = box->mMaxX + obj->mField0C;
-        rect[3] = box->mMaxY + (obj->mField10 - obj->mField14);
+        rect[0] = box->mMinX;
+        rect[1] = box->mMinY;
+        rect[2] = box->mMaxX;
+        rect[3] = box->mMaxY;
+        TuObj* obj = (TuObj*)box->mData;
+        rect[0] = rect[0] + obj->mField0C;
+        rect[1] = rect[1] + (obj->mField10 - obj->mField14);
+        rect[2] = rect[2] + obj->mField0C;
+        rect[3] = rect[3] + (obj->mField10 - obj->mField14);
         for (int i = 0; i < 4; i++) {
             int field4 = obj->mField4;
             u8* base = fn_802D6A9C();
