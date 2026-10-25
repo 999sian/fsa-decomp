@@ -516,25 +516,18 @@ extern "C" void fn_80318B84(Actor* this_)
 }
 
 extern "C" void fn_80318D74(char* p) {
-    Tu80317Rect rect;
-    Tu80317Vec3 vec;
-    Tu80317Vec3 dir;
+    JGeometry::TBox2f rect;
+    JGeometry::TVec3f vec;
+    JGeometry::TVec3f dir;
     f32 dist;
     s32 id;
     s32 room;
     u32 u;
-    rect = *(Tu80317Rect*)(p + 0x60);
-    rect.x0 += *(f32*)(p + 0xc);
-    rect.y0 += *(f32*)(p + 0x10);
-    rect.x1 += *(f32*)(p + 0xc);
-    rect.y1 += *(f32*)(p + 0x10);
+    rect.set(*(JGeometry::TBox2f*)(p + 0x60));
+    rect.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
     fn_80239914(&rect, *(s32*)(p + 4), *(s32*)(p + 0x198));
-    *(u64*)&rect.x0 = *(u64*)(p + 0x248);
-    *(u64*)&rect.x1 = *(u64*)(p + 0x250);
-    rect.x0 += *(f32*)(p + 0xc);
-    rect.y0 += *(f32*)(p + 0x10);
-    rect.x1 += *(f32*)(p + 0xc);
-    rect.y1 += *(f32*)(p + 0x10);
+    rect = *(JGeometry::TBox2f*)(p + 0x248);
+    rect.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
     if (*(s32*)(p + 0x230) != 1) {
         if (fn_802D7F40(fn_802D6A9C(), 2) == 1) {
             *(u8*)(p + 0x11c) = 0;
@@ -543,9 +536,11 @@ extern "C" void fn_80318D74(char* p) {
         fn_8022FEB8(&rect, *(s32*)(p + 4), *(s32*)(p + 0x198), 1, 0);
         id = fn_8022FD8C(*(s32*)(p + 0x198));
         if (id >= 0 && fn_802300EC()) {
-            *(f64*)&vec = *(f64*)(p + 0xc);
-            vec.z = *(f32*)(p + 0x14);
-            if (fn_8038C678(id, *(s32*)(p + 0x244), *(s32*)(p + 0x198), *(s32*)(p + 4), &vec, 0x10)) {
+            s32 kind = *(s32*)(p + 0x244);
+            s32 handle = *(s32*)(p + 0x198);
+            s32 area = *(s32*)(p + 4);
+            vec = *(JGeometry::TVec3f*)(p + 0xc);
+            if (fn_8038C678(id, kind, handle, area, &vec, 0x10)) {
                 *(s32*)(p + 0x234) = id;
                 *(s32*)(p + 0x230) = 1;
             }
@@ -574,18 +569,19 @@ extern "C" void fn_80318D74(char* p) {
             id = *(s32*)(p + 0x234);
             if (id < 0) goto no_room;
             room = *(s32*)(p + 4);
-            if (fn_8023DE58() == room) goto same_room;
+            s32 playerRoom = fn_8023DE58(id);
+            if (playerRoom == room) goto same_room;
         no_room:
             fn_801EE558(p, &dir, &dist, 0);
             goto room_done;
         same_room:
             fn_801EE558(p, &dir, &dist, *(s32*)(p + 0x234) + 1);
         room_done:;
-            if (dist >= lbl_805418F8) {
-                *(s32*)(p + 0x264) = 2;
-            } else {
-                u = (s32)(JMath::atanTable_.atan2_(-dir.xy.x, -dir.xy.y) * lbl_805418FC) & 0xffff;
-                if (u < 0x2000 || u > 0xdfff) {
+            if (dist < 80.0f) {
+                f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                radians *= 10430.378f;
+                u = (s32)radians & 0xffff;
+                if (u < 0x2000 || u >= 0xe000) {
                     *(s32*)(p + 0x264) = 3;
                 } else if (u >= 0x2000 && u < 0x6000) {
                     *(s32*)(p + 0x264) = 1;
@@ -594,6 +590,8 @@ extern "C" void fn_80318D74(char* p) {
                 } else {
                     *(s32*)(p + 0x264) = 0;
                 }
+            } else {
+                *(s32*)(p + 0x264) = 2;
             }
         } else {
             *(s32*)(p + 0x268) -= 1;
