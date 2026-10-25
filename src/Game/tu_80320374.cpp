@@ -163,6 +163,14 @@ extern "C" void fn_80320374(char* p) {
     }
 }
 
+static inline f32 ItemRandom321200() {
+    char* rng=lbl_8053AAF8;
+    u32 bits;
+    *(u32*)(rng+0xb4)=*(u32*)(rng+0xb4)*0x19660d+0x3c6ef35f;
+    bits=(*(u32*)(rng+0xb4)>>9)|0x3f800000;
+    return *(f32*)&bits-lbl_80541AEC;
+}
+
 extern "C" void fn_80320D18(char* p) {
     if (*(s32*)(p + 0x230) == 0 && *(s32*)(p + 0x278) <= 180) {
         if ((*(s32*)(p + 0x278) & 2) == 0) return;
