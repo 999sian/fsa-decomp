@@ -233,26 +233,22 @@ extern "C" void* fn_80157ED0(void* this_, s16 freeFlag) {
         s32 idx = *(s32*)(p + 0x280);
         if (idx >= 0) {
             void* found = fn_801F666C(fn_801F856C(), idx);
-            if (found != 0) {
-                *(s32*)((char*)found + 0x290) -= 1;
-            }
+            if (found != 0) *(s32*)((char*)found + 0x290) -= 1;
         }
         idx = *(s32*)(p + 0x284);
         if (idx >= 0) {
             void* found = fn_801F666C(fn_801F856C(), idx);
             if (found != 0) {
-                Vec v;
-                v.x = lbl_8053D378;
-                v.y = lbl_8053D378;
-                v.z = lbl_8053D39C;
-                *(Vec*)((char*)found + 0x3c) = v;
+                JGeometry::TVec3f v;
+                v.x = 0.0f;
+                v.y = 0.0f;
+                v.z = 5.0f;
+                *(JGeometry::TVec3f*)((char*)found + 0x3c) = v;
             }
             *(s32*)(p + 0x284) = -1;
         }
         __dt__5ActorFv(this_, 0);
-        if (freeFlag > 0) {
-            __dl__FPv(this_);
-        }
+        if (freeFlag > 0) __dl__FPv(this_);
     }
     return this_;
 }
