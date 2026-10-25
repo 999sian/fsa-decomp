@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include <string.h>
