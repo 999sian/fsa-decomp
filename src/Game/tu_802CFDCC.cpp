@@ -1,3 +1,4 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 
 struct FsaResourceManager {
