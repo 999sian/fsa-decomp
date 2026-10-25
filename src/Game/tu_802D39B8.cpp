@@ -1144,28 +1144,6 @@ extern "C" char* fn_802D8228(char* p, s32 index) {
     return 0;
 }
 
-extern const u32 lbl_8046E178[6];
-extern const char lbl_8046E820[];
-extern const f32 lbl_8054112C;
-extern const f32 lbl_80541130;
-inline bool roomSpecial8328() {
-    if (*(u8*)(lbl_8053AAF8+0x7f)==0) return false;
-    char* g = *(char**)(lbl_8053AAF8+4);
-    if ((*(s32*)(*(char**)(g+0xc)+4)==9 && *(s32*)(*(char**)(g+0xc)+8)==3)
-        || *(s32*)(*(char**)(g+0xc)+4)>=13) return true;
-    return false;
-}
-inline bool stagePair8328(s32 stage, s32 part) {
-    return *(s32*)(lbl_80529DEC+0x118)==stage && *(s32*)(lbl_80529DEC+0x11c)==part;
-}
-inline bool swordStage8328() {
-    if (*(u8*)(lbl_8053AAF8+0x7f)==0) return false;
-    if (stagePair8328(0,2)||stagePair8328(1,2)||stagePair8328(2,2)||stagePair8328(3,2)
-      ||stagePair8328(4,2)||stagePair8328(5,2)||stagePair8328(6,2)||stagePair8328(7,1)
-      ||stagePair8328(10,2)) return true;
-    return false;
-}
-
 extern "C" void fn_802D8D50(char* this_, u8 flag) {
     extern void fn_802D4CCC(char* p, s32 index);
     extern void fn_802F6BBC(char* base, s32 src, s32 dst);
