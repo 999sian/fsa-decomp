@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 8018EB94-801902C0 (DGT2). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "Game/ItemBase.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" JMathSinCos sincosTable___5JMath[];
