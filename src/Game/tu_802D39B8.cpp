@@ -931,6 +931,18 @@ extern "C" char* fn_802D8228(char* p, s32 index) {
     return 0;
 }
 
+inline bool isLateStage() {
+    char* root;
+    if (*(u8*)(lbl_8053AAF8 + 0x7F) == 0)
+        return false;
+    root = *(char**)(lbl_8053AAF8 + 4);
+    if (*(s32*)(*(char**)(root + 0x0C) + 4) == 9 && *(s32*)(*(char**)(root + 0x0C) + 8) == 3)
+        return true;
+    if (*(s32*)(*(char**)(root + 0x0C) + 4) >= 13)
+        return true;
+    return false;
+}
+
 inline char* roomTextB(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
