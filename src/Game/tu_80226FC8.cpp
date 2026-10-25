@@ -1,5 +1,11 @@
 #include "types.h"
 #include "sdk/stl/float.h"
+struct GateBox {
+    f32 x0, y0, x1, y1;
+    void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
+    void expand(f32 v) { x0 -= v; y0 -= v; x1 += v; y1 += v; }
+};
+static inline s32 gateRoom(s32 param) { s32 n=(param>>24)&7; return n ? n+7 : n; }
 struct GateRoomFlags { u8 pad[0x131df]; u8 flags[1]; u8 flag(s32 room) { return flags[room]; } };
 
 
@@ -202,7 +208,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
         if (fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF70)) {
             s32 mapRoom;
             if (((*(s32*)(p+0x90)&0x7f)==0x15 || (*(s32*)(p+0x90)&0x7f)==0x23) &&
-                (mapRoom=*(s32*)(p+4), ((u8*)fn_802D6A9C())[mapRoom+0x131df])) {
+                (mapRoom=*(s32*)(p+4), ((GateRoomFlags*)fn_802D6A9C())->flag(mapRoom))) {
                 if (!fn_8022C5EC(i,8) && !fn_8022C5EC(i,4) && !fn_8022C46C(i,8) && !fn_8022C46C(i,4)) continue;
                 if (fn_8022DBA0(i)) continue;
             } else {
@@ -212,19 +218,21 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             if (fn_8022F478(i) && (*(s32*)(p+0x90)&0x7f)!=4) continue;
             if (((*(s32*)(p+0x90)&0x7f)==4 || (*(s32*)(p+0x90)&0x7f)==0x20 || (*(s32*)(p+0x90)&0x7f)==0x24) &&
                 fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
+            s32 kind=*(s32*)(p+0x90)&0x7f;
             s32 room=(*(s32*)(p+0x90)>>24)&7;
             s32 id=room+7; if (!room) id=room;
-            if (fn_802317F0(i,id,p+0xc,p+0x238,*(s32*)(p+0x90)&0x7f) &&
+            if (fn_802317F0(i,id,p+0xc,p+0x238,kind) &&
                 (*(s32*)(p+0x90)&0x7f)==4 && fn_8022F514(i)) {
                 s32 a=fn_8023DE58(i);
-                if (((u8*)fn_802D6A9C())[a+0x131df] || fn_8022CAF8(i)==4 || fn_8022CAF8(i)==5) continue;
-                s32 c;
-                s32 b;
+                if (((GateRoomFlags*)fn_802D6A9C())->flag(a) || fn_8022CAF8(i)==4 || fn_8022CAF8(i)==5) continue;
+                int b;
+                int c;
                 b=fn_8023E724(i);
                 c=fn_8023DE58(i);
                 if (fn_8022BC38(fn_8022F3DC(i),c,b)) {
                     fn_802381B8(fn_8022F3DC(i));
-                    s32 e=fn_8023E724(i); s32 d=fn_8023DE58(i);
+                    int d;
+                    int e=fn_8023E724(i); d=fn_8023DE58(i);
                     fn_802348C4(fn_8022F3DC(i),d,e);
                 }
             }
