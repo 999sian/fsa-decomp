@@ -43,6 +43,11 @@ struct ShapeArg {
     s32 unk38;
 };
 
+struct JMathSinCos {
+    f32 sin;
+    f32 cos;
+};
+
 extern "C" u8 sincosTable___5JMath[];
 extern "C" f32 lbl_805400A0;
 extern "C" f32 lbl_805400A4;
@@ -67,11 +72,12 @@ extern "C" void fn_80255FAC(Actor* param_1) {
     char* p = (char*)param_1;
     ShapeArg arg;
     f32 mtx[3][4];
-    u8* tbl = sincosTable___5JMath;
     f32 s0, c0, sa, ca, k;
-    s32 i;
     u32 off;
+    s32 i;
 
+    arg.unk10 = -1;
+    arg.unk14 = -1;
     for (i = 0; (u8)i < 16; i += 8) {
         arg.idx[(u8)i] = i;
         arg.idx[(u8)(i + 1)] = i + 1;
@@ -104,15 +110,15 @@ extern "C" void fn_80255FAC(Actor* param_1) {
     arg.unk34 = 0;
     arg.unk38 = 2;
 
-    s0 = *(f32*)(tbl + 0);
-    c0 = *(f32*)(tbl + 4);
+    s0 = *(f32*)((u8*)sincosTable___5JMath + 0);
+    c0 = *(f32*)((u8*)sincosTable___5JMath + 4);
     k = lbl_805400A4;
     mtx[0][3] = lbl_805400A0;
     mtx[1][3] = lbl_805400A0;
     mtx[2][3] = lbl_805400A0;
     off = ((u32)*(s16*)(p + 0x238) >> 2) & 0x3ff8;
-    sa = *(f32*)(tbl + off);
-    ca = *(f32*)(tbl + off + 4);
+    sa = *(f32*)((u8*)sincosTable___5JMath + off);
+    ca = *(f32*)((u8*)sincosTable___5JMath + 4 + off);
     arg.mtx = &mtx[0][0];
 
     mtx[0][0] = k * (ca * c0);
@@ -141,24 +147,25 @@ extern "C" void fn_8023DF68(s32 player, const JGeometry::TVec3<f32>& v);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
 extern "C" void fn_8023DFF4(s32 player, const JGeometry::TVec3<f32>& v);
 extern "C" void fn_802561D0(Actor* a) {
+    s32 i;
     u8* p = (u8*)a;
-    if ((*(u32*)(p + 0x90) >> 27) == 0 || (*(u8 (**)(Actor*))(*(u32*)p + 0x34))(a) == 1) {
+    if ((*(u32*)(p + 0x90) >> 27) == 0 || a->v11() == 1) {
         fn_80256410(a);
     }
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; (unsigned short)i < 4; i++) {
         if ((u8)fn_802565BC(a, i) != 0) {
-            if ((*(u32*)(p + 0x90) >> 27) == 0 || (*(u8 (**)(Actor*))(*(u32*)p + 0x34))(a) == 1) {
+            if ((*(u32*)(p + 0x90) >> 27) == 0 || a->v11() == 1) {
                 fn_8023DF68(i, *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18));
                 if ((*(s32*)(p + 0x90) & 0x7f) < 6) {
-                    JGeometry::TVec3<f32> v2;
                     JGeometry::TVec3<f32> v;
+                    JGeometry::TVec3<f32> v2;
                     v = *(JGeometry::TVec3<f32>*)(p + 0xc) - *fn_8023E724(i);
                     v.z = 0.0f;
-                    s32 ang = (s32)(JMath::atanTable_.atan2_(v.y, v.x) * 10430.378f);
+                    register unsigned ang = (s32)(JMath::atanTable_.atan2_(v.y, v.x) * 10430.378f);
                     f32 len = JGeometry::TUtilf::sqrt(v.x * v.x + v.y * v.y);
                     ang = ang - 0x40;
-                    v2.x = len * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
                     v2.y = len * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+                    v2.x = len * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
                     v2.z = 0.0f;
                     fn_8023DFF4(i, v2 - v);
                 }
@@ -221,9 +228,8 @@ extern "C" void fn_80256410(Actor* param_1)
         }
     }
     if ((*(s32*)(p + 0x90) & 0x7f) == 8) {
-        s16 ang = *(s16*)(p + 0x23a);
         k = lbl_805400B4;
-        *(s16*)(p + 0x23a) = ang + 0x40;
+        *(s16*)(p + 0x23a) = *(s16*)(p + 0x23a) + 0x40;
         *(f32*)(p + 0xc) = k * *(f32*)(sincosTable___5JMath + ((u32)*(s16*)(p + 0x23a) >> 2 & 0x3ff8) + 4) + *(f32*)(p + 0x24);
         *(f32*)(p + 0x10) = k * *(f32*)(sincosTable___5JMath + ((u32)*(s16*)(p + 0x23a) >> 2 & 0x3ff8)) + *(f32*)(p + 0x28);
     }
@@ -265,10 +271,11 @@ extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
 extern char* lbl_8053AAF8;
 extern u32 lbl_804A6F48[];
 extern f32 lbl_805400B4;
+#pragma opt_propagation off
 extern "C" void fn_80256888(Actor* param_1) {
     char* p = (char*)param_1;
     if (((*(u32*)(p + 0x90) >> 17) & 0x1f) == 0) {
-        *(u32*)(p + 0x90) |= 0x20000;
+        *(u32*)(p + 0x90) = *(u32*)(p + 0x90) | 0x20000;
     }
     char* mgr = *(char**)(lbl_8053AAF8 + 0xa4);
     *(void**)(p + 0x23c) = (*(void* (**)(void*, u32, u32))(*(u32*)mgr + 0x18))(mgr, 0x3f3f3f3f, lbl_804A6F48[*(u32*)(p + 0x90) & 0x7f]);
@@ -298,7 +305,7 @@ extern "C" void fn_80256888(Actor* param_1) {
         *(s32*)(p + 0x98) = 0;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" char lbl_804CF668[];
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
@@ -331,48 +338,48 @@ extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void fn_80256A50(void)
 {
-    char* base = lbl_804CF668;
-    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+    char* base = &lbl_804CF668[0];
+    if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
-    if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
+    if (!__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack) {
         __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
         __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0xc);
         __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
     }
-    if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
+    if (!__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel) {
         __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
         __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x18);
         __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
     }
-    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
+    if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
         __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x24);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
     }
-    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
+    if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
         __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x30);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
     }
-    if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
+    if (!__init__memPool___30JASPoolAllocObject_9JAIStream) {
         __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
         __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, base + 0x3c);
         __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
     }
-    if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
+    if (!__init__memPool___35JASPoolAllocObject_13JAISoundChild) {
         __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
         __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, base + 0x48);
         __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
     }
-    if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
+    if (!__init__memPool___27JASPoolAllocObject_6JAISeq) {
         __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
         __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, base + 0x54);
         __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
     }
-    if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
+    if (!__init__memPool___26JASPoolAllocObject_5JAISe) {
         __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
         __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, base + 0x60);
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
