@@ -44,7 +44,7 @@ extern "C" s32 fn_801F3D94(void* p, s32 n);
 extern "C" u32 fn_801F2618(void* p, s32 a, s32 b);
 extern "C" u8 fn_801F2DB4(void* p, u32 a, u32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
-extern "C" void fn_801F2B7C(void* p);
+extern "C" void fn_801F2B7C(void* p, ...);
 extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
@@ -80,7 +80,7 @@ extern "C" void fn_801AAF44(char* p) {
         return;
     }
     if (*(s32*)(p + 0x108) < 1000) {
-        (*(void (***)(char*))p)[9](p);
+        ((void (**)(char*))*(void**)p)[9](p);
         *(s32*)(p + 0xb0) = 0;
         return;
     }
@@ -96,9 +96,7 @@ extern "C" void fn_801AAF44(char* p) {
         fn_801F71A4(p + 0x3c, *(f32*)(p + 0x264), lbl_8053E750, lbl_8053E754);
         fn_801F71A4(p + 0x40, *(f32*)(p + 0x268), lbl_8053E750, lbl_8053E754);
     }
-    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
-    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
-    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
     fn_801F2B7C(p);
     u32 r31 = fn_801F2618(p, 0, 0);
     *(f32*)(p + 0x270) = lbl_8053E758;
@@ -219,6 +217,29 @@ extern "C" void fn_801AAF44(char* p) {
             *(f32*)(p + 0xc) = keepx;
             *(f32*)(p + 0x10) = oldy;
             *(f32*)(p + 0x14) = keepz;
+        }
+        if (*(s32*)(p + 0x234) == 0) {
+            if (*(s32*)(p + 0x248) == 0) {
+                *(s32*)(p + 0x250) = *(s32*)(p + 0x244) + 0x13;
+            } else {
+                *(s32*)(p + 0x250) = *(s32*)(p + 0x244) + 8;
+            }
+            *(s32*)(p + 0x234) = 5;
+            *(s32*)(p + 0x244) = (*(s32*)(p + 0x244) + 1) & 3;
+        }
+        if (*(s32*)(p + 0x23c) == 0) {
+            *(f32*)(p + 0x26c) = lbl_8053E744;
+            *(f32*)(p + 0x268) = lbl_8053E744;
+            *(f32*)(p + 0x264) = lbl_8053E744;
+            *(f32*)(p + 0x44) = lbl_8053E744;
+            *(f32*)(p + 0x40) = lbl_8053E744;
+            *(f32*)(p + 0x3c) = lbl_8053E744;
+            if (*(s32*)(p + 0x248) == 0) {
+                *(s32*)(p + 0x230) = 10;
+            } else {
+                *(s32*)(p + 0x230) = 12;
+            }
+            *(s32*)(p + 0x248) ^= 1;
         }
     } break;
     }
