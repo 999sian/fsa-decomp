@@ -955,6 +955,7 @@ extern "C" void fn_80408F38(u8* self, f32 scale) {
 	}
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80409014(u8* self) {
 	(*(s16*)(self + 0x422))++;
 	if (*(s16*)(self + 0x422) >= 15) {
@@ -971,7 +972,7 @@ extern "C" void fn_80409014(u8* self) {
 			*(u8*)(*(u8**)(*(u8**)(self + 0x234) + 4) + 0xb0) = 0;
 		}
 	}
-	J2DPane* pane = *(J2DPane**)(*(u8**)(self + 0x23c) + 4);
+	J2DPicture* pane = *(J2DPicture**)(*(u8**)(self + 0x23c) + 4);
 	(*(s16*)(self + 0x420))++;
 	if (*(s16*)(self + 0x420) >= 180) {
 		*(s16*)(self + 0x420) = 0;
@@ -979,26 +980,46 @@ extern "C" void fn_80409014(u8* self) {
 	s16 c = *(s16*)(self + 0x420);
 	if (c < 45) {
 		f32 t = (f32)(c * c) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 90.0f);
+		pane->setBlendRatio(1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		f32 scale = 0.5f;
+        f32 y = *(f32*)(*(u8**)(self + 0x23c) + 0x1c);
+        f32 x = *(f32*)(*(u8**)(self + 0x23c) + 0x18);
+        y *= scale;
+        x *= scale;
+        pane->rotate(x, y, J2DROTATE_Z, 90.0f);
 	} else if (c < 90) {
 		s32 j = c - 45;
 		f32 t = (f32)(j * j) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 90.0f);
+		pane->setBlendRatio(t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		f32 scale = 0.5f;
+        f32 y = *(f32*)(*(u8**)(self + 0x23c) + 0x1c);
+        f32 x = *(f32*)(*(u8**)(self + 0x23c) + 0x18);
+        y *= scale;
+        x *= scale;
+        pane->rotate(x, y, J2DROTATE_Z, 90.0f);
 	} else if (c < 135) {
 		s32 j = c - 90;
 		f32 t = (f32)(j * j) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 270.0f);
+		pane->setBlendRatio(1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		f32 scale = 0.5f;
+        f32 y = *(f32*)(*(u8**)(self + 0x23c) + 0x1c);
+        f32 x = *(f32*)(*(u8**)(self + 0x23c) + 0x18);
+        y *= scale;
+        x *= scale;
+        pane->rotate(x, y, J2DROTATE_Z, 270.0f);
 	} else {
 		s32 j = c - 135;
 		f32 t = (f32)(j * j) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 270.0f);
+		pane->setBlendRatio(t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		f32 scale = 0.5f;
+        f32 y = *(f32*)(*(u8**)(self + 0x23c) + 0x1c);
+        f32 x = *(f32*)(*(u8**)(self + 0x23c) + 0x18);
+        y *= scale;
+        x *= scale;
+        pane->rotate(x, y, J2DROTATE_Z, 270.0f);
 	}
 }
-
+#pragma opt_propagation on
 extern "C" void fn_8037AA34();
 extern "C" u8 fn_8037AA28();
 
