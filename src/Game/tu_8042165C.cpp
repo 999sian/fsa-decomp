@@ -597,7 +597,7 @@ extern u8 lbl_8050DB0C[];
 
 // Steps player i's displayed count toward the real one by 2 every other frame.
 static inline void StepCount2(u8* this_, s32 i) {
-    s32* q = (s32*)(lbl_80529DEC + i * 4 + 0xe8);
+    s32* q = &((s32*)(lbl_80529DEC + 0xe8))[i];
     s32 c = *q;
     if (c < (s32)fn_80236100(i)) {
         ((s32*)(this_ + 0x178))[i] = ((s32*)(this_ + 0x178))[i] + 1;
@@ -672,42 +672,7 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
         }
     }
 
-    s32* q = (s32*)(lbl_80529DEC + 0xe8 + i * 4);
-    s32 c3 = *q;
-    if (c3 < (s32)fn_80236100(i)) {
-        ((s32*)(this_ + 0x178))[i] = ((s32*)(this_ + 0x178))[i] + 1;
-        if (((s32*)(this_ + 0x178))[i] >= 2) {
-            *q = *q + 2;
-            s32 c4 = *q;
-            if (c4 >= (s32)fn_80236100(i)) {
-                *q = fn_80236100(i);
-                fn_80230EB8(i, 0x51);
-            } else {
-                fn_80230EB8(i, 4);
-            }
-            this_[0x257] |= (u8)(1 << i);
-            ((s32*)(this_ + 0x178))[i] = 0;
-        }
-    } else {
-        s32 c5 = *q;
-        if (c5 > (s32)fn_80236100(i)) {
-            ((s32*)(this_ + 0x178))[i] = ((s32*)(this_ + 0x178))[i] + 1;
-            if (((s32*)(this_ + 0x178))[i] >= 2) {
-                *q = *q - 2;
-                s32 c6 = *q;
-                if (c6 < (s32)fn_80236100(i)) {
-                    *q = fn_80236100(i);
-                    fn_80230EB8(i, 0x51);
-                } else {
-                    fn_80230EB8(i, 0x4e);
-                }
-                this_[0x257] |= (u8)(1 << i);
-                ((s32*)(this_ + 0x178))[i] = 0;
-            }
-        } else {
-            ((s32*)(this_ + 0x178))[i] = 0;
-        }
-    }
+    StepCount2(this_, i);
 
     s16* t = (s16*)(this_ + i * 2);
     s32 n = t[0x1f8 / 2];
@@ -762,7 +727,7 @@ extern "C" void fn_80425F6C(u8* self) {
                 f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
                 JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setOrtho(box, lbl_80543A88, lbl_80543A8C);
-                ((void(*)(void*))(**(void****)(self + 0x4c))[5])(*(void**)(self + 0x4c));
+                (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
                 (*(J2DScreen**)(screens + 8))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
                 *(s16*)(halfwords + 0x208) = 0;
             } else {
@@ -778,7 +743,7 @@ extern "C" void fn_80425F6C(u8* self) {
                     f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
                     JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                     (*(J2DOrthoGraph**)(self + 0x4c))->setOrtho(box, lbl_80543A88, lbl_80543A8C);
-                    ((void(*)(void*))(**(void****)(self + 0x4c))[5])(*(void**)(self + 0x4c));
+                    (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
                     (*(J2DScreen**)(screens + 0x2c))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
                 }
             }
