@@ -118,12 +118,12 @@ extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
 extern "C" void fn_801E9C74(u8* param) {
-    s32 n;
-    s32 i;
     bool b;
     u8* self = param;
     FsaSlot* slots = (FsaSlot*)self;
     bool a;
+    s32 n;
+    s32 i;
 
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
@@ -135,105 +135,107 @@ extern "C" void fn_801E9C74(u8* param) {
         a = s->count > 0;
         b = (u8)(a || s->unk74 > 0);
     }
-    if (a || b) {
-        fn_8013B438(lbl_8053AB10);
-        GXClearVtxDesc();
-        GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
-        GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
-        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
-        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-        GXSetNumTevStages(1);
-        GXSetNumIndStages(0);
-        GXSetNumTexGens(1);
-        GXSetNumChans(0);
-        GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
-        GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
-        GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
-        GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
-        GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
-        GXSetColorUpdate(GX_TRUE);
-        GXSetAlphaUpdate(GX_FALSE);
-        GXSetCullMode((GXCullMode)2);
-        GXSetBlendMode(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, (GXLogicOp)5);
-        GXSetZCompLoc(GX_TRUE);
-        GXSetAlphaCompare((GXCompare)2, 0xff, GX_AOP_AND, GX_ALWAYS, 0);
+    if (!a && !b) {
+        return;
+    }
 
-        if (a) {
-            if (both) {
-                n = slots[0].count;
-                for (i = 0; i < n; i++) {
-                    if (slots[0].entries[i].actor != NULL) {
-                        fn_801E8080(slots[0].entries[i].actor);
-                    }
+    fn_8013B438(lbl_8053AB10);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXSetNumTevStages(1);
+    GXSetNumIndStages(0);
+    GXSetNumTexGens(1);
+    GXSetNumChans(0);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
+    GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
+    GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
+    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_FALSE);
+    GXSetCullMode((GXCullMode)2);
+    GXSetBlendMode(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, (GXLogicOp)5);
+    GXSetZCompLoc(GX_TRUE);
+    GXSetAlphaCompare((GXCompare)2, 0xff, GX_AOP_AND, GX_ALWAYS, 0);
+
+    if (a) {
+        if (both) {
+            n = slots[0].count;
+            for (i = 0; i < n; i++) {
+                if (slots[0].entries[i].actor != NULL) {
+                    fn_801E8080(slots[0].entries[i].actor);
                 }
-                n = slots[1].count;
-                for (i = 0; i < n; i++) {
-                    if (slots[1].entries[i].actor != NULL) {
-                        fn_801E8080(slots[1].entries[i].actor);
-                    }
+            }
+            n = slots[1].count;
+            for (i = 0; i < n; i++) {
+                if (slots[1].entries[i].actor != NULL) {
+                    fn_801E8080(slots[1].entries[i].actor);
                 }
-            } else {
-                FsaSlot* s = &slots[self[0xf0]];
-                for (i = 0; i < s->count; i++) {
-                    if (s->entries[i].actor != NULL) {
-                        fn_801E8080(s->entries[i].actor);
-                    }
+            }
+        } else {
+            FsaSlot* s = &slots[self[0xf0]];
+            for (i = 0; i < s->count; i++) {
+                if (s->entries[i].actor != NULL) {
+                    fn_801E8080(s->entries[i].actor);
                 }
             }
         }
-        if (b) {
-            GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, (GXLogicOp)5);
-            GXSetZCompLoc(GX_FALSE);
-            GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
-            GXLoadTlut((GXTlutObj*)(self + 0x16c), 0);
-            GXLoadTexObj((GXTexObj*)(self + 0x134), GX_TEXMAP0);
-            if (both) {
-                n = slots[0].count;
-                for (i = 0; i < n; i++) {
-                    if (slots[0].entries[i].actor != NULL) {
-                        fn_801E801C(slots[0].entries[i].actor);
+    }
+    if (b) {
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, (GXLogicOp)5);
+        GXSetZCompLoc(GX_FALSE);
+        GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
+        GXLoadTlut((GXTlutObj*)(self + 0x16c), 0);
+        GXLoadTexObj((GXTexObj*)(self + 0x134), GX_TEXMAP0);
+        if (both) {
+            n = slots[0].count;
+            for (i = 0; i < n; i++) {
+                if (slots[0].entries[i].actor != NULL) {
+                    fn_801E801C(slots[0].entries[i].actor);
+                }
+            }
+            n = slots[0].unk74;
+            for (i = 0; i < n; i++) {
+                s32 id = slots[0].unk64[i];
+                if (id >= 0) {
+                    void* actor = fn_801F666C(fn_801F856C(), id);
+                    if (actor != NULL) {
+                        fn_801E6DE8(actor);
                     }
                 }
-                n = slots[0].unk74;
-                for (i = 0; i < n; i++) {
-                    s32 id = slots[0].unk64[i];
-                    if (id >= 0) {
-                        void* actor = fn_801F666C(fn_801F856C(), id);
-                        if (actor != NULL) {
-                            fn_801E6DE8(actor);
-                        }
+            }
+            n = slots[1].count;
+            for (i = 0; i < n; i++) {
+                if (slots[1].entries[i].actor != NULL) {
+                    fn_801E801C(slots[1].entries[i].actor);
+                }
+            }
+            n = slots[1].unk74;
+            for (i = 0; i < n; i++) {
+                s32 id = slots[1].unk64[i];
+                if (id >= 0) {
+                    void* actor = fn_801F666C(fn_801F856C(), id);
+                    if (actor != NULL) {
+                        fn_801E6DE8(actor);
                     }
                 }
-                n = slots[1].count;
-                for (i = 0; i < n; i++) {
-                    if (slots[1].entries[i].actor != NULL) {
-                        fn_801E801C(slots[1].entries[i].actor);
-                    }
+            }
+        } else {
+            FsaSlot* s = &slots[self[0xf0]];
+            for (i = 0; i < s->count; i++) {
+                if (s->entries[i].actor != NULL) {
+                    fn_801E801C(s->entries[i].actor);
                 }
-                n = slots[1].unk74;
-                for (i = 0; i < n; i++) {
-                    s32 id = slots[1].unk64[i];
-                    if (id >= 0) {
-                        void* actor = fn_801F666C(fn_801F856C(), id);
-                        if (actor != NULL) {
-                            fn_801E6DE8(actor);
-                        }
-                    }
-                }
-            } else {
-                FsaSlot* s = &slots[self[0xf0]];
-                for (i = 0; i < s->count; i++) {
-                    if (s->entries[i].actor != NULL) {
-                        fn_801E801C(s->entries[i].actor);
-                    }
-                }
-                for (i = 0; i < s->unk74; i++) {
-                    s32 id = s->unk64[i];
-                    if (id >= 0) {
-                        void* actor = fn_801F666C(fn_801F856C(), id);
-                        if (actor != NULL) {
-                            fn_801E6DE8(actor);
-                        }
+            }
+            for (i = 0; i < s->unk74; i++) {
+                s32 id = s->unk64[i];
+                if (id >= 0) {
+                    void* actor = fn_801F666C(fn_801F856C(), id);
+                    if (actor != NULL) {
+                        fn_801E6DE8(actor);
                     }
                 }
             }
@@ -429,13 +431,9 @@ extern "C" void fn_801EA75C(u8* self, u8 idx, u16 flag, s32 p4, s32 p5, f32* p6)
 
 extern "C" s32 fn_801EA8C0(u8* param_1, u8* param_2) {
     s32 result = 0;
-    u8 a = param_1[4];
-    u8 b = param_2[4];
-
-    if (a < b) {
-        return -1;
-    }
-    if (a > b) {
+    if (((FsaSlotEntry*)param_1)->kind < ((FsaSlotEntry*)param_2)->kind) {
+        result = -1;
+    } else if (((FsaSlotEntry*)param_1)->kind > ((FsaSlotEntry*)param_2)->kind) {
         result = 1;
     }
     return result;
