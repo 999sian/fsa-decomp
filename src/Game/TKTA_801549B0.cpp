@@ -122,8 +122,8 @@ extern "C" void fn_80154A98(char* this_) {
 }
 
 struct TktaRandom {
-    u32 seed;
-    u32 next() {
+    unsigned int seed;
+    unsigned int next() {
         seed = seed * 0x19660d + 0x3c6ef35f;
         return seed;
     }
@@ -229,8 +229,9 @@ extern "C" void fn_80154C30(void* this_) {
             *(f32*)(p + 0x3c) = lbl_8053D330;
             *(f32*)(p + 0x40) = lbl_8053D330;
         }
+        f32 zero = lbl_8053D330;
         *(f32*)(p + 0x44) -= lbl_8053D350;
-        if (*(f32*)(p + 0x14) <= lbl_8053D330 && *(f32*)(p + 0x44) < lbl_8053D330) {
+        if (*(f32*)(p + 0x14) <= zero && *(f32*)(p + 0x44) < zero) {
             JGeometry::TVec3<f32> v;
             v.set(*(JGeometry::TVec3<f32>*)(p + 0xc));
             v.y += lbl_8053D354;
