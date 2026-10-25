@@ -126,8 +126,15 @@ extern "C" void fn_80403514(T34Mgr* p) {
     p->m118 = 0;
     p->m11C = 0;
     for (s32 a = 0; a < 8; a++) {
+        s32 base = a * 4;
         for (s32 b = 0; b < 4; b++) {
-            if (!t34IsSet(a, b)) {
+            BOOL set;
+            if (a < 0 || a > 7 || b < 0 || b > 3) {
+                set = FALSE;
+            } else {
+                set = ((1 << (base + b)) & lbl_8050EC80[lbl_8050EC80[0].cur].flags) != 0;
+            }
+            if (!set) {
                 p->m118 = a;
                 p->m11C = b;
                 if ((p->m118 == 0 && p->m11C == 2) || (p->m118 == 1 && p->m11C == 2) ||
@@ -223,7 +230,7 @@ extern "C" void* fn_80403804(void* this_, s16 freeFlag) {
 
 extern "C" void __ct__Q29JGeometry8TVec3_f_Fv();
 extern "C" void __construct_array(void*, void*, void*, u32, u32);
-extern "C" T34Mgr* fn_8040384C(T34Mgr* p) {
+extern "C" T34Mgr* __ct__6T34MgrFv(T34Mgr* p) {
     u8* b = (u8*)p;
     *(void**)p = lbl_804B0FE0;
     __construct_array(p->m1C4, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 4);
