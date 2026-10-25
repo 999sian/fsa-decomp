@@ -7,13 +7,11 @@ extern KepoGlobals* lbl_8053AB10;
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_8030C210(void* g, f32* v);
 
-static inline f32 kepoSelect(const f32 test, const f32 positive, const f32 negative) {
-    return __fsel(test, positive, negative);
-}
 
 // ---- ReturnZero_80218F80.cpp ----
 // NEW ACTOR (vtable lbl_804A6550). Two trivial vtable-slot stubs, both return 0.
 extern "C" {
+#pragma float_expressions on
 #pragma opt_propagation on
 extern "C" void fn_80218CF4(u8* self) {
     f32 pos[3];
@@ -60,23 +58,19 @@ extern "C" void fn_80218CF4(u8* self) {
                 ptr = (f32*)(base + 0xdc);
             }
             bVar4 = false;
-            f32 y;
-            f32 x;
-            f32 upperX, lowerX, lowerY;
-            f32 right, left, bottom;
-            y = *(f32*)(self + 0x10) - *(f32*)(self + 0x14);
-            x = *(f32*)(self + 0xc);
+            f32 y = *(f32*)(self + 0x10) - *(f32*)(self + 0x14);
+            f32 x = *(f32*)(self + 0xc);
             pos[0] = x;
             pos[1] = y;
             pos[2] = 0.0f;
-            bottom = ptr[1];
-            lowerY = 0.001f + bottom;
+            f32 bottom = ptr[1];
+            f32 lowerY = 0.001f + bottom;
             pos[1] = __fsel(lowerY - y, lowerY, y);
-            left = ptr[0];
-            lowerX = 0.001f + left;
+            f32 left = ptr[0];
+            f32 lowerX = 0.001f + left;
             pos[0] = __fsel(lowerX - x, lowerX, x);
-            right = ptr[2];
-            upperX = right - 0.001f;
+            f32 right = ptr[2];
+            f32 upperX = right - 0.001f;
             pos[0] = __fsel(upperX - pos[0], pos[0], upperX);
             if (pos[0] >= left && pos[1] >= bottom && pos[0] < right && pos[1] < ptr[3]) {
                 bVar4 = true;
@@ -110,6 +104,7 @@ extern "C" void fn_80218CF4(u8* self) {
     }
 }
 #pragma opt_propagation reset
+#pragma float_expressions reset
 int ReturnZero_80218F80(void) { return 0; }
 int ReturnZero_80218F88(void) { return 0; }
 }
