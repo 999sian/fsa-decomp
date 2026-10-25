@@ -258,8 +258,7 @@ extern "C" s32 fn_801174B8(char* p) {
 
 extern s32 lbl_80464A7C[];
 extern "C" void* fn_8011921C(void);
-extern "C" void fn_80117074(void* p, s32 n);
-extern "C" void fn_801174C0(void* param_1) {
+extern "C" void fn_801174C0(char* param_1) {
     if (*(s32*)((char*)fn_8011921C() + 4) == 2) {
         s32 v = *(s32*)((char*)fn_8011921C() + 8);
         if (v == lbl_80464A7C[2]) {
