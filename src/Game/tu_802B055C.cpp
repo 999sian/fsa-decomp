@@ -16,29 +16,28 @@ extern void* lbl_8053AB10;
 extern "C" void fn_80158B5C(void* mgr, void* room, void* pos, GXColor col, f32 size);
 extern "C" void fn_802B055C(char* p) {
     if (*(s32*)(p + 0x254) == 0) {
-        if (*(f32*)(p + 0x258) > lbl_80540990) {
-            *(f32*)(p + 0x258) -= lbl_80540994;
-            if (*(f32*)(p + 0x258) <= lbl_80540990)
-                *(f32*)(p + 0x258) = lbl_80540990;
+        if (*(f32*)(p + 0x258) > 0.0f) {
+            *(f32*)(p + 0x258) -= 6.0f;
+            if (*(f32*)(p + 0x258) <= 0.0f)
+                *(f32*)(p + 0x258) = 0.0f;
         } else {
-            *(f32*)(p + 0x258) = lbl_80540990;
+            *(f32*)(p + 0x258) = 0.0f;
         }
     } else {
-        if (*(f32*)(p + 0x258) < lbl_80540998)
-            *(f32*)(p + 0x258) += lbl_80540994;
+        if (*(f32*)(p + 0x258) < 200.0f)
+            *(f32*)(p + 0x258) += 6.0f;
         else
-            *(f32*)(p + 0x258) = lbl_80540998;
+            *(f32*)(p + 0x258) = 200.0f;
     }
+    f32 size = *(f32*)(p + 0x258);
     GXColor color;
-    f32 pos[3];
-    pos[1] = lbl_8054099C + *(f32*)(p + 0x10);
-    pos[0] = lbl_8054099C + *(f32*)(p + 0xc);
-    pos[2] = lbl_80540990;
+    JGeometry::TVec3<f32> pos(8.0f + *(f32*)(p + 0xc), 8.0f + *(f32*)(p + 0x10), 0.0f);
     color.r = 0;
     color.g = 0;
     color.b = 0;
     color.a = 0x80;
-    ((void (*)(void*, void*, void*, GXColor, f32))fn_80158B5C)(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), pos, color, *(f32*)(p + 0x258));
+    void* room = *(void**)(p + 4);
+    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), room, &pos, color, size);
 }
 
 extern "C" void* fn_802B0998(void* this_, s16 freeFlag) {
