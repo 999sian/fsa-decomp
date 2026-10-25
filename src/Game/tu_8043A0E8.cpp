@@ -14,6 +14,13 @@ extern const f32 lbl_80543D10;
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 
+struct FsaMenuNumber {
+    u8 unk_0x0[0x118];
+    f32 x[10];
+    f32 y[10];
+    f32 scale[10];
+};
+
 struct FsaBlock48 {
     u32 w[12];
 };
@@ -465,68 +472,45 @@ extern "C" void fn_8043BB84(u8* self)
     }
 }
 
-extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u32 p5, u8 p6, f32 f1, f32 f2, f32 f3) {
-    if (self[0x252] < 10) {
-        u8 n = self[0x252];
-        f32 b = (f32)(p5 & 1);
-        f32 a = (f32)((p5 >> 1) & 0x7f);
-        *(f32*)(self + 0x118 + n * 4) = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - lbl_80543CC0 * a * f3;
-        *(f32*)(self + 0x140 + self[0x252] * 4) = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
-        *(f32*)(self + 0x168 + self[0x252] * 4) = f3;
+extern "C" s32 fn_8043CB24(u8* self, s32 value, u8 p3, u8 p4, u8 p5, u8 p6, f32 f1, f32 f2, f32 f3) {
+    u8 n = self[0x252];
+    if (n < 10) {
+        int count = p5;
+        f32 b = (f32)(count % 2);
+        f32 a = (f32)(p5 / 2);
+        ((f32*)(self + n * 4))[0x46] = f1 - lbl_80543CB8 * (lbl_80543CBC * b * f3) - (lbl_80543CC0 * a) * f3;
+        ((f32*)(self + self[0x252] * 4))[0x50] = f2 - lbl_80543CB8 * (lbl_80543CBC * f3);
+        ((f32*)(self + self[0x252] * 4))[0x5a] = f3;
         self[0x244 + self[0x252]] = p3;
-        self[0x226 + self[0x252]] = (u8)p5;
+        self[0x226 + self[0x252]] = p5;
         self[0x1f4 + self[0x252]] = 0xff;
         self[0x1fe + self[0x252]] = 0xff;
         self[0x208 + self[0x252]] = 0xff;
         self[0x212 + self[0x252]] = 0xff;
         self[0x21c + self[0x252]] = 0xff;
-
-        u32 count = p5 & 0xff;
-        s32 pow = 1;
-        s32 k = 0;
-        bool flag = p6 != 0;
-        if (count != 0) {
-            if (count > 8) {
-                for (s32 i = 0; i < (s32)((count - 1) >> 3); i++) {
-                    pow *= 100000000;
-                    k += 8;
-                }
-            }
-            if (k < (s32)count) {
-                for (s32 i = (s32)count - k; i != 0; i--) {
-                    pow *= 10;
-                }
-            }
-        }
-        if (value > pow - 1) {
-            value = pow - 1;
-        }
-        if (value < 0) {
-            value = 0;
-        }
+        int pow = 1;
+        u8 flag = 0;
+        if (p6) flag = 1;
+        for (int i=0; i<count; i++) pow *= 10;
+        if (value > pow-1) value=pow-1;
+        if (value<0) value=0;
         pow /= 10;
-        u8* d = self;
-        for (s32 i = (s32)count - 1; i > 0; i--) {
-            s32 digit = value / pow;
-            value -= digit * pow;
-            if (flag || digit != 0) {
-                if (!flag) {
-                    flag = true;
-                }
-                d[self[0x252] + 0x1f4] = digit;
-            } else {
-                d[self[0x252] + 0x1f4] = 0xff;
+        u8* d=self;
+        for (int i=count-1; i>0; i--) {
+            int digit=value/pow;
+            value-=digit*pow;
+            if (!flag && digit==0) d[self[0x252]+0x1f4]=0xff;
+            else {
+                if (!flag) flag=1;
+                d[self[0x252]+0x1f4]=digit;
             }
-            d += 10;
-            pow /= 10;
+            d+=10;
+            pow/=10;
         }
-        self[count * 10 + self[0x252] + 0x1ea] = value;
-        u8 lvl = p4;
-        if (lvl > 5) {
-            lvl = 5;
-        }
-        self[0x23a + self[0x252]] = lvl;
-        self[0x252] = self[0x252] + 1;
+        self[count*10+self[0x252]+0x1ea]=value;
+        if (p4>5) p4=5;
+        self[0x23a+self[0x252]]=p4;
+        self[0x252]++;
         return 1;
     }
     return 0;
