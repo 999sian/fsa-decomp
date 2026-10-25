@@ -339,10 +339,11 @@ static inline BOOL slmnPartAlive(SlmnPart* part) {
 
 static inline void slmnCenter(Slmn* this_, f32* out) {
     f32 sy; f32 sx; s32 id; Slmn* walker; s32 n; s32 i; char* a;
-    walker = this_;
     n = 0;
     sy = sx = lbl_8053F8E0;
-    for (i = 0; i < 4; i++, walker = (Slmn*)((u8*)walker + 0x24)) {
+    i = 0;
+    walker = this_;
+    for (; i < 4; i++, walker = (Slmn*)((u8*)walker + 0x24)) {
         if (!walker->parts[0].inactive && !walker->parts[0].dead) {
             id = walker->parts[0].id;
             if (id >= 0) {
