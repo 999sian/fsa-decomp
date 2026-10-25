@@ -943,17 +943,20 @@ extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
     }
 }
 
-extern "C" BOOL fn_802A1490(void* this_, JGeometry::TVec2<f32>* param_2) {
+extern "C" BOOL fn_802A1490(void* this_, const volatile JGeometry::TVec2<f32>* param_2) {
+    f32 x;
+    f32 y;
+    y = param_2->y;
+    x = param_2->x;
     JGeometry::TVec2<f32> tmp;
-    f32 y = param_2->y;
     tmp.y = y;
-    tmp.x = param_2->x;
+    tmp.x = x;
     *(u32*)((u8*)this_ + 0x20) = fn_80226BC4(&tmp, 0);
     *(u16*)((u8*)this_ + 0x24) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), 0, *(u32*)((u8*)this_ + 0x20));
     if (lbl_8046CB88[*(u16*)((u8*)this_ + 0x24)] == 0) {
         return TRUE;
     }
-    s32 kind = (u16)fn_8022461C(param_2, 0);
+    s32 kind = (u16)fn_8022461C((JGeometry::TVec2<f32>*)param_2, 0);
     if (kind == 0x22 && *(u8*)((u8*)fn_802D6A9C() + 0x170) == 0) {
         return TRUE;
     }
