@@ -17,7 +17,8 @@ static char lbl_8050E548[0x10];
 
 extern void* lbl_8053AD78;
 extern u8 lbl_8050EC80[];
-
+extern f32 lbl_805431E4;
+extern "C" const char lbl_80543298[];
 extern "C" void fn_803944C8(void* this_, s32 a, u8 b, u8 c) {
     *(u8*)((char*)this_ + 0x3b1) = 1;
     *(s32*)((char*)lbl_8053AD78 + 0x48) = a;
@@ -727,7 +728,6 @@ extern "C" void fn_80398A34(char* p, s32 n) {
     s32 q;
     s32 x;
     char* e;
-    char* f;
     u8 wm[4];
     u8 w10000[4];
     u8 w1000[4];
@@ -741,11 +741,10 @@ extern "C" void fn_80398A34(char* p, s32 n) {
         ((TuCall3*)(*(void**)obj))[11](obj, 0x2d, wm);
         x = wm[1];
         e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
         e = p + *(u8*)(p + 0x201) * 4;
         *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        f = p + *(u8*)(p + 0x201);
-        *(u8*)(f + 0x22d) += 1;
+        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
     }
 
     q = n / 10000;
@@ -756,11 +755,10 @@ extern "C" void fn_80398A34(char* p, s32 n) {
         ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w10000);
         x = w10000[1];
         e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
         e = p + *(u8*)(p + 0x201) * 4;
         *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        f = p + *(u8*)(p + 0x201);
-        *(u8*)(f + 0x22d) += 1;
+        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
     }
 
     q = n / 1000;
@@ -771,11 +769,10 @@ extern "C" void fn_80398A34(char* p, s32 n) {
         ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w1000);
         x = w1000[1];
         e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
         e = p + *(u8*)(p + 0x201) * 4;
         *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        f = p + *(u8*)(p + 0x201);
-        *(u8*)(f + 0x22d) += 1;
+        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
     }
 
     q = n / 100;
@@ -786,11 +783,10 @@ extern "C" void fn_80398A34(char* p, s32 n) {
         ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w100);
         x = w100[1];
         e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
         e = p + *(u8*)(p + 0x201) * 4;
         *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        f = p + *(u8*)(p + 0x201);
-        *(u8*)(f + 0x22d) += 1;
+        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
     }
 
     q = n / 10;
@@ -801,22 +797,20 @@ extern "C" void fn_80398A34(char* p, s32 n) {
         ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w10);
         x = w10[1];
         e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
         e = p + *(u8*)(p + 0x201) * 4;
         *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        f = p + *(u8*)(p + 0x201);
-        *(u8*)(f + 0x22d) += 1;
+        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
     }
 
     obj = *(void**)(p + 0x38);
     ((TuCall3*)(*(void**)obj))[11](obj, n + 0x30, w1);
     x = w1[1];
     e = p + *(u8*)(p + 0x201) * 4;
-    *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+    *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
     e = p + *(u8*)(p + 0x201) * 4;
     *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-    f = p + *(u8*)(p + 0x201);
-    *(u8*)(f + 0x22d) += 1;
+    *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
 }
 
 // ---- ASCII -> font code table helpers ----
