@@ -2569,9 +2569,7 @@ bool fn_8024B108(char* p, s32 a) {
 BOOL fn_8024B24C(char* p) {
     char* sub = (char*)PTR(p, 0xbf0);
     BOOL r = 0;
-    if (U8(sub, 0x98) != 0 || U8(sub, 0x99) != 0) {
-        r = 1;
-    }
+    if (U8(sub, 0x98) != 0 || U8(sub, 0x99) != 0) r = 1;
     return r;
 }
 void fn_8024B274(char* p, s32 v) { SetField_0x98(PTR(p, 0xbf0), v); }
