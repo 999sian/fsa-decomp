@@ -1073,6 +1073,7 @@ inline s32 linkRankCached(char* p, s32& n) {
     return c + 1;
 }
 inline BOOL isLinkOwnerCached(char* p) {
+    s32 v;
     s32 n;
     u8 bit = 1 << S32(p, 4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
