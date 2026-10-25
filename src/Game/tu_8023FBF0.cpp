@@ -1726,9 +1726,8 @@ inline bool padActive(char* p) {
 }
 
 
-inline u8 roomFlag131df(s32 room) { return U8(fn_802D6A9C()+0x131df,room); }
-BOOL fn_80243234(char* p) {
-    const int room=S32(p,0x3b4);
+s32 fn_80243234(char* p) {
+    int room=S32(p,0x3b4);
     if(U8(fn_802D6A9C()+0x131df,room)==0) return 0;
     if ((S32(p,0x3dc)==0 && (!padActive(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034) ||
         (S32(p,0x3dc)==1 && (!padActive6(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034)) {
