@@ -8,7 +8,7 @@
 extern "C" u8* lbl_804ADA98[];
 extern "C" u8 lbl_80472848[];
 extern "C" u8 lbl_804AD900[];
-static const u8 ro_0[0x1790] = {1};
+extern "C" const u8 ro_0[0x1790] = {1};
 static const u8 ro_1790[0x30] = {1};
 static const u32 ro_17c0[0x288 / 4] = {1};
 static const u8 ro_1a48[0x50] = {1};
