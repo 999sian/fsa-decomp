@@ -28,7 +28,7 @@ struct FSAPoolBlock {
 };
 
 
-extern "C" void fn_803721F4(void);
+extern "C" void fn_803721F4(char* self = 0);
 extern "C" u8 fn_8023ED8C(int);
 extern "C" void fn_80230C6C(int);
 extern "C" u8 fn_8023E854(int);
@@ -123,13 +123,13 @@ extern "C" void fn_80370020(void* this_) {
 }
 
 extern "C" s32 fn_80370200(u8* self) {
-    Vec* tgt;
     u8 found[4] = {0, 0, 0, 0};
+    f32 best = 100000.0f;
+    Vec* tgt;
     s32 i;
     s32 idx;
     s32 result = -1;
     bool any = false;
-    f32 best = 100000.0f;
     idx = *(s32*)(self + 0x39c);
     tgt = (Vec*)(self + 0x264 + idx * 0xc);
     for (i = 0; i < 4; i++) {
@@ -213,9 +213,9 @@ extern "C" void fn_803703C8(void* self) {
     *(u8*)(b + 0x7f6) = 0;
 }
 
-extern "C" void fn_803704E8(void)
+extern "C" void fn_803704E8(char* self)
 {
-	fn_803721F4();
+	fn_803721F4(self);
 }
 
 extern "C" void fn_80370508(char* self)
@@ -246,7 +246,11 @@ extern "C" void fn_803705A0(char* self)
             int k = *(int*)(self + 0x23c);
             int n = (k < 0) + ((unsigned)k <= 0xb4) + 2;
             JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self + 0x324);
-            pos.sub(JGeometry::TVec3<f32>(lbl_80542DC4, lbl_80542DCC, lbl_80542DC4));
+            JGeometry::TVec3<f32> off;
+            off.x = lbl_80542DC4;
+            off.y = lbl_80542DCC;
+            off.z = lbl_80542DC4;
+            pos.sub(off);
             JGeometry::TVec3<f32> v = pos;
             Actor_CreateByID(fn_801F856C(), 0x52555059, *(unsigned int*)(self + 4), &v, 0x30000 | (unsigned char)n, -1, -1);
             *(int*)(self + 0x240) = 30;
@@ -464,10 +468,10 @@ extern "C" void fn_8037100C(char* self)
 	JGeometry::TBox2f copy;
 	JGeometry::TBox2f box(lbl_80542E18, lbl_80542DEC, lbl_80542E1C, lbl_80542E20);
 	copy = box;
-	u8 bVar3 = 0;
+	bool bVar3 = false;
 	JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
 	if (pos->x >= copy.i.x && pos->y >= copy.i.y && pos->x < copy.f.x && pos->y < copy.f.y) {
-		bVar3 = 1;
+		bVar3 = true;
 	}
 	if (bVar3) {
 		for (s32 i = 0; i < 4; i++) {
@@ -739,13 +743,20 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void fn_80372400(char* self) {
     Vec saved;
     s32 i;
+    char* vp;
+    char* sp;
+    s32* ids = (s32*)lbl_80474ED0;
     const char* tbl = lbl_80474ED0;
 
     if (*(u8*)((char*)lbl_8053AAF8 + 0x7e) == 0) {
         JGeometry::setTVec3f((f32*)(self + 0xc), (f32*)&saved);
+        vp = self;
+        sp = self;
         for (i = 0; i < 4; i++) {
-            JGeometry::setTVec3f((f32*)(self + 0x294 + i * 0xc), (f32*)(self + 0xc));
-            fn_801F06F0(self, tbl + 0x9c, *(s32*)(self + 0x350 + i * 4) + ((s32*)tbl)[*(s32*)(self + 0x364)], 0, 7, lbl_80542E38, lbl_80542E38);
+            *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)(vp + 0x294);
+            fn_801F06F0(self, tbl + 0x9c, *(s32*)(sp + 0x350) + ids[*(s32*)(self + 0x364)], 0, 7, lbl_80542E38, lbl_80542E38);
+            vp += 0xc;
+            sp += 4;
         }
         if (*(u8*)(self + 0x399) == 0) {
             JGeometry::setTVec3f((f32*)&saved, (f32*)(self + 0xc));
