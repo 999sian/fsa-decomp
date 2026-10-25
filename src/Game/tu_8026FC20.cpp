@@ -3571,17 +3571,11 @@ void fn_8027CBB0(char* p) {
 
 extern "C" {
 inline s32 comboFreeSlot(char* p) {
-    if (S32(p, 0x118c) <= 0) {
-        return 0;
-    }
-    if (S32(p, 0x1190) <= 0) {
-        return 1;
-    }
-    if (S32(p, 0x1194) <= 0) {
-        return 2;
-    }
-    if (S32(p, 0x1198) <= 0) {
-        return 3;
+    PlayerCombo* c = (PlayerCombo*)p;
+    for (int i = 0; i < 4; i++) {
+        if (!(c->mTimerB[i] > 0)) {
+            return i;
+        }
     }
     return 4;
 }
