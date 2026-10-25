@@ -256,6 +256,9 @@ static inline s32 fn_80385960_slot(s32 p) {
     }
     return p;
 }
+static inline s32 fn_80387494_state(s32 p) {
+    return ((u8*)lbl_8053AD78->sub[fn_80385960_slot(p)])[0x24];
+}
 extern "C" void fn_80390850(void* p);
 extern "C" void fn_80458880(void* base, s32 a, s32 b);
 extern "C" void fn_80391678(void* p);
