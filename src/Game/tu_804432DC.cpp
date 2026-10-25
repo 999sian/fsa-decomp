@@ -2,6 +2,12 @@
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+struct ScreenTransitionTable {
+    f32 scale[7];
+    s16 x[8];
+    s16 y[8];
+};
+
 struct J2DScreenVt {
     virtual void m0(void);
     virtual void m1(void);
@@ -176,36 +182,38 @@ extern "C" u8 lbl_804AF86C[];
 extern "C" u8 lbl_8048FBC4[];
 extern "C" u8 lbl_80529DEC[];
 extern "C" void* fn_80443760(void* this_) {
+    void* screen;
+    void* obj;
     u8* self = (u8*)this_;
     *(void**)self = (void*)lbl_804B1AE8;
     lbl_8053AEF0 = (s32)self;
 
-    void* screen = __nw__FUl(0x118);
+    screen = __nw__FUl(0x118);
     if (screen != 0) {
         __ct__9J2DScreenFv(screen);
     }
     *(void**)(self + 4) = screen;
     setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), (const char*)lbl_8048FBC4, 0x1100000, *(void**)(lbl_80529DEC + 0x10));
 
-    void* obj = __nw__FUl(0x2c);
+    obj = __nw__FUl(0x2c);
     if (obj != 0) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 8) = obj;
-    u32 c = 0x746d6170;
-    u32 a = 0x50740000;
-    u32 b = a + 0x6573;
-    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(a, b, c));
+    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x50740000, 0x50746573, 0x746d6170));
 
     obj = __nw__FUl(0x2c);
     if (obj != 0) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 12) = obj;
-    u32 f = 0x7074656e;
-    u32 e = 0x500000;
-    u32 d = e + 0x6d61;
-    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(e, d, f));
+    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, 0x506d61, 0x7074656e));
+
+    self[0x14] = 0;
+    *(s16*)(self + 0x10) = 0;
+    *(s16*)(self + 0x12) = 0;
+    self[0x15] = 3;
+    return this_;
 }
 
 extern "C" void fn_80443894(void) {
