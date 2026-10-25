@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "dolphin/gx/GXStruct.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 extern "C" char lbl_804A84C8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -83,6 +84,9 @@ extern "C" void fn_802B0A4C(char* p) {
     *(u32*)(p + 0x230) = 0;
     *(u32*)(p + 0x254) = 0;
     *(f32*)(p + 0x258) = lbl_80540990;
+}
+
+extern "C" void fn_802B0AB4(void) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
