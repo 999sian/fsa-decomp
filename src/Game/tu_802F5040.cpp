@@ -204,6 +204,14 @@ static inline s32 Tu802F93F4_c5(s32 v) {
     return r;
 }
 
+static inline void SwapSpriteNibbles802F(const u8* src, u8* dst, u32 size) {
+    for (u32 i = 0; i < size; i++) {
+        u8 b = src[i];
+        dst[i] = ((b & 0xf0) >> 4) | ((b & 0x0f) << 4);
+    }
+    DCFlushRange(dst, size);
+}
+
 extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     f32 t;
     s32 a;
