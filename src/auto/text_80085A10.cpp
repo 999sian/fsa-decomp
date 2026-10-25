@@ -78,11 +78,11 @@ extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5
     }
     end = p + size;
     pad = ((n >> 3) + 3) & ~3;
-    result = p;
     aligned = (align + (u32)(base + pad) - 1) & mask;
     remain = (u32)end - aligned;
     count = remain / unit;
-    if (result != 0) {
+    result = p;
+    if (p != 0) {
         result = fn_80085BBC(p, (u32)base, (void*)aligned, unit, count, remain, align, heap, a5);
     }
     if (result == 0) {
@@ -129,17 +129,16 @@ extern "C" void* fn_80085C50(void* param_1, s16 param_2) {
 
 extern "C" void fn_80085CB8(char* p) {
     extern u8 lbl_8053B770[8];
-    u8* data;
+    u8* data = *(u8**)(p + 0x78);
     s32 i;
-    data = *(u8**)(p + 0x78);
     for (i = 0; i < *(s32*)(p + 0x70) / 8; i++) {
         *data++ = 0;
     }
     if (*(s32*)(p + 0x70) & 7) {
-        u8* src;
+        s32 start;
         u32 rem;
         u32 blocks;
-        s32 start;
+        u8* src;
         *data = 0;
         start = *(s32*)(p + 0x70) & 7;
         src = lbl_8053B770 + start;
@@ -205,6 +204,41 @@ extern "C" int fn_80085DEC(char* this_, u32 param_2, u32 param_3) {
     return fn_8008665C(this_, start);
 }
 
+extern "C" s32 fn_80085F0C(char* this_, s32 param_2) {
+    u32* p;
+    u32 words;
+    u32 i;
+    s32 bit;
+    if (param_2 >= 0) {
+        words = (*(u32*)(this_ + 0x70) + 0x1f) >> 5;
+        p = *(u32**)(this_ + 0x78);
+        for (i = 0; i < words; i++) {
+            if (*p != 0xffff) {
+                for (bit = 0; bit < 32; bit++) {
+                    if ((*p & (0x80000000U >> bit)) == 0) {
+                        return bit + (s32)(i << 5);
+                    }
+                }
+            }
+            p++;
+        }
+    } else {
+        words = (*(u32*)(this_ + 0x70) + 0x1f);
+        p = (u32*)((u8*)*(u32**)(this_ + 0x78) + ((words >> 3) & ~3)) - 1;
+        for (i = (words >> 5) - 1; (s32)i >= 0; i--) {
+            if (*p != 0xffff) {
+                for (bit = 31; bit >= 0; bit--) {
+                    if ((*p & (0x80000000U >> bit)) == 0) {
+                        return bit + (s32)(i << 5);
+                    }
+                }
+            }
+            p--;
+        }
+    }
+    return -1;
+}
+
 extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
     if (param_3 == 1) {
         extern s32 fn_80085F0C(char*, s32);
@@ -216,18 +250,29 @@ extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
     }
 }
 
+#pragma opt_propagation off
+#pragma opt_unroll_loops off
 extern "C" s32 fn_8008603C(int param_1, u32 param_2) {
-    u8 inRun = 0;
-    s32 runStart = -1;
-    s32 result = -1;
-    s32 best = ~-(u32)(param_2 == 0) & 0xffff;
-    u32* base = *(u32**)(param_1 + 0x78);
-    u32* end = (u32*)((u8*)base + ((*(u32*)(param_1 + 0x70) + 0x1f) >> 3 & ~3));
-    u32* p;
     s32 count;
+    u32* p;
+    u32* end;
+    u32* base;
+    s32 best;
+    s32 result;
+    s32 runStart;
+    u8 inRun;
+    u32 word;
+    s32 bit;
+
+    inRun = 0;
+    runStart = -1;
+    result = -1;
+    best = ~-(u32)(param_2 == 0) & 0xffff;
+    base = *(u32**)(param_1 + 0x78);
+    end = (u32*)((u8*)base + ((*(u32*)(param_1 + 0x70) + 0x1f) >> 3 & ~3));
 
     for (p = base; p <= end; p++) {
-        u32 word = (p == end) ? 0xffffffff : *p;
+        word = (p != end) ? *p : 0xffffffff;
         if (word == 0) {
             if (!inRun) {
                 runStart = ((s32)p - (s32)base) / 4 * 32;
@@ -236,9 +281,15 @@ extern "C" s32 fn_8008603C(int param_1, u32 param_2) {
             }
             count += 0x20;
         } else if (word != 0xffffffff || inRun) {
-            s32 bit;
             for (bit = 0; bit < 32; bit++) {
-                if (word & (0x80000000U >> bit)) {
+                if (!(word & (0x80000000U >> bit))) {
+                    if (!inRun) {
+                        runStart = bit + ((s32)p - (s32)base) / 4 * 32;
+                        count = 0;
+                        inRun = 1;
+                    }
+                    count++;
+                } else {
                     if (inRun) {
                         if (param_2 == 0) {
                             if (best < count) {
@@ -261,13 +312,6 @@ extern "C" s32 fn_8008603C(int param_1, u32 param_2) {
                         }
                         inRun = 0;
                     }
-                } else {
-                    if (!inRun) {
-                        runStart = bit + ((s32)p - (s32)base) / 4 * 32;
-                        count = 0;
-                        inRun = 1;
-                    }
-                    count++;
                 }
             }
         }
@@ -277,7 +321,7 @@ extern "C" s32 fn_8008603C(int param_1, u32 param_2) {
     }
     return result;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
     u8 inRun = 0;
     s32 runStart = -1;
@@ -318,7 +362,8 @@ extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
                     }
                 } else {
                     if (!inRun) {
-                        runStart = bit + ((s32)p - (s32)base) / 4 * 32;
+                        s32 wordOff = ((s32)p - (s32)base) / 4;
+                        runStart = bit + wordOff * 32;
                         count = 0;
                         inRun = 1;
                     }
@@ -332,7 +377,6 @@ extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
     }
     return result - param_2 + 1;
 }
-
 extern u8 lbl_8053B770[8];
 extern "C" void fn_800863C0(void* param_1) {
     s32 idx = fn_8008668C();
@@ -356,12 +400,13 @@ extern "C" void fn_800863C0(void* param_1) {
 }
 
 extern u8 lbl_8053B770[8];
+#pragma opt_unroll_loops off
 extern "C" void fn_80086438(u8* param_1) {
     extern u8 lbl_8053B770[8];
-    s32 i;
+    u8* src;
     u32 n;
     u8* p;
-    u8* src;
+    s32 i;
     u8 zero;
 
     i = 0;
@@ -397,7 +442,6 @@ extern "C" void fn_80086438(u8* param_1) {
     }
     *(s32*)(param_1 + 0x80) = *(s32*)(param_1 + 0x6c) * *(s32*)(param_1 + 0x70);
 }
-
 extern "C" void fn_8008657C() {
 }
 
@@ -477,6 +521,7 @@ extern "C" void fn_80086724(char* p, s32 index) {
 extern "C" void JUTWarningConsole_f(const char*, ...);
 extern "C" char lbl_8045E820[];
 extern "C" s32 fn_80086764(char* p) {
+    extern u8 lbl_8053B770[8];
     s32 n = (*(s32*)(p + 0x70) + 7) / 8;
     u8* data = *(u8**)(p + 0x78);
     s32 sum = 0;
@@ -488,8 +533,8 @@ extern "C" s32 fn_80086764(char* p) {
             if (bits == 0) {
                 sum += *(s32*)(p + 0x6c) * 8;
             } else {
-                u8* mask = g_bit_mask_table;
-                if ((bits & mask[0]) == 0) sum += *(s32*)(p + 0x6c);
+                u8* mask = lbl_8053B770;
+                if ((bits & *mask++) == 0) sum += *(s32*)(p + 0x6c);
                 if ((bits & *++mask) == 0) sum += *(s32*)(p + 0x6c);
                 if ((bits & *++mask) == 0) sum += *(s32*)(p + 0x6c);
                 if ((bits & *++mask) == 0) sum += *(s32*)(p + 0x6c);
@@ -525,41 +570,15 @@ extern "C" u32 fn_80086890(void* self_) {
 }
 
 extern "C" u32 getTotalFreeSize__7JKRHeapFv(void *heap);
-extern "C" void fn_8008693C(int param_1, int *param_2, int param_3) {
-    int *end;
-    u32 n;
-    int sum;
-    int *start;
-    u32 cnt;
-
+extern "C" void fn_8008693C(int param_1, int* param_2, int param_3) {
     param_2[5] = param_3;
-    *param_2 = *(u32 *)(param_1 + 0x38) - getTotalFreeSize__7JKRHeapFv((void *)param_1);
+    *param_2 = *(u32*)(param_1 + 0x38) - getTotalFreeSize__7JKRHeapFv((void*)param_1);
+    int* end;
+    int sum;
     sum = 0;
-    end = *(int **)(param_1 + 0x7c);
-    start = *(int **)(param_1 + 0x78);
-    n = ((u32)end + 3 - (u32)start) >> 2;
-    if (start < end) {
-        cnt = n >> 3;
-        if (cnt != 0) {
-            do {
-                sum += start[0];
-                sum += start[1];
-                sum += start[2];
-                sum += start[3];
-                sum += start[4];
-                sum += start[5];
-                sum += start[6];
-                sum += start[7];
-                start += 8;
-            } while (--cnt != 0);
-        }
-        n &= 7;
-        if (n != 0) {
-            do {
-                sum += *start;
-                start++;
-            } while (--n != 0);
-        }
+    end = *(int**)(param_1 + 0x7c);
+    for (int* p = *(int**)(param_1 + 0x78); p < end; ++p) {
+        sum += *p;
     }
     param_2[1] = sum;
 }
