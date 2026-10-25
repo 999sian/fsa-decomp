@@ -29,7 +29,7 @@ extern "C" f32 lbl_8053F098;
 
 static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
     u8 ok = 1;
-    if (fn_801CCBD0(pos, room) || fn_801CCB1C(pos, room)) {
+    if (fn_801CCBD0(&pos, room) || fn_801CCB1C(&pos, room)) {
         ok = 0;
     }
     return ok;
@@ -64,9 +64,9 @@ static inline void tu801D3320_normalize(Vec3f& v) {
 }
 
 extern "C" void fn_801D3320(char* this_) {
-    u8 ids2[0x30];
-    u8 ids[0x30];
     u8 free[0x30];
+    u8 ids[0x30];
+    u8 ids2[0x30];
     u8* s;
     if (*(u32*)(this_ + 0x230) & 0x2000000) {
         u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
@@ -79,7 +79,9 @@ extern "C" void fn_801D3320(char* this_) {
                 if (tu801D3320_isFree(&p, *(s32*)(this_ + 0x4))) {
                     f32 dx = p.x - *(f32*)(this_ + 0xc);
                     f32 dy = p.y - *(f32*)(this_ + 0x10);
-                    f32 d = dx * dx + dy * dy;
+                    f32 dx2 = dx * dx;
+                    f32 dy2 = dy * dy;
+                    f32 d = dx2 + dy2;
                     if (d > bestD) {
                         bestD = d;
                         best = ids[i];
@@ -100,8 +102,8 @@ extern "C" void fn_801D3320(char* this_) {
     u8 count = 0;
     for (int i = 0; i < n; i++) {
         s32 room = *(s32*)(this_ + 0x4);
-        Vec3f p = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids2[i]);
-        if (tu801D3320_isFree(&p, room)) {
+        const Vec3f& p = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids2[i]);
+        if (tu801D3320_isFree((Vec3f*)&p, room)) {
             count++;
             *out++ = ids2[i];
         }
@@ -117,17 +119,11 @@ extern "C" void fn_801D3320(char* this_) {
         return;
     }
     u8 next = fn_801C976C(this_);
-    if (*(s32*)(this_ + 0x4) != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), next)) {
+    s32 room = *(s32*)(this_ + 0x4);
+    if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), next)) {
         return;
     }
-    u8 found = 0;
-    for (int i = 0; i < cnt; i++) {
-        if (next == free[i]) {
-            found = 1;
-            break;
-        }
-    }
-    if (!found) {
+    if (!tu801D3320_contains(next, free, cnt)) {
         return;
     }
     Vec3f cur;
