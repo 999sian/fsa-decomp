@@ -36,15 +36,22 @@ extern "C" void fn_8022E088(s32 idx, s32 n, JGeometry::TVec3f* out);
 extern "C" void fn_8022DF48(s32 idx);
 extern "C" void fn_8023DF68(s32 idx, JGeometry::TVec3f* v);
 
-static inline bool tuInBox(u8* self, const JGeometry::TVec3f& v) {
-    if (v.x >= *(f32*)(self + 0x60) && v.y >= *(f32*)(self + 0x64) && v.x < *(f32*)(self + 0x68) && v.y < *(f32*)(self + 0x6c)) {
+static inline bool tuInBox(const JGeometry::TVec3f& v, f32 x0, f32 y0, f32 x1, f32 y1) {
+    if (v.x >= x0 && v.y >= y0 && v.x < x1 && v.y < y1) {
         return true;
     }
     return false;
 }
 
+static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
+    *(f32*)(self + 0x60) = x0;
+    *(f32*)(self + 0x64) = y0;
+    *(f32*)(self + 0x68) = x1;
+    *(f32*)(self + 0x6c) = y1;
+}
+
 static inline bool tuCheckHit(u8* self, s32 idx) {
-    if (*(s32*)(self + 0x4) != fn_8023DE58(idx)) {
+    if (fn_8023DE58(idx) != *(s32*)(self + 0x4)) {
         return false;
     }
     for (s32 j = 0; j < 8; j++) {
@@ -52,7 +59,7 @@ static inline bool tuCheckHit(u8* self, s32 idx) {
         fn_8022E088(idx, j, &v);
         v -= *(JGeometry::TVec3f*)(self + 0xc);
         v.z = 0.0f;
-        if (tuInBox(self, v)) {
+        if (tuInBox(v, *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c))) {
             fn_8022DF48(idx);
             return true;
         }
@@ -122,6 +129,92 @@ extern "C" void fn_802896A8(Actor* this_)
         void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
         void* tex = ((void* (*)(void*, u32))(*(void***)obj)[6])(obj, 0x54494d47);
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), (u8*)this_ + 0xc, tex, &rec);
+    }
+}
+
+extern "C" void fn_80289A88(Actor* this_) {
+    u8* self = (u8*)this_;
+
+    if ((u8)this_->v11()) {
+        if (self[0x244] == 0) {
+            fn_801F0E34(this_, 0x30041, 0);
+        }
+        self[0x244] = 1;
+    } else if ((*(u32*)(self + 0x90) & 0x7f) == 0) {
+        if (self[0x244] == 1) {
+            fn_801F0E34(this_, 0x30041, 0);
+        }
+        self[0x244] = 0;
+    }
+
+    if (self[0x244] != 0) {
+        if ((s32)((*(u32*)(self + 0x90) >> 12) & 0x1f) < 2) {
+            *(f32*)(self + 0x238) += 1.0f;
+            if (*(f32*)(self + 0x238) >= (f32)(s32)(((*(u32*)(self + 0x90) >> 17) & 0x1f) << 4)) {
+                *(f32*)(self + 0x238) = (f32)(s32)(((*(u32*)(self + 0x90) >> 17) & 0x1f) << 4);
+            }
+        } else {
+            *(f32*)(self + 0x23c) += 1.0f;
+            if (*(f32*)(self + 0x23c) >= (f32)(s32)(((*(u32*)(self + 0x90) >> 17) & 0x1f) << 4)) {
+                *(f32*)(self + 0x23c) = (f32)(s32)(((*(u32*)(self + 0x90) >> 17) & 0x1f) << 4);
+            }
+        }
+    } else {
+        if ((s32)((*(u32*)(self + 0x90) >> 12) & 0x1f) < 2) {
+            *(f32*)(self + 0x238) -= 1.0f;
+            if (*(f32*)(self + 0x238) <= 0.0f) {
+                *(f32*)(self + 0x238) = 0.0f;
+            }
+        } else {
+            *(f32*)(self + 0x23c) -= 1.0f;
+            if (*(f32*)(self + 0x23c) <= 0.0f) {
+                *(f32*)(self + 0x23c) = 0.0f;
+            }
+        }
+    }
+
+    JGeometry::TVec3f oldC(0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68),
+                           0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c), 0.0f);
+    switch ((s32)((*(u32*)(self + 0x90) >> 12) & 0x1f)) {
+    case 0:
+        *(f32*)(self + 0x60) = 0.0f;
+        *(f32*)(self + 0x64) = 3.0f;
+        *(f32*)(self + 0x68) = *(f32*)(self + 0x238);
+        *(f32*)(self + 0x6c) = *(f32*)(self + 0x23c) - 3.0f;
+        break;
+    case 1:
+        *(f32*)(self + 0x60) = -*(f32*)(self + 0x238);
+        *(f32*)(self + 0x64) = 3.0f;
+        *(f32*)(self + 0x68) = 0.0f;
+        *(f32*)(self + 0x6c) = *(f32*)(self + 0x23c) - 3.0f;
+        break;
+    case 2:
+        *(f32*)(self + 0x60) = 3.0f;
+        *(f32*)(self + 0x64) = 0.0f;
+        *(f32*)(self + 0x68) = *(f32*)(self + 0x238) - 3.0f;
+        *(f32*)(self + 0x6c) = *(f32*)(self + 0x23c);
+        break;
+    case 3:
+        *(f32*)(self + 0x60) = 3.0f;
+        *(f32*)(self + 0x64) = -*(f32*)(self + 0x23c);
+        *(f32*)(self + 0x68) = *(f32*)(self + 0x238) - 3.0f;
+        *(f32*)(self + 0x6c) = 0.0f;
+        break;
+    }
+
+    u8* t = *(u8**)(self + 0x240);
+    *(f32*)(self + 0x230) = *(f32*)(self + 0x238) / (f32)*(u16*)(t + 2);
+    *(f32*)(self + 0x234) = *(f32*)(self + 0x23c) / (f32)*(u16*)(t + 4);
+    JGeometry::TVec3f newC(0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68),
+                           0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c), 0.0f);
+
+    for (s32 i = 0; i < 4; i++) {
+        if (tuCheckHit(self, i)) {
+            if (!(newC - oldC).isZero()) {
+                JGeometry::TVec3f d = newC - oldC;
+                fn_8023DF68(i, &d);
+            }
+        }
     }
 }
 
