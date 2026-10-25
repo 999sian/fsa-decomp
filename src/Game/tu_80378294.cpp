@@ -1,6 +1,5 @@
 
 
-#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 #define Vec SDKVec
 #include "JSystem/JGeometry/Vec.h"
