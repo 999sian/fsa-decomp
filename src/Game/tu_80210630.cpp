@@ -104,12 +104,22 @@ extern "C" void* lbl_804C3128[];
 extern "C" void fn_80210A30(char* p, float* out);
 static inline void getBox(char* p, float* out)
 {
-	float y = *(float*)(p + 0x58);
-	float x = *(float*)(p + 0x54);
-	out[0] = -16.0f * x;
-	out[1] = -24.0f * y;
-	out[2] = 16.0f * x;
-	out[3] = 8.0f * y;
+    float right;
+    float bottom;
+    float y;
+    float x;
+    float left;
+    float top;
+    y = *(float*)(p + 0x58);
+    x = *(float*)(p + 0x54);
+    left = lbl_8053FAE0;
+    top = lbl_8053FAE4;
+    right = lbl_8053FADC;
+    bottom = lbl_8053FAD8;
+    out[0] = left * x;
+    out[1] = top * y;
+    out[2] = right * x;
+    out[3] = bottom * y;
 }
 extern "C" void fn_80210990(char* p, int side, float* out)
 {
