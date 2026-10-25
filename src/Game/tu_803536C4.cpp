@@ -12,11 +12,6 @@ struct FsaResourceManager {
 };
 
 extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, DrawRec*);
-struct SpriteTables {
-    s32 frames[8];
-    s32 bodyFrames[4];
-    char resourceName[24];
-};
 extern "C" s32 lbl_80472240[];
 extern f32 lbl_80542710;
 extern f32 lbl_80542714;
