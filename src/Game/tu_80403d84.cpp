@@ -110,9 +110,10 @@ static inline s32 EC80Bit28(s32 idx, s32 shift) {
 }
 
 // Pane pair of a 0x14-byte entry at self + 0x28 (one per row, 8 rows).
+class J2DPane;
 struct PaneRef {
 	u8 pad0[4];
-	void* pane; // 0x4
+	J2DPane* pane; // 0x4
 	f32 x;      // 0x8
 	f32 y;      // 0xc
 	u8 pad10[8];
@@ -659,13 +660,16 @@ extern "C" void fn_8040E298(u8* self) {
     }
 }
 
+extern "C" const f32 lbl_80543948;
+#pragma opt_propagation off
 extern "C" void fn_8040E3A0(u8* self) {
+	f32 baseSpeed = 3.4f;
 	s32 idx = *(s32*)(self + 0x340) * 4 + *(s32*)(self + 0x348);
 	f32 tx = lbl_8048C95C[idx * 2];
 	f32 dx = tx - *(f32*)(self + 0x394);
 	f32 tz = lbl_8048C95C[idx * 2 + 1];
 	f32 dz = tz - *(f32*)(self + 0x398);
-	f32 speed = (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f + 3.4f;
+	f32 speed = baseSpeed + (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f;
 	f32 dist = std::sqrtf(dx * dx + dz * dz);
 
 	if (*(u8*)(self + 0x664)) {
@@ -695,7 +699,9 @@ extern "C" void fn_8040E3A0(u8* self) {
 	if (*(f32*)(self + 0x394) == tx) {
 		*(s32*)(self + 0x360) = 0x10;
 	} else {
-		s32 raw = (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dz));
+		f32 angle = JMath::atanTable_.atan2_(-dx, -dz);
+        angle *= 10430.378f;
+        s32 raw = (s32)angle;
 		u16 ang = raw;
 		if (ang < 0x2000 || ang >= 0xe000) {
 			*(s32*)(self + 0x360) = 0x18;
@@ -708,7 +714,7 @@ extern "C" void fn_8040E3A0(u8* self) {
 		}
 	}
 }
-
+#pragma opt_propagation on
 extern "C" void fn_8040F16C(u8* self) {
     *(s16*)(self + 0x434) += 0x200;
     *(s16*)(self + 0x436) += 0x400;
@@ -2380,8 +2386,6 @@ extern "C" void fn_80408114(u8* __restrict self) {
 #pragma peephole reset
 extern "C" void fn_804083D8(u8* self) {
 	u8* p = self;
-	u32 bx0, ax0, bz0, az0, by0, ay0;
-	u32 bx1, ax1, bz1, az1, by1, ay1;
 	f32 t;
 	f32 yX;
 	f32 yY;
@@ -2391,34 +2395,28 @@ extern "C" void fn_804083D8(u8* self) {
 	for (int i = 0; i < 8; i++, p += 0x14) {
 		if (i == *(s32*)(self + 0x340)) {
 			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f / sx, 1.0f / sy);
-			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x18)))((*(PaneRef**)(p + 0x2c))->pane, 72.0f, 36.0f);
+			((J2DPane*)(*(PaneRef**)(p + 0x2c))->pane)->resize(72.0f, 36.0f);
 			t = *(f32*)((u8*)getBounds__7J2DPaneFv((*(PaneRef**)(p + 0x28))->pane) + 4);
 			yX = (*(PaneRef**)(p + 0x28))->y;
 			yY = (*(PaneRef**)(p + 0x30))->y;
-			f32 dx = (*(PaneRef**)(p + 0x28))->x - *(f32*)getBounds__7J2DPaneFv((*(PaneRef**)(p + 0x28))->pane);
-			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0x10)))((*(PaneRef**)(p + 0x30))->pane, (*(PaneRef**)(p + 0x30))->x + dx, yY + (yX - t));
-			ax0 = *(u32*)(self + 0x31c);
-			bx0 = *(u32*)(self + 0x334);
-			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x28))->pane + 0x130)))((*(PaneRef**)(p + 0x28))->pane, &bx0, &ax0);
-			az0 = *(u32*)(self + 0x320);
-			bz0 = *(u32*)(self + 0x338);
-			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x130)))((*(PaneRef**)(p + 0x2c))->pane, &bz0, &az0);
-			ay0 = *(u32*)(self + 0x324);
-			by0 = *(u32*)(self + 0x33c);
-			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0xac)))((*(PaneRef**)(p + 0x30))->pane, &by0, &ay0);
+			f32* bounds=(f32*)getBounds__7J2DPaneFv((*(PaneRef**)(p+0x28))->pane);
+            PaneRef* dest=*(PaneRef**)(p+0x30);
+            PaneRef* from=*(PaneRef**)(p+0x28);
+            ((J2DPane*)dest->pane)->move(dest->x+(from->x-bounds[0]),yY+(yX-t));
+			((J2DPicture*)(*(PaneRef**)(p + 0x28))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x334),*(JUtility::TColor*)(self+0x31c));
+			((J2DPicture*)(*(PaneRef**)(p + 0x2c))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x338),*(JUtility::TColor*)(self+0x320));
+			((J2DTextBox*)(*(PaneRef**)(p + 0x30))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x33c),*(JUtility::TColor*)(self+0x324));
 		} else {
 			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f, 1.0f);
-			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x18)))((*(PaneRef**)(p + 0x2c))->pane, (*(PaneRef**)(p + 0x2c))->w, (*(PaneRef**)(p + 0x2c))->h);
-			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0x10)))((*(PaneRef**)(p + 0x30))->pane, (*(PaneRef**)(p + 0x30))->x, (*(PaneRef**)(p + 0x30))->y);
-			ax1 = *(u32*)(self + 0x310);
-			bx1 = *(u32*)(self + 0x328);
-			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x28))->pane + 0x130)))((*(PaneRef**)(p + 0x28))->pane, &bx1, &ax1);
-			az1 = *(u32*)(self + 0x314);
-			bz1 = *(u32*)(self + 0x32c);
-			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x130)))((*(PaneRef**)(p + 0x2c))->pane, &bz1, &az1);
-			ay1 = *(u32*)(self + 0x318);
-			by1 = *(u32*)(self + 0x330);
-			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0xac)))((*(PaneRef**)(p + 0x30))->pane, &by1, &ay1);
+			PaneRef* z=*(PaneRef**)(p+0x2c);
+            f32 h=z->h;
+            ((J2DPane*)z->pane)->resize(z->w,h);
+			PaneRef* d=*(PaneRef**)(p+0x30);
+            f32 y=d->y;
+            ((J2DPane*)d->pane)->move(d->x,y);
+			((J2DPicture*)(*(PaneRef**)(p + 0x28))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x328),*(JUtility::TColor*)(self+0x310));
+			((J2DPicture*)(*(PaneRef**)(p + 0x2c))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x32c),*(JUtility::TColor*)(self+0x314));
+			((J2DTextBox*)(*(PaneRef**)(p + 0x30))->pane)->setBlackWhite(*(JUtility::TColor*)(self+0x330),*(JUtility::TColor*)(self+0x318));
 		}
 	}
 	if (*(s32*)(self + 0x340) < 8) {
@@ -2427,7 +2425,9 @@ extern "C" void fn_804083D8(u8* self) {
 				appendChild__7J2DPaneFP7J2DPane((*(Screen408**)(self + 0x10))->search(0x004E646174613031ULL), (*(PaneRef**)(self + 0x28 + j * 0x14))->pane);
 			}
 		}
-		appendChild__7J2DPaneFP7J2DPane((*(Screen408**)(self + 0x10))->search(0x004E646174613031ULL), (*(PaneRef**)(self + 0x28 + *(s32*)(self + 0x340) * 0x14))->pane);
+		Pane408* parent=(*(Screen408**)(self+0x10))->search(0x004E646174613031ULL);
+        u8* selected=self;selected+=*(s32*)(self+0x340)*0x14;
+        appendChild__7J2DPaneFP7J2DPane(parent,(*(PaneRef**)(selected+0x28))->pane);
 	}
 }
 
