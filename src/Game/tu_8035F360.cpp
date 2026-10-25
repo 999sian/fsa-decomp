@@ -162,6 +162,11 @@ end:
 
 extern "C" s32 lbl_80474020[];
 extern "C" f32 lbl_80542A14;
+extern "C" f32 lbl_80542A00;
+extern "C" f32 lbl_80542A04;
+extern "C" f32 lbl_80542A08;
+extern "C" f32 lbl_80542A0C;
+extern "C" f32 lbl_80542A10;
 extern "C" void fn_8035FD6C(u8* param_1) {
   u8 done;
   struct Entry {
