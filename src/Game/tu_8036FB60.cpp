@@ -394,12 +394,6 @@ extern "C" void fn_803706AC(char* self)
 	}
 }
 
-static inline void move80370764ToTarget(JGeometry::TVec3<f32>& pos) {
-    JGeometry::TVec3<f32>* p = fn_8023E724(0);
-    JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
-    pos = tgt - *p;
-    if (PSVECMag((Vec*)&pos) > lbl_80542DF0) fn_8023DFF4(0, &pos);
-}
 static inline void move80370764ToTarget() {
     JGeometry::TVec3<f32>* p = fn_8023E724(0);
     JGeometry::TVec3<f32> d = JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4) - *p;
