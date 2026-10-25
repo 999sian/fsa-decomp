@@ -84,7 +84,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
 }
 
 extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, const int type) {
-    for (s32 i = 0; i < 80; i++) {
+    for (int i = 0; i < 80; i++) {
         if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
             t->hits[i] = t->ids[i];
             return 1;
@@ -265,8 +265,7 @@ extern "C" void fn_80268BC4(u8* p) {
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (int k = 0; k < 8; k++) {
         f32 y;
-        f32 x;
-        x = lbl_8046BAE8[k].x;
+        f32 x = lbl_8046BAE8[k].x;
         y = lbl_8046BAE8[k].y;
         *(f32*)(p + 8) = x;
         f32 z = lbl_8046BAE8[k].z;
