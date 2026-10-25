@@ -1,6 +1,9 @@
 // RNBW_80129B0C: .text 0x80129B0C-0x8012A5EC (actor RNBW)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#define Vec SDKVec
+#include "JSystem/JGeometry/Vec.h"
+#undef Vec
 #include "Game/Actor.h"
 
 extern "C" void* fn_802D6A9C(void);
@@ -48,14 +51,128 @@ struct RnbwActor {
 
 inline void releaseHandle(void*& h) { fn_801EE434(h); h = 0; }
 
+extern "C" void fn_80129B0C(void* this_) {
+    Actor* actor = (Actor*)this_;
+    actor->Actor::v03();
+    s32 state = *(s32*)((char*)this_ + 0x238);
+    switch (state) {
+    case 0:
+        if ((u8)actor->v11()) {
+            *(s32*)((char*)this_ + 0x238) = 1;
+            if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39f, 0, -1, 0, 0, 1);
+                s32 i = 0;
+                void** hp = (void**)this_;
+                u16* idp = lbl_80465098;
+                do {
+                    if (hp[0x8f] == 0) {
+                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                    }
+                    i++;
+                    idp++;
+                    hp++;
+                } while (i < 5);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x3a0, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39b, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39c, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39d, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39e, 0, -1, 0, 0, 1);
+            } else {
+                u16* idp = lbl_804650A4;
+                void** hp = (void**)this_;
+                s32 i = 0;
+                do {
+                    if (hp[0x8f] == 0) {
+                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                    }
+                    i++;
+                    idp++;
+                    hp++;
+                } while (i < 5);
+            }
+            if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
+                fn_801F0E34(this_, 0x5004d, 0);
+                *(s32*)((char*)this_ + 0x234) = 0;
+            }
+        }
+        break;
+    case 1:
+        break;
+    }
+}
+
+extern "C" void fn_8012A008(void* this_) {
+    Actor* actor = (Actor*)this_;
+    actor->Actor::v01();
+    *(s32*)((char*)this_ + 0x230) = (*(u32*)((char*)this_ + 0x90) >> 22) & 0x1f;
+    if ((u8)actor->v11()) {
+        *(s32*)((char*)this_ + 0x238) = 1;
+        switch (*(s32*)((char*)this_ + 0x238)) {
+        case 1:
+            if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39f, 0, -1, 0, 0, 1);
+                s32 i = 0;
+                void** hp = (void**)this_;
+                u16* idp = lbl_80465098;
+                do {
+                    if (hp[0x8f] == 0) {
+                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                    }
+                    i++;
+                    idp++;
+                    hp++;
+                } while (i < 5);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x3a0, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39b, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39c, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39d, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39e, 0, -1, 0, 0, 1);
+            } else {
+                u16* idp = lbl_804650A4;
+                void** hp = (void**)this_;
+                s32 i = 0;
+                do {
+                    if (hp[0x8f] == 0) {
+                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                    }
+                    i++;
+                    idp++;
+                    hp++;
+                } while (i < 5);
+            }
+            if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
+                fn_801F0E34(this_, 0x5004d, 0);
+                *(s32*)((char*)this_ + 0x234) = 0;
+            }
+            break;
+        case 0:
+        default:
+            break;
+        }
+    }
+    *(f32*)((char*)this_ + 0x60) = lbl_8053CB4C;
+    *(f32*)((char*)this_ + 0x64) = lbl_8053CB50;
+    *(f32*)((char*)this_ + 0x68) = lbl_8053CB54;
+    *(f32*)((char*)this_ + 0x6c) = lbl_8053CB58;
+    *(f32*)((char*)this_ + 0x70) = *(f32*)((char*)this_ + 0x60);
+    *(f32*)((char*)this_ + 0x74) = *(f32*)((char*)this_ + 0x64);
+    *(f32*)((char*)this_ + 0x78) = *(f32*)((char*)this_ + 0x68);
+    *(f32*)((char*)this_ + 0x7c) = *(f32*)((char*)this_ + 0x6c);
+    *(f32*)((char*)this_ + 0x80) = *(f32*)((char*)this_ + 0x60);
+    *(f32*)((char*)this_ + 0x84) = *(f32*)((char*)this_ + 0x64);
+    *(f32*)((char*)this_ + 0x88) = *(f32*)((char*)this_ + 0x68);
+    *(f32*)((char*)this_ + 0x8c) = *(f32*)((char*)this_ + 0x6c);
+}
+
 extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_8049E610;
-        RnbwActor* actor = (RnbwActor*)this_;
+        void* zero = 0;
         s32 i = 0;
+        void** handles = (void**)this_;
         for (; i < 5; i++) {
-            fn_801EE434(actor->mHandles[i]);
-            actor->mHandles[i] = 0;
+            fn_801EE434(handles[0x8f + i]);
+            handles[0x8f + i] = zero;
         }
         __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
