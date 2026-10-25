@@ -7,7 +7,8 @@ struct JMathSinCos {
 };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" void* lbl_8053AAF8;
-extern "C" s32 fn_802D6A9C(void);
+struct ActorRoomModes;
+extern "C" ActorRoomModes* fn_802D6A9C(void);
 extern "C" char lbl_804AB098[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_8031A210(Actor* p, s16 n) {
@@ -79,9 +80,10 @@ extern "C" void fn_8031B994(Actor* p) {
         char* g = (char*)lbl_8053AAF8;
         u32 s = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
         *(u32*)(g + 0xb4) = s;
-        b1 = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+        b1 = *(u32*)(g + 0xb4);
     }
     }
+    b1 = (b1 >> 9) | 0x3f800000;
             *(s32*)((char*)p + 0x27c) = (s32)(65536.0f * (*(f32*)&b1 - 1.0f));
     *(s32*)((char*)p + 0x230) = 0;
     *(s32*)((char*)p + 0x234) = *(s32*)((char*)p + 0x230);
@@ -99,7 +101,7 @@ extern "C" void fn_8031B994(Actor* p) {
     }
     {
         s32 room = *(s32*)((char*)p + 4);
-        if (*(u8*)(fn_802D6A9C() + (u32)room + 0x131df) != 0) {
+        if (((ActorRoomModes*)fn_802D6A9C())->mode[(u32)room] != 0) {
             *(f32*)((char*)p + 0x10) = *(f32*)((char*)p + 0x10) - *(f32*)((char*)p + 0x14);
             *(f32*)((char*)p + 0x14) = 0.0f;
             *(s32*)((char*)p + 0xb0) = 0x20000;
