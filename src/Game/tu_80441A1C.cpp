@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 struct Slot0 {
     virtual void slot0(s32 arg);
 };
@@ -23,7 +24,7 @@ extern "C" f32 lbl_80543D4C;
 extern "C" f64 lbl_80543D50;
 extern "C" f64 lbl_80543D58;
 extern "C" u8 lbl_804AF86C[];
-extern "C" u8 lbl_8050DB0C[];
+extern "C" const u8 lbl_8050DB0C[];
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
@@ -128,6 +129,173 @@ struct Unk80442254Vt {
     virtual void* m13(s32, s32, u32, s32) = 0;
 };
 
+extern "C" s32 fn_80441A1C(char* this_) {
+    u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (*(s32*)(this_ + 0x14) << 1)) & 3;
+    if (f == 1) {
+        if (fn_8030A258(lbl_8053AD30, fn_8030AAF4(*(s32*)(this_ + 0x14)))) {
+            s16* tbl = (s16*)lbl_8050DB0C;
+            if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) > tbl[0x94 / 2]) {
+                *(s16*)(*(char**)(this_ + 0x8) + 0x26) = tbl[0x94 / 2];
+            }
+            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > tbl[0x92 / 2] + tbl[0x94 / 2]) {
+                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = tbl[0x92 / 2] + tbl[0x94 / 2];
+            }
+            *(s32*)(this_ + 0x18) = 0xb;
+        }
+    } else if (f == 2) {
+        if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(*(s32*)(this_ + 0x14)))) {
+            s16* tbl = (s16*)lbl_8050DB0C;
+            if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) > tbl[0x94 / 2]) {
+                *(s16*)(*(char**)(this_ + 0x8) + 0x26) = tbl[0x94 / 2];
+            }
+            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > tbl[0x92 / 2] + tbl[0x94 / 2]) {
+                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = tbl[0x92 / 2] + tbl[0x94 / 2];
+            }
+            *(s32*)(this_ + 0x18) = 0xb;
+        }
+    }
+    switch (*(s32*)(this_ + 0x18)) {
+    case 1: {
+        u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (*(s32*)(this_ + 0x14) << 1)) & 3;
+        if (f == 2) {
+            if (!AnimTable_IsField0xdcLessThan3(lbl_8053AD30, fn_8030AAF4(*(s32*)(this_ + 0x14)))) {
+                break;
+            }
+        }
+        (*(s32*)(this_ + 0x1c))++;
+        s16* tbl = (s16*)lbl_8050DB0C;
+        s32 t = tbl[0x8c / 2] + 2;
+        if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) < t) {
+            *(s16*)(*(char**)(this_ + 0x8) + 0x26) += 1;
+            Unk80441A1CVt* obj = (Unk80441A1CVt*)*(void**)(*(char**)(this_ + 0x8) + 0x4);
+            obj->m9((s32)(((f32)(*(s16*)(*(char**)(this_ + 0x8) + 0x26) * *(s16*)(*(char**)(this_ + 0x8) + 0x26)) / (f32)(t * t)) * (f32)(u8)(*(char**)(this_ + 0x8))[0x28]));
+        }
+        if (*(s32*)(this_ + 0x1c) >= 0x78) {
+            *(s32*)(this_ + 0x1c) = 0;
+            *(s32*)(this_ + 0x18) = 2;
+        }
+        break;
+    }
+    case 2: {
+        (*(s32*)(this_ + 0x1c))++;
+        s16* tbl = (s16*)lbl_8050DB0C;
+        s32 t = tbl[0x8c / 2] + 2;
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) < t) {
+            *(s16*)(*(char**)(this_ + 0xc) + 0x26) += 1;
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, ((f32)(*(s16*)(*(char**)(this_ + 0xc) + 0x26) * *(s16*)(*(char**)(this_ + 0xc) + 0x26)) / (f32)(t * t)) * ((f32)tbl[0x90 / 2] + lbl_80543D48) + lbl_80543D44);
+        }
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) >= t) {
+            *(s32*)(this_ + 0x18) = 3;
+        }
+        break;
+    }
+    case 3: {
+        (*(s32*)(this_ + 0x1c))++;
+        s16* tbl = (s16*)lbl_8050DB0C;
+        s32 t = tbl[0x8c / 2] + tbl[0x8e / 2] + 2;
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) < t) {
+            *(s16*)(*(char**)(this_ + 0xc) + 0x26) += 1;
+            s32 d = t - *(s16*)(*(char**)(this_ + 0xc) + 0x26);
+            s32 g8e = tbl[0x8e / 2];
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, (f32)tbl[0x90 / 2] * ((f32)(d * d) / (f32)(g8e * g8e)));
+        }
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) >= t) {
+            *(s32*)(this_ + 0x18) = 4;
+        }
+        break;
+    }
+    case 4:
+        if (++(*(s32*)(this_ + 0x1c)) >= 0xb4) {
+            *(s32*)(this_ + 0x1c) = 0;
+            *(s32*)(this_ + 0x18) = 5;
+        }
+        break;
+    case 5:
+        if (++(*(s32*)(this_ + 0x1c)) >= 0xb4) {
+            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0xa) {
+                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = 0xa;
+            }
+            *(s32*)(this_ + 0x18) = 0xd;
+        }
+        break;
+    case 6: {
+        if (fn_80309C4C(lbl_8053AD30, 0x1300, -1)) {
+            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0xa) {
+                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = 0xa;
+            }
+            *(s32*)(this_ + 0x18) = 0xd;
+            break;
+        }
+        s32 cnt1 = 0;
+        s32 cnt2 = 0;
+        s32 i;
+        s32 sh = 0;
+        for (i = 0; i < 4; i++, sh += 2) {
+            if (((s32)((u8*)lbl_8053AAF8)[0x83] >> sh & 3) != 0) {
+                cnt1++;
+                if (((s32)((u8*)lbl_8053AAF8)[0x83] >> sh & 3) == 1) {
+                    if (!AnimTable_IsField0xdcLessThan3(lbl_8053AD30, fn_8030AAF4(i))) {
+                        cnt2++;
+                    }
+                }
+                if (((s32)((u8*)lbl_8053AAF8)[0x83] >> sh & 3) == 2) {
+                    if (!AnimTable_IsField0xe0LessThan3(lbl_8053AD30, fn_8030AAF4(i))) {
+                        cnt2++;
+                    }
+                }
+            }
+        }
+        if (cnt1 != cnt2) {
+            break;
+        }
+        *(s32*)(this_ + 0x1c) = 0;
+        *(s32*)(this_ + 0x18) = 5;
+        break;
+    }
+    case 11: {
+        s16* tbl = (s16*)lbl_8050DB0C;
+        s32 sum = tbl[0x92 / 2] + tbl[0x94 / 2];
+        if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) > 0 && *(s16*)(*(char**)(this_ + 0x8) + 0x26) >= *(s16*)(*(char**)(this_ + 0xc) + 0x26)) {
+            *(s16*)(*(char**)(this_ + 0x8) + 0x26) -= 1;
+            Unk80441A1CVt* obj = (Unk80441A1CVt*)*(void**)(*(char**)(this_ + 0x8) + 0x4);
+            obj->m9((s32)(((f32)(*(s16*)(*(char**)(this_ + 0x8) + 0x26) * *(s16*)(*(char**)(this_ + 0x8) + 0x26)) / (f32)(tbl[0x94 / 2] * tbl[0x94 / 2])) * (f32)(u8)(*(char**)(this_ + 0x8))[0x28]));
+        }
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+            *(s16*)(*(char**)(this_ + 0xc) + 0x26) -= 1;
+        }
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > tbl[0x94 / 2]) {
+            s32 d = sum - *(s16*)(*(char**)(this_ + 0xc) + 0x26);
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, (f32)tbl[0x90 / 2] * ((f32)(d * d) / (f32)(tbl[0x92 / 2] * tbl[0x92 / 2])));
+        } else if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, ((f32)(*(s16*)(*(char**)(this_ + 0xc) + 0x26) * *(s16*)(*(char**)(this_ + 0xc) + 0x26)) / (f32)(tbl[0x94 / 2] * tbl[0x94 / 2])) * ((f32)tbl[0x90 / 2] + lbl_80543D48) + lbl_80543D44);
+        } else {
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, lbl_80543D44);
+        }
+        if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) > 0) {
+            break;
+        }
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+            break;
+        }
+        return *(s32*)(this_ + 0x10);
+    }
+    case 13: {
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+            *(s16*)(*(char**)(this_ + 0xc) + 0x26) -= 1;
+            s32 d = 10 - *(s16*)(*(char**)(this_ + 0xc) + 0x26);
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, lbl_80543D48 * ((f32)(d * d) / lbl_80543D4C));
+        }
+        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+            break;
+        }
+        fn_80458F9C(lbl_8053AF80, 0);
+        fn_80459274(lbl_8053AF80);
+        return 1;
+    }
+    }
+    return 0x16;
+}
+
 extern "C" void fn_80442200(void* this_) {
     fn_8013B490(lbl_8053AB10);
     if (*(int*)((char*)this_ + 0x18) != 0) {
@@ -228,5 +396,8 @@ extern "C" void* fn_8044243C(void* this_) {
     *(s32*)(self + 0x18) = 0;
     *(s32*)(self + 0x1c) = 0;
     return this_;
+}
+
+void fn_804425EC(void) {
 }
 
