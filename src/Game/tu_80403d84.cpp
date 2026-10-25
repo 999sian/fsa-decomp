@@ -627,14 +627,7 @@ struct StateFnEntry {
 	s32 vtblOfs;
 	void* fn;
 };
-struct StateFnTable22 {
-	StateFnEntry e[22];
-};
-struct StateFnTable4 {
-	StateFnEntry e[4];
-};
-
-static StateFnTable22 sStateFnInit = {{
+static StateFnEntry sStateFnInit[22] = {
 	{0, -1, (void*)fn_8040F3AC}, {0, -1, (void*)fn_8040F35C}, {0, -1, (void*)fn_8040F288},
 	{0, -1, (void*)fn_8040F16C}, {0, -1, (void*)fn_8040ED20}, {0, -1, (void*)fn_8040E838},
 	{0, -1, (void*)fn_8040E720}, {0, -1, (void*)fn_8040E700}, {0, -1, (void*)fn_8040E3A0},
@@ -643,14 +636,22 @@ static StateFnTable22 sStateFnInit = {{
 	{0, -1, (void*)fn_80409FDC}, {0, -1, (void*)fn_8040B93C}, {0, -1, (void*)fn_8040B5A0},
 	{0, -1, (void*)fn_8040B388}, {0, -1, (void*)fn_804096E8}, {0, -1, (void*)fn_80409450},
 	{0, -1, (void*)fn_80409330},
-}};
-static StateFnTable22 sStateFns = sStateFnInit;
+};
+static StateFnEntry sStateFns[22] = {
+	sStateFnInit[0], sStateFnInit[1], sStateFnInit[2], sStateFnInit[3], sStateFnInit[4],
+	sStateFnInit[5], sStateFnInit[6], sStateFnInit[7], sStateFnInit[8], sStateFnInit[9],
+	sStateFnInit[10], sStateFnInit[11], sStateFnInit[12], sStateFnInit[13], sStateFnInit[14],
+	sStateFnInit[15], sStateFnInit[16], sStateFnInit[17], sStateFnInit[18], sStateFnInit[19],
+	sStateFnInit[20], sStateFnInit[21],
+};
 
-static StateFnTable4 sIntroFnInit = {{
+static StateFnEntry sIntroFnInit[4] = {
 	{0, -1, (void*)fn_80403F50}, {0, -1, (void*)fn_80403EAC},
 	{0, -1, (void*)fn_80403E24}, {0, -1, (void*)fn_80403D84},
-}};
-static StateFnTable4 sIntroFns = sIntroFnInit;
+};
+static StateFnEntry sIntroFns[4] = {
+	sIntroFnInit[0], sIntroFnInit[1], sIntroFnInit[2], sIntroFnInit[3],
+};
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "Game/ItemBase.h"
