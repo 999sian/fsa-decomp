@@ -52,8 +52,6 @@ struct VObj8045 {
     virtual void v3(void);
     virtual void v4(void);
     virtual void v5(void);
-    virtual void v6(void);
-    virtual void v7(void);
     virtual u32 v8(void);
 };
 extern "C" void fn_8045B030(void* param_1, u8 param_2, s8 param_3) {
@@ -82,9 +80,9 @@ extern "C" void fn_8045B030(void* param_1, u8 param_2, s8 param_3) {
         piVar2 = (void**)fn_80456334(param_1, &tmp, 0);
     }
     if (param_3 != 0 && piVar2 != 0) {
-        void* obj = *piVar2;
+        VObj8045* obj = (VObj8045*)*piVar2;
         if (obj != 0) {
-            u32 r = ((u32 (*)(void*))(*(void***)obj)[8])(obj);
+            u32 r = obj->v8();
             writePort__8JASTrackFUlUs((void*)r, 9, param_3);
         }
     }
