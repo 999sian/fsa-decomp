@@ -1,10 +1,12 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 
 extern "C" u8* lbl_8053AAF8;
 extern "C" u8* lbl_8053AB10;
 extern "C" char lbl_8046ADF0[];
-extern "C" f32 lbl_8053FFD8;
+extern "C" const f32 lbl_8053FFD8;
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, struct SobDrawParam* prm);
 extern "C" void fn_803075AC(void* p, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
@@ -125,6 +127,39 @@ extern "C" void fn_802297FC(Actor* this_) {
     }
 }
 
+extern "C" void fn_80229F1C(Actor* this_) {
+    u8* p = (u8*)this_;
+    s32 mode;
+    s32 frame;
+    f32* src;
+    *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+    mode = (*(u32*)(p + 0x90) >> 2) & 0x3f;
+    switch (mode) {
+    case 0:
+        frame = *(s32*)(p + 0x230);
+        if (frame <= 2) {
+            *(s32*)(p + 0x234) = 0x85;
+        } else if (frame <= 4) {
+            *(s32*)(p + 0x234) = 0x86;
+        } else if (frame <= 6) {
+            *(s32*)(p + 0x234) = 0x87;
+        } else if (frame <= 8) {
+            *(s32*)(p + 0x234) = 0x88;
+        } else {
+            *(u8*)(p + 0x11c) = 0;
+        }
+        break;
+    case 1:
+        src = fn_8023E724(mode & 3);
+        *(f32*)(p + 0xc) = src[0];
+        *(f32*)(p + 0x10) = src[1];
+        *(f32*)(p + 0x14) = src[2];
+        break;
+    default:
+        break;
+    }
+}
+
 extern "C" u8 fn_8022F514(u32 idx);
 extern "C" f32* fn_8023E724(u32 idx);
 extern "C" u8* lbl_8053AAF8;
@@ -133,13 +168,13 @@ extern "C" char lbl_8046ADF0[];
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, struct SobDrawParam* prm);
 extern "C" void fn_803075AC(void* p, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
-extern "C" f32 lbl_8053FFD8;
-extern "C" f32 lbl_8053FFE0;
-extern "C" f32 lbl_8053FFE8;
-extern "C" f32 lbl_8053FFEC;
-extern "C" f32 lbl_8053FFF0;
-extern "C" f32 lbl_8053FFF4;
-extern "C" f32 lbl_8053FFF8;
+extern "C" const f32 lbl_8053FFD8;
+extern "C" const f32 lbl_8053FFE0;
+extern "C" const f32 lbl_8053FFE8;
+extern "C" const f32 lbl_8053FFEC;
+extern "C" const f32 lbl_8053FFF0;
+extern "C" const f32 lbl_8053FFF4;
+extern "C" const f32 lbl_8053FFF8;
 extern "C" void fn_8022A83C(u8* p) {
     s32 mode = (*(u32*)(p + 0x90) >> 2) & 0x3f;
     f32* src;
@@ -226,5 +261,8 @@ extern "C" void fn_8022A83C(u8* p) {
         }
     }
     *(u8*)(p + 0x11f) = 1;
+}
+
+extern "C" void fn_8022AB40(void) {
 }
 
