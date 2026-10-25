@@ -41,6 +41,32 @@ extern "C" void fn_8003C8D8(char* p) {
     *(f32*)(p + 0x4c) = (*(f32*)(p + 0x28) - *(f32*)(p + 0x24)) / (*(f32*)(p + 0x4) - *(f32*)(p + 0x8));
 }
 
+extern "C" void fn_8003C984(char* p) {
+    void* lbl = lbl_80495450;
+    void* vt = (void*)__vt__11JAIAudience;
+    *(void**)p = vt;
+    *(void**)p = lbl;
+    *(f32*)(p + 0x4) = lbl_8053B2B0;
+    *(f32*)(p + 0x8) = lbl_8053B2B4;
+    *(f32*)(p + 0xc) = lbl_8053B2B8;
+    *(f32*)(p + 0x14) = lbl_8053B2BC;
+    *(f32*)(p + 0x10) = lbl_8053B2C0;
+    *(f32*)(p + 0x28) = lbl_8053B2C4;
+    *(f32*)(p + 0x24) = lbl_8053B2C8;
+    *(f32*)(p + 0x18) = lbl_8053B2CC;
+    *(f32*)(p + 0x1c) = lbl_8053B2D0;
+    *(f32*)(p + 0x20) = lbl_8053B2C8;
+    *(f32*)(p + 0x2c) = lbl_8053B2D4;
+    *(u32*)(p + 0x38) = 0xff;
+    *(f32*)(p + 0x30) = lbl_8053B2D8;
+    *(f32*)(p + 0x34) = lbl_8053B2DC;
+    *(f32*)(p + 0x3c) = (*(f32*)(p + 0x20) - *(f32*)(p + 0x1c)) / *(f32*)(p + 0x10);
+    *(f32*)(p + 0x40) = (*(f32*)(p + 0x18) - *(f32*)(p + 0x1c)) / *(f32*)(p + 0x14);
+    *(f32*)((unsigned short)p + 0x44) = (*(f32*)(p + 0xc) - lbl_8053B2CC) / (*(f32*)(p + 0x4) - *(f32*)(p + 0x8));
+    *(f32*)(p + 0x48) = (f32)*(u32*)(p + 0x38) / (*(f32*)(p + 0x4) - *(f32*)(p + 0x8));
+    *(f32*)(p + 0x4c) = (*(f32*)(p + 0x28) - *(f32*)(p + 0x24)) / (*(f32*)(p + 0x4) - *(f32*)(p + 0x8));
+}
+
 extern "C" void** fn_8003CAB0(void** p, short del) {
     if (p != 0) {
         *p = lbl_804954D8;
@@ -189,6 +215,19 @@ extern "C" void* fn_8003CE04(char* p, int i) {
 extern "C" void PSMTXMultVec(void*, void*, void*);
 extern "C" f32 PSVECMag(void*);
 extern "C" u32 __cvt_fp2unsigned(f64);
+
+static inline u32 fn_8003CE20_level(char* self, f32 dist, BOOL loud) {
+    if (dist > *(f32*)(self + 4)) {
+        if (loud) {
+            return 0xffffffff;
+        }
+        return *(u32*)(self + 0x38);
+    }
+    if (dist < *(f32*)(self + 8)) {
+        return 0;
+    }
+    return __cvt_fp2unsigned(*(f32*)(self + 0x48) * (dist - *(f32*)(self + 8)));
+}
 extern "C" u32 fn_8003CE20(char* param_1, char* param_2) {
     u32 local[2];
 
@@ -208,8 +247,8 @@ extern "C" u32 fn_8003CE20(char* param_1, char* param_2) {
         return 0;
     }
     char* item;
-    char* m = param_1;
     char* p = param_2;
+    char* m = param_1;
     u32* out = local;
     u32 min = 0xffffffff;
     for (int i = 0; i < *(int*)(param_1 + 0x50); i++) {
@@ -218,7 +257,7 @@ extern "C" u32 fn_8003CE20(char* param_1, char* param_2) {
             u32 v;
             PSMTXMultVec(m + 0x54, param_2 + 4, item + 0x14);
             *(f32*)(item + 0x20) = PSVECMag(item + 0x14);
-            bool flag = (param_2[0x10] & 1) != 0;
+            bool flag = (bool)(param_2[0x10] & 1);
             if (*(f32*)(item + 0x20) > *(f32*)(param_1 + 4)) {
                 if (flag) {
                     v = 0xffffffff;
@@ -264,6 +303,77 @@ extern "C" void** fn_8003CFC0(void** p, short del) {
         }
     }
     return p;
+}
+
+extern "C" void* sInstance__33JASGlobalInstance__12JAUSoundInfo;
+extern "C" void* __vt__10JAIAudible[];
+extern "C" void fn_8003B0B0(float* v);
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, unsigned long size, unsigned long n);
+extern "C" void** fn_8003D03C(char* param_1, f32* param_2, u32* param_3, s32 param_4, u32 param_5) {
+    struct Pair {
+        s16 a;
+        s16 b;
+    };
+    struct Vec3 {
+        f32 x;
+        f32 y;
+        f32 z;
+    };
+    s32 i;
+    char* m;
+    void** q;
+    void** obj;
+    char* p;
+    u32 flags;
+    u32 key;
+    u32 w;
+    Pair pair;
+    flags = param_5 | ~((1 << *(u32*)(param_1 + 0x50)) - 1);
+    if (flags == 0xffffffff) {
+        return 0;
+    }
+    obj = (void**)JASPoolAllocObject<JASPoolObj3_FSA>::operator new(0x40);
+    if (obj != 0) {
+        p = (char*)obj;
+        *obj = __vt__10JAIAudible;
+        *obj = lbl_80495518;
+        __construct_array(p + 0x1c, fn_8003B0B0, 0, 0x24, 1);
+        *(s32*)(p + 0x10) = -1;
+        *(Vec3*)(p + 0x4) = *(Vec3*)param_2;
+        if ((flags & 1) == 0) {
+            *(f32*)(p + 0x1c) = lbl_8053B2CC;
+            *(f32*)(p + 0x24) = lbl_8053B2CC;
+            *(f32*)(p + 0x20) = lbl_8053B2C8;
+            *(f32*)(p + 0x28) = lbl_8053B2D4;
+            *(f32*)(p + 0x2c) = lbl_8053B2C8;
+            *(void**)(p + 0x18) = p + 0x1c;
+        } else {
+            *(void**)(p + 0x18) = 0;
+        }
+        *obj = lbl_8049552C;
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    q = obj;
+    m = param_1;
+    for (i = 0; i < *(s32*)(param_1 + 0x50); i++) {
+        char* item = (char*)q[6];
+        if (item != 0) {
+            PSMTXMultVec(m + 0x54, p + 4, item + 0x14);
+            *(f32*)(item + 0x20) = PSVECMag(item + 0x14);
+        }
+        q++;
+        m += 0x30;
+    }
+    if (sInstance__33JASGlobalInstance__12JAUSoundInfo != 0) {
+        key = *param_3;
+        pair.a = ((s16 (*)(void*, u32*))((void**)*(void**)sInstance__33JASGlobalInstance__12JAUSoundInfo)[2])(sInstance__33JASGlobalInstance__12JAUSoundInfo, &key);
+        pair.b = -1;
+        w = *(u32*)&pair;
+        *(u32*)(p + 0x10) = w;
+    }
+    return obj;
 }
 
 extern "C" void* lbl_80495518[];
