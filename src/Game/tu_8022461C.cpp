@@ -633,28 +633,50 @@ extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
     return FALSE;
 }
 
-extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
+static inline u16 tileKindAt(const f32* pos, u32 room) {
     u16 tile = lbl_8046CB88[tileAtOrdered(pos, room)];
-    u16 mapped = tile;
-    if (fn_802D6A9C()[room + 0x131df] != 0) {
+    if ((fn_802D6A9C() + 0x131df)[room] != 0) {
+        if (tile == 0) return 2;
+        if (tile == 0x61) return 0;
+        return tile;
+    }
+    if (tile == 0xe && (u8)lbl_8053AAF8[0x7f] != 0) {
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
+            return 0x51;
+        }
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
+            s32 base = *(s32*)(fn_802D6A9C() + 0x14);
+            u8* g2 = fn_802D6A9C();
+            u8* h = fn_802D6A9C();
+            s32 value = (base + h)[*(s32*)(g2 + 0x18) * 10 + 0x60];
+            if (value == 0x10 && pos[1] > lbl_8053FF50) return 0x51;
+        }
+    }
+    return tile;
+}
+
+extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
+    u32 area = room;
+    u16 tile = lbl_8046CB88[tileAtOrdered(pos, area)];
+    if (fn_802D6A9C()[area + 0x131df] != 0) {
         if (tile == 0) {
-            mapped = 2;
+            tile = 2;
         } else if (tile == 0x61) {
-            mapped = 0;
+            tile = 0;
         }
     } else if (tile == 0xe && lbl_8053AAF8[0x7f] != 0) {
         if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
-            mapped = 0x51;
+            tile = 0x51;
         } else if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
             s32 base = *(s32*)(fn_802D6A9C() + 0x14);
             u8* g2 = fn_802D6A9C();
             u8* h = fn_802D6A9C();
             if (h[base + *(s32*)(g2 + 0x18) * 10 + 0x60] == 0x10 && pos[1] > lbl_8053FF50) {
-                mapped = 0x51;
+                tile = 0x51;
             }
         }
     }
-    s32 k = mapped;
+    s32 k = tile;
     if (k == 0 || k == 2 || k == 0x50) return 0;
     if (k == 0x22 && fn_802D6A9C()[0x170] == 0) return 0;
     if (mode == 1 && (k == 0xc || k == 0x39)) return 0;
