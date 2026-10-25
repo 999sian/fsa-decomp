@@ -487,6 +487,7 @@ extern "C" void fn_80402F04(void* obj, void* pane);
 extern "C" u8 lbl_80529DEC[];
 extern "C" void* lbl_804AF86C[];
 extern void* lbl_8053AD78;
+static inline JUTFont* MessageFont() { return *(JUTFont**)((u8*)lbl_8053AD78+0x154); }
 
 void* fn_80431C38(void* this_, s16 flag) {
     if (this_ != 0) {
