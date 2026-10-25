@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern f32 lbl_8053BFA0;
 extern f32 lbl_8053BFA4;
@@ -630,11 +631,12 @@ extern "C" void fn_801F6884(void* mgr);
 extern "C" void fn_80458FF0(void* p, u32 a, s32 b, s32 c);
 extern "C" void fn_8030C210(void* cam, void* pos);
 extern "C" void fn_800FABC0(char* this_) {
-    f32 z = *(f32*)(this_ + 0x14);
+    f32 b = -35.0f + *(f32*)(this_ + 0x14);
+    f32 d = -2.0f + *(f32*)(this_ + 0x14);
     *(f32*)(this_ + 0x70) = -21.0f;
-    *(f32*)(this_ + 0x74) = -35.0f + z;
+    *(f32*)(this_ + 0x74) = b;
     *(f32*)(this_ + 0x78) = 22.0f;
-    *(f32*)(this_ + 0x7c) = -2.0f + z;
+    *(f32*)(this_ + 0x7c) = d;
     if (((ActorVT11*)this_)->v11(0.0f, -20.0f, 50.0f)) {
         return;
     }
@@ -654,7 +656,7 @@ extern "C" void fn_800FABC0(char* this_) {
         *(u16*)(this_ + 0x2ae) += *(u16*)(this_ + 0x2b0);
         *(f32*)(this_ + 0x2a8) = 1.0f;
         *(u16*)(this_ + 0x260) += 0x200;
-        *(f32*)(this_ + 0x14) = 5.0f * sincosTable___5JMath[((u32)*(u16*)(this_ + 0x260) >> 5) * 2] + *(f32*)(this_ + 0x25c);
+        *(f32*)(this_ + 0x14) = 5.0f * sincosTable___5JMath[(((u32)*(u16*)(this_ + 0x260) & 0xffff) >> 5) * 2] + *(f32*)(this_ + 0x25c);
         switch (*(u8*)(this_ + 0x254)) {
         case 0: {
             char* cam = *(char**)(lbl_8053AB10 + 0x30);
