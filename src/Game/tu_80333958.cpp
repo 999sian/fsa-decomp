@@ -21,8 +21,7 @@ struct Tu80333958ResMgr {
 };
 
 struct Tu80333E8CSelf {
-    virtual void v0();
-    virtual void v1();
+    virtual ~Tu80333E8CSelf();
     virtual void v2();
     virtual void v3();
     virtual void v4();
@@ -203,16 +202,13 @@ extern "C" void fn_80333B64(void* this_) {
 extern "C" void fn_80333E8C(void* this_) {
     char* p = (char*)this_;
     u8 r;
-    u32* vt;
     fn_801F2B7C(this_, -0x64, -1, 1);
-    vt = *(u32**)this_;
-    r = ((u8 (*)(void*))(vt[0x34 / 4]))(this_);
+    r = ((Tu80333E8CSelf*)this_)->v13();
     if (r != 0) {
         return;
     }
     ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
-    vt = *(u32**)this_;
-    r = ((u8 (*)(void*, u32))(vt[0x4c / 4]))(this_, *(u32*)(p + 4));
+    r = ((Tu80333E8CSelf*)this_)->v19(*(u32*)(p + 4));
     if (r != 0 || *(s32*)(p + 0x244) > 0x258) {
         *(u8*)(p + 0x11c) = 0;
     }
