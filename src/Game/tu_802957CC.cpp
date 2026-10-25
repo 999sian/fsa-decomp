@@ -5,6 +5,12 @@ extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
+static inline int houseRoom(u32 flags) {
+    u32 mode = (flags >> 24) & 7;
+    int room = mode + 7;
+    if (mode == 0) room = mode;
+    return room;
+}
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
@@ -371,14 +377,16 @@ extern "C" void fn_80295C40(void* p) {
     }
     fn_801F0E34(p, 0x30092, 0);
 
-    for (k = 0; k < 4; k++) {
-        obj = ((void**)((char*)p + 0x2fc))[k];
+    q = (char*)p;
+    k = 4;
+    do {
+        obj = *(void**)(q + 0x2fc);
         if (obj != 0) {
-            *(u32*)((char*)obj + 0xf4) |= 1;
-            *(s32*)((char*)obj + 0x24) = 1;
-            ((void**)((char*)p + 0x2fc))[k] = 0;
+            ((JPABaseEmitter*)obj)->becomeInvalidEmitter();
+            *(void**)(q + 0x2fc) = 0;
         }
-    }
+        q += 4;
+    } while (--k);
 
     q = (char*)p;
     for (i = 0; i < *(s32*)((char*)p + 0x2a4); i++) {
@@ -685,11 +693,11 @@ extern "C" void fn_80298978(void* p) {
             } else {
                 for (j = 0; j < 4; j++) {
                     JGeometry::setTVec3f((f32*)((char*)obj + 0x238), &pos.x);
+                    key = *(u32*)((char*)obj + 0x90) & 0x7f;
                     f32 x = 8.0f * (f32)((j & 1) > 0) - 4.0f;
                     f32 y = 8.0f * (f32)((j & 2) > 0) - 4.0f;
                     pos.x += x;
                     pos.y += y;
-                    key = *(u32*)((char*)obj + 0x90) & 0x7f;
                     if (key == 0 || key == 3) { pos.y += -16.0f; }
                     else if (key == 1 || key == 2) { pos.y += 16.0f; }
                     else if (key == 0x17) { pos.x += 16.0f; }
