@@ -139,6 +139,12 @@ static inline TimerPicture* GetPicture(u8* this_, u64 key) {
     return (TimerPicture*)(*(SubObj**)(this_ + 4))->w13(key);
 }
 
+// Shows or hides the separator of player idx's timer (both picture layers).
+static inline void SetTimerMark(u8* this_, u8* base, u32 idx, u8 v) {
+    ((u8*)GetPicture(this_, ((u64*)(base + 0xa28 + idx * 0x28))[4]))[0xb0] = v;
+    ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[4]))[0xb0] = v;
+}
+
 // Sets digit `pos` of player idx's timer (both picture layers) to texture tex.
 static inline void SetTimerDigitAt(u8* this_, u64* a, u64* b, u32 pos, u32 tex) {
     GetPicture(this_, a[pos])->changeTexture(tex, 0);
@@ -384,12 +390,11 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
         s32 t = ((s32*)(lbl_80529DEC + 0xe8))[idx];
         s32 j;
         u32 name;
-        u32 s;
         if (t > 9999) {
             t = 9999;
         }
         if (t < 0) {
-            s32 off = idx * 0x28;
+            u32 off = idx * 0x28;
             u64* key = (u64*)(base + 0xa28 + off);
             u64* p = key;
             for (j = 0; j < 5; j++) {
@@ -400,14 +405,14 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
                 t = -5000;
             }
             t *= -1;
-            s = fn_804030C4(0x54494d47, (u32)(base + 0x1058));
+            u32 s = fn_804030C4(0x54494d47, (u32)(base + 0x1058));
             GetPicture(this_, *key)->changeTexture(s, 0);
             GetPicture(this_, *(u64*)(base + 0xac8 + off))->changeTexture(s, 0);
             ((u8*)GetPicture(this_, ((u64*)(base + 0xa28 + off))[4]))[0xb0] = 1;
             ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + off))[4]))[0xb0] = 1;
             sel = 1;
         } else {
-            s32 off = idx * 0x28;
+            u32 off = idx * 0x28;
             u64* p = (u64*)(base + 0xa28 + off);
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(*(JUtility::TColor*)(this_ + 0x214), *(JUtility::TColor*)(this_ + 0x210));
@@ -418,17 +423,14 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
         }
         name = lbl_804B1434[t / 1000];
         t %= 1000;
-        s = fn_804030C4(0x54494d47, name);
-        u64* a = (u64*)(base + 0xa28 + idx * 0x28);
-        u64* b = (u64*)(base + 0xac8 + idx * 0x28);
-        SetTimerDigitAt(this_, a, b, sel, s);
+        SetTimerDigit(this_, base, idx, sel, fn_804030C4(0x54494d47, name));
         name = lbl_804B1434[t / 100];
         t %= 100;
-        SetTimerDigitAt(this_, a, b, sel + 1, fn_804030C4(0x54494d47, name));
+        SetTimerDigit(this_, base, idx, sel + 1, fn_804030C4(0x54494d47, name));
         name = lbl_804B1434[t / 10];
         t %= 10;
-        SetTimerDigitAt(this_, a, b, sel + 2, fn_804030C4(0x54494d47, name));
-        SetTimerDigitAt(this_, a, b, sel + 3, fn_804030C4(0x54494d47, lbl_804B1434[t]));
+        SetTimerDigit(this_, base, idx, sel + 2, fn_804030C4(0x54494d47, name));
+        SetTimerDigit(this_, base, idx, sel + 3, fn_804030C4(0x54494d47, lbl_804B1434[t]));
     }
 }
 
