@@ -528,7 +528,6 @@ extern "C" void fn_8030275C(u8* in, s32 slot, u8 a0, u8 m0) {
     }
 }
 
-#pragma opt_propagation off
 extern "C" void fn_80302C34(u8* __restrict p, s32 player, s32 index, s32 bits, u8 flag) {
     u8* effect;
     s32 off;
@@ -577,7 +576,6 @@ extern "C" void fn_80302C34(u8* __restrict p, s32 player, s32 index, s32 bits, u
     fn_802F86CC(*(void**)(lbl_8053AB10+0x20),pos,res,id,1.0f,1.0f,&rec);
     }
 }
-#pragma opt_propagation reset
 
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
