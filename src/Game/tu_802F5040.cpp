@@ -93,13 +93,6 @@ static inline void PlainTileQuad802F(u16 tile, f32 x, f32 y) {
     GXWGFifo.f32=x;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
 }
 
-static inline void WarpTileQuadPtr802F(u16 tile, f32 x, f32 y, const f32* shifts) {
-    u16 index=tile&0xfff;
-    GXWGFifo.f32=x+shifts[0];GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
-    GXWGFifo.f32=lbl_80541510+x+shifts[0];GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
-    GXWGFifo.f32=lbl_80541510+x+shifts[1];GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
-    GXWGFifo.f32=x+shifts[1];GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
-}
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
 #include "sdk/stl/math.h"
 static inline void DrawTileQuad(u16 t, s32 px, s32 py, f32 ox, f32 oy, f32 oz) {
@@ -1903,13 +1896,14 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
     GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_SRCALPHA,(GXLogicOp)5);
     GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
     GXSetCullMode(GX_CULL_NONE);
-    u16* map=((u16**)(self+0x48))[plane];
+    const u16* map=((u16**)(self+0x48))[plane];
     s32 palette;
     if ((plane&7)==0) {
         if (paletteFlag) palette=1;else palette=2;
     } else palette=1;
+    s32 paletteOffset=palette*4+0x18;
     for (s32 i=0;i<16;i++) {
-        GXInitTlutObj(&tluts[i],((u8**)(self+0x18))[palette]+i*0x20,GX_TL_RGB5A3,16);
+        GXInitTlutObj(&tluts[i],*(u8**)(self+paletteOffset)+i*0x20,GX_TL_RGB5A3,16);
         GXLoadTlut(&tluts[i],lbl_8046FA30[i]);
     }
     s32 clear=0;
@@ -1924,7 +1918,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                     if (wave || (px>-16 && px<240)) {
                         u16 tile=map[((sy*2+sx)*16+row)*16+col];
                         if (tile) {
-                            u16* list=*(u16**)(self+0x24);
+                            const u16* list=*(u16**)(self+0x24);
                             for (s32 dy=0;dy<2;dy++) {
                                 for (s32 dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++;
                             }
