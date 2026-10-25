@@ -713,6 +713,7 @@ extern "C" void fn_8018E30C(char* this_, s32 state) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8018E5E4(char* this_) {
     f32 zero = 0.0f;
     f32 unit;
