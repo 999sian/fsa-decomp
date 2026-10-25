@@ -180,35 +180,30 @@ extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out) {
 }
 
 extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
+    int h = JUTVideo::getManager()->getEfbHeight();
+    int w = JUTVideo::getManager()->getFbWidth();
     f32 hw = 0.5f * size;
-    f32 x = pos[0];
-    const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
-    int h = rm->efbHeight;
-    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
-    *(f32*)(obj + 0x180) = x - hw;
-    int w = rm->fbWidth;
-    f32 y = pos[1];
     f32 hh = 0.5f * (size * (f32)h / (f32)w);
-    *(f32*)(obj + 0x184) = y - hh;
-    *(f32*)(obj + 0x188) = x + hw;
-    *(f32*)(obj + 0x18c) = y + hh;
+    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+    ((JGeometry::TBox2f*)(obj + 0x180))->set(pos[0] - hw, pos[1] - hh, pos[0] + hw, pos[1] + hh);
     obj[0x17e] = 1;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8030C85C(u8* self) {
     u32 zero = 0;
     self[0x1e8] = zero;
-    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235c] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2360] = (u8)zero;
+    if ((*(u8**)(lbl_8053AB10 + 0x20))[0x235c] != 0) {
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x2360] = zero;
     }
-    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235d] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2361] = (u8)zero;
+    if ((*(u8**)(lbl_8053AB10 + 0x20))[0x235d] != 0) {
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x2361] = zero;
     }
-    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235e] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2362] = (u8)zero;
+    if ((*(u8**)(lbl_8053AB10 + 0x20))[0x235e] != 0) {
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x2362] = zero;
     }
-    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235f] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2363] = (u8)zero;
+    if ((*(u8**)(lbl_8053AB10 + 0x20))[0x235f] != 0) {
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x2363] = zero;
     }
     fn_802DCDF4((char*)fn_802D6A9C());
     *(f32*)(self + 0x154) = *(f32*)(self + 0x190);
@@ -220,25 +215,32 @@ extern "C" void fn_8030C85C(u8* self) {
     *(f32*)(self + 0x1c0) = 0.0f;
     *(f32*)(self + 0x1bc) = 0.0f;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8030C928(u8* self, f32* rect) {
-    *(f32*)(self + 0x190) = rect[0];
+    f32 y;
+    f32 x0;
+    f32 bottom;
+    f32 right;
+    x0 = rect[0];
+    y = rect[1];
+    *(f32*)(self + 0x190) = x0;
     *(f32*)(self + 0x194) = rect[1];
-    *(f32*)(self + 0x198) = rect[2];
-    *(f32*)(self + 0x19c) = rect[3];
-    Vec v;
-    v.x = rect[0];
-    v.y = rect[1];
-    v.z = 0.0f;
+    right = rect[2];
+    bottom = rect[3];
+    *(f32*)(self + 0x198) = right;
+    *(f32*)(self + 0x19c) = bottom;
+    JGeometry::TVec3f v(rect[0], y, 0.0f);
     u8* g;
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2360] = g[0x235c];
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2361] = g[0x235d];
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2362] = g[0x235e];
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2363] = g[0x235f];
-    g = *(u8**)(lbl_8053AB10 + 0x20); *(Vec*)(g + 0x2374) = *(Vec*)(g + 0x2368);
-    g = *(u8**)(lbl_8053AB10 + 0x20); *(Vec*)(g + 0x2368) = v;
+    g = *(u8**)(lbl_8053AB10 + 0x20);
+    JGeometry::TVec3f* dst = (JGeometry::TVec3f*)(g + 0x2374);
+    JGeometry::TVec3f* src = (JGeometry::TVec3f*)(g + 0x2368);
+    *dst = *src;
+    g = *(u8**)(lbl_8053AB10 + 0x20); *(JGeometry::TVec3f*)(g + 0x2368) = v;
 }
-
 extern u8 lbl_804AA8E8[];
 extern f32 lbl_805416EC;
 extern f32 lbl_805416C8;
