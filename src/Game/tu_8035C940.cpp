@@ -202,7 +202,7 @@ extern "C" JGeometry::TVec3<f32> fn_8035CE78(Unk8035CD00* p) {
     else if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) p->m270 |= 2;
     return ret;
 }
-typedef Vec (Unk8035CD00::*Unk8035CD00Func)();
+typedef JGeometry::TVec3<f32> (Unk8035CD00::*Unk8035CD00Func)();
 extern Unk8035CD00Func lbl_804AD594[];
 extern const f32 lbl_80542948;
 extern const f32 lbl_8054294C;
@@ -213,8 +213,9 @@ extern const f32 lbl_80542964;
 extern const s16 lbl_80472798[];
 extern "C" void fn_8035CF50(Unk8035CD00* self) {
     char* p = (char*)self;
-    Vec v;
     Vec d;
+    Vec v;
+    Vec w;
     f32 mag;
     s16 prev;
 
@@ -252,7 +253,7 @@ extern "C" void fn_8035CF50(Unk8035CD00* self) {
         }
     }
     prev = *(s16*)(p + 0x260);
-    v = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
+    v = w = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
     d.x = v.x - *(f32*)(p + 0xc);
     d.y = v.y - *(f32*)(p + 0x10);
     d.z = lbl_80542930;
