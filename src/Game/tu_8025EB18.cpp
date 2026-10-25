@@ -221,7 +221,7 @@ extern "C" bool fn_8025EB18(char* p) {
         }
     } else {
     char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
-    if (actor && ((u8(*)(char*, s32, JGeometry::TVec3<f32>*))(*(void***)actor)[19])(actor, S32(p, 0x3b4), &VEC(p, 0x2f4))) {
+    if (actor && ((ItemBase*)actor)->v17(S32(p, 0x3b4), (f32*)&VEC(p, 0x2f4))) {
         F32(p, 0x2f4) = F32(p, 0x8);
         F32(p, 0x2f8) = F32(p, 0xc);
         return true;
