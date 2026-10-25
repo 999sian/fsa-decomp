@@ -60,7 +60,7 @@ extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec,
 extern "C" void fn_803075AC(void* h, s32 room, void* pos, s32 id, s32 sign, s32 two, s32 minus1, s32 p7, s32 u, s32 zero);
 extern "C" void fn_802F86CC(void* obj, Vec3f* pos, void* p3, s32 id, f32 a, f32 b, DrawRec* rec);
 extern "C" void* fn_801F856C(void);
-extern "C" void Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
+extern "C" s32 Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
 extern "C" void fn_801597C0(FSAVirtBase* p) {
     p->m7();
 }
@@ -118,7 +118,7 @@ extern "C" void fn_802362C4(void* p, void* v);
 extern "C" void fn_8043D874(u8* p, void* q, void* r, s32 s);
 extern "C" void fn_802ED140(void*);
 extern "C" void* fn_8023E724(void*);
-extern "C" void Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
+extern "C" s32 Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
 extern "C" void fn_80159AA0(char* this_) {
     char* a = *(char**)(this_ + 0x2a8);
     if (a != NULL) {
@@ -158,9 +158,10 @@ extern "C" void fn_80159AA0(char* this_) {
         *(s32*)(this_ + 0x278) = -1;
     }
     if (*(s32*)(this_ + 0x294) >= 0) {
-        *(Vec3f*)(this_ + 0x27c) = *(Vec3f*)fn_8023E724(*(void**)(this_ + 0x250));
+        JGeometry::setTVec3f((const f32*)fn_8023E724(*(void**)(this_ + 0x250)), (f32*)(this_ + 0x27c));
     }
-    Actor_CreateByID(fn_801F856C(), 0x4C535449, *(void**)(this_ + 0x4), this_ + 0x27c, (*(u32*)(this_ + 0x298) << 22) | *(u32*)(this_ + 0x294), -1, -1);
+    u32 flags = (*(u32*)(this_ + 0x298) << 22) | *(u32*)(this_ + 0x294);
+    Actor_CreateByID(fn_801F856C(), 0x4C535449, *(void**)(this_ + 0x4), this_ + 0x27c, flags, -1, -1);
 }
 
 extern "C" void fn_80159C28(char* this_) {
