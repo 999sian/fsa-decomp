@@ -30,26 +30,13 @@ extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, DrawRec* rec
 extern "C" void fn_801EF830(s32 idx, void* pos, DrawRec* rec, u32 mask, const char* name, s32 id, s32 p7);
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* prm);
 extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10);
-static inline void setDrawMatrix(f32 mtx[3][4], f32 s, const char* p) {
-    PSMTXIdentity(mtx);
-    f32 ay = *(const f32*)(p + 0x23c);
-    f32 sx, sy, sz, cx, cy, cz;
-    sx = sin(lbl_80541A20);
-    sy = sin(ay);
-    sz = sin(lbl_80541A20);
-    cx = cos(lbl_80541A20);
-    cy = cos(ay);
-    cz = cos(lbl_80541A20);
-    mtx[0][0] = s * (cy * cz);
-    mtx[1][0] = s * (cy * sz);
-    mtx[2][0] = s * -sy;
-    mtx[0][1] = s * (sx * sy * cz - cx * sz);
-    mtx[1][1] = s * (sx * sy * sz + cx * cz);
-    mtx[2][1] = s * (sx * cy);
-    mtx[0][2] = s * (cx * cz * sy + sx * sz);
-    mtx[1][2] = s * (cx * sz * sy - sx * cz);
-    mtx[2][2] = s * (cx * cy);
-}
+struct FsaResourceManager {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void* getResource(u32 fourccType, const char* fileName);
+};
 
 extern "C" void fn_8031E144(Actor* p) {
     char* c = (char*)p;
