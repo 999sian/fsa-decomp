@@ -164,7 +164,7 @@ extern "C" void fn_80432638(void* obj);
 extern "C" u8 fn_80301D30(s32 i);
 extern "C" s32 fn_8030AAF4(s32 i);
 extern "C" s32 AnimTable_IsField0xe0LessThan3(void* table, s32 slot);
-extern "C" void fn_802FB69C(u8* p, s32 i, s32 a, u8* b, u8* c, u8 d, u8 e, u8 f);
+
 extern void* lbl_8053AD30;
 extern u8 lbl_8053ACF0[4];
 extern u8 lbl_80506D88[];
