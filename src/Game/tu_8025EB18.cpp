@@ -1798,7 +1798,7 @@ extern "C" void fn_80263860(char* p) {
         p[0x3fd] = 2;
         fn_80251AEC(p, 0x12);
     }
-    const JGeometry::TVec3<f32>& pos = lbl_8046B310[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
+    const volatile JGeometry::TVec3<f32>& pos = lbl_8046B310[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
     f32 x = pos.x;
     f32 y = pos.y;
     F32(p, 0x2f4) = x;
@@ -1812,13 +1812,13 @@ extern "C" void fn_80263860(char* p) {
         if (fn_802A3164(lbl_8053AC98, &v, S32(p, 4), S32(p, 0x3b4))) {
             char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
             if (actor)
-                ((void (*)(void*))(*(void***)actor)[18])(actor);
+                ((Actor*)actor)->v16();
         }
     }
     if (fn_8025EB18(p)) {
         p[0x3fd] = 1;
         p[0x459] = 0;
-        const JGeometry::TVec3<f32>& pos2 = lbl_8046B310[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
+        const volatile JGeometry::TVec3<f32>& pos2 = lbl_8046B310[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
         f32 x2 = pos2.x;
         f32 y2 = pos2.y;
         F32(p, 0x2f4) = x2;
@@ -1827,7 +1827,7 @@ extern "C" void fn_80263860(char* p) {
         F32(p, 0x2fc) = z2;
         VEC(p, 0x2f4).add(VEC(p, 8));
         if (VEC(p, 0x35c).length() < lbl_80540188) {
-            const JGeometry::TVec3<f32>& pos3 = lbl_8046B310[S32(p, 0x3dc) * 5 + 2];
+            const volatile JGeometry::TVec3<f32>& pos3 = lbl_8046B310[S32(p, 0x3dc) * 5 + 2];
             f32 x3 = pos3.x;
             f32 y3 = pos3.y;
             F32(p, 0x35c) = x3;
