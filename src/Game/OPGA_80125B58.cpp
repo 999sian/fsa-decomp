@@ -182,6 +182,165 @@ extern "C" void fn_80125CDC(u8* this_) {
     }
 }
 
+extern const f32 lbl_8053CA74;
+extern const f32 lbl_8053CA8C;
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" s32 fn_8022FD8C(s32 handle);
+extern "C" u8 fn_802300EC(void);
+extern "C" void fn_8022FEB8(f32* box, s32 room, s32 handle, s32 a, s32 b);
+extern "C" void fn_8022FF8C(s32 a, f32* box, s32 room, s32 handle, s32 b, s32 c);
+extern "C" u8 fn_80388CAC(s32 a, s32 b);
+extern "C" u8 fn_8038AD24(s32 a, u16 kind, s32 handle, s32 room, JGeometry::TVec3f* p, s32 e);
+extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
+extern "C" void fn_8030C210(void* a, void* b);
+extern "C" void fn_801D1C18(void* p);
+inline void opgaChangeState(u8* p, s32 state) {
+    *(s32*)(p + 0x234) = state;
+    switch (*(s32*)(p + 0x234)) {
+    case 0: p[0x230] = 0; break;
+    case 1:
+        ((OpgaVT*)p)->v12(0xff, 1);
+        p[0x230] = 1;
+        p[0x11d] = 1;
+        *(s32*)(p + 0x23c) = -1;
+        break;
+    case 2: {
+        s32 n = *(s32*)(p + 0x240);
+        if (n > 0) fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
+    } break;
+    }
+}
+
+extern "C" void fn_80125EFC(u8* this_) {
+    f32 box[4];
+    v03__5ActorFv(this_);
+    box[0] = *(f32*)(this_ + 0x60);
+    box[1] = *(f32*)(this_ + 0x64);
+    box[2] = *(f32*)(this_ + 0x68);
+    box[3] = *(f32*)(this_ + 0x6c);
+    box[0] += ((OPGA_Vec*)(this_ + 0xc))->x;
+    box[1] += ((OPGA_Vec*)(this_ + 0xc))->y;
+    box[2] += ((OPGA_Vec*)(this_ + 0xc))->x;
+    box[3] += ((OPGA_Vec*)(this_ + 0xc))->y;
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+        if (((OpgaVT*)this_)->v15() > 0 && ((OpgaVT*)this_)->v13()) {
+            if (*(s32*)(this_ + 0x238) == 0) {
+                *(s32*)(this_ + 0x98) = 0;
+                *(s32*)(this_ + 0x234) = 1;
+                switch (*(s32*)(this_ + 0x234)) {
+                case 0:
+                    *(u8*)(this_ + 0x230) = 0;
+                    break;
+                case 1:
+                    ((OpgaVT*)this_)->v12(0xff, 1);
+                    *(u8*)(this_ + 0x230) = 1;
+                    *(u8*)(this_ + 0x11d) = 1;
+                    *(s32*)(this_ + 0x23c) = -1;
+                    break;
+                case 2: {
+                    s32 n = *(s32*)(this_ + 0x240);
+                    if (n > 0) {
+                        fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
+                    }
+                } break;
+                }
+            } else {
+                goto shared;
+            }
+        }
+        break;
+    case 1:
+        goto shared;
+    case 2:
+        fn_8022FF8C(*(s32*)(this_ + 0x23c), box, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(this_ + 0x23c), *(s32*)(this_ + 0x198))) {
+            *(s32*)(this_ + 0x234) = 1;
+            switch (*(s32*)(this_ + 0x234)) {
+            case 0:
+                *(u8*)(this_ + 0x230) = 0;
+                break;
+            case 1:
+                ((OpgaVT*)this_)->v12(0xff, 1);
+                *(u8*)(this_ + 0x230) = 1;
+                *(u8*)(this_ + 0x11d) = 1;
+                *(s32*)(this_ + 0x23c) = -1;
+                break;
+            case 2: {
+                s32 n = *(s32*)(this_ + 0x240);
+                if (n > 0) {
+                    fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
+                }
+            } break;
+            }
+        }
+        break;
+    }
+    goto done;
+shared:
+    {
+        s32 r29 = *(s32*)(this_ + 0x238) == 1 ? 0x4c0 : 0x4bf;
+        f32 b8[4];
+        b8[0] = *(f32*)(this_ + 0x60);
+        b8[1] = *(f32*)(this_ + 0x64);
+        b8[2] = *(f32*)(this_ + 0x68);
+        b8[3] = *(f32*)(this_ + 0x6c);
+        b8[0] += ((OPGA_Vec*)(this_ + 0xc))->x;
+        b8[1] += ((OPGA_Vec*)(this_ + 0xc))->y;
+        b8[2] += ((OPGA_Vec*)(this_ + 0xc))->x;
+        b8[3] += ((OPGA_Vec*)(this_ + 0xc))->y;
+        fn_8022FEB8(b8, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+        s32 r30 = fn_8022FD8C(*(s32*)(this_ + 0x198));
+        if (r30 >= 0 && fn_802300EC()) {
+            JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
+            pos.y -= lbl_8053CA74;
+            JGeometry::TVec3f p(pos);
+            if (!fn_8038AD24(r30, (u16)r29, *(s32*)(this_ + 0x198), *(s32*)(this_ + 4), &p, 0x28)) {
+                r30 = -1;
+            }
+        } else {
+            r30 = -1;
+        }
+        if (r30 >= 0) {
+            *(s32*)(this_ + 0x23c) = r30;
+            *(s32*)(this_ + 0x234) = 2;
+            switch (*(s32*)(this_ + 0x234)) {
+            case 0:
+                *(u8*)(this_ + 0x230) = 0;
+                break;
+            case 1:
+                ((OpgaVT*)this_)->v12(0xff, 1);
+                *(u8*)(this_ + 0x230) = 1;
+                *(u8*)(this_ + 0x11d) = 1;
+                *(s32*)(this_ + 0x23c) = -1;
+                break;
+            case 2: {
+                s32 n = *(s32*)(this_ + 0x240);
+                if (n > 0) {
+                    fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
+                }
+            } break;
+            }
+        }
+    }
+done:
+    if (*(s32*)(this_ + 0x234) != 0) {
+        fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), this_ + 0xc);
+    }
+    if (*(u8*)(this_ + 0x230) != 0) {
+        fn_80239914(box, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198));
+    }
+    s32 v = *(s32*)(this_ + 0x98);
+    if (v >= 0 && (*(s32*)(this_ + 0x98) = v) != *(s32*)(this_ + 0x24c)) {
+        fn_801D22DC(this_ + 0x244, v, 2, 0);
+        fn_801D1F14(this_ + 0x244, lbl_8053CA70);
+    }
+    *(f32*)(this_ + 0x274) = *(u8*)(this_ + 0x231) != 0 ? lbl_8053CA8C : lbl_8053CA7C;
+    fn_801D1C18(this_ + 0x244);
+    fn_801D1C18(this_ + 0x27c);
+    fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), this_ + 0xc);
+}
+
 extern "C" void fn_8012639C(u8* this_) {
     ((Actor*)this_)->v01();
     *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x90) & 1;
