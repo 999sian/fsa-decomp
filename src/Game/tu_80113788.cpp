@@ -186,7 +186,6 @@ extern "C" void fn_80113790(char* self) {
     }
 }
 
-#include "JSystem/JGeometry/Vec.h"
 extern "C" void fn_8010F668(float m[3][4], float* v, float s);
 extern "C" char* fn_801902C0(void);
 extern int lbl_804647C8[];
