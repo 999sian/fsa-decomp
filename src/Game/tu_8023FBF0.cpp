@@ -227,8 +227,8 @@ inline bool padCheck(char* p) {
     if (!ok) {
         return false;
     }
-    c = 0;
-    for (i = 0; i < 4; i++) {
+    c = i = 0;
+    for (; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
