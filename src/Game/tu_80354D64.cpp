@@ -87,6 +87,84 @@ extern "C" s32 fn_80354D64(Actor* this_, u8 arg2) {
     this_->field_3C.z = 0.0f;
     return hit;
 }
+
+#pragma opt_common_subs off
+extern "C" void fn_80354FE8(void* this_) {
+#pragma opt_propagation off
+#pragma opt_common_subs off
+    JGeometry::TVec3f saved;
+    JGeometry::TVec3f offset;
+    JGeometry::TBox2f box;
+    u16 effect;
+    u8* p=(u8*)this_;
+    const f32* __restrict steps;
+    s32 first;
+    s32 second;
+    s32 index;
+    const f32* __restrict step;
+    s32 chosen;
+    s32 direction;
+    f32 magnitude=((JGeometry::TVec3f*)(p+0x2d4))->squared();
+    if(!(magnitude<=JGeometry::TUtilf::epsilon())) return;
+    if(p[0x2cc]==1) { p[0x2cc]=0; return; }
+    box.set(*(JGeometry::TBox2f*)(p+0x80));
+    box.addPos(*(JGeometry::TVec2f*)(p+0xc));
+    s32 d;
+    if(fn_80239470(&box,*(s32*)(p+4),*(s32*)(p+0x198))>=0 &&
+       fn_80238A68(*(s32*)(p+0x198))>=4 &&
+       (d=fn_8023885C(*(s32*)(p+0x198)))>=0 && d<4) {
+            if(d==0) d=1;
+            else if(d==1) d=0;
+            else if(d==2) d=3;
+            else if(d==3) d=2;
+            first=d;
+    } else first=-1;
+    if(fn_80239108(*(s32*)(p+0x198))>=4 &&
+       (d=fn_80238BC4(*(s32*)(p+0x198)))>=0 && d<4) second=d;
+    else second=-1;
+    if(first!=-1) chosen=first;
+    else if(second!=-1) chosen=second;
+    else return;
+    steps=(const f32*)lbl_804722B0;
+    index=chosen*2;
+    step=steps+index;
+    offset.x=steps[index];
+    offset.y=*++step;
+    saved=*(JGeometry::TVec3f*)(p+0xc);
+    offset.z=lbl_80542790;
+    *(JGeometry::TVec3f*)(p+0xc)+=offset;
+    u8 hit=fn_801F2618((Actor*)p,0,0);
+    *(JGeometry::TVec3f*)(p+0xc)=saved;
+    if(hit==1) return;
+    if(!(u8)fn_80354D64((Actor*)p,(u8)chosen)) return;
+    if(first==-1 && second!=-1) fn_80238E08(*(s32*)(p+0x198));
+    *(f32*)(p+0x44)=lbl_80542790;
+    *(f32*)(p+0x40)=lbl_80542790;
+    *(f32*)(p+0x3c)=lbl_80542790;
+    const f32* __restrict velocities=(const f32*)lbl_804722D0;
+    f32 vx=velocities[chosen*2];
+    f32 vy=velocities[chosen*2+1];
+    ((JGeometry::TVec3f*)(p+0x3c))->set(vx,vy,lbl_80542790);
+    fn_801F0E34(p,0x30004,0);
+    ((JGeometry::TVec3f*)(p+0x2d4))->x=steps[index];
+    ((JGeometry::TVec3f*)(p+0x2d4))->y=*step;
+    ((JGeometry::TVec3f*)(p+0x2d4))->z=lbl_80542790;
+    if(*(s32*)(p+0x2c8)==0) {
+        switch(*(s32*)(p+0x2c0)) {
+        case 0:
+            switch(*(s32*)(p+0x2c4)) {case 0: effect=0x327;break;case 1: effect=0x325;break;}
+            break;
+        case 1:
+            switch(*(s32*)(p+0x2c4)) {case 0: effect=0x328;break;case 1: effect=0x326;break;}
+            break;
+        }
+        if(*(void**)(p+0x2e0)==0)
+            *(void**)(p+0x2e0)=fn_8013CC50(*(u32*)(p+4),p+0xc,effect,0,lbl_80542798,-2,0,0,1);
+    }
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+}
+
 #pragma opt_propagation reset
 extern "C" s32 fn_8035533C(void* this_, s32 param2, f32* param3) {
     u8* p = (u8*)this_;
