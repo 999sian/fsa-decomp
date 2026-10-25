@@ -145,36 +145,27 @@ extern "C" s32 fn_801C0FEC(const u8* this_, const f32* param_2, f32* param_3) {
     if (idx >= 0) {
         u8* obj = (u8*)fn_801F666C(fn_801F856C(), idx);
         if (obj != 0) {
-            f32 dx;
-            f32 dz;
-            f32 ox;
-            f32 px;
-            dz = param_2[1] - *(f32*)(obj + 0x10);
-            px = param_2[0];
-            ox = *(f32*)(obj + 0xc);
-            dx = px - ox;
-            f32 lenSq = dx * dx + dz * dz;
+            JGeometry::TVec2<f32> delta;
+            f32 lenSq;
+            delta.x = param_2[0] - *(f32*)(obj + 0xc);
+            delta.y = param_2[1] - *(f32*)(obj + 0x10);
+            lenSq = delta.x * delta.x + delta.y * delta.y;
             if (lenSq <= lbl_8053ED94) {
                 ret = 1;
                 if (param_2[1] <= *(f32*)(obj + 0x10)) {
-                    if (px < ox) {
-                        param_3[0] = ox - lbl_8053ED98;
+                    if (param_2[0] < *(f32*)(obj + 0xc)) {
+                        param_3[0] = *(f32*)(obj + 0xc) - lbl_8053ED98;
                     } else {
-                        param_3[0] = lbl_8053ED98 + ox;
+                        param_3[0] = lbl_8053ED98 + *(f32*)(obj + 0xc);
                     }
                 } else {
-                    if (lenSq <= lbl_8053ED9C * *(f32*)__float_epsilon) {
-                    } else {
-                        inverseSqrt(lenSq);
-                        dx *= lenSq;
-                        dz *= lenSq;
-                    }
+                    delta.normalize();
                     param_3[0] = *(f32*)(obj + 0xc);
                     param_3[1] = *(f32*)(obj + 0x10);
-                    dx *= lbl_8053ED98;
-                    dz *= lbl_8053ED98;
-                    param_3[0] += dx;
-                    param_3[1] += dz;
+                    delta.x *= lbl_8053ED98;
+                    delta.y *= lbl_8053ED98;
+                    param_3[0] += delta.x;
+                    param_3[1] += delta.y;
                 }
             }
         }
