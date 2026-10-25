@@ -54,15 +54,19 @@ static inline u32 tileKindForCheck(f32* pos, s32 room) {
         return kind;
     }
     if (kind == 0xe && ((u8*)lbl_8053AAF8)[0x7f] != 0) {
-        if ((*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) ||
-            (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3 &&
-             *(u8*)(*(s32*)(fn_802D6A9C() + 0x14) + *(s32*)(fn_802D6A9C() + 0x18) * 10 + (s32)fn_802D6A9C() + 0x60) == 0x10 &&
-             pos[1] > lbl_8053FF50)) return 0x51;
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) return 0x51;
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
+            s32 base = *(s32*)(fn_802D6A9C() + 0x14);
+            u8* g2 = fn_802D6A9C();
+            u8* h = fn_802D6A9C();
+            if (*(char*)(h + base + *(s32*)(g2 + 0x18) * 10 + 0x60) == 0x10 && pos[1] > lbl_8053FF50) return 0x51;
+        }
     }
     return kind;
 }
 
 extern const u16 lbl_8046AADC[];
+#pragma opt_propagation off
 extern "C" BOOL fn_80225614(f32* pos, u32 room) {
     u16 k = tileKindForCheck(pos, room);
     const u16* p = lbl_8046AADC;
@@ -73,7 +77,7 @@ extern "C" BOOL fn_80225614(f32* pos, u32 room) {
     if (k == *++p) return TRUE;
     return FALSE;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_802265DC(f32* pos, s32 room, u8 kind) {
     return fn_802260DC(pos, room, kind);
 }
