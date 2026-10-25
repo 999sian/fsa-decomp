@@ -66,6 +66,7 @@ extern "C" char lbl_80543B74;
 extern "C" char lbl_80543B7C;
 extern "C" char lbl_80543B84;
 extern "C" char lbl_80543B8C;
+extern "C" f32 lbl_80543AF8;
 extern "C" f32 lbl_80543B18;
 extern "C" f32 lbl_80543B28;
 extern "C" f32 lbl_80543B94;
