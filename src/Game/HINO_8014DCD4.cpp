@@ -7,8 +7,7 @@ extern "C" f32 lbl_8053D1D0;
 extern "C" f32 lbl_8053D1D4;
 extern "C" void fn_801F06F0(void* this_, const char* str, s32 a, s32 b, s32 c, f32 f1, f32 f2);
 extern "C" void fn_8014DCD4(u8* this_) {
-    f32 f = lbl_8053D1D0;
-    fn_801F06F0(this_, lbl_80465D60, *(s32*)(this_ + 0x264) + 0x2b, 0, 7, f, f);
+    fn_801F06F0(this_, lbl_80465D60, *(s32*)(this_ + 0x264) + 0x2b, 0, 7, 1.0f, 1.0f);
 }
 
 extern "C" void fn_8014DD14(u8* this_) {
