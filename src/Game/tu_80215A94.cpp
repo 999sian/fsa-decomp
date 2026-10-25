@@ -183,8 +183,8 @@ extern "C" void fn_80215B6C(HrmnTable* t, int idx) {
 
 extern "C" void fn_80215BCC(HrmnTable* t, int idx) {
     if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0(t->mEntry[idx].mSub2)) {
-        u8 a = t->mEntry[idx].m20;
         u8 b = t->mEntry[idx].m21;
+        u8 a = t->mEntry[idx].m20;
         lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x79] = a;
         lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x78] = b;
         fn_802D7844(fn_802D6A9C(), 1, t->mEntry[idx].mA);
@@ -292,29 +292,17 @@ extern "C" void fn_8021600C(HrmnTable* t) {
     }
 }
 
-static inline int Hrmn_AnyPending(s32 n, HrmnTable* p) {
-    int result = 0;
-    for (int i = 0; i < n; i++) {
-        if (p->mEntry[0].mId < 0 && fn_801ED7B0(p->mEntry[0].mSub2)) {
-            result = 1;
-            break;
-        }
-        p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
-    }
-    return result;
-}
-
 extern "C" int fn_8021606C(HrmnTable* t) {
-    const s32 n = t->mCount;
+    s32 n = t->mCount;
     HrmnTable* p = t;
     int result = 0;
-    int i = 0;
-    for (; i < n; i++) {
-        if (p->mEntry[0].mId < 0 && fn_801ED7B0(p->mEntry[0].mSub2)) {
-            result = 1;
-            break;
+    for (int i = 0; i < n; p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry)), i++) {
+        if (p->mEntry[0].mId < 0) {
+            if (fn_801ED7B0(p->mEntry[0].mSub2)) {
+                result = 1;
+                break;
+            }
         }
-        p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
     }
     return result;
 }
