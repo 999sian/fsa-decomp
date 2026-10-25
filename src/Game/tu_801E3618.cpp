@@ -587,23 +587,12 @@ extern "C" void fn_801E4758(u8* p) {
 }
 
 extern "C" void fn_801E4790(u8* p, u8 flag) {
-    f32 s = lbl_8053F0BC;
-    f32 a;
-    register f32 c;
-    register f32 b;
-    f32 d;
-
-    if (flag) {
-        s = lbl_8053F560;
-    }
-    a = lbl_8053F554 * s;
-    b = lbl_8053F558 * s;
-    c = lbl_8053F510 * s;
-    d = lbl_8053F55C * s;
-    *(f32*)(p + 0x60) = a;
-    *(f32*)(p + 0x68) = c;
-    *(f32*)(p + 0x64) = b;
-    *(f32*)(p + 0x6c) = d;
+    f32 scale = lbl_8053F0BC;
+    if (flag) scale = lbl_8053F560;
+    *(f32*)(p + 0x60) = lbl_8053F554 * scale;
+    *(f32*)(p + 0x64) = lbl_8053F558 * scale;
+    *(f32*)(p + 0x68) = lbl_8053F510 * scale;
+    *(f32*)(p + 0x6c) = lbl_8053F55C * scale;
     *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
     *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
     *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
