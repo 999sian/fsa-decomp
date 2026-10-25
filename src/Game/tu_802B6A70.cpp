@@ -25,6 +25,11 @@ extern "C" s32 fn_801F8544(void* mgr, u32 tag, u32 id, f32* pos, s32 n);
 extern "C" Actor* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 param, s32 a, s32 b);
 extern "C" s32 lbl_8046CAF0[];
+extern "C" void* fn_802D6A9C(void);
+extern "C" void* fn_802D9C4C(void* mgr);
+extern "C" u8 fn_802D7544(void* mgr, void* arg);
+extern "C" void fn_8029D8F0(void* mgr, f32* pos, s32 room, s32 n, s32 flag);
+extern "C" void* lbl_8053AC98;
 extern "C" void fn_802B6A70(Actor* p) {
     s32 i;
     s32 c = **(char**)((char*)p + 0x248);
