@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
@@ -39,24 +40,22 @@ extern "C" void* fn_80335A7C(void* this_, s16 freeFlag) {
 
 extern "C" void fn_80335ADC(void* this_) {
     u8* p = (u8*)this_;
-    struct {
-        Vec2_FSA xy;
-        f32 z;
-    } pos;
-
-    pos.xy = *(Vec2_FSA*)(p + 0x230);
+    Vec3_FSA pos;
+    *(f64*)&pos = *(f64*)(p + 0x230);
     pos.z = *(f32*)(p + 0x238);
+
     if (((u8 (**)(void*))(*(void**)this_))[13](this_)) {
         return;
     }
     if (*(s32*)(p + 0x240) == 0) {
         if (p[0x247] != 0) {
-            if (p[0x246] == 0) {
+            u8 cnt = p[0x246];
+            if (cnt == 0) {
                 p[0x246] = 5;
                 *(u32*)(p + 0x90) |= 1;
             } else {
-                p[0x246] -= 1;
-                *(u32*)(p + 0x90) &= ~1;
+                p[0x246] = cnt - 1;
+                *(s32*)(p + 0x90) &= -2;
                 if (p[0x248] < 2) {
                     f32 rnd = rand01();
                     if (rnd <= *(f32*)(p + 0x23c)) {
@@ -80,10 +79,10 @@ extern "C" void fn_80335ADC(void* this_) {
         }
         Actor_CreateByID(fn_801F856C(), 0x42414C4C, *(u32*)(p + 0x4), (f32*)&pos, *(u32*)(p + 0x90) & 0xf80000ffu, -1, -1);
     }
-    if (*(s32*)(p + 0x240) > 0) {
-        *(s32*)(p + 0x240) -= 1;
-    } else {
+    if (*(s32*)(p + 0x240) <= 0) {
         *(s32*)(p + 0x240) = p[0x244] + (s32)(p[0x245] * rand01());
+    } else {
+        *(s32*)(p + 0x240) -= 1;
     }
 }
 
@@ -92,21 +91,13 @@ extern "C" f32 lbl_80542020;
 extern "C" f32 lbl_80541FF8;
 extern "C" void fn_80335D4C(void* this_) {
     u8* p = (u8*)this_;
-    u32 seed;
-    u32 bits;
-    f32 rnd;
-
     *(u32*)(p + 0xb0) = 0x2000;
-    *(f32*)(p + 0x238) = *(f32*)(p + 0x14);
-    *(f32*)(p + 0x23c) = lbl_80542020;
+    f32 probability = 0.5f;
+    *(JGeometry::TVec3f*)(p + 0x230) = *(JGeometry::TVec3f*)(p + 0xc);
+    *(f32*)(p + 0x23c) = probability;
     p[0x244] = (*(u32*)(p + 0x90) >> 8) & 0xff;
     p[0x245] = (*(u32*)(p + 0x90) >> 16) & 0xff;
-    seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    seed = seed * 1664525 + 1013904223;
-    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
-    bits = (*(u32*)((u8*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-    rnd = *(f32*)&bits;
-    *(s32*)(p + 0x240) = (s32)((f32)p[0x245] * (rnd - lbl_80541FF8));
+    *(s32*)(p + 0x240) = (s32)((f32)p[0x245] * rand01());
     p[0x246] = 5;
     p[0x247] = *(u32*)(p + 0x90) & 0xf;
     p[0x248] = (*(u32*)(p + 0x90) >> 4) & 0xf;
