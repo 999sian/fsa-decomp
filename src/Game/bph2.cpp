@@ -715,6 +715,9 @@ extern "C" void fn_8018E30C(char* this_, s32 state) {
 
 extern "C" void fn_8018E5E4(char* this_) {
     f32 zero = 0.0f;
+    f32 unit;
+    f32 speed;
+    f32 scale;
     f32 neg = -8.0f;
     f32 one = 8.0f;
     *(f32*)(this_ + 0x80) = neg;
@@ -768,6 +771,9 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x40) = zero;
     *(f32*)(this_ + 0x3c) = zero;
     f32 initialX = *(f32*)(this_ + 0xc);
+    unit = 1.0f;
+    speed = 3.0f;
+    scale = 100.0f;
     *(f32*)(this_ + 0x2a0) = initialX;
     *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2a8) = *(f32*)(this_ + 0x14);
@@ -782,14 +788,14 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x2e4) = *(f32*)(this_ + 0x14);
     *(s32*)(this_ + 0x254) = -1;
     *(u8*)(this_ + 0x196) = 1;
-    *(f32*)(this_ + 0x294) = 1.0f;
-    *(f32*)(this_ + 0x298) = 1.0f;
-    *(f32*)(this_ + 0x2b8) = 1.0f;
-    *(f32*)(this_ + 0x2bc) = 1.0f;
-    *(f32*)(this_ + 0x2c0) = 3.0f;
+    *(f32*)(this_ + 0x294) = unit;
+    *(f32*)(this_ + 0x298) = unit;
+    *(f32*)(this_ + 0x2b8) = unit;
+    *(f32*)(this_ + 0x2bc) = unit;
+    *(f32*)(this_ + 0x2c0) = speed;
     *(u8*)(this_ + 0x27a) = 0;
     *(f32*)(this_ + 0x28c) = zero;
-    *(f32*)(this_ + 0x284) = 100.0f;
+    *(f32*)(this_ + 0x284) = scale;
     *(f32*)(this_ + 0x290) = zero;
     *(s32*)(this_ + 0x274) = 0x300;
     *(s32*)(this_ + 0x328) = 0;
@@ -824,4 +830,5 @@ extern "C" void fn_8018E5E4(char* this_) {
 
 static u8 lbl_804C18B8[0xC];
 
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
