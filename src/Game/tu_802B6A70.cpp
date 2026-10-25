@@ -9,7 +9,6 @@ struct Vec3f {
         y = ay;
         z = az;
     }
-    operator f32*() { return &x; }
     operator void*() { return this; }
 };
 
@@ -39,7 +38,7 @@ extern "C" s32 lbl_8046CAF0[];
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_802D9C4C(void* mgr);
 extern "C" u8 fn_802D7544(void* mgr, void* arg);
-extern "C" void fn_8029D8F0(void* mgr, f32* pos, s32 room, s32 n, s32 flag);
+extern "C" void fn_8029D8F0(void* mgr, const Vec3f& pos, s32 room, s32 n, s32 flag);
 extern "C" void* lbl_8053AC98;
 extern "C" void fn_802B6A70(Actor* p) {
     s32 i;
