@@ -68,11 +68,12 @@ extern "C" void fn_8020CCA8(u8* o0) {
             m[0][3] = lbl_8053FA04;
             m[1][3] = lbl_8053FA04;
             m[2][3] = lbl_8053FA04;
+            f32 sy = p->y;
             m[0][0] = p->x;
             m[0][1] = lbl_8053FA04;
             m[0][2] = lbl_8053FA04;
             m[1][0] = lbl_8053FA04;
-            m[1][1] = p->y;
+            m[1][1] = sy;
             m[1][2] = lbl_8053FA04;
             m[2][0] = lbl_8053FA04;
             m[2][1] = lbl_8053FA04;
@@ -84,7 +85,7 @@ extern "C" void fn_8020CCA8(u8* o0) {
         if (fn_801E1D7C(o) != 0 && fn_8022461C(o + 0xc, *(u32*)(o + 4)) == 0x39) {
             mask = 0;
         }
-        if (*(s32*)(o + 0x138) == 0) {
+        if (*(u32*)(o + 0x138) == 0) {
             fn_801EF830(*(s32*)(o + 4), (f32*)(o + 0xc), l.ids, mask, lbl_8046A3C0, iv, 0);
         }
         if (*(s32*)(o + 4) < 8) {
