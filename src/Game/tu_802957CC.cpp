@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" const f32 lbl_80540678;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 
@@ -1158,11 +1159,13 @@ extern "C" void fn_8029AE58(char* p) {
     origin.y += 8.0f;
     origin.z = 0.0f;
     pos = origin;
+    char* col;
     s32 j;
+    s32 i;
     char* row = p;
-    for (s32 i = 0; i < 6; i++) {
+    for (i = 0; i < 6; i++) {
         pos.y = origin.y;
-        char* col = row;
+        col = row;
         for (j = 0; j < 6; j++, col += 2) {
             *(u16*)(col + 0x320) = fn_80226850(&pos, 1);
             *(u16*)(col + 0x368) = fn_80226850(&pos, 0);
@@ -1197,12 +1200,12 @@ extern "C" void fn_8029AE58(char* p) {
         if (other && *(s32*)(other + 0x244) == *(s32*)((char*)fn_802D6A9C() + 0x14) && *(s32*)(other + 0x248) == *(s32*)((char*)fn_802D6A9C() + 0x18)) {
             if (*(s32*)(other + 4) == HouseDestination(*(u32*)(p + 0x90)) && *(s32*)(p + 4) == WarpDestination(*(u32*)(other + 0x90))) {
                 if (*(s32*)(p + 0x29c) < 4) {
-                    *(s32*)(p + (*(s32*)(p + 0x29c) * 4 + 0x25c)) = warp;
+                    ((HOUSLinks*)p)->outgoing[((HOUSLinks*)p)->outgoingCount] = warp;
                     *(s32*)(p + 0x29c) += 1;
                 }
             } else if (HouseDestination(*(u32*)(p + 0x90)) == WarpDestination(*(u32*)(other + 0x90)) && *(s32*)(p + 4) == *(s32*)(other + 4)) {
                 if (*(s32*)(p + 0x2a0) < 4) {
-                    *(s32*)(p + (*(s32*)(p + 0x2a0) * 4 + 0x26c)) = warp;
+                    ((HOUSLinks*)p)->incoming[((HOUSLinks*)p)->incomingCount] = warp;
                     *(s32*)(p + 0x2a0) += 1;
                     v = *(JGeometry::TVec3f*)(other + 0xc);
                     switch (*(u32*)(other + 0x90) & 0x7f) {
@@ -1227,7 +1230,7 @@ extern "C" void fn_8029AE58(char* p) {
         if (flame < 0) break;
         if (fn_801F666C(fn_801F856C(), flame)) {
             if (*(s32*)(p + 0x2a4) >= 4) break;
-            *(s32*)(p + (*(s32*)(p + 0x2a4) * 4 + 0x27c)) = flame;
+            ((HOUSLinks*)p)->flames[((HOUSLinks*)p)->flameCount] = flame;
             *(s32*)(p + 0x2a4) += 1;
         }
     }
@@ -1245,7 +1248,7 @@ extern "C" void fn_8029AE58(char* p) {
             }
             if (inside) {
                 if (*(s32*)(p + 0x2a8) >= 4) break;
-                *(s32*)(p + (*(s32*)(p + 0x2a8) * 4 + 0x28c)) = door;
+                ((HOUSLinks*)p)->doors[((HOUSLinks*)p)->doorCount] = door;
                 *(s32*)(p + 0x2a8) += 1;
             }
         }
