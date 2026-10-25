@@ -442,11 +442,17 @@ struct GameResult {
 
     void setWinner(s32 m, s32 k, u8 v) {
         if (m >= 0 && m < 8 && k >= 0 && k < 3) {
-            u8* row = winner[m];
-            row[k] = v;
+            winner[m][k] = v;
         }
     }
 };
+
+static inline void GameResult_setWinner(s32 m, s32 k, u8 v) {
+    if (m >= 0 && m < 8 && k >= 0 && k < 3) {
+        GameResult* g = (GameResult*)lbl_80529DEC;
+        g->winner[m][k] = v;
+    }
+}
 
 extern const char* lbl_804AF980[];
 extern "C" void* fn_80403104(u32 type, const char* name);
