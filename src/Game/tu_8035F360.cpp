@@ -59,6 +59,11 @@ struct FsaCurEntry {
 extern "C" s32 lbl_804742A8[];
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" u8 fn_8035F3C0(u8* p);
+extern "C" f32 lbl_80542A00;
+extern "C" f32 lbl_80542A04;
+extern "C" f32 lbl_80542A08;
+extern "C" f32 lbl_80542A0C;
+extern "C" f32 lbl_80542A10;
 extern "C" void fn_8013CB44(u8* owner, u8* p, s32 a, s32 b, s32 c);
 extern "C" void* fn_8035F360(void* param_1, s16 param_2) {
   if (param_1 != 0) {
