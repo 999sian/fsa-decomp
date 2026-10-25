@@ -38,7 +38,7 @@ extern "C" u8 fn_8022D75C(s32);
 extern "C" u8 Player_GetField_0x454(void*);
 extern "C" u8 fn_80241E28(void*, s32, void*);
 extern "C" u8 fn_80240D64(void*);
-extern "C" u8 fn_80268BC4(u8*);
+extern "C" void fn_80268BC4(u8*);
 extern f32 lbl_80540234;
 extern f32 lbl_80540238;
 extern f32 lbl_8054023C;
@@ -235,7 +235,7 @@ static inline HitRect* roomRect(s32 room) {
     if (room < 8) return (HitRect*)(base + 0xcc);
     return (HitRect*)(base + 0xdc);
 }
-extern "C" u8 fn_80268BC4(u8* p) {
+extern "C" void fn_80268BC4(u8* p) {
     JGeometry::TVec2<f32> v;
     s32 i;
     u32 j;
@@ -263,12 +263,12 @@ extern "C" u8 fn_80268BC4(u8* p) {
     do {
     clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
-    for (i = 0; i < 8; i++) {
-        *(f32*)(p + 8) = lbl_8046BAE8[i].x;
-        f32 y = lbl_8046BAE8[i].y;
+    for (int k = 0; k < 8; k++) {
+        *(f32*)(p + 8) = lbl_8046BAE8[k].x;
+        f32 y = lbl_8046BAE8[k].y;
         *(f32*)(p + 0xc) = y;
-        *(f32*)(p + 0x10) = lbl_8046BAE8[i].z;
-        *(s32*)(p + 0x1c) = i;
+        *(f32*)(p + 0x10) = lbl_8046BAE8[k].z;
+        *(s32*)(p + 0x1c) = k;
         ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(*(u8**)(p + 4) + 8));
         u16 r27 = fn_8022461C((JGeometry::TVec3<f32>*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4));
         if (fn_8025F590(*(void**)(p + 4)) && *(s32*)(*(u8**)(p + 4) + 0x3b4) == 8 && fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70)) < 8) {
