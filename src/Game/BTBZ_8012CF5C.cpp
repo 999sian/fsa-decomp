@@ -63,9 +63,10 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
     case 2: {
         BTBZ_Vec v;
         u8* q = *(u8**)(lbl_8053AB10 + 0x24);
+        v.set(0.0f, 0.0f, 0.0f);
         v.x = -*(f32*)(q + 0x10);
-        v.y = -*(f32*)(q + 0x20);
         v.z = 0.0f;
+        v.y = -*(f32*)(q + 0x20);
         fn_801F0E34(this_, 0x30036, 0);
         fn_8013CC50(*(s32*)(this_ + 4), &v, 0x1BC, 2, 2, 0, 0, 1, lbl_8053CC24);
         *(s32*)(this_ + 0x238) = 0;
@@ -79,9 +80,9 @@ extern "C" void fn_8012CF5C(u8* this_) {
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
-        if (((s32 (*)(u8*))(*(void**)(*(u8**)this_ + 0x3C)))(this_) == 0) {
+        if (((s32 (*)(u8*))((*(void***)this_)[0x3C / 4]))(this_) == 0) {
             BTBZ_setState(this_, 1);
-        } else if (((u8 (*)(u8*))(*(void**)(*(u8**)this_ + 0x34)))(this_)) {
+        } else if (((u8 (*)(u8*))((*(void***)this_)[0x34 / 4]))(this_)) {
             BTBZ_setState(this_, 1);
             if (*(u8*)(this_ + 0x231) != 0) {
                 fn_801F0D20(this_, 6);
@@ -89,8 +90,8 @@ extern "C" void fn_8012CF5C(u8* this_) {
         }
         break;
     case 1:
-        if (((s32 (*)(u8*))(*(void**)(*(u8**)this_ + 0x3C)))(this_) > 0 &&
-            !((u8 (*)(u8*))(*(void**)(*(u8**)this_ + 0x34)))(this_)) {
+        if (((s32 (*)(u8*))((*(void***)this_)[0x3C / 4]))(this_) > 0 &&
+            !((u8 (*)(u8*))((*(void***)this_)[0x34 / 4]))(this_)) {
             BTBZ_setState(this_, 0);
         }
         fn_801F0E34(this_, 0x30032, 0);
@@ -134,7 +135,8 @@ extern "C" void fn_8012D6E8(u8* this_) {
     if (*(void**)(this_ + 0x23C) == 0) {
         BTBZ_Vec pos;
         BTBZ_Box b = *(BTBZ_Box*)(fn_802D6A9C() + 0xCC);
-        pos.set(0.5f * (b.x0 - b.x1) + b.x1, 0.5f * (b.y0 - b.y1) + b.y1, 0.0f);
+        f32 half = 0.5f;
+        pos.set(half * (b.x0 - b.x1) + b.x1, half * (b.y0 - b.y1) + b.y1, 0.0f);
         *(void**)(this_ + 0x23C) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x58, 1, 0, 0, 0, 1, 1.0f);
         if (*(u8**)(this_ + 0x23C) != 0) {
             *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) |= 1;
