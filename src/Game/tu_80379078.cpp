@@ -116,6 +116,7 @@ extern "C" void fn_803790D8(u8* this_) {
     }
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_803792C8(u8* this_) {
     JGeometry::TBox2f box = *(JGeometry::TBox2f*)(this_+0x60);
     box.addPos(*(JGeometry::TVec2f*)(this_+0xc));
@@ -142,10 +143,11 @@ extern "C" void fn_803792C8(u8* this_) {
                     fn_801F0E34(this_, 0x3004b, 0);
                 }
                 s32 n = (u32)*(u8*)(this_ + 0x243) >> 2;
-                f32 t = (f32)n;
+                f32 height = lbl_8054301C;
+                f32 value = height - (f32)n;
                 *(f32*)(this_ + 0x60) = lbl_80543020;
                 *(f32*)(this_ + 0x64) = lbl_80543020;
-                *(f32*)(this_ + 0x68) = lbl_8054301C - t;
+                *(f32*)(this_ + 0x68) = value;
                 *(f32*)(this_ + 0x6c) = lbl_80543024;
                 if (*(u8*)(this_ + 0x241) == 3) {
                     *(f32*)(this_ + 0x60) = lbl_80543020;
@@ -165,8 +167,8 @@ extern "C" void fn_803792C8(u8* this_) {
         *(u8*)(this_ + 0x241) += 1;
         *(u8*)(this_ + 0x242) = 0;
         {
-            f32* e = (f32*)lbl_804751F8 + *(u8*)(this_+0x241)*4;
-            f32 a = e[0];
+            f32 a = lbl_804751F8[*(u8*)(this_+0x241)][0];
+            const f32* e = lbl_804751F8[*(u8*)(this_+0x241)];
             f32 b = e[1];
             *(f32*)(this_+0x60) = a;
             a = e[2];
@@ -184,7 +186,7 @@ extern "C" void fn_803792C8(u8* this_) {
         break;
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7544(void*, s32);
 extern "C" void fn_80379584(Actor* param_1) {
