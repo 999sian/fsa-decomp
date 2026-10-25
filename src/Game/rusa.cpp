@@ -228,8 +228,7 @@ static inline void Rusa_Approach(f32* v, f32 target, s32 remain) {
     if (n < FLT_EPSILON) {
         *v = target;
     } else {
-        f32 k = lbl_8053FB14 / n;
-        *v = k * (target - *v) + *v;
+        *v = (lbl_8053FB14 / n) * (target - *v) + *v;
     }
 }
 
@@ -379,12 +378,12 @@ extern "C" void fn_80211C94(char* p);
 
 // near-match (98.5%): r29/r30 swapped for the state-exit temps
 extern "C" void fn_8021148C(char* p) {
-    s32 id;
-    u8 go;
     fn_80211EB0(p);
     fn_80211C94(p);
     switch (*(s32*)(p + 0x248)) {
     case 0: {
+        u8 go;
+        s32 id;
         go = 0;
         switch (*(s32*)(p + 0x2ac)) {
         case 1:
