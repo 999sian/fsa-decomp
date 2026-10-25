@@ -120,6 +120,14 @@ static inline s32 getFileIcon(u32 slot) {
     return ((s32*)(lbl_804765D0 + 0x730))[7];
 }
 
+static inline BOOL isTimeSet(s64 t) {
+    BOOL r = FALSE;
+    if (t != 0) {
+        r = TRUE;
+    }
+    return r;
+}
+
 static inline BOOL hasTime(u64* t) {
     BOOL r = FALSE;
     if (*t != 0) {
@@ -1493,11 +1501,12 @@ extern "C" void fn_803C92B8(char* p) {
 
 extern "C" f32 lbl_805434AC;
 extern "C" void fn_803C9338(u8* p) {
+    u8* tbl = lbl_8050DB0C;
     u8* base = lbl_804765D0;
-    s16 b = *(s16*)(lbl_8050DB0C + 0x1ee);
-    s16 d = *(s16*)(lbl_8050DB0C + 0x1f2);
-    s16 c = *(s16*)(lbl_8050DB0C + 0x1f0);
-    s16 a = *(s16*)(lbl_8050DB0C + 0x1ec);
+    s16 a = *(s16*)(tbl + 0x1ec);
+    s16 b = *(s16*)(tbl + 0x1ee);
+    s16 c = *(s16*)(tbl + 0x1f0);
+    s16 d = *(s16*)(tbl + 0x1f2);
     s32 max = a + b;
     s32 i;
     if (max < c + d) {
@@ -2079,24 +2088,20 @@ extern "C" s32 fn_803CE4B0(void) {
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 extern "C" u8 fn_803BADAC(void* a);
 extern "C" void fn_803CE4CC(char* p) {
-    s32 i;
-    u32 mask;
-    u64* fir;
-    u64* lv;
-    u64* date;
-    u8* rec;
     u8* base;
+    const u64* date;
+    const u64* lv;
+    const u64* fir;
+    s32 i;
     OSCalendarTime cal;
 
     base = lbl_804765D0;
-    rec = (u8*)lbl_8050EC80;
-    i = 0;
-    date = (u64*)(base + 0x30);
-    lv = (u64*)(base + 0x0);
-    fir = (u64*)(base + 0x18);
-    for (; i < 3; i++) {
-        mask = 1 << i;
-        p[0x115] &= ~(u8)mask;
+    date = (const u64*)(base + 0x30);
+    lv = (const u64*)(base + 0x0);
+    fir = (const u64*)(base + 0x18);
+    for (i = 0; i < 3; i++) {
+        u8* rec = (u8*)lbl_8050EC80 + i * 0xc8;
+        p[0x115] &= ~(u8)(1 << i);
         if ((s32)lbl_8053AAF8[0xff] != 0) {
             if (fn_803BADAC(rec + 0x20)) {
                 if (hasTime((u64*)(rec + 0x20))) {
@@ -2124,7 +2129,7 @@ extern "C" void fn_803CE4CC(char* p) {
                 ((J2DPane*)*(void**)(p + 8))->search(*lv)->hide();
                 ((J2DPane*)*(void**)(p + 8))->search(*fir)->show();
                 ((J2DPane*)*(void**)(p + 8))->search(*date)->hide();
-                p[0x115] |= (u8)mask;
+                p[0x115] |= (u8)(1 << i);
                 fn_803BD5E0((u8*)p, i);
             }
         } else {
@@ -2137,7 +2142,6 @@ extern "C" void fn_803CE4CC(char* p) {
         date++;
         lv++;
         fir++;
-        rec += 0xc8;
     }
 }
 
