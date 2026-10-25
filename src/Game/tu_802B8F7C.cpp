@@ -41,6 +41,7 @@ extern "C" void fn_802B8FDC(void)
     return;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802B9974(Unk802B9974Src* this_) {
     char* p = (char*)this_;
     const f32 f0 = lbl_80540AF0;
@@ -70,7 +71,7 @@ extern "C" void fn_802B9974(Unk802B9974Src* this_) {
         *(u8*)(p + 0x11c) = 0;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" char lbl_804D2468[];
 extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
 extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
