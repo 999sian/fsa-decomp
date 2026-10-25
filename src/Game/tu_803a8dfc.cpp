@@ -457,7 +457,6 @@ static inline void GameResult_setWinner(s32 m, s32 k, u8 v) {
 extern const char* lbl_804AF980[];
 extern "C" void* fn_80403104(u32 type, const char* name);
 
-// NONMATCHING (99%): winner-table index add order / mode register.
 extern "C" void fn_803ABCEC(Menu_Slide* p) {
     p->timer--;
     s32 t = p->timer;
