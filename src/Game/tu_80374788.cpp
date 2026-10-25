@@ -22,18 +22,20 @@ extern "C" const f32 lbl_80542ED8;
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, void* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 #pragma opt_common_subs on
+#pragma opt_propagation on
 extern "C" void fn_803747E8(Actor* this_) {
     DrawRec rec;
     s32 idx = 0;
     s32 type = *(s32*)((char*)this_ + 0x240);
     if (type != 0) {
-        idx = type + 3;
         rec.b1d = -1;
+        idx = type + 3;
         fn_801F06F0(this_, lbl_80475120, idx + 0x45, &rec, 0, lbl_80542ED8, lbl_80542ED8);
     }
     fn_80307AC8(*(void**)((char*)this_ + 0x198), this_->field_04, (char*)this_ + 0xc, idx + 0x45, 0, 0, -1);
 }
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" f32 lbl_80542EE0;
 extern "C" f32 lbl_80542EE4;
 extern "C" f32 lbl_80542EE8;
