@@ -644,11 +644,10 @@ void fn_802925E4(char* p) {
       fn_8013CC50(S32(p, 0x3b4), p + 8, 0x15b, 0, 1, 0, 0, 1, lbl_80540600);
       fn_8013CC50(S32(p, 0x3b4), p + 8, 0x15c, -1, 0, 0, 0, 1, lbl_80540600);
       if (S32(p, 0x3b4) < 8) {
-        JGeometry::TVec3<f32>* src = (JGeometry::TVec3<f32>*)(p + 0xcd4);
         VEC(p, 0xcb0) = VEC(p, 0x8);
-        S32(p, 0x3b4) = S32(p, 0xce4);
-        VEC(p, 0x8) = *src;
       }
+      S32(p, 0x3b4) = S32(p, 0xce4);
+      VEC(p, 0x8) = VEC(p, 0xcd4);
       fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
     }
   }
