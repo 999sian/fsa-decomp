@@ -97,8 +97,8 @@ allowed:
 extern "C" s32 fn_8024189C(char*);
 extern "C" void fn_80230D80(s32, JGeometry::TVec3<f32>*);
 extern "C" s32 fn_8023EF50(s32);
-u8 fn_8022E438(s32, u32);
-void fn_80230C6C(s32);
+extern "C" u8 fn_8022E438(s32, u32);
+extern "C" void fn_80230C6C(s32);
 extern JGeometry::TVec3<f32> lbl_8046B8FC[];
 extern JGeometry::TVec3<f32> lbl_8046B92C[];
 extern const f32 lbl_80540158;
