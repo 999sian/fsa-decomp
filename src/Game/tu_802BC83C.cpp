@@ -2,6 +2,12 @@
 #include "Game/Actor.h"
 
 extern void* lbl_8053AAF8;
+extern "C" u8 fn_801EE3C0(s32 id);
+extern "C" u8 fn_802D7384(void* mgr, u32 v);
+extern "C" u16 fn_80226850(void* a, s32 b);
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" f32 lbl_8046D3B0[];
+extern "C" f32 lbl_8046D3F0[];
 extern "C" void* lbl_8053AC98;
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_80540BBC;
