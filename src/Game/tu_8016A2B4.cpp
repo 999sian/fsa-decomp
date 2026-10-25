@@ -350,7 +350,6 @@ extern "C" void fn_8016AD84(u8* self) {
     }
 }
 
-#pragma opt_propagation off
 extern "C" void fn_8016ADE0(void* param_1) {
     struct ColorHelper {
         static inline GXColor make(u8 a) {
@@ -397,7 +396,6 @@ extern "C" void fn_8016ADE0(void* param_1) {
         GXTexCoord2f32(f29 - f31, f28 + f30);
     }
 }
-#pragma opt_propagation reset
 
 extern "C" void fn_8016B054(u8* self) {
     if (self[0x1D3]) {
