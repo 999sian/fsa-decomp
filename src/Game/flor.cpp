@@ -474,6 +474,10 @@ static inline void florApplyDelta(s32 room, JGeometry::TVec3<f32>& b, const JGeo
     fn_8023DFF4(room, &d);
 }
 
+static inline JGeometry::TVec3<f32> florPlayerPosition(s32 room) {
+    return *(JGeometry::TVec3<f32>*)fn_8023E724(room);
+}
+
 extern "C" void fn_8020EB08(char* this_) {
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> d;
