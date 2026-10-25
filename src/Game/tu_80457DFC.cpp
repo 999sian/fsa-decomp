@@ -83,7 +83,7 @@ static inline void updateAudioTracksForStart(Unk80458408Obj* sound, s32 id) {
     s32 i;
     if (sound) {
         switch (id) { case 0x100001a: break; default: return; }
-        bank = sound->v6();
+        bank = sound->v4();
         if (bank) {
             JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
             for (i = 0; i < 16; i++) {
