@@ -298,10 +298,9 @@ extern "C" TevColorWords fn_800E0D88(const J3DMaterialFactory_v21* self, int idx
 	defaultColor[1] = lbl_80543F14;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTevColorIndex[no] != 0xffff) {
-		const u32* color = (const u32*)&self->mTevColors[initData->mTevColorIndex[no]];
-		return TevColorWords(color[0], color[1]);
+		return *(TevColorWords*)&self->mTevColors[initData->mTevColorIndex[no]];
 	}
-	return TevColorWords(defaultColor[0], defaultColor[1]);
+	return *(TevColorWords*)defaultColor;
 }
 
 extern "C" u32 lbl_80543F10;
