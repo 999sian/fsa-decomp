@@ -14,7 +14,7 @@ extern "C" void fn_802A3948(void*, void*, s32, s32, s32);
 extern "C" f32 lbl_805417B8;
 extern "C" f32 lbl_805417BC;
 extern "C" f32 lbl_805417C0;
-extern "C" f32 lbl_805417C4;
+extern "C" const f32 lbl_805417C4;
 extern "C" f32 lbl_805417C8;
 extern "C" f32 lbl_805417CC;
 extern "C" f32 lbl_805417D0;
