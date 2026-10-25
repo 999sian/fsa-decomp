@@ -213,6 +213,112 @@ extern "C" void fn_80103914(void* this_) {
     }
 }
 
+inline void twevUpdateSingle(void* this_) {
+    char* p = (char*)this_;
+        switch (*(s32*)(p + 0x230)) {
+        case 1: break;
+        case 0:
+            if ((u8)((Actor*)this_)->v11()) {
+                *(s32*)(p + 0x230) = 2;
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0xd3, 2, 2, 0, 0, 1);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0xd4, 2, 2, 0, 0, 1);
+                fn_80134DE4(lbl_8053AAF8, 1, 0);
+                fn_801F0E34(this_, 0x30001, 0);
+            }
+            break;
+        default: break;
+        }
+
+}
+
+extern "C" void fn_80103A90(void* this_) {
+    char* p = (char*)this_;
+    switch (*(s32*)(p + 0x234)) {
+    case 0:
+        switch (*(s32*)(p + 0x230)) {
+        case 0:
+            if ((u8)((Actor*)this_)->v11()) {
+                *(s32*)(p + 0x230) = 1;
+                *(s32*)(p + 0x288) = 0;
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x499, 2, 2, 0, 0, 1);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x49a, 2, 2, 0, 0, 1);
+            }
+            break;
+        case 1:
+            ++*(s32*)(p + 0x288);
+            fn_801F0E34(this_, 0x3006f, 0);
+            if (*(s32*)(p + 0x288) >= 180) {
+                *(s32*)(p + 0x230) = 2;
+                *(s32*)(p + 0x288) = 0;
+            }
+            break;
+        case 2:
+            fn_801F0E34(this_, 0x3006f, 0);
+            ++*(s32*)(p + 0x288);
+            if (*(s32*)(p + 0x288) > 1) {
+                *(f32*)(p + 0x290) += 0.08f;
+                *(s32*)(p + 0x268) += 0x20;
+            }
+            if (*(s32*)(p + 0x288) > 30) {
+                *(f32*)(p + 0x28c) += 0.08f;
+                *(s32*)(p + 0x264) -= 0x40;
+                *(f32*)(p + 0x238) += 1.0f;
+            }
+            if (*(s32*)(p + 0x288) > 60) {
+                *(f32*)(p + 0x294) += 0.08f;
+                *(s32*)(p + 0x26c) -= 0x40;
+            }
+            if (*(s32*)(p + 0x288) == 1) {
+                fn_801F0E34(this_, 0x30071, 0);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x49d, 2, 2, 0, 0, 1);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x49e, 2, 2, 0, 0, 1);
+                fn_80134DE4(lbl_8053AAF8, 1, 0);
+            } else if (*(s32*)(p + 0x288) == 30) {
+                fn_801F0E34(this_, 0x30071, 0);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x49b, 2, 2, 0, 0, 1);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x49c, 2, 2, 0, 0, 1);
+                fn_80134DE4(lbl_8053AAF8, 1, 0);
+            } else if (*(s32*)(p + 0x288) == 60) {
+                fn_801F0E34(this_, 0x30070, 0);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x49f, 2, 2, 0, 0, 1);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0x4a0, 2, 2, 0, 0, 1);
+                fn_80134DE4(lbl_8053AAF8, 3, 0);
+            }
+            if (*(s32*)(p + 0x288) == 70) {
+                u32 id = *(u32*)(p + 0x25c);
+                if (id != 0) {
+                    fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
+                    ((Actor*)this_)->v10(0xff, 0);
+                }
+            }
+            if (*(s32*)(p + 0x288) > 300) *(u8*)(p + 0x11c) = 0;
+            *(f32*)(p + 0x23c) += *(f32*)(p + 0x28c);
+            *(f32*)(p + 0x248) += *(f32*)(p + 0x290);
+            *(f32*)(p + 0x254) += *(f32*)(p + 0x294);
+            break;
+        }
+        break;
+    case 1:
+        switch (*(s32*)(p + 0x230)) {
+        case 1: goto done;
+        case 0:
+            if ((u8)((Actor*)this_)->v11()) {
+                *(s32*)(p + 0x230) = 2;
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0xd3, 2, 2, 0, 0, 1);
+                fn_8013CC50(*(void**)(p + 4), p + 0xc, 1.0f, 0xd4, 2, 2, 0, 0, 1);
+                fn_80134DE4(lbl_8053AAF8, 1, 0);
+                fn_801F0E34(this_, 0x30001, 0);
+            }
+            break;
+        default: break;
+        }
+        break;
+    case 2: default: break;
+    }
+done:
+    return;
+}
+
 extern "C" void* fn_80103F28(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_8049CA40;
