@@ -236,7 +236,9 @@ extern "C" void fn_8022E088(s32 idx, s32 i, Vec* out);
 extern "C" void fn_8022DF48(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
 #pragma opt_common_subs off
-static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
+static inline u8 textureHit(const ResTIMG* image, s32 px, s32 py) {
+            s32 y;
+            s32 x;
             u8 hit = 0;
             u32 halfY = (u32)image->mSizeY >> 1;
             u32 halfX = (u32)image->mSizeX >> 1;
