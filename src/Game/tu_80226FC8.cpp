@@ -162,6 +162,16 @@ extern "C" s32 fn_80227290(void* __restrict this_, f32 eps, const u32* __restric
     return found;
 }
 #pragma opt_propagation reset
+extern "C" u8 fn_8023B0F4(s32, f32*, u32, s32, f32);
+extern "C" u8 fn_8022C8EC(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" s32 fn_8023725C(s32);
+extern "C" u8 fn_8023513C(s32);
+extern "C" u8 fn_802317F0(s32,s32,void*,void*,u32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" s32 fn_8022F3DC(s32);
 extern "C" void fn_80227530(void* this_, f32* out) {
     FsaVec3 v0, v1, v2, v3;
     f32* box = (f32*)((u8*)this_ + 0x60);
