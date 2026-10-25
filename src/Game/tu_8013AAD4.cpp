@@ -135,17 +135,17 @@ struct CamViewBase {
     Mtx mMtx;
 };
 
-extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
-    f32 x = pos->x;
-    f32 y = pos->y;
-    this_->mPos.x = x;
-    f32 z = pos->z;
-    this_->mPos.y = y;
-    this_->mPos.z = z;
-    PSMTXCopy(mtx, this_->mMtx);
-    this_->v2();
-    this_->v1();
-    this_->v5();
+extern "C" void fn_8013ABCC(CamViewBase* this_, const Vec* pos, Mtx mtx) {
+ f32 x=pos->x;
+ f32 y=pos->y;
+ this_->mPos.x=x;
+ f32 z=pos->z;
+ this_->mPos.y=y;
+ this_->mPos.z=z;
+ PSMTXCopy(mtx,this_->mMtx);
+ this_->v2();
+ this_->v1();
+ this_->v5();
 }
 
 extern "C" void fn_8013AC54(Mtx mtx) {
