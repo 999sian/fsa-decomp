@@ -931,63 +931,6 @@ extern "C" char* fn_802D8228(char* p, s32 index) {
     return 0;
 }
 
-inline bool isLateStage() {
-    char* root;
-    if (*(u8*)(lbl_8053AAF8 + 0x7F) == 0)
-        return false;
-    root = *(char**)(lbl_8053AAF8 + 4);
-    if (*(s32*)(*(char**)(root + 0x0C) + 4) == 9 && *(s32*)(*(char**)(root + 0x0C) + 8) == 3)
-        return true;
-    if (*(s32*)(*(char**)(root + 0x0C) + 4) >= 13)
-        return true;
-    return false;
-}
-
-inline char* roomTextB(char* p, s32 index) {
-    s32 x = *(s32*)(p + 0x14);
-    if (x >= 0 && x < 10) {
-        s32 y = *(s32*)(p + 0x18);
-        if (y >= 0 && y < 10) {
-            s32 b = *(s32*)(p + 8);
-            s32 a = *(s32*)(p + 4);
-            const char* name;
-            if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1)
-                name = lbl_804A9530[a][b];
-            else
-                name = lbl_80541128;
-            s32 number = ((RoomArrays*)(p + y * 10))->roomNumbers[0][x];
-            if (number == 255)
-                number = 0;
-            sprintf(p + 0x131FA, lbl_8046E804, name, number / 10, number % 10, index - 7);
-            return p + 0x131FA;
-        }
-    }
-    return 0;
-}
-
-inline char* roomTextA(char* p, s32 index) {
-    s32 x = *(s32*)(p + 0x14);
-    if (x >= 0 && x < 10) {
-        s32 y = *(s32*)(p + 0x18);
-        if (y >= 0 && y < 10) {
-            const char* name;
-            s32 col = *(s32*)(p + 8);
-            s32 row = *(s32*)(p + 4);
-            if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1)
-                name = lbl_804A9530[row][col];
-            else
-                name = lbl_80541128;
-            char* cell = p + y * 10;
-            s32 number = ((RoomArrays*)cell)->roomNumbers[0][x];
-            if (number == 255)
-                number = 0;
-            sprintf(p + 0x1321A, lbl_8046E7E8, name, number / 10, number % 10, index - 7);
-            return p + 0x1321A;
-        }
-    }
-    return 0;
-}
-
 extern "C" void fn_802D8D50(char* this_, u8 flag) {
     extern void fn_802D4CCC(char* p, s32 index);
     extern void fn_802F6BBC(char* base, s32 src, s32 dst);
