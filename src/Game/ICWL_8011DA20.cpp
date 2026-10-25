@@ -94,7 +94,7 @@ static inline void icwlGetBox2(u8* this_, ICWLBox* box, f32 x, f32 y) {
 }
 
 static inline void icwlKillEmitter(void** emitter) {
-    if (*emitter != 0) {
+    if (*(u32*)emitter != 0) {
         forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *emitter);
         *emitter = 0;
     }
