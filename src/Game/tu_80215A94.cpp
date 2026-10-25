@@ -155,18 +155,22 @@ struct HrmnTable {
 extern "C" int fn_80215E98(HrmnTable* t);
 extern "C" void fn_80215E18(HrmnEntry* e);
 
-extern "C" int fn_80215A94(HrmnTable* t) {
+extern "C" int fn_80215A94(const HrmnTable* t) {
+    s32 n;
+    const HrmnTable* p;
     int result = -1;
     s32 cnt = t->mCount;
     if (cnt >= 2 && cnt - 1 == t->countSet()) {
-        s32 n = t->mCount;
+        n = *(const volatile s32*)&t->mCount;
+        p = t;
         for (int i = 0; i < n; i++) {
-            if (!t->mEntry[i].isSet()) {
+            if ((u8)(1 ^ ((u32)p->mEntry[0].mId >> 31)) == 0) {
                 if (fn_801CD2F8(fn_8023DE58(i))) {
                     result = i;
                     break;
                 }
             }
+            p = (const HrmnTable*)((const u8*)p + sizeof(HrmnEntry));
         }
     }
     return result;
@@ -194,18 +198,19 @@ extern "C" void fn_80215BCC(const HrmnTable* t, int idx) {
     }
 }
 #pragma opt_propagation reset
-extern "C" int fn_80215C6C(HrmnTable* t, int idx) {
+#pragma opt_propagation off
+extern "C" int fn_80215C6C(const HrmnTable* t, int idx) {
     int result = 0;
     int off = idx * 0x24;
-    if (*((u8*)t + off + 0x1c) != 0 && !fn_801ED7B0((u8*)t + off + 0x1c)) {
+    if (*((const u8*)t + off + 0x1c) != 0 && !fn_801ED7B0((u8*)t + off + 0x1c)) {
         u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-        u8 lo = rec[0x78];
         u8 hi = rec[0x79];
+        u8 lo = rec[0x78];
         if (hi == 0 && lo == 0) {
             result = 1;
         } else {
-            int a = *((u8*)t + off + 0x24);
-            int b = *((u8*)t + off + 0x25);
+            u8 a = *((const u8*)t + off + 0x24);
+            u8 b = *((const u8*)t + off + 0x25);
             if (a < hi || ((u8)a == hi && (u8)b < lo)) {
                 result = 1;
             }
@@ -213,7 +218,7 @@ extern "C" int fn_80215C6C(HrmnTable* t, int idx) {
     }
     return result;
 }
-
+#pragma opt_propagation reset
 extern "C" int fn_80215D38(HrmnTable* t) {
     int result = 1;
     for (int i = 0; i < t->mCount; i++) {
