@@ -70,17 +70,21 @@ extern "C" void fn_80374074(Actor* p) {
     f32 old = *(f32*)((u8*)p + 0x244);
     f32 period = 10.0f;
     f32 rem = old - period * (f32)(s32)(old / period);
-    p->field_3C.x = p->field_3C.y = p->field_3C.z = 0.0f;
+    p->field_3C.x = 0.0f;
+    p->field_3C.y = 0.0f;
+    p->field_3C.z = 0.0f;
     if (*(s32*)((u8*)p + 0x248) > 0) --*(s32*)((u8*)p + 0x248);
     fn_80373C38(p);
     JGeometry::TBox2f box = *(JGeometry::TBox2f*)((u8*)p + 0x60);
+    JGeometry::TVec3f pos;
     box.addPos(*(JGeometry::TVec2f*)((u8*)p + 0xc));
+    s32 idx;
     s32 count = 0;
-    s32 idx = fn_80239470(&box, p->field_04, *(s32*)((u8*)p + 0x198));
+    idx = fn_80239470(&box, p->field_04, *(s32*)((u8*)p + 0x198));
     if (idx >= 0) count = fn_80238A68(*(s32*)((u8*)p + 0x198));
     if (count >= 4) {
         f32 dx = p->field_0C.x - fn_8023E724(idx)->x;
-        if (__fabs(dx) >= 2.0f) {
+        if (__fabsf(dx) >= 2.0f) {
             JGeometry::TVec3f off(dx, 0.0f, 0.0f);
             fn_8023DFF4(idx, &off);
         }
@@ -99,10 +103,8 @@ extern "C" void fn_80374074(Actor* p) {
                         *(s32*)((u8*)p + 0x24c) = 4;
                         *(s32*)((u8*)p + 0x250) = 0;
                         for (s32 i = 0; i < 4; ++i) {
-                            JGeometry::TVec3f pos = *fn_8023E724(i);
-                            JGeometry::TVec3f off(0.0f, 7.0f, 0.0f);
-                            JGeometry::TVec3f sum = pos + off;
-                            fn_80230498(i, sum, 0x2e2, 0xff, -0x80, -0x80, 1);
+                            pos = *fn_8023E724(i);
+                            fn_80230498(i, pos + JGeometry::TVec3f(0.0f, 7.0f, 0.0f), 0x2e2, 0xff, -0x80, -0x80, 1);
                         }
                     } else *(s32*)((u8*)p + 0x24c) = 0;
                 }
@@ -126,8 +128,9 @@ extern "C" void fn_80374074(Actor* p) {
             else fn_801F0E34(p, 0x5007b, 0);
         }
     }
+    f32 delta = *(f32*)((u8*)p + 0x244) - old;
     p->field_3C.x = 0.0f;
-    p->field_3C.y = *(f32*)((u8*)p + 0x244) - old;
+    p->field_3C.y = delta;
     p->field_3C.z = 0.0f;
     p->field_0C.y = p->field_24.y + *(f32*)((u8*)p + 0x244);
     f32 height = *(f32*)((u8*)p + 0x244);
