@@ -69,7 +69,9 @@ extern "C" u8 fn_802DCD0C(void);
 extern "C" s32 fn_8023DE58(s32 n);
 extern "C" s32 fn_80138A30(u8* p);
 extern "C" void __ptmf_scall(void* obj, s32 off);
-extern "C" u8 lbl_804B19BC[];
+struct State_80441490 {};
+typedef void (State_80441490::*PMF80441490)();
+extern "C" PMF80441490 lbl_804B19BC[];
 extern "C" void fn_80441490(u8* param_1) {
     u16 uVar2;
     u16 uVar3;
