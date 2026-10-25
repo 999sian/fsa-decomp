@@ -249,8 +249,10 @@ extern "C" void fn_8011395C(char* self) {
 
 #pragma opt_propagation off
 static inline void drawSprite_80113B54(char* self, int arg, char* name, void* record) {
-    void* pos = self+0xc;
-    s32 idx = arg + *(s32*)(self+0x274);
+    s32 idx;
+    void* pos;
+    pos = self+0xc;
+    idx = arg + *(s32*)(self+0x274);
     if (*(s32*)(self+4) < 8) {
         void* spr = (*(SpriteResources_80113B54**)((char*)lbl_8053AAF8+0xa4))->v6(0x534f4220, name);
         fn_802F86CC(*(void**)((char*)lbl_8053AB10+0x20), pos, spr, idx, record, lbl_8053C690, lbl_8053C690);
@@ -261,9 +263,6 @@ extern "C" void fn_80113B54(char* self, int arg) {
     u8 buf50[0x3c];
     u8 buf14[0x3c];
     int i;
-    int idx;
-    void* spr;
-    void* pos;
 
     *(s32*)(buf50 + 0x10) = -1;
     *(s32*)(buf50 + 0x14) = -1;
@@ -338,13 +337,9 @@ extern "C" void fn_80113B54(char* self, int arg) {
 
     if (arg == 0x1d6) {
         fn_801EF830(*(s32*)(self + 4), &vec, buf14, 7, lbl_80464968, arg + *(s32*)(self + 0x274), 0);
-        drawSprite_80113B54(self, arg, lbl_80464968, buf50);
-        return;
-    }
-    {
+        drawSprite_80113B54(self, arg, lbl_80464968, buf50);    } else {
         fn_801EF830(*(s32*)(self + 4), &vec, buf14, 7, lbl_8046497C, arg + *(s32*)(self + 0x274), 0);
-        drawSprite_80113B54(self, arg, lbl_8046497C, buf50);
-    }
+        drawSprite_80113B54(self, arg, lbl_8046497C, buf50);    }
 }
 #pragma opt_propagation on
 #if defined(VERSION_G4SE01)
