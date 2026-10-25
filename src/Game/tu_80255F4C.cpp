@@ -238,8 +238,10 @@ extern "C" s32 fn_8023DE58(s32 idx);
 #pragma opt_common_subs off
 static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
             u8 hit = 0;
-            x += (u32)image->mSizeX >> 1;
-            y += (u32)image->mSizeY >> 1;
+            u32 halfY = (u32)image->mSizeY >> 1;
+            u32 halfX = (u32)image->mSizeX >> 1;
+            x += halfX;
+            y += halfY;
             if (x >= 0 && x < image->mSizeX && y >= 0 && y < image->mSizeY) {
                 switch (image->mTextureFormat) {
                 case 8:
