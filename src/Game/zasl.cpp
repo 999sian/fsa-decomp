@@ -114,11 +114,9 @@ extern "C" void fn_8020C30C(void* p) {
 extern "C" void fn_8020C374(void* p) {
     char* c = (char*)p;
     s16 a = *(s16*)(c + 0x2ae);
-    f32 r = *(f32*)(c + 0x254);
-    f32 sn = JMASinShort(a);
-    f32 cs = JMACosShort(a);
-    *(f32*)(c + 0x3c) = r * sn;
-    *(f32*)(c + 0x40) = r * cs;
+    JGeometry::TVec2<f32> velocity(JMASinShort(a), JMACosShort(a));
+    velocity.scale(*(f32*)(c + 0x254));
+    ((JGeometry::TVec2<f32>*)(c + 0x3c))->set(velocity);
     ((ItemBase*)p)->v31();
 }
 
