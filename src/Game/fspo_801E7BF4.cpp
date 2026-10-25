@@ -45,11 +45,12 @@ extern const f32 lbl_8053F5F4;
 
 static inline u8* fspo_mgr() { u8* mgr = fn_801E9AFC(); return mgr + mgr[0xf0] * 0x78; }
 extern "C" void fn_801E7C88(u8* this_) {
-    u32 hi, lo, d, mid, dir;
+    u32 d, mid;
+    u8 hi, lo;
     fn_801D0ED0(this_);
     u32 flags = *(u32*)(this_ + 0x90);
     if ((flags >> 23) & 1) {
-        dir = (flags >> 21) & 3;
+        u32 dir = (flags >> 21) & 3;
         *(f32*)(this_ + 0x24) += fn_80210B34(dir);
         *(f32*)(this_ + 0x28) += fn_80210AF8(dir);
         JGeometry::setTVec3f((f32*)(this_ + 0x24), (f32*)(this_ + 0xc));
@@ -72,8 +73,8 @@ extern "C" void fn_801E7C88(u8* this_) {
     *(u32*)(this_ + 0xb0) = 0;
     *(u32*)(this_ + 0x230) |= 0x100;
     d = *(u32*)(this_ + 0x4);
-    lo = *(u32*)(this_ + 0x90) & 0xff;
     hi = *(u32*)(this_ + 0x90) >> 24;
+    lo = *(u32*)(this_ + 0x90) & 0xff;
     mid = (lo == 0) ? ((*(u32*)(this_ + 0x90) >> 16) & 0x1f) : 0;
     u8* mgr = fn_801E9AFC();
     fn_801EA75C(mgr + mgr[0xf0] * 0x78, hi, (u8)mid, lo, d, (f32*)(this_ + 0xc));
