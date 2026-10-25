@@ -211,6 +211,11 @@ public:
     virtual void v25();
     virtual void v26();
     virtual void v27(u8);
+    virtual void v28();
+    virtual void v29();
+    virtual void v30();
+    virtual void v31(u16);
+    virtual void v32(u16);
 };
 class J3DTexGenBlock {
 public:
@@ -1004,10 +1009,10 @@ void J3DMaterialFactory::modifyPatchedCurrentMtx(J3DMaterial* material, int idx)
     *(u32*)((u8*)material + 0x44) = buf[4][2] | (buf[5][2] << 6) | (buf[6][2] << 12) | (buf[7][2] << 18);
 }
 
-extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags)
+extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial* material, int index, u32 flags)
 {
-    void** tev;
     u8* data;
+    int idx = index;
     if (material == NULL) {
         material = (J3DMaterial*)operator new(0x4c);
         if (material != NULL) {
@@ -1022,33 +1027,33 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
         if (blk != NULL) {
             *blk = __vt__13J3DColorBlock;
             *blk = lbl_8049ABFC;
-            *(void***)((u8*)material + 0x24) = blk;
         }
+            *(void***)((u8*)material + 0x24) = blk;
         void** tex = (void**)operator new(4);
         if (tex != NULL) {
             *tex = __vt__14J3DTexGenBlock;
             *tex = lbl_8049AB90;
-            *(void***)((u8*)material + 0x28) = tex;
         }
-        tev = (void**)operator new(8);
+            *(void***)((u8*)material + 0x28) = tex;
+        void** tev = (void**)operator new(8);
         if (tev != NULL) {
             *tev = __vt__11J3DTevBlock;
             *tev = lbl_8049AAB4;
             fn_800D36E0(tev);
-            *(void***)((u8*)material + 0x2c) = tev;
         }
+            *(void***)((u8*)material + 0x2c) = tev;
         void** ind = (void**)operator new(4);
         if (ind != NULL) {
             *ind = __vt__11J3DIndBlock;
             *ind = __vt__15J3DIndBlockNull;
-            *(void***)((u8*)material + 0x30) = ind;
         }
+            *(void***)((u8*)material + 0x30) = ind;
         void** pe = (void**)operator new(4);
         if (pe != NULL) {
             *pe = __vt__10J3DPEBlock;
             *pe = lbl_8049AA38;
-            *(void***)((u8*)material + 0x34) = pe;
         }
+            *(void***)((u8*)material + 0x34) = pe;
         *(u16*)((u8*)material + 0x14) = idx;
         *(u32*)((u8*)material + 0x10) = ((u8*)self->mPEModes)[idx];
     }
@@ -1056,11 +1061,11 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
     *(u32*)((u8*)material + 0x40) = ((u32*)data)[0];
     *(u32*)((u8*)material + 0x44) = ((u32*)data)[1];
     (*(void (***)(void*, u16))*(void**)((u8*)material + 0x24))[31](*(void**)((u8*)material + 0x24), *(u16*)((u8*)self->mPatchInfo + idx * 16));
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x24))[32](*(void**)((u8*)material + 0x24), *(u16*)((u8*)self->mPatchInfo + idx * 16 + 2));
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x28))[25](*(void**)((u8*)material + 0x28), *(u16*)((u8*)self->mPatchInfo + idx * 16 + 4));
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x2c))[52](*(void**)((u8*)material + 0x2c), *(u16*)((u8*)self->mPatchInfo + idx * 16 + 6));
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x2c))[53](*(void**)((u8*)material + 0x2c), *(u16*)((u8*)self->mPatchInfo + idx * 16 + 8));
-    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x34))[29](*(void**)((u8*)material + 0x34), *(u16*)((u8*)self->mPatchInfo + idx * 16 + 10));
+    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x24))[32](*(void**)((u8*)material + 0x24), ((u16*)((u8*)self->mPatchInfo + idx * 16))[1]);
+    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x28))[25](*(void**)((u8*)material + 0x28), ((u16*)((u8*)self->mPatchInfo + idx * 16))[2]);
+    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x2c))[52](*(void**)((u8*)material + 0x2c), ((u16*)((u8*)self->mPatchInfo + idx * 16))[3]);
+    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x2c))[53](*(void**)((u8*)material + 0x2c), ((u16*)((u8*)self->mPatchInfo + idx * 16))[4]);
+    (*(void (***)(void*, u16))*(void**)((u8*)material + 0x34))[29](*(void**)((u8*)material + 0x34), ((u16*)((u8*)self->mPatchInfo + idx * 16))[5]);
     if (*(void**)((u8*)material + 0x48) == NULL) {
         void** dl = (void**)operator new(0x10);
         if (dl != NULL) {
@@ -1099,18 +1104,21 @@ size_t J3DMaterialFactory::calcSize(J3DMaterial* mat, MaterialType type, int idx
     return size;
 }
 
-extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
+#pragma opt_propagation on
+extern "C" u32 fn_800CAB34(const u8* p, void* mat, s32 idx, u32 flags) {
     u32 size = 0;
     if (*(void**)(p + 0x78) != NULL) {
-        fn_800CAEC8(p, mat, idx, flags);
+        fn_800CAEC8((u8*)p, mat, idx, flags);
     } else {
         u32 texGenNum = 0;
-        u32 tevNum = 0;
+        u32 tevNum = texGenNum;
+        u32 texGenFlags;
         u32 tevStageNum;
         u32 indNum;
-        u32 texGenFlags;
         u32 peFlags;
         u32 indFlag;
+        u32 colorFlags;
+        s32 texMask;
         {
             u8* entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
 
@@ -1158,14 +1166,16 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
                 indNum = 0;
             }
         }
+        texMask = indNum > 4 ? -1 : 0;
         peFlags = flags & 0x30000000;
-        texGenFlags = flags & 0x0C000000 & ~-(u32)(indNum > 4);
+        colorFlags = flags & 0xC0000000;
         indFlag = (flags >> 24) & 1;
+        texGenFlags = (flags & 0x0C000000) & ~texMask;
 
         if (mat == NULL) {
             size = 0x4c;
         }
-        size += calcSizeColorBlock__11J3DMaterialFUl(flags & 0xC0000000);
+        size += calcSizeColorBlock__11J3DMaterialFUl(colorFlags);
         size += calcSizeTexGenBlock__11J3DMaterialFUl(texGenFlags);
         size += calcSizeTevBlock__11J3DMaterialFi((u16)tevStageNum);
         size += calcSizeIndBlock__11J3DMaterialFi(indFlag);
@@ -1199,7 +1209,7 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
     }
     return size;
 }
-
+#pragma opt_propagation reset
 extern "C" u32 calcSizeColorBlock__11J3DMaterialFUl(u32);
 extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
 extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
