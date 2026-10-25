@@ -1039,7 +1039,160 @@ soundStarted:
 
 #include "JSystem/JAudio/JAUInitializer.h"
 #include "JSystem/JAudio/JAUAudioArchive.h"
-extern "C" void fn_80459AE4(u32 a, u32 b, u32 c, void* d, void* e) {
+static inline void initAudienceBase(u8* p) {
+    *(void**)p = lbl_804954F8;
+    *(u32*)(p + 0x50) = 1;
+    PSMTXIdentity((MtxPtr)(p + 0x54));
+}
+#include "JSystem/JKernel/JKRArchive.h"
+extern "C" u32 lbl_8053A220;
+extern "C" u32 lbl_8053A224;
+extern "C" int lbl_8053A228;
+extern "C" f32 lbl_8053A22C;
+extern "C" f32 lbl_8053A230;
+extern "C" u8 lbl_8053A234;
+extern "C" f32 lbl_8053A238;
+extern "C" f32 lbl_8053A23C;
+extern "C" f32 lbl_8053A240;
+extern "C" char* lbl_8053A244;
+extern "C" char* lbl_8053A248;
+extern "C" char* lbl_8053A24C;
+extern "C" f32 lbl_8053AF78;
+extern "C" u8 lbl_80491600[];
+extern "C" void* lbl_80495470[];
+extern "C" char lbl_804B2098[];
+extern "C" void* __vt__16JAIStreamDataMgr[];
+extern "C" void fn_8003C984(void*);
+extern "C" void fn_8003C8D8(void*);
+extern "C" void fn_8045A0E4(int count);
+extern "C" void __ct__12JAISoundInfoFb(void*, bool);
+extern "C" void __ct__14WaveControllerFlll(void*, s32, void*, s32);
+extern "C" void fn_80459AE4(u8* this_, JKRSolidHeap* heap, u32 size, void* data, JKRArchive* arc) {
+    JAU_JASInitializer jas;
+    jas.mChannelPoolCount = lbl_8053A228;
+    jas.mAudioMemSize = size;
+    jas.mDSPLevel = lbl_8053A240;
+    jas.initJASystem(heap);
+    JAU_JAIInitializer jai;
+    jai.mSeCount = lbl_8053A220;
+    jai.mSeqCount = lbl_8053A224;
+    jai.initJAInterface();
+    *(JASAudioReseter**)(this_ + 0x2c) = new (heap, 0) JASAudioReseter();
+    *(JAUSoundMgr**)(this_ + 0x30) = new (heap, 0) JAUSoundMgr();
+    *(u8**)(this_ + 0x34) = *(u8**)(this_ + 0x30) + 4;
+    *(u8**)(this_ + 0x38) = *(u8**)(this_ + 0x30) + 0x728;
+    u8* au = (u8*)operator new(0x84, heap, 0);
+    if (au) {
+        u8* base = au;
+        fn_8003C984(au);
+        *(void**)au = lbl_80495480;
+        *(void**)base = lbl_804954F8;
+        *(u32*)(base + 0x50) = 1;
+        PSMTXIdentity((MtxPtr)(base + 0x54));
+        *(void**)au = lbl_804954D8;
+        *(void**)au = lbl_804B2074;
+    }
+    *(u8**)(this_ + 0x3c) = au;
+    *(f32*)(*(u8**)(this_ + 0x3c) + 0x4) = lbl_8053A22C;
+    *(f32*)(*(u8**)(this_ + 0x3c) + 0x8) = lbl_8053A230;
+    *(f32*)(*(u8**)(this_ + 0x3c) + 0xc) = lbl_8053AF78;
+    *(f32*)(*(u8**)(this_ + 0x3c) + 0x10) = lbl_8053A238;
+    *(f32*)(*(u8**)(this_ + 0x3c) + 0x14) = lbl_8053A23C;
+    *(f32*)(*(u8**)(this_ + 0x3c) + 0x1c) = lbl_8053A234;
+    fn_8045A0E4(jai.mSeCount);
+    fn_8003C8D8(*(void**)(this_ + 0x3c));
+    (*(JAISeMgr**)(this_ + 0x34))->setAudience(*(JAIAudience**)(this_ + 0x3c));
+    JAISeCategoryArrangement cat;
+    cat.mItems[0].mMaxActiveSe = 4;
+    cat.mItems[0].mMaxInactiveSe = 4;
+    cat.mItems[1].mMaxActiveSe = 4;
+    cat.mItems[1].mMaxInactiveSe = 4;
+    cat.mItems[2].mMaxActiveSe = 12;
+    cat.mItems[2].mMaxInactiveSe = 12;
+    cat.mItems[3].mMaxActiveSe = 12;
+    cat.mItems[3].mMaxInactiveSe = 12;
+    cat.mItems[4].mMaxActiveSe = 12;
+    cat.mItems[4].mMaxInactiveSe = 12;
+    cat.mItems[5].mMaxActiveSe = 8;
+    cat.mItems[5].mMaxInactiveSe = 8;
+    cat.mItems[6].mMaxActiveSe = 8;
+    cat.mItems[6].mMaxInactiveSe = 8;
+    (*(JAISeMgr**)(this_ + 0x34))->setCategoryArrangement(cat);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x1c))->moveVolume(lbl_80543EB4, 0);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x88))->moveVolume(lbl_80543EB4, 0);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0xf4))->moveVolume(lbl_80543EB4, 0);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x160))->moveVolume(lbl_80543EB4, 0);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x1cc))->moveVolume(lbl_80543EB4, 0);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x238))->moveVolume(lbl_80543EB4, 0);
+    ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x2a4))->moveVolume(lbl_80543EB4, 0);
+    struct FxSet { JASDsp::FxlineConfig_ c[4]; };
+    FxSet fx = *(FxSet*)lbl_80491600;
+    for (u8 i = 0; i < 4; i++) {
+        JASDsp::FxlineConfig_* cfg = &fx.c[i];
+        JASDsp::setFXLine(i, new (heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)], cfg);
+    }
+    void* w = operator new(0x5c);
+    if (w) __ct__14WaveControllerFlll(w, 0, heap, 4);
+    *(void**)(this_ + 0x14) = w;
+    for (int k = 0; k < 4; k++) {
+        void* w2 = operator new(0x5c);
+        if (w2) __ct__14WaveControllerFlll(w2, 0, heap, 4);
+        *(void**)(this_ + k * 4 + 0x18) = w2;
+    }
+    w = operator new(0x5c);
+    if (w) __ct__14WaveControllerFlll(w, 0, heap, 1);
+    *(void**)(this_ + 0x28) = w;
+    u8* si = (u8*)operator new(0x10, heap, 0);
+    if (si) {
+        __ct__12JAISoundInfoFb(si, true);
+        JASGlobalInstance<JAUSoundInfo>::sInstance = (JAUSoundInfo*)(si + 4);
+        *(void**)(si + 4) = lbl_80495470;
+        *(void**)(si + 8) = __vt__16JAIStreamDataMgr;
+        *(void**)si = lbl_804B2098;
+        *(void**)(si + 4) = lbl_804B2098 + 0x24;
+        *(void**)(si + 8) = lbl_804B2098 + 0x34;
+        *(u32*)(si + 0xc) = 0;
+    }
+    *(u8**)(this_ + 0x40) = si;
+    if (arc == 0) {
+        arc = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_COMP, heap, JKRArchive::MOUNT_DIRECTION_HEAD);
+    }
+    JASWaveArcLoader::setCurrentDir(lbl_8053A248);
+    *(JAUSectionHeap**)(this_ + 0x44) = JAUNewSectionHeap(true);
+    (*(JAUSectionHeap**)(this_ + 0x44))->setSeqDataArchive(arc);
+    (*(JAUSectionHeap**)(this_ + 0x44))->newDynamicSeqBlock(0x16000);
+    (*(JAUSectionHeap**)(this_ + 0x44))->newDynamicSeqBlock(0x16000);
+    (*(JAUSectionHeap**)(this_ + 0x44))->newDynamicSeqBlock(0xb000);
+    JAUAudioArcLoader loader(*(JAUSectionHeap**)(this_ + 0x44));
+    if (data) {
+        loader.load(data);
+    } else {
+        loader.load(lbl_8053A244);
+    }
+    (*(JAISeMgr**)(this_ + 0x34))->setSeqDataMgr((*(JAUSectionHeap**)(this_ + 0x44))->sectionHeapData_.seSeqDataMgr_);
+    (*(JAISeqMgr**)(this_ + 0x38))->setSeqDataMgr((JAISeqDataMgr*)*(JAUSectionHeap**)(this_ + 0x44));
+    *(JAUSoundTable**)(*(u8**)(this_ + 0x40) + 0xc) = (*(JAUSectionHeap**)(this_ + 0x44))->getSoundTable();
+    *(f32*)(this_ + 0x4c) = lbl_80543EB4;
+    *(f32*)(this_ + 0x50) = lbl_80543EB4;
+    *(f32*)(this_ + 0x54) = lbl_80543EB4;
+    *(u32*)(this_ + 0x58) = 0;
+    *(u32*)(this_ + 0x5c) = 0;
+    *(u32*)(this_ + 0x60) = 0;
+    *(s32*)(this_ + 0x64) = -1;
+    this_[0x68] = 0;
+    this_[0x89] = 0;
+    this_[0x69] = 0;
+    this_[0x7c] = 0;
+    this_[0x6a] = 0;
+    this_[0x88] = 0;
+    this_[0x8a] = 0;
+    this_[0x8b] = 0;
+    this_[0x8c] = 0;
+    this_[0x8d] = 0;
+    this_[0x8e] = 0;
+    this_[0x75] = 0;
+    *(u32*)(this_ + 0x78) = 0;
+    fn_80458744(this_, 0);
 }
 
 extern "C" void fn_8045A080(char* self)
