@@ -44,8 +44,6 @@ extern f32 lbl_805439DC;
 // Child object at this+0x24. slot 9 takes an s32; slot 15 takes a u64 (EABI puts it in r5:r6)
 // and returns the child it creates.
 struct T80416BD0_Child {
-    virtual void slot0();
-    virtual void slot1();
     virtual void slot2();
     virtual void slot3();
     virtual void slot4();
