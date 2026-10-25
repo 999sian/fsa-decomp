@@ -1391,6 +1391,26 @@ static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box) {
 extern "C" const f32 lbl_80540670;
 extern "C" const f32 lbl_80540674;
 extern "C" const f32 lbl_8054067C;
+static inline s32 HouseContactMode(char* self, s32& room) {
+    if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+        room = *(s32*)(self + 4);
+        s32 current = fn_8023DE58(0);
+        if (current != room) goto invalid;
+        s32 result = fn_80238BC4(*(void**)(self + 0x198));
+        if (result < 0 || result >= 4) goto invalid;
+        *(s32*)(self + 0x2cc) = 1;
+        return result;
+    }
+invalid:
+    return -1;
+}
+static inline u8 HouseHitsRect(char* self, void* pos, s32& room, void*& handle) {
+    handle = *(void**)(self + 0x198);
+    room = *(s32*)(self + 4);
+    char* base = (char*)fn_8020D58C();
+    return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, handle, 0);
+}
+
 extern "C" void fn_80299FB0(void* p) {
     s32 mode;
     u8 found;
