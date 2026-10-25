@@ -67,7 +67,7 @@ static inline s32 WarpDestination(const char* actor) {
     return result;
 }
 static inline s32 HouseDestination(const char* actor) {
-    s32 room = (*(const u32*)(actor + 0x90) >> 7) & 31;
+    int room = (*(const u32*)(actor + 0x90) >> 7) & 31;
     return (room + 7) & ~-(room == 0);
 }
 
@@ -1215,12 +1215,12 @@ extern "C" void fn_8029AE58(char* p) {
         if (stage != *(s32*)(other + 0x248)) continue;
         {
             s32 otherRoom = *(s32*)(other + 4);
-            if (otherRoom == HouseDestination(*(u32*)(p + 0x90)) && *(s32*)(p + 4) == WarpDestination(*(u32*)(other + 0x90))) {
+            if (otherRoom == HouseDestination(p) && *(s32*)(p + 4) == WarpDestination(other)) {
                 if (*(s32*)(p + 0x29c) < 4) {
                     ((HOUSLinks*)p)->outgoing[((HOUSLinks*)p)->outgoingCount] = warp;
                     *(s32*)(p + 0x29c) += 1;
                 }
-            } else if (HouseDestination(*(u32*)(p + 0x90)) == WarpDestination(*(u32*)(other + 0x90)) && *(s32*)(p + 4) == otherRoom) {
+            } else if (HouseDestination(p) == WarpDestination(other) && *(s32*)(p + 4) == otherRoom) {
                 if (*(s32*)(p + 0x2a0) < 4) {
                     ((HOUSLinks*)p)->incoming[((HOUSLinks*)p)->incomingCount] = warp;
                     *(s32*)(p + 0x2a0) += 1;
