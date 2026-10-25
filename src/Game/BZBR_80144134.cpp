@@ -12,6 +12,22 @@ extern s32 lbl_8049F408[];
 extern s32 lbl_8049F418[];
 extern char* lbl_8053AB10;
 struct BzbrGame;
+extern "C" s32 fn_801F3D94(void* a, s32 b);
+extern "C" u8 fn_801F2618(void* a, f32* out, u32 c);
+extern "C" void fn_801F0E34(void* a, s32 id, s32 z);
+extern "C" u16 fn_8022461C(void* a, s32 b);
+extern "C" s32 fn_8023B004(f32* box, s32 room);
+extern "C" u8 fn_8023E854(void);
+extern "C" void fn_80238548(s32 i, s32 b, f32* p, s32 n);
+extern "C" s32 fn_801F285C(void* a, f32* b, u32* c, u32 e, s32 d);
+extern "C" u8 fn_801F2FAC(void* a);
+extern "C" u32 fn_801F2DB4(void* a, u32 b, u32 c, void* buf);
+extern "C" void fn_801EE8F4(void* a, void* outDir, f32* outLen, s32 n);
+extern "C" void fn_801EEC98(void* unused, s32 idx, u16* angOut, s32* quadOut, f32* distOut, s32* idxOut, s32 sel, s32 mode);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c);
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern const f32 lbl_8053CFDC;
 extern BzbrGame* lbl_8053AAF8;
 
 // Resource manager at game+0xa4; vtable +0x18 looks a resource up by type and name.
