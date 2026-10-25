@@ -40,8 +40,11 @@ extern "C" void fn_803126C8(Actor* p) {
     rec.b1f = 0;
     t = *(s32*)((u8*)p + 0x230);
     if (t >= 6 && t < 0xd) {
-        f32 lo = lbl_805417E8;
-        *(f32*)((u8*)p + 0x14) += *(f32*)((u8*)p + 0x44);
+        f32 lo, a, b;
+        a = *(f32*)((u8*)p + 0x14);
+        b = *(f32*)((u8*)p + 0x44);
+        lo = lbl_805417E8;
+        *(f32*)((u8*)p + 0x14) = a + b;
         *(f32*)((u8*)p + 0x44) += *(f32*)((u8*)p + 0x284);
         if (*(f32*)((u8*)p + 0x44) <= lo || *(f32*)((u8*)p + 0x44) >= lbl_805417EC) {
             *(f32*)((u8*)p + 0x284) = -*(f32*)((u8*)p + 0x284);
@@ -54,8 +57,11 @@ extern "C" void fn_803126C8(Actor* p) {
         fn_801F06F0(p, lbl_804714C0, *(s32*)((u8*)p + 0x234) + 0x27b, &rec, -1, lbl_805417F0, lbl_805417F0);
     } else if (t >= 0xd && *((u8*)p + 0x27c) == 1) {
         if ((t >= 0xe && t < 0x10) || (t == 0x10 && *(s32*)((u8*)p + 0x238) > 0x3c)) {
-            f32 lo = lbl_805417F4;
-            *(f32*)((u8*)p + 0x14) += *(f32*)((u8*)p + 0x44);
+            f32 lo, a, b;
+            a = *(f32*)((u8*)p + 0x14);
+            b = *(f32*)((u8*)p + 0x44);
+            lo = lbl_805417F4;
+            *(f32*)((u8*)p + 0x14) = a + b;
             *(f32*)((u8*)p + 0x44) += *(f32*)((u8*)p + 0x284);
             if (*(f32*)((u8*)p + 0x44) <= lo || *(f32*)((u8*)p + 0x44) >= lbl_805417F8) {
                 *(f32*)((u8*)p + 0x284) = -*(f32*)((u8*)p + 0x284);
@@ -63,7 +69,7 @@ extern "C" void fn_803126C8(Actor* p) {
             idx = *(s32*)((u8*)p + 0x278);
             if (idx >= 0) {
                 u8* mgr = fn_801F856C();
-                u8* other = ((u8**)(mgr + idx * 4))[2];
+                u8* other = *(u8**)((s32)mgr + idx * 4 + 8);
                 if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                     fn_802ED7F0((char*)other, *(f32*)((u8*)p + 0x14));
                 }
@@ -82,6 +88,9 @@ extern "C" void fn_803126C8(Actor* p) {
 }
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_802D6A9C(Actor* p);
 extern "C" u8 fn_802D800C(Actor* p, u32 v);
 extern "C" void fn_80458F9C(void* obj, s32 v);
