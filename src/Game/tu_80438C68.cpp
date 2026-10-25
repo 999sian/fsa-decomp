@@ -89,6 +89,22 @@ extern "C" void fn_802B7CD8(void* p);
 extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
 extern "C" u8 lbl_80529DEC[];
+extern "C" void* lbl_8053AAF8;
+extern "C" s32 fn_801F666C(void* mgr, s32 idx);
+extern "C" void* fn_8013CC50(u32 a, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, f32 scale);
+extern "C" void fn_80458880(void* mgr, u32 p, s32 v);
+extern "C" void fn_80309C4C(void* a, u32 b, s32 c);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* a, void* p);
+extern "C" void* lbl_8053AD30;
+extern "C" f32 lbl_80543C48;
+extern "C" f32 lbl_80543C4C;
+extern "C" f32 lbl_80543C50;
+extern "C" f32 lbl_80543C54;
+extern "C" f32 lbl_80543C58;
+extern "C" f32 lbl_80543C5C;
+extern "C" f32 lbl_80543C60;
+extern "C" f32 lbl_80543C64;
+extern "C" f32 lbl_80543C68;
 extern "C" void fn_80438C68(u8* p) {
     switch (p[0x58]) {
     case 0:
