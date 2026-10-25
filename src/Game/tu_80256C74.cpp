@@ -1,6 +1,7 @@
 // Player collision-cache and state helpers, retail 0x80256C74-0x8025EB18.
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 extern "C" void fn_8024B298(void*, s32, void*);
 extern "C" u8 fn_8022C3AC(u32);
 extern "C" u8 fn_80243234(void*);
