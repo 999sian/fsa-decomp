@@ -1,5 +1,7 @@
 
 
+#include "JSystem/JGeometry/Vec.h"
+
 extern "C" const float lbl_8053FDD8;
 extern "C" const float lbl_8053FDDC;
 extern "C" void* fn_8013C824();
@@ -151,31 +153,36 @@ extern "C" const float lbl_8053FDF0;
 extern "C" const float lbl_8053FDF4;
 extern "C" void* fn_8013CC50(int room, void* pos, float scale, int id, int a, int b, int c, int d, int e);
 extern "C" unsigned short lbl_8053FDD0[3];
-extern "C" void fn_8021F9AC(char* this_, float* src) {
+extern "C" void fn_8021F9AC(char* this_, const volatile float* src) {
     void** p;
     int i;
-    float k3 = lbl_8053FDEC;
-    float k2 = lbl_8053FDF0;
-    float k1 = lbl_8053FDE8;
-    float y = src[1];
     float x = src[0];
-
+    float y = src[1];
+    float k1 = lbl_8053FDE8;
+    float k2 = lbl_8053FDF0;
+    float k3 = lbl_8053FDEC;
     *(float*)(this_ + 0x8) = x;
     *(float*)(this_ + 0xc) = y;
-    *(float*)(this_ + 0x10) = src[2];
-    *(float*)(this_ + 0x14) = *(float*)(this_ + 0x8);
-    *(float*)(this_ + 0x18) = *(float*)(this_ + 0xc);
-    *(float*)(this_ + 0x1c) = k1 + *(float*)(this_ + 0x10);
-    *(float*)(this_ + 0x20) = *(float*)(this_ + 0x8);
-    *(float*)(this_ + 0x24) = k2 + *(float*)(this_ + 0xc);
-    *(float*)(this_ + 0x28) = k3 + *(float*)(this_ + 0x10);
+    *(float*)(this_ + 0x10) = *(const float*)(src + 2);
+    float z1 = *(float*)(this_ + 0x10);
+    float y1 = *(float*)(this_ + 0xc);
+    float x1 = *(float*)(this_ + 0x8);
+    *(float*)(this_ + 0x14) = x1;
+    *(float*)(this_ + 0x18) = y1;
+    *(float*)(this_ + 0x1c) = k1 + z1;
+    float y2 = *(float*)(this_ + 0xc);
+    float z2 = *(float*)(this_ + 0x10);
+    float x2 = *(float*)(this_ + 0x8);
+    *(float*)(this_ + 0x20) = x2;
+    *(float*)(this_ + 0x24) = k2 + y2;
+    *(float*)(this_ + 0x28) = k3 + z2;
     *(float*)(this_ + 0x2c) = lbl_8053FDF4 + *(float*)(this_ + 0x10);
     *(int*)(this_ + 0x4) = 0;
     *(int*)(this_ + 0x0) = 1;
-
     p = (void**)this_;
     for (i = 0; i < 3; i++) {
-        p[0xd] = fn_8013CC50(0, this_ + 0x8, *(float*)(this_ + 0x30), lbl_8053FDD0[i], 0, 0, 0, 0, 1);
+        unsigned short kind = lbl_8053FDD0[i];
+        p[0xd] = fn_8013CC50(0, this_ + 0x8, *(float*)(this_ + 0x30), kind, 0, 0, 0, 0, 1);
         p++;
     }
 }
