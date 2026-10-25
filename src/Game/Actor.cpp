@@ -1163,7 +1163,7 @@ extern "C" void fn_801EF574(void* a, void* b, f32* v, const void* rec) {
     *(s8*)&local.field_1D=-2;
     local.field_20=0;
     void* res=*(void**)((u8*)lbl_8053AAF8+0xa4);
-    void* name=((void*(*)(void*,u32,void*))(*(void***)res)[6])(res,0x534f4220,a);
+    void* name=(void*)((EffResMgr*)res)->load(0x534f4220,a);
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),v,name,(u32)b,&local,lbl_8053F774,lbl_8053F774);
 }
 
