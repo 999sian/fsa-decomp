@@ -796,6 +796,7 @@ extern "C" void fn_80364900(char* self) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80364A88(char* self) {
     char* tbl = (char*)lbl_80474320;
     if (*(s32*)(self + 0x248) == 0) {
@@ -809,38 +810,43 @@ extern "C" void fn_80364A88(char* self) {
                 *(s32*)(self + 0x2f4) += 4;
                 *(s32*)(self + 0x23c) += 1;
                 if (*(s32*)(self + 0x23c) == 1) {
-                    char* base = tbl + 0x228;
+                    const s32* __restrict base = (const s32*)(tbl + 0x228);
                     *(f32*)(self + 0x3c) = zero;
-                    *(f32*)(self + 0x40) = lbl_80542B5C * mag;
+                    *(f32*)(self + 0x40) = -1.0f * mag;
                     *(f32*)(self + 0x44) = zero;
-                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16 + 4);
+                    *(s32*)(self + 0x26c) = base[*(s32*)(self + 0x238) * 4 + 1];
                 } else if (*(s32*)(self + 0x23c) == 2) {
-                    char* base = tbl + 0x228;
+                    const s32* __restrict base = (const s32*)(tbl + 0x228);
                     *(f32*)(self + 0x3c) = mag;
                     *(f32*)(self + 0x40) = zero;
                     *(f32*)(self + 0x44) = zero;
-                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16 + 0xc);
+                    *(s32*)(self + 0x26c) = base[*(s32*)(self + 0x238) * 4 + 3];
                 } else if (*(s32*)(self + 0x23c) == 3) {
-                    char* base = tbl + 0x228;
+                    const s32* __restrict base = (const s32*)(tbl + 0x228);
                     *(f32*)(self + 0x3c) = zero;
                     *(f32*)(self + 0x40) = mag;
                     *(f32*)(self + 0x44) = zero;
-                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16);
+                    *(s32*)(self + 0x26c) = base[*(s32*)(self + 0x238) * 4];
                 } else if (*(s32*)(self + 0x23c) == 4) {
-                    char* base = tbl + 0x228;
+                    const s32* __restrict base = (const s32*)(tbl + 0x228);
                     *(f32*)(self + 0x3c) = mag;
                     *(f32*)(self + 0x40) = zero;
                     *(f32*)(self + 0x44) = zero;
-                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16 + 0xc);
+                    *(s32*)(self + 0x26c) = base[*(s32*)(self + 0x238) * 4 + 3];
                 } else {
-                    char* base = tbl + 0x228;
-                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 4 + 0x40);
+                    const s32* __restrict base = (const s32*)(tbl + 0x228);
+                    *(s32*)(self + 0x26c) = base[*(s32*)(self + 0x238) + 16];
                     *(s32*)(self + 0x260) = 0xf;
                     *(s32*)(self + 0x25c) = 0xf;
-                    *(s32*)(self + 0x264) = *(s32*)(self + 0x238) == 1;
-                    *(f32*)(self + 0x44) = zero;
-                    *(f32*)(self + 0x40) = zero;
-                    *(f32*)(self + 0x3c) = zero;
+                    if (*(s32*)(self + 0x238) == 1) {
+                        *(s32*)(self + 0x264) = 1;
+                    } else {
+                        *(s32*)(self + 0x264) = 0;
+                    }
+                    f32 stop = lbl_80542B0C;
+                    *(f32*)(self + 0x44) = stop;
+                    *(f32*)(self + 0x40) = stop;
+                    *(f32*)(self + 0x3c) = stop;
                     *(s32*)(self + 0x2f4) = 0;
                 }
             }
@@ -852,11 +858,14 @@ extern "C" void fn_80364A88(char* self) {
                 *(s32*)(self + 0x268) = 0;
             }
             if (*(s32*)(self + 0x238) == 1) {
-                *(s32*)(self + 0x25c) = *(s32*)(tbl + 0x758 + *(s32*)(self + 0x268) * 4);
+                const s32* __restrict frames = (const s32*)(tbl + 0x758);
+                *(s32*)(self + 0x25c) = frames[*(s32*)(self + 0x268)];
             } else {
-                *(s32*)(self + 0x25c) = *(s32*)(tbl + 0x768 + *(s32*)(self + 0x268) * 4);
+                const s32* __restrict frames = (const s32*)(tbl + 0x768);
+                *(s32*)(self + 0x25c) = frames[*(s32*)(self + 0x268)];
             }
-            *(s32*)(self + 0x264) = *(s32*)(tbl + 0x748 + *(s32*)(self + 0x268) * 4);
+            const s32* __restrict frames = (const s32*)(tbl + 0x748);
+            *(s32*)(self + 0x264) = frames[*(s32*)(self + 0x268)];
         } else {
             if (*(s32*)(self + 0x238) != 1 && *(s32*)(self + 0x25c) == 0) {
                 *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
@@ -865,7 +874,7 @@ extern "C" void fn_80364A88(char* self) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_801F856C(void);
 extern "C" f32 lbl_80542B50;
 extern "C" f32 lbl_80542B58;
