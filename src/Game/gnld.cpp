@@ -195,13 +195,10 @@ extern "C" void fn_80329640(u8* this_) {
 
 struct GnldRandom {
     u32 seed;
-    u32 get() {
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        return seed;
-    }
     f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        out.s = (get() >> 9) | 0x3f800000;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
         return out.f - lbl_80541D18;
     }
 };
@@ -233,10 +230,8 @@ extern "C" void fn_8032A4FC(s32 id, s32 ang, u8 mode) {
             b = fn_801F666C(fn_801F856C(), id);
             if (b != 0) {
                 if (mode) {
-                    f32 jitter = lbl_80541D70 - lbl_80541D74 * GNLD_RND;
-                    ang += (s32)jitter;
-                    f32 z = lbl_80541D3C * GNLD_RND + lbl_80541D3C;
-                    JGeometry::TVec3<f32> v(lbl_80541D20 * JMASSin(ang), lbl_80541D20 * JMASCos(ang), z);
+                    ang += (int)(lbl_80541D70 - lbl_80541D74 * GNLD_RND);
+                    JGeometry::TVec3<f32> v(lbl_80541D20 * JMASSin(ang), lbl_80541D20 * JMASCos(ang), lbl_80541D3C * GNLD_RND + lbl_80541D3C);
                     *(JGeometry::TVec3<f32>*)(b + 0x3c) = v;
                 } else {
                     JGeometry::TVec3<f32> v(lbl_80541D20 - lbl_80541D78 * GNLD_RND, lbl_80541D20 - lbl_80541D78 * GNLD_RND, lbl_80541D3C * GNLD_RND + lbl_80541D3C);
