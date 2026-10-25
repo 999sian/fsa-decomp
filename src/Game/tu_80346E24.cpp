@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" const f32 lbl_80542438;
@@ -60,6 +61,10 @@ extern "C" Vec* fn_8023E724(s32 id);
 extern "C" s32 fn_8022CAF8(s32 id);
 extern "C" BOOL fn_8022F478(s32 id);
 extern "C" BOOL fn_8022F514(s32 id);
+
+static inline bool IsPlayerBitSet(s32 id) {
+    return (lbl_8053AAF8[0x82] & (u8)(1 << id)) != 0;
+}
 extern "C" BOOL fn_80235580(s32 id);
 extern "C" BOOL fn_8023EA28(s32 id);
 extern "C" s32 fn_8022F3DC(s32 id);
@@ -73,17 +78,17 @@ extern "C" void fn_801F71A4(f32* v, f32 cur, f32 target, f32 step);
 extern "C" void Actor_CreateByID(s32 mgr, s32 name, s32 room, f32* pos, s32 a, s32 b, s32 c);
 extern "C" void detach__5ActorFv(Actor* p);
 extern "C" void fn_803471A0(Actor* this_) {
-    u8* p = (u8*)this_;
-    Vec tmp;
-    f32 box[4];
     s32 i;
-    u8 hit;
     u8 flag;
+    f32 box[4];
+    Vec tmp;
+    u8 hit;
+    u8* p = (u8*)this_;
 
     switch (*(s32*)(p + 0x230)) {
-    case 0: {
-        s32 room = *(s32*)(p + 4);
-        if (((u8*)fn_802D6A9C() + 0x131df)[room] != 0) {
+    case 0:
+        i = *(s32*)(p + 4);
+        if (*(u8*)(fn_802D6A9C() + 0x131df + i) != 0) {
             *(f32*)(p + 0x14) = lbl_80542438;
             *(f32*)(p + 0x44) = lbl_80542438;
             *(f32*)(p + 0x40) += lbl_80542440;
@@ -119,8 +124,8 @@ extern "C" void fn_803471A0(Actor* this_) {
             box[1] = *(f32*)(p + 0x64);
             box[2] = *(f32*)(p + 0x68);
             box[3] = *(f32*)(p + 0x6c);
-            box[0] += *(f32*)(p + 0xc);
             box[1] += *(f32*)(p + 0x10);
+            box[0] += *(f32*)(p + 0xc);
             box[2] += *(f32*)(p + 0xc);
             box[3] += *(f32*)(p + 0x10);
             if ((u8)fn_80233DA4(i) == 1) {
@@ -141,8 +146,11 @@ extern "C" void fn_803471A0(Actor* this_) {
                     hit = 1;
                     flag = 1;
                 }
-            } else if ((lbl_8053AAF8[0x82] & (u8)(1 << *(s32*)(p + 0x250))) != 0 || (u8)fn_8022F514(*(s32*)(p + 0x250))) {
-                hit = 1;
+            } else {
+                u8 on = (lbl_8053AAF8[0x82] & (u8)(1 << *(s32*)(p + 0x250))) != 0;
+                if (on || (u8)fn_8022F514(*(s32*)(p + 0x250))) {
+                    hit = 1;
+                }
             }
             if (!hit) {
                 *(s32*)(p + 0x250) = -1;
@@ -177,7 +185,7 @@ extern "C" void fn_803471A0(Actor* this_) {
                     *(f32*)(p + 0x84) = lbl_80542438;
                     *(f32*)(p + 0x88) = lbl_80542438;
                     *(f32*)(p + 0x8c) = lbl_80542438;
-                    *(Vec*)(p + 0x240) = *(Vec*)(p + 0xc);
+                    JGeometry::setTVec3f((f32*)(p + 0xc), (f32*)(p + 0x240));
                 } else if (*(u8*)(p + 0x270) == 0) {
                     detach__5ActorFv(this_);
                 } else {
@@ -190,7 +198,6 @@ extern "C" void fn_803471A0(Actor* this_) {
             *(s32*)(p + 0x24c) -= 1;
         }
         break;
-    }
     case 1:
         if (*(u16*)(p + 0x264) != fn_80226850(p + 0xc, *(s32*)(p + 4))) {
             *(s32*)(p + 0x230) = 0;
@@ -208,7 +215,7 @@ extern "C" void fn_803471A0(Actor* this_) {
         break;
     case 4:
         if ((u8)fn_8023F264(*(s32*)(p + 0x250))) {
-            *(Vec*)(p + 0xc) = *fn_8023E724(*(s32*)(p + 0x250));
+            JGeometry::setTVec3f((f32*)fn_8023E724(*(s32*)(p + 0x250)), (f32*)(p + 0xc));
             *(f32*)(p + 0x10) -= lbl_80542458;
         }
         if (*(s32*)(p + 0x25c) != 0) {
@@ -217,7 +224,7 @@ extern "C" void fn_803471A0(Actor* this_) {
                 Actor_CreateByID(fn_801F856C(), 0x4e4e4a4e, *(s32*)(p + 4), (f32*)(p + 0x240), *(s32*)(p + 0x90), *(s32*)(p + 0x16c), -1);
             } else if (*(s32*)(p + 0x25c) == 4) {
                 if (*(s32*)(p + 4) >= 8) {
-                    tmp = *(Vec*)(p + 0x240);
+                    JGeometry::setTVec3f((f32*)(p + 0x240), (f32*)&tmp);
                     tmp.z = lbl_80542438;
                     Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(s32*)(p + 4), (f32*)&tmp, 3, -1, -1);
                 } else {
