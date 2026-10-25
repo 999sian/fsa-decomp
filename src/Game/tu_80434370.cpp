@@ -250,5 +250,5 @@ extern "C" void* fn_8043711C(char* this_, s16 how) {
 	return this_;
 }
 
-extern "C" void __sinit_tu_80434370_cpp() {}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
