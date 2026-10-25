@@ -1,6 +1,7 @@
 #include "types.h"
 #include "dolphin/mtx.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern u8 lbl_804AE2E0[];
@@ -27,6 +28,7 @@ extern "C" void fn_8013CC50(s32 id, void* pos, f32 scale, u16 kind, s32 a, s32 b
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
 extern u8* lbl_8053AB10;
 static const u16 lbl_80542D38[4] = {0xfb, 0xfc, 0xfd, 0xfe};
+#pragma opt_propagation off
 extern "C" void fn_8036DDD0(u8* this_) {
     u32 tile = fn_80226BC4((f32*)(this_ + 0x244), *(s32*)(this_ + 4));
     u16 kind = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 4), tile) & 0x3ff;
@@ -54,7 +56,8 @@ extern "C" void fn_8036DDD0(u8* this_) {
         check:
             {
                 Vec tmp;
-                tmp = *(Vec*)fn_8023E724(i);
+                const f32* src = (const f32*)fn_8023E724(i);
+                JGeometry::setTVec3f(src, &tmp.x);
                 if (!(PSVECDistance((Vec*)(this_ + 0xc), &tmp) <= 57.0f && __fabsf(*(f32*)(this_ + 0xc) - tmp.x) <= 42.0f)) {
                     continue;
                 }
@@ -75,7 +78,7 @@ tail:
         }
     }
 }
-
+#pragma opt_propagation reset
 extern const f32 lbl_80542D4C;
 extern const f32 lbl_80542D50;
 extern const f32 lbl_80542D54;
