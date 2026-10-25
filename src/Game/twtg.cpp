@@ -47,6 +47,41 @@ private:
 extern "C" void* lbl_804AAD60[];
 extern "C" u32 lbl_804AAC58[];
 extern "C" u8 lbl_80507EF8[];
+struct TwtgInitData {
+    u32 w00;
+    u32 w01;
+    u32 w02;
+    u32 w03;
+    u32 w04;
+    u32 w05;
+    u32 w06;
+    u32 w07;
+    u32 w08;
+    u32 w09;
+    u32 w0a;
+    u32 w0b;
+    u32 w0c;
+    u32 w0d;
+    u32 w0e;
+    u32 w0f;
+    u32 w10;
+    u32 w11;
+    u32 w12;
+    u32 w13;
+    u32 w14;
+    u32 w15;
+    u32 w16;
+    u32 w17;
+    u32 w18;
+    u32 w19;
+    u32 w1a;
+    u32 w1b;
+    u32 w1c;
+    u32 w1d;
+    u32 w1e;
+    u32 w1f;
+    u32 w20;
+};
 
 class Twtg : public Actor {
 public:
@@ -1289,6 +1324,79 @@ Twtg::Twtg() : Actor() {
     *(void**)this = lbl_804AAD60;
     ResourceHandle* h = new ResourceHandle();
     *(ResourceHandle**)((char*)this + 0x278) = h;
+}
+
+extern "C" void __sinit_twtg_cpp();
+extern "C" void fn_80316ABC() {
+    u32* src = lbl_804AAC58;
+    u32* dst = src + 33;
+    u32 w00 = src[0];
+    u32 w01 = src[1];
+    u32 w02 = src[2];
+    u32 w03 = src[3];
+    u32 w04 = src[4];
+    u32 w05 = src[5];
+    u32 w06 = src[6];
+    u32 w07 = src[7];
+    u32 w08 = src[8];
+    u32 w09 = src[9];
+    u32 w0a = src[10];
+    u32 w0b = src[11];
+    u32 w0c = src[12];
+    u32 w0d = src[13];
+    u32 w0e = src[14];
+    u32 w0f = src[15];
+    u32 w10 = src[16];
+    u32 w11 = src[17];
+    u32 w12 = src[18];
+    u32 w13 = src[19];
+    u32 w14 = src[20];
+    u32 w15 = src[21];
+    u32 w16 = src[22];
+    u32 w17 = src[23];
+    u32 w18 = src[24];
+    u32 w19 = src[25];
+    u32 w1a = src[26];
+    u32 w1b = src[27];
+    u32 w1c = src[28];
+    u32 w1d = src[29];
+    u32 w1e = src[30];
+    u32 w1f = src[31];
+    u32 w20 = src[32];
+    dst[0] = w00;
+    dst[1] = w01;
+    dst[2] = w02;
+    dst[3] = w03;
+    dst[4] = w04;
+    dst[5] = w05;
+    dst[6] = w06;
+    dst[7] = w07;
+    dst[8] = w08;
+    dst[9] = w09;
+    dst[10] = w0a;
+    dst[11] = w0b;
+    dst[12] = w0c;
+    dst[13] = w0d;
+    dst[14] = w0e;
+    dst[15] = w0f;
+    dst[16] = w10;
+    dst[17] = w11;
+    dst[18] = w12;
+    dst[19] = w13;
+    dst[20] = w14;
+    dst[21] = w15;
+    dst[22] = w16;
+    dst[23] = w17;
+    dst[24] = w18;
+    dst[25] = w19;
+    dst[26] = w1a;
+    dst[27] = w1b;
+    dst[28] = w1c;
+    dst[29] = w1d;
+    dst[30] = w1e;
+    dst[31] = w1f;
+    dst[32] = w20;
+    __sinit_twtg_cpp();
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
