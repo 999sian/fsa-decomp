@@ -497,19 +497,21 @@ end:
 extern "C" unsigned char fn_801F2618(char* a, float* out, unsigned int c);
 extern "C" int fn_801F11B4(char* a);
 extern "C" void* fn_802D6A9C(void);
+#pragma opt_propagation off
 extern "C" unsigned char fn_80332378(char* this_) {
-    char* p = this_;
     unsigned char r;
+    char* p = this_;
     float v[3];
-    v[2] = lbl_80541E9C;
-    v[1] = lbl_80541E9C;
-    v[0] = lbl_80541E9C;
-    r = fn_801F2618(p, v, 0);
+    v[0] = v[1] = v[2] = lbl_80541E9C;
+    r = fn_801F2618(this_, v, 0);
     if (r == 1) {
         fn_801F11B4(p);
         int id = *(int*)(p + 4);
-        if (((unsigned char*)fn_802D6A9C())[id + 0x131df] == 1 && v[1] < lbl_80541E9C) {
-            *(float*)(p + 0x2bc) = lbl_80541E9C;
+        if (*(unsigned char*)((int)fn_802D6A9C() + 0x10000 + id + 0x31df) == 1) {
+            float vy = v[1];
+            if (vy < lbl_80541E9C) {
+                *(float*)(p + 0x2bc) = lbl_80541E9C;
+            }
         }
     } else {
         int n = *(int*)(p + 0x270);
@@ -526,7 +528,7 @@ extern "C" unsigned char fn_80332378(char* this_) {
             }
         }
         int id = *(int*)(p + 4);
-        if (((unsigned char*)fn_802D6A9C())[id + 0x131df] == 1 && *(unsigned char*)(p + 0x2a9) == 1 &&
+        if (*(unsigned char*)((int)fn_802D6A9C() + 0x10000 + id + 0x31df) == 1 && *(unsigned char*)(p + 0x2a9) == 1 &&
             lbl_80541E9C == *(float*)(p + 0x2b4)) {
             *(float*)(p + 0x40) = lbl_80541E9C;
             *(float*)(p + 0x2bc) = lbl_80541E9C;
@@ -534,7 +536,7 @@ extern "C" unsigned char fn_80332378(char* this_) {
     }
     return r;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_803324A8(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern float lbl_80541EBC;
