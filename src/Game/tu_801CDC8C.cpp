@@ -153,7 +153,6 @@ extern "C" void fn_801CDD58(ItemBase* this_) {
 extern "C" void fn_801CE00C(void) {}
 
 extern "C" f32 __fsels(f32 a, f32 b, f32 c);
-#pragma fp_relax on
 extern "C" void fn_801CE010(u8* this_, f32* out) {
     s32 idx = *(s32*)(this_ + 0x4);
     u8* mgr = fn_802D6A9C();
@@ -171,7 +170,6 @@ extern "C" void fn_801CE010(u8* this_, f32* out) {
     f32 y = out[1];
     out[1] = __fsel(lim - y, lim, y);
 }
-#pragma fp_relax reset
 extern "C" void fn_801CE0A4(ItemBase* this_) {
     if ((this_->m230 & 7) == 0) {
         this_->m24C++;
@@ -1046,35 +1044,16 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
 }
 #pragma fp_contract on
 extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
-    f32 scale;
-    f32 dx = pos[0] - *(f32*)(this_ + 0xc);
-    f32 dz = pos[1] - *(f32*)(this_ + 0x10);
-    f32 lenSq = dx * dx + dz * dz;
-    if (lenSq <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
-    } else {
-        if (lenSq <= lbl_8053EFC4) {
-            scale = lenSq;
-        } else {
-            f32 y = __frsqrte(lenSq);
-            scale = lbl_8053EFE4 * y * (lbl_8053EFE8 - lenSq * (y * y));
-        }
-        dx *= scale;
-        dz *= scale;
-    }
+    JGeometry::TVec2<f32> delta(pos[0] - *(f32*)(this_ + 0xc), pos[1] - *(f32*)(this_ + 0x10));
+    delta.normalize();
     f32 ddx = pos[0] - *(f32*)(this_ + 0xc);
     f32 ddz = pos[1] - *(f32*)(this_ + 0x10);
-    out[0] = dx;
-    out[1] = dz;
+    out[0] = delta.x;
+    out[1] = delta.y;
     f32 a = ddx * ddx;
     f32 b = ddz * ddz;
-    f32 dist = a + b;
-    if (dist > lbl_8053EFC4) {
-        f32 y = __frsqrte(dist);
-        dist = y * dist;
-    }
-    if (dist < maxLen) {
-        maxLen = dist;
-    }
+    f32 dist = JMAFastSqrt(a + b);
+    if (dist < maxLen) maxLen = dist;
     out[0] *= maxLen;
     out[1] *= maxLen;
 }
