@@ -249,8 +249,9 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
-static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
-            for (s32 i = go; i < 4; i++) {
+static inline u8 slmnCheckNear(char* this_, s32 i, f32 r) {
+            u8 go = FALSE;
+            for (; i < 4; i++) {
                 if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
                     go = TRUE;
                     break;
