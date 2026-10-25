@@ -11,8 +11,8 @@ extern "C" void fn_8010E074(u8* this_);
 extern "C" void fn_801D267C(u8* p);
 extern u8 lbl_8049D740[];
 extern u8 lbl_8049CC34[];
-extern f32 lbl_8053C628;
-extern f32 lbl_8053C65C;
+extern const f32 lbl_8053C628;
+extern const f32 lbl_8053C65C;
 
 extern const f32 lbl_8053C644;
 extern const f32 lbl_8053C64C;
