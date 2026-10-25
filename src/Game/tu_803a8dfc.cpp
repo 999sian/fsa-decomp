@@ -118,6 +118,13 @@ extern "C" void fn_803A97A0(void* this_) {
 }
 
 extern u8 lbl_80529DEC[];
+extern const f32 lbl_80543404;
+extern const f32 lbl_80543408;
+extern const f32 lbl_8054342C;
+extern const f32 lbl_80543428;
+extern const f32 lbl_80543430;
+extern const f64 lbl_805433E0;
+extern const f64 lbl_805433B8;
 extern void* lbl_8053AD68;
 extern "C" void fn_80128C58(u8 a);
 extern "C" void fn_8013A884(void* color);
