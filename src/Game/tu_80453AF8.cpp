@@ -1,4 +1,5 @@
-#include "Game/Actor.h"
+#include "types.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 
 extern "C" void* lbl_8053AF48;
@@ -51,8 +52,10 @@ extern "C" void fn_80454A6C(void* this_) {
     *(s16*)((u8*)this_ + 0x1c) = 0;
     *(s16*)((u8*)this_ + 0x1e) = 2;
     *(s16*)((u8*)this_ + 0x20) = 0;
-    void* p4 = *(void**)((u8*)*(void**)((u8*)this_ + 0x8) + 0x4);
-    ((VFn2)(*(void***)p4)[9])(p4, 0);
+    void* p8 = *(void**)((u8*)this_ + 0x8);
+    void* p4 = *(void**)((u8*)p8 + 0x4);
+    void** vt = *(void***)p4;
+    ((VFn2)vt[9])(p4, 0);
     *(s16*)((u8*)*(void**)((u8*)this_ + 0x8) + 0x26) = 0;
     fn_80402E08(*(void**)((u8*)this_ + 0xc), 0.0f, -480.0f);
     *(s16*)((u8*)*(void**)((u8*)this_ + 0xc) + 0x22) = 0;
@@ -151,15 +154,95 @@ extern "C" void* __nw__FUl(u32 size);
 extern "C" void* getBounds__7J2DPaneFv(void* self);
 extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* self, const char* name, u32 pri, void* archive);
 extern "C" void __ct__9J2DScreenFv(void* self);
+extern "C" char lbl_8049149C[];
+extern "C" const f32 lbl_80543E44;
+extern "C" const f32 lbl_80543E40;
 extern "C" u8* fn_80454DEC(u8* p) {
+    typedef void* (*Search)(void*, u64);
+    typedef void (*SetColor)(void*, void*);
+    typedef void (*SetAlpha)(void*, u8);
     void* s;
     *(void**)p = lbl_804B1DA8;
     lbl_8053AF48 = p;
     s = __nw__FUl(0x118);
-    if (s != 0) {
-        __ct__9J2DScreenFv(s);
-    }
+    if (s) __ct__9J2DScreenFv(s);
     *(void**)(p + 4) = s;
+    setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+4), lbl_8049149C, 0x1100000, *(void**)(lbl_80529DEC+0x4c));
+    *(f32*)(p+0x24) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), 0x506b656e633031ULL)) + 0);
+    *(f32*)(p+0x30) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), 0x506b656e633031ULL)) + 4);
+    *(f32*)(p+0x3c) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), 0x506b656e633032ULL)) + 0);
+    *(f32*)(p+0x48) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), 0x506b656e633032ULL)) + 4);
+    f32 left = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), *(u64*)lbl_80491470)) + 0) - *(f32*)(p+0x24);
+    f32 right = *(f32*)(p+0x3c) - *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), *(u64*)lbl_80491470)) + 8);
+    *(f32*)(p+40) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[1])) + 0) - left;
+    *(f32*)(p+52) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[1])) + 4);
+    *(f32*)(p+64) = right + *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[1])) + 8);
+    *(f32*)(p+76) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[1])) + 4);
+    *(f32*)(p+44) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[2])) + 0) - left;
+    *(f32*)(p+56) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[2])) + 4);
+    *(f32*)(p+68) = right + *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[2])) + 8);
+    *(f32*)(p+80) = *(f32*)((u8*)getBounds__7J2DPaneFv(((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[2])) + 4);
+    s = __nw__FUl(0x2c);
+    if (s) *(void**)s = lbl_804AF86C;
+    *(void**)(p+8) = s;
+    fn_80402F04(*(void**)(p+8), ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), 0x50626c61636bULL));
+    s = __nw__FUl(0x2c);
+    if (s) *(void**)s = lbl_804AF86C;
+    *(void**)(p+12) = s;
+    fn_80402F04(*(void**)(p+12), ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), 0x4e646174613031ULL));
+    for (int i=0; i<3; i++) {
+        s = __nw__FUl(0x2c);
+        if (s) *(void**)s = lbl_804AF86C;
+        ((void**)(p+0x10))[i] = s;
+        fn_80402F04(((void**)(p+0x10))[i], ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[i]));
+    }
+    *(s16*)(p+0x1c) = 0;
+    *(s16*)(p+0x1e) = 2;
+    *(s16*)(p+0x20) = 0;
+    void* pane = *(void**)((u8*)*(void**)(p+8)+4);
+    ((SetAlpha)(*(void***)pane)[9])(pane,0);
+    *(s16*)((u8*)*(void**)(p+8)+0x26) = 0;
+    fn_80402E08(*(void**)(p+0xc), lbl_80543E44, lbl_80543E40);
+    *(s16*)((u8*)*(void**)(p+0xc)+0x22) = 0;
+    for (int i=0; i<3; i++) {
+        if (i == *(s16*)(p+0x1c)) {
+            u32 c1; u8 c1bytes[4];
+            c1bytes[0] = 255;
+            c1bytes[1] = 237;
+            c1bytes[2] = 160;
+            c1bytes[3] = 255;
+            c1 = *(u32*)c1bytes;
+            pane = ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[i]);
+            ((SetColor)(*(void***)pane)[75])(pane,&c1);
+            u32 c2; u8 c2bytes[4];
+            c2bytes[0] = 39;
+            c2bytes[1] = 16;
+            c2bytes[2] = 0;
+            c2bytes[3] = 0;
+            c2 = *(u32*)c2bytes;
+            pane = ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[i]);
+            ((SetColor)(*(void***)pane)[74])(pane,&c2);
+        } else {
+            u32 c3; u8 c3bytes[4];
+            c3bytes[0] = 167;
+            c3bytes[1] = 76;
+            c3bytes[2] = 42;
+            c3bytes[3] = 255;
+            c3 = *(u32*)c3bytes;
+            pane = ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[i]);
+            ((SetColor)(*(void***)pane)[75])(pane,&c3);
+            u32 c4; u8 c4bytes[4];
+            c4bytes[0] = 0;
+            c4bytes[1] = 0;
+            c4bytes[2] = 0;
+            c4bytes[3] = 0;
+            c4 = *(u32*)c4bytes;
+            pane = ((Search)(**(void****)(p+4))[15])(*(void**)(p+4), ((u64*)lbl_80491470)[i]);
+            ((SetColor)(*(void***)pane)[74])(pane,&c4);
+        }
+    }
+    p[0x55] = 0;
+    p[0x54] = 1;
     return p;
 }
 
