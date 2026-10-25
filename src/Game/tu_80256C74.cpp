@@ -1185,7 +1185,7 @@ static inline bool tu8025_eq2(u8* a, u8* b, f32 eps) {
 
 static inline bool tu8025_eq3(u8* a, u8* b, f32 eps) {
     bool equal = false;
-    if (tu8025_eq2(a, b, eps) && JGeometry::TUtil<f32>::epsilonEquals(F32(a, 0x8), F32(b, 0x8), eps)) {
+    if (tu8025_eq2(a, b, eps) && tu8025_eq1(F32(a, 0x8), F32(b, 0x8), eps)) {
         equal = true;
     }
     return equal;
