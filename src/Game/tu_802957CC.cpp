@@ -8,6 +8,7 @@ extern "C" const f32 lbl_80540678;
 
 extern "C" char __vt__4HOUS[];
 extern "C" void fn_801EE434(s32);
+extern "C" void fn_80239914(void*, s32, void*);
 extern "C" void __dt__5ActorFv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" u8 fn_8023F264(s32 i);
