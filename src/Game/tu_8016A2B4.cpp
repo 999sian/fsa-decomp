@@ -1015,8 +1015,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x100) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x40c))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
