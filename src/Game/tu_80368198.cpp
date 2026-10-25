@@ -53,7 +53,10 @@ struct Sub8036C0EC {
     virtual void v23();
     virtual void v24(int);
 };
-struct Unk8036C300;
+struct Unk8036C300 {
+    void state0();
+    void state1();
+};
 struct Vec3f {
     f32 x;
     f32 y;
