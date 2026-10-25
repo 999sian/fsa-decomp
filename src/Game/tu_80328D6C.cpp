@@ -2,6 +2,15 @@
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JGeometry/Vec.h"
 
+class SobResMgr {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32 type, const char* name);
+};
+
 struct Actor;
 
 
