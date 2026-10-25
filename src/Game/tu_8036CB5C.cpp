@@ -59,6 +59,13 @@ extern "C" void fn_8036CE58(Actor* this_) {
     fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0x24, *(s32*)(p + 0x24c) + 0x147, 0, 1, -1, 0, 0, 0);
 }
 
+inline void psw2PlayEffects(JGeometry::TVec3f& pos) {
+    for (s32 i=0; i<4; i++) {
+        pos = *(JGeometry::TVec3f*)fn_8023E724(i);
+        fn_80230498(i, pos + JGeometry::TVec3f(0.0f, 7.0f, 0.0f), 0x2e2, 0xff, -0x80, -0x80, 1);
+    }
+}
+
 inline void psw2ActivateGroup(Actor* p) {
     s32 i;
     char* member;
@@ -84,7 +91,6 @@ inline bool psw2Ready(Actor* p) {
 
 extern "C" void fn_8036CF1C(Actor* this_) {
     u8* p = (u8*)this_;
-    int i;
     JGeometry::TBox2f box = *(JGeometry::TBox2f*)(p + 0x60);
     JGeometry::TVec3f pos;
     JGeometry::TVec3f playerPos;
@@ -120,7 +126,7 @@ extern "C" void fn_8036CF1C(Actor* this_) {
                         *(s32*)(p + 0x258)=50;
                         *(s32*)(p + 0x25c)=4;
                         *(s32*)(p + 0x260)=0;
-                        for (i=0;i<4;i++) {
+                        for (s32 i=0;i<4;i++) {
                             pos=*(JGeometry::TVec3f*)fn_8023E724(i);
                             fn_80230498(i,pos+JGeometry::TVec3f(0.0f,7.0f,0.0f),0x2e2,0xff,-0x80,-0x80,1);
                         }
