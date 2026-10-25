@@ -4163,6 +4163,7 @@ BOOL fn_8024E060(char* p) {
     return U8(p, 0x1216) != 1;
 }
 
+#pragma opt_propagation on
 void fn_8024E0A0(char* this_) {
     S32(this_, 0x1264) = S32(this_, 0x1264) + 1;
     if (S32(this_, 0x1264) >= 0x3C) {
@@ -4212,8 +4213,8 @@ updatePosition:
         if (S32(this_, 0x3B4) < 8) {
             V3(this_, 0x1258) = V3(this_, 0x8);
         } else {
-            char* q;
-            char* src;
+            const char* __restrict q;
+            const char* __restrict src;
             if (S32(this_, 0x3B4) == 8) {
                 char* m = fn_802D6A9C();
                 f32 mx = F32(m, 0xCC);
@@ -4228,16 +4229,17 @@ updatePosition:
                 F32(this_, 0x1270) = F32(this_, 0x10);
                 F32(this_, 0x1268) = F32(this_, 0x1268) + (mx - qx);
                 F32(this_, 0x126C) = F32(this_, 0x126C) + (my - qy);
-                src = this_ + 0x1268;
+                src = (char*)&V3(this_, 0x1268);
             } else {
                 src = this_ + 0x8;
             }
-            V3(this_, 0x1258) = V3(src, 0);
+            JGeometry::TVec3<f32>* dst = &V3(this_, 0x1258);
+            const JGeometry::TVec3<f32>& pos = V3(src, 0);
+            *dst = pos;
         }
         fn_80456154(PTR(this_, 0x1250));
         fn_80456154(PTR(this_, 0x1254));
 }
-
 void fn_8024E344(char* p) {
     if (S32(p, 0x3b4) < 8) {
         fn_8024E694(p, (s32)(20.0f * gameRnd()) + 0x32, 0);
