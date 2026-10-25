@@ -25,9 +25,7 @@ extern "C" void* fn_8029BD18(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8029BD78(u8* this_) {
-    this_[0x11c] = 0;
-}
+extern "C" void fn_8029BD78(u8* this_) { this_[0x11c] = 0; }
 
 extern "C" void fn_8029BD84(void* this_) {
     fn_801F06F0(this_, lbl_8046C3E8, 0x17e, 0, 0, 1.0f, 1.0f);
