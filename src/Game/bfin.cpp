@@ -93,7 +93,13 @@ extern "C" u8 fn_80236B50(s32 i);
 extern "C" u8 fn_802300EC(s32 i);
 extern "C" void fn_80230AD4(s32 i);
 extern "C" u8 fn_80239F10(void* p);
-struct BfinReg { u8 pad[8]; u8* list[0x400]; s32 count; };
+struct BfinReg {
+    u8 pad[8];
+    u8* list[0x400];
+    s32 count;
+    s32 getCount() const { return count; }
+    u8* getActor(s32 index) const { return list[index]; }
+};
 extern "C" BfinReg* fn_801F856C();
 extern "C" void fn_802B3A48(void* p);
 extern "C" void* fn_802D6A9C();
@@ -299,14 +305,12 @@ void Bfin::state0() {
         } else {
             lbl_80529DEC.x1a8 = 4;
         }
-        s32 n = fn_801F856C()->count;
-        s32 j = 0;
-        while (j < n) {
+        const s32 n = fn_801F856C()->count;
+        for (u32 j = 0; (s32)j < n; j++) {
             u8* obj = fn_801F856C()->list[j];
             if (obj && *(u32*)(obj + 0x1a0) == 'SWEV') {
                 fn_802B3A48(obj);
             }
-            j++;
         }
         fn_802D7440(fn_802D6A9C(), 0);
         lbl_80529DEC.x240 = 1;
