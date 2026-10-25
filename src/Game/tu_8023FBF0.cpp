@@ -153,8 +153,7 @@ s32 i;
 s32 c;
 s32 linked;
 c = 0;
-    i = 0;
-    for (; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
