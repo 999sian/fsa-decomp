@@ -2,7 +2,6 @@
 // TU 801AC8EC-801AE9C4 (DDGO). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
-#include "JSystem/JGeometry/Box.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // from src/Game/Ddgo_ApplyState_801AE5AC.cpp
@@ -259,7 +258,7 @@ extern "C" void fn_801ACCF0(char* t) {
     f32* b;
     s32 one;
     u32 bits;
-    char* zero;
+    s32 zero;
     char* em;
 
     if (*(s32*)(t + 0x294) == 1) {
@@ -341,13 +340,13 @@ extern "C" void fn_801ACCF0(char* t) {
         bits=*(u32*)(em+0xf4);
         *(u32*)(em+0xf4)=bits|1;
         *(s32*)(em + 0x24) = one;
-        *(char**)(t + 0x29c) = zero;
+        *(char**)(t + 0x29c) = (char*)zero;
     }
     em = *(char**)(t + 0x2a0);
     if (em != 0) {
         *(s32*)(em + 0xf4) |= 1;
         *(s32*)(em + 0x24) = one;
-        *(char**)(t + 0x2a0) = zero;
+        *(char**)(t + 0x2a0) = (char*)zero;
     }
     *(u8*)(t + 0x11c) = 0;
     break;
