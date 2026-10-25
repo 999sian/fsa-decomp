@@ -43,6 +43,26 @@ extern "C" void* fn_8021ED04(void* this_, s16 freeFlag) {
 }
 
 extern "C" void fn_8021DFAC(char* p, s32 state);
+extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" void detach__5ActorFv(void* this_);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_80230534(s32 a);
+extern const u8 lbl_8046A7AC[];
+extern const f32 lbl_8053FDA0;
+extern "C" void fn_801F3604(void* p);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" void fn_80230FD0(s32 player, s32 id);
+extern "C" s32 fn_80230CFC(s32 i);
+extern "C" void fn_80230498(s32 a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" u8 fn_8022F514(s32 i);
+extern "C" s32 fn_8022F3DC(s32 i);
+extern "C" s32 fn_801D0020(void* p, void* pos, s32 i, s32 d);
+extern "C" s32 fn_801CD354(s32 a);
+extern "C" void fn_80230BF4(s32 a, s32 b);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
+extern u16 lbl_8046A78C[4][4];
+extern u8 lbl_8053FD50[];
 extern "C" void fn_801CE120(void* this_);
 extern "C" void fn_801D0F40(void* this_);
 struct NaviVec {
