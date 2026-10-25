@@ -101,6 +101,15 @@ extern const JGeometry::TVec3<f32> lbl_8046AFE0[];
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_802D79E8(void* mgr, s32 id, s32 a, f32 f1, f32 f2);
 extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
+extern "C" void fn_802F601C(void*, JGeometry::TVec3<f32>*, s32, JGeometry::TVec3<f32>*, f32, f32);
+extern u8* lbl_8053AB10;
+extern "C" u8 fn_8022B244(void);
+extern "C" u8 fn_80240AF0(void*);
+extern "C" s32 fn_802487FC(void*);
+extern "C" s32 fn_802A1D44(void*, void*, u32, s32);
+extern const f32 lbl_8054012C;
+extern const f32 lbl_80540134;
+extern const f32 lbl_80540128;
 
 extern "C" u8 GetBusyLocked(void*);
 extern "C" u8 fn_802413F0(void*);
@@ -1544,8 +1553,72 @@ extern "C" void fn_8025BEB0(u8* p) {
         if (U8(p, 0x3fc) != 0x30) {
             return;
         }
-        u32 fx = U32(p, 0x3dc);
-        (void)fx;
+        const JGeometry::TVec3<f32>& t = lbl_8046B040[U32(p, 0x3dc)];
+        F32(p, 0x12fc) = t.x;
+        F32(p, 0x1300) = t.y;
+        F32(p, 0x1304) = t.z;
+        V3(p, 0x12fc) += V3(p, 0x8);
+        if (PTR(p, 0x12cc) == 0 && S32(p, 0x3b4) < 8) {
+            V3(p, 0x12d4) = V3(p, 0x12fc);
+            *(u8**)(p + 0x12cc) = fn_8013CC50(S32(p, 0x3b4), p + 0x12fc, 0xcb, 0, -1, 0, p + 0x12d0, 1, lbl_805400D4);
+            if (PTR(p, 0x12cc) != 0) {
+                U32(PTR(p, 0x12cc), 0xf4) |= 0x40;
+            }
+        }
+        if (PTR(p, 0x12e4) == 0 && S32(p, 0x3b4) < 8) {
+            V3(p, 0x12ec) = V3(p, 0x12fc);
+            *(u8**)(p + 0x12e4) = fn_8013CC50(S32(p, 0x3b4), p + 0x12fc, 0xcc, 0, -1, 0, p + 0x12e8, 1, lbl_805400D4);
+            if (PTR(p, 0x12e4) != 0) {
+                U32(PTR(p, 0x12e4), 0xf4) |= 0x40;
+            }
+        }
+        if (S32(p, 0x12c0) < 0) {
+            void* mgr = fn_801F856C();
+            S32(p, 0x12c0) = Actor_CreateByID(mgr, 0x50454646, S32(p, 0x3b4), p + 0x12fc, (U32(p, 0x4) & 3) | 8, -1, -1);
+        }
+        fn_8024F0E8(p, 0x2000D);
+        return;
+    }
+    const JGeometry::TVec3<f32>& t = lbl_8046B040[U32(p, 0x3dc)];
+    F32(p, 0x12fc) = t.x;
+    F32(p, 0x1300) = t.y;
+    F32(p, 0x1304) = t.z;
+    V3(p, 0x12fc) += V3(p, 0x8);
+    if (PTR(p, 0x12cc) != 0) {
+        V3(p, 0x12d4) = V3(p, 0x12fc);
+    }
+    if (PTR(p, 0x12e4) != 0) {
+        V3(p, 0x12ec) = V3(p, 0x12fc);
+    }
+    s32 idx = S32(p, 0x12c0);
+    if (idx < 0) {
+        return;
+    }
+    void* mgr = fn_801F856C();
+    u8* obj = fn_801F666C(mgr, idx);
+    if (obj != 0) {
+        V3(obj, 0xc) = V3(p, 0x12fc);
+        F32(obj, 0x14) = F32(p, 0x1304);
+        return;
+    }
+    S32(p, 0x12c0) = -1;
+
+    f32 lenSq = F32(p, 0x344) * F32(p, 0x344) + F32(p, 0x348) * F32(p, 0x348) + F32(p, 0x34c) * F32(p, 0x34c);
+    if (lenSq > *(f32*)__float_epsilon * lbl_805400D8) {
+        if (F32(p, 0x10) > lbl_805400C4) {
+            V3(p, 0x8) += V3(p, 0x344);
+            F32(p, 0x10) += F32(p, 0x34c);
+        }
+        F32(p, 0x34c) -= lbl_80540104;
+        if (F32(p, 0x10) == lbl_805400C4) {
+            F32(p, 0x10) = lbl_805400C4;
+            U8(p, 0x43d) = 3;
+        }
+        return;
+    }
+    if (U8(p, 0x43d) != 0) {
+        U8(p, 0x43d) = U8(p, 0x43d) - 1;
+        return;
     }
 }
 
