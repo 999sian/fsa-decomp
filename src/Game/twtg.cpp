@@ -1223,9 +1223,9 @@ extern "C" void fn_803167F4(char* p) {
         *(f32*)(p + 0x264) = lbl_805418A8;
     }
     s32 k = *(s32*)(p + 0x23c);
-    u8* tbl = (u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8;
-    bool has = (u8)(1 << k) & tbl[0x7a];
-    if (has) {
+    u8* g = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+    u32 r = (u8)(1 << k) & g[0x7a];
+    if ((-r | r) >> 31) {
         *(s32*)(p + 0x268) = lbl_804714D8[k];
     } else {
         *(s32*)(p + 0x268) = 0x473;
