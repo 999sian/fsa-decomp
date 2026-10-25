@@ -722,6 +722,36 @@ extern "C" u8 fn_802604CC(char* p) {
     return 0;
 }
 
+extern JGeometry::TVec3<f32> lbl_8046B83C[];
+extern "C" u8 fn_8022C1D8(s32);
+extern "C" u8 fn_802A01F0(char*, JGeometry::TVec3<f32>*, s32, s32);
+extern "C" s32 fn_802A02A8(char*, JGeometry::TVec3<f32>*, s32, s32);
+extern "C" u32 fn_80226AE0(JGeometry::TVec3<f32>*, s32);
+extern "C" u8 fn_8029E888(char*, JGeometry::TVec3<f32>*, s32, s32);
+extern "C" f32 fn_80247330(char*);
+extern "C" f32 fn_8024712C(char*);
+extern "C" u8 fn_802D6AC4(char*, s32);
+extern "C" void fn_802D6B24(char*, s32, u8);
+extern "C" u8 fn_80260C08(char* p) {
+    if (fn_8022B1F8(p))
+        return 0;
+    if (!fn_80251BFC(p, 0x11))
+        return 0;
+    JGeometry::TVec3<f32> v = lbl_8046B83C[S32(p, 0x3dc)];
+    v.x += F32(p, 0x8);
+    v.y += F32(p, 0xc);
+    v.z = 0.0f;
+    s32 room = S32(p, 0x4);
+    if (fn_8022C1D8(room) || fn_8022C0A0(room)) {
+        if (U8(fn_802D6A9C(), S32(p, 0x3b4) + 0x131df) != 0) {
+            s32 st = S32(p, 0x3dc);
+            if (st == 3) {
+            }
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80261468(char* p) {
     if (S32(p, 0xd74) > 0)
         --S32(p, 0xd74);
@@ -1168,6 +1198,41 @@ extern "C" void fn_80263BA0(char* p) {
             fn_8027221C(p, 0);
     }
     fn_8024F0E8(p, 0x1000e);
+}
+
+extern "C" void fn_80263C64(char* p) {
+    JGeometry::TVec3<f32> v;
+    char* actor;
+    fn_8027FA08(p, &v);
+    if (lbl_80540150 == v.z && lbl_80540150 != F32(p, 0x10) && U8(p, 0x434) == 0) {
+        F32(p, 0x10) = lbl_80540150;
+        actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+        if (fn_8022C13C(S32(p, 0x4))) {
+            if (fn_802416C4(p) == 7) {
+                goto end;
+            }
+            if (fn_8024B24C(p) == 0) {
+                if (isCarriedByPlayer(p)) {
+                    if (fn_80236B50(S32(p, 0xd70))) {
+                        fn_80251AEC(p, 0x16);
+                        goto end;
+                    }
+                }
+            } else if (fn_8022C0A0(S32(p, 0x4))) {
+                fn_80251AEC(p, 0x16);
+                goto end;
+            }
+        }
+        if (isCarriedByPlayer(p)) {
+            if (fn_8023EA28(S32(p, 0xd70))) {
+                fn_802808E8(p, lbl_805401E4);
+                fn_8027EB04(p);
+                fn_80263C64_snap(p);
+            }
+        }
+    }
+end:
+    fn_80268B3C(p);
 }
 
 extern "C" void fn_80264410(char* p) {
