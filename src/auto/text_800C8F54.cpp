@@ -315,6 +315,8 @@ extern "C" void fn_800CB6F0(J3DIndTevStage* out, u8* p, s32 idx, s32 stage);
 extern "C" void fn_800CAEE0(s32* param_1, int param_2, int param_3, int param_4);
 extern "C" u8 fn_800CB15C(u8* p, s32 idx);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b);
+struct J3DIndTexCoordScaleInfo;
+extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no);
 extern "C" void __ct__14J3DIndTevStageFv(void* self);
 extern "C" void __ct__13J3DGXColorS10Fv(void* self);
 extern "C" void __ct__10J3DGXColorFv(void* self);
@@ -440,6 +442,30 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
     u8 i;
     u32 hasInd;
     void* blk;
+    J3DFogInfo s88;
+    u16 s40[2];
+    unsigned int s3c;
+    u16 s0c;
+    u16 s10;
+    u32 s34;
+    u32 s38;
+    u32 s30;
+    u32 s5c;
+    u32 s4c[2];
+    u32 s54[2];
+    u32 s2c;
+    u16 s14;
+    u32 s44[2];
+    u32 s64[2];
+    J3DIndTexMtxInfo s84;
+    u32 s_cc;
+    u32 s_c8;
+    u32 s_d0;
+    u32 s_d4;
+    J3DIndTevStage s_d8;
+    u16 ci;
+    u8 gen;
+    u8 nInd;
 
     if (material == NULL) {
         material = (J3DMaterial*)operator new(0x4c);
@@ -483,7 +509,49 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
     (*(void (***)(void*, u32))*(void**)((u8*)material + 0x2c))[37](*(void**)((u8*)material + 0x2c), fn_800CB428((u8*)self, idx));
     (*(void (***)(void*, u32))*(void**)((u8*)material + 0x24))[18](*(void**)((u8*)material + 0x24), fn_800CAF38((u8*)self, idx));
     (*(void (***)(void*, u32))*(void**)((u8*)material + 0x24))[27](*(void**)((u8*)material + 0x24), fn_800CB28C((u8*)self, idx));
+    s88 = fn_800CB8C8((u8*)self, idx);
+    (*(void (***)(void*, void*))*(void**)((u8*)material + 0x34))[10](*(void**)((u8*)material + 0x34), &s88);
+    fn_800CBA08(s40, (u8*)self, idx);
+    (*(void (***)(void*, void*))*(void**)((u8*)material + 0x34))[14](*(void**)((u8*)material + 0x34), s40);
+    fn_800CBA88(&s3c, (void*)self, idx);
+    (*(void (***)(void*, void*))*(void**)((u8*)material + 0x34))[17](*(void**)((u8*)material + 0x34), &s3c);
+    fn_800CBACC(&s0c, (void*)self, idx);
+    s10 = s0c;
+    (*(void (***)(void*, void*))*(void**)((u8*)material + 0x34))[20](*(void**)((u8*)material + 0x34), &s10);
+    (*(void (***)(void*, u32))*(void**)((u8*)material + 0x34))[23](*(void**)((u8*)material + 0x34), fn_800CBB2C((void*)self, idx));
+    (*(void (***)(void*, u32))*(void**)((u8*)material + 0x34))[26](*(void**)((u8*)material + 0x34), fn_800CBB64((u8*)self, idx));
     nStages = (*(u8 (***)(void*))*(void**)((u8*)material + 0x2c))[38](*(void**)((u8*)material + 0x2c));
+    for (i = 0; i < 8; i++) {
+        (*(void (***)(void*, u32, u16))*(void**)((u8*)material + 0x2c))[19](*(void**)((u8*)material + 0x2c), i, fn_800CB2CC((u8*)self, idx, i));
+    }
+    for (i = 0; i < nStages; i++) {
+        fn_800CB314(&s34, (u8*)self, idx, i);
+        s38 = s34;
+        (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[22](*(void**)((u8*)material + 0x2c), i, &s38);
+    }
+    for (i = 0; i < 4; i++) {
+        fn_800CB3D0(&s30, (u8*)self, idx, i);
+        (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[28](*(void**)((u8*)material + 0x2c), i, &s30);
+    }
+    for (i = 0; i < 4; i++) {
+        fn_800CB360(&s5c, (u8*)self, idx, i);
+        (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[25](*(void**)((u8*)material + 0x2c), i, &s5c);
+    }
+    for (i = 0; i < nStages; i++) {
+        u8* initData = (u8*)self->mInitData + ((u16*)self->mMatRemapTable)[idx] * 0x14c;
+        fn_800CB460(s4c, (u8*)self, idx, i);
+        s54[0] = s4c[0];
+        s54[1] = s4c[1];
+        (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x2c))[40](*(void**)((u8*)material + 0x2c), i, s54);
+        ci = *(u16*)(initData + 0x104 + i * 2);
+        if (ci != 0xffff) {
+            u8* obj = (u8*)(*(void* (***)(void*, u32))*(void**)((u8*)material + 0x2c))[41](*(void**)((u8*)material + 0x2c), i);
+            obj[7] = (obj[7] & 0xf3) | (((u8*)*(void**)((u8*)self + 0x54))[ci * 4 + 1] << 2);
+            u8 v = ((u8*)*(void**)((u8*)self + 0x54))[ci * 4];
+            obj = (u8*)(*(void* (***)(void*, u32))*(void**)((u8*)material + 0x2c))[41](*(void**)((u8*)material + 0x2c), i);
+            obj[7] = (obj[7] & 0xfc) | v;
+        }
+    }
     return material;
 }
 
