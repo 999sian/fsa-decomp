@@ -71,7 +71,7 @@ static inline f32 Swing_Dist(SwingRecord* r) {
 }
 
 // NonMatching (99.9%): zero/game-pointer register swap (r4/r5) in the bounce-settle branch.
-extern "C" bool fn_8021A570(SwingRecord* r, const bool active) {
+extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
     bool result = false;
     if (r->mTimer6 != 0) {
         r->mTimer6--;
@@ -99,11 +99,22 @@ extern "C" bool fn_8021A570(SwingRecord* r, const bool active) {
                         r->mTimer6 = 0;
                     }
                 } else {
-                    Swing_Choose(r);
+                    {if (!r->mLocked) {
+ if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.9f) {
+ r->mState = 1;
+ r->mTimer8 = fn_801CD664(0xb5) + 0x78;
+ if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) r->mSpeed = -0x180;
+ else r->mSpeed = 0x180;
+ } else {
+ r->mState = 0;
+ r->mTimer8 = fn_801CD664(0xb5) + 0x78;
+ r->mSpeed = 0;
+ }
+} else r->mTimer6 = 0;}
                 }
             }
         } else if (r->mState == 1) {
-            const s16 prev = r->mAngle;
+            s16 prev = r->mAngle;
             bool bounced = false;
             r->mAngle = prev + r->mSpeed;
             if (r->mFlipped) {
@@ -136,7 +147,19 @@ extern "C" bool fn_8021A570(SwingRecord* r, const bool active) {
                         }
                     } else {
                         r->mAngle = 0;
-                        Swing_Choose(r);
+                        {if (!r->mLocked) {
+ SwingGame* const game = lbl_8053AAF8;
+ if (game->rnd.get_ufloat_1() < 0.9f) {
+ r->mState = 1;
+ r->mTimer8 = fn_801CD664(0xb5) + 0x78;
+ if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) r->mSpeed = -0x180;
+ else r->mSpeed = 0x180;
+ } else {
+ r->mState = 0;
+ r->mTimer8 = fn_801CD664(0xb5) + 0x78;
+ r->mSpeed = 0;
+ }
+} else r->mTimer6 = 0;}
                         r->mTimer6 = 0;
                     }
                 }
@@ -156,7 +179,18 @@ extern "C" bool fn_8021A570(SwingRecord* r, const bool active) {
                     r->mTimer6 = fn_801CD664(0xb5) + 0x78;
                 }
             } else {
-                Swing_Choose(r);
+                {if (!r->mLocked) {
+ if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.9f) {
+ r->mState = 1;
+ r->mTimer8 = fn_801CD664(0xb5) + 0x78;
+ if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) r->mSpeed = -0x180;
+ else r->mSpeed = 0x180;
+ } else {
+ r->mState = 0;
+ r->mTimer8 = fn_801CD664(0xb5) + 0x78;
+ r->mSpeed = 0;
+ }
+} else r->mTimer6 = 0;}
             }
         }
     }
