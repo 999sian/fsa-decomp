@@ -536,7 +536,6 @@ extern "C" char lbl_8048F3AC[];
 extern "C" const char lbl_80543B20[8];
 extern "C" f32 fn_80430518(void*,u8,s32,f32);
 extern "C" f32 lbl_80543B1C;
-extern "C" f32 lbl_80543AF8;
 #pragma opt_propagation reset
 extern "C" void fn_8042EF9C(T80431_Owner* self_, char* out, s32 message, s32 count) {
 int code;
