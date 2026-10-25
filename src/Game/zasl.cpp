@@ -122,8 +122,8 @@ extern "C" void fn_8020C374(void* p) {
 extern "C" void fn_8020C3D0(void* this_, bool b) {
     char* p = (char*)this_;
     char* g;
-    int state;
-    register s32 h;
+    s32 state;
+    s32 h;
     s32 off;
     u8* base;
     u32 seed;
