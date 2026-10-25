@@ -1659,7 +1659,7 @@ u8 fn_80243C64(char* p) {
 
 inline bool padActive(char* p);
 inline bool padActive6(char* p);
-BOOL fn_80244630(char* p);
+
 
 u32 fn_80309A78(void*, s32, u32);
 u32 fn_80309A54(void*, s32, u32);
