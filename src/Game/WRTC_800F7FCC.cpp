@@ -76,8 +76,8 @@ extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
 static inline f32 WRTC_random() {
-    f32 result;
     f32 one;
+    f32 result;
     one = lbl_8053BFCC;
     u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
     *rng = *rng * 0x19660d + 0x3c6ef35f;
@@ -1917,10 +1917,10 @@ extern "C" void fn_800F87E4(void* this_) {
     id = fn_801F8544(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)(self + 0xc), id);
     if (id >= 0) {
         u8* actor = (u8*)fn_801F666C(fn_801F856C(), id);
-        JGeometry::TVec3<f32> vel;
-        vel.z = lbl_8053BFA0 + lbl_8053BFA0 * WRTC_random();
-        vel.y = lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random();
-        vel.x = lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random();
+        JGeometry::TVec3<f32> vel(
+            lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random(),
+            lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random(),
+            lbl_8053BFA0 + lbl_8053BFA0 * WRTC_random());
         *(JGeometry::TVec3<f32>*)(actor + 0x3c) = vel;
     }
     if ((s32)(lbl_8053BFF4 * WRTC_random()) == 3)
