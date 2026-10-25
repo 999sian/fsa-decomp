@@ -45,12 +45,6 @@ struct Holder8045 {
     u32 pad[2];
     void** vt;
 };
-struct VSub8045 {
-    virtual void v0(void);
-    virtual void v1(void);
-    virtual void v2(void);
-    virtual void** call5(void* a, u32* b);
-};
 struct VObj8045 {
     virtual void v0(void);
     virtual void v1(void);
