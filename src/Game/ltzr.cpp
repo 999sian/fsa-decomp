@@ -430,7 +430,13 @@ static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, 
                 f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
                 pt.z = lbl_80542268;
                 ((JGeometry::TVec2<f32>*)&pt)->set(len * cy, len * sy);
-                if (ltzrPointInBox(*(f32*)(p + 0x60), *(f32*)(p + 0x64), *(f32*)(p + 0x68), *(f32*)(p + 0x6c), pt.x, pt.y)) {
+                f32 minx = *(f32*)(p + 0x60);
+                f32 miny = *(f32*)(p + 0x64);
+                f32 maxx = *(f32*)(p + 0x68);
+                f32 maxy = *(f32*)(p + 0x6c);
+                u8 inside = 0;
+                if (pt.x >= minx && pt.y >= miny && pt.x < maxx && pt.y < maxy) inside = 1;
+                if (inside) {
                     fn_8022DF48(i);
                     hit = 1;
                     return;
