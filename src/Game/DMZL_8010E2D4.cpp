@@ -116,6 +116,32 @@ extern const f32 lbl_8053C5E4;
 extern const f32 lbl_8053C594;
 extern const f32 lbl_8053C5A0;
 
+static inline void DMZLSetBox(f32 x0, f32 y0, f32 x1, f32 y1) {
+    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+    if (obj[0x840] == 0) {
+        obj[0x840] = 1;
+        *(f32*)(obj + 0x844) = x0;
+        *(f32*)(obj + 0x848) = y0;
+        *(f32*)(obj + 0x84c) = x1;
+        *(f32*)(obj + 0x850) = y1;
+        *(f32*)(obj + 0x854) = lbl_8053C550;
+        *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+        *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+    }
+}
+static inline void DMZLSetBoxAlt(f32 x0, f32 y0, f32 x1, f32 y1) {
+    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+    if (obj[0x7f5] == 0) {
+        obj[0x7f4] = 1;
+        *(s32*)(obj + 0x7f8) = 5;
+        *(f32*)(obj + 0x808) = x0;
+        *(f32*)(obj + 0x80c) = y0;
+        *(f32*)(obj + 0x810) = x1;
+        *(f32*)(obj + 0x814) = y1;
+        obj[0x7f6] = 0;
+    }
+}
+
 extern "C" void fn_80110210(u8* this_) {
     u8* obj;
     Vec tmp;
@@ -219,6 +245,198 @@ extern "C" void fn_80110210(u8* this_) {
     case 60:
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), this_ + 0xc);
         break;
+    }
+}
+
+extern "C" void fn_80110454(u8* p) {
+    switch (*(s32*)(p + 0x238)) {
+    case 3: case 4: case 5: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        JGeometry::TVec3<f32> tmp = *fn_8023E724(0);
+        tmp.y += lbl_8053C5D8;
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C598 + tmp.y;
+        f32 lo = tmp.y - lbl_8053C598;
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            
+            *(f32*)(obj + 0x844) = tmp.x;
+            *(f32*)(obj + 0x848) = lo;
+            *(f32*)(obj + 0x84c) = tmp.x;
+            *(f32*)(obj + 0x850) = hi;
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    }
+    case 6: case 7: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        JGeometry::TVec3<f32> tmp = *fn_8023E724(0);
+        tmp.y += *(f32*)(p + 0x278);
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C598 + tmp.y;
+        f32 lo = tmp.y - lbl_8053C598;
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = tmp.x;
+            *(f32*)(obj + 0x80c) = lo;
+            *(f32*)(obj + 0x810) = tmp.x;
+            *(f32*)(obj + 0x814) = hi;
+            obj[0x7f6] = 0;
+        }
+        break;
+    }
+    case 8: case 9: case 10: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        JGeometry::TVec3<f32> tmp = *fn_8023E724(0);
+        fn_801CD950((f32*)(p + 0x278), lbl_8053C5D8, lbl_8053C550);
+        tmp.y += *(f32*)(p + 0x278);
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C598 + tmp.y;
+        f32 lo = tmp.y - lbl_8053C598;
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = tmp.x;
+            *(f32*)(obj + 0x80c) = lo;
+            *(f32*)(obj + 0x810) = tmp.x;
+            *(f32*)(obj + 0x814) = hi;
+            obj[0x7f6] = 0;
+        }
+        break;
+    }
+    case 11: case 12: case 13:
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x17d) = 1;
+
+        break;
+    case 14: case 15: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x17c) = 1;
+
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        JGeometry::TVec3<f32> tmp = *(Vec*)(p + 0x24);
+        tmp.y += lbl_8053C5A0;
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C5DC + tmp.y;
+        f32 lo = tmp.y - lbl_8053C5DC;
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            
+            *(f32*)(obj + 0x844) = tmp.x;
+            *(f32*)(obj + 0x848) = lo;
+            *(f32*)(obj + 0x84c) = tmp.x;
+            *(f32*)(obj + 0x850) = hi;
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    }
+    case 16: case 17: case 18: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C5E0 + *(f32*)(p + 0x28);
+        f32 lo = *(f32*)(p + 0x28) - lbl_8053C5E0;
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            
+            *(f32*)(obj + 0x844) = *(f32*)(p + 0x24);
+            *(f32*)(obj + 0x848) = lo;
+            *(f32*)(obj + 0x84c) = *(f32*)(p + 0x24);
+            *(f32*)(obj + 0x850) = hi;
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    }
+    case 19: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C5E0 + *(f32*)(p + 0x2d4);
+        f32 lo = *(f32*)(p + 0x2d4) - lbl_8053C5E0;
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            
+            *(f32*)(obj + 0x844) = *(f32*)(p + 0x2d0);
+            *(f32*)(obj + 0x848) = lo;
+            *(f32*)(obj + 0x84c) = *(f32*)(p + 0x2d0);
+            *(f32*)(obj + 0x850) = hi;
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    }
+    case 20: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        JGeometry::TVec3<f32> tmp = *(Vec*)(p + 0xc);
+        tmp.y += lbl_8053C5E4;
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C594 + tmp.y;
+        f32 lo = tmp.y - lbl_8053C594;
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            
+            *(f32*)(obj + 0x844) = tmp.x;
+            *(f32*)(obj + 0x848) = lo;
+            *(f32*)(obj + 0x84c) = tmp.x;
+            *(f32*)(obj + 0x850) = hi;
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    }
+    case 21: case 22: case 23: {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+
+        JGeometry::TVec3<f32> tmp = *(Vec*)(p + 0xc);
+        tmp.y += lbl_8053C5E4;
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f32 hi = lbl_8053C594 + tmp.y;
+        f32 lo = tmp.y - lbl_8053C594;
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = tmp.x;
+            *(f32*)(obj + 0x80c) = lo;
+            *(f32*)(obj + 0x810) = tmp.x;
+            *(f32*)(obj + 0x814) = hi;
+            obj[0x7f6] = 0;
+        }
+        break;
+    }
+    case 24: case 25: case 26: case 27: case 28: {
+        u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+        if (obj[0x179] == 0) {
+            obj[0x17a] = 1;
+            obj[0x179] = 0;
+        }
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), p + 0xc);
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            *(f32*)(obj + 0x84c) = *(f32*)(p + 0xc);
+            *(f32*)(obj + 0x844) = *(f32*)(p + 0xc);
+            *(f32*)(obj + 0x850) = *(f32*)(p + 0x10);
+            *(f32*)(obj + 0x848) = *(f32*)(p + 0x10);
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    }
     }
 }
 
