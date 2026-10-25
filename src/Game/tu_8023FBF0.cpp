@@ -208,8 +208,8 @@ inline bool padCheck(char* p) {
     s32 idx;
     s32 r;
     s32 cnt;
-    s32 c;
     s32 i;
+    s32 c;
     s32 linked;
     if (U8(p, 0xc80) == 0) {
         ok = false;
