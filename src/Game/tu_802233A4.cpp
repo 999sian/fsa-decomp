@@ -184,6 +184,12 @@ void fn_80223F14(void* this_) {
 }
 }
 
+struct CornerActor_802233A4 {
+    void* vtable;
+    u32 room;
+    u32 unk8;
+    f32 x, y;
+};
 // ---- fn_80223664 (update) / fn_802238CC (spawn rect corners) ----
 #include "JSystem/JGeometry.h"
 
@@ -279,9 +285,10 @@ void fn_80223664(void* this_, u8 flag) {
     }
 }
 
+extern "C" const f32 lbl_8053FF1C;
 void fn_802238CC(void* this_) {
     char* p = (char*)this_;
-    f32 x0, y0, x1, y1;
+    f32 y1, x0, y0, x1;
     y0 = x0 = 1.0f;
     y1 = x1 = -1.0f;
     if (*(s32*)(p + 0x248) == 5) {
@@ -314,22 +321,22 @@ void fn_802238CC(void* this_) {
         JGeometry::TVec3<f32> a;
         v = &a;
         room = *(u32*)(p + 0x4);
-        a.set(x0, y0, 0.0f);
+        a.set(x0, y0, lbl_8053FF1C);
         fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
         JGeometry::TVec3<f32> b;
         v = &b;
         room = *(u32*)(p + 0x4);
-        b.set(x1, y0, 0.0f);
+        b.set(x1, y0, lbl_8053FF1C);
         fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
         JGeometry::TVec3<f32> c;
         v = &c;
         room = *(u32*)(p + 0x4);
-        c.set(x1, y1, 0.0f);
+        c.set(x1, y1, lbl_8053FF1C);
         fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
         JGeometry::TVec3<f32> d;
         v = &d;
         room = *(u32*)(p + 0x4);
-        d.set(x0, y1, 0.0f);
+        d.set(x0, y1, lbl_8053FF1C);
         fn_802A20F0(lbl_8053AC98, v, -1, room, 0, 0);
     }
 }
