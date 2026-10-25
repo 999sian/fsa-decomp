@@ -353,7 +353,7 @@ extern "C" void* fn_803B8414(u8* this_) {
     int i;
     void* res;
     void* pic;
-    int m;
+    void* m;
     void* wc;
     u8* tbl;
     *(void**)this_ = lbl_804AFAB0;
@@ -374,11 +374,7 @@ extern "C" void* fn_803B8414(u8* this_) {
     *(f32*)(this_ + 0xec) = lbl_80543440;
     *(f32*)(this_ + 0xf0) = lbl_80543440;
     *(f32*)(this_ + 0xf4) = lbl_80543440;
-    m = (int)__nw__FUl(0x60);
-    if (m != 0) {
-        fn_8045B46C((void*)m, 0, 0, 0, 8);
-    }
-    *(int*)(this_ + 0x1c) = m;
+    *(void**)(this_ + 0x1c) = new WaveControllerValue(0, 0, 0, 8);
     *(void**)(this_ + 0x20) = new WaveController((s32)(this_ + 0xec), 0, 8);
     tbl = lbl_80529DEC;
     *(f32*)(this_ + 0xf8) = lbl_80543440;
