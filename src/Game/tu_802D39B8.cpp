@@ -115,6 +115,10 @@ struct FsaActorList {
     s32 getCount() const { return count; }
     u8* getActor(s32 index) const { return actors[index]; }
 };
+static inline u8 getRoomTransitionFlag() {
+    char* manager = *(char**)(lbl_8053AB10 + 0x24);
+    return *(u8*)(manager + 0x1e8);
+}
 static inline FsaActorList* getActorList() {
     return (FsaActorList*)fn_801F856C();
 }
@@ -1330,23 +1334,23 @@ extern "C" void fn_802DA010(char* p) {
 }
 
 extern "C" u8 fn_802DA630(char* p) {
-    u8 flag;
-    s32 count;
-    s32 i;
-    flag = *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
+    u8 flag = *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
     if (flag == 0) {
+        s32 count;
+        s32 i;
         f32 offset;
         JGeometry::TVec3<f32> v;
+        void* e;
+
         offset = *(s32*)(p + 0x2C) > 0 ? lbl_80541160 : lbl_80541164;
         for (i = 0; i < 4; i++) {
             v = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
             v.x += offset;
-            u16 animation = fn_8023CBC0(i);
-            fn_80230498(i, &v, animation, 0xff, -0x80, -0x80, 1);
+            fn_80230498(i, &v, (u16)fn_8023CBC0(i), 0xff, -0x80, -0x80, 1);
         }
         count = *(s32*)((char*)fn_801F856C() + 0x1008);
         for (i = 0; i < count; i++) {
-            void* e = *(void**)((char*)fn_801F856C() + i * 4 + 8);
+            e = getActorList()->getActor(i);
             if (e != NULL && *(s32*)((char*)e + 0x1A0) == 0x4F53494E && *(s32*)((char*)e + 0x230) == 2) {
                 v = *(JGeometry::TVec3<f32>*)((char*)e + 0xC);
                 v.x += offset;
