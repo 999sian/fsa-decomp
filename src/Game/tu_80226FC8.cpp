@@ -1,5 +1,6 @@
 #include "types.h"
 #include "sdk/stl/float.h"
+struct GateRoomFlags { u8 pad[0x131df]; u8 flags[1]; u8 flag(s32 room) { return flags[room]; } };
 
 
 extern "C" void fn_801EE434(void* p);
@@ -102,9 +103,7 @@ extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
             continue;
         }
         if (flag == 0) {
-            f32 dz = *(f32*)((u8*)this_ + 0x14) - *(f32*)(a + 0x14);
-            if (dz < 0.0f) dz = -dz;
-            if (dz > eps) {
+            if (__fabs(*(f32*)((u8*)this_ + 0x14) - *(f32*)(a + 0x14)) > eps) {
                 continue;
             }
             found = *(s32*)(a + 0x198);
@@ -132,6 +131,13 @@ extern "C" void fn_80227530(void* this_, f32* out) {
     out[1] = box[1];
     out[2] = box[2];
     out[3] = box[3];
+    out[0] = box[0] + bpos->x;
+    out[1] = box[1] + bpos->y;
+    out[2] = box[2] + bpos->x;
+    out[3] = box[3] + bpos->y;
+    if (*((u8*)lbl_8053AAF8 + 0x7e) != 0) {
+        return;
+    }
     v0.x = bpos->x - lbl_8053FF70;
     v0.y = bpos->y - lbl_8053FF70;
     v0.z = lbl_8053FF74;
@@ -143,6 +149,94 @@ extern "C" void fn_80227530(void* this_, f32* out) {
     if (*((u8*)this_ + 0x255) == 0) {
         fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, lbl_8053FF78, 0x3e3, 0, -2, 0, 0, 1);
         *((u8*)this_ + 0x255) = 1;
+    }
+}
+
+extern "C" u8 fn_8022D75C(s32);
+extern "C" u8 fn_8022D534(s32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" u8 fn_8023B0F4(s32, f32*, u32, s32, f32);
+extern "C" void fn_802381B8(s32);
+extern "C" u8 fn_80234E30(s32);
+extern "C" u8 fn_8022C8EC(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u32 fn_8022C5EC(s32,s32);
+extern "C" u32 fn_8022C46C(s32,s32);
+extern "C" u8 fn_8022DBA0(s32);
+extern "C" u8 fn_8022F478(s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" s32 fn_8023725C(s32);
+extern "C" u8 fn_8023513C(s32);
+extern "C" u8 fn_802317F0(s32,s32,void*,void*,u32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" s32 fn_8023E724(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern "C" u8 fn_8022BC38(s32,s32,s32);
+extern "C" void fn_802348C4(s32,s32,s32);
+extern "C" void fn_802278A8(void* this_, f32* out) {
+    u8* p = (u8*)this_;
+    for (s32 i = 0; i < 4; i++) {
+        f32 y1, x1, y0, x0, x, y;
+        x0 = *(f32*)(p+0x60); out[0]=x0;
+        y0 = *(f32*)(p+0x64); out[1]=y0;
+        x1 = *(f32*)(p+0x68); out[2]=x1;
+        y1 = *(f32*)(p+0x6c); out[3]=y1;
+        y = *(f32*)(p+0x10);
+        x = *(f32*)(p+0xc);
+        y0+=y; x0+=x; x1+=x; y1+=y;
+        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
+        if (!fn_8022D75C(i) && fn_8022D534(i)) { p[i+0x234]=1; continue; }
+        if ((*(s32*)(p+0x90)&0x7f)==0x10) return;
+        if (fn_8022F514(i)) {
+            s32 type=*(s32*)(p+0x90)&0x7f;
+            if ((type==0 || (u32)(type-1)<=2 || type==0x17 || type==0x18) &&
+                fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF70)) fn_802381B8(i);
+        }
+        if ((*(s32*)(p+0x90)&0x7f)==0x13 && !fn_80234E30(i)) continue;
+        if (*((u8*)lbl_8053AAF8+0x7e) && !fn_8022C8EC(i)) {
+            s32 room=(*(s32*)(p+0x90)>>24)&7;
+            s32 id=room+7; if (!room) id=room;
+            s32 current=fn_8023DE58(i);
+            if (current!=id) continue;
+        }
+        if (fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF70)) {
+            s32 mapRoom;
+            if (((*(s32*)(p+0x90)&0x7f)==0x15 || (*(s32*)(p+0x90)&0x7f)==0x23) &&
+                (mapRoom=*(s32*)(p+4), ((u8*)fn_802D6A9C())[mapRoom+0x131df])) {
+                if (!fn_8022C5EC(i,8) && !fn_8022C5EC(i,4) && !fn_8022C46C(i,8) && !fn_8022C46C(i,4)) continue;
+                if (fn_8022DBA0(i)) continue;
+            } else {
+                if (p[i+0x234]==1) continue;
+                if (fn_8022D75C(i)) { p[i+0x234]=1; continue; }
+            }
+            if (fn_8022F478(i) && (*(s32*)(p+0x90)&0x7f)!=4) continue;
+            if (((*(s32*)(p+0x90)&0x7f)==4 || (*(s32*)(p+0x90)&0x7f)==0x20 || (*(s32*)(p+0x90)&0x7f)==0x24) &&
+                fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
+            s32 room=(*(s32*)(p+0x90)>>24)&7;
+            s32 id=room+7; if (!room) id=room;
+            if (fn_802317F0(i,id,p+0xc,p+0x238,*(s32*)(p+0x90)&0x7f) &&
+                (*(s32*)(p+0x90)&0x7f)==4 && fn_8022F514(i)) {
+                s32 a=fn_8023DE58(i);
+                if (((u8*)fn_802D6A9C())[a+0x131df] || fn_8022CAF8(i)==4 || fn_8022CAF8(i)==5) continue;
+                s32 c;
+                s32 b;
+                b=fn_8023E724(i);
+                c=fn_8023DE58(i);
+                if (fn_8022BC38(fn_8022F3DC(i),c,b)) {
+                    fn_802381B8(fn_8022F3DC(i));
+                    s32 e=fn_8023E724(i); s32 d=fn_8023DE58(i);
+                    fn_802348C4(fn_8022F3DC(i),d,e);
+                }
+            }
+        } else {
+            f32 x0=out[0], y0=out[1], x1=out[2], y1=out[3];
+            f32 expand=lbl_8053FF78;
+            out[0]=x0-expand;
+            out[1]=y0-expand;
+            out[2]=x1+expand;
+            out[3]=y1+expand;
+            if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF74)) p[i+0x234]=0;
+        }
     }
 }
 
