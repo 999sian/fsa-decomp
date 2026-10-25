@@ -22,7 +22,7 @@ extern "C" void fn_8036CBBC(Actor*);
 extern "C" s32 fn_80239470(void*, u32, void*);
 extern "C" void fn_80239914(void*, u32, void*);
 extern "C" void* fn_8023E724(s32);
-extern "C" void fn_8023DFF4(s32, void*);
+extern "C" void fn_8023DFF4(s32, const JGeometry::TVec3f&);
 extern "C" u8 fn_8023077C(void);
 extern "C" void fn_801F0E34(Actor*, s32, s32);
 extern "C" void* fn_801F856C(void);
@@ -74,32 +74,77 @@ inline bool psw2Ready(Actor* p) {
 
 extern "C" void fn_8036CF1C(Actor* this_) {
     u8* p = (u8*)this_;
-    f32 box[4];
-    f32 dx;
-    s32 hit;
-
-    box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
-    box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
-    box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
-    box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
-    *(f32*)(p + 0x3c) = lbl_80542CD8;
-    *(f32*)(p + 0x40) = lbl_80542CD8;
-    *(f32*)(p + 0x44) = lbl_80542CD8;
-
-    if (*(s32*)(p + 0x258) > 0) {
-        *(s32*)(p + 0x258) -= 1;
-        fn_8036CBBC(this_);
-        hit = fn_80239470(box, *(u32*)(p + 4), *(void**)(p + 0x198));
-        if (hit >= 0) {
-            fn_80239914(box, *(u32*)(p + 4), *(void**)(p + 0x198));
-            dx = *(f32*)(p + 0xc) - *(f32*)fn_8023E724(hit);
+    JGeometry::TBox2f box = *(JGeometry::TBox2f*)(p + 0x60);
+    JGeometry::TVec3f pos;
+    box.addPos(*(JGeometry::TVec2f*)(p + 0xc));
+    this_->field_3C.x=0.0f;
+    this_->field_3C.y=0.0f;
+    this_->field_3C.z=0.0f;
+    if (*(s32*)(p + 0x258) > 0) --*(s32*)(p + 0x258);
+    fn_8036CBBC(this_);
+    s32 hit = fn_80239470(&box, this_->field_04, *(void**)(p + 0x198));
+    if (hit >= 0) {
+        fn_80239914(&box,this_->field_04,*(void**)(p + 0x198));
+        f32 dx = this_->field_0C.x - ((JGeometry::TVec3f*)fn_8023E724(hit))->x;
+        if (__fabsf(dx) >= 2.0f) {
+            JGeometry::TVec3f off(dx,0.0f,0.0f);
+            fn_8023DFF4(hit,off);
+        }
+        if (*(u8*)(p + 0x250) != 0) {
+            *(f32*)(p + 0x254)=8.0f;
+            this_->field_0C.y = this_->field_24.y + *(f32*)(p + 0x254);
+        } else if (*(f32*)(p + 0x254) >= 4.0f) {
+            *(f32*)(p + 0x254) += 0.1f;
+            if (*(f32*)(p + 0x254) >= 8.0f) {
+                *(f32*)(p + 0x254)=8.0f;
+                if ((u8)psw2Ready(this_) == 1) {
+                    *(u8*)(p + 0x250)=1;
+                    fn_801F0E34(this_,0x3004b,0);
+                    this_->field_0C.y=this_->field_24.y+*(f32*)(p + 0x254);
+                    this_->field_3C.x=0.0f;
+                    this_->field_3C.y=4.0f;
+                    this_->field_3C.z=0.0f;
+                    if (fn_8023077C()) {
+                        *(s32*)(p + 0x258)=50;
+                        *(s32*)(p + 0x25c)=4;
+                        *(s32*)(p + 0x260)=0;
+                        for (s32 i=0;i<4;i++) {
+                            pos=*(JGeometry::TVec3f*)fn_8023E724(i);
+                            fn_80230498(i,pos+JGeometry::TVec3f(0.0f,7.0f,0.0f),0x2e2,0xff,-0x80,-0x80,1);
+                        }
+                    } else *(s32*)(p + 0x25c)=0;
+                }
+            } else this_->field_0C.y = 4.0f+this_->field_24.y;
+        } else {
+            if (*(f32*)(p + 0x254) <= 0.0f) {
+                *(JGeometry::TVec3f*)(p + 0x240)=*(JGeometry::TVec3f*)(p + 0xc);
+                *(f32*)(p + 0x244) += 16.0f;
+                JGeometry::TVec3f off = *(JGeometry::TVec3f*)(p + 0x240) - *(JGeometry::TVec3f*)fn_8023E724(hit);
+                fn_8023DFF4(hit,off);
+            }
+            *(f32*)(p + 0x254) += 0.25f;
+            this_->field_3C.x=0.0f;
+            this_->field_3C.y=0.25f;
+            this_->field_3C.z=0.0f;
+            this_->field_0C.y=this_->field_24.y+*(f32*)(p + 0x254);
+        }
+    } else {
+        if (*(u8*)(p + 0x250) != 0) {
+            *(f32*)(p + 0x254)=8.0f;
+            this_->field_0C.y=this_->field_24.y+*(f32*)(p + 0x254);
+        } else {
+            *(f32*)(p + 0x254) -= 0.25f;
+            if (*(f32*)(p + 0x254)<0.0f) *(f32*)(p + 0x254)=0.0f;
+            this_->field_3C.x=0.0f;
+            this_->field_3C.y=-0.25f;
+            this_->field_3C.z=0.0f;
+            this_->field_0C.y=this_->field_24.y+*(f32*)(p + 0x254);
         }
     }
-
-    if (*(u8*)(p + 0x250) != 0) {
-        *(f32*)(p + 0x254) = lbl_80542CE0;
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x28) + *(f32*)(p + 0x254);
-    }
+    if (*(f32*)(p + 0x254)<1.0f) *(s32*)(p + 0x24c)=0;
+    else if (*(f32*)(p + 0x254)<3.0f) *(s32*)(p + 0x24c)=1;
+    else if (*(f32*)(p + 0x254)<8.0f) *(s32*)(p + 0x24c)=2;
+    else *(s32*)(p + 0x24c)=4;
 }
 
 extern "C" f32 lbl_80542CD8;
