@@ -66,8 +66,8 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
         v.set(zero, zero, zero);
         u8* q = *(u8**)(lbl_8053AB10 + 0x24);
         v.x = -*(f32*)(q + 0x10);
-        v.z = 0.0f;
         v.y = -*(f32*)(q + 0x20);
+        v.z = 0.0f;
         fn_801F0E34(this_, 0x30036, 0);
         fn_8013CC50(*(s32*)(this_ + 4), &v, 0x1BC, 2, 2, 0, 0, 1, lbl_8053CC24);
         *(s32*)(this_ + 0x238) = 0;
