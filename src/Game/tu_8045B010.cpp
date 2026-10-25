@@ -45,6 +45,17 @@ struct Holder8045 {
     u32 pad[2];
     void** vt;
 };
+struct VObj8045 {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual void v7(void);
+    virtual u32 v8(void);
+};
 extern "C" void fn_8045B030(void* param_1, u8 param_2, s8 param_3) {
     u32 w;
     u8 sec;
@@ -63,7 +74,7 @@ extern "C" void fn_8045B030(void* param_1, u8 param_2, s8 param_3) {
     }
     if (sec == 2 || sec == 1) {
         local = w;
-        piVar2 = ((void** (*)(void*, u32*))(*(void***)((char*)param_1 + 8))[5])(param_1, &local);
+        piVar2 = ((void** (*)(void*, u32*))((Holder8045*)param_1)->vt[5])(param_1, &local);
     } else if (sec == 0) {
         fn_80458880(lbl_8053AF80, w, -1);
     } else {
