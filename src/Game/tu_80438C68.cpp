@@ -93,6 +93,8 @@ extern "C" void* lbl_8053AF80;
 extern "C" u8 lbl_80529DEC[];
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AB10;
+extern "C" u8 lbl_8050DB0C[];
+extern "C" void fn_8022ADCC(void);
 extern "C" s32 fn_801F666C(void* mgr, s32 idx);
 extern "C" void* fn_8013CC50(u32 a, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, f32 scale);
 extern "C" void fn_80458880(void* mgr, u32 p, s32 v);
