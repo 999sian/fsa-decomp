@@ -288,7 +288,7 @@ static BOOL searchSection(u32 addr, u32* id, u32* index, u32* offset, char** nam
     return FALSE;
 }
 
-static inline bool searchPartialModule(const u32 addr, u32* const id, u32* const index, u32* const offset, char** const name)
+static bool searchPartialModule(u32 addr, u32* id, u32* index, u32* offset, char** name)
 {
     if (addr == 0) {
         return false;
