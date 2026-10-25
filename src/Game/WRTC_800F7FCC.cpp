@@ -81,6 +81,18 @@ extern "C" void* fn_801F1184(void* this_);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
+static inline void WRTC_scaleMtx(f32 m[3][4], f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
+
 static inline f32 WRTC_random() {
     f32 one;
     f32 result;
@@ -703,6 +715,37 @@ extern "C" void fn_800F9C20(void* this_) {
             }
         }
     }
+}
+
+extern "C" void fn_800F9F54(void* this_) {
+    u8* self = (u8*)this_;
+    f32 sin = sincosTable___5JMath[((u16)*(u32*)(self + 0x268) >> 5) * 2];
+    f32 x = lbl_8053BFC4 * sin;
+    f32 z = lbl_8053C038 * sin;
+    DrawRec r;
+    f32 m[3][4];
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    f32 scale = *(f32*)(self + 0x26c);
+    m[0][0] = scale + x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = scale;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = scale + z;
+    r.w18 = m;
+    ((u8*)&r.w14)[0] = (u8)(s32)(lbl_8053C03C * *(f32*)(self + 0x274));
+    ((u8*)&r.w14)[1] = (u8)(s32)(lbl_8053C03C * *(f32*)(self + 0x274));
+    ((u8*)&r.w14)[2] = (u8)(s32)(lbl_8053C03C * *(f32*)(self + 0x274));
+    ((u8*)&r.w10)[3] = (u8)(s32)(lbl_8053C03C * *(f32*)(self + 0x270));
+    if (*(u32*)(self + 0x238) & 2) r.w30 = 13;
+    else if (*(u32*)(self + 0x238) & 4) r.w30 = 17;
+    void* res = fn_804032E8(0x57415254, lbl_8049C5D0[self[0x278]]);
+    fn_801EFD34(self, res, 0.0f, lbl_8053C040 * (*(f32*)(self + 0x26c) + z), 0.0f, &r, 5);
 }
 
 extern "C" void fn_800FA1A4(void* this_) {
