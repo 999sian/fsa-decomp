@@ -101,6 +101,9 @@ extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, GXColor color, f32 size
 static inline void drawShadowCF(s32 room, Vec* pos, f32 size, u8 alpha = 0x80) {
     fn_80158B5C(lbl_8053AB10->mFxMgr, room, pos, JUtility::TColor(0, 0, 0, alpha), size);
 }
+static inline void drawShadowCF(Vec* pos, s32 room, f32 size) {
+    fn_80158B5C(lbl_8053AB10->mFxMgr, room, pos, JUtility::TColor(0, 0, 0, 0x80), size);
+}
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 fn_801F7A08(void* a, u32 b);
@@ -160,7 +163,7 @@ extern "C" void fn_802CFE2C(Actor* p) {
         }
 
         pos2.set(lbl_80540E7C + p->field_0C.x, lbl_80540E78 + p->field_0C.y, p->field_0C.z);
-        drawShadowCF(p->field_04, &pos2, lbl_80540E84);
+        drawShadowCF(p->field_04, &pos2, lbl_80540E84, 0x80);
     }
 }
 #pragma opt_propagation reset
