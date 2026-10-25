@@ -143,6 +143,7 @@ extern "C" void* lbl_8053AF80;
 extern "C" u8 lbl_8048C2F8[];
 extern "C" f32 lbl_805438C0;
 extern "C" f32 lbl_80543898;
+extern "C" void fn_80458880(void*, s32, s32);
 extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 extern "C" void fn_804023D0(void* p, void* q, u8 b);
 extern "C" void fn_80404648(u8* self) {
