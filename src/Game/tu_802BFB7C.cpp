@@ -8,7 +8,7 @@ extern "C" char lbl_804A8C80[];
 extern "C" void __dt__5ActorFv(void*, int);
 void operator delete(void*);
 extern "C" f32 lbl_80540C40;
-extern "C" f32 lbl_80540C38;
+extern "C" const f32 lbl_80540C38;
 extern "C" f32 lbl_80540C44;
 extern "C" char lbl_8046D54C[];
 extern "C" u8* lbl_8053AB10;
@@ -152,15 +152,73 @@ extern "C" void Actor_CreateByID(void* a, u32 id, void* rec, void* d, s32 e, s32
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D6F38(void* a, void* b, void* c, s32 d, s32 e);
 extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
-    s32 v26 = room;
-    s32 v22 = room;
-    s32 v3;
-    s32 i;
-    u32 base;
-
-    v22 = room;
-    if (fn_8022F514(room)) {
-        v26 = fn_8022F3DC(room);
+    s32 selected = room;
+    s32 original = room;
+    if ((u8)fn_8022F514(original)) selected = fn_8022F3DC(original);
+    if (lbl_8053AAF8[0x7e] == 1) {
+        if (!(u8)fn_802308E0(selected)) return 0;
+    } else {
+        if (!(u8)fn_8023077C()) return 0;
+        fn_8037AE30(lbl_8053AD70);
+    }
+    s32 index = *(s32*)(this_ + 0x238);
+    if (*(s32*)(this_ + 0x23c) == 2) index += 11;
+    u32 offset = 0;
+    for (s32 i = 0; i < 4; i++, offset += 0x1000000) {
+        JGeometry::TVec3<f32> source(*(Vec*)fn_8023E724(i));
+        Vec pos;
+        pos.x = lbl_80540C38 + source.x;
+        pos.y = source.y - lbl_80540C3C;
+        pos.z = source.z;
+        if (lbl_8053AAF8[0x7e] == 1) {
+            if ((u8)fn_8022F514(i) == 1) {
+                if (selected == fn_8022F3DC(i)) {
+                    if (i == room) {
+                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + offset;
+                s32 destination = fn_8023DE58(i);
+                void* manager = fn_801F856C();
+                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+            } else {
+                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + 0x30000000 + offset;
+                s32 destination = fn_8023DE58(i);
+                void* manager = fn_801F856C();
+                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+            }
+                }
+            } else if (i == selected) {
+                if (i == room) {
+                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + offset;
+                s32 destination = fn_8023DE58(i);
+                void* manager = fn_801F856C();
+                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+            } else {
+                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + 0x30000000 + offset;
+                s32 destination = fn_8023DE58(i);
+                void* manager = fn_801F856C();
+                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+            }
+            }
+        } else {
+            if (i == room) {
+                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + offset;
+                s32 destination = fn_8023DE58(i);
+                void* manager = fn_801F856C();
+                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+            } else {
+                u32 param = lbl_8046D4F0[index] + ((u32)room << 26) + 0x30000000 + offset;
+                s32 destination = fn_8023DE58(i);
+                void* manager = fn_801F856C();
+                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+            }
+        }
+    }
+    if (*(s32*)(this_ + 0x244) >= 0) {
+        s32 value = *(s32*)(this_ + 0x270);
+        void* handle = *(void**)(this_ + 0x264);
+        u32 pair[2];
+        pair[0] = *(u32*)(this_ + 0x268);
+        pair[1] = *(u32*)(this_ + 0x26c);
+        fn_802D6F38(fn_802D6A9C(), handle, pair, value, 0);
     }
     return 1;
 }
