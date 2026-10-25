@@ -4,6 +4,7 @@
 
 extern "C" char lbl_80465D60[];
 extern "C" f32 lbl_8053D1D0;
+extern "C" f32 lbl_8053D1D4;
 extern "C" void fn_801F06F0(void* this_, char* str, s32 a, s32 b, s32 c, f32 f1, f32 f2);
 extern "C" void fn_8014DCD4(u8* this_) {
     const f32 f = lbl_8053D1D0;
