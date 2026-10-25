@@ -446,19 +446,14 @@ static inline u8 pameLanded(u8* this_, s32 st) {
 }
 
 static inline s32 pameFirstPlayer(u8 mask) {
-    if (mask & 1) {
-        return 0;
+    s32 r = -1;
+    for (s32 i = 0; i < 4; i++) {
+        if (mask & (1 << i)) {
+            r = i;
+            break;
+        }
     }
-    if (mask & 2) {
-        return 1;
-    }
-    if (mask & 4) {
-        return 2;
-    }
-    if (mask & 8) {
-        return 3;
-    }
-    return -1;
+    return r;
 }
 
 static inline f32 pameSq(f32 x) {
