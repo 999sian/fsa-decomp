@@ -1,6 +1,25 @@
 #include "types.h"
 #include "Game/Actor.h"
 
+extern "C" void* lbl_8053AC98;
+extern "C" void* lbl_8053AB10;
+extern "C" f32 lbl_80540BBC;
+extern "C" f32 lbl_80540BC0;
+extern "C" f32 lbl_80540BC4;
+extern "C" f32 lbl_80540BC8;
+extern "C" f32 lbl_80540BCC;
+extern "C" f32 lbl_8046D3B0[];
+extern "C" f32 lbl_8046D3F0[];
+extern "C" u8 fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801F2B20(void* p, s32 a);
+extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
+extern "C" void fn_802A20F0(void* a, void* b, s32 c, s32 d, u32 e, s32 f);
+extern "C" void fn_802A381C(void* a, void* b, s32 c, s32 d);
+extern "C" void fn_802A3948(void* a, void* b, s32 c, s32 d, s32 e);
+extern "C" void fn_8030C210(void* a, void* b);
+extern "C" void* fn_801F856C(void);
+extern "C" void* Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, u32 flags, s32 a, s32 b);
+
 
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_802D73CC(void*, u32, s32);
