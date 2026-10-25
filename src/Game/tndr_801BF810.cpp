@@ -290,13 +290,32 @@ extern "C" const f32 lbl_8053ED78;
 extern "C" const f32 lbl_8053ED7C;
 extern "C" void fn_801CD8E4(f32* value, f32 target, f32 rate, f32 eps);
 extern "C" f32 fn_801D0DA0(void* actor, s32 idx, void* pos);
-#pragma opt_propagation off
+#pragma opt_dead_assignments off
+static inline JGeometry::TVec2<f32> tndrSubtract(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    JGeometry::TVec2<f32> result(a);
+    result.x -= b.x;
+    result.y -= b.y;
+    return result;
+}
+static inline JGeometry::TVec2<f32> tndrAdd(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    JGeometry::TVec2<f32> result(a);
+    result.add(b);
+    return result;
+}
+
 extern "C" void fn_801C0634(char* this_) {
     JGeometry::TVec2<f32> delta;
     delta.set(*(JGeometry::TVec2<f32>*)(this_ + 0x2b8));
     delta.x -= *(f32*)(this_ + 0x2c0);
     delta.y -= *(f32*)(this_ + 0x2c4);
-    delta.normalize();
+    f32 lenSq = delta.squared();
+    if (!(lenSq <= lbl_8053ED6C * *(f32*)__float_epsilon)) {
+        if (!(lenSq <= lbl_8053ED34)) {
+            f32 r = __frsqrte(lenSq);
+            lenSq = lbl_8053ED70 * r * (lbl_8053ED74 - lenSq * (r * r));
+        }
+        delta.scale(lenSq);
+    }
     delta.scale(*(f32*)(this_ + 0x2ac));
 
     f32 tx, tz;
@@ -323,14 +342,16 @@ extern "C" void fn_801C0634(char* this_) {
     f32 dist;
     if (*(s32*)(this_ + 0x2a8) >= 0) {
         dist = fn_801D0DA0(this_, *(s32*)(this_ + 0x2a8), this_ + 0xc);
+        if (dist > lbl_8053ED34) dist = __frsqrte(dist) * dist;
     } else {
         f32 ax = *(f32*)(this_ + 0x24) - *(f32*)(this_ + 0xc);
         f32 az = *(f32*)(this_ + 0x28) - *(f32*)(this_ + 0x10);
-        dist = ax * ax + az * az;
+        f32 sqx = ax * ax;
+        f32 sqy = az * az;
+        dist = sqx + sqy;
+        if (dist > lbl_8053ED34) dist = __frsqrte(dist) * dist;
     }
-    if (dist > lbl_8053ED34) {
-        dist = __frsqrte(dist) * dist;
-    }
+
 
     s32 ang = *(s16*)(this_ + 0x2b0);
     if (dist > lbl_8053ED7C) {
@@ -358,7 +379,7 @@ extern "C" void fn_801C0634(char* this_) {
     result.y += difference.x * sn + difference.y * cs;
     ((JGeometry::TVec2<f32>*)(this_ + 0x2b8))->set(result);
 }
-#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 extern "C" void fn_801D01A0(void* this_, void* target, f32 maxd, f32* out);
 extern const f64 lbl_8053ED50;
 extern const f32 lbl_8053ED40;
