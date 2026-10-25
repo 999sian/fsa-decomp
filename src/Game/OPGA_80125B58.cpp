@@ -197,7 +197,6 @@ extern "C" void fn_801D1C18(void* p);
 inline s32 opgaSpawn(u8* this_, u16 kind) {
     f32 b8[4];
     JGeometry::TVec3f pos;
-    JGeometry::TVec3f p;
     b8[0] = *(f32*)(this_ + 0x60);
     b8[1] = *(f32*)(this_ + 0x64);
     b8[2] = *(f32*)(this_ + 0x68);
@@ -212,7 +211,7 @@ inline s32 opgaSpawn(u8* this_, u16 kind) {
     if (!fn_802300EC()) return -1;
     pos = *(JGeometry::TVec3f*)(this_ + 0xc);
     pos.y -= lbl_8053CA74;
-    p = pos;
+    JGeometry::TVec3f p(pos);
     if (fn_8038AD24(player, kind, *(s32*)(this_ + 0x198), *(s32*)(this_ + 4), &p, 0x28)) return player;
     return -1;
 }
@@ -275,11 +274,15 @@ extern "C" void fn_80125EFC(u8* this_) {
         fn_80239914(box, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198));
     }
     s32 v = *(s32*)(this_ + 0x98);
-    if (v >= 0 && (*(s32*)(this_ + 0x98) = v) != *(s32*)(this_ + 0x24c)) {
+    if (v >= 0) {
+        *(s32*)(this_ + 0x98) = v;
+        if (v != *(s32*)(this_ + 0x24c)) {
         fn_801D22DC(this_ + 0x244, v, 2, 0);
         fn_801D1F14(this_ + 0x244, lbl_8053CA70);
     }
-    *(f32*)(this_ + 0x274) = *(u8*)(this_ + 0x231) != 0 ? lbl_8053CA8C : lbl_8053CA7C;
+    }
+    if (*(u8*)(this_ + 0x231) != 0) *(f32*)(this_ + 0x274) = lbl_8053CA8C;
+    else *(f32*)(this_ + 0x274) = lbl_8053CA7C;
     fn_801D1C18(this_ + 0x244);
     fn_801D1C18(this_ + 0x27c);
     fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), this_ + 0xc);
