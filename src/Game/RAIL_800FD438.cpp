@@ -332,7 +332,7 @@ extern "C" RailVec fn_800FE294(RailRing* ring, u8 i) {
     return ring->mNodes[i]->mPos;
 }
 
-extern "C" u8 fn_800FE2E4(RailRing* ring, RailVec* pos, s32 id) {
+extern "C" u8 fn_800FE2E4(RailRing* ring, const RailVec* pos, s32 id) {
     f32 best = lbl_8053C0D8;
     for (u16 i = 0; i < ring->mSize; i++) {
         s32 nodeId;
@@ -343,7 +343,7 @@ extern "C" u8 fn_800FE2E4(RailRing* ring, RailVec* pos, s32 id) {
         }
         if (id == nodeId) {
             RailVec d = ring->mNodes[i]->mPos;
-            d.sub(ring->mNodes[i]->mPos, *pos);
+            d.sub(*pos);
             f32 mag = PSVECMag(&d);
             if (mag < best) {
                 best = mag;
@@ -429,22 +429,20 @@ static inline u32 railLoopMode(RailRing* ring, u8 n) {
 }
 
 extern "C" void fn_800FD818(RailRing* ring, s8 step) {
-    s32 s = step;
-    u8 size = ring->mSize;
-    u32 mode = railLoopMode(ring, size);
-    s32 idx = s + ring->mCur;
+    u32 mode = railLoopMode(ring, ring->mSize);
+    s32 idx = ring->mCur + step;
     if ((s16)idx < 0) {
         if (mode == 1) {
-            ring->mCur = size + idx;
+            ring->mCur = ring->mSize + idx;
         } else {
             ring->mCur = 0;
         }
-    } else if ((s16)idx >= size) {
-        idx -= size;
+    } else if ((s16)idx >= ring->mSize) {
+        idx -= ring->mSize;
         if (mode == 1) {
             ring->mCur = idx;
         } else {
-            ring->mCur = size - 1;
+            ring->mCur = ring->mSize - 1;
         }
     } else {
         ring->mCur = idx;
