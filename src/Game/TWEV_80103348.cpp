@@ -3,6 +3,7 @@
 #include "types.h"
 #include "Game/Actor.h"
 extern "C" void fn_801F0E34(void*, u32, s32);
+extern "C" s32 fn_8013CC50(void*, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80134DE4(void*, s32, s32);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void*, u32, s32, s32);
