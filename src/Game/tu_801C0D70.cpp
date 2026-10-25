@@ -124,6 +124,14 @@ extern const f32 lbl_8053ED98;
 extern f32 lbl_8053ED9C;
 extern f32 lbl_8053EDA0;
 extern f32 lbl_8053EDA4;
+
+static inline void inverseSqrt(f32& value) {
+    if (value <= lbl_8053ED90) {
+        return;
+    }
+    f32 r = __frsqrte(value);
+    value = lbl_8053EDA0 * r * (lbl_8053EDA4 - value * (r * r));
+}
 #pragma opt_propagation off
 extern "C" s32 fn_801C0FEC(const u8* this_, const f32* param_2, f32* param_3) {
     f32 y;
@@ -157,11 +165,7 @@ extern "C" s32 fn_801C0FEC(const u8* this_, const f32* param_2, f32* param_3) {
                 } else {
                     if (lenSq <= lbl_8053ED9C * *(f32*)__float_epsilon) {
                     } else {
-                        if (lenSq <= lbl_8053ED90) {
-                        } else {
-                            f32 r = __frsqrte(lenSq);
-                            lenSq = lbl_8053EDA0 * r * (lbl_8053EDA4 - lenSq * (r * r));
-                        }
+                        lenSq = JGeometry::TUtilf::inv_sqrt(lenSq);
                         dx *= lenSq;
                         dz *= lenSq;
                     }
