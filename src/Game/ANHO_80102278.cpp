@@ -1,6 +1,10 @@
 // ANHO_80102278: .text 0x80102278-0x8010307C (actor ANHO)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "Game/Actor.h"
 
 // ---- from Game/fn_80102278_dtor.cpp
 
