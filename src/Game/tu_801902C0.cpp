@@ -20,14 +20,6 @@ static inline void setRotX90(Mtx m) {
     m[0][1] = m[1][0] = m[0][2] = m[2][0] = 0.0f;
 }
 
-static inline f32 calcLayerOffset(f32 z, s32 a, s32 b) {
-    if (z > 0.0f && a < 1) {
-        a++;
-        b--;
-    }
-    return (f32)(a * 0x400 + b * 0x80);
-}
-
 static inline f32 calcLayerOffset(f32 z, const u8* e) {
     s32 a = *(s32*)(e + 0x5c);
     s32 b = *(s32*)(e + 0x60);
