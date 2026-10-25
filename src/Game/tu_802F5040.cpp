@@ -643,7 +643,7 @@ extern "C" void fn_802F601C(Tu802F5040Effects* this_, f32* src, s32 type, f32* _
     }
 }
 #pragma opt_propagation reset
-extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* src) {
+extern "C" u8 fn_802F6298(u8* self, Vec* __restrict pos, s32 a, s32 b, s32 c, s32 d, u8* src) {
     struct Quad {
         s32 v[4];
     };
@@ -652,7 +652,7 @@ extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
     if (n < 0x20) {
         u8* e = self + n * 0x88 + 0xd324;
         u8 i;
-        Tu802F5040_setVec((f32*)e, pos->x, pos->y, pos->z);
+        *(Vec*)e = *pos;
         *(s32*)(e + 0xc) = a;
         *(s32*)(e + 0x10) = b;
         *(s32*)(e + 0x14) = c;
@@ -1694,6 +1694,8 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
 }
 
 extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
+    u8* out; u8* self; s32 index;
+    self=this_; index=idx; out=dst;
     u32 len;
     u8* base;
     if(size==0) {
@@ -1703,22 +1705,22 @@ extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
         if(r<0) len=0x8000;
         else len=r;
     } else len=size;
-    u32* table=(u32*)(this_+idx*4);
-    dst= (u8*)table[1]+(u32)dst;
+    u32* __restrict table=(u32*)(self+index*4);
+    out= (u8*)table[1]+(u32)out;
     if(JKRDecomp::checkCompressed(src)) {
-        JKRDecomp::decode(src,*(u8**)(this_+0xf8),0x8000,0);
-        base=*(u8**)(this_+0xf8);
+        JKRDecomp::decode(src,*(u8**)(self+0xf8),0x8000,0);
+        base=*(u8**)(self+0xf8);
     } else base=src;
     base+=a;
     for(u32 i=0;i<len;i++) {
-        u8 b=base[i];
-        dst[i]=(b<<4)|(b>>4);
+        u32 b=base[i];
+        out[i]=((b&15)<<4)|(b>>4);
     }
-    DCFlushRange(dst,len);
-    if(idx==1) {
-        u8* p=*(u8**)(this_+8)+0x200;
-        u8* q=*(u8**)(this_+0x238c);
-        for(s32 i=0;i<0x100;i++) q[i]=p[i];
+    DCFlushRange(out,len);
+    if(index==1) {
+        u8* p=*(u8**)(self+8)+0x200;
+        u8* q=*(u8**)(self+0x238c);
+        for(s32 i=0;i<0x100;i++) *q++=*p++;
     }
 }
 
