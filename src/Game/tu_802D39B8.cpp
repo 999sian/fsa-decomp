@@ -2806,16 +2806,15 @@ extern "C" bool fn_802DE814(void) {
 
 extern "C" bool fn_802DE93C() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* const q = *(char**)(lbl_8053AAF8 + 4);
-        if (*(s32*)(*(char**)(q + 0xC) + 4) == 4) {
-            if (*(s32*)(*(char**)(q + 0xC) + 8) == 0) {
-                return true;
-            }
-        }
-        if (*(s32*)(*(char**)(q + 0xC) + 4) == 7) {
-            if (*(s32*)(*(char**)(q + 0xC) + 8) == 2) {
-                return true;
-            }
+        char* p;
+        char* q = *(char**)(lbl_8053AAF8 + 4);
+        p = *(char**)(q + 0xC);
+        if (*(s32*)(p + 4) == 4 && *(s32*)(p + 8) == 0)
+            goto yes;
+        p = *(char* volatile*)(q + 0xC);
+        if (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 2) {
+yes:
+            return true;
         }
         return false;
     }
