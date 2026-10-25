@@ -71,6 +71,20 @@ extern JGeometry::TVec3<f32> lbl_8046B580[];
 extern const f32 lbl_80540188;
 extern const f32 lbl_805401E0;
 extern "C" void fn_801F3708(char*, JGeometry::TVec3<f32>*);
+
+static inline bool canReleaseCarried(char* p, u8 flag) {
+    s32 state = S32(p, 0x1244);
+    if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2)
+        return false;
+    if (flag == 1 && !isCarriedByPlayer(p, flag) && (u32)(state - 0x20) <= 5)
+        return false;
+    if (S32(p, 0xd6c) == 'KEY0' && (u32)(state - 0x1e) <= 1)
+        return false;
+    if (flag == 1 && !isCarriedByPlayer(p, flag) && (state == 0x4c || state == 0x4d))
+        return false;
+    return true;
+}
+
 extern "C" s32 fn_8024189C(char*);
 extern "C" void fn_80230D80(s32, JGeometry::TVec3<f32>*);
 extern "C" s32 fn_8023EF50(s32);
@@ -364,6 +378,103 @@ extern "C" s32 fn_8025F668(char* p) {
 extern "C" int fn_8025F684(char* p) {
     return (u8)(U8(p, 0xd64) == 1);
 }
+
+#pragma opt_common_subs off
+extern "C" void fn_8025F698(char* p, u8 check) {
+    u8 flag = U8(p, 0xd64);
+    if (flag == 0)
+        return;
+    if (check) {
+        s32 state = S32(p, 0x1244);
+        if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2)
+            goto blocked;
+        switch ((u8)(flag == 1)) {
+        case 0: break;
+        default:
+            if (!isCarriedByPlayer(p, flag) && (u32)(state - 0x20) <= 5) goto blocked;
+            break;
+        }
+        if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1)
+            goto blocked;
+        if (flag != 1) goto allowed;
+        if (isCarriedByPlayer(p, flag)) goto allowed;
+        if (state == 0x4c) goto blocked;
+        if (state != 0x4d) goto allowed;
+    blocked:
+        return;
+    }
+allowed:
+    u8 notify = 1;
+    if (U32(p, 0xd6c) == 'NULL')
+        notify = 0;
+    if (isCarriedByPlayer(p, flag)) {
+        JGeometry::TVec3<f32> dir = lbl_8046B8FC[S32(p, 0x3dc)];
+        dir.scale(lbl_80540154);
+        JGeometry::TVec3<f32> vel;
+        s32 st = S32(p, 0x1244);
+        if (st == 0x1e || st == 0x32 || fn_8024189C(p) <= 0) {
+            vel.x = lbl_80540150;
+            vel.y = lbl_80540150;
+            vel.z = lbl_80540150;
+        } else {
+            JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)fn_8023E724(S32(p, 0xd70));
+            s32 count = 0;
+            for (s32 i = 0; i < 3; i++) {
+                pos += dir;
+                u16 t = fn_8022461C(&pos, fn_8023DE58(S32(p, 0xd70)));
+                if (t == 3 || t == 0xe || t == 0x3a)
+                    count++;
+            }
+            vel = lbl_8046B8FC[S32(p, 0x3dc)];
+            if (count >= 2) {
+                s32 d = S32(p, 0x3dc);
+                if (d == 0 || d == 1) {
+                    pos.x = (s32)pos.x / 16 * 16 + 8;
+                } else {
+                    pos.y = (s32)pos.y / 16 * 16 + 8;
+                }
+                vel = pos - *(JGeometry::TVec3<f32>*)fn_8023E724(S32(p, 0xd70));
+                vel.scale(lbl_80540158);
+            } else {
+                vel.scale(lbl_8054015C);
+            }
+        }
+        fn_80230D80(S32(p, 0xd70), &vel);
+        S32(p, 0xd70) = -1;
+        fn_8024F0E8(p, 0x20014);
+    } else {
+        char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+        if (actor) {
+            JGeometry::TVec3<f32> v = lbl_8046B92C[S32(p, 0x3dc)];
+            u32 kind = U32(actor, 0x1a0);
+            if (kind == 'CRTL' || kind == 'BMTY') {
+                v.scale(lbl_80540160);
+            } else if (kind == 'GRAS') {
+                v.scale(lbl_80540164);
+            } else if (S32(actor, 0x1a4) == 0) {
+                v.scale(lbl_80540168);
+            } else {
+                v.scale(lbl_80540164);
+            }
+            fn_801F3708(actor, &v);
+            fn_8024F0E8(p, 0x20014);
+        }
+        S32(p, 0xd68) = -1;
+    }
+    p[0xd64] = 0;
+    U32(p, 0xd6c) = 'NULL';
+    S32(p, 0xd74) = 3;
+    if (notify == 1 && fn_802486A0(p) != 4 && (U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4)))) {
+        for (s32 i = 0; i < 4; i++) {
+            if (fn_8022E438(S32(p, 4), i) && i != S32(p, 4)) {
+                char* a = fn_801F666C(fn_801F856C(), fn_8023EF50(i));
+                if (a && S32(a, 0x1a4) <= 0)
+                    fn_80230C6C(i);
+            }
+        }
+    }
+}
+#pragma opt_common_subs reset
 
 #pragma opt_common_subs off
 extern "C" bool fn_8025FCC8(char* p) {
