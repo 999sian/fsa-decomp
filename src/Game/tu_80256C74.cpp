@@ -901,9 +901,10 @@ extern "C" void fn_80258890(u8* p) {
         }
         if (U8(p, 0x3fa) == 0xb) {
             U8(p, 0xb9e) = 1;
+            JGeometry::TBox2<f32>* __restrict box = &BOX(p, 0x5cc);
             const f32 extent = lbl_805400E0;
             f32 right = extent + pos.x;
-            BOX(p, 0x5cc).set(pos.x - extent, pos.y - extent, right, extent + pos.y);
+            box->set(pos.x - extent, pos.y - extent, right, extent + pos.y);
         }
         if (U8(p, 0x3fa) == 0xc) {
             S32(p, 0xba0) = fn_802A1844(lbl_8053AC98, &pos, S32(p, 0x4), S32(p, 0x3b4));
@@ -1611,6 +1612,7 @@ extern "C" void fn_8025AEC4(u8* p) {
 }
 
 extern "C" void fn_8025AED0(u8* p) {
+    f32 speed;
     U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
     s32 phase = (U8(p, 0x3fc) >> 1) & 3;
     if (phase == 0) {
@@ -1628,13 +1630,14 @@ extern "C" void fn_8025AED0(u8* p) {
             u8* obj=fn_801F666C(fn_801F856C(),S32(p,0x11f8));
             if (obj && S32(obj,4)==S32(p,0x3b4)) {
                 JGeometry::TVec3<f32> v(V3(obj,0xc)-V3(p,8));
-                v.z=lbl_805400C4;
+                v.z=0.0f;
                 v.normalize();
                 if (!v.isZero()) {
-                    v.scale(lbl_80540114);
+                    speed = lbl_80540114;
+                    v.scale(speed);
                     V3(p,8).add(v);
-                    F32(p,0x10)=lbl_805400C4;
                 }
+                F32(p,0x10)=0.0f;
                 return;
             }
         }
