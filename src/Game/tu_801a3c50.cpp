@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "std/math.h"
+#include "JSystem/JMath/JMath.h"
 
 class SayaActor {
 public:
