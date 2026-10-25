@@ -107,6 +107,9 @@ extern "C" u32 fn_804030C4(u32 tag, u32 id);
 
 typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
 
+#include "JSystem/JUtility/TColor.h"
+typedef void (*SetBlackWhiteFn)(u8* self, JUtility::TColor black, JUtility::TColor white);
+
 // Virtual slot 68 of an object returned by SubObj::w13: calls (u32, 0).
 static inline void CallSlot68(u8* obj, u32 s) {
     ((Slot68Fn)(*(void***)obj)[68])(obj, s, 0);
@@ -722,7 +725,7 @@ extern "C" void fn_80425F6C(u8* self) {
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                 video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                f32 y = (f32)(int)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
                 f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
                 JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                 graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
@@ -739,7 +742,7 @@ extern "C" void fn_80425F6C(u8* self) {
                     fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                     video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                    f32 y = (f32)(int)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                    f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
                     f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
                     JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                     graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
