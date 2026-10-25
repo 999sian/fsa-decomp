@@ -1,7 +1,9 @@
 // Game TU 801C0D70-801C1768 (unnamed). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Util.h"
 
 extern s8 lbl_8053AC10[8];
 static u16 lbl_804C7E70[0x30];
