@@ -1586,7 +1586,7 @@ extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
 namespace ATU3 {
 
 /* Tail half: resolve one slot and publish it (retail has this inlined). */
-static inline s32 slotTail(Actor* const a, const u32 code, const u32 z) {
+static s32 slotTail(Actor* a, u32 code, u32 z) {
     u8* p = (u8*)Registry_GetSlotValueOrFallback(
         *reinterpret_cast<void**>(static_cast<u8*>(
             *reinterpret_cast<void**>(static_cast<u8*>(lbl_8053AAF8) + 4)) + 8),
@@ -1685,8 +1685,7 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
             return 0;
         }
     }
-    s32 result = slotTail(a, code, z);
-    return result;
+    return slotTail(a, code, z);
 }
 }  // namespace ATU3
 
