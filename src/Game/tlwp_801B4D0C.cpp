@@ -122,7 +122,7 @@ static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
     v->z = z;
 }
 
-static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, f32 z, f32 t) {
+static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, f32 t, f32 z) {
     tlwpSet(v, r->x0 + t * (r->x1 - r->x0), r->y0 + t * (r->y1 - r->y0), z);
 }
 
@@ -175,7 +175,7 @@ extern "C" void fn_801B6170(char* p) {
         TlwpVec* pos = (TlwpVec*)(p + 0xc);
         v.x = pos->x;
         v.y = pos->y;
-        tlwpLerp(&v, &r, lbl_8053EA88, pos->z);
+        tlwpLerp(&v, &r, pos->z, lbl_8053EA88);
         tlwpSet(&v, pos->x, pos->y, pos->z);
         v.x += lbl_8053EA8C;
         v.y += lbl_8053EA90;
