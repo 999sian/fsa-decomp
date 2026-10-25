@@ -7,10 +7,10 @@ extern void* lbl_8053AB10;
 
 static void fadeChannel(u8* channel, s32 count, s32 target)
 {
-    if ((f32)count >= *(f32*)__float_epsilon) {
-        *channel = (u8)(s32)((lbl_8053C7B8 / (f32)count) * (f32)(target - *channel) + (f32)*channel);
-    } else {
+    if ((f32)count < *(f32*)__float_epsilon) {
         *channel = (u8)target;
+    } else {
+        *channel = (u8)(s32)((lbl_8053C7B8 / (f32)count) * (f32)(target - *channel) + (f32)*channel);
     }
 }
 
@@ -30,6 +30,40 @@ extern void* lbl_8049DB30[];
 extern void* lbl_8049CC34[];
 
 extern f32 lbl_8053C7D0;
+extern "C" void fn_8011A4BC(void* self)
+{
+    u8* p = (u8*)self;
+    s32 state = *(s32*)(p + 0x234);
+    if (state == 2) {
+        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
+        if (*(s32*)(p + 0x240) < 1) {
+            *(s32*)(p + 0x240) = 0;
+        }
+        fadeChannel(p + 0x244, *(s32*)(p + 0x240), 0x9f);
+        fadeChannel(p + 0x245, *(s32*)(p + 0x240), 0xaf);
+        fadeChannel(p + 0x246, *(s32*)(p + 0x240), 0xff);
+        fadeChannel(p + 0x247, *(s32*)(p + 0x240), 0);
+        fadeChannel(p + 0x248, *(s32*)(p + 0x240), 0xff);
+    } else if (state == 1) {
+        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
+        if (*(s32*)(p + 0x240) < 1) {
+            *(s32*)(p + 0x240) = 0;
+        }
+        fadeChannel(p + 0x244, *(s32*)(p + 0x240), 0xff);
+        fadeChannel(p + 0x245, *(s32*)(p + 0x240), 0xff);
+        fadeChannel(p + 0x246, *(s32*)(p + 0x240), 0xff);
+        fadeChannel(p + 0x247, *(s32*)(p + 0x240), 0);
+        fadeChannel(p + 0x248, *(s32*)(p + 0x240), 0xff);
+    }
+    u8* obj = *(u8**)((u8*)lbl_8053AB10 + 0x2c);
+    obj[4] = p[0x244];
+    obj[5] = p[0x245];
+    obj[6] = p[0x246];
+    obj[7] = p[0x247];
+    obj = *(u8**)((u8*)lbl_8053AB10 + 0x2c);
+    obj[0xc] = p[0x248];
+}
+
 extern "C" u32 fn_8011AAB0(void* param_1) {
     u32 val = *(u32*)((u8*)param_1 + 0x234);
     return ((3U - val) | (val - 3U)) >> 31;
