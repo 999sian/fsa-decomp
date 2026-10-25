@@ -1,4 +1,10 @@
 #include "types.h"
+#include "JSystem/JGeometry/Box.h"
+
+class J2DOrthoGraph {
+public:
+    void setOrtho(const JGeometry::TBox2<f32>&, f32, f32);
+};
 
 class J2DGrafContext;
 class J2DScreen {
