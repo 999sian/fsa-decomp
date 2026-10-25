@@ -54,9 +54,9 @@ extern "C" s32 fn_801E667C(s32* this_)
 
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AF80;
-extern "C" f32 lbl_8053F5B0;
-extern "C" f32 lbl_8053F5B4;
-extern "C" f32 lbl_8053F5B8;
+extern "C" const f32 lbl_8053F5B0;
+extern "C" const f32 lbl_8053F5B4;
+extern "C" const f32 lbl_8053F5B8;
 extern "C" s32 fn_80138A30(void* mgr);
 extern "C" void fn_80136798(void* mgr, s32 a, s32 b);
 extern "C" u8 fn_8023F264(s32 idx);
@@ -71,6 +71,7 @@ extern "C" void fn_80458F04(void* mgr, s32 v);
 extern "C" void fn_801D22DC(void* this_, s32 a, s32 b, s32 c);
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_802D9FF4(void* mgr, s32 a, s32 b);
+#pragma opt_propagation off
 extern "C" void fn_801E67C4(s32* this_, s32 flag)
 {
     s32 j;
@@ -85,16 +86,16 @@ extern "C" void fn_801E67C4(s32* this_, s32 flag)
         count = fn_80138A30(lbl_8053AAF8);
         for (i = 0; i < count; i++) {
             if (fn_8023F264(i) != 0 && fn_8022F514(i) == 0) {
-                *(u8*)((u8*)this_ + (i + 0xc)) = 1;
+                *(u8*)((u32)this_ + (i + 0xc)) = 1;
             }
             for (j = i + 1; j < 4; j++) {
                 if (fn_8023F264(j) != 0 && fn_8022F514(j) != 0 && fn_8022F3DC(j) == i && fn_802349EC(j) == 0) {
-                    *(u8*)((u8*)this_ + (j + 0xc)) = 1;
+                    *(u8*)((u32)this_ + (j + 0xc)) = 1;
                 }
             }
         }
         for (i = 0; i < 4; i++) {
-            if (*(u8*)((u8*)this_ + (i + 0xc)) != 0) {
+            if (*(u8*)((u32)this_ + (i + 0xc)) != 0) {
                 fn_80230498(i, (s32)fn_8023E724(i), 0x3e, 0xff, -0x80, -0x80, 1);
             }
         }
@@ -104,14 +105,14 @@ extern "C" void fn_801E67C4(s32* this_, s32 flag)
     case 2:
         fn_801D22DC(this_ + 4, 0, 0, 0);
         for (i = 0; i < 4; i++) {
-            if (*(u8*)((u8*)this_ + (i + 0xc)) != 0) {
+            if (*(u8*)((u32)this_ + (i + 0xc)) != 0) {
                 fn_80230FD0(i, 0x10001);
             }
         }
         break;
     case 3:
         for (i = 0; i < 4; i++) {
-            if (*(u8*)((u8*)this_ + (i + 0xc)) != 0) {
+            if (*(u8*)((u32)this_ + (i + 0xc)) != 0) {
                 f32* p = (f32*)fn_8023E724(i);
                 f32 pos[3];
                 pos[0] = p[0] + lbl_8053F5B0;
@@ -134,7 +135,7 @@ extern "C" void fn_801E67C4(s32* this_, s32 flag)
     this_[1] = 0;
     this_[0] = flag;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801E6A84(s32* this_, s32 val) {
     if (this_[0] == 0) {
         this_[2] = val;
