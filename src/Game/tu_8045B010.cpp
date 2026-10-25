@@ -98,7 +98,7 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
 #include "JSystem/JAudio/Interface/JAISeMgr.h"
-static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, const f32 width, const f32 half) {
+static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, const f32 half, const f32 width) {
     f32 epsilon = 1.0f - ((f32*)&__float_epsilon)[0];
     f32 value = random->get_ufloat_1();
     value *= width;
