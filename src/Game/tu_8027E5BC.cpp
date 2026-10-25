@@ -108,7 +108,7 @@ extern const JGeometry::TVec3<f32> lbl_8046BED8[];
 bool fn_80245238(char*);
 bool fn_80244FFC(char*);
 f32 fn_80246F28(char*);
-static inline void decayPlayerSpeedBound(const f32 minimum, f32& value) {
+static inline void decayPlayerSpeedBound(f32 minimum, f32& value) {
     value -= lbl_8054038C;
     if (value < minimum) value = minimum;
 }
