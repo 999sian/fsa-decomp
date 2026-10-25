@@ -10,7 +10,7 @@ extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
 extern "C" unsigned char fn_8025F448(char* p);
-extern "C" int fn_8023DE58(void);
+extern "C" int fn_8023DE58(int idx = 0);
 extern "C" u16 fn_8022461C(void*, s32);
 extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 type, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
@@ -25,16 +25,22 @@ static f32 fnDist(char* p, Vec* dst) {
     return PSVECMag(dst);
 }
 
+extern "C" u8 fn_8023FC5C(u8* p);
+extern "C" void* GetPtrField_0x4(void* p);
 extern "C" void fn_80264998(char* p)
 {
+    u8 r28;
+    u8* r29;
     if (p[0xcac] == 0) {
         return;
     }
     if (p[0xcee] == 1) {
         return;
     }
-    if (p[0x1215] != 0) {
-        return;
+    r28 = fn_8023FC5C((u8*)p);
+    r29 = (u8*)GetPtrField_0x4(p);
+    if (*(u16*)(p + 0x3c4) >= 0x3d5) {
+        *(u16*)(p + 0x3c4) = 0x3d4;
     }
 }
 
@@ -147,22 +153,55 @@ extern "C" void fn_80265DB0(char* p)
         return;
     }
     if (fn_8025F448(p) != 0) {
-        if (*(s32*)(p + 0xd70) >= 0 && fn_8023DE58() == 8) {
-            goto skip;
-        }
-        if (*(unsigned char*)(p + 0xca1) >= 8) {
-            *(unsigned char*)(p + 0xca1) -= 8;
+        s32* n = (s32*)(p + 0xd70);
+        if (*n < 0 || fn_8023DE58() != 8) {
+            if (*(unsigned char*)(p + 0xca1) >= 8) {
+                *(unsigned char*)(p + 0xca1) -= 8;
+                return;
+            }
+            *(unsigned char*)(p + 0xca1) = 0;
             return;
         }
-        *(unsigned char*)(p + 0xca1) = 0;
-        return;
     }
-skip:
     if (*(unsigned char*)(p + 0xca1) <= 0xf7) {
         *(unsigned char*)(p + 0xca1) += 8;
         return;
     }
     *(unsigned char*)(p + 0xca1) = 0xff;
+}
+
+extern "C" u8 Player_GetField_0x454(char* p);
+extern "C" u8 fn_80241230(char* p);
+extern "C" void fn_80268194(char* p);
+extern "C" void fn_80265E88(char* p)
+{
+    *(unsigned short*)(p + 0x3c6) = *(unsigned short*)(p + 0x3c4);
+    if (p[0xcfe] == 0) {
+        if (p[0x456] == 1) {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned short*)(p + 0x450);
+            p[0xca0] = p[0xca2];
+            p[0x456] = 0;
+            return;
+        }
+        if (Player_GetField_0x454(p) == 0) {
+            if (fn_80241230(p) == 0 && *(int*)(p + 0x488) == 0 && (*(u32*)(p + 0x464) & 2) == 2) {
+                *(unsigned short*)(p + 0x3c4) = 0x121;
+                return;
+            }
+        } else {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned short*)(p + 0x450);
+            p[0xca0] = p[0xca2];
+            return;
+        }
+    } else {
+        if (*(float*)(p + 0x10) <= lbl_805401F0) {
+            *(unsigned short*)(p + 0x3c4) = 0xc3;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0xc2;
+        }
+        return;
+    }
+    fn_80268194(p);
 }
 
 extern "C" void fn_80267018(char* p)
