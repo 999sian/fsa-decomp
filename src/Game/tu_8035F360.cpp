@@ -17,7 +17,25 @@ static const UnkRGB ro_1a98[8] = {{1, 1, 1}};
 static u32 data_0[22] = {1};
 static u32 data_58[22] = {1};
 static u32 data_b0[22] = {1};
+struct FsaActorList {
+    u8 pad0[8];
+    u8* actors[0x400];
+    s32 count;
+    s32 getCount() const { return count; }
+    u8* getActor(s32 idx) const { return actors[idx]; }
+};
 extern "C" u8* fn_801F856C(void);
+static inline FsaActorList* getActorList() { return (FsaActorList*)fn_801F856C(); }
+static inline void findEndmActor(u8* param_1) {
+    s32 count = getActorList()->count;
+    for (s32 i = 0; i < count; i++) {
+        u8* act = getActorList()->actors[i];
+        if (act != NULL && *(u32*)(act + 0x1a0) == 0x454e444d && *(u8*)(act + 0x11c) == 1) {
+            *(u8**)(param_1 + 0x29c) = act;
+            break;
+        }
+    }
+}
 extern "C" s32 Actor_CreateByID(void* mgr, u32 fourcc, s32 room, void* pos, u32 param, s32 a, s32 b);
 extern "C" u8* fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 fn_80230498(s32 index, const JGeometry::TVec3<f32>& pos, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
@@ -435,18 +453,18 @@ extern "C" void fn_80361ECC(u8* param_1) {
     *(void**)(param_1 + 0x29c) = NULL;
 
     if ((*(u32*)(param_1 + 0x90) & 0x100) == 0) {
-        if ((lbl_80472848 + 0x1a48)[*(s32*)(param_1 + 0x250)] == 1) {
+        if (ro_1a48[*(s32*)(param_1 + 0x250)] == 1) {
             *(u8*)(param_1 + 0x2b0) = 0;
             Actor_CreateByID(fn_801F856C(), 0x454f574c, *(s32*)(param_1 + 4), param_1 + 0xc, *(u32*)(param_1 + 0x90) | 0x100, -1, -1);
-            *(u32*)(param_1 + 0x298) = ((u32*)(lbl_804AD900 + 0xb0))[*(s32*)(param_1 + 0x250)];
-            *(u32*)(param_1 + 0x284) = ((u32*)(lbl_804AD900 + 0x58))[*(s32*)(param_1 + 0x250)];
+            *(u32*)(param_1 + 0x298) = data_b0[*(s32*)(param_1 + 0x250)];
+            *(u32*)(param_1 + 0x284) = data_58[*(s32*)(param_1 + 0x250)];
         } else {
-            *(u32*)(param_1 + 0x298) = ((u32*)(lbl_804AD900 + 0xb0))[*(s32*)(param_1 + 0x250)];
-            *(u32*)(param_1 + 0x284) = ((u32*)(lbl_804AD900 + 0x58))[*(s32*)(param_1 + 0x250)];
+            *(u32*)(param_1 + 0x298) = data_b0[*(s32*)(param_1 + 0x250)];
+            *(u32*)(param_1 + 0x284) = data_58[*(s32*)(param_1 + 0x250)];
         }
     } else {
-        *(void**)(param_1 + 0x298) = lbl_80472848 + 0x1790;
-        *(u32*)(param_1 + 0x284) = ((u32*)(lbl_804AD900 + 0))[*(s32*)(param_1 + 0x250)];
+        *(const void**)(param_1 + 0x298) = ro_1790;
+        *(u32*)(param_1 + 0x284) = data_0[*(s32*)(param_1 + 0x250)];
     }
 
     *(s8*)(param_1 + 0x24c) = 1;
@@ -454,21 +472,25 @@ extern "C" void fn_80361ECC(u8* param_1) {
     if (*(s32*)(param_1 + 0x270) == 0) {
         fn_80360914(param_1);
     } else {
-        *(u32*)(param_1 + 0x238) = ((u32*)(lbl_80472848 + 0x17c0))[*(s32*)(param_1 + 0x270) - 1];
+        *(u32*)(param_1 + 0x238) = ro_17c0[*(s32*)(param_1 + 0x270) - 1];
         fn_80360914(param_1);
         if ((*(u32*)(param_1 + 0x90) & 0x100) != 0) {
             *(u8**)(param_1 + 0x2b4) = fn_8013CC50(*(s32*)(param_1 + 4), param_1 + 0xc, 1.0f, 0x32c, *(s8*)(param_1 + 0x24c), *(s8*)(param_1 + 0x24d), 0, 0, 1);
             *(u8**)(param_1 + 0x2b8) = fn_8013CC50(*(s32*)(param_1 + 4), param_1 + 0xc, 1.0f, 0x171, *(s8*)(param_1 + 0x24c), *(s8*)(param_1 + 0x24d), 0, 0, 1);
-            if (*(u8**)(param_1 + 0x2b4) != NULL) {
-                u8* p = lbl_80472848 + 0x1a98 + *(s32*)(param_1 + 0x270) * 3;
-                (*(u8**)(param_1 + 0x2b4))[0xbc] = p[-3];
-                (*(u8**)(param_1 + 0x2b4))[0xbd] = p[-2];
-                (*(u8**)(param_1 + 0x2b4))[0xbe] = p[-1];
+            u8* b4 = *(u8**)(param_1 + 0x2b4);
+            if (b4 != NULL) {
+                s32 idx = *(s32*)(param_1 + 0x270);
+                b4[0xbc] = ro_1a98[idx - 1].r;
+                b4[0xbd] = ro_1a98[idx - 1].g;
+                b4[0xbe] = ro_1a98[idx - 1].b;
             }
         }
     }
 
     if ((*(u32*)(param_1 + 0x90) & 0x100) == 0) {
+        s32 count;
+        s32 i;
+        u8* act;
         if (*(s32*)(param_1 + 0x250) == 0x12) {
             Actor_CreateByID(fn_801F856C(), 0x454c4b32, *(s32*)(param_1 + 4), param_1 + 0xc, 0, -1, -1);
             static JGeometry::TVec3<f32> tbl[4] = {
@@ -477,16 +499,17 @@ extern "C" void fn_80361ECC(u8* param_1) {
                 JGeometry::TVec3<f32>(-26.0f, -156.0f, 0.0f),
                 JGeometry::TVec3<f32>(26.0f, -156.0f, 0.0f),
             };
-            for (s32 i = 0; i < 4; i++) {
-                Actor_CreateByID(fn_801F856C(), 0x45455443, *(s32*)(param_1 + 4), &(*(JGeometry::TVec3<f32>*)(param_1 + 0xc) + tbl[i]), ((i + 0x26) << 5) | 4, -1, -1);
+            for (i = 0; i < 4; i++) {
+                Actor_CreateByID(fn_801F856C(), 0x45455443, *(s32*)(param_1 + 4), &(*(JGeometry::TVec3<f32>*)(param_1 + 0xc) + tbl[i]), ((i + 0x26) << 5) | 4 | 0x80000000, -1, -1);
             }
         } else if (*(s32*)(param_1 + 0x250) == 0x13) {
             Actor_CreateByID(fn_801F856C(), 0x45455443, *(s32*)(param_1 + 4), param_1 + 0xc, 0x10, -1, -1);
             *(s32*)(param_1 + 0x230) = 1;
-            fn_80230498(0, JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f), *(s32*)(param_1 + 0x238) + *(s32*)(param_1 + 0x23c), 0xff, 0x80, 0x80, 1);
+            fn_80230498(0, JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f), *(s32*)(param_1 + 0x238) + *(s32*)(param_1 + 0x23c), 0xff, -0x80, -0x80, 1);
         }
-        for (s32 i = 0; i < *(s32*)(fn_801F856C() + 0x1008); i++) {
-            u8* act = *(u8**)(fn_801F856C() + i * 4 + 8);
+        count = *(s32*)(fn_801F856C() + 0x1008);
+        for (i = 0; i < count; i++) {
+            act = *(u8**)(fn_801F856C() + i * 4 + 8);
             if (act != NULL && *(u32*)(act + 0x1a0) == 0x454e444d && *(u8*)(act + 0x11c) == 1) {
                 *(u8**)(param_1 + 0x29c) = act;
                 break;
