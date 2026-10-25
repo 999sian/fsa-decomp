@@ -720,7 +720,15 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
         (*(TuVtable7**)(lbl_80529DEC + 0x20))->v1();
         fn_803007A0();
         sound = *(void**)(p + 0xa0);
-        delete (TuSceneSound*)sound;
+        if (sound != 0) {
+            if ((u32)sound + 0x84 != 0) {
+                releaseSound__14JAISoundHandleFv((u8*)sound + 0x84);
+            }
+            if ((u32)sound + 0x80 != 0) {
+                releaseSound__14JAISoundHandleFv((u8*)sound + 0x80);
+            }
+            __dl__FPv(sound);
+        }
         destroy__7JKRHeapFv(*(void**)(p + 0x9c));
         delete *(TuOwnedObject**)(p + 0xb8);
         *(void**)(p + 0xb8) = 0;
