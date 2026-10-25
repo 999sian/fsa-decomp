@@ -92,9 +92,6 @@ static inline f32 mcW(MCAlpha* a) {
     MCBounds* b = (MCBounds*)a->vis;
     return b->x1 - b->x0;
 }
-static inline const JGeometry::TBox2<f32>& mcBox(MCAlpha* a) {
-    return *(JGeometry::TBox2<f32>*)((u8*)a->vis + 0x20);
-}
 static inline f32 mcH(MCAlpha* a) {
     MCBounds* b = (MCBounds*)a->vis;
     return b->y1 - b->y0;
@@ -534,7 +531,7 @@ void fn_803D49A4(MemCardMenu* self) {
     f32 w0 = mcW(self->f2c[0]);
     f32 b0 = self->f2c[0]->f18;
     fn_80402E08(self->f2c[0], -(0.5f * (w0 - b0)), -(0.5f * (mcH(self->f2c[0]) - self->f2c[0]->f1c)));
-    fn_80402E08(self->f2c[1], 0.5f * -(self->f2c[1]->f18 - mcW(self->f2c[1])), -(0.5f * (mcH(self->f2c[1]) - self->f2c[1]->f1c)));
+    fn_80402E08(self->f2c[1], 0.5f * (mcW(self->f2c[1]) - self->f2c[1]->f18), 0.5f * (self->f2c[1]->f1c - mcH(self->f2c[1])) * 1.0f - 0.0f);
     fn_80402E08(self->f2c[2], -(0.5f * (mcW(self->f2c[2]) - self->f2c[2]->f18)), 0.5f * (mcH(self->f2c[2]) - self->f2c[2]->f1c));
     fn_80402E08(self->f2c[3], 0.5f * (mcW(self->f2c[3]) - self->f2c[3]->f18), 0.5f * (mcH(self->f2c[3]) - self->f2c[3]->f1c));
     if (w0 / b0 < 1.0f) {
