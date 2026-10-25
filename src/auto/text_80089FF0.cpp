@@ -320,13 +320,6 @@ static inline bool searchPartialModule(const u32 addr, u32* const id, u32* const
     return false;
 }
 
-static inline const char* exceptionPrefix(bool newline)
-{
-    const char* prefix = &lbl_8053B868;
-    if (!newline) prefix = &lbl_8053B87C;
-    return prefix;
-}
-
 static inline void searchNamePart(u8* src, u8* dst, int length)
 {
     for (u8* p = src; *p; p++) {
@@ -449,19 +442,20 @@ extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2)
     u32 x10;
     char buf[0x24];
     char work[0x100];
-    const char* prefix = exceptionPrefix(param_2);
+    const char* prefix = (const char*)&lbl_8053B868;
+    if (!param_2) prefix = (const char*)&lbl_8053B87C;
     bool found = searchPartialModule(param_1, &id, &index, &offset, &name);
     if (found == true) {
         searchNamePart((u8*)name, (u8*)buf, 32);
         lbl_8053A914->print_f(lbl_8045EC1C, prefix, buf, offset, index);
     }
-    param_2 = false;
+    u32 newline = 0;
     if (lbl_8052E894.getFirstLink() != nullptr) {
         u32 ret;
         if (found == true) {
-            ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
+            ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, (u8)newline);
         } else {
-            ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
+            ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, (u8)newline);
         }
         if ((u8)ret == true) {
             return 1;
