@@ -109,7 +109,6 @@ extern "C" void fn_803F267C(u8* p) {
     void* s1;
     void* s2;
     void* s3;
-    const ResTIMG* image;
     J2DPane* piVar4;
 
     base = lbl_80478A60;
@@ -129,9 +128,8 @@ extern "C" void fn_803F267C(u8* p) {
     fn_803832BC(s1, 0xac, 0, 0, 0);
     fn_803832BC(s3, 0xf7, 0, 0, 0);
 
-    for (s32 i = 0; i < 1; ++i) {
     if (*(s32*)(p + 0x1ac) == 0) {
-        image = (const ResTIMG*)fn_804031C4(0x54494d47, base + 0xf30);
+        const ResTIMG* image = (const ResTIMG*)fn_804031C4(0x54494d47, base + 0xf30);
         {
             void* o = *(void**)(p + 0xc);
             piVar4 = (*(J2DPane**)(p + 0xc))->search(0x506e6f703032ULL);
@@ -143,7 +141,7 @@ extern "C" void fn_803F267C(u8* p) {
         }
         ((J2DPicture*)piVar4)->changeTexture(image, 0);
     } else if (*(s32*)(p + 0x1ac) == 1) {
-        image = (const ResTIMG*)fn_804031C4(0x54494d47, base + 0xf44);
+        const ResTIMG* image = (const ResTIMG*)fn_804031C4(0x54494d47, base + 0xf44);
         {
             void* o = *(void**)(p + 0xc);
             piVar4 = (*(J2DPane**)(p + 0xc))->search(0x506e6f703032ULL);
@@ -155,7 +153,7 @@ extern "C" void fn_803F267C(u8* p) {
         }
         ((J2DPicture*)piVar4)->changeTexture(image, 0);
     } else {
-        image = (const ResTIMG*)fn_804031C4(0x54494d47, base + 0xf58);
+        const ResTIMG* image = (const ResTIMG*)fn_804031C4(0x54494d47, base + 0xf58);
         {
             void* o = *(void**)(p + 0xc);
             piVar4 = (*(J2DPane**)(p + 0xc))->search(0x506e6f703032ULL);
@@ -168,7 +166,6 @@ extern "C" void fn_803F267C(u8* p) {
         ((J2DPicture*)piVar4)->changeTexture(image, 0);
     }
 
-    }
     *(f32*)(p + 0x164) = lbl_80543754;
     *(f32*)(p + 0x168) = lbl_80543754;
     *(f32*)(p + 0x184) = lbl_8054375C;
