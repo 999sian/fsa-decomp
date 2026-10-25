@@ -2343,6 +2343,53 @@ void fn_80284DE4(char* p) {
     S32(p, 0x1170) = 60;
 }
 
+extern "C" u8 fn_802265DC(f32*, int, int);
+extern "C" bool fn_80250090(char*);
+extern "C" u8 lbl_8046C098[];
+extern "C" const JGeometry::TVec3<f32> lbl_8046BDD8[];
+extern "C" bool fn_80244630(char*);
+void fn_80284E04(char* p) {
+    JGeometry::TVec3<f32> tmp;
+    JGeometry::TVec3<f32> d;
+    JGeometry::TVec3<f32> a;
+    const JGeometry::TVec3<f32>* src = &lbl_8046BDD8[S32(p,0x3dc)];
+    tmp.x = src->x;
+    tmp.y = src->y;
+    tmp.z = src->z;
+    tmp.add(VEC(p,8));
+    u32 kind = fn_8022461C((char*)&tmp,S32(p,0x3b4));
+    if (!fn_802265DC((f32*)&tmp,S32(p,0x3b4),1) || (u16)kind == 0xe || (u16)kind == 0x39 || (u16)kind == 0xd) {
+        if (!(u8)fn_802684A4(p,(f32*)&tmp,S32(p,0x3b4)) && !fn_80250090(p)) {
+            fn_80251AEC(p,0);
+            goto tail;
+        }
+    }
+    {
+        s32 id = fn_8024FF84(p);
+        char* actor = (char*)fn_801F666C(fn_801F856C(),id);
+        if (actor) {
+            a = VEC(actor,0xc);
+            a.sub(VEC(actor,0x18));
+            d = a;
+            if (PSVECMag(&d) >= lbl_805403B8) {
+                VEC(p,8).add(VEC(actor,0x3c));
+                U8(p,0x3f8)++;
+                if (U8(p,0x3f8) >= 0x80) U8(p,0x3f8)=0;
+                if (U8(p,0x3f8) >= 0x40)
+                    U8(p,0x3f9) = (lbl_8046C098 + S32(p,0x3dc)*8)[(U8(p,0x3f8)-0x40)/8];
+                else
+                    U8(p,0x3f9) = (lbl_8046C098 + S32(p,0x3dc)*8)[U8(p,0x3f8)/8];
+                if (U8(p,0x3f8)==0x10) fn_8024F0E8(p,0x10012);
+                goto tail;
+            }
+        }
+    }
+    if (fn_802456FC(p) && !fn_80244630(p)) fn_80251AEC(p,0x1a);
+    else fn_80251AEC(p,0xd);
+tail:
+    fn_80268B3C(p);
+}
+
 void fn_80285068(char* p) { U8(p, 0x458) = 0; }
 
 void fn_80285074(char* p) {
