@@ -994,7 +994,7 @@ extern "C" void fn_803B8C74(u8 v);
 extern void* lbl_8053AF80;
 extern u8 lbl_80529DEC[];
 
-struct TwtgOrd { u8 pad[0x244]; s32 order[4]; };
+struct TwtgOrd { u8 pad[0x244]; union { s32 order[4]; s32 first; }; };
 extern "C" void fn_80315864(char* p) {
     TwtgBox b;
     b.min.x = *(f32*)(p + 0x258);
@@ -1010,9 +1010,9 @@ extern "C" void fn_80315864(char* p) {
         switch (*(s32*)(p + 0x238)) {
         case 0:
             if (twtgAsk(p, 0x486)) {
-                TwtgOrd* o;
                 s32 j;
                 s32 k;
+                TwtgOrd* o;
                 for (k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
                     o = (TwtgOrd*)p;
                     for (j = 0; j < k; j++) {
@@ -1031,11 +1031,11 @@ extern "C" void fn_80315864(char* p) {
         case 2:
         case 3:
         case 4: {
-            s32 i;
-            s32 v;
             s32 rank;
+            s32 v;
+            s32 i;
             s32 id;
-            id = *(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244);
+            id = ((TwtgOrd*)(p + (4 - *(s32*)(p + 0x238)) * 4))->order[0];
             v = fn_80236228(id);
             rank = 0;
             for (i = rank; i < 4; i++) {
@@ -1044,10 +1044,10 @@ extern "C" void fn_80315864(char* p) {
                 }
             }
             fn_803894BC(*(s32*)(p + 0x254), rank + 1);
-            fn_8038938C(*(s32*)(p + 0x254), fn_80236228(*(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244)));
+            fn_8038938C(*(s32*)(p + 0x254), fn_80236228(((TwtgOrd*)(p + (4 - *(s32*)(p + 0x238)) * 4))->order[0]));
             if (rank != 0) {
-                twtgAsk(p, *(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244) + 0x48b);
-            } else if (twtgAsk(p, *(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244) + 0x48f)) {
+                twtgAsk(p, ((TwtgOrd*)(p + (4 - *(s32*)(p + 0x238)) * 4))->order[0] + 0x48b);
+            } else if (twtgAsk(p, ((TwtgOrd*)(p + (4 - *(s32*)(p + 0x238)) * 4))->order[0] + 0x48f)) {
                 fn_80458F04(lbl_8053AF80, 0x1000027);
             }
             break;
@@ -1154,8 +1154,7 @@ extern "C" void fn_803167F4(char* p) {
     }
     s32 k = *(s32*)(p + 0x23c);
     u8* tbl = (u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8;
-    u32 flag = (u8)(1 << k) & tbl[0x7a];
-    bool has = flag != 0;
+    bool has = (u8)(1 << k) & tbl[0x7a];
     if (has) {
         *(s32*)(p + 0x268) = lbl_804714D8[k];
     } else {
