@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" char lbl_80529DEC[];
 
 struct DtorSlot2 {
 	virtual void destroy(s32 freeFlag);
