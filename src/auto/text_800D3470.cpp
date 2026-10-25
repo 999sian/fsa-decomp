@@ -4513,9 +4513,13 @@ extern "C" u8 fn_800DF36C(void* param_1) {
 return *(u8*)((u32)param_1 + 0xc);
 }
 
+#endif
+#if defined(VERSION_G4SJ01) || defined(VERSION_G4SE01)
 extern "C" void fn_800DF358(void* param_1, u8* param_2) {
     *(u8*)((u32)param_1 + 0xc) = *param_2;
 }
+#endif
+#if defined(VERSION_G4SJ01)
 
 extern "C" void fn_800DDA78(u8* this_, u8* src) {
     u16 w = *(u16*)src;
