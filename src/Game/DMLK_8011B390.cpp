@@ -43,10 +43,11 @@ static inline void dmlkStoreBounds(u8* p, const f32 x0, const f32 x1, const f32 
     ((JGeometry::TBox2f*)(p + 0x250))->set(x0, y0, x1, y1);
 }
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
+    const f32 width = lbl_8053C7F0;
+    const f32 height = lbl_8053C7E8;
     const f32 x = pos[0];
     const f32 y = pos[1];
-    ((JGeometry::TBox2f*)(p + 0x250))->set(x - lbl_8053C7F0, y - lbl_8053C7E8,
-                                        lbl_8053C7F0 + x, lbl_8053C7E8 + y);
+    ((JGeometry::TBox2f*)(p + 0x250))->set(x - width, y - height, width + x, height + y);
 }
 
 struct DMLKResMgr {
