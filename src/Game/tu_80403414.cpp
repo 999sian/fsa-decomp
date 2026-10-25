@@ -72,7 +72,7 @@ struct T34Mgr {
 };
 
 // The TU's global manager; constructed and registered by this TU's __sinit.
-T34Mgr lbl_80529DEC;
+static T34Mgr lbl_80529DEC;
 
 // ---- per-player setting accessors (two banks, picked by lbl_8053AAF8->0x7f) ----
 extern char* lbl_8053AAF8;
