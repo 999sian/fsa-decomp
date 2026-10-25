@@ -260,16 +260,14 @@ extern "C" u32 fn_8017EB1C(f32 value) {
 
 extern "C" u8 fn_8017EB44(const f32* pos) {
     void* base = lbl_8053AB10;
-    u32 done = 0;
-    void* p = *(void**)((char*)base + 0x24);
-    if (*(u8*)((char*)p + 0x7f5) == 0) {
-        *(u8*)((char*)p + 0x7f4) = 1;
-        *(u32*)((char*)p + 0x7f8) = 4;
-        *(f32*)((char*)p + 0x7fc) = pos[0];
-        *(f32*)((char*)p + 0x800) = pos[1];
-        *(f32*)((char*)p + 0x804) = pos[2];
-        *(u8*)((char*)p + 0x7f6) = 0;
-        done = *(u8*)((char*)p + 0x7f4);
+    s32 done = 0;
+    PendingPositionRequest* p = *(PendingPositionRequest**)((char*)base + 0x24);
+    if (p->blocked == 0) {
+        p->active = 1;
+        p->state = 4;
+        p->position.set(pos[0], pos[1], pos[2]);
+        p->flag = done;
+        done = 1;
     }
     return done;
 }
