@@ -4,8 +4,8 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
 
-extern f32 lbl_8053BFA0;
-extern f32 lbl_8053BFA4;
+extern const f32 lbl_8053BFA0;
+extern const f32 lbl_8053BFA4;
 extern f32 lbl_8053BFA8;
 extern f32 lbl_8053BFB8;
 extern "C" u8 fn_8023F264(s32 idx);
@@ -13,7 +13,7 @@ extern "C" u32 fn_8022EA0C(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
 extern "C" f32* fn_8023E724(s32 idx);
 extern "C" const f32 sincosTable___5JMath[];
-extern f32 lbl_8053BFF4;
+extern const f32 lbl_8053BFF4;
 extern f32 lbl_8053BFF8;
 extern f32 lbl_8053BFFC;
 extern f32 lbl_8053C00C;
@@ -27,7 +27,7 @@ extern "C" void fn_802D7440(void* p, s32 x);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
 extern f32 lbl_8053C080;
 extern f32 lbl_8053C050;
-extern f32 lbl_8053BFF0;
+extern const f32 lbl_8053BFF0;
 extern f32 lbl_8053BFC0;
 extern f32 lbl_8053BFC4;
 extern "C" s32 fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
@@ -52,7 +52,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern void* lbl_8053AF80;
 extern f32 lbl_8053BFAC;
-extern f32 lbl_8053BFCC;
+extern const f32 lbl_8053BFCC;
 extern f32 lbl_8053C054;
 extern f32 lbl_8053C058;
 extern f32 lbl_8053C05C;
