@@ -24,49 +24,21 @@ static inline u32 calcCardChecksum(u8* data) {
     } while (--i != 0);
     return (sum << 16) | inv;
 }
+#pragma optimization_level 3
 extern "C" void fn_803BACF8(u8* param_1, u8 param_2) {
-    u8* p;
-    u8* base;
-    u32 inv;
-    u32 sum;
-    s32 i;
-
-    base = param_1 + param_2 * 200;
-    p = base;
-    sum = 0;
-    inv = 0;
-
-    for (i = 0x18; i > 0; i--) {
-        u8 b = p[0];
-        sum += b;
-        inv += ~b;
-        b = p[1];
-        sum += b;
-        inv += ~b;
-        b = p[2];
-        sum += b;
-        inv += ~b;
-        b = p[3];
-        sum += b;
-        inv += ~b;
-        b = p[4];
-        sum += b;
-        inv += ~b;
-        b = p[5];
-        sum += b;
-        inv += ~b;
-        b = p[6];
-        sum += b;
-        inv += ~b;
-        b = p[7];
-        sum += b;
-        inv += ~b;
-        p += 8;
-    }
-    *(u32*)(base + 0xc4) = inv;
-    *(u32*)(base + 0xc0) = sum;
+param_1 += param_2 * 200;
+u32 inv = 0;
+u32 sum = 0;
+u8* p = param_1;
+for (s32 i=192; i>0; i--) {
+u8 b = *p++;
+sum += b;
+inv += ~b;
 }
-
+*(u32*)(param_1+0xc4) = inv;
+*(u32*)(param_1+0xc0) = sum;
+}
+#pragma optimization_level 4
 extern "C" u32 fn_803BADAC(u8* param_1) {
     u32 inv = 0;
     u32 sum = 0;
@@ -84,7 +56,7 @@ extern "C" u32 fn_803BADAC(u8* param_1) {
         sum += p[7]; inv += ~p[7];
         p += 8;
     }
-    return ((sum ^ *(u32*)(param_1 + 0xc0)) | (inv ^ *(u32*)(param_1 + 0xc4))) == 0;
+    return ((inv ^ *(u32*)(param_1 + 0xc4)) | (sum ^ *(u32*)(param_1 + 0xc0))) == 0;
 }
 
 static inline void cardSumBlock(u8* p, u32* sumOut, u32* invOut) {
@@ -118,6 +90,44 @@ extern "C" s32 fn_803BAE68(CARDFileInfo* fileInfo) {
     }
     *(u8*)(lbl_80529DEC + 0x244) = buf[3];
     *(u8*)(lbl_80529DEC + 0x246) = buf[4];
+    return 0;
+}
+
+extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 size) {
+    u8* base = lbl_8051E2C0;
+    u8* blkB = base + 0x2000;
+    u32 sumA0, invA0, sumA1, invA1, sumA2, invA2;
+    u32 sumB0, invB0, sumB1, invB1, sumB2, invB2;
+    bool changed = false;
+    s32 result;
+
+    result = CARDRead(fileInfo, base, 0x2000, 0x2000);
+    if (result != 0) {
+        return result;
+    }
+    result = CARDRead(fileInfo, blkB, 0x2000, 0x4000);
+    if (result != 0) {
+        return result;
+    }
+
+    cardSumBlock(base + 0xa, &sumA0, &invA0);
+    cardSumBlock(base + 0xd2, &sumA1, &invA1);
+    cardSumBlock(base + 0x19a, &sumA2, &invA2);
+    cardSumBlock(blkB + 0xa, &sumB0, &invB0);
+    cardSumBlock(blkB + 0xd2, &sumB1, &invB1);
+    cardSumBlock(blkB + 0x19a, &sumB2, &invB2);
+
+    if (((sumA0 ^ *(u32*)(base + 0xca)) | (invA0 ^ *(u32*)(base + 0xce))) == 0) {
+        memcpy(blkB + 0xa, base + 0xa, 200);
+    } else if (((sumB0 ^ *(u32*)(blkB + 0xca)) | (invB0 ^ *(u32*)(blkB + 0xce))) == 0) {
+        memcpy(base + 0xa, blkB + 0xa, 200);
+        changed = true;
+    }
+
+    (void)changed;
+    (void)dst;
+    (void)size;
+    (void)unused;
     return 0;
 }
 
