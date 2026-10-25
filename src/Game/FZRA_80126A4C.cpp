@@ -256,6 +256,14 @@ static inline u8 fzraFollowRail(u8* p) {
 }
 
 extern "C" int __float_epsilon[];
+static inline void fzraApproach2(f32 t, f32* x, f32 goal) {
+    if (t < *(f32*)__float_epsilon) {
+        *x = goal;
+    } else {
+        *x = (lbl_8053CAA4 / t) * (goal - *x) + *x;
+    }
+}
+
 static inline void fzraApproach(f32* x, f32 goal, f32 t) {
     if (t < *(f32*)__float_epsilon) {
         *x = goal;
