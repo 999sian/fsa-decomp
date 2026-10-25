@@ -6,8 +6,6 @@
 
 // J2D pane virtuals used by fn_8040E838: search at slot 0x3c, setAnimation at slot 0x60.
 struct Tu80403Pane {
-	virtual void v0();
-	virtual void v1();
 	virtual void v2();
 	virtual void v3();
 	virtual void v4();
@@ -1136,47 +1134,47 @@ extern "C" void fn_8040E838(u8* self) {
 		*(s32*)(self + 0x37c) = *(s16*)(*(u8**)(self + 0x20) + 6) - 1;
 	}
 	*(f32*)(*(u8**)(self + 0x1c) + 8) = (f32)(u32)*(s32*)(self + 0x378);
-	animationTransform__7J2DPaneFv(((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x4e646174613038ULL));
+	animationTransform__7J2DPaneFv((*(Tu80403Pane**)(self + 0xc))->search(0x4e646174613038ULL));
 	*(f32*)(*(u8**)(self + 0x20) + 8) = (f32)(u32)*(s32*)(self + 0x37c);
 	animation__9J2DScreenFv(*(void**)(self + 0xc));
 	if (*(s32*)(self + 0x378) >= *(s32*)(self + 0x364) * 200) {
 		for (s32 i = 0; i < 18; i++) {
 			fn_80402E70(*(void**)(self + 0xd4 + i * 4));
 		}
-		void* pane = ((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x4e646174613038ULL);
-		((void(*)(void*, void*))(*(void***)pane)[0x60 / 4])(pane, 0);
+		Tu80403Pane* pane = (*(Tu80403Pane**)(self + 0xc))->search(0x4e646174613038ULL);
+		pane->setAnimation(0);
 		*(s32*)(self + 0x378) = *(s32*)(self + 0x364) * 200;
 		*(s32*)(self + 0x37c) = *(s32*)(self + 0x364) * 200;
 		switch (*(s32*)(self + 0x364)) {
 		case 1:
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503231ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503232ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503233ULL) + 0xb0) = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503231ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503232ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503233ULL))[0xb0] = 0;
 			break;
 		case 2:
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503331ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503332ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503333ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503334ULL) + 0xb0) = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503331ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503332ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503333ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503334ULL))[0xb0] = 0;
 			break;
 		case 3:
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503431ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503432ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503433ULL) + 0xb0) = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503431ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503432ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503433ULL))[0xb0] = 0;
 			break;
 		case 4:
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503531ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503532ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503533ULL) + 0xb0) = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503531ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503532ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503533ULL))[0xb0] = 0;
 			break;
 		case 5:
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503631ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503632ULL) + 0xb0) = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503631ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503632ULL))[0xb0] = 0;
 			break;
 		case 6:
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503731ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503732ULL) + 0xb0) = 0;
-			*(u8*)((u8*)((void*(*)(void*, u64))(*(void***)*(void**)(self + 0xc))[0x3c / 4])(*(void**)(self + 0xc), 0x503733ULL) + 0xb0) = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503731ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503732ULL))[0xb0] = 0;
+			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503733ULL))[0xb0] = 0;
 			break;
 		}
 		u8* row = (u8*)&lbl_8050EC80[lbl_8050EC80[0].selfIndex];
