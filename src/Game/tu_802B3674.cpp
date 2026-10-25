@@ -1,5 +1,15 @@
 #include "types.h"
 
+struct SubVT {
+    void* slot[12];
+    void (*fn12)(void*, s32);
+};
+struct SubObj {
+    void* pad0;
+    void* pad4;
+    SubVT* vt;
+};
+
 
 extern "C" void* fn_8013C824(void);
 extern "C" void* fn_802D6A9C(void);
@@ -141,6 +151,21 @@ extern "C" void fn_802B3A48(char* p) {
 extern "C" void fn_802B3AB4(void) {
 }
 
+extern "C" u8 fn_80236B50(s32);
+extern "C" void fn_801F856C(void);
+extern char lbl_8053AAF8[];
+extern char lbl_80529DEC[];
+extern char lbl_8053AB10[];
+extern float lbl_80540A18[];
+extern float lbl_80540A1C[];
+extern "C" void fn_802B3AB8(char* this_) {
+    u32 flag = 0;
+    if (*(u8*)(*(char**)lbl_8053AAF8 + 0x7f) != 0) {
+        if (fn_80236B50(0) && fn_80236B50(1) && fn_80236B50(2) && fn_80236B50(3)) {
+        }
+    }
+}
+
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern char lbl_804A8638[];
 extern "C" void* fn_802B51C0(void* this_, s16 how) {
@@ -161,8 +186,8 @@ extern "C" void* fn_802B51C0(void* this_, s16 how) {
             fn_801EE434(h2);
         }
         void* sub = *(void**)((char*)this_ + 0x230);
-        if (sub) {
-            if (sub) {
+        if (sub != NULL) {
+            if (sub != NULL) {
                 void* vt = *(void**)((char*)sub + 8);
                 ((void (*)(void*, s32))((void**)vt)[12])(sub, 1);
             }
