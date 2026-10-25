@@ -13,6 +13,12 @@ static inline u8 isCarried(char* p) {
     return U8(p, 0xd64) == 1;
 }
 
+static inline u8 isCarriedByPlayer(char* p, u8 flag) {
+    if ((u8)(flag == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4)
+        return 1;
+    return 0;
+}
+
 static inline u8 isCarriedByPlayer(char* p) {
     if (isCarried(p) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4)
         return 1;
