@@ -344,6 +344,9 @@ public:
     virtual void v24();
     virtual void v25();
     virtual void v26(u8);
+    virtual void v27();
+    virtual void v28();
+    virtual void v29(u16);
 };
 
 class J3DMaterial {
