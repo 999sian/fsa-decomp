@@ -13,6 +13,25 @@ struct fn_801D1974_obj {
     f32 m334;
     s32 m338;
     s16 m33c;
+
+    JGeometry::TVec2<f32>& point(s32 i) { return m2ac[i < m2a8 ? i : 0]; }
+    void popPoint() {
+        if (m2a8 >= 1) {
+            s32 n = m2a8 - 1;
+            for (s32 i = 0; i < n; i++) {
+                m2ac[i].x = m2ac[i + 1].x;
+                m2ac[i].y = m2ac[i + 1].y;
+            }
+            m2a8 = n;
+        }
+    }
+    void pushPoint(const JGeometry::TVec2<f32>& p) {
+        if (m2a8 < 16) {
+            m2ac[m2a8].x = p.x;
+            m2ac[m2a8].y = p.y;
+            m2a8++;
+        }
+    }
 };
 
 extern const f32 lbl_8053F018;
