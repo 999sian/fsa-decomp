@@ -30,11 +30,6 @@ struct TWEVVec {
     f32 z;
 };
 
-struct TWEVVec2 {
-    f32 x;
-    f32 y;
-};
-
 typedef f32 TWEVMtx[3][4];
 
 extern "C" double sin(double);
