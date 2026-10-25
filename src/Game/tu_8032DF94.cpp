@@ -123,7 +123,6 @@ extern "C" void fn_8032E3BC(Actor* p) {
     f32 f14 = 0.0f;
     s32 i1c = 0;
     f32 box[4];
-    s32 r29;
     f32 y = *(f32*)((char*)p + 0x10);
     f32 x = *(f32*)((char*)p + 0xc);
     if (*(u16*)((char*)p + 0x94) != 6) {
@@ -133,12 +132,24 @@ extern "C" void fn_8032E3BC(Actor* p) {
     *(f32*)((char*)p + 0xc) += *(f32*)((char*)p + 0x3c);
     *(f32*)((char*)p + 0x10) += *(f32*)((char*)p + 0x40);
     *(f32*)((char*)p + 0x14) += *(f32*)((char*)p + 0x44);
-    box[0] = *(f32*)((char*)p + 0x60) + x;
-    box[1] = *(f32*)((char*)p + 0x64) + y;
-    box[2] = *(f32*)((char*)p + 0x68) + x;
-    box[3] = *(f32*)((char*)p + 0x6c) + y;
-    if (*(s32*)((char*)p + 0x230) == 4) {
-        r29 = fn_8023AF14(box, *(u32*)((char*)p + 0x4), *(f32*)((char*)p + 0x14), 0);
+    box[0] = *(f32*)((char*)p + 0x60);
+    f32 b0 = box[0] + x;
+    box[1] = *(f32*)((char*)p + 0x64);
+    f32 b1 = box[1] + y;
+    box[2] = *(f32*)((char*)p + 0x68);
+    f32 b2 = box[2] + x;
+    box[3] = *(f32*)((char*)p + 0x6c);
+    f32 b3 = box[3] + y;
+    box[0] = b0;
+    box[1] = b1;
+    box[2] = b2;
+    box[3] = b3;
+    switch (*(s32*)((char*)p + 0x230)) {
+    case 0:
+    case 3:
+        break;
+    case 4: {
+        s32 r29 = fn_8023AF14(box, *(u32*)((char*)p + 0x4), *(f32*)((char*)p + 0x14), 0);
         if (*(s32*)((char*)p + 0x230) != 0) {
             fn_801EEC98(p, *(void**)((char*)p + 0x198), &s8, &i18, &f14, &i1c, 0, 0);
             if (*(u16*)((char*)p + 0x94) == 6 && *(f32*)((char*)p + 0x14) == 0.0f) {
@@ -155,6 +166,8 @@ extern "C" void fn_8032E3BC(Actor* p) {
                 }
             }
         }
+        break;
+    }
     }
     switch (*(s32*)((char*)p + 0x230)) {
     case 0:
@@ -166,25 +179,125 @@ extern "C" void fn_8032E3BC(Actor* p) {
             u32 b = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
             *(s32*)((char*)p + 0x250) += (s32)(256.0f * (*(f32*)&b - 1.0f)) + 0x200;
         }
+        {
+            u16 sub = *(u16*)((char*)p + 0x94);
+            if (sub == 1 || sub == 2) {
+                if (*(s32*)((char*)p + 0x244) == 0) {
+                    switch (*(s32*)((char*)p + 0x98)) {
+                    case 0:
+                        *(f32*)((char*)p + 0x26c) = 0.3f;
+                        *(f32*)((char*)p + 0x270) = 0.0f;
+                        *(f32*)((char*)p + 0x274) = 0.0f;
+                        break;
+                    case 1:
+                        *(f32*)((char*)p + 0x26c) = -0.3f;
+                        *(f32*)((char*)p + 0x270) = 0.0f;
+                        *(f32*)((char*)p + 0x274) = 0.0f;
+                        break;
+                    case 2:
+                        *(f32*)((char*)p + 0x26c) = 0.0f;
+                        *(f32*)((char*)p + 0x270) = 0.3f;
+                        *(f32*)((char*)p + 0x274) = 0.0f;
+                        break;
+                    case 3:
+                        *(f32*)((char*)p + 0x26c) = 0.0f;
+                        *(f32*)((char*)p + 0x270) = -0.3f;
+                        *(f32*)((char*)p + 0x274) = 0.0f;
+                        break;
+                    }
+                    *(s32*)((char*)p + 0x244) = 500;
+                    *(s32*)((char*)p + 0x98) ^= 1;
+                }
+            } else if (sub == 3 || sub == 4) {
+                *(s32*)((char*)p + 0x254) += *(s32*)((char*)p + 0x258);
+                *(f32*)((char*)p + 0xc) = *(f32*)((char*)p + 0x234) * sincosTable___5JMath[(u16)*(s32*)((char*)p + 0x254) >> 5].sin + *(f32*)((char*)p + 0x278);
+                *(f32*)((char*)p + 0x10) = *(f32*)((char*)p + 0x234) * sincosTable___5JMath[(u16)*(s32*)((char*)p + 0x254) >> 5].cos + *(f32*)((char*)p + 0x27c);
+            }
+        }
         break;
     case 1:
+        *(f32*)((char*)p + 0x44) = 0.0f;
+        *(f32*)((char*)p + 0x40) = 0.0f;
+        *(f32*)((char*)p + 0x3c) = 0.0f;
+        *(f32*)((char*)p + 0x14) = 0.0f;
         *(s32*)((char*)p + 0x240) = 0;
         *(s32*)((char*)p + 0x244) = 30;
+        *(f32*)((char*)p + 0x44) = 3.0f;
         *(s32*)((char*)p + 0x230) = 2;
+        /* fallthrough */
+    case 2:
+        *(f32*)((char*)p + 0x44) -= 0.5f;
+        if (*(f32*)((char*)p + 0x14) <= 0.0f && *(f32*)((char*)p + 0x44) < 0.0f) {
+            *(f32*)((char*)p + 0x44) = 0.0f;
+            *(f32*)((char*)p + 0x40) = 0.0f;
+            *(f32*)((char*)p + 0x3c) = 0.0f;
+            *(f32*)((char*)p + 0x14) = 0.0f;
+            if (fn_8023F264(*(s32*)((char*)p + 0x260))) {
+                *(f32*)((char*)p + 0xc) = *(f32*)fn_8023E724(*(s32*)((char*)p + 0x260));
+                *(f32*)((char*)p + 0x10) = ((f32*)fn_8023E724(*(s32*)((char*)p + 0x260)))[1] - 24.0f;
+            }
+            if (*(s32*)((char*)p + 0x244) == 0) {
+                p->v10(0xff, 1);
+                p->detach();
+            }
+        }
         break;
+    case 3:
+        if (*(f32*)((char*)p + 0x14) < 100.0f) {
+            *(s32*)((char*)p + 0x244) = 0;
+            *(s32*)((char*)p + 0x230) = 4;
+        }
+        break;
+    case 4:
+        if (*(f32*)((char*)p + 0x14) > 0.0f) {
+            *(f32*)((char*)p + 0x44) -= 0.3f;
+        } else if (*(u16*)((char*)p + 0x94) == 6) {
+            *(u16*)((char*)p + 0x94) = 5;
+            *(f32*)((char*)p + 0x14) = 0.0f;
+            *(f32*)((char*)p + 0x44) = 0.0f;
+            if (*(f32*)&f14 >= 120.0f) {
+                *(f32*)((char*)p + 0x26c) = 0.0f;
+                *(f32*)((char*)p + 0x270) = 0.0f;
+                *(f32*)((char*)p + 0x274) = 0.0f;
+                *(s32*)((char*)p + 0x230) = 3;
+            }
+        }
+        break;
+    }
+    if (*(s32*)((char*)p + 0x248) <= 0 && *(s32*)((char*)p + 0x284) == 0) {
+        *(s32*)((char*)p + 0x284) = fn_8013CC50(*(u32*)((char*)p + 0x4), (char*)p + 0xc, 1.0f, 0x3d0, 0, 1, 0, 0, 1);
+        fn_801F0E34(p, 0x30022, 0);
+    }
+    *(f32*)((char*)p + 0x23c) += 0.1f;
+    *(f32*)((char*)p + 0x238) -= 0.01f;
+    if (*(f32*)((char*)p + 0x238) < 0.1f) {
+        if (*(s32*)((char*)p + 0x230) == 6 && *(s32*)((char*)p + 0x284) != 0) {
+            *(s32*)(*(s32*)((char*)p + 0x284) + 0xf4) |= 1;
+            *(s32*)(*(s32*)((char*)p + 0x284) + 0x24) = 1;
+            p->detach();
+        }
+    }
+    if (*(s32*)((char*)p + 0x240) > 0) {
+        *(s32*)((char*)p + 0x240) -= 1;
+    }
+    if (*(s32*)((char*)p + 0x244) > 0) {
+        *(s32*)((char*)p + 0x244) -= 1;
+    }
+    if (*(s32*)((char*)p + 0x248) > 0) {
+        *(s32*)((char*)p + 0x248) -= 1;
     }
 }
 
 extern "C" u32 fn_8032EB28(char* p, void* a, void* b) {
     int t = (u16)fn_8022461C(b);
     if (t == 12 || t == 3 || t == 14) {
-        *(float*)(p + 0x3c) = *(float*)(p + 0x40) = *(float*)(p + 0x44) = lbl_80541E40;
+        *(float*)(p + 0x3c) = *(float*)(p + 0x40) = *(float*)(p + 0x44) = 0.0f;
         *(s32*)(p + 0x230) = 5;
         return 0;
     }
     if (t == 13) {
         *(s32*)(p + 0x248) = 0;
-        *(float*)(p + 0x3c) = *(float*)(p + 0x40) = *(float*)(p + 0x44) = lbl_80541E40;
+        *(float*)(p + 0x3c) = *(float*)(p + 0x40) = *(float*)(p + 0x44) = 0.0f;
         *(s32*)(p + 0x230) = 6;
         return 0;
     }
