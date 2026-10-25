@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 8018A8D8-8018EB94 (BPH2). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JUtility/TColor.h"
 #include "Game/ItemBase.h"
@@ -141,15 +142,23 @@ extern "C" void fn_8018A930(char* this_) {
         void* res = fn_804032E8(0x42494750, lbl_804674C8);
         a = *(f32*)(this_ + 0x28c);
         {
-            const f32 sx = (f32)sin(lbl_8053E0C8);
-            const f32 sy = (f32)sin(a);
-            const f32 sz = (f32)sin(lbl_8053E0C8);
-            const f32 cx = (f32)cos(lbl_8053E0C8);
-            const f32 cy = (f32)cos(a);
-            const f32 cz = (f32)cos(lbl_8053E0C8);
+            f32 sx = (f32)sin(lbl_8053E0C8);
+            f32 sy = (f32)sin(a);
+            f32 sz = (f32)sin(lbl_8053E0C8);
+            f32 cx = (f32)cos(lbl_8053E0C8);
+            f32 cy = (f32)cos(a);
+            f32 cz = (f32)cos(lbl_8053E0C8);
             rec.b1d = 2;
             rec.b1c = 1;
-            bph2_fillMtx(mtx, lbl_8053E0D0, sx, sy, sz, cx, cy, cz);
+            mtx[0][0] = lbl_8053E0D0 * (cy * cz);
+            mtx[1][0] = lbl_8053E0D0 * (cy * sz);
+            mtx[2][0] = lbl_8053E0D0 * -sy;
+            mtx[0][1] = lbl_8053E0D0 * ((sx * sy) * cz - cx * sz);
+            mtx[1][1] = lbl_8053E0D0 * ((sx * sy) * sz + cx * cz);
+            mtx[2][1] = lbl_8053E0D0 * (sx * cy);
+            mtx[0][2] = lbl_8053E0D0 * ((cx * cz) * sy + sx * sz);
+            mtx[1][2] = lbl_8053E0D0 * ((cx * sz) * sy - sx * cz);
+            mtx[2][2] = lbl_8053E0D0 * (cx * cy);
         }
         ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x288);
         rec.w18 = mtx;
@@ -209,7 +218,15 @@ extern "C" void fn_8018A930(char* this_) {
             cx = (f32)cos(lbl_8053E0C8);
             cy = (f32)cos(lbl_8053E0C8);
             cz = (f32)cos(lbl_8053E0C8);
-            bph2_fillMtx(mtx, s, sx, sy, sz, cx, cy, cz);
+            mtx[0][0] = s * (cy * cz);
+            mtx[1][0] = s * (cy * sz);
+            mtx[2][0] = s * -sy;
+            mtx[0][1] = s * ((sx * sy) * cz - cx * sz);
+            mtx[1][1] = s * ((sx * sy) * sz + cx * cz);
+            mtx[2][1] = s * (sx * cy);
+            mtx[0][2] = s * ((cx * cz) * sy + sx * sz);
+            mtx[1][2] = s * ((cx * sz) * sy - sx * cz);
+            mtx[2][2] = s * (cx * cy);
         }
         rec.w18 = mtx;
         res = fn_804032E8(0x42494750, lbl_804A1D24[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)]);
@@ -228,6 +245,21 @@ extern "C" void fn_8018A930(char* this_) {
             fn_801F02BC(this_, lbl_804674DC, *(s32*)(this_ + 0x264) + 0x1b1, 0, 0, 0, 0, lbl_8053E0D0, lbl_8053E0D0);
         }
     }
+}
+
+extern "C" void fn_8017EC5C(void* p);
+extern "C" void fn_8017ECC0(void);
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" void fn_8018E964(void* thisPtr, f32 a, f32 b);
+extern "C" void fn_8018AFFC(char* this_) {
+    f32 pos[3];
+    f32 vel[3];
+    fn_8017EC5C(this_ + 0x50);
+    fn_8018E964(this_ + 0x14, *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+    if (*(s32*)(this_ + 0x26c) == 0) {
+        fn_8017ECC0();
+    }
+    *(s32*)(this_ + 0x108) = 0x2710;
 }
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -682,9 +714,9 @@ extern "C" void fn_8018E30C(char* this_, s32 state) {
 }
 
 extern "C" void fn_8018E5E4(char* this_) {
-    f32 zero = lbl_8053E0C8;
-    f32 neg = lbl_8053E104;
-    f32 one = lbl_8053E0E4;
+    f32 zero = 0.0f;
+    f32 neg = -8.0f;
+    f32 one = 8.0f;
     *(f32*)(this_ + 0x80) = neg;
     *(f32*)(this_ + 0x84) = neg;
     *(f32*)(this_ + 0x88) = one;
@@ -735,7 +767,8 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x44) = zero;
     *(f32*)(this_ + 0x40) = zero;
     *(f32*)(this_ + 0x3c) = zero;
-    *(f32*)(this_ + 0x2a0) = *(f32*)(this_ + 0xc);
+    f32 initialX = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2a0) = initialX;
     *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2a8) = *(f32*)(this_ + 0x14);
     *(f32*)(this_ + 0x2c4) = *(f32*)(this_ + 0xc);
@@ -749,14 +782,14 @@ extern "C" void fn_8018E5E4(char* this_) {
     *(f32*)(this_ + 0x2e4) = *(f32*)(this_ + 0x14);
     *(s32*)(this_ + 0x254) = -1;
     *(u8*)(this_ + 0x196) = 1;
-    *(f32*)(this_ + 0x294) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x298) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x2b8) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x2bc) = lbl_8053E0D0;
-    *(f32*)(this_ + 0x2c0) = lbl_8053E18C;
+    *(f32*)(this_ + 0x294) = 1.0f;
+    *(f32*)(this_ + 0x298) = 1.0f;
+    *(f32*)(this_ + 0x2b8) = 1.0f;
+    *(f32*)(this_ + 0x2bc) = 1.0f;
+    *(f32*)(this_ + 0x2c0) = 3.0f;
     *(u8*)(this_ + 0x27a) = 0;
     *(f32*)(this_ + 0x28c) = zero;
-    *(f32*)(this_ + 0x284) = lbl_8053E140;
+    *(f32*)(this_ + 0x284) = 100.0f;
     *(f32*)(this_ + 0x290) = zero;
     *(s32*)(this_ + 0x274) = 0x300;
     *(s32*)(this_ + 0x328) = 0;
@@ -769,10 +802,10 @@ extern "C" void fn_8018E5E4(char* this_) {
         lbl_80539FD0 = 9;
         *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0x2a4) + lbl_8053E0E0;
         fn_802D7440(fn_802D6A9C(), 0);
-        *(f32*)(this_ + 0x60) = lbl_8053E168;
-        *(f32*)(this_ + 0x64) = lbl_8053E16C;
-        *(f32*)(this_ + 0x68) = lbl_8053E170;
-        *(f32*)(this_ + 0x6c) = lbl_8053E124;
+        *(f32*)(this_ + 0x60) = -50.0f;
+        *(f32*)(this_ + 0x64) = -40.0f;
+        *(f32*)(this_ + 0x68) = 42.0f;
+        *(f32*)(this_ + 0x6c) = 40.0f;
         fn_80458F9C(lbl_8053AF80, 0x3c);
         *(s32*)(this_ + 0x230) = 0;
     } else {
