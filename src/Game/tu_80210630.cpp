@@ -77,25 +77,20 @@ extern "C" void fn_80239914(float* box, unsigned int a, unsigned int b);
 extern "C" unsigned char* fn_8020D58C(void);
 extern "C" void fn_8020D8C0(unsigned char* p, float* box, unsigned int b, unsigned int a);
 extern "C" void fn_802108BC(int param_1) {
-    float box[4];
-    fn_801CE0A4();
-    float d = lbl_8053FAD8 * *(float *)(param_1 + 0x58);
-    float c = lbl_8053FAE4 * *(float *)(param_1 + 0x58);
-    float b2 = lbl_8053FADC * *(float *)(param_1 + 0x54);
-    float a0 = lbl_8053FAE0 * *(float *)(param_1 + 0x54);
-    box[0] = a0;
-    box[1] = c;
-    box[2] = b2;
-    box[3] = d;
-    box[0] += *(float *)(param_1 + 0xc);
-    box[1] += *(float *)(param_1 + 0x10);
-    box[2] += *(float *)(param_1 + 0xc);
-    box[3] += *(float *)(param_1 + 0x10);
-    fn_80239914(box, *(unsigned int *)(param_1 + 0x4), *(unsigned int *)(param_1 + 0x198));
-    unsigned int a = *(unsigned int *)(param_1 + 0x198);
-    unsigned int b = *(unsigned int *)(param_1 + 0x4);
-    unsigned char *base = fn_8020D58C();
-    fn_8020D8C0(base + base[0] * 0x784 + 4, box, b, a);
+float box[4];
+float c,d,b2,a0;
+fn_801CE0A4();
+d=lbl_8053FAD8 * *(float*)(param_1+0x58);
+c=lbl_8053FAE4 * *(float*)(param_1+0x58);
+b2=lbl_8053FADC * *(float*)(param_1+0x54);
+a0=lbl_8053FAE0 * *(float*)(param_1+0x54);
+box[0] = a0; box[1] = c; box[2] = b2; box[3] = d;
+box[0] += *(float*)(param_1+0xc); box[1] += *(float*)(param_1+0x10); box[2] += *(float*)(param_1+0xc); box[3] += *(float*)(param_1+0x10);
+fn_80239914(box,*(unsigned int*)(param_1+4),*(unsigned int*)(param_1+0x198));
+unsigned int a = *(unsigned int*)(param_1+0x198);
+unsigned int b = *(unsigned int*)(param_1+4);
+unsigned char* base = fn_8020D58C();
+fn_8020D8C0(base+base[0]*0x784+4,box,b,a);
 }
 
 extern "C" int fn_801D3CE4(void* p, float a, float b);
@@ -184,4 +179,4 @@ extern "C" float fn_80210B34(int i)
 {
 	return lbl_8053FAB8[i][0];
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
