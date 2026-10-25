@@ -64,6 +64,9 @@ extern "C" void* fn_801F26CC(u8* this_, const void* p);
 extern "C" void* fn_801F856C(void);
 extern "C" u8* fn_801F666C(void* a, void* b);
 extern "C" void fn_801F349C(u8* obj, u32 n, f32* v);
+static inline void publishPlatformPos(u8* actor, u32 room, const JGeometry::TVec3<f32>& pos) {
+    fn_801F349C(actor, room, (f32*)&pos);
+}
 extern "C" f32 lbl_805404D0;
 extern "C" f64 lbl_805404E0;
 extern void* lbl_8053AED0;
