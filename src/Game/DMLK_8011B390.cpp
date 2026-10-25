@@ -38,12 +38,14 @@ static inline void dmlkRequestBounds(u8* p) {
     }
 }
 static inline void dmlkSetBounds(u8* p, const f32* pos) {
+    f32 halfWidth = lbl_8053C7F0;
     f32 x = pos[0];
+    f32 halfHeight = lbl_8053C7E8;
     f32 y = pos[1];
-    f32 x0 = x - lbl_8053C7F0;
-    f32 x1 = lbl_8053C7F0 + x;
-    f32 y0 = y - lbl_8053C7E8;
-    f32 y1 = lbl_8053C7E8 + y;
+    f32 x0 = x - halfWidth;
+    f32 x1 = halfWidth + x;
+    f32 y0 = y - halfHeight;
+    f32 y1 = halfHeight + y;
     *(f32*)(p + 0x250) = x0;
     *(f32*)(p + 0x254) = y0;
     *(f32*)(p + 0x258) = x1;
@@ -284,6 +286,87 @@ extern "C" Actor* fn_8011B390(Actor* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern "C" void fn_8011B3F0(u8* p) {
+    u8* view = *(u8**)(lbl_8053AB10 + 0x24);
+    if (view[0x179] == 0) {
+        view[0x17a] = 1;
+        view[0x179] = 0;
+    }
+    switch (*(s32*)(p + 0x238)) {
+    case 7: {
+        s32 elapsed = *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[7];
+        if (elapsed < 180) {
+            dmlkRequestBounds(p);
+            break;
+        }
+        if (elapsed > 410 && elapsed != 0) {
+            fn_801CD950((f32*)(p + 0x244), lbl_8053C7D8, lbl_8053C7DC);
+        } else {
+            fn_801CD950((f32*)(p + 0x244), lbl_8053C7E0, lbl_8053C7E4);
+        }
+        fn_801CD950((f32*)(p + 0x254), (*(f32*)(p + 0x10) - lbl_8053C7E8) - lbl_8053C7EC, -*(f32*)(p + 0x244));
+        fn_801CD950((f32*)(p + 0x25c), lbl_8053C7EC + (lbl_8053C7E8 + *(f32*)(p + 0x10)), *(f32*)(p + 0x244));
+        dmlkRequestBounds(p);
+        break;
+    }
+    case 1:
+    case 2:
+    case 3:
+        dmlkSetBounds(p, (f32*)(p + 0xc));
+        dmlkRequestBounds(p);
+        break;
+    case 4:
+    case 5: {
+        JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(p + 0xc));
+        pos.y += *(f32*)(p + 0x248);
+        fn_801CD950((f32*)(p + 0x248), lbl_8053C7E8, lbl_8053C7F4);
+        dmlkSetBounds(p, &pos.x);
+        dmlkRequestBounds(p);
+        break;
+    }
+    case 6: {
+        JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(p + 0xc));
+        pos.y += *(f32*)(p + 0x248);
+        fn_801CD950((f32*)(p + 0x248), lbl_8053C7D8, lbl_8053C7F4);
+        dmlkSetBounds(p, &pos.x);
+        dmlkRequestBounds(p);
+        break;
+    }
+    case 8:
+        view = *(u8**)(lbl_8053AB10 + 0x24);
+        if (view[0x7f5] == 0) {
+            view[0x7f4] = 1;
+            *(s32*)(view + 0x7f8) = 4;
+            *(f32*)(view + 0x7fc) = *(f32*)(p + 0xc);
+            *(f32*)(view + 0x800) = *(f32*)(p + 0x10);
+            *(f32*)(view + 0x804) = *(f32*)(p + 0x14);
+            view[0x7f6] = 0;
+        }
+        break;
+    case 9:
+    case 10:
+    case 11:
+        view = *(u8**)(lbl_8053AB10 + 0x24);
+        if (view[0x840] == 0) {
+            view[0x840] = 1;
+            f32 step = lbl_8053C7F8;
+            f32 zero = lbl_8053C7FC;
+            *(f32*)(view + 0x84c) = *(f32*)(p + 0xc);
+            *(f32*)(view + 0x844) = *(f32*)(p + 0xc);
+            *(f32*)(view + 0x850) = *(f32*)(p + 0x10);
+            *(f32*)(view + 0x848) = *(f32*)(p + 0x10);
+            *(f32*)(view + 0x854) = step;
+            *(f32*)(view + 0x1d4) = zero;
+            *(f32*)(view + 0x1d8) = zero;
+        }
+        break;
+    default:
+        dmlkRequestBounds(p);
+        break;
+    }
+}
+
 #endif
 
 // Keep regional definitions that were present before source-tree consolidation.
