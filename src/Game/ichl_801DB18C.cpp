@@ -450,8 +450,15 @@ static inline f32 ichlLen(const IchlV2& v) {
     return sq * inv;
 }
 static inline bool ichlIsZero(const IchlV2& v) {
-    f32 square = v.squared();
-    bool r = square <= JGeometry::TUtilf::epsilon();
+    f32 limit;
+    f32 square;
+    f32 yy;
+    f32 xx;
+    xx = v.x * v.x;
+    yy = v.y * v.y;
+    square = xx + yy;
+    limit = JGeometry::TUtilf::epsilon();
+    bool r = square <= limit;
     return r;
 }
 
@@ -507,16 +514,14 @@ extern "C" void fn_801DB9CC(char* p) {
             *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
         }
     }
-    f32 sx;
-    f32 sy;
     s16 ang = *(s16*)(p + 0x2dc);
-    sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-    const f32& r = *(f32*)(p + 0x2d4);
-    sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
-    sx = -sx;
+    const f32& sine = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+    f32 radius = *(f32*)(p + 0x2d4);
+    f32 sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    f32 sx = -sine;
     sy = -sy;
-    sx *= r;
-    sy *= r;
+    sx *= radius;
+    sy *= radius;
     *(f32*)(p + 0x2bc) = *(f32*)(p + 0xc);
     *(f32*)(p + 0x2c0) = *(f32*)(p + 0x10);
     *(f32*)(p + 0x2bc) += sx;
