@@ -316,6 +316,7 @@ extern "C" void fn_800CAEE0(s32* param_1, int param_2, int param_3, int param_4)
 extern "C" u8 fn_800CB15C(u8* p, s32 idx);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b);
 struct J3DIndTexCoordScaleInfo;
+extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int no);
 extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no);
 extern "C" void __ct__14J3DIndTevStageFv(void* self);
 extern "C" void __ct__13J3DGXColorS10Fv(void* self);
