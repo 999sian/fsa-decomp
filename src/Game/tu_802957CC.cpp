@@ -5,15 +5,6 @@ extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
-static inline int houseRoom(u32 flags) {
-    u32 mode = (flags >> 24) & 7;
-    int room = mode + 7;
-    if (mode == 0) room = mode;
-    return room;
-}
-static inline u8 houseQuery(ItemBase* actor, u32 flags, f32* pos) {
-    return actor->v17(houseRoom(flags), pos);
-}
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
@@ -381,14 +372,21 @@ extern "C" void fn_80295C40(void* p) {
     fn_801F0E34(p, 0x30092, 0);
 
     q = (char*)p;
-    k = 4;
+    k = 2;
     do {
         obj = *(void**)(q + 0x2fc);
         if (obj != 0) {
-            ((JPABaseEmitter*)obj)->becomeInvalidEmitter();
+            *(u32*)((char*)obj + 0xf4) |= 1;
+            *(s32*)((char*)obj + 0x24) = 1;
             *(void**)(q + 0x2fc) = 0;
         }
-        q += 4;
+        obj = *(void**)(q + 0x300);
+        if (obj != 0) {
+            *(u32*)((char*)obj + 0xf4) |= 1;
+            *(s32*)((char*)obj + 0x24) = 1;
+            *(void**)(q + 0x300) = 0;
+        }
+        q += 8;
     } while (--k);
 
     q = (char*)p;
@@ -668,6 +666,7 @@ extern "C" void fn_802984B0(void* p) {
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
 extern "C" void fn_80239914(void*, s32, void*);
+#pragma opt_lifetimes off
 extern "C" void fn_80298978(void* p) {
     u8* self = (u8*)p;
     u8* ids = (u8*)p;
@@ -721,7 +720,11 @@ extern "C" void fn_80298978(void* p) {
                         break;
                     }
                     */
-                    ret = ((ItemBase*)p)->v17(houseRoom(*(u32*)((char*)obj + 0x90)), &pos.x);
+                    mode = (*(u32*)((char*)obj + 0x90) >> 24) & 7;
+                    int room = mode + 7;
+                    if (mode == 0) room = mode;
+                    ItemBase* actor = (ItemBase*)p;
+                    ret = actor->v17(room, &pos.x);
                     if (ret == 1U) {
                         flag = 1;
                         break;
@@ -739,7 +742,7 @@ extern "C" void fn_80298978(void* p) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_80298C18(void* p) {
     char* self = (char*)p;
     char* q;
