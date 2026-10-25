@@ -239,16 +239,18 @@ extern const f32 lbl_80541414;
 extern const f32 lbl_80541418;
 
 
-#pragma fp_relax on
 static inline f32 gnefSqrt(f32 x) {
+    f32 result;
     if (x > lbl_80541400) {
-        f64 y = __frsqrte(x);
+        f32 y = __frsqrte(x);
         f32 t = y * x;
         f32 r = lbl_80541408 - t * y;
         r = r * t;
-        return r * lbl_8054140C;
+        result = r * lbl_8054140C;
+    } else {
+        result = x;
     }
-    return x;
+    return result;
 }
 
 struct GnefPull {
