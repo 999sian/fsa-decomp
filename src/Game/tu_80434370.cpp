@@ -20,7 +20,7 @@ public:
     virtual void s1();
     virtual void s2(f32 x, f32 y);
     virtual void s3();
-    virtual void s4();
+    virtual void s4(f32 width, f32 height);
     virtual void s5();
     virtual void s6();
     virtual void s7();
