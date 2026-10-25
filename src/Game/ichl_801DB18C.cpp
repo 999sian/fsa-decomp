@@ -446,8 +446,8 @@ static inline f32 ichlLen(const IchlV2& v) {
     f32 sq = ichlSq(v);
     if (sq <= 0.0f) return sq;
     f32 inv = __frsqrte(sq);
-    inv = (0.5f * inv) * __fnmsubs(sq, inv * inv, 3.0f);
-    return sq * inv;
+    f32 refined = (0.5f * inv) * __fnmsubs(sq, inv * inv, 3.0f);
+    return sq * refined;
 }
 static inline bool ichlIsZero(const IchlV2& v) {
     const f32 square = v.squared();
@@ -457,6 +457,7 @@ static inline bool ichlIsZero(const IchlV2& v) {
 
 extern const f32 lbl_8053F2FC;
 extern int __float_epsilon[];
+#pragma opt_lifetimes off
 #pragma opt_propagation off
 extern "C" void fn_801DB9CC(char* p) {
     if (fn_801CD664(2) == 0) {
@@ -545,6 +546,7 @@ extern "C" void fn_801DB9CC(char* p) {
     }
 }
 #pragma opt_propagation reset
+#pragma opt_lifetimes reset
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "sdk/stl/math.h"
