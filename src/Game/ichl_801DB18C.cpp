@@ -451,9 +451,7 @@ static inline f32 ichlLen(const IchlV2& v) {
 }
 static inline bool ichlIsZero(const IchlV2& v) {
     const f32 square = v.squared();
-    f32 limit = FLT_EPSILON;
-    limit = 32.0f * limit;
-    bool r = square <= limit;
+    bool r = square <= JGeometry::TUtilf::epsilon();
     return r;
 }
 
