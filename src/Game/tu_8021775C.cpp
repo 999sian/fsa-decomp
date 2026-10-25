@@ -1,5 +1,7 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry.h"
 
 
 extern "C" void fn_801EE434(void*);
@@ -7,7 +9,7 @@ extern "C" void __dl__FPv(void*);
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
 extern const f32 lbl_8053FC38;
 
-extern const f32 __float_epsilon;
+extern "C" int __float_epsilon[];
 struct Vec3f {
     f32 x;
     f32 y;
@@ -15,19 +17,19 @@ struct Vec3f {
 };
 
 extern "C" void fn_8021775C(void** p, f32 t) {
-    Vec3f target = *(Vec3f*)((u8*)p[6] + 0x600);
-    Vec3f cur = *(Vec3f*)((u8*)p[6] + 0x60c);
-    if (t < __float_epsilon) {
+    JGeometry::TVec3<f32> cur(*(JGeometry::TVec3<f32>*)((u8*)p[6] + 0x60c));
+    JGeometry::TVec3<f32> target(*(JGeometry::TVec3<f32>*)((u8*)p[6] + 0x600));
+    if (t < *(f32*)__float_epsilon) {
         cur.x = target.x;
     } else {
         cur.x = cur.x + (target.x - cur.x) * (1.0f / t);
     }
-    if (t < __float_epsilon) {
+    if (t < *(f32*)__float_epsilon) {
         cur.y = target.y;
     } else {
         cur.y = cur.y + (target.y - cur.y) * (1.0f / t);
     }
-    if (t < __float_epsilon) {
+    if (t < *(f32*)__float_epsilon) {
         cur.z = target.z;
     } else {
         cur.z = cur.z + (target.z - cur.z) * (1.0f / t);
@@ -42,19 +44,23 @@ extern "C" void fn_80217874(char* this_, f32 t) {
     Vec a;
     Vec b;
 
-    a = *pa;
-    b = *pb;
-    if (t < __float_epsilon) {
+    a.x = pa->x;
+    a.y = pa->y;
+    a.z = pa->z;
+    b.x = pb->x;
+    b.y = pb->y;
+    b.z = pb->z;
+    if (t < *(f32*)__float_epsilon) {
         a.x = b.x;
     } else {
         a.x = (1.0f / t) * (b.x - a.x) + a.x;
     }
-    if (t < __float_epsilon) {
+    if (t < *(f32*)__float_epsilon) {
         a.y = b.y;
     } else {
         a.y = (1.0f / t) * (b.y - a.y) + a.y;
     }
-    if (t < __float_epsilon) {
+    if (t < *(f32*)__float_epsilon) {
         a.z = b.z;
     } else {
         a.z = (1.0f / t) * (b.z - a.z) + a.z;
@@ -182,9 +188,8 @@ extern "C" void fn_80217BC8(void** p) {
 
 extern "C" void fn_80217CD8(void** p) {
     if (p[0] == 0) {
-        u8* base = (u8*)p[6];
-        u8* sub = base + 0xc;
-        p[0] = fn_8013CC50(((u32*)base)[1], sub, 0x228, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u32 base = (u32)p[6];
+        p[0] = fn_8013CC50(*(u32*)(base + 4), (u8*)(base + 0xc), 0x228, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[0];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -197,9 +202,8 @@ extern "C" void fn_80217CD8(void** p) {
         }
     }
     if (p[1] == 0) {
-        u8* base = (u8*)p[6];
-        u8* sub = base + 0xc;
-        p[1] = fn_8013CC50(((u32*)base)[1], sub, 0x229, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u32 base = (u32)p[6];
+        p[1] = fn_8013CC50(*(u32*)(base + 4), (u8*)(base + 0xc), 0x229, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[1];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -214,8 +218,10 @@ extern "C" void fn_80217CD8(void** p) {
 }
 
 extern "C" void fn_80217DE8(void** p) {
-    u8* r = (u8*)fn_8013CC50(*(u32*)((u8*)p[6] + 4), (u8*)p[6] + 0xc, 0x231, 1, lbl_8053FC38, 1, 0, 0, 1);
-    u8* r2 = (u8*)fn_8013CC50(*(u32*)((u8*)p[6] + 4), (u8*)p[6] + 0xc, 0x232, 1, lbl_8053FC38, 1, 0, 0, 1);
+    u8* sub = (u8*)p[6] + 0xc;
+    u8* r = (u8*)fn_8013CC50(*(u32*)((u8*)p[6] + 4), sub, 0x231, 1, lbl_8053FC38, 1, 0, 0, 1);
+    sub = (u8*)p[6] + 0xc;
+    u8* r2 = (u8*)fn_8013CC50(*(u32*)((u8*)p[6] + 4), sub, 0x232, 1, lbl_8053FC38, 1, 0, 0, 1);
     if (r != 0) {
         *(f32*)(r + 0x98) = lbl_804CD838[0];
         *(f32*)(r + 0x9c) = lbl_804CD838[1];
@@ -238,13 +244,19 @@ extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
 extern u16 lbl_8046A5A0[];
 extern const f32 lbl_8053FC38;
 extern "C" void fn_80217ED4(u8* self) {
-    s32 i = 0;
-    u8* obj = *(u8**)(self + 0x18);
-    u16* ids = lbl_8046A5A0;
-    u8* pos = obj + 0xc;
-    f32* tbl = lbl_804CD838;
+    f32* tbl;
+    u8* pos;
+    u16* ids;
+    u8* obj;
+    s32 i;
+    i = 0;
+    obj = *(u8**)(self + 0x18);
+    ids = lbl_8046A5A0;
+    pos = obj + 0xc;
+    tbl = lbl_804CD838;
     do {
-        u8* r = (u8*)fn_8013CC50(*(u32*)(obj + 4), pos, *ids, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u32 room = *(u32*)(obj + 4);
+        u8* r = (u8*)fn_8013CC50(room, pos, *ids, 1, lbl_8053FC38, 1, 0, 0, 1);
         if (r != 0) {
             *(f32*)(r + 0x98) = lbl_804CD838[0];
             *(f32*)(r + 0x9c) = tbl[1];
