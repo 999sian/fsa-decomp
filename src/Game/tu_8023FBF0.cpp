@@ -488,7 +488,52 @@ void fn_80286688(char*);
 void fn_80265E88(char*);
 void fn_802490A8(char*);
 void fn_8026FD14(char*);
-void fn_80251D50(char*);
+void fn_80251D50(char* p) {
+    u8 airborne = 0;
+    s32 i = 0;
+    char* q = p;
+    for (; i < 0x31; i++, q += 12) {
+        s32 room = S32(p, 0x3b4);
+        if (U8(fn_802D6A9C(), room + 0x131df) != 0) {
+            if (F32(q, 0x40) > 0.0f) { airborne = 1; break; }
+            if (i == 0x30) {
+                if (U8(p, 0x284 + i) == 1) { airborne = 1; break; }
+            } else if (U8(p, 0x284 + i) == 1 && U8(p, 0x285 + i) == 1) {
+                airborne = 1; break;
+            }
+        } else if (F32(q, 0x40) > 0.0f) { airborne = 1; break; }
+    }
+    if ((V3(p, 0x38) - V3(p, 8)).length() >= lbl_80540030 || airborne) {
+        if (U8(p, 0xce8) == 0 && U8(p, 0x454) == 0 && S32(p, 0x11f4) == 0 &&
+            U8(p, 0x435) == 0 && U8(p, 0x1216) == 0) {
+            PlayerTrail* t = (PlayerTrail*)p;
+            for (int n = 0x30; n > 0; n--) {
+                t->pos[n] = t->pos[n-1];
+                t->onGround[n] = t->onGround[n-1];
+            }
+            t->pos[0] = V3(p, 8);
+            t->onGround[0] = U8(PTR(p, 0xbf0), 0xb4);
+        }
+    }
+    V3(p, 0x20) = V3(p, 0x14);
+    if (U8(p, 0x457) != 0) {
+        U8(p, 0x457) = 0;
+        V3(p, 8) = V3(p, 0x14);
+        S32(p, 0x3b4) = S32(p, 0x3b8);
+    } else {
+        V3(p, 8) += V3(p, 0x2dc);
+        V3(p, 0x2dc).zero();
+        V3(p, 0x14) = V3(p, 8);
+        S32(p, 0x3b8) = S32(p, 0x3b4);
+    }
+    if (U8(p, 0xce8) == 0) V3(p, 8) += V3(p, 0x2d0);
+    V3(p, 0x2d0).zero();
+    V3(p, 8) += V3(p, 0x2e8);
+    V3(p, 0x2e8).zero();
+    S32(p, 0xda0) = S32(p, 0xd94);
+    if (S32(p, 0x1170) > 0) S32(p, 0x1170)--;
+    S32(p, 0x3e4) = S32(p, 0x3dc);
+}
 void fn_80285E58(char*);
 void fn_8024BDBC(char*);
 void fn_80276538(char*);
@@ -716,7 +761,8 @@ inline BOOL isLinkOwnerCached(char* p) {
 
 inline BOOL isLinkOwnerCached(char*);
 inline s32 getModeCached(const char*);
-extern "C" u8 fn_8023FC5C(char* __restrict p) {
+extern "C" u8 fn_8023FC5C(u8* __restrict self) {
+    char* p = (char*)self;
     bool ok;
     if (U8(p, 0xc80) == 0) ok = false;
     else if (U8(p, 0xcee) != 0) ok = false;
@@ -3694,6 +3740,32 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
             if (a5 != 1 || S32(p, 0x3dc) == 3) {
                 S32(p, 0xd3c) = a3;
                 U8(p, 0xd4e) = a4;
+            }
+        }
+    }
+}
+
+extern const JGeometry::TVec3<f32> lbl_8046AE78[];
+void fn_8024CD20(char* p, const JGeometry::TBox2<f32>* area, s32 a2, s32 a3, u8 a4, u8 a5) {
+    if (S32(p, 0xd50) <= 0 && (S32(p, 0xd44) < 0 || S32(p, 0xd44) == a3) && S32(p, 0xd3c) < 0) {
+        if (!(u8)isLinkOwner3(p) && a2 == S32(p, 0x3b4) && !fn_8025F448(p) && U8(p, 0xce8) == 0) {
+            if (U8(p, 0x454) == 0) {
+                bool bVar1 = false;
+                if (S32(p, 0x1240) == 0xb || S32(p, 0x1244) == 0xb) bVar1 = true;
+                if (bVar1) return;
+            }
+            if (a5 != 1 || S32(p, 0x3dc) == 3) {
+                JGeometry::TVec3<f32> pos;
+                pos.set(lbl_8046AE78[S32(p, 0x3dc)]);
+                pos += V3(p, 8);
+                pos.z = 0.0f;
+                JGeometry::TBox2<f32> box;
+                box.i.set(pos.x, pos.y);
+                box.f = box.i;
+                if (box.intersect(*area)) {
+                    S32(p, 0xd3c) = a3;
+                    U8(p, 0xd4e) = a4;
+                }
             }
         }
     }
