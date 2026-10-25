@@ -55,6 +55,17 @@ static inline void SetHudDigit(u8* self, u32* keys, int idx, int digit) {
     ((J2DPicture*)((J2DPane*)*(void**)(self+4))->search(*(u64*)(keys+idx)))->changeTexture((const ResTIMG*)handle,0);
     ((J2DPicture*)((J2DPane*)*(void**)(self+4))->search(*(u64*)(keys+idx+2)))->changeTexture((const ResTIMG*)handle,0);
 }
+static inline void SetHudThree(u8* self, int v, int hundreds, int tens) {
+SetHudDigit(self,lbl_80490DB8,4,hundreds);
+SetHudDigit(self,lbl_80490DB8,8,tens);
+SetHudDigit(self,lbl_80490DB8,12,v%10);
+}
+static inline void SetHudFour(u8* self, int b, int first, int rem, int tens) {
+SetHudDigit(self,lbl_80490E00,8,first);
+SetHudDigit(self,lbl_80490E00,12,rem);
+SetHudDigit(self,lbl_80490E00,16,tens);
+SetHudDigit(self,lbl_80490E00,20,b%10);
+}
 extern "C" void fn_8044A828(void* self_) {
     u8* self = (u8*)self_;
     void** p = (void**)self;
@@ -82,15 +93,17 @@ extern "C" void fn_8044A828(void* self_) {
 
     obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 16));
     if (((u8*)obj)[0xb0] != 0) {
-        int v;
+        u16 v;
 int tens;
+        int hundreds;
 
         if (*(u16*)(self + 0x10) >= 1000) {
             *(u16*)(self + 0x10) = 999;
         }
         v = *(u16*)(self + 0x10);
-        tens = (v % 100) / 10;
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v / 100]);
+        hundreds = v/100;
+        tens = (v-hundreds*100)/10;
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[hundreds]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 4));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 6));
@@ -124,10 +137,11 @@ int tens;
 
     obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 24));
     if (((u8*)obj)[0xb0] != 0) {
-        int a;
-        int b;
+        u8 a;
+        u8 b;
         int rem;
         int tens;
+        int first;
 
         if (self[0x12] >= 100) {
             self[0x12] = 99;
@@ -138,9 +152,10 @@ int tens;
         }
         a = self[0x12];
         b = self[0x13];
-        rem=a%10;
+        first=a/10;
+        rem=a-first*10;
         tens=b/10;
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[a / 10]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[first]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 8));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 10));
