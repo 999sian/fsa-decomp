@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
@@ -87,6 +89,7 @@ extern "C" void fn_802C99A4(u8* this_) {
         pal.c[0] = 1;
         pal.c[1] = 1;
     }
+    mtx[3][1] = (f32)*(s32*)(this_ + 0x23c);
     mtx[0][0] = (f32)*(s32*)(this_ + 0x238);
     mtx[0][1] = lbl_80540D70;
     mtx[0][2] = lbl_80540D70;
@@ -95,7 +98,6 @@ extern "C" void fn_802C99A4(u8* this_) {
     mtx[2][0] = lbl_80540D70;
     mtx[2][2] = lbl_80540D70;
     mtx[3][0] = lbl_80540D70;
-    mtx[3][1] = (f32)*(s32*)(this_ + 0x23c);
     mtx[3][2] = lbl_80540D70;
     pal.c[0] = 0xff;
     pal.c[1] = 0xff;
