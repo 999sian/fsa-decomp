@@ -1,6 +1,7 @@
 
 
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "PowerPC_EABI_Support/Runtime/MWCPlusPlusLib.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "dolphin/mtx.h"
@@ -136,6 +137,7 @@ extern f32 lbl_80542C80;
 extern f32 lbl_80542C84;
 extern f32 lbl_80542C88;
 extern f32 lbl_80542CB4;
+#pragma opt_dead_assignments off
 extern "C" void fn_80368198(Sub8036C0EC* this_) {
     char* self = (char*)this_;
     s32 a;
@@ -190,7 +192,7 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
         }
     }
 }
-
+#pragma opt_dead_assignments reset
 extern f32 lbl_80542C78;
 extern "C" void fn_801F06F0(void* self, void* tbl, s32 idx, EffArgs* args, s32 n, f32 a, f32 b);
 extern "C" void fn_8013CB44(void* obj, Vec3f* v, s32 a, s32 b, s32 c);
@@ -610,7 +612,6 @@ extern "C" void fn_8036A894(void* this_) {
 
 extern "C" void fn_8036AA60(char* self) {
     extern void* fn_801902C0(void);
-    s32* tbl = (s32*)lbl_80474C38;
     Mtx m1;
     Mtx m2;
     Vec3f v1;
@@ -621,8 +622,8 @@ extern "C" void fn_8036AA60(char* self) {
     s32 idx;
 
     PSMTXTrans(m1, *(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
-    v1.y = lbl_80542C6C;
     v1.x = lbl_80542C58;
+    v1.y = lbl_80542C6C;
     v1.z = lbl_80542C6C;
     fn_8010F668(m1, &v1, lbl_80542CC4);
     m2[0][0] = lbl_80542C6C;
