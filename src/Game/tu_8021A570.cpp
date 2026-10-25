@@ -51,6 +51,12 @@ static inline void Swing_Choose(SwingRecord* r) {
     }
 }
 
+static inline void Swing_Settle(SwingRecord* r) {
+    r->mAngle = 0;
+    Swing_Choose(r);
+    r->mTimer6 = 0;
+}
+
 static inline bool Swing_Stop(SwingRecord* r) {
     bool ret = false;
     if (!r->mLocked) {
@@ -135,7 +141,8 @@ extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
                             result = true;
                         }
                     } else {
-                        r->mAngle = 0;
+                        int zero = 0;
+                        r->mAngle = zero;
                         Swing_Choose(r);
                         r->mTimer6 = 0;
                     }
