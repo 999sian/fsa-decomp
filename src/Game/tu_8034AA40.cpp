@@ -175,7 +175,7 @@ extern "C" void fn_8034ACF4(u8* self) {
                     v.z = lbl_80542550;
                     break;
                 }
-                fn_802314D8(i, *(Vec*)&v);
+                fn_802314D8(i, v);
             }
         }
     }
