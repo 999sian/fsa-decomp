@@ -3,6 +3,8 @@
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Box.h"
 
+extern "C" s32 fn_80226BC4(JGeometry::TVec2<f32>* pos, s32 room);
+
 // ---- fn_802C5950_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
