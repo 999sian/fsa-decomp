@@ -21,7 +21,7 @@ static inline void setRotX(Mtx m, f32 angle) {
 }
 
 extern "C" void* lbl_8053AAF8;
-extern "C" void fn_802D6A9C(void);
+extern "C" u8* fn_802D6A9C(void);
 extern "C" u8 fn_802DCD0C(void);
 extern "C" u8 fn_80239D38(void);
 extern "C" u8 lbl_80529DEC[];
