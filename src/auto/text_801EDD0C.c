@@ -6,9 +6,6 @@
 #include "dolphin/gx.h"
 
 extern "C" f64 __fsel(f64, f64, f64);
-static inline f32 clampDrawScale(f32 value, f32 minimum) {
-    return __fsel(minimum - value, minimum, value);
-}
 extern "C" void* fn_804032E8(u32, const void*);
 extern "C" void fn_801EF830(s32, void*, DrawRec*, u32, void*, u32, void*);
 extern "C" void fn_801EFD34(void*, void*, DrawRec*, s32, f32, f32, f32);
