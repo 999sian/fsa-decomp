@@ -44,13 +44,13 @@ static inline s32 clampSeq(AnmSeqCtrl* this_, s32 f) {
 
 static inline void calcSeq(AnmSeqCtrl* this_) {
     f32 frame = this_->mCtrl.mFrame;
-    SeqEntry* e = this_->mSeqs[this_->mCurSeq];
+    SeqEntry* __restrict e = this_->mSeqs[this_->mCurSeq];
     int start = 0;
     s32 idx = start;
     for (; e->mFrame >= 0; e++, idx++) {
-        s32 previous = start;
-        const f32 prev = previous;
-        start += e->_2;
+        f32 prev = start;
+        s32 next = start + e->_2;
+        start = next;
         if (prev <= frame && frame < (f32)start) {
             this_->_10 = clampSeq(this_, e->mFrame);
             this_->_1C = idx;
@@ -165,6 +165,7 @@ extern "C" BOOL fn_801D21F0(AnmSeqCtrl* this_) {
     return result;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_801D22DC(AnmSeqCtrl* this_, s32 seqIndex, s32 mode, bool keepFrame) {
     this_->mCurSeq = seqIndex;
     SeqEntry* e = this_->mSeqs[this_->mCurSeq];
@@ -200,7 +201,7 @@ extern "C" void fn_801D22DC(AnmSeqCtrl* this_, s32 seqIndex, s32 mode, bool keep
         this_->_20 = 1;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" s32 fn_801D2264(void* this_, s32 seqIndex, s32 mode) {
     s32 result = 0;
     if (*(s32*)((char*)this_ + 0x8) != seqIndex) {
