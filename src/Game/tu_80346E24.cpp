@@ -31,8 +31,9 @@ extern "C" Actor* fn_80346E24(Actor* p, s16 n) {
 
 extern "C" double sin(double);
 extern "C" double cos(double);
-static inline void setDrawRotation(Mtx m, f32 angle, const f32& scale) {
-    f32 sz,sy,sx,cx,cy,cz;
+static inline void setDrawRotation(Mtx m, const f32 angle, const f32 scale) {
+    f32 cx;
+    f32 sz,sy,sx,cy,cz;
     sx=sin(lbl_80542438);
     sy=sin(angle);
     sz=sin(lbl_80542438);
