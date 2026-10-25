@@ -151,6 +151,78 @@ extern "C" void fn_8013AC54(Mtx mtx) {
     j3dSys.setViewMtx(mtx);
 }
 
+extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, Mtx mtx, f32 scale) {
+    struct MtxBox {
+        Mtx m;
+    };
+    Mtx m;
+    Mtx tmp;
+    GXColor c = *color;
+    f32 off;
+    m[0][0] = scale;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[0][3] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = 0.0f;
+    m[1][2] = scale;
+    m[1][3] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = scale;
+    m[2][2] = 0.0f;
+    m[2][3] = 0.0f;
+    if (mtx) {
+        if (pos->z > 0.0f && a < 1) {
+            a++;
+            b--;
+        }
+        off = (f32)(a * 0x400 + b * 0x80);
+        *(MtxBox*)tmp = *(MtxBox*)mtx;
+        tmp[1][3] += off;
+        tmp[2][3] += off;
+        PSMTXConcat(tmp, m, m);
+    } else {
+        if (pos->z > 0.0f && a < 1) {
+            a++;
+            b--;
+        }
+        off = (f32)(a * 0x400 + b * 0x80);
+        m[0][3] += pos->x;
+        m[1][3] += pos->y + off;
+        m[2][3] += pos->z + off;
+        m[1][0] *= 0.5f;
+        m[1][1] *= 0.5f;
+        m[1][2] *= 0.5f;
+        m[2][0] *= 0.5f;
+        m[2][1] *= 0.5f;
+        m[2][2] *= 0.5f;
+    }
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetChanCtrl(GX_COLOR0A0, GX_TRUE, GX_SRC_REG, GX_SRC_REG, (GXLightID)3, GX_DF_CLAMP, GX_AF_SPOT);
+    GXSetNumChans(1);
+    GXSetNumTexGens(0);
+    GXSetTevColor(GX_TEVREG1, c);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevColorIn(GX_TEVSTAGE0, (GXTevColorArg)0xf, (GXTevColorArg)2, (GXTevColorArg)10, (GXTevColorArg)0xf);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)1);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetNumTevStages(1);
+    GXSetNumIndStages(0);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
+    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_FALSE);
+    GXSetCullMode(GX_CULL_BACK);
+    GXDrawSphere1(2);
+}
+
 extern "C" void fn_8013B004(f32* rect, GXColor* color) {
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -176,12 +248,15 @@ extern "C" void fn_8013B004(f32* rect, GXColor* color) {
     GXSetAlphaUpdate(GX_FALSE);
     GXSetCullMode(GX_CULL_NONE);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    f32 x1;
     f32 x0 = rect[0];
     f32 y0 = rect[1];
-    GXPosition2f32(x0, y0);
-    f32 x1 = rect[2];
+    f32 y1;
+    GXWGFifo.f32 = x0;
+    x1 = rect[2];
+    GXWGFifo.f32 = y0;
+    y1 = rect[3];
     GXPosition2f32(x1, y0);
-    f32 y1 = rect[3];
     GXPosition2f32(x1, y1);
     GXPosition2f32(x0, y1);
     GXEnd();
