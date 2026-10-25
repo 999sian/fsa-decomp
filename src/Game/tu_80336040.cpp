@@ -1,5 +1,6 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 class Actor;
 
