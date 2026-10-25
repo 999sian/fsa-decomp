@@ -115,6 +115,12 @@ extern "C" void fn_8044C968(u8* self) {
     *(s16*)(self + 0xfa) = 2;
 }
 
+extern "C" void fn_80134D20(u8*, s32);
+extern u8* lbl_8053AAF8;
+extern "C" u64 lbl_80490FC8[];
+extern "C" void* fn_8013CC50(void*, f32*, u16, s32, s32, s32, s32, s32, f32);
+extern f32 lbl_80543E00;
+extern f32 lbl_80543E04;
 extern "C" u8 fn_8044CB00(u8* p) { return p[0x140]; }
 
 extern "C" u8 fn_8044D290(u8* p) { return p[0x140]; }
