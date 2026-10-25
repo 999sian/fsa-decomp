@@ -124,6 +124,9 @@ struct HeartPane {
     virtual void set(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void v64();
     virtual void v65();
+    virtual void v66(); virtual void v67(); virtual void v68(); virtual void v69();
+    virtual void v70(); virtual void v71(); virtual void v72();
+    virtual void setColor(JUtility::TColor color);
 };
 
 static inline u8* GetHeart(u8* obj, u64 key) { return ((HeartPane*)obj)->search(key); }
