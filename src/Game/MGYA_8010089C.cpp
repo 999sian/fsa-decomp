@@ -143,8 +143,8 @@ extern "C" void fn_801008FC(MGYA* this_) {
         }
         MGYA* m = this_->m290;
         u16* p260 = m->m260;
-        p260[pl] += a;
         u16* p268 = m->m268;
+        p260[pl] += a;
         p268[pl] += b;
     }
 }
@@ -283,6 +283,7 @@ extern const s32 lbl_8049C8D8[];
 extern void* lbl_8053AED0;
 extern u8* lbl_8053AF80;
 extern "C" u8* sManager__8JUTVideo;
+#pragma opt_lifetimes off
 extern "C" void fn_80100D28(MGYA* this_) {
     JGeometry::TVec3f pos(this_->mPos);
     pos.y -= lbl_8053C160;
@@ -294,7 +295,6 @@ extern "C" void fn_80100D28(MGYA* this_) {
     JGeometry::TVec3f dir2;
     f32 dist;
     f32 dist2;
-    s32 i;
     box[0] = this_->m60;
     box[1] = this_->m64;
     box[2] = this_->m68;
@@ -315,16 +315,20 @@ extern "C" void fn_80100D28(MGYA* this_) {
         fn_8022FEB8(box, this_->m04, this_->m198, 1, 0);
         this_->m238 = fn_8022FD8C(this_->m198);
         if (this_->m238 >= 0 && fn_802300EC(this_->m238)) {
-            if (fn_8038AD24(this_->m238, this_->m244 == 1 ? 0x328 : 0x31f, this_->m198, this_->m04, (temp0 = pos, temp0), 0)) {
-                for (i = 0; i < 4; i++) fn_802308E0(i);
-                for (i = 0; i < 4; i++) {
+            s32 id0 = this_->m244 == 1 ? 0x328 : 0x31f;
+            s32 handle0 = this_->m198;
+            s32 room0 = this_->m04;
+            if (fn_8038AD24(this_->m238, id0, handle0, room0, (temp0 = pos, temp0), 0)) {
+                for (s32 i = 0; i < 4; i++) fn_802308E0(i);
+                for (s32 i = 0; i < 4; i++) {
                     this_->m25C[i] = 0;
                     this_->m260[i] = 0;
                 }
                 this_->m230 = 1;
                 fn_801EE558(this_, &dir, &dist, this_->m238 + 1);
                 if (dist < lbl_8053C150) {
-                    u32 angle = (u16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * lbl_8053C164);
+                    f32 radians = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                    u32 angle = (u16)(radians * lbl_8053C164);
                     if (angle < 0x2000 || angle >= 0xE000) this_->m247 = 3;
                     else if (angle >= 0x2000 && angle < 0x6000) this_->m247 = 1;
                     else if (angle >= 0x6000 && angle <= 0xA000) this_->m247 = 2;
@@ -348,14 +352,10 @@ extern "C" void fn_80100D28(MGYA* this_) {
             switch (fn_8037EFB4(this_->m238)) {
             case 0:
                 fn_8038470C(this_->m238, this_->m244 == 1 ? 0x329 : 0x320);
-                {
-                    MGYA* q = this_;
-                    for (i = 0; i < 4; i++) {
-                        q->m270[0] = fn_802373EC(i);
-                        q->m280[0] = fn_8023725C(i);
-                        fn_802372F8(i, 5, 1);
-                        q = (MGYA*)((u8*)q + 4);
-                    }
+                for (s32 i = 0; i < 4; i++) {
+                    this_->m270[i] = fn_802373EC(i);
+                    this_->m280[i] = fn_8023725C(i);
+                    fn_802372F8(i, 5, 1);
                 }
                 this_->m230 = 3;
                 this_->m234 = 0;
@@ -460,19 +460,24 @@ extern "C" void fn_80100D28(MGYA* this_) {
         }
         break;
     case 6:
+        {
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &this_->mPos);
         this_->m234++;
-        if (this_->m234 > 50 && fn_801F68E0(fn_801F856C()) == 1) {
+        s32 st = fn_801F68E0(fn_801F856C());
+        if (this_->m234 > 50 && st == 1) {
             this_->m238 = fn_8022EA0C(this_->m238);
             fn_8022FE80(this_->m238, fn_8023DE58(this_->m238), this_->m198, 0, 0);
             if (fn_8022FD8C(this_->m198) >= 0) {
-                fn_8038AD24(this_->m238, 0x322, this_->m198, this_->m04, (temp1 = pos, temp1), 2);
+                s32 handle1 = this_->m198;
+                s32 room1 = this_->m04;
+                fn_8038AD24(this_->m238, 0x322, handle1, room1, (temp1 = pos, temp1), 2);
                 this_->m230 = 7;
                 this_->m234 = 0;
                 fn_8022B214();
                 fn_80138B7C(lbl_8053AAF8);
                 this_->m234 = 0;
             }
+        }
         }
         break;
     case 7:
@@ -513,13 +518,9 @@ extern "C" void fn_80100D28(MGYA* this_) {
             this_->m230 = 9;
             this_->m234 = 0;
             fn_801F6884(fn_801F856C());
-            {
-                MGYA* q = this_;
-                for (i = 0; i < 4; i++) {
-                    if (!fn_8022F514(i)) {
-                        fn_802372F8(i, q->m270[0], q->m280[0]);
-                    }
-                    q = (MGYA*)((u8*)q + 4);
+            for (s32 i = 0; i < 4; i++) {
+                if (!fn_8022F514(i)) {
+                    fn_802372F8(i, this_->m270[i], this_->m280[i]);
                 }
             }
             if (this_->m244 == 1) {
@@ -528,11 +529,11 @@ extern "C" void fn_80100D28(MGYA* this_) {
                 }
             } else {
                 s32 best = -1;
-                for (i = 0; i < this_->m244; i++) {
+                for (s32 i = 0; i < this_->m244; i++) {
                     if (best < this_->m268[i]) best = this_->m268[i];
                 }
                 if (best != 0) {
-                    for (i = 0; i < this_->m244; i++) {
+                    for (s32 i = 0; i < this_->m244; i++) {
                         if (best == this_->m268[i]) {
                             fn_802D7844(fn_802D6A9C(), 1, i);
                         } else {
@@ -548,12 +549,15 @@ extern "C" void fn_80100D28(MGYA* this_) {
         fn_8022FEB8(box, this_->m04, this_->m198, 1, 0);
         this_->m238 = fn_8022FD8C(this_->m198);
         if (this_->m238 >= 0) {
-            if (fn_8038AD24(this_->m238, 0x328, this_->m198, this_->m04, (temp2 = pos, temp2), 0)) {
+            s32 handle2 = this_->m198;
+            s32 room2 = this_->m04;
+            if (fn_8038AD24(this_->m238, 0x328, handle2, room2, (temp2 = pos, temp2), 0)) {
                 this_->m230 = 10;
                 this_->m234 = 0;
                 fn_801EE558(this_, &dir2, &dist2, this_->m238 + 1);
                 if (dist2 < lbl_8053C150) {
-                    u32 angle = (u16)(JMath::atanTable_.atan2_(-dir2.x, -dir2.y) * lbl_8053C164);
+                    f32 radians = JMath::atanTable_.atan2_(-dir2.x, -dir2.y);
+                    u32 angle = (u16)(radians * lbl_8053C164);
                     if (angle < 0x2000 || angle >= 0xE000) this_->m247 = 3;
                     else if (angle >= 0x2000 && angle < 0x6000) this_->m247 = 1;
                     else if (angle >= 0x6000 && angle <= 0xA000) this_->m247 = 2;
@@ -571,9 +575,10 @@ extern "C" void fn_80100D28(MGYA* this_) {
         break;
     }
 }
-
+#pragma opt_propagation off
 extern "C" void fn_80101B48(MGYA* this_) {
     s32 i;
+    MGYA* p;
     if (this_->m90 & 0x10000) {
         DrawRec rec;
         if (this_->m244 == 1) {
@@ -586,7 +591,11 @@ extern "C" void fn_80101B48(MGYA* this_) {
         }
     } else {
         this_->mPos.y = this_->m24C.y + this_->m258;
-        fn_801F06F0(this_, lbl_80463BA0, this_->m247 * 2 + this_->m246 + 0x311, 0, 0, lbl_8053C140, lbl_8053C140);
+        s32 doubled = this_->m247 << 1;
+        s32 sprite = this_->m246;
+        sprite = doubled + sprite;
+        sprite += 0x311;
+        fn_801F06F0(this_, lbl_80463BA0, sprite, 0, 0, lbl_8053C140, lbl_8053C140);
         s32 st = this_->m230;
         if (st == 5 || (u32)(st - 6) <= 1 || st == 8) {
             s32 t = this_->m23C;
@@ -594,14 +603,15 @@ extern "C" void fn_80101B48(MGYA* this_) {
             lbl_8053AF18[0x30] = m;
             lbl_8053AF18[0x31] = (t - m * 60) / lbl_8053C154;
             lbl_8053AF18[0x32] |= 0x10;
-            for (i = 0; i < this_->m244; i++) {
+            p=this_;
+            for (i = 0; i < this_->m244; i++, p=(MGYA*)((u8*)p+2)) {
                 lbl_8053AF18[0x32] |= (u8)(1 << i);
-                lbl_8053AF18[0x2c + i] = this_->m260[i];
+                lbl_8053AF18[0x2c + i] = p->m260[0];
             }
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80101DF0(MGYA* this_) {
     if (this_->m90 & 0x10000) {
         this_->m245++;
