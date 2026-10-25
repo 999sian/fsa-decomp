@@ -717,26 +717,27 @@ extern "C" void fn_800F9C20(void* this_) {
     }
 }
 
-extern "C" void fn_800F9F54(void* this_) {
-    u8* self = (u8*)this_;
+#pragma opt_propagation off
+extern "C" void fn_800F9F54(u8* this_) {
+    f32 xs;
+    f32 zero;
+    f32 zs;
+    f32 scale;
+    f32 x;
+    u8* self = this_;
     f32 sin = sincosTable___5JMath[((u16)*(u32*)(self + 0x268) >> 5) * 2];
-    f32 x = lbl_8053BFC4 * sin;
+    x = lbl_8053BFC4 * sin;
     f32 z = lbl_8053C038 * sin;
     DrawRec r;
     f32 m[3][4];
-    m[0][3] = 0.0f;
-    m[1][3] = 0.0f;
-    m[2][3] = 0.0f;
-    f32 scale = *(f32*)(self + 0x26c);
-    m[0][0] = scale + x;
-    m[0][1] = 0.0f;
-    m[0][2] = 0.0f;
-    m[1][0] = 0.0f;
-    m[1][1] = scale;
-    m[1][2] = 0.0f;
-    m[2][0] = 0.0f;
-    m[2][1] = 0.0f;
-    m[2][2] = scale + z;
+    zero = 0.0f;
+    m[0][3] = zero;
+    m[1][3] = zero;
+    m[2][3] = zero;
+    scale = *(f32*)(self + 0x26c);
+    zs = scale + z;
+    xs = scale + x;
+    WRTC_scaleMtx(m, xs, scale, zs);
     r.w18 = m;
     ((u8*)&r.w14)[0] = (u8)(s32)(lbl_8053C03C * *(f32*)(self + 0x274));
     ((u8*)&r.w14)[1] = (u8)(s32)(lbl_8053C03C * *(f32*)(self + 0x274));
@@ -747,7 +748,7 @@ extern "C" void fn_800F9F54(void* this_) {
     void* res = fn_804032E8(0x57415254, lbl_8049C5D0[self[0x278]]);
     fn_801EFD34(self, res, 0.0f, lbl_8053C040 * (*(f32*)(self + 0x26c) + z), 0.0f, &r, 5);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_800FA1A4(void* this_) {
     char* self = (char*)this_;
     if (*(u32*)(self + 0x238) & 8) {
@@ -789,12 +790,12 @@ extern "C" void fn_800FA1A4(void* this_) {
 
 extern "C" u8 lbl_8049C61C[];
 extern "C" u8 lbl_8049C628[];
-extern "C" u8 lbl_80539E80[];
-extern "C" u8 lbl_80539E88[];
-extern "C" u8 lbl_80539E90[];
-extern "C" u8 lbl_80539E94[];
-extern "C" u8 lbl_80539E98[];
-extern "C" u8 lbl_80539EA0[];
+extern "C" u8 lbl_80539E80[8];
+extern "C" u8 lbl_80539E88[8];
+extern "C" u8 lbl_80539E90[4];
+extern "C" u8 lbl_80539E94[4];
+extern "C" u8 lbl_80539E98[8];
+extern "C" u8 lbl_80539EA0[8];
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" void fn_800FA6B0(void* p)
 {
@@ -811,23 +812,14 @@ extern "C" void fn_800FA6B0(void* p)
         if (self[0x278] == 0xff) {
             self[0x278] = 3;
             self[0x27a] = 0;
-            break;
+        } else if (self[0x27a] == lbl_8049C628[self[0x279]]) {
+            self[0x27a] = 0;
+            self[0x279]++;
         }
-        if (self[0x27a] != lbl_8049C628[self[0x279]]) {
-            break;
+        if (self[0x27a] == 0 && (self[0x279] == 0 || self[0x279] == 6)) {
+            fn_801F0E34(self, 0x40026, 0);
         }
-        self[0x27a] = 0;
-        self[0x279]++;
-        if (self[0x27a] != 0) {
-            break;
-        }
-        if (self[0x279] != 0) {
-            if (self[0x279] == 6) {
-                fn_801F0E34(p, 0x40026, 0);
-            }
-            break;
-        }
-        /* fallthrough */
+        break;
     case 1:
         self[0x278] = lbl_80539E80[self[0x279]];
         if (self[0x278] == 0xff) {
@@ -874,10 +866,10 @@ extern "C" void fn_800FA6B0(void* p)
         } else if (self[0x27a] == lbl_80539EA0[self[0x279]]) {
             self[0x27a] = 0;
             self[0x279]++;
-            self[0x27a]++;
         }
         break;
     }
+    self[0x27a]++;
 }
 
 extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
