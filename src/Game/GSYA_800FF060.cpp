@@ -10,6 +10,8 @@ extern f32 lbl_8053C110;
 extern f32 lbl_8053C118;
 extern u8 lbl_80463B8C[];
 extern "C" s32 fn_8023DE58(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern f32 lbl_8053C114;
 extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
 
@@ -48,27 +50,30 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 count;
     s32 i;
-    s32 n;
+    u32 n;
+    s32* p;
     if (*(s32*)((u8*)this_ + 0x230) == 7) {
         count = fn_80138A30(lbl_8053AAF8);
         i = 0;
         if (count > 0) {
             if (count > 8) {
-                n = (count - 8 + 7) >> 3;
+                n = (u32)(count - 8 + 7) >> 3;
+                p = (s32*)this_;
                 do {
-                    fsaSetTimeSlot(this_, i + 0);
-                    fsaSetTimeSlot(this_, i + 1);
-                    fsaSetTimeSlot(this_, i + 2);
-                    fsaSetTimeSlot(this_, i + 3);
-                    fsaSetTimeSlot(this_, i + 4);
-                    fsaSetTimeSlot(this_, i + 5);
-                    fsaSetTimeSlot(this_, i + 6);
-                    fsaSetTimeSlot(this_, i + 7);
+                    fsaSetTimeValue(p[0x94], i + 0);
+                    fsaSetTimeValue(p[0x95], i + 1);
+                    fsaSetTimeValue(p[0x96], i + 2);
+                    fsaSetTimeValue(p[0x97], i + 3);
+                    fsaSetTimeValue(p[0x98], i + 4);
+                    fsaSetTimeValue(p[0x99], i + 5);
+                    fsaSetTimeValue(p[0x9a], i + 6);
+                    fsaSetTimeValue(p[0x9b], i + 7);
+                    p += 8;
                     i += 8;
                 } while (--n != 0);
             }
             for (; i < count; i++) {
-                fsaSetTimeSlot(this_, i);
+                fsaSetTimeValue(*(s32*)((u8*)this_ + 0x250 + i * 4), i);
             }
         }
         lbl_8053AF00[0x30] |= (u8)(1 << (*(s32*)((u8*)this_ + 0x240) + 4));
