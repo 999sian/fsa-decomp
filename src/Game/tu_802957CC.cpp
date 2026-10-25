@@ -11,6 +11,9 @@ static inline int houseRoom(u32 flags) {
     if (mode == 0) room = mode;
     return room;
 }
+static inline u8 houseQuery(ItemBase* actor, u32 flags, f32* pos) {
+    return actor->v17(houseRoom(flags), pos);
+}
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
@@ -718,11 +721,7 @@ extern "C" void fn_80298978(void* p) {
                         break;
                     }
                     */
-                    mode = (*(u32*)((char*)obj + 0x90) >> 24) & 7;
-                    int room = mode + 7;
-                    if (mode == 0) room = mode;
-                    ItemBase* actor = (ItemBase*)p;
-                    ret = actor->v17(room, &pos.x);
+                    ret = ((ItemBase*)p)->v17(houseRoom(*(u32*)((char*)obj + 0x90)), &pos.x);
                     if (ret == 1U) {
                         flag = 1;
                         break;
