@@ -73,7 +73,7 @@ static inline void Hrmn_approachTo(f32& cur, f32 target, f32 steps) {
     if (steps < FLT_EPSILON) {
         cur = target;
     } else {
-        cur = cur + (1.0f / steps) * (target - cur);
+        cur += (1.0f / steps) * (target - cur);
     }
 }
 
