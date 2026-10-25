@@ -589,10 +589,11 @@ extern "C" bool fn_802D6AC4(char* p, s32 bit) {
 extern "C" void fn_802D6B24(char* p, s32 bit, u8 set) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
+    char* base = p + 0x10000;
     if (set) {
-        *(u32*)(p + 0xFD68 + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + word * 4) |= 1U << shift;
+        *(u32*)(base + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + (word << 2) - 0x298) |= 1U << shift;
     } else {
-        *(u32*)(p + 0xFD68 + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + word * 4) &= (1U << shift) ^ 0xFFFFFFFF;
+        *(u32*)(base + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + (word << 2) - 0x298) &= (1U << shift) ^ 0xFFFFFFFF;
     }
 }
 
@@ -788,8 +789,7 @@ extern "C" void fn_802D7310(char* p, s32 bit, u8 set) {
 extern "C" bool fn_802D7384(char* p, s32 bit) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
-    u32 flags;
-    flags = ((u32*)(p + 0x12F68))[word];
+    const u32 flags = ((const u32*)(p + 0x12F68))[word];
     return (flags & (1 << shift)) != 0;
 }
 
@@ -840,7 +840,7 @@ extern "C" u8 fn_802D7544(char* p, s32 index) {
     if (index >= 0 && index < 256) {
         char* base = p + 0x10000;
         char* colp = base + *(s32*)(p + 0x18) * 0xa00;
-        colp += *(s32*)(p + 0x14) * 0x100;
+        colp = *(s32*)(p + 0x14) * 0x100 + colp;
         colp += index;
         return *(u8*)(colp - 0x6698);
     }
@@ -850,9 +850,9 @@ extern "C" u8 fn_802D7544(char* p, s32 index) {
 extern "C" void fn_802D7584(char* p, s32 index, u8 value) {
     if (index >= 0 && index < 256) {
         char* base = p + 0x10000;
-        char* rowp = base + *(s32*)(p + 0x18) * 0xa00;
+        char* rowp = base + *(const u32*)(p + 0x18) * 0xa00;
         u8* cell = (u8*)rowp;
-        cell = cell + *(s32*)(p + 0x14) * 0x100;
+        cell = cell + *(const u32*)(p + 0x14) * 0x100;
         cell = cell + (u32)index;
         cell[-0x6698] = value;
     }
@@ -1068,10 +1068,7 @@ extern "C" void fn_802D7E34(char*, s32 index) {
 }
 
 extern "C" u8 fn_802D7E5C(char*, u8 index, s32 bit) {
-    char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    char* e = p + (s32)index * 0x320;
-    u64 mask = *(u64*)(e + 0x3C8);
-    return ((s64)(s32)(1U << bit) & mask) != 0;
+    return (roomArrays()->masks3C8[index][0][0] & (s64)(s32)(1U << bit)) != 0;
 }
 
 extern "C" void fn_802D7EB0(char*, u8 index, s32 bit, u8 set) {
@@ -1159,8 +1156,7 @@ extern "C" char* fn_802D8128(char* p, s32 index) {
                 name = lbl_804A9530[row][col];
             else
                 name = lbl_80541128;
-            char* cell = p + y * 10;
-            s32 number = ((RoomArrays*)cell)->roomNumbers[0][x];
+            s32 number = ((RoomArrays*)((s32)p + y * 10))->roomNumbers[0][x];
             if (number == 255)
                 number = 0;
             sprintf(p + 0x1321A, lbl_8046E7E8, name, number / 10, number % 10, index - 7);
@@ -1182,7 +1178,7 @@ extern "C" char* fn_802D8228(char* p, s32 index) {
                 name = lbl_804A9530[a][b];
             else
                 name = lbl_80541128;
-            s32 number = ((RoomArrays*)(p + y * 10))->roomNumbers[0][x];
+            s32 number = ((RoomArrays*)(p + (u32)(y * 10)))->roomNumbers[0][x];
             if (number == 255)
                 number = 0;
             sprintf(p + 0x131FA, lbl_8046E804, name, number / 10, number % 10, index - 7);
@@ -2908,7 +2904,7 @@ extern "C" void fn_802DEC40(s32 index, s32 digit, u32 value) {
     index = index < 8 ? 0 : index - 7;
     s32 shift = 60 - digit * 4;
     u64 mask = (u64)15 << shift;
-    RoomArrays* base = (RoomArrays*)*(u32*)(root + 0x0C);
+    RoomArrays* base = (RoomArrays*)((u32*)root)[3];
     base->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] &= mask ^ 0xFFFFFFFFFFFFFFFFULL;
     u64 bits = (u64)value << shift;
     base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
