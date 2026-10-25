@@ -24,7 +24,7 @@ extern "C" s32 fn_802255F4(f32* pos, s32 room) {
 return fn_802252F4(pos, room);
 }
 
-static inline u16 tileIndexForCheck(const f32* pos, u32 room) {
+static inline u16 tileIndexForCheck(const f32* pos, int room) {
     struct Rect { f32 x0, y0, x1, y1; };
     u8* g = fn_802D6A9C();
     const Rect r = *(Rect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
@@ -47,15 +47,16 @@ static inline u16 tileIndexForCheck(const f32* pos, u32 room) {
 static inline u32 tileKindForCheck(f32* pos, u32 room) {
     u16 tile = tileIndexForCheck(pos, room);
     u16 kind = lbl_8046CB88[tile];
-    if (fn_802D6A9C()[room + 0x131df] != 0) {
+    u8* g = fn_802D6A9C();
+    if (g[room + 0x131df] != 0) {
         if (kind == 0) return 2;
         else if (kind == 0x61) return 0;
         return kind;
     }
-    if (kind == 0xe && lbl_8053AAF8[0x7f] != 0) {
+    if (kind == 0xe && ((u8*)lbl_8053AAF8)[0x7f] != 0) {
         if ((*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) ||
             (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3 &&
-             *(u8*)(*(s32*)(fn_802D6A9C() + 0x14) + (s32)fn_802D6A9C() + *(s32*)(fn_802D6A9C() + 0x18) * 10 + 0x60) == 0x10 &&
+             *(u8*)(*(s32*)(fn_802D6A9C() + 0x14) + *(s32*)(fn_802D6A9C() + 0x18) * 10 + (s32)fn_802D6A9C() + 0x60) == 0x10 &&
              pos[1] > lbl_8053FF50)) return 0x51;
     }
     return kind;
