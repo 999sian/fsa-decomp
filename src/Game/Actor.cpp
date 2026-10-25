@@ -1044,12 +1044,13 @@ extern "C" void fn_801F26CC(Actor* a, u32 b) {
 /* --- 0x801F3128: midpoint of the two derived edge points ------------------- */
 extern "C" void fn_801F31C4(const Actor* a, f32* out);
 extern "C" void fn_801F3128(Actor* a, f32* out) {
-    f32 x0 = a->field_60 + a->field_0C.x;
-    f32 y0 = a->field_64 + a->field_0C.y - a->field_0C.z;
-    f32 x1 = a->field_68 + a->field_0C.x;
-    f32 y1 = a->field_6C + a->field_0C.y - a->field_0C.z;
-    out[0] = 0.5f * (x0 - x1) + x1;
-    out[1] = 0.5f * (y0 - y1) + y1;
+    JGeometry::TBox2<f32> box;
+    box.set(a->field_60 + a->field_0C.x,
+            a->field_64 + a->field_0C.y - a->field_0C.z,
+            a->field_68 + a->field_0C.x,
+            a->field_6C + a->field_0C.y - a->field_0C.z);
+    ((JGeometry::TVec2<f32>*)out)->set(0.5f * (box.i.x - box.f.x) + box.f.x,
+                                   0.5f * (box.i.y - box.f.y) + box.f.y);
 }
 
 /* --- 0x801F31C4: four derived coordinates (field_60 band) ------------------ */
