@@ -9,10 +9,6 @@ extern "C" void fn_801F0E34(Actor*, u32, s32);
 extern void* lbl_8053AAF8;
 extern const f32 lbl_8053CB24;
 extern const f32 lbl_8053CB28;
-static inline s32 CRGNRandom(const s32* count) {
-    f32 random = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-    return (s32)((f32)*count * random);
-}
 #include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049E5B8[];
@@ -48,6 +44,8 @@ extern "C" Actor* fn_801291A0(Actor* p, s16 n) {
 #pragma opt_lifetimes off
 extern "C" s32 fn_80129200(Actor* self)
 {
+    s32 item;
+    s32 count;
     JGeometry::TVec3<f32> pos(self->field_0C);
     CRGNState* p = (CRGNState*)self;
     s32 room = self->field_04;
@@ -68,14 +66,13 @@ extern "C" s32 fn_80129200(Actor* self)
         *(s32*)((u8*)self + 0x23c) = Actor_CreateByID(fn_801F856C(), 0x4352544c, self->field_04, &pos.x, p->flags280, -1, -1);
         break;
     case 2: {
-        u32 param;
-        int item;
         f32 random = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-        int count = p->count240;
+        count = p->count240;
         item = p->list248[(s32)((f32)count * random)];
         if (count == 0) {
             item = p->list248[(s32)(lbl_8053CB24 * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1())];
         }
+        u32 param;
         if ((((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() >= lbl_8053CB28 && item != 2) || item == 11) {
             param = item | 0x800180;
         } else {
