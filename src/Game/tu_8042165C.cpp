@@ -110,6 +110,31 @@ typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
 #include "JSystem/JUtility/TColor.h"
 typedef void (*SetBlackWhiteFn)(u8* self, JUtility::TColor black, JUtility::TColor white);
 
+// Picture pane reached through GetSub: changeTexture(img, id) at vtable 0x110, setBlackWhite(black, white) at 0x130.
+struct TimerPicture {
+    virtual void p00(); virtual void p01(); virtual void p02(); virtual void p03();
+    virtual void p04(); virtual void p05(); virtual void p06(); virtual void p07();
+    virtual void p08(); virtual void p09(); virtual void p10(); virtual void p11();
+    virtual void p12(); virtual void p13(); virtual void p14(); virtual void p15();
+    virtual void p16(); virtual void p17(); virtual void p18(); virtual void p19();
+    virtual void p20(); virtual void p21(); virtual void p22(); virtual void p23();
+    virtual void p24(); virtual void p25(); virtual void p26(); virtual void p27();
+    virtual void p28(); virtual void p29(); virtual void p30(); virtual void p31();
+    virtual void p32(); virtual void p33(); virtual void p34(); virtual void p35();
+    virtual void p36(); virtual void p37(); virtual void p38(); virtual void p39();
+    virtual void p40(); virtual void p41(); virtual void p42(); virtual void p43();
+    virtual void p44(); virtual void p45(); virtual void p46(); virtual void p47();
+    virtual void p48(); virtual void p49(); virtual void p50(); virtual void p51();
+    virtual void p52(); virtual void p53(); virtual void p54(); virtual void p55();
+    virtual void p56(); virtual void p57(); virtual void p58(); virtual void p59();
+    virtual void p60(); virtual void p61(); virtual void p62(); virtual void p63();
+    virtual void p64(); virtual void p65();
+    virtual void* changeTexture(u32 img, u8 id);
+    virtual void p67(); virtual void p68(); virtual void p69(); virtual void p70();
+    virtual void p71(); virtual void p72(); virtual void p73();
+    virtual bool setBlackWhite(JUtility::TColor black, JUtility::TColor white);
+};
+
 // Virtual slot 68 of an object returned by SubObj::w13: calls (u32, 0).
 static inline void CallSlot68(u8* obj, u32 s) {
     ((Slot68Fn)(*(void***)obj)[68])(obj, s, 0);
@@ -337,6 +362,64 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
     }
 }
 
+extern "C" void fn_80423248(u8* this_, u32 idx) {
+    u8* base = lbl_8048E1B8;
+    if (this_[0x257] & (u8)(1 << idx)) {
+        s32 sel = 0;
+        s32 t = ((s32*)(lbl_80529DEC + 0xe8))[idx];
+        s32 j;
+        u32 s;
+        if (t > 9999) {
+            t = 9999;
+        }
+        if (t < 0) {
+            u64* key = (u64*)(base + 0xa28 + idx * 0x28);
+            u64* p = key;
+            for (j = 0; j < 5; j++) {
+                JUtility::TColor white(0xff, 0x55, 0x41, 0xff);
+                JUtility::TColor black(0, 0, 0, 0);
+                u8* pic = GetSub(this_, *p);
+                ((SetBlackWhiteFn)(*(void***)pic)[76])(pic, black, white);
+                p++;
+            }
+            if (t < -5000) {
+                t = -5000;
+            }
+            t *= -1;
+            s = fn_804030C4(0x54494d47, (u32)(base + 0x1058));
+            CallSlot68(GetSub(this_, *key), s);
+            CallSlot68(GetSub(this_, *(u64*)(base + 0xac8 + idx * 0x28)), s);
+            GetSub(this_, *(u64*)(base + 0xa28 + idx * 0x28 + 0x20))[0xb0] = 1;
+            GetSub(this_, *(u64*)(base + 0xac8 + idx * 0x28 + 0x20))[0xb0] = 1;
+            sel = 1;
+        } else {
+            u64* p = (u64*)(base + 0xa28 + idx * 0x28);
+            for (j = 0; j < 5; j++) {
+                u8* pic = GetSub(this_, *p);
+                ((SetBlackWhiteFn)(*(void***)pic)[76])(pic, *(JUtility::TColor*)(this_ + 0x214), *(JUtility::TColor*)(this_ + 0x210));
+                p++;
+            }
+            GetSub(this_, *(u64*)(base + 0xa28 + idx * 0x28 + 0x20))[0xb0] = 0;
+            GetSub(this_, *(u64*)(base + 0xac8 + idx * 0x28 + 0x20))[0xb0] = 0;
+        }
+        s = fn_804030C4(0x54494d47, lbl_804B1434[t / 1000]);
+        t %= 1000;
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel]), s);
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel]), s);
+        s = fn_804030C4(0x54494d47, lbl_804B1434[t / 100]);
+        t %= 100;
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel + 1]), s);
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel + 1]), s);
+        s = fn_804030C4(0x54494d47, lbl_804B1434[t / 10]);
+        t %= 10;
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel + 2]), s);
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel + 2]), s);
+        s = fn_804030C4(0x54494d47, lbl_804B1434[t]);
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xa28 + idx * 0x28))[sel + 3]), s);
+        CallSlot68(GetSub(this_, ((u64*)(base + 0xac8 + idx * 0x28))[sel + 3]), s);
+    }
+}
+
 extern "C" void fn_80423804(u8* this_, u32 idx) {
     u8* base = lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
@@ -356,11 +439,10 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
             k = 0;
         }
 
-        u32 off = idx * 0x40;
-        u64* a = (u64*)(base + 0x228 + off);
-        u64* b = (u64*)(base + 0x328 + off);
-        u64* c = (u64*)(base + 0x428 + off);
-        u64* d = (u64*)(base + 0x528 + off);
+        u64* a = (u64*)(base + 0x228 + (idx << 6));
+        u64* b = (u64*)(base + 0x328 + (idx << 6));
+        u64* c = (u64*)(base + 0x428 + (idx << 6));
+        u64* d = (u64*)(base + 0x528 + (idx << 6));
         for (s32 j = 0; j < 8; j++) {
             if (k >= 4) {
                 SetSub(GetSub(this_, *a), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
