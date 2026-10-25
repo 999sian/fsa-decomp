@@ -155,7 +155,7 @@ struct BoyoMtx {
 extern "C" void fn_8015B9EC(char* this_) {
     BoyoMtx mtx;
     BoyoDrawParam param;
-    f32 cx; f32 ry; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
+    f32 cx; f32 ry; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
     ry = *(u16*)(this_ + 0x25c) / lbl_8053D4BC;
     sx = sin(lbl_8053D4B8);
     sy = sin(ry);
@@ -164,7 +164,7 @@ extern "C" void fn_8015B9EC(char* this_) {
     cy = cos(ry);
     cz = cos(lbl_8053D4B8);
     f32 sc = lbl_8053D4C0;
-    f32 sxsy = sx * sy;
+    sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
     f32 sxsz = sx * sz;
@@ -180,6 +180,193 @@ extern "C" void fn_8015B9EC(char* this_) {
     mtx.m[2][2] = sc * (cx * cy);
     param.mtx = &mtx;
     fn_801F06F0(this_, lbl_804660E0, *(s32*)(this_ + 0x258) + 0x70, &param, 0, sc, sc);
+}
+
+extern "C" s32 fn_8023DE58(s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" void fn_80239914(f32* box, s32 room, s32 p);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" bool fn_8022F478(s32);
+extern "C" bool fn_8023B0F4(s32, f32*, s32, s32, f32);
+extern "C" s32 fn_801F285C(void*, s32, s32, s32, s32);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F82CC(void*, void*, u8, f32);
+extern "C" s32 fn_801A4D1C(s32, f32*, f32*);
+extern "C" s32 fn_801A6108(s32, f32*, f32*);
+extern "C" s32 fn_801A46FC(s32, f32*, f32*);
+extern "C" s32 fn_801A4F5C(s32, f32*, f32*);
+extern "C" void fn_80134DE4(void*, s32, s32);
+extern "C" void fn_802378AC(s32, f32*);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern "C" void fn_801F71A4(f32*, f32, f32, f32);
+extern void* lbl_8053AAF8;
+extern s32 lbl_804A0228[];
+extern s32 lbl_804A0244[];
+extern const f32 lbl_8053D4D0;
+extern const f32 lbl_8053D4D4;
+extern const f32 lbl_8053D4D8;
+extern const f32 lbl_8053D4DC;
+extern const f32 lbl_8053D4E0;
+extern const f32 lbl_8053D500;
+extern const f32 lbl_8053D504;
+extern const f32 lbl_8053D508;
+extern const f32 lbl_8053D50C;
+extern "C" void fn_8015BC7C(char* this_) {
+    f32 boxA[4];
+    f32 boxB[4];
+    f32 dist[4];
+    s32 idx[4];
+    f32 pos[2];
+    f32 cen[2];
+    s32 i, j, k;
+    s32 target;
+    s32 r22;
+    s32 r3v;
+    s32 mode;
+
+    *(f32*)(this_ + 0x60) = lbl_8053D4D0;
+    *(f32*)(this_ + 0x64) = lbl_8053D4D0;
+    *(f32*)(this_ + 0x68) = lbl_8053D4D4;
+    *(f32*)(this_ + 0x6c) = lbl_8053D4D4;
+    *(f32*)(this_ + 0x80) = lbl_8053D4D8;
+    *(f32*)(this_ + 0x84) = lbl_8053D4D8;
+    *(f32*)(this_ + 0x88) = lbl_8053D4DC;
+    *(f32*)(this_ + 0x8c) = lbl_8053D4DC;
+    *(s32*)(this_ + 0x108) = 1000;
+    *(u16*)(this_ + 0x25c) -= 0x100;
+
+    pos[0] = *(f32*)(this_ + 0xc);
+    pos[1] = *(f32*)(this_ + 0x10);
+    boxA[0] = *(f32*)(this_ + 0x80) + pos[0];
+    boxA[1] = *(f32*)(this_ + 0x84) + pos[1];
+    boxA[2] = *(f32*)(this_ + 0x88) + pos[0];
+    boxA[3] = *(f32*)(this_ + 0x8c) + pos[1];
+    boxB[0] = *(f32*)(this_ + 0x60);
+    boxB[1] = *(f32*)(this_ + 0x64);
+    boxB[2] = *(f32*)(this_ + 0x68);
+    boxB[3] = *(f32*)(this_ + 0x6c);
+    fn_80239914(boxA, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198));
+    boxB[0] += pos[0];
+    boxB[1] += pos[1];
+    boxB[2] += pos[0];
+    boxB[3] += pos[1];
+
+    for (i = 0; i < 4; i++) {
+        dist[i] = lbl_8053D4E0;
+        idx[i] = -1;
+        if (fn_8023DE58(i) == *(s32*)(this_ + 4)) {
+            f32 dx = *(f32*)fn_8023E724(i) - *(f32*)(this_ + 0xc);
+            f32 dy = ((f32*)fn_8023E724(i))[1] - *(f32*)(this_ + 0x10);
+            dist[i] = dolsqrtfull(dx * dx + dy * dy);
+            idx[i] = i;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            if (i < j && fn_8023DE58(j) == fn_8023DE58(i) && dist[i] > dist[j]) {
+                idx[i] = j;
+                idx[j] = i;
+                dist[i] = dist[j];
+                dist[j] = (f32)idx[i];
+            }
+        }
+    }
+
+    target = -1;
+    for (k = 0; k < 4; k++) {
+        if (idx[k] >= 0) {
+            bool ok;
+            if (fn_8022CAF8(idx[k]) == 4 || fn_8022CAF8(idx[k]) == 5) {
+                ok = !fn_8022F478(idx[k]);
+            } else {
+                ok = true;
+            }
+            if (ok && fn_8023B0F4(idx[k], boxB, *(s32*)(this_ + 4), 0, lbl_8053D4B8)) {
+                target = idx[k];
+                break;
+            }
+        }
+    }
+
+    r22 = fn_801F285C(this_, 0, 0, 0, -1);
+    r3v = fn_801F82CC(fn_801F856C(), this_, *(u8*)(this_ + 0x195), lbl_8053D500);
+    *(s32*)(this_ + 0xb0) = 0x42304;
+
+    if (target >= 0 || r22 >= 0 || r3v >= 0 || *(s32*)(this_ + 0x9c) >= 0 ||
+        *(u16*)(this_ + 0x94) == 1 ||
+        fn_801A4D1C(*(s32*)(this_ + 0x198), boxA, pos) != 0 ||
+        fn_801A6108(*(s32*)(this_ + 0x198), boxA, pos) != 0 ||
+        fn_801A46FC(*(s32*)(this_ + 0x198), boxA, pos) != 0 ||
+        fn_801A4F5C(*(s32*)(this_ + 0x198), boxA, pos) != 0) {
+        cen[0] = lbl_8053D504 * (boxB[0] - boxB[2]) + boxB[2];
+        cen[1] = lbl_8053D504 * (boxB[1] - boxB[3]) + boxB[3];
+        *(s16*)(this_ + 0x94) = 0;
+        if (target >= 0) {
+            fn_80134DE4(lbl_8053AAF8, 1, 0);
+            fn_802378AC(target, cen);
+        } else if (r22 >= 0) {
+            fn_80134DE4(lbl_8053AAF8, 1, 0);
+            fn_802378AC(r22, cen);
+        }
+        if (*(s32*)(this_ + 0x230) != 1) {
+            fn_801F0E34(this_, 0x30012, 0);
+            *(s32*)(this_ + 0x230) = 1;
+            *(s32*)(this_ + 0xb0) = 0x2000;
+        }
+    }
+
+    mode = *(s32*)(this_ + 0x90);
+    if (mode == 1 && *(s32*)(this_ + 0x240) == 0) {
+        f32 t = lbl_8053D508 * (lbl_8053D50C * (f32)*(s32*)(this_ + 0x238)) + lbl_8053D508;
+        s32 dir = *(s32*)(this_ + 0x98);
+        if (dir == 0) {
+            *(f32*)(this_ + 0x260) = t;
+            *(f32*)(this_ + 0x264) = lbl_8053D4B8;
+            *(f32*)(this_ + 0x268) = lbl_8053D4B8;
+        } else if (dir == 1) {
+            *(f32*)(this_ + 0x260) = -t;
+            *(f32*)(this_ + 0x264) = lbl_8053D4B8;
+            *(f32*)(this_ + 0x268) = lbl_8053D4B8;
+        } else if (dir == 2) {
+            *(f32*)(this_ + 0x260) = lbl_8053D4B8;
+            *(f32*)(this_ + 0x264) = t;
+            *(f32*)(this_ + 0x268) = lbl_8053D4B8;
+        } else if (dir == 3) {
+            *(f32*)(this_ + 0x260) = lbl_8053D4B8;
+            *(f32*)(this_ + 0x264) = -t;
+            *(f32*)(this_ + 0x268) = lbl_8053D4B8;
+        }
+        *(s32*)(this_ + 0x240) = 500;
+        if (*(s32*)(this_ + 0x238) != 0) {
+            *(s32*)(this_ + 0x240) = 165;
+        }
+        *(s32*)(this_ + 0x98) = *(s32*)(this_ + 0x98) ^ 1;
+        fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x260), lbl_8053D508, lbl_8053D4C0);
+        fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x264), lbl_8053D508, lbl_8053D4C0);
+        *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
+    } else if (mode >= 1 && mode < 6) {
+        *(s32*)(this_ + 0x24c) += *(s32*)(this_ + 0x250);
+        *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x234) * JMASSin(*(s32*)(this_ + 0x24c)) + *(f32*)(this_ + 0x26c);
+        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x234) * JMASCos(*(s32*)(this_ + 0x24c)) + *(f32*)(this_ + 0x270);
+    }
+
+    if (*(s32*)(this_ + 0x230) == 1) {
+        if (*(s32*)(this_ + 0x23c) == 0) {
+            *(s32*)(this_ + 0x248) = *(s32*)(this_ + 0x248) + 1;
+            if (*(s32*)(this_ + 0x248) > 6) {
+                *(s32*)(this_ + 0x258) = 0;
+                *(s32*)(this_ + 0x248) = 0;
+                *(s32*)(this_ + 0x230) = 0;
+            } else {
+                *(s32*)(this_ + 0x258) = lbl_804A0228[*(s32*)(this_ + 0x248)];
+                *(s32*)(this_ + 0x23c) = lbl_804A0244[*(s32*)(this_ + 0x248)];
+            }
+        }
+    }
+    if (*(s32*)(this_ + 0x23c) > 0) *(s32*)(this_ + 0x23c) -= 1;
+    if (*(s32*)(this_ + 0x240) > 0) *(s32*)(this_ + 0x240) -= 1;
+    if (*(s32*)(this_ + 0x244) > 0) *(s32*)(this_ + 0x244) -= 1;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
