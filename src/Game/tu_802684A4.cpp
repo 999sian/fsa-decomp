@@ -500,21 +500,32 @@ extern "C" void fn_8026E464(u8* p) {
     *(s32*)(p + 0xac) = 0;
 }
 
+#pragma opt_propagation off
 extern "C" u8 fn_8026E5F8(u8* p, Vec2f* pos) {
     if (!p[0xd64]) {
         if (fn_80251AEC(p, 0x38)) {
-            ((Vec2f*)(p + 0x324))->set(*pos);
+            f32 y;
+            f32 x;
+            x = pos->x;
+            y = pos->y;
+            *(f32*)(p + 0x324) = x;
+            *(f32*)(p + 0x328) = y;
             return 1;
         }
     } else {
         if (fn_80251AEC(p, 0x13)) {
-            ((Vec2f*)(p + 0x324))->set(*pos);
+            f32 y;
+            f32 x;
+            x = pos->x;
+            y = pos->y;
+            *(f32*)(p + 0x324) = x;
+            *(f32*)(p + 0x328) = y;
             return 1;
         }
     }
     return 0;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802381B8(void*);
 extern "C" u8 fn_80241230(void*);
 extern "C" u8 fn_80240F28(void*);
