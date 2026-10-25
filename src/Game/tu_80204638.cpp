@@ -112,33 +112,27 @@ static inline bool actorInsideBounds(const f32* rect, const f32* pos) {
  return pos[0] >= rect[0] && pos[1] >= rect[1] && pos[0] < rect[2] && pos[1] < rect[3];
 }
 extern "C" void fn_802048F4(u8* param_1) {
-    u8** slot;
-    u8* row;
-    u8* p;
-    s32 i;
-    s32 j;
-    u8* mgr = (u8*)fn_802D6A9C();
-    i = 0;
-    row = param_1;
-    for (; i < 10; i++) {
-        j = 0;
-        slot = (u8**)row;
-        for (; j < 2; j++) {
-            p = slot[1];
-            if (p != NULL && p[0x11c] != 0 && *(s32*)(p + 4) == 0) {
-                bool inside = false;
-                if (*(f32*)(p + 0xc) >= *(f32*)(mgr + 0xcc) && *(f32*)(p + 0x10) >= *(f32*)(mgr + 0xd0) &&
-                    *(f32*)(p + 0xc) < *(f32*)(mgr + 0xd4) && *(f32*)(p + 0x10) < *(f32*)(mgr + 0xd8)) {
-                    inside = true;
-                }
-                if (!inside && fn_80204D44(p) == 0) {
-                    p[0x11c] = 0;
-                }
-            }
-            slot++;
-        }
-        row += 8;
-    }
+ u8** slot;
+ u8* row;
+ u8* p;
+ s32 i;
+ s32 j;
+ u8* mgr=(u8*)fn_802D6A9C();
+ i=0;
+ row=param_1;
+ for(;i<10;i++) {
+  j=0;
+  slot=(u8**)row;
+  for(;j<2;j++) {
+   p=slot[1];
+   if(p!=NULL && p[0x11c]!=0 && *(s32*)(p+4)==0) {
+    bool inside=actorInsideBounds((f32*)(mgr+0xcc),(f32*)(p+0xc));
+    if(!inside && fn_80204D44(p)==0) p[0x11c]=0;
+   }
+   slot++;
+  }
+  row+=8;
+ }
 }
 
 extern "C" void fn_802049E0(u8* param_1, u8* param_2) {
