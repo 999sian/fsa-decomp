@@ -690,7 +690,7 @@ struct MsgProc {
     static s32 lineRow(s8 top, u8 line) {
         return line - top - 1;
     }
-    BOOL testBit(const s32 n) {
+    BOOL testBit(s32 n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
@@ -1939,10 +1939,6 @@ extern "C" const char lbl_805432B8[3];
 
 // NONMATCHING (98%): FP register allocation in indent calc, r6/r7 swap.
 extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
-    s32 y;
-    s32 x;
-    MsgLayout* l;
-    f32 fy, fx;
     if (p->cur > p->lineTab[p->layout->m15c]) {
         strcat(p->str2c0, lbl_805432B8);
         strcat(p->str2c4, lbl_805432B8);
@@ -1951,9 +1947,9 @@ extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
         p->rubySlot++;
         return;
     }
-    x = 0;
+    s32 x = 0;
     if (!p->testBit(p->cur)) {
-        l = p->layout;
+        MsgLayout* l = p->layout;
         if (l->m16c == 0 || !p->testBit(p->cur)) {
             f32 base;
             f32 pos;
@@ -1967,10 +1963,9 @@ extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
             x = (base - pos) * 0.5f + 0.5f;
         }
     }
-    l = p->layout;
-    y = p->slotLine[p->rubySlot + 3] - p->lineTab[l->m15c] - 1;
-    fy = (f32)y;
-    fx = (f32)x + p->slotOfs[p->rubySlot + 3];
+    MsgLayout* l = p->layout;
+    f32 fy = (f32)(p->slotLine[p->rubySlot + 3] - p->lineTab[l->m15c] - 1);
+    f32 fx = (f32)x + p->slotOfs[p->rubySlot + 3];
     for (int i = 0; i < 12; i++) {
         if (l->ruby[i]->tag == 0xff) {
             l->ruby[i]->y = fy;
