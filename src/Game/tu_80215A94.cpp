@@ -2,6 +2,17 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "sdk/stl/float.h"
+#define Vec SDKVec
+#define PSVECMag SDK_PSVECMag
+#define PSMTXScale SDK_PSMTXScale
+#define PSMTXConcat SDK_PSMTXConcat
+#define PSMTXIdentity SDK_PSMTXIdentity
+#include "JSystem/JGeometry/Vec.h"
+#undef PSMTXIdentity
+#undef PSMTXConcat
+#undef PSMTXScale
+#undef PSVECMag
+#undef Vec
 #include "Game/Actor.h"
 
 // ---- fn_80216238.cpp ----
@@ -144,7 +155,7 @@ extern "C" void fn_80215E18(HrmnEntry* e);
 extern "C" int fn_80215A94(HrmnTable* t) {
     int result = -1;
     s32 cnt = t->mCount;
-    if (cnt >= 2 && t->countSet() == cnt - 1) {
+    if (cnt >= 2 && cnt - 1 == t->countSet()) {
         s32 n = t->mCount;
         for (int i = 0; i < n; i++) {
             if (!t->mEntry[i].isSet()) {
@@ -180,15 +191,16 @@ extern "C" void fn_80215BCC(HrmnTable* t, int idx) {
 
 extern "C" int fn_80215C6C(HrmnTable* t, int idx) {
     int result = 0;
-    if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0(t->mEntry[idx].mSub2)) {
+    int off = idx * 0x24;
+    if (*((u8*)t + off + 0x1c) != 0 && !fn_801ED7B0((u8*)t + off + 0x1c)) {
         u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-        u8 hi = rec[0x79];
         u8 lo = rec[0x78];
+        u8 hi = rec[0x79];
         if (hi == 0 && lo == 0) {
             result = 1;
         } else {
-            u32 a = t->mEntry[idx].m20;
-            u32 b = t->mEntry[idx].m21;
+            int a = *((u8*)t + off + 0x24);
+            int b = *((u8*)t + off + 0x25);
             if (a < hi || ((u8)a == hi && (u8)b < lo)) {
                 result = 1;
             }
@@ -279,7 +291,7 @@ extern "C" void fn_8021600C(HrmnTable* t) {
 }
 
 extern "C" int fn_8021606C(HrmnTable* t) {
-    s32 n = t->mCount;
+    int n = t->mCount;
     HrmnTable* p = t;
     int result = 0;
     for (int i = 0; i < n; i++) {
@@ -308,6 +320,25 @@ HrmnEntry::HrmnEntry() {
     Hrmn_ActivateSlotA(mSub2);
 }
 
+extern "C" void fn_802162B8(void* self, s32 a2, s32 a3) {
+    u8* p = (u8*)self;
+    if (p[0] != 0) {
+        if (p[2] != 0) {
+            fn_8021BFA8(p + 4);
+            p[2]--;
+            if (p[2] != 0) {
+                Hrmn_stepSub(p, a2, a3);
+            }
+        }
+    } else {
+        if (p[1] != 0 && fn_802308E0(a2)) {
+            p[0] = 1;
+            p[1] = 0;
+            p[2] = 30;
+            Hrmn_stepSub(p, a2, a3);
+        }
+    }
+}
 
 HrmnTable::HrmnTable() : mCount((s32)fn_80138A30(lbl_8053AAF8)) {
     reset();
