@@ -38,6 +38,13 @@ extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*,
 extern "C" void fn_8016A7DC(void*, void*, const Vec*, s32, u8, u8, f32, f32);
 extern "C" void fn_8016ADE0(void*);
 extern "C" void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
+extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
+extern "C" void fn_802D6A9C();
+extern "C" u8 fn_802DCD0C();
+extern "C" u8 fn_80239D38();
+extern const f32 lbl_8053D9FC;
+extern u8 lbl_80529DEC[];
+extern u8* lbl_8053AEC8;
 extern const f32 lbl_8053D970;
 extern const f32 lbl_8053D9BC;
 extern const f32 lbl_8053D9C0;
@@ -1029,8 +1036,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x104) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x418))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
@@ -1043,8 +1050,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x108) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x424))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
@@ -1057,8 +1064,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x10c) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x434))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
@@ -1071,8 +1078,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x110) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, 0)) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
@@ -1085,8 +1092,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x114) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x440))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
@@ -1099,8 +1106,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x118) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x450))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
@@ -1113,8 +1120,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x11c) = tex;
     }
     {
-        u8* tex = 0;
         JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
+        u8* tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x460))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
