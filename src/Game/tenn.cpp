@@ -539,7 +539,7 @@ extern "C" void fn_801A3068(char* this_) {
     switch (*(s32*)(this_ + 0x274)) {
     case 0:
         if (*(s32*)(this_ + 0x238) == 0) {
-            *(s32*)(this_ + 0x264) = lbl_804A2B90[*(s32*)(this_ + 0x248) + *(s32*)(this_ + 0x98) * 4];
+            *(s32*)(this_ + 0x264) = lbl_804A2B90[(*(u32*)(this_ + 0x98) << 2) + *(u32*)(this_ + 0x248)];
             if ((*(s32*)(this_ + 0x248) & 1) == 0) {
                 *(s32*)(this_ + 0x238) = 12;
             } else {
@@ -562,7 +562,7 @@ extern "C" void fn_801A3068(char* this_) {
         lbl_8053ABC5 = 0;
         lbl_8053ABC4 = 0;
         lbl_8053A0F8 = lbl_8053E4F8;
-        u8 cVar4 = (*(u8 (**)(char*))(*(s32*)this_ + 0x34))(this_);
+        u8 cVar4 = ((Actor*)this_)->v11();
         if (cVar4 != 0) {
             *(s32*)(this_ + 0x230) = 0xb;
         } else {
