@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "Game/ItemBase.h"
 
 class Actor;
 
@@ -65,28 +66,21 @@ extern "C" void fn_802B6358(void* this_) {
     fn_801F06F0(this_, lbl_8046CAB8, 0x29, 0, 0, lbl_80540A3C, lbl_80540A3C);
 }
 
+#pragma optimization_level 3
 extern "C" void fn_802B6394(char* p) {
     switch (*(s32*)(p + 0x230)) {
     case 0: {
-        f32 box[4];
+        JGeometry::TBox2f box;
         JGeometry::TVec3f v;
-        box[0] = *(f32*)(p + 0x60);
-        box[1] = *(f32*)(p + 0x64);
-        box[2] = *(f32*)(p + 0x68);
-        box[3] = *(f32*)(p + 0x6c);
-        box[0] += *(f32*)(p + 0xc);
-        box[1] += *(f32*)(p + 0x10);
-        box[2] += *(f32*)(p + 0xc);
-        box[3] += *(f32*)(p + 0x10);
-        *(s32*)(p + 0x24c) = fn_8023AF14(box, *(void**)(p + 4), lbl_80540A38, 0);
+        box.set(*(JGeometry::TBox2f*)(p + 0x60));
+        box.addPos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+        *(s32*)(p + 0x24c) = fn_8023AF14(&box, *(void**)(p + 4), lbl_80540A38, 0);
         if (*(s32*)(p + 0x24c) >= 0) {
             *(f32*)(p + 0x23c) = lbl_80540A38;
             *(f32*)(p + 0x238) = lbl_80540A38;
             *(f32*)(p + 0x234) = lbl_80540A38;
             v = *(JGeometry::TVec3f*)fn_8023E724(*(s32*)(p + 0x24c));
-            f32 dx = v.x - *(f32*)(p + 0xc);
-            f32 dy = v.y - *(f32*)(p + 0x10);
-            if (__fabsf(dx) > __fabsf(dy)) {
+            if (__fabsf(v.x - *(f32*)(p + 0xc)) > __fabsf(v.y - *(f32*)(p + 0x10))) {
                 if (v.x < *(f32*)(p + 0xc)) {
                     *(f32*)(p + 0x234) = lbl_80540A40;
                 } else {
@@ -113,7 +107,7 @@ extern "C" void fn_802B6394(char* p) {
         *(JGeometry::TVec3f*)(p + 0xc) += *(JGeometry::TVec3f*)(p + 0x3c);
         if (*(f32*)(p + 0x14) > lbl_80540A38) {
             *(f32*)(p + 0x44) -= lbl_80540A4C;
-        } else {
+        } else if (*(f32*)(p + 0x14) <= lbl_80540A38) {
             *(f32*)(p + 0x14) = lbl_80540A38;
             *(s32*)(p + 0x248) = 0x14;
             *(s32*)(p + 0x230) = 2;
@@ -137,18 +131,13 @@ extern "C" void fn_802B6394(char* p) {
         break;
     }
     case 3: {
-        f32* tgt = (f32*)fn_8023E724(*(s32*)(p + 0x24c));
-        f32 dy = tgt[1] - *(f32*)(p + 0x10);
-        f32 dx = tgt[0] - *(f32*)(p + 0xc);
+        JGeometry::TVec2<f32> dir = *(JGeometry::TVec2<f32>*)fn_8023E724(*(s32*)(p + 0x24c));
+        dir.x -= *(f32*)(p + 0xc);
+        dir.y -= *(f32*)(p + 0x10);
+        f32 dx = dir.x, dy = dir.y;
         f32 lenSq = dx * dx + dy * dy;
-        if (lenSq > lbl_80540A58 * *(f32*)__float_epsilon) {
-            f32 scale;
-            if (lenSq <= lbl_80540A38) {
-                scale = lenSq;
-            } else {
-                f32 y = __frsqrte(lenSq);
-                scale = lbl_80540A5C * y * (lbl_80540A60 - lenSq * (y * y));
-            }
+        if (!(lenSq <= lbl_80540A58 * *(f32*)__float_epsilon)) {
+            f32 scale = JGeometry::TUtilf::inv_sqrt(lenSq);
             dx *= scale;
             dy *= scale;
         }
@@ -159,7 +148,8 @@ extern "C" void fn_802B6394(char* p) {
         fn_801F71A4(p + 0x240, lbl_80540A3C, lbl_80540A64, lbl_80540A64);
         *(f32*)(p + 0x44) -= lbl_80540A64;
         *(JGeometry::TVec3f*)(p + 0xc) += *(JGeometry::TVec3f*)(p + 0x3c);
-        JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(p + 0xc);
+        JGeometry::TVec3f saved;
+        saved = *(JGeometry::TVec3f*)(p + 0xc);
         if (fn_801F3D94(p, 1) != 0 || fn_801F305C(p)) {
             (*(void (**)(char*))(*(char**)p + 0x24))(p);
         } else if (fn_801F2618(p, 0, 0)) {
@@ -167,16 +157,14 @@ extern "C" void fn_802B6394(char* p) {
             (*(void (**)(char*))(*(char**)p + 0x24))(p);
         } else if (*(f32*)(p + 0x14) < lbl_80540A38) {
             (*(void (**)(char*))(*(char**)p + 0x24))(p);
-        } else if (fn_801F2B7C(p, *(s32*)(p + 0x114), -1, 4)) {
-            (*(void (**)(char*))(*(char**)p + 0x24))(p);
-        } else if (fn_801F2B20(p, 0)) {
+        } else if (fn_801F2B7C(p, *(s32*)(p + 0x114), -1, 4) || fn_801F2B20(p, 0)) {
             (*(void (**)(char*))(*(char**)p + 0x24))(p);
         }
         break;
     }
     }
 }
-
+#pragma optimization_level 4
 extern "C" const f32 lbl_80540A38;
 extern "C" const f32 lbl_80540A40;
 extern "C" const f32 lbl_80540A44;
