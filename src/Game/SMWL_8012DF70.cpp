@@ -83,24 +83,15 @@ extern "C" void fn_801EE434(void* p);
 extern "C" void fn_8012E230(Actor* this_) {
     u8* p = (u8*)this_;
     v03__5ActorFv(this_);
-    f32 box[4];
+    JGeometry::TBox2f bounds;
+    f32* box = (f32*)&bounds;
     JGeometry::TVec3f vec;
     f32 pos[2];
-    box[0] = *(f32*)(p + 0x60);
-    box[1] = *(f32*)(p + 0x64);
-    box[2] = *(f32*)(p + 0x68);
-    box[3] = *(f32*)(p + 0x6c);
-    f32 x = *(f32*)(p+0xc);
-    f32 x0=box[0]+x;
-    f32 x1=box[2]+x;
-    box[0]=x0;
-    f32 y=*(f32*)(p+0x10);
-    f32 y0=box[1]+y;
-    box[2]=x1;
-    f32 y1=box[3]+y;
-    box[1]=y0; box[3]=y1;
+    bounds.set(*(JGeometry::TBox2f*)(p+0x60));
+    bounds.addPos(*(JGeometry::TVec2f*)(p+0xc));
     fn_80239914(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198));
     switch (*(s32*)(p + 0x230)) {
+    case 2:
     default: break;
     case 0:
         fn_801F0E34(this_, 0x50069, 0);
@@ -152,8 +143,9 @@ extern "C" void fn_8012E230(Actor* this_) {
         break;
     case 1:
         p[0x11d] = 0;
+        f32 limit = 0.5f;
         u8 done;
-        if (*(f32*)(p+0x238)>=lbl_8053CC40 && fn_801CD950((f32*)(p+0x238),lbl_8053CC40,lbl_8053CC44)!=0) {
+        if (*(f32*)(p+0x238)>=limit && fn_801CD950((f32*)(p+0x238),limit,lbl_8053CC44)!=0) {
             done=0;
         } else {
             if (fn_801CD950((f32*)(p+0x238),lbl_8053CC48,lbl_8053CC4C)==0) done=1; else done=0;
