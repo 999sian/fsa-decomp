@@ -35,11 +35,6 @@ extern "C" void fn_80217A74(char* p);
 extern "C" void fn_801F3128(char* p, f32* out);
 extern "C" void fn_801D6D38(char* p, f32* d);
 extern "C" s32 fn_8023DE58(s32 i);
-// Whether player `player` is in room `room`.
-static inline BOOL PlayerInRoom(s32 player, s32 room) {
-    s32 r = fn_8023DE58(player);
-    return r == room;
-}
 extern "C" f32 lbl_8053F54C;
 extern "C" f32 lbl_8053F550;
 extern "C" f32 lbl_8053F534;
