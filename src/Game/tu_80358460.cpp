@@ -26,6 +26,9 @@ extern "C" const f32 lbl_80542884;
 extern "C" const f32 lbl_8054288C;
 extern "C" u8* lbl_8053AC98;
 extern "C" u8* lbl_8053AAF8;
+extern "C" const f32 lbl_80542890;
+extern "C" const f32 lbl_80542894;
+extern "C" const f32 lbl_80542898;
 extern "C" const u16 lbl_80542868[];
 extern "C" const f32 lbl_80542870;
 struct Vec8035A860 {
