@@ -1,5 +1,7 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern void* lbl_8049CB04[];
 extern "C" void* lbl_8053AAF8;
@@ -49,9 +51,19 @@ extern "C" void fn_801042D0(Actor* this_) {
 
 #pragma opt_propagation off
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_801045D8(Actor* this_) {
     u8* tbl = lbl_80463C30;
-    f32 f31 = (f32)lbl_8049C3B8[2] + (*(f32*)((u8*)this_ + 0x10) + lbl_8053C1FC * (f32)(lbl_8049C3B8[0] + ((s32*)(tbl + 0x220))[*(s32*)((u8*)this_ + 0x238)]) + ((f32*)(tbl + 0x268))[*(s32*)((u8*)this_ + 0x238)]);
+    f32 f31;
+    {
+        s32* ids;
+        f32* offs;
+        s32 idx;
+        idx = *(s32*)((u8*)this_ + 0x238);
+        ids = (s32*)(tbl + 0x220);
+        offs = (f32*)(tbl + 0x268);
+        f31 = (f32)lbl_8049C3B8[2] + (*(f32*)((u8*)this_ + 0x10) + lbl_8053C1FC * (f32)(lbl_8049C3B8[0] + ids[idx]) + offs[idx]);
+    }
 
     switch (*(s32*)((u8*)this_ + 0x234)) {
     case 0:
@@ -91,21 +103,25 @@ extern "C" void fn_801045D8(Actor* this_) {
 
     if (*(u8*)((u8*)this_ + 0x244) != 0) {
         f32 box[4];
-        box[0] = *(f32*)((u8*)this_ + 0xc) - lbl_8053C224;
+        f32 x = *(f32*)((u8*)this_ + 0xc);
         box[1] = f31 - lbl_8053C224;
-        box[2] = *(f32*)((u8*)this_ + 0xc) + lbl_8053C224;
-        box[3] = f31 + lbl_8053C224;
+        box[2] = lbl_8053C224 + x;
+        box[0] = x - lbl_8053C224;
+        box[3] = lbl_8053C224 + f31;
         fn_80239914(box, *(u32*)((u8*)this_ + 4), *(u32*)((u8*)this_ + 0x198));
     }
     if (*(u8*)((u8*)this_ + 0x246) != 0) {
         if (*(u8*)((u8*)this_ + 0x246) == 1) {
-            fn_80458FF0(lbl_8053AF80, ((u32*)(tbl + 0x28c))[*(s32*)((u8*)this_ + 0x238)], 0, 0);
+            u32* ids = (u32*)(tbl + 0x28c);
+            fn_80458FF0(lbl_8053AF80, ids[*(s32*)((u8*)this_ + 0x238)], 0, 0);
         } else if (*(u8*)((u8*)this_ + 0x246) == 2) {
-            fn_80458FF0(lbl_8053AF80, ((u32*)(tbl + 0x28c))[*(s32*)((u8*)this_ + 0x238)], 1, 0);
+            u32* ids = (u32*)(tbl + 0x28c);
+            fn_80458FF0(lbl_8053AF80, ids[*(s32*)((u8*)this_ + 0x238)], 1, 0);
         }
         *(u8*)((u8*)this_ + 0x246) = 0;
     }
 }
+#pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" Actor* fn_80104894(Actor* p, s16 n) {
