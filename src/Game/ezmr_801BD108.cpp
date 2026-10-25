@@ -37,7 +37,7 @@ extern "C" u8 fn_802D800C(void* mgr, s32 id);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" void fn_801BD8C0(void* obj, const JGeometry::TVec3<f32>& pos, s32 angle);
-extern const f32 lbl_8053EC70;
+extern f32 lbl_8053EC70;
 
 static inline s16 ezmrGetSpeed(u8* this_) {
     s16 v = *(s16*)(this_ + 0x2f8);
@@ -49,10 +49,13 @@ static inline s16 ezmrGetSpeed(u8* this_) {
 }
 
 extern "C" void fn_801BD198(u8* this_) {
-    s16 speed = ezmrGetSpeed(this_);
-    *(s16*)(this_ + 0x2fa) += speed;
-    speed = ezmrGetSpeed(this_);
-    if (speed < 0) {
+    s32 sw = *(s32*)(this_ + 0x2f0);
+    s16 v = *(s16*)(this_ + 0x2f8);
+    if (sw != 0 && fn_802D800C(fn_802D6A9C(), sw)) {
+        v = -v;
+    }
+    *(s16*)(this_ + 0x2fa) += v;
+    if (ezmrGetSpeed(this_) < 0) {
         *(s16*)(this_ + 0x2fc) = *(s16*)(this_ + 0x2fa) - 0x4000;
     } else {
         *(s16*)(this_ + 0x2fc) = *(s16*)(this_ + 0x2fa) + 0x4000;
