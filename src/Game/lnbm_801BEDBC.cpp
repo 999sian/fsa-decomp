@@ -46,22 +46,95 @@ extern "C" void fn_801BEDBC(u8* this_) {
 
 inline void* lnbmMgr() { u8* m = fn_8020D58C(); return m + m[1] * 0x784 + 4; }
 
-extern "C" BOOL fn_801BEE6C(ItemBase* this_, void* a, void* b) {
-    BOOL result;
+inline BOOL lnbmCheckCollision(ItemBase* self, int room, f32* pos) {
+    s32 param;
+    BOOL result = TRUE;
+    if (!fn_802265DC(pos, (void*)room, 0)) {
+        param = *(s32*)((u8*)self + 0x90);
+        if (!fn_8020D6AC(lnbmMgr(), (void*)room, pos, param, 0)) {
+            result = FALSE;
+        }
+    }
+    return result;
+}
+
+extern "C" BOOL fn_801BEE6C(ItemBase* this_, int a, f32* b) {
     switch ((u16)fn_8022461C(b)) {
     case 3:
     case 13:
     case 14:
         return FALSE;
     }
-    result = TRUE;
-    if (!fn_802265DC(b, a, 0)) {
-        u32 v = *(u32*)((u8*)this_ + 0x90);
-        if (!fn_8020D6AC(lnbmMgr(), a, b, v, 0)) {
+    BOOL result = TRUE;
+    if (!fn_802265DC(b, (void*)a, 0)) {
+        this_ = *(ItemBase**)((u8*)this_ + 0x90);
+        if (!fn_8020D6AC(lnbmMgr(), (void*)a, b, (u32)this_, 0)) {
             result = FALSE;
         }
     }
     return result;
+}
+
+extern "C" void fn_801BEF40(u8* this_) {
+    if (*(u32*)(this_ + 0x230) & 0x2000) {
+        fn_801EE434(*(void**)(this_ + 0x2a8));
+        *(void**)(this_ + 0x2a8) = 0;
+        this_[0x11c] = 0;
+        return;
+    }
+    *(s32*)(this_ + 0x24c) += 1;
+    if (*(s32*)(this_ + 0x24c) < 0) {
+        *(s32*)(this_ + 0x24c) = 0;
+    }
+    if (!(*(u32*)(this_ + 0x230) & 0x400)) {
+        *(u32*)(this_ + 0x230) |= 0x400;
+        (*(void (**)(void*))(*(u32*)this_ + 0x54))(this_);
+        return;
+    }
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(this_ + 0xc);
+    pos->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+    if (*(void**)(this_ + 0x2a8) != 0) {
+        u32 n = 1;
+        if (*(s32*)(this_ + 0x24c) < 2) {
+            n = *(u16*)(this_ + 0x94);
+        }
+        fn_8013CB44(*(void**)(this_ + 0x2a8), this_ + 0xc, 0, n, 1);
+        f32 r = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
+        s16 ang = r * lbl_8053ED04;
+        fn_8013CAA4(*(void**)(this_ + 0x2a8), lbl_8053ED08 * (lbl_8053ED0C * ang));
+    }
+    s32 room = *(s32*)(this_ + 0x4);
+    f32* rb = (f32*)((u8*)fn_802D6A9C() + (room < 8 ? 0xcc : 0xdc));
+    if (pos->x >= rb[0] || pos->y >= rb[1] || pos->x >= rb[2] || pos->y >= rb[3]) {
+        *(u32*)(this_ + 0x230) |= 0x2000;
+        return;
+    }
+    f32* box = (f32*)(this_ + 0x80);
+    JGeometry::TVec3<f32> pt;
+    if ((pt.x = pos->x + box[0], pt.y = pos->y + box[1], pt.z = pos->z, (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt)) ||
+        (pt.x = pos->x + box[2], (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt)) ||
+        (pt.x = pos->x + box[0], pt.y = pos->y + box[3], (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt)) ||
+        (pt.x = pos->x + box[2], (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt))) {
+        JGeometry::TVec3<f32> sp;
+        sp.x = pos->x + box[0];
+        sp.y = pos->y + box[1];
+        sp.z = pos->z;
+        for (s32 i = 0; i < 2; i++) {
+            for (s32 j = 0; j < 2; j++) {
+                if (fn_801CCC78(&sp, room)) {
+                    fn_802A20F0(lbl_8053AC98, &sp, -1, room, 0, 0);
+                }
+                sp.y += box[3] - box[1];
+            }
+            sp.x += box[2] - box[0];
+        }
+        fn_8013CC50(room, this_ + 0xc, 0x1e, 0, -1, 0, 0, 1, lbl_8053ED00);
+        fn_8013CC50(room, this_ + 0xc, 0x1f, 0, 0, 0, 0, 1, lbl_8053ED00);
+        fn_801F0E34(this_, 0x30061, 0);
+        *(u32*)(this_ + 0x230) |= 0x2000;
+        return;
+    }
+    fn_801F2B7C(this_, *(s32*)(this_ + 0x114), -1, 1);
 }
 
 extern "C" void fn_801BF464(u8* this_) {
