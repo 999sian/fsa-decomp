@@ -152,6 +152,17 @@ extern "C" int __float_epsilon[];
 extern u8 lbl_8046B790[];
 extern "C" f32 lbl_8046B7B0[];
 
+static inline bool hasCarriedActor(char* p) {
+    return U8(p, 0xd64) == 1;
+}
+
+static inline s32 attachActorState(u8 flag) {
+    s32 state = 0x12;
+    if (flag)
+        state = 0x11;
+    return state;
+}
+
 static inline u8 canAttachActor(char* p) {
     if ((u8)fn_80270A8C(p))
         return 0;
