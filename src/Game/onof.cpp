@@ -316,9 +316,11 @@ extern u32 lbl_8046D8F8[];
 extern f32 lbl_80540DC0;
 extern "C" void fn_802CBAFC(u8* this_) {
     s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
-    s32 i = 0;
-    s32 off = 0;
-    for (; i < count; i++, off += 4) {
+    s32 off;
+    s32 i;
+    i = 0;
+    off = 0;
+    for (; i < count; off += 4, i++) {
         u8* obj = *(u8**)((u8*)fn_801F856C() + off + 8);
         if (obj != 0 && (*(s32*)(obj + 0x1a0) == 0x53575434 || *(s32*)(obj + 0x1a0) == 0x4c4f5357) &&
             *(s32*)(this_ + 0x170) == *(s32*)(obj + 0x170)) {
@@ -428,11 +430,7 @@ extern "C" void fn_802CBC70(OnofActor* this_) {
         this_->field_238 = 4;
     }
     f32 wide = lbl_80540DC4;
-    f32 near = lbl_80540DC8;
-    this_->field_60 = wide;
-    this_->field_64 = wide;
-    this_->field_68 = near;
-    this_->field_6C = near;
+    ((OnofBox2*)&this_->field_60)->set(wide, wide, lbl_80540DC8, lbl_80540DC8);
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
