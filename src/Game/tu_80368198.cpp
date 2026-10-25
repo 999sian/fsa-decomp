@@ -61,7 +61,16 @@ struct Vec3f {
     f32 z;
 };
 typedef void (Unk8036C300::*Unk8036C300Func)();
-extern Unk8036C300Func lbl_804AE070[];
+extern "C" void fn_80369DDC(void*);
+extern "C" void fn_80368CD8(void*);
+PTMF lbl_804AE058[2] = {
+    {0, -1, {(void*)fn_80369DDC}},
+    {0, -1, {(void*)fn_80368CD8}}
+};
+Unk8036C300Func lbl_804AE070[2] = {
+    *(Unk8036C300Func*)&lbl_804AE058[0],
+    *(Unk8036C300Func*)&lbl_804AE058[1]
+};
 extern char lbl_804AE088[];
 extern char lbl_8049CC34[];
 extern "C" void __dt__13Base_8010E074Fv(void* this_, int how);
