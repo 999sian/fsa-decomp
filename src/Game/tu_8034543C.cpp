@@ -168,7 +168,7 @@ static inline void tuSetVec(Vec* v, f32 x, f32 y, f32 z) {
 
 static inline void tuSpawnFish(u8* self, f32 fx, f32 fy) {
     Vec pos;
-    tuSetVec(&pos, lbl_805423D0 * tuRandF() + fx, lbl_805423D0 * tuRandF() + fy, lbl_805423A0);
+    tuSetVec(&pos, fx + lbl_805423D0 * tuRandF(), fy + lbl_805423D0 * tuRandF(), lbl_805423A0);
     Actor_CreateByID(fn_801F856C(), 0x46495348, *(s32*)(self + 0x4), &pos, 0, -1, -1);
 }
 
@@ -182,16 +182,14 @@ extern "C" s32 fn_803466C0(s32 param_1, s32 param_2, s32 param_3) {
 
 extern "C" void fn_80346704(Actor* this_) {
     u16 tiles[713];
-    u32 spawn = *(u32*)((u8*)this_ + 0x90);
+    u32 spawn = this_->field_90;
+    s32 extra = (spawn >> 12) & 0xff;
+    s32 range = (spawn >> 20) & 0xff;
     u8* self = (u8*)this_;
-    s32 extra;
-    s32 range;
     u32 count;
     s32 n;
 
-    *(u32*)(self + 0x90) = spawn & 0xfff;
-    extra = (spawn >> 12) & 0xff;
-    range = (spawn >> 20) & 0xff;
+    this_->field_90 = spawn & 0xfff;
     *(s32*)(self + 0x108) = 10000;
     *(f32*)(self + 0x60) = lbl_8054241C;
     *(f32*)(self + 0x64) = lbl_8054241C;
