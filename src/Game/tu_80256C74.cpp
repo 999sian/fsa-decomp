@@ -47,9 +47,6 @@ static inline f32 playerVelocitySquared(const JGeometry::TVec3<f32>& velocity) {
 #define V3(p, o) (*(JGeometry::TVec3<f32>*)((u8*)(p) + (o)))
 #define BOX(p, o) (*(JGeometry::TBox2<f32>*)((u8*)(p) + (o)))
 
-static inline void setPlayerBoxAround(JGeometry::TBox2<f32>& box, const JGeometry::TVec3<f32>& pos, f32 extent) {
-    box.set(pos.x - extent, pos.y - extent, extent + pos.x, extent + pos.y);
-}
 
 extern "C" {
 void* fn_801F856C();
@@ -901,10 +898,9 @@ extern "C" void fn_80258890(u8* p) {
         }
         if (U8(p, 0x3fa) == 0xb) {
             U8(p, 0xb9e) = 1;
-            JGeometry::TBox2<f32>* __restrict box = &BOX(p, 0x5cc);
+            f32 right = lbl_805400E0 + pos.x;
             const f32 extent = lbl_805400E0;
-            f32 right = extent + pos.x;
-            box->set(pos.x - extent, pos.y - extent, right, extent + pos.y);
+            BOX(p, 0x5cc).set(pos.x - extent, pos.y - extent, right, extent + pos.y);
         }
         if (U8(p, 0x3fa) == 0xc) {
             S32(p, 0xba0) = fn_802A1844(lbl_8053AC98, &pos, S32(p, 0x4), S32(p, 0x3b4));
