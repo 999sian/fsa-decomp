@@ -74,6 +74,73 @@ extern "C" s32 fn_802064E0(void* this_) {
     return result;
 }
 
+extern "C" void fn_80206538(void* this_) {
+    char* p = (char*)this_;
+    u32 v;
+    s32 w;
+    fn_801D0ED0(this_);
+    v = *(u32*)(p + 0x90) & 0xf;
+    *(u8*)(p + 0x34a) = v > 9 ? 9 : v;
+    v = (*(u32*)(p + 0x90) >> 8) & 0xff;
+    *(u8*)(p + 0x34b) = v > 3 ? v : 3;
+    v = (*(u32*)(p + 0x90) >> 16) & 0xff;
+    *(u8*)(p + 0x34c) = v > 3 ? v : 3;
+    if (*(u8*)(p + 0x34c) <= *(u8*)(p + 0x34b)) {
+        *(u8*)(p + 0x34c) = *(u8*)(p + 0x34b) + 1;
+    }
+    w = (*(u32*)(p + 0x90) >> 24) & 3;
+    *(s32*)(p + 0x350) = w < 3 ? w : 3;
+    *(u32*)(p + 0x354) = *(u32*)(p + 0x90) >> 27;
+    fn_802072E4(this_);
+    f32 b = lbl_8053F8A0;
+    f32 a = lbl_8053F89C;
+    *(f32*)(p + 0x80) = a;
+    *(f32*)(p + 0x84) = a;
+    *(f32*)(p + 0x88) = b;
+    *(f32*)(p + 0x8c) = b;
+    *(u32*)(p + 0xb0) = 0x51303;
+    *(u32*)(p + 0x230) |= 0x200;
+    *(s32*)(p + 0x108) = 1000;
+    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
+    *(f32*)(p + 0x32c) = *(f32*)(p + 0xc);
+    *(f32*)(p + 0x330) = *(f32*)(p + 0x10);
+    *(f32*)(p + 0x334) = *(f32*)(p + 0x14);
+    *(s16*)(p + 0x33c) = fn_801F6874(*(void**)(p + 0x98));
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = -1;
+    f32 z = lbl_8053F860;
+    *(f32*)(p + 0x254) = z;
+    *(f32*)(p + 0x258) = z;
+    fn_801D2608(p + 0x270, lbl_804A59B0 + (*(s32*)(p + 0x350) << 5), 8);
+    fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
+    fn_801D1D60(p + 0x270);
+    fn_80204A20(fn_80204638(), this_);
+    u8 hit = 0;
+    s32 roomIdx = *(s32*)(p + 0x354);
+    if (roomIdx != 0) {
+        if (fn_802D7F40(fn_802D6A9C(), roomIdx)) {
+            hit = 1;
+        }
+    }
+    if (hit) {
+        f32 d = lbl_8053F8A4;
+        f32 c = lbl_8053F870;
+        *(f32*)(p + 0x60) = c;
+        *(f32*)(p + 0x64) = c;
+        *(f32*)(p + 0x68) = d;
+        *(f32*)(p + 0x6c) = d;
+        *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+        *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+        *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+        *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+        *(s32*)(p + 0xb0) = 0;
+        *(u8*)(p + 0x11c) = 0;
+        fn_80204638();
+        fn_80204834();
+    }
+}
+
 // ---- fn_80206758_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 #ifndef dtor_80084580
@@ -160,6 +227,7 @@ extern "C" f32* fn_8023E724(void* a);
 extern "C" void fn_801CE32C(void);
 extern f32 lbl_8053F860;
 extern "C" void fn_80204DAC(void* this_) {
+    f32 zero;
     char* p = (char*)this_;
     if (*(s32*)(p + 0x248) == 3) {
         if (*(u8*)(p + 0xc4) != 0) {
@@ -167,7 +235,7 @@ extern "C" void fn_80204DAC(void* this_) {
             *(s16*)(p + 0x33c) = fn_801F6874(*(void**)(p + 0x98));
             TzokVec3* src = (TzokVec3*)fn_8023E7B0(*(void**)(p + 0xc8));
             f32 x = src->x;
-            f32 zero = lbl_8053F860;
+            zero = lbl_8053F860;
             *(f32*)(p + 0xc) = x;
             *(f32*)(p + 0x10) = src->y;
             *(f32*)(p + 0x14) = src->z;
@@ -385,6 +453,20 @@ extern "C" void fn_80205478(void* this_) {
     fn_801CE4BC(this_);
 }
 
+extern "C" void fn_801F11B4(void);
+extern "C" void fn_802055A4(u8* this_, u8 flag) {
+    if (flag == 0) {
+        fn_801F11B4();
+    }
+    if (*(s32*)(this_ + 0x248) >= 3) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x248) < 1) {
+        return;
+    }
+    fn_80205E0C(this_, 0);
+}
+
 extern "C" void fn_80205E0C(u8* self, s32 n) {
     if (n == 7) {
         switch (*(s32*)(self + 0x248)) {
@@ -404,7 +486,7 @@ extern "C" void fn_80205E0C(u8* self, s32 n) {
     case 0:
         *(s32*)(self + 0x340) = -1;
         *(s32*)(self + 0x338) = -1;
-        *(f32*)(self + 0x258) = lbl_8053F860;
+        *(f32*)(self + 0x258) = 0.0f;
         *(s32*)(self + 0x2a8) = 0;
         fn_80217484(self + 0x368);
         break;
@@ -415,14 +497,16 @@ extern "C" void fn_80205E0C(u8* self, s32 n) {
         *(s32*)(self + 0x2a8) = 0;
         *(u32*)(self + 0x230) |= 0x1000;
         break;
-    case 2:
+    case 2: {
+        const f32* __restrict tbl = (const f32*)lbl_8046A238;
         *(u8*)(self + 0x349) = 0x1e;
-        *(f32*)(self + 0x258) = *(f32*)(lbl_8046A238 + *(s32*)(self + 0x350) * 0x14 + 4);
+        *(f32*)(self + 0x258) = tbl[*(s32*)(self + 0x350) * 5 + 1];
         *(u32*)(self + 0x230) |= 0x1000;
         break;
+    }
     case 3: {
         s32 m1 = -1;
-        f32 zero = lbl_8053F860;
+        f32 zero = 0.0f;
         *(s32*)(self + 0x340) = m1;
         *(s32*)(self + 0x338) = m1;
         *(f32*)(self + 0x254) = zero;
@@ -451,7 +535,7 @@ extern "C" void fn_80205E0C(u8* self, s32 n) {
         break;
     case 7: {
         s32 m1 = -1;
-        f32 zero = lbl_8053F860;
+        f32 zero = 0.0f;
         *(s32*)(self + 0x340) = m1;
         *(s32*)(self + 0x338) = m1;
         *(f32*)(self + 0x254) = zero;
@@ -539,26 +623,27 @@ static inline TzokRect* tzokRoomRect(s32 room) {
     return room < 8 ? (TzokRect*)(cfg + 0xcc) : (TzokRect*)(cfg + 0xdc);
 }
 
+#pragma opt_propagation off
 extern "C" BOOL fn_8020609C(TzokActor* self) {
     s32 room;
+    u16 state = self->m94;
     BOOL r;
+    TzokActor* actor = self;
     r = FALSE;
-    if (self->m94 == 1 && !fn_801CD2F8(self->mRoom)) {
-        room = self->mRoom;
-        u8* cfg = (u8*)fn_802D6A9C();
-        f32* rect = (f32*)(room < 8 ? cfg + 0xcc : cfg + 0xdc);
-        f32 x = self->mX;
-        bool inside = false;
-        if (x >= rect[0] && self->mY >= rect[1] && x < rect[2] && self->mY < rect[3]) {
-            inside = true;
-        }
-        if (!inside) {
-            r = TRUE;
+    if (state == 1) {
+        if (!fn_801CD2F8(actor->mRoom)) {
+            room = actor->mRoom;
+            u8* cfg = (u8*)fn_802D6A9C();
+            f32* rect = (f32*)(room < 8 ? cfg + 0xcc : cfg + 0xdc);
+            f32 x = actor->mX;
+            bool inside = false;
+            if (x >= rect[0] && actor->mY >= rect[1] && x < rect[2] && actor->mY < rect[3]) inside = true;
+            if (!inside) r = TRUE;
         }
     }
     return r;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80206168(char* p) {
     s32 kind;
     u32 n;
@@ -601,10 +686,10 @@ extern "C" void fn_80206168(char* p) {
             if (obj == 0) {
                 continue;
             }
-            f32 c0 = lbl_8053F898;
-            f32 c1 = lbl_8053F894;
-            f32 c2 = lbl_8053F878;
             f32 c3 = lbl_8053F870;
+            f32 c2 = lbl_8053F878;
+            f32 c1 = lbl_8053F894;
+            f32 c0 = lbl_8053F898;
             TzokVec3 v;
             v.z = c0 * tzokRand01();
             v.y = c1 * (c2 * tzokRand01() - c3);
