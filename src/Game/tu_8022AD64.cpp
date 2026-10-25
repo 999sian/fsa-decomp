@@ -155,7 +155,7 @@ void fn_80248E94(Player*, int);
 u8 fn_80241BA0(Player*, int, const JGeometry::TVec3<f32>&, u8);
 int fn_80241DD0(Player*, int, const JGeometry::TVec3<f32>&);
 void fn_8023FF90(Player*, const JGeometry::TVec3<f32>&);
-SameTeamResult fn_8022E438(int, int);
+bool fn_8022E438(int, int);
 void SetBusyLocked(Player*);
 const JGeometry::TVec2<f32>& fn_802422C4(Player*);
 u8 fn_8037F1E4(int);
