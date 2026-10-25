@@ -452,7 +452,7 @@ static inline f32 ichlLen(const IchlV2& v) {
 static inline bool ichlIsZero(const IchlV2& v) {
     f32 limit;
     f32 square;
-    square = ichlSq(v);
+    square = v.squared();
     limit = JGeometry::TUtilf::epsilon();
     bool r = square <= limit;
     return r;
@@ -492,16 +492,20 @@ extern "C" void fn_801DB9CC(char* p) {
                 rx = -rx;
                 ry = -ry;
             }
-            *(s16*)(p + 0x2dc) = lbl_8053F308 * JMAAtan2Radian(rx, ry);
+            f32 angle = JMAAtan2Radian(rx, ry);
+            angle *= lbl_8053F308;
+            *(s16*)(p + 0x2dc) = angle;
             *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
         }
     }
     f32 sy;
     f32 sx;
     s16 ang = *(s16*)(p + 0x2dc);
+    sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
     f32 r = *(f32*)(p + 0x2d4);
-    sx = -JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-    sy = -JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    sx = -sx;
+    sy = -sy;
     sx *= r;
     sy *= r;
     *(f32*)(p + 0x2bc) = *(f32*)(p + 0xc);
