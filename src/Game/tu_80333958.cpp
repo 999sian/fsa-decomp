@@ -1,4 +1,5 @@
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
 
 class Actor;
 
@@ -204,11 +205,11 @@ extern "C" void fn_80333E8C(void* this_) {
     u8 r;
     fn_801F2B7C(this_, -0x64, -1, 1);
     r = ((Tu80333E8CSelf*)this_)->v13();
-    if (r != 0) {
+    if (r) {
         return;
     }
     ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
-    r = ((Tu80333E8CSelf*)this_)->v19(*(u32*)(p + 4));
+    r = ((Tu80333E8CSelf*)this_)->v19(*(u32*)((unsigned short)p + 4));
     if (r != 0 || *(s32*)(p + 0x244) > 0x258) {
         *(u8*)(p + 0x11c) = 0;
     }
