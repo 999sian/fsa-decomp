@@ -293,24 +293,37 @@ extern "C" void fn_801BACE8(ZNRA* this_, s32 state) {
         fn_801D22DC(p + 0x270, 0, 2, 0);
         if (*(u32*)(p + 0x1a0) == 'ZORA') {
             JGeometry::TVec3<f32> pos;
-            s32 i, j;
-            u32 n = *(u32*)(p + 0x90);
+            s32 cnt;
+            s32 j;
+            ZnraCell* cell;
+            ZnraCell* out;
+            s32 start;
+            u32 n;
+            s32 i;
+            n = *(u32*)(p + 0x90);
             JGeometry::TVec3<f32> dst(*(JGeometry::TVec3<f32>*)(p + 0x24));
             if (n != 0) {
-                s32 cnt = 0;
+                cnt = 0;
                 ZnraCell cells[0x3c1];
-                for (i = -n; i <= (s32)n; i++) {
+                i = -n;
+                start = i;
+                out = cells;
+                for (; i <= (s32)n; i++) {
                     f32 dx = 16.0f * i;
-                    for (j = -n; j <= (s32)n; j++) {
+                    j = start;
+                    cell = out;
+                    for (; j <= (s32)n; j++) {
                         pos.x = *(f32*)(p + 0x24);
                         pos.y = *(f32*)(p + 0x28);
                         pos.z = *(f32*)(p + 0x2c);
                         pos.x = pos.x + dx;
                         pos.y = 16.0f * j + pos.y;
                         if ((u16)((u32(*)(void*, u32))fn_8022461C)(&pos, *(u32*)(p + 4)) == 13) {
-                            cells[cnt].x = i;
-                            cells[cnt].y = j;
+                            cell->x = i;
+                            cell->y = j;
+                            out++;
                             cnt++;
+                            cell++;
                         }
                     }
                 }
