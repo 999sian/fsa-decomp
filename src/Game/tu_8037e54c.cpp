@@ -29,6 +29,13 @@ extern u8 lbl_8050EC80[];
 #include "JSystem/JUtility/JUTFont.h"
 #include "JSystem/JUtility/TColor.h"
 #include "JSystem/JUtility/JUTVideo.h"
+extern "C" u32 fn_80383EB0(s32 p, s32 q);
+extern "C" u8 fn_80389F78(s32 unused, s32 p, s32 unused2, u32 id, JGeometry::TVec3<f32>* pos, u16 flags);
+extern "C" u8 fn_80389964(s32 unused, s32 self, u32 id, u16 flags);
+extern "C" u8 fn_8038B8A8(s32 unused, s32 p, s32 q, u32 id, u32 flags);
+extern f32 lbl_805430F8;
+extern f32 lbl_805430FC;
+extern u8* lbl_8053AB10;
 
 // ---- from src/Game/Dtor_lbl804AF070_8038D90C.cpp ----
 // fn_8038D90C - actor@lbl_804AF070: destructor. Reinstalls the base
