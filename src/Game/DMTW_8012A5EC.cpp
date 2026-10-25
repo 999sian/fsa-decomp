@@ -572,7 +572,7 @@ extern "C" void fn_8012B218(char* p) {
 }
 #pragma opt_common_subs reset
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
-extern u8 lbl_8053CB64[];
+extern u8 lbl_8053CB64[4];
 extern f32 lbl_8053CB8C;
 extern f32 lbl_8053CBB0;
 extern "C" void fn_8012BC40(char* this_) {
@@ -730,9 +730,12 @@ extern "C" void fn_8012C334(char* this_) {
         }
     }
     if (lbl_8053AAB0 == 0) {
-        f32 y = lbl_8053CB68 + *(f32*)(this_ + 0x3f4);
-        f32 z = lbl_8053CB8C;
-        f32 x = *(f32*)(this_ + 0x3f8);
+        f32 y;
+        f32 z;
+        f32 x;
+        y = lbl_8053CB68 + *(f32*)(this_ + 0x3f4);
+        z = lbl_8053CB8C;
+        x = *(f32*)(this_ + 0x3f8);
         y = lbl_8053CBF0 + y;
         JGeometry::TVec3<f32> v0(x - lbl_8053CBF0, y, z);
         JGeometry::TVec3<f32> v1(x - lbl_8053CBF4, y, z);
@@ -764,14 +767,11 @@ extern void* __vt__4DMTW[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void* fn_8012C4F8(u32* this_, s16 freeFlag) {
-    int i;
-    u32* p;
-    u32* a;
     if (this_ != NULL) {
+        u32* p = this_;
         *(void**)this_ = __vt__4DMTW;
-        p = this_;
-        for (i = 0; i != 2; i++) {
-            a = (u32*)p[0xe2];
+        for (s32 i = 0; i < 2; i++) {
+            u32* a = (u32*)p[0xe2];
             if (a != NULL) {
                 a[0x3d] |= 0x100;
                 p[0xe2] = 0;
@@ -819,6 +819,7 @@ extern "C" void fn_80230498(s32, void*, s32, s32, s32, s32, s32);
 extern "C" void fn_8012C638(char* this_) {
     Vec saved;
     s32 i;
+    s32 j;
 
     JGeometry::setTVec3f((f32*)(this_ + 0xc), (f32*)&saved);
     for (i = 0; i < 6; i++) {
@@ -826,9 +827,9 @@ extern "C" void fn_8012C638(char* this_) {
         fn_801F06F0(this_, lbl_804650E0, *(s32*)(this_ + 0x2a4 + i * 4) + *(s32*)(this_ + 0x2c0), 0, 7, lbl_8053CB90, lbl_8053CB90);
     }
     if (*(s32*)(this_ + 0x230) > 0) {
-        for (i = 0; i < 4; i++) {
-            if ((u8)fn_80230188(i)) {
-                fn_80230498(i, this_ + 0x3b8 + i * 0xc, *(s32*)(this_ + 0x3e8) + *(s32*)(this_ + 0x3ec), 0xff, -0x80, -0x80, 1);
+        for (j = 0; j < 4; j++) {
+            if ((u8)fn_80230188(j)) {
+                fn_80230498(j, this_ + 0x3b8 + j * 0xc, *(s32*)(this_ + 0x3e8) + *(s32*)(this_ + 0x3ec), 0xff, -0x80, -0x80, 1);
             }
         }
     }
