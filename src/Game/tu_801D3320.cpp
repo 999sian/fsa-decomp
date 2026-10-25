@@ -59,11 +59,10 @@ static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
 }
 
 static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
-    int i;
     u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
     u8 best = 0;
     f32 bestD = lbl_8053F080;
-    for (i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         if (fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), ids[i])) {
             Vec3f p;
             p.set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]));
