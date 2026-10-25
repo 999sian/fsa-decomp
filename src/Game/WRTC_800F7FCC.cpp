@@ -1658,7 +1658,7 @@ extern "C" void fn_800FCCCC(void* this_) {
         u8* mgr = *(u8**)((u8*)lbl_8053AB10 + 0x30);
         if (mgr[0x284] == 0) {
             mgr[0x284] = 1;
-            *(f32*)(mgr + 0x28c) = lbl_8053C074;
+            *(f32*)(mgr + 0x28c) = 0.05f;
         }
         u8* o = *(u8**)((u8*)lbl_8053AB10 + 0x24);
         f32 x = *(f32*)(p + 0xc);
@@ -1685,7 +1685,7 @@ extern "C" void fn_800FCCCC(void* this_) {
         u8* mgr = *(u8**)((u8*)lbl_8053AB10 + 0x30);
         if (mgr[0x284] == 0) {
             mgr[0x284] = 1;
-            *(f32*)(mgr + 0x28c) = lbl_8053C074;
+            *(f32*)(mgr + 0x28c) = 0.05f;
         }
         u8* o = *(u8**)((u8*)lbl_8053AB10 + 0x24);
         f32 x = *(f32*)(p + 0xc);
@@ -1700,8 +1700,8 @@ extern "C" void fn_800FCCCC(void* this_) {
         }
         f32 v = *(f32*)(p + 0x25c) + lbl_8053C00C;
         *(f32*)(p + 0x25c) = v;
-        if (*(f32*)(p + 0x25c) <= lbl_8053BFFC) {
-            *(f32*)(p + 0x25c) = lbl_8053BFFC;
+        if (*(f32*)(p + 0x25c) >= 10.0f) {
+            *(f32*)(p + 0x25c) = 10.0f;
         }
         *(u16*)(p + 0x260) = *(u16*)(p + 0x260) + 0x200;
         *(f32*)(p + 0x14) = lbl_8053BFF4 * *(f32*)((u8*)sincosTable___5JMath + ((*(u16*)(p + 0x260) >> 2) & 0x3ff8)) + *(f32*)(p + 0x25c);
