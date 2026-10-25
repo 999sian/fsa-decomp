@@ -8,6 +8,22 @@ extern "C" void v03__5ActorFv(void* this_);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_80230534(s32 idx);
 extern "C" u8* lbl_8053AB10;
+
+static inline void setState(u8* p, s32 s) {
+    *(s32*)(p + 0x230) = s;
+    switch (s) {
+    case 1:
+        *(s32*)(p + 0x24c) = 0;
+        break;
+    case 3:
+        *(s32*)(p + 0x248) = 0;
+        break;
+    case 5:
+        fn_80230534(0);
+        detach__5ActorFv(p);
+        break;
+    }
+}
 extern "C" s32 fn_8022FE80(s32 a, void* b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_8038BD08(s32 a, u16 id, void* b, Vec* pos, s32 c);
 extern "C" void fn_80125C58(void* p, s32 x);
