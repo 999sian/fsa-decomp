@@ -336,25 +336,85 @@ extern "C" bool fn_8025EF68(char* p, s32 id) {
     return false;
 }
 
+#pragma opt_propagation off
 extern "C" bool fn_8025EFFC(char* p, s32 id, u8 flag, u8 force) {
     char* actor;
-    if (force != 0) {
-        if (isCarried(p) == 1 || isAttached(p) || fn_80241230(p) || fn_802412A4(p)) {
-            if (S32(p, 0xd88) != id && S32(p, 0xd88) < 0) {
-                actor = fn_801F666C(fn_801F856C(), id);
-                if (actor != 0 && fn_801F36D4(actor, S32(p, 4))) {
-                    S32(p, 0xd88) = id;
-                }
-            }
-            return true;
-        }
-    } else {
-        if (!canAttachActor(p)) {
-            return false;
+    bool held;
+    u8 good;
+    if (force == 0) {
+        goto zero;
+    }
+    held = U8(p, 0xd64) == 1;
+    if (held) {
+        goto main;
+    }
+    good = isAttached(p);
+    if (good) {
+        goto main;
+    }
+    if ((u8)fn_80241230(p)) {
+        goto main;
+    }
+    if (!(u8)fn_802412A4(p)) {
+        goto search;
+    }
+main:
+    if (S32(p, 0xd88) != id && S32(p, 0xd88) < 0) {
+        actor = fn_801F666C(fn_801F856C(), id);
+        if (actor != 0 && fn_801F36D4(actor, S32(p, 4))) {
+            S32(p, 0xd88) = id;
         }
     }
+    return true;
+zero:
+    if ((u8)fn_80270A8C(p)) {
+        good = 0;
+        goto eligibility;
+    }
+    held = U8(p, 0xd64) == 1;
+    if (held) {
+        good = 0;
+        goto eligibility;
+    }
+    good = isAttached(p);
+    if (good) {
+        good = 0;
+        goto eligibility;
+    }
+    if ((u8)Player_GetField_0xce8(p)) {
+        good = 0;
+        goto eligibility;
+    }
+    if ((u8)fn_80241230(p)) {
+        good = 0;
+        goto eligibility;
+    }
+    if ((u8)fn_802412A4(p)) {
+        good = 0;
+        goto eligibility;
+    }
+    if ((u8)Player_GetField_0x454(p)) {
+        good = 0;
+        goto eligibility;
+    }
+    if (F32(p, 0x10) > lbl_80540150) {
+        good = 0;
+        goto eligibility;
+    }
+    if (S32(p, 0xd88) < 0 && Player_IsLinked(p) && fn_802486A0(p) == 5) {
+        good = 0;
+        goto eligibility;
+    }
+    good = 1;
+eligibility:
+    if (!good) return false;
+search:
     actor = fn_801F666C(fn_801F856C(), id);
-    if (actor != 0 && fn_80251AEC(p, flag == 0 ? 0x12 : 0x11)) {
+    if (actor != 0) {
+        char* self = p;
+        s32 state = 0x12;
+        if (flag) state = 0x11;
+        if (fn_80251AEC(self, state)) {
         S32(p, 0xd88) = -1;
         U32(p, 0xd6c) = U32(actor, 0x1a0);
         VEC(p, 0x2f4) = VEC(actor, 0xc);
@@ -366,9 +426,10 @@ extern "C" bool fn_8025EFFC(char* p, s32 id, u8 flag, u8 force) {
         fn_8024F0E8(p, 0x20022);
         return true;
     }
+    }
     return false;
 }
-
+#pragma opt_propagation reset
 extern "C" bool fn_8025F2CC(char* p) {
     bool bVar1;
     if ((u8)fn_80270A8C(p) != 0) {
