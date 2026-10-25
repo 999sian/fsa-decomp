@@ -161,7 +161,7 @@ extern "C" s32 fn_801A46FC(void* this_, void* a4, void* a5) {
 // from src/Game/Saya_ForceState2_801A4D1C.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
-extern "C" s32 fn_801A4754(void* this_, void* a4, void* a5);
+extern "C" s32 fn_801A4754(u8* this_, void* a4, void* a5);
 
 // SAYA cluster, part 6/18 (88B). Vtable-slot wrapper directly invoking
 // state-handler fn_801A4754 (same external-entry-point pattern as
