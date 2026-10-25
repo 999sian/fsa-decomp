@@ -1,4 +1,12 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#define I7(p,o) (*(s32*)((char*)(p)+(o)))
+#define F7(p,o) (*(f32*)((char*)(p)+(o)))
+#define B7(p,o) (*(u8*)((char*)(p)+(o)))
+#define H7(p,o) (*(u16*)((char*)(p)+(o)))
+#define V7(p,o) (*(JGeometry::TVec3<f32>*)((char*)(p)+(o)))
 #include "Game/ItemBase.h"
 
 struct Tu80343Random {
@@ -48,6 +56,42 @@ extern "C" void fn_80343AD0(char* this_) {
     }
     fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(this_ + 4), this_ + 0xc, n | 0x261e00);
     v07__5ActorFv(this_);
+}
+
+extern "C" f32 lbl_80542350;
+extern "C" f32 lbl_80542354;
+extern "C" f32 lbl_80542358;
+extern "C" char lbl_80471FE0[];
+extern "C" void fn_801F06F0(void* this_, const char* tbl, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_80343B48(char* this_) {
+    DrawRec rec;
+    rec.b1d = -1;
+    rec.b1c = 1;
+    if (*(s32*)(this_ + 0x274) == 2) {
+        rec.b20 = 0;
+        if (*(s32*)(this_ + 0x230) != 0) {
+            f32 zero = lbl_80542350;
+            char* p = this_;
+            for (s32 i = 0; i < 7; i++) {
+                Tu80343Vec3 a = *(Tu80343Vec3*)(p + 0x2a4);
+                Tu80343Vec3 b = *(Tu80343Vec3*)(this_ + 0x2a4);
+                Tu80343Vec3 sum;
+                sum.x = a.x + b.x;
+                sum.y = a.y + b.y;
+                sum.z = a.z + b.z;
+                *(Tu80343Vec3*)(this_ + 0xc) = sum;
+                if (*(f32*)(this_ + 0x14) <= zero) {
+                    *(f32*)(this_ + 0x14) = lbl_80542354;
+                }
+                fn_801F06F0(this_, lbl_80471FE0, *(s32*)(this_ + 0x240) + *(s32*)(this_ + 0x254) + 0x1cc, &rec, 1, lbl_80542358, lbl_80542358);
+                p += 0xc;
+            }
+            *(Tu80343Vec3*)(this_ + 0xc) = *(Tu80343Vec3*)(this_ + 0x2a4);
+            if (*(s32*)(this_ + 0x274) == 2 && *(f32*)(this_ + 0x14) <= zero) {
+                *(f32*)(this_ + 0x14) = lbl_80542354;
+            }
+        }
+    }
 }
 
 extern "C" void fn_803450AC(char* this_) {
