@@ -1,7 +1,6 @@
 #include <math.h>
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
-#define JGEOMETRY_VEC2_SCALAR_COPY
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
@@ -96,10 +95,7 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
     s32 otherRoom=fn_8023DE58(*(s32*)(this_+0x298));
     if(otherRoom==room) {
         JGeometry::TVec2f* source=(JGeometry::TVec2f*)fn_8023E724(*(s32*)(this_+0x298));
-        JGeometry::TVec2f delta(source->x,source->y);
-        delta.x-=*(f32*)(this_+0xc);
-        delta.y-=*(f32*)(this_+0x10);
-        *(JGeometry::TVec2f*)(this_+0x284)=delta;
+        *(JGeometry::TVec2f*)(this_+0x284)=subtractPos(*source,*(JGeometry::TVec2f*)(this_+0xc));
         ((JGeometry::TVec2f*)(this_+0x284))->normalize();
         idx<<=2;
         char* indexed=this_+idx;
