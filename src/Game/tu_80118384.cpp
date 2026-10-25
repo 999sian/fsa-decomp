@@ -261,48 +261,25 @@ done:
 extern "C" void fn_80118798(u8* self, u8* param_2)
 {
     s32 key = *(s32*)(param_2 + 0x198);
-    volatile s32 b = key;
-    volatile s32 a = key;
+    volatile s32 v[2];
     u8** it;
-    u8** end;
-    u8** src;
-    u8** dst;
-    u32 count;
-    u32 n;
+    u8** end = *(u8***)(self + 0x14);
 
-    end = *(u8***)(self + 0x14);
-    for (it = *(u8***)(self + 0x10); it != end && key != *(s32*)(*it + 0x198); it++) {
+    v[0] = key;
+    it = *(u8***)(self + 0x10);
+    v[1] = key;
+    while (it != end && key != *(s32*)(*it + 0x198)) {
+        it++;
     }
     if (it == end) {
         return;
     }
-    dst = it;
-    src = it + 1;
-    count = ((u32)end + 3 - (u32)src) >> 2;
-    if (src < end) {
-        if ((n = count >> 3) != 0) {
-            do {
-                dst[0] = src[0];
-                dst[1] = src[1];
-                dst[2] = src[2];
-                dst[3] = src[3];
-                dst[4] = src[4];
-                dst[5] = src[5];
-                dst[6] = src[6];
-                dst[7] = src[7];
-                src += 8;
-                dst += 8;
-            } while (--n != 0);
-        }
-        n = count & 7;
-        while (n != 0) {
-            *dst++ = *src++;
-            n--;
-        }
+    for (u8** src = it + 1; src < end; src++) {
+        *it++ = *src;
     }
-    for (it = dst; it != *(u8***)(self + 0x14); it++) {
+    for (u8** p = it; p != *(u8***)(self + 0x14); p++) {
     }
-    *(u8***)(self + 0x14) = dst;
+    *(u8***)(self + 0x14) = it;
 }
 
 extern "C" void fn_8011888C(u8* self, u32 val)
@@ -885,17 +862,15 @@ extern "C" void fn_80119D48(u8* self)
         virtual void v0c(void);
         virtual void* v10(u32 a, u32 b);
     };
-    u8* pic;
-    void* res;
     u8* p = self;
     if (*(u32*)(self + 0x2c) == 0) {
         VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
-        res = obj->v10(0x3f3f3f3f, lbl_80539F10);
-        pic = (u8*)__nw__FUl(0x168);
+        void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
+        void* pic = __nw__FUl(0x168);
         if (pic != 0) {
             __ct__10J2DPictureFPC7ResTIMG(pic, res);
         }
-        *(u8**)(p + 0x2c) = pic;
+        *(void**)(p + 0x2c) = pic;
     }
 }
 
