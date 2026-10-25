@@ -115,7 +115,7 @@ static inline s32 getFileIcon(u32 slot) {
         if (fn_803B8CAC(slot, j)) {
             k++;
         } else {
-            return ((const s32*)(lbl_804765D0 + 0x730))[k];
+            return ((const s32*)lbl_804765D0 + 0x1cc)[k];
         }
     }
     return tbl[7];
