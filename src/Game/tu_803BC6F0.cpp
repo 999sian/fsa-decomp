@@ -207,6 +207,16 @@ struct PaneVt9 {
 static inline void stopPane(void* obj) {
     (*(PaneVt9**)obj)->v9(obj, 0);
 }
+
+static inline void* keyObj(void* obj, u64 key) {
+    return ((KeyGetFn)(*(void***)obj)[15])(obj, key);
+}
+
+static inline void initPane(void* obj) {
+    fn_80402E08(obj, lbl_80543458, lbl_80543458);
+    *(s16*)((u8*)obj + 0x22) = 0;
+    stopPane(*(void**)((u8*)obj + 4));
+}
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     u8* base = (u8*)lbl_804765D0;
