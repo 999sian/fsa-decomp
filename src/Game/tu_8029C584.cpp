@@ -120,8 +120,7 @@ extern "C" void fn_8029C584(void* this_) {
     Box2 box;
     char* p = (char*)this_;
 
-    *(Vec2*)&pos = *(Vec2*)(p + 0xc);
-    pos.z = *(float*)(p + 0x14);
+    JGeometry::setTVec3f((float*)(p + 0xc), &pos.x);
     if (*(int*)(p + 0x4) == 0) {
         box = *(Box2*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x164);
         if (pos.y - pos.z < lbl_80540738 + box.min.y) {
@@ -142,7 +141,7 @@ extern "C" void fn_8029C584(void* this_) {
         }
     } else {
         fn_8022B8EC(*(int*)(p + 0x248), (float*)&box);
-        if (pos.y - pos.z < lbl_8054073C + box.min.y) {
+        if (pos.y - pos.z < lbl_80540738 + box.min.y) {
             pos.y += lbl_8054073C;
         }
         if (*(unsigned char*)(p + 0x24c) != 0) {
@@ -181,9 +180,10 @@ extern "C" void fn_8029C584(void* this_) {
     drawParams.renderFlags[0] = 2;
     drawParams.shadowFlags[1] = 1;
 
+    int spriteId = *(int*)(p + 0x230);
     if (*(int*)(p + 0x4) < 8) {
         sobRes = ((FsaResourceManager*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->getResource(0x534F4220, lbl_8046C490);
-        fn_802F86CC(*(unsigned int*)((char*)lbl_8053AB10 + 0x20), &pos, sobRes, *(int*)(p + 0x230), lbl_80540758, lbl_80540758, &drawParams);
+        fn_802F86CC(*(unsigned int*)((char*)lbl_8053AB10 + 0x20), &pos, sobRes, spriteId, lbl_80540758, lbl_80540758, &drawParams);
     }
     if (fn_8022C8EC(*(int*)(p + 0x90) & 3)) {
         fn_80307AC8(*(unsigned int*)(p + 0x198), *(int*)(p + 0x4), &pos, *(int*)(p + 0x230), 0, 0, -1);
