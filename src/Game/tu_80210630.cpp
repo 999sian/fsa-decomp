@@ -102,19 +102,16 @@ extern "C" void* lbl_804C3128[];
 extern "C" void fn_80210A30(char* p, float* out);
 static inline void setBox(float* out, float x, float y)
 {
-	out[0] = -16.0f * x;
-	out[1] = -24.0f * y;
-	out[2] = 16.0f * x;
-	out[3] = 8.0f * y;
+	out[0] = x * -16.0f;
+	out[1] = y * -24.0f;
+	out[2] = x * 16.0f;
+	out[3] = y * 8.0f;
 }
 extern "C" void fn_80210990(char* p, int side, float* out)
 {
 	float y = *(float*)(p + 0x58);
 	float x = *(float*)(p + 0x54);
-	out[0] = -16.0f * x;
-	out[1] = -24.0f * y;
-	out[2] = 16.0f * x;
-	out[3] = 8.0f * y;
+	setBox(out, x, y);
 	switch (side) {
 	case 0:
 		out[2] = out[2] - 8.0f * x;
