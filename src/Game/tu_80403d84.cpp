@@ -627,30 +627,21 @@ struct StateFnEntry {
 	s32 vtblOfs;
 	void* fn;
 };
-static StateFnEntry sStateFnInit[22] = {
-	{0, -1, (void*)fn_8040F3AC}, {0, -1, (void*)fn_8040F35C}, {0, -1, (void*)fn_8040F288},
-	{0, -1, (void*)fn_8040F16C}, {0, -1, (void*)fn_8040ED20}, {0, -1, (void*)fn_8040E838},
-	{0, -1, (void*)fn_8040E720}, {0, -1, (void*)fn_8040E700}, {0, -1, (void*)fn_8040E3A0},
-	{0, -1, (void*)fn_8040E298}, {0, -1, (void*)fn_8040E278}, {0, -1, (void*)fn_8040D3D0},
-	{0, -1, (void*)fn_8040CE90}, {0, -1, (void*)fn_8040C950}, {0, -1, (void*)fn_8040BC1C},
-	{0, -1, (void*)fn_80409FDC}, {0, -1, (void*)fn_8040B93C}, {0, -1, (void*)fn_8040B5A0},
-	{0, -1, (void*)fn_8040B388}, {0, -1, (void*)fn_804096E8}, {0, -1, (void*)fn_80409450},
-	{0, -1, (void*)fn_80409330},
+struct PtmfProbe {
+	void a0(); void a1(); void a2(); void a3(); void a4(); void a5(); void a6(); void a7();
+	void a8(); void a9(); void a10(); void a11(); void a12(); void a13(); void a14(); void a15();
+	void a16(); void a17(); void a18(); void a19(); void a20(); void a21();
+	void b0(); void b1(); void b2(); void b3();
 };
-static StateFnEntry sStateFns[22] = {
-	sStateFnInit[0], sStateFnInit[1], sStateFnInit[2], sStateFnInit[3], sStateFnInit[4],
-	sStateFnInit[5], sStateFnInit[6], sStateFnInit[7], sStateFnInit[8], sStateFnInit[9],
-	sStateFnInit[10], sStateFnInit[11], sStateFnInit[12], sStateFnInit[13], sStateFnInit[14],
-	sStateFnInit[15], sStateFnInit[16], sStateFnInit[17], sStateFnInit[18], sStateFnInit[19],
-	sStateFnInit[20], sStateFnInit[21],
+typedef void (PtmfProbe::*PtmfProbeFn)();
+static PtmfProbeFn sStateFns[22] = {
+	&PtmfProbe::a0, &PtmfProbe::a1, &PtmfProbe::a2, &PtmfProbe::a3, &PtmfProbe::a4, &PtmfProbe::a5,
+	&PtmfProbe::a6, &PtmfProbe::a7, &PtmfProbe::a8, &PtmfProbe::a9, &PtmfProbe::a10, &PtmfProbe::a11,
+	&PtmfProbe::a12, &PtmfProbe::a13, &PtmfProbe::a14, &PtmfProbe::a15, &PtmfProbe::a16, &PtmfProbe::a17,
+	&PtmfProbe::a18, &PtmfProbe::a19, &PtmfProbe::a20, &PtmfProbe::a21,
 };
-
-static StateFnEntry sIntroFnInit[4] = {
-	{0, -1, (void*)fn_80403F50}, {0, -1, (void*)fn_80403EAC},
-	{0, -1, (void*)fn_80403E24}, {0, -1, (void*)fn_80403D84},
-};
-static StateFnEntry sIntroFns[4] = {
-	sIntroFnInit[0], sIntroFnInit[1], sIntroFnInit[2], sIntroFnInit[3],
+static PtmfProbeFn sIntroFns[4] = {
+	&PtmfProbe::b0, &PtmfProbe::b1, &PtmfProbe::b2, &PtmfProbe::b3,
 };
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
