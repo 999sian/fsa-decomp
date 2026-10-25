@@ -121,7 +121,11 @@ static inline s32 getFileIcon(u32 slot) {
 }
 
 static inline bool hasTime(u64* t) {
-    return *t != 0;
+    bool r = false;
+    if (*t != 0) {
+        r = true;
+    }
+    return r;
 }
 
 struct KeyObjVt {
@@ -1487,6 +1491,68 @@ extern "C" void fn_803C92B8(char* p) {
     }
 }
 
+extern "C" f32 lbl_805434AC;
+extern "C" void fn_803C9338(u8* p) {
+    s16 a = *(s16*)(lbl_8050DB0C + 0x1ec);
+    s16 b = *(s16*)(lbl_8050DB0C + 0x1ee);
+    s16 c = *(s16*)(lbl_8050DB0C + 0x1f0);
+    s16 d = *(s16*)(lbl_8050DB0C + 0x1f2);
+    s32 max = a + b;
+    s32 i;
+    if (max < c + d) {
+        max = c + d;
+    }
+    *(s16*)(p + 0xd8) = *(s16*)(p + 0xd8) + 1;
+    if (a < *(s16*)(p + 0xd8)) {
+        s32 idx = *(s32*)(p + 0xa0);
+        u8* cur = *(u8**)(p + 0x38 + idx * 4);
+        fn_80402940(cur, b, *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(cur + 0xc), *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(cur + 0xc), 0);
+        fn_80402628(cur, b, 0, cur[0x28]);
+        setCell(p, 0x38, idx, 0x780, p[0x125]);
+        setCell(p, 0x38, idx, 0x768, p[0x126]);
+        setCell(p, 0x38, idx, 0x750, p[0x127]);
+        setCell(p, 0x38, idx, 0x6c8, p[0x128]);
+        setCell(p, 0x38, idx, 0x6b0, p[0x129]);
+        setCell(p, 0x38, idx, 0x698, p[0x12a]);
+        setCell(p, 0x38, idx, 0x680, p[0x12b]);
+        setCell(p, 0x38, idx, 0x668, p[0x12c]);
+        setCell(p, 0x38, idx, 0x650, p[0x12d]);
+        setCell(p, 0x38, idx, 0x638, p[0x12e]);
+        setCell(p, 0x38, idx, 0x620, p[0x12f]);
+        setCell(p, 0x38, idx, 0x608, p[0x130]);
+        setCell(p, 0x38, idx, 0x5f0, p[0x131]);
+        fn_80402940(*(void**)(p + 0x14), b, lbl_80543458, *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc), 0);
+        fn_80402628(*(void**)(p + 0x14), b, 0, *(u8*)(*(u8**)(p + 0x14) + 0x28));
+        fn_80402940(*(void**)(p + 0x18), b, lbl_80543458, *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc), 0);
+        fn_80402628(*(void**)(p + 0x18), b, 0, *(u8*)(*(u8**)(p + 0x18) + 0x28));
+        fn_80402940(*(void**)(p + 0x1c), b, lbl_80543458, *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc), 0);
+        fn_80402628(*(void**)(p + 0x1c), b, 0, *(u8*)(*(u8**)(p + 0x1c) + 0x28));
+        for (i = 0; i < 0x51; i++) {
+            u8* obj = *(u8**)(p + 0x4);
+            void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(lbl_804765D0 + 0x48 + i * 8));
+            fn_804023D0(*(void**)(p + 0x14), o, p[0x132 + i]);
+        }
+        for (i = 0; i < 0x13; i++) {
+            u8* obj = *(u8**)(p + 0x8);
+            void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(lbl_804765D0 + 0x2d0 + i * 8));
+            fn_804023D0(*(void**)(p + 0x14), o, p[0x183 + i]);
+        }
+    }
+    if (c < *(s16*)(p + 0xd8)) {
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x20), d, 0, lbl_80543458, lbl_805434AC);
+        fn_80402628(*(void**)(p + 0x20), d, *(u8*)(*(u8**)(p + 0x20) + 0x28), 0);
+        for (i = 0; i < 9; i++) {
+            u8* obj = *(u8**)(p + 0x4);
+            void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)(lbl_804765D0 + 0x368 + i * 8));
+            fn_804023D0(*(void**)(p + 0x20), o, p[0x196 + i]);
+        }
+    }
+    if (max < *(s16*)(p + 0xd8)) {
+        *(u8*)(p + 0x112) = *(u8*)(p + 0x110);
+        *(u8*)(p + 0x110) = 0x18;
+    }
+}
+
 extern "C" void fn_803C0A34(char* p);
 extern "C" void fn_803CE4CC(char* p);
 extern "C" void fn_803C9F14(char* this_) {
@@ -2013,24 +2079,27 @@ extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 extern "C" u8 fn_803BADAC(void* a);
 extern "C" void fn_803CE4CC(char* p) {
     s32 i;
+    u8* base;
     u8* rec;
     u64* date;
     u64* lv;
     u64* fir;
     OSCalendarTime cal;
 
+    base = lbl_804765D0;
     rec = (u8*)lbl_8050EC80;
-    date = (u64*)(lbl_804765D0 + 0x30);
-    lv = (u64*)(lbl_804765D0 + 0x0);
-    fir = (u64*)(lbl_804765D0 + 0x18);
-    for (i = 0; i < 3; i++) {
+    i = 0;
+    date = (u64*)(base + 0x30);
+    lv = (u64*)(base + 0x0);
+    fir = (u64*)(base + 0x18);
+    for (; i < 3; i++) {
         u32 mask = 1 << i;
         p[0x115] &= ~(u8)mask;
-        if (lbl_8053AAF8[0xff] != 0) {
+        if (*(bool*)(lbl_8053AAF8 + 0xff)) {
             if (fn_803BADAC(rec + 0x20)) {
-                if (*(u64*)(rec + 0x20) != 0) {
+                if (hasTime((u64*)(rec + 0x20))) {
                     OSTicksToCalendarTime(*(s64*)(rec + 0x20), &cal);
-                    snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(*date)), 0x1e, (char*)(lbl_804765D0 + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
+                    snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(*date)), 0x1e, (char*)(base + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
                     ((J2DPane*)*(void**)(p + 8))->search(*lv)->show();
                     ((J2DPane*)*(void**)(p + 8))->search(*fir)->hide();
                     ((J2DPane*)*(void**)(p + 8))->search(*date)->show();
