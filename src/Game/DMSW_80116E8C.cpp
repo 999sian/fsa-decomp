@@ -169,37 +169,36 @@ extern "C" void fn_80116E8C(char* p) {
 	}
 }
 
-extern "C" void fn_80117074(void* param, s32 n) {
-    char* p = (char*)param;
-    s32 i;
+extern "C" void fn_80117074(void* p, s32 n) {
+    int i;
     switch (n) {
-    case 2: {
+    case 0x7fff: {
         fn_80119998(fn_80119DD0(), 0x78, 0, 2, 0, 1, 0, 0);
         fn_80234810();
         fn_802382D0(0, 0);
         fn_80458FF0(lbl_8053AF80, 0x1000020, 1, 0);
-        u8* e = *(u8**)(p + 0x2a8);
+        u8* e = *(u8**)((char*)p + 0x2a8);
         if (e) {
             *(u32*)(e + 0xf4) |= 1;
             *(s32*)(e + 0x24) = 1;
-            *(u8**)(p + 0x2a8) = 0;
+            *(u8**)((char*)p + 0x2a8) = 0;
         }
         break;
     }
     case 4:
-        *(f32*)(p + 0x280) = lbl_8053C754;
+        *(f32*)((char*)p + 0x280) = lbl_8053C754;
         break;
     case 5: {
         JGeometry::TVec3<f32> pos;
         for (i = 0; i < 4; i++) {
             pos = *fn_8023E724(i);
-            *(void**)(p + 0x288 + i * 4) = fn_8013CC50(*(s32*)(p + 4), &pos, lbl_8053C740[i], 0, -1, 0, 0, 1, lbl_8053C754);
-            *(void**)(p + 0x298 + i * 4) = fn_8013CC50(*(s32*)(p + 4), &pos, 0x475, 0, -1, 0, 0, 1, lbl_8053C754);
+            *(void**)((char*)p + 0x288 + i * 4) = fn_8013CC50(*(s32*)((char*)p + 4), &pos, lbl_8053C740[i], 0, -1, 0, 0, 1, lbl_8053C754);
+            *(void**)((char*)p + 0x298 + i * 4) = fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0x475, 0, -1, 0, 0, 1, lbl_8053C754);
         }
         for (i = 0; i < 4; i++) {
             fn_80230FD0(i, 0x20048);
         }
-        *(f32*)(p + 0x23c) = lbl_8053C75C;
+        *(f32*)((char*)p + 0x23c) = lbl_8053C75C;
         fn_80118454(fn_8011921C());
         break;
     }
@@ -208,46 +207,51 @@ extern "C" void fn_80117074(void* param, s32 n) {
         break;
     case 7: {
         JGeometry::TVec3<f32> pos;
+        f32 dy;
+        f32 dx;
+        dx = lbl_8053C78C;
+        dy = lbl_8053C790;
         for (i = 0; i < 4; i++) {
             pos = *fn_8023E724(i);
-            pos.x += lbl_8053C78C;
-            pos.y += lbl_8053C790;
-            fn_8013CC50(*(s32*)(p + 4), &pos, 0xcb, 0, 0, 0, 0, 1, lbl_8053C754);
-            fn_8013CC50(*(s32*)(p + 4), &pos, 0xcc, 0, 0, 0, 0, 1, lbl_8053C754);
+            pos.x += dx;
+            pos.y += dy;
+            fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0xcb, 0, 0, 0, 0, 1, lbl_8053C754);
+            fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0xcc, 0, 0, 0, 0, 1, lbl_8053C754);
         }
         for (i = 0; i < 4; i++) {
-            u8* e = *(u8**)(p + 0x288 + i * 4);
+            u8* e = *(u8**)((char*)p + 0x288 + i * 4);
             if (e) {
                 *(u32*)(e + 0xf4) |= 1;
                 *(s32*)(e + 0x24) = 1;
-                *(u8**)(p + 0x288 + i * 4) = 0;
+                *(u8**)((char*)p + 0x288 + i * 4) = 0;
             }
-            e = *(u8**)(p + 0x298 + i * 4);
+            e = *(u8**)((char*)p + 0x298 + i * 4);
             if (e) {
                 *(u32*)(e + 0xf4) |= 1;
                 *(s32*)(e + 0x24) = 1;
-                *(u8**)(p + 0x298 + i * 4) = 0;
+                *(u8**)((char*)p + 0x298 + i * 4) = 0;
             }
         }
         break;
     }
     case 8:
-        fn_801D22DC(p + 0x250, 2, 0, 0);
-        fn_801D1F14(p + 0x250, lbl_8053C75C);
-        *(f32*)(p + 0x280) = lbl_8053C754;
+        fn_801D22DC((char*)p + 0x250, 2, 0, 0);
+        fn_801D1F14((char*)p + 0x250, lbl_8053C75C);
+        *(f32*)((char*)p + 0x280) = lbl_8053C754;
         for (i = 0; i < 4; i++) {
             fn_80230FD0(i, 0x20047);
         }
         break;
     case 11: {
-        JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)((char*)p + 0xc);
+        f32 dy = lbl_8053C788;
         for (i = 0; i < 4; i++) {
             JGeometry::TVec3<f32>* v = fn_8023E724(i);
             pos.x = v->x;
             pos.y = v->y;
             pos.z = v->z;
-            pos.y += lbl_8053C788;
-            fn_8013CC50(*(s32*)(p + 4), &pos, 0x33a, 0, 0, 0, 0, 1, lbl_8053C754);
+            pos.y += dy;
+            fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0x33a, 0, 0, 0, 0, 1, lbl_8053C754);
         }
         for (i = 0; i < 4; i++) {
             fn_80230BF4(i, 3);
@@ -256,8 +260,10 @@ extern "C" void fn_80117074(void* param, s32 n) {
         }
         break;
     }
+    case 12:
+        break;
     }
-    *(s32*)(p + 0x234) = n;
+    *(s32*)((char*)p + 0x234) = n;
 }
 
 extern "C" s32 fn_80117498(char* p) {
