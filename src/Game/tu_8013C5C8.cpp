@@ -590,25 +590,24 @@ struct Vec3_ { f32 x, y, z; };inline f32 addPI(f32 a) { return a + 3.1415927f; }
 extern "C" void fn_8010F668(f32 (*m)[4], Vec3_* axis, f32 rad);
 extern "C" void JPASetRMtxfromMtx__FPA4_CfPA4_f(f32 (*src)[4], void* dst);
 
+extern const f32 lbl_8053CE08;
 extern "C" u8 fn_8013CAA4(u8* this_, f32 angle) {
     int ret = 0;
     if (this_ != 0) {
-    f32 m[3][4];
-    Vec3_ axis;
-    f32 sum = angle;
-    m[0][3] = 0.0f;
-    m[1][3] = 0.0f;
-    m[2][3] = 0.0f;
-    axis.x = 0.0f;
-    axis.y = 1.0f;
-    axis.z = 1.0f;
-    sum = sum + kPI;
-    fn_8010F668(m, &axis, sum);
-    m[0][0] *= -1.0f;
-    m[0][1] *= -1.0f;
-    m[0][2] *= -1.0f;
-    JPASetRMtxfromMtx__FPA4_CfPA4_f(m, this_ + 0x68);
-    ret = 1;
+        f32 m[3][4];
+        Vec3_ axis;
+        m[0][3] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][3] = 0.0f;
+        axis.x = 0.0f;
+        axis.y = 1.0f;
+        axis.z = 1.0f;
+        fn_8010F668(m, &axis, angle + lbl_8053CE08);
+        m[0][0] *= -1.0f;
+        m[0][1] *= -1.0f;
+        m[0][2] *= -1.0f;
+        JPASetRMtxfromMtx__FPA4_CfPA4_f(m, this_ + 0x68);
+        ret = 1;
     }
     return ret;
 }
