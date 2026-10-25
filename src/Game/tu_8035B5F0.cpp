@@ -20,6 +20,7 @@ extern const f32 lbl_805428DC;
 
 extern u32 lbl_804AD3A0[48];
 struct StateTableCopy { FsaStateEntry entry0; FsaStateEntry entry1; FsaStateEntry entry2; FsaStateEntry entry3; FsaStateEntry entry4; FsaStateEntry entry5; FsaStateEntry entry6; FsaStateEntry entry7; };
+struct StateTablePair { StateTableCopy original, current; };
 extern const f32 lbl_805428E8;
 extern const f32 lbl_805428EC;
 extern u32 *lbl_804AD460[];
