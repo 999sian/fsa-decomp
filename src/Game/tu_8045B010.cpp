@@ -96,19 +96,22 @@ extern "C" void __ct__Q25JMath13TRandom_fast_FUl(void* self, u32 x);
 extern u32 lbl_8053AF8C;
 extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
-extern f32 __float_epsilon;
+#include "JSystem/JAudio/JAUSoundObject.h"
 extern "C" void* fn_8045B154(u8* p, u32* param_2) {
+    s32 id = *(s32*)param_2;
     u8 kind = ((u8*)param_2)[1];
     void** h;
     void* mgr = *(void**)((u8*)lbl_8053AF80 + 0x34);
     s32 i;
 
-    switch (*(s32*)param_2) {
+    switch (id) {
     case 0x20037: {
         u32 d = 0x10002;
         ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &d);
         break;
     }
+    case 0x20036:
+        break;
     case 0x2001f:
     case 0x20035:
     case 0x20054:
@@ -139,7 +142,8 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     }
 
     if (kind == 1) {
-        for (i = 0; i < *(s32*)(p + 4); i++) {
+        s32 count = *(s32*)(p + 4);
+        for (i = 0; i < count; i++) {
             void* snd = ((void**)*(void**)p)[i];
             if (snd != NULL) {
                 u32 sid = *(u32*)((u8*)snd + 0x18);
@@ -172,7 +176,7 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
                 lbl_8053AF8C = lbl_8053AF8C * 0x19660d + 0x3c6ef35f;
                 bits = (lbl_8053AF8C >> 9) | 0x3f800000;
                 v = *(f32*)&bits - 1.0f;
-                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, 1.0f + (0.03f * v - 0.015f * (1.0f - __float_epsilon)), 0);
+                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, 1.0f + (0.03f * v - 0.015f * (1.0f - ((f32*)&__float_epsilon)[0])), 0);
             }
         }
     }
@@ -185,6 +189,9 @@ extern "C" char* fn_8045B46C(char* p, unsigned char value, long a, long b, long 
     *(void**)(p + 0x18) = lbl_804B20F8 + 0x24;
     *(unsigned char*)(p + 0x5c) = value;
     return p;
+}
+
+void fn_8045B4CC(void) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
