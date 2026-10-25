@@ -852,7 +852,7 @@ extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
         if (*(void**)(this_ + 0x80) != NULL) {
             ((JAISoundParamsMove*)(*(char**)(this_ + 0x80) + 0x48))->moveVolume(*(f32*)(this_ + 0x4c) * *(f32*)(this_ + 0x54), 0);
             if (param_4 != 0) {
-                u32 port = ((Unk80458408Obj*)*(void**)(this_ + 0x80))->v8();
+                u32 port = (u32)((Unk80458408Obj*)*(void**)(this_ + 0x80))->v6();
                 writePort__8JASTrackFUlUs((void*)port, 0, 1);
             }
         }
