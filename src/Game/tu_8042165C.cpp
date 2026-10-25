@@ -606,45 +606,6 @@ static inline void SyncLinkedCount(s32 i) {
 extern "C" void fn_80230EB8(s32 i, s32 a);
 extern u8 lbl_8050DB0C[];
 
-// Steps player i's displayed count toward the real one by 1 every 10 frames.
-static inline void StepCount10(u8* this_, s32 i) {
-    s32* p = &((s32*)(lbl_80529DEC + 0xd8))[i];
-    s32 cur = *p;
-    if (cur < (s32)fn_80237774(i)) {
-        ((s32*)(this_ + 0x168))[i] = ((s32*)(this_ + 0x168))[i] + 1;
-        if (((s32*)(this_ + 0x168))[i] >= 10) {
-            *p = *p + 1;
-            SyncLinkedCount(i);
-            this_[0x256] |= (u8)(1 << i);
-            ((s32*)(this_ + 0x168))[i] = 0;
-            fn_80230EB8(i, 9);
-            ((s16*)(this_ + 0x1e8))[i] = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
-            ((s32*)(this_ + 0x1b8))[i] = ((s32*)(this_ + 0x1a8))[i];
-            ((s32*)(this_ + 0x1a8))[i] = *p;
-            ((s32*)(this_ + 0x1c8))[i] = fn_80237810(i);
-        }
-    } else {
-        s32 cur2 = *p;
-        if (cur2 > (s32)fn_80237774(i)) {
-            s32 bit = 1 << i;
-            lbl_80529DEC[0x24a] |= (u8)bit;
-            ((s32*)(this_ + 0x168))[i] = ((s32*)(this_ + 0x168))[i] + 1;
-            if (((s32*)(this_ + 0x168))[i] >= 10) {
-                *p = *p - 1;
-                SyncLinkedCount(i);
-                this_[0x256] |= (u8)bit;
-                ((s32*)(this_ + 0x168))[i] = 0;
-            }
-            ((s16*)(this_ + 0x1e8))[i] = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
-            ((s32*)(this_ + 0x1b8))[i] = ((s32*)(this_ + 0x1a8))[i];
-            ((s32*)(this_ + 0x1a8))[i] = *p;
-            ((s32*)(this_ + 0x1c8))[i] = fn_80237810(i);
-        } else {
-            ((s32*)(this_ + 0x168))[i] = 0;
-        }
-    }
-}
-
 // Steps player i's displayed count toward the real one by 2 every other frame.
 static inline void StepCount2(u8* this_, s32 i) {
     s32* q = &((s32*)(lbl_80529DEC + 0xe8))[i];
@@ -777,8 +738,12 @@ extern "C" void fn_80425F6C(u8* self) {
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                 video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                f32 normY = point.y / (f32)(s32)*(u16*)(video + 6);
+                f32 normX = point.x / (f32)(s32)*(u16*)(video + 4);
+                f32 scaledY = height * normY;
+                f32 scaledX = width * normX;
+                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)scaledY - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                f32 x = (f32)scaledX - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
                 JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                 graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
@@ -794,8 +759,12 @@ extern "C" void fn_80425F6C(u8* self) {
                     fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                     video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                    f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                    f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                    f32 normY = point.y / (f32)(s32)*(u16*)(video + 6);
+                    f32 normX = point.x / (f32)(s32)*(u16*)(video + 4);
+                    f32 scaledY = height * normY;
+                    f32 scaledX = width * normX;
+                    f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)scaledY - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                    f32 x = (f32)scaledX - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
                     JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                     graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                     (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
