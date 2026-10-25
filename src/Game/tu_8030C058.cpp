@@ -4,6 +4,7 @@
 #include "JSystem/JUtility/JUTVideo.h"
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern u8* lbl_8053AB10;
 extern f32 lbl_805416C8;
@@ -34,15 +35,18 @@ static inline bool fn_8030C058_in(u8* p, f32* v) {
     return in;
 }
 
-extern "C" bool fn_8030C058(u8* p, f32* v) {
+extern "C" u8 fn_8030C058(u8* p, f32* v) {
+    f32 x;
+    f32 y;
     s32 n = *(s32*)(p + 0x7f0);
     bool ret = false;
     if (n + 1 < 0x80) {
         if (fn_8030C058_in(p, v) && fn_8030C058_in(p, v + 2)) {
-            f32 y = v[1];
+            y = v[1];
+            x = v[0];
             if (n < 0x80 && fn_8030C058_in(p, v)) {
                 f32* d = (f32*)(p + n * 0xc + 0x1f0);
-                d[0] = v[0];
+                d[0] = x;
                 d[1] = y;
                 d[2] = lbl_805416C8;
                 (*(s32*)(p + 0x7f0))++;
@@ -101,16 +105,16 @@ extern "C" void fn_8030C380(u8* p, f32* out) {
     u16 w;
     u16 h;
     JUTVideo::sManager->getBounds(w, h);
-    out[0] = x0 + (scale * (x1 - x0)) / (f32)(u32)w;
-    out[1] = y0 + (scale * (y1 - y0)) / (f32)(u32)h;
+    out[0] = x0 + (scale * (x1 - x0)) / (f32)w;
+    out[1] = y0 + (scale * (y1 - y0)) / (f32)h;
     out[2] = scale;
     JUTVideo::sManager->getBounds(w, h);
     x0 = *(f32*)(p + 0x164);
     y0 = *(f32*)(p + 0x168);
     x1 = *(f32*)(p + 0x16c);
     y1 = *(f32*)(p + 0x170);
-    out[3] = x0 + ((f32)(u32)w * (x1 - x0)) / (f32)(u32)w;
-    out[4] = y0 + ((f32)(u32)h * (y1 - y0)) / (f32)(u32)h;
+    out[3] = x0 + ((f32)w * (x1 - x0)) / (f32)w;
+    out[4] = y0 + ((f32)h * (y1 - y0)) / (f32)h;
     out[5] = scale;
 }
 
@@ -135,10 +139,11 @@ extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
         f32 x1 = *(f32*)(p + 0x164);
         f32 x2 = *(f32*)(p + 0x16c);
         f32 y2 = *(f32*)(p + 0x170);
-        f32 h = (f32)(s32)rm->efbHeight;
         f32 w = (f32)(s32)rm->fbWidth;
+        f32 h = (f32)(s32)rm->efbHeight;
+        f32 dy = y2 - y1;
         f32 tx = in[0] * (x2 - x1) / w;
-        f32 ty = in[1] * (y2 - y1) / h;
+        f32 ty = in[1] * dy / h;
         out[0] = x1 + tx;
         out[1] = y1 + ty;
         out[2] = 0.0f;
@@ -242,7 +247,6 @@ extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void fn_8030C9E4(u8* self, f32* rect) {
     u8* g;
-    u8* src;
     JGeometry::TVec3<f32> v;
     self[0x1e8] = 1;
     *(s32*)(self + 0x1ec) = 0x1e;
@@ -261,8 +265,7 @@ extern "C" void fn_8030C9E4(u8* self, f32* rect) {
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2362] = g[0x235e];
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2363] = g[0x235f];
     g = *(u8**)(lbl_8053AB10 + 0x20);
-    src = g + 0x2368;
-    *(JGeometry::TVec3<f32>*)(g + 0x2374) = *(JGeometry::TVec3<f32>*)src;
+    *(JGeometry::TVec3<f32>*)(g + 0x2374) = *(JGeometry::TVec3<f32>*)(g + 0x2368);
     g = *(u8**)(lbl_8053AB10 + 0x20);
     *(JGeometry::TVec3<f32>*)(g + 0x2368) = v;
 }
@@ -327,21 +330,21 @@ extern "C" void fn_8030DD68(void) {
 }
 
 extern "C" void fn_8030DFE8(u8* p, u8 flag) {
+    u32 h;
+    u32 w;
     if (flag) {
-        PSMTXCopy((f32(*)[4])(p + 0x4), (f32(*)[4])(p + 0x74));
-        PSMTXCopy((f32(*)[4])(p + 0x34), (f32(*)[4])(p + 0xa4));
+        JMath::gekko_ps_copy12(p + 0x74, p + 0x4);
+        JMath::gekko_ps_copy12(p + 0xa4, p + 0x34);
     }
     GXSetProjection((f32(*)[4])(p + 0xa4), GX_ORTHOGRAPHIC);
     GXLoadPosMtxImm((f32(*)[4])(p + 0x74), 0x18);
     GXLoadNrmMtxImm((f32(*)[4])(p + 0x74), 0x18);
     GXSetCurrentMtx(0x18);
-    s32 x = *(s32*)(p + 0x144);
-    s32 y = *(s32*)(p + 0x148);
-    s32 w = *(s32*)(p + 0x14c) - x;
-    s32 h = *(s32*)(p + 0x150) - y;
-    GXSetViewport(x, y, w, h, 0.0f, 1.0f);
-    GXSetScissor(x, y, w, h);
-    GXSetZScaleOffset(1.0f, 0.0f);
+    w = *(u32*)(p + 0x14c) - *(u32*)(p + 0x144);
+    h = *(u32*)(p + 0x150) - *(u32*)(p + 0x148);
+    GXSetViewport(*(u32*)(p + 0x144), *(u32*)(p + 0x148), w, h, lbl_805416C8, lbl_805416D8);
+    GXSetScissor(*(u32*)(p + 0x144), *(u32*)(p + 0x148), w, h);
+    GXSetZScaleOffset(lbl_805416D8, lbl_805416C8);
 }
 
 extern "C" void fn_8030E150(void) {
@@ -543,3 +546,4 @@ extern "C" void* fn_8030E718(u8* p) {
     return p;
 }
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
