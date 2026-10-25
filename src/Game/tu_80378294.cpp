@@ -42,6 +42,12 @@ extern "C" void fn_8020D7D0(void* pos, int handle);
 extern "C" int fn_8013CC50(int room, void* pos, f32 scale, int a, int b, int c, int d, int e, int f);
 extern "C" void fn_801F0E34(void* this_, int id, int arg);
 extern "C" void* fn_801902C0(void);
+#pragma opt_common_subs off
+static inline void shrinkHeight(f32* p) {
+    *p -= lbl_80542FF8;
+    if (*p < lbl_80543000) *p = lbl_80543000;
+}
+#pragma opt_common_subs reset
 extern "C" void fn_802F745C(void* mgr, void* pos, void* res, DrawRec* rec);
 extern "C" void* fn_804032E8(u32 type, const char* name);
 extern "C" void* lbl_8053AB10;
@@ -275,24 +281,24 @@ extern "C" void fn_80378A24(void* param_1) {
         state = *(int*)(p + 0x234);
         switch (state) {
         case 0:
-            f32 b, a;
+            f32 b;
+            f32 a;
+            f32 d;
+            f32 c;
             a = lbl_80542FE0;
             b = lbl_80542FE4;
             *(f32*)(p + 0x60) = a;
-            a = lbl_80542FE8;
+            c = lbl_80542FE8;
             *(f32*)(p + 0x64) = b;
-            b = lbl_80542FDC;
-            *(f32*)(p + 0x68) = a;
-            *(f32*)(p + 0x6c) = b;
+            d = lbl_80542FDC;
+            *(f32*)(p + 0x68) = c;
+            *(f32*)(p + 0x6c) = d;
             if ((unsigned char)fn_80378880(p) == 1) {
                 if (*(void**)(p + 0x230) == 0) {
                     *(int*)(p + 0x230) = fn_8013CC50(*(int*)(p + 0x4), p + 0xc, lbl_80542FD8, 0x456, 0, 1, 0, 0, 1);
                 }
-                f32 value = *(f32*)(p + 0x238);
-                f32 step = lbl_80542FEC;
-                f32 minimum = lbl_80542FF0;
-                *(f32*)(p + 0x238) = value - step;
-                if (*(f32*)(p + 0x238) < minimum) {
+                *(f32*)(p + 0x238) -= lbl_80542FEC;
+                if (*(f32*)(p + 0x238) < lbl_80542FF0) {
                     *(int*)(p + 0x234) = 1;
                 }
                 fn_801F0E34(p, 0x50087, 0);
@@ -303,10 +309,8 @@ extern "C" void fn_80378A24(void* param_1) {
             break;
         case 1:
             fn_801F0E34(p, 0x50087, 0);
-            f32 value = *(f32*)(p + 0x23c);
-            register f64 step = lbl_80542FF8;
             f32 minimum = lbl_80543000;
-            *(f32*)(p + 0x23c) = value - step;
+            *(f32*)(p + 0x23c) -= lbl_80542FF8;
             if (*(f32*)(p + 0x23c) < minimum) {
                 *(f32*)(p + 0x23c) = minimum;
             }
@@ -316,10 +320,11 @@ extern "C" void fn_80378A24(void* param_1) {
             if (*(f32*)(p + 0x238) < decrement) {
                 *(f32*)(p + 0x238) = lbl_80543000;
                 if (fn_8023077C()) {
+                    i = 0;
                     *(int*)(p + 0x244) = 0x32;
                     *(int*)(p + 0x248) = 4;
-                    *(int*)(p + 0x24c) = 0;
-                    for (i = 0; i < 4; i++) {
+                    *(int*)(p + 0x24c) = i;
+                    for (; i < 4; i++) {
                         fn_80230498(i, fn_8023E724(i), 0xe8, 0xff, -0x80, -0x80, 1);
                     }
                 }
@@ -330,15 +335,18 @@ extern "C" void fn_80378A24(void* param_1) {
             }
             break;
         }
-        f32 z = *(f32*)(p + 0x238);
-        f32 x = *(f32*)(p + 0x23c);
-        f32 y = lbl_80542FD8;
+        f32 y;
+        f32 x;
+        f32 z;
+        z = *(f32*)(p + 0x238);
+        x = *(f32*)(p + 0x23c);
+        y = lbl_80542FD8;
         *(f32*)(p + 0x54) = x;
-        *(f32*)(p + 0x5c) = z;
         *(f32*)(p + 0x58) = y;
+        *(f32*)(p + 0x5c) = z;
         n = 100 - (int)(lbl_80543004 * *(f32*)(p + 0x238));
         q = (char*)fn_801902C0();
-        if (*(int*)(q + 0x7e0) != 0 && *(unsigned char*)(q + 0x7ec) == 0) {
+        if (*(void**)(q + 0x7e0) != 0 && *(unsigned char*)(q + 0x7ec) == 0) {
             *(f32*)(q + 0x7d0) = *(f32*)(p + 0xc);
             *(f32*)(q + 0x7d4) = *(f32*)(p + 0x10);
             *(f32*)(q + 0x7d8) = *(f32*)(p + 0x14);
