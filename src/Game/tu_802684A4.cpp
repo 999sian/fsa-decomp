@@ -74,8 +74,10 @@ struct HitRectTable {
 
 
 inline bool rectContains(const HitRect& r, const Vec2f* p) {
+    f32 y;
+    f32 x;
     bool in = false;
-    if (p->x >= r.x0 && p->y >= r.y0 && p->x < r.x1 && p->y < r.y1) {
+    if ((x = p->x) >= r.x0 && (y = p->y) >= r.y0 && x < r.x1 && y < r.y1) {
         in = true;
     }
     return in;
@@ -219,6 +221,7 @@ extern "C" void fn_80268B3C(u8* p) {
 }
 
 extern "C" u8 fn_80268BC4(u8* p) {
+    JGeometry::TVec2<f32> v;
     s32 i;
     u32 j;
     for (i = 0; i < 8; i++) {
@@ -236,10 +239,10 @@ extern "C" u8 fn_80268BC4(u8* p) {
     f32 oldX = *(f32*)(*(u8**)(p + 4) + 8);
     f32 oldY = *(f32*)(*(u8**)(p + 4) + 0xc);
     if (fn_80240B84(*(void**)(p + 4))) {
-        return 1;
+        return;
     }
     if (fn_8025F448(*(void**)(p + 4))) {
-        return 1;
+        return;
     }
     *(s32*)(p + 0xb0) = 0;
     do {
@@ -260,36 +263,38 @@ extern "C" u8 fn_80268BC4(u8* p) {
     }
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (i = 0; i < 8; i++) {
-        ((JGeometry::TVec3<f32>*)(p + 8))->set(lbl_8046BAE8[i]);
+        *(f32*)(p + 8) = lbl_8046BAE8[i].x;
+        f32 y = lbl_8046BAE8[i].y;
+        *(f32*)(p + 0xc) = y;
+        *(f32*)(p + 0x10) = lbl_8046BAE8[i].z;
         *(s32*)(p + 0x1c) = i;
         ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(*(u8**)(p + 4) + 8));
         u16 r27 = fn_8022461C((JGeometry::TVec3<f32>*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4));
         if (fn_8025F590(*(void**)(p + 4)) && *(s32*)(*(u8**)(p + 4) + 0x3b4) == 8 && fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70)) < 8) {
-            JGeometry::TVec3<f32>* pp = (JGeometry::TVec3<f32>*)(p + 8);
-            JGeometry::TVec3<f32> saved = *pp;
+            JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(p + 8);
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
             u8* base = fn_802D6A9C();
             HitRect* o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-            pp->x -= o->x0;
+            (*(f32*)(p + 8)) -= o->x0;
             room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
             base = fn_802D6A9C();
             o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-            pp->y -= o->y0;
+            (*(f32*)(p + 0xc)) -= o->y0;
             room = fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70));
             base = fn_802D6A9C();
             o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-            pp->x += o->x0;
+            (*(f32*)(p + 8)) += o->x0;
             room = fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70));
             base = fn_802D6A9C();
             o = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-            pp->y += o->y0;
+            (*(f32*)(p + 0xc)) += o->y0;
             room = fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70));
             if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), room)) {
                 p[*(s32*)(p + 0x1c) + 0x28] = 1;
             } else {
-                fn_8026B81C(p, fn_8022461C(pp, fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70))));
+                fn_8026B81C(p, fn_8022461C((JGeometry::TVec3<f32>*)(p + 8), fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70))));
             }
-            *pp = saved;
+            *(JGeometry::TVec3<f32>*)(p + 8) = saved;
         }
         if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4))) {
             p[*(s32*)(p + 0x1c) + 0x28] = 1;
@@ -298,8 +303,11 @@ extern "C" u8 fn_80268BC4(u8* p) {
             u8* base = fn_802D6A9C();
             HitRect* rect = room < 8 ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
             if (!rectContains(*rect, (Vec2f*)(p + 8))) p[*(s32*)(p + 0x1c) + 0x38] = 1;
-            else fn_8026C350(p, r27);
-        } else fn_8026C350(p, r27);
+            else goto process;
+        } else {
+        process:
+            fn_8026C350(p, r27);
+        }
     }
     fn_80269574(p);
     if (*(s32*)(p + 0xb0) <= 1) {
@@ -308,7 +316,20 @@ extern "C" u8 fn_80268BC4(u8* p) {
     } while (p[0x9a] == 1 && *(s32*)(p + 0xb0) < 100);
     u8 hit = 0;
     if (p[0x98] || p[0x99]) hit = 1;
-    return hit;
+    if (!hit) {
+        u8* pl = *(u8**)(p + 4);
+        f32 reset = lbl_80540254;
+        *(f32*)(pl + 0xc90) = reset;
+        *(f32*)(pl + 0xc94) = reset;
+        *(f32*)(pl + 0xc98) = reset;
+    } else if (!lbl_8053AAF8[0x96]) {
+        p[0x99] = p[0x98];
+        p[0x98] = 0;
+    }
+    v.set(*(f32*)(*(u8**)(p + 4) + 8), *(f32*)(*(u8**)(p + 4) + 0xc));
+    v.x -= oldX;
+    v.y -= oldY;
+    ((Vec2f*)(p + 0x14))->set(*(Vec2f*)&v);
 }
 
 extern "C" {
