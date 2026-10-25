@@ -472,7 +472,6 @@ void fn_80458F04(void*, s32);
 extern void* lbl_8053AB10;
 void fn_8030AE84(void*, f32*);
 u8 fn_8030C2A8(void*, const JGeometry::TVec3<f32>*);
-extern f32 lbl_80540034;
 extern f32 lbl_80540030;
 extern f32 lbl_80540094;
 f32 fn_80309D90(void*, s32);
