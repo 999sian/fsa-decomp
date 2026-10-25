@@ -85,6 +85,14 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
     ((PaneFloatsFn)(*(void***)pane)[65])(pane, a, b, c, d, e, f, g, h);
 }
 
+typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
+
+// Sets the digit pane pair idx (names at 0x338 and 0x360 tables) to the glyph tag.
+static inline void SetDigitPanes(u8* self, s32 idx, u32 tag) {
+    CallSlot68(FindPaneOfSub(self, lbl_8048D320[0x67 + idx]), tag);
+    CallSlot68(FindPaneOfSub(self, lbl_8048D320[0x6c + idx]), tag);
+}
+
 extern "C" s32 fn_80418B64(u8* self) {
     f32 buf[3];
     fn_8022EA0C(0);
