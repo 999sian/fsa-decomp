@@ -510,15 +510,13 @@ extern "C" u32 fn_8029E248(char* self, const JGeometry::TVec2<f32>* __restrict p
 extern "C" u8 fn_8023F264(s32 i);
 extern "C" u8 fn_80303750(s32 i);
 extern "C" u8 fn_8022C8EC(s32 i);
-extern "C" BOOL fn_8029E508(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
+extern "C" BOOL fn_8029E508(char* self, const JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
     u32 area = room;
     BOOL found;
     s32 i;
-    f32 x = pos->x;
-    f32 y = pos->y;
     JGeometry::TVec2<f32> p;
-    p.y = y;
-    p.x = x;
+    p.y = pos->y;
+    p.x = pos->x;
     *(s32*)(self + 0x20) = fn_80226BC4(&p, area);
     *(u16*)(self + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), area, *(s32*)(self + 0x20));
     JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)fn_8023E724(p3);
@@ -1461,19 +1459,19 @@ extern "C" void fn_802FA160(void*,void*,s32,s32,s32,s32);
 #pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_802A3A0C(char* p) {
-    const u8* base=lbl_8046C4A8;
+    const WaveAnimationData* base=(const WaveAnimationData*)lbl_8046C4A8;
     --*(s32*)(p+8);
     if (*(s32*)(p+8)==0) {
         *(s32*)(p+8)=10;
         *(s32*)(p+0xc)+=2;
         if (*(s32*)(p+0xc)>=16) *(s32*)(p+0xc)=0;
         if (*(s32*)((u8*)fn_802D6A9C()+0x40)==16) {
-            s32 offset=((const u16*)base)[*(s32*)(p+0xc)]+0x4000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x170);
+            s32 offset=base->frames[*(s32*)(p+0xc)]+0x4000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->first);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x3800,0x800);
         } else {
-            s32 offset=((const u16*)base)[*(s32*)(p+0xc)];
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x170);
+            s32 offset=base->frames[*(s32*)(p+0xc)];
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->first);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x3800,0x800);
         }
     }
@@ -1485,23 +1483,23 @@ extern "C" void fn_802A3A0C(char* p) {
         const char* name=fn_802D9C4C(fn_802D6A9C());
         char c=*name;
         if (c=='l') {
-            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)]+0x2000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
+            s32 offset=base->frames[*(s32*)(p+0x1c)]+0x2000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x5800,0x400);
             *(s32*)(p+0x18)=20;
         } else if (c=='s'||c=='w') {
-            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)]+0x6000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
+            s32 offset=base->frames[*(s32*)(p+0x1c)]+0x6000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x1c00,0x400);
         } else if (c=='k'||c=='v') {
             if (*(s32*)(p+0x1c)>=4) *(s32*)(p+0x1c)=0;
-            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)]+0x1000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
+            s32 offset=base->frames[*(s32*)(p+0x1c)]+0x1000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x5c00,0x400);
         } else if (*(s32*)((u8*)fn_802D6A9C()+0x40)==0x1b || *(const u8*)name=='y') {
             if (*(s32*)(p+0x1c)>=4) *(s32*)(p+0x1c)=0;
-            s32 offset=((const u16*)base)[*(s32*)(p+0x1c)*2]+0x4000;
-            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,(const char*)base+0x184);
+            s32 offset=base->frames[*(s32*)(p+0x1c)*2]+0x4000;
+            void* res=(*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResource(0x53434820,base->second);
             fn_802FA160(*(void**)(lbl_8053AB10+0x20),res,offset,0,0x5800,0x800);
         }
     }
