@@ -60,6 +60,17 @@ static inline s32 HouseDestination(u32 param) {
     return (room + 7) & ~-(room == 0);
 }
 
+static inline s32 WarpDestination(const char* actor) {
+    s32 room = (*(const u32*)(actor + 0x90) >> 24) & 7;
+    s32 result = room + 7;
+    if (room == 0) result = room;
+    return result;
+}
+static inline s32 HouseDestination(const char* actor) {
+    s32 room = (*(const u32*)(actor + 0x90) >> 7) & 31;
+    return (room + 7) & ~-(room == 0);
+}
+
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
     s32 room;
@@ -1155,13 +1166,13 @@ extern "C" void fn_8029AE58(char* p) {
     origin = *(JGeometry::TVec3f*)(p + 0xc);
     origin.x += *(f32*)(p + 0x60);
     origin.y += *(f32*)(p + 0x64);
-    origin.x += 8.0f;
-    origin.y += 8.0f;
+    origin.x += lbl_80540678;
+    origin.y += lbl_80540678;
     origin.z = 0.0f;
     pos = origin;
-    char* col;
     s32 j;
     s32 i;
+    char* col;
     char* row = p;
     for (i = 0; i < 6; i++) {
         pos.y = origin.y;
@@ -1197,13 +1208,19 @@ extern "C" void fn_8029AE58(char* p) {
         warp = fn_801F78F4(fn_801F856C(), 0x57415250, warp);
         if (warp < 0) break;
         char* other = (char*)fn_801F666C(fn_801F856C(), warp);
-        if (other && *(s32*)(other + 0x244) == *(s32*)((char*)fn_802D6A9C() + 0x14) && *(s32*)(other + 0x248) == *(s32*)((char*)fn_802D6A9C() + 0x18)) {
-            if (*(s32*)(other + 4) == HouseDestination(*(u32*)(p + 0x90)) && *(s32*)(p + 4) == WarpDestination(*(u32*)(other + 0x90))) {
+        if (!other) continue;
+        s32 room = *(s32*)((char*)fn_802D6A9C() + 0x14);
+        if (room != *(s32*)(other + 0x244)) continue;
+        s32 stage = *(s32*)((char*)fn_802D6A9C() + 0x18);
+        if (stage != *(s32*)(other + 0x248)) continue;
+        {
+            s32 otherRoom = *(s32*)(other + 4);
+            if (otherRoom == HouseDestination(*(u32*)(p + 0x90)) && *(s32*)(p + 4) == WarpDestination(*(u32*)(other + 0x90))) {
                 if (*(s32*)(p + 0x29c) < 4) {
                     ((HOUSLinks*)p)->outgoing[((HOUSLinks*)p)->outgoingCount] = warp;
                     *(s32*)(p + 0x29c) += 1;
                 }
-            } else if (HouseDestination(*(u32*)(p + 0x90)) == WarpDestination(*(u32*)(other + 0x90)) && *(s32*)(p + 4) == *(s32*)(other + 4)) {
+            } else if (HouseDestination(*(u32*)(p + 0x90)) == WarpDestination(*(u32*)(other + 0x90)) && *(s32*)(p + 4) == otherRoom) {
                 if (*(s32*)(p + 0x2a0) < 4) {
                     ((HOUSLinks*)p)->incoming[((HOUSLinks*)p)->incomingCount] = warp;
                     *(s32*)(p + 0x2a0) += 1;
