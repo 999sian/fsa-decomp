@@ -132,10 +132,14 @@ extern "C" int fn_8037845C(void* param_1) {
 }
 
 extern "C" int fn_80378680(char* p) {
-    float x0 = *(float*)(p + 0x60) + *(float*)(p + 0xc);
-    float y0 = *(float*)(p + 0x64) + *(float*)(p + 0x10);
-    float x1 = *(float*)(p + 0x68) + *(float*)(p + 0xc);
-    float y1 = *(float*)(p + 0x6c) + *(float*)(p + 0x10);
+    float x0 = *(float*)(p + 0x60);
+    float y0 = *(float*)(p + 0x64);
+    float x1 = *(float*)(p + 0x68);
+    float y1 = *(float*)(p + 0x6c);
+    x0 += *(float*)(p + 0xc);
+    y0 += *(float*)(p + 0x10);
+    x1 += *(float*)(p + 0xc);
+    y1 += *(float*)(p + 0x10);
     int idx = -1;
     for (;;) {
         idx = fn_801F78F4(fn_801F856C(), 0x48424D42, idx);
@@ -144,10 +148,14 @@ extern "C" int fn_80378680(char* p) {
         }
         char* obj = (char*)fn_801F666C(fn_801F856C(), idx);
         if (obj != 0 && *(int*)(p + 4) == *(int*)(obj + 4)) {
-            float ox0 = *(float*)(obj + 0x60) + *(float*)(obj + 0xc);
-            float oy0 = *(float*)(obj + 0x64) + *(float*)(obj + 0x10);
-            float ox1 = *(float*)(obj + 0x68) + *(float*)(obj + 0xc);
-            float oy1 = *(float*)(obj + 0x6c) + *(float*)(obj + 0x10);
+            float ox0 = *(float*)(obj + 0x60);
+            float oy0 = *(float*)(obj + 0x64);
+            float ox1 = *(float*)(obj + 0x68);
+            float oy1 = *(float*)(obj + 0x6c);
+            ox0 += *(float*)(obj + 0xc);
+            oy0 += *(float*)(obj + 0x10);
+            ox1 += *(float*)(obj + 0xc);
+            oy1 += *(float*)(obj + 0x10);
             if (ox0 <= x0) {
                 ox0 = x0;
             }
@@ -166,7 +174,9 @@ extern "C" int fn_80378680(char* p) {
             }
             if (hit) {
                 JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(obj + 0x3c));
-                if (v.x == 0.0f && v.y == 0.0f) {
+                if (0.0f != v.x || 0.0f != v.y) {
+                    *(int*)(obj + 0x108) = 0;
+                } else {
                     JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(obj + 0xc));
                     if (pos.y > *(float*)(p + 0x10)) {
                         pos.y = 16.0f + *(float*)(p + 0x10);
@@ -174,8 +184,6 @@ extern "C" int fn_80378680(char* p) {
                         pos.y = *(float*)(p + 0x10) - 16.0f;
                     }
                     *(JGeometry::TVec3<f32>*)(obj + 0xc) = pos;
-                } else {
-                    *(int*)(obj + 0x108) = 0;
                 }
             }
         }
@@ -183,36 +191,47 @@ extern "C" int fn_80378680(char* p) {
     return 0;
 }
 
-extern "C" int fn_80378880(void* param_1) {
+extern "C" unsigned char fn_80378880(void* param_1) {
+    char* p = (char*)param_1;
+    float x0 = *(float*)(p + 0x60);
+    float y0 = *(float*)(p + 0x64);
+    float x1 = *(float*)(p + 0x68);
+    float y1 = *(float*)(p + 0x6c);
+    x0 += *(float*)(p + 0xc);
+    y0 += *(float*)(p + 0x10);
+    x1 += *(float*)(p + 0xc);
+    y1 += *(float*)(p + 0x10);
     int idx = -1;
     unsigned char flags = 0;
-    float x0 = *(float*)((char*)param_1 + 0x60) + *(float*)((char*)param_1 + 0xc);
-    float y0 = *(float*)((char*)param_1 + 0x64) + *(float*)((char*)param_1 + 0x10);
-    float x1 = *(float*)((char*)param_1 + 0x68) + *(float*)((char*)param_1 + 0xc);
-    float y1 = *(float*)((char*)param_1 + 0x6c) + *(float*)((char*)param_1 + 0x10);
-
-    idx = fn_801F78F4(fn_801F856C(), 0x46495245, idx);
-    if (idx >= 0) {
-        void* obj = fn_801F666C(fn_801F856C(), idx);
-        if (obj != 0 && *(int*)((char*)param_1 + 0x4) == *(int*)((char*)obj + 0x4)) {
-            float ox0 = *(float*)((char*)obj + 0x60) + *(float*)((char*)obj + 0xc);
-            float oy0 = *(float*)((char*)obj + 0x64) + *(float*)((char*)obj + 0x10);
-            float ox1 = *(float*)((char*)obj + 0x68) + *(float*)((char*)obj + 0xc);
-            float oy1 = *(float*)((char*)obj + 0x6c) + *(float*)((char*)obj + 0x10);
-            unsigned char hit = 0;
-            if (ox0 > x0) {
+    for (;;) {
+        idx = fn_801F78F4(fn_801F856C(), 0x46495245, idx);
+        if (idx < 0) {
+            break;
+        }
+        char* obj = (char*)fn_801F666C(fn_801F856C(), idx);
+        if (obj != 0 && *(int*)(p + 4) == *(int*)(obj + 4)) {
+            float ox0 = *(float*)(obj + 0x60);
+            float oy0 = *(float*)(obj + 0x64);
+            float ox1 = *(float*)(obj + 0x68);
+            float oy1 = *(float*)(obj + 0x6c);
+            ox0 += *(float*)(obj + 0xc);
+            oy0 += *(float*)(obj + 0x10);
+            ox1 += *(float*)(obj + 0xc);
+            oy1 += *(float*)(obj + 0x10);
+            if (ox0 <= x0) {
                 ox0 = x0;
             }
-            if (oy0 > y0) {
+            if (oy0 <= y0) {
                 oy0 = y0;
             }
-            if (ox1 < x1) {
+            if (ox1 >= x1) {
                 ox1 = x1;
             }
-            if (oy1 < y1) {
+            if (oy1 >= y1) {
                 oy1 = y1;
             }
-            if (ox1 < ox0 && oy1 < oy0) {
+            unsigned char hit = 0;
+            if (ox1 >= ox0 && oy1 >= oy0) {
                 hit = 1;
             }
             if (hit) {
