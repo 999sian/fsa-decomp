@@ -39,10 +39,6 @@ struct BTBZ_Vec {
     f32 x, y, z;
 };
 
-static inline void BTBZ_midpoint(BTBZ_Vec& pos, const BTBZ_Box& b) {
-    pos.set(0.5f * (b.x0 - b.x1) + b.x1, 0.5f * (b.y0 - b.y1) + b.y1, 0.0f);
-}
-
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
     *(s32*)(this_ + 0x234) = s;
@@ -140,7 +136,10 @@ extern "C" void fn_8012D6E8(u8* this_) {
     if (*(void**)(this_ + 0x23C) == 0) {
         BTBZ_Vec pos;
         BTBZ_Box b = *(BTBZ_Box*)(fn_802D6A9C() + 0xCC);
-        BTBZ_midpoint(pos, b);
+        f32 y, x;
+        x = 0.5f * (b.x0 - b.x1) + b.x1;
+        y = 0.5f * (b.y0 - b.y1) + b.y1;
+        pos.set(x, y, 0.0f);
         *(void**)(this_ + 0x23C) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x58, 1, 0, 0, 0, 1, 1.0f);
     }
     if (*(u8**)(this_ + 0x23C) != 0) {
