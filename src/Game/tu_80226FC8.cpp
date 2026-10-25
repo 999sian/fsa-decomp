@@ -330,6 +330,16 @@ extern "C" void fn_80227CE8(void* this_) {
     }
 }
 
+extern "C" f32 fn_8022C76C(s32);
+extern "C" void fn_80227F50(void* this_) {
+    u8* p = (u8*)this_;
+    for (s32 i = 0; i < 4; i++) {
+        *(f32*)(p + 0x258) = fn_8022C76C(i);
+        *(f32*)(p + 0x268) = *(f32*)(p + 0x258);
+        p += 4;
+    }
+}
+
 extern "C" void* fn_80228AEC(void* this_, s16 freeFlag) {
     if (this_) {
         *(void**)this_ = lbl_804A6DC8;
