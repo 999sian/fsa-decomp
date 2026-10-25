@@ -1,3 +1,5 @@
+#define GAME_ACTOR_USE_SDK_VEC
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
@@ -14,7 +16,6 @@ extern u8* lbl_8053AB10;
 extern const char* lbl_804AB518[];
 extern const char lbl_804718D0[];
 extern "C" void* fn_802D6A9C(void);
-extern "C" void PSMTXIdentity(void* m);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
 extern "C" void fn_802F745C(void* a, void* b, void* c, void* d);
 extern "C" void fn_803075AC(void* p, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
@@ -66,12 +67,32 @@ extern "C" void fn_80327724(u8* this_) {
     }
 }
 
+extern "C" void fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void fn_801F0E34(void* a, s32 b, s32 c);
+extern "C" void fn_803279D0(Actor* this_) {
+    u8* p = (u8*)this_;
+    if (*(f32*)(p + 0x25c) < 0.0f) {
+        if ((u8)this_->v13() == 1 && p[0x25a] == 1) {
+            fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x503, 1, 0, 0, 0, 1);
+            fn_801F0E34(this_, 0x30003, 0);
+            p[0x25a] = 0;
+        }
+        if (p[0x25a] == 0) {
+            *(f32*)(p + 0x25c) += 1.0f;
+            if (*(f32*)(p + 0x25c) >= 0.0f) {
+                *(f32*)(p + 0x25c) = 0.0f;
+            }
+        }
+    }
+}
+
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
 extern "C" u8 fn_801F6758(f32* pos, s32 room, f32 r);
 extern "C" void fn_803283FC(u8* this_) {
     s32 idx = -1;
+    u8* p;
     *(u16*)(this_ + 0x94) = *(u32*)(this_ + 0x90) & 0xf;
     *(s32*)(this_ + 0x240) = (*(u32*)(this_ + 0x90) >> 4) & 0xf;
     *(s32*)(this_ + 0x248) = (*(u32*)(this_ + 0x90) >> 8) & 0xf;
@@ -84,7 +105,7 @@ extern "C" void fn_803283FC(u8* this_) {
         if (idx == *(s32*)(this_ + 0x198)) {
             continue;
         }
-        u8* p = (u8*)fn_801F666C(fn_801F856C(), idx);
+        p = (u8*)fn_801F666C(fn_801F856C(), idx);
         if (p == 0) {
             continue;
         }
