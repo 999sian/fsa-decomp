@@ -75,7 +75,7 @@ static inline f32 sykyRand01() {
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
-static inline f32 sykyRandFrom(void* game) {
+static inline f32 sykyRandFrom(void* game, u32 multiplier = 0x19660d) {
     u32* seed = (u32*)((u8*)game + 0xb4);
     *seed = *seed * 0x19660d + 0x3c6ef35f;
     u32 bits = (*seed >> 9) | 0x3f800000;
@@ -201,17 +201,17 @@ extern "C" void fn_8019E910(u8* p) {
         }
         switch (*(s32*)(p + 0x230)) {
         case 11:
-            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRand01();
-            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRand01();
-            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRand01();
-            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRand01();
+            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRandFrom(lbl_8053AAF8);
             *(s32*)(p + 0x230) = 0xc;
             break;
         case 12:
             *(f32*)(p + 0x44) -= lbl_8053E460;
             if (*(f32*)(p + 0x14) <= lbl_8053E464) {
                 *(f32*)(p + 0x14) = lbl_8053E464;
-                *(f32*)(p + 0x44) = lbl_8053E474 + lbl_8053E488 * sykyRand01();
+                *(f32*)(p + 0x44) = lbl_8053E474 + lbl_8053E488 * sykyRandFrom(lbl_8053AAF8);
                 *(s32*)(p + 0x230) = 0xd;
             }
             break;
