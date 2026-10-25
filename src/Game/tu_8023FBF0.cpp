@@ -747,7 +747,7 @@ inline BOOL isLinkOwner3(char* p) {
 inline BOOL isLinkOwnerTransition(char* p) {
     s32 me;
     u8 bit = 1 << S32(p, 4);
-    if (!(bit & U8(lbl_8053AAF8, 0x82)) && S32(p, 0xd60) < 0) return 1;
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) return 1;
     if (getModeLO(p, me) == 4) {
         s32 v = linkIdx(p);
         return v != linkRank2(p);
