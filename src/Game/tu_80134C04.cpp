@@ -601,11 +601,19 @@ extern "C" void fn_80135A04(char* this_, u32 which) {
         fn_801352F4(this_, 3);
         fn_801352F4(this_, 4);
         fn_801352F4(this_, 0xc);
-        tu80134_heapReport(this_, base + 0x564);
+        tu80134_heapReport(this_, base + 0x560);
         if (((s32 (*)(void))fn_80021840)() == 2) {
-            *(void**)(this_ + 0xac) = tu80134_load(base + 0x590);
+            if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+                *(void**)(this_ + 0xac) = tu80134_load(base + 0x590);
+            } else {
+                *(void**)(this_ + 0xac) = tu80134_load(base + 0x5a4);
+            }
         } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
-            *(void**)(this_ + 0xac) = tu80134_load(base + 0x5a4);
+            if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+                *(void**)(this_ + 0xac) = tu80134_load(base + 0x5b8);
+            } else {
+                *(void**)(this_ + 0xac) = tu80134_load(base + 0x5d0);
+            }
         }
         *(void**)(this_ + 0xb0) = 0;
         break;
