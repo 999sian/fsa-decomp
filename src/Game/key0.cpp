@@ -95,7 +95,6 @@ static inline void key0RecordDrop(char* p) {
     fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
 }
 
-#pragma peephole off
 extern "C" void fn_802C1674(char* p) {
     if (*(s32*)(p + 0x240) == 4 && *(u8*)(p + 0xc4) == 0) {
         if (*(u8*)(p + 0x2af) != 0) {
