@@ -96,9 +96,9 @@ static inline void Hrmn_stepSub(u8* p, s32 a2, s32 a3) {
                 f32 ty = *(f32*)(m + 0xd0) + f31;
                 f32 c = (f32)p[2];
                 f32 tx = 32.0f + *(f32*)(m + 0xcc);
-                tmp.x = Hrmn_approach(tmp.x, tx, c);
-                tmp.y = Hrmn_approach(tmp.y, ty, c);
-                tmp.z = Hrmn_approach(tmp.z, 0.0f, c);
+                Hrmn_approachTo(tmp.x, tx, c);
+                Hrmn_approachTo(tmp.y, ty, c);
+                Hrmn_approachTo(tmp.z, 0.0f, c);
                 fn_80230498(i, &tmp, *(s32*)(p + 4) + 0x33a, 0xff, -0x80, -0x80, 1);
             }
         }
