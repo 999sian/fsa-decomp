@@ -38,7 +38,7 @@ extern "C" void fn_8011A4BC(void* self)
     switch (state) {
     case 1:
         *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
-        if (*(s32*)(p + 0x240) < 1) {
+        if (*(s32*)(p + 0x240) <= 0) {
             *(s32*)(p + 0x240) = 0;
         }
         fadeChannel(p + 0x244, *(s32*)(p + 0x240), 0xff);
@@ -49,7 +49,7 @@ extern "C" void fn_8011A4BC(void* self)
         break;
     case 2:
         *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
-        if (*(s32*)(p + 0x240) < 1) {
+        if (*(s32*)(p + 0x240) <= 0) {
             *(s32*)(p + 0x240) = 0;
         }
         fadeChannel(p + 0x244, *(s32*)(p + 0x240), 0x9f);
