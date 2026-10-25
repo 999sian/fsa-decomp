@@ -5,7 +5,6 @@
 #pragma auto_inline off
 
 struct Player;
-typedef bool SameTeamResult;
 struct PlayerManager {
     void* vtable;
     Player* players[4];
