@@ -184,12 +184,24 @@ extern "C" void fn_80329468(char* this_) {
     }
 }
 
+extern "C" void fn_801F6874(void*);
+extern "C" void fn_80329640(u8* this_) {
+    u8* p = this_;
+    s32 state = *(s32*)(p + 0x230);
+    if (state == 0) {
+        fn_801F6874(*(void**)(p + 0x98));
+    }
+}
+
 struct GnldRandom {
     u32 seed;
+    u32 get() {
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        return seed;
+    }
     f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
+        out.s = (get() >> 9) | 0x3f800000;
         return out.f - lbl_80541D18;
     }
 };
@@ -208,22 +220,23 @@ extern const f32 lbl_80541D78;
 #define GNLD_RND (((GnldRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1())
 
 extern "C" void fn_8032A4FC(s32 id, s32 ang, u8 mode) {
-    char* a; u32 param; f32 r; char* b;
+    char* a; char* b; f32 r;
     a = fn_801F666C(fn_801F856C(), id);
     if (a != 0) {
         JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(a + 0xc);
         r = GNLD_RND;
+        pos.z = lbl_80541D10;
         pos.x += lbl_80541D14;
         pos.y += lbl_80541D44;
-        pos.z = lbl_80541D10;
-        param = lbl_80541D68 * r;
-        id = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(a + 0x4), &pos, param);
+        id = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(a + 0x4), &pos, (u32)(lbl_80541D68 * r));
         if (id >= 0) {
             b = fn_801F666C(fn_801F856C(), id);
             if (b != 0) {
                 if (mode) {
-                    ang += (s32)(lbl_80541D70 - lbl_80541D74 * GNLD_RND);
-                    JGeometry::TVec3<f32> v(lbl_80541D20 * JMASSin(ang), lbl_80541D20 * JMASCos(ang), lbl_80541D3C * GNLD_RND + lbl_80541D3C);
+                    f32 jitter = lbl_80541D70 - lbl_80541D74 * GNLD_RND;
+                    ang += (s32)jitter;
+                    f32 z = lbl_80541D3C * GNLD_RND + lbl_80541D3C;
+                    JGeometry::TVec3<f32> v(lbl_80541D20 * JMASSin(ang), lbl_80541D20 * JMASCos(ang), z);
                     *(JGeometry::TVec3<f32>*)(b + 0x3c) = v;
                 } else {
                     JGeometry::TVec3<f32> v(lbl_80541D20 - lbl_80541D78 * GNLD_RND, lbl_80541D20 - lbl_80541D78 * GNLD_RND, lbl_80541D3C * GNLD_RND + lbl_80541D3C);
