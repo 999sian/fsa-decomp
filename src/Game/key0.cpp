@@ -79,7 +79,7 @@ extern "C" s32 fn_8023EF50(s32 player);
 
 static inline void key0RecordDropPoints(char* p, Key0Pt pos, Key0Pt key, u32 player, u16 tile) {
     u32 id = *(u32*)(p + 0x238);
-    u32 packed = (player << 30) | (*(u8*)(p + 0x2b5) << 29) |
+    u32 packed = player | (*(u8*)(p + 0x2b5) << 29) |
                  ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | ((tile << 8) & 0xffff00) |
                  (*(u32*)(p + 4) & 0xff);
     fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
