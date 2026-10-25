@@ -590,9 +590,9 @@ extern "C" void fn_802D6B24(char* p, s32 bit, u8 set) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
     if (set) {
-        ((RoomArrays*)p)->flagsFD68[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][word] |= 1U << shift;
+        *(u32*)(p + 0xFD68 + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + word * 4) |= 1U << shift;
     } else {
-        ((RoomArrays*)p)->flagsFD68[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][word] &= (1U << shift) ^ 0xFFFFFFFF;
+        *(u32*)(p + 0xFD68 + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + word * 4) &= (1U << shift) ^ 0xFFFFFFFF;
     }
 }
 
@@ -888,10 +888,9 @@ extern "C" bool fn_802D76A8(char* p, s32 bit) {
 
 extern "C" void fn_802D7704(char* p, s32 bit, u8 value, s32 index) {
     char* q = p + *(s32*)(p + 0x18) * 0x500;
-    s32 row = *(s32*)(p + 0x14) * 0x80;
-    q = q + row;
-    q += (bit / 32) * 4;
-    *(u32*)(q + 0x3548) |= 1U << (bit % 32);
+    q += *(s32*)(p + 0x14) * 0x80;
+    q = (char*)((u32)(q + 0x3548) + (bit / 32) * 4);
+    *(u32*)q |= 1U << (bit % 32);
     if (value != 0) {
         index = index < 8 ? 0 : index - 7;
         ++((s32*)(p + 0x6748))[index];
@@ -2861,8 +2860,9 @@ extern "C" bool fn_802DEA34() {
 
 extern "C" bool fn_802DEABC() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        register char* root = *(char**)(lbl_8053AAF8 + 4);
-        char* p = *(char**)(root + 0x0C);
+        char* p;
+        char* root = *(char**)(lbl_8053AAF8 + 4);
+        p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 0)
             return true;
         p = *(char**)(root + (unsigned short)0x0C);
