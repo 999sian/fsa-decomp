@@ -116,7 +116,6 @@ extern const f32 lbl_8053C5E4;
 extern const f32 lbl_8053C594;
 extern const f32 lbl_8053C5A0;
 
-static inline void DMZLShiftYInPlace(f32* y, const f32 offset) { *y += offset; }
 static inline f32 DMZLShiftY(const f32 y, const f32 offset) { return y + offset; }
 static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
     u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
