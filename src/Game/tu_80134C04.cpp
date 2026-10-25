@@ -342,8 +342,10 @@ extern "C" void* fn_80401E10(const char* name, s32 a, void* heap);
 extern f32 lbl_8053CD50;
 
 static inline void tu80134_heapReport(char* this_, const char* fmt) {
-    OSReport(fmt, (f32)(*(JKRHeap**)(this_ + 0x98))->getFreeSize() * lbl_8053CD50,
-             (f32)(*(JKRHeap**)(this_ + 0x98))->getTotalFreeSize() * lbl_8053CD50);
+    f32 t = (s32)(*(JKRHeap**)(this_ + 0x98))->getTotalFreeSize();
+    f32 total = t * lbl_8053CD50;
+    f32 f = (s32)(*(JKRHeap**)(this_ + 0x98))->getFreeSize();
+    OSReport(fmt, f * lbl_8053CD50, total);
 }
 
 static inline void* tu80134_load(const char* name) {
@@ -478,6 +480,135 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
                 }
             }
         }
+    }
+}
+
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteAllEmitter__17JPAEmitterManagerFv(void* mgr);
+extern "C" char* strcpy(char* d, const char* s);
+extern "C" char* strcat(char* d, const char* s);
+extern "C" void fn_80135A04(char* this_, u32 which) {
+    char* base = (char*)lbl_804652F0;
+    if (*(u8*)(this_ + 0x84) != 0) {
+        fn_801352F4(this_, *(s32*)(this_ + 0x4c));
+        *(u8*)(this_ + 0x84) = 0;
+    }
+    switch (which) {
+    case 7:
+        if (*(void**)(this_ + 4) == 0) {
+            fn_801352F4(this_, 1);
+            fn_801352F4(this_, 2);
+            fn_801352F4(this_, 3);
+            fn_801352F4(this_, 4);
+            fn_801352F4(this_, 6);
+            fn_801352F4(this_, 0xc);
+            tu80134_heapReport(this_, base + 0x324);
+            if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+                char buf[0x20];
+                if (((s32 (*)(void))fn_80021840)() == 2) {
+                    strcpy(buf, base + 0x350);
+                } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+                    strcpy(buf, base + 0x360);
+                }
+                strcat(buf, ((char**)(lbl_8049ED88 + *(s32*)(lbl_80529DEC + 0x118) * 16))[*(s32*)(lbl_80529DEC + 0x11c)]);
+                *(void**)(this_ + 0xac) = tu80134_load(buf);
+            } else if (((s32 (*)(void))fn_80021840)() == 2) {
+                *(void**)(this_ + 0xac) = tu80134_load(base + 0x374);
+            } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+                *(void**)(this_ + 0xac) = tu80134_load(base + 0x390);
+            }
+            if (((s32 (*)(void))fn_80021840)() == 2) {
+                *(void**)(this_ + 0xb0) = tu80134_load(base + 0x3b0);
+            } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+                *(void**)(this_ + 0xb0) = tu80134_load(base + 0x3c8);
+            }
+        }
+        break;
+    case 12:
+        forceDeleteAllEmitter__17JPAEmitterManagerFv(*(void**)((char*)fn_8013C824() + 0xc));
+        fn_801352F4(this_, 1);
+        fn_801352F4(this_, 2);
+        fn_801352F4(this_, 3);
+        fn_801352F4(this_, 4);
+        fn_801352F4(this_, 6);
+        fn_801352F4(this_, 7);
+        tu80134_heapReport(this_, base + 0x3e4);
+        fn_80135020(this_, 0xc);
+        break;
+    case 1:
+        fn_801352F4(this_, 7);
+        fn_801352F4(this_, 2);
+        fn_801352F4(this_, 3);
+        fn_801352F4(this_, 4);
+        fn_801352F4(this_, 6);
+        fn_801352F4(this_, 0xc);
+        tu80134_heapReport(this_, base + 0x414);
+        fn_80135020(this_, 1);
+        break;
+    case 2:
+    case 5:
+        if (*(s32*)(this_ + 0x4c) == 2 || *(s32*)(this_ + 0x4c) == 5) {
+            break;
+        }
+        fn_801352F4(this_, 7);
+        fn_801352F4(this_, 1);
+        fn_801352F4(this_, 3);
+        fn_801352F4(this_, 4);
+        fn_801352F4(this_, 6);
+        fn_801352F4(this_, 0xc);
+        tu80134_heapReport(this_, base + 0x440);
+        if (((s32 (*)(void))fn_80021840)() == 2) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x474);
+        } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x48c);
+        }
+        *(void**)(this_ + 0xb0) = 0;
+        break;
+    case 3:
+        fn_801352F4(this_, 7);
+        fn_801352F4(this_, 1);
+        fn_801352F4(this_, 2);
+        fn_801352F4(this_, 4);
+        fn_801352F4(this_, 6);
+        fn_801352F4(this_, 0xc);
+        tu80134_heapReport(this_, base + 0x4a8);
+        if (((s32 (*)(void))fn_80021840)() == 2) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x4dc);
+        } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x4f0);
+        }
+        *(void**)(this_ + 0xb0) = 0;
+        break;
+    case 4:
+        fn_801352F4(this_, 7);
+        fn_801352F4(this_, 1);
+        fn_801352F4(this_, 2);
+        fn_801352F4(this_, 3);
+        fn_801352F4(this_, 6);
+        fn_801352F4(this_, 0xc);
+        tu80134_heapReport(this_, base + 0x508);
+        if (((s32 (*)(void))fn_80021840)() == 2) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x534);
+        } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x548);
+        }
+        *(void**)(this_ + 0xb0) = 0;
+        break;
+    case 6:
+        fn_801352F4(this_, 7);
+        fn_801352F4(this_, 1);
+        fn_801352F4(this_, 2);
+        fn_801352F4(this_, 3);
+        fn_801352F4(this_, 4);
+        fn_801352F4(this_, 0xc);
+        tu80134_heapReport(this_, base + 0x564);
+        if (((s32 (*)(void))fn_80021840)() == 2) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x590);
+        } else if (((s32 (*)(void))fn_80021840)() == 0 || ((s32 (*)(void))fn_80021840)() == 1) {
+            *(void**)(this_ + 0xac) = tu80134_load(base + 0x5a4);
+        }
+        *(void**)(this_ + 0xb0) = 0;
+        break;
     }
 }
 
