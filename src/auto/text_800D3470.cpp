@@ -1268,17 +1268,6 @@ extern "C" void fn_800D6DE0(u8* p) {
     __GDWriteU32(v);
 }
 
-static inline void tevSwapSel(u8* p, int st, u8* kc, u8* ka, u32 swap) {
-    J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)kc[0], (GXTevKAlphaSel)ka[0],
-                                         (GXTevKColorSel)kc[1], (GXTevKAlphaSel)ka[1],
-                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4],
-                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4 + 1]);
-    J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st + 2), (GXTevKColorSel)kc[2], (GXTevKAlphaSel)ka[2],
-                                         (GXTevKColorSel)kc[3], (GXTevKAlphaSel)ka[3],
-                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4 + 2],
-                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4 + 3]);
-}
-
 extern "C" void fn_800D7020(u8* p) {
     u32 i;
     u8 count = p[0x34];
