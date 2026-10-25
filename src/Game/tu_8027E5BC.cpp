@@ -252,6 +252,7 @@ join:
     }
 }
 
+#pragma opt_propagation off
 void fn_8027EB04(char* p) {
     if (!fn_80241230() && !fn_802412A4(p) && !U8(p, 0x1214)) {
         if (fn_802486A0(p) != 4 && Player_IsLinked(p)) {
@@ -261,7 +262,10 @@ void fn_8027EB04(char* p) {
         }
         if (fn_802486A0(p) == 3 && fn_80248970(p) >= 2) {
             u32 base = S32(p, 0x3b4);
-            u32 ofs = (u32)fn_802D6A9C() + 0x10000 + base;
+            u32 ofs = (u32)fn_802D6A9C();
+            ofs += 0x10000;
+            u8* addr=(u8*)ofs;
+            ofs=(u32)&addr[base];
             if (*(u8*)(ofs + 0x31df) != 0) {
                 s32 v = lbl_8046C0B8[S32(p, 4)];
                 S32(p, 0x3dc) = v;
@@ -317,7 +321,7 @@ void fn_8027EB04(char* p) {
         S32(p, 0x3e8) = 2;
     }
 }
-
+#pragma opt_propagation reset
 void fn_8027EDDC(char* p) {
     if (U8(p, 0x3fc) < 8) U8(p, 0x3fd) = 0;
     else if (U8(p, 0x3fc) < 16) U8(p, 0x3fd) = 1;
@@ -336,38 +340,48 @@ void fn_8027EE84(char* p) {
     U8(p, 0x3f9) = (u32)U8(p, 0x3f8) >> 1;
 }
 
+#pragma opt_propagation off
 void fn_8027EEB4(char* p) {
-    if (Player_IsLinked(p)) {
-        if (!fn_80234ECC(Player_GetLinkTargetIndex(p)) && fn_80250D30(p)) {
-            fn_80251AEC(p, 0xd);
-            return;
-        }
-    } else if (S32(p, 0x1240) == 3 || U8(PTR(p, 0xbf0), 0xb7) == 0) {
-        goto block_c;
+    bool inX, inY, inZ;
+    void* input;
+    u8 flag;
+    f32 machineEps, eps, neg, d;
+    if ((!Player_IsLinked(p) || !fn_80234ECC(Player_GetLinkTargetIndex(p))) && fn_80250D30(p)) {
+        fn_80251AEC(p, 0xd);
+        goto finish;
     }
-    if (!(JMathInlineVEC::PSVECSquareMag(&VEC(p, 0x368)) <= lbl_8054035C * FLT_EPSILON) && S32(PTR(p, 0xbf0), 0xa0) == 0) {
+    if (S32(p, 0x1240) != 3 && U8(PTR(p, 0xbf0), 0xb7) != 0 &&
+        VEC(p, 0x368).squared() <= JGeometry::TUtilf::epsilon() &&
+        S32(PTR(p, 0xbf0), 0xa0) == 0) {
         fn_80251AEC(p, 0);
         U8(p, 0x3f8) = 0;
-        return;
+        goto finish;
     }
-block_c:
-    if (U8(PTR(p, 0xbf0), 0xb7) != 0 && fn_8022C6AC(S32(p, 4)) == lbl_80540360 && S32(PTR(p, 0xbf0), 0xa0) == 0) {
+    if (U8(PTR(p, 0xbf0), 0xb7) != 0) {
+        f32 value = fn_8022C6AC(S32(p, 4));
+        if (value != 0.0f) goto next;
+        if (S32(PTR(p, 0xbf0), 0xa0) != 0) goto next;
         U8(p, 0x3f8) = 0;
-        return;
+        goto finish;
     }
-    if (U8(PTR(p, 0xbf0), 0xb7) == 0) {
-        f32 eps = lbl_8054035C * FLT_EPSILON;
-        bool inX = false;
-        bool inY = false;
-        bool inZ = false;
-        f32 d = F32(p, 0x8) - F32(p, 0x14);
-        if (-eps <= d && d <= eps) {
+next:
+    input = PTR(p, 0xbf0);
+    flag = U8(input, 0xb7);
+    if (flag == 0) {
+        inZ = false;
+        inY = inZ;
+        inX = inY;
+        machineEps = *(f32*)__float_epsilon;
+        eps = 32.0f * machineEps;
+        neg = -eps;
+        d = F32(p, 0x8) - F32(p, 0x14);
+        if (neg <= d && d <= eps) {
             inX = true;
         }
         if (inX) {
             inX = false;
             d = F32(p, 0xc) - F32(p, 0x18);
-            if (-eps <= d && d <= eps) {
+            if (neg <= d && d <= eps) {
                 inX = true;
             }
             if (inX) {
@@ -377,20 +391,20 @@ block_c:
         if (inY) {
             inY = false;
             d = F32(p, 0x10) - F32(p, 0x1c);
-            if (-eps <= d && d <= eps) {
+            if (neg <= d && d <= eps) {
                 inY = true;
             }
             if (inY) {
                 inZ = true;
             }
         }
-        if (inZ && S32(PTR(p, 0xbf0), 0xa0) == 0 && U8(p, 0x434) == 0) {
+        if (inZ && S32(input, 0xa0) == 0 && U8(p, 0x434) == 0) {
             fn_80251AEC(p, 0);
             U8(p, 0x3f8) = 0;
-            return;
+            goto finish;
         }
     }
-    if (U8(PTR(p, 0xbf0), 0xb7) != 0) {
+    if (flag != 0) {
         if (U8(p, 0x3f8) % 3 == 0) {
             U8(p, 0x3f8) += 2;
         } else {
@@ -401,10 +415,11 @@ block_c:
     }
     if (U8(p, 0x3f8) >= 0x18) {
         U8(p, 0x3f8) = 0;
-        U8(p, 0x3f9) = U8(p, 0x3f8) / 3;
     }
+finish:
+    U8(p, 0x3f9) = U8(p, 0x3f8) / 3;
 }
-
+#pragma opt_propagation reset
 void fn_8027F16C(char* p) {
     if (!Player_IsLinked(p) && !fn_80245FEC(p) && U8(p, 0x1201) != 1)
         fn_802416FC(p, 0x180);
@@ -1207,6 +1222,30 @@ void fn_8028126C(char* p) {
     }
 }
 
+extern "C" s32 Actor_CreateByID(void*,u32,u32,void*,u32,s32,s32);
+extern "C" const JGeometry::TVec3<f32> lbl_8046BEA8[];
+#pragma opt_lifetimes off
+void fn_80281760(char* p) {
+ U8(p,0x458)=0;
+ const JGeometry::TVec3<f32>* __restrict v=&lbl_8046BEA8[S32(p,0x3dc)];
+ f32 y; f32 x; x=v->x; y=v->y; F32(p,0x344)=x; f32 z=v->z; F32(p,0x348)=y; F32(p,0x34c)=z;
+if(PTR(p,0x135c)==NULL){switch(S32(p,0x3dc)){
+case 0: PTR(p,0x135c)=fn_8013CC50(S32(p,0x3b4),p+8,584,0,0,0,0,1,lbl_8054036C); break;
+case 1: PTR(p,0x135c)=fn_8013CC50(S32(p,0x3b4),p+8,583,0,0,0,0,1,lbl_8054036C); break;
+case 2: PTR(p,0x135c)=fn_8013CC50(S32(p,0x3b4),p+8,582,0,-1,0,0,1,lbl_8054036C); break;
+case 3: PTR(p,0x135c)=fn_8013CC50(S32(p,0x3b4),p+8,585,0,0,0,0,1,lbl_8054036C); break;
+}}
+if(PTR(p,0x132c)==NULL){switch(S32(p,0x3dc)){
+case 0: PTR(p,0x132c)=fn_8013CC50(S32(p,0x3b4),p+8,580,0,0,0,(s32)(p+0x1330),1,lbl_8054036C); break;
+case 1: PTR(p,0x132c)=fn_8013CC50(S32(p,0x3b4),p+8,579,0,0,0,(s32)(p+0x1330),1,lbl_8054036C); break;
+case 2: PTR(p,0x132c)=fn_8013CC50(S32(p,0x3b4),p+8,578,0,-1,0,(s32)(p+0x1330),1,lbl_8054036C); break;
+case 3: PTR(p,0x132c)=fn_8013CC50(S32(p,0x3b4),p+8,581,0,0,0,(s32)(p+0x1330),1,lbl_8054036C); break;
+}}
+if(S32(p,0xb28)<0){u32 room=S32(p,4); void* mgr=fn_801F856C(); S32(p,0xb28)=Actor_CreateByID(mgr,0x46495245,S32(p,0x3b4),p+8,(((S32(p,0x3dc)&3)<<4)|0x180)|(room&3),-1,room);}
+S32(p,0x408)=0;
+fn_8024F0E8(p,0x10014);fn_8024F0E8(p,0x2004c);
+}
+#pragma opt_lifetimes reset
 void fn_80281A18(char* p) {
     U8(p, 0x11d8) = 0;
     S32(p, 0x11d4) = 10;
