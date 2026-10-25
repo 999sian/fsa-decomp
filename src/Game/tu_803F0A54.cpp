@@ -701,8 +701,6 @@ extern const f32 lbl_805437C8;
 extern const f32 lbl_805437CC;
 extern const f32 lbl_805437A0;
 extern "C" void fn_803F8FBC(u8* p) {
-    u8* q;
-    const u64* ent;
     s32 i;
     f32 span;
     void* r;
@@ -755,42 +753,40 @@ extern "C" void fn_803F8FBC(u8* p) {
         *(s16*)(p + 0x24a) = 0;
     }
 
-    ent = lbl_80479238;
-    q = p;
-    for (i = 0; i < 4; i++, q += 4, ent++) {
+    for (i = 0; i < 4; i++) {
         if (lbl_8053AAF8[0x82] & (u8)(1 << (i + 4))) {
-            *(s32*)(q + 0x210) += 1;
-            if (*(s32*)(q + 0x210) >= 0x82) {
-                *(s32*)(q + 0x210) = 0x64;
+            *(s32*)(p + i * 4 + 0x210) += 1;
+            if (*(s32*)(p + i * 4 + 0x210) >= 0x82) {
+                *(s32*)(p + i * 4 + 0x210) = 0x64;
             }
-            if (*(s32*)(q + 0x210) == 0xb) {
-                ((u8*)*(void**)(q + 0x78))[0x44] = 0;
-                ((u8*)*(void**)(q + 0x78))[0x45] = 0;
+            if (*(s32*)(p + i * 4 + 0x210) == 0xb) {
+                ((u8*)*(void**)(p + i * 4 + 0x78))[0x44] = 0;
+                ((u8*)*(void**)(p + i * 4 + 0x78))[0x45] = 0;
                 t1 = 0x10001;
-                (*(FsaMenuAction**)(q + 0x78))->setAction(&t1);
-            } else if (*(s32*)(q + 0x210) == 0x24) {
-                r = (*(J2DPane**)(p + 8))->search(*ent);
+                (*(FsaMenuAction**)(p + i * 4 + 0x78))->setAction(&t1);
+            } else if (*(s32*)(p + i * 4 + 0x210) == 0x24) {
+                r = (*(J2DPane**)(p + 8))->search(lbl_80479238[i]);
                 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
-                r = (*(J2DPane**)(p + 8))->search(*ent);
+                r = (*(J2DPane**)(p + 8))->search(lbl_80479238[i]);
                 *(f32*)(p + 0x88) = (lbl_805437A0 * (span * lbl_80543720 + *(f32*)((u8*)r + 0x30))) /
                                     (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
-                r = (*(J2DPane**)(p + 8))->search(*ent);
+                r = (*(J2DPane**)(p + 8))->search(lbl_80479238[i]);
                 span = *(f32*)((u8*)r + 0x2c) - *(f32*)((u8*)r + 0x24);
-                r = (*(J2DPane**)(p + 8))->search(*ent);
+                r = (*(J2DPane**)(p + 8))->search(lbl_80479238[i]);
                 *(f32*)(p + 0x8c) = (lbl_805437A4 * (lbl_80543728 + (span * lbl_80543720 + *(f32*)((u8*)r + 0x34)))) /
                                     (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
                 *(f32*)(p + 0x90) = lbl_8054372C;
-                ((u8*)*(void**)(q + 0x78))[0x44] = 0;
-                ((u8*)*(void**)(q + 0x78))[0x45] = 0;
+                ((u8*)*(void**)(p + i * 4 + 0x78))[0x44] = 0;
+                ((u8*)*(void**)(p + i * 4 + 0x78))[0x45] = 0;
                 t2 = 0x2000E;
-                (*(FsaMenuAction**)(q + 0x78))->setAction(&t2);
+                (*(FsaMenuAction**)(p + i * 4 + 0x78))->setAction(&t2);
                 v1.set(lbl_805437CC + *(f32*)(p + 0x88), *(f32*)(p + 0x8c) - lbl_805437C8, *(f32*)(p + 0x90));
                 fn_8013CC50(0, &v1.x, 0xcb, 1, 0, 0, 0, 1, lbl_80543730);
                 v2.set(lbl_805437CC + *(f32*)(p + 0x88), *(f32*)(p + 0x8c) - lbl_805437C8, *(f32*)(p + 0x90));
                 fn_8013CC50(0, &v2.x, 0xcc, 1, 0, 0, 0, 1, lbl_80543730);
             }
         } else {
-            *(s32*)(q + 0x210) = 0;
+            *(s32*)(p + i * 4 + 0x210) = 0;
         }
     }
 }
