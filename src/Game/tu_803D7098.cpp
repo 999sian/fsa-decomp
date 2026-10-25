@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
 
 struct FsaNode {
     virtual void v0(void);
@@ -18,6 +19,12 @@ struct FsaNode {
     virtual void v14(void);
     virtual FsaNode* v15(u64);
 };
+
+typedef FsaNode* (*FsaGetFn)(void* self, u64 key);
+
+static inline FsaNode* fsaGet(u8* obj, u64 key) {
+    return ((FsaGetFn)(*(void***)obj)[15])(obj, key);
+}
 
 struct FsaSlots {
     virtual void v0(void);
@@ -130,6 +137,106 @@ extern "C" f32 lbl_80543530;
 extern "C" f32 lbl_80543538;
 extern "C" f32 lbl_8054353C;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void*, f32, f32, void*);
+extern "C" u8 fn_80402940(void*, s32, s32, f32, f32);
+extern "C" f32* getBounds__7J2DPaneFv(void*);
+extern "C" u64 lbl_80477180[][16];
+extern "C" u64 lbl_80477408[];
+extern "C" void fn_803D7098(u8* param_1) {
+    f32 f28;
+    f32 f29;
+    f32 f30;
+    f32 f31;
+    f32 f0;
+    u8* p;
+    s32 i;
+    u8* q;
+    s32 j;
+    s32 k;
+    s16 b;
+    s16 a;
+    u8 flag0 = 0;
+    u8 flag1 = 0;
+    u8 flag2 = 0;
+    u8 flag3 = 0;
+
+    *(s32*)(param_1 + 0x60) += 1;
+    if (*(s32*)(param_1 + 0x60) > 4) {
+        flag0 = fn_80402940(*(void**)(param_1 + 0x30), 0x16, 0, lbl_80543530, lbl_80543534);
+    }
+    if (*(s32*)(param_1 + 0x60) > 0x10) {
+        flag1 = fn_80402940(*(void**)(param_1 + 0x48), 0x18, 0, lbl_80543530, lbl_80543534);
+    }
+    if (*(s32*)(param_1 + 0x60) > 0) {
+        i = 0;
+        p = param_1;
+        for (; i < 4; i++) {
+            flag2 = fn_80402940(*(void**)(p + 0x34), 0x16, 0, lbl_80543538, lbl_80543534);
+            p += 4;
+        }
+    }
+    if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
+        flag3 = 1;
+    } else {
+        q = param_1;
+        for (k = 0, j = 0; k < 2; k++, j += 5) {
+            if (*(s32*)(param_1 + 0x60) > j) {
+                flag3 = fn_80402940(*(void**)(q + 0x24), 0x10, 0, lbl_8054353C, lbl_80543534);
+            }
+            q += 4;
+        }
+    }
+
+    if (flag0 && flag1 && flag2 && flag3) {
+        (*(u8**)(*(u8**)(param_1 + 0x2c) + 4))[0xb0] = 1;
+        param_1[0x78] = 0;
+        param_1[0x79] = param_1[0x78];
+        *(s16*)(param_1 + 0x6e) = 0;
+        param_1[0x7a] = 3;
+        param_1[0x7f] = 1;
+        *(s16*)(param_1 + 0x70) = 1;
+        a = *(s16*)(param_1 + 0x68);
+        if (a >= 0 && a < 4) {
+            b = *(s16*)(param_1 + 0x6a);
+            if (b >= 0) {
+                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
+                f31 = f0 + f28;
+                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[a][b])->getBounds())[0];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[a])->getBounds())[0];
+                f30 = f0 + f28;
+                f29 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x8))->search(0x0050306B616B3030ULL)->getBounds())[0];
+                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(0x004E646174613033ULL)->getBounds())[0];
+                f28 = f0 + f28;
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
+                f0 = f0 + f28;
+                f0 = f0 - f29;
+                f0 = f0 + f30;
+                f0 = f0 - f31;
+                *(f32*)(param_1 + 0x58) = f0;
+
+                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[1];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[1];
+                f28 = f0 + f28;
+                f29 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[*(s16*)(param_1 + 0x68)][*(s16*)(param_1 + 0x6a)])->getBounds())[1];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[*(s16*)(param_1 + 0x68)])->getBounds())[1];
+                f29 = f0 + f29;
+                f30 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x8))->search(0x0050306B616B3030ULL)->getBounds())[1];
+                f31 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[1];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(0x004E646174613033ULL)->getBounds())[1];
+                f31 = f0 + f31;
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[1];
+                f0 = f0 + f31;
+                f0 = f0 - f30;
+                f0 = f0 + f29;
+                f0 = f0 - f28;
+                *(f32*)(param_1 + 0x5c) = f0;
+            }
+        }
+    }
+    fn_80402E08(*(void**)(param_1 + 0x44), *(f32*)(param_1 + 0x58), *(f32*)(param_1 + 0x5c));
+}
+
 extern "C" void fn_803D82EC(u8* param_1) {
     FsaSlots* obj;
 
@@ -205,7 +312,7 @@ extern "C" void fn_803D8364(u8* param_1) {
                 }
             }
         }
-        ((FsaSlots*)(*(FsaNode**)(param_1 + 4))->v15(0x5061636375723031ULL))->v7((s32)f30);
+        ((*(FsaNodeB**)(param_1 + 4))->v13(0x5061636375723031ULL))->v7((s32)f30);
         fn_80440EE8(lbl_8053AED8);
     }
 }
