@@ -1,5 +1,18 @@
 #include "Game/Actor.h"
 
+namespace JMath {
+    template <int N, typename T>
+    class TAtanTable {
+    public:
+        f32 atan2_(f32, f32) const;
+        f32 mTable[1024];
+        f32 mTable2[8];
+    };
+    extern const TAtanTable<1024, f32> atanTable_;
+}
+struct Tu8030FEB8Rect { f32 x0, y0, x1, y1; };
+struct Tu8030FEB8Vec3 { f32 x, y; f32 z; };
+
 
 extern "C" char lbl_804AAA70[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -27,23 +40,20 @@ extern "C" void fn_801F06F0(void* a, void* p2, s32 idx, void* p4, s32 p5, f32 f1
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 extern "C" void fn_8030FDD8(char* p) {
     if (*(u8*)(p + 0x288)) {
-        f32 f = lbl_8054177C;
-        fn_801F06F0(p, lbl_80471420, *(s32*)(p + 0x240) + 0x12c, 0, 0, f, f);
+        fn_801F06F0(p, lbl_80471420, *(s32*)(p + 0x240) + 0x12c, 0, 0, lbl_8054177C, lbl_8054177C);
         fn_80307AC8(*(void**)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x240) + 0x12c, 0, 0, -1);
     } else {
-        s32 n = *(s32*)(p + 0x238);
-        fn_801F06F0(p, lbl_80471420, *(s32*)(p + 0x240) + (n * 2) + 0xec, 0, 0, lbl_8054177C, lbl_8054177C);
-        n = *(s32*)(p + 0x238);
-        fn_80307AC8(*(void**)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x240) + (n * 2) + 0xec, 0, 0, -1);
+        fn_801F06F0(p, lbl_80471420, *(s32*)(p + 0x240) + (*(s32*)(p + 0x238) << 1) + 0xec, 0, 0, lbl_8054177C, lbl_8054177C);
+        fn_80307AC8(*(void**)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x240) + (*(s32*)(p + 0x238) << 1) + 0xec, 0, 0, -1);
     }
 }
 
 extern "C" void fn_80310904(char* p) {
     s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
+    s32 off = 0;
     char* q = p;
     s32 cnt = 0;
     s32 i = 0;
-    s32 off = 0;
     for (; i < n; off += 4, i++) {
         char* a = *(char**)((char*)fn_801F856C() + off + 8);
         if (a != 0 && *(s32*)(a + 0x1a0) == 0x474d5442) {
@@ -62,12 +72,12 @@ extern "C" void fn_80310904(char* p) {
     *(s32*)(p + 0x24c) = cnt;
     {
         f32 one = lbl_8054177C;
+        char* g = lbl_8053AAF8;
         f32 scale = lbl_8054178C;
-        u32* s = (u32*)(lbl_8053AAF8 + 0xb4);
         u32 bits;
         s32 sel;
-        *s = *s * 0x19660du + 0x3c6ef35fu;
-        bits = (*s >> 9) | 0x3f800000u;
+        *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660du + 0x3c6ef35fu;
+        bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000u;
         sel = (s32)(scale * (*(f32*)&bits - one));
         switch (sel) {
         case 0: {
@@ -97,6 +107,8 @@ extern "C" void fn_80310904(char* p) {
             *(s32*)(p + 0x258) = *(s32*)(p + 0x254);
             *(s32*)(p + 0x254) = t;
         } break;
+        case 5:
+            break;
         }
     }
 }
@@ -107,8 +119,8 @@ extern char* lbl_8053AAF8;
 extern u8 lbl_80529DEC[];
 extern "C" void fn_80310A9C(char* p)
 {
-    f32 b = lbl_80541794;
-    f32 a = lbl_80541790;
+    const f32 b = lbl_80541794;
+    const f32 a = lbl_80541790;
 
     *(f32*)(p + 0x60) = a;
     *(f32*)(p + 0x64) = a;
