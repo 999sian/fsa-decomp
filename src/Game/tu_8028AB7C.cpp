@@ -59,7 +59,7 @@ extern "C" u8 fn_8022F478(s32 i);
 extern "C" u8 fn_8022C8EC(s32 i);
 extern "C" s32 fn_8023DE58(s32 i);
 extern "C" u8 fn_8023B0F4(s32 i, f32* p, u32 room, s32 flag, f32 r);
-extern "C" u8 fn_802317F0(s32 i, s32 a, void* p, void* q, s32 b);
+extern "C" u8 fn_802317F0(s32 i, s32 a, void* p, void* q, u32 b);
 extern "C" void* fn_801F26CC(u8* this_, const void* p);
 extern "C" void* fn_801F856C(void);
 extern "C" u8* fn_801F666C(void* a, void* b);
