@@ -349,6 +349,32 @@ int Actor::v18(int a, f32* b) {
     return result;
 }
 
+extern u32 lbl_80469F78[];
+extern f32 lbl_8053F740;
+extern f32 lbl_8053F7A4;
+extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c)
+{
+    Vec v;
+    u32 cnt[3];
+    u32 r30 = 0;
+    f32* rect = (f32*)lim;
+    u32 i;
+    v.x = p->x + rect[0];
+    v.y = p->y + rect[1];
+    v.z = lbl_8053F740;
+    cnt[0] = lbl_80469F78[0];
+    cnt[1] = lbl_80469F78[1];
+    cnt[2] = lbl_80469F78[2];
+    i = 0;
+    while (v.y < p->y + rect[3] - 1.0f) {
+        if (a->v18(id, (f32*)&v)) {
+            i++;
+        }
+        v.y += lbl_8053F7A4;
+    }
+    return (u8)r30;
+}
+
 /* --- 0x801EE434: release a collision object back to its pool (or reactivate
  * it if it is still on-screen).  Operates on the collision object, not the
  * actor; ~Actor inlines this for field_100 and field_104.  Name is a
@@ -718,6 +744,192 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
     return ret;
 }
 
+extern "C" u8 fn_801F3D94(Actor* a, u8 flag) {
+	typedef JGeometry::TVec3<f32> V3;
+	s32 result = 0;
+	if ((s32)a->field_D8 != 0) {
+		result = 0;
+		if (flag && a->field_C4 == 0) {
+			V3 old = *(V3*)&a->field_0C;
+			switch (a->field_F8) {
+			case 0:
+				a->field_D8--;
+				((V3*)&a->field_3C)->scale(lbl_8053F7B4);
+				((V3*)&a->field_0C)->add(*(V3*)&a->field_3C);
+				break;
+			case 1:
+				a->field_D8--;
+				((V3*)&a->field_3C)->scale(lbl_8053F7B8);
+				((V3*)&a->field_0C)->add(*(V3*)&a->field_3C);
+				break;
+			case 2:
+				if (a->field_0C.z > lbl_8053F740) {
+					a->field_3C.z += lbl_8053F754;
+					((V3*)&a->field_3C)->scale(lbl_8053F7BC);
+				} else {
+					a->field_D8--;
+				}
+				((V3*)&a->field_0C)->add(*(V3*)&a->field_3C);
+				if (a->field_0C.z <= lbl_8053F740) {
+					a->field_0C.z = lbl_8053F740;
+					if (a->field_3C.z < lbl_8053F7C0) {
+						a->field_3C.z *= lbl_8053F7C4;
+						a->field_3C.x *= lbl_8053F7C8;
+						a->field_3C.y *= lbl_8053F7C8;
+						fn_8013CC50(a->field_04, &a->field_0C, lbl_8053F774, 0x3cf, 0, 0, 0, 0, 1);
+					} else {
+						a->field_3C.x = a->field_3C.y = a->field_3C.z = lbl_8053F740;
+					}
+				}
+				if ((s32)a->field_D8 == 0) {
+					a->field_3C.x = a->field_3C.y = a->field_3C.z = lbl_8053F740;
+					a->field_0C.z = lbl_8053F740;
+				}
+				break;
+			}
+			if (lbl_8053F740 == a->field_0C.z && ((V3*)&a->field_3C)->squared() > lbl_8053F774) {
+				f32 s;
+				if (a->field_1A0 == 0x534c4b32) {
+					s = a->field_3C.z;
+				} else {
+					s = lbl_8053F784 * lbl_8046A00C[a->field_C0];
+				}
+				if (s > lbl_8053F740) {
+					V3 d;
+					d.sub(*(V3*)&a->field_0C, old);
+					f32 dist = d.normalize();
+					u32 id;
+					if (fn_802258D4(&a->field_0C, a->field_04) || fn_80225614(&a->field_0C, a->field_04)) {
+						id = 0x3d4;
+					} else {
+						id = 0x3d3;
+					}
+					for (f32 t = lbl_8053F740; t < dist; t += lbl_8053F7CC) {
+						V3 p(d);
+						p.scale(t);
+						p.add(old);
+						u8* e = (u8*)fn_8013CC50(a->field_04, &p, lbl_8053F774, id, 0, 0, 0, 0, 1);
+						if (e) {
+							*(s32*)(e + 0x24) = 1;
+							*(f32*)(e + 0x28) = lbl_8053F7A0;
+							*(f32*)(e + 0xb0) = s;
+							*(f32*)(e + 0xb4) = s;
+						}
+					}
+				}
+			}
+		} else {
+			a->field_D8--;
+		}
+		s32 lim;
+		if ((s32)a->field_108 <= 0 && (s32)a->field_E0 == 0 &&
+			(s32)a->field_D8 <= ((lim = (s32)a->field_DC - 8) > 0 ? lim : 0)) {
+			if ((s32)a->field_FC == 0) {
+				a->field_E0 = 1;
+			} else {
+				a->field_E0 = 0x1e;
+			}
+			a->field_D8 = 0;
+			result = 1;
+			a->field_3C.x = a->field_3C.y = a->field_3C.z = lbl_8053F740;
+			if (a->field_100 != 0) {
+				s32 idx = a->field_10C;
+				s32 n = 0xf;
+				if (idx >= 0 && idx < 4) {
+					n = idx;
+				}
+				Actor_CreateByID(fn_801F856C(), 0x424c5a45, a->field_04, (f32*)&a->field_0C, n, -1, idx);
+			}
+		} else if ((s32)a->field_D8 == 0) {
+			result = 1;
+		}
+		if ((u8)result) {
+			fn_801CB7A0(a->field_100);
+			fn_801CB7A0(a->field_104);
+		}
+		result = 1;
+	} else if ((s32)a->field_E0 != 0) {
+		if ((s32)a->field_E0 == 0x1e) {
+			f32 sc = lbl_8046A00C[a->field_C0];
+			u16 id = 0xffff;
+			switch (a->field_FC) {
+			case 1:
+			case 2:
+				if (a->field_10C >= 0 && a->field_10C < 4 && fn_80237060(a->field_10C) >= 2) {
+					fn_8013CC50(a->field_04, &a->field_0C, sc, 0x17a, 1, 1, 0, 0, 1);
+					fn_8013CC50(a->field_04, &a->field_0C, sc, 0x17b, 1, 1, 0, 0, 1);
+					fn_801F0E34(a, 0x5006b, 0);
+					goto done;
+				}
+				id = 0x174;
+				break;
+			case 3:
+				if (__fabs(a->field_EC.x) > __fabs(a->field_EC.y)) {
+					if (a->field_EC.x < lbl_8053F740) {
+						id = 0x176;
+					} else {
+						id = 0x177;
+					}
+				} else if (a->field_EC.y < lbl_8053F740) {
+					id = 0x178;
+				} else {
+					id = 0x175;
+				}
+				break;
+			case 4:
+				id = 0x17c;
+				break;
+			case 5:
+				id = 0x179;
+				break;
+			}
+			if (id != 0xffff) {
+				fn_8013CC50(a->field_04, &a->field_0C, sc, id, 1, 1, 0, 0, 1);
+			}
+		}
+	done:
+		a->field_E0--;
+		a->field_3C.x = a->field_3C.y = a->field_3C.z = lbl_8053F740;
+		if ((s32)a->field_E0 == 0) {
+			a->v07();
+		}
+		result = 1;
+	} else {
+		a->field_D5 = 0;
+	}
+	if ((s32)a->field_E8 > 0) {
+		if ((s32)a->field_E4 > 0) {
+			a->field_E4--;
+		} else {
+			V3 p;
+			u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xB4);
+			*seed = *seed * 0x19660d + 0x3c6ef35f;
+			u32 bits = (*seed >> 9) | 0x3f800000;
+			p.y = lbl_8053F7A4 * (lbl_8053F7A0 * (*(f32*)&bits - lbl_8053F774) - lbl_8053F774) + a->field_0C.y;
+			p.z = a->field_0C.z;
+			seed = (u32*)((u8*)lbl_8053AAF8 + 0xB4);
+			*seed = *seed * 0x19660d + 0x3c6ef35f;
+			bits = (*seed >> 9) | 0x3f800000;
+			p.x = lbl_8053F7A4 * (lbl_8053F7A0 * (*(f32*)&bits - lbl_8053F774) - lbl_8053F774) + a->field_0C.x;
+			if ((s32)a->field_FC == 5) {
+				fn_8013CC50(a->field_04, &p, lbl_8053F774, 0x19d, 0, 2, 0, 0, 1);
+			} else {
+				fn_8013CC50(a->field_04, &p, lbl_8053F774, 0x24a, 0, 2, 0, 0, 1);
+				fn_8013CC50(a->field_04, &p, lbl_8053F774, 0x24b, 0, 2, 0, 0, 1);
+				fn_801F0E34(a, 0x40002, 0);
+			}
+			a->field_E8--;
+			if ((s32)a->field_E8 > 0) {
+				a->field_E4 = 5;
+			}
+		}
+	}
+	if (result != 0 && (s32)a->field_108 <= 0) {
+		result = -1;
+	}
+	return result;
+}
+
 /* --- 0x801F36D4: claim the interaction slot -------------------------------- */
 extern "C" u8 fn_801F36D4(Actor* a, s32 v) {
     u32 claimed = 0;
@@ -786,11 +998,12 @@ extern "C" void fn_801F317C(const Actor* a, f32* out) {
     f32 y = a->field_0C.y;
     f32 x = a->field_0C.x;
     f32 z = a->field_0C.z;
+    f32 w = a->field_7C.x + y;
     f32 t = a->field_70.y + y;
     out[0] = a->field_70.x + x;
     out[1] = t - z;
     out[2] = a->field_70.z + x;
-    out[3] = a->field_7C.x + y - z;
+    out[3] = w - z;
 }
 
 /* --- 0x801F355C: release the actor's area slot (does not clear field_11C) --- */
@@ -839,14 +1052,11 @@ extern "C" void fn_801F3128(Actor* a, f32* out) {
 
 /* --- 0x801F31C4: four derived coordinates (field_60 band) ------------------ */
 extern "C" void fn_801F31C4(const Actor* a, f32* out) {
-    f32 x0 = a->field_60 + a->field_0C.x;
-    f32 y0 = a->field_64 + a->field_0C.y - a->field_0C.z;
-    f32 x1 = a->field_68 + a->field_0C.x;
-    f32 y1 = a->field_6C + a->field_0C.y - a->field_0C.z;
-    out[0] = x0;
-    out[1] = y0;
-    out[2] = x1;
-    out[3] = y1;
+    ((JGeometry::TBox2<f32>*)out)->set(
+        a->field_60 + a->field_0C.x,
+        a->field_64 + a->field_0C.y - a->field_0C.z,
+        a->field_68 + a->field_0C.x,
+        a->field_6C + a->field_0C.y - a->field_0C.z);
 }
 
 /* --- 0x801F2DB4: submit/refresh a record code against the actor ------------ */
