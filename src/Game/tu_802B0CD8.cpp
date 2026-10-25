@@ -49,30 +49,34 @@ extern "C" void fn_802B0CD8(void* this_) {
     switch (mode) {
     case 0: {
         if (*(u8*)(p + 0x248) == 1) {
-            JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc) + 8.0f, *(f32*)(p + 0x10) + 8.0f, 0.0f);
-            drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0x80);
+            f32 size = *(f32*)(p + 0x250);
+            JGeometry::TVec3<f32> pos(8.0f + *(f32*)(p + 0xc), 8.0f + *(f32*)(p + 0x10), 0.0f);
+            drawShadow802B(*(u32*)(p + 4), &pos, size, 0x80);
         }
         break;
     }
     case 1: {
+        f32 size = *(f32*)(p + 0x250);
         JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - 4.0f, *(f32*)(p + 0x14));
-        drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0xc8);
+        drawShadow802B(*(u32*)(p + 4), &pos, size, 0xc8);
         break;
     }
     case 2: {
         if (*(u8*)(p + 0x248) == 1) {
             u8* mgr = (u8*)*(void**)((u8*)lbl_8053AB10 + 0x2c);
             mgr[0xd] = 1;
-            JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc) + 8.0f, *(f32*)(p + 0x10) + 8.0f, 0.0f);
-            drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0x80);
+            f32 size = *(f32*)(p + 0x250);
+            JGeometry::TVec3<f32> pos(8.0f + *(f32*)(p + 0xc), 8.0f + *(f32*)(p + 0x10), 0.0f);
+            drawShadow802B(*(u32*)(p + 4), &pos, size, 0x80);
         }
         break;
     }
     case 3: {
         u8* mgr = (u8*)*(void**)((u8*)lbl_8053AB10 + 0x2c);
         mgr[0xd] = 1;
+        f32 size = *(f32*)(p + 0x250);
         JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - 4.0f, *(f32*)(p + 0x14));
-        drawShadow802B(*(u32*)(p + 4), &pos, *(f32*)(p + 0x250), 0xc8);
+        drawShadow802B(*(u32*)(p + 4), &pos, size, 0xc8);
         break;
     }
     default:
