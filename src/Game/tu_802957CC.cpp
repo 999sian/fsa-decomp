@@ -49,6 +49,49 @@ extern "C" void fn_80238E08(void* h);
 extern "C" u8 fn_802A1554(void* g, void* v);
 extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 
+// Push direction from a player standing against the block, or -1.
+static inline s32 PushDirFromPlayer(char* self) {
+    if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+        s32 room = *(s32*)(self + 4);
+        if (fn_8023DE58(0) == room) {
+            s32 d = fn_80238BC4(*(void**)(self + 0x198));
+            if (d >= 0 && d < 4) {
+                *(s32*)(self + 0x2cc) = 1;
+                return d;
+            }
+        }
+    }
+    return -1;
+}
+
+// Push direction from a player pulling the block (reversed), or -1.
+static inline s32 PushDirFromPull(char* self) {
+    JGeometry::TBox2f box;
+    box.i.x = *(f32*)(self + 0x80);
+    box.i.y = *(f32*)(self + 0x84);
+    box.f.x = *(f32*)(self + 0x88);
+    box.f.y = *(f32*)(self + 0x8c);
+    box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+    if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0 &&
+        fn_80238A68(*(void**)(self + 0x198)) >= 4) {
+        s32 d = fn_8023885C(*(void**)(self + 0x198));
+        if (d >= 0 && d < 4) {
+            if (d == 0) {
+                d = 1;
+            } else if (d == 1) {
+                d = 0;
+            } else if (d == 2) {
+                d = 3;
+            } else if (d == 3) {
+                d = 2;
+            }
+            *(s32*)(self + 0x2cc) = -1;
+            return d;
+        }
+    }
+    return -1;
+}
+
 struct HOUSLinks {
     u8 unk_000[0x25c];
     s32 outgoing[4];
@@ -1028,21 +1071,27 @@ extern "C" void fn_80299AD0(void* p) {
         JGeometry::TVec3f pos;
         JGeometry::TBox2f area;
     };
-    char* self = (char*)p;
     s32 dir;
-    s32 d;
     u8 ok;
     s32 i;
+    char* self = (char*)p;
+    s32 d;
     s32 j;
     s32 room;
     char* m;
     char* row;
     char* col;
+    JGeometry::TBox2f* src;
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
     JGeometry::TVec3f gridBase;
+    JGeometry::TVec3f grid;
     JGeometry::TBox2f box;
     Probe pt;
 
-    if (!(((JGeometry::TVec3f*)(self + 0x250))->squared() <= 32.0f * FLT_EPSILON)) {
+    if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= 32.0f * FLT_EPSILON)) {
         return;
     }
     if (*(u8*)(self + 0x2c0) == 1) {
@@ -1054,9 +1103,13 @@ extern "C" void fn_80299AD0(void* p) {
     }
     dir = -1;
     if (*(u8*)(self + 0x2b9) == 0) {
-        if (fn_80239108(*(void**)(self + 0x198)) >= 4 && *(s32*)(self + 4) == fn_8023DE58(0) &&
-            (d = fn_80238BC4(*(void**)(self + 0x198))) >= 0 && d < 4) {
-            *(s32*)(self + 0x2cc) = 1;
+        if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+            room = *(s32*)(self + 4);
+            if (fn_8023DE58(0) == room && (d = fn_80238BC4(*(void**)(self + 0x198))) >= 0 && d < 4) {
+                *(s32*)(self + 0x2cc) = 1;
+            } else {
+                d = -1;
+            }
         } else {
             d = -1;
         }
@@ -1092,15 +1145,20 @@ extern "C" void fn_80299AD0(void* p) {
 
     room = *(s32*)(self + 4);
     m = (char*)fn_802D6A9C();
+    src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
     ok = 1;
-    pt.area = *(JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
+    pt.area = *src;
     pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
     pt.pos.x += *(f32*)(self + 0x68);
     pt.pos.x += 8.0f;
-    pt.area.i.x -= -32.0f;
-    pt.area.i.y -= -32.0f;
-    pt.area.f.x += -32.0f;
-    pt.area.f.y += -32.0f;
+    x0 = pt.area.i.x - -32.0f;
+    y0 = pt.area.i.y - -32.0f;
+    x1 = pt.area.f.x + -32.0f;
+    y1 = pt.area.f.y + -32.0f;
+    pt.area.i.x = x0;
+    pt.area.i.y = y0;
+    pt.area.f.x = x1;
+    pt.area.f.y = y1;
     pt.pos.y += *(f32*)(self + 0x64);
     pt.pos.y += 8.0f;
     pt.pos.z = 0.0f;
@@ -1109,7 +1167,11 @@ extern "C" void fn_80299AD0(void* p) {
             ok = 0;
             break;
         }
-        if (!ItemBase_inArea(&pt.area.i.x, &pt.pos.x)) {
+        bool in = false;
+        if (pt.pos.x >= x0 && pt.pos.y >= y0 && pt.pos.x < x1 && pt.pos.y < y1) {
+            in = true;
+        }
+        if (!in) {
             ok = 0;
             break;
         }
@@ -1135,7 +1197,7 @@ extern "C" void fn_80299AD0(void* p) {
             gridBase.x += 8.0f;
             gridBase.y += 8.0f;
             gridBase.z = 0.0f;
-            JGeometry::TVec3f grid(gridBase);
+            grid = gridBase;
             for (i = 0, row = self; i < 6; i++, row += 0xc) {
                 grid.y = gridBase.y;
                 for (j = 0, col = row; j < 6; j++, col += 2) {
@@ -1494,8 +1556,9 @@ extern "C" void fn_8029A974(void* p) {
 
     self = (char*)p;
     vel = (JGeometry::TVec3f*)(self + 0x250);
+    f32 epsilon = lbl_805406A8 * FLT_EPSILON;
     lenSq = JMathInlineVEC::PSVECSquareMag(vel);
-    if (lenSq <= lbl_805406A8 * FLT_EPSILON) {
+    if (lenSq <= epsilon) {
         if (*(u8*)(self + 0x2c0) == 1) {
             *(u8*)(self + 0x2c0) = 0;
             return;
@@ -1505,43 +1568,9 @@ extern "C" void fn_8029A974(void* p) {
         }
         mode = -1;
         if (*(u8*)(self + 0x2b9) == 0) {
-            if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
-                room = *(s32*)(self + 4);
-                if (fn_8023DE58(0) == room) {
-                    mode = fn_80238BC4(*(void**)(self + 0x198));
-                    if (mode >= 0 && mode < 4) {
-                        *(s32*)(self + 0x2cc) = 1;
-                    } else {
-                        mode = -1;
-                    }
-                }
-            }
+            mode = HouseFallMode(self);
             if (mode == -1) {
-                box.set(*(JGeometry::TBox2f*)(self + 0x80));
-                box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
-                if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0) {
-                    if (fn_80238A68(*(void**)(self + 0x198)) >= 4) {
-                        mode = fn_8023885C(*(void**)(self + 0x198));
-                        if (mode >= 0 && mode < 4) {
-                            if (mode == 0) {
-                                mode = 1;
-                            } else if (mode == 1) {
-                                mode = 0;
-                            } else if (mode == 2) {
-                                mode = 3;
-                            } else if (mode == 3) {
-                                mode = 2;
-                            }
-                            *(s32*)(self + 0x2cc) = -1;
-                        } else {
-                            mode = -1;
-                        }
-                    } else {
-                        mode = -1;
-                    }
-                } else {
-                    mode = -1;
-                }
+                mode = HouseBoxMode(self, &box);
             }
         }
         if (mode != 3) {
@@ -1593,13 +1622,13 @@ extern "C" void fn_8029A974(void* p) {
             *(f32*)(self + 0x40) = -0.32f;
             *(u8*)(self + 0x2b8) = 1;
             fn_801F0E34(self, 0x30004, 0);
-            *(f32*)(self + 0x254) = -16.0f;
-            *(s32*)(self + 0x248) = 0;
+        }
+        *(f32*)(self + 0x254) = -16.0f;
+            *(s32*)(self + 0x248) = i = 0;
             if (*(u8*)(self + 0x24c) != 0) {
                 return;
             }
             *(u8*)(self + 0x24c) = 1;
-        }
         pos = *(JGeometry::TVec3f*)(self + 0xc);
         pos.x += *(f32*)(self + 0x60);
         pos.x += 8.0f;
@@ -1607,7 +1636,8 @@ extern "C" void fn_8029A974(void* p) {
         pos.y += 8.0f;
         pos.z = 0.0f;
         copy = pos;
-        for (i = 0; i < 6; i++, self += 0xc) {
+        for (; i < 6; i++, self += 0xc) {
+            copy.y = pos.y;
             for (j = 0, col = self; j < 6; j++, col += 2) {
                 fn_802A381C(lbl_8053AC98, &copy, 0, *(u16*)(col + 0x3b0));
                 fn_802A381C(lbl_8053AC98, &copy, 1, 0);
