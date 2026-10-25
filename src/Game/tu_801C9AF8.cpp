@@ -12,7 +12,7 @@ extern "C" bool fn_801CAED4(void* thisObj, s32 value) {
 extern "C" u8 v17__5ActorFiPf(void* this_, s32 room, const f32* pos);
 extern const f32 lbl_8053EF38;
 
-static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, f32 y, f32 x) {
+static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, const f32 y, const f32 x) {
     f32 z = pos[2];
     JGeometry::TVec3f v(x, y, z);
     return v17__5ActorFiPf(this_, room, &v.x);
@@ -22,10 +22,10 @@ static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, f32 y, f32 x) 
 extern "C" BOOL fn_801CAEF4(void* this_, const f32* pos, s32 room) {
     BOOL r = FALSE;
     if (v17__5ActorFiPf(this_, room, pos)
-        || tuCheckAt(this_, room, pos, pos[1] - lbl_8053EF38, pos[0] - lbl_8053EF38)
-        || tuCheckAt(this_, room, pos, pos[1] - lbl_8053EF38, lbl_8053EF38 + pos[0])
-        || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[1], pos[0] - lbl_8053EF38)
-        || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[1], lbl_8053EF38 + pos[0])) {
+        || v17__5ActorFiPf(this_, room, &JGeometry::TVec3f(pos[0] - lbl_8053EF38, pos[1] - lbl_8053EF38, pos[2]).x)
+        || v17__5ActorFiPf(this_, room, &JGeometry::TVec3f(lbl_8053EF38 + pos[0], pos[1] - lbl_8053EF38, pos[2]).x)
+        || v17__5ActorFiPf(this_, room, &JGeometry::TVec3f(pos[0] - lbl_8053EF38, lbl_8053EF38 + pos[1], pos[2]).x)
+        || v17__5ActorFiPf(this_, room, &JGeometry::TVec3f(lbl_8053EF38 + pos[0], lbl_8053EF38 + pos[1], pos[2]).x)) {
         r = TRUE;
     }
     return r;
