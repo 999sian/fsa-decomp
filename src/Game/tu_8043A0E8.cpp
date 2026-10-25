@@ -1106,11 +1106,22 @@ extern "C" u8 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
     return 1;
 }
 
+static inline bool fn_8043DF8C_hit(f32 x, f32 y, f32 px, f32 py, f32 r) {
+    f32 dx = x - 94.0f;
+    f32 dy = y - 61.5f;
+    f32 sx = 94.0f + x;
+    f32 sy = 61.5f + y;
+    if (px >= dx - r && px <= r + sx && py >= dy - r && py <= r + sy) {
+        return false;
+    }
+    return true;
+}
+
 extern "C" void fn_8043DF8C(void* p, f32 x, f32 y) {
+    f32 out1[3];
+    f32 out2[3];
     f32 in1[3];
     f32 in2[3];
-    f32 out2[3];
-    f32 out1[3];
     in1[0] = lbl_80543C88;
     in1[1] = lbl_80543C88;
     in1[2] = lbl_80543C88;
