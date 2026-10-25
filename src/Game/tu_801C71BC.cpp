@@ -46,7 +46,7 @@ extern "C" void fn_801C71BC(char* this_) {
     u8 ca;
     u8 c9;
     u8 c8;
-    u32 a;
+    u8 a;
     u8 b;
     u8 c;
     u8* s;
@@ -65,7 +65,7 @@ extern "C" void fn_801C71BC(char* this_) {
         fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
         c = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
         s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-        if ((u8)a < s[2]) {
+        if ((u8)(s8)a < s[2]) {
             s[3] = a;
         }
         if (&c8 != 0) {
