@@ -273,6 +273,7 @@ void fn_8029185C(char* p) {
     fn_8024BAEC(p);
 }
 
+#pragma opt_propagation off
 void fn_80291910(char* p) {
     if (U8(p, 0x3fc) < 0x3c) {
         U8(p, 0x3fc)++;
@@ -292,12 +293,13 @@ void fn_80291910(char* p) {
             position.y += lbl_80540614;
             position.z += lbl_805405A8;
             fn_8013CC50(S32(p, 0x3b4), &position, 0x17d, 1, 0, 0, NULL, 1, lbl_80540600);
+            fn_8024F0E8(p, 0x20020);
         }
-        fn_8024F0E8(p, 0x20020);
         fn_8024F0E8(p, 0x2002f);
         fn_8024F0E8(p, 0x20021);
         fn_80241454(p, 1);
-        VEC(p, 0x8) += VEC(p, 0x344);
+    }
+    VEC(p, 0x8).add(VEC(p, 0x344));
         F32(p, 0x34c) -= lbl_8054060C;
         if (F32(p, 0x34c) < lbl_80540618) {
             F32(p, 0x34c) = lbl_80540618;
@@ -319,7 +321,6 @@ void fn_80291910(char* p) {
             }
             return;
         }
-    }
     U8(p, 0x3fc)++;
     s32 state = (U8(p, 0x3fc) >> 2) & 3;
     if (state == 0) {
@@ -336,7 +337,7 @@ void fn_80291910(char* p) {
         S32(p, 0x3e8) = 0;
     }
 }
-
+#pragma opt_propagation reset
 void fn_80291B64(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
@@ -1046,8 +1047,8 @@ void* fn_8023E724(s32);
 s32 fn_8023DE58(s32);
 u16 fn_8022461C(s32, s32);
 u8 fn_802265DC(f32*, int, int);
-bool fn_802684A4(char*, s32, f32*);
-bool fn_802DEABC(char*);
+bool fn_802684A4(char*, f32*, s32);
+bool fn_802DEABC();
 void fn_80272160(char*, s32, char*, s32);
 void fn_8027EDDC(char*);
 void fn_80293B30(char* p) {
@@ -1086,7 +1087,7 @@ void fn_80293B30(char* p) {
         }
         u16 mode = fn_8022461C((s32)(p + 0xcd4), S32(p, 0xce4));
         if (!fn_802265DC((f32*)(p + 0xcd4), S32(p, 0xce4), 1) && mode != 3 && mode != 0xe) {
-            if (fn_802684A4(p, S32(p, 0xce4), (f32*)(p + 0xcd4))) {
+            if (fn_802684A4(p, (f32*)(p + 0xcd4), S32(p, 0xce4))) {
                 if (S32(p, 0xce4) < 8) {
                     VEC(p, 0xcd4) = VEC(p, 0x2c4);
                 } else {
@@ -1097,7 +1098,7 @@ void fn_80293B30(char* p) {
     }
     S32(p, 0x3b4) = S32(p, 0xce4);
     VEC(p, 0x8) = VEC(p, 0xcd4);
-    if (fn_802DEABC(p) && S32(p, 0x3b4) <= 8) {
+    if (fn_802DEABC() && S32(p, 0x3b4) <= 8) {
         if (S32(p, 0xcf4) == 9 || (S32(p, 0xcf4) == 0x12 && !(u8)fn_80240670(p))) {
             fn_80272160(p, 2, p + 8, 0x11);
         }
