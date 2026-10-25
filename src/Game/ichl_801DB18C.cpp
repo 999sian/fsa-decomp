@@ -450,11 +450,8 @@ static inline f32 ichlLen(const IchlV2& v) {
     return sq * inv;
 }
 static inline bool ichlIsZero(const IchlV2& v) {
-    f32 limit;
-    f32 square;
-    square = v.squared();
-    limit = JGeometry::TUtilf::epsilon();
-    bool r = square <= limit;
+    f32 square = v.squared();
+    bool r = square <= JGeometry::TUtilf::epsilon();
     return r;
 }
 
@@ -510,12 +507,11 @@ extern "C" void fn_801DB9CC(char* p) {
             *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
         }
     }
-    f32 r;
     f32 sx;
     f32 sy;
     s16 ang = *(s16*)(p + 0x2dc);
     sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-    r = *(f32*)(p + 0x2d4);
+    const f32& r = *(f32*)(p + 0x2d4);
     sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
     sx = -sx;
     sy = -sy;
