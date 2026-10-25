@@ -171,9 +171,9 @@ c = 0;
 }
 
 inline s32 countSharingT(const char* p) {
-    s32 i;
     s32 linked;
     s32 c;
+    s32 i;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
