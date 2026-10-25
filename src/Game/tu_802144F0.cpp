@@ -41,6 +41,14 @@ extern "C" void fn_80214900(void* this_) {
     fn_801CDC8C(*(void**)(p + 0x34), 0x4000E);
 }
 
+inline void selectPositionOffsets(f32 z, s32& hi, s32& lo) {
+    if (z > 0.0f) {
+        hi = lo;
+        lo = 0;
+    }
+}
+
+extern const f64 lbl_8053FBC8;
 extern "C" void fn_80214994(void* this_)
 {
 	char* p = (char*)this_;
@@ -66,9 +74,10 @@ extern "C" void fn_80214994(void* this_)
 				b = 0;
 			}
 			s32 lim = (a << 10) + (b << 7);
+			f32 limf = lim;
 			f32 x = v.x;
-			f32 y = v.y + lim;
-			f32 z = v.z + lim;
+			f32 y = v.y + limf;
+			f32 z = v.z + limf;
 			f32 w = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), &v.x);
 			*(f32*)(p + 0x20) = x;
 			*(f32*)(p + 0x24) = y;
@@ -90,7 +99,8 @@ extern "C" void fn_80214AF8(void* this_)
 		*(s32*)(p + 0x30) = -1;
 	}
 	if (*(void**)(p + 0x18) != 0) {
-		forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x18));
+		void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+		forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x18));
 		*(void**)(p + 0x18) = 0;
 	}
 	fn_801CDC8C(*(void**)(p + 0x34), 0x4000E);
@@ -103,20 +113,21 @@ extern "C" void fn_80214AF8(void* this_)
 	if (fn_801CD2F8(*(void**)(q + 0x4))) {
 		*(s32*)(p + 0x30) = Actor_CreateByID(fn_801F856C(), 'SLEF', *(u32*)(*(char**)(p + 0x34) + 0x4), &v, 0, -1, -1);
 	} else {
-		s32 a = 0;
 		s32 b = 1;
+		s32 a = 0;
 		if (v.z > lbl_8053FBC0) {
 			a = b;
 			b = 0;
 		}
-		s32 lim = (a << 10) + (b << 7);
+		f32 off = (a << 10) + (b << 7);
 		f32 x = v.x;
-		f32 y = v.y + lim;
-		f32 z = v.z + lim;
+		f32 y = v.y + off;
+		f32 z = v.z + off;
 		f32 w = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), &v.x);
+		z += w - v.z;
 		*(f32*)(p + 0x20) = x;
 		*(f32*)(p + 0x24) = y;
-		*(f32*)(p + 0x28) = z + (w - v.z);
+		*(f32*)(p + 0x28) = z;
 		*(u8**)(p + 0x18) = fn_8013CC50(lbl_8053FBD0, *(u32*)(*(char**)(p + 0x34) + 0x4), &v, 0x565, 0, 1, 0, (s32)(p + 0x1c), 1);
 	}
 	fn_801F0E34(*(void**)(p + 0x34), 0x4000E, 0);
@@ -308,14 +319,16 @@ extern "C" void fn_801CDCD0(u8* o, u32 owner, void* pos, s32 id);
 extern const u16 lbl_8053FB90[3];
 extern const u16 lbl_8053FB98[3];
 extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
-    u8* o = *(u8**)(this_ + 0x34);
-    bool f = (*(u32*)(o + 0x524) & 0x400) != 0;
-    if (*(s32*)(fn_801C0D70(o) + 0x50) >= 0) {
+    s32 f = 0;
+    if (*(u32*)(*(u8**)(this_ + 0x34) + 0x524) & 0x400) {
+        f = 1;
+    }
+    if (*(s32*)(fn_801C0D70(*(u8**)(this_ + 0x34)) + 0x50) >= 0) {
         fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d6, 0, f, 0, 0, 1);
         fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d7, 0, f, 0, 0, 1);
         fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d8, 0, f, 0, 0, 1);
         fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d9, 0, f, 0, 0, 1);
-        fn_801F0E34(o, 0x400d6, 0);
+        fn_801F0E34(*(void**)(this_ + 0x34), 0x400d6, 0);
     } else {
         const u16* ids = lbl_8053FB90;
         if (flag) {
@@ -328,19 +341,20 @@ extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
         if (flag) {
             id = 0x4004e;
         }
-        fn_801CDCD0(o, owner, pos, id);
+        fn_801CDCD0(*(u8**)(this_ + 0x34), owner, pos, id);
     }
 }
 
-void fn_80214E50(u8* this_) {
+extern "C" void fn_80214E50(u8* this_) {
     if (*(u8**)(this_ + 0) == 0) {
         JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(*(u8**)(this_ + 0x34) + 0xc));
         pos.y += -24.0f;
-        s32 lo = 1;
+        s32 lo;
         s32 hi = 0;
+        lo = 1;
         if (pos.z > 0.0f) {
-            hi = lo;
-            lo = 0;
+            hi += lo;
+            lo -= hi;
         }
         f32 off = (hi << 10) + (lo << 7);
         f32 x = pos.x;
@@ -353,9 +367,7 @@ void fn_80214E50(u8* this_) {
         *(f32*)(this_ + 0x10) = z;
         *(u8**)(this_ + 0) = fn_8013CC50(lbl_8053FBA4, *(u32*)(*(u8**)(this_ + 0x34) + 4), &pos, 0x33b, 0, 1, 0, (s32)(this_ + 4), 1);
         u8* e = *(u8**)(this_ + 0);
-        if (e != 0) {
-            *(u32*)(e + 0xf4) |= 0x40;
-        }
+        if (e != 0) *(u32*)(e + 0xf4) |= 0x40;
     }
 }
 
