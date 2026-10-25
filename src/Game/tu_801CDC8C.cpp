@@ -1053,9 +1053,9 @@ extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
     f32 ang = JMath::atanTable_.atan2_(rec->x - x, rec->y - y);
     return ang * lbl_8053EFEC;
 }
-extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
-    f32 dx = pos.x - *(f32*)(this_ + 0xc);
-    f32 dy = pos.y - *(f32*)(this_ + 0x10);
+extern "C" s16 fn_801D02E0(const u8* this_, const Vec& pos) {
+    f32 dy = pos.y - *(const f32*)(this_ + 0x10);
+    f32 dx = pos.x - *(const f32*)(this_ + 0xc);
     f32 ang = JMath::atanTable_.atan2Radian(dx, dy);
     return ang * lbl_8053EFEC;
 }
