@@ -4,6 +4,7 @@
 #include "JSystem/JGeometry/Util.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" void fn_801F0E34(void* self, u32 id, s32 b);
 extern "C" u8 fn_8022F514(s32);
