@@ -923,7 +923,7 @@ static inline void initDmtwPosition(char* self, s32 i) {
     *(JGeometry::TVec3f*)(self + 0x25c + i*12) = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(55.0f*cs,35.0f*sn,0.0f);
     *(s32*)(self + 0x2a4 + i*4) = lbl_804650B0[i];
 }
-#pragma optimization_level 3
+#pragma optimization_level 2
 extern "C" void fn_8012C914(char* this_) {
     s32 i;
     fn_8037AE00(lbl_8053AD70);
