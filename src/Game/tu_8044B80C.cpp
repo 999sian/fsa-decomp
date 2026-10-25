@@ -1,6 +1,17 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
 
+struct MenuTextData {
+    u32 ids[8];
+    char archiveFormat[0x20];
+    char screenFormat[0x12];
+};
+
+struct MenuArchive {
+    u8 pad0[8];
+    virtual void release(int);
+};
+
 struct FsaHeapUser {
     virtual void m0(int) = 0;
     virtual void m1() = 0;
@@ -73,8 +84,8 @@ extern "C" void fn_8044B960(u8* p)
     void* screen;
     char acStack_34[36];
     char acStack_48[20];
-    void* font;
-    void* pane;
+    JUTFont* font;
+    J2DPane* pane;
 
     if (p[0x16] == 1 || p[0x16] == 2) {
         oldHeap = sCurrentHeap__7JKRHeap;
@@ -93,26 +104,26 @@ extern "C" void fn_8044B960(u8* p)
                 *(void**)(p + 8) = screen;
                 snprintf(acStack_48, 0x11, tbl + 0x40, p[0x15] + 1);
                 setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p + 8), acStack_48, 0x1100000, *(void**)((u8*)*(void**)(p + 0xc) + 0x14));
-                font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-                pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663031);
-                ((void (*)(void*, void*))(*(void***)pane)[39])(pane, font);
-                font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-                pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663032);
-                ((void (*)(void*, void*))(*(void***)pane)[39])(pane, font);
-                pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663031);
+                font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
+                pane = (*(J2DPane**)(p + 8))->search(0x0000547374663031ULL);
+                ((J2DTextBox*)pane)->setFont(font);
+                font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
+                pane = (*(J2DPane**)(p + 8))->search(0x0000547374663032ULL);
+                ((J2DTextBox*)pane)->setFont(font);
+                pane = (*(J2DPane**)(p + 8))->search(0x0000547374663031ULL);
                 fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), *(u32*)(tbl + p[0x15] * 4), 0, 0, 0);
-                pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663032);
+                pane = (*(J2DPane**)(p + 8))->search(0x0000547374663032ULL);
                 fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), *(u32*)(tbl + p[0x15] * 4), 0, 0, 0);
                 if (p[0x15] == 5) {
-                    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-                    pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663033);
-                    ((void (*)(void*, void*))(*(void***)pane)[39])(pane, font);
-                    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-                    pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663034);
-                    ((void (*)(void*, void*))(*(void***)pane)[39])(pane, font);
-                    pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663033);
+                    font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
+                    pane = (*(J2DPane**)(p + 8))->search(0x0000547374663033ULL);
+                    ((J2DTextBox*)pane)->setFont(font);
+                    font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
+                    pane = (*(J2DPane**)(p + 8))->search(0x0000547374663034ULL);
+                    ((J2DTextBox*)pane)->setFont(font);
+                    pane = (*(J2DPane**)(p + 8))->search(0x0000547374663033ULL);
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), 0x861, 0, 0, 0);
-                    pane = ((void* (*)(void*, u32, u16, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x74660000, 0x5473, 0x74663034);
+                    pane = (*(J2DPane**)(p + 8))->search(0x0000547374663034ULL);
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), 0x861, 0, 0, 0);
                 }
                 if (*(void**)(p + 0xc) != NULL) {
