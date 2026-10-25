@@ -105,7 +105,8 @@ static inline u8 tu801D3320_collect2(char* this_, u8* ids, u8* out) {
     u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
     u8 count = 0;
     for (int i = 0; i < n; i++) {
-        if (tu801D3320_isFreeAt(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]), *(s32*)(this_ + 0x4))) {
+        s32 room = *(s32*)(this_ + 0x4);
+        if (tu801D3320_isFreeAt(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]), room)) {
             count++;
             *out++ = ids[i];
         }
