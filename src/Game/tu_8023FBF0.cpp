@@ -1619,9 +1619,11 @@ void fn_802422D0(char* p) {
         JGeometry::TBox2<f32> box;
         box = *(JGeometry::TBox2<f32>*)(fn_802D6A9C() + 0xcc);
         if (S32(p, 0x3b4) < 8) {
+            f32 y;
+            f32 x = F32(p, 8);
             bool inside = false;
-            if (F32(p, 8) >= box.i.x && F32(p, 0xc) >= box.i.y &&
-                F32(p, 8) < box.f.x && F32(p, 0xc) < box.f.y) {
+            if (x >= box.i.x && (y = F32(p, 0xc)) >= box.i.y &&
+                x < box.f.x && y < box.f.y) {
                 inside = true;
             }
             if (inside) goto positioned;
@@ -1636,26 +1638,18 @@ positioned:
     V3(p, 0x2c4) = V3(p, 8);
     V3(p, 0xcb0) = V3(p, 0x2c4);
     V3(p, 0xd1c) = V3(p, 0xcb0);
-    F32(p, 0x344) = 0.0f;
-    F32(p, 0x348) = 0.0f;
-    F32(p, 0x34c) = 0.0f;
-    F32(p, 0x368) = 0.0f;
-    F32(p, 0x36c) = 0.0f;
-    F32(p, 0x370) = 0.0f;
+    F32(p, 0x344) = lbl_80540034;
+    F32(p, 0x348) = lbl_80540034;
+    F32(p, 0x34c) = lbl_80540034;
+    F32(p, 0x368) = lbl_80540034;
+    F32(p, 0x36c) = lbl_80540034;
+    F32(p, 0x370) = lbl_80540034;
     S32(p, 0xd54) = 10;
     if (U8(p, 0x1216) == 0) {
         if (U8(p, 0x454) != 0) {
             fn_8024B2E0(p);
         } else {
-            s32 i;
-            PlayerTrail* tr = (PlayerTrail*)p;
-            for (i = 0; i < 0x31; i++) {
-                tr->pos[i].x = F32(p, 8);
-                tr->pos[i].y = F32(p, 0xc);
-                tr->pos[i].z = F32(p, 0x10);
-                if (F32(p, 0x10) > 0.0f) tr->onGround[i] = 1;
-                else tr->onGround[i] = 0;
-            }
+            resetTrail(p);
         }
     }
     if (fn_8025F500(p) && S32(p, 0xd6c) == 'KEY0') {
@@ -5158,34 +5152,45 @@ u8 fn_80250D30(char* p) {
     s32 n;
     s32 i;
 
-    mode = getMode(p);
+    mode = getModeH(p);
     if (mode == 4) {
         if (S32(p, 0xd60) >= 0) {
             x = fn_80234004(S32(p, 0xd60));
         } else {
             x = S32(p, 0x1224);
         }
-        n = 0;
-        if (S32(p, 0xd60) >= 0) {
-            for (i = 0; i < S32(p, 0x4); i++) {
-                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
-                    n++;
+        if (S32(p, 0xd60) < 0) {
+            n = 0;
+        } else {
+            s32 count = 0;
+            for (i = count; i < S32(p, 0x4); i++) {
+                s32 linked = S32(p, 0xd60);
+                if (linked == fn_8022F3DC(i)) {
+                    count++;
                 }
             }
-            n++;
+            n = count + 1;
         }
         if (x != n) {
             bVar1 = false;
             goto LAB_final;
         }
     }
-    mode = getMode(p);
+    mode = getModeH(p);
     if (mode == 5 && S32(p, 0xd60) >= 0) {
         bVar1 = false;
-    } else if (S32(p, 0xd60) < 0) {
-        bVar1 = S32(*(char**)(p + 0xbf0), 0xa0) > 0x13;
+    } else if (S32(p, 0xd60) >= 0) {
+        if (S32(*(char**)(p + 0xbf0), 0xa0) >= 0x12) {
+            bVar1 = true;
+            goto LAB_final;
+        }
+        bVar1 = false;
     } else {
-        bVar1 = S32(*(char**)(p + 0xbf0), 0xa0) > 0x11;
+        if (S32(*(char**)(p + 0xbf0), 0xa0) >= 0x14) {
+            bVar1 = true;
+            goto LAB_final;
+        }
+        bVar1 = false;
     }
 LAB_final:
     if (!bVar1 && fn_80250090(p) == 0 && S32(p, 0x1240) != 0xe && fn_80250FD4(p) == 0) {
