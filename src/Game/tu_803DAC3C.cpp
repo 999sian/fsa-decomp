@@ -162,66 +162,40 @@ extern "C" void fn_803DCCA4(u8* self)
             *(s32*)(self + 0x90) = 0;
         }
         if (self[0x9e] != 0 && self[0x9f] != 0) {
-            u32 im = 0x696d0000;
-            void* mgr = *(void**)(self + 0x8);
-            void* r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3031);
-            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
-            mgr = *(void**)(self + 0x8);
-            r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3032);
-            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+            (*(J2DScreen**)(self + 0x8))->search(0x50696d3031ULL)->setAlpha(0);
+            (*(J2DScreen**)(self + 0x8))->search(0x50696d3032ULL)->setAlpha(0);
         }
         if (self[0x9e] != 1 && self[0x9f] != 1) {
-            u32 im = 0x696d0000;
-            void* mgr = *(void**)(self + 0x8);
-            void* r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3131);
-            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
-            mgr = *(void**)(self + 0x8);
-            r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3132);
-            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+            (*(J2DScreen**)(self + 0x8))->search(0x50696d3131ULL)->setAlpha(0);
+            (*(J2DScreen**)(self + 0x8))->search(0x50696d3132ULL)->setAlpha(0);
         }
         if (*(s32*)(self + 0x84) != 2) {
             switch (self[0x9e]) {
-            case 0: {
-                u32 im = 0x696d0000;
-                void* mgr = *(void**)(self + 0x8);
-                void* r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3031);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11a] * f31));
-                mgr = *(void**)(self + 0x8);
-                r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3032);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11b] * f31));
-            } break;
-            case 1: {
-                u32 im = 0x696d0000;
-                void* mgr = *(void**)(self + 0x8);
-                void* r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3131);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11c] * f31));
-                mgr = *(void**)(self + 0x8);
-                r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3132);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11d] * f31));
-            } break;
+            case 0:
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3031ULL)->setAlpha((u8)(self[0x11a] * f31));
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3032ULL)->setAlpha((u8)(self[0x11b] * f31));
+                break;
+            case 1:
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3131ULL)->setAlpha((u8)(self[0x11c] * f31));
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3132ULL)->setAlpha((u8)(self[0x11d] * f31));
+                break;
+            case 2:
+                break;
             }
         }
         f31 = lbl_805435E8 - f31;
         if (*(s32*)(self + 0x84) != 1 || self[0x9e] != self[0x9f]) {
             switch (self[0x9f]) {
-            case 0: {
-                u32 im = 0x696d0000;
-                void* mgr = *(void**)(self + 0x8);
-                void* r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3031);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11a] * f31));
-                mgr = *(void**)(self + 0x8);
-                r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3032);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11b] * f31));
-            } break;
-            case 1: {
-                u32 im = 0x696d0000;
-                void* mgr = *(void**)(self + 0x8);
-                void* r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3131);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11c] * f31));
-                mgr = *(void**)(self + 0x8);
-                r = ((void* (*)(void*, u32, s32, u32))((*(void***)mgr)[0x3c / 4]))(mgr, im, 0x50, im + 0x3132);
-                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11d] * f31));
-            } break;
+            case 0:
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3031ULL)->setAlpha((u8)(self[0x11a] * f31));
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3032ULL)->setAlpha((u8)(self[0x11b] * f31));
+                break;
+            case 1:
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3131ULL)->setAlpha((u8)(self[0x11c] * f31));
+                (*(J2DScreen**)(self + 0x8))->search(0x50696d3132ULL)->setAlpha((u8)(self[0x11d] * f31));
+                break;
+            case 2:
+                break;
             }
         }
     }
@@ -1146,55 +1120,58 @@ extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
     return self;
 }
 
+#pragma peephole off
 extern "C" void fn_803E1224(void)
 {
-    char* base = lbl_80528468;
-    *(FsaInitTriples*)((u8*)lbl_804B0508 + 0x60) = *(FsaInitTriples*)((u8*)lbl_804B0508);
-    *(FsaInitTriples*)((u8*)lbl_804B0508 + 0x120) = *(FsaInitTriples*)((u8*)lbl_804B0508 + 0xc0);
+    char* base = lbl_80528468 - 12;
+    FsaInitFns* first = (FsaInitFns*)((u8*)lbl_804B0508 + 0x60);
+    FsaInitFns* second = (FsaInitFns*)((u8*)lbl_804B0508 + 0x120);
+    *second = *(FsaInitFns*)((u8*)lbl_804B0508 + 0xc0);
+    *first = *(FsaInitFns*)lbl_804B0508;
     if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0xc);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (!__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack) {
         __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
-        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0xc);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0x18);
         __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
     }
     if (!__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel) {
         __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
-        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x18);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x24);
         __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
     }
     if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
-        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x24);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x30);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
     }
     if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
-        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x30);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x3c);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
     }
     if (!__init__memPool___30JASPoolAllocObject_9JAIStream) {
         __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
-        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, base + 0x3c);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, base + 0x48);
         __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
     }
     if (!__init__memPool___35JASPoolAllocObject_13JAISoundChild) {
         __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
-        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, base + 0x48);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, base + 0x54);
         __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
     }
     if (!__init__memPool___27JASPoolAllocObject_6JAISeq) {
         __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
-        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, base + 0x54);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, base + 0x60);
         __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
     }
     if (!__init__memPool___26JASPoolAllocObject_5JAISe) {
         __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
-        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, base + 0x60);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, base + 0x6c);
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+#pragma peephole reset
