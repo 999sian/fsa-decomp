@@ -173,6 +173,10 @@ static inline void Hide(void* pane) {
 static inline void Attach(void* obj, void* handle) {
     ((TblVObj*)obj)->s68(handle, 0);
 }
+static inline u8* Search(void* screen, void** tbl, int i) {
+    return (u8*)((J2DScreenSearch*)screen)->search(*(u64*)&tbl[i]);
+}
+
 extern "C" f32 fn_8043D514(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern void* lbl_8053AED0;
