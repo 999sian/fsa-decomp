@@ -46,19 +46,9 @@ extern "C" void fn_801BEDBC(u8* this_) {
 
 inline void* lnbmMgr() { u8* m = fn_8020D58C(); return m + m[1] * 0x784 + 4; }
 
-inline BOOL lnbmCheckCollision(f32* pos, int room, ItemBase* self) {
-    s32 param;
-    BOOL result = TRUE;
-    if (!fn_802265DC(pos, (void*)room, 0)) {
-        param = *(s32*)((u8*)self + 0x90);
-        if (!fn_8020D6AC(lnbmMgr(), (void*)room, pos, param, 0)) {
-            result = FALSE;
-        }
-    }
-    return result;
-}
 
-extern "C" BOOL fn_801BEE6C(const ItemBase* this_, int a, f32* b) {
+#pragma opt_lifetimes off
+extern "C" BOOL fn_801BEE6C(ItemBase* this_, int a, f32* b) {
     switch ((u16)fn_8022461C(b)) {
     case 3:
     case 13:
@@ -67,14 +57,14 @@ extern "C" BOOL fn_801BEE6C(const ItemBase* this_, int a, f32* b) {
     }
     BOOL result = TRUE;
     if (!fn_802265DC(b, (void*)a, 0)) {
-        this_ = *(const ItemBase**)((u8*)this_ + 0x90);
+        this_ = *(ItemBase**)((u8*)this_ + 0x90);
         if (!fn_8020D6AC(lnbmMgr(), (void*)a, b, (u32)this_, 0)) {
             result = FALSE;
         }
     }
     return result;
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_801BEF40(u8* this_) {
     if (*(u32*)(this_ + 0x230) & 0x2000) {
         fn_801EE434(*(void**)(this_ + 0x2a8));
