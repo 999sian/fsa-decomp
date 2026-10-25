@@ -16,7 +16,7 @@ struct fn_801D1974_obj {
     s32 m338;
     s16 m33c;
 
-    JGeometry::TVec2<f32>& pointAt(s32 i) { return *(JGeometry::TVec2<f32>*)((u8*)this + i * 8 + 0x2ac); }
+    JGeometry::TVec2<f32>& pointAt(s32 i) { return m2ac[i]; }
     JGeometry::TVec2<f32>& point(s32 i) {
         if (m2a8 <= i) {
             i = 0;
