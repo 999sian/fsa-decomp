@@ -134,6 +134,7 @@ extern "C" u8 fn_801DB2C8(char* p) {
     return r;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_801DB3F0(char* p) {
     if (lbl_8053F2E4 != *(f32*)(p + 0x2b4)) {
         if (*(s32*)(p + 0x248) == 0) {
@@ -158,16 +159,22 @@ extern "C" void fn_801DB3F0(char* p) {
     if (*(s32*)(p + 0x248) == 0) {
         ichlSet((IchlVec3*)(p + 0x3c), *(f32*)(p + 0x2b4), *(f32*)(p + 0x2b8), lbl_8053F2E4);
     } else {
+        f32 r;
+        f32 by;
+        f32 c;
+        f32 sx;
+        f32 sy;
         s16 ang = *(s16*)(p + 0x2dc);
-        f32 r = *(f32*)(p + 0x2d4);
-        f32 bx = *(f32*)(p + 0x2bc);
-        f32 by = *(f32*)(p + 0x2c0);
-        f32 sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first * r;
-        f32 sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second * r;
-        ichlSet((IchlVec3*)(p + 0x3c), (bx + sx) - *(f32*)(p + 0xc), (by + sy) - *(f32*)(p + 0x10), lbl_8053F2E4);
+        r = *(f32*)(p + 0x2d4);
+        sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        sx *= r;
+        by = *(f32*)(p + 0x2c0);
+        c = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+        sy = c * r;
+        ichlSet((IchlVec3*)(p + 0x3c), (*(f32*)(p + 0x2bc) + sx) - *(f32*)(p + 0xc), (by + sy) - *(f32*)(p + 0x10), lbl_8053F2E4);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801DB51C(void* this_) {
     fn_801CE0A4(this_);
     fn_8013CB44(*(s32*)((char*)this_ + 0x2e4), (char*)this_ + 0xc, 1, 0, 1);
@@ -376,8 +383,8 @@ extern "C" void fn_801DB6C8(char* p) {
         }
     }
     if (*(s32*)(p + 0x2a8) == -1) {
-        t.x = *(f32*)(p + 0x2c4) + *(f32*)(p + 0x2b4);
         t.y = *(f32*)(p + 0x2c8) + *(f32*)(p + 0x2b8);
+        t.x = *(f32*)(p + 0x2c4) + *(f32*)(p + 0x2b4);
     } else {
         IchlV2 rec = *(IchlV2*)(p + *(s32*)(p + 0x2a8) * 0xc + 0x1ac);
         IchlV2 d;
@@ -432,6 +439,8 @@ static inline bool ichlIsZero(const IchlV2& v) {
     return r;
 }
 
+extern const f32 lbl_8053F2FC;
+extern int __float_epsilon[];
 extern "C" void fn_801DB9CC(char* p) {
     if (fn_801CD664(2) == 0) {
         *(u32*)(p + 0x230) &= ~0x2000;
@@ -443,21 +452,20 @@ extern "C" void fn_801DB9CC(char* p) {
     *(s16*)(p + 0x2dc) = fn_801CD664(0x10000);
     if (*(s32*)(p + 0x16c) == -1) {
         IchlV2 v = *(IchlV2*)(p + 0x2b4);
-        bool z = ichlIsZero(v);
-        if (!z) {
+        if (!ichlIsZero(v)) {
             f32 rx, ry;
             if (v.x < lbl_8053F2E4) {
-                *(u32*)(p + 0x230) |= 0x2000;
                 f32 c = JMath::sincosTable_.mTable[0x600].second;
                 f32 sn = JMath::sincosTable_.mTable[0x600].first;
-                ry = v.x * sn + v.y * c;
-                rx = v.x * c - v.y * sn;
+                ry = __fmadds(v.x, sn, v.y * c);
+                rx = __fmsubs(v.x, c, v.y * sn);
+                *(u32*)(p + 0x230) |= 0x2000;
             } else {
-                *(u32*)(p + 0x230) &= ~0x2000;
                 f32 c = JMath::sincosTable_.mTable[0x200].second;
                 f32 sn = JMath::sincosTable_.mTable[0x200].first;
-                ry = v.x * sn + v.y * c;
-                rx = v.x * c - v.y * sn;
+                ry = __fmadds(v.x, sn, v.y * c);
+                rx = __fmsubs(v.x, c, v.y * sn);
+                *(u32*)(p + 0x230) &= ~0x2000;
             }
             if (fn_801CD664(2) == 0) {
                 *(u32*)(p + 0x230) ^= 0x2000;
@@ -503,3 +511,4 @@ extern "C" void fn_801DB9CC(char* p) {
 #pragma fp_contract on
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "sdk/stl/math.h"
