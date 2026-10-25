@@ -96,9 +96,11 @@ static inline void ftglFacePlayers(char* p) {
 }
 
 static inline s32 ftglPickTarget(char* p) {
+    s32 room0;
     s32 i;
     for (i = 0; i < 4; i++) {
-        s32 room = *(s32*)(p + 0x4);
+        room0 = *(s32*)(p + 0x4);
+        s32 room = room0;
         s32 r = fn_8023DE58(i);
         if (r == room && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
             s32 side = fn_8023E724(i)->x > *(f32*)(p + 0xc) ? 1 : 0;
