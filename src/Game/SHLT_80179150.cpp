@@ -43,9 +43,24 @@ extern "C" void fn_801791B0(Actor* this_) {
     }
 }
 
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern "C" f32 lbl_8053DC2C;
+extern "C" f32 lbl_8053DC20;
+extern "C" void fn_80179388(Actor* this_)
+{
+    u8* p = (u8*)this_;
+    if (*(s32*)(p + 0x2f8) != 3) {
+        fn_801F71A4((f32*)(p + 0x3c), *(f32*)(p + 0x370), lbl_8053DC2C, lbl_8053DC20);
+        fn_801F71A4((f32*)(p + 0x40), *(f32*)(p + 0x374), lbl_8053DC2C, lbl_8053DC20);
+    }
+    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+}
+
 extern "C" s32 fn_801F6874(u32 x);
 extern "C" u8 sincosTable___5JMath[];
 extern "C" Vec lbl_804C0EA0;
+Vec lbl_804C0EA0;
 extern "C" s32 lbl_8053AB68;
 extern "C" s32 lbl_80539F80;
 extern "C" s32 lbl_80539F84;
