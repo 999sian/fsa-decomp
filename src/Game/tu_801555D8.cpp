@@ -180,9 +180,9 @@ extern "C" s32 fn_80157C68(char* self) {
     *(f32*)(self + 0x2b8) = (f32)((s32)*(f32*)(self + 0x2b8) & 0xFFF8);
     *(f32*)(self + 0x2bc) = (f32)((s32)*(f32*)(self + 0x2bc) & 0xFFF8);
     s32 angle = (s16)fn_801F6874(*(u32*)(self + 0x98));
-    *(f32*)(self + 0x2b8) = lbl_8053D388 * *(f32*)((char*)sincosTable___5JMath + (((u32)angle >> 2) & 0x3ff8)) + *(f32*)(self + 0x2b8);
+    *(f32*)(self + 0x2b8) = lbl_8053D388 * JMath::sincosTable_.mTable[(u16)angle >> 5].first + *(f32*)(self + 0x2b8);
     angle = (s16)fn_801F6874(*(u32*)(self + 0x98));
-    *(f32*)(self + 0x2bc) = lbl_8053D388 * *(f32*)((char*)sincosTable___5JMath + (((u32)angle >> 2) & 0x3ff8) + 4) + *(f32*)(self + 0x2bc);
+    *(f32*)(self + 0x2bc) = lbl_8053D388 * JMath::sincosTable_.mTable[(u16)angle >> 5].second + *(f32*)(self + 0x2bc);
     s32 k = (u16)fn_8022461C(self + 0x2b8, *(s32*)(self + 4));
     if ((u32)(k - 2) <= 1 || k == 0xe) {
         if (k == 0xe && fn_802DE9A0() == 1) {
