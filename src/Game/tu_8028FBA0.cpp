@@ -563,9 +563,9 @@ void fn_802922EC(char* p) {
       fn_80241454(p, 0);
       if (S32(p, 0x3b4) < 8) {
         VEC(p, 0xcb0) = VEC(p, 0x8);
-        S32(p, 0x3b4) = S32(p, 0xce4);
-        VEC(p, 0x8) = VEC(p, 0xcd4);
       }
+      S32(p, 0x3b4) = S32(p, 0xce4);
+      VEC(p, 0x8) = VEC(p, 0xcd4);
       fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
     }
   }
