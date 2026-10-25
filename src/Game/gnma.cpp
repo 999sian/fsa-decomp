@@ -15,6 +15,10 @@ extern void* lbl_804A307C[];
 extern char* lbl_8053AAF8;
 extern s32 lbl_8053ABD8;
 extern void* lbl_8053AB10;
+extern void* lbl_8053AF80;
+extern const f32 lbl_8053E794;
+extern const f32 lbl_8053E744;
+extern u8 sincosTable___5JMath[];
 extern const f32 lbl_8053E750;
 extern const f32 lbl_8053E754;
 extern const f32 lbl_8053E758;
@@ -66,6 +70,51 @@ extern "C" void fn_801AAE88(char* this_) {
             ((GnmaTimers*)this_)->t[i]--;
         }
     }
+}
+
+extern "C" void fn_801AAF44(char* p) {
+    fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), p + 0xc);
+    if (fn_801F3D94(p, 1) != 0) {
+        fn_801F2618(p, 0, 0);
+        return;
+    }
+    if (*(s32*)(p + 0x108) < 1000) {
+        (*(void (***)(char*))p)[9](p);
+        *(s32*)(p + 0xb0) = 0;
+        return;
+    }
+    f32 sx = *(f32*)(p + 0x3c);
+    f32 sy = *(f32*)(p + 0x40);
+    f32 sz = *(f32*)(p + 0x44);
+    if (fn_801F2DB4(p, 'NULL', 'HBMB', 0)) {
+        *(f32*)(p + 0x3c) = sx;
+        *(f32*)(p + 0x40) = sy;
+        *(f32*)(p + 0x44) = sz;
+        *(s32*)(p + 0xd8) = 0;
+        *(s32*)(p + 0xdc) = 0;
+        fn_801F71A4(p + 0x3c, *(f32*)(p + 0x264), lbl_8053E750, lbl_8053E754);
+        fn_801F71A4(p + 0x40, *(f32*)(p + 0x268), lbl_8053E750, lbl_8053E754);
+    }
+    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    fn_801F2B7C(p);
+    u32 r31 = fn_801F2618(p, 0, 0);
+    *(f32*)(p + 0x270) = lbl_8053E758;
+    *(f32*)(p + 0x274) = lbl_8053E75C;
+    *(f32*)(p + 0x278) = lbl_8053E75C;
+    *(f32*)(p + 0x60) = lbl_8053E760;
+    *(f32*)(p + 0x64) = lbl_8053E764;
+    *(f32*)(p + 0x68) = lbl_8053E768;
+    *(f32*)(p + 0x6c) = lbl_8053E76C;
+    *(f32*)(p + 0x80) = lbl_8053E760;
+    *(f32*)(p + 0x84) = lbl_8053E770;
+    *(f32*)(p + 0x88) = lbl_8053E768;
+    *(f32*)(p + 0x8c) = lbl_8053E774;
+    *(f32*)(p + 0x70) = lbl_8053E778;
+    *(f32*)(p + 0x74) = lbl_8053E764;
+    *(f32*)(p + 0x78) = lbl_8053E77C;
+    *(f32*)(p + 0x7c) = lbl_8053E76C;
 }
 
 struct Handles_gnma { u8 pad[0x27c]; void* h[2]; };
