@@ -57,7 +57,7 @@ extern "C" s32 fn_802C8500(f32 a, f32 b, f32 c) {
 extern "C" s32 fn_802C8530(u8* p) {
     s32 idx = -1;
     s32 id = *(s32*)(p + 4);
-    if (*((u8*)fn_802D6A9C() + id + 0x131df) != 0) {
+    if (*((u8*)fn_802D6A9C() + 0x131df + id) != 0) {
         return 0;
     }
     for (;;) {
@@ -368,4 +368,4 @@ extern "C" void fn_802C9284(u8* p) {
     *(u32*)(p + 0x244) = (*(u32*)(p + 0x90) >> 12) & 0xf;
     *(u32*)(p + 0x248) = (*(u32*)(p + 0x90) >> 10) & 0x3;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
