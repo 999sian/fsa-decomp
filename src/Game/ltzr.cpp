@@ -3,6 +3,7 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry.h"
 #include "Game/ItemBase.h"
 
 // ---- from src/Game/Ltzr_ctor_80340C60.cpp ----
@@ -138,8 +139,9 @@ extern "C" s32 fn_80340658(void) { return 0; }
 extern "C" s32 fn_80340660(void) { return 0; }
 
 extern "C" void fn_80340668(void* this_) {
-    f32 b = lbl_805422AC;
+    f32 b;
     f32 a = lbl_80542268;
+    b = lbl_805422AC;
     u8 hit = 0;
     u8* flags = (u8*)this_;
     for (s32 i = 0; i < 4; i++) {
@@ -154,8 +156,8 @@ extern "C" void fn_80340668(void* this_) {
     }
     if (hit == 1) {
         fn_801F0E34(this_, 0x50082, 0);
-        void** vt = *(void***)this_;
-        ((void (*)(void*))vt[41])(this_);
+        void (*fn)(void*) = *(void (**)(void*))(*(char**)this_ + 0xa4);
+        fn(this_);
     }
 }
 
