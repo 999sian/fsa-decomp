@@ -271,54 +271,6 @@ extern "C" void fn_801E90C4(char* p) {
     }
 }
 
-static inline void sampleFsobPath(char* p, u8 seg, s32 ti, f32& x, f32& y) {
-        switch ((u8)ti) {
-        case 0: {
-            char* q = p + seg * 8;
-            x = *(f32*)(q + 0x2b0);
-            y = *(f32*)(q + 0x2b4);
-            break;
-        }
-        case 16: {
-            char* q = p + seg * 8;
-            x = *(f32*)(q + 0x2b8);
-            y = *(f32*)(q + 0x2bc);
-            break;
-        }
-        default: {
-            f32 p0x;
-            f32 p0y;
-            if (seg == 0) {
-                p0x = *(f32*)(p + 0x2b0);
-                p0y = *(f32*)(p + 0x2b4);
-            } else {
-                char* q = p + seg * 8;
-                p0x = *(f32*)(q + 0x2a8);
-                p0y = *(f32*)(q + 0x2ac);
-            }
-            u8 count = *(u8*)(p + 0x2ad);
-            char* q = p + seg * 8;
-            f32 p2x = *(f32*)(q + 0x2b8);
-            f32 p2y = *(f32*)(q + 0x2bc);
-            f32 p1x = *(f32*)(q + 0x2b0);
-            f32 p1y = *(f32*)(q + 0x2b4);
-            f32 p3x;
-            f32 p3y;
-            if (seg == count - 2) {
-                p3x = p2x;
-                p3y = p2y;
-            } else {
-                p3x = *(f32*)(q + 0x2c0);
-                p3y = *(f32*)(q + 0x2c4);
-            }
-            f32 u = 0.0625f * (f32)(u8)ti;
-            y = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
-            x = fn_801CD6D8(p0x, p1x, p2x, p3x, u);
-            break;
-        }
-        }
-
-}
 
 extern "C" void fn_801E9224(char* p) {
     if (*(u32*)(p + 0x230) & 0x4000) {
