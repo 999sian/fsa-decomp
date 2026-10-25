@@ -26,6 +26,10 @@ extern "C" void* fn_801F856C(void);
 extern "C" void Actor_CreateByID(void* mgr, s32 id, s32 a, void* pos, s32 b, s32 c, s32 d);
 extern "C" void fn_8030C210(void* a, void* b);
 extern void* lbl_8053AB10;
+
+struct TBoxCopy {
+    f32 ix, iy, fx, fy;
+};
 extern "C" void* fn_802A40B8(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A7E58;
@@ -43,9 +47,9 @@ extern "C" void fn_802A4118(u8* this_) {
 }
 
 extern "C" void fn_802A4190(u8* this_) {
-    f32 vec[4];
     JGeometry::TVec3f tmp;
     f32 pos[3];
+    f32 vec[4];
     s32 state = *(s32*)(this_ + 0x230);
     f32 py = *(f32*)(this_ + 0x10);
     f32 px = *(f32*)(this_ + 0xc);
