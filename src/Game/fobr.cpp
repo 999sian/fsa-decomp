@@ -138,11 +138,11 @@ extern "C" void fn_8020B558(u8* this_) {
         for (u8 i = 0; i < 0x10; i++) {
             args.order[i] = i;
         }
-        args.b1c = 0;
-        args.b1d = 0;
         args.f10.w = -1;
         args.f14.w = 0;
         args.ptr = 0;
+        args.b1c = 0;
+        args.b1d = 0;
         args.b1e = 0;
         args.b1f = 1;
         args.b20 = 1;
@@ -192,6 +192,7 @@ extern "C" void fn_8020B74C(u8* this_) {
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_8030C210(void* mgr, f32* pos);
 extern "C" const f32 lbl_8053F9D0;
+#pragma fp_relax on
 extern "C" void fn_8020B798(u8* param_1) {
     if (*(s32*)(param_1 + 0x248) != 0) {
         s32 room = *(s32*)(param_1 + 0x4);
@@ -205,14 +206,14 @@ extern "C" void fn_8020B798(u8* param_1) {
         f32 vec[3];
         f32 y = *(f32*)(param_1 + 0x10) - *(f32*)(param_1 + 0x14);
         vec[0] = *(f32*)(param_1 + 0xc);
-        vec[2] = lbl_8053F9C4;
         vec[1] = y;
-        f32 t = box[1] + lbl_8053F9D0;
-        vec[1] = (y - t) > 0.0f ? y : t;
+        vec[2] = lbl_8053F9C4;
+        f32 t = lbl_8053F9D0 + box[1];
+        vec[1] = __fsel(t-y, t, y);
         fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), vec);
     }
 }
-
+#pragma fp_relax reset
 extern "C" void fn_8020B838(u8* this_) {
     *(u32*)(this_ + 0x230) |= 0x80;
 }
@@ -239,24 +240,27 @@ extern "C" s32 fn_8020B848(u8* this_) {
 extern "C" s32 fn_8020B918(u8* this_) {
     if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > 0.0f &&
         *(f32*)(this_ + 0x6C) - *(f32*)(this_ + 0x64) > 0.0f) {
+        s32 room;
         s32 id = fn_801F82CC(fn_801F856C(), this_, *(u8*)(this_ + 0x195), lbl_8053F9D4);
         if (id >= 0 && id != *(s32*)(this_ + 0x198)) {
             void* actor = fn_801F666C(fn_801F856C(), id);
             if (actor != 0) {
-                s32 room = *(s32*)(this_ + 0x4);
-                if (*(u8*)((u8*)fn_802D6A9C() + room + 0x131df) == 0 && *(f32*)(this_ + 0x14) > lbl_8053F9D8 &&
+                u8* base;
+                room = *(s32*)(this_ + 0x4);
+                base = (u8*)fn_802D6A9C();
+                base = base + 0x10000;
+                base = base + room;
+                if (base[0x31df] == 0 && *(f32*)(this_ + 0x14) > lbl_8053F9D8 &&
                     fn_801CC8E4(actor)) {
-                    return 0;
+                } else {
+                    void* target = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+                    if (target != 0) {
+                        JGeometry::TVec3<f32> d(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
+                        d -= *(JGeometry::TVec3<f32>*)((u8*)actor + 0x3c);
+                        fn_80207830(target, *(u16*)(this_ + 0x94), *(s32*)((u8*)actor + 0x110), *(s32*)((u8*)actor + 0x118), &d, *(u32*)((u8*)actor + 0x168));
+                    }
+                    *(u8*)((u8*)actor + 0x164) = 1;
                 }
-                void* target = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
-                if (target != 0) {
-                    FobrVec d;
-                    d.x = *(f32*)(this_ + 0xc) - *(f32*)((u8*)actor + 0x3c);
-                    d.y = *(f32*)(this_ + 0x10) - *(f32*)((u8*)actor + 0x40);
-                    d.z = *(f32*)(this_ + 0x14) - *(f32*)((u8*)actor + 0x44);
-                    fn_80207830(target, *(u16*)(this_ + 0x94), *(s32*)((u8*)actor + 0x110), *(s32*)((u8*)actor + 0x118), &d, *(u32*)((u8*)actor + 0x168));
-                }
-                *(u8*)((u8*)actor + 0x164) = 1;
             }
         }
     }
@@ -271,8 +275,9 @@ extern "C" u8 fn_801CC820(s32, FobrVec*);
 extern "C" u8 fn_801CC538(s32, void*, FobrVec*, s32);
 extern "C" void fn_801CC640(s32, s32, FobrVec*);
 extern "C" s32 fn_8020BA58(u8* this_) {
-    if (*(f32*)(this_ + 0x78) - *(f32*)(this_ + 0x70) <= lbl_8053F9C4 ||
-        *(f32*)(this_ + 0x7C) - *(f32*)(this_ + 0x74) <= lbl_8053F9C4) {
+    u8* self = this_;
+    if (*(f32*)(self + 0x78) - *(f32*)(self + 0x70) <= lbl_8053F9C4 ||
+        *(f32*)(self + 0x7C) - *(f32*)(self + 0x74) <= lbl_8053F9C4) {
         return 0;
     }
     u8 buf8[0x2c];
@@ -284,16 +289,16 @@ extern "C" s32 fn_8020BA58(u8* this_) {
     ofs.z = lbl_8053F9C4;
     u8 hasOfs = 0;
     u8 hasTgt = 0;
-    fn_801F317C(this_, buf34);
-    s32 player = fn_8023AE34(buf34, *(s32*)(this_ + 0x4), buf8);
+    fn_801F317C(self, buf34);
+    s32 player = fn_8023AE34(buf34, *(s32*)(self + 0x4), buf8);
     if (player >= 0) {
         hasOfs = fn_801CC820(player, &ofs);
     } else {
-        player = fn_8023AC74(buf34, *(s32*)(this_ + 0x4), buf8);
+        player = fn_8023AC74(buf34, *(s32*)(self + 0x4), buf8);
         if (player >= 0) {
             hasTgt = fn_801CC538(player, buf8, &tgt, 0);
         } else {
-            player = fn_8023AD54(buf34, *(s32*)(this_ + 0x4), buf8);
+            player = fn_8023AD54(buf34, *(s32*)(self + 0x4), buf8);
             if (player >= 0) {
                 fn_801CC640(player, 0, &ofs);
             }
@@ -302,7 +307,7 @@ extern "C" s32 fn_8020BA58(u8* this_) {
     s32 ret = 0;
     if (player >= 0) {
         ret = 1;
-        void* actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+        void* actor = fn_801F666C(fn_801F856C(), *(s32*)(self + 0x2A8));
         if (actor != 0) {
             FobrVec pos = *(FobrVec*)fn_8023E724(player);
             u32 flag = 0;
@@ -310,15 +315,15 @@ extern "C" s32 fn_8020BA58(u8* this_) {
                 pos = tgt;
             } else {
                 FobrVec d;
-                d.x = *(f32*)(this_ + 0xc) - ofs.x;
-                d.y = *(f32*)(this_ + 0x10) - ofs.y;
-                d.z = *(f32*)(this_ + 0x14) - ofs.z;
+                d.x = *(f32*)(self + 0xc) - ofs.x;
+                d.y = *(f32*)(self + 0x10) - ofs.y;
+                d.z = *(f32*)(self + 0x14) - ofs.z;
                 pos = d;
                 if (hasOfs) {
                     flag = 3;
                 }
             }
-            fn_80207830(actor, *(u16*)(this_ + 0x94), player, 4, &pos, flag);
+            fn_80207830(actor, *(u16*)(self + 0x94), player, 4, &pos, flag);
         }
     }
     return ret;
@@ -362,16 +367,12 @@ extern "C" const f32 lbl_8053F9DC;
 extern char lbl_8053A170[8];
 extern "C" void fn_8020BD00(void* this_) {
     char* p = (char*)this_;
-    f32 k;
     s32 kind;
     char* record;
     f32* r;
     f32 sumX;
     f32 sumY;
-    f32 a0;
-    f32 a1;
-    f32 a2;
-    f32 a3;
+    f32 k;
 
     fn_801D0ED0(this_);
     *(f32*)(p + 0x60) = lbl_8053F9B8;
@@ -402,12 +403,8 @@ extern "C" void fn_8020BD00(void* this_) {
     record = (char*)fn_802D6A9C();
     r = (f32*)((kind < 8) ? (record + 0xcc) : (record + 0xdc));
     k = lbl_8053F9DC;
-    a0 = r[0];
-    a2 = r[2];
-    a1 = r[1];
-    a3 = r[3];
-    sumX = a0 + a2;
-    sumY = a1 + a3;
+    sumX = r[0] + r[2];
+    sumY = r[1] + r[3];
     *(f32*)(p + 0xc) = k * sumX;
     *(f32*)(p + 0x10) = k * sumY;
     *(f32*)(p + 0x14) = lbl_8053F9C4;
