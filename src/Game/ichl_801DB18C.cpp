@@ -449,11 +449,16 @@ static inline f32 ichlLen(const IchlV2& v) {
     f32 refined = (0.5f * inv) * __fnmsubs(sq, inv * inv, 3.0f);
     return sq * refined;
 }
-static inline BOOL ichlIsZero(const IchlV2& v) {
-    const f32 square = v.squared();
-    BOOL r = square <= JGeometry::TUtilf::epsilon();
+#pragma opt_propagation off
+static inline bool ichlIsZero(const IchlV2& v) {
+    f32 limit;
+    f32 square;
+    square = v.squared();
+    limit = JGeometry::TUtilf::epsilon();
+    bool r = square <= limit;
     return r;
 }
+#pragma opt_propagation reset
 
 extern const f32 lbl_8053F2FC;
 extern int __float_epsilon[];
