@@ -281,6 +281,8 @@ extern "C" void fn_8013A1A4(unsigned char* p) {
 
 extern unsigned char lbl_8049F080[];
 extern void* lbl_8053AB00;
+extern s32 lbl_8053AB04;
+extern s8 lbl_8053AB08;
 extern "C" void fn_8013A884(const unsigned char* src);
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteAllEmitter__17JPAEmitterManagerFv(void*);
