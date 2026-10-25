@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JMath/Inline.h"
 
 extern "C" void* lbl_8053AAF8;
 
@@ -16,6 +18,54 @@ extern "C" void fn_801EFD34(Actor* p, void* obj, f32 x, f32 y, f32 z, void* buf,
 extern "C" char lbl_804A87A8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_801EE434(void*);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void fn_801F0E34(Actor* a, u32 code, u32 z);
+extern "C" s32 fn_801F8544(void* mgr, u32 tag, u32 id, f32* pos, s32 n);
+extern "C" Actor* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 param, s32 a, s32 b);
+extern "C" s32 lbl_8046CAF0[];
+extern "C" void fn_802B6A70(Actor* p) {
+    s32 i;
+    s32 c = **(char**)((char*)p + 0x248);
+
+    if (c == 'r' || c == 's' || c == 'y') {
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xad, 1, 0, 0, 0, 1);
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb1, 1, 0, 0, 0, 1);
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb2, 1, 0, 0, 0, 1);
+    } else if (c == 'u') {
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xae, 1, 0, 0, 0, 1);
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb3, 1, 0, 0, 0, 1);
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb4, 1, 0, 0, 0, 1);
+    } else {
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xad, 1, 0, 0, 0, 1);
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xaf, 1, 0, 0, 0, 1);
+        fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb0, 1, 0, 0, 0, 1);
+    }
+    fn_801F0E34(p, 0x30003, 0);
+    if (*(s32*)((char*)p + 0x238) == 0) {
+        i = 0;
+        do {
+            s32 slot = fn_801F8544(fn_801F856C(), 0x52555059, p->field_04, (f32*)&p->field_0C, lbl_8046CAF0[i]);
+            if (slot >= 0) {
+                Actor* e = fn_801F666C(fn_801F856C(), slot);
+                if (e) {
+                    Vec v;
+                    Vec* pv = &v;
+                    pv->z = rand01() * 3.0f + 3.0f;
+                    pv->y = 2.0f - 4.0f * rand01();
+                    pv->x = 2.0f - 4.0f * rand01();
+                    e->field_3C = v;
+                }
+            }
+            i++;
+        } while (i < 4);
+    } else if (*(s32*)((char*)p + 0x238) == 2) {
+        Actor_CreateByID(fn_801F856C(), 0x46415259, p->field_04, &p->field_0C, 0, -1, -1);
+    }
+    p->field_11C = 0;
+}
+
 extern "C" void fn_802B6DAC(Actor* p) {
     u8 buf[0x3c];
     u8* q;
@@ -23,7 +73,6 @@ extern "C" void fn_802B6DAC(Actor* p) {
     s32 i;
     void* mgr;
     void* obj;
-    s32 c;
 
     tbl = lbl_8046CAD0;
     if (*(s32*)((char*)p + 0x234) == 1 || *(s32*)((char*)p + 0x234) >= 3) {
@@ -64,7 +113,7 @@ extern "C" void fn_802B6DAC(Actor* p) {
         buf[0x1c] = 0;
         buf[0x1d] = 1;
 
-        c = **(char**)((char*)p + 0x248);
+        int c = **(char**)((char*)p + 0x248);
         if (c == 'r' || c == 's' || c == 'y') {
             mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
             obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x30);
@@ -128,11 +177,14 @@ extern "C" void fn_802B7568(u8* p) {
     *(s32*)(p + 0x230) = 0;
     *(s32*)(p + 0x240) = 0;
     if (fn_802D7544(fn_802D6A9C(), *(void**)(p + 0x16c))) {
-        room = *(s32*)(p + 4);
         n = *(s32*)(p + 0x244);
-        vec[0] = *(f32*)(p + 0xc) - 8.0f;
-        vec[1] = *(f32*)(p + 0x10);
-        vec[2] = *(f32*)(p + 0x14);
+        room = *(s32*)(p + 4);
+        f32 y = *(f32*)(p + 0x10);
+        f32 z = *(f32*)(p + 0x14);
+        f32 x = *(f32*)(p + 0xc) - 8.0f;
+        vec[0] = x;
+        vec[1] = y;
+        vec[2] = z;
         fn_8029D8F0(lbl_8053AC98, vec, room, n, 0);
         *(u8*)(p + 0x11c) = 0;
     }
