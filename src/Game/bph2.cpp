@@ -535,13 +535,10 @@ extern "C" void fn_8018DFCC(char* this_) {
                     fn_8018E30C(this_, 6);
                 } else {
                     *(s32*)(this_ + 0x264) = 7;
-                    *(u8*)(this_ + 0x27a) = 1;
-                    break;
                 }
-            } else {
-                break;
+                *(u8*)(this_ + 0x27a) = 1;
             }
-            /* fallthrough */
+            break;
         case 4:
         case 6:
             y = y + lbl_8053E128;
@@ -568,13 +565,10 @@ extern "C" void fn_8018DFCC(char* this_) {
                     fn_8018E30C(this_, 2);
                 } else {
                     *(s32*)(this_ + 0x264) = 7;
-                    *(u8*)(this_ + 0x27a) = 1;
-                    break;
                 }
-            } else {
-                break;
+                *(u8*)(this_ + 0x27a) = 1;
             }
-            /* fallthrough */
+            break;
         case 2:
             y = y + lbl_8053E1C4;
             obj = *(void**)(this_ + 0x328);
@@ -600,13 +594,10 @@ extern "C" void fn_8018DFCC(char* this_) {
                     fn_8018E30C(this_, 8);
                 } else {
                     *(s32*)(this_ + 0x264) = 0x15;
-                    *(u8*)(this_ + 0x27a) = 1;
-                    break;
                 }
-            } else {
-                break;
+                *(u8*)(this_ + 0x27a) = 1;
             }
-            /* fallthrough */
+            break;
         case 8:
             *(s32*)(this_ + 0x264) += 1;
             if (*(s32*)(this_ + 0x264) > 5) {
