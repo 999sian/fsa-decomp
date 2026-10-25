@@ -34,7 +34,7 @@ extern "C" void fn_801E6A84(void* p, s32 arg);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_801D74E0(void* a, void* b, s32 c);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
-extern "C" void fn_801E44CC(void* p);
+extern "C" u8 fn_801E44CC(void* p, const void* a = 0, void* b = 0, void* n = 0);
 extern "C" void fn_801CDCD0(void* p, s32 a, void* b, s32 c);
 extern const f32 lbl_8053F0DC;
 extern const f32 lbl_8053F0F8;
