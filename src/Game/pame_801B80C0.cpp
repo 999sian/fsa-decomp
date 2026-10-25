@@ -447,8 +447,8 @@ static inline u8 pameLanded(u8* this_, s32 st) {
 
 static inline s32 pameFirstPlayer(s32 mask) {
     s32 r = -1;
-    u8 m = mask;
-    for (u32 i = 0; i < 4; i++) {
+    u32 m = (u8)mask;
+    for (s32 i = 0; i < 4; i++) {
         if (m & (1 << i)) {
             r = i;
             break;
@@ -550,7 +550,7 @@ extern "C" void fn_801B8C98(u8* this_, u8 hitWall) {
         } else {
             s32 hit = this_[0x240];
             if (hit != 0) {
-            pl = pameFirstPlayer((u8)hit);
+            pl = pameFirstPlayer(hit);
             f32 ny = *(f32*)(this_ + 0x10) - fn_8023E724(pl)[1];
             n.set(*(f32*)(this_ + 0xc) - fn_8023E724(pl)[0], ny, 0.0f);
             fn_801CC350(&n, this_ + 0x3c);
