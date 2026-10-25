@@ -147,26 +147,24 @@ extern "C" void* fn_802BED00(void* this_, short freeFlag) {
 
 #pragma opt_propagation off
 extern "C" void fn_802BED94(char* p) {
-float f0, f1, f2, f3, f4;
-f4=lbl_80540C1C; f2=lbl_80540C24; f1=lbl_80540C28; f0=lbl_80540C10;
     *(unsigned long*)(p + 0x240) = (*(unsigned long*)(p + 0x90) >> 22) & 0x1f;
     *(unsigned long*)(p + 0x244) = *(unsigned long*)(p + 0x90) & 0xfff;
     *(unsigned long*)(p + 0xb0) = 0xd;
     *(unsigned short*)(p + 0x94) = 0;
     *(unsigned long*)(p + 0x230) = 0;
-    f3 = *(float*)(p + 0xc); f3 += f4; *(float*)(p + 0xc) = f3;
-    f3 = *(float*)(p + 0x10); f3 += f4; *(float*)(p + 0x10) = f3;
-    *(float*)(p + 0x60) = f2;
-    *(float*)(p + 0x64) = f2;
-    *(float*)(p + 0x68) = f1;
-    *(float*)(p + 0x6c) = f1;
+    *(float*)(p + 0xc) = *(float*)(p + 0xc) + lbl_80540C1C;
+    *(float*)(p + 0x10) = *(float*)(p + 0x10) + lbl_80540C1C;
+    *(float*)(p + 0x60) = lbl_80540C24;
+    *(float*)(p + 0x64) = lbl_80540C24;
+    *(float*)(p + 0x68) = lbl_80540C28;
+    *(float*)(p + 0x6c) = lbl_80540C28;
     *(unsigned long*)(p + 0x234) = 0;
     *(unsigned long*)(p + 0x238) = 0;
     *(unsigned long*)(p + 0x23c) = 0;
     *(unsigned long*)(p + 0x248) = 0;
     *(unsigned long*)(p + 0x24c) = 0;
     *(unsigned long*)(p + 0x250) = 0;
-    *(float*)(p + 0x254) = f0;
+    *(float*)(p + 0x254) = lbl_80540C10;
 }
 #pragma opt_propagation reset
 
