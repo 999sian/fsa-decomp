@@ -2,6 +2,8 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Box.h"
 
 
 struct LimtDrawParam {
@@ -58,7 +60,7 @@ extern "C" s32 fn_80238BC4(s32 handle);
 extern "C" void fn_80238E08(s32 handle);
 extern "C" void fn_801F0E34(u8* this_, s32 a, s32 b);
 extern f32 lbl_80475248[];
-extern u8 lbl_804751F8[];
+extern const f32 lbl_804751F8[][4];
 extern const f32 lbl_80543014;
 extern const f32 lbl_8054301C;
 extern const f32 lbl_80543020;
@@ -83,28 +85,31 @@ extern "C" void fn_803790D8(u8* this_) {
     LimtDrawParam prm;
     prm.reset();
     Vec* v = (Vec*)(this_ + 0x54);
-    f32 lenSq = v->x * v->x + v->y * v->y + v->z * v->z;
-    if (lenSq > 32.0f * *(f32*)__float_epsilon) {
+    if (!(JMathInlineVEC::PSVECSquareMag(v) <= 32.0f * *(f32*)__float_epsilon)) {
         f32 mtx[3][4];
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = v->x;
+        f32 vx = v->x;
+        f32 vy = v->y;
+        f32 vz = v->z;
+        mtx[0][0] = vx;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
         mtx[1][0] = 0.0f;
-        mtx[1][1] = v->y;
+        mtx[1][1] = vy;
         mtx[1][2] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
-        mtx[2][2] = v->z;
+        mtx[2][2] = vz;
         prm.mMtx = mtx;
     }
     Vec pos;
     Vec* a = (Vec*)(this_ + 0xc);
-    pos.x = a->x + 8.0f;
+    pos.x = a->x;
     pos.y = a->y;
     pos.z = a->z;
+    pos.x += 8.0f;
     u32 tex = fn_804032E8(0x54494D47, lbl_804AE8E0[this_[0x241]]);
     if (*(s32*)(this_ + 4) < 8) {
         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, (void*)tex, &prm);
@@ -112,22 +117,16 @@ extern "C" void fn_803790D8(u8* this_) {
 }
 
 extern "C" void fn_803792C8(u8* this_) {
-    f32 box[4];
-    box[0] = *(f32*)(this_ + 0x60);
-    box[1] = *(f32*)(this_ + 0x64);
-    box[2] = *(f32*)(this_ + 0x68);
-    box[3] = *(f32*)(this_ + 0x6c);
-    box[0] += *(f32*)(this_ + 0xc);
-    box[2] += *(f32*)(this_ + 0xc);
-    box[1] += *(f32*)(this_ + 0x10);
-    box[3] += *(f32*)(this_ + 0x10);
-    fn_80239914(box, *(s32*)(this_ + 0x4), *(s32*)(this_ + 0x198));
+    JGeometry::TBox2f box = *(JGeometry::TBox2f*)(this_+0x60);
+    box.addPos(*(JGeometry::TVec2f*)(this_+0xc));
+    fn_80239914(&box, *(s32*)(this_ + 0x4), *(s32*)(this_ + 0x198));
     {
-        s32 h = *(s32*)(this_ + 0x198);
+        register s32 h = *(s32*)(this_ + 0x198);
         u8* p = (u8*)fn_8020D58C();
         fn_8020D7D0(p + p[0] * 0x784 + 4, h);
     }
     switch (*(s32*)(this_ + 0x23c)) {
+    case 2: break;
     case 0: {
         s32 cur = 0;
         if (fn_80239108(*(s32*)(this_ + 0x198)) >= 1 && *(u8*)(this_ + 0x240) == (cur = fn_80238BC4(*(s32*)(this_ + 0x198))) && cur >= 0 && cur < 4) {
@@ -139,7 +138,7 @@ extern "C" void fn_803792C8(u8* this_) {
                 fn_80238E08(*(s32*)(this_ + 0x198));
                 *(u8*)(this_ + 0x243) += 1;
                 if (lbl_80475248[*(u8*)(this_ + 0x241)] < (f32)*(u8*)(this_ + 0x243)) {
-                    *(u8*)(this_ + 0x241) += 1;
+                    *(u8*)(this_ + (s32)0x241) += 1;
                     fn_801F0E34(this_, 0x3004b, 0);
                 }
                 s32 n = (u32)*(u8*)(this_ + 0x243) >> 2;
@@ -153,7 +152,7 @@ extern "C" void fn_803792C8(u8* this_) {
                     *(f32*)(this_ + 0x64) = lbl_80543020;
                     *(f32*)(this_ + 0x68) = lbl_80543014;
                     *(f32*)(this_ + 0x6c) = lbl_80543024;
-                    ((void (*)(u8*, s32, s32))(*(void***)this_)[12])(this_, 0xff, 1);
+                    ((Actor*)this_)->v10(0xff, 1);
                     *(s32*)(this_ + 0x23c) = 2;
                 }
             }
@@ -166,14 +165,18 @@ extern "C" void fn_803792C8(u8* this_) {
         *(u8*)(this_ + 0x241) += 1;
         *(u8*)(this_ + 0x242) = 0;
         {
-            u8* e = lbl_804751F8 + *(u8*)(this_ + 0x241) * 0x10;
-            *(f32*)(this_ + 0x60) = *(f32*)(e + 0);
-            *(f32*)(this_ + 0x64) = *(f32*)(e + 4);
-            *(f32*)(this_ + 0x68) = *(f32*)(e + 8);
-            *(f32*)(this_ + 0x6c) = *(f32*)(e + 0xc);
+            f32* e = (f32*)lbl_804751F8 + *(u8*)(this_+0x241)*4;
+            f32 a = e[0];
+            f32 b = e[1];
+            *(f32*)(this_+0x60) = a;
+            a = e[2];
+            *(f32*)(this_+0x64) = b;
+            b = e[3];
+            *(f32*)(this_+0x68) = a;
+            *(f32*)(this_+0x6c) = b;
         }
         if (*(u8*)(this_ + 0x241) == 4) {
-            ((void (*)(u8*, s32, s32))(*(void***)this_)[12])(this_, 0xff, 1);
+            ((Actor*)this_)->v10(0xff, 1);
             *(s32*)(this_ + 0x23c) = 2;
         } else {
             *(s32*)(this_ + 0x23c) = 0;
@@ -207,5 +210,9 @@ extern "C" void fn_80379584(Actor* param_1) {
             *(u32*)((u8*)param_1 + 0x23C) = 2;
         }
     }
+}
+
+extern "C" void fn_8037964C(void) {
+    // the per-TU __sinit chain: the pool constructors and __register_global_object calls
 }
 
