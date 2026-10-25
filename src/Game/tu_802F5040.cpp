@@ -194,9 +194,9 @@ extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5FF4(f32 x);
 extern "C" void fn_8013B1E8(void* mgr);
-static inline s32 Tu802F93F4_c5(s32 v) {
+static inline int Tu802F93F4_c5(int v) {
     f32 f = __fmadds((f32)v, lbl_80541518, lbl_805414F8);
-    s32 r = (s32)f;
+    int r = (int)f;
     if (r < 0) {
         r = 0;
     } else if (r > 0x1f) {
@@ -332,10 +332,7 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
     if (ent == NULL || *(s32*)(ent + 0x38) == 2) {
         if (fn_802F58A8(this_, src, mtx) != 0) {
             if (ent != NULL) {
-            u32 b; u32 a; a=*(u32*)(ent+0); b=*(u32*)(ent+4);
-            *(u32*)(dst+0)=a; *(u32*)(dst+4)=b;
-            { u32 c=*(u32*)(ent+8); u32 d=*(u32*)(ent+12);
-            *(u32*)(dst+8)=c; *(u32*)(dst+12)=d; }
+            *(Tu802F5040Ids*)dst=*(Tu802F5040Ids*)ent;
             dst[0x10] = ent[0x10];
             dst[0x11] = ent[0x11];
             dst[0x12] = ent[0x12];
@@ -372,7 +369,7 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
         } else {
             *outEnt = ent;
         }
-        f32 x; f32 y; y=src[1]; x=src[0]; outPos[0]=x; f32 z=src[2]; outPos[1]=y; outPos[2]=z;
+        f32 y; f32 x; x=src[0]; y=src[1]; outPos[0]=x; f32 z=src[2]; outPos[1]=y; outPos[2]=z;
     } else {
         if (*(s32*)(ent+0x38)==1) {
             f32 z=src[2], height=z;
@@ -383,22 +380,21 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
                     f32 loY; f32 y;
                     y=src[1];loY=*(f32*)(this_+0x236c);
                     if (y>=loY && y<lbl_80541510*(f32)*(s32*)(this_+0x2384)+loY) {
-                        f32 one; f32 step; f32 dy; f32 dx;
-                        dx=x-loX; dy=y-loY; step=lbl_80541514; one=lbl_80541518;
+                        f32 dx=x-loX; f32 dy=y-loY;
                         s32 iy; s32 ix;
-                        ix=(s32)(step*dx); iy=(s32)(step*dy);
+                        ix=(s32)(lbl_80541514*dx); iy=(s32)(lbl_80541514*dy);
                         u8* cell=this_; cell+=*(s32*)(this_+0x2388)*4;
                         cell=*(u8**)(cell+0x100)+(iy*0x30c+ix*0xc);
-                        f32 fx=step*(dx-lbl_80541510*(f32)ix);
-                        f32 fy=step*(dy-lbl_80541510*(f32)iy);
-                        height+= (one-fy)*(*(f32*)(cell+8)*(one-fx)+*(f32*)(cell+0x14)*fx) + fy*((one-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
+                        f32 fx=lbl_80541514*(dx-lbl_80541510*(f32)ix);
+                        f32 fy=lbl_80541514*(dy-lbl_80541510*(f32)iy);
+                        height+= (lbl_80541518-fy)*(*(f32*)(cell+8)*(lbl_80541518-fx)+*(f32*)(cell+0x14)*fx) + fy*((lbl_80541518-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
                     }
                 }
             }
-            f32 x; f32 y; y=src[1]; x=src[0]; outPos[0]=x; outPos[1]=y; outPos[2]=z+height;
+            f32 y; f32 x; x=src[0]; y=src[1]; outPos[0]=x; outPos[1]=y; outPos[2]=z+height;
             *outEnt=ent;
         } else {
-            f32 x; f32 y; y=src[1]; x=src[0]; outPos[0]=x; f32 z=src[2];outPos[1]=y;outPos[2]=z;
+            f32 y; f32 x; x=src[0]; y=src[1]; outPos[0]=x; f32 z=src[2];outPos[1]=y;outPos[2]=z;
             *outEnt=ent;
         }
     }
@@ -1381,10 +1377,11 @@ extern "C" void fn_802F93F4(u8* this_, u8* src, u32 srcOff, u32 idx, u32 dstOff,
     u8* output = ((u8**)(self + 0xc8))[entry] + dstOff;
     u8* colors = *(u8**)(slot + 0x98) + dstOff;
     for (k = 0; (u32)k < length; k += 2) {
+        u8 b;
         u16 v = (colors[k] << 8) | colors[k+1];
         if (v & 0x8000) {
             u8 a = Tu802F93F4_c5((v >> 10) & 31);
-            u8 b = Tu802F93F4_c5((v >> 5) & 31);
+            b = Tu802F93F4_c5((v >> 5) & 31);
             u8 c = Tu802F93F4_c5(v & 31);
             if (swap) v = 0x8000 | (c << 10) | (a << 5) | b;
             else v = 0x8000 | (a << 10) | (b << 5) | c;
