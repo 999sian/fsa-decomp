@@ -422,6 +422,7 @@ extern "C" void fn_80361DAC(u8* param_1) {
 }
 
 extern "C" void fn_80361ECC(u8* param_1) {
+    s32 i;
     *(f32*)(param_1 + 0x44) = 0.0f;
     *(f32*)(param_1 + 0x40) = 0.0f;
     *(f32*)(param_1 + 0x3c) = 0.0f;
@@ -488,9 +489,6 @@ extern "C" void fn_80361ECC(u8* param_1) {
     }
 
     if ((*(u32*)(param_1 + 0x90) & 0x100) == 0) {
-        s32 count;
-        s32 i;
-        u8* act;
         if (*(s32*)(param_1 + 0x250) == 0x12) {
             Actor_CreateByID(fn_801F856C(), 0x454c4b32, *(s32*)(param_1 + 4), param_1 + 0xc, 0, -1, -1);
             static JGeometry::TVec3<f32> tbl[4] = {
@@ -507,9 +505,9 @@ extern "C" void fn_80361ECC(u8* param_1) {
             *(s32*)(param_1 + 0x230) = 1;
             fn_80230498(0, JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f), *(s32*)(param_1 + 0x238) + *(s32*)(param_1 + 0x23c), 0xff, -0x80, -0x80, 1);
         }
-        count = *(s32*)(fn_801F856C() + 0x1008);
+        s32 count = getActorList()->getCount();
         for (i = 0; i < count; i++) {
-            act = *(u8**)(fn_801F856C() + i * 4 + 8);
+            u8* act = getActorList()->getActor(i);
             if (act != NULL && *(u32*)(act + 0x1a0) == 0x454e444d && *(u8*)(act + 0x11c) == 1) {
                 *(u8**)(param_1 + 0x29c) = act;
                 break;
