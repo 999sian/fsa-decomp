@@ -329,18 +329,6 @@ extern "C" void fn_802F53F4(u8* this_, s32 idx, u8* data) {
 }
 
 #pragma opt_common_subs off
-static inline f32 sampleRendererHeight(u8* self, const f32 x, const f32 y) {
-    s32 iy; s32 ix;
-    ix=(s32)(lbl_80541514*x); iy=(s32)(lbl_80541514*y);
-    u8* table=self; table+=*(s32*)(self+0x2388)*4;
-    Vec (*grid)[65]=*(Vec(**)[65])(table+0x100);
-    u8* cell=(u8*)&grid[iy][ix];
-    f32 fx=lbl_80541514*(x-lbl_80541510*(f32)ix);
-    f32 fy=lbl_80541514*(y-lbl_80541510*(f32)iy);
-    return (lbl_80541518-fy)*(*(f32*)(cell+8)*(lbl_80541518-fx)+*(f32*)(cell+0x14)*fx)
-        + fy*((lbl_80541518-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
-}
-
 extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos, u8** outEnt, MtxPtr mtx, u8* dst) {
     if (ent == NULL || *(s32*)(ent + 0x38) == 2) {
         if (fn_802F58A8(this_, src, mtx) != 0) {
