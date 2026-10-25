@@ -91,6 +91,49 @@ static bool fn_80364340_isBadPos(Vec* p) {
 
 extern "C" const s32 lbl_80474A98[];
 extern "C" const s32 lbl_80474AD8[];
+extern "C" const s32 lbl_80474858[];
+extern "C" u8 lbl_80542AD8[];
+extern "C" u8 lbl_80542AC8[];
+extern "C" f32 lbl_80542B88;
+extern "C" f32 lbl_80542B90;
+extern "C" f32 lbl_80542B6C;
+
+static void fn_80363880_reset(char* self) {
+    *(s32*)(self + 0x24c) = -1;
+    *(f32*)(self + 0x44) = lbl_80542B0C;
+    *(f32*)(self + 0x40) = lbl_80542B0C;
+    *(f32*)(self + 0x3c) = lbl_80542B0C;
+    *(s32*)(self + 0x264) = 1;
+    *(s32*)(self + 0x268) = 0;
+    *(s32*)(self + 0x248) = 0x20;
+}
+
+static s32 fn_80363880_quadrant(u16 a) {
+    if (a >= 0x2000 && a < 0x6000) {
+        return 0;
+    }
+    if (a >= 0x6000 && a < 0xa000) {
+        return 2;
+    }
+    if (a >= 0xa000 && a < 0xe000) {
+        return 1;
+    }
+    return 3;
+}
+
+static void fn_80363880_aim(char* self, f32 dy, f32 dx, f32 speed) {
+    s16 angle = (s16)(s32)(JMath::atanTable_.atan2_(dy, dx) * lbl_80542B50);
+    *(s16*)(self + 0x240) = angle;
+    *(f32*)(self + 0x3c) = speed * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+    *(f32*)(self + 0x40) = speed * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+}
+
+static void fn_80363880_setQuadrant(char* self) {
+    f32 ang = JMath::atanTable_.atan2_(*(f32*)(self + 0x40), *(f32*)(self + 0x3c));
+    s32 q = fn_80363880_quadrant((u16)(s32)(ang * lbl_80542B50));
+    *(s32*)(self + 0x23c) = q;
+    *(s32*)(self + 0x26c) = lbl_80474858[q];
+}
 
 extern "C" void fn_80362634(char* self) {
     if (*(void**)(self + 0x300) != NULL) {
@@ -829,6 +872,67 @@ extern "C" void fn_80365274(char* this_) {
         }
         break;
     }
+    }
+}
+
+extern "C" void fn_803653EC(char* self) {
+    s32 timer;
+    if (*(s32*)(self + 0x238) < 0) {
+        if (*(s32*)(self + 0x248) >= 0x80) {
+            if (*(s32*)(self + 0x25c) == 0) {
+                *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+                *(s32*)(self + 0x268) += 1;
+                if (*(s32*)(self + 0x268) >= 4) {
+                    *(s32*)(self + 0x268) = 0;
+                }
+                *(s32*)(self + 0x264) = lbl_80474BC4[*(s32*)(self + 0x268)];
+            }
+            JMathInlineVEC::PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
+            JMathInlineVEC::PSVECAdd((Vec*)(self + 0x27c), (Vec*)(self + 0x3c), (Vec*)(self + 0x27c));
+            JMathInlineVEC::PSVECAdd((Vec*)(self + 0x288), (Vec*)(self + 0x3c), (Vec*)(self + 0x288));
+            JMathInlineVEC::PSVECAdd((Vec*)(self + 0x294), (Vec*)(self + 0x3c), (Vec*)(self + 0x294));
+            timer = *(s32*)(self + 0x248);
+            if (timer == 0x80) {
+                *(f32*)(self + 0x44) = lbl_80542B0C;
+                *(f32*)(self + 0x40) = lbl_80542B0C;
+                *(f32*)(self + 0x3c) = lbl_80542B0C;
+                *(s32*)(self + 0x26c) = 0x388;
+                *(s32*)(self + 0x264) = 0;
+            }
+        } else if (*(s32*)(self + 0x248) == 0) {
+            *(s32*)(self + 0x238) = 0;
+        } else {
+            return;
+        }
+    }
+    if (*(s32*)(self + 0x238) < 0) {
+        return;
+    }
+    if (*(s32*)(self + 0x25c) == 0) {
+        *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+        *(s32*)(self + 0x268) += 1;
+        if (*(s32*)(self + 0x268) >= 4) {
+            *(s32*)(self + 0x268) = 0;
+        }
+        *(s32*)(self + 0x264) = lbl_80474BC4[*(s32*)(self + 0x268)];
+    }
+    if (*(s32*)(self + 0x248) != 0) {
+        return;
+    }
+    *(s32*)(self + 0x248) = 0x80;
+    switch (*(s32*)(self + 0x238) & 3) {
+    case 0:
+        *(s32*)(self + 0x26c) = 0x391;
+        return;
+    case 1:
+        *(s32*)(self + 0x26c) = 0x388;
+        return;
+    case 2:
+        *(s32*)(self + 0x26c) = 0x38e;
+        return;
+    case 3:
+        *(s32*)(self + 0x26c) = 0x391;
+        return;
     }
 }
 
