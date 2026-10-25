@@ -169,9 +169,6 @@ extern "C" s32 fn_801E6FAC(char* p) {
 #include "JSystem/JMath/JMath.h"
 struct IpotGame { u8 pad[0xb4]; JMARandFast rnd; };
 extern IpotGame* lbl_8053AAF8;
-static inline void ipotSetVel(JGeometry::TVec3<f32>& v, const f32 x, const f32 y, const f32 z) { v.x = x; v.y = y; v.z = z; }
-static inline f32 ipotRandF(f32 scale) { return scale * lbl_8053AAF8->rnd.get_ufloat_1(); }
-static inline f32 ipotRandPM(f32 scale) { return scale * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f); }
 
 struct RupyDrop {
     u32 param;
@@ -239,11 +236,13 @@ extern "C" void fn_801E728C(char* p, s32 type) {
         if (*(u32*)(p + 0x230) & 0x2000) {
             fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x262, 0, 0, 0, 0, 1, 1.0f);
             for (s32 i = 0; i < 4; i++) {
-                s32 n = lbl_80469C40[i].count;
-                for (s32 j = 0; j < n; j++) {
+                s32 j;
+                register s32 n = lbl_80469C40[i].count;
+                for (j = 0; j < n; j++) {
                     s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, lbl_80469C40[i].param);
                     if (idx >= 0) {
-                        char* rupy = fn_801F666C(fn_801F856C(), idx);
+                        char* rupy;
+                        rupy = fn_801F666C(fn_801F856C(), idx);
                         if (rupy != 0) {
                             JGeometry::TVec3<f32> vel(0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
                                                       0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
