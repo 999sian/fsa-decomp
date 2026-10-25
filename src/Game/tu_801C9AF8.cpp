@@ -393,13 +393,9 @@ static inline void tuPushAway(char* p, s32 who) {
 }
 
 static inline void tuPushAway2(char* p, const s32 who) {
-    f32 dx;
-    f32 dy;
-    dy = *(f32*)(p + 0x10) - fn_8023E724(who)->y;
-    dx = *(f32*)(p + 0xc) - fn_8023E724(who)->x;
     JGeometry::TVec2<f32> d;
-    d.x = dx;
-    d.y = dy;
+    d.y = *(f32*)(p + 0x10) - fn_8023E724(who)->y;
+    d.x = *(f32*)(p + 0xc) - fn_8023E724(who)->x;
     d.normalize();
     d.scale(lbl_8053EF34);
     *(f32*)(p + 0x3c) = d.x;
@@ -422,8 +418,8 @@ extern "C" u8 fn_801CA564(char* p) {
     JGeometry::TVec3f fx1;
     JGeometry::TVec3f fx2;
     s32 kind;
-    JGeometry::TVec3f* pp;
     s32 i;
+    JGeometry::TVec3f* pp;
     u8 held = fn_801C53C4(p);
     if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
         && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
@@ -594,7 +590,7 @@ extern "C" u8 fn_801CA564(char* p) {
             if (found) {
                 f32 dy = *(f32*)(p + 0x10) - fn_8023E724(*(s32*)(p + 0x338))->y;
                 f32 dx = *(f32*)(p + 0xc) - fn_8023E724(*(s32*)(p + 0x338))->x;
-                d.set(dx, dy, lbl_8053EF20);
+                d.set(dx, dy, 0.0f);
                 d.normalize();
                 ((JGeometry::TVec3f*)(p + 0x3c))->set(vel);
                 d.scale(lbl_8053EF54);
