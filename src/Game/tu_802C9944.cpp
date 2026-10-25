@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804A8EF8[];
@@ -127,7 +128,7 @@ extern "C" void fn_802C9BCC(u8* this_) {
         for (i = 0; i < 4; i++) {
             u8 on = (g[0x82] & (u8)(1 << i)) != 0;
             if (on == 1) {
-                Vec pt = *(Vec*)fn_8023E724(fn_8022EA0C(i));
+                PointF pt = *(PointF*)fn_8023E724(fn_8022EA0C(i));
                 if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
                     hit = 1;
                     break;
@@ -135,7 +136,7 @@ extern "C" void fn_802C9BCC(u8* this_) {
             }
         }
     } else {
-        Vec pt = *(Vec*)fn_8023E724(fn_8022EA0C(0));
+        PointF pt = *(PointF*)fn_8023E724(fn_8022EA0C(0));
         if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
             hit = 1;
         }
@@ -189,6 +190,9 @@ extern "C" void fn_802C9BCC(u8* this_) {
 extern const f32 lbl_80540D84;
 extern const f64 lbl_80540D78;
 extern "C" void fn_802C9F48(u8* this_) {
+    f32 fVar1;
+    f32 fVar2;
+
     *(u32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xff;
     *(u32*)(this_ + 0x238) = ((*(u32*)(this_ + 0x90) >> 8) & 0xff) + 1;
     *(u32*)(this_ + 0x23c) = ((*(u32*)(this_ + 0x90) >> 16) & 0xff) + 1;
@@ -202,9 +206,9 @@ extern "C" void fn_802C9F48(u8* this_) {
     } else {
         this_[0x241] = 0;
     }
-    f32 fVar2 = (f32)(s32)((*(s32*)(this_ + 0x23c) << 3) >> 1);
+    fVar2 = (f32)(s32)((*(s32*)(this_ + 0x23c) << 3) >> 1);
     fVar2 -= lbl_80540D84;
-    f32 fVar1 = (f32)(s32)((*(s32*)(this_ + 0x238) << 3) >> 1);
+    fVar1 = (f32)(s32)((*(s32*)(this_ + 0x238) << 3) >> 1);
     fVar1 -= lbl_80540D84;
     *(f32*)(this_ + 0x60) = -fVar1;
     *(f32*)(this_ + 0x64) = -fVar2;
