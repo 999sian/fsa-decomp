@@ -1147,7 +1147,7 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     Vec pa, pb;
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), a, 0, 0, &pa);
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, &pb);
-    f32 r = FABS(pb.x - pa.x) >= FABS(pb.y - pa.y) ? FABS(pb.x - pa.x) : FABS(pb.y - pa.y);
+    f32 r = maxMenuExtent(__fabs(pb.x - pa.x), __fabs(pb.y - pa.y));
     f32 left1;
     f32 left2;
     f32 x = lbl_80543CB8 * (pa.x + pb.x);
