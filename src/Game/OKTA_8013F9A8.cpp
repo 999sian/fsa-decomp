@@ -64,9 +64,6 @@ struct OktaRandom {
 struct OktaGame { u8 pad[0xb4]; OktaRandom rnd; };
 extern OktaGame* lbl_8053AAF8;
 extern s32 lbl_8053AB28;
-static inline s32 oktaRandomInt(f32 scale) {
-    return (s32)(scale * lbl_8053AAF8->rnd.get_ufloat_1());
-}
 
 extern "C" void* fn_8013F9A8(void* this_, s16 freeFlag) {
     if (this_ != 0) {
@@ -163,7 +160,9 @@ extern "C" void fn_8013FD50(u8* this_) {
     fn_801F2618(this_, 0, 0);
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_80140920(u8* this_) {
+    f32 random;
     *(f32*)(this_ + 0x60) = lbl_8053CE80;
     *(f32*)(this_ + 0x64) = lbl_8053CE80;
     *(f32*)(this_ + 0x68) = lbl_8053CE84;
@@ -189,13 +188,16 @@ extern "C" void fn_80140920(u8* this_) {
     *(s32*)(this_ + 0x274) = lbl_8053AB28 & 31;
     lbl_8053AB28++;
     *(u32*)(this_ + 0x90) &= 0xff;
-    *(s32*)(this_ + 0x98) = (int)(lbl_8053CE88 * lbl_8053AAF8->rnd.get_ufloat_1()) & 3;
+    random = lbl_8053AAF8->rnd.get_ufloat_1();
+    *(s32*)(this_ + 0x98) = (s32)(lbl_8053CE88 * random) & 3;
     *(u32*)(this_ + 0xb0) = 0x11101;
     *(s32*)(this_ + 0x270) = 0;
     *(f32*)(this_ + 0x25c) = lbl_8053CE2C;
     this_[0x278] = 3;
-    *(s32*)(this_ + 0x234) = (int)(lbl_8053CE54 * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x32;
-    *(s32*)(this_ + 0x238) = (int)(lbl_8053CE54 * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x64;
+    random = lbl_8053AAF8->rnd.get_ufloat_1();
+    *(s32*)(this_ + 0x234) = (s32)(lbl_8053CE54 * random) + 0x32;
+    random = lbl_8053AAF8->rnd.get_ufloat_1();
+    *(s32*)(this_ + 0x238) = (s32)(lbl_8053CE54 * random) + 0x64;
     switch (*(s32*)(this_ + 0x90)) {
     case 0: break;
     case 1: {
@@ -252,5 +254,5 @@ extern "C" void fn_80140920(u8* this_) {
     }
     *(s32*)(this_ + 0x230) = 0;
 }
-
+#pragma opt_common_subs reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
