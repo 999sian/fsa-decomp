@@ -128,6 +128,10 @@ extern const float lbl_80543620;
 extern const float lbl_80543624;
 extern const float lbl_80543630;
 extern u64 lbl_804774C8[];
+static const u64 ro_0[50] = {1};
+static const u64 ro_190[6] = {1};
+static const u64 ro_1c0[17] = {1};
+static const u64 ro_248[20] = {1};
 extern void* lbl_8053AED8;
 u8 fn_80402B10(void*, s32, f32, s32, f32);
 u8 fn_80402940(void*, s32, f32, s32, f32);
@@ -966,15 +970,18 @@ extern "C" void fn_803DEC44(u8* self)
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803DF2B4(u8* self) {
+    u64* tbl = lbl_804774C8;
+    s32 k;
     u8* q;
     u8 a;
     u8 b;
     u8 c;
     s32 i;
-    s32 k;
-    s32 n;
+    u64* kp;
     s32 j;
+    s32 n;
     f32 f30;
 
     *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
@@ -982,34 +989,33 @@ extern "C" void fn_803DF2B4(u8* self) {
     b = 0;
     c = 0;
     q = self;
-    k = 0;
-    for (i = 0; i < 2; i++, q += 4, k += 3) {
-        if (*(s16*)(self + 0x9c) <= k) {
-            break;
-        }
-        a = fn_80402B10(*(void**)(q + 0x34), 0x14, lbl_80543614, 0, lbl_80543604);
-        fn_80402B10(*(void**)(q + 0x44), 0x14, lbl_80543614, 0, lbl_80543604);
-        n = *(s16*)(self + 0x9c) - k;
-        if (n > 20) {
-            n = 20;
-        }
-        f30 = (f32)(n * n) / lbl_80543618;
-        switch (i) {
-        case 0:
-            for (j = 0; j < 17; j++) {
-                J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[56 + j]);
-                pane->setAlpha((u8)(f30 * (f32)self[0xdb + j]));
+    for (i = 0, k = 0; i < 2; i++, q += 4, k += 3) {
+        if (*(s16*)(self + 0x9c) > k) {
+            a = fn_80402B10(*(void**)(q + 0x34), 0x14, lbl_80543614, 0, lbl_80543604);
+            fn_80402B10(*(void**)(q + 0x44), 0x14, lbl_80543614, 0, lbl_80543604);
+            n = *(s16*)(self + 0x9c) - k;
+            if (n > 20) {
+                n = 20;
             }
-            goto done;
-        case 1:
-            for (j = 0; j < 20; j++) {
-                J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[73 + j]);
-                pane->setAlpha((u8)(f30 * (f32)self[0xec + j]));
+            f30 = (f32)(n * n) / lbl_80543618;
+            switch (i) {
+            case 0:
+                kp = tbl + 56;
+                for (j = 0; j < 17; j++, kp++) {
+                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp);
+                    pane->setAlpha((u8)(f30 * (f32)self[0xdb + j]));
+                }
+                break;
+            case 1:
+                kp = tbl + 73;
+                for (j = 0; j < 20; j++, kp++) {
+                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp);
+                    pane->setAlpha((u8)(f30 * (f32)self[0xec + j]));
+                }
+                break;
             }
-            break;
         }
     }
-done:
     if (*(s16*)(self + 0x9c) > 15) {
         b = fn_80402940(*(void**)(self + 0x30), 0xf, lbl_8054361C, 0, lbl_80543604);
         n = *(s16*)(self + 0x9c) - 15;
@@ -1017,8 +1023,9 @@ done:
             n = 15;
         }
         f30 = (f32)(n * n) / lbl_80543624;
-        for (j = 0; j < 6; j++) {
-            J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[50 + j]);
+        kp = tbl + 50;
+        for (j = 0; j < 6; j++, kp++) {
+            J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp);
             pane->setAlpha((u8)(f30 * (f32)self[0xd5 + j]));
         }
     }
@@ -1036,7 +1043,7 @@ done:
         *(s32*)(self + 0x90) = 1;
     }
 }
-
+#pragma opt_propagation reset
 extern void* lbl_8053AB10;
 extern void* lbl_8053AED8;
 extern void (J2DScreen::*lbl_804B0628[])();
