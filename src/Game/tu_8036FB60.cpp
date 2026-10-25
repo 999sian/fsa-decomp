@@ -20,7 +20,7 @@ extern "C" void fn_8022FF8C(s32 a, f32* box, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_802300EC(void);
 extern "C" u8 fn_80388CAC(s32 a, s32 b);
 extern f32 lbl_80542DDC;
-extern f32 lbl_80542DC4;
+extern const f32 lbl_80542DC4;
 extern f32 lbl_80542DE8;
 extern f32 lbl_80542DEC;
 extern f32 lbl_80542DF0;
@@ -56,24 +56,24 @@ extern "C" void fn_80239914(JGeometry::TBox2<f32>* box, s32 room, s32 handle);
 extern "C" void fn_8036FB60(char* self);
 extern "C" unsigned char __vt__4FGAL[];
 extern void* lbl_8053AF80;
-extern float lbl_80542E00;
-extern float lbl_80542E04;
+extern const float lbl_80542E00;
+extern const float lbl_80542E04;
 extern float lbl_80542E08;
-extern float lbl_80542DC4;
+extern const float lbl_80542DC4;
 extern float lbl_80542DCC;
 extern "C" void* fn_801F856C(void);
 extern "C" int Actor_CreateByID(void* mgr, unsigned int name, unsigned int id, void* pos, unsigned int arg5, int arg6, int arg7);
 void operator delete(void* p);
 extern void* lbl_8053AB10;
-extern float lbl_80542DF4;
-extern float lbl_80542DF8;
-extern float lbl_80542DFC;
+extern const float lbl_80542DF4;
+extern const float lbl_80542DF8;
+extern const float lbl_80542DFC;
 extern float lbl_80542E28;
 extern float lbl_80542E2C;
 extern float lbl_80542E30;
-extern float lbl_80542E34;
-extern float lbl_80542E3C;
-extern "C" f32 lbl_80542E38;
+extern const float lbl_80542E34;
+extern const float lbl_80542E3C;
+extern "C" const f32 lbl_80542E38;
 extern "C" s32 fn_80230CFC(s32);
 extern s32 lbl_80474F4C[];
 extern "C" void fn_8036FB60(char* self) {
@@ -666,9 +666,10 @@ extern "C" void fn_80371284(char* self)
 
 extern "C" void fn_803717CC(char* self)
 {
-	fn_803721F4(self);
+    JGeometry::TBox2<f32> area;
+    JGeometry::TBox2<f32> rect;
+    fn_803721F4(self);
 	JGeometry::TBox2<f32> tmp(lbl_80542E1C, lbl_80542E28, lbl_80542E2C, lbl_80542E30);
-	JGeometry::TBox2<f32> area;
     *(u32*)&area.i.x = *(u32*)&tmp.i.x;
     *(u32*)&area.i.y = *(u32*)&tmp.i.y;
     *(u32*)&area.f.x = *(u32*)&tmp.f.x;
@@ -690,22 +691,34 @@ extern "C" void fn_803717CC(char* self)
 				fn_80230AD4(i);
 			}
 		}
-		*(f32*)(self + 0x324) = lbl_80542DF4;
-		*(f32*)(self + 0x328) = lbl_80542E00;
-		*(f32*)(self + 0x32c) = lbl_80542DC4;
-		*(u8*)(self + 0x399) = 1;
-		*(s32*)(self + 0x230) = 1;
-		*(f32*)(self + 0x244) = -*(f32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x10);
-		*(f32*)(self + 0x248) = -*(f32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x20);
-		*(f32*)(self + 0x24c) = lbl_80542DC4;
-		*(f32*)(self + 0x250) = (lbl_80542DF4 - *(f32*)(self + 0x244)) / lbl_80542E34;
-		*(f32*)(self + 0x254) = (lbl_80542DF8 - *(f32*)(self + 0x248)) / lbl_80542E34;
-		JGeometry::TBox2<f32> rect;
+        f32 target;
+        f32 half;
+        f32 y;
+        f32 duration;
+        f32 zero;
+        f32 x;
+        x = lbl_80542DF4;
+        *(f32*)(self + 0x324) = x;
+        *(f32*)(self + 0x328) = lbl_80542E00;
+        zero = lbl_80542DC4;
+        *(f32*)(self + 0x32c) = zero;
+        duration = lbl_80542E34;
+        *(u8*)(self + 0x399) = 1;
+        y = lbl_80542DF8;
+        *(s32*)(self + 0x230) = 1;
+        half = lbl_80542E04;
+        target = lbl_80542DFC;
+        char* view = *(char**)((char*)lbl_8053AB10 + 0x24);
+        *(f32*)(self + 0x244) = -*(f32*)(view + 0x10);
+        *(f32*)(self + 0x248) = -*(f32*)(view + 0x20);
+        *(f32*)(self + 0x24c) = zero;
+        *(f32*)(self + 0x250) = (x - *(f32*)(self + 0x244)) / duration;
+        *(f32*)(self + 0x254) = (y - *(f32*)(self + 0x248)) / duration;
         u32* src = (u32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x164);
         *(u32*)&rect.i.x = src[0]; *(u32*)&rect.i.y = src[1];
         *(u32*)&rect.f.x = src[2]; *(u32*)&rect.f.y = src[3];
-		*(f32*)(self + 0x25c) = (rect.f.y - rect.i.y) * lbl_80542E04;
-		*(f32*)(self + 0x260) = lbl_80542DFC - *(f32*)(self + 0x25c);
+		*(f32*)(self + 0x25c) = (rect.f.y - rect.i.y) * half;
+		*(f32*)(self + 0x260) = target - *(f32*)(self + 0x25c);
 		f32 f1 = *(f32*)(self + 0x248);
 		f32 f0 = *(f32*)(self + 0x25c);
 		f32 f4 = *(f32*)(self + 0x244);
@@ -852,7 +865,7 @@ extern "C" void fn_803721F4(char* self) {
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
 extern "C" const char lbl_80474ED0[];
-extern "C" f32 lbl_80542E38;
+extern "C" const f32 lbl_80542E38;
 extern "C" void* lbl_8053AAF8;
 extern "C" void fn_80372400(char* self) {
     Vec saved;
