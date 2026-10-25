@@ -3242,13 +3242,13 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
     return this_->b[idx];
 }
 
-#if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDD64(s32 offset, u8* p, u8 value) {
-    p[offset + 0x10a] = value;
+#if !defined(VERSION_G4SJ01)
+extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
+    ((u8*)param_1 + param_2)[0x10a] = param_3;
 }
 #else
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
-    ((u8*)param_1 + param_2)[0x10a] = param_3;
+    *(u8*)(param_1 + param_2 + 0x10a) = param_3;
 }
 #endif
 
