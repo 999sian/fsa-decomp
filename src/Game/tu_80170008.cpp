@@ -45,7 +45,7 @@ extern "C" void fn_80170008(char* self) {
         return;
     }
     if ((*(u32*)(self + 0x90) >> 27) != 0) {
-        if (!(*(u8 (**)(void*))(*(char**)self + 0x34))(self)) {
+        if (!((Slr3VT*)self)->check()) {
             return;
         }
     }
