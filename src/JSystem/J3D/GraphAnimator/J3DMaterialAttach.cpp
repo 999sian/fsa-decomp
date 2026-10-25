@@ -693,13 +693,12 @@ J3DErrType J3DMaterialTable::entryMatColorAnimator(J3DAnmColor* anm)
  */
 static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTextureSRTKey* anm)
 {
-    u16 i;
     u16 count = anm->getUpdateMaterialNum();
     J3DErrType allocationResult = JET_Success;
     if (table->isLocked()) {
 		allocationResult = JET_LockedModelData;
 	} else {
-		for (i = 0; i < count; i++) {
+		for (u16 i = 0; i < count; i++) {
 			u16 matID = anm->getUpdateMaterialID(i);
 			if (matID != 0xffff) {
 				J3DMaterial* mat       = table->mMaterials[matID];
@@ -725,8 +724,9 @@ static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTex
 
 J3DErrType J3DMaterialTable::entryTexMtxAnimator(J3DAnmTextureSRTKey* anm)
 {
+	J3DErrType result;
 	u16 count = anm->getUpdateMaterialNum();
-	J3DErrType result = ensureTexMtxAnimator(this, anm);
+	result = ensureTexMtxAnimator(this, anm);
 	if (result != JET_Success) {
 		return result;
 	}
