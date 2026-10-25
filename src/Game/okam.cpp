@@ -192,7 +192,7 @@ extern "C" void fn_801AF05C(char* this_) {
 }
 
 struct OkamBox {
-    f32 x0, y0, x1, y1;
+    u32 w[4];
 };
 
 extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
