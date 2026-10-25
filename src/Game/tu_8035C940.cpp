@@ -537,10 +537,15 @@ extern "C" void fn_8035DAD8(char* p) {
 
 
 
-extern Unk8035DA78Func lbl_804AD4E0[6];
+struct StateMethodData { s32 adjustment; s32 offset; void* function; };
+StateMethodData lbl_804AD4E0[6] = {
+    {0, -1, (void*)fn_8035D6C4}, {0, -1, (void*)fn_8035D4B8},
+    {0, -1, (void*)fn_8035D1CC}, {0, -1, (void*)fn_8035CF50},
+    {0, -1, (void*)fn_8035CAF8}, {0, -1, (void*)fn_8035C940}
+};
 Unk8035DA78Func lbl_804AD528[6] = {
-    lbl_804AD4E0[0], lbl_804AD4E0[1], lbl_804AD4E0[2],
-    lbl_804AD4E0[3], lbl_804AD4E0[4], lbl_804AD4E0[5]
+    *(Unk8035DA78Func*)&lbl_804AD4E0[0], *(Unk8035DA78Func*)&lbl_804AD4E0[1], *(Unk8035DA78Func*)&lbl_804AD4E0[2],
+    *(Unk8035DA78Func*)&lbl_804AD4E0[3], *(Unk8035DA78Func*)&lbl_804AD4E0[4], *(Unk8035DA78Func*)&lbl_804AD4E0[5]
 };
 extern Unk8035CD00Func lbl_804AD570[3];
 Unk8035CD00Func lbl_804AD594[3] = {
