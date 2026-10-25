@@ -209,7 +209,7 @@ extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_801EEC98(char* this_, s32 handle, s32 a, s32* out, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_801F305C(char* this_);
-extern "C" void fn_801F2618(char* this_, s32 a, s32 b);
+extern "C" u8 fn_801F2618(char* this_, s32 a, s32 b);
 extern "C" u8 fn_80237948(s32 idx, f32* pos);
 extern "C" void fn_8013CC50(s32 handle, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
@@ -230,15 +230,30 @@ extern "C" void fn_801AF1EC(char* this_) {
     case 0:
     case 4:
         if (state == 0) {
-            okamSetBox(this_, -16.0f, -7.0f, 16.0f, 7.0f);
+            f32 b = *(f32*)(this_ + 0x270);
+            f32 a = *(f32*)(this_ + 0x26c);
+            *(f32*)(this_ + 0x60) = -16.0f + a;
+            *(f32*)(this_ + 0x64) = -7.0f + b;
+            *(f32*)(this_ + 0x68) = 16.0f + a;
+            *(f32*)(this_ + 0x6c) = 7.0f + b;
         } else {
-            okamSetBox(this_, -7.0f, -18.0f, 7.0f, 18.0f);
+            f32 b = *(f32*)(this_ + 0x270);
+            f32 a = *(f32*)(this_ + 0x26c);
+            *(f32*)(this_ + 0x60) = -7.0f + a;
+            *(f32*)(this_ + 0x64) = -18.0f + b;
+            *(f32*)(this_ + 0x68) = 7.0f + a;
+            *(f32*)(this_ + 0x6c) = 18.0f + b;
         }
         *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
-    case 2:
-        okamSetBox(this_, -6.0f, -6.0f, 6.0f, 6.0f);
+    case 2: {
+        f32 b = *(f32*)(this_ + 0x270);
+        f32 a = *(f32*)(this_ + 0x26c);
+        *(f32*)(this_ + 0x60) = -6.0f + a;
+        *(f32*)(this_ + 0x64) = -6.0f + b;
+        *(f32*)(this_ + 0x68) = 6.0f + a;
+        *(f32*)(this_ + 0x6c) = 6.0f + b;
         if (res >= 0) {
             fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, &flag, 0, 0, res, 2);
             if (flag >= 0) {
@@ -250,13 +265,25 @@ extern "C" void fn_801AF1EC(char* this_) {
             }
         }
         break;
-    case 1:
-        okamSetBox(this_, -28.0f, -7.0f, 28.0f, 7.0f);
+    }
+    case 1: {
+        f32 b = *(f32*)(this_ + 0x270);
+        f32 a = *(f32*)(this_ + 0x26c);
+        *(f32*)(this_ + 0x60) = -28.0f + a;
+        *(f32*)(this_ + 0x64) = -7.0f + b;
+        *(f32*)(this_ + 0x68) = 28.0f + a;
+        *(f32*)(this_ + 0x6c) = 7.0f + b;
         *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
-    case 6:
-        okamSetBox(this_, -6.0f, -6.0f, 6.0f, 6.0f);
+    }
+    case 6: {
+        f32 b = *(f32*)(this_ + 0x270);
+        f32 a = *(f32*)(this_ + 0x26c);
+        *(f32*)(this_ + 0x60) = -6.0f + a;
+        *(f32*)(this_ + 0x64) = -6.0f + b;
+        *(f32*)(this_ + 0x68) = 6.0f + a;
+        *(f32*)(this_ + 0x6c) = 6.0f + b;
         if (res >= 0) {
             fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, &flag, 0, 0, res, 2);
             if (flag >= 0) {
@@ -268,11 +295,18 @@ extern "C" void fn_801AF1EC(char* this_) {
             }
         }
         break;
-    case 5:
-        okamSetBox(this_, -7.0f, -28.0f, 7.0f, 28.0f);
+    }
+    case 5: {
+        f32 b = *(f32*)(this_ + 0x270);
+        f32 a = *(f32*)(this_ + 0x26c);
+        *(f32*)(this_ + 0x60) = -7.0f + a;
+        *(f32*)(this_ + 0x64) = -28.0f + b;
+        *(f32*)(this_ + 0x68) = 7.0f + a;
+        *(f32*)(this_ + 0x6c) = 28.0f + b;
         *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
+    }
     }
 
     f32 x0 = *(f32*)(this_ + 0x60);
