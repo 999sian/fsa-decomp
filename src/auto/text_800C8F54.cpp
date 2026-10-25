@@ -83,7 +83,9 @@ struct J3DMaterialInitData {
     u8 _00[0x08];
     u16 mMatColorIndex[2];         // _08
     u16 mColorChanControlIndex[4]; // _0C
-    u8 _14[0xE4 - 0x14];
+    u8 _14[0xBC - 0x14];
+    u16 mTevOrderInfoIndex[16]; // _BC
+    u8 _DC[8];
     u16 mTevStageInfoIndex[16]; // _E4
     u8 _104[0x14C - 0x104];
 };
@@ -1226,10 +1228,11 @@ extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags) {
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
     struct Col { s32 v; };
+    const J3DMaterialFactory* self = (const J3DMaterialFactory*)param_2;
     Col def = *(Col*)&lbl_8053BC70;
-    J3DMaterialInitData* initData = &((J3DMaterialInitData*)((const J3DMaterialFactory*)param_2)->mInitData)[((const J3DMaterialFactory*)param_2)->mMatRemapTable[param_3]];
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[param_3]];
     if (initData->mMatColorIndex[param_4] != 0xffff) {
-        *(Col*)param_1 = (*(Col**)(param_2 + 0x10))[initData->mMatColorIndex[param_4]];
+        *param_1 = (*(s32**)((u8*)self + 0x10))[initData->mMatColorIndex[param_4]];
     } else {
         *(Col*)param_1 = def;
     }
@@ -1292,14 +1295,15 @@ extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
 extern "C" void* __nw__FUl(u32);
 extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
-    u8* base = *(u8**)(p + 4);
     u16* ids = *(u16**)(p + 8);
+    u8* base = *(u8**)(p + 4);
+    void* ret;
     u32 off = ids[idx] * 0x14c + 0x48;
     off += b * 2;
     if (*(u16*)(base + off) == 0xffff) {
         return NULL;
     }
-    void* ret = __nw__FUl(0x94);
+    ret = __nw__FUl(0x94);
     if (ret != NULL) {
         __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + off) * 0x64);
     }
@@ -1323,15 +1327,14 @@ extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
 
 extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
-    u16* ids = *(u16**)(p + 8);
-    idx = idx * 2;
-    u32 o = b * 2;
-    u8* base = *(u8**)(p + 4);
-    u32 i = *(u16*)((u8*)ids + idx) * 0x14c + 0xbc;
-    i = i + o;
-    u16 v = *(u16*)(base + i);
+    const u16* ids = *(const u16**)(p + 8);
+    unsigned int off = ids[idx] * 0x14c;
+    unsigned int i = off + 0xbc;
+    const u8* base = *(const u8**)(p + 4);
+    i += b * 2;
+    u16 v = *(const u16*)(base + i);
     if (v != 0xffff) {
-        *out = (*(u32**)(p + 0x40))[v];
+        *out = (*(const u32**)(p + 0x40))[v];
         return;
     }
     *out = j3dDefaultTevOrderInfoNull;
@@ -1415,7 +1418,8 @@ extern "C" void* fn_800CB4C0(void* out, u8* e) {
 
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16* ids = *(u16**)(p + 8);
-    u16 v = *(u16*)(*(u8**)(p + 4) + ids[idx] * 0x14c + 0x124 + stage * 2);
+    u8* base = *(u8**)(p + 4);
+    u16 v = *(u16*)(base + ids[idx] * 0x14c + 0x124 + stage * 2);
     if (v != 0xffff) {
         u8* e = *(u8**)(p + 0x58) + v * 4;
         *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
@@ -1563,8 +1567,8 @@ extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
 
 extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) {
     J3DNBTScale local;
-    u16 uVar4;
     u8* puVar5;
+    u16 uVar4;
 
     uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
     if (uVar4 != 0xffff) {
@@ -1574,7 +1578,12 @@ extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) 
         param_1->mScale[1] = *(f32*)(puVar5 + 8);
         param_1->mScale[2] = *(f32*)(puVar5 + 0xc);
     } else {
-        *param_1 = local;
+        volatile u32* src = (volatile u32*)&local;
+        u32* dst = (u32*)param_1;
+        dst[0] = src[0];
+        dst[1] = src[1];
+        dst[2] = src[2];
+        dst[3] = src[3];
     }
 }
 
