@@ -172,9 +172,9 @@ inline BOOL inRect(const JGeometry::TVec2<f32>& pt, f32 x0, f32 y0, f32 x1, f32 
     return in;
 }
 
-inline BOOL inRectXY(f32 x, const f32* y, f32 x0, f32 y0, f32 x1, f32 y1) {
+inline BOOL inRectV(JGeometry::TVec2<f32> pt, f32 x0, f32 y0, f32 x1, f32 y1) {
     BOOL in = 0;
-    if (x >= x0 && *y >= y0 && x < x1 && *y < y1) {
+    if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
         in = 1;
     }
     return in;
@@ -887,7 +887,6 @@ BOOL fn_80272C20(char* p, const f32* box, s32 a, s32 b) {
     if (U8(p, 0xcee) == 1) {
         return 0;
     }
-    JGeometry::TVec2<f32> pt;
     f32 x0 = box[0];
     f32 y0 = box[1];
     f32 x1 = box[2];
@@ -897,8 +896,16 @@ BOOL fn_80272C20(char* p, const f32* box, s32 a, s32 b) {
     x1 += 2.5f;
     y1 += 2.5f;
     for (s32 i = 0; i < 8; i++) {
+        JGeometry::TVec2<f32> pt;
+        f32 y;
+        f32 x;
         fn_8024B298(p, i, &pt.x);
-        if (!(u8)inRect(pt, x0, y0, x1, y1)) {
+        u8 in = 0;
+        x = pt.x;
+        if (x >= x0 && (y = pt.y) >= y0 && x < x1 && y < y1) {
+            in = 1;
+        }
+        if (!in) {
             goto add;
         }
     }
