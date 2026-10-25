@@ -70,7 +70,11 @@ static inline bool tuCheckHit(u8* self, s32 idx) {
 
 static inline bool tuInBox2(const JGeometry::TVec3f& v, const f32* box) {
     bool ret = false;
-    if (v.x >= box[0] && v.y >= box[1] && v.x < box[2] && v.y < box[3]) {
+    f32 x0 = box[0];
+    f32 y0 = box[1];
+    f32 x1 = box[2];
+    f32 y1 = box[3];
+    if (v.x >= x0 && v.y >= y0 && v.x < x1 && v.y < y1) {
         ret = true;
     }
     return ret;
