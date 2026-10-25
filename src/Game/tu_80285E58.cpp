@@ -97,24 +97,16 @@ extern "C" void fn_80285F44(char* p) {
 extern "C" void fn_80286688(u8* p) {
     void* pad;
     s32 ok = *(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xb;
-    if (ok != 0) {
-        return;
-    }
-    if (*((u8*)lbl_8053AAF8 + 0x7e) != 0) {
-        return;
-    }
-    if ((*((u8*)lbl_8053AAF8 + 0x82) & ((1 << *(u32*)(p + 4)) & 0xff)) != 0) {
-        fn_8024064C(p);
-        if (fn_8023DE58(p) < 8) {
+    if (ok != 0) return;
+    if (!(*((u8*)lbl_8053AAF8 + 0x7e) == 0 && (*((u8*)lbl_8053AAF8 + 0x82) & ((1 << *(u32*)(p + 4)) & 0xff)) != 0)) return;
+    {
+        if (fn_8023DE58((void*)fn_8024064C(p)) < 8) {
             p[0x13b8] = 0;
         } else {
             pad = fn_8008E328(fn_8030AAF4(*(s32*)(p + 0x11ec)));
             if (fn_80247534(p) == 0 && pad != 0 && (*(u32*)((u8*)pad + 0x1c) & 0x10) != 0) {
-                if (p[0x13b8] == 1) {
-                    p[0x13b8] = 0;
-                } else {
-                    p[0x13b8] = 1;
-                }
+                if (p[0x13b8] == 1) p[0x13b8] = 0;
+                else p[0x13b8] = 1;
             }
         }
     }
