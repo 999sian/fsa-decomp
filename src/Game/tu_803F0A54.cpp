@@ -1,7 +1,22 @@
 #include "types.h"
 #include "Game/FsaMenuAction.h"
+#include "Game/ItemBase.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DPicture.h"
+
+struct Tu803FResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* vf18(u32 type, const void* name);
+};
+
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
+extern const f32 lbl_80543718;
+extern const f32 lbl_8054371C;
+extern const f32 lbl_80543724;
+extern const f32 lbl_80543734;
 
 
 extern "C" void* lbl_8053AD30;
@@ -582,6 +597,19 @@ extern "C" void fn_803F38A4(u8* p) {
     }
 }
 
+extern "C" void fn_803F4120(u8* p) {
+    s32 i;
+    u8* base = lbl_80478A60;
+    s32 bit;
+    for (i = 0; i < 4; i++) {
+        bit = 1 << (i + 4);
+        if (*(s32*)(p + 0x210) == 0) {
+            *(u8*)(p + 0x25b) &= ~bit;
+        }
+    }
+    (void)base;
+}
+
 extern "C" void fn_803F5410(u8* p) {
     s32 state = *(s32*)(p + 0x1c4);
     u8* base = lbl_80478A60;
@@ -691,6 +719,24 @@ extern "C" void fn_803F715C(u8* p) {
     if (a != 0 && b != 0 && c != 0) {
         *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
         *(s32*)(p + 0x1c4) = 0xb;
+    }
+}
+
+extern "C" void fn_803F726C(u8* p) {
+    s32 t = *(s32*)(p + 0x210);
+    if (*(s32*)(p + 0x1ac) == 2) {
+        return;
+    }
+    if (t >= 100) {
+        if (t < 112) {
+            *(s32*)(p + 0x210) = t + 1;
+        } else if (t < 212) {
+            *(s32*)(p + 0x210) = 112;
+        } else {
+            *(s32*)(p + 0x210) = t + 1;
+        }
+    } else {
+        *(s32*)(p + 0x210) = 0;
     }
 }
 
@@ -1208,6 +1254,36 @@ extern "C" void fn_803F943C(u8* p) {
     (*(J2DPane**)(p+8))->search(0x50706c6c626b3232ULL)->move(*(f32*)(p+0xc4),*(f32*)(p+0xd4)+*(f32*)(p+0xe4));
     (*(J2DPane**)(p+8))->search(0x50706c6c626b3332ULL)->move(*(f32*)(p+0xc8),*(f32*)(p+0xd8)+*(f32*)(p+0xe8));
 }
+
+extern "C" void fn_803F9EA8(u8* p) {
+    s32 i;
+    s32 j;
+    u8* base = lbl_80478A60;
+    *(s16*)(p + 0x240) += 1;
+    if (*(s16*)(p + 0x240) > 0) {
+        if (*(s16*)(p + 0x240) < 0x19) {
+            *(f32*)(p + 0x9c) = lbl_80543730 * ((f32)((0x19 - *(s16*)(p + 0x240)) * (0x19 - *(s16*)(p + 0x240))) / lbl_805437C0);
+        }
+    }
+}
+
+extern "C" void fn_803FAA88(u8* p) {
+    s32 buf[3];
+    s32 n = *(s32*)(p + 0x1ac);
+    s32 t;
+    s32 i;
+    s32 j;
+    if (n != 0) buf[0] = 0;
+    if (n != 1) buf[1] = 1;
+    if (n != 2) buf[2] = 2;
+    t = *(s16*)(p + 0x240) + 1;
+    *(s16*)(p + 0x240) = t;
+    t = *(s16*)(p + 0x240);
+    if (t > 0x14 && t < 0x1c) {
+        *(f32*)(p + 0x110) = (f32)((t - 0x14) * (t - 0x14)) * lbl_80543730;
+    }
+}
+
 #pragma opt_common_subs reset
 extern "C" void fn_803FB6F4(u8* p) {
     s32 j;
