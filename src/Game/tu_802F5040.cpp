@@ -110,6 +110,11 @@ static inline void ScreenMaskQuad802F(const s32* r) {
     GXWGFifo.f32=-1.0f;GXWGFifo.f32=1.0f;
 }
 
+extern void* lbl_8053AAF8;
+static inline u8 RendererStage11_802F() {
+    return *(s32*)((u8*)lbl_8053AAF8+0x4c)==11;
+}
+
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
 #include "sdk/stl/math.h"
 static inline void DrawTileQuad(u16 t, s32 px, s32 py, f32 ox, f32 oy, f32 oz) {
@@ -2019,7 +2024,7 @@ extern "C" void fn_802FAC10(u8*, s32, s32, s32, s32, u8, u8, s32*);
 extern "C" const f32 lbl_80541588,lbl_8054158C,lbl_80541590,lbl_80541594;
 extern "C" void fn_8030DFE8(void*,s32);
 #pragma opt_loop_invariants on
-extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, u8 effect, u8 opacity) {
+extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, s32 effect, u8 opacity) {
     u8* regs=(u8*)registerPtr;
     s32* rect=(s32*)rectData;
     s32* viewport=(s32*)viewportData;
@@ -2118,7 +2123,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
         GXSetZCompLoc(GX_FALSE);
         GXSetAlphaCompare(GX_ALWAYS,0,GX_AOP_AND,GX_ALWAYS,0);
         GXSetColorUpdate(GX_TRUE);GXSetAlphaUpdate(GX_FALSE);GXSetCullMode(GX_CULL_NONE);
-        GXSetPointSize((s32)((f32)(viewport[2]*step*6)/lbl_80541584),(GXTexOffset)0);
+        ((void(*)(s32,s32))GXSetPointSize)((s32)((f32)(viewport[2]*step*6)/lbl_80541584),(GXTexOffset)0);
         GXDrawDone();
         GXBegin((GXPrimitive)0xb8,GX_VTXFMT0,
             (s32)(lbl_80541588+lbl_8054158C/(f32)step)*(s32)(lbl_80541588+lbl_80541584/(f32)step));
@@ -2129,10 +2134,10 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
             for (s32 x=half;x<half+240;x+=step) {
                 u8 color[4];
                 s32 sampleX=(s32)(lbl_80541594*(f32)(width*x)+(f32)left);
-                GXPeekARGB(sampleX,sampleY,(u32*)color);
+                ((void(*)(s32,s32,u32*))GXPeekARGB)(sampleX,sampleY,(u32*)color);
                 GXWGFifo.f32=(f32)x;
                 GXWGFifo.f32=(f32)y;
-                GXWGFifo.f32=lbl_805414F8;
+                GXWGFifo.f32=0.0f;
                 GXWGFifo.u8=color[1];GXWGFifo.u8=color[2];GXWGFifo.u8=color[3];GXWGFifo.u8=color[0];
             }
         }
