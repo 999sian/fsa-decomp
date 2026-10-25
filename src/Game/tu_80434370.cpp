@@ -18,7 +18,7 @@ class VtSlots {
 public:
     virtual void s0();
     virtual void s1();
-    virtual void s2();
+    virtual void s2(f32 x, f32 y);
     virtual void s3();
     virtual void s4();
     virtual void s5();
@@ -229,6 +229,29 @@ extern "C" int fn_804366B8(Unk80434370* param_1)
     return param_1->m_state == 2;
 }
 
+extern "C" float lbl_80543BDC;
+extern "C" float lbl_80543BE0;
+extern "C" float lbl_80543BF8;
+extern "C" void fn_8043670C(char* this_, s32 flag) {
+    f32 f31 = *(f32*)((char*)((VtSlots*)*(void**)(this_ + 0x4))->s13(0x54713031ULL) + 0x11c);
+    *(s16*)(this_ + 0x58) = 0;
+    *(s16*)(this_ + 0x5a) = 0;
+    union { f32 f; u32 s; } u;
+    u32 seed;
+    seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
+    u.s = (seed >> 9) | 0x3f800000;
+    *(s16*)(this_ + 0x5c) = (s16)((s32)((u.f - lbl_80543BE0) * lbl_80543BDC) + 10);
+    seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
+    u.s = (seed >> 9) | 0x3f800000;
+    *(s16*)(this_ + 0x5e) = (s16)((s32)((u.f - lbl_80543BE0) * lbl_80543BDC) + 10);
+    *(s16*)(this_ + 0x60) = 0;
+    *(s16*)(this_ + 0x66) = -6;
+    *(u8*)(this_ + 0x6b) = 0;
+    *(u8*)(this_ + 0x6c) = (u8)flag;
+}
+
 extern "C" void* fn_8043711C(char* this_, s16 how) {
 	if (this_ != 0) {
 		*(void**)this_ = lbl_804B16A8;
@@ -248,6 +271,160 @@ extern "C" void* fn_8043711C(char* this_, s16 how) {
 		}
 	}
 	return this_;
+}
+
+extern "C" char lbl_804AF86C[];
+extern "C" char lbl_8048F598[];
+extern "C" char lbl_80529DEC[];
+extern "C" void* __nw__FUl(u32 size);
+extern "C" void __ct__9J2DScreenFv(void* self);
+extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* self, const char* name, u32 a, void* archive);
+extern "C" void fn_80402F04(void* obj, void* pane);
+extern "C" void* fn_804030C4(u32 tag, const char* name);
+extern "C" void fn_80440D78(void* p, void* r);
+extern "C" void fn_80440CE4(void* p, void* r);
+extern "C" f32 getRotate__7J2DPaneCFv(void* pane);
+extern "C" void* fn_804372C4(void* this_) {
+    char* names = lbl_8048F598;
+    *(char**)this_ = lbl_804B16A8;
+    void* screen = __nw__FUl(0x118);
+    if (screen != 0) {
+        __ct__9J2DScreenFv(screen);
+    }
+    *(void**)((char*)this_ + 0x4) = screen;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) == 1) {
+        setPriority__9J2DScreenFPCcUlP10JKRArchive(screen, names, 0x1100000, *(void**)(lbl_80529DEC + 0x28));
+    } else {
+        setPriority__9J2DScreenFPCcUlP10JKRArchive(screen, names + 0xc, 0x1100000, *(void**)(lbl_80529DEC + 0x28));
+    }
+    void* o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x8) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x8), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x506f7062626b3033ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0xc) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0xc), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x5061723031ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x10) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x10), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x5061723032ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x14) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x14), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x004e646174613033ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x18) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x18), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x004e646174613032ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x1c) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x1c), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x0000507262613031ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x20) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x20), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x0000507262613032ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x24) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x24), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x0000507262613033ULL));
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x28) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x28), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x0000507262613034ULL));
+    }
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) == 1) {
+        *(void**)((char*)this_ + 0x30) = 0;
+        *(void**)((char*)this_ + 0x2c) = 0;
+    } else {
+        o = __nw__FUl(0x2c);
+        if (o != 0) {
+            *(char**)o = lbl_804AF86C;
+            *(void**)((char*)this_ + 0x2c) = o;
+            fn_80402F04(*(void**)((char*)this_ + 0x2c), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x0000507262613035ULL));
+        }
+        o = __nw__FUl(0x2c);
+        if (o != 0) {
+            *(char**)o = lbl_804AF86C;
+            *(void**)((char*)this_ + 0x30) = o;
+            fn_80402F04(*(void**)((char*)this_ + 0x30), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x0000507262613036ULL));
+        }
+    }
+    o = __nw__FUl(0x2c);
+    if (o != 0) {
+        *(char**)o = lbl_804AF86C;
+        *(void**)((char*)this_ + 0x34) = o;
+        fn_80402F04(*(void**)((char*)this_ + 0x34), ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x50746f7062623037ULL));
+    }
+    *(void**)((char*)this_ + 0x38) = *(void**)((char*)lbl_8053AED8 + 0x8);
+    fn_80440D78(lbl_8053AED8, fn_804030C4(0x54494d47, names + 0x1c));
+    fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, names + 0x30));
+    {
+        void* p = ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x54613032ULL);
+        (*(void (**)(void*, void*))(*(char**)p + 0x9c))(p, *(void**)((char*)lbl_8053AD78 + 0x154));
+    }
+    {
+        void* p = ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x54713032ULL);
+        (*(void (**)(void*, void*))(*(char**)p + 0x9c))(p, *(void**)((char*)lbl_8053AD78 + 0x154));
+    }
+    {
+        void* p = ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x54613031ULL);
+        (*(void (**)(void*, void*))(*(char**)p + 0x9c))(p, *(void**)((char*)lbl_8053AD78 + 0x154));
+    }
+    {
+        void* p = ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x54713031ULL);
+        (*(void (**)(void*, void*))(*(char**)p + 0x9c))(p, *(void**)((char*)lbl_8053AD78 + 0x154));
+    }
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) == 0) {
+        {
+            void* p = ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x54613033ULL);
+            (*(void (**)(void*, void*))(*(char**)p + 0x9c))(p, *(void**)((char*)lbl_8053AD78 + 0x154));
+        }
+        {
+            void* p = ((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x54713033ULL);
+            (*(void (**)(void*, void*))(*(char**)p + 0x9c))(p, *(void**)((char*)lbl_8053AD78 + 0x154));
+        }
+    }
+    *(s16*)((char*)this_ + 0x62) = (s16)(int)getRotate__7J2DPaneCFv(((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x5061723031ULL));
+    *(s16*)((char*)this_ + 0x64) = (s16)(int)getRotate__7J2DPaneCFv(((VtSlots*)*(void**)((char*)this_ + 0x4))->s13(0x5061723032ULL));
+    f32 zero = lbl_80543BD8;
+    *(f32*)((char*)this_ + 0x3c) = zero;
+    *(f32*)((char*)this_ + 0x40) = zero;
+    *(f32*)((char*)this_ + 0x44) = zero;
+    *(s16*)((char*)this_ + 0x58) = 0;
+    *(s16*)((char*)this_ + 0x5a) = 0;
+    *(s16*)((char*)this_ + 0x5c) = 0;
+    *(s16*)((char*)this_ + 0x5e) = 0;
+    *(s16*)((char*)this_ + 0x60) = 0;
+    *(s16*)((char*)this_ + 0x66) = 0;
+    *(u32*)((char*)this_ + 0x54) = 0;
+    *(f32*)((char*)this_ + 0x48) = zero;
+    *(u8*)((char*)this_ + 0x68) = 0;
+    *(f32*)((char*)this_ + 0x4c) = zero;
+    *(u8*)((char*)this_ + 0x69) = 0;
+    *(f32*)((char*)this_ + 0x50) = zero;
+    *(u8*)((char*)this_ + 0x6a) = 0;
+    *(u8*)((char*)this_ + 0x6b) = 0;
+    *(u8*)((char*)this_ + 0x6c) = 0;
+    return this_;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
