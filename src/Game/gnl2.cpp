@@ -130,6 +130,7 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* mgr, s32 id);
 extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, s32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 
+#pragma opt_propagation off
 static inline void gnl2BuildParts(u8* self, const f32* xs, const f32* ys) {
         u8* positions = self;
         u8* state = self;
@@ -146,6 +147,7 @@ static inline void gnl2BuildParts(u8* self, const f32* xs, const f32* ys) {
         }
 }
 
+#pragma opt_propagation reset
 extern "C" void fn_802E3B2C(u8* this_) {
     const Gnl2Layout* t = &lbl_8046EA10;
     s32 off2;
