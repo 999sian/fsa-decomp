@@ -106,6 +106,13 @@ struct Rect_802233A4 {
     f32 x0, y0, x1, y1;
 };
 
+static inline void AddRect_802233A4(f32& x0, f32& y0, f32& x1, f32& y1, f32 dx, f32 dy) {
+    x0 += dx;
+    y0 += dy;
+    x1 += dx;
+    y1 += dy;
+}
+
 static inline void CalcRect_802233A4(char* p, Rect_802233A4& r) {
     r.set(1.0f, 1.0f, -1.0f, -1.0f);
     if (*(s32*)(p + 0x248) == 5) {
