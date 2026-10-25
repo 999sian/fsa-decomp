@@ -202,40 +202,72 @@ static inline void SetTime(u8* self, void** tbl, int idx, int a, int b) {
 extern "C" f32 fn_8043D514(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern void* lbl_8053AED0;
+#pragma opt_propagation off
 extern "C" void fn_8044998C(void* self_) {
+    u8 b;
+    void* handle;
+    int i;
+    int a;
+    void* obj;
+    void** p;
+    int tens;
+    int rem;
     u8* self = (u8*)self_;
-    for (int i = 0; i < 2; i++) {
-        fn_80402E08(((void**)self)[2 + i], lbl_80543DB0, fn_8043D514(lbl_8053AED0));
-    }
+    p = (void**)self;
 
+    for (i = 0; i < 2; i++) {
+        fn_80402E08(p[2], lbl_80543DB0, fn_8043D514(lbl_8053AED0));
+        p++;
+    }
     if (self[0x13] & 1) {
-        if (Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] == 0) {
-            Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] = 1;
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[12]);
+        if (((u8*)obj)[0xb0] == 0) {
+            obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[12]);
+            ((u8*)obj)[0xb0] = 1;
         }
     } else {
-        if (Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] != 0) {
-            Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] = 0;
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[12]);
+        if (((u8*)obj)[0xb0] != 0) {
+            obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[12]);
+            ((u8*)obj)[0xb0] = 0;
         }
     }
 
-    if (Search(*(void**)(self + 4), lbl_80490C40, 12)[0xb0] != 0) {
+    obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[12]);
+    if (((u8*)obj)[0xb0] != 0) {
         if (self[0x10] >= 100) {
             self[0x10] = 99;
         }
-        SetDigits(self, lbl_80490C40, 4, self[0x10] / 10, self[0x10] % 10);
+        b = self[0x10];
+        tens = b % 10;
+        handle = fn_804030C4(0x54494D47, lbl_804B1CA0[b / 10]);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[4]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[6]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CA0[tens]);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[8]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C40[10]);
+        ((TblVObj*)obj)->s68(handle, 0);
     }
 
     if (self[0x13] & 2) {
-        if (Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] == 0) {
-            Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] = 1;
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[24]);
+        if (((u8*)obj)[0xb0] == 0) {
+            obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[24]);
+            ((u8*)obj)[0xb0] = 1;
         }
     } else {
-        if (Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] != 0) {
-            Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] = 0;
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[24]);
+        if (((u8*)obj)[0xb0] != 0) {
+            obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[24]);
+            ((u8*)obj)[0xb0] = 0;
         }
     }
 
-    if (Search(*(void**)(self + 4), lbl_80490C78, 24)[0xb0] != 0) {
+    obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[24]);
+    if (((u8*)obj)[0xb0] != 0) {
         if (self[0x11] >= 100) {
             self[0x11] = 99;
             self[0x12] = 99;
@@ -243,11 +275,34 @@ extern "C" void fn_8044998C(void* self_) {
         if (self[0x12] >= 100) {
             self[0x12] = 99;
         }
-        SetDigits4(self, lbl_80490C78, 8, self[0x11] / 10, self[0x11] % 10, self[0x12] % 10, self[0x12] / 10);
+        a = self[0x11];
+        b = self[0x12];
+        rem = a % 10;
+        tens = b / 10;
+        handle = fn_804030C4(0x54494D47, lbl_804B1CA0[a / 10]);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[8]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[10]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CA0[rem]);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[12]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[14]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CA0[tens]);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[16]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[18]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CA0[b % 10]);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[20]);
+        ((TblVObj*)obj)->s68(handle, 0);
+        obj = ((J2DScreenSearch*)*(void**)(self + 4))->search(*(u64*)&lbl_80490C78[22]);
+        ((TblVObj*)obj)->s68(handle, 0);
     }
     self[0x13] = 0;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8044A024(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
