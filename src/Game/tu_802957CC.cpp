@@ -1075,7 +1075,6 @@ extern "C" void fn_80299AD0(void* p) {
     u8 ok;
     s32 i;
     char* self = (char*)p;
-    s32 d;
     s32 j;
     s32 room;
     char* m;
@@ -1088,7 +1087,6 @@ extern "C" void fn_80299AD0(void* p) {
     f32 y1;
     JGeometry::TVec3f gridBase;
     JGeometry::TVec3f grid;
-    JGeometry::TBox2f box;
     Probe pt;
 
     if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= 32.0f * FLT_EPSILON)) {
@@ -1103,40 +1101,9 @@ extern "C" void fn_80299AD0(void* p) {
     }
     dir = -1;
     if (*(u8*)(self + 0x2b9) == 0) {
-        if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
-            room = *(s32*)(self + 4);
-            if (fn_8023DE58(0) == room && (d = fn_80238BC4(*(void**)(self + 0x198))) >= 0 && d < 4) {
-                *(s32*)(self + 0x2cc) = 1;
-            } else {
-                d = -1;
-            }
-        } else {
-            d = -1;
-        }
-        dir = d;
+        dir = PushDirFromPlayer(self);
         if (dir == -1) {
-            box.i.x = *(f32*)(self + 0x80);
-            box.i.y = *(f32*)(self + 0x84);
-            box.f.x = *(f32*)(self + 0x88);
-            box.f.y = *(f32*)(self + 0x8c);
-            box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
-            if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0 &&
-                fn_80238A68(*(void**)(self + 0x198)) >= 4 &&
-                (d = fn_8023885C(*(void**)(self + 0x198))) >= 0 && d < 4) {
-                if (d == 0) {
-                    d = 1;
-                } else if (d == 1) {
-                    d = 0;
-                } else if (d == 2) {
-                    d = 3;
-                } else if (d == 3) {
-                    d = 2;
-                }
-                *(s32*)(self + 0x2cc) = -1;
-            } else {
-                d = -1;
-            }
-            dir = d;
+            dir = PushDirFromPull(self);
         }
     }
     if (dir != 0) {
@@ -1299,7 +1266,6 @@ extern "C" void fn_80299FB0(void* p) {
     char* col;
     JGeometry::TBox2f area;
     JGeometry::TVec3f v;
-    JGeometry::TVec3f gridBase;
 
     if (!((JGeometry::TVec3f*)(self + 0x250))->isZero()) {
         return;
@@ -1361,17 +1327,19 @@ extern "C" void fn_80299FB0(void* p) {
         fn_801F0E34(self, 0x30004, 0);
     }
     *(f32*)(self + 0x250) = -16.0f;
-    *(s32*)(self + 0x248) = 0;
+    *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
+        JGeometry::TVec3f grid;
+        JGeometry::TVec3f gridBase;
         gridBase = *(JGeometry::TVec3f*)(self + 0xc);
         gridBase.x += *(f32*)(self + 0x60);
         gridBase.y += *(f32*)(self + 0x64);
         gridBase.x += 8.0f;
         gridBase.y += 8.0f;
         gridBase.z = 0.0f;
-        JGeometry::TVec3f grid(gridBase);
-        for (i = 0, row = self; i < 6; i++, row += 0xc) {
+        grid = gridBase;
+        for (row = self; i < 6; i++, row += 0xc) {
             grid.y = gridBase.y;
             for (j = 0, col = row; j < 6; j++, col += 2) {
                 fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
@@ -1507,7 +1475,7 @@ extern "C" void fn_8029A494(void* p) {
 static inline s32 HouseFallMode(char* self) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
         s32 room = *(s32*)(self + 4);
-        if (fn_8023DE58(0) == room) {
+        if (room == fn_8023DE58(0)) {
             s32 r = fn_80238BC4(*(void**)(self + 0x198));
             if (r >= 0 && r < 4) {
                 *(s32*)(self + 0x2cc) = 1;
