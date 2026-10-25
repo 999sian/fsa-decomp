@@ -823,5 +823,4 @@ extern "C" void fn_8018E5E4(char* this_) {
 
 static u8 lbl_804C18B8[0xC];
 
-#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
