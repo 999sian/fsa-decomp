@@ -58,7 +58,7 @@ extern "C" void* fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 
 extern "C" u8 fn_8022F478(s32 i);
 extern "C" u8 fn_8022C8EC(s32 i);
 extern "C" s32 fn_8023DE58(s32 i);
-extern "C" u8 fn_8023B0F4(s32 i, f32* p, f32 r, s32 room, s32 flag);
+extern "C" u8 fn_8023B0F4(s32 i, f32* p, u32 room, s32 flag, f32 r);
 extern "C" u8 fn_802317F0(s32 i, s32 a, void* p, void* q, s32 b);
 extern "C" void* fn_801F26CC(u8* this_, const void* p);
 extern "C" void* fn_801F856C(void);
@@ -69,7 +69,9 @@ extern "C" f64 lbl_805404E0;
 extern void* lbl_8053AED0;
 extern "C" const u8 lbl_8046C100[12];
 extern "C" const f32 lbl_805404D4;
+#pragma opt_propagation off
 extern "C" void fn_8028AE2C(u8* this_) {
+    u8* tgt;
     s32 idx;
     u8 prev;
     u8 cur;
@@ -77,9 +79,9 @@ extern "C" void fn_8028AE2C(u8* this_) {
     s32 n;
     s32 cnt;
     s32 t;
+    s32 room;
     u8* obj;
     JGeometry::TBox2<f32> box;
-    u8* tgt;
     f32 pv[3];
 
     prev = this_[0x234];
@@ -103,11 +105,8 @@ extern "C" void fn_8028AE2C(u8* this_) {
                 fn_801F0D20(this_, 0x2e);
                 this_[0x263] = 0;
             }
-            f32 value = *(f32*)(this_+0x240);
-            f32 step = lbl_805404D0;
             f32 max=1.0f;
-            value += step;
-            *(f32*)(this_+0x240) = value;
+            *(f32*)(this_+0x240) += lbl_805404D0;
             if (*(f32*)(this_ + 0x240) >= max) {
                 *(f32*)(this_ + 0x240) = max;
                 *(s32*)(this_ + 0x248) = 10;
@@ -303,7 +302,8 @@ extern "C" void fn_8028AE2C(u8* this_) {
                 }
                 n = *(s32*)(this_ + 0x25c);
                 if (n < 1 || n > 4 || n == i + 1) {
-                    if (fn_8023B0F4(i, (f32*)&box,0.0f,*(s32*)(this_+4),0)!=0 && this_[0x251]==0) {
+                    room=*(s32*)(this_+4);
+                    if (fn_8023B0F4(i, (f32*)&box,0.0f,room,0)!=0 && this_[0x251]==0) {
                     if (this_[i + 0x252] != 1) {
                         s32 r6 = 6;
                         this_[i + 0x252] = 1;
@@ -356,15 +356,15 @@ extern "C" void fn_8028AE2C(u8* this_) {
             u32 az;
             u8* tbl;
             n = (*(u32*)(this_ + 0x90) >> 24) & 7;
-            cnt = n + 7;
+            idx = n + 7;
             if (n == 0) {
-                cnt = n;
+                idx = n;
             }
-            if (cnt == 0) {
-                cnt = n+7;
-                if (n==0) cnt=n;
+            if (idx == 0) {
+                idx = n+7;
+                if (n==0) idx=n;
                 tbl = fn_802D6A9C();
-                if (cnt < 8) {
+                if (idx < 8) {
                     tbl = tbl + 0xcc;
                 } else {
                     tbl = tbl + 0xdc;
@@ -380,13 +380,13 @@ extern "C" void fn_8028AE2C(u8* this_) {
                 pv[2] = 0.0f;
                 pv[1] = lbl_805404D8 + ((f32)ax + f3);
                 pv[0] = lbl_805404D8 + ((f32)az + f2);
-                fn_801F349C(tgt, ((sp>>24)&7) ? ((sp>>24)&7)+7 : ((sp>>24)&7), pv);
+                fn_801F349C(tgt, platformRoom(sp), pv);
             }
         }
     }
 
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8028BA5C(u8* this_) {
     s32 i;
     this_[0x250] = 1;
