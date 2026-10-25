@@ -59,7 +59,7 @@ extern "C" StaticVec lbl_804BC540;
 extern "C" char lbl_804BC534[];
 extern "C" s8 lbl_8053AA92;
 extern "C" u8 lbl_8053AA90;
-extern "C" void fn_801192AC(void* p);
+extern "C" void fn_801192AC(u8* self, s16 param_2);
 extern "C" void __register_global_object(void* obj, void (*dtor)(void*), void* handle);
 
 extern "C" void fn_80118384(u8* self)
