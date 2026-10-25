@@ -1,5 +1,8 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
+#include "JSystem/JUtility/TColor.h"
 #include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049F330[];
@@ -40,10 +43,13 @@ extern const f32 lbl_8053CFA4;
 
 struct PoohRandom {
     u32 seed;
+    u32 get() {
+        seed = (seed * 0x19660d) + 0x3c6ef35f;
+        return seed;
+    }
     f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
+        out.s = (this->get() >> 9) | 0x3f800000;
         return out.f - lbl_8053CF30;
     }
 };
@@ -150,6 +156,7 @@ extern "C" void fn_80142684(Actor* this_) {
 
 extern "C" void fn_80143330(Actor* this_) {
     u8* p = (u8*)this_;
+    s32 zero = 0;
 
     *(f32*)(p + 0x60) = lbl_8053CF38;
     *(f32*)(p + 0x64) = lbl_8053CF38;
@@ -157,19 +164,19 @@ extern "C" void fn_80143330(Actor* this_) {
     *(f32*)(p + 0x6c) = lbl_8053CF94;
     *(u16*)(p + 0x94) = (u8)*(u32*)(p + 0x90);
     *(s16*)(p + 0x26c) = (s16)((*(u32*)(p + 0x90) >> 8) & 0xffff);
-    *(s32*)(p + 0x238) = 0;
-    *(s32*)(p + 0x23c) = 0;
-    *(s32*)(p + 0x240) = 0;
-    *(s32*)(p + 0x244) = 0;
-    *(s32*)(p + 0x248) = 0;
-    *(s32*)(p + 0x24c) = 0;
-    *(s32*)(p + 0x250) = 0;
-    *(s32*)(p + 0x254) = 0;
-    *(s32*)(p + 0x258) = 0;
+    *(s32*)(p + 0x238) = zero;
+    *(s32*)(p + 0x23c) = zero;
+    *(s32*)(p + 0x240) = zero;
+    *(s32*)(p + 0x244) = zero;
+    *(s32*)(p + 0x248) = zero;
+    *(s32*)(p + 0x24c) = zero;
+    *(s32*)(p + 0x250) = zero;
+    *(s32*)(p + 0x254) = zero;
+    *(s32*)(p + 0x258) = zero;
     *(f32*)(p + 0x270) = lbl_8053CF40;
     *(s32*)(p + 0x23c) = (s32)(lbl_8053CF60 * poohRand01()) + 60;
-    *(s32*)(p + 0x234) = 0;
-    *(s32*)(p + 0xb0) = 0;
+    *(s32*)(p + 0x234) = zero;
+    *(s32*)(p + 0xb0) = zero;
     *(f32*)(p + 0x260) = *(f32*)(p + 0xc);
     *(f32*)(p + 0x264) = *(f32*)(p + 0x10);
     *(f32*)(p + 0x268) = *(f32*)(p + 0x14);
