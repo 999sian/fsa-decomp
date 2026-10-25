@@ -271,10 +271,10 @@ inline bool padCheck(char* p) {
             return false;
         }
     }
-    if (U8(p, 0x11ea) == 0) {
-        ok = false;
-    } else {
+    if (U8(p, 0x11ea) != 0) {
         ok = true;
+    } else {
+        ok = false;
     }
     return ok;
 }
