@@ -9,7 +9,7 @@ extern float lbl_80543DA8;
 struct J2DGrafContext;
 struct J2DScreen;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, float, float, const J2DGrafContext*);
-extern "C" const u64 lbl_80490940[];
+extern "C" const u64 lbl_80490940;
 extern "C" const u8 lbl_80490B00[];
 extern "C" u8 lbl_804B1C68[];
 extern "C" void* fn_804030C4(u32, u32);
@@ -24,19 +24,16 @@ extern "C" void fn_80402E08(void*, f32, f32);
 #pragma peephole on
 static inline s32 getTens_80448940(s32 value) { return value / 10; }
 
-extern "C" void fn_80448940(u8* self_) {
+#pragma opt_propagation off
+extern "C" void fn_80448940(u8* self) {
     u8* ptr;
     const u64* entry;
     int i;
-    u8* self = self_;
     J2DPane* pane;
     void* handle;
     int ones;
-    int first;
-    int second;
-    int tens;
     fn_80402E08(*(void**)(self + 8), lbl_80543DA8, fn_8043D514(lbl_8053AED0));
-    entry = lbl_80490940;
+    entry = (&lbl_80490940);
     ptr = self;
     for (i = 0; i < 4; ++i, ptr += 4, entry += 14) {
         if (i < 2) {
@@ -83,16 +80,17 @@ extern "C" void fn_80448940(u8* self_) {
     if (((u8*)(*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x60)))[0xb0] != 0) {
         if (self[0x30] >= 100) { self[0x30] = 99; self[0x31] = 99; }
         if (self[0x31] >= 100) self[0x31] = 99;
-        first = self[0x30];
-        second = self[0x31];
-        ones = first - (first / 10L) * 10L;
-        tens = second / 10L;
+        int first = self[0x30];
+        int tens;
+        int second = self[0x31];
+        s32 remainder = first - (first / 10L) * 10L;
+        tens = second / 10;
         handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[first / 10]);
         pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x20));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
         pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x28));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
-        handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[ones]);
+        handle = fn_804030C4(0x54494d47, ((u32*)lbl_804B1C68)[remainder]);
         pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x30));
             ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
         pane = (*(J2DScreen**)(self + 4))->search(*(const u64*)(lbl_80490B00 + 0x38));
@@ -110,7 +108,7 @@ extern "C" void fn_80448940(u8* self_) {
     }
     self[0x32] = 0;
 }
-#pragma peephole reset
+#pragma opt_propagation reset
 extern "C" void fn_80449070(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
@@ -119,7 +117,7 @@ extern "C" void fn_80449070(void* self_) {
 }
 
 extern "C" void fn_804490B8(void* self_) {
-    u8* base = (u8*)lbl_80490940;
+    u8* base = (u8*)(&lbl_80490940);
     u8* self = (u8*)self_;
     u8* entry = base;
     void* handle;
@@ -220,7 +218,7 @@ extern "C" void fn_80402F04(void* obj, J2DPane* pane);
 extern "C" u8 lbl_804AF86C[];
 extern "C" const char lbl_80490C30[];
 extern "C" u8 lbl_80529DEC[];
-extern "C" const u64 lbl_80490940[];
+extern "C" const u64 lbl_80490940;
 extern "C" void* fn_804495B8(void* param_1) {
     void** result = (void**)param_1;
 
@@ -241,7 +239,7 @@ extern "C" void* fn_804495B8(void* param_1) {
     void** ptr = result;
     int i = 0;
     do {
-        u8* entry = (u8*)lbl_80490940 + i * 0x70;
+        u8* entry = (u8*)(&lbl_80490940) + i * 0x70;
         void* p3 = __nw__FUl(0x2c);
         if (p3 != 0) {
             *(void**)p3 = lbl_804AF86C;
