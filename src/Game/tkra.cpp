@@ -67,6 +67,28 @@ extern const f32 lbl_805413D0;
 extern const f32 lbl_805413D4;
 extern const f32 lbl_805413E8;
 
+#include "JSystem/JGeometry/Box.h"
+extern "C" s32 fn_8023AF14(void*, s32, s32, f32);
+extern "C" u16 fn_802F9908(void*, s32, u32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
+extern "C" bool fn_8022F514(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern "C" bool fn_8023EFEC(s32);
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" s32 fn_8030AAF4(s32);
+extern "C" u32 fn_80309D6C(void*, s32, u32);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" s32 Actor_CreateByID(void*, u32, s32, JGeometry::TVec3f*, u32, s32, s32);
+extern char* lbl_8053AB10;
+extern void* lbl_8053AD30;
+
+inline u8 tkraRoomMode(char* p) {
+    s32 room = *(s32*)(p + 4);
+    return fn_802D6A9C()->arr[room];
+}
+
 struct TkraV2 { f32 x, y; };
 extern "C" void fn_802EBDCC(char* this_) {
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xff;
