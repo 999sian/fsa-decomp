@@ -4,6 +4,8 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 extern "C" void v03__5ActorFv(void*);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_801053E8(char*,s32);
 extern "C" void fn_80239914(f32*,s32,s32);
 extern "C" u8 fn_802D800C(void*,s32);
 extern "C" void fn_800FE3EC(void*,s32,JGeometry::TVec3f*,s32);
