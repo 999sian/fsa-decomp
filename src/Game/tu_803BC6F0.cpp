@@ -1,6 +1,12 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
 
+struct Tu803CE9ECObj {
+    virtual void v0();
+};
+typedef void (Tu803CE9ECObj::*Tu803CE9ECFn)();
+extern Tu803CE9ECFn lbl_804AFD70[];
+
 struct VtSlot9 {
     void* v0;
     void* v1;
@@ -632,7 +638,7 @@ extern "C" void fn_803C02CC(u8* p) {
 
 extern "C" void fn_803C05D8(u8* p) {
     s32 i;
-    u8* q;
+    u32* q;
 
     for (i = 0; i < 8; i++) {
         if (fn_803B90E4(*(u32*)(p + 0xa0), i)) {
@@ -643,10 +649,10 @@ extern "C" void fn_803C05D8(u8* p) {
     }
 
     *(u32*)(p + 0xa8) = *(u32*)(p + 0xa0);
-    q = p;
+    q = (u32*)p;
     for (i = 0; i < 8; i++) {
-        *(u32*)(q + 0xb8) = fn_803B8CAC(*(u32*)(p + 0xa0), i);
-        q += 4;
+        q[0x2e] = fn_803B8CAC(*(u32*)(p + 0xa0), i);
+        q++;
     }
 
     ((J2DPane*)*(void**)(*(u8**)(p + 0x50) + 4))->setAlpha(0);
@@ -680,10 +686,10 @@ extern "C" void fn_803C05D8(u8* p) {
         fn_80402E08(*(void**)(p + 0x20), 600.0f, 0.0f);
         *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
         ((J2DPane*)*(void**)(*(u8**)(p + 0x20) + 4))->setAlpha(0);
-        u64* pair = (u64*)lbl_80476938;
-        for (s32 j = 0; j < 9; j++) {
-            fn_804023D0(*(void**)(p + 0x20), ((J2DPane*)*(void**)(p + 4))->search(*pair), p[0x196 + j]);
-            pair++;
+        q = lbl_80476938;
+        for (i = 0; i < 9; i++) {
+            fn_804023D0(*(void**)(p + 0x20), ((J2DPane*)*(void**)(p + 4))->search(*(u64*)q), p[0x196 + i]);
+            q += 2;
         }
         *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
     } else {
@@ -1756,17 +1762,18 @@ extern "C" void fn_803CD2DC(u8* p) {
         *(s16*)(*(u8**)(p + 0x50) + 0x26) = 0x1e;
     }
     if (p[0x110] == 5) {
-        f32 f30 = 0.0f;
+        f32 f30;
+        f30 = 0.0f;
         f32 f31;
         u8* q;
         s32 i;
         s16 t = *(s16*)(p + 0xda);
         if (t != 0) {
             if (t < 5) {
-                f30 = (5.0f * (f32)(t * t)) / 25.0f;
+                f30 = (5.0f * static_cast<f32>(t * t)) / 25.0f;
                 *(s16*)(p + 0xda) = t + 1;
             } else if (t < 10) {
-                f30 = (5.0f * (f32)((10 - t) * (10 - t))) / 25.0f;
+                f30 = (5.0f * static_cast<f32>((10 - t) * (10 - t))) / 25.0f;
                 *(s16*)(p + 0xda) = t + 1;
             } else {
                 *(s16*)(p + 0xda) = 0;
@@ -1982,6 +1989,67 @@ extern "C" s32 fn_803CE4B0(void) {
         return *(s32*)(lbl_8053ADB0 + 0x1a8);
     }
     return 3;
+}
+
+extern "C" void* lbl_8053ACA8;
+extern "C" void* lbl_8053AED8;
+extern "C" void fn_80431174(void* a, u8 b);
+extern "C" u8 fn_802B1DCC(void* a);
+extern "C" void fn_80440BF4(void* a, s32 b);
+extern "C" void fn_803CE9EC(u8* p) {
+    u8* base;
+    s32 st;
+
+    *(s32*)(p + 0x1a8) = 3;
+    if (p[0x116] == 1) {
+        fn_80431174(lbl_8053AEC0, p[0x114]);
+        base = (u8*)lbl_8051C1A0;
+        if (base[0x1ff5] == 0 || (base[0x1ff5] == 1 && fn_802B1DCC(lbl_8053ACA8) == 0)) {
+            if (p[0x113] == 0 && p[0x117] == 0) {
+                p[0x112] = p[0x110];
+                p[0x110] = 1;
+            }
+        }
+    }
+    if (p[0x116] < 2) {
+        if (p[0x110] != p[0x111]) {
+            p[0x111] = p[0x110];
+            switch (p[0x110]) {
+            case 0:
+            case 2:
+            case 5:
+            case 10:
+            case 14:
+            case 19:
+                p[0x1a5] = 0;
+                break;
+            default:
+                p[0x1a5] = 1;
+                break;
+            }
+        }
+        if (p[0x1a5] != p[0x1a6]) {
+            p[0x1a4] = 2;
+        } else if (p[0x1a4] == 2) {
+            p[0x1a4] = 1;
+        }
+        st = p[0x1a4];
+        if (st == 2) {
+            fn_80402E08(*(void**)(p + 0x58), 0.0f, 0.0f);
+        } else if (st >= 1) {
+            *(s16*)(p + 0xde) += 1;
+        } else {
+            *(s16*)(p + 0xde) -= 1;
+        }
+    }
+    if (p[0x116] == 1 && p[0x110] == 0) {
+        fn_80440BF4(lbl_8053AED8, 1);
+    }
+    if (*(u32*)(p + 0x7c) != *(u32*)(p + 0x80)) {
+        if (p[0x116] == 0) {
+            *(s32*)(p + 0x7c) = *(s32*)(p + 0x80);
+        }
+    }
 }
 
 extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
