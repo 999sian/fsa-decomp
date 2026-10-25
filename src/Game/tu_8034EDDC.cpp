@@ -1005,5 +1005,22 @@ extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
 extern "C" const f32 lbl_8054261C;
 extern "C" const f32 lbl_805425D8;
-
-
+JGeometry::TBox2f lbl_8050ADF8[4] = {
+    JGeometry::TBox2f(-31.0f, -31.0f, 31.0f, -17.0f),
+    JGeometry::TBox2f(-31.0f, 17.0f, 31.0f, 31.0f),
+    JGeometry::TBox2f(-31.0f, -31.0f, -17.0f, 31.0f),
+    JGeometry::TBox2f(17.0f, -31.0f, 31.0f, 17.0f),
+};
+JGeometry::TBox2f lbl_8050AE38[10] = {
+    JGeometry::TBox2f(-14.0f, -6.0f, 0.0f, 22.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 6.0f),
+    JGeometry::TBox2f(-14.0f, -22.0f, 0.0f, -8.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 22.0f),
+    JGeometry::TBox2f(-22.0f, -14.0f, 6.0f, 0.0f),
+    JGeometry::TBox2f(-6.0f, 0.0f, 22.0f, 14.0f),
+    JGeometry::TBox2f(-14.0f, 8.0f, 0.0f, 22.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 22.0f),
+    JGeometry::TBox2f(-14.0f, -22.0f, 0.0f, 22.0f),
+    JGeometry::TBox2f(0.0f, -22.0f, 14.0f, -8.0f),
+};
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
