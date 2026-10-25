@@ -97,7 +97,9 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
         fn_8022E088(player, j, &pos);
         pos -= *(JGeometry::TVec3f*)&actor->field_0C;
         pos.z = 0.0f;
-        s32 angle = JMath::atanTable_.atan2_(pos.y, pos.x) * lbl_8053CB3C;
+        f32 radians = JMath::atanTable_.atan2_(pos.y, pos.x);
+        radians *= lbl_8053CB3C;
+        s32 angle = radians;
         f32 radius = JGeometry::TUtilf::sqrt(pos.x * pos.x + pos.y * pos.y);
         pos.z = 0.0f;
         pos.x = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
