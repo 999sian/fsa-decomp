@@ -186,18 +186,6 @@ static inline u8* FindHudPane(u8* self, const u64* __restrict tag) {
     HeartPane* pane = *(HeartPane**)(self + 4);
     return pane->search(*tag);
 }
-static inline void SetHudPane(u8* self, const u64* tag, u8 visible) {
-    HeartPane* pane = *(HeartPane**)(self + 4);
-    pane->search(*tag)[0xb0] = visible;
-}
-static inline void AddHudFlag(u8* self, u32 bit) {
-    u8 mask = bit;
-    self[0x259] |= mask;
-}
-static inline void RemoveHudFlag(u8* self, u32 bit) {
-    u8 mask = bit;
-    self[0x259] &= ~mask;
-}
 static inline bool HudHasFlag(u8* self, u32 mask) {
     return (self[0x259] & (u8)mask) != 0;
 }
@@ -746,13 +734,13 @@ extern "C" void fn_80423DF0(u8* self, s32 player) {
     s32 idx;
     s32 i;
     const u8* __restrict tbl;
-    u32 mask;
+    u8 mask;
     i = player;
     idx = -1;
-    bit = 1 << i;
+    bit = 1U << i;
     mask = (u8)bit;
     tbl = lbl_8048E1B8;
-    bool set = HudHasFlag(this_, bit);
+    u8 set = HudHasFlag(this_, bit);
     if (!set && !fn_80230188(i)) {
         fn_8022EA0C(i);
         if (fn_8023BE0C() && !(lbl_8053AED0[0x255] & mask)) {
@@ -811,7 +799,7 @@ extern "C" void fn_80423DF0(u8* self, s32 player) {
         state[0x148/4] = idx;
         const u64* pair = (const u64*)(tbl + 0x6e8) + i * 12;
         pair2 = (const u64*)(tbl + 0x868) + i * 12;
-        for (j = 0; j < 0xc; j++) {
+        for (j = 0; j < 0xc; ) {
             if (j == idx) {
                 FindHudPane(this_, pair)[0xb0] = 1;
                 FindHudPane(this_, pair2)[0xb0] = 1;
@@ -819,6 +807,7 @@ extern "C" void fn_80423DF0(u8* self, s32 player) {
                 FindHudPane(this_, pair)[0xb0] = 0;
                 FindHudPane(this_, pair2)[0xb0] = 0;
             }
+            j++;
             pair2++;
             pair++;
         }
