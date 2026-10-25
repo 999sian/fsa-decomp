@@ -1598,7 +1598,7 @@ extern "C" s32 fn_803075AC(s32 caller, s32 room, const void* __restrict pos, s32
 #pragma opt_propagation reset
 // fn_80307AC8 - effect spawn dispatcher: ids below 0x45 go to the small
 // effect table (fn_80307830), others to the generic effect spawner.
-extern "C" s32 fn_80307830(u32 caller, s32 room, void* pos, s32 id, bool on, s32 a, bool b, s32 kind);
+extern "C" s32 fn_80307830(s32 caller, s32 room, const void* pos, s32 id, u8 on, u8 a, u8 b, u8 kind);
 
 
 extern "C" s32 fn_80307AC8(u32 caller, s32 room, void* pos, s32 id, s32 on, s32 b, s32 target) {
