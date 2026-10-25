@@ -44,7 +44,7 @@ extern "C" s32 fn_801F3D94(void* p, s32 n);
 extern "C" u32 fn_801F2618(void* p, s32 a, s32 b);
 extern "C" u8 fn_801F2DB4(void* p, u32 a, u32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
-extern "C" void fn_801F2B7C(void* p, ...);
+extern "C" void fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
@@ -97,7 +97,7 @@ extern "C" void fn_801AAF44(char* p) {
         fn_801F71A4(p + 0x40, *(f32*)(p + 0x268), lbl_8053E750, lbl_8053E754);
     }
     *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
-    fn_801F2B7C(p);
+    fn_801F2B7C(p, -100, -1, 1);
     u32 r31 = fn_801F2618(p, 0, 0);
     *(f32*)(p + 0x270) = lbl_8053E758;
     *(f32*)(p + 0x274) = lbl_8053E75C;
