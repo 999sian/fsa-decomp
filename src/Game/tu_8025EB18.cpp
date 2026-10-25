@@ -1902,11 +1902,12 @@ extern "C" void fn_80264410(char* p) {
 }
 
 extern JGeometry::TVec3<f32> lbl_8046B250[];
+#pragma opt_propagation off
 extern "C" void fn_8026441C(char* p) {
     s32 iVar6 = 0;
     U8(p, 0x3fc)++;
     char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
-    bool held = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+    u8 held = isCarriedByPlayer(p);
     if (held) {
         if (U8(p, 0x3fc) < 8) {
             iVar6 = 0;
@@ -1923,6 +1924,7 @@ extern "C" void fn_8026441C(char* p) {
             fn_80251AEC(p, 0x12);
         }
     } else if (S32(p, 0xd68) < 0) {
+        iVar6=0;
         if (U8(p, 0x3fc) >= 0x16) {
             U8(p, 0x3fd) = 1;
             fn_80251AEC(p, 0);
@@ -1986,13 +1988,19 @@ extern "C" void fn_8026441C(char* p) {
         }
     }
     if (iVar6 >= 0) {
-        VEC(p, 0x2f4) = lbl_8046B250[iVar6 + S32(p, 0x3dc) * 4];
+        JGeometry::TVec3<f32>* v = &lbl_8046B250[iVar6 + S32(p, 0x3dc) * 4];
+        f32 x=v->x;
+        f32 y=v->y;
+        F32(p,0x2f4)=x;
+        f32 z=v->z;
+        F32(p,0x2f8)=y;
+        F32(p,0x2fc)=z;
         VEC(p, 0x2f4) += VEC(p, 0x8);
     }
     fn_8025EB18(p);
     fn_80268B3C(p);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80264768(char* p) {
     p[0x458] = 0;
 }
