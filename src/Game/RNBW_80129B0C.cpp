@@ -8,7 +8,7 @@
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* manager, s32 kind);
-extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void* fn_8013CC50(u32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
 extern u16 lbl_80465098[];
 extern u16 lbl_804650A4[];
@@ -115,7 +115,7 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
 static inline void rnbwSpawn(Actor* actor, u16* ids) {
     for (s32 i = 0; i < 5; i++) {
         if (((void**)actor)[0x8f + i] == 0) {
-            ((void**)actor)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, ids[i], 0, -1, 0, 0, 1);
+            ((void**)actor)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, ids[i], 0, -1, 0, 0, 1, lbl_8053CB48);
         }
     }
 }
@@ -133,25 +133,15 @@ extern "C" void fn_80129B0C(void* this_) {
             switch (*(s32*)((char*)this_ + 0x238)) {
             case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39f, 0, -1, 0, 0, 1);
-                for (s32 i = 0; i < 5; i++) {
-                    if (((void**)this_)[0x8f + i] == 0) {
-                        u16 id = lbl_80465098[i];
-                        ((void**)this_)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, id, 0, -1, 0, 0, 1);
-                    }
-                }
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x3a0, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39b, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39c, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39d, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39e, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
+                rnbwSpawn(actor, lbl_80465098);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
-                for (s32 i = 0; i < 5; i++) {
-                    if (((void**)this_)[0x8f + i] == 0) {
-                        u16 id = lbl_804650A4[i];
-                        ((void**)this_)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, id, 0, -1, 0, 0, 1);
-                    }
-                }
+                rnbwSpawn(actor, lbl_804650A4);
             }
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_801F0E34(this_, 0x5004d, 0);
@@ -181,7 +171,7 @@ extern "C" void fn_80129B0C(void* this_) {
             }
         }
         {
-            s32 id = *(s32*)((char*)this_ + 0x230);
+            int id = *(s32*)((char*)this_ + 0x230);
             if (id >= 0) fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
         }
         break;
@@ -197,30 +187,30 @@ extern "C" void fn_8012A008(void* this_) {
         switch (*(s32*)((char*)this_ + 0x238)) {
         case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39f, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
                 s32 i = 0;
                 void** hp = (void**)this_;
                 u16* idp = lbl_80465098;
                 do {
                     if (hp[0x8f] == 0) {
-                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, *idp, 0, -1, 0, 0, 1, lbl_8053CB48);
                     }
                     i++;
                     idp++;
                     hp++;
                 } while (i < 5);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x3a0, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39b, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39c, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39d, 0, -1, 0, 0, 1);
-                fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, 0x39e, 0, -1, 0, 0, 1);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
+                fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
                 u16* idp = lbl_804650A4;
                 void** hp = (void**)this_;
                 s32 i = 0;
                 do {
                     if (hp[0x8f] == 0) {
-                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, lbl_8053CB48, *idp, 0, -1, 0, 0, 1);
+                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, *idp, 0, -1, 0, 0, 1, lbl_8053CB48);
                     }
                     i++;
                     idp++;
