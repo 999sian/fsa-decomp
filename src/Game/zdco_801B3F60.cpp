@@ -15,7 +15,8 @@ extern const f64 lbl_8053E9E0;
 static inline f32 zdcoSqrt(const f32 mag)
 {
     if (mag > lbl_8053E9C0) {
-        f64 tmpd = __frsqrte(mag);
+        f64 xd = mag;
+        f64 tmpd = __frsqrte(xd);
         tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
         tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
         tmpd = lbl_8053E9D0 * tmpd * (lbl_8053E9D8 - (mag * (tmpd * tmpd)));
