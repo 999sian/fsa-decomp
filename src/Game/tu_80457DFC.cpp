@@ -1049,6 +1049,26 @@ static inline void constructAudience(u8* p) {
     *(void**)p = lbl_804954D8;
     *(void**)p = lbl_804B2074;
 }
+struct FsaAudienceBase {
+    FsaAudienceBase() {
+        fn_8003C984(this);
+        *(void**)this = lbl_80495480;
+    }
+    u8 pad[0x84];
+};
+struct FsaAudienceMtx : FsaAudienceBase {
+    FsaAudienceMtx() {
+        *(void**)this = lbl_804954F8;
+        *(u32*)(pad + 0x50) = 1;
+        PSMTXIdentity((MtxPtr)(pad + 0x54));
+    }
+};
+struct FsaAudience : FsaAudienceMtx {
+    FsaAudience() {
+        *(void**)this = lbl_804954D8;
+        *(void**)this = lbl_804B2074;
+    }
+};
 class WaveController {
 public:
     WaveController(s32 a, s32 b, s32 c);
@@ -1078,7 +1098,6 @@ extern "C" void fn_8045A0E4(int count);
 extern "C" void __ct__12JAISoundInfoFb(void*, bool);
 extern "C" void __ct__14WaveControllerFlll(void*, s32, void*, s32);
 extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchive* arc) {
-    u8 i;
     JAU_JASInitializer jas;
     jas.mChannelPoolCount = lbl_8053A228;
     jas.mAudioMemSize = size;
@@ -1094,14 +1113,7 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     *(u8**)(this_ + 0x38) = *(u8**)(this_ + 0x30) + 0x728;
     u8* au = (u8*)operator new(0x84, (JKRHeap*)heap, 0);
     if (au) {
-        JAIAudience* base = (JAIAudience*)au;
-        fn_8003C984(au);
-        *(void**)au = lbl_80495480;
-        *(void**)base = lbl_804954F8;
-        *(u32*)((u8*)base + 0x50) = 1;
-        PSMTXIdentity((MtxPtr)((u8*)base + 0x54));
-        *(void**)au = lbl_804954D8;
-        *(void**)au = lbl_804B2074;
+        constructAudience(au);
     }
     *(u8**)(this_ + 0x3c) = au;
     *(f32*)(*(u8**)(this_ + 0x3c) + 0x4) = lbl_8053A22C;
@@ -1138,7 +1150,7 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x2a4))->moveVolume(lbl_80543EB4, 0);
     struct FxSet { JASDsp::FxlineConfig_ c[4]; };
     FxSet fx = *(FxSet*)lbl_80491600;
-    for (i = 0; i < 4; i++) {
+    for (u8 i = 0; i < 4; i++) {
         JASDsp::FxlineConfig_* cfg = &fx.c[i];
         s16* buf = new ((JKRHeap*)heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)];
         JASDsp::setFXLine(i, buf, cfg);
