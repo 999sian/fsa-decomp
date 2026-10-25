@@ -1,6 +1,6 @@
 #include "types.h"
 #include <math.h>
-static inline f32 maxMenuExtent(f64 y, f64 x) { f32 b = y; f32 a = x; return a >= b ? a : b; }
+static inline f32 maxMenuExtent(f64 x, f64 y) { f32 a = x; f32 b = y; return a >= b ? a : b; }
 extern const f32 lbl_80543D00;
 extern const f32 lbl_80543D04;
 extern const f32 lbl_80543D08;
