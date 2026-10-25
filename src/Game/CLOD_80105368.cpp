@@ -3,6 +3,20 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+extern "C" void v03__5ActorFv(void*);
+extern "C" void fn_80239914(f32*,s32,s32);
+extern "C" u8 fn_802D800C(void*,s32);
+extern "C" void fn_800FE3EC(void*,s32,JGeometry::TVec3f*,s32);
+extern "C" u8 fn_800FD894(void*,s32,s32,s32);
+extern "C" s32 fn_800FDEA0(void*,JGeometry::TVec3f*,JGeometry::TVec3f*,s32*,s32*,s32,f32);
+extern "C" u32 fn_800FE21C(void*,u8);
+extern "C" u8 fn_8022D75C(s32);
+extern "C" u8 fn_80230188(s32);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" void fn_8023DF68(s32,JGeometry::TVec3f*);
+extern "C" void fn_801D1C18(void*);
+extern const f32 lbl_8053C240;
+extern const f32 lbl_8053C234;
 
 extern "C" void v06__5ActorFv(void* this_);
 extern "C" void fn_802F745C(void* mgr, JGeometry::TVec3f* pos, s32 id, void* out);
@@ -60,7 +74,8 @@ extern "C" void fn_80105A34(char* p) {
     *(u32*)(p + 0x35c) = (u32)*(s32*)(p + 0x90) >> 27;
     s32 off = 0;
     char* q = p;
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         *(void**)(q + 0x2f8) = (*(CLOD_ResMgr**)(lbl_8053AAF8 + 0xa4))->vf18(0x3f3f3f3f, *(const char**)((char*)lbl_8049CBB0 + *(s32*)(p + 0x36c) * 16 + off));
         off += 4;
         q += 4;
@@ -78,6 +93,7 @@ extern "C" void fn_80105A34(char* p) {
         *(f32*)(p + 0x68) = lbl_8053C260;
         *(f32*)(p + 0x6c) = lbl_8053C264;
         break;
+    case 0:
     default:
         *(f32*)(p + 0x60) = lbl_8053C268;
         *(f32*)(p + 0x64) = lbl_8053C268;
@@ -201,13 +217,14 @@ extern "C" s32 fn_801053E8(char* p, s32 arg) {
     box[1] = *(f32*)(p + 0x64);
     box[2] = *(f32*)(p + 0x68);
     box[3] = *(f32*)(p + 0x6c);
-    if (*(u8*)(fn_802D6A9C() + id + 0x131df) != 0) {
+    u8* flags = (u8*)fn_802D6A9C() + 0x10000;
+    if (flags[id + 0x31df] != 0) {
         box[0] += *(f32*)(p + 0xc);
         box[2] += *(f32*)(p + 0xc);
         box[1] += *(f32*)(p + 0x10);
         box[3] += *(f32*)(p + 0x10);
         box[1] -= lbl_8053C22C;
-        if (fn_8023B0F4(arg, box, lbl_8053C228, id, 0)) {
+        if (fn_8023B0F4(arg, box, lbl_8053C228, *(s32*)(p + 4), 0)) {
             fn_8022DF48(arg);
             return 1;
         }
@@ -217,12 +234,24 @@ extern "C" s32 fn_801053E8(char* p, s32 arg) {
         JGeometry::TVec3f tmp;
         fn_8022E088(arg, i, &tmp);
         tmp -= *(JGeometry::TVec3f*)(p + 0xc);
-        tmp.z = lbl_8053C228;
+        tmp.z = 0.0f;
         s32 ang = lbl_8053C230 * JMath::atanTable_.atan2_(tmp.y, tmp.x);
         f32 r = JGeometry::TUtilf::sqrt(tmp.x * tmp.x + tmp.y * tmp.y);
-        f32 x = r * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
-        f32 y = r * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-        if (x < box[0] && y < box[1] && x < box[2] && y < box[3]) {
+        tmp.x = r * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+        tmp.y = r * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        bool hit = false;
+        if (tmp.x >= box[0]) {
+            continue;
+        }
+        if (tmp.y >= box[1]) {
+            continue;
+        }
+        if (tmp.x < box[2]) {
+            if (tmp.y < box[3]) {
+                hit = true;
+            }
+        }
+        if (hit) {
             fn_8022DF48(arg);
             return 1;
         }
