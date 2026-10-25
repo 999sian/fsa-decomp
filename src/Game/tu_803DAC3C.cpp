@@ -974,17 +974,15 @@ extern "C" void fn_803DF2B4(u8* self) {
     u8 b;
     u8 c;
     s32 i;
-    u64* kp;
-    s32 j;
     s32 n;
     f32 f30;
 
+    q = self;
     *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
     a = 0;
     b = 0;
     c = 0;
-    q = self;
-    for (i = 0, k = 0; i < 2; i++, q += 4, k += 3) {
+    for (i = 0, k = 0; i < 2; i++, k += 3, q += 4) {
         if (*(s16*)(self + 0x9c) > k) {
             a = fn_80402B10(*(void**)(q + 0x34), 0x14, lbl_80543614, 0, lbl_80543604);
             fn_80402B10(*(void**)(q + 0x44), 0x14, lbl_80543614, 0, lbl_80543604);
@@ -994,34 +992,40 @@ extern "C" void fn_803DF2B4(u8* self) {
             }
             f30 = (f32)(n * n) / lbl_80543618;
             switch (i) {
-            case 0:
-                kp = tbl + 56;
-                for (j = 0; j < 17; j++, kp++) {
-                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp);
-                    pane->setAlpha((u8)(f30 * (f32)self[0xdb + j]));
+            case 0: {
+                s32 j0;
+                u64* kp0 = tbl + 56;
+                for (j0 = 0; j0 < 17; j0++, kp0++) {
+                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp0);
+                    pane->setAlpha((u8)(f30 * (f32)self[0xdb + j0]));
                 }
                 break;
-            case 1:
-                kp = tbl + 73;
-                for (j = 0; j < 20; j++, kp++) {
-                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp);
-                    pane->setAlpha((u8)(f30 * (f32)self[0xec + j]));
+            }
+            case 1: {
+                u64* kp1 = tbl + 73;
+                s32 j1;
+                for (j1 = 0; j1 < 20; j1++, kp1++) {
+                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp1);
+                    pane->setAlpha((u8)(f30 * (f32)self[0xec + j1]));
                 }
                 break;
+            }
             }
         }
     }
     if (*(s16*)(self + 0x9c) > 15) {
+        u64* kp2;
+        s32 j2;
         b = fn_80402940(*(void**)(self + 0x30), 0xf, lbl_8054361C, 0, lbl_80543604);
         n = *(s16*)(self + 0x9c) - 15;
         if (n > 15) {
             n = 15;
         }
         f30 = (f32)(n * n) / lbl_80543624;
-        kp = tbl + 50;
-        for (j = 0; j < 6; j++, kp++) {
-            J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp);
-            pane->setAlpha((u8)(f30 * (f32)self[0xd5 + j]));
+        kp2 = tbl + 50;
+        for (j2 = 0; j2 < 6; j2++, kp2++) {
+            J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(*kp2);
+            pane->setAlpha((u8)(f30 * (f32)self[0xd5 + j2]));
         }
     }
     if (*(s16*)(self + 0x9c) > 20) {
