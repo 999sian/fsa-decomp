@@ -34,7 +34,7 @@ extern const f32 lbl_8053E100;
 extern const f32 lbl_8053E104;
 extern s32 lbl_80539FCC;
 
-static inline void bph2_rotScaleMtx(f32 m[3][4], f32 rx, f32 ry, f32 rz, f32 s) {
+static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) {
     f32 sx = (f32)sin(rx);
     f32 sy = (f32)sin(ry);
     f32 sz = (f32)sin(rz);
