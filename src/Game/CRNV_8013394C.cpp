@@ -43,12 +43,12 @@ extern "C" void fn_801339EC(u8* this_) {
         }
     };
     static Col tbl[6] = {
-        Col(0xdc, 0x1e, 0xdc, 0xff),
-        Col(0xff, 0x41, 0x37, 0xff),
-        Col(0x1e, 0xa0, 0xbe, 0xff),
-        Col(0x4b, 0xff, 0x2d, 0xff),
-        Col(0xc8, 0xa0, 0x28, 0xff),
         Col(0x2d, 0x78, 0xff, 0xff),
+        Col(0xc8, 0xa0, 0x28, 0xff),
+        Col(0x4b, 0xff, 0x2d, 0xff),
+        Col(0x1e, 0xa0, 0xbe, 0xff),
+        Col(0xff, 0x41, 0x37, 0xff),
+        Col(0xdc, 0x1e, 0xdc, 0xff),
     };
     s32 i = 0;
     u8* p = this_;
@@ -173,13 +173,11 @@ extern const f32 lbl_8053CD4C;
 extern "C" void fn_8013416C(u8* param_1)
 {
     v01__5ActorFv(param_1);
-    f32 f0 = lbl_8053CD4C;
-    f32 f1 = lbl_8053CD48;
     *(s32*)(param_1 + 0x234) = *(u32*)(param_1 + 0x90) & 0x1f;
-    *(f32*)(param_1 + 0x60) = f1;
-    *(f32*)(param_1 + 0x64) = f1;
-    *(f32*)(param_1 + 0x68) = f0;
-    *(f32*)(param_1 + 0x6c) = f0;
+    *(f32*)(param_1 + 0x60) = lbl_8053CD48;
+    *(f32*)(param_1 + 0x64) = lbl_8053CD48;
+    *(f32*)(param_1 + 0x68) = lbl_8053CD4C;
+    *(f32*)(param_1 + 0x6c) = lbl_8053CD4C;
     *(f32*)(param_1 + 0x70) = *(f32*)(param_1 + 0x60);
     *(f32*)(param_1 + 0x74) = *(f32*)(param_1 + 0x64);
     *(f32*)(param_1 + 0x78) = *(f32*)(param_1 + 0x68);
