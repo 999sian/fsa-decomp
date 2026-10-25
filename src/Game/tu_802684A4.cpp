@@ -30,6 +30,22 @@ extern "C" void fn_8026E1E0(u8*);
 extern "C" u8* fn_802D6A9C();
 extern "C" u16 fn_802265FC(struct Vec2f*, s32);
 extern "C" u16 fn_80226850(struct Vec2f*, s32);
+extern "C" u8 Player_GetField_0xce8(void*);
+extern "C" u8 fn_8025F418(void*);
+extern "C" u8 fn_8022D75C(s32);
+extern "C" u8 Player_GetField_0x454(void*);
+extern "C" u8 fn_80241E28(void*, s32, void*);
+extern "C" u8 fn_80240D64(void*);
+extern "C" u8 fn_80268BC4(u8*);
+extern f32 lbl_80540234;
+extern f32 lbl_80540238;
+extern f32 lbl_8054023C;
+extern f32 lbl_80540240;
+extern f32 lbl_80540244;
+extern f32 lbl_80540248;
+extern f32 lbl_8054022C;
+extern f32 lbl_8054024C;
+extern f32 lbl_80540250;
 
 struct Vec2f {
     void set(const Vec2f& o) {
