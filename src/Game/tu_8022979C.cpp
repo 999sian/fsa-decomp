@@ -176,11 +176,13 @@ extern "C" const f32 lbl_8053FFF0;
 extern "C" const f32 lbl_8053FFF4;
 extern "C" const f32 lbl_8053FFF8;
 extern "C" void fn_8022A83C(u8* p) {
-    s32 mode = (*(u32*)(p + 0x90) >> 2) & 0x3f;
+    s32 mode;
+    u32 flags = *(u32*)(p + 0x90);
+    mode = (flags >> 2) & 0x3f;
     f32* src;
     if (mode != 5) {
         if (mode == 1) {
-            if (fn_8022F514(*(u32*)(p + 0x90) & 3)) {
+            if (fn_8022F514(flags & 3)) {
                 *(u8*)(p + 0x11c) = 0;
                 return;
             }
@@ -195,9 +197,10 @@ extern "C" void fn_8022A83C(u8* p) {
         *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
         u32 bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
         *(f32*)(p + 0xc) += (f32)(s32)(lbl_8053FFEC * (*(f32*)&bits - lbl_8053FFD8)) - lbl_8053FFE0;
+        rng = lbl_8053AAF8;
         *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-        bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-        *(f32*)(p + 0x10) += (f32)(s32)(lbl_8053FFEC * (*(f32*)&bits - lbl_8053FFD8)) - lbl_8053FFF8;
+        u32 bits2 = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+        *(f32*)(p + 0x10) += (f32)(s32)(lbl_8053FFEC * (*(f32*)&bits2 - lbl_8053FFD8)) - lbl_8053FFF8;
     } else if (mode == 4) {
         *(f32*)(p + 0x14) += lbl_8053FFE8;
     } else if (mode == 0xe) {
@@ -208,8 +211,7 @@ extern "C" void fn_8022A83C(u8* p) {
     *(u32*)(p + 0x230) = 0;
     *(u32*)(p + 0x234) = 0;
     mode = (*(u32*)(p + 0x90) >> 2) & 0x3f;
-    if (mode <= 0xe) {
-        switch (mode) {
+    switch (mode) {
         case 0:
             *(s32*)(p + 0x234) = 0x85;
             break;
@@ -228,20 +230,16 @@ extern "C" void fn_8022A83C(u8* p) {
             break;
         case 6:
         case 8:
-            src = fn_8023E724(mode & 3);
-            *(f32*)(p + 0xc) = src[0];
-            *(f32*)(p + 0x10) = src[1];
-            *(f32*)(p + 0x14) = src[2];
+            src = fn_8023E724(*(u32*)(p + 0x90) & 3);
+            JGeometry::setTVec3f(src, (f32*)(p + 0xc));
             *(f32*)(p + 0xc) += lbl_8053FFF0;
             *(f32*)(p + 0x14) += lbl_8053FFF4;
             *(s32*)(p + 0x234) = 0x2a3;
             break;
         case 7:
         case 9:
-            src = fn_8023E724(mode & 3);
-            *(f32*)(p + 0xc) = src[0];
-            *(f32*)(p + 0x10) = src[1];
-            *(f32*)(p + 0x14) = src[2];
+            src = fn_8023E724(*(u32*)(p + 0x90) & 3);
+            JGeometry::setTVec3f(src, (f32*)(p + 0xc));
             *(f32*)(p + 0xc) -= lbl_8053FFF0;
             *(f32*)(p + 0x14) += lbl_8053FFF4;
             *(s32*)(p + 0x234) = 0x2a3;
@@ -258,7 +256,6 @@ extern "C" void fn_8022A83C(u8* p) {
         case 13:
             *(s32*)(p + 0x234) = 0x300;
             break;
-        }
     }
     *(u8*)(p + 0x11f) = 1;
 }
