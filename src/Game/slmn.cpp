@@ -259,8 +259,8 @@ static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
 return go;
 }
 static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
-            s32 bit;
             s32 i;
+            s32 bit;
             for (i = go; i < 4; i++) {
                 bit = 1 << i;
                 if (*(u8*)(this_ + 0x345) & bit) {
@@ -281,11 +281,11 @@ static inline u8 slmnCheck(char* this_, u8 go) {
         case 0:
             go = TRUE;
             break;
-        case 2:
-            go = slmnCheckTrack(this_, go, r);
-            break;
         case 1:
             go = slmnCheckNear(this_, go, r);
+            break;
+        case 2:
+            go = slmnCheckTrack(this_, go, r);
             break;
         case 3:
             if (*(u16*)(this_ + 0x346) != fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4)) ||
