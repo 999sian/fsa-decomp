@@ -97,7 +97,7 @@ extern f32 lbl_80541860;
 extern f32 lbl_80541864;
 extern f32 lbl_80541868;
 extern f32 lbl_8054186C;
-extern f32 lbl_80541810;
+extern const f32 lbl_80541810;
 extern "C" void fn_803137D0(Actor* p) {
     u8* base = (u8*)fn_801F856C();
     long count = *(s32*)(base + 0x1008);
