@@ -175,8 +175,8 @@ extern "C" void fn_801D41B8(void* __restrict this_) {
             rec.ids[7] = *(s32*)((u8*)this_ + 0x560) + 0xc;
         }
         {
-            void* res = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-            void* name = ((void* (*)(void*, u32, void*))(*(void***)res)[6])(res, 0x534f4220, lbl_80469488);
+            JKRFileLoader* res = *(JKRFileLoader**)((u8*)lbl_8053AAF8 + 0xa4);
+            void* name = res->getResource(0x534f4220, (const char*)lbl_80469488);
             fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, name, (void*)mode, &rec, lbl_8053F0A4, lbl_8053F0A4);
         }
     }
