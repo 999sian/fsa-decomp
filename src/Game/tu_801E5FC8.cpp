@@ -6,7 +6,7 @@
 
 struct ActorE62 { u8 pad0[4]; u32 f4; u8 fC[4]; };
 extern "C" void fn_801EE434(void* handle);
-extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, float scale);
+extern "C" void* fn_8013CC50(s32 id, void* pos, f32 scale, u16 kind, s32 a, s32 b, void* c, void* d, u8 e);
 extern "C" void fn_801CB71C(void* a, void* b, u32 c, u32 d);
 extern "C" f32 lbl_8053F5AC;
 extern "C" u32 fn_801DA938(void* p);
@@ -114,19 +114,17 @@ extern "C" void fn_801E6234(char* this_) {
     v[0] = x;
     v[1] = y;
     v[2] = z;
-    *(void**)(this_ + 0x2c8) = fn_8013CC50(*(u32*)(this_ + 4), v, 0x25c, 0, 0, 0, 0, 1, 1.0f);
-    *(void**)(this_ + 0x2cc) = fn_8013CC50(*(u32*)(this_ + 4), v, 0x25d, 0, 0, 0, 0, 1, 1.0f);
+    *(void**)(this_ + 0x2c8) = fn_8013CC50(*(u32*)(this_ + 4), v, 1.0f, 0x25c, 0, 0, 0, 0, 1);
+    *(void**)(this_ + 0x2cc) = fn_8013CC50(*(u32*)(this_ + 4), v, 1.0f, 0x25d, 0, 0, 0, 0, 1);
 }
 
-extern "C" void fn_801E62D4(u8* this_) {
-    s32 id = *(s32*)(this_ + 4);
-    u8* pos = this_ + 0xc;
-    fn_8013CC50(id, pos, 0x259, 0, 0, 0, 0, 1, 1.0f);
+extern "C" void fn_801E62D4(Actor* this_) {
+    fn_8013CC50(this_->field_04, &this_->field_0C, 1.0f, 0x259, 0, 0, 0, 0, 1);
 }
 
 extern "C" void fn_801E631C(void* this_) {
-    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 0x25a, 0, 0, 0, 0, 1, 1.0f);
-    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 0x25b, 0, 0, 0, 0, 1, 1.0f);
+    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 1.0f, 0x25a, 0, 0, 0, 0, 1);
+    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 1.0f, 0x25b, 0, 0, 0, 0, 1);
 }
 
 extern "C" void fn_801E6394(char* this_) {
@@ -137,8 +135,8 @@ extern "C" void fn_801E6394(char* this_) {
 }
 
 extern "C" void fn_801E63D8(char* this_) {
-    *(void**)(this_ + 0x2c0) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x25e, 0, 0, 0, 0, 1, 1.0f);
-    *(void**)(this_ + 0x2c4) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x25f, 0, 0, 0, 0, 1, 1.0f);
+    *(void**)(this_ + 0x2c0) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 1.0f, 0x25e, 0, 0, 0, 0, 1);
+    *(void**)(this_ + 0x2c4) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 1.0f, 0x25f, 0, 0, 0, 0, 1);
 }
 
 void __sinit_tu_801E5FC8_cpp(void) {
