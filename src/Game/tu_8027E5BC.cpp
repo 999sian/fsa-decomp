@@ -2641,6 +2641,6 @@ void fn_802859C4(char* p) {
 
 void fn_80285C28(char* p) { U8(p, 0x458) = 0; }
 
-extern "C" void __sinit_tu_8027E5BC_cpp(void) {}
+
 
 }
