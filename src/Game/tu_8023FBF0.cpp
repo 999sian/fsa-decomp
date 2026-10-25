@@ -199,6 +199,43 @@ inline s32 countSharingT(const char* p) {
 }
 
 extern "C" char* fn_802D6A9C(void);
+s32 fn_80234004(s32);
+extern "C" s32 fn_8022CAF8(s32);
+
+// padActive() with the linked-player table walk expanded inline (no other helpers needed).
+inline bool padCheck(char* p) {
+    s32 r;
+    s32 cnt;
+    s32 i;
+    s32 linked;
+    if (U8(p, 0xc80) == 0 || U8(p, 0xcee) != 0 || U8(p, 0x1215) != 0 || U8(p, 0xca0) == 0 || U8(p, 0xce9) == 0) {
+        return false;
+    }
+    linked = S32(p, 0xd60);
+    if (countSharing(p) < 2) {
+        r = 5;
+    } else if (linked < 0) {
+        r = S32(p, 0x120c);
+    } else {
+        r = fn_8022CAF8(linked);
+    }
+    if (r == 4) {
+        s32 idx = linked < 0 ? S32(p, 0x1224) : fn_80234004(linked);
+        cnt = 0;
+        if (linked >= 0) {
+            for (i = 0; i < S32(p, 0x4); i++) {
+                if (linked == fn_8022F3DC(i)) {
+                    cnt++;
+                }
+            }
+            cnt++;
+        }
+        if (idx != cnt) {
+            return false;
+        }
+    }
+    return U8(p, 0x11ea) != 0;
+}
 
 inline f32* roomOffset(s32 room) {
     char* r = fn_802D6A9C();
