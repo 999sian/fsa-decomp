@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 extern "C" s32 fn_801F285C(void*, void*, s32*, s32, s32);
 extern "C" u8 fn_80235448(s32);
 extern "C" f32* fn_8023E724(s32);
@@ -126,6 +127,7 @@ extern "C" s32 fn_801DD1AC(u8* this_) {
     return result;
 }
 
+#pragma optimization_level 3
 extern "C" s32 fn_801DD28C(u8* this_) {
     s32 result = 0;
     f32 x0 = lbl_8053F388;
@@ -133,6 +135,8 @@ extern "C" s32 fn_801DD28C(u8* this_) {
     f32 x1 = lbl_8053F390;
     f32 y1 = x1;
     switch (*(s32*)(this_ + 0x248)) {
+    default:
+        break;
     case 9:
         x0 = lbl_8053F394;
         y0 = lbl_8053F398;
@@ -159,12 +163,10 @@ extern "C" s32 fn_801DD28C(u8* this_) {
             *(f32*)(this_ + 0x6c) = sy1;
         }
         break;
-    default:
-        break;
     }
     return result;
 }
-
+#pragma optimization_level reset
 extern "C" u8 fn_801DD410(u8* p) {
     u8 hit = 0;
     s32 i;
@@ -383,37 +385,32 @@ extern const f32 lbl_8053F3B0;
 extern const f32 lbl_8053F3A8;
 extern const f32 lbl_8053F3AC;
 extern const f32 lbl_8053F3A4;
+#pragma opt_propagation on
 extern "C" s32 fn_801DE018(char* this_) {
     s32 r = 0;
-    s32 state = *(s32*)(this_ + 0x248);
     bool ok = false;
-    if (state != 5) {
-        if (state < 5) {
-            if (state < 4) {
-                goto skip;
-            }
-        } else if (state > 7) {
-            goto skip;
-        }
+    switch (*(s32*)(this_ + 0x248)) {
+    case 4:
+    case 6:
+    case 7:
         ok = true;
+        break;
+    case 5:
+    default:
+        break;
     }
-skip:
     if (ok) {
         f32 tmp[2];
-        f32 pos[4];
-        s32 res;
-        pos[0] = lbl_8053F3A4 + *(f32*)(this_ + 0xc);
-        pos[1] = lbl_8053F3A8 + *(f32*)(this_ + 0x10);
-        pos[2] = lbl_8053F3AC + *(f32*)(this_ + 0xc);
-        pos[3] = lbl_8053F3B0 + *(f32*)(this_ + 0x10);
-        res = fn_8023AE34(pos, *(s32*)(this_ + 4), tmp);
-        if (res >= 0) {
-            res = fn_8023AA18(pos, *(s32*)(this_ + 4), tmp);
-            if (res >= 0) {
-                res = fn_8023AC74(pos, *(s32*)(this_ + 4), tmp);
-                if (res >= 0) {
-                    res = fn_8023AD54(pos, *(s32*)(this_ + 4), tmp);
-                }
+        JGeometry::TBox2f box(lbl_8053F3A4 + *(f32*)(this_ + 0xc),
+                             lbl_8053F3A8 + *(f32*)(this_ + 0x10),
+                             lbl_8053F3AC + *(f32*)(this_ + 0xc),
+                             lbl_8053F3B0 + *(f32*)(this_ + 0x10));
+        s32 res = fn_8023AE34(&box.i.x, *(s32*)(this_ + 4), tmp);
+        if (res < 0) {
+            res = fn_8023AA18(&box.i.x, *(s32*)(this_ + 4), tmp);
+            if (res < 0) {
+                res = fn_8023AC74(&box.i.x, *(s32*)(this_ + 4), tmp);
+                if (res < 0) res = fn_8023AD54(&box.i.x, *(s32*)(this_ + 4), tmp);
             }
         }
         if (res >= 0) {
@@ -423,7 +420,7 @@ skip:
     }
     return r;
 }
-
+#pragma opt_propagation reset
 extern f32 lbl_8053F398;
 extern const f32 lbl_8053F3B4;
 extern const f32 lbl_8053F3C0;
