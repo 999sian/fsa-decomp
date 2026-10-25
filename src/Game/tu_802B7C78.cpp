@@ -1,6 +1,7 @@
 #include <math.h>
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#define JGEOMETRY_VEC2_SCALAR_COPY
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
@@ -104,9 +105,9 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
         char* indexed=this_+idx;
         *(f32*)(this_+0x254)=*(f32*)(this_+0x284) * *(f32*)(indexed+0x268);
         *(f32*)(this_+0x258)=*(f32*)(this_+0x288) * *(f32*)(indexed+0x268);
-        fn_801F71A4(this_+0x3c,*(f32*)(this_+0x254),lbl_80540AC8,*(f32*)(indexed+0x260));
-        fn_801F71A4(this_+0x40,*(f32*)(this_+0x258),lbl_80540AC8,*(f32*)(indexed+0x260));
-        fn_801F71A4(this_+idx+0x260,lbl_80540ACC,lbl_80540AD0,lbl_80540AD0);
+        fn_801F71A4(this_+0x3c,*(f32*)(this_+0x254),0.3f,*(f32*)(indexed+0x260));
+        fn_801F71A4(this_+0x40,*(f32*)(this_+0x258),0.3f,*(f32*)(indexed+0x260));
+        fn_801F71A4(this_+(idx+0x260),lbl_80540ACC,lbl_80540AD0,lbl_80540AD0);
         *(JGeometry::TVec3f*)(this_+0xc)+=*(JGeometry::TVec3f*)(this_+0x3c);
         s32 flags=0x12;
         s32 kind=*(s32*)(this_+0x114);
@@ -117,12 +118,12 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
             flags=4;
         }
         if(fn_8023F264(*(s32*)(this_+0x298))==1 && !fn_80236B50(*(s32*)(this_+0x298))) {
-            kind=fn_801F2B7C(this_,kind,-1,flags);
-            if(kind) {
+            idx=fn_801F2B7C(this_,kind,-1,flags);
+            if(idx) {
                 fn_801F0E34(this_,0x40041,0);
                 *(s32*)(this_+0x244)=0x8c;
                 *(JGeometry::TVec3f*)(this_+0x234)=*(JGeometry::TVec3f*)(this_+0xc);
-                if(*(s32*)(this_+0x298)==lbl_804A8858[kind>>1]) {
+                if(*(s32*)(this_+0x298)==lbl_804A8858[idx>>1]) {
                     *(s32*)(this_+0x230)=mode;
                     *(s32*)(this_+0x250)=0;
                 }
