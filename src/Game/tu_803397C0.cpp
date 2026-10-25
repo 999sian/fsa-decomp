@@ -15,10 +15,10 @@ extern const f32 lbl_805420F4;
 extern const f32 lbl_805420F8;
 
 struct State_80339820 { u8 pad[0xb4]; JMARandFast rnd; };
-static inline f32 fn_80339820_rnd(u8* game = lbl_8053AAF8, u32 factor = 0x19660d) {
-    unsigned int* seed = (unsigned int*)(game + 0xb4);
-    *seed = *seed * factor + 0x3c6ef35f;
-    unsigned int bits = (*seed >> 9) | 0x3f800000;
+static f32 fn_80339820_rnd() {
+    u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_805420EC;
 }
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -34,6 +34,7 @@ extern "C" Actor* fn_803397C0(Actor* p, s16 n) {
 }
 
 #pragma opt_propagation on
+#pragma opt_common_subs off
 extern "C" void fn_80339820(u8* this_) {
     JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
     bool skip = false;
@@ -62,13 +63,13 @@ extern "C" void fn_80339820(u8* this_) {
         break;
     }
     if (*(s32*)(this_ + 0x260) <= 1) {
-        if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F0) {
-            if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F4) {
+        if (fn_80339820_rnd() < lbl_805420F0) {
+            if (fn_80339820_rnd() < lbl_805420F4) {
                 Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), (f32*)&pos, 0x261400, -1, -1);
             } else {
-                if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F8) skip = true;
+                if (fn_80339820_rnd() < lbl_805420F8) skip = true;
                 if (skip) return;
-                if (fn_80339820_rnd(lbl_8053AAF8) < lbl_805420F0) {
+                if (fn_80339820_rnd() < lbl_805420F0) {
                     Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
                 } else {
                     Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
@@ -82,6 +83,7 @@ extern "C" void fn_80339820(u8* this_) {
         Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
     }
 }
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" void fn_801F06F0(u8* a, void* res, s32 id, void* rec, s32 p5, f32 sx, f32 sy);
 extern "C" void fn_801EFD34(u8* a, void* res, void* rec, s32 n, f32 x, f32 y, f32 z);
