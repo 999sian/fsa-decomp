@@ -2587,23 +2587,15 @@ void fn_8024B9E8(PlayerTrail* t) {
     t->onGround[0] = U8(PTR(t, 0xbf0), 0xb4);
 }
 void fn_8024BAEC(char* p) {
-    if (U8(p, 0x1216) != 0) {
-        return;
-    }
-    if (U8(p, 0x454) != 0) {
-        fn_8024B2E0(p);
-        return;
-    }
+    if (U8(p, 0x1216) != 0) return;
+    if (U8(p, 0x454) != 0) { fn_8024B2E0(p); return; }
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
         t->pos[i].x = t->x;
         t->pos[i].y = t->y;
         t->pos[i].z = t->z;
-        if (t->z > 0.0f) {
-            t->onGround[i] = true;
-        } else {
-            t->onGround[i] = false;
-        }
+        if (t->z > 0.0f) t->onGround[i] = true;
+        else t->onGround[i] = false;
     }
 }
 void fn_8024BB88(char* p) { U8(p, 0xced) = 1; }
