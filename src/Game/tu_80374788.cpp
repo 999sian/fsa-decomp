@@ -151,12 +151,15 @@ extern "C" void fn_803754E8(Actor* this_) {
                 mask |= 1 << *(s32*)((u8*)o + 0x240);
             }
         }
+        f32 one;
+        f32 range;
+        range = lbl_80542F10;
+        one = lbl_80542ED8;
         for (;;) {
             u8* rng = lbl_8053AAF8;
             *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
             bits.i = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-            f32 r = bits.f - lbl_80542ED8;
-            *(s32*)(p + 0x240) = (s32)(lbl_80542F10 * r + lbl_80542ED8);
+            *(s32*)(p + 0x240) = (s32)(range * (bits.f - one) + one);
             if ((mask & 0x1e) == 0x1e) {
                 break;
             }
