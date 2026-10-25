@@ -87,6 +87,25 @@ extern "C" u32 fn_803BADAC(u8* param_1) {
     return ((sum ^ *(u32*)(param_1 + 0xc0)) | (inv ^ *(u32*)(param_1 + 0xc4))) == 0;
 }
 
+static inline void cardSumBlock(u8* p, u32* sumOut, u32* invOut) {
+    u32 sum = 0;
+    u32 inv = 0;
+    s32 i;
+    for (i = 0; i < 0x18; i++) {
+        sum += p[0]; inv += ~p[0];
+        sum += p[1]; inv += ~p[1];
+        sum += p[2]; inv += ~p[2];
+        sum += p[3]; inv += ~p[3];
+        sum += p[4]; inv += ~p[4];
+        sum += p[5]; inv += ~p[5];
+        sum += p[6]; inv += ~p[6];
+        sum += p[7]; inv += ~p[7];
+        p += 8;
+    }
+    *sumOut = sum;
+    *invOut = inv;
+}
+
 extern "C" s32 fn_803BAE68(CARDFileInfo* fileInfo) {
     u8* buf = lbl_8051E2C0;
     s32 result = CARDRead(fileInfo, buf, 0x2000, 0x2000);
