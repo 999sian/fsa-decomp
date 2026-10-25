@@ -27,6 +27,8 @@ extern "C" s32 fn_8013CC50(s32 id, void* p, f32 f, s32 a, s32 b, s32 c, s32 d, s
 extern "C" void fn_801F0E34(void* a, s32 code, s32 z);
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 fn_801F78F4(void*, u32, s32);
+extern "C" u16 fn_80226850(void*, s32);
 extern "C" void* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(void* a, s32 room, void* v, void* h, s32 c);
 extern "C" u8 fn_802A1490(void* g, void* v);
@@ -63,12 +65,13 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     char* m;
     JGeometry::TBox2f* src;
     JGeometry::TVec3f* v;
-    JGeometry::TVec3f save(*(JGeometry::TVec3f*)(self + 0xc));
+    JGeometry::TVec3f save;
     Probe pt;
     JGeometry::TBox2f box;
     JGeometry::TVec3f q;
     JGeometry::TVec3f ofs;
 
+    save = *(JGeometry::TVec3f*)(self + 0xc);
     ((JGeometry::TVec3f*)(self + 0x3c))->x = lbl_8046C268[mode].x;
     ((JGeometry::TVec3f*)(self + 0x3c))->y = lbl_8046C268[mode].y;
     ((JGeometry::TVec3f*)(self + 0x3c))->z = lbl_8046C268[mode].z;
