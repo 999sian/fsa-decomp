@@ -41,6 +41,8 @@ extern "C" void __register_global_object(void*, void (*)(void*), void*);
 #include "dolphin/dvd/dvd.h"
 #include "dolphin/dvd/dvdfs.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/JKernel/JKRArchive.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 struct FsaVirtObj {
     virtual void v0(void);
@@ -1196,6 +1198,9 @@ extern "C" u8 lbl_804B0688[];
 extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 extern "C" char lbl_804AF86C[];
 extern "C" void fn_80402F04(void*, void*);
+struct FsaPaneKeys {
+    u64 keys[50];
+};
 static inline void fn_803DFF40_child(u8* self, s32 off, s32 scrOff, u64 key) {
     void* obj = operator new(0x2c);
     if (obj != 0) {
@@ -1294,7 +1299,177 @@ extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
     return self;
 }
 
+extern "C" void fn_80158B3C(void*);
+extern "C" void fn_802FF798(void*);
+extern "C" void fn_802F9714(void*, void*, s32, s32, s32, s32);
+extern "C" void fn_802F93F4(void*, void*, s32, s32, s32, s32, s32);
+extern "C" void fn_803A7898(void*);
+extern "C" void* fn_80428030(void*);
+extern "C" void* fn_804030C4(u32, const char*);
+extern "C" void fn_80440D78(void*, void*);
+extern "C" void fn_80440CE4(void*, void*);
+extern "C" char* strcpy(char*, const char*);
+extern "C" u8* lbl_8053AD78;
+extern "C" const char lbl_8054363C[4];
 extern "C" void* fn_803DFF40(u8* self) {
+    void* tmp;
+    f32 a;
+    f32 b;
+    s32 i;
+    u64* p;
+    char* names = (char*)lbl_804774C8;
+    *(void**)self = lbl_804B0688;
+    getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
+    fn_80158B3C(*(void**)((u8*)lbl_8053AB10 + 0x2c));
+    if (lbl_80529DEC[0x242] == 0) {
+        lbl_80529DEC[0x242] = 1;
+        fn_802FF798(*(void**)((u8*)lbl_8053AB10 + 0x20));
+        void* res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434820, names + 0x3e4);
+        fn_802F9714(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 0, 0, 0);
+        res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434820, names + 0x3fc);
+        fn_802F9714(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
+        res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434c20, names + 0x414);
+        fn_802F93F4(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 0, 0, 0, 0);
+        res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434820, names + 0x42c);
+        fn_802F9714(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 2, 0x4000, 0);
+        res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434c20, names + 0x414);
+        fn_802F93F4(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 2, 0, 0, 0);
+        res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434820, names + 0x43c);
+        fn_802F9714(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 3, 0, 0);
+        res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x53434c20, names + 0x414);
+        fn_802F93F4(*(void**)((u8*)lbl_8053AB10 + 0x20), res, 0, 3, 0, 0, 0);
+        *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x2364) = 1;
+    }
+    {
+        void* q = operator new(0x84);
+        if (q != 0) {
+            fn_803A7898(q);
+        }
+        *(void**)(self + 0x60) = q;
+    }
+    {
+        void* q = operator new(0x1c);
+        if (q != 0) {
+            fn_80428030(q);
+        }
+        *(void**)(self + 0x64) = q;
+    }
+    *(J2DScreen**)(self + 0x4) = new J2DScreen();
+    u8* tbl = lbl_80529DEC;
+    (*(J2DScreen**)(self + 0x4))->setPriority(names + 0x44c, 0x1100000, *(JKRArchive**)(tbl + 0x2c));
+    *(J2DScreen**)(self + 0x8) = new J2DScreen();
+    (*(J2DScreen**)(self + 0x8))->setPriority(names + 0x45c, 0x1100000, *(JKRArchive**)(tbl + 0x2c));
+    fn_803DFF40_child(self, 0x14, 0x8, 0x506d6f763031ULL);
+    fn_803DFF40_child(self, 0x18, 0x4, 0x4e646174613038ULL);
+    fn_803DFF40_child(self, 0x1c, 0x4, 0x576762636f3031ULL);
+    fn_803DFF40_child(self, 0x20, 0x4, 0x576e6f703031ULL);
+    fn_803DFF40_child(self, 0x24, 0x4, 0x50657870623039ULL);
+    fn_803DFF40_child(self, 0x28, 0x4, 0x576e6f703032ULL);
+    fn_803DFF40_child(self, 0x2c, 0x4, 0x576762636f3032ULL);
+    fn_803DFF40_child(self, 0x30, 0x4, 0x4e646174613035ULL);
+    fn_803DFF40_child(self, 0x34, 0x4, 0x4e646174613032ULL);
+    fn_803DFF40_child(self, 0x38, 0x4, 0x4e646174613033ULL);
+    fn_803DFF40_child(self, 0x40, 0x4, 0x50736375726f3032ULL);
+    fn_803DFF40_child(self, 0x44, 0x4, 0x5073637572683035ULL);
+    b = lbl_805435E8 + (*(J2DScreen**)(self + 0x4))->search(0x5073637572733035ULL)->getBounds()->i.y;
+    a = (*(J2DScreen**)(self + 0x4))->search(0x5073637572733035ULL)->getBounds()->i.x;
+    (*(J2DScreen**)(self + 0x4))->search(0x5073637572733035ULL)->move(a, b);
+    fn_803DFF40_child(self, 0x48, 0x4, 0x5073637572733035ULL);
+    fn_803DFF40_child(self, 0x50, 0x4, 0x50737472623034ULL);
+    fn_803DFF40_child(self, 0x54, 0x4, 0x50626163623034ULL);
+    fn_803DFF40_child(self, 0x58, 0x4, 0x5061636375723032ULL);
+    *(void**)(self + 0x5c) = *(void**)((u8*)lbl_8053AED8 + 0x8);
+    tmp = fn_804030C4(0x54494d47, names + 0x470);
+    fn_80440D78(lbl_8053AED8, tmp);
+    fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, names + 0x484));
+    tmp = fn_804030C4(0x54494d47, names + 0x498);
+    *(J2DPicture**)(self + 0x10) = new J2DPicture((const ResTIMG*)tmp);
+    (*(J2DPicture**)(self + 0x10))->setBlackWhite(JUtility::TColor((u32)0xff), JUtility::TColor((u32)0));
+    self[0xa2] = 0x9c;
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623031ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623032ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623033ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623034ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703031ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703032ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703033ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703034ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703035ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703036ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546578703031ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546261633031ULL))->setFont(f); }
+    { JUTFont* f = *(JUTFont**)(lbl_8053AD78 + 0x154); ((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x547374723031ULL))->setFont(f); }
+    fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x547374723031ULL))->getStringPtr(), (char*)0x118, 0, 0, 0);
+    fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546261633031ULL))->getStringPtr(), (char*)0x11b, 0, 0, 0);
+    fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703033ULL))->getStringPtr(), (char*)0x93, 0, 0, 0);
+    fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703034ULL))->getStringPtr(), (char*)0x93, 0, 0, 0);
+    fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703035ULL))->getStringPtr(), (char*)0xf4, 0, 0, 0);
+    fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546e6f703036ULL))->getStringPtr(), (char*)0xf4, 0, 0, 0);
+    strcpy(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623031ULL))->getStringPtr(), lbl_8054363C);
+    strcpy(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623032ULL))->getStringPtr(), lbl_8054363C);
+    strcpy(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623033ULL))->getStringPtr(), lbl_8054363C);
+    strcpy(((J2DTextBox*)(*(J2DScreen**)(self + 0x4))->search(0x546167623034ULL))->getStringPtr(), lbl_8054363C);
+    *(f32*)(self + 0x6c) = (*(J2DScreen**)(self + 0x4))->search(0x506d616462623031ULL)->getBounds()->i.y +
+                           ((*(J2DScreen**)(self + 0x4))->search(0x4e646174613032ULL)->getBounds()->i.y +
+                            (*(J2DScreen**)(self + 0x4))->search(0x506d616462623037ULL)->getBounds()->i.y);
+    *(f32*)(self + 0x70) = (*(J2DScreen**)(self + 0x4))->search(0x506d626162623031ULL)->getBounds()->i.y +
+                           ((*(J2DScreen**)(self + 0x4))->search(0x4e646174613033ULL)->getBounds()->i.y +
+                            (*(J2DScreen**)(self + 0x4))->search(0x506d626162623037ULL)->getBounds()->i.y);
+    self[0x11a] = (*(J2DScreen**)(self + 0x8))->search(0x50696d3031ULL)->getAlpha();
+    self[0x11b] = (*(J2DScreen**)(self + 0x8))->search(0x50696d3032ULL)->getAlpha();
+    self[0x11c] = (*(J2DScreen**)(self + 0x8))->search(0x50696d3131ULL)->getAlpha();
+    self[0x11d] = (*(J2DScreen**)(self + 0x8))->search(0x50696d3132ULL)->getAlpha();
+    *(u8*)(*(u8**)(*(u8**)(self + 0x14) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x18) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x1c) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x20) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x24) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x28) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x2c) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x50) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x54) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x58) + 4) + 0xb0) = 0;
+    *(s32*)(self + 0x84) = 0;
+    self[0x9e] = lbl_80529DEC[0x23a];
+    self[0x9f] = self[0x9e];
+    *(s32*)(self + 0x80) = 0;
+    *(s32*)(self + 0x88) = 0;
+    *(f32*)(self + 0x7c) = lbl_80543604;
+    *(f32*)(self + 0x78) = lbl_80543604;
+    *(s16*)(self + 0x9a) = 0;
+    *(s16*)(self + 0x98) = 0x3c;
+    self[0xa0] = 0;
+    self[0xa1] = 0;
+    for (i = 0; i < 50; i++) {
+        if (i == 0) {
+            self[0xa3 + i] = (*(J2DScreen**)(self + 0x8))->search(((u64*)(names + 0x0))[i])->getAlpha();
+        } else {
+            self[0xa3 + i] = (*(J2DScreen**)(self + 0x4))->search(((u64*)(names + 0x0))[i])->getAlpha();
+        }
+    }
+    p = (u64*)(names + 0x190);
+    for (i = 0; i < 6; i++) {
+        self[0xd5 + i] = (*(J2DScreen**)(self + 0x4))->search(p[i])->getAlpha();
+    }
+    p = (u64*)(names + 0x1c0);
+    for (i = 0; i < 17; i++) {
+        self[0xdb + i] = (*(J2DScreen**)(self + 0x4))->search(p[i])->getAlpha();
+    }
+    p = (u64*)(names + 0x248);
+    for (i = 0; i < 20; i++) {
+        self[0xec + i] = (*(J2DScreen**)(self + 0x4))->search(p[i])->getAlpha();
+    }
+    p = (u64*)(names + 0x368);
+    for (i = 0; i < 5; i++) {
+        self[0x110 + i] = (*(J2DScreen**)(self + 0x4))->search(p[i])->getAlpha();
+    }
+    p = (u64*)(names + 0x390);
+    for (i = 0; i < 5; i++) {
+        self[0x115 + i] = (*(J2DScreen**)(self + 0x4))->search(p[i])->getAlpha();
+    }
+    *(s32*)(self + 0x94) = 1;
+    fn_803DAC58(self, self[0x9e], lbl_80543604);
+    lbl_8053ADD0 = self;
     return self;
 }
 
