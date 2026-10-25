@@ -404,8 +404,8 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* 
 }
 
 extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
-extern "C" u32 fn_8007AAF8(void* this_, const void* resource) {
-    if (*(u32*)((u8*)this_ + 0x50) == 0) {
+extern "C" u32 fn_8007AAF8(const void* this_, const void* resource) {
+    if (*(const u32*)((const u8*)this_ + 0x50) == 0) {
         return ((JKRArchive*)this_)->getResSize(resource);
     }
     JKRArchive::SDIFileEntry* fileEntry = ((JKRArchive*)this_)->findPtrResource(resource);
