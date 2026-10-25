@@ -11,8 +11,6 @@ const Mtx j3dDefaultMtx   = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.
 
 static f32 Unit01[] = { 0.0f, 1.0f };
 
-extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
-
 /**
  * @note Address: 0x8005EE78
  * @note Size: 0xF0
