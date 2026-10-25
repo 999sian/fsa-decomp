@@ -236,14 +236,7 @@ void* operator new[](unsigned long size, JKRHeap* heap, int align);
 extern const char lbl_8046A048[];
 
 #define TBL_RES (*(TblResMgr**)((char*)lbl_8053AAF8 + 0xa4))
-static inline u32 READ4(const char* p) {
-    u32 value=(u8)p[1];
-    value <<= 16;
-    value |= (u32)(u8)p[0] << 24;
-    value |= (u32)(u8)p[2] << 8;
-    value |= (u8)p[3];
-    return value;
-}
+#define READ4(p) (((u32)(u16)(((u8)(p)[0] << 8) | (u8)(p)[1]) << 16) | ((u8)(p)[2] << 8) | (u8)(p)[3])
 
 extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 	char* buf = TBL_RES->get(0x454e4d20, lbl_8046A048);
