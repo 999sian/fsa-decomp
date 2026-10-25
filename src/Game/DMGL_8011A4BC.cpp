@@ -3,6 +3,7 @@
 
 extern int __float_epsilon[];
 extern f32 lbl_8053C7B8;
+extern void* lbl_8053AB10;
 
 static void fadeChannel(u8* channel, s32 count, s32 target)
 {
