@@ -75,6 +75,12 @@ static inline f32 sykyRand01() {
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
+static inline f32 sykyRandFrom(void* game) {
+    u32* seed = (u32*)((u8*)game + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*seed >> 9) | 0x3f800000;
+    return *(f32*)&bits - lbl_8053E460;
+}
 extern const char lbl_80468480[];
 #pragma opt_propagation off
 extern "C" void fn_8019E37C(u8* p) {
