@@ -114,8 +114,8 @@ extern "C" void fn_80317F18(Actor* this_)
 
     if ((fn_802D800C(fn_802D6A9C(), 0x1e) == 0 && *(s32*)(self + 0x264) == 2) || fn_802D800C(fn_802D6A9C(), 0x1e) == 1) {
         const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
-        ((Tu80317WordPair*)&rect)->set(box[0].first, box[0].second);
-        ((Tu80317WordPair*)&rect + 1)->set(box[1].first, box[1].second);
+        ((Tu80317WordPair*)&rect)->set(box[0].second, box[0].first);
+        ((Tu80317WordPair*)&rect + 1)->set(box[1].second, box[1].first);
         rect.x0 += *(f32*)(self + 0xc);
         rect.y0 += *(f32*)(self + 0x10);
         rect.x1 += *(f32*)(self + 0xc);
@@ -189,10 +189,8 @@ extern "C" void fn_80317F18(Actor* this_)
 extern "C" void fn_8031825C(Actor* this_) {
     u8* self = (u8*)this_;
     Tu80317Rect rect;
-    Tu80317Vec3 vec;
     s32 r;
     Actor* p;
-    u8 ok;
 
     rect = *(Tu80317Rect*)(self + 0x60);
     rect.x0 += *(f32*)(self + 0xc);
@@ -207,8 +205,8 @@ extern "C" void fn_8031825C(Actor* this_) {
         }
     }
 
-    *(u64*)&rect = *(u64*)(self + 0x248);
-    *((u64*)&rect + 1) = *(u64*)(self + 0x250);
+    *(Tu80317WordPair*)&rect = *(Tu80317WordPair*)(self + 0x248);
+    *((Tu80317WordPair*)&rect + 1) = *(Tu80317WordPair*)(self + 0x250);
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);
@@ -223,14 +221,7 @@ extern "C" void fn_8031825C(Actor* this_) {
         if (!fn_802300EC()) {
             goto tail;
         }
-        vec = *(Tu80317Vec3*)(self + 0xc);
-        ok = 0;
-        if (fn_8038AD24(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &vec, 0x10)) {
-            *(s32*)(self + 0x234) = r;
-            *(s32*)(self + 0x230) = 1;
-            ok = 1;
-        }
-        if (!ok) {
+        if (!activate80317F18(self, r)) {
             goto tail;
         }
 
