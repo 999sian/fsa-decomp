@@ -2,6 +2,7 @@
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 struct Box4 {
     f32 a, b, c, d;
