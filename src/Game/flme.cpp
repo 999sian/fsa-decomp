@@ -90,7 +90,6 @@ extern "C" u8* fn_8020D58C();
 extern "C" void fn_8020D7D0(void*,s32);
 extern "C" s16 fn_801F6874(s32);
 extern const f32 lbl_8053D600;
-#pragma scheduling off
 extern "C" void fn_8015DF7C(void* this_) {
  const u8* base=lbl_80466110;
  char* p=(char*)((u32)this_);
@@ -222,7 +221,6 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  }
 }
-#pragma scheduling reset
 
 struct FlmeColor {
     FlmeColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
