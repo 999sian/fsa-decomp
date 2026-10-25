@@ -205,6 +205,19 @@ static inline void setKeyed(u8* p, s32 recvOff, void* target, u8* keys, s32 n, s
     }
 }
 
+struct Obj9 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(s32 b);
+};
+
 struct Vt15x3 {
     void* v[15];
     void* (*v15)(void* self, u32 a, u32 b, u32 c);
@@ -1022,7 +1035,7 @@ extern "C" void fn_803C0A34(char* pc) {
     o = (u8*)arr[idx];
     {
         void* sub = *(void**)(o + 4);
-        (*(PaneVt9**)sub)->v9(sub, o[0x28]);
+        ((PaneVirtVt*)sub)->v9(o[0x28]);
     }
 
     idx = *(s32*)(p + 0xa0);
@@ -1979,6 +1992,7 @@ extern "C" void fn_803C9898(u8* p) {
     s16 mx = *(s16*)(lbl_8050DB0C + 0x1da);
     s16 g = *(s16*)(lbl_8050DB0C + 0x1dc);
     u8* base = (u8*)lbl_804765D0;
+    u8* kb;
     u8* kp;
     s32 off;
     s32 row;
@@ -1995,7 +2009,8 @@ extern "C" void fn_803C9898(u8* p) {
         if (((1 << *(s32*)(p + 0xa0)) & 0xff & p[0x115]) != 0) {
             ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), b, *(u8*)(*(u8**)(p + 0x20) + 0x28), 0);
-            kp = base + 0x368;
+            kb = base + 0x368;
+            kp = kb;
             for (i = 0; i < 9; i++) {
                 u8* obj = *(u8**)(p + 0x4);
                 void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
@@ -2007,7 +2022,7 @@ extern "C" void fn_803C9898(u8* p) {
                             *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc));
                 *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
                 ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 0x4))->v9(0);
-                kp = base + 0x368;
+                kp = kb;
                 for (i = 0; i < 9; i++) {
                     u8* obj = *(u8**)(p + 0x4);
                     void* o = ((KeyGetFn)(*(void***)obj)[15])(obj, *(u64*)kp);
