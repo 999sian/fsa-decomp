@@ -98,7 +98,7 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
 #include "JSystem/JAudio/Interface/JAISeMgr.h"
-static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, const f32 half, const f32 width, const f32 one = 1.0f) {
+static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, f32 half, const f32 width, const f32 one = 1.0f) {
     f32 epsilon = one - ((f32*)&__float_epsilon)[0];
     f32 value = random->get_ufloat_1();
     value *= width;
@@ -182,7 +182,7 @@ extern "C" void* fn_8045B154(u8* p, JAISoundID soundID) {
                 movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[pitchIndex], 0);
             } else if ((u8)kind == 2) {
                 movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48,
-                    randomWavePitch8045((JMath::TRandom_fast_*)&lbl_8053AF8C, 0.015f, 0.03f), 0);
+                    randomWavePitch8045((JMath::TRandom_fast_*)&lbl_8053AF8C, 0.015f, 0.03f, 1.0f), 0);
             }
         }
     }
