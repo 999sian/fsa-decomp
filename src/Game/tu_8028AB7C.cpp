@@ -375,15 +375,80 @@ extern "C" void fn_8028AE2C(u8* this_) {
                 sp = *(u32*)(this_ + 0x90);
                 ax = (sp >> 5) & 0x1f8;
                 az = (sp >> 13) & 0x1f8;
-                pv[2] = 0.0f;
-                pv[1] = lbl_805404D8 + ((f32)ax + f3);
-                pv[0] = lbl_805404D8 + ((f32)az + f2);
-                fn_801F349C(tgt, platformRoom(sp), pv);
+                publishPlatformPos(tgt, platformRoom(sp),
+                    JGeometry::TVec3<f32>(lbl_805404D8 + ((f32)az + f2),
+                        lbl_805404D8 + ((f32)ax + f3),0.0f));
             }
         }
     }
 
 }
+
+extern "C" u8 fn_8028B850(u8* this_) {
+    s32 i;
+    s32 idx;
+    s32 x;
+
+    if (this_[0x250] == 0) {
+        for (i = 0; i < 4; i++) {
+            if (fn_80303750(i)) {
+                *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
+                if (*(s32*)(this_ + 0x230) >= 0x258) {
+                    *(s32*)(this_ + 0x230) = 0x258;
+                }
+                *(s32*)(this_ + 0x258) = 0;
+                return 0;
+            }
+        }
+    }
+    if (*(s32*)(this_ + 0x258) >= 3) {
+        this_[0x250] = 1;
+    } else {
+        *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
+        return 0;
+    }
+    if ((*(u32*)(this_ + 0x90) >> 27) != 0 && !(*(u8 (***)(u8*))this_)[0x34 / 4](this_) &&
+        *(s32*)(this_ + 0x24c) != 0 && *(s32*)(this_ + 0x24c) != 2 && *(s32*)(this_ + 0x24c) != 3) {
+        return 0;
+    }
+    idx = *(s32*)(this_ + 0x24c);
+    switch (idx) {
+    case 0:
+        return 1;
+    case 1:
+        *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
+        if (*(s32*)(this_ + 0x230) >= 0x258) {
+            *(s32*)(this_ + 0x230) = 0;
+            return !this_[0x234];
+        }
+        return this_[0x234];
+    case 2:
+        return (*(u8 (***)(u8*))this_)[0x34 / 4](this_);
+    case 3:
+        return !(*(u8 (***)(u8*))this_)[0x34 / 4](this_);
+    case 4:
+        if (*(s32*)(this_ + 0x230) >= 0x258) {
+            return 1;
+        }
+        *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
+        return 0;
+    case 5:
+        if (*(s32*)(this_ + 0x230) >= 0x258) {
+            return 0;
+        }
+        *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
+        return 1;
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        idx = idx - 5;
+        x = idx ^ *(s32*)(this_ + 0x23c);
+        return (u32)((x >> 1) - (x & idx)) >> 31;
+    }
+    return 1;
+}
+
 #pragma opt_propagation reset
 extern "C" void fn_8028BA5C(u8* this_) {
     s32 i;
@@ -505,3 +570,4 @@ extern "C" void* fn_8028BDD0(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
