@@ -18,9 +18,7 @@ extern "C" void* fn_8029BD18(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A7B90;
         __dt__5ActorFv(this_, 0);
-        if (freeFlag > 0) {
-            dtor_80084580(this_);
-        }
+        if (freeFlag > 0) dtor_80084580(this_);
     }
     return this_;
 }
