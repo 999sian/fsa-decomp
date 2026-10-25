@@ -17,6 +17,11 @@ extern "C" void* fn_8039027C(void* p);
 extern "C" void fn_8013BE04(void*);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80139958(void);
+struct TuSceneSound {
+    u8 unk_00[0x80];
+    JAISoundHandle handles[2];
+};
+
 struct TuOwnedObject {
     virtual ~TuOwnedObject();
 };
@@ -714,12 +719,8 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
         fn_803007A0();
         sound = *(void**)(p + 0xa0);
         if (sound != 0) {
-            if ((u8*)sound + 0x84 != 0) {
-                releaseSound__14JAISoundHandleFv((u8*)sound + 0x84);
-            }
-            if ((u8*)sound + 0x80 != 0) {
-                releaseSound__14JAISoundHandleFv((u8*)sound + 0x80);
-            }
+            ((JAISoundHandle*)((u8*)sound + 0x84))->~JAISoundHandle();
+            ((JAISoundHandle*)((u8*)sound + 0x80))->~JAISoundHandle();
             __dl__FPv(sound);
         }
         destroy__7JKRHeapFv(*(void**)(p + 0x9c));
