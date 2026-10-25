@@ -218,7 +218,7 @@ extern "C" void fn_80403680(T34Mgr* p) {
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B0FE0[];
 
-extern "C" void* fn_80403804(void* this_, s16 freeFlag) {
+extern "C" void* __dt__6T34MgrFv(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B0FE0;
         if (freeFlag > 0) {
