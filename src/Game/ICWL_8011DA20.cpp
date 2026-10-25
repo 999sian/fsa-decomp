@@ -122,7 +122,7 @@ static inline bool icwlHitObject(u8* this_) {
     }
     idx = fn_8023AC74(&box, *(s32*)(this_ + 0x4), &v);
     if (idx >= 0) {
-        fn_801CC538(idx, &v, &out, 0);
+        fn_801CC538(idx, &v, out, 0);
         return true;
     }
     idx = fn_8023AD54(&box, *(s32*)(this_ + 0x4), &v);
