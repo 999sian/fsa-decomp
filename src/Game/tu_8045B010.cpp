@@ -9,20 +9,26 @@ extern "C" void __ct__14WaveControllerFlll(void*, long, long, long);
 extern "C" unsigned char lbl_804B20F8[];
 #pragma mark fn_8045B010
 extern "C" void fn_8045AD64(void* p);
+#pragma exceptions off
 extern "C" void fn_8045B010(void* p) {
-    return fn_8045AD64((char*)p - 4);
+    void (*call)(void*) = fn_8045AD64;
+    p = (u8*)p - 4;
+    call(p);
 }
+#pragma exceptions reset
 extern "C" u16 fn_8045B018(void* p, u8* q) {
-    return fn_8045ABC8((char*)p - 4, q);
+    u16 (*call)(void*, u8*) = fn_8045ABC8;
+    p = (char*)p - 4;
+    return call(p, q);
 }
-
-#pragma mark fn_8045B010
+#pragma exceptions reset
 extern "C" void* fn_8045A640(void* p);
 void* fn_8045A640(void* p);
-extern "C" void* fn_8045B020(void** p) {
-    return fn_8045A640((char*)p - 8);
+#pragma optimization_level 4
+extern "C" void* fn_8045B020(void* p) {
+    return fn_8045A640((void*)((u32)p - 8));
 }
-
+#pragma optimization_level reset
 extern "C" s32 fn_8045A6F4(void* p);
 extern "C" s32 fn_8045B028(void* p) {
     return fn_8045A6F4((char*)p - 8);
@@ -35,6 +41,10 @@ extern "C" void* fn_80456334(void* a, u32* b, s32 c);
 extern "C" void writePort__8JASTrackFUlUs(void* a, u32 b, u16 c);
 extern void* lbl_8053AF80;
 extern u32 lbl_8052DEE0[];
+struct Holder8045 {
+    u32 pad[2];
+    void** vt;
+};
 extern "C" void fn_8045B030(void* param_1, u8 param_2, s8 param_3) {
     u32 w;
     u8 sec;
@@ -79,19 +89,15 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 extern f32 __float_epsilon;
 extern "C" void* fn_8045B154(u8* p, u32* param_2) {
-    u8 kind;
+    u8 kind = ((u8*)param_2)[1];
     void** h;
-    void* mgr;
+    void* mgr = *(void**)((u8*)lbl_8053AF80 + 0x34);
     s32 i;
 
-    kind = ((u8*)param_2)[1];
-    mgr = *(void**)((u8*)lbl_8053AF80 + 0x34);
     switch (*(s32*)param_2) {
-    case 0x20036:
-        break;
     case 0x20037: {
-        u32 a = 0x10002;
-        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &a);
+        u32 d = 0x10002;
+        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &d);
         break;
     }
     case 0x2001f:
@@ -100,18 +106,18 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     case 0x20055:
     case 0x20056:
     case 0x2005f: {
-        u32 b = 0x10003;
-        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &b);
+        u32 a = 0x10003;
+        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &a);
         break;
     }
     case 0x20029: {
-        u32 c = 0x10009;
-        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &c);
+        u32 b = 0x10009;
+        ((void (*)(void*, u32*))(*(void***)(p + 8))[5])(p, &b);
         break;
     }
     case 0x20032: {
-        u32 d = 0x20032;
-        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &d);
+        u32 c = 0x20032;
+        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &c);
         break;
     }
     case 0x20049: {
