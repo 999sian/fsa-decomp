@@ -344,22 +344,26 @@ extern "C" void fn_8029DEBC(void* p, s32 a, s32 room, s32 flag, s32 c, s32 value
 
 extern "C" void fn_8029DF80(void* p, s32 x, u32 y, s32 a, s32 b, s32 c, s32 d) {
     s32 n = x;
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), y, n, (u16)a);
+    u32 yy = y;
+    s32 bb = b;
+    s32 cc = c;
+    s32 dd = d;
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)a);
     n++;
     if ((n & 0xf) == 0) {
         n += 0xf0;
     }
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), y, n, (u16)b);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)bb);
     n = x + 0x10;
     if ((x & 0x100) != (n & 0x100)) {
         n = x + 0x110;
     }
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), y, n, (u16)c);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)cc);
     n++;
     if ((n & 0xf) == 0) {
         n += 0xf0;
     }
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), y, n, (u16)d);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), yy, n, (u16)dd);
 }
 
 extern "C" void fn_8029E050(void* self, JGeometry::TVec2<f32>* pos, u32 room, s32 a, s32 b, s32 c, s32 d)
@@ -634,10 +638,49 @@ extern "C" void fn_8029EC84(void* p, u32 p2, u32 p3, u32 p4, u32 p5, u32 p6) {
     fn_802D7BE8(fn_802D6A9C(), p3, val, 1);
 }
 
+extern "C" void fn_8029EDB8(u8* self, JGeometry::TVec3<f32>* pos, s32 h, s32 idx, s32 flag) {
+    JGeometry::TBox2f* src;
+    JGeometry::TBox2f base;
+    void* mgr;
+    s32 x;
+    s32 y;
+    s32 r;
+    u32 room;
+    s32 idxSel;
+    if (idx < 8) {
+        src = (JGeometry::TBox2f*)(self + 0xcc);
+    } else {
+        src = (JGeometry::TBox2f*)(self + 0xdc);
+    }
+    base = *src;
+    x = (s32)((pos->x - lbl_80540780) - base.i.x);
+    y = (s32)((pos->y - lbl_80540780) - base.i.y);
+    if (x < 0) {
+        x = 0;
+    } else if (x >= 0x200) {
+        x = 0x1ff;
+    }
+    if (y < 0) {
+        y = 0;
+    } else if (y >= 0x200) {
+        y = 0x1ff;
+    }
+    room = idx & 0xfe;
+    mgr = lbl_8053AC98;
+    *(s32*)((u8*)mgr + 0x20) = (s32)lbl_80540780;
+    (void)room;
+    (void)h;
+    (void)flag;
+    (void)r;
+    (void)idxSel;
+    (void)y;
+}
+
 extern "C" u32 fn_802A01F0(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
     JGeometry::TVec2<f32> p;
-    p.y = pos->y;
-    p.x = pos->x;
+    const JGeometry::TVec2<f32>& in = *pos;
+    p.y = in.y;
+    p.x = in.x;
     *(s32*)(self + 0x20) = fn_80226BC4(&p, room);
     *(u16*)(self + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)(self + 0x20));
     u32 ret = 0;
@@ -651,6 +694,148 @@ extern "C" u32 fn_802A01F0(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32
         break;
     }
     return ret;
+}
+
+extern "C" s32 fn_802A02A8(void* self, JGeometry::TVec2<f32>* pos, s32 p3, u32 room) {
+    JGeometry::TVec2<f32> t = *pos;
+    s32 result = -1;
+    s32 effect = 0x79;
+    *(s32*)((u8*)self + 0x20) = fn_80226BC4(&t, room);
+    *(u16*)((u8*)self + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)self + 0x20));
+    switch (*(u16*)((u8*)self + 0x24)) {
+    case 0x16:
+    case 0x17:
+        return fn_802A0800((char*)self, (void*)p3, room) == 1 ? 0x25 : -1;
+    case 0x18:
+        fn_802A02A8_Refresh(pos, room, 0x7a, p3);
+        fn_80458880(lbl_8053AF80, 3, -1);
+        return 0;
+    case 0x19:
+        fn_802A02A8_Refresh(pos, room, 0x12, p3);
+        return 0;
+    case 0x1a:
+        fn_802A02A8_Refresh(pos, room, 0x50, p3);
+        return 0;
+    case 0x1b:
+        result = 0;
+        break;
+    case 0x1c:
+        result = 1;
+        break;
+    case 0x1d:
+        result = 3;
+        break;
+    case 0x1e:
+        result = 5;
+        effect = (*(u16*)((u8*)self + 0x24) == 0x72) ? 0x7c : 0x83;
+        break;
+    case 0x1f:
+        result = 0x27;
+        effect = 0x83;
+        break;
+    case 0x20:
+        result = 7;
+        effect = 0x7b;
+        break;
+    case 0x21:
+        result = 0x18;
+        effect = 0x11;
+        break;
+    case 0x22:
+        result = 0x19;
+        effect = 0x12;
+        break;
+    case 0x23:
+        result = 0x1a;
+        effect = 0x11;
+        break;
+    case 0x24:
+        result = 0x1b;
+        effect = 0x50;
+        break;
+    case 0x25:
+        result = 0x1c;
+        effect = 0x11;
+        break;
+    case 0x26:
+        result = 0x1d;
+        effect = 0x15;
+        break;
+    case 0x27:
+        result = 0x1e;
+        effect = 0x14;
+        break;
+    case 0x28:
+        result = 0x1f;
+        effect = 0x15;
+        break;
+    case 0x29:
+        result = 0x20;
+        effect = 0x52;
+        break;
+    case 0x2a:
+        result = 0x21;
+        effect = 0x15;
+        break;
+    case 0x2b:
+        result = 0x22;
+        effect = 0x11;
+        break;
+    case 0x2c:
+        result = 0x23;
+        effect = 0x11;
+        break;
+    default:
+        return -1;
+    }
+    if (result == -1 || result == 0x25 || result == 0xc) {
+        return result;
+    }
+    if (result == 0x19) {
+        fn_802A02A8_Refresh(pos, room, effect, p3);
+        s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+        for (s32 i = 0; i < count; i++) {
+            Actor* a = (Actor*)(*(void**)((u8*)fn_801F856C() + 8 + i * 4));
+            if (a == 0) {
+                continue;
+            }
+        }
+        return result;
+    }
+    fn_802A02A8_Refresh(pos, room, effect, p3);
+    return result;
+}
+
+extern "C" u8 fn_8022F514(void* a);
+extern "C" s32 fn_8022F3DC(void* a);
+extern "C" s32 fn_802373EC(s32 a);
+extern "C" s32 fn_8022EA0C(void* a);
+extern "C" u32 fn_802A0800(char* self, void* p3, u32 room) {
+    s32 b = (s32)p3;
+    s32 c = (s32)room;
+    s32 r24;
+    s32 r25;
+    s32 r26;
+    s32 r28;
+    s32 r31;
+    s32 r27;
+    s32 r22;
+    JGeometry::TVec2<f32> pos;
+
+    r27 = b;
+    r31 = r27;
+    r22 = (s32)self;
+    if (fn_8022F514((void*)r27) & 0xff) {
+        r31 = fn_8022F3DC((void*)r27);
+        Vec* p = (Vec*)fn_8023E724((void*)r27);
+        pos.x = p->x;
+        pos.y = p->y;
+        r24 = (c >= 8) ? 8 : 1;
+        r28 = fn_802373EC(r31);
+        r26 = c + (r24 & 0xff);
+        r24 = fn_802F9908(lbl_8053AB10, r27, r26) & 0xffff;
+    }
+    return 0;
 }
 
 extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
@@ -1007,6 +1192,15 @@ extern "C" s32 fn_802A1D44(char* self, JGeometry::TVec2<f32>* pos, s32 p3, u32 r
     return ret;
 }
 
+extern "C" void fn_802A20F0(void* this_, void* p2, u32 p3, u32 p4, s32 p5, s32 p6) {
+    (void)this_;
+    (void)p2;
+    (void)p3;
+    (void)p4;
+    (void)p5;
+    (void)p6;
+}
+
 extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, u32 room) {
     u8 ret = 1;
     s32* g;
@@ -1149,17 +1343,17 @@ extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, 
     return ret;
 }
 
-extern "C" void fn_802A381C(void* self, JGeometry::TVec2<f32>* pos, u32 room, u32 value) {
+extern "C" void fn_802A381C(void* self, const JGeometry::TVec2<f32>* pos, u32 room, u32 value) {
     JGeometry::TVec2<f32> p;
-    p.y = pos->y;
-    p.x = pos->x;
+    p.set(pos->x, pos->y);
     s32 r = fn_80226BC4(&p, room & 0xfe);
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, r, value);
 }
 
 extern "C" void fn_802A3884(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room, u32 value) {
     JGeometry::TVec2<f32> p;
-    p.y = pos->y;
+    f32 y = pos->y;
+    p.y = y;
     p.x = pos->x;
     s32 r = fn_80226BC4(&p, room & 0xfe);
     *(s32*)(self + 0x20) = r;
