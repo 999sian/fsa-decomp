@@ -76,6 +76,9 @@ extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
 static inline f32 WRTC_random() {
+    f32 result;
+    f32 one;
+    one = lbl_8053BFCC;
     u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
     *rng = *rng * 0x19660d + 0x3c6ef35f;
     union { u32 u; f32 f; } value;
@@ -1909,17 +1912,17 @@ extern "C" void fn_800F87E4(void* this_) {
     u8* self = (u8*)this_;
     s32 id;
     if (self[0x247] == 0x14) id = 4;
-    else id = (u32)(lbl_8053BFEC * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) + 1;
+    else id = (u32)(lbl_8053BFEC * WRTC_random()) + 1;
     id = fn_801F8544(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)(self + 0xc), id);
     if (id >= 0) {
         u8* actor = (u8*)fn_801F666C(fn_801F856C(), id);
         JGeometry::TVec3<f32> vel;
-        vel.z = lbl_8053BFA0 + lbl_8053BFA0 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-        vel.y = lbl_8053BFF0 - lbl_8053BFA4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-        vel.x = lbl_8053BFF0 - lbl_8053BFA4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+        vel.z = lbl_8053BFA0 + lbl_8053BFA0 * WRTC_random();
+        vel.y = lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random();
+        vel.x = lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random();
         *(JGeometry::TVec3<f32>*)(actor + 0x3c) = vel;
     }
-    if ((s32)(lbl_8053BFF4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) == 3)
+    if ((s32)(lbl_8053BFF4 * WRTC_random()) == 3)
         Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(self + 4), (f32*)(self + 0xc), 0, -1, -1);
     *(s32*)(self + 0x18c) = 0;
     v07__5ActorFv(self);
