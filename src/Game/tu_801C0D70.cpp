@@ -46,9 +46,11 @@ extern "C" void fn_801C186C(void* p);
 extern "C" void fn_801C26FC(void* this_);
 extern "C" void fn_801C272C(void* this_);
 extern "C" void fn_801C27A8(void* this_);
+#pragma opt_propagation off
 extern "C" void fn_801C0DCC(u16* this_) {
 	s32 i;
 	char* p;
+	s32 j;
 	if (this_[0] & 0x100) {
 		if (fn_801186B0(fn_8011921C(), 0xf)) {
 			s32 idx = *(s32*)((char*)this_ + 0x50);
@@ -79,21 +81,21 @@ extern "C" void fn_801C0DCC(u16* this_) {
 		}
 	}
 	if (this_[0] & 0x38) {
-		s32 n = 0;
+		i = 0;
 		p = (char*)this_;
-		for (i = 0; i < *(s32*)((char*)this_ + 0xc); i++) {
+		for (j = i; j < *(s32*)((char*)this_ + 0xc); j++) {
 			void* obj = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
 			if (obj != 0 && (*(u32*)((char*)obj + 0x230) & 0x8000)) {
-				n++;
+				i++;
 			}
 			p += 4;
 		}
-		u32 a = (u16)n;
+		u32 a = (u16)i;
 		u32 b = this_[1];
-		BOOL r28 = ((a | ~b) - ((a - b) >> 1)) >> 31;
+		u32 r28 = ((a | ~b) - ((a - b) >> 1)) >> 31;
 		p = (char*)this_;
 		for (i = 0; i < *(s32*)((char*)this_ + 0xc); i++) {
-			void* obj = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
+			char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
 			if (obj != 0) {
 				if (this_[0] & 0x8) {
 					fn_801C27A8(obj);
@@ -107,22 +109,25 @@ extern "C" void fn_801C0DCC(u16* this_) {
 			}
 			p += 4;
 		}
-		this_[0] &= ~0x29;
+		this_[0] &= ~0x28;
 		if (r28) {
 			this_[0] &= ~0x10;
 		}
 	}
 }
-
+#pragma opt_propagation reset
 extern int __float_epsilon[];
 extern f32 lbl_8053ED94;
-extern f32 lbl_8053ED98;
+extern const f32 lbl_8053ED98;
 extern f32 lbl_8053ED9C;
 extern f32 lbl_8053EDA0;
 extern f32 lbl_8053EDA4;
-extern "C" s32 fn_801C0FEC(u8* this_, const f32* param_2, f32* param_3) {
-    f32 y = param_2[1];
-    f32 x = param_2[0];
+#pragma opt_propagation off
+extern "C" s32 fn_801C0FEC(const u8* this_, const f32* param_2, f32* param_3) {
+    f32 y;
+    f32 x;
+    x = param_2[0];
+    y = param_2[1];
     s32 idx = *(s32*)(this_ + 0x50);
     s32 ret = 0;
     param_3[0] = x;
@@ -130,41 +135,47 @@ extern "C" s32 fn_801C0FEC(u8* this_, const f32* param_2, f32* param_3) {
     if (idx >= 0) {
         u8* obj = (u8*)fn_801F666C(fn_801F856C(), idx);
         if (obj != 0) {
-            f32 dz = param_2[1] - *(f32*)(obj + 0x10);
-            f32 dx = param_2[0] - *(f32*)(obj + 0xc);
+            f32 dx;
+            f32 dz;
+            f32 ox;
+            f32 px;
+            dz = param_2[1] - *(f32*)(obj + 0x10);
+            px = param_2[0];
+            ox = *(f32*)(obj + 0xc);
+            dx = px - ox;
             f32 lenSq = dx * dx + dz * dz;
             if (lenSq <= lbl_8053ED94) {
                 ret = 1;
                 if (param_2[1] <= *(f32*)(obj + 0x10)) {
-                    if (param_2[0] < *(f32*)(obj + 0xc)) {
-                        param_3[0] = *(f32*)(obj + 0xc) - lbl_8053ED98;
+                    if (px < ox) {
+                        param_3[0] = ox - lbl_8053ED98;
                     } else {
-                        param_3[0] = lbl_8053ED98 + *(f32*)(obj + 0xc);
+                        param_3[0] = lbl_8053ED98 + ox;
                     }
                 } else {
                     if (lenSq <= lbl_8053ED9C * *(f32*)__float_epsilon) {
                     } else {
-                        f32 s;
                         if (lenSq <= lbl_8053ED90) {
-                            s = lenSq;
                         } else {
                             f32 r = __frsqrte(lenSq);
-                            s = lbl_8053EDA0 * r * (lbl_8053EDA4 - lenSq * (r * r));
+                            lenSq = lbl_8053EDA0 * r * (lbl_8053EDA4 - lenSq * (r * r));
                         }
-                        dx *= s;
-                        dz *= s;
+                        dx *= lenSq;
+                        dz *= lenSq;
                     }
                     param_3[0] = *(f32*)(obj + 0xc);
                     param_3[1] = *(f32*)(obj + 0x10);
-                    param_3[0] += dx * lbl_8053ED98;
-                    param_3[1] += dz * lbl_8053ED98;
+                    dx *= lbl_8053ED98;
+                    dz *= lbl_8053ED98;
+                    param_3[0] += dx;
+                    param_3[1] += dz;
                 }
             }
         }
     }
     return ret;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801C115C(char* this_) {
     s32 idx = *(s32*)(this_ + 0x50);
     if (idx < 0) return;
@@ -254,21 +265,35 @@ extern "C" void fn_801C1374(u16* this_, u8 param_2) {
     }
 }
 
+#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
+#pragma opt_strength_reduction off
+#pragma opt_loop_invariants off
 extern "C" void fn_801C1440(char* this_, s32 param_2) {
-    s32 found = 0;
+    s32 i;
+    u8 found = 0;
     s32* p = (s32*)(this_ + 0x10);
-    int i;
+    s32 count;
     if (*(s32*)(this_ + 0xc) <= 0) return;
-    for (i = found; i < *(s32*)(this_ + 0xc); i++, p++) {
-        if (!(u8)found) {
-            if (param_2 == *p) found = 1;
+    for (i = found; i < (count = *(s32*)(this_ + 0xc)); i++, p++) {
+        if (!found) {
+            if (param_2 == *p) {
+                found = 1;
+            }
         } else {
             p[-1] = *p;
         }
     }
-    if ((u8)found) --*(s32*)(this_ + 0xc);
+    if (found) {
+        *(s32*)(this_ + 0xc) = count - 1;
+    }
 }
-
+#pragma opt_loop_invariants reset
+#pragma opt_strength_reduction reset
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7440(void* p, s32 v);
 extern "C" void fn_802D6BC8(void* p, s32 v);
