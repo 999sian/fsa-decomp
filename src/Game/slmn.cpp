@@ -342,9 +342,9 @@ static inline void slmnCenter(Slmn* this_, f32* out) {
     walker = this_;
     n = 0;
     sy = sx = lbl_8053F8E0;
-    for (i = 0; i < 4; i++) {
-        if (!this_->parts[i].inactive && !this_->parts[i].dead) {
-            id = this_->parts[i].id;
+    for (i = 0; i < 4; i++, walker = (Slmn*)((u8*)walker + 0x24)) {
+        if (!walker->parts[0].inactive && !walker->parts[0].dead) {
+            id = walker->parts[0].id;
             if (id >= 0) {
                 a = (char*)fn_801F666C(fn_801F856C(), id);
                 if (a != 0) {
