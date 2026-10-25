@@ -55,6 +55,9 @@ struct Key0Pt {
     f32 x, y;
     Key0Pt(f32 x_, f32 y_) { x = x_; y = y_; }
 };
+static inline Key0Pt key0Point(const char* p) {
+    return Key0Pt(*(const f32*)p, *(const f32*)(p + 4));
+}
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D6C10(void* rec, Key0Pt pt, u32 id);
 
@@ -514,7 +517,8 @@ extern "C" BOOL fn_802C2684(void* unused, u8* p, f32* rect) {
 
 extern "C" void fn_802C2840(u8* p) {
     s32 room = *(s32*)(p + 4);
-    if (((u8*)fn_802D6A9C())[0x131df + room] != 0 || *(f32*)(p + 0x14) > lbl_80540C98 ||
+    u8* base = (u8*)fn_802D6A9C();
+    if ((base + 0x10000)[room + 0x31df] != 0 || *(f32*)(p + 0x14) > lbl_80540C98 ||
         *(f32*)(p + 0x44) > lbl_80540C74) {
         *(s32*)(p + 0x298) = -1;
         return;
@@ -561,7 +565,7 @@ extern "C" void fn_802C2840(u8* p) {
     rect[0] += px;
     rect[2] += px;
     s32 type = *(s32*)(p + 4);
-    u8* base = (u8*)fn_802D6A9C();
+    base = (u8*)fn_802D6A9C();
     f32* off;
     if (type < 8) {
         off = (f32*)(base + 0xcc);
@@ -579,8 +583,9 @@ extern "C" void fn_802C2840(u8* p) {
     JGeometry::TVec3<f32>& last = *(JGeometry::TVec3<f32>*)(p + 0x254);
     s32 idx = *(s32*)(p + 0x298);
     if (idx != -1) {
-        u8* o = (u8*)*(u32*)((u8*)fn_801F856C() + 8 + idx * 4);
-        if (fn_802C2684(p, o, rect)) {
+        u32* ent = (u32*)((u8*)fn_801F856C() + idx * 4);
+        u8* o = (u8*)ent[2];
+        if ((u8)fn_802C2684(p, o, rect)) {
             JGeometry::TVec3<f32>& opos = *(JGeometry::TVec3<f32>*)(o + 0xc);
             pos.z = lbl_80540C74;
             JGeometry::TVec3<f32> d;
@@ -600,7 +605,7 @@ extern "C" void fn_802C2840(u8* p) {
             continue;
         }
         u8* o = (u8*)*(u32*)((u8*)fn_801F856C() + 8 + i * 4);
-        if (fn_802C2684(p, o, rect)) {
+        if ((u8)fn_802C2684(p, o, rect)) {
             *(s32*)(p + 0x298) = i;
             pos.z = lbl_80540C74;
             last = *(JGeometry::TVec3<f32>*)(o + 0xc);
@@ -734,6 +739,7 @@ extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, s32 index);
 extern "C" u8 fn_802DCD0C(void* mgr);
 extern "C" void fn_802C52DC(u8* p) {
+    u32 packed;
     *(u32*)(p + 0x280) = *(u32*)(p + 0x90) & 0x1f;
     *(u32*)(p + 0x27c) = *(u32*)(p + 0x90) >> 7 & 0xf;
     *(u32*)(p + 0x278) = *(u32*)(p + 0x90) >> 12 & 0x1f;
@@ -750,11 +756,13 @@ extern "C" void fn_802C52DC(u8* p) {
     *(u8*)(p + 0x2b1) = 0;
     *(u8*)(p + 0x2b5) = 0;
     if ((*(u32*)(p + 0x90) & 0x800) == 0) {
-        *(f32*)(p + 0x234) = *(f32*)(p + 0x10);
-        *(f32*)(p + 0x230) = *(f32*)(p + 0xc);
-        u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+        f32 y = *(f32*)(p + 0x10);
+        f32 x = *(f32*)(p + 0xc);
+        *(f32*)(p + 0x230) = x;
+        *(f32*)(p + 0x234) = y;
+        s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
         u32 x14 = *(u32*)((u8*)fn_802D6A9C() + 0x14);
-        *(u32*)(p + 0x238) = ((x14 & 0xff) << 16) | ((*(u32*)(p + 0x280) & 0x1f) << 24) | ((x18 & 0xff) << 8) | (*(u32*)(p + 4) & 0xff);
+        *(u32*)(p + 0x238) = ((*(u32*)(p + 0x280) & 0x1f) << 24) | ((x14 & 0xff) << 16) | ((x18 & 0xff) << 8) | (*(u32*)(p + 4) & 0xff);
         *(s32*)(p + 0x23c) = 0;
     } else if (flag != 0) {
         *(u8*)(p + 0x2b5) = 1;
@@ -796,14 +804,19 @@ extern "C" void fn_802C52DC(u8* p) {
     case 5: {
         *(s32*)(p + 0x240) = 4;
         *(u8*)(p + 0x2b1) = 1;
-        u32 packed = (*(u32*)(p + 0x23c) << 30) | (*(u8*)(p + 0x2b5) << 29) | ((*(u32*)(p + 0x280) & 0x1f) << 24) | (*(u32*)(p + 4) & 0xff);
-        if (fn_802DCD0C(fn_802D6A9C())) {
-            packed = *(u16*)(p + 0x2aa) << 8;
-        } else {
-            u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+        u32 a = *(u32*)(p + 0x23c) << 30;
+        u32 b = *(u8*)(p + 0x2b5) << 29;
+        packed = a | b | ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | (*(u32*)(p + 4) & 0xff);
+        if (!fn_802DCD0C(fn_802D6A9C())) {
+            s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
             packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+        } else {
+            packed = *(u16*)(p + 0x2aa) << 8;
         }
-        fn_802D6D70(fn_802D6A9C(), Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10)), Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), packed, *(u32*)(p + 0x238));
+        Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
+        Key0Pt pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+        u32 id = *(u32*)(p + 0x238);
+        fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
         break;
     }
     case 6:
@@ -819,17 +832,25 @@ extern "C" void fn_802C52DC(u8* p) {
     case 8:
     default:
         *(s32*)(p + 0x240) = 2;
-        *(u8*)(p + 0x2ad) = 0xff;
-        *(u8*)(p + 0x2b4) = 1;
         break;
     }
-    *(Vec*)(p + 0x260) = *(Vec*)(p + 0xc);
+    *(u8*)(p + 0x2ad) = 0xff;
+    *(u8*)(p + 0x2b4) = 1;
+    *(JGeometry::TVec3<f32>*)(p + 0x260) = *(JGeometry::TVec3<f32>*)(p + 0xc);
     *(s32*)(p + 0x26c) = *(s32*)(p + 4);
     if (*(s32*)(p + 0x280) == 0) {
-        *(f32*)(p + 0x60) = lbl_80540CA0;
-        *(f32*)(p + 0x64) = lbl_80540CA4;
-        *(f32*)(p + 0x68) = lbl_80540C80;
-        *(f32*)(p + 0x6c) = lbl_80540C84;
+        f32 a;
+        f32 b;
+        b = lbl_80540CA4;
+        a = lbl_80540CA0;
+        *(f32*)(p + 0x60) = a;
+        *(f32*)(p + 0x64) = b;
+        f32 d;
+        f32 c;
+        c = lbl_80540C80;
+        d = lbl_80540C84;
+        *(f32*)(p + 0x68) = c;
+        *(f32*)(p + 0x6c) = d;
     } else if (*(s32*)(p + 0x280) == 1 || *(s32*)(p + 0x280) >= 6) {
         *(f32*)(p + 0x60) = lbl_80540CA4;
         *(f32*)(p + 0x64) = lbl_80540CA4;
@@ -855,7 +876,7 @@ extern "C" void fn_802C52DC(u8* p) {
     *(u16*)(p + 0x2a8) = 0xffff;
     *(s32*)(p + 0x298) = -1;
     *(s32*)(p + 0x29c) = -1;
-    u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+    s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
     *(u16*)(p + 0x2aa) = (x18 & 0xff) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 8);
     *(s32*)(p + 0x2a0) = -1;
     if (flag == 0) {
