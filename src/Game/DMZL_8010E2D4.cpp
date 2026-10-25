@@ -129,7 +129,7 @@ static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f3
         *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
     }
 }
-static inline void DMZLSetBoxAlt(f32 x0, f32 y0, f32 x1, f32 y1) {
+static inline void DMZLSetBoxAlt(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
     u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     if (obj[0x7f5] == 0) {
         obj[0x7f4] = 1;
