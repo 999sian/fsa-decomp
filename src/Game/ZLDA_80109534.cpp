@@ -97,6 +97,107 @@ extern "C" void fn_80109534(u8* this_) {
     }
 }
 
+extern "C" s32 fn_801096C8(u8* self, u32 state) {
+    JGeometry::TVec3<f32> posCreate;
+    JGeometry::TVec3<f32> posEffect;
+    JGeometry::TVec3<f32> pos7;
+    JGeometry::TVec3<f32> pos8;
+    s32 actorId;
+    *(u32*)(self + 0x32c) = *(u32*)(self + 0x328);
+    *(u32*)(self + 0x328) = state;
+    self[0x338] = 0;
+    switch (state) {
+    case 0: return 0;
+    case 1:
+        self[0x338] = 1;
+        fn_801D22DC(self + 0x33c, 7, 2, 0);
+        break;
+    case 5: {
+        actorId = *(s32*)(self + 0x16c);
+        if (actorId != -1) fn_802D7704(fn_802D6A9C(), actorId, self[0x1a8], *(s32*)(self + 4));
+        fn_801D22DC(self + 0x33c, 2, 2, 0);
+        break;
+    }
+    case 6:
+        fn_801D22DC(self + 0x33c, 2, 2, 0);
+        break;
+    case 7: {
+        pos7 = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        pos7.y += lbl_8053C3E4;
+        fn_8013CC50(*(s32*)(self + 4), &pos7, 0x33a, 0, 0, 0, 0, 1, lbl_8053C3E8);
+        fn_801D22DC(self + 0x33c, 9, 0, 0);
+        break;
+    }
+    case 8: {
+        pos8 = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        pos8.y += lbl_8053C3E4;
+        fn_8013CC50(*(s32*)(self + 4), &pos8, 0x33a, 0, 0, 0, 0, 1, lbl_8053C3E8);
+        fn_801D22DC(self + 0x33c, 2, 2, 0);
+        break;
+    }
+    case 9:
+        fn_801D22DC(self + 0x33c, fn_80230CFC(*(s32*)(self + 0x300)), 2, 0);
+        break;
+    case 10:
+        fn_801D22DC(self + 0x33c, fn_80230CFC(*(s32*)(self + 0x300)), 2, 0);
+        break;
+    case 11:
+        fn_801D22DC(self + 0x33c, *(s32*)(self + 0x98) + 10, 0, 0);
+        self[0x2f8] = 1;
+        break;
+    case 12:
+        fn_801D22DC(self + 0x33c, 4, 0, 0);
+        fn_80458880(lbl_8053AF80, 10, (s8)*(s32*)(self + 0x300));
+        for (s32 i = 0; i < 4; ++i) fn_80230AD4(i);
+        break;
+    case 13: {
+        for (s32 i = 0; i < 4; ++i) {
+            fn_80230224(i, 0);
+            if (lbl_8053AAF8[0x82] & (u8)(1 << i)) fn_8023764C(i, 0);
+        }
+        actorId = *(s32*)(self + 0x310);
+        if (actorId >= 0) {
+            u8* obj = (u8*)fn_801F666C(fn_801F856C(), actorId);
+            if (obj && *(u32*)(obj + 0x1a0) == 0x4c494d54) obj[0x11c] = 0;
+        }
+        *(s32*)(self + 0x308) = 0;
+        *(s32*)(self + 0x310) = -1;
+        return 1;
+    }
+    case 14:
+        fn_801D22DC(self + 0x33c, 2, 2, 0);
+        lbl_8053AA80 = 0;
+        *(s32*)(self + 0x108) = 4;
+        self[0x2f8] = 1;
+        *(s32*)(self + 0x30c) = 0;
+        *(s32*)(self + 0x310) = Actor_CreateByID(fn_801F856C(), 0x4c494d54, *(u32*)(self + 4), self + 0xc, 0, -1, -1);
+        break;
+    case 15: {
+        if (*(s32*)(self + 0x2fc) > 0 && *(s32*)(self + 0x320) == 0) {
+            posCreate = *(JGeometry::TVec3<f32>*)(self + 0xc);
+            fn_800FE3EC(self + 0x230, *(s32*)(self + 0x2fc), &posCreate, *(s32*)(self + 4));
+        }
+        fn_8023077C();
+        posEffect = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        posEffect.y += lbl_8053C3E4;
+        fn_8013CC50(*(s32*)(self + 4), &posEffect, 0x33a, 0, 0, 0, 0, 1, lbl_8053C3E8);
+        break;
+    }
+    case 16:
+        fn_80230534(0);
+        fn_801D22DC(self + 0x33c, 7, 2, 0);
+        self[0x338] = 1;
+        *(s32*)(self + 0x318) = 0;
+        break;
+    case 17:
+        self[0x338] = 1;
+        break;
+    default: return 0;
+    }
+    fn_801D1F14(self + 0x33c, lbl_8053C3E0);
+    return 1;
+}
+
 extern "C" s32 fn_80109AE0(char* self, f32* out) {
     out[2] = lbl_8053C3E0;
     out[1] = lbl_8053C3E0;
