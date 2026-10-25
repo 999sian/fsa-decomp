@@ -351,10 +351,19 @@ static inline void* createWaveController(void* pos) {
     return controller;
 }
 
+class WaveController {
+public:
+    WaveController(s32 pos, s32 heap, s32 handles);
+private:
+    u8 pad[0x5c];
+};
+
 extern "C" void* fn_803B8414(u8* this_) {
     int i;
     void* res;
     void* pic;
+    void* m;
+    void* wc;
     u8* tbl;
     *(void**)this_ = lbl_804AFAB0;
     __construct_array(this_ + 0xf8, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0xa);
@@ -374,16 +383,8 @@ extern "C" void* fn_803B8414(u8* this_) {
     *(f32*)(this_ + 0xec) = lbl_80543440;
     *(f32*)(this_ + 0xf0) = lbl_80543440;
     *(f32*)(this_ + 0xf4) = lbl_80543440;
-    pic = __nw__FUl(0x60);
-    if (pic != 0) {
-        fn_8045B46C(pic, 0, 0, 0, 8);
-    }
-    *(void**)(this_ + 0x1c) = pic;
-    pic = __nw__FUl(0x5c);
-    if (pic != 0) {
-        __ct__14WaveControllerFlll(pic, this_ + 0xec, 0, 8);
-    }
-    *(void**)(this_ + 0x20) = pic;
+    *(void**)(this_ + 0x1c) = createSoundController();
+    *(void**)(this_ + 0x20) = createWaveController(this_ + 0xec);
     tbl = lbl_80529DEC;
     *(f32*)(this_ + 0xf8) = lbl_80543440;
     *(f32*)(this_ + 0xfc) = lbl_80543440;
