@@ -1,4 +1,6 @@
 #include "Game/esd/types.h"
+extern "C" u8 lbl_804CADE0[0xd0];
+u8 lbl_804CADE0[0xd0];
 #include "Game/SinitPoolChain.h"
 
 
