@@ -36,7 +36,8 @@ extern "C" const f32 lbl_80541CE0;
 extern "C" const char lbl_80471918[];
 extern "C" void fn_80328DCC(u8* this_) {
     if (*(s32*)(this_ + 4) < 8) {
-        void* res = ((void* (*)(void*, u32, const char*))(*(void***)(*(void**)(lbl_8053AAF8 + 0xA4)))[6])(*(void**)(lbl_8053AAF8 + 0xA4), 0x534F4220, lbl_80471918);
+        SobResMgr* mgr = *(SobResMgr**)(lbl_8053AAF8 + 0xA4);
+        void* res = mgr->vf18('SOB ', lbl_80471918);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xC, res, 0x17A, lbl_80541CE0, lbl_80541CE0, 0);
     }
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xC, 0x17A, 0, 2, -1, 0, 0, 0);
