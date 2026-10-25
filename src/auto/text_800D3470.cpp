@@ -876,16 +876,11 @@ extern "C" void fn_800D43F0(void* param) {
 
     *(s32*)((char*)param + 0x1c) = GDGetCurrOffset();
 
-    __GDWrite(0x10);
-    __GDWrite(0x00);
-    __GDWrite(0x03);
-    __GDWrite(0x10);
-    __GDWrite(0x0e);
-
-    writeChanCtrl(*(u16*)((char*)param + 0xe));
-    writeChanCtrl(*(u16*)((char*)param + 0x12));
-    writeChanCtrl(*(u16*)((char*)param + 0x10));
-    writeChanCtrl(*(u16*)((char*)param + 0x14));
+    J3DGDWriteXFCmdHdr(0x100e, 4);
+    ((J3DColorChan*)((char*)param + 0x0e))->load();
+    ((J3DColorChan*)((char*)param + 0x12))->load();
+    ((J3DColorChan*)((char*)param + 0x10))->load();
+    ((J3DColorChan*)((char*)param + 0x14))->load();
 }
 
 extern "C" void fn_800D4A70(u8* p) {
