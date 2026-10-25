@@ -6,7 +6,7 @@ struct GateBox {
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
     void expand(f32 v) { f32 a=x0-v, b=y0-v, c=x1+v, d=y1+v; x0=a; y0=b; x1=c; y1=d; }
 };
-static inline s32 gateRoom(s32 param) { s32 n=(param>>24)&7; s32 r=n+7; if (!n) r=n; return r; }
+static inline s32 gateRoom(const s32 param) { s32 n=(param>>24)&7; s32 r=n+7; if (!n) r=n; return r; }
 struct GateRoomFlags { u8 pad[0x131df]; u8 flags[1]; u8 flag(s32 room) { return flags[room]; } };
 
 
@@ -190,10 +190,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
         x1=*(f32*)(p+0x68); out[2]=x1;
         y1=*(f32*)(p+0x6c); out[3]=y1;
         y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
-        ((GateBox*)out)->x0 = x0+x;
-        ((GateBox*)out)->y0 = y0+y;
-        ((GateBox*)out)->x1 = x1+x;
-        ((GateBox*)out)->y1 = y1+y;
+        ((JGeometry::TBox2f*)out)->set(x0+x,y0+y,x1+x,y1+y);
         if (!fn_8022D75C(i) && fn_8022D534(i)) { p[i+0x234]=1; continue; }
         if ((*(s32*)(p+0x90)&0x7f)==0x10) return;
         if (fn_8022F514(i)) {
@@ -235,7 +232,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             f32 d,c,b,a,v;
             a=out[0]; v=lbl_8053FF78; b=out[1]; c=out[2]; d=out[3];
             a-=v; b-=v; c+=v; d+=v;
-            out[0]=a; out[1]=b; out[2]=c; out[3]=d;
+            ((JGeometry::TBox2f*)out)->set(a,b,c,d);
             if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF74)) p[i+0x234]=0;
         }
     }
