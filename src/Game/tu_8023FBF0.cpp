@@ -765,12 +765,12 @@ inline s32 countSharing2(char* p) {
         } else if (fn_8022F514(i)) {
             s32 linked = S32(p, 0xd60);
             if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
+                if (fn_8022F3DC(i) == linked) {
                     c++;
                 }
             } else {
                 s32 self = S32(p, 0x4);
-                if (self == fn_8022F3DC(i)) {
+                if (fn_8022F3DC(i) == self) {
                     c++;
                 }
             }
@@ -2824,20 +2824,15 @@ void fn_80248604(char* p) {
     }
 }
 BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
+    s32 v;
     if (S32(p, 0x1240) != 0) {
         return 0;
     }
-    if (anim == 0xe8 && getMode2(p) == 4) {
-        s32 v = linkIdx(p);
-        if (v != linkRank2(p)) {
-            S16(p, 0x450) = 0x1c5;
-            goto done;
-        }
-    }
-    if (anim >= 0) {
+    if (anim == 0xe8 && getMode5(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) {
+        S16(p, 0x450) = 0x1c5;
+    } else if (anim >= 0) {
         S16(p, 0x450) = anim;
     }
-done:
     U8(p, 0xca2) = flag;
     U8(p, 0x456) = 1;
     return 1;
@@ -5558,6 +5553,7 @@ extern "C" char __vt__19JPAParticleCallBack[];
 extern "C" char __vt__18JPAEmitterCallBack[];
 extern "C" void* __ct__6PlayerFi(u8* p, s32 idx) {
     void* obj;
+    void* obj2;
     PTR(p, 0x0) = lbl_804A6F38;
     __construct_array(p + 0x38, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0x31);
     __construct_array(p + 0x4e0, (void*)fn_8018E890, 0, 0x10, 3);
@@ -5602,16 +5598,16 @@ extern "C" void* __ct__6PlayerFi(u8* p, s32 idx) {
         fn_8045B46C(obj, (char)idx, 0, 0, 8);
     }
     PTR(p, 0x1254) = obj;
-    obj = __nw__FUl(0x2c0);
-    if (obj) {
+    obj2 = __nw__FUl(0x2c0);
+    if (obj2) {
         fn_8030BDF8();
     }
-    PTR(p, 0xbec) = obj;
-    obj = __nw__FUl(0xc0);
-    if (obj) {
-        fn_8026F9E8(obj, p);
+    PTR(p, 0xbec) = obj2;
+    obj2 = __nw__FUl(0xc0);
+    if (obj2) {
+        fn_8026F9E8(obj2, p);
     }
-    PTR(p, 0xbf0) = obj;
+    PTR(p, 0xbf0) = obj2;
     U8(p, 0xcac) = 0;
     return p;
 }
