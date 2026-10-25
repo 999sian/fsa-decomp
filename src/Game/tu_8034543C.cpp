@@ -134,7 +134,7 @@ static inline f32 tuRandF() {
     u8* g = (u8*)lbl_8053AAF8;
     *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
-    return *(f32*)&bits - lbl_805423A8;
+    return *(f32*)&bits - 1.0f;
 }
 
 static inline s32 tuCollectTiles(u8* self, u16* tiles, f32 x0, f32 y0, s32 w, s32 h) {
@@ -182,14 +182,16 @@ extern "C" s32 fn_803466C0(s32 param_1, s32 param_2, s32 param_3) {
 
 extern "C" void fn_80346704(Actor* this_) {
     u16 tiles[713];
-    u32 spawn = this_->field_90;
-    s32 extra = (spawn >> 12) & 0xff;
-    s32 range = (spawn >> 20) & 0xff;
+    u32 spawn = *(u32*)((u8*)this_ + 0x90);
     u8* self = (u8*)this_;
+    s32 extra;
+    s32 range;
     u32 count;
     s32 n;
 
-    this_->field_90 = spawn & 0xfff;
+    *(u32*)(self + 0x90) = spawn & 0xfff;
+    extra = (spawn >> 12) & 0xff;
+    range = (spawn >> 20) & 0xff;
     *(s32*)(self + 0x108) = 10000;
     *(f32*)(self + 0x60) = lbl_8054241C;
     *(f32*)(self + 0x64) = lbl_8054241C;
@@ -256,8 +258,9 @@ extern "C" void fn_80346704(Actor* this_) {
             }
             f32 fx = (f32)((t & 0x1f) << 4) + x0;
             f32 fy = (f32)(((t >> 5) & 0x7ff) << 4) + y0;
-            for (s32 j = 0; j < num; j++, k++) {
+            for (s32 j = 0; j < num; j++) {
                 tuSpawnFish(self, fx, fy);
+                k++;
             }
         }
     }
