@@ -36,14 +36,16 @@ extern "C" f32 lbl_8046C298[];
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
+    s32 room;
     void* h = *(void**)(self + 0x198);
-    s32 room = *(s32*)(self + 4);
+    room = *(s32*)(self + 4);
     char* base = (char*)fn_8020D58C();
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
 }
 
 extern "C" u8 fn_802957CC(void* p, u8 mode) {
     struct Probe {
+        Probe() {}
         JGeometry::TVec3f pos;
         JGeometry::TBox2f area;
     };
@@ -51,22 +53,18 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     u8 ok = 1;
     s32 i;
     s32 room;
-    void* h;
-    char* base;
     char* m;
-    f32* d;
-    JGeometry::TVec3f* t;
-    JGeometry::TVec3f save;
+    JGeometry::TBox2f* src;
+    JGeometry::TVec3f* v;
+    JGeometry::TVec3f save(*(JGeometry::TVec3f*)(self + 0xc));
     Probe pt;
     JGeometry::TBox2f box;
     JGeometry::TVec3f q;
     JGeometry::TVec3f ofs;
 
-    save = *(JGeometry::TVec3f*)(self + 0xc);
-    t = &lbl_8046C268[mode];
-    ((JGeometry::TVec3f*)(self + 0x3c))->x = t->x;
-    ((JGeometry::TVec3f*)(self + 0x3c))->y = t->y;
-    ((JGeometry::TVec3f*)(self + 0x3c))->z = t->z;
+    ((JGeometry::TVec3f*)(self + 0x3c))->x = lbl_8046C268[mode].x;
+    ((JGeometry::TVec3f*)(self + 0x3c))->y = lbl_8046C268[mode].y;
+    ((JGeometry::TVec3f*)(self + 0x3c))->z = lbl_8046C268[mode].z;
     *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
     *(f32*)(self + 0x60) = -44.0f;
     *(f32*)(self + 0x64) = -44.0f;
@@ -75,7 +73,8 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
 
     room = *(s32*)(self + 4);
     m = (char*)fn_802D6A9C();
-    pt.area = *(JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
+    src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
+    pt.area = *src;
     pt.area.i.x -= -32.0f;
     pt.area.i.y -= -32.0f;
     pt.area.f.x += -32.0f;
@@ -94,14 +93,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         pt.pos.y += *(f32*)(self + 0x64);
         pt.pos.y += 8.0f;
         for (i = 0; i < 6; i++) {
-            if (!fn_802A1490(lbl_8053AC98, &pt)) {
-                ok = 0;
-                break;
-            }
-            h = *(void**)(self + 0x198);
-            room = *(s32*)(self + 4);
-            base = (char*)fn_8020D58C();
-            if (fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, &pt, h, 0) == 1) {
+            if (!fn_802A1490(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
                 ok = 0;
                 break;
             }
@@ -118,14 +110,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         pt.pos.x += *(f32*)(self + 0x60);
         pt.pos.x += 8.0f;
         for (i = 0; i < 6; i++) {
-            if (!fn_802A1490(lbl_8053AC98, &pt)) {
-                ok = 0;
-                break;
-            }
-            h = *(void**)(self + 0x198);
-            room = *(s32*)(self + 4);
-            base = (char*)fn_8020D58C();
-            if (fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, &pt, h, 0) == 1) {
+            if (!fn_802A1490(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
                 ok = 0;
                 break;
             }
@@ -135,23 +120,20 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
 
     if (!ok) {
         ok = 1;
-        box = *(JGeometry::TBox2f*)(self + 0x60);
+        box.i.x = *(f32*)(self + 0x60);
+        box.i.y = *(f32*)(self + 0x64);
+        box.f.x = *(f32*)(self + 0x68);
+        box.f.y = *(f32*)(self + 0x6c);
         box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
-        d = &lbl_8046C298[mode * 3];
         for (i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, *(s32*)(self + 4), 0, 0.0f)) {
-                ofs.set(d[0], d[1], d[2]);
-                q = *(JGeometry::TVec3f*)fn_8023E724(i);
+                v = (JGeometry::TVec3f*)fn_8023E724(i);
+                ofs.set(((JGeometry::TVec3f*)lbl_8046C298)[mode].x, ((JGeometry::TVec3f*)lbl_8046C298)[mode].y,
+                        ((JGeometry::TVec3f*)lbl_8046C298)[mode].z);
+                q = *v;
                 q += ofs;
-                if (fn_802A1490(lbl_8053AC98, &q) != 1) {
+                if (fn_802A1490(lbl_8053AC98, &q) != 1 || HitsRect(self, &q)) {
                     ok = 0;
-                } else {
-                    h = *(void**)(self + 0x198);
-                    room = *(s32*)(self + 4);
-                    base = (char*)fn_8020D58C();
-                    if (fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, &q, h, 0)) {
-                        ok = 0;
-                    }
                 }
             }
         }
@@ -254,7 +236,6 @@ extern "C" s32 fn_801F2718(void* p, u32 id);
 extern "C" void fn_802A381C(void* mgr, void* v, s32 a, s32 b);
 extern "C" void fn_802961AC(void* p) {
     char* self = (char*)p;
-    s32 mode;
     char* other;
     s32 i;
     char* row;
@@ -266,6 +247,7 @@ extern "C" void fn_802961AC(void* p) {
     s32 id;
     s32 j;
     u32 n;
+    s32 mode;
 
     id = fn_801F2718(self, 0x534C5233);
     if (id < 0) {
