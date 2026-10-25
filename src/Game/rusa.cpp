@@ -56,7 +56,6 @@ static inline u8 Rusa_IsActive(char* p) {
 
 extern const f32 lbl_8053FB04;
 
-extern "C" f32 __fsels(f32, f32, f32);
 static inline void Rusa_CalcPush(char* p, const JGeometry::TVec3f* v, JGeometry::TVec3f* out) {
     out->set(0.0f, 0.0f, 0.0f);
     if (v->z <= 0.0f && *(s32*)(p + 0x248) != 0) {
