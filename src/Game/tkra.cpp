@@ -85,9 +85,33 @@ extern "C" s32 Actor_CreateByID(void*, u32, s32, JGeometry::TVec3f*, u32, s32, s
 extern char* lbl_8053AB10;
 extern void* lbl_8053AD30;
 
+struct TKRA {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual u8 open();
+};
+
 inline u8 tkraRoomMode(char* p) {
     s32 room = *(s32*)(p + 4);
-    return fn_802D6A9C()->arr[room];
+    char* g = (char*)fn_802D6A9C();
+    return *(u8*)(g + room + 0x131df);
 }
 
 struct TkraV2 { f32 x, y; };
