@@ -2,6 +2,15 @@
 #include "Game/Actor.h"
 #include "JSystem/JMath/Inline.h"
 
+struct Vec3f {
+    f32 x, y, z;
+    Vec3f(f32 ax, f32 ay, f32 az) {
+        x = ax;
+        y = ay;
+        z = az;
+    }
+};
+
 extern "C" void* lbl_8053AAF8;
 
 /* 0x19660d/0x3c6ef35f LCG kept at lbl_8053AAF8+0xB4; returns a [0,1) float. */
@@ -136,6 +145,137 @@ extern "C" void fn_802B6DAC(Actor* p) {
             obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x60);
             fn_801EFD34(p, obj, 0.0f, -18.0f, 0.0f, buf, 7);
         }
+    }
+}
+
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_80236E3C(s32);
+extern "C" u8 fn_80239C00(s32, void*, u32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" u8 fn_8022F9E4(s32, s32, s32, s32);
+extern "C" void fn_802D7584(void*, s32, s32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" u8 fn_8022F478(s32);
+extern "C" void fn_80230C6C(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" f32* fn_8023E7B0(s32);
+extern "C" u8 fn_801F2B7C(Actor*, s32, s32, s32);
+extern "C" u8 fn_801F2B20(Actor*, s32);
+extern "C" void* lbl_8053AB10;
+extern "C" void fn_8030C210(void*, void*);
+extern "C" void fn_802B7044(Actor* p) {
+    u8* b = (u8*)p;
+    switch (*(s32*)(b + 0x234)) {
+    case 0: {
+        f32 box[4];
+        s32 i = 0;
+        p->field_60 = -30.0f;
+        p->field_64 = -20.0f;
+        p->field_68 = 30.0f;
+        p->field_6C = 20.0f;
+        box[0] = p->field_60;
+        box[1] = p->field_64;
+        box[2] = p->field_68;
+        box[3] = p->field_6C;
+        box[0] += p->field_0C.x;
+        box[1] += p->field_0C.y;
+        box[2] += p->field_0C.x;
+        box[3] += p->field_0C.y;
+        for (; i < 4; i++) {
+            if (fn_8023F264(i) && fn_80236E3C(i) && fn_80239C00(i, box, p->field_04)) {
+                f32* pos = fn_8023E724(i);
+                f32 x = pos[0];
+                f32 y = pos[1];
+                s32 dir = fn_80230CFC(i);
+                f32* off = (f32*)(lbl_8046CAD0 + dir * 8);
+                x += off[0];
+                y += off[1];
+                u8 in = 0;
+                if (x >= box[0] && y >= box[1] && x < box[2] && y < box[3]) {
+                    in = 1;
+                }
+                if (in == 1 && fn_8022F9E4(i, p->field_198, 1, 0)) {
+                    fn_802D7584(fn_802D6A9C(), p->field_16C, 1);
+                    *(s32*)(b + 0x23c) = 50;
+                    *(s32*)(b + 0x234) = 2;
+                    break;
+                }
+            }
+        }
+        if (*(s32*)(b + 0x234) == 0 && *(s32*)(b + 0x23c) != 0) {
+            *(s32*)(b + 0x23c) -= 1;
+        }
+        break;
+    }
+    case 1:
+        *(s32*)(b + 0x234) = 0;
+        *(s32*)(b + 0x23c) = 20;
+        break;
+    case 2:
+        *(s32*)(b + 0x23c) -= 1;
+        if (*(s32*)(b + 0x23c) == 0) {
+            Vec v1;
+            v1.x = p->field_0C.x - 8.0f;
+            v1.y = p->field_0C.y;
+            v1.z = p->field_0C.z;
+            fn_8029D8F0(lbl_8053AC98, (f32*)&v1, p->field_04, *(s32*)(b + 0x244), 0);
+            *(s32*)(b + 0x234) = 3;
+            if (**(u8**)(b + 0x248) == 'u') {
+                Vec v2;
+                v2.x = p->field_0C.x;
+                v2.y = p->field_0C.y;
+                v2.z = p->field_0C.z;
+                *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, &v2, 1.0f, 0x280, 0, 0, 0, 0, 1);
+            } else {
+                Vec v3;
+                v3.x = p->field_0C.x;
+                v3.y = p->field_0C.y;
+                v3.z = p->field_0C.z;
+                *(s32*)(b + 0x230) = fn_8013CC50(p->field_04, &v3, 1.0f, 0x27f, 0, 0, 0, 0, 1);
+            }
+            *(s32*)(b + 0x240) = 50;
+        }
+        break;
+    case 3:
+        if (p->field_C4 != 0) {
+            if ((fn_8022CAF8(p->field_C8) == 4 || fn_8022CAF8(p->field_C8) == 5) && fn_8022F478(p->field_C8)) {
+                fn_80230C6C(p->field_C8);
+            } else if (fn_8023DE58(p->field_C8) < 8) {
+                f32* pos = fn_8023E7B0(p->field_C8);
+                p->field_0C.x = pos[0];
+                p->field_0C.y = pos[1];
+                p->field_0C.z = pos[2];
+                u8* emit = *(u8**)(b + 0x230);
+                if (emit != 0) {
+                    if (*(s32*)(b + 0x240) == 0) {
+                        *(u32*)(emit + 0xf4) |= 1;
+                        *(s32*)(emit + 0x24) = 1;
+                        *(void**)(b + 0x230) = 0;
+                    } else {
+                        f32 x = p->field_0C.x;
+                        f32 y = p->field_0C.y;
+                        f32 z = p->field_0C.z;
+                        *(f32*)(emit + 0xa4) = x;
+                        *(f32*)(emit + 0xa8) = y;
+                        *(f32*)(emit + 0xac) = z;
+                        *(s32*)(b + 0x240) -= 1;
+                    }
+                }
+            } else {
+                fn_80230C6C(p->field_C8);
+            }
+        } else {
+            p->field_3C.z += -0.15f;
+            JMathInlineVEC::PSVECAdd(&p->field_0C, &p->field_3C, &p->field_0C);
+            if (p->field_0C.z < 0.0f) {
+                p->v07();
+            } else if (fn_801F2B7C(p, 0, p->field_C8, 6) || fn_801F2B20(p, 0)) {
+                p->v07();
+            }
+        }
+        fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), &p->field_0C);
+        break;
     }
 }
 
