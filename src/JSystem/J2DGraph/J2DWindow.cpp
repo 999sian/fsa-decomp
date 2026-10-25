@@ -495,6 +495,13 @@ void J2DWindow::drawFrameTexture(JUTTexture* texture, f32 x0, f32 y0, f32 width,
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_S16, 0);
 }
 
+// Incorrect Scheduling
+void J2DWindow::drawFrameTexture(JUTTexture* texture, f32 x0, f32 y0, bool doInvertU, bool doInvertV, bool doLoad)
+{
+    drawFrameTexture(texture, x0, y0, texture->getWidth(), texture->getHeight(), (int)doInvertU ? 0 : 0x8000,
+                     (int)doInvertV ? 0 : 0x8000, (int)doInvertU ? 0x8000 : 0, (int)doInvertV ? 0x8000 : 0, doLoad);
+}
+
 void J2DWindow::drawContentsTexture(f32 x0, f32 y0, f32 xOffset, f32 yOffset)
 {
     f32 x1     = x0 + xOffset;
