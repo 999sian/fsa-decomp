@@ -1,6 +1,8 @@
 // DBRK_8014529C: .text 0x8014529C-0x80145F60 (actor DBRK)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 // ---- from Game/fn_8014529C_dtor.cpp
 
