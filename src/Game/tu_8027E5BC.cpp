@@ -1406,6 +1406,8 @@ extern "C" bool fn_8025F684(char*);
 extern "C" bool fn_8022C3AC(s32);
 extern "C" void fn_80290D58(char*);
 extern "C" void fn_80282178(char* p) {
+f32 y;
+f32 z;
 int area;
 S32(p,0x394)++;
 if(S32(p,0x394)==0x48) fn_8024F0E8(p,0x10003);
@@ -1422,9 +1424,10 @@ if(*(u8*)((u32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
 if(F32(p,0x348)>-7.0f) F32(p,0x348)=-7.0f;
 else if(F32(p,0x348)<-10.0f) F32(p,0x348)=-10.0f;
 } else {
-JGeometry::TVec2<f32> rotated(-F32(p,0x34c),-F32(p,0x348));
-F32(p,0x348)=rotated.x;
-F32(p,0x34c)=rotated.y;
+y=F32(p,0x34c);
+z=F32(p,0x348);
+F32(p,0x348)=-y;
+F32(p,0x34c)=-z;
 if(F32(p,0x34c)<7.0f) F32(p,0x34c)=7.0f;
 else if(F32(p,0x34c)>10.0f) F32(p,0x34c)=10.0f;
 }
@@ -1613,6 +1616,7 @@ void fn_80282AA8(char* p) {
 
 u8 fn_8023F264(s32);
 u8 fn_80243194(char*, s32);
+s32 fn_8024189C(char*);
 s32 fn_8022CAF8(s32);
 void fn_8023E080(s32, s32);
 void fn_80282E6C(char* p) {
