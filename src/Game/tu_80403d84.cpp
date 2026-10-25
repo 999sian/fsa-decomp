@@ -621,12 +621,6 @@ void fn_8040E298(u8* self);
 
 }
 
-// Member-function-pointer layout (this offset, vtable offset, function) of the state handler tables.
-struct StateFnEntry {
-	s32 thisOfs;
-	s32 vtblOfs;
-	void* fn;
-};
 // The state handlers are member functions of the menu object in the original: tables of
 // member-function pointers, which MWCC initializes by copying from a .data image in __sinit.
 // TODO: the handlers are still written as extern "C" free functions above; once they become
