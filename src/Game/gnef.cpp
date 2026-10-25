@@ -116,6 +116,39 @@ extern "C" void fn_802ED834(u8* this_) {
     }
 }
 
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void);
+extern "C" s32 fn_801F68E0(void);
+extern "C" void fn_80458FF0(void*, int, int, int);
+extern "C" void fn_8022ADE4(void);
+extern u8* lbl_8053AF80;
+extern "C" void fn_802ED984(u8* this_) {
+    switch (*(s32*)(this_ + 0x24c)) {
+    case 0:
+        fn_802D6A9C();
+        if (fn_802DCD0C() == 0) {
+            u8* s = *(u8**)(lbl_8053AB10 + 0x24);
+            if (s[0x7f5] == 0) {
+                s[0x7f4] = 1;
+                *(s32*)(s + 0x7f8) = 4;
+                *(f32*)(s + 0x7fc) = *(f32*)(this_ + 0xc);
+                *(f32*)(s + 0x800) = *(f32*)(this_ + 0x10);
+                *(f32*)(s + 0x804) = *(f32*)(this_ + 0x14);
+                s[0x7f6] = 0;
+            }
+            if (fn_801F68E0() != 0) {
+                *(s32*)(this_ + 0x250) = 0x14;
+                *(s32*)(this_ + 0x24c) += 1;
+                fn_80458FF0(lbl_8053AF80, 0x10000d, 0, 0);
+                fn_8022ADE4();
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 // ---- fn_802EE704: link to WARP / SLR4 actors
 class GnefActor {
 public:
@@ -154,11 +187,15 @@ struct GnefObj {
     s32 m25C;
     s32 m260[2];
 };
+#pragma opt_propagation off
 extern "C" void fn_802EE704(GnefObj* this_) {
-    GnefActor* a;
+    s32 offset;
     s32 count = fn_801F856C()->mCount;
-    for (s32 i = 0; i < count; i++) {
-        a = fn_801F856C()->mActors[i];
+    s32 n = 0;
+    s32 i = 0;
+    offset = 0;
+    for (; i < count; offset += 4, i++) {
+        GnefActor* a = *(GnefActor**)((u8*)fn_801F856C() + offset + 8);
         if (a != 0 && a->mName == 'WARP' && this_->m25C == a->v3C()) {
             JGeometry::TVec3f pos = a->mPos;
             pos.x = this_->x;
@@ -166,9 +203,10 @@ extern "C" void fn_802EE704(GnefObj* this_) {
             a->mPos = pos;
         }
     }
-    s32 n = 0;
-    for (s32 j = 0; j < count; j++) {
-        a = fn_801F856C()->mActors[j];
+    n = 0;
+    offset = 0;
+    for (s32 j = 0; j < count; offset += 4, j++) {
+        GnefActor* a = *(GnefActor**)((u8*)fn_801F856C() + offset + 8);
         if (a != 0 && a->mName == 'SLR4') {
             this_->m260[n++] = j;
             fn_802EEA24(1);
@@ -178,7 +216,7 @@ extern "C" void fn_802EE704(GnefObj* this_) {
         }
     }
 }
-
+#pragma opt_propagation reset
 // ---- fn_802ED538: pull players toward the fan
 #include "JSystem/JMath/JMath.h"
 extern "C" u8 fn_8023F264(s32);
@@ -203,9 +241,11 @@ extern const f32 lbl_80541418;
 
 static inline f32 gnefSqrt(f32 x) {
     if (x > lbl_80541400) {
-        f32 y = __frsqrte(x);
+        f64 y = __frsqrte(x);
         f32 t = y * x;
-        return (lbl_80541408 - t * y) * t * lbl_8054140C;
+        f32 r = lbl_80541408 - t * y;
+        r = r * t;
+        return r * lbl_8054140C;
     }
     return x;
 }
@@ -219,10 +259,11 @@ struct GnefPull {
 };
 
 extern "C" u8 fn_802ED538(u8* this_) {
-    u8 result = 1;
     GnefPull* pull = (GnefPull*)this_;
+    u8 result = 1;
+    s32 room;
     for (s32 i = 0; i < 4; i++, pull = (GnefPull*)((u8*)pull + 0x14)) {
-        if (fn_8023F264(i) && fn_8023DE58(i) == *(s32*)(this_ + 4) && !fn_80236B50(i)
+        if (fn_8023F264(i) && (room = *(s32*)(this_ + 4), fn_8023DE58(i) == room) && !fn_80236B50(i)
             && !fn_8023EA28(i) && !fn_80230188(i) && !fn_8022D534(i) && !pull->active
             && fn_802300EC(i))
         {
@@ -253,7 +294,7 @@ extern "C" u8 fn_802ED538(u8* this_) {
                 fn_80230224(i, 0);
             }
         }
-        if (fn_8023DE58(i) == *(s32*)(this_ + 4)) {
+        if (*(s32*)(this_ + 4) == fn_8023DE58(i)) {
             result = 0;
         }
     }
