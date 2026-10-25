@@ -92,10 +92,10 @@ extern "C" void fn_803129AC(Actor* p) {
 extern "C" u8* fn_801F856C(void);
 extern f32 lbl_80541800;
 extern f32 lbl_80541804;
-extern f32 lbl_8054185C;
-extern f32 lbl_80541860;
-extern f32 lbl_80541864;
-extern f32 lbl_80541868;
+extern const f32 lbl_8054185C;
+extern const f32 lbl_80541860;
+extern const f32 lbl_80541864;
+extern const f32 lbl_80541868;
 extern f32 lbl_8054186C;
 extern const f32 lbl_80541810;
 extern "C" void fn_803137D0(Actor* p) {
