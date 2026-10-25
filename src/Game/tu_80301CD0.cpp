@@ -1169,19 +1169,15 @@ extern "C" void fn_803064A8(void* p, const s32 argPlayer, const s32 argCount, co
     s32 slot;
     s32 prio;
     s32 j;
-    register s32 count;
-    register s32 player;
     s32 start;
     start = argStart;
-    count = argCount;
-    player = argPlayer;
     idx = start;
-    if (count == 0) {
+    if (argCount == 0) {
         return;
     }
-    slot = fn_8022EA0C(player);
-    o = lbl_80506DE8 + player * 0x68 + start * 4;
-    base = lbl_80505438[player];
+    slot = fn_8022EA0C(argPlayer);
+    o = lbl_80506DE8 + argPlayer * 0x68 + start * 4;
+    base = lbl_80505438[argPlayer];
     for (prio = 5; prio > 0; prio--) {
         e = base;
         q = o;
@@ -1190,12 +1186,12 @@ extern "C" void fn_803064A8(void* p, const s32 argPlayer, const s32 argCount, co
                 continue;
             }
             s32 t = fn_8023DE58(slot);
-            if ((e->f8 != t && e->fc != player) || (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xb && e->f23 == 0)) {
+            if ((e->f8 != t && e->fc != argPlayer) || (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xb && e->f23 == 0)) {
                 e->f0 = 0;
                 e->f25 = 1;
                 continue;
             }
-            if (e->f0 != prio && e->fc != player) {
+            if (e->f0 != prio && e->fc != argPlayer) {
                 continue;
             }
             if (e->fc >= 0) {
@@ -1231,7 +1227,7 @@ extern "C" void fn_803064A8(void* p, const s32 argPlayer, const s32 argCount, co
             o += 4;
             q += 4;
             idx++;
-            if (idx >= count) {
+            if (idx >= argCount) {
                 return;
             }
         }
