@@ -467,9 +467,12 @@ extern "C" void* fn_8013A538(u8* p, JKRHeap* heap) {
         (*(s32*)(lbl_80529DEC + 0x118) == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 2)) {
         *(void**)(p + 0x30) = create__10JKRExpHeapFUlP7JKRHeapb(0x86470, heap, false);
         if (*(void**)(p + 0x30) == 0) {
-            static s32 reported = 0;
-            if (reported == 0) {
-                reported = 1;
+            if (lbl_8053AB08 == 0) {
+                lbl_8053AB04 = 0;
+                lbl_8053AB08 = 1;
+            }
+            if (lbl_8053AB04 == 0) {
+                lbl_8053AB04 = 1;
                 f32 total = (f32)getTotalFreeSize__7JKRHeapFv(heap) / 1024.0f;
                 OSReport(lbl_80465920, 585.9375, (f32)getFreeSize__7JKRHeapFv(heap) / 1024.0f, total);
             }
