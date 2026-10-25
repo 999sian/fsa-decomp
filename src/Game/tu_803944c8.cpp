@@ -2697,7 +2697,7 @@ void fn_803A3114(void* p) {
 }
 u8 fn_803A313C(void* p) { return *(u8*)((char*)p + 0x1aa); }
 void fn_803A3144(void) { fn_80138B7C(lbl_8053AAF8); }
-void fn_803A3168(s32 a, s32 b) { fn_802D7E5C(fn_802D6A9C(), a, b); }
+u8 fn_803A3168(s32 a, s32 b) { return fn_802D7E5C(fn_802D6A9C(), a, b); }
 void fn_803A31AC(s32 a, s32 b, s32 c) { fn_802D7EB0(fn_802D6A9C(), a, b, c); }
 s32 fn_803A3200(void) { return *(s32*)(lbl_80529DEC + 0x11c); }
 s32 fn_803A3210(void) { return *(s32*)(lbl_80529DEC + 0x118); }
