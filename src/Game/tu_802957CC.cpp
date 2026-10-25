@@ -3,6 +3,17 @@ extern "C" const f32 lbl_80540690;
 extern "C" const f32 lbl_80540678;
 extern "C" const f32 lbl_80540670;
 #include "JSystem/JParticle/JPAEmitter.h"
+#pragma opt_strength_reduction on
+static inline void stopHOUSemitters(char* self) {
+    for (s32 i = 0; i < 4; i++) {
+        JPABaseEmitter* emitter = ((JPABaseEmitter**)(self + 0x2fc))[i];
+        if (emitter != 0) {
+            emitter->becomeInvalidEmitter();
+            ((JPABaseEmitter**)(self + 0x2fc))[i] = 0;
+        }
+    }
+}
+#pragma opt_strength_reduction reset
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
@@ -407,11 +418,12 @@ extern "C" void fn_80295C40(void* p) {
 }
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
-extern "C" void fn_80295EE8(void* this_) {
-    char* self = (char*)this_;
+extern "C" void fn_80295EE8(char* this_) {
+    char* self = this_;
     s32 i;
     s32 j;
     s32 n;
+    s32 k;
     if (*(s32*)(self + 0x2c4) <= 0) {
         ((ItemBase*)self)->v07();
         return;
@@ -451,11 +463,12 @@ extern "C" void fn_80295EE8(void* this_) {
         } while (--k);
         ((JGeometry::TVec3f*)(self + 0x3c))->zero();
     }
-    for (j = 0; j < 4; j++) {
+    for (k = 0; k < 4; k++) {
         n = (*(u32*)(self + 0x90) >> 7) & 0x1f;
         n = n == 0 ? 0 : n + 7;
-        if (fn_8023DE58(j) == n && !fn_80235274(j)) {
-            fn_80238548(j, 0, fn_8023E724(j), 12);
+        s32 room = fn_8023DE58(k);
+        if (room == n && !fn_80235274(k)) {
+            fn_80238548(k, 0, fn_8023E724(k), 12);
         }
     }
     --*(s32*)(self + 0x2c4);
