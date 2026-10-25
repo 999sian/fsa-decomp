@@ -1008,6 +1008,43 @@ inline s32 linkRank(char* p) {
     }
     return c + 1;
 }
+inline s32 countSharingPre(char* p) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+
+inline s32 getModePre(char* p) {
+    if (countSharingPre(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+
 BOOL fn_80240670(char* p) {
     u8 bit = 1 << S32(p, 0x4);
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
