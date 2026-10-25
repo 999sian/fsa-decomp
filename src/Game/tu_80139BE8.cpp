@@ -288,7 +288,24 @@ extern "C" void fn_8016EE84(void*, int);
 extern "C" void fn_80191744(void*, int);
 extern "C" void freeAll__7JKRHeapFv(void*);
 extern "C" void destroy__7JKRHeapFv(void*);
-extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
+extern "C" s32 getTotalFreeSize__7JKRHeapFv(void*);
+extern "C" s32 getFreeSize__7JKRHeapFv(void*);
+extern "C" void* becomeCurrentHeap__7JKRHeapFv(void*);
+extern "C" void* __nw__FUlP7JKRHeapi(u32, JKRHeap*, int);
+extern "C" void* create__10JKRExpHeapFUlP7JKRHeapb(u32, JKRHeap*, bool);
+extern "C" void* fn_802DE64C(void*);
+extern "C" void* __ct__9PlayerMgrFv(void*);
+extern "C" void* fn_801F9078(void*, JKRHeap*);
+extern "C" void* fn_802A3E2C(void*);
+extern "C" void* fn_8043F504(void*);
+extern "C" void* fn_80439C78(void*);
+extern "C" void* fn_8037B0B8(void*);
+extern "C" void* fn_801917E0(void*, JKRHeap*);
+extern "C" void* fn_8016F0BC(void*, JKRHeap*);
+extern "C" void* fn_8044BDCC(void*);
+extern "C" void OSReport(const char*, ...);
+extern char lbl_80465920[];
+extern char lbl_80465960[];
 extern "C" void __dl__FPv(void* this_);
 #pragma opt_propagation off
 extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
