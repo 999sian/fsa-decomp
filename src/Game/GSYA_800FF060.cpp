@@ -82,21 +82,6 @@ extern "C" void fn_801003F4(s32* this_) {
     }
 }
 
-extern u8* lbl_8053AF00;
-extern f32 lbl_8053C110;
-extern f32 lbl_8053C118;
-extern u8 lbl_80463B8C[];
-extern "C" s32 fn_8023DE58(s32 i);
-extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
-extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
-
-static inline void fsaSetTimeSlot(Actor* this_, s32 idx) {
-    s32 v = *(s32*)((u8*)this_ + 0x250 + idx * 4);
-    lbl_8053AF00[0x30] |= (u8)(1 << idx);
-    lbl_8053AF00[0x2c + idx] = (u8)(v / 60);
-    lbl_8053AF00[0x28 + idx] = (u8)((f32)(v % 60) / lbl_8053C110);
-}
-
 extern f32 lbl_8053C134;
 extern f32 lbl_8053C138;
 extern "C" void fn_801005C4(Actor* this_) {
