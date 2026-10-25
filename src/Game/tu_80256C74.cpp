@@ -851,8 +851,9 @@ extern "C" void fn_80258890(u8* p) {
         U8(p, 0xb9f) = 0;
         if (U8(p, 0x3fa) == 0x1c && U8(p, 0x3fd) == 0) {
             s32 r = S32(p, 0xba0);
+            f32 alpha = lbl_805400D4;
             if (r > 0 && r <= 4) {
-                fn_8013CC50(S32(p, 0x3b4), p + 0x8, lbl_8046B200[r - 1][S32(p, 0x3dc)], 0, 0, 0, 0, 1, lbl_805400D4);
+                fn_8013CC50(S32(p, 0x3b4), p + 0x8, lbl_8046B200[r - 1][S32(p, 0x3dc)], 0, 0, 0, 0, 1, alpha);
             }
         }
     }
@@ -1020,6 +1021,27 @@ extern "C" void fn_8025AEB0(u8* p) {
 
 extern "C" void fn_8025AEC4(u8* p) {
     S32(p, 0x11f8) = -1;
+}
+
+extern "C" void fn_8025AED0(u8* p) {
+    U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
+    u32 phase = (U8(p, 0x3fc) >> 1) & 3;
+    if (phase == 0) {
+        S32(p, 0x3dc) = 0;
+        S32(p, 0x3e8) = 0;
+    } else if (phase == 1) {
+        S32(p, 0x3dc) = 2;
+        S32(p, 0x3e8) = 2;
+    } else if (phase == 2) {
+        S32(p, 0x3dc) = 1;
+        S32(p, 0x3e8) = 1;
+    } else {
+        S32(p, 0x3dc) = 3;
+        S32(p, 0x3e8) = 3;
+    }
+    fn_80268B3C(p);
+    U8(p, 0x124d) = 0;
+    fn_80251AEC(p, 0);
 }
 
 extern "C" void fn_8025B218(u8* p) {
@@ -1277,22 +1299,22 @@ extern "C" void fn_8025D6AC(u8* p) {
     U8(p, 0x3fc)++;
     if (U8(p, 0x3fc) == 2) {
         U8(p, 0xb9c) = 0;
+    }
         V3(p, 8).add(V3(p, 0x344));
-        F32(p, 0x34c) -= lbl_80540104;
-        if (F32(p, 0x34c) < lbl_80540108) {
-            F32(p, 0x34c) = lbl_80540108;
+        F32(p, 0x34c) -= 0.25f;
+        if (F32(p, 0x34c) < -4.0f) {
+            F32(p, 0x34c) = -4.0f;
         }
-        if (F32(p, 0x34c) <= lbl_805400C4 && F32(p, 0x10) <= lbl_805400C4) {
-            F32(p, 0x10) = lbl_805400C4;
-        }
+        if (F32(p, 0x34c) <= 0.0f && F32(p, 0x10) <= 0.0f) {
+            F32(p, 0x10) = 0.0f;
         U8(p, 0x124d) = 0;
         fn_80251AEC(p, 0);
+        }
         fn_80268B3C(p);
         if (fn_8025197C(p, 1)) {
-            F32(p, 0x344) = lbl_805400C4;
-            F32(p, 0x348) = lbl_805400C4;
+            F32(p, 0x344) = 0.0f;
+            F32(p, 0x348) = 0.0f;
         }
-    }
 }
 
 extern "C" void fn_802F601C(void*, JGeometry::TVec3<f32>*, s32, JGeometry::TVec3<f32>*, f32, f32);
