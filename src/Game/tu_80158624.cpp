@@ -57,6 +57,116 @@ static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
     *(volatile u8*)0xCC008000 = a;
 }
 
+extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
+    if (*(u8*)(p + 0xc) < 0xff) {
+        u32 tevColor;
+        s32 i;
+        f32 ang;
+        f32 s;
+        f32 c;
+        f32 m[3][4];
+        f32 src[3];
+        f32 dst[3];
+
+        fn_8013B438(lbl_8053AB10);
+        GXClearVtxDesc();
+        GXSetVtxDesc(9, 1);
+        GXSetVtxDesc(0xb, 1);
+        GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+        GXSetVtxAttrFmt(0, 0xb, 1, 5, 0);
+        GXSetChanCtrl(4, 0, 0, 1, 0, 0, 2);
+        GXSetNumChans(1);
+        GXSetNumTexGens(0);
+        tevColor = *(u32*)col;
+        GXSetTevColor(1, &tevColor);
+        GXSetTevOrder(0, 0xff, 0xff, 4);
+        GXSetTevColorIn(0, 0xf, 2, 0xa, 0xf);
+        GXSetTevAlphaIn(0, 7, 1, 5, 7);
+        GXSetTevColorOp(0, 0, 0, 0, 1, 0);
+        GXSetTevAlphaOp(0, 0, 0, 1, 1, 0);
+        GXSetNumTevStages(1);
+        GXSetBlendMode(1, 1, 1, 0xf);
+        GXSetZMode(0, 3, 0);
+        GXSetZCompLoc(1);
+        GXSetAlphaCompare(7, 0, 0, 7, 0);
+        GXSetColorUpdate(1);
+        GXSetAlphaUpdate(1);
+        GXSetCullMode(2);
+
+        GXBegin(0xa0, 0, 0x22);
+        GXPosition3f32(pos1[0], pos1[1], pos1[2]);
+        GXColor4u8(0, 0, 0, 0);
+        for (i = 0; i < 0x21; i++) {
+            ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
+            s = sin(ang);
+            c = cos(ang);
+            m[0][0] = c;
+            m[0][1] = -s;
+            m[0][2] = 0.0f;
+            m[0][3] = 0.0f;
+            m[1][0] = s;
+            m[1][1] = c;
+            m[1][2] = 0.0f;
+            m[1][3] = 0.0f;
+            m[2][0] = 0.0f;
+            m[2][1] = 0.0f;
+            m[2][2] = 1.0f;
+            m[2][3] = 0.0f;
+            src[0] = 0.0f;
+            src[1] = size;
+            src[2] = 0.0f;
+            PSMTXMultVec(m, src, dst);
+            dst[1] *= 0.5f;
+            dst[0] += pos2[0];
+            dst[1] += pos2[1];
+            dst[2] += pos2[2];
+            GXPosition3f32(dst[0], dst[1], dst[2]);
+            GXColor4u8(col[3], col[3], col[3], col[3]);
+        }
+    }
+
+    {
+        s32 i;
+        f32 ang;
+        f32 s;
+        f32 c;
+        f32 m[3][4];
+        f32 src[3];
+        f32 dst[3];
+
+        GXBegin(0xa0, 0, 0x22);
+        GXPosition3f32(pos2[0], pos2[1], pos2[2]);
+        GXColor4u8(col[3], col[3], col[3], col[3]);
+        for (i = 0; i < 0x21; i++) {
+            ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
+            s = sin(ang);
+            c = cos(ang);
+            m[0][0] = c;
+            m[0][1] = -s;
+            m[0][2] = 0.0f;
+            m[0][3] = 0.0f;
+            m[1][0] = s;
+            m[1][1] = c;
+            m[1][2] = 0.0f;
+            m[1][3] = 0.0f;
+            m[2][0] = 0.0f;
+            m[2][1] = 0.0f;
+            m[2][2] = 1.0f;
+            m[2][3] = 0.0f;
+            src[0] = 0.0f;
+            src[1] = size;
+            src[2] = 0.0f;
+            PSMTXMultVec(m, src, dst);
+            dst[1] *= 0.5f;
+            dst[0] += pos2[0];
+            dst[1] += pos2[1];
+            dst[2] += pos2[2];
+            GXPosition3f32(dst[0], dst[1], dst[2]);
+            GXColor4u8(col[3], col[3], col[3], col[3]);
+        }
+    }
+}
+
 extern "C" void fn_80158B3C(char* p) {
     *(u8*)(p + 0x4) = 0xff;
     *(u8*)(p + 0x5) = 0xff;
@@ -143,8 +253,8 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
     load__10JUTTextureF11_GXTexMapID(*(char**)(p + 0x8), 0);
     GXBegin(0x80, 0, 4);
     f32 x = pos[0];
-    f32 z = pos[2];
     f32 y = pos[1];
+    f32 z = pos[2];
     f32 s1 = lbl_8053D450;
     f32 s0 = lbl_8053D43C;
     GXPosition3f32(x - size, y, z + size);
@@ -160,8 +270,8 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
 extern "C" char lbl_804BFB60[];
 extern "C" f32 lbl_8053D440;
 extern "C" f32 lbl_8053D43C;
-extern "C" f32 lbl_8053D454;
-extern "C" f32 lbl_8053D458;
+extern "C" const f32 lbl_8053D454;
+extern "C" const f32 lbl_8053D458;
 extern "C" u32 lbl_8053D420;
 extern "C" u32 lbl_8053D424;
 extern "C" u32 lbl_8053D428;
@@ -177,8 +287,12 @@ extern "C" void fn_80158E88(void) {
     u32 c2;
     u32 c3;
     u32 c4;
+    f32 x;
+    f32 z;
 
-    GXInitLightPos(lbl_804BFB60, lbl_8053D454, lbl_8053D454, lbl_8053D458);
+    x = lbl_8053D454;
+    z = lbl_8053D458;
+    GXInitLightPos(lbl_804BFB60, x, x, z);
     GXInitLightAttn(lbl_804BFB60, lbl_8053D43C, lbl_8053D440, lbl_8053D440, lbl_8053D43C, lbl_8053D440, lbl_8053D440);
     c1 = lbl_8053D420;
     GXInitLightColor(lbl_804BFB60, &c1);
@@ -281,11 +395,26 @@ extern "C" void fn_80158F70(char* p) {
 
 extern "C" void fn_80159330(char* p) {
     s32 kind = *(s32*)(lbl_8053AAF8 + 0x4c);
-    u8 flag = 0;
-    if (kind == 0xc) {
+    u8 isC = kind == 0xc;
+    bool flag = 0;
+    if (isC) {
         return;
     }
-    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 0) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        s32 f = 0;
+        switch (kind) {
+        case 7:
+        case 8:
+        case 9:
+        case 0x16:
+        case 0xa:
+        case 0xb:
+            f = 1;
+            break;
+        }
+        flag = (u8)f;
+    } else {
+        s32 f = 0;
         switch (kind) {
         case 7:
         case 8:
@@ -294,20 +423,10 @@ extern "C" void fn_80159330(char* p) {
         case 0xa:
         case 0xb:
         case 0xc:
-            flag = 1;
+            f = 1;
             break;
         }
-    } else {
-        switch (kind) {
-        case 7:
-        case 8:
-        case 9:
-        case 0x16:
-        case 0xa:
-        case 0xb:
-            flag = 1;
-            break;
-        }
+        flag = (u8)f;
     }
     if (flag) {
         if (fn_802DCD0C(fn_802D6A9C())) {
