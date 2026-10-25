@@ -199,7 +199,7 @@ inline s32 countSharingT(const char* p) {
 }
 
 extern "C" char* fn_802D6A9C(void);
-s32 fn_80234004(s32);
+extern "C" s32 fn_80234004(s32);
 extern "C" s32 fn_8022CAF8(s32);
 
 // padActive() with the linked-player table walk expanded inline (no other helpers needed).
