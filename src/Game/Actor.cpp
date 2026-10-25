@@ -10,6 +10,7 @@
 #undef PSVECMag
 #undef Vec
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Box.h"
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
@@ -2373,8 +2374,8 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
                 rec.b2d = t2d;
                 rec.w34 = t34;
                 rec.w38 = t38;
-                if (p4->w18 != 0) {
-                    PSMTXConcat((void*)p4->w18, v98, v98);
+                if (((EffArgs*)p4)->ptr != 0) {
+                    PSMTXConcat(((EffArgs*)p4)->ptr, v98, v98);
                 }
                 rec.w18 = (u32)v98;
                 fn_801F06F0(a, p2, p3, &rec, p5, f6, f7);
