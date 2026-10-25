@@ -1329,20 +1329,26 @@ extern "C" void fn_8040B93C(u8* self) {
 			}
 			f32 t;
 			{
+				f32 base = *(f32*)(self + 0x3b8);
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
-				t = *(f32*)(self + 0x3b8) - *(f32*)(x + 0xc);
+				t = base - *(f32*)(x + 0xc);
 				fn_80402E08(x, 0.0f, t);
 			}
 			{
 				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
-				*(f32*)(self + 0x3ac) = lbl_805438C8 * (*(f32*)(y + 0x28) - *(f32*)(y + 0x20)) + *(f32*)(y + 0x30);
+				f32 half = 0.5f;
+				f32 right = *(f32*)(y + 0x28);
+				f32 left = *(f32*)(y + 0x20);
+				*(f32*)(self + 0x3ac) = (right - left) * half + *(f32*)(y + 0x30);
 			}
 			{
 				u8* y = *(u8**)(sl->slot[*(s32*)(self + 0x340)] + 4);
 				u8* b = getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(lbl_8048C4F8[*(s32*)(self + 0x340)]));
 				f32 bh = *(f32*)(b + 4);
-				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * lbl_805438C8 + (bh + *(f32*)(self + 0x3b8)));
+				f32 base = *(f32*)(self + 0x3b8) + bh;
+				f32 height = *(f32*)(y + 0x2c) - *(f32*)(y + 0x24);
+				*(f32*)(self + 0x3b0) = t + (height * 0.5f + base);
 			}
 			if (self[0x662] == 0) {
 				*(s32*)(self + 0x350) = 0x11;
@@ -1364,10 +1370,12 @@ extern "C" void fn_8040B93C(u8* self) {
 		} else if (self[0x658]) {
 			self[0x658] = 0;
 			*(s32*)(self + 0x350) = 0x15;
-		} else if (self[0x65d] == 0) {
+		} else {
+			if (self[0x65d] == 0) {
 			for (int i = 0; i < 15; i++) {
 				(*(Obj240**)(self + 0x278 + i * 4))->f26 = 0;
 				self[0x65d] = 1;
+			}
 			}
 			*(s32*)(self + 0x350) = 0xf;
 		}
@@ -2290,7 +2298,7 @@ extern "C" f32 lbl_805438D8;
 extern "C" f32 lbl_805438DC;
 extern "C" f32 lbl_80543904;
 #pragma peephole on
-extern "C" void fn_80408114(u8* self) {
+extern "C" void fn_80408114(u8* __restrict self) {
     s32 i;
     Pane408* obj;
     if (*(s32*)(self + 0x350) == 0xb || *(s32*)(self + 0x350) == 0xc || *(s32*)(self + 0x350) == 0xd) {
@@ -2343,11 +2351,9 @@ extern "C" void fn_80408114(u8* self) {
             obj->setAlpha((int)f);
         }
     } else {
-        u8* q = self;
-        const u64* __restrict table = (const u64*)lbl_8048C2B8;
-        for (int j = 0; j < 8; j++, q += 2, table++) {
-            *(s16*)(q + 0x40e) = 0;
-            obj = (*(Screen408**)(self + 0xc))->search(*table);
+        for (int j = 0; j < 8; j++) {
+            *(s16*)(self + 0x40e + j * 2) = 0;
+            obj = (*(Screen408**)(self + 0xc))->search(((u64*)lbl_8048C2B8)[j]);
             obj->setAlpha(0);
         }
     }
