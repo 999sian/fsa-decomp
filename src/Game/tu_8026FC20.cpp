@@ -1,6 +1,8 @@
 // TU 0x8026fc20-0x8027e5bc: player-class methods (Link object, see tu_8023FBF0).
 // A few small bodies originally from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include <string.h>
+extern "C" const f32 lbl_805402D4;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
@@ -2905,15 +2907,25 @@ void fn_802791B0(char* p) {
             F32(p, 0x358) = -4.0f;
         }
         U8(p, 0x11e9) = 1;
-        const JGeometry::TVec2<f32>& pos = *(JGeometry::TVec2<f32>*)(p + 8);
         RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
         r.x0 -= -16.0f;
         r.y0 -= -16.0f;
         r.x1 += -16.0f;
         r.y1 += -16.0f;
-        if (!anyBtn(p) && rectIn(r, pos) &&
-            (!Player_IsLinked(p) || fn_802486A0(p) == 4 || fn_80234B24(Player_GetLinkTargetIndex(p)))) {
-            goto end;
+        if (!anyBtn(p)) {
+            bool in = 0;
+            if (F32(p, 8) >= r.x0) {
+                if (F32(p, 0xc) >= r.y0) {
+                    if (F32(p, 8) < r.x1) {
+                        if (F32(p, 0xc) < r.y1) {
+                            in = 1;
+                        }
+                    }
+                }
+            }
+            if (in && (!Player_IsLinked(p) || fn_802486A0(p) == 4 || fn_80234B24(Player_GetLinkTargetIndex(p)))) {
+                goto end;
+            }
         }
         if (U8(p, 0x3fa) >= 20) {
             if (fn_8024189C(p) <= 0) {
