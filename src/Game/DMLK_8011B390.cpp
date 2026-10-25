@@ -4,6 +4,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #undef Vec
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" void fn_8011B878(u8* this_, s32 id);
 extern "C" void* fn_8011921C(void);
@@ -295,7 +296,9 @@ extern "C" void fn_8011B3F0(u8* p) {
     }
     switch (*(s32*)(p + 0x238)) {
     case 7: {
-        s32 elapsed = *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[7];
+        s32 current = *(s32*)((u8*)fn_8011921C() + 8);
+        s32 start = lbl_80464AF8[7];
+        s32 elapsed = current - start;
         if (elapsed < 180) {
             dmlkRequestBounds(p);
             break;
