@@ -4,3 +4,7 @@
 
 template <>
 JASMemPool_MultiThreaded<JASChannel> JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
+
+void __sinit_text_8003046C_cpp(void)
+{
+}
