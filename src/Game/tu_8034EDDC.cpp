@@ -406,7 +406,7 @@ extern "C" s32 fn_80350530(u8* self) {
 extern const f32 lbl_80542614;
 extern const f32 lbl_80542620;
 extern u8 lbl_8053AD40;
-f32 lbl_8050AED8[8];
+static f32 lbl_8050AED8[8];
 
 extern "C" s32 fn_803506E0(u8* self) {
     const f32* tbl;
