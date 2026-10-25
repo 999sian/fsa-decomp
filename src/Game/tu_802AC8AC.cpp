@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 extern "C" void fn_8013B490(void*);
 extern void* lbl_8053AB10;
@@ -53,7 +54,7 @@ extern "C" void fn_802AC98C(u8* this_) {
         s32 b = 0xff;
         s32 c = 0;
         s32 d = 0xff;
-        ((void (*)(void*, s32*, s32*))(*(void***)(*(u8**)(this_ + 4)))[0x130 / 4])(*(void**)(this_ + 4), &d, &c);
+        ((void (*)(void*, s32*, s32*))(*(void***)(*(u8**)(this_ + 4)))[0x130 / 4])(*(void**)(this_ + 4), &b, &a);
         ((void (*)(void*, u8))(*(void***)(*(u8**)(this_ + 4)))[0x24 / 4])(*(void**)(this_ + 4), (u8)*(s32*)(this_ + 0x10));
         ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)(*(u8**)(this_ + 4)))[0xec / 4])(*(void**)(this_ + 4), 0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
     }
@@ -67,32 +68,14 @@ typedef void (*FnByte)(void*, u8);
 typedef void (*FnFloats)(void*, s32, s32, s32, f32, f32, f32, f32);
 extern "C" void fn_802ACA64(u8* this_)
 {
-    s32 b[2];
-    s32 a[2];
-    s32 d[2];
-    s32 c[2];
-    void* obj;
-
     fn_8013B490(lbl_8053AB10);
     if (*(s32*)(this_ + 0x18) == 0) {
-        a[1] = 0;
-        b[1] = 0xff;
-        a[0] = 0;
-        b[0] = 0xff;
-        obj = *(void**)(this_ + 4);
-        ((FnPair)((void**)*(void**)obj)[0x130 / 4])(obj, &b[1], &a[1]);
+        (*(J2DPicture**)(this_ + 4))->setBlackWhite(JUtility::TColor(0xff), JUtility::TColor(0));
     } else {
-        c[1] = -0x100;
-        d[1] = -1;
-        c[0] = -0x100;
-        d[0] = -1;
-        obj = *(void**)(this_ + 4);
-        ((FnPair)((void**)*(void**)obj)[0x130 / 4])(obj, &d[1], &c[1]);
+        (*(J2DPicture**)(this_ + 4))->setBlackWhite(JUtility::TColor(0xffffffff), JUtility::TColor(0xffffff00));
     }
-    obj = *(void**)(this_ + 4);
-    ((FnByte)((void**)*(void**)obj)[0x24 / 4])(obj, (u8)*(u32*)(this_ + 0xc));
-    obj = *(void**)(this_ + 4);
-    ((FnFloats)((void**)*(void**)obj)[0xec / 4])(obj, 0, 0, 0, lbl_805408B8, lbl_805408B8, lbl_805408BC, lbl_805408C0);
+    (*(J2DPicture**)(this_ + 4))->setAlpha(*(u32*)(this_ + 0xc));
+    (*(J2DPicture**)(this_ + 4))->draw(lbl_805408B8, lbl_805408B8, lbl_805408BC, lbl_805408C0, false, false, false);
 }
 
 extern "C" void fn_802ACB58(u8* this_) {
