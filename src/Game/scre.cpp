@@ -149,6 +149,8 @@ extern "C" void fn_80391F58(void* this_) {
 
 #pragma dont_inline reset
 
+#pragma opt_propagation on
+#pragma opt_common_subs off
 extern "C" void fn_80393228(void* this_) {
     u8* p = (u8*)this_;
     f32 alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
@@ -156,27 +158,40 @@ extern "C" void fn_80393228(void* this_) {
         if (*(s32*)(p + 4) < 8) {
             JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(p + 0xc));
             s32 type = *(s32*)(p+0x238);
-            screAdd(*(s32*)(p + 0x23c), pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+            u8 b = lbl_80543178[type];
+            u8 r = lbl_80543170[type];
+            u8 g = lbl_80543174[type];
+            screAdd(*(s32*)(p + 0x23c), pos, JUtility::TColor(r, g, b, (u8)(s32)alpha));
         }
     } else if (*(s32*)(p + 0x23c) < 100) {
         if (*(s32*)(p + 4) < 8) {
             JGeometry::TVec3f pos(*(f32*)(p+0xc)-lbl_805431B4, *(f32*)(p+0x10), *(f32*)(p+0x14));
             s32 type = *(s32*)(p+0x238);
-            screAdd(*(s32*)(p + 0x23c)/10, pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+            u8 b = lbl_80543178[type];
+            u8 r = lbl_80543170[type];
+            u8 g = lbl_80543174[type];
+            screAdd(*(s32*)(p + 0x23c)/10, pos, JUtility::TColor(r, g, b, (u8)(s32)alpha));
         }
         alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
         if (*(s32*)(p + 4) < 8) {
             JGeometry::TVec3f pos(lbl_805431B4+*(f32*)(p+0xc), *(f32*)(p+0x10), *(f32*)(p+0x14));
             s32 type = *(s32*)(p+0x238);
-            screAdd(*(s32*)(p + 0x23c)%10, pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+            u8 b = lbl_80543178[type];
+            u8 r = lbl_80543170[type];
+            u8 g = lbl_80543174[type];
+            screAdd(*(s32*)(p + 0x23c)%10, pos, JUtility::TColor(r, g, b, (u8)(s32)alpha));
         }
     } else if (*(s32*)(p + 4) < 8) {
         JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(p + 0xc));
         s32 type = *(s32*)(p+0x238);
-        screAdd(10, pos, JUtility::TColor(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], (u8)(s32)alpha));
+            u8 b = lbl_80543178[type];
+            u8 r = lbl_80543170[type];
+            u8 g = lbl_80543174[type];
+        screAdd(10, pos, JUtility::TColor(r, g, b, (u8)(s32)alpha));
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_80393514(void* this_) {
     u8* p = (u8*)this_;
     if (*(s32*)(p + 0x230) == 0x5a) {
@@ -393,12 +408,14 @@ struct SCRE2 {
     }
 };
 
-extern "C" void fn_80393BF4(SCRE2* this_) {
+#pragma opt_propagation off
+extern "C" void fn_80393BF4(SCRE2* arg) {
     s32 mode;
     u16* tbl;
-    this_->m23C = this_->m90 & 0xffff;
-    this_->mPlayer = (this_->m90 >> 16) & 0xff;
-    this_->mMode = this_->m90 >> 24;
+    SCRE2* __restrict this_ = arg;
+    arg->m23C = arg->m90 & 0xffff;
+    arg->mPlayer = (arg->m90 >> 16) & 0xff;
+    arg->mMode = arg->m90 >> 24;
     this_->m248 = this_->mPos.x - fn_8023E724(this_->mPlayer)->x;
     this_->m24C = this_->mPos.y - fn_8023E724(this_->mPlayer)->y - lbl_805431C8;
     tbl = lbl_80529DEC.arr;
@@ -445,5 +462,5 @@ extern "C" void fn_80393BF4(SCRE2* this_) {
         this_->snapToPlayer();
     }
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
