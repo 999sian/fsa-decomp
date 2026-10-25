@@ -399,9 +399,11 @@ extern "C" void fn_80370C18(void* this_)
 	}
 }
 
-extern "C" u8 fn_80230188(s32 i);
-extern "C" void fn_80230AD4(s32 i);
-extern "C" u8 fn_8023EFEC(s32 i);
+extern "C" u8 fn_80230188(int);
+extern "C" u8 fn_80230AD4(int);
+extern "C" u8 fn_8023EFEC(s32 idx);
+extern f32 lbl_80542DC8;
+extern void* lbl_8053AD70;
 extern "C" void fn_80230498(s32 i, JGeometry::TVec3<f32>* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8037AE30(void* p);
 extern "C" void fn_80370C84(void* this_) {
