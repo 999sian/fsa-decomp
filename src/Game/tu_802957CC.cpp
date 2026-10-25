@@ -3,17 +3,7 @@ extern "C" const f32 lbl_80540690;
 extern "C" const f32 lbl_80540678;
 extern "C" const f32 lbl_80540670;
 #include "JSystem/JParticle/JPAEmitter.h"
-#pragma opt_strength_reduction on
-static inline void stopHOUSemitters(char* self) {
-    for (s32 i = 0; i < 4; i++) {
-        JPABaseEmitter* emitter = ((JPABaseEmitter**)(self + 0x2fc))[i];
-        if (emitter != 0) {
-            emitter->becomeInvalidEmitter();
-            ((JPABaseEmitter**)(self + 0x2fc))[i] = 0;
-        }
-    }
-}
-#pragma opt_strength_reduction reset
+
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
