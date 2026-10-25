@@ -319,6 +319,5 @@ extern "C" void fn_802D27A8(void* this_) {
     *(s32*)(p + 0x250) = 4;
 }
 
-extern "C" void __sinit_tu_802D14DC_cpp(void) {
-}
+void __sinit_tu_802D14DC_cpp(void) {}
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
