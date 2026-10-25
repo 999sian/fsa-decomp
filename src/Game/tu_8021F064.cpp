@@ -29,22 +29,26 @@ bool fn_8021F094(ActorGroup_8021F064* g) {
     if (n <= 0) {
         return false;
     }
+    ActorGroup_8021F064* p = g;
     bool result = true;
     for (s32 i = 0; i < n; i++) {
-        void* actor = fn_801F666C(fn_801F856C(), g->mIds[i]);
+        void* actor = fn_801F666C(fn_801F856C(), p->mIds[0]);
         if (actor != NULL && !fn_8021D794(actor)) {
             result = false;
             break;
         }
+        p = (ActorGroup_8021F064*)((s32*)p + 1);
     }
     return result;
 }
 
 void fn_8021F130(ActorGroup_8021F064* g) {
+    register void* actor;
+    int i;
     if (g->mCount > 0 && (g->mFlags & 3)) {
-        void* actor;
-        for (s32 i = 0; i < g->mCount; i++) {
-            actor = fn_801F666C(fn_801F856C(), g->mIds[i]);
+        for (i = 0; (s32)i < g->mCount; i++) {
+            s32 tmp = (s32)fn_801F666C(fn_801F856C(), g->mIds[i]);
+            actor = (void*)tmp;
             if (actor != NULL) {
                 if (g->mFlags & 1) {
                     fn_8021D764(actor);
@@ -59,23 +63,29 @@ void fn_8021F130(ActorGroup_8021F064* g) {
 }
 
 void fn_8021F1F0(ActorGroup_8021F064* g, s32 id) {
-    if (g->mCount > 0) {
-        s32* ptr = g->mIds;
-        u8 found = 0;
-        if (g->mCount > 0) {
-            for (s32 i = found; i < g->mCount; i++, ptr++) {
-                if (!found) {
-                    if (id == *ptr) {
-                        found = 1;
-                    }
-                } else {
-                    *(ptr - 1) = *ptr;
-                }
+    bool found;
+    s32* ptr;
+    s32 i;
+    if (g->mCount <= 0) {
+        return;
+    }
+    ptr = g->mIds;
+    found = false;
+    if (g->mCount <= 0) {
+        return;
+    }
+    i = found;
+    for (; i < g->mCount; i++, ptr++) {
+        if (!found) {
+            if (id == *ptr) {
+                found = true;
             }
+        } else {
+            *(ptr - 1) = *ptr;
         }
-        if (found) {
-            g->mCount -= 1;
-        }
+    }
+    if (found) {
+        g->mCount--;
     }
 }
 }
