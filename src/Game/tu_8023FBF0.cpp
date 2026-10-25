@@ -759,8 +759,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 linked;
     s32 me;
+    s32 linked;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -1096,20 +1096,76 @@ void fn_802408C8(char* p, s32 a, const JGeometry::TVec3<f32>& v) {
 u8 fn_80233EDC(s32);
 bool fn_80240B84(char* p) {
     struct H {
+        static inline s32 countSharing(char* p) {
+            s32 linked;
+            s32 me;
+            s32 c;
+            s32 i;
+            c = 0;
+            me = S32(p, 0x4);
+            for (i = 0; i < 4; i++) {
+                if (i == me) {
+                    c++;
+                } else if (fn_8022F514(i)) {
+                    if ((linked = S32(p, 0xd60)) >= 0) {
+                        if (linked == fn_8022F3DC(i)) {
+                            c++;
+                        }
+                    } else {
+                        linked = S32(p, 0x4);
+                        if (linked == fn_8022F3DC(i)) {
+                            c++;
+                        }
+                    }
+                } else if (i == S32(p, 0xd60)) {
+                    c++;
+                }
+            }
+            return c;
+        }
+        static inline s32 getMode(char* p) {
+            if (countSharing(p) <= 1) {
+                return 5;
+            }
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                return fn_8022CAF8(linked);
+            }
+            return S32(p, 0x120c);
+        }
         static inline BOOL isOwner(char* p) {
             u8 bit = 1 << S32(p, 0x4);
-            if (!(bit & U8(lbl_8053AAF8, 0x82)) && S32(p, 0xd60) < 0) {
+            if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
                 return 1;
             }
             if (getMode(p) == 4) {
-                s32 v = linkIdx(p);
-                return v != linkRank(p);
+                s32 n;
+                s32 linked;
+                s32 v;
+                s32 i;
+                s32 c;
+                v = linkIdx(p);
+                linked = S32(p, 0xd60);
+                s32 rank;
+                if (linked < 0) {
+                    rank = 0;
+                } else {
+                    c = 0;
+                    n = S32(p, 0x4);
+                    for (i = 0; i < n; i++) {
+                        if (linked == fn_8022F3DC(i)) {
+                            c++;
+                        }
+                    }
+                    rank = c + 1;
+                }
+                return v != rank;
             }
             return ((u32)S32(p, 0xd60) >> 31) ^ 1;
         }
     };
     if ((u8)H::isOwner(p)) {
-        return fn_80233EDC(fn_8022EA0C(S32(p, 0x4)));
+        return ((bool (*)(s32))fn_80233EDC)(fn_8022EA0C(S32(p, 0x4)));
     }
     bool r = 0;
     if (S32(p, 0x1240) == 0x1b || S32(p, 0x1244) == 0x1b) {
@@ -2838,12 +2894,13 @@ void fn_80248604(char* p) {
         }
     }
 }
+#pragma opt_lifetimes off
 BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     s32 v;
     if (S32(p, 0x1240) != 0) {
         return 0;
     }
-    if (anim == 0xe8 && getMode5(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) {
+    if (anim == 0xe8 && getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) {
         S16(p, 0x450) = 0x1c5;
     } else if (anim >= 0) {
         S16(p, 0x450) = anim;
@@ -2852,6 +2909,7 @@ BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     U8(p, 0x456) = 1;
     return 1;
 }
+#pragma opt_lifetimes reset
 s32 fn_802486A0(const char* p) {
     if (countSharing(p) <= 1) {
         return 5;
