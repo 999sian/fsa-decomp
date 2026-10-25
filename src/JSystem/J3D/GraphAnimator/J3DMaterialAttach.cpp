@@ -691,10 +691,11 @@ J3DErrType J3DMaterialTable::entryMatColorAnimator(J3DAnmColor* anm)
  * @note Address: 0x800844E8
  * @note Size: 0x380
  */
-static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTextureSRTKey* anm, u16 count)
+static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTextureSRTKey* anm)
 {
-    J3DErrType allocationResult = JET_Success;
     u16 i;
+    u16 count = anm->getUpdateMaterialNum();
+    J3DErrType allocationResult = JET_Success;
     if (table->isLocked()) {
 		allocationResult = JET_LockedModelData;
 	} else {
@@ -724,37 +725,9 @@ static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTex
 
 J3DErrType J3DMaterialTable::entryTexMtxAnimator(J3DAnmTextureSRTKey* anm)
 {
+	u16 count = anm->getUpdateMaterialNum();
 	u16 i;
-	u16 count;
-	J3DErrType allocationResult;
-	allocationResult = JET_Success;
-	count = anm->getUpdateMaterialNum();
-
-	if (isLocked()) {
-		allocationResult = JET_LockedModelData;
-	} else {
-		for (i = allocationResult; i < count; i++) {
-			u16 matID = anm->getUpdateMaterialID(i);
-			if (matID != 0xffff) {
-				J3DMaterial* mat       = mMaterials[matID];
-				u8 texmtxid            = anm->mUpdateTexMtxID[i];
-				J3DMaterialAnm* matanm = mat->getMaterialAnm();
-
-				if (!matanm) {
-					allocationResult = JET_NoMatAnm;
-					continue;
-				}
-
-				if (texmtxid != 255 && mat->mTexGenBlock->getTexMtx((int)texmtxid) == nullptr) {
-					J3DTexMtx* mtx   = new J3DTexMtx(j3dDefaultTexMtxInfo);
-					allocationResult = JET_OutOfMemory;
-					mat->mTexGenBlock->setTexMtx(texmtxid, mtx);
-				}
-			}
-		}
-	}
-
-	J3DErrType result = allocationResult;
+	J3DErrType result = ensureTexMtxAnimator(this, anm);
 	if (result != JET_Success) {
 		return result;
 	}
