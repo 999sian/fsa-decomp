@@ -59,6 +59,8 @@ s32 fn_801EA8C0(u8* param_1, u8* param_2);
 void qsort(void* base, size_t nmemb, size_t size, s32 (*compar)(void*, void*));
 }
 
+static inline u8* getActor(s32 id) { return (u8*)fn_801F666C(fn_801F856C(), id); }
+
 extern "C" void* fn_801E9AFC(void) {
     if (lbl_8053AC50 == 0) {
         __construct_array(lbl_804CA358, (void*)fn_801E9B54, NULL, 0x78, 2);
