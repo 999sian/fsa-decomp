@@ -184,12 +184,6 @@ void fn_80223F14(void* this_) {
 }
 }
 
-struct CornerActor_802233A4 {
-    void* vtable;
-    u32 room;
-    u32 unk8;
-    f32 x, y;
-};
 // ---- fn_80223664 (update) / fn_802238CC (spawn rect corners) ----
 #include "JSystem/JGeometry.h"
 
