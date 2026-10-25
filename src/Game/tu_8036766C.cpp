@@ -1,9 +1,23 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" char lbl_804ADFE8[];
+extern "C" u8 sincosTable___5JMath[];
+extern "C" u8* sManager__8JUTVideo;
+extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_8022FE80(s32 a, s32 b, void* c, s32 d, s32 e);
+extern "C" u8 fn_803865B8(s32 a);
+extern "C" void fn_80388EEC(s32 a);
+extern "C" u8 fn_8038BD08(s32 a, s32 b, s32 c, void* d, s32 e);
+extern "C" void detach__5ActorFv(void* this_);
+static inline void fn_80367888_addVec(u8* p, f32* v) {
+    *(f32*)(p + 0xc) = *(f32*)(p + 0x244) + v[0];
+    *(f32*)(p + 0x10) = *(f32*)(p + 0x248) + v[1];
+    *(f32*)(p + 0x14) = *(f32*)(p + 0x24c) + v[2];
+}
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_8036766C(Actor* p, s16 n) {
     if (p) {
@@ -49,6 +63,8 @@ extern "C" void fn_80367710(u8* param_1) {
 
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void fn_80367E24(u8* p) {
     s32 n = *(s32*)((u8*)fn_801F856C() + 0x1008);
     s32 off;
@@ -79,4 +95,6 @@ extern "C" void fn_80367E24(u8* p) {
     *(s32*)(p + 0x268) = 1;
     p[0x230] = 0;
 }
+
+void fn_80367F74(void) {}
 
