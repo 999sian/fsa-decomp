@@ -223,11 +223,12 @@ extern "C" s32 fn_801CD950(f32* value, f32 target, f32 step);
 extern const f32 lbl_8053EFCC;
 
 extern "C" void fn_801CE2BC(ItemBase* this_) {
-    this_->m24C = this_->m24C + 1;
+    this_->m24C++;
     if (this_->m24C < 0) {
         this_->m24C = 0;
     }
-    this_->v34();
+    void (**vtable)(ItemBase*) = *(void (***)(ItemBase*))this_;
+    vtable[0x90 / 4](this_);
     this_->v35();
 }
 
@@ -620,17 +621,18 @@ extern "C" s32 fn_801CF0F4(const u8* this_) {
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
-extern "C" bool fn_801CF144(u8* this_) {
+extern "C" bool fn_801CF144(const u8* this_) {
     f32 pos[3];
+    f32 y, x, z;
     bool result = false;
-    u8* p = this_;
-    f32 y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14) - lbl_8053EFF0;
-    pos[0] = *(f32*)(p + 0xc);
+    y = *(const f32*)(this_ + 0x10) - *(const f32*)(this_ + 0x14) - lbl_8053EFF0;
+    x = *(const f32*)(this_ + 0xc);
+    z = lbl_8053EFC4;
+    s32 room = *(const s32*)(this_ + 0x4);
+    pos[0] = x;
     pos[1] = y;
-    pos[2] = lbl_8053EFC4;
-    if (fn_801CCB1C(pos, *(s32*)(p + 0x4))) {
-        result = true;
-    }
+    pos[2] = z;
+    if (fn_801CCB1C(pos, room)) result = true;
     return result;
 }
 
