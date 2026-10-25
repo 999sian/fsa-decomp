@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/ItemBase.h"
 #include <math.h>
 
 #pragma auto_inline off
