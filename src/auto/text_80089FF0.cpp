@@ -396,8 +396,8 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
     char* base = lbl_8045E878;
 
     if (lbl_8053A914 != nullptr) {
-        if (0x11 > error) {
-            lbl_8053A914->print_f(base + 0x1c4, lbl_804993D0[error]);
+        if (error < 0x11) {
+            lbl_8053A914->print_f(base + 0x1c4, (u32)context, lbl_804993D0[error]);
         } else {
             lbl_8053A914->print_f(base + 0x1e4);
         }
