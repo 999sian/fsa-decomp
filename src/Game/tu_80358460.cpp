@@ -1005,26 +1005,43 @@ extern "C" void fn_8035B0E0(u8* arg) {
     }
 }
 
+#pragma scheduling off
 extern "C" void fn_8035B348(void) {
     u8* records = lbl_8050B9F8;
     StateTable8035B348* table = &lbl_804AD2D0;
     u32* src = (u32*)table;
     u32* dst = src + 15;
-    u32 word0 = src[0];
-    u32 word1 = src[1];
-    u32 word2 = src[2];
-    u32 word3 = src[3];
-    u32 word4 = src[4];
-    u32 word5 = src[5];
-    u32 word6 = src[6];
-    u32 word7 = src[7];
-    u32 word8 = src[8];
-    u32 word9 = src[9];
-    u32 word10 = src[10];
-    u32 word11 = src[11];
-    u32 word12 = src[12];
-    u32 word13 = src[13];
-    u32 word14 = src[14];
+    u32 word14;
+    u32 word13;
+    u32 word12;
+    u32 word11;
+    u32 word10;
+    u32 word9;
+    u32 word8;
+    u32 word7;
+    u32 word6;
+    u32 word5;
+    u32 word4;
+    u32 word3;
+    u32 word2;
+    u32 word1;
+    u32 word0;
+    s8 initialized = __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+    word0 = src[0];
+    word1 = src[1];
+    word2 = src[2];
+    word3 = src[3];
+    word4 = src[4];
+    word5 = src[5];
+    word6 = src[6];
+    word7 = src[7];
+    word8 = src[8];
+    word9 = src[9];
+    word10 = src[10];
+    word11 = src[11];
+    word12 = src[12];
+    word13 = src[13];
+    word14 = src[14];
     dst[0] = word0;
     dst[1] = word1;
     dst[2] = word2;
@@ -1040,7 +1057,7 @@ extern "C" void fn_8035B348(void) {
     dst[12] = word12;
     dst[13] = word13;
     dst[14] = word14;
-    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+    if (initialized == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, records + 0x0);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
