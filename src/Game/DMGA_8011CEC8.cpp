@@ -128,9 +128,13 @@ extern "C" void fn_8011CF48(void* this_) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8011D1B8(void* this_, s32 state) {
-    char* p = (char*)this_;
-    switch (state) {
+    char* p;
+    s32 mode;
+    p = (char*)this_;
+    mode = state;
+    switch (mode) {
     case 0:
     case 5:
     case 8:
@@ -185,6 +189,7 @@ extern "C" void fn_8011D1B8(void* this_, s32 state) {
             fn_80230498(j, q, 0x3f, 0, -0x80, -0x80, 1);
         }
         {
+            JGeometry::TVec3<f32> v;
             f32 a[3];
             f32* q;
             u8* ret = (u8*)fn_8011921C();
@@ -197,7 +202,7 @@ extern "C" void fn_8011D1B8(void* this_, s32 state) {
             } else {
                 q = (f32*)(*(u8**)r + 0x24);
             }
-            Vec v = *(Vec*)q;
+            v = *(JGeometry::TVec3<f32>*)q;
             fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x33f, 0, 0, 0, 0, 1);
             fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x340, 0, 0, 0, 0, 1);
             fn_8013CC50(*(void**)(p + 0x4), &v, lbl_8053C87C, 0x341, 0, 0, 0, 0, 1);
@@ -224,7 +229,7 @@ extern "C" void fn_8011D1B8(void* this_, s32 state) {
     }
     *(s32*)(p + 0x234) = state;
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_8011D4B4(int param_1) {
     return *(int*)(param_1 + 0x234) == 9;
 }
@@ -247,7 +252,7 @@ extern f32 lbl_8053C884;
 extern f64 lbl_8053C888;
 extern f32 lbl_8053C860;
 extern int __float_epsilon[];
-extern "C" void fn_8011D1B8(void* p, s32 n);
+
 extern "C" void fn_8011D4D0(void* param_1) {
     if (*(s32*)((char*)fn_8011921C() + 4) == 0x11) {
         s32 v = *(s32*)((char*)fn_8011921C() + 8);
