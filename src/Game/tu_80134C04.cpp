@@ -647,7 +647,6 @@ extern "C" void fn_8007A298(void* p);
 extern "C" void fn_803007A0(void);
 extern "C" void releaseSound__14JAISoundHandleFv(void* p);
 extern "C" void destroy__7JKRHeapFv(void* p);
-#pragma peephole off
 extern "C" void* fn_80138E78(u8* p, s16 how) {
     void* sound;
     void* tmp;
