@@ -486,13 +486,12 @@ extern "C" void fn_80458508(u8* this_, u8 mode) {
 }
 
 extern "C" void fn_80458658(u8* this_, bool flag) {
-    f32 volume;
-    this_[0x8a] = flag;
+    *(bool*)(this_ + 0x8a) = flag;
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(3)->pause(flag);
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(4)->pause(flag);
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(5)->pause(flag);
     ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(6)->pause(flag);
-    volume = lbl_80543EB4;
+    f32 volume = lbl_80543EB4;
     if (flag) {
         volume = lbl_80543EB0;
     }
