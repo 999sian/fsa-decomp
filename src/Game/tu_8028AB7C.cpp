@@ -27,8 +27,8 @@ extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" f32 lbl_805404C4;
 extern "C" f32 lbl_805404C8;
-static inline void platformRotScale(f32 m[3][4], const f32 sc, const f32 ry) {
-    f32 cx; f32 rySin; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
+static inline void platformRotScale(f32 m[3][4], f32 sc, f32 ry) {
+    f32 sx; f32 sy; f32 sz; f32 cx; f32 cy; f32 cz;
     sx = sin(lbl_805404C0);
     sy = sin(ry);
     sz = sin(lbl_805404C0);
@@ -54,9 +54,10 @@ static inline void platformRotScale(f32 m[3][4], const f32 sc, const f32 ry) {
     m[2][2] = sc * (cx * cy);
 }
 
-#pragma opt_propagation off
+#pragma opt_propagation on
+#pragma opt_common_subs off
 extern "C" void fn_8028AB7C(u8* this_) {
-    f32 cx; f32 ry; f32 sc; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
+    f32 ry; f32 sc; f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
     if (*(f32*)(this_ + 0x240) <= 0.0f) return;
     DrawRec rec;
     f32 m[3][4];
@@ -71,9 +72,9 @@ extern "C" void fn_8028AB7C(u8* this_) {
     cz = cos(lbl_805404C0);
     sxsy = sx * sy;
     f32 cxsz = cx * sz;
+    f32 sxcz = sx * cz;
     f32 cxcz = cx * cz;
     f32 sxsz = sx * sz;
-    f32 sxcz = sx * cz;
     m[0][3] = lbl_805404C0;
     m[1][3] = lbl_805404C0;
     m[2][3] = lbl_805404C0;
@@ -89,6 +90,7 @@ extern "C" void fn_8028AB7C(u8* this_) {
     rec.w18 = m;
     fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x25c) + 0x129, &rec, -1, lbl_805404CC, lbl_805404CC);
 }
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_801F0D20(u8* this_, s32 id);
