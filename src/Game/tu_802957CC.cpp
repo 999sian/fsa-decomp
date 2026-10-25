@@ -1027,6 +1027,42 @@ extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" f32 lbl_805406A8;
+// Push direction from the linked player's input (sets 0x2cc to 1).
+static inline s32 PushDirFromLink(char* self) {
+    if (fn_80239108(*(void**)(self + 0x198)) >= 4 && *(s32*)(self + 4) == fn_8023DE58(0)) {
+        s32 dir = fn_80238BC4(*(void**)(self + 0x198));
+        if (dir >= 0 && dir < 4) {
+            *(s32*)(self + 0x2cc) = 1;
+            return dir;
+        }
+    }
+    return -1;
+}
+
+// Push direction from a contact on the side box (sets 0x2cc to -1).
+static inline s32 PushDirFromContact(char* self) {
+    JGeometry::TBox2f box;
+    box.set(*(JGeometry::TBox2f*)(self + 0x80));
+    box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+    if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0 && fn_80238A68(*(void**)(self + 0x198)) >= 4) {
+        s32 dir = fn_8023885C(*(void**)(self + 0x198));
+        if (dir >= 0 && dir < 4) {
+            if (dir == 0) {
+                dir = 1;
+            } else if (dir == 1) {
+                dir = 0;
+            } else if (dir == 2) {
+                dir = 3;
+            } else if (dir == 3) {
+                dir = 2;
+            }
+            *(s32*)(self + 0x2cc) = -1;
+            return dir;
+        }
+    }
+    return -1;
+}
+
 extern "C" void fn_80299FB0(void* p) {
     s32 mode;
     s32 found;
@@ -1153,6 +1189,155 @@ extern "C" void fn_80299FB0(void* p) {
                 g.y += 16.0f;
             }
             g.x += 16.0f;
+        }
+    }
+}
+
+extern "C" void fn_8029A494(void* p) {
+    s32 mode;
+    u8 flag;
+    s32 i;
+    char* self;
+    s32 room;
+    void* h;
+    char* row;
+    char* col;
+    char* base;
+    s32 j;
+    u8 ok;
+    f32 lenSq;
+    JGeometry::TVec3f* vel;
+    JGeometry::TBox2f zone;
+    JGeometry::TVec3f v;
+    JGeometry::TBox2f box;
+    JGeometry::TVec3f grid;
+    JGeometry::TVec3f pos;
+
+    self = (char*)p;
+    vel = (JGeometry::TVec3f*)(self + 0x250);
+    lenSq = vel->squared();
+    if (lenSq <= 32.0f * FLT_EPSILON) {
+        if (*(u8*)(self + 0x2c0) == 1) {
+            *(u8*)(self + 0x2c0) = 0;
+            return;
+        }
+        if (*(u8*)(self + 0x2b4) == 0) {
+            return;
+        }
+        mode = -1;
+        if (*(u8*)(self + 0x2b9) == 0) {
+            if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+                room = *(s32*)(self + 4);
+                if (fn_8023DE58(0) == room) {
+                    mode = fn_80238BC4(*(void**)(self + 0x198));
+                    if (mode >= 0 && mode < 4) {
+                        *(s32*)(self + 0x2cc) = 1;
+                    } else {
+                        mode = -1;
+                    }
+                }
+            }
+            if (mode == -1) {
+                box = *(JGeometry::TBox2f*)(self + 0x80);
+                box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+                if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0) {
+                    if (fn_80238A68(*(void**)(self + 0x198)) >= 4) {
+                        mode = fn_8023885C(*(void**)(self + 0x198));
+                        if (mode >= 0 && mode < 4) {
+                            if (mode == 0) {
+                                mode = 1;
+                            } else if (mode == 1) {
+                                mode = 0;
+                            } else if (mode == 2) {
+                                mode = 3;
+                            } else if (mode == 3) {
+                                mode = 2;
+                            }
+                            *(s32*)(self + 0x2cc) = -1;
+                        } else {
+                            mode = -1;
+                        }
+                    } else {
+                        mode = -1;
+                    }
+                } else {
+                    mode = -1;
+                }
+            }
+        }
+        if (mode != 2) {
+            return;
+        }
+        room = *(s32*)(self + 4);
+        base = (char*)fn_802D6A9C();
+        zone = *(JGeometry::TBox2f*)(room < 8 ? base + 0xcc : base + 0xdc);
+        flag = 1;
+        zone.i.x -= -32.0f;
+        zone.i.y -= -32.0f;
+        zone.f.x += -32.0f;
+        zone.f.y += -32.0f;
+        v = *(JGeometry::TVec3f*)(self + 0xc);
+        v.x += *(f32*)(self + 0x60);
+        v.x += 8.0f;
+        v.y += *(f32*)(self + 0x6c);
+        v.y += 8.0f;
+        v.z = 0.0f;
+        for (i = 0; i < 6; i++) {
+            if (!fn_802A1554(lbl_8053AC98, &v)) {
+                flag = 0;
+                break;
+            }
+            room = *(s32*)(self + 4);
+            h = *(void**)(self + 0x198);
+            base = (char*)fn_8020D58C();
+            if (fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, &v, h, 0) == 1) {
+                flag = 0;
+                break;
+            }
+            ok = 0;
+            if (v.x >= zone.i.x && v.y >= zone.i.y && v.x < zone.f.x && v.y < zone.f.y) {
+                ok = 1;
+            }
+            if (!ok) {
+                flag = 0;
+                break;
+            }
+            v.x += 16.0f;
+        }
+        if (!fn_802957CC(p, 2)) {
+            flag = 0;
+        }
+        if (flag != 1) {
+            return;
+        }
+        if (mode == 2) {
+            fn_80238E08(*(void**)(self + 0x198));
+            *(f32*)(self + 0x40) = 0.32f;
+            *(u8*)(self + 0x2b8) = 1;
+            fn_801F0E34(p, 0x30004, 0);
+            *(f32*)(self + 0x254) = 16.0f;
+            *(s32*)(self + 0x248) = 0;
+            if (*(u8*)(self + 0x24c) != 0) {
+                return;
+            }
+            *(u8*)(self + 0x24c) = 1;
+        }
+        pos = *(JGeometry::TVec3f*)(self + 0xc);
+        pos.x += *(f32*)(self + 0x60);
+        pos.x += 8.0f;
+        pos.y += *(f32*)(self + 0x64);
+        pos.y += 8.0f;
+        pos.z = 0.0f;
+        grid = pos;
+        row = self;
+        for (i = 0; i < 6; i++, row += 0xc) {
+            grid.y = pos.y;
+            for (j = 0, col = row; j < 6; j++, col += 2) {
+                fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
+                fn_802A381C(lbl_8053AC98, &grid, 1, 0);
+                grid.y += 16.0f;
+            }
+            grid.x += 16.0f;
         }
     }
 }
