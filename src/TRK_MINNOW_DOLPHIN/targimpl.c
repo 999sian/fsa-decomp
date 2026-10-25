@@ -997,11 +997,12 @@ DSError TRKTargetAccessARAM(u32 p1, u32 p2, u32* p3, BOOL read)
  * @note Size: 0x8
  */
 #ifdef __MWERKS__ // clang-format off
-asm u32 __TRK_get_MSR(void)
-{
+ASM u32 __TRK_get_MSR(void) {
+#ifdef __MWERKS__ // clang-format off
 	nofralloc
 	mfmsr r3
 	blr
+#endif // clang-format on
 }
 #endif // clang-format on
 
