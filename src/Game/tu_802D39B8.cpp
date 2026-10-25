@@ -5,9 +5,6 @@
 
 #pragma auto_inline off
 
-static inline const char* roomResourceName(const char* base, int offset) {
-    return base + offset;
-}
 
 #if defined(VERSION_G4SP01)
 extern "C" int fn_801365A8(void);
