@@ -5,7 +5,7 @@
 extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
 extern "C" u8 fn_8040271C(void*, s32, f32, f32);
 extern "C" void fn_80402628(void*, s32, s32, u8);
-extern "C" f32 lbl_8054391C;
+extern "C" const f32 lbl_8054391C;
 extern "C" f32 lbl_80543944;
 extern "C" f32 lbl_805438BC;
 extern "C" f32 lbl_80543898;
@@ -944,6 +944,7 @@ extern "C" void fn_80409450(void* p) {
 	}
 }
 
+#pragma fp_contract off
 extern "C" void fn_804096E8(u8* self) {
     u8* table = (u8*)&lbl_8048C1F8;
     u8 scaleDone=0;
@@ -1018,7 +1019,7 @@ extern "C" void fn_804096E8(u8* self) {
     }
     s32 last=*(s32*)(self+0x370);
     if(last>=8) last=7;
-    s32 time=*(s16*)(self+0x41e);
+    s16 time=*(s16*)(self+0x41e);
     if(time>=0 && time<=last*2+16) {
         u8* row=self;
         s32 threshold=0;
@@ -1070,10 +1071,13 @@ extern "C" void fn_804096E8(u8* self) {
             }
             strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x000054746c763133ULL)),(char*)(self+0x438));
             strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x000054746c763134ULL)),(char*)(self+0x438));
-        }
+            *(f32*)(self+0x39c)=lbl_80543944;
+            *(s32*)(self+0x350)=5;
+        } else *(s32*)(self+0x350)=11;
     }
+    if (*(s16*)(self+0x41e)>=0) fn_80458880(lbl_8053AF80,0x54,-1);
 }
-
+#pragma fp_contract reset
 extern "C" u32 fn_80309C4C(void*, s32, s32);
 extern "C" s32 fn_8042EC7C(void*);
 extern "C" s32 fn_8042EBEC(void*);
