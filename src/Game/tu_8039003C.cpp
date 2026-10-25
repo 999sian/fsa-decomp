@@ -129,8 +129,15 @@ extern "C" void* fn_8039017C(void* this_, short flag) {
     return this_;
 }
 
+struct MenuManager {
+    void* vtable;
+    void* standard;
+    void* handheld;
+};
+
 extern "C" void* fn_8039027C(void* this_) {
-    char* base = lbl_80475670;
+    void* res;
+    TResMgr* mgr;
     u8* self = (u8*)this_;
     *(void**)self = lbl_804AF480;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
@@ -141,42 +148,36 @@ extern "C" void* fn_8039027C(void* this_) {
     if (lbl_80529DEC[0x242] == 0) {
         lbl_80529DEC[0x242] = 1;
         fn_802FF798(*(void**)(lbl_8053AB10 + 0x20));
-        void* res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gb_ch_obj_base_sch.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base + 0x18);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gb_ch_obj_tr_schE.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, base + 0x30);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base + 0x48);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "player_sch.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, base + 0x30);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base + 0x58);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gals_sch.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, base + 0x30);
+        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0, 0);
         *((u8*)*(void**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
     }
-    if (lbl_8053AAF8[0x7f] == 0) {
-        void* p = __nw__FUl(0x154);
-        if (p != 0) {
-            fn_8041787C(p);
-        }
-        *(void**)(self + 0x8) = p;
-    } else {
+    if (lbl_8053AAF8[0x7f] != 0) {
         void* p = __nw__FUl(0x66c);
-        if (p != 0) {
-            fn_804122F4(p);
-        }
-        *(void**)(self + 0x4) = p;
-    }
-    if (*(u32*)(lbl_8053AF80 + 0x58) == 0x100001a) {
-        if (lbl_80529DEC[0x248] != 1) {
-            fn_80458408(lbl_8053AF80, 0x100001a, 1);
-            lbl_80529DEC[0x248] = 1;
-        }
+        if (p != 0) fn_804122F4(p);
+        *(void**)(self + 4) = p;
     } else {
+        void* p = __nw__FUl(0x154);
+        if (p != 0) fn_8041787C(p);
+        *(void**)(self + 8) = p;
+    }
+    if (*(u32*)(lbl_8053AF80 + 0x58) != 0x100001a) {
         fn_80458FF0(lbl_8053AF80, 0x100001a, 1, 0);
+        fn_80458408(lbl_8053AF80, 0x100001a, 1);
+        lbl_80529DEC[0x248] = 1;
+    } else if (lbl_80529DEC[0x248] != 1) {
         fn_80458408(lbl_8053AF80, 0x100001a, 1);
         lbl_80529DEC[0x248] = 1;
     }
