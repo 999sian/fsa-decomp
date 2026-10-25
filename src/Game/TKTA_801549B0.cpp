@@ -135,6 +135,7 @@ struct TktaRandom {
 };
 struct TktaGame { u8 pad[0xb4]; TktaRandom rnd; };
 extern TktaGame* lbl_8053AAF8;
+static inline f32 tktaRandom() { return lbl_8053AAF8->rnd.get(); }
 extern "C" void fn_801EEC98(void* this_, u32 a, u16* ang, s32* out, s32 b, s32 c, s32 d, s32 e);
 extern const f32 lbl_8053D33C;
 extern const f32 lbl_8053D348;
@@ -200,10 +201,10 @@ extern "C" void fn_80154C30(void* this_) {
             } else {
                 *(f32*)(p + 0x44) = lbl_8053D340;
             }
-            if (lbl_8053AAF8->rnd.get() < lbl_8053D344) {
+            if (((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053D344) {
                 fn_801EEC98(this_, *(u32*)(p + 0x198), &ang, &out, 0, 0, 0, 0);
             } else {
-                ang = (s32)(lbl_8053D348 * lbl_8053AAF8->rnd.get());
+                ang = (s32)(lbl_8053D348 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
             }
             *(f32*)(p + 0x258) = lbl_8053D34C * JMath::sincosTable_.sinShort(ang);
             *(f32*)(p + 0x25c) = lbl_8053D34C * JMath::sincosTable_.cosShort(ang);
@@ -229,9 +230,8 @@ extern "C" void fn_80154C30(void* this_) {
             *(f32*)(p + 0x3c) = lbl_8053D330;
             *(f32*)(p + 0x40) = lbl_8053D330;
         }
-        f32 zero = lbl_8053D330;
         *(f32*)(p + 0x44) -= lbl_8053D350;
-        if (*(f32*)(p + 0x14) <= zero && *(f32*)(p + 0x44) < zero) {
+        if (*(f32*)(p + 0x14) <= lbl_8053D330 && *(f32*)(p + 0x44) < lbl_8053D330) {
             JGeometry::TVec3<f32> v;
             v.set(*(JGeometry::TVec3<f32>*)(p + 0xc));
             v.y += lbl_8053D354;
@@ -244,9 +244,9 @@ extern "C" void fn_80154C30(void* this_) {
             *(f32*)(p + 0x44) = lbl_8053D330;
             *(f32*)(p + 0x14) = lbl_8053D330;
             *(u32*)(p + 0xb0) = 0x11101;
-            *(s32*)(p + 0x238) = (s32)(lbl_8053D358 * lbl_8053AAF8->rnd.get()) + 50;
+            *(s32*)(p + 0x238) = (s32)(lbl_8053D358 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) + 50;
             if ((*(u32*)(p + 0x90) & 1) && *(s32*)(p + 0x108) < 8) {
-                *(s32*)(p + 0x238) = (s32)(lbl_8053D354 * lbl_8053AAF8->rnd.get()) + 4;
+                *(s32*)(p + 0x238) = (s32)(lbl_8053D354 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) + 4;
             }
             *(s32*)(p + 0x230) = 0;
         }
