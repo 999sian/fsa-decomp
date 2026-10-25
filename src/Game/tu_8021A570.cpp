@@ -31,7 +31,7 @@ extern SwingGame* lbl_8053AAF8;
 s32 fn_801CD664(s32 range);
 }
 
-static inline void Swing_Choose(SwingRecord* r, int zero = 0) {
+static inline void Swing_Choose(SwingRecord* r) {
     if (!r->mLocked) {
         if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.9f) {
             r->mState = 1;
@@ -42,12 +42,12 @@ static inline void Swing_Choose(SwingRecord* r, int zero = 0) {
                 r->mSpeed = 0x180;
             }
         } else {
-            r->mState = zero;
+            r->mState = 0;
             r->mTimer8 = fn_801CD664(0xb5) + 0x78;
             r->mSpeed = 0;
         }
     } else {
-        r->mTimer6 = zero;
+        r->mTimer6 = 0;
     }
 }
 
@@ -77,7 +77,7 @@ static inline f32 Swing_Dist(SwingRecord* r) {
 }
 
 // NonMatching (99.9%): zero/game-pointer register swap (r4/r5) in the bounce-settle branch.
-extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
+extern "C" bool fn_8021A570(SwingRecord* r, const bool active) {
     bool result = false;
     if (r->mTimer6 != 0) {
         r->mTimer6--;
@@ -109,7 +109,7 @@ extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
                 }
             }
         } else if (r->mState == 1) {
-            s16 prev = r->mAngle;
+            const s16 prev = r->mAngle;
             bool bounced = false;
             r->mAngle = prev + r->mSpeed;
             if (r->mFlipped) {
@@ -141,7 +141,8 @@ extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
                             result = true;
                         }
                     } else {
-                        Swing_Choose(r, r->mAngle = 0);
+                        r->mAngle = 0;
+                        Swing_Choose(r);
                         r->mTimer6 = 0;
                     }
                 }
