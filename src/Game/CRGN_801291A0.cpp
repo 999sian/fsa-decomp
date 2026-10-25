@@ -9,8 +9,9 @@ extern "C" void fn_801F0E34(Actor*, u32, s32);
 extern void* lbl_8053AAF8;
 extern const f32 lbl_8053CB24;
 extern const f32 lbl_8053CB28;
-static inline s32 CRGNRandom(s32 count) {
-    return (s32)((f32)count * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
+static inline s32 CRGNRandom(const s32* count) {
+    f32 random = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+    return (s32)((f32)*count * random);
 }
 #include "Game/SinitPoolChain.h"
 
