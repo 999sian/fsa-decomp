@@ -61,10 +61,10 @@ extern "C" void fn_80109534(u8* this_) {
         switch (*(s32*)(this_ + 0x328)) {
         case 0xc:
             if (*(s32*)(this_ + 0x358) < 8) {
-                s32 v = *(s32*)(this_ + 0x108);
+                s32 v = *(s32*)(this_ + 0x108) + 2;
                 *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
                 *(f32*)(o + 0x254) = lbl_8053C3FC;
-                *(s32*)(o + 0x24c) = v + 2;
+                *(s32*)(o + 0x24c) = v;
             } else if (*(s32*)(this_ + 0x358) < 0xc) {
                 s32 v = *(s32*)(this_ + 0x108);
                 *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
