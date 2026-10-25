@@ -1129,10 +1129,13 @@ inline s32 spawnLayer8328(char* p, u8 layer, f32& x, f32& y) {
     x=y=lbl_8054111C;
     return layer+7;
 }
+#pragma opt_propagation off
 inline void spawnPos8328(JGeometry::TVec3<f32>& pos, u16 x, u16 y, f32 ox, f32 oy) {
     pos.set(lbl_8054112C*x+ox,lbl_8054112C*y+oy,lbl_8054111C);
 }
 
+
+#pragma opt_propagation reset
 extern "C" char* fn_802D8128(char* p, s32 index) {
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
@@ -1208,6 +1211,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     u8* data;
     s32* out;
     s32* end;
+    u32 tag;
     s32 number = 0;
     s32 count;
     s32 pass;
@@ -1226,7 +1230,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
         s32 roomNo=((RoomArrays*)(p+*(s32*)(p+0x18)*10))->roomNumbers[0][*(s32*)(p+0x14)];
         if (roomNo==255) roomNo=0;
         char buf[32];
-        u32 tag=0x42202020;
+        tag=0x42202020;
         sprintf(buf,lbl_8046E820,(char*)data,roomNo/10,roomNo%10);
         s32 a=((char*)data)[0]-0x20;
         s32 b=((char*)data)[1]-0x20;
@@ -1252,12 +1256,12 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             offset=0;
             out=end;
             for (;;) {
-                u8* rec=data+offset;
+                const u8* rec=data+offset;
                 id=(u32)rec[0]<<24|(u32)rec[1]<<16|(u32)rec[2]<<8|(u32)rec[3];
                 if (id==0x20202020) break;
                 param=(u32)rec[7]<<24|(u32)rec[8]<<16|(u32)rec[9]<<8|(u32)rec[10];
-                u8 layer=rec[4];
-                u16 x=rec[5],y=rec[6];
+                u32 layer=rec[4];
+                u32 x=rec[5],y=rec[6];
                 offset+=11;
                 bool first=false;
                 for (s32 j=0;j<6;j++) {
@@ -1265,7 +1269,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
                 }
                 if ((first && pass==0)||(!first && pass!=0)) {
                     f32 ox,oy;
-                    if (layer==0) {ox=*(f32*)(p+0xcc);oy=*(f32*)(p+0xd0);room=0;}
+                    if ((u8)layer==0) {ox=*(f32*)(p+0xcc);oy=*(f32*)(p+0xd0);room=0;}
                     else {ox=oy=lbl_8054111C;room=layer+7;}
                     char* base=(char*)roomArrays();
                     if (!(roomArrays()->flags3548[*(s32*)(base+0x18)][*(s32*)(base+0x14)][number/32] & (1<< (number%32)))) {
@@ -1317,22 +1321,29 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),lbl_8054111C);
         Actor_CreateByID(fn_801F856C(),0x5357444c,0,(f32*)&pos,0,-1,-1);
     }
+    {
     char* infoBase=p;
     char* posBase=p;
     for (s32 i=0;i<8;i++,infoBase+=4,posBase+=8) {
         u32 info=*(u32*)(infoBase+0x130c8);
-        if ((s32)((info>>16)&255)==*(s32*)(p+0x14) && (s32)((info>>8)&255)==*(s32*)(p+0x18)) {
+        s32 tileX=(info>>16)&255;
+        s32 tileY=(info>>8)&255;
+        if (tileX==*(s32*)(p+0x14) && tileY==*(s32*)(p+0x18)) {
             u32 param=*(u32*)(infoBase+0x13068);
             JGeometry::TVec3<f32> pos;
             pos.set(*(f32*)(posBase+0x13088),*(f32*)(posBase+0x1308c),lbl_8054111C);
             Actor_CreateByID(fn_801F856C(),0x4c535449,info&255,(f32*)&pos,param|0x80|((info>>7)&0x1fe0000),-1,-1);
         }
     }
-    infoBase=p;
-    posBase=p;
+    }
+    {
+    char* infoBase=p;
+    char* posBase=p;
     for (s32 i=0;i<8;i++,infoBase+=4,posBase+=8) {
         u32 info=*(u32*)(infoBase+0x13128);
-        if ((s32)((info>>16)&255)==*(s32*)(p+0x14) && (s32)((info>>8)&255)==*(s32*)(p+0x18)) {
+        s32 tileX=(info>>16)&255;
+        s32 tileY=(info>>8)&255;
+        if (tileX==*(s32*)(p+0x14) && tileY==*(s32*)(p+0x18)) {
             JGeometry::TVec3<f32> pos;
             pos.set(*(f32*)(posBase+0x130e8),*(f32*)(posBase+0x130ec),lbl_8054111C);
             s32 id=Actor_CreateByID(fn_801F856C(),0x4b455930,info&255,(f32*)&pos,((info>>24)&63)|0x980,-1,-1);
@@ -1342,6 +1353,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             *(u32*)(actor+0x238)=*(u32*)(infoBase+0x13188);
             *(u32*)(actor+0x23c)=info>>30;
         }
+    }
     }
     fn_801F6204(fn_801F856C(),0);
     *(s32*)(p+0xec)=50;
