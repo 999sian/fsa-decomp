@@ -112,7 +112,7 @@ extern "C" u8 fn_801F6758(void*,f32,s32);
 extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
-static inline void BeeeScatter(char* p) {
+static inline void BeeeScatter(char* const p) {
                             int j;
                             char* segment=p+12;char* angles=p+2;
                             for(j=1;j<7;j++) {
