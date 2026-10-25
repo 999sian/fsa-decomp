@@ -73,6 +73,8 @@ extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" s32 fn_801F02BC(void* p, const char* name, s32 id, void* param, s32 a, s32 b, s32 c, f32 f1, f32 f2);
 extern "C" s32 fn_802D6A9C(void);
 extern "C" void fn_80158B5C(void* a, u32 b, void* c, Rgba802D d, f32 f);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void*, s32, s32, void*, s32, s32, s32);
 struct Vec3f_802D { float x, y, z; };
 struct VObj_802D {
     virtual void m0();
