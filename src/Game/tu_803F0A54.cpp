@@ -692,7 +692,7 @@ extern "C" s32 fn_804317AC(void* p);
 extern "C" s32 fn_80431740(void* p);
 extern "C" void fn_8013CC50(s32 a, f32* v, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, f32 h);
 extern "C" u8* sManager__8JUTVideo;
-extern "C" u64 lbl_80479238[];
+extern "C" const u64 lbl_80479238[];
 extern const f32 lbl_80543720;
 extern const f32 lbl_80543728;
 extern const f32 lbl_80543730;
@@ -702,7 +702,7 @@ extern const f32 lbl_805437CC;
 extern const f32 lbl_805437A0;
 extern "C" void fn_803F8FBC(u8* p) {
     u8* q;
-    u64* ent;
+    const u64* ent;
     s32 i;
     f32 span;
     void* r;
@@ -755,9 +755,9 @@ extern "C" void fn_803F8FBC(u8* p) {
         *(s16*)(p + 0x24a) = 0;
     }
 
-    ent = (u64*)lbl_80479238;
+    ent = lbl_80479238;
     q = p;
-    for (i = 0; i < 4; i++, ent++, q += 4) {
+    for (i = 0; i < 4; i++, q += 4, ent++) {
         if (lbl_8053AAF8[0x82] & (u8)(1 << (i + 4))) {
             *(s32*)(q + 0x210) += 1;
             if (*(s32*)(q + 0x210) >= 0x82) {
