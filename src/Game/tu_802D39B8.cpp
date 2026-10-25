@@ -23,7 +23,10 @@ struct RoomArrays {
     u32 flags178[10][10];
     u8 counters308[32];
     u8 values328[32];
-    u32 flags348[8][4];
+    union {
+        u32 flags348[8][4];
+        u32 flags348Flat[32];
+    };
     u64 masks3C8[4][10][10];
     u64 flags1048[10][10][8];
     u16 values2948[8][64];
@@ -1942,32 +1945,24 @@ extern "C" u8 fn_802DEDFC(s32 value) {
 extern "C" void fn_802DEE2C(void) {
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 10; j++) {
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags178[i][j] = 0;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[0][i][j] = 0;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[1][i][j] = 0;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[2][i][j] = 0;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->masks3C8[3][i][j] = 0;
+            roomArrays()->flags178[i][j] = 0;
+            roomArrays()->masks3C8[0][i][j] = 0;
+            roomArrays()->masks3C8[1][i][j] = 0;
+            roomArrays()->masks3C8[2][i][j] = 0;
+            roomArrays()->masks3C8[3][i][j] = 0;
         }
     }
-    for (s32 i = 0; i < 32;) {
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->counters308[i] = 0;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->values328[i] = 255;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12F68[i] = 0;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12FE8[i] = 0;
-        i++;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->counters308[i] = 0;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->values328[i] = 255;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12F68[i] = 0;
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12FE8[i] = 0;
-        i++;
+    for (s32 i = 0; i < 32; i++) {
+        roomArrays()->counters308[i] = 0;
+        roomArrays()->values328[i] = 255;
+        roomArrays()->flags12F68[i] = 0;
+        roomArrays()->flags12FE8[i] = 0;
     }
-    for (s32 i = 0; i < 8; i++) {
-        for (s32 j = 0; j < 4; j++) (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags348[i][j] = 0;
-    }
-    for (s32 i = 0; i < 8; i++) (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->counts6748[i] = 0;
+    for (s32 i = 0; i < 32; i++) ((u32*)roomArrays()->flags348)[i] = 0;
+    for (s32 i = 0; i < 8; i++) roomArrays()->counts6748[i] = 0;
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 10; j++) {
-            for (s32 k = 0; k < 32; k++) (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flagsFD68[i][j][k] = 0;
+            for (s32 k = 0; k < 32; k++) roomArrays()->flagsFD68[i][j][k] = 0;
         }
     }
 }
