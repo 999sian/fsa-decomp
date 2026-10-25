@@ -20,6 +20,29 @@ struct Tu80333958ResMgr {
     virtual void* get(u32 type, const char* name);
 };
 
+struct Tu80333E8CSelf {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual u8 v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual u8 v19(u32 a);
+};
+
 
 extern "C" char lbl_804AB968[];
 extern "C" void fn_801F2B7C(void* this_, u32 a, u32 b, u32 c);
@@ -180,13 +203,16 @@ extern "C" void fn_80333B64(void* this_) {
 extern "C" void fn_80333E8C(void* this_) {
     char* p = (char*)this_;
     u8 r;
+    u32* vt;
     fn_801F2B7C(this_, -0x64, -1, 1);
-    r = ((u8 (*)(void*))((*(u32**)this_)[0x34 / 4]))(this_);
+    vt = *(u32**)this_;
+    r = ((u8 (*)(void*))(vt[0x34 / 4]))(this_);
     if (r != 0) {
         return;
     }
     ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
-    r = ((u8 (*)(void*, u32))((*(u32**)this_)[0x4c / 4]))(this_, *(u32*)(p + 4));
+    vt = *(u32**)this_;
+    r = ((u8 (*)(void*, u32))(vt[0x4c / 4]))(this_, *(u32*)(p + 4));
     if (r != 0 || *(s32*)(p + 0x244) > 0x258) {
         *(u8*)(p + 0x11c) = 0;
     }
