@@ -65,43 +65,12 @@ extern char memPool___30JASPoolAllocObject_9JAIStream[];
 extern char memPool___35JASPoolAllocObject_13JAISoundChild[];
 extern char memPool___27JASPoolAllocObject_6JAISeq[];
 extern char memPool___26JASPoolAllocObject_5JAISe[];
-static inline void initializeRows(u8* p) {
-	s32 i = 0;
-	u8* r;
-
-	u8* q;
-	q = p;
-	*(void**)p = lbl_804AFB30;
-	*(u32*)(p + 0x10) = i;
-	*(u32*)(p + 0xc) = i;
-	*(u32*)(p + 0x8) = i;
-	do {
-		r = p + 0x20;
-		memset(r, 0, 0xc8);
-		memset(q + 0x280, 0, 0x9c4);
-		i++;
-		r[0x5c] = 1;
-		r[0x59] = 0x32;
-		p += 0xc8;
-		*(u32*)(r + 0x8) |= 0x4;
-		*(u32*)(r + 0x8) |= 0x40;
-		*(u32*)(r + 0x8) |= 0x400;
-		*(u32*)(r + 0x8) |= 0x4000;
-		*(u32*)(r + 0x8) |= 0x40000;
-		*(u32*)(r + 0x8) |= 0x400000;
-		*(u32*)(r + 0x8) |= 0x4000000;
-		*(u32*)(r + 0x8) |= 0x20000000;
-		r[0x68] = 1;
-		r[0x69] = 1;
-		q += 0x9c4;
-	} while (i < 3);
-}
-
+#pragma opt_strength_reduction off
 extern "C" void fn_803B961C(void) {
 	u8* base = (u8*)lbl_8050EC60;
 	s32 i = 0;
 	u8* r;
-	u8* __restrict p = base + 0x20;
+	u8* p = base + 0x20;
 	u8* q;
 	q = p;
 	*(void**)p = lbl_804AFB30;
@@ -177,7 +146,7 @@ extern "C" void fn_803B961C(void) {
 		__init__memPool___26JASPoolAllocObject_5JAISe = 1;
 	}
 }
-
+#pragma opt_strength_reduction reset
 // ---- from src/Game/Table_SetSelfIndexedByte86.cpp ----
 // fn_803B8C74(val) / fn_803B8C90() - setter/getter for a byte field at
 // +0x86 in a global table (lbl_8050EC80, stride 0xc8), indexed by a
