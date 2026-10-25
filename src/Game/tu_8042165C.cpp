@@ -523,6 +523,72 @@ timer[0xf4]--;
 }
 }
 
+extern const u64 lbl_8048EF20[];
+extern const u64 lbl_8048EF40[];
+extern "C" void fn_80422824(u8* p) {
+    const u64* marks;
+    s32 count=0;
+    s32 next=0;
+    if (!(p[0x256]&1) && !(p[0x256]&2) && !(p[0x256]&4) && !(p[0x256]&8)) return;
+    if (!p[0x25b]) {p[0x25b]=1;return;}
+    s32 rank[4];
+    s32 used[4];
+    marks=lbl_8048EF20;
+    for(s32 i=0;i<4;i++) {
+        rank[i]=0;used[i]=0;
+        if (lbl_8053AAF8[0x82] & (u8)(1<<i)) {
+            if(lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x89]) GetHeart(*(u8**)(p+0x18),marks[i])[0xb0]=1;
+            else GetHeart(*(u8**)(p+0x18),marks[i])[0xb0]=0;
+            count++;
+        }
+    }
+    do {
+        s32 ties;
+        s32 maximum;
+        maximum=-5001;
+        ties=0;
+        for(s32 i=0;i<count;i++) {
+            if(!used[i] && maximum<(s32)fn_80237774(i)) maximum=fn_80237774(i);
+        }
+        for(s32 i=0;i<count;i++) {
+            if(!used[i] && maximum==(s32)fn_80237774(i)) {
+                rank[i]=next;
+                ties++;
+                used[i]=1;
+            }
+        }
+        next+=ties;
+    }while(next<count);
+    for(s32 i=0;i<count;i++) {
+        switch(rank[i]) {
+        case 0:
+            ((HeartPane*)GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]))->setColor(JUtility::TColor(255,255,255,255));
+            RankColors(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),JUtility::TColor(185,18,18,255),JUtility::TColor(216,58,22,255),JUtility::TColor(185,84,18,255),JUtility::TColor(255,157,16,255));
+            SetHeart(GetHeart(*(u8**)(p+0x18),marks[i]),lbl_80543A4C,lbl_80543A40,lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            SetHeart(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),lbl_80543A4C,lbl_80543A40,lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            break;
+        case 1:
+            ((HeartPane*)GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]))->setColor(JUtility::TColor(255,255,255,255));
+            RankColors(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),JUtility::TColor(242,72,9,255),JUtility::TColor(242,72,9,255),JUtility::TColor(242,171,36,255),JUtility::TColor(252,255,33,255));
+            SetHeart(GetHeart(*(u8**)(p+0x18),marks[i]),lbl_80543A40,lbl_80543A4C,lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            SetHeart(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),lbl_80543A40,lbl_80543A4C,lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            break;
+        case 2:
+            ((HeartPane*)GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]))->setColor(JUtility::TColor(255,255,119,255));
+            RankColors(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
+            SetHeart(GetHeart(*(u8**)(p+0x18),marks[i]),lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            SetHeart(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            break;
+        case 3:
+            ((HeartPane*)GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]))->setColor(JUtility::TColor(216,255,161,255));
+            RankColors(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
+            SetHeart(GetHeart(*(u8**)(p+0x18),marks[i]),lbl_80543A40,lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            SetHeart(GetHeart(*(u8**)(p+0x18),lbl_8048EF40[i]),lbl_80543A40,lbl_80543A40,lbl_80543A40,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C,lbl_80543A4C);
+            break;
+        }
+    }
+}
+
 extern "C" void fn_80423248(u8* this_, u32 idx) {
     u8* base = (u8*)lbl_8048E1B8;
     if (this_[0x257] & (u8)(1 << idx)) {
@@ -741,7 +807,30 @@ extern "C" void fn_80423DF0(u8* this_, s32 i) {
     }
 }
 
+extern "C" void fn_8043D57C(void);
+extern "C" void fn_8043D514(void);
+extern "C" void fn_80402E08(void);
+extern "C" void fn_8042165C(u8* this_);
+extern "C" void fn_8037EB4C(void);
+extern "C" void fn_80424148(u8* this_, s32 i, u8 flag) {
+    s32 idx = i;
+    u8* p = this_;
+    f32 a = *(f32*)(p + 0x108 + idx * 4);
+    f32 b = *(f32*)(p + 0x128 + idx * 4);
+    f32 c = *(f32*)(p + 0x138 + idx * 4);
+    if (idx < 2) {
+        fn_8043D57C();
+        fn_80402E08();
+    } else {
+        fn_8043D514();
+        fn_80402E08();
+    }
+    fn_8042165C(this_);
+    fn_8037EB4C();
+}
+
 extern "C" void fn_80425128(u8* this_) {
+    u32* walk;
     u32* table;
     s32 j;
     s32 bit;
@@ -749,6 +838,7 @@ extern "C" void fn_80425128(u8* this_) {
     s32 i;
 
     table = (u32*)lbl_80529DEC;
+    walk = table;
     for (i = 0; i < 4; i++) {
         bit = 1 << i;
         flag = (lbl_8053AAF8[0x82] & (u8)bit) != 0;
@@ -1383,5 +1473,44 @@ extern "C" void* fn_80426AD4(void* this_, s16 how) {
     }
     return this_;
 }
+
+extern u8 lbl_804B1428[];
+extern "C" void* __nw__FUl(u32 size);
+extern "C" void __ct__9J2DScreenFv(void* this_);
+extern "C" void __ct__13J2DOrthoGraphFffffff(void* this_, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);
+extern "C" void fn_80441778(void);
+extern "C" void* fn_80426DEC(u8* this_) {
+    u8* p = this_;
+    u8* g = lbl_8053AED0;
+    u8* sc;
+    *(u32*)p = (u32)(lbl_804B1428 + 0x44);
+    *(s32*)(p + 0x210) = -1;
+    *(s32*)(p + 0x214) = -1;
+    p[0x25c] = 0;
+    p[0x25d] = 0;
+    p[0x25e] = 0;
+    p[0x25f] = 0;
+    p[0x260] = 0;
+    p[0x261] = 0;
+    g[0x10e] |= 1;
+    sc = (u8*)__nw__FUl(0xd4);
+    if (sc != 0) {
+        __ct__13J2DOrthoGraphFffffff(sc, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    }
+    *(u8**)(p + 0x4c) = sc;
+    sc = (u8*)__nw__FUl(0x10);
+    if (sc != 0) {
+        fn_80441778();
+    }
+    *(u8**)(p + 0xf0) = sc;
+    sc = (u8*)__nw__FUl(0x118);
+    if (sc != 0) {
+        __ct__9J2DScreenFv(sc);
+    }
+    *(u8**)(p + 0x4) = sc;
+    return this_;
+}
+
+extern "C" void __sinit_tu_8042165C_cpp(void) {}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
