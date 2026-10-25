@@ -55,6 +55,16 @@ extern void* lbl_8053AB10;
 extern char lbl_8046C860[];
 extern float lbl_80540888;
 extern float lbl_8054088C;
+struct Tu802AA364ResMgrB {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* get(unsigned int type, const char* name);
+};
+
 extern "C" void fn_802AA3C8(void* self) {
     unsigned char* s = (unsigned char*)self;
     int* p = (int*)self;
