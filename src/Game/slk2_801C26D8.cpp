@@ -1,7 +1,9 @@
 // Game TU 801C26D8-801C5B08 (SLK2). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry.h"
 extern void* lbl_804A46F4[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
@@ -135,8 +137,12 @@ extern "C" void fn_801C283C(u8* this_) {
         }
         break;
     }
-    Vec tmp, pos;
-    tmp = *(Vec*)(this_ + 0xc);
+    struct Vec3f {
+        f32 x;
+        f32 y;
+        f32 z;
+    } tmp, pos;
+    tmp = *(struct Vec3f*)(this_ + 0xc);
     pos = tmp;
     fn_8043E7CC(lbl_8053AED0, &pos);
 }
@@ -201,8 +207,8 @@ extern "C" void fn_801C2A84(u8* this_) {
         return;
     }
     u32 flags = *(u32*)(this_ + 0x230);
-    BOOL moving = (flags & 7) != 0;
-    if (!moving) {
+    u32 moving = (flags & 7) != 0;
+    if (moving == 0) {
         fn_801CE32C(this_);
     } else if (!(flags & 2)) {
         fn_801CE5D4(this_);
@@ -337,6 +343,61 @@ extern "C" void fn_801C2E70(u8* this_) {
         }
     }
     fn_80216A8C(this_ + 0x528);
+}
+
+extern "C" void fn_801D01A0(u8* this_, void* src, f32* out);
+extern "C" u8 fn_801D0DD4(u8* this_);
+extern "C" void fn_802188B0(void* p);
+extern "C" void fn_801C71BC(u8* this_);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16 ang);
+extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
+    if (flag) {
+        if (((u8 (*)(u8*))(*(void***)this_)[0x4c / 4])(this_)) {
+            *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x18);
+            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x1c);
+            f32 delta[2];
+            fn_801D01A0(this_, this_ + 0x32c, delta);
+            *(f32*)(this_ + 0xc) += delta[0];
+            *(f32*)(this_ + 0x10) += delta[1];
+        }
+    }
+    u16* rec = (u16*)fn_801C0D70();
+    if (*rec & 0x400) {
+        if (fn_801D0DD4(this_)) {
+            s32 st = *(s32*)(this_ + 0x248);
+            if (st - 0xe < 0x1a) {
+                return;
+            }
+        }
+    }
+    fn_802188B0(this_ + 0x540);
+    if (*(u32*)(this_ + 0x230) & 0x40000) {
+        if (*(s8*)(this_ + 0x55c) != -1) {
+            *(u8*)(this_ + 0x55c) += 1;
+        }
+    } else {
+        *(u8*)(this_ + 0x55c) = 0;
+    }
+    if (*(u8*)(this_ + 0x597)) *(u8*)(this_ + 0x597) -= 1;
+    if (*(u8*)(this_ + 0x598)) *(u8*)(this_ + 0x598) -= 1;
+    if (*(u8*)(this_ + 0x599)) *(u8*)(this_ + 0x599) -= 1;
+    if (*(u8*)(this_ + 0x59a)) *(u8*)(this_ + 0x59a) -= 1;
+    if (*(u8*)(this_ + 0x59b)) *(u8*)(this_ + 0x59b) -= 1;
+    if (*(u32*)(this_ + 0x230) & 0x100000) {
+        fn_801C71BC(this_);
+    }
+    *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant(*(u16*)(this_ + 0x33e));
+}
+
+extern "C" void fn_801C50A8(void* this_, s32 state);
+extern "C" void fn_801C3B7C(void* this_, s32 state) {
+    u8* p = (u8*)this_;
+    fn_801C50A8(this_, state);
+    if ((u32)state > 0x2f) {
+        *(s32*)(p + 0x248) = state;
+        return;
+    }
+    *(s32*)(p + 0x250) = 1;
 }
 
 extern "C" void fn_801C50A8(void* this_, s32 state) {
@@ -590,7 +651,7 @@ extern "C" void* fn_801C573C(void* this_) {
     *(u8*)(p + 0x55e) = 0;
     *(s32*)(p + 0x560) = 4;
     *(s32*)(p + 0x564) = 0;
-    *(s32*)(p + 0x568) = *(u16*)&lbl_8046A748;
+    *(s32*)(p + 0x568) = lbl_8046A748;
     *(s32*)(p + 0x56c) = 0;
     *(f32*)(p + 0x570) = lbl_8053EE08;
     *(f32*)(p + 0x574) = lbl_8053EE08;
