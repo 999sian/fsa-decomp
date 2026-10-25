@@ -65,12 +65,17 @@ static void dgt2Rot(f32 (*m)[4], f32 th) {
     cT = cos(th);
     cZ = cos(lbl_8053E1D8);
     f32 S = lbl_8053E1DC;
+    f32 ab = sA * sT;
+    f32 dc = cA * sZ;
+    f32 dz = cA * cZ;
+    f32 ac = sA * sZ;
+    f32 af = sA * cZ;
     m[0][0] = S * (cT * cZ);
-    m[0][1] = S * ((sA * sT) * cZ - cA * sZ);
-    m[0][2] = S * ((cA * cZ) * sT + sA * sZ);
+    m[0][1] = S * (ab * cZ - dc);
+    m[0][2] = S * (dz * sT + ac);
     m[1][0] = S * (cT * sZ);
-    m[1][1] = S * ((sA * sT) * sZ + cA * cZ);
-    m[1][2] = S * ((cA * sZ) * sT - sA * cZ);
+    m[1][1] = S * (ab * sZ + dz);
+    m[1][2] = S * (dc * sT - af);
     m[2][0] = S * -sT;
     m[2][1] = S * (sA * cT);
     m[2][2] = S * (cA * cT);
@@ -177,9 +182,10 @@ struct Dgt2Links { u8 pad[0x3c0]; Dgt2Child* child[3]; };
 // Release the three linked child actors.
 extern "C" void fn_8018EB94(void* this_) {
     char* p = (char*)this_;
+    f32 z;
     DrawRec rec;
     f32 mtx[3][4];
-    f32 z = *(f32*)(p + 0x14);
+    z = *(f32*)(p + 0x14);
     if ((*(u32*)(p + 0x240) & 1) != 0) {
         u8* r = (u8*)&rec;
         r[0x17] = 0;
