@@ -115,8 +115,8 @@ inline bool changeState(char* p, s32 st, u8 flag) {
 
 extern "C" bool fn_8022F514(s32);
 extern "C" s32 fn_8022F3DC(s32);
-f32 fn_80309FCC(void*, s32);
-f32 fn_80309F20(void*, s32);
+extern "C" f32 fn_80309FCC(void*, s32);
+extern "C" f32 fn_80309F20(void*, s32);
 
 inline s32 countSharing(const char* p) {
     s32 linked;
