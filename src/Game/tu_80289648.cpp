@@ -53,17 +53,16 @@ static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
 
 static inline bool tuCheckHit(u8* self, s32 idx) {
     s32 room = *(s32*)(self + 0x4);
-    if (room != fn_8023DE58(idx)) {
-        return false;
-    }
-    for (s32 j = 0; j < 8; j++) {
-        JGeometry::TVec3f v;
-        fn_8022E088(idx, j, &v);
-        v -= *(JGeometry::TVec3f*)(self + 0xc);
-        v.z = 0.0f;
-        if (tuInBox(v, *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c))) {
-            fn_8022DF48(idx);
-            return true;
+    if (fn_8023DE58(idx) == room) {
+        for (s32 j = 0; j < 8; j++) {
+            JGeometry::TVec3f v;
+            fn_8022E088(idx, j, &v);
+            v -= *(JGeometry::TVec3f*)(self + 0xc);
+            v.z = 0.0f;
+            if (tuInBox(v, *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c))) {
+                fn_8022DF48(idx);
+                return true;
+            }
         }
     }
     return false;
@@ -199,10 +198,12 @@ extern "C" void fn_80289A88(Actor* this_) {
     u8* t = *(u8**)(self + 0x240);
     f32 sw = (f32)*(u16*)(t + 2);
     f32 sh = (f32)*(u16*)(t + 4);
-    *(f32*)(self + 0x230) = *(f32*)(self + 0x238) / sw;
-    *(f32*)(self + 0x234) = *(f32*)(self + 0x23c) / sh;
+    f32 a = *(f32*)(self + 0x238);
+    f32 b = *(f32*)(self + 0x23c);
     newC.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
     newC.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
+    *(f32*)(self + 0x230) = a / sw;
+    *(f32*)(self + 0x234) = b / sh;
 
     for (s32 i = 0; i < 4; i++) {
         if (tuCheckHit(self, i)) {
