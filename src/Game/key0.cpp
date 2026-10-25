@@ -19,6 +19,7 @@
 #define unknown jsys_unknown
 #endif
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" s32 fn_8023F264(s32 a);
 extern "C" void* fn_8023E724(s32 a);
