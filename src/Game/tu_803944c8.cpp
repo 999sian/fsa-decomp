@@ -311,7 +311,8 @@ extern "C" void fn_80396884(void* this_) {
                         *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                         *(s16*)(self + 0x19c) = 1;
                         if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                            *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                            s32* slots = (s32*)(self + 0x13c);
+                            *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                         }
                         if (self[0x1aa] != 0) {
                             fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -323,7 +324,8 @@ extern "C" void fn_80396884(void* this_) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
                     if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                        s32* slots = (s32*)(self + 0x13c);
+                        *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -335,7 +337,8 @@ extern "C" void fn_80396884(void* this_) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
                 *(s16*)(self + 0x19c) = 1;
                 if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                    s32* slots = (s32*)(self + 0x13c);
+                    *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -350,7 +353,8 @@ extern "C" void fn_80396884(void* this_) {
                         *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                         *(s16*)(self + 0x19c) = 1;
                         if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                            *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                            s32* slots = (s32*)(self + 0x13c);
+                            *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                         }
                         if (self[0x1aa] != 0) {
                             fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -362,7 +366,8 @@ extern "C" void fn_80396884(void* this_) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
                     if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                        s32* slots = (s32*)(self + 0x13c);
+                        *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -374,10 +379,12 @@ extern "C" void fn_80396884(void* this_) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
                 *(s16*)(self + 0x19c) = -1;
                 if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                    s32* slots = (s32*)(self + 0x13c);
+                    *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                 }
                 if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                    s32* slots = (s32*)(self + 0x13c);
+                    *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -393,7 +400,8 @@ extern "C" void fn_80396884(void* this_) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
                     if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                        s32* slots = (s32*)(self + 0x13c);
+                        *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -405,7 +413,8 @@ extern "C" void fn_80396884(void* this_) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                 *(s16*)(self + 0x19c) = 1;
                 if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                    s32* slots = (s32*)(self + 0x13c);
+                    *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -417,7 +426,8 @@ extern "C" void fn_80396884(void* this_) {
             *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
             *(s16*)(self + 0x19c) = 1;
             if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                s32* slots = (s32*)(self + 0x13c);
+                *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
             }
             if (self[0x1aa] != 0) {
                 fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -432,7 +442,8 @@ extern "C" void fn_80396884(void* this_) {
                     *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                     *(s16*)(self + 0x19c) = 1;
                     if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                        *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                        s32* slots = (s32*)(self + 0x13c);
+                        *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                     }
                     if (self[0x1aa] != 0) {
                         fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -444,7 +455,8 @@ extern "C" void fn_80396884(void* this_) {
                 *(s32*)(self + 0x168) = *(s32*)(self + 0x168) + 1;
                 *(s16*)(self + 0x19c) = 1;
                 if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                    *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                    s32* slots = (s32*)(self + 0x13c);
+                    *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
                 }
                 if (self[0x1aa] != 0) {
                     fn_803037D4(*(s32*)(self + 0x160), 9);
@@ -456,10 +468,12 @@ extern "C" void fn_80396884(void* this_) {
             *(s32*)(self + 0x168) = *(s32*)(self + 0x168) - 1;
             *(s16*)(self + 0x19c) = -1;
             if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                s32* slots = (s32*)(self + 0x13c);
+                *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
             }
             if ((u32)(*(s32*)(self + 0x148) + 0x10000) != 0xffff) {
-                *(s32*)(self + 0x148) = *(s32*)(self + *(s32*)(self + 0x168) * 4 + 0x13c);
+                s32* slots = (s32*)(self + 0x13c);
+                *(s32*)(self + 0x148) = slots[*(s32*)(self + 0x168)];
             }
             if (self[0x1aa] != 0) {
                 fn_803037D4(*(s32*)(self + 0x160), 9);
