@@ -107,7 +107,7 @@ extern "C" void fn_801F714C(u16*,u16,s32,s32);
 extern "C" u8 fn_801F2B7C(void*,s32,s32,s32);
 extern "C" u8 fn_8023A51C(s32);
 extern "C" f32 lbl_8054235C,lbl_80542360,lbl_80542364,lbl_80542368,lbl_8054236C,lbl_80542370,lbl_80542374;
-extern "C" f32 lbl_80542378,lbl_8054237C,lbl_80542380,lbl_80542384,lbl_80542388;
+extern "C" const f32 lbl_80542378,lbl_8054237C,lbl_80542380,lbl_80542384,lbl_80542388;
 extern "C" u8 fn_801F6758(void*,f32,s32);
 extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
 extern "C" void fn_80343D90(char* p) {
