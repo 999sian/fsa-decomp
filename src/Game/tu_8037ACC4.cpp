@@ -120,20 +120,26 @@ extern "C" u32 fn_8037AE60(void)
     return ret;
 }
 
-extern "C" u32 fn_8037AEAC(void* arg)
-{
-    s32 ret;
-    if (*((u8*)lbl_80557E40 + 0x7f) != 0) {
-        ret = fn_80447500(lbl_80558260);
-    } else {
-        ret = fn_8044BAA8(lbl_80558268);
-    }
-    if ((s32)fn_8037AE60() != 9) {
-        *((u8*)arg + 0xc) = 0;
-    }
+extern "C" u32 fn_8044F680(void*);
+extern "C" u32 fn_80453B14(void*);
+extern "C" u32 fn_8044F664(void);
+extern "C" u32 fn_80453AF8(void);
+extern "C" void* lbl_8053AAF8[2];
+#pragma global_optimizer off
+extern "C" int fn_8037AEAC(void* self_) {
+    u8* self = (u8*)self_;
+    int ret;
+    if (*((u8*)lbl_8053AAF8[0] + 0x7f)) ret = fn_8044F680(lbl_8053AF40);
+    else ret = fn_80453B14(lbl_8053AF48);
+    int state;
+    if (lbl_8053AD70 != 0) {
+        if (*((u8*)lbl_8053AAF8[0] + 0x7f) != 0) state = fn_8044F664();
+        else state = fn_80453AF8();
+    } else state = 9;
+    if (state != 9) self[0xc] = 0;
     return ret;
 }
-
+#pragma global_optimizer reset
 extern "C" void fn_8044A24C(void*);
 extern "C" void fn_8037AF4C(void)
 {
