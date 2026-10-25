@@ -758,6 +758,7 @@ extern "C" void fn_80332A60(char* this_) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80333078(char* this_) {
     int h;
     int idx = -1;
@@ -765,30 +766,22 @@ extern "C" void fn_80333078(char* this_) {
         for (;;) {
             h = fn_801F78F4(fn_801F856C(), 0x4e495741, idx);
             idx = h;
-            if (h < 0) {
-                break;
-            }
+            if (h < 0) break;
             char* obj = (char*)fn_801F666C(fn_801F856C(), h);
-            if (obj == 0) {
-                continue;
-            }
-            if (*(int*)(obj + 0x198) == *(int*)(this_ + 0x198)) {
-                continue;
-            }
-            if (*(int*)(obj + 0x16c) != *(int*)(this_ + 0x16c)) {
-                continue;
-            }
-            if (fn_801F6758(obj + 0xc, *(int*)(obj + 0x4), lbl_80541EEC) != 0) {
-                if (*(unsigned char*)(obj + 0xc4) != 1) {
-                    continue;
-                }
-            }
+            if (obj == 0) continue;
+            if (*(int*)(obj + 0x198) == *(int*)(this_ + 0x198)) continue;
+            if (*(int*)(obj + 0x16c) != *(int*)(this_ + 0x16c)) continue;
+            float margin = lbl_80541EEC;
+            void* pos = obj + 0xc;
+            int room = *(int*)(obj + 4);
+            unsigned char result = fn_801F6758(pos, room, margin);
+            if (result && *(unsigned char*)(obj + 0xc4) != 1) continue;
             *(unsigned char*)(this_ + 0x11c) = 0;
             break;
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80333148(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern char* fn_802D6A9C(void);
