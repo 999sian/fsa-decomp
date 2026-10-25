@@ -25,6 +25,10 @@ struct FsaVt15 {
     FsaNode* (*v15)(void* a, u64 b);
 };
 
+static inline FsaNode* fsaV15(u8* obj, u64 key) {
+    return (*(FsaVt15**)obj)->v15(obj, key);
+}
+
 struct FsaSlots {
     virtual void v0(void);
     virtual void v1(void);
