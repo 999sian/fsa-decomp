@@ -189,6 +189,34 @@ afterRecovery:
     }
 }
 
+extern "C" void fn_80286B74(char* p) {
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f delta;
+    if (*(f32*)(p + 0xb90) <= lbl_80540410) return;
+    if (*((u8*)lbl_8053AAF8 + 0x7f) != 0 && fn_80241794(p) <= 0 && !fn_80241200(p)) {
+        s32 dir = *(s32*)(p + 0x3dc);
+        if (dir == 0) {
+            pos.set(lbl_8054042C + *(f32*)(p + 8), *(f32*)(p + 0xc), *(f32*)(p + 0x10));
+        } else if (dir == 1) {
+            pos.set(*(f32*)(p + 8) - lbl_8054042C, *(f32*)(p + 0xc), *(f32*)(p + 0x10));
+        } else if (dir == 2) {
+            pos.set(*(f32*)(p + 8), lbl_8054042C + *(f32*)(p + 0xc), *(f32*)(p + 0x10));
+        } else {
+            pos.set(*(f32*)(p + 8), *(f32*)(p + 0xc) - lbl_8054042C, *(f32*)(p + 0x10));
+        }
+    } else {
+        pos.set(*(JGeometry::TVec3f*)(p + 8));
+    }
+    delta = pos - *(JGeometry::TVec3f*)(p + 0x338);
+    if (delta.length() < lbl_80540430 && delta.length() > lbl_80540434) {
+        delta.normalize();
+        delta.scale(lbl_80540434);
+        *(JGeometry::TVec3f*)(p + 0x338) += delta;
+    } else {
+        ((JGeometry::TVec3f*)(p + 0x338))->set(pos);
+    }
+}
+
 extern "C" void fn_80286E10(u8* p) {
     s32 h29;
     s32 h28;
