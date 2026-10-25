@@ -103,12 +103,12 @@ extern "C" void fn_8028C190(u8* this_) {
 extern "C" int fn_80238CB4(int idx);
 extern "C" void* fn_8023E724(int idx);
 extern "C" BOOL fn_8028C364(u8* this_, u8 mode) {
-    s32 i;
     s32 n;
+    int i;
     f32 f31;
     f32 f30;
-    f32 f29;
     f32 v;
+    f32 f29;
 
     if (mode <= 1) {
         f31 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
@@ -121,14 +121,16 @@ extern "C" BOOL fn_8028C364(u8* this_, u8 mode) {
     }
 
     for (i = 0; i < 4; i++) {
+        s32 h;
         n = *(s32*)(this_ + 0x198);
-        if (fn_80238CB4(i) == n) {
+        h = fn_80238CB4(i);
+        if (h == n) {
             if (mode <= 1) {
                 v = *(f32*)((u8*)fn_8023E724(i) + 0x4);
                 if (v < f30 && f31 < v) {
                     return FALSE;
                 }
-                if (mode == 0) {
+                if (!mode) {
                     v = *(f32*)((u8*)fn_8023E724(i) + 0x0);
                     if (v > f29) {
                         return FALSE;
@@ -192,11 +194,12 @@ extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c) {
     if (r == 0) {
         return 0;
     }
-    f32* d = (f32*)(lbl_8046C150 + (u8)(r - 1) * 12);
-    f32 x = (f32)(a + 1);
-    this_[0] = this_[0] + 16.0f * (x * d[0]);
-    this_[1] = this_[1] + 16.0f * (x * d[1]);
-    this_[2] = this_[2] + 0.0f;
+    u32 off = (u8)(r - 1) * 12;
+    Vec v;
+    v.x = 16.0f * (*(f32*)((u8*)lbl_8046C150 + off) * (f32)(a + 1));
+    v.y = 16.0f * (*(f32*)((u8*)lbl_8046C150 + off + 4) * (f32)(a + 1));
+    v.z = 0.0f;
+    JMathInlineVEC::PSVECAdd((Vec*)this_, &v, (Vec*)this_);
     return 1;
 }
 
