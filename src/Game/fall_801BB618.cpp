@@ -223,13 +223,17 @@ static inline u8 fallAlpha(char* this_) {
         alpha = 0xff;
         break;
     default: {
-                    f32 t;
-            f32 delta = *(f32*)(this_ + 0x14);
-            f32 scale = lbl_8053EC04;
-            delta -= lbl_8053EC00;
-            t = delta * scale;
-            if (t > lbl_8053EC08) {
-                t = lbl_8053EC08;
+                    f32 limit;
+            f32 t;
+            f32 delta;
+            delta = *(f32*)(this_ + 0x14);
+            limit = lbl_8053EC00;
+            t = lbl_8053EC04;
+            delta -= limit;
+            limit = lbl_8053EC08;
+            t = delta * t;
+            if (t > limit) {
+                t = limit;
             } else if (t < lbl_8053EC0C) {
                 t = lbl_8053EC0C;
             }
@@ -513,9 +517,17 @@ extern "C" void fn_801BC244(char* this_) {
         if (!fn_8022DCD8(*(s32*)(this_ + 0x2b8))) {
             fn_801BC554(this_, 5);
         } else {
-            FallVec v(*(f32*)(this_ + 0xc) - fn_8023E724(*(s32*)(this_ + 0x2b8))[0], *(f32*)(this_ + 0x10) - fn_8023E724(*(s32*)(this_ + 0x2b8))[1], *(f32*)(this_ + 0x14) - fn_8023E724(*(s32*)(this_ + 0x2b8))[2] - lbl_8053EC30);
-            v.x *= lbl_8053EC58;
-            v.y *= lbl_8053EC58;
+            f32 y;
+            f32 z;
+            f32 scale;
+            f32 playerX;
+            z = *(f32*)(this_ + 0x14) - fn_8023E724(*(s32*)(this_ + 0x2b8))[2] - lbl_8053EC30;
+            y = *(f32*)(this_ + 0x10) - fn_8023E724(*(s32*)(this_ + 0x2b8))[1];
+            playerX = fn_8023E724(*(s32*)(this_ + 0x2b8))[0];
+            scale = lbl_8053EC58;
+            FallVec v(*(f32*)(this_ + 0xc) - playerX, y, z);
+            v.x *= scale;
+            v.y *= scale;
             fn_8023DFF4(*(s32*)(this_ + 0x2b8), &v);
         }
     }
