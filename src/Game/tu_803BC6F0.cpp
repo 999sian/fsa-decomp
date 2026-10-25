@@ -123,7 +123,7 @@ static inline s32 getFileIcon(u32 slot) {
 static inline BOOL hasTime(u64* t) {
     BOOL r = FALSE;
     if (*t != 0) {
-        r = true;
+        r = TRUE;
     }
     return r;
 }
