@@ -60,9 +60,6 @@ namespace JGeometry {
 #else
                   TVec2() {}
 #endif
-#ifdef JGEOMETRY_VEC2_SCALAR_COPY
-        TVec2(const TVec2& other) { set(other); }
-#endif
 
         template <typename TY>
         TVec2(TY X, TY Y) { set(X, Y); }
