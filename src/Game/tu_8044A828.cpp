@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 struct J2DScreen;
 struct J2DGrafContext;
 
@@ -66,12 +67,18 @@ SetHudDigit(self,lbl_80490E00,12,rem);
 SetHudDigit(self,lbl_80490E00,16,tens);
 SetHudDigit(self,lbl_80490E00,20,b%10);
 }
+#pragma opt_propagation off
 extern "C" void fn_8044A828(void* self_) {
-    u8* self = (u8*)self_;
-    void** p = (void**)self;
-    void* handle;
+    u16 v;
+    int tens;
+    int rem;
+    int a;
     void* obj;
+    void** p;
     int i;
+    const ResTIMG* handle;
+    u8* self = (u8*)self_;
+    p = (void**)self;
 
     for (i = 0; i < 2; i++) {
         fn_80402E08(p[2], lbl_80543DB8, fn_8043D514(lbl_8053AED0));
@@ -93,27 +100,23 @@ extern "C" void fn_8044A828(void* self_) {
 
     obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 16));
     if (((u8*)obj)[0xb0] != 0) {
-        u16 v;
-int tens;
-        int hundreds;
 
         if (*(u16*)(self + 0x10) >= 1000) {
             *(u16*)(self + 0x10) = 999;
         }
         v = *(u16*)(self + 0x10);
-        hundreds = v/100;
-        tens = (v-hundreds*100)/10;
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[hundreds]);
+        tens = (v % 100) / 10;
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[v / 100]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 4));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 6));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 8));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 10));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 12));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 14));
@@ -137,40 +140,34 @@ int tens;
 
     obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 24));
     if (((u8*)obj)[0xb0] != 0) {
-        u8 a;
-        u8 b;
-        int rem;
-        int tens;
-        int first;
 
         if (self[0x12] >= 100) {
             self[0x12] = 99;
             self[0x13] = 99;
         }
-        if (self[0x13] > 99) {
+        if (self[0x13] >= 100) {
             self[0x13] = 99;
         }
         a = self[0x12];
-        b = self[0x13];
-        first=a/10;
-        rem=a-first*10;
-        tens=b/10;
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[first]);
+        v = self[0x13];
+        rem=a%10;
+        tens=v/10;
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[a / 10]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 8));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 10));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[rem]);
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[rem]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 12));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 14));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 16));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 18));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[b % 10]);
+        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 20));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 22));
@@ -178,7 +175,7 @@ int tens;
     }
     self[0x14] = 0;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8044AF90(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
@@ -267,17 +264,20 @@ extern "C" void* fn_8044B4B8(VObj** param_1) {
         *(void**)a = lbl_804AF86C;
     }
     param_1[2] = a;
-    fn_80402F04(param_1[2], ((J2DScreenVT*)param_1[1])->m13('N' << 16, 'Nda', 'ta00'));
+    fn_80402F04(param_1[2], (u32)((J2DPane*)param_1[1])->search(0x4e646174613030LL));
     VObj* b = (VObj*)__nw__FUl(0x2c);
     if (b != 0) {
         *(void**)b = lbl_804AF86C;
     }
     param_1[3] = b;
-    fn_80402F04(param_1[3], ((J2DScreenVT*)param_1[1])->m13(0x4e0000, 0x4e6461, 0x74613031));
+    fn_80402F04(param_1[3], (u32)((J2DPane*)param_1[1])->search(0x4e646174613031LL));
     *(u16*)(param_1 + 4) = 0;
     *(u8*)((u8*)param_1 + 0x12) = 0;
     *(u8*)((u8*)param_1 + 0x13) = 0;
     *(u8*)((u8*)param_1 + 0x14) = 0;
     return param_1;
+}
+
+extern "C" void fn_8044B5E8(void) {
 }
 
