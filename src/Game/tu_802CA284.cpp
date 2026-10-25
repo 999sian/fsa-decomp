@@ -16,7 +16,7 @@ extern "C" s32 fn_80237774(s32);
 typedef f32 Mtx[3][4];
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_8022EA0C(s32 i, void* m);
-extern "C" Vec* fn_8023E724(void);
+extern "C" Vec* fn_8023E724(s32 i = 0);
 extern "C" void* fn_804030C4(u32 tag, const char* name);
 extern "C" void fn_802F745C(void* obj, Vec* pos, void* tex, u8* idx);
 extern u8* lbl_8053AB10;
@@ -34,19 +34,21 @@ extern "C" f32 lbl_80540DA0;
 extern "C" void fn_802CA284(u8* this_) {
     u8* p;
     s32 i;
+    u8* self;
 
-    p = this_;
+    self = this_;
+    p = self;
     for (i = 0; i < 4; i++) {
         if (fn_802D6A9C()[0x131ef] == 0 && *(s32*)(p + 0x27c) != 0) {
             DrawRec rec;
             f32 mtx[3][4];
             u8* tag = (u8*)&rec.w10;
-            u32 hit = (lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0;
+            u32 hit = (lbl_8053AAF8[0x82] & (u8)((u32)1 << i)) != 0;
 
             if (hit == 1) {
                 switch (*(s32*)(p + 0x28c)) {
                 case 1: {
-                    Vec pos;
+                    JGeometry::TVec3<f32> pos;
                     void* tex;
 
                     rec.b1c = 0;
@@ -58,24 +60,24 @@ extern "C" void fn_802CA284(u8* this_) {
                     tag[0] = lbl_80540D88[*(s32*)(p + 0x244)];
                     tag[1] = lbl_80540D8C[*(s32*)(p + 0x244)];
                     tag[2] = lbl_80540D90[*(s32*)(p + 0x244)];
-                    tag[3] = this_[0x274 + i];
+                    tag[3] = self[0x274 + i];
                     mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
-                    *(Vec*)(this_ + 0xc) = *fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
                     tex = fn_804030C4(0x54494D47, lbl_804A8F50[*(s32*)(p + 0x244)]);
-                    pos.x = *(f32*)(this_ + 0xc);
-                    pos.y = *(f32*)(this_ + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(this_ + 0x14);
-                    if (*(s32*)(this_ + 4) < 8) {
+                    pos.x = *(f32*)(self + 0xc);
+                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
+                    pos.z = *(f32*)(self + 0x14);
+                    if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
                     break;
                 }
                 case 2: {
-                    Vec pos;
+                    JGeometry::TVec3<f32> pos;
                     void* tex;
 
                     rec.b1c = 0;
@@ -87,24 +89,24 @@ extern "C" void fn_802CA284(u8* this_) {
                     tag[0] = 0xf2;
                     tag[1] = 0x49;
                     tag[2] = 0x12;
-                    tag[3] = this_[0x274 + i];
+                    tag[3] = self[0x274 + i];
                     mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
-                    *(Vec*)(this_ + 0xc) = *fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
                     tex = fn_804030C4(0x54494D47, lbl_8046D8CC);
-                    pos.x = *(f32*)(this_ + 0xc);
-                    pos.y = *(f32*)(this_ + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(this_ + 0x14);
-                    if (*(s32*)(this_ + 4) < 8) {
+                    pos.x = *(f32*)(self + 0xc);
+                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
+                    pos.z = *(f32*)(self + 0x14);
+                    if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
                     break;
                 }
                 case 3: {
-                    Vec pos;
+                    JGeometry::TVec3<f32> pos;
                     void* tex;
 
                     rec.b1c = 0;
@@ -116,18 +118,18 @@ extern "C" void fn_802CA284(u8* this_) {
                     tag[0] = 0xf2;
                     tag[1] = 0x49;
                     tag[2] = 0x12;
-                    tag[3] = this_[0x274 + i];
+                    tag[3] = self[0x274 + i];
                     mtx[0][0] = lbl_80540D98; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
-                    *(Vec*)(this_ + 0xc) = *fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
                     tex = fn_804030C4(0x54494D47, lbl_8046D8E0);
-                    pos.x = *(f32*)(this_ + 0xc);
-                    pos.y = *(f32*)(this_ + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(this_ + 0x14);
-                    if (*(s32*)(this_ + 4) < 8) {
+                    pos.x = *(f32*)(self + 0xc);
+                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
+                    pos.z = *(f32*)(self + 0x14);
+                    if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
                     break;
@@ -137,7 +139,7 @@ extern "C" void fn_802CA284(u8* this_) {
                 case 6:
                 case 7:
                 case 8: {
-                    Vec pos;
+                    JGeometry::TVec3<f32> pos;
                     void* tex;
 
                     rec.b1c = 0;
@@ -149,18 +151,18 @@ extern "C" void fn_802CA284(u8* this_) {
                     tag[0] = 0xff;
                     tag[1] = 0xff;
                     tag[2] = 0xff;
-                    tag[3] = this_[0x274 + i];
+                    tag[3] = self[0x274 + i];
                     mtx[0][0] = lbl_80540DA0; mtx[0][1] = lbl_80540D94; mtx[0][2] = lbl_80540D94;
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540DA0; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540DA0;
                     rec.w18 = mtx;
                     fn_8022EA0C(i, mtx);
-                    *(Vec*)(this_ + 0xc) = *fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
                     tex = fn_804030C4(0x54494D47, lbl_804A8F60[*(s32*)(p + 0x28c) - 4]);
-                    pos.x = *(f32*)(this_ + 0xc);
-                    pos.y = *(f32*)(this_ + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(this_ + 0x14);
-                    if (*(s32*)(this_ + 4) < 8) {
+                    pos.x = *(f32*)(self + 0xc);
+                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
+                    pos.z = *(f32*)(self + 0x14);
+                    if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
                     break;
