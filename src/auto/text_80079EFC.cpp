@@ -9,7 +9,7 @@ public:
     static u32 aramToMainRam(u32, u8*, u32, JKRExpandSwitch, u32, JKRHeap*, int, u32*);
 };
 
-inline u8* JKRAramToMainRam(u32 src, u8* dst, u32 size, JKRExpandSwitch expandSwitch, u32 maxExpandSize, JKRHeap* heap, int id, u32* pSize)
+inline u8* JKRAramToMainRam(u32 src, u8* const dst, u32 size, JKRExpandSwitch expandSwitch, u32 maxExpandSize, JKRHeap* heap, int id, u32* pSize)
 {
     return (u8*)JKRAram::aramToMainRam(src, dst, size, expandSwitch, maxExpandSize, heap, id, pSize);
 }
