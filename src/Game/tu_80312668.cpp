@@ -27,6 +27,11 @@ extern "C" Actor* fn_80312668(Actor* p, s16 n) {
     return p;
 }
 
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_803126C8(Actor* p) {
     DrawRec rec;
     s32 t;
@@ -75,7 +80,8 @@ extern "C" void fn_803126C8(Actor* p) {
         fn_801F06F0(p, lbl_804714C0, *(s32*)((u8*)p + 0x234) + 0x27f, &rec, p5, lbl_805417F0, lbl_805417F0);
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern "C" void fn_802D6A9C(Actor* p);
 extern "C" u8 fn_802D800C(Actor* p, u32 v);
 extern "C" void fn_80458F9C(void* obj, s32 v);
