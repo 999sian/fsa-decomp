@@ -57,16 +57,17 @@ struct Deletable {
 
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+struct MenuEmitters8044 {
+    u8 pad[0x6c];
+    JPABaseEmitter* a[7];
+    JPABaseEmitter* b[7];
+    JPABaseEmitter* c[3];
+    JPABaseEmitter* d[2][2];
+    JPABaseEmitter* e[3];
+};
+
 extern "C" void fn_8044C7F0(u8* self) {
-    struct Emitters {
-        u8 pad[0x6c];
-        JPABaseEmitter* a[7];
-        JPABaseEmitter* b[7];
-        JPABaseEmitter* c[3];
-        JPABaseEmitter* d[2][2];
-        JPABaseEmitter* e[3];
-    };
-    Emitters* t = (Emitters*)self;
+    MenuEmitters8044* t = (MenuEmitters8044*)self;
     for (int i = 0; i < 7; i++) {
         if (t->a[i] != NULL) {
             t->a[i]->becomeInvalidEmitter();
