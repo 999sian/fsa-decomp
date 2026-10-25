@@ -51,8 +51,7 @@ static inline void setFlag(s32 flag, s32 on) {
     fn_802D8050(fn_802D6A9C(), flag, on, 0xFF);
 }
 static inline void switchTo(u8* this_, s32 sel) {
-    s32 off = sel * 4;
-    RNSW_Data* sp = (RNSW_Data*)(this_ + off);
+    RNSW_Data* sp = (RNSW_Data*)(this_ + sel * 4);
     if (sp->mFlags[0] != 0) {
         for (int i = 0; i < 4; i++) {
             if (i != sel && FLAGS[i] != FLAGS[sel]) {
@@ -72,7 +71,9 @@ extern "C" void fn_8011E9CC(u8* this_) {
         }
         S32(0x238)++;
         if (S32(0x238) >= S32(0x23C)) {
-            int sel = fn_801CD664(4);
+            s32 sel;
+            RNSW_Data* sp;
+            sel = fn_801CD664(4);
             if (S32(0x234) == 1) {
                 sel = S32(0x240);
                 S32(0x240) = sel + 1;
