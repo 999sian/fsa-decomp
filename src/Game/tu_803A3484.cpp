@@ -1,4 +1,6 @@
 #include "types.h"
+#include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 struct TResMgr {
     virtual void v00();
