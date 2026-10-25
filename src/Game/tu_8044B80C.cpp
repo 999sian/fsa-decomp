@@ -172,5 +172,5 @@ extern "C" void fn_8044BDCC(u8* p)
     p[0x16] = 0;
 }
 
-extern "C" void fn_8044BE04(void) {}
+extern "C" void __sinit_tu_8044B80C_cpp(void) {}
 
