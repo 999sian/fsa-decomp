@@ -3,6 +3,7 @@
 #include "JSystem/JKernel/JKRArchive.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct Vec3f {
     f32 x, y, z;
@@ -46,7 +47,7 @@ extern "C" void fn_802B6A70(Actor* p) {
     s32 i;
     s32 c = **(char**)((char*)p + 0x248);
 
-    if (c == 'r' || c == 's' || c == 'y') {
+    if ((s16)c == 'r' || c == 's' || c == 'y') {
         fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xad, 1, 0, 0, 0, 1);
         fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb1, 1, 0, 0, 0, 1);
         fn_8013CC50(p->field_04, &p->field_0C, 1.0f, 0xb2, 1, 0, 0, 0, 1);
@@ -69,7 +70,8 @@ extern "C" void fn_802B6A70(Actor* p) {
                 if (e) {
                     Vec v;
                     Vec* pv = &v;
-                    pv->z = rand01() * 3.0f + 3.0f;
+                    f32 z = rand01();
+                    pv->z = 3.0f * z + 3.0f;
                     pv->y = 2.0f - 4.0f * rand01();
                     pv->x = 2.0f - 4.0f * rand01();
                     e->field_3C = v;
