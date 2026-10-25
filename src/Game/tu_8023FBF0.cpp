@@ -262,8 +262,9 @@ inline bool padCheck(char* p) {
                     cnt++;
                 }
             }
+            cnt++;
         }
-        if (idx != (S32(p, 0xd60) >= 0 ? cnt + 1 : 0)) {
+        if (idx != cnt) {
             return false;
         }
     }
