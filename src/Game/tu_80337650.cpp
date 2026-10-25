@@ -1,4 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 extern "C" u8 fn_801F6758(void* pos, u32 room, f32 r);
 
 extern char lbl_80471BB8[];
@@ -9,16 +12,6 @@ extern f32 lbl_8054205C;
 
 extern "C" char lbl_804AC010[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
-namespace JMath {
-    template <int N, typename T>
-    class TAtanTable {
-    public:
-        f32 atan2_(f32, f32) const;
-        f32 mTable[1024];
-        f32 mTable2[8];
-    };
-    extern const TAtanTable<1024, f32> atanTable_;
-}
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
 extern f32 lbl_80542060;
 extern f32 lbl_80542064;
@@ -232,5 +225,89 @@ extern "C" void fn_80337C88(char* this_) {
             fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, val, 0, 2, -1, 0, 0, 0);
         }
     }
+}
+
+extern "C" void fn_80338570(u8* this_) {
+    struct Pair {
+        f32 x;
+        f32 y;
+    };
+    union {
+        f32 f;
+        u32 s;
+    } out;
+    u8* g;
+    *(s32*)(this_ + 0x230) = 0;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(s32*)(this_ + 0x108) = 10000;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(Pair*)(this_ + 0x26c) = *(Pair*)(this_ + 0x24);
+    *(f32*)(this_ + 0x274) = *(f32*)(this_ + 0x2c);
+    g = lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    out.s = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0xc) + (f32)((s32)(7.0f * (out.f - 1.0f)) - 3);
+    g = lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    out.s = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + (f32)((s32)(7.0f * (out.f - 1.0f)) - 3);
+    *(Pair*)(this_ + 0x24) = *(Pair*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2c) = *(f32*)(this_ + 0x14);
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 3;
+    *(s32*)(this_ + 0x258) = (*(u32*)(this_ + 0x90) >> 22) & 7;
+    if ((*(u32*)(this_ + 0x90) >> 25) & 1) {
+        *(s32*)(this_ + 0x258) = -*(s32*)(this_ + 0x258);
+    }
+    *(f32*)(this_ + 0x278) = *(f32*)(this_ + 0x24) + 16.0f * (f32)*(s32*)(this_ + 0x258);
+    *(s32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 18) & 7;
+    if ((*(u32*)(this_ + 0x90) >> 21) & 1) {
+        *(s32*)(this_ + 0x25c) = -*(s32*)(this_ + 0x25c);
+    }
+    *(f32*)(this_ + 0x27c) = *(f32*)(this_ + 0x28) + 16.0f * (f32)*(s32*)(this_ + 0x25c);
+    *(f32*)(this_ + 0x280) = 0.0f;
+    *(s32*)(this_ + 0x24c) = -1;
+    *(s32*)(this_ + 0x264) = (*(u32*)(this_ + 0x90) & 0xfff) + 0x12b;
+    *(s32*)(this_ + 0x250) = (*(u32*)(this_ + 0x90) >> 12) & 0xf;
+    *(s32*)(this_ + 0x240) = 0;
+    *(f32*)(this_ + 0x260) = 0.0f;
+    *(s32*)(this_ + 0x254) = 1;
+    *(u8*)(this_ + 0x268) = (*(u32*)(this_ + 0x90) >> 26) & 1;
+    if (*(u8*)(this_ + 0x268) == 1) {
+        *(s32*)(this_ + 0x230) = 2;
+        *(s32*)(this_ + 0x254) = 0;
+        if (fn_801F6758(this_ + 0x278, *(u32*)(this_ + 4), 0.0f) == 0) {
+            *(s32*)(this_ + 0x230) = 1;
+            *(Pair*)(this_ + 0xc) = *(Pair*)(this_ + 0x278);
+            *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x280);
+            fn_80337A08(this_);
+        }
+    }
+    if (*(s32*)(this_ + 0x250) == 2) {
+        *(f32*)(this_ + 0x80) = -16.0f;
+        *(f32*)(this_ + 0x84) = -16.0f;
+        *(f32*)(this_ + 0x88) = 16.0f;
+        *(f32*)(this_ + 0x8c) = 8.0f;
+        *(f32*)(this_ + 0x60) = -16.0f;
+        *(f32*)(this_ + 0x64) = -16.0f;
+        *(f32*)(this_ + 0x68) = 16.0f;
+        *(f32*)(this_ + 0x6c) = 8.0f;
+    } else {
+        *(f32*)(this_ + 0x80) = -8.0f;
+        *(f32*)(this_ + 0x84) = -8.0f;
+        *(f32*)(this_ + 0x88) = 8.0f;
+        *(f32*)(this_ + 0x8c) = 8.0f;
+        *(f32*)(this_ + 0x60) = -8.0f;
+        *(f32*)(this_ + 0x64) = -8.0f;
+        *(f32*)(this_ + 0x68) = 8.0f;
+        *(f32*)(this_ + 0x6c) = 8.0f;
+    }
+    *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[0];
+    *(u8*)(this_ + 0x194) = 1;
 }
 
