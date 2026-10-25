@@ -1111,8 +1111,8 @@ static inline bool fn_8043DF8C_hit(f32 x, f32 y, f32 px, f32 py, f32 r) {
     f32 a = 94.0f;
     f32 b = 61.5f;
     f32 left = x - a - r;
-    f32 right = a + x + r;
     f32 bottom = y - b - r;
+    f32 right = a + x + r;
     f32 top = b + y + r;
     if (px >= left && px <= right && py >= bottom && py <= top) {
         return false;
@@ -1147,40 +1147,48 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     Vec pa, pb;
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), a, 0, 0, &pa);
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, &pb);
-    const f32 r = FABS(pb.x - pa.x) >= FABS(pb.y - pa.y) ? FABS(pb.x - pa.x) : FABS(pb.y - pa.y);
+    f32 r = FABS(pb.x - pa.x) >= FABS(pb.y - pa.y) ? FABS(pb.x - pa.x) : FABS(pb.y - pa.y);
     f32 left1;
     f32 left2;
-    const f32 x = lbl_80543CB8 * (pa.x + pb.x);
-    const f32 y = lbl_80543CB8 * (pa.y + pb.y);
-    const f32 move1 = fn_8043D514((u8*)lbl_8053AED0);
-    const f32 y1 = lbl_80543CF8 + move1;
+    f32 x = lbl_80543CB8 * (pa.x + pb.x);
+    f32 y = lbl_80543CB8 * (pa.y + pb.y);
+    f32 move1 = fn_8043D514((u8*)lbl_8053AED0);
+    f32 y1 = lbl_80543CF8 + move1;
     left1 = lbl_80543D04 - r;
-    const f32 right1 = r + lbl_80543D00;
+    f32 right1 = r + lbl_80543D00;
     f32 low = (y1 - lbl_80543CF8) - r;
     f32 high = r + (lbl_80543CF8 + y1);
     s32 outside;
     if (x >= left1 && x <= right1 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 1;
-    const f32 move2 = fn_8043D514((u8*)lbl_8053AED0);
-    const f32 y2 = lbl_80543CF8 + move2;
+    {
+    f32 move2 = fn_8043D514((u8*)lbl_8053AED0);
+    f32 y2 = lbl_80543CF8 + move2;
     left2 = lbl_80543D0C - r;
-    const f32 right2 = r + lbl_80543D08;
+    f32 right2 = r + lbl_80543D08;
     low = (y2 - lbl_80543CF8) - r;
     high = r + (lbl_80543CF8 + y2);
     if (x >= left2 && x <= right2 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 2;
-    const f32 move3 = fn_8043D57C((u8*)lbl_8053AED0);
-    const f32 y3 = lbl_80543D10 + move3;
+    }
+    {
+    f32 move3 = fn_8043D57C((u8*)lbl_8053AED0);
+    f32 y3 = lbl_80543D10 + move3;
+    f32 right3 = r + lbl_80543D00;
     low = (y3 - lbl_80543CF8) - r;
     high = r + (lbl_80543CF8 + y3);
-    if (x >= left1 && x <= r + lbl_80543D00 && y >= low && y <= high) outside = 0; else outside = 1;
+    if (x >= left1 && x <= right3 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 4;
-    const f32 move4 = fn_8043D57C((u8*)lbl_8053AED0);
-    const f32 y4 = lbl_80543D10 + move4;
+    }
+    {
+    f32 move4 = fn_8043D57C((u8*)lbl_8053AED0);
+    f32 y4 = lbl_80543D10 + move4;
+    f32 right4 = r + lbl_80543D08;
     low = (y4 - lbl_80543CF8) - r;
     high = r + (lbl_80543CF8 + y4);
-    if (x >= left2 && x <= r + lbl_80543D08 && y >= low && y <= high) outside = 0; else outside = 1;
+    if (x >= left2 && x <= right4 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 8;
+    }
 }
 
 extern "C" void* fn_80440928(f32 a, f32 b);
