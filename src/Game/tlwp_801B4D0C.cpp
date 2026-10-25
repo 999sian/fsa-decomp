@@ -122,7 +122,7 @@ static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
     v->z = z;
 }
 
-static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, f32 t, f32 z) {
+static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, f32 z, f32 t) {
     tlwpSet(v, r->x0 + t * (r->x1 - r->x0), r->y0 + t * (r->y1 - r->y0), z);
 }
 
