@@ -28,6 +28,9 @@ static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 
     f32 square=(f32)(elapsed*elapsed);
     return magnitude*(square*multiplier);
 }
+static inline f32 MenuAlpha803E(s32 elapsed) {
+    return (f32)(elapsed * elapsed) / 900.0f;
+}
 static inline f32 MenuSlide803E(s32 remaining, const f32 magnitude, const f32 denominator) {
     f32 square=(f32)(remaining*remaining);
     return magnitude*(square/denominator);
@@ -477,51 +480,56 @@ extern "C" void fn_803E462C(u8* param_1) {
 }
 
 extern "C" void fn_803E4650(u8* p) {
+    u8* q;
+    u64* tA = (u64*)(lbl_80477970 + 0x9c0);
+    u64* tB = (u64*)(lbl_80477970 + 0x9e0);
+    u64* tC = (u64*)(lbl_80477970 + 0xa00);
+    u8* sp;
     s32 i;
     s32 k;
     s32 n;
     f32 t;
     f32 off;
-    s32* tA = (s32*)(lbl_80477970 + 0x9c0);
-    s32* tB = (s32*)(lbl_80477970 + 0x9e0);
-    s32* tC = (s32*)(lbl_80477970 + 0xa00);
-    Pane803E4650* pane;
+    J2DPane* pane;
+    i = 0;
+    q = p;
+    sp = p;
+    do {
 
-    n = *(s32*)(p + 0x1e0);
+    n = *(s32*)(q + 0x1e0);
     if (n < 30) {
         t = (f32)(n * n) / 900.0f;
     } else {
         n -= 30;
         t = 1.0f - (f32)(n * n) / 900.0f;
     }
-    for (i = 0; i < 4; i++, tA += 2, tB += 2, tC += 2) {
         if (i <= *(s32*)(p + 0x1bc)) {
-            if (*(s32*)(p + 0x1c0 + i * 4) < 4) {
-                pane = ((Screen803E4650*)*(void**)(p + 0x10))->v3C(tA[0], tA[1]);
-                pane->setAlpha((s32)(160.0f * t));
+            if (*(s32*)(q + 0x1c0) < 4) {
+                pane = (*(J2DPane**)(p + 0x10))->search(*tA);
+                ((Pane803E4650*)pane)->setAlpha((s32)(160.0f * t));
             }
-            if (*(s32*)(p + 0x1c0 + i * 4) == 3) {
-                pane = ((Screen803E4650*)*(void**)(p + 0x10))->v3C(tB[0], tB[1]);
-                pane->setAlpha((s32)(t * (f32)p[0x26a]));
-                pane = ((Screen803E4650*)*(void**)(p + 0x10))->v3C(tC[0], tC[1]);
-                pane->setAlpha((s32)(t * (f32)p[0x26a]));
-            }
-            if (*(s32*)(p + 0x1d4) != 0xc) {
-                k = *(s16*)(p + 0x254 + i * 2);
-                if (k >= 5) {
-                    k = 10 - k;
-                }
-                off = (5.0f * (f32)(k * k)) / 25.0f;
-                pane = ((Screen803E4650*)*(void**)(p + 0x10))->v3C(tB[0], tB[1]);
-                t = getBounds__7J2DPaneFv(pane)[0];
-                pane = ((Screen803E4650*)*(void**)(p + 0x10))->v3C(tB[0], tB[1]);
-                pane->v10(t, *(f32*)(p + 0x1b0) + off);
-                if (*(s32*)(p + 0x1c0 + i * 4) >= 3) {
-                    fn_80402E08(*(void**)(p + 0x68 + i * 4), 0.0f, off);
-                }
+            if (*(s32*)(q + 0x1c0) == 3) {
+                pane = (*(J2DPane**)(p + 0x10))->search(*tB);
+                ((Pane803E4650*)pane)->setAlpha((s32)(t * (f32)p[0x26a]));
+                pane = (*(J2DPane**)(p + 0x10))->search(*tC);
+                ((Pane803E4650*)pane)->setAlpha((s32)(t * (f32)p[0x26a]));
             }
         }
-    }
+            if (*(s32*)(p + 0x1d4) != 0xc) {
+                k = *(s16*)(sp + 0x254);
+                k = k < 5 ? k : 10 - k;
+                off = (5.0f * (f32)(k * k)) / 25.0f;
+                pane = (*(J2DPane**)(p + 0x10))->search(*tB);
+                t = getBounds__7J2DPaneFv(pane)[0];
+                pane = (*(J2DPane**)(p + 0x10))->search(*tB);
+                pane->move(t, *(f32*)(p + 0x1b0) + off);
+                if (*(s32*)(q + 0x1c0) >= 3) {
+                    fn_80402E08(*(void**)(q + 0x68), 0.0f, off);
+                }
+            }
+        i++;
+        tA++; tB++; tC++; sp += 2; q += 4;
+    } while (i < 4);
     draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x10), 0.0f, 0.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
     fn_80440EE8(lbl_8053AED8);
 }
