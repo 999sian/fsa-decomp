@@ -48,8 +48,10 @@ extern const f32 lbl_80541268;
 extern const f32 lbl_8054126C;
 
 // near-match (98.6%): search id copy and float regs in the overlap test differ
+#pragma opt_propagation off
 extern "C" u8 fn_802E7DB8(char* p) {
     char* key;
+    s32 found;
     s32 id = -1;
     JGeometry::TVec2<f32> org(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
     JGeometry::TBox2<f32>* hb = (JGeometry::TBox2<f32>*)(p + 0x60);
@@ -58,7 +60,7 @@ extern "C" u8 fn_802E7DB8(char* p) {
     me.addPos(org);
     JGeometry::TVec3<f32> pos;
     while (true) {
-        s32 found = fn_801F78F4(fn_801F856C(), 'KEY0', id);
+        found = fn_801F78F4(fn_801F856C(), 'KEY0', id);
         id = found;
         if (found < 0) {
             return 0;
@@ -71,11 +73,24 @@ extern "C" u8 fn_802E7DB8(char* p) {
         if (pos.z != lbl_80541268) {
             continue;
         }
-        JGeometry::TBox2<f32> kb(*(JGeometry::TBox2<f32>*)(key + 0x60));
-        kb.addPos(pos.x, pos.y);
-        if (kb.intersect(me)) {
-            break;
-        }
+        f32 x0, y0, x1, y1, px, py;
+        x0 = *(f32*)(key + 0x60);
+        y0 = *(f32*)(key + 0x64);
+        x1 = *(f32*)(key + 0x68);
+        y1 = *(f32*)(key + 0x6c);
+        px = pos.x;
+        py = pos.y;
+        x0 += px;
+        x1 += px;
+        y0 += py;
+        y1 += py;
+        if (x0 <= me.i.x) x0 = me.i.x;
+        if (y0 <= me.i.y) y0 = me.i.y;
+        if (x1 >= me.f.x) x1 = me.f.x;
+        if (y1 >= me.f.y) y1 = me.f.y;
+        bool overlap = false;
+        if (x1 >= x0 && y1 >= y0) overlap = true;
+        if (overlap) break;
     }
     *(s32*)(p + 0x244) = 1;
     *(s32*)(p + 0x24c) = 20;
@@ -109,7 +124,7 @@ extern "C" u8 fn_802E7DB8(char* p) {
     fn_801F34DC(p);
     return 1;
 }
-
+#pragma opt_propagation reset
 // ---- fn_802E80A0: point sparkle effects at the nearest opened key block ----
 extern "C" void fn_8013CB44(void* h, JGeometry::TVec3<f32>* pos, s32 a, s32 b, s32 c);
 extern "C" JGeometry::TVec3<f32>* fn_8023E7B0(s32 holder);
@@ -217,12 +232,15 @@ static inline void mjgrKill(char* p, s32 off) {
 
 // near-match (~97%): callee-saved GPR assignment and box copy scheduling differ
 extern "C" void fn_802E83DC(char* p) {
+    s32 i;
     switch (*(s32*)(p + 0x244)) {
     case 0: {
         ((JGeometry::TBox2<f32>*)(p + 0x80))->set(lbl_8054128C, lbl_8054128C, lbl_80541290, lbl_80541290);
         JGeometry::TBox2<f32> b;
-        *(MjV2*)&b.i = *(MjV2*)(p + 0x80);
-        *(MjV2*)&b.f = *(MjV2*)(p + 0x88);
+        u64* bd = (u64*)&b;
+        u64* sd = (u64*)(p + 0x80);
+        bd[0] = sd[0];
+        bd[1] = sd[1];
         f32 px = *(f32*)(p + 0xc);
         f32 py = *(f32*)(p + 0x10);
         b.addPos(px, py);
@@ -257,7 +275,7 @@ extern "C" void fn_802E83DC(char* p) {
             ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lbl_80541260, lbl_8054129C, lbl_80541264, lbl_805412A0);
             b.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
             b.addPos(px, py);
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (fn_8023B0F4(i, &b, *(u32*)(p + 0x4), lbl_80541268, 0) == 1 && fn_8023EEB4(i) == 'KEY0') {
                     char* key = fn_801F666C(fn_801F856C(), fn_8023EF50(i));
                     if (key != 0 && *(s32*)(key + 0x280) == 6) {
