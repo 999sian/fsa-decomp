@@ -649,29 +649,32 @@ extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
         (u16)(*(u16*)(self + 0x24) - 0x70) <= 3 || (u16)(*(u16*)(self + 0x24) - 0x40) <= 4 ||
         *(u16*)(self + 0x24) == 0xe5) {
         u16 kind = *(u16*)(self + 0x24);
+        void* mgr;
+        s32 idx;
+        s32 n;
         switch (kind) {
         case 0x72:
         case 0x73:
         case 0x82: {
             if (kind == 0x72 || kind == 0x73) {
                 JGeometry::TVec2<f32> t = *pos;
-                void* mgr = lbl_8053AC98;
+                mgr = lbl_8053AC98;
                 *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-                s32 idx = *(s32*)((char*)mgr + 0x20);
+                idx = *(s32*)((char*)mgr + 0x20);
                 fn_802D782C(fn_802D6A9C(), 1);
                 fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x7c);
-                s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+                n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
                 if (n != -1) {
                     fn_802D7D00(fn_802D6A9C(), 0, n, 1);
                 }
             } else {
                 JGeometry::TVec2<f32> t = *pos;
-                void* mgr = lbl_8053AC98;
+                mgr = lbl_8053AC98;
                 *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-                s32 idx = *(s32*)((char*)mgr + 0x20);
+                idx = *(s32*)((char*)mgr + 0x20);
                 fn_802D782C(fn_802D6A9C(), 1);
                 fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x83);
-                s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+                n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
                 if (n != -1) {
                     fn_802D7D00(fn_802D6A9C(), 0, n, 1);
                 }
@@ -685,12 +688,12 @@ extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
         }
         case 0x5f: {
             JGeometry::TVec2<f32> t = *pos;
-            void* mgr = lbl_8053AC98;
+            mgr = lbl_8053AC98;
             *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-            s32 idx = *(s32*)((char*)mgr + 0x20);
+            idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
             fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x83);
-            s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+            n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
                 fn_802D7D00(fn_802D6A9C(), 0, n, 1);
             }
@@ -703,12 +706,12 @@ extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
         }
         case 0xe5: {
             JGeometry::TVec2<f32> t = *pos;
-            void* mgr = lbl_8053AC98;
+            mgr = lbl_8053AC98;
             *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-            s32 idx = *(s32*)((char*)mgr + 0x20);
+            idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
             fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x9d);
-            s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+            n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
                 fn_802D7D00(fn_802D6A9C(), 0, n, 1);
             }
@@ -1276,4 +1279,17 @@ extern "C" void fn_802A3E94(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+// Shared tail of the fn_802A02A8 tile cases: re-tile pos with value, then refresh.
+static inline s32 fn_802A02A8_Refresh(JGeometry::TVec2<f32>* pos, u32 room, u16 value, s32 p3) {
+    JGeometry::TVec2<f32> t = *pos;
+    void* mgr = lbl_8053AC98;
+    *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
+    fn_802D782C(fn_802D6A9C(), 1);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)mgr + 0x20), value);
+    s32 idx = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((u8*)mgr + 0x20));
+    if (idx != -1) {
+        fn_802D7D00(fn_802D6A9C(), room, idx, 1);
+        fn_80230FD0(p3, 0x20007);
+    }
+    return idx;
+}
