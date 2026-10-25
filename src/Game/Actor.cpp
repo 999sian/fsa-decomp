@@ -48,6 +48,8 @@ struct EffArgs {
 };
 
 struct Rec {
+    Rec() {}
+    Rec(const Rec& src) : w00(src.w00), w04(src.w04), w08(src.w08), w0c(src.w0c), w10(src.w10), w14(src.w14), w18(src.w18), b1c(src.b1c), b1d(src.b1d), b1e(src.b1e), b1f(src.b1f), b20(src.b20), b21(src.b21), b22(src.b22), b23(src.b23), b24(src.b24), b25(src.b25), b26(src.b26), w28(src.w28), b2c(src.b2c), b2d(src.b2d), b2e(src.b2e), w30(src.w30), w34(src.w34), w38(src.w38) {}
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
     /* 0x08 */ u32 w08;
@@ -1625,65 +1627,64 @@ extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z) {
             return 0;
         }
     }
-    if ((s32)a->field_04 >= 8) {
-        if (((u8*)lbl_8053AAF8)[0x7e] != 0 || ((((u32)((u8*)lbl_8053AAF8)[0x83]) & 3) != 2)) {
-            if (code - 0x30000 == 9) {
-                for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
-                        continue;
-                    }
-                    if (fn_8030381C(i) == 0) {
-                        continue;
-                    }
-                    if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
-                        continue;
-                    }
-                    fn_803037D4(i, 8);
+    if ((s32)a->field_04 >= 8 &&
+        (((u8*)lbl_8053AAF8)[0x7e] != 0 || ((((u32)((u8*)lbl_8053AAF8)[0x83]) & 3) != 2))) {
+        if (code - 0x30000 == 9) {
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
+                    continue;
                 }
-                return 0;
-            } else if (code - 0x30000 == 4) {
-                for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
-                        continue;
-                    }
-                    if (fn_8030381C(i) == 0) {
-                        continue;
-                    }
-                    if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
-                        continue;
-                    }
-                    fn_803037D4(i, 0xb);
+                if (fn_8030381C(i) == 0) {
+                    continue;
                 }
-                return 0;
-            } else if (code - 0x30000 == 0x22) {
-                for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
-                        continue;
-                    }
-                    if (fn_8030381C(i) == 0) {
-                        continue;
-                    }
-                    if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
-                        continue;
-                    }
-                    fn_803037D4(i, 7);
+                if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
+                    continue;
                 }
-                return 0;
-            } else if (code - 0x30000 == 0x4b) {
-                for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
-                        continue;
-                    }
-                    if (fn_8030381C(i) == 0) {
-                        continue;
-                    }
-                    if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
-                        continue;
-                    }
-                    fn_803037D4(i, 8);
-                }
-                return 0;
+                fn_803037D4(i, 8);
             }
+            return 0;
+        } else if (code - 0x30000 == 4) {
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
+                    continue;
+                }
+                if (fn_8030381C(i) == 0) {
+                    continue;
+                }
+                if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
+                    continue;
+                }
+                fn_803037D4(i, 0xb);
+            }
+            return 0;
+        } else if (code - 0x30000 == 0x22) {
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
+                    continue;
+                }
+                if (fn_8030381C(i) == 0) {
+                    continue;
+                }
+                if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
+                    continue;
+                }
+                fn_803037D4(i, 7);
+            }
+            return 0;
+        } else if (code - 0x30000 == 0x4b) {
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, a->field_04, &a->field_0C) == 0) {
+                    continue;
+                }
+                if (fn_8030381C(i) == 0) {
+                    continue;
+                }
+                if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
+                    continue;
+                }
+                fn_803037D4(i, 8);
+            }
+            return 0;
         }
     }
     return slotTail(a, code, z);
@@ -2259,10 +2260,14 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
     }
     if ((s32)a->field_04 <= 8) {
         if (p6 != 0) {
-            if (p6 == 2) {
+            switch (p6) {
+            case 2:
                 PSMTXScale(v98, lbl_8053F774, lbl_8053F774, lbl_8053F74C);
-            } else {
+                break;
+            case 1:
+            default:
                 PSMTXScale(v98, lbl_8053F7A0, lbl_8053F7A0, lbl_8053F7A0);
+                break;
             }
             if (p4 != 0) {
                 u8  t2e = p4->b2e;
@@ -2316,8 +2321,8 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
                 rec.b2d = t2d;
                 rec.w34 = t34;
                 rec.w38 = t38;
-                if (rec.w18 != 0) {
-                    PSMTXConcat(v98, v98, v98);
+                if (p4->w18 != 0) {
+                    PSMTXConcat((void*)p4->w18, v98, v98);
                 }
                 rec.w18 = (u32)v98;
                 fn_801F06F0(a, p2, p3, &rec, p5, f6, f7);
@@ -2369,7 +2374,7 @@ extern "C" void fn_801F02BC(Actor* a, u8* p2, void* p3, Rec* p4, void* p5, s32 p
         u32 n = a->field_D8;
         u32 flag = 1;
         u32 mode = 0;
-        v14 = a->field_0C;
+        *(JGeometry::TVec3f*)&v14 = *(JGeometry::TVec3f*)&a->field_0C;
         if ((s32)n > 0) {
             u32 m = a->field_DC;
             if ((s32)n > (s32)(m - 0x19) || (s32)m < 0x19) {
