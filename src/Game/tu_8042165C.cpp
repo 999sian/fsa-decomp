@@ -455,7 +455,7 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
 }
 
 extern "C" void fn_8042215C(u8* this_, s32 idx) {
-u8* base = (u8*)lbl_8048E1B8;
+const u8* base = lbl_8048E1B8;
 s16* timer = (s16*)(this_ + idx * 2);
 if (timer[0xf4] == 0) {
 ((u32*)(this_ + 0x1a8))[idx] = fn_80237774(idx);
@@ -467,10 +467,10 @@ if(cnt > 32) cnt=32;
 if(cnt < 0) cnt=0;
 if(cnt<n) n=cnt;
 if(n<0) n=0;
-u64* a=(u64*)(base+0xc68);
-u64* b=(u64*)(base+0xce8);
-u64* c=(u64*)(base+0xca8);
-u64* d=(u64*)(base+0xd28);
+const u64* a=(const u64*)(base+0xc68);
+const u64* b=(const u64*)(base+0xce8);
+const u64* c=(const u64*)(base+0xca8);
+const u64* d=(const u64*)(base+0xd28);
 for(s32 k=0;k<8;k++) {
 if(n>=4) {GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
 GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
@@ -478,7 +478,7 @@ SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k]), 1.0f, 0.0f, 0.0f, 0.0f, 1
 SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k]), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
 GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
-cnt -= 4; n-=4;}
+n-=4; cnt -= 4;}
 else {
 if(n==0) {
 GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 0; GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 0;
