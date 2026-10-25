@@ -29,7 +29,7 @@ extern char lbl_8045E878[];
 static int fpKind(f32 value)
 {
     u32 bits = *(u32*)&value;
-    int exp = bits & 0x7f800000;
+    s32 exp = bits & 0x7f800000;
     int kind;
     if (exp == 0x7f800000) {
         if ((bits & 0x7fffff) == 0) {
