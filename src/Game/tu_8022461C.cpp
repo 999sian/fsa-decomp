@@ -83,7 +83,66 @@ extern "C" BOOL fn_80225614(f32* pos, u32 room) {
     for (s32 i = 5; i != 0; i--) { if (k == *table) return TRUE; ++table; }
     return FALSE;
 }
+
+extern const u16 lbl_8046AAC8[9];
 #pragma opt_common_subs reset
+extern "C" BOOL fn_802258D4(f32* pos, s32 room) {
+    struct TileRect { f32 x0, y0, x1, y1; };
+    struct TileStageMap {
+        u8 pad[0x60];
+        u8 cells[10][10];
+    };
+    struct Lookup {
+        static inline u16 tileAtOrdered(const f32* pos, u32 room) {
+            u8* g = fn_802D6A9C();
+            const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+            f32 x0;
+            f32 px = pos[0];
+            x0 = r.x0;
+            u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+            if (!in) return 0xf;
+            s32 x = px - x0;
+            s32 y = pos[1] - r.y0;
+            if (x < 0) x = 0;
+            else if (x >= 0x200) x = 0x1ff;
+            if (y < 0) y = 0;
+            else if (y >= 0x200) y = 0x1ff;
+            return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+                ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+        }
+        static inline u32 tileKindAt(const f32* pos, u32 room) {
+            u16 tile = lbl_8046CB88[tileAtOrdered(pos, room)];
+            u8 (*regions)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
+            if (regions[1][room + 0x31df] != 0) {
+                if (tile == 0) return 2;
+                if (tile == 0x61) return 0;
+                return tile;
+            }
+            if (tile == 0xe && (u8)lbl_8053AAF8[0x7f] != 0) {
+                if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) goto special;
+                if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
+                    s32 x = *(s32*)(fn_802D6A9C() + 0x14);
+                    u8* g2 = fn_802D6A9C();
+                    u8* h = fn_802D6A9C();
+                    s32 value = ((TileStageMap*)h)->cells[*(s32*)(g2 + 0x18)][x];
+                    if (value == 0x10 && pos[1] > lbl_8053FF50) goto special;
+                }
+            }
+            goto normal;
+        special:
+            return 0x51;
+        normal:
+            return tile;
+        }
+    };
+    u32 tile = Lookup::tileKindAt(pos, room);
+    for (s32 i = 0; i < 9; i++) {
+        if ((u16)tile == lbl_8046AAC8[i]) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
 extern "C" s32 fn_802265DC(f32* pos, s32 room, u8 kind) {
     return fn_802260DC(pos, room, kind);
 }
@@ -402,7 +461,6 @@ extern "C" BOOL fn_8022517C(f32* pos, s32 room) {
 }
 
 #pragma opt_common_subs off
-#pragma opt_strength_reduction off
 extern "C" BOOL fn_802252F4(f32* pos, s32 room) {
     const u16* table = lbl_8046AAB0;
     u16 tile = tileAtOrdered(pos, room);
@@ -419,10 +477,7 @@ extern "C" BOOL fn_802252F4(f32* pos, s32 room) {
         if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
             u8* b = fn_802D6A9C() + 0x10000;
             if (b[room + 0x31df] != 0) {
-                const u16* __restrict p = table + 56;
-                for (u32 left = 5; left != 0; left--, p++) {
-                    if (tile == *p) return TRUE;
-                }
+                return tileTableHas5(tile, table + 56);
             } else {
                 const u16* p = table + 42;
                 for (i = 0; i < 13; i++, p++) {
@@ -443,7 +498,6 @@ extern "C" BOOL fn_802252F4(f32* pos, s32 room) {
     }
     return FALSE;
 }
-#pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 extern const u16 lbl_8046AB2C[0x5e];
 
