@@ -326,15 +326,21 @@ void Actor::detach() {
 
 /* --- slot 17: test point b against the actor's area/collision (0x801F15BC) -- */
 int Actor::v17(int a, f32* b) {
-    int result = 1;
-    if (fn_802265DC(b, a, 0) == 0) {
-        s32 region = field_198;
-        u8* base = static_cast<u8*>(fn_8020D58C());
-        if (fn_8020D6AC(base + 4 + base[1] * 0x784, a, b, region, 0) == 0) {
-            result = 0;
+    struct H {
+        static inline int check(Actor* self, u32 r, f32* p) {
+            s32 region;
+            int result = 1;
+            if (fn_802265DC(p, r, 0) == 0) {
+                region = self->field_198;
+                u8* base = static_cast<u8*>(fn_8020D58C());
+                if (fn_8020D6AC(base + 4 + base[1] * 0x784, r, p, region, 0) == 0) {
+                    result = 0;
+                }
+            }
+            return result;
         }
-    }
-    return result;
+    };
+    return H::check(this, a, b);
 }
 
 /* --- slot 18: bounds check b against the manager's world rect (0x801F165C) -- */
@@ -343,7 +349,7 @@ int Actor::v18(int a, f32* b) {
     f32* rect = (a < 8) ? reinterpret_cast<f32*>(static_cast<u8*>(mgr) + 0xcc)
                         : reinterpret_cast<f32*>(static_cast<u8*>(mgr) + 0xdc);
     int result = 0;
-    if ((u8)v17(a, b) != 0 || b[0] < rect[0] || b[1] < rect[1] || b[0] >= rect[2] || b[1] >= rect[3]) {
+    if ((u8)v17(a, b) != 0 || b[1] < rect[1] || b[0] < rect[0] || b[0] >= rect[2] || b[1] >= rect[3]) {
         result = 1;
     }
     return result;
@@ -1000,9 +1006,11 @@ extern "C" void fn_801F317C(const Actor* a, f32* out) {
     f32 z = a->field_0C.z;
     f32 w = a->field_7C.x + y;
     f32 t = a->field_70.y + y;
-    out[0] = a->field_70.x + x;
+    f32 p = a->field_70.x + x;
+    f32 q = a->field_70.z + x;
+    out[0] = p;
     out[1] = t - z;
-    out[2] = a->field_70.z + x;
+    out[2] = q;
     out[3] = w - z;
 }
 
@@ -1184,9 +1192,9 @@ extern "C" u8 fn_801F2FAC(Actor* a) {
 /* --- 0x801F305C: same sweep, but emit the default record when nothing hit --- */
 extern "C" u32 fn_801F305C(Actor* a) {
     u32 i;
-    u32 acc = 0;
-    i = 0;
-    for (; (s32)i < 4; i++) {
+    u32 acc;
+    acc = 0;
+    for (i = acc; (s32)i < 4; i++) {
         u32 buf[2];
         if ((s32)i == (s32)fn_801F285C(a, 0, buf, 1, i)) {
             acc = (fn_801F37AC(a, fn_8023B6CC(i), fn_8023E724(i), 0, buf[0], i) | acc) & 0xff;
