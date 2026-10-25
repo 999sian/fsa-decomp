@@ -47,7 +47,6 @@ struct Tu80406ResMgr {
 	virtual void v2();
 	virtual void v3();
 	virtual void v4();
-	virtual void v5();
 	virtual void* get(u32 type, const char* name);
 };
 
@@ -1606,9 +1605,9 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 }
 
 extern "C" void fn_80405FC0(u8* self) {
-	f32 p3[3];
-	f32 p2[3];
 	f32 pos[3];
+	f32 p2[3];
+	f32 p3[3];
 	u8* tbl = (u8*)&lbl_8048C1F8;
 	s32 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
 	f32 x1 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
@@ -1641,9 +1640,7 @@ extern "C" void fn_80405FC0(u8* self) {
 		s32 st = *(s32*)(self + 0x350);
 		if (st == 0x14 || st == 0x16) {
 			s32 k = *(s16*)(self + 0x41e) / 2;
-			if (k > 0xd) {
-				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), 0xe8, &rec, 1.0f, 1.0f);
-			} else {
+			if (k <= 0xd) {
 				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), k + 0xdb, &rec, 1.0f, 1.0f);
 				if (*(s16*)(self + 0x41e) == 0x1a) {
 					if (*(void**)(q + 0x2cc) == 0) {
@@ -1661,6 +1658,8 @@ extern "C" void fn_80405FC0(u8* self) {
 						*(u32*)((u8*)*(void**)(q + 0x2dc) + 0xf4) |= 0x40;
 					}
 				}
+			} else {
+				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24)), 0xe8, &rec, 1.0f, 1.0f);
 			}
 		} else if (st == 0x2) {
 			s32 id = ((s32*)(tbl + 0xa14))[(*(s32*)(self + 0x358) / 5) % 4];
