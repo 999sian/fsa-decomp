@@ -1247,6 +1247,7 @@ extern "C" void fn_8043E7CC(void* a, void* b) {
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, pos);
     fn_80440928(pos[0], pos[1]);
 }
+#pragma dont_inline reset
 
 extern const f32 lbl_80543CB8;
 extern const f32 lbl_80543D14;
@@ -1666,14 +1667,12 @@ extern "C" void fn_8043F504(u8* self) {
     setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 0xc), (const char*)(lbl_8048F710 + 0x25c), 0x1100000, *(void**)(lbl_80529DEC + 0x20));
 }
 
+#pragma inline_depth(0)
 extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
-    JGeometry::TVec3<f32> v;
-    v.x = self->x;
-    v.y = self->y;
-    v.z = self->z;
+    JGeometry::TVec3<f32> v = *self;
     fn_8043E7CC(lbl_8053AED0, &v);
 }
-
+#pragma inline_depth(8)
 extern "C" void* fn_80440928(f32 a, f32 b) { return ((void* (*)(void*, f32, f32))fn_8043DF8C)(lbl_8053AED0, a, b); }
 
 extern "C" void fn_8044094C(void) {
