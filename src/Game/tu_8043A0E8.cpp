@@ -14,8 +14,6 @@ extern const f32 lbl_80543D10;
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 
-static inline f32 scaleMenuExtent(f32 extent, f32 scale) { return extent * scale; }
-
 struct FsaMenuNumber {
     u8 unk_0x0[0x118];
     f32 x[10];
