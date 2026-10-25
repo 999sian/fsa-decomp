@@ -69,7 +69,7 @@ inline bool pointInRect(const Vec2f& p, const HitRect* r) {
     return in;
 }
 
-inline bool pointInRect(const f32& x, const f32& y, const HitRect* r) {
+inline bool pointInRect(const f32& x, f32 y, const HitRect* r) {
     bool in = false;
     if (x >= r->x0 && y >= r->y0 && x < r->x1 && y < r->y1) {
         in = true;
@@ -330,7 +330,13 @@ extern "C" void fn_8026E68C(u8* p, u16 key) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
             u8* base = fn_802D6A9C();
             HitRect* r = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-            if (!pointInRect(pos, r)) {
+            bool in = false;
+            if (pos.x >= r->x0) {
+                if (pos.y >= r->y0 && pos.x < r->x1 && pos.y < r->y1) {
+                    in = true;
+                }
+            }
+            if (!in) {
                 break;
             }
             u16 t = fn_802265FC(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4));
@@ -348,7 +354,13 @@ extern "C" void fn_8026E68C(u8* p, u16 key) {
                     s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
                     u8* base = fn_802D6A9C();
                     HitRect* r = (room < 8) ? (HitRect*)(base + 0xcc) : (HitRect*)(base + 0xdc);
-                    if (!pointInRect(pos, r)) {
+                    bool in = false;
+                    if (pos.x >= r->x0) {
+                        if (pos.y >= r->y0 && pos.x < r->x1 && pos.y < r->y1) {
+                            in = true;
+                        }
+                    }
+                    if (!in) {
                         return;
                     }
                     u16 t = fn_802265FC(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4));
