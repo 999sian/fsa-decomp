@@ -562,17 +562,7 @@ extern "C" u8 fn_801F3744(Actor* a, s32 v) {
 extern "C" void fn_801F349C(Actor* a, u32 x, f32* p) {
     if (a->field_17C != 0) return;
     if ((s32)a->field_174 > 0) return;
-    register Actor* t = a;
-    register f32* s = p;
-    register f32 z, xy;
-    // clang-format off
-    __asm {
-        psq_l  xy, 0x0(s),  0, 0
-        lfs    z,  0x8(s)
-        psq_st xy, 0x30(t), 0, 0
-        stfs   z,  0x38(t)
-    }
-    // clang-format on
+    JGeometry::setTVec3f(p, &a->field_30.x);
     a->field_178 = x;
     a->field_17C = 1;
     a->field_174 = 0;
