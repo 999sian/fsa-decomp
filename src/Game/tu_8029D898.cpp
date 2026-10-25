@@ -1370,11 +1370,15 @@ extern "C" void fn_802A381C(void* self, const JGeometry::TVec2<f32>* pos, u32 ro
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, r, value);
 }
 
-extern "C" void fn_802A3884(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room, u32 value) {
+#pragma opt_propagation off
+extern "C" void fn_802A3884(char* self, const JGeometry::TVec2<f32>* __restrict pos, void* p3, u32 room, u32 value) {
     JGeometry::TVec2<f32> p;
-    f32 y = pos->y;
+    f32 x;
+    f32 y;
+    y = pos->y;
+    x = pos->x;
     p.y = y;
-    p.x = pos->x;
+    p.x = x;
     s32 r = fn_80226BC4(&p, room & 0xfe);
     *(s32*)(self + 0x20) = r;
     s32 idx = *(s32*)(self + 0x20);
@@ -1385,7 +1389,7 @@ extern "C" void fn_802A3884(char* self, JGeometry::TVec2<f32>* pos, void* p3, u3
         fn_802D7D00(fn_802D6A9C(), room, n, 0);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802A3948(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room, u32 value) {
 	JGeometry::TVec2<f32> p;
 	p.y = pos->y;
