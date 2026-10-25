@@ -768,41 +768,7 @@ extern "C" void fn_801E1300(void* this_) {
             *(s32*)(p + 0x2b4) = fn_801F732C(fn_801F856C(), *(void**)(p + 4), lbl_8053F4B4, p + 0xc, p + 0xc, *(s32*)(p + 0x2b8));
         }
     }
-    {
-        s32 state = *(s32*)(p + 0x248);
-        u8 hit = 0;
-        if (state == 7) {
-            goto done;
-        }
-        if (state < 7) {
-            if (state == 0) {
-                goto done;
-            }
-        } else if (state < 0x13) {
-            if (state >= 0xf) {
-                goto done;
-            }
-        }
-        if (*(u32*)(p + 0x230) & 0x4000 || *(u16*)(p + 0x2cc) != 0) {
-            goto done;
-        }
-        {
-            u8 near = thnk_isIdleSub(this_);
-            if (near != 0) {
-                if (*(u32*)(p + 0x230) & 0x20000) {
-                    if (*(u32*)(p + 0x230) & 0x100000) {
-                        hit = 1;
-                    }
-                } else if (*(s32*)(p + 0x2bc) < 0) {
-                    hit = 1;
-                }
-            }
-        }
-        if (hit) {
-            fn_801E1594(this_, 7);
-        }
-    done:;
-    }
+    if (thnkShouldReset(this_)) fn_801E1594(this_, 7);
 }
 
 extern "C" void fn_801E1594(void* this_, s32 state) {
