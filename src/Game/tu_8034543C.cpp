@@ -1,6 +1,11 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+extern const f32 lbl_805423A0;
+extern const f32 lbl_805423A4;
+extern const f32 lbl_805423A8;
+extern const char lbl_80471FF8[];
+extern "C" void fn_801F06F0(void*, const char*, s32, DrawRec*, s32, f32, f32);
 #include <math.h>
 
 /* JSystem/JMath/JMath.h cannot be included here (its Vec clashes with Actor.h). */
