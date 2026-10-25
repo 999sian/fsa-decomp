@@ -1053,7 +1053,6 @@ static inline void copyStateTable8035B348(u32* dst, const u32* src) {
     dst[14] = word14;
 }
 
-#pragma opt_strength_reduction off
 extern "C" void fn_8035B348(void) {
     u8* records = lbl_8050B9F8;
     StateTable8035B348* table = &lbl_804AD2D0;
