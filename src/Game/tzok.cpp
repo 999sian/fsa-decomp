@@ -1,6 +1,7 @@
 // TU 0x80204d44-0x80206b30 (actor TZOK).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct TzokVec3 { f32 x, y, z; };
 
@@ -668,10 +669,10 @@ extern "C" void fn_80206168(char* p) {
             if (n >= 0x32) {
                 kind = 3;
                 n -= 0x32;
-            } else if (n >= 0x14 && (b || tzokRand01() < lbl_8053F890)) {
+            } else if (n >= 0x14 && (b || tzokRand01() < 0.5f)) {
                 kind = 2;
                 n -= 0x14;
-            } else if (n >= 5 && (b || tzokRand01() < lbl_8053F890)) {
+            } else if (n >= 5 && (b || tzokRand01() < 0.5f)) {
                 kind = 1;
                 n -= 5;
             } else {
@@ -686,10 +687,10 @@ extern "C" void fn_80206168(char* p) {
             if (obj == 0) {
                 continue;
             }
-            f32 c3 = lbl_8053F870;
-            f32 c2 = lbl_8053F878;
-            f32 c1 = lbl_8053F894;
-            f32 c0 = lbl_8053F898;
+            f32 c3 = 1.0f;
+            f32 c2 = 2.0f;
+            f32 c1 = 1.5f;
+            f32 c0 = -0.5f;
             TzokVec3 v;
             v.z = c0 * tzokRand01();
             v.y = c1 * (c2 * tzokRand01() - c3);
