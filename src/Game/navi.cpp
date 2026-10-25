@@ -651,14 +651,8 @@ extern "C" void fn_8021E8D0(char* p) {
             *(void**)(p + 0x2d4) = e;
             e = *(void**)(p + 0x2d0);
             if (e != 0) {
-                const NaviRGB* colors = (const NaviRGB*)lbl_8046A7AC;
-                int i = *(u8*)(p + 0x2ac);
-                u8 red = colors[i].r;
-                u8 green = colors[i].g;
-                ((u8*)e)[0xbc] = red;
-                u8 blue = colors[i].b;
-                ((u8*)e)[0xbd] = green;
-                ((u8*)e)[0xbe] = blue;
+                int i = *(u8*)(p + 0x2ac) * 3;
+                ((JPABaseEmitter*)e)->setGlobalEnvColor(lbl_8046A7AC[i], lbl_8046A7AC[i + 1], lbl_8046A7AC[i + 2]);
             }
         }
     }
