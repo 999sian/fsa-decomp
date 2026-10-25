@@ -11,6 +11,33 @@ extern "C" void fn_802F86CC(void* map, void* pos, void* res, s32 idx, void* rec,
 extern u8* lbl_8053AAF8;
 extern const f32 lbl_8053D7F8;
 extern char* lbl_8053AB10;
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" void fn_801F0E34(void* this_, u32 code, s32 z);
+extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" u16 fn_8022461C(void* p, s32 room);
+extern "C" void* fn_8013CC50(s32 map, void* pos, f32 f, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void detach__5ActorFv(void* this_);
+extern const f32 lbl_8053D7FC;
+extern const f32 lbl_8053D800;
+extern const f32 lbl_8053D804;
+extern const f32 lbl_8053D808;
+extern const f32 lbl_8053D80C;
+extern const f32 lbl_8053D810;
+extern const f32 lbl_8053D814;
+extern const f32 lbl_8053D818;
+extern const f32 lbl_8053D81C;
+extern const f32 lbl_8053D820;
+extern const f32 lbl_8053D824;
+extern const f32 lbl_8053D828;
+extern const f32 lbl_8053D82C;
+extern const f32 lbl_8053D830;
+extern const f32 lbl_8053D834;
+extern const s32 lbl_804A0650[];
+extern const s32 lbl_804A0638[];
+extern "C" const struct JMathSinCos sincosTable___5JMath[];
 
 struct MozoResMgr {
     virtual void v0();
