@@ -547,6 +547,29 @@ extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
     return -1;
 }
 
+extern "C" void fn_802D4CCC(char* p, s32 room) {
+    char* arr = (char*)roomArrays();
+    s32 n = 0, idx = 0, k;
+    u32 lo, hi;
+    if (room < 8) {
+        lo = *(u32*)(arr + room * 0x280 + *(s32*)(arr + 0x14) * 0x40 + 0x1048);
+        hi = *(u32*)(arr + room * 0x280 + *(s32*)(arr + 0x14) * 0x40 + 0x104C);
+    } else {
+        lo = *(u32*)(arr + room * 0x280 + *(s32*)(arr + 0x14) * 0x40 + (room - 7) * 8 + 0x1010);
+        hi = *(u32*)(arr + room * 0x280 + *(s32*)(arr + 0x14) * 0x40 + (room - 7) * 8 + 0x1014);
+    }
+    *(u16*)(p + 0x131B8 + room * 2) = 0;
+    *(u8*)(p + 0x131DF + room) = 0;
+    for (k = 0; k < 0x800; k++) {
+        u32 v = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, k) & 0xffff;
+        if (v == 0x17 || v == 0x16) {
+            u32 r = fn_802DED40(room + 1, n);
+            *(u16*)(arr + (0x3C - idx) * 2 + 0x2948) = (u16)k;
+            n++; idx += 4;
+        }
+    }
+}
+
 extern "C" char* fn_802D6A9C() {
     return *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
@@ -825,8 +848,9 @@ extern "C" void fn_802D7584(char* p, s32 index, u8 value) {
     if (index >= 0 && index < 256) {
         char* base = p + 0x10000;
         char* rowp = base + *(s32*)(p + 0x18) * 0xa00;
-        char* colp = rowp + *(s32*)(p + 0x14) * 0x100;
-        u8* cell = (u8*)colp + index;
+        u8* cell = (u8*)rowp;
+        cell = cell + *(s32*)(p + 0x14) * 0x100;
+        cell = cell + (u32)index;
         cell[-0x6698] = value;
     }
 }
@@ -839,13 +863,8 @@ extern "C" bool fn_802D75BC(char* p, s32 bit) {
 }
 
 extern "C" void fn_802D7618(char* p, s32 bit) {
-    s32 b = *(s32*)(p + 0x14);
-    s32 a = *(s32*)(p + 0x18);
-    char* q = p + a * 0x500;
-    q += b * 0x80;
-    q += (bit / 32) * 4;
-    u32* w = (u32*)(q + 0x6768);
-    *w |= 1U << (bit % 32);
+    u32 (*flags)[10][32] = (u32 (*)[10][32])(p + 0x6768);
+    flags[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][bit / 32] |= 1 << (bit % 32);
 }
 
 extern "C" void fn_802D766C(char* p, u8 value, s32 index) {
