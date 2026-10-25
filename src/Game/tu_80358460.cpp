@@ -45,6 +45,8 @@ extern "C" u8 fn_8023F264(s32 i);
 extern "C" s32 fn_8035AE9C(u8* self, void* obj);
 extern "C" void fn_801F317C(u8* self, f32* out);
 extern "C" u8* fn_801902C0(void);
+extern "C" void fn_8022E088(void*, s32, Vec8035A860*);
+extern "C" void fn_8035AA54(u8* self);
 extern "C" void fn_801F0D20(u8* self, s32 i);
 extern "C" bool fn_8022D75C(void*);
 extern "C" bool fn_80230188(void*);
