@@ -24,7 +24,7 @@ public:
     virtual void s48();
     virtual void s4C(s32 flag);
     virtual void s50();
-    virtual void s54(s32 flag);
+    virtual u8 s54(f32 a, f32 b, f32 c);
     virtual void s58();
 };
 
