@@ -3,6 +3,9 @@
 
 extern "C" void fn_8013B490(void*);
 extern void* lbl_8053AB10;
+extern const f32 lbl_805408B8;
+extern const f32 lbl_805408BC;
+extern const f32 lbl_805408C0;
 
 
 extern "C" void fn_802AC8AC(u8* this_, u32 val) { *(u32*)(this_ + 0x18) = val; }
