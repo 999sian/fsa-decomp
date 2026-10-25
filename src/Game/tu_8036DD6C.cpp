@@ -27,7 +27,7 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" void fn_8013CC50(s32 id, void* pos, f32 scale, u16 kind, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
 extern u8* lbl_8053AB10;
-static const u16 lbl_80542D38[4] = {0xfb, 0xfc, 0xfd, 0xfe};
+extern const u16 lbl_80542D38[4];
 #pragma opt_propagation off
 extern "C" void fn_8036DDD0(u8* this_) {
     u32 tile = fn_80226BC4((f32*)(this_ + 0x244), *(s32*)(this_ + 4));
