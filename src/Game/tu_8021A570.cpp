@@ -51,12 +51,6 @@ static inline void Swing_Choose(SwingRecord* r) {
     }
 }
 
-static inline void Swing_Settle(SwingRecord* r) {
-    r->mAngle = 0;
-    Swing_Choose(r);
-    r->mTimer6 = 0;
-}
-
 static inline bool Swing_Stop(SwingRecord* r) {
     bool ret = false;
     if (!r->mLocked) {
