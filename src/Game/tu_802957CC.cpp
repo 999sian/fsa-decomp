@@ -150,6 +150,31 @@ static inline u8 PushPathClearRight(char* self) {
     return ok;
 }
 
+// Writes the 6x6 tile grid under the block into the room map.
+static inline void PushStampGrid(char* self) {
+    JGeometry::TVec3f grid;
+    JGeometry::TVec3f base;
+    base = *(JGeometry::TVec3f*)(self + 0xc);
+    base.x += *(f32*)(self + 0x60);
+    base.y += *(f32*)(self + 0x64);
+    base.x += 8.0f;
+    base.y += 8.0f;
+    base.z = 0.0f;
+    grid = base;
+    for (s32 i = 0; i < 6; i++) {
+        grid.y = base.y;
+        char* col = self;
+        for (s32 j = 0; j < 6; j++) {
+            fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
+            fn_802A381C(lbl_8053AC98, &grid, 1, 0);
+            grid.y += 16.0f;
+            col += 2;
+        }
+        grid.x += 16.0f;
+        self += 0xc;
+    }
+}
+
 struct HOUSLinks {
     u8 unk_000[0x25c];
     s32 outgoing[4];
@@ -1571,15 +1596,15 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f* box) {
     return -1;
 }
 extern "C" void fn_8029A974(char* self) {
-    s32 mode;
-    s32 i;
+    int mode;
+    int i;
     u8 flag;
-    s32 room;
+    int room;
     void* h;
     char* row;
     char* col;
     char* base;
-    s32 j;
+    int j;
     u8 ok;
     f32 lenSq;
     JGeometry::TVec3f* vel;
