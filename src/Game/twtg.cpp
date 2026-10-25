@@ -82,6 +82,7 @@ struct TwtgInitData {
     u32 w1f;
     u32 w20;
 };
+static inline void copyTwtgInit(TwtgInitData* const dst, const TwtgInitData* const src) { *dst = *src; }
 
 class Twtg : public Actor {
 public:
@@ -1327,14 +1328,14 @@ Twtg::Twtg() : Actor() {
 }
 
 extern "C" void __sinit_twtg_cpp();
-#pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_80316ABC() {
-    const TwtgInitData& src = *(TwtgInitData*)lbl_804AAC58;
-    TwtgInitData& dst = *(TwtgInitData*)(lbl_804AAC58+33);
-    dst = src;
+    TwtgInitData* src = (TwtgInitData*)lbl_804AAC58;
+    TwtgInitData* dst = src+1;
+    *dst = *src;
     __sinit_twtg_cpp();
 }
-#pragma opt_propagation on
+#pragma opt_lifetimes on
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
