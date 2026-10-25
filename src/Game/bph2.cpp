@@ -35,8 +35,7 @@ extern const f32 lbl_8053E104;
 extern s32 lbl_80539FCC;
 
 static inline void bph2_drawShadow(s32 room, f32* pos, f32 alpha, f32 size) {
-    JUtility::TColor col(0, 0, 0, (s32)(lbl_8053E0E8 * alpha));
-    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, col, size);
+    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, JUtility::TColor(0, 0, 0, (s32)(lbl_8053E0E8 * alpha)), size);
 }
 
 static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) {
@@ -155,8 +154,7 @@ extern "C" void fn_8018A930(char* this_) {
         shadow[1] = pos[1];
         shadow[2] = pos[2];
         shadow[1] = shadow[1] + lbl_8053E0E4;
-        JUtility::TColor col(0, 0, 0, (s32)(lbl_8053E0E8 * *(f32*)(this_ + 0x288)));
-        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(this_ + 0x4), shadow, col, lbl_8053E0EC);
+        bph2_drawShadow(*(s32*)(this_ + 0x4), shadow, *(f32*)(this_ + 0x288), lbl_8053E0EC);
         pos[0] = pos[0] + lbl_8053E0F0 * JMath::sincosTable_.mTable[(u16)(s32)(lbl_8053E0F4 * *(f32*)(this_ + 0x28c)) >> 5].first;
         if (*(s32*)(this_ + 0x27c) < 0) {
             *(f32*)(this_ + 0x2dc) = pos[0];
@@ -183,8 +181,7 @@ extern "C" void fn_8018A930(char* this_) {
         } else {
             rec.b26 = 0;
         }
-        JUtility::TColor col3(0, 0, 0, (s32)(lbl_8053E0E8 * *(f32*)(this_ + 0x280)));
-        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(this_ + 0x4), pos, col3, lbl_8053E100);
+        bph2_drawShadow(*(s32*)(this_ + 0x4), pos, *(f32*)(this_ + 0x280), lbl_8053E100);
         a = *(f32*)(this_ + 0x294);
         {
             f32 sx = (f32)sin(lbl_8053E0C8);
