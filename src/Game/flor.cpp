@@ -443,41 +443,7 @@ extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s
 extern "C" u8 fn_8022DCD8(s32 i);
 extern "C" u8 fn_80230188(s32 i);
 extern "C" void fn_80230224(s32 i, s32 b);
-static inline void florFollowPosition(char* this_, JGeometry::TVec3<f32> a) {
-    JGeometry::TVec3<f32> b;
-    JGeometry::TVec3<f32> d;
-    f32 y, z, x;
-    b = a;
-    if (*(s32*)(this_ + 0x248) == 6) {
-        x = *(f32*)(this_ + 0xc);
-        y = *(f32*)(this_ + 0x10);
-        z = lbl_8053FA3C;
-    } else {
-        x = *(f32*)(this_ + 0xc);
-        y = *(f32*)(this_ + 0x10);
-        z = lbl_8053FA2C;
-    }
-    fn_801CD8E4(&b.x, x, lbl_8053FA80, lbl_8053FA2C);
-    fn_801CD8E4(&b.y, y, lbl_8053FA80, lbl_8053FA2C);
-    fn_801CD8E4(&b.z, z, lbl_8053FA80, lbl_8053FA2C);
-    if (*(s32*)(this_ + 0x248) == 5) {
-        fn_80230498(*(s32*)(this_ + 0x2b8), &b, (u16)fn_8023CBC0(*(s32*)(this_ + 0x2b8)), 0xff, -0x80, -0x80, 1);
-    } else {
-        d = b - a;
-        fn_8023DFF4(*(s32*)(this_ + 0x2b8), &d);
-    }
-}
-
-static inline void florApplyDelta(s32 room, JGeometry::TVec3<f32>& b, const JGeometry::TVec3<f32>& a) {
-    JGeometry::TVec3<f32> d;
-    d = b - a;
-    fn_8023DFF4(room, &d);
-}
-
-static inline JGeometry::TVec3<f32> florPlayerPosition(s32 room) {
-    return *(JGeometry::TVec3<f32>*)fn_8023E724(room);
-}
-
+#pragma inline_depth(5)
 extern "C" void fn_8020EB08(char* this_) {
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> d;
@@ -536,7 +502,7 @@ extern "C" void fn_8020EB08(char* this_) {
             if (*(s32*)(this_ + 0x248) == 5) {
                 fn_80230498(*(s32*)(this_ + 0x2b8), &b, (u16)fn_8023CBC0(*(s32*)(this_ + 0x2b8)), 0xff, -0x80, -0x80, 1);
             } else {
-                d = b - a;
+                d.operator=(b.operator-(a));
                 fn_8023DFF4(*(s32*)(this_ + 0x2b8), &d);
             }
         }
@@ -548,7 +514,7 @@ extern "C" void fn_8020EB08(char* this_) {
         }
     }
 }
-
+#pragma inline_depth(8)
 extern "C" void fn_8020ED5C(char* this_, s32 st) {
     switch (st) {
     case 0:
