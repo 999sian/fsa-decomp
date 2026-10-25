@@ -450,7 +450,9 @@ static inline f32 ichlLen(const IchlV2& v) {
     return sq * inv;
 }
 static inline bool ichlIsZero(const IchlV2& v) {
-    bool r = ichlSq(v) <= JGeometry::TUtilf::epsilon();
+    f32 square = ichlSq(v);
+    f32 limit = JGeometry::TUtilf::epsilon();
+    bool r = square <= limit;
     return r;
 }
 
@@ -467,7 +469,7 @@ extern "C" void fn_801DB9CC(char* p) {
     *(s16*)(p + 0x2de) = 0;
     *(s16*)(p + 0x2dc) = fn_801CD664(0x10000);
     if (*(s32*)(p + 0x16c) == -1) {
-        IchlV2 v = *(IchlV2*)(p + 0x2b4);
+        const IchlV2& v = *(IchlV2*)(p + 0x2b4);
         if (!ichlIsZero(v)) {
             f32 rx, ry;
             if (v.x < lbl_8053F2E4) {
@@ -508,7 +510,7 @@ extern "C" void fn_801DB9CC(char* p) {
     *(f32*)(p + 0x2c8) = *(f32*)(p + 0x2c0);
     if (*(s32*)(p + 0x16c) == -1) {
         IchlVec3 tmp;
-        if (fn_801DACAC(fn_801DAC6C(), (IchlV2*)&tmp)) {
+        if (fn_801DACAC(fn_801DAC6C(), &tmp)) {
             *(f32*)(p + 0x2cc) = *(f32*)(p + 0x2c4);
             *(f32*)(p + 0x2d0) = *(f32*)(p + 0x2c8);
             *(f32*)(p + 0x2cc) -= tmp.x;
