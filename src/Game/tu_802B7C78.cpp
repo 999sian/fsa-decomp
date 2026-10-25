@@ -1,5 +1,6 @@
 #include <math.h>
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct SinCosEntry {
     f32 first;
@@ -431,10 +432,10 @@ L156:
 }
 
 extern "C" void fn_802B8C44(u8* this_) {
-    f32 f1 = lbl_80540ADC;
-    f32 f0 = lbl_80540AE0;
-    f32 f3 = lbl_80540ACC;
     f32 f2 = lbl_80540AE4;
+    f32 f3 = lbl_80540ACC;
+    f32 f0 = lbl_80540AE0;
+    f32 f1 = lbl_80540ADC;
     *(f32*)(this_ + 0x60) = f1;
     *(f32*)(this_ + 0x64) = f1;
     f1 = lbl_80540AE8;
