@@ -3,7 +3,7 @@
 #include "types.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
-extern "C" const JMathSinCos sincosTable___5JMath[];
+extern "C" JMathSinCos sincosTable___5JMath[];
 extern void* lbl_8053AAF8;
 extern s32 lbl_8053AB88;
 
@@ -130,21 +130,14 @@ extern "C" void fn_8018FBB8(void* this_) {
     } else {
         *(s32*)(p + 0x254) = -1;
     }
-    s32 n = lbl_8053AB88 + 1;
-    lbl_8053AB88 = n;
-    lbl_8053AB88 = n & 1;
+    lbl_8053AB88++;
+    lbl_8053AB88 &= 1;
     *(s32*)(p + 0xb0) = 0x12202;
     *(s32*)(p + 0x230) = 0;
 
     dgt2SetVel(p);
-    dgt2CopyPos(p + 0x2ac, p);
-    s32 a = (*(s32*)(p + 0x98) - 2) & 0xf;
-    *(f32*)(p + 0x2ac) += 6.0f * dgt2Sin(a);
-    *(f32*)(p + 0x2b0) += 6.0f * dgt2Cos(a);
-    dgt2CopyPos(p + 0x2b8, p);
-    a = (*(s32*)(p + 0x98) + 2) & 0xf;
-    *(f32*)(p + 0x2b8) += 6.0f * dgt2Sin(a);
-    *(f32*)(p + 0x2bc) += 6.0f * dgt2Cos(a);
+    dgt2SetPoint(p + 0x2ac, p, -2);
+    dgt2SetPoint(p + 0x2b8, p, 2);
 }
 
 struct Dgt2Child { u8 pad[0x24]; s32 dead; u8 pad2[0xf4 - 0x28]; u32 flags; };
