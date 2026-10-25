@@ -323,7 +323,6 @@ extern "C" void fn_8013DDEC(u8* this_) {
         virtual void* getRes(u32 type, const char* name);
     };
     EffEmitterSet* set = (EffEmitterSet*)this_;
-    const char** names;
     ResMgr* res;
     s32 i;
     forceDeleteAllEmitter__17JPAEmitterManagerFv(set->mgr);
@@ -355,15 +354,15 @@ extern "C" void fn_8013DDEC(u8* this_) {
     tu13_addEmitter(set, 0x35b, 0, 0);
     res = *(ResMgr**)(lbl_80529DEC + 0x10);
     if (res != 0) {
-        for (i = 0, names = lbl_8049F118; i < 5; i++, names += 2) {
-            void* tex = res->getRes(0x54494d47, names[0]);
+        for (i = 0; i < 5; i++) {
+            void* tex = res->getRes(0x54494d47, ((EffTexSwap*)lbl_8049F118)[i].res);
             if (tex != 0) {
-                swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(*(void**)(this_ + 8), tex, names[1]);
+                swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(*(void**)(this_ + 8), tex, ((EffTexSwap*)lbl_8049F118)[i].name);
             }
         }
     }
-    for (i = 0; i < 0x400; i++) {
-        set->slots[i].used = 0;
+    for (u32 j = 0; j < 0x400; j++) {
+        set->slots[j].used = 0;
     }
 }
 
