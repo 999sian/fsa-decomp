@@ -51,6 +51,12 @@ extern "C" void* Hrmn_InitSlotStateType3(void* obj);
 extern s32 lbl_8046A590[];
 extern void* lbl_8053AED0;
 extern u8 lbl_8050EC80[];
+struct HrmnSaveRecord {
+    u8 pad_0[0x78];
+    u8 m78;
+    u8 m79;
+    u8 pad_7A[0xC8 - 0x7A];
+};
 extern u8* lbl_8053AAF8;
 
 extern "C" u8 fn_8022F514(s32 idx);
@@ -181,10 +187,10 @@ extern "C" void fn_80215B6C(HrmnTable* t, int idx) {
     }
 }
 
-extern "C" void fn_80215BCC(HrmnTable* t, int idx) {
-    if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0(t->mEntry[idx].mSub2)) {
-        u8 b = t->mEntry[idx].m21;
+extern "C" void fn_80215BCC(const HrmnTable* t, int idx) {
+    if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0((void*)t->mEntry[idx].mSub2)) {
         u8 a = t->mEntry[idx].m20;
+        u8 b = t->mEntry[idx].m21;
         lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x79] = a;
         lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x78] = b;
         fn_802D7844(fn_802D6A9C(), 1, t->mEntry[idx].mA);
