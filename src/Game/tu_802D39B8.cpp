@@ -1334,7 +1334,7 @@ extern "C" void fn_802DA010(char* p) {
 }
 
 extern "C" u8 fn_802DA630(char* p) {
-    u8 flag = *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
+    u8 flag = getRoomTransitionFlag();
     if (flag == 0) {
         s32 count;
         s32 i;
@@ -1348,7 +1348,7 @@ extern "C" u8 fn_802DA630(char* p) {
             v.x += offset;
             fn_80230498(i, &v, (u16)fn_8023CBC0(i), 0xff, -0x80, -0x80, 1);
         }
-        count = *(s32*)((char*)fn_801F856C() + 0x1008);
+        count = getActorList()->getCount();
         for (i = 0; i < count; i++) {
             e = getActorList()->getActor(i);
             if (e != NULL && *(s32*)((char*)e + 0x1A0) == 0x4F53494E && *(s32*)((char*)e + 0x230) == 2) {
