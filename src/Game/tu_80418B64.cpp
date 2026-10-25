@@ -1,4 +1,26 @@
 #include "types.h"
+extern "C" void fn_8041E8B4(u8*, s32);
+extern "C" void fn_8041E3B4(u8*, u32);
+extern "C" void fn_8041DD24(void*);
+extern "C" void fn_8041D18C(u8*, s32);
+extern "C" void fn_8041CC04(u8*);
+extern "C" void fn_8041A868(u8*, s32);
+extern "C" void fn_8041C0C0(u8*, s32);
+extern "C" void fn_8041B69C(u8*);
+extern "C" void fn_80419C38(u8*, s32, s32);
+extern "C" void fn_80419570(u8*, s32);
+extern "C" void fn_8041918C(u8*, s32);
+extern "C" void fn_80418D08(u8*, s32, s32);
+extern "C" u8 fn_80236B50(s32);
+extern "C" u8 fn_80236890();
+extern "C" void fn_801367E0(u8*, s32);
+extern "C" void fn_80441490(void*);
+extern f32 lbl_80543A1C;
+extern f32 lbl_80543A20;
+extern f32 lbl_80543A24;
+extern f32 lbl_80543A28;
+extern f32 lbl_80543A2C;
+extern f32 lbl_80543A30;
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JUtility/JUTVideo.h"
 #include "JSystem/J2D/J2DGrafContext.h"
@@ -290,10 +312,11 @@ extern "C" void fn_80419570(u8* self, s32 idx) {
         if (cnt < 0) cnt = 0;
         if (cnt < n) n = cnt;
         if (n < 0) n = 0;
-        u64* d = lbl_8048D320 + 0x19c;
-        u64* c = lbl_8048D320 + 0x18c;
-        u64* b = lbl_8048D320 + 0x194;
-        u64* a = lbl_8048D320 + 0x184;
+        u8* base = (u8*)lbl_8048D320;
+        u64* a = (u64*)(base + 0xc20);
+        u64* b = (u64*)(base + 0xca0);
+        u64* c = (u64*)(base + 0xc60);
+        u64* d = (u64*)(base + 0xce0);
         for (s32 k = 0; k < 8; k++) {
             if (n >= 4) {
                 SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
