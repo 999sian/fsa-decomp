@@ -2,8 +2,10 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
+static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -z; v[1] = -y; }
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
+#include "string.h"
 extern "C" const JGeometry::TVec3<f32> lbl_8046BF38[];
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
@@ -1404,7 +1406,7 @@ extern "C" bool fn_8025F684(char*);
 extern "C" bool fn_8022C3AC(s32);
 extern "C" void fn_80290D58(char*);
 extern "C" void fn_80282178(char* p) {
-s32 area;
+int area;
 S32(p,0x394)++;
 if(S32(p,0x394)==0x48) fn_8024F0E8(p,0x10003);
 if(U8(p,0x3fc)) {
@@ -1413,18 +1415,18 @@ if(U8(p,0xcea)==1) {
 if(S32(p,0x3b4)<8) VEC(p,0xcb0)=VEC(p,8);
 S32(p,0x3b4)=S32(p,0xce4);
 VEC(p,8)=VEC(p,0xcd4);
-F32(p,0x10)=lbl_805403C4;
+F32(p,0x10)=1.25f;
 fn_8030BD3C(PTR(p,0xbec),S32(p,4));
 area=S32(p,0x3b4);
-if(U8(fn_802D6A9C(),0x131df+area)) {
-if(F32(p,0x348)>lbl_805403C8) F32(p,0x348)=lbl_805403C8;
-else if(F32(p,0x348)<lbl_805403CC) F32(p,0x348)=lbl_805403CC;
+if(*(u8*)((u32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
+if(F32(p,0x348)>-7.0f) F32(p,0x348)=-7.0f;
+else if(F32(p,0x348)<-10.0f) F32(p,0x348)=-10.0f;
 } else {
-f32 y=-F32(p,0x34c);
-F32(p,0x34c)=-F32(p,0x348);
-F32(p,0x348)=y;
-if(F32(p,0x34c)<lbl_805403D0) F32(p,0x34c)=lbl_805403D0;
-else if(F32(p,0x34c)>lbl_80540354) F32(p,0x34c)=lbl_80540354;
+JGeometry::TVec2<f32> rotated(-F32(p,0x34c),-F32(p,0x348));
+F32(p,0x348)=rotated.x;
+F32(p,0x34c)=rotated.y;
+if(F32(p,0x34c)<7.0f) F32(p,0x34c)=7.0f;
+else if(F32(p,0x34c)>10.0f) F32(p,0x34c)=10.0f;
 }
 fn_80301D54(S32(p,4));
 U8(p,0xcea)=0;
@@ -1432,7 +1434,8 @@ U8(p,0xcea)=0;
 U8(p,0x3fc)--;
 if(U8(p,0x3fc)==0) {
 fn_80290D58(p);
-if(S32(p,0x3b4)<8) fn_802F601C(PTR(lbl_8053AB10,0x20),p+8,1,0,lbl_8054036C,lbl_805403B4);
+JGeometry::TVec3<f32>* pos = &VEC(p,8);
+if(S32(p,0x3b4)<8) fn_802F601C(PTR(lbl_8053AB10,0x20),pos,1,0,lbl_8054036C,lbl_805403B4);
 fn_8013CC50(S32(p,0x3b4),p+8,0x17d,1,0,0,0,1,lbl_8054036C);
 U8(p,0x124d)=0;
 }
@@ -1447,26 +1450,35 @@ U8(p,0x124d)=1;
 U8(p,0xcea)=1;
 }
 area=S32(p,0x3b4);
-if(U8(fn_802D6A9C(),0x131df+area)) {
-F32(p,0x348)+=lbl_80540398;
-if(F32(p,0x348)>lbl_805403D4) F32(p,0x348)=lbl_805403D4;
+if(*(u8*)((u32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
+{ f32 limit=6.0f;
+F32(p,0x348)+=0.25f;
+if(F32(p,0x348)>limit) F32(p,0x348)=limit;
+}
 area=S32(p,0x3b4);
 char* world=(char*)fn_802D6A9C();
-JGeometry::TBox2f box=*(JGeometry::TBox2f*)(world+(area<8?0xcc:0xdc));
-box.i.x-=lbl_805403D8; box.i.y-=lbl_805403D8;
-box.f.x+=lbl_805403D8; box.f.y+=lbl_805403D8;
+JGeometry::TBox2f box;
+JGeometry::TBox2f* bounds = area < 8 ? (JGeometry::TBox2f*)(world+0xcc) : (JGeometry::TBox2f*)(world+0xdc);
+((u32*)&box)[0]=((u32*)bounds)[0];
+((u32*)&box)[1]=((u32*)bounds)[1];
+((u32*)&box)[2]=((u32*)bounds)[2];
+((u32*)&box)[3]=((u32*)bounds)[3];
+box.i.x-=-16.0f; box.i.y-=-16.0f;
+box.f.x+=-16.0f; box.f.y+=-16.0f;
 if(fn_8025190C(p,1)) {
 fn_80251AEC(p,0x4e);
 F32(p,0x10)=lbl_80540360;
 } else {
-if(F32(p,0x348)<=lbl_80540360 && (fn_802518AC(p,1) || !(F32(p,8)>=box.i.x && F32(p,0xc)>=box.i.y && F32(p,8)<box.f.x && F32(p,0xc)<box.f.y))) {
+if(F32(p,0x348)>=lbl_80540360 && (fn_802518AC(p,1) || !playerBoxContains(box,VEC(p,8)))) {
 if(fn_8025F684(p)) fn_80251AEC(p,0x12); else fn_80251AEC(p,0);
 F32(p,0x10)=lbl_80540360;
-} else F32(p,0x10)=lbl_805403C4;
+} else F32(p,0x10)=1.25f;
 }
 } else {
-F32(p,0x34c)-=lbl_80540398;
-if(F32(p,0x34c)<lbl_805403DC) F32(p,0x34c)=lbl_805403DC;
+{ f32 limit=-6.0f;
+F32(p,0x34c)-=0.25f;
+if(F32(p,0x34c)<7.0f) F32(p,0x34c)=7.0f;
+}
 if(F32(p,0x10)<lbl_80540360) {
 if(fn_8025F684(p)) fn_80251AEC(p,0x12); else fn_80251AEC(p,0);
 F32(p,0x10)=lbl_80540360;
@@ -1475,42 +1487,42 @@ F32(p,0x10)=lbl_80540360;
 
 if(F32(p,0x380) > lbl_80540360) {
 if(fn_8022C82C(S32(p,4)) > lbl_80540360) {
-F32(p,0x380) += lbl_805403B8;
-if(F32(p,0x380) > lbl_805403E0) F32(p,0x380)=lbl_805403E0;
+F32(p,0x380) += 0.1f;
+if(F32(p,0x380) > 1.6f) F32(p,0x380)=1.6f;
 } else {
-F32(p,0x380) -= lbl_805403B8;
-if(F32(p,0x380) < lbl_805403B8) F32(p,0x380)=lbl_805403B8;
+F32(p,0x380) -= 0.1f;
+if(F32(p,0x380) < 0.1f) F32(p,0x380)=0.1f;
 }
 } else if(F32(p,0x380) < lbl_80540360) {
 if(fn_8022C82C(S32(p,4)) < lbl_80540360) {
-F32(p,0x380) -= lbl_805403B8;
-if(F32(p,0x380) < lbl_805403E4) F32(p,0x380)=lbl_805403E4;
+F32(p,0x380) -= 0.1f;
+if(F32(p,0x380) < -1.6f) F32(p,0x380)=-1.6f;
 } else {
-F32(p,0x380) += lbl_805403B8;
-if(F32(p,0x380) > lbl_805403E8) F32(p,0x380)=lbl_805403E8;
+F32(p,0x380) += 0.1f;
+if(F32(p,0x380) > -0.1f) F32(p,0x380)=-0.1f;
 }
-} else F32(p,0x380) = lbl_805403EC * fn_8022C82C(S32(p,4));
+} else F32(p,0x380) = 0.8f * fn_8022C82C(S32(p,4));
 
 area=S32(p,0x3b4);
-if(!U8(fn_802D6A9C(),0x131df+area)) {
+if(!*(u8*)((u32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
 
 if(F32(p,0x384) > lbl_80540360) {
 if(-fn_8022C76C(S32(p,4)) > lbl_80540360) {
-F32(p,0x384) += lbl_805403B8;
-if(F32(p,0x384) > lbl_805403E0) F32(p,0x384)=lbl_805403E0;
+F32(p,0x384) += 0.1f;
+if(F32(p,0x384) > 1.6f) F32(p,0x384)=1.6f;
 } else {
-F32(p,0x384) -= lbl_805403B8;
-if(F32(p,0x384) < lbl_805403B8) F32(p,0x384)=lbl_805403B8;
+F32(p,0x384) -= 0.1f;
+if(F32(p,0x384) < 0.1f) F32(p,0x384)=0.1f;
 }
 } else if(F32(p,0x384) < lbl_80540360) {
 if(-fn_8022C76C(S32(p,4)) < lbl_80540360) {
-F32(p,0x384) -= lbl_805403B8;
-if(F32(p,0x384) < lbl_805403E4) F32(p,0x384)=lbl_805403E4;
+F32(p,0x384) -= 0.1f;
+if(F32(p,0x384) < -1.6f) F32(p,0x384)=-1.6f;
 } else {
-F32(p,0x384) += lbl_805403B8;
-if(F32(p,0x384) > lbl_805403E8) F32(p,0x384)=lbl_805403E8;
+F32(p,0x384) += 0.1f;
+if(F32(p,0x384) > -0.1f) F32(p,0x384)=-0.1f;
 }
-} else F32(p,0x384) = lbl_805403EC * -fn_8022C76C(S32(p,4));
+} else F32(p,0x384) = 0.8f * -fn_8022C76C(S32(p,4));
 
 }
 if(!U8(p,0xce8) && fn_8022C3AC(S32(p,4))) fn_80251AEC(p,5);
@@ -1519,7 +1531,7 @@ fn_802685D4(p);
 if(fn_8025F684(p)) {
 F32(p,0x2f4)=lbl_80540360;
 F32(p,0x2f8)=lbl_80540360;
-F32(p,0x2fc)=lbl_805403F0;
+F32(p,0x2fc)=18.0f;
 VEC(p,0x2f4).add(VEC(p,0x2f4),VEC(p,8));
 if(F32(p,0x34c)<lbl_805403AC) U8(p,0x3f9)=1; else U8(p,0x3f9)=0;
 }
