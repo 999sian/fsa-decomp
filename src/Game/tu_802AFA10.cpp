@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" char lbl_804A8470[];
@@ -217,7 +219,82 @@ inline void yajiStopPulse(YajiActor* p) {
     p->mSubState = 0;
 }
 
-extern "C" void fn_802AFCE8(YajiActor* p) {}
+extern "C" void fn_802AFCE8(YajiActor* p) {
+    f32 box[4];
+    f32 y = p->mZoneCenterY;
+    f32 x = p->mZoneCenterX;
+    box[0]=p->field_60; box[1]=p->field_64; box[2]=p->field_68; box[3]=p->field_6C;
+    box[0]+=x; box[1]+=y; box[2]+=x; box[3]+=y;
+    s32 player = fn_8023AF14(box,p->field_04,0,0.0f);
+    switch (p->mMode) {
+    case YAJI_MODE_CONSTANT:
+        p->mBlinkTimer--;
+        if (p->mBlinkTimer == 0) {
+            p->mBlinkTimer = 8;
+            p->mIsVisible = (p->mIsVisible+1)&3;
+        }
+        break;
+    case YAJI_MODE_TRIGGER_PULSE_A:
+        switch(p->mSubState) {
+        case 0:
+            if ((u8)p->v11()) yajiStartPulse(p);
+            else if (player >= 0) {
+                p->mPlayerInZone=1;
+                p->v10(0xff,1);
+            }
+            break;
+        case 1: {
+            p->mAlpha += lbl_80540968[p->mFadeDirection];
+            fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &p->field_0C);
+            Vec pos = p->field_0C;
+            fn_8043E7CC(lbl_8053AED0, pos);
+            if ((u8)p->v11()) {
+                yajiAdvancePulse(p);
+                if (player < 0) {
+                    if (p->mPlayerInZone != 0) p->v10(0xff,0);
+                    p->mPlayerInZone=0;
+                } else {
+                    p->mPlayerInZone=1;
+                    p->v10(0xff,1);
+                }
+            } else yajiStopPulse(p);
+            break;
+        }
+        }
+        break;
+    case YAJI_MODE_TRIGGER_HIDDEN:
+        switch(p->mSubState) {
+        case 0:
+            if (player >= 0) {
+                p->mSubState=1;
+                fn_801F0D20(p,6);
+            }
+            break;
+        case 1:
+            if (player < 0) p->mSubState=0;
+            break;
+        }
+        break;
+    case YAJI_MODE_TRIGGER_PULSE_B:
+        switch(p->mSubState) {
+        case 0:
+            if ((u8)p->v11()) yajiStartPulse(p);
+            break;
+        case 1: {
+            p->mAlpha += lbl_80540968[p->mFadeDirection];
+            fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &p->field_0C);
+            Vec pos = p->field_0C;
+            fn_8043E7CC(lbl_8053AED0, pos);
+            if ((u8)p->v11()) {
+                yajiAdvancePulse(p);
+                
+            } else yajiStopPulse(p);
+            break;
+        }
+        }
+        break;
+    }
+}
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802B0194(YajiActor* this_) {
