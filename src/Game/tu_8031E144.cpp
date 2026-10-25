@@ -30,6 +30,25 @@ extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, DrawRec* rec
 extern "C" void fn_801EF830(s32 idx, void* pos, DrawRec* rec, u32 mask, const char* name, s32 id, s32 p7);
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* prm);
 extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10);
+static inline void setDrawMatrix(f32 mtx[3][4], f32 s, f32 ay) {
+    f32 sx, sy, sz, cx, cy, cz;
+    sx = sin(lbl_80541A20);
+    sy = sin(ay);
+    sz = sin(lbl_80541A20);
+    cx = cos(lbl_80541A20);
+    cy = cos(ay);
+    cz = cos(lbl_80541A20);
+    mtx[0][0] = s * (cy * cz);
+    mtx[1][0] = s * (cy * sz);
+    mtx[2][0] = s * -sy;
+    mtx[0][1] = s * (sx * sy * cz - cx * sz);
+    mtx[1][1] = s * (sx * sy * sz + cx * cz);
+    mtx[2][1] = s * (sx * cy);
+    mtx[0][2] = s * (cx * cz * sy + sx * sz);
+    mtx[1][2] = s * (cx * sz * sy - sx * cz);
+    mtx[2][2] = s * (cx * cy);
+}
+
 extern "C" void fn_8031E144(Actor* p) {
     char* c = (char*)p;
     DrawRec rec;
@@ -44,15 +63,23 @@ extern "C" void fn_8031E144(Actor* p) {
     s32 state = *(s32*)(c + 0x230);
     if (state == 2 || state == 3) {
         f32 mtx[3][4];
-        f32 s = *(f32*)(c + 0x238) * *(f32*)(c + 0x240);
-        f32 ay = *(f32*)(c + 0x23c);
+    f32 cz;
+    f32 sz;
+    f32 sy;
+    f32 sx;
+    f32 s;
+    f32 ay;
+    f32 cy;
+    f32 cx;
+        s = *(f32*)(c + 0x238) * *(f32*)(c + 0x240);
         PSMTXIdentity(mtx);
-        f32 sx = sin(lbl_80541A20);
-        f32 sy = sin(ay);
-        f32 sz = sin(lbl_80541A20);
-        f32 cx = cos(lbl_80541A20);
-        f32 cy = cos(ay);
-        f32 cz = cos(lbl_80541A20);
+        ay = *(f32*)(c + 0x23c);
+        sx = sin(lbl_80541A20);
+        sy = sin(ay);
+        sz = sin(lbl_80541A20);
+        cx = cos(lbl_80541A20);
+        cy = cos(ay);
+        cz = cos(lbl_80541A20);
         mtx[0][0] = s * (cy * cz);
         mtx[1][0] = s * (cy * sz);
         mtx[2][0] = s * -sy;
@@ -72,15 +99,23 @@ extern "C" void fn_8031E144(Actor* p) {
     }
     rec.b1d = 0;
     f32 mtx2[3][4];
-    f32 ay2 = *(f32*)(c + 0x23c);
-    f32 s2 = *(f32*)(c + 0x240);
+    f32 cz2;
+    f32 sx2;
+    f32 sy2;
+    f32 sz2;
+    f32 s2;
+    f32 cx2;
+    f32 ay2;
+    f32 cy2;
     PSMTXIdentity(mtx2);
-    f32 sx2 = sin(lbl_80541A20);
-    f32 sy2 = sin(ay2);
-    f32 sz2 = sin(lbl_80541A20);
-    f32 cx2 = cos(lbl_80541A20);
-    f32 cy2 = cos(ay2);
-    f32 cz2 = cos(lbl_80541A20);
+    ay2 = *(f32*)(c + 0x23c);
+    s2 = *(f32*)(c + 0x240);
+    sx2 = sin(lbl_80541A20);
+    sy2 = sin(ay2);
+    sz2 = sin(lbl_80541A20);
+    cx2 = cos(lbl_80541A20);
+    cy2 = cos(ay2);
+    cz2 = cos(lbl_80541A20);
     mtx2[0][0] = s2 * (cy2 * cz2);
     mtx2[1][0] = s2 * (cy2 * sz2);
     mtx2[2][0] = s2 * -sy2;
@@ -97,13 +132,14 @@ extern "C" void fn_8031E144(Actor* p) {
     s32 mode = *(s32*)(c + 0x258);
     if (mode == 4 || mode == 5) {
         fn_801F06F0(p, name, id, &rec, -1, lbl_80541A24, lbl_80541A24);
-        f32 save[3];
+        JGeometry::TVec3<f32> save = *(JGeometry::TVec3<f32>*)(c + 0xc);
         *(f32*)(c + 0x10) = *(f32*)(c + 0x10) - lbl_80541A24;
-        if (*(s32*)(c + 0x138) == 0) {
+        if (*(u32*)(c + 0x138) == 0) {
             fn_801EF830(*(s32*)(c + 4), c + 0xc, &rec, 7, name, id, 0);
-        } else {
-            fn_801F06F0(p, name, id, &rec, 7, lbl_80541A24, lbl_80541A24);
         }
+        *(JGeometry::TVec3<f32>*)(c + 0xc) = save;
+    } else {
+        fn_801F06F0(p, name, id, &rec, 7, lbl_80541A24, lbl_80541A24);
     }
     fn_803075AC(*(void**)(c + 0x198), *(s32*)(c + 4), c + 0xc, id, 0, 2, -1, 0, 0, 0);
 }
