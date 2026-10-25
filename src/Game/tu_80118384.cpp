@@ -52,18 +52,6 @@ static inline void StaticVec_init2(StaticVec* v, const StaticVecAlloc& alloc) {
     StaticVec_initVec(v, alloc);
 }
 
-static inline void StaticVec_init(StaticVec* v, StaticVecAlloc alloc) {
-    v->m_00 = 0;
-    v->m_01 = 0;
-    v->m_02 = 0;
-    v->m_04 = 0x13;
-    v->m_08 = 0;
-    v->m_0c = alloc.m_00;
-    v->m_10 = 0;
-    v->m_14 = 0;
-    v->m_18 = 0;
-    v->m_1c = (void*)JGadget::vector::extend_default;
-}
 
 extern "C" StaticVec lbl_804BC540;
 extern "C" char lbl_804BC534[];
