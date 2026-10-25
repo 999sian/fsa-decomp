@@ -88,7 +88,7 @@ extern "C" s32 fn_803B9BDC(char* this_);
 extern "C" void fn_803BF004(char* this_);
 extern "C" void fn_803B93E8(void* a, void* b, void* c, s32 d);
 extern "C" void fn_803BACF8(void* a, u8 b);
-extern "C" u32 lbl_80476938[];
+extern "C" u64 lbl_80476938[];
 extern "C" u32 lbl_80476980[];
 extern "C" f32 lbl_80543458;
 extern "C" f32 lbl_80543498;
