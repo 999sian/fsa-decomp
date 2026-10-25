@@ -5,11 +5,11 @@
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
-extern "C" f32 lbl_8053F0BC;
-extern "C" f32 lbl_8053F510;
-extern "C" f32 lbl_8053F554;
-extern "C" f32 lbl_8053F558;
-extern "C" f32 lbl_8053F55C;
+extern "C" const f32 lbl_8053F0BC;
+extern "C" const f32 lbl_8053F510;
+extern "C" const f32 lbl_8053F554;
+extern "C" const f32 lbl_8053F558;
+extern "C" const f32 lbl_8053F55C;
 extern "C" f32 lbl_8053F560;
 
 extern "C" f32 lbl_8053F530;
@@ -580,9 +580,11 @@ extern "C" void fn_801E4618(char* param_1, f32* param_2, u8 param_3) {
 }
 
 extern "C" void fn_801E4758(u8* p) {
+    f32 a = lbl_8053F554;
     f32 s = lbl_8053F0BC;
-    f32 a = lbl_8053F554 * s;
-    f32 b = lbl_8053F558 * s;
+    f32 b = lbl_8053F558;
+    a *= s;
+    b *= s;
     f32 c = lbl_8053F510 * s;
     f32 d = lbl_8053F55C * s;
 
@@ -593,11 +595,11 @@ extern "C" void fn_801E4758(u8* p) {
 }
 
 extern "C" void fn_801E4790(u8* p, u8 flag) {
-    f32 a;
-    f32 b;
-    f32 c;
-    f32 d;
     f32 s = lbl_8053F0BC;
+    f32 a;
+    register f32 c;
+    register f32 b;
+    f32 d;
 
     if (flag) {
         s = lbl_8053F560;
@@ -607,8 +609,8 @@ extern "C" void fn_801E4790(u8* p, u8 flag) {
     c = lbl_8053F510 * s;
     d = lbl_8053F55C * s;
     *(f32*)(p + 0x60) = a;
-    *(f32*)(p + 0x64) = b;
     *(f32*)(p + 0x68) = c;
+    *(f32*)(p + 0x64) = b;
     *(f32*)(p + 0x6c) = d;
     *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
     *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
