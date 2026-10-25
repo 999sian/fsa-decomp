@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct DgtlEffMgr {
     u8 pad[0xc];
@@ -8,7 +9,14 @@ struct DgtlEffMgr {
 };
 
 struct DgtlObj {
-    u8 pad[0x7c0];
+    u8 pad[0x2ae];
+    u16 angles[7];
+    u8 pad2bc[4];
+    Vec joints[8];
+    u8 pad320[0x18];
+    u16 historyAngles[80];
+    Vec history[80];
+    JPABaseEmitter* bodyEff[10];
     JPABaseEmitter* eff[2];
 };
 
@@ -311,7 +319,6 @@ extern "C" s32 fn_80149AEC(char* p) {
 
 extern "C" s32 fn_80149FDC(char* this_) {
     s32 i;
-    s32 idx;
     char* p;
     if (*(s32*)(this_ + 0x250) == 0) {
         return 1;
@@ -345,9 +352,9 @@ extern "C" s32 fn_80149FDC(char* this_) {
         return 0;
     }
     *(s32*)(this_ + 0x278) = *(s32*)(this_ + 0x27c);
-    s32 count = 0;
-    while (*(s32*)(this_ + 0x27c) == *(s32*)(this_ + 0x278) && count < 100) {
-        count++;
+    i = 0;
+    while (*(s32*)(this_ + 0x27c) == *(s32*)(this_ + 0x278) && i < 100) {
+        i++;
         u8* g = lbl_8053AAF8;
         *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
         u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
@@ -359,14 +366,15 @@ extern "C" s32 fn_80149FDC(char* this_) {
     i = 0;
     p = this_;
     do {
-        if (*(void* volatile*)(p + 0x7c0) != 0) {
-            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void* volatile*)(p + 0x7c0));
-            *(void**)(p + 0x7c0) = 0;
+        if (*(JPABaseEmitter**)(p + 0x7c0) != 0) {
+            DgtlEffMgr* m = (DgtlEffMgr*)fn_8013C824();
+            m->mgr->forceDeleteEmitter(*(JPABaseEmitter**)(p + 0x7c0));
+            *(JPABaseEmitter**)(p + 0x7c0) = 0;
         }
         i++;
         p += 4;
     } while (i < 2);
-    idx = *(s32*)(this_ + 0x278);
+    s32 idx = *(s32*)(this_ + 0x278);
     *(void**)(this_ + 0x7c0) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8049F630[idx][0], 0, 0, 0, 0, 1, lbl_8053D0B4);
     *(void**)(this_ + 0x7c4) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8049F630[idx][1], 0, 0, 0, 0, 1, lbl_8053D0B4);
     if (*(s32*)(this_ + 0x230) != 1 && *(s32*)(this_ + 0x230) != 2) {
@@ -374,6 +382,84 @@ extern "C" s32 fn_80149FDC(char* this_) {
     }
     *(s32*)(this_ + 0x254) = 0xe10;
     return 0;
+}
+
+extern "C" s32 lbl_8049F640[];
+extern "C" const f32 lbl_8053D118;
+extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
+extern "C" void fn_8014A2CC(char* p, s32 mode) {
+    char* pos;
+    u16* angle;
+    s32* table;
+    char* eff;
+    s32 i;
+    s32 start = 0;
+    if (*(s32*)(p + 0x274) == 1) start = 7;
+    char* a = p + 0x3a8;
+    char* b = p + 0x9c;
+    s32 n = 78;
+    if (mode == 0) {
+        for (; n >= 0; a -= 12, n--, b -= 2) {
+            *(JGeometry::TVec3<f32>*)(p + 0x3d8 + (n+1)*12) = *(JGeometry::TVec3<f32>*)(a + 0x3d8);
+            *(u16*)(b+0x33a) = *(u16*)(b+0x338);
+        }
+    } else {
+        for (; n >= 0; n--, a -= 12) {
+            *(f32*)(a+0x3ec) = *(f32*)(a+0x3e0);
+        }
+    }
+    if (mode == 0) {
+        *(f32*)(p+0x3d8) = *(f32*)(p+0xc);
+        *(f32*)(p+0x3dc) = *(f32*)(p+0x10);
+        *(f32*)(p+0x3e0) = *(f32*)(p+0x14);
+        *(u16*)(p+0x338) = *(u16*)(p+0x284);
+    } else {
+        *(f32*)(p+0x3e0) = *(f32*)(p+0x14);
+    }
+    pos = p;
+    angle = (u16*)p;
+    table = lbl_8049F640;
+    eff = p;
+    for (i=0; i<6; i++, table++, eff+=4, pos+=12) {
+        s32 index = lbl_8049F640[start+i];
+        char* src = p + index*12;
+        *(f32*)(pos+0x2cc) = *(f32*)(src+0x3d8);
+        *(f32*)(pos+0x2d0) = *(f32*)(src+0x3dc);
+        *(f32*)(pos+0x2d4) = *(f32*)(src+0x3e0);
+        *(u16*)((char*)angle+0x2ae) = *(u16*)(p+0x338+index*2);
+        if (mode != 0) {
+            index = (s32)((f32)*table*lbl_8053D118);
+            *(f32*)(pos+0x2d4) = *(f32*)(p+0x3e0+index*12);
+        }
+        if (i<5) {
+            void* emitter = *(void**)(eff+0x798);
+            if (emitter == 0) {
+                *(void**)(eff+0x798) = fn_8013CC50(*(s32*)(p+4), p+0x2c0+(i+1)*12, 0x11c, 0,0,0,0,1, lbl_8053D0B4-lbl_8053D0BC*(f32)i);
+            } else {
+                *((u8*)emitter+0xbb) = (u8)*(f32*)(p+0x294);
+                fn_8013CB44(*(void**)(eff+0x798), p+0x2c0+(i+1)*12,0,0,1);
+            }
+        }
+        angle++;
+    }
+    s32* tail = lbl_8049F640+6;
+    s32 index = tail[start];
+    char* src = p+index*12;
+    *(f32*)(p+0x314) = *(f32*)(src+0x3d8);
+    *(f32*)(p+0x318) = *(f32*)(src+0x3dc);
+    *(f32*)(p+0x31c) = *(f32*)(src+0x3e0);
+    char* __restrict anglesrc = p + index*2;
+    *(u16*)(p+0x2ba) = *(u16*)(anglesrc+0x338);
+    eff = p;
+    for (s32 j=0;j<2;j++,eff+=4) fn_8013CB44(*(void**)(eff+0x7c0),p+0x314,0,0,1);
+    if (mode != 0) {
+    s32 zindex = (s32)((f32)*tail*lbl_8053D118);
+    char* __restrict zsrc = p + zindex*12;
+    *(f32*)(p+0x31c) = *(f32*)(zsrc+0x3e0);
+    }
+    *(f32*)(p+0x2c0) = *(f32*)(p+0x3d8);
+    *(f32*)(p+0x2c4) = *(f32*)(p+0x3dc);
+    *(f32*)(p+0x2c8) = *(f32*)(p+0x3e0);
 }
 
 extern "C" void fn_802D7440(void* p, s32 x);
