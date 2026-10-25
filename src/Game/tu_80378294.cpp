@@ -43,6 +43,42 @@ extern "C" void fn_8020D7D0(void* pos, int handle);
 extern "C" int fn_8013CC50(int room, void* pos, f32 scale, int a, int b, int c, int d, int e, int f);
 extern "C" void fn_801F0E34(void* this_, int id, int arg);
 extern "C" void* fn_801902C0(void);
+extern "C" void fn_802F745C(void* mgr, void* pos, void* res, DrawRec* rec);
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void* lbl_8053AB10;
+extern int __float_epsilon[];
+extern f32 lbl_80542FD0;
+extern f32 lbl_80542FD4;
+extern const char lbl_804751E4[];
+extern "C" void fn_80378294(void* param_1) {
+    u8* p = (u8*)param_1;
+    if (p[0x251] != 1) {
+        DrawRec rec;
+        if (!(JMathInlineVEC::PSVECSquareMag((const SDKVec*)(p + 0x54)) <= lbl_80542FD0 * *(f32*)__float_epsilon)) {
+            f32 vec[4][3];
+            f32 zero = lbl_80542FD4;
+            vec[1][0] = zero;
+            vec[2][1] = zero;
+            vec[3][2] = zero;
+            f32 s = *(f32*)(p + 0x238);
+            vec[0][0] = s;
+            vec[0][1] = zero;
+            vec[0][2] = zero;
+            vec[1][1] = zero;
+            vec[1][2] = s;
+            vec[2][0] = zero;
+            vec[2][2] = zero;
+            vec[3][0] = zero;
+            vec[3][1] = s;
+            rec.w18 = vec;
+        }
+        void* res = fn_804032E8(0x54494D47, lbl_804751E4);
+        if (*(int*)(p + 4) < 8) {
+            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), p + 0xc, res, &rec);
+        }
+    }
+}
+
 extern "C" int fn_8037845C(void* param_1) {
     int* p = (int*)param_1;
     int i;
@@ -129,15 +165,15 @@ extern "C" int fn_80378680(char* p) {
                 hit = 1;
             }
             if (hit) {
-                Vec v = *(Vec*)(obj + 0x3c);
+                JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(obj + 0x3c));
                 if (v.x == 0.0f && v.y == 0.0f) {
-                    Vec pos = *(Vec*)(obj + 0xc);
+                    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(obj + 0xc));
                     if (pos.y > *(float*)(p + 0x10)) {
                         pos.y = 16.0f + *(float*)(p + 0x10);
                     } else {
                         pos.y = *(float*)(p + 0x10) - 16.0f;
                     }
-                    *(Vec*)(obj + 0xc) = pos;
+                    *(JGeometry::TVec3<f32>*)(obj + 0xc) = pos;
                 } else {
                     *(int*)(obj + 0x108) = 0;
                 }
