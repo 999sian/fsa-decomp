@@ -413,32 +413,33 @@ static inline f32 ltzrSqrt(f32 x) {
 }
 
 static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, u8& hit) {
-            register f32 vx;
-            register f32 vy;
+    JGeometry::TVec3<f32>* __restrict q = &pt;
+            f32 vx;
+            f32 vy;
             f32 maxy;
             f32 maxx;
             f32 miny;
             f32 minx;
             for (s32 j = 0; j < 8; j++) {
-                fn_8022E088(i, j, (f32*)&pt);
-                pt.sub(*(JGeometry::TVec3<f32>*)(p + 0xc));
-                pt.z = lbl_80542268;
-                f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
+                fn_8022E088(i, j, (f32*)q);
+                q->sub(*(JGeometry::TVec3<f32>*)(p + 0xc));
+                q->z = lbl_80542268;
+                f32 ang = JMath::atanTable_.atan2_(q->y, q->x);
                 s32 a = (s32)(ang * lbl_8054228C);
-                f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
+                f32 len = ltzrSqrt(q->x * q->x + q->y * q->y);
                 f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
                 f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
-                pt.z = lbl_80542268;
+                q->z = lbl_80542268;
                 vy = len * sy;
                 vx = len * cy;
-                pt.y = vy;
-                pt.x = vx;
+                q->y = vy;
+                q->x = vx;
                 minx = *(f32*)(p + 0x60);
                 miny = *(f32*)(p + 0x64);
                 maxx = *(f32*)(p + 0x68);
                 maxy = *(f32*)(p + 0x6c);
                 u8 inside = 0;
-                if (pt.x >= minx && pt.y >= miny && pt.x < maxx && pt.y < maxy) inside = 1;
+                if (q->x >= minx && q->y >= miny && q->x < maxx && q->y < maxy) inside = 1;
                 if (inside) {
                     fn_8022DF48(i);
                     hit = 1;
