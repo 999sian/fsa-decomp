@@ -1523,69 +1523,41 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
     }
 }
 
-extern "C" void fn_802F99DC(u8* this_, u8* src, u32 a, s32 idx, u32 dst, u32 size) {
+#pragma opt_propagation off
+extern "C" void fn_802F99DC(Tu802F5040Tbl* this_, u8* src, u32 a, s32 idx, u32 dst, u32 size) {
+    u8* buf;
     u8* base;
     u8* d;
     u32 i;
     u32 len;
-    u32 n;
-    u32 k;
     if (size == 0) {
         s32 r;
         if (JKRDecomp::checkCompressed(src)) {
             r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
         } else {
-            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
+            JKRArchive* obj = *(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4);
+            r = obj->getResSize(src);
         }
-        if (r < 0) {
-            len = 0x2000;
-        } else {
-            len = r;
-        }
-    } else {
-        len = size;
-    }
+        if (r < 0) len = 0x2000;
+        else len = r;
+    } else len = size;
     if (JKRDecomp::checkCompressed(src)) {
-        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
-        base = *(u8**)(this_ + 0xf8);
-    } else {
-        base = src;
-    }
-    base += a;
+        JKRDecomp::decode(src, *(u8**)((u8*)this_ + 0xf8), 0x8000, 0);
+        buf = *(u8**)((u8*)this_ + 0xf8);
+    } else buf = src;
+    base = buf + a;
     if (idx >= 0 && idx < 4) {
-        d = ((u8**)(this_ + idx * 4))[10] + (dst & ~1);
+        d = this_->m_tbl[idx] + (dst & ~1);
     } else if (idx >= 4 && idx < 8) {
-        d = ((u8**)(this_ + idx * 4))[10] + (dst & ~1);
+        d = this_->m_tbl[idx] + (dst & ~1);
     } else {
-        d = ((u8**)(this_ + idx * 4))[10] + (dst & ~1);
+        d = this_->m_tbl[idx] + (dst & ~1);
     }
-    if (len != 0) {
-        n = (len + 1) >> 1;
-        i = 0;
-        k = n >> 2;
-        if (k != 0) {
-            do {
-                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
-                i += 2;
-                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
-                i += 2;
-                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
-                i += 2;
-                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
-                i += 2;
-            } while (--k != 0);
-        }
-        k = n & 3;
-        if (k != 0) {
-            do {
-                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
-                i += 2;
-            } while (--k != 0);
-        }
+    for (i = 0; i < len; i += 2) {
+        *(u16*)(d + (i & ~1)) = (base[i + 1] << 8) | base[i];
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, u32 param_5)
 {
   u32 size;
@@ -2962,6 +2934,8 @@ extern "C" void fn_803003AC(void* p) {
 }
 
 extern "C" void fn_803004C0(void) {}
+
+void __sinit_tu_802F5040_cpp() {}
 
 extern "C" void __register_global_object(void*, void*, void*);
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
