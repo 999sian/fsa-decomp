@@ -113,9 +113,11 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
 }
 
 static inline void rnbwSpawn(Actor* actor, u16* ids) {
-    for (s32 i = 0; i < 5; i++) {
-        if (((void**)actor)[0x8f + i] == 0) {
-            ((void**)actor)[0x8f + i] = fn_8013CC50(actor->field_04, &actor->field_0C, ids[i], 0, -1, 0, 0, 1, lbl_8053CB48);
+    void** hp = (void**)actor;
+    for (s32 i = 0; i < 5; i++, hp++) {
+        if (hp[0x8f] == 0) {
+            u16 id = ids[i];
+            hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, id, 0, -1, 0, 0, 1, lbl_8053CB48);
         }
     }
 }
