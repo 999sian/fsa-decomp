@@ -131,13 +131,19 @@ struct FsobVec2 {
     f32 x, y;
 };
 
+struct FsobPath {
+    u8 pad[0x2a8];
+    u32 flags;
+    u8 pad2ac[4];
+    JGeometry::TVec2<f32> points[32];
+};
+
 extern "C" void fn_801E8EB4(char* p, u8 idx, s32 unused, FsobVec2* v) {
-    f32 x = v->x;
     f32 y = v->y;
-    *(u32*)(p + 0x2a8) |= 1 << idx;
-    p += idx << 3;
-    *(f32*)(p + 0x2b0) = x;
-    *(f32*)(p + 0x2b4) = y;
+    f32 x = v->x;
+    *(u32*)(p + 0x2a8) |= 1U << idx;
+    ((FsobVec2*)(p + 0x2b0))[idx].x = x;
+    ((FsobVec2*)(p + 0x2b0))[idx].y = y;
 }
 
 extern "C" void fn_801E8EE8(char* p) {
@@ -276,56 +282,53 @@ extern "C" void fn_801E9224(char* p) {
     if (*(u32*)(p + 0x230) & 0x4000) {
         return;
     }
-    u8 seg;
-    u8 done;
-    u8 next;
-    done = 0;
+    u8 done = 0;
     f32 zero = lbl_8053F5FC;
     f32 rem = lbl_8053F60C;
     rem = __fsel(rem, rem, zero);
     while (rem > zero) {
-        seg = *(u8*)(p + 0x3b0);
+        u8 segment = *(u8*)(p + 0x3b0);
         s32 ti = (s32)*(f32*)(p + 0x3b4);
-        f32 ay;
         f32 ax;
+        f32 ay;
         switch ((u8)ti) {
         case 0: {
-            char* q = p + seg * 8;
-            ax = *(f32*)(q + 0x2b0);
-            ay = *(f32*)(q + 0x2b4);
+            f32* q = (f32*)(p + segment * 8);
+            ax = q[172];
+            ay = q[173];
             break;
         }
         case 16: {
-            char* q = p + seg * 8;
-            ax = *(f32*)(q + 0x2b8);
-            ay = *(f32*)(q + 0x2bc);
+            f32* q = (f32*)(p + segment * 8);
+            ax = q[174];
+            ay = q[175];
             break;
         }
         default: {
             f32 p0x;
             f32 p0y;
-            if (seg == 0) {
+            if (segment == 0) {
                 p0x = *(f32*)(p + 0x2b0);
                 p0y = *(f32*)(p + 0x2b4);
             } else {
-                char* q = p + seg * 8;
-                p0x = *(f32*)(q + 0x2a8);
-                p0y = *(f32*)(q + 0x2ac);
+                f32* q = (f32*)(p + segment * 8);
+                p0x = q[170];
+                p0y = q[171];
             }
             u8 count = *(u8*)(p + 0x2ad);
-            char* q = p + seg * 8;
-            f32 p2x = *(f32*)(q + 0x2b8);
-            f32 p2y = *(f32*)(q + 0x2bc);
-            f32 p1x = *(f32*)(q + 0x2b0);
-            f32 p1y = *(f32*)(q + 0x2b4);
+            f32* q = (f32*)(p + segment * 8);
+            f32 p2x = q[174];
+            f32 p2y = q[175];
+            f32 p1x = q[172];
+            f32 p1y = q[173];
             f32 p3x;
             f32 p3y;
-            if (seg == count - 2) {
+            if (segment == count - 2) {
                 p3x = p2x;
                 p3y = p2y;
             } else {
-                p3x = *(f32*)(q + 0x2c0);
-                p3y = *(f32*)(q + 0x2c4);
+                p3x = q[176];
+                p3y = q[177];
             }
             f32 u = 0.0625f * (f32)(u8)ti;
             ay = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
@@ -334,8 +337,8 @@ extern "C" void fn_801E9224(char* p) {
         }
         }
 
-        seg = *(u8*)(p + 0x3b0);
-        next = (u8)((s32)*(f32*)(p + 0x3b4) + 1);
+        u8 seg = *(u8*)(p + 0x3b0);
+        u8 next = (u8)((s32)*(f32*)(p + 0x3b4) + 1);
         if (next >= 16) {
             if (seg >= *(u8*)(p + 0x2ad) - 2) {
                 done = 1;
@@ -345,19 +348,19 @@ extern "C" void fn_801E9224(char* p) {
             }
         }
 
-        f32 bx;
         f32 by;
+        f32 bx;
         switch (next) {
         case 0: {
-            char* q = p + seg * 8;
-            bx = *(f32*)(q + 0x2b0);
-            by = *(f32*)(q + 0x2b4);
+            f32* q = (f32*)(p + seg * 8);
+            bx = q[172];
+            by = q[173];
             break;
         }
         case 16: {
-            char* q = p + seg * 8;
-            bx = *(f32*)(q + 0x2b8);
-            by = *(f32*)(q + 0x2bc);
+            f32* q = (f32*)(p + seg * 8);
+            bx = q[174];
+            by = q[175];
             break;
         }
         default: {
@@ -367,24 +370,24 @@ extern "C" void fn_801E9224(char* p) {
                 p0x = *(f32*)(p + 0x2b0);
                 p0y = *(f32*)(p + 0x2b4);
             } else {
-                char* q = p + seg * 8;
-                p0x = *(f32*)(q + 0x2a8);
-                p0y = *(f32*)(q + 0x2ac);
+                f32* q = (f32*)(p + seg * 8);
+                p0x = q[170];
+                p0y = q[171];
             }
             u8 count = *(u8*)(p + 0x2ad);
-            char* q = p + seg * 8;
-            f32 p2x = *(f32*)(q + 0x2b8);
-            f32 p2y = *(f32*)(q + 0x2bc);
-            f32 p1x = *(f32*)(q + 0x2b0);
-            f32 p1y = *(f32*)(q + 0x2b4);
+            f32* q = (f32*)(p + seg * 8);
+            f32 p2x = q[174];
+            f32 p2y = q[175];
+            f32 p1x = q[172];
+            f32 p1y = q[173];
             f32 p3x;
             f32 p3y;
             if (seg == count - 2) {
                 p3x = p2x;
                 p3y = p2y;
             } else {
-                p3x = *(f32*)(q + 0x2c0);
-                p3y = *(f32*)(q + 0x2c4);
+                p3x = q[176];
+                p3y = q[177];
             }
             f32 u = 0.0625f * (f32)next;
             by = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
