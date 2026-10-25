@@ -137,12 +137,121 @@ static inline f32 tuRandF() {
     return *(f32*)&bits - lbl_805423A8;
 }
 
+static inline void tuSetVec(Vec* v, f32 x, f32 y, f32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+static inline void tuSpawnFish(u8* self, f32 fx, f32 fy) {
+    Vec pos;
+    tuSetVec(&pos, lbl_805423D0 * tuRandF() + fx, lbl_805423D0 * tuRandF() + fy, lbl_805423A0);
+    Actor_CreateByID(fn_801F856C(), 0x46495348, *(s32*)(self + 0x4), &pos, 0, -1, -1);
+}
+
 extern "C" s32 fn_803466C0(s32 param_1, s32 param_2, s32 param_3) {
     s32 r = (u16)fn_8022461C(param_3);
     if (r == 0xd || r == 0x3a) {
         return 0;
     }
     return 1;
+}
+
+extern "C" void fn_80346704(Actor* this_) {
+    u8* self = (u8*)this_;
+    u16 tiles[713];
+    u32 spawn = *(u32*)(self + 0x90);
+    s32 extra = (spawn >> 12) & 0xff;
+    s32 range = (spawn >> 20) & 0xff;
+    s32 count;
+    s32 n;
+
+    *(u32*)(self + 0x90) = spawn & 0xfff;
+    *(s32*)(self + 0x108) = 10000;
+    *(f32*)(self + 0x60) = lbl_8054241C;
+    *(f32*)(self + 0x64) = lbl_8054241C;
+    *(f32*)(self + 0x68) = lbl_80542420;
+    *(f32*)(self + 0x6c) = lbl_80542420;
+    *(f32*)(self + 0x80) = lbl_8054241C;
+    *(f32*)(self + 0x84) = lbl_8054241C;
+    *(f32*)(self + 0x88) = lbl_80542420;
+    *(f32*)(self + 0x8c) = lbl_80542420;
+    *(s32*)(self + 0x240) = 0;
+    *(s32*)(self + 0x244) = 0;
+    *(s32*)(self + 0x248) = 0;
+    *(s32*)(self + 0x234) = 0;
+    *(s32*)(self + 0x238) = 0;
+    *(s32*)(self + 0x23c) = 0;
+    *(f32*)(self + 0x264) = lbl_805423A0;
+    *(u16*)(self + 0x268) = 0;
+    *(s32*)(self + 0x26c) = -1;
+    *(s32*)(self + 0x270) = -1;
+    fn_801F6758(self + 0xc, *(s32*)(self + 0x4));
+
+    count = *(u32*)(self + 0x90);
+    if (count != 0) {
+        s32 room = *(s32*)(self + 0x4);
+        u8* mgr = fn_802D6A9C();
+        f32* box;
+        if (room < 8) {
+            box = (f32*)(mgr + 0xcc);
+        } else {
+            box = (f32*)(mgr + 0xdc);
+        }
+        f32 x0 = box[0];
+        f32 y0 = box[1];
+        s32 w = (s32)(box[2] - x0);
+        s32 h = (s32)(box[3] - y0);
+        n = 0;
+        s32 col = 1;
+        for (s32 x = 16; x < w; x += 16, col++) {
+            f32 fx = (f32)x + x0;
+            u16 v = col + 0x20;
+            for (s32 y = 16; y < h; y += 16, v += 0x20) {
+                f32 pos[2];
+                pos[0] = fx;
+                pos[1] = (f32)y + y0;
+                u16 t = fn_802265FC(pos, *(s32*)(self + 0x4));
+                if (t == 0xd || t == 0x3a) {
+                    if (n >= 713) {
+                        return;
+                    }
+                    tiles[n] = v;
+                    n++;
+                }
+            }
+        }
+        if (n == 0) {
+            return;
+        }
+        for (s32 k = 0; k < count;) {
+            s32 idx = (s32)((f32)n * tuRandF());
+            s32 num = extra + (s32)((f32)(range + 1) * tuRandF());
+            if (!(tuRandF() > lbl_80542424 && count - k > num)) {
+                num = 1;
+            }
+            u16 t = tiles[idx];
+            f32 fx = (f32)((t & 0x1f) << 4) + x0;
+            f32 fy = (f32)((t >> 5) << 4) + y0;
+            for (s32 j = 0; j < num; j++, k++) {
+                Vec pos;
+                pos.z = lbl_805423A0;
+                pos.y = lbl_805423D0 * tuRandF() + fy;
+                pos.x = lbl_805423D0 * tuRandF() + fx;
+                Actor_CreateByID(fn_801F856C(), 0x46495348, *(s32*)(self + 0x4), &pos, 0, -1, -1);
+            }
+        }
+    }
+
+    *(s16*)(self + 0x250) = (s32)(lbl_80542428 * tuRandF());
+    *(u16*)(self + 0x252) = *(u16*)(self + 0x250) + 0x4000;
+    *(s32*)(self + 0x24c) = 0;
+    *(s16*)(self + 0x250) = 0;
+    *(f32*)(self + 0x25c) = lbl_805423A0;
+    *(f32*)(self + 0x258) = lbl_805423A0;
+    *(f32*)(self + 0x254) = lbl_805423A0;
+    *(f32*)(self + 0x260) = lbl_805423D4;
+    *(s32*)(self + 0x230) = 0;
 }
 
 extern "C" void fn_80346C00(void) {
