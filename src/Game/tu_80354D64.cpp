@@ -9,6 +9,7 @@
 #undef GAME_ACTOR_USE_SDK_VEC
 extern const f32 lbl_80542790;
 extern const f32 lbl_80542798;
+extern const f32 lbl_80542794;
 extern "C" s32 fn_80239470(void*,s32,s32);
 extern "C" s32 fn_80238A68(s32);
 extern "C" s32 fn_8023885C(s32);
@@ -90,8 +91,6 @@ extern "C" s32 fn_80354D64(Actor* this_, u8 arg2) {
 
 #pragma opt_common_subs off
 extern "C" void fn_80354FE8(void* this_) {
-#pragma opt_propagation off
-#pragma opt_common_subs off
     JGeometry::TVec3f saved;
     JGeometry::TVec3f offset;
     JGeometry::TBox2f box;
@@ -161,8 +160,6 @@ extern "C" void fn_80354FE8(void* this_) {
         if(*(void**)(p+0x2e0)==0)
             *(void**)(p+0x2e0)=fn_8013CC50(*(u32*)(p+4),p+0xc,effect,0,lbl_80542798,-2,0,0,1);
     }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
 }
 
 #pragma opt_propagation reset
