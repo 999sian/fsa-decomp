@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Box.h"
 
