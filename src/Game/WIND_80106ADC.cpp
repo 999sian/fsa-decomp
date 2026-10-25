@@ -182,7 +182,7 @@ struct WIND_Box {
 };
 
 struct WIND_Vec {
-    void set(const f32 ax, const f32 ay, const f32 az) { x = ax; y = ay; z = az; }
+    void set(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
     void set2(f32 ax, f32 ay, f32 az) { z = az; x = ax; y = ay; }
     f32 x, y, z;
 };
