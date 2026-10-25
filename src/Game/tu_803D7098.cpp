@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
