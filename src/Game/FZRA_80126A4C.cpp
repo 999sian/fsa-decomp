@@ -514,9 +514,7 @@ extern "C" u8 fn_802D800C(void* mgr, s32 kind);
 extern "C" void fn_80126A4C(void* this_, s32 flag);
 extern "C" void* lbl_8049E400[];
 extern "C" const f32 lbl_8053CAD0;
-extern "C" f32 lbl_8053CABC;
 extern "C" const f32 lbl_8053CAD4;
-extern "C" f32 lbl_8053CAA0;
 #pragma opt_propagation off
 extern "C" void fn_80127958(void* this_) {
     v01__5ActorFv(this_);
