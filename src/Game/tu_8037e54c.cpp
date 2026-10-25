@@ -3,6 +3,22 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" void* fn_802D6A9C();
+extern "C" u8 fn_802D800C(void*, u8);
+extern "C" s32 fn_80138A30(void*);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" u32 fn_8023EEB4(s32);
+extern "C" s32 fn_8023EF50(s32);
+extern "C" void fn_8023EE28(s32);
+extern "C" s32 fn_8023ECF0(s32);
+extern "C" u8 fn_8023EFEC(s32);
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void*, s32);
+extern "C" s32 fn_80236100(s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" u8 fn_802D7E5C(void*, u8, s32);
+extern u8 lbl_8050EC80[];
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JUtility/JUTFont.h"
 #include "JSystem/JUtility/TColor.h"
@@ -838,6 +854,177 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f
     return 0;
 }
 
+extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
+    f32 maxW = lbl_805430C8;
+    f32 width = maxW;
+    char padbuf[0xc];
+    char chunk[3];
+    f32 lw[11];
+    Inf1* inf = &lbl_8053AD78->p8->inf;
+    s8* data = (s8*)inf + inf->size + inf->entries[id].offset + 8;
+    s32 pos = 0;
+    s32 col = 1;
+    u8 mode = 0;
+    s32 len = 0;
+    s8* p;
+    s8 c;
+    f32* wr = &lw[2];
+    f32* rd = &lw[2];
+
+    lw[1] = lw[2] = lw[3] = lw[4] = lw[5] = lw[6] = lw[7] = lw[8] = lw[9] = lw[10] = maxW;
+    while ((c = (p = data + pos)[0]) != 0) {
+        if (c == '\n') {
+            wr[-1] = width;
+            if (width > maxW) {
+                maxW = width;
+            }
+            width = lbl_805430C8;
+            wr++;
+            col++;
+            pos++;
+        } else if (c == 0x1a) {
+            if (p[2] == 2) {
+                s8 t = p[4];
+                if (t == 0 || t == 10 || t == 0x12 || t == 0x19) {
+                } else if (t == 1 || t == 9 || t == 0x11 || t == 0x1a) {
+                }
+            } else if (p[2] == 3) {
+                s32 ch = num + '0';
+                JUTFont::TWidth tw;
+                (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(ch, &tw);
+                width += (s32)tw.w1;
+                width += fn_80381560(p[5], num, lbl_805430E8);
+            }
+            pos += p[1];
+        } else {
+            s32 code = (u8)*p;
+            pos++;
+            if ((*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->isLeadByte(code)) {
+                code <<= 8;
+                code |= (u8)data[pos++];
+            }
+            JUTFont::TWidth tw;
+            (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(code, &tw);
+            width += (s32)tw.w1;
+        }
+    }
+    lw[col] = width;
+    if (width > maxW) {
+        maxW = width;
+    }
+    width = lbl_805430C8;
+    col = 1;
+    pos = 0;
+    len = 0;
+    chunk[0] = chunk[1] = chunk[2] = 0;
+    out[0] = 0;
+    if (out2) {
+        out2[0] = 0;
+    }
+    if (out3) {
+        out3[0] = 0;
+    }
+    {
+        s32 pad = (s32)((lbl_805430EC - lw[1]) * lbl_805430BC + lbl_805430BC);
+        if (pad > 0) {
+            snprintf(padbuf, 0xf, "\x1b" "CR[%d]", pad);
+            strcat(out, padbuf);
+        }
+    }
+    while ((c = data[pos]) != 0) {
+        if (c == '\n') {
+            chunk[0] = c;
+            chunk[1] = 0;
+            if (mode == 1 && out2) {
+                strcat(out2, chunk);
+            } else if (mode == 2 && out3) {
+                strcat(out3, chunk);
+            } else {
+                strcat(out, chunk);
+            }
+            col++;
+            pos++;
+            {
+                s32 pad = (s32)((lbl_805430EC - *rd) * lbl_805430BC + lbl_805430BC);
+                rd++;
+                if (pad > 0) {
+                    snprintf(padbuf, 0xf, "\x1b" "CR[%d]", pad);
+                    strcat(out, padbuf);
+                }
+            }
+            width = lbl_805430C8;
+        } else if (c == 0x1a) {
+            if (p[2] == 2) {
+                s8 t = p[4];
+                if (t == 0 || t == 10 || t == 0x12 || t == 0x19) {
+                    if (mode < 2) {
+                        (&lbl_8053AD78->f5c)[mode] = width;
+                        (&lbl_8053AD78->f64)[mode] = col - 1;
+                        mode++;
+                    }
+                } else if (t == 1 || t == 9 || t == 0x11 || t == 0x1a) {
+                    if (mode < 2) {
+                        (&lbl_8053AD78->f5c)[mode] = width;
+                        (&lbl_8053AD78->f64)[mode] = col - 1;
+                        lbl_8053AD78->be6 = mode;
+                        mode++;
+                    }
+                }
+            } else if (p[2] == 3) {
+                s32 ch = num + '0';
+                chunk[0] = ch;
+                chunk[1] = 0;
+                if (mode == 1 && out2) {
+                    strcat(out2, chunk);
+                } else if (mode == 2 && out3) {
+                    strcat(out3, chunk);
+                } else {
+                    strcat(out, chunk);
+                }
+                JUTFont::TWidth tw;
+                (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(ch, &tw);
+                width += (s32)tw.w1;
+                width += fn_8037F580(p[5], num, out, &len, lbl_805430C4);
+            }
+            pos += p[1];
+        } else {
+            s32 code = (u8)*p;
+            if ((*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->isLeadByte(code)) {
+                chunk[0] = c;
+                chunk[1] = data[pos + 1];
+                chunk[2] = 0;
+                if (mode == 1 && out2) {
+                    if (c != 0x20) {
+                        strcat(out2, chunk);
+                    }
+                } else if (mode == 2 && out3) {
+                    strcat(out3, chunk);
+                } else {
+                    strcat(out, chunk);
+                }
+                code = (code << 8) | (u8)data[pos + 1];
+                pos += 2;
+            } else {
+                chunk[0] = c;
+                chunk[1] = 0;
+                if (mode == 1 && out2) {
+                    if (c != 0x20) {
+                        strcat(out2, chunk);
+                    }
+                } else if (mode == 2 && out3) {
+                    strcat(out3, chunk);
+                } else {
+                    strcat(out, chunk);
+                }
+                pos++;
+            }
+            JUTFont::TWidth tw;
+            (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(code, &tw);
+            width += (s32)tw.w1;
+        }
+    }
+    return maxW;
+}
 
 class ResLoader {
 public:
