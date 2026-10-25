@@ -172,29 +172,8 @@ extern "C" void fn_80116E8C(char* p) {
 extern "C" void fn_80117074(void* p, s32 n) {
     int i;
     switch (n) {
-    case 0x7fff: {
-        fn_80119998(fn_80119DD0(), 0x78, 0, 2, 0, 1, 0, 0);
-        fn_80234810();
-        fn_802382D0(0, 0);
-        fn_80458FF0(lbl_8053AF80, 0x1000020, 1, 0);
-        u8* e = *(u8**)((char*)p + 0x2a8);
-        if (e) {
-            *(u32*)(e + 0xf4) |= 1;
-            *(s32*)(e + 0x24) = 1;
-            *(u8**)((char*)p + 0x2a8) = 0;
-        }
-        break;
-    }
-    case 4:
-        *(f32*)((char*)p + 0x280) = lbl_8053C754;
-        break;
     case 5: {
         JGeometry::TVec3<f32> pos;
-        for (i = 0; i < 4; i++) {
-            pos = *fn_8023E724(i);
-            *(void**)((char*)p + 0x288 + i * 4) = fn_8013CC50(*(s32*)((char*)p + 4), &pos, lbl_8053C740[i], 0, -1, 0, 0, 1, lbl_8053C754);
-            *(void**)((char*)p + 0x298 + i * 4) = fn_8013CC50(*(s32*)((char*)p + 4), &pos, 0x475, 0, -1, 0, 0, 1, lbl_8053C754);
-        }
         for (i = 0; i < 4; i++) {
             fn_80230FD0(i, 0x20048);
         }
