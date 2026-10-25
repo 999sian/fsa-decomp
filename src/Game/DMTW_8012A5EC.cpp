@@ -916,6 +916,11 @@ static inline void initDmtwCamera(f32 x, f32 lo, f32 hi) {
         *(f32*)(p + 0x1d8) = lbl_8053CB94;
     }
 }
+static inline JGeometry::TVec3f setDmtwPosition(JGeometry::TVec3f& dst, const JGeometry::TVec3f& src) {
+    dst = src;
+    return src;
+}
+
 static inline void initDmtwPosition(char* self, s32 i) {
     u32 off = (s32)lbl_804650D4[i] >> 2 & 0x3ff8;
     f32 sn = *(f32*)(sincosTable___5JMath + off);
@@ -943,16 +948,13 @@ extern "C" void fn_8012C914(char* this_) {
     *(f32*)(this_ + 0x240) = 0.0f;
     *(f32*)(this_ + 0x400) = 0.0f;
     *(f32*)(this_ + 0x3fc) = 0.0f;
-    i = 6;
-    s16* angle = lbl_804650D4;
-    s32* id = lbl_804650B0;
-    char* out = this_;
-    char* idOut = this_;
-    while (i--) {
-        u32 off = (s16)*angle++ >> 2 & 0x3ff8;
+    for (i = 0; i < 6; i++) {
+        u32 off = (s16)lbl_804650D4[i] >> 2 & 0x3ff8;
         f32 sn = *(f32*)(sincosTable___5JMath + off);
         f32 cs = *(f32*)(sincosTable___5JMath + off + 4);
-        *(JGeometry::TVec3f*)(this_ + 0x25c + (i) * 12) = *(JGeometry::TVec3f*)(this_ + 0xc) + JGeometry::TVec3f(55.0f * cs, 35.0f * sn, 0.0f);
+        JGeometry::TVec3f delta(55.0f * cs, 35.0f * sn, 0.0f);
+        JGeometry::TVec3f value = *(JGeometry::TVec3f*)(this_ + 0xc) + delta;
+        *(JGeometry::TVec3f*)(this_ + 0x25c + i*12) = value;
         *(s32*)(this_ + 0x2a4 + (i) * 4) = lbl_804650B0[i];
     }
     *(s32*)(this_ + 0x2bc) = 0;
