@@ -323,7 +323,7 @@ extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
 extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
     index = index < 8 ? 0 : index - 7;
     for (int i = 0; i < 64; ++i) {
-        if ((&roomArrays()->values2948[0][i])[index * 64] == value) return i;
+        if (roomValueColumn(i)[index * 64] == value) return i;
     }
     return -1;
 }
@@ -669,12 +669,12 @@ extern "C" void fn_802D77E4(char*, s32 index, u16 value) {
     ((u16*)(p + 0x131B8))[index] = value;
 }
 
-extern "C" bool fn_802D7804(char* p, s32 index, u32 mask) {
-    u16 v = ((u16*)(p + 0x131B8))[index];
-    u16 m = mask & 0xFFFF;
-    return (v & m) != 0;
+#pragma scheduling off
+extern "C" bool fn_802D7804(RoomArrays* p, s32 index, u16 mask) {
+    u32 value = p->flags131B8[index];
+    return (value & mask) != 0;
 }
-
+#pragma scheduling reset
 extern "C" void fn_802D782C(char*, u8 value) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     *(u8*)(p + 0x131DE) = value;
@@ -1272,23 +1272,23 @@ extern "C" void fn_802DA010(char* p) {
 }
 
 extern "C" u8 fn_802DA630(char* p) {
-    u8 flag = *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
+    u8 flag;
+    s32 count;
+    s32 i;
+    flag = *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
     if (flag == 0) {
-        s32 count;
-        s32 i;
         f32 offset;
         JGeometry::TVec3<f32> v;
-        void* e;
-
         offset = *(s32*)(p + 0x2C) > 0 ? lbl_80541160 : lbl_80541164;
         for (i = 0; i < 4; i++) {
             v = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
             v.x += offset;
-            fn_80230498(i, &v, (u16)fn_8023CBC0(i), 0xff, -0x80, -0x80, 1);
+            u16 animation = fn_8023CBC0(i);
+            fn_80230498(i, &v, animation, 0xff, -0x80, -0x80, 1);
         }
         count = *(s32*)((char*)fn_801F856C() + 0x1008);
         for (i = 0; i < count; i++) {
-            e = *(void**)((char*)fn_801F856C() + i * 4 + 8);
+            void* e = *(void**)((char*)fn_801F856C() + i * 4 + 8);
             if (e != NULL && *(s32*)((char*)e + 0x1A0) == 0x4F53494E && *(s32*)((char*)e + 0x230) == 2) {
                 v = *(JGeometry::TVec3<f32>*)((char*)e + 0xC);
                 v.x += offset;
@@ -1500,7 +1500,7 @@ extern "C" void fn_802DCDF4(char* p) {
 }
 
 extern "C" u8 fn_802DCE5C(char* p, s32 value) {
-    u8 ret = 0;
+    u32 ret = 0;
     if (*(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8) == 0) {
         *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + 0x131EF) = 0;
         u8 v;
@@ -1534,8 +1534,8 @@ extern "C" u8 fn_802DCE5C(char* p, s32 value) {
         char* e = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + *(s32*)(p + 0x18) * 0x28;
         e += *(s32*)(p + 0x14) * 4;
         *(u32*)(e + 0x178) &= 0xFFFF0000;
-        for (s32 i = 0; i < 16; i += 8) {
-            s32 o = i + 0x308;
+        for (u32 i = 0; i < 16; i += 8) {
+            u32 o = i + 0x308;
             *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o) = 0;
             *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 1) = 0;
             *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 2) = 0;
@@ -1603,7 +1603,7 @@ extern "C" u8 fn_802DCE5C(char* p, s32 value) {
         fn_8030C9E4(*(char**)(lbl_8053AB10 + 0x24), p + 0xCC);
         ret = 1;
     }
-    return ret;
+    return (u8)ret;
 }
 
 extern "C" u8 fn_802DD3D4(char* p, s32* param_2) {
