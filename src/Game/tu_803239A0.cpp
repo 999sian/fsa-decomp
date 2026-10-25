@@ -42,6 +42,11 @@ extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" void* fn_802D6A9C(void);
 extern "C" s32 lbl_80541B68;
 extern "C" s32 lbl_80541B6C;
+extern "C" f32 lbl_80541B74;
+extern "C" f32 lbl_80541B78;
+extern "C" f32 lbl_80541B7C;
+extern "C" f32 lbl_80541B80;
+extern "C" f32 lbl_80541B84;
 extern "C" void fn_803239A0(char* this_) {
     u8 tbl[16];
     FsaParam p;
