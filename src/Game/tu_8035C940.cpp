@@ -278,6 +278,8 @@ extern "C" void fn_8035CF50(Unk8035CD00* self) {
     }
 }
 
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_8035D1CC(char* p) {
     char* base = (char*)lbl_80472718;
 
@@ -285,12 +287,14 @@ extern "C" void fn_8035D1CC(char* p) {
         return;
     }
     if (*(s32*)(p + 0x234) == 0x128) {
+        const u16* __restrict first = ((T35Tables*)base)->first;
         *(s32*)(p + 0x240) = 3;
         JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(p + 0xc);
         *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + lbl_80542968;
-        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80542954, ((u16*)(base + 0x3c))[*(u32*)(p + 0x90) & 7], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80542954, first[*(u32*)(p + 0x90) & 7], 0, 0, 0, 0, 1);
+        const u16* __restrict second = ((T35Tables*)base)->second;
         *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + lbl_8054296C;
-        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80542954, ((u16*)(base + 0x48))[*(u32*)(p + 0x90) & 7], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80542954, second[*(u32*)(p + 0x90) & 7], 0, 0, 0, 0, 1);
         *(JGeometry::TVec3<f32>*)(p + 0xc) = saved;
         fn_801F0E34(p, 0x400d9, 0);
         return;
@@ -307,20 +311,28 @@ extern "C" void fn_8035D1CC(char* p) {
             fn_8013CB44(*(void**)(p + 0x278), p + 0xc, -1, -1, 1);
         }
         if (fn_8035C15C(p, 10) == 1) {
-            fn_8035C1C4(p, 10, ((u32*)(base + 0x18))[*(u32*)(p + 0x90) & 7]);
+            const u32* __restrict frames = ((T35Tables*)base)->frames;
+        fn_8035C1C4(p, 10, frames[*(u32*)(p + 0x90) & 7]);
         }
         *(f32*)(p + 0x14) = lbl_80542970;
         *(s32*)(p + 0x274) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80542954, 0x32c, -1, -1, 0, 0, 1);
         *(s32*)(p + 0x278) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80542954, 0x184, -1, -1, 0, 0, 1);
-        if (*(u32*)(p + 0x274) != 0) {
-            u8* t = (u8*)(base + 0x54) + (*(u32*)(p + 0x90) & 7) * 3;
-            char* obj = (char*)*(u32*)(p + 0x274);
-            obj[0xbc] = t[0];
-            obj[0xbd] = t[1];
-            obj[0xbe] = t[2];
+        const u8* t;
+        char* obj = *(char**)(p + 0x274);
+        if (obj != 0) {
+            const u8* __restrict colors = (u8*)(base + 0x54);
+            s32 index = (*(u32*)(p + 0x90) & 7) * 3;
+            u8 red = colors[index];
+            t = colors + index;
+            u8 green = t[1];
+            u8 blue = t[2];
+            obj[0xbc] = red;
+            obj[0xbd] = green;
+            obj[0xbe] = blue;
         }
+        const u32* __restrict frames = ((T35Tables*)base)->frames;
         *(s32*)(p + 0x248) = 0;
-        *(u32*)(p + 0x250) = ((u32*)(base + 0x18))[*(u32*)(p + 0x90) & 7];
+        *(u32*)(p + 0x250) = frames[*(u32*)(p + 0x90) & 7];
         return;
     }
     if (*(u32*)(p + 0x274) != 0) {
@@ -330,7 +342,8 @@ extern "C" void fn_8035D1CC(char* p) {
         fn_8013CB44(*(void**)(p + 0x278), p + 0xc, -1, -1, 1);
     }
     if (fn_8035C15C(p, 10) == 1) {
-        fn_8035C1C4(p, 10, ((u32*)(base + 0x18))[*(u32*)(p + 0x90) & 7]);
+        const u32* __restrict frames = ((T35Tables*)base)->frames;
+        fn_8035C1C4(p, 10, frames[*(u32*)(p + 0x90) & 7]);
     }
     if (*(s32*)(p + 0x238) == 1) {
         *(s32*)(p + 0x230) = 3;
@@ -338,7 +351,8 @@ extern "C" void fn_8035D1CC(char* p) {
         *(s32*)(p + 0x238) = 0;
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern "C" u8 fn_8035C15C(char* p, s32 id);
 extern "C" void fn_8035C1C4(char* p, s32 id, u32 arg);
 extern "C" u32 fn_801CD664(s32 id);
