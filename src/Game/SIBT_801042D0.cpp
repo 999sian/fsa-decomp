@@ -2,6 +2,10 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Box.h"
+#include "Game/ItemBase.h"
+extern s32 lbl_80463E50[];
+extern f32 lbl_80463E74[];
+extern const f64 lbl_8053C200;
 
 extern void* lbl_8049CB04[];
 extern "C" void* lbl_8053AAF8;
@@ -91,9 +95,9 @@ extern "C" void fn_801045D8(Actor* this_) {
             if (*(f32*)((u8*)this_ + 0x240) < lbl_8053C21C) {
                 *(f32*)((u8*)this_ + 0x240) = lbl_8053C21C;
                 *(u8*)((u8*)this_ + 0x245) = 2;
+            }
                 fn_802D79E8(fn_802D6A9C(), *(u32*)((u8*)this_ + 4), 0, lbl_8053C220, lbl_8053C1F8);
                 fn_80134DE4(lbl_8053AAF8, 1, 0);
-            }
         } else {
             *(f32*)((u8*)this_ + 0x240) = lbl_8053C21C;
             *(u8*)((u8*)this_ + 0x244) = 0;
@@ -103,10 +107,14 @@ extern "C" void fn_801045D8(Actor* this_) {
 
     if (*(u8*)((u8*)this_ + 0x244) != 0) {
         f32 box[4];
-        f32 x = *(f32*)((u8*)this_ + 0xc);
-        box[1] = f31 - lbl_8053C224;
-        box[2] = lbl_8053C224 + x;
-        box[0] = x - lbl_8053C224;
+        f32 y0, x0, x1, x;
+        x = *(f32*)((u8*)this_ + 0xc);
+        y0 = f31 - lbl_8053C224;
+        x1 = lbl_8053C224 + x;
+        x0 = x - lbl_8053C224;
+        box[1] = y0;
+        box[0] = x0;
+        box[2] = x1;
         box[3] = lbl_8053C224 + f31;
         fn_80239914(box, *(u32*)((u8*)this_ + 4), *(u32*)((u8*)this_ + 0x198));
     }
