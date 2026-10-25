@@ -14,7 +14,6 @@ extern const f32 lbl_805420F0;
 extern const f32 lbl_805420F4;
 extern const f32 lbl_805420F8;
 
-struct State_80339820 { u8 pad[0xb4]; JMARandFast rnd; };
 static f32 fn_80339820_rnd() {
     u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
     *seed = *seed * 0x19660d + 0x3c6ef35f;
