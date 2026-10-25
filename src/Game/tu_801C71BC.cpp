@@ -367,10 +367,11 @@ static inline void tndrUpdateTarget(char* this_) {
         ((JGeometry::TVec3<f32>*)(this_+0x32c))->set(q.x, *(f32*)(this_+0x10), q.z);
     }
 }
+#pragma opt_lifetimes off
+#pragma opt_propagation off
 #pragma fp_contract off
-extern "C" BOOL fn_801C7BD0(char* self) {
+extern "C" BOOL fn_801C7BD0(char* this_) {
     BOOL result = 0;
-    char* this_ = self;
     int state = *(s32*)(this_ + 0x2a8);
     if (state == 2) {
         f32 dz;
@@ -417,16 +418,7 @@ extern "C" BOOL fn_801C7BD0(char* self) {
             }
             room = *(s32*)(this_+4);
             if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), 0xff) && !(u8)fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
-                f32 q[3];
-                const JGeometry::TVec3<f32>& rq = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
-                JGeometry::setTVec3f(&rq.x, q);
-                if (fn_801CC9F8(this_ + 0xc, *(s32*)(this_+4)) && !fn_8022461C(q, *(s32*)(this_+4))) {
-                    *(f32*)(this_ + 0x32c) = q[0];
-                    *(f32*)(this_ + 0x330) = q[1];
-                    *(f32*)(this_ + 0x334) = q[2];
-                } else {
-                    ((JGeometry::TVec3<f32>*)(this_+0x32c))->set(q[0], *(f32*)(this_+0x10), q[2]);
-                }
+                tndrUpdateTarget(this_);
             }
         }
         f32 dx = tx - *(f32*)(this_ + 0xc);
@@ -1035,6 +1027,50 @@ extern "C" void fn_801C9234(char* this_, f32* out)
     fn_801C9420(this_, v);
     out[0] = *(f32*)(this_ + 0xc) + v[0];
     out[1] = *(f32*)(this_ + 0x10) + v[1];
+}
+
+extern "C" void fn_801C9420(char* this_, f32* v) {
+    JGeometry::TVec2<f32> cur;
+    JGeometry::TVec2<f32> next;
+    JGeometry::TVec2<f32> prev;
+    f32 ox = *(f32*)(this_ + 0xc);
+    f32 oy = *(f32*)(this_ + 0x10);
+    for (s32 i = 0; i < 2; i++) {
+        ((JGeometry::TVec2<f32>*)v)->normalize();
+        ((JGeometry::TVec2<f32>*)v)->scale(8.0f);
+        f32 vx = v[0];
+        f32 vy = v[1];
+        cur.x = ox;
+        cur.y = oy;
+        for (s32 j = 0; j < 30; j++) {
+            prev.x = cur.x;
+            prev.y = cur.y;
+            cur.x += vx;
+            cur.y += vy;
+            if (fn_801CF888(this_, &prev, &cur, *(s32*)(this_ + 0x4))) {
+                break;
+            }
+            JGeometry::TVec2<f32> d;
+            d.y = *(f32*)(this_ + 0x330) - cur.y;
+            d.x = *(f32*)(this_ + 0x32c) - cur.x;
+            d.normalize();
+            d.scale(14.0f);
+            next.x = cur.x + d.x;
+            next.y = cur.y + d.y;
+            if (!fn_801CF888(this_, &cur, &next, *(s32*)(this_ + 0x4))) {
+                v[0] = cur.x - ox;
+                v[1] = cur.y - oy;
+                return;
+            }
+        }
+        v[0] = -v[0];
+        v[1] = -v[1];
+    }
+    *(u32*)(this_ + 0x230) |= 0x100000;
+    v[0] = -v[0];
+    v[1] = -v[1];
+    ((JGeometry::TVec2<f32>*)v)->normalize();
+    ((JGeometry::TVec2<f32>*)v)->scale(8.0f);
 }
 
 extern "C" void* lbl_8053AAF8;
