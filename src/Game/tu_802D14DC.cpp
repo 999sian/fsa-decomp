@@ -132,6 +132,8 @@ extern "C" u32 fn_80226850(void*, s32);
 extern "C" void fn_802A381C(void*, void*, s32, s32);
 extern "C" void fn_8030C210(void*, void*);
 extern "C" u8 lbl_8053AAF8[];
+extern "C" u32 lbl_8053AC98;
+extern "C" u32 lbl_8053ADF8;
 extern "C" void fn_802D1FEC(void* this_) {
     char* p = (char*)this_;
 
