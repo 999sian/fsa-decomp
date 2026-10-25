@@ -29,7 +29,7 @@ extern f32 lbl_8053C080;
 extern f32 lbl_8053C050;
 extern const f32 lbl_8053BFF0;
 extern f32 lbl_8053BFC0;
-extern f32 lbl_8053BFC4;
+extern const f32 lbl_8053BFC4;
 extern "C" s32 fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern f32 lbl_8053BFC8;
@@ -1671,15 +1671,30 @@ extern "C" void fn_800FCCCC(void* this_) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_800FCF80(u8* this_) {
-    f32 fVar1 = lbl_8053BFCC;
-    *(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0xc);
-    f32 fVar2 = lbl_8053BFAC;
-    *(f32*)(this_ + 0x240) = *(f32*)(this_ + 0x10);
-    *(f32*)(this_ + 0x244) = *(f32*)(this_ + 0x14);
-    *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0xc);
-    *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x10);
-    *(f32*)(this_ + 0x250) = *(f32*)(this_ + 0x14);
+    f32 fVar2;
+    f32 fVar1;
+    f32 copy;
+    f32 c;
+    f32 d;
+    f32 k2;
+    f32 a;
+    f32 b;
+    fVar1 = lbl_8053BFCC;
+    copy = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x23c) = copy;
+    fVar2 = 0.0f;
+    copy = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x240) = copy;
+    copy = *(f32*)(this_ + 0x14);
+    *(f32*)(this_ + 0x244) = copy;
+    copy = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x248) = copy;
+    copy = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x24c) = copy;
+    copy = *(f32*)(this_ + 0x14);
+    *(f32*)(this_ + 0x250) = copy;
     *(s32*)(this_ + 0x258) = 0;
     *(s32*)(this_ + 0x230) = 0;
     *(s32*)(this_ + 0x234) = 500;
@@ -1711,12 +1726,12 @@ extern "C" void fn_800FCF80(u8* this_) {
         *(s32*)(this_ + 0x108) = 0x1e0;
     }
     *(s32*)(this_ + 0xbc) = 3;
-    f32 k1 = lbl_8053C054;
-    f32 k2 = *(f32*)(this_ + 0x26c);
-    f32 a = k1 * k2;
-    f32 b = lbl_8053C058 * k2;
-    f32 c = lbl_8053C05C * k2;
-    f32 d = lbl_8053BFAC;
+    c = lbl_8053C054;
+    k2 = *(f32*)(this_ + 0x26c);
+    a = c * k2;
+    b = lbl_8053C058 * k2;
+    c = lbl_8053C05C * k2;
+    d = 0.0f;
     *(f32*)(this_ + 0x60) = a;
     *(f32*)(this_ + 0x64) = b;
     *(f32*)(this_ + 0x68) = c;
@@ -1730,8 +1745,10 @@ extern "C" void fn_800FCF80(u8* this_) {
     *(s32*)(this_ + 0x280) = 9;
     fn_800FA6B0(this_);
     fn_80458F9C(lbl_8053AF80, 0x3c);
-    s32 n = 0;
-    s32 off = 0;
+    s32 off;
+    s32 n;
+    n = 0;
+    off = 0;
     u32 base = *(u32*)(this_ + 0x198) & 0xffff;
     do {
         void* mgr = fn_801F856C();
@@ -1754,7 +1771,7 @@ extern "C" void fn_800FCF80(u8* this_) {
         } while (cnt < 2);
     }
 }
-
+#pragma opt_propagation reset
 struct WRTCEff { f32 x, y, z; u8 m0C, m0D; u8 pad[2]; f32 m10; u16 m14; u8 m16; };
 
 static inline f32 WRTC_quantize(f32 v) {
