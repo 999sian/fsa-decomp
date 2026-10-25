@@ -16,7 +16,7 @@ extern "C" f32 lbl_80542534;
 extern "C" s32 lbl_80472158[];
 extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
-extern "C" void fn_8043D67C(void* snd, s32 a, s32 b);
+extern "C" void fn_8043D67C(void* snd, s32 a, s32 b, ...);
 extern "C" void fn_80458508(void* obj, s32 a);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F78F4(void* pool, u32 type, s32 afterId);
@@ -270,8 +270,10 @@ extern "C" void fn_8034C464(Actor* self) {
     u32 ang;
 
     *(s32*)(p + 0x230) = 0;
-    self->field_B0 = 0x1000;
-    ((JGeometry::TVec3f*)(p + 0x3c))->set(0.0f, 0.0f, 0.0f);
+    *(u32*)(p + 0xb0) = 0x1000;
+    *(f32*)(p + 0x3c) = 0.0f;
+    *(f32*)(p + 0x40) = 0.0f;
+    *(f32*)(p + 0x44) = 0.0f;
     *(s32*)(p + 0x108) = 10000;
     *(s32*)(p + 0x238) = 0;
     *(s32*)(p + 0x234) = 0;
