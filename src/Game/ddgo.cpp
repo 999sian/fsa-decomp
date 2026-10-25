@@ -2,6 +2,7 @@
 // TU 801AC8EC-801AE9C4 (DDGO). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // from src/Game/Ddgo_ApplyState_801AE5AC.cpp
@@ -245,6 +246,7 @@ extern f32 lbl_804A31C8[][4];
 extern f32 lbl_8053E7D0;
 extern f32 lbl_8053E7E0;
 extern f32 lbl_8053E7E4;
+#pragma opt_propagation off
 extern "C" void fn_801ACCF0(void* this_) {
     char* t = (char*)this_;
     s32 j;
@@ -252,13 +254,14 @@ extern "C" void fn_801ACCF0(void* this_) {
     s32 flags;
     f32 stepY;
     f32 stepX;
-    f32 scale = lbl_8053E7D0;
+    f32 scale = 1.0f;
     f32 p[3];
     f32* b;
     char* em;
 
     if (*(s32*)(t + 0x294) == 1) {
         scale = lbl_8053E7E0;
+    }
         switch (*(s32*)(t + 0x230)) {
         case 0xc:
             *(void**)(t + 0x29c) = fn_8013CC50(*(u32*)(t + 4), t + 0xc, scale, 0x1ac, 1, 1, 0, 0, 1);
@@ -267,44 +270,45 @@ extern "C" void fn_801ACCF0(void* this_) {
             }
             *(s32*)(t + 0x238) = 8;
             *(s32*)(t + 0x230) = 0xd;
-            break;
         case 0xd:
-            break;
-        default:
-            return;
-        }
 
         if (*(void**)(t + 0x29c) != 0) {
             flags = 0;
             if (*(s32*)(t + 0x98) == 2) {
                 flags = 0x4000;
-                fn_8013CB44(*(void**)(t + 0x29c), t + 0xc, 1, 1, 1);
             }
-            JPAGetXYZRotateMtx((s16)flags, (s16)lbl_804689C0[*(s32*)(t + 0x98)], -0x8000, (f32(*)[4])(*(char**)(t + 0x29c) + 0x68));
+            fn_8013CB44(*(void**)(t + 0x29c), t + 0xc, 1, 1, 1);
+            const s32* __restrict angles = lbl_804689C0;
+            JPAGetXYZRotateMtx((s16)flags, (s16)angles[*(s32*)(t + 0x98)], -0x8000, (f32(*)[4])(*(char**)(t + 0x29c) + 0x68));
         }
         fn_801F0E34(t, 0x30011, 0);
 
         if (*(s32*)(t + 0x238) == 0) {
-            b = lbl_804A31C8[*(s32*)(t + 0x98)];
-            *(f32*)(t + 0x60) = scale * b[0];
-            *(f32*)(t + 0x64) = scale * b[1];
-            *(f32*)(t + 0x68) = scale * b[2];
-            *(f32*)(t + 0x6c) = scale * b[3];
+            s32 dir = *(s32*)(t+0x98);
+            f32 left = ((f32*)lbl_804A31C8)[dir*4];
+            b = lbl_804A31C8[dir];
+            f32 top = b[1];
+            f32 right;
+            f32 bottom = b[3];
+            right = b[2];
+            left=scale*left; top=scale*top; bottom=scale*bottom; right=scale*right;
+            *(f32*)(t+0x60)=left;
+            *(f32*)(t+0x64)=top;
+            *(f32*)(t+0x68)=right;
+            *(f32*)(t+0x6c)=bottom;
             fn_801F2B7C(t, *(s32*)(t + 0x114), -1, 9);
             fn_801F2B20(t, 5);
-            p[0] = *(f32*)(t + 0xc);
-            p[1] = *(f32*)(t + 0x10);
-            p[2] = *(f32*)(t + 0x14);
+            *(JGeometry::TVec3f*)p = *(JGeometry::TVec3f*)(t+0xc);
 
             if (*(s32*)(t + 0x254) == 0) {
                 *(s32*)(t + 0x254) = 1;
-                stepX = (*(f32*)(t + 0x68) - *(f32*)(t + 0x60)) * lbl_8053E7E4;
-                stepY = (*(f32*)(t + 0x6c) - *(f32*)(t + 0x64)) * lbl_8053E7E4;
+                stepX = (*(f32*)(t + 0x68) - *(f32*)(t + 0x60)) * 0.125f;
+                stepY = (*(f32*)(t + 0x6c) - *(f32*)(t + 0x64)) * 0.125f;
                 p[0] = *(f32*)(t + 0xc) + *(f32*)(t + 0x60);
                 for (i = 0; i < 8; i++) {
                     p[1] = *(f32*)(t + 0x10) + *(f32*)(t + 0x64);
                     for (j = 0; j < 8; j++) {
-                        if (fn_8022461C(p, *(s32*)(t + 4)) == 0x21 || fn_8022517C(p, *(s32*)(t + 4)) == 1) {
+                        if ((s32)fn_8022461C(p, *(s32*)(t + 4)) == 0x21 || fn_8022517C(p, *(s32*)(t + 4)) == 1) {
                             Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(t + 4), p, 0xE0C0, -1, -1);
                         }
                         p[1] += stepY;
@@ -313,26 +317,30 @@ extern "C" void fn_801ACCF0(void* this_) {
                 }
             }
         }
-    }
 
     if (*(s32*)(t + 0x108) > 0) {
         return;
     }
     em = *(char**)(t + 0x29c);
+    s32 one=1;
+    s32 zero=0;
     if (em != 0) {
         *(s32*)(em + 0xf4) |= 1;
-        *(s32*)(em + 0x24) = 1;
-        *(char**)(t + 0x29c) = 0;
+        *(s32*)(em + 0x24) = one;
+        *(char**)(t + 0x29c) = (char*)zero;
     }
     em = *(char**)(t + 0x2a0);
     if (em != 0) {
         *(s32*)(em + 0xf4) |= 1;
-        *(s32*)(em + 0x24) = 1;
-        *(char**)(t + 0x2a0) = 0;
+        *(s32*)(em + 0x24) = one;
+        *(char**)(t + 0x2a0) = (char*)zero;
     }
     *(u8*)(t + 0x11c) = 0;
+    break;
+    default: break;
+    }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801AE5AC(void* this_);
 extern void* lbl_8053AF80;
 extern "C" void fn_80458F9C(void* a, u32 b);
