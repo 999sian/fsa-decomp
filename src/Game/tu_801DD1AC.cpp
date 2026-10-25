@@ -179,8 +179,9 @@ extern "C" u8 fn_801DDBE4(u8* p) {
                 if (*(s32*)(p + 0x248) != 0x11) {
                     ++p[0x33f];
                     if (p[0x33f] >= lbl_8053F1C8) {
-                        *(f32*)(p + 0x3c) *= lbl_8053F3C4;
-                        f32 scale = lbl_8053F3C4;
+                        f32 vx = *(f32*)(p + 0x3c);
+                        f32 scale = 2.0f;
+                        *(f32*)(p + 0x3c) = vx * scale;
                         *(f32*)(p + 0x40) *= scale;
                         fn_801D9C58(p, 15);
                     }
