@@ -158,6 +158,7 @@ extern "C" void fn_801CD0D0(f32* a, f32* b);
 extern "C" void fn_80238548(u32 i, s32 b, f32* p, void* d);
 extern "C" f32 lbl_8053F740;
 extern "C" f32 lbl_8053F74C;
+extern "C" f32 lbl_8053F790;
 extern void* lbl_8053AB10;
 void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
 u8 fn_80230188(s32 i);
