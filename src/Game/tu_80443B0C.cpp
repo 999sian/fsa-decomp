@@ -95,13 +95,13 @@ extern "C" void fn_80443DAC(u8* this_) {
     if (fn_80309C4C(lbl_8053AD30, 4, -1) != 0) {
         if (this_[0x4c] == 0) {
             this_[0x4c] = 1;
-            b = *(u32*)(this_ + 0x38);
             a = *(u32*)(this_ + 0x3c);
+            b = *(u32*)(this_ + 0x38);
             obj = *(void**)(this_ + 0x4);
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3033);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &b, &a);
-            d = *(u32*)(this_ + 0x30);
             c = *(u32*)(this_ + 0x34);
+            d = *(u32*)(this_ + 0x30);
             obj = *(void**)(this_ + 0x4);
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
@@ -116,13 +116,13 @@ extern "C" void fn_80443DAC(u8* this_) {
     } else if (fn_80309C4C(lbl_8053AD30, 8, -1) != 0) {
         if (this_[0x4c] == 1) {
             this_[0x4c] = 0;
-            d = *(u32*)(this_ + 0x30);
             c = *(u32*)(this_ + 0x34);
+            d = *(u32*)(this_ + 0x30);
             obj = *(void**)(this_ + 0x4);
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3033);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
-            b = *(u32*)(this_ + 0x38);
             a = *(u32*)(this_ + 0x3c);
+            b = *(u32*)(this_ + 0x38);
             obj = *(void**)(this_ + 0x4);
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &b, &a);
@@ -144,13 +144,13 @@ extern "C" void fn_80443DAC(u8* this_) {
         }
     } else if (fn_80309C4C(lbl_8053AD30, 0x200, -1) != 0) {
         this_[0x4c] = 1;
-        b = *(u32*)(this_ + 0x38);
         a = *(u32*)(this_ + 0x3c);
+        b = *(u32*)(this_ + 0x38);
         obj = *(void**)(this_ + 0x4);
         tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3033);
         ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &b, &a);
-        d = *(u32*)(this_ + 0x30);
         c = *(u32*)(this_ + 0x34);
+        d = *(u32*)(this_ + 0x30);
         obj = *(void**)(this_ + 0x4);
         tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
         ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
@@ -366,6 +366,7 @@ extern const f32 lbl_80543D70;
 extern const f32 lbl_80543D74;
 struct MenuPane80444B68 {
     MenuPane80444B68() { vtable = lbl_804AF86C; }
+    void init() { vtable = lbl_804AF86C; }
     void* vtable;
     J2DPane* pane;
     u8 pad[0x24];
@@ -381,17 +382,14 @@ struct Menu80444B68 {
     u8 flag;
     u8 state;
 };
-extern "C" void fn_80444B68(void* this_) {
+extern "C" void* fn_80444B68(void* this_) {
     u8* self = (u8*)this_;
+    Menu80444B68* menu = (Menu80444B68*)this_;
     void* p;
     void* font;
     void* tb;
     f32 base;
     u32 bits;
-    u8 c18[4];
-    u8 c14[4];
-    u8 c10[4];
-    u8 c0c[4];
 
     *(void**)self = lbl_804B1B60;
     *(s32*)(self + 0x30) = -1;
@@ -400,74 +398,64 @@ extern "C" void fn_80444B68(void* this_) {
     *(s32*)(self + 0x3c) = -1;
 
     *(J2DScreen**)(self + 4) = new J2DScreen;
-    ((J2DScreen*)*(void**)(self + 4))->setPriority(lbl_8048FBEC, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x34));
+    menu->screen->setPriority(lbl_8048FBEC, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x34));
 
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 8) = p;
-        fn_80402F04(*(void**)(self + 8), ((J2DScreen*)*(void**)(self + 4))->search(0x004e646174613031ULL));
+        menu->panes[0] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[0], menu->screen->search(0x004e646174613031ULL));
         fn_80402E08(*(void**)(self + 8), lbl_80543D78, lbl_80543D84);
     }
     *(u16*)(*(u8**)(self + 8) + 0x22) = 0;
 
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0xc) = p;
-        fn_80402F04(*(void**)(self + 0xc), ((J2DScreen*)*(void**)(self + 4))->search(0x000050626c61636bULL));
+        menu->panes[1] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[1], menu->screen->search(0x000050626c61636bULL));
     }
     tb = *(void**)(*(u8**)(self + 0xc) + 4);
-    ((void (*)(void*, s32))(*(void***)tb)[0x24 / 4])(tb, 0);
+    ((J2DPane*)tb)->setAlpha(0);
     *(u16*)(*(u8**)(self + 0xc) + 0x26) = 0;
 
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x10) = p;
-        fn_80402F04(*(void**)(self + 0x10), ((J2DScreen*)*(void**)(self + 4))->search(0x00506f6375723031ULL));
+        menu->panes[2] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[2], menu->screen->search(0x00506f6375723031ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x14) = p;
-        fn_80402F04(*(void**)(self + 0x14), ((J2DScreen*)*(void**)(self + 4))->search(0x00506f6375723032ULL));
+        menu->panes[3] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[3], menu->screen->search(0x00506f6375723032ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x18) = p;
-        fn_80402F04(*(void**)(self + 0x18), ((J2DScreen*)*(void**)(self + 4))->search(0x00506f6375723033ULL));
+        menu->panes[4] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[4], menu->screen->search(0x00506f6375723033ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x1c) = p;
-        fn_80402F04(*(void**)(self + 0x1c), ((J2DScreen*)*(void**)(self + 4))->search(0x00506f6375723034ULL));
+        menu->panes[5] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[5], menu->screen->search(0x00506f6375723034ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x20) = p;
-        fn_80402F04(*(void**)(self + 0x20), ((J2DScreen*)*(void**)(self + 4))->search(0x00506f6375723035ULL));
+        menu->panes[6] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[6], menu->screen->search(0x00506f6375723035ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x24) = p;
-        fn_80402F04(*(void**)(self + 0x24), ((J2DScreen*)*(void**)(self + 4))->search(0x00506f6375723036ULL));
+        menu->panes[7] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[7], menu->screen->search(0x00506f6375723036ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x28) = p;
-        fn_80402F04(*(void**)(self + 0x28), ((J2DScreen*)*(void**)(self + 4))->search(0x0050746375723032ULL));
+        menu->panes[8] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[8], menu->screen->search(0x0050746375723032ULL));
     }
-    p = __nw__FUl(0x2c);
+    p = new MenuPane80444B68;
     if (p != 0) {
-        *(void**)p = lbl_804AF86C;
-        *(void**)(self + 0x2c) = p;
-        fn_80402F04(*(void**)(self + 0x2c), ((J2DScreen*)*(void**)(self + 4))->search(0x0050746375723034ULL));
+        menu->panes[9] = (MenuPane80444B68*)p;
+        fn_80402F04(menu->panes[9], menu->screen->search(0x0050746375723034ULL));
     }
 
     *(u8*)(*(u8**)(*(u8**)(self + 0x10) + 4) + 0xb0) = 0;
@@ -477,59 +465,53 @@ extern "C" void fn_80444B68(void* this_) {
     *(u8*)(*(u8**)(*(u8**)(self + 0x20) + 4) + 0xb0) = 0;
     *(u8*)(*(u8**)(*(u8**)(self + 0x24) + 4) + 0xb0) = 0;
 
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3035ULL);
-    ((void (*)(u8*, void*))(*(void***)tb)[0xb0 / 4])(c18, tb);
-    self[0x30] = c18[0];
-    self[0x31] = c18[1];
-    self[0x32] = c18[2];
-    self[0x33] = c18[3];
-
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3035ULL);
-    ((void (*)(u8*, void*))(*(void***)tb)[0xb4 / 4])(c14, tb);
-    self[0x34] = c14[0];
-    self[0x35] = c14[1];
-    self[0x36] = c14[2];
-    self[0x37] = c14[3];
-
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3033ULL);
-    ((void (*)(u8*, void*))(*(void***)tb)[0xb0 / 4])(c10, tb);
-    self[0x38] = c10[0];
-    self[0x39] = c10[1];
-    self[0x3a] = c10[2];
-    self[0x3b] = c10[3];
-
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3033ULL);
-    ((void (*)(u8*, void*))(*(void***)tb)[0xb4 / 4])(c0c, tb);
-    self[0x3c] = c0c[0];
-    self[0x3d] = c0c[1];
-    self[0x3e] = c0c[2];
-    self[0x3f] = c0c[3];
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3035ULL);
+    menu->colors[0] = ((J2DTextBox*)tb)->getBlack();
 
     font = *(void**)((u8*)lbl_8053AD78 + 0x154);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3031ULL);
-    ((void (*)(void*, void*))(*(void***)tb)[0x9c / 4])(tb, font);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3032ULL);
-    ((void (*)(void*, void*))(*(void***)tb)[0x9c / 4])(tb, font);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3033ULL);
-    ((void (*)(void*, void*))(*(void***)tb)[0x9c / 4])(tb, font);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3034ULL);
-    ((void (*)(void*, void*))(*(void***)tb)[0x9c / 4])(tb, font);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3035ULL);
-    ((void (*)(void*, void*))(*(void***)tb)[0x9c / 4])(tb, font);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3036ULL);
-    ((void (*)(void*, void*))(*(void***)tb)[0x9c / 4])(tb, font);
+    tb = menu->screen->search(0x000000546d6d3035ULL);
+    menu->colors[1] = ((J2DTextBox*)tb)->getWhite();
 
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3035ULL);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3033ULL);
+    menu->colors[2] = ((J2DTextBox*)tb)->getBlack();
+
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3033ULL);
+    menu->colors[3] = ((J2DTextBox*)tb)->getWhite();
+
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3031ULL);
+    ((J2DTextBox*)tb)->setFont((JUTFont*)font);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3032ULL);
+    ((J2DTextBox*)tb)->setFont((JUTFont*)font);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3033ULL);
+    ((J2DTextBox*)tb)->setFont((JUTFont*)font);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3034ULL);
+    ((J2DTextBox*)tb)->setFont((JUTFont*)font);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3035ULL);
+    ((J2DTextBox*)tb)->setFont((JUTFont*)font);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3036ULL);
+    ((J2DTextBox*)tb)->setFont((JUTFont*)font);
+
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3035ULL);
     base = *(f32*)((u8*)((J2DPane*)tb)->getBounds() + 4);
-    tb = ((J2DScreen*)*(void**)(self + 4))->search(0x000000546d6d3033ULL);
+    font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+    tb = menu->screen->search(0x000000546d6d3033ULL);
     *(f32*)(self + 0x40) = *(f32*)((u8*)((J2DPane*)tb)->getBounds() + 4) - base;
     *(s32*)(self + 0x44) = 0;
 
-    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-    bits = (*(u32*)((u8*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-    *(s32*)(self + 0x48) = (s32)(lbl_80543D70 * (*(f32*)&bits - lbl_80543D74)) + 10;
+    *(s32*)(self + 0x48) = (s32)(lbl_80543D70 * (Tu80443B0C_randf() - lbl_80543D74)) + 10;
     self[0x4c] = 0;
     self[0x4d] = 0;
+    return this_;
 }
 
 extern "C" u8 lbl_804B1B00[];
