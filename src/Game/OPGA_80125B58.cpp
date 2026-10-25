@@ -194,6 +194,29 @@ extern "C" u8 fn_8038AD24(s32 a, u16 kind, s32 handle, s32 room, JGeometry::TVec
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
 extern "C" void fn_8030C210(void* a, void* b);
 extern "C" void fn_801D1C18(void* p);
+inline s32 opgaSpawn(u8* this_, u16 kind) {
+    JGeometry::TVec3f p;
+    JGeometry::TVec3f pos;
+    f32 b8[4];
+    b8[0] = *(f32*)(this_ + 0x60);
+    b8[1] = *(f32*)(this_ + 0x64);
+    b8[2] = *(f32*)(this_ + 0x68);
+    b8[3] = *(f32*)(this_ + 0x6c);
+    b8[0] += ((OPGA_Vec*)(this_ + 0xc))->x;
+    b8[1] += ((OPGA_Vec*)(this_ + 0xc))->y;
+    b8[2] += ((OPGA_Vec*)(this_ + 0xc))->x;
+    b8[3] += ((OPGA_Vec*)(this_ + 0xc))->y;
+    fn_8022FEB8(b8, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+    s32 player = fn_8022FD8C(*(s32*)(this_ + 0x198));
+    if (player < 0) return -1;
+    if (!fn_802300EC()) return -1;
+    pos = *(JGeometry::TVec3f*)(this_ + 0xc);
+    pos.y -= lbl_8053CA74;
+    p = pos;
+    if (fn_8038AD24(player, kind, *(s32*)(this_ + 0x198), *(s32*)(this_ + 4), &p, 0x28)) return player;
+    return -1;
+}
+
 inline void opgaChangeState(u8* p, s32 state) {
     *(s32*)(p + 0x234) = state;
     switch (*(s32*)(p + 0x234)) {
@@ -225,61 +248,14 @@ extern "C" void fn_80125EFC(u8* this_) {
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
         if (((OpgaVT*)this_)->v15() > 0 && ((OpgaVT*)this_)->v13()) {
-            if (*(s32*)(this_ + 0x238) == 0) {
-                *(s32*)(this_ + 0x98) = 0;
-                *(s32*)(this_ + 0x234) = 1;
-                switch (*(s32*)(this_ + 0x234)) {
-                case 0:
-                    *(u8*)(this_ + 0x230) = 0;
-                    break;
-                case 1:
-                    ((OpgaVT*)this_)->v12(0xff, 1);
-                    *(u8*)(this_ + 0x230) = 1;
-                    *(u8*)(this_ + 0x11d) = 1;
-                    *(s32*)(this_ + 0x23c) = -1;
-                    break;
-                case 2: {
-                    s32 n = *(s32*)(this_ + 0x240);
-                    if (n > 0) {
-                        fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
-                    }
-                } break;
-                }
-            } else {
-                goto shared;
-            }
+            if (*(s32*)(this_ + 0x238) == 0) *(s32*)(this_ + 0x98) = 0;
+            opgaChangeState(this_, 1);
         }
         break;
     case 1:
-        goto shared;
-    case 2:
-        fn_8022FF8C(*(s32*)(this_ + 0x23c), box, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
-        if (fn_80388CAC(*(s32*)(this_ + 0x23c), *(s32*)(this_ + 0x198))) {
-            *(s32*)(this_ + 0x234) = 1;
-            switch (*(s32*)(this_ + 0x234)) {
-            case 0:
-                *(u8*)(this_ + 0x230) = 0;
-                break;
-            case 1:
-                ((OpgaVT*)this_)->v12(0xff, 1);
-                *(u8*)(this_ + 0x230) = 1;
-                *(u8*)(this_ + 0x11d) = 1;
-                *(s32*)(this_ + 0x23c) = -1;
-                break;
-            case 2: {
-                s32 n = *(s32*)(this_ + 0x240);
-                if (n > 0) {
-                    fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
-                }
-            } break;
-            }
-        }
-        break;
-    }
-    goto done;
-shared:
     {
-        s32 r29 = *(s32*)(this_ + 0x238) == 1 ? 0x4c0 : 0x4bf;
+        s32 r29;
+        switch (*(s32*)(this_ + 0x238)) { case 1: r29=0x4c0; break; case 0: default: r29=0x4bf; break; }
         f32 b8[4];
         b8[0] = *(f32*)(this_ + 0x60);
         b8[1] = *(f32*)(this_ + 0x64);
@@ -303,27 +279,15 @@ shared:
         }
         if (r30 >= 0) {
             *(s32*)(this_ + 0x23c) = r30;
-            *(s32*)(this_ + 0x234) = 2;
-            switch (*(s32*)(this_ + 0x234)) {
-            case 0:
-                *(u8*)(this_ + 0x230) = 0;
-                break;
-            case 1:
-                ((OpgaVT*)this_)->v12(0xff, 1);
-                *(u8*)(this_ + 0x230) = 1;
-                *(u8*)(this_ + 0x11d) = 1;
-                *(s32*)(this_ + 0x23c) = -1;
-                break;
-            case 2: {
-                s32 n = *(s32*)(this_ + 0x240);
-                if (n > 0) {
-                    fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
-                }
-            } break;
-            }
+            opgaChangeState(this_, 2);
         }
     }
-done:
+        break;
+    case 2:
+        fn_8022FF8C(*(s32*)(this_ + 0x23c), box, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(this_ + 0x23c), *(s32*)(this_ + 0x198))) opgaChangeState(this_, 1);
+        break;
+    }
     if (*(s32*)(this_ + 0x234) != 0) {
         fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), this_ + 0xc);
     }
