@@ -301,6 +301,20 @@ extern "C" void fn_800CBACC(unsigned short* out, void* self, int idx);
 extern "C" unsigned char fn_800CBB2C(void* self, int idx);
 extern "C" u8 fn_800CBB64(u8* p, s32 idx);
 extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b);
+extern "C" J3DFogInfo fn_800CB8C8(u8* p, s32 idx);
+extern "C" void fn_800CBA08(u16* param_1, u8* param_2, s32 param_3);
+extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx);
+extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b);
+extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b);
+extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b);
+extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b);
+extern "C" u8 fn_800CB5BC(u8* p, s32 idx);
+extern "C" J3DIndTexMtxInfo fn_800CB628(u8* p, s32 idx, s32 b);
+extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage);
+extern "C" void fn_800CB6F0(J3DIndTevStage* out, u8* p, s32 idx, s32 stage);
+extern "C" void fn_800CAEE0(s32* param_1, int param_2, int param_3, int param_4);
+extern "C" u8 fn_800CB15C(u8* p, s32 idx);
+extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b);
 extern "C" void __ct__14J3DIndTevStageFv(void* self);
 extern "C" void __ct__13J3DGXColorS10Fv(void* self);
 extern "C" void __ct__10J3DGXColorFv(void* self);
@@ -418,6 +432,59 @@ extern "C" void fn_800C9D18(void) {}
 
 extern "C" s32 lbl_8053BC74;
 extern "C" void fn_800C9D1C(void) {
+}
+
+extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags)
+{
+    u8 nStages;
+    u8 i;
+    u32 hasInd;
+    void* blk;
+
+    if (material == NULL) {
+        material = (J3DMaterial*)operator new(0x4c);
+        if (material != NULL) {
+            *(void**)material = __vt__11J3DMaterial;
+            *(u32*)((u8*)material + 0x40) = 0x3CF3CF00;
+            *(u32*)((u8*)material + 0x44) = 0x00F3CF3C;
+            material->initialize();
+            *(void**)material = __vt__18J3DPatchedMaterial;
+            ((J3DPatchedMaterial*)material)->initialize();
+        }
+    }
+    hasInd = (flags & 0x03000000) != 0;
+    *(void**)((u8*)material + 0x24) = createColorBlock__11J3DMaterialFUl(0x40000000);
+
+    blk = operator new(0x5c);
+    if (blk != NULL) {
+        *(void**)blk = __vt__14J3DTexGenBlock;
+        *(void**)blk = __vt__21J3DTexGenBlockPatched;
+        __construct_array((u8*)blk + 8, __ct__11J3DTexCoordFv, 0, 6, 8);
+        initialize__21J3DTexGenBlockPatchedFv(blk);
+    }
+    *(void**)((u8*)material + 0x28) = blk;
+
+    blk = operator new(0xd8);
+    if (blk != NULL) {
+        *(void**)blk = __vt__11J3DTevBlock;
+        *(void**)blk = lbl_8049B440;
+        __construct_array((u8*)blk + 0x18, __ct__11J3DTevOrderFv, 0, 4, 8);
+        __construct_array((u8*)blk + 0x38, __ct__11J3DTevStageFv, 0, 8, 8);
+        __construct_array((u8*)blk + 0x78, __ct__14J3DIndTevStageFv, 0, 4, 8);
+        __construct_array((u8*)blk + 0x98, __ct__13J3DGXColorS10Fv, 0, 8, 4);
+        __construct_array((u8*)blk + 0xb8, __ct__10J3DGXColorFv, 0, 4, 4);
+        fn_800D36EC(blk);
+    }
+    *(void**)((u8*)material + 0x2c) = blk;
+    *(void**)((u8*)material + 0x30) = createIndBlock__11J3DMaterialFi(hasInd);
+    *(void**)((u8*)material + 0x34) = createPEBlock__11J3DMaterialFUlUl(0x10000000, ((u8*)self->mInitData)[((u16*)self->mMatRemapTable)[idx] * 0x14c]);
+    *(u16*)((u8*)material + 0x14) = idx;
+    *(u32*)((u8*)material + 0x10) = ((u8*)self->mInitData)[((u16*)self->mMatRemapTable)[idx] * 0x14c];
+    (*(void (***)(void*, u32))*(void**)((u8*)material + 0x2c))[37](*(void**)((u8*)material + 0x2c), fn_800CB428((u8*)self, idx));
+    (*(void (***)(void*, u32))*(void**)((u8*)material + 0x24))[18](*(void**)((u8*)material + 0x24), fn_800CAF38((u8*)self, idx));
+    (*(void (***)(void*, u32))*(void**)((u8*)material + 0x24))[27](*(void**)((u8*)material + 0x24), fn_800CB28C((u8*)self, idx));
+    nStages = (*(u8 (***)(void*))*(void**)((u8*)material + 0x2c))[38](*(void**)((u8*)material + 0x2c));
+    return material;
 }
 
 extern "C" void** __dt__11J3DMaterialFv(void** param_1, short param_2)
