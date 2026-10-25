@@ -72,6 +72,12 @@ extern "C" s32 fn_803A65EC() {
 extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 extern void* lbl_8053AAF8;
+static inline f32 tuRandFloat() {
+    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660du + 0x3c6ef35fu;
+    u32 bits = (*seed >> 9) | 0x3f800000u;
+    return *(f32*)&bits - 1.0f;
+}
 extern "C" void fn_8013B490(void* obj);
 extern "C" void fn_80440EE8(void* obj);
 struct Game8053AB10 { u8 pad[0x10]; J2DGrafContext* graf; };
@@ -83,6 +89,63 @@ extern "C" void fn_803A71F0(char* p) {
     fn_8013B490(lbl_8053AB10);
     (*(J2DScreen**)(p + 0x4))->draw(0.0f, 0.0f, lbl_8053AB10->graf);
     fn_80440EE8(lbl_8053AED8);
+}
+
+extern "C" void fn_803A7280(char* p) {
+    *(u32*)(p + 0x64) = 0;
+    *(u16*)(p + 0x68) = 0;
+    *(u8*)(p + 0x76) = 0;
+    fn_80402E08(*(void**)(p + 0x8), 0.0f, -448.0f);
+    *(u16*)(*(char**)(p + 0x8) + 0x22) = 0;
+    for (s32 i = 0; i < 6; i++) {
+        fn_80402E08(*(void**)(p + 0xc + i * 4), 0.0f, -448.0f);
+        *(u16*)(*(char**)(p + 0xc + i * 4) + 0x22) = 0;
+    }
+    for (s32 i = 0; i < 2; i++) {
+        fn_80402E08(*(void**)(p + 0x24 + i * 4), 0.0f, -448.0f);
+        *(u16*)(*(char**)(p + 0x24 + i * 4) + 0x22) = 0;
+    }
+    fn_80402E08(*(void**)(p + 0x2c), 0.0f, -448.0f);
+    *(u16*)(*(char**)(p + 0x2c) + 0x22) = 0;
+    fn_80402E08(*(void**)(p + 0x30), 0.0f, -448.0f);
+    *(u16*)(*(char**)(p + 0x30) + 0x22) = 0;
+    fn_80402E08(*(void**)(p + 0x34), 0.0f, -448.0f);
+    *(u16*)(*(char**)(p + 0x34) + 0x22) = 0;
+
+    *(u8*)(p + 0x77) = lbl_80529DEC[0x245];
+    *(u8*)(p + 0x78) = lbl_80529DEC[0x246];
+    if (*(u8*)(p + 0x77) == 1) {
+        fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->getStringPtr(), 0x98, 0, 0, 0);
+    } else {
+        fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->getStringPtr(), 0x99, 0, 0, 0);
+    }
+    if (*(u8*)(p + 0x78) == 1) {
+        fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->getStringPtr(), 0x38, 0, 0, 0);
+    } else {
+        fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->getStringPtr(), 0x39, 0, 0, 0);
+    }
+
+    f32 h = (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL)->getHeight();
+    J2DPane* w = (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL);
+    (*(J2DScreen**)(p + 0x4))->search(0x5061723031ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x70) + *(s16*)(p + 0x74));
+    h = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->getHeight();
+    w = (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL);
+    (*(J2DScreen**)(p + 0x4))->search(0x5061723032ULL)->rotate(0.5f * w->getWidth(), 0.5f * h, J2DROTATE_Z, *(s16*)(p + 0x72) + *(s16*)(p + 0x74));
+
+    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660du + 0x3c6ef35fu;
+    u32 bits = (*seed >> 9) | 0x3f800000u;
+    *(s16*)(p + 0x6a) = (s32)(11.0f * (*(f32*)&bits - 1.0f)) + 10;
+    seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660du + 0x3c6ef35fu;
+    bits = (*seed >> 9) | 0x3f800000u;
+    *(s16*)(p + 0x6c) = (s32)(11.0f * (*(f32*)&bits - 1.0f)) + 10;
+    *(s16*)(p + 0x6e) = 0;
+    *(u8*)(p + 0x79) = 0;
+    *(u8*)(p + 0x7a) = 10;
+    *(u8*)(p + 0x7b) = 0xff;
+    *(u8*)(p + 0x7c) = 0xc0;
+    *(s32*)(p + 0x80) = 5;
 }
 
 extern void* lbl_804AF86C[];
