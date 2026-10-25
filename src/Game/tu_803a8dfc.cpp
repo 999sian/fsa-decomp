@@ -43,6 +43,12 @@ extern const f32 lbl_805433D8;
 extern const f32 lbl_805433DC;
 extern s32 lbl_804AF888[];
 
+extern "C" f32* getBounds__7J2DPaneFv(void* this_);
+extern "C" s32 fn_80388EEC(s32 idx);
+extern "C" void fn_80458880(void* obj, s32 id, s32 v);
+extern void* lbl_8053AF80;
+extern u8 lbl_8050DB0C[];
+
 struct VPane_803B14F8 {
     virtual void v00();
     virtual void v04();
@@ -1988,6 +1994,33 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
         p->m4c2 = 0;
         p->timer = 0x96;
         p->m4c1 = 8;
+    }
+}
+
+extern "C" void fn_803B0978(Menu_Slide* p) {
+    s16 t19 = *(s16*)(lbl_8050DB0C + 0x256);
+    s16 t20 = *(s16*)(lbl_8050DB0C + 0x252);
+    s16 t7 = *(s16*)(lbl_8050DB0C + 0x254);
+    s16 t18 = *(s16*)(lbl_8050DB0C + 0x258);
+    s32 r23 = t20 * t20;
+    s32 r22 = t7 * t7;
+    s32 r24 = t20 + t7;
+    f32 f31 = lbl_80543428 + (f32)t19;
+    s32 r21 = 0;
+    s32 i;
+    for (i = 0; i < p->count; i++) {
+        if (((u8*)p)[0x4bc + i] == 0xff) {
+            if (fn_80388EEC(i) != 0) {
+                ((u8*)p)[0x4bc + i] = fn_803A8DFC(p, i);
+                fn_80458880(lbl_8053AF80, 0xb, -1);
+            }
+        }
+        if (((u8*)p)[0x4bc + i] == 0xff) {
+            ((u8*)p)[0x4bc + i] = 0;
+        }
+    }
+    if (r21 == p->count) {
+        p->m4c1 = 7;
     }
 }
 
