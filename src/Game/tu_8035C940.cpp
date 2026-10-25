@@ -459,18 +459,15 @@ extern "C" void fn_8035D7BC(char* this_) {
         DrawRec rec;
         if (*(s8*)(p + 0x272) != 0) {
             *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-            *(f32*)(p + 0x14) = lbl_80542930;
+            *(f32*)(p + 0x14) = 0.0f;
             rec.b1d = -1;
         }
         fn_801F06F0(p, base + 0xcc, lbl_80542954, lbl_80542954,
                     *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, -1);
         *(JGeometry::TVec3<f32>*)(p + 0xc) = saved;
-        f32 height = lbl_80542974;
-        f32 z = *(f32*)(p + 0x14);
-        f32 s = height - (z - lbl_80542970);
-        s = s * lbl_80542978;
+        f32 s = (512.0f - ((*(f32*)(p + 0x14)) - 13.0f)) / 512.0f;
         f32 m[3][4];
-        f32 zero = lbl_80542930;
+        f32 zero = 0.0f;
         m[0][1] = zero;
         m[0][2] = zero;
         m[1][0] = zero;
@@ -485,8 +482,8 @@ extern "C" void fn_8035D7BC(char* this_) {
         m[2][3] = zero;
         rec.w18 = m;
         rec.b1d = 0;
-        if (z < lbl_8054297C) {
-            ((u8*)&rec.w10)[3] = (u8)(lbl_8054297C - z);
+        if ((*(f32*)(p + 0x14)) < 268.0f) {
+            ((u8*)&rec.w10)[3] = (u8)(268.0f - (*(f32*)(p + 0x14)));
         } else {
             ((u8*)&rec.w10)[3] = 0;
         }
