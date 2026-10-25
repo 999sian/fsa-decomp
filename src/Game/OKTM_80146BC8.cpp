@@ -1,5 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "types.h"
 #include "Game/Actor.h"
+#include "JSystem/JMath/Inline.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
@@ -136,11 +138,10 @@ extern "C" void fn_80146C28(char* this_) {
 }
 
 extern "C" void fn_80146F58(char* this_) {
-    s32 r30 = *(s32*)(this_ + 0x98);
     u8 r29 = 0;
-    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
-    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
-    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    s32 r30;
+    *(OktmVec3*)(this_ + 0xc) += *(OktmVec3*)(this_ + 0x3c);
+    r30 = *(s32*)(this_ + 0x98);
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
         if (*(s32*)(this_ + 0x23c) == 0) {
