@@ -78,11 +78,11 @@ static inline void Hrmn_approachTo(f32& cur, f32 target, f32 steps) {
 }
 
 static inline void Hrmn_stepSub(u8* p, s32 a2, s32 a3) {
-    s32 idx = a2;
+    s32 cnt = a2;
     if (fn_8022F514(a2)) {
-        idx = fn_8022F3DC(a2);
+        cnt = fn_8022F3DC(a2);
     }
-    u16 cnt = (u16)fn_8023CBC0(idx);
+    cnt = (u16)fn_8023CBC0(cnt);
     f32 f31 = 16.0f * (17.5f + (f32)a3);
     for (s32 i = 0; i < 4; i++) {
         if (fn_8022E438(i, a2)) {
