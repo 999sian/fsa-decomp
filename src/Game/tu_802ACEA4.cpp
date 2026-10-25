@@ -41,3 +41,155 @@ extern "C" Actor* fn_802ACEA4(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_802F745C(void* mgr, void* src, s32 room, void* out);
+extern "C" void fn_802F6CF4(void* mgr, void* src, s32 room, void* out);
+extern "C" void* fn_802D6A9C();
+extern "C" f32 lbl_805408D0;
+extern "C" void* lbl_8053AAF8;
+extern "C" void* lbl_8053AB10;
+extern "C" f32 lbl_805408CC;
+extern "C" f32 lbl_805408D8;
+extern "C" void fn_802ACF04(Actor* a) {
+    u8 tbl[0x10];
+    f32 vec[3];
+    s32 i;
+    s32 kind = *(s32*)((u8*)a + 0x234);
+    f32 angle = *(f32*)((u8*)a + 0x248);
+    s32 room;
+
+    for (i = 0; i < 0x10; i++) {
+        tbl[i] = (u8)i;
+    }
+    room = a->field_04;
+    if (room < 8) {
+    }
+}
+
+void fn_80239914(s32 room, void* obj);
+void* fn_8023E724(s32 idx);
+s32 fn_8022F478(s32 idx);
+s32 fn_80234F68(s32 idx);
+void* fn_801F2718(Actor* a, u32 fourcc);
+void fn_8023A89C(void* box, s32 room, void* out);
+s32 fn_8023A97C(s32 idx, void* box, s32 room, void* out);
+s32 fn_802D800C(void* mgr, s32 idx);
+s16 fn_802F9908(void* mgr, s32 room, u32 key);
+void fn_8013CC50(s32 room, void* vec, s32 id, s32 f6, s32 f7, s32 f8, s32 f9, s32 f10);
+void fn_801F0E34(Actor* a, u32 id, s32 n);
+extern "C" f32 lbl_805408EC;
+extern "C" f32 lbl_805408F8;
+extern "C" void fn_802ADC18(Actor* a) {
+    u8* p = (u8*)a;
+    Vec pos = a->field_0C;
+
+    switch (*(s32*)(p + 0x234)) {
+    case 2:
+        a->field_0C.x += lbl_805408EC;
+        a->field_0C.y += lbl_805408F4;
+        break;
+    case 3:
+        a->field_0C.x += lbl_805408DC;
+        a->field_0C.y += lbl_805408F4;
+        break;
+    case 4:
+    case 5:
+        *(f32*)(p + 0x80) = lbl_805408F8;
+        *(f32*)(p + 0x84) = lbl_805408F8;
+        *(f32*)(p + 0x88) = lbl_805408EC;
+        *(f32*)(p + 0x8c) = lbl_805408EC;
+        a->field_0C.x += lbl_805408EC;
+        a->field_0C.y += lbl_805408EC;
+        break;
+    default:
+        a->field_0C.x += lbl_805408DC;
+        a->field_0C.y += lbl_805408DC;
+        break;
+    }
+}
+
+extern "C" void fn_802AEE10(Actor* a) {
+    u8* p = (u8*)a;
+    f32 zero = lbl_805408C8;
+    *(s32*)(p + 0x234) = a->field_90 & 0x7f;
+    *(s32*)(p + 0x238) = (a->field_90 >> 7) & 0x1f;
+    *(s32*)(p + 0x240) = (a->field_90 >> 12) & 0xfff;
+    *(s32*)(p + 0x23c) = (a->field_90 >> 24) & 3;
+    *(f32*)(p + 0x248) = zero;
+
+    switch (*(s32*)(p + 0x234)) {
+    case 6:
+    default:
+        if (*(s32*)(p + 0x23c) == 1) {
+            f32 lo = lbl_8054094C;
+            f32 hi = lbl_80540948;
+            a->field_60 = hi;
+            a->field_64 = hi;
+            a->field_68 = lo;
+            a->field_6C = lo;
+        } else {
+            f32 lo = lbl_805408DC;
+            f32 hi = lbl_80540950;
+            a->field_60 = hi;
+            a->field_64 = hi;
+            a->field_68 = lo;
+            a->field_6C = lo;
+        }
+        break;
+    case 2:
+        a->field_60 = lbl_80540954;
+        a->field_64 = lbl_80540950;
+        a->field_68 = lbl_805408F4;
+        a->field_6C = lbl_805408DC;
+        break;
+    case 3:
+        a->field_60 = lbl_80540958;
+        a->field_64 = lbl_80540950;
+        a->field_68 = lbl_80540904;
+        a->field_6C = lbl_805408DC;
+        break;
+    case 4:
+    case 5:
+        a->field_60 = lbl_805408FC;
+        a->field_64 = lbl_80540900;
+        a->field_68 = lbl_80540904;
+        a->field_6C = lbl_80540908;
+        *(f32*)(p + 0x248) = lbl_8054095C;
+        break;
+    }
+
+    *(s32*)(p + 0x244) = 0x14;
+    if (((u8*)lbl_8053AAF8)[0x7f] == 1) {
+        *(s16*)(p + 0x252) = 12;
+    } else {
+        *(s16*)(p + 0x252) = 13;
+    }
+
+    if (*(s32*)(p + 0x234) >= 2) {
+        f32 px = a->field_0C.x;
+        s32 room = a->field_04;
+        u8* mgr = (u8*)fn_802D6A9C();
+        Box4 box = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+        s32* ta = lbl_8046C8CC;
+        s32* tb = lbl_8046C8B0;
+        f32 one = lbl_8054090C;
+        for (s32 i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+            s32 xi = (s32)(px - box.a);
+            f32 py = a->field_0C.y;
+            for (s32 j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                s32 yi = (s32)(py - box.b);
+                s32 x = xi < 0 ? 0 : (xi >= 0x200 ? 0x1ff : xi);
+                s32 y = yi < 0 ? 0 : (yi >= 0x200 ? 0x1ff : yi);
+                u32 key = (x & 0x100) | ((y & 0x100) << 1) | (y & 0xf0) | ((x >> 4) & 0xf);
+                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), room, key, 6);
+                py += one;
+            }
+            px += one;
+        }
+    }
+    *(s32*)(p + 0x230) = 0;
+}
+
+extern "C" void fn_802AF108(void) {
+}
+
