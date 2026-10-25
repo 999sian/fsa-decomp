@@ -711,6 +711,8 @@ inline BOOL isLinkOwnerCached(char* p) {
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
 
+inline BOOL isLinkOwnerCached(char*);
+inline s32 getModeCached(const char*);
 extern "C" u8 fn_8023FC5C(u8* self) {
     char* p = (char*)self;
     bool ok;
@@ -721,33 +723,9 @@ extern "C" u8 fn_8023FC5C(u8* self) {
     else if (U8(p, 0xce9) == 0) ok = false;
     else ok = true;
     if (ok) {
-        if (getMode(p) == 4) {
-            u8 bit = 1 << S32(p, 4);
-            BOOL owner;
-            if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
-                owner = 1;
-            } else if (getMode(p) == 4) {
-                s32 index;
-                if (S32(p, 0xd60) >= 0) index = fn_80234004(S32(p, 0xd60));
-                else index = S32(p, 0x1224);
-                s32 rank;
-                s32 linked = S32(p, 0xd60);
-                if (linked < 0) rank = 0;
-                else {
-                    s32 c = 0;
-                    s32 n = S32(p, 4);
-                    for (s32 i = 0; i < n; i++) {
-                        if (linked == fn_8022F3DC(i)) c++;
-                    }
-                    rank = c + 1;
-                }
-                owner = index != rank;
-            } else {
-                owner = ((u32)S32(p, 0xd60) >> 31) ^ 1;
-            }
-            if ((u8)owner && U8(p, 0xcfe) == 0 && U8(p, 0x454) == 0) {
+        if (getModeCached(p) == 4 && (u8)isLinkOwnerCached(p) &&
+            U8(p, 0xcfe) == 0 && U8(p, 0x454) == 0) {
             return (u32)U8(p, 0xca0) >> 1;
-            }
         }
         return U8(p, 0xca0);
     }
@@ -2816,7 +2794,8 @@ void fn_8025250C(char* p) {
     if (S32(p, 0x3b4) >= 8) {
         return;
     }
-    JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(fn_802D6A9C() + 0xcc);
+    JGeometry::TBox2<f32> box;
+    box = *(JGeometry::TBox2<f32>*)(fn_802D6A9C() + 0xcc);
     if (F32(p, 0x8) <= lbl_80540070 + box.i.x) {
         F32(p, 0x8) = lbl_80540070 + box.i.x;
     } else if (F32(p, 0x8) >= box.f.x - lbl_80540070) {
