@@ -56,6 +56,20 @@ extern "C" Actor* fn_8034543C(Actor* this_, s16 n) {
     return this_;
 }
 
+extern "C" void fn_801F71A4(f32, f32, f32, f32);
+extern "C" s32 fn_80345744(Actor* this_) {
+    u8* self = (u8*)this_;
+    s32 state;
+
+    fn_801F71A4(*(f32*)(self + 0x254), 0.0f, 0.0f, *(f32*)(self + 0x260));
+    fn_801F71A4(*(f32*)(self + 0x258), 0.0f, 0.0f, *(f32*)(self + 0x260));
+    state = *(s32*)(self + 0x230);
+    if (state == 3) {
+        return 0;
+    }
+    return 0;
+}
+
 extern "C" void fn_801EEC98(void*, s32, u16*, s32*, f32*, s32*, s32, s32);
 extern "C" u8 fn_80233E40(s32);
 extern "C" u8 fn_8022B7C4(s32);
@@ -253,7 +267,7 @@ extern "C" void fn_80346704(Actor* this_) {
     *(s32*)(self + 0x230) = 0;
 }
 
-extern "C" void fn_80346C00(void) {
+extern "C" void __sinit_tu_8034543C_cpp(void) {
     char* base = &lbl_8050A3F8[0];
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
