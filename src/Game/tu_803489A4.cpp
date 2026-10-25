@@ -1,4 +1,12 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#define I(p,o) (*(s32*)((u8*)(p)+(o)))
+#define F(p,o) (*(f32*)((u8*)(p)+(o)))
+#define B(p,o) (*(u8*)((u8*)(p)+(o)))
+#define V(p,o) (*(JGeometry::TVec3<f32>*)((u8*)(p)+(o)))
+
 #include "Game/ItemBase.h"
 
 
