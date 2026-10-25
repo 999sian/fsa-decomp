@@ -394,6 +394,20 @@ extern "C" void fn_803706AC(char* self)
 	}
 }
 
+#pragma opt_lifetimes off
+static inline void move80370764ToTarget() {
+    JGeometry::TVec3<f32>* p = fn_8023E724(0);
+    JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
+    JGeometry::TVec3<f32> d = tgt - *p;
+    if (PSVECMag((Vec*)&d) > lbl_80542DF0) fn_8023DFF4(0, &d);
+}
+static inline void move80370764ToTarget(JGeometry::TVec3<f32>& pos) {
+    JGeometry::TVec3<f32>* p = fn_8023E724(0);
+    JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
+    pos = tgt - *p;
+    if (PSVECMag((Vec*)&pos) > lbl_80542DF0) fn_8023DFF4(0, &pos);
+}
+
 extern "C" void fn_80370764(char* self)
 {
 	fn_803703C8(self);
@@ -417,27 +431,32 @@ extern "C" void fn_80370764(char* self)
 		fn_8022CA6C(0, 5, 0);
 	}
 	*(s32*)(self + 0x23c) += 1;
-	((void (*)(char*))fn_803721F4)(self);
-	JGeometry::TVec3<f32> pos;
+	fn_803721F4(self);
 	{
 		JGeometry::TVec3<f32>* p = fn_8023E724(0);
 		JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
-		pos = tgt - *p;
+		JGeometry::TVec3<f32> pos = tgt - *p;
 		if (PSVECMag((Vec*)&pos) > lbl_80542DF0) {
 			fn_8023DFF4(0, &pos);
 		}
-	}
-	if (fn_802341D0(0)) {
+	if (!fn_802341D0(0)) {
+        *(s32*)(self + 0x240) = 2;
+        return;
+    }
+    {
 		if (*(u8*)(self + 0x398) != 0 && *(s32*)(self + 0x240) == 0) {
 			if (fn_8022CAF8(0) == lbl_80474F30[*(s32*)(self + 0x394)]) {
 				if (((u8 (*)(int))fn_802300EC)(0)) {
-					pos = JGeometry::TVec3<f32>((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f, (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
+					f32 half = lbl_80542E04;
+                    f32 width = (f32)(s32)JUTVideo::getManager()->getFbWidth();
+                    f32 height = (f32)(s32)JUTVideo::getManager()->getEfbHeight();
+                    pos.set(width * half, height * half, 0.0f);
 					fn_8022FE80(0, *(int*)(self + 0x4), *(int*)(self + 0x198), 1, 0);
 					s32 msg;
 					s32 n = *(s32*)(self + 0x394);
 					if (n < 3) {
-						*(s32*)(self + 0x394) = n + 1;
 						msg = lbl_80474F40[n];
+                        *(s32*)(self + 0x394) = n + 1;
 					} else if (*(s32*)(self + 0x23c) < 0x168) {
 						*(s32*)(self + 0x394) = 4;
 						msg = 0x509;
@@ -453,11 +472,10 @@ extern "C" void fn_80370764(char* self)
 				}
 			}
 		}
-	} else {
-		*(s32*)(self + 0x240) = 2;
-	}
+    }
 }
-
+}
+#pragma opt_lifetimes reset
 extern "C" void fn_80371D50(void* self, s32 id);
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
 extern "C" void fn_8043D67C(void*, s32, s32, s32);
