@@ -433,6 +433,14 @@ extern "C" void fn_8012B0D8(char* this_) {
     }
 }
 
+struct DmtwParts {
+    u8 pad[0x2C8];
+    JGeometry::TVec3<f32> pos[4];
+    JGeometry::TVec3<f32> vel[4];
+    void* emitters[3][4];
+    void* rings[3][4];
+    void* smoke[3][4];
+};
 static inline void* dmtwSpawn(u32 room, const JGeometry::TVec3<f32>& pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
     return fn_8013CC50(room, (void*)&pos, scale, id, a, b, c, d, e);
 }
@@ -464,12 +472,9 @@ extern "C" void fn_8012B218(char* p) {
             for (s32 i=0;i<4;i++) {
                 f32 y=*(f32*)(p+0x3F4)+lbl_804BD7C0[i].y;
                 f32 x=*(f32*)(p+0x3F8)+lbl_804BD7C0[i].x;
-                JGeometry::TVec3<f32> v;
-                v.z=0.0f;
-                v.y=(y-((JGeometry::TVec3<f32>*)(p+0x2C8))[i].y)/40.0f;
-                v.x=(x-((JGeometry::TVec3<f32>*)(p+0x2C8))[i].x)/40.0f;
-                v.z=0.0f;
-                ((JGeometry::TVec3<f32>*)(p+0x2F8))[i]=v;
+                ((JGeometry::TVec3<f32>*)(p+0x2F8))[i]=JGeometry::TVec3<f32>(
+                    (x-((JGeometry::TVec3<f32>*)(p+0x2C8))[i].x)/40.0f,
+                    (y-((JGeometry::TVec3<f32>*)(p+0x2C8))[i].y)/40.0f,0.0f);
             }
             *(s32*)(p+0x250)=40;
         }
@@ -483,8 +488,7 @@ extern "C" void fn_8012B218(char* p) {
             for (s32 i=0;i<4;i++) {
                 ((JGeometry::TVec3<f32>*)(p+0x2F8))[i].zero();
                 ((JGeometry::TVec3<f32>*)(p+0x2F8))[i].z=-0.2f;
-                JGeometry::TVec3<f32> off(*(f32*)(p+0x3F8),*(f32*)(p+0x3F4),0.0f);
-                ((JGeometry::TVec3<f32>*)(p+0x2C8))[i]=lbl_804BD7C0[i]+off;
+                ((JGeometry::TVec3<f32>*)(p+0x2C8))[i]=lbl_804BD7C0[i]+JGeometry::TVec3<f32>(*(f32*)(p+0x3F8),*(f32*)(p+0x3F4),0.0f);
             }
             ++*(s32*)(p+0x234); *(s32*)(p+0x250)=60;
         }
@@ -520,12 +524,9 @@ extern "C" void fn_8012B218(char* p) {
                 {u8* e=*(u8**)(p+0x378+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x378+i*4)=0;}}
             }
             for (s32 i=0;i<4;i++) {
-                JGeometry::TVec3<f32> v0(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f);
-                *(void**)(p+0x388+i*4)=fn_8013CC50(*(u32*)(p+4),&v0,1.0f,(u16)(0x461+i*3),1,2,0,0,1);
-                JGeometry::TVec3<f32> v1(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f);
-                *(void**)(p+0x398+i*4)=fn_8013CC50(*(u32*)(p+4),&v1,1.0f,(u16)(0x462+i*3),1,2,0,0,1);
-                JGeometry::TVec3<f32> v2(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f);
-                *(void**)(p+0x3a8+i*4)=fn_8013CC50(*(u32*)(p+4),&v2,1.0f,(u16)(0x463+i*3),1,2,0,0,1);
+                *(void**)(p+0x388+i*4)=dmtwSpawn(*(u32*)(p+4),JGeometry::TVec3<f32>(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f),(u16)(0x461+i*3),1,2,0,0,1,1.0f);
+                *(void**)(p+0x398+i*4)=dmtwSpawn(*(u32*)(p+4),JGeometry::TVec3<f32>(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f),(u16)(0x462+i*3),1,2,0,0,1,1.0f);
+                *(void**)(p+0x3a8+i*4)=dmtwSpawn(*(u32*)(p+4),JGeometry::TVec3<f32>(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f),(u16)(0x463+i*3),1,2,0,0,1,1.0f);
             }
         }
 
@@ -540,8 +541,7 @@ extern "C" void fn_8012B218(char* p) {
             pos.y+=-16.0f;
             fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
             u32 owner=*(u32*)(p+4);
-            JGeometry::TVec3<f32> copy(pos);
-            if (!fn_8038BD08(0,lbl_804650C8[*(s32*)(p+0x254)],owner,&copy,0x22)) return;
+            if (!dmtwDialog(owner,lbl_804650C8[*(s32*)(p+0x254)],JGeometry::TVec3<f32>(pos))) return;
             ++*(s32*)(p+0x254);
             fn_8011921C();
             fn_80118454();
