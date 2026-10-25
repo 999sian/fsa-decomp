@@ -202,6 +202,13 @@ static inline void setCellT(u8* this_, u8* tbl, s32 cell, s32 idx, s32 keyOff, u
     fn_804023D0(*(void**)(this_ + cell + idx * 4), o, flag);
 }
 
+static inline void setCellU(u8* this_, u8* tbl, s32 keyOff, s32 flagOff) {
+    s32 idx = *(s32*)(this_ + 0xa4);
+    u8* sub = *(u8**)(this_ + 8);
+    void* o = ((KeyGetFn)(*(void***)sub)[15])(sub, *(u64*)(tbl + keyOff + idx * 8));
+    fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), o, *(u8*)(this_ + flagOff));
+}
+
 static inline void drawTextRow(u8* p, u8* q, u8* t) {
     s32 k;
     for (k = 0; k < 4; k++) {
@@ -2001,13 +2008,15 @@ extern "C" void fn_803C4330(char* p) {
 }
 
 extern "C" void fn_803C4628(u8* this_) {
-    s16 sVar2 = *(s16*)(lbl_8050DB0C + 0x208);
-    s16 sVar3 = *(s16*)(lbl_8050DB0C + 0x20a);
+    u8* cfg = lbl_8050DB0C;
+    u8* tbl = (u8*)lbl_804765D0;
+    s16 sVar2 = *(s16*)(cfg + 0x208);
+    s16 sVar3 = *(s16*)(cfg + 0x20a);
     s32 iVar10 = sVar2 + sVar3;
-    s16 sVar11 = *(s16*)(lbl_8050DB0C + 0x210);
-    s32 iVar6 = *(s16*)(lbl_8050DB0C + 0x20c);
-    s32 iVar8 = *(s16*)(lbl_8050DB0C + 0x20e);
-    s32 iVar7 = *(s16*)(lbl_8050DB0C + 0x212);
+    s16 sVar11 = *(s16*)(cfg + 0x210);
+    s32 iVar6 = *(s16*)(cfg + 0x20c);
+    s32 iVar8 = *(s16*)(cfg + 0x20e);
+    s32 iVar7 = *(s16*)(cfg + 0x212);
     s32 iVar5;
     s32 cur;
     void* obj;
@@ -2027,19 +2036,19 @@ extern "C" void fn_803C4628(u8* this_) {
                     *(f32*)((u8*)*(void**)(this_ + 0x40) + 0xc) - *(f32*)((u8*)obj + 0xc), 0);
         obj = *(void**)(this_ + 0x38 + cur * 4);
         fn_80402628(obj, sVar3, *(u8*)((u8*)obj + 0x28), 0);
-        setCell(this_, 0x38, cur, 0x780, *(u8*)(this_ + 0x125));
-        setCell(this_, 0x38, cur, 0x768, *(u8*)(this_ + 0x126));
-        setCell(this_, 0x38, cur, 0x750, *(u8*)(this_ + 0x127));
-        setCell(this_, 0x38, cur, 0x6c8, *(u8*)(this_ + 0x128));
-        setCell(this_, 0x38, cur, 0x6b0, *(u8*)(this_ + 0x129));
-        setCell(this_, 0x38, cur, 0x698, *(u8*)(this_ + 0x12a));
-        setCell(this_, 0x38, cur, 0x680, *(u8*)(this_ + 0x12b));
-        setCell(this_, 0x38, cur, 0x668, *(u8*)(this_ + 0x12c));
-        setCell(this_, 0x38, cur, 0x650, *(u8*)(this_ + 0x12d));
-        setCell(this_, 0x38, cur, 0x638, *(u8*)(this_ + 0x12e));
-        setCell(this_, 0x38, cur, 0x620, *(u8*)(this_ + 0x12f));
-        setCell(this_, 0x38, cur, 0x608, *(u8*)(this_ + 0x130));
-        setCell(this_, 0x38, cur, 0x5f0, *(u8*)(this_ + 0x131));
+        setCellT(this_, tbl, 0x38, cur, 0x780, *(u8*)(this_ + 0x125));
+        setCellT(this_, tbl, 0x38, cur, 0x768, *(u8*)(this_ + 0x126));
+        setCellT(this_, tbl, 0x38, cur, 0x750, *(u8*)(this_ + 0x127));
+        setCellT(this_, tbl, 0x38, cur, 0x6c8, *(u8*)(this_ + 0x128));
+        setCellT(this_, tbl, 0x38, cur, 0x6b0, *(u8*)(this_ + 0x129));
+        setCellT(this_, tbl, 0x38, cur, 0x698, *(u8*)(this_ + 0x12a));
+        setCellT(this_, tbl, 0x38, cur, 0x680, *(u8*)(this_ + 0x12b));
+        setCellT(this_, tbl, 0x38, cur, 0x668, *(u8*)(this_ + 0x12c));
+        setCellT(this_, tbl, 0x38, cur, 0x650, *(u8*)(this_ + 0x12d));
+        setCellT(this_, tbl, 0x38, cur, 0x638, *(u8*)(this_ + 0x12e));
+        setCellT(this_, tbl, 0x38, cur, 0x620, *(u8*)(this_ + 0x12f));
+        setCellT(this_, tbl, 0x38, cur, 0x608, *(u8*)(this_ + 0x130));
+        setCellT(this_, tbl, 0x38, cur, 0x5f0, *(u8*)(this_ + 0x131));
     }
     if (*(s16*)(this_ + 0xd8) == iVar10) {
         obj = *(void**)(this_ + 0x38 + *(s32*)(this_ + 0xa4) * 4);
@@ -2050,19 +2059,19 @@ extern "C" void fn_803C4628(u8* this_) {
             (*(VtSlot9**)sub)->v9(sub, 0);
         }
         cur = *(s32*)(this_ + 0xa4);
-        setCell(this_, 0x38, cur, 0x780, *(u8*)(this_ + 0x125));
-        setCell(this_, 0x38, cur, 0x768, *(u8*)(this_ + 0x126));
-        setCell(this_, 0x38, cur, 0x750, *(u8*)(this_ + 0x127));
-        setCell(this_, 0x38, cur, 0x6c8, *(u8*)(this_ + 0x128));
-        setCell(this_, 0x38, cur, 0x6b0, *(u8*)(this_ + 0x129));
-        setCell(this_, 0x38, cur, 0x698, *(u8*)(this_ + 0x12a));
-        setCell(this_, 0x38, cur, 0x680, *(u8*)(this_ + 0x12b));
-        setCell(this_, 0x38, cur, 0x668, *(u8*)(this_ + 0x12c));
-        setCell(this_, 0x38, cur, 0x650, *(u8*)(this_ + 0x12d));
-        setCell(this_, 0x38, cur, 0x638, *(u8*)(this_ + 0x12e));
-        setCell(this_, 0x38, cur, 0x620, *(u8*)(this_ + 0x12f));
-        setCell(this_, 0x38, cur, 0x608, *(u8*)(this_ + 0x130));
-        setCell(this_, 0x38, cur, 0x5f0, *(u8*)(this_ + 0x131));
+        setCellT(this_, tbl, 0x38, cur, 0x780, *(u8*)(this_ + 0x125));
+        setCellT(this_, tbl, 0x38, cur, 0x768, *(u8*)(this_ + 0x126));
+        setCellT(this_, tbl, 0x38, cur, 0x750, *(u8*)(this_ + 0x127));
+        setCellT(this_, tbl, 0x38, cur, 0x6c8, *(u8*)(this_ + 0x128));
+        setCellT(this_, tbl, 0x38, cur, 0x6b0, *(u8*)(this_ + 0x129));
+        setCellT(this_, tbl, 0x38, cur, 0x698, *(u8*)(this_ + 0x12a));
+        setCellT(this_, tbl, 0x38, cur, 0x680, *(u8*)(this_ + 0x12b));
+        setCellT(this_, tbl, 0x38, cur, 0x668, *(u8*)(this_ + 0x12c));
+        setCellT(this_, tbl, 0x38, cur, 0x650, *(u8*)(this_ + 0x12d));
+        setCellT(this_, tbl, 0x38, cur, 0x638, *(u8*)(this_ + 0x12e));
+        setCellT(this_, tbl, 0x38, cur, 0x620, *(u8*)(this_ + 0x12f));
+        setCellT(this_, tbl, 0x38, cur, 0x608, *(u8*)(this_ + 0x130));
+        setCellT(this_, tbl, 0x38, cur, 0x5f0, *(u8*)(this_ + 0x131));
         *(s16*)(*(u8**)(this_ + 0x38 + cur * 4) + 0x26) = 0;
         *(s32*)(this_ + 0x84) = 0x60;
         ((void* (*)(void*, u32, u32, u32))(*(void***)(*(u8**)(this_ + 8)))[15])(*(void**)(this_ + 8), cur * 4, 0x54, 0x66743031);
@@ -3243,6 +3252,112 @@ extern "C" void fn_803CC62C(u8* p) {
                 }
             }
         }
+    }
+}
+
+extern "C" void fn_803CC760(u8* p) {
+    s32 mx;
+    s32 order[3];
+    s32* op;
+    s32 i;
+    s32 r29;
+    s32 r24;
+    s32 idx;
+    u8* q;
+
+    mx = *(s16*)(lbl_8050DB0C + 0x168) + *(s16*)(lbl_8050DB0C + 0x16a);
+    tu803C_max(&mx, *(s16*)(lbl_8050DB0C + 0x16c) + *(s16*)(lbl_8050DB0C + 0x16e) + 3 * *(s16*)(lbl_8050DB0C + 0x170));
+    tu803C_max(&mx, *(s16*)(lbl_8050DB0C + 0x172) + *(s16*)(lbl_8050DB0C + 0x174) + *(s16*)(lbl_8050DB0C + 0x176));
+
+    op = order;
+    if (*(s32*)(p + 0xa4) != 0) {
+        *op++ = 0;
+    }
+    if (*(s32*)(p + 0xa4) != 1) {
+        *op++ = 1;
+    }
+    if (*(s32*)(p + 0xa4) != 2) {
+        *op = 2;
+    }
+
+    *(s16*)(p + 0xd8) = *(s16*)(p + 0xd8) + 1;
+    if (*(s16*)(p + 0xd8) > *(s16*)(lbl_8050DB0C + 0x168)) {
+        setFade(*(void**)(p + 0x14), *(s16*)(lbl_8050DB0C + 0x16a), 0, lbl_80543458, lbl_80543498);
+        fn_80402628(*(void**)(p + 0x14), *(s16*)(lbl_8050DB0C + 0x16a), ((u8*)*(void**)(p + 0x14))[0x28], 0);
+        setFade(*(void**)(p + 0x18), *(s16*)(lbl_8050DB0C + 0x16a), 0, lbl_80543458, lbl_80543498);
+        fn_80402628(*(void**)(p + 0x18), *(s16*)(lbl_8050DB0C + 0x16a), ((u8*)*(void**)(p + 0x18))[0x28], 0);
+        setFade(*(void**)(p + 0x1c), *(s16*)(lbl_8050DB0C + 0x16a), 0, lbl_80543458, lbl_80543498);
+        fn_80402628(*(void**)(p + 0x1c), *(s16*)(lbl_8050DB0C + 0x16a), ((u8*)*(void**)(p + 0x1c))[0x28], 0);
+        setKeyedAt(p, 0x4, 0x14, (u8*)lbl_804765D0 + 0x48, 0x51, 0x132);
+        setKeyedAt(p, 0x8, 0x14, (u8*)lbl_804765D0 + 0x2d0, 0x13, 0x183);
+    }
+
+    r29 = 0;
+    q = p;
+    for (i = 0; i < 4; i++) {
+        if (*(s16*)(p + 0xd8) > *(s16*)(lbl_8050DB0C + 0x16c) + r29) {
+            void* tgt = *(void**)(q + 0x24);
+            fn_80402940(tgt, *(s16*)(lbl_8050DB0C + 0x16e), lbl_80543458, lbl_8054349C, 0);
+            fn_80402628(tgt, *(s16*)(lbl_8050DB0C + 0x16e), ((u8*)tgt)[0x28], 0);
+            switch (i) {
+            case 0:
+                setKeyedAt(p, 0x8, 0x24, (u8*)lbl_804765D0 + 0x7f8, 0x4, 0x19f);
+                break;
+            case 1:
+                setKeyedAt(p, 0x8, 0x28, (u8*)lbl_804765D0 + 0x7d8, 0x4, 0x19f);
+                break;
+            case 2:
+                setKeyedAt(p, 0x8, 0x2c, (u8*)lbl_804765D0 + 0x7b8, 0x4, 0x19f);
+                break;
+            case 3:
+                setKeyedAt(p, 0x8, 0x30, (u8*)lbl_804765D0 + 0x798, 0x4, 0x19f);
+                break;
+            }
+        }
+        r29 += *(s16*)(lbl_8050DB0C + 0x170);
+        q += 4;
+    }
+
+    r24 = 0;
+    for (i = 0; i < 2; i++) {
+        if (*(s16*)(p + 0xd8) > *(s16*)(lbl_8050DB0C + 0x172) + r24) {
+            idx = *(s32*)(order);
+            setFade(*(void**)(p + 0x38 + idx * 4), *(s16*)(lbl_8050DB0C + 0x174), 0, lbl_80543498, lbl_80543458);
+            fn_80402628(*(void**)(p + 0x38 + idx * 4), *(s16*)(lbl_8050DB0C + 0x174), 0, ((u8*)*(void**)(p + 0x38 + idx * 4))[0x28]);
+            tu803C_setCell(p, 0x38, idx, 0x780, 0x125);
+            tu803C_setCell(p, 0x38, idx, 0x768, 0x126);
+            tu803C_setCell(p, 0x38, idx, 0x750, 0x127);
+            tu803C_setCell(p, 0x38, idx, 0x6c8, 0x128);
+            tu803C_setCell(p, 0x38, idx, 0x6b0, 0x129);
+            tu803C_setCell(p, 0x38, idx, 0x698, 0x12a);
+            tu803C_setCell(p, 0x38, idx, 0x680, 0x12b);
+            tu803C_setCell(p, 0x38, idx, 0x668, 0x12c);
+            tu803C_setCell(p, 0x38, idx, 0x650, 0x12d);
+            tu803C_setCell(p, 0x38, idx, 0x638, 0x12e);
+            tu803C_setCell(p, 0x38, idx, 0x620, 0x12f);
+            tu803C_setCell(p, 0x38, idx, 0x608, 0x130);
+            tu803C_setCell(p, 0x38, idx, 0x5f0, 0x131);
+            setFade(*(void**)(p + 0x44 + idx * 4), *(s16*)(lbl_8050DB0C + 0x174), 0, lbl_80543498, lbl_80543458);
+            fn_80402628(*(void**)(p + 0x44 + idx * 4), *(s16*)(lbl_8050DB0C + 0x174), 0, ((u8*)*(void**)(p + 0x44 + idx * 4))[0x28]);
+            tu803C_setCell(p, 0x44, idx, 0x5d8, 0x118);
+            tu803C_setCell(p, 0x44, idx, 0x5c0, 0x119);
+            tu803C_setCell(p, 0x44, idx, 0x5a8, 0x11a);
+            tu803C_setCell(p, 0x44, idx, 0x590, 0x11b);
+            tu803C_setCell(p, 0x44, idx, 0x578, 0x11c);
+        }
+        r24 += *(s16*)(lbl_8050DB0C + 0x176);
+    }
+    if (*(s32*)(p + 0xa4) != 0 && *(s16*)(lbl_8050DB0C + 0x172) < *(s16*)(p + 0xd8)) {
+        fn_80402940(*(void**)(p + *(s32*)(p + 0xa4) * 4 + 0x38), *(s16*)(lbl_8050DB0C + 0x174), lbl_80543458, lbl_8054349C, 0);
+        fn_80402940(*(void**)(p + *(s32*)(p + 0xa4) * 4 + 0x44), *(s16*)(lbl_8050DB0C + 0x174), lbl_80543458, lbl_8054349C, 0);
+    }
+    if (mx < *(s16*)(p + 0xd8)) {
+        s32 local_50 = *(s32*)(p + 0xe0);
+        s32 local_4c = *(s32*)(p + 0xe4);
+        void* obj = callVt3(p, 0x70620000, 0x50636f, 0x70623031);
+        ((ColorVt*)obj)->v76(obj, &local_4c, &local_50);
+        p[0x112] = p[0x110];
+        p[0x110] = 5;
     }
 }
 
