@@ -3037,10 +3037,10 @@ extern "C" void fn_800DD9B8(u8* p, u32 v) { *(u32*)(p + 0x3c) = v; }
 extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = &__vt__14J3DPEBlockFull;
-        if (param_2 != 0) {
+        if (param_1 != nullptr) {
             *(void**)param_1 = &__vt__10J3DPEBlock;
         }
-        if ((short)param_2 > 0) {
+        if (param_2 > 0) {
             __dl__FPv(param_1);
         }
     }
