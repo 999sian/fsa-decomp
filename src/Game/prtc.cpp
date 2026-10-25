@@ -26,15 +26,9 @@ extern f32 lbl_805411A8;
 extern f32 lbl_805411AC;
 
 static inline void* PrtcSpawnA(char* p, s32 id) {
-    f32 pos[3];
-    f32 x = *(f32*)(p + 0xc);
-    f32 x2 = *(f32*)(p + 0x244);
-    f32 y = *(f32*)(p + 0x10);
-    f32 y2 = *(f32*)(p + 0x248);
-    pos[0] = x + x2;
-    pos[1] = y + y2;
-    pos[2] = 0.0f;
-    return fn_8013CC50(*(s32*)(p + 4), pos, id, *(s32*)(p + 0x254), 0, 0, 0, 1, lbl_805411AC);
+    JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc) + *(f32*)(p + 0x244),
+                             *(f32*)(p + 0x10) + *(f32*)(p + 0x248), 0.0f);
+    return fn_8013CC50(*(s32*)(p + 4), &pos, id, *(s32*)(p + 0x254), 0, 0, 0, 1, 1.0f);
 }
 
 static inline void PrtcNotify(char* p) {
