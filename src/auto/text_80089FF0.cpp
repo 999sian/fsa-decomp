@@ -37,9 +37,7 @@ static int fpKind(f32 value)
         } else {
             kind = 1;
         }
-    } else if (exp > 0x7f800000) {
-        kind = 4;
-    } else if (exp == 0) {
+    } else if (exp < 0x7f800000 && exp == 0) {
         if ((bits & 0x7fffff) == 0) {
             kind = 3;
         } else {
