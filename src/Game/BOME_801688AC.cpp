@@ -189,23 +189,25 @@ extern "C" void fn_8016890C(void* this_, void* pos, s32 room, void* out) {
     }
 }
 
+#pragma opt_dead_code off
 extern "C" s32 fn_80168C38(char* this_) {
     f32 box[4];
-    JGeometry::TVec2<f32> rel;
+    f32 rel[2];
     Vec* ptr;
+    f32 margin = 4.0f;
     f32 px;
     f32 py;
+    int found;
     s32 i;
-    s32 found;
 
     ptr = (Vec*)fn_8023E724(*(s32*)(this_ + 0x90));
     found = -1;
-    rel.x = ptr->x;
-    rel.y = ptr->y;
+    rel[0] = ptr->x;
+    rel[1] = ptr->y;
     px = *(f32*)(this_ + 0xc);
     py = *(f32*)(this_ + 0x10);
-    rel.x = rel.x - px;
-    rel.y = rel.y - py;
+    *(volatile f32*)&rel[0] = rel[0] - px;
+    *(volatile f32*)&rel[1] = rel[1] - py;
     box[0] = *(f32*)(this_ + 0x60);
     box[1] = *(f32*)(this_ + 0x64);
     box[2] = *(f32*)(this_ + 0x68);
@@ -214,10 +216,10 @@ extern "C" s32 fn_80168C38(char* this_) {
     box[1] = box[1] + py;
     box[2] = box[2] + px;
     box[3] = box[3] + py;
-    box[0] = box[0] - 4.0f;
-    box[1] = box[1] - 4.0f;
-    box[2] = box[2] + 4.0f;
-    box[3] = box[3] + 4.0f;
+    box[0] = box[0] - margin;
+    box[1] = box[1] - margin;
+    box[2] = box[2] + margin;
+    box[3] = box[3] + margin;
     for (i = 0; i < 4; i++) {
         if (fn_8023EA28(i) != 1) {
             if (fn_8022E438(i, *(s32*)(this_ + 0x90)) == 0) {
@@ -234,13 +236,8 @@ extern "C" s32 fn_80168C38(char* this_) {
             found = i;
         }
     }
-    if (found < 0) {
-        return 0;
-    }
-    if (fn_8022CAF8(found) == 4) {
-        *(u8*)(this_ + 0x261) = 1;
-        return fn_8022E23C(found, *(void**)(this_ + 0x198));
-    }
+    if (found >= 0) {
+        if (fn_8022CAF8(found) != 4) {
     for (i = 0; i < 4; i++) {
         if (fn_8022E438(i, found) == 1) {
             *(u8*)(this_ + 0x261) = 1;
@@ -250,13 +247,19 @@ extern "C" s32 fn_80168C38(char* this_) {
                 JGeometry::TVec3<f32> d(*(Vec*)(this_ + 0xc));
                 ptr = (Vec*)fn_8023E724(i);
                 d.sub(*(JGeometry::TVec3<f32>*)ptr);
-                fn_8023DFF4(i);
+                fn_8023DFF4(i, &d);
             }
         }
     }
-    return 1;
+        } else {
+            *(u8*)(this_ + 0x261) = 1;
+            return fn_8022E23C(found, *(void**)(this_ + 0x198));
+        }
+        return 1;
+    }
+    return 0;
 }
-
+#pragma opt_dead_code reset
 extern "C" void fn_80168E78(char* this_) {
     SwbmDrawParam prm;
     prm.reset();
