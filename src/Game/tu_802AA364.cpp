@@ -16,6 +16,31 @@ extern "C" void *fn_802AA364(void *self, short flags) {
 extern "C" void fn_802AA3C4(void) {
 }
 
+// Actor virtual at vtable +0x34: nonzero once the actor is ready to act.
+struct Tu802AA364Actor {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual unsigned char isReady();
+};
+
+// Resource manager at game+0xa4; vtable +0x18 looks a resource up by type and name.
+struct Tu802AA364ResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(unsigned int type, const char* name);
+};
+
 extern "C" void fn_802A3948(void* a, void* b, int c, int d, int e);
 extern "C" void fn_802A3884(void* a, void* b, int c, int d, int e);
 extern "C" void fn_801F0E34(void* a, unsigned int code, unsigned int z);
