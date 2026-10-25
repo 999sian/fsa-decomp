@@ -27,7 +27,7 @@ extern void* fn_801F666C(void*, s32);
 extern void fn_8020B434(void*);
 extern void fn_8020B3E4(void*, s32, s32, void*, s32);
 extern "C" void* fn_80207AC0(void*);
-extern f32 lbl_8053F918;
+extern const f32 lbl_8053F918;
 extern f32 lbl_8053F91C;
 extern f32 lbl_8053F920;
 extern "C" void fn_80209640(void* this_, f32* out);
@@ -299,17 +299,19 @@ extern "C" void fn_80209280(char* this_) {
 
 extern "C" void* fn_802095C4(char* this_) {
     fn_80207AC0(this_);
+    void* vt = lbl_804A5C88;
+    s32 zero = 0;
     f32 f0 = lbl_8053F918;
-    *(void**)this_ = lbl_804A5C88;
-    *(s32*)(this_ + 0x340) = 0;
-    *(s32*)(this_ + 0x344) = 0;
-    *(s32*)(this_ + 0x348) = 0;
-    *(s32*)(this_ + 0x34c) = 0;
+    *(void**)this_ = vt;
+    *(s32*)(this_ + 0x340) = zero;
+    *(s32*)(this_ + 0x344) = zero;
+    *(s32*)(this_ + 0x348) = zero;
+    *(s32*)(this_ + 0x34c) = zero;
     *(f32*)(this_ + 0x350) = f0;
     *(f32*)(this_ + 0x354) = f0;
-    *(s32*)(this_ + 0x358) = 0;
+    *(s32*)(this_ + 0x358) = zero;
     *(s16*)(this_ + 0x35c) = -0x8000;
-    *(s16*)(this_ + 0x35e) = 0;
+    *(s16*)(this_ + 0x35e) = zero;
     *(f32*)(this_ + 0x360) = f0;
     *(f32*)(this_ + 0x364) = f0;
     *(f32*)(this_ + 0x368) = f0;
