@@ -22,10 +22,10 @@ static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, f32 y, f32 x) 
 extern "C" BOOL fn_801CAEF4(void* this_, const f32* pos, s32 room) {
     BOOL r = FALSE;
     if (v17__5ActorFiPf(this_, room, pos)
-        || tuCheckAt(this_, room, pos, pos[0] - lbl_8053EF38, pos[1] - lbl_8053EF38)
-        || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[0], pos[1] - lbl_8053EF38)
-        || tuCheckAt(this_, room, pos, pos[0] - lbl_8053EF38, lbl_8053EF38 + pos[1])
-        || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[0], lbl_8053EF38 + pos[1])) {
+        || tuCheckAt(this_, room, pos, pos[1] - lbl_8053EF38, pos[0] - lbl_8053EF38)
+        || tuCheckAt(this_, room, pos, pos[1] - lbl_8053EF38, lbl_8053EF38 + pos[0])
+        || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[1], pos[0] - lbl_8053EF38)
+        || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[1], lbl_8053EF38 + pos[0])) {
         r = TRUE;
     }
     return r;
@@ -277,13 +277,14 @@ extern "C" u8 fn_801CA274(char* p) {
     u8 mask;
     u8 r = 0;
     if (*(s32*)(p + 0x564) != 3) {
-        mask = 0xf;
+        u8 m = 0xf;
         if (*(s32*)(p + 0x560) != 4) {
-            mask = 1 << *(s32*)(p + 0x560);
+            m = 1 << *(s32*)(p + 0x560);
         }
+        mask = m;
         if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
             && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
-            u8 hit = fn_8021693C(p + 0x528, mask);
+            u8 hit = fn_8021693C(p + 0x528, m);
             if (hit) {
                 u8 done = 0;
                 for (s32 i = 0; i < 4; i++) {
@@ -391,7 +392,20 @@ static inline void tuPushAway(char* p, s32 who) {
     *(f32*)(p + 0x40) = d.y;
 }
 
-// near-match (98.8%): register coloring in the last two player loops differs
+static inline void tuPushAway2(char* p, const s32 who) {
+    f32 dx;
+    f32 dy;
+    dy = *(f32*)(p + 0x10) - fn_8023E724(who)->y;
+    dx = *(f32*)(p + 0xc) - fn_8023E724(who)->x;
+    JGeometry::TVec2<f32> d;
+    d.x = dx;
+    d.y = dy;
+    d.normalize();
+    d.scale(lbl_8053EF34);
+    *(f32*)(p + 0x3c) = d.x;
+    *(f32*)(p + 0x40) = d.y;
+}
+// Player collision checks.
 extern "C" u8 fn_801CA564(char* p) {
     switch (*(s32*)(p + 0x248)) {
     case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13:
@@ -408,6 +422,8 @@ extern "C" u8 fn_801CA564(char* p) {
     JGeometry::TVec3f fx1;
     JGeometry::TVec3f fx2;
     s32 kind;
+    JGeometry::TVec3f* pp;
+    s32 i;
     u8 held = fn_801C53C4(p);
     if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
         && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
@@ -494,7 +510,9 @@ extern "C" u8 fn_801CA564(char* p) {
         *(f32*)(p + 0x68) = x1;
         *(f32*)(p + 0x6c) = y1;
         for (s32 i = 0; i < 4; i++) {
-            if (i == fn_801F285C(p, &hit, 0, 1, i) && fn_801D0020(p, p + 0xc, i, 0) == *(s32*)(p + 0x98)) {
+            if (i != fn_801F285C(p, &hit, 0, 1, i)) continue;
+            int direction = fn_801D0020(p, p + 0xc, i, 0);
+            if (direction == *(s32*)(p + 0x98)) {
                 if (held) {
                     fn_8023B6CC(i);
                 fn_80237948(i, p + 0xc);
@@ -541,7 +559,6 @@ extern "C" u8 fn_801CA564(char* p) {
     found = 0;
     if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053EF20
         && *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053EF20) {
-        s32 i;
         u8 other = 0;
         for (i = 0; i < 4; i++) {
             if (i == fn_801F285C(p, 0, 0, 1, i)) {
@@ -565,10 +582,10 @@ extern "C" u8 fn_801CA564(char* p) {
         }
         if (!held) {
             vel = *(JGeometry::TVec3f*)(p + 0x3c);
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (i == fn_801F285C(p, 0, &kind, 1, i)) {
-                    JGeometry::TVec3f* pp = fn_8023E724(i);
-                    if (fn_801F37AC(p, fn_8023B6CC(i), pp, 0, kind, i)) {
+                    pp = fn_8023E724(i);
+                    if (fn_801F37AC(p, fn_8023B6CC(i), (JGeometry::TVec3f*)pp, 0, kind, i)) {
                         found = 1;
                         *(s32*)(p + 0x338) = i;
                     }
@@ -579,7 +596,7 @@ extern "C" u8 fn_801CA564(char* p) {
                 f32 dx = *(f32*)(p + 0xc) - fn_8023E724(*(s32*)(p + 0x338))->x;
                 d.set(dx, dy, lbl_8053EF20);
                 d.normalize();
-                *(JGeometry::TVec3f*)(p + 0x3c) = vel;
+                ((JGeometry::TVec3f*)(p + 0x3c))->set(vel);
                 d.scale(lbl_8053EF54);
                 ((JGeometry::TVec3f*)(p + 0x3c))->add(d);
                 *(f32*)(p + 0x44) = lbl_8053EF20;
