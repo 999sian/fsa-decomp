@@ -120,6 +120,8 @@ extern "C" void fn_801183BC(void);
 extern void* lbl_8053AAF8;
 extern char* lbl_8053A1C8;
 extern void* sManager__8JUTVideo;
+extern f32 lbl_80542C64;
+extern f32 lbl_80542C68;
 extern "C" void fn_80368198(Sub8036C0EC* this_) {
     char* self = (char*)this_;
     s32 a;
@@ -742,8 +744,8 @@ extern "C" void fn_8036C3AC(void* this_) {
     extern f32 lbl_80542CD0;
     extern f32 lbl_80542CD4;
 
-    char* self = (char*)this_;
     char* tbl = lbl_80474C38;
+    char* self = (char*)this_;
     s32 i;
     u32* b;
     u16* a;
@@ -924,7 +926,7 @@ extern "C" s32 fn_8036C8F4(void* this_) {
     return *(s32*)((char*)this_ + 0x240);
 }
 
-void fn_8036C8FC(void)
+void __sinit_tu_80368198_cpp(void)
 {
   extern void __ct__17JASGenericMemPoolFv(void);
   extern void __register_global_object(void*, void*, void*);
