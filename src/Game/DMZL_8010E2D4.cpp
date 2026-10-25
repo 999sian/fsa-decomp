@@ -106,6 +106,15 @@ extern "C" void fn_80110198(u8* this_) {
 
 extern "C" void fn_8030C210(void* p, void* q);
 extern "C" u8* lbl_8053AB10;
+extern "C" Vec* fn_8023E724(s32);
+extern "C" void fn_801CD950(f32*, f32, f32);
+extern const f32 lbl_8053C5D8;
+extern const f32 lbl_8053C5DC;
+extern const f32 lbl_8053C5E0;
+extern const f32 lbl_8053C5E4;
+extern const f32 lbl_8053C594;
+extern const f32 lbl_8053C5A0;
+
 extern "C" void fn_80110210(u8* this_) {
     u8* obj;
     Vec tmp;
