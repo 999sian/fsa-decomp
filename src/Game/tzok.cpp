@@ -368,7 +368,7 @@ extern "C" void fn_802051AC(char* this_, int param_2) {
     s32 room;
     bool bVar1;
     if (*(u8*)(p + 0xc4) != 0 && *(s32*)(p + 0xc8) >= 0 && *(s32*)(p + 0xc8) < 4) {
-        if (*(u8*)fn_80204638() != 0 || fn_802064E0(p)) {
+        if (*(u8*)fn_80204638() != 0 || tzokRoomActive(p)) {
             fn_80230C6C(*(s32*)(p + 0xc8));
         }
     }
@@ -395,32 +395,40 @@ extern "C" void fn_802051AC(char* this_, int param_2) {
     if (*(u8*)(p + 0x349) != 0) {
         *(u8*)(p + 0x349) -= 1;
     }
-    bVar1 = false;
+    s32 r;
+    bool outside = false;
     if (*(u16*)(p + 0x94) == 1 && !fn_801CD2F8(*(s32*)(p + 4))) {
-        s32 r = *(s32*)(p + 4);
+        r = *(s32*)(p + 4);
         u8* g = (u8*)fn_802D6A9C();
-        f32* box = (f32*)(g + (r < 8 ? 0xcc : 0xdc));
+        f32* box;
+        if (r < 8) box = (f32*)(g + 0xcc);
+        else box = (f32*)(g + 0xdc);
         f32 x = *(f32*)(p + 0xc);
         bool inside = false;
         if (x >= box[0] && *(f32*)(p + 0x10) >= box[1] && x < box[2] && *(f32*)(p + 0x10) < box[3]) {
             inside = true;
         }
         if (!inside) {
-            bVar1 = true;
+            outside = true;
         }
     }
-    if (!bVar1) {
+    if (!outside) {
         s32 st = *(s32*)(p + 0x248);
         switch (st) { case 3: case 4: case 9: break; default: {
-            if (*(u8*)fn_80204638() == 0 && !fn_802064E0(p)) {
+            if (*(u8*)fn_80204638() == 0 && !tzokRoomActive(p)) {
                 f32 buf[6];
                 fn_801F31C4(p, buf);
+                s32 currentRoom;
                 s32 i = 0;
                 do {
-                    if (fn_801CCFE4(i) && *(s32*)(p + 4) == fn_8023DE58((void*)i) &&
+                    if (fn_801CCFE4(i)) {
+                    currentRoom = *(s32*)(p + 4);
+                    s32 playerRoom = fn_8023DE58((void*)i);
+                    if (playerRoom == currentRoom &&
                         fn_80239C00(i, buf, *(s32*)(p + 4)) && fn_8022F9E4(i, *(void**)(p + 0x198), 1, 0)) {
                         fn_80205E0C((u8*)p, 3);
                         break;
+                    }
                     }
                     i++;
                 } while (i < 4);
@@ -695,8 +703,11 @@ extern "C" void fn_80206168(char* p) {
             if (obj == 0) {
                 continue;
             }
-            JGeometry::TVec3f v;
-            v.set(1.5f * (2.0f * tzokRand01() - 1.0f), 1.5f * (2.0f * tzokRand01() - 1.0f), -0.5f * tzokRand01());
+            f32 c3 = 1.0f;
+            f32 c2 = 2.0f;
+            f32 c1 = 1.5f;
+            f32 c0 = -0.5f;
+            JGeometry::TVec3f v(c1 * (c2 * tzokRand01() - c3), c1 * (c2 * tzokRand01() - c3), c0 * tzokRand01());
             *(JGeometry::TVec3f*)(obj + 0x3c) = v;
         }
     }
