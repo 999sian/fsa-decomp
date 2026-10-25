@@ -284,7 +284,6 @@ extern "C" void fn_80331D38(char* this_) {
     extern unsigned char fn_8023F264(int idx);
     extern unsigned char fn_80239C00(int idx, void* box, int a2);
     extern unsigned char fn_8022F9E4(int idx, int a0, unsigned char a1, unsigned char a2);
-    extern float lbl_80541E9C;
     extern float lbl_80541EFC;
     float limit = lbl_80541EFC;
     float cur = *(float*)(this_ + 0x14);
