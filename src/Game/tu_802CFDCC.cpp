@@ -8,8 +8,6 @@ struct FsaResourceManager {
     virtual void v01();
     virtual void v02();
     virtual void v03();
-    virtual void v04();
-    virtual void v05();
     virtual u32 getResource(u32 fourccType, const char* fileName); // slot 6 (+0x18)
 };
 
@@ -133,19 +131,16 @@ extern "C" Actor* fn_802CFDCC(Actor* p, s16 n) {
 
 extern "C" void fn_802CFE2C(Actor* p) {
     if (*(u8*)((u8*)p + 0x26c) == 1) {
-        u32 sobRes;
-        s32 spriteId;
-        u8 color[4];
-        Vec pos2;
-        Vec pos1;
-        Vec pos0;
         SobDrawParams drawParams;
+        JGeometry::TVec3f pos0;
+        JGeometry::TVec3f pos1;
+        JGeometry::TVec3f pos2;
+        s32 spriteId;
+        u32 sobRes;
 
         drawParams.renderFlags[1] = -1;
         drawParams.primaryColor.rgba.a = (u8)(s32)(lbl_80540E70 - *(f32*)((u8*)p + 0x270));
-        pos0.y = p->field_0C.y + lbl_80540E78;
-        pos0.x = p->field_0C.x + lbl_80540E7C;
-        pos0.z = p->field_0C.z;
+        pos0.set(lbl_80540E7C + p->field_0C.x, lbl_80540E78 + p->field_0C.y, p->field_0C.z);
         spriteId = *(s32*)((u8*)p + 0x264) + 0x175;
         if (p->field_04 < 8) {
             sobRes = lbl_8053AAF8->mResMgr->getResource(FOURCC_SOB, lbl_8046E040);
@@ -153,23 +148,15 @@ extern "C" void fn_802CFE2C(Actor* p) {
         }
 
         drawParams.primaryColor.rgba.a = (u8)(s32)*(f32*)((u8*)p + 0x270);
-        pos1.y = p->field_0C.y + lbl_80540E78;
-        pos1.x = p->field_0C.x + lbl_80540E7C;
-        pos1.z = p->field_0C.z;
+        pos1.set(lbl_80540E7C + p->field_0C.x, lbl_80540E78 + p->field_0C.y, p->field_0C.z);
         spriteId = lbl_8046DFD0[*(s32*)((u8*)p + 0x264)] + 0x175;
         if (p->field_04 < 8) {
             sobRes = lbl_8053AAF8->mResMgr->getResource(FOURCC_SOB, lbl_8046E040);
             fn_802F86CC(lbl_8053AB10->mSobRenderer, &pos1, sobRes, spriteId, lbl_80540E80, lbl_80540E80, &drawParams);
         }
 
-        pos2.y = p->field_0C.y + lbl_80540E78;
-        pos2.x = p->field_0C.x + lbl_80540E7C;
-        pos2.z = p->field_0C.z;
-        color[0] = 0;
-        color[1] = 0;
-        color[2] = 0;
-        color[3] = 0x80;
-        fn_80158B5C(lbl_8053AB10->mFxMgr, p->field_04, &pos2, *(GXColor*)color, lbl_80540E84);
+        pos2.set(lbl_80540E7C + p->field_0C.x, lbl_80540E78 + p->field_0C.y, p->field_0C.z);
+        fn_80158B5C(lbl_8053AB10->mFxMgr, p->field_04, &pos2, JUtility::TColor(0, 0, 0, 0x80), lbl_80540E84);
     }
 }
 
