@@ -75,8 +75,8 @@ static inline f32 sykyRand01() {
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
-static inline f32 sykyRandFrom(void* game, u32 multiplier = 0x19660d) {
-    u32* seed = (u32*)((u8*)game + 0xb4);
+static inline f32 sykyRandFrom(void* __restrict game, u32 multiplier = 0x19660d) {
+    u32* __restrict seed = (u32*)((u8*)game + 0xb4);
     *seed = *seed * multiplier + 0x3c6ef35f;
     u32 bits = (*seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053E460;
@@ -178,6 +178,7 @@ extern "C" void fn_8019E7A4(u8* p) {
     fn_801F06F0(p, lbl_80468494, *(s32*)(p + 0x264) + 8, &rec, 0, lbl_8053E460, lbl_8053E460);
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_8019E910(u8* p) {
     switch (*(s32*)(p + 0x268)) {
     case 0:
@@ -201,17 +202,17 @@ extern "C" void fn_8019E910(u8* p) {
         }
         switch (*(s32*)(p + 0x230)) {
         case 11:
-            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8);
-            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8);
-            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRandFrom(lbl_8053AAF8);
-            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRand01();
+            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRand01();
+            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRand01();
+            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRand01();
             *(s32*)(p + 0x230) = 0xc;
             break;
         case 12:
             *(f32*)(p + 0x44) -= lbl_8053E460;
             if (*(f32*)(p + 0x14) <= lbl_8053E464) {
                 *(f32*)(p + 0x14) = lbl_8053E464;
-                *(f32*)(p + 0x44) = lbl_8053E474 + lbl_8053E488 * sykyRandFrom(lbl_8053AAF8);
+                *(f32*)(p + 0x44) = lbl_8053E474 + lbl_8053E488 * sykyRand01();
                 *(s32*)(p + 0x230) = 0xd;
             }
             break;
@@ -230,7 +231,7 @@ extern "C" void fn_8019E910(u8* p) {
         break;
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8019EC04(u8* p) {
     fn_801F71A4(p + 0x3c, *(f32*)(p + 0x2a0), lbl_8053E46C, lbl_8053E460);
     fn_801F71A4(p + 0x40, *(f32*)(p + 0x2a4), lbl_8053E46C, lbl_8053E460);
