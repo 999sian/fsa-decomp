@@ -170,17 +170,21 @@ extern "C" bool fn_80256C74(u8* p, const f32* bounds, s32 id) {
     f32 y0 = F32(p, 0x5e0);
     f32 x1 = F32(p, 0x5e4);
     f32 y1 = F32(p, 0x5e8);
-    if (x0 <= bounds[0]) {
-        x0 = bounds[0];
+    f32 b0 = bounds[0];
+    if (x0 <= b0) {
+        x0 = b0;
     }
-    if (y0 <= bounds[1]) {
-        y0 = bounds[1];
+    f32 b1 = bounds[1];
+    if (y0 <= b1) {
+        y0 = b1;
     }
-    if (x1 >= bounds[2]) {
-        x1 = bounds[2];
+    f32 b2 = bounds[2];
+    if (x1 >= b2) {
+        x1 = b2;
     }
-    if (y1 >= bounds[3]) {
-        y1 = bounds[3];
+    f32 b3 = bounds[3];
+    if (y1 >= b3) {
+        y1 = b3;
     }
     bool ok = false;
     if (x1 >= x0 && y1 >= y0) {
@@ -364,11 +368,11 @@ extern "C" bool fn_802575B8(u8* p, const JGeometry::TBox2<f32>* bounds,
 
 extern "C" bool fn_802576CC(u8* p, const JGeometry::TBox2<f32>* bounds,
                              s32 id, JGeometry::TVec2<f32>* center) {
+    u8* ids = p;
     u8* base = p;
     u8* boxes = base;
-    s32* ids = (s32*)p;
-    if (S32(p, 0xb00) >= 0 && S32(p, 0xb40) == id) {
-        for (s32 i = 0; i < 3; i++, ids++, boxes += 0x10) {
+    if (S32(ids, 0xb00) >= 0 && S32(ids, 0xb40) == id) {
+        for (s32 i = 0; i < 3; i++, ids += 4, boxes += 0x10) {
             JGeometry::TBox2<f32> overlap = BOX(boxes, 0x4e0);
             if (overlap.intersect(*bounds)) {
                 JGeometry::TBox2<f32>& box = BOX(base, 0x4e0 + i * 0x10);
@@ -379,7 +383,7 @@ extern "C" bool fn_802576CC(u8* p, const JGeometry::TBox2<f32>* bounds,
             }
         }
     }
-    S32(p, 0xb7c) = -1;
+    S32(base, 0xb7c) = -1;
     return false;
 }
 
