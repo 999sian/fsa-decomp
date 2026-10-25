@@ -399,7 +399,7 @@ void fn_8022B278()
     }
 }
 
-static inline u8 p40AF0(int i) {
+static inline int p40AF0(int i) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(i)) return 0;
     return fn_80240AF0(lbl_8053AC90->players[i]);
@@ -409,7 +409,7 @@ static inline int p486A0(int i) {
     if (!isPlayerEnabled(i)) return 0;
     return fn_802486A0(lbl_8053AC90->players[i]);
 }
-static inline u8 pIsLinkedU8(int i) {
+static inline int pIsLinkedU8(int i) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(i)) return 0;
     return Player_IsLinked(lbl_8053AC90->players[i]);
