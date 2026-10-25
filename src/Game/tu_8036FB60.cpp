@@ -76,6 +76,57 @@ extern float lbl_80542E3C;
 extern "C" f32 lbl_80542E38;
 extern "C" s32 fn_80230CFC(s32);
 extern s32 lbl_80474F4C[];
+extern "C" void fn_8036FB60(char* self) {
+ s32 k;
+ s32 j;
+ s32 i;
+ u8 found = 0;
+ if (*(u8*)(self+0x398)==1) {
+  for (j=0;j<4;j++) {
+   for (i=0;i<4;i++) {
+    if (PSVECDistance((Vec*)(self+0x264+i*12),(Vec*)(self+0x294+j*12)) < lbl_80542DC0) {
+     found=1;
+     break;
+    }
+   }
+   if (found==1) break;
+  }
+ }
+ if (found==1) {
+  ++*(s32*)(self+0x238);
+ } else {
+  for (k=0;k<4;k++) {
+   JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self+0x294+k*12);
+   fn_8037B374(*(void**)(self+0x3b0+k*4), &pos, *(s32*)(self+0x340+k*4)*3);
+  }
+  s32 state=*(s32*)(self+0x230);
+  if (state==0 || state==3 || state==11 || *(u8*)(self+0x398)!=1) {
+   if (*(s32*)(self+0x238)==0) {
+    ++*(s32*)(self+0x234);
+    *(s32*)(self+0x234) &= 3;
+    fn_80371D50(self,*(s32*)(self+0x234));
+   } else {
+    ((JGeometry::TVec3<f32>*)(self+0x294))->add(*(JGeometry::TVec3<f32>*)(self+0x2f4));
+    ((JGeometry::TVec3<f32>*)(self+0x2a0))->add(*(JGeometry::TVec3<f32>*)(self+0x300));
+    ((JGeometry::TVec3<f32>*)(self+0x2ac))->add(*(JGeometry::TVec3<f32>*)(self+0x30c));
+    ((JGeometry::TVec3<f32>*)(self+0x2b8))->add(*(JGeometry::TVec3<f32>*)(self+0x318));
+    if (*(s32*)(self+0x238)==0x76) {
+     f32 zero = lbl_80542DC4;
+     for (k=0;k<4;k++) {
+      *(JGeometry::TVec3<f32>*)(self+0x294+k*12)=*(JGeometry::TVec3<f32>*)(self+0x2c4+k*12);
+      *(f32*)(self+0x2fc+k*12)=zero;
+      *(f32*)(self+0x2f8+k*12)=zero;
+      *(f32*)(self+0x2f4+k*12)=zero;
+      fn_80458880(lbl_8053AF80,0x37,-1);
+     }
+    } else if (*(s32*)(self+0x238)<0x76) {
+     *(u8*)(self+0x398)=1;
+    }
+   }
+  }
+ }
+}
+
 extern "C" void fn_80370020(void* this_) {
     f32 box[4];
     JGeometry::TVec3<f32> pos;
@@ -617,7 +668,11 @@ extern "C" void fn_803717CC(char* self)
 {
 	fn_803721F4(self);
 	JGeometry::TBox2<f32> tmp(lbl_80542E1C, lbl_80542E28, lbl_80542E2C, lbl_80542E30);
-	JGeometry::TBox2<f32> area(tmp);
+	JGeometry::TBox2<f32> area;
+    *(u32*)&area.i.x = *(u32*)&tmp.i.x;
+    *(u32*)&area.i.y = *(u32*)&tmp.i.y;
+    *(u32*)&area.f.x = *(u32*)&tmp.f.x;
+    *(u32*)&area.f.y = *(u32*)&tmp.f.y;
 	f32* pos = (f32*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
 	bool inside = false;
 	if (pos[0] >= area.i.x && pos[1] >= area.i.y && pos[0] < area.f.x && pos[1] < area.f.y) {
@@ -645,7 +700,10 @@ extern "C" void fn_803717CC(char* self)
 		*(f32*)(self + 0x24c) = lbl_80542DC4;
 		*(f32*)(self + 0x250) = (lbl_80542DF4 - *(f32*)(self + 0x244)) / lbl_80542E34;
 		*(f32*)(self + 0x254) = (lbl_80542DF8 - *(f32*)(self + 0x248)) / lbl_80542E34;
-		JGeometry::TBox2<f32> rect = *(JGeometry::TBox2<f32>*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x164);
+		JGeometry::TBox2<f32> rect;
+        u32* src = (u32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x164);
+        *(u32*)&rect.i.x = src[0]; *(u32*)&rect.i.y = src[1];
+        *(u32*)&rect.f.x = src[2]; *(u32*)&rect.f.y = src[3];
 		*(f32*)(self + 0x25c) = (rect.f.y - rect.i.y) * lbl_80542E04;
 		*(f32*)(self + 0x260) = lbl_80542DFC - *(f32*)(self + 0x25c);
 		f32 f1 = *(f32*)(self + 0x248);
