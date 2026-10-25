@@ -62,13 +62,6 @@ extern "C" void fn_80230498(s32 idx, void* vec, s32 a, s32 b, s32 c, s32 d, s32 
 extern "C" u8 fn_802308E0(s32 idx);
 extern "C" void fn_8021BFA8(void* p);
 
-static inline f32 Hrmn_approach(f32 cur, f32 target, f32 steps) {
-    if (steps < FLT_EPSILON) {
-        return target;
-    }
-    return cur + (1.0f / steps) * (target - cur);
-}
-
 static inline void Hrmn_approachTo(f32& cur, f32 target, f32 steps) {
     if (steps < FLT_EPSILON) {
         cur = target;
