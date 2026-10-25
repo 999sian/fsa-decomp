@@ -30,8 +30,7 @@ struct FsaMenuNumber {
 };
 
 struct FsaBlock48 {
-    u32 a, b, c;
-    u32 w[9];
+    u32 w[12];
 };
 extern "C" u8 lbl_804B1810[];
 extern "C" u8 lbl_8052C5D8[];
@@ -1675,7 +1674,7 @@ extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
 #pragma inline_depth(8)
 extern "C" void* fn_80440928(f32 a, f32 b) { return ((void* (*)(void*, f32, f32))fn_8043DF8C)(lbl_8053AED0, a, b); }
 
-#pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_8044094C(void) {
     u8* p = lbl_804B1810;
     u8* base = lbl_8052C5D8;
@@ -1727,4 +1726,4 @@ extern "C" void fn_8044094C(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
