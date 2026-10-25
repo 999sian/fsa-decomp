@@ -130,11 +130,12 @@ extern "C" void* fn_8039017C(void* this_, short flag) {
 
 extern "C" void* fn_8039027C(void* this_) {
     char* base = lbl_80475670;
-    *(void**)this_ = lbl_804AF480;
+    u8* self = (u8*)this_;
+    *(void**)self = lbl_804AF480;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
-    lbl_8053AD80 = (u8*)this_;
-    *(void**)((u8*)this_ + 0x4) = 0;
-    *(void**)((u8*)this_ + 0x8) = 0;
+    lbl_8053AD80 = self;
+    *(void**)(self + 0x4) = 0;
+    *(void**)(self + 0x8) = 0;
     fn_80158B3C(*(void**)(lbl_8053AB10 + 0x2c));
     if (lbl_80529DEC[0x242] == 0) {
         lbl_80529DEC[0x242] = 1;
@@ -160,13 +161,13 @@ extern "C" void* fn_8039027C(void* this_) {
         if (p != 0) {
             fn_8041787C(p);
         }
-        *(void**)((u8*)this_ + 0x8) = p;
+        *(void**)(self + 0x8) = p;
     } else {
         void* p = __nw__FUl(0x66c);
         if (p != 0) {
             fn_804122F4(p);
         }
-        *(void**)((u8*)this_ + 0x4) = p;
+        *(void**)(self + 0x4) = p;
     }
     if (*(u32*)(lbl_8053AF80 + 0x58) == 0x100001a) {
         if (lbl_80529DEC[0x248] != 1) {
@@ -214,9 +215,9 @@ extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
-extern "C" void fn_803905F4(void)
+extern "C" void __sinit_tu_8039003C_cpp(void)
 {
-    char* base = &lbl_8050E118[0];
+    char* base = lbl_8050E118;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
