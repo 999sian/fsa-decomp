@@ -392,7 +392,7 @@ extern const f32 lbl_80542614;
 extern const f32 lbl_80542620;
 extern u8 lbl_8053AD40;
 f32 lbl_8050AED8[8];
-#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" s32 fn_803506E0(u8* self) {
     const f32* __restrict tbl;
     s32 bit;
