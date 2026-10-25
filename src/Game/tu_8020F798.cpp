@@ -51,7 +51,8 @@ extern "C" void fn_8020F80C(void* self, char* p)
         if (r == 0) {
             return;
         }
-        rec.b1c = 0;
+    }
+    rec.b1c = 0;
         rec.b1d = 0;
         if (*(u32*)(this_ + 0x138) == 0) {
             fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &rec, 0, lbl_8046A448, 0, 0);
@@ -78,7 +79,6 @@ extern "C" void fn_8020F80C(void* self, char* p)
             mode = 2;
             *(f32*)(this_ + 0x14) -= lbl_8046A238[*(s32*)(this_ + 0x350)].f;
         }
-    }
     if (*(s32*)(this_ + 4) < 8) {
         void* res = (*(Tu8020F80CResMgr**)(lbl_8053AAF8 + 0xa4))->get('SOB ', lbl_8046A458);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, (s32)p, 1.0f, 1.0f, &rec);
