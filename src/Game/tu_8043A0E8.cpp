@@ -174,7 +174,9 @@ extern const f32 lbl_80543CF0;
 extern const f32 lbl_80543CF4;
 extern "C" void fn_8041E708(void* p, s32 i, s32 val, u8 flag);
 extern "C" void fn_80425234(void* p, s32 i, s32 val, u8 flag);
+#pragma dont_inline on
 extern "C" void fn_8043E7CC(void* game, void* v);
+#pragma dont_inline reset
 extern "C" void fn_8041E58C(void* p);
 extern "C" void fn_80425128(void* p);
 extern "C" void fn_8041FC2C(void* p);
