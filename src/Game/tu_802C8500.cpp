@@ -302,23 +302,8 @@ extern "C" void fn_802C8F28(char* this_) {
     u8 buf2[8];
     f32 pos[2];
     f32 y;
-    u32 n = (u8)fn_80138A30(lbl_8053AAF8);
-    s32 go = 0;
-    if (*(s32*)(this_ + 0x248) == 0) {
-        go = 1;
-    } else if (*(s32*)(this_ + 0x248) == 1) {
-        if (n >= 3) {
-            go = 1;
-        }
-    } else if (*(s32*)(this_ + 0x248) == 2) {
-        if (n >= 4) {
-            go = 1;
-        }
-    } else if (*(s32*)(this_ + 0x248) == 3) {
-        if (n >= 2) {
-            go = 1;
-        }
-    }
+    s32 go;
+    key0InitialCheck(this_, fn_80138A30(lbl_8053AAF8), go);
     y = *(f32*)(this_ + 0x10);
     pos[0] = *(f32*)(this_ + 0xc);
     pos[1] = y;
