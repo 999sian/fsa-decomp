@@ -83,8 +83,7 @@ extern "C" void fn_80434370(char* this_) {
             *(f32*)(this_ + 0x48) = fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_ + 0x4))->s13((u64)0x54613031))->getStringPtr(), 0xfc, 0, 0, 0);
         }
         char* p = (char*)((VtSlots*)*(void**)(this_ + 0x4))->s13((u64)0x54613031);
-        f32 d = *(f32*)(p + 0x28) - *(f32*)(p + 0x20);
-        *(f32*)(this_ + 0x40) = (d - *(f32*)(this_ + 0x48) * f31) * lbl_80543BC8;
+        *(f32*)(this_ + 0x40) = ((*(f32*)(p + 0x28) - *(f32*)(p + 0x20)) - *(f32*)(this_ + 0x48) * f31) * lbl_80543BC8;
     } else if (idx == 1) {
         if (*(u8*)(this_ + 0x6c) == 0) {
             if (*(u8*)(this_ + 0x69) == 1) {
@@ -104,8 +103,7 @@ extern "C" void fn_80434370(char* this_) {
             }
         }
         char* p = (char*)((VtSlots*)*(void**)(this_ + 0x4))->s13((u64)0x54613032);
-        f32 d = *(f32*)(p + 0x28) - *(f32*)(p + 0x20);
-        *(f32*)(this_ + 0x40) = (d - *(f32*)(this_ + 0x4c) * f31) * lbl_80543BC8;
+        *(f32*)(this_ + 0x40) = ((*(f32*)(p + 0x28) - *(f32*)(p + 0x20)) - *(f32*)(this_ + 0x4c) * f31) * lbl_80543BC8;
     } else if (idx == 2) {
         if (*(u8*)(this_ + 0x6c) == 1) {
             if (*(u8*)(this_ + 0x6a) == 1) {
@@ -224,7 +222,7 @@ extern "C" void fn_80436668(char* param_1)
 extern "C" int fn_804366B8(Unk80434370* param_1)
 {
     (param_1->*lbl_804B1690[param_1->m_state])();
-    return 2 == param_1->m_state;
+    return param_1->m_state == 2;
 }
 
 extern "C" void* fn_8043711C(char* this_, s16 how) {
@@ -237,10 +235,8 @@ extern "C" void* fn_8043711C(char* this_, s16 how) {
 		DispatchSlot2(this_ + 0x10);
 		DispatchSlot2(this_ + 0x14);
 		DispatchSlot2(this_ + 0x18);
-		char* p = this_;
 		for (s32 i = 0; i < 6; i++) {
-			DispatchSlot2(p + 0x1c);
-			p += 4;
+			DispatchSlot2(this_ + 0x1c + i * 4);
 		}
 		DispatchSlot2(this_ + 0x34);
 		if (how > 0) {
@@ -249,4 +245,6 @@ extern "C" void* fn_8043711C(char* this_, s16 how) {
 	}
 	return this_;
 }
+
+extern "C" void __sinit_tu_80434370_cpp() {}
 
