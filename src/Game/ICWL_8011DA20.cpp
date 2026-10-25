@@ -136,13 +136,10 @@ static inline bool icwlHitObject(u8* this_) {
 static inline bool icwlHitFire(u8* this_) {
     ICWLVec2 v;
     ICWLBox box;
-    icwlGetBox(this_, &box);
     v.x = lbl_8053C8B8;
     v.y = lbl_8053C8B8;
-    if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0) {
-        return true;
-    }
-    if (fn_801F2718(this_, 0x46495245) >= 0) {
+    icwlGetBox(this_, &box);
+    if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0 || fn_801F2718(this_, 0x46495245) >= 0) {
         return true;
     }
     return false;
