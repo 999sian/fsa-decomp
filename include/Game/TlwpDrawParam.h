@@ -47,7 +47,7 @@ struct TlwpDrawParam {
 };
 extern "C" double sin(double);
 extern "C" double cos(double);
-static inline void tlwpRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+static inline void tlwpRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, const f32 s) {
     f32 sz, sy, sx, cz, cy, cx;
     sx = sin(ax);
     sy = sin(ay);
