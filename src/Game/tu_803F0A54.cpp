@@ -341,6 +341,11 @@ extern "C" void fn_803F1C70(u8* p) {
     }
 }
 
+static inline s32 tu803F_clearTimer(u8* p) {
+    s32 zero = 0;
+    *(s16*)(p + 0x240) = zero;
+    return zero;
+}
 extern "C" void fn_803F2580(u8* p) {
     s32 j;
     s32 i;
@@ -951,6 +956,7 @@ extern "C" void fn_803F726C(u8* p) {
     }
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_803F8050(u8* p) {
     s32 t = *(s16*)(p + 0x240);
 
@@ -972,29 +978,7 @@ extern "C" void fn_803F8050(u8* p) {
         if (fn_80309C4C(lbl_8053AD30, 0x1100, q[0x23d] + 2) != 0) {
             if (*(s32*)(p + 0x1a8) < 3) {
                 *(s32*)(p + 0x1cc) = 0xd;
-                *(s16*)(p + 0x240) = 0;
-                *(s32*)(p + 0x1d0) = 5;
-                if (*(s32*)(p + 0x1a8) == 0) {
-                    s32 i = 0;
-                    s32 j = 0;
-                    s32 k;
-                    u8* b;
-                    for (k = 0; k < 4; k++) {
-                        if (i < *(s32*)(p + 0x1ac) + 2) {
-                            lbl_8053AAF8[0x82] |= (u8)(1 << i);
-                            b = lbl_8053AAF8;
-                            b[0x83] &= ~(u8)(3 << j);
-                            b[0x83] |= (u8)(1 << j);
-                        } else {
-                            lbl_8053AAF8[0x82] &= ~(u8)(1 << i);
-                            lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
-                        }
-                        j += 2;
-                        i++;
-                    }
-                }
-                *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
-                *(s32*)(p + 0x1c4) = 9;
+                fn_803F2580(p);
             }
             fn_80458880(lbl_8053AF80, 0xb, -1);
         } else if (fn_80309C4C(lbl_8053AD30, 0x200, q[0x23d] + 2) != 0) {
@@ -1024,7 +1008,7 @@ extern "C" void fn_803F8050(u8* p) {
         *(s32*)(p + 0x1d0) = 0;
     }
 }
-
+#pragma opt_lifetimes reset
 extern const f32 lbl_805437C0;
 extern const f32 lbl_805437C4;
 extern "C" void fn_803F8354(u8* p) {
