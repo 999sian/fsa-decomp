@@ -26,6 +26,28 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
+extern "C" char lbl_8053B868;
+static inline bool findModuleAddress(u32 addr, u32* id, u32* index, u32* offset, char** name)
+{
+    if (addr == 0) return false;
+    for (u32* module = *(u32**)0x800030c8; module; module = (u32*)module[1]) {
+        u32* section = (u32*)module[4];
+        for (u32 i = 0; i < module[3]; i++, section += 2) {
+            u32 size = section[1];
+            if (size) {
+                u32 start = section[0] & ~1;
+                if (start <= addr && addr < start + size) {
+                    if (id) *id = module[0];
+                    if (index) *index = i;
+                    if (offset) *offset = addr - start;
+                    if (name) *name = (char*)module[5];
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 static int fpKind(f32 value)
 {
     u32 bits = *(u32*)&value;
