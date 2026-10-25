@@ -1864,12 +1864,6 @@ s32 id = (s32)a->field_04; u8 same = 0; if (ee8f4_eq(fn_8023DE58(i), id) || ee8f
  * entry for a->field_18C to pick a name/count, then spawns local[0+i] actors
  * (local[4+i] name) per row and scatters each one on a ring. */
 
-static inline f32 ActorDropRandom() {
-    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *seed = *seed * 0x19660d + 1013904223;
-    u32 bits = (*seed >> 9) | 0x3f800000;
-    return *(f32*)&bits - 1.0f;
-}
 extern "C" void fn_801F52A4(Actor* a) {
     u32 rnd1Bits;
     u32 rnd2Bits;
@@ -1878,21 +1872,13 @@ extern "C" void fn_801F52A4(Actor* a) {
     u32 name[2];
     u32 param[2];
     u32 count[2];
-    u32 i;
+    int i;
     u32 j;
     s32 id;
     s32 idx = a->field_18C;
 
-    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *seed = *seed * 0x19660d + 1013904223;
-    rnd1Bits = (*seed >> 9) | 0x3f800000;
-    f32 roll = *(f32*)&rnd1Bits - lbl_8053F774;
-    if (roll < lbl_80469D48[idx]) {
-    } else {
-        return;
-    }
-    *seed = *seed * 0x19660d + 1013904223;
-    rnd2Bits = (*seed >> 9) | 0x3f800000;
+    if (!(((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_80469D48[idx])) return;
+    u32* options = lbl_80469D78 + idx * 8;
     name[0] = lbl_8053F728;
     name[1] = lbl_8053F72C;
     param[0] = lbl_80543F40;
@@ -1900,7 +1886,7 @@ extern "C" void fn_801F52A4(Actor* a) {
     count[0] = lbl_80543F48;
     count[1] = lbl_80543F4C;
 
-    switch (lbl_80469D78[idx * 8 + (s32)(lbl_8053F7A4 * (*(f32*)&rnd2Bits - lbl_8053F774))]) {
+    switch (options[(s32)(8.0f * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1())]) {
     case 1:
         count[0] = 1;
         name[0] = 0x48415254;
@@ -1970,18 +1956,18 @@ extern "C" void fn_801F52A4(Actor* a) {
     f32 dy = a->field_0C.y - a->field_0C.z;
     for (i = 0; i < 2 && name[i] != 0x4e554c4c; i++) {
         u32 n = count[i];
-        param[i] |= 0x26001e00;
+        param[i] |= 0x261e00;
         f32 spread = scale * (f32)i;
         for (j = 0; j < n; j++) {
             p1.x = x;
             p1.y = dy;
             p1.z = zero;
             id = Actor_CreateByID(fn_801F856C(), name[i], a->field_04, (f32*)&p1, param[i], -1, -1);
-            if (id >= 0 && n > 1) {
+            if (id >= 0 && count[i] > 1) {
                 void* child = fn_801F666C(fn_801F856C(), id);
                 if (child != 0) {
                     JGeometry::setTVec3f(&p1.x, &p2.x);
-                    f32 step = spread / (f32)n;
+                    f32 step = spread / (f32)count[i];
                     f32 astep = step;
                     if (astep < zero) {
                         astep = -astep;
