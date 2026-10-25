@@ -81,7 +81,7 @@ extern "C" void fn_80454A6C(void* this_) {
     o = ((VFn4)(*(void***)o)[15])(o, 0x73630000, 0x50, 0x73633031);
     ((VFn3)(*(void***)o)[68])(o, uVar1, 0);
 
-    u32* p = lbl_80491470;
+    const u32* p = lbl_80491470;
     for (s32 i = 0; i < 3; i++, p += 2) {
         if (i == *(s16*)((u8*)this_ + 0x1c)) {
             u32 c1;
