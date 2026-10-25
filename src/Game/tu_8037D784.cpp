@@ -169,8 +169,6 @@ extern "C" void fn_8037DD38(u8* this_) {
     this_[0x11c] = 0;
 }
 
-extern "C" void fn_8037DD44(void) {}
-
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 
