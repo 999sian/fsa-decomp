@@ -478,7 +478,7 @@ struct MsgProc {
     }
     void putSlotPos(s32 x, s32 base) {
         str2c0[m2d0++] = -2;
-        str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
+        str2c0[m2d0++] = base + (x + (s8)slotLine[slot + 0x10]);
         str2c0[m2d0++] = -2;
         if (layout->m1a1 != 0 && (u8)slotLine[slot] - lineTab[layout->m15c] - 1 == 0) {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
@@ -875,8 +875,6 @@ static inline void msgAppendChar(MsgProc* p, char* buf) {
 
 // NONMATCHING (99%): cur/layout register swap in the bit test (same as fn_8039D0DC).
 extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
-    s32 index;
-    MsgLayout* l;
     bool lead = false;
     bool neg = false;
     if (n < 0) {
@@ -884,10 +882,9 @@ extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
         neg = true;
     }
     if (p->m2d6) {
-        index = p->cur;
-        if (!p->testBit(index)) {
-            l = p->layout;
-            if (l->m16c == 0 || !p->testBit(index)) {
+        if (!p->testBit(p->cur)) {
+            MsgLayout* l = p->layout;
+            if (l->m16c == 0 || !p->testBit(p->cur)) {
                 f32 base;
                 f32 pos;
                 if (!(l->font->flags & 0x40)) {
