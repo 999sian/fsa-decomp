@@ -55,7 +55,7 @@ extern "C" f32 lbl_80542B3C;
 extern "C" f32 lbl_80542B40;
 extern "C" f32 lbl_80542B44;
 extern "C" f32 lbl_80542B48;
-extern "C" f32 lbl_80542B4C;
+extern "C" const f32 lbl_80542B4C;
 extern "C" f32 lbl_80542BB4;
 extern "C" f32 lbl_80542BB8;
 extern "C" void* fn_801F856C(void);
