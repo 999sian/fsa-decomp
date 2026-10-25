@@ -68,7 +68,7 @@ extern "C" void fn_8044B8EC(u8* p)
     }
 }
 
-extern "C" char lbl_80490F48[];
+extern "C" const MenuTextData lbl_80490F48;
 extern "C" void* lbl_8053AD78;
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 extern "C" void* fn_80401E10(const char* path, int mode, void* heap);
@@ -77,9 +77,10 @@ extern "C" void __ct__9J2DScreenFv(void* self);
 extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* pane, const char* name, unsigned long id, void* archive);
 extern "C" const char* getStringPtr__10J2DTextBoxCFv(void* self);
 extern "C" void fn_803832BC(const char*, u32, u32, u32, u32);
+#pragma opt_propagation off
 extern "C" void fn_8044B960(u8* p)
 {
-    char* tbl = lbl_80490F48;
+    MenuTextData* tbl = (MenuTextData*)&lbl_80490F48;
     void* oldHeap;
     void* screen;
     char acStack_34[36];
@@ -91,7 +92,7 @@ extern "C" void fn_8044B960(u8* p)
         oldHeap = sCurrentHeap__7JKRHeap;
         becomeCurrentHeap__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
         if (p[0x16] == 1) {
-            snprintf(acStack_34, 0x1f, tbl + 0x20, p[0x15] + 1);
+            snprintf(acStack_34, 0x1f, tbl->archiveFormat, p[0x15] + 1);
             *(void**)(p + 0xc) = fn_80401E10(acStack_34, 0, *(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
             p[0x16] = 2;
         }
@@ -102,7 +103,7 @@ extern "C" void fn_8044B960(u8* p)
                     __ct__9J2DScreenFv(screen);
                 }
                 *(void**)(p + 8) = screen;
-                snprintf(acStack_48, 0x11, tbl + 0x40, p[0x15] + 1);
+                snprintf(acStack_48, 0x11, tbl->screenFormat, p[0x15] + 1);
                 setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p + 8), acStack_48, 0x1100000, *(void**)((u8*)*(void**)(p + 0xc) + 0x14));
                 font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663031ULL);
@@ -111,9 +112,17 @@ extern "C" void fn_8044B960(u8* p)
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663032ULL);
                 ((J2DTextBox*)pane)->setFont(font);
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663031ULL);
-                fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), *(u32*)(tbl + p[0x15] * 4), 0, 0, 0);
+                {
+                    const char* text = getStringPtr__10J2DTextBoxCFv(pane);
+                    const u32* __restrict ids = tbl->ids;
+                    fn_803832BC(text, ids[p[0x15]], 0, 0, 0);
+                }
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663032ULL);
-                fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), *(u32*)(tbl + p[0x15] * 4), 0, 0, 0);
+                {
+                    const char* text = getStringPtr__10J2DTextBoxCFv(pane);
+                    const u32* __restrict ids = tbl->ids;
+                    fn_803832BC(text, ids[p[0x15]], 0, 0, 0);
+                }
                 if (p[0x15] == 5) {
                     font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
                     pane = (*(J2DPane**)(p + 8))->search(0x0000547374663033ULL);
@@ -127,7 +136,7 @@ extern "C" void fn_8044B960(u8* p)
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(pane), 0x861, 0, 0, 0);
                 }
                 if (*(void**)(p + 0xc) != NULL) {
-                    (*(void (**)(void*, int))((u8*)*(void**)((u8*)*(void**)(p + 0xc) + 8) + 8))(*(void**)(p + 0xc), 1);
+                    (*(MenuArchive**)(p + 0xc))->release(1);
                 }
                 p[0x16] = 3;
             }
@@ -135,7 +144,7 @@ extern "C" void fn_8044B960(u8* p)
         becomeCurrentHeap__7JKRHeapFv(oldHeap);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_8044BCA4(u8* p, s16 param_2)
 {
     void* oldHeap;
