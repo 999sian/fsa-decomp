@@ -447,20 +447,16 @@ extern "C" void fn_80295EE8(char* this_) {
         }
     } else {
         char* q = self;
-        s32 k = 2;
-        do {
-            JPABaseEmitter* emitter = *(JPABaseEmitter**)(q + 0x2fc);
-            if (emitter) {
-                emitter->becomeInvalidEmitter();
-                *(JPABaseEmitter**)(q + 0x2fc) = 0;
-            }
-            emitter = *(JPABaseEmitter**)(q + 0x300);
-            if (emitter) {
-                emitter->becomeInvalidEmitter();
-                *(JPABaseEmitter**)(q + 0x300) = 0;
+        for (s32 row = 0; row < 2; row++) {
+            for (s32 col = 0; col < 2; col++) {
+                JPABaseEmitter* emitter = *(JPABaseEmitter**)(q + 0x2fc + col * 4);
+                if (emitter != 0) {
+                    emitter->becomeInvalidEmitter();
+                    *(JPABaseEmitter**)(q + 0x2fc + col * 4) = 0;
+                }
             }
             q += 8;
-        } while (--k);
+        }
         ((JGeometry::TVec3f*)(self + 0x3c))->zero();
     }
     for (k = 0; k < 4; k++) {
