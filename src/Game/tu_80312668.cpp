@@ -79,8 +79,6 @@ extern "C" void fn_803126C8(Actor* p) {
 }
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
-#pragma opt_propagation reset
-#pragma opt_common_subs reset
 #pragma opt_strength_reduction reset
 extern "C" void fn_802D6A9C(Actor* p);
 extern "C" u8 fn_802D800C(Actor* p, u32 v);
