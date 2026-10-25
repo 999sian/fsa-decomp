@@ -5,6 +5,35 @@
 #include "JSystem/JUtility/TColor.h"
 #include "Game/ItemBase.h"
 
+extern "C" double sin(double x);
+extern "C" double cos(double x);
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void fn_801EFD34(void* this_, void* res, DrawRec* rec, s32 n, f32 a, f32 b, f32 c);
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern "C" void fn_80158B5C(void* mgr, s32 room, f32* pos, GXColor color, f32 size);
+extern "C" void fn_80158624(void* mgr, f32* pos, void* b, GXColor color, f32 scale);
+extern u8* lbl_8053AB10;
+extern const char lbl_804674C8[];
+extern const char lbl_804674DC[];
+extern const char* lbl_804A1D24[];
+extern const f32 lbl_8053E0C8;
+extern const f32 lbl_8053E0CC;
+extern const f32 lbl_8053E0D0;
+extern const f32 lbl_8053E0D4;
+extern const f32 lbl_8053E0D8;
+extern const f32 lbl_8053E0DC;
+extern const f32 lbl_8053E0E0;
+extern const f32 lbl_8053E0E4;
+extern const f32 lbl_8053E0E8;
+extern const f32 lbl_8053E0EC;
+extern const f32 lbl_8053E0F0;
+extern const f32 lbl_8053E0F4;
+extern f32 lbl_8053E0F8;
+extern const f32 lbl_8053E0FC;
+extern const f32 lbl_8053E100;
+extern const f32 lbl_8053E104;
+extern s32 lbl_80539FCC;
+
 // from src/Game/Bph2_SetVec2.cpp
 // BPH2 cluster, part 5 (final piece). fn_8018E964 - trivial 2-float
 // setter, no extab entry (leaf).
