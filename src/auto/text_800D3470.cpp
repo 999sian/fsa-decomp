@@ -1482,19 +1482,17 @@ extern "C" void fn_800D800C(Unk800D800C* self) {
 }
 
 extern "C" void fn_800D80DC(u8* p) {
-    u8* addr;
     u8* saved;
     u8* tev;
     u8 count;
-    u32 j;
-    u32 i;
+    u8* addr;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
     count = p[0xd0];
     saved = __GDCurrentDL->pDisplayListData;
 
     addr = p;
-    for (i = 0; i < 8; i++) {
+    for (u32 i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
@@ -1502,9 +1500,9 @@ extern "C" void fn_800D80DC(u8* p) {
     }
 
     tev = p;
-    for (j = 0; j < count; j += 2) {
-        u8* next = p + (j + 1) * 4;
-        J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
+    for (u32 i = 0; i < count; i += 2) {
+        u8* next = p + (i + 1) * 4;
+        J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
         u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x19] & 7) * 8);
@@ -1652,21 +1650,27 @@ extern "C" void fn_800D87B4(u8* self) {
 }
 
 extern "C" void fn_800D8884(u8* p) {
+    u8* q;
+    u8* r;
+    u16* s;
+    u8 n;
+    u32 j;
+    u32 i;
     GDSetCurrOffset(*(u32*)(p + 4));
     u8* start = GDGetCurrPointer();
-    u8 n = p[0x20];
+    n = p[0x20];
 
-    for (u32 i = 0; i < 8; i++) {
+    for (i = 0; i < 8; i++) {
         if (*(u16*)(p + i * 2 + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(p + i * 2 + 8));
         }
     }
 
-    for (u32 i = 0; i < n; i += 2) {
-        u8* q = p + i * 4;
-        u8* r = p + (i + 1) * 4;
-        J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)q[0x10], (GXTexMapID)q[0x11], (GXChannelID)q[0x12], (GXTexCoordID)r[0x10], (GXTexMapID)r[0x11], (GXChannelID)r[0x12]);
-        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (q[0x11] & 7) * 8);
+    for (j = 0; j < n; j += 2) {
+        q = p + j * 4;
+        r = p + (j + 1) * 4;
+        J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)q[0x10], (GXTexMapID)q[0x11], (GXChannelID)q[0x12], (GXTexCoordID)r[0x10], (GXTexMapID)r[0x11], (GXChannelID)r[0x12]);
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (q[0x11] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(q[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (r[0x11] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(r[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
@@ -2830,7 +2834,7 @@ extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
     int i;
     for (i = 0; i < 8; i++) {
         if (*(void**)(tex + 0x38) != NULL) {
-            u32 type = *((u8*)*(void**)(tex + 0x38) + 1) & 0x3f;
+            u8 type = *((u8*)*(void**)(tex + 0x38) + 1) & 0x3f;
             *(u16*)(stage + 0xc) = stage[0xa];
             switch (type) {
             case 0:
