@@ -91,6 +91,7 @@ extern "C" void fn_80118454(void*);
 extern "C" void fn_801183BC(void*);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1F14(void*, f32);
+extern "C" void* fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f);
 extern "C" const u16 lbl_8053C740[4];
 extern "C" f32 lbl_8053C788;
 extern "C" f32 lbl_8053C790;
