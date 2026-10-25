@@ -690,7 +690,7 @@ struct MsgProc {
     static s32 lineRow(s8 top, u8 line) {
         return line - top - 1;
     }
-    BOOL testBit(int n) {
+    BOOL testBit(s32 n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
