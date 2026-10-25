@@ -58,8 +58,6 @@ struct VPane_803B14F8 {
 };
 
 struct VScreen_803B14F8 {
-    virtual void v00();
-    virtual void v04();
     virtual void v08();
     virtual void v0C();
     virtual void v10();
@@ -1997,7 +1995,8 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
     }
 }
 
-extern "C" void fn_803B0978(Menu_Slide* p) {
+extern "C" void fn_803B0978(Menu_Intro* p) {
+    IntroTags* tbl = &lbl_80476208;
     s16 t19 = *(s16*)(lbl_8050DB0C + 0x256);
     s16 t20 = *(s16*)(lbl_8050DB0C + 0x252);
     s16 t7 = *(s16*)(lbl_8050DB0C + 0x254);
@@ -2008,20 +2007,28 @@ extern "C" void fn_803B0978(Menu_Slide* p) {
     f32 f31 = lbl_80543428 + (f32)t19;
     s32 r21 = 0;
     s32 i;
-    for (i = 0; i < p->count; i++) {
-        if (((u8*)p)[0x4bc + i] == 0xff) {
-            if (fn_80388EEC(i) != 0) {
-                ((u8*)p)[0x4bc + i] = fn_803A8DFC(p, i);
-                fn_80458880(lbl_8053AF80, 0xb, -1);
+    u64 (*r3)[3] = (u64 (*)[3])tbl->p3;
+    u64 (*r2)[2] = (u64 (*)[2])tbl->p2;
+    for (i = 0; i < p->count; i++, r3++, r2++) {
+        if (p->ready[i] == 0xff && fn_80388EEC(i) != 0) {
+            p->m460[i] = 0;
+            f32 x = p->screens[p->cur]->search((*r3)[2])->getBounds()->i.x;
+            p->screens[p->cur]->search((*r2)[1])->move(x, p->y420);
+            p->ready[i] = fn_803A8DFC(p, i);
+            fn_80458880(lbl_8053AF80, 0xb, -1);
+        }
+        if (p->ready[i] == 0xff) {
+            if (p->m460[i] < r24) {
+                p->m460[i]++;
             }
-        }
-        if (((u8*)p)[0x4bc + i] == 0xff) {
-            ((u8*)p)[0x4bc + i] = 0;
+        } else {
+            p->m460[i] = 0;
         }
     }
-    if (r21 == p->count) {
-        p->m4c1 = 7;
+    for (i = 0; i < p->count; i++) {
+        p->m460[i] = 0;
     }
+    p->m4c1 = 7;
 }
 
 // NONMATCHING (99.5%): register allocation in the slide loops.
@@ -2095,6 +2102,48 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
             p->m4c1 = 6;
         }
     }
+}
+
+extern "C" void fn_803B14F8(void* this_) {
+    char* p = (char*)this_;
+    s32 i;
+    s32 cnt;
+    s16 a = *(s16*)(lbl_8050DB0C + 0x256);
+    s16 b = *(s16*)(lbl_8050DB0C + 0x252);
+    s16 c = *(s16*)(lbl_8050DB0C + 0x254);
+    s16 d = *(s16*)(lbl_8050DB0C + 0x258);
+    s32 bc = b + c;
+    VScreen_803B14F8* scr;
+    VPane_803B14F8* pn;
+    f32 f30;
+    f32 f29;
+    s32 r21 = 0;
+
+    cnt = *(s32*)(p + 0x454);
+    for (i = 0; i < cnt; i++) {
+        if (*(u8*)(p + 0x4b8 + i) == 0xff) {
+            if (fn_80388EEC(i) != 0) {
+                *(s16*)(p + 0x460 + i * 2) = 0;
+                scr = *(VScreen_803B14F8**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
+                pn = scr->v3C(*(s32*)(lbl_8050DB0C + 0x10), *(s32*)(lbl_8050DB0C + 0x14));
+                f30 = getBounds__7J2DPaneFv(pn)[0];
+                pn = scr->v3C(*(s32*)(lbl_8050DB0C + 0x10), *(s32*)(lbl_8050DB0C + 0x14));
+                pn->move(f30, *(f32*)(p + 0x420));
+                *(u8*)(p + 0x4b8 + i) = (u8)fn_803A8DFC(this_, i);
+                fn_80458880(lbl_8053AF80, 0xb, -1);
+            }
+        }
+        if (*(u8*)(p + 0x4b8 + i) != 0xff) {
+            if (*(s16*)(p + 0x460 + i * 2) < bc) {
+                *(s16*)(p + 0x460 + i * 2) += 1;
+            }
+            if (*(s16*)(p + 0x460 + i * 2) <= b) {
+                /* partial */
+            }
+        }
+    }
+    *(s32*)(p + 0x440) = 0;
+    (void)a; (void)d; (void)f29; (void)r21;
 }
 
 struct PFlag {
