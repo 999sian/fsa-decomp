@@ -34,6 +34,24 @@ extern const f32 lbl_8053E100;
 extern const f32 lbl_8053E104;
 extern s32 lbl_80539FCC;
 
+static inline void bph2_rotScaleMtx(f32 m[3][4], f32 rx, f32 ry, f32 rz, f32 s) {
+    f32 sx = (f32)sin(rx);
+    f32 sy = (f32)sin(ry);
+    f32 sz = (f32)sin(rz);
+    f32 cx = (f32)cos(rx);
+    f32 cy = (f32)cos(ry);
+    f32 cz = (f32)cos(rz);
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * ((sx * sy) * cz - cx * sz);
+    m[1][1] = s * ((sx * sy) * sz + cx * cz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * ((cx * cz) * sy + sx * sz);
+    m[1][2] = s * ((cx * sz) * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
+}
+
 // from src/Game/Bph2_SetVec2.cpp
 // BPH2 cluster, part 5 (final piece). fn_8018E964 - trivial 2-float
 // setter, no extab entry (leaf).
@@ -76,6 +94,124 @@ extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" void fn_8018A8D8(ActorVt_bph2* this_) {
     fn_801F0E34(this_, 0x40015, 0);
     this_->setShadow(2, 0.0f, 16.0f);
+}
+
+extern "C" void fn_8018A930(char* this_) {
+    DrawRec rec;
+    f32 mtx[3][4];
+    mtx[0][3] = lbl_8053E0C8;
+    mtx[1][3] = lbl_8053E0C8;
+    mtx[2][3] = lbl_8053E0C8;
+    if (*(s32*)(this_ + 0x26c) == 0) {
+        if (*(s32*)(this_ + 0x230) == 0) {
+            return;
+        }
+        rec.b1f = 0;
+        void* res = fn_804032E8(0x42494750, lbl_804674C8);
+        {
+            f32 ay = *(f32*)(this_ + 0x28c);
+            f32 sx = (f32)sin(lbl_8053E0C8);
+            f32 sy = (f32)sin(ay);
+            f32 sz = (f32)sin(lbl_8053E0C8);
+            f32 cx = (f32)cos(lbl_8053E0C8);
+            f32 cy = (f32)cos(ay);
+            f32 cz = (f32)cos(lbl_8053E0C8);
+            rec.b1d = 2;
+            rec.b1c = 1;
+            mtx[0][0] = lbl_8053E0D0 * (cy * cz);
+            mtx[1][0] = lbl_8053E0D0 * (cy * sz);
+            mtx[2][0] = lbl_8053E0D0 * -sy;
+            mtx[0][1] = lbl_8053E0D0 * (cz * (sx * sy) - cx * sz);
+            mtx[1][1] = lbl_8053E0D0 * (sz * (sx * sy) + cx * cz);
+            mtx[2][1] = lbl_8053E0D0 * (sx * cy);
+            mtx[0][2] = lbl_8053E0D0 * (sy * (cx * cz) + sx * sz);
+            mtx[1][2] = lbl_8053E0D0 * (sy * (cx * sz) - sx * cz);
+            mtx[2][2] = lbl_8053E0D0 * (cx * cy);
+        }
+        rec.w18 = mtx;
+        ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x288);
+        fn_801EFD34(this_, res, &rec, -1, lbl_8053E0D4, lbl_8053E0D8, lbl_8053E0C8);
+        JUtility::TColor col2(0x3f3f1f7f);
+        f32 pos[3];
+        pos[0] = *(f32*)(this_ + 0xc);
+        pos[1] = *(f32*)(this_ + 0x10);
+        pos[2] = *(f32*)(this_ + 0x14);
+        pos[0] = pos[0] - lbl_8053E0DC;
+        pos[1] = pos[1] + lbl_8053E0E0;
+        f32 shadow[3];
+        shadow[0] = pos[0];
+        shadow[1] = pos[1];
+        shadow[2] = pos[2];
+        shadow[1] = shadow[1] + lbl_8053E0E4;
+        JUtility::TColor col(0, 0, 0, (s32)(lbl_8053E0E8 * *(f32*)(this_ + 0x288)));
+        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(this_ + 0x4), shadow, col, lbl_8053E0EC);
+        pos[0] = pos[0] + lbl_8053E0F0 * JMath::sincosTable_.mTable[(u16)(s32)(lbl_8053E0F4 * *(f32*)(this_ + 0x28c)) >> 5].first;
+        if (*(s32*)(this_ + 0x27c) < 0) {
+            *(f32*)(this_ + 0x2dc) = pos[0];
+            *(f32*)(this_ + 0x2e0) = pos[1];
+            *(f32*)(this_ + 0x2e4) = pos[2];
+            *(f32*)(this_ + 0x2dc) = *(f32*)(this_ + 0x2dc) + lbl_8053E0F0 * JMath::sincosTable_.mTable[(u16)(s32)(lbl_8053E0F4 * *(f32*)(this_ + 0x28c)) >> 5].first;
+            *(f32*)(this_ + 0x2e0) = *(f32*)(this_ + 0x2e0) + lbl_8053E0CC;
+            *(f32*)(this_ + 0x2e4) = lbl_8053E0C8;
+        }
+        if (lbl_8053E0F8 != *(f32*)(this_ + 0x284)) {
+            fn_80158624(*(void**)(lbl_8053AB10 + 0x2c), pos, this_ + 0x2d0, col2, lbl_8053E0FC);
+        }
+        rec.b1d = 2;
+        rec.b1c = 1;
+        ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x280);
+        pos[0] = *(f32*)(this_ + 0xc);
+        pos[1] = *(f32*)(this_ + 0x10);
+        pos[2] = *(f32*)(this_ + 0x14);
+        pos[0] = pos[0] - lbl_8053E0E4;
+        if (((u8*)&rec.w10)[3] == 0xff) {
+            rec.b26 = 1;
+            rec.w30 = 0x11;
+        } else {
+            rec.b26 = 0;
+        }
+        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(this_ + 0x4), pos,
+                    JUtility::TColor(0, 0, 0, (s32)(lbl_8053E0E8 * *(f32*)(this_ + 0x280))), lbl_8053E100);
+        {
+            f32 cy;
+            f32 cx;
+            f32 s = *(f32*)(this_ + 0x294);
+            f32 sz;
+            f32 sy;
+            f32 sx;
+            sx = (f32)sin(lbl_8053E0C8);
+            sy = (f32)sin(lbl_8053E0C8);
+            sz = (f32)sin(lbl_8053E0C8);
+            cx = (f32)cos(lbl_8053E0C8);
+            cy = (f32)cos(lbl_8053E0C8);
+            f32 cz = (f32)cos(lbl_8053E0C8);
+            mtx[0][0] = s * (cy * cz);
+            mtx[1][0] = s * (cy * sz);
+            mtx[2][0] = s * -sy;
+            mtx[0][1] = s * (cz * (sx * sy) - cx * sz);
+            mtx[1][1] = s * (sz * (sx * sy) + cx * cz);
+            mtx[2][1] = s * (sx * cy);
+            mtx[0][2] = s * (sy * (cx * cz) + sx * sz);
+            mtx[1][2] = s * (sy * (cx * sz) - sx * cz);
+            mtx[2][2] = s * (cx * cy);
+        }
+        rec.w18 = mtx;
+        fn_801EFD34(this_, fn_804032E8(0x42494750, lbl_804A1D24[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)]), &rec, -1,
+                    lbl_8053E0C8, lbl_8053E104, lbl_8053E0C8);
+        if (*(s32*)(this_ + 0x268) == 2) {
+            res = fn_804032E8(0x42494750, lbl_804A1D24[0x3a]);
+            rec.b26 = 1;
+            rec.b1d = 1;
+            rec.b1c = 0;
+            fn_801EFD34(this_, res, &rec, -1, lbl_8053E0C8, lbl_8053E104, lbl_8053E0C8);
+        }
+    } else if (*(s32*)(this_ + 0x26c) == 1) {
+        if (lbl_80539FCC >= 0) {
+            rec.b1d = 0;
+            rec.b1c = 1;
+            fn_801F02BC(this_, lbl_804674DC, *(s32*)(this_ + 0x264) + 0x1b1, 0, 0, 0, 0, lbl_8053E0D0, lbl_8053E0D0);
+        }
+    }
 }
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
