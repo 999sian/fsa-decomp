@@ -60,56 +60,67 @@ extern "C" u8 fn_8021C848(int* param_1) {
     return *(u8*)(param_1 + 5);
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8021C9C4(int* param_1, int param_2)
 {
+    int r = 0;
     char* base = lbl_8046A688;
-    int r;
-
     param_1[4] = param_2;
-    param_1[0] = 0;
-    param_1[2] = 0;
-    param_1[3] = 0;
-    *(char*)(param_1 + 5) = 0;
+    param_1[0] = r;
+    param_1[2] = r;
+    param_1[3] = r;
+    *(char*)(param_1 + 5) = r;
     switch (param_1[0]) {
     case 0:
         base += 0x1c;
-        r = *(int*)(base + (param_1[4] * 4 + param_1[2] * 4));
+        { int offset = (param_1[4] << 2) + (param_1[2] << 2); r = *(int*)(base + offset); }
         break;
     case 1:
         base += 0x2c;
-        r = *(int*)(base + (param_1[4] * 0x1c + param_1[2] * 4));
+        { int offset = param_1[4] * 0x1c + param_1[2] * 4; r = *(int*)(base + offset); }
         break;
     case 2:
         base += 0x9c;
-        r = *(int*)(base + (param_1[4] * 8 + param_1[2] * 4));
+        { int offset = param_1[4] * 8 + param_1[2] * 4; r = *(int*)(base + offset); }
         break;
     }
     param_1[1] = r;
 }
-
+#pragma opt_propagation off
 extern "C" void fn_8021CA70(int* param_1, int param_2)
 {
-    char* base = lbl_8046A688;
-    int r;
-
+    int r = 0;
     param_1[0] = param_2;
-    param_1[2] = 0;
-    param_1[3] = 0;
-    *(char*)(param_1 + 5) = 0;
+    param_1[2] = r;
+    param_1[3] = r;
+    *(char*)(param_1 + 5) = r;
+    char* base = lbl_8046A688;
     switch (param_1[0]) {
-    case 0:
-        r = *(int*)(base + 0x1c + param_1[4] * 4 + param_1[2] * 4);
+    case 0: {
+        r = param_1[4];
+        base +=  0x1c;
+        r *= 4;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
-    case 1:
-        r = *(int*)(base + 0x2c + param_1[4] * 0x1c + param_1[2] * 4);
+    }
+    case 1: {
+        r = param_1[4];
+        base +=  0x2c;
+        r *= 0x1c;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
-    case 2:
-        r = *(int*)(base + 0x9c + param_1[4] * 8 + param_1[2] * 4);
+    }
+    case 2: {
+        r = param_1[4];
+        base +=  0x9c;
+        r *= 8;
+        r = *(int*)(base + r + param_1[2] * 4);
         break;
+    }
     }
     param_1[1] = r;
 }
-
+#pragma opt_propagation reset
 extern "C" int fn_8021CB18(int* param_1)
 {
     int result = 0;
