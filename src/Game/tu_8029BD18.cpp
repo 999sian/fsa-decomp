@@ -33,7 +33,7 @@ extern "C" void fn_8029BD84(void* this_) {
 }
 
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
-extern "C" f32 PSVECDistance(const Vec* a, const Vec* b);
+
 extern "C" u16 fn_80226850(const Vec* pos, s32 room);
 extern "C" void fn_802A3948(void* mgr, Vec* pos, s32 flag, s32 room, s32 id);
 extern "C" void* fn_801F856C(void);
