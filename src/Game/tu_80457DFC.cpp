@@ -78,6 +78,25 @@ static inline void updateAudioTracks(Unk80458408Obj* sound, s32 id) {
         }
     }
 }
+static inline void updateAudioTracksForStart(Unk80458408Obj* sound, s32 id) {
+    s32 i;
+    Unk80458408Obj* bank;
+    if (sound) {
+        switch (id) { case 0x100001a: break; default: return; }
+        bank = sound->v6();
+        if (bank) {
+            JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
+            for (i = 0; i < 16; i++) {
+                JASTrack* track = bank->v9(i);
+                if (track) {
+                    if (i == 2 || i == 7) track->mute(false);
+                    else track->mute(true);
+                }
+            }
+        }
+    }
+}
+
 struct Unk804580DCBank {
     char padEC[0xEC];
     Unk804580DCTrack** mEC;
@@ -1271,10 +1290,10 @@ extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
 extern "C" void fn_8045A114(void) {
-    char* base = &lbl_8052DBE0[0];
+    char* base = lbl_8052DBE0;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, (char*)lbl_8052DBE0 + 0x0);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
@@ -1345,19 +1364,20 @@ extern "C" void** fn_8045A338(void** p, short del) {
 extern "C" const f32 lbl_80543ED0;
 extern "C" int __float_epsilon[];
 extern "C" void fn_8045A3D8(char* p1, JASSoundParams* p2, Unk8045A3D8Src* p3, s32 p4) {
-    s32* idx = (s32*)p3 + p4;
-    char* o = (char*)idx[6];
+    char* o = *(char**)((char*)p3 + p4 * 4 + 0x18);
     if (o != 0) {
         JASSoundParams sp;
         f32 t;
+        f32 one = 1.0f;
+        f32 zero = 0.0f;
         if ((p3->m10 >> 2) & 1) {
             t = *(f32*)(o + 0x20);
             if (t > *(f32*)(p1 + 0x4)) {
                 sp.mVolume = *(f32*)(p1 + 0xc);
             } else if (t < *(f32*)(p1 + 0x8)) {
             } else {
-                f32 v = *(f32*)(p1 + 0x44) * (t - *(f32*)(p1 + 0x8)) + 1.0f;
-                sp.mVolume = v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
+                f32 v = *(f32*)(p1 + 0x44) * (t - *(f32*)(p1 + 0x8)) + one;
+                sp.mVolume = v < zero ? zero : (v > one ? one : v);
             }
         }
         if ((p3->m11 >> 6) & 1) {
@@ -1366,7 +1386,7 @@ extern "C" void fn_8045A3D8(char* p1, JASSoundParams* p2, Unk8045A3D8Src* p3, s3
                 sp.mDolby = *(f32*)(p1 + 0x18);
             } else if (t < *(f32*)(p1 + 0x10)) {
                 sp.mDolby = *(f32*)(p1 + 0x20);
-            } else if (t < 0.0f) {
+            } else if (t < zero) {
                 sp.mDolby = *(f32*)(p1 + 0x3c) * t + *(f32*)(p1 + 0x1c);
             } else {
                 sp.mDolby = *(f32*)(p1 + 0x40) * t + *(f32*)(p1 + 0x1c);
@@ -1377,11 +1397,11 @@ extern "C" void fn_8045A3D8(char* p1, JASSoundParams* p2, Unk8045A3D8Src* p3, s3
         if ((p3->m11 >> 7) & 1) {
             if ((p3->m11 & 1) == 0 || (p3->m11 & 2) != 0) {
                 if (*(s32*)(p1 + 0x50) > 2) {
-                    sp.mPan = (p4 & 1) ? 1.0f : 0.0f;
+                    sp.mPan = (p4 & 1) ? one : zero;
                 } else {
                     f32 r;
                     if (*(f32*)(o + 0x20) <= lbl_80543ED0 * *(f32*)__float_epsilon) {
-                        r = 0.0f;
+                        r = zero;
                     } else {
                         r = *(f32*)(o + 0x14) / *(f32*)(o + 0x20);
                     }
@@ -1390,7 +1410,7 @@ extern "C" void fn_8045A3D8(char* p1, JASSoundParams* p2, Unk8045A3D8Src* p3, s3
                 p3->m11 |= 2;
             } else {
                 sp.mPan = 0.5f;
-                sp.mPitch = 1.0f;
+                sp.mPitch = one;
             }
         }
         if ((p3->m10 >> 1) & 1) {
@@ -1403,7 +1423,7 @@ extern "C" void fn_8045A3D8(char* p1, JASSoundParams* p2, Unk8045A3D8Src* p3, s3
                 sp.mFxMix = *(f32*)(p1 + 0x4c) * (t - *(f32*)(p1 + 0x8)) + *(f32*)(p1 + 0x24);
             }
         } else {
-            sp.mFxMix = 0.0f;
+            sp.mFxMix = zero;
         }
         p3->v3(p4)->combine(*p2, sp);
     }
