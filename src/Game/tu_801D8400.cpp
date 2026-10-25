@@ -675,44 +675,41 @@ static inline s32 t84FindPlayer(char* p) {
     if (pl >= 0) {
         f32 dy = fn_8023E724(pl)->y - v.y;
         f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
-        f32 scale = lbl_8053F20C;
         s16 d = ang - (s16)(a * lbl_8053F208);
-        if (scale * __fabsf(d) <= lbl_8053F1F0) {
+        if (lbl_8053F20C * JGeometry::TUtilf::abs(d) <= lbl_8053F1F0) {
             found = pl;
         }
     }
     return found;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_801D9960(char* p) {
     if (*(u16*)(p + 0x33c) != 0) {
         (*(u16*)(p + 0x33c))--;
     }
     if (*(u16*)(p + 0x33c) == 0) {
-        if (t84FindPlayer(p) >= 0 && fn_801DA894(p + 0x2a8)) {
+        s16 ang;
+        s32 pl;
+        s32 found = -1;
+        JGeometry::TVec3<f32> v;
+        t84FrontPos(p, &v);
+        ang = t84FaceAngle(p);
+        pl = fn_801D0338(p, &v, ang);
+        if (pl >= 0) {
+            f32 dy = fn_8023E724(pl)->y - v.y;
+            f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
+            s16 d = ang - (s16)(a * lbl_8053F208);
+            if (lbl_8053F20C * JGeometry::TUtilf::abs(d) <= lbl_8053F1F0) found = pl;
+        }
+        if (found >= 0 && fn_801DA894(p + 0x2a8)) {
             fn_801D9C58(p, 0xd);
         }
     }
     if (*(s32*)(p + 0x248) == 0xb) {
         (*(u16*)(p + 0x338))--;
         if (*(u16*)(p + 0x338) == 0) {
-            if (*(u8*)(p + 0x33f) == 3) {
-                s32 l[12];
-                s32 n = 1;
-                l[0] = 1;
-                l[n++] = 2;
-                l[2] = 5;
-                n = 3;
-                l[n++] = 6;
-                l[4] = 9;
-                n = 5;
-                l[n++] = 10;
-                if (n > 0) *(u8*)(p + 0x334) = l[fn_801CD664(n)];
-                else *(u8*)(p + 0x334) = 0;
-            } else {
-                *(u8*)(p + 0x334) = fn_801CD664(12);
-            }
-            *(u16*)(p + 0x338) = fn_801CD664(61) + 60;
+            t84PickTarget(p);
             bool turn = false;
             bool left = false;
             f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
@@ -735,7 +732,7 @@ extern "C" void fn_801D9960(char* p) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" BOOL fn_801D95F4(char* p) {
     BOOL ok = FALSE;
     JGeometry::TVec2<f32> dir;
