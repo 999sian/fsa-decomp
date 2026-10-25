@@ -74,14 +74,6 @@ static inline u8 key0RoomFlag(s32 room) {
     return base[room + 0x131df];
 }
 
-extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
-static inline void key0RecordMoving(char* p, u32 packed) {
-    Key0Pt key = key0Point(p + 0x230);
-    Key0Pt pos = key0Point(p + 0xc);
-    u32 id = *(u32*)(p + 0x238);
-    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
-}
-
 static inline void key0Register(char* p) {
     u32 id = *(u32*)(p + 0x238);
     fn_802D6C10(fn_802D6A9C(), Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), id);
@@ -687,15 +679,17 @@ extern "C" void fn_802C3AE4(char* p) {
         else if (*(f32*)(p+0x40) < lbl_80540CD8) *(f32*)(p+0x40) += lbl_80540CD4;
         else *(f32*)(p+0x40) = lbl_80540C74;
     }
-    f32 rect[4];
-    rect[0]=*(f32*)(p+0x60); rect[1]=*(f32*)(p+0x64); rect[2]=*(f32*)(p+0x68); rect[3]=*(f32*)(p+0x6c);
-    f32 py = *(f32*)(p+0x10), px = *(f32*)(p+0xc);
-    rect[1] += py; rect[0] += px; rect[2] += px; rect[3] += py;
+    JGeometry::TBox2<f32> rect(*(JGeometry::TBox2<f32>*)(p+0x60));
+    rect.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+    s32 kind;
     s32 i;
     for (i=0; i<4; i++) {
-        if ((u8)fn_8023F264(i) && fn_80239C00(i, rect, *(s32*)(p+4))) {
-            s32 kind = *(s32*)(p+0x280);
-            if (kind==3 || kind==5 || kind==4) {
+        if ((u8)fn_8023F264(i) && fn_80239C00(i, &rect, *(s32*)(p+4))) {
+            kind = *(s32*)(p+0x280);
+            if (kind==3) goto create;
+            if (kind==4) goto create;
+            if (kind==5) {
+create:
                 Actor_CreateByID(fn_801F856C(), 0x544b5241, *(s32*)(p+4), p+0xc, (kind+(i<<12))+0x210, -1, -1);
                 key0Register(p);
                 detach__5ActorFv(p);
@@ -722,9 +716,9 @@ extern "C" void fn_802C3AE4(char* p) {
     }
     key0Register(p);
     u8 mask=1;
-    u8 hit=fn_801F2740(p,-1);
-    if (hit) {
-        if ((u8)fn_802C2300(p,(u8)hit)==1) {
+    u32 hit=fn_801F2740(p,-1);
+    if ((u8)hit) {
+        if ((u8)fn_802C2300(p,hit)==1) {
             *(s32*)(p+0x240)=11;
             return;
         }
@@ -733,7 +727,7 @@ extern "C" void fn_802C3AE4(char* p) {
         if (tile==0xd || tile==0x3b) {
             s32 player;
             for (player=0; player<4; player++,mask<<=1) {
-                if (hit&mask) break;
+                if ((u8)hit&mask) break;
             }
             if (fn_8022F6E8(player,*(s32*)(p+0x198))==1) {
                 *(s32*)(p+0x29c)=player;
@@ -742,7 +736,7 @@ extern "C" void fn_802C3AE4(char* p) {
             }
         } else {
             for (i=0; i<4; i++,mask<<=1) {
-                if (hit&mask) {
+                if ((u8)hit&mask) {
                     JGeometry::TVec3<f32> pos(*(Vec*)fn_8023E724(i));
                     s32 dx=(s32)(f32)__fabs(*(f32*)(p+0xc)-pos.x);
                     s32 dy=(s32)(f32)__fabs(*(f32*)(p+0x10)-pos.y);
