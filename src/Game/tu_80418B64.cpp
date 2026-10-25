@@ -25,6 +25,7 @@ extern f32 lbl_80543A30;
 #include "JSystem/JUtility/JUTVideo.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern u8* lbl_8053AAF8;
@@ -949,8 +950,7 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
         }
     }
     if (val >= 1000 || val <= -1000) {
-        s32 mag = val < 0 ? -val : val;
-        *(s16*)(this_ + i * 2 + 0x224) = (s16)(mag / 100);
+        *(s16*)(this_ + i * 2 + 0x224) = (s16)((val < 0 ? -val : val) / 100);
         *(s16*)(this_ + i * 2 + 0x22C) = 0;
     } else {
         fn_80230FD0(i, 0x20034);
@@ -1461,4 +1461,6 @@ extern "C" u8* fn_80420574(u8* self) {
     self[0x298] = 0;
     return self;
 }
+
+void __sinit_tu_80418B64_cpp() {}
 
