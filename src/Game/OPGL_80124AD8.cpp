@@ -568,35 +568,69 @@ extern "C" void fn_8022FE80(void*, s32, s32, s32, s32);
 extern "C" s32 fn_8022FD8C(s32);
 extern "C" u8 fn_8038AD24(s32, s32, s32, s32, Vec*, s32);
 extern "C" int fn_80125668(void* this_, s32 param_2) {
-    typedef u8 (*method_t)(void*);
-    typedef void (*vmethod_t)(void*, s32);
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v0a();
+        virtual void v0b();
+        virtual void v0c();
+        virtual void v0d();
+        virtual void v0e();
+        virtual void v0f();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual u8 v13();
+        virtual u8 v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual void v18();
+        virtual void v19(s32);
+    };
+    int ret;
     if (*(s32*)((char*)this_ + 0x33c) == 0x11) {
         return 3;
     }
-    if (!((method_t)(*(void***)this_)[0x54 / sizeof(void*)])(this_)) {
+    if (!((VObj*)this_)->v13()) {
         return 0;
     }
     if (fn_80130030(fn_8012FF9C(), param_2) == 0) {
-        s32 state = *(s32*)((char*)this_ + 0x33c);
-        if (state != 3 && state != 0) {
+        switch (*(s32*)((char*)this_ + 0x33c)) {
+        case 0:
+        case 3:
+            break;
+        default:
             fn_8012285C(this_);
             fn_8022FE80(fn_8022EA0C(), *(s32*)((char*)this_ + 0x4), *(s32*)((char*)this_ + 0x198), 0, 0);
             s32 r = fn_8022FD8C(*(s32*)((char*)this_ + 0x198));
             if (r >= 0) {
-                Vec v = *(Vec*)((char*)this_ + 0xc);
-                if (fn_8038AD24(r, 0x442, *(s32*)((char*)this_ + 0x198), *(s32*)((char*)this_ + 0x4), &v, 0x28)) {
+                s32 handle = *(s32*)((char*)this_ + 0x198);
+                s32 room = *(s32*)((char*)this_ + 0x4);
+                JGeometry::TVec3<f32> v(*(Vec*)((char*)this_ + 0xc));
+                if (fn_8038AD24(r, 0x442, handle, room, &v, 0x28)) {
                     *(s32*)((char*)this_ + 0x3d0) = *(s32*)((char*)this_ + 0x33c);
-                    vmethod_t move = (vmethod_t)(*(void***)this_)[0x6c / sizeof(void*)];
-                    move(this_, 3);
+                    ((VObj*)this_)->v19(3);
                 }
             }
+            break;
         }
         return 1;
     }
-    if (((method_t)(*(void***)this_)[0x58 / sizeof(void*)])(this_)) {
-        return 2;
+    u8 b = ((VObj*)this_)->v14();
+    ret = 1;
+    if (b) {
+        ret = 2;
     }
-    return 1;
+    return ret;
 }
 
 extern "C" bool fn_801257A8(void* param_1)
