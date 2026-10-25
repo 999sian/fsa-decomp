@@ -859,10 +859,10 @@ extern "C" void fn_80322BC4(char* p) {
             bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
             if (*(f32*)&bits - lbl_80541AEC >= chance) {
                 *(s32*)(p + 0x298) = 2;
-                *(s32*)(p + 0x230) = 4;
             }
         }
     }
+    *(s32*)(p + 0x230) = 4;
 }
 
 extern "C" s32 fn_80236228(s32 i);
