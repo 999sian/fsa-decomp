@@ -154,6 +154,14 @@ struct Tu802F5040Mtx {
     f32 v[12];
 };
 
+struct Tu802F5040Effect {
+    s32 type;
+    JGeometry::TVec3<f32> pos;
+    s32 timer;
+    f32 a;
+    f32 b;
+    JGeometry::TVec3<f32> direction;
+};
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
     u8* m_tbl[8];
