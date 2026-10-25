@@ -201,7 +201,7 @@ extern "C" void fn_80379584(Actor* param_1) {
             param_1->field_64 = lbl_80543020;
             param_1->field_68 = lbl_80543014;
             param_1->field_6C = lbl_80543024;
-            ((void (*)(Actor*, s32, s32))(*(void***)param_1)[12])(param_1, 0xff, 1);
+            param_1->v10(0xff, 1);
             *(u32*)((u8*)param_1 + 0x23C) = 2;
         }
     }
