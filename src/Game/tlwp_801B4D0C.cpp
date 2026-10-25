@@ -122,7 +122,7 @@ static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
     v->z = z;
 }
 
-static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, f32 t, f32 z) {
+static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, const f32 t, const f32 z) {
     tlwpSet(v, r->x0 + t * (r->x1 - r->x0), r->y0 + t * (r->y1 - r->y0), z);
 }
 
@@ -180,7 +180,7 @@ extern "C" void fn_801B6170(char* p) {
         v.x += lbl_8053EA8C;
         v.y += lbl_8053EA90;
         for (s32 i = 0; i < 20; i++) {
-            *(s32*)(p + i * 4 + 0x2a0) = fn_8013CC50(*(s32*)(p + 0x4), &v, lbl_8053EA10, lbl_804A37E0.ids[i], 0, 0, 0, 0, 1);
+            *(s32*)(p + i * 4 + 0x2a0) = fn_8013CC50(*(s32*)(p + 0x4), &v, lbl_804A37E0.ids[i], 0, 0, 0, 0, 1, lbl_8053EA10);
         }
     }
     *(s32*)(p + 0x24c) = 0;
