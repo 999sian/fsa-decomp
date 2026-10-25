@@ -113,4 +113,4 @@ extern "C" Tu803DA6B4Owner* fn_803DA8FC(Tu803DA6B4Owner* this_) {
     this_->m21 = 0;
     return this_;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
