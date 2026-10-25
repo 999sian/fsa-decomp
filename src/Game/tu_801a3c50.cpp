@@ -237,6 +237,9 @@ struct SayaRandom {
         out.s = (seed >> 9) | 0x3f800000;
         return out.f - 1.0f;
     }
+    f32 get_sfloat_1() {
+        return 1.0f - 2.0f * get_ufloat_1();
+    }
 };
 struct SayaGame { u8 pad[0xb4]; SayaRandom rnd; };
 extern SayaGame* lbl_8053AAF8;
@@ -262,7 +265,7 @@ extern "C" s32 fn_801A4FB4(u8* this_) {
                 continue;
             }
             room = *(s32*)(this_ + 4);
-            if (room == fn_8023DE58(i) && fn_8023A51C(i) && *(f32*)(this_ + 0x14) == 0.0f) {
+            if (room == fn_8023DE58(i) && fn_8023A51C(i) && *(f32*)(this_ + 0x14) == lbl_8053E5D4) {
                 if (fn_8023725C(i) == 1) {
                     range = 50.0f;
                 } else if (fn_8023725C(i) == 2) {
