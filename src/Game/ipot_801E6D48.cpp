@@ -166,16 +166,8 @@ extern "C" s32 fn_801E6FAC(char* p) {
     return 0;
 }
 
-struct IpotRandom {
-    u32 seed;
-    f32 get_ufloat_1() {
-        union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
-        return out.f - 1.0f;
-    }
-};
-struct IpotGame { u8 pad[0xb4]; IpotRandom rnd; };
+#include "JSystem/JMath/JMath.h"
+struct IpotGame { u8 pad[0xb4]; JMARandFast rnd; };
 extern IpotGame* lbl_8053AAF8;
 
 struct RupyDrop {
@@ -243,9 +235,12 @@ extern "C" void fn_801E728C(char* p, s32 type) {
         fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x5c, 0, 0, 0, 0, 1, 1.0f);
         if (*(u32*)(p + 0x230) & 0x2000) {
             fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x262, 0, 0, 0, 0, 1, 1.0f);
-            for (s32 i = 0; i < 4; i++) {
-                s32 n = lbl_80469C40[i].count;
-                for (s32 j = 0; j < n; j++) {
+            s32 n;
+            s32 i;
+            s32 j;
+            for (i = 0; i < 4; i++) {
+                n = lbl_80469C40[i].count;
+                for (j = 0; j < n; j++) {
                     s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, lbl_80469C40[i].param);
                     if (idx >= 0) {
                         char* rupy = fn_801F666C(fn_801F856C(), idx);
@@ -344,6 +339,7 @@ extern "C" void fn_801E77A0(char* p) {
     *(s32*)(p + 0x250) = -1;
     *(f32*)(p + 0x254) = 0.0f;
     *(f32*)(p + 0x258) = 0.0f;
+    return;
 }
 
 extern "C" void* fn_801E78F0(void* this_) {
