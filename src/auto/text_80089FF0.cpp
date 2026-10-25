@@ -320,6 +320,20 @@ static bool searchPartialModule(u32 addr, u32* id, u32* index, u32* offset, char
     return false;
 }
 
+static inline void searchNamePart(u8* src, u8* dst, int length)
+{
+    for (u8* p = src; *p; p++) {
+        if (*p == '\\') src = p;
+    }
+    if (*src == '\\') src++;
+    for (int i = 0; *src != 0 && i < length;) {
+        if (*src == '.') break;
+        *dst++ = *src++;
+        i++;
+    }
+    *dst = '\0';
+}
+
 extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
 extern "C" JUTConsole* lbl_8053A914;
 extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
@@ -691,7 +705,7 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
         ms = (OSGetTime() - start) / ((*(u32*)0x800000F8 / 4) / 1000);
     } while (ms < 50);
 
-    if (*(s32*)((u8*)this_ + 0x84) == -1) {
+    if (*(u32*)((u8*)this_ + 0x84) == 0xFFFFFFFF) {
         FSAPad pad0;
         FSAPad pad1;
         FSAPad pad2;
@@ -702,64 +716,20 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
         fn_8008CF54(&pad3, 3);
         fn_8008D15C();
 
-        bool active = false;
-        if (pad0._7c != -1 && pad0._98 != 0) {
-            active = true;
-        }
-        s64 t0;
-        if (active) {
-            t0 = lbl_804993B0[0];
-            if (t0 == 0) {
-                t0 = OSGetTime();
-            }
-        } else {
-            t0 = 0;
-        }
+        bool active0 = pad0._7c != -1 && pad0._98 != 0;
+        s64 t0 = active0 ? (lbl_804993B0[0] != 0 ? lbl_804993B0[0] : OSGetTime()) : 0;
         lbl_804993B0[0] = t0;
 
-        active = false;
-        if (pad1._7c != -1 && pad1._98 != 0) {
-            active = true;
-        }
-        s64 t1;
-        if (active) {
-            t1 = lbl_804993B0[1];
-            if (t1 == 0) {
-                t1 = OSGetTime();
-            }
-        } else {
-            t1 = 0;
-        }
+        bool active1 = pad1._7c != -1 && pad1._98 != 0;
+        s64 t1 = active1 ? (lbl_804993B0[1] != 0 ? lbl_804993B0[1] : OSGetTime()) : 0;
         lbl_804993B0[1] = t1;
 
-        active = false;
-        if (pad2._7c != -1 && pad2._98 != 0) {
-            active = true;
-        }
-        s64 t2;
-        if (active) {
-            t2 = lbl_804993B0[2];
-            if (t2 == 0) {
-                t2 = OSGetTime();
-            }
-        } else {
-            t2 = 0;
-        }
+        bool active2 = pad2._7c != -1 && pad2._98 != 0;
+        s64 t2 = active2 ? (lbl_804993B0[2] != 0 ? lbl_804993B0[2] : OSGetTime()) : 0;
         lbl_804993B0[2] = t2;
 
-        active = false;
-        if (pad3._7c != -1 && pad3._98 != 0) {
-            active = true;
-        }
-        s64 t3;
-        if (active) {
-            t3 = lbl_804993B0[3];
-            if (t3 == 0) {
-                t3 = OSGetTime();
-            }
-        } else {
-            t3 = 0;
-        }
+        bool active3 = pad3._7c != -1 && pad3._98 != 0;
+        s64 t3 = active3 ? (lbl_804993B0[3] != 0 ? lbl_804993B0[3] : OSGetTime()) : 0;
         lbl_804993B0[3] = t3;
 
         s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
@@ -797,19 +767,8 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
     } else {
         FSAPad pad;
         fn_8008CF54(&pad, *(s32*)((u8*)this_ + 0x88));
-        bool active = false;
-        if (pad._7c != -1 && pad._98 != 0) {
-            active = true;
-        }
-        s64 t0;
-        if (active) {
-            t0 = lbl_804993B0[0];
-            if (t0 == 0) {
-                t0 = OSGetTime();
-            }
-        } else {
-            t0 = 0;
-        }
+        bool active = pad._7c != -1 && pad._98 != 0;
+        s64 t0 = active ? (lbl_804993B0[0] != 0 ? lbl_804993B0[0] : OSGetTime()) : 0;
         lbl_804993B0[0] = t0;
         s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
         fn_8008D4CC(&pad, e0);
