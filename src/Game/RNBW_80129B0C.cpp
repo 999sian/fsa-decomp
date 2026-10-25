@@ -51,6 +51,39 @@ struct RnbwActor {
 
 inline void releaseHandle(void*& h) { fn_801EE434(h); h = 0; }
 
+extern "C" s32 fn_8023DE58(s32 player);
+extern "C" void fn_8022E088(s32 player, s32 index, JGeometry::TVec3f* out);
+extern "C" void fn_8022DF48(s32 player);
+extern "C" void fn_8023DF68(s32 player, JGeometry::TVec3f* delta);
+extern "C" void fn_802D8050(void* mgr, s32 id, s32 state, s32 flag);
+extern const f32 lbl_8053CB3C;
+static inline bool rnbwContains(Actor* actor, s32 player) {
+    if (player < 0) return false;
+    if (actor->field_04 != fn_8023DE58(player)) return false;
+    f32 x0 = actor->field_60;
+    f32 y0 = actor->field_64;
+    f32 x1 = actor->field_68;
+    f32 y1 = actor->field_6C;
+    for (s32 j = 0; j < 8; j++) {
+        JGeometry::TVec3f pos;
+        fn_8022E088(player, j, &pos);
+        pos -= *(JGeometry::TVec3f*)&actor->field_0C;
+        pos.z = 0.0f;
+        s32 angle = lbl_8053CB3C * JMath::atanTable_.atan2_(pos.y, pos.x);
+        f32 radius = JGeometry::TUtilf::sqrt(pos.x * pos.x + pos.y * pos.y);
+        pos.z = 0.0f;
+        pos.x = radius * JMath::sincosTable_.cosShort(angle);
+        pos.y = radius * JMath::sincosTable_.sinShort(angle);
+        bool hit = false;
+        if (pos.x >= x0 && pos.y >= y0 && pos.x < x1 && pos.y < y1) hit = true;
+        if (hit) {
+            fn_8022DF48(player);
+            return true;
+        }
+    }
+    return false;
+}
+
 extern "C" void fn_80129B0C(void* this_) {
     Actor* actor = (Actor*)this_;
     actor->Actor::v03();
