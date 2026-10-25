@@ -98,6 +98,9 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
 #include "JSystem/JAudio/Interface/JAISeMgr.h"
+static inline void* startWave8045(u8* p, const JAISoundID& id) {
+    return fn_80456334(p, (u32*)&id, 0);
+}
 extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     s32 id = *(s32*)param_2;
     u8 kind = ((u8*)param_2)[1];
@@ -118,8 +121,7 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     case 0x20055:
     case 0x20056:
     case 0x2005f: {
-        u32 a = 0x10003;
-        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &a);
+        ((JAISeMgr*)mgr)->stopSoundID(JAISoundID(0x10003));
         break;
     }
     case 0x20029: {
@@ -127,13 +129,11 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
         break;
     }
     case 0x20032: {
-        u32 c = 0x20032;
-        stopSoundID__8JAISeMgrF10JAISoundID(mgr, &c);
+        ((JAISeMgr*)mgr)->stopSoundID(JAISoundID(0x20032));
         break;
     }
     case 0x20049: {
-        u32 e = *param_2;
-        if (getHandleSoundID__15JAISoundHandlesF10JAISoundID(p, &e) != 0) {
+        if (((JAISoundHandles*)p)->getHandleSoundID(*(JAISoundID*)param_2) != 0) {
             return NULL;
         }
         break;
@@ -145,8 +145,8 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
         for (i = 0; i < count; i++) {
             void* snd = ((void**)*(void**)p)[i];
             if (snd != NULL) {
-                u32 sid = *(u32*)((u8*)snd + 0x18);
-                if (((u8*)&sid)[1] == 1 && sid != 0x10009 && sid != 0x1000d) {
+                JAISoundID sid = ((JAISound*)snd)->getID();
+                if (sid.mId.mBytes.mGroupId == 1 && sid != 0x10009 && sid != 0x1000d) {
                     stop__8JAISoundFUl(snd, 0);
                     break;
                 }
@@ -161,14 +161,16 @@ extern "C" void* fn_8045B154(u8* p, u32* param_2) {
     if (h == NULL) {
         return NULL;
     }
-    if (*h != NULL && *param_2 != 0x20033 && *param_2 != 0x20049) {
+    if (*h == NULL) return h;
+    if (*param_2 != 0x20033 && *param_2 != 0x20049) {
         if (lbl_8053AF88 == 0) {
             __ct__Q25JMath13TRandom_fast_FUl(&lbl_8053AF8C, 0);
             lbl_8053AF88 = 1;
         }
-        if (*(s8*)(p + 0x5c) >= 0 && *(s8*)(p + 0x5c) < 4) {
+        s8 pitchIndex = *(s8*)(p + 0x5c);
+        if (pitchIndex >= 0 && pitchIndex < 4) {
             if (kind == 1) {
-                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[*(s8*)(p + 0x5c)], 0);
+                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[pitchIndex], 0);
             } else if (kind == 2) {
                 f32 v;
                 u32 bits;
