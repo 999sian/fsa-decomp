@@ -553,7 +553,7 @@ extern "C" void* fn_802BBDFC(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void JPAGetXYZRotateMtx(s16 x, s16 y, s16 z, float (*m)[4]);
+void JPAGetXYZRotateMtx(s16 x, s16 y, s16 z, float (*m)[4]);
 extern s32 lbl_8046D388[];
 extern "C" void fn_802BBE80(char* p) {
     *(u32*)(p + 0x284) = (*(u32*)(p + 0x90) >> 11) & 1;
