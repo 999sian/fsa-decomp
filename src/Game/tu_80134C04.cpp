@@ -21,6 +21,8 @@ extern void* lbl_8053AD80;
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80158B3C(void*);
 extern "C" void fn_80390088(void*);
+extern "C" void fn_80458F04(void*, u32);
+extern "C" void fn_80458FF0(void*, u32, s32, u8);
 struct TuOwnedObject {
     virtual ~TuOwnedObject();
 };
