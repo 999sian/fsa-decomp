@@ -1255,8 +1255,8 @@ extern "C" u8 fn_801F2740(const Actor* a, s32 b) {
     f32 rect[4];
     rect[3] = a->field_6C + a->field_0C.y - a->field_0C.z;
     rect[1] = a->field_64 + a->field_0C.y - a->field_0C.z;
-    rect[2] = a->field_68 + a->field_0C.x;
     rect[0] = a->field_60 + a->field_0C.x;
+    rect[2] = a->field_68 + a->field_0C.x;
     u32 id;
     u32 acc = 0;
     s32 i;
@@ -1325,27 +1325,29 @@ extern "C" void fn_801F0D20(Actor* a, u32 p) {
 
 /* --- 0x801F2A10: does any slot overlap the actor's bounds rect? ------------- */
 extern "C" u32 fn_801F2A10(Actor* a, s32 b, u32 p3, u32 p4, u32 p5) {
-    f32 rect[4];
     u32 id;
     s32 i;
-    rect[3] = a->field_6C + a->field_0C.y - a->field_0C.z;
-    rect[1] = a->field_64 + a->field_0C.y - a->field_0C.z;
-    rect[2] = a->field_68 + a->field_0C.x;
-    rect[0] = a->field_60 + a->field_0C.x;
+    JGeometry::TBox2<f32> bounds;
+    bounds.set(
+        a->field_60 + a->field_0C.x,
+        a->field_64 + a->field_0C.y - a->field_0C.z,
+        a->field_68 + a->field_0C.x,
+        a->field_6C + a->field_0C.y - a->field_0C.z);
     for (i = 0; i < 4; i++) {
         u8* buf;
         id = a->field_04;
         buf = (u8*)fn_802D6A9C();
         if (buf[id + 0x131df] == 0) {
-            f32* p = (f32*)fn_8023E724(i);
-            if (__fabs(a->field_0C.z - p[2]) > lbl_8053F748) {
+            volatile f32* p = (f32*)fn_8023E724(i);
+            f32 z = p[2];
+            if (__fabs(a->field_0C.z - z) > lbl_8053F748) {
                 continue;
             }
         }
         if (fn_8022E438(i, b) != 0) {
             continue;
         }
-        if (fn_80239B64(i, rect, a->field_04, p3, p4, p5) == 0) {
+        if (fn_80239B64(i, (f32*)&bounds, a->field_04, p3, p4, p5) == 0) {
             continue;
         }
         return 1;
@@ -1762,8 +1764,7 @@ extern "C" u32 fn_801EE24C(Actor* a) {
         }
         break;
     }
-    Vec pos;
-    atu5SetVec3f((const f32*)((u8*)a + 0xc), (f32*)&pos);
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)&a->field_0C;
     s32 slot = (st >> 24) & 7;
     if (slot != 0) {
         slot += 7;
@@ -1778,7 +1779,7 @@ extern "C" u32 fn_801EE24C(Actor* a) {
     d = warpRect(slot)[1];
     pos.y += d;
     pos.z = 200.0f;
-    atu5SetVec3f((const f32*)&pos, (f32*)((u8*)a + 0xc));
+    *(JGeometry::TVec3<f32>*)&a->field_0C = pos;
     a->field_04 = slot;
     return 1;
 
@@ -1803,11 +1804,10 @@ extern "C" int fn_801F11B4(Actor* a) {
             if ((u8)a->v17((int)a->field_04, (f32*)&a->field_0C) != 0) {
                 a->field_0C.x = a->field_18.x;
                 a->field_0C.y = a->field_18.y;
-                f32 c = 8.0f;
                 s16 angle = fn_801F6874(a->field_98);
                 u32 idx = (u16)(angle - 0x8000) >> 5;
-                f32 dx = c * sincosTable___5JMath[idx].sin;
-                f32 dy = c * sincosTable___5JMath[idx].cos;
+                f32 dx = lbl_8053F7A4 * sincosTable___5JMath[idx].sin;
+                f32 dy = lbl_8053F7A4 * sincosTable___5JMath[idx].cos;
                 a->field_0C.x = a->field_0C.x + dx;
                 a->field_0C.y = a->field_0C.y + dy;
                 f32* rect = warpRect((s32)a->field_04);
@@ -1815,22 +1815,8 @@ extern "C" int fn_801F11B4(Actor* a) {
                                 a->field_0C.x < rect[2] && a->field_0C.y < rect[3];
                 if (!inside) {
                     a->field_04 = a->field_08;
-                    register Actor* t = a;
-                    register f32 z, xy;
-                    // clang-format off
-                    __asm {
-                        psq_l  xy, 0x24(t), 0, 0
-                        lfs    z,  0x2c(t)
-                        psq_st xy, 0xc(t),  0, 0
-                        stfs   z,  0x14(t)
-                    }
-                    __asm {
-                        psq_l  xy, 0x24(t), 0, 0
-                        lfs    z,  0x2c(t)
-                        psq_st xy, 0x18(t),  0, 0
-                        stfs   z,  0x20(t)
-                    }
-                    // clang-format on
+                    *(JGeometry::TVec3<f32>*)&a->field_0C = *(JGeometry::TVec3<f32>*)&a->field_24;
+                    *(JGeometry::TVec3<f32>*)&a->field_18 = *(JGeometry::TVec3<f32>*)&a->field_24;
                 }
                 result = 1;
             }
