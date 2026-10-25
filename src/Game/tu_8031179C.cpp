@@ -285,8 +285,7 @@ extern "C" s8 fn_802D800C(void*, s32);
 extern "C" void fn_802D8050(void*, s32, s32, s32);
 extern "C" void fn_802A3948(void*, void*, s32, s32, s32);
 extern "C" void* lbl_8053AC98;
-extern "C" f32 lbl_805417E0;
-extern "C" f32 lbl_805417E4;
+extern "C" const f32 lbl_805417E4;
 extern "C" void fn_80312358(Actor* p) {
     void* base;
     s32 b;
