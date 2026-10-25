@@ -6,6 +6,13 @@
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern const u32 lbl_80472718[];
+struct T35Tables {
+    u8 pad00[0x18];
+    u32 frames[9];
+    u16 first[6];
+    u16 second[6];
+    u8 colors[8][3];
+};
 extern const s16 lbl_80472748[];
 extern const f32 lbl_80542930;
 extern const f32 lbl_80542940;
