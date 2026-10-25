@@ -1761,13 +1761,11 @@ void fn_80284978(char* p) {
     JGeometry::TVec3<f32>* arrA = tbl->ofsA;
     JGeometry::TVec3<f32>* arrB = tbl->ofsB;
     s32 mode = S32(p, 0x3dc);
-    tmp.x = arrA[mode].x;
-    tmp.y = arrA[mode].y;
-    tmp.z = arrA[mode].z;
-    tmp2.x = arrB[mode].x;
-    tmp2.y = arrB[mode].y;
-    tmp2.z = arrB[mode].z;
+    arrA += mode;
+    arrB += mode;
+    tmp.set(*arrA);
     tmp.add(VEC(p, 0x8));
+    tmp2.set(*arrB);
     tmp2.add(VEC(p, 0x8));
     kind = fn_8022461C((char*)&tmp, S32(p, 0x3b4));
     if (!fn_802265DC((f32*)&tmp, S32(p, 0x3b4), 1) || (u16)kind == 0xe || (u16)kind == 0x39 || (u16)kind == 0xd) {
@@ -1804,19 +1802,31 @@ void fn_80284978(char* p) {
                 VEC(p, 0x8).add(VEC(actor, 0x3c));
             } else if (!fn_802456FC(p)) {
                 fn_80251AEC(p, 0);
-            } else if (fn_802456FC(p) && (u32)fn_80246D1C(p, tbl->ids[S32(p, 0x3dc)]) != 0) {
-                fn_80251AEC(p, 0xd);
+            } else if (fn_802456FC(p)) {
+                s32* ids = tbl->ids;
+                ids += S32(p, 0x3dc);
+                if ((u32)fn_80246D1C(p, *ids) != 0) {
+                    fn_80251AEC(p, 0xd);
+                }
             }
         } else {
             S32(p, 0xda4) = -1;
-            if (fn_802456FC(p) && (u32)fn_80246D1C(p, tbl->ids[S32(p, 0x3dc)]) != 0) {
-                fn_80251AEC(p, 0xd);
+            if (fn_802456FC(p)) {
+                s32* ids = tbl->ids;
+                ids += S32(p, 0x3dc);
+                if ((u32)fn_80246D1C(p, *ids) != 0) {
+                    fn_80251AEC(p, 0xd);
+                }
             }
         }
     } else if (!fn_802456FC(p)) {
         fn_80251AEC(p, 0);
-    } else if (fn_802456FC(p) && (u32)fn_80246D1C(p, tbl->ids[S32(p, 0x3dc)]) != 0) {
-        fn_80251AEC(p, 0xd);
+    } else if (fn_802456FC(p)) {
+        s32* ids = tbl->ids;
+        ids += S32(p, 0x3dc);
+        if ((u32)fn_80246D1C(p, *ids) != 0) {
+            fn_80251AEC(p, 0xd);
+        }
     }
     if (fn_8024FEFC(p) || moved) {
         U8(p, 0x3f8) += 1;
