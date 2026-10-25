@@ -418,6 +418,7 @@ extern "C" u8 fn_801CA564(char* p) {
     JGeometry::TVec3f fx1;
     JGeometry::TVec3f fx2;
     s32 kind;
+    s32 j;
     int i;
     u8 held = fn_801C53C4(p);
     if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
@@ -577,12 +578,11 @@ extern "C" u8 fn_801CA564(char* p) {
         }
         if (!held) {
             vel = *(JGeometry::TVec3f*)(p + 0x3c);
-            for (i = 0; i < 4; i++) {
-                if (i == fn_801F285C(p, 0, &kind, 1, i)) {
-                    register JGeometry::TVec3f* pp = ((JGeometry::TVec3f*)fn_8023E724(i));
-                    if (fn_801F37AC(p, fn_8023B6CC(i), pp, 0, kind, i)) {
+            for (j = 0; j < 4; j++) {
+                if (j == fn_801F285C(p, 0, &kind, 1, j)) {
+                    if (fn_801F37AC(p, fn_8023B6CC(j), ((JGeometry::TVec3f*)fn_8023E724(j)), 0, kind, j)) {
                         found = 1;
-                        *(s32*)(p + 0x338) = i;
+                        *(s32*)(p + 0x338) = j;
                     }
                 }
             }
