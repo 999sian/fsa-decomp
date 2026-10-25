@@ -372,29 +372,58 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, 
     }
 }
 
+u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* heap, int compression, u8** pBuf)
+{
+    u32 result;
+    u32 size = (length + 0x1f) & ~0x1f;
+
+    switch (compression) {
+    case 0: {
+        u8* buf = (u8*)JKRHeap::alloc(size, 0x20, heap);
+        JKRAramToMainRam(aramAddr, buf, size, EXPAND_SWITCH_DEFAULT, size, NULL, -1, NULL);
+        *pBuf = buf;
+        return length;
+    }
+    case 1:
+    case 2: {
+        u8 header[64];
+        u8* headerPtr = (u8*)(((u32)header + 0x1f) & ~0x1f);
+        JKRAramToMainRam(aramAddr, headerPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
+        u32 expandSize = (headerPtr[4] << 0x18) | (headerPtr[5] << 0x10) | (headerPtr[6] << 8) | headerPtr[7];
+        u32 alignedExpand = (expandSize + 0x1f) & ~0x1f;
+        u8* buf = (u8*)JKRHeap::alloc(alignedExpand, 0x20, heap);
+        JKRAramToMainRam(aramAddr, buf, size, EXPAND_SWITCH_DECOMPRESS, alignedExpand, heap, -1, &result);
+        *pBuf = buf;
+        return result;
+    }
+    default:
+        JUTException::panic_f(lbl_8045E0F8, 0x2c9, lbl_8053B6D0, lbl_8045E10C);
+        return 0;
+    }
+}
+
 extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
 extern "C" u32 fn_8007AAF8(void* this_, const void* resource) {
-    u8* self = (u8*)this_;
-    if (*(u32*)(self + 0x50) == 0) {
-        return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
+    if (*(u32*)((u8*)this_ + 0x50) == 0) {
+        return ((JKRArchive*)this_)->getResSize(resource);
     }
-    u8* fileEntry = (u8*)findPtrResource__10JKRArchiveCFPCv(this_, resource);
+    JKRArchive::SDIFileEntry* fileEntry = ((JKRArchive*)this_)->findPtrResource(resource);
     if (fileEntry == nullptr) {
         return 0xffffffff;
     }
-    if ((*(u32*)(fileEntry + 0x4) >> 24 & 4) == 0) {
-        return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
+    if ((fileEntry->mFlag >> 24 & 4) == 0) {
+        return ((JKRArchive*)this_)->getResSize(resource);
     }
-    u32 expandSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, fileEntry);
+    u32 expandSize = ((JKRArchive*)this_)->getExpandSize(fileEntry);
     if (expandSize != 0) {
         return expandSize;
     }
     u8 buf[64];
     u8* bufPtr = (u8*)(((u32)buf + 31) & ~31);
-    u8* block = *(u8**)(self + 0x64);
-    JKRAram::aramToMainRam(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), bufPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, nullptr, -1, nullptr);
+    u8* block = *(u8**)((u8*)this_ + 0x64);
+    JKRAram::aramToMainRam(fileEntry->mDataOffset + *(u32*)(block + 0x14), bufPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, nullptr, -1, nullptr);
     expandSize = (bufPtr[4] << 24) | (bufPtr[5] << 16) | (bufPtr[6] << 8) | bufPtr[7];
-    ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, fileEntry, expandSize);
+    ((JKRArchive*)this_)->setExpandSize(fileEntry, expandSize);
     return expandSize;
 }
 
