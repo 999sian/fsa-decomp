@@ -246,9 +246,9 @@ extern f32 lbl_804A31C8[][4];
 extern f32 lbl_8053E7D0;
 extern f32 lbl_8053E7E0;
 extern f32 lbl_8053E7E4;
+#pragma opt_lifetimes off
 #pragma opt_propagation off
-extern "C" void fn_801ACCF0(void* this_) {
-    char* t = (char*)this_;
+extern "C" void fn_801ACCF0(char* t) {
     s32 j;
     s32 i;
     s32 flags;
@@ -257,6 +257,9 @@ extern "C" void fn_801ACCF0(void* this_) {
     f32 scale = 1.0f;
     f32 p[3];
     f32* b;
+    s32 one;
+    u32 bits;
+    char* zero;
     char* em;
 
     if (*(s32*)(t + 0x294) == 1) {
@@ -278,33 +281,43 @@ extern "C" void fn_801ACCF0(void* this_) {
                 flags = 0x4000;
             }
             fn_8013CB44(*(void**)(t + 0x29c), t + 0xc, 1, 1, 1);
+            s16 xrot=(s16)flags;
             const s32* __restrict angles = lbl_804689C0;
-            JPAGetXYZRotateMtx((s16)flags, (s16)angles[*(s32*)(t + 0x98)], -0x8000, (f32(*)[4])(*(char**)(t + 0x29c) + 0x68));
+            JPAGetXYZRotateMtx(xrot, (s16)angles[*(s32*)(t + 0x98)], -0x8000, (f32(*)[4])(*(char**)(t + 0x29c) + 0x68));
+            fn_801F0E34(t, 0x30011, 0);
         }
-        fn_801F0E34(t, 0x30011, 0);
 
         if (*(s32*)(t + 0x238) == 0) {
-            s32 dir = *(s32*)(t+0x98);
-            f32 left = ((f32*)lbl_804A31C8)[dir*4];
-            b = lbl_804A31C8[dir];
-            f32 top = b[1];
+            f32 left;
+            f32 top;
             f32 right;
-            f32 bottom = b[3];
+            f32 bottom;
+            s32 dir = *(s32*)(t+0x98);
+            left = ((f32*)lbl_804A31C8)[dir*4];
+            b = lbl_804A31C8[dir];
+            top = b[1];
+            bottom = b[3];
             right = b[2];
-            left=scale*left; top=scale*top; bottom=scale*bottom; right=scale*right;
+            left=scale*left; top=scale*top; bottom=scale*bottom;
             *(f32*)(t+0x60)=left;
             *(f32*)(t+0x64)=top;
-            *(f32*)(t+0x68)=right;
+            *(f32*)(t+0x68)=scale*right;
             *(f32*)(t+0x6c)=bottom;
             fn_801F2B7C(t, *(s32*)(t + 0x114), -1, 9);
             fn_801F2B20(t, 5);
             *(JGeometry::TVec3f*)p = *(JGeometry::TVec3f*)(t+0xc);
 
             if (*(s32*)(t + 0x254) == 0) {
+                f32 eighth;
+                f32 width;
+                f32 minx;
+                eighth = 0.125f;
                 *(s32*)(t + 0x254) = 1;
-                stepX = (*(f32*)(t + 0x68) - *(f32*)(t + 0x60)) * 0.125f;
-                stepY = (*(f32*)(t + 0x6c) - *(f32*)(t + 0x64)) * 0.125f;
-                p[0] = *(f32*)(t + 0xc) + *(f32*)(t + 0x60);
+                width = *(f32*)(t+0x68)-(minx=*(f32*)(t+0x60));
+                stepX = width * eighth;
+                f32 height=*(f32*)(t+0x6c)-*(f32*)(t+0x64);
+                stepY=height*eighth;
+                p[0] = *(f32*)(t + 0xc) + minx;
                 for (i = 0; i < 8; i++) {
                     p[1] = *(f32*)(t + 0x10) + *(f32*)(t + 0x64);
                     for (j = 0; j < 8; j++) {
@@ -321,19 +334,20 @@ extern "C" void fn_801ACCF0(void* this_) {
     if (*(s32*)(t + 0x108) > 0) {
         return;
     }
+    one=1;
+    zero=0;
     em = *(char**)(t + 0x29c);
-    s32 one=1;
-    s32 zero=0;
     if (em != 0) {
-        *(s32*)(em + 0xf4) |= 1;
+        bits=*(u32*)(em+0xf4);
+        *(u32*)(em+0xf4)=bits|1;
         *(s32*)(em + 0x24) = one;
-        *(char**)(t + 0x29c) = (char*)zero;
+        *(char**)(t + 0x29c) = zero;
     }
     em = *(char**)(t + 0x2a0);
     if (em != 0) {
         *(s32*)(em + 0xf4) |= 1;
         *(s32*)(em + 0x24) = one;
-        *(char**)(t + 0x2a0) = (char*)zero;
+        *(char**)(t + 0x2a0) = zero;
     }
     *(u8*)(t + 0x11c) = 0;
     break;
@@ -341,6 +355,7 @@ extern "C" void fn_801ACCF0(void* this_) {
     }
 }
 #pragma opt_propagation reset
+#pragma opt_lifetimes reset
 extern "C" void fn_801AE5AC(void* this_);
 extern void* lbl_8053AF80;
 extern "C" void fn_80458F9C(void* a, u32 b);
@@ -449,7 +464,7 @@ extern "C" void fn_801AE32C(void* this_) {
 }
 
 extern "C" void fn_801ACFF4(void* this_);
-extern "C" void fn_801ACCF0(void* this_);
+extern "C" void fn_801ACCF0(char* this_);
 struct DdgoTimers { u8 pad[0x238]; s32 t[5]; };
 
 // DDGO update
