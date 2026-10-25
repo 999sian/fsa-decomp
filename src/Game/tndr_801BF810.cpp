@@ -2,7 +2,9 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "float.h"
+#pragma opt_propagation off
 #include "JSystem/JGeometry/Vec.h"
+#pragma opt_propagation reset
 #include "JSystem/JMath/JMath.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -280,6 +282,83 @@ extern "C" void fn_801C0438(char* this_, s32 st) {
     *(s32*)(this_ + 0x248) = st;
 }
 
+extern int __float_epsilon[];
+extern "C" const f32 lbl_8053ED6C;
+extern "C" const f32 lbl_8053ED70;
+extern "C" const f32 lbl_8053ED74;
+extern "C" const f32 lbl_8053ED78;
+extern "C" const f32 lbl_8053ED7C;
+extern "C" void fn_801CD8E4(f32* value, f32 target, f32 rate, f32 eps);
+extern "C" f32 fn_801D0DA0(void* actor, s32 idx, void* pos);
+#pragma opt_propagation off
+extern "C" void fn_801C0634(char* this_) {
+    JGeometry::TVec2<f32> delta;
+    delta.set(*(JGeometry::TVec2<f32>*)(this_ + 0x2b8));
+    delta.x -= *(f32*)(this_ + 0x2c0);
+    delta.y -= *(f32*)(this_ + 0x2c4);
+    delta.normalize();
+    delta.scale(*(f32*)(this_ + 0x2ac));
+
+    f32 tx, tz;
+    if (*(s32*)(this_ + 0x2a8) >= 0) {
+        f32* p = fn_8023E724(*(s32*)(this_ + 0x2a8));
+        tx = p[0];
+        tz = p[1];
+    } else {
+        tx = *(f32*)(this_ + 0x24);
+        tz = *(f32*)(this_ + 0x28);
+    }
+    fn_801CD8E4((f32*)(this_ + 0x2c0), tx, lbl_8053ED30, lbl_8053ED34);
+    fn_801CD8E4((f32*)(this_ + 0x2c4), tz, lbl_8053ED30, lbl_8053ED34);
+    JGeometry::TVec2<f32> target;
+    target.set(*(JGeometry::TVec2<f32>*)(this_ + 0x2c0));
+    target.add(delta);
+    fn_801CD8E4((f32*)(this_ + 0x2b8), target.x, lbl_8053ED78, lbl_8053ED34);
+    fn_801CD8E4((f32*)(this_ + 0x2bc), target.y, lbl_8053ED78, lbl_8053ED34);
+
+    JGeometry::TVec2<f32> difference;
+    difference.set(*(JGeometry::TVec2<f32>*)(this_ + 0x2b8));
+    difference.x -= *(f32*)(this_ + 0x2c0);
+    difference.y -= *(f32*)(this_ + 0x2c4);
+    f32 dist;
+    if (*(s32*)(this_ + 0x2a8) >= 0) {
+        dist = fn_801D0DA0(this_, *(s32*)(this_ + 0x2a8), this_ + 0xc);
+    } else {
+        f32 ax = *(f32*)(this_ + 0x24) - *(f32*)(this_ + 0xc);
+        f32 az = *(f32*)(this_ + 0x28) - *(f32*)(this_ + 0x10);
+        dist = ax * ax + az * az;
+    }
+    if (dist > lbl_8053ED34) {
+        dist = __frsqrte(dist) * dist;
+    }
+
+    s32 ang = *(s16*)(this_ + 0x2b0);
+    if (dist > lbl_8053ED7C) {
+        s32 t = (s32)((lbl_8053ED30 / dist) * ((f32)ang * *(f32*)(this_ + 0x2ac)));
+        if ((s16)t > ang) {
+            t = ang;
+        } else if ((s16)t < 0x100) {
+            t = 0x100;
+        }
+        ang = t;
+    }
+    if (*(s32*)(this_ + 0x248) == 5) {
+        ang = (s32)((lbl_8053ED30 - lbl_8053ED78 * (f32)(20 - *(s32*)(this_ + 0x24c))) * (f32)(s16)ang);
+    }
+
+    if (*(u32*)(this_ + 0x230) & 0x4000) {
+        ang = (s16)-ang;
+    }
+    u16 a = -ang;
+    f32 sn = JMath::sincosTable_.mTable[a >> 5].first;
+    f32 cs = JMath::sincosTable_.mTable[a >> 5].second;
+    JGeometry::TVec2<f32> result;
+    result.set(*(JGeometry::TVec2<f32>*)(this_ + 0x2c0));
+    result.x += difference.x * cs - difference.y * sn;
+    result.y += difference.x * sn + difference.y * cs;
+    ((JGeometry::TVec2<f32>*)(this_ + 0x2b8))->set(result);
+}
+#pragma opt_propagation reset
 extern "C" void fn_801D01A0(void* this_, void* target, f32 maxd, f32* out);
 extern const f64 lbl_8053ED50;
 extern const f32 lbl_8053ED40;
@@ -347,6 +426,138 @@ extern "C" void fn_801BFD08(char* this_) {
         break;
     default:
         break;
+    }
+}
+
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 f);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" u8 fn_801D0B44(void* this_, s32 id);
+extern "C" u8 fn_8022E438(u32 i, s32 b);
+extern "C" s32 fn_802265FC(void* a, s32 b);
+extern "C" void fn_801BFF04(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            *(s32*)(this_ + 0x2a8) = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
+            if (*(s32*)(this_ + 0x2a8) >= 0) {
+                fn_801C0438(this_, 1);
+            }
+        }
+        return;
+    case 1:
+        if (*(f32*)(this_ + 0x14) >= lbl_8053ED44) {
+            *(f32*)(this_ + 0x14) = lbl_8053ED44;
+            *(f32*)(this_ + 0x2ac) = (f32)(fn_801CD664(0x21) + 0x30);
+            *(s16*)(this_ + 0x2b0) = fn_801CD664(0x101) + 0x200;
+            if (fn_801CD664(2) == 0) {
+                *(u32*)(this_ + 0x230) &= ~0x2000;
+            } else {
+                *(u32*)(this_ + 0x230) |= 0x2000;
+            }
+            fn_801C0438(this_, 2);
+        }
+        return;
+    case 2: {
+        s32 a = *(s32*)(this_ + 0x2a8);
+        if (a >= 0 && !fn_80230188(a) && !fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
+            s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
+            if (v >= 0 && v != *(s32*)(this_ + 0x2a8) && fn_8022E438(v, *(s32*)(this_ + 0x2a8))) {
+                *(s32*)(this_ + 0x2a8) = v;
+                fn_801C0438(this_, 2);
+            } else {
+                fn_801C0438(this_, 6);
+            }
+            return;
+        }
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250) && !fn_80230188(*(s32*)(this_ + 0x2a8))) {
+            f32 dist = fn_801D0DA0(this_, *(s32*)(this_ + 0x2a8), this_ + 0xc);
+            f32 t = lbl_8053ED38 + *(f32*)(this_ + 0x2ac);
+            if (dist <= t * t) {
+                fn_801C0438(this_, 3);
+                return;
+            }
+        }
+        fn_801C0634(this_);
+        return;
+    }
+    case 3:
+        *(s32*)(this_ + 0x2a8) = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
+        if (*(s32*)(this_ + 0x2a8) >= 0) {
+            fn_801C0438(this_, 2);
+        } else {
+            fn_801C0634(this_);
+        }
+        return;
+    case 4:
+        if (*(s32*)(this_ + 0x24c) >= 0xf) {
+            if (!fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
+                s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
+                if (v >= 0 && v != *(s32*)(this_ + 0x2a8) && fn_8022E438(v, *(s32*)(this_ + 0x2a8))) {
+                    *(s32*)(this_ + 0x2a8) = v;
+                    fn_801C0438(this_, 2);
+                } else {
+                    fn_801C0438(this_, 6);
+                }
+            } else {
+                fn_801C0438(this_, 4);
+            }
+        }
+        return;
+    case 5:
+        if (*(s32*)(this_ + 0x24c) >= 0x32) {
+            if (!fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
+                s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
+                if (v >= 0 && v != *(s32*)(this_ + 0x2a8) && fn_8022E438(v, *(s32*)(this_ + 0x2a8))) {
+                    *(s32*)(this_ + 0x2a8) = v;
+                    fn_801C0438(this_, 2);
+                } else {
+                    fn_801C0438(this_, 6);
+                }
+            } else {
+                fn_801C0438(this_, 5);
+            }
+        }
+        return;
+    case 6:
+        if (!fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
+            s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
+            if (v >= 0 && v != *(s32*)(this_ + 0x2a8) && fn_8022E438(v, *(s32*)(this_ + 0x2a8))) {
+                *(s32*)(this_ + 0x2a8) = v;
+                fn_801C0438(this_, 2);
+            } else {
+                fn_801C0438(this_, 6);
+            }
+            return;
+        }
+        fn_801C0634(this_);
+        if (*(s32*)(this_ + 0x24c) >= 0x14) {
+            fn_801C0438(this_, 2);
+            return;
+        }
+        break;
+    default:
+        return;
+    }
+
+    if (*(f32*)(this_ + 0x14) <= lbl_8053ED30) {
+        *(f32*)(this_ + 0x14) = lbl_8053ED30;
+    }
+    u8 flag = 0;
+    s32 id = *(s32*)(this_ + 0x4);
+    if (fn_802D6A9C()->arr[id] != 0) {
+        f32 pos[2];
+        f32 y = lbl_8053ED58 + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+        pos[0] = *(f32*)(this_ + 0xc);
+        pos[1] = y;
+        if ((u16)fn_802265FC(pos, *(s32*)(this_ + 0x4)) == 2) {
+            flag = 1;
+        }
+    }
+    if (flag) {
+        *(s32*)(this_ + 0x2a8) = -1;
+        fn_801C0438(this_, 1);
+    } else {
+        fn_801C0438(this_, 0);
     }
 }
 
