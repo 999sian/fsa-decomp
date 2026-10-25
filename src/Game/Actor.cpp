@@ -50,8 +50,6 @@ public:
     virtual void e2();
     virtual void e3();
     virtual u32 load(u32 a, void* b);
-    virtual void e5();
-    virtual void* loadSprite(u32 a, void* b);
 };
 
 union EffWord {
