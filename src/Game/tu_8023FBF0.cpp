@@ -368,7 +368,7 @@ extern f32 lbl_80540030;
 extern f32 lbl_80540094;
 f32 fn_80309D90(void*, s32);
 void fn_8015F8FC(void*, s32, void*, s32);
-void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 void fn_8024F0E8(char*, s32);
 void fn_8043A170(s32, s32);
 void fn_80270D08(char*);
