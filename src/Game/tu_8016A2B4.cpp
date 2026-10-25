@@ -350,6 +350,7 @@ extern "C" void fn_8016AD84(u8* self) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8016ADE0(void* param_1) {
     struct ColorHelper {
         static inline GXColor make(u8 a) {
@@ -361,6 +362,7 @@ extern "C" void fn_8016ADE0(void* param_1) {
     u8* p = (u8*)param_1;
     if (p[0x1ec] != 0) {
         f32 f31, f30, f29, f28, fw, fh;
+        f32 k, sy, sx;
         u8* r7_20 = *(u8**)(lbl_8053AB10 + 0x20);
         u8* r7 = *(u8**)(sManager__8JUTVideo + 0x4);
         fw = (f32)(s32)*(u16*)(r7 + 0x4);
@@ -369,9 +371,9 @@ extern "C" void fn_8016ADE0(void* param_1) {
         f32 fa = (f32)*(s32*)(r7_20 + 0x2380);
         f32 fb = (f32)*(s32*)(r7_20 + 0x2384);
         u8* r8 = *(u8**)(lbl_8053AB10 + 0x24);
-        f32 sx = lbl_8053D938 / fa;
-        f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
-        f32 sy = lbl_8053D938 / fb;
+        sx = lbl_8053D938 / fa;
+        k = lbl_8053D93C / *(f32*)(r8 + 0x858);
+        sy = lbl_8053D938 / fb;
         f29 = -*(f32*)(r8 + 0x10) * sx;
         f28 = -*(f32*)(r8 + 0x20) * sy;
         f31 = k * (lbl_8053D940 * (sx * (f32)(s32)*(u16*)(r7 + 0x4)));
@@ -395,6 +397,7 @@ extern "C" void fn_8016ADE0(void* param_1) {
         GXTexCoord2f32(f29 - f31, f28 + f30);
     }
 }
+#pragma opt_propagation reset
 
 extern "C" void fn_8016B054(u8* self) {
     if (self[0x1D3]) {
