@@ -915,6 +915,32 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
     }
 }
 
+struct J2DPane {
+    JGeometry::TBox2<f32>* getBounds();
+};
+
+// Pane reached through GetKeyed: resize(w, h) at vtable 0x18.
+struct HudResizePane {
+    virtual void r00();
+    virtual void r01();
+    virtual void r02();
+    virtual void r03();
+    virtual void resize(f32 w, f32 h);
+};
+
+extern "C" void fn_80422824(u8* this_);
+extern "C" void fn_80423248(u8* this_, u32 idx);
+extern "C" void fn_80423804(u8* this_, u32 idx);
+extern "C" u8 fn_8023BD70(s32 i);
+extern "C" void fn_80441490(void* p);
+extern const f32 lbl_80543A68;
+extern const f32 lbl_80543A70;
+extern const f32 lbl_80543A74;
+extern const f32 lbl_80543A78;
+extern const f32 lbl_80543A7C;
+extern const f32 lbl_80543A80;
+extern const f32 lbl_80543A84;
+
 extern "C" void fn_80425F24(u8* this_) {
     fn_8013B490(lbl_8053AB10);
     (*(J2DScreen**)(this_ + 0x18))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
@@ -988,27 +1014,28 @@ extern "C" void fn_80425F6C(u8* self) {
 }
 #pragma fp_contract on
 extern "C" void fn_804263A8(u8* this_) {
-    u8* base = (u8*)lbl_8048E1B8;
+    const u8* base = lbl_8048E1B8;
     s32 i;
 
     for (i = 0; i < 4; i++) {
         u8 mask = 1 << i;
-        if (!(lbl_8053AAF8[0x82] & mask)) {
+        BOOL active = (lbl_8053AAF8[0x82] & mask) != 0;
+        if (!active) {
             this_[0x25d] &= ~mask;
         } else {
-            if ((lbl_8053AED0[0xdd] & mask) && !(this_[0x25c] & mask)) {
+            if ((u32)((lbl_8053AED0[0xdd] & mask) != 0) && !(this_[0x25c] & mask)) {
                 this_[0x25c] |= mask;
                 this_[0x25d] |= mask;
             } else if (lbl_8053AED0[0xdc] & 0x10) {
                 this_[0x25d] &= ~mask;
             } else if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) {
                 this_[0x25d] &= ~mask;
-                *(u32*)(lbl_80529DEC + 0xd8 + i * 4) = fn_80237774(i);
-                *(u32*)(lbl_80529DEC + 0xe8 + i * 4) = fn_80236100(i);
-                *(u32*)(lbl_80529DEC + 0x108 + i * 4) = fn_802375B0(i);
             }
         }
 
+        *(u32*)(lbl_80529DEC + 0xd8 + i * 4) = fn_80237774(i);
+        *(u32*)(lbl_80529DEC + 0xe8 + i * 4) = fn_80236100(i);
+        *(u32*)(lbl_80529DEC + 0x108 + i * 4) = fn_802375B0(i);
         *(s32*)(this_ + 0x158 + i * 4) = 0x180;
         *(s32*)(this_ + 0x168 + i * 4) = 0;
         *(s32*)(this_ + 0x178 + i * 4) = 0;
@@ -1050,47 +1077,58 @@ extern "C" void fn_804263A8(u8* this_) {
     *(s32*)(this_ + 0x150) = -2;
     *(s32*)(this_ + 0x154) = -2;
 
-    for (i = 0; i < 4; i++) {
+    const u64* firstKeys = (const u64*)(base + 0xd68);
+    const u64* key0 = firstKeys;
+    const u64* key1 = (const u64*)(base + 0xda8);
+    const u64* key2 = (const u64*)(base + 0xdc8);
+    const u64* key3 = (const u64*)(base + 0xde8);
+    const u64* key4 = (const u64*)(base + 0xe28);
+    const u64* key5 = (const u64*)(base + 0xe68);
+    const u64* key6 = (const u64*)(base + 0xe88);
+    const u64* key7 = (const u64*)(base + 0xe08);
+    const u64* key8 = (const u64*)(base + 0xea8);
+    const u64* key9 = (const u64*)(base + 0xec8);
+    for (i = 0; i < 4; i++, ++key0, ++key1, ++key2, ++key3, ++key4, ++key5, ++key6, ++key7, ++key8, ++key9) {
         if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
-            SetKeyFlag(*(u8**)(this_ + 0x18), *(u64*)(base + 0xd68 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 0x18), *(u64*)(base + 0xda8 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xdc8 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xde8 + i * 8), 1);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe28 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe68 + i * 8), 1);
+            ((u8*)GetHeart(*(u8**)(this_ + 0x18), *key0))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 0x18), *key1))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key2))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key3))[0xb0] = 1;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key4))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key5))[0xb0] = 1;
             if (lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x89] != 0) {
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe88 + i * 8), 1);
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key6))[0xb0] = 1;
             } else {
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe88 + i * 8), 0);
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key6))[0xb0] = 0;
             }
             if (((s32)lbl_8053AAF8[0x83] >> (2 * i) & 3) == 2) {
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe08 + i * 8), 1);
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xea8 + i * 8), 1);
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8), 0);
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key7))[0xb0] = 1;
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key8))[0xb0] = 1;
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key9))[0xb0] = 0;
             } else {
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe08 + i * 8), 0);
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xea8 + i * 8), 0);
-                SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8), 0);
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key7))[0xb0] = 0;
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key8))[0xb0] = 0;
+                ((u8*)GetHeart(*(u8**)(this_ + 4), *key9))[0xb0] = 0;
             }
         } else {
-            SetKeyFlag(*(u8**)(this_ + 0x18), *(u64*)(base + 0xd68 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 0x18), *(u64*)(base + 0xda8 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xdc8 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xde8 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe08 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe28 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe68 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xe88 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xea8 + i * 8), 0);
-            SetKeyFlag(*(u8**)(this_ + 4), *(u64*)(base + 0xec8 + i * 8), 0);
+            ((u8*)GetHeart(*(u8**)(this_ + 0x18), *key0))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 0x18), *key1))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key2))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key3))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key7))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key4))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key5))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key6))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key8))[0xb0] = 0;
+            ((u8*)GetHeart(*(u8**)(this_ + 4), *key9))[0xb0] = 0;
         }
     }
 
     {
-        u32 tag = fn_804030C4(0x54494D47, lbl_804B145C[0]);
         for (i = 0; i < 4; i++) {
-            CallSlot68(GetKeyed(*(u8**)(this_ + 0x18), *(u64*)(base + 0xd68 + i * 8)), tag);
-            CallSlot68(GetKeyed(*(u8**)(this_ + 0x18), *(u64*)(base + 0xd88 + i * 8)), tag);
+            u32 tag = fn_804030C4(0x54494D47, lbl_804B145C[0]);
+            CallSlot68(GetHeart(*(u8**)(this_ + 0x18), firstKeys[i]), tag);
+            CallSlot68(GetHeart(*(u8**)(this_ + 0x18), *(const u64*)(base + 0xd88 + i * 8)), tag);
         }
     }
 
