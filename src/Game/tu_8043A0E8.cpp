@@ -1107,11 +1107,13 @@ extern "C" u8 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
 }
 
 static inline bool fn_8043DF8C_hit(f32 x, f32 y, f32 px, f32 py, f32 r) {
-    f32 dx = x - 94.0f;
-    f32 dy = y - 61.5f;
-    f32 sx = 94.0f + x;
-    f32 sy = 61.5f + y;
-    if (px >= dx - r && px <= r + sx && py >= dy - r && py <= r + sy) {
+    f32 a = 94.0f;
+    f32 b = 61.5f;
+    f32 left = x - a - r;
+    f32 right = a + x + r;
+    f32 bottom = y - b - r;
+    f32 top = b + y + r;
+    if (px >= left && px <= right && py >= bottom && py <= top) {
         return false;
     }
     return true;
@@ -1151,8 +1153,8 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), a, 0, 0, &pa);
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, &pb);
     f32 dy = FABS(pb.y - pa.y);
-    f32 dx = FABS(pb.x - pa.x);
-    f32 r = dx >= dy ? dx : dy;
+    f32 r = FABS(pb.x - pa.x);
+    r = r >= dy ? r : dy;
     f32 left1;
     f32 left2;
     f32 x = lbl_80543CB8 * (pa.x + pb.x);
