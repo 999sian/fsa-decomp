@@ -2,6 +2,8 @@
 #include "Game/Actor.h"
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
+extern "C" char lbl_804720A0[];
 
 extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" const f32 lbl_80542438;
