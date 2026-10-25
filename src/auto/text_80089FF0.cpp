@@ -70,6 +70,27 @@ static void showFloat(f32 value, int col)
         }
     }
 }
+static void showFloatAt(char* fmt, f32 value, int col)
+{
+    int kind = fpKind(value);
+    if (kind == 1) {
+        lbl_8053A914->print_f(fmt + 0xd4, col);
+    } else {
+        kind = fpKind(value);
+        if (kind == 2) {
+            u8 sign = *(u8*)&value;
+            if (sign & 0x80) {
+                lbl_8053A914->print_f(fmt + 0xe8, col);
+            } else {
+                lbl_8053A914->print_f(fmt + 0xf8, col);
+            }
+        } else if (value == 0.0f) {
+            lbl_8053A914->print_f(fmt + 0x108, col);
+        } else {
+            lbl_8053A914->print_f(fmt + 0x11c, col, value);
+        }
+    }
+}
 extern "C" void* __nw__FUlP7JKRHeapi(size_t size, JKRHeap* heap, int align);
 extern void* lbl_80499414[];
 extern "C" void __ct__9JKRThreadFUlii(JKRThread* this_, u32 stackSize, int msgCount, int threadPriority);
@@ -449,13 +470,13 @@ extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2)
         searchNamePart((u8*)name, (u8*)buf, 32);
         lbl_8053A914->print_f(lbl_8045EC1C, prefix, buf, offset, index);
     }
-    u32 newline = 0;
+    param_2 = false;
     if (lbl_8052E894.getFirstLink() != nullptr) {
         u32 ret;
         if (found == true) {
-            ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, (u8)newline);
+            ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
         } else {
-            ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, (u8)newline);
+            ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
         }
         if ((u8)ret == true) {
             return 1;
