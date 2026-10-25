@@ -240,9 +240,9 @@ extern "C" void fn_8010D55C(u8* this_) {
     *(s32*)(this_ + 0x258) = (*(s32*)(this_ + 0x90) >> 8) & 0xff;
     *(s32*)(this_ + 0x25c) = (*(s32*)(this_ + 0x90) >> 16) & 0xff;
     if (*(s32*)(this_ + 0x258) > 0 && lbl_8053C4A4 == *(f32*)(this_ + 0x260)) {
-        SHBL_setBox(this_, lbl_8053C4F0, lbl_8053C4A0);
+        SHBL_setBox(this_, lbl_8053C4A0, lbl_8053C4F0);
     } else {
-        SHBL_setBox(this_, lbl_8053C4F4, lbl_8053C4BC);
+        SHBL_setBox(this_, lbl_8053C4BC, lbl_8053C4F4);
     }
     *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
     *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
