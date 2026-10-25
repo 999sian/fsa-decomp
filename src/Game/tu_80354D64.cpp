@@ -8,6 +8,15 @@
 #include "JSystem/JGeometry/Box.h"
 #undef GAME_ACTOR_USE_SDK_VEC
 extern const f32 lbl_80542790;
+extern const f32 lbl_80542798;
+extern "C" s32 fn_80239470(void*,s32,s32);
+extern "C" s32 fn_80238A68(s32);
+extern "C" s32 fn_8023885C(s32);
+extern "C" s32 fn_80239108(s32);
+extern "C" s32 fn_80238BC4(s32);
+extern "C" void fn_80238E08(s32);
+extern "C" char lbl_804722B0[];
+extern "C" char lbl_804722D0[];
 extern const JGeometry::TVec3f lbl_80472320[];
 
 struct MrtaResMgr {
