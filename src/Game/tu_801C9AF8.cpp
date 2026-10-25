@@ -198,7 +198,7 @@ extern "C" s32 fn_8023AD54(void* box, s32 room, void* info);
 extern "C" u8 fn_801CC820(s32 idx, JGeometry::TVec3f* off);
 extern "C" u8 fn_801CC538(s32 idx, void* info, JGeometry::TVec3f* out, s32* id);
 extern "C" void fn_801CC640(s32 idx, s32* id, JGeometry::TVec3f* off);
-extern "C" JGeometry::TVec3f* fn_8023E724(int idx);
+extern "C" void* fn_8023E724(int idx);
 
 struct TuBox { f32 v[4]; };
 
@@ -231,7 +231,7 @@ extern "C" u8 fn_801C9EB8(char* p) {
     }
     u8 r = 0;
     if (idx >= 0) {
-        JGeometry::TVec3f d(*fn_8023E724(idx));
+        JGeometry::TVec3f d(*((JGeometry::TVec3f*)fn_8023E724(idx)));
         s32 mode = 0;
         if (isB) {
             mode = 4;
@@ -294,8 +294,8 @@ extern "C" u8 fn_801CA274(char* p) {
                         if (!done) {
                             done = 1;
                             JGeometry::TVec2<f32> d;
-                            d.y = *(f32*)(p + 0x10) - fn_8023E724(i)->y;
-                            d.x = *(f32*)(p + 0xc) - fn_8023E724(i)->x;
+                            d.y = *(f32*)(p + 0x10) - ((JGeometry::TVec3f*)fn_8023E724(i))->y;
+                            d.x = *(f32*)(p + 0xc) - ((JGeometry::TVec3f*)fn_8023E724(i))->x;
                             d.normalize();
                             d.scale(lbl_8053EF34);
                             *(f32*)(p + 0x3c) = d.x;
@@ -381,8 +381,8 @@ static inline u8 tuOtherPlayer(char* p, s32 i) {
 }
 
 static inline void tuPushAway(char* p, s32 who) {
-    f32 dy = *(f32*)(p + 0x10) - fn_8023E724(who)->y;
-    f32 dx = *(f32*)(p + 0xc) - fn_8023E724(who)->x;
+    f32 dy = *(f32*)(p + 0x10) - ((JGeometry::TVec3f*)fn_8023E724(who))->y;
+    f32 dx = *(f32*)(p + 0xc) - ((JGeometry::TVec3f*)fn_8023E724(who))->x;
     JGeometry::TVec2<f32> d;
     d.x = dx;
     d.y = dy;
@@ -394,8 +394,8 @@ static inline void tuPushAway(char* p, s32 who) {
 
 static inline void tuPushAway2(char* p, const s32 who) {
     JGeometry::TVec2<f32> d;
-    d.y = *(f32*)(p + 0x10) - fn_8023E724(who)->y;
-    d.x = *(f32*)(p + 0xc) - fn_8023E724(who)->x;
+    d.y = *(f32*)(p + 0x10) - ((JGeometry::TVec3f*)fn_8023E724(who))->y;
+    d.x = *(f32*)(p + 0xc) - ((JGeometry::TVec3f*)fn_8023E724(who))->x;
     d.normalize();
     d.scale(lbl_8053EF34);
     *(f32*)(p + 0x3c) = d.x;
@@ -579,7 +579,7 @@ extern "C" u8 fn_801CA564(char* p) {
             vel = *(JGeometry::TVec3f*)(p + 0x3c);
             for (i = 0; i < 4; i++) {
                 if (i == fn_801F285C(p, 0, &kind, 1, i)) {
-                    register JGeometry::TVec3f* pp = fn_8023E724(i);
+                    register JGeometry::TVec3f* pp = ((JGeometry::TVec3f*)fn_8023E724(i));
                     if (fn_801F37AC(p, fn_8023B6CC(i), pp, 0, kind, i)) {
                         found = 1;
                         *(s32*)(p + 0x338) = i;
@@ -587,8 +587,8 @@ extern "C" u8 fn_801CA564(char* p) {
                 }
             }
             if (found) {
-                y1 = *(f32*)(p + 0x10) - fn_8023E724(*(s32*)(p + 0x338))->y;
-                f32 dx = *(f32*)(p + 0xc) - fn_8023E724(*(s32*)(p + 0x338))->x;
+                y1 = *(f32*)(p + 0x10) - ((JGeometry::TVec3f*)fn_8023E724(*(s32*)(p + 0x338)))->y;
+                f32 dx = *(f32*)(p + 0xc) - ((JGeometry::TVec3f*)fn_8023E724(*(s32*)(p + 0x338)))->x;
                 d.set(dx, y1, 0.0f);
                 d.normalize();
                 ((JGeometry::TVec3f*)(p + 0x3c))->set(vel);
