@@ -194,15 +194,13 @@ struct CharFontVt {
     virtual void v06();
     virtual void v07();
     virtual void v08();
-    virtual void v09();
-    virtual void v10();
-    virtual void v11(s8 ch, s32* info);
+    virtual void v09(s8 ch, s32* info);
 };
 
 static inline u8 fn_8037F580_getw(char* buf, s32* idx) {
     s32 info;
     CharFontVt* font = *(CharFontVt**)((u8*)lbl_8053AD78 + 0x154);
-    font->v11(buf[*idx], &info);
+    font->v09(buf[*idx], &info);
     return ((u8*)&info)[1];
 }
 
@@ -1125,6 +1123,45 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f
         return 1;
     }
     return 0;
+}
+
+extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale) {
+    f32 acc = lbl_805430C8;
+    u8 w;
+    switch (type) {
+    case 0:
+        out[*len] = 0xA0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'F');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'o');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'r');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'c');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 0xA0);
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'G');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'm');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if (num == 1) {
+            break;
+        }
+        out[*len] = 's';
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        break;
+    default:
+        break;
+    }
+    return acc;
 }
 
 extern "C" f32 fn_80381560(u8 type, s32 num, f32 scale)
