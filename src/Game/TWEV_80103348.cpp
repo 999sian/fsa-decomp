@@ -53,15 +53,15 @@ static inline void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
     f32 cb = cos(ay);
     f32 cc = cos(az);
     f32 s = lbl_8053C1D8;
-    m[0][0] = s * (cb * cc);
+    m[0][0] = s * cb * cc;
     m[0][1] = s * (sa * sb * cc - ca * sc);
     m[0][2] = s * (ca * cc * sb + sa * sc);
-    m[1][0] = s * (cb * sc);
+    m[1][0] = s * cb * sc;
     m[1][1] = s * (sa * sb * sc + ca * cc);
     m[1][2] = s * (ca * sc * sb - sa * cc);
-    m[2][0] = s * -sb;
-    m[2][1] = s * (sa * cb);
-    m[2][2] = s * (ca * cb);
+    m[2][0] = -s * sb;
+    m[2][1] = s * sa * cb;
+    m[2][2] = s * ca * cb;
 }
 
 // ---- from Game/fn_80103F28_dtor.cpp
