@@ -95,6 +95,7 @@ extern "C" const f32 lbl_80540E84;
 extern "C" void fn_802F86CC(u32 sobRenderer, Vec* pos, u32 sobResource, s32 spriteId,
                             f32 scaleX, f32 scaleY, SobDrawParams* drawParams);
 #include "dolphin/gx/GXStruct.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, void* color, f32 size);
 extern "C" void* fn_801F856C();
@@ -401,6 +402,5 @@ extern "C" void fn_802D06BC(Actor* p) {
     *(f32*)((u8*)p + 0x260) = p->field_0C.z;
 }
 
-extern "C" void __sinit_tu_802CFDCC_cpp(void) {
-}
+
 
