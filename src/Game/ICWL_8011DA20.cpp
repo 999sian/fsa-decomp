@@ -111,8 +111,7 @@ static inline bool icwlHitObject(u8* this_) {
     s32 idx;
     v.x = lbl_8053C8B8;
     v.y = lbl_8053C8B8;
-    box = *(ICWLBox*)(this_ + 0x70);
-    box.offset(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+    icwlGetBox2(this_, &box, *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
     if (fn_8023AA18(&box, *(s32*)(this_ + 0x4), &v) >= 0) {
         return true;
     }
