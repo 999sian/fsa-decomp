@@ -1235,10 +1235,10 @@ extern "C" void fn_804299C0(s16* destination, s16* source, u32 sample) {
 }
 
 extern "C" void fn_80429BE4(u8* yImage, u8* uImage, u8* vImage, s16 x, s16 y, s16 textureWidth, s16 textureHeight, s16 polygonWidth, s16 polygonHeight) {
-    s32 x0;
-    s32 y0;
-    s32 x1;
     s32 y1;
+    s32 x1;
+    s32 y0;
+    s32 x0;
     GXTexObj tobj0;
     GXTexObj tobj1;
     GXTexObj tobj2;
@@ -1421,7 +1421,8 @@ extern "C" void fn_8042A534(AudioThreadObj* t, u8* bufPtr) {
         readBuffer.frameNumber = i;
         fn_8042E53C(&readBuffer);
         frame = i + lbl_8052AAD0.initReadFrame;
-        if (frame % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+        u32 remainder = frame % lbl_8052AAD0.header.numFrames;
+        if (remainder == lbl_8052AAD0.header.numFrames - 1) {
             if (lbl_8052AAD0.playFlag & 1) {
                 readSize = *(s32*)readBuffer.ptr;
                 readBuffer.ptr = lbl_8052AAD0.movieData;
@@ -1617,14 +1618,14 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
 }
 
 extern "C" void fn_8042AB70(VideoThreadObj* t, THPReadBuffer* readBuffer) {
-    s32 i;
     THPTextureSet* textureSet;
+    u32 i;
     u32* compSizePtr;
     u8* ptr;
     BOOL old;
     compSizePtr = (u32*)(readBuffer->ptr + 8);
-    ptr = &readBuffer->ptr[lbl_8052AAD0.compInfo.numComponents * 4] + 8;
-    textureSet = (THPTextureSet*)fn_8042E6C0();
+    ptr = readBuffer->ptr + lbl_8052AAD0.compInfo.numComponents * 4 + 8;
+    textureSet = ((THPTextureSet* (*)())fn_8042E6C0)();
     for (i = 0; i < lbl_8052AAD0.compInfo.numComponents; i++) {
         switch (lbl_8052AAD0.compInfo.frameComp[i]) {
         case 0:
@@ -1870,6 +1871,7 @@ extern "C" void fn_8042B1DC() {
 
 
 
+#pragma opt_propagation off
 extern "C" void fn_8042BD84(u8* info, s16* block) {
     s32 t;
     s16 dc;
@@ -1965,7 +1967,7 @@ extern "C" void fn_8042BD84(u8* info, s16* block) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_8042BF54(u8* info, void* h) {
     u8* tab = (u8*)h;
     s32 cnt = *(s32*)(info + 0x6a4);
@@ -2012,6 +2014,7 @@ extern void* lbl_8053AE24;
 extern void* lbl_8053AE30;
 extern u8 lbl_8048F270[64];
 extern "C" s32 fn_8042BF54(u8* info, void* h);
+#pragma dont_inline on
 extern "C" void fn_8042C1CC(u8* info, s16* block) {
     s32 t;
     s16 dc;
@@ -2025,7 +2028,7 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
 
     if (t) {
         s32 cnt = *(s32*)(info + 0x6a4);
-        s32 tmp = 33 - cnt;
+        u32 tmp = 33 - cnt;
         u32 cw = *(u32*)(info + 0x6a0);
         s32 v = t - tmp;
         u32 code;
@@ -2100,7 +2103,7 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
         }
     }
 }
-
+#pragma dont_inline reset
 extern "C" void fn_8042C39C(u8* info, s16* block) {
     s32 t;
     s32 k;
