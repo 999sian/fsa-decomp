@@ -3671,8 +3671,10 @@ void fn_8027DEA0(char* p) {
     } else if (comboDirCount2(p) == 0) {
         if (comboFreeSlot(p) <= 2) {
             S32(p, 0x45c) = 2;
+        } else if (comboFreeSlot(p) == 3) {
+            S32(p, 0x45c) = 0;
         } else {
-            S32(p, 0x45c) = comboFreeSlot(p) == 3 ? 0 : 1;
+            S32(p, 0x45c) = 1;
         }
     } else {
         if (comboFreeSlot(p) <= 2) {
