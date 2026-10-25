@@ -110,6 +110,20 @@ extern "C" const f32 lbl_8054235C,lbl_80542360,lbl_80542364,lbl_80542368,lbl_805
 extern "C" const f32 lbl_80542378,lbl_8054237C,lbl_80542380,lbl_80542384,lbl_80542388;
 extern "C" u8 fn_801F6758(void*,f32,s32);
 extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+static inline void BeeeScatter(char* p) {
+                            int j;
+                            char* segment=p+12;char* angles=p+2;
+                            for(j=1;j<7;j++) {
+                                V7(segment,0x2f8)=V7(p,0x2f8);
+                                H7(angles,0x294)=(j<<16)/6;
+                                F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                                F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                                segment+=12;angles+=2;
+                            }
+                        }
+
 extern "C" void fn_80343D90(char* p) {
     JGeometry::TVec3<f32> delta;
     delta.x=delta.y=delta.z=lbl_80542350;
@@ -145,7 +159,7 @@ extern "C" void fn_80343D90(char* p) {
                     I7(p,0x24c)=player;I7(p,0x238)=10;I7(p,0x108)=1;
                     delta.x=F7(p,0x2a4)-F7(fn_8023E724(I7(p,0x24c)),0);
                     delta.y=F7(p,0x2a8)-F7(fn_8023E724(I7(p,0x24c)),4);
-                    H7(p,0x2a2)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(delta.x,delta.y));
+                    {f32 angle=JMath::atanTable_.atan2_(delta.x,delta.y);H7(p,0x2a2)=(s16)(angle*lbl_80542360);}
                     H7(p,0x294)=H7(p,0x2a2);
                     F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x294));
                     F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x294));
@@ -171,7 +185,7 @@ extern "C" void fn_80343D90(char* p) {
         }
         fn_801F714C(&H7(p,0x294),H7(p,0x2a2),4,0x400);
         V7(p,0xc)=V7(p,0x2a4);
-        if(I7(p,0x230)!=4 && I7(p,0x230)!=5 && I7(p,0x230)!=6 && fn_801F2B7C(p,1,-1,1)) {
+        if(I7(p,0x230)!=4 && (u32)(I7(p,0x230)-5)>1 && fn_801F2B7C(p,1,-1,1)) {
             I7(p,0x250)++;
             if(I7(p,0x250)>=5) {
                 lbl_8053AAF8->rnd.get_ufloat_1();
@@ -199,11 +213,16 @@ states:
                     f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
                     if(!(xx+yy>lbl_8054236C)) {
                         I7(p,0x238)=60;
-                        for(s32 j=1;j<7;j++) {
-                            V7(p,0x2f8+j*12)=V7(p,0x2f8);
-                            H7(p,0x294+j*2)=(j*65536)/6;
-                            F7(p,0x2f8+j*12)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(p,0x294+j*2));
-                            F7(p,0x2fc+j*12)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(p,0x294+j*2));
+                        {
+                            int j;
+                            char* segment=p+12;char* angles=p+2;
+                            for(j=1;j<7;j++) {
+                                V7(segment,0x2f8)=V7(p,0x2f8);
+                                H7(angles,0x294)=(0x10000*j)/6;
+                                F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                                F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                                segment+=12;angles+=2;
+                            }
                         }
                         I7(p,0x230)=1;return;
                     }
@@ -216,12 +235,17 @@ states:
                 f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
                 if(!(xx+yy>lbl_80542374)) {
                     I7(p,0x238)=120;
-                    for(s32 j=1;j<7;j++) {
-                        V7(p,0x2f8+j*12)=V7(p,0x2f8);
-                        H7(p,0x294+j*2)=(j*65536)/6;
-                        F7(p,0x2f8+j*12)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(p,0x294+j*2));
-                        F7(p,0x2fc+j*12)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(p,0x294+j*2));
-                    }
+                    {
+                            int j;
+                            char* segment=p+12;char* angles=p+2;
+                            for(j=1;j<7;j++) {
+                                V7(segment,0x2f8)=V7(p,0x2f8);
+                                H7(angles,0x294)=(0x10000*j)/6;
+                                F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
+                                F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                                segment+=12;angles+=2;
+                            }
+                        }
                     I7(p,0x230)=1;return;
                 }
             } break;
@@ -233,11 +257,15 @@ states:
     case 2:case 3:
         if(I7(p,0x238)<=0) {
             f32 closest=lbl_80542378;
+            int i;
             s32 id=-1;
-            s32 count=I7(fn_801F856C(),0x1008);
-            for(s32 i=0;i<count;i++) {
-                char* obj=*(char**)((char*)fn_801F856C()+8+i*4);
-                if(obj && (u32)I7(obj,0x1a0)==0x48424d42 && B7(obj,0x11c)==1 && I7(obj,0x90)!=1 && I7(obj,0x90)!=2 && I7(obj,0x90)!=4) {
+            s32 count;
+            char* obj;
+            s32 offset;
+            count=I7(fn_801F856C(),0x1008);
+            for(offset=0,i=offset;i<count;offset+=4,i++) {
+                obj=*(char**)((char*)fn_801F856C()+8+offset);
+                if(obj && (u32)I7(obj,0x1a0)==0x48424d42 && B7(obj,0x11c)==1 && (u32)I7(obj,0x90)!=1 && (u32)I7(obj,0x90)!=2 && (u32)I7(obj,0x90)!=4) {
                     f32 distance=PSVECDistance((Vec*)(p+0xc),(Vec*)(obj+0xc));
                     if(distance<closest) {id=I7(obj,0x198);closest=distance;}
                 }
@@ -251,20 +279,24 @@ states:
                     delta.x=pos.x-F7(p,0xc);
                     delta.y=pos.y-F7(p,0x10);
         {
+            s32 i;
             char* angles=p+2;
             char* segment=p+12;
             char* speeds=p+4;
-            for(s32 i=1;i<7;i++) {
+            for(i=1;i<7;i++) {
                 if(I7(p,0x238)%10==0) {
                     H7(angles,0x294)=(s16)(lbl_8054237C*lbl_8053AAF8->rnd.get_ufloat_1());
                     f32 x,y;
                     if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
                         x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
                     } else {
-                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
-                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                        const std::pair<f32,f32>* trig=&JMath::sincosTable_.mTable[(u32)(u16)H7(angles,0x294)>>5];
+                        x=-F7(segment,0x2a4);
+                        y=-F7(segment,0x2a8);
+                        x+=trig->first*lbl_80542380;
+                        y+=trig->second*lbl_80542380;
                     }
-                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                    {f32 angle=JMath::atanTable_.atan2_(x,y);H7(angles,0x294)=(s16)(angle*lbl_80542360);}
                 }
                 F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
                 F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
@@ -273,7 +305,7 @@ states:
         }
 
                     if(PSVECMag(&delta)>lbl_80542384) {
-                        H7(p,0x2a2)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(delta.x,delta.y));
+                        {f32 angle=JMath::atanTable_.atan2_(delta.x,delta.y);H7(p,0x2a2)=(s16)(angle*lbl_80542360);}
                         F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x294));
                         F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x294));
                         I7(p,0x238)=5;
@@ -282,13 +314,12 @@ states:
                         V7(p,0x34c)=delta;
                         I7(p,0x238)=10;
                     }
-                    if(pos.x>F7(p,676)) I7(p,596)=0;else I7(p,596)=2;
-                    if(pos.x>F7(p,688)) I7(p,600)=0;else I7(p,600)=2;
-                    if(pos.x>F7(p,700)) I7(p,604)=0;else I7(p,604)=2;
-                    if(pos.x>F7(p,712)) I7(p,608)=0;else I7(p,608)=2;
-                    if(pos.x>F7(p,724)) I7(p,612)=0;else I7(p,612)=2;
-                    if(pos.x>F7(p,736)) I7(p,616)=0;else I7(p,616)=2;
-                    if(pos.x>F7(p,748)) I7(p,620)=0;else I7(p,620)=2;
+                    if(pos.x>F7(p,0x2a4)) I7(p,0x254)=0;else I7(p,0x254)=2;
+                    char* segment=p+12;char* frames=p+4;
+                    for(s32 j=1;j<7;j++) {
+                        if(pos.x>F7(segment,0x2a4)) I7(frames,0x254)=0;else I7(frames,0x254)=2;
+                        segment+=12;frames+=4;
+                    }
                 }
             } else {
                 if(I7(p,0x230)==2) fn_801EEC98(p,I7(p,0x198),0,0,0,(s32*)(p+0x244),0,0);
@@ -296,7 +327,7 @@ states:
                 if(I7(p,0x244)>=0) {
                     delta.x=F7(fn_8023E724(I7(p,0x244)),0)-F7(p,0xc);
                     delta.y=F7(fn_8023E724(I7(p,0x244)),4)-F7(p,0x10);
-                    H7(p,0x2a2)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(delta.x,delta.y));
+                    {f32 angle=JMath::atanTable_.atan2_(delta.x,delta.y);H7(p,0x2a2)=(s16)(angle*lbl_80542360);}
                 }
         {
             char* angles=p+2;
@@ -309,10 +340,13 @@ states:
                     if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
                         x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
                     } else {
-                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
-                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                        const std::pair<f32,f32>* trig=&JMath::sincosTable_.mTable[(u32)(u16)H7(angles,0x294)>>5];
+                        x=-F7(segment,0x2a4);
+                        y=-F7(segment,0x2a8);
+                        x+=trig->first*lbl_80542380;
+                        y+=trig->second*lbl_80542380;
                     }
-                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                    {f32 angle=JMath::atanTable_.atan2_(x,y);H7(angles,0x294)=(s16)(angle*lbl_80542360);}
                 }
                 F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
                 F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
@@ -327,8 +361,10 @@ states:
                 F7(p,0x34c)=lbl_80542364*JMath::sincosTable_.sinShort(H7(p,0x294));
                 F7(p,0x350)=lbl_80542364*JMath::sincosTable_.cosShort(H7(p,0x294));
                 if(F7(fn_8023E724(I7(p,0x244)),0)>F7(p,0x2a4)) I7(p,0x254)=0;else I7(p,0x254)=2;
+                char* segment=p+12;char* frames=p+4;
                 for(s32 i=1;i<7;i++) {
-                    if(F7(fn_8023E724(I7(p,0x244)),0)>F7(p,0x2a4+i*12)) I7(p,0x254+i*4)=0;else I7(p,0x254+i*4)=2;
+                    if(F7(fn_8023E724(I7(p,0x244)),0)>F7(segment,0x2a4)) I7(frames,0x254)=0;else I7(frames,0x254)=2;
+                    segment+=12;frames+=4;
                 }
             } else {F7(p,0x34c)=lbl_80542350;F7(p,0x350)=lbl_80542350;}
             if(I7(p,0x230)==3 && I7(p,0x244)!=I7(p,0x24c)) {
@@ -350,10 +386,13 @@ states:
                     if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
                         x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
                     } else {
-                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
-                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                        const std::pair<f32,f32>* trig=&JMath::sincosTable_.mTable[(u32)(u16)H7(angles,0x294)>>5];
+                        x=-F7(segment,0x2a4);
+                        y=-F7(segment,0x2a8);
+                        x+=trig->first*lbl_80542380;
+                        y+=trig->second*lbl_80542380;
                     }
-                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                    {f32 angle=JMath::atanTable_.atan2_(x,y);H7(angles,0x294)=(s16)(angle*lbl_80542360);}
                 }
                 F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
                 F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
@@ -375,10 +414,13 @@ states:
                     if(I7(p,0x230)==5 || (I7(p,0x248)>=0 && I7(p,0x244)<0)) {
                         x=-F7(segment,0x2a4);y=-F7(segment,0x2a8);
                     } else {
-                        x=-F7(segment,0x2a4)+lbl_80542380*JMath::sincosTable_.sinShort(H7(angles,0x294));
-                        y=-F7(segment,0x2a8)+lbl_80542380*JMath::sincosTable_.cosShort(H7(angles,0x294));
+                        const std::pair<f32,f32>* trig=&JMath::sincosTable_.mTable[(u32)(u16)H7(angles,0x294)>>5];
+                        x=-F7(segment,0x2a4);
+                        y=-F7(segment,0x2a8);
+                        x+=trig->first*lbl_80542380;
+                        y+=trig->second*lbl_80542380;
                     }
-                    H7(angles,0x294)=(s16)(lbl_80542360*JMath::atanTable_.atan2_(x,y));
+                    {f32 angle=JMath::atanTable_.atan2_(x,y);H7(angles,0x294)=(s16)(angle*lbl_80542360);}
                 }
                 F7(segment,0x34c)=F7(speeds,0x278)*JMath::sincosTable_.sinShort(H7(angles,0x294));
                 F7(segment,0x350)=F7(speeds,0x278)*JMath::sincosTable_.cosShort(H7(angles,0x294));
@@ -405,7 +447,8 @@ states:
     }
     if(I7(p,0x238)>0) I7(p,0x238)--;
 }
-
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 extern "C" void fn_803450AC(char* this_) {
     s32 n;
     char* p;
