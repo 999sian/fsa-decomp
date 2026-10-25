@@ -37,7 +37,7 @@ extern const f32 lbl_8053D830;
 extern const f32 lbl_8053D834;
 extern const s32 lbl_804A0650[];
 extern const s32 lbl_804A0638[];
-extern "C" const struct JMathSinCos sincosTable___5JMath[];
+extern "C" u8 sincosTable___5JMath[];
 
 struct MozoResMgr {
     virtual void v0();
