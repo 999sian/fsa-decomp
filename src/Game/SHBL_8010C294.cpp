@@ -185,9 +185,11 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
             if (*(s32*)(this_ + 0x258) >= 1) {
                 idx = 1;
             }
-            s32 id = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(this_ + 4), this_ + 0xc, lbl_80464328[idx]);
-            if (id >= 0) {
-                fn_801F666C(fn_801F856C(), id);
+            for (s32 i = 0; i < 1; i++) {
+                s32 id = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(this_ + 4), this_ + 0xc, lbl_80464328[idx]);
+                if (id >= 0) {
+                    fn_801F666C(fn_801F856C(), id);
+                }
             }
             break;
         }
