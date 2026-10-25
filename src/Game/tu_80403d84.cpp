@@ -599,7 +599,58 @@ u8 fn_804149C0(void) {
 	return lbl_8050EC80[idx].field87 & 1;
 }
 
+struct E720;
+void fn_8040ED20(u8* self);
+void fn_8040E838(u8* self);
+void fn_8040E720(E720* self);
+void fn_8040E3A0(u8* self);
+void fn_8040D3D0(u8* self);
+void fn_8040CE90(u8* self);
+void fn_8040C950(u8* self);
+void fn_8040BC1C(u8* self);
+void fn_80409FDC(u8* self);
+void fn_8040B93C(u8* self);
+void fn_8040B5A0(u8* self);
+void fn_8040B388(u8* self);
+void fn_804096E8(u8* self);
+void fn_80409450(void* p);
+void fn_80409330(u8* self);
+void fn_80403F50(u8* self);
+void fn_8040F16C(u8* self);
+void fn_8040E298(u8* self);
+
 }
+
+// Member-function-pointer layout (this offset, vtable offset, function) of the state handler tables.
+struct StateFnEntry {
+	s32 thisOfs;
+	s32 vtblOfs;
+	void* fn;
+};
+struct StateFnTable22 {
+	StateFnEntry e[22];
+};
+struct StateFnTable4 {
+	StateFnEntry e[4];
+};
+
+static StateFnTable22 sStateFnInit = {{
+	{0, -1, (void*)fn_8040F3AC}, {0, -1, (void*)fn_8040F35C}, {0, -1, (void*)fn_8040F288},
+	{0, -1, (void*)fn_8040F16C}, {0, -1, (void*)fn_8040ED20}, {0, -1, (void*)fn_8040E838},
+	{0, -1, (void*)fn_8040E720}, {0, -1, (void*)fn_8040E700}, {0, -1, (void*)fn_8040E3A0},
+	{0, -1, (void*)fn_8040E298}, {0, -1, (void*)fn_8040E278}, {0, -1, (void*)fn_8040D3D0},
+	{0, -1, (void*)fn_8040CE90}, {0, -1, (void*)fn_8040C950}, {0, -1, (void*)fn_8040BC1C},
+	{0, -1, (void*)fn_80409FDC}, {0, -1, (void*)fn_8040B93C}, {0, -1, (void*)fn_8040B5A0},
+	{0, -1, (void*)fn_8040B388}, {0, -1, (void*)fn_804096E8}, {0, -1, (void*)fn_80409450},
+	{0, -1, (void*)fn_80409330},
+}};
+static StateFnTable22 sStateFns = sStateFnInit;
+
+static StateFnTable4 sIntroFnInit = {{
+	{0, -1, (void*)fn_80403F50}, {0, -1, (void*)fn_80403EAC},
+	{0, -1, (void*)fn_80403E24}, {0, -1, (void*)fn_80403D84},
+}};
+static StateFnTable4 sIntroFns = sIntroFnInit;
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "Game/ItemBase.h"
@@ -942,7 +993,7 @@ extern "C" void fn_8040C950(u8* self) {
 	} else {
 		s32 t = *(s16*)(self + 0x426);
 		f32 w;
-		f32 a;
+		f32 one = 1.0f;
 		if (t < 5) {
 			w = -7.0f * (f32)(t * t) / 25.0f;
 			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
@@ -952,13 +1003,15 @@ extern "C" void fn_8040C950(u8* self) {
 			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x22c), 0.0f, w);
 		}
-		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - (f32)*(s16*)(self + 0x426) * 0.125f)));
+		f32 a;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * (a = one - (f32)*(s16*)(self + 0x426) * 0.125f)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
-		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - a)));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (a = one - a)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 	}
 }
 
+extern "C" f64 lbl_805438B0;
 extern "C" void fn_8040CE90(u8* self) {
 	(*(s16*)(self + 0x426))++;
 	if (*(s16*)(self + 0x426) >= 8) {
@@ -991,15 +1044,15 @@ extern "C" void fn_8040CE90(u8* self) {
 		f32 w;
 		f32 a;
 		if (*(s16*)(self + 0x426) < 5) {
-			w = -7.0f * (f32)(*(s16*)(self + 0x426) * *(s16*)(self + 0x426)) / 25.0f;
+			w = lbl_805438D0 * (f32)(*(s16*)(self + 0x426) * *(s16*)(self + 0x426)) / lbl_8054397C;
 			fn_80402E08(*(void**)(self + 0x230), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x234), 0.0f, w);
 		} else if (*(s16*)(self + 0x426) <= 10) {
-			w = -7.0f * (f32)((10 - *(s16*)(self + 0x426)) * (10 - *(s16*)(self + 0x426))) / 25.0f;
+			w = lbl_805438D0 * (f32)((10 - *(s16*)(self + 0x426)) * (10 - *(s16*)(self + 0x426))) / lbl_8054397C;
 			fn_80402E08(*(void**)(self + 0x230), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x234), 0.0f, w);
 		}
-		a = 1.0f - (f32)*(s16*)(self + 0x426) * 0.125f;
+		a = 1.0f - (f32)*(s16*)(self + 0x426) * lbl_80543980;
 		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
 		a = 1.0f - a;
@@ -1660,9 +1713,12 @@ extern "C" void fn_804069E8(u8* self) {
 	f32 mtx[3][4];
 	f32 pos[3];
 	f32 zero = 0.0f;
-	s32 idx = *(s32*)(self + 0x340);
-	if (idx == 10 && *(s32*)(self + 0x348) == 2) {
+	s32 idx0 = *(s32*)(self + 0x340);
+	s32 idx;
+	if (idx0 == 10 && *(s32*)(self + 0x348) == 2) {
 		idx = *(s32*)(lbl_80529DEC + 0x120);
+	} else {
+		idx = idx0;
 	}
 	f32 s = *(f32*)(lbl_8050DB0C + 8);
 	f32 sx = sin(zero);
@@ -1671,18 +1727,18 @@ extern "C" void fn_804069E8(u8* self) {
 	f32 cx = cos(zero);
 	f32 cy = cos(zero);
 	f32 cz = cos(zero);
-	mtx[0][0] = s * (cy * cz);
-	mtx[0][1] = s * ((sx * sy) * cz - cx * sz);
-	mtx[0][2] = s * ((cx * cz) * sy + sx * sz);
 	mtx[0][3] = 0.0f;
-	mtx[1][0] = s * (cy * sz);
-	mtx[1][1] = s * ((sx * sy) * sz + cx * cz);
-	mtx[1][2] = s * ((cx * sz) * sy - sx * cz);
 	mtx[1][3] = 0.0f;
-	mtx[2][0] = s * -sy;
-	mtx[2][1] = s * (sx * cy);
-	mtx[2][2] = s * (cx * cy);
 	mtx[2][3] = 0.0f;
+	mtx[0][0] = s * (cy * cz);
+	mtx[1][0] = s * (cy * sz);
+	mtx[2][0] = s * -sy;
+	mtx[0][1] = s * ((sx * sy) * cz - cx * sz);
+	mtx[1][1] = s * ((sx * sy) * sz + cx * cz);
+	mtx[2][1] = s * (sx * cy);
+	mtx[0][2] = s * ((cx * cz) * sy + sx * sz);
+	mtx[1][2] = s * ((cx * sz) * sy - sx * cz);
+	mtx[2][2] = s * (cx * cy);
 	rec.w18 = mtx;
 	u8* q = self;
 	for (int i = 0; i < 4; i++, q += 4) {
