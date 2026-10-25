@@ -1045,11 +1045,11 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
     out[1] *= maxLen;
 }
 #pragma fp_contract off
-extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
-    Vec* self = (Vec*)(this_ + 0xc);
+extern "C" s16 fn_801D0280(const u8* this_, s32 idx) {
+    const Vec* self = (const Vec*)(this_ + 0xc);
     f32 x = self->x;
     f32 y = self->y;
-    Vec* rec = (Vec*)(this_ + idx * 0xc + 0x1ac);
+    const Vec* rec = (const Vec*)(this_ + idx * 0xc + 0x1ac);
     f32 ang = JMath::atanTable_.atan2_(rec->x - x, rec->y - y);
     return ang * lbl_8053EFEC;
 }
