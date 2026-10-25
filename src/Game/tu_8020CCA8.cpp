@@ -24,20 +24,6 @@ extern "C" void fn_801EF574(u8* a, s32 b, f32* v, u8* rec);
 extern "C" void fn_801CD0D0(f32* a, f32* b);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, f32 e, f32 f, void* g);
 extern "C" int __float_epsilon[];
-struct CCA8Loc {
-    u8 idx[16];
-    s32 a;
-    s32 b;
-    f32* c;
-    u8 d[11];
-    s32 e;
-    u8 f;
-    u8 g;
-    u8 h;
-    s32 i;
-    s32 j;
-    s32 k;
-};
 struct CCA8ResMgr {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void* get(u32 type, void* name);
