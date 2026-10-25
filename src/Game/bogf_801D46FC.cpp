@@ -1,6 +1,7 @@
 // Game TU 801D46FC-801D6CEC (BOGF). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry.h"
 
@@ -793,19 +794,26 @@ extern const f32 lbl_8053F110;
 extern "C" void fn_801CE32C(void* p);
 extern "C" s32 fn_801CD580(s32 id);
 extern "C" void fn_801E4A18(void* p);
+#pragma opt_propagation off
 extern "C" void fn_801D4ED4(u8* this_) {
-    s32 sel = 0;
+    u8 sel = 0;
     if (this_[0x5d1] != 0) {
         this_[0x5d1]--;
         if (this_[0x5d1] == 0) {
             fn_80217CD8(this_ + 0x448);
             s16 ang = *(s16*)(this_ + 0x5d2);
-            *(f32*)(this_ + 0x3c) = lbl_8053F104 * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-            *(f32*)(this_ + 0x40) = lbl_8053F104 * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+            const f32* __restrict table = (const f32*)JMath::sincosTable_.mTable;
+            f32 s = table[((u16)ang >> 5)*2];
+            f32 c = table[((u16)ang >> 5)*2 + 1];
+            *(f32*)(this_ + 0x3c) = lbl_8053F104 * s;
+            *(f32*)(this_ + 0x40) = lbl_8053F104 * c;
         }
     }
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
+    case 11:
+    case 23:
+    case 26:
         break;
     case 6:
         if (*(u32*)(this_ + 0x230) & 1) {
@@ -822,16 +830,16 @@ extern "C" void fn_801D4ED4(u8* this_) {
         f32 y0 = *(f32*)(this_ + 0x5c0);
         switch (*(s32*)(this_ + 0x5b8)) {
         case 0:
-            *(f32*)(this_ + 0x5bc) += lbl_8053F10C;
+            *(f32*)(this_ + 0x5bc) = *(volatile f32*)(this_ + 0x5bc) + lbl_8053F10C;
             break;
         case 1:
-            *(f32*)(this_ + 0x5bc) -= lbl_8053F10C;
+            *(f32*)(this_ + 0x5bc) = *(volatile f32*)(this_ + 0x5bc) - lbl_8053F10C;
             break;
         case 2:
-            *(f32*)(this_ + 0x5c0) += lbl_8053F10C;
+            *(f32*)(this_ + 0x5c0) = *(volatile f32*)(this_ + 0x5c0) + lbl_8053F10C;
             break;
         case 3:
-            *(f32*)(this_ + 0x5c0) -= lbl_8053F10C;
+            *(f32*)(this_ + 0x5c0) = *(volatile f32*)(this_ + 0x5c0) - lbl_8053F10C;
             break;
         }
         bool done = false;
@@ -860,11 +868,15 @@ extern "C" void fn_801D4ED4(u8* this_) {
     if (sel) {
         fn_801CE32C(this_);
     }
-    if (*(s32*)(this_ + 0x248) == 1) {
-        if (*(f32*)(this_ + 0x14) < lbl_8053F0EC) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1: {
+        f32 height = *(f32*)(this_ + 0x14);
+        if (height < lbl_8053F0EC) {
             *(f32*)(this_ + 0x14) = lbl_8053F0EC;
         }
-    } else if (!fn_801CD2F8(*(s32*)(this_ + 0x4))) {
+    } break;
+    default:
+    if (!fn_801CD2F8(*(s32*)(this_ + 0x4))) {
         f32 v = *(f32*)(this_ + 0x14);
         if (v > lbl_8053F108) {
             v = lbl_8053F108;
@@ -873,11 +885,12 @@ extern "C" void fn_801D4ED4(u8* this_) {
         }
         *(f32*)(this_ + 0x14) = v;
     }
+    }
     fn_801E4A18(this_ + 0x52c);
     fn_801E4A18(this_ + 0x540);
     fn_801E4A18(this_ + 0x554);
 }
-
+#pragma opt_propagation reset
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_8030C210(void* cam, JGeometry::TVec3<f32>* pos);
 extern u8* lbl_8053AB10;
@@ -885,6 +898,8 @@ extern const f32 lbl_8053F0CC;
 extern const f32 lbl_8053F0D4;
 extern const f32 lbl_8053F0DC;
 
+extern "C" f32 __fsels(f32, f32, f32);
+#pragma fp_relax on
 extern "C" void fn_801D47DC(u8* this_) {
     s32 room = *(s32*)(this_ + 0x4);
     u8* g = fn_802D6A9C();
@@ -894,21 +909,21 @@ extern "C" void fn_801D47DC(u8* this_) {
     } else {
         rect = (f32*)(g + 0xdc);
     }
+    JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14), 0.0f);
     f32 lim = lbl_8053F0CC + rect[1];
-    JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14), lbl_8053F0C8);
     pos.y = __fsel(lim - pos.y, lim, pos.y);
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
     case 0x17:
         break;
     case 1: {
-        JGeometry::TVec3<f32> c0(lbl_8053F0D0 + rect[0], lbl_8053F0D0 + rect[1], lbl_8053F0C8);
+        JGeometry::TVec3<f32> c0(32.0f + rect[0], 32.0f + rect[1], 0.0f);
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c0);
-        JGeometry::TVec3<f32> c1(rect[2] - lbl_8053F0D0, lbl_8053F0D0 + rect[1], lbl_8053F0C8);
+        JGeometry::TVec3<f32> c1(rect[2] - 32.0f, 32.0f + rect[1], 0.0f);
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c1);
-        JGeometry::TVec3<f32> c2(lbl_8053F0D0 + rect[0], rect[3] - lbl_8053F0D0, lbl_8053F0C8);
+        JGeometry::TVec3<f32> c2(32.0f + rect[0], rect[3] - 32.0f, 0.0f);
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c2);
-        JGeometry::TVec3<f32> c3(rect[2] - lbl_8053F0D0, rect[3] - lbl_8053F0D0, lbl_8053F0C8);
+        JGeometry::TVec3<f32> c3(rect[2] - 32.0f, rect[3] - 32.0f, 0.0f);
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c3);
         break;
     }
@@ -923,7 +938,9 @@ extern "C" void fn_801D47DC(u8* this_) {
         if (cam[0x7f5] == 0) {
             cam[0x7f4] = 1;
             *(s32*)(cam + 0x7f8) = 4;
-            *(JGeometry::TVec3<f32>*)(cam + 0x7fc) = pos;
+            *(f32*)(cam + 0x7fc) = pos.x;
+            *(f32*)(cam + 0x800) = pos.y;
+            *(f32*)(cam + 0x804) = pos.z;
             cam[0x7f6] = 0;
         }
         break;
@@ -932,10 +949,8 @@ extern "C" void fn_801D47DC(u8* this_) {
         u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
         if (cam[0x840] == 0) {
             cam[0x840] = 1;
-            *(f32*)(cam + 0x84c) = pos.x;
-            *(f32*)(cam + 0x844) = pos.x;
-            *(f32*)(cam + 0x850) = pos.y;
-            *(f32*)(cam + 0x848) = pos.y;
+            *(f32*)(cam + 0x844) = *(f32*)(cam + 0x84c) = pos.x;
+            *(f32*)(cam + 0x848) = *(f32*)(cam + 0x850) = pos.y;
             *(f32*)(cam + 0x854) = lbl_8053F0D8;
             *(f32*)(cam + 0x1d4) = lbl_8053F0DC;
             *(f32*)(cam + 0x1d8) = lbl_8053F0DC;
@@ -963,5 +978,5 @@ extern "C" void fn_801D47DC(u8* this_) {
     }
     }
 }
-
+#pragma fp_relax reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
