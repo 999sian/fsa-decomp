@@ -4,6 +4,7 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry.h"
+#include "JSystem/JKernel/JKRArchive.h"
 
 extern "C" u8* fn_802D6A9C(void);
 extern u8* lbl_8053AB10;
