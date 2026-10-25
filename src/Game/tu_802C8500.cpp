@@ -277,8 +277,8 @@ extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 id);
 extern "C" void fn_802F9974(void* mgr, s32 room, s32 id, u16 frame);
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AB10;
-static inline s32 key0InitialCheck(char* this_, u32 n) {
-    s32 go = 0;
+static inline void key0InitialCheck(char* this_, u32 n, s32& go) {
+    go = 0;
     s32 mode = *(s32*)(this_ + 0x248);
     if (mode == 0) {
         go = 1;
@@ -295,7 +295,6 @@ static inline s32 key0InitialCheck(char* this_, u32 n) {
             go = 1;
         }
     }
-    return go;
 }
 
 extern "C" void fn_802C8F28(char* this_) {
