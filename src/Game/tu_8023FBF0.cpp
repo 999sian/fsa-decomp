@@ -1583,7 +1583,7 @@ s32 fn_802426E0(char* p, s32 v) {
     return 1;
 }
 BOOL fn_80242704(char* p, s32 v) {
-    if ((u8)isLinkOwner(p)) {
+    if ((u8)isLinkOwner3(p)) {
         return 0;
     }
     if (fn_8025F448(p)) {
