@@ -423,6 +423,113 @@ void J2DPictureEx::draw(f32 p1, f32 p2, u8 index, bool p4, bool p5, bool p6)
     }
 }
 
+void J2DPictureEx::draw(f32 x, f32 y, f32 width, f32 height, bool p5, bool p6, bool p7)
+{
+    if (!isVisible()) {
+        return;
+    }
+
+    if (!mMaterial) {
+        return;
+    }
+
+    if (!mMaterial->getTevBlock()) {
+        return;
+    }
+
+    if (mMaterial->getTexGenBlock()->mTexGenNum == 0) {
+        return;
+    }
+
+    mMaterial->setGX();
+    makeMatrix(x, y, 0.0f, 0.0f);
+    GXLoadPosMtxImm(mPositionMtx, 0);
+    GXSetCurrentMtx(0);
+
+    if (!mMaterial->isVisible()) {
+        return;
+    }
+
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+
+    mColorAlpha   = mAlpha;
+    int alphaCalc = mMaterial->getMaterialAlphaCalc();
+    JUTColor colors[4];
+    for (int i = 0; i < 4; i++) {
+        colors[i] = mCornerColors[i];
+    }
+
+    if (alphaCalc == 1) {
+        for (int i = 0; i < 4; i++) {
+            colors[i].a = (mColorAlpha * colors[i].a) / 255;
+        }
+    }
+
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    f32 z = 0.0f;
+    GXPosition3f32(z, z, z);
+    GXColor1u32(colors[0]);
+
+    if (!p7) {
+        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0x8000 : 0);
+    } else {
+        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0 : 0x8000);
+    }
+
+    GXPosition3f32(width, z, z);
+    GXColor1u32(colors[1]);
+
+    if (!p7) {
+        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0x8000 : 0);
+    } else {
+        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0x8000 : 0);
+    }
+
+    GXPosition3f32(width, height, z);
+    GXColor1u32(colors[3]);
+
+    if (!p7) {
+        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0 : 0x8000);
+    } else {
+        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0x8000 : 0);
+    }
+
+    GXPosition3f32(z, height, z);
+    GXColor1u32(colors[2]);
+
+    if (!p7) {
+        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0 : 0x8000);
+    } else {
+        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0 : 0x8000);
+    }
+
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_S16, 0);
+    GXSetNumTexGens(0);
+    GXSetNumTevStages(1);
+    GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+
+    for (int i = 0; i < 4; i++) {
+        GXSetTevSwapModeTable(GXTevSwapSel(i), GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_ALPHA);
+    }
+
+    GXSetNumIndStages(0);
+
+    for (int i = 0; i < 16; i++) {
+        GXSetTevDirect(GXTevStageID(i));
+    }
+
+    Mtx posMtx;
+    PSMTXIdentity(posMtx);
+    GXLoadPosMtxImm(posMtx, 0);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, 0, GX_DF_NONE, GX_AF_NONE);
+    GXSetVtxDesc(GX_VA_TEX0, GX_NONE);
+}
+
 void J2DPictureEx::drawOut(f32 p1, f32 p2, f32 p3, f32 p4, f32 p5, f32 p6)
 {
     if (mMaterial && mMaterial->mTevBlock && mIsVisible) {
