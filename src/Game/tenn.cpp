@@ -119,7 +119,7 @@ extern "C" void fn_801A0B8C(void* this_) {
 extern "C" void fn_801F0E34(void*, s32, s32);
 extern "C" void fn_801F71A4(f32*, f32, f32, f32);
 extern "C" u8 fn_801F2740(void*, s32);
-extern "C" void fn_8022F3DC(void);
+extern "C" s32 fn_8022F3DC(void);
 extern "C" u8 fn_801F2B7C(void*, s32, s32, s32);
 extern "C" s32 fn_801F285C(void*, f32*, u32*, u32, s32);
 extern "C" u16 fn_8023CBC0(s32);
@@ -136,60 +136,47 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" void fn_8023E724(s32);
 extern "C" s32 fn_801F2718(void*, u32);
 extern "C" void fn_8030C210(void*, ...);
+extern "C" u8 fn_801F6758(void*, s32, f32);
 extern "C" void fn_801A0F90(void* this_) {
+    s32 flag = 0;
     char* p = (char*)this_;
-    s32 r31 = 0;
-    s16 ang;
-    f32 scale;
+    u16 ang;
     s32 cnt;
     s32 idx;
+    s32 r29;
+    char* o;
+    f32 scale;
 
     *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
     *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + *(f32*)(p + 0x40);
     *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + *(f32*)(p + 0x44);
-    fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24));
+    fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), p + 0xc);
 
-    switch (*(s32*)(p + 0x230)) {
-    case 0x10: {
-        s32 r29 = fn_801F2718(this_, 0x54454e4e);
-        if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
-            fn_801F0E34(this_, 0x3004c, 0);
-            *(f32*)(p + 0x14) = lbl_8053E4F0;
-            *(f32*)(p + 0x44) = lbl_8053E51C;
-        } else {
-            *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E548;
-        }
-        if (lbl_8053ABC4 == 1 && r29 >= 0) {
-            char* obj = (char*)fn_801F666C(fn_801F856C(), r29);
-            if (obj != 0) {
-                *(s32*)(obj + 0x258) = 1;
-                *(s32*)(p + 0x230) = 0xe;
-            }
-        }
-        return;
+    {
+        s32 st = *(s32*)(p + 0x230);
+        if (st == 0x10) goto L_E38;
+        if (st >= 0x10) goto L_8F8;
+        if (st == 0xe) goto L_904;
+        if (st >= 0xe) goto L_90C;
+        goto L_F58;
     }
-    case 0x11:
-        fn_801F71A4((f32*)(p + 0x340), lbl_8053E4F0, lbl_8053E544, lbl_8053E518);
-        return;
-    case 0xe:
-        *(s32*)(p + 0x230) = 0xf;
-        break;
-    case 0xf:
-        break;
-    default:
-        return;
+L_8F8:
+    if (*(s32*)(p + 0x230) >= 0x12) goto L_F58;
+    goto L_ED4;
+L_904:
+    *(s32*)(p + 0x230) = 0xf;
+L_90C:
+    if (*(f32*)(p + 0x3c) != lbl_8053E4F0) goto L_974;
+    if (*(f32*)(p + 0x40) != lbl_8053E4F0) goto L_974;
+    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+        fn_801F0E34(this_, 0x3004c, 0);
+        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x44) = lbl_8053E518;
+    } else {
+        *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E544;
     }
-
-    if (*(f32*)(p + 0x3c) == lbl_8053E4F0 && *(f32*)(p + 0x40) == lbl_8053E4F0) {
-        if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
-            fn_801F0E34(this_, 0x3004c, 0);
-            *(f32*)(p + 0x14) = lbl_8053E4F0;
-            *(f32*)(p + 0x44) = lbl_8053E518;
-        } else {
-            *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E544;
-        }
-        return;
-    }
+    goto L_F58;
+L_974:
     if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = lbl_8053E4F0;
@@ -198,52 +185,57 @@ extern "C" void fn_801A0F90(void* this_) {
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E548;
     }
     fn_801F71A4((f32*)(p + 0x14), lbl_8053E500, lbl_8053E548, lbl_8053E4F8);
-    if (*(s32*)(p + 0x23c) != 0) return;
-
+    if (*(s32*)(p + 0x23c) != 0) goto L_F58;
     *(f32*)(p + 0x60) = lbl_8053E54C;
     *(f32*)(p + 0x64) = lbl_8053E54C;
     *(f32*)(p + 0x68) = lbl_8053E550;
     *(f32*)(p + 0x6c) = lbl_8053E550;
     {
         u8 r = fn_801F2740(this_, -1);
-        if (r != 0) {
-            s32 v = r;
-            idx = 0;
-            while (v > 0) {
-                v >>= 1;
-                idx++;
-            }
-            idx--;
-            if (idx < 0) idx = 0;
-            if (*(s32*)(p + 0x264) != idx) {
-                fn_8022F3DC();
-                if (*(s32*)(p + 0x264) != idx) goto l_a8c;
-            }
-            if (fn_801F2B7C(this_, 0, -1, 1)) {
-                fn_801F0E34(this_, 0x3004d, 0);
-                r31 = 1;
-                lbl_8053ABC5 = 1;
-                return;
-            }
+        s32 n = 0;
+        s32 v;
+        if ((r & 0xff) == 0) goto L_A8C;
+        v = r;
+        while (v > 0) {
+            v >>= 1;
+            n++;
+        }
+        idx = n - 1;
+        if (idx < 0) idx = 0;
+        if (*(s32*)(p + 0x264) != idx) {
+            fn_8022F3DC();
+            if (*(s32*)(p + 0x264) != idx) goto L_A8C;
+        }
+        if (fn_801F2B7C(this_, 0, -1, 1) & 0xff) {
+            fn_801F0E34(this_, 0x3004d, 0);
+            flag = 1;
+            lbl_8053ABC5 = 1;
+            goto L_F58;
         }
     }
-l_a8c:
+L_A8C:
     *(f32*)(p + 0x60) = lbl_8053E554;
     *(f32*)(p + 0x64) = lbl_8053E554;
     *(f32*)(p + 0x68) = lbl_8053E53C;
     *(f32*)(p + 0x6c) = lbl_8053E53C;
     *(s32*)(p + 0x278) = fn_801F285C(this_, 0, 0, 1, -1);
-    if (*(s32*)(p + 0x278) < 0) return;
+    if (*(s32*)(p + 0x278) < 0) goto L_F58;
     if (*(s32*)(p + 0x264) != *(s32*)(p + 0x278)) {
         fn_8022F3DC();
-        if (*(s32*)(p + 0x264) != *(s32*)(p + 0x278)) return;
+        if (*(s32*)(p + 0x264) != *(s32*)(p + 0x278)) goto L_F58;
     }
     {
-        u16 c = fn_8023CBC0(*(s32*)(p + 0x278));
-        if (c >= 0x43 && c < 0x6f) return;
+        s32 r0;
+        if (*(s32*)(p + 0x278) >= 0) {
+            u16 c = fn_8023CBC0(*(s32*)(p + 0x278));
+            r0 = (c >= 0x43 && c < 0x6f) ? 1 : 0;
+        } else {
+            r0 = -1;
+        }
+        if (r0 != 0) goto L_F58;
     }
     scale = lbl_8053A0F8;
-    if (fn_802353AC(*(s32*)(p + 0x264))) scale = scale * lbl_8053E558;
+    if (fn_802353AC(*(s32*)(p + 0x264)) & 0xff) scale = scale * lbl_8053E558;
     *(s32*)(p + 0x264) += 1;
     cnt = fn_80138A30(lbl_8053AAF8);
     if (*(s32*)(p + 0x264) >= cnt) *(s32*)(p + 0x264) = 0;
@@ -251,16 +243,12 @@ l_a8c:
     fn_8023B6CC(*(s32*)(p + 0x278));
     fn_80230FD0(*(s32*)(p + 0x278), 0x2003f);
     cnt = fn_80138A30(lbl_8053AAF8);
-    if (*(s32*)(p + 0x248) >= cnt) {
-        *(s32*)(p + 0x248) = 0;
-        *(s32*)(p + 0x264) = 4;
-        return;
-    }
-    if (fn_8023F264(*(s32*)(p + 0x264))) {
-        if (*(s32*)(p + 0x4) != fn_8023DE58(*(s32*)(p + 0x264))) return;
-        if (fn_80230188(*(s32*)(p + 0x264))) return;
-        fn_801EEC98(this_, *(s32*)(p + 0x198), &ang, 0, 0, 0, *(s32*)(p + 0x264), 2);
-    }
+    if (*(s32*)(p + 0x248) >= cnt) goto L_D14;
+    if ((fn_8023F264(*(s32*)(p + 0x264)) & 0xff) == 0) goto L_E30;
+    r29 = *(s32*)(p + 0x4);
+    if (r29 != fn_8023DE58(*(s32*)(p + 0x264))) goto L_E30;
+    if (fn_80230188(*(s32*)(p + 0x264)) & 0xff) goto L_E30;
+    fn_801EEC98(this_, *(s32*)(p + 0x198), (s16*)&ang, 0, 0, 0, *(s32*)(p + 0x264), 2);
     {
         char* game = lbl_8053AAF8;
         u32 seed = *(u32*)(game + 0xb4) * 0x19660d + 0x3c6ef35f;
@@ -272,10 +260,104 @@ l_a8c:
         if (rf >= lbl_8053E544) ang += 0x600;
         else ang -= 0x600;
     }
-    *(f32*)(p + 0x3c) = JMath::sincosTable_.mTable[(u16)ang >> 5].first * scale;
-    *(f32*)(p + 0x40) = JMath::sincosTable_.mTable[(u16)ang >> 5].second * scale;
+    *(f32*)(p + 0x3c) = JMath::sincosTable_.mTable[ang >> 5].first * scale;
+    *(f32*)(p + 0x40) = JMath::sincosTable_.mTable[ang >> 5].second * scale;
     *(s32*)(p + 0x23c) = 0x1e;
-    (void)r31;
+    r29 = *(s32*)(p + 0x320);
+    if (r29 < 0) goto L_E30;
+    o = (char*)fn_801F666C(fn_801F856C(), r29);
+    if (o == 0) goto L_E30;
+    *(s32*)(o + 0x254) += 1;
+    if (*(s32*)(o + 0x254) > 0x3e7) *(s32*)(o + 0x254) = 0x3e7;
+    *(s32*)(o + 0x26c) += 1;
+    if (*(s32*)(o + 0x26c) > 0x3e7) *(s32*)(o + 0x26c) = 0x3e7;
+    if (*(s32*)(o + 0x254) > 0x3e7) *(s32*)(o + 0x254) = 0x3e7;
+    goto L_F58;
+L_D14:
+    r29 = *(s32*)(p + 0x320);
+    if (r29 < 0) goto L_E30;
+    o = (char*)fn_801F666C(fn_801F856C(), r29);
+    if (o == 0) goto L_E30;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x264) = 4;
+    if (fn_80138A30(lbl_8053AAF8) > 1) {
+        *(s32*)(o + 0x254) += 1;
+        if (*(s32*)(o + 0x254) > 0x3e7) *(s32*)(o + 0x254) = 0x3e7;
+        *(s32*)(o + 0x26c) += 1;
+        if (*(s32*)(o + 0x26c) > 0x3e7) *(s32*)(o + 0x26c) = 0x3e7;
+    }
+    fn_8023E724(0);
+    fn_8023E724(0);
+    if (*(s32*)(p + 0x278) < 0) goto L_E30;
+    {
+        f32 dx = *(f32*)(o + 0xc) - *(f32*)(p + 0xc);
+        f32 dy = *(f32*)(o + 0x10) - *(f32*)(p + 0x10);
+        f32 a = JMath::atanTable_.atan2_(dx, dy) * lbl_8053E538;
+        s32 ai = (s32)a;
+        ang = (u16)ai;
+        *(f32*)(p + 0x3c) = lbl_8053A0F8 * JMath::sincosTable_.mTable[ai >> 5].first;
+        *(f32*)(p + 0x40) = lbl_8053A0F8 * JMath::sincosTable_.mTable[ang >> 5].second;
+    }
+    *(s32*)(p + 0x230) = 0x10;
+    goto L_F58;
+L_E30:
+    flag = 1;
+    goto L_F58;
+L_E38:
+    r29 = fn_801F2718(this_, 0x54454e4e);
+    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+        fn_801F0E34(this_, 0x3004c, 0);
+        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x44) = lbl_8053E51C;
+    } else {
+        *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E548;
+    }
+    if (lbl_8053ABC4 != 1) goto L_F58;
+    if (r29 < 0) goto L_F58;
+    o = (char*)fn_801F666C(fn_801F856C(), r29);
+    if (o == 0) goto L_F58;
+    *(s32*)(o + 0x258) = 1;
+    *(s32*)(p + 0x230) = 0xe;
+    goto L_F58;
+L_ED4:
+    fn_801F71A4((f32*)(p + 0x340), lbl_8053E4F0, lbl_8053E544, lbl_8053E518);
+    if (*(f32*)(p + 0x14) > lbl_8053E4F0) {
+        fn_801F0E34(this_, 0x3004c, 0);
+        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x44) = lbl_8053E51C;
+    } else {
+        *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E544;
+    }
+    if (*(s32*)(p + 0x23c) == 0) goto L_F50;
+    if (*(f32*)(p + 0x340) >= lbl_8053E4FC) goto L_F58;
+L_F50:
+    *(u8*)(p + 0x11c) = 0;
+L_F58:
+    if (*(s32*)(p + 0x230) == 0x11) goto L_1030;
+    if (*(s32*)(p + 0x108) == 0) goto L_F94;
+    if ((u8)flag == 1) goto L_F94;
+    if ((fn_801F6758(p + 0xc, *(s32*)(p + 0x4), lbl_8053E55C) & 0xff) == 0) goto L_1030;
+    *(s32*)(p + 0x23c) = 0x32;
+L_F94:
+    if (*(s32*)(p + 0x108) == 0) goto L_FE8;
+    r29 = *(s32*)(p + 0x320);
+    if (r29 < 0) goto L_FE8;
+    o = (char*)fn_801F666C(fn_801F856C(), r29);
+    if (o == 0) goto L_FE8;
+    *(s32*)(o + 0x268) = *(s32*)(p + 0x264);
+    *(s32*)(o + 0x28c + *(s32*)(p + 0x264) * 4) += 1;
+L_FE8:
+    *(f32*)(p + 0x3c) = *(f32*)(p + 0x3c) * lbl_8053E540;
+    *(f32*)(p + 0x40) = *(f32*)(p + 0x40) * lbl_8053E540;
+    *(f32*)(p + 0x44) = lbl_8053E51C;
+    fn_801F0E34(this_, 0x3004d, 0);
+    lbl_8053ABC0 = 1;
+    *(s32*)(p + 0x230) = 0x11;
+L_1030:
+    if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
+    if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
+    if (*(s32*)(p + 0x240) > 0) *(s32*)(p + 0x240) -= 1;
+    if (*(s32*)(p + 0x244) > 0) *(s32*)(p + 0x244) -= 1;
 }
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
