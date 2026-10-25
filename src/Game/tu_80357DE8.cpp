@@ -161,12 +161,16 @@ extern "C" void fn_803581AC(char* self)
     switch (*(s32*)(self + 0x234)) {
     case 0:
     case 2:
-    case 3:
-        setBounds(self, lbl_80542854, lbl_80542858);
+    case 3: {
+        f32 a = lbl_80542854;
+        setBounds(self, a, lbl_80542858);
         break;
-    case 1:
-        setBounds(self, lbl_8054285C, lbl_80542860);
+    }
+    case 1: {
+        f32 a = lbl_8054285C;
+        setBounds(self, a, lbl_80542860);
         break;
+    }
     }
     *(s32*)(self + 0x230) = 0;
 }
