@@ -664,6 +664,7 @@ extern "C" int fn_8008E328(int param_1)
 
 extern "C" void fn_8008E364(u32 param_1)
 {
+    u8* obj;
     s32 i;
     for (i = 0; i < 4; i++) {
         if ((lbl_8053A938 & lbl_80499480[i]) == 0) {
@@ -671,18 +672,19 @@ extern "C" void fn_8008E364(u32 param_1)
                 PADControlMotor(i, 0);
                 lbl_8053A934[i] = 0;
             }
-            u8* obj = 0;
             u8* link = *(u8**)lbl_8052E8A0;
             for (; link != 0; link = *(u8**)(link + 0xc)) {
-                if (i == *(s16*)(*(u8**)link + 0x7c)) {
-                    obj = *(u8**)link;
-                    break;
+                obj = *(u8**)link;
+                if (i == *(s16*)(obj + 0x7c)) {
+                    goto found;
                 }
             }
+            obj = 0;
+        found:
             if (obj != 0) {
                 s16 idx = *(s16*)(obj + 0x7c);
                 *(u32*)(obj + 0x6c) = 0;
-                if ((lbl_8053A938 & lbl_80499470[idx]) != 0) {
+                if (lbl_8053A938 & lbl_80499470[idx]) {
                     PADControlMotor(idx, 2);
                     lbl_8053A934[idx] = 0;
                 }
@@ -702,20 +704,14 @@ extern "C" void fn_8008E488(void *param_1, u32 param_2, u32 param_3, u32 param_4
 
 extern "C" u32 fn_8008E4A4(u32 mask) {
     u32* p = lbl_80499480;
-    if (lbl_8053A928 & *p) {
-        mask &= *p ^ 0xffffffff;
-    }
-    p++;
-    if (lbl_8053A928 & *p) {
-        mask &= *p ^ 0xffffffff;
-    }
-    p++;
-    if (lbl_8053A928 & *p) {
-        mask &= *p ^ 0xffffffff;
-    }
-    p++;
-    if (lbl_8053A928 & *p) {
-        mask &= *p ^ 0xffffffff;
+    u32 disabled;
+    u32 value;
+    disabled = lbl_8053A928;
+    for (int i = 0; i < 4; ++i, ++p) {
+        value = *p;
+        if (disabled & value) {
+            mask &= value ^ 0xffffffff;
+        }
     }
     return PADRecalibrate(mask) != 0;
 }
