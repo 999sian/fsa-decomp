@@ -60,7 +60,6 @@ extern "C" void fn_80179388(Actor* this_)
 extern "C" s32 fn_801F6874(u32 x);
 extern "C" u8 sincosTable___5JMath[];
 extern "C" Vec lbl_804C0EA0;
-__declspec(section ".data") Vec lbl_804C0EA0;
 extern "C" s32 lbl_8053AB68;
 extern "C" s32 lbl_80539F80;
 extern "C" s32 lbl_80539F84;
