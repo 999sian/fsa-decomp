@@ -633,6 +633,11 @@ extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
     return FALSE;
 }
 
+struct TileRoomFlagView {
+    u8 pad[0x131df];
+    u8 flag;
+};
+
 struct TileStageMap {
     u8 pad[0x60];
     u8 cells[10][10];
@@ -640,8 +645,7 @@ struct TileStageMap {
 
 static inline u32 tileKindAt(const f32* pos, u32 room) {
     u16 tile = lbl_8046CB88[tileAtOrdered(pos, room)];
-    u32 flags = (u32)fn_802D6A9C() + 0x131df;
-    if (*(u8*)(flags + room) != 0) {
+    if (((TileRoomFlagView*)(fn_802D6A9C() + room))->flag != 0) {
         if (tile == 0) return 2;
         if (tile == 0x61) return 0;
         return tile;
@@ -664,8 +668,8 @@ normal:
 }
 
 extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
-    u16 kind = tileKindAt(pos, room);
-    s32 k = kind;
+    s32 k;
+    k = (u16)tileKindAt(pos, room);
     if (k == 0 || k == 2 || k == 0x50) return 0;
     if (k == 0x22 && fn_802D6A9C()[0x170] == 0) return 0;
     if (mode == 1 && (k == 0xc || k == 0x39)) return 0;
