@@ -14,32 +14,7 @@ extern char* lbl_8053AB10;
 struct BzbrGame;
 extern BzbrGame* lbl_8053AAF8;
 
-// Scaled rotation about Y (x/z angles zero) into a 3x4 matrix.
-static inline void bzbrRotYMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
-    f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
-    sx = sin(rx);
-    sy = sin(ry);
-    sz = sin(rz);
-    cx = cos(rx);
-    cy = cos(ry);
-    cz = cos(rz);
-    f32 sxsy = sx * sy;
-    f32 cxsz = cx * sz;
-    f32 cxcz = cx * cz;
-    f32 sxsz = sx * sz;
-    f32 sxcz = sx * cz;
-    m[0][0] = s * (cy * cz);
-    m[1][0] = s * (cy * sz);
-    m[2][0] = s * -sy;
-    m[0][1] = s * (sxsy * cz - cxsz);
-    m[1][1] = s * (sxsy * sz + cxcz);
-    m[2][1] = s * (sx * cy);
-    m[0][2] = s * (cxcz * sy + sxsz);
-    m[1][2] = s * (cxsz * sy - sxcz);
-    m[2][2] = s * (cx * cy);
-}
-
-// Resource manager at game+0xa4; slot 6 looks a resource up by type and name.
+// Resource manager at game+0xa4; vtable +0x18 looks a resource up by type and name.
 struct BzbrResMgr {
     virtual void v0();
     virtual void v1();
@@ -76,12 +51,12 @@ extern "C" void fn_80144194(u8* this_) {
     if (*(s32*)(this_ + 0x230) == 4) {
         DrawRec rec2;
         f32 m2[3][4];
-        f32 s; f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
+        f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
         m2[0][3] = 0.0f;
         m2[1][3] = 0.0f;
         m2[2][3] = 0.0f;
+        f32 s = *(f32*)(this_ + 0x250);
         ang = *(f32*)(this_ + 0x254);
-        s = *(f32*)(this_ + 0x250);
         f32 rx = 0.0f;
         sx = sin(rx);
         sy = sin(ang);
