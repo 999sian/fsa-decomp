@@ -30,6 +30,8 @@ extern f32 lbl_8053C050;
 extern f32 lbl_8053BFF0;
 extern f32 lbl_8053BFC0;
 extern f32 lbl_8053BFC4;
+extern "C" s32 fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern f32 lbl_8053BFC8;
 extern "C" void fn_800FA1A4(void* this_);
 extern "C" u8 fn_801F2618(void* this_, void* out, s32 flag);
@@ -238,41 +240,133 @@ extern "C" void fn_800F8A30(void* this_) {
 }
 
 extern "C" void fn_800F8BAC(void* this_) {
-    extern f32 lbl_8053BFD0, lbl_8053BFD4, lbl_8053BFF8, lbl_8053BFFC, lbl_8053C000, lbl_8053C004, lbl_8053C008;
-    u8* self = (u8*)this_;
-    u8* owner = *(u8**)(self + 0x240);
-    u8 idx = self[0x247];
-    f32 k, t, sn, cs, fx, fy, fz, scl;
-    s32 n;
-    u16 ang;
-    if (*(s16*)(owner + 0x284 + ((u32)idx << 1)) != 0) {
-        n = owner[0x2ac] >> 1;
-        if (idx == 0) {
-            ang = *(u16*)(owner + 0x2b2);
-            t = (f32)((n + 1) * 20);
-            k = lbl_8053BFF8 + t;
-        } else {
-            ang = *(u16*)(owner + 0x2b4);
-            t = (f32)((n + 1) * -20);
-            k = t - lbl_8053BFF8;
+    void fn_80239914(void* box, u32 room, u32 handle);
+    u8 fn_801F2740(void* this_, s32 a);
+    void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+    s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
+    struct WrtcOwner {
+        u8 pad0[0xc];
+        f32 x, y, z;
+        u8 pad18[0x284 - 0x18];
+        s16 m284[2];
+        u8 pad288[0x2ac - 0x288];
+        u8 m2ac;
+        u8 pad2ad[0x2b2 - 0x2ad];
+        u16 m2b2;
+        u16 m2b4;
+    };
+    struct WrtcSub {
+        u8 pad0[4];
+        u32 mRoomId;
+        u8 pad8[4];
+        JGeometry::TVec3<f32> mPos;
+        u8 pad18[0x3c - 0x18];
+        JGeometry::TVec3<f32> mVel;
+        u8 pad48[0x198 - 0x48];
+        u32 mRoomHandle;
+        u8 pad19c[0x240 - 0x19c];
+        WrtcOwner* mOwner;
+        u8 pad244[3];
+        u8 mIdx;
+        u8 pad248;
+        bool m249;
+        u8 m24a;
+    };
+    struct H {
+        static inline JGeometry::TVec3<f32> calcPos(WrtcOwner* owner, u8 idx) {
+            s16 ang;
+            f32 k;
+            if (idx == 0) {
+                k = 20.0f + (f32)(((owner->m2ac >> 1) + 1) * 20);
+                ang = owner->m2b2;
+            } else {
+                k = (f32)(((owner->m2ac >> 1) + 1) * -20) - 20.0f;
+                ang = owner->m2b4;
+            }
+            f32 sn = JMath::sincosTable_.mTable[(ang >> 5) & 0x7ff].first;
+            f32 cs = JMath::sincosTable_.mTable[(ang >> 5) & 0x7ff].second;
+            JGeometry::TVec3<f32> res;
+            res.x = k * sn + owner->x;
+            res.y = k * cs + owner->y;
+            res.z = 10.0f + owner->z;
+            return res;
         }
-        sn = JMath::sincosTable_.mTable[(s16)ang >> 5].first;
-        cs = JMath::sincosTable_.mTable[(s16)ang >> 5].second;
-        fx = k * sn + *(f32*)(owner + 0xc);
-        fy = k * cs + *(f32*)(owner + 0x10);
-        fz = lbl_8053BFFC + *(f32*)(owner + 0x14);
-        self[0x249] = 1;
-        n = owner[0x2ac] >> 1;
-        scl = lbl_8053C000 - lbl_8053C004 * (f32)(n + 1);
-        *(f32*)(self + 0x3c) = *(f32*)(self + 0xc);
-        *(f32*)(self + 0x40) = *(f32*)(self + 0x10);
-        *(f32*)(self + 0x44) = *(f32*)(self + 0x14);
-        *(f32*)(self + 0xc) = lbl_8053BFD0 * (f32)(s32)(lbl_8053BFD4 * (fx - *(f32*)(self + 0xc))) * scl + *(f32*)(self + 0xc);
-        *(f32*)(self + 0x10) = lbl_8053BFD0 * (f32)(s32)(lbl_8053BFD4 * (fy - *(f32*)(self + 0x10))) * scl + *(f32*)(self + 0x10);
-        *(f32*)(self + 0x14) = lbl_8053BFD0 * (f32)(s32)(lbl_8053BFD4 * (fz - *(f32*)(self + 0x14))) * scl + *(f32*)(self + 0x14);
-        *(f32*)(self + 0x3c) = (*(f32*)(self + 0x3c) - *(f32*)(self + 0xc)) * lbl_8053C008;
-        *(f32*)(self + 0x40) = (*(f32*)(self + 0x40) - *(f32*)(self + 0x10)) * lbl_8053C008;
-        *(f32*)(self + 0x44) = (*(f32*)(self + 0x44) - *(f32*)(self + 0x14)) * lbl_8053C008;
+        static inline f32 quantize(f32 v) {
+            return 0.0001f * (f32)(s32)(10000.0f * v);
+        }
+        static inline void lerpVec(f32* p1, const f32* p2, f32 scl) {
+            f32 dx = quantize(p2[0] - p1[0]);
+            p1[0] += dx * scl;
+            f32 dy = quantize(p2[1] - p1[1]);
+            p1[1] += dy * scl;
+            f32 dz = quantize(p2[2] - p1[2]);
+            p1[2] += dz * scl;
+        }
+        static inline f32 dot(WrtcSub* self, const JGeometry::TVec3<f32>& b) {
+            return self->mVel.x * b.x + self->mVel.y * b.y + self->mVel.z * b.z;
+        }
+    };
+    WrtcSub* self = (WrtcSub*)this_;
+    WrtcOwner* owner = self->mOwner;
+    if (owner->m284[self->mIdx] != 0) {
+        JGeometry::TVec3<f32> targetPos;
+        targetPos.set(H::calcPos(owner, self->mIdx));
+        self->m249 = true;
+        f32 scl = 0.36f - 0.032f * (f32)((owner->m2ac >> 1) + 1);
+        self->mVel.set(self->mPos);
+        H::lerpVec((f32*)&self->mPos, (const f32*)&targetPos, scl);
+        self->mVel.sub(self->mPos);
+        self->mVel.scale(-0.5f);
+    } else {
+        self->mVel.z -= 0.2f;
+        self->mPos.add(self->mVel);
+        if (self->mPos.z <= 0.0f) {
+            self->mPos.z = 0.0f;
+            self->mVel.z = 0.0f;
+            self->mVel.x *= 0.99f;
+            self->mVel.y *= 0.99f;
+        }
+        JGeometry::TVec3<f32> n;
+        if (fn_801F2618(this_, &n, 0)) {
+            f32 k = 2.0f * H::dot(self, n);
+            self->mVel.x -= k * n.x;
+            self->mVel.y -= k * n.y;
+            self->mVel.z -= k * n.z;
+            if (self->m24a == 0) {
+                fn_801F0E34(this_, 0x4002d, 0);
+                self->m24a = 1;
+            }
+        }
+    }
+    if (self->m24a != 0) {
+        self->m24a++;
+        if (self->m24a >= 30) {
+            self->m24a = 0;
+        }
+    }
+    if (__fabsf(self->mVel.x) < 1.0f && __fabsf(self->mVel.y) < 1.0f) {
+        JGeometry::TBox2<f32> box(self->mPos.x - 10.0f, self->mPos.y - 10.0f, self->mPos.x + 10.0f, self->mPos.y + 10.0f);
+        fn_80239914(&box, self->mRoomId, self->mRoomHandle);
+        if (fn_801F2740(this_, -1)) {
+            self->mVel.x = 0.0f;
+            self->mVel.y = 0.0f;
+        }
+    } else {
+        fn_801F2B7C(this_, 2, -1, 1);
+    }
+    if (__fabsf(self->mVel.x) < 1.0f && __fabsf(self->mVel.y) < 1.0f) {
+        s32 hit = fn_801F285C(this_, 0, 0, 1, -1);
+        if (hit >= 0) {
+            JGeometry::TVec3<f32> dir(0.0f, 0.0f, 0.0f);
+            dir.x = fn_8023E724(hit)[0] - self->mPos.x;
+            dir.y = fn_8023E724(hit)[1] - self->mPos.y;
+            dir.normalize();
+            dir.scale(-1.0f);
+            self->mVel.x = 1.5f * dir.x;
+            self->mVel.y = 1.5f * dir.y;
+            JGeometry::TVec2<f32> p2(self->mPos.x, self->mPos.y);
+            fn_80238548(hit, 0, (f32*)&p2, 0x10);
+        }
     }
 }
 
@@ -416,6 +510,45 @@ extern "C" void fn_800F9C20(void* this_) {
             if ((s32)(lbl_8053BFA0 * (*(f32*)&bits - 1.0f)) < 1) {
                 *(s32*)(p + 0x23c) = -1;
                 *(u16*)(p + 0x94) = 0;
+            }
+        }
+    }
+}
+
+extern "C" void fn_800FA1A4(void* this_) {
+    char* self = (char*)this_;
+    if (*(u32*)(self + 0x238) & 8) {
+        JGeometry::TVec3<f32> d;
+        char* pa = (char*)fn_801F666C(fn_801F856C(), *(s32*)(self + 0x288));
+        char* pb = (char*)fn_801F666C(fn_801F856C(), *(s32*)(self + 0x28c));
+        JMathInlineVEC::PSVECSubtract((Vec*)(pa + 0xc), (Vec*)(pb + 0xc), &d);
+        JGeometry::TVec3<f32> posA(*(Vec*)(pa + 0xc));
+        JGeometry::TVec3<f32> posB(*(Vec*)(pb + 0xc));
+        if (PSVECMag(&d) < lbl_8053BFF8) {
+            JGeometry::TVec3<f32> velA(*(Vec*)(pa + 0x3c));
+            *(JGeometry::TVec3<f32>*)(pa + 0x3c) = *(JGeometry::TVec3<f32>*)(pb + 0x3c);
+            *(JGeometry::TVec3<f32>*)(pb + 0x3c) = velA;
+            JGeometry::TVec3<f32> mid;
+            JMathInlineVEC::PSVECAdd(&posA, &posB, &mid);
+            JMathInlineVEC::PSVECScale(&mid, &mid, lbl_8053BFB0);
+            d.normalize();
+            JMathInlineVEC::PSVECScale(&d, &d, lbl_8053BFFC);
+            JMathInlineVEC::PSVECAdd(&mid, &d, (Vec*)(pa + 0xc));
+            JMathInlineVEC::PSVECScale(&d, &d, lbl_8053C044 / lbl_8053BFFC);
+            JMathInlineVEC::PSVECAdd(&mid, &d, (Vec*)(pb + 0xc));
+        }
+        if (*(u8*)(self + 0x2ac) == 0) {
+            JGeometry::TVec3<f32> v(*(f32*)(self + 0xc), *(f32*)(self + 0x10) - lbl_8053BFF8, *(f32*)(self + 0x14));
+            JGeometry::TVec3<f32> t;
+            JMathInlineVEC::PSVECSubtract(&v, &posA, &t);
+            if (PSVECMag(&t) < lbl_8053C048) {
+                t.normalize();
+                JMathInlineVEC::PSVECScale(&t, (Vec*)(pa + 0x3c), lbl_8053C04C);
+            }
+            JMathInlineVEC::PSVECSubtract(&v, &posB, &t);
+            if (PSVECMag(&t) < lbl_8053C048) {
+                t.normalize();
+                JMathInlineVEC::PSVECScale(&t, (Vec*)(pb + 0x3c), lbl_8053C04C);
             }
         }
     }
@@ -1591,3 +1724,4 @@ extern "C" void fn_800F8548(void* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/Inline.h"
