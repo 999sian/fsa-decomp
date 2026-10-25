@@ -217,6 +217,8 @@ inline void yajiStopPulse(YajiActor* p) {
     p->mSubState = 0;
 }
 
+extern "C" void fn_802AFCE8(YajiActor* p) {}
+
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802B0194(YajiActor* this_) {
     s32 layerId;
