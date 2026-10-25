@@ -401,12 +401,6 @@ static inline void move80370764ToTarget() {
 }
 
 
-static inline u8 send80370764Message(s32 msg, u32 room, const JGeometry::TVec3<f32>& pos) {
-    JGeometry::TVec3<f32> copy(pos);
-    return fn_8038BD08(0, msg, room, &copy, 0x22);
-}
-
-static inline s32 message80370764At(s32 index) { return lbl_80474F40[index]; }
 extern "C" void fn_80370764(char* self)
 {
 	fn_803703C8(self);
