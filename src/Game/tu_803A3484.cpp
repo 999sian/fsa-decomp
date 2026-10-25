@@ -31,6 +31,29 @@ extern "C" s32 fn_803A3484(void) {
     return 1;
 }
 
+extern "C" u8* sManager__10JFWDisplay;
+extern "C" void fn_8013B438(void* p);
+extern "C" void fn_8013B490(void* p);
+extern "C" void fn_80427D2C(void* p, s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_803A44D8(u8* this_) {
+    u8 col[4] = {0, 0, 0, 0};
+    u8 copy[4];
+    *(u32*)copy = *(u32*)col;
+    sManager__10JFWDisplay[8] = copy[0];
+    sManager__10JFWDisplay[9] = copy[1];
+    sManager__10JFWDisplay[10] = copy[2];
+    sManager__10JFWDisplay[11] = copy[3];
+    if (*(s32*)(lbl_80529DEC + 0x1a0) > 0) {
+        *(s32*)(lbl_80529DEC + 0x1a0) -= 1;
+    } else {
+        *(s32*)(lbl_80529DEC + 0x1a0) = 0;
+    }
+    if (*(s16*)(this_ + 0x6c) != 0) {
+        fn_8013B438(lbl_8053AB10);
+        fn_80427D2C(*(void**)(this_ + 0x48), 0, 0, 0, 0);
+    }
+}
+
 extern "C" void fn_803A5380(u8* this_) {
     char* base = lbl_80475F58;
     if (lbl_80529DEC[0x242] == 0) {
@@ -99,6 +122,35 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* em);
 extern "C" void forceDeleteAllEmitter__17JPAEmitterManagerFv(void* mgr);
+struct TDelObj {
+    virtual ~TDelObj();
+};
+struct TPadBase8 {
+    u8 pad[8];
+};
+struct TSlotObj : TPadBase8 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+    virtual void m8();
+    virtual void m9();
+    virtual void m10(s32);
+};
+struct TSysObj {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+};
 extern "C" u8* fn_803A56C4(u8* p, s16 n) {
     if (p != NULL) {
         *(void**)p = lbl_804AF820;
