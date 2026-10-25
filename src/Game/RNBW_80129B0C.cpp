@@ -128,8 +128,8 @@ static inline void rnbwSpawn(Actor* actor, const u16* ids) {
 }
 static inline void rnbwSpawn(const u16* ids, Actor* actor) {
     s32 i;
-    void** hp = (void**)actor;
     const u16* table = ids;
+    void** hp = (void**)actor;
     for (i = 0; i < 5; i++, hp++, table++) {
         if (hp[0x8f] == 0) {
             u16 id = *table;
