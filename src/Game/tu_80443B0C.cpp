@@ -106,10 +106,12 @@ extern "C" void fn_80443DAC(u8* this_) {
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
             for (i = 0; i < 6; i++) {
-                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), lbl_80543D78, lbl_80543D78);
+                f32 k = lbl_80543D78;
+                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), k, k);
             }
             for (i = 0; i < 2; i++) {
-                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), lbl_80543D78, lbl_80543D78);
+                f32 k = lbl_80543D78;
+                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), k, k);
             }
             fn_80458880(lbl_8053AF80, 0, -1);
         }
@@ -127,10 +129,12 @@ extern "C" void fn_80443DAC(u8* this_) {
             tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
             ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &b, &a);
             for (i = 0; i < 6; i++) {
-                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), lbl_80543D78, *(f32*)(this_ + 0x40));
+                f32 k = lbl_80543D78;
+                fn_80402E08(*(void**)(this_ + 0x10 + i * 4), k, *(f32*)(this_ + 0x40));
             }
             for (i = 0; i < 2; i++) {
-                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), lbl_80543D78, *(f32*)(this_ + 0x40));
+                f32 k = lbl_80543D78;
+                fn_80402E08(*(void**)(this_ + 0x28 + i * 4), k, *(f32*)(this_ + 0x40));
             }
             fn_80458880(lbl_8053AF80, 0, -1);
         }
@@ -155,10 +159,12 @@ extern "C" void fn_80443DAC(u8* this_) {
         tb = ((void* (*)(void*, u32, u32, u32))(*(void***)obj)[0x3c / 4])(obj, unk, 0x54, 0x6d6d3035);
         ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &d, &c);
         for (i = 0; i < 6; i++) {
-            fn_80402E08(*(void**)(this_ + 0x10 + i * 4), lbl_80543D78, lbl_80543D78);
+            f32 k = lbl_80543D78;
+            fn_80402E08(*(void**)(this_ + 0x10 + i * 4), k, k);
         }
         for (i = 0; i < 2; i++) {
-            fn_80402E08(*(void**)(this_ + 0x28 + i * 4), lbl_80543D78, lbl_80543D78);
+            f32 k = lbl_80543D78;
+            fn_80402E08(*(void**)(this_ + 0x28 + i * 4), k, k);
         }
         *(u16*)(*(u8**)(this_ + 0x8) + 0x22) = 0;
         this_[0x4d] = 3;
@@ -366,6 +372,12 @@ extern const f32 lbl_80543D70;
 extern const f32 lbl_80543D74;
 struct MenuPane80444B68 {
     MenuPane80444B68() { vtable = lbl_804AF86C; }
+    MenuPane80444B68(MenuPane80444B68** slot, J2DScreen** screen, u64 tag, bool move) {
+        vtable = lbl_804AF86C;
+        *slot = this;
+        fn_80402F04(*slot, (*screen)->search(tag));
+        if (move) fn_80402E08(*slot, lbl_80543D78, lbl_80543D84);
+    }
     void init() { vtable = lbl_804AF86C; }
     void* vtable;
     J2DPane* pane;
