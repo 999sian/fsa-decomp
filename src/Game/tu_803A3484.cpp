@@ -54,6 +54,10 @@ extern "C" void fn_803A44D8(u8* this_) {
     }
 }
 
+static inline void setPair4c(u8* p, f32 v) {
+    *(f32*)(p + 0x50) = v;
+    *(f32*)(p + 0x4c) = v;
+}
 extern "C" void fn_803A5380(u8* this_) {
     char* base = lbl_80475F58;
     if (lbl_80529DEC[0x242] == 0) {
