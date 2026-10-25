@@ -412,6 +412,12 @@ static inline f32 ltzrSqrt(f32 x) {
     return x * y;
 }
 
+static inline u8 ltzrPointInBox(f32 x, f32 y, f32 minx, f32 miny, f32 maxx, f32 maxy) {
+    u8 inside = 0;
+    if (x >= minx && y >= miny && x < maxx && y < maxy) inside = 1;
+    return inside;
+}
+
 static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, u8& hit) {
             for (s32 j = 0; j < 8; j++) {
                 fn_8022E088(i, j, (f32*)&pt);
