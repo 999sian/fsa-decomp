@@ -28,6 +28,9 @@ extern "C" void fn_8013CC50(s32 id, void* pos, f32 scale, u16 kind, s32 a, s32 b
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
 extern u8* lbl_8053AB10;
 extern const u16 lbl_80542D38[4];
+extern const f32 lbl_80542D40;
+extern const f32 lbl_80542D44;
+extern const f32 lbl_80542D48;
 #pragma opt_propagation off
 extern "C" void fn_8036DDD0(u8* this_) {
     u32 tile = fn_80226BC4((f32*)(this_ + 0x244), *(s32*)(this_ + 4));
@@ -48,7 +51,7 @@ extern "C" void fn_8036DDD0(u8* this_) {
                 goto check;
             }
         spawn:
-            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, lbl_80542D38[*(s32*)(this_ + 0x234)], 0, 2, 0, 0, 1);
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_80542D40, lbl_80542D38[*(s32*)(this_ + 0x234)], 0, 2, 0, 0, 1);
             if (*(u32*)(this_ + 0x23c) != 0xffffffff) {
                 fn_801F0E34(this_, *(s32*)(this_ + 0x23c), 0);
             }
@@ -58,11 +61,11 @@ extern "C" void fn_8036DDD0(u8* this_) {
                 Vec tmp;
                 const f32* src = (const f32*)fn_8023E724(i);
                 JGeometry::setTVec3f(src, &tmp.x);
-                if (!(PSVECDistance((Vec*)(this_ + 0xc), &tmp) <= 57.0f && __fabsf(*(f32*)(this_ + 0xc) - tmp.x) <= 42.0f)) {
+                if (!(PSVECDistance((Vec*)(this_ + 0xc), &tmp) <= lbl_80542D44 && __fabsf(*(f32*)(this_ + 0xc) - tmp.x) <= lbl_80542D48)) {
                     continue;
                 }
             }
-            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, lbl_80542D38[*(s32*)(this_ + 0x234)], 0, 2, 0, 0, 1);
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_80542D40, lbl_80542D38[*(s32*)(this_ + 0x234)], 0, 2, 0, 0, 1);
             if (*(u32*)(this_ + 0x23c) != 0xffffffff) {
                 fn_801F0E34(this_, *(s32*)(this_ + 0x23c), 0);
             }
@@ -72,7 +75,7 @@ extern "C" void fn_8036DDD0(u8* this_) {
 tail:
     if (this_[0x230] == 1) {
         this_[0x230] = 0;
-        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, lbl_80542D38[*(s32*)(this_ + 0x234)], 0, 2, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_80542D40, lbl_80542D38[*(s32*)(this_ + 0x234)], 0, 2, 0, 0, 1);
         if (*(u32*)(this_ + 0x23c) != 0xffffffff) {
             fn_801F0E34(this_, *(s32*)(this_ + 0x23c), 0);
         }
