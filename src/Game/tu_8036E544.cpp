@@ -32,14 +32,29 @@ extern "C" void fn_8036E544(void* this_) {
 extern "C" void fn_8036E5E4(void) {
 }
 
+extern "C" void fn_8036E5E8(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x234)) {
+        *(s32*)(p + 0x234) = *(s32*)(p + 0x234) - 1;
+    }
+    if (*(s32*)(p + 0x23c)) {
+        *(s32*)(p + 0x23c) = *(s32*)(p + 0x23c) - 1;
+    }
+    if (*(s32*)(p + 0x2b0)) {
+        *(s32*)(p + 0x2b0) = *(s32*)(p + 0x2b0) - 1;
+    }
+    *(f32*)(*(char**)(p + 0x250) + 0xc) = *(f32*)(p + 0xc);
+    *(f32*)(*(char**)(p + 0x250) + 0x14) = *(f32*)(p + 0x14);
+}
+
 extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8023077C(void);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_8013CC50(s32 room, void* p, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8036F5BC(void* this_) {
-    s32 i;
-    s32 n;
     s32 off;
+    s32 n;
+    s32 i;
     f32 v[3];
 
     *(s32*)((char*)this_ + 0x230) = 0;
@@ -146,6 +161,7 @@ extern "C" void* fn_8036F880(void* this_, short how) {
     return this_;
 }
 
+static u8 lbl_8050C700[0x40];
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
