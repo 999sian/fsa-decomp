@@ -1244,6 +1244,7 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
 }
 
 extern "C" void* fn_80440928(f32 a, f32 b);
+#pragma dont_inline on
 extern "C" void fn_8043E7CC(void* a, void* b) {
     f32 pos[6];
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, pos);
