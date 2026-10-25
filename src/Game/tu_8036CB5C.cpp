@@ -67,12 +67,14 @@ inline void psw2PlayEffects(JGeometry::TVec3f& pos) {
 }
 
 inline void psw2ActivateGroup(Actor* p) {
+    u8 active;
     s32 i;
     char* member;
+    active = 1;
     member = (char*)p;
     for (i=0; i<3; i++, member+=4) {
         char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(member + 0x234));
-        *(u8*)(other + 0x250) = 1;
+        *(u8*)(other + 0x250) = active;
     }
 }
 inline bool psw2Ready(Actor* p) {
@@ -126,7 +128,7 @@ extern "C" void fn_8036CF1C(Actor* this_) {
                         *(s32*)(p + 0x258)=50;
                         *(s32*)(p + 0x25c)=4;
                         *(s32*)(p + 0x260)=0;
-                        for (s32 i=0;i<4;i++) {
+                        for (u32 i=0;(s32)i<4;i++) {
                             pos=*(JGeometry::TVec3f*)fn_8023E724(i);
                             fn_80230498(i,pos+JGeometry::TVec3f(0.0f,7.0f,0.0f),0x2e2,0xff,-0x80,-0x80,1);
                         }
