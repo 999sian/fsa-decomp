@@ -122,7 +122,7 @@ inline s32 tkraCreateItem(s32 player, JGeometry::TVec3f* pos, u32 param) {
 }
 
 inline void tkraCreateItems(char* p) {
-    u32 i;
+    int i;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f v;
         for (i=0; i<4; i++) {
