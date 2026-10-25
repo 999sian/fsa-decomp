@@ -1,6 +1,8 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 8015DE10-8015F454 (FLME). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 // from src/Game/fn_8015F19C_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
