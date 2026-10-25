@@ -151,15 +151,17 @@ struct TSysObj {
     virtual void m6();
     virtual void m7();
 };
+#pragma opt_common_subs off
 extern "C" u8* fn_803A56C4(u8* p, s16 n) {
     if (p != NULL) {
         *(void**)p = lbl_804AF820;
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
         for (s32 i = 0; i < 4; i++) {
-            void* obj = *(void**)(p + i * 0x1c + 0xa8);
+            TSlotObj* obj = *(TSlotObj**)(p + i * 0x1c + 0xa8);
             if (obj != NULL) {
-                void** vt = *(void***)((u8*)obj + 0x8);
-                ((void (*)(void*, s32))vt[0xc])(obj, 1);
+                if (obj != NULL) {
+                    obj->m10(1);
+                }
             }
         }
         if (*(s16*)(p + 0x6c) != 0) {
@@ -167,16 +169,14 @@ extern "C" u8* fn_803A56C4(u8* p, s16 n) {
             *(s16*)(p + 0x6c) = 0;
         }
         for (s32 i = 0; i < 3; i++) {
-            void* em = *(void**)(p + 0x28 + i * 4);
-            if (em != NULL) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), em);
+            if (*(void**)(p + 0x28 + i * 4) != NULL) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x28 + i * 4));
                 *(void**)(p + 0x28 + i * 4) = NULL;
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            void* em = *(void**)(p + 0x34 + i * 4);
-            if (em != NULL) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), em);
+            if (*(void**)(p + 0x34 + i * 4) != NULL) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x34 + i * 4));
                 *(void**)(p + 0x34 + i * 4) = NULL;
             }
         }
@@ -186,58 +186,27 @@ extern "C" u8* fn_803A56C4(u8* p, s16 n) {
         }
         forceDeleteAllEmitter__17JPAEmitterManagerFv(*(void**)((u8*)fn_8013C824() + 0xc));
         destroy__7JKRHeapFv(*(void**)(p + 0x100));
-        void* sub;
-        sub = *(void**)(p + 0x4);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x4) = NULL;
-        }
-        sub = *(void**)(p + 0x24);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x24) = NULL;
-        }
-        sub = *(void**)(p + 0x8);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x8) = NULL;
-        }
-        sub = *(void**)(p + 0x48);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x48) = NULL;
-        }
-        sub = *(void**)(p + 0xc);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0xc) = NULL;
-        }
-        sub = *(void**)(p + 0x10);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x10) = NULL;
-        }
-        sub = *(void**)(p + 0x14);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x14) = NULL;
-        }
-        sub = *(void**)(p + 0x18);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x18) = NULL;
-        }
-        sub = *(void**)(p + 0x1c);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x1c) = NULL;
-        }
-        sub = *(void**)(p + 0x20);
-        if (sub != NULL) {
-            ((void (*)(void*, s32))(*(void***)sub)[2])(sub, 1);
-            *(void**)(p + 0x20) = NULL;
-        }
-        ((void (*)(void*))(*(void***)*(void**)(lbl_80529DEC + 0x24))[9])(*(void**)(lbl_80529DEC + 0x24));
+        delete *(TDelObj**)(p + 0x4);
+        *(void**)(p + 0x4) = NULL;
+        delete *(TDelObj**)(p + 0x24);
+        *(void**)(p + 0x24) = NULL;
+        delete *(TDelObj**)(p + 0x8);
+        *(void**)(p + 0x8) = NULL;
+        delete *(TDelObj**)(p + 0x48);
+        *(void**)(p + 0x48) = NULL;
+        delete *(TDelObj**)(p + 0xc);
+        *(void**)(p + 0xc) = NULL;
+        delete *(TDelObj**)(p + 0x10);
+        *(void**)(p + 0x10) = NULL;
+        delete *(TDelObj**)(p + 0x14);
+        *(void**)(p + 0x14) = NULL;
+        delete *(TDelObj**)(p + 0x18);
+        *(void**)(p + 0x18) = NULL;
+        delete *(TDelObj**)(p + 0x1c);
+        *(void**)(p + 0x1c) = NULL;
+        delete *(TDelObj**)(p + 0x20);
+        *(void**)(p + 0x20) = NULL;
+        (*(TSysObj**)(lbl_80529DEC + 0x24))->m7();
         lbl_8053AD88 = NULL;
         if (n > 0) {
             operator delete(p);
@@ -245,7 +214,7 @@ extern "C" u8* fn_803A56C4(u8* p, s16 n) {
     }
     return p;
 }
-
+#pragma opt_common_subs reset
 extern "C" u32 lbl_804AF7D8[][3];
 extern "C" u8* sCurrentHeap__7JKRHeap;
 extern "C" void fn_8016FDE0(void);
