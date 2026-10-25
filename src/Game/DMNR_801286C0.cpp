@@ -20,6 +20,9 @@ extern "C" void detach__5ActorFv(void*);
 extern "C" void Actor_CreateByID(void*, s32, s32, void*, s32, s32, s32);
 extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
+inline u8 requestMessage(s32 player, s32 id, u32 room, JGeometry::TVec3<f32> pos, s32 flags) {
+    return fn_8038BD08(player, id, room, &pos, flags);
+}
 extern "C" void* sManager__8JUTVideo;
 extern "C" void* lbl_8053AF80;
 extern "C" const f32 lbl_8053CAE0;
