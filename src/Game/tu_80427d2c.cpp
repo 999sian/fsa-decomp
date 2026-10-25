@@ -2352,6 +2352,40 @@ extern "C" void fn_8042CD38() {
     __mtspr(918, 0x3d043d04);
 }
 
+typedef f32 THPQuantTab[64];
+struct THPHuffmanTab {
+    u8 quick[32];
+    u8 increment[32];
+    u8* Vij;
+    s32 maxCode[18];
+    s32 valPtr[18];
+    u8 Vij1;
+    u8 pad[11];
+};
+struct THPComponent {
+    u8 quantizationTableSelector;
+    u8 DCTableSelector;
+    u8 ACTableSelector;
+    s16 predDC;
+};
+struct THPFileInfo {
+    THPQuantTab quantTabs[3];
+    THPHuffmanTab huffmanTabs[4];
+    THPComponent components[3];
+    u16 xPixelSize;
+    u16 yPixelSize;
+    u16 MCUsPerRow;
+    u16 decompressedY;
+    u8* file;
+    u32 currByte;
+    u32 cnt;
+    u8 validHuffmanTabs;
+    u8 RST;
+    u16 nMCU;
+    u16 currMCU;
+    u8* dLC[3];
+};
+#define __THPInfo ((THPFileInfo*)lbl_8053AE74)
 #pragma opt_propagation off
 extern "C" void fn_8042CD64() {
     u32 x;
@@ -2399,40 +2433,7 @@ extern "C" void fn_8042CD64() {
 extern u8* lbl_8053AE74;
 
 // ---- THP decoder (SDK THPDec.c, functions laid out in reverse) ----
-typedef f32 THPQuantTab[64];
-struct THPHuffmanTab {
-    u8 quick[32];
-    u8 increment[32];
-    u8* Vij;
-    s32 maxCode[18];
-    s32 valPtr[18];
-    u8 Vij1;
-    u8 pad[11];
-};
-struct THPComponent {
-    u8 quantizationTableSelector;
-    u8 DCTableSelector;
-    u8 ACTableSelector;
-    s16 predDC;
-};
-struct THPFileInfo {
-    THPQuantTab quantTabs[3];
-    THPHuffmanTab huffmanTabs[4];
-    THPComponent components[3];
-    u16 xPixelSize;
-    u16 yPixelSize;
-    u16 MCUsPerRow;
-    u16 decompressedY;
-    u8* file;
-    u32 currByte;
-    u32 cnt;
-    u8 validHuffmanTabs;
-    u8 RST;
-    u16 nMCU;
-    u16 currMCU;
-    u8* dLC[3];
-};
-#define __THPInfo ((THPFileInfo*)lbl_8053AE74)
+
 #define __THPHuffmanBits lbl_8053AE38
 extern u8* lbl_8053AE38;
 
