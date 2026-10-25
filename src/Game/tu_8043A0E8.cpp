@@ -432,7 +432,8 @@ extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
     }
     piVar2 = (Fn8043ABCC_Obj*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x64660000, 0x50, 0x64663031);
     piVar2->v68(uVar1, 0);
-    u8* p = (u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x64660000, 0x50, 0x64663031);
+    s32 sz = 0x50;
+    u8* p = (u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x64660000, sz, 0x64663031);
     p[0xb0] = 1;
     u8* q = (u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x30310000, 0x5077, 0x30313031);
     q[0xb0] = 0;
@@ -745,8 +746,10 @@ extern "C" u8 fn_802D46D8(void* mgr, u32 a, u32 id, u32 b);
 extern "C" void fn_80383E2C(u32 id, char* buf);
 extern "C" void fn_80458880(void* p, u32 a, s32 b);
 extern void* lbl_8053AF80;
+static inline bool tu8043_isFlagSet(u8 flags, u8 bit) {
+    return flags & bit;
+}
 extern "C" s32 fn_8043D67C(u8* param_1, u32 param_2, u32 param_3, u32 param_4) {
-    s32 bit;
     char name[8];
     if (param_1[0x10a] != 0) {
         return 0;
@@ -757,8 +760,9 @@ extern "C" s32 fn_8043D67C(u8* param_1, u32 param_2, u32 param_3, u32 param_4) {
         }
         fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
     } else if (param_2 == 0x1b5) {
-        bit = (u8)(1 << param_3);
-        if (param_1[0xde] & bit) {
+        u8 bit = 1 << param_3;
+        bool set = param_1[0xde] & bit;
+        if (set) {
             return 0;
         }
         param_1[0xde] |= bit;
