@@ -19,6 +19,76 @@ extern float lbl_80541EEC;
 extern "C" int fn_8013CC50(int, char*, float, int, int, int, int, int, int);
 extern "C" void fn_8013CB44(void*, void*, int, int, int);
 extern float lbl_80541EBC;
+extern float lbl_80541E98;
+extern float lbl_80541E9C;
+extern float lbl_80541EBC;
+extern float lbl_80541ECC;
+extern float lbl_80541EE4;
+extern float lbl_80541EFC;
+extern float lbl_80541F10;
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_8022DCD8(s32);
+extern "C" u8 fn_8022F478(s32);
+extern "C" u8 fn_80236B50(s32);
+extern "C" u8 fn_8022D534(s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
+extern "C" void fn_8032F148(void* p1, s32 idx, u16* outAng, s32* outQuad, f32* outDist, s32* outFlag, s32 slot) {
+    char* a = (char*)fn_801F666C(fn_801F856C(), idx);
+    f32 dist = lbl_80541E98;
+    s32 result = -1;
+    u16 ang = 0;
+    s32 mode;
+    s32 room;
+    f32 dx;
+    f32 dy;
+    f32 len;
+
+    if (a == 0) {
+        if (outQuad != 0) *outQuad = -1;
+        if (outFlag != 0) *outFlag = -1;
+        return;
+    }
+    mode = 0;
+    if (fn_8023DE58(slot) < 8 && *(s32*)(a + 4) == 8) {
+        mode = 2;
+    } else {
+        room = *(s32*)(a + 4);
+        if (room == fn_8023DE58(slot)) {
+            mode = 1;
+        }
+    }
+    if (fn_8023F264(slot) && !fn_8022DCD8(slot) && mode != 0 && !fn_8022F478(slot) && !fn_80236B50(slot) && !fn_8022D534(slot)) {
+        if (mode == 1) {
+            dx = *(f32*)(a + 0xc) - ((f32*)fn_8023E724(slot))[0];
+            dy = *(f32*)(a + 0x10) - ((f32*)fn_8023E724(slot))[1];
+        } else {
+            u32 tmp[4];
+            s32 q = fn_8023DE58(slot);
+            char* m = (char*)fn_802D6A9C();
+            s32 n = fn_8023DE58(slot);
+            if (q < 8) {
+                ((u32*)tmp)[0] = ((u32*)(m + 0xcc))[0];
+            }
+            dx = *(f32*)(a + 0xc) - (((f32*)fn_8023E724(slot))[0] - *(f32*)&tmp[0]);
+            dy = *(f32*)(a + 0x10) - (((f32*)fn_8023E724(slot))[1] - *(f32*)&tmp[1]);
+        }
+        len = std::sqrtf(dx * dx + dy * dy);
+        dist = len;
+        ang = (u16)(s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
+        result = slot;
+    }
+    if (result >= 0) {
+        if (outAng != 0) *outAng = ang;
+        if (outQuad != 0) *outQuad = ClassifyBamAngleToQuadrant(ang);
+        if (outDist != 0) *outDist = dist;
+        if (outFlag != 0) *outFlag = result;
+    } else {
+        if (outQuad != 0) *outQuad = -1;
+        if (outFlag != 0) *outFlag = -1;
+    }
+}
+
 extern "C" void fn_8032F4A8(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern float lbl_80541E9C;
@@ -462,9 +532,10 @@ extern "C" void fn_80333148(char* this_) {
     extern void fn_8023061C(int a);
     extern unsigned char fn_8022F9E4(int idx, int a0, unsigned char a1, unsigned char a2);
 
-    u16 local_8 = 0;
-    s32 local_18;
     s32 idx;
+    s32 local_18;
+    u16 local_8 = 0;
+    char* obj = this_;
 
     *(float*)(this_ + 0x60) = -7.0f;
     *(float*)(this_ + 0x64) = -7.0f;
@@ -494,128 +565,128 @@ extern "C" void fn_80333148(char* this_) {
     this_[0x2a7] = (*(u32*)(this_ + 0x90) >> 14) & 1;
     this_[0x2a8] = 0;
     if ((*(u8 (**)(char*))(*(char**)this_ + 0x34))(this_) == 1) {
-        this_[0x2a7] = 0;
+        obj[0x2a7] = 0;
     }
-    this_[0x2a4] = 1;
-    this_[0x2a5] = 1;
-    *(s32*)(this_ + 0x290) = *(u32*)(this_ + 0x90) & 0xf;
-    *(s32*)(this_ + 0x108) = 1000;
-    *(s32*)(this_ + 0x264) = 0;
-    *(s32*)(this_ + 0x26c) = 0;
-    *(float*)(this_ + 0x2d0) = *(float*)(this_ + 0xc);
-    *(float*)(this_ + 0x2d4) = *(float*)(this_ + 0x10);
-    *(float*)(this_ + 0x2d8) = *(float*)(this_ + 0x14);
+    obj[0x2a4] = 1;
+    obj[0x2a5] = 1;
+    *(s32*)(obj + 0x290) = *(u32*)(obj + 0x90) & 0xf;
+    *(s32*)(obj + 0x108) = 1000;
+    *(s32*)(obj + 0x264) = 0;
+    *(s32*)(obj + 0x26c) = 0;
+    *(float*)(obj + 0x2d0) = *(float*)(obj + 0xc);
+    *(float*)(obj + 0x2d4) = *(float*)(obj + 0x10);
+    *(float*)(obj + 0x2d8) = *(float*)(obj + 0x14);
     *(u32*)(lbl_8053AAF8 + 0xb4) = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
     {
         u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-        *(s16*)(this_ + 0x29c) = 65536.0f * (*(float*)&a - 1.0f);
+        *(s16*)(obj + 0x29c) = 65536.0f * (*(float*)&a - 1.0f);
     }
-    *(s16*)(this_ + 0x29e) = 0;
-    this_[0x288] = 0xff;
-    *(float*)(this_ + 0x2b0) = 0.0f;
-    *(s32*)(this_ + 0x2ac) = 0;
-    *(s32*)(this_ + 0x298) = 0;
-    *(s32*)(this_ + 0x270) = 0;
-    *(s32*)(this_ + 0x274) = 0;
-    *(s32*)(this_ + 0x278) = 0;
-    *(s32*)(this_ + 0x27c) = 50;
-    *(s32*)(this_ + 0x280) = 0;
-    *(Vec*)(this_ + 0x2dc) = *(Vec*)(this_ + 0xc);
-    *(s32*)(this_ + 0x294) = *(s32*)(this_ + 4);
-    *(s32*)(this_ + 0x268) = 10;
-    *(s32*)(this_ + 0x2f4) = 0;
-    *(s32*)(this_ + 0x2f8) = 0;
-    *(s32*)(this_ + 0x2fc) = 0;
-    *(s32*)(this_ + 0x300) = 0;
-    this_[0x2a0] = 1;
-    this_[0x2a9] = 1;
-    *(float*)(this_ + 0x2b4) = 0.3f;
-    *(s32*)(this_ + 0x28c) = 1;
+    *(s16*)(obj + 0x29e) = 0;
+    obj[0x288] = (u8)0xff;
+    *(float*)(obj + 0x2b0) = 0.0f;
+    *(s32*)(obj + 0x2ac) = 0;
+    *(s32*)(obj + 0x298) = 0;
+    *(s32*)(obj + 0x270) = 0;
+    *(s32*)(obj + 0x274) = 0;
+    *(s32*)(obj + 0x278) = 0;
+    *(s32*)(obj + 0x27c) = 50;
+    *(s32*)(obj + 0x280) = 0;
+    *(Vec*)(obj + 0x2dc) = *(Vec*)(obj + 0xc);
+    *(s32*)(obj + 0x294) = *(s32*)(obj + 4);
+    *(s32*)(obj + 0x268) = 10;
+    *(s32*)(obj + 0x2f4) = 0;
+    *(s32*)(obj + 0x2f8) = 0;
+    *(s32*)(obj + 0x2fc) = 0;
+    *(s32*)(obj + 0x300) = 0;
+    obj[0x2a0] = 1;
+    obj[0x2a9] = 1;
+    *(float*)(obj + 0x2b4) = 0.3f;
+    *(s32*)(obj + 0x28c) = 1;
     if (lbl_8053AAF8[0x7f] == 0) {
-        *(s32*)(this_ + 0x28c) = 4;
+        *(s32*)(obj + 0x28c) = 4;
     }
     {
         s32 n = fn_80138A30(lbl_8053AAF8);
         s32 shift = 0;
         for (; n > 0; n--) {
             if (((lbl_8053AAF8[0x83] >> shift) & 3) == 2) {
-                this_[0x2a0] = 0;
+                obj[0x2a0] = 0;
                 break;
             }
             shift += 2;
         }
     }
-    this_[0x2a6] = 0;
-    *(float*)(this_ + 0x2b8) = 0.0f;
-    *(float*)(this_ + 0x2bc) = 0.0f;
-    *(float*)(this_ + 0x2c0) = 0.0f;
-    *(float*)(this_ + 0x3c) = 0.0f;
-    *(float*)(this_ + 0x40) = 0.0f;
-    *(float*)(this_ + 0x44) = 0.0f;
-    *(float*)(this_ + 0x2cc) = 0.0f;
-    *(float*)(this_ + 0x2c8) = 0.0f;
-    *(float*)(this_ + 0x2c4) = 0.0f;
-    *(float*)(this_ + 0x184) = 20.0f;
-    *(s32*)(this_ + 0x284) = 0;
-    *(Vec*)(this_ + 0x2e8) = *(Vec*)(this_ + 0xc);
-    *(float*)(this_ + 0x2f0) = *(float*)(this_ + 0x14);
+    obj[0x2a6] = 0;
+    *(float*)(obj + 0x2b8) = 0.0f;
+    *(float*)(obj + 0x2bc) = 0.0f;
+    *(float*)(obj + 0x2c0) = 0.0f;
+    *(float*)(obj + 0x3c) = 0.0f;
+    *(float*)(obj + 0x40) = 0.0f;
+    *(float*)(obj + 0x44) = 0.0f;
+    *(float*)(obj + 0x2cc) = 0.0f;
+    *(float*)(obj + 0x2c8) = 0.0f;
+    *(float*)(obj + 0x2c4) = 0.0f;
+    *(float*)(obj + 0x184) = 20.0f;
+    *(s32*)(obj + 0x284) = 0;
+    *(Vec*)(obj + 0x2e8) = *(Vec*)(obj + 0xc);
+    *(float*)(obj + 0x2f0) = *(float*)(obj + 0x14);
 
-    switch (*(s32*)(this_ + 0x290)) {
+    switch (*(s32*)(obj + 0x290)) {
     case 1: {
-        fn_801EEC98(this_, *(void**)(this_ + 0x198), &local_8, 0, 0, &local_18, 0, *(s32*)(this_ + 0x28c));
-        *(s32*)(this_ + 0x240) = 10;
+        fn_801EEC98(obj, *(void**)(obj + 0x198), &local_8, 0, 0, &local_18, 0, *(s32*)(obj + 0x28c));
+        *(s32*)(obj + 0x240) = 10;
         if (local_18 == -1) {
             char* m = fn_802D6A9C();
-            float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(this_ + 0xc);
-            float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(this_ + 0x10);
+            float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(obj + 0xc);
+            float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(obj + 0x10);
             local_8 = JMath::atanTable_.atan2_(y, x) * 10430.378f;
-            *(float*)(this_ + 0x2b8) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].first;
-            *(float*)(this_ + 0x2bc) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].second;
-            *(s32*)(this_ + 0x98) = (*(float*)(this_ + 0x2b8) >= 0.0f) ? 1 : 0;
-            this_[0x2a6] = 1;
-            *(s32*)(this_ + 0x230) = 7;
+            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].first;
+            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].second;
+            *(s32*)(obj + 0x98) = (*(float*)(obj + 0x2b8) >= 0.0f) ? 1 : 0;
+            obj[0x2a6] = 1;
+            *(s32*)(obj + 0x230) = 7;
         } else {
-            *(s32*)(this_ + 0x290) = 1;
-            *(s32*)(this_ + 0x240) = 1000;
-            *(s32*)(this_ + 0x230) = 6;
+            *(s32*)(obj + 0x290) = 1;
+            *(s32*)(obj + 0x240) = 1000;
+            *(s32*)(obj + 0x230) = 6;
         }
         break;
     }
     case 2:
     case 3:
     case 8:
-        *(s32*)(this_ + 0x230) = 3;
+        *(s32*)(obj + 0x230) = 3;
         break;
     case 4:
-        *(s32*)(this_ + 0xb8) = 2;
-        *(s32*)(this_ + 0x290) = 0;
-        fn_8023061C(*(s32*)(this_ + 0x25c));
-        idx = *(s32*)(this_ + 0x25c);
+        *(s32*)(obj + 0xb8) = 2;
+        *(s32*)(obj + 0x290) = 0;
+        fn_8023061C(*(s32*)(obj + 0x25c));
+        idx = *(s32*)(obj + 0x25c);
     case 5:
-        if (fn_8022F9E4(idx, *(s32*)(this_ + 0x198), 0, 0) == 1) {
-            *(s32*)(this_ + 0x230) = 3;
+        if (fn_8022F9E4(idx, *(s32*)(obj + 0x198), 0, 0) == 1) {
+            *(s32*)(obj + 0x230) = 3;
         } else {
-            *(s32*)(this_ + 0x230) = 2;
+            *(s32*)(obj + 0x230) = 2;
         }
         break;
     case 6:
     case 7:
     default:
-        *(s32*)(this_ + 0x230) = 0;
-        *(s32*)(this_ + 0xb8) = 2;
-        if (*(s32*)(this_ + 0x290) == 7) {
-            *(s32*)(this_ + 0x290) = 6;
-            *(s32*)(this_ + 0x230) = 1;
-            if (this_[0x2a2] == 1) {
+        *(s32*)(obj + 0x230) = 0;
+        *(s32*)(obj + 0xb8) = 2;
+        if (*(s32*)(obj + 0x290) == 7) {
+            *(s32*)(obj + 0x290) = 6;
+            *(s32*)(obj + 0x230) = 1;
+            if (obj[0x2a2] == 1) {
                 u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f);
                 *(u32*)(lbl_8053AAF8 + 0xb4) = a;
                 a = (a >> 9) | 0x3f800000;
-                *(s32*)(this_ + 0x240) = (s32)(200.0f * (*(float*)&a - 1.0f)) + 0xc8;
+                *(s32*)(obj + 0x240) = (s32)(200.0f * (*(float*)&a - 1.0f)) + 0xc8;
             } else {
                 u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f);
                 *(u32*)(lbl_8053AAF8 + 0xb4) = a;
                 a = (a >> 9) | 0x3f800000;
-                *(s32*)(this_ + 0x240) = (s32)(100.0f * (*(float*)&a - 1.0f)) + 0x64;
+                *(s32*)(obj + 0x240) = (s32)(100.0f * (*(float*)&a - 1.0f)) + 0x64;
             }
         }
         break;
