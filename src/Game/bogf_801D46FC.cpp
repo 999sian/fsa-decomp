@@ -181,6 +181,59 @@ skip:
     return;
 }
 
+extern "C" s32 fn_80458FF0(void* mgr, s32 handle, s32 a, s32 b);
+extern "C" void fn_801D5390(u8* this_) {
+    s32 state = *(s32*)(this_ + 0x248);
+    if ((u32)state > 0x1a) {
+        return;
+    }
+    switch (state) {
+    case 0:
+        if (fn_801CD228(*(s32*)(this_ + 0x4))) {
+            fn_801F856C();
+            if (fn_801F68E0() != 0) {
+                fn_801D5D84(this_, 1);
+            }
+        }
+        break;
+    case 1:
+        if (*(f32*)(this_ + 0x14) <= lbl_8053F0EC) {
+            *(f32*)(this_ + 0x14) = lbl_8053F0EC;
+            fn_801D5D84(this_, 2);
+        }
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x24c) >= 0xb4) {
+            fn_801D5D84(this_, 3);
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x24c) >= 0x3c) {
+            fn_801F6884(fn_801F856C());
+            fn_80458FF0(lbl_8053AF80, 0x100004, 1, 0);
+            fn_801D5D84(this_, 4);
+        }
+        break;
+    case 4:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            s32 count = 0;
+            s32 i;
+            s32 out[4];
+            for (i = 0; i < 4; i++) {
+                if (i != *(s32*)(this_ + 0x5b0) && this_[0x2a8 + i * 0x18] == 0 && fn_801D0B44(this_, i)) {
+                    out[count++] = i;
+                }
+            }
+            if (count > 0) {
+                s32 pick = out[fn_801CD664(count)];
+                *(s32*)(this_ + 0x5b0) = pick;
+                fn_801D5D84(this_, 5);
+            }
+        }
+        break;
+    }
+}
+
 extern "C" s32 fn_801D652C(void) {
     return fn_80458F9C(lbl_8053AF80, 0x3c);
 }
@@ -686,8 +739,8 @@ extern "C" void fn_801D4C70(u8* this_) {
     if (this_[0x5d1] != 0) {
         s16 ang = *(s16*)(this_ + 0x5d2);
         f32 k = lbl_8053F0E4;
-        f32 c = JMASCos(ang);
-        f32 s = JMASSin(ang);
+        f32 s = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        f32 c = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
         *(f32*)(this_ + 0x3c) = k * s;
         *(f32*)(this_ + 0x40) = k * c;
         return;
