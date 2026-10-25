@@ -10,7 +10,7 @@ extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_80138B7C(void* game);
 extern "C" void fn_801AB6A8(void* this_);
-extern "C" void fn_801AAF44(void* this_);
+extern "C" void fn_801AAF44(char* this_);
 extern void* lbl_804A307C[];
 extern char* lbl_8053AAF8;
 extern s32 lbl_8053ABD8;
