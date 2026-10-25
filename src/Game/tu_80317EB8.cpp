@@ -7,6 +7,28 @@ struct Tu80317Vec2 { f32 x, y; };
 struct Tu80317Vec3 { Tu80317Vec2 xy; f32 z; };
 
 
+extern "C" void fn_80319658(Actor*);
+extern "C" void fn_803190E0(Actor*);
+extern "C" void fn_80318D74(char*);
+extern "C" void fn_80318B84(Actor*);
+extern "C" void fn_803187F4(Actor*);
+extern "C" void fn_803185A8(Actor*);
+extern "C" void fn_8031825C(Actor*);
+extern "C" void fn_80317F18(Actor*);
+extern "C" void fn_803193B4(Actor*);
+struct StateMethodData80317 { s32 adjustment; s32 offset; void* function; };
+typedef void (Actor::*StateMethod80317)();
+union StateMethodConstant80317 { StateMethodData80317 raw; StateMethod80317 method; };
+StateMethodConstant80317 lbl_804AAE68 = {{0, -1, (void*)fn_80319658}};
+StateMethodConstant80317 stateMethod80317_1 = {{0, -1, (void*)fn_803190E0}};
+StateMethodConstant80317 stateMethod80317_2 = {{0, -1, (void*)fn_80318D74}};
+StateMethodConstant80317 stateMethod80317_3 = {{0, -1, (void*)fn_80318B84}};
+StateMethodConstant80317 stateMethod80317_4 = {{0, -1, (void*)fn_803187F4}};
+StateMethodConstant80317 stateMethod80317_5 = {{0, -1, (void*)fn_803185A8}};
+StateMethodConstant80317 stateMethod80317_6 = {{0, -1, (void*)fn_8031825C}};
+StateMethodConstant80317 stateMethod80317_7 = {{0, -1, (void*)fn_80317F18}};
+StateMethodConstant80317 stateMethod80317_8 = {{0, -1, (void*)fn_803193B4}};
+StateMethod80317 lbl_804AAED4[9] = {lbl_804AAE68.method, stateMethod80317_1.method, stateMethod80317_2.method, stateMethod80317_3.method, stateMethod80317_4.method, stateMethod80317_5.method, stateMethod80317_6.method, stateMethod80317_7.method, stateMethod80317_8.method};
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, s32, char*, u32, s32, s32);
