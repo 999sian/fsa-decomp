@@ -29,12 +29,13 @@ extern char lbl_8045E878[];
 extern "C" char lbl_8053B868;
 static inline bool findModuleAddress(u32 addr, u32* id, u32* index, u32* offset, char** name)
 {
+    u32 size;
     if (addr == 0) return false;
     for (u32* module = *(u32**)0x800030c8; module; module = (u32*)module[1]) {
         u32* section = (u32*)module[4];
         u32 count = module[3];
-        for (u32 i = 0; i < count; i++, section += 2) {
-            u32 size = section[1];
+        for (u32 i = 0; i < count; section += 2, i++) {
+            size = section[1];
             if (size) {
                 u32 start = section[0] & ~1;
                 if (start <= addr && addr < start + size) {
@@ -566,7 +567,7 @@ extern "C" void fn_8008B214(JUTException* this_, u32* param_2)
             if (addr >= 0x80000000 && addr <= 0x82ffffff) {
                 found = true;
                 lbl_8053A914->print_f(base + 0x3e8, i, addr);
-                bool ok = showExceptionAddress(addr);
+                bool ok = showExceptionAddress(addr, base);
                 if (!ok) lbl_8053A914->print(base + 0x3f8);
                 JUTConsoleManager::sManager->drawDirect(true);
                 fn_8008C308(this_->mPrintWaitTime1);
