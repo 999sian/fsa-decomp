@@ -1360,7 +1360,14 @@ extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
     *(FsaTevColorS10*)out = def;
 }
 
-
+extern "C" TevKColorWord fn_800CB3D0(const J3DMaterialFactory* self, int idx, int no) {
+    GXColor def = *(GXColor*)&lbl_8053BC78;
+    J3DMaterialInitData* data = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (data->mTevKColorIndex[no] != 0xffff) {
+        return TevKColorWord((*(u32**)((u8*)self + 0x48))[data->mTevKColorIndex[no]]);
+    }
+    return TevKColorWord(*(u32*)&def);
+}
 
 extern "C" u8 fn_800CB428(u8* p, s32 idx) {
     u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
