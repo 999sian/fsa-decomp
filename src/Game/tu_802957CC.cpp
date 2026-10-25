@@ -1988,6 +1988,16 @@ extern "C" void* fn_8029B484(void* p, s16 flag) {
     return p;
 }
 
-extern "C" void fn_8029B538(void) {}
-
-#pragma dummy_never_used
+#pragma merge_bss off
+extern "C" void __sinit_tu_802957CC_cpp(void) {
+    static JASMemPool_MultiThreaded<JASTrack::TChannelMgr> pool0;
+    static JASMemPool_MultiThreaded<JASTrack> pool1;
+    static JASMemPool_MultiThreaded<JASChannel> pool2;
+    static JASMemPool<JASPoolObj3_FSA> pool3;
+    static JASMemPool<JASPoolObj4_FSA> pool4;
+    static JASMemPool<JAIStream> pool5;
+    static JASMemPool<JAISoundChild> pool6;
+    static JASMemPool<JAISeq> pool7;
+    static JASMemPool<JAISe> pool8;
+}
+#pragma merge_bss reset
