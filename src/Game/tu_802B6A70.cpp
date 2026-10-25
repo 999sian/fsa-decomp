@@ -316,4 +316,4 @@ extern "C" void fn_802B7568(u8* p) {
         *(u8*)(p + 0x11c) = 0;
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
