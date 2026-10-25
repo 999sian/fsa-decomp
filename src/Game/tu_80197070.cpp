@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80197070-8019D12C (unknown). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "std/math.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 
@@ -349,7 +350,8 @@ extern "C" void* fn_8019C7EC(char* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8019C8A4(u8* this_) {
+extern "C" void fn_8019C8A4(u8* arg) {
+    u8* this_ = arg;
     lbl_8053ABA8 = 0;
     *(f32*)(this_ + 0x60) = lbl_8053E434;
     *(f32*)(this_ + 0x64) = lbl_8053E434;
@@ -413,19 +415,7 @@ extern "C" void fn_8019C8A4(u8* this_) {
     *(f32*)(this_ + 0x298) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x29c) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2a0) = *(f32*)(this_ + 0x14);
-    *(s32*)(this_ + 0x304) = 0;
-    *(s32*)(this_ + 0x308) = 0;
-    *(s32*)(this_ + 0x30c) = 0;
-    *(s32*)(this_ + 0x310) = 0;
-    *(s32*)(this_ + 0x314) = 0;
-    *(s32*)(this_ + 0x318) = 0;
-    *(s32*)(this_ + 0x31c) = 0;
-    *(s32*)(this_ + 0x320) = 0;
-    *(s32*)(this_ + 0x324) = 0;
-    *(s32*)(this_ + 0x328) = 0;
-    *(s32*)(this_ + 0x32c) = 0;
-    *(s32*)(this_ + 0x330) = 0;
-    for (s32 i = 12; i < 13; i++) {
+    for (int i = 0; i < 13; ++i) {
         *(s32*)(this_ + 0x304 + i * 4) = 0;
     }
     *(s32*)(this_ + 0xb0) = 0xa040004;
@@ -444,12 +434,14 @@ extern "C" void fn_8019C8A4(u8* this_) {
         {
             s32 id = Actor_CreateByID(fn_801F856C(), 0x4c494d54, *(s32*)(this_ + 4), this_ + 0xc, 0, -1, -1);
             *(s32*)(this_ + 0x260) = id;
+            id = *(s32*)(this_ + 0x260);
             if (id >= 0) {
                 u8* a = (u8*)fn_801F666C(fn_801F856C(), id);
                 if (a != 0) {
+                    s32 count = *(s32*)(this_ + 0x258);
                     *(s32*)(a + 0x250) = *(s32*)(this_ + 0x198);
                     *(f32*)(a + 0x254) = lbl_8053E3E8;
-                    *(s32*)(a + 0x24c) = *(s32*)(this_ + 0x258);
+                    *(s32*)(a + 0x24c) = count;
                 }
             }
         }
