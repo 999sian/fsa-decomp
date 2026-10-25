@@ -61,7 +61,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
     return in;
 }
 
-inline bool pointInRect(Vec2f p, const HitRect* r) {
+inline bool pointInRect(const Vec2f& p, const HitRect* r) {
     bool in = false;
     if (p.x >= r->x0 && p.y >= r->y0 && p.x < r->x1 && p.y < r->y1) {
         in = true;
