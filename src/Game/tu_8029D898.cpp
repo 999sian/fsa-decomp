@@ -1279,17 +1279,3 @@ extern "C" void fn_802A3E94(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-// Shared tail of the fn_802A02A8 tile cases: re-tile pos with value, then refresh.
-static inline s32 fn_802A02A8_Refresh(JGeometry::TVec2<f32>* pos, u32 room, u16 value, s32 p3) {
-    JGeometry::TVec2<f32> t = *pos;
-    void* mgr = lbl_8053AC98;
-    *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
-    fn_802D782C(fn_802D6A9C(), 1);
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)mgr + 0x20), value);
-    s32 idx = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((u8*)mgr + 0x20));
-    if (idx != -1) {
-        fn_802D7D00(fn_802D6A9C(), room, idx, 1);
-        fn_80230FD0(p3, 0x20007);
-    }
-    return idx;
-}
