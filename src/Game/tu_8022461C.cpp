@@ -17,7 +17,7 @@ extern char lbl_80529DEC[];
 // with its arguments unchanged and returns its result. Sibling of
 // fn_801CE800's fn_802265FC (extab_801ce800.s) - both sit in the same
 // 0x80226xxx cluster.
-extern "C" s32 fn_802260DC(void* this_);
+extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 kind);
 extern "C" BOOL fn_802252F4(f32* pos, s32 room);
 
 extern "C" s32 fn_802255F4(f32* pos, s32 room) {
@@ -77,8 +77,8 @@ extern "C" BOOL fn_80225614(f32* pos, u32 room) {
     return FALSE;
 }
 
-extern "C" s32 fn_802265DC(void* this_) {
-    return fn_802260DC(this_);
+extern "C" s32 fn_802265DC(f32* pos, s32 room, u8 kind) {
+    return fn_802260DC(pos, room, kind);
 }
 
 extern "C" u32 fn_802265FC(f32* pos, s32 room) {
@@ -430,16 +430,21 @@ extern "C" BOOL fn_802252F4(f32* pos, s32 room) {
             u8* b = fn_802D6A9C() + 0x10000;
             if (b[room + 0x31df] != 0) {
                 const u16* p = table + 56;
-                if (tile == p[0]) return TRUE;
-                if (tile == *++p) return TRUE;
-                if (tile == *++p) return TRUE;
-                if (tile == *++p) return TRUE;
-                if (tile == p[1]) return TRUE;
+                if (tile == *p) return TRUE;
+                p++;
+                if (tile == *p) return TRUE;
+                p++;
+                if (tile == *p) return TRUE;
+                p++;
+                if (tile == *p) return TRUE;
+                p++;
+                if (tile == *p) return TRUE;
             } else {
                 const u16* p = table + 42;
                 for (i = 0; i < 13; i++, p++) {
                     if (tile == *p) return TRUE;
                 }
+                return FALSE;
             }
         }
         return FALSE;
@@ -528,7 +533,7 @@ extern "C" u32 fn_80226BC4(f32* pos, s32 room) {
 
 extern "C" u16 fn_80226850(f32* pos, u32 room) {
     u8* g = fn_802D6A9C();
-    const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+    TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
     u8 in = 0;
     if (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1) {
         in = 1;
@@ -582,8 +587,8 @@ extern "C" void fn_80226CA8(s32 idx, s32 room, JGeometry::TVec3<f32>* out) {
     JGeometry::TVec3<f32> v(*out);
     u8* g = fn_802D6A9C();
     TileRect* src = (TileRect*)((room < 8) ? g + 0xcc : g + 0xdc);
-    s32 iy = ((idx >> 1) & 0x100) + (idx & 0xf0);
     s32 ix = (idx & 0x100) + (idx & 0xf) * 16;
+    s32 iy = ((idx >> 1) & 0x100) + (idx & 0xf0);
     TileRect r = *src;
     v.x = (f32)ix + r.x0;
     v.y = (f32)iy + r.y0;
@@ -645,6 +650,7 @@ extern "C" u16 fn_8022461C(f32* pos, u32 room) {
     f32 x0 = r.x0;
     u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
     u16 tile;
+    u32 rm = room;
     if (!in) {
         tile = 0xf;
     } else {
@@ -654,11 +660,11 @@ extern "C" u16 fn_8022461C(f32* pos, u32 room) {
         else if (x >= 0x200) x = 0x1ff;
         if (y < 0) y = 0;
         else if (y >= 0x200) y = 0x1ff;
-        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), rm,
             ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
     }
     u16 kind = lbl_8046CB88[tile];
-    if (fn_802D6A9C()[room + 0x131df] != 0) {
+    if (fn_802D6A9C()[rm + 0x131df] != 0) {
         if (kind == 0) {
             return 2;
         } else if (kind == 0x61) {
