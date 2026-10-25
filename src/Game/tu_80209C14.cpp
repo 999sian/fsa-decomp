@@ -692,6 +692,8 @@ extern "C" void fn_8020AE2C(void* param_1) {
     *(f32*)((u8*)param_1 + 0x2c4) = f3 - f2;
 }
 
+#endif
+
 extern "C" void fn_801D0ED0(u8* this_);
 extern "C" void fn_801D2608(u8* p, void* data, s32 n);
 extern "C" void fn_801D22DC(u8* p, s32 a, s32 b, s32 c);
@@ -768,5 +770,3 @@ extern "C" void fn_8020AE50(u8* this_) {
     *(f32*)(this_ + 0x254) = 0.0f;
     *(f32*)(this_ + 0x258) = 0.0f;
 }
-
-#endif
