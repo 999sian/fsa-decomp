@@ -81,16 +81,16 @@ extern "C" const f32 lbl_80541584;
 static inline void WarpTileQuad802F(u16 tile, f32 x, f32 y, f32 top, f32 bottom) {
     u16 index=tile&0xfff;
     GXWGFifo.f32=x+top;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
-    GXWGFifo.f32=x+lbl_80541510+top;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
-    GXWGFifo.f32=x+lbl_80541510+bottom;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
-    GXWGFifo.f32=x+bottom;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
+    GXWGFifo.f32=lbl_80541510+x+top;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
+    GXWGFifo.f32=lbl_80541510+x+bottom;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
+    GXWGFifo.f32=x+bottom;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
 }
 static inline void PlainTileQuad802F(u16 tile, f32 x, f32 y) {
     u16 index=tile&0xfff;
     GXWGFifo.f32=x;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
-    GXWGFifo.f32=x+lbl_80541510;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
-    GXWGFifo.f32=x+lbl_80541510;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
-    GXWGFifo.f32=x;GXWGFifo.f32=y+lbl_80541510;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
+    GXWGFifo.f32=lbl_80541510+x;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
+    GXWGFifo.f32=lbl_80541510+x;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
+    GXWGFifo.f32=x;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
 }
 
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
@@ -1852,6 +1852,138 @@ extern "C" void fn_802FA3FC(void* mgr) {
         }
     }
     __dt__10JUTTextureFv(tex, -1);
+}
+
+extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 paletteFlag, u8 shade, u8 alpha, s32* wave) {
+    GXTexObj texture;
+    s32 counts[16];
+    GXTlutObj tluts[16];
+    f32 shifts[3];
+    if (scrollX>0x180) scrollX-=0x200;
+    if (scrollY>0x180) scrollY-=0x200;
+    f32 ox=-scrollX;
+    f32 oy=-scrollY;
+    fn_8013B1E8(lbl_8053AB10);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS,GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0,GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0,GX_VA_POS,GX_POS_XYZ,GX_F32,0);
+    GXSetVtxAttrFmt(GX_VTXFMT0,GX_VA_TEX0,GX_TEX_ST,GX_F32,0);
+    GXSetArray(GX_VA_TEX0,*(void**)(self+0x110),8);
+    if (shade==255 && alpha==255) {
+        GXSetTevColor(GX_TEVREG1,lbl_805414F0);
+        GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,GX_TEXMAP0,GX_COLOR_NULL);
+        GXSetTevColorIn(GX_TEVSTAGE0,GX_CC_ZERO,GX_CC_ZERO,GX_CC_ZERO,GX_CC_TEXC);
+        GXSetTevAlphaIn(GX_TEVSTAGE0,(GXTevAlphaArg)4,(GXTevAlphaArg)1,(GXTevAlphaArg)6,GX_CA_ZERO);
+        GXSetTevAlphaOp(GX_TEVSTAGE0,(GXTevOp)14,GX_TB_ZERO,GX_CS_SCALE_1,GX_TRUE,GX_TEVPREV);
+    } else {
+        JUtility::TColor color(lbl_80543F50);
+        color.r=shade;color.g=shade;color.b=shade;color.a=alpha;
+        GXSetTevColor(GX_TEVREG1,color);
+        GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,GX_TEXMAP0,GX_COLOR_NULL);
+        GXSetTevColorIn(GX_TEVSTAGE0,GX_CC_ZERO,(GXTevColorArg)8,(GXTevColorArg)9,GX_CC_ZERO);
+        GXSetTevAlphaIn(GX_TEVSTAGE0,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO);
+        GXSetTevOrder(GX_TEVSTAGE1,GX_TEXCOORD_NULL,GX_TEXMAP_NULL,GX_COLOR_NULL);
+        GXSetTevColorIn(GX_TEVSTAGE1,GX_CC_ZERO,(GXTevColorArg)0,(GXTevColorArg)2,GX_CC_ZERO);
+        GXSetTevAlphaIn(GX_TEVSTAGE1,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO,(GXTevAlphaArg)1);
+        GXSetTevColorOp(GX_TEVSTAGE1,GX_TEV_ADD,GX_TB_ZERO,GX_CS_SCALE_1,GX_TRUE,GX_TEVPREV);
+        GXSetTevAlphaOp(GX_TEVSTAGE1,GX_TEV_ADD,GX_TB_ZERO,GX_CS_SCALE_1,GX_TRUE,GX_TEVPREV);
+        GXSetTevSwapMode(GX_TEVSTAGE1,GX_TEV_SWAP0,GX_TEV_SWAP0);
+        GXSetTevDirect(GX_TEVSTAGE1);
+        GXSetNumTevStages(2);
+    }
+    GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_SRCALPHA,GX_LO_INV);
+    GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
+    GXSetCullMode(GX_CULL_NONE);
+    u16* map=((u16**)(self+0x48))[plane];
+    s32 palette;
+    if ((plane&7)!=0 || paletteFlag!=0) palette=1;
+    else palette=2;
+    for (s32 i=0;i<16;i++) {
+        GXInitTlutObj(&tluts[i],((u8**)(self+0x18))[palette]+i*0x20,GX_TL_RGB5A3,16);
+        GXLoadTlut(&tluts[i],lbl_8046FA30[i]);
+    }
+    for (s32 i=0;i<16;i++) counts[i]=0;
+    for (s32 sy=0;sy<2;sy++) {
+        for (s32 sx=0;sx<2;sx++) {
+            for (s32 row=0;row<16;row++) {
+                s32 py=(sy*32+row*2)*8-scrollY;
+                if (py<=-16 || py>=160) continue;
+                for (s32 col=0;col<16;col++) {
+                    s32 px=(sx*32+col*2)*8-scrollX;
+                    if (wave || (px>-16 && px<240)) {
+                        u16 tile=map[((sy*2+sx)*16+row)*16+col];
+                        if (tile) {
+                            u16* list=*(u16**)(self+0x24);
+                            counts[(list[tile*4]>>12)&15]++;
+                            counts[(list[tile*4+1]>>12)&15]++;
+                            counts[(list[tile*4+2]>>12)&15]++;
+                            counts[(list[tile*4+3]>>12)&15]++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for (s32 pal=0;pal<16;pal++) {
+        if (counts[pal]<=0) continue;
+        GXInitTexObjCI(&texture,*(void**)(self+8),128,512,GX_TF_C8,GX_CLAMP,GX_CLAMP,GX_FALSE,lbl_8046FA30[pal]);
+        GXLoadTexObj(&texture,GX_TEXMAP0);
+        GXBegin(GX_QUADS,GX_VTXFMT0,counts[pal]*4);
+        for (s32 sy=0;sy<2;sy++) {
+            for (s32 sx=0;sx<2;sx++) {
+                for (s32 row=0;row<16;row++) {
+                    s32 ty=sy*32+row*2;
+                    s32 py=ty*8-scrollY;
+                    if (py<=-16 || py>=160) continue;
+                    if (wave) {
+                        for (s32 j=0;j<3;j++) {
+                            shifts[j]=lbl_805414F8;
+                            s32 y=py+j*8;
+                            for (s32 n=0;n<8;n++,y++) {
+                                s32 idx;
+                                if (y<0) idx=0;else if (y>159) idx=159;else idx=y;
+                                shifts[j]-=wave[idx];
+                            }
+                            shifts[j]*=lbl_80541514;
+                        }
+                        for (s32 col=0;col<16;col++) {
+                            u16 tile=map[((sy*2+sx)*16+row)*16+col];
+                            if (!tile) continue;
+                            s32 tx=sx*32+col*2;
+                            f32 x=ox+(f32)(tx*8);
+                            if (x+shifts[0]<lbl_8054157C && x+shifts[1]<lbl_8054157C && x+shifts[2]<lbl_8054157C) x+=lbl_80541580;
+                            else if (x+shifts[0]>lbl_80541584 && x+shifts[1]>lbl_80541584 && x+shifts[2]>lbl_80541584) x-=lbl_80541580;
+                            for (s32 dy=0;dy<2;dy++) {
+                                f32 y=oy+(f32)((ty+dy)*8);
+                                for (s32 dx=0;dx<2;dx++) {
+                                    u16 t=(*(u16**)(self+0x24))[tile*4+dy*2+dx];
+                                    if (((t>>12)&15)==pal) {
+                                        WarpTileQuad802F(t,x+(f32)(dx*8),y,shifts[dy],shifts[dy+1]);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        for (s32 col=0;col<16;col++) {
+                            s32 tx=sx*32+col*2;
+                            s32 px=tx*8-scrollX;
+                            if (px<=-16 || px>=240) continue;
+                            u16 tile=map[((sy*2+sx)*16+row)*16+col];
+                            if (!tile) continue;
+                            for (s32 dy=0;dy<2;dy++) {
+                                f32 y=oy+(f32)((ty+dy)*8);
+                                for (s32 dx=0;dx<2;dx++) {
+                                    u16 t=(*(u16**)(self+0x24))[tile*4+dy*2+dx];
+                                    if (((t>>12)&15)==pal) PlainTileQuad802F(t,ox+(f32)((tx+dx)*8),y);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 extern "C" u32 lbl_8046F9F0[];
