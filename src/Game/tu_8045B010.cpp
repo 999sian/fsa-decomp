@@ -98,10 +98,12 @@ extern s8 lbl_8053AF88;
 extern f32 lbl_80491680[];
 #include "JSystem/JAudio/JAUSoundObject.h"
 #include "JSystem/JAudio/Interface/JAISeMgr.h"
-static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, const f32 width, const f32 half) {
-    f32 epsilon = 1.0f - ((f32*)&__float_epsilon)[0];
-    f32 value = random->get_ufloat_1();
-    value *= width;
+static inline f32 randomWavePitch8045(JMath::TRandom_fast_* random, f32 width, f32 half) {
+    f32 value;
+    f32 epsilon;
+    epsilon = 1.0f - ((f32*)&__float_epsilon)[0];
+    value = random->get_ufloat_1();
+    value = width * value;
     value -= half * epsilon;
     return 1.0f + value;
 }
@@ -181,19 +183,8 @@ extern "C" void* fn_8045B154(u8* p, JAISoundID soundID) {
             if ((u8)kind == 1) {
                 movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, lbl_80491680[pitchIndex], 0);
             } else if ((u8)kind == 2) {
-                f32 v;
-                f32 width;
-                f32 eps;
-                f32 half;
-                f32 one;
-                eps = 1.0f - ((f32*)&__float_epsilon)[0];
-                width = 0.03f;
-                half = 0.015f;
-                v = ((JMath::TRandom_fast_*)&lbl_8053AF8C)->get_ufloat_1();
-                v = width * v;
-                v -= half * eps;
-                one = 1.0f;
-                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48, one + v, 0);
+                movePitch__18JAISoundParamsMoveFfUl((u8*)*h + 0x48,
+                    randomWavePitch8045((JMath::TRandom_fast_*)&lbl_8053AF8C, 0.03f, 0.015f), 0);
             }
         }
     }
