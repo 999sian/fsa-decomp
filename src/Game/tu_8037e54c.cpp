@@ -257,6 +257,10 @@ static inline s32 fn_80385960_slot(s32 p) {
     return p;
 }
 extern "C" void fn_80390850(void* p);
+extern "C" void fn_80458880(void* base, s32 a, s32 b);
+extern "C" void fn_80391678(void* p);
+extern "C" void fn_80230224(s32 a, s32 b);
+extern "C" u8 fn_8023F264(s32 a);
 extern u8 lbl_80529DEC[];
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 extern "C" char* strcat(char* dst, const char* src);
@@ -1088,6 +1092,16 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f
         return 1;
     }
     return 0;
+}
+
+extern "C" f32 fn_80381560(u8 type, s32 num, f32 scale)
+{
+    switch (type) {
+    case 0:
+        return scale;
+    default:
+        return scale;
+    }
 }
 
 extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
