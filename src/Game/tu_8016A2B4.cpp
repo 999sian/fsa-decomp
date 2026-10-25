@@ -921,7 +921,6 @@ extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
 extern u8 lbl_80529DEC[];
 extern u8 lbl_80466368[];
 extern u8 lbl_804A0790[];
-extern u8 lbl_8053DA04[];
 extern "C" void fn_8016FDE0(void);
 extern "C" void __construct_array(void*, void*, void*, u32, u32);
 extern "C" void* __nw__FUlP7JKRHeapi(u32, JKRHeap*, s32);
