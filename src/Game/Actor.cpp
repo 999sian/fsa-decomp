@@ -250,18 +250,7 @@ int Actor::v13() {
  * scalar); plain C++ struct assignment scalarises to 3x lfs/stfs with this
  * compiler, so the copy is written with the same inline PS asm idiom the repo
  * already uses in JMathInlineVEC. */
-void Actor::v05() {
-    register Actor* t = this;
-    register f32 z, xy;
-    // clang-format off
-    __asm {
-        psq_l  xy, 0xc(t),  0, 0
-        lfs    z,  0x14(t)
-        psq_st xy, 0x18(t), 0, 0
-        stfs   z,  0x20(t)
-    }
-    // clang-format on
-}
+void Actor::v05() { JGeometry::setTVec3f(&field_0C.x, &field_18.x); }
 
 /* --- slot 12: notify the manager of this actor's kind ---------------------- */
 void Actor::v12() {
