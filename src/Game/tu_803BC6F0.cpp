@@ -218,7 +218,7 @@ static inline void stopPane(void* obj) {
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
-    u8* base = lbl_804765D0;
+    u8* base = (u8*)lbl_804765D0;
     u32 off = idx * 8;
     void* r;
     Clr a;
