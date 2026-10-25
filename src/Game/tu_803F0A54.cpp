@@ -106,6 +106,10 @@ static inline void tu803F_setAlphas(u8* p, u64* tags, u8* alphas, s32 n, f32 a) 
     }
 }
 
+static inline f32 tu803F_ease(s32 d, f32 div) {
+    return (f32)(d * d) / div;
+}
+
 static inline void tu803F_fade(u8* p, s32 start, s32 len, f32* out, f32 scale, f32 div, f32 adiv, u64* tags, u8* alphas, s32 n) {
     if (*(s16*)(p + 0x240) < start + len) {
         s32 d = len - (*(s16*)(p + 0x240) - start);
