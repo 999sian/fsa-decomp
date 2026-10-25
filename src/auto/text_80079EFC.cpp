@@ -1,6 +1,7 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
+#pragma exceptions off
 #define JKRFILE_OUT_OF_LINE_DTOR
 #include <JSystem/JKernel/JKRArchive.h>
 
