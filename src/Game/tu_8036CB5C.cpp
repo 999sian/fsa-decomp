@@ -60,13 +60,19 @@ extern "C" void fn_8036CE58(Actor* this_) {
 }
 
 inline bool psw2Ready(Actor* p) {
+    s32 j;
+    char* member;
+    s32 i;
     if ((p->field_90 >> 4) & 3) return false;
-    for (s32 i=0; i<3; i++) {
-        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)((char*)p + 0x234 + i*4));
+    i = 0;
+    member = (char*)p;
+    for (; i<3; i++, member+=4) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(member + 0x234));
         if (*(f32*)(other + 0x254) < 8.0f) return false;
     }
-    for (s32 i=0; i<3; i++) {
-        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)((char*)p + 0x234 + i*4));
+    member = (char*)p;
+    for (j=0; j<3; j++, member+=4) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(member + 0x234));
         *(u8*)(other + 0x250) = 1;
     }
     return true;
@@ -76,6 +82,7 @@ extern "C" void fn_8036CF1C(Actor* this_) {
     u8* p = (u8*)this_;
     JGeometry::TBox2f box = *(JGeometry::TBox2f*)(p + 0x60);
     JGeometry::TVec3f pos;
+    JGeometry::TVec3f playerPos;
     box.addPos(*(JGeometry::TVec2f*)(p + 0xc));
     this_->field_3C.x=0.0f;
     this_->field_3C.y=0.0f;
@@ -119,8 +126,8 @@ extern "C" void fn_8036CF1C(Actor* this_) {
             if (*(f32*)(p + 0x254) <= 0.0f) {
                 *(JGeometry::TVec3f*)(p + 0x240)=*(JGeometry::TVec3f*)(p + 0xc);
                 *(f32*)(p + 0x244) += 16.0f;
-                JGeometry::TVec3f off = *(JGeometry::TVec3f*)(p + 0x240) - *(JGeometry::TVec3f*)fn_8023E724(hit);
-                fn_8023DFF4(hit,off);
+                playerPos = *(JGeometry::TVec3f*)fn_8023E724(hit);
+                fn_8023DFF4(hit,*(JGeometry::TVec3f*)(p + 0x240) - playerPos);
             }
             *(f32*)(p + 0x254) += 0.25f;
             this_->field_3C.x=0.0f;
