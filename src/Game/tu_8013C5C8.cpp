@@ -41,14 +41,21 @@ struct EffSlot {
     f32 pos[3];
 };
 
-static inline bool tu13_inPlay(u8* g) {
-    u8 hit = 0;
+struct EffSlotTable {
+    u8 pad[0x10];
+    EffSlot slots[0x400];
+};
+
+static inline u8 tu13_inPlay(u8* g) {
     if (g[0x7f] != 0) {
-        hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb);
+        u8 hit = 0;
+        if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb) hit = 1;
+        return hit != 0;
     } else {
-        hit = (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc);
+        u8 hit = 0;
+        if (*(s32*)(g + 0x4c) == 7 || *(s32*)(g + 0x4c) == 8 || *(s32*)(g + 0x4c) == 9 || *(s32*)(g + 0x4c) == 0x16 || *(s32*)(g + 0x4c) == 0xa || *(s32*)(g + 0x4c) == 0xb || *(s32*)(g + 0x4c) == 0xc) hit = 1;
+        return hit != 0;
     }
-    return hit;
 }
 
 // ---- from Game/dtor_8013C5C8.cpp
@@ -556,3 +563,181 @@ extern "C" u8 fn_8013CB44(u8* this_, f32* pos, s32 a, s32 b, u8 flag) {
     }
     return ret;
 }
+
+extern f32 lbl_8053CE00;
+extern f32 lbl_8053CE20;
+extern "C" u8 fn_802DEABC(void);
+extern "C" u8 fn_802DEB58(void);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s32 dz, JPAEmitterCallBack* cb, JPAParticleCallBack* pcb, u8 snap) {
+    u8* em = 0;
+    if (scale > lbl_8053CE00) {
+        if (mode == 0) {
+            f32 v[3];
+            u8 group;
+            if (snap) {
+                snap = pos[2] > lbl_8053CE00;
+            }
+            if (snap && dy < 1) {
+                dy++;
+                dz--;
+            }
+            f32 off = (f32)((dy << 10) + (dz << 7));
+            v[0] = pos[0];
+            v[1] = pos[1] + off;
+            v[2] = pos[2] + off;
+            v[2] += fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos) - pos[2];
+            switch (effect) {
+            case 0x558: case 0x559: case 0x55a: case 0x55b: case 0x55c: case 0x55d: case 0x55e:
+            case 0x48e: case 0x48f: case 0x490: case 0x491: case 0x492: case 0x493: case 0x494: case 0x495:
+            case 0x569: case 0x56a: case 0x56b: case 0x56c: case 0x56d: case 0x56e: case 0x56f: case 0x570: case 0x571:
+                group = 2;
+                break;
+            case 0x127: case 0x128: case 0x129: case 0x12a: case 0x12b:
+            case 0x188: case 0x189: case 0x18a: case 0x18b: case 0x18c: case 0x18d:
+            case 0x2a8:
+            case 0x4e0: case 0x4e1:
+                group = 3;
+                break;
+            case 0x241:
+            case 0x3dd:
+            case 0x4cf: case 0x4d0: case 0x4d1:
+                group = 4;
+                break;
+            case 0x543: case 0x544:
+            case 0x54b:
+                group = 5;
+                break;
+            case 0x26a:
+            case 0x277: case 0x278: case 0x279: case 0x27a: case 0x27b: case 0x27c: case 0x27d:
+            case 0x3a7: case 0x3a8: case 0x3a9: case 0x3aa: case 0x3ab: case 0x3ac: case 0x3ad:
+            case 0x3ae: case 0x3af: case 0x3b0: case 0x3b1: case 0x3b2: case 0x3b3:
+                group = 7;
+                break;
+            case 0x566: case 0x567: case 0x568:
+                group = 8;
+                break;
+            case 0x385:
+                group = 9;
+                break;
+            case 0xd8: case 0xd9: case 0xda: case 0xdb: case 0xdc: case 0xdd: case 0xde: case 0xdf:
+            case 0xe0: case 0xe1: case 0xe2: case 0xe3: case 0xe4: case 0xe5: case 0xe6: case 0xe7:
+            case 0xe8: case 0xe9:
+            case 0x1dc: case 0x1dd: case 0x1de: case 0x1df: case 0x1e0: case 0x1e1: case 0x1e2: case 0x1e3:
+            case 0x1e4: case 0x1e5: case 0x1e6: case 0x1e7: case 0x1e8: case 0x1e9: case 0x1ea: case 0x1eb:
+            case 0x1ec: case 0x1ed: case 0x1ee: case 0x1ef: case 0x1f0: case 0x1f1: case 0x1f2: case 0x1f3:
+            case 0x1f4: case 0x1f5: case 0x1f6: case 0x1f7: case 0x1f8: case 0x1f9: case 0x1fa: case 0x1fb:
+            case 0x1fc:
+            case 0x3ec: case 0x3ed: case 0x3ee: case 0x3ef: case 0x3f0: case 0x3f1: case 0x3f2: case 0x3f3:
+                group = 10;
+                break;
+            case 0x345: case 0x346: case 0x347: case 0x348: case 0x349: case 0x34a: case 0x34b: case 0x34c:
+            case 0x34d: case 0x34e: case 0x34f: case 0x350: case 0x351: case 0x352: case 0x353: case 0x354:
+            case 0x355: case 0x356: case 0x357: case 0x358: case 0x359: case 0x35a: case 0x35b: case 0x35c:
+            case 0x54d:
+                group = 0xff;
+                break;
+            default:
+                group = 0;
+                break;
+            }
+            u8* g = (u8*)lbl_8053AAF8;
+            if (tu13_inPlay(g) && *(s32*)(g + 0x4c) != 0xc) {
+                if (fn_802D6A9C()[0x131f1] != 0) {
+                    switch (effect) {
+                    case 0x3cf: effect = 0x454; break;
+                    case 0x3d3: effect = 0x455; break;
+                    case 0x116: effect = 0x44e; break;
+                    case 0x115: effect = 0x44d; break;
+                    }
+                } else if (fn_802D6A9C()[0x131f2] != 0) {
+                    switch (effect) {
+                    case 0x3d3: effect = 0x3a4; break;
+                    case 0x3cf: effect = 0x3a3; break;
+                    case 0x24e: effect = 0x24c; break;
+                    case 0x24f: effect = 0x24d; break;
+                    }
+                } else if (fn_802DEABC()) {
+                    switch (effect) {
+                    case 0x3d3: effect = 0xd6; break;
+                    case 0x3cf: effect = 0xd5; break;
+                    }
+                } else if (fn_802DEB58()) {
+                    switch (effect) {
+                    case 0x2a9: effect = 0x45e; break;
+                    case 0x2aa: effect = 0x45f; break;
+                    case 0x4f3: case 0x4f7: effect = 0x4fb; break;
+                    case 0x4f4: case 0x4f8: effect = 0x4fc; break;
+                    case 0x4f5: case 0x4f9: effect = 0x4fd; break;
+                    case 0x4f6: case 0x4fa: effect = 0x4fe; break;
+                    case 0x15b: case 0x15c: case 0x3d0: return 0;
+                    }
+                }
+                if (!fn_802DE9A0()) {
+                    switch (effect) {
+                    case 0x2a9: return 0;
+                    case 0x2aa: return 0;
+                    case 0x4f7: return 0;
+                    case 0x4f8: return 0;
+                    case 0x4f9: return 0;
+                    case 0x4fa: return 0;
+                    }
+                }
+            }
+            if (group == 0xff) {
+                EffSlot* slot = (EffSlot*)(*(u8**)(lbl_8053AB10 + 0x28) + 0x10);
+                for (s32 i = 0; i < 0x400; i++, slot++) {
+                    if (slot->used == 0) {
+                        slot->pos[0] = v[0];
+                        slot->pos[1] = v[1];
+                        slot->pos[2] = v[2];
+                        slot->id = effect;
+                        slot->used = 1;
+                        break;
+                    }
+                }
+            } else {
+                u8* mgr = *(u8**)(lbl_8053AB10 + 0x28);
+                if ((*(JPAResourceManager**)(mgr + 0x8))->getResUserWork(effect) & 1) {
+                    cb = (JPAEmitterCallBack*)&lbl_8053AB18;
+                }
+                if (((*(JPAResourceManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0x8))->getResUserWork(effect) & 2) && group != 5) {
+                    group = 1;
+                }
+                em = (u8*)(*(JPAEmitterManager**)(*(u8**)(lbl_8053AB10 + 0x28) + 0xc))->createSimpleEmitterID(
+                    *(JGeometry::TVec3<f32>*)v, effect, group, 0, cb, pcb);
+            }
+            if (em != 0) {
+                f32 k = lbl_8053CE20 * scale;
+                if (group == 2 || group == 4 || group == 5 || group == 8 || group == 10) {
+                    *(f32*)(em + 0x98) = scale;
+                    *(f32*)(em + 0x9c) = scale;
+                    *(f32*)(em + 0xa0) = scale;
+                    *(f32*)(em + 0xb0) = scale;
+                    *(f32*)(em + 0xb4) = scale;
+                } else {
+                    f32 m[3][4];
+                    m[0][0] = scale;
+                    m[0][1] = lbl_8053CE00;
+                    m[0][2] = lbl_8053CE00;
+                    m[0][3] = v[0];
+                    m[1][0] = lbl_8053CE00;
+                    m[1][1] = lbl_8053CE00;
+                    m[1][2] = k;
+                    m[1][3] = v[1];
+                    m[2][0] = lbl_8053CE00;
+                    m[2][1] = k;
+                    m[2][2] = lbl_8053CE00;
+                    m[2][3] = v[2];
+                    JPASetRMtxSTVecfromMtx(m, (f32 (*)[4])(em + 0x68), (JGeometry::TVec3<f32>*)(em + 0x98), (JGeometry::TVec3<f32>*)(em + 0xa4));
+                    *(f32*)(em + 0xb0) = *(f32*)(em + 0x98);
+                    *(f32*)(em + 0xb4) = *(f32*)(em + 0x9c);
+                    *(f32*)(em + 0xb0) = scale;
+                    *(f32*)(em + 0xb4) = scale;
+                }
+            }
+        }
+    }
+    return em;
+}
+
