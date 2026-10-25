@@ -292,7 +292,7 @@ extern "C" f32 lbl_80541B7C;
 extern "C" f32 lbl_80541B80;
 extern "C" f32 lbl_80541B84;
 extern "C" const f32 lbl_80541B90;
-extern "C" f32 lbl_80541BB0;
+extern "C" const f32 lbl_80541BB0;
 extern "C" f32 lbl_80541BB4;
 extern "C" f32 lbl_80541BB8;
 extern "C" f32 lbl_80541BBC;
