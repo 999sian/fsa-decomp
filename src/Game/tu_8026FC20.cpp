@@ -172,6 +172,14 @@ inline BOOL inRect(const JGeometry::TVec2<f32>& pt, f32 x0, f32 y0, f32 x1, f32 
     return in;
 }
 
+inline BOOL inRectXY(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
+    BOOL in = 0;
+    if (x >= x0 && y >= y0 && x < x1 && y < y1) {
+        in = 1;
+    }
+    return in;
+}
+
 struct PlayerAreas2 {
     u8 pad0[0xef0];
     s32 mId[0x50];
@@ -518,6 +526,7 @@ extern "C" s32 fn_80270A8C(void* playerObj) {
 }
 
 extern "C" {
+#pragma opt_propagation off
 BOOL fn_80270ABC(char* p) {
     if (U8(p, 0xce8) == 1) {
         return 1;
@@ -563,6 +572,7 @@ BOOL fn_80270ABC(char* p) {
     }
     return S32(p, 0x464) > 0;
 }
+#pragma opt_propagation reset
 inline BOOL isBusy(char* p) {
     if (fn_80241200(p)) {
         return 1;
@@ -722,6 +732,11 @@ void fn_80270F00(char* p, s32 n) {
 void fn_80271038(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xf); }
 void fn_80271068(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xe); }
 void fn_80271098(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xd); }
+
+bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
+    return false;
+}
+
 void fn_80272160(char* p, s32 a, s32 b, s32 c) { fn_80238548(S32(p, 0x4), a, b, c); }
 s32 fn_80272184(void) { return 4; }
 s32 fn_8027218C(char* p) {
@@ -805,6 +820,7 @@ bool fn_802728AC(char* p, const f32* box, s32 room, s32 id) {
     }
     return 1;
 }
+#pragma peephole off
 bool fn_802729F0(char* p, s32 id) {
     for (int i = 0; i < 0x48; i += 9) {
         if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
@@ -850,6 +866,7 @@ bool fn_802729F0(char* p, s32 id) {
     }
     return 0;
 }
+#pragma peephole reset
 BOOL fn_80272B4C(PlayerAreas* pa, const f32* pt) {
     for (int i = 0; i < 0x50; i++) {
         if (pa->mId[i] >= 0 && fn_802413F0((char*)pa) && pa->mOwner[i] == S32(pa, 0x3b4)) {
@@ -1565,6 +1582,153 @@ void fn_80274988(char* p) {
     }
     fn_802765C0(p);
 }
+
+void fn_80274CB8(char* p) {
+    f32 eps;
+    f32 neg;
+    f32 d;
+    BOOL b7;
+    BOOL b8;
+    BOOL b9;
+    s32 idx;
+    u8 st;
+    const u8* t;
+    const f32* v;
+    s32 id;
+    void* a;
+    const u8* tb;
+    char* self;
+
+    self = p;
+    tb = (const u8*)lbl_8046BB48;
+
+    if (F32(self, 0x10) > lbl_8054028C) {
+        st = U8(self, 0x3f8);
+        if (st < 4) {
+            U8(self, 0x3f8) = st + 1;
+            U8(self, 0x3f9) = 0;
+        } else if (st < 8) {
+            U8(self, 0x3f8) = st + 1;
+            U8(self, 0x3f9) = 2;
+        } else {
+            U8(self, 0x3f8) = 8;
+            U8(self, 0x3f9) = 4;
+        }
+        return;
+    }
+
+    eps = lbl_80540298 * *(f32*)__float_epsilon;
+    neg = -eps;
+    b9 = 0;
+    b8 = 0;
+    b7 = 0;
+    d = F32(self, 0x8) - F32(self, 0x14);
+    if (neg <= d && d <= eps) {
+        b7 = 1;
+    }
+    if (b7) {
+        b7 = 0;
+        d = F32(self, 0xc) - F32(self, 0x18);
+        if (neg <= d && d <= eps) {
+            b7 = 1;
+        }
+        if (b7) {
+            b8 = 1;
+        }
+    }
+    if (b8) {
+        b7 = 0;
+        d = F32(self, 0x10) - F32(self, 0x1c);
+        if (neg <= d && d <= eps) {
+            b7 = 1;
+        }
+        if (b7) {
+            b9 = 1;
+        }
+    }
+    if (b9) {
+        U8(self, 0x3f8) = 0;
+    } else {
+        U8(self, 0x3f8) = U8(self, 0x3f8) + 1;
+        if (U8(self, 0x3f8) >= 0x1c) {
+            U8(self, 0x3f8) = 0;
+        }
+    }
+
+    idx = S32(self, 0x3dc);
+    st = U8(self, 0x3f8);
+    if (U8(self, 0x403) < 0xa8) {
+        t = tb + 0x180 + idx * 8;
+        if (st < 4) {
+            U8(self, 0x3f9) = t[0];
+        } else if (st < 6) {
+            U8(self, 0x3f9) = t[1];
+        } else if (st < 10) {
+            U8(self, 0x3f9) = t[2];
+        } else if (st < 14) {
+            U8(self, 0x3f9) = t[3];
+        } else if (st < 18) {
+            U8(self, 0x3f9) = t[4];
+        } else if (st < 20) {
+            U8(self, 0x3f9) = t[5];
+        } else if (st < 24) {
+            U8(self, 0x3f9) = t[6];
+        } else {
+            U8(self, 0x3f9) = t[7];
+        }
+    } else {
+        if (st < 4) {
+            U8(self, 0x3f9) = 0;
+        } else if (st < 8) {
+            U8(self, 0x3f9) = 2;
+        } else if (st < 10) {
+            U8(self, 0x3f9) = 4;
+        } else if (st < 14) {
+            U8(self, 0x3f9) = 6;
+        } else if (st < 18) {
+            U8(self, 0x3f9) = 0;
+        } else if (st < 22) {
+            U8(self, 0x3f9) = 2;
+        } else if (st < 24) {
+            U8(self, 0x3f9) = 4;
+        } else {
+            U8(self, 0x3f9) = 6;
+        }
+    }
+
+    if (S32(self, 0x3b4) >= 8) {
+        if (U8(self, 0x403) >= 0x30 && (U8(self, 0x404) & 2) == 0) {
+            U8(self, 0x3f9) = U8(self, 0x3f9) + 1;
+        }
+    }
+
+    if (U8(self, 0x403) < 0xa7) {
+        v = (const f32*)(tb + 0x1a0) + idx * 3;
+    } else {
+        v = (const f32*)(tb + 0x1d0) + idx * 3;
+    }
+    F32(self, 0x12a4) = v[0];
+    F32(self, 0x12a8) = v[1];
+    F32(self, 0x12ac) = v[2];
+    *(JGeometry::TVec3<f32>*)(self + 0x12a4) += *(JGeometry::TVec3<f32>*)(self + 0x8);
+
+    F32(self, 0x127c) = F32(self, 0x12a4);
+    F32(self, 0x1280) = F32(self, 0x12a8);
+    F32(self, 0x1284) = F32(self, 0x12ac);
+    F32(self, 0x1294) = F32(self, 0x12a4);
+    F32(self, 0x1298) = F32(self, 0x12a8);
+    F32(self, 0x129c) = F32(self, 0x12ac);
+
+    id = S32(self, 0x12c0);
+    if (id >= 0) {
+        a = fn_801F666C(fn_801F856C(), id);
+        if (a != NULL) {
+            *(JGeometry::TVec3<f32>*)((char*)a + 0xc) = *(JGeometry::TVec3<f32>*)(self + 0x12a4);
+        }
+    }
+    S32(self, 0x12c0) = -1;
+}
+
 void fn_80276538(char* p) {
     setAround((JGeometry::TBox2<f32>*)(p + 0x4c0), *(JGeometry::TVec2<f32>*)(p + 0x8), 7.0f);
     JGeometry::TBox2<f32>* b = (JGeometry::TBox2<f32>*)(p + 0x4d0);
@@ -1772,6 +1936,20 @@ void fn_80277EBC(char* p) {
         U8(p, 0xc00) = 0;
     }
 }
+
+void fn_80277F98(char* p) {
+    s32 r29 = (u32)fn_8022461C(p + 8, (void*)S32(p, 0x3b4));
+    if (S32(lbl_8053AAF8, 0x4c) == 0xb) {
+        return;
+    }
+    if (U8(p, 0xcfc) != 1) {
+        return;
+    }
+    if (fn_8025F448()) {
+        return;
+    }
+}
+
 void fn_802790C0(char* p) {
     if (fn_8025F448() && !fn_8025F418(p)) {
         fn_8025FEDC(p);
