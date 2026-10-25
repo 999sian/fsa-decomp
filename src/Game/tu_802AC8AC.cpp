@@ -104,20 +104,12 @@ extern "C" void* fn_802ACB68(void* this_, short param_2) {
 extern "C" void* fn_802ACBE8(void* this_) {
     *(void**)this_ = (void*)lbl_804A8390;
     lbl_8053ACA0 = this_;
-    
-    void* res = fn_804030C4(0x54494d47, (void*)lbl_8046C8A0);
-    void* picture = __nw__FUl(0x168);
-    
-    if (picture != 0) {
-        __ct__10J2DPictureFPC7ResTIMG(picture, res);
-        *(void**)((char*)this_ + 4) = picture;
-    }
-    
-    *(u32*)((char*)this_ + 0xc) = 0;
-    *(u32*)((char*)this_ + 0x10) = 0;
-    *(u32*)((char*)this_ + 0x14) = 0;
-    *(u32*)((char*)this_ + 0x18) = 0;
-    
+    const ResTIMG* res = (const ResTIMG*)fn_804030C4(0x54494d47, (void*)lbl_8046C8A0);
+    *(J2DPicture**)((u8*)this_ + 4) = new J2DPicture(res);
+    *(u32*)((u8*)this_ + 0xc) = 0;
+    *(u32*)((u8*)this_ + 0x10) = 0;
+    *(u32*)((u8*)this_ + 0x14) = 0;
+    *(u32*)((u8*)this_ + 0x18) = 0;
     return this_;
 }
 
