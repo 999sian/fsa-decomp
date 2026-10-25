@@ -57,12 +57,13 @@ extern char lbl_804674F0[];
 struct Dgt2Vec { f32 x; f32 y; f32 z; };
 
 static void dgt2Rot(f32 (*m)[4], f32 th) {
-    f32 sA = sin(lbl_8053E1D8);
-    f32 sT = sin(th);
-    f32 sZ = sin(lbl_8053E1D8);
-    f32 cA = cos(lbl_8053E1D8);
-    f32 cT = cos(th);
-    f32 cZ = cos(lbl_8053E1D8);
+    f32 sZ, sT, sA, cT, cA, cZ;
+    sA = sin(lbl_8053E1D8);
+    sT = sin(th);
+    sZ = sin(lbl_8053E1D8);
+    cA = cos(lbl_8053E1D8);
+    cT = cos(th);
+    cZ = cos(lbl_8053E1D8);
     f32 S = lbl_8053E1DC;
     m[0][0] = S * (cT * cZ);
     m[0][1] = S * ((sA * sT) * cZ - cA * sZ);
@@ -174,6 +175,62 @@ struct Dgt2Child { u8 pad[0x24]; s32 dead; u8 pad2[0xf4 - 0x28]; u32 flags; };
 struct Dgt2Links { u8 pad[0x3c0]; Dgt2Child* child[3]; };
 
 // Release the three linked child actors.
+extern "C" void fn_8018EB94(void* this_) {
+    char* p = (char*)this_;
+    DrawRec rec;
+    f32 mtx[3][4];
+    f32 z = *(f32*)(p + 0x14);
+    if ((*(u32*)(p + 0x240) & 1) != 0) {
+        u8* r = (u8*)&rec;
+        r[0x17] = 0;
+        r[0x14] = 0x80;
+        r[0x15] = 0x80;
+        r[0x16] = 0x80;
+    }
+    rec.b1d = 1;
+
+    PSMTXIdentity(mtx);
+    dgt2Rot(mtx, *(f32*)(p + 0x270));
+    rec.w18 = mtx;
+    *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x2a0);
+    *(f32*)(p + 0x14) = z;
+    fn_801F06F0(this_, lbl_804674F0, 0x29, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+
+    rec.b1d = 2;
+    PSMTXIdentity(mtx);
+    dgt2Rot(mtx, *(f32*)(p + 0x270));
+    rec.w18 = mtx;
+    *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x294);
+    *(f32*)(p + 0x14) = z;
+    fn_801F06F0(this_, lbl_804674F0, 0x27, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+
+    rec.b1d = 3;
+    PSMTXIdentity(mtx);
+    dgt2Rot(mtx, *(f32*)(p + 0x270));
+    rec.w18 = mtx;
+    *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x288);
+    *(f32*)(p + 0x14) = z;
+    fn_801F06F0(this_, lbl_804674F0, 0x26, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+
+    rec.b1d = 4;
+    PSMTXIdentity(mtx);
+    dgt2Rot(mtx, *(f32*)(p + 0x274));
+    rec.w18 = mtx;
+    *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x2ac);
+    *(f32*)(p + 0x14) = z;
+    fn_801F06F0(this_, lbl_804674F0, 0x2a, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+
+    PSMTXIdentity(mtx);
+    dgt2Rot(mtx, -*(f32*)(p + 0x274));
+    rec.w18 = mtx;
+    *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x2b8);
+    *(f32*)(p + 0x14) = z;
+    fn_801F06F0(this_, lbl_804674F0, 0x2a, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+
+    *(Dgt2Vec*)(p + 0xc) = *(Dgt2Vec*)(p + 0x288);
+    *(f32*)(p + 0x14) = z;
+}
+
 extern "C" void fn_8018FAB4(Dgt2Links* this_) {
     for (int i = 0; i < 3; i++) {
         Dgt2Child* c = this_->child[i];
