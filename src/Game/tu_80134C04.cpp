@@ -18,6 +18,7 @@ extern "C" void fn_8013BE04(void*);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80139958(void);
 struct TuSceneSound {
+    ~TuSceneSound() {}
     u8 unk_00[0x80];
     JAISoundHandle handle80;
     JAISoundHandle handle84;
@@ -646,6 +647,7 @@ extern "C" void fn_8007A298(void* p);
 extern "C" void fn_803007A0(void);
 extern "C" void releaseSound__14JAISoundHandleFv(void* p);
 extern "C" void destroy__7JKRHeapFv(void* p);
+#pragma peephole off
 extern "C" void* fn_80138E78(u8* p, s16 how) {
     void* sound;
     void* tmp;
@@ -719,11 +721,7 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
         (*(TuVtable7**)(lbl_80529DEC + 0x20))->v1();
         fn_803007A0();
         sound = *(void**)(p + 0xa0);
-        if (sound != 0) {
-            ((JAISoundHandle*)((u8*)sound + 0x84))->~JAISoundHandle();
-            ((JAISoundHandle*)((u8*)sound + 0x80))->~JAISoundHandle();
-            __dl__FPv(sound);
-        }
+        delete (TuSceneSound*)sound;
         destroy__7JKRHeapFv(*(void**)(p + 0x9c));
         delete *(TuOwnedObject**)(p + 0xb8);
         *(void**)(p + 0xb8) = 0;
@@ -744,5 +742,5 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
     }
     return p;
 }
-
+#pragma peephole reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
