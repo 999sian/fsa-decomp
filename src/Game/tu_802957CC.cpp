@@ -1958,10 +1958,12 @@ extern "C" void fn_8029B2EC(void* p) {
 }
 
 extern "C" void* fn_8029B484(void* p, s16 flag) {
-    char* row;
     char* col;
+    char* row;
+    s32* q;
     s32 i;
     s32 j;
+    int k;
 
     if (p != 0) {
         row = (char*)p;
@@ -1973,8 +1975,9 @@ extern "C" void* fn_8029B484(void* p, s16 flag) {
             }
             row += 8;
         }
-        for (j = 0, col = (char*)p; j < 4; j++, col += 4) {
-            fn_801EE434(*(s32*)(col + 0x310));
+        for (k = 0, q = (s32*)p; k < 4; k++) {
+            fn_801EE434(q[0x310 / 4]);
+            q++;
         }
         __dt__5ActorFv(p, 0);
         if (flag > 0) {
@@ -1983,3 +1986,4 @@ extern "C" void* fn_8029B484(void* p, s16 flag) {
     }
     return p;
 }
+#pragma dummy_never_used
