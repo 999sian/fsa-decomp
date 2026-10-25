@@ -8,6 +8,11 @@ extern "C" void* lbl_8053AD30;
 extern "C" void* fn_80309C4C(void* a, s32 b, s32 c);
 extern "C" void* fn_80309A9C(void* a, s32 b, s32 c);
 extern "C" void fn_80403680(void* p);
+extern "C" u8* sManager__8JUTVideo;
+extern "C" const u64 lbl_80479238[];
+extern "C" s32 fn_80403414(s32 a);
+extern "C" s32 fn_804033D4(s32 a);
+extern "C" s32 fn_8040336C(s32 a);
 extern "C" u8 lbl_80529DEC[];
 
 extern "C" void fn_8043670C(void* p, s32 a);
