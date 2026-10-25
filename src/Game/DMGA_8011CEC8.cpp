@@ -337,20 +337,27 @@ extern "C" void fn_8011D614(int param_1) {
         fn_801CD950((f32*)(param_1 + 0x238), lbl_8053C860, lbl_8053C8A8);
         break;
     case 6:
+    case 7:
+    case 8:
+    case 9:
         break;
     }
     if (*(u8*)(param_1 + 0x230) != 0) {
         f32 v[3];
-        f32 out[2];
+        f32 out[3];
         u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
         v[0] = -*(f32*)(obj + 0x10);
         v[1] = -*(f32*)(obj + 0x20);
         v[2] = lbl_8053C860;
         fn_8030C5F0(obj, v, 0, 0, out);
-        f32 f3 = (fn_801365A8() == 2) ? lbl_8053C890 : lbl_8053C894;
+        f32 f3;
+        switch (fn_801365A8()) {
+        case 2: f3 = lbl_8053C890; break;
+        default: f3 = lbl_8053C894; break;
+        }
         out[0] = -(f3 * lbl_8053C898 - out[0]);
         out[1] = out[1] - lbl_8053C89C;
-        fn_8043A208(lbl_8053AED0, (s32)*(f32*)(param_1 + 0x238));
+        fn_8043A208(lbl_8053AED0, (s32)*(f32*)(param_1 + 0x238), out[0], out[1], f3, lbl_8053C880);
     }
     fn_801D1C18((void*)(param_1 + 0x274));
 }
