@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JKernel/JKRArchive.h"
 #include "Game/ItemBase.h"
 struct SpriteOam802F {
     u8 y;
@@ -296,10 +297,10 @@ extern "C" void fn_802F53F4(u8* this_, s32 idx, u8* data) {
                 this_[idx + 0x130] = (data[4] >> 5) & 3;
             }
             if (((data[2] >> 6) & 1) != 0) {
-                u8* a = lbl_80506DA8 + idx * 4;
-                u8* b = lbl_80506DB8 + idx * 4;
-                u8* c = lbl_80506DC8 + idx * 4;
                 u32* dd = (u32*)lbl_80506DD8;
+                u8* c = lbl_80506DC8 + idx * 4;
+                u8* b = lbl_80506DB8 + idx * 4;
+                u8* a = lbl_80506DA8 + idx * 4;
                 for (s32 i = 0; i < 4; i++) {
                     a[i] = (data[6] >> (i * 2)) & 3;
                     b[i] = ((data[7] >> 4) >> i) & 1;
@@ -526,12 +527,14 @@ extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
     f32 z = pos[2];
     if (*(s32*)(this_ + 0xc21c) > 0) {
-        f32 lo_x = *(f32*)(this_ + 0x2368);
+        f32 lo_x;
         f32 x = pos[0];
-        if (x >= lo_x && x < (f32)*(s32*)(this_ + 0x2380) * lbl_80541510 + lo_x) {
-            f32 lo_y = *(f32*)(this_ + 0x236c);
+        lo_x = *(f32*)(this_ + 0x2368);
+        if (x >= lo_x && x < lbl_80541510 * (f32)*(s32*)(this_ + 0x2380) + lo_x) {
+            f32 lo_y;
             f32 y = pos[1];
-            if (y >= lo_y && y < (f32)*(s32*)(this_ + 0x2384) * lbl_80541510 + lo_y) {
+            lo_y = *(f32*)(this_ + 0x236c);
+            if (y >= lo_y && y < lbl_80541510 * (f32)*(s32*)(this_ + 0x2384) + lo_y) {
                 f32 scale = lbl_80541514;
                 s32 ix = (s32)((x - lo_x) * scale);
                 s32 iy = (s32)((y - lo_y) * scale);
@@ -939,10 +942,11 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
     return done;
 }
 
+#pragma opt_unroll_loops off
 extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
     u16* s;
     u16* d;
-    u32 n;
+    s32 n;
     if (src >= 0 && src < 4) {
         s = (u16*)base->m_tbl[src];
     } else if (src >= 4 && src < 8) {
@@ -977,9 +981,9 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
         d[15] = s[15];
         s += 16;
         d += 16;
-    } while (--n);
+    } while (--n != 0);
 }
-
+#pragma opt_unroll_loops reset
 extern "C" u32 lbl_80471020[];
 extern "C" f32 lbl_80541528, lbl_80541530, lbl_80541538, lbl_8054153C;
 extern "C" void fn_802F6CF4(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
@@ -1439,13 +1443,15 @@ extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
     u32 i;
     u32 len;
     s32 n;
+    u8* self = this_;
     if (size == 0) {
         s32 r;
         if (JKRDecomp::checkCompressed(src)) {
             r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
         } else {
             void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
+            void** vt = *(void***)obj;
+            r = ((s32 (*)(void*, u8*))vt[12])(obj, src);
         }
         if (r < 0) {
             len = 0x8000;
@@ -1455,10 +1461,10 @@ extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
     } else {
         len = size;
     }
-    dst += *(u32*)(this_ + idx * 4 + 0x88);
+    dst += *(u32*)(self + idx * 4 + 0x88);
     if (JKRDecomp::checkCompressed(src)) {
-        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
-        base = *(u8**)(this_ + 0xf8);
+        JKRDecomp::decode(src, *(u8**)(self + 0xf8), 0x8000, 0);
+        base = *(u8**)(self + 0xf8);
     } else {
         base = src;
     }
@@ -1587,9 +1593,6 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
   u8* buf;
   u8* p;
   u32 i;
-  u32 j;
-  u32 n;
-  u32 k;
 
   if (param_5 == 0) {
     if (checkCompressed__9JKRDecompFPUc(param_2) != 0) {
@@ -1613,35 +1616,8 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
     buf = param_2;
   }
   p = buf + param_3;
-  if (param_4 < size) {
-    i = param_4;
-    j = param_4 & ~1;
-    n = ((size + 1) - param_4) >> 1;
-    k = n >> 2;
-    if (k != 0) {
-      do {
-        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-        i += 2;
-        j += 2;
-        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-        i += 2;
-        j += 2;
-        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-        i += 2;
-        j += 2;
-        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-        i += 2;
-        j += 2;
-      } while (--k != 0);
-    }
-    k = n & 3;
-    if (k != 0) {
-      do {
-        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-        i += 2;
-        j += 2;
-      } while (--k != 0);
-    }
+  for (i = param_4; i < size; i += 2) {
+    (*(u16**)(param_1 + 0x24))[i >> 1] = ((p + i)[1] << 8) | (p + i)[0];
   }
 }
 
@@ -2550,21 +2526,33 @@ extern "C" void fn_802FF3F0(u8* this_) {
     u8* e;
     u8* mgr;
     u8* video;
-    Tu802F5040Rect rect;
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+    volatile Tu802F5040Rect rect;
     if (this_[0x248] != 0 && *(u32*)(this_ + 0x254) != 0) {
+        s32 v = *(s32*)(this_ + 0x24c);
         mgr = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        *(s32*)(mgr + 0x144) = *(s32*)(this_ + 0x24c);
+        *(s32*)(mgr + 0x144) = v;
         *(s32*)(mgr + 0x148) = *(s32*)(this_ + 0x250);
         *(s32*)(mgr + 0x14c) = *(s32*)(this_ + 0x254);
         *(s32*)(mgr + 0x150) = *(s32*)(this_ + 0x258);
     } else {
         video = *(u8**)((u8*)sManager__8JUTVideo + 4);
         mgr = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        rect.m0c = *(u16*)(video + 6);
-        rect.m08 = *(u16*)(video + 4);
-        rect.m00 = 0;
-        rect.m04 = 0;
-        *(Tu802F5040Rect*)(mgr + 0x144) = rect;
+        d = *(u16*)(video + 6);
+        c = *(u16*)(video + 4);
+        a = 0;
+        b = 0;
+        rect.m00 = a;
+        rect.m04 = b;
+        rect.m08 = c;
+        rect.m0c = d;
+        *(s32*)(mgr + 0x144) = a;
+        *(s32*)(mgr + 0x148) = b;
+        *(s32*)(mgr + 0x14c) = c;
+        *(s32*)(mgr + 0x150) = d;
     }
     fn_802FC80C(this_);
     p = this_;
