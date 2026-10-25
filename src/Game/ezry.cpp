@@ -179,6 +179,11 @@ struct EzrySaveRecord { u8 pad[0x87]; u8 flags; u8 tail[0x40]; };
 
 #define EZRY_RND() (((EzryRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1())
 
+static inline void EzryNotifyCount(void* mgr, const u8* count) {
+    fn_8043D67C(mgr, 0x339, 0, *count);
+}
+
+#pragma opt_lifetimes off
 extern "C" void fn_80161290(char* p) {
     *(f32*)(p + 0x60) = lbl_8053D6A4;
     *(f32*)(p + 0x64) = lbl_8053D6A4;
@@ -252,14 +257,12 @@ extern "C" void fn_80161290(char* p) {
         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
             u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
             if (!(e[0x87] & 1)) {
-                u8* g = lbl_80529DEC;
                 e[0x87] |= 1;
-                void* mgr = lbl_8053AED0;
-                s32 count = g[0x24f];
-                fn_8043D67C(mgr, 0x339, 0, count);
+                u8* g = lbl_80529DEC;
+                fn_8043D67C(lbl_8053AED0, 0x339, 0, g[0x24f]);
             }
         }
     }
 }
-
+#pragma opt_lifetimes reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
