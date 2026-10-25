@@ -8,6 +8,10 @@ extern const TAtanTable<1024, f32> atanTable_;
 #include "JSystem/JUtility/JUTVideo.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Box.h"
+extern "C" char lbl_8050C8D0[];
+extern "C" s8 lbl_8053AD63;
+extern "C" s32 lbl_80474F5C[];
+extern "C" void* fn_801F666C(void*, s32);
 extern "C" const f32 lbl_80542DC0;
 extern "C" void fn_80371D50(void*, s32);
 extern "C" void fn_80458880(void*, s32, s32);
@@ -664,6 +668,7 @@ extern "C" void fn_80371284(char* self)
 	*(s32*)(self + 0x368) = 0x108;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803717CC(char* self)
 {
     JGeometry::TBox2<f32> area;
@@ -736,7 +741,7 @@ extern "C" void fn_803717CC(char* self)
 		}
 	}
 }
-
+#pragma opt_propagation reset
 extern "C" char lbl_8050C870[];
 extern "C" char lbl_8050C8A0[];
 extern s8 lbl_8053AD61;
