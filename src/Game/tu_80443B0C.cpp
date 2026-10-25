@@ -364,6 +364,23 @@ extern "C" const char lbl_8048FBEC[];
 extern "C" void* lbl_804AF86C[];
 extern const f32 lbl_80543D70;
 extern const f32 lbl_80543D74;
+struct MenuPane80444B68 {
+    MenuPane80444B68() { vtable = lbl_804AF86C; }
+    void* vtable;
+    J2DPane* pane;
+    u8 pad[0x24];
+};
+struct Menu80444B68 {
+    void* vtable;
+    J2DScreen* screen;
+    MenuPane80444B68* panes[10];
+    JUtility::TColor colors[4];
+    f32 delta;
+    s32 number;
+    s32 timer;
+    u8 flag;
+    u8 state;
+};
 extern "C" void fn_80444B68(void* this_) {
     u8* self = (u8*)this_;
     void* p;
