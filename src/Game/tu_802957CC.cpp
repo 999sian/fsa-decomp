@@ -36,6 +36,11 @@ extern "C" u8 fn_8023B0F4(s32 idx, void* box, s32 room, s32 a, f32 f);
 extern "C" JGeometry::TVec3f lbl_8046C268[];
 extern "C" f32 lbl_8046C298[];
 
+static inline s32 WarpDestination(u32 param) {
+    s32 room = (param >> 24) & 7;
+    return room ? room + 7 : room;
+}
+
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
     s32 room;
@@ -1120,6 +1125,96 @@ extern "C" void fn_8029A974(void* p) {
                 v.y += 16.0f;
             }
             v.x += 16.0f;
+        }
+    }
+}
+
+extern "C" void fn_8029AE58(char* p) {
+    JGeometry::TVec3f origin = *(JGeometry::TVec3f*)(p + 0xc);
+    origin.x += *(f32*)(p + 0x60);
+    origin.y += *(f32*)(p + 0x64);
+    origin.x += 8.0f;
+    origin.y += 8.0f;
+    origin.z = 0.0f;
+    JGeometry::TVec3f pos = origin;
+    for (s32 i = 0; i < 6; i++) {
+        pos.y = origin.y;
+        for (s32 j = 0; j < 6; j++) {
+            ((u16*)(p + 0x320))[i * 6 + j] = fn_80226850(&pos, 1);
+            ((u16*)(p + 0x368))[i * 6 + j] = fn_80226850(&pos, 0);
+            if (*(u8*)(p + 0x2b5) == 0) {
+                if (*(s32*)(p + 0x244) == 0 || *(s32*)(p + 0x244) == 2)
+                    ((u16*)(p + 0x3b0))[i * 6 + j] = 0x78;
+                else
+                    ((u16*)(p + 0x3b0))[i * 6 + j] = 0x360;
+            }
+            pos.y += 16.0f;
+        }
+        pos.x += 16.0f;
+    }
+    *(u8*)(p + 0x2b5) = 1;
+    s32 warp = -1;
+    s32 flame = -1;
+    s32 door = -1;
+    f32 left = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+    f32 right = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+    f32 top = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+    f32 bottom = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+    while ((warp = fn_801F78F4(fn_801F856C(), 0x57415250, warp)) >= 0) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), warp);
+        if (other && *(s32*)((char*)fn_802D6A9C() + 0x14) == *(s32*)(other + 0x244) && *(s32*)((char*)fn_802D6A9C() + 0x18) == *(s32*)(other + 0x248)) {
+            s32 dest = (*(u32*)(p + 0x90) >> 7) & 0x1f;
+            dest = (dest + 7) & ~-(dest == 0);
+            s32 otherDest = (*(u32*)(other + 0x90) >> 24) & 7;
+            otherDest = otherDest ? otherDest + 7 : otherDest;
+            if (*(s32*)(other + 4) == dest && *(s32*)(p + 4) == otherDest) {
+                if (*(s32*)(p + 0x29c) < 4) {
+                    ((s32*)(p + 0x25c))[*(s32*)(p + 0x29c)] = warp;
+                    *(s32*)(p + 0x29c) += 1;
+                }
+            } else if (dest == otherDest && *(s32*)(p + 4) == *(s32*)(other + 4)) {
+                if (*(s32*)(p + 0x2a0) < 4) {
+                    ((s32*)(p + 0x26c))[*(s32*)(p + 0x2a0)] = warp;
+                    *(s32*)(p + 0x2a0) += 1;
+                    JGeometry::TVec3f v = *(JGeometry::TVec3f*)(other + 0xc);
+                    switch (*(u32*)(other + 0x90) & 0x7f) {
+                    case 0: case 3: v.y -= 2.0f; break;
+                    case 1: case 2: v.y += 2.0f; break;
+                    case 0x17: v.x += 2.0f; break;
+                    }
+                    *(JGeometry::TVec3f*)(other + 0xc) = v;
+                }
+            }
+        }
+    }
+    for (s32 i = 0; i < *(s32*)(p + 0x29c); i++) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), ((s32*)(p + 0x25c))[i]);
+        if (other) {
+            *(f32*)(p + 0x2dc + i * 8) = *(f32*)(other + 0xc);
+            *(f32*)(p + 0x2e0 + i * 8) = *(f32*)(other + 0x10);
+        }
+    }
+    while ((flame = fn_801F78F4(fn_801F856C(), 0x464c4d45, flame)) >= 0) {
+        if (fn_801F666C(fn_801F856C(), flame)) {
+            if (*(s32*)(p + 0x2a4) >= 4) break;
+            ((s32*)(p + 0x27c))[*(s32*)(p + 0x2a4)] = flame;
+            *(s32*)(p + 0x2a4) += 1;
+        }
+    }
+    while ((door = fn_801F78F4(fn_801F856C(), 0x444f4f52, door)) >= 0) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), door);
+        if (other) {
+            bool inside = false;
+            f32 x = *(f32*)(other + 0xc);
+            if (x >= left) {
+                f32 y = *(f32*)(other + 0x10);
+                if (y >= top && x < right && y < bottom) inside = true;
+            }
+            if (inside) {
+                if (*(s32*)(p + 0x2a8) >= 4) break;
+                ((s32*)(p + 0x28c))[*(s32*)(p + 0x2a8)] = door;
+                *(s32*)(p + 0x2a8) += 1;
+            }
         }
     }
 }
