@@ -11,13 +11,13 @@ extern "C" void fn_801F0E34(void*, s32, s32);
 extern "C" void fn_801E62D4(void*);
 extern "C" void fn_801D9C58(void*, s32);
 extern const u8 lbl_8053F1C8;
-extern f32 lbl_8053F38C;
+extern const f32 lbl_8053F38C;
 extern const f32 lbl_8053F3B4;
 extern const f32 lbl_8053F3B8;
 extern const f32 lbl_8053F3BC;
 extern const f32 lbl_8053F3C0;
-extern f32 lbl_8053F3C4;
-extern f32 lbl_8053F3C8;
+extern const f32 lbl_8053F3C4;
+extern const f32 lbl_8053F3C8;
 
 extern "C" u8 fn_801F37AC(void*, s32, void*, s32, s32, s32);
 extern "C" void fn_801CB538(s32, void*, s32, s32);
@@ -74,7 +74,7 @@ extern const f32 lbl_8053F3B0;
 extern "C" void fn_801D9C58(void*, s32);
 
 extern f32 lbl_8053F388;
-extern f32 lbl_8053F38C;
+extern const f32 lbl_8053F38C;
 extern f32 lbl_8053F390;
 extern f32 lbl_8053F394;
 extern f32 lbl_8053F398;
@@ -272,7 +272,7 @@ extern "C" u8 fn_801EAC54(void*, s32);
 extern "C" void fn_801CB538(s32, void*, s32, s32);
 extern "C" void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern f32 lbl_8053F3CC;
-extern f32 lbl_8053F3C4;
+extern const f32 lbl_8053F3C4;
 extern f64 lbl_8053F3D0;
 extern const u8 lbl_8053F1C8;
 static inline u8 canHitFire(u8* p, u8* other) {
@@ -422,7 +422,7 @@ skip:
 extern f32 lbl_8053F398;
 extern const f32 lbl_8053F3B4;
 extern const f32 lbl_8053F3C0;
-extern f32 lbl_8053F3C8;
+extern const f32 lbl_8053F3C8;
 extern f32 lbl_8053F3D8;
 extern f32 lbl_8053F3DC;
 extern f32 lbl_8053F3E0;
