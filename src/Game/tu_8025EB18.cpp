@@ -399,10 +399,10 @@ extern "C" void fn_8025F698(char* p, u8 check) {
     if (U32(p, 0xd6c) == 'NULL')
         notify = 0;
     if (isCarriedByPlayer(p, flag)) {
+        JGeometry::TVec3<f32> vel;
         JGeometry::TVec3<f32> dir;
         dir.set(lbl_8046B8FC[S32(p, 0x3dc)]);
         dir.scale(lbl_80540154);
-        JGeometry::TVec3<f32> vel;
         s32 st = S32(p, 0x1244);
         if (st == 0x1e || st == 0x32 || fn_8024189C(p) <= 0) {
             vel.x = lbl_80540150;
@@ -425,7 +425,8 @@ extern "C" void fn_8025F698(char* p, u8 check) {
                 } else {
                     pos.y = (s32)pos.y / 16 * 16 + 8;
                 }
-                vel = pos - *(JGeometry::TVec3<f32>*)fn_8023E724(S32(p, 0xd70));
+                JGeometry::TVec3<f32> diff = pos - *(JGeometry::TVec3<f32>*)fn_8023E724(S32(p, 0xd70));
+                vel.set(diff);
                 vel.scale(lbl_80540158);
             } else {
                 vel.scale(lbl_8054015C);
@@ -441,13 +442,13 @@ extern "C" void fn_8025F698(char* p, u8 check) {
             v.set(lbl_8046B92C[S32(p, 0x3dc)]);
             u32 kind = U32(actor, 0x1a0);
             if (kind == 'CRTL' || kind == 'BMTY') {
-                v.scale(lbl_80540160);
+                v *= lbl_80540160;
             } else if (kind == 'GRAS') {
-                v.scale(lbl_80540164);
+                v *= lbl_80540164;
             } else if (S32(actor, 0x1a4) == 0) {
-                v.scale(lbl_80540168);
+                v *= lbl_80540168;
             } else {
-                v.scale(lbl_80540164);
+                v *= lbl_80540164;
             }
             fn_801F3708(actor, &v);
             fn_8024F0E8(p, 0x20014);
