@@ -48,9 +48,9 @@ static inline void calcSeq(AnmSeqCtrl* this_) {
     s32 start = 0;
     s32 idx = start;
     for (; e->mFrame >= 0; e++, idx++) {
-        s32 prev = start;
+        f32 lo = start;
         start += e->_2;
-        if ((f32)prev <= frame && frame < (f32)start) {
+        if (lo <= frame && frame < (f32)start) {
             this_->_10 = clampSeq(this_, e->mFrame);
             this_->_1C = idx;
             return;
@@ -109,38 +109,7 @@ extern "C" void fn_801D1D60(AnmSeqCtrl* this_) {
 }
 
 extern "C" void fn_801D1F14(AnmSeqCtrl* this_, f32 frame) {
-    f32 end = (f32)this_->mCurFrame;
-    f32 f = frame;
-    if (f > end) {
-        f = end;
-    } else if (f < 0.0f) {
-        f = 0.0f;
-    }
-    if (f == (f32)this_->mCurFrame) {
-        if (this_->mCtrl.mAttr == 2) {
-            f = 0.0f;
-        } else {
-            f -= 0.001f;
-        }
-    }
-    this_->mCtrl.mFrame = f;
-    f32 cur = this_->mCtrl.mFrame;
-    SeqEntry* seq = this_->mSeqs[this_->mCurSeq];
-    SeqEntry* e = seq;
-    s32 start = 0;
-    s32 idx = start;
-    s16 fr;
-    for (; (fr = e->mFrame) >= 0; e++, idx++) {
-        s32 prev = start;
-        start += e->_2;
-        if ((f32)prev <= cur && cur < (f32)start) {
-            this_->_10 = clampSeq(this_, fr);
-            this_->_1C = idx;
-            return;
-        }
-    }
-    this_->_10 = clampSeq(this_, seq->mFrame);
-    this_->_1C = 0;
+    setSeqFrame(this_, frame);
 }
 
 static inline BOOL isEndPass(AnmSeqCtrl* this_) {
