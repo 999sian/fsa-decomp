@@ -3243,8 +3243,8 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 #if !defined(VERSION_G4SJ01)
-extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
-    ((u8*)param_1 + param_2)[0x10a] = param_3;
+extern "C" void fn_800DDD64(u8* p, s32 idx, u8 value) {
+    p[idx + 0x10a] = value;
 }
 #else
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
