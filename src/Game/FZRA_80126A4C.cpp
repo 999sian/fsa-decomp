@@ -478,13 +478,7 @@ extern "C" void fn_80127088(void* this_) {
             f32 inv = lbl_8053CAA4 / t;
             *(s32*)(p + 0x254) = (s32)(inv * (f32)(0xff - *(s32*)(p + 0x254)) + (f32)*(s32*)(p + 0x254));
         }
-        t = (f32)*(s32*)(p + 0x250);
-        f32 goal = *(f32*)(p + 0x270);
-        if (t < *(f32*)__float_epsilon) {
-            *(f32*)(p + 0xc) = goal;
-        } else {
-            *(f32*)(p + 0xc) = (lbl_8053CAA4 / t) * (goal - *(f32*)(p + 0xc)) + *(f32*)(p + 0xc);
-        }
+        fzraApproach((f32*)(p + 0xc), *(f32*)(p + 0x270), *(s32*)(p + 0x250));
         if (*(s32*)(p + 0x250) <= 0) {
             fn_80126A4C(this_, 0xe);
         }
@@ -519,20 +513,25 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* mgr, s32 kind);
 extern "C" void fn_80126A4C(void* this_, s32 flag);
 extern "C" void* lbl_8049E400[];
-extern "C" f32 lbl_8053CAD0;
+extern "C" const f32 lbl_8053CAD0;
 extern "C" f32 lbl_8053CABC;
 extern "C" f32 lbl_8053CAD4;
 extern "C" f32 lbl_8053CAA0;
+#pragma opt_propagation off
 extern "C" void fn_80127958(void* this_) {
     v01__5ActorFv(this_);
     u8* p = (u8*)this_;
     if (*(u32*)(p + 0x90) & 1) {
         *(u8*)(p + 0x258) = 1;
     }
-    f32 q0 = lbl_8053CAD0;
-    f32 q1 = lbl_8053CABC;
-    f32 q2 = lbl_8053CAD4;
-    f32 q3 = lbl_8053CAA0;
+    f32 q3;
+    f32 q2;
+    f32 q1;
+    f32 q0;
+    q0 = lbl_8053CAD0;
+    q1 = lbl_8053CABC;
+    q2 = lbl_8053CAD4;
+    q3 = lbl_8053CAA0;
     *(s32*)(p + 0x234) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
     *(s32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 8) & 0xff;
     *(f32*)(p + 0x60) = q0;
@@ -556,7 +555,7 @@ extern "C" void fn_80127958(void* this_) {
     *(u8*)(p + 0x11d) = 0;
     fn_80128398(fn_801283E8(), this_);
     if (*(s32*)(p + 0x234) > 0) {
-        if (!((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
+        if (!(u8)((Actor*)this_)->v11()) {
             void* mgr = fn_802D6A9C();
             if (fn_802D800C(mgr, *(s32*)(p + 0x234))) {
                 fn_80126A4C(this_, 1);
@@ -564,7 +563,7 @@ extern "C" void fn_80127958(void* this_) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_80127AAC(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
