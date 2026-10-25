@@ -1148,27 +1148,9 @@ extern "C" void fn_80299720(void* p) {
     }
 }
 
-extern "C" void fn_80299AD0(void* p) {
-    struct Probe {
-        Probe() {}
-        JGeometry::TVec3f pos;
-        JGeometry::TBox2f area;
-    };
-    char* col;
-    s32 j;
-    s32 room;
-    char* m;
-    char* row;
-    JGeometry::TBox2f* src;
-    char* self = (char*)p;
-    s32 i;
-    u8 ok;
+extern "C" void fn_80299AD0(char* self) {
     s32 dir;
-    f32 x0;
-    f32 y0;
-    f32 x1;
-    f32 y1;
-    Probe pt;
+    u8 ok;
 
     if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= 32.0f * FLT_EPSILON)) {
         return;
@@ -1190,41 +1172,7 @@ extern "C" void fn_80299AD0(void* p) {
     if (dir != 0) {
         return;
     }
-
-    room = *(s32*)(self + 4);
-    m = (char*)fn_802D6A9C();
-    src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
-    ok = 1;
-    pt.area = *src;
-    pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
-    pt.pos.x += *(f32*)(self + 0x68);
-    pt.pos.x += 8.0f;
-    x0 = pt.area.i.x - -32.0f;
-    y0 = pt.area.i.y - -32.0f;
-    x1 = pt.area.f.x + -32.0f;
-    y1 = pt.area.f.y + -32.0f;
-    pt.area.i.x = x0;
-    pt.area.i.y = y0;
-    pt.area.f.x = x1;
-    pt.area.f.y = y1;
-    pt.pos.y += *(f32*)(self + 0x64);
-    pt.pos.y += 8.0f;
-    pt.pos.z = 0.0f;
-    for (i = 0; i < 6; i++) {
-        if (!fn_802A1554(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
-            ok = 0;
-            break;
-        }
-        bool in = false;
-        if (pt.pos.x >= x0 && pt.pos.y >= y0 && pt.pos.x < x1 && pt.pos.y < y1) {
-            in = true;
-        }
-        if (!in) {
-            ok = 0;
-            break;
-        }
-        pt.pos.y += 16.0f;
-    }
+    ok = PushPathClearRight(self);
     if (!fn_802957CC(self, 0)) {
         ok = 0;
     }
@@ -1238,24 +1186,8 @@ extern "C" void fn_80299AD0(void* p) {
         *(f32*)(self + 0x250) = 16.0f;
         *(s32*)(self + 0x248) = 0;
         if (*(u8*)(self + 0x24c) == 0) {
-            JGeometry::TVec3f gridBase;
             *(u8*)(self + 0x24c) = 1;
-            gridBase = *(JGeometry::TVec3f*)(self + 0xc);
-            gridBase.x += *(f32*)(self + 0x60);
-            gridBase.y += *(f32*)(self + 0x64);
-            gridBase.x += 8.0f;
-            gridBase.y += 8.0f;
-            gridBase.z = 0.0f;
-            JGeometry::TVec3f grid(gridBase);
-            for (i = 0, row = self; i < 6; i++, row += 0xc) {
-                grid.y = gridBase.y;
-                for (j = 0, col = row; j < 6; j++, col += 2) {
-                    fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
-                    fn_802A381C(lbl_8053AC98, &grid, 1, 0);
-                    grid.y += 16.0f;
-                }
-                grid.x += 16.0f;
-            }
+            PushStampGrid(self);
         }
     }
 }
@@ -1307,7 +1239,7 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f& box) {
 static inline s32 PushDirFromLink(char* self) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
         s32 room = *(s32*)(self + 4);
-        if (fn_8023DE58(0) == room) {
+        if (room == fn_8023DE58(0)) {
             s32 dir = fn_80238BC4(*(void**)(self + 0x198));
             if (dir >= 0 && dir < 4) {
                 *(s32*)(self + 0x2cc) = 1;
@@ -1363,7 +1295,7 @@ extern "C" void fn_80299FB0(void* p) {
     JGeometry::TVec3f grid;
     JGeometry::TVec3f gridBase;
 
-    if (!((JGeometry::TVec3f*)(self + 0x250))->isZero()) {
+    if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= lbl_805406A8 * FLT_EPSILON)) {
         return;
     }
     if (*(u8*)(self + 0x2c0) == 1) {
@@ -1595,16 +1527,17 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f* box) {
     }
     return -1;
 }
+#pragma opt_common_subs off
 extern "C" void fn_8029A974(char* self) {
-    int mode;
-    int i;
+    s32 mode;
+    s32 i;
     u8 flag;
-    int room;
+    s32 room;
     void* h;
     char* row;
     char* col;
     char* base;
-    int j;
+    s32 j;
     u8 ok;
     f32 lenSq;
     JGeometry::TVec3f* vel;
@@ -1706,7 +1639,7 @@ extern "C" void fn_8029A974(char* self) {
         }
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8029AE58(char* p) {
     const f32 center = lbl_80540678;
     JGeometry::TVec3f v;
