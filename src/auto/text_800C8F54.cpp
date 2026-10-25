@@ -175,6 +175,10 @@ class J3DLockedMaterial : public J3DMaterial {
 public:
     void initialize();
 };
+class J3DPatchedMaterial : public J3DMaterial {
+public:
+    void initialize();
+};
 class J3DDisplayListObj {
 public:
     void setSingleDisplayList(void*, u32);
