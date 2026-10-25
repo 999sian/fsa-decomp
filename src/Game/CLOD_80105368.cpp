@@ -72,22 +72,17 @@ extern "C" void fn_801056E4(char* p) {
     s32 room = *(s32*)(p+4);
     u8* flags = fn_802D6A9C() + 0x10000;
     if(flags[room+0x31df]) {
-        f32 box[4];
-        box[0]=*(f32*)(p+0x60);
-        box[1]=*(f32*)(p+0x64);
-        box[2]=*(f32*)(p+0x68);
-        box[3]=*(f32*)(p+0x6c);
-        box[0]+=*(f32*)(p+0xc);
-        box[2]+=*(f32*)(p+0xc);
-        box[1]+=*(f32*)(p+0x10);
-        box[3]+=*(f32*)(p+0x10);
-        fn_80239914(box,*(s32*)(p+4),*(s32*)(p+0x198));
+        JGeometry::TBox2f box;
+        box.set(*(JGeometry::TBox2f*)(p+0x60));
+        box.addPos(*(JGeometry::TVec2f*)(p+0xc));
+        fn_80239914((f32*)&box,*(s32*)(p+4),*(s32*)(p+0x198));
     }
     s32 bit=*(s32*)(p+0x368);
     if(bit>0 && fn_802D800C(fn_802D6A9C(),bit)) {
         p[0x11c]=0;
         return;
     }
+    JGeometry::TVec3f vel;
     switch(*(s32*)(p+0x370)) {
     case 0:
         if(*(s32*)(p+0x354)>0) {
@@ -96,8 +91,10 @@ extern "C" void fn_801056E4(char* p) {
             if(*(s32*)(p+0x354)>0 && *(s32*)(p+0x364)>0) {
                 u8 current=fn_800FD894(p+0x230,-1,0,0);
                 s32 requested=*(s32*)(p+0x364);
-                if(requested<=current && (u8)requested < *(u8*)(p+0x232))
-                    *(u8*)(p+0x233)=(u8)requested;
+                if(requested<=current) {
+                    u8 value=requested;
+                    if(value < *(u8*)(p+0x232)) *(u8*)(p+0x233)=value;
+                }
             }
             *(s32*)(p+0x360)=0;
             *(s32*)(p+0x370)=1;
@@ -105,12 +102,12 @@ extern "C" void fn_801056E4(char* p) {
         break;
     case 1:
         if(*(s32*)(p+0x354)>0) {
-            JGeometry::TVec3f vel;
             vel.set(lbl_8053C228,lbl_8053C228,lbl_8053C228);
             s32 room=*(s32*)(p+4);
             s32 out;
+            f32 speed=lbl_8053C240 * *(s32*)(p+0x358)+lbl_8053C234;
             JGeometry::TVec3f pos=*(JGeometry::TVec3f*)(p+0xc);
-            s32 result=fn_800FDEA0(p+0x230,&pos,&vel,&room,&out,0x200, lbl_8053C240 * *(s32*)(p+0x358)+lbl_8053C234);
+            s32 result=fn_800FDEA0(p+0x230,&pos,&vel,&room,&out,0x200, speed);
             *(f32*)(p+0x3c)=vel.x;
             *(f32*)(p+0x40)=vel.y;
             *(f32*)(p+0x44)=vel.z;
@@ -134,10 +131,12 @@ extern "C" void fn_801056E4(char* p) {
     }
     for(s32 i=0;i<4;i++) {
         if((u8)fn_801053E8(p,i) && !fn_8022D75C(i) && !fn_80230188(i)) {
-            if(fn_8023E724(i)->z<=lbl_8053C228) {
+            if(fn_8023E724(i)->z>lbl_8053C228) continue;
+            {
+                JGeometry::TVec3f copy;
                 JGeometry::TVec3f delta=*(JGeometry::TVec3f*)(p+0xc);
                 delta-=*(JGeometry::TVec3f*)(p+0x18);
-                JGeometry::TVec3f copy=delta;
+                copy=delta;
                 fn_8023DF68(i,&copy);
             }
         }
