@@ -860,6 +860,30 @@ static inline void StepCount2(u8* this_, s32 i) {
     }
 }
 
+struct J2DPane {
+    JGeometry::TBox2<f32>* getBounds();
+};
+
+// Pane reached through GetKeyed: resize(w, h) at vtable 0x18.
+struct HudResizePane {
+    virtual void r00();
+    virtual void r01();
+    virtual void r02();
+    virtual void r03();
+    virtual void resize(f32 w, f32 h);
+};
+
+extern "C" void fn_80422824(u8* this_);
+extern "C" u8 fn_8023BD70(s32 i);
+extern "C" void fn_80441490(void* p);
+extern const f32 lbl_80543A68;
+extern const f32 lbl_80543A70;
+extern const f32 lbl_80543A74;
+extern const f32 lbl_80543A78;
+extern const f32 lbl_80543A7C;
+extern const f32 lbl_80543A80;
+extern const f32 lbl_80543A84;
+
 extern "C" void fn_804253E0(u8* this_, s32 i) {
     s32* p = &((s32*)(lbl_80529DEC + 0xd8))[i];
     s32 cur = *p;
@@ -986,9 +1010,21 @@ extern "C" void fn_80425F6C(u8* self) {
     (*(J2DScreen**)(self + 4))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
     fn_8044148C(*(void**)(self + 0xf0));
 }
-#pragma fp_contract on
+#pragma opt_propagation off
 extern "C" void fn_804263A8(u8* this_) {
     const u8* base = lbl_8048E1B8;
+    const u64* key1;
+    const u64* key0;
+    const u64* key2;
+    const u64* key3;
+    const u64* key4;
+    const u64* key5;
+    const u64* key6;
+    s32 shift;
+    const u64* key7;
+    const u64* key8;
+    const u64* key9;
+    const u64* firstKeys;
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -1040,6 +1076,8 @@ extern "C" void fn_804263A8(u8* this_) {
     }
 
     this_[0x255] = 0xf;
+    firstKeys = (const u64*)(base + 0xd68);
+    shift = 0;
     this_[0x256] = 0xf;
     this_[0x257] = 0xf;
     this_[0x258] = 0;
@@ -1051,18 +1089,17 @@ extern "C" void fn_804263A8(u8* this_) {
     *(s32*)(this_ + 0x150) = -2;
     *(s32*)(this_ + 0x154) = -2;
 
-    const u64* firstKeys = (const u64*)(base + 0xd68);
-    const u64* key0 = firstKeys;
-    const u64* key1 = (const u64*)(base + 0xda8);
-    const u64* key2 = (const u64*)(base + 0xdc8);
-    const u64* key3 = (const u64*)(base + 0xde8);
-    const u64* key4 = (const u64*)(base + 0xe28);
-    const u64* key5 = (const u64*)(base + 0xe68);
-    const u64* key6 = (const u64*)(base + 0xe88);
-    const u64* key7 = (const u64*)(base + 0xe08);
-    const u64* key8 = (const u64*)(base + 0xea8);
-    const u64* key9 = (const u64*)(base + 0xec8);
-    for (i = 0; i < 4; i++, ++key0, ++key1, ++key2, ++key3, ++key4, ++key5, ++key6, ++key7, ++key8, ++key9) {
+    key0 = firstKeys;
+    key1 = (const u64*)(base + 0xda8);
+    key2 = (const u64*)(base + 0xdc8);
+    key3 = (const u64*)(base + 0xde8);
+    key4 = (const u64*)(base + 0xe28);
+    key5 = (const u64*)(base + 0xe68);
+    key6 = (const u64*)(base + 0xe88);
+    key7 = (const u64*)(base + 0xe08);
+    key8 = (const u64*)(base + 0xea8);
+    key9 = (const u64*)(base + 0xec8);
+    for (i = 0; i < 4; i++, ++key0, ++key1, ++key2, ++key3, ++key4, ++key5, ++key6, ++key7, ++key8, ++key9, shift += 2) {
         if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
             ((u8*)GetHeart(*(u8**)(this_ + 0x18), *key0))[0xb0] = 0;
             ((u8*)GetHeart(*(u8**)(this_ + 0x18), *key1))[0xb0] = 0;
@@ -1075,7 +1112,7 @@ extern "C" void fn_804263A8(u8* this_) {
             } else {
                 ((u8*)GetHeart(*(u8**)(this_ + 4), *key6))[0xb0] = 0;
             }
-            if (((s32)lbl_8053AAF8[0x83] >> (2 * i) & 3) == 2) {
+            if (((u32)((s32)lbl_8053AAF8[0x83] >> shift) & 3) == 2) {
                 ((u8*)GetHeart(*(u8**)(this_ + 4), *key7))[0xb0] = 1;
                 ((u8*)GetHeart(*(u8**)(this_ + 4), *key8))[0xb0] = 1;
                 ((u8*)GetHeart(*(u8**)(this_ + 4), *key9))[0xb0] = 0;
@@ -1101,8 +1138,8 @@ extern "C" void fn_804263A8(u8* this_) {
     {
         for (i = 0; i < 4; i++) {
             u32 tag = fn_804030C4(0x54494D47, lbl_804B145C[0]);
-            CallSlot68(GetHeart(*(u8**)(this_ + 0x18), firstKeys[i]), tag);
-            CallSlot68(GetHeart(*(u8**)(this_ + 0x18), *(const u64*)(base + 0xd88 + i * 8)), tag);
+            ((TimerPicture*)GetHeart(*(u8**)(this_ + 0x18), firstKeys[i]))->changeTexture(tag, 0);
+            ((TimerPicture*)GetHeart(*(u8**)(this_ + 0x18), *(const u64*)(base + 0xd88 + i * 8)))->changeTexture(tag, 0);
         }
     }
 
@@ -1113,7 +1150,7 @@ extern "C" void fn_804263A8(u8* this_) {
     }
     fn_8044172C(*(void**)(this_ + 0xf0));
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_80426AD4(void* this_, s16 how) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B146C;
