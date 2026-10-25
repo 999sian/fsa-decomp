@@ -92,10 +92,10 @@ static inline void* rnbwEffect(u16 id, Actor* actor) {
     return fn_8013CC50(actor->field_04, &actor->field_0C, id, 0, -1, 0, 0, 1, lbl_8053CB48);
 }
 static inline void rnbwSpawn(Actor* actor, const u16* ids) {
-    const u16* table = ids;
     void** hp = (void**)actor;
-    s32 i;
-    for (i = 0; i < 5; i++, hp++, table++) {
+    const u16* table = ids;
+    s32 i = 0;
+    for (; i < 5; i++, hp++, table++) {
         if (hp[0x8f] == 0) {
             u16 id = *table;
             hp[0x8f] = rnbwEffect(id, actor);
