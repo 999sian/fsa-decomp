@@ -159,7 +159,7 @@ extern const f32 lbl_80543CEC;
 
 
 extern void* lbl_8053AED0;
-extern "C" void* fn_8043DF8C(void* game);
+extern "C" void fn_8043DF8C(void* p, f32 x, f32 y);
 extern char* lbl_8053AAF8;
 extern s32 lbl_8053AEF0;
 extern u8 lbl_80529DEC[];
