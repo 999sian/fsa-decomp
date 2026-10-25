@@ -81,6 +81,7 @@ extern "C" void* Actor_CreateByID(void* mgr, u32 id, u32 room, JGeometry::TVec2<
 extern f32 lbl_80540790;
 extern "C" void fn_80230FD0(s32 h, s32 id);
 extern "C" void fn_80458880(void* p, s32 a, s32 b);
+extern void* lbl_8053AF80;
 // Shared tail of the fn_802A02A8 tile cases: re-tile pos with value, then refresh.
 static inline s32 fn_802A02A8_Refresh(JGeometry::TVec2<f32>* pos, u32 room, u16 value, s32 p3) {
     JGeometry::TVec2<f32> t = *pos;
