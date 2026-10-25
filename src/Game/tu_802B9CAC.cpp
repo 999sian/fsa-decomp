@@ -53,8 +53,6 @@ static inline f32 distSq(const ActorV::Vec2& a, const ActorV::Vec2& b) {
     f32 dy2 = dy * dy;
     return dx2 + dy2;
 }
-#pragma opt_dead_assignments reset
-#pragma opt_propagation reset
 
 // NonMatching: one instruction short, retail materialises a dead
 // "addi r4, this, 0xc" (address of pos) after the fn_8023A478 call.
