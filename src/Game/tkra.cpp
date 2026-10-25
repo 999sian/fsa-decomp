@@ -57,6 +57,7 @@ struct TkraG { u8 pad[0x131df]; u8 arr[4]; };
 extern "C" TkraG* fn_802D6A9C(void);
 extern "C" u32 fn_80226BC4(f32* pos, s32 room);
 extern "C" u8 fn_802D49A8(void* g, s32 room, u16 idx);
+extern const f32 lbl_805413B0;
 extern const f32 lbl_805413B4;
 extern const f32 lbl_805413B8;
 extern const f32 lbl_805413BC;
