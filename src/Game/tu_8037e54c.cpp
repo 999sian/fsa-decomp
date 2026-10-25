@@ -199,20 +199,20 @@ struct CharFontVt {
     virtual void v11(s8 ch, s32* info);
 };
 
-static inline u8 fn_8037F580_getw(u8* buf, u32* idx) {
+static inline u8 fn_8037F580_getw(char* buf, s32* idx) {
     s32 info;
     CharFontVt* font = *(CharFontVt**)((u8*)lbl_8053AD78 + 0x154);
-    font->v11((s8)buf[*idx], &info);
+    font->v11(buf[*idx], &info);
     return ((u8*)&info)[1];
 }
 
-static inline f32 fn_8037F580_adv(f32 acc, f32 scale, u8 w, u8* buf, u32* idx, u8 ch) {
+static inline f32 fn_8037F580_adv(f32 acc, f32 scale, u8 w, char* buf, s32* idx, char ch) {
     *idx += 1;
     buf[*idx] = ch;
     return scale * (f32)w + acc;
 }
 
-static inline f32 fn_8037F580_skip(f32 acc, f32 scale, u8 w, u32* idx) {
+static inline f32 fn_8037F580_skip(f32 acc, f32 scale, u8 w, s32* idx) {
     *idx += 1;
     return scale * (f32)w + acc;
 }
