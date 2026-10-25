@@ -1,24 +1,11 @@
+#define Vec SDKVec
+#define PSMTXIdentity SDK_PSMTXIdentity
+#include "JSystem/JGeometry/Vec.h"
+#undef PSMTXIdentity
+#undef Vec
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-
-
-namespace JMath {
-template <int length, typename T>
-struct TAtanTable {
-    T atan2_(T, T) const;
-    T mTable[length];
-};
-struct TSinCosPair {
-    f32 first;
-    f32 second;
-};
-struct TSinCosTable {
-    TSinCosPair mTable[2048];
-};
-extern const TAtanTable<1024, f32> atanTable_;
-extern const TSinCosTable sincosTable_;
-}
 
 extern "C" char lbl_804AC250[];
 extern "C" void fn_801EE434(void* handle);
