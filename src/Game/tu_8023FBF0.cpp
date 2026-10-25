@@ -150,8 +150,8 @@ inline s32 countSharing(const char* p) {
 
 inline s32 countSharingH(const char* p) {
 s32 i;
-s32 c;
 s32 linked;
+s32 c;
 c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
