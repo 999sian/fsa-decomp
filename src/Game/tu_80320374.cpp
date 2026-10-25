@@ -52,8 +52,6 @@ extern "C" u8 lbl_8047182C[];
 extern "C" void fn_801F06F0(void*, void*, s32, void*, s32, f32, f32);
 extern "C" void fn_803075AC(s32, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80320D18(char* p) {
-    f32 scale;
-    f32 angle;
     if (*(s32*)(p + 0x230) == 0 && *(s32*)(p + 0x278) <= 180) {
         if ((*(s32*)(p + 0x278) & 2) == 0) return;
     }
@@ -74,6 +72,8 @@ extern "C" void fn_80320D18(char* p) {
     rec.palette = 1;
     if (*(s32*)(p + 0x2a8) == 1) {
         PSMTXIdentity(m);
+        f32 angle;
+        f32 scale;
         angle = *(f32*)(p + 0x238);
         scale = *(f32*)(p + 0x234);
         tlwpRotMtx(m, lbl_80541AE0, angle, lbl_80541AE0, scale);
@@ -132,6 +132,7 @@ extern "C" s32 fn_8032221C(char* p, s32 p2, f32* pos) {
     s32 t;
     f32 x;
     f32 y;
+    int roomLater = p2;
 
     t = ((u16 (*)(f32*, s32))fn_8022461C)(pos, p2);
     fn_80226850(pos, p2);
@@ -195,7 +196,7 @@ extern "C" s32 fn_8032221C(char* p, s32 p2, f32* pos) {
         return 0;
     }
     if (t != 0 && t != 3 && t != 0xe && t != 0xd && t != 0x3b && t != 4 && t != 5 && t != 6 && t != 7 && t != 2 && t != 0x50 && t != 0xc && t != 0x27 && t != 0x28 && t != 0x29 && t != 0x2a && t != 0x2b && t != 0x2c && t != 0x2d && t != 0x2e && t != 0x2f && t != 0x20 && t != 0x39 && t != 0x3a && t != 0x4c && t != 0x4d && t != 0x4e && t != 0x4f) {
-        if (fn_80226850(pos, p2) == 0x3a || fn_80226850(pos, p2) == 0x3d) {
+        if (fn_80226850(pos, roomLater) == 0x3a || fn_80226850(pos, roomLater) == 0x3d) {
             *(s32*)(p + 0x274) = 0;
             return 0;
         }
