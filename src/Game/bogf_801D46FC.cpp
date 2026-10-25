@@ -367,7 +367,6 @@ struct BogfRandom {
 };
 struct BogfGame { u8 pad[0xb4]; BogfRandom rnd; };
 static inline f32 bogfRand() { return lbl_8053AAF8->rnd.get_ufloat_1(); }
-static inline f32 bogfLerp(f32 a, f32 b, f32 t) { return a + t * (b - a); }
 static inline f32 bogfRandF(f32 s) { return s * lbl_8053AAF8->rnd.get_ufloat_1(); }
 static inline f32 bogfRandPM(f32 s) { return s * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8); }
 
