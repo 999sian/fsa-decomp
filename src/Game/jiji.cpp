@@ -199,10 +199,7 @@ extern "C" void fn_8037B7EC(JijiWork* w) {
 #include "Game/AnimEffectRec.h"
 extern "C" void fn_801EE434(void* h);
 
-struct JijiBlock {
-    u8 raw[0x288];
-};
-extern "C" u8 lbl_804AE9C0[];
+
 extern "C" void __dt__13AnimEffectRecFv(void* p, int flag);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* p);
