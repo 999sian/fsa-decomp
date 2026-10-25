@@ -802,9 +802,9 @@ extern "C" void fn_8043D834(u8* self) {
 extern "C" void fn_8043D874(u8* param_1, s32 i, s32 val, u8 flag) {
     u8* game = (u8*)lbl_8053AAF8;
     if (game[0x7f] != 0) {
-        ((void (*)(void*, s32, s32, u8))fn_8041E708)(*(void**)(param_1 + 0x290), i, val, flag);
+        fn_8041E708(*(void**)(param_1 + 0x290), i, val, flag);
     } else {
-        ((void (*)(void*, s32, s32, u8))fn_80425234)(*(void**)(param_1 + 0x294), i, val, flag);
+        fn_80425234(*(void**)(param_1 + 0x294), i, val, flag);
     }
 }
 
