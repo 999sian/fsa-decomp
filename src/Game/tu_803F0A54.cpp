@@ -4,8 +4,6 @@ struct FsaMenuAction : FsaMenuActionBase {
     virtual void v00();
     virtual void v01();
     virtual void v02();
-    virtual void v03();
-    virtual void v04();
     virtual void setAction(u32*);
 };
 #include "JSystem/J2D/J2DPane.h"
