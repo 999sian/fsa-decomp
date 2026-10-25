@@ -93,6 +93,22 @@ static inline void PlainTileQuad802F(u16 tile, f32 x, f32 y) {
     GXWGFifo.f32=x;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
 }
 
+extern "C" f32 lbl_80541574;
+extern "C" u8* lbl_8053AEC8;
+static inline u8 RendererFadeAlpha802F() {
+    return lbl_8053AEC8 ? lbl_8053AEC8[0x5c] : 0;
+}
+static inline void ScreenMaskQuad802F(const s32* r) {
+    GXWGFifo.f32=(f32)r[0];GXWGFifo.f32=(f32)r[1];GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=lbl_80541574;GXWGFifo.f32=lbl_80541574;
+    GXWGFifo.f32=(f32)(r[0]+r[2]);GXWGFifo.f32=(f32)r[1];GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541574;
+    GXWGFifo.f32=(f32)(r[0]+r[2]);GXWGFifo.f32=(f32)(r[1]+r[3]);GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541518;
+    GXWGFifo.f32=(f32)r[0];GXWGFifo.f32=(f32)(r[1]+r[3]);GXWGFifo.f32=lbl_805414F8;
+    GXWGFifo.f32=lbl_80541574;GXWGFifo.f32=lbl_80541518;
+}
+
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
 #include "sdk/stl/math.h"
 static inline void DrawTileQuad(u16 t, s32 px, s32 py, f32 ox, f32 oy, f32 oz) {
