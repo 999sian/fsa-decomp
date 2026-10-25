@@ -85,6 +85,10 @@ inline s32 playerIdx(char* p) {
     return S32(p, 0x4);
 }
 
+extern "C" void fn_80270948(char*, const JGeometry::TVec3<f32>*);
+extern "C" void fn_802C1D30(void*, const JGeometry::TVec3<f32>*, s32);
+extern "C" int lbl_8053A190;
+
 typedef JGeometry::TVec3<f32> TrailPos;
 struct PlayerTrail {
     u8 pad0[0x8];
