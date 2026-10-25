@@ -70,7 +70,7 @@ static inline u8 tu801D3320_isFree(Vec3f* pos, s32 room) {
 }
 
 static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
-    u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
+    int n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
     u8 best = 0;
     f32 bestD = lbl_8053F080;
     for (int i = 0; i < n; i++) {
@@ -194,25 +194,25 @@ extern "C" void fn_801D3320(char* this_) {
         return;
     }
     Vec3f dir = d;
-    d *= ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+    d.scale(((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
     u8 a = fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), sel);
     u8 b = fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), next);
     if (a) {
         if (d.squared() < lbl_8053F090) {
             d.set(dir);
-            tu801D3320_normalize(d);
-            d *= lbl_8053F088;
+            tu801D3320_normalizeR(d);
+            d.scale(lbl_8053F088);
         }
     } else if (b) {
         f32 len = PSVECMag(&dir);
         if (PSVECMag(&d) > len - lbl_8053F088) {
             d.set(dir);
-            tu801D3320_normalize(d);
-            d *= len - lbl_8053F088;
+            tu801D3320_normalizeR(d);
+            d.scale(len - lbl_8053F088);
         }
     }
     ((Vec3f*)(this_ + 0x32c))->add(d);
-    if (!tu801D3320_isFreeT((Vec3f*)(this_ + 0x32c), this_) || fn_801CAEF4(this_, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
+    if (!tu801D3320_isFree((Vec3f*)(this_ + 0x32c), *(s32*)(this_ + 0x4)) || fn_801CAEF4(this_, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
         if (b) {
             ((Vec3f*)(this_ + 0x32c))->set(cur);
             return;
