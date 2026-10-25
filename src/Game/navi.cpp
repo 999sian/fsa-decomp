@@ -2,6 +2,7 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 // ---- fn_8021ED04_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
@@ -650,12 +651,12 @@ extern "C" void fn_8021E8D0(char* p) {
             *(void**)(p + 0x2d4) = e;
             e = *(void**)(p + 0x2d0);
             if (e != 0) {
+                const u8* colors = lbl_8046A7AC;
                 s32 i = *(u8*)(p + 0x2ac) * 3;
-                u8 red = lbl_8046A7AC[i];
-                const u8* color = lbl_8046A7AC + i;
-                u8 green = color[1];
+                u8 red = colors[i];
+                u8 green = colors[i + 1];
                 ((u8*)e)[0xbc] = red;
-                u8 blue = color[2];
+                u8 blue = colors[i + 2];
                 ((u8*)e)[0xbd] = green;
                 ((u8*)e)[0xbe] = blue;
             }
