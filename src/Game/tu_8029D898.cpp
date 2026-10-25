@@ -91,6 +91,19 @@ static inline void fn_8029E9EC_sub(JGeometry::TVec2<f32>* pos, s32 room, u16 par
         fn_802D7D00(fn_802D6A9C(), room, idx, 1);
     }
 }
+// Replaces the room-0 tile at pos with tile `value` and refreshes it.
+static inline void SetTile0(JGeometry::TVec2<f32> pos, u16 value) {
+    void* mgr = lbl_8053AC98;
+    *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&pos, 0);
+    s32 idx = *(s32*)((char*)mgr + 0x20);
+    fn_802D782C(fn_802D6A9C(), 1);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, value);
+    s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+    if (n != -1) {
+        fn_802D7D00(fn_802D6A9C(), 0, n, 1);
+    }
+}
+
 extern "C" void fn_8029D898(void* a, s32 b) {
     s32 v = *(s32*)((char*)fn_802D6A9C() + 0x34);
     fn_802D7970(fn_802D6A9C(), b);
@@ -619,8 +632,6 @@ extern "C" u32 fn_802A01F0(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32
 }
 
 extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
-    s32* g;
-    s32 handle;
     JGeometry::TVec2<f32> p;
     f32 x = pos->x;
     f32 y = pos->y;
@@ -628,77 +639,78 @@ extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
     p.x = x;
     *(s32*)(self + 0x20) = fn_80226BC4(&p, 0);
     *(u16*)(self + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), 0, *(s32*)(self + 0x20));
-    u16 kind = *(u16*)(self + 0x24);
-    if (kind == 0x69 || kind == 0x68 || kind == 0x75 || (u16)(kind - 0x6a) <= 1 || kind == 0x82 ||
-        kind == 0x5f || (u16)(kind - 0x70) <= 3 || (u16)(kind - 0x40) <= 4 || kind == 0xe5) {
+    if (*(u16*)(self + 0x24) == 0x69 || *(u16*)(self + 0x24) == 0x68 || *(u16*)(self + 0x24) == 0x75 ||
+        (u16)(*(u16*)(self + 0x24) - 0x6a) <= 1 || *(u16*)(self + 0x24) == 0x82 || *(u16*)(self + 0x24) == 0x5f ||
+        (u16)(*(u16*)(self + 0x24) - 0x70) <= 3 || (u16)(*(u16*)(self + 0x24) - 0x40) <= 4 ||
+        *(u16*)(self + 0x24) == 0xe5) {
+        u16 kind = *(u16*)(self + 0x24);
         switch (kind) {
         case 0x72:
         case 0x73:
         case 0x82: {
             if (kind == 0x72 || kind == 0x73) {
                 JGeometry::TVec2<f32> t = *pos;
-                g = (s32*)lbl_8053AC98;
-                g[8] = fn_80226BC4(&t, 0);
-                handle = g[8];
+                void* mgr = lbl_8053AC98;
+                *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
+                s32 idx = *(s32*)((char*)mgr + 0x20);
                 fn_802D782C(fn_802D6A9C(), 1);
-                fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, handle, 0x7c);
-                handle = fn_802D4C10(fn_802D6A9C(), 0, (u16)g[8]);
-                if (handle != -1) {
-                    fn_802D7D00(fn_802D6A9C(), 0, handle, 1);
+                fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x7c);
+                s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+                if (n != -1) {
+                    fn_802D7D00(fn_802D6A9C(), 0, n, 1);
                 }
             } else {
                 JGeometry::TVec2<f32> t = *pos;
-                g = (s32*)lbl_8053AC98;
-                g[8] = fn_80226BC4(&t, 0);
-                handle = g[8];
+                void* mgr = lbl_8053AC98;
+                *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
+                s32 idx = *(s32*)((char*)mgr + 0x20);
                 fn_802D782C(fn_802D6A9C(), 1);
-                fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, handle, 0x83);
-                handle = fn_802D4C10(fn_802D6A9C(), 0, (u16)g[8]);
-                if (handle != -1) {
-                    fn_802D7D00(fn_802D6A9C(), 0, handle, 1);
+                fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x83);
+                s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+                if (n != -1) {
+                    fn_802D7D00(fn_802D6A9C(), 0, n, 1);
                 }
             }
             void* id = Actor_CreateByID(fn_801F856C(), 0x53544f4e, 0, pos, 0, -1, -1);
-            s32* actor = (s32*)fn_801F666C(fn_801F856C(), id);
+            ActorVt* actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
             if (actor != 0) {
-                (*(void (**)(void*))(*actor + 0x24))(actor);
+                actor->activate();
             }
             break;
         }
         case 0x5f: {
             JGeometry::TVec2<f32> t = *pos;
-            g = (s32*)lbl_8053AC98;
-            g[8] = fn_80226BC4(&t, 0);
-            handle = g[8];
+            void* mgr = lbl_8053AC98;
+            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
+            s32 idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, handle, 0x83);
-            handle = fn_802D4C10(fn_802D6A9C(), 0, (u16)g[8]);
-            if (handle != -1) {
-                fn_802D7D00(fn_802D6A9C(), 0, handle, 1);
+            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x83);
+            s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+            if (n != -1) {
+                fn_802D7D00(fn_802D6A9C(), 0, n, 1);
             }
             void* id = Actor_CreateByID(fn_801F856C(), 0x59415349, 0, pos, 0, -1, -1);
-            s32* actor = (s32*)fn_801F666C(fn_801F856C(), id);
+            ActorVt* actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
             if (actor != 0) {
-                (*(void (**)(void*))(*actor + 0x24))(actor);
+                actor->activate();
             }
             break;
         }
         case 0xe5: {
             JGeometry::TVec2<f32> t = *pos;
-            g = (s32*)lbl_8053AC98;
-            g[8] = fn_80226BC4(&t, 0);
-            handle = g[8];
+            void* mgr = lbl_8053AC98;
+            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
+            s32 idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, handle, 0x9d);
-            handle = fn_802D4C10(fn_802D6A9C(), 0, (u16)g[8]);
-            if (handle != -1) {
-                fn_802D7D00(fn_802D6A9C(), 0, handle, 1);
+            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x9d);
+            s32 n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+            if (n != -1) {
+                fn_802D7D00(fn_802D6A9C(), 0, n, 1);
             }
             fn_8013CC50(0, pos, 0xf9, 1, 0, 0, 0, 1, lbl_80540790);
             fn_8013CC50(0, pos, 0xfa, 1, 0, 0, 0, 1, lbl_80540790);
             u32 msg = 0x50045;
-            WaveSub* sub = (WaveSub*)((WaveOwner*)self)->mpSub;
-            ((void (*)(void*, u32*))(*(void***)((char*)sub + 8))[5])(sub, &msg);
+            ((WaveMsgSink*)((WaveOwner*)self)->mpSub)->post(&msg);
             break;
         }
         }
