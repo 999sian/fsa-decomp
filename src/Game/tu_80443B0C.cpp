@@ -8,9 +8,6 @@ struct FsaBlock48 {
     u32 w[12];
 };
 
-static inline void copyFsaBlock48(FsaBlock48* dst, const FsaBlock48* src) {
-    *dst = *src;
-}
 extern "C" void __dl__FPv(void* p);
 extern const f32 lbl_80543D78;
 extern "C" void fn_8013B490(void*);
@@ -531,12 +528,15 @@ extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void*, void*);
+#pragma opt_propagation off
+#pragma opt_common_subs off
 #pragma opt_strength_reduction off
 extern "C" void fn_80445338(void) {
-    u8* p = lbl_804B1B00;
+    u8* __restrict p = lbl_804B1B00;
     u8* base = lbl_8052CD00;
-    FsaBlock48* __restrict dst = (FsaBlock48*)(p + 0x30);
+    FsaBlock48* dst = (FsaBlock48*)(p + 0x30);
     *dst = *(FsaBlock48*)p;
+
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
@@ -584,3 +584,5 @@ extern "C" void fn_80445338(void) {
     }
 }
 #pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
