@@ -1033,16 +1033,18 @@ extern "C" void fn_801C9420(char* this_, f32* v) {
     JGeometry::TVec2<f32> cur;
     JGeometry::TVec2<f32> next;
     JGeometry::TVec2<f32> prev;
+    s32 j;
+    s32 i;
     f32 ox = *(f32*)(this_ + 0xc);
     f32 oy = *(f32*)(this_ + 0x10);
-    for (s32 i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         ((JGeometry::TVec2<f32>*)v)->normalize();
         ((JGeometry::TVec2<f32>*)v)->scale(8.0f);
         f32 vx = v[0];
         f32 vy = v[1];
         cur.x = ox;
         cur.y = oy;
-        for (s32 j = 0; j < 30; j++) {
+        for (j = 0; j < 30; j++) {
             prev.x = cur.x;
             prev.y = cur.y;
             cur.x += vx;
@@ -1051,6 +1053,7 @@ extern "C" void fn_801C9420(char* this_, f32* v) {
                 break;
             }
             JGeometry::TVec2<f32> d;
+            d.x = 0.0f;
             d.y = *(f32*)(this_ + 0x330) - cur.y;
             d.x = *(f32*)(this_ + 0x32c) - cur.x;
             d.normalize();
@@ -1058,8 +1061,7 @@ extern "C" void fn_801C9420(char* this_, f32* v) {
             next.x = cur.x + d.x;
             next.y = cur.y + d.y;
             if (!fn_801CF888(this_, &cur, &next, *(s32*)(this_ + 0x4))) {
-                v[0] = cur.x - ox;
-                v[1] = cur.y - oy;
+                ((JGeometry::TVec2<f32>*)v)->set(cur.x - ox, cur.y - oy);
                 return;
             }
         }
