@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "sdk/stl/float.h"
 #include "JSystem/JKernel/JKRArchive.h"
