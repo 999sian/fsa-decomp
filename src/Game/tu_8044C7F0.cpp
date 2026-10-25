@@ -22,6 +22,7 @@ static inline J2DPane* MenuSearch8044(J2DPane* screen, const u64* tags, s32 inde
     return screen->search(tags[index]);
 }
 #include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 
 extern "C" void fn_804316EC(void*);
@@ -51,62 +52,52 @@ struct UlPane {
     virtual UlPane* find(u64 tag);
 };
 struct Deletable {
-    virtual void v00();
-    virtual void v04();
     virtual void del(s32 flag);
 };
 
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern "C" void fn_8044C7F0(u8* self) {
-    s32 i;
-    u8* p;
-    for (i = 0; i < 7; i++) {
-        p = *(u8**)(self + 0x6c + i * 4);
-        if (p != NULL) {
-            *(u32*)(p + 0xf4) |= 1;
-            *(s32*)(p + 0x24) = 1;
-            *(u8**)(self + 0x6c + i * 4) = NULL;
+    struct Emitters {
+        u8 pad[0x6c];
+        JPABaseEmitter* a[7];
+        JPABaseEmitter* b[7];
+        JPABaseEmitter* c[3];
+        JPABaseEmitter* d[2][2];
+        JPABaseEmitter* e[3];
+    };
+    Emitters* t = (Emitters*)self;
+    for (int i = 0; i < 7; i++) {
+        if (t->a[i] != NULL) {
+            t->a[i]->becomeInvalidEmitter();
+            t->a[i] = NULL;
         }
-        p = *(u8**)(self + 0x88 + i * 4);
-        if (p != NULL) {
-            *(u32*)(p + 0xf4) |= 1;
-            *(s32*)(p + 0x24) = 1;
-            *(u8**)(self + 0x88 + i * 4) = NULL;
+        if (t->b[i] != NULL) {
+            t->b[i]->becomeInvalidEmitter();
+            t->b[i] = NULL;
         }
     }
-    p = *(u8**)(self + 0xb0);
-    if (p != NULL) {
-        *(u32*)(p + 0xf4) |= 1;
-        *(s32*)(p + 0x24) = 1;
-        *(u8**)(self + 0xb0) = NULL;
-    }
-    p = *(u8**)(self + 0xb4);
-    if (p != NULL) {
-        *(u32*)(p + 0xf4) |= 1;
-        *(s32*)(p + 0x24) = 1;
-        *(u8**)(self + 0xb4) = NULL;
-    }
-    p = *(u8**)(self + 0xb8);
-    if (p != NULL) {
-        *(u32*)(p + 0xf4) |= 1;
-        *(s32*)(p + 0x24) = 1;
-        *(u8**)(self + 0xb8) = NULL;
-    }
-    p = *(u8**)(self + 0xbc);
-    if (p != NULL) {
-        *(u32*)(p + 0xf4) |= 1;
-        *(s32*)(p + 0x24) = 1;
-        *(u8**)(self + 0xbc) = NULL;
-    }
-    for (i = 0; i < 3; i++) {
-        if (*(void**)(self + 0xa4 + i * 4) != NULL) {
-            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(self + 0xa4 + i * 4));
-            *(void**)(self + 0xa4 + i * 4) = NULL;
+    for (int j = 0; j < 2; j++) {
+        JPABaseEmitter** d = t->d[j];
+        if (d[0] != NULL) {
+            d[0]->becomeInvalidEmitter();
+            d[0] = NULL;
         }
-        if (*(void**)(self + 0xc0 + i * 4) != NULL) {
-            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(self + 0xc0 + i * 4));
-            *(void**)(self + 0xc0 + i * 4) = NULL;
+        if (d[1] != NULL) {
+            d[1]->becomeInvalidEmitter();
+            d[1] = NULL;
+        }
+    }
+    for (int k = 0; k < 3; k++) {
+        if (t->c[k] != NULL) {
+            JPAEmitterManager* mgr = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+            mgr->forceDeleteEmitter(t->c[k]);
+            t->c[k] = NULL;
+        }
+        if (t->e[k] != NULL) {
+            JPAEmitterManager* mgr = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+            mgr->forceDeleteEmitter(t->e[k]);
+            t->e[k] = NULL;
         }
     }
 }
@@ -144,15 +135,16 @@ extern f32 lbl_80543E00;
 extern f32 lbl_80543E04;
 extern "C" u8 fn_8044CB00(u8* p) { return p[0x140]; }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_8044CB08(u8* self, s32 index) {
     MenuTables8044* data = (MenuTables8044*)lbl_80490FC8;
     MenuParticles8044* menu = (MenuParticles8044*)self;
     u64* a;
     u64* b;
     s32 i;
-    f32 width;
-    f32 height;
     f32 origin;
+    f32 height;
+    f32 width;
     if (index < 0) return;
     if (index > 6) return;
     fn_80134D20(lbl_8053AAF8, 0);
@@ -168,39 +160,39 @@ extern "C" void fn_8044CB08(u8* self, s32 index) {
         ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setContentsColor(JUtility::TColor(150, 150, 150, self[0x167]), JUtility::TColor(150, 150, 150, self[0x16b]), JUtility::TColor(150, 150, 150, self[0x16f]), JUtility::TColor(150, 150, 150, self[0x173]));
         (*(J2DPane**)(self + 4))->search(*b)->setAlpha(200);
     }
-    ((u8*)(*(J2DPane**)(self+4))->search(data->hide168[self[0x138]]))[0xb0] = 0;
-    ((u8*)(*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]))[0xb0] = 0;
-    (*(J2DPane**)(self+4))->search(data->alpha1a0[self[0x138]])->setAlpha(0);
-    (*(J2DPane**)(self+4))->search(data->alpha1d8[self[0x138]])->setAlpha(0);
+    (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide168 + (u32)self[0x138]*8))->hide();
+    (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8))->hide();
+    (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->alpha1a0 + (u32)self[0x138]*8))->setAlpha(0);
+    (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->alpha1d8 + (u32)self[0x138]*8))->setAlpha(0);
 
     if (menu->first[self[0x138]] == 0) {
         f32 pos[3];
-        J2DPane* pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
+        J2DPane* pane = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8));
         height = pane->mBounds.f.y - pane->mBounds.i.y;
-        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.y;
+        origin = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8))->getBounds()->i.y;
         height = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.y + origin + height * lbl_80543E00;
-        pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
+        pane = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8));
         width = pane->mBounds.f.x - pane->mBounds.i.x;
-        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.x;
+        origin = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8))->getBounds()->i.x;
         pos[0] = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.x + origin + width * lbl_80543E00;
         pos[1] = height;
         pos[2] = lbl_80543DFC;
-        menu->first[self[0x138]] = fn_8013CC50(0, pos, data->particle3e8[self[0x138]], 0,0,0,0,1,lbl_80543E04);
+        menu->first[self[0x138]] = fn_8013CC50(0, pos, *(u16*)((u32)data->particle3e8 + (u32)self[0x138]*2), 0,0,0,0,1,lbl_80543E04);
     }
 
     if (menu->second[self[0x138]] == 0) {
         f32 pos[3];
-        J2DPane* pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
+        J2DPane* pane = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8));
         height = pane->mBounds.f.y - pane->mBounds.i.y;
-        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.y;
+        origin = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8))->getBounds()->i.y;
         height = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.y + origin + height * lbl_80543E00;
-        pane = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]]);
+        pane = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8));
         width = pane->mBounds.f.x - pane->mBounds.i.x;
-        origin = (*(J2DPane**)(self+4))->search(data->hide210[self[0x138]])->getBounds()->i.x;
+        origin = (*(J2DPane**)(self+4))->search(*(u64*)((u32)data->hide210 + (u32)self[0x138]*8))->getBounds()->i.x;
         pos[0] = (*(J2DPane**)(self+4))->search(0x004e646174613036ULL)->getBounds()->i.x + origin + width * lbl_80543E00;
         pos[1] = height;
         pos[2] = lbl_80543DFC;
-        menu->second[self[0x138]] = fn_8013CC50(0, pos, data->particle3f8[self[0x138]], 0,0,0,0,1,lbl_80543E04);
+        menu->second[self[0x138]] = fn_8013CC50(0, pos, *(u16*)((u32)data->particle3f8 + (u32)self[0x138]*2), 0,0,0,0,1,lbl_80543E04);
     }
     *(u32*)((u8*)menu->first[self[0x138]]+0xf4) |= 1;
     *(u32*)((u8*)menu->first[self[0x138]]+0xf4) |= 2;
@@ -208,9 +200,9 @@ extern "C" void fn_8044CB08(u8* self, s32 index) {
     *(u32*)((u8*)menu->second[self[0x138]]+0xf4) |= 1;
     *(u32*)((u8*)menu->second[self[0x138]]+0xf4) |= 2;
     *(u32*)((u8*)menu->second[self[0x138]]+0xf4) |= 4;
-    ((u8*)(*(J2DPane**)(self+4))->search(0x5063756c3031ULL))[0xb0] = 0;
+    (*(J2DPane**)(self+4))->search(0x5063756c3031ULL)->hide();
 }
-
+#pragma opt_strength_reduction reset
 extern "C" u8 fn_8044D290(u8* p) { return p[0x140]; }
 
 extern "C" void fn_80134D20(u8*, s32);
@@ -288,11 +280,37 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     f[0xb0] = 0;
 }
 
+extern "C" void fn_8044D894(u8* self) {
+    u8* p;
+    s32 i;
+    if (*(s16*)(self + 0xf8) != 0) {
+        return;
+    }
+    for (i = 0; i < 3; i++) {
+        ((UlPane*)(*(u8**)(self + 4)))->setAlpha(0);
+        ((UlPane*)(*(u8**)(self + 4)))->setAlpha(0);
+    }
+    for (i = 0; i < 3; i++) {
+        p = self;
+        (void)p;
+    }
+    p = self;
+    (void)p;
+}
+
 extern "C" void* fn_8044F664(void) {
     if (lbl_8053AF40 != 0) {
         return *(void**)((char*)lbl_8053AF40 + 0x184);
     }
     return (void*)9;
+}
+
+void fn_8044F680(u8* self)
+{
+    *(s32*)(self + 0x184) = 9;
+    if (*(s16*)(self + 0xfa) == 2) {
+        return;
+    }
 }
 
 extern "C" void fn_804522C8(u8* p) {
@@ -483,6 +501,20 @@ extern "C" void* fn_8045270C(u8* self, s16 deleting) {
     return self;
 }
 
+extern "C" void __construct_array(void*, void*, void*, u32, u32);
+extern "C" void __ct__Q28JUtility6TColorFv(void*);
+extern "C" void fn_80453830(void*);
+extern "C" void fn_80452A80(u8* self) {
+    *(void**)self = lbl_804B1D58;
+    __construct_array(self + 0x144, __ct__Q28JUtility6TColorFv, 0, 4, 2);
+    __construct_array(self + 0x14c, __ct__Q28JUtility6TColorFv, 0, 4, 2);
+    __construct_array(self + 0x154, __ct__Q28JUtility6TColorFv, 0, 4, 2);
+    __construct_array(self + 0x15c, __ct__Q28JUtility6TColorFv, 0, 4, 2);
+    __construct_array(self + 0x164, fn_80453830, 0, 0x10, 2);
+    lbl_8053AF40 = self;
+    *(J2DScreen**)(self + 4) = new J2DScreen;
+}
+
 extern "C" void fn_80453830(void* thisPtr) {
 	s32* p = (s32*)thisPtr;
 	p[0] = -1;
@@ -541,10 +573,14 @@ extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void fn_804538D4(void)
 {
-    u8* pool = (u8*)&lbl_8052D700;
+    struct PoolBase {
+        u32 first;
+    };
+    PoolBase* base = (PoolBase*)&lbl_8052D700;
+    u8* pool = (u8*)base;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, pool + 0x0);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, (u8*)&base->first + 0x0);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
