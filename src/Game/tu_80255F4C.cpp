@@ -266,7 +266,7 @@ static inline u8 textureHit(const ResTIMG* image, s32 x, s32 y) {
     return hit;
 }
 
-#pragma opt_common_subs reset
+#pragma opt_common_subs off
 extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     u8* p = (u8*)a;
     s32 i;
