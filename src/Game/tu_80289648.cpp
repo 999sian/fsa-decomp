@@ -97,6 +97,35 @@ extern "C" void fn_802896A8(Actor* this_)
 
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053A198;
+extern "C" void fn_801F0E34(void* this_, u32 code, u32 z);
+extern "C" s32 fn_8023DE58(s32 idx);
+extern "C" void fn_8022E088(s32 idx, s32 n, JGeometry::TVec3f* out);
+extern "C" void fn_8022DF48(s32 idx);
+extern "C" void fn_8023DF68(s32 idx, JGeometry::TVec3f* v);
+
+static inline bool tuInBox(u8* self, const JGeometry::TVec3f& v) {
+    if (v.x >= *(f32*)(self + 0x60) && v.y >= *(f32*)(self + 0x64) && v.x < *(f32*)(self + 0x68) && v.y < *(f32*)(self + 0x6c)) {
+        return true;
+    }
+    return false;
+}
+
+static inline bool tuCheckHit(u8* self, s32 idx) {
+    if (*(s32*)(self + 0x4) != fn_8023DE58(idx)) {
+        return false;
+    }
+    for (s32 j = 0; j < 8; j++) {
+        JGeometry::TVec3f v;
+        fn_8022E088(idx, j, &v);
+        v -= *(JGeometry::TVec3f*)(self + 0xc);
+        v.z = 0.0f;
+        if (tuInBox(self, v)) {
+            fn_8022DF48(idx);
+            return true;
+        }
+    }
+    return false;
+}
 extern "C" void fn_80289F6C(Actor* this_) {
     u8* self = (u8*)this_;
     s32 mode;
