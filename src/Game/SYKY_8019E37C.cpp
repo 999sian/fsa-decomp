@@ -4,6 +4,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct SykyVec {
     f32 x, y, z;
@@ -76,9 +77,9 @@ static inline f32 sykyRand01() {
     return *(f32*)&a - lbl_8053E460;
 }
 extern const char lbl_80468480[];
+#pragma opt_propagation off
 extern "C" void fn_8019E37C(u8* p) {
-    s32 state = *(s32*)(p + 0x268);
-    switch (state) {
+    switch (*(s32*)(p + 0x268)) {
     case 0: {
         s32 i;
         fn_801F02BC(p, lbl_8053E460, lbl_8053E460, lbl_80468480, *(s32*)(p + 0x264) + 0x1ab, 0, 0, 0, 0);
@@ -86,8 +87,8 @@ extern "C" void fn_8019E37C(u8* p) {
             for (i = 0; i < 4; i++) {
                 if (!fn_8022F478(i)) {
                     s32 idx = fn_8022F340(i);
-                    s32 off = idx + 0x28;
                     ((SykyAfState*)lbl_8053AF10)->flags |= (u8)(1 << idx);
+                    s32 off = idx + 0x28;
                     ((u8*)lbl_8053AF10)[off] = (u8)(10 - lbl_804C6330[idx]);
                 }
             }
@@ -104,7 +105,7 @@ extern "C" void fn_8019E37C(u8* p) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8019E480(u8* p) {
     DrawRec rec;
     f32 vec[4][3];
@@ -272,11 +273,12 @@ extern "C" void fn_8019EC04(u8* p) {
     if (*(s32*)(p + 0x23c) > 0) {
         *(s32*)(p + 0x23c) -= 1;
     }
+    u8* q = (u8*)((u32)p + 8);
     if (*(s32*)(p + 0x240) > 0) {
-        *(s32*)(p + 0x240) -= 1;
+        *(s32*)(q + 0x238) = *(s32*)(p + 0x240) - 1;
     }
-    if (*(s32*)(p + 0x244) > 0) {
-        *(s32*)(p + 0x244) -= 1;
+    if (*(s32*)(q + 0x23c) > 0) {
+        *(s32*)(q + 0x23c) -= 1;
     }
 }
 
@@ -286,6 +288,97 @@ extern "C" void fn_8019EE04(u8* p) {
         *(f32*)(p + 0x10) -= lbl_8053E4A8;
         fn_80458880(lbl_8053AF80, 6, -1);
         *(s32*)(p + 0x230) = 0xf;
+    }
+}
+
+extern "C" void fn_8019EE74(u8* p) {
+    JGeometry::TBox2<f32> box;
+    JGeometry::TVec2<f32> ofs;
+    box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+    ofs.x = *(f32*)(p + 0xc);
+    ofs.y = *(f32*)(p + 0x10);
+    box.addPos(ofs);
+    fn_801F71A4(p + 0x3c, *(f32*)(p + 0x2a0), lbl_8053E46C, lbl_8053E460);
+    fn_801F71A4(p + 0x40, *(f32*)(p + 0x2a4), lbl_8053E46C, lbl_8053E460);
+    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
+    switch (*(s32*)(p + 0x230)) {
+    case 9:
+        *(s32*)(p + 0x238) = (s32)(lbl_8053E4AC * sykyRand01()) + 0x3c;
+        *(s32*)(p + 0x23c) = (s32)(lbl_8053E4B0 * sykyRand01()) + 0x50;
+        *(f32*)(p + 0x2a0) = lbl_8053E494;
+        if (*(s32*)(p + 0x98) != 0) {
+            *(f32*)(p + 0x2a0) = lbl_8053E498;
+        }
+        *(s32*)(p + 0x230) = 10;
+        /* fallthrough */
+    case 10:
+        *(s32*)(p + 0xb0) = 3;
+        if (*(s32*)(p + 0x240) == 1) {
+            *(u8*)(p + 0x11c) = 0;
+            break;
+        }
+        if (*(s32*)(p + 0x240) == 0 && fn_801A6108(*(s32*)(p + 0x198), &box, &ofs)) {
+            Vec pos = *(Vec*)(p + 0xc);
+            int i;
+            *(s32*)(p + 0xb0) = 7;
+            *(s32*)(p + 0x248) = fn_8023AE34(&box, *(s32*)(p + 0x4), &ofs);
+            if (*(s32*)(p + 0x268) == 1) {
+                fn_8043D874(lbl_8053AED0, 0x12c, *(s32*)(p + 0x248), 0);
+                for (i = 0; i < 20; i++) {
+                    pos.x = pos.x + (lbl_8053E4B4 - lbl_8053E4A8 * sykyRand01());
+                    pos.y = pos.y + (lbl_8053E4B4 - lbl_8053E4A8 * sykyRand01());
+                    Actor_CreateByID(fn_801F856C(), 0x53594B59, *(s32*)(p + 0x4), &pos, 4, -1, -1);
+                }
+            } else {
+                fn_8043D874(lbl_8053AED0, 0x14, *(s32*)(p + 0x248), 0);
+            }
+            *(s32*)(p + 0x240) = 2;
+            fn_801F0D20(p, 4);
+            return;
+        }
+        if (*(s32*)(p + 0x268) == 1 && *(s32*)(p + 0x23c) != 0) {
+            if (*(s32*)(p + 0x23c) == 1) {
+                if (sykyRand01() < lbl_8053E4B8) {
+                    *(s32*)(p + 0x98) ^= 1;
+                    *(f32*)(p + 0x2a0) = lbl_8053E494;
+                    if (*(s32*)(p + 0x98) != 0) {
+                        *(f32*)(p + 0x2a0) = lbl_8053E498;
+                    }
+                }
+            }
+        } else {
+            if (*(s32*)(p + 0x98) == 0) {
+                if (*(f32*)(p + 0xc) > lbl_8053E48C) {
+                    *(u8*)(p + 0x11c) = 0;
+                }
+            } else {
+                if (*(f32*)(p + 0xc) < lbl_8053E490) {
+                    *(u8*)(p + 0x11c) = 0;
+                }
+            }
+        }
+        break;
+    }
+    if (*(s32*)(p + 0x238) == 0) {
+        *(s32*)(p + 0x264) += 1;
+        *(s32*)(p + 0x264) &= 3;
+        if (*(s32*)(p + 0x264) == 0) {
+            *(s32*)(p + 0x238) = (s32)(lbl_8053E4AC * sykyRand01()) + 0x3c;
+        } else {
+            *(s32*)(p + 0x238) = 2;
+        }
+    }
+    if (*(s32*)(p + 0x238) > 0) {
+        *(s32*)(p + 0x238) -= 1;
+    }
+    if (*(s32*)(p + 0x23c) > 0) {
+        *(s32*)(p + 0x23c) -= 1;
+    }
+    if (*(s32*)(p + 0x240) > 0) {
+        *(s32*)(p + 0x240) -= 1;
+    }
+    if (*(s32*)(p + 0x244) > 0) {
+        *(s32*)(p + 0x244) -= 1;
     }
 }
 
