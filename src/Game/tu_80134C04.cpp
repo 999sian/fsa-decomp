@@ -2,7 +2,6 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JKernel/JKRHeap.h"
-#include "JSystem/JAudio/Interface/JAISound.h"
 void* operator new(unsigned long size, JKRHeap* heap, int align);
 
 extern "C" void fn_80139BE8(void* p);
