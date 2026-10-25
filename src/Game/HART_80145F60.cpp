@@ -100,9 +100,11 @@ extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_80146364(void* this_) {
     Vec* pos = (Vec*)((u8*)this_ + 0xc);
     Vec* vel = (Vec*)((u8*)this_ + 0x3c);
+    f32 py = pos->y;
+    f32 px = pos->x;
     f32 pos2[2];
-    pos2[1] = pos->y;
-    pos2[0] = pos->x;
+    pos2[0] = px;
+    pos2[1] = py;
     if (*(s32*)((u8*)this_ + 0x240) == 0) {
         *(s32*)((u8*)this_ + 0x234) -= 1;
         if (*(s32*)((u8*)this_ + 0x234) <= 0) {
@@ -110,9 +112,7 @@ extern "C" void fn_80146364(void* this_) {
             return;
         }
     }
-    pos->x += vel->x;
-    pos->y += vel->y;
-    pos->z += vel->z;
+    JMathInlineVEC::PSVECAdd(pos, vel, pos);
     switch (*(s32*)((u8*)this_ + 0x230)) {
     case 0:
         vel->z -= lbl_8053D04C;
@@ -160,6 +160,7 @@ extern "C" void fn_80146364(void* this_) {
         }
         break;
     case 3: {
+        Vec v;
         vel->y += lbl_8053D058;
         if (vel->y > lbl_8053D05C) {
             vel->y = lbl_8053D05C;
@@ -171,10 +172,10 @@ extern "C" void fn_80146364(void* this_) {
         }
         s32 ang = *(s32*)((u8*)this_ + 0x23c);
         pos->x = pos->x + *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
-        Vec v;
         v.x = pos->x;
-        v.y = pos->y + lbl_8053D060;
+        v.y = pos->y;
         v.z = pos->z;
+        v.y = v.y + lbl_8053D060;
         u8 (*vfn)(void*, u32, Vec*) = *(u8 (**)(void*, u32, Vec*))((u8*)*(void**)this_ + 0x4c);
         if (vfn(this_, *(u32*)((u8*)this_ + 4), &v) == 1) {
             vel->x = lbl_8053D050;
@@ -246,6 +247,7 @@ extern "C" void fn_80146890(void* this_) {
     *(u32*)((u8*)this_ + 0x230) = 4;
 }
 
+#pragma global_optimizer off
 extern "C" void fn_801468AC(void* this_) {
     *(f32*)((u8*)this_ + 0x60) = lbl_8053D064;
     *(f32*)((u8*)this_ + 0x64) = lbl_8053D064;
@@ -255,13 +257,16 @@ extern "C" void fn_801468AC(void* this_) {
     *(f32*)((u8*)this_ + 0x84) = lbl_8053D06C;
     *(f32*)((u8*)this_ + 0x88) = lbl_8053D060;
     *(f32*)((u8*)this_ + 0x8c) = lbl_8053D060;
-    *(u32*)((u8*)this_ + 0x238) = 0;
+    *(s32*)((u8*)this_ + 0x238) = 0;
     *(s32*)((u8*)this_ + 0x234) = 0x3ff;
     *(u32*)((u8*)this_ + 0x240) = *(u32*)((u8*)this_ + 0x90) & 3;
     *(u32*)((u8*)this_ + 0xb0) = 0x21000;
     if (*(s32*)((u8*)this_ + 0x240) != 1) {
         *(f32*)((u8*)this_ + 0x44) = lbl_8053D070;
-        *(s32*)((u8*)this_ + 0x230) = 0;
+        {
+            s32 zero = 0;
+            *(s32*)((u8*)this_ + 0x230) = zero;
+        }
         s32 iVar1 = *(s32*)((u8*)this_ + 0x4);
         s32 iVar4 = fn_802D6A9C();
         if (*(u8*)(iVar4 + 0x10000 + iVar1 + 0x31df) != 0) {
@@ -275,4 +280,4 @@ extern "C" void fn_801468AC(void* this_) {
         *(s32*)((u8*)this_ + 0x230) = 4;
     }
 }
-
+#pragma global_optimizer reset
