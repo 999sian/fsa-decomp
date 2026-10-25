@@ -1,6 +1,10 @@
 
 
 #include "types.h"
+extern "C" f32 lbl_80542B80;
+extern "C" f32 lbl_80542B84;
+extern "C" const s32 lbl_804745A8[];
+extern "C" const s32 lbl_80474BC4[];
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
@@ -567,35 +571,35 @@ extern "C" void fn_80363FFC(char* self) {
     s32 rx;
     s32 ry;
 
-    if (lbl_80542B0C == *(f32*)(self + 0x3c)) {
+    if (0.0f == *(f32*)(self + 0x3c)) {
         rx = (s32)*(f32*)(self + 0xc);
-        if (*(f32*)(self + 0x40) < lbl_80542B0C) {
+        if (*(f32*)(self + 0x40) < 0.0f) {
             ry = (s32)(*(f32*)(self + 0x10) - lbl_80542B94);
         } else {
             ry = (s32)(lbl_80542B94 + *(f32*)(self + 0x10));
         }
     } else {
         ry = (s32)*(f32*)(self + 0x10);
-        if (*(f32*)(self + 0x3c) < lbl_80542B0C) {
+        if (*(f32*)(self + 0x3c) < 0.0f) {
             rx = (s32)(*(f32*)(self + 0xc) - lbl_80542B94);
         } else {
             rx = (s32)(lbl_80542B94 + *(f32*)(self + 0xc));
         }
     }
 
-    if (*(f32*)(self + 0x44) == lbl_80542B0C && *(f32*)(self + 0x14) == lbl_80542B0C) {
-        u32 packed = ((u32)rx & 0x100) | (((u32)ry & 0x100) << 1) | ((u32)ry & 0xf0) | ((u32)rx >> 4 & 0xf);
+    if (0.0f == *(f32*)(self + 0x44) && 0.0f == *(f32*)(self + 0x14)) {
+        u32 packed = (((u32)ry & 0x100) << 1) | ((u32)rx & 0x100) | ((u32)ry & 0xf0) | ((u32)rx >> 4 & 0xf);
         *(u16*)(self + 0x27a) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(u32*)(self + 4), packed) & 0x3ff;
         if (*(u16*)(self + 0x27a) == 0x1a8) {
-            *(f32*)(self + 0x44) = lbl_80542B98;
             *(s32*)(self + 0x264) = 0;
+            *(f32*)(self + 0x44) = lbl_80542B98;
         }
     } else {
-        if (*(f32*)(self + 0x14) > lbl_80542B0C) {
+        if (*(f32*)(self + 0x14) > 0.0f) {
             *(f32*)(self + 0x44) = *(f32*)(self + 0x44) - lbl_80542B9C;
         } else {
-            *(f32*)(self + 0x14) = lbl_80542B0C;
-            *(f32*)(self + 0x44) = lbl_80542B0C;
+            *(f32*)(self + 0x14) = 0.0f;
+            *(f32*)(self + 0x44) = 0.0f;
         }
         *(s32*)(self + 0x264) = 0;
         *(s32*)(self + 0x25c) = 1;
@@ -603,11 +607,13 @@ extern "C" void fn_80363FFC(char* self) {
 
     v.x = lbl_80542BA0;
     v.y = lbl_80542BA4;
-    v.z = lbl_80542B0C;
+    v.z = 0.0f;
     if (*(f32*)(self + 0xc) >= lbl_80542BA0) {
         if (*(f32*)(self + 0x10) < lbl_80542BA4) {
             f32 dist;
-            s32 ang = (s32)(JMath::atanTable_.atan2_(*(f32*)(self + 0x10) - lbl_80542BA4, *(f32*)(self + 0xc) - lbl_80542BA0) * lbl_80542B50);
+            f32 radians = JMath::atanTable_.atan2_(*(f32*)(self + 0x10) - lbl_80542BA4, *(f32*)(self + 0xc) - lbl_80542BA0);
+            radians *= lbl_80542B50;
+            s32 ang = (s32)radians;
             dist = PSVECDistance((Vec*)(self + 0xc), &v);
             ang += (s32)(lbl_80542BAC * (lbl_80542BB0 / (lbl_80542BA8 * dist)));
             *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[(u16)ang >> 5].second + v.x;
@@ -621,9 +627,9 @@ extern "C" void fn_80363FFC(char* self) {
                 }
                 *(s32*)(self + 0x26c) += lbl_80474598[*(s32*)(self + 0x23c)];
             }
-            *(f32*)(self + 0x44) = lbl_80542B0C;
-            *(f32*)(self + 0x40) = lbl_80542B0C;
-            *(f32*)(self + 0x3c) = lbl_80542B0C;
+            *(f32*)(self + 0x44) = 0.0f;
+            *(f32*)(self + 0x40) = 0.0f;
+            *(f32*)(self + 0x3c) = 0.0f;
         } else {
             *(f32*)(self + 0x3c) = lbl_8050C028[0];
             *(f32*)(self + 0x40) = lbl_8050C028[1];
@@ -636,9 +642,9 @@ extern "C" void fn_80363FFC(char* self) {
         *(s32*)(self + 0x268) += 1;
         if ((s8)(*(u8**)(self + 0x270))[*(s32*)(self + 0x268)] < 0) {
             *(s32*)(self + 0x268) = 0;
-            *(s32*)(self + 0x25c) = (s8)(*(u8**)(self + 0x270))[*(s32*)(self + 0x268)];
-            *(s32*)(self + 0x264) = (s8)(*(u8**)(self + 0x274))[*(s32*)(self + 0x268)];
         }
+        *(s32*)(self + 0x25c) = (s8)(*(u8**)(self + 0x270))[*(s32*)(self + 0x268)];
+            *(s32*)(self + 0x264) = (s8)(*(u8**)(self + 0x274))[*(s32*)(self + 0x268)];
     }
 }
 
