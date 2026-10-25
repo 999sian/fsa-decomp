@@ -131,7 +131,6 @@ extern "C" void fn_801158B8(u8* this_) {
 extern "C" s32 fn_80115A7C(char* p) {
     JGeometry::TVec3<f32> b;
     JGeometry::TVec3<f32> a;
-    f32 maxDist = lbl_8053C6DC;
     for (s32 i = 0; i < 4; i++) {
         a = *fn_8023E724(i);
         fn_80115BC4(p, &a, &b);
@@ -140,7 +139,7 @@ extern "C" s32 fn_80115A7C(char* p) {
         f32 dy = a.y - *(f32*)(p + 0x10);
         f32 dx2 = dx * dx;
         f32 dy2 = dy * dy;
-        if (JMAFastSqrt(dx2 + dy2) <= maxDist) {
+        if (JMAFastSqrt(dx2 + dy2) <= lbl_8053C6DC) {
             fn_80230498(i, &a, *(s32*)(p + 0x280) + 0x3b5, (s32)lbl_8053C6E0, -0x80, -0x80, 1);
         } else {
             fn_8023DFF4(i, &a);
