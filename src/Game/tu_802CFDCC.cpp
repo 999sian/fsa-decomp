@@ -98,7 +98,7 @@ extern "C" void fn_802F86CC(u32 sobRenderer, Vec* pos, u32 sobResource, s32 spri
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, GXColor color, f32 size);
-static inline void drawShadowCF(s32 room, Vec* pos, f32 size, u8 alpha = 0x80) {
+static inline void drawShadowCF(s32 room, JGeometry::TVec3f* pos, f32 size, u8 alpha = 0x80) {
     fn_80158B5C(lbl_8053AB10->mFxMgr, room, pos, JUtility::TColor(0, 0, 0, alpha), size);
 }
 static inline void drawShadowCF(Vec* pos, s32 room, f32 size) {
@@ -163,7 +163,7 @@ extern "C" void fn_802CFE2C(Actor* p) {
         }
 
         pos2.set(lbl_80540E7C + p->field_0C.x, lbl_80540E78 + p->field_0C.y, p->field_0C.z);
-        drawShadowCF(p->field_04, &pos2, lbl_80540E84, 0x80);
+        drawShadowCF(&pos2, p->field_04, lbl_80540E84);
     }
 }
 #pragma opt_propagation reset
