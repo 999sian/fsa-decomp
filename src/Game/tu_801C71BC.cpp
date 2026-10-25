@@ -41,8 +41,8 @@ extern "C" f32 lbl_8053EEE0;
 extern "C" f32 lbl_8053EEE4;
 extern "C" void* lbl_8053AC98;
 
-static inline void setSlotIndex(u8* s, u8 i) {
-    if (i < s[2]) {
+static inline void setSlotIndex(u8* s, s8 i) {
+    if ((u8)i < s[2]) {
         s[3] = i;
     }
 }
