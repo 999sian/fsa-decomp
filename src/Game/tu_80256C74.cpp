@@ -26,14 +26,6 @@ extern const f32 lbl_80540108;
 
 #pragma auto_inline off
 
-static inline f32 playerInverseLength(const f32 value) {
-    if (value <= 0.0f) {
-        return value;
-    }
-    const f32 inverse = __frsqrte(value);
-    return 0.5f * inverse * (3.0f - value * (inverse * inverse));
-}
-
 static inline f32 playerVelocitySquared(const JGeometry::TVec3<f32>& velocity) {
     return velocity.squared();
 }
@@ -2415,14 +2407,15 @@ extern "C" void fn_8025D7E4(u8* p) {
     dx = -F32(p, 0x344);
     dz = lbl_805400C4;
     direction.set(dx, dy, dz);
+    f32 estimate;
     f32 sq = direction.squared();
     if (!(sq <= lbl_805400D8 * *(f32*)__float_epsilon)) {
-        f32 inv;
+        register f32 inv;
         if (sq <= lbl_805400C4) {
             inv = sq;
         } else {
-            f32 y = __frsqrte(sq);
-            inv = lbl_805400C0 * y * (lbl_805400FC - sq * (y * y));
+            estimate = __frsqrte(sq);
+            inv = lbl_805400C0 * estimate * (lbl_805400FC - sq * (estimate * estimate));
         }
         direction.scale(inv);
     }
