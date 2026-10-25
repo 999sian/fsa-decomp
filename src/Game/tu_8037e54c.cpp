@@ -79,7 +79,11 @@ struct DrawObj {
 
 extern f32 lbl_805430C8;
 extern f32 lbl_805430B8;
+extern f32 lbl_805430BC;
+extern f32 lbl_805430C0;
 extern f32 lbl_805430C4;
+extern f32 lbl_805430CC;
+extern void* lbl_804AF32C[];
 class J2DTextBox {
 public:
     char* getStringPtr() const;
@@ -461,10 +465,14 @@ static inline bool testBit(u8 bits, s32 n) {
 }
 
 extern "C" void fn_8038D4A8() {
+    s32 i;
     s32 v;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         v = lbl_8053AD78->wfc[i];
-        if (v != -1 && testBit(lbl_8053AAF8->b82, v) == true) {
+        if (v == -1) {
+            continue;
+        }
+        if (testBit(lbl_8053AAF8->b82, v) == true) {
             fn_80390E68(lbl_8053AD78->sub[v]);
         }
     }
@@ -549,7 +557,8 @@ extern "C" void fn_8043DF8C(void* p, f32 x, f32 y);
 struct SubFlags { u16 pad : 9; u16 big : 1; u16 rest : 6; };
 #define POS(i) (((Vec2f*)((u8*)lbl_8053AD78 + 0x124))[i])
 extern "C" void fn_8037EB4C() {
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         u8* sub = *(u8**)((u8*)lbl_8053AD78 + 0x114 + i * 4);
         f32 s = lbl_805430C4;
         if ((*(u16*)(sub + 0x28) >> 6) & 1) {
@@ -653,8 +662,7 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, JUtility::TColor* color, f
         f32 len = lbl_8053AD78->f6c * scale;
         f32 total = len + (s32)JUTVideo::getManager()->getFbWidth();
         ((J2DTextBox*)lbl_8053AD78->p4)->setFontSize(w, h);
-        JUtility::TColor c = *color;
-        ((J2DTextBox*)lbl_8053AD78->p4)->setFontColor(c, c);
+        ((J2DTextBox*)lbl_8053AD78->p4)->setFontColor(*color, *color);
         lbl_8053AD78->w7c = lines;
         if (lbl_8053AD78->w7c == 0) {
             lbl_8053AD78->f70 = x - lbl_8053AD78->f6c * scale * lbl_805430BC;
@@ -718,7 +726,8 @@ extern "C" char lbl_804755C4[];
 MsgMgr::MsgMgr() {
     lbl_8053AD78 = (Mgr*)this;
     void* res = ((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755B0);
-    mFont = new JUTResFont((ResFONT*)res, 0);
+    JUTResFont* font = new JUTResFont((ResFONT*)res, 0);
+    mFont = font;
     mMsgData = ((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755C4);
     for (s32 i = 0; i < 4; i++) {
         mSub[i] = new MsgSub(i);
@@ -779,7 +788,7 @@ extern "C" void fn_8038D570() {
             lbl_8053AD78->w7c--;
             lbl_8053AD78->f70 -= lbl_8053AD78->f78;
             if (lbl_8053AD78->w7c == 0) {
-                lbl_8053AD78->be4 = 0;
+                lbl_8053AD78->be4 = false;
                 for (i = 0; i < 4; i++) {
                     if ((lbl_8053AD78->be5 & (1 << i)) && fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100)) {
                         lbl_8053AD78->be4 = 0;
@@ -959,8 +968,7 @@ extern "C" u8 fn_80389F78(s32 unused, s32 p, s32 unused2, u32 id, JGeometry::TVe
     }
     fn_80390E40(lbl_8053AD78->sub[p], id, 0);
     u8* sub = (u8*)lbl_8053AD78->sub[p];
-    JGeometry::TVec3<f32> v(*pos);
-    *(JGeometry::TVec3<f32>*)(sub + 0x50) = v;
+    *(JGeometry::TVec3<f32>*)(sub + 0x50) = *pos;
     *(s32*)(sub + 0x30) = -1;
     setActive(p, 6);
     lbl_8053AD78->wfc[lbl_8053AD78->wf8] = resolvePlayer(p);
@@ -1027,9 +1035,9 @@ extern "C" u8 fn_803865B8(s32 p) {
     if (lbl_8053AD78->be7 & (u8)(1 << resolvePlayer(i))) {
         return 1;
     }
-    if ((s16)lbl_8053AD78->hf0[i] > 0) {
+    if (lbl_8053AD78->hf0[i] > 0) {
         lbl_8053AD78->hf0[i]--;
-        if ((s16)lbl_8053AD78->hf0[i] == 0) {
+        if (lbl_8053AD78->hf0[i] == 0) {
             lbl_8053AD78->be7 |= (u8)(1 << resolvePlayer(i));
             return 1;
         }
@@ -1099,6 +1107,49 @@ extern "C" u8 fn_803865B8(s32 p) {
         }
         fn_8038470C(i, fn_80390C38(lbl_8053AD78->sub[i]));
         return 0;
+    }
+    if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0) {
+        bVar5 = false;
+        for (s32 k = 0; k < 4; k++) {
+            if (lbl_8053AAF8->b82 & (u8)(1 << k)) {
+                u8 st = *((u8*)lbl_8053AD78->sub[k] + 0x24);
+                if (st == 0 || st == 9) {
+                    if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(k), 0x100) != 0) {
+                        bVar5 = true;
+                    }
+                }
+            }
+        }
+        if (bVar5 && (*(u16*)((u8*)lbl_8053AD78->sub[i] + 0x28) & 0x100) != 0) {
+            bVar5 = true;
+        } else {
+            bVar5 = false;
+        }
+        if (bVar5) {
+            goto L_194bc;
+        }
+    } else {
+    L_194bc:
+        if (!bVar4) {
+            goto L_194d0;
+        }
+    }
+    if (!bVar6) {
+        return 0;
+    }
+L_194d0:
+    OSReport("====>%d, %d\n", i, (*(u16*)((u8*)lbl_8053AD78->sub[i] + 0x28) >> 8) & 1);
+    fn_80390B64(lbl_8053AD78->sub[i]);
+    bVar15 = fn_80390894(lbl_8053AD78->sub[i], *(u32*)((u8*)lbl_8053AD78->sub[resolvePlayer(i)] + 0x2c));
+    if (bVar15 == 2) {
+        fn_80458880(lbl_8053AF80, 0x5a, -1);
+    } else if (bVar15 < 2 && bVar15 != 0) {
+        fn_80458880(lbl_8053AF80, 0x59, -1);
+    }
+    if (isActive(i) == 5) {
+        setActive(i, 2);
+    } else {
+        setActive(i, 7);
     }
     return 0;
 }
@@ -1210,6 +1261,7 @@ extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3) {
     s32 len = 0;
     s8* p;
     s8 c;
+    s32 n = num;
     while ((c = (p = data + pos)[0]) != 0) {
         if (c == '\n') {
             PUT_CH(c);
@@ -1252,13 +1304,13 @@ extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3) {
                     }
                 }
             } else if (p[2] == 3) {
-                s32 ch = num + '0';
+                s32 ch = n + '0';
                 PUT_CH(ch);
                 len++;
                 JUTFont::TWidth tw;
-                msgFont()->getWidthEntry(num, &tw);
+                msgFont()->getWidthEntry(n, &tw);
                 width += (s32)tw.w1;
-                width += fn_8037F580(p[5], num, out, &len, lbl_805430C4);
+                width += fn_8037F580(p[5], n, out, &len, lbl_805430C4);
             }
             pos += p[1];
         } else {
