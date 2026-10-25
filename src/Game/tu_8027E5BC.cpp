@@ -2,7 +2,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
-static inline void applyPlayerGravity(f32* velocity, const f32 gravity, const f32 terminal) {
+static inline void applyPlayerGravity(f32* velocity, f32 gravity, f32 terminal) {
     *velocity -= gravity;
     if (*velocity < terminal) *velocity = terminal;
 }
@@ -2172,12 +2172,7 @@ extern const f32 lbl_80540404;
 #pragma opt_propagation off
 void fn_8028434C(char* p) {
     VEC(p, 8).add(VEC(p, 0x344));
-    f32 d;
-    f32 c;
-    d = lbl_80540404;
-    c = lbl_80540398;
-    F32(p, 0x34c) -= c;
-    if (F32(p, 0x34c) < d) F32(p, 0x34c) = d;
+    applyPlayerGravity(&F32(p, 0x34c), lbl_80540398, lbl_80540404);
     if (F32(p, 0x34c) < lbl_80540360 && F32(p, 0x10) <= lbl_80540360) {
         F32(p, 0x10) = lbl_80540360;
         U8(p, 0x124d) = 0;
