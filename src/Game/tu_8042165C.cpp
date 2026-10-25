@@ -55,7 +55,7 @@ struct SubObj {
     virtual void w12();
     virtual SubObj* w13(u64 x);
 };
-extern u8 lbl_8048E1B8[];
+extern const u8 lbl_8048E1B8[];
 struct HeartPane {
     virtual void v0();
     virtual void v1();
@@ -257,7 +257,7 @@ static inline void ReleaseSlot(void** slot) {
     *slot = 0;
 }
 extern "C" void fn_8042165C(u8* this_) {
-    u8* base = lbl_8048E1B8;
+    u8* base = (u8*)lbl_8048E1B8;
     s32 j;
     s32 i;
     s32 k;
@@ -339,7 +339,7 @@ extern "C" void fn_8042165C(u8* this_) {
 }
 
 extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag) {
-    u8* base = lbl_8048E1B8;
+    u8* base = (u8*)lbl_8048E1B8;
     s32 j;
     u8 bit = 1 << i;
     s32 off = i * 4;
@@ -455,7 +455,7 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
 }
 
 extern "C" void fn_8042215C(u8* this_, s32 idx) {
-u8* base = lbl_8048E1B8;
+u8* base = (u8*)lbl_8048E1B8;
 s16* timer = (s16*)(this_ + idx * 2);
 if (timer[0xf4] == 0) {
 ((u32*)(this_ + 0x1a8))[idx] = fn_80237774(idx);
@@ -472,38 +472,38 @@ u64* b=(u64*)(base+0xce8);
 u64* c=(u64*)(base+0xca8);
 u64* d=(u64*)(base+0xd28);
 for(s32 k=0;k<8;k++) {
-if(n>=4) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+if(n>=4) {GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k]), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k]), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
 cnt -= 4; n-=4;}
 else {
 if(n==0) {
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 0; GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 0;
-if(cnt>0) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 1; GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 1; cnt-=4;}
-else {GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0; GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;}
-} else if(n==1) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 0; GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 0;
+if(cnt>0) {GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 1; GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 1; cnt-=4;}
+else {GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0; GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;}
+} else if(n==1) {GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k]), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k]), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
 cnt -= 4;}
-else if(n==2) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+else if(n==2) {GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k]), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k]), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
 cnt -= 4;}
-else if(n==3) {GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), a[k]), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-SetSub(GetKeyed(*(u8**)(this_ + idx * 4 + 8), b[k]), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40);
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
-GetKeyed(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
+else if(n==3) {GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k])[0xb0] = 1;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k])[0xb0] = 1;
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), a[k]), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+SetHeart(GetHeart(*(u8**)(this_ + idx * 4 + 8), b[k]), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+GetHeart(*(u8**)(this_ + idx * 4 + 8), c[k])[0xb0] = 0;
+GetHeart(*(u8**)(this_ + idx * 4 + 8), d[k])[0xb0] = 0;
 cnt -= 4;}
 n=0;
 }
@@ -513,7 +513,7 @@ timer[0xf4]--;
 }
 
 extern "C" void fn_80423248(u8* this_, u32 idx) {
-    u8* base = lbl_8048E1B8;
+    u8* base = (u8*)lbl_8048E1B8;
     if (this_[0x257] & (u8)(1 << idx)) {
         s32 t;
         s32 sel = 0;
@@ -566,7 +566,7 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
 }
 
 extern "C" void fn_80423804(u8* this_, u32 idx) {
-    u8* base = lbl_8048E1B8;
+    u8* base = (u8*)lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
         s32 n = fn_80237810(idx);
         s32 cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -641,7 +641,7 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
 extern "C" void fn_80423DF0(u8* this_, s32 i) {
     s32 idx = -1;
     u8 mask = 1 << i;
-    u8* tbl = lbl_8048E1B8;
+    u8* tbl = (u8*)lbl_8048E1B8;
     s32 j;
     u32* pair;
     u32* pair2;
@@ -988,7 +988,7 @@ extern "C" void fn_80425F6C(u8* self) {
 }
 #pragma fp_contract on
 extern "C" void fn_804263A8(u8* this_) {
-    u8* base = lbl_8048E1B8;
+    u8* base = (u8*)lbl_8048E1B8;
     s32 i;
 
     for (i = 0; i < 4; i++) {
