@@ -3,7 +3,7 @@
 extern "C" f32 lbl_8053D43C;
 extern "C" f32 lbl_8053D450;
 
-static inline void GXPosition3f32(f32 x, f32 y, f32 z) {
+static inline void GXPosition3f32(const f32 x, const f32 y, const f32 z) {
     *(volatile f32*)0xCC008000 = x;
     *(volatile f32*)0xCC008000 = y;
     *(volatile f32*)0xCC008000 = z;
@@ -209,7 +209,13 @@ extern "C" void GXSetColorUpdate(s32 enable);
 extern "C" void GXSetAlphaUpdate(s32 enable);
 extern "C" void GXSetCullMode(s32 mode);
 extern "C" void GXBegin(s32 prim, s32 fmt, s32 nverts);
+#pragma opt_propagation off
 extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
+    f32 s0;
+    f32 s1;
+    f32 x;
+    f32 y;
+    f32 z;
     if (kind >= 8) {
         return;
     }
@@ -258,11 +264,11 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
     GXSetCullMode(0);
     load__10JUTTextureF11_GXTexMapID(*(char**)(p + 0x8), 0);
     GXBegin(0x80, 0, 4);
-    f32 x = pos[0];
-    f32 y = pos[1];
-    f32 z = pos[2];
-    f32 s1 = lbl_8053D450;
-    f32 s0 = lbl_8053D43C;
+    x = pos[0];
+    y = pos[1];
+    z = pos[2];
+    s1 = 0.0f;
+    s0 = 1.0f;
     GXPosition3f32(x - size, y, z + size);
     GXTexCoord2f32(s1, s1);
     GXPosition3f32(x + size, y, z + size);
@@ -272,7 +278,7 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
     GXPosition3f32(x - size, y, z - size);
     GXTexCoord2f32(s1, s0);
 }
-
+#pragma opt_propagation reset
 extern "C" char lbl_804BFB60[];
 extern "C" f32 lbl_8053D440;
 extern "C" f32 lbl_8053D43C;
@@ -396,38 +402,37 @@ extern "C" void fn_80158F70(char* p) {
 
 extern "C" void fn_80159330(char* p) {
     s32 kind = *(s32*)(lbl_8053AAF8 + 0x4c);
-    u8 isC = kind == 0xc;
-    bool flag = 0;
-    if (isC) {
+    bool flag;
+    if (kind == 0xc) {
         return;
     }
     if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
-        s32 f = 0;
-        switch (kind) {
-        case 7:
-        case 8:
-        case 9:
-        case 0x16:
-        case 0xa:
-        case 0xb:
-            f = 1;
-            break;
-        }
-        flag = (u8)f;
+        u8 selected = 0;
+        if (kind == 7) goto set;
+        if (kind == 8) goto set;
+        if (kind == 9) goto set;
+        if (kind == 0x16) goto set;
+        if (kind == 0xa) goto set;
+        if (kind == 0xb) goto set;
+        goto done;
+    set:
+        selected = 1;
+    done:
+        flag = selected;
     } else {
-        s32 f = 0;
-        switch (kind) {
-        case 7:
-        case 8:
-        case 9:
-        case 0x16:
-        case 0xa:
-        case 0xb:
-        case 0xc:
-            f = 1;
-            break;
-        }
-        flag = (u8)f;
+        u8 selected = 0;
+        if (kind == 7) goto set2;
+        if (kind == 8) goto set2;
+        if (kind == 9) goto set2;
+        if (kind == 0x16) goto set2;
+        if (kind == 0xa) goto set2;
+        if (kind == 0xb) goto set2;
+        if (kind == 0xc) goto set2;
+        goto done2;
+    set2:
+        selected = 1;
+    done2:
+        flag = selected;
     }
     if (flag) {
         if (fn_802DCD0C(fn_802D6A9C())) {
@@ -493,6 +498,9 @@ extern "C" char* fn_801594E8(char* p, void* heap) {
     }
     *(char**)(p + 0x8) = tex;
     return p;
+}
+
+static void __sinit_tu_80158624_cpp(void) {
 }
 
 struct JASGenericMemPool {
