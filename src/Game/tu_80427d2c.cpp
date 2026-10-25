@@ -165,7 +165,7 @@ static u32 lbl_8052AAA0[3];
 static u32 lbl_8052AAAC[3];
 static u32 lbl_8052AAB8[6];
 static THPPlayerState lbl_8052AAD0;
-static u8 lbl_8052ACA0[0x40] __attribute__((aligned(32)));
+static u32 lbl_8052ACA0[0x10] __attribute__((aligned(32)));
 static OSMessageQueue lbl_8052ACE0;
 static OSMessageQueue lbl_8052AD00;
 static OSMessage lbl_8052AD20[8];
@@ -1619,13 +1619,13 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
 }
 
 extern "C" void fn_8042AB70(VideoThreadObj* t, THPReadBuffer* readBuffer) {
+    s32 i;
     THPTextureSet* textureSet;
-    u32 i;
     u32* compSizePtr;
     u8* ptr;
     BOOL old;
     compSizePtr = (u32*)(readBuffer->ptr + 8);
-    ptr = readBuffer->ptr + lbl_8052AAD0.compInfo.numComponents * 4 + 8;
+    ptr = &readBuffer->ptr[lbl_8052AAD0.compInfo.numComponents * 4] + 8;
     textureSet = (THPTextureSet*)fn_8042E6C0();
     for (i = 0; i < lbl_8052AAD0.compInfo.numComponents; i++) {
         switch (lbl_8052AAD0.compInfo.frameComp[i]) {
@@ -1816,6 +1816,8 @@ extern "C" u8 fn_8042B148() {
     lbl_8053AE78 = 1;
     return 1;
 }
+
+extern "C" void fn_8042B1A8(void) { }
 
 extern "C" void fn_8042B1DC() {
     u8 i;
