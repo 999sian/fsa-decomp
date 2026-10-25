@@ -243,8 +243,8 @@ extern "C" void* fn_8044B3FC(VObj** param_1, short param_2) {
     return param_1;
 }
 
-extern void __ct__9J2DScreenFv(J2DScreen* self);
-extern void setPriority__9J2DScreenFPCcUlP10JKRArchive(J2DScreen* self, const char* name, u32 flags, void* archive);
+extern "C" void __ct__9J2DScreenFv(J2DScreen* self);
+extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(J2DScreen* self, const char* name, u32 flags, void* archive);
 extern "C" void* __nw__FUl(u32 size);
 extern "C" void fn_80402F04(void* self, u32 value);
 extern "C" void* lbl_804AF86C[];
