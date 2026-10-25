@@ -263,16 +263,17 @@ extern "C" s32 fn_80390C38(Tu80390818* t) {
 }
 
 static inline u16 Tu80390818_read16(u8* p) {
-    u16 v = p[0] << 8;
-    v |= p[1];
-    return v;
+    u8 lo = p[1];
+    u8 hi = p[0];
+    return (u16)((hi << 8) | lo);
 }
 
 extern "C" u16 fn_80390C6C(Tu80390818* t) {
     if (t->m24 == 3) {
         switch (t->m41) {
-        case 0:
-            t->m26 = Tu80390818_read16(t->m0C);
+        case 0: {
+            u8* p = t->m0C;
+            t->m26 = Tu80390818_read16(p);
             t->m41 = 1;
             t->m10 = 2;
             t->m14 = 0;
@@ -280,6 +281,7 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
             t->m0C++;
             t->m0C++;
             break;
+        }
         case 1:
             if (t->m28 & 1) {
                 t->m26 = 0xFFFC;
@@ -288,8 +290,9 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
                 break;
             }
             t->m41 = 2;
-        case 2:
-            t->m26 = Tu80390818_read16(t->m0C);
+        case 2: {
+            u8* p = t->m0C;
+            t->m26 = Tu80390818_read16(p);
             if (t->m26 == 0xFFF0) {
                 t->m10 += 2;
                 t->m14++;
@@ -309,6 +312,7 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
             }
             t->m43++;
             break;
+        }
         case 3:
             t->m24 = 4;
             t->m26 = 0xFFFE;
@@ -519,7 +523,8 @@ extern "C" void fn_803913E0(Tu80390818* t) {
     t->m14 = 0;
     t->m42 = 0;
     t->m43 = 0;
-    for (i = 0; i < 4; i++) {
+    i = 0;
+    do {
         s32 id = t->m48->m180[i];
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
@@ -540,37 +545,40 @@ extern "C" void fn_803913E0(Tu80390818* t) {
             }
             t->m4C->m180[i] = -1;
         }
-    }
+        i++;
+    } while (i < 4);
 }
 
 extern "C" void fn_80391678(Tu80390818* t) {
-    s32 id;
     t->m08 = 0;
-    t->m20 = 0;
-    t->m24 = 0;
-    t->m25 = t->m24;
-    t->m26 = 0;
-    t->m41 = 0;
-    t->m40 = 1;
-    t->m28 = 0;
-    t->m10 = 0;
-    t->m14 = 0;
-    t->m42 = 0;
-    t->m43 = 0;
-    t->m3C = 0;
-    t->m3E = 0;
-    t->m34 = 0;
-    t->m38 = 0;
-    t->m30 = -1;
-    t->m50 = 0.0f;
-    t->m54 = 0.0f;
-    t->m58 = 0.0f;
-    t->m44 = 0;
-    if (lbl_8053AD78->mED != 0 && t->m18 == lbl_8053AD78->m110) {
+    Tu80390818* p = t;
+    p->m20 = 0;
+    p->m24 = 0;
+    p->m25 = p->m24;
+    p->m26 = 0;
+    p->m41 = 0;
+    p->m40 = 1;
+    p->m28 = 0;
+    p->m10 = 0;
+    p->m14 = 0;
+    p->m42 = 0;
+    p->m43 = 0;
+    p->m3C = 0;
+    p->m3E = 0;
+    p->m34 = 0;
+    p->m38 = 0;
+    p->m30 = -1;
+    p->m50 = 0.0f;
+    p->m54 = 0.0f;
+    p->m58 = 0.0f;
+    p->m44 = 0;
+    if (lbl_8053AD78->mED != 0 && p->m18 == lbl_8053AD78->m110) {
         lbl_8053AD78->mED = 0;
     }
-    for (s32 i = 0; i < 4; i++) {
-        id = t->m48->m180[i];
+    s32 off = 0;
+    s32 id;
+    for (s32 i = 0; i < 4; i++, off += 4) {
+        id = *(s32*)((u8*)p->m48 + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
@@ -578,9 +586,9 @@ extern "C" void fn_80391678(Tu80390818* t) {
                     fn_802EB27C(a);
                 }
             }
-            t->m48->m180[i] = -1;
+            *(s32*)((u8*)p->m48 + 0x180 + off) = -1;
         }
-        id = t->m4C->m180[i];
+        id = *(s32*)((u8*)p->m4C + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
@@ -588,7 +596,7 @@ extern "C" void fn_80391678(Tu80390818* t) {
                     fn_802EB27C(a);
                 }
             }
-            t->m4C->m180[i] = -1;
+            *(s32*)((u8*)p->m4C + 0x180 + off) = -1;
         }
     }
 }
