@@ -135,7 +135,6 @@ struct TktaRandom {
 };
 struct TktaGame { u8 pad[0xb4]; TktaRandom rnd; };
 extern TktaGame* lbl_8053AAF8;
-static inline f32 tktaRandom() { return lbl_8053AAF8->rnd.get(); }
 extern "C" void fn_801EEC98(void* this_, u32 a, u16* ang, s32* out, s32 b, s32 c, s32 d, s32 e);
 extern const f32 lbl_8053D33C;
 extern const f32 lbl_8053D348;
