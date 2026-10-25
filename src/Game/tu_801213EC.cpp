@@ -190,6 +190,7 @@ extern const f32 lbl_8053C9F4;
 extern const f32 lbl_8053C9F8;
 extern const f32 lbl_8053C9FC;
 extern const f32 lbl_8053CA00;
+extern const f32 lbl_8053C9F0;
 extern "C" const void* fn_8023E4E4(s32, s32);
 extern "C" u8 fn_8023EA28(s32);
 extern "C" u16 fn_802265FC(void*, s32);
