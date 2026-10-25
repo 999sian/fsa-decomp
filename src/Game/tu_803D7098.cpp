@@ -97,6 +97,12 @@ struct FsaSlots {
     virtual void v59(s32, s32, s32, f32, f32, f32, f32);
 };
 
+struct FsaPaneRef {
+    void* unknown;
+    FsaSlots* pane;
+    void setAlpha(f32 alpha) { pane->v7((s32)alpha); }
+};
+
 struct FsaNodeB {
     virtual void v0(void);
     virtual void v1(void);
@@ -379,6 +385,7 @@ extern "C" f32 lbl_80543584;
 extern "C" f32 lbl_80543588;
 extern "C" void fn_804316EC(void*);
 extern "C" void fn_80440EE8(void*);
+#pragma opt_propagation off
 extern "C" void fn_803D8364(u8* param_1) {
     f32 f31;
     f32 f30;
@@ -430,7 +437,8 @@ extern "C" void fn_803D8364(u8* param_1) {
             if (lbl_80543534 == f31) {
                 if (param_1[0x79] != param_1[0x78]) {
                     param_1[0x79] = param_1[0x78];
-                    (*(FsaSlots**)(*(u8**)(param_1 + 0x2c) + 4))->v7((s32)f30);
+                    u8* o = *(u8**)(param_1 + 0x2c);
+                    (*(FsaSlots**)(o + 4))->v7((int)f30);
                 }
             }
         }
@@ -438,7 +446,7 @@ extern "C" void fn_803D8364(u8* param_1) {
         fn_80440EE8(lbl_8053AED8);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_803D8670(u8* param_1) {
     FsaSlots* obj;
 
