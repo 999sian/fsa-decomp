@@ -480,11 +480,15 @@ struct MsgProc {
         str2c0[m2d0++] = -2;
         str2c0[m2d0++] = base + (x + (s8)slotLine[slot + 0x10]);
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0 && (u8)slotLine[slot] - lineTab[layout->m15c] - 1 == 0) {
-            str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
-        } else {
-            str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
+        if (layout->m1a1 != 0) {
+            s8 top = lineTab[layout->m15c];
+            s8 line = slotLine[slot];
+            if ((u8)line - top - 1 == 0) {
+                str2c0[m2d0++] = line + (base + 0x20) - top;
+                return;
+            }
         }
+        str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
     }
     BOOL testBit(s32 n) {
         if (n < 32) {
@@ -874,7 +878,8 @@ static inline void msgAppendChar(MsgProc* p, char* buf) {
 }
 
 // NONMATCHING (99%): cur/layout register swap in the bit test (same as fn_8039D0DC).
-extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
+extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
+    MsgProc* p = &object;
     bool lead = false;
     bool neg = false;
     if (n < 0) {
