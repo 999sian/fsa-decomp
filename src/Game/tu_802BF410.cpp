@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+struct BF474Table { u16 values[6]; };
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802F9974(void* mgr, s32 id, s32 n, s32 flag);
@@ -46,15 +47,19 @@ extern "C" Actor* fn_802BF410(Actor* p, s16 n) {
 extern "C" void fn_802BF470(void) {
 }
 
+#pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_802BF474(Actor* this_) {
-    u8* self = (u8*)this_;
-    s32 k;
+    u32 k;
     s32 y;
-    u16 ret;
+    u8* self = (u8*)this_;
     u16* tbl = (u16*)lbl_8046D470;
+    u16 ret;
+    u32 a;
+    u8 offset;
 
     if ((*(u32*)(self + 0x90) >> 27) != 0) {
-        if (((ActorSlots*)this_)->v13() != 1) {
+        if (((ActorSlots*)this_)->v11() != 1) {
             return;
         }
     }
@@ -63,43 +68,50 @@ extern "C" void fn_802BF474(Actor* this_) {
         case 0:
             fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4), *(s32*)(self + 0x24c), 0x30);
             break;
-        case 1:
+        case 1: {
+ const u16* __restrict t = tbl+0;
             fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4), *(s32*)(self + 0x24c),
-                        tbl[*(s32*)(self + 0x23c)]);
+                        t[*(s32*)(self + 0x23c)]);
             break;
-        case 2:
-            k = *(s32*)(self + 0x4) < 8 ? 1 : 8;
-            ret = fn_802D7B34(fn_802D6A9C(), *(s32*)(self + 0x4) + 1, *(s32*)(self + 0x254));
+        }
+        case 2: {
+            y = *(s32*)(self + 0x4);
+            k = 8; if (y < 8) k = 1;
+            ret = fn_802D7B34(fn_802D6A9C(), y + 1, *(s32*)(self + 0x254));
             y = *(s32*)(self + 0x24c);
             if (ret == 0) {
-                u16 a = tbl[0x28 / 2 + *(s32*)(self + 0x240)];
+                const u16* __restrict t = tbl+0x28/2;
+                a = t[*(s32*)(self + 0x240)];
                 if (a < 0xa0) {
                     fn_802D7BE8(fn_802D6A9C(), *(s32*)(self + 0x4), *(s32*)(self + 0x254), a - 0x26);
                 } else {
                     fn_802D7BE8(fn_802D6A9C(), *(s32*)(self + 0x4), *(s32*)(self + 0x254), a - 0xa6);
                 }
-                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4) + k, y,
-                            tbl[0x28 / 2 + *(s32*)(self + 0x240)]);
-                if ((y & 0x100) == ((y - 0x10) & 0x100)) {
-                    y -= 0x10;
-                } else {
-                    y -= 0x110;
-                }
-                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4) + k, y,
-                            tbl[0xc / 2 + *(s32*)(self + 0x240)]);
+                const u16* __restrict t28 = tbl+0x28/2;
+                offset = (u8)k;
+
+                s32 room = *(s32*)(self+4);
+                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), room + offset, y,
+                            t28[*(s32*)(self + 0x240)]);
+                if ((y & 0x100) != ((y - 0x10) & 0x100)) { y -= 0x110; } else { y -= 0x10; }
+                const u16* __restrict tc = tbl+0xc/2;
+                room = *(s32*)(self+4);
+                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), room + offset, y,
+                            tc[*(s32*)(self + 0x240)]);
             } else {
-                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4) + k, y,
-                            tbl[0x44 / 2 + ret * 2 + 1]);
-                if ((y & 0x100) == ((y - 0x10) & 0x100)) {
-                    y -= 0x10;
-                } else {
-                    y -= 0x110;
-                }
-                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4) + k, y,
-                            tbl[0x44 / 2 + ret * 2]);
+                const u16* __restrict t44 = tbl+0x44/2;
+                s32 room = *(s32*)(self+4);
+                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), room + (u8)k, y,
+                            t44[ret * 2 + 1]);
+                if ((y & 0x100) != ((y - 0x10) & 0x100)) {y-=0x110;} else {y-=0x10;}
+                const u16* __restrict t44b = tbl+0x44/2;
+                room = *(s32*)(self+4);
+                fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self+4) + (u8)k, y,
+                            t44b[ret * 2]);
             }
             fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(self + 0x4), *(s32*)(self + 0x24c), 0x17);
             break;
+        }
         case 3:
             switch (*(s32*)(self + 0x244)) {
             case 0:
@@ -133,7 +145,8 @@ extern "C" void fn_802BF474(Actor* this_) {
         *(s32*)(self + 0x248) -= 1;
     }
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D4874(void* cfg, s32 room, u16 tile, void* a, void* b);
 extern "C" void fn_802D4768(void* cfg, s32 room, u16 tile, void* a, void* b);
