@@ -5,7 +5,7 @@
 #pragma auto_inline off
 
 struct Player;
-typedef u8 SameTeamResult;
+typedef bool SameTeamResult;
 struct PlayerManager {
     void* vtable;
     Player* players[4];
