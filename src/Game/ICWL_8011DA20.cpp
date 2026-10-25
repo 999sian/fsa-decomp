@@ -141,9 +141,10 @@ static inline bool icwlHitObject(u8* this_) {
 }
 
 static inline bool icwlHitFire(u8* this_) {
+    f32 zero = lbl_8053C8B8;
     ICWLBox box;
     icwlGetBox(this_, &box);
-    ICWLVec2 v(lbl_8053C8B8, lbl_8053C8B8);
+    ICWLVec2 v(zero, zero);
     if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0 || fn_801F2718(this_, 0x46495245) >= 0) {
         return true;
     }
@@ -168,12 +169,13 @@ extern "C" void fn_8011E030(u8* this_) {
         if (icwlHitFire(this_)) {
             icwlKillEmitter((void**)(this_ + 0x100));
             icwlKillEmitter((void**)(this_ + 0x104));
-            if (*(s32*)(this_ + 0x4) == 0) {
+            s32 room = *(s32*)(this_ + 0x4);
+            if (room == 0) {
                 f32 scale = lbl_8053C8BC;
                 if (*(s32*)(this_ + 0x230) == 1) {
                     scale = lbl_8053C8C0;
                 }
-                *(void**)(this_ + 0x27C) = (void*)fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, scale, 0x28D, 1, 0, 0, 0, 1);
+                *(void**)(this_ + 0x27C) = (void*)fn_8013CC50(room, this_ + 0xc, scale, 0x28D, 1, 0, 0, 0, 1);
                 fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, scale, 0x28E, 1, 0, 0, 0, 1);
             }
             fn_801F0E34(this_, 0x30061, 0);
@@ -192,6 +194,8 @@ extern "C" void fn_8011E030(u8* this_) {
                 *(s32*)(emitter + 0x24) = 1;
             }
             switch (*(s32*)(this_ + 0x238)) {
+            case 0:
+                break;
             case 1:
                 fn_801F0D20(this_, 3);
                 break;
@@ -203,18 +207,23 @@ extern "C" void fn_8011E030(u8* this_) {
                 break;
             }
             if (*(s32*)(this_ + 0x23C) != 0) {
-                u32 arg = lbl_80464C0C[*(s32*)(this_ + 0x23C)];
-                u32 name = lbl_80464BE8[*(s32*)(this_ + 0x23C)];
+                u32 name;
+                u32 arg;
+                arg = lbl_80464C0C[*(s32*)(this_ + 0x23C)];
+                name = lbl_80464BE8[*(s32*)(this_ + 0x23C)];
                 Actor_CreateByID(fn_801F856C(), name, *(s32*)(this_ + 0x4), this_ + 0xc, arg, -1, -1);
             }
             detach__5ActorFv(this_);
             *(s32*)(this_ + 0x234) = 2;
         }
         break;
+    default:
+        break;
     }
-    *(f32*)(this_ + 0x54) = *(f32*)(this_ + 0x240);
-    *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x240);
-    *(f32*)(this_ + 0x5C) = *(f32*)(this_ + 0x240);
+    f32 s = *(f32*)(this_ + 0x240);
+    *(f32*)(this_ + 0x54) = s;
+    *(f32*)(this_ + 0x58) = s;
+    *(f32*)(this_ + 0x5C) = s;
     fn_801D1C18(this_ + 0x244);
 }
 
