@@ -13,6 +13,14 @@ extern "C" const u64 lbl_80479238[];
 extern "C" s32 fn_80403414(s32 a);
 extern "C" s32 fn_804033D4(s32 a);
 extern "C" s32 fn_8040336C(s32 a);
+extern "C" void fn_8013CC50(s32 a, f32* v, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, f32 h);
+extern const f32 lbl_80543720;
+extern const f32 lbl_80543728;
+extern const f32 lbl_80543730;
+extern const f32 lbl_805437A0;
+extern const f32 lbl_805437A4;
+extern const f32 lbl_805437C8;
+extern const f32 lbl_805437CC;
 extern "C" u8 lbl_80529DEC[];
 
 extern "C" void fn_8043670C(void* p, s32 a);
