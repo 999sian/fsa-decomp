@@ -1,6 +1,8 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801AC8EC-801AE9C4 (DDGO). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 // from src/Game/Ddgo_ApplyState_801AE5AC.cpp
 // DDGO cluster, part 8/8. Private helper shared by update() state
@@ -129,11 +131,12 @@ extern "C" void fn_801AC930(void* this_) {
     f32 local_78[12];
     s32 r5;
     void* uVar1;
-    u8 i;
+    s32 i;
+    s32 k;
 
     blk.a = -1;
     blk.b = -1;
-    for (i = 0; i < 16; i += 8) {
+    for (i = 0; (u8)i < 16; i += 8) {
         blk.idx[(u8)i] = i;
         blk.idx[(u8)(i + 1)] = i + 1;
         blk.idx[(u8)(i + 2)] = i + 2;
@@ -167,8 +170,8 @@ extern "C" void fn_801AC930(void* this_) {
 
     r5 = *(s32*)((char*)this_ + 0x258);
     if ((*(u32*)((char*)this_ + 0x244) & 2) == 0) {
-        if (r5 > 2 && r5 - 12 > 2 && r5 - 24 > 1 && r5 == 0x20) {
-            local_78[0] = -1.0f * *(f32*)((char*)this_ + 0x274);
+        if ((u32)r5 > 2 && (u32)r5 - 12 > 2 && (u32)r5 - 24 > 1 && r5 == 0x20) {
+            local_78[0] = *(f32*)((char*)this_ + 0x274) * -1.0f;
             local_78[1] = 0.0f;
             local_78[2] = 0.0f;
             local_78[3] = 0.0f;
@@ -181,13 +184,13 @@ extern "C" void fn_801AC930(void* this_) {
             local_78[10] = *(f32*)((char*)this_ + 0x278);
             local_78[11] = 0.0f;
             blk.p = local_78;
-            blk.b = r5;
         }
         if (*(s32*)((char*)this_ + 0x294) == 1) {
-            uVar1 = fn_804032E8(0x54494D47, lbl_804A3208[r5 + 0x24]);
+            k = r5 + 0x24;
+            uVar1 = fn_804032E8(0x54494D47, lbl_804A3208[k]);
         } else {
-            uVar1 = ((void* (*)(void*, u32, const char*))((void**)*(void**)lbl_8053AAF8)[6])(
-                *(void**)((char*)lbl_8053AAF8 + 0xa4), 0x54494D47, lbl_804A3208[r5]);
+            void* obj = *(void**)((char*)lbl_8053AAF8 + 0xa4);
+            uVar1 = ((void* (*)(void*, u32, const char*))((void**)*(void**)obj)[6])(obj, 0x54494D47, lbl_804A3208[r5]);
         }
         fn_801EFD34(this_, uVar1, &blk, 7, 0.0f, -2.0f, 0.0f);
     }
@@ -227,6 +230,107 @@ extern "C" void* fn_801ACC14(char* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void* fn_8013CC50(u32 id, void* pos, f32 scale, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void fn_8013CB44(void* em, void* pos, s32 a, s32 b, s32 c);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" u8 fn_801F2B20(void* this_, u32 v);
+extern "C" u16 fn_8022461C(f32* p, s32 room);
+extern "C" u8 fn_8022517C(f32* p, s32 room);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+void JPAGetXYZRotateMtx(s16, s16, s16, f32 (*)[4]);
+extern s32 lbl_804689C0[];
+extern f32 lbl_804A31C8[][4];
+extern f32 lbl_8053E7D0;
+extern f32 lbl_8053E7E0;
+extern f32 lbl_8053E7E4;
+extern "C" void fn_801ACCF0(void* this_) {
+    char* t = (char*)this_;
+    s32 j;
+    s32 i;
+    s32 flags;
+    f32 stepY;
+    f32 stepX;
+    f32 scale = lbl_8053E7D0;
+    f32 p[3];
+    f32* b;
+    char* em;
+
+    if (*(s32*)(t + 0x294) == 1) {
+        scale = lbl_8053E7E0;
+        switch (*(s32*)(t + 0x230)) {
+        case 0xc:
+            *(void**)(t + 0x29c) = fn_8013CC50(*(u32*)(t + 4), t + 0xc, scale, 0x1ac, 1, 1, 0, 0, 1);
+            if (*(void**)(t + 0x29c) == 0) {
+                return;
+            }
+            *(s32*)(t + 0x238) = 8;
+            *(s32*)(t + 0x230) = 0xd;
+            break;
+        case 0xd:
+            break;
+        default:
+            return;
+        }
+
+        if (*(void**)(t + 0x29c) != 0) {
+            flags = 0;
+            if (*(s32*)(t + 0x98) == 2) {
+                flags = 0x4000;
+                fn_8013CB44(*(void**)(t + 0x29c), t + 0xc, 1, 1, 1);
+            }
+            JPAGetXYZRotateMtx((s16)flags, (s16)lbl_804689C0[*(s32*)(t + 0x98)], -0x8000, (f32(*)[4])(*(char**)(t + 0x29c) + 0x68));
+        }
+        fn_801F0E34(t, 0x30011, 0);
+
+        if (*(s32*)(t + 0x238) == 0) {
+            b = lbl_804A31C8[*(s32*)(t + 0x98)];
+            *(f32*)(t + 0x60) = scale * b[0];
+            *(f32*)(t + 0x64) = scale * b[1];
+            *(f32*)(t + 0x68) = scale * b[2];
+            *(f32*)(t + 0x6c) = scale * b[3];
+            fn_801F2B7C(t, *(s32*)(t + 0x114), -1, 9);
+            fn_801F2B20(t, 5);
+            p[0] = *(f32*)(t + 0xc);
+            p[1] = *(f32*)(t + 0x10);
+            p[2] = *(f32*)(t + 0x14);
+
+            if (*(s32*)(t + 0x254) == 0) {
+                *(s32*)(t + 0x254) = 1;
+                stepX = (*(f32*)(t + 0x68) - *(f32*)(t + 0x60)) * lbl_8053E7E4;
+                stepY = (*(f32*)(t + 0x6c) - *(f32*)(t + 0x64)) * lbl_8053E7E4;
+                p[0] = *(f32*)(t + 0xc) + *(f32*)(t + 0x60);
+                for (i = 0; i < 8; i++) {
+                    p[1] = *(f32*)(t + 0x10) + *(f32*)(t + 0x64);
+                    for (j = 0; j < 8; j++) {
+                        if (fn_8022461C(p, *(s32*)(t + 4)) == 0x21 || fn_8022517C(p, *(s32*)(t + 4)) == 1) {
+                            Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(t + 4), p, 0xE0C0, -1, -1);
+                        }
+                        p[1] += stepY;
+                    }
+                    p[0] += stepX;
+                }
+            }
+        }
+    }
+
+    if (*(s32*)(t + 0x108) > 0) {
+        return;
+    }
+    em = *(char**)(t + 0x29c);
+    if (em != 0) {
+        *(s32*)(em + 0xf4) |= 1;
+        *(s32*)(em + 0x24) = 1;
+        *(char**)(t + 0x29c) = 0;
+    }
+    em = *(char**)(t + 0x2a0);
+    if (em != 0) {
+        *(s32*)(em + 0xf4) |= 1;
+        *(s32*)(em + 0x24) = 1;
+        *(char**)(t + 0x2a0) = 0;
+    }
+    *(u8*)(t + 0x11c) = 0;
 }
 
 extern "C" void fn_801AE5AC(void* this_);
