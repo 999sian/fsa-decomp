@@ -26,7 +26,7 @@ struct RailRing {
 };
 
 extern f32 lbl_8053C0B8;
-extern f32 lbl_8053C0D0;
+extern const f32 lbl_8053C0D0;
 
 static inline u8 railNoFlag4(RailNode* node) {
     return ((node->mFlags >> 2) & 1) ^ 1;
@@ -101,14 +101,14 @@ void fn_800FDE38(void* ringArray)
     }
 }
 
-extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* angOut, s16 maxTurn, f32 speed) {
+extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* angOut, s32 maxTurn, f32 speed) {
     RailVec target;
     RailVec p = *pos;
     s32 ang;
     u8 res = fn_800FE090(ring, &p, &target);
     f32 dx = target.x - pos->x;
     f32 dy = target.y - pos->y;
-    ang = lbl_8053C0D0 * JMath::atanTable_.atan2_(dx, dy);
+    ang = (s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053C0D0);
     s32 out;
     if (id != NULL) {
         s32 nodeId = ring->mNodes[ring->mCur]->mId;
@@ -122,14 +122,18 @@ extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* 
     if (lbl_8053C0B8 == vel[0] && lbl_8053C0B8 == vel[1] && railNoFlag4(ring->mNodes[ring->mCur])) {
         out = ang;
     } else {
-        s32 cur = lbl_8053C0D0 * JMath::atanTable_.atan2_(vel[0], vel[1]);
-        s16 diff = ang - cur;
+        s16 diff;
+        s32 cur;
+        cur = (s32)(JMath::atanTable_.atan2_(vel[0], vel[1]) * lbl_8053C0D0);
+        diff = ang - cur;
         if (diff >= 0) {
-            if (diff > maxTurn) {
+            if (diff > (s16)maxTurn) {
                 ang = cur + maxTurn;
             }
-        } else if (diff < -maxTurn) {
-            ang = cur - maxTurn;
+        } else {
+            if (diff < -(s16)maxTurn) {
+                ang = cur - maxTurn;
+            }
         }
         out = ang;
     }
