@@ -90,12 +90,13 @@ extern "C" u8* fn_8020D58C();
 extern "C" void fn_8020D7D0(void*,s32);
 extern "C" s16 fn_801F6874(s32);
 extern const f32 lbl_8053D600;
+#pragma opt_propagation off
 extern "C" void fn_8015DF7C(void* this_) {
- char* p=(char*)this_;
- u8* base=(u8*)lbl_80466110;
- JGeometry::TVec2<f32> d;
- JGeometry::TBox2f box;
+ const u8* base=lbl_80466110;
+ char* p=(char*)((u32)this_);
  JGeometry::TVec3<f32> pos;
+ JGeometry::TBox2f box;
+ volatile JGeometry::TVec2<f32> savedDelta;
  box.set(*(JGeometry::TBox2f*)(p+0x60));
  f32 x;f32 y;
  y=*(f32*)(p+0x10);
@@ -109,14 +110,14 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  if(*(s32*)(p+0x240)!=0){
  f32 target=lbl_8053D59C;if(*(u16*)(p+0x94)==4)target=lbl_8053D5A0;
- fn_801F71A4((f32*)(p+0x260),target,lbl_8053D5A4,lbl_8053D59C);
+ fn_801F71A4((f32*)(p+0x260),target,lbl_8053D5A4,1.0f);
  if(*(u16*)(p+0x94)!=4&&*(u16*)(p+0x94)!=5){
- ((JGeometry::TBox2f*)(p+0x60))->set(((JGeometry::TBox2f*)(base+0x20))[*(s32*)(p+0x98)]);
+ {const JGeometry::TBox2f* src=&((const JGeometry::TBox2f*)(base+0x20))[*(s32*)(p+0x98)];((JGeometry::TBox2f*)(p+0x60))->i.set(src->i.x,src->i.y);((JGeometry::TBox2f*)(p+0x60))->f.set(src->f.x,src->f.y);}
  if(*(s32*)(p+0x258)==1){((JGeometry::TVec2<f32>*)(p+0x60))->scale(lbl_8053D5A8);((JGeometry::TVec2<f32>*)(p+0x68))->scale(lbl_8053D5A8);}
  if(*(f32*)(p+0x260)>lbl_8053D5AC){
  fn_801F2B20(p,5);
  if(!fn_801F2B7C(p,*(s32*)(p+0x114),-1,9)&&lbl_8053AAF8[0x7f]==1){
- ((JGeometry::TBox2f*)(p+0x80))->set(((JGeometry::TBox2f*)(base+0x60))[*(s32*)(p+0x98)]);
+ {const JGeometry::TBox2f* src=&((const JGeometry::TBox2f*)(base+0x60))[*(s32*)(p+0x98)];((JGeometry::TBox2f*)(p+0x80))->i.set(src->i.x,src->i.y);((JGeometry::TBox2f*)(p+0x80))->f.set(src->f.x,src->f.y);}
  if(*(s32*)(p+0x258)==1){((JGeometry::TVec2<f32>*)(p+0x80))->scale(lbl_8053D5A8);((JGeometry::TVec2<f32>*)(p+0x88))->scale(lbl_8053D5A8);}
  box=*(JGeometry::TBox2f*)(p+0x80);box.addPos(x,y);
  fn_80239914(&box,*(s32*)(p+4),*(u32*)(p+0x198));
@@ -134,7 +135,11 @@ extern "C" void fn_8015DF7C(void* this_) {
  if(!fn_801F2B7C(p,*(s32*)(p+0x114),-1,9)){
  for(s32 i=0;i<4;i++){
  if(fn_8023F264(i)&&fn_8023DE58(i)!=8){
- f32* src=fn_8023E724(i);d.set(src[0],src[1]);d.x-=*(f32*)(p+0xc);d.y-=*(f32*)(p+0x10);
+ f32* src=fn_8023E724(i);
+ f32 sx=src[0];f32 sy=src[1];
+ f32 dy=sy-*(f32*)(p+0x10);savedDelta.y=sy;
+ f32 dx=sx-*(f32*)(p+0xc);savedDelta.x=sx;
+ JGeometry::TVec2<f32> d(dx,dy);savedDelta.x=dx;savedDelta.y=dy;
  if(d.squared()<lbl_8053D5E4){d.normalize();if(!(d.squared()<=JGeometry::TUtilf::epsilon()))d.scale(lbl_8053D5F8);pos.set(d.x,d.y,lbl_8053D5EC);fn_8023DFF4(i,&pos);}
  }}}
  }
@@ -163,7 +168,7 @@ extern "C" void fn_8015DF7C(void* this_) {
  if(*(u32*)(p+0x268)!=0){
  s32 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
  fn_8013CB44(*(u32*)(p+0x268),&pos,1,1,1);
- JPAGetXYZRotateMtx((s16)angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x268))->mGlobalRot);
+ JPAGetXYZRotateMtx((s16)angle,(s16)((const s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x268))->mGlobalRot);
  }
  }else{
  JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x268);
@@ -175,7 +180,7 @@ extern "C" void fn_8015DF7C(void* this_) {
  if(*(u32*)(p+0x264)!=0){
  s32 angle=0;if(*(s32*)(p+0x98)==2)angle=0x4000;
  fn_8013CB44(*(u32*)(p+0x264),&pos,1,1,1);
- JPAGetXYZRotateMtx((s16)angle,(s16)((s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x264))->mGlobalRot);
+ JPAGetXYZRotateMtx((s16)angle,(s16)((const s32*)base)[*(s32*)(p+0x98)],-0x8000,(*(JPABaseEmitter**)(p+0x264))->mGlobalRot);
  }
  if(lbl_8053D59C!=*(f32*)(p+0x60)&&lbl_8053D5FC!=*(f32*)(p+0x68)){
  s32 room=*(s32*)(p+0x198);u8* g=fn_8020D58C();fn_8020D7D0(g+4+g[0]*0x784,room);fn_801F0E34(p,0x30011,0);
@@ -183,10 +188,10 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  *(s32*)(p+0x24c)+=1;
  if(*(s32*)(p+0x24c)>10){
- s32 count=5;if(*(f32*)(p+0x260)<lbl_8053D5A4)count=1;
- for(s32 i=0;i<count;i++){
+ s32 i;s32 count=5;if(*(f32*)(p+0x260)<lbl_8053D5A4)count=1;
+ for(i=0;i<count;i++){
  pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
- s16 a=fn_801F6874(*(s32*)(p+0x98));
+ s32 a=fn_801F6874(*(s32*)(p+0x98));
  f32 distance=lbl_8053D5F8*(f32)i;
  pos.x+=distance*JMath::sincosTable_.mTable[(u16)a>>5].first;
  a=fn_801F6874(*(s32*)(p+0x98));
@@ -197,14 +202,12 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  }else if(*(u32*)(p+0x264)!=0){
  (*(JPABaseEmitter**)(p+0x264))->mGlobalPrmClr.a=(u8)(lbl_8053D600**(f32*)(p+0x260));
- (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.x=*(f32*)(p+0x260);
- (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.y=*(f32*)(p+0x260);
- (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.x=*(f32*)(p+0x260);
- (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.y=*(f32*)(p+0x260);
+ (*(JPABaseEmitter**)(p+0x268))->mGlobalPScl.setAll(*(f32*)(p+0x260));
+ (*(JPABaseEmitter**)(p+0x26c))->mGlobalPScl.setAll(*(f32*)(p+0x260));
  if(*(f32*)(p+0x260)>lbl_8053D5A4){
  *(s32*)(p+0x24c)+=1;
  if(*(s32*)(p+0x24c)>10){
- for(s32 i=0,angle=0;i<8;i++,angle+=0x2000){
+ s32 i;s32 angle;for(i=0,angle=0;i<8;i++,angle+=0x2000){
  pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
  f32 distance=*(u16*)(p+0x94)==5?lbl_8053D5B8:lbl_8053D5E0;
  pos.x+=distance*JMath::sincosTable_.mTable[(u16)angle>>5].first;
@@ -219,6 +222,7 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  }
 }
+#pragma opt_propagation reset
 
 struct FlmeColor {
     FlmeColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
