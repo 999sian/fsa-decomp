@@ -30,7 +30,8 @@ struct FsaMenuNumber {
 };
 
 struct FsaBlock48 {
-    u32 w[12];
+    u32 a, b, c;
+    u32 w[9];
 };
 extern "C" u8 lbl_804B1810[];
 extern "C" u8 lbl_8052C5D8[];
@@ -827,6 +828,7 @@ extern "C" void fn_804465B8(void* p);
 extern "C" void fn_8044C038(void* p);
 extern "C" void fn_80443638(void* p);
 extern "C" void reset__7RupyNumFv(void* p);
+#pragma opt_common_subs off
 extern "C" void fn_8043D8B4(u8* self) {
     s32 i;
     s32* p;
@@ -889,7 +891,7 @@ extern "C" void fn_8043D8B4(u8* self) {
         self[0x257] = 0;
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8043DB58(u8* param_1) {
 	struct VObj {
 		virtual void v00();
@@ -1673,10 +1675,12 @@ extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
 #pragma inline_depth(8)
 extern "C" void* fn_80440928(f32 a, f32 b) { return ((void* (*)(void*, f32, f32))fn_8043DF8C)(lbl_8053AED0, a, b); }
 
+#pragma opt_propagation off
 extern "C" void fn_8044094C(void) {
     u8* p = lbl_804B1810;
     u8* base = lbl_8052C5D8;
-    *(FsaBlock48*)(p + 0xc0) = *(FsaBlock48*)(p + 0x90);
+    FsaBlock48* dst = (FsaBlock48*)(p + 0xc0);
+    *dst = *(FsaBlock48*)(p + 0x90);
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x28);
@@ -1723,4 +1727,4 @@ extern "C" void fn_8044094C(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+#pragma opt_propagation reset
