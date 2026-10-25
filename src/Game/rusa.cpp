@@ -691,7 +691,10 @@ extern "C" void fn_80212288(char* p) {
         } else {
             *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x390);
         }
-        Rusa_SubClamp((f32*)(p + 0x39c), lbl_8053FB00, lbl_8053FB44);
+        *(f32*)(p + 0x39c) -= lbl_8053FB00;
+        if (*(f32*)(p + 0x39c) < 0.1f) {
+            *(f32*)(p + 0x39c) = 0.1f;
+        }
         *(f32*)(p + 0x3a0) = lbl_8053FB00 * *(f32*)(p + 0x394) + lbl_8053FB00;
     } else {
         *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x394);
