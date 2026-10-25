@@ -1,6 +1,27 @@
 // BZBR_80144134: .text 0x80144134-0x8014529C (actor BZBR)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "Game/ItemBase.h"
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801F06F0(void* actor, const char* res, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
+extern char lbl_80465B80[];
+extern s32 lbl_8049F408[];
+extern s32 lbl_8049F418[];
+extern char* lbl_8053AB10;
+
+// Resource manager at game+0xa4; slot 6 looks a resource up by type and name.
+struct BzbrResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* get(u32 type, const char* name);
+};
 
 // ---- from Game/fn_80144134_dtor.cpp
 
