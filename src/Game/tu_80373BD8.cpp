@@ -31,6 +31,48 @@ extern "C" Actor* fn_80373BD8(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" void fn_80373C38(Actor* this_) {
+    u8* p = (u8*)this_;
+    s32 i;
+    s32 state = *(s32*)(p + 0x24c);
+    if (state < 0) return;
+    if (state < 4) {
+        if (!fn_8023077C()) return;
+        *(s32*)(p + 0x24c) = 4;
+        *(s32*)(p + 0x248) = 0x32;
+        *(s32*)(p + 0x250) = 0;
+        for (i = 0; i < 4; i++) {
+            JGeometry::TVec3f pos = *fn_8023E724(i);
+            fn_80230498(i, pos + JGeometry::TVec3f(lbl_80542E88, lbl_80542E8C, lbl_80542E88), 0x2e2, 0xff, -0x80, -0x80, 1);
+        }
+        return;
+    }
+    if (*(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x248) > 0x1e) {
+        for (i = 0; i < 4; i++) {
+            JGeometry::TVec3f v = *fn_8023E724(i);
+            fn_80230498(i, v, 0x2e2, 0xff, -0x80, -0x80, 1);
+        }
+        return;
+    }
+    if (*(s32*)(p + 0x250) < 0xd) {
+        if (*(s32*)(p + 0x248) == 0) {
+            *(s32*)(p + 0x250) += 1;
+            *(s32*)(p + 0x248) = lbl_80475070[*(s32*)(p + 0x250)];
+            for (i = 0; i < 4; i++) {
+                JGeometry::TVec3f v = *fn_8023E724(i);
+                fn_80230498(i, v, *(s32*)(p + 0x250) + 0xdb, 0xff, -0x80, -0x80, 1);
+                if (*(s32*)(p + 0x250) == 1) fn_80230FD0(i, 0x10001);
+            }
+            if (*(s32*)(p + 0x250) == 0xd) *(s32*)(p + 0x248) = 0x19;
+        }
+    } else {
+        if (*(s32*)(p + 0x248) == 0 && fn_80230534(0)) {
+            *(s32*)(p + 0x24c) = -1;
+            this_->v10(0xff, 1);
+        }
+    }
+}
+
 extern "C" void fn_80373EC8(Actor* p) {
     f32 period = lbl_80542E90;
     JGeometry::TVec3f saved = *(JGeometry::TVec3f*)((u8*)p + 0xc);
