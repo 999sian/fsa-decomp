@@ -182,13 +182,14 @@ extern "C" void* fn_801F856C(void);
 extern "C" u8* fn_801F666C(void* mgr, s32 id);
 extern "C" u8 fn_802EB27C(u8* actor);
 
+#pragma opt_propagation off
 extern "C" s32 fn_803908D0(Tu80390818* t) {
-    s32 off = 0;
-    s32 i = 0;
+    s32 off;
+    s32 i;
     s32 id;
-    Tu80390818* p = t;
-    for (; i < 4; i++, off += 4) {
-        id = *(s32*)((u8*)p->m48 + 0x180 + off);
+    off = 0;
+    for (i = 0; i < 4; i++, off += 4) {
+        id = *(s32*)((u8*)t->m48 + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
@@ -196,9 +197,9 @@ extern "C" s32 fn_803908D0(Tu80390818* t) {
                     return 0;
                 }
             }
-            *(s32*)((u8*)p->m48 + 0x180 + off) = -1;
+            *(s32*)((u8*)t->m48 + 0x180 + off) = -1;
         }
-        id = *(s32*)((u8*)p->m4C + 0x180 + off);
+        id = *(s32*)((u8*)t->m4C + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
@@ -206,12 +207,12 @@ extern "C" s32 fn_803908D0(Tu80390818* t) {
                     return 0;
                 }
             }
-            *(s32*)((u8*)p->m4C + 0x180 + off) = -1;
+            *(s32*)((u8*)t->m4C + 0x180 + off) = -1;
         }
     }
     return 1;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80390B64(Tu80390818* t) {
     if (t->m24 == 5) {
         Tu80390818_Sub* p = t->m4C;
@@ -271,9 +272,8 @@ static inline u16 Tu80390818_read16(u8* p) {
 extern "C" u16 fn_80390C6C(Tu80390818* t) {
     if (t->m24 == 3) {
         switch (t->m41) {
-        case 0: {
-            u8* p = t->m0C;
-            t->m26 = Tu80390818_read16(p);
+        case 0:
+            t->m26 = Tu80390818_read16(t->m0C);
             t->m41 = 1;
             t->m10 = 2;
             t->m14 = 0;
@@ -281,7 +281,6 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
             t->m0C++;
             t->m0C++;
             break;
-        }
         case 1:
             if (t->m28 & 1) {
                 t->m26 = 0xFFFC;
@@ -290,9 +289,8 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
                 break;
             }
             t->m41 = 2;
-        case 2: {
-            u8* p = t->m0C;
-            t->m26 = Tu80390818_read16(p);
+        case 2:
+            t->m26 = Tu80390818_read16(t->m0C);
             if (t->m26 == 0xFFF0) {
                 t->m10 += 2;
                 t->m14++;
@@ -312,7 +310,6 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
             }
             t->m43++;
             break;
-        }
         case 3:
             t->m24 = 4;
             t->m26 = 0xFFFE;
@@ -512,6 +509,8 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
     }
 }
 
+#pragma optimization_level 3
+#pragma opt_strength_reduction off
 extern "C" void fn_803913E0(Tu80390818* t) {
     s32 i;
     t->m08 = 0;
@@ -548,7 +547,7 @@ extern "C" void fn_803913E0(Tu80390818* t) {
         i++;
     } while (i < 4);
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_80391678(Tu80390818* t) {
     t->m08 = 0;
     Tu80390818* p = t;
