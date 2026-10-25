@@ -101,7 +101,8 @@ extern "C" void fn_803F2580(u8* p) {
 
 static inline void tu803F_setAlphas(u8* p, u64* tags, u8* alphas, s32 n, f32 a) {
     for (s32 i = 0; i < n; i++) {
-        (*(J2DPane**)(p + 0xc))->search(tags[i])->setAlpha((u8)((f32)alphas[i] * a));
+        f32 v = alphas[i];
+        (*(J2DPane**)(p + 0xc))->search(tags[i])->setAlpha((u8)(v * a));
     }
 }
 
@@ -710,7 +711,7 @@ extern "C" void fn_803F8354(u8* p) {
     u8* base = lbl_80478A60;
     f32 a;
     (*(s16*)(p + 0x240))++;
-    if (*(s16*)(p + 0x240) > 0) {
+    if (0 < *(s16*)(p + 0x240)) {
         if (*(s16*)(p + 0x240) < 0x19) {
             *(f32*)(p + 0x164) = lbl_80543754 * ((f32)((0x19 - *(s16*)(p + 0x240)) * (0x19 - *(s16*)(p + 0x240))) / lbl_805437C0);
             a = (f32)*(s16*)(p + 0x240) / lbl_80543788;
@@ -722,7 +723,8 @@ extern "C" void fn_803F8354(u8* p) {
             tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, a);
         } else {
             *(f32*)(p + 0x164) = lbl_8054372C;
-            tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, lbl_80543730);
+            a = lbl_80543730;
+            tu803F_setAlphas(p, (u64*)(base + 0x5f0), p + 0x312, 20, a);
         }
     }
     if (*(s16*)(p + 0x240) > 0x19) {
@@ -748,12 +750,13 @@ extern "C" void fn_803F8354(u8* p) {
                 tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, a);
             } else {
                 *(f32*)(p + 0x184 + k * 4) = lbl_8054372C;
-                tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, lbl_80543730);
+                a = lbl_80543730;
+                tu803F_setAlphas(p, (u64*)(base + 0x690) + k * 5, p + 0x326 + k * 5, 5, a);
             }
         }
         s += 10;
     }
-    if (*(s16*)(p + 0x240) > 0) {
+    if (0 < *(s16*)(p + 0x240)) {
         if (*(s16*)(p + 0x240) < 15) {
             *(f32*)(p + 0x198) = lbl_80543760 * ((f32)((15 - *(s16*)(p + 0x240)) * (15 - *(s16*)(p + 0x240))) / lbl_8054378C);
             a = (f32)*(s16*)(p + 0x240) / lbl_805437C4;
