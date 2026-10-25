@@ -52,7 +52,8 @@ static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
 }
 
 static inline bool tuCheckHit(u8* self, s32 idx) {
-    if (fn_8023DE58(idx) != *(s32*)(self + 0x4)) {
+    s32 room = *(s32*)(self + 0x4);
+    if (fn_8023DE58(idx) != room) {
         return false;
     }
     for (s32 j = 0; j < 8; j++) {
