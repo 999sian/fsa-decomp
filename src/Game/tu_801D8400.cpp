@@ -317,7 +317,8 @@ extern "C" s32 fn_801CD664(s32 n);
 struct T84List {
     T84List() : n(0) {}
     void add(s32 x) {
-        v[n++] = x;
+        v[n] = x;
+        n++;
     }
     s32 v[11];
     s32 n;
@@ -683,35 +684,39 @@ static inline s32 t84FindPlayer(char* p) {
     return found;
 }
 
-#pragma opt_propagation off
+#pragma opt_common_subs on
+#pragma opt_propagation on
 extern "C" void fn_801D9960(char* p) {
     if (*(u16*)(p + 0x33c) != 0) {
         (*(u16*)(p + 0x33c))--;
     }
     if (*(u16*)(p + 0x33c) == 0) {
-        s16 ang;
-        s32 pl;
-        s32 found = -1;
-        JGeometry::TVec3<f32> v;
-        t84FrontPos(p, &v);
-        ang = t84FaceAngle(p);
-        pl = fn_801D0338(p, &v, ang);
-        if (pl >= 0) {
-            f32 dy = fn_8023E724(pl)->y - v.y;
-            f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
-            s16 d = ang - (s16)(a * lbl_8053F208);
-            if (lbl_8053F20C * JGeometry::TUtilf::abs(d) <= lbl_8053F1F0) found = pl;
-        }
-        if (found >= 0 && fn_801DA894(p + 0x2a8)) {
+        if (t84FindPlayer(p) >= 0 && fn_801DA894(p + 0x2a8)) {
             fn_801D9C58(p, 0xd);
         }
     }
     if (*(s32*)(p + 0x248) == 0xb) {
         (*(u16*)(p + 0x338))--;
         if (*(u16*)(p + 0x338) == 0) {
-            t84PickTarget(p);
+            if (*(u8*)(p + 0x33f) == 3) {
+                s32 l[12];
+                s32 n = 1;
+                l[0] = 1;
+                l[n++] = 2;
+                l[2] = 5;
+                ++n;
+                l[n++] = 6;
+                l[4] = 9;
+                ++n;
+                l[n++] = 10;
+                if (n > 0) *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+                else *(u8*)(p + 0x334) = 0;
+            } else {
+                *(u8*)(p + 0x334) = fn_801CD664(12);
+            }
+            *(u16*)(p + 0x338) = fn_801CD664(61) + 60;
             bool turn = false;
-            bool left = false;
+            bool left = turn;
             f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
             f32 x = *(f32*)(p + 0xc);
             if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
@@ -732,6 +737,7 @@ extern "C" void fn_801D9960(char* p) {
         }
     }
 }
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" BOOL fn_801D95F4(char* p) {
     BOOL ok = FALSE;
