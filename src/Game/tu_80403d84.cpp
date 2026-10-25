@@ -627,21 +627,30 @@ struct StateFnEntry {
 	s32 vtblOfs;
 	void* fn;
 };
-struct PtmfProbe {
-	void a0(); void a1(); void a2(); void a3(); void a4(); void a5(); void a6(); void a7();
-	void a8(); void a9(); void a10(); void a11(); void a12(); void a13(); void a14(); void a15();
-	void a16(); void a17(); void a18(); void a19(); void a20(); void a21();
-	void b0(); void b1(); void b2(); void b3();
+// The state handlers are member functions of the menu object in the original: tables of
+// member-function pointers, which MWCC initializes by copying from a .data image in __sinit.
+// TODO: the handlers are still written as extern "C" free functions above; once they become
+// these members (and their symbols are renamed), the table relocations will match too.
+struct StateMenu {
+	void fn_8040F3AC(); void fn_8040F35C(); void fn_8040F288(); void fn_8040F16C();
+	void fn_8040ED20(); void fn_8040E838(); void fn_8040E720(); void fn_8040E700();
+	void fn_8040E3A0(); void fn_8040E298(); void fn_8040E278(); void fn_8040D3D0();
+	void fn_8040CE90(); void fn_8040C950(); void fn_8040BC1C(); void fn_80409FDC();
+	void fn_8040B93C(); void fn_8040B5A0(); void fn_8040B388(); void fn_804096E8();
+	void fn_80409450(); void fn_80409330();
+	void fn_80403F50(); void fn_80403EAC(); void fn_80403E24(); void fn_80403D84();
 };
-typedef void (PtmfProbe::*PtmfProbeFn)();
-static PtmfProbeFn sStateFns[22] = {
-	&PtmfProbe::a0, &PtmfProbe::a1, &PtmfProbe::a2, &PtmfProbe::a3, &PtmfProbe::a4, &PtmfProbe::a5,
-	&PtmfProbe::a6, &PtmfProbe::a7, &PtmfProbe::a8, &PtmfProbe::a9, &PtmfProbe::a10, &PtmfProbe::a11,
-	&PtmfProbe::a12, &PtmfProbe::a13, &PtmfProbe::a14, &PtmfProbe::a15, &PtmfProbe::a16, &PtmfProbe::a17,
-	&PtmfProbe::a18, &PtmfProbe::a19, &PtmfProbe::a20, &PtmfProbe::a21,
+typedef void (StateMenu::*StateMenuFn)();
+static StateMenuFn sStateFns[22] = {
+	&StateMenu::fn_8040F3AC, &StateMenu::fn_8040F35C, &StateMenu::fn_8040F288, &StateMenu::fn_8040F16C,
+	&StateMenu::fn_8040ED20, &StateMenu::fn_8040E838, &StateMenu::fn_8040E720, &StateMenu::fn_8040E700,
+	&StateMenu::fn_8040E3A0, &StateMenu::fn_8040E298, &StateMenu::fn_8040E278, &StateMenu::fn_8040D3D0,
+	&StateMenu::fn_8040CE90, &StateMenu::fn_8040C950, &StateMenu::fn_8040BC1C, &StateMenu::fn_80409FDC,
+	&StateMenu::fn_8040B93C, &StateMenu::fn_8040B5A0, &StateMenu::fn_8040B388, &StateMenu::fn_804096E8,
+	&StateMenu::fn_80409450, &StateMenu::fn_80409330,
 };
-static PtmfProbeFn sIntroFns[4] = {
-	&PtmfProbe::b0, &PtmfProbe::b1, &PtmfProbe::b2, &PtmfProbe::b3,
+static StateMenuFn sIntroFns[4] = {
+	&StateMenu::fn_80403F50, &StateMenu::fn_80403EAC, &StateMenu::fn_80403E24, &StateMenu::fn_80403D84,
 };
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
