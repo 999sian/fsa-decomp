@@ -164,8 +164,7 @@ extern "C" void fn_8014AFB4(u8* this_) {
     }
     if (*(u32*)(this_ + 0x90) == 8 || *(u32*)(this_ + 0x90) == 9) {
         if (*(s32*)(this_ + 0x230) != 5) {
-            scale = *(f32*)(this_ + 0x274);
-            scale *= 0.5f;
+            scale = *(f32*)(this_ + 0x274) * lbl_8053D12C;
             n = 0;
             idx = *(s32*)(this_ + 0x24c) + 0x312;
         } else {
@@ -235,11 +234,11 @@ extern "C" void fn_8014AFB4(u8* this_) {
             fn_801F06F0(this_, lbl_80465D48, idx, &rec, mode, 1.0f, 1.0f);
         }
     }
-    s32 r10 = 0;
-    if (*(u8*)(this_ + 0xc4) == 0 && *(s32*)(this_ + 0x90) == 0xb) {
-        r10 = 1;
+    s32 flag = 0;
+    if (*(u8*)(this_ + 0xc4) != 0 || *(s32*)(this_ + 0x90) == 0xb) {
+        flag = 1;
     }
-    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, idx, n != 0, 2, -1, r10, 0, 0);
+    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, idx, n != 0, 2, -1, flag, 0, 0);
 }
 
 extern "C" void* fn_8014CF28(u32* this_, s16 freeFlag) {
