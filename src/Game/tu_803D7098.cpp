@@ -617,7 +617,6 @@ extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" void __dl__FPv(void*);
 extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
-    s32 i;
     void** slot;
     u8* obj;
 
@@ -631,9 +630,10 @@ extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
             *(void**)(param_1 + 0x4c) = 0;
         }
         slot = (void**)(param_1 + 4);
-        for (i = 1; i < 3; i++, slot++) {
+        for (int i = 1; i < 3; i++, slot++) {
             if (slot[0x13] != 0) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), slot[0x13]);
+                void* manager = *(void**)((u8*)fn_8013C824() + 0xc);
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(manager, slot[0x13]);
                 slot[0x13] = 0;
             }
         }
@@ -658,7 +658,7 @@ extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
         }
         *(void**)(param_1 + 0x20) = 0;
         slot = (void**)param_1;
-        for (i = 0; i < 2; i++, slot++) {
+        for (int i = 0; i < 2; i++, slot++) {
             obj = *(u8**)(slot + 9);
             if (obj != 0) {
                 ((FsaDisposable*)obj)->del(1);
@@ -676,7 +676,7 @@ extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
         }
         *(void**)(param_1 + 0x30) = 0;
         slot = (void**)param_1;
-        for (i = 0; i < 4; i++, slot++) {
+        for (int i = 0; i < 4; i++, slot++) {
             obj = *(u8**)(slot + 13);
             if (obj != 0) {
                 ((FsaDisposable*)obj)->del(1);
