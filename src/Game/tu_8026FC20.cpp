@@ -172,9 +172,9 @@ inline BOOL inRect(const JGeometry::TVec2<f32>& pt, f32 x0, f32 y0, f32 x1, f32 
     return in;
 }
 
-inline BOOL inRectXY(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
+inline BOOL inRectXY(f32 x, const f32* y, f32 x0, f32 y0, f32 x1, f32 y1) {
     BOOL in = 0;
-    if (x >= x0 && y >= y0 && x < x1 && y < y1) {
+    if (x >= x0 && *y >= y0 && x < x1 && *y < y1) {
         in = 1;
     }
     return in;
@@ -528,7 +528,7 @@ extern "C" s32 fn_80270A8C(void* playerObj) {
 extern "C" {
 #pragma opt_propagation off
 BOOL fn_80270ABC(char* p) {
-    if (U8(p, 0xce8) == 1) {
+    if (*(u8*)(p + 0xce8) == 1) {
         return 1;
     }
     if (U8(p, 0xcee) == 1) {
