@@ -6,11 +6,11 @@ extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5
 extern "C" u8 fn_802ED7F0(char* p, f32 v);
 extern "C" u8* fn_801F856C(void);
 extern "C" u8 lbl_804714C0[];
-extern f32 lbl_805417E8;
-extern f32 lbl_805417EC;
-extern f32 lbl_805417F0;
-extern f32 lbl_805417F4;
-extern f32 lbl_805417F8;
+extern const f32 lbl_805417E8;
+extern const f32 lbl_805417EC;
+extern const f32 lbl_805417F0;
+extern const f32 lbl_805417F4;
+extern const f32 lbl_805417F8;
 
 
 extern "C" char lbl_804AABA8[];
