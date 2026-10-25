@@ -8,6 +8,17 @@ static inline JGeometry::TVec3<f32> SHBL_neg(const JGeometry::TVec3<f32>& v) {
     return r;
 }
 
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F8544(void* mgr, u32 tag, s32 room, void* pos, s32 n);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+
+static inline void SHBL_spawn(u8* this_, u32 tag, const s32& n) {
+    s32 id = fn_801F8544(fn_801F856C(), tag, *(s32*)(this_ + 4), this_ + 0xc, n);
+    if (id >= 0) {
+        fn_801F666C(fn_801F856C(), id);
+    }
+}
+
 static inline void SHBL_neg2(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& v) {
     JGeometry::TVec3<f32> r;
     r.negate(v);
@@ -60,19 +71,18 @@ extern "C" s32 fn_801F8544(void* mgr, u32 tag, s32 room, void* pos, s32 n);
 extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
-    u16 a;
-    f32 d;
-    s32 c;
-    s32 b;
-    JGeometry::TVec3<f32> p;
     switch (mode) {
     case 1:
         *(s32*)(this_ + 0x24c) = 0;
         *(s32*)(this_ + 0x254) = 5;
         break;
-    case 2:
+    case 2: {
         *(s32*)(this_ + 0x248) = 0;
         *(s32*)(this_ + 0x24c) = 0;
+        u16 a;
+        f32 d;
+        s32 c;
+        s32 b;
         a = 0;
         b = 0;
         c = 0;
@@ -80,6 +90,7 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
         fn_801EEC98(this_, *(void**)(this_ + 0x198), &a, &b, &d, &c, *(s32*)(this_ + 0x23c), 2);
         *(u16*)(this_ + 0x230) = a;
         break;
+    }
     case 3:
         *(u8*)(this_ + 0x2ae) = 0;
         *(u8*)(this_ + 0x2af) = 0;
@@ -87,15 +98,17 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
         break;
     case 4:
         *(f32*)(this_ + 0x264) = 1.5f;
-        if (*(s32*)(this_ + 0x258) > 0) {
-            s32 n = *(s32*)(this_ + 0x25c);
-            if (n > 0 && (u8)n < *(u8*)(this_ + 0x2ae)) {
+        if (*(s32*)(this_ + 0x258) > 0 && *(s32*)(this_ + 0x25c) > 0) {
+            u8 n = *(s32*)(this_ + 0x25c);
+            if (n < *(u8*)(this_ + 0x2ae)) {
                 *(u8*)(this_ + 0x2af) = n;
             }
         }
         break;
     case 5: {
-        *(JGeometry::TVec3<f32>*)(this_ + 0x3c) = SHBL_neg(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+        JGeometry::TVec3<f32> w;
+        SHBL_neg2(w, *(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+        *(JGeometry::TVec3<f32>*)(this_ + 0x3c) = w;
         *(f32*)(this_ + 0x44) = 1.0f;
         fn_802D79E8(fn_802D6A9C(), *(s32*)(this_ + 4), 0, 4.0f, 0.0f);
         u8* e = *(u8**)(this_ + 0x374);
@@ -142,7 +155,7 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode) {
         if (e != 0) {
             *(u32*)(e + 0xf4) |= 1;
         }
-        p = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+        JGeometry::TVec3<f32> p(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
         p.y -= 16.0f * *(f32*)(this_ + 0x260);
         fn_8013CC50(*(s32*)(this_ + 4), &p, 0x44a, 0, 1, 0, 0, 1, *(f32*)(this_ + 0x260));
         fn_8013CC50(*(s32*)(this_ + 4), &p, 0x44b, 0, 1, 0, 0, 1, *(f32*)(this_ + 0x260));
