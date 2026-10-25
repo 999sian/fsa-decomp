@@ -44,6 +44,19 @@ static inline void setStateByte(s32 off, u8 v) {
     }
 }
 
+static inline void setUpdateWord(s32 off, void* value, unsigned char* player, unsigned char* base) {
+    bool locked;
+    if (player[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) locked = true;
+    else locked = false;
+    if (!locked) *(void**)(lbl_80529DEC + off) = value;
+}
+static inline void setUpdateByte(s32 off, u8 value, unsigned char* player, unsigned char* base) {
+    bool locked;
+    if (player[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) locked = true;
+    else locked = false;
+    if (!locked) lbl_80529DEC[off] = value;
+}
+
 struct VObj2 {
         virtual void v00();
         virtual void v04();
@@ -127,13 +140,9 @@ extern "C" void fn_80139D70(void) {
 }
 
 extern "C" void fn_80139D9C(unsigned char* p) {
-    struct VObj2 {
-        virtual void v00();
-        virtual void v04();
-        virtual void v08();
-        virtual void v0C();
-        virtual void v10();
-    };
+    u8 fc;
+    void* f8;
+    unsigned char* pl;
     bool bVar1;
     s32 iVar3 = *(s32*)(lbl_8053AAF8 + 0x4c);
     if (iVar3 != 7 || *(s32*)(lbl_8053AAF8 + 0x60) < 4) {
@@ -218,9 +227,9 @@ END:
         }
         q += 4;
     }
-    unsigned char* pl = lbl_8053AAF8;
-    void* f8 = *(void**)(pl + 0xf8);
-    if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+    pl = lbl_8053AAF8;
+    f8 = *(void**)(pl + 0xf8);
+    if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
         bVar1 = true;
     } else {
         bVar1 = false;
@@ -228,8 +237,8 @@ END:
     if (!bVar1) {
         *(void**)(lbl_80529DEC + 0x1b0) = f8;
     }
-    u8 fc = pl[0xfc];
-    if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+    fc = pl[0xfc];
+    if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
         bVar1 = true;
     } else {
         bVar1 = false;
@@ -238,7 +247,7 @@ END:
         lbl_80529DEC[0x214] = fc;
     }
     if ((lbl_80529DEC[0x24a] & 1) == 0 && (lbl_80529DEC[0x24a] & 2) == 0 && (lbl_80529DEC[0x24a] & 4) == 0 && (lbl_80529DEC[0x24a] & 8) == 0) {
-        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+        if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
             bVar1 = true;
         } else {
             bVar1 = false;
@@ -247,7 +256,7 @@ END:
             lbl_80529DEC[0x215] = 1;
         }
     } else {
-        if (lbl_8053AAF8[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
+        if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
             bVar1 = true;
         } else {
             bVar1 = false;
