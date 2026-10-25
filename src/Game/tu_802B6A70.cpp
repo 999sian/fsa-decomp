@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JKernel/JKRArchive.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JMath/Inline.h"
 
 struct Vec3f {
@@ -82,7 +83,7 @@ extern "C" void fn_802B6A70(Actor* p) {
     p->field_11C = 0;
 }
 
-#pragma opt_propagation off
+#pragma peephole off
 extern "C" void fn_802B6DAC(Actor* p) {
     u8 buf[0x3c];
     u8* q;
@@ -134,24 +135,24 @@ extern "C" void fn_802B6DAC(Actor* p) {
         c = **(char**)((char*)p + 0x248);
         if (c == 'r' || c == 's' || c == 'y') {
             mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
-            obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x30);
+            obj = ((JKRArchive*)mgr)->getResource(0x54494d47, (const char*) tbl + 0x30);
             fn_801EFD34(p, obj, 0.0f, -18.0f, 0.0f, buf, 7);
         } else if (c == 'l' || c == 'x' || c == 'p') {
             mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
-            obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x40);
+            obj = ((JKRArchive*)mgr)->getResource(0x54494d47, (const char*) tbl + 0x40);
             fn_801EFD34(p, obj, 0.0f, -18.0f, 0.0f, buf, 7);
         } else if (c == 'u') {
             mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
-            obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x50);
+            obj = ((JKRArchive*)mgr)->getResource(0x54494d47, (const char*) tbl + 0x50);
             fn_801EFD34(p, obj, 0.0f, -18.0f, 0.0f, buf, 7);
         } else {
             mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
-            obj = ((void* (*)(void*, s32, void*))(*(void***)mgr)[6])(mgr, 0x54494d47, tbl + 0x60);
+            obj = ((JKRArchive*)mgr)->getResource(0x54494d47, (const char*) tbl + 0x60);
             fn_801EFD34(p, obj, 0.0f, -18.0f, 0.0f, buf, 7);
         }
     }
 }
-#pragma opt_propagation reset
+#pragma peephole reset
 extern "C" u8 fn_8023F264(s32);
 extern "C" u8 fn_80236E3C(s32);
 extern "C" u8 fn_80239C00(s32, void*, u32);
