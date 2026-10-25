@@ -7,7 +7,7 @@
 extern "C" char lbl_804AE5C8[];
 extern "C" char lbl_804750AC[];
 extern "C" f32 lbl_80475060[];
-extern "C" f32 lbl_80542E88;
+extern "C" const f32 lbl_80542E88;
 extern "C" f32 lbl_80542E90;
 extern "C" f32 lbl_80542E94;
 extern "C" f32 lbl_80542E98;
@@ -143,7 +143,7 @@ extern "C" void fn_80374074(Actor* p) {
 
 extern "C" const f32 lbl_80542ED0;
 extern "C" const f32 lbl_80542ED4;
-extern "C" f32 lbl_80542E88;
+extern "C" const f32 lbl_80542E88;
 extern "C" void fn_803744C4(u8* p) {
     f32 a = lbl_80542ED0;
     f32 b = lbl_80542ED4;
