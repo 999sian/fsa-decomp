@@ -4,6 +4,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/Inline.h"
+#include "Game/TlwpDrawParam.h"
 
 struct SykyVec {
     f32 x, y, z;
@@ -82,6 +83,26 @@ static inline f32 sykyRandFrom(void* __restrict game, int multiplier = 0x19660d)
     return *(f32*)&bits - lbl_8053E460;
 }
 extern const char lbl_80468480[];
+static inline void sykyRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+    f32 sz, sy, sx, cz, cy, cx;
+    sx = sin(ax); sy = sin(ay); sz = sin(az);
+    cx = cos(ax); cy = cos(ay); cz = cos(az);
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    f32 sxcz, sxsz, cxsz, sxsy, cxcz;
+    cxcz = cx * cz;
+    sxsy = sx * sy;
+    cxsz = cx * sz;
+    sxsz = sx * sz;
+    sxcz = sx * cz;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
 #pragma opt_propagation off
 extern "C" void fn_8019E37C(u8* p) {
     switch (*(s32*)(p + 0x268)) {
@@ -111,46 +132,28 @@ extern "C" void fn_8019E37C(u8* p) {
     }
 }
 #pragma opt_propagation reset
-extern "C" void fn_8019E480(u8* p) {
+extern "C" void fn_8019E480(u8* self) {
     DrawRec rec;
-    f32 vec[4][3];
+    f32 vec[3][4];
     s32 id = 0;
-    vec[1][0] = lbl_8053E464;
-    vec[2][1] = lbl_8053E464;
-    vec[3][2] = lbl_8053E464;
-    f32 ang = *(f32*)(p + 0x294) / lbl_8053E468;
-    f32 scale = *(f32*)(p + 0x290);
-    f32 sx = sin(lbl_8053E464);
-    f32 sy = sin(ang);
-    f32 sz = sin(lbl_8053E464);
-    f32 cx = cos(lbl_8053E464);
-    f32 cy = cos(ang);
-    f32 cz = cos(lbl_8053E464);
-    vec[0][0] = scale * (cy * cz);
-    vec[0][1] = scale * ((sx * sy) * cz - cx * sz);
-    vec[0][2] = scale * ((cx * cz) * sy + sx * sz);
-    vec[1][1] = scale * (cy * sz);
-    vec[1][2] = scale * ((sx * sy) * sz + cx * cz);
-    vec[2][0] = scale * ((cx * sz) * sy - sx * cz);
-    vec[2][2] = scale * -sy;
-    vec[3][0] = scale * (sx * cy);
-    vec[3][1] = scale * (cx * cy);
+    u8* p = self;
+    f32 scale;
+    f32 ang;
+    vec[0][3] = lbl_8053E464;
+    vec[1][3] = lbl_8053E464;
+    vec[2][3] = lbl_8053E464;
+    scale = *(f32*)(p+0x290);
+    ang = *(f32*)(p+0x294) / lbl_8053E468;
+    tlwpRotMtx(vec, lbl_8053E464, ang, lbl_8053E464, scale);
     rec.w18 = vec;
     switch (*(s32*)(p + 0x268)) {
-    case 1:
-        id = 9;
-        break;
-    case 2:
-        id = 0x1d;
-        break;
-    case 4:
-        id = 0xd;
-        rec.w30 = 0x11;
-        break;
+    case 1: id = 9; break;
+    case 2: id = 0x1d; break;
+    case 4: id = 0xd; rec.w30 = 0x11; break;
     }
     *((u8*)&rec.w10 + 3) = (u8)*(f32*)(p + 0x298);
+    id += *(s32*)(p + 0x264);
     if (*(s32*)(p + 4) < 8) {
-        id += *(s32*)(p + 0x264);
         SykyObjVT* obj = *(SykyObjVT**)((u8*)lbl_8053AAF8 + 0xa4);
         s32 kind = obj->v6(0x534F4220, lbl_80468480);
         fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), (Vec*)(p + 0xc), kind, id, lbl_8053E460, lbl_8053E460, &rec);
