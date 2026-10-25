@@ -562,12 +562,10 @@ extern "C" bool fn_80260048(char* p, s32 id) {
     return true;
 }
 
-u8 fn_8022E438(s32, u32);
 s32 fn_8023DE58(u32);
 s32 Player_GetLinkTargetIndex(char*);
 void fn_80233F78(s32);
 u8 fn_80243194(char*, s32);
-void fn_80230C6C(s32);
 extern "C" u8 fn_802600A0(char* p, u32 id) {
     if ((u8)fn_80270A8C(p)) {
         return 0;
