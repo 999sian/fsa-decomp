@@ -117,7 +117,7 @@ static inline s32 getFileIcon(u32 slot) {
             return ((s32*)(lbl_804765D0 + 0x730))[k];
         }
     }
-    return ((s32*)(lbl_804765D0 + 0x730))[7];
+    return *(s32*)(lbl_804765D0 + 0x74c);
 }
 
 static inline BOOL isTimeSet(s64 t) {
