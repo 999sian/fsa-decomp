@@ -120,9 +120,9 @@ struct HeartPane {
     virtual void v60();
     virtual void v61();
     virtual void v62();
-    virtual void v63();
-    virtual void v64();
     virtual void set(f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void v64();
+    virtual void v65();
 };
 
 extern u8 lbl_8050EC80[];
