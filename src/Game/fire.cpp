@@ -294,9 +294,6 @@ extern "C" void fn_802BABEC(char* p, void* pos, u8 flag) {
     }
 }
 
-void* fn_801F856C(void);
-s32 fn_801F78F4(void* obj, u32 id, s32 prev);
-char* fn_801F666C(void* obj, s32 idx);
 extern "C" s32 fn_801F78F4(void*, u32, s32);
 extern "C" char* fn_801F666C(void*, s32);
 extern "C" BOOL fn_802BACE4(char* p) {
