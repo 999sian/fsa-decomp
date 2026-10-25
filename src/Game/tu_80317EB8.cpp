@@ -51,7 +51,7 @@ extern "C" u8 fn_802D800C(s32, s32);
 extern "C" s32 lbl_804AAF88[];
 extern "C" s32 lbl_804AAFA0[];
 extern "C" s32 lbl_804AAF40[];
-extern "C" u8 lbl_8053A1B0[];
+extern "C" u8 lbl_8053A1B0[2];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
