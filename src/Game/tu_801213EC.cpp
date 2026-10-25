@@ -1276,6 +1276,7 @@ extern "C" void fn_80123D30(u8* self) {
     *(s32*)(self + 0x108) = *(s32*)(self + 0x360) << 2;
 }
 
+#pragma opt_propagation off
 extern "C" s32 fn_80123D88(u8* self) {
     if (self[0x333]) {
         return 0;
@@ -1317,7 +1318,7 @@ extern "C" s32 fn_80123D88(u8* self) {
     }
     return 1;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_80123E80(u8* self, s32 state) {
     *(s32*)(self + 0x340) = *(s32*)(self + 0x33C);
     *(s32*)(self + 0x33C) = state;
@@ -1538,9 +1539,6 @@ extern "C" void* fn_801247C8(u8* self, const char* name, s32 kind, u8 companions
     *(s32*)(self + 0x370) = -1;
     strcpy((char*)(self + 0x384), name);
     return self;
-}
-
-extern "C" void __sinit_tu_801213EC_cpp(void) {
 }
 
 // Keep regional definitions that were present before source-tree consolidation.
