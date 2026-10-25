@@ -1,6 +1,64 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
+extern "C" s32 fn_801F285C(void*, void*, s32*, s32, s32);
+extern "C" u8 fn_80235448(s32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" s32 fn_8023B6CC(s32);
+extern "C" void fn_80237948(s32, void*);
+extern "C" u8 fn_801EAC20(void*, s32);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern "C" void fn_801E62D4(void*);
+extern "C" void fn_801D9C58(void*, s32);
+extern const u8 lbl_8053F1C8;
+extern f32 lbl_8053F38C;
+extern f32 lbl_8053F3B4, lbl_8053F3B8, lbl_8053F3BC, lbl_8053F3C0, lbl_8053F3C4, lbl_8053F3C8;
+
+static inline bool canHitPlayer(u8* p, s32 idx) {
+    bool result = false;
+    if (idx >= 0 && idx < 4 && !fn_80235448(idx)) {
+        if (*(s32*)(p + 0x248) == 0x11) {
+            result = true;
+        } else if (lbl_8053F3C8 + fn_8023E724(idx)[1] >= *(f32*)(p + 0x10) + *(f32*)(p + 0x64)) {
+            switch (*(s32*)(p + 0x248)) {
+            case 12:
+                result = true;
+                break;
+            case 11: case 13: case 14:
+                if (fn_8023E724(idx)[1] - lbl_8053F3C8 > *(f32*)(p + 0x10) + *(f32*)(p + 0x6c)) {
+                    result = true;
+                } else if (*(u32*)(p + 0x230) & 0x2000) {
+                    if (*(f32*)(p + 0xc) < fn_8023E724(idx)[0]) result = true;
+                } else if (fn_8023E724(idx)[0] < *(f32*)(p + 0xc)) {
+                    result = true;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+static inline void onPlayerHit(u8* p) {
+    *(s32*)(p + 0xf8) = 0;
+    f32 zero = lbl_8053F38C;
+    *(f32*)(p + 0x44) = zero;
+    *(f32*)(p + 0x14) = zero;
+    fn_801F0E34(p, 0x40005, 0);
+    fn_801E62D4(p);
+    if (*(s32*)(p + 0x248) != 0x11) {
+        ++p[0x33f];
+        if (p[0x33f] >= lbl_8053F1C8) {
+            f32 vx = *(f32*)(p + 0x3c);
+            f32 scale = lbl_8053F3C4;
+            *(f32*)(p + 0x3c) = vx * scale;
+            *(f32*)(p + 0x40) *= scale;
+            fn_801D9C58(p, 15);
+        }
+    }
+}
 extern f32 lbl_8053F3A4;
 extern f32 lbl_8053F3A8;
 extern f32 lbl_8053F3AC;
