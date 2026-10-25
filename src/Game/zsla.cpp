@@ -148,6 +148,11 @@ extern "C" void fn_8022249C(void* this_) {
 #include "JSystem/JGeometry.h"
 
 union ZslaRandomFloat { f32 f; u32 s; };
+static inline void ZslaSetVelocity(JGeometry::TVec3<f32>& v, const f32 y) {
+    v.x=0.0f;
+    v.y=y;
+    v.z=0.0f;
+}
 struct ZslaRandom {
     u32 seed;
     f32 get_ufloat_1() {
@@ -259,7 +264,20 @@ void fn_80222668(void* this_, s32 state) {
 }
 
 // NonMatching (~92%): float register allocation / RNG reload scheduling differ.
+extern "C" const f32 lbl_8053FEC0, lbl_8053FEC4, lbl_8053FEC8, lbl_8053FECC, lbl_8053FED0, lbl_8053FED4, lbl_8053FED8, lbl_8053FEDC, lbl_8053FEE0, lbl_8053FEE4, lbl_8053FEE8, lbl_8053FEEC;
+extern "C" f32 __fmadds(f32, f32, f32);
+extern "C" f32 __fmsubs(f32, f32, f32);
+#pragma opt_propagation off
 void fn_80222730(void* this_) {
+    f32 zero;
+    f32 spreadX;
+    f32 one;
+    f32 two;
+    f32 spreadY;
+    f32 baseY;
+    f32 x;
+    f32 height;
+    f32 step;
     char* p = (char*)this_;
     s32 room = *(s32*)(p + 0x4);
     char* cfg = fn_802D6A9C();
@@ -270,29 +288,43 @@ void fn_80222730(void* this_) {
         rect = (f32*)(cfg + 0xdc);
     }
     f32 halfW = 0.5f * (rect[2] - rect[0]);
-    f32 height = 64.0f + (32.0f + (rect[3] - rect[1]));
-    s32 n = (s32)(0.0625f * halfW) + 1;
-    f32 x = *(f32*)(p + 0xc) - 0.5f * halfW;
-    f32 baseY = rect[1] - 32.0f;
+    height = 64.0f + (32.0f + (rect[3] - rect[1]));
+    baseY = rect[1] - 32.0f;
+    x = *(f32*)(p + 0xc) - 0.5f * halfW;
+    s32 n = (s32)(lbl_8053FED0 * halfW) + 1;
+    spreadY=lbl_8053FED4;
+    two=lbl_8053FED8;
+    one=lbl_8053FEDC;
+    spreadX=lbl_8053FEE0;
+    zero=lbl_8053FEC0;
+    step=lbl_8053FEEC;
     for (s32 i = 0; i < n; i++) {
-        f32 dy = 15.0f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f);
-        f32 dx = 7.0f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f);
-        JGeometry::TVec3<f32> pos(x + dx, baseY + dy, 0.0f);
+        ZslaRandomFloat uy;
+        ZslaGame* gy=lbl_8053AAF8;
+        gy->rnd.seed=gy->rnd.seed*0x19660d+0x3c6ef35f;
+        uy.s=(gy->rnd.seed>>9)|0x3f800000;
+        f32 dy=spreadY*(two*(uy.f-one)-one);
+        ZslaRandomFloat ux;
+        ZslaGame* gx=lbl_8053AAF8;
+        gx->rnd.seed=gx->rnd.seed*0x19660d+0x3c6ef35f;
+        ux.s=(gx->rnd.seed>>9)|0x3f800000;
+        f32 dx=spreadX*(two*(ux.f-one)-one);
+        JGeometry::TVec3<f32> pos(x + dx, baseY + dy, zero);
         s32 id = Actor_CreateByID(fn_801F856C(), 'OKTM', *(u32*)(p + 0x4), &pos, 5, -1, -1);
         if (id >= 0) {
             char* a = (char*)fn_801F666C(fn_801F856C(), id);
             if (a != 0) {
                 *(s32*)(a + 0x98) = 2;
-                JGeometry::TVec3<f32> vel(0.0f, 3.2f + 0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f), 0.0f);
+                JGeometry::TVec3<f32> vel(0.0f,__fmadds(0.6f,2.0f*lbl_8053AAF8->rnd.get_ufloat_1()-1.0f,3.2f),0.0f);
                 *(JGeometry::TVec3<f32>*)(a + 0x3c) = vel;
                 *(u8*)(a + 0x194) = 1;
                 *(s32*)(a + 0x23c) = (s32)(height * (1.0f / *(f32*)(a + 0x40)));
             }
         }
-        x += 16.0f;
+        x += step;
     }
 }
-
+#pragma opt_propagation reset
 void fn_802229EC(void* this_) {
     char* p = (char*)this_;
     fn_802217C8(this_);
