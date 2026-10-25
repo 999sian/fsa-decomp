@@ -1636,7 +1636,7 @@ extern "C" void fn_800D8720(void* param_1) {
 extern "C" void fn_800D87B4(u8* self) {
     u8* start;
     u8* p;
-    u32 i;
+    unsigned int i;
     u8* base;
     i = 0;
     base = self;
@@ -1708,6 +1708,7 @@ extern "C" void fn_800D8A3C(void* p) {
     DCStoreRange(saved, (u32)(now - saved));
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_800D8AD0(u8* this_) {
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x170);
     u8* base = __GDCurrentDL->pDisplayListData;
@@ -1716,14 +1717,15 @@ extern "C" void fn_800D8AD0(u8* this_) {
         J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0xda));
         p += 8;
     }
-    p = this_;
-    for (u32 i = 0; i < 4; i++) {
-        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0xfa));
-        p += 4;
+    u32 i = 0;
+    u8* q = this_;
+    for (; i < 4; i++) {
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(q + 0xfa));
+        q += 4;
     }
     DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_800D8BA0(u8* p) {
     u8* addr = p;
     u8* saved;
