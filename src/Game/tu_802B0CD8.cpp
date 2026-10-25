@@ -14,7 +14,7 @@ extern "C" void* fn_8013CC50(u32 a, void* b, f32 c, s32 d, s32 e, s32 f, s32 g, 
 extern "C" void fn_801F0E34(void* this_, u32 a, s32 b);
 
 extern "C" void* lbl_8053AB10;
-extern "C" void fn_80158B5C(void* mgr, u32 room, f32 t, JGeometry::TVec3<f32>* pos, GXColor* col);
+extern "C" void fn_80158B5C(void* mgr, u32 room, JGeometry::TVec3<f32>* pos, GXColor col, f32 t);
 extern "C" void fn_802B0CD8(void* this_) {
     char* p = (char*)this_;
     if (*((u8*)fn_802D6A9C() + 0x131f5) != 0) {
@@ -51,7 +51,7 @@ extern "C" void fn_802B0CD8(void* this_) {
             col.g = 0;
             col.b = 0;
             col.a = 0x80;
-            fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(u32*)(p + 4), *(f32*)(p + 0x250), &pos, &col);
+            fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
         }
         break;
     }
@@ -62,7 +62,7 @@ extern "C" void fn_802B0CD8(void* this_) {
         col.g = 0;
         col.b = 0;
         col.a = 0xc8;
-        fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(u32*)(p + 4), *(f32*)(p + 0x250), &pos, &col);
+        fn_80158B5C(*(void**)((u8*)lbl_8053AB10 + 0x2c), *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
         break;
     }
     case 2: {
@@ -75,7 +75,7 @@ extern "C" void fn_802B0CD8(void* this_) {
             col.g = 0;
             col.b = 0;
             col.a = 0x80;
-            fn_80158B5C(mgr, *(u32*)(p + 4), *(f32*)(p + 0x250), &pos, &col);
+            fn_80158B5C(mgr, *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
         }
         break;
     }
@@ -88,7 +88,7 @@ extern "C" void fn_802B0CD8(void* this_) {
         col.g = 0;
         col.b = 0;
         col.a = 0xc8;
-        fn_80158B5C(mgr, *(u32*)(p + 4), *(f32*)(p + 0x250), &pos, &col);
+        fn_80158B5C(mgr, *(u32*)(p + 4), &pos, col, *(f32*)(p + 0x250));
         break;
     }
     default:
