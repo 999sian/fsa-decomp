@@ -28,12 +28,14 @@ extern "C" u32 fn_80309D48(void* p, s32 a, s32 b);
 extern "C" s32 fn_8030AAF4(s32 a);
 extern "C" void fn_803037D4(s32 i, s32 v);
 extern "C" void fn_80458880(void* m, s32 p, s32 v);
+#pragma dont_inline on
 extern "C" void fn_803944C8(void* this_, s32 a, u8 b, u8 c) {
     *(u8*)((char*)this_ + 0x3b1) = 1;
     *(s32*)((char*)lbl_8053AD78 + 0x48) = a;
     *(u8*)((char*)lbl_8053AD78 + 0xea) = b;
     *(u8*)((char*)lbl_8053AD78 + 0xeb) = c;
 }
+#pragma dont_inline reset
 
 static inline void setTBFontSize(J2DTextBox* tb, J2DTextBox::TFontSize size) {
     f32 x = size.x;
@@ -2243,6 +2245,14 @@ extern "C" const u32 lbl_805431D0[2];
 extern "C" s32 fn_8039FE78(void* this_,s32 event,u8* payload){
 u8* data=payload;
 MsgCounter* p = (MsgCounter*)this_;
+u32 byte0;
+u32 byte1;
+u32 byte2;
+u32 byte3;
+u32 byte4;
+u32 byte5;
+u32 byte6;
+u32 byte9;
 s32 args[5];
 if(!fn_803A313C(p->m60)){
 switch(event){
@@ -2396,12 +2406,10 @@ return 1;
 }
 case 0x20006:
 {
-u32 flag;
-u32 id;
-flag = data[1];
-id = data[0];
-if (flag != 0) fn_8018E8DC(id,1,255);
-else fn_8018E8DC(id,0,255);
+byte1 = data[1];
+byte0 = data[0];
+if (byte1 != 0) fn_8018E8DC(byte0,1,255);
+else fn_8018E8DC(byte0,0,255);
 return 1;
 }
 case 0x20007:
@@ -2419,36 +2427,30 @@ return 1;
 case 0x20008:
 {
 int a;
-u32 b;
-u32 c;
-u32 d;
 a = data[0];
-b = data[1];
-c = data[2];
-d = data[3];
-if (fn_8018E930(a != 0 && b == 1) || !fn_8018E930(a != 0 && b == 0)) {
-    if (d != 0) fn_8018E8DC(c,1,255);
-    else fn_8018E8DC(c,0,255);
+byte1 = data[1];
+byte2 = data[2];
+byte3 = data[3];
+if (fn_8018E930(a != 0 && byte1 == 1) || !fn_8018E930(a != 0 && byte1 == 0)) {
+    if (byte3 != 0) fn_8018E8DC(byte2,1,255);
+    else fn_8018E8DC(byte2,0,255);
 }
 return 1;
 }
 case 0x2000d:
 {
-u32 player;
-u32 subtract;
-u32 permanent;
 s32 i;
-player = data[5];
+byte5 = data[5];
 args[0] = *(s32*)data;
-subtract = data[4];
-permanent = data[6];
-if (player == 5) {
+byte4 = data[4];
+byte6 = data[6];
+if (byte5 == 5) {
     for (i =0;i<4;i++) {
         if (fn_8018A614(i)) {
-if (subtract == 0) {
+if (byte4 == 0) {
     if (args[0] >= 100) fn_803A3228(i,args[0],0);
     else fn_802362C4(i,args[0]);
-} else if (permanent == 0) {
+} else if (byte6 == 0) {
     if (args[0] >= 100) fn_803A3228(i,-args[0],0);
     else fn_802362C4(i,-args[0]);
 } else {
@@ -2458,17 +2460,17 @@ if (subtract == 0) {
         }
     }
 } else {
-    switch ((int)player) {
+    switch ((int)byte5) {
     case 1: args[1]=0; break;
     case 2: args[1]=1; break;
     case 3: args[1]=2; break;
     case 4: args[1]=3; break;
     default: args[1]=fn_803A30BC(p->m60); break;
     }
-if (subtract == 0) {
+if (byte4 == 0) {
     if (args[0] >= 100) fn_803A3228(args[1],args[0],0);
     else fn_802362C4(args[1],args[0]);
-} else if (permanent == 0) {
+} else if (byte6 == 0) {
     if (args[0] >= 100) fn_803A3228(args[1],-args[0],0);
     else fn_802362C4(args[1],-args[0]);
 } else {
@@ -2499,68 +2501,66 @@ return 1;
 }
 case 0x20010:
 {
-u32 type;
-u32 remove;
 void* obj;
-type = data[0];
+byte0 = data[0];
 s32 second = *(s32*)(data+5);
 s32 first = *(s32*)(data+1);
-remove = data[9];
+byte9 = data[9];
 args[1] = second;
 args[0] = first;
 args[2] = second;
-switch (type) {
+switch (byte0) {
 case 0: case 1: case 2: case 16:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'KEY0') {
         obj = fn_8015445C(fn_8023EF50(fn_8022EA0C(fn_803A30BC(p->m60))));
-        if ((fn_803A3220(obj)==0 && type==0) || (fn_803A3220(obj)==1 && type==1) || (fn_803A3220(obj)==2 && type==2) || (fn_803A3220(obj)==9 && type==16)) {
+        if ((fn_803A3220(obj)==0 && byte0==0) || (fn_803A3220(obj)==1 && byte0==1) || (fn_803A3220(obj)==2 && byte0==2) || (fn_803A3220(obj)==9 && byte0==16)) {
             args[2] = args[0];
-            if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+            if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
         }
     }
     break;
 case 3:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'BORD') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 4:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'STON') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 5:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'HBMB') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 6:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'NIWA') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 7:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'GRAS') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 8: case 9: case 10:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'TUBO') {
         obj = fn_8015445C(fn_8022EA0C(fn_8023EF50(fn_803A30BC(p->m60))));
-        if ((((fn_801544C8(obj)>>7)&31)==0 && type==10) || (((fn_801544C8(obj)>>7)&31)==1 && type==8) || (((fn_801544C8(obj)>>7)&31)==2 && type==9)) {
+        if ((((fn_801544C8(obj)>>7)&31)==0 && byte0==10) || (((fn_801544C8(obj)>>7)&31)==1 && byte0==8) || (((fn_801544C8(obj)>>7)&31)==2 && byte0==9)) {
             args[2] = args[0];
-            if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+            if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
         }
     }
     break;
 case 11: case 12: case 13: case 14:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'PLAY') {
-        if ((fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==0 && type==11) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==1 && type==12) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==2 && type==13) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==3 && type==14)) args[2]=args[0];
+        if ((fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==0 && byte0==11) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==1 && byte0==12) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==2 && byte0==13) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==3 && byte0==14)) args[2]=args[0];
     }
     break;
 case 15:
@@ -2572,11 +2572,10 @@ return 1;
 }
 case 0x20015:
 {
-u32 tag;
-tag = data[4];
+byte4 = data[4];
 args[0] = *(s32*)data;
-if (tag==0) fn_803A30B0(p->m60);
-fn_803A30A4(p->m60,tag,args[0]);
+if (byte4==0) fn_803A30B0(p->m60);
+fn_803A30A4(p->m60,byte4,args[0]);
 return 1;
 }
 case 0x20016:
@@ -2653,14 +2652,12 @@ return 1;
 }
 case 0x20022:
 {
-u32 player;
 s32 flag;
-u32 value;
-player =data[0];
+byte0 =data[0];
 flag =*(u16*)(data+1);
-value =data[3];
-if(player==5){
-    if(value!=0){
+byte3 =data[3];
+if(byte0==5){
+    if(byte3!=0){
         fn_803A31AC(0,flag,1);
         fn_803A31AC(1,flag,1);
         fn_803A31AC(2,flag,1);
@@ -2671,26 +2668,25 @@ if(player==5){
         fn_803A31AC(2,flag,0);
         fn_803A31AC(3,flag,0);
     }
-} else if(player>=1 && player<=4){
-    if(value!=0) fn_803A31AC((u8)(player-1),flag,1);
-    else fn_803A31AC((u8)(player-1),flag,0);
+} else if(byte0>=1 && byte0<=4){
+    if(byte3!=0) fn_803A31AC((u8)(byte0-1),flag,1);
+    else fn_803A31AC((u8)(byte0-1),flag,0);
 } else {
-    if(value!=0) fn_803A31AC((u8)fn_803A30BC(p->m60),flag,1);
+    if(byte3!=0) fn_803A31AC((u8)fn_803A30BC(p->m60),flag,1);
     else fn_803A31AC((u8)fn_803A30BC(p->m60),flag,0);
 }
 return 1;
 }
 case 0x20023:
 {
-u32 player;
 s32 flag;
 u32 who;
-player =data[0];
+byte0 =data[0];
 args[0]=*(s32*)(data+3);
 args[1]=*(s32*)(data+7);
 flag =*(u16*)(data+1);
 
-if (player>=1 && player<=4) who=player-1;
+if (byte0>=1 && byte0<=4) who=byte0-1;
 else who=(u8)fn_803A30BC(p->m60);
 if (fn_803A3168(who,flag)) fn_803A30DC(p->m60,args[0]);
 else fn_803A30DC(p->m60,args[1]);
@@ -2698,30 +2694,27 @@ return 1;
 }
 case 0x20024:
 {
-u32 player;
-u32 item;
-u32 mode;
 u8 kind;
 s32 i;
 u32 param;
 Vec* pos;
 s32 room;
 s32 obj;
-player =data[0];
-item =data[1];
-mode =data[2];
-switch ((int)player) {
-case 1: case 2: case 3: case 4: args[0]=player-1; break;
+byte0 =data[0];
+byte1 =data[1];
+byte2 =data[2];
+switch ((int)byte0) {
+case 1: case 2: case 3: case 4: args[0]=byte0-1; break;
 case 5: args[0]=5; break;
 default: args[0]=fn_803A30BC(p->m60); break;
 }
 
-if(mode==1) kind=lbl_80475D24[item]; else kind=lbl_80475D44[item];
+if(byte2==1) kind=lbl_80475D24[byte1]; else kind=lbl_80475D44[byte1];
 for(i =0;i<4;i++){
     if(fn_8018A614(i)){
-        if((u32)i==(u32)args[0] || player==5){
+        if((u32)i==(u32)args[0] || byte0==5){
             param =(fn_8022EA0C(i)<<12)|0x100|kind;
-            pos =(Vec*)fn_8023E724(fn_8022EA0C(i));
+            pos =fn_8023E724(fn_8022EA0C(i));
             room =fn_8023DE58(fn_8022EA0C(i));
             obj =fn_80154310('TKRA',room,pos,param,-1,-1);
             fn_803A3084(p->m60,i,obj);
@@ -2740,12 +2733,10 @@ return 1;
 }
 case 0x20026:
 {
-u32 a;
-u32 b;
 args[0]=*(s32*)data;
-a =data[4];
-b =data[5];
-if(!fn_803A300C()) fn_803944C8(p->m60,args[0],a,b);
+byte4 =data[4];
+byte5 =data[5];
+if(!fn_803A300C()) fn_803944C8(p->m60,args[0],byte4,byte5);
 return 1;
 }
 case 0x20027:
@@ -2824,7 +2815,7 @@ s32 room;
 if(fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)))!=0){
     a =fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)));
     param =(fn_8023725C(fn_8022EA0C(fn_803A30BC(p->m60)))<<22)|a;
-    pos =(Vec*)fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
+    pos =fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
     room =fn_8023DE58(fn_8022EA0C(fn_803A30BC(p->m60)));
     fn_80154310('LSTI',room,pos,param,-1,-1);
     fn_802372F8(fn_8022EA0C(fn_803A30BC(p->m60)),0,1);
@@ -3059,12 +3050,10 @@ return 1;
 }
 case 0x20006:
 {
-u32 flag;
-u32 id;
-flag = data[1];
-id = data[0];
-if (flag != 0) fn_8018E8DC(id,1,255);
-else fn_8018E8DC(id,0,255);
+byte1 = data[1];
+byte0 = data[0];
+if (byte1 != 0) fn_8018E8DC(byte0,1,255);
+else fn_8018E8DC(byte0,0,255);
 return 1;
 }
 case 0x20007:
@@ -3082,36 +3071,30 @@ return 1;
 case 0x20008:
 {
 int a;
-u32 b;
-u32 c;
-u32 d;
 a = data[0];
-b = data[1];
-c = data[2];
-d = data[3];
-if (fn_8018E930(a != 0 && b == 1) || !fn_8018E930(a != 0 && b == 0)) {
-    if (d != 0) fn_8018E8DC(c,1,255);
-    else fn_8018E8DC(c,0,255);
+byte1 = data[1];
+byte2 = data[2];
+byte3 = data[3];
+if (fn_8018E930(a != 0 && byte1 == 1) || !fn_8018E930(a != 0 && byte1 == 0)) {
+    if (byte3 != 0) fn_8018E8DC(byte2,1,255);
+    else fn_8018E8DC(byte2,0,255);
 }
 return 1;
 }
 case 0x2000d:
 {
-u32 player;
-u32 subtract;
-u32 permanent;
 s32 i;
-player = data[5];
+byte5 = data[5];
 args[0] = *(s32*)data;
-subtract = data[4];
-permanent = data[6];
-if (player == 5) {
+byte4 = data[4];
+byte6 = data[6];
+if (byte5 == 5) {
     for (i =0;i<4;i++) {
         if (fn_8018A614(i)) {
-if (subtract == 0) {
+if (byte4 == 0) {
     if (args[0] >= 100) fn_803A3228(i,args[0],0);
     else fn_802362C4(i,args[0]);
-} else if (permanent == 0) {
+} else if (byte6 == 0) {
     if (args[0] >= 100) fn_803A3228(i,-args[0],0);
     else fn_802362C4(i,-args[0]);
 } else {
@@ -3121,17 +3104,17 @@ if (subtract == 0) {
         }
     }
 } else {
-    switch ((int)player) {
+    switch ((int)byte5) {
     case 1: args[1]=0; break;
     case 2: args[1]=1; break;
     case 3: args[1]=2; break;
     case 4: args[1]=3; break;
     default: args[1]=fn_803A30BC(p->m60); break;
     }
-if (subtract == 0) {
+if (byte4 == 0) {
     if (args[0] >= 100) fn_803A3228(args[1],args[0],0);
     else fn_802362C4(args[1],args[0]);
-} else if (permanent == 0) {
+} else if (byte6 == 0) {
     if (args[0] >= 100) fn_803A3228(args[1],-args[0],0);
     else fn_802362C4(args[1],-args[0]);
 } else {
@@ -3162,68 +3145,66 @@ return 1;
 }
 case 0x20010:
 {
-u32 type;
-u32 remove;
 void* obj;
-type = data[0];
+byte0 = data[0];
 s32 second = *(s32*)(data+5);
 s32 first = *(s32*)(data+1);
-remove = data[9];
+byte9 = data[9];
 args[1] = second;
 args[0] = first;
 args[2] = second;
-switch (type) {
+switch (byte0) {
 case 0: case 1: case 2: case 16:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'KEY0') {
         obj = fn_8015445C(fn_8023EF50(fn_8022EA0C(fn_803A30BC(p->m60))));
-        if ((fn_803A3220(obj)==0 && type==0) || (fn_803A3220(obj)==1 && type==1) || (fn_803A3220(obj)==2 && type==2) || (fn_803A3220(obj)==9 && type==16)) {
+        if ((fn_803A3220(obj)==0 && byte0==0) || (fn_803A3220(obj)==1 && byte0==1) || (fn_803A3220(obj)==2 && byte0==2) || (fn_803A3220(obj)==9 && byte0==16)) {
             args[2] = args[0];
-            if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+            if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
         }
     }
     break;
 case 3:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'BORD') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 4:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'STON') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 5:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'HBMB') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 6:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'NIWA') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 7:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'GRAS') {
         args[2] = args[0];
-        if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+        if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
     }
     break;
 case 8: case 9: case 10:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'TUBO') {
         obj = fn_8015445C(fn_8023EF50(fn_8022EA0C(fn_803A30BC(p->m60))));
-        if ((((fn_801544C8(obj)>>7)&31)==0 && type==10) || (((fn_801544C8(obj)>>7)&31)==1 && type==8) || (((fn_801544C8(obj)>>7)&31)==2 && type==9)) {
+        if ((((fn_801544C8(obj)>>7)&31)==0 && byte0==10) || (((fn_801544C8(obj)>>7)&31)==1 && byte0==8) || (((fn_801544C8(obj)>>7)&31)==2 && byte0==9)) {
             args[2] = args[0];
-            if (remove != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
+            if (byte9 != 0) fn_8023EE28(fn_8022EA0C(fn_803A30BC(p->m60)));
         }
     }
     break;
 case 11: case 12: case 13: case 14:
     if (fn_8023EEB4(fn_8022EA0C(fn_803A30BC(p->m60))) == 'PLAY') {
-        if ((fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==0 && type==11) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==1 && type==12) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==2 && type==13) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==3 && type==14)) args[2]=args[0];
+        if ((fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==0 && byte0==11) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==1 && byte0==12) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==2 && byte0==13) || (fn_8023ECF0(fn_8022EA0C(fn_803A30BC(p->m60)))==3 && byte0==14)) args[2]=args[0];
     }
     break;
 case 15:
@@ -3242,9 +3223,8 @@ return 1;
 }
 case 0x20016:
 {
-u32 tag;
-tag =data[0];
-if(tag>5 && (u8)(s8)tag!=11) fn_8045B030(fn_803A309C(p->m60),tag,0);
+byte0 =data[0];
+if(byte0>5 && (u8)(s8)byte0!=11) fn_8045B030(fn_803A309C(p->m60),byte0,0);
 return 1;
 }
 case 0x20017:
@@ -3315,14 +3295,12 @@ return 1;
 }
 case 0x20022:
 {
-u32 player;
 s32 flag;
-u32 value;
-player =data[0];
+byte0 =data[0];
 flag =*(u16*)(data+1);
-value =data[3];
-if(player==5){
-    if(value!=0){
+byte3 =data[3];
+if(byte0==5){
+    if(byte3!=0){
         fn_803A31AC(0,flag,1);
         fn_803A31AC(1,flag,1);
         fn_803A31AC(2,flag,1);
@@ -3333,26 +3311,25 @@ if(player==5){
         fn_803A31AC(2,flag,0);
         fn_803A31AC(3,flag,0);
     }
-} else if(player>=1 && player<=4){
-    if(value!=0) fn_803A31AC((u8)(player-1),flag,1);
-    else fn_803A31AC((u8)(player-1),flag,0);
+} else if(byte0>=1 && byte0<=4){
+    if(byte3!=0) fn_803A31AC((u8)(byte0-1),flag,1);
+    else fn_803A31AC((u8)(byte0-1),flag,0);
 } else {
-    if(value!=0) fn_803A31AC((u8)fn_803A30BC(p->m60),flag,1);
+    if(byte3!=0) fn_803A31AC((u8)fn_803A30BC(p->m60),flag,1);
     else fn_803A31AC((u8)fn_803A30BC(p->m60),flag,0);
 }
 return 1;
 }
 case 0x20023:
 {
-u32 player;
 s32 flag;
 u32 who;
-player =data[0];
+byte0 =data[0];
 args[0]=*(s32*)(data+3);
 args[1]=*(s32*)(data+7);
 flag =*(u16*)(data+1);
 
-if (player>=1 && player<=4) who=player-1;
+if (byte0>=1 && byte0<=4) who=byte0-1;
 else who=(u8)fn_803A30BC(p->m60);
 if (fn_803A3168(who,flag)) fn_803A30DC(p->m60,args[0]);
 else fn_803A30DC(p->m60,args[1]);
@@ -3360,30 +3337,27 @@ return 1;
 }
 case 0x20024:
 {
-u32 player;
-u32 item;
-u32 mode;
 u8 kind;
 s32 i;
 u32 param;
 Vec* pos;
 s32 room;
 s32 obj;
-player =data[0];
-item =data[1];
-mode =data[2];
-switch ((int)player) {
-case 1: case 2: case 3: case 4: args[0]=player-1; break;
+byte0 =data[0];
+byte1 =data[1];
+byte2 =data[2];
+switch ((int)byte0) {
+case 1: case 2: case 3: case 4: args[0]=byte0-1; break;
 case 5: args[0]=5; break;
 default: args[0]=fn_803A30BC(p->m60); break;
 }
 
-if(mode==1) kind=lbl_80475D24[item]; else kind=lbl_80475D44[item];
+if(byte2==1) kind=lbl_80475D24[byte1]; else kind=lbl_80475D44[byte1];
 for(i =0;i<4;i++){
     if(fn_8018A614(i)){
-        if((u32)i==(u32)args[0] || player==5){
+        if((u32)i==(u32)args[0] || byte0==5){
             param =(fn_8022EA0C(i)<<12)|0x100|kind;
-            pos =(Vec*)fn_8023E724(fn_8022EA0C(i));
+            pos =fn_8023E724(fn_8022EA0C(i));
             room =fn_8023DE58(fn_8022EA0C(i));
             obj =fn_80154310('TKRA',room,pos,param,-1,-1);
             fn_803A3084(p->m60,i,obj);
@@ -3402,12 +3376,10 @@ return 1;
 }
 case 0x20026:
 {
-u32 a;
-u32 b;
 args[0]=*(s32*)data;
-a =data[4];
-b =data[5];
-if(!fn_803A300C()) fn_803944C8(p->m60,args[0],a,b);
+byte4 =data[4];
+byte5 =data[5];
+if(!fn_803A300C()) fn_803944C8(p->m60,args[0],byte4,byte5);
 return 1;
 }
 case 0x20027:
@@ -3486,7 +3458,7 @@ s32 room;
 if(fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)))!=0){
     a =fn_802373EC(fn_8022EA0C(fn_803A30BC(p->m60)));
     param =(fn_8023725C(fn_8022EA0C(fn_803A30BC(p->m60)))<<22)|a;
-    pos =(Vec*)fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
+    pos =fn_8023E724(fn_8022EA0C(fn_803A30BC(p->m60)));
     room =fn_8023DE58(fn_8022EA0C(fn_803A30BC(p->m60)));
     fn_80154310('LSTI',room,pos,param,-1,-1);
     fn_802372F8(fn_8022EA0C(fn_803A30BC(p->m60)),0,1);
