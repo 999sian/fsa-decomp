@@ -34,7 +34,7 @@ extern "C" void fn_801E6A84(void* p, s32 arg);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_801D74E0(void* a, void* b, s32 c);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
-extern "C" u8 fn_801E44CC(void* p, const void* a = 0, void* b = 0, void* n = 0);
+extern "C" u8 fn_801E44CC(void* p, const void* a, void* b, void* n);
 extern "C" void fn_801CDCD0(void* p, s32 a, void* b, s32 c);
 extern const f32 lbl_8053F0DC;
 extern const f32 lbl_8053F0F8;
@@ -503,11 +503,12 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
         *(s32*)(p + 0x5b0) = -1;
         *(s32*)(p + 0xb0) = 3;
         fn_801E4618(p, box, fn_801CD2F8(*(s32*)(p + 0x4)));
-        JGeometry::TVec2<f32> c;
-        c.x = box[0].x + lbl_8053F0F8 * (box[1].x - box[0].x);
-        c.y = box[0].y + lbl_8053F0F8 * (box[1].y - box[0].y);
-        *(f32*)(p + 0x60c) = c.x;
-        *(f32*)(p + 0x610) = c.y;
+        f32 dx = box[1].x - box[0].x;
+        f32 dy = box[1].y - box[0].y;
+        f32 cx = box[0].x + lbl_8053F0F8 * dx;
+        f32 cy = box[0].y + lbl_8053F0F8 * dy;
+        *(f32*)(p + 0x60c) = cx;
+        *(f32*)(p + 0x610) = cy;
         *(f32*)(p + 0x614) = lbl_8053F0C8;
         *(f32*)(p + 0x5bc) = box[0].x + (box[1].x - box[0].x) * bogfRand();
         *(f32*)(p + 0x5c0) = box[0].y + (box[1].y - box[0].y) * bogfRand();
@@ -549,8 +550,8 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
     case 13:
         *(f32*)(p + 0x258) = lbl_8053F0C8;
         if (*(s32*)(p + 0x508) == 3) {
-            *(bool*)(p + 0x51c) = true;
-            *(bool*)(p + 0x5cf) = false;
+            *(u8*)(p + 0x51c) = 1;
+            *(u8*)(p + 0x5cf) = 0;
             break;
         }
         /* fallthrough */
