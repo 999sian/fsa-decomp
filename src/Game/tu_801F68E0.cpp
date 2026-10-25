@@ -604,8 +604,8 @@ extern "C" void fn_801F8658(ActorPool* pool) {
                 if (pool->mActors[i]->m11f == 0) {
                     continue;
                 }
-                fn_801A3CFC(pool->mActors[i]);
             }
+            fn_801A3CFC(pool->mActors[i]);
             ((Actor*)pool->mActors[i])->v06();
         }
     }
