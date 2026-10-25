@@ -82,10 +82,6 @@ extern "C" void fn_803A71F0(char* p) {
     fn_80440EE8(lbl_8053AED8);
 }
 
-extern "C" void fn_80402E08(void* a, f32 b, f32 c);
-extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
-extern void* lbl_8053AAF8;
-
 extern void* lbl_804AF86C[];
 
 extern "C" void* fn_803A8378(void* this_, s16 flag) {
