@@ -1967,46 +1967,124 @@ extern "C" void fn_8042BD84(u8* info, s16* block) {
     }
 }
 #pragma opt_propagation reset
+struct THPHuffmanTab {
+    u8 quick[32];
+    u8 increment[32];
+    u8* Vij;
+    s32 maxCode[18];
+    s32 valPtr[18];
+    u8 Vij1;
+    u8 pad[11];
+};
 extern "C" s32 fn_8042BF54(u8* info, void* h) {
-    u8* tab = (u8*)h;
-    s32 cnt = *(s32*)(info + 0x6a4);
-    u32 buf = *(u32*)(info + 0x6a0);
-    u32 code;
-    u32 idx;
-    s32 l;
-    s32* maxCode = (s32*)(tab + 0x44);
-    u8 v;
-    u8 len;
-
-    if (cnt <= 28) {
-        idx = ((buf << (cnt + 4)) | (buf >> (28 - cnt))) & 0x1f;
-        v = tab[idx];
-        len = tab[idx + 0x20];
-        if (v != 0xff) {
-            *(s32*)(info + 0x6a4) = cnt + len;
-            return v;
-        }
-        cnt += 5;
-        code = (idx << 1) | ((buf >> (32 - cnt)) & 1);
-        cnt++;
-        l = 6;
-    } else {
-        u32* p = *(u32**)(info + 0x69c);
-        code = ((buf & ~(0xffffffffU << (33 - cnt))) << 1) | (p[1] >> 31);
-        buf = p[1];
-        *(u32**)(info + 0x69c) = p + 1;
-        *(u32*)(info + 0x6a0) = buf;
-        l = 34 - cnt;
-        cnt = 2;
+ u8* tab=(u8*)h;
+ s32 cnt=*(s32*)(info+0x6a4);
+ u32 buf=*(u32*)(info+0x6a0);
+ u8* lengths=tab+0x20;
+ s32 code=__rlwnm(buf,cnt+4,27,31);
+ s32 value;
+ s32 len;
+ s32* maxCode;
+ u32* p;
+ if(cnt<=28) {
+  value=tab[code]; len=lengths[code];
+  if(value!=255) {
+   cnt+=len; *(s32*)(info+0x6a4)=cnt; return value;
+  }
+  maxCode=(s32*)(tab+0x58);
+  len=5;
+  cnt+=5;
+  s32 limit;
+  do {
+   code<<=1;
+   if(cnt==33) {
+    p=*(u32**)(info+0x69c);
+    cnt=1;
+    buf=*++p;
+    limit=*++maxCode;
+    code=__rlwimi(code,buf,1,31,31);
+    *(u32**)(info+0x69c)=p;
+    *(u32*)(info+0x6a0)=buf;
+    goto refill_test;
+refill_loop:
+    code<<=1;
+    code|=__rlwnm(buf,cnt,31,31);
+    limit=*++maxCode;
+refill_test:
+    cnt++;
+    len++;
+    if(code>limit) goto refill_loop;
+    break;
+   }
+   code|=__rlwnm(buf,cnt,31,31);
+   limit=*++maxCode;
+   cnt++;
+   len++;
+  } while(code>limit);
+  *(s32*)(info+0x6a4)=cnt;
+  return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+ } else {
+  p=*(u32**)(info+0x69c);
+  if(cnt!=33) {
+   code=__rlwnm(buf,cnt+4,27,31);
+   if(cnt!=32) {
+    value=tab[code]; len=lengths[code];
+    if(value!=255) {
+     s32 next=cnt+len;
+     *(s32*)(info+0x6a4)=next;
+     if(next<=33) return value;
     }
-
-    while ((s32)code > maxCode[l]) {
-        code = (code << 1) | ((buf >> (32 - cnt)) & 1);
-        cnt++;
-        l++;
-    }
-    *(s32*)(info + 0x6a4) = cnt;
-    return (*(u8**)(tab + 0x40))[code + *(s32*)(tab + 0x8c + l * 4)];
+   } else {
+    buf=*++p;
+    *(u32**)(info+0x69c)=p;
+    code=__rlwimi(code,buf,4,28,31);
+    value=tab[code]; len=lengths[code];
+    *(u32*)(info+0x6a0)=buf;
+    *(s32*)(info+0x6a4)=len;
+    if(value!=255) return value;
+    buf=__rlwimi(code<<27,buf,31,1,31);
+    maxCode=(s32*)(tab+0x58);
+    len=5;
+    do {code=buf>>(31-len); ++maxCode; ++len;} while(code>*maxCode);
+    *(s32*)(info+0x6a4)=len;
+    return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+   }
+  } else {
+   buf=*++p;
+   *(u32**)(info+0x69c)=p;
+   code=buf>>27;
+   value=tab[code]; len=lengths[code];
+   *(u32*)(info+0x6a0)=buf;
+   if(value!=255) {
+    *(s32*)(info+0x6a4)=len+1; return value;
+   }
+   len=5;
+   s32 byteOff=20;
+   s32 limit;
+   do {limit=*(s32*)(tab+0x48+byteOff);code=buf>>(31-len);++len;byteOff+=4;} while(code>limit);
+   *(s32*)(info+0x6a4)=len+1;
+   return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+  }
+  code=buf & ~(0xffffffffU<<(33-cnt));
+  len=33-cnt;
+  maxCode=(s32*)(tab+0x44)+len;
+  buf=*++p;
+  cnt=2;
+  code=__rlwimi(code<<1,buf,1,31,31);
+  *(u32**)(info+0x69c)=p;
+  *(u32*)(info+0x6a0)=buf;
+  len++;
+  ++maxCode;
+  s32 limit=*maxCode;
+  u32 bit=__rlwnm(buf,cnt,31,31);
+  while(code>limit) {
+   code=(code<<1)+bit;
+   limit=*++maxCode;cnt++;len++;
+   bit=__rlwnm(buf,cnt,31,31);
+  }
+  *(s32*)(info+0x6a4)=cnt;
+  return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+ }
 }
 
 extern void* lbl_8053AE24;
@@ -2353,15 +2431,7 @@ extern "C" void fn_8042CD38() {
 }
 
 typedef f32 THPQuantTab[64];
-struct THPHuffmanTab {
-    u8 quick[32];
-    u8 increment[32];
-    u8* Vij;
-    s32 maxCode[18];
-    s32 valPtr[18];
-    u8 Vij1;
-    u8 pad[11];
-};
+
 struct THPComponent {
     u8 quantizationTableSelector;
     u8 DCTableSelector;
@@ -2394,8 +2464,12 @@ extern "C" void fn_8042CD64() {
     u8* aligned;
     u32 i, off, k, j;
     u32 dst;
-    x = *(u32*)(lbl_8053AE74 + 0x6a4);
-    ptr = *(u8**)(lbl_8053AE74 + 0x69c);
+    s32 code;
+    s32 val;
+    u8* values;
+    u32 ydc, udc, vdc, yac, uac, vac;
+    x = __THPInfo->cnt;
+    ptr = __THPInfo->file;
     aligned = (u8*)((u32)ptr & ~3);
     low = (u32)ptr & 3;
     if (x != 0x21) {
@@ -2404,16 +2478,20 @@ extern "C" void fn_8042CD64() {
         *(u32*)(lbl_8053AE74 + 0x6a4) = low * 8 + 1;
     }
     *(u8**)(lbl_8053AE74 + 0x69c) = aligned;
-    *(u32*)(lbl_8053AE74 + 0x6a0) = *(u32*)aligned;
+    __THPInfo->currByte = *(u32*)aligned;
     off = 0;
     for (i=0;i<4;i++) {
-        if (lbl_8053AE74[0x6a8] & (1 << i)) {
+        if (__THPInfo->validHuffmanTabs & (1 << i)) {
             dst = off;
             for (k=0;k<32;k++, dst++) {
                 lbl_8053AE74[0x300+off+k]=0xff;
                 for (j=0;j<5;j++) {
-                    if ((s32)(k>>(4-j)) <= *(s32*)(lbl_8053AE74+off+j*4+0x348)) {
-                        lbl_8053AE74[0x300+dst] = ((u8*)(*(s32*)(lbl_8053AE74+off+0x340) + *(s32*)(lbl_8053AE74+off+j*4+0x390)))[k>>(4-j)];
+                    code=(s32)(k>>(4-j));
+                    if (code <= *(s32*)(lbl_8053AE74+off+j*4+0x348)) {
+                        values=*(u8**)(lbl_8053AE74+off+0x340);
+                        val=*(s32*)(lbl_8053AE74+off+j*4+0x390);
+                        values+=val;
+                        lbl_8053AE74[0x300+dst] = values[code];
                         lbl_8053AE74[0x320+dst] = j+1;
                         j=99;
                     }
@@ -2422,12 +2500,18 @@ extern "C" void fn_8042CD64() {
         }
         off+=0xe0;
     }
-    lbl_8053AE20 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x681] * 2) * 0xe0;
-    lbl_8053AE24 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x687] * 2) * 0xe0;
-    lbl_8053AE28 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x68d] * 2) * 0xe0;
-    lbl_8053AE2C = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x682] * 2 + 1) * 0xe0;
-    lbl_8053AE30 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x688] * 2 + 1) * 0xe0;
-    lbl_8053AE34 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x68e] * 2 + 1) * 0xe0;
+    yac=lbl_8053AE74[0x682]*2+1;
+    uac=lbl_8053AE74[0x688]*2+1;
+    vac=lbl_8053AE74[0x68e]*2+1;
+    udc=lbl_8053AE74[0x687]*2;
+    vdc=lbl_8053AE74[0x68d]*2;
+    ydc=lbl_8053AE74[0x681]*2;
+    lbl_8053AE20 = lbl_8053AE74+0x300+ydc*0xe0;
+    lbl_8053AE24 = lbl_8053AE74+0x300+udc*0xe0;
+    lbl_8053AE28 = lbl_8053AE74+0x300+vdc*0xe0;
+    lbl_8053AE2C = lbl_8053AE74+0x300+yac*0xe0;
+    lbl_8053AE30 = lbl_8053AE74+0x300+uac*0xe0;
+    lbl_8053AE34 = lbl_8053AE74+0x300+vac*0xe0;
 }
 #pragma opt_propagation reset
 extern u8* lbl_8053AE74;
