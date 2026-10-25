@@ -85,6 +85,13 @@ static inline void key0RecordDropPoints(char* p, u16 tile, u32 player, const Key
     fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
 }
 
+static inline void key0RecordDropPoints(char* p, u16 tile, const Key0Pt& pos, const Key0Pt& key, u32 player) {
+    u32 id = *(u32*)(p + 0x238);
+    u32 packed = player | (*(u8*)(p + 0x2b5) << 29) |
+                 ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | ((tile << 8) & 0xffff00) |
+                 (*(u32*)(p + 4) & 0xff);
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+}
 static inline void key0RecordDrop(char* p) {
     u32 id = *(u32*)(p + 0x238);
     Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
@@ -98,8 +105,9 @@ static inline void key0RecordDrop(char* p) {
 extern "C" void fn_802C1674(char* p) {
     if (*(s32*)(p + 0x240) == 4 && *(u8*)(p + 0xc4) == 0) {
         if (*(u8*)(p + 0x2af) != 0) {
-            if (*(u16*)(p + 0x2a8) != 0xffff) {
-                key0RecordDrop(p);
+            u16 tile = *(u16*)(p + 0x2a8);
+            if (tile != 0xffff) {
+                key0RecordDropPoints(p, tile, *(u32*)(p + 0x23c) << 30, key0Point(p + 0x230), key0Point(p + 0xc));
                 *(u16*)(p + 0x2a8) = 0xffff;
                 *(u8*)(p + 0x2af) = 0;
             }
