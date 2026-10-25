@@ -20,6 +20,12 @@ static inline void fsaSetTimeSlot(Actor* this_, s32 idx) {
     lbl_8053AF00[0x28 + idx] = (u8)((f32)(v % 60) / lbl_8053C110);
 }
 
+static inline void fsaSetTimeValue(s32 v, s32 idx) {
+    lbl_8053AF00[0x30] |= (u8)(1 << idx);
+    lbl_8053AF00[0x2c + idx] = (u8)(v / 60);
+    lbl_8053AF00[0x28 + idx] = (u8)((f32)(v % 60) / lbl_8053C110);
+}
+
 // ---- from Game/fn_800FF060_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -37,6 +43,37 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_800FF0C0(Actor* this_) {
+    s32 count;
+    s32 i;
+    s32 n;
+    if (*(s32*)((u8*)this_ + 0x230) == 7) {
+        count = fn_80138A30(lbl_8053AAF8);
+        i = 0;
+        if (count > 0) {
+            if (count > 8) {
+                n = (count - 8 + 7) >> 3;
+                do {
+                    fsaSetTimeSlot(this_, i + 0);
+                    fsaSetTimeSlot(this_, i + 1);
+                    fsaSetTimeSlot(this_, i + 2);
+                    fsaSetTimeSlot(this_, i + 3);
+                    fsaSetTimeSlot(this_, i + 4);
+                    fsaSetTimeSlot(this_, i + 5);
+                    fsaSetTimeSlot(this_, i + 6);
+                    fsaSetTimeSlot(this_, i + 7);
+                    i += 8;
+                } while (--n != 0);
+            }
+            for (; i < count; i++) {
+                fsaSetTimeSlot(this_, i);
+            }
+        }
+        lbl_8053AF00[0x30] |= (u8)(1 << (*(s32*)((u8*)this_ + 0x240) + 4));
+    }
+    fn_801F06F0(this_, lbl_80463B8C, (void*)(((u8)*((u8*)this_ + 0x235) * 2) + *(s32*)((u8*)this_ + 0x23c) + 0x311), 0, 0, lbl_8053C118, lbl_8053C118);
 }
 
 extern "C" s32 fn_80138A30(void* game);
