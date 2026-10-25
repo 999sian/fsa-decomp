@@ -1,6 +1,8 @@
 // TU 0x80301cd0-0x803099fc.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 extern "C" u8 fn_8022F5B0(s32);
 extern "C" void fn_803085A4(s32,s32);
