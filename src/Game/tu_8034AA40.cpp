@@ -3,6 +3,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Box.h"
 
 
 extern "C" char __vt__4NWOK[];
@@ -38,7 +39,7 @@ extern "C" f32 lbl_80542548;
 extern "C" f32 lbl_80542550;
 extern "C" f32 lbl_80542554;
 extern "C" int fn_8023EA28(int idx);
-extern "C" void fn_802314D8(s32 idx, Vec v);
+extern "C" void fn_802314D8(s32 idx, JGeometry::TVec3f v);
 
 extern "C" Actor* fn_8034AA40(Actor* p, s16 n) {
     if (p) {
@@ -109,9 +110,8 @@ extern "C" s32 fn_8034AAA0(u8* self) {
 }
 
 extern "C" void fn_8034ACF4(u8* self) {
-    struct Box {
-        f32 x0, y0, x1, y1;
-    };
+    JGeometry::TBox2f box;
+    JGeometry::TVec3f p, w, v;
     f32 tmp[4];
     s32 i;
 
@@ -119,19 +119,19 @@ extern "C" void fn_8034ACF4(u8* self) {
     tmp[1] = lbl_8054253C;
     tmp[2] = lbl_80542540;
     tmp[3] = lbl_80542544;
-    Box box = *(Box*)tmp;
+    box = *(JGeometry::TBox2f*)tmp;
 
-    box.x0 += *(f32*)(self + 0xc);
-    box.y0 += *(f32*)(self + 0x10);
-    box.x1 += *(f32*)(self + 0xc);
-    box.y1 += *(f32*)(self + 0x10);
+    box.i.x += *(f32*)(self + 0xc);
+    box.i.y += *(f32*)(self + 0x10);
+    box.f.x += *(f32*)(self + 0xc);
+    box.f.y += *(f32*)(self + 0x10);
 
     for (i = 0; i < 4; i++) {
         if ((u8)fn_8023EA28(i) == 1) {
             self[0x288 + i] = 1;
             *(JGeometry::TVec3f*)(self + 0x290 + i * 0xc) = *(JGeometry::TVec3f*)fn_8023E724(i);
         } else if (self[0x288 + i] == 1) {
-            JGeometry::TVec3f p = *(JGeometry::TVec3f*)fn_8023E724(i);
+            p = *(JGeometry::TVec3f*)fn_8023E724(i);
             JGeometry::TVec3f* vec = (JGeometry::TVec3f*)(self + 0x290 + i * 0xc);
             if (p.x > vec->x) {
                 *(s32*)(self + 0x260 + i * 4) = 0;
@@ -145,14 +145,13 @@ extern "C" void fn_8034ACF4(u8* self) {
             self[0x288 + i] = 0;
         }
 
-        JGeometry::TVec3f w = *(JGeometry::TVec3f*)fn_8023E724(i);
+        w = *(JGeometry::TVec3f*)fn_8023E724(i);
         if (w.z <= 0.0f) {
             u8 inside = 0;
-            if (w.x >= box.x0 && w.y >= box.y0 && w.x < box.x1 && w.y < box.y1) {
+            if (w.x >= box.i.x && w.y >= box.i.y && w.x < box.f.x && w.y < box.f.y) {
                 inside = 1;
             }
             if (inside == 1) {
-                JGeometry::TVec3f v;
                 fn_8043D67C(lbl_8053AED0, 0x410, 0, 0);
                 switch (*(s32*)(self + 0x260 + i * 4)) {
                 case 0:
