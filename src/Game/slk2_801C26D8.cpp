@@ -137,13 +137,8 @@ extern "C" void fn_801C283C(u8* this_) {
         }
         break;
     }
-    struct Vec3f {
-        f32 x;
-        f32 y;
-        f32 z;
-    } tmp, pos;
-    tmp = *(struct Vec3f*)(this_ + 0xc);
-    pos = tmp;
+    JGeometry::TVec3<f32> tmp(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
+    JGeometry::TVec3<f32> pos(tmp);
     fn_8043E7CC(lbl_8053AED0, &pos);
 }
 
@@ -217,23 +212,12 @@ extern "C" void fn_801C2A84(u8* this_) {
     fn_80214994(this_ + 0x4ec);
     if ((*(u32*)(this_ + 0x524) & 1) && !fn_801CD2F8(*(void**)(this_ + 4)) && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
         state = *(s32*)(this_ + 0x248);
-        if (state < 0x17) {
-            if (state != 10) {
-                if (state < 10) {
-                    if (state >= 0) {
-                        return;
-                    }
-                } else if (state < 0xf) {
-                    return;
-                }
-            }
-        } else {
-            if (state == 0x29) {
-                return;
-            }
-            if (state < 0x29 && state < 0x1b) {
-                return;
-            }
+        switch (state) {
+        case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+        case 0xb: case 0xc: case 0xd: case 0xe:
+        case 0x17: case 0x18: case 0x19: case 0x1a:
+        case 0x29:
+            return;
         }
         if (fn_8022461C(this_ + 0xc, *(void**)(this_ + 4)) == 0 && fn_80226850(this_ + 0xc, *(void**)(this_ + 4)) != 0xad) {
             fn_802A381C(lbl_8053AC98, this_ + 0xc, *(void**)(this_ + 4), 0xad);
@@ -257,11 +241,10 @@ extern "C" void fn_801C2BF4(void* this_) {
     f32 mul = scale;
     switch (state) {
     case 0x20:
-        if (*(f32*)(p + 0x14) <= lbl_8053EE08) {
-            break;
+        if (!(*(f32*)(p + 0x14) <= lbl_8053EE08)) {
+            *(f32*)(p + 0x3c) *= lbl_8053EE0C;
+            *(f32*)(p + 0x40) *= lbl_8053EE0C;
         }
-        *(f32*)(p + 0x3c) *= lbl_8053EE0C;
-        *(f32*)(p + 0x40) *= lbl_8053EE0C;
         break;
     case 0x11: {
         s16 angle = *(s16*)(p + 0x33c);
@@ -288,7 +271,8 @@ extern "C" void fn_801C2BF4(void* this_) {
         }
         break;
     }
-    (*(void (**)(void*))(*(u32*)p + 0x84))(p);
+    char* vt = *(char**)this_;
+    (*(void (**)(void*))(vt + 0x84))(this_);
 }
 
 extern const f32 lbl_8053EFB8;
@@ -402,8 +386,8 @@ extern "C" void fn_801C3B7C(void* this_, s32 state) {
 
 extern "C" void fn_801C50A8(void* this_, s32 state) {
     u8* p = (u8*)this_;
-    f32 a;
     f32 b;
+    f32 a;
 
     *(u32*)(p + 0x230) &= ~0x40000;
     *(u8*)(p + 0x55c) = 0;
@@ -413,8 +397,8 @@ extern "C" void fn_801C50A8(void* this_, s32 state) {
     if (*(s32*)(p + 0x248) == 0x11) {
         *(u8*)(p + 0x598) = 0;
     }
-    a = lbl_8053EE28;
-    b = lbl_8053EE50;
+    a = 1.0f;
+    b = -1.0f;
     *(f32*)(p + 0x52c) = a;
     *(f32*)(p + 0x530) = a;
     *(f32*)(p + 0x534) = b;
@@ -428,8 +412,8 @@ extern "C" void fn_801C50A8(void* this_, s32 state) {
         *(u32*)(p + 0x230) &= ~0x1000;
         break;
     case 0x14:
-        a = lbl_8053EE20;
-        b = lbl_8053EE14;
+        a = -8.0f;
+        b = 8.0f;
         *(u32*)(p + 0x230) &= ~0x100;
         *(f32*)(p + 0x60) = a;
         *(f32*)(p + 0x64) = a;
@@ -447,8 +431,8 @@ extern "C" void fn_801C50A8(void* this_, s32 state) {
     case 0x17:
     case 0x18:
     case 0x19:
-        a = lbl_8053EE20;
-        b = lbl_8053EE14;
+        a = -8.0f;
+        b = 8.0f;
         *(u32*)(p + 0x230) &= ~0x1100;
         *(f32*)(p + 0x60) = a;
         *(f32*)(p + 0x64) = a;
@@ -465,12 +449,11 @@ extern "C" void fn_801C50A8(void* this_, s32 state) {
         }
         if (*(s32*)(p + 0x248) == 0x19) {
             *(s32*)(p + 0x560) = fn_801CD664(4);
-            *(s32*)(p + 4) = *(s32*)(p + 0x57c);
-            *(Vec*)(p + 0xc) = *(Vec*)(p + 0x580);
-            *(Vec*)(p + 0x18) = *(Vec*)(p + 0x580);
-            break;
         }
-        /* fall through */
+            *(s32*)(p + 4) = *(s32*)(p + 0x57c);
+            *(JGeometry::TVec3f*)(p + 0xc) = *(JGeometry::TVec3f*)(p + 0x580);
+            *(JGeometry::TVec3f*)(p + 0x18) = *(JGeometry::TVec3f*)(p + 0x580);
+            break;
     case 0x20:
         *(u32*)(p + 0x230) &= ~0x80000;
         break;
@@ -482,8 +465,8 @@ extern "C" void fn_801C50A8(void* this_, s32 state) {
     case 0x15:
     case 0x16:
     case 0x2f:
-        a = lbl_8053EE20;
-        b = lbl_8053EE14;
+        a = -8.0f;
+        b = 8.0f;
         *(u32*)(p + 0x230) &= ~0x100;
         *(f32*)(p + 0x60) = a;
         *(f32*)(p + 0x64) = a;
@@ -532,8 +515,8 @@ extern "C" void fn_801C544C(void* this_) {
     u32 mode;
     void* sub;
     s32 level;
-    f32 a;
     f32 b;
+    f32 a;
 
     fn_801D0ED0(this_);
     *(u16*)((char*)this_ + 0x94) = fn_801C14A8(fn_801C0D70(), *(void**)((char*)this_ + 0x198));
