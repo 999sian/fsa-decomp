@@ -297,63 +297,64 @@ extern "C" void fn_802AFCE8(YajiActor* p) {
 }
 
 extern "C" void* fn_802D6A9C(void);
-extern "C" void fn_802B0194(YajiActor* this_) {
-    s32 layerId;
-    u8* areaMgr;
-    f32* roomBounds;
+extern "C" void fn_802B0194(u8* this_) {
+	s32 id;
+	u8* mgr;
+	f32* pfVar5;
 
-    this_->mDirection = this_->field_90 & 0xf;
-    this_->mMode = (this_->field_90 >> 7) & 0x1f;
-    this_->mSuppressSfx = (this_->field_90 >> 4) & 1;
-    this_->mSubState = 0;
-    this_->mIsVisible = 0;
-    this_->mBlinkTimer = 8;
-    this_->mAlpha = 0x28;
-    this_->mFadeDirection = 0;
-    this_->mPlayerInZone = 0;
+	*(s32*)(this_ + 0x240) = *(u32*)(this_ + 0x90) & 0xf;
+	*(s32*)(this_ + 0x244) = (*(u32*)(this_ + 0x90) >> 7) & 0x1f;
+	*(s32*)(this_ + 0x248) = (*(u32*)(this_ + 0x90) >> 4) & 1;
+	*(s32*)(this_ + 0x230) = 0;
+	*(s32*)(this_ + 0x250) = 0;
+	*(s32*)(this_ + 0x24c) = 8;
+	*(s32*)(this_ + 0x254) = 0x28;
+	*(s32*)(this_ + 0x258) = 0;
+	*(s32*)(this_ + 0x25c) = 0;
 
-    layerId = this_->field_04;
-    areaMgr = (u8*)fn_802D6A9C();
-    if (layerId < MAX_TV_LAYER_ID) {
-        roomBounds = (f32*)(areaMgr + 0xcc);
-    } else {
-        roomBounds = (f32*)(areaMgr + 0xdc);
-    }
+	id = *(s32*)(this_ + 4);
+	mgr = (u8*)fn_802D6A9C();
+	if (id < 8) {
+		pfVar5 = (f32*)(mgr + 0xcc);
+	} else {
+		pfVar5 = (f32*)(mgr + 0xdc);
+	}
 
-    this_->mZoneCenterZ = this_->field_0C.z;
-    switch (this_->mDirection) {
-    case 0:
-        this_->mZoneCenterX = this_->field_0C.x;
-        this_->mZoneCenterY = 192.0f + roomBounds[1];
-        this_->field_60 = -32.0f;
-        this_->field_64 = -256.0f;
-        this_->field_68 = 32.0f;
-        this_->field_6C = 256.0f;
-        break;
-    case 1:
-        this_->mZoneCenterX = this_->field_0C.x;
-        this_->mZoneCenterY = 192.0f + roomBounds[1];
-        this_->field_60 = -32.0f;
-        this_->field_64 = -256.0f;
-        this_->field_68 = 32.0f;
-        this_->field_6C = 256.0f;
-        break;
-    case 2:
-        this_->mZoneCenterX = 256.0f + roomBounds[0];
-        this_->mZoneCenterY = this_->field_0C.y;
-        this_->field_60 = -256.0f;
-        this_->field_64 = -32.0f;
-        this_->field_68 = 256.0f;
-        this_->field_6C = 32.0f;
-        break;
-    case 3:
-        this_->mZoneCenterX = 256.0f + roomBounds[0];
-        this_->mZoneCenterY = this_->field_0C.y;
-        this_->field_60 = -256.0f;
-        this_->field_64 = -32.0f;
-        this_->field_68 = 256.0f;
-        this_->field_6C = 32.0f;
-        break;
-    }
+	*(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0x14);
+	switch (*(s32*)(this_ + 0x240)) {
+	case 0:
+		*(f32*)(this_ + 0x234) = *(f32*)(this_ + 0xc);
+		*(f32*)(this_ + 0x238) = 192.0f + pfVar5[1];
+		*(f32*)(this_ + 0x60) = -32.0f;
+		*(f32*)(this_ + 0x64) = -256.0f;
+		*(f32*)(this_ + 0x68) = 32.0f;
+		*(f32*)(this_ + 0x6c) = 256.0f;
+		break;
+	case 1:
+		*(f32*)(this_ + 0x234) = *(f32*)(this_ + 0xc);
+		*(f32*)(this_ + 0x238) = 192.0f + pfVar5[1];
+		*(f32*)(this_ + 0x60) = -32.0f;
+		*(f32*)(this_ + 0x64) = -256.0f;
+		*(f32*)(this_ + 0x68) = 32.0f;
+		*(f32*)(this_ + 0x6c) = 256.0f;
+		break;
+	case 2:
+		*(f32*)(this_ + 0x234) = 256.0f + pfVar5[0];
+		*(f32*)(this_ + 0x238) = *(f32*)(this_ + 0x10);
+		*(f32*)(this_ + 0x60) = -256.0f;
+		*(f32*)(this_ + 0x64) = -32.0f;
+		*(f32*)(this_ + 0x68) = 256.0f;
+		*(f32*)(this_ + 0x6c) = 32.0f;
+		break;
+	case 3:
+	default:
+		*(f32*)(this_ + 0x234) = 256.0f + pfVar5[0];
+		*(f32*)(this_ + 0x238) = *(f32*)(this_ + 0x10);
+		*(f32*)(this_ + 0x60) = -256.0f;
+		*(f32*)(this_ + 0x64) = -32.0f;
+		*(f32*)(this_ + 0x68) = 256.0f;
+		*(f32*)(this_ + 0x6c) = 32.0f;
+		break;
+	}
 }
 
