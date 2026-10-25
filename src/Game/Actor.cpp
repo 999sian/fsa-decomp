@@ -10,7 +10,6 @@
 #undef PSVECMag
 #undef Vec
 #include "Game/Actor.h"
-#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Box.h"
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
