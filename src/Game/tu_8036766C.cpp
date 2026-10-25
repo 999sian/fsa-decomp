@@ -239,5 +239,5 @@ extern "C" void fn_80367E24(u8* p) {
     p[0x230] = 0;
 }
 
-void fn_80367F74(void) {}
+void __sinit_tu_8036766C_cpp(void) {}
 
