@@ -65,6 +65,11 @@ struct VObj2 {
         virtual void v10();
     };
 
+struct ManagerDtorObj {
+    virtual void v08(int);
+    virtual void v0C();
+};
+
 class VObj {
 public:
     virtual void v00();
@@ -285,6 +290,7 @@ extern "C" void freeAll__7JKRHeapFv(void*);
 extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 extern "C" void __dl__FPv(void* this_);
+#pragma opt_propagation off
 extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 	struct VObj {
 		virtual void v08(int);
@@ -381,7 +387,7 @@ extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
 	}
 	return this_;
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_8013A538(u8* this_, JKRHeap* heap) {
     u8* p = this_;
     *(void**)p = &lbl_8049F080;
