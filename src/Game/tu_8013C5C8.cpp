@@ -259,11 +259,11 @@ static inline JPAEmitterCallBack* tu13_effCallBack() {
 
 static inline void tu13_addEmitter(EffEmitterSet* set, u16 id, u8 group, s32 flag) {
     JPAEmitterCallBack* cb = tu13_effCallBack();
+    JPABaseEmitter*& em = set->emitters[set->count];
     f32 pos[3];
     pos[0] = lbl_8053CE00;
     pos[1] = lbl_8053CE00;
     pos[2] = lbl_8053CE00;
-    JPABaseEmitter*& em = set->emitters[set->count];
     em = set->mgr->createSimpleEmitterID(*(JGeometry::TVec3<f32>*)pos, id, group, 0, cb, 0);
     *(s32*)((u8*)em + 0x24) = 0;
     *(u32*)((u8*)em + 0xf4) |= 1;
