@@ -272,10 +272,10 @@ extern "C" void* fn_8015B420(char* this_, short how) {
     return this_;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8015B49C(char* this_) {
     s32 id;
-    f32 zero = lbl_8053D4AC;
-    Vec3f* src;
+    f32 zero = 0.0f;
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xfff;
     *(s32*)(this_ + 0x250) = (*(u32*)(this_ + 0x90) >> 24) & 3;
     *(s32*)(this_ + 0x24c) = (*(u32*)(this_ + 0x90) >> 26) & 3;
@@ -306,8 +306,7 @@ extern "C" void fn_8015B49C(char* this_) {
         *(s32*)(this_ + 0x238) = 0x2d;
     }
     *(s32*)(this_ + 0x288) = 0;
-    src = (Vec3f*)fn_8023E724((void*)*(s32*)(this_ + 0x250));
-    *(Vec3f*)(this_ + 0x27c) = *src;
+    JGeometry::setTVec3f((const f32*)fn_8023E724(*(void**)(this_ + 0x250)), (f32*)(this_ + 0x27c));
     *(s32*)(this_ + 0x274) = *(s32*)(this_ + 0x250);
     if (fn_8022F514(*(s32*)(this_ + 0x250))) {
         *(void**)(this_ + 0x274) = fn_8022F3DC(*(s32*)(this_ + 0x250));
@@ -319,7 +318,6 @@ extern "C" void fn_8015B49C(char* this_) {
     case 1:
     case 2:
     case 3:
-    case 0x2e:
         if (*(s32*)(this_ + 0x25c) == 0) {
             fn_802362C4(*(void**)(this_ + 0x274), lbl_804A0170[id]);
         }
@@ -334,23 +332,30 @@ extern "C" void fn_8015B49C(char* this_) {
     case 11:
         if (*(s32*)(this_ + 0x25c) == 0) {
             fn_8043D874(lbl_8053AED0, *(void**)(this_ + 0x274), lbl_804A0170[id], 0);
-            if (*(s32*)(this_ + 0x270) != 0) {
-                *(s32*)(this_ + 0x28c) = 2;
-            }
+        }
+        if (*(s32*)(this_ + 0x270) != 0) {
+            *(s32*)(this_ + 0x28c) = 2;
         }
         break;
-    }
+    case 0x2e:
     *(f32*)(this_ + 0x14) = lbl_8053D480 + *(f32*)(this_ + 0x284);
-    Actor_CreateByID(fn_801F856C(), 0x42424d42, *(void**)(this_ + 4), this_ + 0xc, 0x20000, -1, -1);
+    *(s32*)(this_ + 0x290) = Actor_CreateByID(fn_801F856C(), 0x42424d42, *(void**)(this_ + 4), this_ + 0xc, 0x20000, -1, -1);
+        break;
+    }
     *(s32*)(this_ + 0x230) = 0;
     if (*(s32*)(this_ + 0x258) == 0) {
         if (*(s32*)(this_ + 0x28c) != 2) {
-            Actor_CreateByID(fn_801F856C(), 0x5354504e, *(void**)(this_ + 4), this_ + 0xc, 0, -1, -1);
+            *(s32*)(this_ + 0x260) = Actor_CreateByID(fn_801F856C(), 0x5354504e, *(void**)(this_ + 4), this_ + 0xc, 0, -1, -1);
+            if (lbl_8053AAF8[0x96] == 0) *(s32*)(this_ + 0x260) = 0;
+        } else {
+            if(lbl_8053AAF8[0x7e] == 0) *(s32*)(this_ + 0x238) = 0x2d;
+            else *(s32*)(this_ + 0x28c) = 0xa;
+            *(s32*)(this_ + 0x260) = 0;
         }
-    }
+    } else *(s32*)(this_ + 0x260) = 0;
     *(s32*)(this_ + 0x278) = -1;
     *(s32*)(this_ + 0x294) = -1;
 }
-
+#pragma opt_propagation reset
 void __sinit_IMUP_801597B8_cpp(void) {}
 
