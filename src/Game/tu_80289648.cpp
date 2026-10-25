@@ -46,8 +46,8 @@ static inline bool tuInBox(const JGeometry::TVec3f& v, f32 x0, f32 y0, f32 x1, f
 
 static inline void tuGetCenter(u8* self, JGeometry::TVec3f& c) {
     c.z = 0.0f;
-    c.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
-    c.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
+    c.x = *(f32*)(self + 0x68) + 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68));
+    c.y = *(f32*)(self + 0x6c) + 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c));
 }
 
 static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
@@ -210,9 +210,7 @@ extern "C" void fn_80289A88(Actor* this_) {
     }
 
     JGeometry::TVec3f oldC;
-    oldC.z = 0.0f;
-    oldC.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
-    oldC.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
+    tuGetCenter(self, oldC);
     switch ((s32)((*(u32*)(self + 0x90) >> 12) & 0x1f)) {
     case 0:
         tuSetBox(self, 0.0f, 3.0f, *(f32*)(self + 0x238), *(f32*)(self + 0x23c) - 3.0f);
@@ -228,15 +226,13 @@ extern "C" void fn_80289A88(Actor* this_) {
         break;
     }
 
-    JGeometry::TVec3f newC;
-    newC.z = 0.0f;
     u8* t = *(u8**)(self + 0x240);
     f32 sh = (f32)*(u16*)(t + 4);
     f32 sw = (f32)*(u16*)(t + 2);
     f32 a = *(f32*)(self + 0x238);
     f32 b = *(f32*)(self + 0x23c);
-    newC.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
-    newC.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
+    JGeometry::TVec3f newC;
+    tuGetCenter(self, newC);
     *(f32*)(self + 0x230) = a / sw;
     *(f32*)(self + 0x234) = b / sh;
 
