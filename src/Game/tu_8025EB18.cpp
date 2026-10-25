@@ -155,8 +155,7 @@ extern "C" f32 lbl_8046B7B0[];
 static inline u8 canAttachActor(char* p) {
     if ((u8)fn_80270A8C(p))
         return 0;
-    bool held = U8(p, 0xd64) == 1;
-    if (held)
+    if (isCarried(p) == 1)
         return 0;
     if (isAttached(p))
         return 0;
@@ -329,7 +328,8 @@ extern "C" bool fn_8025EF68(char* p, s32 id) {
 extern "C" bool fn_8025EFFC(char* p, s32 id, u8 flag, u8 force) {
     char* actor;
     if (force != 0) {
-        if (isCarried(p) || isAttached(p) || fn_80241230(p) || fn_802412A4(p)) {
+        bool held = U8(p, 0xd64) == 1;
+        if (held || isAttached(p) || fn_80241230(p) || fn_802412A4(p)) {
             if (S32(p, 0xd88) != id && S32(p, 0xd88) < 0) {
                 actor = fn_801F666C(fn_801F856C(), id);
                 if (actor != 0 && fn_801F36D4(actor, S32(p, 4))) {
@@ -344,7 +344,10 @@ extern "C" bool fn_8025EFFC(char* p, s32 id, u8 flag, u8 force) {
         }
     }
     actor = fn_801F666C(fn_801F856C(), id);
-    if (actor != 0 && fn_80251AEC(p, flag != 0 ? 0x11 : 0x12)) {
+    if (actor != 0) {
+        s32 state = 0x12;
+        if (flag != 0) state = 0x11;
+        if (fn_80251AEC(p, state)) {
         S32(p, 0xd88) = -1;
         U32(p, 0xd6c) = U32(actor, 0x1a0);
         VEC(p, 0x2f4) = VEC(actor, 0xc);
@@ -355,6 +358,7 @@ extern "C" bool fn_8025EFFC(char* p, s32 id, u8 flag, u8 force) {
         U8(p, 0x1174) = 1;
         fn_8024F0E8(p, 0x20022);
         return true;
+    }
     }
     return false;
 }
