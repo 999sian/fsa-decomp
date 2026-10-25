@@ -198,6 +198,7 @@ inline void arijSetBoxS(char* p, f32 sx, f32 sy) {
     arijSetBox(p, lbl_8053FB60 * sx, lbl_8053FB60 * sy, lbl_8053FB5C * sx, lbl_8053FB5C * sy);
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802132FC(char* p) {
     if (AS32(0x248) == 4 && AS32(0x278) == 1 && fn_801D217C(p + 0x270)) {
         fn_801F0E34(p, 0x50035, 0);
@@ -212,12 +213,20 @@ extern "C" void fn_802132FC(char* p) {
             break;
         default:
             {
-            f32 sx = AF32(0x54);
-            f32 sy = AF32(0x58);
-            f32 b = lbl_8053FB60 * sy;
-            f32 a = lbl_8053FB60 * sx;
-            f32 d = lbl_8053FB5C * sy;
-            f32 c = lbl_8053FB5C * sx;
+            f32 b;
+            f32 a;
+            f32 far;
+            f32 c;
+            f32 d;
+            f32 sx;
+            f32 sy;
+            sx = AF32(0x54);
+            sy = AF32(0x58);
+            b = lbl_8053FB60 * sy;
+            a = lbl_8053FB60 * sx;
+            far = lbl_8053FB5C;
+            d = far * sy;
+            c = far * sx;
             AF32(0x60) = a;
             AF32(0x64) = b;
             AF32(0x68) = c;
@@ -243,7 +252,7 @@ extern "C" void fn_802132FC(char* p) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 struct ArijDrawParam {
     ArijDrawParam() : m40(-1), m44(-1) {
         for (u8 i = 0; i < 16; i++) {
@@ -471,10 +480,10 @@ extern "C" void fn_80213774(char* p, s32 state) {
         {
         f32 sx = AF32(0x54);
         f32 sy = AF32(0x58);
-        f32 b = lbl_8053FB60 * sy;
         f32 a = lbl_8053FB60 * sx;
-        f32 d = lbl_8053FB5C * sy;
+        f32 b = lbl_8053FB60 * sy;
         f32 c = lbl_8053FB5C * sx;
+        f32 d = lbl_8053FB5C * sy;
         AF32(0x60) = a;
         AF32(0x64) = b;
         AF32(0x68) = c;
@@ -489,10 +498,10 @@ extern "C" void fn_80213774(char* p, s32 state) {
         {
         f32 sx = AF32(0x54);
         f32 sy = AF32(0x58);
-        f32 b = lbl_8053FB60 * sy;
         f32 a = lbl_8053FB60 * sx;
-        f32 d = lbl_8053FB5C * sy;
+        f32 b = lbl_8053FB60 * sy;
         f32 c = lbl_8053FB5C * sx;
+        f32 d = lbl_8053FB5C * sy;
         AF32(0x60) = a;
         AF32(0x64) = b;
         AF32(0x68) = c;
@@ -505,10 +514,10 @@ extern "C" void fn_80213774(char* p, s32 state) {
         {
         f32 sx = AF32(0x54);
         f32 sy = AF32(0x58);
-        f32 b = lbl_8053FB60 * sy;
         f32 a = lbl_8053FB60 * sx;
-        f32 d = lbl_8053FB5C * sy;
+        f32 b = lbl_8053FB60 * sy;
         f32 c = lbl_8053FB5C * sx;
+        f32 d = lbl_8053FB5C * sy;
         AF32(0x60) = a;
         AF32(0x64) = b;
         AF32(0x68) = c;
