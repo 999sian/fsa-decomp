@@ -349,4 +349,3 @@ extern "C" void fn_803D6D74(void* thisObj) {
 
 #pragma exceptions off
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-#pragma exceptions reset
