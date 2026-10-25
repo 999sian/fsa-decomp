@@ -109,24 +109,26 @@ extern f32 lbl_8053F3CC;
 extern f32 lbl_8053F3C4;
 extern f64 lbl_8053F3D0;
 extern u8 lbl_8053F1C8;
-static inline bool canHitFire(u8* p, u8* other) {
+static inline u8 canHitFire(u8* p, u8* other) {
     switch (*(s32*)(other + 0x1a0)) {
     case 'SWBM': case 'FIRE': break;
-    default: return false;
+    default: return 0;
     }
-    if (*(s32*)(p + 0x248) == 0x11) return true;
-    if (*(f32*)(other + 0x40) > lbl_8053F38C) return false;
-    switch (*(s32*)(p + 0x248)) {
-    case 12: return true;
-    case 11: case 13: case 14:
-        if (*(f32*)(other + 0x40) < lbl_8053F38C) return true;
-        if (*(u32*)(p + 0x230) & 0x2000) {
-            if (*(f32*)(other + 0x3c) < lbl_8053F3D0) return true;
-        } else if (*(f32*)(other + 0x3c) > lbl_8053F3D0) return true;
-        break;
-    default: break;
+    if (*(s32*)(p + 0x248) == 0x11) return 1;
+    u8 result = 0;
+    if (!(*(f32*)(other + 0x40) > lbl_8053F38C)) {
+        switch (*(s32*)(p + 0x248)) {
+        case 12: result = 1; break;
+        case 11: case 13: case 14:
+            if (*(f32*)(other + 0x40) < lbl_8053F38C) result = 1;
+            else if (*(u32*)(p + 0x230) & 0x2000) {
+                if (*(f32*)(other + 0x3c) < lbl_8053F3D0) result = 1;
+            } else if (*(f32*)(other + 0x3c) > lbl_8053F3D0) result = 1;
+            break;
+        default: break;
+        }
     }
-    return false;
+    return result;
 }
 
 extern "C" u8 fn_801DDBE4(u8* p) {
