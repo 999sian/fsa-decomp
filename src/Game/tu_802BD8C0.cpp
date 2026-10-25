@@ -3,7 +3,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 
-extern "C" u16 fn_80226850(s32 a, s32 b);
+extern "C" u16 fn_80226850(void* a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern const f32 lbl_80540BE0;
 extern const f32 lbl_80540BE4;
@@ -29,97 +29,63 @@ extern "C" void fn_802BD920(void)
     return;
 }
 
-extern "C" void fn_802BDCC0(u8* param_1)
-{
-    Vec pos;
-    u32 gx;
-    u32 gy;
-    s32 i;
-    u16 s;
-
-    if (*(s32*)(param_1 + 4) < 8) {
+extern "C" void fn_802BDCC0(u8* this_) {
+    u32 ux;
+    u32 uy;
+    u16 ret;
+    f32* o = (f32*)(this_ + 0x23c);
+    s32 room = *(s32*)(this_ + 4);
+    if (room < 8) {
         u8* mgr = (u8*)fn_802D6A9C();
-        u8* src = (*(s32*)(param_1 + 4) >= 8) ? mgr + 0xdc : mgr + 0xcc;
-        *(u32*)(param_1 + 0x23c) = *(u32*)src;
-        *(u32*)(param_1 + 0x240) = *(u32*)(src + 4);
-        *(u32*)(param_1 + 0x244) = *(u32*)(src + 8);
-        *(u32*)(param_1 + 0x248) = *(u32*)(src + 0xc);
-        return;
-    }
-
-    pos = *(Vec*)(param_1 + 0xc);
-    gx = (u32)pos.x & ~7;
-    gy = (u32)pos.y & ~7;
-    pos.x = (f32)gx;
-    pos.y = (f32)gy;
-    pos.z = lbl_80540BE0;
-
-    if (pos.x >= lbl_80540BE4) {
-        for (i = 0; i < 0x40; i++) {
-            if (pos.x < lbl_80540BE4) {
-                pos.x = lbl_80540BE4;
-                break;
-            }
-            s = fn_80226850((s32)&pos, *(s32*)(param_1 + 4));
-            if (s >= 8 && s < 0x10 && (s & 1)) {
-                break;
-            }
-            pos.x += lbl_80540BE8;
-        }
+        f32* box;
+        if (room < 8) box = (f32*)(mgr + 0xcc);
+        else box = (f32*)(mgr + 0xdc);
+        o[0] = box[0]; o[1] = box[1]; o[2] = box[2]; o[3] = box[3];
     } else {
-        pos.x = lbl_80540BE4;
-    }
-    *(f32*)(param_1 + 0x244) = pos.x;
-
-    pos.x = (f32)gx;
-    if (pos.x >= lbl_80540BE8) {
-        for (i = 0; i < 0x40; i++) {
-            s = fn_80226850((s32)&pos, *(s32*)(param_1 + 4));
-            if (s >= 8 && s < 0x10 && (s & 1)) {
-                pos.x += lbl_80540BE8;
-                break;
+        JGeometry::TVec3<f32> p(*(Vec*)(this_ + 0xc));
+        ux = (u32)p.x & ~7;
+        uy = (u32)p.y & ~7;
+        p.set((f32)ux, (f32)uy, 0.0f);
+        {
+            for (s32 i = 0; i < 0x40; i++) {
+                if (p.x >= 512.0f) { p.x = 512.0f; break; }
+                ret = fn_80226850(&p, *(s32*)(this_ + 4));
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) break;
+                p.x += 8.0f;
             }
-            pos.x -= lbl_80540BE8;
         }
-    } else {
-        pos.x = lbl_80540BE0;
-    }
-    *(f32*)(param_1 + 0x23c) = pos.x;
-
-    pos.x = (f32)gx;
-    pos.y = (f32)gy;
-    pos.z = lbl_80540BE0;
-    if (pos.y >= lbl_80540BE4) {
-        for (i = 0; i < 0x40; i++) {
-            if (pos.y < lbl_80540BE4) {
-                pos.y = lbl_80540BE4;
-                break;
+        o[2] = p.x;
+        p.x = (f32)ux;
+        {
+            for (s32 i = 0; i < 0x40; i++) {
+                if (p.x < 8.0f) { p.x = 0.0f; break; }
+                ret = fn_80226850(&p, *(s32*)(this_ + 4));
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) { p.x += 8.0f; break; }
+                p.x -= 8.0f;
             }
-            s = fn_80226850((s32)&pos, *(s32*)(param_1 + 4));
-            if (s >= 8 && s < 0x10 && (s & 1)) {
-                break;
-            }
-            pos.y += lbl_80540BE8;
         }
-    } else {
-        pos.y = lbl_80540BE4;
-    }
-    *(f32*)(param_1 + 0x248) = pos.y;
-
-    pos.y = (f32)gy;
-    if (pos.y >= lbl_80540BE8) {
-        for (i = 0; i < 0x40; i++) {
-            s = fn_80226850((s32)&pos, *(s32*)(param_1 + 4));
-            if (s >= 8 && s < 0x10 && (s & 1)) {
-                pos.y += lbl_80540BE8;
-                break;
+        o[0] = p.x;
+        p.set((f32)ux, (f32)uy, 0.0f);
+        {
+            for (s32 i = 0; i < 0x40; i++) {
+                if (p.y >= 512.0f) { p.y = 512.0f; break; }
+                ret = fn_80226850(&p, *(s32*)(this_ + 4));
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) break;
+                p.y += 8.0f;
             }
-            pos.y -= lbl_80540BE8;
         }
-    } else {
-        pos.y = lbl_80540BE0;
+        o[3] = p.y;
+        p.y = (f32)uy;
+        {
+            for (s32 i = 0; i < 0x40; i++) {
+                if (p.y < 8.0f) { p.y = 0.0f; break; }
+                ret = fn_80226850(&p, *(s32*)(this_ + 4));
+                if (ret >= 8 && ret < 0x10 && (ret & 1)) { p.y += 8.0f; break; }
+                p.y -= 8.0f;
+            }
+        }
+        o[1] = p.y;
     }
-    *(f32*)(param_1 + 0x240) = pos.y;
 }
 
 extern const f64 lbl_80540BF8;
