@@ -75,14 +75,16 @@ extern "C" void fn_801F3708(char*, JGeometry::TVec3<f32>*);
 static inline bool canReleaseCarried(char* p, u8 flag) {
     s32 state = S32(p, 0x1244);
     if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2)
-        return false;
+        goto blocked;
     if (flag == 1 && !isCarriedByPlayer(p, flag) && (u32)(state - 0x20) <= 5)
-        return false;
+        goto blocked;
     if (S32(p, 0xd6c) == 'KEY0' && (u32)(state - 0x1e) <= 1)
-        return false;
+        goto blocked;
     if (flag == 1 && !isCarriedByPlayer(p, flag) && (state == 0x4c || state == 0x4d))
-        return false;
+        goto blocked;
     return true;
+blocked:
+    return false;
 }
 
 extern "C" s32 fn_8024189C(char*);
