@@ -747,5 +747,4 @@ extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
     self->m230 = 0;
 }
 
-void fn_8033E414(void) {}
 
