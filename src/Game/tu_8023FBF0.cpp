@@ -171,9 +171,9 @@ c = 0;
 }
 
 inline s32 countSharingT(const char* p) {
-    s32 c;
-    s32 i;
     s32 linked;
+    s32 i;
+    s32 c;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
@@ -3536,10 +3536,10 @@ void fn_8024D134(char* p) {
     JGeometry::TVec3<f32> v;
 
     if (U8(lbl_8053AAF8, 0x7e) == 0 && S32(p, 0xd60) < 0) {
-        n = countSharingH(p);
+        n = countSharingT(p);
         st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
         if (st != 5) {
-            n = countSharingH(p);
+            n = countSharingT(p);
             st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
             if (st != 4) {
                 U8(p, 0x121d) = 0;
@@ -3549,21 +3549,21 @@ void fn_8024D134(char* p) {
                 }
                 v.set(V3(p, 0x8));
                 v.z = lbl_80540034;
-                n = countSharingH(p);
+                n = countSharingT(p);
                 st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
                 if (st == 2) {
                     v.x += lbl_80540050;
                     v.y += lbl_80540050;
                 } else if (st < 2) {
                     if (st == 0) {
-                        n = countSharingH(p);
+                        n = countSharingT(p);
                         st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-                        n = st == 4 ? 1 : countSharingH(p);
+                        n = st == 4 ? 1 : countSharingT(p);
                         v.x += lbl_80540050 * (f32)(n - 1);
                     } else if (st >= 0) {
-                        n = countSharingH(p);
+                        n = countSharingT(p);
                         st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-                        n = st == 4 ? 1 : countSharingH(p);
+                        n = st == 4 ? 1 : countSharingT(p);
                         v.y += lbl_80540050 * (f32)(n - 1);
                     }
                 } else if (st < 4) {
@@ -3586,7 +3586,7 @@ void fn_8024D134(char* p) {
                         }
                     }
                 }
-                n = countSharingH(p);
+                n = countSharingT(p);
                 st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
                 if (st == 2) {
                     PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x35f, 0, -1, 0, 0, 1);
@@ -4348,7 +4348,23 @@ u8 fn_8024F63C(char* p) {
     f32* t2;
     JGeometry::TVec3<f32> tmp;
 
-    bVar1 = U8(p, 0xc80) != 0 && U8(p, 0xcee) == 0 && U8(p, 0x1215) == 0 && U8(p, 0xca0) != 0 && U8(p, 0xce9) != 0;
+    if (U8(p, 0xc80) == 0) {
+        bVar1 = 0;
+    } else if (U8(p, 0xcee) == 0) {
+        if (U8(p, 0x1215) == 0) {
+            if (U8(p, 0xca0) == 0) {
+                bVar1 = 0;
+            } else if (U8(p, 0xce9) == 0) {
+                bVar1 = 0;
+            } else {
+                bVar1 = 1;
+            }
+        } else {
+            bVar1 = 0;
+        }
+    } else {
+        bVar1 = 0;
+    }
     uVar2 = 0;
     if (bVar1) {
         cnt = countSharing(p);
@@ -4397,8 +4413,24 @@ u8 fn_8024F63C(char* p) {
                 return 0;
             }
         } else {
-            bVar1 = U8(p, 0xc80) != 0 && U8(p, 0xcee) == 0 && U8(p, 0x1215) == 0 && U8(p, 0xca0) != 0 && U8(p, 0xce9) != 0;
             uVar2 = 0;
+            if (U8(p, 0xc80) == 0) {
+                bVar1 = 0;
+            } else if (U8(p, 0xcee) == 0) {
+                if (U8(p, 0x1215) == 0) {
+                    if (U8(p, 0xca0) == 0) {
+                        bVar1 = 0;
+                    } else if (U8(p, 0xce9) == 0) {
+                        bVar1 = 0;
+                    } else {
+                        bVar1 = 1;
+                    }
+                } else {
+                    bVar1 = 0;
+                }
+            } else {
+                bVar1 = 0;
+            }
             if (bVar1) {
                 cnt = countSharing(p);
                 linked = S32(p, 0xd60);
