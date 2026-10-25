@@ -2,6 +2,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct SinCosEntry {
@@ -83,6 +84,7 @@ static inline JGeometry::TVec2f subtractPos(const JGeometry::TVec2f& a, const JG
     return result;
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
     JGeometry::TVec2f delta;
     JGeometry::TVec3f tgt=*(JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_+0x298));
@@ -143,7 +145,7 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
         *(s32*)(this_+0x250)=0;
     }
 }
-#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_802B8078(char* this_) {
     *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
     if (*(s32*)(this_ + 0x29c) < 8) {
