@@ -9,6 +9,8 @@ struct Vec3f {
         y = ay;
         z = az;
     }
+    operator f32*() { return &x; }
+    operator void*() { return this; }
 };
 
 extern "C" void* lbl_8053AAF8;
