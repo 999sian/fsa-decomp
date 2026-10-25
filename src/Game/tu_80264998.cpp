@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" int fn_802486A0(void*);
@@ -876,6 +877,4 @@ extern "C" void fn_80268194(char* p)
     }
 }
 
-extern "C" void __sinit_tu_80264998_cpp(void)
-{
-}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
