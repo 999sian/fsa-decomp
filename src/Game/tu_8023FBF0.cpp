@@ -256,7 +256,7 @@ inline bool padCheck(char* p) {
     if (r == 4) {
         idx = S32(p, 0xd60) >= 0 ? fn_80234004(S32(p, 0xd60)) : S32(p, 0x1224);
         if (S32(p, 0xd60) < 0) {
-            cnt = 0;
+            r = 0;
         } else {
             cnt = 0;
             for (i = 0; i < S32(p, 0x4); i++) {
@@ -265,10 +265,6 @@ inline bool padCheck(char* p) {
                     cnt++;
                 }
             }
-        }
-        if (S32(p, 0xd60) < 0) {
-            r = 0;
-        } else {
             r = cnt + 1;
         }
         if (idx != r) {
