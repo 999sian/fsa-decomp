@@ -1,5 +1,7 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "types.h"
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 struct LimtDrawParam {
