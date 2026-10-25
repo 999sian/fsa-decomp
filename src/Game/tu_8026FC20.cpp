@@ -838,6 +838,10 @@ bool fn_802729F0(char* p, s32 id) {
             return 1;
         }
         p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
     }
     return 0;
 }
@@ -861,6 +865,7 @@ BOOL fn_80272C20(char* p, const f32* box, s32 a, s32 b) {
     if (U8(p, 0xcee) == 1) {
         return 0;
     }
+    JGeometry::TVec2<f32> pt;
     f32 x0 = box[0];
     f32 y0 = box[1];
     f32 x1 = box[2];
@@ -870,7 +875,6 @@ BOOL fn_80272C20(char* p, const f32* box, s32 a, s32 b) {
     x1 += 2.5f;
     y1 += 2.5f;
     for (s32 i = 0; i < 8; i++) {
-        JGeometry::TVec2<f32> pt;
         fn_8024B298(p, i, &pt.x);
         if (!(u8)inRect(pt, x0, y0, x1, y1)) {
             goto add;
@@ -963,7 +967,7 @@ bool fn_80273518(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out) 
     if (room != S32(p, 0x3b4)) {
         return 0;
     }
-    JGeometry::TBox2<f32> b(*box);
+    JGeometry::TBox2<f32> b = *box;
     f32* o = roomOffset(room);
     JGeometry::TVec2<f32> n;
     n.x = -o[0];
@@ -2541,6 +2545,8 @@ void fn_8027B648(char* p) {
     }
     fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
     fn_80268B3C(p);
+    JGeometry::TVec3<f32> v;
+    JGeometry::TVec3<f32> w;
     if (U8(p, 0x3fa) == 10) {
         s32 dir = S32(p, 0x3dc);
         if (S32(p, 0xb38) < 0) {
@@ -2554,26 +2560,23 @@ void fn_8027B648(char* p) {
                 }
                 goto skip;
             } else {
-                s32 m = fn_802417CC(p);
+                register s32 m = fn_802417CC(p);
                 if (fn_8024189C(p) < m) {
                     goto skip;
                 }
             }
         create:
-            JGeometry::TVec3<f32> v;
-            v.x = F32(p, 0x8);
-            v.y = F32(p, 0xc);
-            v.z = F32(p, 0x10);
-            v.x += lbl_8046BD88[dir].x;
-            v.y += lbl_8046BD88[dir].y;
+            w.x = F32(p, 0x8);
+            w.y = F32(p, 0xc);
+            w.z = F32(p, 0x10);
+            w.x += lbl_8046BD88[dir].x;
+            w.y += lbl_8046BD88[dir].y;
             if (fn_80241284(p) && S32(p, 0x11ac) == 1) {
-                s32 no = S32(p, 0x4);
-                S32(p, 0xb38) = Actor_CreateByID(fn_801F856C(), 'SWBM', PTR(p, 0x3b4), &v,
-                                                 ((dir & 3) << 4) | 0x100 | (no & 3), -1, no);
+                long no = S32(p, 0x4);
+                S32(p, 0xb38) = Actor_CreateByID(fn_801F856C(), 'SWBM', PTR(p, 0x3b4), &w, ((dir & 3) << 4) | 0x100 | (no & 3), -1, no);
             } else {
-                s32 no = S32(p, 0x4);
-                S32(p, 0xb38) = Actor_CreateByID(fn_801F856C(), 'SWBM', PTR(p, 0x3b4), &v,
-                                                 ((dir & 3) << 4) | (no & 3), -1, no);
+                register s32 no = S32(p, 0x4);
+                S32(p, 0xb38) = Actor_CreateByID(fn_801F856C(), 'SWBM', PTR(p, 0x3b4), &w, ((dir & 3) << 4) | (no & 3), -1, no);
             }
             if (S32(p, 0xb38) >= 0) {
                 S32(p, 0xb6c) = S32(p, 0x3b4);
@@ -2582,9 +2585,9 @@ void fn_8027B648(char* p) {
     }
 skip:
     if (PTR(p, 0x12bc) != NULL) {
-        JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(p + 8));
-        v.x += 20.0f * JMASCos(S16(p, 0x11c0));
-        v.y += 20.0f * JMASSin(S16(p, 0x11c0));
+        v = *(JGeometry::TVec3<f32>*)(p + 8);
+        v.x += JMASCos(S16(p, (u32)0x11c0)) * 20.0f;
+        v.y += JMASSin(S16(p, 0x11c0)) * 20.0f;
         fn_8013CB44(PTR(p, 0x12bc), &v, 0, 1, 1);
     }
 }
@@ -2667,6 +2670,13 @@ inline bool rectIn(const RoomRect& r, const JGeometry::TVec2<f32>& v) {
     }
     return in;
 }
+inline bool rectInXY(const RoomRect& r, f32 x, f32 y) {
+    bool in = 0;
+    if (x >= r.x0 && y >= r.y0 && x < r.x1 && y < r.y1) {
+        in = 1;
+    }
+    return in;
+}
 inline void stopVel(char* p) {
     ((JGeometry::TVec3<f32>*)(p + 0x368))->set(F32(p, 0x344), F32(p, 0x348), 0.0f);
     F32(p, 0x344) = 0.0f;
@@ -2730,13 +2740,16 @@ void fn_8027BE74(char* p) {
         fn_80275D9C(p);
         fn_80274CB8(p);
         fn_80268B3C(p);
-        if (U8(p, 0x403) < 0xa8 && ((u8*)PTR(p, 0xbf0) + S32(p, 0x3dc))[0x48] != 0 && fn_80251AEC(p, 0x37)) {
-            *(Vec*)(p + 0x350) = ((const Vec*)lbl_8046BBA8)[S32(p, 0x3dc)];
-            fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
-            if (fn_8022486C(p + 0x30c, PTR(p, 0x3b4))) {
-                fn_8024F0E8(p, 0x20062);
-            } else {
-                fn_8024F0E8(p, 0x20061);
+        if (U8(p, 0x403) < 0xa8) {
+            u8* q = (u8*)PTR(p, 0xbf0);
+            if (q[S32(p, 0x3dc) + 0x48] != 0 && fn_80251AEC(p, 0x37)) {
+                *(JGeometry::TVec3<f32>*)(p + 0x350) = lbl_8046BBA8[S32(p, 0x3dc)];
+                fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+                if (fn_8022486C(p + 0x30c, PTR(p, 0x3b4))) {
+                    fn_8024F0E8(p, 0x20062);
+                } else {
+                    fn_8024F0E8(p, 0x20061);
+                }
             }
         }
     }
@@ -2899,12 +2912,13 @@ void fn_802791B0(char* p) {
             F32(p, 0x358) = -4.0f;
         }
         U8(p, 0x11e9) = 1;
+        const JGeometry::TVec2<f32>& pos = *(JGeometry::TVec2<f32>*)(p + 8);
         RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
         r.x0 -= -16.0f;
         r.y0 -= -16.0f;
         r.x1 += -16.0f;
         r.y1 += -16.0f;
-        if (!anyBtn(p) && rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8)) &&
+        if (!anyBtn(p) && rectIn(r, pos) &&
             (!Player_IsLinked(p) || fn_802486A0(p) == 4 || fn_80234B24(Player_GetLinkTargetIndex(p)))) {
             goto end;
         }
@@ -3006,11 +3020,13 @@ void fn_80279824(char* p) {
     }
     if (S32(p, 0x11e4) == 3) {
         U8(p, 0x11e9) = 1;
-        RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
-        r.x0 -= -16.0f;
-        r.y0 -= -16.0f;
-        r.x1 += -16.0f;
-        // TODO: target keeps the (unused) room rect on the stack
+        s32 room = S32(p, 0x3b4);
+        RoomRect r;
+        r = *(RoomRect*)roomOffset(room);
+        RoomRect* rp = &r;
+        rp->x0 -= -16.0f;
+        rp->y0 -= -16.0f;
+        rp->x1 += -16.0f;
         landState(p);
     } else {
         if (F32(p, 0x10) <= 0.0f) {
@@ -3147,7 +3163,7 @@ void fn_8027CC90(char* p) {
         fn_80251AEC(p, 6);
     }
     PlayerOfs* po = (PlayerOfs*)p;
-    po->ofs.set(lbl_8046BB78[S32(p, 0x3dc)]);
+    po->ofs = lbl_8046BB78[S32(p, 0x3dc)];
     po->ofs += po->pos;
     if (PTR(p, 0x1274) != NULL) {
         F32(p, 0x127c) = F32(p, 0x12a4);
