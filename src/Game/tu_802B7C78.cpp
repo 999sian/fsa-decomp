@@ -77,13 +77,17 @@ extern "C" void fn_802B7CD8(void* this_) {
 }
 
 #pragma opt_common_subs on
-static inline JGeometry::TVec2f subtractPos(JGeometry::TVec2f result, const JGeometry::TVec2f& b) {
+struct ChaseVec2 : JGeometry::TVec2f {
+    ChaseVec2(const JGeometry::TVec2f& other) { set(other); }
+    ChaseVec2(const ChaseVec2& other) { set(other); }
+};
+static inline ChaseVec2 subtractChasePos(ChaseVec2 result, const JGeometry::TVec2f& b) {
     result.x-=b.x;
     result.y-=b.y;
     return result;
 }
 
-#pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
     JGeometry::TVec3f tgt=*(JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_+0x298));
     s32 dxi=(s32)(f32)fabs(*(f32*)(this_+0xc)-tgt.x);
@@ -95,7 +99,10 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
     s32 otherRoom=fn_8023DE58(*(s32*)(this_+0x298));
     if(otherRoom==room) {
         JGeometry::TVec2f* source=(JGeometry::TVec2f*)fn_8023E724(*(s32*)(this_+0x298));
-        *(JGeometry::TVec2f*)(this_+0x284)=subtractPos(*source,*(JGeometry::TVec2f*)(this_+0xc));
+        JGeometry::TVec2f delta(source->x,source->y);
+        delta.x-=*(f32*)(this_+0xc);
+        delta.y-=*(f32*)(this_+0x10);
+        *(JGeometry::TVec2f*)(this_+0x284)=delta;
         ((JGeometry::TVec2f*)(this_+0x284))->normalize();
         idx<<=2;
         char* indexed=this_+idx;
@@ -141,7 +148,7 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
         *(s32*)(this_+0x250)=0;
     }
 }
-#pragma opt_strength_reduction reset
+#pragma opt_lifetimes reset
 extern "C" void fn_802B8078(char* this_) {
     *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
     if (*(s32*)(this_ + 0x29c) < 8) {
