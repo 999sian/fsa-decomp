@@ -10,6 +10,8 @@ extern f32 lbl_805416C8;
 extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 
 struct Vec3f { f32 x, y, z; };
 extern "C" void GXSetZScaleOffset(f32 scale, f32 offset);
@@ -81,9 +83,14 @@ extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
     f32 pos[3];
     fn_8030C5F0(p, r4, 1, 0, pos);
     bool ret = false;
-    if (pos[0] >= (f32)(u32)(*(u32*)(p + 0x144) + 0xe) && pos[0] < (f32)(u32)(*(u32*)(p + 0x14c) - 0xe) &&
-        pos[1] >= (f32)(u32)(*(u32*)(p + 0x148) + 0xe) && pos[1] < (f32)(u32)(*(u32*)(p + 0x150) - 0xe)) {
-        ret = true;
+    if (pos[0] >= (f32)(u32)(*(u32*)(p + 0x144) + 0xe)) {
+        if (pos[0] < (f32)(u32)(*(u32*)(p + 0x14c) - 0xe)) {
+            if (pos[1] >= (f32)(u32)(*(u32*)(p + 0x148) + 0xe)) {
+                if (pos[1] < (f32)(u32)(*(u32*)(p + 0x150) - 0xe)) {
+                    ret = true;
+                }
+            }
+        }
     }
     return ret;
 }
@@ -165,15 +172,15 @@ extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out) {
 }
 
 extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
-    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     f32 hw = 0.5f * size;
     f32 x = pos[0];
     const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
     int h = rm->efbHeight;
+    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
+    *(f32*)(obj + 0x180) = x - hw;
     int w = rm->fbWidth;
     f32 y = pos[1];
     f32 hh = 0.5f * (size * (f32)h / (f32)w);
-    *(f32*)(obj + 0x180) = x - hw;
     *(f32*)(obj + 0x184) = y - hh;
     *(f32*)(obj + 0x188) = x + hw;
     *(f32*)(obj + 0x18c) = y + hh;
@@ -184,16 +191,16 @@ extern "C" void fn_8030C85C(u8* self) {
     u32 zero = 0;
     self[0x1e8] = zero;
     if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235c] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2360] = zero;
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2360] = (u8)zero;
     }
     if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235d] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2361] = zero;
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2361] = (u8)zero;
     }
     if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235e] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2362] = zero;
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2362] = (u8)zero;
     }
     if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235f] != 0) {
-        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2363] = zero;
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2363] = (u8)zero;
     }
     fn_802DCDF4((char*)fn_802D6A9C());
     *(f32*)(self + 0x154) = *(f32*)(self + 0x190);
@@ -286,6 +293,19 @@ extern "C" void fn_8030CB10(u8* p, f32* v, f32 s) {
     r[2] = v[2];
     r[3] = v[3];
 }
+
+#pragma dont_inline on
+extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b) {
+    f32 scale = *(f32*)(p + 0x1d4);
+    f32 lo = *(f32*)(entry + 0x0);
+    f32 limit = lbl_805416C8;
+    if (scale >= limit) {
+        *(f32*)(p + 0x1d4) = lo;
+    } else {
+        *(f32*)(p + 0x1d4) = lo;
+    }
+}
+#pragma dont_inline reset
 
 extern "C" void fn_8030DD20(u8* param_1, Mtx param_2) {
     Mtx sp8;
