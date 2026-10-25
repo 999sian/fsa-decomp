@@ -173,14 +173,6 @@ extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" s32 fn_8022F3DC(s32);
 #pragma opt_propagation off
-static inline u8 gateTransition(const s32 player, u8* p) {
-    u32 param = *(u32*)(p+0x90);
-    u32 kind = param & 0x7f;
-    s32 room = (param >> 24) & 7;
-    s32 id = room + 7;
-    if (!room) id = room;
-    return fn_802317F0(player, id, p+0xc, p+0x238, kind);
-}
 extern "C" void fn_80227530(u8* p, f32* out) {
     s32 i;
     for (i = 0; i < 4; i++) {
