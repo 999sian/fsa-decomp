@@ -689,10 +689,9 @@ extern "C" void fn_801C844C(char* p) {
     }
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_801C887C(char* this_) {
-    JGeometry::TVec3<f32> v28 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
-    JGeometry::TVec3<f32> v1c;
-    JGeometry::TVec3<f32> v10;
+    const JGeometry::TVec3f& v28 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
     u8 ba;
     u8 b9;
     u8 b8;
@@ -703,7 +702,7 @@ extern "C" void fn_801C887C(char* this_) {
     s32 room;
     JMARandFast* rnd;
 
-    if (fn_801CCB1C(&v28, *(s32*)(this_ + 4))) {
+    if (fn_801CCB1C((void*)&v28, *(s32*)(this_ + 4))) {
         a = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
         fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), 1);
         b = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
@@ -714,7 +713,7 @@ extern "C" void fn_801C887C(char* this_) {
         fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
         c = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
         s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-        if (a < s[2]) {
+        if ((u8)(s8)a < s[2]) {
             s[3] = a;
         }
         if (&ba != 0) {
@@ -733,7 +732,9 @@ extern "C" void fn_801C887C(char* this_) {
             if (a < s[2]) {
                 s[3] = a;
             }
-        } else if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), b8)) {
+        } else {
+            room = *(s32*)(this_ + 4);
+            if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), b8)) {
             a = ba;
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             if (a < s[2]) {
@@ -741,25 +742,30 @@ extern "C" void fn_801C887C(char* this_) {
             }
         } else {
             rnd = (JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4);
-            if (rnd->get_ufloat_1() < lbl_8053EED8) {
-                v1c = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ba);
-                if (fn_801CCB1C(&v1c, *(s32*)(this_ + 4))) {
+            if (rnd->get_ufloat_1() < 0.5f) {
+                const JGeometry::TVec3f& v1c = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ba);
+                if (fn_801CCB1C((void*)&v1c, *(s32*)(this_ + 4))) {
                     a = b8;
+                    s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+                    if (a < s[2]) { s[3] = a; }
                 } else {
                     a = ba;
+                    s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+                    if (a < s[2]) { s[3] = a; }
                 }
             } else {
-                v10 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), b8);
-                if (fn_801CCB1C(&v10, *(s32*)(this_ + 4))) {
+                const JGeometry::TVec3f& v10 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), b8);
+                if (fn_801CCB1C((void*)&v10, *(s32*)(this_ + 4))) {
                     a = ba;
+                    s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+                    if (a < s[2]) { s[3] = a; }
                 } else {
                     a = b8;
+                    s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+                    if (a < s[2]) { s[3] = a; }
                 }
             }
-            s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-            if (a < s[2]) {
-                s[3] = a;
-            }
+        }
         }
         room = *(s32*)(this_ + 4);
         if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
@@ -771,7 +777,7 @@ extern "C" void fn_801C887C(char* this_) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_801C8B50(char* this_) {
     *(s32*)(this_ + 0x2a8) = 0;
     *(u32*)(this_ + 0x230) &= 0xffffefff;
