@@ -260,7 +260,8 @@ static inline void fzraApproach(f32* x, f32 goal, f32 t) {
     if (t < *(f32*)__float_epsilon) {
         *x = goal;
     } else {
-        *x = (lbl_8053CAA4 / t) * (goal - *x) + *x;
+        f32 cur = *x;
+        *x = (lbl_8053CAA4 / t) * (goal - cur) + cur;
     }
 }
 
@@ -460,7 +461,7 @@ extern "C" void fn_80127088(void* this_) {
             f32 inv = lbl_8053CAA4 / t;
             *(s32*)(p + 0x254) = (s32)(inv * (f32)(0xff - *(s32*)(p + 0x254)) + (f32)*(s32*)(p + 0x254));
         }
-        fzraApproach((f32*)(p + 0xc), *(f32*)(p + 0x270), *(s32*)(p + 0x250));
+        fzraApproach((f32*)(p + 0xc), *(f32*)(p + 0x270), (f32)*(s32*)(p + 0x250));
         if (*(s32*)(p + 0x250) <= 0) {
             fn_80126A4C(this_, 0xe);
         }
