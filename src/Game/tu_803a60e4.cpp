@@ -10,6 +10,24 @@ extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 extern f32 lbl_8054335C;
 extern f32 lbl_80543360;
 extern f32 lbl_80543364;
+extern char lbl_80476168[];
+extern void* lbl_804AF86C[];
+extern u8 lbl_8053AD78[];
+extern void* lbl_8053AED8;
+extern "C" void* fn_804030C4(u32 a, char* b);
+extern "C" void fn_80440D78(void* a, void* b);
+extern "C" void fn_80440CE4(void* a, void* b);
+extern "C" void fn_80402F04(void* a, void* b);
+extern "C" void* __nw__FUl(u32 size);
+static inline void fn_803A7898_child(char* p, s32 off, u64 key) {
+    void* obj = __nw__FUl(0x2c);
+    if (obj != 0) {
+        *(void**)obj = lbl_804AF86C;
+        *(void**)(p + off) = obj;
+        J2DPane* found = (*(J2DScreen**)(p + 0x4))->search(key);
+        fn_80402F04(*(void**)(p + off), found);
+    }
+}
 
 // ---- from src/Game/Dtor_lbl804AF860_803A7708.cpp ----
 // fn_803A7708 - actor@lbl_804AF860's destructor. Calls getTotalFreeSize__7JKRHeapFv on
@@ -105,26 +123,26 @@ extern "C" void fn_803A60E4(char* p) {
             if (v > -5) {
                 x = -v;
             } else {
+                x = v + 10;
                 if (v == -10) {
                     *(s16*)(p + 0x6e) = 0;
                 }
-                x = v + 10;
             }
-            fn_80402E08(*(void**)(p + 0x24), -5.0f * (f32)*(s32*)(p + 0x64) / 25.0f, *(f32*)(p + 0x60) * (f32)(x * x));
+            fn_80402E08(*(void**)(p + 0x24), lbl_8054335C * (f32)*(s32*)(p + 0x64) / lbl_80543360, *(f32*)(p + 0x60) * (f32)(x * x));
             if (*(s16*)(p + 0x6e) != 0) {
                 --*(s16*)(p + 0x6e);
             }
         } else if (v > 0) {
-            s32 x;
+            s16 x;
             if (v < 5) {
                 x = v;
             } else {
+                x = 10 - v;
                 if (v == 10) {
                     *(s16*)(p + 0x6e) = 0;
                 }
-                x = 10 - v;
             }
-            fn_80402E08(*(void**)(p + 0x28), 5.0f * (f32)*(s32*)(p + 0x64) / 25.0f, *(f32*)(p + 0x60) * (f32)(x * x));
+            fn_80402E08(*(void**)(p + 0x28), lbl_80543364 * (f32)*(s32*)(p + 0x64) / lbl_80543360, *(f32*)(p + 0x60) * (f32)(x * x));
             if (*(s16*)(p + 0x6e) != 0) {
                 ++*(s16*)(p + 0x6e);
             }
