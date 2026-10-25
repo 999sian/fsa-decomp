@@ -44,6 +44,35 @@ extern "C" u8 fn_802EB27C(TkraObj* p) {
     return found;
 }
 
+#include "JSystem/JGeometry/Vec.h"
+struct TkraG;
+extern "C" TkraG* fn_802D6A9C(void);
+extern "C" bool fn_8022F514(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" s32 Actor_CreateByID(void*, u32, s32, JGeometry::TVec3f*, u32, s32, s32);
+extern "C" u8 fn_802308E0(s32);
+extern "C" u8 fn_8023077C(void);
+extern "C" void fn_8037AE30(void*);
+extern "C" s32 fn_80138A30(void*);
+extern "C" s32 fn_801F6058(void*, s32);
+extern "C" s32 fn_801CD664(s32);
+extern "C" void fn_80230FD0(s32, s32);
+extern "C" void fn_802A3948(void*, void*, s32, s32, s32);
+extern "C" s32 fn_802D4C10(TkraG*, s32, u16);
+extern "C" void fn_802D7D00(TkraG*, s32, s32, s32);
+extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern u8* lbl_8053AAF8;
+extern void* lbl_8053AD70;
+extern void* lbl_8053AC98;
+extern u8 lbl_80529DEC[];
+extern u8 lbl_8050EC80[];
+extern const f32 lbl_805413B0;
+extern const f32 lbl_805413B4;
+extern const f32 lbl_805413B8;
+extern const f32 lbl_805413BC;
+
 // ---- Tkra_EmptyHook.cpp ----
 // Tkra_EmptyHook - TKRA: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
