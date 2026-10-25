@@ -2,6 +2,7 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 
 extern "C" void fn_8044C028(u8* this_, f32 val) {
