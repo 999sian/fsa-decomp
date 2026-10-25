@@ -21,6 +21,14 @@ extern "C" Actor* fn_8031A210(Actor* p, s16 n) {
     return p;
 }
 
+inline f32 actorRandomUnit() {
+    union { u32 bits; f32 value; } out;
+    u32* seed = (u32*)((char*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    out.bits = (*seed >> 9) | 0x3f800000;
+    return out.value - 1.0f;
+}
+
 extern "C" void fn_8031B994(Actor* p) {
     *(u16*)((char*)p + 0x94) = (*(u32*)((char*)p + 0x90) >> 16) & 0xff;
     *(s32*)((char*)p + 0x270) = *(u32*)((char*)p + 0x90) & 7;
