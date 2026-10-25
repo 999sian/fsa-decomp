@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "JSystem/JGeometry.h"
 #include "Game/SinitPoolChain.h"
 
@@ -130,7 +132,8 @@ extern "C" void fn_8020CF7C(u8* o) {
 }
 
 extern "C" void fn_8020CFC4(u8* o) {
-    switch (fn_8022461C(o + 0xc, *(u32*)(o + 4))) {
+    u32 room = *(u32*)(o + 4);
+    switch (fn_8022461C(o + 0xc, room)) {
     case 0xd:
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x3d0, 0, 1, 0, 0, 1, lbl_8053FA0C);
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x15b, 0, 1, 0, 0, 1, lbl_8053FA08);
