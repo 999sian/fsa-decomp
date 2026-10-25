@@ -1418,7 +1418,7 @@ extern "C" u8 fn_80389964(s32 unused, s32 self, u32 id, u16 flags) {
 }
 
 
-extern "C" void fn_8022FB1C(s32 p, s32 a);
+extern "C" u8 fn_8022FB1C(s32 p, s32 a);
 extern "C" s32 fn_8022CAF8(s32 p);
 extern "C" s32 fn_8022EA0C(s32 p);
 extern "C" void fn_8023061C(s32 p, s32 a);
