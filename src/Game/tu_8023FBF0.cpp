@@ -1659,37 +1659,7 @@ u8 fn_80243C64(char* p) {
 
 inline bool padActive(char* p);
 inline bool padActive6(char* p);
-BOOL fn_80244630(char* p) {
-    f32 f;
-    if (!padCheck(p)) {
-        return 0;
-    }
-    if (S32(p, 0x3dc) == 0) {
-        f = !padCheck(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
-        if (f > 0.0f) {
-            return 1;
-        }
-    }
-    if (S32(p, 0x3dc) == 1) {
-        f = !padCheck(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
-        if (f < 0.0f) {
-            return 1;
-        }
-    }
-    if (S32(p, 0x3dc) == 2) {
-        f = !padCheck(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
-        if (f < 0.0f) {
-            return 1;
-        }
-    }
-    if (S32(p, 0x3dc) == 3) {
-        f = !padCheck(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
-        if (f > 0.0f) {
-            return 1;
-        }
-    }
-    return 0;
-}
+BOOL fn_80244630(char* p);
 
 u32 fn_80309A78(void*, s32, u32);
 u32 fn_80309A54(void*, s32, u32);
