@@ -23,6 +23,14 @@ static inline void* PrtcSpawn(char* p, s32 id, s32 a) {
     return fn_8013CC50(*(s32*)(p + 4), pos, id, a, 0, 0, 0, 1, 1.0f);
 }
 
+static inline void* PrtcSpawnA(char* p, s32 id) {
+    f32 pos[3];
+    pos[1] = *(f32*)(p + 0x10) + *(f32*)(p + 0x248);
+    pos[0] = *(f32*)(p + 0xc) + *(f32*)(p + 0x244);
+    pos[2] = 0.0f;
+    return fn_8013CC50(*(s32*)(p + 4), pos, id, *(s32*)(p + 0x254), 0, 0, 0, 1, 1.0f);
+}
+
 static inline void PrtcNotify(char* p) {
     s32 code = 0x30074;
     void* obj = *(void**)(p + 0x230);
@@ -164,6 +172,93 @@ extern "C" void* Prtc_dtor(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_802E111C(void* this_) {
+    char* p = (char*)this_;
+    *(s32*)(p + 0x250) = *(s32*)(p + 0x90) & 0xff;
+    *(s32*)(p + 0x258) = (*(s32*)(p + 0x90) >> 12) & 0xf;
+    *(s32*)(p + 0x254) = (*(s32*)(p + 0x90) >> 16) & 0xf;
+    *(s32*)(p + 0x25c) = (*(s32*)(p + 0x90) >> 20) & 0xf;
+    *(s32*)(p + 0x254) = 1;
+    if (fn_802DEBA0()) {
+        if (*(s32*)(p + 0x250) == 9) {
+            *(s32*)(p + 0x254) = 0;
+        }
+    }
+    if (*(s32*)(p + 0x90) & 0x4000000) {
+        *(u8*)(p + 0x260) = 1;
+    } else {
+        *(u8*)(p + 0x260) = 0;
+    }
+    *(f32*)(p + 0x244) = 0.0f;
+    *(f32*)(p + 0x248) = 0.0f;
+    *(f32*)(p + 0x24c) = 0.0f;
+    if (*(s32*)(p + 0x90) & 0x800) {
+        *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + 512.0f;
+    }
+    if (*(s32*)(p + 0x90) & 0x400) {
+        *(f32*)(p + 0x244) = *(f32*)(p + 0x244) - 512.0f;
+    }
+    if (*(s32*)(p + 0x90) & 0x200) {
+        *(f32*)(p + 0x248) = *(f32*)(p + 0x248) + 384.0f;
+    }
+    if (*(s32*)(p + 0x90) & 0x100) {
+        *(f32*)(p + 0x248) = *(f32*)(p + 0x248) - 384.0f;
+    }
+    *(void**)(p + 0x234) = 0;
+    *(void**)(p + 0x238) = 0;
+    *(void**)(p + 0x23c) = 0;
+    if (*(s32*)(p + 0x25c) == 0) {
+        switch (*(s32*)(p + 0x250)) {
+        case 0:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x188, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0x189, *(s32*)(p + 0x254));
+            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x18a, *(s32*)(p + 0x254));
+            break;
+        case 1:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x18b, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0x18c, *(s32*)(p + 0x254));
+            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x18d, *(s32*)(p + 0x254));
+            break;
+        case 2:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x552, *(s32*)(p + 0x254));
+            break;
+        case 3:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x17e, *(s32*)(p + 0x254));
+            break;
+        case 4:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x17f, *(s32*)(p + 0x254));
+            break;
+        case 5:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x180, *(s32*)(p + 0x254));
+            break;
+        case 6:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x6e, *(s32*)(p + 0x254));
+            break;
+        case 7:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0xa9, -1);
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0xaa, *(s32*)(p + 0x254));
+            break;
+        case 8:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x6f, *(s32*)(p + 0x254));
+            break;
+        case 9:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x185, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0x186, *(s32*)(p + 0x254));
+            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x187, *(s32*)(p + 0x254));
+            break;
+        case 10:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x88, -1);
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0x89, *(s32*)(p + 0x254));
+            break;
+        }
+        *(s32*)(p + 0x240) = 1;
+    } else {
+        *(s32*)(p + 0x240) = 0;
+    }
+    WaveController* wc = new WaveController(0, 0, 8);
+    *(WaveController**)(p + 0x230) = wc;
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
