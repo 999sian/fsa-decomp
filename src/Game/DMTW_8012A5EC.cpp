@@ -441,12 +441,13 @@ struct DmtwParts {
     void* rings[3][4];
     void* smoke[3][4];
 };
-static inline void* dmtwSpawn(u32 room, JGeometry::TVec3<f32> pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
+static inline void* dmtwSpawn(u32 room, const JGeometry::TVec3<f32>& pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
     return fn_8013CC50(room, (void*)&pos, scale, id, a, b, c, d, e);
 }
 static inline u8 dmtwDialog(u32 owner, s32 message, JGeometry::TVec3<f32> pos) {
     return fn_8038BD08(0, message, owner, (JGeometry::TVec3<f32>*)&pos, 0x22);
 }
+#pragma opt_common_subs off
 extern "C" void fn_8012B218(char* p) {
     s32 i;
     if (!lbl_8053AAB1) {
@@ -470,12 +471,14 @@ extern "C" void fn_8012B218(char* p) {
     case 1:
         if (*(s32*)(p+0x250)==0) {
             ++*(s32*)(p+0x234);
-            for (i=0;i<4;i++) {
-                f32 y=*(f32*)(p+0x3F4)+lbl_804BD7C0[i].y;
-                f32 x=*(f32*)(p+0x3F8)+lbl_804BD7C0[i].x;
-                ((DmtwParts*)p)->vel[i]=JGeometry::TVec3<f32>(
-                    (x-((DmtwParts*)p)->pos[i].x)/40.0f,
-                    (y-((DmtwParts*)p)->pos[i].y)/40.0f,0.0f);
+            DmtwParts* q=(DmtwParts*)p;
+            JGeometry::TVec3<f32>* table=lbl_804BD7C0;
+            for (i=0;i<4;i++, q=(DmtwParts*)((char*)q+12),table++) {
+                f32 y=*(f32*)(p+0x3F4)+table[0].y;
+                f32 x=*(f32*)(p+0x3F8)+table[0].x;
+                q->vel[0]=JGeometry::TVec3<f32>(
+                    (x-q->pos[0].x)/40.0f,
+                    (y-q->pos[0].y)/40.0f,0.0f);
             }
             *(s32*)(p+0x250)=40;
         }
@@ -502,16 +505,20 @@ extern "C" void fn_8012B218(char* p) {
         *(JGeometry::TVec3<f32>*)(p+0x2ec) += *(JGeometry::TVec3<f32>*)(p+0x31c);
             if (*(f32*)(p+0x2D0)<=32.0f) {
                 ++*(s32*)(p+0x234); *(s32*)(p+0x250)=390;
-                for (i=0;i<4;i++) {
-                    {u8* e=*(u8**)(p+0x328+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x328+i*4)=0;}}
-                    {u8* e=*(u8**)(p+0x338+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x338+i*4)=0;}}
-                    {u8* e=*(u8**)(p+0x348+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x348+i*4)=0;}}
+                i=0;
+                char* q=p;
+                for (;i<4;q+=4,++i) {
+                    {u8* e=*(u8**)(q+0x328); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x328)=0;}}
+                    {u8* e=*(u8**)(q+0x338); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x338)=0;}}
+                    {u8* e=*(u8**)(q+0x348); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x348)=0;}}
                 }
-                for (i=0;i<4;i++) {
-                    *(void**)(p+0x358+i*4)=fn_8013CC50(*(u32*)(p+4),p+0x2C8+i*12,1.0f,(u16)(0x3b4+i*3),0,0,0,0,1);
-                    *(void**)(p+0x368+i*4)=fn_8013CC50(*(u32*)(p+4),p+0x2C8+i*12,1.0f,(u16)(0x3b5+i*3),0,0,0,0,1);
-                    *(void**)(p+0x378+i*4)=fn_8013CC50(*(u32*)(p+4),p+0x2C8+i*12,1.0f,(u16)(0x3b6+i*3),0,0,0,0,1);
-                }
+                {s32 id1; char* records; char* positions; s32 id0; s32 player; s32 id2;
+                positions=p;records=p;player=0;id0=0x3B4;id1=0x3B5;id2=0x3B6;
+                for (;player<4;player++,id0+=3,positions+=12,records+=4,id1+=3,id2+=3) {
+                    *(void**)(records+0x358)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id0,0,0,0,0,1);
+                    *(void**)(records+0x368)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id1,0,0,0,0,1);
+                    *(void**)(records+0x378)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id2,0,0,0,0,1);
+                                }}
             }
         }
         break;
@@ -519,11 +526,13 @@ extern "C" void fn_8012B218(char* p) {
         if (*(s32*)(p+0x250)==360) {
             fn_80119998(fn_80119DD0(),150,0,2,0,1,150,0);
         } else if (*(s32*)(p+0x250)==210) {
-            for (i=0;i<4;i++) {
-                {u8* e=*(u8**)(p+0x358+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x358+i*4)=0;}}
-                {u8* e=*(u8**)(p+0x368+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x368+i*4)=0;}}
-                {u8* e=*(u8**)(p+0x378+i*4); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(p+0x378+i*4)=0;}}
-            }
+            i=0;
+                char* q=p;
+                for (;i<4;++i,q+=4) {
+                {u8* e=*(u8**)(q+0x358); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x358)=0;}}
+                {u8* e=*(u8**)(q+0x368); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x368)=0;}}
+                {u8* e=*(u8**)(q+0x378); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x378)=0;}}
+                }
             for (i=0;i<4;i++) {
                 *(void**)(p+0x388+i*4)=dmtwSpawn(*(u32*)(p+4),JGeometry::TVec3<f32>(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f),(u16)(0x461+i*3),1,2,0,0,1,1.0f);
                 *(void**)(p+0x398+i*4)=dmtwSpawn(*(u32*)(p+4),JGeometry::TVec3<f32>(*(f32*)(p+0x3F8),192.0f+*(f32*)(p+0x3F4),0.0f),(u16)(0x462+i*3),1,2,0,0,1,1.0f);
@@ -537,8 +546,8 @@ extern "C" void fn_8012B218(char* p) {
             *(s32*)(p+0x2C0)=10;
             *(s32*)(p+0x234)=0;
             JGeometry::TVec3<f32> pos(
-                (f32)(s32)JUTVideo::getManager()->getFbWidth()*0.5f,
-                (f32)(s32)JUTVideo::getManager()->getEfbHeight()*0.5f,0.0f);
+                (f32)(s32)JUTVideo::getManager()->getFbWidth()/2.0f,
+                (f32)(s32)JUTVideo::getManager()->getEfbHeight()/2.0f,0.0f);
             pos.y+=-16.0f;
             fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
             u32 owner=*(u32*)(p+4);
@@ -550,16 +559,18 @@ extern "C" void fn_8012B218(char* p) {
         }
         break;
     }
-    for (i=0;i<4;i++) {
-        if (*(void**)(p+0x328+i*4))
-            fn_8013CB44(*(void**)(p+0x328+i*4),p+0x2C8+i*12,0,0,1);
-        if (*(void**)(p+0x338+i*4))
-            fn_8013CB44(*(void**)(p+0x338+i*4),p+0x2C8+i*12,0,0,1);
-        if (*(void**)(p+0x348+i*4))
-            fn_8013CB44(*(void**)(p+0x348+i*4),p+0x2C8+i*12,0,0,1);
+    char* records=p;
+    char* positions=p;
+    for (s32 player=0;player<4;player++,records+=4,positions+=12) {
+        if (*(void**)(records+0x328))
+            fn_8013CB44(*(void**)(records+0x328),positions+0x2C8,0,0,1);
+        if (*(void**)(records+0x338))
+            fn_8013CB44(*(void**)(records+0x338),positions+0x2C8,0,0,1);
+        if (*(void**)(records+0x348))
+            fn_8013CB44(*(void**)(records+0x348),positions+0x2C8,0,0,1);
     }
 }
-
+#pragma opt_common_subs reset
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern u8 lbl_8053CB64[];
 extern f32 lbl_8053CB8C;
