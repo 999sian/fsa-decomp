@@ -27,43 +27,17 @@ extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" f32 lbl_805404C4;
 extern "C" f32 lbl_805404C8;
-static inline void platformRotScale(f32 m[3][4], f32 sc, f32 ry) {
-    f32 sx; f32 sy; f32 sz; f32 cx; f32 cy; f32 cz;
-    sx = sin(lbl_805404C0);
-    sy = sin(ry);
-    sz = sin(lbl_805404C0);
-    cx = cos(lbl_805404C0);
-    cy = cos(ry);
-    cz = cos(lbl_805404C0);
-    f32 sxsy = sx * sy;
-    f32 cxsz = cx * sz;
-    f32 sxcz = sx * cz;
-    f32 cxcz = cx * cz;
-    f32 sxsz = sx * sz;
-    m[0][3] = lbl_805404C0;
-    m[1][3] = lbl_805404C0;
-    m[2][3] = lbl_805404C0;
-    m[0][0] = sc * (cy * cz);
-    m[1][0] = sc * (cy * sz);
-    m[2][0] = sc * -sy;
-    m[0][1] = sc * (sxsy * cz - cxsz);
-    m[1][1] = sc * (sxsy * sz + cxcz);
-    m[2][1] = sc * (sx * cy);
-    m[0][2] = sc * (cxcz * sy + sxsz);
-    m[1][2] = sc * (cxsz * sy - sxcz);
-    m[2][2] = sc * (cx * cy);
-}
 
 #pragma opt_propagation on
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void fn_8028AB7C(u8* this_) {
     f32 ry; f32 sc; f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
     if (*(f32*)(this_ + 0x240) <= 0.0f) return;
     DrawRec rec;
     f32 m[3][4];
     rec.b1d = -1;
+    ry = lbl_805404C4 * (lbl_805404C8 * (lbl_805404CC - *(f32*)(this_ + 0x240)));
     sc = *(f32*)(this_ + 0x240);
-    ry = lbl_805404C4 * (lbl_805404C8 * (lbl_805404CC - sc));
     sx = sin(lbl_805404C0);
     sy = sin(ry);
     sz = sin(lbl_805404C0);
