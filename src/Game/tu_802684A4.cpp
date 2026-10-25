@@ -83,7 +83,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
     return in;
 }
 
-extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
+extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, int type) {
     for (s32 i = 0; i < 80; i++) {
         if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
             t->hits[i] = t->ids[i];
@@ -264,12 +264,7 @@ extern "C" void fn_80268BC4(u8* p) {
     clearProbeFlags(p);
     *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
     for (int k = 0; k < 8; k++) {
-        f32 x = lbl_8046BAE8[k].x;
-        f32 y = lbl_8046BAE8[k].y;
-        f32 z = lbl_8046BAE8[k].z;
-        *(f32*)(p + 8) = x;
-        *(f32*)(p + 0xc) = y;
-        *(f32*)(p + 0x10) = z;
+        ((JGeometry::TVec3<f32>*)(p + 8))->set(lbl_8046BAE8[k]);
         *(s32*)(p + 0x1c) = k;
         ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(*(u8**)(p + 4) + 8));
         u16 r27 = fn_8022461C((JGeometry::TVec3<f32>*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4));
