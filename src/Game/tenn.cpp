@@ -24,6 +24,14 @@ extern s32 lbl_8053ABC0;
 extern u8 lbl_8053ABC4;
 extern u8 lbl_8053ABC5;
 extern f32 lbl_8053A0F8;
+extern const f32 lbl_8053E500;
+extern const f32 lbl_8053E518;
+extern const f32 lbl_8053E51C;
+extern const f32 lbl_8053E544;
+extern const f32 lbl_8053E548;
+extern const f32 lbl_8053E54C;
+extern const f32 lbl_8053E550;
+extern const f32 lbl_8053E558;
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AB10;
 
