@@ -714,6 +714,10 @@ extern "C" void fn_80119628(u8* self)
     case 9:
         break;
     default:
+        goto process;
+    }
+    return;
+process:
         if (self[0] != 0) {
             if (self[1] != 0) {
                 if (self[2] != 0) {
@@ -797,8 +801,6 @@ extern "C" void fn_80119628(u8* self)
                 }
             }
         }
-        break;
-    }
 }
 
 extern "C" void fn_80119958(u8* self)
