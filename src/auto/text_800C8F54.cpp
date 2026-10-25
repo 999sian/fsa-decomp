@@ -282,6 +282,15 @@ extern "C" u32 calcSizeTevBlock__11J3DMaterialFi(int);
 extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
 extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
 extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags);
+extern "C" void* createColorBlock__11J3DMaterialFUl(u32);
+extern "C" void* createIndBlock__11J3DMaterialFi(int);
+extern "C" void* createPEBlock__11J3DMaterialFUlUl(u32, u32);
+extern "C" void fn_800D36EC(void* tev);
+extern "C" char __vt__18J3DPatchedMaterial[];
+extern "C" char __vt__21J3DTexGenBlockPatched[];
+extern "C" char lbl_8049B440[];
+extern "C" void __construct_array(void* p, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void initialize__21J3DTexGenBlockPatchedFv(void* p);
 
 #include <types.h>
 
