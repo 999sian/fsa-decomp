@@ -9,6 +9,9 @@ extern "C" void fn_801F0E34(Actor*, u32, s32);
 extern void* lbl_8053AAF8;
 extern const f32 lbl_8053CB24;
 extern const f32 lbl_8053CB28;
+static inline s32 CRGNRandom(s32 count) {
+    return (s32)((f32)count * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1());
+}
 #include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049E5B8[];
@@ -41,6 +44,57 @@ extern "C" Actor* fn_801291A0(Actor* p, s16 n) {
     return p;
 }
 
+#pragma opt_lifetimes off
+extern "C" s32 fn_80129200(Actor* self)
+{
+    JGeometry::TVec3<f32> pos(self->field_0C);
+    CRGNState* p = (CRGNState*)self;
+    s32 room = self->field_04;
+    u8* __restrict flags = (u8*)fn_802D6A9C() + 0x10000;
+    if (flags[room + 0x31df] == 0) {
+        pos.z = lbl_8053CB24;
+    }
+    s32 index = p->field234;
+    if (index == 15) {
+        if (p->count244 <= 0) {
+            index = 1;
+        } else {
+            index = p->list270[(s32)((f32)p->count244 * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1())];
+        }
+    }
+    switch (index) {
+    case 0:
+        *(s32*)((u8*)self + 0x23c) = Actor_CreateByID(fn_801F856C(), 0x4352544c, self->field_04, &pos.x, p->flags280, -1, -1);
+        break;
+    case 2: {
+        u32 param;
+        int item;
+        f32 random = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+        int count = p->count240;
+        item = p->list248[(s32)((f32)count * random)];
+        if (count == 0) {
+            item = p->list248[(s32)(lbl_8053CB24 * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1())];
+        }
+        if ((((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() >= lbl_8053CB28 && item != 2) || item == 11) {
+            param = item | 0x800180;
+        } else {
+            param = item | 0x400180;
+        }
+        *(s32*)((u8*)self + 0x23c) = Actor_CreateByID(fn_801F856C(), 0x4c535449, self->field_04, &pos.x, param, -1, -1);
+        fn_801F0E34(self, 0x3004a, 0);
+        break;
+    }
+    case 3:
+        *(s32*)((u8*)self + 0x23c) = Actor_CreateByID(fn_801F856C(), 0x4e4e4a4e, self->field_04, &pos.x, 1, -1, -1);
+        break;
+    default:
+        *(s32*)((u8*)self + 0x23c) = Actor_CreateByID(fn_801F856C(), 0x4352544c, self->field_04, &pos.x, 0, -1, -1);
+        break;
+    }
+    *(s32*)((u8*)self + 0x238) = 0;
+    return 1;
+}
+#pragma opt_lifetimes reset
 extern "C" void fn_8012952C(Actor* p, s32 state) {
     switch (state) {
     case 0:
