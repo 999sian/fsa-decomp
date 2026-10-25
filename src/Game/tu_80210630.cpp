@@ -8,6 +8,7 @@ extern "C" void fn_801CEBD0(void);
 #include "JSystem/JGeometry/Vec.h"
 #undef PSMTXIdentity
 #undef Vec
+#include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
 extern "C" void* fn_804032E8(unsigned int tag, void* id);
