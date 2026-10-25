@@ -33,44 +33,45 @@ extern "C" void fn_802AAC5C(void)
 
 extern "C" void fn_802AAC60(int* param_1)
 {
-    int iVar2;
     u8 cVar3;
-    int obj;
     int ret;
 
     switch (param_1[0x8c]) {
     case 0:
         param_1[0x8e] = param_1[0x8e] - 1;
         if (param_1[0x8e] == 0) {
-            obj = *(int*)((u8*)lbl_8053AAF8 + 0xa4);
-            ret = ((int (*)(int, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+            JKRFileLoader* obj = *(JKRFileLoader**)((u8*)lbl_8053AAF8 + 0xa4);
+            ret = (int)obj->getResource(0x53434820, lbl_8046C878);
             fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0, 0, 0x40, 0xc0);
             param_1[0x8c] = 1;
             fn_801F0E34(param_1, 0x30015, 0);
         }
         /* fall through */
     case 1:
-        iVar2 = param_1[0x8d];
-        if (iVar2 == 0) {
-            cVar3 = ((u8 (*)(int*))(*(int**)param_1)[13])(param_1);
+        switch (param_1[0x8d]) {
+        case 0:
+            cVar3 = (u8)((Actor*)param_1)->v11();
             if (cVar3 != 0) {
                 fn_801F0D20(param_1, 3);
                 param_1[0x8c] = 2;
                 param_1[0x8e] = 8;
             }
-        } else {
+            break;
+        case 1:
+        default:
             if (((u8*)fn_801F856C())[0x305c] == 1) {
                 fn_801F0D20(param_1, 3);
                 param_1[0x8e] = 8;
                 param_1[0x8c] = 2;
             }
+            break;
         }
         break;
     case 2:
         param_1[0x8e] = param_1[0x8e] - 1;
         if (param_1[0x8e] == 0) {
-            obj = *(int*)((u8*)lbl_8053AAF8 + 0xa4);
-            ret = ((int (*)(int, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+            JKRFileLoader* obj = *(JKRFileLoader**)((u8*)lbl_8053AAF8 + 0xa4);
+            ret = (int)obj->getResource(0x53434820, lbl_8046C878);
             fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0xc0, 0, 0x40, 0xc0);
             param_1[0x8c] = 3;
             fn_801F0E34(param_1, 0x30016, 0);
@@ -80,8 +81,8 @@ extern "C" void fn_802AAC60(int* param_1)
     case 3:
         param_1[0x8e] = param_1[0x8e] - 1;
         if (param_1[0x8e] == 0) {
-            obj = *(int*)((u8*)lbl_8053AAF8 + 0xa4);
-            ret = ((int (*)(int, int, char*))(*(int**)obj)[6])(obj, 0x53434820, lbl_8046C878);
+            JKRFileLoader* obj = *(JKRFileLoader**)((u8*)lbl_8053AAF8 + 0xa4);
+            ret = (int)obj->getResource(0x53434820, lbl_8046C878);
             fn_802FA160(*(int*)((u8*)lbl_8053AB10 + 0x20), ret, 0x180, 0, 0x40, 0xc0);
             fn_802D7920(fn_802D6A9C(), 0);
             *((u8*)param_1 + 0x11c) = 0;
@@ -117,5 +118,7 @@ extern "C" void fn_802AAEC0(int* param_1)
         param_1[0x8e] = 0xf;
     }
 }
+
+void fn_802AAFB0(void) {}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
