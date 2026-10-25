@@ -309,7 +309,6 @@ extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx
 	return TevKColorWord(*(u32*)&defaultColor);
 }
 
-// fn_800E0DF8 (newTevKColor) goes here
 
 u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
 {
