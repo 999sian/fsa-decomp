@@ -31,7 +31,7 @@ extern SwingGame* lbl_8053AAF8;
 s32 fn_801CD664(s32 range);
 }
 
-static inline void Swing_Choose(SwingRecord* r, s32 zero = 0) {
+static inline void Swing_Choose(SwingRecord* r, int zero = 0) {
     if (!r->mLocked) {
         if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.9f) {
             r->mState = 1;
@@ -44,7 +44,7 @@ static inline void Swing_Choose(SwingRecord* r, s32 zero = 0) {
         } else {
             r->mState = zero;
             r->mTimer8 = fn_801CD664(0xb5) + 0x78;
-            r->mSpeed = zero;
+            r->mSpeed = 0;
         }
     } else {
         r->mTimer6 = zero;
