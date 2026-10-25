@@ -24,7 +24,7 @@ extern "C" s32 fn_802255F4(f32* pos, s32 room) {
 return fn_802252F4(pos, room);
 }
 
-static inline u16 tileIndexForCheck(const f32* pos, int room) {
+static inline u16 tileIndexForCheck(const f32* pos, u32 room) {
     struct Rect { f32 x0, y0, x1, y1; };
     u8* g = fn_802D6A9C();
     const Rect r = *(Rect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
@@ -44,7 +44,7 @@ static inline u16 tileIndexForCheck(const f32* pos, int room) {
             ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
     }
 }
-static inline u32 tileKindForCheck(f32* pos, u32 room) {
+static inline u32 tileKindForCheck(f32* pos, s32 room) {
     u16 tile = tileIndexForCheck(pos, room);
     u16 kind = lbl_8046CB88[tile];
     u8* g = fn_802D6A9C();
