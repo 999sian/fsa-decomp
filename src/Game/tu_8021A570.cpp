@@ -42,12 +42,12 @@ static inline void Swing_Choose(SwingRecord* r, s32 zero = 0) {
                 r->mSpeed = 0x180;
             }
         } else {
-            r->mState = 0;
+            r->mState = zero;
             r->mTimer8 = fn_801CD664(0xb5) + 0x78;
-            r->mSpeed = 0;
+            r->mSpeed = zero;
         }
     } else {
-        r->mTimer6 = 0;
+        r->mTimer6 = zero;
     }
 }
 
@@ -141,10 +141,8 @@ extern "C" bool fn_8021A570(SwingRecord* r, bool active) {
                             result = true;
                         }
                     } else {
-                        bool zero = false;
-                        r->mAngle = zero;
-                        Swing_Choose(r);
-                        r->mTimer6 = zero;
+                        Swing_Choose(r, r->mAngle = 0);
+                        r->mTimer6 = 0;
                     }
                 }
             } else if (r->mTimer6 == 0) {
