@@ -218,7 +218,7 @@ static inline void Rusa_Exit(char* p) {
 
 static inline void Rusa_SubClamp(f32* v, f32 d, f32 lo) {
     *v -= d;
-    if (*v < lo) {
+    if (lo > *v) {
         *v = lo;
     }
 }
@@ -686,16 +686,12 @@ extern "C" void fn_80212288(char* p) {
         }
     }
     if (*(s32*)(p + 0x2ac) == 4) {
-        f32* q = (f32*)(p + 0x39c);
         if (*(u32*)(p + 0x230) & 0x4000) {
-            *q = lbl_8053FB00 * *(f32*)(p + 0x394);
+            *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x394);
         } else {
-            *q = lbl_8053FB00 * *(f32*)(p + 0x390);
+            *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x390);
         }
-        *q -= lbl_8053FB00;
-        if (lbl_8053FB44 > *q) {
-            *q = lbl_8053FB44;
-        }
+        Rusa_SubClamp((f32*)(p + 0x39c), lbl_8053FB00, lbl_8053FB44);
         *(f32*)(p + 0x3a0) = lbl_8053FB00 * *(f32*)(p + 0x394) + lbl_8053FB00;
     } else {
         *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x394);
