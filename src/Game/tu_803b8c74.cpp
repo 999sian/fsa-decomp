@@ -34,7 +34,7 @@ extern "C" void* fn_803B95D4(void* this_, s16 freeFlag) {
 
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void*, void*);
-extern "C" void fn_803B9160(void*);
+extern "C" void* fn_803B9160(void*);
 extern "C" void* fn_803B94C4(void*, s16);
 extern "C" void* fn_803B95D4(void*, s16);
 extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
@@ -66,22 +66,23 @@ extern char memPool___35JASPoolAllocObject_13JAISoundChild[];
 extern char memPool___27JASPoolAllocObject_6JAISeq[];
 extern char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void fn_803B961C(void) {
-	u8* base = (u8*)lbl_8050EC60;
+	u8* __restrict base = (u8*)lbl_8050EC60;
 	s32 i = 0;
-	u8* q;
+	u8* r;
 	u8* p = base + 0x20;
+	u8* q;
 	q = p;
 	*(void**)p = lbl_804AFB30;
-	*(u32*)(p + 0x10) = 0;
-	*(u32*)(p + 0xc) = 0;
-	*(u32*)(p + 0x8) = 0;
+	*(u32*)(p + 0x10) = i;
+	*(u32*)(p + 0xc) = i;
+	*(u32*)(p + 0x8) = i;
 	do {
-		u8* r = p + 0x20;
+		r = p + 0x20;
 		memset(r, 0, 0xc8);
 		memset(q + 0x280, 0, 0x9c4);
 		i++;
-		r[0x7c] = 1;
-		r[0x79] = 0x32;
+		r[0x5c] = 1;
+		r[0x59] = 0x32;
 		p += 0xc8;
 		*(u32*)(r + 0x8) |= 0x4;
 		*(u32*)(r + 0x8) |= 0x40;
@@ -91,8 +92,8 @@ extern "C" void fn_803B961C(void) {
 		*(u32*)(r + 0x8) |= 0x400000;
 		*(u32*)(r + 0x8) |= 0x4000000;
 		*(u32*)(r + 0x8) |= 0x20000000;
-		r[0x88] = 1;
-		r[0x89] = 1;
+		r[0x68] = 1;
+		r[0x69] = 1;
 		q += 0x9c4;
 	} while (i < 3);
 	__register_global_object(base + 0x20, (void*)fn_803B94C4, base);
@@ -240,7 +241,7 @@ extern "C" u8 fn_803B9120(s32 n) {
 
 extern u32 lbl_80476548[];
 #pragma opt_strength_reduction off
-extern "C" void fn_803B9160(void* this_) {
+extern "C" void* fn_803B9160(void* this_) {
 	u8* self = (u8*)this_;
 	u32 off = 0;
 	u32 k = 0;
@@ -302,6 +303,7 @@ extern "C" void fn_803B9160(void* this_) {
 	self[0xd7] = 0;
 	self[0x48] = 0;
 	self[0xd8] = 0;
+	return this_;
 }
 #pragma opt_strength_reduction reset
 }
