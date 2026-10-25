@@ -120,6 +120,10 @@ extern "C" void fn_8013B490(void* p);
 extern void* lbl_8053AB10;
 extern u8 lbl_8050DB0C[];
 
+static inline u8 msgDrawFadeAlpha(s32 count, s32 limit) {
+    if (count > limit) count = 0;
+    return (u8)(255.0f * (f32)(limit - count) / (f32)limit);
+}
 static inline s32 msgDrawClampCount(s32 count, s32 limit) {
     if (count > limit) count = 0;
     return count;
