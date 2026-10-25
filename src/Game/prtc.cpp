@@ -28,10 +28,10 @@ extern f32 lbl_805411AC;
 
 static inline void* PrtcSpawnA(char* p, s32 id) {
     f32 pos[3];
-    f32 y = *(f32*)(p + 0x10);
-    f32 y2 = *(f32*)(p + 0x248);
     f32 x = *(f32*)(p + 0xc);
     f32 x2 = *(f32*)(p + 0x244);
+    f32 y = *(f32*)(p + 0x10);
+    f32 y2 = *(f32*)(p + 0x248);
     pos[0] = x + x2;
     pos[1] = y + y2;
     pos[2] = 0.0f;
