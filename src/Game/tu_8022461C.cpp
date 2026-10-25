@@ -536,7 +536,13 @@ extern "C" u32 fn_80226BC4(f32* pos, s32 room) {
 
 extern "C" u16 fn_80226850(f32* pos, u32 room) {
     u8* g = fn_802D6A9C();
-    TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+    u8* p;
+    if ((s32)room < 8) {
+        p = g + 0xcc;
+    } else {
+        p = g + 0xdc;
+    }
+    TileRect r = *(TileRect*)p;
     u8 in = 0;
     if (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1) {
         in = 1;
@@ -544,8 +550,9 @@ extern "C" u16 fn_80226850(f32* pos, u32 room) {
     if (!in) {
         return 0xf;
     }
+    s32 y;
     s32 x = pos[0] - r.x0;
-    s32 y = pos[1] - r.y0;
+    y = pos[1] - r.y0;
     if (x < 0) {
         x = 0;
     } else if (x >= 0x200) {
@@ -580,25 +587,26 @@ extern "C" u16 fn_80226998(f32* pos, u32 room) {
     } else if (y >= 0x200) {
         y = 0x1ff;
     }
-    u32 idx = ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf);
-    return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), (s32)room, idx) & 0x3ff;
+    return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
 }
 
 extern const f32 lbl_8053FF54;
 
+#pragma opt_propagation off
 extern "C" void fn_80226CA8(s32 idx, s32 room, JGeometry::TVec3<f32>* out) {
     JGeometry::TVec3<f32> v(*out);
     u8* g = fn_802D6A9C();
     TileRect* src = (TileRect*)((room < 8) ? g + 0xcc : g + 0xdc);
+    s32 iy = ((idx >> 1) & 0x100);
+    iy += idx & 0xf0;
     s32 ix = (idx & 0x100) + (idx & 0xf) * 16;
-    s32 iy = ((idx >> 1) & 0x100) + (idx & 0xf0);
     TileRect r = *src;
     v.x = (f32)ix + r.x0;
     v.y = (f32)iy + r.y0;
     v.z = lbl_8053FF54;
     *out = v;
 }
-
+#pragma opt_propagation reset
 extern const u16 lbl_8046AAB0[12];
 
 extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
