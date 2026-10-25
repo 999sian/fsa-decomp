@@ -1199,6 +1199,602 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
     p->slot++;
 }
 
+extern "C" void fn_8039CDF8(MsgProc*, u8);
+extern "C" void fn_8039D0DC(MsgProc*, u8);
+extern "C" void fn_8039D30C(MsgProc*, u8);
+extern "C" void fn_8039C9A0(MsgProc&, s32);
+extern "C" void fn_8039A638(MsgProc*, s16);
+extern "C" void fn_8039ACD0(u8*, s16);
+extern "C" void fn_8039B3EC(u8*, u8, s32);
+extern "C" const char lbl_805432BC[4];
+extern "C" const char lbl_805432C0[4];
+extern "C" const char lbl_805432C4[4];
+extern "C" const char lbl_805432C8[4];
+extern "C" const char lbl_805432CC[4];
+extern "C" const char lbl_805432D4[4];
+extern "C" const u32 lbl_80475D64[];
+extern "C" const char lbl_80475DC8[];
+extern "C" const char lbl_805432BC[4];
+extern "C" const char lbl_805432C0[4];
+extern "C" const char lbl_805432C4[4];
+extern "C" const char lbl_805432C8[4];
+extern "C" const char lbl_805432CC[4];
+extern "C" const char lbl_805432D4[4];
+extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
+    char buf[30];
+    if (p->layout->m1aa == 0) {
+        switch (event) {
+    case 0x0:
+        return 1;
+    case 0x10000:
+        fn_8039CDF8(p, 0);
+        return 1;
+    case 0x10001:
+        fn_8039CDF8(p, 1);
+        return 1;
+    case 0x10002:
+        fn_8039CDF8(p, 2);
+        return 1;
+    case 0x10003:
+        fn_8039CDF8(p, 3);
+        return 1;
+    case 0x10007:
+        fn_8039CDF8(p, 7);
+        return 1;
+    case 0x10008:
+        fn_8039CDF8(p, 8);
+        return 1;
+    case 0x10009:
+        fn_8039CDF8(p, 9);
+        return 1;
+    case 0x1000a:
+        fn_8039CDF8(p, 10);
+        return 1;
+    case 0x10004:
+        fn_8039CDF8(p, 4);
+        return 1;
+    case 0x10005:
+        fn_8039CDF8(p, 5);
+        return 1;
+    case 0x10006:
+        fn_8039CDF8(p, 6);
+        return 1;
+    case 0x1000b:
+    case 0x1000c:
+        return 1;
+    case 0x10010:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            strcat(p->str2c0, lbl_805432BC);
+            strcat(p->str2c4, lbl_805432BC);
+            u8 tag = data[0];
+            p->m2d0 += 1;
+            fn_8039D0DC(p, tag);
+        }
+        return 1;
+    case 0x10011:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            strcat(p->str2c0, lbl_805432C0);
+            strcat(p->str2c4, lbl_805432C0);
+            u8 tag = data[0];
+            p->m2d0 += 1;
+            fn_8039D0DC(p, tag);
+        }
+        return 1;
+    case 0x10012:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            strcat(p->str2c0, lbl_805432C4);
+            strcat(p->str2c4, lbl_805432C4);
+            u8 tag = data[0];
+            p->m2d0 += 1;
+            fn_8039D0DC(p, tag);
+        }
+        return 1;
+    case 0x10013:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            strcat(p->str2c0, lbl_805432C8);
+            strcat(p->str2c4, lbl_805432C8);
+            u8 tag = data[0];
+            p->m2d0 += 1;
+            fn_8039D0DC(p, tag);
+        }
+        return 1;
+    case 0x20000:
+    case 0x20001:
+    case 0x20002:
+    case 0x20003:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            strcat(p->str2c0, lbl_805432CC);
+            strcat(p->str2c4, lbl_805432CC);
+            u8 tag = data[0];
+            p->m2d0 += 4;
+            fn_8039D0DC(p, tag);
+        }
+        return 1;
+    case 0x20011:
+    case 0x20012:
+    case 0x20013:
+    case 0x20014:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            strcat(p->str2c0, lbl_805432CC);
+            strcat(p->str2c4, lbl_805432CC);
+            u8 tag = data[4];
+            p->m2d0 += 4;
+            fn_8039D0DC(p, tag);
+        }
+        return 1;
+    case 0x20009:
+    case 0x2000a:
+    case 0x2000b:
+    case 0x2000c:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            s32 i;
+            for (i = 0; i < *(s16*)(lbl_8050DB0C + 0x2ee); i++) {
+                strcat(p->str2c0, lbl_805432D4);
+                strcat(p->str2c4, lbl_805432D4);
+            }
+            p->m2d0 += *(s16*)(lbl_8050DB0C + 0x2ee);
+            fn_8039D0DC(p, data[4]);
+        }
+        return 1;
+    case 0x20019:
+    case 0x2001a:
+    case 0x2001b:
+    case 0x2001c:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            s32 i;
+            for (i = 0; i < *(s16*)(lbl_8050DB0C + 0x2ee); i++) {
+                strcat(p->str2c0, lbl_805432D4);
+                strcat(p->str2c4, lbl_805432D4);
+            }
+            p->m2d0 += *(s16*)(lbl_8050DB0C + 0x2ee);
+            fn_8039D0DC(p, data[0]);
+        }
+        return 1;
+    case 0x20004:
+    case 0x20005:
+    case 0x20006:
+    case 0x20007:
+    case 0x20008:
+        return 1;
+    case 0x2000d:
+    case 0x2000e:
+    case 0x2000f:
+    case 0x20010:
+    case 0x20015:
+    case 0x20016:
+    case 0x20017:
+    case 0x20018:
+    case 0x2001d:
+        return 1;
+    case 0x2001e:
+        if (p->cur > p->lineTab[p->layout->m15c] && data[0] < 5) {
+            p->layout->m154 = lbl_80475D64[data[0]];
+            snprintf(buf, 30, lbl_80475DC8, p->layout->m154);
+            strcat(p->str2c0, buf);
+            if ((p->layout->font->flags & 0x40) == 0 && *((u8*)p->layout + 0x1a2) != 0) {
+                snprintf(buf, 30, lbl_80475DC8, -1);
+                strcat(p->str2c4, buf);
+            } else {
+                snprintf(buf, 30, lbl_80475DC8, 0xff);
+                strcat(p->str2c4, buf);
+            }
+            p->m2d0 += strlen(buf);
+        }
+        return 1;
+    case 0x2001f:
+    case 0x20020:
+    case 0x20021:
+    case 0x20022:
+    case 0x20023:
+    case 0x20024:
+        return 1;
+    case 0x20025:
+    case 0x20026:
+    case 0x20027:
+    case 0x20028:
+        return 1;
+    case 0x20029:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039ACD0((u8*)p, 0);
+        }
+        return 1;
+    case 0x2002a:
+    case 0x2002b:
+        return 1;
+    case 0x2002c:
+        return 1;
+    case 0x2002d:
+        return 1;
+    case 0x2002e:
+        return 1;
+    case 0x2002f:
+        return 1;
+    case 0x20030:
+        return 1;
+    case 0x20031:
+        return 1;
+    case 0x20032:
+        return 1;
+    case 0x20033:
+        return 1;
+    case 0x30000:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, p->layout->m190);
+            fn_8039C630(p, data[0], p->layout->m190);
+        }
+        return 1;
+    case 0x30001:
+        return 1;
+    case 0x30002:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, p->layout->m192);
+            fn_8039C630(p, data[0], p->layout->m192);
+        }
+        return 1;
+    case 0x30003:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, p->layout->m178);
+            fn_8039C630(p, data[0], p->layout->m178);
+        }
+        return 1;
+    case 0x30004:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, p->layout->m17c);
+            fn_8039C630(p, data[0], p->layout->m17c);
+        }
+        return 1;
+    case 0x30005:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039A638(p, 0);
+        }
+        return 1;
+    case 0x30006:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x34));
+            fn_8039C630(p, 4, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x34));
+        }
+        return 1;
+    case 0x30007:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x36));
+            fn_8039C630(p, 4, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x36));
+        }
+        return 1;
+    case 0x30008:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C9A0(*p, *(s32*)((u8*)lbl_8053AD78 + 0x10c));
+            fn_8039C630(p, 6, *(s32*)((u8*)lbl_8053AD78 + 0x10c));
+        }
+        return 1;
+        }
+    } else {
+    if (event != 0 && p->cur > p->lineTab[p->layout->m15c] && p->m2d6 != 0) {
+        if (!p->testBit(p->cur)) {
+            if (p->layout->m16c == 0 || !p->testBit(p->cur)) {
+                s32 n = 28 - ((s8*)p + p->cur)[0x265];
+                if (n > 0 && n < 28) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = n + 208;
+                }
+            }
+        }
+        p->m2d6 = 0;
+    }
+    switch (event) {
+    case 0x0:
+        return 1;
+    case 0x10000:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf1;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xc0;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xe0;
+        }
+        return 1;
+    case 0x10001:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf2;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xc0;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xe0;
+        }
+        return 1;
+    case 0x10002:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf3;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xc0;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xe0;
+        }
+        return 1;
+    case 0x10003:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf4;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xc0;
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0xe0;
+        }
+        return 1;
+    case 0x10007:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf5;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0x0;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x10008:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf6;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0x40;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0x60;
+        }
+        return 1;
+    case 0x10009:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf7;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0x80;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0xa0;
+        }
+        return 1;
+    case 0x1000a:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xf8;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0xc0;
+            p->str2c0[p->m2d0++] = 0x3d;
+            p->str2c0[p->m2d0++] = 0xe0;
+        }
+        return 1;
+    case 0x10004:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0x0;
+        }
+        return 1;
+    case 0x10005:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x10006:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0x40;
+        }
+        return 1;
+    case 0x1000b:
+    case 0x1000c:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x3c;
+            p->str2c0[p->m2d0++] = 0x60;
+        }
+        return 1;
+    case 0x10010:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0xe0;
+        }
+        return 1;
+    case 0x10011:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x15;
+            p->str2c0[p->m2d0++] = 0x0;
+        }
+        return 1;
+    case 0x10012:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x15;
+            p->str2c0[p->m2d0++] = 0x40;
+        }
+        return 1;
+    case 0x10013:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            p->str2c0[p->m2d0++] = 0x15;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x2000a:
+    case 0x2000c:
+    case 0x20012:
+    case 0x20014:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039D30C(p, data[4]);
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x20000:
+    case 0x20002:
+    case 0x20019:
+    case 0x2001b:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039D30C(p, data[0]);
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x20009:
+    case 0x20011:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039D30C(p, data[4]);
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xb0;
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x20001:
+    case 0x2001a:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039D30C(p, data[0]);
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xb0;
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x2000b:
+    case 0x20013:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039D30C(p, data[4]);
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xb1;
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x20003:
+    case 0x2001c:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039D30C(p, data[0]);
+            p->str2c0[p->m2d0++] = 0xff;
+            p->str2c0[p->m2d0++] = 0xb1;
+            p->str2c0[p->m2d0++] = 0x14;
+            p->str2c0[p->m2d0++] = 0x20;
+        }
+        return 1;
+    case 0x20004:
+    case 0x20005:
+    case 0x20006:
+    case 0x20007:
+    case 0x20008:
+    case 0x2000d:
+    case 0x2000e:
+    case 0x2000f:
+    case 0x20010:
+    case 0x20015:
+        return 1;
+    case 0x20016:
+    {
+        u8 tag;
+        if (p->cur > p->lineTab[p->layout->m15c] && ((tag = data[0]) <= 5 || tag == 11)) {
+            p->str2c0[p->m2d0++] = 0xfd;
+            p->str2c0[p->m2d0++] = tag;
+        }
+        return 1;
+    }
+    case 0x20017:
+    case 0x20018:
+    case 0x2001d:
+        return 1;
+    case 0x2001e:
+    {
+        u8 tag;
+        if (p->cur > p->lineTab[p->layout->m15c] && (tag = data[0]) < 5) {
+            p->str2c0[p->m2d0++] = 0xfb;
+            p->str2c0[p->m2d0++] = tag;
+        }
+        return 1;
+    }
+    case 0x2001f:
+    case 0x20020:
+    case 0x20021:
+    case 0x20022:
+    case 0x20023:
+    case 0x20024:
+        return 1;
+    case 0x20025:
+    case 0x20026:
+    case 0x20027:
+    case 0x20028:
+        return 1;
+    case 0x20029:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039ACD0((u8*)p, 1);
+        }
+        return 1;
+    case 0x2002a:
+    case 0x2002b:
+        return 1;
+    case 0x2002c:
+        return 1;
+    case 0x2002d:
+        return 1;
+    case 0x2002e:
+        return 1;
+    case 0x2002f:
+        return 1;
+    case 0x20030:
+        return 1;
+    case 0x20031:
+        return 1;
+    case 0x20032:
+        return 1;
+    case 0x20033:
+        return 1;
+    case 0x30000:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, p->layout->m190);
+            fn_8039B3EC((u8*)p, data[0], p->layout->m190);
+        }
+        return 1;
+    case 0x30001:
+        return 1;
+    case 0x30002:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, p->layout->m192);
+            fn_8039B3EC((u8*)p, data[0], p->layout->m192);
+        }
+        return 1;
+    case 0x30003:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, p->layout->m178);
+            fn_8039B3EC((u8*)p, data[0], p->layout->m178);
+        }
+        return 1;
+    case 0x30004:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, p->layout->m17c);
+            fn_8039B3EC((u8*)p, data[0], p->layout->m17c);
+        }
+        return 1;
+    case 0x30005:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039A638(p, 1);
+        }
+        return 1;
+    case 0x30006:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x34));
+            fn_8039B3EC((u8*)p, 4, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x34));
+        }
+        return 1;
+    case 0x30007:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x36));
+            fn_8039B3EC((u8*)p, 4, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x36));
+        }
+        return 1;
+    case 0x30008:
+        if (p->cur > p->lineTab[p->layout->m15c]) {
+            fn_8039C258(p, *(s32*)((u8*)lbl_8053AD78 + 0x10c));
+            fn_8039B3EC((u8*)p, 6, *(s32*)((u8*)lbl_8053AD78 + 0x10c));
+        }
+        return 1;
+    }
+    }
+    return 0;
+}
+
 extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
     MsgLayout* l = p->layout;
     l->m3ab = 0;
@@ -1317,6 +1913,16 @@ extern "C" void fn_8039934C(MsgMeasure* m, s32 a, s32 b) {
     }
     msgMeasureChar(m, e + '0', ratio, 3.0f);
     msgMeasureChar2(m, '\'', ratio, 6.0f);
+}
+
+extern "C" void fn_803997B8(u8* this_, s32 id, s32 arg) {
+    f32 ratio = *(f32*)(this_ + 0x48) / (f32)(s32)(u16)*(u16*)(lbl_8050DB0C + 0);
+    if (id == 0x25) {
+        return;
+    }
+    if (id > 0x25) {
+        return;
+    }
 }
 
 extern "C" const char lbl_805432B8[3];
@@ -1773,6 +2379,24 @@ extern "C" void fn_8039ACD0(u8* param_1, s16 param_2) {
     strcat(*(char**)(param_1 + 0x2c0), lbl_805432A4);
     strcat(*(char**)(param_1 + 0x2c4), lbl_805432A4);
     *(s32*)(param_1 + 0x2d0) += 1;
+}
+
+extern "C" void fn_8039B3EC(u8* self, u8 kind, s32 flag) {
+    s32 len;
+    u8* buf;
+    switch (kind) {
+    case 0:
+        len = *(s32*)(self + 0x2d0);
+        buf = *(u8**)(self + 0x2c0);
+        *(s32*)(self + 0x2d0) = len + 1;
+        buf[len] = 0x14;
+        break;
+    default:
+        break;
+    }
+    if (flag == 1) {
+        return;
+    }
 }
 
 // ---- small helpers near the end of the TU (0x803A2BC4-0x803A3258) ----
