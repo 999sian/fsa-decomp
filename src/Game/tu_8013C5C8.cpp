@@ -235,6 +235,12 @@ extern "C" void* lbl_8053AB20;
 extern "C" char lbl_804BEC44[];
 extern f32 lbl_8053CE00;
 
+// Texture swap table: TIMG resource name, then the particle texture it replaces.
+struct EffTexSwap {
+    const char* res;
+    const char* name;
+};
+
 struct EffEmitterSet {
     u8 pad0[0xc];
     JPAEmitterManager* mgr;
@@ -307,6 +313,7 @@ extern "C" void fn_8013DC44(u8* this_) {
 }
 
 extern "C" const char* lbl_8049F118[];
+extern "C" u8 lbl_80529DEC[];
 extern "C" void fn_8013DDEC(u8* this_) {
     struct ResMgr {
         virtual void v0();
@@ -316,6 +323,9 @@ extern "C" void fn_8013DDEC(u8* this_) {
         virtual void* getRes(u32 type, const char* name);
     };
     EffEmitterSet* set = (EffEmitterSet*)this_;
+    const char** names;
+    ResMgr* res;
+    s32 i;
     forceDeleteAllEmitter__17JPAEmitterManagerFv(set->mgr);
     set->count = 0;
     tu13_addEmitter(set, 0x347, 0, 0);
@@ -343,24 +353,17 @@ extern "C" void fn_8013DDEC(u8* this_) {
     tu13_addEmitter(set, 0x359, 0, 0);
     tu13_addEmitter(set, 0x35a, 0, 0);
     tu13_addEmitter(set, 0x35b, 0, 0);
-    {
-        ResMgr* res = *(ResMgr**)((u8*)lbl_8053AAF8 + 0xa4);
-        if (res != 0) {
-            s32 i;
-            const char** names = lbl_8049F118;
-            for (i = 0; i < 5; i++, names += 2) {
-                void* tex = res->getRes(0x54494d47, names[0]);
-                if (tex != 0) {
-                    swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(*(void**)(this_ + 8), tex, names[1]);
-                }
+    res = *(ResMgr**)(lbl_80529DEC + 0x10);
+    if (res != 0) {
+        for (i = 0, names = lbl_8049F118; i < 5; i++, names += 2) {
+            void* tex = res->getRes(0x54494d47, names[0]);
+            if (tex != 0) {
+                swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(*(void**)(this_ + 8), tex, names[1]);
             }
         }
     }
-    {
-        s32 i;
-        for (i = 0; i < 0x400; i++) {
-            set->slots[i].used = 0;
-        }
+    for (i = 0; i < 0x400; i++) {
+        set->slots[i].used = 0;
     }
 }
 
