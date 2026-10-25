@@ -240,17 +240,17 @@ extern const f32 lbl_80541418;
 
 
 static inline f32 gnefSqrt(f32 x) {
-    f32 result;
+    f32 y;
     if (x > lbl_80541400) {
-        f32 y = __frsqrte(x);
-        f32 t = y * x;
-        f32 r = lbl_80541408 - t * y;
-        r = r * t;
-        result = r * lbl_8054140C;
+        y = __frsqrte(x);
+        x = y * x;
+        y = lbl_80541408 - x * y;
+        y = y * x;
+        y = y * lbl_8054140C;
     } else {
-        result = x;
+        y = x;
     }
-    return result;
+    return y;
 }
 
 struct GnefPull {
@@ -261,12 +261,13 @@ struct GnefPull {
     u8 active;             // 0x28e
 };
 
+#pragma fp_relax on
 extern "C" u8 fn_802ED538(u8* this_) {
     GnefPull* pull = (GnefPull*)this_;
     u8 result = 1;
     s32 room;
     for (s32 i = 0; i < 4; i++, pull = (GnefPull*)((u8*)pull + 0x14)) {
-        if (fn_8023F264(i) && (room = *(s32*)(this_ + 4), fn_8023DE58(i) == room) && !fn_80236B50(i)
+        if (fn_8023F264(i) && (room = *(s32*)(this_ + 4), room == fn_8023DE58(i)) && !fn_80236B50(i)
             && !fn_8023EA28(i) && !fn_80230188(i) && !fn_8022D534(i) && !pull->active
             && fn_802300EC(i))
         {
@@ -278,15 +279,21 @@ extern "C" u8 fn_802ED538(u8* this_) {
                 f32 dy = (lbl_80541404 + *(f32*)(this_ + 0x10)) - py;
                 pull->pos = *fn_8023E724(i);
                 pull->dist = gnefSqrt(dx * dx + dy * dy);
-                pull->angle = lbl_80541410 * JMAAtan2Radian(-dx, -dy);
+                f32 angle = JMAAtan2Radian(-dx, -dy);
+                angle *= lbl_80541410;
+                pull->angle = angle;
                 pull->active = 1;
                 fn_80230AD4(i);
                 fn_8022CA6C(i, 5, 0);
             }
         }
         if (pull->active && fn_80230188(i) && !fn_8022D75C(i)) {
-            if (pull->dist > lbl_80541414) {
-                pull->dist -= lbl_80541414;
+            f32 step;
+            f32 dist;
+            dist = pull->dist;
+            step = lbl_80541414;
+            if (dist > step) {
+                pull->dist = dist - step;
             } else {
                 pull->dist = lbl_80541400;
             }
@@ -297,13 +304,14 @@ extern "C" u8 fn_802ED538(u8* this_) {
                 fn_80230224(i, 0);
             }
         }
-        if (*(s32*)(this_ + 4) == fn_8023DE58(i)) {
+        room = *(s32*)(this_ + 4);
+        if (room == fn_8023DE58(i)) {
             result = 0;
         }
     }
     return result;
 }
-
+#pragma fp_relax reset
 // ---- fn_802EE830: init
 struct GnefSlot {
     f32 a, b, c, d;
