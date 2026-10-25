@@ -83,6 +83,14 @@ static inline void icwlGetBox(u8* this_, ICWLBox* box) {
     box->y1 += *(f32*)(this_ + 0x10);
 }
 
+static inline void icwlGetBox2(u8* this_, ICWLBox* box, f32 x, f32 y) {
+    *box = *(ICWLBox*)(this_ + 0x70);
+    box->x0 += x;
+    box->y0 += y;
+    box->x1 += x;
+    box->y1 += y;
+}
+
 static inline bool icwlHitPlayer(u8* this_) {
     s32 idx = fn_801F285C(this_, 0, 0, 1, -1);
     if (idx >= 0) {
@@ -145,8 +153,7 @@ extern "C" void fn_8011E030(u8* this_) {
     ICWLBox box;
 
     v03__5ActorFv(this_);
-    box = *(ICWLBox*)(this_ + 0x60);
-    box.offset(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+    icwlGetBox(this_, &box);
 
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
@@ -201,7 +208,9 @@ extern "C" void fn_8011E030(u8* this_) {
                 break;
             }
             if (*(s32*)(this_ + 0x23C) != 0) {
-                Actor_CreateByID(fn_801F856C(), lbl_80464BE8[*(s32*)(this_ + 0x23C)], *(s32*)(this_ + 0x4), this_ + 0xc, lbl_80464C0C[*(s32*)(this_ + 0x23C)], -1, -1);
+                u32 arg = lbl_80464C0C[*(s32*)(this_ + 0x23C)];
+                u32 name = lbl_80464BE8[*(s32*)(this_ + 0x23C)];
+                Actor_CreateByID(fn_801F856C(), name, *(s32*)(this_ + 0x4), this_ + 0xc, arg, -1, -1);
             }
             detach__5ActorFv(this_);
             *(s32*)(this_ + 0x234) = 2;
