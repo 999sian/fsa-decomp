@@ -1,15 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
-
-namespace JMath {
-    template <int N, typename T>
-    class TAtanTable {
-    public:
-        f32 atan2_(f32, f32) const;
-        f32 mTable[1024];
-        f32 mTable2[8];
-    };
-    extern const TAtanTable<1024, f32> atanTable_;
-}
+#include "JSystem/JGeometry/Vec.h"
 struct Tu80317Rect { f32 x0, y0, x1, y1; };
 struct Tu80317Vec2 { f32 x, y; };
 struct Tu80317Vec3 { Tu80317Vec2 xy; f32 z; };
@@ -748,8 +739,6 @@ extern "C" void fn_801F35AC(Actor* a);
 extern "C" void fn_80319658(Actor* this_)
 {
     Tu80317Rect rect;
-    Tu80317Vec3 pos;
-    s32 slot;
     u8* self = (u8*)this_;
 
     if (*(s32*)(self + 0x264) == 2) {
@@ -762,6 +751,8 @@ extern "C" void fn_80319658(Actor* this_)
         rect.x1 = rect.x1 + *(f32*)(self + 0xc);
         rect.y1 = rect.y1 + *(f32*)(self + 0x10);
         if (*(s32*)(self + 0x230) != 1) {
+            s32 slot;
+            Tu80317Vec3 pos;
             fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 0, 0);
             slot = fn_8022FD8C(*(s32*)(self + 0x198));
             if (slot >= 0 && fn_802300EC() && fn_802373EC(slot) == 6) {
