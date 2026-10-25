@@ -1728,7 +1728,6 @@ extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
 }
 
 extern "C" u32 lbl_8046F9F0[];
-extern "C" f32 lbl_80541520;
 extern "C" f32 lbl_80541598;
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
     Mtx m;
