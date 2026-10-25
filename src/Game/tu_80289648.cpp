@@ -44,6 +44,12 @@ static inline bool tuInBox(const JGeometry::TVec3f& v, f32 x0, f32 y0, f32 x1, f
     return false;
 }
 
+static inline void tuGetCenter(u8* self, JGeometry::TVec3f& c) {
+    c.z = 0.0f;
+    c.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
+    c.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
+}
+
 static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
     *(f32*)(self + 0x60) = x0;
     *(f32*)(self + 0x64) = y0;
