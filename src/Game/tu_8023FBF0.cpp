@@ -614,7 +614,7 @@ inline s32 countSharing2(char* p) {
 }
 inline BOOL playerSelected(char* p) {
     u8 bit = 1 << S32(p, 4);
-    return (U8(lbl_8053AAF8, 0x82) & bit) != 0;
+    return (bit & U8(lbl_8053AAF8, 0x82)) != 0;
 }
 
 inline s32 countSharing3(char* p) {
