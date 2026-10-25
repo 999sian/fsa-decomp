@@ -1,6 +1,7 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 struct Actor;
 
 
