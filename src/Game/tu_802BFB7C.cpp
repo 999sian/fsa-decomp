@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
@@ -13,7 +14,8 @@ extern "C" char lbl_8046D54C[];
 extern "C" u8* lbl_8053AB10;
 extern "C" void fn_801F06F0(void* a, const char* name, s32 id, void* rec, s32 p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
-extern "C" void fn_80158B5C(void*, s32, void*, void*, f32);
+struct Col4;
+extern "C" void fn_80158B5C(void*, s32, void*, Col4, f32);
 extern "C" u8* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(u8* a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 fn_8022461C(s32 a, s32 b);
@@ -227,7 +229,7 @@ extern "C" void fn_802C0278(char* p) {
     }
     tmp = Col4(0, 0, 0, 0x80);
     col = tmp;
-    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(p + 4), p + 0xc, &col, lbl_80540C44);
+    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(p + 4), p + 0xc, col, lbl_80540C44);
 }
 
 extern "C" u8 fn_801F2740(void* a, s32 b);
