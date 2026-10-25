@@ -122,26 +122,27 @@ inline s32 tkraCreateItem(s32 player, JGeometry::TVec3f* pos, u32 param) {
 }
 
 inline void tkraCreateItems(char* p) {
-    int i;
-    char* out;
+    register s32 i;
+    register char* out;
+    register u32 bits;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f v;
         f32 dx = lbl_805413B0;
         out = p;
         f32 dy = lbl_805413B4;
-        for (i=0; i<4; i++, out+=4) {
+        for (i=0, bits=0UL; i<4; i++, bits+=0x1000000, out+=4) {
             v = *fn_8023E724(i);
             pos = v;
             pos.x=dx+v.x;
             pos.y=v.y-dy;
             pos.z=v.z;
             if ((u8)fn_8022F514(i)==1) {
-                if (i == *(s32*)(p + 0x244)) { s32 room; u32 param = ((i << 24) + *(u32*)(p + 0x234));
+                if (i == *(s32*)(p + 0x244)) { s32 room; u32 param = (bits + *(u32*)(p + 0x234));
                     param = (s32)(0x80000000 + (*(u32*)(p + 0x244) << 26)) + (s32)param;
                     room = fn_8023DE58(i);
                     *(s32*)(out + 0x24c) = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
             } else {
-                if (i == *(s32*)(p + 0x244)) { u32 param = ((i << 24) + *(u32*)(p + 0x234));
+                if (i == *(s32*)(p + 0x244)) { u32 param = (bits + *(u32*)(p + 0x234));
                     param = (s32)(0x80000000 + (*(u32*)(p + 0x244) << 26)) + (s32)param;
                     s32 room = fn_8023DE58(i);
                     *(s32*)(out + 0x24c) = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
