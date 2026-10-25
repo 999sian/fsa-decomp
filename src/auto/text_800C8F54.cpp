@@ -80,7 +80,8 @@ struct J3DColorChanInfo {
 extern J3DColorChanInfo j3dDefaultColorChanInfo;
 
 struct J3DMaterialInitData {
-    u8 _00[0x0C];
+    u8 _00[0x08];
+    u16 mMatColorIndex[2];         // _08
     u16 mColorChanControlIndex[4]; // _0C
     u8 _14[0xE4 - 0x14];
     u16 mTevStageInfoIndex[16]; // _E4
@@ -1258,7 +1259,9 @@ extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
     s32* pdef = &def;
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + ids[a] * 0x14c + 0x14 + b * 2);
+    s32 idx = ids[a] * 0x14c + 0x14;
+    idx += b * 2;
+    u16 v = *(u16*)(base + idx);
     if (v != 0xffff) {
         *out = (*(s32**)(p + 0x1c))[v];
     } else {
@@ -1358,7 +1361,7 @@ extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
 
 extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
     u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x94;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
+    u16 v = *(u16*)(*(u8**)(p + 4) + off + (b << 1));
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x48))[v];
         return;
