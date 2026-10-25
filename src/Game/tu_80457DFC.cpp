@@ -79,8 +79,8 @@ static inline void updateAudioTracks(Unk80458408Obj* sound, s32 id) {
     }
 }
 static inline void updateAudioTracksForStart(Unk80458408Obj* sound, s32 id) {
-    s32 i;
     Unk80458408Obj* bank;
+    s32 i;
     if (sound) {
         switch (id) { case 0x100001a: break; default: return; }
         bank = sound->v6();
@@ -806,14 +806,12 @@ extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
     if (this_[0x4] != 0) {
         return;
     }
-    if (id == -1) {
+    if ((u32)id == 0xffffffff) {
         return;
     }
     switch (id) {
     case 0x1000028:
         this_[0x89] = 1;
-        param_3 = 1;
-        break;
     case 0x1000019:
         param_3 = 1;
         break;
@@ -823,10 +821,10 @@ extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
         break;
     }
     if (this_[0x68] == 1 && param_3 == 0 && *(void**)(this_ + 0x80) != NULL) {
-        if (id == *(s32*)(this_ + 0x58) && *(s32*)(this_ + 0x64) == -1) {
+        if ((u32)id == *(u32*)(this_ + 0x58) && *(s32*)(this_ + 0x64) == -1) {
             return;
         }
-        if (id == *(s32*)(this_ + 0x5c)) {
+        if ((u32)id == *(u32*)(this_ + 0x5c)) {
             return;
         }
         if (*(void**)(this_ + 0x80) != NULL) {
@@ -842,26 +840,15 @@ extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
         fn_8045815C(this_, this_[0x8b]);
         switch (*(s32*)(this_ + 0x5c)) {
         case 0x100001a:
-            if (*(void**)(this_ + 0x80) != NULL) {
-                Unk80458408Obj* bank = ((Unk80458408Obj*)*(void**)(this_ + 0x80))->v6();
-                if (bank != NULL) {
-                    BOOL enabled = OSDisableInterrupts();
-                    for (s32 i = 0; i < 0x10; i++) {
-                        JASTrack* track = bank->v9(i);
-                        if (track != NULL) {
-                            if (i == 2 || i == 7) {
-                                track->mute(FALSE);
-                            } else {
-                                track->mute(TRUE);
-                            }
-                        }
-                    }
-                    OSRestoreInterrupts(enabled);
-                }
-            }
+            updateAudioTracksForStart((Unk80458408Obj*)*(void**)(this_ + 0x80), *(s32*)(this_ + 0x5c));
+            break;
+        case 0x100000d:
+        case 0x100001c:
+        case 0x1000021:
+        case 0x1000024:
+            *(f32*)(this_ + 0x4c) = lbl_80543EB4;
             break;
         }
-        *(f32*)(this_ + 0x4c) = lbl_80543EB4;
         if (*(void**)(this_ + 0x80) != NULL) {
             ((JAISoundParamsMove*)(*(char**)(this_ + 0x80) + 0x48))->moveVolume(*(f32*)(this_ + 0x4c) * *(f32*)(this_ + 0x54), 0);
             if (param_4 != 0) {
