@@ -910,9 +910,11 @@ inline bool isMode4OtherLink(char* p) {
     s32 me;
     if (getModeLO(p, me) == 4) {
         s32 v = linkIdx(p);
-        return v != linkRank2(p);
+        if (v != linkRank2(p)) {
+            return true;
+        }
     }
-    return 0;
+    return false;
 }
 inline BOOL isLinkOwnerTransition(char* p) {
     s32 me;
