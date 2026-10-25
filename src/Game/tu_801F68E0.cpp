@@ -514,13 +514,14 @@ extern "C" s32 fn_801F7464(const ActorPool* pool, s32 param, s32 exceptId) {
     }
     return id;
 }
-extern "C" s32 fn_801F750C(ActorPool* pool, s32 param, s32 exceptId) {
+extern "C" s32 fn_801F750C(const ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
+    PoolActor** cur = (PoolActor**)pool;
     s32 id = -1;
-    for (s32 i = 0; i < count; i++) {
-        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
-            exceptId != pool->mActors[i]->mId && fn_801CC910(pool->mActors[i]))
-        {
+    s32 i;
+    for (i = 0; i < count; cur++, i++) {
+        PoolActor* a = cur[2];
+        if (a != NULL && a->mActive && param == a->mParam && exceptId != a->mId && fn_801CC910(a)) {
             id = pool->mActors[i]->mId;
             break;
         }
