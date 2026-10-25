@@ -1010,10 +1010,10 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
     out[0] *= maxLen;
     out[1] *= maxLen;
 }
-#pragma fp_contract off
+#pragma fp_contract on
 extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
-    f32 dx = pos[0] - *(f32*)(this_ + 0xc);
     f32 dz = pos[1] - *(f32*)(this_ + 0x10);
+    f32 dx = pos[0] - *(f32*)(this_ + 0xc);
     f32 lenSq = dx * dx + dz * dz;
     if (lenSq <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
     } else {
@@ -1033,7 +1033,8 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
     f32 ddz = pos[1] - *(f32*)(this_ + 0x10);
     f32 dist = ddx * ddx + ddz * ddz;
     if (dist > lbl_8053EFC4) {
-        dist = dist * __frsqrte(dist);
+        f32 y = __frsqrte(dist);
+        dist = y * dist;
     }
     if (dist < maxLen) {
         maxLen = dist;
@@ -1041,7 +1042,6 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
     out[0] *= maxLen;
     out[1] *= maxLen;
 }
-
 #pragma fp_contract off
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
     Vec* self = (Vec*)(this_ + 0xc);
@@ -1344,15 +1344,17 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
     return dx * dx + dz * dz;
 }
 
-extern "C" BOOL fn_801D0DD4(char* this_) {
-    struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
-    s32 room = *(s32*)(this_ + 0x4);
-    char* self = this_;
-    TndrG* g = (TndrG*)fn_802D6A9C();
-    if (g->arr[room] != 0) {
-        return (*(u32*)(self + 0x230) & 0x18) != 0;
+static inline u8 roomFlag_801D0DD4(s32 room) {
+    return ((u8*)fn_802D6A9C())[0x131df + room];
+}
+
+extern "C" BOOL fn_801D0DD4(void* p) {
+    s32 off = *(s32*)((char*)p + 4);
+    u8* base = (u8*)fn_802D6A9C();
+    if (*(u8*)((u32)base + 0x10000 + off + 0x31df) != 0) {
+        return (*(u32*)((char*)p + 0x230) & 0x18) != 0;
     }
-    return *(f32*)(self + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
+    return *(f32*)((char*)p + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
 }
 
 extern "C" void fn_801D0E58(char* p) {
