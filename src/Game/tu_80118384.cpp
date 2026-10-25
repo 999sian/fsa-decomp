@@ -1,12 +1,5 @@
 #include "types.h"
 
-static inline u32* copyVectorWords(u32* first, u32* last, u32* out) {
-    while (first < last) *out++ = *first++;
-    return out;
-}
-static inline void copyVectorWordsBackward(u32* first, u32* last, u32* out) {
-    while (last > first) *--out = *--last;
-}
 
 extern "C" void* fn_80119E5C(u8* self, s16 size);
 extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
@@ -329,56 +322,56 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
 }
 
 extern "C" void __dl__FPv(void*);
-extern "C" u32* fn_801189B0(u8* selfArg, u32* positionArg, u32 amountArg) {
+extern "C" u32* fn_801189B0(u8* selfArg, void* positionArg, u32 amountArg) {
     u8* self = selfArg;
     u32 amount = amountArg;
-    u32* result;
-    u32* position = positionArg;
+    void** result;
+    void** position = (void**)positionArg;
     u32 capacity;
     u32 needed;
-    u32* buffer;
-    u32* first;
-    u32* last;
-    u32* src;
-    u32* dst;
-    u32* split;
-    u32* it;
-    u32* volatile guard;
+    void** buffer;
+    void** first;
+    void** last;
+    void** src;
+    void** dst;
+    void** split;
+    void** it;
+    void** volatile guard;
     u8* volatile owner;
-    if (amount == 0) return position;
-    first = *(u32**)(self + 4);
-    needed = first == 0 ? 0 : ((s32)*(u32**)(self + 8) - (s32)first) / 4;
+    if (amount == 0) return (u32*)position;
+    first = *(void***)(self + 4);
+    needed = first == 0 ? 0 : ((s32)*(void***)(self + 8) - (s32)first) / 4;
     if (amount + needed <= *(u32*)(self + 0xc)) {
-        last = *(u32**)(self + 8);
+        last = *(void***)(self + 8);
         split = position + amount;
         if (split < last) {
             src = last - amount;
             dst = last;
-            u32* end = last;
-            u32* start = src;
+            void** end = last;
+            void** start = src;
             while (src < end) *dst++ = *src++;
             src = start;
-            dst = *(u32**)(self + 8);
+            dst = *(void***)(self + 8);
             while (src > position) *--dst = *--src;
             for (it = position; it != split; ++it) {}
-            *(u32**)(self + 8) += amount;
-            return position;
+            *(void***)(self + 8) += amount;
+            return (u32*)position;
         } else {
             src = position;
             dst = split;
             while (src < last) *dst++ = *src++;
-            for (it = position; it != *(u32**)(self + 8); ++it) {}
+            for (it = position; it != *(void***)(self + 8); ++it) {}
         }
-        *(u32**)(self + 8) += amount;
-        return position;
+        *(void***)(self + 8) += amount;
+        return (u32*)position;
     }
-    needed = first == 0 ? 0 : ((s32)*(u32**)(self + 8) - (s32)first) / 4;
+    needed = first == 0 ? 0 : ((s32)*(void***)(self + 8) - (s32)first) / 4;
     u32 newSize = needed + amount;
     capacity = ((u32(*)(u32,u32,u32))*(void**)(self + 0x10))(*(u32*)(self + 0xc), needed, amount);
-    if (newSize > capacity) capacity = newSize;
-    buffer = (u32*)__nw__FUl(capacity * 4);
-    if (buffer == 0) return *(u32**)(self + 8);
-    src = *(u32**)(self + 4);
+    capacity = newSize > capacity ? newSize : capacity;
+    buffer = (void**)__nw__FUl(capacity * 4);
+    if (buffer == 0) return (u32*)*(void***)(self + 8);
+    src = *(void***)(self + 4);
     dst = buffer;
     owner = self;
     guard = buffer;
@@ -386,17 +379,17 @@ extern "C" u32* fn_801189B0(u8* selfArg, u32* positionArg, u32 amountArg) {
     result = dst;
     src = position;
     dst += amount;
-    last = *(u32**)(self + 8);
+    last = *(void***)(self + 8);
     while (src < last) *dst++ = *src++;
-    first = *(u32**)(self + 4);
-    last = *(u32**)(self + 8);
+    first = *(void***)(self + 4);
+    last = *(void***)(self + 8);
     for (it = first; it != last; ++it) {}
     guard = first;
-    *(u32**)(self + 8) = buffer + (amount + (((s32)*(u32**)(self + 8) - (s32)*(u32**)(self + 4)) / 4));
-    *(u32**)(self + 4) = buffer;
+    *(void***)(self + 8) = buffer + (amount + (((s32)*(void** volatile*)(self + 8) - (s32)*(void** volatile*)(self + 4)) / 4));
+    *(void***)(self + 4) = buffer;
     *(u32*)(self + 0xc) = capacity;
     __dl__FPv(first);
-    return result;
+    return (u32*)result;
 }
 
 extern "C" void fn_80118E20(u8* self)
