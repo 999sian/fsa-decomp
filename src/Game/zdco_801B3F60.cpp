@@ -5,6 +5,7 @@ extern const f32 lbl_8053EA08;
 extern const f32 lbl_8053E9EC;
 extern const f32 lbl_8053E9C0;
 #include "std/math.h"
+#include "JSystem/JGeometry/Vec.h"
 extern const f64 lbl_8053E9D0;
 extern const f64 lbl_8053E9D8;
 extern const f64 lbl_8053E9E0;
