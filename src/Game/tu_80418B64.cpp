@@ -33,6 +33,8 @@ extern "C" void fn_80230FD0(s32 i, s32 id);
 extern "C" u32 fn_80237810(s32 i);
 extern u8 lbl_8050DB0C[];
 extern u64 lbl_8048D320[];
+extern f32 lbl_80543A0C;
+extern f32 lbl_80543A00;
 
 // Sub-object virtual slots 13 called by fn_8041918C.
 struct SubObj {
@@ -276,14 +278,157 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
     }
 }
 
+extern "C" void fn_80419570(u8* self, s32 idx) {
+    s16* timer = (s16*)(self + idx * 2);
+    if (timer[0x10d] == 0) {
+        ((u32*)(self + 0x1d8))[idx] = fn_80237774(idx);
+        ((u32*)(self + 0x1f8))[idx] = fn_80237810(idx);
+    } else {
+        s32 cnt = ((s32*)(self + 0x1f8))[idx];
+        s32 n = ((s32*)(self + 0x1d8))[idx];
+        if (cnt > 0x20) cnt = 0x20;
+        if (cnt < 0) cnt = 0;
+        if (cnt < n) n = cnt;
+        if (n < 0) n = 0;
+        u64* d = lbl_8048D320 + 0x19c;
+        u64* c = lbl_8048D320 + 0x18c;
+        u64* b = lbl_8048D320 + 0x194;
+        u64* a = lbl_8048D320 + 0x184;
+        for (s32 k = 0; k < 8; k++) {
+            if (n >= 4) {
+                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
+                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
+                PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
+                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                cnt -= 4;
+                n -= 4;
+            } else {
+                if (n == 0) {
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 0);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 0);
+                    if (cnt > 0) {
+                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 1);
+                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 1);
+                        cnt -= 4;
+                    } else {
+                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
+                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    }
+                } else if (n == 1) {
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
+                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    cnt -= 4;
+                } else if (n == 2) {
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
+                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    cnt -= 4;
+                } else if (n == 3) {
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
+                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
+                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    cnt -= 4;
+                }
+                n = 0;
+            }
+            a++;
+            b++;
+            c++;
+            d++;
+        }
+        timer[0x10d]--;
+    }
+}
+
+extern "C" void fn_8041C0C0(u8* self, s32 idx) {
+    u8* base = (u8*)lbl_8048D320;
+    s32 n;
+    s32 which;
+    s32 i;
+    u32 tag;
+
+    if (self[0x28b] & (u8)(1 << idx)) {
+        which = 0;
+        n = *(s32*)(lbl_80529DEC + idx * 4 + 0xe8);
+        if (n > 9999) {
+            n = 9999;
+        }
+        if (n < 0) {
+            u8* p = base + 0x3b8 + idx * 0x28;
+            for (i = 0; i < 5; i++) {
+                GXColor col;
+                GXColor zero;
+                col.r = 0xff;
+                col.g = 0x55;
+                col.b = 0x41;
+                col.a = 0xff;
+                zero.r = 0;
+                zero.g = 0;
+                zero.b = 0;
+                zero.a = 0;
+                u8* obj = FindPaneOfSub(self, *(u64*)p);
+                ((PaneColorsFn)(*(void***)obj)[76])(obj, &zero, &col);
+                p += 8;
+            }
+            if (n < -5000) {
+                n = -5000;
+            }
+            n = -n;
+            tag = fn_804030C4(0x54494d47, (u32)(base + 0xe38));
+            CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28)), tag);
+            CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x458 + idx * 0x28)), tag);
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + 0x20), 1);
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x458 + idx * 0x28 + 0x20), 1);
+            which = 1;
+        } else {
+            for (i = 0; i < 5; i++) {
+                u32 a = *(u32*)(self + 0x244);
+                u32 b = *(u32*)(self + 0x248);
+                u8* obj = FindPaneOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + i * 8));
+                ((PaneColorsFn)(*(void***)obj)[76])(obj, &b, &a);
+            }
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + 0x20), 0);
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x458 + idx * 0x28 + 0x20), 0);
+        }
+
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 1000]);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + which * 8)), tag);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x458 + idx * 0x28 + which * 8)), tag);
+        n %= 1000;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 100]);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + (which + 1) * 8)), tag);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x458 + idx * 0x28 + (which + 1) * 8)), tag);
+        n %= 100;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + (which + 2) * 8)), tag);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x458 + idx * 0x28 + (which + 2) * 8)), tag);
+        n %= 10;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n]);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x3b8 + idx * 0x28 + (which + 3) * 8)), tag);
+        CallSlot68(FindPaneOfSub(self, *(u64*)(base + 0x458 + idx * 0x28 + (which + 3) * 8)), tag);
+    }
+}
+
 extern u64 lbl_8048D320[];
 extern u32 lbl_804B13C4;
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80419C38(u8* self, s32 i, s32 v);
 extern "C" void fn_8041C67C(u8* this_) {
-	s32 i;
 	u64* base = lbl_8048D320;
 	u8* self = this_;
+	s32 i;
 	SetPaneVisibleOfSub(self, 0x004E646174613133ULL, 0);
 	SetPaneVisibleOfSub(self, 0x506870316E693032ULL, 0);
 	SetPaneVisibleOfSub(self, 0x5068317069696233ULL, 0);
@@ -354,22 +499,92 @@ extern "C" void fn_8041C67C(u8* this_) {
 	}
 }
 
-extern "C" void fn_8041DD24(u8* this_) {
-    u64* p31;
-    u64* p30;
-    u64* p29;
-    u64* p28;
+extern "C" void fn_8041CC04(u8* self) {
+    u8* base = (u8*)lbl_8048D320;
     s32 n;
-    u8* base;
-    u8* self;
+    s32 which;
+    s32 i;
+    u8* p;
+    u32 tag;
+
+    if (self[0x28b] & 1) {
+        which = 0;
+        s32 v = *(s32*)(lbl_80529DEC + 0xe8);
+        n = v;
+        if (v > 9999) {
+            n = 9999;
+        }
+        if (n < 0) {
+            p = base + 0x338;
+            for (i = 0; i < 5; i++) {
+                GXColor col;
+                GXColor zero;
+                col.r = 0xff;
+                col.g = 0x55;
+                col.b = 0x41;
+                col.a = 0xff;
+                zero.r = 0;
+                zero.g = 0;
+                zero.b = 0;
+                zero.a = 0;
+                u8* obj = FindPaneOfSub(self, *(u64*)p);
+                ((PaneColorsFn)(*(void***)obj)[76])(obj, &zero, &col);
+                p += 8;
+            }
+            if (n < -5000) {
+                n = -5000;
+            }
+            n = -n;
+            tag = fn_804030C4(0x54494d47, (u32)(base + 0xe38));
+            SetDigitPanes(self, 0, tag);
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x338 + 0x20), 1);
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x360 + 0x20), 1);
+            which = 1;
+        } else {
+            for (i = 0; i < 5; i++) {
+                u32 a = *(u32*)(self + 0x244);
+                u32 b = *(u32*)(self + 0x248);
+                u8* obj = FindPaneOfSub(self, *(u64*)(base + 0x338 + i * 8));
+                ((PaneColorsFn)(*(void***)obj)[76])(obj, &b, &a);
+            }
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x338 + 0x20), 0);
+            SetPaneVisibleOfSub(self, *(u64*)(base + 0x360 + 0x20), 0);
+        }
+
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 1000]);
+        n = n % 1000;
+        SetDigitPanes(self, which, tag);
+
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 100]);
+        n = n % 100;
+        SetDigitPanes(self, which + 1, tag);
+
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
+        n = n % 10;
+        SetDigitPanes(self, which + 2, tag);
+
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[n]);
+        SetDigitPanes(self, which + 3, tag);
+    }
+}
+
+extern "C" void fn_8041DD24(void* this_) {
     s32 cnt;
+    u8* self = (u8*)this_;
+    u8* base;
+    s32 n;
+    u64* p28;
+    u64* p29;
+    u64* p30;
+    u64* p31;
     s32 i;
 
-    self = this_;
     base = (u8*)lbl_8048D320;
     if (self[0x28a] & 1) {
+        s32 tmp;
         n = fn_80237810(0);
-        cnt = *(s32*)(lbl_80529DEC + 0xd8);
+        tmp = *(s32*)(lbl_80529DEC + 0xd8);
+        cnt = tmp;
         if (n > 0x20) {
             n = 0x20;
         }
@@ -807,11 +1022,16 @@ extern "C" void fn_8041FC2C(u8* self) {
     u8* p;
     u8* q;
     s32 i;
+    s32 j;
     f32 f;
+    u32* w;
 
     tbl = (u8*)lbl_8048D320;
     lbl = (u8*)lbl_80529DEC;
     f = lbl_80543A00;
+    p = self;
+    q = self;
+    w = (u32*)(lbl + 0xd8);
 
     i = 0;
     fn_8041E3B4(self, i);
@@ -819,9 +1039,7 @@ extern "C" void fn_8041FC2C(u8* self) {
     *(u32*)(lbl + 0xe8) = fn_80236100(i);
     *(u32*)(lbl + 0x108) = fn_802375B0(i);
 
-    p = self;
-    q = self;
-    for (; i < 4; i++, p += 4, q += 2) {
+    while (i < 4) {
         *(u32*)(p + 0x188) = 0x180;
         *(u32*)(p + 0x198) = 0;
         *(u32*)(p + 0x1a8) = 0;
@@ -846,6 +1064,10 @@ extern "C" void fn_8041FC2C(u8* self) {
         *(u16*)(q + 0x22c) = 0;
         *(u32*)(p + 0x208) = 0;
         *(u16*)(q + 0x234) = 0;
+        p += 4;
+        q += 2;
+        w++;
+        i++;
     }
     *(s16*)(self + 0x222) = -1;
 
@@ -859,15 +1081,23 @@ extern "C" void fn_8041FC2C(u8* self) {
         SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0x3b0), 0);
         SetPaneVisible(*(u8**)(self + 4), 0x004E646174613136ULL, (lbl_8053AAF8[0x83] & 3) == 2);
 
-        for (i = 0; i < 4; i++) {
-            SetPaneVisible(*(u8**)(self + 0x18), *(u64*)(tbl + 0xae0 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 0x18), *(u64*)(tbl + 0xb20 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xb40 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xb60 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xb80 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xbc0 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xbe0 + 8 * i), 0);
-            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xc00 + 8 * i), 0);
+        u64* n0 = (u64*)(tbl + 0xae0);
+        u64* n1 = (u64*)(tbl + 0xb20);
+        u64* n2 = (u64*)(tbl + 0xb40);
+        u64* n3 = (u64*)(tbl + 0xb60);
+        u64* n4 = (u64*)(tbl + 0xb80);
+        u64* n5 = (u64*)(tbl + 0xbc0);
+        u64* n6 = (u64*)(tbl + 0xbe0);
+        u64* n7 = (u64*)(tbl + 0xc00);
+        for (j = 0; j < 4; j++, n0++, n1++, n2++, n3++, n4++, n5++, n6++, n7++) {
+            SetPaneVisible(*(u8**)(self + 0x18), *n0, 0);
+            SetPaneVisible(*(u8**)(self + 0x18), *n1, 0);
+            SetPaneVisible(*(u8**)(self + 4), *n2, 0);
+            SetPaneVisible(*(u8**)(self + 4), *n3, 0);
+            SetPaneVisible(*(u8**)(self + 4), *n4, 0);
+            SetPaneVisible(*(u8**)(self + 4), *n5, 0);
+            SetPaneVisible(*(u8**)(self + 4), *n6, 0);
+            SetPaneVisible(*(u8**)(self + 4), *n7, 0);
         }
         fn_8041A868(self, 1);
     } else {
@@ -891,8 +1121,21 @@ extern "C" void fn_8041FC2C(u8* self) {
     *(s32*)(self + 0x17c) = -2;
     *(s32*)(self + 0x180) = -2;
     *(s32*)(self + 0x184) = -2;
-    if (*(s32*)(lbl + 0x118) < 8 && *(s32*)(lbl + 0x11c) < 4) {
-        fn_8043A608(lbl_8053AED0);
+    {
+        s32 a = *(s32*)(lbl + 0x118);
+        s32 b = *(s32*)(lbl + 0x11c);
+        if (a < 8 && b < 4) {
+            if (a == 0 && b == 0) {
+                u8* e = (u8*)lbl_8050EC80 + 0xc8 * *(s32*)((u8*)lbl_8050EC80 + 0x10);
+                if (*(s32*)(e + 0x28) & 1) {
+                    fn_8043A608(lbl_8053AED0);
+                }
+            } else if (!((a == 0 && b == 1) || (a == 1 && b == 3) || (a == 2 && b == 3) ||
+                         (a == 4 && b == 3) || (a == 5 && (b == 1 || b == 3)) ||
+                         (a == 6 && (b == 1 || b == 3)) || (a == 7 && b == 3))) {
+                fn_8043A608(lbl_8053AED0);
+            }
+        }
     }
     if (*(u8**)(self + 0x50) != 0) {
         fn_8044172C(*(u8**)(self + 0x50));
