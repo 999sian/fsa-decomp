@@ -48,8 +48,8 @@ extern TAtanTable<1024, f32> atanTable_;
 }
 
 struct Tmp16 {
-    f32 x;
-    f32 y;
+    u32 x;
+    u32 y;
     s32 a;
     s32 b;
 };
@@ -93,10 +93,11 @@ extern const char lbl_80465BD8[];
 extern const char lbl_80465BEC[];
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AB10;
+#pragma opt_propagation off
 extern "C" void fn_80146C28(char* this_) {
     DrawRec rec;
-    Vec pos;
     Tmp16 cpy;
+    Vec pos;
 
     *(u8*)((u8*)&rec + 0x13) = *(s32*)(this_ + 0x248);
     switch (*(s32*)(this_ + 0x90)) {
@@ -106,9 +107,11 @@ extern "C" void fn_80146C28(char* this_) {
             Tmp16* cp = &cpy;
             *cp = *(Tmp16*)((u8*)mgr + 0xcc);
             Vec* p = (Vec*)(this_ + 0xc);
-            pos.x = p->x + cp->x;
-            pos.y = p->y + cp->y;
+            pos.x = p->x;
+            pos.y = p->y;
             pos.z = p->z;
+            pos.x += cp->x;
+            pos.y += cp->y;
             fn_801EF574(lbl_80465BD8, 0x25, &pos, &rec);
             fn_801F02BC(this_, lbl_80465BEC, 0x317, &rec, 1, 0, 0, 1.0f, 1.0f);
         } else {
@@ -136,11 +139,12 @@ extern "C" void fn_80146C28(char* this_) {
         break;
     }
 }
-
-extern "C" void fn_80146F58(char* this_) {
-    u8 r29 = 0;
+#pragma opt_propagation reset
+extern "C" void fn_80146F58(char* self) {
+    char* this_ = self;
     s32 r30;
-    *(OktmVec3*)(this_ + 0xc) += *(OktmVec3*)(this_ + 0x3c);
+    u8 r29 = 0;
+    JMathInlineVEC::PSVECAdd((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x3c), (Vec*)(this_ + 0xc));
     r30 = *(s32*)(this_ + 0x98);
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
