@@ -633,11 +633,6 @@ extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
     return FALSE;
 }
 
-struct TileRoomFlagView {
-    u8 pad[0x131df];
-    u8 flag;
-};
-
 struct TileStageMap {
     u8 pad[0x60];
     u8 cells[10][10];
