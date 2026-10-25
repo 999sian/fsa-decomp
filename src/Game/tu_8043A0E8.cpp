@@ -1,4 +1,10 @@
 #include "types.h"
+#include <math.h>
+extern const f32 lbl_80543D00;
+extern const f32 lbl_80543D04;
+extern const f32 lbl_80543D08;
+extern const f32 lbl_80543D0C;
+extern const f32 lbl_80543D10;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
