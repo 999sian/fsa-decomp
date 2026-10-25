@@ -45,6 +45,33 @@ extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern void* lbl_804A1FA0[];
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void PSMTXIdentity(f32 (*m)[4]);
+extern "C" void fn_801F06F0(void* a, const char* tbl, s32 idx, DrawRec* rec, s32 p5, f32 f6, f32 f7);
+extern f32 lbl_8053E1D8;
+extern f32 lbl_8053E1DC;
+extern f32 lbl_8053E1E0;
+extern char lbl_804674F0[];
+
+static void dgt2Rot(f32 (*m)[4], f32 th) {
+    f32 sA = sin(lbl_8053E1D8);
+    f32 sT = sin(th);
+    f32 sZ = sin(lbl_8053E1D8);
+    f32 cA = cos(lbl_8053E1D8);
+    f32 cT = cos(th);
+    f32 cZ = cos(lbl_8053E1D8);
+    f32 S = lbl_8053E1DC;
+    m[0][0] = S * (cT * cZ);
+    m[0][1] = S * ((sA * sT) * cZ - cA * sZ);
+    m[0][2] = S * ((cA * cZ) * sT + sA * sZ);
+    m[1][0] = S * (cT * sZ);
+    m[1][1] = S * ((sA * sT) * sZ + cA * cZ);
+    m[1][2] = S * ((cA * sZ) * sT - sA * cZ);
+    m[2][0] = S * -sT;
+    m[2][1] = S * (sA * cT);
+    m[2][2] = S * (cA * cT);
+}
 
 extern "C" void* fn_8018FB24(void* this_, s16 freeFlag) {
     if (this_ != 0) {
