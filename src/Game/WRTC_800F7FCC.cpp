@@ -44,8 +44,8 @@ extern "C" void fn_800FA1A4(void* this_);
 extern "C" u8 fn_801F2618(void* this_, void* out, s32 flag);
 extern "C" void fn_800FB6E0(void* p, s32 x);
 extern f32 lbl_8053C084;
-extern f32 lbl_8053C088;
-extern f32 lbl_8053C08C;
+extern const f32 lbl_8053C088;
+extern const f32 lbl_8053C08C;
 extern const f32 lbl_8053BFE8;
 extern "C" void fn_802D79E8(void* mgr, s32 room, s32 a, f32 x, f32 y);
 extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
@@ -1303,6 +1303,92 @@ extern "C" void fn_800FB32C(void* this_) {
     }
 }
 
+#pragma opt_propagation off
+extern "C" void fn_800FB6E0(void* this_, s32 mode) {
+    f32 zero;
+    f32 c;
+    f32 b;
+    f32 a;
+    f32 scale;
+    f32 multiplier;
+    u8* p = (u8*)this_;
+    u16 angle = 0;
+    f32 distance = lbl_8053BFAC;
+    s32 unused = 0;
+    s32 index = 0;
+    fn_801EEC98(this_, *(void**)(p + 0x198), (s16*)&angle, &unused, &distance, &index, 0, 0);
+    if (index != -1 && distance < lbl_8053C048) {
+        *(u16*)(p + 0x262) = angle;
+    } else {
+        if ((*(u32*)(p + 0x238) & 8) == 0) {
+            distance = lbl_8053BFD4;
+        } else {
+            u8* first = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(p + 0x288));
+            u8* second = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(p + 0x28c));
+            JGeometry::TVec3f b;
+            JGeometry::TVec3f a;
+            a = *(JGeometry::TVec3f*)(p + 0xc);
+            b = *(JGeometry::TVec3f*)(p + 0xc);
+            a -= *(JGeometry::TVec3f*)(first + 0xc);
+            b -= *(JGeometry::TVec3f*)(second + 0xc);
+            f32 len = a.length();
+            if (len < b.length()) {
+                f32 radians = JMath::atanTable_.atan2_(-a.x, -a.y);
+                radians *= lbl_8053C050;
+                angle = (s32)radians;
+            } else {
+                f32 radians = JMath::atanTable_.atan2_(-b.x, -b.y);
+                radians *= lbl_8053C050;
+                angle = (s32)radians;
+            }
+        }
+        if (distance < lbl_8053C084) {
+            *(u16*)(p + 0x262) = angle;
+        } else {
+            f32 random;
+            f32 k;
+            f32 one;
+            u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+            one = lbl_8053BFCC;
+            k = lbl_8053C088;
+            *rng = *rng * 0x19660d + 0x3c6ef35f;
+            union { u32 u; f32 f; } value;
+            value.u = (*rng >> 9) | 0x3f800000;
+            random = value.f - one;
+            *(u16*)(p + 0x262) += (s16)(0x2000 - (s32)(k * random));
+        }
+    }
+    *(f32*)(p + 0x3c) = lbl_8053BFE8 * sincosTable___5JMath[((*(u16*)(p + 0x262) >> 5) & 0x7ff) * 2];
+    *(f32*)(p + 0x40) = lbl_8053BFE8 * sincosTable___5JMath[((*(u16*)(p + 0x262) >> 5) & 0x7ff) * 2 + 1];
+    if (mode == 1) {
+        *(f32*)(p + 0x44) = lbl_8053BFA8;
+        p[0x257] = 0;
+        fn_801F0E34(this_, 0x4002b, 0);
+    } else {
+        *(f32*)(p + 0x44) = lbl_8053BFF4;
+        p[0x257]++;
+        fn_801F0E34(this_, 0x400ca, 0);
+    }
+    *(u32*)(p + 0x238) |= 4;
+    *(u32*)(p + 0x238) &= ~0x10;
+    multiplier = lbl_8053C08C;
+    a = lbl_8053C054;
+    b = lbl_8053C058;
+    c = lbl_8053C05C;
+    zero = lbl_8053BFAC;
+    scale = multiplier * *(f32*)(p + 0x26c);
+    a *= scale;
+    b *= scale;
+    c *= scale;
+    *(f32*)(p + 0x60) = a;
+    *(f32*)(p + 0x64) = b;
+    *(f32*)(p + 0x68) = c;
+    *(f32*)(p + 0x6c) = zero;
+    *(s32*)(p + 0x230) = 7;
+    *(s32*)(p + 0x268) = 1;
+    *(s32*)(p + 0x264) = 0;
+}
+#pragma opt_propagation reset
 extern "C" s32 fn_801F3D94(void* p, s32 x);
 extern "C" void fn_800FB6E0(void* p, s32 x);
 extern f32 lbl_8053BFE0;
@@ -1547,8 +1633,9 @@ extern "C" void fn_800FC4A8(void* this_) {
 }
 
 extern f32 lbl_8053C094;
+#pragma opt_propagation off
 extern "C" void fn_800FC984(void* this_) {
-    u8 bVar1;
+    unsigned char bVar1;
     u8* self = (u8*)this_;
     if (self[0x2ac] == 0) {
         *(s32*)(self + 0xb0) = 4;
@@ -1556,8 +1643,7 @@ extern "C" void fn_800FC984(void* this_) {
         *(s32*)(self + 0x234) = 0;
         *(s32*)(self + 0x230) = 8;
         fn_801F0E34(this_, 0x40005, 0);
-        self[0x2ad] = 1;
-        bVar1 = 1;
+        self[0x2ad] = bVar1 = 1;
     } else {
         bVar1 = 0;
     }
@@ -1595,8 +1681,21 @@ extern "C" void fn_800FC984(void* this_) {
                 if (((*(u32*)(self + 0x238) & 8) != 0) && self[0x2ac] <= 0xc) {
                     *(s32*)(self + 0x230) = 4;
                     *(s32*)(self + 0x234) = 0;
-                    *(s16*)(self+0x284)=(s32)(lbl_8053C094+(f32)(s32)(lbl_8053C078*WRTC_random()));
-                    *(s16*)(self+0x286)=(s32)(lbl_8053C094+(f32)(s32)(lbl_8053C078*WRTC_random()));
+                    f32 one=lbl_8053BFCC;
+                    f32 scale=100.0f;
+                    f32 base=400.0f;
+                    char* game=(char*)lbl_8053AAF8;
+                    *(u32*)(game+0xb4)=*(u32*)(game+0xb4)*0x19660d+0x3c6ef35f;
+                    union {u32 u; f32 f;} a;
+                    a.u=(*(u32*)(game+0xb4)>>9)|0x3f800000;
+                    s32 x=(s32)(scale*(a.f-one));
+                    *(s16*)(self+0x284)=(s32)(base+(f32)x);
+                    game=(char*)lbl_8053AAF8;
+                    *(u32*)(game+0xb4)=*(u32*)(game+0xb4)*0x19660d+0x3c6ef35f;
+                    union {u32 u; f32 f;} b;
+                    b.u=(*(u32*)(game+0xb4)>>9)|0x3f800000;
+                    s32 y=(s32)(scale*(b.f-one));
+                    *(s16*)(self+0x286)=(s32)(base+(f32)y);
                     *(s16*)(self + 0x2b2) = 0x3000;
                     *(s16*)(self + 0x2b4) = 0x5000;
                 } else {
@@ -1608,15 +1707,15 @@ extern "C" void fn_800FC984(void* this_) {
             *(f32*)(self + 0x240) = *(f32*)(self + 0x24c);
             *(f32*)(self + 0x244) = *(f32*)(self + 0x250);
             *(u16*)(self + 0x260) += 0x200;
-            *(f32*)(self + 0x14) = lbl_8053BFF4 * sincosTable___5JMath[((*(u16*)(self + 0x260) >> 5) & 0x1fff) * 2] + *(f32*)(self + 0x25c);
+            *(f32*)(self + 0x14) = 5.0f * sincosTable___5JMath[((((u32)*(u16*)(self + 0x260) >> 5)&0x7ff)) * 2] + *(f32*)(self + 0x25c);
             *(u16*)(self + 0x262) += 0xb0;
-            *(f32*)(self + 0xc) = lbl_8053C078 * sincosTable___5JMath[((*(u16*)(self + 0x262) >> 5) & 0x1fff) * 2] + *(f32*)(self + 0x23c);
-            *(f32*)(self + 0x10) = lbl_8053C048 * sincosTable___5JMath[((*(u16*)(self + 0x262) >> 5) & 0x1fff) * 2 + 1] + *(f32*)(self + 0x240) - lbl_8053C048;
+            *(f32*)(self + 0xc) = 100.0f * sincosTable___5JMath[((((u32)*(u16*)(self + 0x262) >> 5)&0x7ff)) * 2] + *(f32*)(self + 0x23c);
+            *(f32*)(self + 0x10) = 50.0f * sincosTable___5JMath[((((u32)*(u16*)(self + 0x262) >> 5)&0x7ff)) * 2 + 1] + *(f32*)(self + 0x240) - 50.0f;
             fn_801F3D94(this_, 1);
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_800FCCCC(void* this_) {
     u8* p = (u8*)this_;
     s16 a = 0;
