@@ -9,6 +9,7 @@ extern u8* lbl_8053AF00;
 extern f32 lbl_8053C110;
 extern f32 lbl_8053C118;
 extern u8 lbl_80463B8C[];
+extern u8 lbl_80463B78[];
 extern "C" s32 fn_8023DE58(s32 i);
 extern "C" void* fn_8023E724(s32 i);
 extern f32 lbl_8053C114;
