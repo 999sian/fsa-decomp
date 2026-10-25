@@ -1,4 +1,6 @@
 #include "types.h"
+#include "std/math.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct YasiDrawKey {
     s32 a, b;
@@ -131,7 +133,7 @@ extern "C" s32 fn_801F7818(void*, u32, s32, void*, s32);
 extern "C" u32 fn_80226850(void*, s32);
 extern "C" void fn_802A381C(void*, void*, s32, s32);
 extern "C" void fn_8030C210(void*, void*);
-extern "C" u8 lbl_8053AAF8[];
+extern "C" u8* lbl_8053AAF8;
 extern "C" u32 lbl_8053AC98;
 extern "C" const f32 lbl_80540F00;
 extern "C" s32 fn_801F7818(void*, u32, s32, void*, s32);
@@ -164,49 +166,85 @@ extern "C" void fn_802D1FEC(void* this_) {
                 *(s32*)(p + 0x238) = 2;
             }
         }
-        if (*(s32*)(p + 0x234) == 1) {
-            f32 x = *(f32*)(p + 0xc);
-            f32 y = *(f32*)(p + 0x18);
-            if (x == y && *(f32*)(p + 0x10) == *(f32*)(p + 0x1c)) {
-                if (*(s32*)(p + 0x244) != 0) {
-                    if (*(s32*)(p + 0x230) != 0) {
-                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(
-                            *(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x230));
-                        *(s32*)(p + 0x230) = 0;
+    } else {
+        s32 mode = *(s32*)(p + 0x114);
+        if (lbl_8053AAF8[0x7f] != 0) {
+            mode = 0;
+        }
+        s32 id = *(s32*)(p + 4);
+        if (*(u8*)((char*)fn_802D6A9C() + 0x10000 + id + 0x31df) == 0) {
+            *(f32*)(p + 0x44) += 1.0f;
+            *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+            *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+            if (fn_801F2618(p, 0, 0)) {
+                if (*(f32*)(p + 0x14) < 0.0f) {
+                    if ((u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x90) {
+                        fn_802A381C((void*)lbl_8053AC98, p + 0xc, *(s32*)(p + 4), 0x91);
+                    } else if ((u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x91 ||
+                               (u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x22e) {
+                        fn_802A381C((void*)lbl_8053AC98, p + 0xc, *(s32*)(p + 4), 0x92);
                     }
-                    *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x1a8, 0, 0, 0, 0, 1);
-                    *(s32*)(p + 0x244) = 0;
                 }
+                if (*(s32*)(p + 0x234) == 2) {
+                    void* mgr = fn_801F856C();
+                    s32 n = fn_801F7818(mgr, 0x424c5a32, *(s32*)(p + 4), buf, -1);
+                    void** e = (void**)buf;
+                    for (s32 i = 0; i < n; i++, e++) {
+                        char* r5 = (char*)*e;
+                        if (r5 == 0) continue;
+                        f32 dy = *(f32*)(r5 + 0x10) - *(f32*)(p + 0x10);
+                        f32 dx = *(f32*)(r5 + 0xc) - *(f32*)(p + 0xc);
+                        f32 d = std::sqrtf(dx * dx + dy * dy);
+                        if (d < lbl_80540F00) {
+                            *(s16*)(r5 + 0x94) = 2;
+                        }
+                    }
+                }
+                ((VObj_802D*)p)->m9();
+                return;
+            }
+            if (!fn_801F2B7C(p, mode, *(s32*)(p + 0xc8), 1)) {
+                if (fn_801F2B20(p, 0)) {
+                    ((VObj_802D*)p)->m9();
+                }
+                return;
             }
         }
-        if (*(s32*)(p + 0x230) != 0) {
-            fn_8013CB44(*(s32*)(p + 0x230), p + 0xc, 0, 1, 1);
-            *(u8*)(*(s32*)(p + 0x230) + 0xbb) = *(u8*)(p + 0x254);
+        if (*(s32*)(p + 0x24c) == 0) {
+            *(f32*)(p + 0x10) -= *(f32*)(p + 0x14);
+            *(f32*)(p + 0x14) = 0.0f;
+            *(f32*)(p + 0x44) = 0.0f;
+            *(s32*)(p + 0x24c) = 1;
         }
+        *(f32*)(p + 0x40) += 1.0f;
+        *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+        if (!fn_801F2B7C(p, mode, *(s32*)(p + 0xc8), 1)) {
+            if (!fn_801F2B20(p, 0)) {
+                return;
+            }
+        }
+        ((VObj_802D*)p)->m9();
         return;
     }
-    s32 mode = *(s32*)(p + 0x114);
-    if (lbl_8053AAF8[0x7f] != 0) {
-        mode = 0;
-    }
-    s32 id = *(s32*)(p + 4);
-    if (*(u8*)((char*)fn_802D6A9C() + 0x10000 + id + 0x31df) == 0) {
-        *(f32*)(p + 0x44) += 1.0f;
-        *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
-        *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
-        *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
-    }
-    if (fn_801F2618(p, 0, 0)) {
-        if (*(f32*)(p + 0x14) < 0.0f) {
-            if ((u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x90) {
-                fn_802A381C((void*)lbl_8053AC98, p + 0xc, *(s32*)(p + 4), 0x91);
-            } else if ((u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x91 ||
-                       (u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x22e) {
-                fn_802A381C((void*)lbl_8053AC98, p + 0xc, *(s32*)(p + 4), 0x92);
+    if (*(s32*)(p + 0x234) == 1) {
+        f32 x = *(f32*)(p + 0xc);
+        f32 y = *(f32*)(p + 0x18);
+        if (x == y && *(f32*)(p + 0x10) == *(f32*)(p + 0x1c)) {
+            if (*(s32*)(p + 0x244) != 0) {
+                if (*(s32*)(p + 0x230) != 0) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(
+                        *(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x230));
+                    *(s32*)(p + 0x230) = 0;
+                }
+                *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x1a8, 0, 0, 0, 0, 1);
+                *(s32*)(p + 0x244) = 0;
             }
         }
     }
-    ((VObj_802D*)p)->m9();
+    if (*(s32*)(p + 0x230) != 0) {
+        fn_8013CB44(*(s32*)(p + 0x230), p + 0xc, 0, 1, 1);
+        *(u8*)(*(s32*)(p + 0x230) + 0xbb) = *(u8*)(p + 0x254);
+    }
     lbl_8053ADF8 = 0;
 }
 
