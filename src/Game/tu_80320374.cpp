@@ -237,6 +237,308 @@ extern "C" void fn_80320D18(char* p) {
 }
 }
 
+extern "C" u8 fn_8022F9E4(s32,s32,u8,u8);
+extern "C" void fn_80322F44(char*);
+extern "C" void fn_80322964(char*);
+extern "C" void fn_80322BC4(char*);
+extern "C" void fn_801F71A4(f32*,f32,f32,f32);
+extern "C" u8 fn_80239C00(s32,void*,s32);
+extern "C" u8 fn_8023ED8C(s32);
+extern "C" u8 fn_8023EBB8(s32);
+extern "C" u8 fn_802308E0(s32);
+extern "C" s32 fn_80230498(s32,void*,s32,s32,s32,s32,s32);
+extern "C" void fn_801F3604(char*);
+extern "C" void* fn_8023E7B0(s32);
+extern "C" s32 fn_8023BCD4(s32);
+extern "C" void* lbl_8053AED0;
+extern "C" void fn_8043D67C(void*,s32,s32,s32);
+extern "C" const f32 lbl_80541B08,lbl_80541B0C,lbl_80541B10,lbl_80541B14,lbl_80541B18,lbl_80541B1C;
+extern "C" void fn_803226EC(char*);
+extern "C" void fn_8038BD08(s32,s32,s32,void*,s32);
+extern "C" void fn_80230F44(s32,s32);
+extern "C" u8 fn_80388EEC(s32);
+extern "C" void* fn_801F666C(void*,s32);
+extern "C" void fn_8023061C(s32,s32);
+extern "C" u8 fn_8023A51C(s32);
+extern "C" void* fn_8023A478(s32);
+extern "C" s32 fn_8023A240(s32);
+extern "C" const f32 lbl_80541B20,lbl_80541B24,lbl_80541B28,lbl_80541B30,lbl_80541B34;
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+extern "C" void fn_80321200(char* p) {
+    if (I6(p,0x230)==1 || I6(p,0x230)==3) {
+        if (fn_8022F9E4(I6(p,0x23c),I6(p,0x198),0,0)==1) {
+            if (I6(p,0x230)==1) fn_80322F44(p);
+            else I6(p,0x230)=4;
+        }
+        return;
+    }
+    V6(p,0xc)+=V6(p,0x3c);
+    if (I6(p,0x2a8)>0) {
+        fn_801F71A4(&F6(p,0xc),F6(p,0x2b8),lbl_80541AD8,lbl_80541AEC);
+        fn_801F71A4(&F6(p,0x10),F6(p,0x2bc),lbl_80541AD8,lbl_80541AEC);
+        F6(p,0x238)+=lbl_80541AD8;
+        F6(p,0x234)-=lbl_80541B08;
+        if (F6(p,0x234)<lbl_80541AD8) detach__5ActorFv(p);
+        return;
+    }
+    switch(I6(p,0x230)) {
+    case 0:case 8:
+        {
+            s32 room=I6(p,4);
+            char* manager=(char*)fn_802D6A9C();
+            if (((u8*)(manager+0x131df))[room]==0) {
+                if (F6(p,0x14)>lbl_80541AE0) {
+                    if (I6(p,0x27c)==0) {fn_801F0E34(p,0x30048,0);I6(p,0x27c)=1;}
+                    F6(p,0x44)-=lbl_80541AD8;
+                } else if (F6(p,0x14)<lbl_80541AE0) {
+                    if (B6(p,0x2a4)==0) {
+                        I6(p,0x230)=0;
+                        fn_801F2618(p,0,0);
+                        if (I6(p,0x2a8)>0 || B6(p,0x2ac)==1) return;
+                        fn_801F0E34(p,0x30049,0);
+                        fn_8013CC50(I6(p,4),p+0xc,lbl_80541B0C,0x3cf,0,-1,0,0,1);
+                        B6(p,0x2a4)=1;
+                        F6(p,0x44)=lbl_80541AE8*ItemRandom321200()+lbl_80541AE8;
+                        F6(p,0x3c)=lbl_80541AE8-ItemRandom321200();
+                        F6(p,0x40)=lbl_80541AE8-ItemRandom321200();
+                    } else {
+                        B6(p,0x2a4)=0;
+                        F6(p,0x14)=lbl_80541AE0;
+                        F6(p,0x3c)=F6(p,0x40)=F6(p,0x44)=lbl_80541AE0;
+                    }
+                }
+                if (I6(p,0x230)!=0) break;
+                fn_801F2618(p,0,0);
+            } else {
+                JGeometry::TVec3<f32> movement;
+                movement.zero();
+                ((u8(*)(char*,void*,s32))fn_801F2618)(p,&movement,0);
+                if (lbl_80541AE0==movement.y) {
+                    if (I6(p,0x27c)==0) {fn_801F0E34(p,0x30048,0);I6(p,0x27c)=1;}
+                    if (B6(p,0x2a5)==1) {B6(p,0x2a4)=0;B6(p,0x2a5)=0;}
+                    F6(p,0x40)+=lbl_80541B10;
+                } else if (B6(p,0x2a4)==0) {
+                    fn_801F0E34(p,0x30049,0);
+                    fn_8013CC50(I6(p,4),p+0xc,lbl_80541B0C,0x3cf,0,-1,0,0,1);
+                    B6(p,0x2a4)=1;
+                    F6(p,0x3c)=lbl_80541AE8-ItemRandom321200();
+                    F6(p,0x40)=lbl_80541B14-ItemRandom321200();
+                } else {
+                    B6(p,0x2a5)=1;
+                    F6(p,0x3c)=F6(p,0x40)=F6(p,0x44)=lbl_80541AE0;
+                    F6(p,0x40)=lbl_80541AEC;
+                }
+            }
+            JGeometry::TBox2<f32> box;
+            f32 y=F6(p,0x10),x=F6(p,0xc);
+            box.i.x=F6(p,0x60);box.i.y=F6(p,0x64);box.f.x=F6(p,0x68);box.f.y=F6(p,0x6c);
+            box.addPos(x,y);
+            I6(p,0x29c)=-1;
+            if (I6(p,0x2a8)==0) {
+                fn_80322964(p);
+                for (s32 i=0;i<4;i++) {
+                    if (fn_80239C00(i,&box,I6(p,4))==1 && F6(fn_8023E724(i),8)<=lbl_80541AE0) {
+                        I6(p,0x29c)=i;break;
+                    }
+                }
+            }
+            if (I6(p,0x29c)>=0 && !fn_8023ED8C(I6(p,0x29c)) && !fn_8023EBB8(I6(p,0x29c))) {
+                F6(p,0x234)=lbl_80541AEC;
+                I6(p,0xb0)=0;
+                if (B6(lbl_8053AAF8,0x7f)==1) {
+                    if (fn_802308E0(I6(p,0x29c))==1) {
+                        I6(p,0x23c)=I6(p,0x29c);
+                        JGeometry::TVec3<f32> playerPos(*(Vec*)fn_8023E724(I6(p,0x29c)));
+                        JGeometry::TVec3<f32> target;
+                        target.set(playerPos.x,playerPos.y-lbl_80541B18,playerPos.z);
+                        fn_80230498(I6(p,0x29c),&playerPos,0xed,255,-128,-128,1);
+                        V6(p,0xc)=target;
+                        I6(p,0x258)=90;I6(p,0x25c)=10;
+                        F6(p,0x3c)=F6(p,0x40)=F6(p,0x44)=lbl_80541AE0;
+                        I6(p,0x230)=5;
+                        fn_801F3604(p);
+                    }
+                } else if (fn_8022F9E4(I6(p,0x29c),I6(p,0x198),1,0)==1) {
+                    I6(p,0x23c)=I6(p,0x29c);
+                    if (H6(p,0x94)==0) {
+                        fn_80322F44(p);
+                        if (I6(p,4)>=8 && B6(lbl_8053AAF8,0x7e)==1)
+                            fn_8043D67C(lbl_8053AED0,0x1a1,I6(p,0x29c),0);
+                    } else if (H6(p,0x94)==2) fn_80322BC4(p);
+                }
+            }
+            if (B6(lbl_8053AAF8,0x7f)==0) {
+                I6(p,0x278)--;
+                if (I6(p,0x278)<=0) detach__5ActorFv(p);
+            }
+        }
+        break;
+    case 2: {
+
+            s32 room=I6(p,4);
+            char* manager=(char*)fn_802D6A9C();
+            if (((u8*)(manager+0x131df))[room]==0) {
+                if (B6(p,0xc4)) {
+                    V6(p,0xc).set(*(JGeometry::TVec3<f32>*)fn_8023E7B0(I6(p,0xc8)));
+                    I6(p,4)=fn_8023DE58(I6(p,0xc8));
+                    
+                    B6(p,0x28c)=fn_8023BCD4(I6(p,0xc8));
+                } else {
+                    F6(p,0x44)+=lbl_80541B1C;
+                    V6(p,0xc)+=V6(p,0x3c);
+                    if (F6(p,0x14)<lbl_80541AE0 || fn_801F2618(p,0,0)) ((Actor*)p)->v07();
+                }
+            } else {
+                if (B6(p,0xc4)) {
+                    V6(p,0xc).set(*(JGeometry::TVec3<f32>*)fn_8023E7B0(I6(p,0xc8)));
+                    I6(p,4)=fn_8023DE58(I6(p,0xc8));
+                    B6(p,0x28c)=fn_8023BCD4(I6(p,0xc8));
+                } else {
+                    if(I6(p,0x26c)==0) {
+                        F6(p,0x40)-=F6(p,0x44);
+                        F6(p,0x10)-=F6(p,0x14);
+                        F6(p,0x14)=lbl_80541AE0;F6(p,0x44)=lbl_80541AE0;I6(p,0x26c)=1;
+                    }
+                    if(I6(p,0x26c)==1) F6(p,0x40)+=lbl_80541B10;
+                    V6(p,0xc)+=V6(p,0x3c);
+                    if(fn_801F2618(p,0,0)) ((Actor*)p)->v07();
+                }
+            }
+
+        if(I6(p,0x24c)<=0 && I6(p,0x294)==I6(p,0x264) && I6(p,0x248)<=1) {I6(p,0x248)=90;I6(p,0x230)=4;}
+        break;
+    }
+    case 3:I6(p,0x230)=4;break;
+    case 4: {
+
+            s32 room=I6(p,4);
+            char* manager=(char*)fn_802D6A9C();
+            if (((u8*)(manager+0x131df))[room]==0) {
+                if (B6(p,0xc4)) {
+                    V6(p,0xc).set(*(JGeometry::TVec3<f32>*)fn_8023E7B0(I6(p,0xc8)));
+                    I6(p,4)=fn_8023DE58(I6(p,0xc8));
+                    I6(p,0x290)=(fn_80230CFC(I6(p,0xc8))&1)<<1;
+                    B6(p,0x28c)=fn_8023BCD4(I6(p,0xc8));
+                } else {
+                    F6(p,0x44)+=lbl_80541B1C;
+                    V6(p,0xc)+=V6(p,0x3c);
+                    if (F6(p,0x14)<lbl_80541AE0 || fn_801F2618(p,0,0)) ((Actor*)p)->v07();
+                }
+            } else {
+                if (B6(p,0xc4)) {
+                    V6(p,0xc).set(*(JGeometry::TVec3<f32>*)fn_8023E7B0(I6(p,0xc8)));
+                    I6(p,4)=fn_8023DE58(I6(p,0xc8));
+                    B6(p,0x28c)=fn_8023BCD4(I6(p,0xc8));
+                } else {
+                    if(I6(p,0x26c)==0) {
+                        F6(p,0x40)-=F6(p,0x44);
+                        F6(p,0x10)-=F6(p,0x14);
+                        F6(p,0x14)=lbl_80541AE0;F6(p,0x44)=lbl_80541AE0;I6(p,0x26c)=1;
+                    }
+                    if(I6(p,0x26c)==1) F6(p,0x40)+=lbl_80541B10;
+                    V6(p,0xc)+=V6(p,0x3c);
+                    if(fn_801F2618(p,0,0)) ((Actor*)p)->v07();
+                }
+            }
+
+        if(I6(p,0x248)%30==29) fn_801F0E34(p,0x3006e,0);
+        break;
+    }
+    case 5: {
+        JGeometry::TVec3<f32> playerPos(*(Vec*)fn_8023E724(I6(p,0x29c)));
+        I6(p,0x258)--;
+        if(I6(p,0x258)<=0) {
+            if(B6(lbl_8053AAF8,0x7e)==1) {
+                s32 room=I6(p,4);
+                if(room>=8 && B6(lbl_8053AAF8,0x7e)==1) fn_8043D67C(lbl_8053AED0,0x1a1,I6(p,0x29c),0);
+                else {
+                    JGeometry::TVec3<f32> pos=V6(p,0xc);
+                    fn_8038BD08(I6(p,0x29c),0xd3,room,&pos,1);
+                }
+            } else {
+                s32 room=I6(p,4);
+                JGeometry::TVec3<f32> pos=V6(p,0xc);
+                fn_8038BD08(I6(p,0x29c),0xd3,room,&pos,1);
+            }
+            I6(p,0x230)=6;
+        } else {
+            I6(p,0x25c)--;
+            if(I6(p,0x25c)<=0) {
+                I6(p,0x270)++;
+                if(I6(p,0x270)==1) {
+                    F6(p,0x10)=playerPos.y-lbl_80541B20;I6(p,0x25c)=4;
+                    fn_80230F44(fn_8022F340(I6(p,0x29c)),0x1000002);
+                } else if(I6(p,0x270)<=3) {
+                    I6(p,0x270)=3;F6(p,0x10)=playerPos.y-lbl_80541B24;I6(p,0x25c)=200;
+                    I6(p,0x2c8)=fn_8013CC50(I6(p,4),p+0xc,lbl_80541B28,0x562,0,1,0,0,1);
+                    I6(p,0x2c4)=fn_8013CC50(I6(p,4),p+0xc,lbl_80541B2C,0x563,0,1,0,0,1);
+                }
+                fn_80230498(I6(p,0x29c),&playerPos,I6(p,0x270)+0xed,255,-128,-128,1);
+            }
+        }
+        break;
+    }
+    case 6: {
+        if(fn_80388EEC(I6(p,0x29c))) {
+            s32 id=I6(p,0x2a0);
+            if(id>=0) {
+                char* obj=(char*)fn_801F666C(fn_801F856C(),id);
+                if(obj) B6(obj,0x11c)=0;
+                I6(p,0x2a0)=-1;
+            }
+            fn_8023061C(I6(p,0x29c),0);
+            if(fn_8022F9E4(I6(p,0x29c),I6(p,0x198),0,0)) {
+                char* emitter=*(char**)(p+0x2c4);
+                if(emitter) {I6(emitter,0xf4)|=1;I6(emitter,0x24)=1;I6(p,0x2c4)=0;}
+                emitter=*(char**)(p+0x2c8);
+                if(emitter) {I6(emitter,0xf4)|=1;I6(emitter,0x24)=1;I6(p,0x2c8)=0;}
+                I6(p,0x23c)=I6(p,0x29c);
+                if(H6(p,0x94)==0) fn_80322F44(p);
+                else if(H6(p,0x94)==2) fn_80322BC4(p);
+            }
+        } else if(I6(p,0x2a0)<0) {
+            I6(p,0x2a0)=Actor_CreateByID(fn_801F856C(),0x50454646,I6(p,4),(f32*)(p+0xc),(I6(p,0x29c)&3)|0x24,-1,-1);
+        }
+        break;
+    }
+    case 7: {
+        s32 room;
+        s32 i;
+        for(i=0;i<4;i++) {
+            if(fn_8023A51C(i)==1) {
+                room=I6(p,4);
+                if(room==fn_8023DE58(i)) {
+                    JGeometry::TVec3<f32>* pos=(JGeometry::TVec3<f32>*)fn_8023A478(i);
+                    f32 dx=pos->x-F6(p,0xc),dy=pos->y-F6(p,0x10);
+                    f32 xx=dx*dx; f32 yy=dy*dy;
+                    if(!(xx+yy>lbl_80541B30)) {
+                        s32 dir=-1;
+                        s32 kind=I6(p,0x2b0);
+                        switch(kind) {
+                        case 1:case 6:dir=fn_8023A240(kind)^1;break;
+                        case 2:case 3:case 4:case 5:dir=kind-2;break;
+                        case 7:case 8:case 9:case 10:dir=kind-7;break;
+                        }
+                        switch(dir) {
+                        case 0:{JGeometry::TVec3<f32> v(lbl_80541AE4,lbl_80541AE0,lbl_80541AE4);V6(p,0x3c)=v;break;}
+                        case 1:{JGeometry::TVec3<f32> v(lbl_80541B34,lbl_80541AE0,lbl_80541AE4);V6(p,0x3c)=v;break;}
+                        case 2:{JGeometry::TVec3<f32> v(lbl_80541AE0,lbl_80541AE4,lbl_80541AE4);V6(p,0x3c)=v;break;}
+                        case 3:{JGeometry::TVec3<f32> v(lbl_80541AE0,lbl_80541B34,lbl_80541AE4);V6(p,0x3c)=v;break;}
+                        default:{JGeometry::TVec3<f32> v(lbl_80541AE0,lbl_80541AE0,lbl_80541AE4);V6(p,0x3c)=v;break;}
+                        }
+                        I6(p,0x2b0)=0;I6(p,0xb0)=0x2100a;I6(p,0x230)=8;return;
+                    }
+                }
+            }
+        }
+        break;
+    }
+    }
+    fn_803226EC(p);
+}
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 extern "C" void fn_803221F4(char* p) {
     *(f32*)(p + 0x44) = lbl_80541AE0;
     *(f32*)(p + 0x40) = lbl_80541AE0;
