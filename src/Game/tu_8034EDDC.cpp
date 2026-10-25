@@ -15,6 +15,12 @@ extern "C" char lbl_8050AE38[];
 extern const f32 lbl_8054261C;
 extern const f64 lbl_805425F8;
 extern const f32 lbl_805425D8;
+extern const f32 lbl_805425DC;
+extern const f32 lbl_805425E0;
+extern const f32 lbl_805425E4;
+extern const f32 lbl_805425E8;
+extern const f32 lbl_805425EC;
+extern const f32 lbl_805425F0;
 extern const f32 lbl_80542600;
 
 struct Actor {
@@ -116,6 +122,73 @@ extern "C" s32 fn_80350274(s32 param_1, s32 param_2, s32 param_3) {
         return 0;
     }
     return 1;
+}
+
+extern "C" s32 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" s32 fn_803502CC(u8* self) {
+    s32 i;
+    f32* p;
+    s32 j;
+    u8* base;
+    f32 s0 = *(f32*)(self + 0x80);
+    f32 s1 = *(f32*)(self + 0x84);
+    f32 s2 = *(f32*)(self + 0x88);
+    f32 s3 = *(f32*)(self + 0x8c);
+
+    if (*(s32*)(self + 0x258) == 4) {
+        p = (f32*)lbl_8050ADF8;
+        for (i = 0; i < 4; i++) {
+            *(f32*)(self + 0x80) = p[0];
+            *(f32*)(self + 0x84) = p[1];
+            *(f32*)(self + 0x88) = p[2];
+            *(f32*)(self + 0x8c) = p[3];
+            if (*(s32*)(self + 0x268) == 0 || *(s32*)(self + 0x268) == 1) {
+                *(f32*)(self + 0x8c) = *(f32*)(self + 0x8c) - lbl_80542604;
+            } else {
+                *(f32*)(self + 0x84) = *(f32*)(self + 0x84) + *(f32*)(self + 0x290);
+                *(f32*)(self + 0x8c) = *(f32*)(self + 0x8c) + *(f32*)(self + 0x290);
+            }
+            if ((u8)fn_801F2618(self, 0, 0) == 1) {
+                *(f32*)(self + 0x80) = s0;
+                *(f32*)(self + 0x84) = s1;
+                *(f32*)(self + 0x88) = s2;
+                *(f32*)(self + 0x8c) = s3;
+                return 1;
+            }
+            p += 4;
+        }
+    } else if (*(s32*)(self + 0x258) >= 0x10 && *(s32*)(self + 0x258) <= 0x14) {
+        base = (u8*)lbl_8050AE38 + (*(s32*)(self + 0x258) - 0x10) * 0x20;
+        j = 0;
+        for (i = 0; i < 2; i++) {
+            p = (f32*)(base + j);
+            *(f32*)(self + 0x80) = p[0];
+            *(f32*)(self + 0x84) = p[1];
+            *(f32*)(self + 0x88) = p[2];
+            *(f32*)(self + 0x8c) = p[3];
+            if (*(s32*)(self + 0x268) == 0 || *(s32*)(self + 0x268) == 1) {
+                *(f32*)(self + 0x8c) = *(f32*)(self + 0x8c) - lbl_80542604;
+            } else {
+                *(f32*)(self + 0x84) = *(f32*)(self + 0x84) + *(f32*)(self + 0x290);
+                *(f32*)(self + 0x8c) = *(f32*)(self + 0x8c) + *(f32*)(self + 0x290);
+            }
+            if ((u8)fn_801F2618(self, 0, 0) == 1) {
+                *(f32*)(self + 0x80) = s0;
+                *(f32*)(self + 0x84) = s1;
+                *(f32*)(self + 0x88) = s2;
+                *(f32*)(self + 0x8c) = s3;
+                return 1;
+            }
+            j += 0x10;
+        }
+    } else {
+        return fn_801F2618(self, 0, 0);
+    }
+    *(f32*)(self + 0x80) = s0;
+    *(f32*)(self + 0x84) = s1;
+    *(f32*)(self + 0x88) = s2;
+    *(f32*)(self + 0x8c) = s3;
+    return 0;
 }
 
 extern "C" s32 fn_80350530(u8* self) {
