@@ -778,10 +778,6 @@ extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
 extern "C" void fn_80444650(void* p);
 extern "C" void fn_8042EB98(void* p);
 
-static inline f32 Tu411Center(const f32 coordinate, const f32 bounds, const f32 extent, const f32 scale) {
-    return (coordinate - bounds) - extent * scale;
-}
-
 // States in which the "Pphu01" pointer pane is shown.
 static inline bool Tu411ShowState(s32 st) {
 	if (st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 15) <= 3 ||
