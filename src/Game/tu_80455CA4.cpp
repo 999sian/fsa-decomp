@@ -29,7 +29,8 @@ extern u8* lbl_8053AF80;
 typedef void (*VFn)(void*);
 typedef u32 (*VFnArg)(void*, void*);
 extern "C" void writePort__8JASTrackFUlUs(void* a, u32 b, u16 c);
-extern "C" void fn_80455CA4(u8* p, void** snd, f32* src, u32* id) {
+#pragma exceptions off
+extern "C" void fn_80455CA4(u8* p, void** snd, const f32* __restrict src, u32* id) {
     if (src[0] < 0.0f) {
         ((JAISoundParamsMove*)((u8*)*snd + 0x48))->movePan(0.0f, 0);
         ((JAISoundParamsMove*)((u8*)*snd + 0x48))->moveVolume(0.4f, 0);
@@ -51,7 +52,7 @@ extern "C" void fn_80455CA4(u8* p, void** snd, f32* src, u32* id) {
         return;
     }
     if (src[0] < 0.1f || src[1] < 0.1f) {
-        f32 m = (src[0] <= src[1]) ? src[1] : src[0];
+        f32 m = (src[0] <= src[1]) ? src[0] : src[1];
         f32 v = 0.4f + 10.0f * m;
         if (v > 1.0f) {
             v = 1.0f;
@@ -61,7 +62,7 @@ extern "C" void fn_80455CA4(u8* p, void** snd, f32* src, u32* id) {
         return;
     }
     if (src[0] > 0.9f || src[1] > 0.9f) {
-        f32 m = (src[0] >= src[1]) ? src[1] : src[0];
+        f32 m = (src[0] >= src[1]) ? src[0] : src[1];
         f32 v = 0.4f + 10.0f * (1.0f - m);
         if (v > 1.0f) {
             v = 1.0f;
@@ -81,7 +82,7 @@ extern "C" void fn_80455CA4(u8* p, void** snd, f32* src, u32* id) {
         }
     }
 }
-
+#pragma exceptions reset
 extern "C" void fn_80455F40(u8* param_1, void** param_2) {
     struct SndVT {
         virtual void v0();
