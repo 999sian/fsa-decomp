@@ -60,12 +60,12 @@ extern "C" int* fn_8021FAB8(int* this_, short n) {
     if (this_) {
         int i = 0;
         void** p = (void**)this_;
-        void* null = (void*)i;
+        int null = i;
         do {
             if (p[0xd]) {
                 void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, p[0xd]);
-                p[0xd] = null;
+                p[0xd] = (void*)null;
             }
             i++;
             p++;
@@ -99,4 +99,24 @@ extern "C" void fn_8021FB44(char* p) {
 }
 
 void fn_8021FB94(void) {}
+extern int __float_epsilon[];
+extern "C" void fn_8013CB44(void*, void*, void*, void*, int);
 
+static inline void approachTimed(float* value, float target, float frames) {
+    if (frames < *(float*)__float_epsilon) {
+        *value = target;
+    } else {
+        *value += (lbl_8053FDD8 / frames) * (target - *value);
+    }
+}
+
+static inline void setEmitterScale(void* emitter, float scale) {
+    if (emitter) {
+        char* p = (char*)emitter;
+        *(float*)(p + 0x98) = scale;
+        *(float*)(p + 0x9c) = scale;
+        *(float*)(p + 0xa0) = scale;
+        *(float*)(p + 0xb0) = scale;
+        *(float*)(p + 0xb4) = scale;
+    }
+}
