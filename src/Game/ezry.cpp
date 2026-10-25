@@ -175,7 +175,6 @@ extern const f32 lbl_8053D6B0;
 extern const f32 lbl_8053D6B4;
 
 struct EzryTimers { u8 pad[0x234]; s32 t[4]; };
-struct EzrySaveRecord { u8 pad[0x87]; u8 flags; u8 tail[0x40]; };
 
 #define EZRY_RND() (((EzryRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1())
 
