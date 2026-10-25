@@ -98,12 +98,13 @@ static inline s32 fn_802A02A8_Refresh(JGeometry::TVec2<f32>* pos, u32 room, u16 
     return idx;
 }
 
-static inline void fn_8029E9EC_sub(JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
+static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
     JGeometry::TVec2<f32> t = *pos;
     void* mgr = lbl_8053AC98;
     *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
+    s32 tile = *(s32*)((u8*)mgr + 0x20);
     fn_802D782C(fn_802D6A9C(), 1);
-    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)mgr + 0x20), param);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, tile, param);
     s32 idx = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((u8*)mgr + 0x20));
     if (idx != -1) {
         fn_802D7D00(fn_802D6A9C(), room, idx, 1);
@@ -134,19 +135,26 @@ extern "C" void fn_8029D898(void* a, s32 b) {
     fn_802D7970(fn_802D6A9C(), v);
 }
 
-extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s32 param_4, s32 param_5) {
+#pragma opt_propagation off
+#pragma opt_common_subs off
+extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 arg3, s32 arg4, s32 param_5) {
+    s32 param_4;
+    s32 param_3;
+    param_3 = arg3;
+    param_4 = arg4;
     void* mgr = fn_802D6A9C();
     JGeometry::TBox2f* src;
     JGeometry::TBox2f base;
     s32 x;
     s32 y;
-    u32 cell;
-    u32 rowStart;
-    u32 slot;
+    s32 offset;
     u32 room;
-    u16* row;
-    u16* pv;
+    u32 cell;
     u16 v;
+    u16* pv;
+    u16* row;
+    s32 rowStart;
+    u32 slot;
     s32 i;
     s32 j;
 
@@ -168,11 +176,12 @@ extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s3
     } else if (y >= 0x200) {
         y = 0x1ff;
     }
-    cell = ((x - 0x10) & 0x100) | (((y - 0x30) & 0x100) << 1) | ((y - 0x30) & 0xf0) | (((x - 0x10) >> 4) & 0xf);
+    cell = (((y - 0x30) & 0x100) << 1) | ((x - 0x10) & 0x100) | ((y - 0x30) & 0xf0) | (((x - 0x10) >> 4) & 0xf);
     room = param_3 + param_4;
+    offset = param_5 * 0x28;
 
     rowStart = cell;
-    row = (u16*)((u8*)lbl_8046C5A0 + param_5 * 0x28);
+    row = (u16*)((u8*)lbl_8046C5A0 + offset);
     for (i = 0; i < 4; i++) {
         pv = row;
         slot = rowStart;
@@ -184,11 +193,11 @@ extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s3
             if ((slot & 0xf) == 0) {
                 slot += 0xf0;
             }
-            pv++;
+            pv += 1;
         }
         {
-            u32 next = rowStart + 0x10;
-            if ((rowStart & 0x100) != (next & 0x100)) {
+            s32 next = rowStart + 0x10;
+            if ((s32)(s32)(rowStart & 0x100) != (s32)(next & 0x100)) {
                 next = rowStart + 0x110;
             }
             rowStart = next;
@@ -197,10 +206,10 @@ extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s3
     }
 
     rowStart = cell + 0x10;
-    if ((cell & 0x100) != (rowStart & 0x100)) {
+    if ((s32)(cell & 0x100) != (s32)(rowStart & 0x100)) {
         rowStart = cell + 0x110;
     }
-    row = (u16*)((u8*)lbl_8046C528 + param_5 * 0x28);
+    row = (u16*)((u8*)lbl_8046C528 + offset);
     for (i = 0; i < 4; i++) {
         pv = row;
         slot = rowStart;
@@ -208,15 +217,15 @@ extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s3
             v = *pv;
             fn_802D782C(fn_802D6A9C(), 1);
             fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), param_3, slot, v);
-            slot++;
-            if ((slot & 0xf) == 0) {
-                slot += 0xf0;
+            slot += 1;
+            if (((unsigned)slot & 0xf) == 0) {
+                slot += (short)0xf0;
             }
             pv++;
         }
         {
-            u32 next = rowStart + 0x10;
-            if ((rowStart & 0x100) != (next & 0x100)) {
+            s32 next = rowStart + 0x10;
+            if ((s32)(rowStart & 0x100) != (s32)(next & 0x100)) {
                 next = rowStart + 0x110;
             }
             rowStart = next;
@@ -224,7 +233,7 @@ extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s3
         row += 4;
     }
 }
-
+#pragma opt_common_subs reset
 #pragma opt_propagation off
 extern "C" void fn_8029DB2C(void* p, u32 a, u32 room, s32 flag, u32 v1, u32 v2, u32 v3, u32 v4, u16 v5, u16 v6) {
     u32 a1;
