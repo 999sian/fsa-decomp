@@ -131,7 +131,7 @@ extern "C" void fn_804465B8(void* self_) {
 
     self = (u8*)self_;
     slot = (void**)self;
-    params = lbl_80490038;
+    params = (u8*)lbl_80490038;
     for (i = 0; i < 4; i++, params += 0xc0) {
         if (i < 2) {
             fn_80402E08(slot[2], lbl_80543D90, fn_8043D514(lbl_8053AED0));
