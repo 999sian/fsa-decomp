@@ -167,7 +167,7 @@ inline void J3DGDSetZMode(u8 compareEnable, GXCompare func, u8 writeEnable)
 	J3DGDWriteBPCmd(compareEnable | func << 1 | writeEnable << 4 | 0x40 << 24);
 }
 
-inline void J3DGDSetZCompLoc(u32 compLocEnable)
+inline void J3DGDSetZCompLoc(u8 compLocEnable)
 {
 	J3DGDWriteBPCmd(0xFE000040);
 	J3DGDWriteBPCmd(compLocEnable << 6 | 0x43 << 24);
