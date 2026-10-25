@@ -77,6 +77,12 @@ extern "C" void* fn_8035F360(void* param_1, s16 param_2) {
 }
 
 extern "C" f32 __fres(f32);
+extern "C" f32 lbl_80542A18;
+extern "C" f32 lbl_80542A1C;
+extern "C" f32 lbl_80542A20;
+extern "C" f32 lbl_80542A24;
+extern "C" f32 lbl_80542A28;
+extern "C" f32 lbl_80542A2C;
 extern "C" void fn_8035F9C8(u8* param_1) {
     if (*(s32*)(param_1 + 0x234) == 0) {
         if (lbl_804742A8[*(s32*)(param_1 + 0x240) * 2] < 0) {
@@ -90,7 +96,7 @@ extern "C" void fn_8035F9C8(u8* param_1) {
         *(f32*)(param_1 + 0x26c) = *(f32*)(param_1 + 0x26c) - 0.2f;
     }
     f32 inv = __fres(6.28318f * *(f32*)(param_1 + 0x26c));
-    s32 step = (s32)(65536.0f * (1.3f * inv));
+    s32 step = (s32)(65536.0f * (inv * 1.3f));
     *(s16*)(param_1 + 0x254) = *(s16*)(param_1 + 0x254) - step;
     *(f32*)(param_1 + 0x3c) = 1.3f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].cos;
     *(f32*)(param_1 + 0x40) = 1.3f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].sin;
@@ -124,7 +130,7 @@ extern "C" void fn_8035FB64(u8* param_1) {
         *(s32*)(param_1 + 0x240) = *(s32*)(param_1 + 0x240) + 1;
     }
     if (*(f32*)(param_1 + 0x26c) < 16.0f) {
-        *(f32*)(param_1 + 0x26c) = *(f32*)(param_1 + 0x26c) + 0.2f;
+        *(f32*)(param_1 + 0x26c) += 0.2f;
     }
     s32 step = (s32)(65536.0f * (__fres(6.28318f * *(f32*)(param_1 + 0x26c)) * 1.75f));
     *(s16*)(param_1 + 0x254) = *(s16*)(param_1 + 0x254) - step;
@@ -134,9 +140,8 @@ extern "C" void fn_8035FB64(u8* param_1) {
     *(JGeometry::TVec3<f32>*)(param_1 + 0xc) += *(JGeometry::TVec3<f32>*)(param_1 + 0x3c);
     *(s32*)(param_1 + 0x264) = *(s32*)(param_1 + 0x264) + (s16)step;
     if (*(f32*)(param_1 + 0x26c) >= 16.0f) {
-        return;
+        fn_80360914(param_1);
     }
-    fn_80360914(param_1);
     *(f32*)(param_1 + 0x44) = 0.0f;
 }
 
@@ -244,6 +249,211 @@ extern "C" void fn_8035FF70(u8* param_1) {
     if (*(s32*)(param_1 + 0x280) == 0) {
         fn_80360914(param_1);
     }
+}
+
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" f32 lbl_80542A20;
+extern "C" f32 lbl_80542A24;
+extern "C" f32 lbl_80542A38;
+extern "C" f32 lbl_80542A3C;
+extern "C" void fn_8036003C(u8* p) {
+    struct Entry {
+        s32 m_0;
+        u32 m_4;
+    };
+    s32 oldState = *(s32*)(p + 0x274);
+    *(s32*)(p + 0x248) = *(s32*)(p + 0x244);
+    if (*(s32*)(p + 0x270) == 0) {
+        s32 tbl = *(s32*)(p + 0x244);
+        u8 done;
+        if (*(s32*)(p + 0x234) == 0) {
+            s32 idx = *(s32*)(p + 0x240);
+            Entry* base = (Entry*)lbl_804ADA98[tbl];
+            if (base[idx].m_0 < 0) {
+                done = 1;
+            } else {
+                *(u32*)(p + 0x234) = base[idx].m_4;
+                *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
+                *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+                done = 0;
+            }
+        } else {
+            done = 0;
+        }
+        if (done == 1 && *(u8*)(p + 0x2b0) == 1) {
+            *(s32*)(p + 0x244) = lbl_80474020[*(s32*)(p + 0x274)];
+            if (fn_801CD664(100) < 5 || (*(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x27c) != 0 && *(s32*)(p + 0x27c) != 1 && *(f32*)(p + 0x26c) < lbl_80542A38)) {
+                *(s32*)(p + 0x244) = *(s32*)(p + 0x244) + 1;
+            }
+            tbl = *(s32*)(p + 0x244);
+            *(s32*)(p + 0x234) = 0;
+            *(s32*)(p + 0x240) = 0;
+            if (*(s32*)(p + 0x234) == 0) {
+                s32 idx = *(s32*)(p + 0x240);
+                Entry* base = (Entry*)lbl_804ADA98[tbl];
+                if (base[idx].m_0 >= 0) {
+                    *(u32*)(p + 0x234) = base[idx].m_4;
+                    *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
+                    *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+                }
+            }
+            if ((*(u32*)(p + 0x248) & 1) == 0 && (*(u32*)(p + 0x244) & 1) != 0) {
+                *(s32*)(p + 0x240) = 4;
+                *(s32*)(p + 0x234) = 0;
+                if (*(s32*)(p + 0x234) == 0) {
+                    s32 idx = *(s32*)(p + 0x240);
+                    Entry* base = (Entry*)lbl_804ADA98[tbl];
+                    if (base[idx].m_0 >= 0) {
+                        *(u32*)(p + 0x234) = base[idx].m_4;
+                        *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
+                        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+                    }
+                }
+                *(s32*)(p + 0x240) = 0;
+                *(s32*)(p + 0x234) = 6;
+            }
+        }
+    } else {
+        if (*(s32*)(p + 0x250) == 9 && *(f32*)(p + 0x10) >= lbl_80542A3C) {
+            *(s8*)(p + 0x24c) = -1;
+            *(u8*)(p + 0x24d) = 0;
+        } else {
+            *(u8*)(p + 0x24c) = 1;
+            *(u8*)(p + 0x24d) = 1;
+        }
+        if (*(s32*)(p + 0x234) == 0) {
+            if (lbl_804742A8[*(s32*)(p + 0x240) * 2] < 0) {
+                *(s32*)(p + 0x240) = 0;
+            }
+            *(s32*)(p + 0x234) = lbl_804742A8[*(s32*)(p + 0x240) * 2 + 1];
+            *(s32*)(p + 0x23c) = lbl_804742A8[*(s32*)(p + 0x240) * 2];
+            *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+        }
+    }
+    if (*(s32*)(p + 0x27c) == 0) {
+        *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+        if (__fabsf(*(f32*)(p + 0x288) - *(f32*)(p + 0xc)) < *(f32*)(p + 0x268) &&
+            __fabsf(*(f32*)(p + 0x28c) - *(f32*)(p + 0x10)) < *(f32*)(p + 0x268)) {
+            *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x288);
+            fn_80360914(p);
+            goto end;
+        }
+    } else if (*(s32*)(p + 0x27c) == 1) {
+        *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+        f32 m = PSVECMag((Vec*)(p + 0x3c));
+        *(f32*)(p + 0x25c) += m;
+        if (*(f32*)(p + 0x25c) >= *(f32*)(p + 0x258)) {
+            *(f32*)(p + 0x25c) = lbl_80542A00;
+            fn_80360914(p);
+            goto end;
+        }
+    } else if (*(s32*)(p + 0x27c) == 2 || *(s32*)(p + 0x27c) == 4) {
+        JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        f32 inv = __fres(lbl_80542A20 * *(f32*)(p + 0x26c));
+        s32 step = (s32)(lbl_80542A24 * (inv * *(f32*)(p + 0x268)));
+        if (*(s32*)(p + 0x27c) == 2) {
+            *(s16*)(p + 0x254) = *(s16*)(p + 0x254) + step;
+        } else {
+            *(s16*)(p + 0x254) = *(s16*)(p + 0x254) - step;
+        }
+        *(f32*)(p + 0x3c) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
+        *(f32*)(p + 0x40) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].sin;
+        *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+        *(s32*)(p + 0x264) += (s16)step;
+        if (*(s32*)(p + 0x264) >= *(s32*)(p + 0x260)) {
+            s16 d;
+            if (*(s32*)(p + 0x27c) == 2) {
+                d = (s16)(*(s32*)(p + 0x260) - *(s32*)(p + 0x264));
+            } else {
+                d = (s16)(*(s32*)(p + 0x264) - *(s32*)(p + 0x260));
+            }
+            if (d != 0) {
+                *(JGeometry::TVec3<f32>*)(p + 0xc) = saved;
+                *(s16*)(p + 0x254) = *(s16*)(p + 0x254) + d;
+                *(f32*)(p + 0x3c) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
+                *(f32*)(p + 0x40) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].sin;
+                *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+            }
+            fn_80360914(p);
+            goto end;
+        }
+    } else {
+        f32 inv = __fres(lbl_80542A20 * *(f32*)(p + 0x26c));
+        s32 step = (s32)(lbl_80542A24 * (inv * *(f32*)(p + 0x268)));
+        if (*(s32*)(p + 0x27c) == 3) {
+            *(s16*)(p + 0x254) = *(s16*)(p + 0x254) + step;
+        } else {
+            *(s16*)(p + 0x254) = *(s16*)(p + 0x254) - step;
+        }
+        *(f32*)(p + 0x3c) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
+        *(f32*)(p + 0x40) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].sin;
+        *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+        *(s32*)(p + 0x264) += (s16)step;
+        if (*(s32*)(p + 0x264) >= *(s32*)(p + 0x260)) {
+            fn_80360914(p);
+            goto end;
+        }
+    }
+    {
+        f32 ang = JMath::atanTable_.atan2_(*(f32*)(p + 0x40), *(f32*)(p + 0x3c));
+        u16 q = (u16)(s32)(ang * lbl_80542A14);
+        s32 ns;
+        if (q >= 0x2000 && q < 0x6000) {
+            ns = 3;
+        } else if (q >= 0x6000 && q < 0xa000) {
+            ns = 1;
+        } else if (q >= 0xa000 && q < 0xe000) {
+            ns = 2;
+        } else {
+            ns = 0;
+        }
+        *(s32*)(p + 0x274) = ns;
+        if (*(s32*)(p + 0x270) == 0 && *(u8*)(p + 0x2b0) == 1 && *(s32*)(p + 0x274) != oldState) {
+            s32 tbl = lbl_80474020[*(s32*)(p + 0x274)];
+            *(s32*)(p + 0x244) = tbl;
+            if ((*(u32*)(p + 0x248) & 1) != 1 && fn_801CD664(100) >= 5 && *(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x27c) != 0 && *(s32*)(p + 0x27c) != 1 && *(f32*)(p + 0x26c) < lbl_80542A38) {
+                *(s32*)(p + 0x244) = *(s32*)(p + 0x244) + 1;
+            }
+            tbl = *(s32*)(p + 0x244);
+            if ((*(u32*)(p + 0x248) & 1) == 0) {
+                *(s32*)(p + 0x234) = 0;
+                *(s32*)(p + 0x240) = 0;
+                if (*(s32*)(p + 0x234) == 0) {
+                    s32 idx = *(s32*)(p + 0x240);
+                    Entry* base = (Entry*)lbl_804ADA98[tbl];
+                    if (base[idx].m_0 >= 0) {
+                        *(u32*)(p + 0x234) = base[idx].m_4;
+                        *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
+                        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+                    }
+                }
+                if ((*(u32*)(p + 0x244) & 1) != 0) {
+                    *(s32*)(p + 0x240) = 4;
+                    *(s32*)(p + 0x234) = 0;
+                    if (*(s32*)(p + 0x234) == 0) {
+                        s32 idx = *(s32*)(p + 0x240);
+                        Entry* base = (Entry*)lbl_804ADA98[tbl];
+                        if (base[idx].m_0 >= 0) {
+                            *(u32*)(p + 0x234) = base[idx].m_4;
+                            *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
+                            *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+                        }
+                    }
+                    *(s32*)(p + 0x240) = 0;
+                    *(s32*)(p + 0x234) = 6;
+                }
+            } else {
+                Entry* base = (Entry*)lbl_804ADA98[tbl];
+                if (*(s32*)(p + 0x240) == 0) {
+                    *(s32*)(p + 0x23c) = base[4].m_0;
+                } else {
+                    *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240) - 1].m_0;
+                }
+            }
+        }
+    }
+end:
+    ;
 }
 
 extern "C" void fn_803613D0(u8* param_1) {
