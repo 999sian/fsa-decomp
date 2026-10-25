@@ -141,11 +141,9 @@ static inline bool icwlHitObject(u8* this_) {
 }
 
 static inline bool icwlHitFire(u8* this_) {
-    ICWLVec2 v;
     ICWLBox box;
     icwlGetBox(this_, &box);
-    v.x = lbl_8053C8B8;
-    v.y = lbl_8053C8B8;
+    ICWLVec2 v(lbl_8053C8B8, lbl_8053C8B8);
     if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0 || fn_801F2718(this_, 0x46495245) >= 0) {
         return true;
     }
@@ -168,14 +166,8 @@ extern "C" void fn_8011E030(u8* this_) {
             break;
         }
         if (icwlHitFire(this_)) {
-            if (*(void**)(this_ + 0x100) != 0) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x100));
-                *(void**)(this_ + 0x100) = 0;
-            }
-            if (*(void**)(this_ + 0x104) != 0) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x104));
-                *(void**)(this_ + 0x104) = 0;
-            }
+            icwlKillEmitter((void**)(this_ + 0x100));
+            icwlKillEmitter((void**)(this_ + 0x104));
             if (*(s32*)(this_ + 0x4) == 0) {
                 f32 scale = lbl_8053C8BC;
                 if (*(s32*)(this_ + 0x230) == 1) {
