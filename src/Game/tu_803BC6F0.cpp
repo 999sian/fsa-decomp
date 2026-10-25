@@ -1188,7 +1188,7 @@ extern "C" void fn_803C1054(u8* p) {
         fn_80402E08(*(void**)(p + 0x20), 600.0f, *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc));
         *(u16*)(*(u8**)(p + 0x20) + 0x20) = 0;
         ((J2DTextBoxVt*)*(void**)(*(u8**)(p + 0x20) + 4))->v9(0);
-        pair = lbl_80476938;
+        pair = (u32*)lbl_80476938;
         for (i = 0; i < 9; i++) {
             fn_804023D0(*(void**)(p + 0x20), ((J2DTextBoxVt*)*(void**)(p + 4))->v15(0, pair[0], pair[1]), p[0x196 + i]);
             pair += 2;
