@@ -386,7 +386,11 @@ extern "C" s32 fn_80149FDC(char* this_) {
 
 extern "C" s32 lbl_8049F640[];
 extern "C" const f32 lbl_8053D118;
+static inline s32 dgtlTrailHeightIndex(s32 index) {
+    return (s32)((f32)index * lbl_8053D118);
+}
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
+#pragma opt_propagation off
 extern "C" void fn_8014A2CC(char* p, s32 mode) {
     char* pos;
     u16* angle;
@@ -420,7 +424,7 @@ extern "C" void fn_8014A2CC(char* p, s32 mode) {
     angle = (u16*)p;
     table = lbl_8049F640;
     eff = p;
-    for (i=0; i<6; i++, table++, eff+=4, pos+=12) {
+    for (i=0; i<6; i++, pos+=12, angle++, table++, eff+=4) {
         s32 index = lbl_8049F640[start+i];
         char* src = p + index*12;
         *(f32*)(pos+0x2cc) = *(f32*)(src+0x3d8);
@@ -428,8 +432,7 @@ extern "C" void fn_8014A2CC(char* p, s32 mode) {
         *(f32*)(pos+0x2d4) = *(f32*)(src+0x3e0);
         *(u16*)((char*)angle+0x2ae) = *(u16*)(p+0x338+index*2);
         if (mode != 0) {
-            index = (s32)((f32)*table*lbl_8053D118);
-            *(f32*)(pos+0x2d4) = *(f32*)(p+0x3e0+index*12);
+            *(f32*)(pos+0x2d4) = *(f32*)(p+0x3e0+static_cast<int>((f32)*table*lbl_8053D118)*12);
         }
         if (i<5) {
             void* emitter = *(void**)(eff+0x798);
@@ -440,28 +443,28 @@ extern "C" void fn_8014A2CC(char* p, s32 mode) {
                 fn_8013CB44(*(void**)(eff+0x798), p+0x2c0+(i+1)*12,0,0,1);
             }
         }
-        angle++;
     }
     s32* tail = lbl_8049F640+6;
+    DgtlObj* obj = (DgtlObj*)p;
     s32 index = tail[start];
     char* src = p+index*12;
     *(f32*)(p+0x314) = *(f32*)(src+0x3d8);
     *(f32*)(p+0x318) = *(f32*)(src+0x3dc);
     *(f32*)(p+0x31c) = *(f32*)(src+0x3e0);
-    char* __restrict anglesrc = p + index*2;
-    *(u16*)(p+0x2ba) = *(u16*)(anglesrc+0x338);
+    char* anglesrc = p + index*2;
+    obj->angles[6] = obj->historyAngles[index];
     eff = p;
     for (s32 j=0;j<2;j++,eff+=4) fn_8013CB44(*(void**)(eff+0x7c0),p+0x314,0,0,1);
     if (mode != 0) {
-    s32 zindex = (s32)((f32)*tail*lbl_8053D118);
-    char* __restrict zsrc = p + zindex*12;
-    *(f32*)(p+0x31c) = *(f32*)(zsrc+0x3e0);
+    int zindex = static_cast<int>((f32)*tail*lbl_8053D118);
+    char* zsrc = p + zindex*12;
+    obj->joints[7].z = obj->history[zindex].z;
     }
     *(f32*)(p+0x2c0) = *(f32*)(p+0x3d8);
     *(f32*)(p+0x2c4) = *(f32*)(p+0x3dc);
     *(f32*)(p+0x2c8) = *(f32*)(p+0x3e0);
 }
-
+#pragma opt_propagation on
 extern "C" void fn_802D7440(void* p, s32 x);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80458F9C(void* p, s32 x);
