@@ -73,11 +73,13 @@ extern "C" s32 fn_80336040(Actor* self) {
     }
 
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    JGeometry::TVec3<f32> sum;
     JGeometry::TVec3<f32> off;
     off.x = (&lbl_80471AE0[0][0])[idx * 4 + slot].x;
     off.y = (&lbl_80471AE0[0][0])[idx * 4 + slot].y;
     off.z = (&lbl_80471AE0[0][0])[idx * 4 + slot].z;
-    JGeometry::TVec3<f32> sum = pos + off;
+    sum = pos;
+    sum += off;
     fn_80230498(*(s32*)(p + 0x24c), &pos, *(s32*)(p + 0x270), 0xff, -0x80, -0x80, 1);
     fn_80230498(*(s32*)(p + 0x250), &sum, *(s32*)(p + 0x274), 0xff, -0x80, -0x80, 1);
     return ret;
