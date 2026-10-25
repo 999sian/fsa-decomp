@@ -168,4 +168,4 @@ extern "C" void fn_80179F64(Actor* this_)
         *(s32*)(p + 0x2fc) = *(s32*)(p + 0x2f8);
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
