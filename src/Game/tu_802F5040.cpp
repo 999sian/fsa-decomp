@@ -93,6 +93,13 @@ static inline void PlainTileQuad802F(u16 tile, f32 x, f32 y) {
     GXWGFifo.f32=x;GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
 }
 
+static inline void WarpTileQuadPtr802F(u16 tile, f32 x, f32 y, const f32* shifts) {
+    u16 index=tile&0xfff;
+    GXWGFifo.f32=x+shifts[0];GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
+    GXWGFifo.f32=lbl_80541510+x+shifts[0];GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x400;
+    GXWGFifo.f32=lbl_80541510+x+shifts[1];GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0xc00;
+    GXWGFifo.f32=x+shifts[1];GXWGFifo.f32=lbl_80541510+y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index^0x800;
+}
 static inline f32 TileTexCoord(f32 coordinate, f32 scale, f32 offset) { return coordinate * scale + offset; }
 #include "sdk/stl/math.h"
 static inline void DrawTileQuad(u16 t, s32 px, s32 py, f32 ox, f32 oy, f32 oz) {
@@ -1854,6 +1861,7 @@ extern "C" void fn_802FA3FC(void* mgr) {
     __dt__10JUTTextureFv(tex, -1);
 }
 
+#pragma opt_loop_invariants off
 extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 paletteFlag, u8 shade, u8 alpha, s32* wave) {
     GXTexObj texture;
     s32 counts[16];
@@ -1871,15 +1879,15 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
     GXSetVtxAttrFmt(GX_VTXFMT0,GX_VA_TEX0,GX_TEX_ST,GX_F32,0);
     GXSetArray(GX_VA_TEX0,*(void**)(self+0x110),8);
     if (shade==255 && alpha==255) {
-        GXSetTevColor(GX_TEVREG1,lbl_805414F0);
+        GXSetTevColor(GX_TEVREG0,lbl_805414F0);
         GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,GX_TEXMAP0,GX_COLOR_NULL);
         GXSetTevColorIn(GX_TEVSTAGE0,GX_CC_ZERO,GX_CC_ZERO,GX_CC_ZERO,GX_CC_TEXC);
         GXSetTevAlphaIn(GX_TEVSTAGE0,(GXTevAlphaArg)4,(GXTevAlphaArg)1,(GXTevAlphaArg)6,GX_CA_ZERO);
         GXSetTevAlphaOp(GX_TEVSTAGE0,(GXTevOp)14,GX_TB_ZERO,GX_CS_SCALE_1,GX_TRUE,GX_TEVPREV);
     } else {
-        JUtility::TColor color(lbl_80543F50);
+        JUtility::TColor color(*(u32*)&lbl_80543F50);
         color.r=shade;color.g=shade;color.b=shade;color.a=alpha;
-        GXSetTevColor(GX_TEVREG1,color);
+        GXSetTevColor(GX_TEVREG0,color);
         GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,GX_TEXMAP0,GX_COLOR_NULL);
         GXSetTevColorIn(GX_TEVSTAGE0,GX_CC_ZERO,(GXTevColorArg)8,(GXTevColorArg)9,GX_CC_ZERO);
         GXSetTevAlphaIn(GX_TEVSTAGE0,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO);
@@ -1892,18 +1900,20 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
         GXSetTevDirect(GX_TEVSTAGE1);
         GXSetNumTevStages(2);
     }
-    GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_SRCALPHA,GX_LO_INV);
+    GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_SRCALPHA,(GXLogicOp)5);
     GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
     GXSetCullMode(GX_CULL_NONE);
     u16* map=((u16**)(self+0x48))[plane];
     s32 palette;
-    if ((plane&7)!=0 || paletteFlag!=0) palette=1;
-    else palette=2;
+    if ((plane&7)==0) {
+        if (paletteFlag) palette=1;else palette=2;
+    } else palette=1;
     for (s32 i=0;i<16;i++) {
         GXInitTlutObj(&tluts[i],((u8**)(self+0x18))[palette]+i*0x20,GX_TL_RGB5A3,16);
         GXLoadTlut(&tluts[i],lbl_8046FA30[i]);
     }
-    for (s32 i=0;i<16;i++) counts[i]=0;
+    s32 clear=0;
+    do {counts[clear]=0;} while (++clear<16);
     for (s32 sy=0;sy<2;sy++) {
         for (s32 sx=0;sx<2;sx++) {
             for (s32 row=0;row<16;row++) {
@@ -1915,10 +1925,9 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                         u16 tile=map[((sy*2+sx)*16+row)*16+col];
                         if (tile) {
                             u16* list=*(u16**)(self+0x24);
-                            counts[(list[tile*4]>>12)&15]++;
-                            counts[(list[tile*4+1]>>12)&15]++;
-                            counts[(list[tile*4+2]>>12)&15]++;
-                            counts[(list[tile*4+3]>>12)&15]++;
+                            for (s32 dy=0;dy<2;dy++) {
+                                for (s32 dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++;
+                            }
                         }
                     }
                 }
@@ -1927,7 +1936,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
     }
     for (s32 pal=0;pal<16;pal++) {
         if (counts[pal]<=0) continue;
-        GXInitTexObjCI(&texture,*(void**)(self+8),128,512,GX_TF_C8,GX_CLAMP,GX_CLAMP,GX_FALSE,lbl_8046FA30[pal]);
+        GXInitTexObjCI(&texture,*(void**)(self+8),128,512,GX_TF_C4,GX_CLAMP,GX_CLAMP,GX_FALSE,lbl_8046FA30[pal]);
         GXLoadTexObj(&texture,GX_TEXMAP0);
         GXBegin(GX_QUADS,GX_VTXFMT0,counts[pal]*4);
         for (s32 sy=0;sy<2;sy++) {
@@ -1985,7 +1994,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
         }
     }
 }
-
+#pragma opt_loop_invariants reset
 extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
