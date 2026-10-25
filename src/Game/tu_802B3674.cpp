@@ -1,5 +1,21 @@
 #include "types.h"
 
+struct SubObject {
+    void* pad0;
+    void* pad4;
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual ~SubObject();
+};
+
 struct SubVT {
     void* slot[12];
     void (*fn12)(void*, s32);
@@ -185,11 +201,11 @@ extern "C" void* fn_802B51C0(void* this_, s16 how) {
         if (h2) {
             fn_801EE434(h2);
         }
-        void* sub = *(void**)((char*)this_ + 0x230);
+        SubObj* sub = *(SubObj**)((char*)this_ + 0x230);
         if (sub != NULL) {
-            if (sub != NULL) {
-                void* vt = *(void**)((char*)sub + 8);
-                ((void (*)(void*, s32))((void**)vt)[12])(sub, 1);
+            SubObj* s2 = sub;
+            if (s2 != NULL) {
+                s2->vt->fn12(s2, 1);
             }
         }
         __dt__5ActorFv(this_, 0);
