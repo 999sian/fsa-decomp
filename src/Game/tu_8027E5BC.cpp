@@ -2,7 +2,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
-static inline void applyPlayerGravity(f32* velocity, f32 gravity, f32 terminal) {
+static inline void applyPlayerGravity(f32* velocity, f32 terminal, f32 gravity) {
     *velocity -= gravity;
     if (*velocity < terminal) *velocity = terminal;
 }
