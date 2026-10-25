@@ -133,6 +133,27 @@ extern "C" void fn_803E3548(u8* param_1) {
     *(s32*)(param_1 + 0x1d4) = 10;
 }
 
+class Picture803E3CB0 {
+public:
+    virtual void p00(); virtual void p01(); virtual void p02(); virtual void p03();
+    virtual void p04(); virtual void p05(); virtual void p06(); virtual void p07();
+    virtual void p08(); virtual void p09(); virtual void p10(); virtual void p11();
+    virtual void p12(); virtual void p13(); virtual void p14(); virtual void p15();
+    virtual void p16(); virtual void p17(); virtual void p18(); virtual void p19();
+    virtual void p20(); virtual void p21(); virtual void p22(); virtual void p23();
+    virtual void p24(); virtual void p25(); virtual void p26(); virtual void p27();
+    virtual void p28(); virtual void p29(); virtual void p30(); virtual void p31();
+    virtual void p32(); virtual void p33(); virtual void p34(); virtual void p35();
+    virtual void p36(); virtual void p37(); virtual void p38(); virtual void p39();
+    virtual void p40(); virtual void p41(); virtual void p42(); virtual void p43();
+    virtual void p44(); virtual void p45(); virtual void p46(); virtual void p47();
+    virtual void p48(); virtual void p49(); virtual void p50(); virtual void p51();
+    virtual void p52(); virtual void p53(); virtual void p54(); virtual void p55();
+    virtual void p56(); virtual void p57(); virtual void p58(); virtual void p59();
+    virtual void p60(); virtual void p61(); virtual void p62(); virtual void p63();
+    virtual void p64(); virtual void p65();
+    virtual void* changeTexture(void* img, u8 id);
+};
 extern "C" void fn_803E3564(u8* p) {
     u8* base = lbl_80477970;
     char* a;
@@ -141,59 +162,59 @@ extern "C" void fn_803E3564(u8* p) {
     void* g;
     Pane803E4650* pane;
 
-    a = getStringPtr__10J2DTextBoxCFv(((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x616e0000, 0x5468, 0x616e3031));
-    b = getStringPtr__10J2DTextBoxCFv(((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x74610000, 0x5473, 0x74613031));
-    c = getStringPtr__10J2DTextBoxCFv(((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x540000, 0x547275, 0x6c653031));
+    a = getStringPtr__10J2DTextBoxCFv((Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5468 << 32) | 0x616e3031));
+    b = getStringPtr__10J2DTextBoxCFv((Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5473 << 32) | 0x74613031));
+    c = getStringPtr__10J2DTextBoxCFv((Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x547275 << 32) | 0x6c653031));
     if (*(s32*)(p + 0x1bc) == 0) {
         if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) != 0) {
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x62610000, 0x5067, 0x62613032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5067 << 32) | 0x62613032);
             ((u8*)pane)[0xb0] = 0;
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f6e0000, 0x5063, 0x6f6e3032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5063 << 32) | 0x6f6e3032);
             ((u8*)pane)[0xb0] = 1;
         } else {
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x62610000, 0x5067, 0x62613032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5067 << 32) | 0x62613032);
             ((u8*)pane)[0xb0] = 1;
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f6e0000, 0x5063, 0x6f6e3032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5063 << 32) | 0x6f6e3032);
             ((u8*)pane)[0xb0] = 0;
         }
         fn_803832BC(b, 0x11b, 0, 0, 0);
         fn_803832BC(a, 0x11b, 0, 0, 0);
         fn_803832BC(c, 0xf7, 0, 0, 0);
         g = fn_804031C4(0x54494d47, base + 0xfd8);
-        pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703032);
+        pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
         ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
-        pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703031);
+        pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
         ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
-        pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x500000, 0x507374, 0x61623034);
+        pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x507374 << 32) | 0x61623034);
         ((u8*)pane)[0xb0] = 0;
     } else {
         fn_803832BC(b, 0x11b, 0, 0, 0);
         fn_803832BC(a, 0xac, 0, 0, 0);
         fn_803832BC(c, 0xf7, 0, 0, 0);
-        pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x62610000, 0x5067, 0x62613032);
+        pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5067 << 32) | 0x62613032);
         ((u8*)pane)[0xb0] = 0;
-        pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f6e0000, 0x5063, 0x6f6e3032);
+        pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5063 << 32) | 0x6f6e3032);
         ((u8*)pane)[0xb0] = 1;
         if (*(s32*)(p + 0x1bc) == 1) {
             g = fn_804031C4(0x54494d47, base + 0xfec);
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
             ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703031);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
             ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
         } else if (*(s32*)(p + 0x1bc) == 2) {
             g = fn_804031C4(0x54494d47, base + 0x1000);
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
             ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703031);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
             ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
         } else {
             g = fn_804031C4(0x54494d47, base + 0x1014);
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703032);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703032);
             ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
-            pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x6f700000, 0x506e, 0x6f703031);
+            pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506e << 32) | 0x6f703031);
             ((void (**)(void*, void*, s32))*(void**)pane)[68](pane, g, 0);
         }
-        pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x500000, 0x507374, 0x61623034);
+        pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x507374 << 32) | 0x61623034);
         ((u8*)pane)[0xb0] = 1;
     }
     *(f32*)(p + 0x164) = -200.0f;
@@ -202,16 +223,16 @@ extern "C" void fn_803E3564(u8* p) {
     *(f32*)(p + 0x188) = 300.0f;
     *(f32*)(p + 0x18c) = 300.0f;
     *(f32*)(p + 0x198) = -450.0f;
-    pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x62620000, 0x506d6164, 0x62623037);
+    pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506d6164 << 32) | 0x62623037);
     pane->v10(*(f32*)(p + 0x15c), *(f32*)(p + 0x160) + *(f32*)(p + 0x164));
     fn_80402E08(*(void**)(p + 0x78), 0.0f, *(f32*)(p + 0x168));
-    pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x500000, 0x507374, 0x61623034);
+    pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x507374 << 32) | 0x61623034);
     pane->v10(*(f32*)(p + 0x16c) + *(f32*)(p + 0x184), *(f32*)(p + 0x178));
-    pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x500000, 0x506861, 0x6e623034);
+    pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506861 << 32) | 0x6e623034);
     pane->v10(*(f32*)(p + 0x170) + *(f32*)(p + 0x188), *(f32*)(p + 0x17c));
-    pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x75620000, 0x5072, 0x75623034);
+    pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x5072 << 32) | 0x75623034);
     pane->v10(*(f32*)(p + 0x174) + *(f32*)(p + 0x18c), *(f32*)(p + 0x180));
-    pane = ((Screen803EDBF0*)*(void**)(p + 0xc))->v3C(0x506c0000, 0x506c6962, 0x6b6b3033);
+    pane = (Pane803E4650*)((J2DPane*)*(void**)(p + 0xc))->search(((u64)0x506c6962 << 32) | 0x6b6b3033);
     pane->v10(*(f32*)(p + 0x190) + *(f32*)(p + 0x198), *(f32*)(p + 0x194));
     *(s32*)(p + 0x220) = 0;
     *(s32*)(p + 0x1e0) = 0;
@@ -248,27 +269,6 @@ extern "C" void fn_803832BC(char* s, s32 a, s32 b, s32 c, s32 d);
 extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
 
 // Picture pane view: changeTexture(img, id) at vtable 0x110.
-class Picture803E3CB0 {
-public:
-    virtual void p00(); virtual void p01(); virtual void p02(); virtual void p03();
-    virtual void p04(); virtual void p05(); virtual void p06(); virtual void p07();
-    virtual void p08(); virtual void p09(); virtual void p10(); virtual void p11();
-    virtual void p12(); virtual void p13(); virtual void p14(); virtual void p15();
-    virtual void p16(); virtual void p17(); virtual void p18(); virtual void p19();
-    virtual void p20(); virtual void p21(); virtual void p22(); virtual void p23();
-    virtual void p24(); virtual void p25(); virtual void p26(); virtual void p27();
-    virtual void p28(); virtual void p29(); virtual void p30(); virtual void p31();
-    virtual void p32(); virtual void p33(); virtual void p34(); virtual void p35();
-    virtual void p36(); virtual void p37(); virtual void p38(); virtual void p39();
-    virtual void p40(); virtual void p41(); virtual void p42(); virtual void p43();
-    virtual void p44(); virtual void p45(); virtual void p46(); virtual void p47();
-    virtual void p48(); virtual void p49(); virtual void p50(); virtual void p51();
-    virtual void p52(); virtual void p53(); virtual void p54(); virtual void p55();
-    virtual void p56(); virtual void p57(); virtual void p58(); virtual void p59();
-    virtual void p60(); virtual void p61(); virtual void p62(); virtual void p63();
-    virtual void p64(); virtual void p65();
-    virtual void* changeTexture(void* img, u8 id);
-};
 extern "C" void fn_803E3CB0(u8* p) {
     u8* base = lbl_80477970;
     u8 v;
