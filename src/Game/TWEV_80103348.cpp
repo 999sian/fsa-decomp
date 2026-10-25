@@ -300,7 +300,7 @@ extern "C" void fn_80103A90(void* this_) {
         break;
     case 1:
         switch (*(s32*)(p + 0x230)) {
-        case 1: goto done;
+        case 2: default: break;
         case 0:
             if ((u8)((Actor*)this_)->v11()) {
                 *(s32*)(p + 0x230) = 2;
@@ -310,13 +310,10 @@ extern "C" void fn_80103A90(void* this_) {
                 fn_801F0E34(this_, 0x30001, 0);
             }
             break;
-        default: break;
         }
         break;
     case 2: default: break;
     }
-done:
-    return;
 }
 
 extern "C" void* fn_80103F28(void* this_, s16 freeFlag) {
