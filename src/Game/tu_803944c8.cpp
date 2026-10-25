@@ -480,15 +480,14 @@ struct MsgProc {
         str2c0[m2d0++] = -2;
         str2c0[m2d0++] = base + (x + (s8)slotLine[slot + 0x10]);
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0) {
-            s8 top = lineTab[layout->m15c];
-            s8 line = slotLine[slot];
-            if ((u8)line - top - 1 == 0) {
-                str2c0[m2d0++] = line + (base + 0x20) - top;
-                return;
-            }
+        if (layout->m1a1 != 0 && lineRow(slotLine[slot]) == 0) {
+            str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
+        } else {
+            str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
         }
-        str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
+    }
+    s32 lineRow(u8 line) {
+        return line - lineTab[layout->m15c] - 1;
     }
     BOOL testBit(s32 n) {
         if (n < 32) {
