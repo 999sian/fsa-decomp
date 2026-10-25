@@ -3,6 +3,8 @@
 #include "types.h"
 #include "Game/Actor.h"
 
+extern void* lbl_8053AAF8;
+extern "C" s32 fn_80138A30(void* game);
 extern u8* lbl_8053AF00;
 extern f32 lbl_8053C110;
 extern f32 lbl_8053C118;
