@@ -1268,17 +1268,25 @@ extern "C" void fn_800D6DE0(u8* p) {
     __GDWriteU32(v);
 }
 
+static inline void tevSwapSel(u8* p, int st, u8* kc, u8* ka, u32 swap) {
+    J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)kc[0], (GXTevKAlphaSel)ka[0],
+                                         (GXTevKColorSel)kc[1], (GXTevKAlphaSel)ka[1],
+                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4],
+                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4 + 1]);
+    J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st + 2), (GXTevKColorSel)kc[2], (GXTevKAlphaSel)ka[2],
+                                         (GXTevKColorSel)kc[3], (GXTevKAlphaSel)ka[3],
+                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4 + 2],
+                                         (GXTevColorChan)j3dTevSwapTableTable[p[swap] * 4 + 3]);
+}
+
 extern "C" void fn_800D7020(u8* p) {
-    u8 count = p[0x34];
-    s32 off;
-    u8* addr;
     u32 i;
+    u8 count = p[0x34];
     *(u32*)(p + 4) = GDGetCurrOffset();
-    for (i = 0, addr = p; i < 2; i++) {
-        if (*(u16*)(addr + 8) != 0xffff) {
-            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+    for (i = 0; i < 2; i++) {
+        if (*(u16*)(p + 8 + i * 2) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(p + 8 + i * 2));
         }
-        addr += 2;
     }
     J3DGDSetTevOrder((GXTevStageID)0, (GXTexCoordID)p[0xc], (GXTexMapID)p[0xd], (GXChannelID)p[0xe], (GXTexCoordID)p[0x10], (GXTexMapID)p[0x11], (GXChannelID)p[0x12]);
     u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0xd] & 7) * 8);
@@ -1286,56 +1294,78 @@ extern "C" void fn_800D7020(u8* p) {
     s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0x11] & 7) * 8);
     J3DGDSetTexCoordScale2((GXTexCoordID)(p[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
     *(u32*)(p + 0x68) = GDGetCurrOffset();
-    for (i = 0, addr = p; i < 3; i++) {
-        GXColorS10 c = *(GXColorS10*)(addr + 0x14);
-        J3DGDSetTevColorS10((GXTevRegID)(i + 1), c);
-        addr += 8;
+    for (i = 0; i < 3; i++) {
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0x14 + i * 8));
     }
-    for (i = 0, addr = p; i < 4; i++) {
-        GXColor c = *(GXColor*)(addr + 0x45);
-        J3DGDSetTevKColor((GXTevKColorID)i, c);
-        addr += 4;
-    }
-    u8* a = p;
-    u8* b = p;
-    for (i = 0; i < count; i++) {
-        u32 tag = (i + 0x10) << 24;
-        u32 v = *(u32*)(a + 0x35);
-        __GDWrite(0x61);
-        __GDWriteU32(v);
-        v = *(u32*)(a + 0x39);
-        a += 8;
-        __GDWrite(0x61);
-        __GDWriteU32(v);
-        v = *(u32*)(b + 0x60) | tag;
-        b += 4;
-        __GDWrite(0x61);
-        __GDWriteU32(v);
-    }
-    off = 0;
     for (i = 0; i < 4; i++) {
-        u32 sw = p[0x59 + i] * 4;
-        u8 p58 = p[0x58];
-        u8 p56 = p[0x56];
-        u8 t1 = j3dTevSwapTableTable[sw + 1];
-        u8 t0 = j3dTevSwapTableTable[sw];
-        u8 p57 = p[0x57];
-        u8 p55 = p[0x55];
-        u32 w = (p55 << 4) | t0 | (t1 << 2);
-        w = w | (p57 << 9) | (p56 << 14);
-        __GDWrite(0x61);
-        __GDWriteU32(((off / 2 + 0xf6) << 24) | (p58 << 19) | w);
-        sw = p[0x59 + i] * 4;
-        u8 t3 = j3dTevSwapTableTable[sw + 3];
-        u8 q58 = p[0x58];
-        u8 q56 = p[0x56];
-        u8 q57 = p[0x57];
-        u8 t2 = j3dTevSwapTableTable[sw + 2];
-        u8 q55 = p[0x55];
-        w = (q55 << 4) | t2 | (t3 << 2) | (q57 << 9) | (q56 << 14) | (q58 << 19);
-        __GDWrite(0x61);
-        __GDWriteU32((((off + 2) / 2 + 0xf6) << 24) | w);
-        off += 4;
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0x45 + i * 4));
+    }
+    for (i = 0; i < count; i++) {
+        u32 v = *(u32*)(p + 0x35 + i * 8);
+        J3DGDWriteBPCmd(v);
+        v = *(u32*)(p + 0x39 + i * 8);
+        J3DGDWriteBPCmd(v);
+        v = *(u32*)(p + 0x60 + i * 4) | ((i + 0x10) << 24);
+        J3DGDWriteBPCmd(v);
+    }
+    for (int j = 0; j < 4; j++) {
+        int st = j * 4;
+        J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)p[0x55], (GXTevKAlphaSel)p[0x57],
+                                             (GXTevKColorSel)p[0x56], (GXTevKAlphaSel)p[0x58],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[j + 0x59] * 4],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[j + 0x59] * 4 + 1]);
+        J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st + 2), (GXTevKColorSel)p[0x55], (GXTevKAlphaSel)p[0x57],
+                                             (GXTevKColorSel)p[0x56], (GXTevKAlphaSel)p[0x58],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[j + 0x59] * 4 + 2],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[j + 0x59] * 4 + 3]);
+    }
+}
+
+extern "C" void fn_800D7524(u8* p) {
+    u32 i;
+    u8* tev;
+    u8 count = p[0x20];
+    *(u32*)(p + 4) = GDGetCurrOffset();
+    for (i = 0; i < 4; i++) {
+        if (*(u16*)(p + 8 + i * 2) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(p + 8 + i * 2));
+        }
+    }
+    tev = p;
+    for (u32 j = 0; j < count; j += 2) {
+        u8* next = p + (j + 1) * 4;
+        J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)tev[0x10], (GXTexMapID)tev[0x11], (GXChannelID)tev[0x12], (GXTexCoordID)next[0x10], (GXTexMapID)next[0x11], (GXChannelID)next[0x12]);
+        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x11] & 7) * 8);
+        J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x11] & 7) * 8);
+        J3DGDSetTexCoordScale2((GXTexCoordID)(next[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        tev += 8;
+    }
+    *(u32*)(p + 0x90) = GDGetCurrOffset();
+    for (i = 0; i < 3; i++) {
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0x42 + i * 8));
+    }
+    for (i = 0; i < 4; i++) {
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0x62 + i * 4));
+    }
+    for (i = 0; i < count; i++) {
+        u32 v = *(u32*)(p + 0x21 + i * 8);
+        J3DGDWriteBPCmd(v);
+        v = *(u32*)(p + 0x25 + i * 8);
+        J3DGDWriteBPCmd(v);
+        v = *(u32*)(p + 0x80 + i * 4) | ((i + 0x10) << 24);
+        J3DGDWriteBPCmd(v);
+    }
+    for (u32 k = 0; k < 4; k++) {
+        s32 st = k * 4;
+        J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)p[0x72], (GXTevKAlphaSel)p[0x76],
+                                             (GXTevKColorSel)p[0x73], (GXTevKAlphaSel)p[0x77],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4 + 1]);
+        J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st + 2), (GXTevKColorSel)p[0x74], (GXTevKAlphaSel)p[0x78],
+                                             (GXTevKColorSel)p[0x75], (GXTevKAlphaSel)p[0x79],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4 + 2],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + k] * 4 + 3]);
     }
 }
 
@@ -2254,26 +2284,10 @@ extern "C" void fn_800DA8F8(void) {
 
 extern "C" void fn_800DABCC(u8* p) {
     GDOverflowCheck(0x1e);
-    u16 alphaID = *(u16*)(p + 4);
-    u32 comp0 = j3dAlphaCmpTable[alphaID * 3];
-    u32 op = j3dAlphaCmpTable[alphaID * 3 + 1];
-    u32 comp1 = j3dAlphaCmpTable[alphaID * 3 + 2];
-    u32 alpha = p[7] << 8 | p[6] | comp0 << 16 | comp1 << 19 | op << 22;
-    u8 p8 = p[8];
-    __GDWrite(0x61);
-    __GDWriteU32(0xF3000000 | alpha);
-    __GDWrite(0x61);
-    __GDWriteU32(0xFE00FFE7);
-    __GDWrite(0x61);
-    __GDWriteU32(0x41000000 | p[11] << 12 | p[10] << 5 | p[9] << 8 | p[15] << 2 | (p8 == 2) << 1 | (p8 == 1 || p8 == 3) | (p8 == 3) << 11);
-    u16 zID = *(u16*)(p + 0xc);
-    u32 zMode = j3dZModeTable[zID * 3] | j3dZModeTable[zID * 3 + 1] << 1 | j3dZModeTable[zID * 3 + 2] << 4;
-    __GDWrite(0x61);
-    __GDWriteU32(0x40000000 | zMode);
-    __GDWrite(0x61);
-    __GDWriteU32(0xFE000040);
-    __GDWrite(0x61);
-    __GDWriteU32(0x43000000 | p[14] << 6);
+    ((J3DAlphaComp*)(p + 4))->load();
+    ((J3DBlend*)(p + 8))->load(p[0xf]);
+    ((J3DZMode*)(p + 0xc))->load();
+    J3DGDSetZCompLoc(p[0xe]);
 }
 
 extern u8 j3dZModeTable[96];
