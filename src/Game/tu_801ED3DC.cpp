@@ -43,10 +43,27 @@ static inline void setRecord(s32 idx, u8 b, u8 a, s32 lvl) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_801ED3DC(Rec10* rec, s32 idx, s32 lvl) {
-    setRecord(idx, rec->m9, rec->m8, lvl);
+    u8 b;
+    u8 a;
+    int one;
+    u8 flags;
+    u8* base;
+    base = lbl_8053AEF8;
+    flags = base[0x44];
+    one = 1;
+    a = rec->m8;
+    b = rec->m9;
+    base[0x44] = flags | (u8)(one << idx);
+    lbl_8053AEF8[idx + 0x3c] = a;
+    lbl_8053AEF8[idx + 0x38] = b;
+    if (lvl >= 0 && lvl < 4) {
+        lbl_8053AEF8[0x44] |= (u8)(one << (idx + 4));
+        lbl_8053AEF8[idx + 0x40] = lvl + 1;
+    }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801ED458(Rec10* r, u8 flag) {
     if (r->m0 == 0) {
         r->m4++;
