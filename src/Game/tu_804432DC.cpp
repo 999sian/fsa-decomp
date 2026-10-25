@@ -55,10 +55,10 @@ class J2DScreen;
 class JKRArchive;
 struct J2DGrafContext;
 extern "C" s32 fn_804432DC(void* this_, u8 cmd, s16 a, s16 b) {
-    char* p = (char*)this_;
+    u8* p = (u8*)this_;
     char* tbl = (char*)lbl_8048FB88;
-    if (cmd < 8 && *(u8*)(p + 0x15) == 3) {
-        *(u8*)(p + 0x14) = cmd;
+    if (cmd < 8 && p[0x15] == 3) {
+        p[0x14] = cmd;
         *(s16*)(p + 0x10) = a;
         *(s16*)(p + 0x12) = b;
         if (cmd == 0) {
@@ -69,16 +69,16 @@ extern "C" s32 fn_804432DC(void* this_, u8 cmd, s16 a, s16 b) {
             fn_80402CE0(*(void**)(p + 0x8), lbl_80543D64, lbl_80543D64);
             *(u8*)(*(char**)(*(char**)(p + 0x8) + 0x4) + 0xb0) = 1;
             *(u8*)(*(char**)(*(char**)(p + 0xc) + 0x4) + 0xb0) = 0;
-            *(u8*)(p + 0x15) = 0;
+            p[0x15] = 0;
         } else if (cmd == 7) {
             *(u8*)(*(char**)(*(char**)(p + 0x8) + 0x4) + 0xb0) = 0;
             *(u8*)(*(char**)(*(char**)(p + 0xc) + 0x4) + 0xb0) = 1;
-            *(u8*)(p + 0x15) = 2;
+            p[0x15] = 2;
         } else {
             *(s16*)(*(char**)(p + 0x8) + 0x20) = 0;
             *(s16*)(*(char**)(p + 0x8) + 0x22) = 0;
             *(s16*)(*(char**)(p + 0x8) + 0x24) = 0;
-            u8 idx = *(u8*)(p + 0x14);
+            u8 idx = p[0x14];
             f32 x = (f32)((s16*)(tbl + 0x1c))[idx];
             f32 y = (f32)((s16*)(tbl + 0x2c))[idx];
             fn_80402E08(*(void**)(p + 0x8), x, y);
@@ -86,7 +86,7 @@ extern "C" s32 fn_804432DC(void* this_, u8 cmd, s16 a, s16 b) {
             fn_80402CE0(*(void**)(p + 0x8), z, z);
             *(u8*)(*(char**)(*(char**)(p + 0x8) + 0x4) + 0xb0) = 1;
             *(u8*)(*(char**)(*(char**)(p + 0xc) + 0x4) + 0xb0) = 0;
-            *(u8*)(p + 0x15) = 2;
+            p[0x15] = 2;
         }
     }
     return 0;
@@ -107,21 +107,30 @@ extern "C" void fn_80402940(void* this_, s32 a, s32 b, f32 c, f32 d);
 extern "C" void fn_8040271C(void* this_, s32 a, f32 c, f32 d);
 extern u8 lbl_8048FB88[];
 extern const f32 lbl_80543D64;
-#pragma opt_strength_reduction off
+#pragma opt_propagation off
 extern "C" void fn_804434B8(void* this_) {
+    ScreenTransitionTable* tbl = (ScreenTransitionTable*)lbl_8048FB88;
     ScreenTransitionState* p = (ScreenTransitionState*)this_;
     p->timer += 1;
     {
-    ScreenTransitionTable* tbl = (ScreenTransitionTable*)lbl_8048FB88;
-    fn_80402B10(p->pane, 30, 0, lbl_80543D60, tbl->x[p->index]);
-    fn_80402940(p->pane, 30, 0, lbl_80543D60, tbl->y[p->index]);
-    f32 height = ((f32*)p->pane)[6];
-    f32 scale = tbl->scale[p->index];
+    s16* x = tbl->x;
+    fn_80402B10(p->pane, 30, 0, lbl_80543D60, x[p->index]);
+    s16* y;
+    u32 index;
+    index = p->index;
+    y = tbl->y;
+    fn_80402940(p->pane, 30, 0, lbl_80543D60, y[index]);
+    f32 (*scales)[7];
+    scales = &tbl->scale;
+    f32 scale;
+    f32 height;
+    height = ((f32*)p->pane)[6];
+    scale = (*scales)[p->index];
     fn_8040271C(p->pane, 30, lbl_80543D64, scale / height);
     }
     if (p->timer >= 30) p->state = 2;
 }
-#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
 extern "C" void fn_804435B8(void* this_) {
     char* p = (char*)this_;
     s32 v = *(s16*)(p + 0x10);
@@ -227,7 +236,7 @@ extern "C" void* fn_80443760(void* this_) {
     return this_;
 }
 
-extern "C" void fn_80443894(void) {
+extern "C" void __sinit_tu_804432DC_cpp(void) {
     JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_;
     JASPoolAllocObject_MultiThreaded<JASTrack>::memPool_;
     JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
