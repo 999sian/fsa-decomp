@@ -4863,8 +4863,8 @@ extern "C" u8 fn_8022DA68(s32);
 extern "C" s32 fn_80238CB4(s32);
 extern "C" char lbl_8046AE08[];
 inline s32 countSharing50090(char* p) {
-    s32 linked;
-    int me;
+    register s32 linked;
+    register int me;
     s32 c;
     s32 i;
     c = 0;
