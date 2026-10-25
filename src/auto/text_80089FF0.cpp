@@ -5,6 +5,8 @@
 #include "JSystem/JUtility/JUTConsole.h"
 #include "JSystem/JUtility/JUTDirectPrint.h"
 #include "JSystem/JUtility/JUTExternalFB.h"
+#include "JSystem/JUtility/JUTDirectFile.h"
+#include "stdlib.h"
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
@@ -1059,7 +1061,7 @@ extern "C" void fn_8008C494(char* param_1) {
     }
 }
 
-extern "C" u8 fn_8008C608(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9);
+extern "C" bool fn_8008C608(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9);
 extern JSUPtrList lbl_8052E894;
 extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9) {
     char buf[80];
@@ -1079,6 +1081,93 @@ extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4
     return 0;
 }
 
+extern "C" char lbl_8045ED8C[];
+#pragma opt_propagation off
+extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outStartArg, u32 outSizeArg, u32 nameArg, u32 capacityArg, u32 printArg, u8 headerArg) {
+    u32 print = printArg;
+    u32 name = nameArg;
+    u32 outSize = outSizeArg;
+    u32 outStart = outStartArg;
+    s32 section = sectionArg;
+    u32 address = addressArg;
+    s32 sectionNo;
+    u32 start;
+    u32 size;
+    u8 header = headerArg;
+    u32 capacity = capacityArg;
+    u8 found;
+    if (!path) return 0;
+    JUTDirectFile file;
+    sectionNo = 0;
+    if (!file.fopen(path)) return 0;
+    char line[0x200];
+    char sectionName[16];
+    found = 0;
+    for (;;) {
+        sectionNo++;
+        u8 hasSection = 0;
+        for (;;) {
+            s32 length = file.fgets(line, sizeof(line));
+            if (length < 0) break;
+            if (line[0] != '.') continue;
+            char* src = line+1;
+            char* dst = sectionName;
+            s32 n = 0;
+            while (*src) {
+                *dst = *src;
+                if (*src == ' ' || n == 15) break;
+                dst++; n++; src++;
+            }
+            sectionName[n] = 0;
+            if (!*src) break;
+            if (src[1]=='s' && src[2]=='e' && src[3]=='c' && src[4]=='t') {
+                hasSection = 1;
+                break;
+            }
+        }
+        if (!hasSection) break;
+        if (section >= 0 && section != sectionNo) continue;
+        for (;;) {
+            s32 length = file.fgets(line,sizeof(line));
+            if (length <= 4) break;
+            if (length < 28 || line[28] != '4') continue;
+            start = ((line[18]-'0') << 28) | strtol(line+19,0,16);
+            size = strtol(line+11,0,16);
+            if (start > address || address >= start+size) continue;
+            if (outStart) *(u32*)outStart=start;
+            if (outSize) *(u32*)outSize=size;
+            if (name) {
+                const u8* src = (u8*)line+30;
+                u8* dst = (u8*)name;
+                u32 n = 0;
+                while (n < capacity-1) {
+                    u32 c = *src;
+                    if (c < 32 && c != 9) break;
+                    if ((c==' ' || c=='\t') && n != 0) {
+                        if (dst[-1] != ' ') { *dst=' '; dst++; n++; }
+                    } else { *dst++=c; n++; }
+                    src++;
+                }
+                if (n && dst[-1]==' ') dst--;
+                *dst=0;
+                if ((u8)print) {
+                    if (header) lbl_8053A914->print(&lbl_8053B868);
+                    lbl_8053A914->print_f(lbl_8045ED8C,address,sectionName,start,size,name);
+                    header=0;
+                }
+            }
+            found=1;
+            break;
+        }
+        if (section >= 0 && section==sectionNo) {
+            if ((u8)print && header) lbl_8053A914->print(&lbl_8053B868);
+            break;
+        }
+    }
+    file.fclose();
+    return found != 0;
+}
+#pragma opt_propagation on
 void JUTException::createConsole(void* console_buffer, u32 console_buffer_size)
 {
     if (!console_buffer || !console_buffer_size)
