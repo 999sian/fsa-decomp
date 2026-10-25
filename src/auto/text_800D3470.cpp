@@ -2654,9 +2654,9 @@ extern "C" void fn_800DC934(u8* this_, Unk800DC64CSrc* src) {
         *(s16*)(dst + 0x48) = s[3];
         dst += 8;
     }
-    dst = this_;
-    for (u32 i = 0; i < 4; i++) {
-        u8* s = src->m29(i);
+    u32 j;
+    for (j = 0, dst = this_; j < 4; j++) {
+        u8* s = src->m29(j);
         dst[0x62] = s[0];
         dst[0x63] = s[1];
         dst[0x64] = s[2];
