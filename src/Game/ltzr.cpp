@@ -420,15 +420,10 @@ static inline void ltzrCheckContacts(char* p, s32 i, JGeometry::TVec3<f32>& pt, 
                 f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
                 s32 a = (s32)(ang * lbl_8054228C);
                 f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
-                f32 vx;
-                f32 vy;
                 f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
                 f32 cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
-                vy = len * sy;
-                vx = len * cy;
                 pt.z = lbl_80542268;
-                pt.y = vy;
-                pt.x = vx;
+                ((JGeometry::TVec2<f32>*)&pt)->set(len * cy, len * sy);
                 f32 minx = *(f32*)(p + 0x60);
                 f32 miny = *(f32*)(p + 0x64);
                 f32 maxx = *(f32*)(p + 0x68);
