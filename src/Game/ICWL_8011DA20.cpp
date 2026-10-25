@@ -80,8 +80,8 @@ struct ICWLBox {
 static inline void icwlGetBox(u8* this_, ICWLBox* box) {
     *box = *(ICWLBox*)(this_ + 0x60);
     box->x0 += *(f32*)(this_ + 0xc);
-    box->x1 += *(f32*)(this_ + 0xc);
     box->y0 += *(f32*)(this_ + 0x10);
+    box->x1 += *(f32*)(this_ + 0xc);
     box->y1 += *(f32*)(this_ + 0x10);
 }
 
