@@ -216,7 +216,18 @@ extern "C" void PSMTXMultVec(void*, void*, void*);
 extern "C" f32 PSVECMag(void*);
 extern "C" u32 __cvt_fp2unsigned(f64);
 
-static inline u32 fn_8003CE20_level(char* self, f32 dist, BOOL loud) {
+struct fn_8003CE20_Flags {
+    u8 b7 : 1;
+    u8 b6 : 1;
+    u8 b5 : 1;
+    u8 b4 : 1;
+    u8 b3 : 1;
+    u8 b2 : 1;
+    u8 b1 : 1;
+    u8 b0 : 1;
+};
+
+static inline u32 fn_8003CE20_level(char* self, f32 dist, bool loud) {
     if (dist > *(f32*)(self + 4)) {
         if (loud) {
             return 0xffffffff;
