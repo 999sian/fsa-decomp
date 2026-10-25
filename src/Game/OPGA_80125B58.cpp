@@ -210,7 +210,9 @@ inline s32 opgaSpawn(u8* this_, u16 kind) {
     if (!fn_802300EC()) return -1;
     JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
     pos.y -= lbl_8053CA74;
-    if (fn_8038AD24(player, kind, *(s32*)(this_ + 0x198), *(s32*)(this_ + 4), pos, 0x28)) return player;
+    s32 room = *(s32*)(this_ + 0x198);
+    s32 id = *(s32*)(this_ + 4);
+    if (fn_8038AD24(player, kind, room, id, pos, 0x28)) return player;
     return -1;
 }
 
