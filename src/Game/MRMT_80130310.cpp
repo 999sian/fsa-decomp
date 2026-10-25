@@ -11,7 +11,7 @@ extern "C" u8* lbl_8053AB10;
 
 static inline void setState(u8* p, s32 s) {
     *(s32*)(p + 0x230) = s;
-    switch (s) {
+    switch (*(s32*)(p + 0x230)) {
     case 1:
         *(s32*)(p + 0x24c) = 0;
         break;
@@ -162,7 +162,7 @@ extern "C" void fn_80388EEC(s32 idx);
 extern "C" void fn_801306BC(u8* p) {
     v03__5ActorFv(p);
     s32 st = *(s32*)(p + 0x230);
-    if (st > 1 && st < 5) {
+    if (st >= 2 && st <= 4) {
         u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
         obj[0x179] = 1;
         f32 r = lbl_8053CC88;
