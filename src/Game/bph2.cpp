@@ -2,6 +2,8 @@
 // TU 8018A8D8-8018EB94 (BPH2). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JUtility/TColor.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/Bph2_SetVec2.cpp
 // BPH2 cluster, part 5 (final piece). fn_8018E964 - trivial 2-float
@@ -169,6 +171,121 @@ extern "C" s32 fn_8018DA6C(char* this_) {
         *(f32*)(this_ + 0x284) = lbl_8053E140;
     }
     return 0;
+}
+
+extern "C" void fn_8018DC70(char* this_, s32 mode) {
+    void* list[1024];
+    f32 vec[3];
+    s32 i;
+    s32 room;
+    void** cur;
+    u16 ang;
+    s32 j;
+    s32 count;
+    f32 f29;
+    f32 f31;
+    f32 f30;
+    char* p;
+    f32* obj;
+
+    if (*(s32*)(this_ + 0x26c) == 1) {
+        return;
+    }
+    if (*(u8*)(this_ + 0x27a) != 1) {
+        return;
+    }
+    vec[2] = lbl_8053E0C8;
+    vec[1] = lbl_8053E0C8;
+    vec[0] = lbl_8053E0C8;
+    if (*(s32*)(this_ + 0x254) >= 0) {
+        return;
+    }
+    for (i = 0; i < 4; i++) {
+        if (!fn_8023F264(i)) {
+            continue;
+        }
+        room = *(s32*)(this_ + 4);
+        if (room != fn_8023DE58(i)) {
+            continue;
+        }
+        if (fn_80230188(i)) {
+            continue;
+        }
+        if (mode != 3) {
+            obj = fn_8023E724(i);
+            if (!(obj[1] > *(f32*)(this_ + 0x10))) {
+                continue;
+            }
+        }
+        f30 = *(f32*)(this_ + 0x10);
+        f31 = *(f32*)(this_ + 0xc);
+        f30 = f30 - lbl_8053E11C;
+        obj = fn_8023E724(i);
+        f29 = obj[0] - f31;
+        obj = fn_8023E724(i);
+        ang = (s32)(lbl_8053E1B0 * JMath::atanTable_.atan2_(f29, obj[1] - f30));
+        if (mode != 1 && ang >= 0x2000 && ang < 0xe000) {
+            continue;
+        }
+        switch (mode) {
+        case 3:
+            ang += 0x8000;
+            vec[0] = lbl_8053E1B8;
+            vec[1] = lbl_8053E1B8;
+            break;
+        case 1:
+            vec[0] = lbl_8053E130;
+            vec[1] = lbl_8053E130;
+            break;
+        case 0:
+        case 2:
+        default:
+            vec[0] = lbl_8053E18C;
+            vec[1] = lbl_8053E18C;
+            break;
+        }
+        if (mode == 0 || mode == 1) {
+            count = fn_801F7818(fn_801F856C(), 0x46495245, *(u32*)(this_ + 4), list, -1);
+            cur = list;
+            for (j = 0; j < count; cur++, j++) {
+                p = (char*)*cur;
+                if (p == 0) {
+                    continue;
+                }
+                if (((*(u32*)(p + 0x90)) >> 6) & 3) {
+                    continue;
+                }
+                if (!((f32)fabs(*(f32*)(p + 0xc) - *(f32*)(this_ + 0xc)) < lbl_8053E0EC)) {
+                    continue;
+                }
+                if (!(*(f32*)(this_ + 0x10) - lbl_8053E0CC < *(f32*)(p + 0x10))) {
+                    continue;
+                }
+                if (!((f32)fabs(*(f32*)(p + 0x10) - *(f32*)(this_ + 0x10)) < lbl_8053E100)) {
+                    continue;
+                }
+                ((ActorVt_bph2*)p)->v7();
+            }
+        }
+        if (mode != 1) {
+            obj = fn_8023E724(i);
+            vec[0] = vec[0] - lbl_8053E1BC * (f32)fabs(obj[0] - f31);
+            if (vec[0] < lbl_8053E110) {
+                vec[0] = lbl_8053E110;
+            }
+            obj = fn_8023E724(i);
+            vec[1] = vec[1] - lbl_8053E1C0 * (f32)fabs(obj[1] - f30);
+            if (vec[1] < lbl_8053E110) {
+                vec[1] = lbl_8053E110;
+            }
+        }
+        vec[0] = vec[0] * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        vec[1] = vec[1] * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+        if (fn_80236BEC(i)) {
+            continue;
+        }
+        fn_8023DFF4(i, vec);
+    }
 }
 
 extern "C" void fn_8018DFCC(char* this_) {
@@ -385,8 +502,8 @@ extern "C" void fn_8018E30C(char* this_, s32 state) {
 
 extern "C" void fn_8018E5E4(char* this_) {
     f32 zero = lbl_8053E0C8;
-    f32 one = lbl_8053E0E4;
     f32 neg = lbl_8053E104;
+    f32 one = lbl_8053E0E4;
     *(f32*)(this_ + 0x80) = neg;
     *(f32*)(this_ + 0x84) = neg;
     *(f32*)(this_ + 0x88) = one;
