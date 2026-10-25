@@ -17,6 +17,11 @@ struct Vtable800D8248 {
 extern "C" u32 lbl_80539E10;
 extern "C" u32 lbl_80539E18;
 extern "C" u32 lbl_8053BCC8;
+inline u8 J3DColorChan::getAttnFn() const {
+    u8 attnTbl[4];
+    *(u32*)attnTbl = lbl_8053BCC8;
+    return attnTbl[(mChanCtrl >> 9) & 3];
+}
 static inline void writeChanCtrl(u16 x) {
     u8 attnTbl[4];
     *(u32*)attnTbl = lbl_8053BCC8;
@@ -1112,23 +1117,14 @@ extern "C" void fn_800D6404(void* param) {
 
 extern "C" void fn_800D6580(u8* p) {
     GDOverflowCheck(lbl_80539E18);
-
-    __GDWrite(0x10);
-    __GDWrite(0x00);
-    __GDWrite(0x03);
-    __GDWrite(0x10);
-    __GDWrite(0x0e);
-
+    J3DGDWriteXFCmdHdr(0x100e, 4);
     writeChanCtrl(*(u16*)(p + 0x16));
     writeChanCtrl(*(u16*)(p + 0x1a));
     writeChanCtrl(*(u16*)(p + 0x18));
     writeChanCtrl(*(u16*)(p + 0x1c));
-
-    for (int i = 0; i < 8; i++) {
+    for (u32 i = 0; i < 8; i++) {
         J3DLightObj* light = ((J3DLightObj**)(p + 0x20))[i];
-        if (light != NULL) {
-            light->load(i);
-        }
+        if (light != NULL) light->load(i);
     }
 }
 
