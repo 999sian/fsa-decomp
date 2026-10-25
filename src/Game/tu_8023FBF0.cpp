@@ -227,15 +227,34 @@ inline bool padCheck(char* p) {
     if (!ok) {
         return false;
     }
-    if (countSharingH(p) < 2) {
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    if (c < 2) {
         r = 5;
-    } else if (S32(p, 0xd60) < 0) {
-        r = S32(p, 0x120c);
-    } else {
+    } else if (S32(p, 0xd60) >= 0) {
         r = fn_8022CAF8(S32(p, 0xd60));
+    } else {
+        r = S32(p, 0x120c);
     }
     if (r == 4) {
-        s32 idx = S32(p, 0xd60) < 0 ? S32(p, 0x1224) : fn_80234004(S32(p, 0xd60));
+        idx = S32(p, 0xd60) < 0 ? S32(p, 0x1224) : fn_80234004(S32(p, 0xd60));
         cnt = 0;
         if (S32(p, 0xd60) >= 0) {
             for (i = 0; i < S32(p, 0x4); i++) {
