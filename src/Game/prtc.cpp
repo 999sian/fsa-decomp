@@ -178,6 +178,8 @@ extern "C" void* Prtc_dtor(void* this_, short how) {
     return this_;
 }
 
+extern f32 lbl_805411B0;
+extern f32 lbl_805411B4;
 extern "C" void fn_802E111C(void* this_) {
     char* p = (char*)this_;
     *(s32*)(p + 0x250) = *(s32*)(p + 0x90) & 0xff;
@@ -199,16 +201,16 @@ extern "C" void fn_802E111C(void* this_) {
     *(f32*)(p + 0x248) = 0.0f;
     *(f32*)(p + 0x24c) = 0.0f;
     if (*(s32*)(p + 0x90) & 0x800) {
-        *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + 512.0f;
+        *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + lbl_805411B0;
     }
     if (*(s32*)(p + 0x90) & 0x400) {
-        *(f32*)(p + 0x244) = *(f32*)(p + 0x244) - 512.0f;
+        *(f32*)(p + 0x244) = *(f32*)(p + 0x244) - lbl_805411B0;
     }
     if (*(s32*)(p + 0x90) & 0x200) {
-        *(f32*)(p + 0x248) = *(f32*)(p + 0x248) + 384.0f;
+        *(f32*)(p + 0x248) = *(f32*)(p + 0x248) + lbl_805411B4;
     }
     if (*(s32*)(p + 0x90) & 0x100) {
-        *(f32*)(p + 0x248) = *(f32*)(p + 0x248) - 384.0f;
+        *(f32*)(p + 0x248) = *(f32*)(p + 0x248) - lbl_805411B4;
     }
     *(void**)(p + 0x234) = 0;
     *(void**)(p + 0x238) = 0;
@@ -216,45 +218,45 @@ extern "C" void fn_802E111C(void* this_) {
     if (*(s32*)(p + 0x25c) == 0) {
         switch (*(s32*)(p + 0x250)) {
         case 0:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x188, *(s32*)(p + 0x254));
-            *(void**)(p + 0x238) = PrtcSpawn(p, 0x189, *(s32*)(p + 0x254));
-            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x18a, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x188);
+            *(void**)(p + 0x238) = PrtcSpawnA(p, 0x189);
+            *(void**)(p + 0x23c) = PrtcSpawnA(p, 0x18a);
             break;
         case 1:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x18b, *(s32*)(p + 0x254));
-            *(void**)(p + 0x238) = PrtcSpawn(p, 0x18c, *(s32*)(p + 0x254));
-            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x18d, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x18b);
+            *(void**)(p + 0x238) = PrtcSpawnA(p, 0x18c);
+            *(void**)(p + 0x23c) = PrtcSpawnA(p, 0x18d);
             break;
         case 2:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x552, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x552);
             break;
         case 3:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x17e, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x17e);
             break;
         case 4:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x17f, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x17f);
             break;
         case 5:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x180, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x180);
             break;
         case 6:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x6e, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x6e);
             break;
         case 7:
             *(void**)(p + 0x234) = PrtcSpawn(p, 0xa9, -1);
-            *(void**)(p + 0x238) = PrtcSpawn(p, 0xaa, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawnA(p, 0xaa);
             break;
         case 8:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x6f, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x6f);
             break;
         case 9:
-            *(void**)(p + 0x234) = PrtcSpawn(p, 0x185, *(s32*)(p + 0x254));
-            *(void**)(p + 0x238) = PrtcSpawn(p, 0x186, *(s32*)(p + 0x254));
-            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x187, *(s32*)(p + 0x254));
+            *(void**)(p + 0x234) = PrtcSpawnA(p, 0x185);
+            *(void**)(p + 0x238) = PrtcSpawnA(p, 0x186);
+            *(void**)(p + 0x23c) = PrtcSpawnA(p, 0x187);
             break;
         case 10:
             *(void**)(p + 0x234) = PrtcSpawn(p, 0x88, -1);
-            *(void**)(p + 0x238) = PrtcSpawn(p, 0x89, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawnA(p, 0x89);
             break;
         }
         *(s32*)(p + 0x240) = 1;
