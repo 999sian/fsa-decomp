@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" const f32 lbl_80540690;
 extern "C" const f32 lbl_80540678;
 extern "C" const f32 lbl_80540670;
 #include "JSystem/JParticle/JPAEmitter.h"
@@ -407,21 +408,57 @@ extern "C" void fn_80295C40(void* p) {
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 extern "C" void fn_80295EE8(void* this_) {
-    extern void fn_8013CB44(void* a, s32 b, s32 c, s32 d, f32 e, f32 f, f32 g);
-    extern void fn_8023DE58(s32 a);
-    extern s32 fn_80235274(s32 a);
-    extern void fn_8023E724(s32 a);
-    extern void fn_80238548(s32 a, s32 b, s32 c, s32 d);
-
     char* self = (char*)this_;
     s32 i;
     s32 j;
     s32 n;
-
-    if (*(s32*)(self + 0x2c4) > 0) {
-        if (*(s32*)(self + 0x2c8) - *(s32*)(self + 0x2c4) < 0x3c) {
+    if (*(s32*)(self + 0x2c4) <= 0) {
+        ((ItemBase*)self)->v07();
+        return;
+    }
+    if (*(s32*)(self + 0x2c8) - *(s32*)(self + 0x2c4) < 60) {
+        *(JGeometry::TVec3f*)(self + 0x3c) = *(JGeometry::TVec3f*)(self + 0x2d0);
+        ((JGeometry::TVec3f*)(self + 0x3c))->scale(2.0f * ((f32)(*(s32*)(self + 0x2c4) + 60 - *(s32*)(self + 0x2c8)) / 60.0f));
+        ((JGeometry::TVec3f*)(self + 0xc))->add(*(JGeometry::TVec3f*)(self + 0x3c));
+        for (i = 0; i < 2; i++) {
+            f32 x = 50.0f * i - 25.0f;
+            for (j = 0; j < 2; j++) {
+                void* emitter = *(void**)(self + 0x2fc + i * 8 + j * 4);
+                if (emitter != 0) {
+                    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(self + 0xc);
+                    f32 y = 50.0f * j - 25.0f;
+                    pos.x += x * *(f32*)(self + 0x54);
+                    pos.y += y * *(f32*)(self + 0x54);
+                    fn_8013CB44(emitter, &pos, 0, -1, 1);
+                }
+            }
+        }
+    } else {
+        char* q = self;
+        s32 k = 2;
+        do {
+            JPABaseEmitter* emitter = *(JPABaseEmitter**)(q + 0x2fc);
+            if (emitter) {
+                emitter->becomeInvalidEmitter();
+                *(JPABaseEmitter**)(q + 0x2fc) = 0;
+            }
+            emitter = *(JPABaseEmitter**)(q + 0x300);
+            if (emitter) {
+                emitter->becomeInvalidEmitter();
+                *(JPABaseEmitter**)(q + 0x300) = 0;
+            }
+            q += 8;
+        } while (--k);
+        ((JGeometry::TVec3f*)(self + 0x3c))->zero();
+    }
+    for (j = 0; j < 4; j++) {
+        n = (*(u32*)(self + 0x90) >> 7) & 0x1f;
+        n = n == 0 ? 0 : n + 7;
+        if (fn_8023DE58(j) == n && !fn_80235274(j)) {
+            fn_80238548(j, 0, fn_8023E724(j), 12);
         }
     }
+    --*(s32*)(self + 0x2c4);
 }
 
 extern "C" s32 fn_801F2718(void* p, u32 id);
