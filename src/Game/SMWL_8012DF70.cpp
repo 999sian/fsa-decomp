@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 
 extern "C" char lbl_8049E8A0[];
