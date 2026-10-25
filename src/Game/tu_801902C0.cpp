@@ -30,20 +30,6 @@ static inline f32 calcLayerOffset(f32 z, const u8* e) {
     return (f32)(a * 0x400 + b * 0x80);
 }
 
-static inline void setRotX(Mtx m, f32 angle) {
-    f32 s = sin(angle);
-    f32 c = cos(angle);
-    m[0][0] = 1.0f;
-    m[0][1] = 0.0f;
-    m[0][2] = 0.0f;
-    m[1][0] = 0.0f;
-    m[1][1] = c;
-    m[1][2] = -s;
-    m[2][0] = 0.0f;
-    m[2][1] = s;
-    m[2][2] = c;
-}
-
 extern "C" void* lbl_8053AAF8;
 extern "C" u8* fn_802D6A9C(void);
 extern "C" u8 fn_802DCD0C(void);
