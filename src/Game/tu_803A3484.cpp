@@ -225,6 +225,13 @@ struct TObj1c {
     TObj1c() { fn_80428030(this); }
     u8 pad[0x1c];
 };
+struct WaveController {
+    WaveController(long a, long b, long c);
+    u8 pad[0x5c];
+};
+static inline J2DPicture* tuNewPicture(const void* res) {
+    return new J2DPicture((const ResTIMG*)res);
+}
 extern "C" u8* fn_803A59E0(u8* self) {
     void* tmp;
     char* names = lbl_80475F58;
