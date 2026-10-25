@@ -39,6 +39,51 @@ struct Unk802D3488Buf {
     s32 k;
 };
 
+struct YasiDrawKey {
+    s32 a, b;
+    YasiDrawKey() { a = -1; b = -1; }
+};
+struct YasiDrawParam {
+    u8 map[16];
+    YasiDrawKey key;
+    s32 c;
+    u8 palette;
+    u8 color;
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;
+    u8 f2c, f2d, f2e;
+    s32 g;
+    s32 h;
+    s32 i;
+
+    YasiDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+
 extern "C" s32 fn_801F132C(void* this_, u32 param2, u32 param3, void* statePtr);
 extern "C" void* fn_802D3184(void* p, s16 flags) {
     if (p != 0) {
@@ -97,20 +142,21 @@ extern "C" void fn_802D3234(char* p) {
 
 extern "C" void fn_802D3488(u8* param_1) {
     Unk802D3488Buf s;
+    u8* buf = s.buf;
     u8 i;
     s32 flag = 7;
 
     s.a = -1;
     s.b = -1;
     for (i = 0; i < 0x10; i += 8) {
-        s.buf[(u8)(i + 0)] = i + 0;
-        s.buf[(u8)(i + 1)] = i + 1;
-        s.buf[(u8)(i + 2)] = i + 2;
-        s.buf[(u8)(i + 3)] = i + 3;
-        s.buf[(u8)(i + 4)] = i + 4;
-        s.buf[(u8)(i + 5)] = i + 5;
-        s.buf[(u8)(i + 6)] = i + 6;
-        s.buf[(u8)(i + 7)] = i + 7;
+        buf[(u8)(i + 0)] = i + 0;
+        buf[(u8)(i + 1)] = i + 1;
+        buf[(u8)(i + 2)] = i + 2;
+        buf[(u8)(i + 3)] = i + 3;
+        buf[(u8)(i + 4)] = i + 4;
+        buf[(u8)(i + 5)] = i + 5;
+        buf[(u8)(i + 6)] = i + 6;
+        buf[(u8)(i + 7)] = i + 7;
     }
 
     s.a = -1;
@@ -189,4 +235,8 @@ extern "C" void fn_802D3758(char* p) {
     *(f32*)(p + 0x8c) = lbl_80540F50;
     *(s32*)(p + 0x230) = 0;
 }
+
+void fn_802D3794(void) {
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
