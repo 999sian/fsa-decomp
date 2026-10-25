@@ -39,7 +39,7 @@ extern "C" s32 fn_8010C294(u8* this_, s32 mode);
 extern f32 lbl_8053C4A4;
 extern f32 lbl_8053C4A0;
 
-static inline void SHBL_setBox(u8* this_, f32 w, f32 h) {
+static inline void SHBL_setBox(u8* this_, f32 h, f32 w) {
     *(f32*)(this_ + 0x60) = w;
     *(f32*)(this_ + 0x64) = w;
     *(f32*)(this_ + 0x68) = h;
@@ -240,15 +240,9 @@ extern "C" void fn_8010D55C(u8* this_) {
     *(s32*)(this_ + 0x258) = (*(s32*)(this_ + 0x90) >> 8) & 0xff;
     *(s32*)(this_ + 0x25c) = (*(s32*)(this_ + 0x90) >> 16) & 0xff;
     if (*(s32*)(this_ + 0x258) > 0 && lbl_8053C4A4 == *(f32*)(this_ + 0x260)) {
-        f32 b = lbl_8053C4A0;
-        f32 a = lbl_8053C4F0;
-        *(f32*)(this_ + 0x64) = *(f32*)(this_ + 0x60) = a;
-        *(f32*)(this_ + 0x6c) = *(f32*)(this_ + 0x68) = b;
+        SHBL_setBox(this_, lbl_8053C4F0, lbl_8053C4A0);
     } else {
-        f32 b = lbl_8053C4BC;
-        f32 a = lbl_8053C4F4;
-        *(f32*)(this_ + 0x64) = *(f32*)(this_ + 0x60) = a;
-        *(f32*)(this_ + 0x6c) = *(f32*)(this_ + 0x68) = b;
+        SHBL_setBox(this_, lbl_8053C4F4, lbl_8053C4BC);
     }
     *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
     *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
