@@ -3,6 +3,10 @@
 #include "JSystem/J2D/J2DPane.h"
 
 extern const f32 lbl_80543664;
+extern const f32 lbl_805436A8;
+extern const f32 lbl_805436AC;
+extern const f32 lbl_805436F0;
+extern const f32 lbl_805436F4;
 extern const f32 lbl_80543668;
 extern const f32 lbl_8054368C;
 extern const f32 lbl_805436F8;
@@ -500,6 +504,24 @@ extern "C" void fn_803E4650(u8* p) {
     }
     draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x10), 0.0f, 0.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
     fn_80440EE8(lbl_8053AED8);
+}
+
+extern "C" void fn_803E4940(u8* p) {
+    s32 state = *(s32*)(p + 0x1d4);
+    f32 f31;
+    if (state == 0xb) {
+        return;
+    }
+    {
+        s32 v = *(s32*)(p + 0x1e0);
+        f32 f2;
+        if (v < 0x1e) {
+            f2 = (f32)(v * v) / lbl_805436B4;
+        } else {
+            f2 = lbl_80543668 - (f32)((v - 0x1e) * (v - 0x1e)) / lbl_805436B4;
+        }
+        f31 = f2 * ((f32)*(u8*)(p + 0x269) - lbl_80543670);
+    }
 }
 
 extern "C" void fn_803E64A0(u8* p) {
