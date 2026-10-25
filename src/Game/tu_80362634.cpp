@@ -44,7 +44,7 @@ extern "C" f32 lbl_80542BC4;
 extern "C" f32 lbl_80542B8C;
 extern "C" f32 lbl_80542BC8;
 extern "C" f32 lbl_80542B54;
-extern "C" f32 lbl_80542B20;
+extern "C" const f32 lbl_80542B20;
 extern "C" f32 lbl_80542B24;
 extern "C" f32 lbl_80542B28;
 extern "C" f32 lbl_80542B2C;
@@ -660,8 +660,7 @@ extern "C" void fn_80364340(char* self) {
         *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
         offs.z = lbl_80542B4C;
         u32 type = fn_801CD664(8) | 0x250000;
-        JGeometry::TVec3<f32> spawn = saved;
-        spawn.add(offs);
+        JGeometry::TVec3<f32> spawn = *(JGeometry::TVec3<f32>*)(self + 0xc) + offs;
         Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)&spawn, type, -1, -1);
     }
 }
