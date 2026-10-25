@@ -51,7 +51,7 @@ extern "C" void fn_80239914(void*,int,int);
 extern "C" void fn_8022FEB8(void*,int,int,int,int);
 extern "C" int fn_8022FD8C(int);
 extern "C" u8 fn_802300EC(int);
-extern "C" u8 fn_8038AD24(int,int,int,int,const JGeometry::TVec3<f32>&,int);
+extern "C" u8 fn_8038AD24(int,int,int,int,JGeometry::TVec3<f32>,int);
 extern "C" void fn_802308E0(int);
 extern "C" void fn_801EE8F4(void*,void*,f32*,int);
 extern "C" u8 fn_803865B8(int);
@@ -78,6 +78,7 @@ extern "C" u8 fn_8023077C();
 extern "C" void fn_8030C210(void*,void*);
 extern "C" void fn_8022B130();
 extern "C" u8 fn_80384C58(int,int);
+extern const u8 lbl_80539EB8[2];
 extern "C" void fn_80102398(char* p) {
     JGeometry::TVec3<f32> pos(*(Vec*)(p + 0xC));
     pos.y -= lbl_8053C1B8;
@@ -103,7 +104,7 @@ extern "C" void fn_80102398(char* p) {
         fn_8022FEB8(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 1, 0);
         *(s32*)(p + 0x23c) = fn_8022FD8C(*(s32*)(p + 0x198));
         if (*(s32*)(p + 0x23c) >= 0 && fn_802300EC(*(s32*)(p + 0x23c))) {
-            if (fn_8038AD24(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, *(s32*)(p + 0x198), *(s32*)(p + 0x4), pos, 0)) {
+            if (fn_8038AD24(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, *(s32*)(p + 0x198), *(s32*)(p + 0x4), JGeometry::TVec3<f32>(pos), 0)) {
                 for (int i = 0; i < 4; i++) fn_802308E0(i);
                 *(s32*)(p + 0x230) = 1;
                 *(s32*)(p + 0x244) = 0;
@@ -111,7 +112,7 @@ extern "C" void fn_80102398(char* p) {
                 f32 dist;
                 fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
                 if (dist < lbl_8053C1BC) {
-                    u16 angle = JMath::atanTable_.atan2_(-dir.x, -dir.y) * lbl_8053C1C0;
+                    u32 angle = (u16)(lbl_8053C1C0 * JMath::atanTable_.atan2_(-dir.x, -dir.y));
                     if (angle < 0x2000 || angle >= 0xE000) ((u8*)p)[0x235] = 3;
                     else if (angle >= 0x2000 && angle < 0x6000) ((u8*)p)[0x235] = 1;
                     else if (angle >= 0x6000 && angle <= 0xA000) ((u8*)p)[0x235] = 2;
@@ -211,7 +212,7 @@ extern "C" void fn_80102398(char* p) {
         if (*(s32*)(p + 0x244) > 50 && ((u8*)p)[0x250] == 1) {
             fn_8022FE80(0,fn_8023DE58(0),*(s32*)(p + 0x198),0,0);
             if (fn_8022FD8C(*(s32*)(p + 0x198)) == 0) {
-                fn_8038AD24(0,0x331,*(s32*)(p + 0x198),*(s32*)(p + 0x4),pos,2);
+                fn_8038AD24(0,0x331,*(s32*)(p + 0x198),*(s32*)(p + 0x4),JGeometry::TVec3<f32>(pos),2);
                 *(s32*)(p + 0x230)=6; *(s32*)(p + 0x244)=0; fn_8022B130();
             }
         }
@@ -231,10 +232,37 @@ extern "C" void fn_80102398(char* p) {
                     if (diffs[i]>best) best=diffs[i];
                 }
             }
+            for (int i=0;i<4;i++) {
+                if (!fn_8022F514(i) && best != diffs[i])
+                    fn_802372F8(i, ((s32*)(p+0x254))[i], ((s32*)(p+0x264))[i]);
+            }
+            fn_80458FF0(lbl_8053AF80,*(s32*)(p+0x248),1,0);
         }
         break;
-    case 7: break;
-    case 8: break;
+    case 7:
+        fn_8022FEB8(box, *(s32*)(p+4), *(s32*)(p+0x198), 1, 0);
+        *(s32*)(p+0x23C)=fn_8022FD8C(*(s32*)(p+0x198));
+        if (*(s32*)(p+0x23C)>=0 &&
+            fn_8038AD24(*(s32*)(p+0x23C),0x332,*(s32*)(p+0x198),*(s32*)(p+4),JGeometry::TVec3<f32>(pos),0)) {
+            *(s32*)(p+0x230)=8; *(s32*)(p+0x244)=0;
+                JGeometry::TVec3<f32> dir;
+                f32 dist;
+                fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
+                if (dist < lbl_8053C1BC) {
+                    u32 angle = (u16)(lbl_8053C1C0 * JMath::atanTable_.atan2_(-dir.x, -dir.y));
+                    if (angle < 0x2000 || angle >= 0xE000) ((u8*)p)[0x235] = 3;
+                    else if (angle >= 0x2000 && angle < 0x6000) ((u8*)p)[0x235] = 1;
+                    else if (angle >= 0x6000 && angle <= 0xA000) ((u8*)p)[0x235] = 2;
+                    else ((u8*)p)[0x235] = 0;
+                }
+        }
+        break;
+    case 8:
+        fn_8022FEB8(box, *(s32*)(p+4), *(s32*)(p+0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(p+0x23C),*(s32*)(p+0x198))) {
+            *(s32*)(p+0x230)=7; *(s32*)(p+0x244)=0;
+        }
+        break;
     }
 }
 
