@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 
 extern "C" u16 fn_80226850(s32 a, s32 b);
@@ -128,6 +130,8 @@ extern "C" void fn_802BE008(u8* param_1)
     s32 a;
     s32 b;
     f32 scale;
+    f32 na;
+    f32 nb;
 
     *(s32*)(param_1 + 0x230) = 0;
     *(u32*)(param_1 + 0x234) = *(u32*)(param_1 + 0x90) & 0x1f;
@@ -154,11 +158,13 @@ extern "C" void fn_802BE008(u8* param_1)
         }
     }
 
-    scale = lbl_80540BE8;
     a = *(s32*)(param_1 + 0x258);
     b = *(s32*)(param_1 + 0x25c);
-    *(f32*)(param_1 + 0x23c) = scale * (f32)(-a);
-    *(f32*)(param_1 + 0x240) = scale * (f32)(-b);
+    scale = lbl_80540BE8;
+    na = (f32)(-a);
+    *(f32*)(param_1 + 0x23c) = scale * na;
+    nb = (f32)(-b);
+    *(f32*)(param_1 + 0x240) = scale * nb;
     *(f32*)(param_1 + 0x244) = scale * (f32)a;
     *(f32*)(param_1 + 0x248) = scale * (f32)b;
     *(f32*)(param_1 + 0x23c) = *(f32*)(param_1 + 0x23c) + *(f32*)(param_1 + 0xc);
@@ -171,4 +177,5 @@ call:
     fn_802BDCC0(param_1);
 }
 
+extern "C" void fn_802BE178(void) {}
 
