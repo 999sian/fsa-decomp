@@ -1137,6 +1137,23 @@ extern "C" void fn_801EF510(Actor* a) {
     fn_801F2DB4(a, 0x4E554C4C, 0x4E554C4C, &local);
 }
 
+extern "C" void fn_801EF574(void* a, void* b, f32* v, void* rec) {
+    DrawRec local;
+    if(rec) local=*(DrawRec*)rec;
+    ((u8*)&local.w10)[0]=0;
+    ((u8*)&local.w10)[1]=0;
+    ((u8*)&local.w10)[2]=0;
+    ((u8*)&local.w10)[3] >>= 1;
+    local.w28=1;
+    local.b2e=0x3f;
+    local.b1c=0;
+    local.b1d=-2;
+    local.b20=0;
+    void* res=*(void**)((u8*)lbl_8053AAF8+0xa4);
+    void* name=((void*(*)(void*,u32,void*))(*(void***)res)[6])(res,0x534f4220,a);
+    fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),v,name,(u32)b,&local,lbl_8053F774,lbl_8053F774);
+}
+
 /* --- 0x801F3604: detach from the area manager (no field_11C clear) ---------- */
 extern "C" void fn_801F3604(Actor* a) {
     s32 id = a->field_16C;
@@ -2526,25 +2543,29 @@ static inline void ATU7_setTVec3f(register const f32* src, register f32* dst) {
     }
 }
 extern f32 lbl_8053F7A8;
-extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c) {
-    JGeometry::TVec3f pos(*(JGeometry::TVec3f*)f18);
+#pragma opt_lifetimes on
+extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* __restrict f0C, void* __restrict f18, void* __restrict p80, f32* out1, f32* out2, u32 c) {
+    JGeometry::TVec3f src;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f delta;
+    pos = *(JGeometry::TVec3f*)f18;
     u8 more = 1;
-    u8 ret = 0;
+    u32 ret = 0;
     f32 w = ((f32*)p80)[2] - ((f32*)p80)[0];
     f32 h = ((f32*)p80)[3] - ((f32*)p80)[1];
-    if (w > lbl_8053F7A8 && h > lbl_8053F7A8) {
-        f32 r, nr;
+    if (w > 0.01f && h > 0.01f) {
+        f32 nr, r;
         if (w < h) h = w;
         r = h;
-        if (r > lbl_8053F7A4) r = lbl_8053F7A4;
-        r -= lbl_8053F7A8;
-        r *= lbl_8053F74C;
+        if (r > 8.0f) r = 8.0f;
+        r -= 0.01f;
+        r *= 0.5f;
         nr = -r;
+        src = *(JGeometry::TVec3f*)f0C;
         while (more != 0) {
-            JGeometry::TVec3f delta;
             u8 okx = 0;
             u8 oky = 0;
-            delta.sub(*(JGeometry::TVec3f*)f0C, pos);
+            delta.sub(src, pos);
             if (delta.x > r) {
                 delta.y = delta.y * (r / delta.x);
                 delta.x = r;
@@ -2582,6 +2603,7 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* f0C, void* f18, void* p80, f32
     }
     return ret;
 }
+#pragma opt_lifetimes reset
 /* --- 0x801EF830: spawn the actor's effect / model ---------------------------
  * Guards on the actor slot, picks the effect id from the collision kind, then
  * fills an effect-argument block and hands it to one of three spawners:
@@ -3108,36 +3130,7 @@ template <> JASMemPool<Atu2PoolObj9> JASPoolAllocObject<Atu2PoolObj9>::memPool_;
  * p4 is declared const so MWCC hoists the record loads above the destination
  * stores (retail schedules the copy that way).  The `s32 d8` local mirrors the
  * hoisted field_D8 load retail keeps live across the record's default init. */
-struct UnkDrawRec {
-    /* 0x00 */ u8  field_00[0x10];
-    /* 0x10 */ u8  field_10;
-    /* 0x11 */ u8  field_11;
-    /* 0x12 */ u8  field_12;
-    /* 0x13 */ u8  field_13;
-    /* 0x14 */ u8  field_14;
-    /* 0x15 */ u8  field_15;
-    /* 0x16 */ u8  field_16;
-    /* 0x17 */ u8  field_17;
-    /* 0x18 */ u32 field_18;
-    /* 0x1C */ u8  field_1C;
-    /* 0x1D */ u8  field_1D;
-    /* 0x1E */ u8  field_1E;
-    /* 0x1F */ u8  field_1F;
-    /* 0x20 */ u8  field_20;
-    /* 0x21 */ u8  field_21;
-    /* 0x22 */ u8  field_22;
-    /* 0x23 */ u8  field_23;
-    /* 0x24 */ u8  field_24;
-    /* 0x25 */ u8  field_25;
-    /* 0x26 */ u8  field_26;
-    /* 0x28 */ u32 field_28;
-    /* 0x2C */ u8  field_2C;
-    /* 0x2D */ u8  field_2D;
-    /* 0x2E */ u8  field_2E;
-    /* 0x30 */ s32 field_30;
-    /* 0x34 */ u32 field_34;
-    /* 0x38 */ u32 field_38;
-};
+#include "Game/ActorDrawRec.h"
 
 /* 0x30-byte matrix handed to PSMTXConcat. */
 struct UnkMtx30 {
