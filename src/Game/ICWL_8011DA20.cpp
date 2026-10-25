@@ -146,10 +146,10 @@ static inline bool icwlHitObject(u8* this_) {
 }
 
 static inline bool icwlHitFire(u8* this_) {
-    f32 zero = lbl_8053C8B8;
     ICWLBox box;
+    ICWLVec2 v;
     icwlGetBox(this_, &box);
-    ICWLVec2 v(zero, zero);
+    v.x = v.y = lbl_8053C8B8;
     if (fn_8023AB94(&box, *(s32*)(this_ + 0x4), &v) >= 0 || fn_801F2718(this_, 0x46495245) >= 0) {
         return true;
     }
@@ -158,13 +158,13 @@ static inline bool icwlHitFire(u8* this_) {
 
 extern "C" void fn_8011E030(u8* this_) {
     ICWLBox box;
+    u32 name;
+    u32 arg;
 
     v03__5ActorFv(this_);
     icwlGetBox(this_, &box);
 
     switch (*(s32*)(this_ + 0x234)) {
-    default:
-        break;
     case 0:
         fn_80239914(&box, *(s32*)(this_ + 0x4), *(u32*)(this_ + 0x198));
         if (icwlHitPlayer(this_)) {
@@ -214,8 +214,6 @@ extern "C" void fn_8011E030(u8* this_) {
                 break;
             }
             if (*(s32*)(this_ + 0x23C) != 0) {
-                u32 name;
-                u32 arg;
                 arg = lbl_80464C0C[*(s32*)(this_ + 0x23C)];
                 name = lbl_80464BE8[*(s32*)(this_ + 0x23C)];
                 Actor_CreateByID(fn_801F856C(), name, *(s32*)(this_ + 0x4), this_ + 0xc, arg, -1, -1);
