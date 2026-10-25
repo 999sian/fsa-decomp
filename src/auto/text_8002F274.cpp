@@ -11,6 +11,7 @@ public:
 };
 
 extern JKRHeap* JASDram;
+static inline unsigned long BankAlign8002F34C(unsigned long address) { return (address + 3) & ~3; }
 static inline unsigned long* BankChunk8002F34C(char* base, unsigned long tag) {
     char* end = base + *(unsigned long*)(base + 4);
     unsigned long* chunk = (unsigned long*)(base + 0x20);
@@ -81,6 +82,7 @@ extern "C" void* fn_8002F294(const void* data, JKRHeap* heap) {
     return bank;
 }
 
+#pragma opt_common_subs off
 extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
     char* base = (char*)data;
     if (heap == 0) {
@@ -240,7 +242,7 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
     }
     return bank;
 }
-
+#pragma opt_common_subs reset
 extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
     if (heap == 0) {
         heap = JASDram;
