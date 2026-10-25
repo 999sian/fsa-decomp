@@ -63,15 +63,6 @@ extern "C" s32 fn_801CD950(void* value, f32 target, f32 step);
 extern "C" s32 fn_8013CC50(u32 room, void* pos, f32 scale, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 extern "C" void fn_801D1C18(void* p);
 extern "C" void v06__5ActorFv(void* this_);
-extern "C" void fn_8011DA20(char* this_) {
-    v06__5ActorFv(this_);
-    u8 tbl[16];
-    s32 i;
-    for (i = 0; i < 16; i++) {
-        tbl[i] = (u8)i;
-    }
-}
-
 struct ICWLVec2 {
     ICWLVec2() {}
     ICWLVec2(f32 x_, f32 y_) : x(x_), y(y_) {}
