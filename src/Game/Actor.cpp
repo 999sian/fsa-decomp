@@ -50,6 +50,8 @@ public:
     virtual void e2();
     virtual void e3();
     virtual u32 load(u32 a, void* b);
+    virtual void e5();
+    virtual void* loadSprite(u32 a, void* b);
 };
 
 union EffWord {
@@ -1138,18 +1140,28 @@ extern "C" void fn_801EF510(Actor* a) {
     fn_801F2DB4(a, 0x4E554C4C, 0x4E554C4C, &local);
 }
 
-extern "C" void fn_801EF574(void* a, void* b, f32* v, void* rec) {
-    DrawRec local;
-    if(rec) local=*(DrawRec*)rec;
-    ((u8*)&local.w10)[0]=0;
-    ((u8*)&local.w10)[1]=0;
-    ((u8*)&local.w10)[2]=0;
-    ((u8*)&local.w10)[3] >>= 1;
-    local.w28=1;
-    local.b2e=0x3f;
-    local.b1c=0;
-    local.b1d=-2;
-    local.b20=0;
+extern "C" void fn_801EF574(void* a, void* b, f32* v, const void* rec) {
+    UnkDrawRec local;
+    *(u32*)&local.field_10=-1;
+    *(u32*)&local.field_14=-1;
+    for(u8 i=0;i<16;i++) local.field_00[i]=i;
+    *(u32*)&local.field_10=-1; *(u32*)&local.field_14=0;
+    local.field_18=0;
+    local.field_1C=0;local.field_1D=0;local.field_1E=0;local.field_1F=1;
+    local.field_20=1;local.field_21=0;local.field_22=0;local.field_23=0;
+    local.field_24=0;local.field_25=0;local.field_26=1;local.field_28=3;
+    local.field_2C=1;local.field_2D=0;local.field_2E=0;
+    local.field_30=-1;local.field_34=0;local.field_38=2;
+    if(rec) local=*(const UnkDrawRec*)rec;
+    local.field_10=0;
+    local.field_11=0;
+    local.field_12=0;
+    local.field_13 >>= 1;
+    local.field_28=1;
+    local.field_2E=0x3f;
+    local.field_1C=0;
+    *(s8*)&local.field_1D=-2;
+    local.field_20=0;
     void* res=*(void**)((u8*)lbl_8053AAF8+0xa4);
     void* name=((void*(*)(void*,u32,void*))(*(void***)res)[6])(res,0x534f4220,a);
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),v,name,(u32)b,&local,lbl_8053F774,lbl_8053F774);
