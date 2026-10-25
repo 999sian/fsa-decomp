@@ -84,8 +84,7 @@ extern "C" void fn_80401318(s32 param_1, s32 param_2) {
     JFWDisplay::getManager()->beginRender();
     if (lbl_80529DEC[0x251] == 0 || lbl_80529DEC[0x251] > 0x5a) {
         j3dSys.drawInit();
-        GXRenderModeObj *mode = JUTVideo::getManager()->getRenderMode();
-        J2DOrthoGraph ortho(0.0f, 0.0f, (s32)mode->fbWidth, (s32)mode->efbHeight, -1.0f, 1.0f);
+        J2DOrthoGraph ortho(0.0f, 0.0f, (int)JUTVideo::getManager()->getFbWidth(), (int)JUTVideo::getManager()->getEfbHeight(), -1.0f, 1.0f);
         JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
         ortho.setPort();
         if (param_2 == 4) {
