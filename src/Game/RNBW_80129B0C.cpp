@@ -12,11 +12,11 @@ extern "C" void* fn_8013CC50(u32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
 extern const u16 lbl_80465098[];
 extern const u16 lbl_804650A4[];
-extern f32 lbl_8053CB48;
-extern f32 lbl_8053CB4C;
-extern f32 lbl_8053CB50;
-extern f32 lbl_8053CB54;
-extern f32 lbl_8053CB58;
+extern const f32 lbl_8053CB48;
+extern const f32 lbl_8053CB4C;
+extern const f32 lbl_8053CB50;
+extern const f32 lbl_8053CB54;
+extern const f32 lbl_8053CB58;
 
 // ---- from Game/Rnbw_ctor_8012A364.cpp
 
@@ -183,34 +183,14 @@ extern "C" void fn_8012A008(void* this_) {
         case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
-                s32 i = 0;
-                void** hp = (void**)this_;
-                const u16* idp = lbl_80465098;
-                do {
-                    if (hp[0x8f] == 0) {
-                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, *idp, 0, -1, 0, 0, 1, lbl_8053CB48);
-                    }
-                    i++;
-                    idp++;
-                    hp++;
-                } while (i < 5);
+                rnbwSpawn(lbl_80465098, actor);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
-                const u16* idp = lbl_804650A4;
-                void** hp = (void**)this_;
-                s32 i = 0;
-                do {
-                    if (hp[0x8f] == 0) {
-                        hp[0x8f] = fn_8013CC50(actor->field_04, &actor->field_0C, *idp, 0, -1, 0, 0, 1, lbl_8053CB48);
-                    }
-                    i++;
-                    idp++;
-                    hp++;
-                } while (i < 5);
+                rnbwSpawn(actor, lbl_804650A4);
             }
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_801F0E34(this_, 0x5004d, 0);
@@ -237,21 +217,24 @@ extern "C" void fn_8012A008(void* this_) {
 }
 
 extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
-    if (this_ != 0) {
-        *(void**)this_ = lbl_8049E610;
-        void* zero = 0;
-        s32 i = 0;
-        void** handles = (void**)this_;
-        for (; i < 5; i++) {
-            fn_801EE434(handles[0x8f + i]);
-            handles[0x8f + i] = zero;
-        }
-        __dt__5ActorFv(this_, 0);
-        if (freeFlag > 0) {
-            __dl__FPv(this_);
-        }
+    s32 i;
+    void* self = this_;
+    s16 flag = freeFlag;
+    if (self != 0) {
+        *(void**)self = lbl_8049E610;
+        i = 0;
+        void** p = (void**)((char*)self + i);
+        void* zero = (void*)(i & 0);
+        do {
+            fn_801EE434(p[0x8f]);
+            i++;
+            p[0x8f] = zero;
+            p++;
+        } while(i < 5);
+        __dt__5ActorFv(self, 0);
     }
-    return this_;
+    if (flag > 0) __dl__FPv(self);
+    return self;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
