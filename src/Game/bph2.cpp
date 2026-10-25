@@ -38,6 +38,10 @@ static inline void bph2_drawShadow(s32 room, f32* pos, f32 alpha, f32 size) {
     fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, JUtility::TColor(0, 0, 0, (s32)(lbl_8053E0E8 * alpha)), size);
 }
 
+static inline void bph2_drawLight(f32* pos, void* p, GXColor col, f32 size) {
+    fn_80158624(*(void**)(lbl_8053AB10 + 0x2c), pos, p, col, size);
+}
+
 static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) {
     f32 sz;
     f32 sy;
