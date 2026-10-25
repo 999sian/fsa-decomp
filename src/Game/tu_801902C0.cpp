@@ -28,6 +28,16 @@ static inline f32 calcLayerOffset(f32 z, s32 a, s32 b) {
     return (f32)(a * 0x400 + b * 0x80);
 }
 
+static inline f32 calcLayerOffset(f32 z, const u8* e) {
+    s32 a = *(s32*)(e + 0x5c);
+    s32 b = *(s32*)(e + 0x60);
+    if (z > 0.0f && a < 1) {
+        a++;
+        b--;
+    }
+    return (f32)(a * 0x400 + b * 0x80);
+}
+
 static inline void setRotX(Mtx m, f32 angle) {
     f32 s = sin(angle);
     f32 c = cos(angle);
@@ -75,7 +85,6 @@ extern "C" void fn_801902D0(u8* p) {
         virtual void v3();
         virtual void* getRes(u32 type, const char* name);
     };
-    f32 off;
     f32 x;
     f32 y;
     f32 z;
@@ -88,15 +97,9 @@ extern "C" void fn_801902D0(u8* p) {
             x = *(f32*)(cur + 0x20);
             y = *(f32*)(cur + 0x30);
             z = *(f32*)(cur + 0x40);
-            s32 a = *(s32*)(cur + 0x5c);
-            s32 b = *(s32*)(cur + 0x60);
             Mtx m;
             Mtx r;
-            if (z > 0.0f && a < 1) {
-                a++;
-                b--;
-            }
-            off = (f32)(a * 0x400 + b * 0x80);
+            f32 off = calcLayerOffset(z, *(s32*)(cur + 0x5c), *(s32*)(cur + 0x60));
             m[0][3] = 0.0f;
             m[1][3] = 0.0f;
             m[2][3] = 0.0f;
@@ -166,7 +169,7 @@ extern "C" void fn_801902D0(u8* p) {
         fn_8013ABCC(*(void**)(p + 0x32c), &v, m);
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x4a8); i++, cur += 0x24) {
+    for (i = 0; i < *(s32*)(p + 0x4a8); cur += 0x24, i++) {
         if (*(void**)(cur + 0x358) != NULL) {
             JGeometry::TVec3<f32> v;
             Mtx m;
@@ -180,18 +183,25 @@ extern "C" void fn_801902D0(u8* p) {
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x5ec); i++, cur += 0x28) {
+    for (i = 0; i < *(s32*)(p + 0x5ec); cur += 0x28, i++) {
         if (*(void**)(cur + 0x4c0) != NULL) {
             JGeometry::TVec3<f32> v(1.0f, 0.7f, -1.0f);
             Mtx m;
             PSMTXTrans(m, *(f32*)(cur + 0x4ac), *(f32*)(cur + 0x4b0), *(f32*)(cur + 0x4b4));
-            setRotX90(m);
+            f32 s = sin(lbl_8053E214);
+            f32 c = cos(lbl_8053E214);
+            m[0][0] = 1.0f;
+            m[1][1] = c;
+            m[1][2] = -s;
+            m[2][1] = s;
+            m[2][2] = c;
+            m[0][1] = m[1][0] = m[0][2] = m[2][0] = 0.0f;
             v.scale(1.5f);
             fn_8013ABCC(*(void**)(cur + 0x4c0), &v, m);
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x618); i++, cur += 0x14) {
+    for (i = 0; i < *(s32*)(p + 0x618); cur += 0x14, i++) {
         if (*(void**)(cur + 0x5fc) != NULL) {
             JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
             Mtx m;
@@ -204,7 +214,7 @@ extern "C" void fn_801902D0(u8* p) {
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x79c); i++, cur += 0x18) {
+    for (i = 0; i < *(s32*)(p + 0x79c); cur += 0x18, i++) {
         if (*(void**)(cur + 0x62c) != NULL) {
             JGeometry::TVec3<f32> v(1.0f, 1.0f, -1.0f);
             Mtx m;
