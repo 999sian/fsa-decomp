@@ -1,6 +1,12 @@
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
 
+struct HudPlayerState {
+    u8 pad[0x89];
+    u8 visible;
+    u8 tail[0x3e];
+};
+
 class J2DOrthoGraph {
 public:
     void setOrtho(const JGeometry::TBox2<f32>&, f32, f32);
@@ -675,6 +681,69 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
 extern "C" void fn_80425F24(u8* this_) {
     fn_8013B490(lbl_8053AB10);
     (*(J2DScreen**)(this_ + 0x18))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern u8* sManager__8JUTVideo;
+extern const f32 lbl_80543A58;
+extern const f32 lbl_80543A88;
+extern const f32 lbl_80543A8C;
+extern "C" void fn_8044148C(void*);
+extern "C" void fn_80425F6C(u8* self) {
+    f32 width;
+    f32 height;
+    f32 right;
+    f32 bottom;
+    f32 point[2];
+    u8* settings = lbl_8050DB0C;
+    u8* states = lbl_8050EC80;
+    u8* halfwords = self;
+    u8* screens = self;
+    s32 i;
+    u8* video = *(u8**)(sManager__8JUTVideo + 4);
+    f32 scale = *(f32*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x858);
+    width = *(f32*)(settings + 0x40) * ((f32)(s32)*(u16*)(video + 4) / scale);
+    height = *(f32*)(settings + 0x40) * ((f32)(s32)*(u16*)(video + 6) / scale);
+    right = lbl_80543A40 + width;
+    bottom = lbl_80543A40 + height;
+    for (i = 0; i < 4; ++i) {
+        if ((lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0 &&
+            fn_8023DE58(fn_8022EA0C(i)) < 8) {
+            if (*(s16*)(halfwords + 0x1e8) > 0 && states[*(s32*)(states + 0x10) * 0xc8 + 0x89] != 0) {
+                fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, point);
+                video = *(u8**)(sManager__8JUTVideo + 4);
+                f32 x = width * (point[0] / (f32)(s32)*(u16*)(video + 4)) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                f32 y = (f32)*(s16*)(settings + 0x4e) + (height * (point[1] / (f32)(s32)*(u16*)(video + 6)) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
+                J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
+                graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
+                ((void(*)(void*))(*(void***)graph)[5])(graph);
+                (*(J2DScreen**)(screens + 8))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
+                *(s16*)(halfwords + 0x208) = 0;
+            } else {
+                bool blocked;
+                if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) blocked = true;
+                else blocked = lbl_8053AAF8[0x88] == 2;
+                if (!blocked &&
+                    ((s32(*)(s32))fn_802366CC)(fn_8022EA0C(i)) > 0 &&
+                    ((s32(*)(s32))fn_802366CC)(fn_8022EA0C(i)) < 300) {
+                    fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, point);
+                    video = *(u8**)(sManager__8JUTVideo + 4);
+                    f32 y = (f32)*(s16*)(settings + 0x4e) + (height * (point[1] / (f32)(s32)*(u16*)(video + 6)) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
+                    f32 x = width * (point[0] / (f32)(s32)*(u16*)(video + 4)) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                    JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
+                    J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
+                    graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
+                    ((void(*)(void*))(*(void***)graph)[5])(graph);
+                    (*(J2DScreen**)(screens + 0x2c))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
+                }
+            }
+        }
+        halfwords += 2;
+        screens += 4;
+    }
+    fn_8013B490(lbl_8053AB10);
+    (*(J2DScreen**)(self + 4))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+    fn_8044148C(*(void**)(self + 0xf0));
 }
 
 extern "C" void fn_804263A8(u8* this_) {
