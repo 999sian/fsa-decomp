@@ -19,7 +19,7 @@ extern const f32 lbl_805401F4;
 extern const f32 lbl_80540200;
 
 static f32 fnDist(char* p, Vec* dst) {
-    Vec pos = *(Vec*)(p + 8);
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 8);
     JMathInlineVEC::PSVECSubtract(&pos, (Vec*)(p + 0x14), &pos);
     *(JGeometry::TVec3<f32>*)dst = *(JGeometry::TVec3<f32>*)&pos;
     return PSVECMag(dst);
