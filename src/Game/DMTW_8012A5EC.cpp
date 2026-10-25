@@ -578,29 +578,20 @@ extern f32 lbl_8053CBB0;
 extern "C" void fn_8012BC40(char* this_) {
     u8 result = fn_8012A5EC(this_);
     if (*(f32*)(this_ + 0x23c) == 279.0f + *(f32*)(this_ + 0x3f4) && 105.0f == *(f32*)(this_ + 0x248) && result == 1) {
-        f32 zero = lbl_8053CB8C;
-        f32 half = lbl_8053CBB0;
-        *(JGeometry::TVec3<f32>*)(this_ + 0x2c8) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + lbl_8053CB64[0] * 12);
-        *(f32*)(this_ + 0x2f8) = zero;
-        *(f32*)(this_ + 0x2fc) = zero;
-        *(f32*)(this_ + 0x300) = half;
-        *(JGeometry::TVec3<f32>*)(this_ + 0x2d4) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + lbl_8053CB64[1] * 12);
-        *(f32*)(this_ + 0x304) = zero;
-        *(f32*)(this_ + 0x308) = zero;
-        *(f32*)(this_ + 0x30c) = half;
-        *(JGeometry::TVec3<f32>*)(this_ + 0x2e0) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + lbl_8053CB64[2] * 12);
-        *(f32*)(this_ + 0x310) = zero;
-        *(f32*)(this_ + 0x314) = zero;
-        *(f32*)(this_ + 0x318) = half;
-        *(JGeometry::TVec3<f32>*)(this_ + 0x2ec) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + lbl_8053CB64[3] * 12);
-        *(f32*)(this_ + 0x31c) = zero;
-        *(f32*)(this_ + 0x320) = zero;
-        *(f32*)(this_ + 0x324) = half;
         for (s32 i = 0; i < 4; i++) {
-            void* pos = this_ + 0x2c8 + i * 12;
-            *(void**)(this_ + 0x328 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053CB90, (u16)(0x3c0 + i * 3), 0, 0, 0, 0, 1);
-            *(void**)(this_ + 0x338 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053CB90, (u16)(0x3c1 + i * 3), 0, 0, 0, 0, 1);
-            *(void**)(this_ + 0x348 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053CB90, (u16)(0x3c2 + i * 3), 0, 0, 0, 0, 1);
+            *(JGeometry::TVec3<f32>*)(this_ + 0x2c8 + i * 12) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + lbl_8053CB64[i] * 12);
+            *(f32*)(this_ + 0x2f8 + i * 12) = 0.0f;
+            *(f32*)(this_ + 0x2fc + i * 12) = 0.0f;
+            *(f32*)(this_ + 0x300 + i * 12) = 0.5f;
+        }
+        {
+            s32 player; u16 id0; char* positions; char* records; u16 id1; u16 id2;
+            positions = this_; records = this_; player = 0; id0 = 0x3c0; id1 = 0x3c1; id2 = 0x3c2;
+            for (; player < 4; player++, id0 += 3, positions += 12, records += 4, id1 += 3, id2 += 3) {
+                *(void**)(records + 0x328) = fn_8013CC50(*(u32*)(this_ + 4), positions + 0x2c8, 1.0f, id0, 0, 0, 0, 0, 1);
+                *(void**)(records + 0x338) = fn_8013CC50(*(u32*)(this_ + 4), positions + 0x2c8, 1.0f, id1, 0, 0, 0, 0, 1);
+                *(void**)(records + 0x348) = fn_8013CC50(*(u32*)(this_ + 4), positions + 0x2c8, 1.0f, id2, 0, 0, 0, 0, 1);
+            }
         }
         *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
         *(s32*)(this_ + 0x234) = 0;
