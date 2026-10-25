@@ -51,7 +51,6 @@ extern "C" void fn_80458F9C(void* p, s32 x);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern void* lbl_8053AF80;
-extern f32 lbl_8053BFAC;
 extern const f32 lbl_8053BFCC;
 extern f32 lbl_8053C054;
 extern f32 lbl_8053C058;
@@ -1913,17 +1912,62 @@ extern "C" void fn_800F87E4(void* this_) {
     u8* self = (u8*)this_;
     s32 id;
     if (self[0x247] == 0x14) id = 4;
-    else id = (u32)(lbl_8053BFEC * WRTC_random()) + 1;
+    else {
+        f32 one;
+        f32 random;
+        f32 scale;
+        u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+        one = lbl_8053BFCC;
+        scale = lbl_8053BFEC;
+        *rng = *rng * 0x19660d + 0x3c6ef35f;
+        union { u32 u; f32 f; } value;
+        value.u = (*rng >> 9) | 0x3f800000;
+        random = value.f;
+        one = random - one;
+        id = (u32)(scale * one) + 1;
+    }
     id = fn_801F8544(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)(self + 0xc), id);
+    union { u32 u; f32 f; } last;
     if (id >= 0) {
         u8* actor = (u8*)fn_801F666C(fn_801F856C(), id);
-        JGeometry::TVec3<f32> vel(
-            lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random(),
-            lbl_8053BFF0 - lbl_8053BFA4 * WRTC_random(),
-            lbl_8053BFA0 + lbl_8053BFA0 * WRTC_random());
+        f32 z;
+        f32 base;
+        f32 amplitude;
+        f32 one;
+        union { u32 u; f32 f; } rz, ry, rx;
+        JGeometry::TVec3<f32> vel;
+        u32* rngZ;
+        u32* rngY;
+        u32* rngX;
+        one = lbl_8053BFCC;
+        amplitude = lbl_8053BFA4;
+        base = lbl_8053BFF0;
+        z = lbl_8053BFA0;
+        rngZ = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+        *rngZ = *rngZ * 0x19660d + 0x3c6ef35f;
+        rz.u = (*rngZ >> 9) | 0x3f800000;
+        rngY = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+        *rngY = *rngY * 0x19660d + 0x3c6ef35f;
+        ry.u = (*rngY >> 9) | 0x3f800000;
+        rngX = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+        *rngX = *rngX * 0x19660d + 0x3c6ef35f;
+        rx.u = (*rngX >> 9) | 0x3f800000;
+        vel.set(base - amplitude * (rx.f - one),
+                base - amplitude * (ry.f - one),
+                z + z * (rz.f - one));
         *(JGeometry::TVec3<f32>*)(actor + 0x3c) = vel;
     }
-    if ((s32)(lbl_8053BFF4 * WRTC_random()) == 3)
+    f32 one;
+    f32 random;
+    f32 scale;
+    u32* rng = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    one = lbl_8053BFCC;
+    scale = lbl_8053BFF4;
+    *rng = *rng * 0x19660d + 0x3c6ef35f;
+    last.u = (*rng >> 9) | 0x3f800000;
+    random = last.f;
+    one = random - one;
+    if ((s32)(scale * one) == 3)
         Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(self + 4), (f32*)(self + 0xc), 0, -1, -1);
     *(s32*)(self + 0x18c) = 0;
     v07__5ActorFv(self);
