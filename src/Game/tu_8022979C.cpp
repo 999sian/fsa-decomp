@@ -8,6 +8,8 @@ extern "C" f32 lbl_8053FFD8;
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, struct SobDrawParam* prm);
 extern "C" void fn_803075AC(void* p, s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
+extern "C" f32* fn_8023E724(u32 idx);
+
 struct SobResMgr {
     virtual void v0();
     virtual void v1();
