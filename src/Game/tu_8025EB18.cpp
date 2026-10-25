@@ -166,7 +166,7 @@ static inline s32 attachActorState(u8 flag) {
 static inline u8 canAttachActor(char* p) {
     if ((u8)fn_80270A8C(p))
         return 0;
-    if ((bool)isCarried(p))
+    if (hasCarriedActor(p))
         return 0;
     if (isAttached(p))
         return 0;
