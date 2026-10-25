@@ -15,9 +15,7 @@ extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
 
 
 extern "C" u8* fn_8013CC50(u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
-static inline void spawnEffect(u32 owner, void* pos, f32 scale, s32 id) {
-    fn_8013CC50(owner, pos, id, 0, 0, 0, 0, 1, scale);
-}
+
 extern "C" bool fn_801E1D9C();
 extern "C" u8 fn_801E1D7C(u8* o);
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
