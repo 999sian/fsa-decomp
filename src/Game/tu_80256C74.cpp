@@ -1281,6 +1281,176 @@ extern "C" void fn_8025D090(u8* p) {
     S32(p, 0x40c) = 0;
 }
 
+extern "C" void fn_8025D0B0(u8* p) {
+    f32 savedY = F32(p, 0xc);
+    if (S32(p, 0xbac) >= 1) {
+        switch (S32(p, 0x3dc)) {
+        case 0:
+            F32(p, 8) = F32(p, 8) + lbl_805400FC;
+            break;
+        case 1:
+            F32(p, 8) = F32(p, 8) - lbl_805400FC;
+            break;
+        case 2:
+            F32(p, 0xc) = savedY + lbl_805400FC;
+            break;
+        case 3:
+            F32(p, 0xc) = savedY - lbl_805400FC;
+            break;
+        }
+    } else {
+        switch (S32(p, 0x3dc)) {
+        case 0:
+            if (fn_8022C82C(PTR(p, 4)) < lbl_805400C4) {
+                S32(p, 0xba8) = 1;
+                break;
+            }
+            if (fn_8022C76C(PTR(p, 4)) > lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) + lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) - lbl_80540148;
+                if (fn_8022C82C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        if (U8(PTR(p, 0xbf0), 0xb4) != 0) {
+                            S32(p, 0xba8) = 1;
+                        } else {
+                            S32(p, 0x3dc) = 3;
+                            S32(p, 0x3e8) = 3;
+                            U8(p, 0x3fc) = 0;
+                        }
+                    }
+                }
+            } else if (fn_8022C76C(PTR(p, 4)) < lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) + lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) + lbl_80540148;
+                if (fn_8022C82C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        if (U8(PTR(p, 0xbf0), 0xb4) != 0) {
+                            S32(p, 0xba8) = 1;
+                        } else {
+                            S32(p, 0x3dc) = 2;
+                            S32(p, 0x3e8) = 2;
+                            U8(p, 0x3fc) = 0;
+                        }
+                    }
+                }
+            } else {
+                F32(p, 8) = F32(p, 8) + lbl_805400FC;
+                U8(p, 0x3fc) = 0;
+            }
+            break;
+        case 1:
+            if (fn_8022C82C(PTR(p, 4)) > lbl_805400C4) {
+                S32(p, 0xba8) = 1;
+                break;
+            }
+            if (fn_8022C76C(PTR(p, 4)) > lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) - lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) - lbl_80540148;
+                if (fn_8022C82C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        if (U8(PTR(p, 0xbf0), 0xb4) != 0) {
+                            S32(p, 0xba8) = 1;
+                        } else {
+                            S32(p, 0x3dc) = 3;
+                            S32(p, 0x3e8) = 3;
+                            U8(p, 0x3fc) = 0;
+                        }
+                    }
+                }
+            } else if (fn_8022C76C(PTR(p, 4)) < lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) - lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) + lbl_80540148;
+                if (fn_8022C82C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        if (U8(PTR(p, 0xbf0), 0xb4) != 0) {
+                            S32(p, 0xba8) = 1;
+                        } else {
+                            S32(p, 0x3dc) = 2;
+                            S32(p, 0x3e8) = 2;
+                            U8(p, 0x3fc) = 0;
+                        }
+                    }
+                }
+            } else {
+                F32(p, 8) = F32(p, 8) - lbl_805400FC;
+                U8(p, 0x3fc) = 0;
+            }
+            break;
+        case 2:
+            if (fn_8022C76C(PTR(p, 4)) > lbl_805400C4) {
+                S32(p, 0xba8) = 1;
+                break;
+            }
+            if (fn_8022C82C(PTR(p, 4)) > lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) + lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) + lbl_80540148;
+                if (fn_8022C76C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        S32(p, 0x3dc) = 0;
+                        S32(p, 0x3e8) = 0;
+                        U8(p, 0x3fc) = 0;
+                    }
+                }
+            } else if (fn_8022C82C(PTR(p, 4)) < lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) - lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) + lbl_80540148;
+                if (fn_8022C76C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        S32(p, 0x3dc) = 1;
+                        S32(p, 0x3e8) = 1;
+                        U8(p, 0x3fc) = 0;
+                    }
+                }
+            } else {
+                F32(p, 0xc) = F32(p, 0xc) + lbl_805400FC;
+                U8(p, 0x3fc) = 0;
+            }
+            break;
+        case 3:
+            if (fn_8022C76C(PTR(p, 4)) < lbl_805400C4) {
+                S32(p, 0xba8) = 1;
+                break;
+            }
+            if (fn_8022C82C(PTR(p, 4)) > lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) + lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) - lbl_80540148;
+                if (fn_8022C76C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        S32(p, 0x3dc) = 0;
+                        S32(p, 0x3e8) = 0;
+                        U8(p, 0x3fc) = 0;
+                    }
+                }
+            } else if (fn_8022C82C(PTR(p, 4)) < lbl_805400C4) {
+                F32(p, 8) = F32(p, 8) - lbl_80540148;
+                F32(p, 0xc) = F32(p, 0xc) - lbl_80540148;
+                if (fn_8022C76C(PTR(p, 4)) == lbl_805400C4) {
+                    U8(p, 0x3fc)++;
+                    if (U8(p, 0x3fc) > 8) {
+                        S32(p, 0x3dc) = 1;
+                        S32(p, 0x3e8) = 1;
+                        U8(p, 0x3fc) = 0;
+                    }
+                }
+            } else {
+                F32(p, 0xc) = F32(p, 0xc) - lbl_805400FC;
+                U8(p, 0x3fc) = 0;
+            }
+            break;
+        }
+        if (U8(PTR(p, 0xbf0), 0xb4) != 0) {
+            F32(p, 0xc) = savedY;
+        }
+    }
+}
+
 extern "C" void fn_8025D6A0(u8* p) {
     U8(p, 0xb9c) = 0;
 }
