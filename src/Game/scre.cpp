@@ -11,9 +11,9 @@ public:
 	void add(u8 digit, int p2, f32 scale, JUtility::TColor color);
 };
 extern "C" RupyNum* lbl_8053AF50;
-extern const u8 lbl_80543170[];
-extern const u8 lbl_80543174[];
-extern const u8 lbl_80543178[];
+extern const u8 lbl_80543170[4];
+extern const u8 lbl_80543174[4];
+extern const u8 lbl_80543178[4];
 extern const f32 lbl_80543194;
 extern const f32 lbl_80543198;
 extern const f32 lbl_8054318C;
@@ -51,6 +51,98 @@ extern "C" void* fn_80391CE4(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#pragma dont_inline on
+extern "C" void fn_80391D44(void* this_) {
+    u8* p = (u8*)this_;
+    s32 n = fn_8023BC38(*(s32*)(p + 0x238)) / 60 + 1;
+    if (n < 10) {
+        f32 x = *(f32*)(p + 0xc);
+        f32 y = *(f32*)(p + 0x10);
+        f32 z = *(f32*)(p + 0x14);
+        Vec pos;
+        pos.x = x;
+        pos.y = y;
+        pos.z = z;
+        if (*(s32*)(p + 4) < 8) {
+            s32 type = *(s32*)(p + 0x238);
+            GXColor c;
+            c.r = lbl_8054317C[type];
+            c.g = lbl_80543180[type];
+            c.b = lbl_80543184[type];
+            c.a = 0xff;
+            lbl_8053AF50->add(n, (int)&pos, lbl_8054318C, *(JUtility::TColor*)&c);
+        }
+    } else {
+        Vec pos;
+        pos.x = *(f32*)(p + 0xc) - 8.333f;
+        pos.y = *(f32*)(p + 0x10);
+        pos.z = *(f32*)(p + 0x14);
+        if (*(s32*)(p + 4) < 8) {
+            s32 type = *(s32*)(p + 0x238);
+            GXColor c;
+            c.r = lbl_8054317C[type];
+            c.g = lbl_80543180[type];
+            c.b = lbl_80543184[type];
+            c.a = 0xff;
+            lbl_8053AF50->add(1, (int)&pos, lbl_8054318C, *(JUtility::TColor*)&c);
+        }
+        Vec pos2;
+        pos2.x = *(f32*)(p + 0xc) + 8.333f;
+        pos2.y = *(f32*)(p + 0x10);
+        pos2.z = *(f32*)(p + 0x14);
+        if (*(s32*)(p + 4) < 8) {
+            s32 type = *(s32*)(p + 0x238);
+            GXColor c;
+            c.r = lbl_8054317C[type];
+            c.g = lbl_80543180[type];
+            c.b = lbl_80543184[type];
+            c.a = 0xff;
+            lbl_8053AF50->add(0, (int)&pos2, lbl_8054318C, *(JUtility::TColor*)&c);
+        }
+    }
+}
+
+extern const f32 lbl_80543188;
+extern const f32 lbl_8054319C;
+extern const f32 lbl_80543190;
+extern "C" void fn_80391F58(void* this_) {
+    u8* p = (u8*)this_;
+    f32 alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
+    switch (*(s32*)(p + 0x23c)) {
+    case 0:
+        if (*(s32*)(p + 4) < 8) {
+            JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
+            lbl_8053AF50->add(1, (int)&pos, lbl_80543188, color);
+        }
+        break;
+    case 1:
+        if (*(s32*)(p + 4) < 8) {
+            JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
+            lbl_8053AF50->add(5, (int)&pos, lbl_80543188, color);
+        }
+        break;
+    case 2: {
+        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+        pos.x -= lbl_8054319C;
+        if (*(s32*)(p + 4) < 8) {
+            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
+            lbl_8053AF50->add(2, (int)&pos, lbl_80543188, color);
+        }
+        JGeometry::TVec3f pos2 = *(JGeometry::TVec3f*)(p + 0xc);
+        pos2.x += lbl_8054319C;
+        if (*(s32*)(p + 4) < 8) {
+            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
+            lbl_8053AF50->add(0, (int)&pos2, lbl_80543188, color);
+        }
+        break;
+    }
+    }
+}
+
+#pragma dont_inline reset
 
 extern "C" void fn_80393228(void* this_) {
   u8* p = (u8*)this_;
@@ -300,6 +392,7 @@ struct SCRE2 {
 };
 
 extern "C" void fn_80393BF4(SCRE2* this_) {
+    s32 mode;
     u16* tbl;
     this_->m23C = this_->m90 & 0xffff;
     this_->mPlayer = (this_->m90 >> 16) & 0xff;
@@ -309,7 +402,7 @@ extern "C" void fn_80393BF4(SCRE2* this_) {
     tbl = lbl_80529DEC.arr;
     this_->m240 = this_->m23C;
     this_->m244 = tbl[this_->mPlayer];
-    s32 mode = this_->mMode;
+    mode = this_->mMode;
     if (mode == 0 || mode == 4) {
         if (lbl_8053AAF8[0x7f] == 0 || fn_802DE814()) {
             this_->m11C = 0;
