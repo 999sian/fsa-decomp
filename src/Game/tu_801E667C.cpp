@@ -1,6 +1,12 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 
+struct State_801E667C {
+    s32 state;
+    s32 timer;
+    s32 unk_0x8;
+    u8 active[4];
+};
 extern "C" void fn_801E67C4(s32* this_, s32 flag);
 extern "C" void fn_801D1C18(s32* this_);
 extern "C" u8 fn_801D21F0(s32* this_);
