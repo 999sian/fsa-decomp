@@ -3,6 +3,11 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 
+struct JijiBlock {
+    u8 raw[0x288];
+};
+extern "C" u8 lbl_804AE9C0[];
+
 // ---- from src/Game/Jiji_ctor_8037CE00.cpp ----
 // fn_8037CE00 - "JIJI" real constructor. Identical shape to FTGL/TWTG -
 // see Ftgl_ctor_80317C38.cpp for the full technique writeup. Base Actor
