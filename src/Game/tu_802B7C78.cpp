@@ -26,7 +26,7 @@ extern "C" u8 fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 x, f32 y, f32 z);
 extern void* lbl_8053AAF8;
 extern s32 lbl_804A8858[];
-extern f32 __float_epsilon;
+extern int __float_epsilon[];
 extern f32 lbl_80540AB8;
 extern f32 lbl_80540ABC;
 extern f32 lbl_80540AC0;
