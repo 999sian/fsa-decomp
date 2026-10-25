@@ -612,6 +612,11 @@ inline s32 countSharing2(char* p) {
     }
     return c;
 }
+inline bool playerSelected(char* p) {
+    u8 bit = 1 << S32(p, 4);
+    return U8(lbl_8053AAF8, 0x82) & bit;
+}
+
 inline s32 countSharing3(char* p) {
     s32 me;
     s32 linked;
@@ -2153,7 +2158,38 @@ void fn_80247F58(char* p) {
         fn_80272160(p, 0, p + 0x8, 0x12);
     }
 }
-void fn_802520C0(char* p, s32* dir) {}
+void fn_802520C0(char* p, s32* dir) {
+ if (fn_8025F448(p)) return;
+ u8 bit = 1 << S32(p,4);
+ if ((u8)(bool)(U8(lbl_8053AAF8,0x82) & bit)) {
+  if ((u8)isLinkOwner(p)) {
+   f32* pos = fn_8023E724(fn_8022EA0C(S32(p,4)));
+   F32(p,8)=pos[0]; F32(p,0xc)=pos[1]; F32(p,0x10)=pos[2];
+   S32(p,0x3b4)=fn_8023DE58(fn_8022EA0C(S32(p,4)));
+   F32(p,0x2c)=F32(p,8); F32(p,0x30)=F32(p,0xc); F32(p,0x34)=F32(p,0x10);
+  }
+  U8(p,0x1216)=0;
+  fn_80248004(p,5,0);
+  U8(p,0x1216)=0;
+  if (U8(p,0x1216)==0) {
+   if (U8(p,0x454)!=0) fn_8024B2E0(p);
+   else resetTrail(p);
+  }
+ } else {
+  f32* pos=fn_8023E724(S32(p,0xd60));
+  F32(p,8)=pos[0]; F32(p,0xc)=pos[1]; F32(p,0x10)=pos[2];
+  S32(p,0x3b4)=fn_8023DE58(S32(p,0xd60));
+  F32(p,0x2c)=F32(p,8); F32(p,0x30)=F32(p,0xc); F32(p,0x34)=F32(p,0x10);
+ }
+ if (changeState(p,0x1b,1)) {
+  F32(p,0x398)=F32(p,8); F32(p,0x39c)=F32(p,0xc); F32(p,0x3a0)=F32(p,0x10); F32(p,0x3a0)=0.0f;
+  F32(p,0x3a4)=F32(p,8); F32(p,0x3a8)=F32(p,0xc); F32(p,0x3ac)=F32(p,0x10); F32(p,0x3ac)=0.0f;
+  if(dir[0]==1 && dir[1]==0) F32(p,0x3a4)=lbl_80540088+F32(fn_802D6A9C(),0xcc);
+  else if(dir[0]==-1 && dir[1]==0) F32(p,0x3a4)=F32(fn_802D6A9C(),0xd4)-56.0f;
+  else if(dir[0]==0 && dir[1]==1) F32(p,0x3a8)=lbl_80540088+F32(fn_802D6A9C(),0xd0);
+  else if(dir[0]==0 && dir[1]==-1) F32(p,0x3a8)=F32(fn_802D6A9C(),0xd8)-56.0f;
+ }
+}
 
 void fn_8025250C(char* p) {
     s32 i;
