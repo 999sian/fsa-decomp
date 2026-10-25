@@ -3,6 +3,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern const char lbl_804684E8[];
@@ -192,18 +193,16 @@ L_974:
     *(f32*)(p + 0x6c) = lbl_8053E550;
     {
         u8 r = fn_801F2740(this_, -1);
-        s32 n = 0;
         s32 v;
         if ((r & 0xff) == 0) goto L_A8C;
-        v = r;
-        while (v > 0) {
-            v >>= 1;
-            n++;
+        idx = 0;
+        for (v = r; v > 0; v >>= 1) {
+            idx++;
         }
-        idx = n - 1;
+        idx -= 1;
         if (idx < 0) idx = 0;
         if (*(s32*)(p + 0x264) != idx) {
-            fn_8022F3DC();
+            idx = fn_8022F3DC();
             if (*(s32*)(p + 0x264) != idx) goto L_A8C;
         }
         if (fn_801F2B7C(this_, 0, -1, 1) & 0xff) {
@@ -221,8 +220,8 @@ L_A8C:
     *(s32*)(p + 0x278) = fn_801F285C(this_, 0, 0, 1, -1);
     if (*(s32*)(p + 0x278) < 0) goto L_F58;
     if (*(s32*)(p + 0x264) != *(s32*)(p + 0x278)) {
-        fn_8022F3DC();
-        if (*(s32*)(p + 0x264) != *(s32*)(p + 0x278)) goto L_F58;
+        s32 t = fn_8022F3DC();
+        if (*(s32*)(p + 0x264) != t) goto L_F58;
     }
     {
         s32 r0;
