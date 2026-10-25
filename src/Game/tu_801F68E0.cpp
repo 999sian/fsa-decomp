@@ -4,6 +4,22 @@
 #include "float.h"
 #include "Game/Actor.h"
 
+namespace JMath {
+template <int length, typename T>
+struct TAtanTable;
+template <>
+struct TAtanTable<1024, f32> {
+    f32 atan2_(f32, f32) const;
+};
+extern const TAtanTable<1024, f32> atanTable_;
+
+struct TSinCosPair {
+    f32 first;
+    f32 second;
+};
+extern const TSinCosPair sincosTable_[2048] __attribute__((aligned(32)));
+}
+
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D39B8(void* mgr, s32 idx, s32 value);
 extern "C" u8 fn_8023EBB8(s32 idx);
