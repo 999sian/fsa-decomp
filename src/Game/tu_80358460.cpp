@@ -1005,7 +1005,24 @@ extern "C" void fn_8035B0E0(u8* arg) {
     }
 }
 
-#pragma opt_propagation off
+static inline void setStateTable8035B348(u32* dst, u32 w14, u32 w13, u32 w12, u32 w11, u32 w10, u32 w9, u32 w8, u32 w7, u32 w6, u32 w5, u32 w4, u32 w3, u32 w2, u32 w1, u32 w0) {
+    dst[0] = w0;
+    dst[1] = w1;
+    dst[2] = w2;
+    dst[3] = w3;
+    dst[4] = w4;
+    dst[5] = w5;
+    dst[6] = w6;
+    dst[7] = w7;
+    dst[8] = w8;
+    dst[9] = w9;
+    dst[10] = w10;
+    dst[11] = w11;
+    dst[12] = w12;
+    dst[13] = w13;
+    dst[14] = w14;
+}
+
 extern "C" void fn_8035B348(void) {
     u8* records = lbl_8050B9F8;
     StateTable8035B348* table = &lbl_804AD2D0;
