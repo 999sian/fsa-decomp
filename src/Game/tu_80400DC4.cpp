@@ -131,3 +131,4 @@ extern "C" s32 fn_80401518(s32 param_1) {
     if (status2 == 1) lbl_80529DEC[0x250] = 1;
     return status2;
 }
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
