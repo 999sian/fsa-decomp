@@ -173,6 +173,16 @@ struct Packet_80301CD0 {
     u8 rest : 4;
 };
 
+static inline u32 tu80301_swapWord(u32 word) {
+    Slot_80301CD0 out;
+    u8* bytes = (u8*)&word;
+    out.id = bytes[3];
+    out.f1 = bytes[2];
+    out.f2 = bytes[1];
+    ((u8*)&out)[3] = bytes[0];
+    return *(u32*)&out;
+}
+
 struct Hdr_80301CD0 {
     u8 f0;
     u8 f1;
@@ -1041,6 +1051,7 @@ extern u8 lbl_8053AD1C[4];
 extern "C" u16 fn_8037F0CC(s32);
 extern "C" void fn_803085A4(s32, s32);
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
     if (flag) {
         u8* rec = lbl_80506DE8 + player * 0x68;
@@ -1050,10 +1061,11 @@ extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
         ((Packet_80301CD0*)rec)->code = 11;
     }
     fn_803085A4(unused, player);
-    s32 max = (lbl_80541618[lbl_8053AD08] - 2) * 2;
-    s32 start = lbl_8053AD0C[player];
-    u16* data = (u16*)(lbl_805071E8 + player * 0x100);
     s32 i;
+    s32 start;
+    s32 max = (lbl_80541618[lbl_8053AD08] - 2) * 2;
+    start = lbl_8053AD0C[player];
+    u16* data = (u16*)(lbl_805071E8 + player * 0x100);
     for (i = 0; i < max; ++i) {
         data[start + i] = fn_8037F0CC(player);
         if (fn_8037F1E4(player) != 3) {
@@ -1070,33 +1082,38 @@ extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
     for (; i < max; ++i) {
         ((u16*)(lbl_805071E8 + player * 0x100))[start + i] = 0;
     }
-    u8* rec = lbl_80506DE8 + player * 0x68;
-    u32* dst = (u32*)(rec + 8);
     s32 n = lbl_80541618[lbl_8053AD08] - 2;
-    s32 j = start;
+    u8* rec = lbl_80506DE8 + player * 0x68;
+    u8* copyBase = lbl_805071E8 + player * 0x100;
+    u8* dst = rec;
+    s32 j = start * 2;
     for (s32 k = n; k > 0; --k) {
-        u16* src = (u16*)(lbl_805071E8 + player * 0x100) + j;
+        u16* src = (u16*)(copyBase + j);
         Slot_80301CD0 out;
-        u32 word = src[0] | ((u32)src[1] << 16);
+        u32 word = ((u32)src[1] << 16) | src[0];
         u8* bytes = (u8*)&word;
         out.id = bytes[3];
         out.f1 = bytes[2];
         out.f2 = bytes[1];
         ((u8*)&out)[3] = bytes[0];
-        *dst++ = *(u32*)&out;
-        j += 2;
+        *(u32*)(dst + 8) = *(u32*)&out;
+        dst += 4;
+        j += 4;
     }
     u32 sum = 0;
     MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + player * 0x2380))[lbl_80504A18[player]];
     if (e->f118 == 0) {
         u8* p = rec + 8;
-        for (int b = 8; b < lbl_80541618[lbl_8053AD08] * 4; ++b) sum += *p++;
+        int limit = lbl_80541618[lbl_8053AD08] * 4;
+        for (int b = 8; b < limit; ++b) sum += *p++;
     } else {
         u8* p = rec + 8;
-        for (int b = 8; b < lbl_80541618[lbl_8053AD08] * 4; ++b) sum += *p++;
+        int limit = lbl_80541618[lbl_8053AD08] * 4;
+        for (int b = 8; b < limit; ++b) sum += *p++;
     }
     rec[0] = sum;
 }
+#pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 extern "C" void fn_803085A4(s32 unused, s32 i)
 {
