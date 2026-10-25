@@ -220,7 +220,7 @@ extern "C" const f32 lbl_80540564;
 extern "C" const f32 lbl_80540568;
 extern "C" char lbl_8046C120[];
 extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c);
-extern "C" u8 fn_8028C518(void* p, u32 idx);
+extern "C" u8 fn_8028C518(u8* p, u8 idx);
 extern "C" void fn_8029E9EC(void* sys, void* pos, u32 room, u32 id, s32 c, u32 idx);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
 extern "C" void fn_8028D5D0(u8* this_) {
