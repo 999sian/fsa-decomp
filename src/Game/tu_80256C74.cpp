@@ -930,7 +930,6 @@ extern "C" void fn_80258BBC(u8* p) {
 #pragma opt_common_subs off
 #pragma opt_propagation on
 extern "C" void fn_80258BE8(u8* p) {
- f32 speedSquared;
  if (fn_8022C6AC(U32(p,4)) > lbl_805400C4) {
 if (lbl_805400C4 == F32(p,0x344)) {
  F32(p,0x344) = lbl_805400E4 * fn_8022C82C(PTR(p,4));
@@ -978,10 +977,10 @@ f32 savedZ = F32(p,0x34c);
  F32(p,0x34c)=savedZ;
  }
  }
- speedSquared=V3(p,0x344).squared();
- if(speedSquared<=lbl_805400D8 * *(f32*)__float_epsilon) {
- if(!(F32(p,0x10)>lbl_805400C4) || U8(p,0x3fa)<1) goto afterPhysics;
+ if(playerVelocitySquared(V3(p,0x344))<=lbl_805400D8 * *(f32*)__float_epsilon) {
+ if(!(F32(p,0x10)>lbl_805400C4)) goto afterPhysics;
  }
+ if(U8(p,0x3fa)<1) goto afterPhysics;
  F32(p,0x34c)-=lbl_80540104;
  if(F32(p,0x34c)<lbl_80540108)F32(p,0x34c)=lbl_80540108;
  {
