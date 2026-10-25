@@ -184,6 +184,39 @@ struct Mgr {
 };
 extern Mgr* lbl_8053AD78;
 
+struct CharFontVt {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11(s8 ch, s32* info);
+};
+
+static inline u8 fn_8037F580_getw(u8* buf, u32* idx) {
+    s32 info;
+    CharFontVt* font = *(CharFontVt**)((u8*)lbl_8053AD78 + 0x154);
+    font->v11((s8)buf[*idx], &info);
+    return ((u8*)&info)[1];
+}
+
+static inline f32 fn_8037F580_adv(f32 acc, f32 scale, u8 w, u8* buf, u32* idx, u8 ch) {
+    *idx += 1;
+    buf[*idx] = ch;
+    return scale * (f32)w + acc;
+}
+
+static inline f32 fn_8037F580_skip(f32 acc, f32 scale, u8 w, u32* idx) {
+    *idx += 1;
+    return scale * (f32)w + acc;
+}
+
 struct GameState {
     u8 pad0[0x4c];
     s32 mode;       // 0x4c
