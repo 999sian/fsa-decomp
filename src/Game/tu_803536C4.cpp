@@ -8,8 +8,6 @@ struct FsaResourceManager {
     virtual void v01();
     virtual void v02();
     virtual void v03();
-    virtual void v04();
-    virtual void v05();
     virtual void* getResource(u32 fourccType, const char* fileName); // slot 6 (+0x18)
 };
 
@@ -38,15 +36,15 @@ extern "C" Actor* fn_803536C4(Actor* p, s16 n) {
 }
 
 extern "C" void fn_80353724(u8* p) {
-    Vec top = *(Vec*)(p + 0xc);
-    DrawRec rec;
     s32* tbl = lbl_80472240;
+    JGeometry::TVec3f top = *(Vec*)(p + 0xc);
+    DrawRec rec;
     s32 frame;
     rec.b2d = 1;
     rec.b1c = 2;
     rec.b1d = 1;
     if (*(s32*)(p + 0x24c) < 8) {
-        Vec pos = *(Vec*)(p + 0xc);
+        JGeometry::TVec3f pos = *(Vec*)(p + 0xc);
         pos.x -= lbl_80542710;
         switch (*(s32*)(p + 0x24c)) {
         case 2:
