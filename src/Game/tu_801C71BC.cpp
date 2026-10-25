@@ -11,6 +11,7 @@ extern "C" void* GetCurrentSlotPtr(void* thisPtr);
 extern "C" s32 fn_801CD664(s32 n);
 
 struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
+struct TndrMotion { u8 pad[0x2a8]; s32 state; JGeometry::TVec2<f32> points[2]; };
 extern "C" u8 fn_800FD5E8(void* ring, u8 i);
 extern "C" s32 fn_800FE25C(void* ring, u8 i);
 extern "C" u8 fn_801CC9F8(void* p, s32 room);
