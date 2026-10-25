@@ -92,53 +92,56 @@ extern "C" void fn_8021835C(u8* p) {
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_8022B978(s32 room, f32* pos, u8 mode);
 extern "C" bool fn_8030C2A8(u8* p, f32* v);
-extern "C" u32 fn_80218538(u8* p) {
-    u32 ret = 0;
+#pragma opt_propagation off
+extern "C" u32 fn_80218538(const u8* __restrict this_) {
+    u8* cam;
+    bool ok;
+    u32 ret;
+    const u8* p = this_;
     f32 pt[2][2];
     f32 w[3];
     f32 v[3];
-    f32 min = *(f32*)(p + 0x60);
-    f32 max = *(f32*)(p + 0x68);
-    f32 x = *(f32*)(p + 0xc);
-    f32 y = *(f32*)(p + 0x10);
-    pt[0][0] = x;
+    f32 max;
+    f32 y;
+    f32 x;
+    f32 min;
+    max = *(const volatile f32*)(p + 0x68);
+    min = *(const volatile f32*)(p + 0x60);
+    y = *(const f32*)(p + 0x10);
+    x = *(const f32*)(p + 0xc);
     pt[0][1] = y;
+    ret = 0;
+    pt[0][0] = x;
     pt[1][0] = x;
     pt[1][1] = y;
-    if (max - min > lbl_8053FC40) {
+    if (max - min > 0.0f) {
         pt[0][0] = x + min;
         pt[1][0] = x + max;
     }
-    min = *(f32*)(p + 0x64);
-    max = *(f32*)(p + 0x6c);
-    if (max - min > lbl_8053FC40) {
-        pt[0][1] = pt[0][1] + min;
-        pt[1][1] = pt[1][1] + max;
+    max = *(const volatile f32*)(p + 0x6c);
+    min = *(const volatile f32*)(p + 0x64);
+    if (max - min > 0.0f) {
+        pt[0][1] += min;
+        pt[1][1] += max;
     }
     if (fn_801CD2F8(*(s32*)(p + 4))) {
-        if (fn_8022B978(*(s32*)(p + 4), pt[0], 0)) {
-            ret = 1;
-        }
+        if (fn_8022B978(*(s32*)(p + 4), pt[0], 0)) ret = 1;
     } else {
-        bool ok = false;
-        u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
+        ok = false;
+        cam = *(u8**)(lbl_8053AB10 + 0x24);
         v[0] = pt[0][0];
         v[1] = pt[0][1];
-        v[2] = lbl_8053FC40;
+        v[2] = 0.0f;
         if (fn_8030C2A8(cam, v)) {
             w[0] = pt[1][0];
             w[1] = pt[1][1];
-            w[2] = lbl_8053FC40;
-            if (fn_8030C2A8(cam, w)) {
-                ok = true;
-            }
+            w[2] = 0.0f;
+            if (fn_8030C2A8(cam, w)) ok = true;
         }
-        if (ok) {
-            ret = 1;
-        }
+        if (ok) ret = 1;
     }
     return ret;
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
