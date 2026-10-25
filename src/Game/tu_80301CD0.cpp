@@ -27,6 +27,7 @@ extern u8 lbl_8053ACEC[4];
 extern u8 lbl_8053ACF0[4];
 extern u8 lbl_8053ACF4[4];
 extern u8 lbl_8053ACF8[4];
+extern u8 lbl_8053ACFC[4];
 struct Game_80301CD0;
 extern Game_80301CD0* lbl_8053AAF8;
 extern "C" void* fn_802D6A9C(void);
@@ -1160,13 +1161,13 @@ nextPlayer:;
     header2->x=fn_8023CD74(owner)>>4;
     ((Ctl4_80301CD0*)(p+0x17))->y=fn_8023CD74(owner);
     Ctl4_80301CD0* header3=(Ctl4_80301CD0*)(p+0x17);
-    bool active=false;
-    if(fn_8037F1E4(player)>=1 && fn_8037F1E4(player)<=5) active=true;
+    u8 active=0;
+    if(fn_8037F1E4(player)>=1 && fn_8037F1E4(player)<=5) active=1;
     header1->x=active!=0;
-    active=false;
+    active=0;
     if(fn_8022F5B0(owner)) {
         s32 room=fn_8023DE58(owner);
-        if(!fn_802D7804(fn_802D6A9C(),room,2)) active=true;
+        if(!fn_802D7804(fn_802D6A9C(),room,2)) active=1;
     }
     header3->x=active!=0;
     s32 clearCount=lbl_80541618[lbl_8053AD08]-7;
