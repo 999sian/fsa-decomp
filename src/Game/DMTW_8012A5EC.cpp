@@ -901,8 +901,21 @@ extern f32 lbl_8053CC18;
 extern "C" void fn_8037AE00(s32);
 extern "C" s32 fn_80458F9C(s32 mgr, s32 handle);
 extern "C" void fn_80119998(s32, s32, s32, s32, s32, s32, s32, s32);
-#pragma opt_unroll_loops off
-#pragma opt_unroll_loops off
+#pragma optimization_level 3
+static inline void initDmtwCamera(f32 x, f32 lo, f32 hi) {
+    *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+    char* p = *(char**)(lbl_8053AB10 + 0x24);
+    if (*(u8*)(p + 0x840) == 0) {
+        *(u8*)(p + 0x840) = 1;
+        *(f32*)(p + 0x844) = x;
+        *(f32*)(p + 0x848) = lo;
+        *(f32*)(p + 0x84c) = x;
+        *(f32*)(p + 0x850) = hi;
+        *(f32*)(p + 0x854) = lbl_8053CB90;
+        *(f32*)(p + 0x1d4) = lbl_8053CB94;
+        *(f32*)(p + 0x1d8) = lbl_8053CB94;
+    }
+}
 extern "C" void fn_8012C914(char* this_) {
     s32 i;
     fn_8037AE00(lbl_8053AD70);
@@ -920,12 +933,12 @@ extern "C" void fn_8012C914(char* this_) {
     *(f32*)(this_ + 0x240) = 0.0f;
     *(f32*)(this_ + 0x400) = 0.0f;
     *(f32*)(this_ + 0x3fc) = 0.0f;
-    for (i = 0; i < 6; i++) {
-        u32 off = (s16)lbl_804650D4[i] >> 2 & 0x3ff8;
+    for (i = 6; i > 0; i--) {
+        u32 off = (s16)lbl_804650D4[6-i] >> 2 & 0x3ff8;
         f32 sn = *(f32*)(sincosTable___5JMath + off);
         f32 cs = *(f32*)(sincosTable___5JMath + off + 4);
-        *(JGeometry::TVec3f*)(this_ + 0x25c + i * 12) = *(JGeometry::TVec3f*)(this_ + 0xc) + JGeometry::TVec3f(55.0f * cs, 35.0f * sn, 0.0f);
-        *(s32*)(this_ + 0x2a4 + i * 4) = lbl_804650B0[i];
+        *(JGeometry::TVec3f*)(this_ + 0x25c + (6-i) * 12) = *(JGeometry::TVec3f*)(this_ + 0xc) + JGeometry::TVec3f(55.0f * cs, 35.0f * sn, 0.0f);
+        *(s32*)(this_ + 0x2a4 + (6-i) * 4) = lbl_804650B0[6-i];
     }
     *(s32*)(this_ + 0x2bc) = 0;
     *(s32*)(this_ + 0x2c0) = 8;
@@ -934,7 +947,7 @@ extern "C" void fn_8012C914(char* this_) {
     *(f32*)(this_ + 0x64) = -8.0f;
     *(f32*)(this_ + 0x68) = 8.0f;
     *(f32*)(this_ + 0x6c) = 8.0f;
-    if (*(s32*)(lbl_8053AF80 + 0x58) - 0x1000000 != 0x1c) {
+    if (*(u32*)(lbl_8053AF80 + 0x58) - 0x1000000 != 0x1c) {
         fn_80458F9C(lbl_8053AF80, 0x3c);
     }
     *(s32*)(this_ + 0x258) = 0x3c;
@@ -971,7 +984,7 @@ extern "C" void fn_8012C914(char* this_) {
         *(f32*)(p + 0x1d8) = lbl_8053CB94;
     }
 }
-#pragma opt_unroll_loops reset
+#pragma optimization_level 4
 extern "C" void fn_8012CBE4(void)
 {
     u8* p = lbl_8049E668;
