@@ -125,6 +125,8 @@ struct HeartPane {
     virtual void v65();
 };
 
+static inline u8* GetHeart(u8* obj, u64 key) { return ((HeartPane*)obj)->search(key); }
+static inline void SetHeart(u8* obj, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) { ((HeartPane*)obj)->set(a,b,c,d,e,f,g,h); }
 extern u8 lbl_8050EC80[];
 extern u32 lbl_804B145C[];
 extern "C" u32 fn_802375B0(s32 i);
