@@ -335,11 +335,13 @@ extern "C" void fn_800CF8CC(void** self, void* data)
 extern "C" void fn_800CF8F4(void* param_1, void* anm_, void* data_) {
     unsigned char* anm = (unsigned char*)anm_;
     const J3DAnmVisibilityFullData* data = (const J3DAnmVisibilityFullData*)data_;
-    *(short*)(anm + 6) = data->mTotalFrameCount;
-    anm[4] = data->mAttribute;
-    *(float*)(anm + 8) = 0.0f;
-    *(unsigned short*)(anm + 12) = data->mExtraInfo1;
-    *(unsigned short*)(anm + 14) = data->mExtraInfo2;
+    f32 zero = lbl_8053BC80;
+    u8 attr = data->mAttribute;
+    *(s16*)(anm + 6) = data->mTotalFrameCount;
+    anm[4] = attr;
+    *(f32*)(anm + 8) = zero;
+    *(u16*)(anm + 12) = data->mExtraInfo1;
+    *(u16*)(anm + 14) = data->mExtraInfo2;
     *(J3DAnmVisibilityFullTable**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmVisibilityFullTable>(data, (void*)data->mTableOffset);
     *(unsigned char**)(anm + 0x14) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)data->mValuesOffset);
 }
@@ -662,7 +664,24 @@ extern "C" int fn_800D0618(void)
     return 6;
 }
 
-#if defined(VERSION_G4SJ01)
+#if !defined(VERSION_G4SJ01) && !defined(VERSION_G4SP01)
+extern "C" void* fn_800D0620(void* param_1, short param_2)
+{
+    if (param_1 != 0) {
+        ((void**)param_1)[0] = &lbl_8049AE5C;
+        if (param_1 != 0) {
+            ((void**)param_1)[0] = &__vt__15J3DAnmTransform;
+            if (param_1 != 0) {
+                ((void**)param_1)[0] = &__vt__10J3DAnmBase;
+            }
+        }
+        if (param_2 > 0) {
+            __dl__FPv(param_1);
+        }
+    }
+    return param_1;
+}
+#elif defined(VERSION_G4SJ01)
 extern "C" void* fn_800D0620(void* param_1, short param_2)
 {
     s32 p = (s32)param_1;
