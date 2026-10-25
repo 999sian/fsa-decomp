@@ -72,15 +72,10 @@ J3DMaterialFactory_v21::J3DMaterialFactory_v21(const J3DMaterialBlock_v21& block
 
 u16 J3DMaterialFactory_v21::countUniqueMaterials()
 {
-	u16 count = 0;
-	u16 num = mMaterialNum;
-	if (num != 0) {
-		if (num > 8) {
-			for (; count < (u16)(num - 8); count += 8) {}
-		}
-		for (; count < num; count++) {}
+	u16 i;
+	for (i = 0; i < mMaterialNum; i++) {
 	}
-	return count;
+	return i;
 }
 
 J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32 flags) const
@@ -337,16 +332,17 @@ J3DTevSwapModeTable J3DMaterialFactory_v21::newTevSwapModeTable(int idx, int sta
     return J3DTevSwapModeTable(j3dDefaultTevSwapModeTable);
 }
 
-extern "C" J3DFog fn_800E0F84(const J3DMaterialFactory_v21* self, int idx)
+#pragma use_lmw_stmw off
+extern "C" J3DFog fn_800E0F84(const J3DMaterialFactory_v21* self, const int idx)
 {
-	J3DFog fog;
-	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
-	if (initData->mFogInfoIndex != 0xffff) {
-		fog.setFogInfo(self->mFogInfo[initData->mFogInfoIndex]);
-	}
-	return fog;
+    J3DFog fog;
+    J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+    if (initData->mFogInfoIndex != 0xffff) {
+        fog.setFogInfo(self->mFogInfo[initData->mFogInfoIndex]);
+    }
+    return fog;
 }
-
+#pragma use_lmw_stmw reset
 
 J3DAlphaComp J3DMaterialFactory_v21::newAlphaComp(int idx) const
 {
