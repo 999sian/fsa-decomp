@@ -2,6 +2,11 @@
 
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
+#define Vec SDKVec
+#include "JSystem/JGeometry/Vec.h"
+#undef Vec
+#include "JSystem/JMath/Inline.h"
+#include "Game/ItemBase.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void __dl__FPv(void* p);
@@ -91,11 +96,6 @@ extern "C" int fn_8037845C(void* param_1) {
 }
 
 extern "C" int fn_80378680(char* p) {
-    struct Vec3f {
-        float x;
-        float y;
-        float z;
-    };
     float x0 = *(float*)(p + 0x60) + *(float*)(p + 0xc);
     float y0 = *(float*)(p + 0x64) + *(float*)(p + 0x10);
     float x1 = *(float*)(p + 0x68) + *(float*)(p + 0xc);
@@ -113,35 +113,31 @@ extern "C" int fn_80378680(char* p) {
             float ox1 = *(float*)(obj + 0x68) + *(float*)(obj + 0xc);
             float oy1 = *(float*)(obj + 0x6c) + *(float*)(obj + 0x10);
             if (ox0 <= x0) {
-            } else {
                 ox0 = x0;
             }
             if (oy0 <= y0) {
-            } else {
                 oy0 = y0;
             }
             if (ox1 >= x1) {
-            } else {
                 ox1 = x1;
             }
             if (oy1 >= y1) {
-            } else {
                 oy1 = y1;
             }
             unsigned char hit = 0;
-            if (!(ox1 >= ox0) && !(oy1 >= oy0)) {
+            if (ox1 >= ox0 && oy1 >= oy0) {
                 hit = 1;
             }
             if (hit) {
-                Vec3f v = *(Vec3f*)(obj + 0x3c);
+                Vec v = *(Vec*)(obj + 0x3c);
                 if (v.x == 0.0f && v.y == 0.0f) {
-                    Vec3f pos = *(Vec3f*)(obj + 0xc);
+                    Vec pos = *(Vec*)(obj + 0xc);
                     if (pos.y > *(float*)(p + 0x10)) {
-                        pos.y = *(float*)(p + 0x10) + 16.0f;
+                        pos.y = 16.0f + *(float*)(p + 0x10);
                     } else {
                         pos.y = *(float*)(p + 0x10) - 16.0f;
                     }
-                    *(Vec3f*)(obj + 0xc) = pos;
+                    *(Vec*)(obj + 0xc) = pos;
                 } else {
                     *(int*)(obj + 0x108) = 0;
                 }
@@ -212,8 +208,8 @@ extern "C" void fn_80378A24(void* param_1) {
     if ((unsigned char)fn_8037845C(param_1) != 1) {
         box = *(Box*)(p + 0x60);
         box.x0 += *(f32*)(p + 0xc);
-        box.x1 += *(f32*)(p + 0xc);
         box.y0 += *(f32*)(p + 0x10);
+        box.x1 += *(f32*)(p + 0xc);
         box.y1 += *(f32*)(p + 0x10);
         fn_80239914(&box, *(int*)(p + 0x4), *(int*)(p + 0x198));
         handle = *(int*)(p + 0x198);
@@ -223,32 +219,45 @@ extern "C" void fn_80378A24(void* param_1) {
         state = *(int*)(p + 0x234);
         switch (state) {
         case 0:
-            *(f32*)(p + 0x60) = lbl_80542FE0;
-            *(f32*)(p + 0x64) = lbl_80542FE4;
-            *(f32*)(p + 0x68) = lbl_80542FE8;
-            *(f32*)(p + 0x6c) = lbl_80542FDC;
+            f32 b, a;
+            a = lbl_80542FE0;
+            b = lbl_80542FE4;
+            *(f32*)(p + 0x60) = a;
+            a = lbl_80542FE8;
+            *(f32*)(p + 0x64) = b;
+            b = lbl_80542FDC;
+            *(f32*)(p + 0x68) = a;
+            *(f32*)(p + 0x6c) = b;
             if ((unsigned char)fn_80378880(p) == 1) {
-                if (*(int*)(p + 0x230) == 0) {
+                if (*(void**)(p + 0x230) == 0) {
                     *(int*)(p + 0x230) = fn_8013CC50(*(int*)(p + 0x4), p + 0xc, lbl_80542FD8, 0x456, 0, 1, 0, 0, 1);
                 }
-                *(f32*)(p + 0x238) = *(f32*)(p + 0x238) - lbl_80542FEC;
-                if (*(f32*)(p + 0x238) < lbl_80542FF0) {
+                f32 value = *(f32*)(p + 0x238);
+                f32 step = lbl_80542FEC;
+                f32 minimum = lbl_80542FF0;
+                *(f32*)(p + 0x238) = value - step;
+                if (*(f32*)(p + 0x238) < minimum) {
                     *(int*)(p + 0x234) = 1;
                 }
                 fn_801F0E34(p, 0x50087, 0);
-            } else if (*(int*)(p + 0x230) != 0) {
+            } else if (*(void**)(p + 0x230) != 0) {
                 fn_801EE434(*(void**)(p + 0x230));
                 *(int*)(p + 0x230) = 0;
             }
             break;
         case 1:
             fn_801F0E34(p, 0x50087, 0);
-            *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) - lbl_80542FF8;
-            if (*(f32*)(p + 0x23c) < lbl_80543000) {
-                *(f32*)(p + 0x23c) = lbl_80543000;
+            f32 value = *(f32*)(p + 0x23c);
+            f64 step = lbl_80542FF8;
+            f32 minimum = lbl_80543000;
+            *(f32*)(p + 0x23c) = value - step;
+            if (*(f32*)(p + 0x23c) < minimum) {
+                *(f32*)(p + 0x23c) = minimum;
             }
-            *(f32*)(p + 0x238) = *(f32*)(p + 0x238) - lbl_80542FEC;
-            if (*(f32*)(p + 0x238) < lbl_80542FEC) {
+            f32 amount = *(f32*)(p + 0x238);
+            f32 decrement = lbl_80542FEC;
+            *(f32*)(p + 0x238) = amount - decrement;
+            if (*(f32*)(p + 0x238) < decrement) {
                 *(f32*)(p + 0x238) = lbl_80543000;
                 if (fn_8023077C()) {
                     *(int*)(p + 0x244) = 0x32;
@@ -258,16 +267,19 @@ extern "C" void fn_80378A24(void* param_1) {
                         fn_80230498(i, fn_8023E724(i), 0xe8, 0xff, -0x80, -0x80, 1);
                     }
                 }
-                if (*(int*)(p + 0x230) != 0) {
+                if (*(void**)(p + 0x230) != 0) {
                     fn_801EE434(*(void**)(p + 0x230));
                     *(int*)(p + 0x230) = 0;
                 }
             }
             break;
         }
-        *(f32*)(p + 0x54) = *(f32*)(p + 0x23c);
-        *(f32*)(p + 0x58) = lbl_80542FD8;
-        *(f32*)(p + 0x5c) = *(f32*)(p + 0x238);
+        f32 z = *(f32*)(p + 0x238);
+        f32 x = *(f32*)(p + 0x23c);
+        f32 y = lbl_80542FD8;
+        *(f32*)(p + 0x54) = x;
+        *(f32*)(p + 0x58) = y;
+        *(f32*)(p + 0x5c) = z;
         n = 100 - (int)(lbl_80543004 * *(f32*)(p + 0x238));
         q = (char*)fn_801902C0();
         if (*(int*)(q + 0x7e0) != 0 && *(unsigned char*)(q + 0x7ec) == 0) {
