@@ -108,14 +108,6 @@ extern const JGeometry::TVec3<f32> lbl_8046BED8[];
 bool fn_80245238(char*);
 bool fn_80244FFC(char*);
 f32 fn_80246F28(char*);
-static inline void decayPlayerSpeedBound(f32 minimum, f32& value) {
-    value -= lbl_8054038C;
-    if (minimum > value) value = minimum;
-}
-static inline void decayPlayerSpeed(f32& value, const f32 minimum) {
-    value -= lbl_8054038C;
-    if (value < minimum) value = minimum;
-}
 u8 Player_GetField_0xce8(char* p);
 void fn_8027FA08(char*, f32*);
 bool fn_80275D9C(char*);
@@ -692,15 +684,24 @@ void fn_802804E0(char* p) {
     }
     speed = PSVECMag((Vec*)(p + 0x344));
     if (S32(p, 0x430) > 0) {
-        decayPlayerSpeedBound(lbl_80540360, speed);
+        speed -= lbl_8054038C;
+        if (speed < lbl_80540360) {
+            speed = lbl_80540360;
+        }
     } else if (U8(p, 0x3ff) == 0) {
         if (fn_80245238(p)) {
             U8(p, 0x3ff) = 1;
             fn_8024F0E8(p, 0x20039);
         } else if (fn_80244FFC(p)) {
-            decayPlayerSpeedBound(lbl_80540390, speed);
+            speed -= lbl_8054038C;
+            if (speed < lbl_80540390) {
+                speed = lbl_80540390;
+            }
         } else if (fn_80246F28(p) > lbl_80540360) {
-            decayPlayerSpeedBound(lbl_8054036C, speed);
+            speed -= lbl_8054038C;
+            if (speed < lbl_8054036C) {
+                speed = lbl_8054036C;
+            }
         } else {
             speed -= lbl_8054038C;
             if (speed < lbl_80540360) {
@@ -716,7 +717,10 @@ void fn_802804E0(char* p) {
             } else if (st < 16) {
                 speed += lbl_8054039C;
             } else {
-                decayPlayerSpeedBound(lbl_80540390, speed);
+                speed -= lbl_8054038C;
+                if (speed < lbl_80540390) {
+                    speed = lbl_80540390;
+                }
             }
         }
         if (U8(p, 0x3ff) >= 0x21) {
