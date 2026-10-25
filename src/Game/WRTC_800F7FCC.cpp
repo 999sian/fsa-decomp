@@ -821,7 +821,6 @@ extern "C" void fn_800FA6B0(void* p)
 
 extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
 extern f32 lbl_8053BFAC;
-extern f32 lbl_8053BFF4;
 extern f32 lbl_8053C054;
 extern f32 lbl_8053C058;
 extern f32 lbl_8053C05C;
