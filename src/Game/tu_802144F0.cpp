@@ -352,10 +352,7 @@ extern "C" void fn_80214E50(u8* this_) {
         s32 lo;
         s32 hi = 0;
         lo = 1;
-        if (pos.z > 0.0f) {
-            hi += lo;
-            lo -= hi;
-        }
+        selectPositionOffsets(pos.z, hi, lo);
         f32 off = (hi << 10) + (lo << 7);
         f32 x = pos.x;
         f32 y = pos.y + off;
@@ -371,6 +368,7 @@ extern "C" void fn_80214E50(u8* this_) {
     }
 }
 
+#pragma peephole reset
 void* dtor_80214F9C(void* this_, s16 flag) {
     u8* p = (u8*)this_;
     if (p != 0) {
