@@ -34,6 +34,14 @@ static inline void tu801D3320_setCur(char* this_, u8 i) {
     }
 }
 
+static inline void tu801D3320_setCurI(char* this_, int i) {
+    u8* s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+    u8 v = i;
+    if (v < s[2]) {
+        s[3] = v;
+    }
+}
+
 static inline u8 tu801D3320_isFreeAt(const Vec3f& pos, s32 room) {
     u8 ok = 1;
     if (fn_801CCBD0(&pos, room) || fn_801CCB1C(&pos, room)) {
@@ -171,15 +179,14 @@ extern "C" void fn_801D3320(char* this_) {
 
     u8 count = tu801D3320_collect2(this_, ids2, free);
     int cnt = count;
-    u8 sel = free[fn_801CD664(cnt)];
+    u8 sel = tu801D3320_pick(free, cnt);
     tu801D3320_setCur(this_, sel);
     ((Vec3f*)(this_ + 0x32c))->set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff));
     if (count == 1) {
         return;
     }
-    s32 nextRaw = fn_801C976C(this_);
+    u8 next = tu801D3320_next(this_);
     s32 room = *(s32*)(this_ + 0x4);
-    u8 next = nextRaw;
     if (room != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), next)) {
         return;
     }
