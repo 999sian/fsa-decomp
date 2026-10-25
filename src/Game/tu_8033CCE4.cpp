@@ -91,7 +91,7 @@ struct UnkObj8033D4CC {
 extern "C" void fn_8033D4CC(UnkObj8033D4CC* self);
 extern "C" int __float_epsilon[];
 extern "C" const f32 lbl_805421C4;
-extern s32 lbl_804ABC80;
+extern "C" s32 lbl_804ABC80[];
 
 struct UnkObj8033D264 {
     u8 pad0[4];
@@ -662,12 +662,15 @@ extern "C" const f32 lbl_80542204;
 extern "C" const f32 lbl_80542208;
 extern "C" u8 fn_8028D4DC(void* a, s32 b, s32 c);
 extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
+    JGeometry::TVec3f v1;
+    JGeometry::TVec3f v2;
     self->m25c = (self->mSpawnParam >> 12) & 0xf;
     switch (self->m25c) {
     case 0:
     case 1:
     case 5:
-        self->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421C4, lbl_805421B0));
+        v1.set(lbl_805421B0, lbl_805421C4, lbl_805421B0);
+        self->mPos.add(v1);
         self->mRect[0] = lbl_805421EC;
         self->mRect[1] = lbl_805421F0;
         self->mRect[2] = lbl_805421F4;
@@ -682,7 +685,8 @@ extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
     case 2:
     case 3:
     case 6:
-        self->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421FC, lbl_805421B0));
+        v2.set(lbl_805421B0, lbl_805421FC, lbl_805421B0);
+        self->mPos.add(v2);
         self->mRect[0] = lbl_80542200;
         self->mRect[1] = lbl_80542204;
         self->mRect[2] = lbl_80542208;
@@ -715,7 +719,7 @@ extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
     self->m0b8 = 2;
     self->m234 = 0;
     self->m250 = 0;
-    self->m24c = lbl_804ABC80;
+    self->m24c = ((s32*)&lbl_804ABC80)[0];
     self->m254 = 2;
     self->m258 = -1;
     self->m272 = 0;
@@ -724,7 +728,7 @@ extern "C" void fn_8033E188(UnkObj8033D4CC* self) {
     self->m264 = (self->mSpawnParam >> 17) & 1;
     if (self->m264 == 0 && fn_8028D4DC(&self->mPos, self->m260 - 1, self->m16c)) {
         self->m265 = 1;
-        ((void (*)(void*, s32, s32))(*(void***)self)[12])(self, 0xff, 1);
+        ((Actor*)self)->v10(0xff, 1);
     }
 
     self->mPrev = self->mPos;
