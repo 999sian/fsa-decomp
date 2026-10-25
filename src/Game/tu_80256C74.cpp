@@ -88,6 +88,7 @@ extern const f32 lbl_80540124;
 extern const f32 lbl_80540140;
 extern const f32 lbl_80540144;
 extern const f32 lbl_805400FC;
+extern const f32 lbl_80540148;
 extern "C" f32 fn_8022C82C(void*);
 extern "C" f32 fn_8022C76C(void*);
 extern const JGeometry::TVec3<f32> lbl_8046B010[];
