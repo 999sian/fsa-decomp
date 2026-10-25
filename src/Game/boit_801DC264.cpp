@@ -185,10 +185,13 @@ extern "C" int fn_801DC364(u8* this_) {
 extern const f32 lbl_8053F340;
 struct BoitRandom {
     u32 seed;
+    u32 get() {
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        return seed;
+    }
     f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
+        out.s = (get() >> 9) | 0x3f800000;
         return out.f - lbl_8053F340;
     }
 };
@@ -217,6 +220,7 @@ static inline f32 boitRandF(f32 scale) { return scale * boitRand(); }
 static inline f32 boitRandPM(f32 scale) { return scale * (lbl_8053F34C * boitRand() - lbl_8053F340); }
 
 #pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" bool fn_801DC3C4(u8* this_) {
     bool result = false;
     if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053F344
@@ -270,6 +274,7 @@ extern "C" bool fn_801DC3C4(u8* this_) {
     }
     return result;
 }
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" void fn_801DC6B4(u8* this_) {
     fn_801D22A0(this_ + 0x270, 0, 2);
