@@ -4,6 +4,9 @@
 struct FsaInitBlock { u32 w0; u32 w1; u32 w2; u32 w3; u32 w4; u32 w5; u32 w6; u32 w7; u32 w8; u32 w9; u32 w10; u32 w11; u32 w12; u32 w13; u32 w14; u32 w15; u32 w16; u32 w17; u32 w18; u32 w19; u32 w20; u32 w21; u32 w22; u32 w23; };
 struct FsaInitTriple { u32 a, b, c; };
 struct FsaInitTriples { FsaInitTriple t0; FsaInitTriple t1; FsaInitTriple t2; FsaInitTriple t3; FsaInitTriple t4; FsaInitTriple t5; FsaInitTriple t6; FsaInitTriple t7; };
+class FsaInitOwner;
+typedef void (FsaInitOwner::*FsaInitFn)();
+struct FsaInitFns { FsaInitFn t0; FsaInitFn t1; FsaInitFn t2; FsaInitFn t3; FsaInitFn t4; FsaInitFn t5; FsaInitFn t6; FsaInitFn t7; };
 extern "C" FsaInitTriples lbl_804B0508[];
 extern "C" char lbl_80528468[];
 extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
