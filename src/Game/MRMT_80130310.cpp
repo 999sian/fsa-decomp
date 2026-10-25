@@ -107,6 +107,7 @@ extern "C" s32 fn_80130370(u8* p) {
     return ret;
 }
 
+#pragma dont_inline on
 extern "C" s32 fn_8013056C(char* p, u16 id, s32 mode, s32 val) {
     u8* actor;
     Vec pos;
