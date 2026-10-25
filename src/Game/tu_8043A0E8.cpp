@@ -1,6 +1,6 @@
 #include "types.h"
 #include <math.h>
-static inline f32 maxMenuExtent(f64 x, f64 y) { f32 a = x; f32 b = y; return a >= b ? a : b; }
+static inline f32 maxMenuExtent(f64 y, f64 x) { f32 b = y; f32 a = x; return a >= b ? a : b; }
 extern const f32 lbl_80543D00;
 extern const f32 lbl_80543D04;
 extern const f32 lbl_80543D08;
@@ -1152,38 +1152,62 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     f32 left2;
     f32 x = lbl_80543CB8 * (pa.x + pb.x);
     f32 y = lbl_80543CB8 * (pa.y + pb.y);
-    f32 move1 = fn_8043D514((u8*)lbl_8053AED0);
-    f32 y1 = lbl_80543CF8 + move1;
+    f32 right1;
+    f32 y1;
+    f32 move1 = lbl_80543C88;
+    {
+        u8* game = (u8*)lbl_8053AED0;
+        if (game[0x10b] != 0 && game[0x10c] == 1) {
+            J2DPane* pane = *(J2DPane**)(*(u8**)(game + 0x64) + 4);
+            f32 paneY = pane->getBounds()->i.y;
+            move1 = (lbl_80543CE8 * (lbl_80543CEC - (paneY - lbl_80543CC8))) / lbl_80543CC4;
+        }
+    }
+    y1 = lbl_80543CF8 + move1;
     left1 = lbl_80543D04 - r;
-    f32 right1 = r + lbl_80543D00;
+    right1 = r + lbl_80543D00;
     f32 low = (y1 - lbl_80543CF8) - r;
     f32 high = r + (lbl_80543CF8 + y1);
     s32 outside;
     if (x >= left1 && x <= right1 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 1;
     {
-    f32 move2 = fn_8043D514((u8*)lbl_8053AED0);
-    f32 y2 = lbl_80543CF8 + move2;
+    f32 right2;
+    f32 y2;
+    f32 move2 = lbl_80543C88;
+    {
+        u8* game = (u8*)lbl_8053AED0;
+        if (game[0x10b] != 0 && game[0x10c] == 1) {
+            J2DPane* pane = *(J2DPane**)(*(u8**)(game + 0x64) + 4);
+            f32 paneY = pane->getBounds()->i.y;
+            move2 = (lbl_80543CE8 * (lbl_80543CEC - (paneY - lbl_80543CC8))) / lbl_80543CC4;
+        }
+    }
+    y2 = lbl_80543CF8 + move2;
     left2 = lbl_80543D0C - r;
-    f32 right2 = r + lbl_80543D08;
+    right2 = r + lbl_80543D08;
     low = (y2 - lbl_80543CF8) - r;
     high = r + (lbl_80543CF8 + y2);
     if (x >= left2 && x <= right2 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 2;
     }
     {
+    f32 right3;
+    f32 y3;
     f32 move3 = fn_8043D57C((u8*)lbl_8053AED0);
-    f32 y3 = lbl_80543D10 + move3;
-    f32 right3 = r + lbl_80543D00;
+    y3 = lbl_80543D10 + move3;
+    right3 = r + lbl_80543D00;
     low = (y3 - lbl_80543CF8) - r;
     high = r + (lbl_80543CF8 + y3);
     if (x >= left1 && x <= right3 && y >= low && y <= high) outside = 0; else outside = 1;
     if ((u8)outside == 0) ((u8*)lbl_8053AED0)[0xdc] |= 4;
     }
     {
+    f32 right4;
+    f32 y4;
     f32 move4 = fn_8043D57C((u8*)lbl_8053AED0);
-    f32 y4 = lbl_80543D10 + move4;
-    f32 right4 = r + lbl_80543D08;
+    y4 = lbl_80543D10 + move4;
+    right4 = r + lbl_80543D08;
     low = (y4 - lbl_80543CF8) - r;
     high = r + (lbl_80543CF8 + y4);
     if (x >= left2 && x <= right4 && y >= low && y <= high) outside = 0; else outside = 1;
