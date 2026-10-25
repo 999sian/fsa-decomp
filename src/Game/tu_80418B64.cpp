@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/J2D/J2DGrafContext.h"
 
 
 extern u8* lbl_8053AAF8;
@@ -17,7 +18,7 @@ extern "C" u8 fn_8022AF5C(void);
 extern "C" u8 fn_8022B1AC(void);
 extern "C" u8 fn_8022B160(void);
 extern "C" s32 fn_80138A30(u8* game);
-extern "C" void fn_8022EA0C(s32);
+extern "C" s32 fn_8022EA0C(s32);
 extern "C" void* fn_8023E724();
 extern "C" void fn_8030C5F0(void*, void*, s32, s32, f32*);
 extern "C" s32 fn_8023DE58(s32);
@@ -119,6 +120,99 @@ extern "C" s32 fn_80418B64(u8* self) {
         } else r = 1;
     }
     return r;
+}
+
+extern "C" void fn_80418D08(u8* self, s32 idx, s32 flag) {
+    u64* base = lbl_8048D320;
+    s32 off = idx * 4;
+    u8* p = self + off;
+    u8 mask = (u8)(1 << idx);
+    f32 v31 = *(f32*)(p + 0x128);
+    f32 v30 = *(f32*)(p + 0x168);
+
+    s32 t = (self[0x28f] & mask) != 0;
+    if (t == 0) {
+        if (v31 > 0.0f) {
+            *(f32*)(p + 0x128) = v31 - 0.1f;
+        } else {
+            *(f32*)(p + 0x128) = 0.0f;
+        }
+        u8* q = *(u8**)(lbl_8053AB10 + 0x20);
+        q[idx + 0x217] = 1;
+    } else {
+        if (*(s32*)(lbl_80529DEC + off + 0xd8) == 0 && lbl_8053AEC8[0x5e] == 0) {
+            if (v31 > 0.6f) {
+                *(f32*)(p + 0x128) = v31 - 0.1f;
+                if (!(*(f32*)(p + 0x128) <= 0.6f)) {
+                    *(f32*)(p + 0x128) = 0.6f;
+                }
+            } else if (v31 < 0.6f) {
+                *(f32*)(p + 0x128) = v31 + 0.1f;
+                if (!(*(f32*)(p + 0x128) >= 0.6f)) {
+                    *(f32*)(p + 0x128) = 0.6f;
+                }
+            }
+        } else {
+            if (v31 < 1.0f) {
+                *(f32*)(p + 0x128) = v31 + 0.1f;
+            } else {
+                *(f32*)(p + 0x128) = 1.0f;
+            }
+        }
+    }
+
+    if (v31 != *(f32*)(p + 0x128) || (u8)flag != 0) {
+        if ((self[0x28f] & mask) == 0 && fn_8022B1AC() == 0) {
+            if (v30 > 0.0f) {
+                *(f32*)(p + 0x168) = v30 - 0.1f;
+            } else {
+                *(f32*)(p + 0x168) = 0.0f;
+            }
+        } else {
+            if (*(s32*)(lbl_80529DEC + off + 0xd8) == 0 && lbl_8053AEC8[0x5e] == 0) {
+                if (v30 > 0.6f) {
+                    *(f32*)(p + 0x168) = v30 - 0.1f;
+                    if (!(*(f32*)(p + 0x168) <= 0.6f)) {
+                        *(f32*)(p + 0x168) = 0.6f;
+                    }
+                } else if (v30 < 0.6f) {
+                    *(f32*)(p + 0x168) = v30 + 0.1f;
+                    if (!(*(f32*)(p + 0x168) >= 0.6f)) {
+                        *(f32*)(p + 0x168) = 0.6f;
+                    }
+                }
+            } else {
+                if (v30 < 1.0f) {
+                    *(f32*)(p + 0x168) = v30 + 0.1f;
+                } else {
+                    *(f32*)(p + 0x168) = 1.0f;
+                }
+            }
+        }
+
+        if (v31 != *(f32*)(p + 0x128) || v30 != *(f32*)(p + 0x168) || (u8)flag != 0) {
+            u64* t0 = base + 0x184;
+            u64* t1 = base + 0x194;
+            u64* t2 = base + 0x18c;
+            u64* t3 = base + 0x19c;
+            s32 k;
+            for (k = 0; k < 8; k++) {
+                u8* pane = ((SearchByName)(*(void***)(*(u8**)(p + 8)))[15])(*(u8**)(p + 8), t0[k]);
+                ((void (*)(u8*, s32))(*(void***)pane)[9])(pane, (s32)((f32)(u32)self[0x250] * *(f32*)(p + 0x128)));
+                pane = ((SearchByName)(*(void***)(*(u8**)(p + 8)))[15])(*(u8**)(p + 8), t1[k]);
+                ((void (*)(u8*, s32))(*(void***)pane)[9])(pane, (s32)((f32)(u32)self[0x251] * *(f32*)(p + 0x128)));
+                pane = ((SearchByName)(*(void***)(*(u8**)(p + 8)))[15])(*(u8**)(p + 8), t2[k]);
+                ((void (*)(u8*, s32))(*(void***)pane)[9])(pane, (s32)((f32)(u32)self[0x252] * *(f32*)(p + 0x128)));
+                pane = ((SearchByName)(*(void***)(*(u8**)(p + 8)))[15])(*(u8**)(p + 8), t3[k]);
+                ((void (*)(u8*, s32))(*(void***)pane)[9])(pane, (s32)((f32)(u32)self[0x253] * *(f32*)(p + 0x128)));
+            }
+            u64* t4 = base + 0x156;
+            for (k = 0; k < 6; k++) {
+                u8* pane = ((SearchByName)(*(void***)(*(u8**)(p + 0x2c)))[15])(*(u8**)(p + 0x2c), t4[k]);
+                ((void (*)(u8*, s32))(*(void***)pane)[9])(pane, (s32)((f32)(u32)self[0x27b + k] * *(f32*)(p + 0x168)));
+            }
+        }
+    }
 }
 
 extern "C" void fn_8041918C(u8* this_, s32 idx) {
@@ -464,18 +558,20 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
 }
 
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
-    u8 mask;
-    u32 bit;
-    s32 i;
     s32 cnt;
-    BOOL flag;
+    s32 i;
+    bool flag;
+    u32 bit;
+    u8 mask;
 
     bit = 1 << idx;
     mask = bit;
 
-    flag = (lbl_80529DEC[0x239] & mask) != 0;
+    flag = lbl_80529DEC[0x239] & mask;
     if (flag) {
-        *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) = fn_80237774(idx);
+        s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+        cnt = fn_80237774(idx);
+        *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) = cnt;
         for (i = 0; i < 4; i++) {
             if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
                 *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -604,6 +700,87 @@ extern "C" void fn_8041F5FC(void* this_) {
     if (*(void**)(p + 0x50) != 0) {
         fn_8044148C();
     }
+}
+
+extern "C" void fn_8013B490(void* p);
+extern f32 lbl_80543A34;
+extern f32 lbl_80543A38;
+extern f32 lbl_80543A3C;
+extern "C" void fn_8041F720(u8* self) {
+    f32 buf[3];
+    s32 st = *(s32*)(lbl_80529DEC + 0x118);
+    if ((st == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) || (st == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+        (st == 1 && *(s32*)(lbl_80529DEC + 0x11c) == 2) || (st == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+        (st == 4 && *(s32*)(lbl_80529DEC + 0x11c) == 2) || (st == 5 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+        (st == 0xa && *(s32*)(lbl_80529DEC + 0x11c) == 2)) {
+        return;
+    }
+
+    if (self[0x291] != 0) {
+        f32 ex;
+        f32 ey;
+        f32 sx;
+        f32 sy;
+        f32 d = *(f32*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x858);
+        f32 k = *(f32*)(lbl_8050DB0C + 0x40);
+        u8* vid = *(u8**)(sManager__8JUTVideo + 4);
+        sx = k * ((f32)(s32)*(u16*)(vid + 4) / d);
+        sy = k * ((f32)(s32)*(u16*)(vid + 6) / d);
+        ex = lbl_80543A00 + sx;
+        ey = lbl_80543A00 + sy;
+
+        for (s32 i = 0; i < 4; i++) {
+            if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
+                u8* p2 = self + 2 * i;
+                u8* p4 = self + 4 * i;
+                fn_8022EA0C(i);
+                if (fn_8023DE58(i) < 8) {
+                    u8* rec = lbl_8050EC80 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10);
+                    if (*(s16*)(p2 + 0x21a) > 0 && rec[0x88] != 0) {
+                        fn_8022EA0C(i);
+                        fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
+                        u8* vp = *(u8**)(sManager__8JUTVideo + 4);
+                        f32 fa = (f32)(s32)*(u16*)(vp + 4);
+                        f32 fb = (f32)(s32)*(u16*)(vp + 6);
+                        f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
+                        f32 xx = sx * (buf[0] / fa);
+                        f32 x = xx - fa * lbl_80543A34;
+                        f32 yy = sy * (buf[1] / fb);
+                        f32 y = c + (yy - fb * lbl_80543A34);
+                        JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
+                        ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+                        ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
+                        ((J2DScreen*)*(u8**)(p4 + 8))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
+                        *(s16*)(p2 + 0x234) = 0;
+                    } else if (!(*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb || lbl_8053AAF8[0x88] == 2)) {
+                        fn_8022EA0C(i);
+                        if (fn_802366CC() > 0) {
+                            fn_8022EA0C(i);
+                            if (fn_802366CC() < 0x12c) {
+                                fn_8022EA0C(i);
+                                fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
+                                u8* vp = *(u8**)(sManager__8JUTVideo + 4);
+                                f32 fa = (f32)(s32)*(u16*)(vp + 4);
+                                f32 fb = (f32)(s32)*(u16*)(vp + 6);
+                                f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
+                                f32 xx = sx * (buf[0] / fa);
+                                f32 x = xx - fa * lbl_80543A34;
+                                f32 yy = sy * (buf[1] / fb);
+                                f32 y = c + (yy - fb * lbl_80543A34);
+                                JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
+                                ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+                                ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
+                                ((J2DScreen*)*(u8**)(p4 + 0x2c))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fn_8013B490(lbl_8053AB10);
+    ((J2DScreen*)*(u8**)(self + 4))->draw(lbl_80543A00, lbl_80543A00, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
 extern "C" void fn_8041A868(u8* self, s32 x);
