@@ -224,7 +224,7 @@ static inline u8 fallAlpha(char* this_) {
         break;
     default: {
                     f32 t = *(f32*)(this_ + 0x14);
-            t = (t - lbl_8053EC00) * lbl_8053EC04;
+            t = lbl_8053EC04 * (t - lbl_8053EC00);
             if (t > lbl_8053EC08) {
                 t = lbl_8053EC08;
             } else if (t < lbl_8053EC0C) {
@@ -244,8 +244,33 @@ extern "C" void fn_801BB618(char* this_) {
         return;
     }
     FallDrawParam param;
-    ((u8*)&param.key.a)[3] = fallAlpha(this_);
-    fn_801F02BC(this_, lbl_804693C4, *(s32*)(this_ + 0x280) + 0x8a, &param, 0x407, 0, 0, lbl_8053EC08, lbl_8053EC08);
+    u8 alpha;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 9:
+        alpha = 0;
+        break;
+    case 7:
+    case 8:
+        alpha = 0xff;
+        break;
+    default: {
+        f32 t;
+        f32 k = lbl_8053EC04;
+        t = *(f32*)(this_ + 0x14);
+        t = (t - lbl_8053EC00) * k;
+        if (t > lbl_8053EC08) {
+            t = *(f32*)&lbl_8053EC08;
+        } else if (t < lbl_8053EC0C) {
+            t = lbl_8053EC0C;
+        }
+        alpha = (u8)(lbl_8053EC10 * t);
+        break;
+    }
+    }
+    ((u8*)&param.key.a)[3] = alpha;
+    f32 s = *(f32*)&lbl_8053EC08;
+    fn_801F02BC(this_, lbl_804693C4, *(s32*)(this_ + 0x280) + 0x8a, &param, 0x407, 0, 0, s, lbl_8053EC08);
 }
 
 struct FallRoute {
@@ -359,8 +384,8 @@ extern "C" void fn_801BC9DC(char* this_) {
         }
     }
     if (!(*(u32*)(this_ + 0x230) & 0x4000)) {
-        f32 ox = lbl_8053EC0C;
-        f32 oy = ox;
+        f32 oy = lbl_8053EC0C;
+        f32 ox = oy;
         s32 room = *(s32*)(this_ + 0x2ac);
         if (room == 0) {
             char* base = fn_802D6A9C();
@@ -373,12 +398,13 @@ extern "C" void fn_801BC9DC(char* this_) {
             ox = r[0];
             oy = r[1];
         }
-        u32 px = ((*(u32*)(this_ + 0x90) >> 16) & 0x3f) * 8;
-        u32 py = ((*(u32*)(this_ + 0x90) >> 8) & 0x3f) * 8;
+        f32 k = lbl_8053EC3C;
+        u32 px = (*(u32*)(this_ + 0x90) >> 13) & 0x1f8;
+        u32 py = (*(u32*)(this_ + 0x90) >> 5) & 0x1f8;
         f32 fx = (f32)px + ox;
         f32 fy = (f32)py + oy;
-        *(f32*)(this_ + 0x2b0) = lbl_8053EC3C + fx;
-        *(f32*)(this_ + 0x2b4) = lbl_8053EC3C + fy;
+        *(f32*)(this_ + 0x2b0) = k + fx;
+        *(f32*)(this_ + 0x2b4) = k + fy;
     }
     f32 hi = lbl_8053EC68;
     f32 lo = lbl_8053EC08;
