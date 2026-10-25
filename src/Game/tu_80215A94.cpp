@@ -78,28 +78,20 @@ static inline void Hrmn_stepSub(u8* p, s32 a2, s32 a3) {
     f32 f31 = 16.0f * (17.5f + (f32)a3);
     for (s32 i = 0; i < 4; i++) {
         if (fn_8022E438(i, a2)) {
-            Vec tmp = *(Vec*)fn_8023E724(a2);
-            if (a3 >= 0 && p[2] != 30) {
-                u8* m = (u8*)fn_802D6A9C();
-                f32 c = (f32)p[2];
-                f32 ty = *(f32*)(m + 0xd0) + f31;
-                f32 tx = 32.0f + *(f32*)(m + 0xcc);
-                if (c >= FLT_EPSILON) {
-                    tmp.x = tmp.x + (1.0f / c) * (tx - tmp.x);
-                }
-                if (c >= FLT_EPSILON) {
-                    tmp.y = tmp.y + (1.0f / c) * (ty - tmp.y);
-                } else {
-                    tmp.y = ty;
-                }
-                if (c >= FLT_EPSILON) {
-                    tmp.z = tmp.z + (1.0f / c) * (0.0f - tmp.z);
-                } else {
-                    tmp.z = 0.0f;
-                }
-                fn_80230498(i, &tmp, *(s32*)(p + 4) + 0x33a, 0xff, -0x80, -0x80, 1);
-            } else {
+            JGeometry::TVec3<f32> tmp(*(JGeometry::TVec3<f32>*)fn_8023E724(a2));
+            if (a3 < 0) {
                 fn_80230498(i, &tmp, cnt, 0xff, -0x80, -0x80, 1);
+            } else if (p[2] == 30) {
+                fn_80230498(i, &tmp, cnt, 0xff, -0x80, -0x80, 1);
+            } else {
+                u8* m = (u8*)fn_802D6A9C();
+                f32 ty = *(f32*)(m + 0xd0) + f31;
+                f32 c = (f32)p[2];
+                f32 tx = 32.0f + *(f32*)(m + 0xcc);
+                tmp.x = Hrmn_approach(tmp.x, tx, c);
+                tmp.y = Hrmn_approach(tmp.y, ty, c);
+                tmp.z = Hrmn_approach(tmp.z, 0.0f, c);
+                fn_80230498(i, &tmp, *(s32*)(p + 4) + 0x33a, 0xff, -0x80, -0x80, 1);
             }
         }
     }
