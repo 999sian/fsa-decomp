@@ -305,9 +305,9 @@ void Bfin::state0() {
         } else {
             lbl_80529DEC.x1a8 = 4;
         }
-        const s32 n = fn_801F856C()->count;
-        for (u32 j = 0; (s32)j < n; j++) {
-            u8* obj = fn_801F856C()->list[j];
+        s32 n = fn_801F856C()->getCount();
+        for (s32 j = 0; j < n; j++) {
+            u8* obj = fn_801F856C()->getActor(j);
             if (obj && *(u32*)(obj + 0x1a0) == 'SWEV') {
                 fn_802B3A48(obj);
             }
