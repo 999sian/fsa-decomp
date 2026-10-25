@@ -667,32 +667,9 @@ extern "C" u32 fn_801F2DB4(Actor* a, u32 b, u32 c, void* buf) {
             }
         }
         if (sel != 0) {
-            Vec v;
-            {
-                register f32* s1 = (f32*)&a->field_0C;
-                register f32* s2 = (f32*)&p->field_3C;
-                register f32* dst = (f32*)&v;
-                /* The declaration order is load-bearing: MWCC picks the FPRs for
-                 * these operands from the order below, and any other order moves
-                 * one temp to f31 (forcing a prologue save) and breaks the match. */
-                register f32 az, axy, bxy, bz, dxy, dz;
-                // clang-format off
-                __asm {
-                    psq_l  axy, 0(s1),  0, 0
-                    lfs    az,  8(s1)
-                    stfs   az,  8(dst)
-                    psq_st axy, 0(dst), 0, 0
-                    psq_l  bz,  8(dst), 1, 0
-                    psq_l  bxy, 0(s2),  0, 0
-                    ps_sub dxy, axy, bxy
-                    psq_st dxy, 0(dst), 0, 0
-                    psq_l  dz,  8(s2),  1, 0
-                    ps_sub dz,  bz,  dz
-                    psq_st dz,  8(dst), 1, 0
-                }
-                // clang-format on
-            }
-            ok = fn_801F37AC(a, p->field_118, &v, 0, p->field_168, p->field_110);
+            JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)&a->field_0C);
+            v -= *(JGeometry::TVec3<f32>*)&p->field_3C;
+            ok = fn_801F37AC(a, p->field_118, (Vec*)&v, 0, p->field_168, p->field_110);
         } else {
             if (c != 0x48424D42) {
                 ok = 1;
@@ -1050,9 +1027,10 @@ extern "C" void fn_801F33C4(Actor* a) {
  * exact. */
 
 /* --- 0x801F285C: pick the collision slot overlapping the actor's bounds ------ */
+#pragma scheduling on
 extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
-    s32 slot = d;
     s32 r;
+    s32 slot = d;
     f32 rect[4];
     f32 out8[2];
     f32 ta = a->field_60 + a->field_0C.x;
@@ -1089,7 +1067,7 @@ extern "C" s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d) {
     }
     return r;
 }
-
+#pragma scheduling reset
 /* ==== integrated from actor-wip ==== */
 
 /* --- 0x801F132C: choose this actor's "collision object to spawn" flag -------
