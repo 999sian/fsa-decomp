@@ -677,6 +677,7 @@ extern "C" void fn_803E8210(u8* p) {
     }
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_803E831C(u8* p) {
     u8* tbl = (u8*)lbl_80477970;
     s32 i;
@@ -826,6 +827,7 @@ extern "C" void fn_803E831C(u8* p) {
  pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
  pane->v10(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
 }
+#pragma opt_common_subs reset
 
 extern "C" void fn_803E9034(u8* p) {
 	s32 n;
