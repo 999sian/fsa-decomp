@@ -563,10 +563,10 @@ inline bool actionReady(char* p) {
             return false;
         }
     }
-    if (U8(p, 0x11ea) != 0) {
-        return true;
+    if (U8(p, 0x11ea) == 0) {
+        return false;
     }
-    return false;
+    return true;
 }
 void* fn_801F856C();
 extern char* lbl_8053AED0;
