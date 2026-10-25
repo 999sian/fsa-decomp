@@ -2,7 +2,9 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JMath/JMath.h"
+#pragma dont_inline on
 extern "C" void fn_801C8B50(char* this_);
+#pragma dont_inline reset
 extern "C" void fn_801C3B7C(void* this_, s32 state);
 extern "C" u8 fn_800FD4C0(void* ring, u8 a, u8 b);
 extern "C" JGeometry::TVec3<f32> fn_800FE294(void* ring, u8 i);
@@ -353,8 +355,10 @@ extern "C" u8 fn_801CC9F8(void* pos, s32 layer);
 extern "C" u16 fn_8022461C(void* pos, s32 room);
 #pragma fp_contract off
 extern "C" BOOL fn_801C7BD0(char* this_) {
+    JGeometry::TVec3<f32> q;
+    JGeometry::TVec3<f32> p;
     BOOL result = 0;
-    s32 state = *(s32*)(this_ + 0x2a8);
+    int state = *(s32*)(this_ + 0x2a8);
     if (state == 2) {
         f32 dx = *(f32*)(this_ + 0x32c) - *(f32*)(this_ + 0xc);
         f32 dz = *(f32*)(this_ + 0x330) - *(f32*)(this_ + 0x10);
@@ -364,15 +368,15 @@ extern "C" BOOL fn_801C7BD0(char* this_) {
             if (state <= 1) {
                 i = 0;
             }
-            char* py = this_ + i * 8;
-            f32 y = *(f32*)(py + 0x2b0);
+            TndrMotion* __restrict py = (TndrMotion*)(this_ + i * 8);
+            f32 y = py->points[0].y;
             f32 z = lbl_8053EEF4;
             s32 j = 1;
             if (state <= 1) {
                 j = 0;
             }
-            char* px = this_ + j * 8;
-            f32 x = *(f32*)(px + 0x2ac);
+            TndrMotion* __restrict px = (TndrMotion*)(this_ + j * 8);
+            f32 x = px->points[0].x;
             *(f32*)(this_ + 0x32c) = x;
             *(f32*)(this_ + 0x330) = y;
             *(f32*)(this_ + 0x334) = z;
@@ -388,16 +392,17 @@ extern "C" BOOL fn_801C7BD0(char* this_) {
         TndrG* g = fn_802D6A9C();
         if (g->arr[room] != 0) {
             r = lbl_8053EEF0 + lbl_8053EDF0;
-            JGeometry::TVec3<f32> p = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
-            if (fn_801CCB1C(&p, room)) {
+            p = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+            if (fn_801CCB1C(&p, *(s32*)(this_+4))) {
                 k = 1;
             } else {
                 tx = p.x;
                 ty = p.y;
             }
-            if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), 0xff) && !fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
-                JGeometry::TVec3<f32> q = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
-                if (!fn_801CC9F8(this_ + 0xc, room) || fn_8022461C(&q, room)) {
+            room = *(s32*)(this_+4);
+            if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), 0xff) && !(u8)fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
+                q = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+                if (!fn_801CC9F8(this_ + 0xc, *(s32*)(this_+4)) || fn_8022461C(&q, *(s32*)(this_+4))) {
                     *(f32*)(this_ + 0x32c) = q.x;
                     *(f32*)(this_ + 0x330) = *(f32*)(this_ + 0x10);
                     *(f32*)(this_ + 0x334) = q.z;
