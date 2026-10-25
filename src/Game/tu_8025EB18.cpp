@@ -358,12 +358,17 @@ extern "C" bool fn_8025FCC8(char* p) {
     s32 state = S32(p, 0x1244);
     if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2)
         goto blocked;
-    if (isCarried(p) && !isCarriedByPlayer(p) && (u32)(state - 0x20) <= 5)
-        goto blocked;
+    u8 flag = U8(p, 0xd64);
+    switch ((u8)(flag == 1)) {
+    case 0: break;
+    default:
+        if (!isCarriedByPlayer(p, flag) && (u32)(state - 0x20) <= 5) goto blocked;
+        break;
+    }
     if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1)
         goto blocked;
-    if (U8(p, 0xd64) != 1) goto allowed;
-    if (isCarriedByPlayer(p)) goto allowed;
+    if (flag != 1) goto allowed;
+    if (isCarriedByPlayer(p, flag)) goto allowed;
     if (state == 0x4c) goto blocked;
     if (state != 0x4d) goto allowed;
 blocked:
