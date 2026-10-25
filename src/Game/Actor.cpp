@@ -363,6 +363,7 @@ int Actor::v18(int a, f32* b) {
 extern u32 lbl_80469F78[];
 extern f32 lbl_8053F740;
 extern f32 lbl_8053F7A4;
+#pragma dont_inline on
 extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c)
 {
     Vec v;
@@ -385,6 +386,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     }
     return (u8)r30;
 }
+#pragma dont_inline reset
 #pragma dont_inline reset
 
 /* --- 0x801EE434: release a collision object back to its pool (or reactivate
