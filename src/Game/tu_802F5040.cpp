@@ -117,6 +117,7 @@ struct Tu802F5040Tbl {
 
 extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF798(void* mgr);
+extern "C" void fn_8013B438(void* mgr);
 extern "C" void fn_80432750(void* obj, u32 flag, f32 a, f32 b, f32 c, f32 d);
 extern "C" void fn_80432638(void* obj);
 extern "C" u8 fn_80301D30(s32 i);
@@ -1055,17 +1056,16 @@ if(ent && *(s32*)(ent+0x30)!=-1) fn_802F6800(this_,pos,0,0,0,(s32)tiles,ent);
 }
 
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, void* ptr, f32 scaleX, f32 scaleY) {
-    u8* self=(u8*)base;
-    f32* pos=(f32*)elem;
     u8* data=(u8*)a;
     u8* ent=(u8*)ptr;
+    u8* self=(u8*)base;
+    f32* pos=(f32*)elem;
     Mtx matrix;
     f32 origin[3];
     u8* resolved;
     SpriteOam802F object;
     u8 transformed;
     u8* tables = lbl_8046F940;
-    s32 (*sizes)[2] = (s32 (*)[2])(tables + 0x1680);
     if (!self[0x2364]) return;
     if (ent && ent[0x21]) {
         if (fn_802F654C(self,pos,(s32)data,frame,0,0,ent)) return;
@@ -1082,10 +1082,9 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
     fn_802F5570(self,pos,ent,origin,&resolved,matrix,(u8*)&record);
     f32 depth;
     if (resolved) {
-        bool adjust;
-        if ((*(u8**)((u8*)lbl_8053AB10+0x20))[0xe461]) adjust = resolved[0x20]!=0;
-        else adjust = true;
-        if (adjust) adjust = origin[2] > lbl_805414F8;
+        u8 adjust;
+        if ((*(u8**)((u8*)lbl_8053AB10+0x20))[0xe461] && !resolved[0x20]) adjust=0;
+        else adjust=origin[2]>lbl_805414F8;
         s32 layer=(s8)resolved[0x1c];
         s32 sub=(s8)resolved[0x1d];
         if (adjust && layer<1) { layer++; sub--; }
@@ -1093,6 +1092,7 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
     } else depth=lbl_805414F8;
     fn_802F91AC(self,origin,resolved,&transformed,depth);
     fn_802F8F0C(self,resolved);
+    s32 (*sizes)[2] = (s32 (*)[2])(tables + 0x1680);
     s32 offsetY=lbl_80541548*(lbl_80541518-scaleY);
     s32 offsetX=lbl_80541548*(lbl_80541518-scaleX);
     u8* source = data + start + (count-1)*6;
@@ -1114,37 +1114,36 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
         object.size=(source[3]>>6)&3;
         object.tile=source[4]|((source[5]&3)<<8);
         object.priority=(source[5]>>2)&3;
-        if (resolved) object.palette=resolved[source[5]>>4];
-        else object.palette=source[5]>>4;
+        if (resolved) object.palette=resolved[(u32)source[5]>>4];
+        else object.palette=(u32)source[5]>>4;
         object.pad=0;
-        s32 priority=((*(u16*)((u8*)&object+4)>>4)&3);
+        s32 priority=(((u32)*((u8*)&object+5)>>4)&3);
         s32 palette=(*((u8*)&object+5)&15);
-        if (priority!=lastPriority || palette!=lastPalette) {
+        if (lastPriority!=priority || lastPalette!=palette) {
             lastPriority=priority;
-            lastPalette=palette;
-            s32 bank=resolved?resolved[0x1e]:0;
+            lastPalette=*((u8*)&object+5)&15;
+            s32 bank=0;
+            if (resolved) bank=resolved[0x1e];
             GXLoadTlut((GXTlutObj*)(self+0x25c+bank*0x300+priority*0xc0+palette*0xc), ((GXTlut*)(tables+0x1640))[palette]);
             u32 map=(((palette&1)<<2)|priority);
             GXLoadTexObj((GXTexObj*)(self+0xb5c+(bank<<11)+(priority<<9)+(palette<<5)), ((GXTexMapID*)(tables+0x1620))[map]);
             GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,((GXTexMapID*)(tables+0x1620))[map],GX_COLOR_NULL);
         }
+        f32 x, z, y, u, v, u2, v2, width, height;
         s32* size = sizes[(*((u8*)&object+1)&3)*4+(*((u8*)&object+3)&3)];
-        f32 width=size[0]*8;
-        f32 height=size[1]*8;
-        f32 x;
-        if ((*(u16*)((u8*)&object+2)>>7)&0x100) x=(s16)((*(u16*)((u8*)&object+2)>>7)|0xfe00);
-        else x=(u8)(*(u16*)((u8*)&object+2)>>7);
-        f32 z=lbl_805414F8;
-        f32 y=-(f32)(s8)(*(u8*)&object);
+        width=size[0]*8;
+        height=size[1]*8;
+        if (((u32)*(u16*)((u8*)&object+2)>>7)&0x100) x=(s16)(((u32)*(u16*)((u8*)&object+2)>>7)|0xfe00);
+        else x=(u8)((u32)*(u16*)((u8*)&object+2)>>7);
+        z=lbl_805414F8;
+        y=-(f32)(s8)(*(u8*)&object);
         if (!transformed) {
             x+=origin[0];
             z+=origin[1]+depth;
             y+=origin[2]+depth;
         }
-        f32 u=(lbl_80541510*(f32)((*(u16*)((u8*)&object+4)>>6)&31)+lbl_80541520)*lbl_8054154C;
-        f32 v=((lbl_80541510*(f32)((*(u16*)((u8*)&object+4)>>6)&0x3e0))*lbl_80541550+lbl_80541520)*lbl_8054154C;
-        f32 u2;
-        f32 v2;
+        v=((lbl_80541510*(f32)(int)(((u32)*(u16*)((u8*)&object+4)>>6)&0x3e0))*lbl_80541550+lbl_80541520)*lbl_8054154C;
+        u=(lbl_80541510*(f32)(int)(((u32)*(u16*)((u8*)&object+4)>>6)&31)+lbl_80541520)*lbl_8054154C;
         if ((((*((u8*)&object+3))>>3)&1)) {u2=u;u+=(width-lbl_80541518)*lbl_8054154C;}
         else u2=u+(width-lbl_80541518)*lbl_8054154C;
         if ((((*((u8*)&object+3))>>2)&1)) {v2=v;v+=(height-lbl_80541518)*lbl_8054154C;}
