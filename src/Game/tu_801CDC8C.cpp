@@ -888,7 +888,7 @@ extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v) {
     s32 cols;
     s32 i;
     s32 j;
-    s32 room;
+    int room;
     JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
     v = lbl_8053EFE4 * v;
     switch (idx) {
@@ -942,7 +942,9 @@ extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v) {
     if (!inside) {
         return 1;
     }
-    if (x1 - x0 < lbl_8053EFC4 || y1 - y0 < lbl_8053EFC4) {
+    f32 width = x1 - x0;
+    f32 height;
+    if (width < lbl_8053EFC4 || (height = y1 - y0) < lbl_8053EFC4) {
         return 1;
     }
 
@@ -950,8 +952,8 @@ extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v) {
     cur[0] = x0;
     cur[1] = y0;
     cur[2] = lbl_8053EFC4;
-    s32 nx = (s32)(lbl_8053EFF8 * (x1 - x0));
-    s32 ny = (s32)(lbl_8053EFF8 * (y1 - y0));
+    s32 nx = (s32)(lbl_8053EFF8 * width);
+    s32 ny = (s32)(lbl_8053EFF8 * height);
     cols = nx + 2;
     rows = ny + 2;
     lastCol = cols - 1;
@@ -965,7 +967,7 @@ extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v) {
             if (j == lastCol) {
                 cur[0] = x1;
             }
-            if (((u8 (*)(u8*, s32, f32*))(*(void***)this_)[19])(this_, room, cur)) {
+            if (((ItemBase*)this_)->v17(room, cur)) {
                 return 1;
             }
             cur[0] += lbl_8053EFDC;
