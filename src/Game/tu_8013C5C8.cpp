@@ -232,6 +232,7 @@ extern "C" char __vt__18JPAEmitterCallBack[];
 extern "C" char lbl_804BEC38[];
 extern "C" s8 lbl_8053AB1C;
 extern "C" void* lbl_8053AB20;
+extern "C" char lbl_804BEC44[];
 extern f32 lbl_8053CE00;
 
 struct EffEmitterSet {
@@ -302,6 +303,64 @@ extern "C" void fn_8013DC44(u8* this_) {
     }
     calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 3);
     calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 9);
+}
+
+extern "C" const char* lbl_8049F118[];
+extern "C" void fn_8013DDEC(u8* this_) {
+    struct ResMgr {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void* getRes(u32 type, const char* name);
+    };
+    EffEmitterSet* set = (EffEmitterSet*)this_;
+    forceDeleteAllEmitter__17JPAEmitterManagerFv(set->mgr);
+    set->count = 0;
+    tu13_addEmitter(set, 0x347, 0, 0);
+    tu13_addEmitter(set, 0x346, 0, 0);
+    tu13_addEmitter(set, 0x345, 0, 0);
+    tu13_addEmitter(set, 0x357, 0, 0);
+    tu13_addEmitter(set, 0x358, 0, 0);
+    tu13_addEmitter(set, 0x348, 0, 0);
+    tu13_addEmitter(set, 0x35c, 0, 0);
+    tu13_addEmitter(set, 0x54d, 1, 0);
+    tu13_addEmitter(set, 0x349, 0, 0);
+    tu13_addEmitter(set, 0x34a, 0, 0);
+    tu13_addEmitter(set, 0x34b, 0, 0);
+    tu13_addEmitter(set, 0x34c, 0, 1);
+    tu13_addEmitter(set, 0x34d, 0, 1);
+    tu13_addEmitter(set, 0x354, 0, 0);
+    tu13_addEmitter(set, 0x355, 0, 0);
+    tu13_addEmitter(set, 0x356, 0, 0);
+    tu13_addEmitter(set, 0x351, 0, 0);
+    tu13_addEmitter(set, 0x352, 0, 0);
+    tu13_addEmitter(set, 0x353, 0, 0);
+    tu13_addEmitter(set, 0x34e, 0, 0);
+    tu13_addEmitter(set, 0x34f, 0, 0);
+    tu13_addEmitter(set, 0x350, 0, 0);
+    tu13_addEmitter(set, 0x359, 0, 0);
+    tu13_addEmitter(set, 0x35a, 0, 0);
+    tu13_addEmitter(set, 0x35b, 0, 0);
+    {
+        ResMgr* res = *(ResMgr**)((u8*)lbl_8053AAF8 + 0xa4);
+        if (res != 0) {
+            s32 i;
+            const char** names = lbl_8049F118;
+            for (i = 0; i < 5; i++, names += 2) {
+                void* tex = res->getRes(0x54494d47, names[0]);
+                if (tex != 0) {
+                    swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(*(void**)(this_ + 8), tex, names[1]);
+                }
+            }
+        }
+    }
+    {
+        s32 i;
+        for (i = 0; i < 0x400; i++) {
+            set->slots[i].used = 0;
+        }
+    }
 }
 
 extern "C" void* fn_8013F378(void* this_, s16 freeFlag) {
