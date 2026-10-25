@@ -2284,36 +2284,9 @@ extern "C" void fn_800DABCC(u8* p) {
 
 extern u8 j3dZModeTable[96];
 extern "C" void fn_800DB068(u8* p) {
-    s32 a;
-    s32 b;
-    s32 c;
-    s32 d;
-    s32 h;
-    u8 flag = 0;
-    u32 idx;
-    u32 v;
-
     GDOverflowCheck(0xf);
-    a = p[8];
-    b = p[9];
-    c = p[10];
-    d = p[11];
-    h = p[15];
-    __GDWrite(0x61);
-    __GDWrite(0xfe);
-    __GDWrite(flag);
-    __GDWrite(0xff);
-    __GDWrite(0xe7);
-    __GDWrite(0x61);
-    if (a == 1 || a == 3) {
-        flag = 1;
-    }
-    v = 0x41000000 | (d << 12) | (b << 8) | (c << 5) | (h << 2) | flag | ((a == 2) << 1) | ((a == 3) << 11);
-    __GDWriteU32(v);
-    __GDWrite(0x61);
-    idx = *(u16*)(p + 0xc) * 3;
-    v = 0x40000000 | (j3dZModeTable[idx + 2] << 4) | (j3dZModeTable[idx + 1] << 1) | j3dZModeTable[idx];
-    __GDWriteU32(v);
+    ((J3DBlend*)(p + 8))->load(p[0xf]);
+    ((J3DZMode*)(p + 0xc))->load();
 }
 
 extern "C" void fn_800DB360(u8* p) {
