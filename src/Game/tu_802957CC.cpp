@@ -1,5 +1,4 @@
 #include "types.h"
-extern "C" const f32 lbl_80540690;
 extern "C" const f32 lbl_80540678;
 extern "C" const f32 lbl_80540670;
 #include "JSystem/JParticle/JPAEmitter.h"
