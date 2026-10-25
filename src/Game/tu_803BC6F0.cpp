@@ -215,6 +215,15 @@ static inline void* callVt3(u8* p, u32 a, u32 b, u32 c) {
     return (*(Vt15x3**)obj)->v15(obj, a, b, c);
 }
 
+static inline void setKeyedAt(u8* p, s32 recvOff, s32 tgtOff, u8* keys, s32 n, s32 flagOff) {
+    s32 i;
+    u8* k = keys;
+    for (i = 0; i < n; i++, k += 8) {
+        void* s = ((TextBoxVt15*)*(void**)(p + recvOff))->v15(*(void**)(p + recvOff), *(u64*)k);
+        fn_804023D0(*(void**)(p + tgtOff), s, p[i + flagOff]);
+    }
+}
+
 struct PaneVt9 {
     void* v0;
     void* v1;
@@ -635,6 +644,122 @@ extern "C" void fn_803BF698(u8* p) {
     p[0x110] = 0x27;
 }
 
+extern "C" void fn_803BF9C4(u8* p) {
+    u32 pa[2];
+    u32 pb[2];
+    u32 pc[2];
+    u32 pd[2];
+    s32 i;
+    u8* q;
+    void* r;
+    void* obj;
+
+    *(u8*)(*(u8**)(*(u8**)(p + 0x20) + 4) + 0xb0) = 1;
+    *(u8*)(*(u8**)(*(u8**)(p + 0x34) + 4) + 0xb0) = 1;
+    obj = *(void**)(*(u8**)(p + 0x50) + 4);
+    (*(VtSlot9**)obj)->v9(obj, 0);
+    r = callVt3(p, 0x500000, 0x506663, 0x75723031);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    r = callVt3(p, 0x500000, 0x506663, 0x75723032);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    r = callVt3(p, 0x500000, 0x506663, 0x75723033);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    r = callVt3(p, 0x500000, 0x506663, 0x75723034);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+
+    pa[0] = *(u32*)(p + 0xe0);
+    pa[1] = *(u32*)(p + 0xe4);
+    r = callVt3(p, 0x70620000, 0x50636f, 0x70623031);
+    (*(ColorVt**)r)->v76(r, &pa[1], &pa[0]);
+    pb[0] = *(u32*)(p + 0xe0);
+    pb[1] = *(u32*)(p + 0xe4);
+    r = callVt3(p, 0x70620000, 0x50636f, 0x70623032);
+    (*(ColorVt**)r)->v76(r, &pb[1], &pb[0]);
+    pc[0] = *(u32*)(p + 0xe0);
+    pc[1] = *(u32*)(p + 0xe4);
+    r = callVt3(p, 0x6c620000, 0x506465, 0x6c623031);
+    (*(ColorVt**)r)->v76(r, &pc[1], &pc[0]);
+    pd[0] = *(u32*)(p + 0xe0);
+    pd[1] = *(u32*)(p + 0xe4);
+    r = callVt3(p, 0x6c620000, 0x506465, 0x6c623032);
+    (*(ColorVt**)r)->v76(r, &pd[1], &pd[0]);
+
+    *(s16*)(*(u8**)(p + 0x38) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x38) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x38) + 0x26) = 0;
+    *(s16*)(*(u8**)(p + 0x44) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x44) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x44) + 0x26) = 0;
+    *(s16*)(*(u8**)(p + 0x3c) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x3c) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x3c) + 0x26) = 0;
+    *(s16*)(*(u8**)(p + 0x48) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x48) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x48) + 0x26) = 0;
+    *(s16*)(*(u8**)(p + 0x40) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x40) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x40) + 0x26) = 0;
+    *(s16*)(*(u8**)(p + 0x4c) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x4c) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x4c) + 0x26) = 0;
+
+    fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
+    *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
+    obj = *(void**)(*(u8**)(p + 0x20) + 4);
+    (*(VtSlot9**)obj)->v9(obj, *(u8*)(*(u8**)(p + 0x20) + 0x28));
+
+    for (i = 0; i < 9; i++) {
+        obj = *(void**)(p + 4);
+        r = (*(TextBoxVt15**)obj)->v15(obj, *(u64*)(lbl_804765D0 + 0x368 + i * 8));
+        fn_804023D0(*(void**)(p + 0x20), r, p[i + 0x196]);
+    }
+    *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
+    obj = *(void**)(*(u8**)(p + 0x34) + 4);
+    (*(VtSlot9**)obj)->v9(obj, 0);
+    r = callVt3(p, 0x50610000, 0x50616363, 0x75723031);
+    fn_804023D0(*(void**)(p + 0x34), r, *(u8*)(*(u8**)(p + 0x34) + 0x28));
+    *(s16*)(*(u8**)(p + 0x34) + 0x26) = 0;
+
+    q = p;
+    for (i = 0; i < 4; i++) {
+        *(u8*)(*(u8**)(*(u8**)(q + 0x24) + 4) + 0xb0) = 1;
+        fn_80402E08(*(void**)(q + 0x24), lbl_80543458, lbl_8054349C);
+        *(s16*)(*(u8**)(q + 0x24) + 0x22) = 0;
+        obj = *(void**)(*(u8**)(q + 0x24) + 4);
+        (*(VtSlot9**)obj)->v9(obj, 0);
+        *(s16*)(*(u8**)(q + 0x24) + 0x26) = 0;
+        switch (i) {
+        case 0:
+            drawTextRow(p, q, (u8*)lbl_804765D0 + 0x7f8);
+            break;
+        case 1:
+            drawTextRow(p, q, (u8*)lbl_804765D0 + 0x7d8);
+            break;
+        case 2:
+            drawTextRow(p, q, (u8*)lbl_804765D0 + 0x7b8);
+            break;
+        case 3:
+            drawTextRow(p, q, (u8*)lbl_804765D0 + 0x798);
+            break;
+        }
+        q += 4;
+    }
+
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(callVt3(p, 0x74720000, 0x5473, 0x74723031)), 0x11e, 0, 0, 0);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(callVt3(p, 0x6f700000, 0x5463, 0x6f703031)), 0x11f, 0, 0, 0);
+
+    {
+        s16 sum = *(s16*)(lbl_8050DB0C + 0x1e4) + *(s16*)(lbl_8050DB0C + 0x1e2) + *(s16*)(lbl_8050DB0C + 0x1e0);
+        *(s16*)(p + 0xd8) = *(s16*)(lbl_8050DB0C + 0x1e6);
+        if (*(s16*)(p + 0xd8) < sum) {
+            *(s16*)(p + 0xd8) = sum;
+        }
+    }
+    *(s16*)(p + 0xda) = 0;
+    p[0x112] = p[0x110];
+    p[0x110] = 0x20;
+}
+
 extern "C" void fn_803C02CC(u8* p) {
     s32 state = 0x117;
     if (lbl_8053AAF8[0x7f] != 0) {
@@ -769,26 +894,29 @@ extern "C" void fn_803C05D8(u8* p) {
 
 extern "C" void fn_803C0A34(char* pc) {
     u8* p = (u8*)pc;
+    u8* kp;
+    u8* base = (u8*)lbl_804765D0;
     s32 i;
-    s32 k;
     s32 idx;
     void** arr;
     f32 d;
     u8* o;
 
-    for (i = 0; i < 8; i++) {
+    kp = base + 0x3b0;
+    for (i = 0; i < 8; i++, kp += 8) {
         if (fn_803B90E4(*(u32*)(p + 0xa0), i)) {
-            o = (u8*)keyObj(*(void**)(p + 4), *(u64*)(lbl_804765D0 + 0x3c0 + i * 8));
+            o = (u8*)keyObj(*(void**)(p + 4), *(u64*)(kp + 0x10));
             o[0xb0] = 0;
         } else {
-            o = (u8*)keyObj(*(void**)(p + 4), *(u64*)(lbl_804765D0 + 0x3c0 + i * 8));
+            o = (u8*)keyObj(*(void**)(p + 4), *(u64*)(kp + 0x10));
             o[0xb0] = 1;
         }
     }
 
     *(u32*)(p + 0xa8) = *(u32*)(p + 0xa0);
-    for (i = 0; i < 8; i++) {
-        ((u32*)(p + 0xb8))[i] = fn_803B8CAC(*(u32*)(p + 0xa0), i);
+    kp = p;
+    for (i = 0; i < 8; i++, kp += 4) {
+        *(u32*)(kp + 0xb8) = fn_803B8CAC(*(u32*)(p + 0xa0), i);
     }
 
     *(s32*)(p + 0x84) = 100;
@@ -803,11 +931,13 @@ extern "C" void fn_803C0A34(char* pc) {
     initPane(*(void**)(p + 0x18));
     initPane(*(void**)(p + 0x1c));
 
-    for (k = 0; k < 0x51; k++) {
-        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 4), *(u64*)(lbl_804765D0 + 0x48 + k * 8)), p[0x132 + k]);
+    kp = base + 0x48;
+    for (i = 0; i < 0x51; i++, kp += 8) {
+        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 4), *(u64*)kp), p[0x132 + i]);
     }
-    for (k = 0; k < 0x13; k++) {
-        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)(lbl_804765D0 + 0x2d0 + k * 8)), p[0x183 + k]);
+    kp = base + 0x2d0;
+    for (i = 0; i < 0x13; i++, kp += 8) {
+        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)kp), p[0x183 + i]);
     }
 
     *(s16*)(*(u8**)(p + 0x14) + 0x26) = 0;
@@ -1256,14 +1386,16 @@ extern "C" void fn_803C4330(char* p) {
 }
 
 extern "C" void fn_803C5190(u8* p) {
-    s16 a = *(s16*)(lbl_8050DB0C + 0x21c);
-    s16 b = *(s16*)(lbl_8050DB0C + 0x21e);
-    s16 f = *(s16*)(lbl_8050DB0C + 0x226);
+    u8* tbl = lbl_8050DB0C;
+    u8* base = (u8*)lbl_804765D0;
+    s16 a = *(s16*)(tbl + 0x21c);
+    s16 b = *(s16*)(tbl + 0x21e);
+    s16 f = *(s16*)(tbl + 0x226);
     s32 sum = a + b;
-    s16 d = *(s16*)(lbl_8050DB0C + 0x222);
-    s16 e = *(s16*)(lbl_8050DB0C + 0x224);
-    s16 c = *(s16*)(lbl_8050DB0C + 0x220);
-    s16 g = *(s16*)(lbl_8050DB0C + 0x228);
+    s16 d = *(s16*)(tbl + 0x222);
+    s16 e = *(s16*)(tbl + 0x224);
+    s16 c = *(s16*)(tbl + 0x220);
+    s16 g = *(s16*)(tbl + 0x228);
     s32 lim = c + d + e;
     s32 acc;
     s32 i;
@@ -1278,26 +1410,26 @@ extern "C" void fn_803C5190(u8* p) {
 
     *(s16*)(p + 0xd8) += 1;
     if (a < *(s16*)(p + 0xd8) && *(s16*)(p + 0xd8) <= sum) {
-        if ((p[0x115] & ((1 << *(u32*)(p + 0xa4)) & 0xff)) == 0) {
+        if ((p[0x115] & ((1 << *(u32*)(p + 0xa4)) & 0xff)) != 0) {
+            setFade(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
+            fn_80402628(*(void**)(p + 0x20), b, ((u8*)*(void**)(p + 0x20))[0x28], 0);
+            setKeyed(p, 4, *(void**)(p + 0x20), base + 0x368, 9, 0x196);
+            if (*(s16*)(p + 0xd8) == sum) {
+                fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
+                *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
+                ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 4))->v9(0);
+                setKeyed(p, 4, *(void**)(p + 0x20), base + 0x368, 9, 0x196);
+                *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
+            }
+        } else {
             setFade(*(void**)(p + 0x14), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x14), b, ((u8*)*(void**)(p + 0x14))[0x28], 0);
             setFade(*(void**)(p + 0x18), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x18), b, ((u8*)*(void**)(p + 0x18))[0x28], 0);
             setFade(*(void**)(p + 0x1c), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x1c), b, ((u8*)*(void**)(p + 0x1c))[0x28], 0);
-            setKeyed(p, 4, *(void**)(p + 0x14), (u8*)lbl_804765D0 + 0x48, 0x51, 0x132);
-            setKeyed(p, 8, *(void**)(p + 0x14), (u8*)lbl_804765D0 + 0x2d0, 0x13, 0x183);
-        } else {
-            setFade(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
-            fn_80402628(*(void**)(p + 0x20), b, ((u8*)*(void**)(p + 0x20))[0x28], 0);
-            setKeyed(p, 4, *(void**)(p + 0x20), (u8*)lbl_804765D0 + 0x368, 9, 0x196);
-            if (*(s16*)(p + 0xd8) == sum) {
-                fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
-                *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
-                ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 4))->v9(0);
-                setKeyed(p, 4, *(void**)(p + 0x20), (u8*)lbl_804765D0 + 0x368, 9, 0x196);
-                *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
-            }
+            setKeyed(p, 4, *(void**)(p + 0x14), base + 0x48, 0x51, 0x132);
+            setKeyed(p, 8, *(void**)(p + 0x14), base + 0x2d0, 0x13, 0x183);
         }
         if (*(s16*)(p + 0xd8) == sum) {
             *(s32*)(p + 0x84) = 0x5f;
@@ -1321,16 +1453,16 @@ extern "C" void fn_803C5190(u8* p) {
             fn_80402628(*(void**)(q + 0x24), d, ((u8*)*(void**)(q + 0x24))[0x28], 0);
             switch (i) {
             case 0:
-                drawTextRow(p, q, (u8*)lbl_804765D0 + 0x7f8);
+                drawTextRow(p, q, base + 0x7f8);
                 break;
             case 1:
-                drawTextRow(p, q, (u8*)lbl_804765D0 + 0x7d8);
+                drawTextRow(p, q, base + 0x7d8);
                 break;
             case 2:
-                drawTextRow(p, q, (u8*)lbl_804765D0 + 0x7b8);
+                drawTextRow(p, q, base + 0x7b8);
                 break;
             case 3:
-                drawTextRow(p, q, (u8*)lbl_804765D0 + 0x798);
+                drawTextRow(p, q, base + 0x798);
                 break;
             }
         }
@@ -1341,7 +1473,7 @@ extern "C" void fn_803C5190(u8* p) {
     if (*(s16*)(p + 0xd8) > f) {
         setFade(*(void**)(p + 0x20), g, 0, lbl_80543498, lbl_80543458);
         fn_80402628(*(void**)(p + 0x20), g, 0, ((u8*)*(void**)(p + 0x20))[0x28]);
-        setKeyed(p, 4, *(void**)(p + 0x20), (u8*)lbl_804765D0 + 0x368, 9, 0x196);
+        setKeyed(p, 4, *(void**)(p + 0x20), base + 0x368, 9, 0x196);
     }
 
     if (*(s16*)(p + 0xd8) > lim) {
