@@ -2384,16 +2384,6 @@ extern "C" void fn_80408114(u8* __restrict self) {
     }
 }
 #pragma opt_common_subs off
-static inline void restorePaneSize(PaneRef* p) {
-    const f32 h=p->h;
-    const f32 w=p->w;
-    p->pane->resize(w,h);
-}
-static inline void restorePanePosition(PaneRef* p) {
-    const f32 y=p->y;
-    const f32 x=p->x;
-    p->pane->move(x,y);
-}
 extern "C" void fn_804083D8(u8* self) {
 	u8* p = self;
 	f32 t;
