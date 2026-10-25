@@ -3,7 +3,7 @@
 struct GateBox {
     f32 x0, y0, x1, y1;
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
-    void expand(f32 v) { x0 -= v; y0 -= v; x1 += v; y1 += v; }
+    void expand(f32 v) { f32 a=x0-v, b=y0-v, c=x1+v, d=y1+v; x0=a; y0=b; x1=c; y1=d; }
 };
 static inline s32 gateRoom(s32 param) { s32 n=(param>>24)&7; return n ? n+7 : n; }
 struct GateRoomFlags { u8 pad[0x131df]; u8 flags[1]; u8 flag(s32 room) { return flags[room]; } };
