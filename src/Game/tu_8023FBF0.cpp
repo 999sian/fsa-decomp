@@ -171,9 +171,9 @@ c = 0;
 }
 
 inline s32 countSharingT(const char* p) {
+    s32 c;
     s32 linked;
     s32 i;
-    s32 c;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
@@ -4495,9 +4495,7 @@ u8 fn_8024F63C(char* p) {
     }
 
     tmp.set(*(JGeometry::TVec3<f32>*)(lbl_8046AE28 + S32(p, 0x3dc) * 12));
-    tmp.x += F32(p, 0x8);
-    tmp.y += F32(p, 0xc);
-    tmp.z += F32(p, 0x10);
+    tmp += V3(p, 0x8);
     if (!fn_802265DC(&tmp, S32(p, 0x3b4), 1)) {
         if (fn_802684A4(p, &tmp, S32(p, 0x3b4))) {
             S32(p, 0xdac) = -1;
@@ -4518,31 +4516,53 @@ u8 fn_8024F63C(char* p) {
     box[2] += t2[0];
     box[3] += t2[1];
 
-    r30 = 0;
-    if (r30 != S32(p, 0x4) && fn_8022D894(r30)) {
-        if (S32(p, 0x3dc) == fn_80230CFC(r30)) {
-            found = 0;
-            for (i = 0; i < 4; i++) {
-                if (r30 == fn_80238EDC(i)) {
-                    found = 1;
-                    break;
-                }
-            }
-            if (!found && fn_8023B0F4(r30, box, S32(p, 0x3b4), 0, lbl_80540034)) {
-                st = S32(p, 0x1240);
-                if (st != 0x1a) {
-                    if (st != 0 && (u32)(st - 2) > 1) {
-                        if (st != 0x11) {
-                            return 0;
-                        }
-                        if (fn_8025F500(p) || fn_8025F590(p)) {
-                            return 0;
-                        }
-                    }
-                    changeState(p, 0x1a, 1);
-                }
+    for (r30 = 0; r30 < 4; r30++) {
+        if (r30 == S32(p, 0x4)) {
+            continue;
+        }
+        if (!fn_8022D894(r30)) {
+            continue;
+        }
+        if (S32(p, 0x3dc) != fn_80230CFC(r30)) {
+            continue;
+        }
+        found = 0;
+        for (i = 0; i < 4; i++) {
+            if (r30 == fn_80238EDC(i)) {
+                found = 1;
+                break;
             }
         }
+        if (found) {
+            continue;
+        }
+        if (!fn_8023B0F4(r30, box, S32(p, 0x3b4), 0, lbl_80540034)) {
+            continue;
+        }
+        st = S32(p, 0x1240);
+        if (st == 0x1a) {
+            continue;
+        }
+        if (st != 0 && (u32)(st - 2) > 1) {
+            if (st != 0x11) {
+                continue;
+            }
+            if (fn_8025F500(p) || fn_8025F590(p)) {
+                continue;
+            }
+        }
+        if (changeState(p, 0x1a, 1)) {
+            continue;
+        }
+        if (fn_8022D7F8(r30) >= 0) {
+            S32(p, 0xda4) = fn_8022D7F8(r30);
+        }
+        S32(p, 0xdac) = r30;
+        S32(p, 0xda8) = 3;
+        return 1;
+    }
+    if (S32(p, 0xda8) > 0) {
+        return 1;
     }
     return 0;
 }
