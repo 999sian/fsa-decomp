@@ -25,7 +25,7 @@ void* fn_8023E724(s32 idx);
 u8 fn_8023EA28(s32 idx);
 u8 fn_8022E438(s32 idx, s32 other);
 u8 fn_80235580(s32 idx);
-s32 fn_8023B0F4(s32 idx, void* box, s32 a2, s32 a3, f32 f);
+u8 fn_8023B0F4(s32 idx, void* box, s32 a2, s32 a3, f32 f);
 s32 fn_8022CAF8(s32 idx);
 s32 fn_8022E23C(s32 idx, void* p);
 void fn_8022CC20(s32 idx);
@@ -191,22 +191,21 @@ extern "C" void fn_8016890C(void* this_, void* pos, s32 room, void* out) {
 
 extern "C" s32 fn_80168C38(char* this_) {
     f32 box[4];
-    Vec d;
-    f32 rel[2];
+    JGeometry::TVec2<f32> rel;
     Vec* ptr;
     f32 px;
     f32 py;
-    s32 found;
     s32 i;
+    s32 found;
 
     ptr = (Vec*)fn_8023E724(*(s32*)(this_ + 0x90));
     found = -1;
-    rel[0] = ptr->x;
-    rel[1] = ptr->y;
+    rel.x = ptr->x;
+    rel.y = ptr->y;
     px = *(f32*)(this_ + 0xc);
     py = *(f32*)(this_ + 0x10);
-    rel[0] = rel[0] - px;
-    rel[1] = rel[1] - py;
+    rel.x = rel.x - px;
+    rel.y = rel.y - py;
     box[0] = *(f32*)(this_ + 0x60);
     box[1] = *(f32*)(this_ + 0x64);
     box[2] = *(f32*)(this_ + 0x68);
@@ -248,11 +247,9 @@ extern "C" s32 fn_80168C38(char* this_) {
             fn_8022E23C(i, *(void**)(this_ + 0x198));
             fn_8022CC20(i);
             if (fn_8022F514(i) == 1) {
-                d = *(Vec*)(this_ + 0xc);
+                JGeometry::TVec3<f32> d(*(Vec*)(this_ + 0xc));
                 ptr = (Vec*)fn_8023E724(i);
-                d.x = d.x - ptr->x;
-                d.y = d.y - ptr->y;
-                d.z = d.z - ptr->z;
+                d.sub(*(JGeometry::TVec3<f32>*)ptr);
                 fn_8023DFF4(i);
             }
         }
