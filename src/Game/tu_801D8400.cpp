@@ -427,18 +427,18 @@ struct T84Slot19 {
     virtual u8 v17(u32 room, JGeometry::TVec3<f32>* pos);
 };
 
-#pragma opt_propagation off
 inline void t84Row(char* p, s32 n, f32 x, f32 y) {
+    s32 offset = n * 8;
     for (s32 j = 0; j < 4; j++) {
-        ((JGeometry::TVec2<f32>*)(p + (n * 8 + 0x2d4 + j * 8)))->set(x, y);
+        ((JGeometry::TVec2<f32>*)(p + (offset + 0x2d4)))->set(x, y);
+        offset += 8;
         x += lbl_8053F1F4;
     }
 }
-#pragma opt_propagation reset
 struct T84 { u8 pad[0x2d4]; JGeometry::TVec2<f32> mTbl[12]; };
 
 #pragma opt_propagation on
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void fn_801DA124(char* a) {
     char* game;
     char* area;
