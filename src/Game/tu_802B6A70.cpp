@@ -271,12 +271,6 @@ extern "C" void fn_802B7044(Actor* p) {
     }
 }
 
-extern "C" void* fn_802D6A9C(void);
-extern "C" void* fn_802D9C4C(void* mgr);
-extern "C" u8 fn_802D7544(void* mgr, void* arg);
-extern "C" void fn_8029D8F0(void* mgr, f32* pos, s32 room, s32 n, s32 flag);
-extern "C" void* lbl_8053AC98;
-
 extern "C" Actor* fn_802B74F4(Actor* p, s16 n) {
     if (p) {
         *(void**)p = lbl_804A87A8;
