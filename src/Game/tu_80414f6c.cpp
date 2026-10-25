@@ -36,10 +36,10 @@ struct T804170EC_Color {
 };
 extern s32 lbl_8053AE00;
 extern const u64 lbl_8048CD50[];
-extern f32 lbl_805439C8;
+extern const f32 lbl_805439C8;
 extern const f32 lbl_805439CC;
-extern f32 lbl_805439D4;
-extern f32 lbl_805439DC;
+extern const f32 lbl_805439D4;
+extern const f32 lbl_805439DC;
 
 // Child object at this+0x24. slot 9 takes an s32; slot 15 takes a u64 (EABI puts it in r5:r6)
 // and returns the child it creates.
@@ -120,8 +120,10 @@ void TU80414F6C::fn_80414F78() {
 }
 
 extern "C" void fn_80416BD0(u8* p) {
-    const u64* t = lbl_8048CD50;
     int i;
+    const u64* first;
+    const u64* t = lbl_8048CD50;
+    first = t;
 
     fn_8042EB24(lbl_8053AEC4);
     *(s32*)(p + 0x1c) = -1;
@@ -130,60 +132,65 @@ extern "C" void fn_80416BD0(u8* p) {
     *(u8*)(p + 0x10a) = 0;
     *(u16*)(p + 0x102) = 0;
 
-    const u64* q = t;
     for (i = 0; i < 0xb; i++) {
-        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * lbl_805439CC));
-        q++;
+        (*(T80416BD0_Child**)(p + 0x24))->slot15(*first)->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * lbl_805439CC));
+        first++;
     }
-    q = t + 11;
+    {
+    const u64* q = t + 11;
     for (i = 0; i < 0xb; i++) {
         (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x12e + i) * lbl_805439CC));
         q++;
     }
-    q = t + 22;
+    }
+    {
+    const u64* q = t + 22;
     for (i = 0; i < 9; i++) {
         (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x139 + i) * lbl_805439CC));
         q++;
     }
-    q = t + 31;
+    }
+    {
+    const u64* q = t + 31;
     for (i = 0; i < 6; i++) {
         (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x142 + i) * lbl_805439CC));
         q++;
     }
 
-    q = t + 37;
-    for (i = 0; i < 0xa; i++) {
-        const u64* row = q + i * 10;
-        for (s32 j = 0; j < 0xa; j++) {
+    }
+    t += 37;
+    for (s32 outer = 0; outer < 0xa; outer++, t += 10) {
+        const u64* row = t;
+        for (int j = 0; j < 0xa; j++) {
             if (row[j] != 0) {
                 (*(T80416BD0_Child**)(p + 0x24))->slot15(row[j])->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439CC));
             }
         }
     }
 
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         u8* slot = p + 0x28 + i * 4;
-        fn_80402E08(*(void**)slot, 0.0f, lbl_805439C8);
+        fn_80402E08(*(void**)slot, lbl_805439CC, lbl_805439C8);
         *(u16*)((u8*)*(void**)slot + 0x22) = 0;
     }
 
-    fn_80402E08(*(void**)(p + 0x34), 0.0f, lbl_805439D4);
+    fn_80402E08(*(void**)(p + 0x34), lbl_805439CC, lbl_805439D4);
     *(u16*)((u8*)*(void**)(p + 0x34) + 0x22) = 0;
-    fn_80402E08(*(void**)(p + 0x38), 0.0f, lbl_805439DC);
+    fn_80402E08(*(void**)(p + 0x38), lbl_805439CC, lbl_805439DC);
     *(u16*)((u8*)*(void**)(p + 0x38) + 0x22) = 0;
 
-    for (i = 0; i < 0xa; i++) {
+    for (int i = 0; i < 0xa; i++) {
         u8* slotA = p + 0x3c + i * 4;
-        fn_80402E08(*(void**)slotA, 0.0f, lbl_805439C8);
+        fn_80402E08(*(void**)slotA, lbl_805439CC, lbl_805439C8);
         *(u16*)((u8*)*(void**)slotA + 0x22) = 0;
         u8* slotB = p + 0x6c + i * 4;
-        fn_80402E08(*(void**)slotB, 0.0f, lbl_805439C8);
+        fn_80402E08(*(void**)slotB, lbl_805439CC, lbl_805439C8);
         *(u16*)((u8*)*(void**)slotB + 0x22) = 0;
     }
 
-    fn_80402E08(*(void**)(p + 0x9c), 0.0f, lbl_805439C8);
+    fn_80402E08(*(void**)(p + 0x9c), lbl_805439CC, lbl_805439C8);
     *(u16*)((u8*)*(void**)(p + 0x9c) + 0x22) = 0;
-    fn_80402E08(*(void**)(p + 0xa0), 0.0f, lbl_805439DC);
+    fn_80402E08(*(void**)(p + 0xa0), lbl_805439CC, lbl_805439DC);
     *(u16*)((u8*)*(void**)(p + 0xa0) + 0x22) = 0;
 
     T80416BD0_Child* c;
