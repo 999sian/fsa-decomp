@@ -374,22 +374,25 @@ extern const f32 lbl_80541DB8;
 extern const f32 lbl_80541DBC;
 extern void* lbl_8053AB10;
 extern "C" void fn_8032BB90(char* this_) {
+s32 room;
+u32 kind;
+s32 dir;
 s32 i = 0;
 do {
     if (fn_8023A51C(i) != 1) continue;
-    s32 room = *(s32*)(this_ + 4);
+    room = *(s32*)(this_ + 4);
     if (room != fn_8023DE58(i)) continue;
     f32* pos = (f32*)fn_8023A478(i);
-    f32 dx = pos[0] - *(f32*)(this_ + 0xc);
-    f32 dy = pos[1] - *(f32*)(this_ + 0x10);
+    JGeometry::TVec2f* actorPos = (JGeometry::TVec2f*)(this_ + 0xc);
+    f32 dx = pos[0] - actorPos->x;
+    f32 dy = pos[1] - actorPos->y;
     f32 dx2 = dx * dx;
     f32 dy2 = dy * dy;
     if (dx2 + dy2 > lbl_80541DB8) continue;
-    if (fn_8030C2A8(*(void**)((char*)lbl_8053AB10 + 0x24), this_ + 0xc) != 1) continue;
+    if (fn_8030C2A8(*(void**)((char*)lbl_8053AB10 + 0x24), actorPos) != 1) continue;
     *(f32*)(this_ + 0x14) = lbl_80541DBC;
     if (*(s32*)(this_ + 0x230) == 7 || *(s32*)(this_ + 0x248) != 0) {
-        s32 dir;
-        u32 kind = 'RUPY';
+        kind = 'RUPY';
         if (*(s32*)(this_ + 0x248) != 0) {
             kind = 'ESRY';
             *(u32*)(this_ + 0x268) |= *(u32*)(this_ + 0x90) & 0xf8000000;
@@ -417,7 +420,6 @@ case 3: *(JGeometry::TVec3f*)(spawned + 0x3c) = JGeometry::TVec3f(lbl_80541D88, 
         }
         detach__5ActorFv(this_);
     } else {
-        s32 dir;
         if (*(u16*)(this_ + 0x94) == 0x1f) dir = fn_8023A240();
         else dir = *(u16*)(this_ + 0x94) - 0xc;
         switch (dir) {
@@ -434,8 +436,8 @@ case 3: *(JGeometry::TVec3f*)(this_ + 0x3c) = JGeometry::TVec3f(lbl_80541D88, lb
     }
     u16 subtype = *(u16*)(this_ + 0x94);
     if ((subtype >= 4 && subtype <= 7) || (subtype >= 0xc && subtype <= 0xf) || subtype == 0x1d || subtype == 0x1f)
-        ((void (*)(void*, s32, s32))(*(void***)this_)[12])(this_, 0xff, 1);
-    break;
+        ((Actor*)this_)->v10(0xff, 1);
+    return;
 } while (++i < 4);
 }
 
