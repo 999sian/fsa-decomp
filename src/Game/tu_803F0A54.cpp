@@ -13,8 +13,6 @@ struct Tu803FResMgr {
 };
 
 struct Tu803FVObj {
-    virtual void v0();
-    virtual void v1();
     virtual void v2();
     virtual void v3();
     virtual void v4();
@@ -1674,8 +1672,8 @@ extern "C" void fn_803FC46C(u8* p) {
             break;
         }
         fn_8013B490(lbl_8053AB10);
-        ((void(*)(void*, s32))(*(void***)(*(void**)(p + 0x5c)))[9])(*(void**)(p + 0x5c), p[0x25d]);
-        ((void(*)(void*, s32, f32, s32, s32, f32, f32, f32))(*(void***)(*(void**)(p + 0x5c)))[59])(*(void**)(p + 0x5c), 0, lbl_8054372C, 0, 0, lbl_8054372C, lbl_8054374C, lbl_80543750);
+        ((Tu803FVObj*)*(void**)(p + 0x5c))->v9(p[0x25d]);
+        ((Tu803FVObj*)*(void**)(p + 0x5c))->v59(0, 0, 0, lbl_8054372C, lbl_8054372C, lbl_8054374C, lbl_80543750);
     }
 }
 
