@@ -116,6 +116,9 @@ struct Tu80256Tables {
     JGeometry::TVec3<f32> b[8];
     JGeometry::TVec3<f32> c[4];
 };
+static inline void tu8025_copyVec(JGeometry::TVec3<f32>* dst, const JGeometry::TVec3<f32>* table, s32 idx) {
+    dst->set(table[idx]);
+}
 
 extern "C" u8 GetBusyLocked(void*);
 extern "C" u8 fn_802413F0(void*);
