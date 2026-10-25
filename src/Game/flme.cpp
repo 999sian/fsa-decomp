@@ -90,7 +90,6 @@ extern "C" u8* fn_8020D58C();
 extern "C" void fn_8020D7D0(void*,s32);
 extern "C" s16 fn_801F6874(s32);
 extern const f32 lbl_8053D600;
-#pragma optimization_level 3
 extern "C" void fn_8015DF7C(void* this_) {
  char* p=(char*)this_;
  u8* base=lbl_80466110;
@@ -98,8 +97,9 @@ extern "C" void fn_8015DF7C(void* this_) {
  JGeometry::TBox2f box;
  JGeometry::TVec3<f32> pos;
  box.set(*(JGeometry::TBox2f*)(p+0x60));
- f32 y=*(f32*)(p+0x10);
- f32 x=*(f32*)(p+0xc);
+ f32 x;f32 y;
+ y=*(f32*)(p+0x10);
+ x=*(f32*)(p+0xc);
  box.addPos(x,y);
  if(*(s32*)(p+0x254)!=0){
  s32 player=fn_8023B004(&box,*(s32*)(p+4));
@@ -217,7 +217,6 @@ extern "C" void fn_8015DF7C(void* this_) {
  }
  }
 }
-#pragma optimization_level 4
 
 struct FlmeColor {
     FlmeColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
