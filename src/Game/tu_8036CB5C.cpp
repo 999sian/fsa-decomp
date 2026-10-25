@@ -60,8 +60,8 @@ extern "C" void fn_8036CE58(Actor* this_) {
 }
 
 inline bool psw2Ready(Actor* p) {
-    s32 j;
     char* member;
+    s32 j;
     s32 i;
     if ((p->field_90 >> 4) & 3) return false;
     i = 0;
