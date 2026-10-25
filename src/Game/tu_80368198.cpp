@@ -937,3 +937,4 @@ extern "C" s32 fn_8036C8F4(void* this_) {
 }
 
 void __sinit_tu_80368198_cpp(void) {}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
