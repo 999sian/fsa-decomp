@@ -55,7 +55,7 @@ extern u8* lbl_8053AAF8;
 
 extern "C" u8 fn_8022F514(s32 idx);
 extern "C" s32 fn_8022F3DC(s32 idx);
-extern "C" u32 fn_8023CBC0(s32 v);
+extern "C" u16 fn_8023CBC0(s32 v);
 extern "C" u8 fn_8022E438(s32 idx, s32 other);
 extern "C" void* fn_8023E724(s32 idx);
 extern "C" void fn_80230498(s32 idx, void* vec, s32 a, s32 b, s32 c, s32 d, s32 e);
