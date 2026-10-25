@@ -1194,14 +1194,15 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" f32 lbl_805406A8;
 static inline s32 HouseContactMode(char* self) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
-        s32 room = *(s32*)(self + 4);
-        if (fn_8023DE58(0) != room) return -1;
+        int room = *(s32*)(self + 4);
+        s32 current = fn_8023DE58(0);
+        if (current != room) goto invalid;
         s32 result = fn_80238BC4(*(void**)(self + 0x198));
-        if (result >= 0 && result < 4) {
-            *(s32*)(self + 0x2cc) = 1;
-            return result;
-        }
+        if (result < 0 || result >= 4) goto invalid;
+        *(s32*)(self + 0x2cc) = 1;
+        return result;
     }
+invalid:
     return -1;
 }
 static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f& box) {
@@ -1503,10 +1504,10 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f* box) {
     return -1;
 }
 extern "C" void fn_8029A974(void* p) {
-    s32 mode;
-    u8 flag;
-    s32 i;
+    int mode;
     char* self;
+    int i;
+    u8 flag;
     s32 room;
     void* h;
     char* row;
@@ -1525,7 +1526,7 @@ extern "C" void fn_8029A974(void* p) {
     self = (char*)p;
     vel = (JGeometry::TVec3f*)(self + 0x250);
     f32 epsilon = lbl_805406A8 * FLT_EPSILON;
-    lenSq = JMathInlineVEC::PSVECSquareMag(vel);
+    lenSq = vel->squared();
     if (lenSq <= epsilon) {
         if (*(u8*)(self + 0x2c0) == 1) {
             *(u8*)(self + 0x2c0) = 0;
