@@ -538,18 +538,20 @@ extern "C" void fn_8035DAD8(char* p) {
 
 
 struct StateMethodData { s32 adjustment; s32 offset; void* function; };
-StateMethodData lbl_804AD4E0[6] = {
+union StateMethodConstants { StateMethodData raw[6]; Unk8035DA78Func methods[6]; };
+StateMethodConstants lbl_804AD4E0 = {{
     {0, -1, (void*)fn_8035D6C4}, {0, -1, (void*)fn_8035D4B8},
     {0, -1, (void*)fn_8035D1CC}, {0, -1, (void*)fn_8035CF50},
     {0, -1, (void*)fn_8035CAF8}, {0, -1, (void*)fn_8035C940}
-};
+}};
 Unk8035DA78Func lbl_804AD528[6] = {
-    *(Unk8035DA78Func*)&lbl_804AD4E0[0], *(Unk8035DA78Func*)&lbl_804AD4E0[1], *(Unk8035DA78Func*)&lbl_804AD4E0[2],
-    *(Unk8035DA78Func*)&lbl_804AD4E0[3], *(Unk8035DA78Func*)&lbl_804AD4E0[4], *(Unk8035DA78Func*)&lbl_804AD4E0[5]
+    lbl_804AD4E0.methods[0], lbl_804AD4E0.methods[1], lbl_804AD4E0.methods[2],
+    lbl_804AD4E0.methods[3], lbl_804AD4E0.methods[4], lbl_804AD4E0.methods[5]
 };
-extern Unk8035CD00Func lbl_804AD570[3];
+union PathMethodConstants { StateMethodData raw[3]; Unk8035CD00Func methods[3]; };
+PathMethodConstants lbl_804AD570 = {{{0, -1, (void*)fn_8035CD00}, {0, -1, (void*)fn_8035CDC0}, {0, -1, (void*)fn_8035CE78}}};
 Unk8035CD00Func lbl_804AD594[3] = {
-    lbl_804AD570[0], lbl_804AD570[1], lbl_804AD570[2]
+    lbl_804AD570.methods[0], lbl_804AD570.methods[1], lbl_804AD570.methods[2]
 };
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
