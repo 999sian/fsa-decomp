@@ -675,7 +675,9 @@ static inline s32 t84FindPlayer(char* p) {
     if (pl >= 0) {
         f32 dy = fn_8023E724(pl)->y - v.y;
         f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
-        if (lbl_8053F20C * __fabsf((s16)(ang - (s16)(a * lbl_8053F208))) <= lbl_8053F1F0) {
+        f32 scale = lbl_8053F20C;
+        s16 d = ang - (s16)(a * lbl_8053F208);
+        if (scale * __fabsf(d) <= lbl_8053F1F0) {
             found = pl;
         }
     }
