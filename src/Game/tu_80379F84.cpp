@@ -34,6 +34,10 @@ extern "C" void fn_803B7DCC(void* p);
 extern "C" void fn_803D8364(void);
 extern "C" void fn_803D82EC(void* p);
 extern void* lbl_8053AAF8;
+static inline bool isBlockedState(u8 state) {
+    return state == 8 || state == 7 || state == 9;
+}
+
 extern "C" BOOL fn_80379F84(void* this_) {
     if (*((u8*)lbl_8053AAF8 + 0x7f) == 1 && *((u8*)lbl_8053AAF8 + 0x7e) == 1 && lbl_8053AD68 != 0 &&
         *(void**)((u8*)this_ + 4) != 0) {
