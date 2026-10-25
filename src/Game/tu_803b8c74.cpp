@@ -359,18 +359,24 @@ static inline void resetSlot(SaveSlot* dst, SaveBig* bdst) {
 
 extern "C" {
 
+#pragma opt_propagation off
 s32 fn_803B933C(void* unused, SaveSlot* slots, s32 idx) {
-	SaveSlot* dst = &slots[idx];
-	SaveSlot tmp;
-	initSlot(&tmp);
-	memcpy(dst, &tmp, sizeof(SaveSlot));
-	return 0;
+    SaveSlot* dst = &slots[idx];
+    SaveSlot tmp;
+    memset(&tmp, 0, sizeof(SaveSlot));
+    setDefaults(&tmp);
+    memcpy(dst, &tmp, sizeof(SaveSlot));
+    return 0;
 }
-
+#pragma opt_propagation reset
 s32 fn_803B93E8(void* unused, SaveSlot* slots, SaveBig* bigs, s32 idx) {
+	SaveSlot tmp;
+	SaveBig big;
 	SaveSlot* dst = &slots[idx];
 	SaveBig* bdst = &bigs[idx];
-	resetSlot(dst, bdst);
+	initSlot(&tmp, &big);
+	memcpy(dst, &tmp, sizeof(SaveSlot));
+	memcpy(bdst, &big, sizeof(SaveBig));
 	return 0;
 }
 
