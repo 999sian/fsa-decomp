@@ -27,6 +27,11 @@ extern "C" const s32 lbl_80474B88[];
 extern "C" const s32 lbl_80474BA0[];
 extern "C" const s32 lbl_80474320[];
 extern "C" f32 lbl_80542B5C;
+extern "C" f32 lbl_80542B60;
+extern "C" f32 lbl_80542B64;
+extern "C" f32 lbl_80542B68;
+extern "C" f32 lbl_80542B6C;
+extern "C" f32 lbl_80542B70;
 
 struct Unk80365AB8;
 typedef void (Unk80365AB8::*Unk80365AB8Func)();
