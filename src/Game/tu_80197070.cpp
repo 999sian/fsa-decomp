@@ -268,10 +268,8 @@ extern "C" void fn_801979C4(u8* p) {
         u16 angle = lbl_804A2880[*(u16*)(p + 0x94)];
         f32 x = *(f32*)(p + 0x280);
         f32 y = *(f32*)(p + 0x284);
-        f32 sine = JMASinShort(angle);
-        f32 cosine = JMACosShort(angle);
-        x += lbl_8053E3A0 * sine;
-        y += lbl_8053E3A0 * cosine;
+        x += lbl_8053E3A0 * JMASinShort(angle);
+        y += lbl_8053E3A0 * JMACosShort(angle);
         x -= *(f32*)(p + 0xc);
         y -= *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
         *(f32*)(p + 0x274) = lbl_8053E3A8 * JMASinShort((s16)(s32)(JMAAtan2Radian(x, y) * lbl_8053E3A4));
@@ -290,10 +288,10 @@ extern "C" void fn_801979C4(u8* p) {
     }
     case 0x4d:
         if (lbl_8053ABA4 == 1) {
-            s32 index = *(u16*)(p + 0x94);
-            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053E370, ((const u16*)lbl_804A28D8)[index * 3 + 0], 0, 5, 0, 0, 1);
-            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053E370, ((const u16*)lbl_804A28D8)[index * 3 + 1], 0, 5, 0, 0, 1);
-            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053E370, ((const u16*)lbl_804A28D8)[index * 3 + 2], 0, 5, 0, 0, 1);
+            s32 index = *(u16*)(p + 0x94) * 3;
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053E370, ((const u16*)((const u8*)lbl_804A28D8 + 0))[index], 0, 5, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053E370, ((const u16*)((const u8*)lbl_804A28D8 + 2))[index], 0, 5, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053E370, ((const u16*)((const u8*)lbl_804A28D8 + 4))[index], 0, 5, 0, 0, 1);
             *(s32*)(p + 0x248) = 0;
             *(s32*)(p + 0x230) = 0x4e;
         }
@@ -565,15 +563,17 @@ extern "C" void fn_8019C8A4(u8* arg) {
         *(f32*)(this_ + 0x270) = lbl_8053E380;
         if (*(u32*)(this_ + 0x304) == 0) {
             *(s32*)(this_ + 0x304) = (s32)fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E370, 0x32c, 0, 4, 0, 0, 1);
-            const u8* col = lbl_804A28C4 + *(u16*)(this_ + 0x94) * 3;
+            u8 (*colors)[3] = (u8 (*)[3])lbl_804A28C4;
+            u16 index = *(u16*)(this_ + 0x94);
             JPABaseEmitter* e = *(JPABaseEmitter**)(this_ + 0x304);
-            e->setGlobalEnvColor(col[0], col[1], col[2]);
+            e->setGlobalEnvColor(colors[index][0], colors[index][1], colors[index][2]);
         }
         if (*(u32*)(this_ + 0x308) == 0) {
             *(s32*)(this_ + 0x308) = (s32)fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E370, 0x184, 0, 4, 0, 0, 1);
-            const u8* col = lbl_804A28C4 + *(u16*)(this_ + 0x94) * 3;
+            u8 (*colors)[3] = (u8 (*)[3])lbl_804A28C4;
+            u16 index = *(u16*)(this_ + 0x94);
             JPABaseEmitter* e = *(JPABaseEmitter**)(this_ + 0x308);
-            e->setGlobalEnvColor(col[0], col[1], col[2]);
+            e->setGlobalEnvColor(colors[index][0], colors[index][1], colors[index][2]);
         }
         *(s32*)(this_ + 0x230) = 0x4a;
         break;
