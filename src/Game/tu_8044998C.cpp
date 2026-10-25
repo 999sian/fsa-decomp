@@ -286,15 +286,14 @@ extern "C" void* fn_8044A418(VObj** param_1, short param_2) {
 }
 
 extern "C" void* fn_8044A4D4(void** param_1) {
-    u32 a1 = 0x4e0000;
     *param_1 = lbl_804B1CC8;
     lbl_8053AF20 = (int)param_1;
     param_1[1] = new J2DScreen();
     setPriority__9J2DScreenFPCcUlP10JKRArchive((J2DScreen*)param_1[1], lbl_80490DA8, 0x1100000, lbl_80529DEC[4]);
     param_1[2] = new VObj2();
-    fn_80402F04(param_1[2], ((J2DScreenVt2*)param_1[1])->m12(a1, a1 + 0x6461, 0x74613030));
+    fn_80402F04(param_1[2], (u32)((J2DScreenSearch*)param_1[1])->search(0x4e646174613030LL));
     param_1[3] = new VObj2();
-    fn_80402F04(param_1[3], ((J2DScreenVt2*)param_1[1])->m12(a1, a1 + 0x6461, 0x74613031));
+    fn_80402F04(param_1[3], (u32)((J2DScreenSearch*)param_1[1])->search(0x4e646174613031LL));
     ((u8*)param_1)[0x10] = 0;
     ((u8*)param_1)[0x11] = 0;
     ((u8*)param_1)[0x12] = 0;
