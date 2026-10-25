@@ -3,6 +3,7 @@
 #include "Game/ItemBase.h"
 
 extern "C" f32 lbl_8053D128;
+extern "C" f32 lbl_8053D12C;
 extern "C" f32 lbl_8053D130;
 extern "C" f32 lbl_8053D138;
 extern "C" f32 lbl_8053D144;
@@ -68,12 +69,10 @@ extern "C" void fn_801EE434(void* p);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* a, s32 b);
 extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
-extern "C" BOOL fn_8014AD2C(u8* this_, s32 b, s32 c) {
-    s32 sub;
-    s32 kind;
+extern "C" BOOL fn_8014AD2C(u8* this_, u32 b, u32 c) {
+    s32 kind = (u16)fn_8022461C(c, b);
+    s32 sub = (u16)fn_80226850(c, b);
 
-    kind = (u16)fn_8022461C(c, b);
-    sub = (u16)fn_80226850(c, b);
     if ((u32)(kind - 0x10) <= 7 || (sub >= 0x140 && sub <= 0x15f)) {
         *(s32*)(this_ + 0x264) = 1;
         return 0;
@@ -122,11 +121,17 @@ extern "C" void fn_8014AFB4(u8* this_) {
     s32 n;
     s32 idx;
     s32 mode;
-    f32 f30;
-    f32 scale;
+    f32 ss;
+    f32 cz;
+    f32 cs, a0, a1, a2, a3, a4, a5, a6, a7, a8;
+    f32 cc;
+    f32 sx;
+    f32 sy;
+    f32 sz;
     f32 cx;
-    f32 sx, sy, sz;
-    f32 cy, cz;
+    f32 cy;
+    f32 angle;
+    f32 scale;
 
     if (*(s32*)(this_ + 0x230) == 9) {
         return;
@@ -159,7 +164,8 @@ extern "C" void fn_8014AFB4(u8* this_) {
     }
     if (*(u32*)(this_ + 0x90) == 8 || *(u32*)(this_ + 0x90) == 9) {
         if (*(s32*)(this_ + 0x230) != 5) {
-            scale = 0.5f * *(f32*)(this_ + 0x274);
+            scale = *(f32*)(this_ + 0x274);
+            scale *= 0.5f;
             n = 0;
             idx = *(s32*)(this_ + 0x24c) + 0x312;
         } else {
@@ -171,25 +177,37 @@ extern "C" void fn_8014AFB4(u8* this_) {
         scale = *(f32*)(this_ + 0x274);
         idx = *(s32*)(this_ + 0x24c) + 0xe8;
     }
-    f30 = *(f32*)(this_ + 0x278);
+    angle = *(f32*)(this_ + 0x278);
     sx = sin(zero);
-    sy = sin(f30);
+    sy = sin(angle);
     sz = sin(zero);
     cx = cos(zero);
-    cy = cos(f30);
+    cy = cos(angle);
     cz = cos(zero);
     rec.w18 = mtx;
     rec.b1d = 1;
     rec.b1c = 1;
-    mtx[0][0] = scale * (cy * cz);
-    mtx[1][0] = scale * (cy * sz);
-    mtx[2][0] = scale * -sy;
-    mtx[0][1] = scale * (sx * sy * cz - cx * sz);
-    mtx[1][1] = scale * (sx * sy * sz + cx * cz);
-    mtx[2][1] = scale * (sx * cy);
-    mtx[0][2] = scale * (cx * cz * sy + sx * sz);
-    mtx[1][2] = scale * (cx * sz * sy - sx * cz);
-    mtx[2][2] = scale * (cx * cy);
+    cc = cx * cz;
+    ss = sx * sy;
+    cs = cx * sz;
+    a0 = cy * cz;
+    a1 = cy * sz;
+    a2 = -sy;
+    a3 = ss * cz - cs;
+    a4 = ss * sz + cc;
+    a5 = sx * cy;
+    a6 = cc * sy + sx * sz;
+    a7 = cs * sy - sx * cz;
+    a8 = cx * cy;
+    mtx[0][0] = scale * a0;
+    mtx[1][0] = scale * a1;
+    mtx[2][0] = scale * a2;
+    mtx[0][1] = scale * a3;
+    mtx[1][1] = scale * a4;
+    mtx[2][1] = scale * a5;
+    mtx[0][2] = scale * a6;
+    mtx[1][2] = scale * a7;
+    mtx[2][2] = scale * a8;
     if (*(s32*)(this_ + 0x90) == 0xb) {
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x24c) + 0x2d5, 0, 2, -1, 1, 0, 0);
         return;
@@ -205,10 +223,15 @@ extern "C" void fn_8014AFB4(u8* this_) {
     }
     mode = -1;
     if (*(s32*)(this_ + 0x24c) < 2) {
-        if (*(s32*)(this_ + 0x230) != 0xa && *(s32*)(this_ + 0x230) != 0 && *(s32*)(this_ + 0x230) != 6 && *(s32*)(this_ + 0x230) != 7 && *(s32*)(this_ + 0x230) != 8 && *(u8*)(this_ + 0xc4) == 0) {
-            mode = (*(u32*)(this_ + 0x90) == 8 || *(u32*)(this_ + 0x90) == 9) ? 7 : 0;
+        s32 st = *(s32*)(this_ + 0x230);
+        if (st != 0xa && st != 0 && st != 6 && st != 7 && st != 8 && *(u8*)(this_ + 0xc4) == 0) {
+            if (*(u32*)(this_ + 0x90) == 8 || *(u32*)(this_ + 0x90) == 9) {
+                mode = 7;
+            } else {
+                mode = 0;
+            }
         }
-        if (*(s32*)(this_ + 0x230) != 5) {
+        if (st != 5) {
             fn_801F06F0(this_, lbl_80465D48, idx, &rec, mode, 1.0f, 1.0f);
         }
     }
