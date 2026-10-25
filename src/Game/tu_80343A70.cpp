@@ -9,6 +9,7 @@
 #define V7(p,o) (*(JGeometry::TVec3<f32>*)((char*)(p)+(o)))
 #include "Game/ItemBase.h"
 
+extern "C" const f32 lbl_80542358;
 struct Tu80343Random {
     u32 seed;
     f32 get_ufloat_1() {
