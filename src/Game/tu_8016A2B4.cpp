@@ -37,6 +37,24 @@ extern "C" void* fn_8013C824();
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" void fn_8016A7DC(void*, void*, const Vec*, s32, u8, u8, f32, f32);
 extern "C" void fn_8016ADE0(void*);
+extern "C" void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
+extern const f32 lbl_8053D970;
+extern const f32 lbl_8053D9BC;
+extern const f32 lbl_8053D9C0;
+extern const f32 lbl_8053D9C4;
+extern const f32 lbl_8053D9C8;
+extern const f32 lbl_8053D9CC;
+extern const f32 lbl_8053D9D0;
+extern const f32 lbl_8053D9D4;
+extern const f32 lbl_8053D9D8;
+extern const f32 lbl_8053D9DC;
+extern const f32 lbl_8053D9E0;
+extern const f32 lbl_8053D9E4;
+extern const f32 lbl_8053D9E8;
+extern const f32 lbl_8053D9EC;
+extern const f32 lbl_8053D9F0;
+extern const f32 lbl_8053D9F4;
+extern const f32 lbl_8053D9F8;
 
 extern "C" void fn_8016A2B4(u8* self) {
     if (*(void**)(self + 0x124) != 0) {
@@ -86,6 +104,57 @@ extern "C" void fn_8016A330(u8* self) {
 
 extern "C" void* fn_8016A3AC() {
     return *(void**)(*(u8**)(lbl_8053AAF8 + 4) + 0x24);
+}
+
+extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const char* tex1, const char* tex2, const char* tev1, const char* tev2, u32 flags, JKRHeap* heap, J3DModel** model, J3DAnmTextureSRTKey** outTex1, J3DAnmTextureSRTKey** outTex2, J3DAnmTevRegKey** outTev1, J3DAnmTevRegKey** outTev2)
+{
+    J3DMaterialAnm* anm;
+    J3DModelData* data;
+    void* resource = 0;
+    if (archive) resource = archive->getResource(0x4a334420, modelName);
+    if (resource) {
+        data = J3DModelLoaderDataBase::load(resource, flags);
+        if (tex1) {
+            *outTex1 = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex1), 0);
+            (*outTex1)->searchUpdateMaterialID(data);
+        } else if (outTex1) {
+            *outTex1 = 0;
+        }
+        if (tex2) {
+            *outTex2 = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex2), 0);
+            (*outTex2)->searchUpdateMaterialID(data);
+        } else if (outTex2) {
+            *outTex2 = 0;
+        }
+        if (tev1) {
+            *outTev1 = (J3DAnmTevRegKey*)fn_800CECCC(archive->getResource(0x4a334420, tev1), 0);
+            (*outTev1)->searchUpdateMaterialID(data);
+        } else if (outTev1) {
+            *outTev1 = 0;
+        }
+        if (tev2) {
+            *outTev2 = (J3DAnmTevRegKey*)fn_800CECCC(archive->getResource(0x4a334420, tev2), 0);
+            (*outTev2)->searchUpdateMaterialID(data);
+        } else if (outTev2) {
+            *outTev2 = 0;
+        }
+        for (u16 i = 0; i < data->getMaterialNum(); i++) {
+            anm = new (heap, 0) J3DMaterialAnm;
+            data->getMaterialNodePointer(i)->change();
+            data->getMaterialNodePointer(i)->setMaterialAnm(anm);
+        }
+        if (tex1) j3dSys.ErrorReport(data->mMaterialTable.entryTexMtxAnimator(*outTex1));
+        if (tex2) j3dSys.ErrorReport(data->mMaterialTable.entryTexMtxAnimator(*outTex2));
+        if (tev1) j3dSys.ErrorReport(data->mMaterialTable.entryTevRegAnimator(*outTev1));
+        if (tev2) j3dSys.ErrorReport(data->mMaterialTable.entryTevRegAnimator(*outTev2));
+        *model = new (heap, 0) J3DModel(data, 0, 1);
+    } else {
+        if (outTex1) *outTex1 = 0;
+        if (outTex2) *outTex2 = 0;
+        if (outTev1) *outTev1 = 0;
+        if (outTev2) *outTev2 = 0;
+        *model = 0;
+    }
 }
 
 extern "C" void fn_8016A9EC(u8* self) {
