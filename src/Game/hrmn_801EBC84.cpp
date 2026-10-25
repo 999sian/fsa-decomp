@@ -115,6 +115,59 @@ extern "C" void fn_801EBE3C(char* p) {
     fn_801CE4BC(p);
 }
 
+extern "C" void fn_801EBE7C(char* p) {
+    HrmnRect rect(*(f32*)(p + 0xc) - lbl_8053F6BC, *(f32*)(p + 0x10) - lbl_8053F6BC, lbl_8053F6BC + *(f32*)(p + 0xc), lbl_8053F6BC + *(f32*)(p + 0x10));
+    f32 vals[3];
+    switch (*(s32*)(p + 0x248)) {
+    case 0: {
+        fn_8022FEB8((f32*)&rect, *(u32*)(p + 0x4), *(u32*)(p + 0x198), 1, 0);
+        *(s32*)(p + 0x2b0) = (s32)fn_8022FD8C(*(void**)(p + 0x198));
+        if (*(s32*)(p + 0x2b0) < 0) {
+            break;
+        }
+        u8 r30 = (*(u8 (**)(void*))((char*)*(void**)p + 0x34))(p);
+        u32 snd = 0x364;
+        if (!r30) {
+            snd = 0x35d;
+            vals[0] = lbl_8053F6C0;
+            vals[1] = lbl_8053F6C0;
+            vals[2] = lbl_8053F6C0;
+            if (!fn_8038AD24(*(void**)(p + 0x2b0), snd, *(u32*)(p + 0x4), vals, 0)) {
+                break;
+            }
+        }
+        break;
+    }
+    case 1:
+        fn_8022FEB8((f32*)&rect, *(u32*)(p + 0x4), *(u32*)(p + 0x198), 1, 0);
+        if (!fn_803865B8(*(void**)(p + 0x2b0))) {
+            break;
+        }
+        if (!fn_80384C58(*(void**)(p + 0x2b0), *(void**)(p + 0x198))) {
+            break;
+        }
+        *(s32*)(p + 0x98) = 2;
+        fn_801ECB08(p, 0);
+        break;
+    case 2: {
+        char* q = *(char**)(lbl_8053AB10 + 0x24);
+        if (!q[0x7f5]) {
+            q[0x7f4] = 1;
+            *(s32*)(q + 0x7f8) = 4;
+            *(f32*)(q + 0x7fc) = *(f32*)(p + 0xc);
+            *(f32*)(q + 0x800) = *(f32*)(p + 0x10);
+            *(f32*)(q + 0x804) = *(f32*)(p + 0x14);
+            q[0x7f6] = 0;
+        }
+        fn_8022FEB8((f32*)&rect, *(u32*)(p + 0x4), *(u32*)(p + 0x198), 1, 0);
+        if (!fn_803865B8(*(void**)(p + 0x2b0))) {
+            break;
+        }
+        break;
+    }
+    }
+}
+
 extern "C" void fn_801ECFBC(char* p) {
     fn_801D0ED0(p);
     *(u32*)(p + 0x2ac) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
@@ -189,21 +242,28 @@ static inline f32 hrmn_clamp(f32 t) {
     return t;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_801EC7B8(char* p) {
-    s32 id = *(s32*)(p + 0x4);
+    struct Local {
+        static inline bool eq(s32 a, s32 b) {
+            return a == b;
+        }
+        static inline bool sameRoom(s32 roomId, s32 i) {
+            return eq(fn_8023DE58(i), roomId);
+        }
+    };
+    s32 count;
+    s32 k;
+    s32 i;
+    s32 id;
     u8 flags[4];
     f32 vals[4];
-    flags[0] = 0;
-    vals[0] = lbl_8053F6B8;
-    u8* fbase = flags;
-    flags[1] = 0;
-    vals[1] = lbl_8053F6B8;
-    f32* vbase = vals;
-    s32 count = 0;
-    flags[2] = 0;
-    vals[2] = lbl_8053F6B8;
-    flags[3] = 0;
-    vals[3] = lbl_8053F6B8;
+    for (i = 0; i < 4; i++) {
+        flags[i] = 0;
+        vals[i] = 1.0f;
+    }
+    count = 0;
+    id = *(s32*)(p + 0x4);
     u8* cfg = fn_802D6A9C();
     f32* r;
     if (id < 8) {
@@ -211,69 +271,72 @@ extern "C" void fn_801EC7B8(char* p) {
     } else {
         r = (f32*)(cfg + 0xdc);
     }
-    u8* fp = fbase;
-    f32* vp = vbase;
     f32 px;
-    f32 xLim = lbl_8053F6C8 + r[0];
-    f32 yLim = lbl_8053F6CC * (r[1] + r[3]);
-    for (s32 i = 0; i < *(s32*)(p + 0x2a8); i++, fp++, vp++) {
+    f32 xLim = 88.0f + r[0];
+    f32 yLim = 0.5f * (r[1] + r[3]);
+    for (i = 0; i < *(s32*)(p + 0x2a8); i++) {
         if (!((HrmnQueue*)(p + 0x2b8))->isEmpty(i)) {
-            s32 myId = *(s32*)(p + 0x4);
-            if (fn_8023DE58(i) == myId && fn_8023E724(i)[1] > yLim && fn_8023E724(i)[0] < xLim) {
-                *fp = 1;
+            if (Local::sameRoom(*(s32*)(p + 0x4), i) && fn_8023E724(i)[1] > yLim && fn_8023E724(i)[0] < xLim) {
+                flags[i] = 1;
                 px = fn_8023E724(i)[0];
-                f32 d = lbl_8053F6D0 * (px - fn_8023E578(i)[0]);
-                f32 t = lbl_8053F6B8;
-                f32 x = px - d;
+                f32 x = px - fn_8023E578(i)[0];
+                f32 step = lbl_8053F6D0;
+                f32 d = step * x;
+                f32 t = 1.0f;
+                x = px - d;
                 while (x < xLim) {
-                    t -= lbl_8053F6D0;
+                    t -= step;
                     x -= d;
-                    if (t <= lbl_8053F6C0) {
+                    if (t <= 0.0f) {
                         break;
                     }
                 }
-                *vp = hrmn_clamp(t);
+                if (t > 1.0f) {
+                    t = 1.0f;
+                } else if (t < 0.0f) {
+                    t = 0.0f;
+                }
+                vals[i] = t;
                 count++;
             }
         }
     }
     if (count > 0) {
         fn_801F0D20(p, 0x3a);
-        s32 k = fn_80215E98((HrmnQueue*)(p + 0x2b8));
+        k = fn_80215E98((HrmnQueue*)(p + 0x2b8));
         while (count > 0) {
             f32 best = *(f32*)__float_max;
-            s32 bi = -1;
-            u8* f = fbase;
-            f32* v = vbase;
-            for (s32 j = 0; j < *(s32*)(p + 0x2a8); j++, f++, v++) {
-                if (*f && *v <= best) {
-                    bi = j;
-                    best = *v;
+            i = -1;
+            for (s32 j = 0; j < *(s32*)(p + 0x2a8); j++) {
+                if (flags[j] && vals[j] <= best) {
+                    i = j;
+                    best = vals[j];
                 }
             }
-            fn_80215FB8((HrmnQueue*)(p + 0x2b8), bi, k, vals[bi]);
-            fn_80215D8C((HrmnQueue*)(p + 0x2b8), bi);
-            if (k == 0 && fn_80215C6C((HrmnQueue*)(p + 0x2b8), bi)) {
+            fn_80215FB8((HrmnQueue*)(p + 0x2b8), i, k, vals[i]);
+            fn_80215D8C((HrmnQueue*)(p + 0x2b8), i);
+            if (k == 0 && fn_80215C6C((HrmnQueue*)(p + 0x2b8), i)) {
                 *(u32*)(p + 0x230) |= 0x2000;
             }
             count--;
-            flags[bi] = 0;
+            flags[i] = 0;
             k++;
         }
     }
-    if (((HrmnQueue*)(p + 0x2b8))->isFull()) {
+    bool full = fn_80215E98((HrmnQueue*)(p + 0x2b8)) == *(s32*)(p + 0x2b8);
+    if (full) {
         fn_801ECB08(p, 0xb);
     } else if (fn_8021606C((HrmnQueue*)(p + 0x2b8))) {
-        for (s32 i = 0; i < *(s32*)(p + 0x2a8); i++) {
-            if (!((HrmnQueue*)(p + 0x2b8))->isEmpty(i)) {
-                fn_80215D8C((HrmnQueue*)(p + 0x2b8), i);
+        for (s32 j = 0; j < *(s32*)(p + 0x2a8); j++) {
+            if (!((HrmnQueue*)(p + 0x2b8))->isEmpty(j)) {
+                fn_80215D8C((HrmnQueue*)(p + 0x2b8), j);
             }
         }
         fn_801F0D20(p, 0x3b);
         fn_801ECB08(p, 0xb);
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void* fn_801D0020(void* p, void* pos, s32 a, s32 b);
 extern "C" void* fn_80119DD0(void);
 extern "C" void fn_80119998(void* a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
