@@ -32,6 +32,9 @@ extern "C" void fn_80128728(void* p, s32 x);
 extern "C" const s32 lbl_80464FC0[];
 
 extern "C" char lbl_8049E500[];
+struct DMNRSndObj {
+    virtual s32 v06(u32 a, void* b);
+};
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void* fn_801286C0(void* p, s16 n) {
     if (p) {
