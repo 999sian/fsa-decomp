@@ -1,6 +1,7 @@
 #include "types.h"
 #include <math.h>
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" f32 lbl_8053D128;
 extern "C" f32 lbl_8053D12C;
@@ -69,7 +70,7 @@ extern "C" void fn_801EE434(void* p);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* a, s32 b);
 extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
-extern "C" BOOL fn_8014AD2C(u8* this_, u32 b, u32 c) {
+extern "C" BOOL fn_8014AD2C(u8* this_, int b, int c) {
     s32 kind = (u16)fn_8022461C(c, b);
     s32 sub = (u16)fn_80226850(c, b);
 
@@ -241,6 +242,15 @@ extern "C" void fn_8014AFB4(u8* this_) {
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, idx, n != 0, 2, -1, flag, 0, 0);
 }
 
+extern "C" void fn_8014B49C(u8* this_) {
+    if (*(s32*)(this_ + 0x230) == 9) {
+        return;
+    }
+    if (this_[0xc4] != 0) {
+        *(s32*)(this_ + 0x264) = 0;
+    }
+}
+
 extern "C" void* fn_8014CF28(u32* this_, s16 freeFlag) {
     if (this_ != 0) {
         u32* p = this_;
@@ -259,7 +269,9 @@ extern "C" void* fn_8014CF28(u32* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8014CFBC(u8* this_) {
+#pragma opt_propagation off
+#pragma opt_lifetimes off
+extern "C" void fn_8014CFBC(u8* p) {
     struct VObj {
         virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04();
         virtual void v05(); virtual void v06(); virtual void v07(); virtual void v08(); virtual void v09();
@@ -268,44 +280,49 @@ extern "C" void fn_8014CFBC(u8* this_) {
         virtual void v20(); virtual void v21();
     };
     s32 room;
+    u8* this_ = p;
+    u32 tag = 0x53308;
+    s32 neg = -1;
+    s32 priority = 2;
+    s32 zero = 0;
 
-    *(f32*)(this_ + 0x60) = -7.0f;
-    *(f32*)(this_ + 0x64) = -7.0f;
-    *(f32*)(this_ + 0x68) = 7.0f;
-    *(f32*)(this_ + 0x6c) = 7.0f;
-    *(f32*)(this_ + 0x80) = -7.0f;
-    *(f32*)(this_ + 0x84) = -7.0f;
-    *(f32*)(this_ + 0x88) = 7.0f;
-    *(f32*)(this_ + 0x8c) = 7.0f;
-    *(s32*)(this_ + 0x24c) = 0;
-    *(s32*)(this_ + 0x250) = 0;
-    *(s32*)(this_ + 0x254) = 0;
-    *(s32*)(this_ + 0x258) = 0;
-    *(s32*)(this_ + 0x25c) = 0;
-    *(s32*)(this_ + 0x260) = 0;
-    *(s32*)(this_ + 0x264) = 0;
-    *(s32*)(this_ + 0x234) = 0;
-    *(s32*)(this_ + 0x238) = 0;
-    *(s32*)(this_ + 0x23c) = 0;
-    *(s32*)(this_ + 0x240) = 0;
-    *(s32*)(this_ + 0x244) = 0;
-    *(s32*)(this_ + 0x248) = 0;
-    *(s32*)(this_ + 0x108) = 2;
-    *(s32*)(this_ + 0x26c) = 0;
-    *(u8*)(this_ + 0x280) = 0;
-    *(f32*)(this_ + 0x27c) = 1.0f;
-    *(s32*)(this_ + 0x290) = 0;
-    *(s32*)(this_ + 0x294) = 0;
-    *(s32*)(this_ + 0x298) = 0;
-    *(f32*)(this_ + 0x274) = 1.0f;
-    *(s32*)(this_ + 0x268) = -1;
-    *(s32*)(this_ + 0xb0) = 0x53308;
-    *(u32*)(this_ + 0x270) = (*(u32*)(this_ + 0x90) >> 8) & 1;
-    *(u32*)(this_ + 0x90) = *(u32*)(this_ + 0x90) & 0xff;
-    *(u16*)(this_ + 0x94) = 0;
-    *(s32*)(this_ + 0x260) = -1;
-    *(f32*)(this_ + 0x278) = 0.0f;
-    switch (*(u32*)(this_ + 0x90)) {
+    *(f32*)(p + 0x60) = -7.0f;
+    *(f32*)(p + 0x64) = -7.0f;
+    *(f32*)(p + 0x68) = 7.0f;
+    *(f32*)(p + 0x6c) = 7.0f;
+    *(f32*)(p + 0x80) = -7.0f;
+    *(f32*)(p + 0x84) = -7.0f;
+    *(f32*)(p + 0x88) = 7.0f;
+    *(f32*)(p + 0x8c) = 7.0f;
+    *(s32*)(p + 0x24c) = zero;
+    *(s32*)(p + 0x250) = zero;
+    *(s32*)(p + 0x254) = zero;
+    *(s32*)(p + 0x258) = zero;
+    *(s32*)(p + 0x25c) = zero;
+    *(s32*)(p + 0x260) = zero;
+    *(s32*)(p + 0x264) = zero;
+    *(s32*)(p + 0x234) = zero;
+    *(s32*)(p + 0x238) = zero;
+    *(s32*)(p + 0x23c) = zero;
+    *(s32*)(p + 0x240) = zero;
+    *(s32*)(p + 0x244) = zero;
+    *(s32*)(p + 0x248) = zero;
+    *(s32*)(p + 0x108) = 2;
+    *(s32*)(p + 0x26c) = zero;
+    *(u8*)(p + 0x280) = zero;
+    *(f32*)(p + 0x27c) = 1.0f;
+    *(s32*)(p + 0x290) = zero;
+    *(s32*)(p + 0x294) = zero;
+    *(s32*)(p + 0x298) = zero;
+    *(f32*)(p + 0x274) = 1.0f;
+    *(s32*)(p + 0x268) = -1;
+    *(s32*)(p + 0xb0) = 0x53308;
+    *(u32*)(p + 0x270) = (*(u32*)(p + 0x90) >> 8) & 1;
+    *(u32*)(p + 0x90) = *(u32*)(p + 0x90) & 0xff;
+    *(u16*)(p + 0x94) = zero;
+    *(s32*)(p + 0x260) = -1;
+    *(f32*)(p + 0x278) = 0.0f;
+    switch (*(u32*)(p + 0x90)) {
     case 10:
         *(s32*)(this_ + 0x248) = 0x14;
     case 0:
@@ -314,7 +331,9 @@ extern "C" void fn_8014CFBC(u8* this_) {
         *(s32*)(this_ + 0x230) = 2;
         *(s32*)(this_ + 0xb0) = 0x73308;
         room = *(s32*)(this_ + 4);
-        if (((u8*)fn_802D6A9C())[0x131df + room] != 0) {
+        u8* state = (u8*)fn_802D6A9C();
+        state += 0x10000;
+        if (state[room + 0x31df] != 0) {
             *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
             *(f32*)(this_ + 0x14) = 0.0f;
             *(f32*)(this_ + 0x44) = 0.0f;
@@ -326,12 +345,29 @@ extern "C" void fn_8014CFBC(u8* this_) {
             *(f32*)(this_ + 0x6c) = 13.0f;
             *(f32*)(this_ + 0x274) = 2.0f;
         }
-        if (*(s32*)(this_ + 0x294) == 0) {
+        if (*(u32*)(this_ + 0x294) == 0) {
             *(s32*)(this_ + 0x294) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, *(f32*)(this_ + 0x274), 0x66, 0, 0, 0, 0, 0);
         }
-        if (*(s32*)(this_ + 0x298) == 0) {
+        if (*(u32*)(this_ + 0x298) == 0) {
             *(s32*)(this_ + 0x298) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, *(f32*)(this_ + 0x274), 0x67, 0, 0, 0, 0, 0);
         }
+        break;
+    default:
+    case 5:
+    case 6:
+        *(s32*)(this_ + 0x240) = 0x32;
+    case 3:
+    case 9:
+        *(s32*)(this_ + 0x240) = 0x32;
+        if (*(u32*)(this_ + 0x90) == 9) {
+            *(f32*)(this_ + 0x60) = -13.0f;
+            *(f32*)(this_ + 0x64) = -13.0f;
+            *(f32*)(this_ + 0x68) = 13.0f;
+            *(f32*)(this_ + 0x6c) = 13.0f;
+            *(f32*)(this_ + 0x274) = 2.0f;
+        }
+        *(s32*)(this_ + 0xb0) = 0x73308;
+        *(s32*)(this_ + 0x230) = 0;
         break;
     case 1:
         *(f32*)(this_ + 0x60) = 0.0f;
@@ -339,7 +375,7 @@ extern "C" void fn_8014CFBC(u8* this_) {
         *(f32*)(this_ + 0x68) = 0.0f;
         *(f32*)(this_ + 0x6c) = 0.0f;
         *(f32*)(this_ + 0x274) = 0.0f;
-        *(s32*)(this_ + 0xb0) = 0;
+        *(s32*)(this_ + 0xb0) = zero;
         *(s32*)(this_ + 0x230) = 9;
         break;
     case 2:
@@ -347,10 +383,14 @@ extern "C" void fn_8014CFBC(u8* this_) {
     case 4:
         if (lbl_8053AAF8[0x7f] == 0) {
             *(u8*)(this_ + 0x11f) = 1;
-            *(f32*)(this_ + 0x60) = -10.0f;
-            *(f32*)(this_ + 0x64) = -10.0f;
-            *(f32*)(this_ + 0x68) = 10.0f;
-            *(f32*)(this_ + 0x6c) = 10.0f;
+            f32 high;
+            f32 low;
+            low = -10.0f;
+            high = 10.0f;
+            *(f32*)(this_ + 0x60) = low;
+            *(f32*)(this_ + 0x64) = low;
+            *(f32*)(this_ + 0x68) = high;
+            *(f32*)(this_ + 0x6c) = high;
             *(s32*)(this_ + 0xb0) = 0x53303;
             *(s32*)(this_ + 0x230) = 10;
         } else {
@@ -371,26 +411,11 @@ extern "C" void fn_8014CFBC(u8* this_) {
         *(s32*)(this_ + 0x234) = lbl_8049F760[*(s32*)(this_ + 0x24c)];
         *(s32*)(this_ + 0x230) = 4;
         break;
-    default:
-    case 5:
-    case 6:
-        *(s32*)(this_ + 0x240) = 0x32;
-    case 3:
-    case 9:
-        *(s32*)(this_ + 0x240) = 0x32;
-        if (*(u32*)(this_ + 0x90) == 9) {
-            *(f32*)(this_ + 0x60) = -13.0f;
-            *(f32*)(this_ + 0x64) = -13.0f;
-            *(f32*)(this_ + 0x68) = 13.0f;
-            *(f32*)(this_ + 0x6c) = 13.0f;
-            *(f32*)(this_ + 0x274) = 2.0f;
-        }
-        *(s32*)(this_ + 0xb0) = 0x73308;
-        *(s32*)(this_ + 0x230) = 0;
-        break;
+
     }
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void fn_8014D304(u8* this_) {
     struct VObj {
         virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04();
@@ -543,23 +568,32 @@ extern "C" BOOL fn_8014D6DC(u8* this_) {
 
 extern "C" void fn_8014D868(u8* this_, f32* pos) {
     s32 list[1024];
-    s32 count = fn_801F7818(fn_801F856C(), 0x57415250, *(u32*)(this_ + 4), list, -1);
-    for (s32 i = 0; i < count; i++) {
-        u8* p = (u8*)list[i];
+    s32 i;
+    s32* entry;
+    f32* pos2 = pos;
+    s32 count;
+    s32 id;
+    f32* q;
+    u8* base = this_;
+    count = fn_801F7818(fn_801F856C(), 0x57415250, *(u32*)(base + 4), list, -1);
+    entry = list;
+    for (i = 0; i < count; i++) {
+        u8* p = (u8*)*entry;
         if (p != 0) {
-            f32 dx = *(f32*)(p + 0xc) - pos[0];
-            f32 dz = *(f32*)(p + 0x10) - pos[1];
+            f32 dx = *(f32*)(p + 0xc) - pos2[0];
+            f32 dz = *(f32*)(p + 0x10) - pos2[1];
             f32 dist = dolsqrtfull(dx * dx + dz * dz);
             if (dist < 24.0f) {
                 u32 type = (*(u32*)(p + 0x90) >> 24) & 7;
-                f32* q = (f32*)(p + 0x238);
-                s32 id = type + 7;
+                q = (f32*)(p + 0x238);
+                id = type + 7;
                 if (type == 0) {
                     id = type;
                 }
                 Actor_CreateByID(fn_801F856C(), 0x48424d42, id, q, 0xc, -1, -1);
             }
         }
+        entry++;
     }
 }
 
