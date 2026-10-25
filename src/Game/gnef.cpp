@@ -240,17 +240,17 @@ extern const f32 lbl_80541418;
 
 
 static inline f32 gnefSqrt(f32 x) {
-    f32 y;
+    f32 result;
     if (x > lbl_80541400) {
-        y = __frsqrte(x);
-        x = y * x;
-        y = lbl_80541408 - x * y;
-        y = y * x;
-        y = y * lbl_8054140C;
+        f32 y = __frsqrte(x);
+        f32 t = y * x;
+        f32 r = lbl_80541408 - t * y;
+        r = r * t;
+        result = r * lbl_8054140C;
     } else {
-        y = x;
+        result = x;
     }
-    return y;
+    return result;
 }
 
 struct GnefPull {
