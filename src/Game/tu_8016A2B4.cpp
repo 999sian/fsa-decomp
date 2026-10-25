@@ -725,23 +725,31 @@ extern "C" void fn_8016DB60(u8* self) {
     if (lbl_8053AAF8[0x7F]) {
         u8 selected = 0;
         s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
-        if (mode == 7) selected = 1;
-        if (mode == 8) selected = 1;
-        if (mode == 9) selected = 1;
-        if (mode == 22) selected = 1;
-        if (mode == 10) selected = 1;
-        if (mode == 11) selected = 1;
+        if (mode == 7) goto yes;
+        if (mode == 8) goto yes;
+        if (mode == 9) goto yes;
+        if (mode == 22) goto yes;
+        if (mode == 10) goto yes;
+        if (mode == 11) goto yes;
+        goto no;
+    yes:
+        selected = 1;
+    no:
         enabled = selected;
     } else {
         u8 selected = 0;
         s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
-        if (mode == 7) selected = 1;
-        if (mode == 8) selected = 1;
-        if (mode == 9) selected = 1;
-        if (mode == 22) selected = 1;
-        if (mode == 10) selected = 1;
-        if (mode == 11) selected = 1;
-        if (mode == 12) selected = 1;
+        if (mode == 7) goto yes2;
+        if (mode == 8) goto yes2;
+        if (mode == 9) goto yes2;
+        if (mode == 22) goto yes2;
+        if (mode == 10) goto yes2;
+        if (mode == 11) goto yes2;
+        if (mode == 12) goto yes2;
+        goto no2;
+    yes2:
+        selected = 1;
+    no2:
         enabled = selected;
     }
     if (enabled) {
@@ -778,30 +786,39 @@ extern "C" void fn_8016DCEC(u8* self) {
     bool enabled;
     u8* mgr;
     if (lbl_8053AAF8[0x7F]) {
-        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         u8 selected = 0;
-        if (mode == 7) selected = 1;
-        if (mode == 8) selected = 1;
-        if (mode == 9) selected = 1;
-        if (mode == 22) selected = 1;
-        if (mode == 10) selected = 1;
-        if (mode == 11) selected = 1;
+        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
+        if (mode == 7) goto set;
+        if (mode == 8) goto set;
+        if (mode == 9) goto set;
+        if (mode == 22) goto set;
+        if (mode == 10) goto set;
+        if (mode == 11) goto set;
+        goto done;
+    set:
+        selected = 1;
+    done:
         enabled = selected;
     } else {
-        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
         u8 selected = 0;
-        if (mode == 7) selected = 1;
-        if (mode == 8) selected = 1;
-        if (mode == 9) selected = 1;
-        if (mode == 22) selected = 1;
-        if (mode == 10) selected = 1;
-        if (mode == 11) selected = 1;
-        if (mode == 12) selected = 1;
+        s32 mode = *(s32*)(lbl_8053AAF8 + 0x4C);
+        if (mode == 7) goto set2;
+        if (mode == 8) goto set2;
+        if (mode == 9) goto set2;
+        if (mode == 22) goto set2;
+        if (mode == 10) goto set2;
+        if (mode == 11) goto set2;
+        if (mode == 12) goto set2;
+        goto done2;
+    set2:
+        selected = 1;
+    done2:
         enabled = selected;
     }
     if (enabled && self[0x1CF] != 0 && *(s32*)(lbl_8053AAF8 + 0x4C) != 11) {
         mgr = *(u8**)(lbl_8053AB10 + 0x24);
-        fn_8016D398(mgr + 4, *(void**)(self + 0x1C0), 0, self[0x1D0] == 0, self + 0x140, self + 0x1B0, self + 0x1B8, self + 0x1B4, self + 0x54, self + 0x6C, lbl_8053D968 / *(f32*)(mgr + 0x858));
+        f32 one = lbl_8053D968;
+        fn_8016D398(mgr + 4, *(void**)(self + 0x1C0), 0, self[0x1D0] ? 0 : 1, self + 0x140, self + 0x1B0, self + 0x1B8, self + 0x1B4, self + 0x54, self + 0x6C, one / *(f32*)(mgr + 0x858));
     }
 }
 
