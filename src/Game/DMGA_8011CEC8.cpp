@@ -288,7 +288,7 @@ extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
 extern "C" void fn_801D1C18(void* anim);
 extern "C" s32 fn_801365A8(void);
 extern "C" void fn_8030C5F0(void* a, f32* v, s32 b, s32 c, f32* out);
-extern "C" void fn_8043A208(void* p, s32 n, f32 x = 0.0f, f32 y = 0.0f, f32 scale = 0.0f, f32 height = 0.0f);
+extern "C" void fn_8043A208(void* p, s32 n, f32 x, f32 y, f32 scale, f32 height);
 extern "C" void* fn_8011871C(void* a, s32 b, s32 c);
 extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
 extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
