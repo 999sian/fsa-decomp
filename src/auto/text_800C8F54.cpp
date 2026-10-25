@@ -463,7 +463,11 @@ extern "C" J3DFogInfo fn_800CB8C8(u8* p, s32 idx);
 extern "C" void fn_800CBA08(u16* param_1, u8* param_2, s32 param_3);
 extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx);
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b);
-extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b);
+struct TevKColorWord {
+    TevKColorWord(u32 rgba) : mRGBA(rgba) {}
+    u32 mRGBA;
+};
+extern "C" TevKColorWord fn_800CB3D0(const J3DMaterialFactory* self, int idx, int no);
 extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b);
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b);
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx);
