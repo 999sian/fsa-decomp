@@ -1,5 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JUtility/TColor.h"
 
 struct FsaResourceManager {
     virtual void v00();
@@ -319,12 +321,10 @@ extern "C" const f32 lbl_80540E9C;
 extern "C" const f32 lbl_80540EA0;
 extern "C" const f32 lbl_80540EA4;
 extern "C" void fn_802D06BC(Actor* p) {
-    u8* b;
-    s32 neg;
+    s32 neg = -1;
+    u8* b = (u8*)p;
     s32 i;
 
-    neg = -1;
-    b = (u8*)p;
     for (i = 8; i > 0; i--) {
         *(s32*)(b + 0x274) = neg;
         *(s32*)(b + 0x278) = neg;
