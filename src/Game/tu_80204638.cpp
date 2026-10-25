@@ -94,10 +94,10 @@ extern "C" u8 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
     *(s32*)(param_1 + 0x54) = *(s32*)(param_1 + 0x54) + 1;
     return ret;
 }
-#pragma fp_contract on
+#pragma opt_strength_reduction off
 extern "C" void fn_80204834(u8* param_1) {
-    for (u32 i = 0; i < 2; i++) {
-        for (u32 j = 4; j <= 0x28; j += 4) {
+    for (int i = 0; i < 2; i++) {
+        for (int j = 4; j <= 0x28; j += 4) {
             u8* p = *(u8**)(param_1 + j);
             if (p) {
                 p[0x11c] = 0;
@@ -106,8 +106,11 @@ extern "C" void fn_80204834(u8* param_1) {
         param_1 += 0x28;
     }
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void* fn_802D6A9C(void);
+static inline bool actorInsideBounds(const f32* rect, const f32* pos) {
+ return pos[0] >= rect[0] && pos[1] >= rect[1] && pos[0] < rect[2] && pos[1] < rect[3];
+}
 extern "C" void fn_802048F4(u8* param_1) {
     u8** slot;
     u8* row;
