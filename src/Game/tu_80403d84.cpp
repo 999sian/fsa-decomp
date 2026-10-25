@@ -2001,9 +2001,11 @@ extern u8 lbl_80543880[];
 extern u8 lbl_80543888[];
 extern u8 lbl_8048C90C[];
 extern u8 lbl_8048C924[];
+#pragma opt_propagation off
 extern "C" void fn_80405D00(u8* self, s32 param) {
-	s32 i;
 	s32 count = 0;
+	s32 i;
+	s32 state;
 	for (i = 0; i < 4; i++) {
 		if (*(u32*)(self + 0x38c) & (1 << (*(s32*)(self + 0x340) * 4 + i))) {
 			count++;
@@ -2012,8 +2014,8 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 	if (count == 1) {
 		return;
 	}
-	s32 state = *(s32*)(self + 0x340);
-	if ((state == 0 || (u32)(state - 1) < 5 || state == 6) && !(*(u32*)(self + 0x38c) & (1 << (state * 4 + 1)))) {
+	state = *(s32*)(self + 0x340);
+	if ((state == 0 || (u32)(state - 1) <= 4 || state == 6) && !(*(u32*)(self + 0x38c) & (1 << (state * 4 + 1)))) {
 		if (*(s32*)(self + 0x348) == 0) {
 			if (lbl_80543880[state] == param) {
 				*(s32*)(self + 0x348) = 2;
@@ -2066,7 +2068,7 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 		}
 	}
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80405FC0(u8* self) {
 	f32 pos[3];
 	f32 p2[3];
@@ -2279,7 +2281,7 @@ extern "C" void fn_80406F68(u8* self, f32 a, f32 b) {
 	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC2C), id, &rec, 1.0f, 1.0f);
 }
 
-extern "C" u32 lbl_8048C2B8[];
+extern "C" u64 lbl_8048C2B8[];
 extern "C" f32 lbl_805438F8;
 extern "C" f32 lbl_805438FC;
 extern "C" f32 lbl_80543898;
@@ -2287,21 +2289,21 @@ extern "C" f32 lbl_80543900;
 extern "C" f32 lbl_805438D8;
 extern "C" f32 lbl_805438DC;
 extern "C" f32 lbl_80543904;
-#pragma peephole off
+#pragma peephole on
 extern "C" void fn_80408114(u8* self) {
     s32 i;
-    u8* obj;
+    Pane408* obj;
     if (*(s32*)(self + 0x350) == 0xb || *(s32*)(self + 0x350) == 0xc || *(s32*)(self + 0x350) == 0xd) {
         for (i = 0; i < 8; i++) {
             f32 f;
             if (i == *(s32*)(self + 0x340)) {
                 *(s16*)(self + 0x40e + i * 2) = *(s16*)(self + 0x40e + i * 2) + 1;
                 if (*(s16*)(self + 0x40e + i * 2) < 15) {
-                    f = lbl_805438F8 * ((f32)*(s16*)(self + 0x40e + i * 2) / lbl_805438FC);
-                    if (f > lbl_80543900) {
-                        f = lbl_80543900;
-                    } else if (f < lbl_80543898) {
-                        f = lbl_80543898;
+                    f = 155.0f * ((f32)*(s16*)(self + 0x40e + i * 2) / 15.0f);
+                    if (f > 150.0f) {
+                        f = 150.0f;
+                    } else if (f < 0.0f) {
+                        f = 0.0f;
                     }
                 } else {
                     f32 t;
@@ -2309,44 +2311,44 @@ extern "C" void fn_80408114(u8* self) {
                         *(s16*)(self + 0x40e + i * 2) = 15;
                     }
                     if (*(s16*)(self + 0x40e + i * 2) < 0x41) {
-                        t = (f32)(*(s16*)(self + 0x40e + i * 2) - 15) / lbl_805438D8;
+                        t = (f32)(*(s16*)(self + 0x40e + i * 2) - 15) / 50.0f;
                     } else {
-                        t = (f32)(100 - (*(s16*)(self + 0x40e + i * 2) - 15)) / lbl_805438D8;
+                        t = (f32)(100 - (*(s16*)(self + 0x40e + i * 2) - 15)) / 50.0f;
                     }
-                    f = lbl_80543904 * t + lbl_80543900;
-                    if (f > lbl_805438DC) {
-                        f = lbl_805438DC;
-                    } else if (f < lbl_80543900) {
-                        f = lbl_80543900;
+                    f = 105.0f * t + 150.0f;
+                    if (f > 255.0f) {
+                        f = 255.0f;
+                    } else if (f < 150.0f) {
+                        f = 150.0f;
                     }
                 }
             } else if (i == *(s32*)(self + 0x344)) {
                 if (*(s16*)(self + 0x40e + i * 2) >= 15) {
                     *(s16*)(self + 0x40e + i * 2) = 15;
                 }
-                if (*(s16*)(self + 0x40e + i * 2) > 0) {
+                if ((s32)*(s16*)(self + 0x40e + i * 2) > 0) {
                     *(s16*)(self + 0x40e + i * 2) = *(s16*)(self + 0x40e + i * 2) - 1;
                 }
-                f = lbl_805438F8 * ((f32)*(s16*)(self + 0x40e + i * 2) / lbl_805438FC);
-                if (f > lbl_80543900) {
-                    f = lbl_80543900;
-                } else if (f < lbl_80543898) {
-                    f = lbl_80543898;
+                f = 155.0f * ((f32)*(s16*)(self + 0x40e + i * 2) / 15.0f);
+                if (f > 150.0f) {
+                    f = 150.0f;
+                } else if (f < 0.0f) {
+                    f = 0.0f;
                 }
             } else {
                 *(s16*)(self + 0x40e + i * 2) = 0;
-                f = lbl_80543898;
+                f = 0.0f;
             }
-            obj = *(u8**)(self + 0xc);
-            ((void (*)(void*, s32, u32, u32))(*(u32**)obj)[15])(obj, 0, lbl_8048C2B8[2 * i], lbl_8048C2B8[2 * i + 1]);
-            ((void (*)(void*, s32))(*(u32**)obj)[9])(obj, (s32)f);
+            obj = (*(Screen408**)(self + 0xc))->search(((u64*)lbl_8048C2B8)[i]);
+            obj->setAlpha((int)f);
         }
     } else {
-        *(s16*)(self + 0x40e) = 0;
-        for (i = 0; i < 8; i++) {
-            obj = *(u8**)(self + 0xc);
-            ((void (*)(void*, s32, u32, u32))(*(u32**)obj)[15])(obj, 0, lbl_8048C2B8[2 * i], lbl_8048C2B8[2 * i + 1]);
-            ((void (*)(void*, s32))(*(u32**)obj)[9])(obj, 0);
+        u8* q = self;
+        const u64* __restrict table = (const u64*)lbl_8048C2B8;
+        for (int j = 0; j < 8; j++, q += 2, table++) {
+            *(s16*)(q + 0x40e) = 0;
+            obj = (*(Screen408**)(self + 0xc))->search(*table);
+            obj->setAlpha(0);
         }
     }
 }
