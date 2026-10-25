@@ -996,14 +996,16 @@ s32 px=(col*2+x)*8;
 s32 py=(row*2+y)*8;
 f32 vx=(f32)px+ox;
 f32 vy=(f32)py+oy;
+const f32 unit=0.0078125f;
+const f32 halfPixel=0.501f;
 f32 u=(f32)(int)(t&15);
 f32 v=(f32)(int)((t>>4)&63);
-u=8.0f*u+0.501f;
-v=8.0f*v+0.501f;
+u=8.0f*u+halfPixel;
+v=8.0f*v+halfPixel;
 u*=0.0078125f;
 v*=0.001953125f;
-f32 su=__fmadds((f32)px,0.0078125f,0.0f);
-f32 sv=__fmadds((f32)py,0.0078125f,0.0f);
+f32 su=__fmadds((f32)px,unit,0.0f);
+f32 sv=__fmadds((f32)py,unit,0.0f);
 f32 eu=0.0625f+su;
 f32 ev=0.0625f+sv;
 f32 u2,v2;
@@ -1080,7 +1082,7 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-extern "C" void fn_802F91AC(f32 f, f32* p, u8* o, u8* out) {
+extern "C" void fn_802F91AC(void* self, f32* p, u8* o, u8* out, f32 f) {
     f32 m[12];
     f32 s;
     s32 i;
