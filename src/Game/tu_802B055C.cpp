@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "dolphin/gx/GXStruct.h"
 
 extern "C" char lbl_804A84C8[];
