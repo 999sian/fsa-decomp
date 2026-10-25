@@ -18,7 +18,7 @@ extern "C" void fn_8030C5F0(void*, void*, s32, s32, void*);
 extern "C" void fn_8030C210(void*, void*);
 extern "C" void* fn_8013CC50(u32, void*, u16, s32, s32, s32, s32, s32, f32);
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
-extern "C" void fn_8043E7CC(void*, void*);
+extern "C" void fn_8043E7CC(void*, JGeometry::TVec3f);
 extern "C" f32 lbl_80543C0C;
 extern "C" f32 lbl_80543C10;
 extern "C" f32 lbl_80543C14;
@@ -35,12 +35,12 @@ extern "C" void fn_80437F78(u8* p) {
     for (int i = 0; i < 4; i++) {
         u8* cfg = lbl_80529DEC + i * 12;
         if (lbl_80529DEC[0x236] & (u8)(1 << i)) {
-            JGeometry::TVec3f out;
             JGeometry::TVec3f tmp;
+            JGeometry::TVec3f out;
             tmp = *(JGeometry::TVec3f*)(cfg + 0x1c4);
             fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4, 0, 0, &out);
             if (p[0x240 + i] == 0xff) {
-                if (out.y > (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) * lbl_80543C0C) {
+                if (out.y > lbl_80543C0C * (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6)) {
                     p[0x240 + i] = 0;
                     tmp.y += *(f32*)(lbl_8050DB0C + 0x34);
                 } else {
@@ -48,15 +48,15 @@ extern "C" void fn_80437F78(u8* p) {
                     tmp.y -= *(f32*)(lbl_8050DB0C + 0x34);
                 }
             } else {
-                if (out.y > (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) * lbl_80543C10) {
+                if (out.y > lbl_80543C10 * (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6)) {
                     p[0x240 + i] = 0;
                     tmp.y += *(f32*)(lbl_8050DB0C + 0x34);
-                } else if (out.y < (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) * lbl_80543C14) {
+                } else if (out.y < lbl_80543C14 * (f32)(s32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6)) {
                     p[0x240 + i] = 1;
                     tmp.y -= *(f32*)(lbl_8050DB0C + 0x34);
                 }
             }
-            *(JGeometry::TVec3f*)(cfg + 0x1c4) = tmp;
+            setMarkerPosition(cfg, tmp);
             if (*(s32*)(p + 4) < 8) {
                 fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), cfg + 0x1c4);
             }
@@ -67,9 +67,10 @@ extern "C" void fn_80437F78(u8* p) {
                 fn_8013CB44(*(void**)(p + 0x230 + i * 4), cfg + 0x1c4, 1, 1, 1);
             }
             JGeometry::TVec3f effect(*(JGeometry::TVec3f*)(cfg + 0x1c4));
-            fn_8043E7CC(lbl_8053AED0, &effect);
+            fn_8043E7CC(lbl_8053AED0, effect);
         } else if (*(void**)(p + 0x230 + i * 4)) {
-            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x230 + i * 4));
+            void* mgr = *(void**)((u8*)fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x230 + i * 4));
             *(void**)(p + 0x230 + i * 4) = 0;
         }
     }
