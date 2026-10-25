@@ -75,7 +75,7 @@ static inline f32 sykyRand01() {
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
-static inline f32 sykyRandFrom(void* __restrict game, u32 multiplier = 0x19660d) {
+static inline f32 sykyRandFrom(void* __restrict game, int multiplier = 0x19660d) {
     unsigned int* __restrict seed = (unsigned int*)((u8*)game + 0xb4);
     *seed = *seed * multiplier + 0x3c6ef35f;
     u32 bits = (*seed >> 9) | 0x3f800000;
@@ -179,7 +179,6 @@ extern "C" void fn_8019E7A4(u8* p) {
 }
 
 #pragma opt_common_subs off
-#pragma opt_strength_reduction off
 extern "C" void fn_8019E910(u8* p) {
     switch (*(s32*)(p + 0x268)) {
     case 0:
@@ -202,15 +201,13 @@ extern "C" void fn_8019E910(u8* p) {
             *(f32*)(p + 0x294) -= lbl_8053E470;
         }
         switch (*(s32*)(p + 0x230)) {
-        case 11: {
-            u32 multiplier = 0x19660d;
-            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8, multiplier);
-            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8, multiplier);
-            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRandFrom(lbl_8053AAF8, multiplier);
-            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRandFrom(lbl_8053AAF8, multiplier);
+        case 11:
+            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRandFrom(lbl_8053AAF8);
+            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRandFrom(lbl_8053AAF8);
             *(s32*)(p + 0x230) = 0xc;
             break;
-        }
         case 12:
             *(f32*)(p + 0x44) -= lbl_8053E460;
             if (*(f32*)(p + 0x14) <= lbl_8053E464) {
@@ -234,7 +231,6 @@ extern "C" void fn_8019E910(u8* p) {
         break;
     }
 }
-#pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 extern "C" void fn_8019EC04(u8* p) {
     fn_801F71A4(p + 0x3c, *(f32*)(p + 0x2a0), lbl_8053E46C, lbl_8053E460);
