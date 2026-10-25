@@ -3,9 +3,9 @@
 
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
-extern f32 lbl_80540BE0;
-extern f32 lbl_80540BE4;
-extern f32 lbl_80540BE8;
+extern const f32 lbl_80540BE0;
+extern const f32 lbl_80540BE4;
+extern const f32 lbl_80540BE8;
 
 
 extern "C" char lbl_804A8AC8[];
