@@ -51,6 +51,8 @@ extern "C" s32 fn_802D7948(void*);
 extern "C" u8 lbl_8047182C[];
 extern "C" void fn_801F06F0(void*, void*, s32, void*, s32, f32, f32);
 extern "C" void fn_803075AC(s32, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void fn_80320D18(char* p) {
     if (*(s32*)(p + 0x230) == 0 && *(s32*)(p + 0x278) <= 180) {
         if ((*(s32*)(p + 0x278) & 2) == 0) return;
