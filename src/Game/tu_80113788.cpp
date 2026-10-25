@@ -16,6 +16,33 @@ extern "C" void fn_801EF830(s32 a, void* b, void* c, s32 d, void* e, s32 f, s32 
 extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, void* e, f32 f1, f32 f2);
 extern "C" void* fn_8011921C(void);
 extern "C" s32 lbl_8046486C[];
+extern "C" f32 lbl_8053C680;
+extern "C" f32 lbl_8053C6B8;
+extern "C" f32 lbl_8053C6BC;
+extern "C" f32 lbl_8053C6C0;
+extern "C" f32 lbl_8053C6C4;
+extern "C" f32 lbl_8053C6C8;
+extern "C" f32 lbl_8053C6CC;
+extern "C" s32 lbl_8053AD30;
+extern "C" char lbl_8050EC80[];
+extern "C" void fn_8010DF78(void* p);
+extern "C" void fn_8030C210(void* p, void* v);
+extern "C" void fn_80458FF0(void* a, u32 b, s32 c, s32 d);
+extern "C" s32 fn_8023BCD4(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" u16 fn_8023CBC0(s32 i);
+extern "C" void fn_80230498(s32 i, void* v, u16 a, u8 b, s32 c, s32 d, s32 e);
+extern "C" void* fn_8016A3AC(void);
+extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801CD950(void* p, f32 a, f32 b);
+extern "C" void fn_801D1C18(void* p);
+extern "C" void fn_8022FE80(s32 a, u32 b, void* c, s32 d, s32 e);
+extern "C" u8 fn_803865B8(s32 a);
+extern "C" void fn_80388EEC(s32 a);
+extern "C" void fn_80387494(s32 a);
+extern "C" void fn_801183BC(void);
+extern "C" void* fn_80309C4C(void* a, u32 b, s32 c);
+extern "C" void fn_801F0E34(void* a, u32 b, u32 c);
 extern "C" s32 fn_8013CC50(void* obj, void* v, u16 a, s32 b, f32 c, u32 d, s32 e, s32 f, s32 g);
 
 static inline void CallVfn24(char* obj, s32 arg) {
