@@ -3,6 +3,10 @@
 extern f32 lbl_8053E440;
 extern f32 lbl_8053E444;
 extern f32 lbl_8053E448;
+extern f32 lbl_8053E44C;
+extern f32 lbl_8053E450;
+extern f32 lbl_8053E454;
+extern f32 lbl_8053E458;
 extern "C" void fn_80134DE4(void*, s32, s32);
 extern "C" void fn_8022ADE4(void);
 extern "C" void fn_801F0E34(void*, s32, s32);
@@ -110,32 +114,35 @@ extern "C" void fn_8019D12C(char* this_) {
 }
 
 extern "C" void fn_8019D958(char* this_) {
-    typedef void (*EffectFn)(s32, void*, f32, s32, s32, s32, s32, s32, s32);
-    EffectFn effect = (EffectFn)fn_8013CC50;
+    s32 room;
+    s32 i;
+    f32 zero = lbl_8053E440;
     char* st = *(char**)((char*)lbl_8053AB10 + 0x24);
     f32 pos[3];
     pos[0] = -*(f32*)(st + 0x10);
     pos[1] = -*(f32*)(st + 0x20);
-    pos[2] = lbl_8053E440;
+    pos[2] = zero;
     switch (*(s32*)(this_ + 0x230)) {
     case 1:
         fn_80134FC4(lbl_8053AAF8, 1);
         fn_8022ADE4();
-        effect(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x8e, 1, 7, 0, 0, 1);
-        effect(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x8f, 1, 7, 0, 0, 1);
-        effect(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x90, 1, 7, 0, 0, 1);
-        effect(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x421, 1, 7, 0, 0, 1);
-        effect(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x422, 1, 7, 0, 0, 1);
-        effect(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x423, 1, 7, 0, 0, 1);
-        effect(*(s32*)(this_ + 4), pos, lbl_8053E444, 0x425, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x8e, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x8f, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x90, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x421, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x422, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053E444, 0x423, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), pos, lbl_8053E444, 0x425, 1, 7, 0, 0, 1);
         fn_801F0E34(this_, 0x30001, 0);
         fn_80134DE4(lbl_8053AAF8, 3, 0);
-        for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && *(s32*)(this_ + 4) == fn_8023DE58(i)) {
-                effect(*(s32*)(this_ + 4), fn_8023E724(i), lbl_8053E444, 0x424, 1, 4, 0, 0, 1);
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i)) {
+                room = *(s32*)(this_ + 4);
+                if (room != fn_8023DE58(i)) continue;
+                fn_8013CC50(*(s32*)(this_ + 4), fn_8023E724(i), lbl_8053E444, 0x424, 1, 4, 0, 0, 1);
             }
         }
-        effect(*(s32*)(this_ + 4), pos, lbl_8053E444, 0x550, 1, 7, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), pos, lbl_8053E444, 0x550, 1, 7, 0, 0, 1);
         *(s32*)(this_ + 0x230) = 2;
         break;
     case 2:
