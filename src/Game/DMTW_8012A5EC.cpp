@@ -444,7 +444,7 @@ struct DmtwParts {
 static inline void* dmtwSpawn(u32 room, JGeometry::TVec3<f32> pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
     return fn_8013CC50(room, (void*)&pos, scale, id, a, b, c, d, e);
 }
-static inline u8 dmtwDialog(u32 owner, s32 message, const JGeometry::TVec3<f32>& pos) {
+static inline u8 dmtwDialog(u32 owner, s32 message, JGeometry::TVec3<f32> pos) {
     return fn_8038BD08(0, message, owner, (JGeometry::TVec3<f32>*)&pos, 0x22);
 }
 extern "C" void fn_8012B218(char* p) {
