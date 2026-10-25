@@ -1,6 +1,5 @@
 
 
-#include "Game/SinitPoolChain.h"
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/Inline.h"
