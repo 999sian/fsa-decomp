@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct Actor;
 
@@ -138,8 +139,12 @@ extern "C" void fn_80328E7C(Actor* this_) {
     }
 }
 
+extern "C" const f32 lbl_80541D04;
+extern "C" const f32 lbl_80541D08;
+extern "C" const f32 lbl_80541D0C;
 extern "C" void fn_803291D4(u8* p) {
     *(s32*)(p + 0x108) = 10000;
+    *(JGeometry::TVec3f*)(p + 0x23C) = *(JGeometry::TVec3f*)(p + 0xC);
     *(s32*)(p + 0x230) = 0;
     *(s32*)(p + 0x234) = 0;
     *(u8*)(p + 0x238) = 0;
@@ -147,5 +152,13 @@ extern "C" void fn_803291D4(u8* p) {
     *(u8*)(p + 0x23A) = 0;
     *(u8*)(p + 0x23B) = 0;
     *(s32*)(p + 0x114) = 4;
+    *(f32*)(p + 0x80) = lbl_80541D04;
+    *(f32*)(p + 0x84) = lbl_80541D08;
+    *(f32*)(p + 0x88) = lbl_80541CE4;
+    *(f32*)(p + 0x8C) = lbl_80541D0C;
+    *(f32*)(p + 0x60) = lbl_80541D04;
+    *(f32*)(p + 0x64) = lbl_80541D08;
+    *(f32*)(p + 0x68) = lbl_80541CE4;
+    *(f32*)(p + 0x6C) = lbl_80541CE4;
 }
 
