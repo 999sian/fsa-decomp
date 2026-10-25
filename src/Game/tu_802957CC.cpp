@@ -1315,19 +1315,6 @@ static inline bool HouseInsideBounds(f32 x0, f32 y0, f32 x1, f32 y1, const JGeom
     return inside;
 }
 
-static inline s32 HouseContactMode(char* self) {
-    if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
-        int room = *(s32*)(self + 4);
-        s32 current = fn_8023DE58(0);
-        if (current != room) goto invalid;
-        s32 result = fn_80238BC4(*(void**)(self + 0x198));
-        if (result < 0 || result >= 4) goto invalid;
-        *(s32*)(self + 0x2cc) = 1;
-        return result;
-    }
-invalid:
-    return -1;
-}
 static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f& box) {
     if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0
         && fn_80238A68(*(void**)(self + 0x198)) >= 4) {
@@ -1557,8 +1544,8 @@ extern "C" void fn_8029A494(char* self) {
         ((u32*)&zone)[3] = zoneSrc[3];
         u8 flag = 1;
         s32 i = 0;
-        f32 y0, x1, y1, step, x0;
-        x0 = zone.i.x - -32.0f;
+        f32 y0, x1, y1, step;
+        const f32 x0 = zone.i.x - -32.0f;
         y0 = zone.i.y - -32.0f;
         x1 = zone.f.x + -32.0f;
         y1 = zone.f.y + -32.0f;
