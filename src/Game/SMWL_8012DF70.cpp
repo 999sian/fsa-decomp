@@ -22,7 +22,7 @@ extern "C" u8* lbl_8053AB10;
 extern "C" void fn_802F745C(void* a, void* b, s32 c, void* d);
 extern int __float_epsilon[];
 
-extern f32 lbl_8053CC54;
+extern const f32 lbl_8053CC54;
 extern "C" void fn_8012DF70(Actor* this_) {
     u8* p = (u8*)this_;
     this_->Actor::v06();
