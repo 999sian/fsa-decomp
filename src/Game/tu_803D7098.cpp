@@ -150,8 +150,6 @@ extern "C" u64 lbl_80477180[][16];
 extern "C" u64 lbl_80477408[];
 
 struct FsaVtJ2D {
-    virtual void v0(void);
-    virtual void v1(void);
     virtual void v2(void);
     virtual void v3(void);
     virtual void v4(void);
