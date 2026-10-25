@@ -118,7 +118,7 @@ public:
     /* 0x0E */ virtual void v14();
     /* 0x0F */ virtual void v15();
     /* 0x10 */ virtual void v16();
-    /* 0x11 */ virtual int v17(int a, f32* b);
+    /* 0x11 */ virtual u8 v17(int a, f32* b);
     /* 0x12 */ virtual int v18(int a, f32* b);
     /* 0x13 */ virtual void v19();
     /* 0x14 */ virtual int v20();
