@@ -3,6 +3,54 @@
 #include "Game/esd/types.h"
 #include "Game/Actor.h"
 
+struct OnofVec2 {
+    f32 x, y;
+    void add(const OnofVec2& o) {
+        x += o.x;
+        y += o.y;
+    }
+};
+
+struct OnofBox2 {
+    OnofVec2 i, f;
+    void addPos(const OnofVec2& p) {
+        i.add(p);
+        f.add(p);
+    }
+};
+
+extern const f32 lbl_80540DA8;
+extern f32 lbl_80540DAC;
+extern f32 lbl_80540DB0;
+extern f32 lbl_80540DB4;
+extern f32 lbl_80540DB8;
+extern f32 lbl_80540DBC;
+extern f32 lbl_80540DC0;
+extern f32 lbl_80540DC4;
+extern f32 lbl_80540DC8;
+extern char* lbl_8053AB10;
+extern void* lbl_8053AC98;
+extern void* lbl_8053AAF8;
+extern u32 lbl_8046D8F8[];
+
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_802D6A9C(void);
+extern "C" bool fn_802D800C(void* mgr, s32 id);
+extern "C" bool fn_802D7888(void* mgr, s32 bit);
+extern "C" void fn_802D78B4(void* mgr, s32 bit, u8 set);
+extern "C" void fn_802A3948(void* g, void* pos, s32 a, s32 kind, s32 b);
+extern "C" void fn_802A3884(void* g, void* pos, s32 a, s32 kind, s32 b);
+extern "C" s32 fn_8013CC50(s32 kind, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" u8 fn_80138A30(void* game);
+extern "C" s32 fn_8023AE34(void* box, s32 room, void* pos);
+extern "C" s32 fn_8023BA68(void* box, s32 room, void* pos, s32 a);
+extern "C" s32 fn_8023A6CC(void* box, s32 room);
+extern "C" s32 fn_801F8108(void* actor, u32 type, s32 handle, f32 radius);
+extern "C" s32 fn_801F2718(void* actor, u32 type);
+extern "C" u8* fn_801F666C(void* mgr, s32 id);
+extern "C" void fn_801BEDBC(void* actor);
+extern "C" void fn_801F0E34(void* actor, u32 a, s32 b);
+
 // fn_802CB1C4 - ONOF: draw a shadow/marker while in state 1 or 2.
 // NONMATCHING (79.8%): retail shares the zero register (r7) between the
 // colour bytes and the flag argument.
@@ -10,8 +58,6 @@ struct OnofColor {
     u8 r, g, b, a;
     OnofColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
 };
-extern const f32 lbl_80540DA8;
-extern char* lbl_8053AB10;
 struct OnofShadowMgr {
     void draw(u32 room, void* pos, OnofColor color, s32 flag, f32 scale);
 };
@@ -110,8 +156,8 @@ extern "C" u8 fn_80138A30(void* game);
 extern "C" bool fn_802D7888(void* mgr, s32 bit);
 extern "C" void fn_802A3884(void* g, void* pos, s32 a, s32 kind, s32 b);
 extern "C" void fn_802CBC70(OnofActor* this_) {
-    this_->field_0C.x += lbl_80540DB0;
-    this_->field_0C.y += lbl_80540DB0;
+    this_->field_0C.x = this_->field_0C.x + lbl_80540DB0;
+    this_->field_0C.y = this_->field_0C.y + lbl_80540DB0;
     this_->field_244 = this_->field_90 >> 27;
     this_->field_24C = this_->field_90 & 0xfff;
     this_->field_240 = (this_->field_90 >> 12) & 7;
@@ -120,7 +166,7 @@ extern "C" void fn_802CBC70(OnofActor* this_) {
     this_->field_254 = 0;
     this_->field_230 = 0;
     this_->field_234 = 0;
-    u8 area = fn_80138A30(lbl_8053AAF8);
+    u8 area = (u8)(u32)fn_80138A30(lbl_8053AAF8);
     s32 mode = this_->field_248;
     s32 skip = 0;
     if (mode == 0) {
@@ -173,10 +219,12 @@ extern "C" void fn_802CBC70(OnofActor* this_) {
         ((Actor*)this_)->v10(0xff, 1);
         this_->field_238 = 4;
     }
-    this_->field_60 = lbl_80540DC4;
-    this_->field_64 = lbl_80540DC4;
-    this_->field_68 = lbl_80540DC8;
-    this_->field_6C = lbl_80540DC8;
+    f32 wide = lbl_80540DC4;
+    f32 near = lbl_80540DC8;
+    this_->field_60 = wide;
+    this_->field_64 = wide;
+    this_->field_68 = near;
+    this_->field_6C = near;
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
