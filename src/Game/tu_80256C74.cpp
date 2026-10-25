@@ -1165,6 +1165,13 @@ extern "C" void fn_8025A0B0(u8* p) {
 
 extern "C" u8 fn_8023B400(s32);
 extern const f32 lbl_80540128;
+struct Tu8025Data {
+    u8 pad[0x250];
+    u8 frames[4][8];
+    s32 rotA[4];
+    s32 rotB[4];
+};
+
 static inline bool tu8025_eq1(f32 a, f32 b, f32 eps) {
     bool equal = false;
     f32 d = a - b;
@@ -1229,19 +1236,22 @@ extern "C" void fn_8025A15C(u8* p) {
             break;
         case 1:
             pos.x -= lbl_80540110;
-            box.set(pos.x - lbl_80540118, pos.y - lbl_80540114, pos.x, lbl_80540114 + pos.y);
+            box.i.set(pos.x - lbl_80540118, pos.y - lbl_80540114);
+            box.f.set(pos.x, lbl_80540114 + pos.y);
             BOX(p, 0x580).set(box);
             break;
         case 2:
             pos.x += lbl_805400E0;
             pos.y += lbl_8054011C;
-            box.set(pos.x - lbl_80540114, pos.y, lbl_80540114 + pos.x, pos.y + lbl_80540118);
+            box.i.set(pos.x - lbl_80540114, pos.y);
+            box.f.set(lbl_80540114 + pos.x, pos.y + lbl_80540118);
             BOX(p, 0x580).set(box);
             break;
         case 3:
             pos.x -= lbl_805400E0;
             pos.y -= lbl_80540120;
-            box.set(pos.x - lbl_80540114, pos.y - lbl_80540118, lbl_80540114 + pos.x, pos.y);
+            box.i.set(pos.x - lbl_80540114, pos.y - lbl_80540118);
+            box.f.set(lbl_80540114 + pos.x, pos.y);
             BOX(p, 0x580).set(box);
             break;
         }
