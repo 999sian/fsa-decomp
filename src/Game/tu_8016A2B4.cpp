@@ -10,6 +10,17 @@ extern "C" void* fn_800CECCC(const void*, u32);
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
 
+struct ActorVObj8016B0B0 {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+};
+
 #pragma auto_inline off
 
 extern u8* lbl_8053AAF8;
@@ -343,16 +354,16 @@ extern "C" void fn_8016B0B0(u8* self) {
             f32 f4 = lbl_8053D96C - lbl_8053D970 * fi;
             Mtx m;
             m[0][0] = lbl_8053D93C;
-            m[0][1] = 0.0f;
-            m[0][2] = 0.0f;
+            m[0][1] = lbl_8053D944;
+            m[0][2] = lbl_8053D944;
             m[0][3] = -*(f32*)(p + 0x10);
-            m[1][0] = 0.0f;
-            m[1][1] = 0.0f;
+            m[1][0] = lbl_8053D944;
+            m[1][1] = lbl_8053D944;
             m[1][2] = lbl_8053D93C;
             m[1][3] = lbl_8053D974 + (f4 - *(f32*)(p + 0x20));
-            m[2][0] = 0.0f;
+            m[2][0] = lbl_8053D944;
             m[2][1] = lbl_8053D93C;
-            m[2][2] = 0.0f;
+            m[2][2] = lbl_8053D944;
             m[2][3] = f4;
             *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x18) = scale;
             *(f32*)(*(u8**)(self + 0x3C + i * 4) + 0x1C) = scale;
