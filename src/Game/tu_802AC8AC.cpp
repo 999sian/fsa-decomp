@@ -93,13 +93,7 @@ extern "C" void __ct__10J2DPictureFPC7ResTIMG(void*, void*);
 extern "C" void* fn_802ACB68(void* this_, short param_2) {
   if (this_ != (void*)0) {
     *(void**)this_ = (void*)lbl_804A8390;
-    void** ptr_field = (void**)((u8*)this_ + 4);
-    if (*ptr_field != (void*)0) {
-      void** obj = (void**)*ptr_field;
-      typedef void (*Func)(void*, int);
-      Func func = *(Func*)((u8*)obj[0] + 8);
-      func((void*)obj, 1);
-    }
+    delete *(J2DPicture**)((u8*)this_ + 4);
     *(u32*)((u8*)this_ + 4) = 0;
     if (param_2 > 0) {
       __dl__FPv(this_);
