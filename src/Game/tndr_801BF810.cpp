@@ -2,9 +2,7 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "float.h"
-#pragma opt_propagation off
 #include "JSystem/JGeometry/Vec.h"
-#pragma opt_propagation reset
 #include "JSystem/JMath/JMath.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
