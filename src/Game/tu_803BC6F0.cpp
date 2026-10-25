@@ -88,7 +88,7 @@ extern "C" s32 fn_803B9BDC(char* this_);
 extern "C" void fn_803BF004(char* this_);
 extern "C" void fn_803B93E8(void* a, void* b, void* c, s32 d);
 extern "C" void fn_803BACF8(void* a, u8 b);
-extern "C" u64 lbl_80476938[];
+extern "C" const u64 lbl_80476938[];
 extern "C" u32 lbl_80476980[];
 extern "C" f32 lbl_80543458;
 extern "C" f32 lbl_80543498;
@@ -3842,8 +3842,7 @@ extern "C" void fn_803CE05C(char* p) {
 #pragma opt_strength_reduction off
 extern "C" void fn_803CE11C(u8* p) {
     s32 i;
-    const u64* table;
-    const u64* __restrict pair;
+    const u64* pair;
     u32 state;
     f32* bounds;
     char* obj;
@@ -3864,8 +3863,7 @@ extern "C" void fn_803CE11C(u8* p) {
         duration=*(s16*)(lbl_8050DB0C+0x1d2);
         setFade(obj, duration, 0, lbl_80543458, limit);
         fn_80402628(*(void**)(p + 0x20), *(s16*)(lbl_8050DB0C + 0x1d2), *(u8*)(*(char**)(p + 0x20) + 0x28), 0);
-        table = (const u64*)lbl_80476938;
-        pair = table;
+        pair = lbl_80476938;
         for (i = 0; i < 9; i++) {
             J2DPane* pane=((J2DPane*)*(void**)(p+4))->search(*pair);
             fn_804023D0(*(void**)(p+0x20),pane,p[0x196+i]);
