@@ -19,6 +19,22 @@ extern "C" void GXSetAlphaUpdate(u8);
 extern "C" u8* sManager__8JUTVideo;
 extern u8* lbl_8053AB10;
 
+namespace JGeometry {
+template <typename T> struct TVec3;
+}
+struct JPABaseEmitter;
+struct JPAEmitterCallBack;
+struct JPAParticleCallBack;
+class JPAEmitterManager {
+public:
+    JPABaseEmitter* createSimpleEmitterID(const JGeometry::TVec3<f32>&, u16, u8, u8, JPAEmitterCallBack*, JPAParticleCallBack*);
+};
+class JPAResourceManager {
+public:
+    u32 getResUserWork(u16) const;
+};
+void JPASetRMtxSTVecfromMtx(const f32 (*)[4], f32 (*)[4], JGeometry::TVec3<f32>*, JGeometry::TVec3<f32>*);
+
 struct EffSlot {
     u16 id;
     u16 used;
