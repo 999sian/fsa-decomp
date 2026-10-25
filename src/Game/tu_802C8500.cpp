@@ -146,10 +146,16 @@ extern "C" void fn_802C89FC(u8* p) {
         *(f32*)(p + 0x64) = lbl_80540D68;
         *(f32*)(p + 0x68) = lbl_80540D6C;
         *(f32*)(p + 0x6c) = lbl_80540D6C;
-        box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
-        box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
-        box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
-        box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+        f32 y = *(f32*)(p + 0x10);
+        f32 x = *(f32*)(p + 0xc);
+        box[0] = *(f32*)(p + 0x60);
+        box[1] = *(f32*)(p + 0x64);
+        box[2] = *(f32*)(p + 0x68);
+        box[3] = *(f32*)(p + 0x6c);
+        box[0] += x;
+        box[1] += y;
+        box[2] += x;
+        box[3] += y;
         s32 hit = fn_8023AF14(box, *(u32*)(p + 0x4), 0, lbl_80540D5C);
         s32 state = *(s32*)(p + 0x230);
         switch (state) {
@@ -174,8 +180,8 @@ extern "C" void fn_802C89FC(u8* p) {
                     }
                 }
             }
-            ((ActorV*)p)->s54(1);
-            ((ActorV*)p)->s58();
+            ((ActorV*)p)->s4C(1);
+            ((ActorV*)p)->s50();
             if (*(s32*)(p + 0x23c) == 0) {
                 *(u8*)(p + 0x11c) = 0;
             } else {
@@ -185,7 +191,7 @@ extern "C" void fn_802C89FC(u8* p) {
         case 1:
             if (hit < 0) {
                 fn_802A3884(lbl_8053AC98, (f32*)(p + 0xc), 0, *(u32*)(p + 0x4) + *(u8*)(p + 0x256), *(u16*)(p + 0x254));
-                ((ActorV*)p)->s54(0);
+                ((ActorV*)p)->s4C(0);
                 *(s32*)(p + 0x230) = 0;
             }
             break;
@@ -193,7 +199,7 @@ extern "C" void fn_802C89FC(u8* p) {
     } else {
         switch (*(s32*)(p + 0x230)) {
         case 0:
-            if (((ActorV*)p)->v13() == 1) {
+            if (((ActorV*)p)->s2C() == 1) {
                 s32 type = *(s32*)(p + 0x234);
                 if (type == 0x30 || type == 0x10) {
                     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), *(u32*)(p + 0x4) + *(u8*)(p + 0x256), *(s32*)(p + 0x250), (u16)type);
@@ -209,8 +215,8 @@ extern "C" void fn_802C89FC(u8* p) {
                         fn_802A3948(lbl_8053AC98, (f32*)(p + 0xc), 0, *(u32*)(p + 0x4) + *(u8*)(p + 0x256), (u16)*(s32*)(p + 0x234));
                     }
                 }
-                ((ActorV*)p)->s54(1);
-                ((ActorV*)p)->s58();
+                ((ActorV*)p)->s4C(1);
+                ((ActorV*)p)->s50();
                 if (*(s32*)(p + 0x23c) == 0) {
                     *(u8*)(p + 0x11c) = 0;
                 } else {
@@ -219,9 +225,9 @@ extern "C" void fn_802C89FC(u8* p) {
             }
             break;
         case 1:
-            if (((ActorV*)p)->v13() == 0) {
+            if (((ActorV*)p)->s2C() == 0) {
                 fn_802A3884(lbl_8053AC98, (f32*)(p + 0xc), 0, *(u32*)(p + 0x4) + *(u8*)(p + 0x256), *(u16*)(p + 0x254));
-                ((ActorV*)p)->s54(0);
+                ((ActorV*)p)->s4C(0);
                 *(s32*)(p + 0x230) = 0;
             }
             break;
