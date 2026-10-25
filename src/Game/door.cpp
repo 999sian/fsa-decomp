@@ -38,6 +38,8 @@ void fn_802C59D4(void)
 
 } // extern "C"
 
+extern "C" s32 fn_80226BC4(JGeometry::TVec2<f32>* pos, s32 room);
+
 // ---- Actor_SetVec3_0x0.cpp ----
 // Actor_SetVec3_0x0 - trivial 3-float vector setter (this->0x0/0x4/0x8 = x,y,z).
 extern "C" void Actor_SetVec3_0x0(void* thisObj, f32 x, f32 y, f32 z) {
