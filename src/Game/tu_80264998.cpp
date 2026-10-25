@@ -877,6 +877,6 @@ extern "C" void fn_80268194(char* p)
     }
 }
 
-extern "C" void fn_80268280(void)
+extern "C" void __sinit_tu_80264998_cpp(void)
 {
 }
