@@ -13,7 +13,7 @@ extern const f32 lbl_8053CB28;
 
 extern "C" char lbl_8049E5B8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
-extern "C" void fn_80129200(Actor*);
+extern "C" s32 fn_80129200(Actor*);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 struct CRGNState {
