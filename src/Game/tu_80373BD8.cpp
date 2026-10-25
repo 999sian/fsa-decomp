@@ -1,4 +1,7 @@
 #include "Game/Actor.h"
+#define Vec SDKVec
+#include "JSystem/JGeometry/Box.h"
+#undef Vec
 
 
 extern "C" char lbl_804AE5C8[];
@@ -42,9 +45,13 @@ extern "C" void fn_80373EC8(Actor* p) {
     if (idx == 0) {
         p->field_0C = saved;
     } else {
-        p->field_0C.x = saved.x - lbl_80542E88;
-        p->field_0C.y = saved.y - angle;
-        p->field_0C.z = saved.z - lbl_80542E88;
+        Vec off;
+        off.x = lbl_80542E88;
+        off.y = *(f32*)((u8*)p + 0x244);
+        off.z = lbl_80542E88;
+        p->field_0C.x = saved.x - off.x;
+        p->field_0C.y = saved.y - off.y;
+        p->field_0C.z = saved.z - off.z;
         fn_801F06F0(p, lbl_804750AC, idx + 0x469, 0, -1, lbl_80542E94, lbl_80542E94);
         p->field_0C = saved;
     }
