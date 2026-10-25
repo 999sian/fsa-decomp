@@ -12,6 +12,8 @@ extern "C" f32 lbl_80540A00;
 extern "C" f32 lbl_80540A04;
 extern "C" f32 lbl_80540A08;
 extern "C" u8 sincosTable___5JMath[];
+extern "C" void fn_801F71A4(void* p, f32 target, f32 a, f32 b);
+extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
 
 struct Color4 {
     Color4(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
