@@ -19,7 +19,7 @@ struct Tu80343Random {
         } out;
         seed = seed * 0x19660d + 0x3c6ef35f;
         out.s = (seed >> 9) | 0x3f800000;
-        return out.f - 1.0f;
+        return out.f - lbl_80542358;
     }
 };
 struct Tu80343Game {
