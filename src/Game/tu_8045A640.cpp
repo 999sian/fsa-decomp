@@ -246,6 +246,9 @@ extern "C" u16 fn_8045AD64(void* param_1, JAISoundID* param_2) {
     }
     return 0xffff;
 }
+
+
+
 #pragma opt_lifetimes reset
 
 
