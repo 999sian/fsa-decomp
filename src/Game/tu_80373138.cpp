@@ -44,8 +44,8 @@ extern "C" void fn_80373198(Actor* this_) {
         *(s32*)(p + 0x250) = 0;
         for (i = 0; i < 4; i++) {
             Vec* src = fn_8023E724(i);
-            JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)src + JGeometry::TVec3<f32>(0.0f, lbl_80542E54, 0.0f);
-            fn_80230498(i, (Vec*)&v, 0x2e2, 0xff, -0x80, -0x80, 1);
+            JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)src;
+            fn_80230498(i, (Vec*)&(pos + JGeometry::TVec3<f32>(lbl_80542E50, lbl_80542E54, lbl_80542E50)), 0x2e2, 0xff, -0x80, -0x80, 1);
         }
         return;
     }
@@ -57,19 +57,8 @@ extern "C" void fn_80373198(Actor* this_) {
         }
         return;
     }
-    if (*(s32*)(p + 0x250) >= 0xd) {
-        if (*(s32*)(p + 0x248) == 0) {
-            if (fn_80230534(0)) {
-                *(s32*)(p + 0x24c) = -1;
-            }
-        } else if (*(s32*)(p + 0x248) == 0xf) {
-            ((void (*)(Actor*, s32, s32))(*(void***)this_)[12])(this_, 0xff, 1);
-        }
-        return;
-    }
-    if (*(s32*)(p + 0x248) != 0) {
-        return;
-    }
+    if (*(s32*)(p + 0x250) < 0xd) {
+    if (*(s32*)(p + 0x248) == 0) {
     *(s32*)(p + 0x250) += 1;
     *(s32*)(p + 0x248) = lbl_80475024[*(s32*)(p + 0x250)];
     for (i = 0; i < 4; i++) {
@@ -82,6 +71,16 @@ extern "C" void fn_80373198(Actor* this_) {
     }
     if (*(s32*)(p + 0x250) == 0xd) {
         *(s32*)(p + 0x248) = 0x19;
+    }
+    }
+    } else {
+        if (*(s32*)(p + 0x248) == 0) {
+            if (fn_80230534(0)) {
+                *(s32*)(p + 0x24c) = -1;
+            }
+        } else if (*(s32*)(p + 0x248) == 0xf) {
+            this_->v10(0xff, 1);
+        }
     }
 }
 
