@@ -13,7 +13,7 @@ extern "C" const f32 lbl_805404C0;
 extern "C" f32 lbl_805404D8;
 extern "C" f32 lbl_805404F0;
 extern void* lbl_8053AAF8;
-static inline s32 platformRoom(u32 param) {
+static inline s32 platformRoom(const s32 param) {
     s32 value = (param >> 24) & 7;
     s32 room = value + 7;
     if (value == 0) room = value;
@@ -69,7 +69,7 @@ extern "C" f64 lbl_805404E0;
 extern void* lbl_8053AED0;
 extern "C" const u8 lbl_8046C100[12];
 extern "C" const f32 lbl_805404D4;
-#pragma opt_propagation off
+#pragma opt_propagation on
 extern "C" void fn_8028AE2C(u8* this_) {
     u8* tgt;
     s32 idx;
@@ -303,19 +303,14 @@ extern "C" void fn_8028AE2C(u8* this_) {
                 n = *(s32*)(this_ + 0x25c);
                 if (n < 1 || n > 4 || n == i + 1) {
                     room=*(s32*)(this_+4);
-                    if (fn_8023B0F4(i, (f32*)&box,0.0f,room,0)!=0 && this_[0x251]==0) {
+                    if (fn_8023B0F4(i, (f32*)&box,room,0,0.0f)!=0 && this_[0x251]==0) {
                     if (this_[i + 0x252] != 1) {
                         s32 r6 = 6;
                         this_[i + 0x252] = 1;
                         if (*(s32*)(this_ + 0x25c) == 5) {
                             r6 = 0x14;
                         }
-                        n = (*(u32*)(this_ + 0x90) >> 24) & 7;
-                        cnt = n + 7;
-                        if (n == 0) {
-                            cnt = n;
-                        }
-                        if (fn_802317F0(i, cnt, this_ + 0xc, this_ + 0x268, r6)) {
+                        if (fn_802317F0(i, platformRoom(*(u32*)(this_+0x90)), this_ + 0xc, this_ + 0x268, r6)) {
                             *(s32*)(this_ + 0x238) = 0xb4;
                             cnt = *(s32*)(this_ + 0x24c);
                             if ((cnt >= 6 && cnt <= 9) || (*(s32*)(this_ + 0x25c) == 5 && cnt == 0)) {
@@ -337,7 +332,7 @@ extern "C" void fn_8028AE2C(u8* this_) {
                         box.f.y += 1.0f;
                         t=*(s32*)(this_+4);
                         if (t==fn_8023DE58(i) &&
-                            fn_8023B0F4(i, (f32*)&box,lbl_805404D4,*(s32*)(this_+4),0)==0)
+                            fn_8023B0F4(i, (f32*)&box,*(u32*)(this_+4),0,100.0f)==0)
                             this_[i+0x252]=0;
                     }
 
