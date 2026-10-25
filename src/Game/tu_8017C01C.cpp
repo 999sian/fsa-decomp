@@ -29,6 +29,15 @@ extern "C" void fn_8017C01C(ActorVt_tu8017C01C* this_) {
     this_->setShadow(*(s8*)((char*)this_ + 0x2ba), 8.0f, -16.0f);
 }
 
+extern "C" void fn_801546F4(void* dst, void* src);
+extern "C" void fn_8017ECE8(void* dst, f32 x, f32 y);
+extern "C" void fn_801546BC(void* v);
+extern "C" void fn_8017C40C(char* this_) {
+    fn_801546F4(this_ + 0x60, this_ + 0x60);
+    fn_8017ECE8(this_ + 0x60, *(f32*)(this_ + 0x2a0), *(f32*)(this_ + 0x2a4));
+    fn_801546BC(this_ + 0x50);
+}
+
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_8022ADCC(void);
 extern "C" void* fn_802D6A9C(void);
@@ -241,19 +250,17 @@ extern "C" u32 fn_8017EB1C(f32 value) {
 
 extern "C" u8 fn_8017EB44(const f32* pos) {
     void* base = lbl_8053AB10;
-    s32 done = 0;
+    u32 done = 0;
     void* p = *(void**)((char*)base + 0x24);
-    
     if (*(u8*)((char*)p + 0x7f5) == 0) {
-        done = 1;
         *(u8*)((char*)p + 0x7f4) = 1;
         *(u32*)((char*)p + 0x7f8) = 4;
         *(f32*)((char*)p + 0x7fc) = pos[0];
         *(f32*)((char*)p + 0x800) = pos[1];
         *(f32*)((char*)p + 0x804) = pos[2];
         *(u8*)((char*)p + 0x7f6) = 0;
+        done = *(u8*)((char*)p + 0x7f4);
     }
-    
     return done;
 }
 
@@ -345,4 +352,12 @@ extern "C" void fn_8017ED08(void) {
 
 void __sinit_tu_8017C01C_cpp(void) {
 }
-
+struct PendingPositionRequest {
+    u8 pad[0x7f4];
+    u8 active;
+    u8 blocked;
+    u8 flag;
+    u8 pad7f7;
+    u32 state;
+    JGeometry::TVec3<f32> position;
+};
