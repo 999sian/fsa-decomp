@@ -35,12 +35,18 @@ extern const f32 lbl_8053E104;
 extern s32 lbl_80539FCC;
 
 static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) {
-    f32 sx = (f32)sin(rx);
-    f32 sy = (f32)sin(ry);
-    f32 sz = (f32)sin(rz);
-    f32 cx = (f32)cos(rx);
-    f32 cy = (f32)cos(ry);
-    f32 cz = (f32)cos(rz);
+    f32 sz;
+    f32 sy;
+    f32 sx;
+    f32 cy;
+    f32 cx;
+    f32 cz;
+    sx = (f32)sin(rx);
+    sy = (f32)sin(ry);
+    sz = (f32)sin(rz);
+    cx = (f32)cos(rx);
+    cy = (f32)cos(ry);
+    cz = (f32)cos(rz);
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
