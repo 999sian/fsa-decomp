@@ -7,7 +7,7 @@
 #include "JSystem/J3D/J3DInd.h"
 #include "JSystem/J3D/J3DPE.h"
 
-extern "C" J3DFogInfo fn_800E0F84(const J3DMaterialFactory_v21* self, int idx);
+extern "C" J3DFog fn_800E0F84(const J3DMaterialFactory_v21* self, int idx);
 extern "C" J3DBlend fn_800E1144(const J3DMaterialFactory_v21* self, int idx);
 extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, int no);
