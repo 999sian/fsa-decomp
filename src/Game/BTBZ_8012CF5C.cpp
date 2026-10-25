@@ -35,7 +35,7 @@ struct BTBZ_Box {
 
 struct BTBZ_Vec {
     BTBZ_Vec() {}
-    void set(const f32 ax, const f32 ay, const f32 az) { x = ax; y = ay; z = az; }
+    void set(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
     f32 x, y, z;
 };
 
@@ -140,10 +140,7 @@ extern "C" void fn_8012D6E8(u8* this_) {
     if (*(void**)(this_ + 0x23C) == 0) {
         BTBZ_Vec pos;
         BTBZ_Box b = *(BTBZ_Box*)(fn_802D6A9C() + 0xCC);
-        f32 y, x;
-        x = 0.5f * (b.x0 - b.x1) + b.x1;
-        y = 0.5f * (b.y0 - b.y1) + b.y1;
-        pos.set(x, y, 0.0f);
+        BTBZ_midpoint(pos, b);
         *(void**)(this_ + 0x23C) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x58, 1, 0, 0, 0, 1, 1.0f);
     }
     if (*(u8**)(this_ + 0x23C) != 0) {
