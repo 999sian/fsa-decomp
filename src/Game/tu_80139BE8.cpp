@@ -140,9 +140,6 @@ extern "C" void fn_80139D70(void) {
 }
 
 extern "C" void fn_80139D9C(unsigned char* p) {
-    u8 fc;
-    void* f8;
-    unsigned char* pl;
     bool bVar1;
     s32 iVar3 = *(s32*)(lbl_8053AAF8 + 0x4c);
     if (iVar3 != 7 || *(s32*)(lbl_8053AAF8 + 0x60) < 4) {
@@ -227,43 +224,13 @@ END:
         }
         q += 4;
     }
-    pl = lbl_8053AAF8;
-    f8 = *(void**)(pl + 0xf8);
-    if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
-        bVar1 = true;
-    } else {
-        bVar1 = false;
-    }
-    if (!bVar1) {
-        *(void**)(lbl_80529DEC + 0x1b0) = f8;
-    }
-    fc = pl[0xfc];
-    if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
-        bVar1 = true;
-    } else {
-        bVar1 = false;
-    }
-    if (!bVar1) {
-        lbl_80529DEC[0x214] = fc;
-    }
+    unsigned char* pl = lbl_8053AAF8;
+    setUpdateWord(0x1b0, *(void**)(pl + 0xf8), pl, base);
+    setUpdateByte(0x214, pl[0xfc], pl, base);
     if ((lbl_80529DEC[0x24a] & 1) == 0 && (lbl_80529DEC[0x24a] & 2) == 0 && (lbl_80529DEC[0x24a] & 4) == 0 && (lbl_80529DEC[0x24a] & 8) == 0) {
-        if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
-            bVar1 = true;
-        } else {
-            bVar1 = false;
-        }
-        if (!bVar1) {
-            lbl_80529DEC[0x215] = 1;
-        }
+        setUpdateByte(0x215, 1, pl, base);
     } else {
-        if (pl[0x7f] != 0 && *(s32*)(base + 0x118) == 9 && *(s32*)(base + 0x11c) == 3) {
-            bVar1 = true;
-        } else {
-            bVar1 = false;
-        }
-        if (!bVar1) {
-            lbl_80529DEC[0x215] = 0;
-        }
+        setUpdateByte(0x215, 0, pl, base);
     }
 }
 
