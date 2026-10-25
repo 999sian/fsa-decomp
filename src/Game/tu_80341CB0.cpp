@@ -71,6 +71,9 @@ extern "C" void fn_80341CB0(s32 id, f32* pos) {
     Actor_CreateByID(fn_801F856C(), 0x42424D42, id, pos, 0x30000, -1, -1);
 }
 
+static inline void bombDrawTexture(Actor* actor, const void* texture, DrawRec* rec, s32 mode, f32 height) {
+    ((BombDrawActor*)actor)->drawTexture(texture, rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
+}
 extern "C" void fn_80342368(Actor* actor) {
     u8* p = (u8*)actor;
     if (*(s32*)(p + 0x230) == 2 || *(s32*)(p + 0x230) == 7) return;
