@@ -77,6 +77,14 @@ extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
 extern "C" u8 fn_8022F478(s32 player);
 extern "C" s32 fn_8023EF50(s32 player);
 
+static inline void key0RecordDropPoints(char* p, Key0Pt pos, Key0Pt key) {
+    u32 packed = (*(u32*)(p + 0x23c) << 30) | (*(u8*)(p + 0x2b5) << 29) |
+                 ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | ((*(u16*)(p + 0x2a8) << 8) & 0xffff00) |
+                 (*(u32*)(p + 4) & 0xff);
+    u32 id = *(u32*)(p + 0x238);
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+}
+
 static inline void key0RecordDrop(char* p) {
     u32 id = *(u32*)(p + 0x238);
     Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
