@@ -91,6 +91,124 @@ extern "C" void* fn_80324570(char* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" s32 fn_803245DC(char* this_, s32 room, void* pos) {
+    s32 tbl[2];
+    tbl[0] = lbl_80541B68;
+    tbl[1] = lbl_80541B6C;
+    s32 id = *(s32*)(this_ + 0x198);
+    u8* base = (u8*)fn_8020D58C();
+    int roomLater = room;
+    if (fn_8020D6AC(base + base[1] * 0x784 + 4, room, pos, id, tbl) == 1) {
+        return 1;
+    }
+    s32 kind = (u16)fn_8022461C(pos, room);
+    s32 attr = (u16)fn_80226850(pos, room);
+    if ((u32)(kind - 0x10) <= 7 || (attr >= 0x140 && attr <= 0x15f)) {
+        if (*(s32*)(this_ + 0x250) == 0) {
+            *(s32*)(this_ + 0x250) = 1;
+            *(s32*)(this_ + 0x260) = 6;
+            *(u8*)(this_ + 0x268) = 1;
+            *(u8*)(this_ + 0x269) = 1;
+            return 0;
+        }
+        if (*(u16*)(this_ + 0x94) == 0) {
+            *(u8*)(this_ + 0x268) = 1;
+            if (*(u8*)(this_ + 0x268) != *(u8*)(this_ + 0x269)) {
+                return 1;
+            }
+        }
+    }
+    if (*(u16*)(this_ + 0x94) == 0 && *(s32*)(this_ + 0x250) == 1) {
+        return 0;
+    }
+    if ((u32)(attr - 0x230) <= 1 || attr == 0x234) {
+        *(s32*)(this_ + 0x250) = 0;
+        return 0;
+    }
+    if (kind != 0 && kind != 4 && kind != 5 && kind != 6 && kind != 7 && kind != 2 && kind != 3 && kind != 0x50 && kind != 0xe && kind != 0xc && kind != 0x27 && kind != 0x28 && kind != 0x29 && kind != 0x2a && kind != 0x2b && kind != 0x2c && kind != 0x2d && kind != 0x2e && kind != 0x2f && kind != 0x20 && kind != 0xd && kind != 0x23 && kind != 0x39 && kind != 0x3a && kind != 0x3b && kind != 0x4c && kind != 0x4d && kind != 0x4e && kind != 0x4f && kind != 0x24) {
+        if ((u32)(kind - 7) <= 1 || kind == 10) {
+            if (*(s32*)(this_ + 0x98) == 1) {
+                return 0;
+            }
+            if (*(s32*)(this_ + 0x250) == 0) {
+                *(s32*)(this_ + 0x264) = *(s32*)(this_ + 0x264) + 1;
+                if (*(s32*)(this_ + 0x264) > 0x14) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        if (kind == 6 || kind == 9 || kind == 0xb) {
+            if (*(s32*)(this_ + 0x98) == 0) {
+                return 0;
+            }
+            if (*(s32*)(this_ + 0x250) == 0) {
+                *(s32*)(this_ + 0x264) = *(s32*)(this_ + 0x264) + 1;
+                if (*(s32*)(this_ + 0x264) > 0x14) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        if (kind == 4) {
+            if (*(s32*)(this_ + 0x98) == 2) {
+                return 0;
+            }
+            if (*(s32*)(this_ + 0x250) == 0) {
+                *(s32*)(this_ + 0x264) = *(s32*)(this_ + 0x264) + 1;
+                if (*(s32*)(this_ + 0x264) > 0x14) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        if (kind == 5) {
+            if (*(s32*)(this_ + 0x98) == 3) {
+                return 0;
+            }
+            if (*(s32*)(this_ + 0x250) == 0) {
+                *(s32*)(this_ + 0x264) = *(s32*)(this_ + 0x264) + 1;
+                if (*(s32*)(this_ + 0x264) > 0x14) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        if ((u16)fn_80226850(pos, roomLater) == 0x3a || (u16)fn_80226850(pos, roomLater) == 0x3d) {
+            *(s32*)(this_ + 0x250) = 0;
+            return 0;
+        }
+        if (kind == 0x25) {
+            if (*(s32*)(this_ + 0x250) == 0 && ((u8*)fn_802D6A9C())[0x171] == 0) {
+                return 1;
+            }
+            *(s32*)(this_ + 0x250) = 0;
+            return 0;
+        }
+        if (kind == 0x26) {
+            if (*(s32*)(this_ + 0x250) == 0 && ((u8*)fn_802D6A9C())[0x171] == 1) {
+                return 1;
+            }
+            *(s32*)(this_ + 0x250) = 0;
+            return 0;
+        }
+        if (*(s32*)(this_ + 0x250) == 0 && (kind != 0x22 || ((u8*)fn_802D6A9C())[0x170] == 1)) {
+            return 1;
+        }
+        if (*(s32*)(this_ + 0x250) != 0) {
+            return 0;
+        }
+    }
+    if (*(s32*)(this_ + 0x250) == 1) {
+        *(u8*)(this_ + 0x268) = 1;
+        if (*(s32*)(this_ + 0x260) < 0) {
+            *(s32*)(this_ + 0x260) = 0;
+            *(s32*)(this_ + 0x250) = 0;
+        }
+    }
+    return 0;
+}
+
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" f32 lbl_80541B74;
