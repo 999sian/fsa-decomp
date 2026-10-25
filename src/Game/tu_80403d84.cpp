@@ -17,6 +17,25 @@ extern "C" char lbl_80543928[5];
 extern "C" char lbl_80543930[3];
 extern "C" char lbl_80543934[8];
 extern "C" char lbl_8054393C[8];
+struct PtmfObj;
+typedef void (PtmfObj::*PtmfFn)();
+extern "C" PtmfFn lbl_804B10F8[];
+extern "C" PtmfFn lbl_804B1230[];
+extern "C" u8 lbl_8048C658[];
+extern "C" u8* getBounds__7J2DPaneFv(void*);
+extern "C" void fn_80440BF4(void* p, s32 b);
+extern "C" void fn_80456154(void* p);
+extern "C" f32 lbl_80543974;
+extern "C" f32 lbl_80543988;
+extern "C" f32 lbl_8054398C;
+extern "C" f32 lbl_80543990;
+extern "C" f32 lbl_80543994;
+extern "C" f32 lbl_80543998;
+extern "C" f32 lbl_805438A0;
+extern "C" f32 lbl_8054389C;
+extern "C" void fn_80408114(u8* self);
+extern "C" void fn_8040732C(u8* self);
+extern "C" void fn_80409014(u8* self);
 #include "JSystem/JMath/JMath.h"
 
 // J2D pane virtuals used by fn_8040E838: search at slot 0x3c, setAnimation at slot 0x60.
@@ -431,6 +450,18 @@ void fn_8040F3AC(u8* self) {
 
 u32 fn_8040F474(void) {
 	return *(u32*)(lbl_8053ADF8 + 0x668);
+}
+
+extern "C" void fn_80408114(u8* self);
+extern "C" void fn_8040732C(u8* self);
+extern "C" void fn_80409014(u8* self);
+extern "C" void fn_804108B4(T80403D84* self) {
+	s32 state = self->state;
+	fn_80408114((u8*)self);
+	if (state == 0x16) {
+	}
+	fn_8040732C((u8*)self);
+	fn_80409014((u8*)self);
 }
 
 void fn_8041499C(u8* dst, const u8* src) {
@@ -944,7 +975,7 @@ extern "C" void fn_80409450(void* p) {
 	}
 }
 
-#pragma fp_contract off
+#pragma opt_common_subs off
 extern "C" void fn_804096E8(u8* self) {
     u8* table = (u8*)&lbl_8048C1F8;
     u8 scaleDone=0;
@@ -961,7 +992,12 @@ extern "C" void fn_804096E8(u8* self) {
             if (t>lbl_805438BC) t=lbl_805438BC;
             f32 fade=lbl_805438BC-t;
             u64* names=(u64*)(table+0x3d8);
-            for(i=0;i<9;i++,names++) (*(Screen408**)(self+0x14))->search(*names)->setAlpha((s32)(self[0x642+i]*fade));
+            for(i=0;i<9;i++,names++) {
+                Pane408* pane=(*(Screen408**)(self+0x14))->search(*names);
+                f32 alpha=self[0x642+i];
+                alpha*=fade;
+                pane->setAlpha((s32)alpha);
+            }
             if (*(s16*)(self+0x41e)>=20) scaleDone=1;
         }
         if (*(s16*)(self+0x41e)==1) {
@@ -975,34 +1011,34 @@ extern "C" void fn_804096E8(u8* self) {
     } else {
         if (*(s32*)(self+0x340)<7) {
             if (*(s16*)(self+0x41e)>=0) {
-                fn_80402B10(*(void**)(self+0xc8),20,(f32)((s16*)(table+0x674))[*(s32*)(self+0x340)],lbl_80543898,0);
-                fn_80402940(*(void**)(self+0xc8),20,(f32)((s16*)(table+0x684))[*(s32*)(self+0x340)],lbl_80543898,0);
-                scaleDone=fn_8040271C(*(void**)(self+0xc8),20,((f32*)(table+0x658))[*(s32*)(self+0x340)]/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
-                f32 factor=((f32*)(table+0x658))[*(s32*)(self+0x340)]/(*(f32*)(*(u8**)(self+0xc8)+0x18))-lbl_805438BC;
+                fn_80402B10(*(void**)(self+0xc8),20,(f32)*(s16*)((u32)(table+0x674) + (u32)*(s32*)(self+0x340)*2),lbl_80543898,0);
+                fn_80402940(*(void**)(self+0xc8),20,(f32)*(s16*)((u32)(table+0x684) + (u32)*(s32*)(self+0x340)*2),lbl_80543898,0);
+                scaleDone=fn_8040271C(*(void**)(self+0xc8),20,*(f32*)((u32)(table+0x658) + (u32)*(s32*)(self+0x340)*4)/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
+                f32 factor=*(f32*)((u32)(table+0x658) + (u32)*(s32*)(self+0x340)*4)/(*(f32*)(*(u8**)(self+0xc8)+0x18))-lbl_805438BC;
                 {
                     u8* anchor=*(u8**)(self+0xc8);
                     u8* pane=*(u8**)(self+0xcc);
                     f32 dx=factor*(*(f32*)(pane+0x10)-*(f32*)(anchor+0x10));
                     f32 dy=factor*(*(f32*)(pane+0x14)-*(f32*)(anchor+0x14));
-                    fn_80402B10(pane,20,dx+(f32)((s16*)(table+0x674))[*(s32*)(self+0x340)],lbl_80543898,0);
-                    fn_80402940(*(void**)(self+0xcc),20,dy+(f32)((s16*)(table+0x684))[*(s32*)(self+0x340)],lbl_80543898,0);
-                    fn_8040271C(*(void**)(self+0xcc),20,((f32*)(table+0x658))[*(s32*)(self+0x340)]/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
+                    fn_80402B10(pane,20,dx+(f32)*(s16*)((u32)(table+0x674) + (u32)*(s32*)(self+0x340)*2),lbl_80543898,0);
+                    fn_80402940(*(void**)(self+0xcc),20,dy+(f32)*(s16*)((u32)(table+0x684) + (u32)*(s32*)(self+0x340)*2),lbl_80543898,0);
+                    fn_8040271C(*(void**)(self+0xcc),20,*(f32*)((u32)(table+0x658) + (u32)*(s32*)(self+0x340)*4)/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
                 }
                 {
                     u8* anchor=*(u8**)(self+0xc8);
                     u8* pane=*(u8**)(self+0xd0);
                     f32 dx=factor*(*(f32*)(pane+0x10)-*(f32*)(anchor+0x10));
                     f32 dy=factor*(*(f32*)(pane+0x14)-*(f32*)(anchor+0x14));
-                    fn_80402B10(pane,20,dx+(f32)((s16*)(table+0x674))[*(s32*)(self+0x340)],lbl_80543898,0);
-                    fn_80402940(*(void**)(self+0xd0),20,dy+(f32)((s16*)(table+0x684))[*(s32*)(self+0x340)],lbl_80543898,0);
-                    fn_8040271C(*(void**)(self+0xd0),20,((f32*)(table+0x658))[*(s32*)(self+0x340)]/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
+                    fn_80402B10(pane,20,dx+(f32)*(s16*)((u32)(table+0x674) + (u32)*(s32*)(self+0x340)*2),lbl_80543898,0);
+                    fn_80402940(*(void**)(self+0xd0),20,dy+(f32)*(s16*)((u32)(table+0x684) + (u32)*(s32*)(self+0x340)*2),lbl_80543898,0);
+                    fn_8040271C(*(void**)(self+0xd0),20,*(f32*)((u32)(table+0x658) + (u32)*(s32*)(self+0x340)*4)/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
                 }
                 u8* cursor=self;
                 for(i=0;i<18;i++,cursor+=4) {
                     u8* pane=*(u8**)(cursor+0xd4);
                     f32 x=*(f32*)(pane+0x10);
                     f32 dy=factor**(f32*)(pane+0x14);
-                    fn_8040271C(pane,20,((f32*)(table+0x658))[*(s32*)(self+0x340)]/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
+                    fn_8040271C(pane,20,*(f32*)((u32)(table+0x658) + (u32)*(s32*)(self+0x340)*4)/(*(f32*)(*(u8**)(self+0xc8)+0x18)),lbl_805438BC);
                     fn_80402B10(*(void**)(cursor+0xd4),20,factor*x,lbl_80543898,0);
                     fn_80402940(*(void**)(cursor+0xd4),20,dy,lbl_80543898,0);
                 }
@@ -1077,7 +1113,7 @@ extern "C" void fn_804096E8(u8* self) {
     }
     if (*(s16*)(self+0x41e)>=0) fn_80458880(lbl_8053AF80,0x54,-1);
 }
-#pragma fp_contract reset
+#pragma opt_common_subs reset
 extern "C" u32 fn_80309C4C(void*, s32, s32);
 extern "C" s32 fn_8042EC7C(void*);
 extern "C" s32 fn_8042EBEC(void*);
