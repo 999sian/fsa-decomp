@@ -18,6 +18,12 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" s32 fn_80236100(s32);
 extern "C" s32 fn_802373EC(s32);
 extern "C" u8 fn_802D7E5C(void*, u8, s32);
+extern "C" u8 fn_802D46D8(void* cfg, s32 index, u32 bit, u8 set);
+extern "C" u8 fn_8022C8EC(s32 a);
+extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out);
+extern "C" u8 fn_80303750(s32 a);
+extern "C" s32 fn_8023DE58(s32 x);
+extern "C" u8 fn_80390818(void* p);
 extern u8 lbl_8050EC80[];
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JUtility/JUTFont.h"
@@ -697,6 +703,168 @@ extern "C" s8* fn_80383E2C(s32 idx, s8* out) {
     return 0;
 }
 
+extern "C" u32 fn_8023EEB4(s32 p);
+extern "C" s32 fn_8023EF50(s32 p);
+extern "C" void fn_8023EE28(s32 p);
+extern "C" s32 fn_8023ECF0(s32 p);
+extern "C" u8 fn_8023EFEC(s32 p);
+extern "C" s32 fn_80236100(s32 p);
+extern "C" s32 fn_802373EC(s32 p);
+extern "C" u32 fn_80383EB0(s32 p, s32 q) {
+    s32 yes, no;
+    s32 result;
+    s8* cmd;
+    u8 kind;
+    s32 player;
+    s32 original;
+    original = fn_8022EA0C(p);
+    player = resolvePlayer(p);
+    p = q;
+    for (;;) {
+        Inf1* inf = &lbl_8053AD78->p8->inf;
+        cmd = (s8*)inf + inf->size + inf->entries[p].offset + 8;
+        s8 op = 0;
+        if (cmd[0] == 0x1a && cmd[2] == 2) {
+            switch (cmd[4]) {
+            case 7: case 16: case 23: case 24: case 29: case 32:
+            case 33: case 35: case 42: case 44: case 48: case 51:
+                op = cmd[4]; break;
+            default: goto invalid;
+            }
+        } else {
+        invalid:
+            cmd = 0;
+        }
+        if (cmd == 0) break;
+        switch (op) {
+        case 7: {
+            yes = *(s32*)(cmd + 6);
+            no = *(s32*)(cmd + 10);
+            if (fn_802D800C(fn_802D6A9C(), cmd[5])) p = yes;
+            else p = no;
+            break;
+        }
+        case 16: {
+            kind = cmd[5];
+            s32 yes = *(s32*)(cmd + 6);
+            s32 no = *(s32*)(cmd + 10);
+            u32 consume = (u8)cmd[14];
+            switch (kind) {
+            case 0: case 1: case 2: case 16:
+                if (fn_8023EEB4(original) == 'KEY0') {
+                    s32 handle = fn_8023EF50(original);
+                    s32 k = *(s32*)((u8*)fn_801F666C(fn_801F856C(), handle) + 0x280);
+                    if ((k == 0 && kind == 0) || (k == 1 && kind == 1) || (k == 2 && kind == 2) || (k == 9 && kind == 16)) {
+                        no = yes; if (consume) fn_8023EE28(original);
+                    }
+                } break;
+            case 3: if (fn_8023EEB4(original) == 'BORD') { no = yes; if (consume) fn_8023EE28(original); } break;
+            case 4: if (fn_8023EEB4(original) == 'STON') { no = yes; if (consume) fn_8023EE28(original); } break;
+            case 5: if (fn_8023EEB4(original) == 'HBMB') { no = yes; if (consume) fn_8023EE28(original); } break;
+            case 6: if (fn_8023EEB4(original) == 'NIWA') { no = yes; if (consume) fn_8023EE28(original); } break;
+            case 7: if (fn_8023EEB4(original) == 'GRAS') { no = yes; if (consume) fn_8023EE28(original); } break;
+            case 8: case 9: case 10:
+                if (fn_8023EEB4(original) == 'TUBO') {
+                    s32 handle = fn_8023EF50(original);
+                    u32 k = (*(u32*)((u8*)fn_801F666C(fn_801F856C(), handle) + 0x90) >> 7) & 31;
+                    if ((k == 0 && kind == 10) || (k == 1 && kind == 8) || (k == 2 && kind == 9)) {
+                        no = yes; if (consume) fn_8023EE28(original);
+                    }
+                } break;
+            case 11: case 12: case 13: case 14:
+                if (fn_8023EEB4(original) == 'PLAY') {
+                    if ((fn_8023ECF0(player) == 0 && kind == 11) ||
+                        (fn_8023ECF0(original) == 1 && kind == 12) ||
+                        (fn_8023ECF0(original) == 2 && kind == 13) ||
+                        (fn_8023ECF0(original) == 3 && kind == 14)) no = yes;
+                } break;
+            case 15: if (!fn_8023EFEC(original)) no = yes; break;
+            }
+            p = no; break;
+        }
+        case 23: {
+            u32 n = (u8)cmd[5];
+            u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+            *seed = *seed * 0x19660d + 0x3c6ef35f;
+            union { u32 u; f32 f; } random;
+            random.u = (*seed >> 9) | 0x3f800000;
+            s32 v = (s32)(n * (random.f - lbl_805430C4)) + 1;
+            if (v > (s32)n) v = n;
+            Inf1* table = &lbl_8053AD78->p8->inf;
+            u32 wanted = table->entries[p].id + v;
+            u32 i;
+
+            for (i = 0; i < table->count; i++) {
+                if (table->entries[i].id == wanted) { result = i; break; }
+            }
+            if (i >= table->count) result = 0x12b;
+            p = result;
+            break;
+        }
+        case 24: {
+            s32 a = *(s32*)(cmd + 5), b = *(s32*)(cmd + 9);
+            s32 c = *(s32*)(cmd + 13), d = *(s32*)(cmd + 17);
+            switch (fn_80138A30(lbl_8053AAF8)) {
+            case 1: p = a; break; case 2: p = b; break;
+            case 3: p = c; break; case 4: p = d; break;
+            } break;
+        }
+        case 29: {
+            s32 threshold = *(s32*)(cmd + 5);
+            s32 yes = *(s32*)(cmd + 9);
+            s32 no = *(s32*)(cmd + 13);
+            p = no;
+            if (fn_80236100(player) >= threshold) p = yes;
+            break;
+        }
+        case 32: {
+            s32 a = *(s32*)(cmd + 5), b = *(s32*)(cmd + 9);
+            s32 c = *(s32*)(cmd + 13), d = *(s32*)(cmd + 17);
+            switch (player) {
+            case 0: p = a; break; case 1: p = b; break;
+            case 2: p = c; break; case 3: p = d; break;
+            } break;
+        }
+        case 33: {
+            s32 yes = *(s32*)(cmd + 5); no = *(s32*)(cmd + 9);
+            s32 room = *(s32*)(lbl_80529DEC + 0x118);
+            s32 bit = *(s32*)(lbl_80529DEC + 0x11c);
+            int set;
+            if (room < 0 || room > 7) set = 0;
+            else if (bit < 0 || bit > 3) set = 0;
+            else set = (*(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28) & (1 << (room * 4 + bit))) != 0;
+            if (set) p = yes; else p = no;
+            break;
+        }
+        case 35: {
+            u32 index = (u8)cmd[5];
+            u16 bit = *(u16*)(cmd + 6);
+            s32 yes = *(s32*)(cmd + 8); no = *(s32*)(cmd + 12);
+            u8 which;
+            if (index >= 1 && index <= 4) which = index - 1;
+            else which = player;
+            if (fn_802D7E5C(fn_802D6A9C(), which, bit)) p = yes; else p = no;
+            break;
+        }
+        case 42: {
+            s32 yes = *(s32*)(cmd + 5), no = *(s32*)(cmd + 9);
+            if ((*(u8*)((u8*)lbl_8053AAF8 + 0x83) >> (player * 2) & 3) == 2u) p = yes;
+            else p = no;
+            break;
+        }
+        case 44: {
+            s32 yes = *(s32*)(cmd + 5), no = *(s32*)(cmd + 9);
+            if (fn_8022CAF8(player) != 4) p = yes; else p = no; break;
+        }
+        case 48: {
+            s32 yes = *(s32*)(cmd + 5), no = *(s32*)(cmd + 9);
+            if (fn_802373EC(player) == 1) p = yes; else p = no; break;
+        }
+        case 51: break;
+        }
+    }
+    return p;
+}
 
 extern "C" void fn_8038911C(s32 p, s32 v) {
     s32 i = resolvePlayer(p);
