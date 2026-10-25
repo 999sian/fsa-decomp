@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "dolphin/mtx.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 union EffWord {
     u32 w;
@@ -857,7 +858,7 @@ extern "C" void fn_801D267C(void* p);
 extern "C" void fn_80458F9C(void* p, int n);
 extern void* lbl_8053AF80;
 extern "C" void __ct__Q29JGeometry8TVec3_f_Fv();
-extern "C" void __construct_array(void*, void*, void*, long, long);
+#include "PowerPC_EABI_Support/Runtime/MWCPlusPlusLib.h"
 extern "C" u8* fn_8036C750(u8* this_)
 {
     fn_8010E074(this_);
@@ -887,7 +888,7 @@ extern "C" u8* fn_8036C750(u8* this_)
     *(f32*)(this_ + 0x288) = 0.0f;
     *(s32*)(this_ + 0x28c) = -1;
     *(f32*)(this_ + 0x290) = 0.0f;
-    __construct_array(this_ + 0x2a8, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 6);
+    __construct_array(this_ + 0x2a8, (ConstructorDestructor)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 6);
     *(s32*)(this_ + 0x2f0) = 0;
     *(s32*)(this_ + 0x310) = 0;
     *(s32*)(this_ + 0x314) = 0;
@@ -926,14 +927,4 @@ extern "C" s32 fn_8036C8F4(void* this_) {
     return *(s32*)((char*)this_ + 0x240);
 }
 
-void __sinit_tu_80368198_cpp(void)
-{
-  extern void __ct__17JASGenericMemPoolFv(void);
-  extern void __register_global_object(void*, void*, void*);
-  extern char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
-
-  if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
-    __ct__17JASGenericMemPoolFv();
-    __register_global_object(0, 0, 0);
-  }
-}
+void __sinit_tu_80368198_cpp(void) {}
