@@ -1,23 +1,8 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
-#include <JSystem/JKernel/JKRDisposer.h>
-
-// JKRFile.h defines the virtual dtor inline; this TU has it out of line.
-class JKRFile : JKRDisposer {
-public:
-    virtual ~JKRFile();
-    bool mFileOpen;
-};
-
-#include <JSystem/JKernel/JKRCompression.h>
-
-// Trimmed declarations: the real JKRAram.h and JUTException.h pull in JKRFile.h, which this file defines itself.
-class JKRHeap {
-public:
-    static void copyMemory(void*, void*, u32);
-    static void* alloc(u32, int, JKRHeap*);
-};
+#define JKRFILE_OUT_OF_LINE_DTOR
+#include <JSystem/JKernel/JKRArchive.h>
 
 class JKRAram {
 public:
@@ -32,12 +17,6 @@ inline u8* JKRAramToMainRam(u32 src, u8* dst, u32 size, JKRExpandSwitch expandSw
 class JUTException {
 public:
     static void panic_f(const char*, int, const char*, ...);
-};
-
-class JKRAramArchive {
-public:
-    static u32 fetchResource_subroutine(u32, u32, u8*, u32, int);
-    static u32 fetchResource_subroutine(u32, u32, JKRHeap*, int, u8**);
 };
 
 extern char lbl_8045E0F8[];
@@ -323,42 +302,32 @@ extern "C" void* fn_8007A6CC(u8* this_, u8* entry, u32* pSize) {
 }
 
 extern "C" void* fn_8007A7F0(void* this_, void* data, u32 compressedSize, void* entry, u32* pSize) {
+    u32* sizeOut = pSize;
+    u32 fileSize;
+    u32 maxSize = compressedSize;
+    void* destination = data;
     u8* fileEntry = (u8*)entry;
-    u32 fileSize = *(u32*)(fileEntry + 0xc);
-    if (fileSize > compressedSize) {
-        fileSize = compressedSize;
-    }
-
-    u32 flag = *(u32*)(fileEntry + 0x4);
+    fileSize = *(u32*)(fileEntry + 0xc);
+    if (fileSize > maxSize) fileSize = maxSize;
+    u32 flag = *(u32*)(fileEntry + 4);
     int compression;
-    if ((flag >> 24 & 4) == 0) {
-        compression = 0;
-    } else if (flag >> 24 & 0x80) {
-        compression = 2;
-    } else {
-        compression = 1;
-    }
-
+    if ((flag >> 24 & 4) == 0) compression = 0;
+    else if (flag >> 24 & 0x80) compression = 2;
+    else compression = 1;
     if (*(void**)(fileEntry + 0x10) == nullptr) {
         u8* block = *(u8**)((u8*)this_ + 0x64);
-        fileSize = JKRAramArchive::fetchResource_subroutine(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), fileSize, (u8*)data, compressedSize & ~0x1f, compression);
+        fileSize = JKRAramArchive::fetchResource_subroutine(*(u32*)(fileEntry + 8) + *(u32*)(block + 0x14), fileSize, (u8*)destination, maxSize & ~0x1f, compression);
     } else {
         if (compression == 2) {
-            u32 expandSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, entry);
-            if (expandSize != 0) {
-                fileSize = expandSize;
-            }
+            u32 (*getSize)(void*, void*) = *(u32 (**)(void*, void*))(*(u8**)this_ + 0x4c);
+            u32 expandSize = getSize(this_, fileEntry);
+            if (expandSize != 0) fileSize = expandSize;
         }
-        if (fileSize > compressedSize) {
-            fileSize = compressedSize;
-        }
-        JKRHeap::copyMemory(data, *(void**)(fileEntry + 0x10), fileSize);
+        if (fileSize > maxSize) fileSize = maxSize;
+        JKRHeap::copyMemory(destination, *(void**)(fileEntry + 0x10), fileSize);
     }
-
-    if (pSize != nullptr) {
-        *pSize = fileSize;
-    }
-    return data;
+    if (sizeOut != nullptr) *sizeOut = fileSize;
+    return destination;
 }
 
 u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, u32 dstLength, int compression)
@@ -386,7 +355,8 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, 
 
 extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
 extern "C" u32 fn_8007AAF8(void* this_, const void* resource) {
-    if (*(u32*)((u8*)this_ + 0x50) == 0) {
+    u8* self = (u8*)this_;
+    if (*(u32*)(self + 0x50) == 0) {
         return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
     }
     u8* fileEntry = (u8*)findPtrResource__10JKRArchiveCFPCv(this_, resource);
@@ -402,7 +372,7 @@ extern "C" u32 fn_8007AAF8(void* this_, const void* resource) {
     }
     u8 buf[64];
     u8* bufPtr = (u8*)(((u32)buf + 31) & ~31);
-    u8* block = *(u8**)((u8*)this_ + 0x64);
+    u8* block = *(u8**)(self + 0x64);
     JKRAram::aramToMainRam(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), bufPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, nullptr, -1, nullptr);
     expandSize = (bufPtr[4] << 24) | (bufPtr[5] << 16) | (bufPtr[6] << 8) | bufPtr[7];
     ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, fileEntry, expandSize);
