@@ -916,6 +916,8 @@ static inline void initDmtwCamera(f32 x, f32 lo, f32 hi) {
         *(f32*)(p + 0x1d8) = lbl_8053CB94;
     }
 }
+#pragma opt_propagation off
+#pragma opt_unroll_loops off
 extern "C" void fn_8012C914(char* this_) {
     s32 i;
     fn_8037AE00(lbl_8053AD70);
