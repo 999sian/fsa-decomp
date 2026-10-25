@@ -11,9 +11,7 @@ extern void __dt__16JAIStreamDataMgrFv(void*, int);
 extern void __dt__12JAISoundInfoFv(void*, int);
 extern void __dl__FPv(void*);
 
-typedef struct {
-    u32 id;
-} JAISoundID;
+#include "JSystem/JAudio/Interface/JAISound.h"
 
 extern "C" void* getData__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
 extern "C" u8 getTypeID__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
@@ -53,10 +51,10 @@ extern "C" void fn_8045A6FC(void) {
 extern "C" void fn_8045A700(void* this_, JAISoundID* param_2, void* param_3) {
     JAISoundID typeSoundID;
     JAISoundID soundID;
-    u32 id = param_2->id;
-    soundID.id = id;
+    u32 id = param_2->mId.mFullId;
+    soundID.mId.mFullId = id;
     void* result = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
-    typeSoundID.id = id;
+    typeSoundID.mId.mFullId = id;
     u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
     if (result != 0) {
         switch (typeID) {
@@ -76,10 +74,10 @@ extern "C" void fn_8045A700(void* this_, JAISoundID* param_2, void* param_3) {
 static inline void setSoundInfo(void* this_, JAISoundID* param_2, void* param_3) {
     JAISoundID typeSoundID;
     JAISoundID soundID;
-    u32 id = param_2->id;
-    soundID.id = id;
+    u32 id = param_2->mId.mFullId;
+    soundID.mId.mFullId = id;
     void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
-    typeSoundID.id = id;
+    typeSoundID.mId.mFullId = id;
     u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
     if (data != 0) {
         switch (typeID) {
@@ -93,12 +91,12 @@ static inline void setSoundInfo(void* this_, JAISoundID* param_2, void* param_3)
 extern "C" void fn_8045A81C(void* this_, JAISoundID* param_2, void* param_3) {
     char* p = (char*)param_3;
     if (p != 0) {
-        u32 id = param_2->id;
+        u32 id = param_2->mId.mFullId;
         JAISoundID soundID;
-        soundID.id = id;
+        soundID.mId.mFullId = id;
         void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
         JAISoundID typeSoundID;
-        typeSoundID.id = id;
+        typeSoundID.mId.mFullId = id;
         u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
         if (data != 0) {
             switch (typeID) {
@@ -117,9 +115,9 @@ extern "C" void fn_8045A81C(void* this_, JAISoundID* param_2, void* param_3) {
 }
 
 extern "C" s32 fn_8045A944(void* this_, JAISoundID* param_2) {
-    u32 id = param_2->id;
+    u32 id = param_2->mId.mFullId;
     JAISoundID soundID;
-    soundID.id = id;
+    soundID.mId.mFullId = id;
     void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
     JAISoundID typeSoundID = *param_2;
     u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
@@ -138,7 +136,7 @@ extern "C" s32 fn_8045A944(void* this_, JAISoundID* param_2) {
 
 extern "C" u32 fn_8045A9FC(void* this_, JAISoundID* param_2) {
     JAISoundID soundID;
-    soundID.id = param_2->id;
+    soundID.mId.mFullId = param_2->mId.mFullId;
     u8* data = (u8*)getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
     JAISoundID typeSoundID = *param_2;
     u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
@@ -188,11 +186,11 @@ extern "C" u8 fn_8045AB44(void* param_1, JAISoundID* param_2) {
 
 extern "C" u16 fn_8045ABC8(void* param_1, JAISoundID* param_2) {
     JAISoundID soundID;
-    soundID.id = param_2->id;
+    soundID.mId.mFullId = param_2->mId.mFullId;
     void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)param_1 + 0xc), &soundID);
 
     JAISoundID typeSoundID;
-    typeSoundID.id = param_2->id;
+    typeSoundID.mId.mFullId = param_2->mId.mFullId;
     u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)param_1 + 0xc), &typeSoundID);
 
     if (data != 0) {
@@ -200,7 +198,7 @@ extern "C" u16 fn_8045ABC8(void* param_1, JAISoundID* param_2) {
             case 0x10: {
                 u16 result = 0xf0;
                 JAISoundID flagSoundID;
-                flagSoundID.id = param_2->id;
+                flagSoundID.mId.mFullId = param_2->mId.mFullId;
                 u32 flags = (*(u32 (**)(void*, JAISoundID*))(*(char**)param_1 + 0x50))(param_1, &flagSoundID);
                 if ((flags & 1) == 0) {
                     result = 0x8f0;
