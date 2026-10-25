@@ -50,6 +50,7 @@ extern u8 lbl_80529DEC[];
 
 // NonMatching: retail computes the room-centre x/y into f31/f30 before the
 // fn_801F0E34 call; here mwcc sinks that math past the call.
+#pragma opt_propagation off
 extern "C" void fn_8033F4AC(u8* this_) {
     u8 hit = 0;
     s32 i;
@@ -98,7 +99,7 @@ extern "C" void fn_8033F4AC(u8* this_) {
     }
     (*(s32*)(this_ + 0x230))--;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8033F748(u8* this_) {
     *(s32*)(this_ + 0x230) = 300;
     *(u32*)(this_ + 0x234) = (*(u32*)(this_ + 0x90) >> 4) & 0xf;
