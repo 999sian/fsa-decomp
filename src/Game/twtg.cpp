@@ -802,7 +802,33 @@ extern "C" void fn_803146DC(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
     f32 dist;
-    twtgUpdateDir(p, v, dist);
+    if (*(s32*)(p + 0x274) <= 0) {
+        *(s32*)(p + 0x274) = 20;
+        s32 room;
+        s32 actual;
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), (actual=fn_8023DE58(*(s32*)(p + 0x254)), actual != room))) {
+            fn_801EE558(p, &v, &dist, 0);
+        } else {
+            fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
+        }
+        if (dist < lbl_80541880) {
+            f32 ang = JMAAtan2Radian(-v.x, -v.y);
+            u16 a = (s32)(ang * lbl_80541884);
+            if (a < 0x2000 || a >= 0xe000) {
+                *(s32*)(p + 0x270) = 3;
+            } else if (a >= 0x2000 && a < 0x6000) {
+                *(s32*)(p + 0x270) = 1;
+            } else if (a >= 0x6000 && a <= 0xa000) {
+                *(s32*)(p + 0x270) = 2;
+            } else {
+                *(s32*)(p + 0x270) = 0;
+            }
+        } else {
+            *(s32*)(p + 0x270) = 2;
+        }
+    } else {
+        (*(s32*)(p + 0x274))--;
+    }
     b.min.x = *(f32*)(p + 0x258);
     b.min.y = *(f32*)(p + 0x25c);
     b.max.x = *(f32*)(p + 0x260);
@@ -817,8 +843,7 @@ extern "C" void fn_803146DC(char* p) {
         case 0: {
             fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
             slot = fn_8022FD8C(*(void**)(p + 0x198));
-            s32 cmp = fn_8023DE58(*(s32*)(p + 4));
-            if (cmp == *(s32*)(p + 4) && slot >= 0 && fn_802300EC()) {
+            if (slot >= 0 && fn_802300EC()) {
                 void* room = *(void**)(p + 0x198);
                 s32 player = *(s32*)(p + 4);
                 if (fn_8038AD24(slot, 0x481, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
