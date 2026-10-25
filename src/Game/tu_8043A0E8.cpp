@@ -1106,6 +1106,42 @@ extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
     return 1;
 }
 
+extern "C" void fn_8043E398(void* self, void* a, void* b)
+{
+    Vec pa, pb;
+    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), a, 0, 0, &pa);
+    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, &pb);
+    f32 dx = FABS(pb.x - pa.x);
+    f32 dy = FABS(pb.y - pa.y);
+    f32 r = dx >= dy ? dx : dy;
+    f32 x = (pa.x + pb.x) * lbl_80543CB8;
+    f32 y = (pa.y + pb.y) * lbl_80543CB8;
+    f32 y1 = lbl_80543CF8 + fn_8043D514((u8*)lbl_8053AED0);
+    f32 left1 = lbl_80543D04 - r;
+    f32 right1 = r + lbl_80543D00;
+    f32 low = (y1 - lbl_80543CF8) - r;
+    f32 high = r + (lbl_80543CF8 + y1);
+    bool outside = !(x >= left1 && x <= right1 && y >= low && y <= high);
+    if (!outside) ((u8*)lbl_8053AED0)[0xdc] |= 1;
+    f32 y2 = lbl_80543CF8 + fn_8043D514((u8*)lbl_8053AED0);
+    f32 left2 = lbl_80543D0C - r;
+    f32 right2 = r + lbl_80543D08;
+    low = (y2 - lbl_80543CF8) - r;
+    high = r + (lbl_80543CF8 + y2);
+    outside = !(x >= left2 && x <= right2 && y >= low && y <= high);
+    if (!outside) ((u8*)lbl_8053AED0)[0xdc] |= 2;
+    f32 y3 = lbl_80543D10 + fn_8043D57C((u8*)lbl_8053AED0);
+    low = (y3 - lbl_80543CF8) - r;
+    high = r + (lbl_80543CF8 + y3);
+    outside = !(x >= left1 && x <= r + lbl_80543D00 && y >= low && y <= high);
+    if (!outside) ((u8*)lbl_8053AED0)[0xdc] |= 4;
+    f32 y4 = lbl_80543D10 + fn_8043D57C((u8*)lbl_8053AED0);
+    low = (y4 - lbl_80543CF8) - r;
+    high = r + (lbl_80543CF8 + y4);
+    outside = !(x >= left2 && x <= r + lbl_80543D08 && y >= low && y <= high);
+    if (!outside) ((u8*)lbl_8053AED0)[0xdc] |= 8;
+}
+
 extern "C" void* fn_80440928(f32 a, f32 b);
 extern "C" void fn_8043E7CC(void* a, void* b) {
     f32 pos[6];
@@ -1422,7 +1458,7 @@ extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
     fn_8043E7CC(lbl_8053AED0, &v);
 }
 
-extern "C" void* fn_80440928(f32 a, f32 b) { return fn_8043DF8C(lbl_8053AED0); }
+extern "C" void* fn_80440928(f32 a, f32 b) { return ((void* (*)(void*, f32, f32))fn_8043DF8C)(lbl_8053AED0, a, b); }
 
 extern "C" void fn_8044094C(void) {
     u8* p = lbl_804B1810;
