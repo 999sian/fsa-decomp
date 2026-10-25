@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "Game/ItemBase.h"
 #include "Game/Actor.h"
 
@@ -45,21 +46,22 @@ extern "C" void fn_8021AFB8(void* this_) {
     if (fn_80219E04(this_)) {
         cVar = -6;
     }
+    u32 flags = *(u32*)(p + 0x230);
     rec.b1d = cVar;
-    if (*(u32*)(p + 0x230) & 0x2000) {
+    if (flags & 0x2000) {
         f32 m[3][4];
-        m[0][3] = lbl_8053FCCC;
-        m[1][3] = lbl_8053FCCC;
-        m[2][3] = lbl_8053FCCC;
         m[0][0] = lbl_8053FCD0;
+        m[1][1] = lbl_8053FCD4;
+        m[2][2] = lbl_8053FCD4;
         m[0][1] = lbl_8053FCCC;
         m[0][2] = lbl_8053FCCC;
+        m[0][3] = lbl_8053FCCC;
         m[1][0] = lbl_8053FCCC;
-        m[1][1] = lbl_8053FCD4;
         m[1][2] = lbl_8053FCCC;
+        m[1][3] = lbl_8053FCCC;
         m[2][0] = lbl_8053FCCC;
         m[2][1] = lbl_8053FCCC;
-        m[2][2] = lbl_8053FCD4;
+        m[2][3] = lbl_8053FCCC;
         rec.w18 = m;
     }
     fn_801F06F0(this_, lbl_8046A660, *(u32*)(p + 0x280) + 0x25c, &rec, lbl_8053FCD4, lbl_8053FCD4, -1);
