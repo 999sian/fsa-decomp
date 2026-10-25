@@ -82,6 +82,11 @@ struct FsaBlock84 {
     u32 m80;
 };
 
+static inline void copyFsaBlock84(FsaBlock84* __restrict dst, const FsaBlock84* __restrict src)
+{
+    *dst = *src;
+}
+
 extern "C" u8 fn_8012A5EC(void*);
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8022FE80(int, int, int, u8, u8);
@@ -1010,10 +1015,10 @@ extern "C" void fn_8012C914(char* this_) {
     f32 e = *(f32*)(this_ + 0x248);
     initDmtwCamera(a, b-e, b+e);
 }
-#pragma optimization_level 4
+#pragma opt_propagation off
 extern "C" void fn_8012CBE4(void)
 {
-    u8* p = lbl_8049E668;
+    u8* __restrict p = lbl_8049E668;
     JGeometry::TVec3<f32>* base = lbl_804BD790;
     *(FsaBlock84*)(p + 0x84) = *(FsaBlock84*)p;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
@@ -1062,4 +1067,4 @@ extern "C" void fn_8012CBE4(void)
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+#pragma opt_propagation reset
