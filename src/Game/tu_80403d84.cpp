@@ -609,6 +609,10 @@ extern "C" void fn_80406634(u8* self, s32 slot, s32 flag);
 extern "C" f32 lbl_80543898;
 extern "C" f32 lbl_805438C4;
 extern "C" f32 lbl_805438CC;
+extern void* lbl_8053AEC4;
+extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
+extern "C" void fn_80444650(void* p);
+extern "C" void fn_8042EB98(void* p);
 
 // States in which the "Pphu01" pointer pane is shown.
 static inline bool Tu411ShowState(s32 st) {
