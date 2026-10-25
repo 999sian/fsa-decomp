@@ -168,5 +168,5 @@ extern "C" s32* fn_801E6AB8(s32* this_) {
     return this_;
 }
 
-void __sinit_tu_801E667C_cpp(void) {}
+
 
