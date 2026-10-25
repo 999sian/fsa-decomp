@@ -167,6 +167,12 @@ struct Slot_80301CD0 {
     u8 flag : 1;
 };
 
+struct Packet_80301CD0 {
+    u8 checksum, f1, f2;
+    u8 code : 4;
+    u8 rest : 4;
+};
+
 struct Hdr_80301CD0 {
     u8 f0;
     u8 f1;
@@ -1027,6 +1033,68 @@ extern "C" s32 fn_80307AC8(u32 caller, s32 room, void* pos, s32 id, s32 on, s32 
         return fn_80307830(caller, room, pos, id, on != 0, 0, b != 0, 4);
     }
     return fn_803075AC(caller, room, pos, id + 0x400, on ? 1 : 0, 2, target, 0, b ? 1 : 0, 0);
+}
+
+extern u16 lbl_8053AD0C[4];
+extern u8 lbl_8053AD24[4];
+extern u8 lbl_8053AD1C[4];
+extern "C" u16 fn_8037F0CC(s32);
+void fn_803085A4(s32, s32);
+extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
+    if (flag) {
+        u8* rec = lbl_80506DE8 + player * 0x68;
+        rec[3] = (rec[3] & 15) | 0xa0;
+    } else {
+        u8* rec = lbl_80506DE8 + player * 0x68;
+        rec[3] = (rec[3] & 15) | 0xb0;
+    }
+    fn_803085A4(unused, player);
+    s32 max = (lbl_80541618[lbl_8053AD08] - 2) * 2;
+    s32 start = lbl_8053AD0C[player];
+    u16* data = (u16*)(lbl_805071E8 + player * 0x100);
+    s32 i;
+    for (i = 0; i < max; ++i) {
+        data[start + i] = fn_8037F0CC(player);
+        if (fn_8037F1E4(player) != 3) {
+            u8* rec = lbl_80506DE8 + player * 0x68;
+            u8 code = (rec[3] & 15) | 0xc0;
+            lbl_8053AD24[player] = 1;
+            ++i;
+            lbl_8053AD1C[player] = 0;
+            rec[3] = code;
+            break;
+        }
+    }
+    lbl_8053AD0C[player] += i;
+    for (; i < max; ++i) {
+        ((u16*)(lbl_805071E8 + player * 0x100))[start + i] = 0;
+    }
+    u8* rec = lbl_80506DE8 + player * 0x68;
+    u32* dst = (u32*)(rec + 8);
+    s32 n = lbl_80541618[lbl_8053AD08] - 2;
+    s32 j = start;
+    for (s32 k = n; k > 0; --k) {
+        u16* src = (u16*)(lbl_805071E8 + player * 0x100) + j;
+        u32 word = src[0] | ((u32)src[1] << 16);
+        Slot_80301CD0 out;
+        u8* bytes = (u8*)&word;
+        out.id = bytes[3];
+        out.f1 = bytes[2];
+        out.f2 = bytes[1];
+        ((u8*)&out)[3] = bytes[0];
+        *dst++ = *(u32*)&out;
+        j += 2;
+    }
+    u32 sum = 0;
+    MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + player * 0x2380))[lbl_80504A18[player]];
+    if (e->f118 == 0) {
+        u8* p = rec + 8;
+        for (s32 b = 8; b < lbl_80541618[lbl_8053AD08] * 4; ++b) sum += *p++;
+    } else {
+        u8* p = rec + 8;
+        for (s32 b = 8; b < lbl_80541618[lbl_8053AD08] * 4; ++b) sum += *p++;
+    }
+    rec[0] = sum;
 }
 
 void fn_803085A4(s32 unused, s32 i)
