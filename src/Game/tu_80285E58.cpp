@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern void* lbl_8053AAF8;
