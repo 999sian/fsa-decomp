@@ -9,10 +9,6 @@ struct FsaMenuAction : FsaMenuActionBase {
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DPicture.h"
 
-static inline void setOptionTexture(u8* p, const ResTIMG* image) {
-    ((J2DPicture*)(*(J2DPane**)(p + 0xc))->search(0x506e6f703032ULL))->changeTexture(image, 0);
-    ((J2DPicture*)(*(J2DPane**)(p + 0xc))->search(0x506e6f703031ULL))->changeTexture(image, 0);
-}
 
 extern "C" void* lbl_8053AD30;
 extern "C" void* fn_80309C4C(void* a, s32 b, s32 c);
