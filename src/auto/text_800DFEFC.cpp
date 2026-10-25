@@ -341,7 +341,6 @@ extern "C" J3DFog fn_800E0F84(const J3DMaterialFactory_v21* self, int idx)
 	return fog;
 }
 
-// fn_800E0F84 (newFog) goes here
 
 J3DAlphaComp J3DMaterialFactory_v21::newAlphaComp(int idx) const
 {
