@@ -778,8 +778,8 @@ extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
 extern "C" void fn_80444650(void* p);
 extern "C" void fn_8042EB98(void* p);
 
-static inline f32 Tu411Center(s16 coordinate, f32 bounds, const f32 extent) {
-    return ((f32)coordinate - bounds) - extent * lbl_805438C8;
+static inline f32 Tu411Center(const f32 coordinate, const f32 bounds, const f32 extent, const f32 scale) {
+    return (coordinate - bounds) - extent * scale;
 }
 
 // States in which the "Pphu01" pointer pane is shown.
