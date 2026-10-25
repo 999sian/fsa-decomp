@@ -1,5 +1,8 @@
 #include "types.h"
 #include <JSystem/JGeometry/Box.h>
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+#undef GAME_ACTOR_USE_SDK_VEC
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void fn_802397B4(void* rect, u32 id, s32 v);
@@ -125,6 +128,64 @@ extern "C" s32 fn_801E2610(u8* this_) {
     return ret;
 }
 
+extern "C" s32 fn_801F82CC(void* p, u8* this_, u8 kind, f32 r);
+extern "C" u8 fn_801CC8E4(void* p);
+extern "C" const f32 lbl_8053F4E4;
+extern "C" const f32 lbl_8053F4E8;
+extern "C" s32 fn_801E284C(u8* this_) {
+    s32 ret = 0;
+    s32 id;
+    u8* p;
+    s32 ok;
+
+    id = fn_801F82CC(fn_801F856C(), this_, this_[0x195], lbl_8053F4E4);
+    if (id >= 0 && id != *(s32*)(this_ + 0x198)) {
+        p = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (p != 0) {
+            id = *(s32*)(this_ + 4);
+            if (*(fn_802D6A9C() + 0x131df + id) == 0 && *(f32*)(this_ + 0x14) > lbl_8053F4E8 && fn_801CC8E4(p)) {
+                ok = 0;
+            } else if (!fn_801E1CF8(this_)) {
+                ok = 1;
+            } else {
+                JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+                v.sub(*(JGeometry::TVec3<f32>*)(p + 0x3c));
+                ok = fn_801F37AC(this_, *(s32*)(p + 0x118), &v, 0, *(s32*)(p + 0x168), -1);
+                if ((u8)ok) {
+                    ret = 1;
+                }
+            }
+            if ((u8)ok) {
+                p[0x164] = 1;
+                if (*(s32*)(this_ + 0x248) == 0xc && *(s32*)(this_ + 0x24c) >= 6 && !fn_801E1DE8(this_)) {
+                    fn_801E1594(this_, 0xd);
+                } else if (fn_801E1CF8(this_) && (*(u32*)(this_ + 0x230) & 0x10000) == 0) {
+                    *(u32*)(this_ + 0x230) |= 0x10000;
+                    fn_801F0E34(this_, 0x4003d, 0);
+                    lbl_8053AC30++;
+                    if (lbl_8053AC30 >= 5) {
+                        lbl_8053AC30 = 0;
+                    }
+                    *(u32*)(this_ + 0x230) &= ~0x100000;
+                    if ((*(u32*)(this_ + 0x230) & 0x80000) == 0 && *(s32*)(this_ + 0x2bc) >= 0) {
+                        void* q;
+                        fn_801F0E34(this_, 0x5001a, 0);
+                        q = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2bc));
+                        if (q != 0) {
+                            *(u16*)((u8*)q + 0x94) = 0;
+                            *(u8*)((u8*)q + 0x194) = 0;
+                        }
+                        *(s32*)(this_ + 0x2bc) = -1;
+                        *(s32*)(this_ + 0x2c0) = 0;
+                        *(u32*)(this_ + 0x230) &= ~0x8000;
+                    }
+                }
+            }
+        }
+    }
+    return ret;
+}
+
 extern "C" s32 fn_801E2A98(u8* this_) {
     f32 a50[3];
     JGeometry::TVec3<f32> a44;
@@ -135,7 +196,7 @@ extern "C" s32 fn_801E2A98(u8* this_) {
     u8 b30 = 0;
     u8 b29 = 0;
     u8 b28 = 0;
-    u8 b26 = 0;
+    s32 b26 = 0;
 
     a44.x = lbl_8053F4D4;
     a44.y = lbl_8053F4D4;
@@ -151,7 +212,7 @@ extern "C" s32 fn_801E2A98(u8* this_) {
     } else if ((h = fn_8023AD54(buf34, *(s32*)(this_ + 4), buf8)) >= 0) {
         b26 = fn_801CC640(h, 0, &a44);
     }
-    if (b30 || b28 || b26) {
+    if (b30 || b28 || (u8)b26) {
         if (*(s32*)(this_ + 0x248) == 0xc && *(s32*)(this_ + 0x24c) >= 6 && !fn_801E1DE8(this_)) {
             fn_801E1594(this_, 0xd);
         } else if (fn_801E1CF8(this_) && (*(u32*)(this_ + 0x230) & 0x10000) == 0) {
@@ -258,26 +319,15 @@ extern "C" void fn_801E2D88(u8* this_) {
 }
 
 extern "C" void fn_801E2EE4(u8* this_) {
-    f32 c = lbl_8053F4D0;
     f32 x = *(f32*)(this_ + 0xc);
     f32 y = *(f32*)(this_ + 0x10);
-    f32 rect[4];
-    rect[0] = x - c;
-    rect[1] = y - c;
-    rect[2] = x + c;
-    rect[3] = y + c;
-    fn_802397B4(rect, *(u32*)(this_ + 4), *(s32*)(this_ + 0x198));
+    fn_802397B4(&JGeometry::TBox2<f32>(x - lbl_8053F4D0, y - lbl_8053F4D0, lbl_8053F4D0 + x, lbl_8053F4D0 + y), *(u32*)(this_ + 4), *(s32*)(this_ + 0x198));
 }
 
 extern "C" s32 fn_801E2F40(u8* this_) {
-    s32 result = 0;
-    u16 kind = fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4));
-    switch (kind) {
-    case 3:
-    case 13:
-    case 14:
-        result = 1;
-        break;
+    int result = 0;
+    switch ((u16)fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4))) {
+    case 3: case 13: case 14: result = 1; break;
     }
     return result;
 }
