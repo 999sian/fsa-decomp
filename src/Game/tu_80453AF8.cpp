@@ -82,7 +82,7 @@ struct FsaVt80454A6C {
     virtual void v63(void);
     virtual void v64(void);
     virtual void v65(void);
-    virtual void v66(void);
+    virtual void v66(u32, u32);
     virtual void v67(void);
     virtual void v68(u32, u32);
     virtual void v69(void);
