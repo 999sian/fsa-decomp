@@ -88,7 +88,7 @@ struct UnkObj8033D4CC {
 
 extern "C" void fn_8033D4CC(UnkObj8033D4CC* self);
 extern "C" int __float_epsilon[];
-extern "C" f32 lbl_805421C4;
+extern "C" const f32 lbl_805421C4;
 extern s32 lbl_804ABC80;
 
 struct UnkObj8033D264 {
