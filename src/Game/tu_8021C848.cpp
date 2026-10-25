@@ -46,21 +46,15 @@ extern "C" u8 fn_8021C848(int* param_1) {
 
     int r = 0;
     switch (param_1[0]) {
-    case 0: {
-        char* p = base + 0x1c;
-        r = *(int*)(p + param_1[4] * 4 + param_1[2] * 4);
+    case 0:
+        r = *(int*)(base + 0x1c + param_1[4] * 4 + param_1[2] * 4);
         break;
-    }
-    case 1: {
-        char* p = base + 0x2c;
-        r = *(int*)(p + param_1[4] * 0x1c + param_1[2] * 4);
+    case 1:
+        r = *(int*)(base + 0x2c + param_1[4] * 0x1c + param_1[2] * 4);
         break;
-    }
-    case 2: {
-        char* p = base + 0x9c;
-        r = *(int*)(p + param_1[4] * 8 + param_1[2] * 4);
+    case 2:
+        r = *(int*)(base + 0x9c + param_1[4] * 8 + param_1[2] * 4);
         break;
-    }
     }
     param_1[1] = r;
     return *(u8*)(param_1 + 5);
@@ -118,20 +112,26 @@ extern "C" void fn_8021CA70(int* param_1, int param_2)
 
 extern "C" int fn_8021CB18(int* param_1)
 {
-    if (param_1[0] > 1) {
-        if (param_1[0] >= 3) {
-            return 0;
-        }
-        return lbl_8053FD24 + *(int*)((char*)&lbl_8053FD24 + 4);
-    }
-    if (param_1[0] == 1) {
+    int result = 0;
+    switch (param_1[0]) {
+    case 0:
+        result = lbl_8053FD20;
+        break;
+    case 1: {
         int* tbl = (int*)lbl_8046A688;
-        return tbl[0] + tbl[1] + tbl[2] + tbl[3] + tbl[4] + tbl[5] + tbl[6];
+        result = tbl[0] + tbl[1];
+        result += tbl[2];
+        result += tbl[3];
+        result += tbl[4];
+        result += tbl[5];
+        result += tbl[6];
+        break;
     }
-    if (param_1[0] >= 0) {
-        return lbl_8053FD20;
+    case 2:
+        result = lbl_8053FD24 + *(int*)((char*)&lbl_8053FD24 + 4);
+        break;
     }
-    return 0;
+    return result;
 }
 
 extern "C" void fn_8021CBA0(int* param_1)
