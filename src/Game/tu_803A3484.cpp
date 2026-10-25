@@ -221,20 +221,6 @@ static inline void* tuNewObj1c() {
     }
     return p;
 }
-static inline void tuLoadParticles(u8* self, u8* tbl) {
-    u8* p = self;
-    for (s32 i = 0; i < 6; i++) {
-        fn_8016A3BC(*(void**)(tbl + 0x24), lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], 0, lbl_804AF7D8[i][2], 0, 0x10240000, *(void**)(self + 0x100),
-                    p + 0x104, p + 0x11c, 0, p + 0x134, 0);
-        if (*(void**)(p + 0x11c) != NULL) {
-            *(f32*)(*(u8**)(p + 0x11c) + 0x8) = lbl_805432E0;
-        }
-        if (*(void**)(p + 0x134) != NULL) {
-            *(f32*)(*(u8**)(p + 0x134) + 0x8) = lbl_805432E0;
-        }
-        p += 4;
-    }
-}
 struct TObj1c {
     TObj1c() { fn_80428030(this); }
     u8 pad[0x1c];
