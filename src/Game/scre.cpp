@@ -18,9 +18,9 @@ extern const f32 lbl_80543194;
 extern const f32 lbl_80543198;
 extern const f32 lbl_8054318C;
 extern const f32 lbl_805431B4;
-extern "C" void add__7RupyNumFUcifQ28JUtility6TColor(RupyNum*, s32, JGeometry::TVec3f, f32, JUtility::TColor);
+extern "C" void add__7RupyNumFUcifQ28JUtility6TColor(RupyNum*, s32, int, f32, JUtility::TColor);
 static inline void screAdd(s32 n, JGeometry::TVec3f pos, JUtility::TColor color) {
-    add__7RupyNumFUcifQ28JUtility6TColor(lbl_8053AF50, n, pos, lbl_8054318C, color);
+    add__7RupyNumFUcifQ28JUtility6TColor(lbl_8053AF50, n, (int)&pos, lbl_8054318C, color);
 }
 
 extern "C" void fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
