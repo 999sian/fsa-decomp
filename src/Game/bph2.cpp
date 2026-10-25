@@ -34,6 +34,9 @@ extern const f32 lbl_8053E100;
 extern const f32 lbl_8053E104;
 extern s32 lbl_80539FCC;
 
+static inline f32 bph2_sinf(f32 x) { return (f32)sin(x); }
+static inline f32 bph2_cosf(f32 x) { return (f32)cos(x); }
+
 static inline void bph2_drawShadow(s32 room, f32* pos, f32 alpha, f32 size) {
     fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), room, pos, JUtility::TColor(0, 0, 0, (s32)(lbl_8053E0E8 * alpha)), size);
 }
@@ -136,11 +139,11 @@ extern "C" void fn_8018A930(char* this_) {
             mtx[0][0] = lbl_8053E0D0 * (cy * cz);
             mtx[1][0] = lbl_8053E0D0 * (cy * sz);
             mtx[2][0] = lbl_8053E0D0 * -sy;
-            mtx[0][1] = lbl_8053E0D0 * ((sx * sy) * cz - cx * sz);
-            mtx[1][1] = lbl_8053E0D0 * ((sx * sy) * sz + cx * cz);
+            mtx[0][1] = lbl_8053E0D0 * (cz * (sx * sy) - cx * sz);
+            mtx[1][1] = lbl_8053E0D0 * (sz * (sx * sy) + cx * cz);
             mtx[2][1] = lbl_8053E0D0 * (sx * cy);
-            mtx[0][2] = lbl_8053E0D0 * ((cx * cz) * sy + sx * sz);
-            mtx[1][2] = lbl_8053E0D0 * ((cx * sz) * sy - sx * cz);
+            mtx[0][2] = lbl_8053E0D0 * (sy * (cx * cz) + sx * sz);
+            mtx[1][2] = lbl_8053E0D0 * (sy * (cx * sz) - sx * cz);
             mtx[2][2] = lbl_8053E0D0 * (cx * cy);
         }
         ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x288);
@@ -170,7 +173,7 @@ extern "C" void fn_8018A930(char* this_) {
         }
         if (lbl_8053E0F8 != *(f32*)(this_ + 0x284)) {
             *(u32*)&col2 = 0x3f3f1f7f;
-            fn_80158624(*(void**)(lbl_8053AB10 + 0x2c), pos, this_ + 0x2d0, col2, lbl_8053E0FC);
+            bph2_drawLight(pos, this_ + 0x2d0, col2, lbl_8053E0FC);
         }
         rec.b1d = 2;
         rec.b1c = 1;
@@ -186,23 +189,30 @@ extern "C" void fn_8018A930(char* this_) {
             rec.b26 = 0;
         }
         bph2_drawShadow(*(s32*)(this_ + 0x4), pos, *(f32*)(this_ + 0x280), lbl_8053E100);
-        a = *(f32*)(this_ + 0x294);
         {
-            f32 sx = (f32)sin(lbl_8053E0C8);
-            f32 sy = (f32)sin(lbl_8053E0C8);
-            f32 sz = (f32)sin(lbl_8053E0C8);
-            f32 cx = (f32)cos(lbl_8053E0C8);
-            f32 cy = (f32)cos(lbl_8053E0C8);
-            f32 cz = (f32)cos(lbl_8053E0C8);
-            mtx[0][0] = a * (cy * cz);
-            mtx[1][0] = a * (cy * sz);
-            mtx[2][0] = a * -sy;
-            mtx[0][1] = a * ((sx * sy) * cz - cx * sz);
-            mtx[1][1] = a * ((sx * sy) * sz + cx * cz);
-            mtx[2][1] = a * (sx * cy);
-            mtx[0][2] = a * ((cx * cz) * sy + sx * sz);
-            mtx[1][2] = a * ((cx * sz) * sy - sx * cz);
-            mtx[2][2] = a * (cx * cy);
+            f32 sx;
+            f32 sy;
+            f32 sz;
+            f32 cx;
+            f32 cy;
+            f32 s;
+            f32 cz;
+            s = *(f32*)(this_ + 0x294);
+            sx = (f32)sin(lbl_8053E0C8);
+            sy = (f32)sin(lbl_8053E0C8);
+            sz = (f32)sin(lbl_8053E0C8);
+            cx = (f32)cos(lbl_8053E0C8);
+            cy = (f32)cos(lbl_8053E0C8);
+            cz = (f32)cos(lbl_8053E0C8);
+            mtx[0][0] = s * (cy * cz);
+            mtx[1][0] = s * (cy * sz);
+            mtx[2][0] = s * -sy;
+            mtx[0][1] = s * (cz * (sx * sy) - cx * sz);
+            mtx[1][1] = s * (sz * (sx * sy) + cx * cz);
+            mtx[2][1] = s * (sx * cy);
+            mtx[0][2] = s * (sy * (cx * cz) + sx * sz);
+            mtx[1][2] = s * (sy * (cx * sz) - sx * cz);
+            mtx[2][2] = s * (cx * cy);
         }
         rec.w18 = mtx;
         res = fn_804032E8(0x42494750, lbl_804A1D24[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)]);
