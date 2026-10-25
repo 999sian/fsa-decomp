@@ -210,7 +210,12 @@ struct T80431_Owner {
     u8 pad4[0x4];
     J2DScreen* screen;
     T8042_PaneAnim* anim;
-    u8 pad10[0xe8 - 0x10];
+    u8 pad10[0xb8 - 0x10];
+    f32 width;
+    f32 choiceWidth[4];
+    f32 choiceX[3];
+    f32 choiceLine[3];
+    s32 lineCount;
     s16 timer;
     u8 padea;
     u8 feb;
