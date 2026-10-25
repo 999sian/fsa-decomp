@@ -4,7 +4,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
 inline bool padActive6(char* p);
-extern f32 lbl_80540034;
+extern const f32 lbl_80540034;
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U16(p, o) (*(u16*)((char*)(p) + (o)))
