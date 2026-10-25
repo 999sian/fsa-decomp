@@ -6,6 +6,9 @@
 
 extern "C" const f32 lbl_8053FA0C;
 extern "C" u16 fn_8022461C(void* p, u32 b);
+static inline u16 getGroundType(Actor* actor) {
+    return fn_8022461C(&actor->field_0C, actor->field_04);
+}
 extern "C" u8 fn_801CD2F8(u32 o);
 extern "C" u8 fn_802DEB58();
 extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
@@ -132,8 +135,7 @@ extern "C" void fn_8020CF7C(u8* o) {
 }
 
 extern "C" void fn_8020CFC4(u8* o) {
-    u32 room = *(u32*)(o + 4);
-    switch (fn_8022461C(o + 0xc, room)) {
+    switch (fn_8022461C(o + 0xc, *(u32*)(o + 4))) {
     case 0xd:
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x3d0, 0, 1, 0, 0, 1, lbl_8053FA0C);
         fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x15b, 0, 1, 0, 0, 1, lbl_8053FA08);
