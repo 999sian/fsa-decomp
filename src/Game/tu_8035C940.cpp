@@ -2,6 +2,7 @@
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
@@ -533,4 +534,6 @@ extern "C" void fn_8035DAD8(char* p) {
     *(s32*)(p + 0x274) = 0;
     *(s32*)(p + 0x278) = 0;
 }
+
+
 
