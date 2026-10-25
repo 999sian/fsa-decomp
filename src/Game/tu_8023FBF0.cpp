@@ -418,7 +418,7 @@ inline void resetTrail(char* p) {
         t->pos[i].x = t->x;
         t->pos[i].y = t->y;
         t->pos[i].z = t->z;
-        if (t->z > 0.0f) {
+        if (t->z > lbl_80540034) {
             t->onGround[i] = 1;
         } else {
             t->onGround[i] = 0;
