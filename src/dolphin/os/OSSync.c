@@ -29,12 +29,9 @@ ASM static void SystemCallVector()
  */
 void __OSInitSystemCall()
 {
-	void* handler = OS_SYS_CALL_HANDLER;
-	memcpy(handler, __OSSystemCallVectorStart, (u32)__OSSystemCallVectorEnd - (u32)__OSSystemCallVectorStart);
-
-	DCFlushRangeNoSync(handler, OS_HANDLER_SLOT_SIZE);
-#ifdef __MWERKS__ // clang-format off
-	asm { sync }
-#endif // clang-format on
-	ICInvalidateRange(handler, OS_HANDLER_SLOT_SIZE);
+    void* handler = OS_SYS_CALL_HANDLER;
+    memcpy(handler, __OSSystemCallVectorStart, (u32)__OSSystemCallVectorEnd - (u32)__OSSystemCallVectorStart);
+    DCFlushRangeNoSync(handler, OS_HANDLER_SLOT_SIZE);
+    __sync();
+    ICInvalidateRange(handler, OS_HANDLER_SLOT_SIZE);
 }
