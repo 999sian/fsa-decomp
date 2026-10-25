@@ -250,7 +250,8 @@ extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
 static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
-            for (s32 i = go; i < 4; i++) {
+            s32 i;
+            for (i = go; i < 4; i++) {
                 if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
                     go = TRUE;
                     break;
@@ -259,11 +260,12 @@ static inline u8 slmnCheckNear(char* this_, u8 go, f32 r) {
 return go;
 }
 static inline u8 slmnCheckTrack(char* this_, u8 go, f32 r) {
-            s32 bit;
+            u32 bit;
             s32 i;
             for (i = go; i < 4; i++) {
+                u8 flags = *(u8*)(this_ + 0x345);
                 bit = 1 << i;
-                if (*(u8*)(this_ + 0x345) & bit) {
+                if (flags & bit) {
                     if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
                         go = TRUE;
                         break;
@@ -297,6 +299,7 @@ static inline u8 slmnCheck(char* this_, u8 go) {
     return go;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_80207F14(char* this_) {
     fn_80207A60(this_);
     switch (*(s32*)(this_ + 0x248)) {
@@ -323,7 +326,7 @@ extern "C" void fn_80207F14(char* this_) {
         break;
     }
 }
-
+#pragma opt_lifetimes reset
 struct SlmnRandom {
     u32 seed;
     f32 get_ufloat_1() {
