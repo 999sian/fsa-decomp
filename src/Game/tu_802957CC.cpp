@@ -52,16 +52,6 @@ struct HOUSLinks {
     s32 doorCount;
 };
 
-static inline s32 WarpDestination(u32 param) {
-    s32 room = (param >> 24) & 7;
-    s32 result = room + 7;
-    if (room == 0) result = room;
-    return result;
-}
-static inline s32 HouseDestination(u32 param) {
-    s32 room = (param >> 7) & 31;
-    return (room + 7) & ~-(room == 0);
-}
 
 static inline s32 WarpDestination(const char* actor) {
     s32 room = (*(const u32*)(actor + 0x90) >> 24) & 7;
@@ -456,6 +446,72 @@ extern "C" void fn_802965BC(void* this_)
                 fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, tbl + 0x150), &rec);
             }
             rec.b1c--;
+        }
+    }
+}
+
+extern "C" void fn_802984B0(void* p) {
+    char* self = (char*)p;
+    JGeometry::TBox2f b1;
+    JGeometry::TBox2f b2;
+    JGeometry::TBox2f b3;
+    JGeometry::TBox2f b4;
+    JGeometry::TBox2f b5;
+    JGeometry::TBox2f b6;
+
+    switch (*(s32*)(self + 0x2b0)) {
+    case 0:
+        b1.set(*(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c));
+        b1.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        b1.f.y -= 40.0f;
+        fn_80239914(&b1, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        break;
+    case 1:
+        b1.set(*(f32*)(self + 0x60), *(f32*)(self + 0x64), 42.0f + *(f32*)(self + 0x60), 42.0f + *(f32*)(self + 0x64));
+        b1.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b1, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        b2.set(*(f32*)(self + 0x68) - 42.0f, *(f32*)(self + 0x64), *(f32*)(self + 0x68), 42.0f + *(f32*)(self + 0x64));
+        b2.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b2, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        break;
+    case 2:
+        b1.set(*(f32*)(self + 0x60), *(f32*)(self + 0x64), 42.0f + *(f32*)(self + 0x60), *(f32*)(self + 0x6c) - 40.0f);
+        b1.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b1, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        b2.set(*(f32*)(self + 0x68) - 42.0f, *(f32*)(self + 0x64), *(f32*)(self + 0x68), *(f32*)(self + 0x6c) - 40.0f);
+        b2.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b2, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        break;
+    }
+    switch (*(s32*)(self + 0x244)) {
+    case 0:
+    case 1:
+        b3.set(*(f32*)(self + 0x60), *(f32*)(self + 0x6c) - 42.0f, 42.0f + *(f32*)(self + 0x60), *(f32*)(self + 0x6c));
+        b3.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b3, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        b4.set(*(f32*)(self + 0x68) - 42.0f, *(f32*)(self + 0x6c) - 42.0f, *(f32*)(self + 0x68), *(f32*)(self + 0x6c));
+        b4.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b4, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        break;
+    case 2:
+        b3.set(*(f32*)(self + 0x60), *(f32*)(self + 0x6c) - 42.0f, 58.0f + *(f32*)(self + 0x60), *(f32*)(self + 0x6c));
+        b3.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b3, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        b4.set(*(f32*)(self + 0x68) - 26.0f, *(f32*)(self + 0x6c) - 42.0f, *(f32*)(self + 0x68), *(f32*)(self + 0x6c));
+        b4.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+        fn_80239914(&b4, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        break;
+    }
+    if (*(s32*)(self + 0x2a8) > 0) {
+        if (*(u8*)(self + 0x2b6) == 0) {
+            b5.set(40.0f + *(f32*)(self + 0x60), *(f32*)(self + 0x6c) - 16.0f, *(f32*)(self + 0x68) - 40.0f, *(f32*)(self + 0x6c));
+            b5.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+            fn_80239914(&b5, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        }
+        if (*(u8*)(self + 0x2b7) == 0) {
+            b6.set(40.0f + *(f32*)(self + 0x60), *(f32*)(self + 0x64), *(f32*)(self + 0x68) - 40.0f, 16.0f + *(f32*)(self + 0x64));
+            b6.addPos(*(JGeometry::TVec2f*)(self + 0xc));
+            fn_80239914(&b6, *(s32*)(self + 0x4), *(void**)(self + 0x198));
         }
     }
 }
@@ -1257,13 +1313,15 @@ extern "C" void fn_8029A974(void* p) {
 }
 
 extern "C" void fn_8029AE58(char* p) {
+    const f32 center = lbl_80540678;
     JGeometry::TVec3f v;
     JGeometry::TVec3f pos;
-    JGeometry::TVec3f origin = *(JGeometry::TVec3f*)(p + 0xc);
+    JGeometry::TVec3f origin;
+    origin = *(JGeometry::TVec3f*)(p + 0xc);
     origin.x += *(f32*)(p + 0x60);
     origin.y += *(f32*)(p + 0x64);
-    origin.x += lbl_80540678;
-    origin.y += lbl_80540678;
+    origin.x += center;
+    origin.y += center;
     origin.z = 0.0f;
     pos = origin;
     s32 j;
