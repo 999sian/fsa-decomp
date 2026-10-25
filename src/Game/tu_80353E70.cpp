@@ -71,6 +71,113 @@ extern "C" void fn_80353EE0(void* this_) {
     fn_801F06F0(this_, lbl_80472298, lbl_80472288[*(s32*)((char*)this_ + 0x2c8)] + 0x466, &rec, 7, lbl_80542750, lbl_80542750);
 }
 
+extern "C" void fn_80354030(char* this_) {
+    if (*(s32*)(this_ + 0x2b8) != 0) {
+        char* p = *(char**)((char*)lbl_8053AB10 + 0x30);
+        if (*(u8*)(p + 0x284) == 0) {
+            f32 f = lbl_80542754;
+            *(u8*)(p + 0x284) = 1;
+            *(f32*)(p + 0x28c) = f;
+        }
+        p = *(char**)((char*)lbl_8053AB10 + 0x24);
+        if (*(u8*)(p + 0x7f4) == 0) {
+            *(u8*)(p + 0x7f5) = 1;
+        }
+    }
+
+    switch (*(s32*)(this_ + 0x2b8)) {
+    case 0:
+        fn_80134FC4(lbl_8053AAF8, 1);
+        fn_8037AE00(lbl_8053AD70);
+        fn_80134FBC(lbl_8053AAF8, 1);
+        *(s32*)(this_ + 0x2c0) = 0x3c;
+        *(s32*)(this_ + 0x2b8) = 1;
+        break;
+    case 1:
+        JMathInlineVEC::PSVECAdd((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x3c), (Vec*)(this_ + 0xc));
+        if (*(s32*)(this_ + 0x2c0) <= 0) {
+            fn_801F0E34(this_, 0x4003f, 0);
+            f32 scale = lbl_8054275C;
+            *(f32*)(this_ + 0x288) = lbl_80542758;
+            *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x44) = lbl_8054273C;
+            *(s32*)(this_ + 0x2c0) = 0;
+            *(s32*)(this_ + 0x2b8) = 2;
+            *(f32*)(this_ + 0x2d8) = scale * (f32)(*(u32*)(this_ + 0x2d4) >> 24);
+            *(f32*)(this_ + 0x2dc) = scale * (f32)((*(u32*)(this_ + 0x2d4) >> 16) & 0xff);
+            *(f32*)(this_ + 0x2e0) = scale * (f32)((*(u32*)(this_ + 0x2d4) >> 8) & 0xff);
+        } else {
+            *(f32*)(this_ + 0x2d8) = *(f32*)(this_ + 0x2d8) + *(f32*)(this_ + 0x2e8);
+            *(f32*)(this_ + 0x2dc) = *(f32*)(this_ + 0x2dc) + *(f32*)(this_ + 0x2ec);
+            *(f32*)(this_ + 0x2e0) = *(f32*)(this_ + 0x2e0) + *(f32*)(this_ + 0x2f0);
+        }
+        *(s32*)(this_ + 0x2c0) = *(s32*)(this_ + 0x2c0) - 1;
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x2c0) <= 0) {
+            *(s32*)(this_ + 0x2c0) = 300;
+            *(s32*)(this_ + 0x2b8) = 3;
+        } else {
+            *(s32*)(this_ + 0x2c0) = *(s32*)(this_ + 0x2c0) - 1;
+        }
+        *(s32*)(this_ + 0x2bc) = *(s32*)(this_ + 0x2bc) - 1;
+        if (*(s32*)(this_ + 0x2bc) < 0) {
+            *(s32*)(this_ + 0x2bc) = 10;
+            *(s32*)(this_ + 0x2c8) = *(s32*)(this_ + 0x2c8) + 1;
+            *(u32*)(this_ + 0x2c8) = *(u32*)(this_ + 0x2c8) & 3;
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x2c4) <= 0 || (*(s32*)(this_ + 0x2c0) <= 0 && *(f32*)(this_ + 0xc) >= *(f32*)(this_ + 0x290) && *(f32*)(this_ + 0x10) >= *(f32*)(this_ + 0x294))) {
+            if (*(s32*)(this_ + 0x2c0) <= 0) {
+                *(f32*)(this_ + 0x290) = *(f32*)(this_ + 0x2a8) - lbl_80542730;
+                *(f32*)(this_ + 0x294) = (*(f32*)(this_ + 0x2ac) + *(f32*)(this_ + 0x2b4)) * lbl_80542738 + lbl_80542734;
+            }
+            f32 ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
+            *(s16*)(this_ + 0x2d0) = (s16)(s32)(lbl_80542740 * ang);
+            *(s32*)(this_ + 0x2c4) = 6;
+        }
+        fn_801F714C(this_ + 0x2cc, *(u16*)(this_ + 0x2d0), 0x14, 0x1000);
+        *(f32*)(this_ + 0x2a0) = lbl_80542744 * JMath::sincosTable_.mTable[*(u16*)(this_ + 0x2cc) >> 5].first;
+        *(f32*)(this_ + 0x2a4) = lbl_80542744 * JMath::sincosTable_.mTable[*(u16*)(this_ + 0x2cc) >> 5].second;
+        fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x2a0), lbl_80542748, lbl_8054274C);
+        fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x2a4), lbl_80542748, lbl_8054274C);
+        *(s32*)(this_ + 0x2c4) = *(s32*)(this_ + 0x2c4) - 1;
+        JMathInlineVEC::PSVECAdd((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x3c), (Vec*)(this_ + 0xc));
+        fn_801EB418(this_ + 0x230, this_ + 0xc);
+        if (*(s32*)(this_ + 0x2c0) > 0) {
+            if (*(s32*)(this_ + 0x2c0) <= 0x28 && *(u8*)(this_ + 0x2f8) == 1) {
+                fn_801F0E34(this_, 0x40041, 0);
+                *(u8*)(this_ + 0x2f8) = 0;
+                *(s32*)(this_ + 0x2c0) = *(s32*)(this_ + 0x2c0) - 1;
+                fn_801F0E34(this_, 0x40051, 0);
+            }
+        } else if (*(f32*)(this_ + 0x2a8) - lbl_80542730 > *(f32*)(this_ + 0xc)) {
+            *(s32*)(this_ + 0x2b8) = 4;
+        }
+        *(s32*)(this_ + 0x2bc) = *(s32*)(this_ + 0x2bc) - 1;
+        if (*(s32*)(this_ + 0x2bc) < 0) {
+            *(s32*)(this_ + 0x2bc) = 10;
+            *(s32*)(this_ + 0x2c8) = *(s32*)(this_ + 0x2c8) + 1;
+            *(u32*)(this_ + 0x2c8) = *(u32*)(this_ + 0x2c8) & 3;
+        }
+        break;
+    case 4:
+        fn_80134FC4(lbl_8053AAF8, 0);
+        fn_8037AE30(lbl_8053AD70);
+        for (s32 i = 0; i < 4; i++) {
+            fn_80238548(i, 0x28, this_ + 0xc, 0x12);
+        }
+        *(u8*)(this_ + 0x28c) = 1;
+        *(f32*)(this_ + 0x288) = lbl_8054273C;
+        fn_80134FBC(lbl_8053AAF8, 0);
+        detach__5ActorFv((Actor*)this_);
+        break;
+    }
+
+    u32 color = ((s32)*(f32*)(this_ + 0x2d8) << 24) | ((s32)*(f32*)(this_ + 0x2dc) << 16) | ((s32)*(f32*)(this_ + 0x2e0) << 8) | (s32)*(f32*)(this_ + 0x2e4);
+    fn_8013A884(&color);
+}
+
 extern "C" void fn_803545A4(char* this_) {
     struct {
         s32 a;
@@ -101,7 +208,7 @@ extern "C" void fn_803545A4(char* this_) {
     rec.c[0] = lbl_8054276C;
     rec.c[1] = lbl_80542770;
     rec.c[2] = lbl_80542774;
-    *(s32*)(this_ + 0x23c) = rec.a;
+    *(s32*)(this_ + 0x23c) = 1;
     *(s32*)(this_ + 0x240) = rec.b;
     *(f32*)(this_ + 0x244) = rec.c[0];
     *(f32*)(this_ + 0x248) = rec.c[1];
@@ -141,5 +248,5 @@ extern "C" void fn_803545A4(char* this_) {
     *(s32*)(this_ + 0x2b8) = 0;
 }
 
-extern "C" void fn_80354820(void) {}
+
 
