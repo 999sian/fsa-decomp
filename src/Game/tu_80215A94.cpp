@@ -292,11 +292,24 @@ extern "C" void fn_8021600C(HrmnTable* t) {
     }
 }
 
-extern "C" int fn_8021606C(HrmnTable* t) {
-    int n = t->mCount;
-    HrmnTable* p = t;
+static inline int Hrmn_AnyPending(s32 n, HrmnTable* p) {
     int result = 0;
     for (int i = 0; i < n; i++) {
+        if (p->mEntry[0].mId < 0 && fn_801ED7B0(p->mEntry[0].mSub2)) {
+            result = 1;
+            break;
+        }
+        p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
+    }
+    return result;
+}
+
+extern "C" int fn_8021606C(HrmnTable* t) {
+    const s32 n = t->mCount;
+    HrmnTable* p = t;
+    int result = 0;
+    int i = 0;
+    for (; i < n; i++) {
         if (p->mEntry[0].mId < 0 && fn_801ED7B0(p->mEntry[0].mSub2)) {
             result = 1;
             break;
