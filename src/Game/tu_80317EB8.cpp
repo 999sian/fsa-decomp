@@ -650,7 +650,6 @@ extern "C" void fn_803193B4(Actor* this_)
 {
     u8* self = (u8*)this_;
     Tu80317Rect rect;
-    JGeometry::TVec3<f32> vec;
     s32 r;
     s32 idx;
     u32 type;
@@ -691,16 +690,7 @@ extern "C" void fn_803193B4(Actor* this_)
         if (!fn_802300EC()) {
             goto tail;
         }
-        s32 slot = *(s32*)(self + 0x244);
-        s32 room = *(s32*)(self + 0x198);
-        s32 area = *(s32*)(self + 4);
-        vec = *(JGeometry::TVec3<f32>*)(self + 0xc);
-        if (fn_8038C678(r, slot, room, area, &vec, 0x10)) {
-            *(s32*)(self + 0x234) = r;
-            ok = (*(s32*)(self + 0x230) = 1);
-        } else {
-            ok = 0;
-        }
+        ok = activate803193B4(self, r);
         if (!ok) {
             goto tail;
         }
