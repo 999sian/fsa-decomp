@@ -73,7 +73,6 @@ void fn_802F6CF4(void* obj, FsaVec3* pos, void* res, u8* blk);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_801F856C(void);
 #pragma opt_common_subs off
-#pragma opt_propagation off
 extern "C" void fn_80226FC8(void* this_, s32 idx) {
     u8* actor = (u8*)this_;
     if (*(actor + 0x255) != 1) {
@@ -92,9 +91,8 @@ extern "C" void fn_80226FC8(void* this_, s32 idx) {
             JGeometry::TVec3f* apos = (JGeometry::TVec3f*)((u8*)a + 0xc);
 
             
-            if (!(vel->squared() <= lbl_8053FF60 * FLT_EPSILON) && apos->z < lbl_8053FF64) {
+            if (!(vel->squared() <= lbl_8053FF60 * FLT_EPSILON) && *(volatile f32*)((u8*)a + 0x14) < lbl_8053FF64) {
                 JGeometry::TVec3f d;
-                JGeometry::TVec3f v0, v1, v2, v3;
                 d = *apos - *(JGeometry::TVec3f*)(actor + 0xc);
                 bool hit = false;
                 if (d.x >= lbl_8053FF68 && d.y >= lbl_8053FF68 && d.x < lbl_8053FF6C && d.y < lbl_8053FF6C) {
@@ -104,14 +102,10 @@ extern "C" void fn_80226FC8(void* this_, s32 idx) {
                     void* target = *(void**)(p + 0x27c);
                     ((Actor*)target)->v16();
                     *(void**)(p + 0x27c) = 0;
-                    v0.set(*(f32*)(actor + 0xc) - 8.0f, *(f32*)(actor + 0x10) - 8.0f, 0.0f);
-                    fn_802A3948(lbl_8053AC98, (f32*)&v0, idx, *(u32*)(actor + 4), 0xc);
-                    v1.set(8.0f + *(f32*)(actor + 0xc), *(f32*)(actor + 0x10) - 8.0f, 0.0f);
-                    fn_802A3948(lbl_8053AC98, (f32*)&v1, idx, *(u32*)(actor + 4), 0xc);
-                    v2.set(*(f32*)(actor + 0xc) - 8.0f, 8.0f + *(f32*)(actor + 0x10), 0.0f);
-                    fn_802A3948(lbl_8053AC98, (f32*)&v2, idx, *(u32*)(actor + 4), 0xc);
-                    v3.set(8.0f + *(f32*)(actor + 0xc), 8.0f + *(f32*)(actor + 0x10), 0.0f);
-                    fn_802A3948(lbl_8053AC98, (f32*)&v3, idx, *(u32*)(actor + 4), 0xc);
+                    gateEffect(JGeometry::TVec3f(*(f32*)(actor + 0xc) - lbl_8053FF70, *(f32*)(actor + 0x10) - lbl_8053FF70, lbl_8053FF74), idx, *(u32*)(actor + 4));
+                    gateEffect(JGeometry::TVec3f(lbl_8053FF70 + *(f32*)(actor + 0xc), *(f32*)(actor + 0x10) - lbl_8053FF70, lbl_8053FF74), idx, *(u32*)(actor + 4));
+                    gateEffect(JGeometry::TVec3f(*(f32*)(actor + 0xc) - lbl_8053FF70, lbl_8053FF70 + *(f32*)(actor + 0x10), lbl_8053FF74), idx, *(u32*)(actor + 4));
+                    gateEffect(JGeometry::TVec3f(lbl_8053FF70 + *(f32*)(actor + 0xc), lbl_8053FF70 + *(f32*)(actor + 0x10), lbl_8053FF74), idx, *(u32*)(actor + 4));
                     if (*(actor + 0x255) == 0) {
                         fn_8013CC50(*(u32*)(actor + 4), actor + 0xc, lbl_8053FF78, 0x3e3, 0, -2, 0, 0, 1);
                         *(actor + 0x255) = 1;
@@ -121,7 +115,6 @@ extern "C" void fn_80226FC8(void* this_, s32 idx) {
         }
     }
 }
-#pragma opt_propagation reset
 #pragma opt_common_subs reset
 extern "C" s32 fn_80227290(void* __restrict this_, f32 eps, const u32* __restrict types, s32 handle) {
     u8 flag;
