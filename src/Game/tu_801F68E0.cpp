@@ -514,7 +514,6 @@ extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
     }
     return id;
 }
-#pragma scheduling reset
 extern "C" s32 fn_801F750C(ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
     s32 id = -1;
