@@ -44,11 +44,11 @@ extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B1AE8[];
 extern s32 lbl_8053AEF0;
 extern u8 lbl_8048FB88[];
-extern "C" f32 lbl_80543D64;
+extern "C" const f32 lbl_80543D64;
 extern "C" void fn_80402E08(void* this_, f32 a, f32 b);
 extern "C" void fn_80402CE0(void* this_, f32 a, f32 b);
 extern "C" void* lbl_8053AB10;
-extern "C" f32 lbl_80543D60;
+extern "C" const f32 lbl_80543D60;
 extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 class J2DScreen;
@@ -106,20 +106,20 @@ extern "C" void fn_80402B10(void* this_, s32 a, s32 b, f32 c, f32 d);
 extern "C" void fn_80402940(void* this_, s32 a, s32 b, f32 c, f32 d);
 extern "C" void fn_8040271C(void* this_, s32 a, f32 c, f32 d);
 extern u8 lbl_8048FB88[];
-extern f32 lbl_80543D64;
+extern const f32 lbl_80543D64;
 #pragma opt_strength_reduction off
 extern "C" void fn_804434B8(void* this_) {
-    char* p = (char*)this_;
-    *(s16*)(p + 0x10) += 1;
+    ScreenTransitionState* p = (ScreenTransitionState*)this_;
+    p->timer += 1;
     {
     ScreenTransitionTable* tbl = (ScreenTransitionTable*)lbl_8048FB88;
-    fn_80402B10(*(void**)(p + 8), 30, 0, lbl_80543D60, tbl->x[*(u8*)(p + 0x14)]);
-    fn_80402940(*(void**)(p + 8), 30, 0, lbl_80543D60, tbl->y[*(u8*)(p + 0x14)]);
-    f32 height = ((f32*)*(void**)(p + 8))[6];
-    f32 scale = tbl->scale[*(u8*)(p + 0x14)];
-    fn_8040271C(*(void**)(p + 8), 30, lbl_80543D64, scale / height);
+    fn_80402B10(p->pane, 30, 0, lbl_80543D60, tbl->x[p->index]);
+    fn_80402940(p->pane, 30, 0, lbl_80543D60, tbl->y[p->index]);
+    f32 height = ((f32*)p->pane)[6];
+    f32 scale = tbl->scale[p->index];
+    fn_8040271C(p->pane, 30, lbl_80543D64, scale / height);
     }
-    if (*(s16*)(p + 0x10) >= 30) *(u8*)(p + 0x15) = 2;
+    if (p->timer >= 30) p->state = 2;
 }
 #pragma opt_strength_reduction reset
 extern "C" void fn_804435B8(void* this_) {
@@ -155,7 +155,7 @@ extern "C" void fn_80443638(T80443638* this_) {
 extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 extern "C" void* lbl_8053AB10;
-extern "C" f32 lbl_80543D60;
+extern "C" const f32 lbl_80543D60;
 extern "C" void fn_80443688(void) {
 }
 
