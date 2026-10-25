@@ -15,15 +15,14 @@ struct BzbrGame;
 extern BzbrGame* lbl_8053AAF8;
 
 // Scaled rotation about Y (x/z angles zero) into a 3x4 matrix.
-static inline void bzbrRotYMtx(f32 (*m)[4], f32 ang, f32 s) {
+static inline void bzbrRotYMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
     f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
-    f32 rx = 0.0f;
     sx = sin(rx);
-    sy = sin(ang);
-    sz = sin(rx);
+    sy = sin(ry);
+    sz = sin(rz);
     cx = cos(rx);
-    cy = cos(ang);
-    cz = cos(rx);
+    cy = cos(ry);
+    cz = cos(rz);
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
@@ -77,7 +76,7 @@ extern "C" void fn_80144194(u8* this_) {
     if (*(s32*)(this_ + 0x230) == 4) {
         DrawRec rec2;
         f32 m2[3][4];
-        f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz; f32 s;
+        f32 s; f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
         m2[0][3] = 0.0f;
         m2[1][3] = 0.0f;
         m2[2][3] = 0.0f;
@@ -123,7 +122,7 @@ extern "C" void fn_80144194(u8* this_) {
         mtx[2][1] = 0.0f;
         mtx[2][2] = ys;
         rec.w18 = mtx;
-        if (0.0f != *(f32*)(this_ + 0x14)) {
+        if (*(f32*)(this_ + 0x14) != 0.0f) {
             rec.w30 = 0x11;
         }
         fn_801F06F0(this_, lbl_80465B80, lbl_8049F408[*(s32*)(this_ + 0x244)] + 0x10, &rec, 0, 1.0f, 1.0f);
