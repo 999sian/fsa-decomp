@@ -283,7 +283,10 @@ extern "C" bool fn_802570BC(u8* p, const JGeometry::TBox2<f32>* bounds,
         if (S32(ids, 0xb1c) >= 0 && S32(ids, 0xb5c) == id) {
             JGeometry::TBox2<f32> overlap = BOX(boxes, 0x550);
             if (overlap.intersect(*bounds)) {
-                JGeometry::TBox2<f32>& box = BOX(p, i * 0x10 + 0x550);
+                u32 offset = i * 0x10;
+                u8* selected = p;
+                selected += offset;
+                JGeometry::TBox2<f32>& box = BOX(selected, 0x550);
                 center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
                 center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
                 return true;
@@ -2407,15 +2410,14 @@ extern "C" void fn_8025D7E4(u8* p) {
     dx = -F32(p, 0x344);
     dz = lbl_805400C4;
     direction.set(dx, dy, dz);
-    f32 estimate;
     f32 sq = direction.squared();
     if (!(sq <= lbl_805400D8 * *(f32*)__float_epsilon)) {
-        register f32 inv;
+        f32 inv;
         if (sq <= lbl_805400C4) {
             inv = sq;
         } else {
-            estimate = __frsqrte(sq);
-            inv = lbl_805400C0 * estimate * (lbl_805400FC - sq * (estimate * estimate));
+            f32 y = __frsqrte(sq);
+            inv = lbl_805400C0 * y * (lbl_805400FC - sq * (y * y));
         }
         direction.scale(inv);
     }
