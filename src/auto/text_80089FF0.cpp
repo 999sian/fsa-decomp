@@ -49,6 +49,50 @@ static inline bool findModuleAddress(u32 addr, u32* id, u32* index, u32* offset,
     }
     return false;
 }
+static inline bool showExceptionAddress(u32 addr)
+{
+    bool ok;
+                u8 flag = 1;
+                if (addr < 0x80000000 || addr > 0x82ffffff) {
+                    ok = false;
+                } else {
+                    u32 outB, outA;
+                    u32 sectionOffset;
+                    u32 sectionIndex;
+                    u32 sectionBase;
+                    char* mapName;
+                    char name[0x24];
+                    char buf[0x100];
+                    char* zero = &lbl_8053B868;
+                    bool mapped = findModuleAddress(addr, &sectionBase, &sectionIndex, &sectionOffset, &mapName);
+                    if (mapped == true) {
+                        u8* last = (u8*)mapName;
+                        u8* p = (u8*)mapName;
+                        while (*p) { if (*p == '\\') last = p; p++; }
+                        char* out = name;
+                        if (*last == '\\') last++;
+                        s32 n = 0;
+                        while (*last && n < 0x20) {
+                            if (*last == '.') break;
+                            n++; *out++ = *last++;
+                        }
+                        *out = 0;
+                        lbl_8053A914->print_f(lbl_8045E878 + 0x3a4, zero, name, sectionOffset, sectionIndex);
+                        flag = 0;
+                    }
+                    if (lbl_8052E894.getFirstLink()) {
+                        u8 result;
+                        if (mapped == true)
+                            result = fn_8008C528(name, sectionOffset, sectionIndex, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag);
+                        else
+                            result = fn_8008C528(0, addr, -1, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag);
+                        if (result == 1) ok = true; else ok = false;
+                    } else ok = false;
+                }
+
+return ok;
+}
+
 static int fpKind(f32 value)
 {
     u32 bits = *(u32*)&value;
@@ -516,8 +560,8 @@ extern "C" void fn_8008B214(JUTException* this_, u32* param_2)
     if (lbl_8053A914 != nullptr) {
         bool found = false;
         lbl_8053A914->print(base + 0x3bc);
-        for (s32 i = 0; i < 0x1f; i++, param_2++) {
-            u32 addr = *param_2;
+        for (s32 i = 0; i < 0x1f; i++) {
+            u32 addr = param_2[i];
             if (addr >= 0x80000000 && addr <= 0x82ffffff) {
                 found = true;
                 lbl_8053A914->print_f(base + 0x3e8, i, addr);
