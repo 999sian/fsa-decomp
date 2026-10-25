@@ -1620,7 +1620,6 @@ extern "C" u8 fn_80390894(void* sub, u32 v);
 extern "C" void fn_80390B64(void* sub);
 extern "C" u8 fn_802D46D8(void* cfg, s32 index, u32 bit, u8 set);
 extern "C" void OSReport(const char* fmt, ...);
-#pragma optimization_level 4
 extern "C" u8 fn_803865B8(s32 p) {
     const s32 i = resolvePlayer(p);
     bool bVar5;
@@ -1744,7 +1743,6 @@ L_194d0:
 L_fail:
     return 0;
 }
-#pragma optimization_level 3
 
 extern "C" u8 fn_8022FCF0(s32 q, s32 v);
 extern "C" void fn_8022FC54(s32 q, s32 v);
