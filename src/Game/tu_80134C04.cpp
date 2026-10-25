@@ -337,6 +337,19 @@ extern "C" void fn_801352F4(char* this_, s32 which) {
     }
 }
 
+extern "C" void OSReport(const char* fmt, ...);
+extern "C" void* fn_80401E10(const char* name, s32 a, void* heap);
+extern f32 lbl_8053CD50;
+
+static inline void tu80134_heapReport(char* this_, const char* fmt) {
+    OSReport(fmt, (f32)(*(JKRHeap**)(this_ + 0x98))->getFreeSize() * lbl_8053CD50,
+             (f32)(*(JKRHeap**)(this_ + 0x98))->getTotalFreeSize() * lbl_8053CD50);
+}
+
+static inline void* tu80134_load(const char* name) {
+    return fn_80401E10(name, 0, *(void**)(lbl_80529DEC + 8));
+}
+
 extern "C" void fn_80135494(char* this_, s32 cmd) {
     u8 bVar2 = 0;
     if ((cmd != 2 || *(s32*)(this_ + 0x4c) == 2 || *(s32*)(this_ + 0x4c) == 5) &&
