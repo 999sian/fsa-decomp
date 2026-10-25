@@ -80,7 +80,7 @@ struct OnofColor {
 struct OnofShadowMgr {
     void draw(u32 room, void* pos, OnofColor color, s32 flag, f32 scale);
 };
-extern "C" void fn_80158B5C(void* mgr, u32 room, void* pos, OnofColor color, int flag, f32 scale);
+extern "C" void fn_80158B5C(void* mgr, u32 room, void* pos, OnofColor color, s32 flag, f32 scale);
 #pragma peephole off
 extern "C" void fn_802CB1C4(char* p) {
     s32 st = *(s32*)(p + 0x238);
