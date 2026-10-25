@@ -48,6 +48,10 @@ public:
     virtual void v14(); virtual void v18(); virtual void v1C(); virtual void v20();
     virtual void setAlpha(s32 a);
 };
+static inline void MenuMoveCursor803E(u8* self, const f32 height) {
+    J2DPane* pane=(*(J2DPane**)(self+0xc))->search(0x50736375726f3032ULL);
+    pane->move(*(f32*)(self+0x1a4)+((f32*)(self+0x184))[*(s32*)(self+0x1b8)],height);
+}
 class Screen803EDBF0 {
 public:
     virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
@@ -681,8 +685,7 @@ extern "C" void fn_803E8210(u8* p) {
 extern "C" void fn_803E831C(u8* p) {
     u8* tbl = (u8*)lbl_80477970;
     s32 i;
-    s32 val;
-    Pane803E4650* pane;
+    J2DPane* pane;
     f32 v;
 
     if (*(s32*)(p + 0x1bc) != 3) {
@@ -714,17 +717,17 @@ extern "C" void fn_803E831C(u8* p) {
             }
             u64* names=(u64*)(tbl+0x650);s32 j;
             for (j = 0; j < 0x11; j++,names++) {
-                pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*names);
-                f32 value=p[0x322+j];value*=v;val=(s32)value;
-                pane->setAlpha(val);
+                pane=(*(J2DPane**)(p+0xc))->search(*names);
+                f32 value=p[0x322+j];value*=v;
+                pane->setAlpha((u8)value);
             }
         } else {
             *(f32*)(p + 0x164) = lbl_8054368C;
             u64* names=(u64*)(tbl+0x650);s32 j;
             for (j = 0; j < 0x11; j++,names++) {
-                pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*names);
-                f32 value=p[0x322+j];value*=lbl_80543664;val=(s32)value;
-                pane->setAlpha(val);
+                pane=(*(J2DPane**)(p+0xc))->search(*names);
+                f32 value=p[0x322+j];value*=lbl_80543664;
+                pane->setAlpha((u8)value);
             }
         }
     }
@@ -736,9 +739,10 @@ extern "C" void fn_803E831C(u8* p) {
  s16 ids[2];s16* id=ids;s16* write=id;
  for(s32 j=0;j<3;j++){if(j!=*(s32*)(p+0x1b8))*write++=j;}
  if(*(s32*)(p+0x1dc)==2){
- s32 lo;s32 hi;u8* offsets;s32 lo2;u8* bytes;u64* keys;s32 group;
-lo=0;offsets=p;lo2=lo;bytes=p;keys=(u64*)(tbl+0x6d8);group=0;hi=10;
- for(;group<3;group++,hi+=10,lo2+=30,offsets+=4,bytes+=5,keys+=5,lo+=10){
+ long lo;int hi;u8* offsets;s32 lo2;u8* bytes;u64* keys;s32 group;
+group=0;
+ for(;group<3;group++){
+lo=(long)group*10;hi=(int)group*10+10;offsets=p+group*4;lo2=group*30;bytes=p+group*5;keys=(u64*)(tbl+0x6d8)+group*5;
  if(*(s16*)(p+0x254)>lo){
  if(*(s16*)(p+0x254)<hi){
  s32 d=*(s16*)(p+0x254)-lo;
@@ -746,16 +750,17 @@ lo=0;offsets=p;lo2=lo;bytes=p;keys=(u64*)(tbl+0x6d8);group=0;hi=10;
  v=(f32)(10-(*(s16*)(p+0x254)-lo2))/lbl_805436F4;
  if(v<lbl_80543664)v=lbl_80543664;else if(v>lbl_80543668)v=lbl_80543668;
  u8* alpha=bytes;u64* name=keys;
- for(i=0;i<5;i++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((s32)value);}
+ for(i=0;i<5;i++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((u8)value);}
  }else{
  *(f32*)(offsets+0x184)=lbl_80543694;
  u8* alpha=bytes;u64* name=keys;
- for(i=0;i<5;i++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((s32)value);}
+ for(i=0;i<5;i++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((u8)value);}
  }}}
  }else{
- s32 group;s32 lo;s32 hi;s32 lo2;
-lo=0;group=0;lo2=lo;hi=10;
- for(;group<2;group++,hi+=10,id++,lo2+=30,lo+=10){
+ s32 group;long lo;int hi;s32 lo2;
+group=0;
+ for(;group<2;group++,id++){
+lo=(long)group*10;hi=(int)group*10+10;lo2=group*30;
  if(*(s16*)(p+0x254)>lo){
  if(*(s16*)(p+0x254)<hi){
  s32 d=*(s16*)(p+0x254)-lo;
@@ -764,10 +769,10 @@ lo=0;group=0;lo2=lo;hi=10;
  v=(f32)(10-(*(s16*)(p+0x254)-lo2))/lbl_805436F4;
  if(v<lbl_80543664)v=lbl_80543664;else if(v>lbl_80543668)v=lbl_80543668;
  s32 alphaOffset=idx*5;
- u64* name=(u64*)(tbl+0x6d8);
- u8* alpha=p+alphaOffset;
+ u8* alpha;u64* name=(u64*)(tbl+0x6d8);
+ alpha=p+alphaOffset;
  name+=idx*5;
- for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((s32)value);}
+ for(s32 j=0;j<5;j++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((u8)value);}
  }else{
  s32 idx=*id; s32 cell=idx*4+0x184;
  ((f32*)p)[idx+0x61]=lbl_80543694;
@@ -775,7 +780,7 @@ lo=0;group=0;lo2=lo;hi=10;
  u64* name=(u64*)(tbl+0x6d8);
  u8* alpha=p+alphaOffset;
  name+=idx*5;
- for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((s32)value);}
+ for(s32 j=0;j<5;j++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((u8)value);}
  }}}
  if(*(s16*)(p+0x254)>15){
  if(*(s16*)(p+0x254)<23){
@@ -788,7 +793,7 @@ lo=0;group=0;lo2=lo;hi=10;
  u64* name=(u64*)(tbl+0x6d8);
  u8* alpha=p+alphaOffset;
  name+=idx*5;
- for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((s32)value);}
+ for(s32 j=0;j<5;j++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=v;pane->setAlpha((u8)value);}
  }else{
  s32 idx=*(s32*)(p+0x1b8);
  ((f32*)(p+0x184))[idx]=lbl_80543694;
@@ -797,7 +802,7 @@ lo=0;group=0;lo2=lo;hi=10;
  u64* name=(u64*)(tbl+0x6d8);
  u8* alpha=p+alphaOffset;
  name+=idx*5;
- for(s32 j=0;j<5;j++,alpha++,name++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((s32)value);}
+ for(s32 j=0;j<5;j++,alpha++,name++){pane=(*(J2DPane**)(p+0xc))->search(*name);f32 value=alpha[0x333];value*=lbl_80543664;pane->setAlpha((u8)value);}
  }}
  }
 
@@ -807,10 +812,10 @@ lo=0;group=0;lo2=lo;hi=10;
  *(f32*)(p+0x198)=MenuSlideExit803E(d,lbl_80543698,lbl_805436E8);
  v=(f32)(8-(*(s16*)(p+0x254)-15))*lbl_805436EC;
  if(v<lbl_80543664)v=lbl_80543664;else if(v>lbl_80543668)v=lbl_80543668;
- u64* names=(u64*)(tbl+0x750);for(s32 j=0;j<26;j++,names++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*names);f32 value=p[0x342+j];value*=v;pane->setAlpha((s32)value);}
+ u64* names=(u64*)(tbl+0x750);for(i=0;i<26;i++,names++){pane=(*(J2DPane**)(p+0xc))->search(*names);f32 value=p[0x342+i];value*=v;pane->setAlpha((u8)value);}
  }else{
  *(f32*)(p+0x198)=lbl_80543698;
- u64* names=(u64*)(tbl+0x750);for(s32 j=0;j<26;j++,names++){pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(*names);f32 value=p[0x342+j];value*=lbl_80543664;pane->setAlpha((s32)value);}
+ u64* names=(u64*)(tbl+0x750);for(i=0;i<26;i++,names++){pane=(*(J2DPane**)(p+0xc))->search(*names);f32 value=p[0x342+i];value*=lbl_80543664;pane->setAlpha((u8)value);}
  }}
  if(*(s16*)(p+0x254)>=48){
  if(*(s32*)(p+0x1dc)==2) *(s32*)(p+0x360)=6;
@@ -827,21 +832,21 @@ lo=0;group=0;lo2=lo;hi=10;
  }
  *(s32*)(p+0x1e0)+=1;
  if(*(s32*)(p+0x1e0)>=30)*(s32*)(p+0x1e0)=0;
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x506d616462623037ULL);
- pane->v10(*(f32*)(p+0x15c),*(f32*)(p+0x160)+*(f32*)(p+0x164));
+ pane=(*(J2DPane**)(p+0xc))->search(0x506d616462623037ULL);
+ pane->move(*(f32*)(p+0x15c),*(f32*)(p+0x160)+*(f32*)(p+0x164));
  fn_80402E08(*(void**)(p+0x78),lbl_80543664,*(f32*)(p+0x168));
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x0050737461623034ULL);
- pane->v10(*(f32*)(p+0x16c)+*(f32*)(p+0x184),*(f32*)(p+0x178));
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x005068616e623034ULL);
- pane->v10(*(f32*)(p+0x170)+*(f32*)(p+0x188),*(f32*)(p+0x17c));
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x507275623034ULL);
- pane->v10(*(f32*)(p+0x174)+*(f32*)(p+0x18c),*(f32*)(p+0x180));
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL);
- pane->v10(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
+ pane=(*(J2DPane**)(p+0xc))->search(0x0050737461623034ULL);
+ pane->move(*(f32*)(p+0x16c)+*(f32*)(p+0x184),*(f32*)(p+0x178));
+ pane=(*(J2DPane**)(p+0xc))->search(0x005068616e623034ULL);
+ pane->move(*(f32*)(p+0x170)+*(f32*)(p+0x188),*(f32*)(p+0x17c));
+ pane=(*(J2DPane**)(p+0xc))->search(0x507275623034ULL);
+ pane->move(*(f32*)(p+0x174)+*(f32*)(p+0x18c),*(f32*)(p+0x180));
+ pane=(*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL);
+ pane->move(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
+ pane=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
  f32 h=getBounds__7J2DPaneFv(pane)[1];
- pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
- pane->v10(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
+ pane=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
+ pane->move(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
 }
 #pragma opt_common_subs reset
 
