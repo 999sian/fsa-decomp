@@ -223,8 +223,14 @@ static inline u8 fallAlpha(char* this_) {
         alpha = 0xff;
         break;
     default: {
-                    f32 t = (*(f32*)(this_ + 0x14) - lbl_8053EC00) * lbl_8053EC04;
-            alpha = lbl_8053EC10 * fallClamp(t, lbl_8053EC0C, lbl_8053EC08);
+                    f32 t = *(f32*)(this_ + 0x14);
+            t = (t - lbl_8053EC00) * lbl_8053EC04;
+            if (t > lbl_8053EC08) {
+                t = lbl_8053EC08;
+            } else if (t < lbl_8053EC0C) {
+                t = lbl_8053EC0C;
+            }
+            alpha = lbl_8053EC10 * t;
         break;
     }
     }
