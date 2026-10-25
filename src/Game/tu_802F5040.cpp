@@ -2004,7 +2004,148 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
         }
     }
 }
+
+extern "C" void fn_8013B414(void*, void*, s32);
+extern "C" void fn_8013B004(void*, const GXColor*);
+extern "C" void* fn_8022BCD4(s32);
+extern "C" s32* fn_8030B1E8(void*, s32, u16);
+extern "C" void fn_8030275C(u8*, s32, u8, u8);
+extern "C" void fn_803022C4(u8*, s32, u8, u8);
+extern "C" GXColor lbl_805414EC;
+extern "C" void fn_802FAC10(u8*, s32, s32, s32, s32, u8, u8, s32*);
 #pragma opt_loop_invariants reset
+#pragma opt_common_subs on
+extern "C" const f32 lbl_80541588,lbl_8054158C,lbl_80541590,lbl_80541594;
+extern "C" void fn_8030DFE8(void*,s32);
+extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, u8 effect, u8 opacity) {
+    u8* regs=(u8*)registerPtr;
+    s32* rect=(s32*)rectData;
+    s32* viewport=(s32*)viewportData;
+    JGeometry::TBox2<f32> box;
+    box.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
+    fn_8013B414(lbl_8053AB10,&box,0);
+    GXSetViewport(viewport[0],viewport[1],viewport[2],viewport[3],lbl_805414F8,lbl_80541518);
+    GXSetScissor(viewport[0],viewport[1],viewport[2],viewport[3]);
+    s32 scrollX=((regs[0xb]<<1)&0x1f0)|((regs[0xf]>>4)&15);
+    s32 scrollY=((regs[0x13]<<1)&0x1f0)|((regs[0x17]>>4)&15);
+    s32* wave=0;
+    void* controller=fn_8022BCD4(player);
+    if (enabled) {
+        u8 special=0;
+        if (((((regs[2]>>2)&7)-1)&7)!=0 && self[0x134+player]!=0) special=1;
+        u16 color=((u16*)(self+0x114))[1+!special];
+        fn_8013B3F0(lbl_8053AB10);
+        JGeometry::TBox2<f32> bg;
+        bg.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
+        GXColor rgb;
+        rgb.r=((color&0x7c00)>>7)|((color&0x7c00)>>12);
+        rgb.g=((color>>2)&0xf8)|((color>>7)&7);
+        rgb.b=((color<<3)&0xf8)|((color>>2)&7);
+        rgb.a=255;
+        fn_8013B004(&bg,&rgb);
+        if ((regs[0x17]>>3)&1) {
+            u8* game=(u8*)lbl_8053AAF8;
+            if ((*(s32*)(game+0x4c)!=11 && game[0x88]==0) || RendererFadeAlpha802F()<255) {
+                s32 mode=(regs[2]>>2)&7;
+                s32 selector=6;
+                if (mode>1 || self[0x134+player]) selector=5;
+                else if (((regs[2]>>6)&3)==3) selector=(regs[5]>>4)&3;
+                if (controller) wave=fn_8030B1E8(controller,selector,(u16)scrollY);
+                fn_802FAC10(self,((regs[2]>>2)&7)-1,scrollX,scrollY,self[0x134+player],255,255,wave);
+            }
+        }
+    } else {
+        fn_8013B1E8(lbl_8053AB10);
+        load__10JUTTextureF11_GXTexMapID(*(void**)(self+0xe454),0);
+        GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
+        GXSetColorUpdate(GX_FALSE);
+        GXSetAlphaUpdate(GX_TRUE);
+        GXSetAlphaCompare(GX_ALWAYS,0,GX_AOP_AND,GX_ALWAYS,0);
+        GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_ZERO,(GXLogicOp)5);
+        GXSetTevColor(GX_TEVREG0,lbl_805414EC);
+        GXBegin(GX_QUADS,GX_VTXFMT0,4);
+        ScreenMaskQuad802F(rect);
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        GXSetAlphaCompare(GX_GREATER,0,GX_AOP_AND,GX_ALWAYS,0);
+    }
+    fn_8030275C(regs,player,enabled,self[0x134+player]!=0);
+    if (enabled) {
+        fn_8013B3F0(lbl_8053AB10);
+        if ((regs[0x17]>>3)&1) {
+            u8* game=(u8*)lbl_8053AAF8;
+            if ((*(s32*)(game+0x4c)!=11 && game[0x88]==0) || RendererFadeAlpha802F()<255) {
+                if (self[0x130+player]==1)
+                    fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],128,255,wave);
+                else if (self[0x130+player]==2)
+                    fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],0,192,wave);
+                else fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],255,255,wave);
+            }
+        }
+        u8* game=(u8*)lbl_8053AAF8;
+        bool fade;
+        if (*(s32*)(game+0x4c)==11) fade=true;
+        else fade=game[0x88]==2;
+        if (fade) {
+            fn_8013B3F0(lbl_8053AB10);
+            JGeometry::TBox2<f32> overlay;
+            overlay.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
+            GXColor black;
+            black.r=black.g=black.b=0;
+            black.a=RendererFadeAlpha802F();
+            fn_8013B004(&overlay,&black);
+        }
+    }
+    fn_803022C4(regs,player,enabled,self[0x134+player]!=0);
+    if (effect) {
+        s32 step=effect+1;
+        fn_8013B3F0(lbl_8053AB10);
+        GXClearVtxDesc();
+        GXSetVtxDesc(GX_VA_POS,GX_DIRECT);
+        GXSetVtxDesc(GX_VA_CLR0,GX_DIRECT);
+        GXSetVtxAttrFmt(GX_VTXFMT0,GX_VA_POS,GX_POS_XYZ,GX_F32,0);
+        GXSetVtxAttrFmt(GX_VTXFMT0,GX_VA_CLR0,(GXCompCnt)0,(GXCompType)5,0);
+        GXSetChanCtrl((GXChannelID)4,GX_FALSE,GX_SRC_REG,GX_SRC_VTX,0,GX_DF_NONE,GX_AF_NONE);
+        GXSetNumChans(1);
+        GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD_NULL,GX_TEXMAP_NULL,(GXChannelID)4);
+        GXSetTevColorIn(GX_TEVSTAGE0,GX_CC_ZERO,GX_CC_ZERO,GX_CC_ZERO,(GXTevColorArg)10);
+        GXSetTevAlphaIn(GX_TEVSTAGE0,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO,(GXTevAlphaArg)6);
+        GXSetNumTevStages(1);
+        GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_ZERO,(GXLogicOp)5);
+        GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
+        GXSetZCompLoc(GX_FALSE);
+        GXSetAlphaCompare(GX_ALWAYS,0,GX_AOP_AND,GX_ALWAYS,0);
+        GXSetColorUpdate(GX_TRUE);GXSetAlphaUpdate(GX_FALSE);GXSetCullMode(GX_CULL_NONE);
+        GXSetPointSize((s32)((f32)(viewport[2]*step*6)/lbl_80541584),(GXTexOffset)0);
+        GXDrawDone();
+        GXBegin((GXPrimitive)0xb8,GX_VTXFMT0,
+            (s32)(lbl_80541588+lbl_8054158C/(f32)step)*(s32)(lbl_80541588+lbl_80541584/(f32)step));
+        s32 half=step>>1;
+        s32 left=viewport[0],top=viewport[1],width=viewport[2],height=viewport[3];
+        for (s32 y=half;y<half+160;y+=step) {
+            s32 sampleY=(s32)(lbl_80541590*(f32)(height*y)+(f32)top);
+            for (s32 x=half;x<half+240;x+=step) {
+                u8 color[4];
+                s32 sampleX=(s32)(lbl_80541594*(f32)(width*x)+(f32)left);
+                GXPeekARGB(sampleX,sampleY,(u32*)color);
+                GXWGFifo.f32=(f32)x;
+                GXWGFifo.f32=(f32)y;
+                GXWGFifo.f32=lbl_805414F8;
+                GXWGFifo.u8=color[1];GXWGFifo.u8=color[2];GXWGFifo.u8=color[3];GXWGFifo.u8=color[0];
+            }
+        }
+    }
+    if (enabled && opacity<255) {
+        fn_8013B3F0(lbl_8053AB10);
+        JGeometry::TBox2<f32> overlay;
+        overlay.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
+        GXColor black;
+        black.r=0;black.g=0;black.b=0;black.a=255-opacity;
+        fn_8013B004(&overlay,&black);
+    }
+    fn_8030DFE8(*(void**)((u8*)lbl_8053AB10+0x24),1);
+}
+#pragma opt_common_subs reset
 extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
@@ -2761,4 +2902,5 @@ extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" u8 lbl_804D69B8[];
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "sdk/stl/math.h"
+#include "JSystem/JGeometry/Box.h"
 
