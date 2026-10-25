@@ -60,8 +60,9 @@ extern "C" Actor* fn_80333958(Actor* p, s16 n)
 
 extern const f32 lbl_80541F38;
 extern "C" u16 fn_8022461C(Vec* pos, s32 room);
-extern "C" BOOL fn_803339B8(void* this_, s32 room, JGeometry::TVec3f* pos) {
-    JGeometry::TVec3f v(*pos);
+extern "C" BOOL fn_803339B8(void* this_, s32 room, const JGeometry::TVec3f* pos) {
+    Vec v;
+    JGeometry::setTVec3f(&pos->x, &v.x);
     switch (*(s32*)((char*)this_ + 0x240)) {
     case 0:
         if (*(s32*)((char*)this_ + 0x23c) != 0) {
