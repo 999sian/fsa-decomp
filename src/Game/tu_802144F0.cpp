@@ -368,7 +368,6 @@ extern "C" void fn_80214E50(u8* this_) {
     }
 }
 
-#pragma peephole reset
 void* dtor_80214F9C(void* this_, s16 flag) {
     u8* p = (u8*)this_;
     if (p != 0) {
