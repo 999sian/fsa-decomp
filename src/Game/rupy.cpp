@@ -443,6 +443,15 @@ case 3: *(JGeometry::TVec3f*)(this_ + 0x3c) = JGeometry::TVec3f(lbl_80541D88, lb
 
 // RUPY: small helpers.
 extern const f32 lbl_80541D88;
+// Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
+struct RupyResMgr {
+    virtual void r0();
+    virtual void r1();
+    virtual void r2();
+    virtual void r3();
+    virtual void* get(u32 type, const char* name);
+};
+
 extern "C" void fn_8032D534(char* p) {
     *(f32*)(p + 0x44) = lbl_80541D88;
     *(f32*)(p + 0x40) = lbl_80541D88;
@@ -602,14 +611,18 @@ extern "C" void fn_8032D6C0(void* this_) {
             *(s32*)(p + 0xb0) = 0x2000a;
         }
         room = *(s32*)(p + 0x4);
-        if (*(u8*)((u8*)fn_802D6A9C() + 0x10000 + room + 0x31df) == 1) {
-            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-            *(f32*)(p + 0x14) = lbl_80541D88;
-            *(f32*)(p + 0x40) = *(f32*)(p + 0x40) - *(f32*)(p + 0x44);
-            *(f32*)(p + 0x44) = lbl_80541D88;
+        {
+            u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
+            if (tbl[room + 0x31df] == 1) {
+                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+                *(f32*)(p + 0x14) = lbl_80541D88;
+                *(f32*)(p + 0x40) = *(f32*)(p + 0x40) - *(f32*)(p + 0x44);
+                *(f32*)(p + 0x44) = lbl_80541D88;
+                *(s32*)(p + 0x230) = 0;
+                break;
+            }
         }
-        *(s32*)(p + 0x230) = 0;
-        break;
+        /* fall through */
     case 1:
         *(s32*)(p + 0x230) = 0xb;
         break;
@@ -629,13 +642,17 @@ extern "C" void fn_8032D6C0(void* this_) {
             *(s32*)(p + 0xb0) = 0x2000a;
         }
         room = *(s32*)(p + 0x4);
-        if (*(u8*)((u8*)fn_802D6A9C() + 0x10000 + room + 0x31df) == 1) {
-            *(f32*)(p + 0x40) = lbl_80541DB4;
-            *(s32*)(p + 0x24c) = 0x30c;
-            *(u8*)(p + 0x27d) = 1;
-            *(s32*)(p + 0x230) = 9;
+        {
+            u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
+            if (tbl[room + 0x31df] == 1) {
+                *(f32*)(p + 0x40) = lbl_80541DB4;
+                *(s32*)(p + 0x24c) = 0x30c;
+                *(u8*)(p + 0x27d) = 1;
+                *(s32*)(p + 0x230) = 9;
+                break;
+            }
         }
-        break;
+        /* fall through */
     case 4:
         *(s32*)(p + 0x248) = 2;
         if (((ActorSlot13*)this_)->slot13() != 0) {
@@ -709,11 +726,14 @@ extern "C" void fn_8032D6C0(void* this_) {
         }
         *(s32*)(p + 0x274) = 0xa;
         room = *(s32*)(p + 0x4);
-        if (*(u8*)((u8*)fn_802D6A9C() + 0x10000 + room + 0x31df) == 1) {
-            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-            *(f32*)(p + 0x14) = lbl_80541D88;
-            *(f32*)(p + 0x40) = *(f32*)(p + 0x40) - *(f32*)(p + 0x44);
-            *(f32*)(p + 0x44) = lbl_80541D88;
+        {
+            u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
+            if (tbl[room + 0x31df] == 1) {
+                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+                *(f32*)(p + 0x14) = lbl_80541D88;
+                *(f32*)(p + 0x40) = *(f32*)(p + 0x40) - *(f32*)(p + 0x44);
+                *(f32*)(p + 0x44) = lbl_80541D88;
+            }
         }
         *(s32*)(p + 0x230) = 0xf;
         break;
