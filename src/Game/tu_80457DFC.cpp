@@ -1039,6 +1039,16 @@ soundStarted:
 
 #include "JSystem/JAudio/JAUInitializer.h"
 #include "JSystem/JAudio/JAUAudioArchive.h"
+extern "C" void fn_8003C984(void*);
+static inline void constructAudience(u8* p) {
+    fn_8003C984(p);
+    *(void**)p = lbl_80495480;
+    *(void**)p = lbl_804954F8;
+    *(u32*)(p + 0x50) = 1;
+    PSMTXIdentity((MtxPtr)(p + 0x54));
+    *(void**)p = lbl_804954D8;
+    *(void**)p = lbl_804B2074;
+}
 class WaveController {
 public:
     WaveController(s32 a, s32 b, s32 c);
@@ -1067,28 +1077,29 @@ extern "C" void fn_8003C8D8(void*);
 extern "C" void fn_8045A0E4(int count);
 extern "C" void __ct__12JAISoundInfoFb(void*, bool);
 extern "C" void __ct__14WaveControllerFlll(void*, s32, void*, s32);
-extern "C" void fn_80459AE4(u8* this_, JKRSolidHeap* heap, u32 size, void* data, JKRArchive* arc) {
+extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchive* arc) {
+    u8 i;
     JAU_JASInitializer jas;
     jas.mChannelPoolCount = lbl_8053A228;
     jas.mAudioMemSize = size;
     jas.mDSPLevel = lbl_8053A240;
-    jas.initJASystem(heap);
+    jas.initJASystem((JKRSolidHeap*)heap);
     JAU_JAIInitializer jai;
     jai.mSeCount = lbl_8053A220;
     jai.mSeqCount = lbl_8053A224;
     jai.initJAInterface();
-    *(JASAudioReseter**)(this_ + 0x2c) = new (heap, 0) JASAudioReseter();
-    *(JAUSoundMgr**)(this_ + 0x30) = new (heap, 0) JAUSoundMgr();
+    *(JASAudioReseter**)(this_ + 0x2c) = new ((JKRHeap*)heap, 0) JASAudioReseter();
+    *(JAUSoundMgr**)(this_ + 0x30) = new ((JKRHeap*)heap, 0) JAUSoundMgr();
     *(u8**)(this_ + 0x34) = *(u8**)(this_ + 0x30) + 4;
     *(u8**)(this_ + 0x38) = *(u8**)(this_ + 0x30) + 0x728;
-    u8* au = (u8*)operator new(0x84, heap, 0);
+    u8* au = (u8*)operator new(0x84, (JKRHeap*)heap, 0);
     if (au) {
-        u8* base = au;
+        JAIAudience* base = (JAIAudience*)au;
         fn_8003C984(au);
         *(void**)au = lbl_80495480;
         *(void**)base = lbl_804954F8;
-        *(u32*)(base + 0x50) = 1;
-        PSMTXIdentity((MtxPtr)(base + 0x54));
+        *(u32*)((u8*)base + 0x50) = 1;
+        PSMTXIdentity((MtxPtr)((u8*)base + 0x54));
         *(void**)au = lbl_804954D8;
         *(void**)au = lbl_804B2074;
     }
@@ -1127,23 +1138,17 @@ extern "C" void fn_80459AE4(u8* this_, JKRSolidHeap* heap, u32 size, void* data,
     ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x2a4))->moveVolume(lbl_80543EB4, 0);
     struct FxSet { JASDsp::FxlineConfig_ c[4]; };
     FxSet fx = *(FxSet*)lbl_80491600;
-    for (u8 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         JASDsp::FxlineConfig_* cfg = &fx.c[i];
-        s16* buf = new (heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)];
+        s16* buf = new ((JKRHeap*)heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)];
         JASDsp::setFXLine(i, buf, cfg);
     }
-    void* w = operator new(0x5c);
-    if (w) __ct__14WaveControllerFlll(w, 0, heap, 4);
-    *(void**)(this_ + 0x14) = w;
+    *(WaveController**)(this_ + 0x14) = new WaveController(0, heap, 4);
     for (int k = 0; k < 4; k++) {
-        void* w2 = operator new(0x5c);
-        if (w2) __ct__14WaveControllerFlll(w2, 0, heap, 4);
-        *(void**)(this_ + k * 4 + 0x18) = w2;
+        *(WaveController**)(this_ + k * 4 + 0x18) = new WaveController(0, heap, 4);
     }
-    w = operator new(0x5c);
-    if (w) __ct__14WaveControllerFlll(w, 0, heap, 1);
-    *(void**)(this_ + 0x28) = w;
-    u8* si = (u8*)operator new(0x10, heap, 0);
+    *(WaveController**)(this_ + 0x28) = new WaveController(0, heap, 1);
+    u8* si = (u8*)operator new(0x10, (JKRHeap*)heap, 0);
     if (si) {
         __ct__12JAISoundInfoFb(si, true);
         JASGlobalInstance<JAUSoundInfo>::sInstance = (JAUSoundInfo*)(si + 4);
@@ -1156,7 +1161,7 @@ extern "C" void fn_80459AE4(u8* this_, JKRSolidHeap* heap, u32 size, void* data,
     }
     *(u8**)(this_ + 0x40) = si;
     if (arc == 0) {
-        arc = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_COMP, heap, JKRArchive::MOUNT_DIRECTION_HEAD);
+        arc = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_DVD, (JKRHeap*)heap, JKRArchive::MOUNT_DIRECTION_HEAD);
     }
     JASWaveArcLoader::setCurrentDir(lbl_8053A248);
     *(JAUSectionHeap**)(this_ + 0x44) = JAUNewSectionHeap(true);
