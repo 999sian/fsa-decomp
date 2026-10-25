@@ -12,6 +12,10 @@ extern "C" u8* lbl_8053AB10;
 static inline void setState(u8* p, s32 s) {
     *(s32*)(p + 0x230) = s;
     switch (*(s32*)(p + 0x230)) {
+    case 0:
+    case 2:
+    case 4:
+        break;
     case 1:
         *(s32*)(p + 0x24c) = 0;
         break;
@@ -175,19 +179,55 @@ extern "C" void fn_801306BC(u8* p) {
             *(f32*)(obj + 0x808) = x;
             *(f32*)(obj + 0x80c) = y - r;
             *(f32*)(obj + 0x810) = x;
-            *(f32*)(obj + 0x814) = y + r;
+            *(f32*)(obj + 0x814) = r + y;
             obj[0x7f6] = 0;
         }
     }
     st = *(s32*)(p + 0x230);
-    if (st == 3) {
+    switch (st) {
+    case 0:
+        if ((*(u8 (**)(u8*))(*(u8**)p + 0x34))(p)) {
+            setState(p, 1);
+        }
+        break;
+    case 1:
+        *(s32*)(p + 0x24c) += 1;
+        if (*(s32*)(p + 0x24c) >= 0x78) {
+            u8* h = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+            if (h != NULL && *(s32*)(h + 0x98) != 1) {
+                *(s32*)(h + 0x98) = 1;
+                fn_80125BF4();
+            }
+        }
+        if (fn_802D800C(fn_802D6A9C(), *(s32*)(p + 0x23c))) {
+            setState(p, 2);
+        }
+        break;
+    case 2: {
+        u8* mgr = *(u8**)(lbl_8053AB10 + 0x30);
+        if (mgr[0x284] == 0) {
+            mgr[0x284] = 1;
+            *(f32*)(mgr + 0x28c) = lbl_8053CC8C;
+        }
+        if ((u8)fn_80130370(p)) {
+            s32 i = 0;
+            do {
+                fn_80230BF4(i, 3);
+                fn_80230498(i, fn_8023E724(i), 0x3f, 0xff, -0x80, -0x80, 1);
+                i++;
+            } while (i < 4);
+            setState(p, 3);
+        }
+        break;
+    }
+    case 3: {
         u8* mgr = *(u8**)(lbl_8053AB10 + 0x30);
         if (mgr[0x284] == 0) {
             mgr[0x284] = 1;
             *(f32*)(mgr + 0x28c) = lbl_8053CC8C;
         }
         *(s32*)(p + 0x248) += 1;
-        if (*(s32*)(p + 0x248) > 0x3b) {
+        if (*(s32*)(p + 0x248) >= 0x3c) {
             if (*(s32*)(p + 0x244) < 4) {
                 u8* e = lbl_8049EA58 + *(s32*)(p + 0x244) * 12;
                 if (fn_8013056C((char*)p, *(u16*)e, *(s32*)(e + 4), *(s32*)(e + 8)) >= 0) {
@@ -197,40 +237,9 @@ extern "C" void fn_801306BC(u8* p) {
                 setState(p, 5);
             }
         }
-    } else if (st < 3) {
-        if (st == 1) {
-            *(s32*)(p + 0x24c) += 1;
-            if (*(s32*)(p + 0x24c) > 0x77) {
-                u8* h = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
-                if (h != NULL && *(s32*)(h + 0x98) != 1) {
-                    *(s32*)(h + 0x98) = 1;
-                    fn_80125BF4();
-                }
-            }
-            if (fn_802D800C(fn_802D6A9C(), *(s32*)(p + 0x23c))) {
-                setState(p, 2);
-            }
-        } else if (st < 1) {
-            if (st >= 0 && (*(u8 (**)(u8*))(*(u8**)p + 0x34))(p)) {
-                setState(p, 1);
-            }
-        } else {
-            u8* mgr = *(u8**)(lbl_8053AB10 + 0x30);
-            if (mgr[0x284] == 0) {
-                mgr[0x284] = 1;
-                *(f32*)(mgr + 0x28c) = lbl_8053CC8C;
-            }
-            if (fn_80130370(p)) {
-                s32 i = 0;
-                do {
-                    fn_80230BF4(i, 3);
-                    fn_80230498(i, fn_8023E724(i), 0x3f, 0xff, -0x80, -0x80, 1);
-                    i++;
-                } while (i < 4);
-                setState(p, 3);
-            }
-        }
-    } else if (st != 5 && st < 5) {
+        break;
+    }
+    case 4: {
         u8* mgr = *(u8**)(lbl_8053AB10 + 0x30);
         if (mgr[0x284] == 0) {
             mgr[0x284] = 1;
@@ -264,6 +273,8 @@ extern "C" void fn_801306BC(u8* p) {
             *(s32*)(p + 0x244) += 1;
             setState(p, 3);
         }
+        break;
+    }
     }
 }
 
