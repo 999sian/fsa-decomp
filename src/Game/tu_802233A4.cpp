@@ -204,6 +204,11 @@ void fn_802A20F0(void* mgr, JGeometry::TVec3<f32>* pos, s32 a, u32 room, s32 b, 
 void fn_80223AD8(void* this_, s32 state);
 void fn_802238CC(void* this_);
 
+static inline void SpawnPoint_802233A4(f32 x, f32 y, f32 z, u32 room) {
+    JGeometry::TVec3<f32> v(x, y, z);
+    fn_802A20F0(lbl_8053AC98, &v, -1, room, 0, 0);
+}
+
 static inline void SpawnCorner_802233A4(u32 room, f32 x, f32 y) {
     JGeometry::TVec3<f32> v(x, y, 0.0f);
     fn_802A20F0(lbl_8053AC98, &v, -1, room, 0, 0);
@@ -313,10 +318,10 @@ void fn_802238CC(void* this_) {
         y0 += dy;
         x1 += dx;
         y1 += dy;
-        SpawnCorner_802233A4(x0, y0, *(u32*)(p + 0x4));
-        SpawnCorner_802233A4(x1, y0, *(u32*)(p + 0x4));
-        SpawnCorner_802233A4(x1, y1, *(u32*)(p + 0x4));
-        SpawnCorner_802233A4(x0, y1, *(u32*)(p + 0x4));
+        SpawnCorner_802233A4(*(u32*)(p + 0x4), x0, y0);
+        SpawnCorner_802233A4(*(u32*)(p + 0x4), x1, y0);
+        SpawnCorner_802233A4(*(u32*)(p + 0x4), x1, y1);
+        SpawnCorner_802233A4(*(u32*)(p + 0x4), x0, y1);
     }
 }
 
