@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" char lbl_804B16E0[];
