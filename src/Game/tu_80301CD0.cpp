@@ -81,8 +81,8 @@ static inline void tu80301_tickA(Elem28_80301CD0* p) {
 // This TU's .bss (0x804DBC18-0x805076E8), in retail order.
 static u8 lbl_804DBC18[0x20000];
 static u8 lbl_804FBC18[0x8E00];
-static s32 lbl_80504A18[4];
-static s32 lbl_80504A28[4];
+static int lbl_80504A18[4];
+static int lbl_80504A28[4];
 static Elem28_80301CD0 lbl_80504A38[4][16];
 static Elem28_80301CD0 lbl_80505438[4][40];
 static u32 lbl_80506D38[4];
@@ -1461,44 +1461,42 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
     s32 r25;
     s32 c;
     s32 x;
-    s32* tbl;
     u8* e;
-    u8* p2;
-    u8* p3;
     u8* p4;
     u8* p5;
     u8* p6;
+    Rec2_80301CD0* q2;
+    Rec3_80301CD0* q3;
 
     r25 = fn_8022EA0C(i);
     e = lbl_80506DE8 + i * 0x68;
-    p2 = e + 2;
-    p3 = e + 3;
-    tbl = (s32*)lbl_80506D48;
-    p3[0] = (p3[0] & 0xFC) | (lbl_8053AD08 & 3);
-    p2[0] = (p2[0] & 0xFC) | (r25 & 3);
+    q2 = (Rec2_80301CD0*)(e + 2);
+    q3 = (Rec3_80301CD0*)(e + 3);
+    q3->lo = lbl_8053AD08 & 3;
+    q2->c = r25 & 3;
     if (fn_8023DE58(r25) < 8) {
-        p2[0] = (p2[0] & 0xE3) | ((0 << 2) & 0x1C);
+        q2->b = 0;
     } else {
-        p2[0] = (p2[0] & 0xE3) | (((fn_8023DE58(r25) - 7) << 2) & 0x1C);
+        q2->b = fn_8023DE58(r25) - 7;
     }
-    p2[0] = (p2[0] & 0x3F) | ((tbl[i] & 3) << 6);
+    q2->a = ((s32*)lbl_80506D48)[i] & 3;
 
     if (lbl_8053ACD0 != 0 && (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) != 0) {
         if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 9 || ((u8*)lbl_8053AAF8)[0x80] != 0) {
-            p2[0] |= 0x20;
+            q2->flag = 1;
         } else if (lbl_8053ACD8[i] == 0) {
-            p2[0] &= 0xDF;
+            q2->flag = 0;
         } else if (fn_8037F1E4(i) < 1) {
-            p2[0] |= 0x20;
+            q2->flag = 1;
         } else if (fn_8037F1E4(i) > 5) {
-            p2[0] |= 0x20;
+            q2->flag = 1;
         } else {
-            p2[0] &= 0xDF;
+            q2->flag = 0;
         }
-        p3[0] = (p3[0] & 0xF3) | (((lbl_8053ACEC[i] > 1 ? lbl_8053ACE8[i] : 0) << 2) & 0x0C);
+        q3->m = lbl_8053ACEC[i] > 1 ? lbl_8053ACE8[i] : 0;
     } else {
-        p2[0] |= 0x20;
-        p3[0] &= 0xF3;
+        q2->flag = 1;
+        q3->m = 0;
     }
 
     p4 = e + 4;
@@ -1510,7 +1508,7 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
     *(s32*)(e + 4) = 0;
     p5 = e + 5;
     p6 = e + 6;
-    if (tbl[i] == 1) {
+    if (((s32*)lbl_80506D48)[i] == 1) {
         p5[0] = (p5[0] & 0x0F) | 0xF0;
     }
     if (((u8*)lbl_8053AAF0)[0x78] < 4 || (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
@@ -1521,7 +1519,7 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
     if (lbl_8053ACD0 == 0 && !fn_80379F84(lbl_8053AD68)) {
         goto chain2;
     }
-    if ((tbl[i] & 1) == 0) {
+    if ((((s32*)lbl_80506D48)[i] & 1) == 0) {
         p5[0] = (p5[0] & 0x80) | (*(s32*)((u8*)lbl_80529DEC + 0xd8 + i * 4) & 0x7F);
         p4[0] = (p4[0] & 0x1F) | ((((*(s32*)((u8*)lbl_80529DEC + 0xc8 + i * 4)) / 4 - 1) << 5) & 0xE0);
         p6[0] = (p6[0] & 0xFC) | (fn_8037EE8C(i) & 3);
@@ -1533,7 +1531,7 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
         }
         e[7] = (x >> 6) & 0xFF;
         p6[0] = (p6[0] & 0x03) | ((x & 0x3F) << 2);
-    } else if (tbl[i] == 1) {
+    } else if (((s32*)lbl_80506D48)[i] == 1) {
         c = 0;
         if (lbl_8053AEC8 != NULL) {
             u8 hv = ((u8*)lbl_8053AEC8)[0x40];
@@ -1547,12 +1545,12 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
 
 chain2:
     if (lbl_8053ACD0 != 0) {
-        if (tbl[i] == 2) {
+        if (((s32*)lbl_80506D48)[i] == 2) {
             r25 = fn_8023DE58(r25);
             c = fn_802D7804(fn_802D6A9C(), r25, 1);
             p5[0] = (p5[0] & 0x7F) | (c << 7);
             goto tail;
-        } else if ((tbl[i] & 1) == 1) {
+        } else if ((((s32*)lbl_80506D48)[i] & 1) == 1) {
             if (fn_8023DE58(r25) >= 8) {
                 if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xb && ((u8*)lbl_8053AAF8)[0x88] != 2) {
                     s32 r26;
@@ -1590,7 +1588,7 @@ chain2:
                     p5[0] = (p5[0] & 0xF0) | ((r26 >> 1) & 0x0F);
                 }
             }
-            if (tbl[i] == 3) {
+            if (((s32*)lbl_80506D48)[i] == 3) {
                 c = fn_802D7804(fn_802D6A9C(), fn_8023DE58(r25), 0xc);
                 if (c != 0) {
                     p5[0] = (p5[0] & 0xCF) | ((*(u16*)((u8*)fn_802D6A9C() + 0x131b8 + fn_8023DE58(r25) * 2) << 2) & 0x30);
@@ -1609,9 +1607,9 @@ chain2:
 
 tail:
     if (fn_80379F84(lbl_8053AD68)) {
-        if (tbl[i] == 0) {
+        if (((s32*)lbl_80506D48)[i] == 0) {
             p5[0] |= 0x80;
-        } else if (tbl[i] == 3) {
+        } else if (((s32*)lbl_80506D48)[i] == 3) {
             p5[0] |= 0x80;
         }
     }
@@ -1675,7 +1673,7 @@ extern u8 lbl_8053ACFC[4];
 extern u16 lbl_8053AD14[4];
 extern "C" s32 fn_8030905C(s32 self) {
 *(void**)self=lbl_804AA8B8;
-for(s32 i=0;i<4;i++) {
+for(int i=0;i<4;i++) {
 lbl_80504A18[i]=0;
 lbl_80504A28[i]=0;
 for(int j=0;j<32;j++) {
