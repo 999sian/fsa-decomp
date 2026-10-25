@@ -22,18 +22,6 @@ public:
     void draw(f32, f32, const J2DGrafContext*);
 };
 
-struct HudDrawState {
-    u8 pad00[4];
-    J2DScreen* mainScreen;
-    J2DScreen* activeScreens[4];
-    u8 pad18[0x14];
-    J2DScreen* warningScreens[4];
-    u8 pad3c[0x10];
-    J2DOrthoGraph* graph;
-    u8 pad50[0xa0];
-    void* panel;
-};
-
 extern "C" void fn_8013B490(void*);
 extern u8* lbl_8053AB10;
 extern const f32 lbl_80543A40;
