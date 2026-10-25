@@ -215,9 +215,7 @@ extern const f32 lbl_8053F34C;
 extern const f32 lbl_8053F350;
 extern const f32 lbl_8053F354;
 extern const f32 lbl_8053F358;
-static inline f32 boitRand() { return ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1(); }
-static inline f32 boitRandF(f32 scale) { return scale * boitRand(); }
-static inline f32 boitRandPM(f32 scale) { return scale * (lbl_8053F34C * boitRand() - lbl_8053F340); }
+
 
 #pragma opt_propagation off
 #pragma opt_common_subs off
@@ -244,9 +242,9 @@ extern "C" bool fn_801DC3C4(u8* this_) {
                             JGeometry::TVec3<f32> v2;
                             JGeometry::TVec3<f32> v1;
                             if (flag) {
-                                f32 c, b, a;
+                                f32 b, a, c;
                                 a = lbl_8053F34C; b = lbl_8053F348; c = lbl_8053F350;
-                                v1.set(b * (a * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1() - lbl_8053F340),
+                                v1.set((a * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1() - lbl_8053F340) * b,
                                        c - a * ((BoitGame*)lbl_8053AAF8)->rnd.get_ufloat_1(),
                                        lbl_8053F344);
                                 rupy->mVel = v1;
