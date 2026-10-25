@@ -1477,9 +1477,9 @@ extern "C" void fn_8029A494(void* p) {
     }
 }
 
-static inline s32 HouseFallMode(char* self) {
+static inline int HouseFallMode(char* self) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
-        s32 room = *(s32*)(self + 4);
+        int room = *(s32*)(self + 4);
         if (room == fn_8023DE58(0)) {
             s32 r = fn_80238BC4(*(void**)(self + 0x198));
             if (r >= 0 && r < 4) {
