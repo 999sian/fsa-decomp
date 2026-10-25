@@ -81,6 +81,13 @@ struct UnkDrawRec {
     s32 field_38;
 };
 
+struct DrawTables97070 {
+    s32 first[6];
+    s32 second[6];
+    u8 name0[0x14];
+    u8 name1[0x14];
+};
+
 extern u8 lbl_80468428[];
 extern "C" void fn_80197070(u8* this_) {
     u8* tbl = lbl_80468428;
@@ -107,12 +114,14 @@ extern "C" void fn_80197070(u8* this_) {
             DrawRec local;
             local.b1d = 5;
             local.w30 = 0x11;
-            s32 total = *(s32*)(this_ + 0x254) + *(s32*)(tbl + *(u16*)(this_ + 0x94) * 4);
+            s32* table = (s32*)tbl;
+            s32 total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
             fn_801F02BC(this_, tbl + 0x30, (void*)total, &local, (void*)-1, 0, 0, lbl_8053E370, lbl_8053E370);
             ((u8*)&local.w10)[3] = (u8)(s32)*(f32*)(this_ + 0x270);
-            if (*(u32*)(this_ + 0x138) == 0) {
+            total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
+        if (*(u32*)(this_ + 0x138) == 0) {
                 fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl + 0x30,
-                            *(s32*)(this_ + 0x254) + *(s32*)(tbl + *(u16*)(this_ + 0x94) * 4), 0);
+                            total, 0);
             }
         }
         break;
@@ -121,12 +130,13 @@ extern "C" void fn_80197070(u8* this_) {
         DrawRec local;
         local.b1f = 0;
         local.b1d = 5;
-        s32 total = *(s32*)(this_ + 0x254) + *(s32*)(tbl + 0x18 + *(u16*)(this_ + 0x94) * 4);
+        s32* table = (s32*)(tbl + 0x18);
+        s32 total = *(s32*)(this_ + 0x254) + table[*(u16*)(this_ + 0x94)];
         fn_801F06F0(this_, tbl + 0x44, (void*)total, &local, (void*)-1, lbl_8053E370, lbl_8053E370);
         ((u8*)&local.w10)[3] = (u8)(s32)*(f32*)(this_ + 0x270);
         if (*(u32*)(this_ + 0x138) == 0) {
             fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), (u8*)&local, 0x407, tbl + 0x44,
-                        *(s32*)(this_ + 0x254) + *(s32*)(tbl + 0x18 + *(u16*)(this_ + 0x94) * 4), 0);
+                        total, 0);
         }
         break;
     }
