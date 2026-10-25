@@ -1997,7 +1997,6 @@ extern "C" void fn_803C9898(u8* p) {
     s32 row;
     s32 i;
     u8* q;
-    u32 unset;
     if (mx < sum) {
         mx = sum;
     }
