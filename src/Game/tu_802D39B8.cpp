@@ -48,6 +48,10 @@ struct RoomArrays {
 };
 
 extern char* lbl_8053AAF8;
+static inline BOOL roomPlayerFlag(s32 index) {
+    u8 mask = 1 << index;
+    return (*(u8*)(lbl_8053AAF8 + 0x82) & mask) != 0;
+}
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
@@ -206,6 +210,198 @@ extern "C" void fn_802D3A18(char* p) {
     }
 }
 
+extern "C" u8* fn_80403328(const char*);
+extern "C" void fn_80134DC0();
+extern const char* lbl_804A9710[][4];
+extern const char* lbl_804A9830[][4];
+extern const char lbl_8046E7B8[];
+extern const char lbl_8046E7C8[];
+#pragma opt_propagation on
+extern "C" void fn_802D3D48(char* p) {
+    u32 index;
+    s32 column;
+    u8* text;
+    *(s32*)(*(char**)(*(char**)(lbl_8053AAF8+4)+0xC)+0x1328C)=0;
+    for (s32 i=0;i<10;i++)
+        for (u32 j=0;j<10;j++)
+            ((RoomArrays*)p)->roomNumbers[i][j]=255;
+    index=0;
+    column=0;
+    if (*(u8*)(lbl_8053AAF8+0x7F)==1) {
+        if (*(u8*)(lbl_8053AAF8+0x7E)==1)
+            text=fn_80403328(lbl_804A9710[*(s32*)(p+4)][*(s32*)(p+8)]);
+        else
+            text=fn_80403328(lbl_804A9830[*(s32*)(p+4)][*(s32*)(p+8)]);
+        u8* scan=text;
+        for (;;) { if (*scan==0x2Cu) break; index++; scan++; }
+        *(s32*)(p+0x14)=text[index+1]-'0';
+        *(s32*)(p+0xC)=*(s32*)(p+0x14);
+        *(s32*)(p+0x18)=text[index+3]-'0';
+        *(s32*)(p+0x10)=*(s32*)(p+0x18);
+        index+=5;
+        *(s32*)(p+0x34)=text[index]-'0';
+        if (text[index+1]!=0x2Cu && text[index+1]!=0xDu) {
+            if (*(s32*)(p+0x34)==0) *(s32*)(p+0x34)=0;
+            else if (*(s32*)(p+0x34)==1) *(s32*)(p+0x34)=10;
+            else if (*(s32*)(p+0x34)==2) *(s32*)(p+0x34)=20;
+            else *(s32*)(p+0x34)=30;
+            *(s32*)(p+0x34)+=(u8)(text[index+1]-'0');
+            ++index;
+        }
+        *(s32*)(p+0x38)=*(s32*)(p+0x34);
+        *(s32*)(p+0x3C)=text[index+2]-'0';
+        index+=4;
+        *(s32*)(p+0x40)=text[index]-'0';
+        if (text[index+1]!=0x2Cu && text[index+1]!=0xDu) {
+            if (*(s32*)(p+0x40)==0) *(s32*)(p+0x40)=0;
+            else if (*(s32*)(p+0x40)==1) *(s32*)(p+0x40)=10;
+            else if (*(s32*)(p+0x40)==2) *(s32*)(p+0x40)=20;
+            else *(s32*)(p+0x40)=30;
+            *(s32*)(p+0x40)+=(u8)(text[index+1]-'0');
+            ++index;
+        }
+        index+=2;
+        *(s32*)(p+0x44)=text[index]-'0';
+        if (text[index+1]!=0x2Cu && text[index+1]!=0xDu) {
+            if (*(s32*)(p+0x44)==0) *(s32*)(p+0x44)=0;
+            else if (*(s32*)(p+0x44)==1) *(s32*)(p+0x44)=10;
+            else if (*(s32*)(p+0x44)==2) *(s32*)(p+0x44)=20;
+            else *(s32*)(p+0x44)=30;
+            *(s32*)(p+0x44)+=(u8)(text[index+1]-'0');
+            ++index;
+        }
+        bool flag;
+        if (*(u8*)(lbl_8053AAF8+0x7F)==0) flag=false;
+        else {
+            char* room=*(char**)(*(char**)(lbl_8053AAF8+4)+0xC);
+            if (*(s32*)(room+4)==8 && *(s32*)(room+8)==3) flag=true;
+            else flag=false;
+        }
+        if (!flag) *(s32*)(p+0x48)=0;
+        else *(s32*)(p+0x48)=0;
+        *(s32*)(p+0x4C)=1;
+        index+=2;
+        *(s32*)(p+0x50)=text[index]-'0';
+        if (text[index+1]!=0x2Cu && text[index+1]!=0xDu) {
+            if (*(s32*)(p+0x50)==0) *(s32*)(p+0x50)=0;
+            else if (*(s32*)(p+0x50)==1) *(s32*)(p+0x50)=10;
+            *(s32*)(p+0x50)+=(u8)(text[index+1]-'0');
+            ++index;
+        }
+        *(s32*)(p+0x54)=text[index+2]-'0';
+        if (*(s32*)(p+0x54)<2 || *(s32*)(p+0x54)>=8) *(s32*)(p+0x54)=5;
+        index+=4;
+        *(s32*)(p+0x58)=text[index]-'0';
+        for (;;) {
+            if (text[index]==0xDu && text[index+1]==0xAu) {index+=2;break;}
+            index++;
+        }
+        RoomArrays* row=(RoomArrays*)p;
+        for (;;) {
+            u8* scan=text+index;
+            u8 c=*scan;
+            if (c=='e' && scan[1]=='n' && scan[2]=='d') break;
+            if (c==0xDu && scan[1]==0xAu) {
+                column=0; index+=2; row=(RoomArrays*)((char*)row+10);
+            } else if (c==0x2Cu) {
+                ++index;
+            } else if (c=='N') {
+                ++column;index+=4;
+            } else {
+                u8 next=scan[1];
+                u8 value=c-'0';
+                if (next!=0x2Cu && next!=0xDu) {
+                    value = value <= 9 ? (u8)(value*10) : 0;
+                    value += (u8)(next-'0');
+                    ++index;
+                }
+                ++index;
+                row->roomNumbers[0][column]=value;
+                ++column;
+            }
+        }
+    } else {
+        fn_80134DC0();
+        s32 count=0;
+        for (s32 i=0;i<4;i++) {
+            u32 flag=(*(u8*)(lbl_8053AAF8+0x82) & (u8)(1<<i))!=0;
+            if (flag==1) count++;
+        }
+        s32 two=0;
+        for (s32 i=0, shift=0;i<count;i++,shift+=2) {
+            if (((*(u8*)(lbl_8053AAF8+0x83)>>shift)&3)==2) two++;
+        }
+        s32 line=*(s32*)(p+8)+*(s32*)(p+4)*4;
+        if (two!=0) text=fn_80403328(lbl_8046E7B8);
+        else text=fn_80403328(lbl_8046E7C8);
+        *(s32*)(p+0x14)=1;
+        *(s32*)(p+0x18)=1;
+        u32 cursor=0;
+        if (line!=0) {
+            do {
+                for (;;) {
+                    if (text[cursor]==0xDu && text[cursor+1]==0xAu) {cursor+=2;column++;break;}
+                    cursor++;
+                }
+            } while (line!=column);
+        }
+        u8 value=text[cursor]-'0';
+        u8 next=text[cursor+1];
+        if (next!=0x2Cu && next!=0xDu) {
+            if (value==0) value=0;
+            else if (value==1) value=10;
+            else if (value==2) value=20;
+            else value=30;
+            value+=(u8)(next-'0');
+            ++cursor;
+        }
+        ((u8*)p)[0x6B]=value;
+        cursor+=2;
+        *(s32*)(p+0x34)=text[cursor]-'0';
+        if (text[cursor+1]!=0x2Cu && text[cursor+1]!=0xDu) {
+            if (*(s32*)(p+0x34)==0) *(s32*)(p+0x34)=0;
+            else if (*(s32*)(p+0x34)==1) *(s32*)(p+0x34)=10;
+            else if (*(s32*)(p+0x34)==2) *(s32*)(p+0x34)=20;
+            else *(s32*)(p+0x34)=30;
+            *(s32*)(p+0x34)+=(u8)(text[cursor+1]-'0');
+            ++cursor;
+        }
+        *(s32*)(p+0x38)=*(s32*)(p+0x34);
+        *(s32*)(p+0x3C)=text[cursor+2]-'0';
+        cursor+=4;
+        *(s32*)(p+0x40)=text[cursor]-'0';
+        if (text[cursor+1]!=0x2Cu && text[cursor+1]!=0xDu) {
+            if (*(s32*)(p+0x40)==0) *(s32*)(p+0x40)=0;
+            else if (*(s32*)(p+0x40)==1) *(s32*)(p+0x40)=10;
+            else if (*(s32*)(p+0x40)==2) *(s32*)(p+0x40)=20;
+            else *(s32*)(p+0x40)=30;
+            *(s32*)(p+0x40)+=(u8)(text[cursor+1]-'0');
+            ++cursor;
+        }
+        cursor+=2;
+        *(s32*)(p+0x48)=text[cursor]-'0';
+        if (text[cursor+1]!=0x2Cu && text[cursor+1]!=0xDu) {
+            if (*(s32*)(p+0x48)==0) *(s32*)(p+0x48)=0;
+            else if (*(s32*)(p+0x48)==1) *(s32*)(p+0x48)=10;
+            *(s32*)(p+0x48)+=(u8)(text[cursor+1]-'0');
+            ++cursor;
+        }
+        cursor+=2;
+        *(s32*)(p+0x50)=text[cursor]-'0';
+        if (text[cursor+1]!=0x2Cu && text[cursor+1]!=0xDu) {
+            if (*(s32*)(p+0x50)==0) *(s32*)(p+0x50)=0;
+            else if (*(s32*)(p+0x50)==1) *(s32*)(p+0x50)=10;
+            *(s32*)(p+0x50)+=(u8)(text[cursor+1]-'0');
+            ++cursor;
+        }
+        *(s32*)(p+0x4C)=text[cursor+2]-'0';
+        if (*(s32*)(p+0x4C)!=1 && *(s32*)(p+0x4C)!=2) *(s32*)(p+0x4C)=1;
+        *(s32*)(p+0x54)=text[cursor+4]-'0';
+        if (*(s32*)(p+0x54)<2 || *(s32*)(p+0x54)>=8) *(s32*)(p+0x54)=5;
+        *(s32*)(p+0x58)=text[cursor+6]-'0';
+    }
+}
+#pragma opt_propagation reset
 extern "C" bool fn_802D46D8(char*, int index, unsigned int bit, u8 set) {
     unsigned int word = bit / 32;
     if (!set) {
