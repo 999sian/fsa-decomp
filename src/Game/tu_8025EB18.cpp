@@ -256,6 +256,7 @@ extern "C" bool fn_8025EE34(char* p, s32 id) {
 
 extern "C" bool fn_8025EE48(char* p, s32 id) {
     bool ok;
+    s32 ok2;
     if ((u8)fn_80270A8C(p))
         return false;
     if ((u8)(U8(p, 0xd64) == 1) == 1)
@@ -264,7 +265,7 @@ extern "C" bool fn_8025EE48(char* p, s32 id) {
         ok = true;
     else
         ok = false;
-    if (!ok)
+    if (ok == 0)
         return false;
     if (Player_GetField_0xce8(p))
         return false;
@@ -371,6 +372,44 @@ search:
     S32(p, 0xd74) = 3;
     U8(p, 0x1174) = 1;
     fn_8024F0E8(p, 0x20022);
+    return true;
+}
+
+extern "C" bool fn_8025F2CC(char* p) {
+    bool bVar1;
+    if ((u8)fn_80270A8C(p) != 0) {
+        return false;
+    }
+    u8 d64 = U8(p, 0xd64);
+    if (d64 == 1) {
+        return false;
+    }
+    if (!(((S32(p, 0xd70) < 0 || S32(p, 0xd70) >= 4) && S32(p, 0xd68) < 0) || d64 != 0)) {
+        bVar1 = true;
+    } else {
+        bVar1 = false;
+    }
+    if (bVar1) {
+        return false;
+    }
+    if (Player_GetField_0xce8(p) != 0) {
+        return false;
+    }
+    if (fn_80241230(p) != 0) {
+        return false;
+    }
+    if (fn_802412A4(p) != 0) {
+        return false;
+    }
+    if (Player_GetField_0x454(p) != 0) {
+        return false;
+    }
+    if (F32(p, 0x10) > lbl_80540150) {
+        return false;
+    }
+    if (S32(p, 0xd88) < 0 && Player_IsLinked(p) && fn_802486A0(p) == 5) {
+        return false;
+    }
     return true;
 }
 
@@ -1619,6 +1658,7 @@ extern "C" void fn_802635C8(char* p) {
 extern "C" void fn_802635D4(void) {
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802635D8(char* p) {
     ++U8(p, 0x3fc);
     if (U8(p, 0x3fc) < 2) {
@@ -1632,8 +1672,10 @@ extern "C" void fn_802635D8(char* p) {
         fn_80251AEC(p, 0);
     }
     const JGeometry::TVec3<f32>& pos = lbl_8046B490[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
-    f32 x = pos.x;
-    f32 y = pos.y;
+    f32 x;
+    f32 y;
+    x = pos.x;
+    y = pos.y;
     F32(p, 0x2f4) = x;
     f32 z = pos.z;
     F32(p, 0x2f8) = y;
@@ -1642,7 +1684,7 @@ extern "C" void fn_802635D8(char* p) {
     fn_8025EB18(p);
     fn_80268B3C(p);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_802636C4(char* p) {
     p[0x458] = 0;
 }
