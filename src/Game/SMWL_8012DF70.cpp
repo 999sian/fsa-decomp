@@ -155,14 +155,19 @@ extern "C" void fn_8012E230(Actor* this_) {
 }
 
 extern "C" void v01__5ActorFv(void*);
+#pragma opt_propagation off
 extern "C" void fn_8012E5A0(Actor* p) {
     v01__5ActorFv(p);
-    f32 d = lbl_8053CC50;
-    f32 c = lbl_8053CC60;
-    f32 b = lbl_8053CC5C;
-    f32 a = lbl_8053CC58;
+    f32 b;
+    f32 a;
+    f32 d;
+    f32 c;
+    a = lbl_8053CC58;
+    b = lbl_8053CC5C;
     *(f32*)((char*)p + 0x60) = a;
+    c = lbl_8053CC60;
     *(f32*)((char*)p + 0x64) = b;
+    d = lbl_8053CC50;
     *(f32*)((char*)p + 0x68) = c;
     *(f32*)((char*)p + 0x6c) = d;
     *(f32*)((char*)p + 0x70) = *(f32*)((char*)p + 0x60);
@@ -189,7 +194,7 @@ extern "C" void fn_8012E5A0(Actor* p) {
         *(void**)((char*)p + 0x244) = fn_8013CC50(p->field_04, (char*)p + 0xc, 0x453, 0, 0, 0, 0, 1, lbl_8053CC3C);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" Actor* fn_8012E6EC(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_8049E8A0;
