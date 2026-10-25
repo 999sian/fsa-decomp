@@ -14,6 +14,7 @@ extern const f32 lbl_805420F0;
 extern const f32 lbl_805420F4;
 extern const f32 lbl_805420F8;
 
+struct State_80339820 { u8 pad[0xb4]; JMARandFast rnd; };
 static f32 fn_80339820_rnd() {
     u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
     *seed = *seed * 0x19660d + 0x3c6ef35f;
@@ -32,18 +33,19 @@ extern "C" Actor* fn_803397C0(Actor* p, s16 n) {
     return p;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80339820(u8* this_) {
-    f32 pos[3];
-    pos[0] = *(f32*)(this_ + 0xc);
-    pos[1] = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
-    pos[2] = lbl_805420E8;
+    JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
+    bool skip = false;
+    pos.y -= pos.z;
+    pos.z = lbl_805420E8;
     switch (*(s32*)(this_ + 0x24c)) {
     case 1:
         switch (*(s32*)(this_ + 0x260)) {
-        case 0x6b:
+        case 0x75:
             *(s32*)(this_ + 0x260) = 2;
             break;
-        case 0x75:
+        case 0x6b:
             *(s32*)(this_ + 0x260) = 4;
             break;
         default:
@@ -52,32 +54,35 @@ extern "C" void fn_80339820(u8* this_) {
         }
         break;
     case 5:
-        if (*(s32*)(this_ + 0x260) < 0x45) {
-            *(s32*)(this_ + 0x260) -= 0x40;
-        } else {
+        if (*(s32*)(this_ + 0x260) >= 0x45) {
             *(s32*)(this_ + 0x260) -= 0x45;
+        } else {
+            *(s32*)(this_ + 0x260) -= 0x40;
         }
         break;
     }
     if (*(s32*)(this_ + 0x260) <= 1) {
-        if (fn_80339820_rnd() < lbl_805420F0) {
-            if (fn_80339820_rnd() < lbl_805420F4) {
-                Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), pos, 0x261400, -1, -1);
-            } else if (fn_80339820_rnd() >= lbl_805420F8) {
-                if (fn_80339820_rnd() < lbl_805420F0) {
-                    Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), pos, 0, -1, -1);
+        if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F0) {
+            if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F4) {
+                Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), (f32*)&pos, 0x261400, -1, -1);
+            } else {
+                if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F8) skip = true;
+                if (skip) return;
+                if (((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_805420F0) {
+                    Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
                 } else {
-                    Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), pos, 0, -1, -1);
+                    Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
                 }
             }
         }
     } else if (*(s32*)(this_ + 0x260) == 2) {
-        Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), pos, 0, -1, -1);
+        Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
+    } else if (*(s32*)(this_ + 0x260) == 3) {
     } else if (*(s32*)(this_ + 0x260) == 4) {
-        Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), pos, 0, -1, -1);
+        Actor_CreateByID(fn_801F856C(), 0x46415259, *(u32*)(this_ + 4), (f32*)&pos, 0, -1, -1);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801F06F0(u8* a, void* res, s32 id, void* rec, s32 p5, f32 sx, f32 sy);
 extern "C" void fn_801EFD34(u8* a, void* res, void* rec, s32 n, f32 x, f32 y, f32 z);
 extern "C" void PSMTXIdentity(f32 m[3][4]);
