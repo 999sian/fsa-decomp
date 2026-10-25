@@ -14,6 +14,7 @@ extern "C" void fn_8013B414(void* a, f32* b, s32 c);
 extern char lbl_805433C0[];
 extern char lbl_805433C4[];
 extern char lbl_8047641C[];
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
 
 struct SprMgr_803A8F5C {
     virtual void v00();
