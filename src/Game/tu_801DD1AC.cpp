@@ -108,7 +108,7 @@ extern "C" void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern f32 lbl_8053F3CC;
 extern f32 lbl_8053F3C4;
 extern f64 lbl_8053F3D0;
-extern u8 lbl_8053F1C8;
+extern const u8 lbl_8053F1C8;
 static inline u8 canHitFire(u8* p, u8* other) {
     switch (*(s32*)(other + 0x1a0)) {
     case 'SWBM': case 'FIRE': break;
@@ -143,14 +143,10 @@ extern "C" u8 fn_801DDBE4(u8* p) {
         f32 y0 = *(f32*)(p + 0x64);
         f32 x1 = *(f32*)(p + 0x68);
         f32 y1 = *(f32*)(p + 0x6c);
-        f32 a = lbl_8053F3A4;
-        f32 b = lbl_8053F3A8;
-        *(f32*)(p + 0x60) = a;
-        a = lbl_8053F3AC;
-        *(f32*)(p + 0x64) = b;
-        b = lbl_8053F3B0;
-        *(f32*)(p + 0x68) = a;
-        *(f32*)(p + 0x6c) = b;
+        *(f32*)(p + 0x60) = -40.0f;
+        *(f32*)(p + 0x64) = -16.0f;
+        *(f32*)(p + 0x68) = 40.0f;
+        *(f32*)(p + 0x6c) = 50.0f;
         s32 found = fn_801F82CC(fn_801F856C(), p, p[0x195], lbl_8053F3CC);
         if (found >= 0 && found != *(s32*)(p + 0x198)) fn_801D9C58(p, 5);
         *(f32*)(p + 0x60) = x0;
@@ -163,26 +159,7 @@ extern "C" u8 fn_801DDBE4(u8* p) {
         s32 found = fn_801F82CC(fn_801F856C(), p, p[0x195], lbl_8053F3CC);
         if (found >= 0 && found != *(s32*)(p + 0x198)) {
             u8* other = (u8*)fn_801F666C(fn_801F856C(), found);
-            bool valid = false;
-            switch (*(u32*)(other + 0x1a0)) {
-            case 'SWBM': case 'FIRE':
-                if (*(s32*)(p + 0x248) == 0x11) valid = true;
-                else if (*(f32*)(other + 0x40) <= lbl_8053F38C) {
-                    switch (*(s32*)(p + 0x248)) {
-                    case 12: valid = true; break;
-                    case 11: case 13: case 14:
-                        if (*(f32*)(other + 0x40) < lbl_8053F38C) valid = true;
-                        else if (*(u32*)(p + 0x230) & 0x2000) {
-                            if (*(f32*)(other + 0x3c) < lbl_8053F3D0) valid = true;
-                        } else if (*(f32*)(other + 0x3c) > lbl_8053F3D0) valid = true;
-                        break;
-                    default: break;
-                    }
-                }
-                break;
-            default: break;
-            }
-            if (valid) {
+            if ((u8)canHitFire(p, other)) {
                 s32 oldPriority = *(s32*)(p + 0x108);
                 JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
                 pos -= *(JGeometry::TVec3f*)(other + 0x3c);
@@ -194,7 +171,7 @@ extern "C" u8 fn_801DDBE4(u8* p) {
             }
             if (hit) {
                 *(s32*)(p + 0xf8) = 0;
-                f32 zero = lbl_8053F38C;
+                f32 zero = 0.0f;
                 *(f32*)(p + 0x44) = zero;
                 *(f32*)(p + 0x14) = zero;
                 fn_801F0E34(p, 0x40005, 0);
@@ -202,8 +179,8 @@ extern "C" u8 fn_801DDBE4(u8* p) {
                 if (*(s32*)(p + 0x248) != 0x11) {
                     ++p[0x33f];
                     if (p[0x33f] >= lbl_8053F1C8) {
+                        *(f32*)(p + 0x3c) *= lbl_8053F3C4;
                         f32 scale = lbl_8053F3C4;
-                        *(f32*)(p + 0x3c) *= scale;
                         *(f32*)(p + 0x40) *= scale;
                         fn_801D9C58(p, 15);
                     }
