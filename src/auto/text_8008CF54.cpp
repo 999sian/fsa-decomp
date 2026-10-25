@@ -79,6 +79,15 @@ struct JUTGamePad {
     static void init();
 };
 
+static inline void assignPad(u8* self, s32 id) {
+    self[0x98] = 0;
+    *(s16*)(self + 0x7c) = (s16)id;
+    if (*(s16*)(self + 0x7c) >= 0) {
+        lbl_8053A924[id]++;
+    }
+    ((void (*)(void*))fn_8008D0D4)(self);
+}
+
 extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
     u8* self = this_;
     s32 id = param_2;
