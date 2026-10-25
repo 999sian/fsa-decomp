@@ -169,9 +169,12 @@ static inline u16 tileRead(s32 room, s32 x, s32 y) {
 static inline u16 tileAtOrdered(const f32* pos, u32 room) {
     u8* g = fn_802D6A9C();
     const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
-    u8 in = (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1);
+    f32 x0;
+    f32 px = pos[0];
+    x0 = r.x0;
+    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
     if (!in) return 0xf;
-    s32 x = pos[0] - r.x0;
+    s32 x = px - x0;
     s32 y = pos[1] - r.y0;
     if (x < 0) x = 0;
     else if (x >= 0x200) x = 0x1ff;
@@ -628,6 +631,55 @@ extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
         }
     }
     return FALSE;
+}
+
+extern "C" s32 fn_802260DC(f32* pos, s32 room, u8 mode) {
+    u16 tile = lbl_8046CB88[tileAtOrdered(pos, room)];
+    u16 mapped = tile;
+    if (fn_802D6A9C()[room + 0x131df] != 0) {
+        if (tile == 0) {
+            mapped = 2;
+        } else if (tile == 0x61) {
+            mapped = 0;
+        }
+    } else if (tile == 0xe && lbl_8053AAF8[0x7f] != 0) {
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
+            mapped = 0x51;
+        } else if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
+            s32 base = *(s32*)(fn_802D6A9C() + 0x14);
+            u8* g2 = fn_802D6A9C();
+            u8* h = fn_802D6A9C();
+            if (h[base + *(s32*)(g2 + 0x18) * 10 + 0x60] == 0x10 && pos[1] > lbl_8053FF50) {
+                mapped = 0x51;
+            }
+        }
+    }
+    s32 k = mapped;
+    if (k == 0 || k == 2 || k == 0x50) return 0;
+    if (k == 0x22 && fn_802D6A9C()[0x170] == 0) return 0;
+    if (mode == 1 && (k == 0xc || k == 0x39)) return 0;
+    if (mode == 1 && (k == 3 || k == 0xe || k == 0x3a)) return 0;
+    if (mode == 1 && k >= 0x4c && k <= 0x4f) return 0;
+    if (k == 0x25) return (u8)(fn_802D6A9C()[0x171] == 0);
+    if (k == 0x26) return (u8)(fn_802D6A9C()[0x171] == 1);
+    if (k == 4) {
+        if (((s32)pos[1] & 0xf) >= 8) return 0;
+    } else if (k == 5) {
+        if (((s32)pos[1] & 0xf) < 8) return 0;
+    } else if (k == 6) {
+        if (((s32)pos[0] & 0xf) >= 8) return 0;
+    } else if (k == 7) {
+        if (((s32)pos[0] & 0xf) < 8) return 0;
+    } else if (k == 0x18) {
+        if (((s32)pos[0] & 0xf) >= 8 || ((s32)pos[1] & 0xf) >= 8) return 0;
+    } else if (k == 0x19) {
+        if (((s32)pos[0] & 0xf) < 8 || ((s32)pos[1] & 0xf) >= 8) return 0;
+    } else if (k == 0x1a) {
+        if (((s32)pos[0] & 0xf) >= 8 || ((s32)pos[1] & 0xf) < 8) return 0;
+    } else if (k == 0x1b) {
+        if (((s32)pos[0] & 0xf) < 8 || ((s32)pos[1] & 0xf) < 8) return 0;
+    }
+    return 1;
 }
 
 struct Tu8022G {
