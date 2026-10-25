@@ -713,7 +713,7 @@ inline BOOL isLinkOwnerCached(char* p) {
 
 inline BOOL isLinkOwnerCached(char*);
 inline s32 getModeCached(const char*);
-extern "C" u8 fn_8023FC5C(u8* self) {
+extern "C" u8 fn_8023FC5C(u8* __restrict self) {
     char* p = (char*)self;
     bool ok;
     if (U8(p, 0xc80) == 0) ok = false;
@@ -2475,71 +2475,11 @@ BOOL fn_80247C0C(char* p) {
     if (!fn_80251BFC(p, 0xb)) {
         return 0;
     }
-    n = 0;
-    i = 0;
-    n = 0;
-    for (i = n; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            n++;
-        } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    n++;
-                }
-            } else {
-                idx = S32(p, 0x4);
-                if (idx == fn_8022F3DC(i)) {
-                    n++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            n++;
-        }
-    }
-    if (n <= 1) {
-        r = 5;
-    } else {
-        linked = S32(p, 0xd60);
-        if (linked >= 0) {
-            r = fn_8022CAF8(linked);
-        } else {
-            r = S32(p, 0x120c);
-        }
-    }
+    r = getMode3(p);
     if (r == 4) {
         fn_80248004(p, 5, 1);
     }
-    n = 0;
-    for (i = 0; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            n++;
-        } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    n++;
-                }
-            } else {
-                idx = S32(p, 0x4);
-                if (idx == fn_8022F3DC(i)) {
-                    n++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            n++;
-        }
-    }
-    if (n <= 1) {
-        r = 5;
-    } else {
-        linked = S32(p, 0xd60);
-        if (linked >= 0) {
-            r = fn_8022CAF8(linked);
-        } else {
-            r = S32(p, 0x120c);
-        }
-    }
+    r = getMode2(p);
     if (r == 4) {
         return 0;
     }
