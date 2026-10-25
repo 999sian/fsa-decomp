@@ -48,8 +48,6 @@ struct EffArgs {
 };
 
 struct Rec {
-    Rec() {}
-    Rec(const Rec& src) : w00(src.w00), w04(src.w04), w08(src.w08), w0c(src.w0c), w10(src.w10), w14(src.w14), w18(src.w18), b1c(src.b1c), b1d(src.b1d), b1e(src.b1e), b1f(src.b1f), b20(src.b20), b21(src.b21), b22(src.b22), b23(src.b23), b24(src.b24), b25(src.b25), b26(src.b26), w28(src.w28), b2c(src.b2c), b2d(src.b2d), b2e(src.b2e), w30(src.w30), w34(src.w34), w38(src.w38) {}
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
     /* 0x08 */ u32 w08;
