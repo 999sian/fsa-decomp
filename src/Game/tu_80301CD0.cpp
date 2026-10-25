@@ -1535,17 +1535,23 @@ extern "C" s32 fn_803074A4(s32 a, s32 b) {
 	}
 }
 
-extern "C" s32 fn_803075AC(s32 caller, s32 room, void* pos, s32 id, bool on, s32 mode, s32 target, u8 kind, bool b, u8 d) {
-    s32 ok = 0;
+#pragma opt_propagation on
+extern "C" s32 fn_803075AC(s32 caller, s32 room, const void* __restrict pos, s32 id, u8 on, s32 mode, s32 target, s32 kind, u8 b, u8 d) {
+    Elem28_80301CD0* base;
+    u8 k;
+    s32 ok;
     s32 i;
+    bool enabled;
     s32 n;
     s32 c;
-    Elem28_80301CD0* base;
     Elem28_80301CD0* e;
 
     if (room < 8 && room != -1) {
         return 0;
     }
+    enabled=on!=0;
+    k=kind;
+    ok=0;
     for (i = 0; i < 4; i++) {
         s32 r = fn_8022EA0C(i);
         if (((*((u8*)lbl_8053AAF8 + 0x82)) & (u8)(1 << i)) == 0) {
@@ -1555,41 +1561,15 @@ extern "C" s32 fn_803075AC(s32 caller, s32 room, void* pos, s32 id, bool on, s32
             continue;
         }
         base = lbl_80505438[i];
-        e = base;
+        e=base;
         n = 0;
-        c = 5;
-        do {
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-            if (e->f24 == 1 && e->f4 == caller) break;
-            n++;
-            e++;
-        } while (--c != 0);
+        for(;n<40;e++,n++) { if(e->f24==1 && e->f4==caller) break; }
         if (n < 40) {
             e->f8 = room;
-            *(struct Vec*)&e->f10 = *(struct Vec*)pos;
+            *(JGeometry::TVec3<f32>*)&e->f10 = *(const JGeometry::TVec3<f32>*)pos;
             ok = 1;
             e->f1c = id;
-            e->f21 = on;
+            e->f21 = enabled;
             e->f22 = b;
         } else {
             e = base;
@@ -1599,11 +1579,11 @@ extern "C" s32 fn_803075AC(s32 caller, s32 room, void* pos, s32 id, bool on, s32
                     e->f4 = caller;
                     e->f8 = room;
                     e->fc = target;
-                    *(struct Vec*)&e->f10 = *(struct Vec*)pos;
+                    *(JGeometry::TVec3<f32>*)&e->f10 = *(JGeometry::TVec3<f32>*)pos;
                     ok = 1;
                     e->f1c = id;
-                    e->f21 = on;
-                    e->f20 = kind;
+                    e->f21 = enabled;
+                    e->f20 = k;
                     e->f23 = d;
                     e->f22 = b;
                     e->f24 = 1;
@@ -1615,7 +1595,7 @@ extern "C" s32 fn_803075AC(s32 caller, s32 room, void* pos, s32 id, bool on, s32
     }
     return ok;
 }
-
+#pragma opt_propagation reset
 // fn_80307AC8 - effect spawn dispatcher: ids below 0x45 go to the small
 // effect table (fn_80307830), others to the generic effect spawner.
 extern "C" s32 fn_80307830(u32 caller, s32 room, void* pos, s32 id, bool on, s32 a, bool b, s32 kind);
