@@ -251,11 +251,12 @@ extern "C" void fn_801902D0(u8* p) {
 }
 
 extern "C" void fn_80190DC8(u8* p) {
-    u8* e3;
-    s32 i;
     s32 t = *(s32*)(p + 4);
     u8* cur = p;
-    for (i = 0; i < 7; i++, cur += 0x60) {
+    u8* e3;
+    int i;
+    int j, k, m, n;
+    for (i = 0; i < 7; cur += 0x60, i++) {
         u8* e = *(u8**)(cur + 0x48);
         if (e != NULL && cur[0x64] != 0) {
             *(f32*)(e + 8) = (f32)(t % *(s16*)(e + 6));
@@ -304,7 +305,7 @@ extern "C" void fn_80190DC8(u8* p) {
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x4a8); i++, cur += 0x24) {
+    for (j = 0; j < *(s32*)(p + 0x4a8); cur += 0x24, j++) {
         e3 = *(u8**)(cur + 0x35c);
         if (e3 != NULL) {
             s32 v = (s32)((f32)t * *(f32*)(cur + 0x354));
@@ -313,7 +314,7 @@ extern "C" void fn_80190DC8(u8* p) {
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x5ec); i++, cur += 0x28) {
+    for (k = 0; k < *(s32*)(p + 0x5ec); cur += 0x28, k++) {
         e3 = *(u8**)(cur + 0x4c4);
         if (e3 != NULL) {
             *(f32*)(e3 + 8) = (f32)(t % *(s16*)(e3 + 6));
@@ -324,14 +325,14 @@ extern "C" void fn_80190DC8(u8* p) {
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x618); i++, cur += 0x14) {
+    for (m = 0; m < *(s32*)(p + 0x618); cur += 0x14, m++) {
         e3 = *(u8**)(cur + 0x600);
         if (e3 != NULL) {
             *(f32*)(e3 + 8) = (f32)(t % *(s16*)(e3 + 6));
         }
     }
     cur = p;
-    for (i = 0; i < *(s32*)(p + 0x79c); i++, cur += 0x18) {
+    for (n = 0; n < *(s32*)(p + 0x79c); cur += 0x18, n++) {
         e3 = *(u8**)(cur + 0x630);
         if (e3 != NULL) {
             *(f32*)(e3 + 8) = (f32)(t % *(s16*)(e3 + 6));
@@ -359,10 +360,11 @@ extern "C" void fn_80190DC8(u8* p) {
     }
     u8* e6 = *(u8**)(p + 0x7c8);
     if (e6 != NULL) {
-        if (p[0x7c0] != 0 || (*(s32*)(p + 0x7bc) > 0 && *(s32*)(p + 0x7bc) < *(s16*)(e6 + 6))) {
+        int frame;
+        if (p[0x7c0] != 0 || ((frame = *(s32*)(p + 0x7bc)) > 0 && frame < *(s16*)(e6 + 6))) {
             *(s32*)(p + 0x7bc) = *(s32*)(p + 0x7bc) + 1;
         }
-        *(f32*)(e6 + 8) = (f32)*(s32*)(p + 0x7bc);
+        *(f32*)(*(u8**)(p + 0x7c8) + 8) = (f32)*(s32*)(p + 0x7bc);
     }
     u8* e7 = *(u8**)(p + 0x7e4);
     if (e7 != NULL && p[0x7ec] != 0) {
