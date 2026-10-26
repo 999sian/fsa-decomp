@@ -29,7 +29,14 @@ struct PlayerModeTbl {
 };
 
 static inline void copyPlayerDirection(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& in) {
-    out.set(in.x, in.y, in.z);
+    const f32* src = &in.x;
+    f32* dst = &out.x;
+    f32 x = *src++;
+    f32 y = *src++;
+    *dst++ = x;
+    f32 z = *src;
+    *dst++ = y;
+    *dst = z;
 }
 
 extern "C" {
