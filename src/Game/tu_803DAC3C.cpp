@@ -851,6 +851,7 @@ extern "C" char* lbl_80477880[];
 struct FsaMenuPaneSlot {
     u8 pad[0x44];
     u8* pane[4];
+    u8* getPane() { return pane[0]; }
 };
 typedef void* (*FsaFindPaneFn)(void*, u32, u32, u32);
 extern "C" void fn_803DEC44(u8* self)
@@ -919,7 +920,7 @@ extern "C" void fn_803DEC44(u8* self)
             fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 4))->search(0x546e6f703031ULL))->getStringPtr(), lbl_8047788C[self[0x9e]], 0, 0, 0);
             fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 4))->search(0x546e6f703032ULL))->getStringPtr(), lbl_8047788C[self[0x9e]], 0, 0, 0);
             fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 4))->search(0x546578703031ULL))->getStringPtr(), lbl_80477880[self[0x9e]], 0, 0, 0);
-            *(u8*)(*(u8**)(((FsaMenuPaneSlot*)(self + self[0x9e] * 4))->pane + 4) + 0xb0) = 0;
+            (*(J2DPane**)(*(u8**)(self + self[0x9e] * 4 + 0x44) + 4))->hide();
             *(s32*)(self + 0x84) = 2;
             self[0x9f] = self[0x9e];
             *(s32*)(self + 0x90) = 1;
