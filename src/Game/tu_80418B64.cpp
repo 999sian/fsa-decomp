@@ -605,56 +605,59 @@ extern "C" void fn_8041C0C0(u8* self, s32 idx) {
 }
 
 extern const u64 lbl_8048D320[];
-extern u32 lbl_804B13C4;
+extern u32 lbl_804B13C4[];
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80419C38(u8* self, s32 i, s32 v);
 extern "C" void fn_8041C67C(u8* this_) {
-	const u64* base = lbl_8048D320;
+	u8* state;
+	const u8* base = (const u8*)lbl_8048D320;
 	u8* self = this_;
 	s32 i;
-	SetPaneVisibleOfSub(self, 0x004E646174613133ULL, 0);
-	SetPaneVisibleOfSub(self, 0x506870316E693032ULL, 0);
-	SetPaneVisibleOfSub(self, 0x5068317069696233ULL, 0);
-	SetPaneVisibleOfSub(self, 0x004E646174613136ULL, 0);
-	SetPaneVisibleOfSub(self, 0x004E646174613032ULL, 0);
-	const u64* p20 = &base[0x15c];
-	const u64* p29 = p20;
-	const u64* p28 = &base[0x164];
-	const u64* p27 = &base[0x168];
-	const u64* p26 = &base[0x16c];
-	const u64* p25 = &base[0x170];
-	const u64* p24 = &base[0x178];
-	const u64* p23 = &base[0x17c];
-	const u64* p22 = &base[0x180];
-	const u64* p21 = &base[0x13b];
 
-	for (i = 0; i < 4; i++) {
-		if (lbl_8053AAF8[0x82] & (1 << i)) {
-			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p29))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p28))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p27))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p26))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p25))[0xb0] = 1;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p24))[0xb0] = 1;
-			if (lbl_8050EC80[*(u32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x88]) {
-				((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p23))[0xb0] = 1;
+	HudHidePane8041(self, 0x004E646174613133ULL);
+	HudHidePane8041(self, 0x506870316E693032ULL);
+	HudHidePane8041(self, 0x5068317069696233ULL);
+	HudHidePane8041(self, 0x004E646174613136ULL);
+	HudHidePane8041(self, 0x004E646174613032ULL);
+	const u64* p20 = (const u64*)(base + 0xae0);
+	const u64* p29 = p20;
+	const u64* p28 = (const u64*)(base + 0xb20);
+	const u64* p27 = (const u64*)(base + 0xb40);
+	const u64* p26 = (const u64*)(base + 0xb60);
+	const u64* p25 = (const u64*)(base + 0xb80);
+	const u64* p24 = (const u64*)(base + 0xbc0);
+	const u64* p23 = (const u64*)(base + 0xbe0);
+	const u64* p22 = (const u64*)(base + 0xc00);
+	const u64* p21 = (const u64*)(base + 0x9d8);
+    state = lbl_8050EC80;
+
+	for (s32 i = 0; i < 4; i++) {
+		if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
+			((J2DPane*)(*(SubObj**)(self + 0x18))->w13(*p29))->hide();
+			((J2DPane*)(*(SubObj**)(self + 0x18))->w13(*p28))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p27))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p26))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p25))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p24))->show();
+			if (lbl_8050EC80[*(u32*)(state + 0x10) * 0xc8 + 0x88]) {
+				((J2DPane*)(*(SubObj**)(self + 4))->w13(*p23))->show();
 			} else {
-				((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p23))[0xb0] = 0;
+				((J2DPane*)(*(SubObj**)(self + 4))->w13(*p23))->hide();
 			}
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p22))[0xb0] = 1;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[0]))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[1]))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[2]))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(p21[3]))[0xb0] = 0;
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p22))->show();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(p21[0]))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(p21[1]))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(p21[2]))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(p21[3]))->hide();
 		} else {
-			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p29))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p28))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p27))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p26))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p25))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p24))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p23))[0xb0] = 0;
-			((u8*)((SubObj*)*(u8**)(self + 4))->w13(*p22))[0xb0] = 0;
+			((J2DPane*)(*(SubObj**)(self + 0x18))->w13(*p29))->hide();
+			((J2DPane*)(*(SubObj**)(self + 0x18))->w13(*p28))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p27))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p26))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p25))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p24))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p23))->hide();
+			((J2DPane*)(*(SubObj**)(self + 4))->w13(*p22))->hide();
 		}
 		p29++;
 		p28++;
@@ -665,17 +668,19 @@ extern "C" void fn_8041C67C(u8* this_) {
 		p23++;
 		p22++;
 		p21 += 4;
+		state += 4;
 	}
 
-	const u64* q22 = &base[0x160];
-	u32 s = fn_804030C4(0x54494d47, lbl_804B13C4);
-	for (i = 0; i < 4; i++) {
-		((void (*)(u8*, u32, u32))(*(u32**)((SubObj*)*(u8**)(self + 0x18))->w13(*p20))[68])((u8*)((SubObj*)*(u8**)(self + 0x18))->w13(*p20), s, 0);
-		p20++;
-		q22++;
-	}
+	const u64* q22 = (const u64*)(base + 0xb00);
+	for (s32 i = 0; i < 4; i++) {
+        u32 texture = fn_804030C4(0x54494d47, ((u32*)&lbl_804B13C4)[0]);
+        ((J2DPicture*)(*(SubObj**)(self + 0x18))->w13(*p20))->changeTexture((const ResTIMG*)texture, 0);
+        ((J2DPicture*)(*(SubObj**)(self + 0x18))->w13(*q22))->changeTexture((const ResTIMG*)texture, 0);
+        p20++;
+        q22++;
+    }
 
-	for (i = 0; i < 4; i++) {
+	for (s32 i = 0; i < 4; i++) {
 		if (lbl_8053AAF8[0x82] & (1 << i)) {
 			fn_80419C38(self, i, 1);
 		}
