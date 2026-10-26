@@ -132,7 +132,7 @@ static inline f32 rupyRand01() {
     u32* s = (u32*)lbl_8053AAF8;
     s[45] = s[45] * 0x19660du + 0x3c6ef35fu;
     u32 a = (s[45] >> 9) | 0x3f800000u;
-    return *(f32*)&a - lbl_80541D90;
+    return *(f32*)&a - 1.0f;
 }
 
 extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
@@ -407,8 +407,7 @@ extern "C" s32 fn_8032B3F8(void* this_) {
                     *(s32*)(p + 0x260) = 1;
                     *(f32*)(p + 0x44) = lbl_80541D88;
                     *(f32*)(p + 0x3c) = lbl_80541DAC - rupyRand01();
-                    f32 y = lbl_80541D90 - lbl_80541DA0 * rupyRand01();
-                    *(f32*)(p + 0x40) = lbl_80541DB0 + y;
+                    *(f32*)(p + 0x40) = lbl_80541DB0 + (lbl_80541D90 - rupyRand01() * lbl_80541DA0);
                 } else {
                     *(f32*)(p + 0x3c) = lbl_80541D88;
                     *(f32*)(p + 0x44) = lbl_80541D88;
