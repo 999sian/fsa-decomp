@@ -16,7 +16,7 @@ extern "C" u32 lbl_8053A1B8[2];
 extern "C" char lbl_804724E0[];
 extern "C" void fn_802F745C(void*, const void*, void*, DrawRec*);
 #include "JSystem/JMath/JMath.h"
-static inline void rotation80359E18(f32 m[3][4], f32 scale, s16 angle)
+static inline void rotation80359E18(f32 m[3][4], const f32 scale, s16 angle)
 {
     f32 sx, sy, sz, cx, cy, cz;
     u32 offset = ((u16)angle >> 5) * 8;
