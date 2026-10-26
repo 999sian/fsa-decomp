@@ -506,6 +506,7 @@ extern "C" void fn_8016A3BC(void* archive, const void* a, const void* b, const v
 extern "C" const char lbl_80467508[];
 extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
     u8* arc;
+    u8* arc2;
     const char* str;
     char nameA[32];
     char nameB[32];
@@ -527,7 +528,7 @@ extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
             sprintf(nameA, str + 0x10, i + 1);
             sprintf(nameB, str + 0x20, i + 1);
             sprintf(nameC, str + 0x30, i + 1);
-            if (((void* (*)(void*, u32, const char*))(*(void***)*(void**)(arc + 0x10))[6])(*(void**)(arc + 0x10), 0x4a334420, nameA) == 0) {
+            if (((JKRArchive*)*(void**)(arc + 0x10))->getResource(0x4a334420, nameA) == 0) {
                 sprintf(nameA, str + 0x40);
                 sprintf(nameB, str + 0x50);
                 sprintf(nameC, str + 0x60);
@@ -545,17 +546,20 @@ extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
     fn_8016A3BC(*(void**)(arc + 0x10), str + 0xf4, str + 0x104, 0, 0, 0, 0x240000, *(void**)param_1, param_1 + 0x32c, param_1 + 0x330, 0, 0, 0);
 
     {
+        s32 i;
         u8* elem = param_1;
-        for (s32 i = 0; i < 10; i++) {
+        for (i = 0; i < 10; i++) {
             fn_8016A3BC(*(void**)(arc + 0x10), str + 0x114, str + 0x120, 0, str + 0x12c, 0, 0x240000, *(void**)param_1, elem + 0x358, elem + 0x35c, 0, elem + 0x360, 0);
             elem += 0x24;
         }
     }
 
+    arc2=lbl_80529DEC;
     {
+        s32 i;
         u8* elem = param_1;
-        for (s32 i = 0; i < 8; i++) {
-            fn_8016A3BC(*(void**)(arc + 0x14), str + 0x138, str + 0x14c, str + 0x160, str + 0x178, str + 0x18c, 0x20240000, *(void**)param_1, elem + 0x4c0, elem + 0x4c4, elem + 0x4c8, elem + 0x4cc, elem + 0x4d0);
+        for (i = 0; i < 8; i++) {
+            fn_8016A3BC(*(void**)(arc2 + 0x14), str + 0x138, str + 0x14c, str + 0x160, str + 0x178, str + 0x18c, 0x20240000, *(void**)param_1, elem + 0x4c0, elem + 0x4c4, elem + 0x4c8, elem + 0x4cc, elem + 0x4d0);
             elem += 0x28;
         }
     }
@@ -563,14 +567,15 @@ extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
     {
         u8* elem = param_1;
         for (s32 i = 0; i < 2; i++) {
-            fn_8016A3BC(*(void**)(arc + 0x14), str + 0x1a4, str + 0x1b4, 0, 0, 0, 0x01240000, *(void**)param_1, elem + 0x5fc, elem + 0x600, 0, 0, 0);
+            fn_8016A3BC(*(void**)(arc2 + 0x14), str + 0x1a4, str + 0x1b4, 0, 0, 0, 0x01240000, *(void**)param_1, elem + 0x5fc, elem + 0x600, 0, 0, 0);
             elem += 0x14;
         }
     }
 
     {
+        s32 i;
         u8* elem = param_1;
-        for (s32 i = 0; i < 16; i++) {
+        for (i = 0; i < 16; i++) {
             fn_8016A3BC(*(void**)(arc + 0x10), str + 0x1c4, str + 0x1d4, 0, 0, 0, 0x240000, *(void**)param_1, elem + 0x62c, elem + 0x630, 0, 0, 0);
             elem += 0x18;
         }
@@ -583,19 +588,8 @@ extern "C" void* fn_801917E0(u8* param_1, void* param_2) {
     adjustSize__12JKRSolidHeapFv(*(void**)param_1);
     becomeCurrentHeap__7JKRHeapFv(param_2);
 
-    {
-        void* wc;
-        wc = __nw__FUl(0x5c);
-        if (wc != 0) {
-            __ct__14WaveControllerFlll(wc, 0, 0, 8);
-        }
-        *(void**)(param_1 + 0x7b8) = wc;
-        wc = __nw__FUl(0x5c);
-        if (wc != 0) {
-            __ct__14WaveControllerFlll(wc, 0, 0, 8);
-        }
-        *(void**)(param_1 + 0x7cc) = wc;
-    }
+    *(WaveController**)(param_1+0x7b8) = new WaveController(0,0,8);
+    *(WaveController**)(param_1+0x7cc) = new WaveController(0,0,8);
     return param_1;
 }
 
