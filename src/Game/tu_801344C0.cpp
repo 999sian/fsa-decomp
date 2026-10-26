@@ -5,6 +5,7 @@
 #include "JSystem/JUtility/JUTProcBar.h"
 #include "dolphin/os.h"
 #include "dolphin/dvd.h"
+#include "JSystem/JKernel/JKRExpHeap.h"
 
 struct FSAStackObj {
     u8 _00[0xa8];
@@ -54,22 +55,27 @@ void becomeCurrentHeap__7JKRHeapFv(void*);
 }
 
 #pragma opt_strength_reduction off
+#pragma opt_propagation off
 static inline bool mainStateReady(const u8* state) {
-    return state[0x78] >= 4;
+    bool ready = state[0x78] >= 4;
+    return ready;
 }
+#pragma opt_propagation reset
 
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void main(void)
 {
-    void* game;
     FSAStackObj obj0;
     FSAStackObj obj1;
     FSAStackObj obj2;
     FSAStackObj obj3;
     int i;
     s32 n;
+    void* initObject;
     void* p;
     void* solidHeap;
-    JKRHeap* expHeap;
+    JKRExpHeap* expHeap;
     bool bVar1;
     bool bVar2;
     s32 t;
@@ -84,8 +90,9 @@ void main(void)
 
     OSSetSaveRegion((void*)0x80700000, (void*)0x8070001F);
 
-    if (*(u16*)&lbl_80529DEC[0x216] != 0xA759 || *(u16*)&lbl_80529DEC[0x218] != 0xDC96) {
-        *(u16*)&lbl_80529DEC[0x216] = 0xA759;
+    u8* reset = lbl_80529DEC;
+    if (*(u16*)&reset[0x216] != 0xA759 || *(u16*)&reset[0x218] != 0xDC96) {
+        *(u16*)&reset[0x216] = 0xA759;
         *(u16*)&lbl_80529DEC[0x218] = 0xDC96;
         lbl_80529DEC[0x21a] = 0;
         lbl_80529DEC[0x21b] = 0;
@@ -131,18 +138,18 @@ void main(void)
     JFWDisplay::getManager()->clearAllXfb();
     fn_803BA980(lbl_8051C1A0);
     solidHeap = create__12JKRSolidHeapFUlP7JKRHeapb(0x180000, JKRHeap::sRootHeap, false);
-    expHeap = (JKRHeap*)create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false);
-    p = __nw__FUlP7JKRHeapi(0x90, expHeap, 0);
-    if (p != NULL) {
-        p = fn_8045A080(p);
+    expHeap = JKRExpHeap::create(0xffffffff, JKRHeap::sRootHeap, false);
+    initObject = __nw__FUlP7JKRHeapi(0x90, expHeap, 0);
+    if (initObject != NULL) {
+        initObject = fn_8045A080(initObject);
     }
     becomeCurrentHeap__7JKRHeapFv(expHeap);
     *(void**)&lbl_80529DEC[4] = solidHeap;
     *(void**)&lbl_80529DEC[8] = expHeap;
-    *(void**)&lbl_80529DEC[0xc] = p;
+    *(void**)&lbl_80529DEC[0xc] = initObject;
     *(u8*)((u8*)JUTProcBar::getManager() + 0x10c) = 0;
     *(u8*)((u8*)JUTProcBar::getManager() + 0x130) = 0;
-    solidHeap = create__10JKRExpHeapFUlP7JKRHeapb(0x800, expHeap, false);
+    solidHeap = JKRExpHeap::create(0x800, expHeap, false);
     fn_80401FEC(OSGetThreadPriority(OSGetCurrentThread()) - 1, solidHeap, 0);
     p = __nw__FUlP7JKRHeapi(0x7c, expHeap, 0);
     if (p != NULL) {
@@ -192,10 +199,10 @@ void main(void)
             u32 state = lbl_8053AAF0[0x78];
             if (((state | ~4U) - ((state - 4U) >> 1)) >> 31) {
                 fn_803FF2C4();
-                game = __nw__FUl(0x11c);
-                if (game != NULL) fn_80139300();
-                lbl_8053AAF8 = (u8*)game;
-                fn_80138C9C(game);
+                p = __nw__FUl(0x11c);
+                if (p != NULL) fn_80139300();
+                lbl_8053AAF8 = (u8*)p;
+                fn_80138C9C(p);
                 JFWDisplay::getManager()->endFrame();
             } else {
                 if (!bVar1) bVar1 = true;
@@ -205,6 +212,7 @@ void main(void)
     }
 }
 #pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 void __sinit_tu_801344C0_cpp(void)
 {
 }
