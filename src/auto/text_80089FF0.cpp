@@ -74,7 +74,7 @@ static inline bool showExceptionAddress(const u32 addr, char* const base = lbl_8
                         const u8* p = (const u8*)mapName;
                         while (*p) { if (*p == '\\') last = p; p++; }
                         if (*last == '\\') last++;
-                        s32 n = 0;
+                        int n = 0;
                         while (*last && n < 0x20) {
                             if (*last == '.') break;
                             n++; *out++ = *last++;
@@ -581,7 +581,7 @@ extern "C" void fn_8008B214(JUTException* this_, u32* param_2)
 #pragma opt_loop_invariants reset
 extern "C" void fn_8008A50C(JUTException* this_, OSContext* context);
 static BOOL FindModuleSection(u32 addr, u32* moduleId, s32* sectionIndex, u32* sectionOffset, char** mapName);
-extern "C" void fn_8008B508(JUTException* const this_, s32 param_2, u16 param_3, OSContext* const param_4, u32 param_5, u32 param_6)
+extern "C" void fn_8008B508(JUTException* this_, s32 param_2, u16 param_3, OSContext* param_4, u32 param_5, u32 param_6)
 {
     char* base = lbl_8045E878;
 
