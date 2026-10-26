@@ -325,11 +325,16 @@ static inline void mjgrIdle(char* p) {
 // near-match (~97%): callee-saved GPR assignment and box copy scheduling differ
 #pragma opt_propagation off
 extern "C" void fn_802E83DC(char* p) {
-    u32 i;
+    u32 param;
+    s32 room;
+    char* key;
+    s32 i;
     switch (*(s32*)(p + 0x244)) {
     case 0: {
         ((JGeometry::TBox2<f32>*)(p + 0x80))->set(lbl_8054128C, lbl_8054128C, lbl_80541290, lbl_80541290);
         JGeometry::TBox2<f32> b;
+        JGeometry::TVec3<f32> kp;
+        JGeometry::TVec3<f32> pos;
         u32* bd = (u32*)&b;
         u32* sd = (u32*)(p + 0x80);
         u32 c, a;
@@ -345,7 +350,7 @@ extern "C" void fn_802E83DC(char* p) {
         *(s32*)(p + 0x250) = fn_8023AF14(&b, *(u32*)(p + 0x4), 0, lbl_80541268);
         if (*(s32*)(p + 0x250) >= 0) {
             if (*(void**)(p + 0x234) == 0) {
-                JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14));
+                pos.set(*(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14));
                 *(void**)(p + 0x234) = fn_8013CC50(*(u32*)(p + 0x4), &pos, 0x2a7, 1, 0, 0, 0, 1, lbl_8054126C);
                 fn_80134DE4(lbl_8053AAF8, 9, 0);
                 if (*(s32*)((char*)fn_802D6A9C() + 0x4) == 1 && *(s32*)((char*)fn_802D6A9C() + 0x8) == 1
@@ -370,14 +375,14 @@ extern "C" void fn_802E83DC(char* p) {
             ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lbl_80541260, lbl_8054129C, lbl_80541264, lbl_805412A0);
             b.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
             b.addPos(px, py);
-            for (i = 0; (s32)i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (fn_8023B0F4(i, &b, *(u32*)(p + 0x4), lbl_80541268, 0) == 1 && fn_8023EEB4(i) == 'KEY0') {
-                    char* key = fn_801F666C(fn_801F856C(), fn_8023EF50(i));
+                    key = fn_801F666C(fn_801F856C(), fn_8023EF50(i));
                     if (key != 0 && *(s32*)(key + 0x280) == 6) {
-                        JGeometry::TVec3<f32> kp(*(JGeometry::TVec3<f32>*)(key + 0xc));
+                        kp = *(JGeometry::TVec3<f32>*)(key + 0xc);
                         *(s32*)(p + 0x244) = 1;
                         *(s32*)(p + 0x24c) = 20;
-                        s32 room = *(s32*)(p + 0x4);
+                        room = *(s32*)(p + 0x4);
                         if (room >= 8) {
                             Actor_CreateByID(fn_801F856C(), 'KMRI', room, &kp, 0, -1, -1);
                         } else {
@@ -430,7 +435,7 @@ extern "C" void fn_802E83DC(char* p) {
     case 2:
         (*(s32*)(p + 0x24c))--;
         if (*(s32*)(p + 0x24c) == 0) {
-            u32 param = (*(u32*)(p + 0x90) & ~0xff) | lbl_8046F270[*(s32*)(p + 0x248)];
+            param = (*(u32*)(p + 0x90) & ~0xff) | lbl_8046F270[*(s32*)(p + 0x248)];
             Actor_CreateByID(fn_801F856C(), 'CIRC', *(s32*)(p + 0x4), p + 0xc, param, -1, -1);
             *(s32*)(p + 0x244) = 3;
             *(s32*)(p + 0x24c) = 60;
