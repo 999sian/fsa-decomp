@@ -2,6 +2,11 @@
 // SetField_0x98 from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+static inline void playerDifferenceInto(JGeometry::TVec2<f32>* dst, const JGeometry::TVec2<f32>* a, const JGeometry::TVec2<f32>* b) {
+    dst->set(*a);
+    dst->x -= b->x;
+    dst->y -= b->y;
+}
 static inline JGeometry::TVec2<f32> playerDifferenceValue(JGeometry::TVec2<f32> v, const JGeometry::TVec2<f32>& b) {
     v.x -= b.x;
     v.y -= b.y;
@@ -133,7 +138,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         if (fn_802265FC((Vec2f*)&a, *(s32*)(p + 0x3b4)) == 1) {
             JGeometry::TVec2<f32> b(*(f32*)(p + 0x2c), *(f32*)(p + 0xc));
             if (fn_802265FC((Vec2f*)&b, *(s32*)(p + 0x3b4)) == 1) {
-                JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+                JGeometry::TVec2<f32> d = playerDifference2(JGeometry::TVec2<f32>(*(f32*)(p + 8), *(f32*)(p + 0xc)), *(JGeometry::TVec2<f32>*)(p + 0x2c));
                 if (d.squared() >= 25.0f) {
                     d.normalize();
                     d.scale(lbl_80540234);
@@ -146,7 +151,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
     }
     JGeometry::TVec2<f32> c(*(f32*)(p + 8), *(f32*)(p + 0xc));
     if (fn_802265FC((Vec2f*)&c, *(s32*)(p + 0x3b4)) == 1) {
-        JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+        JGeometry::TVec2<f32> d = playerDifference2(JGeometry::TVec2<f32>(*(f32*)(p + 8), *(f32*)(p + 0xc)), *(JGeometry::TVec2<f32>*)(p + 0x2c));
         if (d.squared() >= 25.0f) {
             d.normalize();
             d.scale(lbl_80540234);
@@ -155,7 +160,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + d.y;
         goto move;
     }
-    JGeometry::TVec2<f32> e = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+    JGeometry::TVec2<f32> e = playerDifference2(JGeometry::TVec2<f32>(*(f32*)(p + 8), *(f32*)(p + 0xc)), *(JGeometry::TVec2<f32>*)(p + 0x2c));
     f32 sq = e.squared();
     if (!(sq >= lbl_80540238)) {
         goto move;
