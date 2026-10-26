@@ -46,6 +46,93 @@ extern "C" void fn_802BD920(void)
     return;
 }
 
+extern "C" void fn_802BD924(u8* this_) {
+    if (*(u8*)(this_ + 0x250) == 0) {
+        *(u32*)(this_ + 0x24c) = *(u32*)((u8*)lbl_8053AF80 + 0x58);
+        *(u8*)(this_ + 0x250) = 1;
+        return;
+    }
+
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        switch (*(s32*)(this_ + 0x234)) {
+        case 0:
+        case 1:
+            if (((u8*)fn_801F856C())[0x305c] == 1) {
+                if (*(s32*)(this_ + 0x238) == 0 || (*(s32*)(this_ + 0x238) == 1 && !(u8)((Actor*)this_)->v11())) {
+                    ((Actor*)this_)->v10(0xff, 1);
+                    if (*(s32*)(this_ + 0x234) == 0) {
+                        fn_801F0D20(this_, 3);
+                    }
+                    if (*(s32*)(this_ + 0x238) == 0) {
+                        *(s32*)(this_ + 0x230) = 1;
+                    }
+                    if (*(s32*)(this_ + 0x254) == 0) {
+                        if (*(u32*)(this_ + 0x24c) != *(u32*)((u8*)lbl_8053AF80 + 0x58)) {
+                            fn_80138B7C(lbl_8053AAF8);
+                            *(s32*)(this_ + 0x254) = 1;
+                        }
+                    } else if (*(s32*)(this_ + 0x254) == 2) {
+                        fn_80138B7C(lbl_8053AAF8);
+                        *(s32*)(this_ + 0x254) = 1;
+                    }
+                }
+            } else {
+                if (*(s32*)(this_ + 0x238) == 1 && (u8)((Actor*)this_)->v11() == 1) {
+                    ((Actor*)this_)->v10(0xff, 0);
+                }
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5: {
+            bool found = false;
+            for (s32 i = 0; i < 4; i++) {
+                if (rectContains((Rect4*)(this_ + 0x23c), fn_8023E724(i)) == 1 && *(s32*)(this_ + 4) == fn_8023DE58(i)) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                break;
+            }
+        }
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            if (fn_801F75B4(fn_801F856C(), *(s32*)(this_ + 4), (f32*)(this_ + 0x23c)) == 1) {
+                if (*(s32*)(this_ + 0x238) == 0 || (*(s32*)(this_ + 0x238) == 1 && !(u8)((Actor*)this_)->v11())) {
+                    ((Actor*)this_)->v10(0xff, 1);
+                    if (*(s32*)(this_ + 0x234) == 2 || *(s32*)(this_ + 0x234) == 4 || *(s32*)(this_ + 0x234) == 6 || *(s32*)(this_ + 0x234) == 8) {
+                        fn_801F0D20(this_, 3);
+                    }
+                    if (*(s32*)(this_ + 0x238) == 0) {
+                        *(s32*)(this_ + 0x230) = 1;
+                    }
+                    if (*(s32*)(this_ + 0x254) == 0) {
+                        if (*(u32*)(this_ + 0x24c) != *(u32*)((u8*)lbl_8053AF80 + 0x58)) {
+                            fn_80138B7C(lbl_8053AAF8);
+                            *(s32*)(this_ + 0x254) = 1;
+                        }
+                    } else if (*(s32*)(this_ + 0x254) == 2) {
+                        fn_80138B7C(lbl_8053AAF8);
+                        *(s32*)(this_ + 0x254) = 1;
+                    }
+                }
+            } else {
+                if (*(s32*)(this_ + 0x238) == 1 && (u8)((Actor*)this_)->v11() == 1) {
+                    ((Actor*)this_)->v10(0xff, 0);
+                }
+            }
+            break;
+        }
+        break;
+    case 1:
+        break;
+    }
+}
+
 extern "C" void fn_802BDCC0(u8* this_) {
     s32 room;
     u32 ux;
