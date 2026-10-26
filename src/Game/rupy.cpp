@@ -407,7 +407,8 @@ extern "C" s32 fn_8032B3F8(void* this_) {
                     *(s32*)(p + 0x260) = 1;
                     *(f32*)(p + 0x44) = lbl_80541D88;
                     *(f32*)(p + 0x3c) = lbl_80541DAC - rupyRand01();
-                    *(f32*)(p + 0x40) = lbl_80541DB0 + (lbl_80541D90 - lbl_80541DA0 * rupyRand01());
+                    f32 y = lbl_80541D90 - lbl_80541DA0 * rupyRand01();
+                    *(f32*)(p + 0x40) = lbl_80541DB0 + y;
                 } else {
                     *(f32*)(p + 0x3c) = lbl_80541D88;
                     *(f32*)(p + 0x44) = lbl_80541D88;
@@ -424,6 +425,7 @@ extern "C" s32 fn_8032B3F8(void* this_) {
     return 1;
 }
 
+#pragma opt_propagation reset
 extern "C" u8 fn_8023A51C(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
 extern "C" void* fn_8023A478(s32 idx);
