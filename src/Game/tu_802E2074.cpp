@@ -31,6 +31,11 @@ extern "C" void* fn_802E2074(void* this_, s16 freeFlag) {
 // ---- EmptyHook_802E20D4.cpp ----
 // Unnamed actor cluster, part 2/4. EmptyHook_802E20D4 - empty override (bare
 // blr), no extab.
+static inline s32 genDestinationRoom(u8 destination) { return destination + 7; }
+static inline void genSetPosition(JGeometry::TVec3<f32>& pos, u16 x, u16 y, f32 baseX, f32 baseY) {
+    pos.set(8.0f * x + baseX, 8.0f * y + baseY, 0.0f);
+}
+
 struct Box4 {
     f32 x0, y0, x1, y1;
 };
@@ -50,15 +55,18 @@ void fn_802E20D8(u8* this_)
 {
     s32 room = *(s32*)(this_ + 4);
     u8* game = (u8*)fn_802D6A9C();
-    Box4 box = *(Box4*)(game + (room < 8 ? 0xcc : 0xdc));
+    Box4* bounds;
+    if (room < 8) bounds=(Box4*)(game+0xcc); else bounds=(Box4*)(game+0xdc);
+    Box4 box = *bounds;
     s32 offset = 0;
     u8 finished = 0;
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
-        if (lbl_8053ACB0 != 0) {
+        if ((s32)lbl_8053ACB0 != 0) {
+            s32 id;
             s32* entry = (s32*)lbl_804D4768;
             for (s32 i = 0; i < 80; i++, entry++) {
-                s32 id = *entry;
+                id = *entry;
                 if (id >= 0 && fn_801F666C(fn_801F856C(), id) == 0) {
                     *entry = -1;
                     if (--lbl_8053ACB0 == 0) {
@@ -107,30 +115,26 @@ void fn_802E20D8(u8* this_)
             if (found == 1) {
                 u8* data = *(u8**)(this_ + 0x244) + offset;
                 offset += 11;
-                u32 param = (data[7] << 24) | (data[8] << 16) | (data[9] << 8) | data[10];
-                u8 destination = data[4];
-                u8 x = data[5];
-                u8 y = data[6];
                 s32 room;
+                u32 param = (data[7] << 24) | (data[8] << 16) | (data[9] << 8) | data[10];
+                u32 destination = data[4];
+                u16 x = data[5];
+                u16 y = data[6];
                 f32 baseX, baseY;
                 if (destination == 0) {
                     baseX = box.x0; baseY = box.y0; room = 0;
                 } else {
-                    baseX = baseY = 0.0f; room = destination + 7;
+                    baseX = baseY = 0.0f; room = (u8)destination + 7;
                 }
-                s32 direction = *(s32*)(this_ + 0x23c);
+                int direction = *(s32*)(this_ + 0x23c);
                 if (direction < 2) {
-                    f32 pos[3];
-                    pos[0] = 8.0f * (u16)x + baseX;
-                    pos[1] = 8.0f * lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)] + baseY;
-                    pos[2] = 0.0f;
-                    ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, pos, param, 0, -1);
+                    JGeometry::TVec3<f32> pos;
+                    pos.set(8.0f * (u16)x + baseX, 8.0f * lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)] + baseY, 0.0f);
+                    ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, (f32*)&pos, param, 0, -1);
                 } else {
-                    f32 pos[3];
-                    pos[0] = 8.0f * lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)] + baseX;
-                    pos[1] = 8.0f * (u16)y + baseY;
-                    pos[2] = 0.0f;
-                    ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, pos, param, 0, -1);
+                    JGeometry::TVec3<f32> pos;
+                    pos.set(8.0f * lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)] + baseX, 8.0f * (u16)y + baseY, 0.0f);
+                    ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, (f32*)&pos, param, 0, -1);
                 }
                 if (((s32*)lbl_804D4768)[lbl_8053ACB0] >= 0) {
                     if ((s32)++lbl_8053ACB0 >= 80) { detach__5ActorFv(this_); break; }
@@ -140,7 +144,7 @@ void fn_802E20D8(u8* this_)
         *(s32*)(this_ + 0x230) = 0;
         break;
     case 2:
-        if ((*(u32*)(this_ + 0x90) >> 27) == 0 || ((u8 (*)(u8*))(*(void***)this_)[13])(this_) == 1) *(s32*)(this_ + 0x230) = 1;
+        if ((*(u32*)(this_ + 0x90) >> 27) == 0 || (u8)((Actor*)this_)->v11() == 1) *(s32*)(this_ + 0x230) = 1;
         break;
     }
 }
