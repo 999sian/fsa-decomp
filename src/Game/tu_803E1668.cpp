@@ -585,8 +585,8 @@ extern "C" void fn_803E64A0(u8* p) {
     s32 n;
     s32 st;
     f32 u;
-    f32 f30;
     f32 f31;
+    f32 f30;
     f32 off;
     f32 h;
     f32 h2;
@@ -616,12 +616,13 @@ extern "C" void fn_803E64A0(u8* p) {
         }
         f30 = 230.0f * u;
     }
-    k = 0;
     if (st == 3 || (st == 4 && *(s16*)(p + 0x254) <= 10)) {
         k = *(s16*)(p + 0x254);
         if (k >= 5) {
             k = 10 - k;
         }
+    } else {
+        k = 0;
     }
     f31 = 80.0f * u;
     off = (5.0f * (f32)(k * k)) / 25.0f;
@@ -676,6 +677,7 @@ extern "C" void fn_803E64A0(u8* p) {
 
 #pragma opt_common_subs reset
 #pragma opt_loop_invariants reset
+#pragma opt_propagation reset
 extern "C" void fn_803E6A28(void) {}
 
 extern "C" void fn_803E6A2C(u8* param_1) {
