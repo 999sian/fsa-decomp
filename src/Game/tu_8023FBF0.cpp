@@ -2366,6 +2366,25 @@ s32 fn_80247594(char* p, s32 amount) {
 }
 
 void fn_8022AD64(void);
+inline s32 timer476(char* p) {
+ s32 linked = S32(p, 0xd60);
+ if (linked >= 0) return fn_8023C36C(linked);
+ return S32(p, 0x48c);
+}
+inline s32 counter476(char* p) {
+ s32 linked = S32(p, 0xd60);
+ if (linked >= 0) return fn_8023BEA8(linked);
+ return S32(p, 0xbc0);
+}
+inline BOOL owner476(char* p) {
+ if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4))) && S32(p, 0xd60) < 0) return 1;
+ if (getMode4(p) == 4) {
+  s32 a = linkIdx(p);
+  return a != linkRank2(p);
+ }
+ return ((u32)S32(p, 0xd60) >> 31) ^ 1;
+}
+
 void fn_8024762C(char* p) {
     if (fn_8022AF5C()) {
         if (U8(p, 0xce8) == 0 && S32(p, 0x1240) != 0xb) {
