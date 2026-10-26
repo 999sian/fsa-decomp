@@ -70,6 +70,10 @@ struct EffArgs {
     u32 x30, x34, x38;
 };
 
+static inline void EffRaiseLayer(EffArgs& args, const u8 layer) {
+    args.b1d = layer + 1;
+}
+
 struct Rec {
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
@@ -2617,7 +2621,8 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* __restrict f0C, void* __restri
 
 
 
-extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7) {
+extern "C" void fn_801EF830(s32 idx, const f32* pos, const u8* p3, u32 mask, u8* p5, u32 p6, u8* p7) {
+    s32 id2;
     if ((s32)mask == -1) {
         return;
     }
@@ -2630,7 +2635,7 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     }
     s32 kind;
     s32 uVar3 = mask & 0x3ff;
-    kind = fn_802265FC(pos, 0);
+    kind = fn_802265FC((void*)pos, 0);
     u8 ok = 1;
     s32 n = 3;
     if (fn_802DEB58() != 0) {
@@ -2682,29 +2687,25 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     args.x38 = 2;
     args.f10.b[3] = 0xdf;
     if (zPositive) {
-        f32 t = (f32)args.f10.b[3] - lbl_8053F74C * z;
-        f32 m = lbl_8053F778 >= t ? lbl_8053F778 : t;
+        f32 t = (f32)args.f10.b[3] - 0.5f * z;
+        f32 m = 159.0f >= t ? 159.0f : t;
         args.f10.b[3] = (u8)(s32)m;
     }
     if (p3 != 0) {
         if ((mask & 0x400) != 0) {
             args.f10.b[3] = (u8)((args.f10.b[3] * p3[0x13]) / 0xff);
         }
-        u8 y;
-        u8 x;
-        x = p3[0x1c];
-        y = p3[0x1d];
-        args.b1c = x;
-        args.b1d = y;
+        args.b1c = p3[0x1c];
+        args.b1d = p3[0x1d];
     }
-    args.b1d = args.b1d - 1;
+    --args.b1d;
     args.w28 = 1;
     args.b2e = args.f10.b[3] >> 1;
     if ((u16)kind == 0x39 && uVar3 == 0 && 0.0f == pos[2]) {
-        u32 sel = (*(u32*)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x34) >> 2) & 3;
-        u32 id2 = lbl_8053F738[sel] + 0x18f;
-        args.b1d = args.b1d + 1;
-        v14.set(pos[0], lbl_8053F77C + pos[1], pos[2]);
+        unsigned int sel = (*(u32*)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x34) >> 2) & 3;
+        args.b1d++;
+        id2 = lbl_8053F738[sel] + 0x18f;
+        v14.set(pos[0], 0.1f + pos[1], pos[2]);
         if (idx < 8) {
             EffResMgr* m = (EffResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4);
             void* name = (void*)m->load(0x534f4220, lbl_8046A020);
