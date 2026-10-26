@@ -1,5 +1,36 @@
 #include "Game/Actor.h"
 
+struct SwtcVec2 {
+    f32 x, y;
+    SwtcVec2() {}
+    SwtcVec2(f32 x_, f32 y_) { set(x_, y_); }
+    void set(f32 x_, f32 y_) {
+        x = x_;
+        y = y_;
+    }
+    void set(const SwtcVec2& o) {
+        x = o.x;
+        y = o.y;
+    }
+    void add(const SwtcVec2& o) {
+        x += o.x;
+        y += o.y;
+    }
+};
+
+struct SwtcBox2 {
+    SwtcVec2 i, f;
+    SwtcBox2() {}
+    SwtcBox2(const SwtcBox2& o) {
+        i.set(o.i);
+        f.set(o.f);
+    }
+    void addPos(const SwtcVec2& p) {
+        i.add(p);
+        f.add(p);
+    }
+};
+
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void __dl__FPv(void* p);
@@ -42,11 +73,13 @@ extern "C" unsigned char fn_802D800C(void* mgr, unsigned int kind);
 extern "C" void fn_802A3948(void* mgr, void* pos, unsigned int room, int value, int kind);
 extern unsigned int lbl_80475138[];
 extern void* lbl_8053AC98;
-extern "C" void fn_80375E38(int param_1) {
+extern "C" void fn_80375E38(char* param_1) {
+    int i;
+    int off;
     int count = *(int*)((char*)fn_801F856C() + 0x1008);
-    int i = 0;
-    int off = 0;
-    for (; i < count; i++, off += 4) {
+    i = 0;
+    off = 0;
+    for (; i < count; off += 4, i++) {
         unsigned int p = *(unsigned int*)((char*)fn_801F856C() + off + 8);
         if (p == 0) {
             continue;
@@ -59,11 +92,10 @@ extern "C" void fn_80375E38(int param_1) {
             continue;
         }
         unsigned int bits = *(unsigned int*)(p + 0x90);
-        unsigned int* shift = lbl_80475138;
         unsigned int kind = bits >> 27;
         int j = 0;
-        for (; j < 4; j++, shift++) {
-            if (*(unsigned int*)(param_1 + 0x248) == ((bits >> *shift) & 0x1f)) {
+        for (; j < 4; j++) {
+            if (*(unsigned int*)(param_1 + 0x248) == ((bits >> lbl_80475138[j]) & 0x1f)) {
                 *(unsigned int*)(param_1 + 0x254) = kind;
                 void* mgr = fn_802D6A9C();
                 if (fn_802D800C(mgr, *(unsigned int*)(param_1 + 0x254))) {
