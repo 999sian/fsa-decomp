@@ -1120,9 +1120,12 @@ extern u8 lbl_80529DEC[];
 
 struct TwtgOrd { u8 pad[0x244]; s32 order[4]; };
 static inline void twtgSortOrder(TwtgOrd* actor) {
-    for (s32 k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
-        TwtgOrd* o = actor;
-        for (s32 j = 0; j < k; j++) {
+    TwtgOrd* o;
+    s32 j;
+    s32 k;
+    for (k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
+        o = actor;
+        for (j = 0; j < k; j++) {
             s32 nv = fn_80236228(o->order[1]);
             if (fn_80236228(o->order[0]) < nv) {
                 s32 t = o->order[0];
