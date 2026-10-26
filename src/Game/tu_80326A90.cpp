@@ -1,5 +1,6 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
@@ -48,21 +49,21 @@ extern "C" void fn_80326A90(void* this_) {
 extern "C" void fn_80326C5C(void* thisPtr) {
 	char* p = (char*)thisPtr;
 	JGeometry::TBox2<f32> box;
-	f32 x;
+	f32 xA, xB, xC;
 	f32 dx;
 	f32 dy;
 	u32 seed;
 	u32 bitsA, bitsB, bitsC;
 	s32 hit;
-	s32 i;
+	u8* q;
 	char* e;
+	int i;
 	s32 room;
-	char* q;
 	u32* rng;
 
-	fn_801F71A4((f32*)(p + 0x3c), *(f32*)(p + 0x258), 0.1f, 0.5f);
-	fn_801F71A4((f32*)(p + 0x40), *(f32*)(p + 0x25c), 0.1f, 0.5f);
-	fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x260), 0.3f, 0.5f);
+	fn_801F71A4((f32*)(p + 0x3c), *(f32*)(p + 0x258), lbl_80541C34, lbl_80541C38);
+	fn_801F71A4((f32*)(p + 0x40), *(f32*)(p + 0x25c), lbl_80541C34, lbl_80541C38);
+	fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x260), lbl_80541C3C, lbl_80541C38);
 	*(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
 
 	e = *(char**)(p + 0x264);
@@ -79,14 +80,12 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 	}
 
 	switch (*(s32*)(p + 0x230)) {
-	case 1:
-		goto chase;
-	case 0:
+	case 0: {
 		if (*(s32*)(p + 0x23c) != 0) {
 			goto tail;
 		}
 		*(s32*)(p + 0x244) += 0x300;
-		*(f32*)(p + 0x260) = 2.0f * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x244) >> 5].first + 7.0f;
+		*(f32*)(p + 0x260) = lbl_80541C44 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x244) >> 5].first + lbl_80541C40;
 		if (*(s32*)(p + 0x24c) == 0) {
 			if (*(s32*)(p + 0x240) != 0) {
 				*(s32*)(p + 0x248) += 0x100;
@@ -95,30 +94,33 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 				seed = *rng * 0x19660d + 0x3c6ef35f;
 				*rng = seed;
 				bitsA = (*rng >> 9) | 0x3f800000;
-				x = *(f32*)&bitsA - 1.0f;
-				*(s32*)(p + 0x240) = (s32)(30.0f * x) + 30;
+				xA = *(f32*)&bitsA - lbl_80541C30;
+				*(s32*)(p + 0x240) = (s32)(lbl_80541C48 * xA) + 30;
 				*(s32*)(p + 0x24c) = 1;
-				*(f32*)(p + 0x258) = 0.0f;
-				*(f32*)(p + 0x25c) = 0.0f;
+				*(f32*)(p + 0x258) = lbl_80541C28;
+				*(f32*)(p + 0x25c) = lbl_80541C28;
 			}
 		} else if (*(s32*)(p + 0x240) == 0) {
 			rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
 			seed = *rng * 0x19660d + 0x3c6ef35f;
 			*rng = seed;
 			bitsB = (*rng >> 9) | 0x3f800000;
-			x = *(f32*)&bitsB - 1.0f;
-			*(s32*)(p + 0x248) += (s32)(32768.0f * x);
+			xB = *(f32*)&bitsB - lbl_80541C30;
+			*(s32*)(p + 0x248) += (s32)(lbl_80541C4C * xB);
+			rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
 			seed = *rng * 0x19660d + 0x3c6ef35f;
 			*rng = seed;
 			bitsC = (*rng >> 9) | 0x3f800000;
-			x = *(f32*)&bitsC - 1.0f;
-			*(s32*)(p + 0x240) = (s32)(40.0f * x) + 40;
+			xC = *(f32*)&bitsC - lbl_80541C30;
+			*(s32*)(p + 0x240) = (s32)(lbl_80541C50 * xC) + 40;
 			*(s32*)(p + 0x24c) = 0;
 		}
 		box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
-		box.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
+		JGeometry::TVec2<f32> pos;
+		pos.set(*(f32*)(p+0xc), *(f32*)(p+0x10));
+		box.addPos(pos);
 		room = *(s32*)(p + 0x4);
-		hit = fn_8023AF14((f32*)&box, *(s32*)(p+4), 0.0f, 1);
+		hit = fn_8023AF14((f32*)&box, *(s32*)(p+4), lbl_80541C28, 1);
 		if (hit < 0) {
 			goto tail;
 		}
@@ -138,26 +140,28 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 			*(u8*)(p + 0x11e) = 1;
 			goto tail;
 		}
-		fn_8023C830(hit);
+	}
+	case 1:
+		fn_8023C830(*(s32*)(p + 0x244));
 		*(s32*)(p + 0x234) = 1000;
 		*(s32*)(p + 0x248) += 1;
-		goto tail;
+		goto chase;
 	default:
 		goto tail;
 	}
 
 chase:
 	if (*(s32*)(p + 0x23c) == 0) {
-		f32* a = fn_8023E724(*(s32*)(p + 0x244));
-		dx = *(f32*)(p + 0xc) - a[0];
-		a = fn_8023E724(*(s32*)(p + 0x244));
-		dy = *(f32*)(p + 0x10) - a[1];
-		*(s16*)(p + 0x254) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.4f);
+		dx = *(f32*)(p + 0xc) - fn_8023E724(*(s32*)(p + 0x244))[0];
+		dy = *(f32*)(p + 0x10) - fn_8023E724(*(s32*)(p + 0x244))[1];
+		f32 angle = JMath::atanTable_.atan2_(-dx, -dy);
+		*(s16*)(p + 0x254) = (s16)(angle * lbl_80541C54);
 		*(s32*)(p + 0x23c) = 5;
-		*(f32*)(p + 0x258) = 5.0f * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x254) >> 5].first;
-		*(f32*)(p + 0x25c) = 5.0f * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x254) >> 5].second;
+
 	}
 
+	*(f32*)(p + 0x258) = lbl_80541C58 * JMath::sincosTable_.sinShort(*(s16*)(p + 0x254));
+	*(f32*)(p + 0x25c) = lbl_80541C58 * JMath::sincosTable_.cosShort(*(s16*)(p + 0x254));
 	if (*(s32*)(p + 0x248) > 720) {
 		e = *(char**)(p + 0x264);
 		if (e != NULL) {
@@ -181,44 +185,28 @@ tail:
 			*(s32*)(p + 0x250) = 0;
 		}
 	}
-	q = p;
-	for (i = 0; i < 2; i++, q += 8) {
+	q = (u8*)p;
+	for (i = 0; i < 4; q += 4, i++) {
 		if (*(s32*)(q + 0x234) > 0) {
 			*(s32*)(q + 0x234) -= 1;
 		}
 		if (*(s32*)(p + 0x234) <= 0) {
-			e = *(char**)(p + 0x264);
-			if (e != NULL) {
-				*(u32*)(e + 0xf4) |= 1;
-				*(s32*)(e + 0x24) = 1;
+			char* emitter;
+			emitter = *(char**)(p + 0x264);
+			if (emitter != NULL) {
+				*(u32*)(emitter + 0xf4) |= 1;
+				*(s32*)(emitter + 0x24) = 1;
 				*(s32*)(p + 0x264) = 0;
 			}
-			e = *(char**)(p + 0x268);
-			if (e != NULL) {
-				*(u32*)(e + 0xf4) |= 1;
-				*(s32*)(e + 0x24) = 1;
+			emitter = *(char**)(p + 0x268);
+			if (emitter != NULL) {
+				*(u32*)(emitter + 0xf4) |= 1;
+				*(s32*)(emitter + 0x24) = 1;
 				*(s32*)(p + 0x268) = 0;
 			}
 			*(u8*)(p + 0x11c) = 0;
 		}
-		if (*(s32*)(q + 0x238) > 0) {
-			*(s32*)(q + 0x238) -= 1;
-		}
-		if (*(s32*)(p + 0x234) <= 0) {
-			e = *(char**)(p + 0x264);
-			if (e != NULL) {
-				*(u32*)(e + 0xf4) |= 1;
-				*(s32*)(e + 0x24) = 1;
-				*(s32*)(p + 0x264) = 0;
-			}
-			e = *(char**)(p + 0x268);
-			if (e != NULL) {
-				*(u32*)(e + 0xf4) |= 1;
-				*(s32*)(e + 0x24) = 1;
-				*(s32*)(p + 0x268) = 0;
-			}
-			*(u8*)(p + 0x11c) = 0;
-		}
+
 	}
 }
 
