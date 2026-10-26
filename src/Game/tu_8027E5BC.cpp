@@ -2338,9 +2338,14 @@ void fn_802844F8(char* p) {
         if (U8(p, 0x3fd) == 3) fn_8027E5BC(p, lbl_80540380);
         else fn_8027E5BC(p, lbl_805403B0);
     }
+    f32 top = box.i.y;
+    f32 right = box.f.x;
+    f32 bottom = box.f.y;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && fn_80233EDC(i)) {
-            if (!playerBoxContains(box, *fn_8023E724(i))) { all = false; break; }
+            JGeometry::TVec3<f32>* pos = fn_8023E724(i);
+            bool inside = pos->x >= box.i.x && pos->y >= top && pos->x < right && pos->y < bottom;
+            if (!inside) { all = false; break; }
         }
     }
     if (all) {
@@ -2362,7 +2367,7 @@ void fn_802844F8(char* p) {
         else if (U8(p, 0x3fd) == 0) {
             U8(p, 0x3f8)++;
             if (U8(p, 0x3f8) >= 16) U8(p, 0x3f8) = 0;
-            U8(p, 0x3f9) = U8(p, 0x3f8) >> 1;
+            U8(p, 0x3f9) = (u32)U8(p, 0x3f8) >> 1;
         } else if (U8(p, 0x3fd) == 3) {
             U8(p, 0x3f8)++;
             if (U8(p, 0x3f8) >= 19) U8(p, 0x3f8) = 0;
