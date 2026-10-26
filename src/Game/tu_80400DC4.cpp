@@ -38,6 +38,10 @@ extern "C" u8 lbl_80479C60[];
 extern "C" f32 lbl_80543844;
 extern "C" f32 lbl_80543848;
 extern "C" f32 lbl_8054384C;
+static inline void setTextSize(J2DTextBox& box, J2DTextBox::TFontSize size) {
+    box.mFontSize.x = size.x > lbl_80543834 ? size.x : lbl_80543834;
+    box.mFontSize.y = size.y > lbl_80543834 ? size.y : lbl_80543834;
+}
 #pragma fp_contract off
 extern "C" void fn_80400DC4(s32 param_1, s32 param_2) {
     J2DTextBox::TFontSize size;
@@ -47,22 +51,22 @@ extern "C" void fn_80400DC4(s32 param_1, s32 param_2) {
     u8* base = lbl_80479CA0 + 0x20;
     char* str = (char*)base + (*(u32*)(base + 4) + *(u32*)(base + param_2 * 4 + 0x10) + 8);
     const GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-    f32 f30 = lbl_80543834 + f31;
-    J2DTextBox tb1(0x5445585431ULL, JGeometry::TBox2f(lbl_80543834, lbl_80543834, f30, lbl_80543838), (ResFONT*)lbl_80479F00, (const char*)str, -1, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-    J2DTextBox tb2(0x5445585432ULL, JGeometry::TBox2f(lbl_80543834, lbl_80543834, f30, lbl_80543838), (ResFONT*)lbl_80479F00, (const char*)str, -1, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-    J2DPicture pic(0x5049435431ULL, JGeometry::TBox2f(lbl_80543834, lbl_80543834, lbl_8054383C, lbl_80543840), (ResTIMG*)lbl_80479C60, (ResTLUT*)0);
+    f32 f30 = 0.0f + f31;
+    J2DTextBox tb1(0x5445585431ULL, JGeometry::TBox2f(0.0f, 0.0f, f30, lbl_80543838), (ResFONT*)lbl_80479F00, (const char*)str, -1, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
+    J2DTextBox tb2(0x5445585432ULL, JGeometry::TBox2f(0.0f, 0.0f, f30, lbl_80543838), (ResFONT*)lbl_80479F00, (const char*)str, -1, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
+    J2DPicture pic(0x5049435431ULL, JGeometry::TBox2f(0.0f, 0.0f, lbl_8054383C, lbl_80543840), (ResTIMG*)lbl_80479C60, (ResTLUT*)0);
     tb1.setFontSize(size);
     JUtility::TColor textColor(255, 200, 0, 255);
     JUtility::TColor gradColor(255, 180, 0, 255);
-    tb1.setFontColor(textColor, gradColor);
-    tb1.setCharSpace(lbl_80543834);
+    setTextColors(tb1, textColor, gradColor);
+    tb1.setCharSpace(0.0f);
     tb1.setLineSpace(lbl_80543830);
     tb1.setBlack(JUtility::TColor(255, 255, 255, 0));
     tb2.setFontSize(size);
     JUtility::TColor shadowColor(0, 0, 0, 200);
     JUtility::TColor shadowGrad(0, 0, 0, 200);
-    tb2.setFontColor(shadowColor, shadowGrad);
-    tb2.setCharSpace(lbl_80543834);
+    setTextColors(tb2, shadowColor, shadowGrad);
+    tb2.setCharSpace(0.0f);
     tb2.setLineSpace(lbl_80543830);
     pic.setAlpha(130);
     JUTResFont font((ResFONT*)lbl_80479F00, (JKRHeap*)0);
@@ -70,27 +74,25 @@ extern "C" void fn_80400DC4(s32 param_1, s32 param_2) {
     f32 lines[6];
     f32 maxW;
     f32 f29;
-    char* p;
-    f32* lp;
     s32 yy;
     JUTFont* fontPtr = &font;
+    f32* lp;
 
-    maxW = lbl_80543834;
+    maxW = 0.0f;
     for (int i = 0; i < 6; i++) {
-        lines[i] = lbl_80543834;
+        lines[i] = 0.0f;
     }
     yy = 0x1b;
     lp = lines;
-    p = str;
-    while (*p != 0) {
-        if (*p == 0xa) {
+    while (*str != 0) {
+        if (*str == 0xa) {
             yy += 0x1b;
             lp++;
         } else {
-            fontPtr->getWidthEntry(*p, &tw);
+            fontPtr->getWidthEntry((u8)*str, &tw);
             *lp = *lp + (f32)(s32)tw.w1;
         }
-        p++;
+        str++;
     }
 
     for (int i = 0; i < 6; i++) {
