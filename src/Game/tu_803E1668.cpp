@@ -583,16 +583,16 @@ extern "C" void fn_803E64A0(u8* p) {
     s32 n;
     s32 st;
     f32 u;
-    f32 f31;
     f32 f30;
+    f32 f31;
     f32 off;
     f32 h;
     f32 h2;
-    f32 t;
     u8* q;
-    s32* tA = (s32*)(lbl_80477970 + 0xea8);
-    s32* tB = (s32*)(lbl_80477970 + 0xec8);
-    s32* tC = (s32*)(lbl_80477970 + 0xee8);
+    const u8* base = lbl_80477970;
+    s32* tA;
+    s32* tB;
+    s32* tC;
     Pane803E4650* pane;
 
     st = *(s32*)(p + 0x1d4);
@@ -602,8 +602,7 @@ extern "C" void fn_803E64A0(u8* p) {
             u = (f32)(n * n) / 900.0f;
         } else {
             n -= 30;
-            t = (f32)(n * n) / 900.0f;
-            u = 1.0f - t;
+            u = 1.0f - (f32)(n * n) / 900.0f;
         }
         f30 = u * (f32)p[0x268];
     } else {
@@ -625,6 +624,9 @@ extern "C" void fn_803E64A0(u8* p) {
     f31 = 80.0f * u;
     off = (5.0f * (f32)(k * k)) / 25.0f;
     q = p;
+    tA = (s32*)(base + 0xea8);
+    tB = (s32*)(base + 0xec8);
+    tC = (s32*)(base + 0xee8);
     for (i = 0; i < 4; i++, tA += 2, tB += 2, tC += 2, q += 4) {
         if (i == *(s32*)(p + 0x1bc)) {
             pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tA[0], tA[1]);
@@ -637,7 +639,7 @@ extern "C" void fn_803E64A0(u8* p) {
                 pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(0x50736375, 0x726f3032);
                 pane->v10(h, *(f32*)(p + 0x1a0) + off);
             } else {
-                h = getBounds__7J2DPaneFv(((Screen803E4650*)*(void**)(p + 4))->v3C(tA[0], tA[1]))[1];
+                h = getBounds__7J2DPaneFv(((Screen803E4650*)*(void**)(p + 4))->v3C(*(s32*)(base + 0xea8), *(s32*)(base + 0xeac)))[1];
                 h2 = getBounds__7J2DPaneFv(((Screen803E4650*)*(void**)(p + 4))->v3C(tA[0], tA[1]))[1];
                 h2 = (*(f32*)(p + 0x1a0) + h2) - h;
                 pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(0x50736375, 0x726f3032);
@@ -652,9 +654,9 @@ extern "C" void fn_803E64A0(u8* p) {
             pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tC[0], tC[1]);
             pane->setAlpha((s32)f31);
         } else {
-            pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tB[0], tB[1]);
+            pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tA[0], tA[1]);
             h = getBounds__7J2DPaneFv(pane)[0];
-            pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tB[0], tB[1]);
+            pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tA[0], tA[1]);
             pane->v10(h, *(f32*)(q + 0x110));
             pane = ((Screen803E4650*)*(void**)(p + 4))->v3C(tB[0], tB[1]);
             *((u8*)pane + 0xb0) = 1;
@@ -670,6 +672,7 @@ extern "C" void fn_803E64A0(u8* p) {
     fn_80440EE8(lbl_8053AED8);
 }
 
+#pragma opt_common_subs reset
 extern "C" void fn_803E6A28(void) {}
 
 extern "C" void fn_803E6A2C(u8* param_1) {
