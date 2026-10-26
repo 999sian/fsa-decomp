@@ -1373,8 +1373,8 @@ extern "C" void fn_800D7524(u8* p) {
         v = *(u32*)(p + 0x80 + i * 4) | ((i + 0x10) << 24);
         J3DGDWriteBPCmd(v);
     }
-    for (int j = 0; j < 4; j++) {
-        int st = j * 4;
+    for (int st = 0; st < 16; st += 4) {
+        int j = st / 4;
         J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)p[0x72], (GXTevKAlphaSel)p[0x76],
                                              (GXTevKColorSel)p[0x73], (GXTevKAlphaSel)p[0x77],
                                              (GXTevColorChan)j3dTevSwapTableTable[p[0x7a + j] * 4],
