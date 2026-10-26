@@ -273,8 +273,8 @@ static inline void* callVt3(u8* p, u32 a, u32 b, u32 c) {
 }
 
 static inline void setKeyedAt(u8* p, s32 recvOff, s32 tgtOff, u8* keys, s32 n, s32 flagOff) {
-    s32 i;
     u8* k = keys;
+    s32 i;
     for (i = 0; i < n; i++, k += 8) {
         void* object = *(void**)(p + recvOff);
         void* s = ((J2DPane*)object)->search(*(u64*)k);
@@ -2257,6 +2257,7 @@ extern "C" void fn_803C5190(u8* p) {
     s16 c = *(s16*)(tbl + 0x220);
     s16 g = *(s16*)(tbl + 0x228);
     s32 lim = c + d + e;
+    u8* keys;
     s32 acc;
     s32 i;
     u8* q;
@@ -2273,12 +2274,13 @@ extern "C" void fn_803C5190(u8* p) {
         if ((p[0x115] & ((1 << *(u32*)(p + 0xa4)) & 0xff)) != 0) {
             setFade(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), b, ((u8*)*(void**)(p + 0x20))[0x28], 0);
-            setKeyedAt(p, 4, 0x20, base + 0x368, 9, 0x196);
+            keys=base+0x368;
+            setKeyedAt(p, 4, 0x20, keys, 9, 0x196);
             if (*(s16*)(p + 0xd8) == sum) {
                 fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
                 *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
                 ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 4))->v9(0);
-                setKeyedAt(p, 4, 0x20, base + 0x368, 9, 0x196);
+                setKeyedAt(p, 4, 0x20, keys, 9, 0x196);
                 *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
             }
         } else {
