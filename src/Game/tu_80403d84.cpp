@@ -104,9 +104,9 @@ extern "C" u8 lbl_8050DB0C[];
 extern u8 lbl_80543880[8];
 extern u8 lbl_80543888[8];
 
-static inline s32 EC80Bit28(s32 idx, s32 shift) {
+static inline BOOL EC80Bit28(s32 idx, u32 shift) {
 	if (idx < 0 || idx > 7) return 0;
-	return (*(u32*)((u8*)&lbl_8050EC80[lbl_8050EC80[0].selfIndex] + 0x28) & (1 << (idx * 4 + shift))) != 0;
+	return ((1 << (idx * 4 + shift)) & *(u32*)((u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
 }
 
 // Pane pair of a 0x14-byte entry at self + 0x28 (one per row, 8 rows).
@@ -634,9 +634,11 @@ u8 fn_80404270(void* self, s32 idx) {
 			if (EC80Bit28(idx, 2)) goto found;
 		}
 	}
-	return 0;
+	goto failed;
 found:
 	return 1;
+failed:
+	return 0;
 }
 
 extern "C" void fn_8040E298(u8* self) {
