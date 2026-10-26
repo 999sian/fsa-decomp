@@ -215,11 +215,6 @@ static inline f32 centerOffset80431(f32 width, const f32 paneWidth, const f32 of
     return difference * 0.5f + offset;
 }
 
-static inline f32 halfDifference80431(f32 a, const f32 b) {
-    a -= b;
-    return a * 0.5f;
-}
-
 struct T80431_Owner {
     void* vt;
     u8 pad4[0x4];
