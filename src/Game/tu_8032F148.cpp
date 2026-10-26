@@ -742,6 +742,7 @@ static inline u8 enemyFlameHitResult(char* self, char* target) {
     }
     return hit;
 }
+#pragma opt_propagation off
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern const f32 lbl_80541ED0;
@@ -758,23 +759,36 @@ extern "C" void fn_80332A60(char* this_) {
     if (*(s32*)(p+0x268)>0) {
         kind=0;
         hit=0;
-        box.set(*(JGeometry::TBox2<f32>*)(p+0x60));
-        f32 x0=box.i.x;
-        f32 y0=box.i.y;
-        f32 x1=box.f.x;
-        f32 y1=box.f.y;
+        box.i.x=*(f32*)(p+0x60);
+        box.i.y=*(f32*)(p+0x64);
+        box.f.x=*(f32*)(p+0x68);
+        box.f.y=*(f32*)(p+0x6c);
         offset.x=*(f32*)(p+0xc);
-        x0+=offset.x; x1+=offset.x;
         offset.y=*(f32*)(p+0x10);
-        y0+=offset.y; y1+=offset.y;
-        box.i.x=x0; box.i.y=y0; box.f.x=x1; box.f.y=y1;
+        box.addPos(offset);
 
         idx=fn_801F82CC(fn_801F856C(),p,*(u8*)(p+0x195),lbl_80541F28);
         u8 result;
         if(idx>=0 && idx!=*(s32*)(p+0x198)) {
             a=(char*)fn_801F666C(fn_801F856C(),idx);
-            result=enemyFlameHit(p,a,hit);
-        } else result=hit;
+            result=0;
+            switch((u32)a) {
+            case 0: goto resultCheck;
+            default: {
+                if(*(u32*)(a+0x1a0)=='FLME') result=1;
+                if(result) {
+                    JGeometry::TVec3<f32> v;
+                    v.zero();
+                    fn_801F3128(a,&v.x);
+                    v -= *(JGeometry::TVec3<f32>*)(a+0x3c);
+                    hit=fn_801F37AC(p,*(u32*)(a+0x118),&v,0,*(u32*)(a+0x168),*(u32*)(a+0x110));
+                    if(hit) *(u8*)(a+0x164)=1;
+                }
+            } break;
+            }
+        }
+        result=hit;
+resultCheck:
         if((u8)result) kind=2;
         else if ((u8)fn_801F2DB4(p,'NULL','FLME',0) || fn_801F2FAC(p) ||
                  fn_801A4D1C(*(s32*)(p+0x198),&box,&offset)!=0 ||
@@ -783,9 +797,9 @@ extern "C" void fn_80332A60(char* this_) {
                  fn_801A46FC(*(s32*)(p+0x198),&box,&offset)!=0) kind=1;
         if(kind>0) {
             if(*(u8*)(p+0x2a2)==1)
-                *(s32*)(p+0x240)=(s32)(lbl_80541F14*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+200;
+                *(s32*)(p+0x240)=(s32)(200.0f*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+200;
             else
-                *(s32*)(p+0x240)=(s32)(lbl_80541F18*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+100;
+                *(s32*)(p+0x240)=(s32)(100.0f*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+100;
             if(*(s32*)((char*)fn_802D6A9C()+4)!=1 || *(s32*)((char*)fn_802D6A9C()+8)!=2)
                 *(s32*)(p+0x268)-=1;
             if(*(u8*)(p+0x2a1)==0)
@@ -794,22 +808,21 @@ extern "C" void fn_80332A60(char* this_) {
                 fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80541EBC,0xd2,0,0,0,0,1);
             fn_801F0E34(p,0x40001,0);
             if(*(s32*)(p+0x268)==0)
-                *(s32*)(p+0x240)=(s32)(lbl_80541F14*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+200;
+                *(s32*)(p+0x240)=(s32)(200.0f*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+200;
             if(kind==1 || *(s32*)(p+0x268)==0) {
                 *(s32*)(p+0x238)=0;
                 *(s32*)(p+0x258)=0;
-                *(f32*)(p+0x14)=lbl_80541E9C;
-                *(f32*)(p+0x44)=lbl_80541E9C;
-                if(((JGeometry::TVec3<f32>*)(p+0x3c))->length()>lbl_80541EE8) {
-                    f32 limit=lbl_80541EE8;
+                *(f32*)(p+0x14)=0.0f;
+                *(f32*)(p+0x44)=0.0f;
+                if(((JGeometry::TVec3<f32>*)(p+0x3c))->length()>4.0f) {
                     ((JGeometry::TVec3<f32>*)(p+0x3c))->normalize();
-                    ((JGeometry::TVec3<f32>*)(p+0x3c))->scale(limit);
+                    ((JGeometry::TVec3<f32>*)(p+0x3c))->scale(4.0f);
                 }
             } else {
                 *(s32*)(p+0x238)=*(s32*)(p+0x240);
                 *(s32*)(p+0x258)=0;
-                *(f32*)(p+0x14)=lbl_80541E9C;
-                *(f32*)(p+0x44)=lbl_80541E9C;
+                *(f32*)(p+0x14)=0.0f;
+                *(f32*)(p+0x44)=0.0f;
                 *(JGeometry::TVec3<f32>*)(p+0x2b8)=*(JGeometry::TVec3<f32>*)(p+0x3c);
                 ((JGeometry::TVec3<f32>*)(p+0x2b8))->normalize();
                 f32 speed=lbl_80541ED0;
