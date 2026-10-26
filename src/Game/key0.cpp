@@ -67,9 +67,7 @@ static inline Key0Pt key0Point(const char* p) {
     return Key0Pt(*(const f32*)p, *(const f32*)(p + 4));
 }
 extern "C" void* fn_802D6A9C(void);
-static inline u8 key0StageIndex() {
-    return *(u32*)((u8*)fn_802D6A9C() + 0x18);
-}
+
 extern "C" void fn_802D6C10(void* rec, Key0Pt pt, u32 id);
 
 static inline u8 key0RoomFlag(s32 room) {
