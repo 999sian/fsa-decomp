@@ -1566,12 +1566,12 @@ extern "C" void fn_800FBD90(void* this_) {
         fn_801F0E34(p, 0x4002e, 0);
         JGeometry::TVec3<f32> n;
         if (fn_801F2618(p, &n, 0)) {
-            f32 x = *(f32*)(p + 0x3c);
-            f32 dot = WRTC_velocityDot((f32*)(p + 0x3c), n);
+            WrtcVec* vel = (WrtcVec*)(p + 0x3c);
+            f32 dot = WRTC_velocityDot(vel, n);
             f32 k = lbl_8053BFF0 * dot;
-            *(f32*)(p + 0x3c) = x - k * n.x;
-            *(f32*)(p + 0x40) -= k * n.y;
-            *(f32*)(p + 0x44) -= k * n.z;
+            vel->x -= k * n.x;
+            vel->y -= k * n.y;
+            vel->z -= k * n.z;
             fn_801F0E34(p, 0x4002d, 0);
         }
     }
