@@ -50,6 +50,14 @@ extern "C" s32 fn_8013CC50(s32 id, void* p, f32 f, s32 a, s32 b, s32 c, s32 d, s
 extern "C" void fn_801F0E34(void* a, s32 code, s32 z);
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
+static inline void clearHouseActors(char* self, s32 countOffset, s32 handleOffset) {
+    s32 index;
+    char* entry;
+    for (index = 0, entry = self; index < *(s32*)(self + countOffset); entry += 4, index++) {
+        char* actor = (char*)fn_801F666C(fn_801F856C(), *(s32*)(entry + handleOffset));
+        if (actor) *(u8*)(actor + 0x11c) = 0;
+    }
+}
 extern "C" s32 fn_801F78F4(void*, u32, s32);
 extern "C" u16 fn_80226850(void*, s32);
 extern "C" void* fn_8020D58C(void);
@@ -474,7 +482,7 @@ extern "C" void fn_802961AC(void* p) {
     char* col;
     JGeometry::TVec3f* dir;
     JGeometry::TVec3f v;
-    JGeometry::TVec3f gridBase;
+    Vec gridBase;
     f32 ox;
     s32 id;
     s32 j;
@@ -486,7 +494,7 @@ extern "C" void fn_802961AC(void* p) {
         return;
     }
     other = (char*)fn_801F666C(fn_801F856C(), id);
-    if (other != 0) {
+    if (other) {
         if (*(u16*)(other + 0x94) == 5) {
             dir = (JGeometry::TVec3f*)(self + 0x2d0);
             *dir = *(JGeometry::TVec3f*)(self + 0xc) - *(JGeometry::TVec3f*)(other + 0xc);
@@ -526,10 +534,10 @@ extern "C" void fn_802961AC(void* p) {
             *(u8*)(self + 0x24c) = 0;
             if (*(u8*)(self + 0x24c) == 0) {
                 *(u8*)(self + 0x24c) = 1;
-                gridBase = *(JGeometry::TVec3f*)(self + 0xc);
+                *(JGeometry::TVec3f*)&gridBase = *(JGeometry::TVec3f*)(self + 0xc);
                 gridBase.x += *(f32*)(self + 0x60);
-                gridBase.y += *(f32*)(self + 0x64);
                 gridBase.x += 8.0f;
+                gridBase.y += *(f32*)(self + 0x64);
                 gridBase.y += 8.0f;
                 gridBase.z = 0.0f;
                 JGeometry::TVec3f grid(gridBase);
@@ -1134,7 +1142,7 @@ extern "C" void fn_80299720(char* self) {
     s32 bits;
     f32 lenSq;
     JGeometry::TVec3f tmp;
-    volatile JGeometry::TVec3f v;
+    JGeometry::TVec3f v;
     JGeometry::TVec3f d;
     JGeometry::TVec3f sum;
 
@@ -1187,7 +1195,7 @@ extern "C" void fn_80299720(char* self) {
             for (k = 0; k < *(s32*)(self + 0x2a8); k++) {
                 obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + (JGeometry::TVec3f&)v;
+                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + v;
                     fn_802C59B0(obj);
                 }
                 q += 4;
