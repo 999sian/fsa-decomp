@@ -122,6 +122,11 @@ extern const f32 lbl_8053DBDC;
 extern const f32 lbl_8053DBB8;
 extern const f32 lbl_8053DBF4;
 extern void* lbl_8053AAF8;
+#pragma opt_propagation off
+static inline void wizrSetState(char* p, s32 state) {
+    *(s32*)(p + 0x230) = state;
+}
+
 extern "C" void fn_801788B4(char* this_) {
     u32 spawn = *(u32*)(this_ + 0x90);
     *(s32*)(this_ + 0x2c8) = (spawn >> 22) & 0x1f;
@@ -193,13 +198,14 @@ extern "C" void fn_801788B4(char* this_) {
     *(u8*)(this_ + 0x2e5) = 0;
 
     switch (*(u16*)(this_ + 0x94)) {
+    case 0:
     default: {
         char* rng = (char*)lbl_8053AAF8;
         *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
         u32 bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
         *(s32*)(this_ + 0x250) = (s32)(lbl_8053DC10 * (*(f32*)&bits - lbl_8053DBB0));
         *(s32*)(this_ + 0x250) &= 3;
-        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && ((u8 (*)(void*))(*(void***)this_)[13])(this_) == 0) {
+        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && (u8)((Actor*)this_)->v11() == 0) {
             *(u8*)(this_ + 0x1a8) = 0;
             *(u8*)(this_ + 0x2e5) = 1;
             *(s32*)(this_ + 0x230) = 0;
@@ -246,6 +252,7 @@ extern "C" void fn_801788B4(char* this_) {
         *(s32*)(this_ + 0x108) = 0x2710;
         *(s32*)(this_ + 0x230) = 0xf;
         break;
+    case 30:
     case 31:
         *(s32*)(this_ + 0x300) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x50d, 1, 1, 0, 0, 1);
         *(s32*)(this_ + 0x304) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x50e, 1, 1, 0, 0, 1);
@@ -256,5 +263,5 @@ extern "C" void fn_801788B4(char* this_) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
