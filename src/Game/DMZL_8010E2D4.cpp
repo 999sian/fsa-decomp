@@ -293,7 +293,7 @@ extern const f32 lbl_8053C594;
 extern const f32 lbl_8053C5A0;
 
 static inline f32 DMZLShiftY(const f32 y, const f32 offset) { return y + offset; }
-static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
+static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1, const f32 offset = lbl_8053C550, const f32 speed = lbl_8053C5D0) {
     u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     if (obj[0x840] == 0) {
         obj[0x840] = 1;
@@ -301,12 +301,12 @@ static inline void DMZLSetBox(const f32 x0, const f32 y0, const f32 x1, const f3
         *(f32*)(obj + 0x848) = y0;
         *(f32*)(obj + 0x84c) = x1;
         *(f32*)(obj + 0x850) = y1;
-        *(f32*)(obj + 0x854) = lbl_8053C550;
-        *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
-        *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        *(f32*)(obj + 0x854) = offset;
+        *(f32*)(obj + 0x1d4) = speed;
+        *(f32*)(obj + 0x1d8) = speed;
     }
 }
-static inline void DMZLSetBoxAlt(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
+static inline void DMZLSetBoxAlt(const f32 x0, const f32 y0, const f32 x1, const f32 y1, const f32 offset = lbl_8053C550, const f32 speed = lbl_8053C5D0) {
     u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     if (obj[0x7f5] == 0) {
         obj[0x7f4] = 1;
@@ -325,6 +325,8 @@ extern "C" void fn_80110210(u8* this_) {
     f32 x;
     f32 sum;
     f32 f274;
+    f32 d0;
+    f32 d1;
 
     switch (*(s32*)(this_ + 0x238)) {
     case 38:
@@ -335,16 +337,18 @@ extern "C" void fn_80110210(u8* this_) {
     case 41:
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
         sum = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x278);
-        f274 = *(f32*)(this_ + 0x274);
         obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f274 = *(f32*)(this_ + 0x274);
+        d0 = sum - f274;
+        d1 = f274 + sum;
         x = *(f32*)(this_ + 0xc);
         if (obj[0x7f5] == 0) {
             obj[0x7f4] = 1;
             *(s32*)(obj + 0x7f8) = 5;
             *(f32*)(obj + 0x808) = x;
-            *(f32*)(obj + 0x80c) = sum - f274;
+            *(f32*)(obj + 0x80c) = d0;
             *(f32*)(obj + 0x810) = x;
-            *(f32*)(obj + 0x814) = f274 + sum;
+            *(f32*)(obj + 0x814) = d1;
             obj[0x7f6] = 0;
         }
         break;
@@ -353,16 +357,18 @@ extern "C" void fn_80110210(u8* this_) {
     case 44:
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
         sum = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x278);
-        f274 = *(f32*)(this_ + 0x274);
         obj = *(u8**)(lbl_8053AB10 + 0x24);
+        f274 = *(f32*)(this_ + 0x274);
+        d0 = sum - f274;
+        d1 = f274 + sum;
         x = *(f32*)(this_ + 0xc);
         if (obj[0x7f5] == 0) {
             obj[0x7f4] = 1;
             *(s32*)(obj + 0x7f8) = 5;
             *(f32*)(obj + 0x808) = x;
-            *(f32*)(obj + 0x80c) = sum - f274;
+            *(f32*)(obj + 0x80c) = d0;
             *(f32*)(obj + 0x810) = x;
-            *(f32*)(obj + 0x814) = f274 + sum;
+            *(f32*)(obj + 0x814) = d1;
             obj[0x7f6] = 0;
         }
         break;
@@ -380,16 +386,18 @@ extern "C" void fn_80110210(u8* this_) {
     case 51:
     case 52:
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
-        obj = *(u8**)(lbl_8053AB10 + 0x24);
-        sum = *(f32*)(this_ + 0x10);
         f274 = *(f32*)(this_ + 0x274);
+        sum = *(f32*)(this_ + 0x10);
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        d0 = sum - f274;
+        d1 = sum + f274;
         x = *(f32*)(this_ + 0xc);
         if (obj[0x840] == 0) {
             obj[0x840] = 1;
             *(f32*)(obj + 0x844) = x;
-            *(f32*)(obj + 0x848) = sum - f274;
+            *(f32*)(obj + 0x848) = d0;
             *(f32*)(obj + 0x84c) = x;
-            *(f32*)(obj + 0x850) = sum + f274;
+            *(f32*)(obj + 0x850) = d1;
             *(f32*)(obj + 0x854) = lbl_8053C550;
             *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
             *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
@@ -541,33 +549,35 @@ extern "C" void fn_80111CC0(u8* this_) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80111D44(u8* this_) {
+    int tag;
     u8* list;
-    u8** it;
+    register u8** it;
     u8* elem;
     s32 idx;
-
     list = (u8*)fn_8011921C();
     it = (u8**)fn_8011871C(list, *(void**)(list + 0x10), 0x444d474c);
     if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
         *(JGeometry::TVec3<f32>*)(this_ + 0x27c) = *(JGeometry::TVec3<f32>*)(*it + 0xc);
     }
-
-    it = (u8**)DMZLFindTag(0x444d4d44);
+    void* first = *(void**)((u8*)fn_8011921C() + 0x10);
+    tag = 0x444d0000;
+    void* registry = fn_8011921C();
+    it = (u8**)fn_8011871C(registry, first, tag + 0x4d44);
     if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
         do {
             elem = *it;
             idx = *(s32*)(elem + 0x234);
             if (idx < 6) {
                 *(JGeometry::TVec3<f32>*)(this_ + 0x288 + idx * 12) = *(JGeometry::TVec3<f32>*)(elem + 0xc);
+                it++;
             }
-            it++;
         } while (it != *(u8***)((u8*)fn_8011921C() + 0x14));
     }
-
     *(JGeometry::TVec3<f32>*)(this_ + 0x2d0) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8010DF98(void*);
 extern "C" void fn_801D2608(void*, void*, s32);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
@@ -902,19 +912,19 @@ extern "C" void fn_8010F478(u8* this_, s32 param_2) {
 }
 
 extern "C" void fn_8010F4DC(u8* this_) {
-    Vec v1;
-    Vec v2;
     Mtx m1;
     Mtx m2;
+    Vec v1;
+    Vec v2;
     u8* e;
     s32 n;
     f32 z;
 
     *(f32*)(this_ + 0x268) = *(f32*)(this_ + 0x268) + lbl_8053C5C8;
     PSMTXTrans(m1, *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
-    v1.x = lbl_8053C550;
     v1.y = lbl_8053C55C;
     v1.z = lbl_8053C55C;
+    v1.x = lbl_8053C550;
     fn_8010F668(m1, (f32*)&v1, lbl_8053C5CC);
     m2[2][3] = lbl_8053C55C;
     m2[1][3] = lbl_8053C55C;
@@ -947,7 +957,16 @@ extern "C" void fn_8010F4DC(u8* this_) {
         *(f32*)(e + 0x248) = z;
         *(f32*)(e + 0x24c) = z;
         *(f32*)(e + 0x250) = z;
-        PSMTXCopy(m1, *(Mtx*)(e + 0x254));
+        {
+            f64* d = (f64*)(e + 0x254);
+            f64* s = (f64*)m1;
+            d[0] = s[0];
+            d[1] = s[1];
+            d[2] = s[2];
+            d[3] = s[3];
+            d[4] = s[4];
+            d[5] = s[5];
+        }
         *(f32*)(e + 0x290) = lbl_8053C5D0;
         *(s32*)(e + 0x294) = n;
         *(s32*)(e + 0x29c) = 0;
@@ -962,41 +981,41 @@ extern int __float_epsilon[];
 extern "C" f64 sin(f64);
 extern "C" f64 cos(f64);
 void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle) {
-    f32 v[3];
-    f32 len2 = (axis[2] * axis[2] + axis[0] * axis[0]) + (axis[2] * axis[2] + axis[1] * axis[1]);
+    Vec v;
+    f32 len2;
+    f32 inv;
+    f32 y;
+    len2 = JMathInlineVEC::PSVECSquareMag((const Vec*)axis);
 
     if (len2 <= lbl_8053C5B4 * *(f32*)__float_epsilon) {
-        v[0] = lbl_8053C55C;
-        v[1] = lbl_8053C55C;
-        v[2] = lbl_8053C55C;
+        v.z = lbl_8053C55C;
+        v.y = lbl_8053C55C;
+        v.x = lbl_8053C55C;
     } else {
-        f32 inv;
         if (len2 <= lbl_8053C55C) {
             inv = len2;
         } else {
-            f32 y = __frsqrte(len2);
+            y = __frsqrte(len2);
             inv = lbl_8053C58C * y * (lbl_8053C5D4 - (len2 * (y * y)));
         }
-        v[0] = axis[0] * inv;
-        v[1] = axis[1] * inv;
-        v[2] = axis[2] * inv;
+        JMathInlineVEC::PSVECScale((const Vec*)axis, &v, inv);
     }
 
     f32 s = sin(angle);
     f32 c = cos(angle);
     f32 t = lbl_8053C550 - c;
-    f32 x = v[0];
-    f32 y = v[1];
-    f32 z = v[2];
+    f32 x = v.x;
+    f32 yy = v.y;
+    f32 z = v.z;
 
     m[0][0] = t * (x * x) + c;
-    m[0][1] = t * x * y - s * z;
-    m[0][2] = t * x * z + s * y;
-    m[1][0] = t * x * y + s * z;
-    m[1][1] = t * (y * y) + c;
-    m[1][2] = t * y * z - s * x;
-    m[2][0] = t * x * z - s * y;
-    m[2][1] = t * y * z + s * x;
+    m[0][1] = t * x * yy - s * z;
+    m[0][2] = t * x * z + s * yy;
+    m[1][0] = t * x * yy + s * z;
+    m[1][1] = t * (yy * yy) + c;
+    m[1][2] = t * yy * z - s * x;
+    m[2][0] = t * x * z - s * yy;
+    m[2][1] = t * yy * z + s * x;
     m[2][2] = t * (z * z) + c;
 }
 
@@ -1010,17 +1029,18 @@ extern "C" void fn_8010F7EC(u8* this_, s32 param) {
         if (*(s32*)(this_ + 0x264) >= 0x10000) {
             *(s32*)(this_ + 0x264) -= 0x10000;
         }
+        f32 zero = lbl_8053C55C;
         f32 s = sincosTable___5JMath[(u16)*(s32*)(this_ + 0x264) >> 5].sin;
         m[0][0] = lbl_8053C550;
-        m[0][1] = lbl_8053C55C;
-        m[0][2] = lbl_8053C55C;
-        m[0][3] = lbl_8053C55C;
-        m[1][0] = lbl_8053C55C;
+        m[0][1] = zero;
+        m[0][2] = zero;
+        m[0][3] = zero;
+        m[1][0] = zero;
         m[1][1] = lbl_8053C550;
-        m[1][2] = lbl_8053C55C;
-        m[1][3] = lbl_8053C55C;
-        m[2][0] = lbl_8053C55C;
-        m[2][1] = lbl_8053C55C;
+        m[1][2] = zero;
+        m[1][3] = zero;
+        m[2][0] = zero;
+        m[2][1] = zero;
         m[2][2] = lbl_8053C550;
         m[2][3] = lbl_8053C560 * s;
         prm.mMtx = m;
