@@ -97,7 +97,7 @@ static inline f32 mcH(MCAlpha* a) {
     return b->y1 - b->y0;
 }
 
-static inline f32 mcMutableWidth(const MCAlpha* a) {
+static inline f32 mcMutableWidth(MCAlpha* a) {
     MCBounds* b=(MCBounds*)a->vis;
     f32 width=b->x1;
     width-=b->x0;
