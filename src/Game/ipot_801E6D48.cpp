@@ -169,10 +169,10 @@ extern "C" s32 fn_801E6FAC(char* p) {
 #include "JSystem/JMath/JMath.h"
 struct IpotGame { u8 pad[0xb4]; JMARandFast rnd; };
 extern IpotGame* lbl_8053AAF8;
-extern const f32 lbl_8053F5D8;
-extern const f32 lbl_8053F5DC;
-extern const f32 lbl_8053F5E0;
-extern const f32 lbl_8053F5E4;
+extern f32 lbl_8053F5D8;
+extern f32 lbl_8053F5DC;
+extern f32 lbl_8053F5E0;
+extern f32 lbl_8053F5E4;
 
 struct RupyDrop {
     u32 param;
