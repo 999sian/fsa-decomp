@@ -3,6 +3,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 typedef f32 Mtx[3][4];
 typedef struct MtxBox {
