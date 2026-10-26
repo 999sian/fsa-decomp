@@ -132,7 +132,7 @@ extern "C" f32 lbl_8054345C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
 static inline s32 getFileIcon(u32 slot) {
-    u32 k = 0;
+    s32 k = 0;
     s32 j;
     for (j = 0; j < 8; j++) {
         if (fn_803B8CAC(slot, j)) {
