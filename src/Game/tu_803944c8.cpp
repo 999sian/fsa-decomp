@@ -184,19 +184,21 @@ struct MsgPop {
 
 // NONMATCHING (99.9%): add operand order for the cumulative durations.
 extern "C" void fn_80395480(MsgPop* self, J2DPane* pane) {
+    s32 t0, t1, t2, t3, t4;
+    u32 alpha;
     s16* dur = (s16*)(lbl_8050DB0C + 0x286);
-    s32 t4 = dur[0] + dur[1] + dur[2] + dur[3] + dur[4];
-    s32 t0 = dur[0];
-    s32 t1 = dur[0] + dur[1];
-    s32 t2 = t1 + dur[2];
-    s32 t3 = t2 + dur[3];
+    t0 = dur[0];
+    t1 = dur[0] + dur[1];
+    t2 = t1 + dur[2];
+    t3 = t2 + dur[3];
+    t4 = t3 + dur[4];
     self->timer++;
-    if (pane->getAlpha() < self->alpha) {
+    if (pane->getAlpha() < (alpha = self->alpha)) {
         if (self->timer == 10) {
             self->timer = 0;
             pane->setAlpha(self->alpha);
         } else {
-            pane->setAlpha(self->alpha * (self->timer / 10.0f));
+            pane->setAlpha(alpha * (self->timer / 10.0f));
         }
     } else {
         f32 sy;
