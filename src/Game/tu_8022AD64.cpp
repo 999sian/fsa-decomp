@@ -1382,6 +1382,7 @@ int fn_802319B4(int index, int a0)
     return 0;
 }
 
+u8 fn_802527B0(Player*, s32*);
 static inline u8 playerMgrBusy()
 {
     if (lbl_8053AC90 == NULL) return 0;
