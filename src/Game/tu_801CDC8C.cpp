@@ -523,11 +523,12 @@ static inline f32 DirectionInvSqrt(f32 lengthSquared) {
     f32 square = estimate * estimate;
     return (lbl_8053EFE4 * estimate) * __fnmsubs(lengthSquared, square, lbl_8053EFE8);
 }
+#pragma opt_lifetimes off
 #pragma fp_contract off
 extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
     f32 bestDist = *(f32*)__float_max;
     f32 limitSq = limit * limit;
-    s32 created;
+    s32 index;
     s32 result;
     s32 best = -1;
     u32 ok;
@@ -550,9 +551,9 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
             case 0x534c4b32:
             case 0x4e415649:
             case 0x545a4f4b:
-                s32 room = *(s32*)(this_ + 0x4);
+                index = *(s32*)(this_ + 0x4);
                 s32 owner = fn_8023DE58(i);
-                if (owner == room) {
+                if (owner == index) {
                     ok = 1;
                 }
                 break;
@@ -595,9 +596,9 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
         return 0;
     }
     result = 0;
-    created = Actor_CreateByID(fn_801F856C(), name, *(u32*)(this_ + 0x4), (f32*)(this_ + 0xc), 0, -1, -1);
-    if (created >= 0) {
-        void* obj = fn_801F666C(fn_801F856C(), created);
+    index = Actor_CreateByID(fn_801F856C(), name, *(u32*)(this_ + 0x4), (f32*)(this_ + 0xc), 0, -1, -1);
+    if (index >= 0) {
+        void* obj = fn_801F666C(fn_801F856C(), index);
         if (obj != 0) {
             f32* target = (f32*)(this_ + 0x1ac + best * 0xc);
             f32 dx = target[0] - *(f32*)(this_ + 0xc);
@@ -608,9 +609,10 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
                 dir.x = lbl_8053EFC4;
                 dir.y = radius;
             } else {
-#pragma fp_contract on
-                dir.normalize();
-#pragma fp_contract off
+                if (!(dir.squared() <= JGeometry::TUtilf::epsilon())) {
+                    f32 inv = DirectionInvSqrt(dir.squared());
+                    dir.scale(inv);
+                }
                 dir.scale(radius);
             }
             fn_801D2CF0(obj, (f32*)&dir);
@@ -620,6 +622,7 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
     return result;
 }
 #pragma fp_contract reset
+#pragma opt_lifetimes reset
 
 #pragma fp_contract off
 extern "C" s32 fn_801CF0F4(const u8* this_) {
