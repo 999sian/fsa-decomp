@@ -77,7 +77,7 @@ static inline f32 tuRand01() {
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
 }
-extern "C" u8 fn_800FE2E4(void* slot, const JGeometry::TVec3f& pos, s32 room);
+extern "C" s32 fn_800FE2E4(void* slot, const JGeometry::TVec3f& pos, s32 room);
 #pragma opt_lifetimes off
 #pragma opt_propagation off
 extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
@@ -120,7 +120,8 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
                     flag = 0;
                     if (self->field_599 == 0) {
                         u8 r26 = ((u8*)GetCurrentSlotPtr(self->field_358))[3];
-                        u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), *(JGeometry::TVec3f*)&self->field_0C, self->field_04);
+                        JGeometry::TVec3f pos(*(JGeometry::TVec3f*)&self->field_0C);
+                        u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), pos, self->field_04);
                         u8* slot = (u8*)GetCurrentSlotPtr(self->field_358);
                         if (r26 < slot[2]) {
                             slot[3] = r26;
