@@ -171,7 +171,7 @@ static inline f32 ItemRandom321200() {
     return *(f32*)&bits-lbl_80541AEC;
 }
 
-static inline void tu320RotMtx(f32 m[3][4], f32* angle, f32* scale) {
+static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) {
     f32 ang;
     f32 s;
     ang = *angle;
