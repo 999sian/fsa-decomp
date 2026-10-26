@@ -190,36 +190,6 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
         }
     }
 }
-static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
-    JGeometry::TVec3f vec;
-    JGeometry::TVec3f saved;
-    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
-    saved = vec;
-    *(s32*)(self + 0x258) = state;
-    for (s32 k = 0; k < 6; ++k) {
-        for (s32 j = 0; j < 6; ++j) {
-            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
-            vec.y += lbl_80542870;
-        }
-        vec.y = saved.y;
-        vec.x += lbl_80542870;
-    }
-}
-static inline void spawnGridIndices8035A210(u8* self, u16 idx, s32 state, s32& k, s32& j) {
-    JGeometry::TVec3f vec;
-    JGeometry::TVec3f saved;
-    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
-    saved = vec;
-    *(s32*)(self + 0x258) = state;
-    for (k = 0; k < 6; ++k) {
-        for (j = 0; j < 6; ++j) {
-            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
-            vec.y += lbl_80542870;
-        }
-        vec.y = saved.y;
-        vec.x += lbl_80542870;
-    }
-}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -812,6 +782,7 @@ extern "C" void fn_8035A1D4(Unk8035A1D4* self) {
 extern "C" const f32 lbl_805428AC;
 extern "C" const f32 lbl_805428BC;
 extern "C" const f32 lbl_805428C0;
+#pragma peephole off
 extern "C" void fn_8035A210(u8* self) {
     f32 cv[3];
     f32 box[4];
@@ -842,9 +813,9 @@ extern "C" void fn_8035A210(u8* self) {
             fn_801F317C(p, box);
             rot = *(s16*)(p + 0x230);
             py = *(f32*)(p + 0x10);
-            c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)rot >> 5) * 8 + 4));
-            box[1] = (box[1] - py) * c + py;
-            box[3] = (box[3] - py) * c + py;
+            const f32 scale = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)rot >> 5) * 8 + 4));
+            box[1] = (box[1] - py) * scale + py;
+            box[3] = (box[3] - py) * scale + py;
             if (fn_8023AAF8(i, box, *(s32*)(p + 4), (Vec8035A860*)tmp)) {
                 dy = py - tmp[1];
                 if (p[0x24e] != 0 && lbl_8054286C == dy) dy = lbl_8054287C;
@@ -870,10 +841,8 @@ extern "C" void fn_8035A210(u8* self) {
             for (i = 0; i < 4; i++) {
                 if (fn_8022F514((void*)i)) continue;
                 if ((s8)p[0x24a + i] != 0) continue;
-                u8 contact = p[0x246 + i];
-                if ((s8)contact == 0) continue;
-                s8 direction = p[0x24a + m];
-                if (direction * (s8)contact >= 0) continue;
+                if ((s8)p[0x246 + i] == 0) continue;
+                if ((s8)p[0x24a + m] * (s8)p[0x246 + i] >= 0) continue;
                 cv[0] = lbl_8054286C;
                 cv[1] = lbl_8054286C;
                 cv[2] = lbl_80542898;
@@ -905,7 +874,7 @@ extern "C" void fn_8035A210(u8* self) {
             (old < -0x4000 && *(s16*)(p + 0x230) >= -0x4000)) p[0x244] ^= 1;
     }
 }
-
+#pragma peephole reset
 extern "C" Vec8035A860* fn_8023E724(void*);
 extern "C" void fn_8022BE24(void*, Vec8035A860*);
 extern "C" unsigned char sincosTable___5JMath[];
