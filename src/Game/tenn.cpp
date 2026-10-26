@@ -6,6 +6,12 @@
 #include "JSystem/JGeometry/Vec.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+extern "C" void fn_8030C210(void*, ...);
+extern "C" Vec* fn_8023E724(s32);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void*, s32);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern "C" void fn_801F71A4(f32*, f32, f32, f32);
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern const char lbl_804684E8[];
