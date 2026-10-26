@@ -215,6 +215,14 @@ struct Ctl3_80301CD0 {
     u8 flag : 1;
 };
 
+static inline void tu80301_initCtl(u8* q) {
+    ((Ctl4_80301CD0*)(q + 3))->flag = 1;
+    q[2] = 0x80;
+    q[1] = 0xe0;
+    ((Ctl4_80301CD0*)(q + 3))->mode = 0;
+    q[0] = 0;
+}
+
 static inline u8 tu80301_roomVisible(s32 owner) {
     u8 active = 0;
     if (fn_8022F5B0(owner)) {
@@ -1900,6 +1908,8 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
     }
     fn_803085A4(param_1, i);
     p = lbl_80506DE8 + i * 0x68;
+    pf = p + 0xf;
+    pl = p + 0x17;
     ((Ctl4_80301CD0*)(p + 0xb))->flag = 1;
     p[0xa] = 0x80;
     p[0x9] = 0xe0;
@@ -1927,22 +1937,13 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
     ((Ctl4_80301CD0*)(p + 0x13))->x = 0;
     ((Ctl4_80301CD0*)(p + 0x17))->y = 0;
 
-    pf = p + 0xf;
-    pl = p + 0x17;
     ret = fn_8022EA0C(i);
     if (*((u8*)lbl_8053AAF0 + 0x78) >= 4) {
         lv = 0;
         if (fn_8037F1E4(i) >= 1 && fn_8037F1E4(i) <= 5) lv = 1;
         ((Ctl4_80301CD0*)pf)->x = lv != 0;
         if (lbl_8053ACD0 != 0 && (*((u8*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
-            u8 active;
-            s32 room;
-            active = 0;
-            if (fn_8022F5B0(ret)) {
-                room = fn_8023DE58(ret);
-                if (!fn_802D7804(fn_802D6A9C(), room, 2)) active = 1;
-            }
-            ((Ctl4_80301CD0*)pl)->x = active != 0;
+            ((Ctl4_80301CD0*)pl)->x = tu80301_roomVisible(ret) != 0;
         } else {
             ((Ctl4_80301CD0*)pl)->x = 0;
         }
