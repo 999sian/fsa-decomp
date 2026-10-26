@@ -17,12 +17,6 @@
 extern void* lbl_8053AAF8;
 extern "C" s32 fn_80138A30(void* game);
 extern u8* lbl_8053AF00;
-struct GSYATimeState {
-    u8 pad[0x28];
-    u8 centiseconds[4];
-    u8 seconds[4];
-    u8 flags;
-};
 extern const f32 lbl_8053C110;
 extern const f32 lbl_8053C118;
 extern u8 lbl_80463B8C[];
