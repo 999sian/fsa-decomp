@@ -33,7 +33,7 @@ extern f32 lbl_80540AB8;
 extern f32 lbl_80540ABC;
 extern f32 lbl_80540AC0;
 extern f32 lbl_80540AC4;
-extern f32 lbl_80540AC8;
+extern const f32 lbl_80540AC8;
 extern f32 lbl_80540AD0;
 extern const f32 lbl_80540AD4;
 extern const f32 lbl_80540ACC;
