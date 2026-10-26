@@ -395,7 +395,6 @@ extern "C" int fn_8022CAF8(int a);
 extern "C" void fn_801F0D20(void* this_, int a);
 extern "C" unsigned char* fn_802D6A9C(void);
 extern "C" int* fn_801F856C(void);
-extern float lbl_8054075C;
 extern "C" void fn_8029CFF8(void* this_) {
     float* p;
     int j;
