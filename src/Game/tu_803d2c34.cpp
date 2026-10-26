@@ -1313,7 +1313,6 @@ extern u8 lbl_80476F20[];
 extern void* lbl_8053AD78;
 extern void* lbl_804AF86C[];
 typedef void* (*VtSearch)(void*, u32, u32, u32);
-extern void* __nw__FUl(u32 size);
 extern "C" void* __nw__FUl(u32 size);
 extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	const char* tbl = (const char*)lbl_80476F20;
