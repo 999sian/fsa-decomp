@@ -20,14 +20,11 @@ static inline u32 calcCardChecksum(u8* data) {
     u32 sum = 0;
     u16 inv = 0;
     u16* p = (u16*)data;
-    s32 i = 0x7ff;
-    do {
-        sum += p[0];
-        inv += ~p[0];
-        sum += p[1];
-        inv += ~p[1];
-        p += 2;
-    } while (--i != 0);
+    for (int i = 0; i < 0xffe; i++) {
+        u16 value = *p++;
+        sum += value;
+        inv += ~value;
+    }
     return (sum << 16) | inv;
 }
 #pragma optimization_level 3
@@ -129,9 +126,10 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     return 0;
 }
 
-extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, void* src, s32 unused, s32 size) {
-    u8* base = lbl_8051E2C0;
-    char* fmt = lbl_80476578;
+extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
+    CARDFileInfo* fileInfo = info;
+    void* src = data;
+    s32 size = len;
     OSCalendarTime cal;
     CARDStat stat;
     CARDStat tailStat;
@@ -144,14 +142,14 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, void* src, s32 unused, s32 si
     u8* res1;
     bool bVar3;
 
-    snprintf((char*)(base + 0x4000) + 0x1c00, 0x20, fmt);
+    snprintf((char*)saveBanner + 0x1c00, 0x20, "Four Swords Adventures");
     OSTicksToCalendarTime(OSGetTime(), &cal);
-    snprintf((char*)(base + 0x4000) + 0x1c20, 0x20, fmt + 0x18, cal.mon + 1, cal.mday);
-    res0 = (u8*)fn_804030C4(0x54494D47, fmt + 0x28);
-    res1 = (u8*)fn_804030C4(0x54494D47, fmt + 0x40);
-    memcpy(base + 0x4000, res0 + *(u32*)(res0 + 0x1c), *(u16*)(res0 + 0xa) * 2 + 0xc00);
-    memcpy((base + 0x4000) + 0xe00, res1 + *(u32*)(res1 + 0x1c), *(u16*)(res1 + 0xa) * 2 + 0x400);
-    result = CARDWrite(fileInfo, base + 0x4000, 0x2000, 0);
+    snprintf((char*)saveBanner + 0x1c20, 0x20, "%d/%d Save Data", cal.mon + 1, cal.mday);
+    res0 = (u8*)fn_804030C4(0x54494D47, "kk_diskbanner_01.bti");
+    res1 = (u8*)fn_804030C4(0x54494D47, "kk_ipl_icon_01.bti");
+    memcpy(saveBanner, res0 + *(u32*)(res0 + 0x1c), *(u16*)(res0 + 0xa) * 2 + 0xc00);
+    memcpy(saveBanner + 0xe00, res1 + *(u32*)(res1 + 0x1c), *(u16*)(res1 + 0xa) * 2 + 0x400);
+    result = CARDWrite(fileInfo, saveBanner, 0x2000, 0);
     if (result != 0) {
         return result;
     }
@@ -171,32 +169,32 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, void* src, s32 unused, s32 si
         bVar3 = false;
     }
     if (!bVar3) {
-        memset(base, 0, 0x2000);
-        result = CARDWrite(fileInfo, base, 0x2000, 0x2000);
+        memset(saveBlock0, 0, 0x2000);
+        result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x2000);
         if (result != 0) {
             return result;
         }
-        result = CARDWrite(fileInfo, base, 0x2000, 0x4000);
+        result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x4000);
         if (result != 0) {
             return result;
         }
-        memset(base + 0x6000, 0, 0x1d4c);
-        memset(base + 0x7d60, 0, 0x1d4c);
+        memset(saveData0, 0, 0x1d4c);
+        memset(saveData1, 0, 0x1d4c);
     }
-    buf0 = base;
-    buf1 = base + 0x2000;
+    buf0 = saveBlock0;
+    buf1 = saveBlock1;
     *(u16*)buf0 = 0;
     *(u16*)buf1 = 0;
     memcpy(buf0 + 0xa, src, size);
     memcpy(buf1 + 0xa, src, size);
-    memcpy(buf0 + 0x262, base + 0x6000, 0x1d4c);
-    memcpy(buf1 + 0x262, base + 0x7d60, 0x1d4c);
-    buf0[2] = lbl_80529DEC[0x245];
-    buf1[2] = lbl_80529DEC[0x245];
-    buf0[3] = lbl_80529DEC[0x244];
-    buf1[3] = lbl_80529DEC[0x244];
-    buf0[4] = lbl_80529DEC[0x246];
-    buf1[4] = lbl_80529DEC[0x246];
+    memcpy(buf0 + 0x262, saveData0, 0x1d4c);
+    memcpy(buf1 + 0x262, saveData1, 0x1d4c);
+    u8 v0 = lbl_80529DEC[0x245];
+    u8 v1 = lbl_80529DEC[0x244];
+    u8 v2 = lbl_80529DEC[0x246];
+    buf1[2] = buf0[2] = v0;
+    buf1[3] = buf0[3] = v1;
+    buf1[4] = buf0[4] = v2;
     chk0 = calcCardChecksum(buf0);
     *(u32*)(buf0 + 0x1ffc) = chk0;
     chk1 = calcCardChecksum(buf1);
@@ -210,7 +208,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, void* src, s32 unused, s32 si
         return result;
     }
     if (chk0 != calcCardChecksum(buf0)) {
-        return 0;
+        return result;
     }
     result = CARDWrite(fileInfo, buf1, 0x2000, 0x4000);
     if (result != 0) {
@@ -221,28 +219,28 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, void* src, s32 unused, s32 si
         return result;
     }
     if (chk1 != calcCardChecksum(buf1)) {
-        return 0;
+        return result;
     }
     CARDGetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
+    CARDSetIconFormat(&tailStat, 0, 1);
+    CARDSetIconSpeed(&tailStat, 0, 3);
+    CARDSetBannerFormat(&tailStat, 1);
+    CARDSetIconFormat(&tailStat, 1, 0);
+    CARDSetIconSpeed(&tailStat, 1, 0);
+    CARDSetIconFormat(&tailStat, 2, 0);
+    CARDSetIconSpeed(&tailStat, 2, 0);
+    CARDSetIconFormat(&tailStat, 3, 0);
+    CARDSetIconSpeed(&tailStat, 3, 0);
+    CARDSetIconFormat(&tailStat, 4, 0);
+    CARDSetIconSpeed(&tailStat, 4, 0);
+    CARDSetIconFormat(&tailStat, 5, 0);
+    CARDSetIconSpeed(&tailStat, 5, 0);
+    CARDSetIconFormat(&tailStat, 6, 0);
+    CARDSetIconSpeed(&tailStat, 6, 0);
     tailStat.iconAddr = 0;
     tailStat.commentAddr = 0x1c00;
-    tailStat.bannerFormat = (tailStat.bannerFormat & ~3) | 1;
-    tailStat.bannerFormat &= ~4;
-    tailStat.iconFormat = (tailStat.iconFormat & ~3) | 1;
-    tailStat.iconFormat &= ~0xc;
-    tailStat.iconFormat &= ~0x30;
-    tailStat.iconFormat &= ~0xc0;
-    tailStat.iconFormat &= ~0x300;
-    tailStat.iconFormat &= ~0xc00;
-    tailStat.iconFormat &= ~0x3000;
+    CARDSetIconAnim(&tailStat,0);
     tailStat.iconFormat &= 0xfff;
-    tailStat.iconSpeed = (tailStat.iconSpeed & ~3) | 3;
-    tailStat.iconSpeed &= ~0xc;
-    tailStat.iconSpeed &= ~0x30;
-    tailStat.iconSpeed &= ~0xc0;
-    tailStat.iconSpeed &= ~0x300;
-    tailStat.iconSpeed &= ~0xc00;
-    tailStat.iconSpeed &= ~0x3000;
     tailStat.iconSpeed &= 0xfff;
     CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
     return result;
