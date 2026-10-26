@@ -341,11 +341,6 @@ static inline void* keyObj(void* obj, u64 key) {
     return ((KeyLookupVt*)obj)->v15(key);
 }
 
-static inline void tu803C0A_setCell(u8* p, const u64* table, s32 idx, s32 flagOff) {
-    void* o = keyObj(*(void**)(p + 8), table[idx]);
-    fn_804023D0(menuSlot((char*)p, idx), o, p[flagOff]);
-}
-
 static inline void tu803C_setCell(u8* this_, s32 cell, s32 idx, s32 keyOff, s32 flagOff) {
     void* o = keyObj(*(void**)(this_ + 8), *(u64*)(lbl_804765D0 + keyOff + idx * 8));
     fn_804023D0(*(void**)(this_ + cell + idx * 4), o, this_[flagOff]);
