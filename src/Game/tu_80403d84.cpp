@@ -1695,6 +1695,7 @@ extern "C" void fn_8040C950(u8* self) {
 }
 #pragma fp_contract reset
 extern "C" f64 lbl_805438B0;
+#pragma fp_contract off
 extern "C" void fn_8040CE90(u8* self) {
 	(*(s16*)(self + 0x426))++;
 	if (*(s16*)(self + 0x426) >= 8) {
@@ -1724,26 +1725,25 @@ extern "C" void fn_8040CE90(u8* self) {
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 		*(s32*)(self + 0x350) = 0xb;
 	} else {
+		s32 t = *(s16*)(self + 0x426);
 		f32 w;
-		f32 a;
-		if (*(s16*)(self + 0x426) < 5) {
-			w = lbl_805438D0 * (f32)(*(s16*)(self + 0x426) * *(s16*)(self + 0x426)) / lbl_8054397C;
+		if (t < 5) {
+			w = lbl_805438D0 * (f32)(t * t) / 25.0f;
 			fn_80402E08(*(void**)(self + 0x230), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x234), 0.0f, w);
-		} else if (*(s16*)(self + 0x426) <= 10) {
-			w = lbl_805438D0 * (f32)((10 - *(s16*)(self + 0x426)) * (10 - *(s16*)(self + 0x426))) / lbl_8054397C;
+		} else if (t <= 10) {
+			w = lbl_805438D0 * (f32)((10 - t) * (10 - t)) / 25.0f;
 			fn_80402E08(*(void**)(self + 0x230), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x234), 0.0f, w);
 		}
-		a = 1.0f - (f32)*(s16*)(self + 0x426) * lbl_80543980;
-		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
+		f32 a;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - (f32)*(s16*)(self + 0x426) * lbl_80543980)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
-		a = 1.0f - a;
-		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - a)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 	}
 }
-
+#pragma fp_contract reset
 extern "C" char* strcpy(char*, const char*);
 extern "C" void fn_803837A4(char* buf, s32 v, f32 a, f32 b, s32, s32);
 extern "C" void fn_80402E08(void* part, f32 a, f32 b);
