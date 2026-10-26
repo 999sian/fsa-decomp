@@ -2,6 +2,12 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+extern u64 lbl_8048C4F8[];
+extern "C" void fn_8042EDAC(void*, s32, s32);
+extern "C" f32 lbl_8054396C;
+extern "C" f32 lbl_80543970;
+extern "C" f32 lbl_805438E4;
+extern "C" s16 lbl_80543890[];
 #include "JSystem/J2D/J2DPane.h"
 extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
 extern "C" u8 fn_8040271C(void*, s32, f32, f32);
@@ -326,43 +332,44 @@ static inline void ClearPaneFields804049DC(u8** slot) {
 extern "C" void fn_804049DC(u8* self) {
 	if (*(u32*)(self + 0x38c) & 0x10) {
         u8* p = self;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = 0;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = 0;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = 0;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x26) = 0;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x20) = 0;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x22) = 0;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x24) = 0;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x26) = 0;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x20) = 0;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = 0;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = 0;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = 0;
+        int clearValue = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = clearValue;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = clearValue;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = clearValue;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x26) = clearValue;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x20) = clearValue;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x22) = clearValue;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x24) = clearValue;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x26) = clearValue;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x20) = clearValue;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = clearValue;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = clearValue;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = clearValue;
 		for (s32 i = 0; i < 3; i++, p += 0x18) {
-			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = 0;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = 0;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = 0;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x26) = 0;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x20) = 0;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x22) = 0;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x24) = 0;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x26) = 0;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x20) = 0;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x22) = 0;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x24) = 0;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x26) = 0;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x20) = 0;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x22) = 0;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x24) = 0;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x26) = 0;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x20) = 0;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x22) = 0;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x24) = 0;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x26) = 0;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x20) = 0;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x22) = 0;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x24) = 0;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x26) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x20) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x22) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x24) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x26) = clearValue;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x20) = clearValue;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x22) = clearValue;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x24) = clearValue;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x26) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x20) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x22) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x24) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x26) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x20) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x22) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x24) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x26) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x20) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x22) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x24) = clearValue;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x26) = clearValue;
 		}
 		*(s16*)(*(u8**)(self + 0x228) + 0x22) = 0;
 		*(s16*)(*(u8**)(self + 0x22c) + 0x22) = 0;
