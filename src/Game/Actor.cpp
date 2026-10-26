@@ -1907,8 +1907,14 @@ inline f32 blkSqrt(f32 x) {
 }
 } // namespace
 
-static inline u8 ee8f4_eq(s32 a, s32 b);
-static inline u8 ee8f4_t(Actor* a, s32 i);
+static inline u8 ee8f4_eq(s32 a, s32 b) { return a == b; }
+static inline u8 ee8f4_t(Actor* a, s32 i) {
+    u8 t = 0;
+    if (fn_8023DE58(i) < 8 && (s32)a->field_04 == 8) {
+        t = 1;
+    }
+    return t;
+}
 
 extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
     u8 first = true;
