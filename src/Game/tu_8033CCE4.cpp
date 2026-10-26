@@ -451,10 +451,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
         if (self->m258 < 0) {
             return;
         }
-        f32* p = fn_8023E724(self->m258);
-        f32 height = p[2];
-        f32 zero = lbl_805421B0;
-        if (height != zero) {
+        if (lbl_805421B0 != fn_8023E724(self->m258)[2]) {
             return;
         }
         if (!fn_802300EC(self->m258)) {
