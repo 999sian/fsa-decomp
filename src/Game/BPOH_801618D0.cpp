@@ -149,8 +149,7 @@ extern "C" void fn_801618D0(char* this_, f32* pos, u8* ent) {
     out[0] -= lbl_8053D6BC * w;
     out[2] -= lbl_8053D6BC * h;
     GXBegin((GXPrimitive)0x80, (GXVtxFmt)0, 4);
-    one = lbl_8053D6C4;
-    zero = lbl_8053D6C0;
+    zero = 0.0f;
     x0 = out[0];
     *(volatile f32*)0xCC008000 = x0;
     x1 = x0 + w;
@@ -161,6 +160,7 @@ extern "C" void fn_801618D0(char* this_, f32* pos, u8* ent) {
     *(volatile f32*)0xCC008000 = z1;
     *(volatile f32*)0xCC008000 = zero;
     *(volatile f32*)0xCC008000 = zero;
+    one = 1.0f;
     *(volatile f32*)0xCC008000 = x1;
     *(volatile f32*)0xCC008000 = y;
     *(volatile f32*)0xCC008000 = z1;
