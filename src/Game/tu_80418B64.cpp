@@ -414,6 +414,7 @@ extern "C" f32 fn_8043D57C(u8* obj);
 extern "C" f32 fn_8043D514(u8* obj);
 extern "C" void fn_80402E08(u8* obj, f32 a, f32 b);
 extern "C" void fn_8037EB4C(void);
+#pragma dont_inline on
 extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
     u8* p = self + (idx << 2);
     f32 v29 = *(f32*)(p + 0x118);
@@ -440,6 +441,7 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
     }
     fn_8037EB4C();
 }
+#pragma dont_inline reset
 
 extern "C" void fn_8041A868(u8* self, s32 arg) {
     s32 flag = (lbl_8053AAF8[0x83] & 3) == 2;
