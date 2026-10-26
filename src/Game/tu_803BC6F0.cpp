@@ -4518,26 +4518,25 @@ extern "C" void fn_803CEED4(u8* p) {
                 ((J2DPane*)*(void**)(p + 8))->search(0x0050616468753031ULL)->show();
                 ((J2DPane*)*(void**)(p + 4))->search(0x0050616468753032ULL)->show();
                 ((J2DPane*)*(void**)(p + 4))->search(0x0050616468753033ULL)->show();
-                fn_803BE3D8(p);
-                goto tail;
             }
+            fn_803BE3D8(p);
         } else {
             if (((u8*)((J2DPane*)*(void**)(p + 8))->search(0x0050616468753031ULL))[0xb0] == 0) {
-                goto tail;
+                goto drawCursor;
             }
             ((J2DPane*)*(void**)(p + 8))->search(0x0050616468753031ULL)->hide();
             ((J2DPane*)*(void**)(p + 4))->search(0x0050616468753032ULL)->hide();
             ((J2DPane*)*(void**)(p + 4))->search(0x0050616468753033ULL)->hide();
         }
+drawCursor:
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 8), lbl_80543458, lbl_80543458, *(void**)((u8*)lbl_8053AB10 + 0x10));
     }
 
-tail:
     if (*(u8*)(p + 0x116) != 0) {
         (*(J2DPicture**)(p + 0x10))->setAlpha(p[0x1a3]);
         (*(J2DPicture**)(p + 0x10))->draw(lbl_805434B0, lbl_805434B0, lbl_805434B4, lbl_805434B8, false, false, false);
+        fn_804316EC(lbl_8053AEC0);
     }
-    fn_804316EC(lbl_8053AEC0);
     fn_80440EE8(lbl_8053AED8);
 }
 
