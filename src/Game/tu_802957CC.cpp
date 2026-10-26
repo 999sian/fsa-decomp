@@ -243,6 +243,8 @@ static inline u8 HitsRect(char* self, void* pos) {
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
 }
 
+struct HouseProbeBounds { f32 x0, y0, x1, y1; };
+
 // Scroll bounds of the screen (TV or GBA) this actor's room is on.
 static inline JGeometry::TBox2f* RoomBounds(char* self) {
     s32 room = *(s32*)(self + 4);
