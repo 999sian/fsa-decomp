@@ -217,7 +217,7 @@ extern f32 lbl_80543E00;
 extern f32 lbl_80543E04;
 extern "C" u16 lbl_80543DD8[4];
 #pragma opt_strength_reduction off
-#pragma opt_common_subs off
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" void fn_8044D298(u8* self, s32 index) {
     register MenuTables8044* data = &lbl_80490FC8;
