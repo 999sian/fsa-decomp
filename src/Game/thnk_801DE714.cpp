@@ -547,18 +547,6 @@ static inline void thnkStoreTurn(char* p, f32 x, u8& hit) {
         break;
     }
 }
-static inline u8 thnkNeedsTurn(char* p, f32 x) {
-    u8 hit=0;
-    switch(*(s32*)(p+0x98)) {
-    case 0:
-        if(x<*(f32*)(p+0xc)-lbl_8053F4AC) hit=1;
-        break;
-    case 1:
-        if(lbl_8053F4AC+*(f32*)(p+0xc)<x) hit=1;
-        break;
-    }
-    return hit;
-}
 static inline u8 thnkResetCached(char* p, s32 state, u32 flags, u32 active) {
     u8 hit=0;
     switch(state) {
