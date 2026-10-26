@@ -71,8 +71,9 @@ struct fn_801D1974_obj {
     }
     void pushPoint(const JGeometry::TVec2<f32>& p) {
         if (m2a8 < 16) {
-            m2ac[m2a8].x = p.x;
-            m2ac[m2a8].y = p.y;
+            fn_801D1974_obj* dst = (fn_801D1974_obj*)((u8*)this + m2a8 * 8);
+            dst->m2ac[0].x = p.x;
+            dst->m2ac[0].y = p.y;
             m2a8++;
         }
     }
@@ -124,20 +125,19 @@ extern "C" void fn_801D11FC(u8* this_)
 #pragma opt_propagation reset
 extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     fn_801D1974_obj* object = this_;
-    s32 ret;
     s32 lost;
+    s32 ret = 0;
     u8 far_;
     s32 i;
     s32 n;
     s32 j;
-    PointTrail* trail;
     fn_801D1974_obj* from;
+    PointTrail* trail;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
 
-    ret = 0;
     if (object->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(object, object->m338)) {
         lost = object->m338;
         fn_8022E114(lost, &pos);
@@ -192,7 +192,10 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
             if (object->m2a8 == 0) {
                 lost = 1;
             } else {
-                JGeometry::TVec2<f32> q1 = object->m2ac[object->pointIndex(object->m2a8 - 1)];
+                JGeometry::TVec2<f32> q1;
+                s32 qidx = object->pointIndex(object->m2a8 - 1);
+                q1.x = object->m2ac[qidx].x;
+                q1.y = object->m2ac[qidx].y;
                 if (fn_801CF888(object, &q1, &v, *(s32*)((u8*)object + 4))) {
                     lost = 1;
                 } else {
@@ -201,7 +204,10 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
                     if (ex * ex + ey * ey >= lbl_8053F030) {
                         far_ = 1;
                         if (object->m2a8 >= 2) {
-                            JGeometry::TVec2<f32> q2 = object->m2ac[object->pointIndex(object->m2a8 - 2)];
+                            JGeometry::TVec2<f32> q2;
+                            s32 qidx = object->pointIndex(object->m2a8 - 2);
+                            q2.x = object->m2ac[qidx].x;
+                            q2.y = object->m2ac[qidx].y;
                             if (!fn_801CF888(object, &q2, &v, *(s32*)((u8*)object + 4))) {
                                 if (object->m2a8 > 0) {
                                     object->m2a8--;
