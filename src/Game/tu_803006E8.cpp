@@ -173,56 +173,61 @@ extern "C" void fn_803007D0(void) {
         p += 0xe0;
     }
 }
+#pragma opt_strength_reduction reset
 
 extern "C" void fn_80300A8C(void* p) {
+    BOOL b28;
+    u8 saved_f02;
+    u32 saved_f0c;
+    u32 v25;
+    BOOL b24;
     GbaChan* c = (GbaChan*)p;
-    GbaPkt* table = (GbaPkt*)lbl_804D6AB8;
-    BOOL b28 = 1;
-    BOOL b24 = 0;
 
+    b28 = 1;
+    b24 = 0;
     c->f_d8 = 0;
     c->f_d9 = 1;
     c->f_d3 = 3;
 
-    u32 v25 = c->pkt.f08;
-    c->pkt.f08 = table[c->chan].f08;
+    v25 = c->pkt.f08;
+    c->pkt.f08 = lbl_804D6AB8[c->chan].f08;
 
     if (c->pkt.f00 == 0) {
         if (c->pkt.f03 == 0) {
-            GbaPkt* entry = &table[c->chan];
+            GbaPkt* entry = &lbl_804D6AB8[c->chan];
             memset(entry, 0, sizeof(GbaPkt));
             entry->f01 = c->chan;
             entry->f03 = 1;
             entry->f04 = lbl_8053ACC8;
-            table[c->chan].f02 = c->pkt.f02;
-            table[c->chan].f0c = c->pkt.f0c;
+            lbl_804D6AB8[c->chan].f02 = c->pkt.f02;
+            lbl_804D6AB8[c->chan].f0c = c->pkt.f0c;
             c->tick = OSGetTick();
-            table[c->chan].f08 = c->tick;
+            lbl_804D6AB8[c->chan].f08 = c->tick;
             OSSendMessage(c, (void*)5, 1);
         } else {
-            if (memcmp(&c->pkt, &table[c->chan], sizeof(GbaPkt)) == 0 && c->f_dd == 0 &&
-                (v25 == table[c->chan].f08 || v25 == c->tick)) {
-                table[c->chan].f08 = v25;
+            if (memcmp(&c->pkt, &lbl_804D6AB8[c->chan], sizeof(GbaPkt)) == 0 && c->f_dd == 0 &&
+                (v25 == lbl_804D6AB8[c->chan].f08 || v25 == c->tick)) {
+                lbl_804D6AB8[c->chan].f08 = v25;
                 c->tick = v25;
                 b28 = 0;
             }
             if (b28) {
+                b24 = 1;
                 OSSendMessage(c, (void*)4, 1);
                 c->f_dd = 0;
-                b24 = 1;
             }
         }
     } else {
-        u8 saved_f02 = c->pkt.f02;
-        c->pkt.f02 = table[c->chan].f02;
-        u32 saved_f0c = c->pkt.f0c;
-        c->pkt.f0c = table[c->chan].f0c;
-        if (memcmp(&c->pkt, &table[c->chan], sizeof(GbaPkt)) == 0 && c->f_dd == 0 &&
-            (v25 == table[c->chan].f08 || v25 == c->tick)) {
-            table[c->chan].f08 = v25;
+        saved_f02 = c->pkt.f02;
+        c->pkt.f02 = lbl_804D6AB8[c->chan].f02;
+        saved_f0c = c->pkt.f0c;
+        c->pkt.f0c = lbl_804D6AB8[c->chan].f0c;
+        if (memcmp(&c->pkt, &lbl_804D6AB8[c->chan], sizeof(GbaPkt)) == 0 && c->f_dd == 0 &&
+            (v25 == lbl_804D6AB8[c->chan].f08 || v25 == c->tick)) {
+            lbl_804D6AB8[c->chan].f08 = v25;
             c->tick = v25;
-            table[c->chan].f02 = saved_f02;
-            table[c->chan].f0c = saved_f0c;
+            lbl_804D6AB8[c->chan].f02 = saved_f02;
+            lbl_804D6AB8[c->chan].f0c = saved_f0c;
             b28 = 0;
         }
         if (b28) {
@@ -239,7 +244,7 @@ extern "C" void fn_80300A8C(void* p) {
                 writeVal = v25;
             } else {
                 writeVal = OSGetTick();
-                table[c->chan].f08 = writeVal;
+                lbl_804D6AB8[c->chan].f08 = writeVal;
             }
             if (GBAWrite(c->chan, (u8*)&writeVal, c->status) == 0 && (c->status[0] & 0x30) == 0x30) {
                 if (GBAGetStatus(c->chan, c->status) == 0 && c->status[0] == 0x38) {
