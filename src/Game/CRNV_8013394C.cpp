@@ -184,13 +184,13 @@ switch (*(s32*)(p+0x230)) {
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-s32 i=0; void** q=(void**)(p+0x278);
-do { fn_801EE434(*q); i++; *q=NULL; q++; } while(i<2);
+s32 i=0; u8* q=p;
+do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=0; q+=4; } while(i<2);
 detach__5ActorFv(p); break;
 }
 }
 }
-static inline s32 crnvTryTalk(u8* p,s32 msg) {
+static inline s32 crnvTryTalk(u8* p,u32 msg) {
 s32 r;
 
 JGeometry::TBox2f box2;
