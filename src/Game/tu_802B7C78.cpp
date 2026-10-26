@@ -77,6 +77,7 @@ extern "C" void fn_802B7CD8(void* this_) {
 
 #pragma opt_common_subs on
 
+#pragma opt_strength_reduction on
 #pragma opt_lifetimes off
 extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
     JGeometry::TVec3f tgt=*(JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_+0x298));
@@ -139,13 +140,18 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
     }
 }
 #pragma opt_lifetimes reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_802B8078(char* this_) {
     *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
-    if (*(s32*)(this_ + 0x29c) < 8) {
+    int room = *(s32*)(this_ + 0x29c);
+    if (room < 8) {
         if (*(s32*)(this_ + 4) >= 8) {
-            *(Vec*)(this_ + 0xc) = *(Vec*)(this_ + 0x28c);
+            *(JGeometry::TVec3f*)(this_ + 0xc) = *(JGeometry::TVec3f*)(this_ + 0x28c);
             *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
-            Vec v = *(Vec*)(this_ + 0xc);
+            JGeometry::TVec3f v;
+            v.x = *(f32*)(this_+0xc);
+            v.y = *(f32*)(this_+0x10);
+            v.z = *(f32*)(this_+0x14);
             v.y += lbl_80540AB8;
             v.z += lbl_80540AD4;
             fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
@@ -159,13 +165,16 @@ extern "C" void fn_802B8078(char* this_) {
         }
     } else {
         if (*(s32*)(this_ + 4) >= 8) {
-            if (*(s32*)(this_ + 0x29c) == *(s32*)(this_ + 4)) {
+            if (room == *(s32*)(this_ + 4)) {
                 *(s32*)(this_ + 0x230) = 7;
                 *(s32*)(this_ + 0x244) = 300;
             } else {
-                *(Vec*)(this_ + 0xc) = *(Vec*)(this_ + 0x28c);
+                *(JGeometry::TVec3f*)(this_ + 0xc) = *(JGeometry::TVec3f*)(this_ + 0x28c);
                 *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
-                Vec v = *(Vec*)(this_ + 0xc);
+                JGeometry::TVec3f v;
+            v.x = *(f32*)(this_+0xc);
+            v.y = *(f32*)(this_+0x10);
+            v.z = *(f32*)(this_+0x14);
                 v.y += lbl_80540AB8;
                 v.z += lbl_80540AD4;
                 fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
@@ -175,39 +184,43 @@ extern "C" void fn_802B8078(char* this_) {
                 *(s32*)(this_ + 0x230) = 4;
             }
         } else {
-            Vec v = *(Vec*)(this_ + 0xc);
+            JGeometry::TVec3f v;
+            v.x = *(f32*)(this_+0xc);
+            v.y = *(f32*)(this_+0x10);
+            v.z = *(f32*)(this_+0x14);
             v.y += lbl_80540AB8;
             v.z += lbl_80540AD4;
             fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
             fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
-            *(Vec*)(this_ + 0x28c) = *(Vec*)(this_ + 0xc);
-            Vec* src = (Vec*)fn_8023E724(*(s32*)(this_ + 0x298));
-            *(Vec*)(this_ + 0xc) = *src;
+            *(JGeometry::TVec3f*)(this_ + 0x28c) = *(JGeometry::TVec3f*)(this_ + 0xc);
+            JGeometry::TVec3f* src = (JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_ + 0x298));
+            *(JGeometry::TVec3f*)(this_ + 0xc) = *src;
+            *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
             *(s32*)(this_ + 0x244) = 0xb4;
             *(s32*)(this_ + 0x24c) = 0;
             *(s32*)(this_ + 0x230) = 5;
-            *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
             Vec t;
             t.x = *(f32*)(this_ + 0xc) - lbl_80540AD4;
             t.y = *(f32*)(this_ + 0x10) - lbl_80540AD4;
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
-            t.x = *(f32*)(this_ + 0xc) + lbl_80540AD4;
+            t.x = lbl_80540AD4 + *(f32*)(this_ + 0xc);
             t.y = *(f32*)(this_ + 0x10) - lbl_80540AD4;
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
             t.x = *(f32*)(this_ + 0xc) - lbl_80540AD4;
-            t.y = *(f32*)(this_ + 0x10) + lbl_80540AD4;
+            t.y = lbl_80540AD4 + *(f32*)(this_ + 0x10);
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
-            t.x = *(f32*)(this_ + 0xc) + lbl_80540AD4;
-            t.y = *(f32*)(this_ + 0x10) + lbl_80540AD4;
+            t.x = lbl_80540AD4 + *(f32*)(this_ + 0xc);
+            t.y = lbl_80540AD4 + *(f32*)(this_ + 0x10);
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
         }
     }
 }
 
+#pragma opt_propagation on
 extern "C" void fn_802B8420(char* this_) {
     fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x173, 1, 0, 0, 0, 1, 1.0f);
     *(u8*)(this_ + 0x11c) = 0;
