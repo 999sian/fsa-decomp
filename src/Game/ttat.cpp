@@ -238,7 +238,8 @@ extern "C" void fn_801A96B4(void* this_) {
                 ang += (u16)phase;
                 v[1] = *(f32*)(t + 0x10);
                 v[2] = *(f32*)(t + 0x14);
-                f32 childAngle = (f32)((u16)ang + 0x8000);
+                s32 reverse = (u16)ang + 0x8000;
+                f32 childAngle = (f32)reverse;
                 *(f32*)((char*)c + 0x2b4) = childAngle;
                 v[0] = v[0] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
                 v[1] = v[1] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
