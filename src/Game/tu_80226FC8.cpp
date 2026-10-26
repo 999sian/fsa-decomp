@@ -12,9 +12,6 @@ static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
     box->f.y -= pos.z;
 }
 
-static inline void gateStoreBox(f32* out, const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
-    out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
-}
 struct GateBox {
     f32 x0, y0, x1, y1;
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
@@ -268,8 +265,8 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
         x1=*(f32*)(p+0x68); out[2]=x1;
         y1=*(f32*)(p+0x6c); out[3]=y1;
         y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
-        f32 a=y0+y, b=x0+x, c=x1+x, d=y1+y;
-        out[1]=a; out[0]=b; out[2]=c; out[3]=d;
+        y0+=y; x0+=x; x1+=x; y1+=y;
+        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
         if (!fn_8022D75C(i) && fn_8022D534(i)) { p[i+0x234]=1; continue; }
         if ((*(s32*)(p+0x90)&0x7f)==0x10) return;
         if (fn_8022F514(i)) {
@@ -297,10 +294,12 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             if (fn_8022F478(i) && (*(s32*)(p+0x90)&0x7f)!=4) continue;
             if (((*(s32*)(p+0x90)&0x7f)==4 || (*(s32*)(p+0x90)&0x7f)==0x20 || (*(s32*)(p+0x90)&0x7f)==0x24) &&
                 fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
-            int targetRoom;
+            u32 param;
+            u32 kind;
             u32 rawRoom;
-            u32 param=*(u32*)(p+0x90);
-            u32 kind=param&0x7f;
+            int targetRoom;
+            param=*(u32*)(p+0x90);
+            kind=param&0x7f;
             rawRoom=(param>>24)&7;
             targetRoom=rawRoom+7; if (!rawRoom) targetRoom=rawRoom;
             if (fn_802317F0(i,targetRoom,p+0xc,p+0x238,kind) &&
