@@ -685,36 +685,37 @@ extern "C" void fn_803BE3D8(void* a) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803BF004(char* p) {
+    const u8* table = lbl_804765D0;
     *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
-    fn_80402E08(*(void**)(p + 0x38 + *(s32*)(p + 0xa4) * 4), lbl_80543458,
-        *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0xc));
-    *(s16*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0x22) = 0;
-    *(s16*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0x26) = 0;
-    ((J2DPane*)*(void**)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 4))->setAlpha(*(u8*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0x28));
+    fn_80402E08(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)], lbl_80543458,
+        *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0xc));
+    *(s16*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0x22) = 0;
+    *(s16*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0x26) = 0;
+    ((J2DPane*)*(void**)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 4))->setAlpha(*(u8*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0x28));
     s32 idx = *(s32*)(p + 0xa4);
-    setCell((u8*)p, 0x38, idx, 0x780, *(u8*)(p + 0x125));
-    setCell((u8*)p, 0x38, idx, 0x768, *(u8*)(p + 0x126));
-    setCell((u8*)p, 0x38, idx, 0x750, *(u8*)(p + 0x127));
-    setCell((u8*)p, 0x38, idx, 0x6c8, *(u8*)(p + 0x128));
-    setCell((u8*)p, 0x38, idx, 0x6b0, *(u8*)(p + 0x129));
-    setCell((u8*)p, 0x38, idx, 0x698, *(u8*)(p + 0x12a));
-    setCell((u8*)p, 0x38, idx, 0x680, *(u8*)(p + 0x12b));
-    setCell((u8*)p, 0x38, idx, 0x668, *(u8*)(p + 0x12c));
-    setCell((u8*)p, 0x38, idx, 0x650, *(u8*)(p + 0x12d));
-    setCell((u8*)p, 0x38, idx, 0x638, *(u8*)(p + 0x12e));
-    setCell((u8*)p, 0x38, idx, 0x620, *(u8*)(p + 0x12f));
-    setCell((u8*)p, 0x38, idx, 0x608, *(u8*)(p + 0x130));
-    setCell((u8*)p, 0x38, idx, 0x5f0, *(u8*)(p + 0x131));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x780))[idx]), *(u8*)(p + 0x125));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x768))[idx]), *(u8*)(p + 0x126));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x750))[idx]), *(u8*)(p + 0x127));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x6c8))[idx]), *(u8*)(p + 0x128));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x6b0))[idx]), *(u8*)(p + 0x129));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x698))[idx]), *(u8*)(p + 0x12a));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x680))[idx]), *(u8*)(p + 0x12b));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x668))[idx]), *(u8*)(p + 0x12c));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x650))[idx]), *(u8*)(p + 0x12d));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x638))[idx]), *(u8*)(p + 0x12e));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x620))[idx]), *(u8*)(p + 0x12f));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x608))[idx]), *(u8*)(p + 0x130));
+    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x5f0))[idx]), *(u8*)(p + 0x131));
     *(s16*)(p + 0xd8) = 0;
     *(s16*)(p + 0xda) = 0;
     p[0x112] = p[0x110];
     p[0x110] = 0x23;
     fn_80458880(lbl_8053AF80, 0x62, -1);
 }
-
-#pragma opt_lifetimes off
+#pragma opt_propagation reset
 extern "C" void fn_803BF3BC(u8* this_) {
     const u64* __restrict tbl;
     int i;
@@ -1285,37 +1286,20 @@ extern "C" void fn_803C1054(u8* p) {
 }
 
 extern "C" void fn_803C1340(u8* p) {
-    u32 t1[2];
-    u32 t2[2];
-    u32 t3[2];
-    u32 t4[2];
     void* o;
 
-    fn_80402E08(*(void**)(p + 0x50), lbl_80543494, lbl_80543458);
+    fn_80402E08(*(void**)(p + 0x50), -300.0f, 0.0f);
     *(s16*)(*(u8**)(p + 0x50) + 0x20) = 0;
-    stopPane(*(void**)(*(u8**)(p + 0x50) + 4));
-    fn_804023D0(*(void**)(p + 0x50), (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723031ULL), (*(u8**)(p + 0x50))[0x28]);
-    fn_804023D0(*(void**)(p + 0x50), (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723032ULL), (*(u8**)(p + 0x50))[0x28]);
-    fn_804023D0(*(void**)(p + 0x50), (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723033ULL), (*(u8**)(p + 0x50))[0x28]);
-    fn_804023D0(*(void**)(p + 0x50), (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723034ULL), (*(u8**)(p + 0x50))[0x28]);
+    ((J2DPane*)*(void**)(*(u8**)(p+0x50)+4))->setAlpha(0);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x0050666375723031ULL), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x0050666375723032ULL), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x0050666375723033ULL), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x0050666375723034ULL), (*(u8**)(p + 0x50))[0x28]);
 
-    t1[0] = *(u32*)(p + 0xe0);
-    t1[1] = *(u32*)(p + 0xe4);
-    o = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x70620000, 0x0050636f70623031ULL);
-    (*(ColorVt**)o)->v76(o, &t1[1], &t1[0]);
-    t2[0] = *(u32*)(p + 0xe0);
-    t2[1] = *(u32*)(p + 0xe4);
-    o = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x70620000, 0x0050636f70623032ULL);
-    (*(ColorVt**)o)->v76(o, &t2[1], &t2[0]);
-    t3[0] = *(u32*)(p + 0xe0);
-    t3[1] = *(u32*)(p + 0xe4);
-    o = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x6c620000, 0x005064656c623031ULL);
-    (*(ColorVt**)o)->v76(o, &t3[1], &t3[0]);
-    t4[0] = *(u32*)(p + 0xe0);
-    t4[1] = *(u32*)(p + 0xe4);
-    o = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x6c620000, 0x0050646556c623032ULL);
-    (*(ColorVt**)o)->v76(o, &t4[1], &t4[0]);
-
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
     *(s16*)(*(u8**)(p + 0x38) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x38) + 0x22) = 0;
     *(s16*)(*(u8**)(p + 0x38) + 0x26) = 0;
@@ -1341,9 +1325,8 @@ extern "C" void fn_803C1340(u8* p) {
     *(s16*)(*(u8**)(p + 0x1c) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x1c) + 0x26) = 0;
 
-    stopPane(*(void**)(*(u8**)(p + 0x34) + 4));
-    o = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x50610000, 0x0050636375723031ULL);
-    fn_804023D0(*(void**)(p + 0x34), o, (*(u8**)(p + 0x34))[0x28]);
+    ((J2DPane*)*(void**)(*(u8**)(p+0x34)+4))->setAlpha(0);
+    fn_804023D0(*(void**)(p + 0x34), ((J2DPane*)*(void**)(p+8))->search(0x5061636375723031ULL), (*(u8**)(p + 0x34))[0x28]);
     *(s16*)(*(u8**)(p + 0x34) + 0x26) = 0;
     *(s16*)(*(u8**)(p + 0x24) + 0x22) = 0;
     *(s16*)(*(u8**)(p + 0x24) + 0x26) = 0;
@@ -1354,12 +1337,12 @@ extern "C" void fn_803C1340(u8* p) {
     *(s16*)(*(u8**)(p + 0x30) + 0x22) = 0;
     *(s16*)(*(u8**)(p + 0x30) + 0x26) = 0;
 
-    *(f32*)(p + 0x70) = lbl_80543458;
-    *(f32*)(p + 0x64) = lbl_80543458;
-    *(f32*)(p + 0x74) = lbl_80543458;
-    *(f32*)(p + 0x68) = lbl_80543458;
-    *(f32*)(p + 0x78) = lbl_80543458;
-    *(f32*)(p + 0x6c) = lbl_80543458;
+    *(f32*)(p + 0x70) = 0.0f;
+    *(f32*)(p + 0x64) = 0.0f;
+    *(f32*)(p + 0x74) = 0.0f;
+    *(f32*)(p + 0x68) = 0.0f;
+    *(f32*)(p + 0x78) = 0.0f;
+    *(f32*)(p + 0x6c) = 0.0f;
     *(s16*)(p + 0xd8) = 0;
     *(s16*)(p + 0xda) = 0;
     p[0x112] = p[0x110];
