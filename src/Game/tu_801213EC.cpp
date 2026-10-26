@@ -540,7 +540,10 @@ static inline bool PlayerIsHidden(s32 idx) {
             break;
         }
     }
-    return fn_80234E30(slot) || fn_80235448(idx);
+    if (fn_80234E30(slot) || fn_80235448(idx)) {
+        return true;
+    }
+    return false;
 }
 
 static inline s32 FindActivePlayerSlot(s32 slot) {
