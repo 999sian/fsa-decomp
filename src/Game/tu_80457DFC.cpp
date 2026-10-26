@@ -1013,7 +1013,7 @@ extern "C" void fn_80459674(u8* p) {
                         switch (*(s32*)(p+0x5c)) { case 0x100001a: break; default: goto soundStarted; }
                         bank=(*(Unk80458408Obj**)(p+0x80))->v4();
                         if (bank) {
-                            const JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock& lock = JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock(*bank);
+                            volatile BOOL irq=OSDisableInterrupts();
                             for (i=0;i<16;i++) {
                                 JASTrack* track=bank->v7(i);
                                 if (track) {
@@ -1021,6 +1021,7 @@ extern "C" void fn_80459674(u8* p) {
                                     else track->mute(true);
                                 }
                             }
+                            OSRestoreInterrupts(irq);
                         }
                     }
                     break;
@@ -1059,6 +1060,14 @@ soundStarted:
 #include "JSystem/JAudio/JAUInitializer.h"
 #include "JSystem/JAudio/JAUAudioArchive.h"
 extern "C" void fn_8003C984(void*);
+static inline void initFsaAudienceMtx(u8* const base, u8* owner) {
+    fn_8003C984(owner);
+    *(void**)owner = lbl_80495480;
+    *(void**)base = lbl_804954F8;
+    *(u32*)(base + 0x50) = 1;
+    PSMTXIdentity((MtxPtr)(base + 0x54));
+}
+
 struct FsaAudienceBase {
     FsaAudienceBase() {
         fn_8003C984(this);
@@ -1107,7 +1116,11 @@ extern "C" void fn_8003C8D8(void*);
 extern "C" void fn_8045A0E4(int count);
 extern "C" void __ct__12JAISoundInfoFb(void*, bool);
 extern "C" void __ct__14WaveControllerFlll(void*, s32, void*, s32);
+#pragma opt_lifetimes on
 extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchive* arc) {
+    JAUSoundInfo* info;
+    JASDsp::FxlineConfig_* cfg;
+    u8 i;
     JAU_JASInitializer jas;
     jas.mChannelPoolCount = lbl_8053A228;
     jas.mAudioMemSize = size;
@@ -1121,7 +1134,13 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     *(JAUSoundMgr**)(this_ + 0x30) = new ((JKRHeap*)heap, 0) JAUSoundMgr();
     *(u8**)(this_ + 0x34) = *(u8**)(this_ + 0x30) + 4;
     *(u8**)(this_ + 0x38) = *(u8**)(this_ + 0x30) + 0x728;
-    *(FsaAudience**)(this_ + 0x3c) = new ((JKRHeap*)heap, 0) FsaAudience();
+    u8* au = (u8*)operator new(0x84, (JKRHeap*)heap, 0);
+    if (au) {
+        new (au) FsaAudienceMtx();
+        *(void**)au = lbl_804954D8;
+        *(void**)au = lbl_804B2074;
+    }
+    *(u8**)(this_ + 0x3c) = au;
     *(f32*)(*(u8**)(this_ + 0x3c) + 0x4) = lbl_8053A22C;
     *(f32*)(*(u8**)(this_ + 0x3c) + 0x8) = lbl_8053A230;
     *(f32*)(*(u8**)(this_ + 0x3c) + 0xc) = lbl_8053AF78;
@@ -1156,10 +1175,11 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x2a4))->moveVolume(lbl_80543EB4, 0);
     struct FxSet { JASDsp::FxlineConfig_ c[4]; };
     FxSet fx = *(FxSet*)lbl_80491600;
-    for (u8 i = 0; i < 4; i++) {
-        JASDsp::FxlineConfig_& cfg = fx.c[i];
-        s16* buf = new ((JKRHeap*)heap, 0x20) s16[(cfg.mBufCount * 0xa0) / sizeof(s16)];
-        JASDsp::setFXLine(i, buf, &cfg);
+    for (i = 0; i < 4; i++) {
+        s16* buf;
+        cfg = &fx.c[i];
+        buf = new ((JKRHeap*)heap, 0x20) s16[(cfg->mBufCount * 0xa0) / sizeof(s16)];
+        JASDsp::setFXLine(i, buf, cfg);
     }
     *(WaveController**)(this_ + 0x14) = new WaveController(0, heap, 4);
     for (int k = 0; k < 4; k++) {
@@ -1169,8 +1189,9 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     u8* si = (u8*)operator new(0x10, (JKRHeap*)heap, 0);
     if (si) {
         __ct__12JAISoundInfoFb(si, true);
-        JASGlobalInstance<JAUSoundInfo>::sInstance = (JAUSoundInfo*)(si + 4);
-        *(void**)(si + 4) = lbl_80495470;
+        info = (JAUSoundInfo*)(si + 4);
+        JASGlobalInstance<JAUSoundInfo>::sInstance = info;
+        *(void**)info = lbl_80495470;
         *(void**)(si + 8) = __vt__16JAIStreamDataMgr;
         *(void**)si = lbl_804B2098;
         *(void**)(si + 4) = lbl_804B2098 + 0x24;
@@ -1218,7 +1239,7 @@ extern "C" void fn_80459AE4(u8* this_, s32 heap, u32 size, void* data, JKRArchiv
     *(u32*)(this_ + 0x78) = 0;
     fn_80458744(this_, 0);
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_8045A080(char* self)
 {
     *(u32*)(self + 0x80) = 0;
