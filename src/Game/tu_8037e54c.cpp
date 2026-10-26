@@ -336,23 +336,17 @@ static inline s32 resolvePlayer(s32 p) {
 
 extern "C" u8 fn_80390818(void* p);
 extern "C" void __ct__9T37ConfigFv(char* p) {
-    f32 f0 = lbl_805430CC;
-    f32 f1 = lbl_805430C8;
-    f32 f2 = lbl_805430C4;
-    f32 f3 = lbl_805430C0;
-    f32 f4 = lbl_805430BC;
-    f32 f5 = lbl_805430B8;
     *(void**)p = lbl_804AF32C;
     *(u8*)(p + 0x4) = 0x0;
     *(u8*)(p + 0x5) = 0x0;
     *(s16*)(p + 0x6) = 0x0;
-    *(f32*)(p + 0x8) = f5;
-    *(f32*)(p + 0x30) = f4;
-    *(f32*)(p + 0x34) = f3;
-    *(f32*)(p + 0x38) = f2;
-    *(f32*)(p + 0x3c) = f1;
+    *(f32*)(p + 0x8) = lbl_805430B8;
+    *(f32*)(p + 0x30) = lbl_805430BC;
+    *(f32*)(p + 0x34) = lbl_805430C0;
+    *(f32*)(p + 0x38) = lbl_805430C4;
+    *(f32*)(p + 0x3c) = lbl_805430C8;
     *(s16*)(p + 0x4c) = 0x6;
-    *(f32*)(p + 0x40) = f0;
+    *(f32*)(p + 0x40) = lbl_805430CC;
     *(s16*)(p + 0x4e) = -0x28;
     *(s16*)(p + 0x50) = 0x50;
     *(s16*)(p + 0x52) = 0x5;
@@ -613,8 +607,8 @@ extern "C" void __ct__9T37ConfigFv(char* p) {
     *(s16*)(p + 0x2ea) = 0x82;
     *(s16*)(p + 0x2ec) = 0x0;
     *(s16*)(p + 0x2ee) = 0x2;
-    *(f32*)(p + 0x44) = f2;
-    *(f32*)(p + 0x48) = f5;
+    *(f32*)(p + 0x44) = lbl_805430C4;
+    *(f32*)(p + 0x48) = lbl_805430B8;
     *(s16*)(p + 0x2f8) = 0x50;
     *(u8*)(p + 0x30c) = 0x0;
     *(u8*)(p + 0x304) = 0x50;
