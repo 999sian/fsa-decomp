@@ -80,6 +80,9 @@ extern char* lbl_8053AAF8;
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
+inline u32* roomValueFlag(int i) {
+    return &roomArrays()->flags12F68[i];
+}
 inline u16* roomValueColumn(int i) {
     return &roomArrays()->values2948[0][i];
 }
@@ -1437,8 +1440,8 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     char* tbl;
     const char* fmt;
     const char* name;
-    int tens;
-    int ones;
+    s32 tens;
+    s32 ones;
     s32 key;
     s32 number;
     char buf104[32];
@@ -1763,7 +1766,7 @@ extern "C" void fn_802DA010(char* p) {
     }
     RoomArrays* base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     base->flags178[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)] &= 0xFFFF0000;
-    for (int i = 0; i < 16; i++) {
+    for (unsigned int i = 0; i < 16; i++) {
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counters308[i] = 0;
     }
     {
@@ -1771,20 +1774,24 @@ extern "C" void fn_802DA010(char* p) {
         int j = 0;
         for (s32 i = 0; i < 8; i++) {
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 0] = 0xFF;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->flags12F68[j++] = 0;
+            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
+            j += 4;
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 1] = 0xFF;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->flags12F68[j++] = 0;
+            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
+            j += 4;
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 2] = 0xFF;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->flags12F68[j++] = 0;
+            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
+            j += 4;
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 3] = 0xFF;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->flags12F68[j++] = 0;
+            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
+            j += 4;
             k += 4;
         }
     }
     for (s32 i = 0; i < 8; i++) {
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counts6748[i] = 0;
         for (int k = 0; k < 64; k++) {
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][k] = 0;
+            roomValueColumn(k)[i * 64] = 0;
         }
     }
     fn_8038D454();
@@ -1800,8 +1807,8 @@ extern "C" void fn_802DA010(char* p) {
     }
     fn_8013C8CC(fn_8013C824());
     {
-        const f32* t = lbl_8046E148;
         s32 i;
+        const f32* t = lbl_8046E148;
         *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + 0x131DE) = i = 0;
         for (; i < 4; i++) {
             v[0] = t[0];
@@ -1816,6 +1823,7 @@ extern "C" void fn_802DA010(char* p) {
     fn_8022BD70();
     fn_8037AE30(lbl_8053AD70);
     fn_802D8328(p, 0, 0);
+    w[2] = lbl_8054111C;
     {
         char* a = *(char**)(lbl_8053AB10 + 0x24);
         *(f32*)(a + 0x154) = *(f32*)(p + 0xCC);
@@ -1823,9 +1831,8 @@ extern "C" void fn_802DA010(char* p) {
         *(f32*)(a + 0x15C) = *(f32*)(p + 0xD4);
         *(f32*)(a + 0x160) = *(f32*)(p + 0xD8);
     }
-    w[2] = lbl_8054111C;
-    w[0] = *(f32*)(p + 0xCC);
     w[1] = *(f32*)(p + 0xD0);
+    w[0] = *(f32*)(p + 0xCC);
     JGeometry::setTVec3f(w, (f32*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2368));
     f32* pos = (f32*)fn_8023E724(0);
     u8* a = *(u8**)(lbl_8053AB10 + 0x24);
@@ -2078,15 +2085,21 @@ extern "C" void fn_802DB6F0(char* p) {
     for (i = 0; i < 16; i++) {
         roomArrays()->counters308[i] = 0;
     }
-    for (i = 0; i < 8; i++) {
-        roomArrays()->values328[i * 4 + 0] = 0xFF;
-        roomArrays()->flags12F68[i * 4 + 0] = 0;
-        roomArrays()->values328[i * 4 + 1] = 0xFF;
-        roomArrays()->flags12F68[i * 4 + 1] = 0;
-        roomArrays()->values328[i * 4 + 2] = 0xFF;
-        roomArrays()->flags12F68[i * 4 + 2] = 0;
-        roomArrays()->values328[i * 4 + 3] = 0xFF;
-        roomArrays()->flags12F68[i * 4 + 3] = 0;
+    int byteIndex = 0;
+    int wordOffset = 0;
+    for (int n = 0; n < 8; n++) {
+        roomArrays()->values328[byteIndex++] = 0xff;
+        *(u32*)((char*)roomArrays() + 0x12f68 + wordOffset) = 0;
+        wordOffset += 4;
+        roomArrays()->values328[byteIndex++] = 0xff;
+        *(u32*)((char*)roomArrays() + 0x12f68 + wordOffset) = 0;
+        wordOffset += 4;
+        roomArrays()->values328[byteIndex++] = 0xff;
+        *(u32*)((char*)roomArrays() + 0x12f68 + wordOffset) = 0;
+        wordOffset += 4;
+        roomArrays()->values328[byteIndex++] = 0xff;
+        *(u32*)((char*)roomArrays() + 0x12f68 + wordOffset) = 0;
+        wordOffset += 4;
     }
     for (i = 0; i < 8; i++) {
         roomArrays()->counts6748[i] = 0;
