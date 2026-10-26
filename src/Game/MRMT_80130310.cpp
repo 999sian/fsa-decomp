@@ -202,10 +202,9 @@ extern "C" void fn_801306BC(u8* p) {
             if (*(s32*)(p + 0x244) >= 4) {
                 setState(p, 5);
             } else {
-                s32 off = *(s32*)(p + 0x244) * 12;
-                u8* table = lbl_8049EA58;
-                u8* e = table + off;
-                if (fn_8013056C((char*)p, *(u16*)(table + off), *(s32*)(e + 4), *(s32*)(e + 8)) >= 0) {
+                MRMTEvent* events = (MRMTEvent*)lbl_8049EA58;
+                s32 index = *(s32*)(p + 0x244);
+                if (fn_8013056C((char*)p, events[index].id, events[index].mode, events[index].value) >= 0) {
                     setState(p, 4);
                 }
             }
@@ -225,10 +224,8 @@ extern "C" void fn_801306BC(u8* p) {
         } else {
             fn_80388EEC(0);
             s32 which = 0;
-            s32 off = *(s32*)(p + 0x244) * 12;
-            u8* table = lbl_8049EA58;
-            u8* e = table + off;
-            switch (*(s32*)(e + 4)) {
+            MRMTEvent* events = (MRMTEvent*)lbl_8049EA58;
+            switch (events[*(s32*)(p + 0x244)].mode) {
             case 1:
                 which = *(s32*)(p + 0x238);
                 break;
