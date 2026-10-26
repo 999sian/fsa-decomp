@@ -45,6 +45,14 @@ Jiji::Jiji() : Actor() {
     *(ResourceHandle**)((char*)this + 0x274) = h;
 }
 
+extern "C" void fn_8037CE5C(void) {
+    u32* src = (u32*)lbl_804AE9C0;
+    u32* dst = (u32*)(lbl_804AE9C0 + 0x288);
+    for (int i = 0; i < 0xa2; i++) {
+        dst[i] = src[i];
+    }
+}
+
 // ---- JIJI small state helpers (0x8037B374-0x8037B7EC) ----
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
@@ -243,7 +251,6 @@ extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 
 extern f32 lbl_80543054;
-#pragma opt_propagation off
 extern "C" void fn_8037B7F8(u8* this_) {
     const JijiTable* t = &lbl_804753C0;
     if (*(s32*)(this_ + 0x230) == 5 && *(AnimEffectRec**)(this_ + 0x274) != 0) {
