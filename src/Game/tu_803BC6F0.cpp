@@ -138,7 +138,7 @@ static inline s32 getFileIcon(u32 slot) {
         if (fn_803B8CAC(slot, j)) {
             k++;
         } else {
-            return ((s32*)(lbl_804765D0 + 0x730))[k];
+            return ((const s32*)lbl_804765D0)[k + 0x1cc];
         }
     }
     return ((const s32*)(lbl_804765D0 + 0x730))[7];
@@ -4155,10 +4155,16 @@ extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 extern "C" u8 fn_803BADAC(void* a);
 extern "C" void fn_803CE4CC(char* p) {
     const u8* base;
-    s32 i;
+    const u64* dates;
+ const u64* levels;
+ const u64* fires;
+ s32 i;
     OSCalendarTime cal;
 
     base = lbl_804765D0;
+ dates=(const u64*)(base+0x30);
+ levels=(const u64*)(base+0);
+ fires=(const u64*)(base+0x18);
     for (i = 0; i < 3; i++) {
         u8* rec = (u8*)lbl_8050EC80 + i * 0xc8;
         p[0x115] &= ~(u8)(1 << i);
@@ -4167,10 +4173,10 @@ extern "C" void fn_803CE4CC(char* p) {
                 s64 t = *(s64*)(rec + 0x20);
                 if (isTimeSet(t)) {
                     OSTicksToCalendarTime(t, &cal);
-                    snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])), 0x1e, (const char*)(base + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
-                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->show();
-                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->hide();
-                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->show();
+                    snprintf(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(dates[i])), 0x1e, (const char*)(base + 0x868), cal.mon + 1, cal.mday, cal.year, cal.hour, cal.min, cal.sec);
+                    ((J2DPane*)*(void**)(p + 8))->search(levels[i])->show();
+                    ((J2DPane*)*(void**)(p + 8))->search(fires[i])->hide();
+                    ((J2DPane*)*(void**)(p + 8))->search(dates[i])->show();
                     s32 icon;
                     icon = getFileIcon(0);
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466316c76ULL)), icon, 0, 0, 0);
@@ -4179,25 +4185,25 @@ extern "C" void fn_803CE4CC(char* p) {
                     icon = getFileIcon(2);
                     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466336c76ULL)), icon, 0, 0, 0);
                 } else {
-                    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])), 0x6a, 0, 0, 0);
-                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->hide();
-                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->show();
-                    ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->hide();
+                    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(fires[i])), 0x6a, 0, 0, 0);
+                    ((J2DPane*)*(void**)(p + 8))->search(levels[i])->hide();
+                    ((J2DPane*)*(void**)(p + 8))->search(fires[i])->show();
+                    ((J2DPane*)*(void**)(p + 8))->search(dates[i])->hide();
                 }
                 fn_803BDD44((u8*)p, i);
             } else {
-                fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])), 0x11d, 0, 0, 0);
-                ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->hide();
-                ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->show();
-                ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->hide();
+                fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(fires[i])), 0x11d, 0, 0, 0);
+                ((J2DPane*)*(void**)(p + 8))->search(levels[i])->hide();
+                ((J2DPane*)*(void**)(p + 8))->search(fires[i])->show();
+                ((J2DPane*)*(void**)(p + 8))->search(dates[i])->hide();
                 p[0x115] |= (u8)(1 << i);
                 fn_803BD5E0((u8*)p, i);
             }
         } else {
-            fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])), 0x6a, 0, 0, 0);
-            ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x0))[i])->hide();
-            ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x18))[i])->show();
-            ((J2DPane*)*(void**)(p + 8))->search(((const u64*)(base + 0x30))[i])->hide();
+            fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(fires[i])), 0x6a, 0, 0, 0);
+            ((J2DPane*)*(void**)(p + 8))->search(levels[i])->hide();
+            ((J2DPane*)*(void**)(p + 8))->search(fires[i])->show();
+            ((J2DPane*)*(void**)(p + 8))->search(dates[i])->hide();
             fn_803BDD44((u8*)p, i);
         }
     }
