@@ -151,7 +151,7 @@ static inline f32 paneSpan(const f32* bounds) {
 	return bounds[2] - bounds[0];
 }
 
-static inline bool menuReached(f32 position, f32 origin) {
+static inline bool menuReached(const f32 position, const f32 origin) {
 	return position <= origin - 400.0f;
 }
 
@@ -1504,7 +1504,7 @@ extern "C" void fn_8040B5A0(Slots208* obj) {
   break;
  case 1: {
   *(f32*)(self+0x3b8) -= lbl_8054396C;
-  if (*(f32*)(self+0x3b8) <= *(f32*)(obj->slot[*(s32*)(self+0x340)]+0xc)-400.0f) {
+  if (menuReached(*(f32*)(self+0x3b8), *(f32*)(obj->slot[*(s32*)(self+0x340)]+0xc))) {
    lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a |= (u8)(1 << *(s32*)(self+0x340));
    if (*(s32*)(self+0x340)==7) *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+1);
    else *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+2);
