@@ -385,7 +385,8 @@ static inline void Tu80390818_reset(Tu80390818_Sub* s, u8 kind) {
 
 static inline void Tu80390818_setMessage(Tu80390818_Sub* s, const u32 code, const JGeometry::TVec3<f32> pos, const JGeometry::TVec3<f32> anchor) {
     s->m14C = code;
-    s->m08->setMessageCode(code >> 16, code & 0xFFFF);
+    JMessage::TControl* control = s->m08;
+    control->setMessageCode((u16)(code >> 16), (u16)code);
     JGeometry::setTVec3f(&pos.x, s->m98);
     s->mA4[0] = anchor.x;
     s->mA4[1] = anchor.y;
@@ -418,7 +419,7 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         t->m4C->m17C = t->m38;
         Tu80390818_reset(t->m4C, 0);
         t->m44 = 2;
-        Tu80390818_setMessage(t->m4C, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
+        Tu80390818_setMessage(t->m20, t->m4C, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
         t->m24 = 2;
         break;
     }
@@ -475,9 +476,9 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
                 if (a != 0) v = *(Tu80390818_Vec*)(a + 0xc);
                 else v = *(Tu80390818_Vec*)&t->m50;
-                Tu80390818_setMessage(t->m48, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&v);
+                Tu80390818_setMessage(t->m20, t->m48, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&v);
             } else {
-                Tu80390818_setMessage(t->m48, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
+                Tu80390818_setMessage(t->m20, t->m48, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
             }
         }
         t->m24 = 7;
