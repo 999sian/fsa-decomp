@@ -9,6 +9,11 @@ extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
+
+static inline JGeometry::TVec3f translatedBlockPosition(JGeometry::TVec3f pos, const JGeometry::TVec3f& offset) {
+    pos += offset;
+    return pos;
+}
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
