@@ -253,6 +253,8 @@ static inline s32 HouseDestination(const char* actor) {
     s32 room = (*(const u32*)(actor + 0x90) >> 7) & 31;
     return (room + 7) & ~-(room == 0);
 }
+static inline bool WarpDestinationIs(const char* other, s32 room) { return room == WarpDestination(other); }
+
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
@@ -1286,10 +1288,10 @@ extern "C" void fn_80299AD0(char* self) {
     s32 d;
     s32 dir;
     u8 ok;
-    f32 x0;
     f32 y0;
     f32 x1;
     f32 y1;
+    f32 x0;
     JGeometry::TBox2f box;
     JGeometry::TVec3f grid;
     JGeometry::TVec3f gridBase;
@@ -1307,7 +1309,19 @@ extern "C" void fn_80299AD0(char* self) {
     }
     dir = -1;
     if (*(u8*)(self + 0x2b9) == 0) {
-        dir = PushDirFromPlayer(self);
+        if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
+            room = *(s32*)(self + 4);
+            if (fn_8023DE58(0) == room) {
+                d = fn_80238BC4(*(void**)(self + 0x198));
+                if (d >= 0 && d < 4) {
+                    *(s32*)(self + 0x2cc) = 1;
+                    goto gotPlayer;
+                }
+            }
+        }
+        d = -1;
+    gotPlayer:
+        dir = d;
         if (dir == -1) {
             box.i.x = *(f32*)(self + 0x80);
             box.i.y = *(f32*)(self + 0x84);
