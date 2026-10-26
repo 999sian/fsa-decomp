@@ -78,16 +78,17 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
 }
 
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 minutes;
     s32 value;
-    s32 i;
+    u32 i;
     s32 count;
     JGeometry::TVec3<f32> saved;
     s32 state = *(s32*)((u8*)this_ + 0x230);
     if (state == 4 || (u32)(state - 5) <= 1 || state == 7) {
         count = fn_80138A30(lbl_8053AAF8);
-        for (i = 0; i < count; i++) {
+        for (i = 0; (s32)i < count; i++) {
             lbl_8053AF00[0x30] |= (u8)(1 << i);
             value = *(s32*)((u8*)this_ + 0x250 + i * 4);
             minutes = value / 60;
@@ -113,11 +114,11 @@ extern "C" void fn_800FF0C0(Actor* this_) {
             this_->field_0C.z = saved.z;
         }
     }
-    s32 id = *(u8*)((u8*)this_ + 0x235);
-    id <<= 1;
-    id += *(s32*)((u8*)this_ + 0x23c);
-    id += 0x311;
-    fn_801F06F0(this_, lbl_80463B8C, (void*)id, 0, 0, lbl_8053C118, lbl_8053C118);
+    s32 variant = *(u8*)((u8*)this_ + 0x235);
+    s32 id = *(s32*)((u8*)this_ + 0x23c);
+    variant <<= 1;
+    id += variant;
+    fn_801F06F0(this_, lbl_80463B8C, (void*)(id + 0x311), 0, 0, lbl_8053C118, lbl_8053C118);
 }
 #pragma opt_common_subs reset
 extern "C" void fn_80239914(s32 a, s32 b);
