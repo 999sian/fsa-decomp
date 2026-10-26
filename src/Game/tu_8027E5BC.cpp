@@ -1662,17 +1662,16 @@ extern "C" s32 fn_8024189C(char*);
 extern "C" bool fn_80225BE4(char*, s32);
 extern "C" void fn_80242DAC(char*);
 extern "C" const f32 lbl_805403D4, lbl_805403A8, lbl_805403F4;
+#pragma opt_common_subs off
 extern "C" void fn_80282ACC(char* p) {
     int n;
-    int area;
-    int room;
-    int target;
     if (fn_8024189C(p) <= 0 && fn_80251AEC(p, 0x33)) return;
     if (Player_IsLinked(p) && U8(p,0x1215)) {
         S32(p,0x3b4) = fn_8023DE58(Player_GetLinkTargetIndex(p));
         VEC(p,8) = *fn_8023E724(Player_GetLinkTargetIndex(p));
-        area = S32(p,0x3b4);
-        if (*((u8*)fn_802D6A9C()+0x10000+area+0x31df)==0) fn_80251AEC(p,0x4a);
+        s32 area = S32(p,0x3b4);
+        u8 (*manager)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
+        if (manager[1][area+0x31df]==0) fn_80251AEC(p,0x4a);
         return;
     }
     if (PSVECMag(&VEC(p,0x344)) > lbl_8054036C) {
@@ -1694,7 +1693,7 @@ extern "C" void fn_80282ACC(char* p) {
         JGeometry::TVec3<f32> pos(VEC(p,8));
         if (S32(p,0x3dc)==0) pos.x += lbl_805403D4;
         else if (S32(p,0x3dc)==1) pos.x -= lbl_805403D4;
-        room = S32(p,4);
+        s32 room = S32(p,4);
         Actor_CreateByID(fn_801F856C(),0x50454646,S32(p,0x3b4),&pos,(room&3)|0xc,-1,room);
     }
     if (PSVECMag(&VEC(p,0x344)) > lbl_8054036C) U8(p,0x3f8) += 2;
@@ -1712,8 +1711,9 @@ extern "C" void fn_80282ACC(char* p) {
         S32(p,0x3e8)=2;
     } else {
         if (fn_802486A0(p)==4) {
-            target = fn_80248778(p);
-            if (fn_80240888(p)!=target) {
+            s32 target = fn_80248778(p);
+            s32 current = fn_80240888(p);
+            if (current!=target) {
                 fn_8027E7E0(p);
                 goto tail;
             }
@@ -1727,7 +1727,7 @@ tail:
     if (!fn_80225BE4(p+8,S32(p,0x3b4))) fn_80251AEC(p,0);
     fn_80268B3C(p);
 }
-#pragma opt_propagation reset
+#pragma opt_common_subs on
 u8 fn_8023F264(s32);
 u8 fn_80243194(char*, s32);
 s32 fn_8024189C(char*);
