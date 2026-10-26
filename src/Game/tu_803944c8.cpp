@@ -1076,7 +1076,7 @@ extern "C" void fn_8039C258(MsgProc* p, s32 n) {
     msgPutWide(p, n + '0');
 }
 
-static inline BOOL msgTestBit(s32 n, const u32* bits) {
+static inline s32 msgTestBit(const s32 n, const u32* bits) {
     if (n < 32) return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
     if (n < 64) return (bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
     return FALSE;
@@ -1098,20 +1098,18 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         n *= -1;
         neg = true;
     }
-    if (p->m2d6) {
-        int cur = p->cur;
-        if (!p->testBit(cur)) {
+    if (p->m2d6 && !p->testBit(p->cur)) {
             MsgLayout* l = p->layout;
-            if (l->m16c == 0 || !p->testBit(cur)) {
-                f32 pos;
+            if (l->m16c == 0 || !p->testBit(p->cur)) {
                 f32 base;
+                f32 pos;
                 if (!(l->font->flags & 0x40)) {
                     base = l->baseE8;
-                    pos = p->posA[cur];
+                    pos = p->posA[p->cur];
                 } else {
                     base = l->baseF0;
-                    f32 left = p->posA[cur];
-                    f32 extra = p->posB[cur];
+                    f32 left = p->posA[p->cur];
+                    f32 extra = p->posB[p->cur];
                     extra -= lbl_805431E8;
                     pos = left + extra;
                 }
@@ -1126,7 +1124,6 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
                 }
             }
             p->m2d6 = 0;
-        }
     }
     char buf[3];
     buf[2] = 0;
