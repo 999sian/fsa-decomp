@@ -26,7 +26,7 @@ static inline void bombSetRotation(Mtx m, f32 sx, f32 sy, f32 sz,
 }
 class BombDrawActor : public Actor {
 public:
-    virtual void drawTexture(const void* texture, DrawRec* rec, s32 mode, f32 x, f32 y, f32 z);
+    virtual void drawTexture(void* texture, DrawRec* rec, int mode, f32 x, f32 y, f32 z);
 };
 class BombResourceMgr {
 public:
