@@ -363,6 +363,31 @@ static inline void* tu80134_load(const char* name) {
     return fn_80401E10(name, 0, *(void**)(lbl_80529DEC + 8));
 }
 
+static inline void tu80134PlayTransition(char* this_) {
+u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
+                    s32 st = *(s32*)((char*)fn_802D6A9C() + 0x34);
+                    if (st != 0x11) {
+                        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+                            if (st == 0x14 || st == 0x1e) {
+                                fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[st]);
+                            } else {
+                                u32 id = lbl_804652F0[st];
+                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
+                                char* manager = (char*)fn_802D6A9C();
+                                *(u32*)(manager + 0x1328c) = uVar1 + 1;
+                            }
+                         } else if (st != 0x19) {
+                            if (*(u8*)(this_ + 0x86) == 0) {
+                                fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000004, 0, 0);
+                            } else {
+                                fn_80458FF0(*(void**)(this_ + 0xa0), 0x100000d, 0, 0);
+                            }
+                        } else {
+                            fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000019, 0, 0);
+                        }
+                    }
+}
+
 extern "C" void fn_80135494(char* this_, s32 cmd) {
     u8 bVar2 = 0;
     if ((cmd == 2 && *(s32*)(this_ + 0x4c) != 2 && *(s32*)(this_ + 0x4c) != 5) ||
@@ -399,16 +424,16 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
         case 6:
             *(s32*)(lbl_80529DEC + 0x34) = *(s32*)(obj + 0x14);
             fn_80135020(this_, 6);
+            fn_80390088(lbl_8053AD80);
             break;
         }
-        fn_80390088(lbl_8053AD80);
         obj = *(char**)(this_ + 0xac);
         if (obj != 0) {
-            ((TuStateObject*)obj)->v2(1);
+            ((TuStateObject*)obj)->v0(1);
         }
         obj = *(char**)(this_ + 0xb0);
         if (obj != 0) {
-            ((TuStateObject*)obj)->v2(1);
+            ((TuStateObject*)obj)->v0(1);
         }
         bVar2 = 1;
     } else if (cmd == 0xc && lbl_80529DEC[0x24d] == 1 && *(s16*)(this_ + 0x7c) < 0x78) {
@@ -449,17 +474,18 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
                     (*(s32*)((char*)fn_802D6A9C() + 4) == 0 && *(s32*)((char*)fn_802D6A9C() + 8) == 0 &&
                      (*(s32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28) & 1) != 0)) {
                     u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-                    s32 st = *(s32*)((char*)fn_802D6A9C() + 0x34);
-                    if (st != 0x11) {
+                    cmd = *(s32*)((char*)fn_802D6A9C() + 0x34);
+                    if (cmd != 0x11) {
                         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                            if (st == 0x14 || st == 0x1e) {
-                                fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[st]);
+                            if (cmd == 0x14 || cmd == 0x1e) {
+                                fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[cmd]);
                             } else {
-                                fn_80458FF0(*(void**)(this_ + 0xa0), lbl_804652F0[st], 0, uVar1 & 0xff);
+                                u32 id = lbl_804652F0[cmd];
+                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
                                 char* manager = (char*)fn_802D6A9C();
                                 *(u32*)(manager + 0x1328c) = uVar1 + 1;
                             }
-                         } else if (st != 0x19) {
+                         } else if (cmd != 0x19) {
                             if (*(u8*)(this_ + 0x86) == 0) {
                                 fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000004, 0, 0);
                             } else {
@@ -474,17 +500,18 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
         } else if (*(s32*)(this_ + 0x50) == 0xe) {
             *(s32*)(this_ + 0x60) = 4;
             u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-            s32 st = *(s32*)((char*)fn_802D6A9C() + 0x34);
-            if (st != 0x11) {
+            cmd = *(s32*)((char*)fn_802D6A9C() + 0x34);
+            if (cmd != 0x11) {
                 if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                    if (st == 0x14 || st == 0x1e) {
-                        fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[st]);
+                    if (cmd == 0x14 || cmd == 0x1e) {
+                        fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[cmd]);
                     } else {
-                        fn_80458FF0(*(void**)(this_ + 0xa0), lbl_804652F0[st], 0, uVar1 & 0xff);
+                        u32 id = lbl_804652F0[cmd];
+                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
                         char* manager = (char*)fn_802D6A9C();
                                 *(u32*)(manager + 0x1328c) = uVar1 + 1;
                     }
-                 } else if (st != 0x19) {
+                 } else if (cmd != 0x19) {
                             if (*(u8*)(this_ + 0x86) == 0) {
                                 fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000004, 0, 0);
                             } else {
