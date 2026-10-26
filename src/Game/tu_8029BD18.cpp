@@ -29,7 +29,7 @@ extern "C" void fn_8029BD84(void* this_) {
     fn_801F06F0(this_, lbl_8046C3E8, 0x17e, 0, 0, 1.0f, 1.0f);
 }
 
-static inline void snapToGrid(f32& position, f32 origin, f32 tolerance) {
+static inline void snapToGrid(f32& position, const f32 origin, const f32 tolerance) {
     f32 value = position;
     if (value <= tolerance + origin && value >= origin - tolerance) position = origin;
     else position = (f32)(((s32)value + 4) / 8 * 8);
