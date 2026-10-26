@@ -3,7 +3,7 @@
 #include "JSystem/JGeometry/Vec.h"
 
 extern "C" f32 lbl_8053C67C;
-extern "C" f32 lbl_8053C684;
+extern "C" const f32 lbl_8053C684;
 extern "C" f32 lbl_8053C690;
 extern "C" f32 lbl_8053C698;
 extern "C" f32 lbl_8053C69C;
