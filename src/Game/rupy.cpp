@@ -185,10 +185,6 @@ struct RupyVec3 : JGeometry::TVec3f {
     }
 };
 
-static inline void rupyInitSetState(void* obj, s32 state) {
-    *(s32*)((u8*)obj + 0x230) = state;
-}
-
 static inline f32 rupyInitRand01() {
     u32* s = (u32*)lbl_8053AAF8;
     s[45] = s[45] * 0x19660du + 0x3c6ef35fu;
@@ -721,7 +717,8 @@ extern "C" void fn_8032BFB0(char* p) {
     JGeometry::TVec3<f32> save;
     PSMTXIdentity(mtx);
     {
-        RupyDrawMtx(mtx, rec, *(f32*)(p + 0x23c), scale);
+        f32 angle = *(f32*)(p + 0x23c);
+        RupyDrawMtx(mtx, rec, angle, scale);
     }
     st = *(s32*)(p + 0x230);
     if (st == 5 || st == 6) {
