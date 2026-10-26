@@ -42,14 +42,14 @@ extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s
 #include "Game/Actor.h"
 class FireActorInterface : public Actor {
 public:
-    virtual void v19();
+    virtual void v19(JGeometry::TVec3<f32> pos, s32 flag);
     virtual void v20();
     virtual void v21(JGeometry::TVec3<f32> pos, s32 flag);
 };
 
 
 // FIRE: small accessors.
-extern "C" u8 fn_802BA558(char* this_, s32 a, f32* b) {
+extern "C" u8 fn_802BA558(char* this_, int a, f32* b) {
     char* p = this_;
     u32 names[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     f32 v[3];
@@ -59,8 +59,8 @@ extern "C" u8 fn_802BA558(char* this_, s32 a, f32* b) {
     u8 r;
     s32 q;
     s32 mode;
-    s32 idx;
-    s32 c;
+    int idx;
+    int c;
     u16 sv;
 
     if (*(s32*)(p + 0x264) != 1) {
@@ -81,7 +81,7 @@ extern "C" u8 fn_802BA558(char* this_, s32 a, f32* b) {
             fn_80226CA8(a, *(s32*)(p + 4), v);
             v[0] = v[0] + lbl_80540B50;
             v[1] = v[1] + lbl_80540B50;
-            ((FireVecVFn*)(*(void**)p))[21](p, *(JGeometry::TVec3<f32>*)v, 0);
+            ((FireActorInterface*)p)->v21(*(JGeometry::TVec3<f32>*)v, 0);
             *(s32*)(p + 0x254) = 5;
             *(u8*)(p + 0x291) = 1;
             return 1;
@@ -101,7 +101,7 @@ extern "C" u8 fn_802BA558(char* this_, s32 a, f32* b) {
             fn_80226CA8(c, *(s32*)(p + 4), v);
             v[0] = v[0] + lbl_80540B50;
             v[1] = v[1] + lbl_80540B50;
-            ((FireVecVFn*)(*(void**)p))[21](p, *(JGeometry::TVec3<f32>*)v, 1);
+            ((FireActorInterface*)p)->v21(*(JGeometry::TVec3<f32>*)v, 1);
             return 0;
         }
         *(s32*)(p + 0x27c) = lbl_8046CB88[sv];
