@@ -69,8 +69,8 @@ static inline bool showExceptionAddress(u32 addr, char* base = lbl_8045E878)
                     char* zero = &lbl_8053B868;
                     bool mapped = findModuleAddress(addr, &sectionBase, &sectionIndex, &sectionOffset, &mapName);
                     if (mapped == true) {
-                        const u8* last = (const u8*)mapName;
                         u8* out = (u8*)name;
+                        const u8* last = (const u8*)mapName;
                         const u8* p = (const u8*)mapName;
                         while (*p) { if (*p == '\\') last = p; p++; }
                         if (*last == '\\') last++;
@@ -612,85 +612,25 @@ extern "C" void fn_8008B508(JUTException* this_, s32 param_2, u16 param_3, OSCon
     case 4:
         fn_8008B214(this_, (u32*)param_4);
         return;
-    case 5:
-        break;
-    default:
-        return;
-    }
-
+    case 5: {
     if (lbl_8053A914 == nullptr)
     {
         return;
     }
     lbl_8053A914->print(base + 0x434);
     u32 addr = *(u32*)((u8*)param_4 + 0x198);
-    if (addr < 0x80000000 || addr > 0x82ffffff)
-    {
-        return;
-    }
+    if (addr < 0x80000000) return;
+    if (addr > 0x82ffffff) return;
     lbl_8053A914->print_f(base + 0x460, addr);
 
-    u32 flag = 1;
-    bool ok = false;
-    BOOL found = FALSE;
-    u32 moduleId;
-    s32 sectionIndex;
-    u32 sectionOffset;
-    char* mapName;
-    u32 outA;
-    u32 outB;
-    char name[0x20];
-    u8 buf[0x100];
-
-    if (addr >= 0x80000000 && addr <= 0x82ffffff)
-    {
-        found = FindModuleSection(addr, &moduleId, &sectionIndex, &sectionOffset, &mapName);
-        if (found)
-        {
-            char* last = mapName;
-            for (char* p = mapName; *p != 0; p++)
-            {
-                if (*p == '\\')
-                {
-                    last = p;
-                }
-            }
-            if (*last == '\\')
-            {
-                last++;
-            }
-            s32 n = 0;
-            char* out = name;
-            while (*last != 0 && n < 0x20 && *last != '.')
-            {
-                n++;
-                *out++ = *last++;
-            }
-            *out = 0;
-            lbl_8053A914->print_f(base + 0x3a4, 0, name, sectionOffset, sectionIndex);
-            flag = 0;
-        }
-        if (lbl_8052E894.getFirstLink() != nullptr)
-        {
-            if (found)
-            {
-                ok = fn_8008C528(name, sectionOffset, sectionIndex, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag) == 1;
-            }
-            else
-            {
-                ok = fn_8008C528(nullptr, addr, -1, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag) == 1;
-            }
-        }
-        else
-        {
-            ok = false;
-        }
-    }
-    if (!ok)
-    {
+    if (!showExceptionAddress(addr, base)) {
         lbl_8053A914->print(base + 0x3f8);
     }
     JUTConsoleManager::sManager->drawDirect(true);
+    return;
+    }
+    default: return;
+    }
 }
 
 extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
@@ -1083,18 +1023,9 @@ extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4
 
 extern "C" char lbl_8045ED8C[];
 #pragma opt_propagation off
-extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outStartArg, u32 outSizeArg, u32 nameArg, int capacityArg, u32 printArg, u8 headerArg) {
-    u32 print = printArg;
-    u32 name = nameArg;
-    u32 outSize = outSizeArg;
-    u32 outStart = outStartArg;
-    s32 section = sectionArg;
-    u32 address = addressArg;
+extern "C" bool fn_8008C608(char* path, u32 address, s32 section, u32 outStart, u32 outSize, u32 name, int capacityArg, u32 print, u8 headerArg) {
     s32 sectionNo;
-    u32 start;
-    u32 size;
     u8 header = headerArg;
-    u32 capacity = capacityArg;
     u8 found;
     if (!path) return 0;
     JUTDirectFile file;
@@ -1102,7 +1033,6 @@ extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outS
     if (!file.fopen(path)) return 0;
     char line[0x200];
     char sectionName[16];
-    path = line+30;
     found = 0;
     for (;;) {
         sectionNo++;
@@ -1133,13 +1063,14 @@ extern "C" bool fn_8008C608(char* path, u32 addressArg, s32 sectionArg, u32 outS
             s32 length = file.fgets(line,sizeof(line));
             if (length <= 4) break;
             if (length < 28 || line[28] != '4') continue;
-            start = ((line[18]-'0') << 28) | strtol(line+19,0,16);
-            size = strtol(line+11,0,16);
+            u32 start = ((line[18]-'0') << 28) | strtol(line+19,0,16);
+            u32 size = strtol(line+11,0,16);
             if (start > address || address >= start+size) continue;
             if (outStart) *(u32*)outStart=start;
             if (outSize) *(u32*)outSize=size;
             if (name) {
-                const u8* src = (u8*)path;
+                u32 capacity = capacityArg;
+                const u8* src = (u8*)line+30;
                 u8* dst = (u8*)name;
                 u32 n = 0;
                 while (n < capacity-1) {
