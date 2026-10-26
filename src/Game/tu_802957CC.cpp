@@ -1428,16 +1428,7 @@ extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" f32 lbl_805406A8;
-static inline bool HouseInsideBounds(f32 x0, const f32 y0, f32 x1, const f32 y1, const JGeometry::TVec3f& pos) {
-    bool inside = false;
-    f32 x = pos.x;
-    if (x >= x0) {
-        f32 y = pos.y;
-        if (y >= y0 && x < x1 && y < y1) inside = true;
-    }
-    return inside;
-}
-static inline bool HouseInsideEdges(f32 x0, f32 y1, f32 x1, f32 y0, const JGeometry::TVec3f& pos) {
+static inline bool HouseInsideBounds(f32 x0, f32 y0, f32 x1, f32 y1, const JGeometry::TVec3f& pos) {
     bool inside = false;
     f32 x = pos.x;
     if (x >= x0) {
@@ -1686,11 +1677,11 @@ extern "C" void fn_8029A494(char* self) {
         ((u32*)&zone)[3] = zoneSrc[3];
         u8 flag = 1;
         s32 i = 0;
-        f32 y0, x1, y1, step;
+        f32 y0, x1, step;
         zone.i.x -= lbl_80540670;
         y0 = zone.i.y - lbl_80540670;
         x1 = zone.f.x + lbl_80540670;
-        y1 = zone.f.y + lbl_80540670;
+        const f32 y1 = zone.f.y + lbl_80540670;
         zone.i.y = y0;
         zone.f.x = x1;
         zone.f.y = y1;
