@@ -215,14 +215,6 @@ struct Ctl3_80301CD0 {
     u8 flag : 1;
 };
 
-static inline void tu80301_initCtl(u8* q) {
-    ((Ctl4_80301CD0*)(q + 3))->flag = 1;
-    q[2] = 0x80;
-    q[1] = 0xe0;
-    ((Ctl4_80301CD0*)(q + 3))->mode = 0;
-    q[0] = 0;
-}
-
 static inline u8 tu80301_roomVisible(s32 owner) {
     u8 active = 0;
     if (fn_8022F5B0(owner)) {
