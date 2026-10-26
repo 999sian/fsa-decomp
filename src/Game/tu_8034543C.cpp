@@ -100,13 +100,17 @@ extern const f64 lbl_80542408;
 extern const f64 lbl_80542410;
 extern const f32 lbl_80542418;
 
+static inline f64 sqrtStep(f64 tmpd, f32 mag) {
+    return tmpd * lbl_80542400 * (lbl_80542408 - mag * (tmpd * tmpd));
+}
+
 static inline f32 tuSqrt(f32 mag) {
     if (mag > lbl_805423A0) {
         f64 tmpd = __frsqrte(mag);
-        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * mag));
-        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * mag));
-        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * mag));
-        return (f32)(mag * tmpd);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        return mag * tmpd;
     } else if (mag < lbl_80542410) {
         return *(f32*)__float_nan;
     } else if (fpclassify(mag) == 1) {
@@ -118,6 +122,8 @@ static inline f32 tuSqrt(f32 mag) {
 extern "C" s32 fn_80346330(u8* this_) {
     s32 i;
     s32 room;
+    f32 dy;
+    f32 dx;
 
     *(f32*)(this_ + 0x264) = lbl_805423A0;
     *(u16*)(this_ + 0x268) = 0;
@@ -147,17 +153,18 @@ extern "C" s32 fn_80346330(u8* this_) {
         if (fn_80233E40(i) != 1 && fn_8022B7C4(i) != 1) {
             continue;
         }
-        {
-            f32 dx = *(f32*)(this_ + 0xc) - fn_8023E724(i)->x;
-            f32 dy = *(f32*)(this_ + 0x10) - fn_8023E724(i)->y;
+        dx = *(f32*)(this_ + 0xc) - fn_8023E724(i)->x;
+        dy = *(f32*)(this_ + 0x10) - fn_8023E724(i)->y;
 
-            if (tuSqrt(dx * dx + dy * dy) < lbl_805423FC) {
-                *(f32*)(this_ + 0x264) = tuSqrt(dx * dx + dy * dy);
-                *(s16*)(this_ + 0x268) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * lbl_80542418);
-                *(s32*)(this_ + 0x270) = i;
-                *(s32*)(this_ + 0x26c) = ClassifyBamAngleToQuadrant(*(u16*)(this_ + 0x268));
-                return 1;
-            }
+        if (tuSqrt(dx * dx + dy * dy) < lbl_805423FC) {
+            f32 angle;
+            *(f32*)(this_ + 0x264) = tuSqrt(dx * dx + dy * dy);
+            angle = JMath::atanTable_.atan2_(-dx, -dy);
+            angle *= lbl_80542418;
+            *(s16*)(this_ + 0x268) = (s16)angle;
+            *(s32*)(this_ + 0x270) = i;
+            *(s32*)(this_ + 0x26c) = ClassifyBamAngleToQuadrant(*(u16*)(this_ + 0x268));
+            return 1;
         }
     }
     return 0;
