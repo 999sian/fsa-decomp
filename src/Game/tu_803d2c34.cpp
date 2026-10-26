@@ -552,12 +552,20 @@ static inline void mcPlaceTopRight(MCAlpha* a, const f32 width, const f32 half) 
     fn_80402E08(a, x, -y);
 }
 
+extern const f32 lbl_805434F4;
 void fn_803D49A4(MemCardMenu* self) {
     f32 w0 = mcW(self->f2c[0]);
     f32 b0 = self->f2c[0]->f18;
     fn_80402E08(self->f2c[0], -(0.5f * (w0 - b0)), -(0.5f * (mcH(self->f2c[0]) - self->f2c[0]->f1c)));
-    fn_80402E08(self->f2c[1], 0.5f * (mcW(self->f2c[1]) - self->f2c[1]->f18), 0.5f * (self->f2c[1]->f1c - mcH(self->f2c[1])) * 1.0f - 0.0f);
-    fn_80402E08(self->f2c[2], -(0.5f * (mcW(self->f2c[2]) - self->f2c[2]->f18)), 0.5f * (mcH(self->f2c[2]) - self->f2c[2]->f1c));
+    {
+        MCAlpha* a=self->f2c[1];
+        f32 bx=a->f18;
+        f32 w=mcMutableWidth(a)-bx;
+        f32 h=mcH(a)-a->f1c;
+        h=lbl_805434F4*h; w=lbl_805434F4*w;
+        fn_80402E08(a,w,-h);
+    }
+    fn_80402E08(self->f2c[2], -(lbl_805434F4 * (mcMutableWidth(self->f2c[2]) - self->f2c[2]->f18)), lbl_805434F4 * (mcH(self->f2c[2]) - self->f2c[2]->f1c));
     fn_80402E08(self->f2c[3], 0.5f * (mcW(self->f2c[3]) - self->f2c[3]->f18), 0.5f * (mcH(self->f2c[3]) - self->f2c[3]->f1c));
     if (w0 / b0 < 1.0f) {
         fn_80402CE0(self->f3c[0], (2.0f * (self->f2c[0]->f18 - mcW(self->f2c[0])) + self->f3c[0]->f18) / self->f3c[0]->f18, self->f3c[0]->f1c);
