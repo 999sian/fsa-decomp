@@ -544,14 +544,6 @@ void MemCardMenu::fn_803D4298() {
     }
 }
 
-static inline void mcPlaceTopRight(MCAlpha* a, const f32 width, const f32 half) {
-    f32 h=mcH(a);
-    f32 w=mcMutableWidth(a);
-    f32 x=half*(w-width);
-    f32 y=half*(h-a->f1c);
-    fn_80402E08(a, x, -y);
-}
-
 extern const f32 lbl_805434F4;
 void fn_803D49A4(MemCardMenu* self) {
     f32 w0 = mcW(self->f2c[0]);
