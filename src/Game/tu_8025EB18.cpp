@@ -1528,6 +1528,16 @@ extern const f32 lbl_805401DC;
 
 #pragma opt_common_subs off
 #pragma opt_propagation off
+static inline void updateCarriedPosition(f32* pos, const f32 target, const f32 delta, const f32 step) {
+    if (delta >= step) {
+        *pos += step;
+    } else if (delta <= lbl_805401CC) {
+        *pos -= step;
+    } else if (lbl_80540150 != delta) {
+        *pos = target;
+    }
+}
+
 static inline f32 carriedPositionDelta(f32 goal, f32 value) {
     return goal - value;
 }
@@ -1644,10 +1654,11 @@ extern "C" void fn_80262BAC(char* p) {
     }
     U8(p, 0x3f9) = (lbl_8046B790 + S32(p, 0x3dc) * 8)[U8(p, 0x3f8) / 3];
     JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)((char*)lbl_8046B7B0 + U8(p, 0x3f9) * 0x14);
-    f32 x = pos->x;
-    f32 y = pos->y;
+    f32* src = &pos->x;
+    f32 x = *src++;
+    f32 y = *src++;
     F32(p,0x2f4) = x;
-    f32 z = pos->z;
+    f32 z = *src;
     F32(p,0x2f8) = y;
     F32(p,0x2fc) = z;
     VEC(p, 0x2f4).add(VEC(p, 0x8));
