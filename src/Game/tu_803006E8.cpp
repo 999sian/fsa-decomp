@@ -13,6 +13,39 @@ extern "C" int memcmp(const void* a, const void* b, u32 n);
 extern "C" int GBAGetStatus(s32 chan, u8* status);
 extern "C" int GBARead(s32 chan, u8* dst, u8* status);
 extern "C" int GBAWrite(s32 chan, u8* src, u8* status);
+struct GbaPkt {
+    u8 f00;
+    u8 f01;
+    u8 f02;
+    u8 f03;
+    u32 f04;
+    u32 f08;
+    u32 f0c;
+    u8 pad[0x10];
+};
+
+struct GbaChan {
+    u8 mq[0x20];
+    u32 msg;
+    void* cb;
+    GbaPkt pkt;
+    u32 tick;
+    u8 pad4C[0x84];
+    char chan;
+    u8 f_d1;
+    u8 f_d2;
+    u8 f_d3;
+    u8 status[4];
+    u8 f_d8;
+    u8 f_d9;
+    u8 f_da;
+    u8 f_db;
+    u8 f_dc;
+    u8 f_dd;
+    u8 f_de;
+    u8 f_df;
+};
+
 extern "C" void fn_80300A8C(void* p);
 extern "C" void* fn_80300E1C(void* p);
 extern u8 lbl_804D6AB8[];
