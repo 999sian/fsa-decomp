@@ -1510,11 +1510,13 @@ static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box) {
 extern "C" const f32 lbl_80540670;
 extern "C" const f32 lbl_80540674;
 extern "C" const f32 lbl_8054067C;
+#pragma opt_common_subs off
 static inline bool HouseContains(const JGeometry::TBox2f& area, JGeometry::TVec3f& pos) {
     bool inside = false;
     if (pos.x >= area.i.x && pos.y >= area.i.y && pos.x < area.f.x && pos.y < area.f.y) inside = true;
     return inside;
 }
+#pragma opt_common_subs on
 
 static inline void HouseGridBase(JGeometry::TVec3f& out, const JGeometry::TVec3f& pos, const JGeometry::TVec2f& offset, f32 border) {
     f32 y;
