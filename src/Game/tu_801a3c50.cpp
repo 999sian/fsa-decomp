@@ -165,8 +165,129 @@ struct SayaRandom {
 };
 struct SayaGame { u8 pad[0xb4]; SayaRandom rnd; };
 extern SayaGame* lbl_8053AAF8;
-#pragma dont_inline on
-extern "C" s32 fn_801A41D8(void* this_, void* a4, void* a5) { return 0; }
+extern const f32 lbl_8053E5E0;
+#pragma dont_inline reset
+extern "C" s32 fn_801A41D8(void* this_, void* a4, void* a5) {
+    u8* other;
+    s32 id;
+    s32 kind;
+    s32 result;
+    u8* self = (u8*)this_;
+    id = fn_8023AD54(a4, *(s32*)(self+4), a5);
+    if (id < 0) return 0;
+    s32 room = *(s32*)(self+4);
+    u8 (*mgr)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
+    if (mgr[1][room+0x31df] == 0 && *(f32*)(self+0x14)>32.0f) return 0;
+    s32 handle = fn_8023B358(id);
+    other = (u8*)fn_801F666C(fn_801F856C(), handle);
+    if (!other || *(s32*)(other+0x108)==0) return 0;
+    s32 mode = 0;
+    if (*(u16*)(other+0x94)) kind = (*(u32*)(self+0xb0)>>16)&0xff;
+    else { mode = 1; kind = *(u32*)(self+0xb0)&0xff; }
+    if (kind==0) return 0;
+    result = 0;
+    if (id>=0) lbl_8053A100=id;
+    ((SayaActor*)self)->v44();
+    if (mode==0) {
+        if (kind==6) {
+            f32 x = *(f32*)(self+0xc)-*(f32*)(other+0xc);
+            f32 y = *(f32*)(self+0x10)-*(f32*)(other+0x10);
+            s32 dir;
+            bool diff=false;
+            kind=4;
+            f32 angle=JMath::atanTable_.atan2_(-x,-y);
+            dir=*(s32*)(self+0x98);
+            if ((dir^1)!=ClassifyBamAngleToQuadrant((u16)(s32)(angle*lbl_8053E5E0))) diff=true;
+            if (!diff) kind=1;
+            if (*(s32*)(self+0xa4)) kind=1;
+        }
+        switch (kind) {
+        default: case 0: case 4: case 6:
+            for (s32 i=0;i<4;i++) {
+                s32 h=fn_8023B358(i);
+                if (h>=0) {
+                    u8* a=(u8*)fn_801F666C(fn_801F856C(),h);
+                    if (a) *(s32*)(a+0x108)=0;
+                }
+            }
+        case 2: case 5: result=0xff; break;
+        case 1:
+            if (*(f32*)(self+0x14)==lbl_8053E5D4) {
+                f32 base = 4.0f;
+                f32 one = 1.0f;
+                f32 scale = 2.0f;
+                f32 random = lbl_8053AAF8->rnd.get_ufloat_1();
+                f32 z=base+(one-scale*random);
+                *(JGeometry::TVec3<f32>*)(self+0x3c)=JGeometry::TVec3<f32>(*(f32*)(self+0x3c),*(f32*)(self+0x40),z);
+                *(JGeometry::TVec3<f32>*)(self+0xc)=JGeometry::TVec3<f32>(*(f32*)(self+0xc),*(f32*)(self+0x10),*(f32*)(self+0x14)+*(f32*)(self+0x44));
+            }
+            *(s32*)(self+0xd8)=0;
+            *(s32*)(self+0xdc)=0;
+            *(s32*)(other+0x108)=0;
+            fn_801F3780(self,0x12c);
+            fn_801F0E34(self,0x30021,0);
+            result=0x32; break;
+        case 7:
+            *(u8*)(other+0x11c)=0;
+            *(s32*)(self+0x108)=0;
+            result=0xff; break;
+        case 3:
+            *(u8*)(other+0x11c)=0;
+            *(s32*)(self+0x10c)=id;
+            fn_801F4694(self);
+            ((SayaActor*)self)->v24();
+            break;
+        }
+    } else {
+        if (kind==9) {
+            kind=4;
+            f32 x=*(f32*)(self+0xc)-((f32*)fn_8023E724(id))[0];
+            f32 y=*(f32*)(self+0x10)-((f32*)fn_8023E724(id))[1];
+            f32 angle=JMath::atanTable_.atan2_(-x,-y);
+            mode=*(s32*)(self+0x98);
+            if (mode!=ClassifyBamAngleToQuadrant((u16)(s32)(angle*lbl_8053E5E0))) kind=5;
+        }
+        switch(kind) {
+        case 8:
+            *(s32*)(self+0x108)=0; result=0xff; break;
+        case 1: case 2: case 5: {
+            mode=*(s32*)(self+0x108);
+            s32 health=mode-fn_8023B5B4(id);
+            *(u8*)(other+0x11c)=0;
+            if (health<=0) {
+                *(s32*)(self+0x108)=0;
+                fn_80235B68(id,*(s32*)(self+0x198));
+                *(s32*)(self+0x10c)=id;
+                result=0x14;
+            } else { *(s32*)(self+0x108)=health; result=0xa; }
+            break;
+        }
+        case 4: case 6: case 11: case 16: case 17: case 18:
+            for (s32 i=0;i<4;i++) {
+                s32 h=fn_8023B358(i);
+                if (h>=0) {
+                    u8* a=(u8*)fn_801F666C(fn_801F856C(),h);
+                    other=a;
+                    if (a) *(s32*)(a+0x108)=0;
+                }
+            }
+            result=0xff; break;
+        case 0: case 3: case 9: case 10: case 12: case 13: case 14: case 15: break;
+        default:
+            fn_8013CC50(*(s32*)(other+4),other+0xc,0x24a,0,1,0,0,1,1.0f);
+            fn_8013CC50(*(s32*)(other+4),other+0xc,0x24b,0,1,0,0,1,1.0f);
+            *(u8*)(other+0x11c)=0;
+            *(u8*)(self+0x11c)=0;
+            result=0xff; break;
+        }
+        if (result && (kind==1 || kind==2 || kind==5)) {
+            JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self+0xc));
+            JMathInlineVEC::PSVECSubtract(&pos,(Vec*)(other+0x3c),&pos);
+            fn_801F37AC(self,0,&pos,3,0,-1);
+        }
+    }
+    return result;
+}
 #pragma dont_inline reset
 
 // SAYA cluster, part 4/18 (88B). Vtable-slot wrapper that directly
@@ -184,6 +305,9 @@ extern "C" s32 fn_801A46FC(void* this_, void* a4, void* a5) {
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
 extern "C" s32 fn_801A4754(u8* this_, void* a4, void* a5);
+#pragma dont_inline on
+extern "C" s32 fn_801A4754(u8* this_, void* a4, void* a5) { return 0; }
+#pragma dont_inline reset
 
 // SAYA cluster, part 6/18 (88B). Vtable-slot wrapper directly invoking
 // state-handler fn_801A4754 (same external-entry-point pattern as
