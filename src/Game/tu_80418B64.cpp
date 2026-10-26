@@ -135,6 +135,7 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
 }
 
 typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
+struct HudDigitNames8041 { u8 pad[0x338]; u64 digits[5]; u64 shadows[5]; };
 
 
 // Sets the digit pane pair idx (names at 0x338 and 0x360 tables) to the glyph tag.
