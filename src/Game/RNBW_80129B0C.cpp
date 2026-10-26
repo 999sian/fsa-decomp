@@ -59,7 +59,7 @@ extern "C" void fn_802D8050(void* mgr, s32 id, s32 state, s32 flag);
 extern const f32 lbl_8053CB3C;
 
 
-static inline void rnbwPolar(JGeometry::TVec3f& pos, f32 radius, s32 angle) {
+static inline void rnbwPolar(JGeometry::TVec3f& pos, const f32 radius, const s32 angle) {
     pos.x = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
     pos.y = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
 }
