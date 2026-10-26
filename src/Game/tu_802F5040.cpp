@@ -207,8 +207,8 @@ static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
     s32 a, b;
     u8 flag = SpriteDepthEnabled802F(ent);
     if (flag) flag = pos[2] > lbl_805414F8;
-    a = (s8)ent[0x1c];
-    b = (s8)ent[0x1d];
+    a = ((s8*)ent)[0x1c];
+    b = ((s8*)ent)[0x1d];
     if (flag && a < 1) {
         a++;
         b--;
