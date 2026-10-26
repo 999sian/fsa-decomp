@@ -175,31 +175,31 @@ extern "C" u8 fn_802C18BC(char* p, s32 room, void* pos) {
 
 extern const f32 lbl_80540C70;
 extern const f32 lbl_80540C78;
-extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_8022461C(void* pos, ...);
 extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" u8 fn_802C1970(char* p, s32 room, void* pos) {
+    u16 kind;
     s32 type;
-    s32 kind;
     type = (u16)fn_8022461C(pos, room);
     kind = (u16)fn_80226850(pos, room);
-    if (kind == 0x230 || kind == 0x231) {
+    if ((s32)kind == 0x230 || (s32)kind == 0x231) {
         return 0;
     }
-    if ((u32)(kind - 0x19e) <= 1 || (u32)(kind - 0x350) <= 1 || (u32)(kind - 0x342) <= 1 ||
-        (u32)(kind - 0x345) <= 1 || (u32)(kind - 0x355) <= 1 || (u32)(kind - 0x2ee) <= 1 ||
-        (u32)(kind - 0x2fe) <= 1 || (u32)(kind - 0x338) <= 1 || (u32)(kind - 0x32a) <= 1 ||
-        (u32)(kind - 0x32d) <= 1 || (u32)(kind - 0x33d) <= 1 || (u32)(kind - 0x2ce) <= 1 ||
-        (u32)(kind - 0x2de) <= 1 || (u32)(kind - 0x3b0) <= 1 || (u32)(kind - 0x3a2) <= 1 ||
-        (u32)(kind - 0x3a5) <= 1 || kind == 0x3b6 || (u32)(kind - 0x398) <= 1 ||
-        (u32)(kind - 0x38a) <= 1 || kind == 0x39d || (u32)(kind - 0x38d) <= 1 || kind == 0x39e) {
+    if ((u32)((s32)kind - 0x19e) <= 1 || (u32)((s32)kind - 0x350) <= 1 || (u32)((s32)kind - 0x342) <= 1 ||
+        (u32)((s32)kind - 0x345) <= 1 || (u32)((s32)kind - 0x355) <= 1 || (u32)((s32)kind - 0x2ee) <= 1 ||
+        (u32)((s32)kind - 0x2fe) <= 1 || (u32)((s32)kind - 0x338) <= 1 || (u32)((s32)kind - 0x32a) <= 1 ||
+        (u32)((s32)kind - 0x32d) <= 1 || (u32)((s32)kind - 0x33d) <= 1 || (u32)((s32)kind - 0x2ce) <= 1 ||
+        (u32)((s32)kind - 0x2de) <= 1 || (u32)((s32)kind - 0x3b0) <= 1 || (u32)((s32)kind - 0x3a2) <= 1 ||
+        (u32)((s32)kind - 0x3a5) <= 1 || (s32)kind == 0x3b6 || (u32)((s32)kind - 0x398) <= 1 ||
+        (u32)((s32)kind - 0x38a) <= 1 || (s32)kind == 0x39d || (u32)((s32)kind - 0x38d) <= 1 || (s32)kind == 0x39e) {
         return 1;
     }
     if ((*(s32*)(p + 0x280) == 0 || (u32)(*(s32*)(p + 0x280) - 1) <= 1 || *(s32*)(p + 0x280) == 6 ||
          *(s32*)(p + 0x280) == 9) &&
-        ((u32)(kind - 0x1a8) <= 1 || kind == 0x1aa)) {
+        ((u32)((s32)kind - 0x1a8) <= 1 || (s32)kind == 0x1aa)) {
         return 1;
     }
-    if (*(u8*)((u8*)fn_802D6A9C() + *(s32*)(p + 0x4) + 0x131df) != 0 && kind == 0x14) {
+    if (key0RoomFlag(*(s32*)(p + 0x4)) != 0 && (s32)kind == 0x14) {
         return 0;
     }
     if (type != 0 && type != 4 && type != 5 && type != 6 && type != 7 && type != 2 && type != 3 &&
@@ -212,16 +212,17 @@ extern "C" u8 fn_802C1970(char* p, s32 room, void* pos) {
             }
             if (*(f32*)(p + 0x14) > lbl_80540C70 && *(f32*)(p + 0x3c) == lbl_80540C74) {
                 *(s32*)(p + 0x288) = 300;
-                if (*(f32*)(p + 0x14) < lbl_80540C78) {
-                    *(f32*)(p + 0x14) = lbl_80540C78;
+                f32 minHeight = lbl_80540C78;
+                if (*(f32*)(p + 0x14) < minHeight) {
+                    *(f32*)(p + 0x14) = minHeight;
                 }
                 return 0;
             }
         }
-        if (kind == 0x3a) {
+        if ((s32)kind == 0x3a) {
             return 1;
         }
-        if (kind == 0x3d) {
+        if ((s32)kind == 0x3d) {
             return 0;
         }
         if (type == 0x25) {
