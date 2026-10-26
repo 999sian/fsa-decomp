@@ -175,7 +175,7 @@ extern f32 lbl_8053F5E0;
 extern f32 lbl_8053F5E4;
 
 static inline f32 ipotRandom() {
-    u32 bits = (lbl_8053AAF8->rnd.get_bit32() >> 9) | 0x3f800000;
+    s32 bits = (lbl_8053AAF8->rnd.get_bit32() >> 9) | 0x3f800000;
     return *(f32*)&bits - 1.0f;
 }
 
@@ -253,10 +253,9 @@ extern "C" void fn_801E728C(char* p, s32 type) {
                         char* rupy;
                         rupy = fn_801F666C(fn_801F856C(), idx);
                         if (rupy != 0) {
-                            JGeometry::TVec3<f32> vel;
-                            vel.set(0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
-                                                      0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
-                                                      6.0f * lbl_8053AAF8->rnd.get_ufloat_1() + 6.0f);
+                            JGeometry::TVec3<f32> vel(0.6f * (2.0f * ipotRandom() - 1.0f),
+                                                      0.6f * (2.0f * ipotRandom() - 1.0f),
+                                                      6.0f * ipotRandom() + 6.0f);
                             *(JGeometry::TVec3<f32>*)(rupy + 0x3c) = vel;
                         }
                     }
