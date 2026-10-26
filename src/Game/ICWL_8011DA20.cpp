@@ -106,20 +106,6 @@ static inline void icwlScaleMatrix(f32* __restrict m, const JGeometry::TVec3<f32
     m[6] = zero; m[8] = zero; m[9] = zero;
     m[10] = v.z;
 }
-static inline void icwlScaleMatrix(f32* m, f32 x, f32 y, f32 z) {
-    m[3] = 0.0f;
-    m[7] = 0.0f;
-    m[11] = 0.0f;
-    m[0] = x;
-    m[1] = 0.0f;
-    m[2] = 0.0f;
-    m[4] = 0.0f;
-    m[5] = y;
-    m[6] = 0.0f;
-    m[8] = 0.0f;
-    m[9] = 0.0f;
-    m[10] = z;
-}
 static inline void icwlDrawSprite(void* pos, const char* name, s32 id, DrawRec* rec) {
     void* res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, name);
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, id, rec, lbl_8053C8BC, lbl_8053C8BC);
