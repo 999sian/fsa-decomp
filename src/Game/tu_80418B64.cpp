@@ -15,7 +15,6 @@ extern "C" void fn_8041DD24(void*);
 extern "C" void fn_8041D18C(u8*, s32);
 extern "C" void fn_8041CC04(u8*);
 extern "C" void fn_8041A868(u8*, s32);
-extern "C" void fn_8041C0C0(u8*, s32);
 extern "C" void fn_8041B69C(u8*);
 extern "C" void fn_80419C38(u8*, s32, s32);
 extern "C" void fn_80419570(u8*, s32);
@@ -539,8 +538,9 @@ extern "C" void fn_8041B69C(u8* self) {
     }
 }
 
-extern "C" void fn_8041C0C0(u8* self, s32 idx) {
-    u8* base = (u8*)lbl_8048D320;
+extern "C" void fn_8041C0C0(u8* self_, s32 idx) {
+    const u8* base = (u8*)lbl_8048D320;
+    u8* self = self_;
     s32 n;
     s32 which;
     s32 i;
@@ -548,63 +548,61 @@ extern "C" void fn_8041C0C0(u8* self, s32 idx) {
 
     if (self[0x28b] & (u8)(1 << idx)) {
         which = 0;
-        n = *(s32*)(lbl_80529DEC + idx * 4 + 0xe8);
-        if (n > 9999) {
-            n = 9999;
-        }
+        s32 value = *(s32*)(idx * 4 + (u8*)lbl_80529DEC + 0xe8);
+        n = value;
+        if (value > 9999) n = 9999;
         if (n < 0) {
-            u8* p = base + 0x3b8 + idx * 0x28;
+            s32 off = idx * 0x28;
+            u64* first = (u64*)(base + 0x3b8);
+            first = (u64*)((u8*)first + off);
+            u64* p = first;
             for (i = 0; i < 5; i++) {
-                GXColor col;
-                GXColor zero;
-                col.r = 0xff;
-                col.g = 0x55;
-                col.b = 0x41;
-                col.a = 0xff;
-                zero.r = 0;
-                zero.g = 0;
-                zero.b = 0;
-                zero.a = 0;
-                u8* obj = FindPaneOfSub(self, *(const u64*)p);
-                ((PaneColorsFn)(*(void***)obj)[76])(obj, &zero, &col);
-                p += 8;
+                ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*p))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(255, 85, 65, 255));
+                p++;
             }
             if (n < -5000) {
                 n = -5000;
             }
-            n = -n;
+            n *= -1;
             tag = fn_804030C4(0x54494d47, (u32)(base + 0xe38));
-            CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28)), tag);
-            CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28)), tag);
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + 0x20), 1);
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28 + 0x20), 1);
+            ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*first))->changeTexture((ResTIMG*)tag, 0);
+            ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)((u64*)(base + 0x458) + idx * 5)))))->changeTexture((ResTIMG*)tag, 0);
+            (*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)((u64*)(base + 0x3b8) + idx * 5)) + 0x20))->show();
+            (*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)((u64*)(base + 0x458) + idx * 5)) + 0x20))->show();
             which = 1;
         } else {
-            for (i = 0; i < 5; i++) {
-                u32 a = *(u32*)(self + 0x244);
-                u32 b = *(u32*)(self + 0x248);
-                u8* obj = FindPaneOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + i * 8));
-                ((PaneColorsFn)(*(void***)obj)[76])(obj, &b, &a);
+            s32 off = idx * 0x28;
+            u64* p = (u64*)(base + 0x3b8);
+            p = (u64*)((u8*)p + off);
+            for (i = 0; i < 5; i++, p++) {
+                ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*p))->setBlackWhite(*(JUtility::TColor*)(self + 0x248), *(JUtility::TColor*)(self + 0x244));
             }
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + 0x20), 0);
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28 + 0x20), 0);
+            (*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)((u64*)(base + 0x3b8) + idx * 5)) + 0x20))->hide();
+            (*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)((u64*)(base + 0x458) + idx * 5)) + 0x20))->hide();
         }
 
-        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 1000]);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + which * 8)), tag);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28 + which * 8)), tag);
+        s32 digit1000 = n / 1000;
         n %= 1000;
-        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 100]);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + (which + 1) * 8)), tag);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28 + (which + 1) * 8)), tag);
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[digit1000]);
+        u64* a = (u64*)(base + 0x3b8);
+        a = (u64*)((u8*)a + idx * 0x28);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)a) + which * 8)))->changeTexture((ResTIMG*)tag, 0);
+        u64* b = (u64*)(base + 0x458);
+        b = (u64*)((u8*)b + idx * 0x28);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)b) + which * 8)))->changeTexture((ResTIMG*)tag, 0);
+        s32 digit100 = n / 100;
         n %= 100;
-        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + (which + 2) * 8)), tag);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28 + (which + 2) * 8)), tag);
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[digit100]);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)a) + (which + 1) * 8)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)b) + (which + 1) * 8)))->changeTexture((ResTIMG*)tag, 0);
+        s32 digit10 = n / 10;
         n %= 10;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[digit10]);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)a) + (which + 2) * 8)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)b) + (which + 2) * 8)))->changeTexture((ResTIMG*)tag, 0);
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n]);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x3b8 + idx * 0x28 + (which + 3) * 8)), tag);
-        CallSlot68(FindPaneOfSub(self, *(const u64*)(base + 0x458 + idx * 0x28 + (which + 3) * 8)), tag);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)a) + (which + 3) * 8)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)b) + (which + 3) * 8)))->changeTexture((ResTIMG*)tag, 0);
     }
 }
 
