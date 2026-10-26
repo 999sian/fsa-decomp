@@ -464,7 +464,7 @@ extern "C" void fn_8041A868(u8* self, s32 arg) {
 #pragma dont_inline reset
 
 #pragma dont_inline reset
-struct HudPaneNames8041 { u64 names[4]; };
+struct HudPaneNames8041 { u64 names[4]; const u64& operator[](int i) const { return names[i]; } };
 static inline void HudHideIndexed8041(u8* self, const HudPaneNames8041* names, s32 index) {
     (*(J2DPane**)(self + 4))->search(names->names[index])->hide();
 }
@@ -1405,12 +1405,12 @@ extern "C" void fn_8041C67C(u8* self);
 extern "C" void fn_80418D08(u8* self, s32 i, s32 j);
 extern "C" void fn_8043A608(u8* x);
 extern "C" void fn_8044172C(u8* x);
+extern const u64 lbl_8048D6B8[];
 #pragma auto_inline off
 extern "C" void fn_8041FC2C(u8* self_) {
-    s32 j;
+    s32 k;
     u8* tbl;
     u8* self = self_;
-    s32 k;
     u32* lbl;
     u8* p;
     u8* q;
@@ -1421,6 +1421,7 @@ extern "C" void fn_8041FC2C(u8* self_) {
     u64* n4;
     u64* n5;
     u64* n6;
+    s32 j;
     u64* n7;
     s32 i;
     f32 f;
@@ -1469,9 +1470,9 @@ extern "C" void fn_8041FC2C(u8* self_) {
         (*(J2DPane**)(self + 4))->search(0x506870316E693032ULL)->hide();
         (*(J2DPane**)(self + 4))->search(0x5068317069696233ULL)->show();
         (*(J2DPane**)(self + 4))->search(*(u64*)(tbl + 0x398))->hide();
-        HudHideIndexed8041(self, (u64*)(tbl + 0x398), 1);
-        HudHideIndexed8041(self, (u64*)(tbl + 0x398), 2);
-        HudHideIndexed8041(self, (u64*)(tbl + 0x398), 3);
+        (*(J2DPane**)(self + 4))->search(lbl_8048D6B8[1])->hide();
+        HudHideIndexed8041(self, (HudPaneNames8041*)(tbl + 0x398), 2);
+        HudHideIndexed8041(self, (HudPaneNames8041*)(tbl + 0x398), 3);
         if ((lbl_8053AAF8[0x83] & 3U) == 2) {
             (*(J2DPane**)(self + 4))->search(0x004E646174613136ULL)->show();
         } else {
