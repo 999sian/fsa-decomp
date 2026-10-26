@@ -230,7 +230,7 @@ extern "C" void fn_802B2728(Actor* param_1)
     }
 }
 
-#pragma opt_propagation off
+#pragma opt_propagation on
 extern "C" void fn_802B28E4(Actor* param_1)
 {
     u8* p = (u8*)param_1;
@@ -331,8 +331,8 @@ timerReset:
                     f32 sign=lbl_805409D8;
                     if (*(s32*)(p+0x24c)==1) sign=lbl_805409E0;
                     switch (*(s32*)(p+0x248)) {
-                    case 0: case 1: vel->x=sign; break;
-                    case 2: case 3: vel->y=sign; break;
+                    case 0: case 1: vel->y=sign; break;
+                    case 2: case 3: vel->x=sign; break;
                     }
                 }
                 break;
