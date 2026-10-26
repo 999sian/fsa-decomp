@@ -362,8 +362,8 @@ void fn_804310CC(T80431_Owner* self) {
     self->active = 0;
 }
 
-extern "C" s16 lbl_80543AE8[];
-extern "C" s16 lbl_80543AF0[];
+extern "C" s16 lbl_80543AE8[3];
+extern "C" s16 lbl_80543AF0[3];
 BOOL fn_80431174(T80431_Owner* self, u8 flag) {
     if (self->screen->search('Pwcur01')->isVisible()) {
         f32 y;
