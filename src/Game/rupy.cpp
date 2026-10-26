@@ -341,7 +341,6 @@ extern "C" s32 fn_8032B0A4(void* this_) {
     return 0;
 }
 
-#pragma opt_propagation off
 extern "C" s32 fn_8032B3F8(void* this_) {
     u8* p = (u8*)this_;
     u32 room = *(u32*)(p + 4);
