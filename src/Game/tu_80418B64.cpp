@@ -464,6 +464,10 @@ extern "C" void fn_8041A868(u8* self, s32 arg) {
 #pragma dont_inline reset
 
 #pragma dont_inline reset
+struct HudPaneNames8041 { u64 names[4]; };
+static inline void HudHideIndexed8041(u8* self, const HudPaneNames8041* names, s32 index) {
+    (*(J2DPane**)(self + 4))->search(names->names[index])->hide();
+}
 static inline void HudHideIndexed8041(u8* self, const u64* names, s32 index) {
     (*(J2DPane**)(self + 4))->search(names[index])->hide();
 }
@@ -1403,26 +1407,35 @@ extern "C" void fn_8043A608(u8* x);
 extern "C" void fn_8044172C(u8* x);
 #pragma auto_inline off
 extern "C" void fn_8041FC2C(u8* self_) {
-    s32 i;
+    s32 j;
+    u8* tbl;
+    u8* self = self_;
+    s32 k;
+    u32* lbl;
     u8* p;
     u8* q;
-    u8* lbl;
-    u8* self = self_;
-    u8* tbl;
-    s32 j;
+    u64* n0;
+    u64* n1;
+    u64* n2;
+    u64* n3;
+    u64* n4;
+    u64* n5;
+    u64* n6;
+    u64* n7;
+    s32 i;
     f32 f;
 
     tbl = (u8*)lbl_8048D320;
-    lbl = (u8*)lbl_80529DEC;
     f = lbl_80543A00;
     p = self;
     q = self;
 
-    for (i = 0; i < 4; i++, p += 4, q += 2, lbl += 4) {
+    for (i = 0; i < 4; i++, p += 4, q += 2) {
+    lbl = (u32*)lbl_80529DEC + i;
     fn_8041E3B4(self, i);
-    *(u32*)(lbl + 0xd8) = fn_80237774(i);
-    *(u32*)(lbl + 0xe8) = fn_80236100(i);
-    *(u32*)(lbl + 0x108) = fn_802375B0(i);
+    lbl[0x36] = fn_80237774(i);
+    lbl[0x3a] = fn_80236100(i);
+    lbl[0x42] = fn_802375B0(i);
 
         *(u32*)(p + 0x188) = 0x180;
         *(u32*)(p + 0x198) = 0;
@@ -1456,23 +1469,23 @@ extern "C" void fn_8041FC2C(u8* self_) {
         (*(J2DPane**)(self + 4))->search(0x506870316E693032ULL)->hide();
         (*(J2DPane**)(self + 4))->search(0x5068317069696233ULL)->show();
         (*(J2DPane**)(self + 4))->search(*(u64*)(tbl + 0x398))->hide();
-        (*(J2DPane**)(self + 4))->search(((u64*)(tbl + 0x398))[1])->hide();
-        (*(J2DPane**)(self + 4))->search(((u64*)(tbl + 0x398))[2])->hide();
-        (*(J2DPane**)(self + 4))->search(((u64*)(tbl + 0x398))[3])->hide();
+        HudHideIndexed8041(self, (u64*)(tbl + 0x398), 1);
+        HudHideIndexed8041(self, (u64*)(tbl + 0x398), 2);
+        HudHideIndexed8041(self, (u64*)(tbl + 0x398), 3);
         if ((lbl_8053AAF8[0x83] & 3U) == 2) {
             (*(J2DPane**)(self + 4))->search(0x004E646174613136ULL)->show();
         } else {
             (*(J2DPane**)(self + 4))->search(0x004E646174613136ULL)->hide();
         }
 
-        u64* n0 = (u64*)(tbl + 0xae0);
-        u64* n1 = (u64*)(tbl + 0xb20);
-        u64* n2 = (u64*)(tbl + 0xb40);
-        u64* n3 = (u64*)(tbl + 0xb60);
-        u64* n4 = (u64*)(tbl + 0xb80);
-        u64* n5 = (u64*)(tbl + 0xbc0);
-        u64* n6 = (u64*)(tbl + 0xbe0);
-        u64* n7 = (u64*)(tbl + 0xc00);
+        n0 = (u64*)(tbl + 0xae0);
+        n1 = (u64*)(tbl + 0xb20);
+        n2 = (u64*)(tbl + 0xb40);
+        n3 = (u64*)(tbl + 0xb60);
+        n4 = (u64*)(tbl + 0xb80);
+        n5 = (u64*)(tbl + 0xbc0);
+        n6 = (u64*)(tbl + 0xbe0);
+        n7 = (u64*)(tbl + 0xc00);
         for (j = 0; j < 4; j++, n0++, n1++, n2++, n3++, n4++, n5++, n6++, n7++) {
             (*(J2DPane**)(self + 0x18))->search(*n0)->hide();
             (*(J2DPane**)(self + 0x18))->search(*n1)->hide();
@@ -1489,7 +1502,7 @@ extern "C" void fn_8041FC2C(u8* self_) {
     }
 
     if (self[0x291] != 0) {
-        for (s32 k = 0; k < 4; k++) {
+        for (k = 0; k < 4; k++) {
             if (lbl_8053AAF8[0x82] & (u8)(1 << k)) {
                 fn_80418D08(self, k, 1);
             }
