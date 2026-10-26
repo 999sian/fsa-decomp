@@ -55,7 +55,7 @@ struct RoomArrays {
 
 static inline bool roomPositionEquals(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
     bool same = false;
-    f32 eps = JGeometry::TUtilf::epsilon();
+    f32 eps = 32.0f * FLT_EPSILON;
     if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, eps) && JGeometry::TUtilf::epsilonEquals(a.y, b.y, eps)) same = true;
     return same;
 }
@@ -754,24 +754,7 @@ insert:
     for (i = 0; i < 8; i++) {
         u32 k = ((RoomArrays*)((u8*)p+off4))->keys13068[0] & 0xFFFFF07F;
         if (k == (key & 0xFFFFF07F)) {
-            bool bVar4 = false;
-            bool bVar5 = false;
-            f32 eps = lbl_80541120 * FLT_EPSILON;
-            f32* pair = (f32*)&((RoomArrays*)((u8*)p+off8))->positions13088[0];
-            f32 dx = pair[0] - pos[0];
-            if (-eps <= dx && dx <= eps) {
-                bVar4 = true;
-            }
-            if (bVar4) {
-                bVar4 = false;
-                f32 dy = ((RoomArrays*)((u8*)p+off8))->positions13088[0].y - pos[1];
-                if (-eps <= dy && dy <= eps) {
-                    bVar4 = true;
-                }
-                if (bVar4) {
-                    bVar5 = true;
-                }
-            }
+            bool bVar5 = roomPositionEquals(((RoomArrays*)((u8*)p+off8))->positions13088[0], *(JGeometry::TVec2<f32>*)pos);
             if (bVar5 && ((RoomArrays*)((u8*)p+off4))->owners130C8[0] == owner) {
                 for (s32 j = i; j < 7; j++) {
                     p->keys13068[j] = p->keys13068[j + 1];
