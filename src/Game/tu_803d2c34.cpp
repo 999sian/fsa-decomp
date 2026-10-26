@@ -96,7 +96,9 @@ static inline f32 mcW(MCAlpha* a) {
 }
 static inline f32 mcH(MCAlpha* a) {
     MCBounds* b = (MCBounds*)a->vis;
-    return b->y1 - b->y0;
+    f32 height = b->y1;
+    height -= b->y0;
+    return height;
 }
 
 struct MemCardMenu {
