@@ -1142,7 +1142,7 @@ extern "C" void fn_802C52DC(u8* p) {
         *(s32*)(p + 0x2a4) = -1;
     }
 }
-#pragma opt_lifetimes reset
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
