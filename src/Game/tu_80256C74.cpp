@@ -425,11 +425,22 @@ extern "C" u8 fn_802518AC(void*, s32);
 extern "C" u8 fn_80246228(void*);
 extern "C" u8 lbl_8053ABB8[4];
 extern "C" JGeometry::TVec3<f32> lbl_8046B220[];
-extern "C" void fn_8025785C(u8* self) {
-    s32 cur;
-    s32 i;
-    s32 created;
-    u8* p = self;
+#pragma opt_propagation off
+static inline void playerSyncLinkedItem(u8* p) {
+    s32 cur = fn_802416C4(p);
+    s32 linkedKind = fn_802373EC(Player_GetLinkTargetIndex(p));
+    if (linkedKind != cur) {
+        fn_80241618(p, fn_802373EC(Player_GetLinkTargetIndex(p)), 1);
+    }
+}
+extern "C" void fn_8025785C(void* self) {
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f v;
+    u8* const p = (u8*)self;
+    u8* q;
+    int created;
+    int i;
+    int cur;
     if (S32(p, 0xb74) > 0) {
         S32(p, 0xb74) = S32(p, 0xb74) - 1;
     }
@@ -463,8 +474,8 @@ extern "C" void fn_8025785C(u8* self) {
                     }
                 }
             } else if (fn_802416C4(p) == 4) {
-                if (S32(p, 0xb18) < 0 && S32(p, 0xb74) < 1) {
-                    if (fn_8022B160(p) == 0 ||
+                if (S32(p, 0xb18) < 0 && S32(p, 0xb74) <= 0) {
+                    if (((u8 (*)(void))fn_8022B160)() == 0 ||
                         ((Player_IsLinked(p) == 0 || fn_802486A0(p) == 4) && lbl_8053ABB8[S32(p, 0x4)] == 0)) {
                         fn_80251AEC(p, 0x3a);
                     }
@@ -474,7 +485,8 @@ extern "C" void fn_8025785C(u8* self) {
             } else if (fn_802416C4(p) == 6) {
                 if (fn_802415CC(p) >= 2) {
                     fn_80251AEC(p, 0x45);
-                } else if (fn_802415CC(p) < 2) {
+                } else {
+                    if (fn_802415CC(p) < 2) {
                     s32 n = 0;
                     if (S32(p, 0xb1c) >= 0) {
                         n = 1;
@@ -485,9 +497,9 @@ extern "C" void fn_8025785C(u8* self) {
                     if (S32(p, 0xb24) >= 0) {
                         n++;
                     }
-                    if (n < 3) {
-                        fn_80251AEC(p, 0x44);
+                    if (n >= 3) goto end;
                     }
+                    fn_80251AEC(p, 0x44);
                 }
             } else if (fn_802416C4(p) == 7) {
                 if (fn_8025F500(p)) {
@@ -496,33 +508,40 @@ extern "C" void fn_8025785C(u8* self) {
                         goto end;
                     }
                 }
-                for (i = 0; i < 4; i++) {
-                    if (fn_80243194(p, i) && fn_8023EEB4(i) == 0x52434b32) {
+                for (s32 j = 0; j < 4; j++) {
+                    if (fn_80243194(p, j) && fn_8023EEB4(j) == 0x52434b32) {
                         goto end;
                     }
                 }
                 s32 id = S32(p, 0x3b4);
                 if (*((u8*)fn_802D6A9C() + id + 0x131df) != 0) {
                 if (fn_802518AC(p, 1) == 0) {
-                    JGeometry::TVec2<f32> v;
-                    fn_8024B298(p, 2, &v);
-                    v.y = v.y + lbl_805400C8;
-                    if (fn_8022461C(&v, S32(p, 0x3b4)) == 2) {
-                        goto end;
+                    fn_8024B298(p, 2, &pos);
+                    pos.y = pos.y + lbl_805400C8;
+                    if (fn_8022461C(&pos, S32(p, 0x3b4)) != 2) {
+                        goto chooseAction;
                     }
+                    goto end;
                 }
                 } else if (F32(p, 0x10) > lbl_805400C4) {
                     goto end;
                 }
+chooseAction:
                 if (fn_8025F684(p)) {
                     fn_80251AEC(p, 0x14);
                 } else {
                     fn_80251AEC(p, 0x46);
                 }
             } else if (fn_802416C4(p) == 8) {
-                for (i = 0; i < 2; i++) {
-                    if (S32(p, 0xb30 + i * 4) < 0) {
-                        JGeometry::TVec3f v = lbl_8046B220[S32(p, 0x3dc)];
+                q = p;
+                for (i = 0; i < 2; i++, q += 4) {
+                    if (S32(q, 0xb30) < 0) {
+                        const JGeometry::TVec3f& initial = lbl_8046B220[S32(p, 0x3dc)];
+                        f32 z;
+                        f32 y;
+                        f32 x;
+                        x = initial.x; y = initial.y; z = initial.z;
+                        v.x = x; v.y = y; v.z = z;
                         v.add(V3(p, 0x8));
                         v.z = lbl_805400C4;
                         if (fn_8022461C(&v, S32(p, 0x3b4)) == 0xe) {
@@ -554,7 +573,7 @@ extern "C" void fn_8025785C(u8* self) {
 end:
     U8(p, 0x1174) = 0;
 }
-
+#pragma opt_propagation reset
 extern "C" BOOL fn_80257DB4(u8* p) {
     if (U8(p, 0x1174) != 0) {
         return FALSE;
