@@ -38,11 +38,13 @@ extern "C" s32 fn_8015C888(void* this_, void* arg1, void* targetPos) {
 
 struct KethRandom {
     u32 seed;
-    f32 get_ufloat_1(int mul = 0x19660d) {
-        u32* base = &seed;
+    u32 get() {
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        return seed;
+    }
+    f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        *base = *base * mul + 0x3c6ef35f;
-        out.s = (*base >> 9) | 0x3f800000;
+        out.s = (get() >> 9) | 0x3f800000;
         return out.f - 1.0f;
     }
 };
