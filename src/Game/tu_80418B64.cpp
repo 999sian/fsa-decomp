@@ -1300,6 +1300,12 @@ static inline void HudSetProjection8041(J2DOrthoGraph* graph, f32 ex, f32 ey, co
     graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
 }
 static inline f32 HudFloat8041(const s32 value) { return (f32)value; }
+static inline void HudProjectCoords8041(const f32 sx, const f32 sy, const s32 width, const s32 height, const s16 offset, const f32* point, f32& x, f32& y) {
+    f32 yy = sy * (point[1] / (f32)height);
+    f32 xx = sx * (point[0] / (f32)width);
+    y = (f32)offset + (yy - (f32)height * lbl_80543A34);
+    x = xx - (f32)width * lbl_80543A34;
+}
 static inline bool HudHideTimer8041() {
     if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return 1;
     return lbl_8053AAF8[0x88] == 2;
@@ -1323,8 +1329,8 @@ extern "C" void fn_8041F720(u8* self) {
         f32 k = *(f32*)(lbl_8050DB0C + 0x40);
         JUTVideo* vid = JUTVideo::getManager();
         sx = k * (HudFloat8041(vid->getFbWidth()) / d);
-        sy = k * (HudFloat8041(vid->getEfbHeight()) / d);
         ex = lbl_80543A00 + sx;
+        sy = k * (HudFloat8041(vid->getEfbHeight()) / d);
         ey = lbl_80543A00 + sy;
 
         for (s32 i = 0; i < 4; i++) {
@@ -1333,8 +1339,7 @@ extern "C" void fn_8041F720(u8* self) {
                 u8* p4 = self + 4 * i;
                 if (fn_8023DE58(fn_8022EA0C(i)) < 8) {
                     if (*(s16*)(p2 + 0x21a) > 0 && (lbl_8050EC80 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10))[0x88] != 0) {
-                        fn_8022EA0C(i);
-                        fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
+                        fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), ((void* (*)(s32))fn_8023E724)(fn_8022EA0C(i)), 0, 0, buf);
                         JUTVideo* vp = JUTVideo::getManager();
                         s32 fa = vp->getFbWidth();
                         s32 fb = vp->getEfbHeight();
@@ -1353,12 +1358,9 @@ extern "C" void fn_8041F720(u8* self) {
                         ((J2DScreen*)*(u8**)(p4 + 8))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
                         *(s16*)(p2 + 0x234) = 0;
                     } else if (!HudHideTimer8041()) {
-                        fn_8022EA0C(i);
-                        if (fn_802366CC() > 0) {
-                            fn_8022EA0C(i);
-                            if (fn_802366CC() < 0x12c) {
-                                fn_8022EA0C(i);
-                                fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
+                        if (((s32 (*)(s32))fn_802366CC)(fn_8022EA0C(i)) > 0) {
+                            if (((s32 (*)(s32))fn_802366CC)(fn_8022EA0C(i)) < 0x12c) {
+                                fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), ((void* (*)(s32))fn_8023E724)(fn_8022EA0C(i)), 0, 0, buf);
                                 JUTVideo* vp = JUTVideo::getManager();
                                 s32 fa = vp->getFbWidth();
                                 s32 fb = vp->getEfbHeight();
