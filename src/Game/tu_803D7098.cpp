@@ -121,7 +121,7 @@ struct FsaDisposable {
 
 extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AD68;
-extern "C" f32 lbl_80543534;
+extern "C" const f32 lbl_80543534;
 extern "C" f32 lbl_80543568;
 extern "C" f32 lbl_8054356C;
 extern "C" void fn_8013B490(void*);
@@ -496,7 +496,7 @@ extern "C" void fn_803D87C0(u8* param_1) {
     const u64* k21;
     const u64* k26o;
     const u64* k25o;
-    s32 i;
+    s32 n;
     J2DPane* p;
 
     base = (const u8*)lbl_80476F80;
@@ -504,8 +504,8 @@ extern "C" void fn_803D87C0(u8* param_1) {
     k19 = (const u64*)(base + 0x420);
     k20 = (const u64*)(base + 0x438);
     k21 = (const u64*)(base + 0x450);
-    for (i = 0; i < 3; i++) {
-        if (i >= fn_80138A30(lbl_8053AAF8) - 1) {
+    for (n = 0; n < 3; n++) {
+        if (n >= fn_80138A30(lbl_8053AAF8) - 1) {
             p = (*(J2DPane**)(param_1 + 4))->search(*k19);
             p->show();
             p = (*(J2DPane**)(param_1 + 4))->search(*k20);
@@ -526,12 +526,12 @@ extern "C" void fn_803D87C0(u8* param_1) {
     }
 
     lbl = (u8*)lbl_80529DEC;
-    k22 = (const u64*)(base + 0x400);
     k23 = (const u64*)(base + 0x468);
+    k22 = (const u64*)(base + 0x400);
     cnt = (s32*)lbl;
+    k26o = (const u64*)(base + 0);
     k25o = (const u64*)(base + 0x200);
-    k26o = (const u64*)base;
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         mask = (u8)(1 << i);
         count = *(s32*)((u8*)cnt + 0x140);
         if (bool(lbl[0x243] & mask)) {
@@ -590,7 +590,7 @@ extern "C" void fn_803D87C0(u8* param_1) {
     *(u16*)(*(u8**)(param_1 + 0x30) + 0x22) = 0;
     fn_80402E08(*(u8**)(param_1 + 0x48), lbl_80543534, lbl_80543530);
     *(u16*)(*(u8**)(param_1 + 0x48) + 0x22) = 0;
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         fn_80402E08(*(u8**)(param_1 + 0x34 + i * 4), lbl_80543534, lbl_80543538);
         *(u16*)(*(u8**)(param_1 + 0x34 + i * 4) + 0x22) = 0;
     }
@@ -603,7 +603,7 @@ extern "C" void fn_803D87C0(u8* param_1) {
     p->setAlpha(0);
     p = (*(J2DPane**)(param_1 + 4))->search(0x5061636375723031ULL);
     p->setAlpha(0);
-    for (i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++) {
         fn_80402E08(*(u8**)(param_1 + 0x24 + i * 4), lbl_80543534, lbl_8054353C);
         *(u16*)(*(u8**)(param_1 + 0x24 + i * 4) + 0x22) = 0;
     }
