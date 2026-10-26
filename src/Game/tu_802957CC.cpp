@@ -254,6 +254,7 @@ static inline s32 HouseDestination(const char* actor) {
     return (room + 7) & ~-(s32)(room == 0);
 }
 static inline bool WarpDestinationIs(const char* other, s32 room) { return room == WarpDestination(other); }
+static inline bool HouseDestinationIs(const char* self, s32 room) { return room == HouseDestination(self); }
 
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
@@ -1878,13 +1879,13 @@ extern "C" void fn_8029A974(char* self) {
 }
 #pragma opt_common_subs reset
 extern "C" void fn_8029AE58(char* p) {
-    const f32 center = lbl_80540678;
-    JGeometry::TVec3f v;
+        JGeometry::TVec3f v;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f origin;
     origin = *(JGeometry::TVec3f*)(p + 0xc);
     origin.x += *(f32*)(p + 0x60);
     origin.y += *(f32*)(p + 0x64);
+    const f32 center = lbl_80540678;
     origin.x += center;
     origin.y += center;
     origin.z = 0.0f;
