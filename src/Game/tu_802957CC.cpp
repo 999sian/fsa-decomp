@@ -51,8 +51,8 @@ extern "C" void fn_801F0E34(void* a, s32 code, s32 z);
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 static inline void clearHouseActors(char* self, s32 countOffset, s32 handleOffset) {
-    s32 index;
     char* entry;
+    s32 index;
     for (index = 0, entry = self; index < *(s32*)(self + countOffset); entry += 4, index++) {
         char* actor = (char*)fn_801F666C(fn_801F856C(), *(s32*)(entry + handleOffset));
         if (actor) *(u8*)(actor + 0x11c) = 0;
@@ -482,7 +482,7 @@ extern "C" void fn_802961AC(void* p) {
     char* col;
     JGeometry::TVec3f* dir;
     JGeometry::TVec3f v;
-    Vec gridBase;
+    JGeometry::TVec3f gridBase;
     f32 ox;
     s32 id;
     s32 j;
@@ -518,23 +518,13 @@ extern "C" void fn_802961AC(void* p) {
             if (n == 0) mode = 0; else mode = n + 7;
             fn_802D79E8(fn_802D6A9C(), mode, 16.0f, 0.0f, 1);
 
-            for (j = 0, col = self; j < *(s32*)(self + 0x2a0); j++, col += 4) {
-                other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(col + 0x26c));
-                if (other != 0) {
-                    *(u8*)(other + 0x11c) = 0;
-                }
-            }
-            for (j = 0, col = self; j < *(s32*)(self + 0x29c); j++, col += 4) {
-                other = (char*)fn_801F666C(fn_801F856C(), *(s32*)(col + 0x25c));
-                if (other != 0) {
-                    *(u8*)(other + 0x11c) = 0;
-                }
-            }
+            clearHouseActors(self, 0x2a0, 0x26c);
+            clearHouseActors(self, 0x29c, 0x25c);
 
             *(u8*)(self + 0x24c) = 0;
             if (*(u8*)(self + 0x24c) == 0) {
                 *(u8*)(self + 0x24c) = 1;
-                *(JGeometry::TVec3f*)&gridBase = *(JGeometry::TVec3f*)(self + 0xc);
+                gridBase = *(JGeometry::TVec3f*)(self + 0xc);
                 gridBase.x += *(f32*)(self + 0x60);
                 gridBase.x += 8.0f;
                 gridBase.y += *(f32*)(self + 0x64);
