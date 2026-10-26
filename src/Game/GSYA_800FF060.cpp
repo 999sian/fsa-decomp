@@ -76,7 +76,7 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
     return this_;
 }
 
-#pragma opt_common_subs on
+#pragma opt_common_subs off
 extern "C" void fn_800FF0C0(Actor* this_) {
     int fraction;
     int remainder;
