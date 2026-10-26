@@ -16,14 +16,6 @@ extern "C" char lbl_80476578[];
 extern "C" void* fn_804030C4(u32 tag, char* name);
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 
-struct CardSaveBlock {
-    u16 revision;
-    u8 options[3];
-    u8 reserved[5];
-    u8 payload[0x1ff2];
-    u32 checksum;
-};
-
 static inline u32 calcCardChecksum(const u8* data, s32 bytes = 0x1ffc) {
     u32 sum = 0;
     u16 inv = 0;
