@@ -321,7 +321,6 @@ extern "C" void fn_803D7098(u8* param_1) {
     }
     fn_80402E08(*(void**)(param_1 + 0x44), *(f32*)(param_1 + 0x58), *(f32*)(param_1 + 0x5c));
 }
-#pragma opt_common_subs reset
 extern "C" void fn_80431174(void*, u8);
 extern "C" s32 fn_80309C4C(void*, s32, s32);
 extern "C" void fn_80458880(void*, s32, s32);
