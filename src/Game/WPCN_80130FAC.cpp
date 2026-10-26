@@ -277,15 +277,11 @@ extern "C" s32 fn_801CD950(f32* v, f32 target, f32 step);
 extern "C" char* fn_80119DD0(void);
 extern "C" void fn_801D1C18(void* p);
 
-static inline f32 wpcnAdvance(const f32 value, const f32 step) {
-    return value + step;
-}
-static inline bool wpcnClamp(f32* value, const f32 limit) {
-    if (*value >= limit) {
-        *value = limit;
-        return true;
-    }
-    return false;
+extern "C" {
+    s32 lbl_8053AAD0;
+    s8 lbl_8053AAD4;
+    f32 lbl_8053AAD8;
+    s8 lbl_8053AADC;
 }
 
 static inline s32 wpcnFindPlayer(char* p, WpcnBox& box) {
@@ -299,10 +295,6 @@ static inline s32 wpcnFindPlayer(char* p, WpcnBox& box) {
     return -1;
 }
 
-static inline WpcnVec wpcnDelta(const f32 rate) {
-    return WpcnVec(0.0f, lbl_8053CCC0 * (lbl_8053CCB0 - rate), 0.0f);
-}
-
 static inline bool wpcnAllReady() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i)) {
@@ -312,32 +304,6 @@ static inline bool wpcnAllReady() {
     return true;
 }
 
-static inline bool wpcnBounce(char* p) {
-    static s32 sCount = 0;
-    static f32 sT = lbl_8053CCA0;
-    sT += lbl_8053CCA4;
-    if (sT >= lbl_8053CCA8) {
-        sT = lbl_8053CCA8;
-    }
-    sCount++;
-    f32 dy;
-    if (sT <= lbl_8053CCB8) {
-        dy = lbl_8053CCAC * (lbl_8053CCB0 - sT);
-    } else {
-        dy = lbl_8053CCB4 * (lbl_8053CCB8 - sT);
-    }
-    WpcnVec d(lbl_8053CCA0, dy, lbl_8053CCA0);
-    ((WpcnVec*)(p + 0xc))->add(d);
-    if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
-    }
-    if (sT >= lbl_8053CCA8 && sCount >= 30) {
-        sCount = 0;
-        sT = lbl_8053CCA0;
-        return true;
-    }
-    return false;
-}
 
 extern "C" void fn_801313BC(char* p) {
     s32 player;
@@ -398,27 +364,33 @@ extern "C" void fn_801313BC(char* p) {
         }
         {
             bool bounced;
-    static s32 sCount = 0;
-    static f32 sT = lbl_8053CCA0;
-    sT += lbl_8053CCA4;
-    if (sT >= 1.0f) {
-        sT = 1.0f;
+    if (lbl_8053AAD4 == 0) {
+        lbl_8053AAD0 = 0;
+        lbl_8053AAD4 = 1;
     }
-    sCount++;
+    if (lbl_8053AADC == 0) {
+        lbl_8053AADC = 1;
+        lbl_8053AAD8 = lbl_8053CCA0;
+    }
+    lbl_8053AAD8 += lbl_8053CCA4;
+    if (lbl_8053AAD8 >= 1.0f) {
+        lbl_8053AAD8 = 1.0f;
+    }
+    lbl_8053AAD0++;
     f32 dy;
-    if (sT <= lbl_8053CCB8) {
-        dy = lbl_8053CCAC * (lbl_8053CCB0 - sT);
+    if (lbl_8053AAD8 <= lbl_8053CCB8) {
+        dy = lbl_8053CCAC * (lbl_8053CCB0 - lbl_8053AAD8);
     } else {
-        dy = lbl_8053CCB4 * (lbl_8053CCB8 - sT);
+        dy = lbl_8053CCB4 * (lbl_8053CCB8 - lbl_8053AAD8);
     }
     WpcnVec d(0.0f, dy, 0.0f);
     ((WpcnVec*)(p + 0xc))->add(d);
     if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
         *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
     }
-    if (sT >= lbl_8053CCA8 && sCount >= 30) {
-        sCount = 0;
-        sT = lbl_8053CCA0;
+    if (lbl_8053AAD8 >= lbl_8053CCA8 && lbl_8053AAD0 >= 30) {
+        lbl_8053AAD0 = 0;
+        lbl_8053AAD8 = lbl_8053CCA0;
         bounced = true;
     } else {
         bounced = false;
