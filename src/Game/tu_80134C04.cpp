@@ -365,7 +365,7 @@ static inline void* tu80134_load(const char* name) {
 
 static inline void tu80134PlayTransition(char* this_) {
 u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-                    int st = *(s32*)((char*)fn_802D6A9C() + 0x34);
+                    const s32& st = *(s32*)((char*)fn_802D6A9C() + 0x34);
                     if (st != 0x11) {
                         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
                             if (st == 0x14 || st == 0x1e) {
