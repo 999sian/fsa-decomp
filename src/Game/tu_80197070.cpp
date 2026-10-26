@@ -246,7 +246,7 @@ extern "C" s32 fn_801F0E34(void*, u32, u32);
 extern "C" const u16 lbl_804A2880[];
 extern "C" const u16 lbl_804A28D8[][3];
 extern "C" const f32 lbl_8053E3A0;
-static inline void orbitPoint(f32& x, f32& y, const u8* p, const s16 angle) {
+static inline void orbitPoint(f32& x, f32& y, const u8* p, const s16 angle, const f32 radius) {
     f32 cosine;
     f32 sine;
     x = *(const f32*)(p + 0x280);
