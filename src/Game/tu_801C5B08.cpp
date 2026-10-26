@@ -75,8 +75,8 @@ struct TuRandom {
 };
 
 static inline f32 tuRandStored(u32& bits) {
-    u32 factor = 0x19660d;
     TuRandom* rng = (TuRandom*)((u8*)lbl_8053AAF8 + 0xb4);
+    int factor = 0x19660d;
     rng->seed = factor * rng->seed + 0x3c6ef35f;
     bits = (rng->seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
@@ -261,6 +261,7 @@ extern f32 lbl_8053EE9C;
 extern const f32 lbl_8053EEA0;
 extern const f32 lbl_8053EEA4;
 extern const f32 lbl_8053EEA8;
+#pragma opt_lifetimes on
 extern "C" void fn_801C6260(void* p) {
     u32 randGate, randAttack, randVariant, randLeft, randRight, randTurn, randDirection;
     Unk801C5B08* self = (Unk801C5B08*)p;
@@ -334,7 +335,7 @@ extern "C" void fn_801C6260(void* p) {
     }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_801C6784(void* p) {
     Unk801C5B08* self = (Unk801C5B08*)p;
     s32 off = self->field_04;
