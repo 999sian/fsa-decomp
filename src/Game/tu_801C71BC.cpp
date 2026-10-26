@@ -127,6 +127,7 @@ static inline void getSlotNeighbours(char* this_, u8* prev, u8* next) {
     if(next) *next=b;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_801C7370(char* this_, u8 param_2) {
     JGeometry::TVec3<f32> tmp;
     JMARandFast* rnd;
@@ -266,7 +267,7 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
         r28 = 0;
         d = fn_801D05F8(this_, this_ + 0xc, lbl_8053EEDC);
         if (d >= 0) {
-            s15 = fn_801D0280(this_);
+            s15 = fn_801D0280(this_, d);
             s14 = *(s16*)(this_ + 0x33c);
             if (lbl_8053EEE0 * __fabsf((f32)(s16)(s14 - s15)) <= lbl_8053EEE4) {
                 r28 = 1;
@@ -277,7 +278,7 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" u8 fn_800FD594(void* ring, u8 i);
 extern "C" u8 fn_801CD2F8(s32 p);
 extern "C" s32 fn_800FE25C(void* ring, u8 i);
@@ -1075,7 +1076,6 @@ extern "C" void fn_801C9420(char* this_, f32* v) {
 }
 
 extern "C" void* lbl_8053AAF8;
-extern "C" f32 lbl_8053EED8;
 extern "C" void fn_800FD818(void* p, s32 n);
 extern "C" s32 fn_800FE25C(void* p, u8 n);
 extern "C" u8 fn_801C976C(char* this_) {
