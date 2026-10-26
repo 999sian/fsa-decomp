@@ -670,7 +670,7 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
     }
 }
 #pragma opt_strength_reduction reset
-#pragma opt_propagation off
+#pragma opt_propagation reset
 extern "C" void fn_80423804(u8* this_, u32 idx) {
     u64* a;
     u64* b;
