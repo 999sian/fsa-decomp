@@ -2164,7 +2164,7 @@ struct IntroTags {
     u64 p2[4][2];
 };
 
-static inline void IntroFade(Menu_Intro* p, const void* tags, const s32 count, const s32 elapsed, const s32 duration, const u32 alphaOffset) {
+static inline void IntroFade(Menu_Intro* p, const u64* tags, const s32 count, const s32 elapsed, const s32 duration, const u32 alphaOffset) {
     if (p->cur < 2) {
         for (s32 k = 0; k < count; k++) {
             p->screens[p->cur]->search(((const u64*)tags)[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
@@ -2855,7 +2855,7 @@ static inline int MenuPlayerCount803B(MsgGame* game) {
     return count;
 }
 extern "C" void fn_803B6768(void* this_) {
-    int count;
+    s32 count;
     s32* c320;
     s16* c460;
     u8* c2f0;
