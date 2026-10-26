@@ -169,6 +169,10 @@ extern "C" s32 fn_801E6FAC(char* p) {
 #include "JSystem/JMath/JMath.h"
 struct IpotGame { u8 pad[0xb4]; JMARandFast rnd; };
 extern IpotGame* lbl_8053AAF8;
+extern const f32 lbl_8053F5D8;
+extern const f32 lbl_8053F5DC;
+extern const f32 lbl_8053F5E0;
+extern const f32 lbl_8053F5E4;
 
 struct RupyDrop {
     u32 param;
@@ -236,10 +240,11 @@ extern "C" void fn_801E728C(char* p, s32 type) {
         if (*(u32*)(p + 0x230) & 0x2000) {
             fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x262, 0, 0, 0, 0, 1, 1.0f);
             for (s32 i = 0; i < 4; i++) {
+                const RupyDrop& drop = lbl_80469C40[i];
                 s32 j;
-                register s32 n = lbl_80469C40[i].count;
+                s32 n = drop.count;
                 for (j = 0; j < n; j++) {
-                    s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, lbl_80469C40[i].param);
+                    s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, drop.param);
                     if (idx >= 0) {
                         char* rupy;
                         rupy = fn_801F666C(fn_801F856C(), idx);
@@ -297,7 +302,9 @@ extern "C" void fn_801D0ED0(void* this_);
 extern "C" void fn_80210990(void* this_, s32 type, void* box);
 extern "C" s16 fn_801F6874(s32 type);
 
-extern "C" void fn_801E77A0(char* p) {
+#pragma opt_common_subs off
+extern "C" void fn_801E77A0(void* this_) {
+    u8* p = (u8*)this_;
     fn_801D0ED0(p);
     *(u32*)(p + 0x98) = *(u32*)(p + 0x90) & 3;
     *(u32*)(p + 0x2b4) = (*(u32*)(p + 0x90) >> 2) & 0x1f;
@@ -340,7 +347,7 @@ extern "C" void fn_801E77A0(char* p) {
     *(f32*)(p + 0x258) = 0.0f;
     return;
 }
-
+#pragma opt_common_subs reset
 extern "C" void* fn_801E78F0(void* this_) {
     fn_80210AB4(this_);
     *(void**)this_ = lbl_804A5418;
