@@ -561,7 +561,7 @@ static inline void dmlkEmitPuff(u8* this_) {
         *(u8*)(this_ + 0x284) = 2;
         tmp16 = *(JGeometry::TVec3f*)(this_ + 0xc);
         tmp16.y = tmp16.y + lbl_8053C818;
-        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp16, lbl_8053C7F8, 0x33b, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp16, 1.0f, 0x33b, 0, 0, 0, 0, 1);
 }
 extern "C" void fn_8011B878(u8* this_, s32 id) {
     JGeometry::TVec3f tmp9;
@@ -670,13 +670,15 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
         fn_800FEB78(this_ + 0x278, 0);
         *(s32*)(this_ + 0x23c) = 0;
         break;
-    case 23:
+    case 23: {
         fn_800FEB78(this_ + 0x278, 4);
-        *(u8*)(this_ + 0x231) = *(u8*)(this_ + 0x231) ? 0U : 1U;
+        u32 toggle = *(u8*)(this_ + 0x231) == 0;
+        *(u8*)(this_ + 0x231) = toggle;
         *(s32*)(this_ + 0x23c) = 0;
         *(f32*)(this_ + 0x14) = lbl_8053C7D8;
         fn_801F0E34(this_, 0x400c7, 0);
         break;
+    }
     case 24:
         fn_800FEB78(this_ + 0x278, 0);
         *(f32*)(this_ + 0x44) = lbl_8053C7D8;
