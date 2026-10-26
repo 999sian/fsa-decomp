@@ -1,4 +1,5 @@
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
@@ -45,6 +46,7 @@ extern "C" void fn_80326A90(void* this_) {
 
 extern "C" void fn_80326C5C(void* thisPtr) {
 	char* p = (char*)thisPtr;
+	f32 pad[4];
 	f32 box[4];
 	f32 x;
 	f32 dx;
@@ -55,12 +57,13 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 	s32 i;
 	char* e;
 	s32 room;
+	char* q;
+	u32* rng;
 
 	fn_801F71A4((f32*)(p + 0x3c), *(f32*)(p + 0x258), 0.1f, 0.5f);
 	fn_801F71A4((f32*)(p + 0x40), *(f32*)(p + 0x25c), 0.1f, 0.5f);
 	fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x260), 0.3f, 0.5f);
-	*(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
-	*(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+	*(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
 	*(f32*)(p + 0x14) += *(f32*)(p + 0x44);
 
 	e = *(char**)(p + 0x264);
@@ -76,19 +79,23 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 		*(f32*)(e + 0xac) = *(f32*)(p + 0x14);
 	}
 
-	if (*(s32*)(p + 0x230) == 0) {
+	switch (*(s32*)(p + 0x230)) {
+	case 1:
+		break;
+	case 0:
 		if (*(s32*)(p + 0x23c) != 0) {
 			return;
 		}
 		*(s32*)(p + 0x244) += 0x300;
-		*(f32*)(p + 0x260) = 2.0f * sincosTable___5JMath[((u16)*(s32*)(p + 0x244) >> 5) * 2] + 7.0f;
+		*(f32*)(p + 0x260) = 2.0f * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x244) >> 5].first + 7.0f;
 		if (*(s32*)(p + 0x24c) == 0) {
 			if (*(s32*)(p + 0x240) != 0) {
 				*(s32*)(p + 0x248) += 0x100;
 			} else {
-				seed = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-				*(u32*)((char*)lbl_8053AAF8 + 0xb4) = seed;
-				bits = (seed >> 9) | 0x3f800000;
+				rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
+				seed = *rng * 0x19660d + 0x3c6ef35f;
+				*rng = seed;
+				bits = (*rng >> 9) | 0x3f800000;
 				x = *(f32*)&bits - 1.0f;
 				*(s32*)(p + 0x240) = (s32)(30.0f * x) + 30;
 				*(s32*)(p + 0x24c) = 1;
@@ -97,14 +104,15 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 			}
 		}
 		if (*(s32*)(p + 0x240) == 0) {
-			seed = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-			*(u32*)((char*)lbl_8053AAF8 + 0xb4) = seed;
-			bits = (seed >> 9) | 0x3f800000;
+			rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
+			seed = *rng * 0x19660d + 0x3c6ef35f;
+			*rng = seed;
+			bits = (*rng >> 9) | 0x3f800000;
 			x = *(f32*)&bits - 1.0f;
 			*(s32*)(p + 0x248) += (s32)(32768.0f * x);
-			seed = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-			*(u32*)((char*)lbl_8053AAF8 + 0xb4) = seed;
-			bits = (seed >> 9) | 0x3f800000;
+			seed = *rng * 0x19660d + 0x3c6ef35f;
+			*rng = seed;
+			bits = (*rng >> 9) | 0x3f800000;
 			x = *(f32*)&bits - 1.0f;
 			*(s32*)(p + 0x240) = (s32)(40.0f * x) + 40;
 			*(s32*)(p + 0x24c) = 0;
@@ -136,6 +144,9 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 		fn_8023C830(hit);
 		*(s32*)(p + 0x234) = 1000;
 		*(s32*)(p + 0x248) += 1;
+		break;
+	default:
+		return;
 	}
 
 	if (*(s32*)(p + 0x23c) == 0) {
@@ -145,8 +156,8 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 		dy = *(f32*)(p + 0x10) - a[1];
 		*(s16*)(p + 0x254) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.4f);
 		*(s32*)(p + 0x23c) = 5;
-		*(f32*)(p + 0x258) = 5.0f * sincosTable___5JMath[((u16)*(s16*)(p + 0x254) >> 5) * 2];
-		*(f32*)(p + 0x25c) = 5.0f * sincosTable___5JMath[((u16)*(s16*)(p + 0x254) >> 5) * 2 + 1];
+		*(f32*)(p + 0x258) = 5.0f * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x254) >> 5].first;
+		*(f32*)(p + 0x25c) = 5.0f * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x254) >> 5].second;
 	}
 
 	if (*(s32*)(p + 0x248) > 720) {
@@ -171,9 +182,10 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 			*(s32*)(p + 0x250) = 0;
 		}
 	}
-	for (i = 0; i < 3; i++) {
-		if (*(s32*)(p + 0x234 + i * 8) > 0) {
-			*(s32*)(p + 0x234 + i * 8) -= 1;
+	q = p;
+	for (i = 0; i < 3; i++, q += 8) {
+		if (*(s32*)(q + 0x234) > 0) {
+			*(s32*)(q + 0x234) -= 1;
 		}
 		if (*(s32*)(p + 0x234) <= 0) {
 			e = *(char**)(p + 0x264);
@@ -190,8 +202,8 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 			}
 			*(u8*)(p + 0x11c) = 0;
 		}
-		if (*(s32*)(p + 0x238 + i * 8) > 0) {
-			*(s32*)(p + 0x238 + i * 8) -= 1;
+		if (*(s32*)(q + 0x238) > 0) {
+			*(s32*)(q + 0x238) -= 1;
 		}
 		if (*(s32*)(p + 0x234) <= 0) {
 			e = *(char**)(p + 0x264);
@@ -280,6 +292,8 @@ extern "C" Actor* fn_8032742C(Actor* p, s16 n) {
 	}
 	return p;
 }
+
+void fn_803274A0(void) {}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
