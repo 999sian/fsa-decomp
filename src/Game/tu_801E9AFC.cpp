@@ -110,8 +110,8 @@ extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
 static inline void fsaDrawEntries(FsaSlot* slots, const s32 index, const bool textured) {
-    s32 n = slots[index].count;
-    s32 i;
+    int n = slots[index].count;
+    int i;
     for (i = 0; i < n; i++) {
         if (slots[index].entries[i].actor) {
             if (textured) fn_801E801C(slots[index].entries[i].actor);
