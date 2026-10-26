@@ -70,6 +70,15 @@ struct EffArgs {
     u32 x30, x34, x38;
 };
 
+static inline void EffArgsSetLayer(EffArgs& args, const u8 a, const u8 b) {
+    args.b1c = a;
+    args.b1d = b;
+}
+
+static inline f32 EffAlphaClamp(const f32 a, const f32 b) {
+    return a >= b ? a : b;
+}
+
 struct Rec {
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
@@ -1916,6 +1925,7 @@ static inline u8 ee8f4_t(Actor* a, s32 i) {
     return t;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
     u8 first = true;
     s32 slot = 0;
@@ -1925,11 +1935,11 @@ extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
     Vec delta;
     f32 min;
 
+    p = a->field_0C;
     best.x = lbl_8053F740;
     best.y = lbl_8053F744;
     best.z = lbl_8053F740;
     min = blkSquareMag(&best);
-    p = a->field_0C;
     p.y = p.y - p.z;
 
     for (; slot < 4; slot++) {
@@ -1938,9 +1948,8 @@ extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
         }
         if (fn_8023F264(slot)) {
             s32 t = aa->field_04;
-            bool ok = false;
-            s32 room = fn_8023DE58(slot);
-            if (room == t || (u8)(t = 0, (fn_8023DE58(slot) < 8 && (s32)aa->field_04 == 8) ? t = 1 : t)) {
+            u8 ok = false;
+            if (ee8f4_eq(fn_8023DE58(slot), t) || ee8f4_t(aa, slot)) {
                 ok = true;
             }
             if (ok) {
@@ -1991,7 +2000,7 @@ extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
         *c = blkSqrt(min);
     }
 }
-
+#pragma opt_common_subs on
 /* --- 0x801F0E34: publish/refresh the four slot-sound entries ---------------
  * Dispatch on `code` (0x30000-based slot ids) to re-arm one of the four
  * slot-sound entries, then resolve and publish the actor's slot state.  The
@@ -2417,7 +2426,7 @@ extern "C" void fn_801F52A4(Actor* a) {
     u32* pp;
     u32* np;
     u32* cp;
-    s32 i;
+    int i;
     u32 j;
     s32 id;
     s32 idx = a->field_18C;
@@ -2618,7 +2627,6 @@ extern "C" u8 fn_801F23BC(Actor* a, u32 id, void* __restrict f0C, void* __restri
 
 
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7) {
-    f32 z = pos[2];
     if ((s32)mask == -1) {
         return;
     }
@@ -2649,14 +2657,16 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     u8 alpha = 0xdf;
     EffArgs args;
     f32 mtx[3][4];
-    Vec v20;
-    Vec v14;
-    Vec v8;
+    JGeometry::TVec3<f32> v20;
+    JGeometry::TVec3<f32> v14;
+    JGeometry::TVec3<f32> v8;
     args.f10.w = -1;
     args.f14.w = -1;
     for (u8 i = 0; i < 0x10; i++) {
         args.order[i] = i;
     }
+    f32 z = pos[2];
+    bool zPositive = z > 0.0f;
     args.f10.w = -1;
     args.f14.w = 0;
     args.ptr = 0;
@@ -2679,28 +2689,27 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     args.x34 = 0;
     args.x38 = 2;
     args.f10.b[3] = 0xdf;
-    if (z > lbl_8053F740) {
+    if (zPositive) {
         f32 t = (f32)args.f10.b[3] - lbl_8053F74C * z;
-        f32 m = lbl_8053F778;
-        if (m >= t) {
-            m = t;
-        }
+        f32 m = lbl_8053F778 >= t ? lbl_8053F778 : t;
         args.f10.b[3] = (u8)(s32)m;
     }
     if (p3 != 0) {
         if ((mask & 0x400) != 0) {
             args.f10.b[3] = (u8)((args.f10.b[3] * p3[0x13]) / 0xff);
         }
-        args.b1c = p3[0x1c];
-        args.b1d = p3[0x1d];
+        u8 y;
+        u8 x;
+        x = p3[0x1c];
+        y = p3[0x1d];
+        args.b1c = x;
+        args.b1d = y;
     }
     args.b1d = args.b1d - 1;
     args.w28 = 1;
     args.b2e = args.f10.b[3] >> 1;
-    if ((u16)kind == 0x39 && uVar3 == 0 && pos[2] == lbl_8053F740) {
-        v14.x = pos[0];
-        v14.y = lbl_8053F77C + pos[1];
-        v14.z = pos[2];
+    if ((u16)kind == 0x39 && uVar3 == 0 && 0.0f == pos[2]) {
+        v14.set(pos[0], lbl_8053F77C + pos[1], pos[2]);
         u32 sel = (*(u32*)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x34) >> 2) & 3;
         u32 id2 = lbl_8053F738[sel] + 0x18f;
         args.b1d = args.b1d + 1;
@@ -2710,9 +2719,7 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
             fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), &v14, name, id2, &args, lbl_8053F774, lbl_8053F774);
         }
     } else if (uVar3 == 7) {
-        v20.x = pos[0];
-        v20.y = pos[1];
-        v20.z = lbl_8053F780;
+        v20.set(pos[0], pos[1], lbl_8053F780);
         PSMTXScale(mtx, lbl_8053F784, lbl_8053F74C, lbl_8053F74C);
         if (p3 != 0) {
             u8* o = *(u8**)(p3 + 0x18);
@@ -2747,9 +2754,7 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
         }
     } else {
         f32 f = lbl_80469FA8[uVar3];
-        v8.x = pos[0];
-        v8.y = pos[1];
-        v8.z = lbl_8053F740;
+        v8.set(pos[0], pos[1], 0.0f);
         if (idx < 8) {
             EffResMgr* m = (EffResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4);
             void* name = (void*)m->load(0x534f4220, lbl_8046A034);
@@ -2827,6 +2832,7 @@ extern "C" void fn_801EFD34(Actor* this_, void* res, DrawRec* rec, u32 mask, f32
  * one word, 3 bytes, 3 words. */
 
 
+#pragma opt_common_subs off
 extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32 p6, u8 p7, f32 f6, f32 f7) {
     Vec v14;
     f32 v98[3][4];
@@ -2846,35 +2852,37 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
                 break;
             }
             if (p4 != 0) {
-                u8  t2e = p4->b2e;
-                u8  t2c = p4->b2c;
+                u32 t2e = p4->b2e;
+                Rec rec;
+                rec.b2c = p4->b2c;
                 u32 t30 = p4->w30;
+                rec.b2e = t2e;
                 u32 t34 = p4->w34;
-                u32 t18 = p4->w18;
+                rec.w30 = t30;
+                u32 matrix = p4->w18;
                 u32 t00 = p4->w00;
                 u32 t04 = p4->w04;
                 u32 t08 = p4->w08;
                 u32 t0c = p4->w0c;
                 u32 t10 = p4->w10;
                 u32 t14 = p4->w14;
-                u8  t1c = p4->b1c;
-                u8  t1d = p4->b1d;
-                u8  t1e = p4->b1e;
-                u8  t1f = p4->b1f;
-                u8  t20 = p4->b20;
-                u8  t21 = p4->b21;
-                u8  t22 = p4->b22;
-                u8  t23 = p4->b23;
-                u8  t24 = p4->b24;
-                u8  t25 = p4->b25;
-                u8  t26 = p4->b26;
+                u32 t18 = *(volatile u32*)&p4->w18;
+                u32 t1c = p4->b1c;
+                u32 t1d = p4->b1d;
+                u32 t1e = p4->b1e;
+                u32 t1f = p4->b1f;
+                u32 t20 = p4->b20;
+                u32 t21 = p4->b21;
+                u32 t22 = p4->b22;
+                u32 t23 = p4->b23;
+                u32 t24 = p4->b24;
+                u32 t25 = p4->b25;
+                u32 t26 = p4->b26;
                 u32 t28 = p4->w28;
-                u8  t2d = p4->b2d;
+                u32 t2d = p4->b2d;
                 u32 t38 = p4->w38;
-                Rec rec;
-                rec.b2c = t2c;
-                rec.b2e = t2e;
-                rec.w30 = t30;
+                
+                
                 rec.w00 = t00;
                 rec.w04 = t04;
                 rec.w08 = t08;
@@ -2897,8 +2905,8 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
                 rec.b2d = t2d;
                 rec.w34 = t34;
                 rec.w38 = t38;
-                if (p4->w18 != 0) {
-                    PSMTXConcat((void*)p4->w18, v98, v98);
+                if (matrix != 0) {
+                    PSMTXConcat((void*)matrix, v98, v98);
                 }
                 rec.w18 = (u32)v98;
                 fn_801F06F0(a, p2, p3, &rec, p5, f6, f7);
@@ -2941,11 +2949,12 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
     }
     if ((s32)a->field_04 >= 8) {
         s32 n = a->field_D8;
-        s32 flag = 1;
+        s32 m;
+        u8 flag = 1;
         s32 mode = 0;
         *(JGeometry::TVec3f*)&v14 = *(JGeometry::TVec3f*)&a->field_0C;
         if ((s32)n > 0) {
-            s32 m = a->field_DC;
+            m = a->field_DC;
             if ((s32)n > (s32)(m - 0x19) || (s32)m < 0x19) {
                 if (n & 2) {
                     flag = 0;
@@ -2967,7 +2976,7 @@ extern "C" void fn_801F02BC(Actor* a, char* p2, void* p3, Rec* p4, void* p5, s32
         }
     }
 }
-
+#pragma opt_common_subs reset
 /* v09__5ActorFv - 100% (objdiff, functionRelocDiffs=none). Body from the v09 handover run.
  * The three source properties that matter: the loop start value is its own variable
  * (retail's li r4,0 / li r4,2 / mr r30,r4), the rand seed is read through a struct, and
