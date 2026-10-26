@@ -457,30 +457,25 @@ extern f32 lbl_8053F448;
 extern "C" u8 fn_801DA904(void* p);
 extern "C" s32 fn_801DA96C(void* p);
 extern "C" void fn_801DE12C(u8* this_) {
-    s32 state = *(s32*)(this_ + 0x248);
-    s32 frame;
-
-    if (state >= 0x13) {
-        if (state >= 0x15) {
-            goto frame_anim;
-        }
-    } else if (state >= 4 || state < 0) {
-        goto frame_anim;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 19:
+    case 20:
+        *(f32*)(this_ + 0x60) = 1.0f;
+        *(f32*)(this_ + 0x64) = 1.0f;
+        *(f32*)(this_ + 0x68) = -1.0f;
+        *(f32*)(this_ + 0x6c) = -1.0f;
+        *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+        return;
     }
 
-    *(f32*)(this_ + 0x60) = 1.0f;
-    *(f32*)(this_ + 0x64) = 1.0f;
-    *(f32*)(this_ + 0x68) = -1.0f;
-    *(f32*)(this_ + 0x6c) = -1.0f;
-    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
-    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
-    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
-    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
-    return;
-
-frame_anim:
-    frame = fn_801DA96C(this_ + 0x2a8);
-    switch (frame) {
+    switch (fn_801DA96C(this_ + 0x2a8)) {
     case 0: case 1: case 2: case 3: case 4: case 5: case 11: case 12:
         *(f32*)(this_ + 0x60) = -24.0f;
         *(f32*)(this_ + 0x64) = -16.0f;
