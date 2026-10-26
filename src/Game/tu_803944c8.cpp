@@ -1809,6 +1809,7 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
     return 0;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
     MsgLayout* l;
     char* src;
