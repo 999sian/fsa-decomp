@@ -21,8 +21,8 @@ static inline u32 calcCardChecksum(u8* data) {
     u16 inv = 0;
     for (u32 i = 0; i < 0x1ffc; i += 2) {
         u16 value = *(u16*)(data + i);
-        sum += value;
         inv += ~value;
+        sum += value;
     }
     return (sum << 16) | inv;
 }
@@ -128,8 +128,8 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
 #pragma optimization_level reset
 #pragma opt_unroll_loops reset
 #pragma peephole on
-extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
-    CARDFileInfo* fileInfo = info;
+extern "C" s32 fn_803BBF08(u8* info, void* data, s32 unused, s32 len) {
+    u8* fileInfo = info;
     void* src = data;
     s32 size = len;
     OSCalendarTime cal;
@@ -143,6 +143,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     u8* res0;
     u8* res1;
     bool bVar3;
+    u8* base = saveBlock0;
 
     snprintf((char*)saveBanner + 0x1c00, 0x20, "Four Swords Adventures");
     OSTicksToCalendarTime(OSGetTime(), &cal);
@@ -151,11 +152,11 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     res1 = (u8*)fn_804030C4(0x54494D47, "kk_ipl_icon_01.bti");
     memcpy(saveBanner, res0 + *(u32*)(res0 + 0x1c), *(u16*)(res0 + 0xa) * 2 + 0xc00);
     memcpy(saveBanner + 0xe00, res1 + *(u32*)(res1 + 0x1c), *(u16*)(res1 + 0xa) * 2 + 0x400);
-    result = CARDWrite(fileInfo, saveBanner, 0x2000, 0);
+    result = CARDWrite((CARDFileInfo*)fileInfo, saveBanner, 0x2000, 0);
     if (result != 0) {
         return result;
     }
-    CARDGetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &stat);
+    CARDGetStatus(lbl_8051C1A0[0x1ff4], *(s32*)(fileInfo+4), &stat);
     if (stat.iconAddr == 0 && stat.commentAddr == 0x1c00 && (stat.bannerFormat & 3) == 1 &&
         !(stat.bannerFormat & 4) && (stat.iconFormat & 3) == 1 &&
         (stat.iconFormat >> 2 & 3) == 0 && (stat.iconFormat >> 4 & 3) == 0 &&
@@ -171,19 +172,19 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
         bVar3 = false;
     }
     if (!bVar3) {
-        memset(saveBlock0, 0, 0x2000);
-        result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x2000);
+        memset(base, 0, 0x2000);
+        result = CARDWrite((CARDFileInfo*)fileInfo, saveBlock0, 0x2000, 0x2000);
         if (result != 0) {
             return result;
         }
-        result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x4000);
+        result = CARDWrite((CARDFileInfo*)fileInfo, saveBlock0, 0x2000, 0x4000);
         if (result != 0) {
             return result;
         }
         memset(saveData0, 0, 0x1d4c);
         memset(saveData1, 0, 0x1d4c);
     }
-    buf0 = saveBlock0;
+    buf0 = base;
     buf1 = saveBlock1;
     *(u16*)buf0 = 0;
     *(u16*)buf1 = 0;
@@ -201,29 +202,29 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     *(u32*)(buf0 + 0x1ffc) = chk0;
     chk1 = calcCardChecksum(buf1);
     *(u32*)(buf1 + 0x1ffc) = chk1;
-    result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x2000);
+    result = CARDWrite((CARDFileInfo*)fileInfo, saveBlock0, 0x2000, 0x2000);
     if (result != 0) {
         return result;
     }
-    result = CARDRead(fileInfo, saveBlock0, 0x2000, 0x2000);
+    result = CARDRead((CARDFileInfo*)fileInfo, saveBlock0, 0x2000, 0x2000);
     if (result != 0) {
         return result;
     }
     if (chk0 != calcCardChecksum(saveBlock0)) {
         return result;
     }
-    result = CARDWrite(fileInfo, saveBlock1, 0x2000, 0x4000);
+    result = CARDWrite((CARDFileInfo*)fileInfo, saveBlock1, 0x2000, 0x4000);
     if (result != 0) {
         return result;
     }
-    result = CARDRead(fileInfo, saveBlock1, 0x2000, 0x4000);
+    result = CARDRead((CARDFileInfo*)fileInfo, saveBlock1, 0x2000, 0x4000);
     if (result != 0) {
         return result;
     }
     if (chk1 != calcCardChecksum(saveBlock1)) {
         return result;
     }
-    CARDGetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
+    CARDGetStatus(lbl_8051C1A0[0x1ff4], *(s32*)(fileInfo+4), &tailStat);
     CARDSetIconFormat(&tailStat, 0, 1);
     CARDSetIconSpeed(&tailStat, 0, 3);
     CARDSetBannerFormat(&tailStat, 1);
@@ -244,7 +245,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     CARDSetIconAnim(&tailStat,0);
     tailStat.iconFormat &= 0xfff;
     tailStat.iconSpeed &= 0xfff;
-    CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
+    CARDSetStatus(lbl_8051C1A0[0x1ff4], *(s32*)(fileInfo+4), &tailStat);
     return result;
 }
 #pragma peephole reset
