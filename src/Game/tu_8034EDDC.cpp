@@ -68,11 +68,11 @@ extern "C" void PSMTXIdentity(f32 (*m)[4]);
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" char lbl_80472228[];
-static inline s32 enemyDrawAlphaUp(s32 q) {
-    return (s32)(lbl_805425DC * (((f32)q - lbl_805425E0) / lbl_805425E0));
+static inline f32 enemyDrawAlphaUp(f32 range, f32 q, f32 center) {
+    return range * ((q - center) / center);
 }
-static inline s32 enemyDrawAlphaDown(s32 q) {
-    return (s32)(lbl_805425DC * ((lbl_805425E0 - (f32)q) / lbl_805425E0));
+static inline f32 enemyDrawAlphaDown(f32 range, f32 q, f32 center) {
+    return range * ((center - q) / center);
 }
 static inline f32 enemyDrawSin(f32 x) { return sin(x); }
 static inline f32 enemyDrawCos(f32 x) { return cos(x); }
@@ -122,11 +122,9 @@ extern "C" void fn_8034EE3C(u8* self) {
             if (*(s32*)(self + 4) < 8) {
                 int q = v % 40;
                 if (q > 20) {
-                    f32 range;
-                    f32 center;
-                    const f32 f = q;
-                    center = lbl_805425E0;
-                    range = lbl_805425DC;
+                    f32 center = lbl_805425E0;
+                    f32 f = q;
+                    f32 range = lbl_805425DC;
                     mode = (s32)(range * ((f - center) / center));
                 } else {
                     f32 f = q;
