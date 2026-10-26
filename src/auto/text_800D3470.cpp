@@ -1387,74 +1387,50 @@ extern "C" void fn_800D7524(u8* p) {
 }
 
 extern "C" void fn_800D7A4C(u8* p) {
-    u8* addr = p;
-    u32 i = 0;
+    u32 i;
     u8* tev;
     u8 count = p[0x58];
-    u8* table;
-    u32 j;
     *(u32*)(p + 4) = GDGetCurrOffset();
-    for (; i < 8; i++) {
-        if (*(u16*)(addr + 8) != 0xffff) {
-            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+    for (i = 0; i < 8; i++) {
+        if (*(u16*)(p + 8 + i * 2) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(p + 8 + i * 2));
         }
-        addr += 2;
     }
     tev = p;
-    table = (u8*)&sTexCoordScaleTable__6J3DSys;
-    for (j = 0; j < count; j += 2) {
+    for (u32 j = 0; j < count; j += 2) {
         u8* next = p + (j + 1) * 4;
         J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
-        u16* s = (u16*)(table + (tev[0x19] & 7) * 8);
+        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
-        s = (u16*)(table + (next[0x19] & 7) * 8);
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(next[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         tev += 8;
     }
     *(u32*)(p + 0x170) = GDGetCurrOffset();
-    addr = p;
     for (i = 0; i < 3; i++) {
-        GXColorS10 c = *(GXColorS10*)(addr + 0xda);
-        J3DGDSetTevColorS10((GXTevRegID)(i + 1), c);
-        addr += 8;
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0xda + i * 8));
     }
-    addr = p;
     for (i = 0; i < 4; i++) {
-        GXColor c = *(GXColor*)(addr + 0xfa);
-        J3DGDSetTevKColor((GXTevKColorID)i, c);
-        addr += 4;
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0xfa + i * 4));
     }
-    u8* a = p;
-    u8* b = p;
     for (i = 0; i < count; i++) {
-        u32 tag = (i + 0x10) << 24;
-        u32 v = *(u32*)(a + 0x59);
-        __GDWrite(0x61);
-        __GDWriteU32(v);
-        v = *(u32*)(a + 0x5d);
-        a += 8;
-        __GDWrite(0x61);
-        __GDWriteU32(v);
-        v = *(u32*)(b + 0x130) | tag;
-        b += 4;
-        __GDWrite(0x61);
-        __GDWriteU32(v);
+        u32 v = *(u32*)(p + 0x59 + i * 8);
+        J3DGDWriteBPCmd(v);
+        v = *(u32*)(p + 0x5d + i * 8);
+        J3DGDWriteBPCmd(v);
+        v = *(u32*)(p + 0x130 + i * 4) | ((i + 0x10) << 24);
+        J3DGDWriteBPCmd(v);
     }
-    u8* swapTable = (u8*)j3dTevSwapTableTable;
-    for (i = 0; i < 4; i++) {
-        s32 off = i * 4;
-        u8* s = p + off;
-        u32 sw = p[0x12a + i] * 4;
-        u8 t0 = swapTable[sw];
-        u8 t1 = swapTable[sw + 1];
-        u32 w = (s[0x10a] << 4) | t0 | (t1 << 2) | (s[0x11a] << 9) | (s[0x10b] << 14) | (s[0x11b] << 19);
-        __GDWrite(0x61);
-        __GDWriteU32((((off / 2) + 0xf6) << 24) | w);
-        u8 t2 = swapTable[sw + 2];
-        u8 t3 = swapTable[sw + 3];
-        w = (s[0x10c] << 4) | t2 | (t3 << 2) | (s[0x11c] << 9) | (s[0x10d] << 14) | (s[0x11d] << 19);
-        __GDWrite(0x61);
-        __GDWriteU32((((off + 2) / 2 + 0xf6) << 24) | w);
+    for (int st = 0; st < 16; st += 4) {
+        int j = st / 4;
+        J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)p[st + 0x10a], (GXTevKAlphaSel)p[st + 0x11a],
+                                             (GXTevKColorSel)p[st + 0x10b], (GXTevKAlphaSel)p[st + 0x11b],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x12a + j] * 4],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x12a + j] * 4 + 1]);
+        J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st + 2), (GXTevKColorSel)p[st + 0x10c], (GXTevKAlphaSel)p[st + 0x11c],
+                                             (GXTevKColorSel)p[st + 0x10d], (GXTevKAlphaSel)p[st + 0x11d],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x12a + j] * 4 + 2],
+                                             (GXTevColorChan)j3dTevSwapTableTable[p[0x12a + j] * 4 + 3]);
     }
 }
 
