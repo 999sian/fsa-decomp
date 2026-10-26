@@ -136,29 +136,6 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
 #pragma optimization_level reset
 #pragma opt_unroll_loops reset
 #pragma peephole on
-static inline void setupCardStat(CARDStat& stat) {
-    CARDSetIconFormat(&stat, 0, 1);
-    CARDSetIconSpeed(&stat, 0, 3);
-    CARDSetBannerFormat(&stat, 1);
-    CARDSetIconFormat(&stat, 1, 0);
-    CARDSetIconSpeed(&stat, 1, 0);
-    CARDSetIconFormat(&stat, 2, 0);
-    CARDSetIconSpeed(&stat, 2, 0);
-    CARDSetIconFormat(&stat, 3, 0);
-    CARDSetIconSpeed(&stat, 3, 0);
-    CARDSetIconFormat(&stat, 4, 0);
-    CARDSetIconSpeed(&stat, 4, 0);
-    CARDSetIconFormat(&stat, 5, 0);
-    CARDSetIconSpeed(&stat, 5, 0);
-    CARDSetIconFormat(&stat, 6, 0);
-    CARDSetIconSpeed(&stat, 6, 0);
-    stat.iconAddr = 0;
-    stat.commentAddr = 0x1c00;
-    CARDSetIconAnim(&stat,0);
-    stat.iconFormat &= 0xfff;
-    stat.iconSpeed &= 0xfff;
-}
-
 #pragma optimization_level 3
 #pragma opt_loop_invariants off
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
@@ -173,24 +150,22 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     u16* buf1;
     u32 chk0;
     u32 chk1;
-    u8* res0;
-    u8* res1;
+    const u8* res0;
+    const u8* res1;
     bool bVar3;
-    u8* card;
 
     snprintf((char*)saveBanner + 0x1c00, 0x20, "Four Swords Adventures");
     OSTicksToCalendarTime(OSGetTime(), &cal);
     snprintf((char*)saveBanner + 0x1c20, 0x20, "%d/%d Save Data", cal.mon + 1, cal.mday);
     res0 = (u8*)fn_804030C4(0x54494D47, "kk_diskbanner_01.bti");
     res1 = (u8*)fn_804030C4(0x54494D47, "kk_ipl_icon_01.bti");
-    memcpy(saveBanner, res0 + *(u32*)(res0 + 0x1c), *(u16*)(res0 + 0xa) * 2 + 0xc00);
-    memcpy(saveBanner + 0xe00, res1 + *(u32*)(res1 + 0x1c), *(u16*)(res1 + 0xa) * 2 + 0x400);
+    memcpy(saveBanner, res0 + *(const s32*)(res0 + 0x1c), *(const u16*)(res0 + 0xa) * 2 + 0xc00);
+    memcpy(saveBanner + 0xe00, res1 + *(const s32*)(res1 + 0x1c), *(const u16*)(res1 + 0xa) * 2 + 0x400);
     result = CARDWrite(fileInfo, saveBanner, 0x2000, 0);
     if (result != 0) {
         return result;
     }
-    card = lbl_8051C1A0;
-    CARDGetStatus(card[0x1ff4], fileInfo->fileNo, &stat);
+    CARDGetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &stat);
     if (!(stat.iconAddr == 0 && stat.commentAddr == 0x1c00 && (stat.bannerFormat & 3) == 1 &&
         !(stat.bannerFormat & 4) && (stat.iconFormat & 3) == 1 &&
         (stat.iconFormat >> 2 & 3) == 0 && (stat.iconFormat >> 4 & 3) == 0 &&
@@ -279,7 +254,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     CARDSetIconAnim(&tailStat,0);
     tailStat.iconFormat &= 0xfff;
     tailStat.iconSpeed &= 0xfff;
-    CARDSetStatus(card[0x1ff4], fileInfo->fileNo, &tailStat);
+    CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
     return result;
 }
 #pragma optimization_level reset
