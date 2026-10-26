@@ -2845,12 +2845,13 @@ static inline bool MenuPlayerActive803B(MsgGame* game, s32 i) {
     u8 mask = 1 << i;
     return (((u8*)game)[0x82] & mask) != 0;
 }
-static inline int MenuPlayerCount803B(MsgGame* game, int count = 0) {
+static inline void MenuPlayerCount803B(MsgGame* game, s32& count) {
+    count = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (MenuPlayerActive803B(game, i)) count++;
+        if (((u8*)game)[0x82] & (u8)(1 << i)) count++;
     }
-    return count;
 }
+#pragma opt_propagation off
 extern "C" void fn_803B6768(void* this_) {
     s32 count;
     s32* c320;
@@ -2858,7 +2859,13 @@ extern "C" void fn_803B6768(void* this_) {
     u8* c2f0;
     s32 i;
     u8* p = (u8*)this_;
-    count = MenuPlayerCount803B(lbl_8053AAF8, 0);
+    MsgGame* game = lbl_8053AAF8;
+    count = 0;
+    for (s32 j = 0; j < 4; j++) {
+        if (((u8*)game)[0x82] & (u8)(1 << j)) {
+            count++;
+        }
+    }
     switch (count) {
     case 2:
         *(s32*)(p + 0x450) = 2;
@@ -2938,20 +2945,23 @@ extern "C" void fn_803B6768(void* this_) {
             x0 = *(f32*)pane->getBounds();
             f32 cx = *(f32*)(*(J2DPane**)(p + 0x168))->getBounds();
             cx += x0;
-            f32 center;
-            f32 scale;
-            scale = lbl_805433CC;
-            center = width * lbl_805433E8 + cx;
+            f32 scale = lbl_805433CC;
+            f32 center = width * lbl_805433E8 + cx;
             *(f32*)(c2f0 + 0x2f0) = scale * center / (f32)texW;
 
             s32 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
             pane = *(J2DPane**)((u8*)c320 + 0x158);
             f32 by = ((f32*)(*(J2DPane**)(p + 0x168))->getBounds())[1];
-            f32 baseY;
             f32 h = *(f32*)((u8*)pane + 0x2c) - *(f32*)((u8*)pane + 0x24);
+            const f32 scaleY = lbl_805433D0;
+            const f32 b = lbl_80543400;
+            const f32 a = lbl_805433FC;
+            f32 total;
             f32 y = by + h;
-            baseY = *(f32*)(p + 0x3f0);
-            *(f32*)(c2f0 + 0x2f4) = lbl_805433D0 * (baseY + y - lbl_805433FC - lbl_80543400) / (f32)texH;
+            total = *(f32*)(p + 0x3f0) + y;
+            f32 yy = total - a;
+            total = yy - b;
+            *(f32*)(c2f0 + 0x2f4) = scaleY * total / (f32)texH;
             *(f32*)(c2f0 + 0x2f8) = lbl_805433C8;
         }
     }
@@ -2994,7 +3004,7 @@ extern "C" void fn_803B6768(void* this_) {
     u32 color = -0x100;
     fn_8013A884(&color);
 }
-
+#pragma opt_propagation reset
 struct DelObj {
     virtual ~DelObj();
 };
