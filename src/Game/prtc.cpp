@@ -201,9 +201,9 @@ extern "C" void fn_802E111C(void* this_) {
     } else {
         *(u8*)(p + 0x260) = 0;
     }
-    *(f32*)(p + 0x244) = 0.0f;
-    *(f32*)(p + 0x248) = 0.0f;
-    *(f32*)(p + 0x24c) = 0.0f;
+    *(f32*)(p + 0x244) = lbl_805411A8;
+    *(f32*)(p + 0x248) = lbl_805411A8;
+    *(f32*)(p + 0x24c) = lbl_805411A8;
     if (*(s32*)(p + 0x90) & 0x800) {
         *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + lbl_805411B0;
     }
@@ -286,6 +286,4 @@ extern "C" void fn_802E111C(void* this_) {
 #undef NULL
 #define NULL 0
 #define unknown jsys_unknown
-#pragma exceptions off
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-#pragma exceptions reset
