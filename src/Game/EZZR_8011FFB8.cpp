@@ -13,12 +13,17 @@ struct EzzrMgr {
     u8 mFlags[1];
 };
 
+static inline f32 EZZR_Sqr(f32 x) {
+    return x * x;
+}
+
 static inline f32 EZZR_Sqrt(f32 x) {
     if (x <= 0.0f) {
         return x;
     }
     f32 y = __frsqrte(x);
-    return 0.5f * y * (3.0f - (x * (y * y))) * x;
+    y = 0.5f * y * (3.0f - (x * (y * y)));
+    return x * y;
 }
 
 class EZZR : public Actor {
@@ -187,12 +192,11 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
             f32 dx2 = dx * dx;
             f32 dy2 = dy * dy;
             f32 distA = EZZR_Sqrt(dx2 + dy2);
-            dx = p->field_0C.x - b.x;
-            dy = p->field_0C.y - b.y;
-            dx2 = dx * dx;
-            dy2 = dy * dy;
-            dx = EZZR_Sqrt(dx2 + dy2);
-            if (distA > dx) {
+            f32 bx = p->field_0C.x - b.x;
+            f32 by = p->field_0C.y - b.y;
+            f32 bx2 = bx * bx;
+            f32 by2 = by * by;
+            if (distA > EZZR_Sqrt(bx2 + by2)) {
                 if (*((u8*)p + 0x3c4) != 0) {
                     fn_80127ED8(fn_801283E8(), &b);
                 } else {
