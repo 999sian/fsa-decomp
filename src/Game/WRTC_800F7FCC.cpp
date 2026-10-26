@@ -1475,11 +1475,6 @@ extern "C" void fn_800FBA14(char* this_) {
 }
 
 extern const f32 lbl_8053C07C;
-static inline f32 WRTC_velocityDot(const f32* v, const JGeometry::TVec3<f32>& n) {
-    f32 d = v[0] * n.x + v[1] * n.y;
-    return d + v[2] * n.z;
-}
-
 static inline f32 WRTC_velocityDot(WrtcVec* v, const JGeometry::TVec3<f32>& n) {
     f32 d = v->x * n.x + v->y * n.y;
     return d + v->z * n.z;
