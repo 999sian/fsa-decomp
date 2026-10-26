@@ -7,14 +7,6 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 #pragma auto_inline off
-static inline void SetRoomBounds802D(char* p, f32 left, f32 top) {
-    extern const f32 lbl_80541140;
-    extern const f32 lbl_80541144;
-    *(f32*)(p + 0xcc) = left;
-    *(f32*)(p + 0xd0) = top;
-    *(f32*)(p + 0xd4) = lbl_80541144 + left;
-    *(f32*)(p + 0xd8) = lbl_80541140 + top;
-}
 static inline u32 RoomResourceTag802D(const char* name) {
     s32 a = name[0] - 0x20;
     s32 b = name[1] - 0x20;
@@ -1445,8 +1437,8 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     char* tbl;
     const char* fmt;
     const char* name;
-    s32 tens;
-    s32 ones;
+    int tens;
+    int ones;
     s32 key;
     s32 number;
     char buf104[32];
@@ -1479,12 +1471,7 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     }
     tens = number / 10;
     ones = number % 10;
-    s32 n0 = name[0];
-    s32 n1 = name[1];
-    s32 n2 = name[2];
-    key = 0x4d202020;
-    key += ((n0 - 0x20) << 16) + ((n1 - 0x20) << 8) + n2;
-    key -= 0x20;
+    key = RoomResourceTag802D(name);
     sprintf(buf104, fmt + 0x6f0, name, tens, ones);
     sprintf(buf32, fmt + 0x70c, name, tens, ones);
     if (flag != 0) {
