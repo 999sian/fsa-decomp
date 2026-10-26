@@ -72,6 +72,7 @@ extern "C" void fn_8013B3CC(void* mgr, void* mtx);
 extern "C" void fn_8013B3F0(void* mgr);
 extern void* sManager__8JUTVideo;
 extern "C" void fn_802FC80C(u8* this_);
+static inline f32 GridIndexFloat802F(s32 index) { return index; }
 static inline void WarpMatrixSet802F(MtxPtr m, f32 xx, f32 yx, f32 zx, f32 tx, f32 xy, f32 yy, f32 zy, f32 ty, f32 xz, f32 yz, f32 zz, f32 tz) {
     m[0][0]=xx; m[0][1]=yx; m[0][2]=zx; m[0][3]=tx;
     m[1][0]=xy; m[1][1]=yy; m[1][2]=zy; m[1][3]=ty;
@@ -413,7 +414,7 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
 #pragma opt_common_subs reset
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
     typedef JGeometry::TVec3<f32> V3;
-    bool ret = false;
+    u32 ret = 0;
     if (*(s32*)(this_ + 0xc21c) > 0) {
         f32 loX; f32 x;
         x = src[0]; loX = *(f32*)(this_ + 0x2368);
@@ -423,17 +424,17 @@ extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
             if (y >= loY && y < lbl_80541510 * (f32)*(s32*)(this_ + 0x2384) + loY) {
                 f32 dx = x - loX;
                 f32 dy = y - loY;
-                s32 iy; s32 ix;
-                ix = (s32)(lbl_80541514 * dx);
-                iy = (s32)(lbl_80541514 * dy);
+                int iy; int ix;
+                ix = (s32)(0.125f * dx);
+                iy = (s32)(0.125f * dy);
                 u8* table = this_;
                 table += *(s32*)(this_ + 0x2388) * 4;
                 V3 (*grid)[65] = *(V3(**)[65])(table + 0x100);
                 V3* cell = &grid[iy][ix];
-                f32 fx = lbl_80541514 * (dx - lbl_80541510 * (f32)ix);
-                f32 fy = lbl_80541514 * (dy - lbl_80541510 * (f32)iy);
-                f32 oneX = lbl_80541518 - fx;
-                f32 oneY = lbl_80541518 - fy;
+                f32 fx = 0.125f * (dx - lbl_80541510 * (f32)ix);
+                f32 fy = 0.125f * (dy - lbl_80541510 * (f32)iy);
+                f32 oneX = 1.0f - fx;
+                f32 oneY = 1.0f - fy;
                 V3 temp, left, pos, n1, n2;
                 temp.set(cell[0]);
                 temp.scale(oneX);
@@ -449,21 +450,21 @@ extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
                 pos.scale(fy);
                 pos.add(left);
                 temp.sub(cell[1], cell[0]);
-                n1.cross(temp, V3(lbl_805414F8, lbl_80541518, lbl_805414F8));
+                n1.cross(temp, V3(0.0f, 1.0f, 0.0f));
                 n1.normalize();
                 n1.scale(oneY);
                 temp.sub(cell[66], cell[65]);
-                n2.cross(temp, V3(lbl_805414F8, lbl_80541518, lbl_805414F8));
+                n2.cross(temp, V3(0.0f, 1.0f, 0.0f));
                 n2.normalize();
                 n2.scale(fy);
                 n2.add(n1);
-                n2.y = lbl_805414F8;
+                n2.y = 0.0f;
                 n2.normalize();
-                n1.cross(V3(lbl_805414F8, lbl_80541518, lbl_805414F8), n2);
+                n1.cross(V3(0.0f, 1.0f, 0.0f), n2);
                 WarpMatrixSet802F(mtx, n1.x, 0.0f, n2.x, pos.x - dx,
                                   n1.y, 1.0f, n2.y, pos.y - dy,
                                   n1.z, 0.0f, n2.z, pos.z);
-                ret = true;
+                ret = 1;
             }
         }
     }
