@@ -2736,6 +2736,12 @@ s32 fn_80237810(s32);
 s32 fn_8024189C(char*);
 extern const Vec2f lbl_8046BD88[];
 }
+static inline void playerMovementDelta(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& target, const JGeometry::TVec3<f32>& pos) {
+    JGeometry::TVec3<f32> delta(target);
+    delta -= pos;
+    out = delta;
+}
+
 void fn_8027B648(char* p) {
     fn_80274988(p);
     if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4)) && U8(p, 0x3fa) >= 11 && U8(p, 0x3fa) < 35) {
