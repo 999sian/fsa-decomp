@@ -44,9 +44,14 @@ static inline void rotation80359E18(f32 m[3][4], const f32 scale, s16 angle)
     m[1][2] = scale * (cxsz * sy - sxcz);
     m[2][2] = scale * (cx * cy);
 }
-static inline void rotationEuler80359E18(f32 m[3][4], f32 scale, s16 rx, s16 ry, s16 rz)
+static inline void rotationEuler80359E18(f32 m[3][4], const f32 scale, s16 rx, s16 ry, s16 rz)
 {
-    f32 sx, sy, sz, cx, cy, cz;
+    f32 cz;
+    f32 cy;
+    f32 sz;
+    f32 sy;
+    f32 sx;
+    f32 cx;
     sx = JMath::sincosTable_.sinShort(rx);
     sy = JMath::sincosTable_.sinShort(ry);
     sz = JMath::sincosTable_.sinShort(rz);
@@ -748,9 +753,9 @@ extern "C" void fn_80359E18(u8* self)
     mtx[1][3] = lbl_8054286C;
     mtx[2][3] = lbl_8054286C;
     if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) == 4 && *(s16*)(self + 0x230) == 0) {
-        rotation80359E18(mtx, lbl_80542878, *(s16*)(self + 0x23c));
+        rotationEuler80359E18(mtx, lbl_80542878, *(s16*)(self + 0x23c), 0, 0);
     } else {
-        rotation80359E18(mtx, lbl_80542878, *(s16*)(self + 0x230));
+        rotationEuler80359E18(mtx, lbl_80542878, *(s16*)(self + 0x230), 0, 0);
     }
     rec.w18 = mtx;
     rec.b21 = 1;
