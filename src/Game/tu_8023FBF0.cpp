@@ -2418,13 +2418,13 @@ void fn_8024762C(char* p) {
     if (U8(p, 0x454) != 0) {
         return;
     }
-    s32 cv;
+    bool cv;
     if (!(u8)owner476(p)) {
         cv = S32(p, 0x1240) == 0x1b || S32(p, 0x1244) == 0x1b;
     } else {
-        cv = fn_80233EDC(fn_8022EA0C(S32(p, 0x4)));
+        cv = ((bool (*)(s32))fn_80233EDC)(fn_8022EA0C(S32(p, 0x4)));
     }
-    if ((u8)cv) {
+    if (cv) {
         return;
     }
     if (U8(p, 0xce8) != 0) {
@@ -2461,26 +2461,7 @@ void fn_8024762C(char* p) {
             }
         }
     } else if (timer476(p) == 0 && S32(p, 0x1240) == 0xb) {
-        bool ok = 0;
-        if (fn_80251BFC(p, 0)) {
-            ok = 1;
-            if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && S32(p, 0xd60) < 0) {
-                S32(p, 0x1244) = 1;
-            } else if (U8(p, 0x434) == 0) {
-                S32(p, 0x1244) = 0;
-            } else if (S32(p, 0x1240) == 2) {
-                ok = 0;
-            } else {
-                S32(p, 0x1244) = 2;
-            }
-            if (ok) {
-                U8(p, 0x124c) = 1;
-                if (S32(p, 0xd60) < 0 && U8(p, 0xcfe) == 1 && S32(p, 0x1244) != 0) {
-                    U8(p, 0xcfe) = 0;
-                }
-            }
-        }
-        if (ok && U8(p, 0xbd4) == 0) {
+        if (resetState476(p) && U8(p, 0xbd4) == 0) {
             fn_8013CC50(S32(p, 0x3b4), p + 8, lbl_80540030, 0x503, 1, 1, 0, 0, 1);
         }
     }
