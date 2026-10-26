@@ -71,7 +71,7 @@ extern "C" void fn_8033E698(Actor* self) {
  fn_801F06F0(self,lbl_80471E98,*(s32*)(p+0x244)+0x172,&rec,-1,lbl_8054221C,lbl_8054221C);
 }
 
-extern "C" void fn_8023DEDC(int, s32);
+extern "C" void fn_8023DEDC(int, const JGeometry::TVec3<f32>*);
 extern "C" void fn_8022CB94(int);
 extern "C" void fn_8022DF48(int);
 extern "C" void* fn_8023E724(int);
@@ -95,7 +95,7 @@ struct FsaVirtBase {
     virtual s32 v15();
 };
 static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& delta) {
-    fn_8023DEDC(player, (s32)&delta);
+    fn_8023DEDC(player, &delta);
 }
 
 static inline u8 platformHasPlayer(u8* p, int player, int room) {
@@ -217,8 +217,7 @@ stop:
     for (player = 0; player < 4; ++player) {
         u8 hit = platformHasPlayer(p, player, *(s32*)(p + 4));
         if (hit && ((JGeometry::TVec3<f32>*)fn_8023E724(player))->z <= lbl_80542210) {
-            const JGeometry::TVec3<f32>& delta = *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18);
-            fn_8023DEDC(player, (s32)&delta);
+            movePlatformPlayer(player, *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18));
             for (int j = 0; j < 3; ++j) fn_8022CB94(player);
         }
         if (((JGeometry::TVec3<f32>*)fn_8023E724(player))->z > lbl_80542210) hit = 0;
@@ -243,7 +242,7 @@ extern "C" const float lbl_80542230;
 extern "C" const float lbl_80542234;
 extern "C" const f64 lbl_80542238;
 extern "C" void PSVECAdd(const Vec* a, const Vec* b, Vec* c);
-extern "C" void fn_8023DEDC(int, s32);
+extern "C" void fn_8023DEDC(int, const JGeometry::TVec3<f32>*);
 extern "C" void fn_8022CB94(int);
 extern "C" void fn_8022DF48(int);
 extern "C" void* fn_8023E724(int);
