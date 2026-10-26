@@ -317,12 +317,18 @@ static inline f32 navi_invsqrt(f32 x) {
 }
 
 static inline f32 navi_sqrt(f32 x) {
-    if (x <= 0.0f) {
+    if (x <= lbl_8053FD58) {
         return x;
     }
     f32 y = __frsqrte(x);
-    y = 0.5f * y * (3.0f - (x * (y * y)));
-    return x * y;
+    y = lbl_8053FDA8 * y * (lbl_8053FDAC - (x * (y * y)));
+    x *= y;
+    return x;
+}
+static inline void navi_invsqrt_inplace(f32& x) {
+    if (x <= lbl_8053FD58) return;
+    f32 y = __frsqrte(x);
+    x = lbl_8053FDA8 * y * (lbl_8053FDAC - (x * (y * y)));
 }
 extern "C" u16* fn_8021F064(void);
 extern "C" u8 fn_8021F094(void);
@@ -643,19 +649,17 @@ extern "C" void fn_8021E4F8(char* p) {
     f32* dp = d;
     dp[0] = *(f32*)(p + 0x2c0);
     dp[1] = *(f32*)(p + 0x2c4);
-    f32 dz = dp[1] - *(f32*)(p + 0x2cc);
-    f32 dx = dp[0] - *(f32*)(p + 0x2c8);
+    f32 dx;
+    f32 dz;
+    dz = dp[1] - *(f32*)(p + 0x2cc);
+    dx = dp[0] - *(f32*)(p + 0x2c8);
     dp[0] = dx;
     dp[1] = dz;
     f32 len2 = dx * dx + dz * dz;
     if (!(len2 <= lbl_8053FDA4 * *(f32*)__float_epsilon)) {
-        f32 inv = len2;
-        if (!(inv <= lbl_8053FD58)) {
-            f32 y = __frsqrte(inv);
-            inv = (lbl_8053FDA8 * y) * (lbl_8053FDAC - inv * (y * y));
-        }
-        dx *= inv;
-        dz *= inv;
+        len2 = navi_invsqrt(len2);
+        dx *= len2;
+        dz *= len2;
     }
     dx *= *(f32*)(p + 0x2bc);
     dz *= *(f32*)(p + 0x2bc);
