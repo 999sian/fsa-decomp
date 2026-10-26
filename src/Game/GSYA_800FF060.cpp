@@ -14,15 +14,6 @@
 #undef Vec
 #include "Game/Actor.h"
 
-struct GSYAActor : Actor {
-    s32 field_230;
-    u8 field_234, field_235, field_236, field_237;
-    s32 field_238;
-    s32 field_23C;
-    s32 field_240;
-    s32 field_244, field_248, field_24C;
-    s32 field_250[4];
-};
 extern void* lbl_8053AAF8;
 extern "C" s32 fn_80138A30(void* game);
 extern u8* lbl_8053AF00;
@@ -81,13 +72,13 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 minutes;
     s32 value;
-    u32 i;
+    register s32 i;
     s32 count;
     JGeometry::TVec3<f32> saved;
     s32 state = *(s32*)((u8*)this_ + 0x230);
     if (state == 4 || (u32)(state - 5) <= 1 || state == 7) {
         count = fn_80138A30(lbl_8053AAF8);
-        for (i = 0; (s32)i < count; i++) {
+        for (i = 0; i < count; i++) {
             lbl_8053AF00[0x30] |= (u8)(1 << i);
             value = *(s32*)((u8*)this_ + 0x250 + i * 4);
             minutes = value / 60;
