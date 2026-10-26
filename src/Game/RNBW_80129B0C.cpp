@@ -113,6 +113,28 @@ static inline void rnbwSpawn(const u16* ids, Actor* actor) {
         }
     }
 }
+static inline void rnbwUpdateSpawn(const u16* ids, Actor* actor) {
+    s32 i = 0;
+    const u16* table = ids;
+    void** hp = (void**)actor;
+    for (; i < 5; i++, hp++, table++) {
+        if (hp[0x8f] == 0) {
+            u16 id = *table;
+            hp[0x8f] = rnbwEffect(id, actor);
+        }
+    }
+}
+static inline void rnbwUpdateSpawn(Actor* actor, const u16* ids) {
+    const u16* table = ids;
+    void** hp = (void**)actor;
+    s32 i = 0;
+    for (; i < 5; i++, hp++, table++) {
+        if (hp[0x8f] == 0) {
+            u16 id = *table;
+            hp[0x8f] = rnbwEffect(id, actor);
+        }
+    }
+}
 extern "C" void fn_80129B0C(void* this_) {
     JGeometry::TVec3f movement;
     JGeometry::TVec3f testPos;
