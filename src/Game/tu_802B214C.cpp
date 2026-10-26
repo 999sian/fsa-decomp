@@ -5,7 +5,7 @@
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
 
-extern "C" s32 lbl_805409D0[];
+extern "C" s32 lbl_805409D0[2];
 extern "C" f32 lbl_805409EC;
 extern "C" f32 lbl_805409F0;
 extern "C" f32 lbl_805409F4;
@@ -214,37 +214,31 @@ extern "C" void fn_802B2728(Actor* param_1)
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802B28E4(Actor* param_1)
 {
     u8* p = (u8*)param_1;
-    VecOp* pos = (VecOp*)(p + 0xc);
-    VecOp* vel = (VecOp*)(p + 0x3c);
-    VecOp hit;
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(p + 0xc);
+    JGeometry::TVec3<f32>* vel = (JGeometry::TVec3<f32>*)(p + 0x3c);
+    JGeometry::TVec3<f32> hit;
     s32 r;
     s32 cnt;
 
-    cnt = *(s32*)(p + 0x250) - 1;
-    *(s32*)(p + 0x250) = cnt;
-    if (cnt == 0) {
-        if (*(s32*)(p + 0x240) == 2) {
-            s32 st = *(s32*)(p + 0x248);
-            if (st == 0) {
-            } else if (st == 3) {
-                if (*(s32*)(p + 0x24c) == 0) {
-                } else if (st == 1) {
-                }
-            } else if (st == 1) {
-                if (++*(s32*)(p + 0x258) >= 5) {
-                    *(s32*)(p + 0x258) = 0;
-                    *(s32*)(p + 0x250) = 4;
-                }
-            } else if (st == 2 && *(s32*)(p + 0x24c) == 1) {
-                if (--*(s32*)(p + 0x258) < 0) {
-                    *(s32*)(p + 0x258) = 4;
-                }
+    *(s32*)(p+0x250) -= 1;
+    if (*(s32*)(p+0x250) == 0) {
+        if (*(s32*)(p+0x240) == 2) {
+            s32 st=*(s32*)(p+0x248);
+            if (((st==0 || st==3) && *(s32*)(p+0x24c)==0) ||
+                ((st==1 || st==2) && *(s32*)(p+0x24c)==1)) {
+                *(s32*)(p+0x258) -= 1;
+                if (*(s32*)(p+0x258)<0) *(s32*)(p+0x258)=4;
+                goto timerReset;
             }
         }
-        *(s32*)(p + 0x250) = 4;
+        *(s32*)(p+0x258) += 1;
+        if (*(s32*)(p+0x258)>=5) *(s32*)(p+0x258)=0;
+timerReset:
+        *(s32*)(p+0x250)=4;
     }
 
     switch (*(s32*)(p + 0x240)) {
@@ -253,15 +247,15 @@ extern "C" void fn_802B28E4(Actor* param_1)
         *(f32*)(p + 0xc) = lbl_805409EC * *(f32*)(sincosTable___5JMath + (((u16)*(s32*)(p + 0x244) >> 2) & 0x3ff8)) + *(f32*)(p + 0x234);
         *(f32*)(p + 0x10) = lbl_805409EC * *(f32*)(sincosTable___5JMath + (((u16)*(s32*)(p + 0x244) >> 2) & 0x3ff8) + 4) + *(f32*)(p + 0x238);
         *(s32*)(p + 0x25c) = 0;
-        r = ((s32 (*)(Actor*))(*(void***)param_1)[14])(param_1);
+        r = ((Tu802BVirtual*)param_1)->getState();
         if (r >= 6) {
             p[0x11c] = 0;
         } else {
-            r = ((s32 (*)(Actor*))(*(void***)param_1)[14])(param_1);
+            r = ((Tu802BVirtual*)param_1)->getState();
             if (r >= 3) {
                 *(s32*)(p + 0x25c) = 1;
             }
-            r = ((s32 (*)(Actor*))(*(void***)param_1)[14])(param_1);
+            r = ((Tu802BVirtual*)param_1)->getState();
             if (r == 3 && (*(u32*)(p + 0x90) & 0xf) == 0) {
                 *(s32*)(p + 0x25c) = 0;
             }
@@ -297,14 +291,47 @@ extern "C" void fn_802B28E4(Actor* param_1)
             *(f32*)(p + 0x264) = (*(f32*)(p + 0x264) >= lbl_805409DC) ? lbl_805409E0 : lbl_805409D8;
         }
         break;
-    case 2:
+    case 2: {
+        JGeometry::TVec3<f32>* desired=(JGeometry::TVec3<f32>*)(p+0x260);
+        JGeometry::TVec3<f32>* normal=(JGeometry::TVec3<f32>*)(p+0x270);
+        if (((Tu802BVirtual*)param_1)->check() == 1) {
+            desired->zero();
+            *desired += *vel;
+            normal->normalize();
+            *normal *= lbl_805409E0;
+            normal->z=lbl_805409DC;
+            *desired += *normal;
+            *(f32*)(p+0x26c)=lbl_80540A08;
+            *(s32*)(p+0x240)=1;
+        } else {
+            switch (*(s32*)(p+0x230)) {
+            case 0:
+                *pos += *vel;
+                if (fn_801F2618(param_1, normal, 0)==1) {
+                    *(s32*)(p+0x230)=1;
+                    normal->normalize();
+                    *normal *= lbl_805409E0;
+                    normal->z=lbl_805409DC;
+                    vel->z=vel->y=vel->x=lbl_805409DC;
+                    f32 sign=lbl_805409D8;
+                    if (*(s32*)(p+0x24c)==1) sign=lbl_805409E0;
+                    switch (*(s32*)(p+0x248)) {
+                    case 2: case 3: vel->y=sign; break;
+                    case 0: case 1: vel->x=sign; break;
+                    }
+                }
+                break;
+            case 1:
+                fn_802B21EC(param_1);
+                fn_801F2B7C(param_1, *(s32*)(p+0x114), -1, 1);
+                break;
+            }
+        }
         break;
     }
-
-    fn_802B21EC(param_1);
-    fn_801F2B7C(param_1, *(s32*)(p + 0x114), -1, 1);
+    }
 }
-
+#pragma opt_propagation reset
 extern "C" f32 lbl_80540A0C;
 extern "C" f32 lbl_80540A10;
 extern "C" f32 lbl_80540A14;
