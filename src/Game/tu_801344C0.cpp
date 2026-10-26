@@ -55,12 +55,9 @@ void becomeCurrentHeap__7JKRHeapFv(void*);
 }
 
 #pragma opt_strength_reduction off
-#pragma opt_propagation off
-static inline bool mainStateReady(const u8* state) {
-    bool ready = state[0x78] >= 4;
-    return ready;
+static inline u32 mainAtLeast(const u32 value, const u32 minimum) {
+    return ((value | ~minimum) - ((value - minimum) >> 1)) >> 31;
 }
-#pragma opt_propagation reset
 
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
