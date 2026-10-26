@@ -246,9 +246,23 @@ extern "C" s32 fn_801F0E34(void*, u32, u32);
 extern "C" const u16 lbl_804A2880[];
 extern "C" const u16 lbl_804A28D8[][3];
 extern "C" const f32 lbl_8053E3A0;
+static inline void orbitPoint(f32& x, f32& y, const u8* p, const s16 angle) {
+    f32 cosine;
+    f32 sine;
+    x = *(const f32*)(p + 0x280);
+    y = *(const f32*)(p + 0x284);
+    sine = JMASinShort(angle);
+    cosine = JMACosShort(angle);
+    x += lbl_8053E3A0 * sine;
+    y += lbl_8053E3A0 * cosine;
+}
 extern "C" const f32 lbl_8053E3A4;
 extern "C" const f32 lbl_8053E3A8;
 extern "C" void fn_801979C4(u8* p) {
+    f32 cosine;
+    f32 sine;
+    f32 y;
+    f32 x;
     s32 id;
     for (s32 i = 0; i < 13; i++) {
         fn_8013CB44(*(void**)(p + 0x304 + i * 4), p + 0xc, 0, 4, 1);
@@ -267,8 +281,12 @@ extern "C" void fn_801979C4(u8* p) {
         break;
     case 0x4c: {
         u16 angle = lbl_804A2880[*(u16*)(p + 0x94)];
-        f32 x = *(f32*)(p + 0x280) + lbl_8053E3A0 * JMASinShort(angle);
-        f32 y = *(f32*)(p + 0x284) + lbl_8053E3A0 * JMACosShort(angle);
+        x = *(f32*)(p + 0x280);
+        y = *(f32*)(p + 0x284);
+        cosine = JMACosShort(angle);
+        sine = JMASinShort(angle);
+        x += lbl_8053E3A0 * sine;
+        y += lbl_8053E3A0 * cosine;
         x -= *(f32*)(p + 0xc);
         y -= *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
         f32 direction = JMAAtan2Radian(x, y);
