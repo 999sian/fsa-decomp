@@ -209,8 +209,9 @@ struct T80431_Pane {
     f32 f118;
 };
 
-static inline f32 centerOffset80431(const f32 width, const f32 paneWidth, const f32 offset) {
-    return (width - paneWidth) * 0.5f + offset;
+static inline f32 centerOffset80431(f32 width, f32 paneWidth, f32 offset) {
+    width -= paneWidth;
+    return width * 0.5f + offset;
 }
 
 struct T80431_Owner {
@@ -398,7 +399,7 @@ BOOL fn_80431174(T80431_Owner* self, u8 flag) {
             f32 cw = cur->sw - cur->w;
             f32 offset = self->choiceX[1] - self->choiceX[0];
             f32 half = 0.5f;
-            x += offset + half * (space - cw);
+            x += centerOffset80431(space, cw, offset);
         }
         T80431_Pane* pcur = (T80431_Pane*)self->screen->search('Pwcur01');
         f32 hdiff = pcur->sh - pcur->h;
@@ -407,7 +408,7 @@ BOOL fn_80431174(T80431_Owner* self, u8 flag) {
         f32 sizeOffset = (fa - hdiff) * 0.5f;
         f32 lines = (f32)self->lineCount;
         f32 lineOffset = ((f32*)((char*)self + 0xd8))[flag] - lines * 0.5f - lbl_80543B28;
-        y += sizeOffset + lineOffset * tb->f118;
+        y += lineOffset * tb->f118 + sizeOffset;
         self->screen->search('Pwcur01')->move(x, y);
         self->screen->search('Pwcur02')->move(x, y);
         T80431_Pane* pa = (T80431_Pane*)self->screen->search('Pwcur01');
