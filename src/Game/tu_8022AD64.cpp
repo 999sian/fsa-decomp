@@ -730,6 +730,23 @@ void fn_8022CF08(int owner)
     }
 }
 
+#pragma opt_loop_invariants off
+f32 fn_8022CFE8(int index)
+{
+    if (lbl_8053AC90 == NULL) return lbl_80540008;
+    f32 maximum = lbl_80540008;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)pIsLinked(i) && (u8)playerLinkReady(i) && fn_8022E438(index, i)) {
+            JGeometry::TVec3<f32> pos;
+            fn_8027FA08(lbl_8053AC90->players[i], &pos);
+            if ((playerPosition(i) - pos).length() > maximum) {
+                maximum = (playerPosition(i) - pos).length();
+            }
+        }
+    }
+    return maximum;
+}
+#pragma opt_loop_invariants reset
 void fn_8024BB88(Player*);
 void fn_8022D36C(int index)
 {
