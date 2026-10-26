@@ -201,26 +201,34 @@ extern "C" void fn_8034E050(YnswActor* this_) {
 
 extern "C" void fn_8034E49C(YnswActor* this_) {
     f32 rect[4];
-    Vec v44;
-    Vec v38;
-    Vec v2c;
-    Vec v20;
-    Vec v14;
-    Vec v8;
+    JGeometry::TVec3<f32> v44;
+    JGeometry::TVec3<f32> v38;
+    JGeometry::TVec3<f32> v2c;
+    JGeometry::TVec3<f32> v20;
+    JGeometry::TVec3<f32> v14;
+    JGeometry::TVec3<f32> v8;
     s32 i;
     s32 count = 0;
     u8 flag;
 
-    f32 px = this_->field_0C.x;
-    f32 py = this_->field_0C.y;
-    f32 r0 = this_->field_60 + px;
-    f32 r1 = this_->field_64 + py + lbl_805425C4;
-    f32 r2 = this_->field_68 + px;
-    f32 r3 = this_->field_6C + py + lbl_805425C4;
-    rect[0] = r0;
-    rect[1] = r1;
-    rect[2] = r2;
-    rect[3] = r3;
+    f32 shift, xmin, ymin, py, ymax, xmax, px;
+    shift = lbl_805425C4;
+    ymin = this_->field_64;
+    py = this_->field_0C.y;
+    ymax = this_->field_6C;
+    ymin += py;
+    xmin = this_->field_60;
+    ymax += py;
+    px = this_->field_0C.x;
+    xmax = this_->field_68;
+    xmin += px;
+    xmax += px;
+    ymin += shift;
+    ymax += shift;
+    rect[0]=xmin;
+    rect[1]=ymin;
+    rect[2]=xmax;
+    rect[3]=ymax;
 
     switch (this_->mState) {
     case 0:
@@ -314,8 +322,8 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
     case 2:
         if (this_->mSubTimer <= 0) {
             for (i = 0; i < 4; i++) {
-                Vec tmp = *fn_8023E724(i);
-                fn_80230498(i, &tmp, 0xe8, 0xff, -0x80, -0x80, 1);
+                v2c = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
+                fn_80230498(i, &v2c, 0xe8, 0xff, -0x80, -0x80, 1);
             }
             fn_801F0E34(this_, 0x30009, 0);
             this_->mAnimFrame = 2;
@@ -333,18 +341,21 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
         this_->mSubTimer--;
         break;
     case 1:
-        if (--this_->mSubTimer == 0) {
-            if (this_->mUnused248 >= 0xd) {
+        this_->mSubTimer--;
+        if (this_->mSubTimer == 0) {
+            if (this_->mUnused248 < 0xd) {
+                this_->mUnused248++;
+            } else {
                 fn_801F0D20(this_, 3);
                 ((YnswVirtShort*)this_)->v12(0xff, 1);
                 this_->mSubTimer = 0xf;
                 this_->mState = 3;
                 break;
+
             }
-            this_->mUnused248++;
             this_->mSubTimer = lbl_804721D4[this_->mUnused248];
             for (i = 0; i < 4; i++) {
-                v14 = *fn_8023E724(i);
+                v14 = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
                 fn_80230498(i, &v14, this_->mUnused248 + 0xdb, 0xff, -0x80, -0x80, 1);
                 if (this_->mUnused248 == 1) {
                     fn_80230FD0(i, 0x10001);
@@ -353,13 +364,14 @@ extern "C" void fn_8034E49C(YnswActor* this_) {
         }
         break;
     case 3:
-        if (--this_->mSubTimer < 0 && fn_80230534(0)) {
+        this_->mSubTimer--;
+        if (this_->mSubTimer < 0 && fn_80230534(0)) {
             this_->mSubTimer = 0;
-            for (i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 v8.z = lbl_805425CC;
                 v8.y = lbl_805425CC;
                 v8.x = lbl_805425CC;
-                fn_8022FFC4(i, &v8);
+                fn_8022FFC4(j, &v8);
             }
             if (this_->mSwitchType == 1) {
                 this_->mState = 4;
