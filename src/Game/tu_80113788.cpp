@@ -71,8 +71,6 @@ struct StateActor80113788 {
     virtual void v19();
     virtual void v20();
     virtual void v21();
-    virtual void v22();
-    virtual void v23();
     virtual void setState(s32 state);
 };
 
@@ -389,54 +387,59 @@ extern "C" void fn_80113EC4(char* self, s32 state) {
 
 extern "C" void fn_80114860(char* this_) {
     s32 v = *(s32*)((u8*)fn_8011921C() + 8);
-    if (*(s32*)(this_ + 0x238) != 0) {
+    switch (*(s32*)(this_ + 0x238)) {
+    case 0: {
         if (v == lbl_8046486C[2]) {
-            CallVfn24(this_, 2);
+            ((StateActor80113788*)this_)->setState(2);
         } else if (v == lbl_8046486C[3]) {
-            CallVfn24(this_, 3);
+            ((StateActor80113788*)this_)->setState(3);
         } else if (v == lbl_8046486C[4]) {
-            CallVfn24(this_, 4);
+            ((StateActor80113788*)this_)->setState(4);
         } else if (v == lbl_8046486C[5]) {
-            CallVfn24(this_, 5);
+            ((StateActor80113788*)this_)->setState(5);
         } else if (v == lbl_8046486C[6]) {
-            CallVfn24(this_, 6);
+            ((StateActor80113788*)this_)->setState(6);
         } else if (v == lbl_8046486C[7]) {
-            CallVfn24(this_, 7);
+            ((StateActor80113788*)this_)->setState(7);
         } else if (v == lbl_8046486C[9]) {
-            CallVfn24(this_, 9);
-        } else if (v == lbl_8046486C[10]) {
-            CallVfn24(this_, 10);
-        }
-    } else {
-        if (v == lbl_8046486C[2]) {
-            CallVfn24(this_, 2);
-        } else if (v == lbl_8046486C[3]) {
-            CallVfn24(this_, 3);
-        } else if (v == lbl_8046486C[4]) {
-            CallVfn24(this_, 4);
-        } else if (v == lbl_8046486C[5]) {
-            CallVfn24(this_, 5);
-        } else if (v == lbl_8046486C[6]) {
-            CallVfn24(this_, 6);
-        } else if (v == lbl_8046486C[7]) {
-            CallVfn24(this_, 7);
-        } else if (v == lbl_8046486C[9]) {
-            CallVfn24(this_, 9);
+            ((StateActor80113788*)this_)->setState(9);
         } else if (v == lbl_8046486C[11]) {
-            CallVfn24(this_, 11);
+            ((StateActor80113788*)this_)->setState(11);
         } else if (v == lbl_8046486C[12]) {
-            CallVfn24(this_, 12);
+            ((StateActor80113788*)this_)->setState(12);
         } else if (v == lbl_8046486C[13]) {
-            CallVfn24(this_, 13);
+            ((StateActor80113788*)this_)->setState(13);
         } else if (v == lbl_8046486C[14]) {
-            CallVfn24(this_, 14);
+            ((StateActor80113788*)this_)->setState(14);
         } else if (v == lbl_8046486C[15]) {
-            CallVfn24(this_, 15);
+            ((StateActor80113788*)this_)->setState(15);
         } else if (v == lbl_8046486C[16]) {
-            CallVfn24(this_, 16);
+            ((StateActor80113788*)this_)->setState(16);
         } else if (v == lbl_8046486C[17]) {
-            CallVfn24(this_, 17);
+            ((StateActor80113788*)this_)->setState(17);
         }
+    }
+    break;
+    default: {
+        if (v == lbl_8046486C[2]) {
+            ((StateActor80113788*)this_)->setState(2);
+        } else if (v == lbl_8046486C[3]) {
+            ((StateActor80113788*)this_)->setState(3);
+        } else if (v == lbl_8046486C[4]) {
+            ((StateActor80113788*)this_)->setState(4);
+        } else if (v == lbl_8046486C[5]) {
+            ((StateActor80113788*)this_)->setState(5);
+        } else if (v == lbl_8046486C[6]) {
+            ((StateActor80113788*)this_)->setState(6);
+        } else if (v == lbl_8046486C[7]) {
+            ((StateActor80113788*)this_)->setState(7);
+        } else if (v == lbl_8046486C[9]) {
+            ((StateActor80113788*)this_)->setState(9);
+        } else if (v == lbl_8046486C[10]) {
+            ((StateActor80113788*)this_)->setState(10);
+        }
+    }
+    break;
     }
 }
 
