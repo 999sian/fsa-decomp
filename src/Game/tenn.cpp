@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801A0710-801A35AC (TENN). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "std/math.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Vec.h"
