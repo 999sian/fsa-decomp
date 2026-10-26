@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" void* fn_8013C824(void);
@@ -11,6 +12,24 @@ extern "C" bool fn_80219E04(void* thisObj);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern const f32 lbl_8053FCD4;
 extern "C" const f32 lbl_8053FCC8;
+static inline void resetDrawRec(DrawRec& rec) {
+    for (u32 i = 0; (u8)i < 0x10; i += 8) {
+        rec.ids[(u8)i] = i;
+        rec.ids[(u8)(i + 1)] = i + 1;
+        rec.ids[(u8)(i + 2)] = i + 2;
+        rec.ids[(u8)(i + 3)] = i + 3;
+        rec.ids[(u8)(i + 4)] = i + 4;
+        rec.ids[(u8)(i + 5)] = i + 5;
+        rec.ids[(u8)(i + 6)] = i + 6;
+        rec.ids[(u8)(i + 7)] = i + 7;
+    }
+    rec.w10 = -1; rec.w14 = 0; rec.w18 = 0;
+    rec.b1c = 0; rec.b1d = 0; rec.b1e = 0; rec.b1f = 1;
+    rec.b20 = 1; rec.b21 = 0; rec.b22 = 0; rec.b23 = 0;
+    rec.b24 = 0; rec.b25 = 0; rec.b26 = 1; rec.w28 = 3;
+    rec.b2c = 1; rec.b2d = 0; rec.b2e = 0;
+    rec.w30 = -1; rec.w34 = 0; rec.w38 = 2;
+}
 extern "C" void fn_8021B1AC(void* this_);
 extern "C" void fn_8021AFB8(void* this_);
 extern "C" void fn_801F06F0(void* this_, void* table, u32 id, void* data, f32 f1, f32 f2, s32 mode);
@@ -163,5 +182,9 @@ extern "C" void fn_8021B668(void* this_) {
     char layer = 0;
     if (fn_80219E04(actor)) layer = -6;
     fn_8013CC50((void*)room, &actor->field_0C, 0x343, 0, layer, 0, 0, 1, lbl_8053FCD4);
+}
+
+extern "C" void fn_8021B6E0(void) {
+    static_cast<void>(0);
 }
 
