@@ -4128,26 +4128,7 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
         } else {
             Actor_CreateByID(fn_801F856C(), 0x474f4c44, (void*)kind, &pos, idx | 0x40000, -1, -1);
         }
-        if (S32(p, 0xd60) >= 0) {
-            fn_802362C4(-a);
-            return;
-        }
-        c = S32(p, 0xc04);
-        if (c > 0x270f) {
-            S32(p, 0xc04) = c + 1;
-        }
-        if (a > 0) {
-            S32(p, 0xc04) = S32(p, 0xc04) - a;
-            if (S32(p, 0xc04) > 0x270f) {
-                S32(p, 0xc04) = 0x270f;
-            }
-        } else if (S32(p, 0xc04) >= 0) {
-            c = S32(p, 0xc04) - a;
-            S32(p, 0xc04) = c < 0 ? 0 : c;
-        }
-        if (-a == 1) {
-            fn_802702C4(p);
-        }
+        adjustRupees(p, -a);
     } else {
         if (S32(p, 0xd60) >= 0) {
             lim = fn_80236228(S32(p, 0xd60));
@@ -4157,17 +4138,17 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
                 lim = 0;
             }
         }
-        a = lim;
+        if (a > lim) {
+            if (S32(p,0xd60)>=0) a=fn_80236228(S32(p,0xd60));
+            else { a=S32(p,0xc04); if(a<0) a=0; }
+        }
         if (a > 0) {
             if (f2) {
                 Actor_CreateByID(fn_801F856C(), 0x474f4c44, (void*)kind, &pos, a | 0x60000, -1, -1);
             } else {
                 Actor_CreateByID(fn_801F856C(), 0x474f4c44, (void*)kind, &pos, a, -1, -1);
             }
-            if (S32(p, 0xd60) >= 0) {
-                fn_802362C4(-a);
-                return;
-            }
+            adjustRupees(p, -a);
         }
     }
 }
@@ -4192,39 +4173,7 @@ void fn_8024ECCC(char* p, s32 n) {
     }
 }
 void fn_8024ED4C(char* p, s32 n) {
-    s32 linked = S32(p, 0xd60);
-    if (linked >= 0) {
-        fn_802362C4(linked);
-        return;
-    }
-    s32 old = S32(p, 0xc04);
-    if (old > 9999) {
-        for (;;) {}
-    }
-    S32(p, 0xc04) = old + 1;
-    if (S32(p, 0xc04) == old) {
-        for (;;) {}
-    }
-    S32(p, 0xc04) = old;
-    if (n >= 0) {
-        S32(p, 0xc04) += n;
-        if (S32(p, 0xc04) > 9999) {
-            S32(p, 0xc04) = 9999;
-        }
-    } else {
-        s32 cur = S32(p, 0xc04);
-        if (cur < 0) {
-            return;
-        }
-        if (cur + n >= 0) {
-            S32(p, 0xc04) = cur + n;
-        } else {
-            S32(p, 0xc04) = 0;
-        }
-    }
-    if (n == 1) {
-        fn_802702C4(p);
-    }
+    adjustRupees(p, n);
 }
 u8 fn_8024EE0C(char* p) { return U8(p, 0x3d9); }
 u8 fn_8024EE14(char* p) { return U8(p, 0x3d8); }
