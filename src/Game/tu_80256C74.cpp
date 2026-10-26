@@ -423,7 +423,7 @@ extern "C" void fn_8024B298(void*, s32, void*);
 extern "C" u8 fn_8025F500(void*);
 extern "C" u8 fn_802518AC(void*, s32);
 extern "C" u8 fn_80246228(void*);
-extern "C" u8 lbl_8053ABB8[];
+extern "C" u8 lbl_8053ABB8[4];
 extern "C" JGeometry::TVec3<f32> lbl_8046B220[];
 extern "C" void fn_8025785C(u8* self) {
     s32 cur;
