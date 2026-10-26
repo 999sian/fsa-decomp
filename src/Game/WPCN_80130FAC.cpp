@@ -299,6 +299,10 @@ static inline s32 wpcnFindPlayer(char* p, WpcnBox& box) {
     return -1;
 }
 
+static inline WpcnVec wpcnDelta(const f32 rate) {
+    return WpcnVec(0.0f, lbl_8053CCC0 * (lbl_8053CCB0 - rate), 0.0f);
+}
+
 static inline bool wpcnAllReady() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i)) {
@@ -336,22 +340,11 @@ static inline bool wpcnBounce(char* p) {
 }
 
 extern "C" void fn_801313BC(char* p) {
-    s32 i;
     switch (*(s32*)(p + 0x268)) {
     case 0: {
         WpcnBox box = *(WpcnBox*)(p + 0x60);
         box.addPos(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14));
-        for (i = 0; i < 4; i++) {
-            if ((*(u8*)(lbl_8053AAF8 + 0x82) & (u8)(1 << i)) &&
-                fn_8023B0F4(i, &box, *(s32*)(p + 0x4), 0, lbl_8053CCD4) && !fn_80230188(i)) {
-                if (*(s32*)(p + 0x26c) >= 0) {
-                    continue;
-                }
-                goto found;
-            }
-        }
-        i = -1;
-    found:
+        s32 i = wpcnFindPlayer(p, box);
         if (i >= 0) {
             *(s32*)(p + 0x26c) = i;
             fn_80130FAC(p, 1);
@@ -385,7 +378,7 @@ extern "C" void fn_801313BC(char* p) {
     }
     case 2:
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
-        for (i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             pos.y -= *(f32*)(p + 0x27c);
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
@@ -431,7 +424,7 @@ extern "C" void fn_801313BC(char* p) {
         break;
     case 4:
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCD0);
-        for (i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             fn_801CD950(&pos.z, lbl_8053CCD4, *(f32*)(p + 0x27c));
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
@@ -442,7 +435,7 @@ extern "C" void fn_801313BC(char* p) {
         break;
     case 5:
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCD0);
-        for (i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             fn_801CD950(&pos.z, lbl_8053CCD4, *(f32*)(p + 0x27c));
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
@@ -457,7 +450,7 @@ extern "C" void fn_801313BC(char* p) {
     case 7: {
         u8 done = 0;
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
-        for (i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             if (fn_801CD950(&pos.z, lbl_8053CCA0, *(f32*)(p + 0x27c)) == 0) {
                 done = 1;
