@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "Game/TlwpDrawParam.h"
 
 extern "C" double sin(double);
 extern "C" double cos(double);
@@ -72,7 +73,7 @@ extern "C" void fn_80144194(u8* this_) {
         m2[0][3] = 0.0f;
         m2[1][3] = 0.0f;
         m2[2][3] = 0.0f;
-        f32 s = *(f32*)(this_ + 0x250);
+        const f32 s = *(f32*)(this_ + 0x250);
         ang = *(f32*)(this_ + 0x254);
         f32 rx = 0.0f;
         sx = sin(rx);
@@ -114,7 +115,7 @@ extern "C" void fn_80144194(u8* this_) {
         mtx[2][1] = 0.0f;
         mtx[2][2] = ys;
         rec.w18 = mtx;
-        if (*(f32*)(this_ + 0x14) != 0.0f) {
+        if (0.0f != *(f32*)(this_ + 0x14)) {
             rec.w30 = 0x11;
         }
         fn_801F06F0(this_, lbl_80465B80, lbl_8049F408[*(s32*)(this_ + 0x244)] + 0x10, &rec, 0, 1.0f, 1.0f);
