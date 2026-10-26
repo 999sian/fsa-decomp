@@ -482,7 +482,7 @@ extern "C" void fn_80295EE8(char* this_) {
 
 extern "C" s32 fn_801F2718(void* p, u32 id);
 extern "C" void fn_802A381C(void* mgr, void* v, s32 a, s32 b);
-static inline s32 houseCameraMode(u32 flags) {
+static inline s32 houseCameraMode(const u32 flags) {
     u32 n = (flags >> 7) & 0x1f;
     s32 mode;
     if (n == 0) mode = 0; else mode = n + 7;
@@ -574,7 +574,7 @@ extern "C" void fn_802961AC(void* p) {
                 }
             }
 
-            shakeHouseFlags(*(u32*)(self + 0x90));
+            fn_802D79E8(fn_802D6A9C(), houseCameraMode(*(u32*)(self + 0x90)), 16.0f, 0.0f, 1);
 
             clearHouseActors(self, 0x2a0, 0x26c);
             clearHouseFollowers(self, 0x29c, 0x25c);
