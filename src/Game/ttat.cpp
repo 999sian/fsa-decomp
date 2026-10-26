@@ -150,6 +150,8 @@ extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80458FF0(void* obj, s32 a, s32 b, s32 c);
 extern u8 sincosTable___5JMath[];
+static inline f32 ttatSin(u16 angle) { return *(f32*)(sincosTable___5JMath + ((angle >> 2) & 0x3ff8)); }
+static inline f32 ttatCos(u16 angle) { return *(f32*)(sincosTable___5JMath + ((angle >> 2) & 0x3ff8) + 4); }
 extern const u16 lbl_8053A108[4];
 #pragma opt_propagation off
 extern "C" void fn_801A96B4(void* this_) {
@@ -160,6 +162,7 @@ extern "C" void fn_801A96B4(void* this_) {
     s32 i;
     char* t = (char*)this_;
     s32 id;
+    s32 id2;
     f32* v;
     int ang;
 
@@ -330,9 +333,9 @@ extern "C" void fn_801A96B4(void* this_) {
             if (*(s32*)(t + 0x244) > 3) {
                 ((Actor*)t)->v07();
             } else {
-                id = ttatChildHandle(t, *(s32*)(t+0x244));
-                if (id >= 0) {
-                    void* c2 = fn_801F666C(fn_801F856C(), id);
+                id2 = ttatChildHandle(t, *(s32*)(t+0x244));
+                if (id2 >= 0) {
+                    void* c2 = fn_801F666C(fn_801F856C(), id2);
                     if (c2 != 0) {
                         ((Actor*)c2)->v07();
                         *(s32*)(t + 0x234) = 10;
