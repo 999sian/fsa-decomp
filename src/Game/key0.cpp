@@ -175,7 +175,7 @@ extern "C" u8 fn_802C18BC(char* p, s32 room, void* pos) {
 
 extern const f32 lbl_80540C70;
 extern const f32 lbl_80540C78;
-extern "C" u16 fn_8022461C(void* pos, ...);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
 extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" u8 fn_802C1970(char* p, s32 room, void* pos) {
     u16 kind;
