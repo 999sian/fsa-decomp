@@ -60,7 +60,10 @@ struct MCBounds {
     f32 y1;
 };
 
+extern void* lbl_804AF86C[];
+
 struct MCAlpha {
+    MCAlpha() { *(void**)this = lbl_804AF86C; }
     u8 pad0[0x4];
     MCVis* vis;
     u8 pad8[0x18 - 0x8];
@@ -1366,7 +1369,7 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	((J2DTextBox*)t)->setFont((JUTFont*)v29);
 	v29 = *(u32*)((u8*)lbl_8053AD78 + 0x154);
 	t = self->screen->search(0x547965733031ULL);
-	((void (*)(void*, u32))(*(void***)t)[39])(t, v29);
+	((J2DTextBox*)t)->setFont((JUTFont*)v29);
 	t = self->screen->search(0x547965733031ULL);
 	fn_803832BC(((J2DTextBox*)t)->getStringPtr(), 0x11e, 0, 0, 0);
 	t = self->screen->search(0x546e6f3031ULL);
@@ -1374,41 +1377,41 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 
 	void* o;
 	o=__nw__FUl(0x2c);
-	if(o) *(void**)o=&lbl_804AF86C;
+	if(o) *(void**)o=lbl_804AF86C;
 	self->f14=(MCAlpha*)o;
 	fn_80402F04(self->f14,self->screen->search(0x5073616261636bULL));
 
 	o=__nw__FUl(0x2c);
-	if(o) *(void**)o=&lbl_804AF86C;
+	if(o) *(void**)o=lbl_804AF86C;
 	self->f18=(MCAnim*)o;
-	fn_80402F04(self->f18,self->screen->search(0x507361626b3033ULL));
+	fn_80402F04(self->f18,self->screen->search(0x50736162626b3033ULL));
 
 	o=__nw__FUl(0x2c);
-	if(o) *(void**)o=&lbl_804AF86C;
+	if(o) *(void**)o=lbl_804AF86C;
 	self->f1c[0]=(MCAnim*)o;
 	fn_80402F04(self->f1c[0],self->screen->search(0x50796573623034ULL));
 
 	o=__nw__FUl(0x2c);
-	if(o) *(void**)o=&lbl_804AF86C;
+	if(o) *(void**)o=lbl_804AF86C;
 	self->f1c[1]=(MCAnim*)o;
 	fn_80402F04(self->f1c[1],self->screen->search(0x506e6f623034ULL));
 
 	o=__nw__FUl(0x2c);
-	if(o) *(void**)o=&lbl_804AF86C;
+	if(o) *(void**)o=lbl_804AF86C;
 	self->f24=(MCAnim*)o;
 	fn_80402F04(self->f24,self->screen->search(0x50746f7062623037ULL));
 
 	o=__nw__FUl(0x2c);
-	if(o) *(void**)o=&lbl_804AF86C;
+	if(o) *(void**)o=lbl_804AF86C;
 	self->f28=(MCPaneHolder*)o;
 	fn_80402F04(self->f28,self->screen->search(0x5061636375723032ULL));
 
     for(s32 i=0;i<8;i++) {
-        void** slots=(void**)((u8*)this_+0x2c);
+        MemCardMenu* slots=(MemCardMenu*)((u8*)this_+i*4);
         o=__nw__FUl(0x2c);
-        if(o) *(void**)o=&lbl_804AF86C;
-        slots[i]=o;
-        fn_80402F04(slots[i],self->screen->search(((u64*)tbl)[i]));
+        if(o) *(void**)o=lbl_804AF86C;
+        slots->f2c[0]=(MCAlpha*)o;
+        fn_80402F04(slots->f2c[0],self->screen->search(((u64*)tbl)[i]));
     }
 
 	self->f4c = (MCAnim*)*(void**)((u8*)lbl_8053AED8 + 8);
