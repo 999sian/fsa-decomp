@@ -63,8 +63,9 @@ struct fn_801D1974_obj {
             int n = m2a8 - 1;
             for (int i = 0; i < n; i++) {
                 int j = i + 1;
-                trail().pts[i].x = m2ac[j].x;
-                trail().pts[i].y = m2ac[j].y;
+                fn_801D1974_obj* from = (fn_801D1974_obj*)((u8*)this + j * 8);
+                trail().pts[i].x = from->m2ac[0].x;
+                trail().pts[i].y = from->m2ac[0].y;
             }
             m2a8 = n;
         }
@@ -227,7 +228,8 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
                 }
             }
             if (far_ || (u8)lost) {
-                if (object->m2a8 >= 0x10) {
+                idx = object->m2a8;
+                if (idx >= 0x10) {
                     object->m2a8 = 0;
                     return 0;
                 }
@@ -236,7 +238,12 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
                     f32 x = v.x - (fn_8023E724(object->m338)->x - fn_8023E578(object->m338)->x);
                     object->pushPoint(JGeometry::TVec2<f32>(x, y));
                 } else {
-                    object->pushPoint(*(JGeometry::TVec2<f32>*)&v);
+                    if (idx < 16) {
+                        fn_801D1974_obj* dst = (fn_801D1974_obj*)((u8*)object + idx * 8);
+                        dst->m2ac[0].x = v.x;
+                        dst->m2ac[0].y = v.y;
+                        object->m2a8++;
+                    }
                 }
             }
             ((JGeometry::TVec3<f32>*)&object->m32c)->set(object->m2ac[object->pointIndex(0)].x, object->m2ac[object->pointIndex(0)].y, lbl_8053F028);
