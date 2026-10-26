@@ -204,41 +204,44 @@ extern "C" int fn_80085DEC(char* this_, u32 param_2, u32 param_3) {
     return fn_8008665C(this_, start);
 }
 
+#pragma opt_propagation off
 extern "C" s32 fn_80085F0C(char* this_, s32 param_2) {
-    u32* p;
-    u32 words;
-    u32 i;
-    s32 bit;
     if (param_2 >= 0) {
+        u32 words;
+        u32 value;
+        u32* p;
+        u32 i;
+        s32 bit;
         words = (*(u32*)(this_ + 0x70) + 0x1f) >> 5;
         p = *(u32**)(this_ + 0x78);
-        for (i = 0; i < words; i++) {
-            if (*p != 0xffff) {
+        for (i = 0; i < words; i++, p++) {
+            value = *p;
+            if (value != 0xffff) {
                 for (bit = 0; bit < 32; bit++) {
-                    if ((*p & (0x80000000U >> bit)) == 0) {
-                        return bit + (s32)(i << 5);
-                    }
+                    if ((value & (0x80000000U >> bit)) == 0) return bit + (s32)(i << 5);
                 }
             }
-            p++;
         }
     } else {
+        u32* base;
+        u32 words;
+        u32* p;
+        u32 i;
+        s32 bit;
+        base = *(u32**)(this_ + 0x78);
         words = (*(u32*)(this_ + 0x70) + 0x1f);
-        p = (u32*)((u8*)*(u32**)(this_ + 0x78) + ((words >> 3) & ~3)) - 1;
-        for (i = (words >> 5) - 1; (s32)i >= 0; i--) {
+        p = (u32*)((u8*)base + ((words >> 3) & ~3)) - 1;
+        for (i = (words >> 5) - 1; (s32)i >= 0; i--, p--) {
             if (*p != 0xffff) {
                 for (bit = 31; bit >= 0; bit--) {
-                    if ((*p & (0x80000000U >> bit)) == 0) {
-                        return bit + (s32)(i << 5);
-                    }
+                    if ((*p & (0x80000000U >> bit)) == 0) return bit + (s32)(i << 5);
                 }
             }
-            p--;
         }
     }
     return -1;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
     if (param_3 == 1) {
         extern s32 fn_80085F0C(char*, s32);
