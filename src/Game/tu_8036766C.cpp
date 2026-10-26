@@ -78,7 +78,9 @@ extern "C" const f32 lbl_80542C34;
 extern "C" const f32 lbl_80542C38;
 extern "C" const f64 lbl_80542C40;
 static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 height) {
- out.set(width * 0.5f, height * 0.5f, lbl_80542C24);
+ f32 x = width;
+ f32 y = height;
+ out.set(x * lbl_80542C28, y * lbl_80542C28, lbl_80542C24);
 }
 
 struct Tu80367888Owner : Actor {
