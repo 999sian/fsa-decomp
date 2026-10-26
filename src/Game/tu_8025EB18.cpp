@@ -1528,8 +1528,9 @@ extern const f32 lbl_805401DC;
 
 #pragma opt_common_subs off
 #pragma opt_propagation off
-static inline f32 stepCarriedPosition(f32* pos, f32 target, f32 step) {
-    f32 delta = target - *pos;
+static inline f32 stepCarriedPosition(f32* pos, const f32 target, const f32 step) {
+    f32 delta = target;
+    delta -= *pos;
     if (delta >= step) {
         *pos += step;
     } else if (delta <= lbl_805401CC) {
@@ -1541,15 +1542,15 @@ static inline f32 stepCarriedPosition(f32* pos, f32 target, f32 step) {
 }
 
 static inline bool carriedPositionUnchanged(char* p) {
+    bool inZ;
     bool inX;
     bool inY;
-    bool inZ;
     inZ = false;
     inY = inZ;
     inX = inZ;
-    f32 eps;
     f32 neg;
     f32 d;
+    f32 eps;
     f32 machineEps = *(f32*)__float_epsilon;
     eps = lbl_8054017C * machineEps;
     neg = -eps;
