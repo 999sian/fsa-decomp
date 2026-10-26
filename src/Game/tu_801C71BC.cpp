@@ -113,9 +113,21 @@ extern "C" u8 fn_801D0DD4(void* p);
 extern "C" u8 fn_8029E248(void* p, void* pos, s32 room);
 extern "C" u8 fn_801CCB1C(void* p, s32 room);
 extern "C" void fn_801CD930(void* p, s32 v, s32 n);
+static inline void getSlotNeighbours(char* this_, u8* prev, u8* next) {
+    u8 a = ((u8*)GetCurrentSlotPtr(this_+0x358))[3];
+    fn_800FD818(GetCurrentSlotPtr(this_+0x358),1);
+    u8 b = ((u8*)GetCurrentSlotPtr(this_+0x358))[3];
+    u8* s = (u8*)GetCurrentSlotPtr(this_+0x358);
+    if(a<s[2]) s[3]=a;
+    fn_800FD818(GetCurrentSlotPtr(this_+0x358),-1);
+    u8 c = ((u8*)GetCurrentSlotPtr(this_+0x358))[3];
+    s=(u8*)GetCurrentSlotPtr(this_+0x358);
+    if((u8)(s8)a<s[2]) s[3]=a;
+    if(prev) *prev=c;
+    if(next) *next=b;
+}
+
 extern "C" void fn_801C7370(char* this_, u8 param_2) {
-    JGeometry::TVec3<f32> v1c;
-    JGeometry::TVec3<f32> v28;
     JGeometry::TVec3<f32> tmp;
     JMARandFast* rnd;
     u8 c8;
@@ -137,7 +149,7 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
             fn_801C3B7C(this_, 0x1e);
             return;
         }
-        if (*(u32*)(this_ + 0x230) & 0x400000) {
+        if (*(volatile u32*)(this_ + 0x230) & 0x400000) {
             *(u32*)(this_ + 0x230) &= 0xffbfffff;
             fn_801C3B7C(this_, 0x12);
             return;
@@ -182,12 +194,12 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
         if (*(u8*)(this_ + 0x55d) != 0) {
             *(u8*)(this_ + 0x55d) -= 1;
         }
-        if (fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
+        if ((u8)fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
             fn_801C3B7C(this_, 0x12);
             return;
         }
-        JGeometry::TVec3<f32> v40 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
-        if (fn_801CCB1C(&v40, *(s32*)(this_ + 0x4))) {
+        const JGeometry::TVec3<f32>& v40 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+        if (fn_801CCB1C((void*)&v40, *(s32*)(this_ + 0x4))) {
             fn_801C8B50(this_);
             if (!fn_801D0DD4(this_)) {
                 return;
@@ -213,14 +225,14 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
             if ((u8)(s8)a < s[2]) {
                 s[3] = a;
             }
-            c8 = c;
-            c9 = b;
+            if (&c8) c8 = c;
+            if (&c9) c9 = b;
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-            if (s[1] == 0) {
+            if (s[1] != 0) {
                 room = *(s32*)(this_ + 0x4);
-                if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c9)) {
-                    v28 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), c9);
-                    if (*(f32*)(this_ + 0xc) >= v28.x) {
+                if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c8)) {
+                    const JGeometry::TVec3<f32>& v1c = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), c8);
+                    if (*(f32*)(this_ + 0xc) >= v1c.x) {
                         *(s16*)(this_ + 0x33c) = -0x4000;
                     } else {
                         *(s16*)(this_ + 0x33c) = 0x4000;
@@ -235,9 +247,9 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
                 }
             } else {
                 room = *(s32*)(this_ + 0x4);
-                if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c8)) {
-                    v1c = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), c8);
-                    if (*(f32*)(this_ + 0xc) >= v1c.x) {
+                if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c9)) {
+                    const JGeometry::TVec3<f32>& v28 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), c9);
+                    if (*(f32*)(this_ + 0xc) >= v28.x) {
                         *(s16*)(this_ + 0x33c) = -0x4000;
                     } else {
                         *(s16*)(this_ + 0x33c) = 0x4000;
@@ -615,7 +627,7 @@ extern "C" void fn_801C844C(char* p) {
     u8 pairA1;
     u8 pairA0;
     u8 x;
-    s32 c;
+    u32 c;
     u8 b;
     u32 a;
     u8* slot;
@@ -675,7 +687,7 @@ extern "C" void fn_801C844C(char* p) {
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), 1);
     b = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
-    if ((u32)c < slot[2]) slot[3] = c;
+    if (c < slot[2]) slot[3] = c;
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), -1);
     a = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
@@ -839,23 +851,22 @@ extern "C" void fn_801C8BC4(char* this_, u8 param_2) {
 
 extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
     u8 bA;
-    s32 room;
     u8 bB;
     u8* s;
     u8 done;
     u8 bC;
-    u8 c8;
-    u8 c9;
-    u8 ca;
-    u8 cb;
     u8 cc;
+    u8 cb;
+    u8 ca;
+    u8 c9;
+    u8 c8;
     f32 v[2];
-    JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> old;
     u8* rng;
     u32 bits;
     f32 r;
     char* me = this_;
+    s32 room;
 
     if (!(u8)a2) {
         const JGeometry::TVec3<f32>& q = fn_800FE294(GetCurrentSlotPtr(me + 0x358), 0xff);
@@ -863,7 +874,8 @@ extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
         *(f32*)(me + 0x330) = q.y;
         *(f32*)(me + 0x334) = q.z;
         room = *(s32*)(me + 0x4);
-        if (fn_802D6A9C()->arr[room]) {
+        TndrG* mgr = fn_802D6A9C();
+        if (mgr->arr[room]) {
             room = *(s32*)(me + 0x4);
             if (room != fn_800FE25C(GetCurrentSlotPtr(me + 0x358), 0xff)) {
                 return;
@@ -871,15 +883,14 @@ extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
             if ((u8)fn_800FD548(GetCurrentSlotPtr(me + 0x358), 0xff)) {
                 return;
             }
-            p = fn_800FE294(GetCurrentSlotPtr(me + 0x358), 0xff);
+            const JGeometry::TVec3f& next = fn_800FE294(GetCurrentSlotPtr(me + 0x358), 0xff);
+            JGeometry::TVec3f p(next);
             if (fn_801CC9F8(me + 0xc, *(s32*)(me + 0x4)) && !(u16)fn_8022461C(&p, *(s32*)(me + 0x4))) {
                 *(f32*)(me + 0x32c) = p.x;
                 *(f32*)(me + 0x330) = p.y;
                 *(f32*)(me + 0x334) = p.z;
             } else {
-                *(f32*)(me + 0x32c) = p.x;
-                *(f32*)(me + 0x330) = *(f32*)(me + 0x10);
-                *(f32*)(me + 0x334) = p.z;
+                ((JGeometry::TVec3f*)(me + 0x32c))->set(p.x, *(f32*)(me + 0x10), p.z);
             }
             return;
         }
@@ -897,13 +908,15 @@ extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
                 fn_800FD818(GetCurrentSlotPtr(me + 0x358), 1);
                 s = (u8*)GetCurrentSlotPtr(me + 0x358);
                 bB = s[3];
-                if (bA < s[2]) {
+                s = (u8*)GetCurrentSlotPtr(me + 0x358);
+                if ((u8)(s8)bA < s[2]) {
                     s[3] = bA;
                 }
                 fn_800FD818(GetCurrentSlotPtr(me + 0x358), -1);
                 s = (u8*)GetCurrentSlotPtr(me + 0x358);
                 bC = s[3];
-                if (bA < s[2]) {
+                s = (u8*)GetCurrentSlotPtr(me + 0x358);
+                if ((u8)(s8)bA < s[2]) {
                     s[3] = bA;
                 }
                 if (&cb != 0) {
@@ -912,9 +925,7 @@ extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
                 if (&cc != 0) {
                     cc = bB;
                 }
-                if (fn_800FD5E8(GetCurrentSlotPtr(me + 0x358), cb)) {
-                    done = 1;
-                } else if (fn_800FD5E8(GetCurrentSlotPtr(me + 0x358), cc)) {
+                if (fn_800FD5E8(GetCurrentSlotPtr(me + 0x358), cb) || fn_800FD5E8(GetCurrentSlotPtr(me + 0x358), cc)) {
                     done = 1;
                 }
             }
@@ -925,49 +936,44 @@ extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
             return;
         }
         old = *(JGeometry::TVec3<f32>*)(me + 0x32c);
-        rng = (u8*)lbl_8053AAF8;
-        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-        bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-        r = *(f32*)&bits;
-        *(f32*)(me + 0x32c) += lbl_8053EED4 * (lbl_8053EF04 * (r - 1.0f) - 1.0f);
-        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-        bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-        r = *(f32*)&bits;
-        *(f32*)(me + 0x330) += lbl_8053EED4 * (lbl_8053EF04 * (r - 1.0f) - 1.0f);
-        if (fn_801CAEF4(me, me + 0x32c, room)) {
-            *(JGeometry::TVec3<f32>*)(me + 0x32c) = old;
+        *(f32*)(me + 0x32c) += 16.0f * (2.0f * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() - 1.0f);
+        *(f32*)(me + 0x330) += 16.0f * (2.0f * ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() - 1.0f);
+        if (fn_801CAEF4(me, me + 0x32c, *(s32*)(me + 4))) {
+            *(f32*)(me + 0x32c) = old.x;
+            *(f32*)(me + 0x330) = old.y;
+            *(f32*)(me + 0x334) = old.z;
         }
         return;
     }
 
     done = 1;
-    room = *(s32*)(me + 0x4);
-    if (*(u8*)(me + 0x59b) == 0 && fn_802D6A9C()->arr[room] == 0) {
-        if (*(u32*)(me + 0x524) & 0x100) {
-            if (fn_800FD5E8(GetCurrentSlotPtr(me + 0x358), 0xff)) {
-                done = 0;
-            }
-        }
-    } else {
+    if (*(u8*)(me + 0x59b) != 0) {
         done = 0;
+    } else {
+        room = *(s32*)(me + 4);
+        TndrG* mgr = fn_802D6A9C();
+        if (mgr->arr[room] || ((*(u32*)(me + 0x524) & 0x100) && fn_800FD5E8(GetCurrentSlotPtr(me + 0x358), 0xff))) done = 0;
     }
     if (!done) {
         return;
     }
     fn_801C9234(me, v);
-    if ((*(u32*)(me + 0x524) & 0x800) && !(*(u32*)(me + 0x230) & 0x2000000) && !(*(u32*)(me + 0x230) & 0x100000) && fn_801CF888(me, v, me + 0x32c, room)) {
+    if ((*(u32*)(me + 0x524) & 0x800) && !(*(u32*)(me + 0x230) & 0x2000000) && !(*(u32*)(me + 0x230) & 0x100000) && fn_801CF888(me, v, me + 0x32c, *(s32*)(me + 4))) {
+        done = 0;
         s = (u8*)GetCurrentSlotPtr(me + 0x358);
         bA = s[3];
         fn_800FD818(GetCurrentSlotPtr(me + 0x358), 1);
         s = (u8*)GetCurrentSlotPtr(me + 0x358);
         bB = s[3];
-        if (bA < s[2]) {
+        s = (u8*)GetCurrentSlotPtr(me + 0x358);
+        if ((u8)(s8)bA < s[2]) {
             s[3] = bA;
         }
         fn_800FD818(GetCurrentSlotPtr(me + 0x358), -1);
         s = (u8*)GetCurrentSlotPtr(me + 0x358);
         bC = s[3];
-        if (bA < s[2]) {
+        s = (u8*)GetCurrentSlotPtr(me + 0x358);
+        if ((u8)(s8)bA < s[2]) {
             s[3] = bA;
         }
         if (&c8 != 0) {
@@ -987,22 +993,23 @@ extern "C" void fn_801C8C84(char* this_, s32 a2, s32 a3) {
             *(f32*)(me + 0x32c) = q2.x;
             *(f32*)(me + 0x330) = q2.y;
             *(f32*)(me + 0x334) = q2.z;
-            return;
+            done = 1;
         }
+        if (done) return;
     }
     if (*(s32*)(me + 0x2a8) < 0x10) {
-        *(f32*)(me + 0x2ac + *(s32*)(me + 0x2a8) * 8) = v[0];
-        *(f32*)(me + 0x2b0 + *(s32*)(me + 0x2a8) * 8) = v[1];
+        TndrMotion* slot = (TndrMotion*)(me + *(s32*)(me + 0x2a8) * 8);
+        slot->points[0].x = v[0];
+        slot->points[0].y = v[1];
         *(s32*)(me + 0x2a8) += 1;
     }
     if (*(s32*)(me + 0x2a8) < 0x10) {
-        *(f32*)(me + 0x2ac + *(s32*)(me + 0x2a8) * 8) = *(f32*)(me + 0x32c);
-        *(f32*)(me + 0x2b0 + *(s32*)(me + 0x2a8) * 8) = *(f32*)(me + 0x330);
+        TndrMotion* slot = (TndrMotion*)(me + *(s32*)(me + 0x2a8) * 8);
+        slot->points[0].x = *(f32*)(me + 0x32c);
+        slot->points[0].y = *(f32*)(me + 0x330);
         *(s32*)(me + 0x2a8) += 1;
     }
-    *(f32*)(me + 0x32c) = v[0];
-    *(f32*)(me + 0x330) = v[1];
-    *(f32*)(me + 0x334) = lbl_8053EEF4;
+    ((JGeometry::TVec3f*)(me + 0x32c))->set(v[0], v[1], lbl_8053EEF4);
     *(s16*)(me + 0x33c) = fn_801D02E0(me, me + 0x32c);
     *(u32*)(me + 0x230) &= 0xfffdffff;
     *(u32*)(me + 0x230) |= 0x1000;
