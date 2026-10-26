@@ -783,7 +783,7 @@ extern "C" void fn_801E1300(void* this_) {
 }
 
 extern "C" void fn_801E1594(void* this_, s32 state) {
-    s32 flag;
+    u8 flag;
     char* field;
     char* rec;
     void* obj;
@@ -823,12 +823,8 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
                 x = *(f32*)((char*)obj + 0xc);
                 y = *(f32*)((char*)obj + 0x10);
             }
-            flag = 0;
-            field = thnkFieldAt(*(s32*)(p + 4));
-            if (x < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 0x8))) {
-                flag = 1;
-            }
-            if ((u8)flag != 0) {
+            flag = thnkIsLeft(x, *(s32*)(p + 4));
+            if (flag != 0) {
                 field = thnkFieldAt(*(s32*)(p + 4));
                 *(f32*)(p + 0xc) = 30.0f + *(f32*)(field + 0x8);
                 *(s32*)(p + 0x98) = 1;
@@ -844,7 +840,8 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             *(f32*)(p + 0x2c4) = px;
             *(f32*)(p + 0x2c8) = py;
             *(s32*)(p + 0xb0) = 0x51303;
-            *(s32*)(p + 0x250) = -1;
+        }
+        *(s32*)(p + 0x250) = -1;
             if (*(s32*)(p + 0x2bc) >= 0) {
                 *(f32*)(p + 0x258) = lbl_8053F490;
             } else if (*(u32*)(p + 0x230) & 0x4000) {
@@ -857,7 +854,8 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             } else {
                 fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 2);
             }
-        } else {
+        break;
+    case 3:
             *(s32*)(p + 0x250) = -1;
             *(f32*)(p + 0x258) = 0.6f;
             if (*(s32*)(p + 0x2ac) >= 0) {
@@ -865,7 +863,6 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             } else {
                 fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 2);
             }
-        }
         break;
     case 5:
     case 6:
