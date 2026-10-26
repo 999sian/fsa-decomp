@@ -76,7 +76,9 @@ extern "C" void fn_80353EE0(void* this_) {
 static inline f32 tugfDistance(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
     f32 x = a.x - b.x;
     f32 y = a.y - b.y;
-    return JGeometry::TUtilf::sqrt(x*x + y*y);
+    f32 xx = x*x;
+    f32 yy = y*y;
+    return JGeometry::TUtilf::sqrt(xx + yy);
 }
 #pragma fp_contract on
 
