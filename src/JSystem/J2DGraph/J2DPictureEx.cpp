@@ -461,40 +461,56 @@ void J2DPictureEx::draw(f32 x, f32 y, f32 width, f32 height, bool p5, bool p6, b
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
     f32 z = 0.0f;
-    GXPosition3f32(z, z, z);
-    GXColor1u32(colors[0]);
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).u32 = colors[0];
 
     if (!p7) {
-        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0x8000 : 0);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0x8000 : 0;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0x8000 : 0;
     } else {
-        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0 : 0x8000);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0x8000 : 0;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0 : 0x8000;
     }
 
-    GXPosition3f32(width, z, z);
-    GXColor1u32(colors[1]);
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = width;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).u32 = colors[1];
 
     if (!p7) {
-        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0x8000 : 0);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0 : 0x8000;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0x8000 : 0;
     } else {
-        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0x8000 : 0);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0x8000 : 0;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0x8000 : 0;
     }
 
-    GXPosition3f32(width, height, z);
-    GXColor1u32(colors[3]);
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = width;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = height;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).u32 = colors[3];
 
     if (!p7) {
-        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0 : 0x8000);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0 : 0x8000;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0 : 0x8000;
     } else {
-        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0x8000 : 0);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0 : 0x8000;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0x8000 : 0;
     }
 
-    GXPosition3f32(z, height, z);
-    GXColor1u32(colors[2]);
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = height;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32 = z;
+    (*(volatile PPCWGPipe*)GXFIFO_ADDR).u32 = colors[2];
 
     if (!p7) {
-        GXTexCoord2s16(p5 ? 0x8000 : 0, p6 ? 0 : 0x8000);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0x8000 : 0;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0 : 0x8000;
     } else {
-        GXTexCoord2s16(p5 ? 0 : 0x8000, p6 ? 0 : 0x8000);
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p5 ? 0 : 0x8000;
+        (*(volatile PPCWGPipe*)GXFIFO_ADDR).s16 = p6 ? 0 : 0x8000;
     }
 
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_S16, 0);
