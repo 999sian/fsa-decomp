@@ -46,8 +46,8 @@ extern "C" void fn_80326A90(void* this_) {
 	}
 }
 
-extern "C" void fn_80326C5C(void* thisPtr) {
-	char* p = (char*)thisPtr;
+extern "C" void fn_80326C5C(char* thisPtr) {
+	char* p = thisPtr;
 	JGeometry::TBox2<f32> box;
 	f32 xA, xB, xC;
 	f32 dx;
@@ -55,7 +55,7 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 	u32 seed;
 	u32 bitsA, bitsB, bitsC;
 	s32 hit;
-	u8* q;
+	char* q;
 	char* e;
 	int i;
 	s32 room;
@@ -132,14 +132,14 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 		room = *(s32*)(p + 4);
 		if (room >= 8) {
 			Actor_CreateByID(fn_801F856C(), 'PEFF', room, (f32*)(p + 0xc), (hit & 3) | 4, -1, -1);
-			*(s32*)(p + 0x23c) = 0;
+		}
+		*(s32*)(p + 0x23c) = 0;
 			*(s16*)(p + 0x254) = 0;
 			*(s32*)(p + 0x248) = 0;
 			*(s32*)(p + 0xb0) = 0;
 			*(s32*)(p + 0x230) = 1;
 			*(u8*)(p + 0x11e) = 1;
-			goto tail;
-		}
+		goto tail;
 	}
 	case 1:
 		fn_8023C830(*(s32*)(p + 0x244));
@@ -163,17 +163,13 @@ chase:
 	*(f32*)(p + 0x258) = lbl_80541C58 * JMath::sincosTable_.sinShort(*(s16*)(p + 0x254));
 	*(f32*)(p + 0x25c) = lbl_80541C58 * JMath::sincosTable_.cosShort(*(s16*)(p + 0x254));
 	if (*(s32*)(p + 0x248) > 720) {
-		e = *(char**)(p + 0x264);
-		if (e != NULL) {
-			*(u32*)(e + 0xf4) |= 1;
-			*(s32*)(e + 0x24) = 1;
-			*(s32*)(p + 0x264) = 0;
+		if (*(JPABaseEmitter**)(p + 0x264)) {
+			(*(JPABaseEmitter**)(p + 0x264))->becomeInvalidEmitter();
+			*(JPABaseEmitter**)(p + 0x264) = NULL;
 		}
-		e = *(char**)(p + 0x268);
-		if (e != NULL) {
-			*(u32*)(e + 0xf4) |= 1;
-			*(s32*)(e + 0x24) = 1;
-			*(s32*)(p + 0x268) = 0;
+		if (*(JPABaseEmitter**)(p + 0x268)) {
+			(*(JPABaseEmitter**)(p + 0x268))->becomeInvalidEmitter();
+			*(JPABaseEmitter**)(p + 0x268) = NULL;
 		}
 		*(u8*)(p + 0x11c) = 0;
 	}
@@ -185,24 +181,19 @@ tail:
 			*(s32*)(p + 0x250) = 0;
 		}
 	}
-	q = (u8*)p;
-	for (i = 0; i < 4; q += 4, i++) {
+	for (i = 0; i < 4; i++) {
+		q = p + i*4;
 		if (*(s32*)(q + 0x234) > 0) {
 			*(s32*)(q + 0x234) -= 1;
 		}
 		if (*(s32*)(p + 0x234) <= 0) {
-			char* emitter;
-			emitter = *(char**)(p + 0x264);
-			if (emitter != NULL) {
-				*(u32*)(emitter + 0xf4) |= 1;
-				*(s32*)(emitter + 0x24) = 1;
-				*(s32*)(p + 0x264) = 0;
+			if (*(JPABaseEmitter**)(p + 0x264)) {
+				(*(JPABaseEmitter**)(p + 0x264))->becomeInvalidEmitter();
+				*(JPABaseEmitter**)(p + 0x264) = NULL;
 			}
-			emitter = *(char**)(p + 0x268);
-			if (emitter != NULL) {
-				*(u32*)(emitter + 0xf4) |= 1;
-				*(s32*)(emitter + 0x24) = 1;
-				*(s32*)(p + 0x268) = 0;
+			if (*(JPABaseEmitter**)(p + 0x268)) {
+				(*(JPABaseEmitter**)(p + 0x268))->becomeInvalidEmitter();
+				*(JPABaseEmitter**)(p + 0x268) = NULL;
 			}
 			*(u8*)(p + 0x11c) = 0;
 		}
