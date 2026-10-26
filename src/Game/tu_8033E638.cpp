@@ -98,6 +98,20 @@ static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& d
     fn_8023DEDC(player, &delta);
 }
 
+static inline void platformPolar(JGeometry::TVec3<f32>& point, const f32 radius, const s32 angle) {
+    const f32* trig = &JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    f32 y;
+    f32 x;
+    f32 sine;
+    f32 cosine;
+    cosine = *++trig;
+    sine = *--trig;
+    x = radius * cosine;
+    y = radius * sine;
+    point.y = y;
+    point.x = x;
+}
+
 static inline BOOL platformContains(const f32* bounds, const JGeometry::TVec3<f32>& point) {
     f32 minX, maxY, minY, maxX;
     BOOL inside;
@@ -124,14 +138,8 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
         f32 xx = point.x * point.x;
         f32 yy = point.y * point.y;
         f32 length = JGeometry::TUtilf::sqrt(xx + yy);
-        const f32* entry = &JMath::sincosTable_.mTable[(u16)angle >> 5].first;
-        f32 y;
-        f32 x;
-        y = length * entry[0];
-        x = length * entry[1];
         point.z = 0.0f;
-        point.y = y;
-        point.x = x;
+        platformPolar(point, length, angle);
         if ((u8)platformContains((f32*)(p + 0x60), point)) {
             fn_8022DF48(player);
             return 1;
