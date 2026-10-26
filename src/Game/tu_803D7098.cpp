@@ -141,7 +141,7 @@ extern "C" void* lbl_8053AEC0;
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AED8;
 extern "C" void* lbl_8053AF80;
-extern "C" const u64 lbl_80476F80[];
+extern "C" const char lbl_80476F80[];
 extern "C" char lbl_80529DEC[];
 extern "C" const f32 lbl_80543530;
 extern "C" f32 lbl_80543538;
