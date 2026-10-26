@@ -184,10 +184,10 @@ extern "C" void fn_8031E144(Actor* p) {
     fn_803075AC(*(void**)(c + 0x198), *(s32*)(c + 4), c + 0xc, id, 0, 2, -1, 0, 0, 0);
 }
 
-extern "C" f32 lbl_80541A28;
-extern "C" f32 lbl_80541A2C;
-extern "C" f32 lbl_80541A30;
-extern "C" f32 lbl_80541A34;
+extern "C" const f32 lbl_80541A28;
+extern "C" const f32 lbl_80541A2C;
+extern "C" const f32 lbl_80541A30;
+extern "C" const f32 lbl_80541A34;
 extern "C" char lbl_80471708[];
 extern "C" void fn_80239914(void* box, s32 room, void* handle);
 extern "C" void fn_8020D8C0(void* a, void* box, s32 room, void* handle);
