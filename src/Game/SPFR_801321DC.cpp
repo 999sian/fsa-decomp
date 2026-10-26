@@ -70,6 +70,11 @@ static inline s32 spfrTrySpawn(char* p) {
     return -1;
 }
 
+static inline s32 spfrSpawnResult(s32 id, bool result) {
+    if (result) return id;
+    return -1;
+}
+
 static inline f32 spfrRand01() {
     u32* s = (u32*)(lbl_8053AAF8 + 0xb4);
     *s = *s * 0x19660du + 0x3c6ef35fu;
@@ -569,7 +574,7 @@ extern "C" void fn_80132F60(char* p) {
     JGeometry::TBox2f box;
     s32 id;
     f32 height, one, width;
-    u32 multiplier;
+    int multiplier;
     u32* seed;
 
     fn_8010DF78();
@@ -613,35 +618,7 @@ extern "C" void fn_80132F60(char* p) {
         default:
             break;
         case 1: {
-            JGeometry::TVec3f v;
-            JGeometry::TVec3f pos;
-            JGeometry::TBox2f box2;
-            box2.i.x = *(f32*)(p + 0x60);
-            box2.i.y = *(f32*)(p + 0x64);
-            box2.f.x = *(f32*)(p + 0x68);
-            box2.f.y = *(f32*)(p + 0x6c);
-            box2.i.x += *(f32*)(p + 0xc);
-            box2.i.y += *(f32*)(p + 0x10);
-            box2.f.x += *(f32*)(p + 0xc);
-            box2.f.y += *(f32*)(p + 0x10);
-            fn_8022FEB8(&box2, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
-            id = fn_8022FD8C(*(void**)(p + 0x198));
-            if (id < 0) {
-                id = -1;
-            } else if (!fn_802300EC()) {
-                id = -1;
-            } else {
-                pos = *(JGeometry::TVec3f*)(p + 0xc);
-                pos.y -= lbl_8053CD14;
-                void* handle = *(void**)(p + 0x198);
-                s32 room = *(s32*)(p + 4);
-                v = pos;
-                if (fn_8038AD24(id, 0x2b6, handle, room, &v, 0x28)) {
-                    goto found;
-                }
-                id = -1;
-            }
-            found:
+            id = spfrTrySpawn(p);
             if (id >= 0) {
                 *(s32*)(p + 0x23c) = id;
                 fn_80132454(p, 3);
@@ -681,7 +658,7 @@ extern "C" void fn_80132F60(char* p) {
             }
             pos.x -= lbl_8053CCF4;
             pos.y += lbl_8053CCF8;
-            one = lbl_8053CD00;
+            one = 1.0f;
             width = lbl_8053CCFC;
             height = lbl_8053CD04;
             multiplier = 0x19660d;
