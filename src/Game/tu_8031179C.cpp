@@ -42,7 +42,7 @@ extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" u32 __cvt_fp2unsigned(f64);
 
 template <class T> static inline f32 tu311Random(T* base, int multiplier, f32 one) {
-    unsigned int* seed = (unsigned int*)(base + 0xb4);
+    unsigned int* seed = (unsigned int*)((u8*)base + 0xb4);
     *seed = *seed * multiplier + 0x3c6ef35f;
     union { u32 bits; f32 value; } out;
     out.bits = (*seed >> 9) | 0x3f800000;
@@ -142,7 +142,7 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy=*(f32*)(((u8*)actor)+0x234);
         fx1=*(f32*)(((u8*)actor)+0x238);
         fy1=*(f32*)(((u8*)actor)+0x23c);
-        f32 offsetY, offsetX, rangeY, rangeX, one;
+        f32 offsetX, offsetY, rangeY, one, rangeX;
         one=lbl_805417C4;
         offsetX=lbl_805417B8;
         offsetY=lbl_805417BC;
@@ -154,8 +154,8 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy1-=offsetY;
         zero=lbl_805417CC;
         step=lbl_805417D0;
-        fx2=rangeX*tu311Random((u8*)lbl_8053AAF8,0x19660d,one)+fx;
-        fy2=rangeY*tu311Random((u8*)lbl_8053AAF8,0x19660d,one)+fy;
+        fx2=rangeX*tu311Random((unsigned int*)lbl_8053AAF8,0x19660d,one)+fx;
+        fy2=rangeY*tu311Random((unsigned int*)lbl_8053AAF8,0x19660d,one)+fy;
         for (r30 = 0; r30 < 0x14; r30++) {
             for (r28 = 0; r28 < 0x1a; r28++) {
                 pos.x = fx2;
