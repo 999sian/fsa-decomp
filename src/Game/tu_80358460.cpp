@@ -15,34 +15,32 @@ extern "C" void* lbl_8053AB10;
 extern "C" u32 lbl_8053A1B8[2];
 extern "C" char lbl_804724E0[];
 extern "C" void fn_802F745C(void*, const void*, void*, DrawRec*);
+#include "JSystem/JMath/JMath.h"
 static inline void rotation80359E18(f32 m[3][4], f32 scale, s16 angle)
 {
-    u32 offset = ((u16)angle >> 5) * 2;
-    f32* table = (f32*)sincosTable___5JMath;
-    f32 sy = table[0];
-    f32 cy = table[1];
-    f32 sx = table[offset];
-    f32 cx = (table + 1)[offset];
-    f32 cc = cy * cy;
-    f32 ssx = sx * sy;
-    f32 ccx = cx * cy;
-    f32 csx = cx * sy;
-    f32 scx = sx * cy;
-    f32 cs = cy * sy;
-    f32 negsy = -sy;
-    f32 r01 = ssx * cy - csx;
-    f32 r11 = ssx * sy + ccx;
-    f32 r02 = ccx * sy + ssx;
-    f32 r12 = csx * sy - scx;
-    m[0][0] = scale * cc;
-    m[1][0] = scale * cs;
-    m[2][0] = scale * negsy;
-    m[0][1] = scale * r01;
-    m[1][1] = scale * r11;
-    m[2][1] = scale * scx;
-    m[0][2] = scale * r02;
-    m[1][2] = scale * r12;
-    m[2][2] = scale * ccx;
+    f32 sx, sy, sz, cx, cy, cz;
+    sx = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    sy = JMath::sincosTable_.mTable[0].first;
+    sz = JMath::sincosTable_.mTable[0].first;
+    cx = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+    cy = JMath::sincosTable_.mTable[0].second;
+    cz = JMath::sincosTable_.mTable[0].second;
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    f32 cycz = cy * cz;
+    f32 cysz = cy * sz;
+    m[0][0] = scale * cycz;
+    m[1][0] = scale * cysz;
+    m[2][0] = scale * -sy;
+    m[0][1] = scale * (sxsy * cz - cxsz);
+    m[1][1] = scale * (sxsy * sz + cxcz);
+    m[2][1] = scale * (sx * cy);
+    m[0][2] = scale * (cxcz * sy + sxsz);
+    m[1][2] = scale * (cxsz * sy - sxcz);
+    m[2][2] = scale * (cx * cy);
 }
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
