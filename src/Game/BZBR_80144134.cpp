@@ -62,7 +62,7 @@ extern "C" void* fn_80144134(void* this_, s16 freeFlag) {
 
 static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale) {
     f32 ang;
-    f32 s;
+    register f32 s;
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
