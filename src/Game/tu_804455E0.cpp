@@ -14,7 +14,7 @@ struct fn_804461D0_Self {
     u8 f[4];
     u8 g;
 };
-extern "C" u64 lbl_8048FC08[];
+extern "C" const u64 lbl_8048FC08[];
 extern "C" char lbl_80490020[];
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_804AF86C[];
