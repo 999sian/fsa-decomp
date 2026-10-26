@@ -270,7 +270,7 @@ extern "C" const f32 lbl_80540568;
 extern "C" const char lbl_8046C120[];
 
 extern "C" u8 fn_8028C518(u8* p, u8 idx);
-extern "C" void fn_8029E9EC(void* sys, void* pos, u32 room, u32 id, s32 c, u32 idx);
+extern "C" void fn_8029E9EC(void* sys, const void* pos, s32 room, u32 id, s32 c, u8 idx);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
 extern "C" void fn_8028D5D0(u8* this_) {
     JGeometry::TVec3<f32> v;
@@ -377,9 +377,11 @@ extern "C" void fn_8028D5D0(u8* this_) {
     *(JGeometry::TVec3<f32>*)(this_+0x18) = *(JGeometry::TVec3<f32>*)(this_+0xc);
     if (((s32)*(u32*)(this_ + 0x90)&3) == 0) {
         ((JGeometry::TVec3<f32>*)(this_+0x3c))->set(sv.x,sv.y,sv.z);
+    u32 dir;
+    u32 kind;
     u32 flags = *(u32*)(this_ + 0x90);
-    u32 kind = (flags >> 4) & 7;
-    u32 dir = (flags >> 2) & 3;
+    kind = (flags >> 4) & 7;
+    dir = (flags >> 2) & 3;
     fn_8029E9EC(lbl_8053AC98, this_+0xc, *(u32*)(this_ + 4), (u16)(kind + 0x21), 0, dir);
     fn_801F0E34(this_, 0x30004, 0);
     }
