@@ -922,7 +922,7 @@ extern "C" void fn_804069E8(u8* self);
 extern "C" void fn_80405FC0(u8* self);
 extern "C" void fn_80406634(u8* self, s32 slot, s32 flag);
 extern "C" f32 lbl_80543898;
-extern "C" f32 lbl_805438C4;
+extern "C" const f32 lbl_805438C4;
 extern "C" f32 lbl_805438CC;
 extern void* lbl_8053AEC4;
 extern "C" void fn_80406F68(u8* self, f32 a, f32 b);
