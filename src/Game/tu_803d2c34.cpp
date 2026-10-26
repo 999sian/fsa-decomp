@@ -90,7 +90,9 @@ extern MemCardMenu* lbl_8053ADB8;
 
 static inline f32 mcW(MCAlpha* a) {
     MCBounds* b = (MCBounds*)a->vis;
-    return b->x1 - b->x0;
+    f32 width = b->x1;
+    width -= b->x0;
+    return width;
 }
 static inline f32 mcH(MCAlpha* a) {
     MCBounds* b = (MCBounds*)a->vis;
