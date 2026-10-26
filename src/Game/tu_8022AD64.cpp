@@ -692,6 +692,21 @@ void fn_8022CD48(int index)
     if (isPlayerEnabled(index)) fn_80248FF0(lbl_8053AC90->players[index]);
 }
 
+int fn_80241380(Player*);
+void fn_8027FA08(Player*, JGeometry::TVec3<f32>*);
+extern JGeometry::TVec3<f32> lbl_804CF460;
+static inline int playerLinkReady(int index)
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(index)) return 0;
+    return fn_80241380(lbl_8053AC90->players[index]);
+}
+static inline JGeometry::TVec3<f32>& playerPosition(int index)
+{
+    if (lbl_8053AC90 == NULL) return *(JGeometry::TVec3<f32>*)(u32)&lbl_804CF460;
+    if (!isPlayerEnabled(index)) return *(JGeometry::TVec3<f32>*)(u32)&lbl_804CF460;
+    return *(JGeometry::TVec3<f32>*)((u8*)lbl_8053AC90->players[index] + 8);
+}
 void ClearBusyLocked(Player*);
 void fn_8022CDD4(int index)
 {
