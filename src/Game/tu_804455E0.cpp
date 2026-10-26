@@ -43,7 +43,7 @@ extern "C" f32 fn_8043D57C(u8*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern "C" void fn_804455E0(void* self_) {
     void** ptr = (void**)self_;
-    u64* row = lbl_8048FC08;
+    const u64* row = lbl_8048FC08;
     int s;
     int d;
     int sTens;
@@ -129,34 +129,28 @@ extern "C" void fn_80445CDC(void* self_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
-extern "C" void fn_80445D24(void* self_) {
-    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
-    u64* row = lbl_8048FC08;
-    int i = 0;
-    u32* p2 = lbl_804B1BA0;
-    u32* p1 = lbl_804B1B78;
-    u32 tag = 0x54494D47;
-    void* anm;
-    for (; i < 4; i++, row += 24) {
+extern "C" void fn_80445D24(fn_804461D0_Self* self) {
+    const ResTIMG* anm;
+    for (int i = 0; i < 4; i++) {
         self->g &= ~(u8)(1 << i);
         self->g &= ~(u8)(1 << (i + 4));
-        anm = fn_804030C4(tag, *p1);
-        SetAnimation(self->screen->search(row[13]), anm);
-        SetAnimation(self->screen->search(row[14]), anm);
-        SetAnimation(self->screen->search(row[15]), anm);
-        SetAnimation(self->screen->search(row[16]), anm);
-        SetAnimation(self->screen->search(row[17]), anm);
-        SetAnimation(self->screen->search(row[18]), anm);
-        SetAnimation(self->screen->search(row[19]), anm);
-        SetAnimation(self->screen->search(row[20]), anm);
-        SetAnimation(self->screen->search(row[21]), anm);
-        SetAnimation(self->screen->search(row[22]), anm);
-        anm = fn_804030C4(tag, *p2);
-        SetAnimation(self->screen->search(row[0]), anm);
-        SetAnimation(self->screen->search(row[1]), anm);
-        ((u8*)self->screen->search(row[8]))[0xb0] = 0;
-        ((u8*)self->screen->search(row[23]))[0xb0] = 0;
-        ((u8*)self->screen->search(row[1]))[0xb0] = 0;
+        anm = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1B78[0]);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 13]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 14]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 15]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 16]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 17]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 18]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 19]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 20]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 21]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 22]))->changeTexture(anm, 0);
+        anm = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1BA0[0]);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 0]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 1]))->changeTexture(anm, 0);
+        self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 8])->hide();
+        self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 23])->hide();
+        self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 1])->hide();
     }
 }
 
