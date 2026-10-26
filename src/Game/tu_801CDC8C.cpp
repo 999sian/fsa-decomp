@@ -521,7 +521,7 @@ static inline f32 DirectionInvSqrt(f32 lengthSquared) {
     }
     f32 estimate = __frsqrte(lengthSquared);
     f32 square = estimate * estimate;
-    return (lbl_8053EFE4 * estimate) * (lbl_8053EFE8 - lengthSquared * square);
+    return (lbl_8053EFE4 * estimate) * __fnmsubs(lengthSquared, square, lbl_8053EFE8);
 }
 #pragma fp_contract off
 extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
