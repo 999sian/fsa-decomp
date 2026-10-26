@@ -1480,7 +1480,7 @@ static inline f32 WRTC_velocityDot(const f32* v, const JGeometry::TVec3<f32>& n)
     return d + v[2] * n.z;
 }
 
-static inline f32 WRTC_velocityDot(const WrtcVec* v, const JGeometry::TVec3<f32>& n) {
+static inline f32 WRTC_velocityDot(WrtcVec* v, const JGeometry::TVec3<f32>& n) {
     f32 d = v->x * n.x + v->y * n.y;
     return d + v->z * n.z;
 }
@@ -1566,9 +1566,10 @@ extern "C" void fn_800FBD90(void* this_) {
         fn_801F0E34(p, 0x4002e, 0);
         JGeometry::TVec3<f32> n;
         if (fn_801F2618(p, &n, 0)) {
+            f32 x = *(f32*)(p + 0x3c);
             f32 dot = WRTC_velocityDot((f32*)(p + 0x3c), n);
             f32 k = lbl_8053BFF0 * dot;
-            *(f32*)(p + 0x3c) -= k * n.x;
+            *(f32*)(p + 0x3c) = x - k * n.x;
             *(f32*)(p + 0x40) -= k * n.y;
             *(f32*)(p + 0x44) -= k * n.z;
             fn_801F0E34(p, 0x4002d, 0);
