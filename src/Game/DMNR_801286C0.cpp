@@ -151,6 +151,7 @@ extern "C" void fn_80128728(void* p, s32 x) {
     *(s32*)((u8*)p + 0x230) = x;
 }
 
+#pragma dont_inline on
 extern "C" u8 fn_80128B18(char* p) {
     return *(s32*)(p + 0x230) == 10;
 }
@@ -196,7 +197,6 @@ extern "C" void fn_80128C58(s32 val) {
     *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x2c) + 0xc) = val;
 }
 
-#pragma dont_inline on
 extern "C" void fn_80128C68(char* p) {
     fn_80128C58((s32)*(f32*)(p + 0x234));
     s32 v = *(s32*)(p + 0x230);
