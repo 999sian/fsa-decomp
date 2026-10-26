@@ -125,10 +125,6 @@ static inline void icwlDrawSprite(void* pos, const char* name, s32 id, DrawRec* 
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, id, rec, lbl_8053C8BC, lbl_8053C8BC);
 }
 
-extern "C" f64 __psq_l(const void*, s32, s32, s32);
-extern "C" f64 __ps_mul(f64, f64);
-extern "C" f64 __ps_madd(f64, f64, f64);
-extern "C" f64 __ps_sum0(f64, f64, f64);
 extern int __float_epsilon[];
 extern "C" void fn_8011DA20(u8* this_) {
     v06__5ActorFv(this_);
@@ -136,7 +132,7 @@ extern "C" void fn_8011DA20(u8* this_) {
     DrawRec b;
     f32 m[12];
     JGeometry::TVec3<f32> pos;
-    JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
+    const JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
     if (!(v.squared() <= lbl_8053C8C4 * (*(f32*)__float_epsilon))) {
         icwlScaleMatrix(m, v);
         a.w18 = m;
