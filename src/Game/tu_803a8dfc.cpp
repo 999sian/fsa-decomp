@@ -2167,7 +2167,7 @@ struct IntroTags {
 static inline void IntroFade(Menu_Intro* p, const u64* tags, const s32 count, const s32 elapsed, const s32 duration, const u32 alphaOffset) {
     if (p->cur < 2) {
         for (s32 k = 0; k < count; k++) {
-            p->screens[p->cur]->search(((const u64*)tags)[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
+            p->screens[p->cur]->search(tags[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
         }
     }
 }
