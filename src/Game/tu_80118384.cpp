@@ -878,7 +878,7 @@ extern "C" void fn_80119998(u8* self, u32 frames, u32 b, s32 mode, u32 d, u32 e,
             fn_8013CC50(0, pos, 0x3f3, 0, 0, 0, 0, 1, lbl_8053C7A0);
         }
         *(f32*)(self + 0x14) = lbl_8053C798;
-        *(f32*)(self + 0x18) = lbl_8053C7B4 / (f32)(*(s32*)(self + 0x8) - 1);
+        *(f32*)(self + 0x18) = lbl_8053C7B0 / (f32)(*(s32*)(self + 0x8) - 1);
         break;
     case 2:
         if (*(s32*)(self + 0x24) == 2) {
