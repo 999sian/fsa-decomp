@@ -1095,7 +1095,7 @@ extern "C" u8 fn_80388EEC(s32 p) {
 
 
 extern f32 lbl_805430D0;
-extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3);
+extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3);
 extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, const JUtility::TColor* __restrict color, f32 x, f32 y, f32 w, f32 h) {
     if (!lbl_8053AD78->be4) {
         if (lbl_8053AD78->w3c != id) {
@@ -1546,10 +1546,19 @@ extern "C" u8 fn_8022FB1C(s32 p, s32 a);
 extern "C" s32 fn_8022CAF8(s32 p);
 extern "C" s32 fn_8022EA0C(s32 p);
 extern "C" void fn_8023061C(s32 p, s32 a);
+#pragma opt_lifetimes off
 extern "C" void fn_803895EC(s32 unused, s32 p, s32 a, u8 b, u8 c) {
     s32 self;
     s32 orig = p;
-    self = resolvePlayer(orig);
+    if (isShared()) {
+        s32 resolved = fn_8022F340(p);
+        if (resolved >= 0 && resolved < 4) {
+            self = resolved;
+            goto haveSelf;
+        }
+    }
+    self = p;
+haveSelf:
     for (p = 0; p < 4; p++) {
         if (isActive(p) == 9) {
             if (c) {
@@ -1561,14 +1570,12 @@ extern "C" void fn_803895EC(s32 unused, s32 p, s32 a, u8 b, u8 c) {
                     fn_8022FB1C(p, a);
                 }
             }
-            if (b) {
-                fn_8023061C(p, 0);
-            }
+            if (b) fn_8023061C(p, 0);
             *((u8*)lbl_8053AD78->sub[resolvePlayer(p)] + 0x24) = 0;
         }
     }
 }
-
+#pragma opt_lifetimes reset
 
 extern "C" u8 fn_80303750(s32 p);
 extern "C" void fn_80390E40(void* sub, u32 id, s32 z);
@@ -1591,7 +1598,9 @@ extern "C" u8 fn_80389BF0(s32 p, u32 id) {
 
 
 extern "C" u8 fn_8022C8EC(s32 p);
-extern "C" u8 fn_8038B8A8(s32 unused, s32 p, s32 q, u32 id, u32 flags) {
+#pragma optimization_level 3
+extern "C" u8 fn_8038B8A8(s32 unused, const s32 p, s32 q, u32 id, u32 options) {
+    unsigned int flags = options;
     if (!isActive(p) && !fn_80303750(p) && fn_8022C8EC(p)) {
         u16 f = flags;
         if (f & 0x91f) {
@@ -1620,7 +1629,6 @@ extern "C" u8 fn_8038B8A8(s32 unused, s32 p, s32 q, u32 id, u32 flags) {
     }
     return 0;
 }
-
 extern "C" u8 fn_8038BD08(s32 a, s32 id, s32 room, JGeometry::TVec3<f32>* pos, s32 flags) {
     s32 p = resolvePlayer(a);
     if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) {
@@ -2178,7 +2186,7 @@ extern f32 lbl_805430EC;
     else if (mode == 2 && out3) { out3[len] = (ch); } \
     else { out[len] = (ch); }
 static inline JUTFont* msgFont() { return *(JUTFont**)((u8*)lbl_8053AD78 + 0x154); }
-extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3) {
+extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     f32 width = lbl_805430C8;
     Inf1* inf = &lbl_8053AD78->p8->inf;
     s8* data = (s8*)inf + inf->size + inf->entries[id].offset + 8;
