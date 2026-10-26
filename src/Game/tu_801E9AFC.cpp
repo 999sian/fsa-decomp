@@ -139,26 +139,29 @@ static inline void fsaDrawActors(FsaSlot* slots, const s32 index) {
         }
     }
 }
+static inline u8 fsaNormalizeFlag(u8 value) {
+    return (-(u32)value | (u32)value) >> 31;
+}
 static inline u8 fsaHasEntries(FsaSlot* s) { return s->count > 0; }
 static inline u8 fsaHasActors(FsaSlot* s) { return s->unk74 > 0; }
 extern "C" void fn_801E9C74(u8* param) {
     s32 n;
     s32 i;
-    u8 b;
+    bool b;
     u8* self = param;
     FsaSlot* slots = (FsaSlot*)self;
-    bool a;
 
 
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
+    bool a;
     if (both) {
         a = (u8)(slots[0].count > 0 || slots[1].count > 0);
-        b = ((u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0) != 0);
+        b = (u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
     } else {
         FsaSlot* s = &slots[self[0xf0]];
         a = fsaHasEntries(s);
-        b = ((u8)(a || fsaHasActors(s)) != 0);
+        b = (u8)(a || s->unk74 > 0);
     }
     if (!a && !b) {
         return;
@@ -207,27 +210,9 @@ extern "C" void fn_801E9C74(u8* param) {
         GXLoadTexObj((GXTexObj*)(self + 0x134), GX_TEXMAP0);
         if (both) {
             fsaDrawEntries(slots, 0, true);
-            n = slots[0].unk74;
-            for (i = 0; i < n; i++) {
-                s32 id = slots[0].unk64[i];
-                if (id >= 0) {
-                    void* actor = fn_801F666C(fn_801F856C(), id);
-                    if (actor != NULL) {
-                        fn_801E6DE8(actor);
-                    }
-                }
-            }
+            fsaDrawActors(slots, 0);
             fsaDrawEntries(slots, 1, true);
-            n = slots[1].unk74;
-            for (i = 0; i < n; i++) {
-                s32 id = slots[1].unk64[i];
-                if (id >= 0) {
-                    void* actor = fn_801F666C(fn_801F856C(), id);
-                    if (actor != NULL) {
-                        fn_801E6DE8(actor);
-                    }
-                }
-            }
+            fsaDrawActors(slots, 1);
         } else {
             FsaSlot* s = &slots[self[0xf0]];
             for (i = 0; i < s->count; i++) {
