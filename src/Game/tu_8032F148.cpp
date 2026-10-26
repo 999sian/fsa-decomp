@@ -374,6 +374,14 @@ extern "C" void fn_80331D38(char* this_) {
     }
 }
 
+static inline f32 warpSqrt80331(f32 x) {
+    if (x <= 0.0f) return x;
+    f32 y = (f32)__frsqrte(x);
+    y = 0.5f * y * (3.0f - x * (y * y));
+    x *= y;
+    return x;
+}
+
 extern "C" void fn_80331E6C(char* this_) {
     u8* self = (u8*)this_;
 
@@ -834,7 +842,7 @@ extern "C" void fn_80333148(char* this_) {
     extern int fn_80138A30(unsigned char* a);
     extern int fn_801EEC98(char* a, void* h, u16* p5, int p6, int p7, s32* p8, int p9, int p10);
     extern void fn_8023061C(int a, int b);
-    extern unsigned char fn_8022F9E4(int idx, int a0, unsigned char a1, unsigned char a2);
+    extern unsigned char fn_8022F9E4(s32 idx, s32 a0, s32 a1, s32 a2);
 
     struct VT14 {
         virtual void s00();
@@ -937,7 +945,7 @@ extern "C" void fn_80333148(char* this_) {
             shift += 2;
         }
     }
-    u32 idx = 0;
+    s32 idx = 0;
     *(u8*)(obj + 0x2a6) = idx;
     *(float*)(obj + 0x2b8) = 0.0f;
     *(float*)(obj + 0x2bc) = 0.0f;
@@ -969,7 +977,7 @@ extern "C" void fn_80333148(char* this_) {
             char* m = fn_802D6A9C();
             float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(obj + 0xc);
             float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(obj + 0x10);
-            local_8 = (s16)(s32)(JMath::atanTable_.atan2_(y, x) * 10430.378f);
+            local_8 = enemyAngle(y, x);
             *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.sinShort(local_8);
             *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.cosShort(local_8);
             if (*(float*)(obj + 0x2b8) >= 0.0f) *(s32*)(obj + 0x98) = 0;
