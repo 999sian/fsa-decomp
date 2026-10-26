@@ -100,16 +100,22 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
         JGeometry::TVec3<f32> point;
         fn_8022E088(player, j, (JGeometry::TVec2<f32>*)&point);
         point -= *(JGeometry::TVec3<f32>*)(p + 0xc);
-        point.z = lbl_80542210;
-        s16 angle = (s16)(s32)(JMath::atanTable_.atan2_(point.y, point.x) * lbl_80542230);
+        point.z = 0.0f;
+        f32 angleF = JMath::atanTable_.atan2_(point.y, point.x);
+        angleF *= lbl_80542230;
+        s32 angle = (s32)angleF;
         f32 xx = point.x * point.x;
         f32 yy = point.y * point.y;
         f32 length = JGeometry::TUtilf::sqrt(xx + yy);
-        point.z = lbl_80542210;
+        point.z = 0.0f;
         point.y = length * JMath::sincosTable_.sinShort(angle);
         point.x = length * JMath::sincosTable_.cosShort(angle);
+        f32 minX = *(f32*)(p + 0x60);
+        f32 minY = *(f32*)(p + 0x64);
+        f32 maxX = *(f32*)(p + 0x68);
+        f32 maxY = *(f32*)(p + 0x6c);
         bool inside = false;
-        if (point.x >= *(f32*)(p + 0x60) && point.y >= *(f32*)(p + 0x64) && point.x < *(f32*)(p + 0x68) && point.y < *(f32*)(p + 0x6c)) inside = true;
+        if (point.x >= minX && point.y >= minY && point.x < maxX && point.y < maxY) inside = true;
         if (inside) {
             fn_8022DF48(player);
             return 1;
@@ -120,77 +126,102 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
 
 extern "C" void fn_8033EA54(Actor* this_) {
     u8* p = (u8*)this_;
+    int player;
     if (*(s32*)(p + 0x230) == 1) {
-        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + *(f32*)(p + 0x40);
-        *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + *(f32*)(p + 0x44);
-        if (((s32 (*)(Actor*))(*(void***)this_)[15])(this_) > 0) {
-            if (!((s32 (*)(Actor*))(*(void***)this_)[13])(this_)) {
-                *(s32*)(p + 0x230) = 2;
-            }
-        }
+        ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
+    }
+    if (((FsaVirtBase*)p)->v15() > 0 && !((FsaVirtBase*)p)->v11()) {
+        *(s32*)(p + 0x230) = 2;
     }
     switch (*(s32*)(p + 0x230)) {
-    case 0:
-        if (*(s32*)(p + 0x248) == 0) {
-            break;
-        }
-        if (*(s32*)(p + 0x24c) > 0) {
-            break;
-        }
+    case 0: {
+        s32 speed = *(s32*)(p + 0x248);
+        if (speed == 0 || *(s32*)(p + 0x24c) > 0) break;
         switch (*(s32*)(p + 0x254)) {
         case 0:
-            *(f32*)(p + 0x3c) = lbl_80542224 * (f32)*(s32*)(p + 0x248);
+            *(f32*)(p + 0x3c) = lbl_80542224 * (f32)speed;
             *(f32*)(p + 0x40) = lbl_80542210;
             *(f32*)(p + 0x44) = lbl_80542210;
             break;
         case 1:
-            *(f32*)(p + 0x3c) = lbl_80542224 * -(f32)*(s32*)(p + 0x248);
+            *(f32*)(p + 0x3c) = lbl_80542224 * -(f32)speed;
             *(f32*)(p + 0x40) = lbl_80542210;
             *(f32*)(p + 0x44) = lbl_80542210;
             break;
         case 2:
             *(f32*)(p + 0x3c) = lbl_80542210;
-            *(f32*)(p + 0x40) = lbl_80542224 * ((f32)*(s32*)(p + 0x248) - lbl_80542238);
+            *(f32*)(p + 0x40) = lbl_80542224 * (f32)speed;
             *(f32*)(p + 0x44) = lbl_80542210;
             break;
         case 3:
             *(f32*)(p + 0x3c) = lbl_80542210;
-            *(f32*)(p + 0x40) = lbl_80542224 * -((f32)*(s32*)(p + 0x248) - lbl_80542238);
+            *(f32*)(p + 0x40) = lbl_80542224 * -(f32)speed;
             *(f32*)(p + 0x44) = lbl_80542210;
             break;
         }
         *(s32*)(p + 0x24c) = 1;
         *(s32*)(p + 0x230) = 1;
         break;
+    }
     case 1: {
-        Vec sum;
-        f32 dist;
         if (*(s32*)(p + 0x254) == *(s32*)(p + 0x250)) {
-            sum.x = *(f32*)(p + 0x24) + *(f32*)(p + 0x234);
-            sum.y = *(f32*)(p + 0x28) + *(f32*)(p + 0x238);
-            sum.z = *(f32*)(p + 0x2c) + *(f32*)(p + 0x23c);
-            dist = PSVECDistance((Vec*)(p + 0xc), &sum);
-            if (dist >= (f32)*(u32*)(p + 0x258) * lbl_80542228) {
-                if (*(s32*)(p + 0x254) != *(s32*)(p + 0x250)) {
-                    *(f32*)(p + 0x3c) = lbl_80542210;
-                }
+            JGeometry::TVec3<f32> target = *(JGeometry::TVec3<f32>*)(p + 0x24) + *(JGeometry::TVec3<f32>*)(p + 0x234);
+            if (PSVECDistance((Vec*)(p + 0xc), &target) >= lbl_80542228 * (f32)*(s32*)(p + 0x258)) goto stop;
+        }
+        if (*(s32*)(p + 0x254) != *(s32*)(p + 0x250)) {
+            JGeometry::TVec3<f32> target = *(JGeometry::TVec3<f32>*)(p + 0x24) + *(JGeometry::TVec3<f32>*)(p + 0x234);
+            if (PSVECDistance((Vec*)(p + 0xc), &target) <= lbl_80542210) {
+stop:
+                *(f32*)(p + 0x44) = lbl_80542210;
+                *(f32*)(p + 0x40) = lbl_80542210;
+                *(f32*)(p + 0x3c) = lbl_80542210;
+                *(s32*)(p + 0x254) ^= 1;
+                *(s32*)(p + 0x24c) = 60;
+                *(s32*)(p + 0x230) = 0;
             }
         }
-        if (((s32 (*)(Actor*))(*(void***)this_)[13])(this_) == 1) {
-            *(s32*)(p + 0x230) = 2;
-        }
+        if (*(s32*)(p + 0x24c) == 0) *(s32*)(p + 0x24c) = 16;
         break;
     }
     case 2:
-        if (*(f32*)(p + 0x240) > lbl_80542210) {
-            *(f32*)(p + 0x240) = *(f32*)(p + 0x240) - lbl_8054222C;
+        if (((FsaVirtBase*)p)->v11() == 1) {
+            if (*(f32*)(p + 0x240) < lbl_8054221C) {
+                *(f32*)(p + 0x240) += lbl_8054222C;
+                if (*(f32*)(p + 0x240) >= lbl_8054221C) {
+                    *(f32*)(p + 0x240) = lbl_8054221C;
+                    *(s32*)(p + 0x230) = 0;
+                }
+            }
+        } else {
             if (*(f32*)(p + 0x240) > lbl_80542210) {
-                *(f32*)(p + 0x240) = lbl_80542210;
+                *(f32*)(p + 0x240) -= lbl_8054222C;
+                if (*(f32*)(p + 0x240) <= lbl_80542210) *(f32*)(p + 0x240) = lbl_80542210;
             }
         }
-        break;
+        return;
     }
+    if (p[0x262] != 0) {
+        *(f32*)(p + 0x10) -= *(f32*)(p + 0x238);
+        *(u16*)(p + 0x25c) += 0x800;
+        *(f32*)(p + 0x238) = JMath::sincosTable_.sinShort(*(u16*)(p + 0x25c));
+        *(f32*)(p + 0x10) += *(f32*)(p + 0x238);
+        if (*(u16*)(p + 0x25c) == 0) {
+            *(f32*)(p + 0x238) = lbl_80542210;
+            p[0x262] = 0;
+        }
+    }
+    for (player = 0; player < 4; ++player) {
+        u8 hit = platformHasPlayer(p, player, *(s32*)(p + 4));
+        if (hit && ((JGeometry::TVec3<f32>*)fn_8023E724(player))->z <= lbl_80542210) {
+            JGeometry::TVec3<f32> delta = *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18);
+            fn_8023DEDC(player, (s32)&delta);
+            for (int j = 0; j < 3; ++j) fn_8022CB94(player);
+        }
+        if (((JGeometry::TVec3<f32>*)fn_8023E724(player))->z > lbl_80542210) hit = 0;
+        if (hit != p[0x25e + player]) p[0x262] = 1;
+        p[0x25e + player] = hit;
+    }
+    if (*(s32*)(p + 0x24c) > 0) --*(s32*)(p + 0x24c);
 }
 
 extern "C" const float lbl_80542210;
