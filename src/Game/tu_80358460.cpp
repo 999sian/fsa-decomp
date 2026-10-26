@@ -141,6 +141,21 @@ extern "C" void fn_802314D8(s32, f32*);
 extern "C" u8 fn_80235448(s32 i);
 extern "C" void fn_802A381C(u8* a, Vec8035A860* v, s32 room, u16 idx);
 extern "C" u8 fn_8023AAF8(s32 i, f32* box, s32 room, Vec8035A860* out);
+static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
+    JGeometry::TVec3f saved;
+    JGeometry::TVec3f vec;
+    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+    saved = vec;
+    *(s32*)(self + 0x258) = state;
+    for (s32 k = 0; k < 6; ++k) {
+        for (s32 j = 0; j < 6; ++j) {
+            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
+            vec.y += lbl_80542870;
+        }
+        vec.y = saved.y;
+        vec.x += lbl_80542870;
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -575,25 +590,26 @@ extern "C" void fn_8023DF68(s32, Vec8035A860*);
 extern "C" void fn_802314D8(s32, f32*);
 extern "C" u8 fn_80235448(s32 i);
 extern "C" void fn_802A381C(u8* a, Vec8035A860* v, s32 room, u16 idx);
-extern "C" void fn_803597EC(u8* self) {
-    u8* q;
+extern "C" void fn_803597EC(u8* object) {
+    u8* tbl;
+    u8* self;
+    s32 flags;
     s32 i;
+    u8* q;
     s32 a;
     s32 b;
-    s32 flags;
     s16 ang;
     s16 vel;
     f32 cs;
     f32 box[4];
     Vec8035A860 v8;
-    Vec8035A860 vec;
     f32 d;
     f32 py;
     u16 idx;
     s32 k;
     s32 j;
-    u8* tbl;
 
+    self = object;
     flags = 0;
     *(f32*)(self + 0x240) = lbl_8054286C;
     *(u8*)(self + 0x24e) = 0;
@@ -610,49 +626,46 @@ extern "C" void fn_803597EC(u8* self) {
         q[0x24a] = 0;
         if (fn_8023F264(i)) {
             q[0x246] = fn_8035AE9C(self, (void*)i);
-            if (fn_80235448(i) && q[0x246] != 0) {
+            if (fn_80235448(i) && (s8)q[0x246] != 0) {
                 *(u8*)(self + 0x24e) |= 1 << i;
-                fn_801F317C(self, box);
-                ang = *(s16*)(self + 0x230);
-                py = *(f32*)(self + 0x10);
-                cs = __fabs(((f32*)(tbl + ((u16)ang >> 5) * 8))[1]);
-                box[1] = (box[1] - py) * cs + py;
-                box[3] = (box[3] - py) * cs + py;
-                if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), &v8)) {
-                    d = py - v8.y;
-                    if (*(u8*)(self + 0x24e) != 0 && d == lbl_8054286C) {
-                        d = lbl_8054287C;
-                        if (*(u8*)(self + 0x24e) == 0 && __fabsf(d) <= lbl_80542880) {
-                            *(f32*)(self + 0x240) += lbl_80542884 * lbl_8054286C;
-                            q[0x24a] = d >= lbl_8054286C ? 1 : -1;
-                        } else {
-                            q[0x24a] = 0;
-                        }
-                    } else {
-                        q[0x24a] = 0;
-                    }
-                }
             }
         }
+        fn_801F317C(self, box);
+        ang = *(s16*)(self + 0x230);
+        py = *(f32*)(self + 0x10);
+        f32* sc = (f32*)(tbl + ((u16)ang >> 5) * 8);
+        f64 csd = __fabs(sc[1]);
+        box[1] = (box[1] - py) * csd + py;
+        box[3] = (box[3] - py) * csd + py;
+        s32 hit;
+        if (fn_8023AAF8(i, box, *(s32*)(self + 4), &v8)) {
+            d = py - v8.y;
+            if (self[0x24e] != 0 && lbl_8054286C == d) d = lbl_8054287C;
+            if (self[0x24e] == 0 && __fabs(d) <= lbl_80542880) d = lbl_8054286C;
+            *(f32*)(self + 0x240) += lbl_80542884 * d;
+            hit = d >= lbl_8054286C ? 1 : -1;
+        } else {
+            hit = 0;
+        }
+        q[0x24a] = hit;
         flags |= *(u8*)(self + 0x24e);
         flags |= (s8)q[0x24a] << i;
     }
     if (flags != 0) {
-        if (*(s16*)(self + 0x238) == 0 && *(f32*)(self + 0x240) != 0.0f) {
+        if (*(s16*)(self + 0x238) == 0 && *(f32*)(self + 0x240) != lbl_8054286C) {
             *(s32*)(self + 0x254) = 30;
             idx = lbl_80542868[1];
-            vec = *(Vec8035A860*)(self + 0xc);
-            vec.x += *(f32*)(self + 0x60);
-            vec.y += *(f32*)(self + 0x64);
+            JGeometry::TVec3f vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+            JGeometry::TVec3f saved(vec);
             *(s32*)(self + 0x258) = 1;
             flags = 0;
             for (k = 0; k < 6; k++) {
                 for (j = 0; j < 6; j++) {
-                    fn_802A381C(lbl_8053AC98, &vec, *(s32*)(self + 0x4), idx);
+                    fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 0x4), idx);
                     vec.y += lbl_80542870;
                 }
+                vec.y = saved.y;
                 vec.x += lbl_80542870;
-                vec.y = *(f32*)(self + 0x10);
             }
         }
         if (*(f32*)(self + 0x240) > lbl_8054286C) {
@@ -662,24 +675,26 @@ extern "C" void fn_803597EC(u8* self) {
         }
     }
     for (i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
+        if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
             ang = *(s16*)(self + 0x230);
-            cs = ((f32*)(tbl + ((u16)ang >> 5) * 8))[0];
+            cs = ((f32*)(sincosTable___5JMath + ((u16)ang >> 5) * 8))[0];
             d = __fabsf(cs);
             cs = cs * d;
             cs = lbl_8054288C * cs;
-            if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && ((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
+            if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && (s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
                 cs = cs * lbl_80542890;
             }
             if (*(u8*)(self + 0x244) == 0) {
                 if (*(s32*)(self + 0x258) == 1) {
+                    Vec8035A860 vec;
                     vec.x = lbl_8054286C;
-                    vec.y = cs * lbl_80542894;
+                    vec.y = lbl_80542894 * cs;
                     vec.z = lbl_8054286C;
                     fn_8023DF68(i, &vec);
                 }
             } else {
                 if (*(s32*)(self + 0x258) == 1) {
+                    Vec8035A860 vec;
                     vec.x = lbl_8054286C;
                     vec.y = cs;
                     vec.z = lbl_8054286C;
@@ -689,9 +704,9 @@ extern "C" void fn_803597EC(u8* self) {
         }
     }
     for (a = 0; a < 4; a++) {
-        if (self[0x24a + a] != 0) {
+        if ((s8)self[0x24a + a] != 0) {
             for (b = 0; b < 4; b++) {
-                if (!fn_8022F514((void*)b) && self[0x24a + b] == 0 && (s8)self[0x246 + b] != 0 &&
+                if (!fn_8022F514((void*)b) && (s8)self[0x24a + b] == 0 && (s8)self[0x246 + b] != 0 &&
                     (s8)self[0x24a + a] * (s8)self[0x246 + b] < 0) {
                     f32 cv[3];
                     cv[0] = lbl_8054286C;
@@ -703,12 +718,31 @@ extern "C" void fn_803597EC(u8* self) {
         }
     }
     ang = *(s16*)(self + 0x230);
+    *(s16*)(self + 0x230) = ang + *(s16*)(self + 0x238);
     vel = *(s16*)(self + 0x238);
-    *(s16*)(self + 0x230) = ang + vel;
     if (vel < 0) {
-        if (ang > 0x4000 && *(s16*)(self + 0x230) <= 0x4000) {
-            *(u8*)(self + 0x244) ^= 1;
+        if ((ang > 0x4000 && *(s16*)(self + 0x230) <= 0x4000) ||
+            (ang >= -0x4000 && *(s16*)(self + 0x230) < -0x4000)) self[0x244] ^= 1;
+    } else if (vel > 0) {
+        if ((ang <= 0x4000 && *(s16*)(self + 0x230) > 0x4000) ||
+            (ang < -0x4000 && *(s16*)(self + 0x230) >= -0x4000)) self[0x244] ^= 1;
+    }
+    if (*(s16*)(self + 0x230) == 0 || *(s16*)(self + 0x230) == -0x8000) {
+        if (*(s16*)(self + 0x238) != 0) {
+            JGeometry::TVec3f vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+            JGeometry::TVec3f saved(vec);
+            idx = lbl_80542868[0];
+            *(s32*)(self + 0x258) = 0;
+            for (k = 0; k < 6; k++) {
+                for (j = 0; j < 6; j++) {
+                    fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
+                    vec.y += lbl_80542870;
+                }
+                vec.y = saved.y;
+                vec.x += lbl_80542870;
+            }
         }
+        *(s16*)(self + 0x238) = 0;
     }
 }
 
