@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
 extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
 extern "C" u8 fn_8040271C(void*, s32, f32, f32);
 extern "C" void fn_80402628(void*, s32, s32, u8);
@@ -212,6 +213,7 @@ extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 extern "C" void fn_804023D0(void* p, void* q, u8 b);
 extern "C" void fn_80404648(u8* self) {
 	if (*(u32*)(self + 0x38c) & 0x10) {
+        u8* p = self;
 		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = 0;
 		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = 0;
 		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = 0;
@@ -224,8 +226,7 @@ extern "C" void fn_80404648(u8* self) {
 		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = 0;
 		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = 0;
 		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = 0;
-		for (s32 i = 0; i < 3; i++) {
-			u8* p = self + i * 0x18;
+		for (int i = 3; i > 0; --i, p += 0x18) {
 			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = 0;
 			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = 0;
 			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = 0;
@@ -294,7 +295,7 @@ extern "C" void fn_80404648(u8* self) {
 			fn_80402E08(*(void**)(base + 0x28), lbl_805438C0, lbl_80543898);
 			*(s16*)(*(u8**)(base + 0x28) + 0x20) = 0;
 			for (s32 k = 0; k < 3; k++) {
-				u8* obj = *(u8**)(base + 0x28 + k * 4);
+				u8* obj = *(u8**)(*(u8**)(base + 0x28 + k * 4) + 4);
 				((void (*)(void*, s32))(*(void***)obj)[9])(obj, 0);
 				*(s16*)(*(u8**)(base + 0x28 + k * 4) + 0x26) = 0;
 			}
