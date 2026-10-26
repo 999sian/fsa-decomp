@@ -20,7 +20,7 @@ struct Obj8033D264 {
 #include "Game/ItemBase.h"
 
 extern "C" {
-extern f32 lbl_805421B0;
+extern const f32 lbl_805421B0;
 extern char lbl_804AC2D8[];
 void __dt__5ActorFv(void*, s32);
 extern JGeometry::TVec3f lbl_80471E28[];
