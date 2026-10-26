@@ -73,9 +73,16 @@ extern "C" void fn_80238E08(void* h);
 extern "C" u8 fn_802A1554(void* g, void* v);
 extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 
-static inline void moveBlockChild(char* obj, const JGeometry::TVec3f& offset) {
-    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + offset;
-    fn_802C59B0(obj);
+static inline void moveBlockChildren(char* self, JGeometry::TVec3f offset) {
+    char* q = self;
+    for (s32 k = 0; k < *(s32*)(self + 0x2a8); k++) {
+        char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
+        if (obj) {
+            *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + offset;
+            fn_802C59B0(obj);
+        }
+        q += 4;
+    }
 }
 
 // Push direction from a player standing against the block, or -1.
