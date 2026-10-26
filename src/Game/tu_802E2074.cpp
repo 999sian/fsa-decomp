@@ -47,6 +47,11 @@ struct GenRecordReader {
     }
 };
 
+static inline void genReadCoordinates(GenRecordReader& reader, u16& y, u16& x) {
+    x = reader.read8();
+    y = reader.read8();
+}
+
 struct Box4 {
     f32 x0, y0, x1, y1;
 };
@@ -103,10 +108,11 @@ void fn_802E20D8(u8* this_)
     case 1:
         *(s32*)(this_ + 0x240) = 0;
         do {
-            u8 found = 1;
+            u8 found;
             u32 name;
             for (;;) {
                 u8* data = *(u8**)(this_ + 0x244) + offset;
+                found = 1;
                 name = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
                 if (name == 0x20202020) {
                     *(u16*)(this_ + 0x24c) += 2;
@@ -127,15 +133,18 @@ void fn_802E20D8(u8* this_)
                 offset += 11;
             }
             if (found == 1) {
-                u8 destination;
-                u16 y, x;
+                u32 destination;
+                u16 x, y;
                 u8* data = *(u8**)(this_ + 0x244) + offset;
                 offset += 11;
                 s32 room;
-                u32 param = (data[7] << 24) | (data[8] << 16) | (data[9] << 8) | data[10];
-                destination = data[4];
-                x = data[5];
-                y = data[6];
+                GenRecordReader reader(data+4);
+                destination=reader.read8();
+                reader.p = data+6;
+                y=reader.read8();
+                reader.p = data+5;
+                x=reader.read8();
+                u32 param=(data[7]<<24)|(data[8]<<16)|(data[9]<<8)|data[10];
                 f32 baseX, baseY;
                 if (destination == 0) {
                     baseX = box.x0; baseY = box.y0; room = 0;
