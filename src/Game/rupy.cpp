@@ -57,7 +57,7 @@ struct RupyRotation {
     }
 };
 
-static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, f32 ang, const f32& scale) {
+static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& ang, const f32& scale) {
         f32 cx;
         f32 s;
         f32 sz;
@@ -683,7 +683,6 @@ extern "C" void fn_8032BFB0(char* p) {
     const char* name;
     s32 mode;
     s32 id;
-    f32 cx, ang, sx, sy, sz, cy, cz;
     f32 scale;
     s32 st = *(s32*)(p + 0x230);
     if (st == 7) {
@@ -722,32 +721,7 @@ extern "C" void fn_8032BFB0(char* p) {
     JGeometry::TVec3<f32> save;
     PSMTXIdentity(mtx);
     {
-        ang = *(f32*)(p + 0x23c);
-        sx = sin(lbl_80541D88);
-        sy = sin(ang);
-        sz = sin(lbl_80541D88);
-        cx = cos(lbl_80541D88);
-        cy = cos(ang);
-        cz = cos(lbl_80541D88);
-        f32 sxsy = sx * sy;
-        f32 cxsz = cx * sz;
-        f32 cxcz = cx * cz;
-        f32 sxsz = sx * sz;
-        f32 sxcz = sx * cz;
-        f32 cycz = cy * cz;
-        f32 cysz = cy * sz;
-        rec.w18 = mtx;
-        rec.b2d = 1;
-        rec.b20 = 0;
-        mtx[0][0] = scale * cycz;
-        mtx[1][0] = scale * cysz;
-        mtx[2][0] = scale * -sy;
-        mtx[0][1] = scale * (sxsy * cz - cxsz);
-        mtx[1][1] = scale * (sxsy * sz + cxcz);
-        mtx[2][1] = scale * (sx * cy);
-        mtx[0][2] = scale * (cxcz * sy + sxsz);
-        mtx[1][2] = scale * (cxsz * sy - sxcz);
-        mtx[2][2] = scale * (cx * cy);
+        RupyDrawMtx(mtx, rec, *(f32*)(p + 0x23c), scale);
     }
     st = *(s32*)(p + 0x230);
     if (st == 5 || st == 6) {
@@ -1397,10 +1371,12 @@ extern "C" void fn_8032D6C0(void* this_) {
         *(f32*)(p + 0x238) = lbl_80541D88;
         *(u8*)(p + 0x280) = 1;
         *(s32*)(p + 0x274) = 0xa;
-        if (((ActorSlot13*)this_)->slot13() != 0 && *(u16*)(p + 0x94) == 0x1a) {
+        if (((ActorSlot13*)this_)->slot13() != 0) {
+            if (*(u16*)(p + 0x94) == 0x1a) {
                 *(f32*)(p + 0x238) = lbl_80541D90;
                 *(s32*)(p + 0x230) = 0xa;
                 break;
+            }
         }
         /* fall through */
     case 16:
@@ -1437,8 +1413,7 @@ extern "C" void fn_8032D6C0(void* this_) {
         break;
     case 29:
         *(s32*)(p + 0x24c) = 0x30c;
-        *(u8*)(p + 0x27d) = 1;
-        *(s32*)(p + 0x230) = 9;
+        *(s32*)(p + 0x230) = (*(u8*)(p + 0x27d) = 1, 9);
         break;
     case 30:
         *(s32*)(p + 0x274) = 0xa;
