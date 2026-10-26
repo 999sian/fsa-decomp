@@ -235,6 +235,12 @@ static inline void SetTimerMark(u8* this_, u8* base, u32 idx, u8 v) {
     ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + idx * 0x28))[4]))[0xb0] = v;
 }
 
+struct HudTimerTables {
+    u8 pad[0xa28];
+    u64 digitsA[4][5];
+    u64 digitsB[4][5];
+};
+
 // Sets digit `pos` of player idx's timer (both picture layers) to texture tex.
 static inline void SetTimerDigitAt(u8* this_, u64* a, u64* b, u32 pos, u32 tex) {
     GetPicture(this_, a[pos])->changeTexture(tex, 0);
@@ -662,9 +668,15 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
 }
 
 extern "C" void fn_80423804(u8* this_, u32 idx) {
-    u8* base = (u8*)lbl_8048E1B8;
+    u64* a;
+    u64* b;
+    u64* c;
+    u64* d;
+    s32 j;
+    s32 n;
+    const u8* base = lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
-        s32 n = fn_80237810(idx);
+        n = fn_80237810(idx);
         s32 cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         s32 k = cnt;
         if (n > 0x20) {
@@ -680,48 +692,48 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
             k = 0;
         }
 
-        u32 off = idx << 6;
-        u64* a = (u64*)(base + 0x228 + off);
-        u64* b = (u64*)(base + 0x328 + off);
-        u64* c = (u64*)(base + 0x428 + off);
-        u64* d = (u64*)(base + 0x528 + off);
-        for (s32 j = 0; j < 8; j++) {
+        u32 off = idx * 0x40;
+        a = (u64*)(base + 0x228 + off);
+        b = (u64*)(base + 0x328 + off);
+        c = (u64*)(base + 0x428 + off);
+        d = (u64*)(base + 0x528 + off);
+        for (j = 0; j < 8; j++) {
             if (k >= 4) {
-                SetSub(GetSub(this_, *a), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                SetSub(GetSub(this_, *b), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                GetSub(this_, *c)[0xb0] = 0;
-                GetSub(this_, *d)[0xb0] = 0;
+                SetHeart(FindHudPane(this_, a), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                SetHeart(FindHudPane(this_, b), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                FindHudPane(this_, c)[0xb0] = 0;
+                FindHudPane(this_, d)[0xb0] = 0;
                 n -= 4;
                 k -= 4;
             } else {
                 if (k == 0) {
-                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetHeart(FindHudPane(this_, a), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetHeart(FindHudPane(this_, b), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
                     if (n > 0) {
-                        GetSub(this_, *c)[0xb0] = 1;
-                        GetSub(this_, *d)[0xb0] = 1;
+                        FindHudPane(this_, c)[0xb0] = 1;
+                        FindHudPane(this_, d)[0xb0] = 1;
                         n -= 4;
                     } else {
-                        GetSub(this_, *c)[0xb0] = 0;
-                        GetSub(this_, *d)[0xb0] = 0;
+                        FindHudPane(this_, c)[0xb0] = 0;
+                        FindHudPane(this_, d)[0xb0] = 0;
                     }
                 } else if (k == 1) {
-                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    GetSub(this_, *c)[0xb0] = 0;
-                    GetSub(this_, *d)[0xb0] = 0;
+                    SetHeart(FindHudPane(this_, a), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetHeart(FindHudPane(this_, b), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    FindHudPane(this_, c)[0xb0] = 0;
+                    FindHudPane(this_, d)[0xb0] = 0;
                     n -= 4;
                 } else if (k == 2) {
-                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    GetSub(this_, *c)[0xb0] = 0;
-                    GetSub(this_, *d)[0xb0] = 0;
+                    SetHeart(FindHudPane(this_, a), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetHeart(FindHudPane(this_, b), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    FindHudPane(this_, c)[0xb0] = 0;
+                    FindHudPane(this_, d)[0xb0] = 0;
                     n -= 4;
                 } else if (k == 3) {
-                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
-                    GetSub(this_, *c)[0xb0] = 0;
-                    GetSub(this_, *d)[0xb0] = 0;
+                    SetHeart(FindHudPane(this_, a), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetHeart(FindHudPane(this_, b), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    FindHudPane(this_, c)[0xb0] = 0;
+                    FindHudPane(this_, d)[0xb0] = 0;
                     n -= 4;
                 }
                 k = 0;
@@ -1018,14 +1030,13 @@ extern const f32 lbl_80543A7C;
 extern const f32 lbl_80543A80;
 extern const f32 lbl_80543A84;
 
-extern "C" void fn_804253E0(u8* obj, s32 i) {
-    u8* this_ = obj;
+extern "C" void fn_804253E0(u8* this_, s32 i) {
     s16* t;
     s32 n, w;
     s32 j1, j2;
     u8 *table1, *table2;
     s32* p = &((s32*)(lbl_80529DEC + 0xd8))[i];
-    s32 cur = *p;
+    const s32 cur = *p;
     if (cur < (s32)fn_80237774(i)) {
         ((s32*)(this_ + 0x168))[i] = ((s32*)(this_ + 0x168))[i] + 1;
         if (((s32*)(this_ + 0x168))[i] >= 10) {
@@ -1045,7 +1056,7 @@ extern "C" void fn_804253E0(u8* obj, s32 i) {
             ((s32*)(this_ + 0x1c8))[i] = fn_80237810(i);
         }
     } else {
-        s32 cur2 = *p;
+        const s32 cur2 = *p;
         if (cur2 > (s32)fn_80237774(i)) {
             s32 bit = 1 << i;
             lbl_80529DEC[0x24a] |= (u8)bit;
@@ -1270,7 +1281,7 @@ extern const f32 lbl_80543A58;
 extern const f32 lbl_80543A88;
 extern const f32 lbl_80543A8C;
 extern "C" void fn_8044148C(void*);
-#pragma fp_contract off
+#pragma fp_contract on
 extern "C" void fn_80425F6C(u8* self) {
     f32 right;
     f32 bottom;
@@ -1298,12 +1309,18 @@ extern "C" void fn_80425F6C(u8* self) {
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                 video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                f32 coord[2];
+                coord[1] = point.y / (f32)(s32)*(u16*)(video + 6);
+                coord[0] = point.x / (f32)(s32)*(u16*)(video + 4);
+                coord[1] = height * coord[1];
+                coord[0] = width * coord[0];
+                coord[1] -= (f32)(s32)*(u16*)(video + 6) * 0.5f;
+                coord[0] -= (f32)(s32)*(u16*)(video + 4) * 0.5f;
+                coord[1] += (f32)*(s16*)(settings + 0x4e);
                 JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                 graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                 (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
-                (*(J2DScreen**)(screens + 8))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
+                (*(J2DScreen**)(screens + 8))->draw(coord[0], coord[1], (J2DGrafContext*)*(void**)(self + 0x4c));
                 *(s16*)(halfwords + 0x208) = 0;
             } else {
                 bool blocked;
@@ -1315,12 +1332,18 @@ extern "C" void fn_80425F6C(u8* self) {
                     fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(fn_8022EA0C(i)), 0, 0, &point.x);
                     video = *(u8**)(sManager__8JUTVideo + 4);
                 J2DOrthoGraph* graph = *(J2DOrthoGraph**)(self + 0x4c);
-                    f32 y = (f32)*(s16*)(settings + 0x4e) + ((f32)(height * (point.y / (f32)(s32)*(u16*)(video + 6))) - (f32)(s32)*(u16*)(video + 6) * lbl_80543A58);
-                    f32 x = (f32)(width * (point.x / (f32)(s32)*(u16*)(video + 4))) - (f32)(s32)*(u16*)(video + 4) * lbl_80543A58;
+                    f32 coord[2];
+                coord[1] = point.y / (f32)(s32)*(u16*)(video + 6);
+                coord[0] = point.x / (f32)(s32)*(u16*)(video + 4);
+                coord[1] = height * coord[1];
+                coord[0] = width * coord[0];
+                coord[1] -= (f32)(s32)*(u16*)(video + 6) * 0.5f;
+                coord[0] -= (f32)(s32)*(u16*)(video + 4) * 0.5f;
+                coord[1] += (f32)*(s16*)(settings + 0x4e);
                     JGeometry::TBox2<f32> box(lbl_80543A40, lbl_80543A40, right, bottom);
                     graph->setOrtho(box, lbl_80543A88, lbl_80543A8C);
                     (*(J2DOrthoGraph**)(self + 0x4c))->setPort();
-                    (*(J2DScreen**)(screens + 0x2c))->draw(x, y, (J2DGrafContext*)*(void**)(self + 0x4c));
+                    (*(J2DScreen**)(screens + 0x2c))->draw(coord[0], coord[1], (J2DGrafContext*)*(void**)(self + 0x4c));
                 }
             }
         }
@@ -1331,7 +1354,6 @@ extern "C" void fn_80425F6C(u8* self) {
     (*(J2DScreen**)(self + 4))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
     fn_8044148C(*(void**)(self + 0xf0));
 }
-#pragma opt_propagation off
 extern "C" void fn_804263A8(u8* this_) {
     u8* config = lbl_80529DEC;
     const u8* base = lbl_8048E1B8;
