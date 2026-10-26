@@ -38,7 +38,7 @@ extern "C" s32 fn_801CD664(s32 n);
 extern "C" f32 lbl_8053EECC;
 extern "C" f32 lbl_8053EED0;
 extern "C" f32 lbl_8053EED4;
-extern "C" f32 lbl_8053EED8;
+extern "C" const f32 lbl_8053EED8;
 extern "C" f32 lbl_8053EEDC;
 extern "C" f32 lbl_8053EEE0;
 extern "C" f32 lbl_8053EEE4;
