@@ -72,6 +72,9 @@ extern char* lbl_8053AAF8;
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
+static inline void clearRoomWord(const s32 offset) {
+    *(u32*)((u8*)roomArrays() + offset) = 0;
+}
 inline u16* roomValueColumn(int i) {
     return &roomArrays()->values2948[0][i];
 }
@@ -2468,33 +2471,14 @@ extern "C" u8 fn_802DCE5C(char* p, s32 value) {
         char* e = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + *(s32*)(p + 0x18) * 0x28;
         e += *(s32*)(p + 0x14) * 4;
         *(u32*)(e + 0x178) &= 0xFFFF0000;
-        for (u32 i = 0; i < 16; i += 8) {
-            u32 o = i + 0x308;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 1) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 2) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 3) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 4) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 5) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 6) = 0;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + o + 7) = 0;
+        for (int i = 0; i < 16; i++) {
+            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counters308[i] = 0;
         }
-        s32 w = 0;
-        s32 b = 0;
-        for (s32 i = 0; i < 8; i++) {
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + b + 0x328) = 0xFF;
-            *(u32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + w + 0x12F68) = 0;
-            w += 4;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + b + 0x329) = 0xFF;
-            *(u32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + w + 0x12F68) = 0;
-            w += 4;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + b + 0x32A) = 0xFF;
-            *(u32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + w + 0x12F68) = 0;
-            w += 4;
-            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + b + 0x32B) = 0xFF;
-            *(u32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + w + 0x12F68) = 0;
-            w += 4;
-            b += 4;
+        u32 b = 0;
+        for (u32 w = 0; w < 128; w += 4, b++) {
+            s32 o = w + 0x12f68;
+            *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + b + 0x328) = 0xff;
+            *(u32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + o) = 0;
         }
         for (s32 i = 0; i < 8; i++) {
             ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counts6748[i] = 0;
