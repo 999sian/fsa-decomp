@@ -69,6 +69,96 @@ extern "C" void fn_80375970(int param_1) {
     *(char*)(param_1 + 0x11c) = 0;
 }
 
+extern "C" void fn_803759C4(u8* p) {
+    SwtcVec2 pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    SwtcBox2 box(*(SwtcBox2*)(p + 0x60));
+    box.addPos(pos);
+    fn_80239914(&box, *(s32*)(p + 4), *(s32*)(p + 0x198));
+    {
+        s32 room = *(s32*)(p + 0x198);
+        u8* g = fn_8020D58C();
+        fn_8020D7D0(g + 4 + g[0] * 0x784, room);
+    }
+    s32 arrowId = *(s32*)(p + 0x250);
+    if (arrowId != -1) {
+        u8* arrow = fn_801F666C(fn_801F856C(), arrowId);
+        if (arrow != 0 && *(u32*)(arrow + 0x1a0) == 'ARRW') {
+            return;
+        }
+        *(s32*)(p + 0x250) = -1;
+    }
+    switch (*(s32*)(p + 0x234)) {
+    case 0:
+        if (*(s32*)(p + 0x238) != 0) {
+            *(s32*)(p + 0x238) -= 1;
+        } else {
+            fn_8023BA68(&box, *(s32*)(p + 4), &pos, 1);
+            s32 hit = fn_801F8108(p, 'ARRW', -1, lbl_80542F24);
+            if (hit >= 0) {
+                u8* arrow = fn_801F666C(fn_801F856C(), hit);
+                if (arrow != 0 && *(u32*)(arrow + 0x1a0) == 'ARRW') {
+                    p[0x244] ^= 1;
+                    *(s32*)(p + 0x250) = hit;
+                    if (*(s32*)(p + 0x23c) >= 3) {
+                        void* mgr = fn_802D6A9C();
+                        u8 set = *(volatile u8*)(p + 0x244);
+                        fn_802D78B4(mgr, *(s32*)(p + 0x248), set);
+                    }
+                    if (*(s32*)(p + 0x23c) == 0 || *(s32*)(p + 0x23c) == 4) {
+                        ((Actor*)p)->v10(0xff, 1);
+                        fn_802A3948(lbl_8053AC98, p + 0xc, 0, *(s32*)(p + 4), 0x35);
+                        fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80542F20, 0x181, 0, 0, 0, 0, 1);
+                        fn_801F0E34(p, 0x3008f, 0);
+                        *(s32*)(p + 0x234) = 2;
+                    } else {
+                        if (*(s32*)(p + 0x23c) == 2) {
+                            *(s32*)(p + 0x234) = 1;
+                            *(s32*)(p + 0x238) = *(s32*)(p + 0x24c);
+                        } else {
+                            *(s32*)(p + 0x238) = 0x19;
+                        }
+                        if (p[0x244] == 0) {
+                            ((Actor*)p)->v10(0xff, 0);
+                            fn_802A3884(lbl_8053AC98, p + 0xc, 0, *(s32*)(p + 4), 0xac);
+                        } else {
+                            ((Actor*)p)->v10(0xff, 1);
+                            fn_802A3948(lbl_8053AC98, p + 0xc, 0, *(s32*)(p + 4), 0x35);
+                            fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80542F20, 0x181, 0, 0, 0, 0, 1);
+                            fn_801F0E34(p, 0x3008f, 0);
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    case 1:
+        if (*(s32*)(p + 0x238) != 0) {
+            *(s32*)(p + 0x238) -= 1;
+            if (*(s32*)(p + 0x238) == 0) {
+                *(s32*)(p + 0x234) = 0;
+                ((Actor*)p)->v10(0xff, 0);
+                fn_802A3884(lbl_8053AC98, p + 0xc, 0, *(s32*)(p + 4), 0xac);
+                p[0x244] = 0;
+            }
+        }
+        break;
+    case 2:
+        p[0x244] = 1;
+        break;
+    }
+    if (p[0x244] == 1) {
+        if (*(u32*)(p + 0x230) == 0) {
+            *(u32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80542F20, 0x182, 0, 0, 0, 0, 1);
+        }
+    } else {
+        if (*(u32*)(p + 0x230) != 0) {
+            void* mgr = fn_8013C824();
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(int*)((char*)mgr + 0xc), *(u32*)(p + 0x230));
+            *(u32*)(p + 0x230) = 0;
+        }
+    }
+}
+
 extern "C" void* fn_80375DBC(void* param_1, short param_2) {
     if (param_1 != 0) {
         *(void**)param_1 = (void*)lbl_804AE678;
