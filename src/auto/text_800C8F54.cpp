@@ -513,8 +513,9 @@ extern "C" void fn_800CAEE0(s32* param_1, int param_2, int param_3, int param_4)
 extern "C" u8 fn_800CB15C(u8* p, s32 idx);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b);
 struct J3DIndTexCoordScaleInfo;
+struct J3DIndTexCoordScale;
 extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int no);
-extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no);
+extern "C" J3DIndTexCoordScale fn_800CB884(u8* p, s32 idx, s32 no);
 extern "C" void __ct__14J3DIndTevStageFv(void* self);
 extern "C" void __ct__13J3DGXColorS10Fv(void* self);
 extern "C" void __ct__10J3DGXColorFv(void* self);
@@ -977,7 +978,7 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
             (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x30))[9](*(void**)((u8*)material + 0x30), i, &s_c8);
         }
         for (i = 0; i < nInd; i++) {
-            fn_800CB884((J3DIndTexCoordScaleInfo*)&s_d0, (u8*)self, idx, i);
+            ((void (*)(void*, u8*, s32, s32))fn_800CB884)(&s_d0, (u8*)self, idx, i);
             (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x30))[16](*(void**)((u8*)material + 0x30), i, &s_d0);
         }
         for (i = 0; i < nStages; i++) {
@@ -1535,16 +1536,16 @@ struct J3DIndTexCoordScaleInfo {
 extern const J3DIndTexCoordScaleInfo j3dDefaultIndTexCoordScaleInfo;
 struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
+    J3DIndTexCoordScale(const J3DIndTexCoordScaleInfo& info) { *(J3DIndTexCoordScaleInfo*)this = info; }
 };
 #pragma opt_lifetimes off
-extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no) {
+extern "C" J3DIndTexCoordScale fn_800CB884(u8* p, s32 idx, s32 no) {
     J3DIndTexCoordScale dflt;
     u8* data = *(u8**)(p + 0xc) + idx * 0x138;
     if (data[0] == 1) {
-        *(u32*)out = *(u32*)(data + no * 4 + 0x68);
-    } else {
-        *(u32*)out = *(u32*)&dflt;
+        return J3DIndTexCoordScale(*(J3DIndTexCoordScaleInfo*)(data + no * 4 + 0x68));
     }
+    return dflt;
 }
 #pragma opt_lifetimes reset
 extern "C" J3DFogInfo fn_800CB8C8(u8* p, s32 idx)
