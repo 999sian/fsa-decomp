@@ -594,7 +594,7 @@ extern "C" void fn_801F3780(Actor* a, u32 v) {
 extern "C" void fn_801CB5CC(u32 room, Vec* pos, u32 a, u32 b);
 extern "C" void fn_801CB688(u32 room, Vec* pos, u32 a, u32 b);
 extern u32 lbl_80469EF8[];
-static inline f32 ActorRand37AC(unsigned int* base, int multiplier)
+static inline f32 ActorRand37AC(unsigned int* base, int multiplier, const f32 one = lbl_8053F774)
 {
     union { unsigned int bits; f32 value; } out;
     base[0xB4 / 4] = base[0xB4 / 4] * multiplier + 0x3C6EF35F;
