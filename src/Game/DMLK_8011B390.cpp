@@ -542,8 +542,9 @@ extern "C" void fn_80230BF4(s32 i, s32 n);
 extern "C" const f32 lbl_8053C81C;
 extern "C" f32 lbl_8053C820;
 extern "C" const f32 lbl_8053C818;
-static inline JGeometry::TVec3f dmlkDivide(JGeometry::TVec3f value, f32 divisor) {
-    return JGeometry::TVec3f(value.x / divisor, value.y / divisor, value.z / divisor);
+static inline JGeometry::TVec3f dmlkDivide(const JGeometry::TVec3f& value, const f32 divisor) {
+    JGeometry::TVec3f copy(value);
+    return JGeometry::TVec3f(copy.x / divisor, copy.y / divisor, copy.z / divisor);
 }
 static inline void dmlkEmitBurst(u8* this_) {
         JGeometry::TVec3f tmp12;
