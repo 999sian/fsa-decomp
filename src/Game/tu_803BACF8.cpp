@@ -3,6 +3,12 @@
 #include <string.h>
 
 
+static u8 saveBlock0[0x2000] ATTRIBUTE_ALIGN(32);
+static u8 saveBlock1[0x2000] ATTRIBUTE_ALIGN(32);
+static u8 saveBanner[0x2000] ATTRIBUTE_ALIGN(32);
+static u8 saveData0[0x1d4c] ATTRIBUTE_ALIGN(32);
+static u8 saveData1[0x1d4c] ATTRIBUTE_ALIGN(32);
+
 extern "C" u8 lbl_8051E2C0[];
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_8051C1A0[];
@@ -38,27 +44,19 @@ inv += ~b;
 *(u32*)(param_1+0xc4) = inv;
 *(u32*)(param_1+0xc0) = sum;
 }
-#pragma optimization_level 4
-extern "C" u32 fn_803BADAC(u8* param_1) {
-    u32 inv = 0;
-    u32 sum = 0;
-    u8* p = param_1;
-    s32 i;
-
-    for (i = 0; i < 0x18; i++) {
-        sum += p[0]; inv += ~p[0];
-        sum += p[1]; inv += ~p[1];
-        sum += p[2]; inv += ~p[2];
-        sum += p[3]; inv += ~p[3];
-        sum += p[4]; inv += ~p[4];
-        sum += p[5]; inv += ~p[5];
-        sum += p[6]; inv += ~p[6];
-        sum += p[7]; inv += ~p[7];
-        p += 8;
-    }
-    return ((inv ^ *(u32*)(param_1 + 0xc4)) | (sum ^ *(u32*)(param_1 + 0xc0))) == 0;
+#pragma optimization_level 3
+extern "C" bool fn_803BADAC(u8* param_1) {
+u32 inv = 0;
+u32 sum = 0;
+u8* p = param_1;
+for (s32 i=192; i>0; i--) {
+u8 b = *p++;
+sum += b;
+inv += ~b;
 }
-
+return ((sum ^ *(u32*)(param_1+0xc0)) | (inv ^ *(u32*)(param_1+0xc4))) == 0;
+}
+#pragma optimization_level 4
 static inline void cardSumBlock(u8* p, u32* sumOut, u32* invOut) {
     u32 sum = 0;
     u32 inv = 0;
@@ -280,9 +278,7 @@ extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void fn_803BC4C8(void) {
-    static u8 pad[0x9aac];
     static u32 c0[3], c1[3], c2[3], c3[3], c4[3], c5[3], c6[3], c7[3], c8[3];
-    (void)pad;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, c0);
