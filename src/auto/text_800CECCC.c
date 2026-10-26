@@ -43,7 +43,7 @@ extern "C" J3DAnmVtxColorKey* __ct__17J3DAnmVtxColorKeyFv(J3DAnmVtxColorKey*);
 extern "C" J3DAnmColorFull* __ct__15J3DAnmColorFullFv(J3DAnmColorFull*);
 extern "C" J3DAnmTexPattern* __ct__16J3DAnmTexPatternFv(J3DAnmTexPattern*);
 extern "C" J3DAnmVtxColorFull* __ct__18J3DAnmVtxColorFullFv(J3DAnmVtxColorFull*);
-#pragma opt_lifetimes off
+#pragma opt_lifetimes reset
 extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
     if (data == 0) {
         return 0;
