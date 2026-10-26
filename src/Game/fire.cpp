@@ -47,19 +47,6 @@ public:
     virtual void v21(JGeometry::TVec3<f32> pos, s32 flag);
 };
 
-static inline bool fireIgniteCell(char* p, s32 cell, f32* v) {
-    *(s16*)(p + 0x288) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), cell);
-    if (fn_801EE3C0(*(u16*)(p + 0x288)) == 1) {
-        fn_80226CA8(cell, *(s32*)(p + 4), v);
-        v[0] += lbl_80540B50;
-        v[1] += lbl_80540B50;
-        ((FireActorInterface*)p)->v21(*(JGeometry::TVec3<f32>*)v, 0);
-        *(s32*)(p + 0x254) = 5;
-        *(u8*)(p + 0x291) = 1;
-        return true;
-    }
-    return false;
-}
 
 // FIRE: small accessors.
 extern "C" u8 fn_802BA558(char* this_, s32 a, f32* b) {
