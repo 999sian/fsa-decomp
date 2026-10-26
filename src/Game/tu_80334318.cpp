@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804AB9C0[];
@@ -102,13 +103,16 @@ extern "C" void fn_80334488(Actor* a) {
     f32 vA[3];
     f32 vB[3];
     f32 mtx[3][4];
-    f32 s;
-    f32 cb;
-    f32 ca;
+    f32 ss;
+    f32 cz;
+    f32 cs,a0,a1,a2,a3,a4,a5,a6,a7,a8;
+    f32 cc;
     f32 sa;
     f32 sb;
     f32 sc;
-    f32 cc;
+    f32 ca;
+    f32 cb;
+    f32 s;
     PSMTXIdentity(mtx);
     rB.b1d = -1;
     if (*(s32*)(p + 0x230) == 7) {
@@ -118,22 +122,37 @@ extern "C" void fn_80334488(Actor* a) {
         sc = sin(lbl_80541F70);
         ca = cos(lbl_80541F70);
         cb = cos(lbl_80541F70);
-        cc = cos(lbl_80541F70);
-        mtx[0][0] = s * (cb * cc);
-        mtx[1][0] = s * (cb * sc);
-        mtx[2][0] = s * -sb;
-        mtx[0][1] = s * ((sa * sb) * cc - ca * sc);
-        mtx[1][1] = s * ((sa * sb) * sc + ca * cc);
-        mtx[2][1] = s * (sa * cb);
-        mtx[0][2] = s * ((ca * cc) * sb + sa * sc);
-        mtx[1][2] = s * ((ca * sc) * sb - sa * cc);
-        mtx[2][2] = s * (ca * cb);
+        cz = cos(lbl_80541F70);
         rA.w18 = mtx;
+        cc = ca * cz;
+        ss = sa * sb;
+        cs = ca * sc;
+        a0 = cb * cz;
+        a1 = cb * sc;
+        a2 = -sb;
+        a3 = ss * cz - cs;
+        a4 = ss * sc + cc;
+        a5 = sa * cb;
+        a6 = cc * sb + sa * sc;
+        a7 = cs * sb - sa * cz;
+        a8 = ca * cb;
+        mtx[0][0] = s * a0;
+        mtx[1][0] = s * a1;
+        mtx[2][0] = s * a2;
+        mtx[0][1] = s * a3;
+        mtx[1][1] = s * a4;
+        mtx[2][1] = s * a5;
+        mtx[0][2] = s * a6;
+        mtx[1][2] = s * a7;
+        mtx[2][2] = s * a8;
     }
     if (*(s32*)(p + 0x250) == 0) {
         if (*(s32*)(p + 0x230) != 7) {
-            vA[1] = lbl_80541F80 + *(f32*)(p + 0x10);
-            vA[0] = *(f32*)(p + 0xc);
+            f32* pos = (f32*)(p + 0xc);
+            f32 y = lbl_80541F80 + pos[1];
+            f32 x = pos[0];
+            vA[0] = x;
+            vA[1] = y;
             vA[2] = lbl_80541F70;
             if (*(s32*)(p + 4) < 8) {
                 void* obj = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->v18('SOB ', lbl_80471AB8);
@@ -148,8 +167,11 @@ extern "C" void fn_80334488(Actor* a) {
         fn_80307AC8(*(u32*)(p + 0x198), *(u32*)(p + 4), p + 0xc, *(s32*)(p + 0x24c) + 0x25, 0, 0, -1);
     } else {
         if (*(s32*)(p + 0x230) != 7) {
-            vB[1] = lbl_80541F88 + *(f32*)(p + 0x10);
-            vB[0] = *(f32*)(p + 0xc);
+            f32* pos = (f32*)(p + 0xc);
+            f32 y = lbl_80541F88 + pos[1];
+            f32 x = pos[0];
+            vB[0] = x;
+            vB[1] = y;
             vB[2] = lbl_80541F70;
             if (*(s32*)(p + 4) < 8) {
                 void* obj = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->v18('SOB ', lbl_80471AB8);
@@ -163,6 +185,13 @@ extern "C" void fn_80334488(Actor* a) {
         }
         fn_80307AC8(*(u32*)(p + 0x198), *(u32*)(p + 4), p + 0xc, *(s32*)(p + 0x24c) + 0x27, 0, 0, -1);
     }
+}
+
+void fn_80334A04(u8* p)
+{
+    *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
+    *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + *(f32*)(p + 0x40);
+    *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + *(f32*)(p + 0x44);
 }
 
 extern "C" u16 fn_8022461C(s32 a);
@@ -228,5 +257,8 @@ extern "C" void fn_8033571C(char* p) {
     *(s32*)(p + 0x25c) = 0;
     *(u16*)(p + 0x26c) = 0;
     *(s32*)(p + 0xb8) = 1;
+}
+
+extern "C" void fn_80335858(void) {
 }
 
