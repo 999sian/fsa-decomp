@@ -1809,6 +1809,13 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
     return 0;
 }
 
+static inline u16 msgToWideScan(u16 c) {
+    const MsgCharMap* entry = lbl_80475830;
+    for (int i = 0; entry->ascii != 0xffff; ++i, ++entry) {
+        if (entry->ascii == c) return lbl_80475830[i].code;
+    }
+    return 0x1420;
+}
 #pragma opt_propagation off
 extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
     MsgLayout* l;
