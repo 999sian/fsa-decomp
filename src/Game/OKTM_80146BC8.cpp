@@ -134,6 +134,7 @@ extern "C" void fn_80146C28(char* this_) {
     }
 }
 #pragma opt_propagation reset
+extern const f32 lbl_8053D094;
 extern "C" void fn_80146F58(char* this_) {
     s32 r30;
     u8 r29 = 0;
@@ -164,11 +165,10 @@ extern "C" void fn_80146F58(char* this_) {
         if (r29 == 0) {
             fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x24a, 0, 1, 0, 0, 1);
             fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x24b, 0, 1, 0, 0, 1);
-            *(u8*)(this_ + 0x11c) = 0;
         } else {
             fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x339, 0, 1, 0, 0, 1);
-            *(u8*)(this_ + 0x11c) = 0;
         }
+        *(u8*)(this_ + 0x11c) = 0;
         break;
 bounce:
             fn_801F0E34(this_, 0x30000, 0);
@@ -211,7 +211,7 @@ bounce:
         *(s32*)(this_ + 0x230) = 2;
         break;
     case 2:
-        if (*(s32*)(this_ + 0x90) == 1 && (*(s32*)(this_ + 0x238) & 1) == 0) {
+        if (*(u32*)(this_ + 0x90) == 1 && (*(s32*)(this_ + 0x238) & 1) == 0) {
             *(s32*)(this_ + 0x240) += 1;
             *(s32*)(this_ + 0x240) &= 3;
             *(s32*)(this_ + 0x98) = lbl_8049F548[*(s32*)(this_ + 0x240)];
@@ -239,12 +239,11 @@ bounce:
     case 4:
     case 5:
     case 6: {
-        s32 id;
         char* tgt;
         *(s32*)(this_ + 0xb0) = 0;
-        id = *(s32*)(this_ + 0x258);
-        if (id >= 0) {
-            tgt = (char*)fn_801F666C(fn_801F856C(), id);
+        r30 = *(s32*)(this_ + 0x258);
+        if (r30 >= 0) {
+            tgt = (char*)fn_801F666C(fn_801F856C(), r30);
             if (tgt != 0) {
                 s32 i = ((u16)(fn_801F6874(*(s32*)(tgt + 0x98)) - *(u16*)(this_ + 0x25c)) >> 5) * 2;
                 f32 dx;
@@ -257,7 +256,9 @@ bounce:
                 *(f32*)(this_ + 0x14) = *(f32*)(tgt + 0x14);
                 dx = *(f32*)(this_ + 0xc) - *(f32*)(tgt + 0xc);
                 dy = *(f32*)(this_ + 0x10) - *(f32*)(tgt + 0x10);
-                *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.4f));
+                f32 angle = JMath::atanTable_.atan2_(-dx, -dy);
+                angle *= lbl_8053D094;
+                *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)angle);
                 if (*(s32*)(this_ + 0x240) < 6) {
                     *(s32*)(this_ + 0x240) += 1;
                 } else if (*(s32*)(this_ + 0x230) == 6) {
@@ -276,38 +277,42 @@ bounce:
         break;
     }
     }
-    if (*(s32*)(this_ + 0x234) > 0) {
-        *(s32*)(this_ + 0x234) -= 1;
-        if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
-            *(u8*)(this_ + 0x11c) = 0;
+    for (int i = 0; i < 3; ++i) {
+        char* timerBase = this_ + i * 4;
+        s32* timer = (s32*)(timerBase + 0x234);
+        if (*timer > 0) {
+            --*timer;
+            if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
+                *(u8*)(this_ + 0x11c) = 0;
+            }
         }
     }
-    if (*(s32*)(this_ + 0x238) > 0) {
-        *(s32*)(this_ + 0x238) -= 1;
-        if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
-            *(u8*)(this_ + 0x11c) = 0;
+    switch (*(s32*)(this_ + 0x90)) {
+    case 2:
+    case 4:
+        if (*(s32*)(this_ + 0x238) == 0) {
+            *(s32*)(this_ + 0x238) = 3;
+            *(s32*)(this_ + 0x24c) += 1;
+            *(s32*)(this_ + 0x24c) &= 3;
         }
-    }
-    if (*(s32*)(this_ + 0x23c) > 0) {
-        *(s32*)(this_ + 0x23c) -= 1;
-        if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
-            *(u8*)(this_ + 0x11c) = 0;
-        }
-    }
-    if (*(s32*)(this_ + 0x90) == 3) {
-        return;
-    }
-    if (*(s32*)(this_ + 0x90) == 1 || *(s32*)(this_ + 0x90) == 5) {
+        break;
+    case 1:
+    case 5:
         if (*(s32*)(this_ + 0x230) == 0 || *(s32*)(this_ + 0x230) == 2) {
             *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x98);
         } else {
-            *(s32*)(this_ + 0x24c) = lbl_8049F558[*(s32*)(this_ + 0x98) * 8 + *(s32*)(this_ + 0x240)];
+            s32 frame;
+            s32 direction;
+            direction = *(s32*)(this_ + 0x98);
+            frame = *(s32*)(this_ + 0x240);
+            direction *= 8;
+            s32 index = direction + frame;
+            *(s32*)(this_ + 0x24c) = lbl_8049F558[index];
         }
-    } else if (*(s32*)(this_ + 0x90) == 2 || *(s32*)(this_ + 0x90) == 4) {
-        if (*(s32*)(this_ + 0x238) == 0) {
-            *(s32*)(this_ + 0x238) = 3;
-            *(s32*)(this_ + 0x24c) = (*(s32*)(this_ + 0x24c) + 1) & 3;
-        }
+        break;
+    case 3:
+    default:
+        break;
     }
 }
 
