@@ -1306,11 +1306,18 @@ static inline void HudProjectCoords8041(const f32 sx, const f32 sy, const s32 wi
     y = (f32)offset + (yy - (f32)height * lbl_80543A34);
     x = xx - (f32)width * lbl_80543A34;
 }
+static inline f32 HudSettingsScale8041(const u8* settings) { return *(const f32*)(settings + 0x40); }
 static inline bool HudHideTimer8041() {
     if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return 1;
     return lbl_8053AAF8[0x88] == 2;
 }
+#pragma opt_common_subs off
 extern "C" void fn_8041F720(u8* self) {
+    u8* videoManager;
+    f32 ay;
+    f32 ax;
+    f32 by;
+    f32 bx;
     f32 buf[3];
     s32 st = *(s32*)(lbl_80529DEC + 0x118);
     if ((st == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) || (st == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
@@ -1321,16 +1328,17 @@ extern "C" void fn_8041F720(u8* self) {
     }
 
     if (self[0x291] != 0) {
+        videoManager = sManager__8JUTVideo;
         f32 ex;
         f32 ey;
         f32 sx;
         f32 sy;
         f32 d = *(f32*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x858);
         f32 k = *(f32*)(lbl_8050DB0C + 0x40);
-        JUTVideo* vid = JUTVideo::getManager();
-        sx = k * (HudFloat8041(vid->getFbWidth()) / d);
+        u8* vid = *(u8**)(videoManager + 4);
+        sx = k * ((f32)(s32)*(u16*)(vid + 4) / d);
+        sy = k * ((f32)(s32)*(u16*)(vid + 6) / d);
         ex = lbl_80543A00 + sx;
-        sy = k * (HudFloat8041(vid->getEfbHeight()) / d);
         ey = lbl_80543A00 + sy;
 
         for (s32 i = 0; i < 4; i++) {
@@ -1343,19 +1351,17 @@ extern "C" void fn_8041F720(u8* self) {
                         JUTVideo* vp = JUTVideo::getManager();
                         s32 fa = vp->getFbWidth();
                         s32 fb = vp->getEfbHeight();
-                        f32 y;
-                        f32 x;
-                        f32 zero = lbl_80543A00;
+                                                f32 zero = lbl_80543A00;
                         J2DOrthoGraph* graph = (J2DOrthoGraph*)*(u8**)(self + 0x4c);
-                        f32 c = HudFloat8041(*(s16*)(lbl_8050DB0C + 0x4e));
-                        f32 xx = sx * (buf[0] / HudFloat8041(fa));
-                        x = xx - HudFloat8041(fa) * lbl_80543A34;
-                        f32 yy = sy * (buf[1] / HudFloat8041(fb));
-                        y = c + (yy - HudFloat8041(fb) * lbl_80543A34);
+                        f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
+                        f32 xx = sx * (buf[0] / (f32)fa);
+                        ax = xx - (f32)fa * lbl_80543A34;
+                        f32 yy = sy * (buf[1] / (f32)fb);
+                        ay = c + (yy - (f32)fb * lbl_80543A34);
                         JGeometry::TBox2f box(zero, zero, ex, ey);
                         graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
                         ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
-                        ((J2DScreen*)*(u8**)(p4 + 8))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
+                        ((J2DScreen*)*(u8**)(p4 + 8))->draw(ax, ay, *(J2DGrafContext**)(self + 0x4c));
                         *(s16*)(p2 + 0x234) = 0;
                     } else if (!HudHideTimer8041()) {
                         if (((s32 (*)(s32))fn_802366CC)(fn_8022EA0C(i)) > 0) {
@@ -1364,17 +1370,17 @@ extern "C" void fn_8041F720(u8* self) {
                                 JUTVideo* vp = JUTVideo::getManager();
                                 s32 fa = vp->getFbWidth();
                                 s32 fb = vp->getEfbHeight();
-                                f32 zero = lbl_80543A00;
+                                                                f32 zero = lbl_80543A00;
                         J2DOrthoGraph* graph = (J2DOrthoGraph*)*(u8**)(self + 0x4c);
-                        f32 c = HudFloat8041(*(s16*)(lbl_8050DB0C + 0x4e));
-                                f32 xx = sx * (buf[0] / HudFloat8041(fa));
-                                f32 x = xx - HudFloat8041(fa) * lbl_80543A34;
-                                f32 yy = sy * (buf[1] / HudFloat8041(fb));
-                                f32 y = c + (yy - HudFloat8041(fb) * lbl_80543A34);
+                        f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
+                                f32 xx = sx * (buf[0] / (f32)fa);
+                                bx = xx - (f32)fa * lbl_80543A34;
+                                f32 yy = sy * (buf[1] / (f32)fb);
+                                by = c + (yy - (f32)fb * lbl_80543A34);
                                 JGeometry::TBox2f box(zero, zero, ex, ey);
                                 graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
                                 ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
-                                ((J2DScreen*)*(u8**)(p4 + 0x2c))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
+                                ((J2DScreen*)*(u8**)(p4 + 0x2c))->draw(bx, by, *(J2DGrafContext**)(self + 0x4c));
                             }
                         }
                     }
@@ -1386,7 +1392,7 @@ extern "C" void fn_8041F720(u8* self) {
     fn_8013B490(lbl_8053AB10);
     ((J2DScreen*)*(u8**)(self + 4))->draw(lbl_80543A00, lbl_80543A00, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8041A868(u8* self, s32 x);
 extern "C" void fn_8041C67C(u8* self);
 extern "C" void fn_80418D08(u8* self, s32 i, s32 j);
