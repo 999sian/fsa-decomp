@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/SinitPoolChain.h"
@@ -94,52 +96,53 @@ extern "C" u16 fn_802265FC(JGeometry::TVec3<f32>* a, s32 room);
 extern "C" const JGeometry::TVec3<f32>* fn_8023E578(s32 idx);
 extern "C" const JGeometry::TVec3<f32>* fn_8023E724(s32 idx);
 typedef u8 (*VirtFn)(void*, s32, void*);
+#pragma opt_propagation off
 extern "C" void fn_801D11FC(u8* this_)
 {
-    s16 cur;
     s16 lo;
     s16 hi;
     s16 target;
-    f32 dHi;
-    f32 dLo;
+    s16 cur;
     f32 angle;
+    f32 dLo;
+    f32 dHi;
+    f32 scale;
 
     angle = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x264), *(f32*)(this_ + 0x268));
+    target = (s16)(s32)(angle * lbl_8053F018);
     cur = *(s16*)(this_ + 0x33c);
     hi = cur + 0x5b0;
     lo = cur - 0x5b0;
-    target = (s16)(s32)(angle * lbl_8053F018);
     dHi = (f32)(s16)(target - hi);
     dLo = (f32)(s16)(target - lo);
-    if (lbl_8053F01C * __fabsf(dHi) < lbl_8053F01C * __fabsf(dLo)) {
-        *(s16*)(this_ + 0x33c) = hi;
-    } else {
-        *(s16*)(this_ + 0x33c) = lo;
-    }
+    scale = lbl_8053F01C;
+    if (scale * __fabsf(dHi) < scale * __fabsf(dLo)) *(s16*)(this_ + 0x33c) = hi;
+    else *(s16*)(this_ + 0x33c) = lo;
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     s32 ret = 0;
     u8 far_;
     u8 lost;
-    s32 idx;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
 
     if (this_->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(this_, this_->m338)) {
-        idx = this_->m338;
-        fn_8022E114(idx, &pos);
-        if (fn_801F329C(this_, idx)) {
-            fn_801CD150(&pos, &tmp);
-            v.x = tmp.x;
-            v.y = tmp.y;
-            v.z = tmp.z;
-        } else {
-            v.x = pos.x;
-            v.y = pos.y;
-            v.z = pos.z;
+        {
+            s32 idx = this_->m338;
+            fn_8022E114(idx, &pos);
+            if (fn_801F329C(this_, idx)) {
+                fn_801CD150(&pos, &tmp);
+                v.x = tmp.x;
+                v.y = tmp.y;
+                v.z = tmp.z;
+            } else {
+                v.x = pos.x;
+                v.y = pos.y;
+                v.z = pos.z;
+            }
         }
         p.x = v.x;
         p.y = v.y;
@@ -156,14 +159,14 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
             this_->m2a8 = 0;
             ((JGeometry::TVec3<f32>*)&this_->m32c)->set(v.x, v.y, lbl_8053F028);
         } else {
-            if (this_->trail().count >= 1) {
+            if (this_->m2a8 >= 1) {
                 f32 dx = this_->m32c - this_->m00c.x;
                 f32 dy = this_->m330 - this_->m00c.y;
                 f32 r = lbl_8053F02C + *(f32*)((u8*)this_ + 0x258);
                 f32 dx2 = dx * dx;
                 f32 dy2 = dy * dy;
                 if (dx2 + dy2 <= r * r) {
-                    this_->trail().removeFront();
+                    this_->popPoint();
                 }
             }
             far_ = 0;
