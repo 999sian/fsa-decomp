@@ -10,6 +10,11 @@ extern "C" u32 fn_801F37AC(void*, u32, void*, u32, u32, u32);
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
 #include "Game/SinitPoolChain.h"
+static inline void setFobrVelocity(u8* p, const f32 x, const f32 y, const f32 z) {
+    *(f32*)(p + 0x2b4) = x;
+    *(f32*)(p + 0x2b8) = y;
+    *(f32*)(p + 0x2bc) = z;
+}
 
 struct ItemResMgr {
     virtual void v0();
@@ -615,8 +620,8 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
             ang = fn_801CD664(0x10000);
         }
         }
-        idx = ((s32)ang >> 2) & 0x3FF8;
-        ((JGeometry::TVec3<f32>*)(this_ + 0x2b4))->set(*(f32*)(sincosTable___5JMath + idx) * lbl_8053F99C, *(f32*)(sincosTable___5JMath + idx + 4) * lbl_8053F99C, lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
+        idx = (u16)ang >> 5;
+        ((JGeometry::TVec3<f32>*)(this_ + 0x2b4))->set(JMath::sincosTable_.mTable[idx].first * lbl_8053F99C, JMath::sincosTable_.mTable[idx].second * lbl_8053F99C, lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
         *(u8*)(this_ + 0x2b1) = 3;
         break;
     case 9: {
