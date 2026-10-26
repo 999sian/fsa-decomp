@@ -184,7 +184,7 @@ switch (*(s32*)(p+0x230)) {
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-u8* q; s32 i; i=0; q=p;
+int i=0; u8* q=p;
 do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=0; q+=4; } while(i<2);
 detach__5ActorFv(p); break;
 }
