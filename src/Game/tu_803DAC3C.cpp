@@ -8,9 +8,6 @@ class FsaInitOwner { public: virtual void dispatch(); };
 
 typedef void (FsaInitOwner::*FsaInitFn)();
 struct FsaInitFns { FsaInitFn t0; FsaInitFn t1; FsaInitFn t2; FsaInitFn t3; FsaInitFn t4; FsaInitFn t5; FsaInitFn t6; FsaInitFn t7; };
-struct FsaInitFnArray { FsaInitFn t[8]; };
-struct FsaInitTail { FsaInitFn t1, t2, t3, t4, t5, t6, t7; };
-struct FsaInitSplit { FsaInitFn t0; FsaInitTail tail; };
 extern "C" FsaInitTriples lbl_804B0508[];
 extern "C" char lbl_80528468[];
 extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
@@ -1472,12 +1469,12 @@ extern "C" void* fn_803DFF40(u8* self) {
     return self;
 }
 
-#pragma peephole off
+#pragma optimization_level 3
 extern "C" void fn_803E1224(void)
 {
     char* base = lbl_80528468 - 12;
-    *(FsaInitTriples*)((u8*)lbl_804B0508 + 0x120) = *(FsaInitTriples*)((u8*)lbl_804B0508 + 0xc0);
-    *(FsaInitTriples*)((u8*)lbl_804B0508 + 0x60) = *(FsaInitTriples*)((u8*)lbl_804B0508);
+    *(FsaInitFns*)((u8*)lbl_804B0508 + 0x120) = *(FsaInitFns*)((u8*)lbl_804B0508 + 0xc0);
+    *(FsaInitFns*)((u8*)lbl_804B0508 + 0x60) = *(FsaInitFns*)((u8*)lbl_804B0508);
     if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0xc);
@@ -1524,4 +1521,4 @@ extern "C" void fn_803E1224(void)
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-#pragma peephole reset
+#pragma optimization_level reset
