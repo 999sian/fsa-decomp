@@ -115,6 +115,8 @@ struct Gewp {
 
 // GEWP update (vtable slot 3)
 extern "C" void fn_801B6C54(Gewp* p) {
+    Gewp* q;
+    s32 index;
     if (p->x24c == 0 && p->state != 0) {
         fn_80128C58((s32)p->x260);
     }
@@ -140,9 +142,10 @@ extern "C" void fn_801B6C54(Gewp* p) {
             p->pos.y = y;
             p->pos.z = 0.0f;
         }
-        for (s32 i = 0; i < 4; i++) {
-            fn_8013CC50(p->room, fn_8023E724(i), 0x3ae, 1, 1, 0, 0, 1, 1.0f);
-            p->eff[i] = fn_8013CC50(p->room, fn_8023E724(i), 0x3ac, 1, 1, 0, 0, 1, 1.0f);
+        q = p;
+        for (index = 0; index < 4; index++, q = (Gewp*)((u8*)q + 4)) {
+            fn_8013CC50(p->room, fn_8023E724(index), 0x3ae, 1, 1, 0, 0, 1, 1.0f);
+            q->eff[0] = fn_8013CC50(p->room, fn_8023E724(index), 0x3ac, 1, 1, 0, 0, 1, 1.0f);
         }
         p->timers[1] = 120;
         p->state = 1;
@@ -154,8 +157,10 @@ extern "C" void fn_801B6C54(Gewp* p) {
             v.x = v.y = v.z = 0.0f;
             v.y = -10.0f;
             fn_8022FE80(fn_8022EA0C(0), p->room, p->x198, 0, 0);
-            u32 player = p->room;
-            void* room = p->x198;
+            u32 player;
+            void* room;
+            room = p->x198;
+            player = p->room;
             if (fn_8038AD24(fn_8022EA0C(0), 0x240, room, player, v, 0x4102)) {
                 p->state = 2;
             }
@@ -179,11 +184,11 @@ extern "C" void fn_801B6C54(Gewp* p) {
                 lbl_8053AAA0 = 1;
                 lbl_8053AB98 = 1;
                 lbl_8053ABE8 = 1;
-                for (s32 i = 0; i < 4; i++) {
-                    JGeometry::TVec3<f32>* src = fn_8023E724(i);
-                    p->ppos[i].x = src->x;
-                    p->ppos[i].y = src->y;
-                    p->ppos[i].z = src->z;
+                for (index = 0; index < 4; index++) {
+                    JGeometry::TVec3<f32>* src = fn_8023E724(index);
+                    p->ppos[index].x = src->x;
+                    p->ppos[index].y = src->y;
+                    p->ppos[index].z = src->z;
                 }
                 p->timers[0] = 8;
                 p->x244 = 0x3f;
@@ -225,8 +230,8 @@ extern "C" void fn_801B6C54(Gewp* p) {
             fn_802D9FF4(fn_802D6A9C(), p->x250, p->x254);
             fn_80119468(fn_80119DD0(), 0, 1);
             fn_802D6AAC(fn_802D6A9C(), 2);
-            for (s32 i = 0; i < 4; i++) {
-                fn_802372F8(i, lbl_804A39A0[p->x258], 1);
+            for (index = 0; index < 4; index++) {
+                fn_802372F8(index, lbl_804A39A0[p->x258], 1);
             }
             p->timers[0] = 5;
             p->state = 5;
