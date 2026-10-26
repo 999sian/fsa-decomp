@@ -72,6 +72,11 @@ extern "C" void fn_8013B3CC(void* mgr, void* mtx);
 extern "C" void fn_8013B3F0(void* mgr);
 extern void* sManager__8JUTVideo;
 extern "C" void fn_802FC80C(u8* this_);
+static inline void WarpMatrixSet802F(MtxPtr m, f32 xx, f32 yx, f32 zx, f32 tx, f32 xy, f32 yy, f32 zy, f32 ty, f32 xz, f32 yz, f32 zz, f32 tz) {
+    m[0][0]=xx; m[0][1]=yx; m[0][2]=zx; m[0][3]=tx;
+    m[1][0]=xy; m[1][1]=yy; m[1][2]=zy; m[1][3]=ty;
+    m[2][0]=xz; m[2][1]=yz; m[2][2]=zz; m[2][3]=tz;
+}
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx);
 
 extern "C" GXColor lbl_805414F0;
@@ -407,128 +412,71 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
 }
 #pragma opt_common_subs reset
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
-    f32 lx;
-    f32 ly;
-    f32 dx;
-    f32 dy;
-    f32 fx;
-    f32 fy;
-    u8* cell;
-    u32 ix;
-    u32 iy;
-    s32 i;
-    s32 ret;
-    f32 r0[3];
-    f32 r1[3];
-    f32 p[3];
-    f32 tx[3];
-    f32 tz[3];
-    f32 up[3];
-    f32 c1[3];
-    f32 c2[3];
-    f32 n2[3];
-    f32 n[3];
-    f32 mag;
-    f32 sc;
-    f32 r;
-    f32* m;
-
-    ret = 0;
-    if (0 < *(s32*)(this_ + 0xc21c)) {
-        lx = *(f32*)(this_ + 0x2368);
-        ly = *(f32*)(this_ + 0x236c);
-        if (src[0] >= lx && src[0] < lbl_80541510 * (f32)*(s32*)(this_ + 0x2380) + lx) {
-            if (src[1] >= ly && src[1] < lbl_80541510 * (f32)*(s32*)(this_ + 0x2384) + ly) {
-                dx = src[0] - lx;
-                dy = src[1] - ly;
-                ix = (u32)(lbl_80541514 * dx);
-                iy = (u32)(lbl_80541514 * dy);
-                cell = *(u8**)(this_ + *(s32*)(this_ + 0x2388) * 4 + 0x100) + iy * 0x30c + ix * 0xc;
-                fx = lbl_80541514 * (dx - lbl_80541510 * (f32)ix);
-                fy = lbl_80541514 * (dy - lbl_80541510 * (f32)iy);
-
-                for (i = 0; i < 3; i++) {
-                    f32 v00 = *(f32*)(cell + i * 4);
-                    f32 v10 = *(f32*)(cell + 0xc + i * 4);
-                    f32 v01 = *(f32*)(cell + 0x30c + i * 4);
-                    f32 v11 = *(f32*)(cell + 0x318 + i * 4);
-                    r0[i] = v00 + fx * (v10 - v00);
-                    r1[i] = v01 + fx * (v11 - v01);
-                    p[i] = r0[i] + fy * (r1[i] - r0[i]);
-                    tx[i] = (v10 - v00) + fy * ((v11 - v01) - (v10 - v00));
-                    tz[i] = (v01 - v00) + fx * ((v11 - v10) - (v01 - v00));
-                }
-                up[0] = lbl_805414F8;
-                up[1] = lbl_80541518;
-                up[2] = lbl_805414F8;
-
-                PSVECCrossProduct((Vec*)tz, (Vec*)up, (Vec*)c1);
-                mag = c1[0] * c1[0] + c1[1] * c1[1] + c1[2] * c1[2];
-                if (mag > 32.0f * *(f32*)&__float_epsilon) {
-                    if (mag <= 0.0f) {
-                        sc = mag;
-                    } else {
-                        r = (f32)__frsqrte(mag);
-                        sc = (r * 0.5f) * (3.0f - mag * (r * r));
-                    }
-                    for (i = 0; i < 3; i++) {
-                        c1[i] *= sc;
-                    }
-                }
-                for (i = 0; i < 3; i++) {
-                    c1[i] *= (lbl_80541518 - fy);
-                }
-
-                PSVECCrossProduct((Vec*)tx, (Vec*)up, (Vec*)c2);
-                mag = c2[0] * c2[0] + c2[1] * c2[1] + c2[2] * c2[2];
-                if (mag > 32.0f * *(f32*)&__float_epsilon) {
-                    if (mag <= 0.0f) {
-                        sc = mag;
-                    } else {
-                        r = (f32)__frsqrte(mag);
-                        sc = (r * 0.5f) * (3.0f - mag * (r * r));
-                    }
-                    for (i = 0; i < 3; i++) {
-                        c2[i] *= sc;
-                    }
-                }
-                for (i = 0; i < 3; i++) {
-                    c2[i] *= fy;
-                    n2[i] = c1[i] + c2[i];
-                }
-
-                PSVECCrossProduct((Vec*)up, (Vec*)n2, (Vec*)n);
-                mag = n[0] * n[0] + n[1] * n[1] + n[2] * n[2];
-                if (mag > 32.0f * *(f32*)&__float_epsilon) {
-                    if (mag <= 0.0f) {
-                        sc = mag;
-                    } else {
-                        r = (f32)__frsqrte(mag);
-                        sc = (r * 0.5f) * (3.0f - mag * (r * r));
-                    }
-                    for (i = 0; i < 3; i++) {
-                        n[i] *= sc;
-                    }
-                }
-
-                m = (f32*)mtx;
-                m[0] = n[0];
-                m[1] = lbl_805414F8;
-                m[2] = n2[0];
-                m[3] = p[0] - dx;
-                m[4] = n[1];
-                m[5] = lbl_80541518;
-                m[6] = n2[1];
-                m[7] = p[1] - dy;
-                m[8] = n[2];
-                m[9] = lbl_805414F8;
-                m[10] = n2[2];
-                m[11] = p[2];
+    typedef JGeometry::TVec3<f32> V3;
+    s32 ret = 0;
+    if (*(s32*)(this_ + 0xc21c) > 0) {
+        f32 loX; f32 x;
+        x = src[0]; loX = *(f32*)(this_ + 0x2368);
+        if (x >= loX && x < lbl_80541510 * (f32)*(s32*)(this_ + 0x2380) + loX) {
+            f32 loY; f32 y;
+            y = src[1]; loY = *(f32*)(this_ + 0x236c);
+            if (y >= loY && y < lbl_80541510 * (f32)*(s32*)(this_ + 0x2384) + loY) {
+                f32 dx = x - loX;
+                f32 dy = y - loY;
+                s32 iy; s32 ix;
+                ix = (s32)(lbl_80541514 * dx);
+                iy = (s32)(lbl_80541514 * dy);
+                u8* table = this_;
+                table += *(s32*)(this_ + 0x2388) * 4;
+                V3 (*grid)[65] = *(V3(**)[65])(table + 0x100);
+                V3* cell = &grid[iy][ix];
+                f32 fx = lbl_80541514 * (dx - lbl_80541510 * (f32)ix);
+                f32 fy = lbl_80541514 * (dy - lbl_80541510 * (f32)iy);
+                f32 oneX = lbl_80541518 - fx;
+                f32 oneY = lbl_80541518 - fy;
+                V3 temp, left, pos, n1, n2;
+                temp.set(cell[0]);
+                temp.scale(oneX);
+                left.set(cell[1]);
+                left.scale(fx);
+                left.add(temp);
+                left.scale(oneY);
+                temp.set(cell[65]);
+                temp.scale(oneX);
+                pos.set(cell[66]);
+                pos.scale(fx);
+                pos.add(temp);
+                pos.scale(fy);
+                pos.add(left);
+                temp.sub(cell[1], cell[0]);
+                n1.cross(temp, V3(lbl_805414F8, lbl_80541518, lbl_805414F8));
+                n1.normalize();
+                n1.scale(oneY);
+                temp.sub(cell[66], cell[65]);
+                n2.cross(temp, V3(lbl_805414F8, lbl_80541518, lbl_805414F8));
+                n2.normalize();
+                n2.scale(fy);
+                n2.add(n1);
+                n2.y = lbl_805414F8;
+                n2.normalize();
+                n1.cross(V3(lbl_805414F8, lbl_80541518, lbl_805414F8), n2);
+                mtx[0][0] = n1.x;
+                mtx[0][1] = lbl_805414F8;
+                mtx[0][2] = n2.x;
+                mtx[0][3] = pos.x - dx;
+                mtx[1][0] = n1.y;
+                mtx[1][1] = lbl_80541518;
+                mtx[1][2] = n2.y;
+                mtx[1][3] = pos.y - dy;
+                mtx[2][0] = n1.z;
+                mtx[2][1] = lbl_805414F8;
+                mtx[2][2] = n2.z;
+                mtx[2][3] = pos.z;
                 ret = 1;
             }
         }
     }
-    return ret;
+    return (u8)ret;
 }
 
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
@@ -1566,9 +1514,9 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
 #pragma opt_propagation off
 extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff, u32 size, u8 flag) {
     u8* base;
-    s32 i;
-    u8* d;
-    u8* s;
+    int i;
+    u8* __restrict d;
+    u8* __restrict s;
     s32 len;
     u16 keep;
     if (size == 0) {
@@ -1614,21 +1562,21 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     {
         u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b0] << 8) | t[0x1b1];
-        u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        s32 x = (u16)(((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf));
         t[0x1b0] = (s32)x >> 8;
         t[0x1b1] = x;
     }
     {
         u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b2] << 8) | t[0x1b3];
-        u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        s32 x = (u16)(((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf));
         t[0x1b2] = x >> 8;
         t[0x1b3] = x;
     }
     {
         u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b4] << 8) | t[0x1b5];
-        u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        s32 x = (u16)(((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf));
         t[0x1b4] = x >> 8;
         t[0x1b5] = x;
     }
@@ -1639,9 +1587,18 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     for (i = 0; (u32)i < length; i += 2) {
         u16 v = (s[i] << 8) | s[i + 1];
         if (v & 0x8000) {
-            u8 a=Tu802F93F4_c5((v>>10)&31);
-            u8 b=Tu802F93F4_c5((v>>5)&31);
-            u8 c=Tu802F93F4_c5(v&31);
+            s32 r;
+            u8 c,b,a;
+            u16 pixel = v;
+            r=(s32)__fmadds((f32)((pixel>>10)&31),lbl_80541518,lbl_805414F8);
+            if(r<0) r=0; else if(r>31) r=31;
+            a=r;
+            r=(s32)__fmadds((f32)((pixel>>5)&31),lbl_80541518,lbl_805414F8);
+            if(r<0) r=0; else if(r>31) r=31;
+            b=r;
+            r=(s32)__fmadds((f32)(pixel&31),lbl_80541518,lbl_805414F8);
+            if(r<0) r=0; else if(r>31) r=31;
+            c=r;
             if (flag != 0) {
                 v = 0x8000 | (c << 10) | (a << 5) | b;
             } else {
@@ -2071,74 +2028,90 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
 #pragma opt_strength_reduction reset
 extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
+#pragma opt_lifetimes off
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
-    Mtx m;
-    GXTlutObj tlut[16];
+    JGeometry::TVec3<f32> trans;
+    trans = *(JGeometry::TVec3<f32>*)arr;
     GXTexObj texObj;
-    s32 cnt[16] = {0};
-    s32 i;
-    s32 j;
-    s32 p;
-    s32 q;
-    s32 r;
-    s32 c;
-    f32 k;
-    u16* lut;
-    f32* pos = (f32*)arr;
-    u16* idx = (u16*)v;
-    u16* lut2;
-
-    k = lbl_80541598 * ((f32)a - lbl_80541520);
-    PSMTXTrans(m, pos[0], pos[1] + k, pos[2] + k);
-    fn_8013B3CC(lbl_8053AB10, m);
-
-    for (i = 0; i < 16; i++) {
-        GXInitTlutObj(&tlut[i], *(u8**)(self + 0x18) + i * 0x20, GX_TL_RGB5A3, 16);
-        GXLoadTlut(&tlut[i], lbl_8046F9F0[i]);
+    Mtx m;
+    s32 cnt[16];
+    GXTlutObj tlut[16];
+    f32* pos=(f32*)arr;
+    u16* idx=(u16*)v;
+    const f32 z=trans.z;
+    f32 k=lbl_80541598*((f32)a-lbl_80541520);
+    trans.y+=k;
+    trans.z=z+k;
+    PSMTXTrans(m,trans.x,trans.y,trans.z);
+    fn_8013B3CC(lbl_8053AB10,m);
+    for(int i=0;i<16;i++) {
+        GXInitTlutObj(&tlut[i],*(u8**)(self+0x18)+i*0x20,GX_TL_RGB5A3,16);
+        GXLoadTlut(&tlut[i],lbl_8046F9F0[i]);
     }
-
-    lut = *(u16**)(self + 0x24);
-    for (p = 0; p < 2; p++) {
-        for (q = 0; q < 2; q++) {
-            for (j = 0; j < 16; j++) {
-                u16 w = idx[(p * 2 + q) * 16 + j];
-                if (w != 0) {
-                    cnt[(lut[w * 4 + 0] >> 10) & 0xf]++;
-                    cnt[(lut[w * 4 + 1] >> 10) & 0xf]++;
-                    cnt[(lut[w * 4 + 2] >> 10) & 0xf]++;
-                    cnt[(lut[w * 4 + 3] >> 10) & 0xf]++;
+    for(int i=0;i<16;i++) cnt[i]=0;
+    for(int by=0;by<2;by++) {
+        for(int bx=0;bx<2;bx++) {
+            for(int y=0;y<16 && by*16+y<*(s32*)(self+0x2384)/2;y++) {
+                for(int x=0;x<16 && bx*16+x<*(s32*)(self+0x2380)/2;x++) {
+                    u16 id=idx[((by*2+bx)*16+y)*16+x];
+                    if(id) {
+                        u16* lut=*(u16**)(self+0x24);
+                        for(int sy=0;sy<2;sy++) for(int sx=0;sx<2;sx++) cnt[(lut[id*4+sy*2+sx]>>12)&15]++;
+                    }
                 }
             }
         }
     }
-
-    if (cnt[0] > 0) {
-        GXInitTexObjCI(&texObj, *(void**)(self + 4), 0x80, 0x200, GX_TF_C8, GX_CLAMP, GX_CLAMP, GX_FALSE, lbl_8046F9F0[0]);
-        GXLoadTexObj(&texObj, GX_TEXMAP0);
-        GXBegin(GX_QUADS, GX_VTXFMT0, cnt[0] * 4);
-        for (r = 0; r < 2; r++) {
-            for (c = 0; c < 16; c++) {
-                lut2 = *(u16**)(self + 0x24);
-                u16 t = lut2[(r * 2) * 16 + c];
-                if (((t >> 12) & 0xf) == cnt[0]) {
-                    f32 x = pos[0] + (f32)c;
-                    f32 y = pos[1] + (f32)r;
-                    GXWGFifo.u16 = (u16)(x);
-                    GXWGFifo.u16 = (u16)(x);
-                    GXWGFifo.u16 = (u16)(t & 0xfff);
-                    GXWGFifo.f32 = x * lbl_8054152C;
-                    GXWGFifo.f32 = y * lbl_8054152C;
-                    GXWGFifo.u16 = (u16)(y);
-                    GXWGFifo.u16 = (u16)(y);
-                    GXWGFifo.u16 = (u16)(t ^ 0x400);
-                    GXWGFifo.f32 = lbl_80541534 + x * lbl_8054152C;
-                    GXWGFifo.f32 = lbl_80541534 + y * lbl_8054152C;
+    for(int pal=0;pal<16;pal++) {
+        if(cnt[pal]>0) {
+            GXInitTexObjCI(&texObj,*(void**)(self+4),0x80,0x200,GX_TF_C4,GX_CLAMP,GX_CLAMP,GX_FALSE,lbl_8046F9F0[pal]);
+            GXLoadTexObj(&texObj,GX_TEXMAP0);
+            GXBegin(GX_QUADS,GX_VTXFMT0,cnt[pal]*4);
+            for(int by=0;by<2;by++) {
+                for(int bx=0;bx<2;bx++) {
+                    for(int y=0;y<16 && by*16+y<*(s32*)(self+0x2384)/2;y++) {
+                        for(int x=0;x<16 && bx*16+x<*(s32*)(self+0x2380)/2;x++) {
+                            u16 id=idx[((by*2+bx)*16+y)*16+x];
+                            if(id) {
+                                for(int sy=0;sy<2;sy++) {
+                                    for(int sx=0;sx<2;sx++) {
+                                        u16 tile=(*(u16**)(self+0x24))[id*4+sy*2+sx];
+                                        if(((tile>>12)&15)==pal) {
+                                            int px=bx*32+x*2+sx;
+                                            int py=by*32+y*2+sy;
+                                            u16 vertex=py*65+px;
+                                            u16 b=vertex+1;
+                                            u16 c=b+65;
+                                            u16 d=c-1;
+                                            u16 flags=tile&0xfff;
+                                            f32 tx=pos[0]+(f32)(px*8);
+                                            f32 ty=pos[1]+(f32)(py*8);
+                                            f32 scale=lbl_8054152C;
+                                            f32 step=lbl_80541534;
+                                            tx*=scale;
+                                            ty*=scale;
+                                            f32 tx1=step+tx;
+                                            f32 ty1=step+ty;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=vertex; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=vertex; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=flags;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=tx; (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=ty;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=b; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=b; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=flags^0x400;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=tx1; (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=ty;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=c; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=c; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=flags^0xc00;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=tx1; (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=ty1;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=d; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=d; (*(volatile PPCWGPipe*)GXFIFO_ADDR).u16=flags^0x800;
+                                            (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=tx; (*(volatile PPCWGPipe*)GXFIFO_ADDR).f32=ty1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_8013B438(void* mgr);
 extern "C" void* fn_802D6A9C();
 extern "C" void load__10JUTTextureF11_GXTexMapID(void* tex, s32 id);
@@ -2493,11 +2466,15 @@ extern "C" f32 lbl_8054153C;
 extern "C" f32 lbl_80541610;
 extern "C" f32 lbl_80541614;
 extern "C" void fn_802FF798(void* mgr) {
-    u8* this_ = (u8*)mgr;
+    s32 y;
+    u8* rect;
+    u8* p;
+    u8* view;
+    s32 v;
     s32 i;
     s32 j;
     s32 n;
-    u8* p;
+    u8* this_ = (u8*)mgr;
 
     for (i = 0; i < 4; i++) {
         this_[0x235c + i] = 0;
@@ -2521,11 +2498,11 @@ extern "C" void fn_802FF798(void* mgr) {
     for (int k = 0; k < 0x10; k++) {
         *(s32*)(this_ + 0xbf9c + k * 0x28) = 0;
     }
-    for (i = 0; i < 0x40; i++) {
-        for (j = 0; j < 0x10; j++) {
-            n = i * 0x10 + j;
-            ((f32*)*(u8**)(this_ + 0x110))[n * 2] = 0.0078125f * (8.0f * (f32)j + 0.501f);
-            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1] = 0.001953125f * (8.0f * (f32)i + 0.501f);
+    for (int row = 0; row < 0x40; row++) {
+        for (int col = 0; col < 0x10; col++) {
+            n = row * 0x10 + col;
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2] = 0.0078125f * (8.0f * (f32)col + 0.501f);
+            ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1] = 0.001953125f * (8.0f * (f32)row + 0.501f);
             ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x800] = 6.98f / 128.0f + ((f32*)*(u8**)(this_ + 0x110))[n * 2];
             ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x801] = ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 1];
             ((f32*)*(u8**)(this_ + 0x110))[n * 2 + 0x1000] = ((f32*)*(u8**)(this_ + 0x110))[n * 2];
@@ -2538,29 +2515,33 @@ extern "C" void fn_802FF798(void* mgr) {
     *(s32*)(this_ + 0xd320) = 0;
     *(s32*)(this_ + 0xe424) = 0;
     fn_802FDDD4(this_);
-    for (i = 0; i < 4; i++) {
+    p = this_;
+    rect = this_;
+    for (v = 0; v < 4; v++) {
         s32 x;
-        s32 y;
-        this_[0x12c + i] = 0;
-        *(s32*)(this_ + 0x138 + i * 4) = 0;
-        this_[0x148 + i] = 0;
-        this_[0x14c + i] = 0;
-        this_[0x210 + i] = 0;
-        if (i & 2) {
+        view = this_ + v;
+        view[0x12c] = 0;
+        *(s32*)(p + 0x138) = 0;
+        view[0x148] = 0;
+        view[0x14c] = 0;
+        view[0x210] = 0;
+        if (v & 2) {
             y = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) - 0x90;
         } else {
             y = 0x48;
         }
-        if (i & 1) {
+        if (v & 1) {
             x = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4) - 0x60;
         } else {
             x = 0x18;
         }
-        *(s32*)(this_ + 0x1d0 + i * 0x10) = x;
-        *(s32*)(this_ + 0x1d4 + i * 0x10) = y;
-        *(s32*)(this_ + 0x1d8 + i * 0x10) = 0x48;
-        *(s32*)(this_ + 0x1dc + i * 0x10) = 0x48;
-        this_[0x217 + i] = 0;
+        *(s32*)(rect + 0x1d0) = x;
+        *(s32*)(rect + 0x1d4) = y;
+        *(s32*)(rect + 0x1d8) = 0x48;
+        *(s32*)(rect + 0x1dc) = 0x48;
+        view[0x217] = 0;
+        p += 4;
+        rect += 0x10;
     }
     this_[0x216] = 0;
     this_[0x214] = 0;
