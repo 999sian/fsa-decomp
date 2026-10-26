@@ -915,12 +915,9 @@ extern "C" void fn_80138B7C(char* this_) {
     }
 }
 
-struct ResFONT;
-class J2DTextBox {
-public:
-    J2DTextBox(u64 tag, const JGeometry::TBox2f& box, const ResFONT* font, const char* str, s16 len, s32 hb, s32 vb);
-    char* getStringPtr() const;
-};
+#include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
+extern char lbl_8053CDB0[8];
 extern "C" char* strcpy(char*, const char*);
 extern "C" void fn_8013BE04(void*);
 extern "C" void fn_802ACB58(void*);
@@ -1238,18 +1235,18 @@ extern "C" void* fn_80139300(char* this_) {
     if (((s32 (*)(void))fn_80021840)() == 2) {
         u16 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
         JGeometry::TBox2f boxA(lbl_8053CD90, lbl_8053CDB8, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxA, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxA, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
         *(void**)(this_ + 0xc0) = p;
         JGeometry::TBox2f boxB(lbl_8053CD84, lbl_8053CDBC, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxB, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxB, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
         *(void**)(this_ + 0xc4) = p;
     } else {
         u16 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
         JGeometry::TBox2f boxC(lbl_8053CD90, lbl_8053CDB8, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxC, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxC, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
         *(void**)(this_ + 0xc0) = p;
         JGeometry::TBox2f boxD(lbl_8053CD84, lbl_8053CDBC, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxD, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, 0, 0);
+        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxD, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
         *(void**)(this_ + 0xc4) = p;
     }
 
