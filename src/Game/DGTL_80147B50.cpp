@@ -572,32 +572,7 @@ extern "C" void fn_8014A5F4(char* this_) {
     *(f32*)(p + 0x294) = lbl_8053D0E4;
     *(u8*)(p + 0x196) = 1;
 
-    switch (*(u32*)(p + 0x98)) {
-    case 0:
-        angle = 0;
-        break;
-    case 1:
-        angle = 0x2000;
-        break;
-    case 2:
-        angle = 0x4000;
-        break;
-    case 3:
-        angle = 0x6000;
-        break;
-    case 4:
-        angle = 0x8000;
-        break;
-    case 5:
-        angle = 0xa000;
-        break;
-    case 6:
-        angle = 0xc000;
-        break;
-    case 7:
-        angle = 0xe000;
-        break;
-    }
+    angle = dgtlAngleFromIndex(*(u32*)(p + 0x98));
     *(u16*)(p + 0x284) = angle;
     *(u16*)(p + 0x286) = *(u16*)(p + 0x284);
 
