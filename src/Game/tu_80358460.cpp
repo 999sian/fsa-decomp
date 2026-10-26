@@ -156,6 +156,18 @@ static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
         vec.x += lbl_80542870;
     }
 }
+static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state, JGeometry::TVec3f vec) {
+    JGeometry::TVec3f saved(vec);
+    *(s32*)(self + 0x258) = state;
+    for (s32 k = 0; k < 6; ++k) {
+        for (s32 j = 0; j < 6; ++j) {
+            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
+            vec.y += lbl_80542870;
+        }
+        vec.y = saved.y;
+        vec.x += lbl_80542870;
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -591,11 +603,10 @@ extern "C" void fn_802314D8(s32, f32*);
 extern "C" u8 fn_80235448(s32 i);
 extern "C" void fn_802A381C(u8* a, Vec8035A860* v, s32 room, u16 idx);
 extern "C" void fn_803597EC(u8* object) {
-    u8* tbl;
     u8* self;
+    u8* q;
     s32 flags;
     s32 i;
-    u8* q;
     s32 a;
     s32 b;
     s16 ang;
@@ -619,7 +630,6 @@ extern "C" void fn_803597EC(u8* object) {
             fn_801F0D20(self, 3);
         }
     }
-    tbl = sincosTable___5JMath;
     for (i = 0; i < 4; i++) {
         q = self + i;
         q[0x246] = 0;
@@ -633,10 +643,13 @@ extern "C" void fn_803597EC(u8* object) {
         fn_801F317C(self, box);
         ang = *(s16*)(self + 0x230);
         py = *(f32*)(self + 0x10);
-        f32* sc = (f32*)(tbl + ((u16)ang >> 5) * 8);
-        f64 csd = __fabs(sc[1]);
-        box[1] = (box[1] - py) * csd + py;
-        box[3] = (box[3] - py) * csd + py;
+        f32 csd = __fabsf(JMath::sincosTable_.mTable[(u16)ang >> 5].second);
+        f32 dy2;
+        f32 dy1;
+        dy1 = box[1] - py;
+        dy2 = box[3] - py;
+        box[1] = dy1 * csd + py;
+        box[3] = dy2 * csd + py;
         s32 hit;
         if (fn_8023AAF8(i, box, *(s32*)(self + 4), &v8)) {
             d = py - v8.y;
@@ -654,19 +667,7 @@ extern "C" void fn_803597EC(u8* object) {
     if (flags != 0) {
         if (*(s16*)(self + 0x238) == 0 && *(f32*)(self + 0x240) != lbl_8054286C) {
             *(s32*)(self + 0x254) = 30;
-            idx = lbl_80542868[1];
-            JGeometry::TVec3f vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
-            JGeometry::TVec3f saved(vec);
-            *(s32*)(self + 0x258) = 1;
-            flags = 0;
-            for (k = 0; k < 6; k++) {
-                for (j = 0; j < 6; j++) {
-                    fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 0x4), idx);
-                    vec.y += lbl_80542870;
-                }
-                vec.y = saved.y;
-                vec.x += lbl_80542870;
-            }
+            spawnGrid803597EC(self, lbl_80542868[1], 1);
         }
         if (*(f32*)(self + 0x240) > lbl_8054286C) {
             *(s16*)(self + 0x238) = 0x200;
@@ -677,7 +678,7 @@ extern "C" void fn_803597EC(u8* object) {
     for (i = 0; i < 4; i++) {
         if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
             ang = *(s16*)(self + 0x230);
-            cs = ((f32*)(sincosTable___5JMath + ((u16)ang >> 5) * 8))[0];
+            cs = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
             d = __fabsf(cs);
             cs = cs * d;
             cs = lbl_8054288C * cs;
@@ -729,18 +730,7 @@ extern "C" void fn_803597EC(u8* object) {
     }
     if (*(s16*)(self + 0x230) == 0 || *(s16*)(self + 0x230) == -0x8000) {
         if (*(s16*)(self + 0x238) != 0) {
-            JGeometry::TVec3f vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
-            JGeometry::TVec3f saved(vec);
-            idx = lbl_80542868[0];
-            *(s32*)(self + 0x258) = 0;
-            for (k = 0; k < 6; k++) {
-                for (j = 0; j < 6; j++) {
-                    fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
-                    vec.y += lbl_80542870;
-                }
-                vec.y = saved.y;
-                vec.x += lbl_80542870;
-            }
+            spawnGrid803597EC(self, lbl_80542868[0], 0);
         }
         *(s16*)(self + 0x238) = 0;
     }
