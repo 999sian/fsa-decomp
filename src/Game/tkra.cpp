@@ -311,7 +311,7 @@ inline void tkraCreateItems(char* p) {
     JGeometry::TVec3f v;
         f32 dx = 1.0f;
         out = p;
-        f32 dy = lbl_805413B4;
+        f32 dy = 12.0f;
         for (i=0, bits=0UL; i<4; i++, bits+=0x1000000, out+=4) {
             v = *fn_8023E724(i);
             pos = v;
