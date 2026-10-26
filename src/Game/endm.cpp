@@ -4,7 +4,6 @@
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Util.h"
-#include "JSystem/JKernel/JKRHeap.h"
 
 extern char* lbl_8053AB10;
 extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
@@ -302,7 +301,6 @@ extern "C" f32 lbl_805413A4;
 extern "C" f32 lbl_805413A8;
 extern "C" f32 lbl_805413AC;
 #pragma opt_propagation off
-#pragma opt_dead_assignments off
 extern "C" void fn_802EAD78(void) {
     f32 v28;
     f32 v27;
@@ -363,76 +361,76 @@ extern "C" void fn_802EAD78(void) {
     v27 = lbl_805413A4;
     v28 = lbl_805413A8;
     char* base = lbl_804D56A8;
-    f32* pts = (f32*)base;
-    f32* tail = (f32*)(base + 0x88);
-    pts[0] = v0;
-    pts[1] = v1;
-    pts[2] = v0;
-    pts[3] = v1;
-    pts[4] = v0;
-    pts[5] = v1;
-    pts[6] = v0;
-    pts[7] = v1;
-    pts[8] = v0;
-    pts[9] = v1;
-    pts[10] = v0;
-    pts[11] = v1;
-    pts[12] = v0;
-    pts[13] = v1;
-    pts[14] = v0;
-    pts[15] = v1;
-    pts[16] = v0;
-    pts[17] = v1;
-    pts[18] = v0;
-    pts[19] = v1;
-    pts[20] = v0;
-    pts[21] = v1;
-    pts[22] = v0;
-    pts[23] = v1;
-    pts[24] = v0;
-    pts[25] = v1;
-    pts[26] = v0;
-    pts[27] = v1;
-    pts[28] = v0;
-    pts[29] = v1;
-    pts[30] = v0;
-    pts[31] = v1;
-    pts[32] = v0;
-    pts[33] = v1;
-    tail[0] = v2;
-    tail[1] = v3;
-    tail[2] = v4;
-    tail[3] = v5;
-    tail[4] = v6;
-    tail[5] = v5;
-    tail[6] = v7;
-    tail[7] = v8;
-    tail[8] = v9;
-    tail[9] = v10;
-    tail[10] = v11;
-    tail[11] = v12;
-    tail[12] = v13;
-    tail[13] = v14;
-    tail[14] = v15;
-    tail[15] = v16;
-    tail[16] = v17;
-    tail[17] = v18;
-    tail[18] = v15;
-    tail[19] = v19;
-    tail[20] = v15;
-    tail[21] = v20;
-    tail[22] = v15;
-    tail[23] = v21;
-    tail[24] = v15;
-    tail[25] = v22;
-    tail[26] = v23;
-    tail[27] = v24;
-    tail[28] = v25;
-    tail[29] = v26;
-    tail[30] = v15;
-    tail[31] = v27;
-    tail[32] = v28;
-    tail[33] = lbl_805413AC;
+    f32 (*pts)[34] = (f32 (*)[34])base;
+    f32 (*tail)[34] = (f32 (*)[34])(base + 0x88);
+    (*pts)[0] = v0;
+    (*pts)[1] = v1;
+    (*pts)[2] = v0;
+    (*pts)[3] = v1;
+    (*pts)[4] = v0;
+    (*pts)[5] = v1;
+    (*pts)[6] = v0;
+    (*pts)[7] = v1;
+    (*pts)[8] = v0;
+    (*pts)[9] = v1;
+    (*pts)[10] = v0;
+    (*pts)[11] = v1;
+    (*pts)[12] = v0;
+    (*pts)[13] = v1;
+    (*pts)[14] = v0;
+    (*pts)[15] = v1;
+    (*pts)[16] = v0;
+    (*pts)[17] = v1;
+    (*pts)[18] = v0;
+    (*pts)[19] = v1;
+    (*pts)[20] = v0;
+    (*pts)[21] = v1;
+    (*pts)[22] = v0;
+    (*pts)[23] = v1;
+    (*pts)[24] = v0;
+    (*pts)[25] = v1;
+    (*pts)[26] = v0;
+    (*pts)[27] = v1;
+    (*pts)[28] = v0;
+    (*pts)[29] = v1;
+    (*pts)[30] = v0;
+    (*pts)[31] = v1;
+    (*pts)[32] = v0;
+    (*pts)[33] = v1;
+    (*tail)[0] = v2;
+    (*tail)[1] = v3;
+    (*tail)[2] = v4;
+    (*tail)[3] = v5;
+    (*tail)[4] = v6;
+    (*tail)[5] = v5;
+    (*tail)[6] = v7;
+    (*tail)[7] = v8;
+    (*tail)[8] = v9;
+    (*tail)[9] = v10;
+    (*tail)[10] = v11;
+    (*tail)[11] = v12;
+    (*tail)[12] = v13;
+    (*tail)[13] = v14;
+    (*tail)[14] = v15;
+    (*tail)[15] = v16;
+    (*tail)[16] = v17;
+    (*tail)[17] = v18;
+    (*tail)[18] = v15;
+    (*tail)[19] = v19;
+    (*tail)[20] = v15;
+    (*tail)[21] = v20;
+    (*tail)[22] = v15;
+    (*tail)[23] = v21;
+    (*tail)[24] = v15;
+    (*tail)[25] = v22;
+    (*tail)[26] = v23;
+    (*tail)[27] = v24;
+    (*tail)[28] = v25;
+    (*tail)[29] = v26;
+    (*tail)[30] = v15;
+    (*tail)[31] = v27;
+    (*tail)[32] = v28;
+    (*tail)[33] = lbl_805413AC;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x110);
@@ -479,7 +477,6 @@ extern "C" void fn_802EAD78(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-#pragma opt_dead_assignments reset
 #pragma opt_propagation reset
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
