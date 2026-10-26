@@ -45,10 +45,6 @@ struct GenRecordReader {
     }
 };
 
-static inline void genReadCoordinates(GenRecordReader& reader, u16& y, u16& x) {
-    x = reader.read8();
-    y = reader.read8();
-}
 
 struct Box4 {
     f32 x0, y0, x1, y1;
