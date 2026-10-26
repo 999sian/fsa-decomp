@@ -62,8 +62,8 @@ struct Tu80317WordPair {
     void setFrom(const Tu80317WordPair& src) {
         u32 a = src.first;
         u32 b = src.second;
-        first = a;
         second = b;
+        first = a;
     }
 };
 static inline u8 activate80317F18(u8* self, s32 idx) {
@@ -377,8 +377,8 @@ extern "C" void fn_803187F4(Actor* this_)
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
     const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
-    ((Tu80317WordPair*)&rect)->setOrdered(box[0].first, box[0].second);
-    ((Tu80317WordPair*)&rect + 1)->setOrdered(box[1].first, box[1].second);
+    ((Tu80317WordPair*)&rect)->setFrom(box[0]);
+    ((Tu80317WordPair*)&rect + 1)->setFrom(box[1]);
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);
@@ -1032,8 +1032,8 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(f32*)(self + 0x250) = lbl_8054191C;
         *(f32*)(self + 0x254) = lbl_8054191C;
         const Tu80317WordPair* __restrict box=(Tu80317WordPair*)(self+0x248);
-        ((Tu80317WordPair*)(self+0x60))->setOrdered(box[0].first,box[0].second);
-        ((Tu80317WordPair*)(self+0x68))->setOrdered(box[1].first,box[1].second);
+        ((Tu80317WordPair*)(self+0x60))->set(box[0].second,box[0].first);
+        ((Tu80317WordPair*)(self+0x68))->set(box[1].second,box[1].first);
     }
 
     if ((*(u32*)(self + 0x90) >> 27) != 0) {
