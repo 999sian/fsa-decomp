@@ -35,7 +35,7 @@ extern f32 lbl_80540AC0;
 extern f32 lbl_80540AC4;
 extern f32 lbl_80540AC8;
 extern f32 lbl_80540AD0;
-extern f32 lbl_80540AD4;
+extern const f32 lbl_80540AD4;
 extern const f32 lbl_80540ACC;
 extern const f32 lbl_80540ADC;
 extern const f32 lbl_80540AE0;
@@ -294,25 +294,25 @@ extern "C" void fn_802B85EC(char* this_) {
         *(s32*)(this_ + 0x230) = 1;
         break;
     case 1:
+    case 8:
         if (*(s32*)(this_ + 0x280) == 0) {
-            if (--*(s32*)(this_ + 0x244) == 0) {
+            *(s32*)(this_ + 0x244) -= 1;
+            if (*(s32*)(this_ + 0x244) == 0) {
                 if (*(u8*)((char*)lbl_8053AAF8 + 0x7e) == 1) {
                     if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) == 1) {
                         for (;;) {
-                            s32 s = *(s32*)(this_ + 0x298) = *(s32*)(this_ + 0x2a0 + *(s32*)(this_ + 0x27c) * 4);
-                            bool bit = (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << s)) != 0;
-                            if (bit && fn_8023F264(s) == 1) {
-                                fn_802B8078(this_);
-                                *(s32*)(this_ + 0x27c) += 1;
-                                if (*(s32*)(this_ + 0x27c) >= 4) *(s32*)(this_ + 0x27c) = 0;
-                                break;
-                            }
+                            *(s32*)(this_ + 0x298) = *(s32*)(this_ + 0x2a0 + *(s32*)(this_ + 0x27c) * 4);
+                            u32 bit = (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << *(s32*)(this_ + 0x298))) != 0;
+                            if (bit == 1 && fn_8023F264(*(s32*)(this_ + 0x298)) == 1) break;
                             *(s32*)(this_ + 0x27c) += 1;
                             if (*(s32*)(this_ + 0x27c) >= 4) {
                                 *(s32*)(this_ + 0x244) = 0x78;
                                 *(s32*)(this_ + 0x27c) = 0;
                             }
                         }
+                        fn_802B8078(this_);
+                        *(s32*)(this_ + 0x27c) += 1;
+                        if (*(s32*)(this_ + 0x27c) >= 4) *(s32*)(this_ + 0x27c) = 0;
                     } else {
                         if (*(s32*)(this_ + 0x27c) >= 4) {
                             *(u8*)(this_ + 0x11c) = 0;
@@ -320,16 +320,15 @@ extern "C" void fn_802B85EC(char* this_) {
                             break;
                         }
                         do {
-                            s32 s = *(s32*)(this_ + 0x298) = *(s32*)(this_ + 0x2a0 + *(s32*)(this_ + 0x27c) * 4);
-                            bool bit = (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << s)) != 0;
-                            if (bit && fn_8023F264(s) == 1 && fn_80237774(s) > 1) {
+                            *(s32*)(this_ + 0x298) = *(s32*)(this_ + 0x2a0 + *(s32*)(this_ + 0x27c) * 4);
+                            u32 bit = (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << *(s32*)(this_ + 0x298))) != 0;
+                            if (bit == 1 && fn_8023F264(*(s32*)(this_ + 0x298)) == 1 && fn_80237774(*(s32*)(this_ + 0x298)) > 1) {
                                 goto L156;
                             }
                             *(s32*)(this_ + 0x27c) += 1;
                         } while (*(s32*)(this_ + 0x27c) < 4);
                         *(u8*)(this_ + 0x11c) = 0;
                         fn_801F0E34(this_, 0x40041, 0);
-                        break;
 L156:
                         if (*(u8*)(this_ + 0x11c) != 0) {
                             fn_802B8078(this_);
@@ -337,35 +336,43 @@ L156:
                         }
                     }
                 } else {
-                    if (--*(s32*)(this_ + 0x298) < 0) *(s32*)(this_ + 0x298) = 3;
+                    *(s32*)(this_ + 0x298) -= 1;
+            if (*(s32*)(this_ + 0x298) < 0) *(s32*)(this_ + 0x298) = 3;
                     fn_802B8078(this_);
                     *(s32*)(this_ + 0x27c) += 1;
                 }
             } else {
-                s32 ang = *(s32*)(this_ + 0x274) + 0xc0;
-                *(s32*)(this_ + 0x274) = ang;
-                *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x234) + lbl_80540AD4 * sincosTable___5JMath[(u16)ang >> 5].first;
-                *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x238) + lbl_80540AD4 * sincosTable___5JMath[(u16)ang >> 5].second;
+                *(s32*)(this_ + 0x274) += 0xc0;
+                *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x234) + lbl_80540AD4 * sincosTable___5JMath[(u16)*(s32*)(this_+0x274) >> 5].first;
+                *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x238) + lbl_80540AD4 * sincosTable___5JMath[(u16)*(s32*)(this_+0x274) >> 5].second;
             }
         } else {
-            Vec* p = (Vec*)fn_8023E724(*(s32*)(this_ + 0x298));
-            f32 dx = p->x - *(f32*)(this_ + 0xc);
-            f32 dy = (p->y - lbl_80540AD8) - *(f32*)(this_ + 0x10);
-            *(f32*)(this_ + 0x284) = dx;
-            *(f32*)(this_ + 0x288) = dy;
-            f32 len2 = dx * dx + dy * dy;
-            if (len2 > lbl_80540AB8 * *(f32*)&__float_epsilon && len2 <= lbl_80540ABC) {
-                f32 r = __frsqrte(len2);
-                f32 inv = lbl_80540AC0 * r * (lbl_80540AC4 - len2 * (r * r));
-                *(f32*)(this_ + 0x284) = dx * inv;
-                *(f32*)(this_ + 0x288) = dy * inv;
+            JGeometry::TVec3f p = *(JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_ + 0x298));
+            p.y -= lbl_80540AD8;
+            JGeometry::TVec2f delta;
+            delta.x = p.x;
+            delta.y = p.y;
+            delta.x -= *(f32*)(this_+0xc);
+            delta.y -= *(f32*)(this_+0x10);
+            *(JGeometry::TVec2f*)(this_+0x284)=delta;
+            f32 len2 = ((JGeometry::TVec2f*)(this_+0x284))->squared();
+            if (!(len2 <= lbl_80540AB8 * *(f32*)&__float_epsilon)) {
+                f32 inv = len2;
+                if (!(len2 <= lbl_80540ABC)) {
+                    f32 r = __frsqrte(len2);
+                    inv = lbl_80540AC0 * r * (lbl_80540AC4 - len2 * (r * r));
+                }
+                ((JGeometry::TVec2f*)(this_+0x284))->scale(inv);
             }
             *(f32*)(this_ + 0x254) = *(f32*)(this_ + 0x284) * *(f32*)(this_ + 0x26c);
             *(f32*)(this_ + 0x258) = *(f32*)(this_ + 0x288) * *(f32*)(this_ + 0x26c);
             fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x254), lbl_80540AC8, *(f32*)(this_ + 0x264));
             fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x258), lbl_80540AC8, *(f32*)(this_ + 0x264));
             fn_801F71A4(this_ + 0x264, lbl_80540ACC, lbl_80540AD0, lbl_80540AD0);
-            if (--*(s32*)(this_ + 0x280) == 0) {
+            *(JGeometry::TVec3f*)(this_+0xc) += *(JGeometry::TVec3f*)(this_+0x3c);
+            *(s32*)(this_ + 0x280) -= 1;
+            if (*(s32*)(this_ + 0x280) == 0) {
+                *(JGeometry::TVec3f*)(this_+0x234) = *(JGeometry::TVec3f*)(this_+0xc);
                 *(s32*)(this_ + 0x274) = 0x8000;
             }
         }
@@ -375,38 +382,44 @@ L156:
         break;
     case 3:
         {
-            s32 ang = *(s32*)(this_ + 0x274) + 0xc0;
-            *(s32*)(this_ + 0x274) = ang;
-            *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x234) + lbl_80540AD4 * sincosTable___5JMath[(u16)ang >> 5].first;
-            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x238) + lbl_80540AD4 * sincosTable___5JMath[(u16)ang >> 5].second;
+            *(s32*)(this_ + 0x274) += 0xc0;
+            *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x234) + lbl_80540AD4 * sincosTable___5JMath[(u16)*(s32*)(this_+0x274) >> 5].first;
+            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x238) + lbl_80540AD4 * sincosTable___5JMath[(u16)*(s32*)(this_+0x274) >> 5].second;
         }
-        if (--*(s32*)(this_ + 0x244) == 0) {
+        *(s32*)(this_ + 0x244) -= 1;
+            if (*(s32*)(this_ + 0x244) == 0) {
             fn_802B8078(this_);
             fn_801F0E34(this_, 0x40041, 0);
         }
         break;
     case 4:
-        if (--*(s32*)(this_ + 0x244) == 0) {
+        *(s32*)(this_ + 0x244) -= 1;
+            if (*(s32*)(this_ + 0x244) == 0) {
             *(s32*)(this_ + 0x230) = 2;
             *(s32*)(this_ + 0x244) = 0x12c;
             fn_801F0E34(this_, 0x4003f, 0);
         }
         break;
     case 5:
-        if (--*(s32*)(this_ + 0x244) == 0) {
+        *(s32*)(this_ + 0x244) -= 1;
+            if (*(s32*)(this_ + 0x244) == 0) {
             *(s32*)(this_ + 0x230) = 7;
             *(s32*)(this_ + 0x244) = 0x12c;
             fn_801F0E34(this_, 0x4003f, 0);
         }
         break;
-    case 6:
+    case 7:
         fn_802B7D1C(this_, 1, 8);
+        break;
+    case 6:
         break;
     }
     if (*(s32*)(this_ + 0x270) < 0xff) *(s32*)(this_ + 0x270) += 1;
     if (*(s32*)(this_ + 0x250) == 0) {
-        if (--*(s32*)(this_ + 0x248) == 0) {
-            if (++*(s32*)(this_ + 0x24c) >= 4) *(s32*)(this_ + 0x24c) = 0;
+        *(s32*)(this_ + 0x248) -= 1;
+            if (*(s32*)(this_ + 0x248) == 0) {
+            *(s32*)(this_ + 0x24c) += 1;
+            if (*(s32*)(this_ + 0x24c) >= 4) *(s32*)(this_ + 0x24c) = 0;
             *(s32*)(this_ + 0x248) = 0x14;
         }
     } else {
