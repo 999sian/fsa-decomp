@@ -1510,7 +1510,7 @@ static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box) {
 extern "C" const f32 lbl_80540670;
 extern "C" const f32 lbl_80540674;
 extern "C" const f32 lbl_8054067C;
-static inline bool HouseContains(const JGeometry::TBox2f& area, const JGeometry::TVec3f& pos) {
+static inline bool HouseContains(const JGeometry::TBox2f& area, JGeometry::TVec3f& pos) {
     bool inside = false;
     if (pos.x >= area.i.x && pos.y >= area.i.y && pos.x < area.f.x && pos.y < area.f.y) inside = true;
     return inside;
@@ -1590,10 +1590,7 @@ extern "C" void fn_80299FB0(char* self) {
             found = 0;
             break;
         }
-        bool in = false;
-        if (v.x >= area.i.x && v.y >= area.i.y && v.x < area.f.x && v.y < area.f.y) {
-            in = true;
-        }
+        bool in = HouseContains(area, v);
         if (!in) {
             found = 0;
             break;
