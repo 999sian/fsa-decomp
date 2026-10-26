@@ -27,6 +27,10 @@ extern "C" f32 lbl_8053C7F4;
 extern "C" f32 lbl_8053C7F8;
 extern "C" f32 lbl_8053C7FC;
 static inline s32 dmlkElapsed(const s32 current) { return current - lbl_80464AF8[7]; }
+static inline s32 dmlkElapsed(void* timeline) {
+    return *(s32*)((u8*)timeline + 8) - lbl_80464AF8[7];
+}
+
 static inline void dmlkRequestBounds(u8* p) {
     u8* view = *(u8**)(lbl_8053AB10 + 0x24);
     if (view[0x7f5] == 0) {
@@ -451,8 +455,7 @@ extern "C" void fn_8011B3F0(u8* p) {
     }
     switch (*(s32*)(p + 0x238)) {
     case 7: {
-        s32 elapsed = *(s32*)((u8*)fn_8011921C() + 8);
-        elapsed -= lbl_80464AF8[7];
+        s32 elapsed = dmlkElapsed(*(s32*)((u8*)fn_8011921C() + 8));
         if (elapsed < 180) {
             dmlkRequestBounds(p);
             break;
