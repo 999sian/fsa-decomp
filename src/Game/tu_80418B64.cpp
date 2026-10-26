@@ -990,6 +990,25 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
     this_[0x28B] |= (u8)(1 << idx);
 }
 
+static inline void HudSyncCount8041(s32 idx) {
+    u8* dst = lbl_80529DEC;
+    s32* src = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+    for (s32 i = 0; i < 4; i++, dst += 4) {
+        if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
+            *(s32*)(dst + 0xd8) = *src;
+        }
+    }
+}
+
+static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
+    u8* p2 = self + idx * 2;
+    u8* p4 = self + idx * 4;
+    *(s16*)(p2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
+    *(s32*)(p4 + 0x1e8) = *(s32*)(p4 + 0x1d8);
+    *(s32*)(p4 + 0x1d8) = *source;
+    *(s32*)(self + idx * 4 + 0x1f8) = fn_80237810(idx);
+}
+
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     s32 cnt;
     s32 i;
