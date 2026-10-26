@@ -41,6 +41,7 @@ struct GenRecordReader {
     u8* p;
     GenRecordReader(u8* data) : p(data) {}
     u8 read8() { return *p++; }
+    u16 readCoord() { return read8(); }
     u32 read32() {
         u32 a=read8(), b=read8(), c=read8(), d=read8();
         return (a<<24)|(b<<16)|(c<<8)|d;
@@ -132,7 +133,8 @@ void fn_802E20D8(u8* this_)
                 }
                 offset += 11;
             }
-            if (found == 1) {
+            if (found != 1) break;
+            {
                 u32 destination;
                 u16 x, y;
                 u8* data = *(u8**)(this_ + 0x244) + offset;
