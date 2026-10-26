@@ -1537,6 +1537,7 @@ extern const J3DIndTexCoordScaleInfo j3dDefaultIndTexCoordScaleInfo;
 struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
     J3DIndTexCoordScale(const J3DIndTexCoordScaleInfo& info) { *(J3DIndTexCoordScaleInfo*)this = info; }
+    ~J3DIndTexCoordScale() {}
 };
 #pragma opt_lifetimes off
 extern "C" J3DIndTexCoordScale fn_800CB884(u8* p, s32 idx, s32 no) {
