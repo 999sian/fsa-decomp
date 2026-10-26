@@ -347,5 +347,4 @@ extern "C" void fn_801060A0(WLFT* this_) {
         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), (u8*)this_ + 0xc, tex, &this_->m238);
     }
 }
-#pragma opt_dead_assignments reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
