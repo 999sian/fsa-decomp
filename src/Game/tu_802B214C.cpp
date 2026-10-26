@@ -18,6 +18,14 @@ extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801F71A4(void* p, f32 target, f32 a, f32 b);
 extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
 
+static inline f32 movementInvSqrt(f32 x) { return JGeometry::TUtilf::inv_sqrt(x); }
+static inline void movementNormalize(JGeometry::TVec3<f32>* v) {
+    f32 squared = v->squared();
+    if (squared <= JGeometry::TUtilf::epsilon()) return;
+    f32 inverse = movementInvSqrt(squared);
+    v->scale(inverse);
+}
+
 struct Color4 {
     Color4(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
     u8 r, g, b, a;
@@ -260,9 +268,8 @@ timerReset:
                 *(s32*)(p + 0x25c) = 0;
             }
         }
-        if (*(s32*)(p + 0x254) != 0) {
-            *(s32*)(p + 0x254) -= 1;
-        } else if (*(s32*)(p + 0x25c) != 0) {
+        if (*(s32*)(p + 0x254) == 0) {
+        if (*(s32*)(p + 0x25c) != 0) {
             *(f32*)(p + 0x60) = lbl_805409F0;
             *(f32*)(p + 0x64) = lbl_805409F0;
             *(f32*)(p + 0x68) = lbl_805409F4;
@@ -272,6 +279,7 @@ timerReset:
                 *(s32*)(p + 0x254) = 0x28;
             }
         }
+        } else { *(s32*)(p+0x254)-=1; }
         break;
     case 1:
         fn_801F71A4(p + 0x3c, *(f32*)(p + 0x260), lbl_805409F8, *(f32*)(p + 0x26c));
@@ -280,44 +288,43 @@ timerReset:
         *pos += *vel;
         if (fn_801F2618(param_1, &hit, 0)) {
             if (hit.x != lbl_805409DC) {
-                *(f32*)(p + 0x260) = (hit.x >= lbl_805409DC) ? lbl_805409D8 : lbl_805409E0;
+                if (hit.x >= lbl_805409DC) { *(f32*)(p+0x260)=lbl_805409D8; } else { *(f32*)(p+0x260)=lbl_805409E0; }
             }
             if (hit.y != lbl_805409DC) {
-                *(f32*)(p + 0x264) = (hit.y >= lbl_805409DC) ? lbl_805409D8 : lbl_805409E0;
+                if (hit.y >= lbl_805409DC) { *(f32*)(p+0x264)=lbl_805409D8; } else { *(f32*)(p+0x264)=lbl_805409E0; }
             }
         }
         if (fn_801F2B7C(param_1, *(s32*)(p + 0x114), -1, 1)) {
-            *(f32*)(p + 0x260) = (*(f32*)(p + 0x260) >= lbl_805409DC) ? lbl_805409E0 : lbl_805409D8;
-            *(f32*)(p + 0x264) = (*(f32*)(p + 0x264) >= lbl_805409DC) ? lbl_805409E0 : lbl_805409D8;
+            if (*(f32*)(p + 0x260) >= lbl_805409DC) { *(f32*)(p+0x260)=lbl_805409E0; } else { *(f32*)(p+0x260)=lbl_805409D8; }
+            if (*(f32*)(p + 0x264) >= lbl_805409DC) { *(f32*)(p+0x264)=lbl_805409E0; } else { *(f32*)(p+0x264)=lbl_805409D8; }
         }
         break;
     case 2: {
         JGeometry::TVec3<f32>* desired=(JGeometry::TVec3<f32>*)(p+0x260);
-        JGeometry::TVec3<f32>* normal=(JGeometry::TVec3<f32>*)(p+0x270);
         if (((Tu802BVirtual*)param_1)->check() == 1) {
             desired->zero();
             *desired += *vel;
-            normal->normalize();
-            *normal *= lbl_805409E0;
-            normal->z=lbl_805409DC;
-            *desired += *normal;
+            ((JGeometry::TVec3<f32>*)(p+0x270))->normalize();
+            *(JGeometry::TVec3<f32>*)(p+0x270) *= lbl_805409E0;
+            ((JGeometry::TVec3<f32>*)(p+0x270))->z=lbl_805409DC;
+            *desired += *(JGeometry::TVec3<f32>*)(p+0x270);
             *(f32*)(p+0x26c)=lbl_80540A08;
             *(s32*)(p+0x240)=1;
         } else {
             switch (*(s32*)(p+0x230)) {
             case 0:
                 *pos += *vel;
-                if (fn_801F2618(param_1, normal, 0)==1) {
+                if (fn_801F2618(param_1, (JGeometry::TVec3<f32>*)(p+0x270), 0)==1) {
                     *(s32*)(p+0x230)=1;
-                    normal->normalize();
-                    *normal *= lbl_805409E0;
-                    normal->z=lbl_805409DC;
-                    vel->z=vel->y=vel->x=lbl_805409DC;
+                    ((JGeometry::TVec3<f32>*)(p+0x270))->normalize();
+                    *(JGeometry::TVec3<f32>*)(p+0x270) *= lbl_805409E0;
+                    ((JGeometry::TVec3<f32>*)(p+0x270))->z=lbl_805409DC;
+                    vel->x=vel->y=vel->z=lbl_805409DC;
                     f32 sign=lbl_805409D8;
                     if (*(s32*)(p+0x24c)==1) sign=lbl_805409E0;
                     switch (*(s32*)(p+0x248)) {
-                    case 2: case 3: vel->y=sign; break;
                     case 0: case 1: vel->x=sign; break;
+                    case 2: case 3: vel->y=sign; break;
                     }
                 }
                 break;
