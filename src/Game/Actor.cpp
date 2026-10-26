@@ -599,7 +599,7 @@ static inline f32 ActorRand37AC(unsigned int* base, int multiplier, const f32 on
     union { unsigned int bits; f32 value; } out;
     base[0xB4 / 4] = base[0xB4 / 4] * multiplier + 0x3C6EF35F;
     out.bits = (base[0xB4 / 4] >> 9) | 0x3F800000;
-    return out.value - lbl_8053F774;
+    return out.value - one;
 }
 u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
 {
