@@ -43,7 +43,6 @@ extern "C" void fn_801C6260(void* p);
 extern "C" u8 fn_801D0DD4(void* p);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" void* GetCurrentSlotPtr(void* p);
-extern "C" s32 fn_800FE2E4(void* slot, void* pos, s32 room);
 extern "C" JGeometry::TVec3f fn_800FE294(void* slot, s32 room);
 extern "C" u8 fn_800FD5E8(void* slot, s32 room);
 extern "C" s16 fn_801D02E0(void* p, void* pos);
@@ -79,6 +78,7 @@ static inline f32 tuRand01() {
     return *(f32*)&bits - lbl_8053EE68;
 }
 extern "C" void fn_801C5B08(void* p, s32 param_2) {
+    extern s32 fn_800FE2E4(void* slot, void* pos, s32 room);
     Unk801C5B08* self = (Unk801C5B08*)p;
     if (fn_801C5340() != 0) {
         self->field_230 |= 0x2000000;
