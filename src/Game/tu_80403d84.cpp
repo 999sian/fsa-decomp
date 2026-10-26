@@ -2475,7 +2475,7 @@ static inline void menuMarkerMtx(f32 m[3][4], const f32 s) {
     m[2][2] = s * (cx * cy);
 }
 
-static inline void menuMarkerEulerMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+static inline void menuMarkerEulerMtx(f32 m[3][4], f32 ax, f32 ay, const f32 az, const f32 s) {
     f32 sz, sy, sx, cz, cy, cx;
  f32 zero = 0.0f;
     sx = sin(ax); sy = sin(ay); sz = sin(az);
@@ -2504,15 +2504,16 @@ extern "C" void fn_804069E8(u8* self) {
 	f32 pos[3];
 	f32 zero = 0.0f;
 	s32 idx0 = *(s32*)(self + 0x340);
-	s32 idx;
+	u8* q;
+ s32 idx;
 	if (idx0 == 10 && *(s32*)(self + 0x348) == 2) {
 		idx = *(s32*)(lbl_80529DEC + 0x120);
 	} else {
 		idx = idx0;
 	}
-	menuMarkerMtx(mtx, *(f32*)(lbl_8050DB0C + 8));
+	menuMarkerEulerMtx(mtx, zero, zero, zero, *(f32*)(lbl_8050DB0C + 8));
  rec.w18 = mtx;
-	u8* q = self;
+	q = self;
 	for (int i = 0; i < 4; i++, q += 4) {
 		if ((u8)fn_80404074(self, idx, i, &out)) {
 			_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
