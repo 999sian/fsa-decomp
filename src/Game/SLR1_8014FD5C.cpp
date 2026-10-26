@@ -52,37 +52,8 @@ extern const f32 lbl_8053D268;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern char lbl_80465DBC[];
 extern char lbl_80465DD0[];
-static inline void slrRotation(f32 mtx[3][4], f32 s, f32 ang) {
-    f32 cA;
-    f32 sC;
-    f32 sB;
-    f32 sA;
-    f32 cB;
-    f32 sAsB;
-    f32 cC;
-    f32 rx = 0.0f;
-    sA = sin(rx);
-    sB = sin(ang);
-    sC = sin(rx);
-    cA = cos(rx);
-    cB = cos(ang);
-    cC = cos(rx);
-    f32 cAsC;
-    f32 cAcC;
-    cAcC = cA * cC;
-    sAsB = sA * sB;
-    cAsC = cA * sC;
-    f32 sAsC = sA * sC;
-    f32 sAcC = sA * cC;
-    mtx[0][0] = s * (cB * cC);
-    mtx[1][0] = s * (cB * sC);
-    mtx[2][0] = s * -sB;
-    mtx[0][1] = s * (sAsB * cC - cAsC);
-    mtx[1][1] = s * (sAsB * sC + cAcC);
-    mtx[2][1] = s * (sA * cB);
-    mtx[0][2] = s * (cAcC * sB + sAsC);
-    mtx[1][2] = s * (cAsC * sB - sAcC);
-    mtx[2][2] = s * (cA * cB);
+static inline f32 slrScale(const f32 scale, const f32 value) {
+    return scale * value;
 }
 
 extern "C" void fn_8014FD5C(Actor* actor)
@@ -95,8 +66,8 @@ extern "C" void fn_8014FD5C(Actor* actor)
     u32 m90;
     s32 m230;
     u16 state;
-    f32 s;
     f32 ang;
+    f32 s;
     f32 cA;
     f32 sA;
     f32 sB;
@@ -123,7 +94,7 @@ extern "C" void fn_8014FD5C(Actor* actor)
         }
         if (*(s32*)(base + 0x230) == 0xe) {
             ang = *(f32*)(base + 0x294);
-            s = *(f32*)(base + 0x298);
+            f32 scale = *(f32*)(base + 0x298);
             f32 rx = 0.0f;
             sA = sin(rx);
             sB = sin(ang);
@@ -131,6 +102,7 @@ extern "C" void fn_8014FD5C(Actor* actor)
             cA = cos(rx);
             cB = cos(ang);
             cC = cos(rx);
+            s = scale;
             f32 cAsC;
             f32 cAcC;
             cAcC = cA * cC;
