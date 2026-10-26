@@ -176,7 +176,7 @@ extern f32 lbl_8053F5E4;
 
 static inline f32 ipotRandom() {
     IpotGame* game = lbl_8053AAF8;
-    u32 bits = (game->rnd.get() >> 9) | 0x3f800000;
+    unsigned int bits = ((unsigned int)game->rnd.get() >> 9) | 0x3f800000;
     return *(f32*)&bits - 1.0f;
 }
 
