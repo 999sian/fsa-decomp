@@ -144,7 +144,7 @@ extern "C" u8 fn_8023AAF8(s32 i, f32* box, s32 room, Vec8035A860* out);
 static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
     JGeometry::TVec3f vec;
     JGeometry::TVec3f saved;
-    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), 0.0f);
+    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
     saved = vec;
     *(s32*)(self + 0x258) = state;
     for (s32 k = 0; k < 6; ++k) {
