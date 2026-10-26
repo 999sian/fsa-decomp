@@ -167,7 +167,7 @@ extern "C" void fn_8017A4AC(char* this_) {
 }
 
 extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
-extern "C" s32 fn_801F6874(s32 id);
+extern "C" s16 fn_801F6874(s32 id);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" u8 fn_801F2B20(void* this_, s32 a);
 extern "C" u8 fn_801F2A10(void* this_, s32 a, s32 b, s32 c, s32 d);
@@ -180,13 +180,14 @@ extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" f64 __ps_add(f64 a, f64 b);
 extern "C" void fn_8017A68C(char* this_) {
+    s32 room;
     *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
 
     if (*(s32*)(this_ + 0x25c) == 1) {
         s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98));
-        ang += 0x2000;
-        f32 r = lbl_8053DC7C;
-        for (s32 i = 0; i < 2; i++) {
+        f32 r = 8.0f;
+        s32 i = 0;
+        for (ang += 0x2000; i < 2; i++) {
             TVec3f pos;
             SinCos* sc = &sincosTable___5JMath[(u16)ang >> 5];
             pos.x = *(f32*)(this_ + 0xc);
@@ -206,9 +207,9 @@ extern "C" void fn_8017A68C(char* this_) {
                 *(u8*)(this_ + 0x11c) = 0;
                 return;
             }
-            s32 room = *(s32*)(this_ + 4);
+            room = *(s32*)(this_ + 4);
             if (room < 8) {
-                fn_8013CC50(room, this_ + 0xc, lbl_8053DC78, 0x339, 0, 1, 0, 0, 1);
+                fn_8013CC50(room, this_ + 0xc, 1.0f, 0x339, 0, 1, 0, 0, 1);
             } else {
                 Actor_CreateByID(fn_801F856C(), 0x48544d4b, room, this_ + 0xc, 0, -1, -1);
             }
@@ -231,24 +232,24 @@ extern "C" void fn_8017A68C(char* this_) {
                 *(s32*)(this_ + 0x244) = 0x88;
                 switch (*(s32*)(this_ + 0x98)) {
                 case 0:
-                    *(f32*)(this_ + 0x3c) = lbl_8053DC80;
-                    *(f32*)(this_ + 0x40) = lbl_8053DC84;
-                    *(f32*)(this_ + 0x44) = lbl_8053DC84;
+                    *(f32*)(this_ + 0x3c) = 5.0f;
+                    *(f32*)(this_ + 0x40) = 0.0f;
+                    *(f32*)(this_ + 0x44) = 0.0f;
                     break;
                 case 1:
-                    *(f32*)(this_ + 0x3c) = lbl_8053DC88;
-                    *(f32*)(this_ + 0x40) = lbl_8053DC84;
-                    *(f32*)(this_ + 0x44) = lbl_8053DC84;
+                    *(f32*)(this_ + 0x3c) = -5.0f;
+                    *(f32*)(this_ + 0x40) = 0.0f;
+                    *(f32*)(this_ + 0x44) = 0.0f;
                     break;
                 case 2:
-                    *(f32*)(this_ + 0x3c) = lbl_8053DC84;
-                    *(f32*)(this_ + 0x40) = lbl_8053DC80;
-                    *(f32*)(this_ + 0x44) = lbl_8053DC84;
+                    *(f32*)(this_ + 0x3c) = 0.0f;
+                    *(f32*)(this_ + 0x40) = 5.0f;
+                    *(f32*)(this_ + 0x44) = 0.0f;
                     break;
                 case 3:
-                    *(f32*)(this_ + 0x3c) = lbl_8053DC84;
-                    *(f32*)(this_ + 0x40) = lbl_8053DC88;
-                    *(f32*)(this_ + 0x44) = lbl_8053DC84;
+                    *(f32*)(this_ + 0x3c) = 0.0f;
+                    *(f32*)(this_ + 0x40) = -5.0f;
+                    *(f32*)(this_ + 0x44) = 0.0f;
                     break;
                 }
                 *(s32*)(this_ + 0x230) = 1;
@@ -257,9 +258,9 @@ extern "C" void fn_8017A68C(char* this_) {
         break;
     case 1:
         if (fn_801F2A10(this_, *(s32*)(this_ + 0x258), *(s32*)(this_ + 0x98), 1, 1)) {
-            s32 room = *(s32*)(this_ + 4);
+            room = *(s32*)(this_ + 4);
             if (room < 8) {
-                fn_8013CC50(room, this_ + 0xc, lbl_8053DC78, 0x339, 0, 1, 0, 0, 1);
+                fn_8013CC50(room, this_ + 0xc, 1.0f, 0x339, 0, 1, 0, 0, 1);
             } else {
                 Actor_CreateByID(fn_801F856C(), 0x48544d4b, room, this_ + 0xc, 0, -1, -1);
             }
@@ -273,9 +274,9 @@ extern "C" void fn_8017A68C(char* this_) {
         }
     case 2:
     if (*(s32*)(this_ + 0x240) == 0) {
-        *(f32*)(this_ + 0x44) = lbl_8053DC84;
-        *(f32*)(this_ + 0x40) = lbl_8053DC84;
-        *(f32*)(this_ + 0x3c) = lbl_8053DC84;
+        *(f32*)(this_ + 0x44) = 0.0f;
+        *(f32*)(this_ + 0x40) = 0.0f;
+        *(f32*)(this_ + 0x3c) = 0.0f;
     }
     if (*(s32*)(this_ + 0x244) == 0) {
         *(u8*)(this_ + 0x11c) = 0;
