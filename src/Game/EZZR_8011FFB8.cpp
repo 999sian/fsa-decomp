@@ -1,5 +1,7 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 class GateRegistry;
 extern "C" GateRegistry* fn_80131F0C(void);
