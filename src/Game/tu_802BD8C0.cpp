@@ -6,9 +6,25 @@
 
 extern "C" u16 fn_80226850(void* a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+extern "C" void* fn_801F856C(void);
+extern "C" void fn_801F0D20(void*, s32);
+extern "C" void fn_80138B7C(void*);
+extern "C" f32* fn_8023E724(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u8 fn_801F75B4(void*, s32, f32*);
+extern void* lbl_8053AF80;
+extern void* lbl_8053AAF8;
 extern const f32 lbl_80540BE0;
 extern const f32 lbl_80540BE4;
 extern const f32 lbl_80540BE8;
+
+struct Rect4 {
+    f32 x0, y0, x1, y1;
+};
+
+static inline u8 rectContains(Rect4* rect, f32* p) {
+    return p[0] >= rect->x0 && p[1] >= rect->y0 && p[0] < rect->x1 && p[1] < rect->y1;
+}
 
 
 extern "C" char lbl_804A8AC8[];
