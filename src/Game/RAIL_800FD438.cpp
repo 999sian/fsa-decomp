@@ -429,7 +429,7 @@ static inline s32 railGetId(RailRing* ring, u8 i) {
     return ring->mNodes[i]->mId;
 }
 
-static inline u32 railLoopMode(RailRing* ring, u8 n) {
+static inline u32 railLoopMode(RailRing* ring, const u8 n) {
     return ((RailNode**)ring)[n]->mFlags & 3;
 }
 
