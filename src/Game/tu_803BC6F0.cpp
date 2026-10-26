@@ -236,7 +236,7 @@ static inline void drawTextRow(u8* p, u8* q, u8* t) {
     s32 k;
     for (k = 0; k < 4; k++) {
         void* object = *(void**)(p + 0x8);
-        void* s = (*(TextBoxVt15**)object)->v15(object, *(u64*)t);
+        void* s = ((J2DPane*)object)->search(*(u64*)t);
         fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
         t += 8;
     }
