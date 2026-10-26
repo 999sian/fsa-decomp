@@ -271,59 +271,32 @@ extern "C" void fn_80446D68(void* self_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
-extern "C" void fn_80446DB0(void* self_) {
-    typedef void* (*SearchFn)(void*, unsigned long long);
-    typedef void (*SetFn)(void*, void*, int);
-    u8* self;
-    u8* params;
-    int i;
-    void* tex;
-    void* obj;
-    self = (u8*)self_;
-    for (i = 0, params = (u8*)lbl_80490038; i < 4; i++, params += 0xc0) {
-        self[0x30] &= ~(u8)(1 << i);
-        self[0x30] &= ~(u8)(1 << (i + 4));
-        tex = fn_804030C4(0x54494D47, lbl_804B1BC0[0]);
-
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x68));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x70));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x78));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x80));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x88));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x90));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x98));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xa0));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xa8));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xb0));
-        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
-
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x30));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x50));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x60));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x70));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x80));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x90));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xa0));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xb0));
-        ((u8*)obj)[0xb0] = 0;
-        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x40));
-        ((u8*)obj)[0xb0] = 0;
+extern "C" void fn_80446DB0(Obj804465B8* self)
+{
+    void* res;
+    for (int i = 0; i < 4; i++) {
+        self->flags[8] &= ~(u8)(1 << i);
+        self->flags[8] &= ~(u8)(1 << (i + 4));
+        res = fn_804030C4('TIMG', lbl_804B1BC0[0]);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x30))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x38))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x40))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x48))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x50))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x58))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x60))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x68))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x70))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x78))->changeTexture(res, 0);
+        self->screen->search(lbl_80490038[i].tag0)->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x18))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x28))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x38))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x48))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x58))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x68))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x78))->hide();
+        self->screen->search(*(u64*)(lbl_80490038[i].pad38 + 0x08))->hide();
     }
 }
 
