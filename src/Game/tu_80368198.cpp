@@ -195,8 +195,11 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
     }
 }
 
-#pragma opt_common_subs off
+#pragma opt_common_subs reset
 extern "C" void fn_803683AC(void* this_) {
+    const s32* __restrict first;
+    const s32* __restrict second;
+    s32 i;
     char* self = (char*)this_;
     char* tbl = lbl_80474C38;
     DrawRec rec;
@@ -209,22 +212,22 @@ extern "C" void fn_803683AC(void* this_) {
         if (*(s32*)(self + 0x264) >= 6) *(s32*)(self + 0x264) = 0;
         *(s32*)(self + 0x260) = 1;
     }
-    const s32* first = (s32*)(tbl + 0x1b4);
-    const s32* second = (s32*)(tbl + 0x1cc);
-    for (s32 i = 0; i < 6; i++) {
-        s32 state = ((s32*)(self + 0x2f8))[i];
+    first = (s32*)(tbl + 0x1b4);
+    second = (s32*)(tbl + 0x1cc);
+    for (i = 0; i < 6; i++, first++, second++) {
+        s32 state = ((Obj8036C750*)self)->a2f8[i];
         if (state == 0) {
-            *(JGeometry::TVec3<f32>*)(self + 0xc) = ((JGeometry::TVec3<f32>*)(self + 0x2a8))[i];
+            *(JGeometry::TVec3<f32>*)(self + 0xc) = ((Obj8036C750*)self)->trail[i];
             ((u8*)&rec.w10)[3] = 0xff;
-            fn_801F06F0(self, tbl + 0x210, first[i] + 8, (EffArgs*)&rec, 7, lbl_80542C58, lbl_80542C58);
+            fn_801F06F0(self, tbl + 0x210, *first + 8, (EffArgs*)&rec, 7, 1.0f, 1.0f);
         } else if (state != 1 && state != 4) {
-            *(JGeometry::TVec3<f32>*)(self + 0xc) = ((JGeometry::TVec3<f32>*)(self + 0x2a8))[i];
+            *(JGeometry::TVec3<f32>*)(self + 0xc) = ((Obj8036C750*)self)->trail[i];
             ((u8*)&rec.w10)[3] = 0xff;
-            fn_801F06F0(self, tbl + 0x224, *(s32*)(self + 0x264) + second[i], (EffArgs*)&rec, -1, lbl_80542C58, lbl_80542C58);
-            f32 z = ((JGeometry::TVec3<f32>*)(self + 0x2a8))[i].z;
+            fn_801F06F0(self, tbl + 0x224, *(s32*)(self + 0x264) + *second, (EffArgs*)&rec, -1, 1.0f, 1.0f);
+            f32 z = ((Obj8036C750*)self)->trail[i].z;
             if (z < lbl_80542C68) ((u8*)&rec.w10)[3] = 255 - (s32)z;
             else ((u8*)&rec.w10)[3] = 0;
-            s32 id = *(s32*)(self + 0x264) + second[i];
+            s32 id = *(s32*)(self + 0x264) + *second;
             if (*(u32*)(self + 0x138) == 0) {
                 fn_801EF830(*(s32*)(self + 4), self + 0xc, (u8*)&rec, 0x407, (u8*)(tbl + 0x224), id, 0);
             }
@@ -232,7 +235,6 @@ extern "C" void fn_803683AC(void* this_) {
     }
     *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
 }
-#pragma opt_common_subs reset
 extern f32 lbl_80542C78;
 extern "C" void fn_801F06F0(void* self, void* tbl, s32 idx, EffArgs* args, s32 n, f32 a, f32 b);
 extern "C" void fn_8013CB44(void* obj, Vec3f* v, s32 a, s32 b, s32 c);
@@ -718,6 +720,12 @@ extern "C" void fn_8036AA60(char* self) {
     }
 }
 
+static inline void drawShadow8036(char* self, DrawRec& args, u32 index)
+{
+    if (*(u32*)(self + 0x138) == 0) {
+        fn_801EF830(*(s32*)(self + 4), self + 0xc, args.ids, 7, lbl_80474E48, index, 0);
+    }
+}
 extern "C" void fn_8036AC58(void* this_, void* param) {
     char* self = (char*)this_;
     EffArgs args;
@@ -905,35 +913,29 @@ extern "C" void fn_8036C3AC(void* this_) {
     extern void detach__5ActorFv(void* p);
     extern void fn_801D2608(void* p, void* a, s32 b);
     extern void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
-    extern void fn_801D1F14(void* p);
+    extern void fn_801D1F14(void* p, f32);
     extern void fn_802D7440(void* mgr, s32 a);
     extern void* fn_802D6A9C(void);
     extern void* fn_801F856C(void);
     extern s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
     extern char lbl_8053A1C0;
     extern u8 sincosTable___5JMath[];
-    extern f32 lbl_80542C58;
-    extern f32 lbl_80542C6C;
-    extern f32 lbl_80542C84;
-    extern f32 lbl_80542C9C;
-    extern f32 lbl_80542CBC;
-    extern f32 lbl_80542CD0;
-    extern f32 lbl_80542CD4;
 
-    char* tbl = lbl_80474C38;
     char* self = (char*)this_;
+    const char* tbl;
+    tbl = lbl_80474C38;
     s32 i;
     u32* b;
     u16* a;
-    Vec3f* pt;
-    s32* dst;
-    Vec3f pts[5];
+    JGeometry::TVec3<f32>* pt;
+    char* dst;
 
-    fn_8010DF98(this_);
+
+    fn_8010DF98(self);
     *(s32*)(self + 0x23c) = *(s32*)(self + 0x90) & 0x1f;
     *(s32*)(self + 0x248) = (*(u32*)(self + 0x90) >> 22) & 0x1f;
     if (*(s32*)(self + 0x23c) != 4 && *(s32*)(self + 0x23c) != 5) {
-        detach__5ActorFv(this_);
+        detach__5ActorFv(self);
         return;
     }
     if (*(s32*)(self + 0x23c) == 5) {
@@ -946,38 +948,39 @@ extern "C" void fn_8036C3AC(void* this_) {
         void* obj = lbl_8053AAF8;
         char* str = lbl_8053A1C8;
         void* sub = *(void**)((char*)obj + 0xa4);
-        *(void**)(self + 0x310) = ((void* (*)(void*, u32, char*))(*(void***)sub)[6])(sub, 0x3f3f3f3f, str);
+        *(void**)(self + 0x310) = ((SobResMgr*)sub)->vf18(0x3f3f3f3f, str);
     }
     fn_801D2608(self + 0x318, &lbl_8053A1C0, 2);
-    if (*(s32*)(self + 0x23c) == 6 || *(s32*)(self + 0x23c) >= 6 || *(s32*)(self + 0x23c) < 0) {
-        fn_801D22DC(self + 0x318, 1, 2, 0);
-    } else {
+    switch (*(s32*)(self + 0x23c)) {
+    case 0: case 1: case 2: case 3: case 4: case 5:
         fn_801D22DC(self + 0x318, 0, 2, 0);
+        break;
+    case 6: default:
+        fn_801D22DC(self + 0x318, 1, 2, 0);
+        break;
     }
-    fn_801D1F14(self + 0x318);
-    *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - lbl_80542C84;
+    fn_801D1F14(self + 0x318, 0.0f);
+    *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - 32.0f;
 
-    pts[0] = *(Vec3f*)(self + 0xc);
-    pts[1].x = *(f32*)(self + 0x24) - lbl_80542CBC;
-    pts[1].y = *(f32*)(self + 0x28) - lbl_80542C9C;
-    pts[1].z = lbl_80542C6C;
-    pts[2].x = *(f32*)(self + 0x24) + lbl_80542CBC;
-    pts[2].y = *(f32*)(self + 0x28) - lbl_80542C9C;
-    pts[2].z = lbl_80542C6C;
-    pts[3].x = *(f32*)(self + 0x24) - lbl_80542CBC;
-    pts[3].y = lbl_80542C9C + *(f32*)(self + 0x28);
-    pts[3].z = lbl_80542C6C;
-    pts[4].x = lbl_80542CBC + *(f32*)(self + 0x24);
-    pts[4].y = lbl_80542C9C + *(f32*)(self + 0x28);
-    pts[4].z = lbl_80542C6C;
+    JGeometry::TVec3<f32> pts[5];
+    JGeometry::TVec3<f32> t4, t3, t2, t1;
+    pts[0] = *(JGeometry::TVec3<f32>*)(self + 0xc);
+    t1.set(*(f32*)(self+0x24)-80.0f, *(f32*)(self+0x28)-48.0f, 0.0f);
+    pts[1] = t1;
+    t2.set(*(f32*)(self+0x24)+80.0f, *(f32*)(self+0x28)-48.0f, 0.0f);
+    pts[2] = t2;
+    t3.set(*(f32*)(self+0x24)-80.0f, 48.0f+*(f32*)(self+0x28), 0.0f);
+    pts[3] = t3;
+    t4.set(80.0f+*(f32*)(self+0x24), 48.0f+*(f32*)(self+0x28), 0.0f);
+    pts[4] = t4;
 
     b = (u32*)(tbl + 0xb4);
     a = (u16*)(tbl + 0xa8);
     pt = pts;
-    dst = (s32*)(self + 0x384);
+    dst = self;
     for (i = 0; i < 5; i++) {
-        *dst = fn_8013CC50(*(u32*)(self + 0x4), pt, lbl_80542C58, *a, 0, *b, 0, 0, 1);
-        dst++;
+        *(s32*)(dst + 0x384) = fn_8013CC50(*(u32*)(self + 0x4), pt, 1.0f, *a, 0, *b, 0, 0, 1);
+        dst += 4;
         pt++;
         a++;
         b++;
@@ -987,12 +990,10 @@ extern "C" void fn_8036C3AC(void* this_) {
     for (i = 0; i < 5; i++) {
         s16 ang = *(s16*)(tbl + 0x6c + i * 2);
         f32* sc = (f32*)(sincosTable___5JMath + ((u16)ang >> 5) * 8);
-        Vec3f* out = (Vec3f*)(self + 0x2a8);
-        out[i].x = *(f32*)(self + 0xc) + lbl_80542CD4 * sc[1];
-        out[i].y = lbl_80542C84 + (*(f32*)(self + 0x10) + lbl_80542CD0 * sc[0]);
-        out[i].z = lbl_80542C6C;
+        JGeometry::TVec3<f32>* out = (JGeometry::TVec3<f32>*)(self + 0x2a8);
+        out[i].set(*(f32*)(self + 0xc) + 55.0f * sc[1], 32.0f + (*(f32*)(self + 0x10) + 35.0f * sc[0]), 0.0f);
     }
-    *(Vec3f*)(self + 0x2e4) = *(Vec3f*)(self + 0xc);
+    *(JGeometry::TVec3<f32>*)(self + 0x2e4) = *(JGeometry::TVec3<f32>*)(self + 0xc);
 
     {
         s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
