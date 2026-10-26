@@ -300,6 +300,7 @@ extern "C" void fn_8044D894(u8* self) {
     (void)p;
 }
 
+#pragma dont_inline reset
 extern "C" void* fn_8044F664(void) {
     if (lbl_8053AF40 != 0) {
         return *(void**)((char*)lbl_8053AF40 + 0x184);
