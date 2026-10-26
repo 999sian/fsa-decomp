@@ -852,6 +852,7 @@ extern "C" s32 fn_80428C6C() {
     return -1;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_80428CBC(u32 retraceCount) {
     THPTextureSet* textureSet;
     if (lbl_8053AE90) {
@@ -869,8 +870,10 @@ extern "C" void fn_80428CBC(u32 retraceCount) {
                 if (lbl_8052AAD0.audioExist) {
                     if (lbl_8052AAD0.mF0 - lbl_8052AAD0.mF4 <= 1) {
                         textureSet = (THPTextureSet*)fn_8042E2C4(0);
-                        lbl_8052AAD0.mF0++;
-                        lbl_8052AAD0.mD8--;
+                        s32 count = lbl_8052AAD0.mF0;
+                        s32 remaining = lbl_8052AAD0.mD8;
+                        lbl_8052AAD0.mF0 = count + 1;
+                        lbl_8052AAD0.mD8 = remaining - 1;
                     } else {
                         lbl_8052AAD0.internalState = 2;
                     }
@@ -888,8 +891,10 @@ extern "C" void fn_80428CBC(u32 retraceCount) {
                 if (lbl_8052AAD0.audioExist) {
                     if (lbl_8052AAD0.mF0 - lbl_8052AAD0.mF4 <= 1) {
                         textureSet = (THPTextureSet*)fn_8042E2C4(0);
-                        lbl_8052AAD0.mF0++;
-                        lbl_8052AAD0.mD8--;
+                        s32 count = lbl_8052AAD0.mF0;
+                        s32 remaining = lbl_8052AAD0.mD8;
+                        lbl_8052AAD0.mF0 = count + 1;
+                        lbl_8052AAD0.mD8 = remaining - 1;
                     }
                 } else {
                     textureSet = (THPTextureSet*)fn_8042E2C4(0);
@@ -904,7 +909,8 @@ extern "C" void fn_80428CBC(u32 retraceCount) {
         }
         if (!(lbl_8052AAD0.playFlag & 1)) {
             if (lbl_8052AAD0.audioExist) {
-                if (lbl_8052AAD0.header.numFrames == lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame && lbl_8052AAD0.playAudioBuffer == 0) {
+                u32 frame = lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame;
+                if (frame == lbl_8052AAD0.header.numFrames && lbl_8052AAD0.playAudioBuffer == 0) {
                     lbl_8052AAD0.state = lbl_8052AAD0.internalState = 3;
                 }
             } else {
@@ -921,7 +927,7 @@ extern "C" void fn_80428CBC(u32 retraceCount) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" u8 fn_80428F74() {
     if (lbl_8052AAD0.videoInfo[2] & 1) {
         if (VIGetNextField() == 0) {
@@ -1976,17 +1982,22 @@ struct THPHuffmanTab {
     u8 Vij1;
     u8 pad[11];
 };
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" s32 fn_8042BF54(u8* info, void* h) {
  u8* tab=(u8*)h;
+ THPHuffmanTab* table=(THPHuffmanTab*)h;
  s32 cnt=*(s32*)(info+0x6a4);
- u32 buf=*(u32*)(info+0x6a0);
+ unsigned int buf=*(u32*)(info+0x6a0);
  u8* lengths=tab+0x20;
- s32 code=__rlwnm(buf,cnt+4,27,31);
+ unsigned int idx=__rlwnm(buf,cnt+4,27,31);
+ unsigned int code;
  s32 value;
  s32 len;
  s32* maxCode;
  u32* p;
  if(cnt<=28) {
+  code=idx;
   value=tab[code]; len=lengths[code];
   if(value!=255) {
    cnt+=len; *(s32*)(info+0x6a4)=cnt; return value;
@@ -1997,40 +2008,43 @@ extern "C" s32 fn_8042BF54(u8* info, void* h) {
   s32 limit;
   do {
    code<<=1;
-   if(cnt==33) {
+   if(cnt!=33) {
+    code|=__rlwnm(buf,cnt,31,31);
+    limit=*++maxCode;
+    cnt++;
+   } else {
     p=*(u32**)(info+0x69c);
     cnt=1;
     buf=*++p;
     limit=*++maxCode;
-    code=__rlwimi(code,buf,1,31,31);
+    code=(code & ~1U)|(buf>>31);
     *(u32**)(info+0x69c)=p;
     *(u32*)(info+0x6a0)=buf;
     goto refill_test;
 refill_loop:
     code<<=1;
-    code|=__rlwnm(buf,cnt,31,31);
+    value=__rlwnm(buf,cnt,31,31);
     limit=*++maxCode;
+    code|=value;
 refill_test:
     cnt++;
     len++;
-    if(code>limit) goto refill_loop;
-    break;
+    if((s32)(s32)code>limit) goto refill_loop;
+    goto fast_done;
    }
-   code|=__rlwnm(buf,cnt,31,31);
-   limit=*++maxCode;
-   cnt++;
    len++;
-  } while(code>limit);
+  } while((s32)(s32)code>limit);
+fast_done:
   *(s32*)(info+0x6a4)=cnt;
-  return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+  { u8* values = table->Vij; s32 offset = table->valPtr[len]; values += offset; return values[code]; }
  } else {
   p=*(u32**)(info+0x69c);
   if(cnt!=33) {
    code=__rlwnm(buf,cnt+4,27,31);
    if(cnt!=32) {
     value=tab[code]; len=lengths[code];
+    s32 next=cnt+len;
     if(value!=255) {
-     s32 next=cnt+len;
      *(s32*)(info+0x6a4)=next;
      if(next<=33) return value;
     }
@@ -2045,9 +2059,10 @@ refill_test:
     buf=__rlwimi(code<<27,buf,31,1,31);
     maxCode=(s32*)(tab+0x58);
     len=5;
-    do {code=buf>>(31-len); ++maxCode; ++len;} while(code>*maxCode);
+    do {code=buf>>(31-len); ++maxCode; ++len;} while((s32)(s32)code>*maxCode);
     *(s32*)(info+0x6a4)=len;
-    return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+slow_return:
+    { u8* values = table->Vij; s32 offset = table->valPtr[len]; values += offset; return values[code]; }
    }
   } else {
    buf=*++p;
@@ -2055,17 +2070,19 @@ refill_test:
    code=buf>>27;
    value=tab[code]; len=lengths[code];
    *(u32*)(info+0x6a0)=buf;
+   len++;
    if(value!=255) {
-    *(s32*)(info+0x6a4)=len+1; return value;
+    *(s32*)(info+0x6a4)=len; return value;
    }
    len=5;
    s32 byteOff=20;
    s32 limit;
-   do {limit=*(s32*)(tab+0x48+byteOff);code=buf>>(31-len);++len;byteOff+=4;} while(code>limit);
+   do {limit=*(s32*)(tab+0x48+byteOff);code=buf>>(31-len);++len;byteOff+=4;} while((s32)(s32)code>limit);
    *(s32*)(info+0x6a4)=len+1;
-   return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+   goto slow_return;
   }
   code=buf & ~(0xffffffffU<<(33-cnt));
+  p=*(u32* volatile*)(info+0x69c);
   len=33-cnt;
   maxCode=(s32*)(tab+0x44)+len;
   buf=*++p;
@@ -2077,16 +2094,17 @@ refill_test:
   ++maxCode;
   s32 limit=*maxCode;
   u32 bit=__rlwnm(buf,cnt,31,31);
-  while(code>limit) {
+  while((s32)(s32)code>limit) {
    code=(code<<1)+bit;
    limit=*++maxCode;cnt++;len++;
    bit=__rlwnm(buf,cnt,31,31);
   }
   *(s32*)(info+0x6a4)=cnt;
-  return (*(u8**)(tab+0x40)+*(s32*)(tab+0x8c+len*4))[code];
+  { u8* values = table->Vij; s32 offset = table->valPtr[len]; values += offset; return values[code]; }
  }
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 extern void* lbl_8053AE24;
 extern void* lbl_8053AE30;
 extern u8 lbl_8048F270[64];
@@ -2180,20 +2198,12 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
         }
     }
 }
-#pragma dont_inline reset
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_8042C39C(u8* info, s16* block) {
     s32 t;
-    s32 k;
-    s32 cnt;
-    u32 cw;
-    u32 code;
-    s32 idx;
-    s32 sym;
-    s32 size;
-    s32 run;
     s16 dc;
     s16 diff;
-    u8* tbl = (u8*)lbl_8053AE2C;
 
     __dcbz(block, 0);
     t = fn_8042BF54(info, lbl_8053AE20);
@@ -2202,96 +2212,192 @@ extern "C" void fn_8042C39C(u8* info, s16* block) {
     __dcbz(block, 64);
 
     if (t) {
-        s32 cnt2 = *(s32*)(info + 0x6a4);
-        s32 tmp = 33 - cnt2;
-        u32 cw2 = *(u32*)(info + 0x6a0);
-        s32 v = t - tmp;
-        u32 c;
+        u32 tmp;
+        u32 cw;
+        s32 cnt;
+        s32 sh;
+        s32 v;
+        u32 code;
+        cnt = *(s32*)(info + 0x6a4);
+        tmp = 33-cnt;
+        sh = cnt-1;
+        cw = *(u32*)(info + 0x6a0);
+        v = t-tmp;
         if (v <= 0) {
-            *(s32*)(info + 0x6a4) = cnt2 + t;
-            c = (cw2 << (cnt2 - 1)) >> (32 - t);
+            code = cw << sh;
+            *(s32*)(info + 0x6a4) = cnt + t;
+            code >>= 32 - t;
         } else {
             u32* p;
-            c = cw2 << (cnt2 - 1);
+            code = cw << sh;
             p = *(u32**)(info + 0x69c);
-            cw2 = *++p;
-            *(u32*)(info + 0x6a0) = cw2;
-            c += cw2 >> tmp;
+            cw = *++p;
+            *(u32*)(info + 0x6a0) = cw;
+            code += cw >> tmp;
             *(u32**)(info + 0x69c) = p;
             *(s32*)(info + 0x6a4) = v + 1;
-            c >>= 32 - t;
+            code >>= 32 - t;
         }
-        diff = c;
+        diff = code;
         if (__cntlzw(diff) > 32 - t) {
-            diff = c + (-1 << t) + 1;
+            code = (-1 << t) + code;
+            diff = code + 1;
         }
     }
 
     __dcbz(block, 96);
-    dc = *(s16*)(info + 0x684) + diff;
-    *(s16*)(info + 0x684) = dc;
+    s32 k = 1;
+    s32 cnt;
+    u8* lengths;
+    u8* tab;
+    dc = *(s16*)(info+0x684) + diff;
+    *(s16*)(info+0x684) = dc;
     block[0] = dc;
+    tab = (u8*)lbl_8053AE2C;
+    THPHuffmanTab* table = (THPHuffmanTab*)tab;
+    cnt = *(s32*)(info+0x6a4);
+    unsigned int cw = *(u32*)(info+0x6a0);
+    lengths = tab+0x20;
+    for (;k<64;k++) {
+        s32* maxCode;
+        s32 len;
+        unsigned int code;
+        s32 sym;
+        u32* p;
+        code = __rlwnm(cw,cnt+4,27,31);
+if(cnt<=28) {
+  
+  sym=tab[code]; len=lengths[code];
+  if(sym!=255) {
+   cnt+=len;  {goto ac_done;}
+  }
+  maxCode=(s32*)(tab+0x58);
+  len=5;
+  cnt+=5;
+  s32 limit;
+  do {
+   code<<=1;
+   if(cnt!=33) {
+    code|=__rlwnm(cw,cnt,31,31);
+    limit=*++maxCode;
+    cnt++;
+   } else {
+    p=*(u32**)(info+0x69c);
+    cnt=1;
+    cw=*++p;
+    limit=*++maxCode;
+    code=(code & ~1U)|(cw>>31);
+    *(u32**)(info+0x69c)=p;
+    
+    goto refill_test;
+refill_loop:
+    code<<=1;
+    sym=__rlwnm(cw,cnt,31,31);
+    limit=*++maxCode;
+    code|=sym;
+refill_test:
+    cnt++;
+    len++;
+    if((s32)(s32)code>limit) goto refill_loop;
+    goto fast_done;
+   }
+   len++;
+  } while((s32)(s32)code>limit);
+fast_done:
+  
+  { u8* values=table->Vij; u8* row=tab+len*4; s32 offset=*(s32*)(row+0x8c); values=offset+values; sym=values[code]; goto ac_done; }
+ } else {
+  p=*(u32**)(info+0x69c);
+  if(cnt==33) goto empty_word;
+  code=__rlwnm(cw,cnt+4,27,31);
+  if(cnt==32) goto one_bit;
+  sym=tab[code]; len=lengths[code];
+  {s32 next=cnt+len;
+   if(sym!=255 && next<=33) {cnt=next;goto ac_done;}
+  }
+  goto split_code;
+empty_word:
+  cw=*++p;
+  *(u32**)(info+0x69c)=p;
+  code=cw>>27;
+  sym=tab[code]; len=lengths[code];
+  cnt=len+1;
+  if(sym!=255) goto ac_done;
+  len=5;
+  {s32 byteOff=20; s32 limit;
+   do {limit=*(s32*)(tab+0x48+byteOff);code=cw>>(31-len);++len;byteOff+=4;} while((s32)code>limit);
+   cnt=len+1;
+   u8* values=table->Vij;
+   s32 offset=*(s32*)(tab+byteOff+0x8c);
+   values=offset+values; sym=values[code];goto ac_done;
+  }
+one_bit:
+  cw=*++p;
+  *(u32**)(info+0x69c)=p;
+  code=__rlwimi(code,cw,4,28,31);
+  sym=tab[code]; cnt=lengths[code];
+  if(sym!=255) goto ac_done;
+  {unsigned int joined=__rlwimi(code<<27,cw,31,1,31);
+   maxCode=(s32*)(tab+0x58); cnt=5;
+   do {code=joined>>(31-cnt); ++maxCode; ++cnt;} while((s32)code>*maxCode);
+   u8* values=table->Vij;
+   s32 offset=*(s32*)(tab+cnt*4+0x8c);
+   values=offset+values; sym=values[code]; goto ac_done;
+  }
+split_code:
+  code=cw & ~(0xffffffffU<<(33-cnt));
+  p=*(u32* volatile*)(info+0x69c);
+  len=33-cnt;
+  maxCode=(s32*)(tab+0x44);
+  cw=*++p;
+  len++;
+  maxCode += (33-cnt);
+  code=__rlwimi(code<<1,cw,1,31,31);
+  *(u32**)(info+0x69c)=p;
+  s32 limit=*++maxCode;
+  cnt=2;
+  u32 bit=__rlwnm(cw,cnt,31,31);
+  while((s32)code>limit) {
+   code=(code<<1)+bit;
+   limit=*++maxCode;cnt++;len++;
+   bit=__rlwnm(cw,cnt,31,31);
+  }
+  { u8* values=table->Vij; u8* row=tab+len*4; s32 offset=*(s32*)(row+0x8c); values=offset+values; sym=values[code]; goto ac_done; }
+ }
 
-    k = 1;
-    cnt = *(s32*)(info + 0x6a4);
-    cw = *(u32*)(info + 0x6a0);
-    while (k < 64) {
-        idx = (s32)((cw << (cnt + 4)) | (cw >> (32 - (cnt + 4)))) & 0x1f;
-        if (cnt < 0x1d && tbl[idx] != 0xff) {
-            sym = tbl[idx];
-            cnt += tbl[idx + 0x20];
-        } else {
-            s32 l = 5;
-            do {
-                l++;
-                code = (cw << (cnt + 4)) | (cw >> (32 - (cnt + 4)));
-            } while (l < 0x21 && (s32)code > *(s32*)(tbl + 0x58 + l * 4));
-            sym = tbl[(s32)(code + *(s32*)(tbl + 0x8c + l * 4)) + *(s32*)(tbl + 0x40)];
-            cnt += l;
-        }
-        size = sym & 15;
-        run = sym >> 4;
-        if (size) {
+ac_done:
+        s32 size = sym & 15;
+        s32 run = sym >> 4;
+        if(size) {
             k += run;
-            t = size;
-            {
-                s32 cnt2 = cnt;
-                s32 tmp = 33 - cnt2;
-                s32 v = t - tmp;
-                u32 c;
-                if (v <= 0) {
-                    *(s32*)(info + 0x6a4) = cnt2 + t;
-                    c = (cw << (cnt2 - 1)) >> (32 - t);
-                } else {
-                    u32* p;
-                    c = cw << (cnt2 - 1);
-                    p = *(u32**)(info + 0x69c);
-                    cw = *++p;
-                    *(u32*)(info + 0x6a0) = cw;
-                    c += cw >> tmp;
-                    *(u32**)(info + 0x69c) = p;
-                    *(s32*)(info + 0x6a4) = v + 1;
-                    c >>= 32 - t;
-                }
-                if (__cntlzw(c) > 32 - t) {
-                    c += (-1 << t) + 1;
-                }
-                block[lbl_8048F270[k]] = c;
+            s32 tmp = 33-cnt;
+            s32 v = size-tmp;
+            s32 sh = cnt-1;
+            u32 bits;
+            if(v<=0) {
+                cnt += size;
+                bits = (cw<<sh)>>(32-size);
+            } else {
+                bits = cw<<sh;
+                p = *(u32**)(info+0x69c);
+                cw = *++p;
+                *(u32**)(info+0x69c)=p;
+                bits += cw>>tmp;
+                cnt = v+1;
+                bits >>= 32-size;
             }
-            cnt = *(s32*)(info + 0x6a4);
-            cw = *(u32*)(info + 0x6a0);
+            if(__cntlzw(bits)>32-size) { bits = (-1<<size)+bits; bits += 1; }
+            block[lbl_8048F270[k]]=bits;
         } else {
-            if (run != 15) {
-                break;
-            }
-            k += 15;
+            if(run!=15) break;
+            k+=15;
         }
-        k++;
     }
-    *(s32*)(info + 0x6a4) = cnt;
-    *(u32*)(info + 0x6a0) = cw;
+    *(s32*)(info+0x6a4)=cnt;
+    *(u32*)(info+0x6a0)=cw;
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_8042C79C() {
     u8 i;
     s32 off;
@@ -2829,16 +2935,22 @@ extern "C" s32 fn_8042DCC4(BitReader* r) {
     return v;
 }
 
+static inline s16 roundADPCM(s64 sample) {
+    if ((u16)(sample & 0xffffLL) > 0x8000 || ((u16)(sample & 0xffffLL) == 0x8000 && (sample & 0x10000LL))) sample += 0x10000LL;
+    if (sample > 0x7fffffffLL) sample = 0x7fffffffLL;
+    if (sample < -0x80000000LL) sample = -0x80000000LL;
+    return (s16)(sample >> 16);
+}
+
 struct BitReader;
 extern "C" void fn_8042DC88(BitReader* r, u8* p);
 extern "C" s32 fn_8042DCC4(BitReader* r);
 extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
-    s32 base;
-    s32 cnt;
+    u32 base;
     s32 stride;
     s16* outA;
     s16* outB;
-    u8 br[8];
+    BitReader br;
     u8* bits;
     s32 i;
     s32 v;
@@ -2857,30 +2969,30 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
         return 0;
     }
     base = *(s32*)param_2;
-    bits = param_2 + 0x50;
-    cnt = *(s32*)(param_2 + 4);
+    bits = param_2 + 0x50 + base;
     if (param_3 == 1) {
         stride = 1;
-        outA = param_1 + cnt;
+        outB = param_1;
+        outA = param_1 + *(u32*)(param_2 + 4);
     } else {
+        outB = param_1;
         outA = param_1 + 1;
         stride = 2;
     }
-    outB = param_1;
     if (base == 0) {
-        fn_8042DC88((BitReader*)br, bits);
+        fn_8042DC88(&br, param_2 + 0x50);
         x1 = *(s16*)(param_2 + 0x48);
         x2 = *(s16*)(param_2 + 0x4a);
-        for (i = 0; i < cnt; i++) {
-            v = fn_8042DCC4((BitReader*)br);
-            b8 = br[8];
-            b9 = br[9];
+        for (i = 0; (u32)i < *(u32*)(param_2 + 4); i++) {
+            v = fn_8042DCC4(&br);
+            b8 = br.b8;
+            b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
             pa = (s32)tp[5] * x2;
             pb = (s32)tp[4] * x1;
             c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
-            if ((u16)w > 0x8000 || ((u16)w == 0x8000 && (w & 0x10000))) {
+            if ((u16)(w & 0xffffLL) > 0x8000 || ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000))) {
                 w += 0x10000;
             }
             if (w > 0x7fffffffLL) {
@@ -2898,19 +3010,19 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             x1 = out;
         }
     } else {
-        fn_8042DC88((BitReader*)br, bits);
+        fn_8042DC88(&br, param_2 + 0x50);
         x1 = *(s16*)(param_2 + 0x48);
         x2 = *(s16*)(param_2 + 0x4a);
-        for (i = 0; i < cnt; i++) {
-            v = fn_8042DCC4((BitReader*)br);
-            b8 = br[8];
-            b9 = br[9];
+        for (i = 0; (u32)i < *(u32*)(param_2 + 4); i++) {
+            v = fn_8042DCC4(&br);
+            b8 = br.b8;
+            b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
             pa = (s32)tp[5] * x2;
             pb = (s32)tp[4] * x1;
             c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
-            if ((u16)w > 0x8000 || ((u16)w == 0x8000 && (w & 0x10000))) {
+            if ((u16)(w & 0xffffLL) > 0x8000 || ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000))) {
                 w += 0x10000;
             }
             if (w > 0x7fffffffLL) {
@@ -2925,19 +3037,19 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             x2 = x1;
             x1 = out;
         }
-        fn_8042DC88((BitReader*)br, bits + base);
+        fn_8042DC88(&br, bits);
         x1 = *(s16*)(param_2 + 0x4c);
         x2 = *(s16*)(param_2 + 0x4e);
-        for (i = 0; i < cnt; i++) {
-            v = fn_8042DCC4((BitReader*)br);
-            b8 = br[8];
-            b9 = br[9];
+        for (i = 0; (u32)i < *(u32*)(param_2 + 4); i++) {
+            v = fn_8042DCC4(&br);
+            b8 = br.b8;
+            b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
             pa = (s32)tp[0x15] * x2;
             pb = (s32)tp[0x14] * x1;
             c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
-            if ((u16)w > 0x8000 || ((u16)w == 0x8000 && (w & 0x10000))) {
+            if ((u16)(w & 0xffffLL) > 0x8000 || ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000))) {
                 w += 0x10000;
             }
             if (w > 0x7fffffffLL) {
