@@ -70,15 +70,6 @@ struct EffArgs {
     u32 x30, x34, x38;
 };
 
-static inline void EffArgsSetLayer(EffArgs& args, const u8 b, const u8 a) {
-    args.b1c = a;
-    args.b1d = b;
-}
-
-static inline f32 EffAlphaClamp(const f32 a, const f32 b) {
-    return a >= b ? a : b;
-}
-
 struct Rec {
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
@@ -2654,6 +2645,7 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     if (ok == 0) {
         return;
     }
+    f32 f;
     u8 alpha = 0xdf;
     EffArgs args;
     f32 mtx[3][4];
@@ -2690,26 +2682,29 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     args.x38 = 2;
     args.f10.b[3] = 0xdf;
     if (zPositive) {
-        f32 m;
-        f32 t;
-        t = (f32)args.f10.b[3] - lbl_8053F74C * z;
-        m = EffAlphaClamp(lbl_8053F778, t);
+        f32 t = (f32)args.f10.b[3] - lbl_8053F74C * z;
+        f32 m = lbl_8053F778 >= t ? lbl_8053F778 : t;
         args.f10.b[3] = (u8)(s32)m;
     }
     if (p3 != 0) {
         if ((mask & 0x400) != 0) {
             args.f10.b[3] = (u8)((args.f10.b[3] * p3[0x13]) / 0xff);
         }
-        EffArgsSetLayer(args, p3[0x1c], p3[0x1d]);
+        u8 y;
+        u8 x;
+        x = p3[0x1c];
+        y = p3[0x1d];
+        args.b1c = x;
+        args.b1d = y;
     }
     args.b1d = args.b1d - 1;
     args.w28 = 1;
     args.b2e = args.f10.b[3] >> 1;
     if ((u16)kind == 0x39 && uVar3 == 0 && 0.0f == pos[2]) {
-        v14.set(pos[0], lbl_8053F77C + pos[1], pos[2]);
         u32 sel = (*(u32*)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x34) >> 2) & 3;
         u32 id2 = lbl_8053F738[sel] + 0x18f;
         args.b1d = args.b1d + 1;
+        v14.set(pos[0], lbl_8053F77C + pos[1], pos[2]);
         if (idx < 8) {
             EffResMgr* m = (EffResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4);
             void* name = (void*)m->load(0x534f4220, lbl_8046A020);
@@ -2750,7 +2745,7 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
             }
         }
     } else {
-        f32 f = lbl_80469FA8[uVar3];
+        f = lbl_80469FA8[uVar3];
         v8.set(pos[0], pos[1], 0.0f);
         if (idx < 8) {
             EffResMgr* m = (EffResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4);
