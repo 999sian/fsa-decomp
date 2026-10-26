@@ -36,6 +36,13 @@ extern "C" void fn_800CF678(void*, void*, void*);
 extern "C" void fn_800CF734(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800CF998(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800CFA2C(void**, void*, const void*);
+extern "C" J3DAnmColorKey* __ct__14J3DAnmColorKeyFv(J3DAnmColorKey*);
+extern "C" J3DAnmTextureSRTKey* __ct__19J3DAnmTextureSRTKeyFv(J3DAnmTextureSRTKey*);
+extern "C" J3DAnmTevRegKey* __ct__15J3DAnmTevRegKeyFv(J3DAnmTevRegKey*);
+extern "C" J3DAnmVtxColorKey* __ct__17J3DAnmVtxColorKeyFv(J3DAnmVtxColorKey*);
+extern "C" J3DAnmColorFull* __ct__15J3DAnmColorFullFv(J3DAnmColorFull*);
+extern "C" J3DAnmTexPattern* __ct__16J3DAnmTexPatternFv(J3DAnmTexPattern*);
+extern "C" J3DAnmVtxColorFull* __ct__18J3DAnmVtxColorFullFv(J3DAnmVtxColorFull*);
 extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
     if (data == 0) {
         return 0;
@@ -46,49 +53,57 @@ extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
             void* self[2];
             fn_800CF370(self);
             self[1] = new J3DAnmTransformKey();
-            void* r = fn_800CFB9C(self, data);
+            flags = (u32)fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62706b31: {
             void* self[2];
             fn_800CF370(self);
-            self[1] = new J3DAnmColorKey();
-            void* r = fn_800CFB9C(self, data);
+            J3DAnmColorKey* value = (J3DAnmColorKey*)operator new(sizeof(J3DAnmColorKey));
+            if (value != 0) value = __ct__14J3DAnmColorKeyFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x626c6b31: {
             void* self[2];
             fn_800CF370(self);
             self[1] = new J3DAnmClusterKey();
-            void* r = fn_800CFB9C(self, data);
+            flags = (u32)fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62746b31: {
             void* self[2];
             fn_800CF370(self);
-            self[1] = new J3DAnmTextureSRTKey();
-            void* r = fn_800CFB9C(self, data);
+            J3DAnmTextureSRTKey* value = (J3DAnmTextureSRTKey*)operator new(sizeof(J3DAnmTextureSRTKey));
+            if (value != 0) value = __ct__19J3DAnmTextureSRTKeyFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62726b31: {
             void* self[2];
             fn_800CF370(self);
-            self[1] = new J3DAnmTevRegKey();
-            void* r = fn_800CFB9C(self, data);
+            J3DAnmTevRegKey* value = (J3DAnmTevRegKey*)operator new(sizeof(J3DAnmTevRegKey));
+            if (value != 0) value = __ct__15J3DAnmTevRegKeyFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62786b31: {
             void* self[2];
             fn_800CF370(self);
-            self[1] = new J3DAnmVtxColorKey();
-            void* r = fn_800CFB9C(self, data);
+            J3DAnmVtxColorKey* value = (J3DAnmVtxColorKey*)operator new(sizeof(J3DAnmVtxColorKey));
+            if (value != 0) value = __ct__17J3DAnmVtxColorKeyFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62636131: {
             void* self[2];
@@ -98,55 +113,64 @@ extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
             } else {
                 self[1] = new J3DAnmTransformFull();
             }
-            void* r = fn_800CF3E8(self, data);
+            flags = (u32)fn_800CF3E8(self, data);
             fn_800CF314(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62706131: {
             void* self[2];
             fn_800CF2B0(self);
-            self[1] = new J3DAnmColorFull();
-            void* r = fn_800CF3E8(self, data);
+            J3DAnmColorFull* value = (J3DAnmColorFull*)operator new(sizeof(J3DAnmColorFull));
+            if (value != 0) value = __ct__15J3DAnmColorFullFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CF3E8(self, data);
             fn_800CF314(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62747031: {
             void* self[2];
             fn_800CF2B0(self);
-            self[1] = new J3DAnmTexPattern();
-            void* r = fn_800CF3E8(self, data);
+            J3DAnmTexPattern* value = (J3DAnmTexPattern*)operator new(sizeof(J3DAnmTexPattern));
+            if (value != 0) value = __ct__16J3DAnmTexPatternFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CF3E8(self, data);
             fn_800CF314(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62766131: {
             void* self[2];
             fn_800CF2B0(self);
             self[1] = new J3DAnmVisibilityFull();
-            void* r = fn_800CF3E8(self, data);
+            flags = (u32)fn_800CF3E8(self, data);
             fn_800CF314(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x626c6131: {
             void* self[2];
             fn_800CF2B0(self);
             self[1] = new J3DAnmClusterFull();
-            void* r = fn_800CF3E8(self, data);
+            flags = (u32)fn_800CF3E8(self, data);
             fn_800CF314(self, -1);
-            return r;
+            return (void*)flags;
         }
         case 0x62786131: {
             void* self[2];
             fn_800CF2B0(self);
-            self[1] = new J3DAnmVtxColorFull();
-            void* r = fn_800CF3E8(self, data);
+            J3DAnmVtxColorFull* value = (J3DAnmVtxColorFull*)operator new(sizeof(J3DAnmVtxColorFull));
+            if (value != 0) value = __ct__18J3DAnmVtxColorFullFv(value);
+            self[1] = value;
+            flags = (u32)fn_800CF3E8(self, data);
             fn_800CF314(self, -1);
-            return r;
+            return (void*)flags;
         }
+        default:
+            return 0;
         }
     }
     return 0;
 }
 
+#pragma opt_lifetimes reset
 #pragma peephole off
 extern "C" void** fn_800CF2B0(void** p) {
     register void* vt = lbl_8049AE38;
@@ -308,21 +332,27 @@ extern "C" void fn_800CF800(void** self, void* data)
     fn_800CF828(self, self[1], data);
 }
 
-extern "C" void fn_800CF828(void* param_1, void* param_2, void* param_3) {
-    unsigned char* anm = (unsigned char*)param_2;
-    unsigned char* data = (unsigned char*)param_3;
-
-    *(f32*)(anm + 8) = lbl_8053BC80;
-    anm[4] = data[8];
-    *(s16*)(anm + 6) = *(const s16*)(data + 10);
-    *(u16*)(anm + 0x16) = *(const u16*)(data + 12);
-    *(u16*)(anm + 0x14) = *(const u16*)(data + 14);
-    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmTexPatternFullTable>(data, (void*)*(const u32*)(data + 0x10));
-    *(void**)(anm + 0xc) = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(data + 0x14));
-    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(data + 0x18));
-    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const u32*)(data + 0x1c)));
+#pragma opt_propagation off
+extern "C" void fn_800CF828(void*, void* anm_, void* data_) {
+    f32 zero = lbl_8053BC80;
+    int attr = ((const J3DAnmTexPatternFullData*)data_)->mAttribute;
+    const J3DAnmTexPatternFullData* data = (const J3DAnmTexPatternFullData*)data_;
+    J3DAnmTexPattern* anm = (J3DAnmTexPattern*)anm_;
+    int frame = data->mTotalFrameCount;
+    anm->mMaxFrame = frame;
+    u32 count = data->mExtraInfo1;
+    anm->mAttribute = attr;
+    u32 info = data->mExtraInfo2;
+    anm->mCurrentFrame = zero;
+    anm->mUpdateMaterialNum = count;
+    u32 offset = data->mTableOffset;
+    anm->_14 = info;
+    anm->mAnmTable = JSUConvertOffsetToPtr<J3DAnmTexPatternFullTable>(data, (void*)offset);
+    anm->_0C = JSUConvertOffsetToPtr<u16>(data, (void*)data->mValuesOffset);
+    anm->mUpdateMaterialID = JSUConvertOffsetToPtr<u16>(data, (void*)data->mUpdateMaterialIDOffset);
+    anm->mNameTab.setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)data->mNameTabOffset));
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_800CF8CC(void** self, void* data)
 {
     fn_800CF8F4(self, self[1], data);
@@ -473,26 +503,28 @@ extern "C" void fn_800CFE04(void** self, void* data)
     fn_800CFE2C(self, self[1], data);
 }
 
+#pragma opt_propagation reset
 extern "C" void fn_800CFE2C(void* self, void* anm, void* src) {
-    u8* a = (u8*)anm;
-    u8* s = (u8*)src;
+    J3DAnmTransformKey* a = (J3DAnmTransformKey*)anm;
+    const J3DAnmTransformKeyData* s = (const J3DAnmTransformKeyData*)src;
     f32 f = lbl_8053BC80;
-    s16 h = *(s16*)(s + 0xa);
-    u16 w = *(u16*)(s + 0xc);
-    *(u16*)(a + 0x1e) = w;
-    u8 b = s[8];
-    *(s16*)(a + 6) = h;
-    u8 c = s[9];
-    a[4] = b;
-    void* p = *(void**)(s + 0x14);
-    *(u32*)(a + 0x20) = c;
-    *(f32*)(a + 8) = f;
-    *(void**)(a + 0x24) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, p);
-    *(void**)(a + 0xc) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x18));
-    *(void**)(a + 0x10) = JSUConvertOffsetToPtr<s16>(s, *(void**)(s + 0x1c));
-    *(void**)(a + 0x14) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x20));
+    int h;
+    int w;
+    h = s->mTotalFrameCount;
+    w = s->mExtraInfo1;
+    a->_1E = w;
+    w = s->mAttribute;
+    a->mMaxFrame = h;
+    h = s->mRotationScale;
+    a->mAttribute = w;
+    void* p = (void*)s->mTableOffset;
+    a->_20 = h;
+    a->mCurrentFrame = f;
+    a->mTable = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, p);
+    a->mScaleVals = JSUConvertOffsetToPtr<f32>(s, (void*)s->mScaleOffset);
+    a->mRotationVals = JSUConvertOffsetToPtr<s16>(s, (void*)s->mRotationOffset);
+    a->mTranslationVals = JSUConvertOffsetToPtr<f32>(s, (void*)s->mTranslateOffset);
 }
-
 extern "C" void fn_800CFEC8(void** self, void* data)
 {
     fn_800CFEF0(self, self[1], data);
@@ -545,27 +577,38 @@ extern "C" void fn_800D00C8(void** self, void* data)
     fn_800D00F0(self, (unsigned char*)self[1], (unsigned char*)data);
 }
 
-extern "C" void fn_800D00F0(void* param_1, void* param_2, void* param_3) {
-    unsigned char* anm = (unsigned char*)param_2;
-    unsigned char* data = (unsigned char*)param_3;
-    unsigned char* base = anm;
-    *(short*)(base + 6) = *(short*)(data + 12);
-    base[4] = data[8];
-    *(float*)(base + 8) = 0.0f;
-    *(unsigned short*)(anm + 0x14) = *(unsigned short*)(data + 14);
-    *(unsigned short*)(anm + 0xc) = *(unsigned short*)(data + 16);
-    *(unsigned short*)(anm + 0xe) = *(unsigned short*)(data + 18);
-    *(unsigned short*)(anm + 0x10) = *(unsigned short*)(data + 20);
-    *(unsigned short*)(anm + 0x12) = *(unsigned short*)(data + 22);
-    *(void**)(anm + 0x3c) = JSUConvertOffsetToPtr<J3DAnmColorKeyTable>(data, (void*)*(unsigned int*)(data + 0x18));
-    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<short>(data, (void*)*(unsigned int*)(data + 0x24));
-    *(void**)(anm + 0x30) = JSUConvertOffsetToPtr<short>(data, (void*)*(unsigned int*)(data + 0x28));
-    *(void**)(anm + 0x34) = JSUConvertOffsetToPtr<short>(data, (void*)*(unsigned int*)(data + 0x2c));
-    *(void**)(anm + 0x38) = JSUConvertOffsetToPtr<short>(data, (void*)*(unsigned int*)(data + 0x30));
-    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(unsigned int*)(data + 0x1c));
-    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(unsigned int*)(data + 0x20)));
+#pragma opt_common_subs off
+extern "C" void fn_800D00F0(void* self, void* anm_, void* data_) {
+    s16 frame;
+    u8 attr;
+    u8* anm = (u8*)anm_;
+    const u8* data = (const u8*)data_;
+    f32 zero = lbl_8053BC80;
+    attr = data[8];
+    frame = *(const s16*)(data + 0xc);
+    *(s16*)(anm + 6) = frame;
+    u16 a = *(const u16*)(data + 0x10);
+    anm[4] = attr;
+    u16 b = *(const u16*)(data + 0xe);
+    *(f32*)(anm + 8) = zero;
+    *(u16*)(anm + 0x14) = b;
+    b = *(const u16*)(data + 0x12);
+    *(u16*)(anm + 0xc) = a;
+    a = *(const u16*)(data + 0x14);
+    *(u16*)(anm + 0xe) = b;
+    b = *(const u16*)(data + 0x16);
+    *(u16*)(anm + 0x10) = a;
+    void* table = *(void**)(data + 0x18);
+    *(u16*)(anm + 0x12) = b;
+    *(void**)(anm + 0x3c) = JSUConvertOffsetToPtr<J3DAnmColorKeyTable>(data, table);
+    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x24));
+    *(void**)(anm + 0x30) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x28));
+    *(void**)(anm + 0x34) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x2c));
+    *(void**)(anm + 0x38) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x30));
+    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(data + 0x1c));
+    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const u32*)(data + 0x20)));
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_800D01DC(void** self, void* data)
 {
     fn_800D0204(self, (unsigned char*)self[1], (const unsigned char*)data);
@@ -587,12 +630,13 @@ extern "C" void fn_800D0270(void** self, void* data)
     fn_800D0298(self, self[1], data);
 }
 
+#pragma opt_propagation off
 extern "C" void fn_800D0298(void* param_1, void* param_2, void* param_3) {
-    unsigned char* anm = (unsigned char*)param_2;
     const unsigned char* data = (const unsigned char*)param_3;
+    unsigned char* anm = (unsigned char*)param_2;
+    *(float*)(anm + 8) = 0.0f;
     *(short*)(anm + 6) = *(const short*)(data + 10);
     anm[4] = data[8];
-    *(float*)(anm + 8) = 0.0f;
     *(unsigned short*)(anm + 0xc) = *(const unsigned short*)(data + 12);
     *(void**)(anm + 0x48) = JSUConvertOffsetToPtr<J3DAnmCRegKeyTable>(data, (void*)*(const unsigned int*)(data + 0x20));
     *(void**)(anm + 0x20) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x28));
@@ -618,7 +662,7 @@ extern "C" void fn_800D0298(void* param_1, void* param_2, void* param_3) {
     *(void**)(anm + 0x68) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x50));
     *(void**)(anm + 0x6c) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x54));
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_800D044C(void** self, void* res, const void* data);
 extern "C" void fn_800D0424(void** self, const void* data) {
     fn_800D044C(self, self[1], data);
