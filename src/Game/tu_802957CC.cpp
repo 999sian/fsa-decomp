@@ -68,11 +68,6 @@ extern "C" void fn_80238E08(void* h);
 extern "C" u8 fn_802A1554(void* g, void* v);
 extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 
-static inline JGeometry::TVec3f addChildOffset(JGeometry::TVec3f pos, JGeometry::TVec3f& offset) {
-    pos += offset;
-    return pos;
-}
-
 // Push direction from a player standing against the block, or -1.
 static inline s32 PushDirFromPlayer(char* self) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
@@ -1139,7 +1134,7 @@ extern "C" void fn_80299720(char* self) {
     s32 bits;
     f32 lenSq;
     JGeometry::TVec3f tmp;
-    JGeometry::TVec3f v;
+    volatile JGeometry::TVec3f v;
     JGeometry::TVec3f d;
     JGeometry::TVec3f sum;
 
@@ -1192,7 +1187,7 @@ extern "C" void fn_80299720(char* self) {
             for (k = 0; k < *(s32*)(self + 0x2a8); k++) {
                 obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + *(JGeometry::TVec3f*)(s32)&v;
+                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + (JGeometry::TVec3f&)v;
                     fn_802C59B0(obj);
                 }
                 q += 4;
