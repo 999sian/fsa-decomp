@@ -671,8 +671,7 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
         break;
     case 23: {
         fn_800FEB78(this_ + 0x278, 4);
-        u32 toggle = *(u8*)(this_ + 0x231) == 0;
-        *(u8*)(this_ + 0x231) = toggle;
+        *(bool*)(this_ + 0x231) = !*(bool*)(this_ + 0x231);
         *(s32*)(this_ + 0x23c) = 0;
         *(f32*)(this_ + 0x14) = lbl_8053C7D8;
         fn_801F0E34(this_, 0x400c7, 0);
