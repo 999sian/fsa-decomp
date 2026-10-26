@@ -94,6 +94,10 @@ struct FsaVirtBase {
     virtual void v12();
     virtual s32 v15();
 };
+static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& delta) {
+    fn_8023DEDC(player, (s32)&delta);
+}
+
 static inline u8 platformHasPlayer(u8* p, int player, int room) {
     if (fn_8023DE58(player) != room) return 0;
     for (int j = 0; j < 8; ++j) {
@@ -165,11 +169,11 @@ extern "C" void fn_8033EA54(Actor* this_) {
     }
     case 1: {
         if (*(s32*)(p + 0x254) == *(s32*)(p + 0x250)) {
-            JGeometry::TVec3<f32> target = *(JGeometry::TVec3<f32>*)(p + 0x24) + *(JGeometry::TVec3<f32>*)(p + 0x234);
+            const JGeometry::TVec3<f32>& target = *(JGeometry::TVec3<f32>*)(p + 0x24) + *(JGeometry::TVec3<f32>*)(p + 0x234);
             if (PSVECDistance((Vec*)(p + 0xc), &target) >= lbl_80542228 * (f32)*(s32*)(p + 0x258)) goto stop;
         }
         if (*(s32*)(p + 0x254) != *(s32*)(p + 0x250)) {
-            JGeometry::TVec3<f32> target = *(JGeometry::TVec3<f32>*)(p + 0x24) + *(JGeometry::TVec3<f32>*)(p + 0x234);
+            const JGeometry::TVec3<f32>& target = *(JGeometry::TVec3<f32>*)(p + 0x24) + *(JGeometry::TVec3<f32>*)(p + 0x234);
             if (PSVECDistance((Vec*)(p + 0xc), &target) <= lbl_80542210) {
 stop:
                 *(f32*)(p + 0x44) = lbl_80542210;
@@ -213,7 +217,7 @@ stop:
     for (player = 0; player < 4; ++player) {
         u8 hit = platformHasPlayer(p, player, *(s32*)(p + 4));
         if (hit && ((JGeometry::TVec3<f32>*)fn_8023E724(player))->z <= lbl_80542210) {
-            JGeometry::TVec3<f32> delta = *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18);
+            const JGeometry::TVec3<f32>& delta = *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18);
             fn_8023DEDC(player, (s32)&delta);
             for (int j = 0; j < 3; ++j) fn_8022CB94(player);
         }
