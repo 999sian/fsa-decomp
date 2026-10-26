@@ -229,15 +229,6 @@ static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
     return (f32)((a << 10) + (b << 7));
 }
 extern "C" void fn_8013B1E8(void* mgr);
-#pragma peephole off
-static inline int PaletteHighByte802F(u16 color) {
-    return color >> 8;
-}
-#pragma peephole reset
-static inline u16 PaletteRGB444802F(u16 color) {
-    return ((color >> 3) & 0xf00) | 0x4000 | ((color >> 2) & 0xf0) | ((color >> 1) & 0xf);
-}
-
 static inline int Tu802F93F4_c5(int v) {
     f32 f = __fmadds((f32)v, lbl_80541518, lbl_805414F8);
     int r = (int)f;
