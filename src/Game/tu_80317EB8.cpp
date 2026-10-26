@@ -58,7 +58,7 @@ extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
 struct Tu80317WordPair {
     u32 first, second;
     void set(u32 b, u32 a) { first = a; second = b; }
-    void setOrdered(u32 a, u32 b) { first = a; second = b; }
+    void setOrdered(const u32 a, const u32 b) { first = a; second = b; }
 };
 static inline u8 activate80317F18(u8* self, s32 idx) {
     s32 slot = *(s32*)(self + 0x244);
@@ -371,8 +371,8 @@ extern "C" void fn_803187F4(Actor* this_)
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
     const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
-    ((Tu80317WordPair*)&rect)->set(box[0].second, box[0].first);
-    ((Tu80317WordPair*)&rect + 1)->set(box[1].second, box[1].first);
+    ((Tu80317WordPair*)&rect)->setOrdered(box[0].first, box[0].second);
+    ((Tu80317WordPair*)&rect + 1)->setOrdered(box[1].first, box[1].second);
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);
@@ -392,7 +392,9 @@ extern "C" void fn_803187F4(Actor* this_)
                 fn_801EE558(this_, &dir, &len, *(s32*)(self + 0x234) + 1);
             }
             if (len < lbl_805418F8) {
-                u16 angle = (u16)(s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * lbl_805418FC);
+                f32 angleFloat = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+                angleFloat *= lbl_805418FC;
+                u16 angle = (s32)angleFloat;
                 if (angle < 0x2000 || angle >= 0xe000) *(s32*)(self + 0x264) = 3;
                 else if (angle >= 0x2000 && angle < 0x6000) *(s32*)(self + 0x264) = 1;
                 else if (angle >= 0x6000 && angle <= 0xa000) *(s32*)(self + 0x264) = 2;
