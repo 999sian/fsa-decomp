@@ -18,6 +18,7 @@ extern "C" void PSMTXTrans(f32 m[3][4], f32 x, f32 y, f32 z);
 extern "C" const f32 sincosTable___5JMath[];
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AB10;
+extern "C" void* lbl_8053A198;
 
 
 extern "C" char lbl_804A78B0[];
