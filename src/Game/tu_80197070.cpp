@@ -253,8 +253,8 @@ static inline void orbitPoint(f32& x, f32& y, const u8* p, const s16 angle, cons
     y = *(const f32*)(p + 0x284);
     sine = JMASinShort(angle);
     cosine = JMACosShort(angle);
-    x += lbl_8053E3A0 * sine;
-    y += lbl_8053E3A0 * cosine;
+    x += radius * sine;
+    y += radius * cosine;
 }
 extern "C" const f32 lbl_8053E3A4;
 extern "C" const f32 lbl_8053E3A8;
