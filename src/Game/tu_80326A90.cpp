@@ -5,6 +5,7 @@
 
 struct Actor;
 extern "C" f32 sincosTable___5JMath[];
+extern f32 lbl_80541C28, lbl_80541C30, lbl_80541C34, lbl_80541C38, lbl_80541C3C, lbl_80541C40, lbl_80541C44, lbl_80541C48, lbl_80541C4C, lbl_80541C50, lbl_80541C54, lbl_80541C58;
 extern "C" void fn_801F71A4(f32* v, f32 target, f32 rate, f32 limit);
 extern "C" s32 fn_8023AF14(f32* box, s32 room, f32 f, s32 flag);
 extern "C" f32* fn_8023E724(s32 i);
@@ -46,13 +47,12 @@ extern "C" void fn_80326A90(void* this_) {
 
 extern "C" void fn_80326C5C(void* thisPtr) {
 	char* p = (char*)thisPtr;
-	f32 pad[4];
-	f32 box[4];
+	JGeometry::TBox2<f32> box;
 	f32 x;
 	f32 dx;
 	f32 dy;
 	u32 seed;
-	u32 bits;
+	u32 bitsA, bitsB, bitsC;
 	s32 hit;
 	s32 i;
 	char* e;
@@ -64,7 +64,6 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 	fn_801F71A4((f32*)(p + 0x40), *(f32*)(p + 0x25c), 0.1f, 0.5f);
 	fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x260), 0.3f, 0.5f);
 	*(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
-	*(f32*)(p + 0x14) += *(f32*)(p + 0x44);
 
 	e = *(char**)(p + 0x264);
 	if (e != NULL) {
@@ -81,10 +80,10 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 
 	switch (*(s32*)(p + 0x230)) {
 	case 1:
-		break;
+		goto chase;
 	case 0:
 		if (*(s32*)(p + 0x23c) != 0) {
-			return;
+			goto tail;
 		}
 		*(s32*)(p + 0x244) += 0x300;
 		*(f32*)(p + 0x260) = 2.0f * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x244) >> 5].first + 7.0f;
@@ -95,42 +94,40 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 				rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
 				seed = *rng * 0x19660d + 0x3c6ef35f;
 				*rng = seed;
-				bits = (*rng >> 9) | 0x3f800000;
-				x = *(f32*)&bits - 1.0f;
+				bitsA = (*rng >> 9) | 0x3f800000;
+				x = *(f32*)&bitsA - 1.0f;
 				*(s32*)(p + 0x240) = (s32)(30.0f * x) + 30;
 				*(s32*)(p + 0x24c) = 1;
 				*(f32*)(p + 0x258) = 0.0f;
 				*(f32*)(p + 0x25c) = 0.0f;
 			}
-		}
-		if (*(s32*)(p + 0x240) == 0) {
+		} else if (*(s32*)(p + 0x240) == 0) {
 			rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
 			seed = *rng * 0x19660d + 0x3c6ef35f;
 			*rng = seed;
-			bits = (*rng >> 9) | 0x3f800000;
-			x = *(f32*)&bits - 1.0f;
+			bitsB = (*rng >> 9) | 0x3f800000;
+			x = *(f32*)&bitsB - 1.0f;
 			*(s32*)(p + 0x248) += (s32)(32768.0f * x);
 			seed = *rng * 0x19660d + 0x3c6ef35f;
 			*rng = seed;
-			bits = (*rng >> 9) | 0x3f800000;
-			x = *(f32*)&bits - 1.0f;
+			bitsC = (*rng >> 9) | 0x3f800000;
+			x = *(f32*)&bitsC - 1.0f;
 			*(s32*)(p + 0x240) = (s32)(40.0f * x) + 40;
 			*(s32*)(p + 0x24c) = 0;
 		}
-		box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
-		box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
-		box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
-		box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+		box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+		box.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
 		room = *(s32*)(p + 0x4);
-		hit = fn_8023AF14(box, room, 0.0f, 1);
+		hit = fn_8023AF14((f32*)&box, *(s32*)(p+4), 0.0f, 1);
 		if (hit < 0) {
-			return;
+			goto tail;
 		}
 		*(s32*)(p + 0x244) = 0;
 		*(s32*)(p + 0x248) = 0;
 		*(s32*)(p + 0x24c) = 0;
 		*(s32*)(p + 0x234) = 500;
 		*(s32*)(p + 0x244) = hit;
+		room = *(s32*)(p + 4);
 		if (room >= 8) {
 			Actor_CreateByID(fn_801F856C(), 'PEFF', room, (f32*)(p + 0xc), (hit & 3) | 4, -1, -1);
 			*(s32*)(p + 0x23c) = 0;
@@ -139,16 +136,17 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 			*(s32*)(p + 0xb0) = 0;
 			*(s32*)(p + 0x230) = 1;
 			*(u8*)(p + 0x11e) = 1;
-			return;
+			goto tail;
 		}
 		fn_8023C830(hit);
 		*(s32*)(p + 0x234) = 1000;
 		*(s32*)(p + 0x248) += 1;
-		break;
+		goto tail;
 	default:
-		return;
+		goto tail;
 	}
 
+chase:
 	if (*(s32*)(p + 0x23c) == 0) {
 		f32* a = fn_8023E724(*(s32*)(p + 0x244));
 		dx = *(f32*)(p + 0xc) - a[0];
@@ -175,6 +173,7 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 		}
 		*(u8*)(p + 0x11c) = 0;
 	}
+tail:
 	if (*(s32*)(p + 0x238) == 0) {
 		*(s32*)(p + 0x238) = 4;
 		*(s32*)(p + 0x250) += 1;
@@ -183,7 +182,7 @@ extern "C" void fn_80326C5C(void* thisPtr) {
 		}
 	}
 	q = p;
-	for (i = 0; i < 3; i++, q += 8) {
+	for (i = 0; i < 2; i++, q += 8) {
 		if (*(s32*)(q + 0x234) > 0) {
 			*(s32*)(q + 0x234) -= 1;
 		}
