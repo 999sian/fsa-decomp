@@ -79,14 +79,16 @@ extern "C" u8 fn_802300EC(s32 idx);
 extern "C" void fn_80230AD4(s32 idx);
 extern "C" void fn_80230498(s32 idx, Vec* v, s32 se, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
-extern "C" void fn_8028A460(Actor* p) {
+extern "C" void fn_8028A460(Actor* this_) {
     f32 box[4];
-    Vec vec;
-    Vec sfx;
+    JGeometry::TVec3f sfx;
+    JGeometry::TVec3f other;
+    JGeometry::TVec3f vec;
     Vec* pos;
     s32 idx;
     f32 t;
     f32 d;
+    Actor* p=this_;
 
     box[0] = p->field_60;
     box[1] = p->field_64;
@@ -108,14 +110,14 @@ extern "C" void fn_8028A460(Actor* p) {
                 *(s32*)((u8*)p + 0x24c) = -1;
             }
         } else {
-            sfx = *(Vec*)((u8*)p + 0x230);
+            sfx = *(JGeometry::TVec3f*)((u8*)p + 0x230);
             sfx.y += 8.0f;
             if (*(s32*)((u8*)p + 0x248) >= 0x70) {
-                fn_80230498(*(s32*)((u8*)p + 0x24c), &sfx, 0x2e2, 0xff, -0x80, -0x80, 1);
+                fn_80230498(*(s32*)((u8*)p + 0x24c), (Vec*)&sfx, 0x2e2, 0xff, -0x80, -0x80, 1);
             } else if (*(s32*)((u8*)p + 0x248) >= 0x68) {
-                fn_80230498(*(s32*)((u8*)p + 0x24c), &sfx, 0x2e3, 0xff, -0x80, -0x80, 1);
+                fn_80230498(*(s32*)((u8*)p + 0x24c), (Vec*)&sfx, 0x2e3, 0xff, -0x80, -0x80, 1);
             } else {
-                fn_80230498(*(s32*)((u8*)p + 0x24c), &sfx, 0x2e4, 0xff, -0x80, -0x80, 1);
+                fn_80230498(*(s32*)((u8*)p + 0x24c), (Vec*)&sfx, 0x2e4, 0xff, -0x80, -0x80, 1);
             }
         }
     }
@@ -123,12 +125,13 @@ extern "C" void fn_8028A460(Actor* p) {
     if (idx >= 0) {
         fn_80239914(box, *(s32*)((u8*)p + 4), *(s32*)((u8*)p + 0x198));
         pos = fn_8023E724(idx);
-        d = p->field_0C.x - pos->x;
-        if (__fabs(d) >= 2.0f) {
+        d = pos->x;
+        d = p->field_0C.x - d;
+        if (__fabsf(d) >= 2.0f) {
             vec.x = d;
             vec.y = 0.0f;
             vec.z = 0.0f;
-            fn_8023DFF4(idx, &vec);
+            fn_8023DFF4(idx, (Vec*)&vec);
         }
         if (*(u8*)((u8*)p + 0x240) != 0) {
             *(f32*)((u8*)p + 0x244) = 8.0f;
@@ -136,12 +139,14 @@ extern "C" void fn_8028A460(Actor* p) {
         } else {
             t = *(f32*)((u8*)p + 0x244);
             if (t >= 4.0f) {
-                *(f32*)((u8*)p + 0x244) = t + 0.1f;
+                f32 increment = 0.1f;
+                increment = t + increment;
+                *(f32*)((u8*)p + 0x244) = increment;
                 if (*(f32*)((u8*)p + 0x244) >= 8.0f) {
                     *(f32*)((u8*)p + 0x244) = 8.0f;
                     *(u8*)((u8*)p + 0x240) = 1;
                     fn_801F0E34(p, 0x3004b, 0);
-                    ((void (*)(Actor*, s32, s32))(*(void***)p)[12])(p, 0xff, 1);
+                    p->v10(0xff,1);
                     p->field_0C.y = p->field_24.y + *(f32*)((u8*)p + 0x244);
                     p->field_3C.x = 0.0f;
                     p->field_3C.y = 4.0f;
@@ -154,33 +159,35 @@ extern "C" void fn_8028A460(Actor* p) {
                 } else {
                     p->field_0C.y = 4.0f + p->field_24.y;
                 }
-            } else if (t <= 0.0f) {
-                *(Vec*)((u8*)p + 0x230) = p->field_0C;
+            } else {
+                if (t <= 0.0f) {
+                *(JGeometry::TVec3f*)((u8*)p + 0x230) = *(JGeometry::TVec3f*)&p->field_0C;
                 *(f32*)((u8*)p + 0x234) += 16.0f;
-                pos = fn_8023E724(idx);
-                vec.x = *(f32*)((u8*)p + 0x230) - pos->x;
-                vec.y = *(f32*)((u8*)p + 0x234) - pos->y;
-                vec.z = *(f32*)((u8*)p + 0x238) - pos->z;
-                fn_8023DFF4(idx, &vec);
+                other = *(JGeometry::TVec3f*)fn_8023E724(idx);
+                fn_8023DFF4(idx, (Vec*)&(*(JGeometry::TVec3f*)((u8*)p+0x230) - other));
+                }
                 *(f32*)((u8*)p + 0x244) += 0.25f;
                 p->field_3C.x = 0.0f;
                 p->field_3C.y = 0.25f;
                 p->field_3C.z = 0.0f;
                 p->field_0C.y = p->field_24.y + *(f32*)((u8*)p + 0x244);
-            } else if (*(u8*)((u8*)p + 0x240) != 0) {
+            }
+
+        }
+    } else {
+        if (*(u8*)((u8*)p + 0x240) != 0) {
                 *(f32*)((u8*)p + 0x244) = 8.0f;
                 p->field_0C.y = p->field_24.y + *(f32*)((u8*)p + 0x244);
             } else {
                 *(f32*)((u8*)p + 0x244) -= 0.25f;
                 if (*(f32*)((u8*)p + 0x244) < 0.0f) {
                     *(f32*)((u8*)p + 0x244) = 0.0f;
-                    p->field_3C.x = 0.0f;
-                    p->field_3C.y = -0.25f;
-                    p->field_3C.z = 0.0f;
                 }
+                p->field_3C.x = 0.0f;
+                p->field_3C.y = -0.25f;
+                p->field_3C.z = 0.0f;
                 p->field_0C.y = p->field_24.y + *(f32*)((u8*)p + 0x244);
             }
-        }
     }
     t = *(f32*)((u8*)p + 0x244);
     if (t < 1.0f) {
