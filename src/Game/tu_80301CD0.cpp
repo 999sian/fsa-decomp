@@ -163,6 +163,29 @@ static inline void tu80301_pushMeasured(s32 i, const char* str, u32 color) {
     }
 }
 
+static inline void tu80301_queueMeasured(const char* str, u32 color, s32 i) {
+    if (str == NULL) {
+        return;
+    }
+    if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
+        return;
+    }
+    MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]];
+    e->f104 = 0;
+    e->f100 = (((TextCall_80301CD0*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->measure(((TextCall_80301CD0*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->convert(0x3f3f3f3f, str)) + 3) / 4;
+    e->f114 = color;
+    e->f119 = 0;
+    e->f11a = 1;
+    e->f110 = 0;
+    e->f118 = 1;
+    e->f10c = 0;
+    strcpy(e->text, str);
+    lbl_80504A28[i]++;
+    if (lbl_80504A28[i] >= 0x20) {
+        lbl_80504A28[i] = 0;
+    }
+}
+
 struct Slot_80301CD0 {
     u8 id;
     u8 f1;
