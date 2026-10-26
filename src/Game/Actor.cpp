@@ -195,7 +195,7 @@ extern "C" f32 lbl_8053F73C;
 extern "C" f32 lbl_8053F7A4;
 extern f32 lbl_8053F740; /* 0.0 */
 extern f32 lbl_8053F744; /* 512.0 */
-extern f32 lbl_8053F74C; /* 0.5 */
+
 extern f32 lbl_8053F750; /* 3.0 */
 extern f32 lbl_8053F754;
 extern f32 lbl_8053F7B4;
@@ -658,7 +658,7 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
         if ((s32)x > 4 && ((s32)buf == 0 || (s32)buf == 1)) {
             if (lbl_8053F740 == a->field_0C.z) {
                 f32 r;
-                r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xB4))->get_ufloat_1();
+                r = ActorRand37AC((unsigned int*)lbl_8053AAF8, 0x19660D);
                 f32 half = lbl_8053F74C;
                 if (r < half) {
                     v.scale(lbl_8053F7B0);
@@ -666,7 +666,7 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
                 } else {
                     a->field_F8 = 2;
                     f32 scale = lbl_8053F7A4;
-                    r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xB4))->get_ufloat_1();
+                    r = ActorRand37AC((unsigned int*)lbl_8053AAF8, 0x19660D);
                     v.z += half + r;
                     v.scale(scale);
                 }
