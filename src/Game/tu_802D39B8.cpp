@@ -72,9 +72,6 @@ extern char* lbl_8053AAF8;
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
 }
-static inline void clearRoomWord(const s32 offset) {
-    *(u32*)((u8*)roomArrays() + offset) = 0;
-}
 inline u16* roomValueColumn(int i) {
     return &roomArrays()->values2948[0][i];
 }
@@ -2478,7 +2475,7 @@ extern "C" u8 fn_802DCE5C(char* p, s32 value) {
         for (u32 w = 0; w < 128; w += 4, b++) {
             s32 o = w + 0x12f68;
             *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + b + 0x328) = 0xff;
-            *(u32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + o) = 0;
+            *(u32*)((u32)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + o) = 0;
         }
         for (s32 i = 0; i < 8; i++) {
             ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counts6748[i] = 0;
