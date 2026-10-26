@@ -42,7 +42,7 @@ extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" u32 __cvt_fp2unsigned(f64);
 
 static inline f32 tu311Random(u8* base=(u8*)lbl_8053AAF8, int multiplier=0x19660d) {
-    u32* seed = (u32*)(base + 0xb4);
+    unsigned int* seed = (unsigned int*)(base + 0xb4);
     *seed = *seed * multiplier + 0x3c6ef35f;
     union { u32 bits; f32 value; } out;
     out.bits = (*seed >> 9) | 0x3f800000;
