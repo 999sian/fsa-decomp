@@ -99,11 +99,13 @@ static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& d
 }
 
 static inline u8 platformContains(const f32* bounds, const JGeometry::TVec3<f32>& point) {
-    f32 minX = bounds[0];
-    f32 minY = bounds[1];
-    f32 maxX = bounds[2];
-    f32 maxY = bounds[3];
-    u8 inside = 0;
+    f32 minX, maxY, minY, maxX;
+    BOOL inside;
+    minX = bounds[0];
+    minY = bounds[1];
+    maxX = bounds[2];
+    maxY = bounds[3];
+    inside = FALSE;
     if (point.x >= minX && point.y >= minY && point.x < maxX && point.y < maxY) inside = 1;
     return inside;
 }
