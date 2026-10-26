@@ -140,14 +140,13 @@ extern "C" void fn_801555D8(char* self) {
         fn_801F06F0(self, lbl_80465E00, *(s32*)(self + 0x274) + 0x4f, &rec, 0, lbl_8053D37C, lbl_8053D37C);
     }
     if (*(u32*)(self + 0x90) == 3) {
-        f32 newY = ((Vec*)(self + 0xc))->y - lbl_8053D380;
-        JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(self + 0xc);
-        ((Vec*)(self + 0xc))->y = newY;
-        fn_801F06F0(self, lbl_80465E00, *(s32*)(self + 0x274) + 0x4f, &rec, -1, lbl_8053D37C, lbl_8053D37C);
+        const JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(self + 0xc);
+        ((Vec*)(self + 0xc))->y = ((Vec*)(self + 0xc))->y - lbl_8053D380;
+        fn_801F06F0(self, lbl_80465E00, *(s32*)(self + 0x274) + 0x4f, &rec, -1, 1.0f, 1.0f);
         ((Vec*)(self + 0xc))->x = saved.x;
         ((Vec*)(self + 0xc))->y = saved.y;
         ((Vec*)(self + 0xc))->z = saved.z;
-        f32 s = 1.3f;
+        f32 s = lbl_8053D384;
         mtx[0][0] = s;
         mtx[0][1] = lbl_8053D378;
         mtx[0][2] = lbl_8053D378;
