@@ -411,7 +411,7 @@ extern "C" void fn_800F4C70(char* this_) {
         }
         break;
     case 5: {
-        f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
+        f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
@@ -424,15 +424,15 @@ extern "C" void fn_800F4C70(char* this_) {
         cy = cos(ang);
         cz = cos(rx);
         f32 s = 1.0f;
-        f32 sxsy = sx * sy;
-        f32 cxsz = cx * sz;
-        f32 cxcz = cx * cz;
+        sxsy = sx * sy;
+        f32 cxsz;
+        f32 cxcz;
+        cxcz = cx * cz;
+        cxsz = cx * sz;
         f32 sxsz = sx * sz;
         f32 sxcz = sx * cz;
-        f32 cycz = cy * cz;
-        f32 cysz = cy * sz;
-        mtx[0][0] = s * cycz;
-        mtx[1][0] = s * cysz;
+        mtx[0][0] = s * (cy * cz);
+        mtx[1][0] = s * (cy * sz);
         mtx[2][0] = s * -sy;
         mtx[0][1] = s * (sxsy * cz - cxsz);
         mtx[1][1] = s * (sxsy * sz + cxcz);
