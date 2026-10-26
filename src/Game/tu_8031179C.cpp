@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "JSystem/JGeometry/Box.h"
 #include "Game/Actor.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" u8 fn_802D800C(void*, s32);
 extern "C" void fn_80239914(void*, s32, void*);
@@ -40,14 +41,6 @@ extern "C" u8 fn_8022E438(s32 i, s32 b);
 extern "C" s32 fn_8022CAF8(s32 i);
 extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" u32 __cvt_fp2unsigned(f64);
-
-template <class T> static inline f32 tu311Random(T* base, const int multiplier, const f32 one) {
-    volatile unsigned int* seed = (volatile unsigned int*)((u8*)base + 0xb4);
-    *seed = *seed * multiplier + 0x3c6ef35f;
-    union { unsigned int bits; f32 value; } out;
-    out.bits = (*seed >> 9) | 0x3f800000;
-    return out.value - one;
-}
 
 static inline void tuPlayerMessage(u8* p, s32 id, s32 player) {
     if (player == *(s32*)(p + 0x250) ||
@@ -154,8 +147,10 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy1-=offsetY;
         zero=lbl_805417CC;
         step=lbl_805417D0;
-        fx2=rangeX*tu311Random((unsigned int*)lbl_8053AAF8,0x19660d,one)+fx;
-        fy2=rangeY*tu311Random((unsigned int*)lbl_8053AAF8,0x19660d,one)+fy;
+        f32 rx=((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1();
+        f32 ry=((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1();
+        fx2=rangeX*rx+fx;
+        fy2=rangeY*ry+fy;
         for (r30 = 0; r30 < 0x14; r30++) {
             for (r28 = 0; r28 < 0x1a; r28++) {
                 pos.x = fx2;
