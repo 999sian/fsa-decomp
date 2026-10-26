@@ -109,13 +109,16 @@ extern "C" void fn_801E8080(void* actor);
 extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
+static inline u8 fsaHasEntries(FsaSlot* s) { return s->count > 0; }
+static inline u8 fsaHasActors(FsaSlot* s) { return s->unk74 > 0; }
 extern "C" void fn_801E9C74(u8* param) {
+    s32 n;
+    s32 i;
     bool b;
     u8* self = param;
     FsaSlot* slots = (FsaSlot*)self;
     bool a;
-    s32 n;
-    s32 i;
+
 
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
@@ -289,13 +292,16 @@ extern "C" void fn_801EA384(u8* param_1, u8 param_2) {
     u8* tlut;
     u8* tex;
     u8* out;
+    s32 i;
+    u32* names;
 
     if (param_2) {
         tlut = param_1;
         tex = param_1;
         out = param_1;
-        for (s32 i = 0; i < 3; i++) {
-            *(f32*)(out + 0x178) = fn_801CB270(lbl_804A5610[i], (GXTexObj*)(tex + 0xf4), (GXTlutObj*)(tlut + 0x154));
+        names = (u32*)lbl_804A5610;
+        for (i = 0; i < 3; i++) {
+            *(f32*)(out + 0x178) = fn_801CB270((const char*)names[i], (GXTexObj*)(tex + 0xf4), (GXTlutObj*)(tlut + 0x154));
             tlut += 0xc;
             tex += 0x20;
             out += 4;
