@@ -690,11 +690,15 @@ struct MsgProc {
         str2c0[m2d0++] = -2;
         str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0 && lineRow(lineTab[layout->m15c], slotLine[slot]) == 0) {
-            str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
-        } else {
-            str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
+        if (layout->m1a1 != 0) {
+            const s8 top = lineTab[layout->m15c];
+            const u8 line = slotLine[slot];
+            if (lineRow(top, line) == 0) {
+                str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
+                return;
+            }
         }
+        str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
     }
     s32 slotCol(s32 x) {
         return x + (s8)slotLine[slot + 0x10];
