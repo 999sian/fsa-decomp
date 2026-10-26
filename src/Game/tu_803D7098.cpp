@@ -225,7 +225,6 @@ struct FsaVtJ2D {
     virtual void v75(void);
     virtual void set76(void*, void*);
 };
-#pragma opt_common_subs off
 extern "C" void fn_803D7098(u8* param_1) {
     f32 f28;
     f32 f29;
@@ -283,7 +282,7 @@ extern "C" void fn_803D7098(u8* param_1) {
         if (a >= 0 && a < 4) {
             b = *(s16*)(param_1 + 0x6a);
             if (b >= 0) {
-                f32 tmpX, baseX, originX, targetX;
+                f32 baseX, originX, tmpX, targetX;
                 tmpX = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
                 f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
                 baseX = f0 + tmpX;
