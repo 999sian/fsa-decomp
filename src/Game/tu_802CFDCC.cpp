@@ -88,12 +88,6 @@ extern FsaRenderManager* lbl_8053AB10;
 extern "C" const char lbl_8046E040[];
 extern "C" s32 lbl_8046DFD0[];
 
-static inline void cfSetVec(JGeometry::TVec3f& v, const f32 x, const f32 y, const f32 z) {
-    v.x = x;
-    v.y = y;
-    v.z = z;
-}
-
 struct CFActor : Actor {
     s32 field_230;
     s32 field_234[3];
@@ -322,8 +316,10 @@ extern "C" void fn_802D010C(Actor* p) {
         }
         if (*(s32*)((u8*)p + 0x230) == 1) {
             if (*(s32*)((u8*)p + 0x268) == 0) {
-                q = tbl + 24;
-                *(s32*)((u8*)p + 0x268) = q[*(s32*)((u8*)p + 0x264)];
+                s32 (*groups)[24] = (s32(*)[24])tbl;
+                s32* times = groups[1];
+                s32* frames = groups[0];
+                *(s32*)((u8*)p + 0x268) = times[*(s32*)((u8*)p + 0x264)];
                 q = tbl;
                 *(s32*)((u8*)p + 0x264) = q[*(s32*)((u8*)p + 0x264)];
                 *(f32*)((u8*)p + 0x270) = lbl_80540E8C;
