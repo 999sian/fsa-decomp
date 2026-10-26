@@ -521,6 +521,10 @@ extern "C" void fn_801E002C(void* this_, s32 state) {
     }
 }
 
+static inline char* thnkLookupActor(s32 index) {
+    if(index<0) return 0;
+    return (char*)fn_801F666C(fn_801F856C(),index);
+}
 static inline void thnkStoreTurn(char* p, f32 x, u8& hit) {
     hit=0;
     switch(*(s32*)(p+0x98)) {
@@ -559,9 +563,9 @@ static inline u8 thnkResetCached(char* p, s32 state, u32 flags, u32 active) {
 }
 extern "C" void fn_801E0CF4(char* this_) {
     s32 id;
-    s32 i;
-    char* p = static_cast<char*>(this_);
-    s32 n;
+    int i;
+    char* p = this_;
+    int n;
     s32 found[4];
     s32* piVar;
     s32 st;
