@@ -60,8 +60,9 @@ extern const f32 lbl_8053CB3C;
 
 
 static inline void rnbwPolar(JGeometry::TVec3f& pos, const f32 radius, const s32 angle) {
-    f32 cosine = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
-    f32 sine = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    const f32* trig = &JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    f32 cosine = *++trig;
+    f32 sine = *--trig;
     cosine = radius * cosine;
     sine = radius * sine;
     pos.x = cosine;
