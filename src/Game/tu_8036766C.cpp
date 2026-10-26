@@ -4,6 +4,7 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JMath/JMath.h"
 
 
 extern "C" char lbl_804ADFE8[];
@@ -76,6 +77,14 @@ extern "C" const f32 lbl_80542C30;
 extern "C" const f32 lbl_80542C34;
 extern "C" const f32 lbl_80542C38;
 extern "C" const f64 lbl_80542C40;
+struct Tu80367888Owner : Actor {
+ virtual void v19();
+ virtual void v20();
+ virtual void v21();
+ virtual void setState(s32);
+ s32 mState;
+};
+
 extern "C" void fn_80367888(u8* p) {
     if (*(u8**)(p + 0x270) != 0) {
         fn_8013CB44(*(void**)(p + 0x270), p + 0xc, 0, -1, 1);
@@ -124,8 +133,8 @@ extern "C" void fn_80367888(u8* p) {
         s16 b;
         *(s16*)(p + 0x240) = ang + 0x200;
         b = *(s16*)(p + 0x240);
-        v.x = lbl_80542C1C * *(f32*)(sincosTable___5JMath + (((u16)b >> 5) * 8));
-        v.y = lbl_80542C20 * *(f32*)(sincosTable___5JMath + (((u16)(b * 2) >> 5) * 8));
+        v.x = lbl_80542C1C * JMath::sincosTable_.sinShort(b);
+        v.y = lbl_80542C20 * JMath::sincosTable_.sinShort(b * 2);
         v.z = lbl_80542C24;
         *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x244) + v;
         fn_8022FE80(0, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
@@ -142,8 +151,8 @@ extern "C" void fn_80367888(u8* p) {
  JGeometry::TVec3<f32> v;
             *(s16*)(p + 0x240) = ang + 0x200;
             b = *(s16*)(p + 0x240);
-            v.x = lbl_80542C1C * *(f32*)(sincosTable___5JMath + (((u16)b >> 5) * 8));
-            v.y = lbl_80542C20 * *(f32*)(sincosTable___5JMath + (((u16)(b * 2) >> 5) * 8));
+            v.x = lbl_80542C1C * JMath::sincosTable_.sinShort(b);
+            v.y = lbl_80542C20 * JMath::sincosTable_.sinShort(b * 2);
             v.z = lbl_80542C24;
             *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x244) + v;
             break;
@@ -177,14 +186,14 @@ extern "C" void fn_80367888(u8* p) {
         *(s16*)(p + 0x240) = *(s16*)(p + 0x240) + 0x800;
         a = *(s16*)(p + 0x240);
         if (t < lbl_80542C30) {
-            v.x = t * *(f32*)(sincosTable___5JMath + (((u16)a >> 5) * 8) + 4);
-            v.y = t * *(f32*)(sincosTable___5JMath + (((u16)a >> 5) * 8));
+            v.x = t * JMath::sincosTable_.cosShort(a);
+            v.y = t * JMath::sincosTable_.sinShort(a);
             v.z = lbl_80542C24;
         } else {
         *(f32*)(p + 0x14) -= lbl_80542C34;
         d = lbl_80542C38 - t;
-        v.x = __fabsf(d) * *(f32*)(sincosTable___5JMath + (((u16)a >> 5) * 8) + 4);
-        v.y = __fabsf(d) * *(f32*)(sincosTable___5JMath + (((u16)a >> 5) * 8));
+        v.x = __fabsf(d) * JMath::sincosTable_.cosShort(a);
+        v.y = __fabsf(d) * JMath::sincosTable_.sinShort(a);
         v.z = lbl_80542C24;
         if (t >= lbl_80542C38) {
             u8* q = *(u8**)(p + 0x254);
