@@ -3,6 +3,7 @@
 #include "Game/ItemBase.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 struct Tu803FResMgr {
     virtual void v0();
@@ -117,17 +118,6 @@ extern const f32 lbl_80543730;
 extern const f64 lbl_80543738;
 extern const f64 lbl_80543740;
 static inline f32 MenuSquare803F(s32 n) { return n * n; }
-union MenuFloatScratch803F { f64 value; u32 words[2]; };
-static inline f32 MenuSignedFloat803F(s32 n, MenuFloatScratch803F& scratch) {
-    scratch.words[0] = 0x43300000;
-    scratch.words[1] = (u32)n ^ 0x80000000;
-    return scratch.value - lbl_80543740;
-}
-static inline f32 MenuUnsignedFloat803F(u32 n, MenuFloatScratch803F& scratch) {
-    scratch.words[0] = 0x43300000;
-    scratch.words[1] = n;
-    return scratch.value - lbl_80543738;
-}
 extern const f32 lbl_80543784;
 extern const f32 lbl_80543788;
 extern const f32 lbl_8054378C;
@@ -832,27 +822,29 @@ extern "C" void fn_803F4120(u8* p) {
 
 #pragma opt_lifetimes on
 extern "C" void fn_803F5410(u8* p) {
-    s32 state = *(s32*)(p + 0x1c4);
+    int state = *(s32*)(p + 0x1c4);
     u8* base = lbl_80478A60;
     u8* q;
-    f32 f29;
+    f32 cursorX;
+    f32 baseY;
     f32 f28;
+    f32 f29;
     f32 f27;
     f32 f31;
     f32 f30;
     f32 f3;
     if (state != 2) {
         if (*(s32*)(p + 0x1d0) < 0x1e) {
-            f3 = (f32)(s32)(*(s32*)(p + 0x1d0) * *(s32*)(p + 0x1d0)) / lbl_8054377C;
+            f3 = MenuSquare803F(*(s32*)(p + 0x1d0)) / lbl_8054377C;
         } else {
-            f3 = lbl_80543730 - (f32)(s32)((*(s32*)(p + 0x1d0) - 0x1e) * (*(s32*)(p + 0x1d0) - 0x1e)) / lbl_8054377C;
+            f3 = lbl_80543730 - MenuSquare803F(*(s32*)(p + 0x1d0) - 0x1e) / lbl_8054377C;
         }
         f30 = f3 * (f32)*(u8*)(p + 0x258);
     } else {
         if (*(s32*)(p + 0x1d0) < 0xf) {
-            f3 = (f32)(s32)(*(s32*)(p + 0x1d0) * *(s32*)(p + 0x1d0)) / lbl_8054378C;
+            f3 = MenuSquare803F(*(s32*)(p + 0x1d0)) / lbl_8054378C;
         } else {
-            f3 = lbl_80543730 - (f32)(s32)((*(s32*)(p + 0x1d0) - 0xf) * (*(s32*)(p + 0x1d0) - 0xf)) / lbl_8054378C;
+            f3 = lbl_80543730 - MenuSquare803F(*(s32*)(p + 0x1d0) - 0xf) / lbl_8054378C;
         }
         f30 = lbl_80543790 * f3;
     }
@@ -864,24 +856,24 @@ extern "C" void fn_803F5410(u8* p) {
         r0 = 0;
     }
     f31 = lbl_805437AC * f3;
-    f27 = lbl_80543784 * (f32)(s32)(r0 * r0) / lbl_80543788;
+    f27 = lbl_80543784 * MenuSquare803F(r0) / lbl_80543788;
     q = p;
-    u64* a = (u64*)(base + 0xe60);
-    u64* b = (u64*)(base + 0xe78);
-    u64* c = (u64*)(base + 0xe90);
-    for (s32 i = 0; i < 3; i++, a++, b++, c++, q += 4) {
+    const u64* a = (const u64*)(base + 0xe60);
+    const u64* b = (const u64*)(base + 0xe78);
+    const u64* c = (const u64*)(base + 0xe90);
+    for (s32 i = 0; i < 3; i++, q += 4, a++, b++, c++) {
         if (i == *(s32*)(p + 0x1ac)) {
             f28 = ((J2DPane*)*(void**)(p + 4))->search(*a)->getBounds()->i.x;
             ((J2DPane*)*(void**)(p + 4))->search(*a)->move(f28, *(f32*)(q + 0x124) + f27);
             if (i == 0) {
-                f28 = ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->getBounds()->i.x;
-                ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->move(f28, *(f32*)(p + 0xf0) + f27);
+                baseY = ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->getBounds()->i.x;
+                ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->move(baseY, *(f32*)(p + 0xf0) + f27);
             } else {
-                f28 = ((J2DPane*)*(void**)(p + 4))->search(*(u64*)(base + 0xe60))->getBounds()->i.y;
+                baseY = ((J2DPane*)*(void**)(p + 4))->search(*(u64*)(base + 0xe60))->getBounds()->i.y;
                 f32 t = ((J2DPane*)*(void**)(p + 4))->search(*a)->getBounds()->i.y;
-                f28 = (*(f32*)(p + 0xf0) + t) - f28;
-                f29 = ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->getBounds()->i.x;
-                ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->move(f29, f28);
+                baseY = (*(f32*)(p + 0xf0) + t) - baseY;
+                cursorX = ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->getBounds()->i.x;
+                ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->move(cursorX, baseY);
             }
             ((J2DPane*)*(void**)(p + 4))->search(*b)->hide();
             ((J2DPane*)*(void**)(p + 4))->search(*c)->show();
