@@ -52,76 +52,61 @@ extern "C" void fn_80432638(char* this_) {
 }
 
 extern "C" void fn_80402CE0(void* p, f32 x, f32 y);
+extern "C" const f32 lbl_80543BB8;
 extern "C" void fn_80432750(char* this_, u8 flag, f32 a, f32 b, f32 c, f32 d) {
-	f32 sx;
-	f32 sy;
-	f32 ox;
-	f32 x;
-	f32 oy;
-	f32 y;
-	fn_8013B490(lbl_8053AB10);
-	if (*(u8*)(this_ + 0xa4) == 0) {
-		sx = c / *(f32*)(*(char**)(this_ + 0x20) + 0x18);
-		sy = d / *(f32*)(*(char**)(this_ + 0x20) + 0x1c);
-		ox = *(f32*)(*(char**)(this_ + 0x20) + 0x10);
-		x = (a + c * 0.5f) - (ox + ((J2DScreen*)*(void**)(this_ + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.x);
-		oy = *(f32*)(*(char**)(this_ + 0x20) + 0x14);
-		y = (b + d * 0.5f) - (oy + ((J2DScreen*)*(void**)(this_ + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.y);
-		char* p = this_;
-		for (s32 i = 0; i < 4; i++) {
-			fn_80402E08(*(void**)(p + 0x18), x, y);
-			fn_80402CE0(*(void**)(p + 0x18), sx, sy);
-			p += 4;
-		}
-		if (flag != 0 && sx == 1.0f) {
-			u16 v = *(u16*)(this_ + 0x9e);
-			if (v == 1 || v == 2 || v == 3) {
-				this_[0xa2] = 1;
-			} else {
-				this_[0xa2] = 0;
-			}
-			if (*(u8*)(this_ + 0xa2) == *(u8*)(this_ + 0xa3)) {
-				char* q = *(char**)(*(char**)(this_ + 0x34) + 4);
-				if (*(u8*)(q + 0xb0) == 0) {
-					q[0xb0] = 1;
-				}
-				if (*(u8*)(this_ + 0xa2) == 1) {
-					y += 290.0f;
-					fn_80402E08(*(void**)(this_ + 0x34), x, y);
-				} else {
-					if (*(u8*)(q + 0xb0) != 0) {
-						q[0xb0] = 0;
-					}
-					this_[0xa3] = this_[0xa2];
-				}
-			} else {
-				char* q = *(char**)(*(char**)(this_ + 0x34) + 4);
-				if (*(u8*)(q + 0xb0) != 0) {
-					q[0xb0] = 0;
-				}
-				if (sx != 1.0f) {
-					if (*(u8*)(this_ + 0xac) == 1) {
-						this_[0xac] = 0;
-						((J2DScreen*)*(void**)(this_ + 0x4))->draw(0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
-						return;
-					}
-				}
-			}
-		}
-		char* p2 = this_;
-		sx = c / *(f32*)(*(char**)(this_ + 0x2c) + 0x18);
-		sy = d / *(f32*)(*(char**)(this_ + 0x2c) + 0x1c);
-		ox = *(f32*)(*(char**)(this_ + 0x2c) + 0x10);
-		x = (a + c * 0.5f) - (ox + ((J2DScreen*)*(void**)(this_ + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.x);
-		oy = *(f32*)(*(char**)(this_ + 0x2c) + 0x14);
-		y = (b + d * 0.5f) - (oy + ((J2DScreen*)*(void**)(this_ + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.y);
-		for (s32 j = 0; j < 3; j++) {
-			fn_80402E08(*(void**)(p2 + 0x28), x, y);
-			fn_80402CE0(*(void**)(p2 + 0x28), sx, sy);
-			p2 += 4;
-		}
-		((J2DScreen*)*(void**)(this_ + 0x8))->draw(0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
-	}
+    fn_8013B490(lbl_8053AB10);
+    if (*(u8*)(this_ + 0xa4) == 0) {
+        f32 t;
+        f32 sx;
+        f32 sy;
+        sx = c / *(f32*)(*(char**)(this_ + 0x20) + 0x18);
+        sy = d / *(f32*)(*(char**)(this_ + 0x20) + 0x1c);
+        t = *(f32*)(*(char**)(this_ + 0x20) + 0x10);
+        f32 x = (a + c * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 4))->search(0x004E646174613031ULL)->getBounds()->i.x);
+        t = *(f32*)(*(char**)(this_ + 0x20) + 0x14);
+        f32 y = (b + d * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 4))->search(0x004E646174613031ULL)->getBounds()->i.y);
+        char* p = this_;
+        for (s32 i = 0; i < 4; ++i, p += 4) {
+            fn_80402E08(*(void**)(p + 0x18), x, y);
+            fn_80402CE0(*(void**)(p + 0x18), sx, sy);
+        }
+        if (flag != 0 && sx == 1.0f) {
+            u16 v = *(u16*)(this_ + 0x9e);
+            if (v == 1 || v == 2 || v == 3) this_[0xa2] = 1;
+            else this_[0xa2] = 0;
+            if (*(u8*)(this_ + 0xa2) == *(u8*)(this_ + 0xa3)) {
+                J2DPane* pane = *(J2DPane**)(*(char**)(this_ + 0x34) + 4);
+                if (!((u8*)pane)[0xb0]) pane->show();
+                if (*(u8*)(this_ + 0xa2) == 1) y += 290.0f;
+                fn_80402E08(*(void**)(this_ + 0x34), x, y);
+            } else {
+                J2DPane* pane = *(J2DPane**)(*(char**)(this_ + 0x34) + 4);
+                if (((u8*)pane)[0xb0]) pane->hide();
+                this_[0xa3] = this_[0xa2];
+            }
+        } else {
+            J2DPane* pane = *(J2DPane**)(*(char**)(this_ + 0x34) + 4);
+            if (((u8*)pane)[0xb0]) pane->hide();
+            if (sx != 1.0f && *(u8*)(this_ + 0xac) == 1) this_[0xac] = 0;
+        }
+        ((J2DScreen*)*(void**)(this_ + 4))->draw(0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+    } else {
+        f32 t;
+        f32 sy;
+        f32 sx;
+        sx = c / *(f32*)(*(char**)(this_ + 0x2c) + 0x18);
+        sy = d / *(f32*)(*(char**)(this_ + 0x2c) + 0x1c);
+        t = *(f32*)(*(char**)(this_ + 0x2c) + 0x10);
+        f32 x = (a + c * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 8))->search(0x004E646174613031ULL)->getBounds()->i.x);
+        t = *(f32*)(*(char**)(this_ + 0x2c) + 0x14);
+        f32 y = (b + d * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 8))->search(0x004E646174613031ULL)->getBounds()->i.y);
+        char* p = this_;
+        for (s32 i = 0; i < 3; ++i, p += 4) {
+            fn_80402E08(*(void**)(p + 0x28), x, y);
+            fn_80402CE0(*(void**)(p + 0x28), sx, sy);
+        }
+        ((J2DScreen*)*(void**)(this_ + 8))->draw(0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+    }
 }
 
 extern "C" void fn_80432AF8(char* this_) {
