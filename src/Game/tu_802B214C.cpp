@@ -6,14 +6,14 @@
 #include "Game/SinitPoolChain.h"
 
 extern "C" s32 lbl_805409D0[2];
-extern "C" f32 lbl_805409EC;
-extern "C" f32 lbl_805409F0;
-extern "C" f32 lbl_805409F4;
-extern "C" f32 lbl_805409F8;
-extern "C" f32 lbl_805409FC;
-extern "C" f32 lbl_80540A00;
-extern "C" f32 lbl_80540A04;
-extern "C" f32 lbl_80540A08;
+extern "C" const f32 lbl_805409EC;
+extern "C" const f32 lbl_805409F0;
+extern "C" const f32 lbl_805409F4;
+extern "C" const f32 lbl_805409F8;
+extern "C" const f32 lbl_805409FC;
+extern "C" const f32 lbl_80540A00;
+extern "C" const f32 lbl_80540A04;
+extern "C" const f32 lbl_80540A08;
 extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801F71A4(void* p, f32 target, f32 a, f32 b);
 extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
@@ -335,11 +335,11 @@ timerReset:
 extern "C" f32 lbl_80540A0C;
 extern "C" f32 lbl_80540A10;
 extern "C" f32 lbl_80540A14;
-extern "C" f32 lbl_80540A08;
+extern "C" const f32 lbl_80540A08;
 extern "C" const f32 lbl_805409DC;
 extern "C" const f32 lbl_805409E0;
-extern "C" f32 lbl_805409F0;
-extern "C" f32 lbl_805409F4;
+extern "C" const f32 lbl_805409F0;
+extern "C" const f32 lbl_805409F4;
 extern "C" f32 lbl_805409C8;
 extern "C" void fn_802B2F44(Actor* param_1)
 {
