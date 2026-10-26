@@ -135,22 +135,22 @@ extern "C" void fn_80445D24(fn_804461D0_Self* self) {
         self->g &= ~(u8)(1 << i);
         self->g &= ~(u8)(1 << (i + 4));
         anm = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1B78[0]);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 13]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 14]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 15]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 16]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 17]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 18]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 19]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 20]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 21]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 22]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 13]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 14]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 15]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 16]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 17]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 18]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 19]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 20]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 21]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 22]))->changeTexture(anm, 0);
         anm = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1BA0[0]);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 0]))->changeTexture(anm, 0);
-        ((J2DPicture*)self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 1]))->changeTexture(anm, 0);
-        self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 8])->hide();
-        self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 23])->hide();
-        self->screen->search(((const u64*)lbl_8048FC08)[i * 24 + 1])->hide();
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 0]))->changeTexture(anm, 0);
+        ((J2DPicture*)self->screen->search(lbl_8048FC08[i * 24 + 1]))->changeTexture(anm, 0);
+        self->screen->search(lbl_8048FC08[i * 24 + 8])->hide();
+        self->screen->search(lbl_8048FC08[i * 24 + 23])->hide();
+        self->screen->search(lbl_8048FC08[i * 24 + 1])->hide();
     }
 }
 
