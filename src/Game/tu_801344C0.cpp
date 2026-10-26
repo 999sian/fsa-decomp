@@ -9,6 +9,7 @@
 struct FSAStackObj {
     u8 _00[0xa8];
     u8 _a8;
+    u8 _a9[7];
 };
 
 extern "C" {
@@ -50,6 +51,178 @@ void* create__10JKRExpHeapFUlP7JKRHeapb(u32, void*, bool);
 void* __nw__FUlP7JKRHeapi(u32, void*, s32);
 void* __nw__FUl(u32);
 void becomeCurrentHeap__7JKRHeapFv(void*);
+}
+
+void main(void)
+{
+    FSAStackObj obj0;
+    FSAStackObj obj1;
+    FSAStackObj obj2;
+    FSAStackObj obj3;
+    s32 i;
+    s32 n;
+    void* p;
+    void* solidHeap;
+    void* expHeap;
+    bool bVar1;
+    bool bVar2;
+    s32 t;
+
+    JFWSystem::CSetUpParam::maxStdHeaps = 1;
+    JFWSystem::CSetUpParam::sysHeapSize = 0x200000;
+    JFWSystem::CSetUpParam::fifoBufSize = 0x40000;
+
+    i = 0;
+    n = 2;
+    do {
+        u8* src = (u8*)(0x80700000 + i);
+        u8* dst = lbl_80529DEC + i;
+        dst[0x216] = src[0];
+        dst[0x217] = src[1];
+        dst[0x218] = src[2];
+        dst[0x219] = src[3];
+        dst[0x21a] = src[4];
+        dst[0x21b] = src[5];
+        dst[0x21c] = src[6];
+        dst[0x21d] = src[7];
+        i += 8;
+        src = (u8*)(0x80700000 + i);
+        dst = lbl_80529DEC + i;
+        dst[0x216] = src[0];
+        dst[0x217] = src[1];
+        dst[0x218] = src[2];
+        dst[0x219] = src[3];
+        dst[0x21a] = src[4];
+        dst[0x21b] = src[5];
+        dst[0x21c] = src[6];
+        dst[0x21d] = src[7];
+        i += 8;
+    } while (--n != 0);
+
+    OSSetSaveRegion((void*)0x80700000, (void*)0x8070001F);
+
+    if (*(u16*)&lbl_80529DEC[0x216] != 0xA759 || *(u16*)&lbl_80529DEC[0x218] != 0xDC96) {
+        *(u16*)&lbl_80529DEC[0x216] = 0xA759;
+        *(u16*)&lbl_80529DEC[0x218] = 0xDC96;
+        lbl_80529DEC[0x21a] = 0;
+        lbl_80529DEC[0x21b] = 0;
+        lbl_80529DEC[0x21c] = 0;
+        lbl_80529DEC[0x21d] = 0;
+        lbl_80529DEC[0x21e] = 0;
+        lbl_80529DEC[0x21f] = 0;
+        lbl_80529DEC[0x220] = 0;
+        lbl_80529DEC[0x221] = 0;
+        lbl_80529DEC[0x222] = 0xff;
+        lbl_80529DEC[0x223] = 0;
+        lbl_80529DEC[0x225] = 0;
+        lbl_80529DEC[0x226] = 0;
+    }
+    if (OSGetResetCode() == 0) {
+        lbl_80529DEC[0x221] = 0;
+        lbl_80529DEC[0x222] = 0xff;
+        lbl_80529DEC[0x223] = 0;
+        lbl_80529DEC[0x225] = 0;
+        lbl_80529DEC[0x226] = 0;
+    }
+
+    if (lbl_80529DEC[0x226] == 1) {
+        if (OSGetProgressiveMode() == 1) {
+            JFWSystem::CSetUpParam::renderMode = &lbl_8048C1B8;
+        } else {
+            JFWSystem::CSetUpParam::renderMode = &lbl_8048C17C;
+        }
+    } else {
+        JFWSystem::CSetUpParam::renderMode = &lbl_8048C17C;
+    }
+
+    JFWSystem::init();
+    fn_8008E364(0xf0000000);
+    fn_8008CF54(&obj0, 0);
+    fn_8008CF54(&obj1, 1);
+    fn_8008CF54(&obj2, 2);
+    fn_8008CF54(&obj3, 3);
+    obj1._a8 = 0;
+    obj2._a8 = 0;
+    obj3._a8 = 0;
+    JFWDisplay::createManager(0, JKRHeap::sSystemHeap, JUTXfb::EXfbNumber(2), true);
+    JFWDisplay::getManager()->clearAllXfb();
+    fn_803BA980(lbl_8051C1A0);
+    solidHeap = create__12JKRSolidHeapFUlP7JKRHeapb(0x180000, JKRHeap::sRootHeap, false);
+    expHeap = create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false);
+    p = __nw__FUlP7JKRHeapi(0x90, expHeap, 0);
+    if (p != NULL) {
+        p = fn_8045A080(p);
+    }
+    becomeCurrentHeap__7JKRHeapFv(expHeap);
+    *(void**)&lbl_80529DEC[4] = solidHeap;
+    *(void**)&lbl_80529DEC[8] = expHeap;
+    *(void**)&lbl_80529DEC[0xc] = p;
+    *(u8*)((u8*)JUTProcBar::getManager() + 0x10c) = 0;
+    *(u8*)((u8*)JUTProcBar::getManager() + 0x130) = 0;
+    solidHeap = create__10JKRExpHeapFUlP7JKRHeapb(0x800, expHeap, false);
+    fn_80401FEC(OSGetThreadPriority(OSGetCurrentThread()) - 1, solidHeap, 0);
+    p = __nw__FUlP7JKRHeapi(0x7c, expHeap, 0);
+    if (p != NULL) {
+        p = fn_804009CC(p);
+    }
+    lbl_8053AAF0 = (u8*)p;
+    bVar1 = false;
+
+    for (;;) {
+        do {
+            fn_803B9E2C(lbl_8051C1A0);
+            if (DVDGetDriveStatus() != -1) {
+                fn_8008D15C();
+            }
+            if (!fn_802B1DCC(lbl_8053ACA8) && fn_802B1D7C(lbl_8053ACA8)) {
+                t = fn_802B1D60(lbl_8053ACA8);
+                if (t != 0 && t != 1 && t != 2 && t != 3) {
+                    t = -1;
+                }
+                p = fn_8008E328(t);
+                bVar2 = false;
+                if (*(s16*)((u8*)p + 0x7c) != -1 && *((u8*)p + 0x98) != 0) {
+                    bVar2 = true;
+                }
+                if (!bVar2) {
+                    fn_802B1D98(lbl_8053ACA8);
+                }
+            }
+            if (lbl_80529DEC[0x251] != 0 && lbl_80529DEC[0x251] < 0x5b) {
+                lbl_80529DEC[0x251]++;
+            }
+        } while (fn_80401518(&lbl_8053ADE8) != 0);
+
+        if (lbl_8053AAF0[0x78] >= 4) {
+            JFWDisplay::getManager()->beginRender();
+            if (lbl_80529DEC[0x251] == 0) {
+                fn_80136828(lbl_8053AAF8);
+                JFWDisplay::getManager()->endRender();
+                fn_80137300(lbl_8053AAF8);
+                JFWDisplay::getManager()->endFrame();
+                continue;
+            }
+            JFWDisplay::getManager()->beginRender();
+            fn_803FF420(lbl_8053AAF0);
+            JFWDisplay::getManager()->endRender();
+            fn_803FFAA8(lbl_8053AAF0);
+        }
+        if (lbl_8053AAF0[0x78] >= 4) {
+            fn_803FF2C4();
+            p = __nw__FUl(0x11c);
+            if (p != NULL) {
+                fn_80139300();
+            }
+            lbl_8053AAF8 = (u8*)p;
+            fn_80138C9C(p);
+            JFWDisplay::getManager()->endFrame();
+        } else {
+            if (!bVar1) {
+                bVar1 = true;
+            }
+            JFWDisplay::getManager()->endFrame();
+        }
+    }
 }
 
 void __sinit_tu_801344C0_cpp(void)
