@@ -1,7 +1,9 @@
 // TWEV_80103348: .text 0x80103348-0x801042D0 (actor TWEV)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" s32 fn_8013CC50(void*, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80134DE4(void*, s32, s32);
@@ -73,9 +75,9 @@ extern "C" void fn_801EFD34(void* this_, u32 id, void* param, s32 n, f32 a, f32 
 extern "C" void fn_80103348(void* this_) {
     char* p = (char*)this_;
     char* names = lbl_80463BD0;
-    f32 savedPos[3];
-    TWEVMtx mtx;
     TWEVParam param;
+    TWEVMtx mtx;
+    f32 savedPos[3];
     s32 i;
     f32 ang;
 
