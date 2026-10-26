@@ -211,7 +211,7 @@ extern "C" void fn_80418D08(u8* self, s32 idx, s32 flag) {
             }
         } else {
             if (v31 < 1.0f) {
-                *(f32*)(p + 0x128) = *(f32*)(p + 0x128) + lbl_80543A04;
+                HudIncreaseFade8041((f32*)(p + 0x128), lbl_80543A04);
             } else {
                 *(f32*)(p + 0x128) = 1.0f;
             }
