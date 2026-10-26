@@ -19,12 +19,14 @@ extern "C" void fn_802F745C(void*, const void*, void*, DrawRec*);
 static inline void rotation80359E18(f32 m[3][4], f32 scale, s16 angle)
 {
     f32 sx, sy, sz, cx, cy, cz;
-    sx = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
-    sy = JMath::sincosTable_.mTable[0].first;
-    sz = JMath::sincosTable_.mTable[0].first;
-    cx = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
-    cy = JMath::sincosTable_.mTable[0].second;
-    cz = JMath::sincosTable_.mTable[0].second;
+    u32 offset = ((u16)angle >> 5) * 8;
+    f32* table = (f32*)sincosTable___5JMath;
+    sx = *(f32*)((u32)table + offset);
+    sy = table[0];
+    sz = table[0];
+    cx = *(f32*)((u32)(table + 1) + offset);
+    cy = table[1];
+    cz = table[1];
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
@@ -716,8 +718,10 @@ extern "C" void fn_80359E18(u8* self)
 {
     DrawRec rec;
     Mtx mtx;
-    mtx[0][3] = mtx[1][3] = mtx[2][3] = lbl_8054286C;
-    if (((*(u32*)(self + 0x90) >> 7) & 0x1f) == 4 && *(s16*)(self + 0x230) == 0) {
+    mtx[0][3] = lbl_8054286C;
+    mtx[1][3] = lbl_8054286C;
+    mtx[2][3] = lbl_8054286C;
+    if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) == 4 && *(s16*)(self + 0x230) == 0) {
         rotation80359E18(mtx, lbl_80542878, *(s16*)(self + 0x23c));
     } else {
         rotation80359E18(mtx, lbl_80542878, *(s16*)(self + 0x230));
@@ -732,10 +736,12 @@ extern "C" void fn_80359E18(u8* self)
         void* texture = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18('TIMG', resource);
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), self + 0xc, texture, &rec);
     }
-    if (((*(u32*)(self + 0x90) >> 7) & 0x1f) < 2) {
+    if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) < 2) {
         rec.b1c = 0xff;
         rec.b1d = -2;
-        mtx[0][3] = mtx[1][3] = mtx[2][3] = lbl_8054286C;
+        mtx[0][3] = lbl_8054286C;
+    mtx[1][3] = lbl_8054286C;
+    mtx[2][3] = lbl_8054286C;
         mtx[0][0] = 1.5f;
         mtx[0][1] = lbl_8054286C;
         mtx[0][2] = lbl_8054286C;
