@@ -622,7 +622,7 @@ extern "C" void fn_802D6BF8(char*, u8 value) {
     *(u8*)(p + 0x131F2) = value;
 }
 
-extern const f32 lbl_80541120;
+extern f32 lbl_80541120;
 extern "C" void fn_802D6C10(char* unused, f32* pos, u32 id) {
     for (s32 i = 0; i < 8; i++) {
         char* rooms = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
@@ -712,37 +712,35 @@ extern "C" bool fn_802D6D70(void* unused, f32* a, f32* b, s32 owner, u32 key) {
     return found;
 }
 
-extern "C" void fn_802D6F38(char* p, u32 key, f32* pos, s32 owner, u8 mode) {
+extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode) {
     s32 i = 0;
     if (mode == 1) {
-        for (; i < 8; i++) {
-            if (((s32*)(p + 0x130C8))[i] == -1) {
-                goto insert;
-            }
-        }
+        while (p->owners130C8[i] != (u32)-1) {
+            if (++i >= 8) {
         i = 7;
         for (s32 j = 0; j < 7; j++) {
-            ((u32*)(p + 0x13068))[j] = ((u32*)(p + 0x13068))[j + 1];
-            ((f32*)(p + 0x13088))[j * 2] = ((f32*)(p + 0x13088))[(j + 1) * 2];
-            ((f32*)(p + 0x13088))[j * 2 + 1] = ((f32*)(p + 0x13088))[(j + 1) * 2 + 1];
-            ((s32*)(p + 0x130C8))[j] = ((s32*)(p + 0x130C8))[j + 1];
+            p->keys13068[j] = p->keys13068[j + 1];
+            p->positions13088[j].x = p->positions13088[j+1].x;
+            p->positions13088[j].y = p->positions13088[j+1].y;
+            p->owners130C8[j] = p->owners130C8[j + 1];
         }
-    insert:
-        ((u32*)(p + 0x13068))[i] = key;
-        ((f32*)(p + 0x13088))[i * 2] = pos[0];
-        ((f32*)(p + 0x13088))[i * 2 + 1] = pos[1];
-        ((s32*)(p + 0x130C8))[i] = owner;
+        break;
+        }
+        }
+        p->keys13068[i] = key;
+        p->positions13088[i].set(pos[0], pos[1]);
+        p->owners130C8[i] = owner;
         return;
     }
 
     s32 off4 = 0;
     s32 off8 = 0;
     for (i = 0; i < 8; i++) {
-        if ((*(u32*)(p + off4 + 0x13068) & 0xFFFFF07F) == (key & 0xFFFFF07F)) {
+        if ((((RoomArrays*)((u8*)p+off4))->keys13068[0] & 0xFFFFF07F) == (key & 0xFFFFF07F)) {
             bool bVar4 = false;
             bool bVar5 = false;
             f32 eps = lbl_80541120 * FLT_EPSILON;
-            f32* pair = (f32*)(p + off8 + 0x13088);
+            f32* pair = (f32*)&((RoomArrays*)((u8*)p+off8))->positions13088[0];
             f32 dx = pair[0] - pos[0];
             if (-eps <= dx && dx <= eps) {
                 bVar4 = true;
@@ -757,17 +755,17 @@ extern "C" void fn_802D6F38(char* p, u32 key, f32* pos, s32 owner, u8 mode) {
                     bVar5 = true;
                 }
             }
-            if (bVar5 && *(s32*)(p + off4 + 0x130C8) == owner) {
+            if (bVar5 && ((RoomArrays*)((u8*)p+off4))->owners130C8[0] == owner) {
                 for (s32 j = i; j < 7; j++) {
-                    ((u32*)(p + 0x13068))[j] = ((u32*)(p + 0x13068))[j + 1];
-                    ((f32*)(p + 0x13088))[j * 2] = ((f32*)(p + 0x13088))[(j + 1) * 2];
-                    ((f32*)(p + 0x13088))[j * 2 + 1] = ((f32*)(p + 0x13088))[(j + 1) * 2 + 1];
-                    ((s32*)(p + 0x130C8))[j] = ((s32*)(p + 0x130C8))[j + 1];
+                    p->keys13068[j] = p->keys13068[j + 1];
+                    p->positions13088[j].x = p->positions13088[j+1].x;
+                    p->positions13088[j].y = p->positions13088[j+1].y;
+                    p->owners130C8[j] = p->owners130C8[j + 1];
                 }
-                ((u32*)(p + 0x13068))[7] = 0;
-                ((f32*)(p + 0x13088))[14] = lbl_8054111C;
-                ((f32*)(p + 0x13088))[15] = lbl_8054111C;
-                ((s32*)(p + 0x130C8))[7] = -1;
+                p->keys13068[7] = 0;
+                p->positions13088[7].x = lbl_8054111C;
+                p->positions13088[7].y = lbl_8054111C;
+                p->owners130C8[7] = -1;
                 return;
             }
         }
