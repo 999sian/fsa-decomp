@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" void fn_801EE434(void* obj);
 extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
@@ -162,6 +163,81 @@ extern "C" void fn_80133C6C(u8* this_) {
     *(s32*)(buf + 0x38) = 2;
     fn_801F02BC(this_, lbl_804652D8, lbl_804652C0[*(s32*)(this_ + 0x234)] + *(s32*)(this_ + 0x250), buf, 7, 0, 0, lbl_8053CD30, lbl_8053CD30);
 }
+
+extern "C" void v03__5ActorFv(void*);
+extern "C" void fn_8022FEB8(void*,s32,s32,s32,s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" bool fn_802300EC(s32);
+extern "C" bool fn_8038AD24(s32,s32,s32,s32,const JGeometry::TVec3f&,s32);
+extern "C" void fn_8022FF8C(s32,void*,s32,s32,s32,s32);
+extern "C" bool fn_80388CAC(s32,s32);
+extern "C" void fn_801CD950(f32*,f32,f32);
+extern "C" void fn_80239914(void*,s32,s32);
+extern "C" void fn_801D1C18(void*);
+extern s32 lbl_804652A4[];
+extern f32 lbl_8053CD38, lbl_8053CD3C, lbl_8053CD40, lbl_8053CD44;
+#pragma opt_propagation off
+extern "C" void fn_80133DD0(u8* p) {
+v03__5ActorFv(p);
+JGeometry::TBox2f box;
+box.set(*(JGeometry::TBox2f*)(p+0x60));
+box.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+switch(*(s32*)(p+0x230)) {
+case 0: {
+fn_801339EC(p);
+s32 msg=lbl_804652A4[*(s32*)(p+0x234)];
+JGeometry::TBox2f box2;
+box2.set(*(JGeometry::TBox2f*)(p+0x60));
+box2.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+fn_8022FEB8(&box2,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
+s32 r=fn_8022FD8C(*(s32*)(p+0x198));
+if(r<0 || r>=4) r=-1;
+else if(!fn_802300EC(r)) r=-1;
+else if(fn_8038AD24(r,msg,*(s32*)(p+0x198),*(s32*)(p+4),*(JGeometry::TVec3f*)(p+0xc),0x28)) {} else r=-1;
+*(s32*)(p+0x238)=r;
+if(*(s32*)(p+0x238)>=0) { *(s32*)(p+0x230)=1; switch (*(s32*)(p + 0x230)) {
+case 0: *(s32*)(p+0x238)=-1; break;
+case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
+case 3: {
+s32 i=0; u8* q=p; u32 zero=0;
+do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
+detach__5ActorFv(p); break;
+}
+} }
+break;
+}
+case 1:
+fn_8022FF8C(*(s32*)(p+0x238),&box,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
+if(fn_80388CAC(*(s32*)(p+0x238),*(s32*)(p+0x198))) { *(s32*)(p+0x230)=0; switch (*(s32*)(p + 0x230)) {
+case 0: *(s32*)(p+0x238)=-1; break;
+case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
+case 3: {
+s32 i=0; u8* q=p; u32 zero=0;
+do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
+detach__5ActorFv(p); break;
+}
+} }
+break;
+case 2:
+fn_801CD950((f32*)(p+0x23c),lbl_8053CD38,lbl_8053CD3C);
+fn_801CD950((f32*)(p+0x14),lbl_8053CD40,*(f32*)(p+0x23c));
+fn_801339EC(p);
+if(*(f32*)(p+0x14)>=lbl_8053CD44) { *(s32*)(p+0x230)=3; switch (*(s32*)(p + 0x230)) {
+case 0: *(s32*)(p+0x238)=-1; break;
+case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
+case 3: {
+s32 i=0; u8* q=p; u32 zero=0;
+do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
+detach__5ActorFv(p); break;
+}
+} }
+break;
+case 3: default: break;
+}
+fn_80239914(&box,*(s32*)(p+4),*(s32*)(p+0x198));
+fn_801D1C18(p+0x240);
+}
+#pragma opt_propagation reset
 
 extern "C" void v01__5ActorFv(void* this_);
 extern "C" void fn_801D2608(void*, void*, s32);
