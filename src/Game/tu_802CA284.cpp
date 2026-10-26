@@ -32,6 +32,10 @@ extern "C" f32 lbl_80540D94;
 extern "C" f32 lbl_80540D98;
 extern "C" f32 lbl_80540D9C;
 extern "C" f32 lbl_80540DA0;
+static inline u32 Tu802CA284_isActive(s32 i) {
+    return (lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0;
+}
+
 extern "C" void fn_802CA284(u8* this_) {
     u8* p;
     s32 i;
@@ -52,10 +56,10 @@ extern "C" void fn_802CA284(u8* this_) {
                     JGeometry::TVec3<f32> pos;
                     void* tex;
 
-                    rec.b1c = 0;
                     mtx[0][3] = lbl_80540D94;
                     mtx[1][3] = lbl_80540D94;
                     mtx[2][3] = lbl_80540D94;
+                    rec.b1c = 0;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = lbl_80540D88[*(s32*)(p + 0x244)];
@@ -66,12 +70,9 @@ extern "C" void fn_802CA284(u8* this_) {
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
-                    fn_8022EA0C(i, mtx);
-                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(i, mtx));
                     tex = fn_804030C4(0x54494D47, lbl_804A8F50[*(s32*)(p + 0x244)]);
-                    pos.x = *(f32*)(self + 0xc);
-                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(self + 0x14);
+                    pos.set(*(f32*)(self + 0xc), *(f32*)(self + 0x10) - lbl_80540D9C, *(f32*)(self + 0x14));
                     if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
@@ -81,10 +82,10 @@ extern "C" void fn_802CA284(u8* this_) {
                     JGeometry::TVec3<f32> pos;
                     void* tex;
 
-                    rec.b1c = 0;
                     mtx[0][3] = lbl_80540D94;
                     mtx[1][3] = lbl_80540D94;
                     mtx[2][3] = lbl_80540D94;
+                    rec.b1c = 0;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = 0xf2;
@@ -95,12 +96,9 @@ extern "C" void fn_802CA284(u8* this_) {
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
-                    fn_8022EA0C(i, mtx);
-                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(i, mtx));
                     tex = fn_804030C4(0x54494D47, lbl_8046D8CC);
-                    pos.x = *(f32*)(self + 0xc);
-                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(self + 0x14);
+                    pos.set(*(f32*)(self + 0xc), *(f32*)(self + 0x10) - lbl_80540D9C, *(f32*)(self + 0x14));
                     if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
@@ -110,10 +108,10 @@ extern "C" void fn_802CA284(u8* this_) {
                     JGeometry::TVec3<f32> pos;
                     void* tex;
 
-                    rec.b1c = 0;
                     mtx[0][3] = lbl_80540D94;
                     mtx[1][3] = lbl_80540D94;
                     mtx[2][3] = lbl_80540D94;
+                    rec.b1c = 0;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = 0xf2;
@@ -124,12 +122,9 @@ extern "C" void fn_802CA284(u8* this_) {
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540D98; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540D98;
                     rec.w18 = mtx;
-                    fn_8022EA0C(i, mtx);
-                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(i, mtx));
                     tex = fn_804030C4(0x54494D47, lbl_8046D8E0);
-                    pos.x = *(f32*)(self + 0xc);
-                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(self + 0x14);
+                    pos.set(*(f32*)(self + 0xc), *(f32*)(self + 0x10) - lbl_80540D9C, *(f32*)(self + 0x14));
                     if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
@@ -143,10 +138,10 @@ extern "C" void fn_802CA284(u8* this_) {
                     JGeometry::TVec3<f32> pos;
                     void* tex;
 
-                    rec.b1c = 0;
                     mtx[0][3] = lbl_80540D94;
                     mtx[1][3] = lbl_80540D94;
                     mtx[2][3] = lbl_80540D94;
+                    rec.b1c = 0;
                     rec.b1d = 0;
                     rec.b2d = 0;
                     tag[0] = 0xff;
@@ -157,12 +152,9 @@ extern "C" void fn_802CA284(u8* this_) {
                     mtx[1][0] = lbl_80540D94; mtx[1][1] = lbl_80540DA0; mtx[1][2] = lbl_80540D94;
                     mtx[2][0] = lbl_80540D94; mtx[2][1] = lbl_80540D94; mtx[2][2] = lbl_80540DA0;
                     rec.w18 = mtx;
-                    fn_8022EA0C(i, mtx);
-                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724();
+                    *(JGeometry::TVec3<f32>*)(self + 0xc) = *(JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(i, mtx));
                     tex = fn_804030C4(0x54494D47, lbl_804A8F60[*(s32*)(p + 0x28c) - 4]);
-                    pos.x = *(f32*)(self + 0xc);
-                    pos.y = *(f32*)(self + 0x10) - lbl_80540D9C;
-                    pos.z = *(f32*)(self + 0x14);
+                    pos.set(*(f32*)(self + 0xc), *(f32*)(self + 0x10) - lbl_80540D9C, *(f32*)(self + 0x14));
                     if (*(s32*)(self + 4) < 8) {
                         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, tex, (u8*)&rec);
                     }
