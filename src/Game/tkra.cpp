@@ -65,11 +65,6 @@ static inline u8 tkraCanOpen(char* p) {
     }
     return ok;
 }
-static inline u32 tkraSpawnParam(u32 player, u32 bits, s32 item, u32 flags) {
-    u32 param = bits + (player << 26);
-    param += flags;
-    return item + param;
-}
 struct TkraObj {
     u8 pad[0x24c];
     s32 ids[4];
@@ -91,7 +86,13 @@ extern "C" u8 fn_802EB27C(TkraObj* p) {
 }
 
 extern "C" u8 fn_802EB314(char* p) {
-    s32 ret;
+    int chance;
+    u32 param;
+    s32 room;
+    s32 r;
+    s32 k;
+    s32 pl;
+    int ret;
     u8 ok;
     u32 bits;
     int i;
@@ -124,7 +125,7 @@ extern "C" u8 fn_802EB314(char* p) {
                 bit = bit != 0;
             }
             if (bit != 0) {
-                s32 k = *(s32*)(p + 0x234);
+                k = *(s32*)(p + 0x234);
                 if (k <= 2 || k == 0x2f) {
                     s32 n = fn_80138A30(lbl_8053AAF8);
                     if (*(s32*)(p + 0x240) == fn_801F6058(fn_801F856C(), n - 1)) {
@@ -151,47 +152,46 @@ extern "C" u8 fn_802EB314(char* p) {
             pos.x = dx + v.x;
             pos.y = v.y - dy;
             pos.z = v.z;
-            s32 k = *(s32*)(p + 0x234);
+            k = *(s32*)(p + 0x234);
             if (k >= 0x30) {
                 if (lbl_8053AAF8[0x7e] == 1) {
                     if ((u8)fn_8022F514(i) == 1) {
                         if (*(s32*)(p + 0x248) == fn_8022F3DC(i)) {
                             if (i == *(s32*)(p + 0x240)) {
-                                s32 room;
-                                u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                                param = bits + (*(u32*)(p + 0x240) << 26);
                                 param = *(s32*)(p + 0x234) + param;
                                 room = fn_8023DE58(i);
                                 Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
                             } else {
-                                u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                                param = bits + (*(u32*)(p + 0x240) << 26);
                                 param |= 0x10000000;
                                 param = *(s32*)(p + 0x234) + param;
-                                s32 room = fn_8023DE58(i);
+                                room = fn_8023DE58(i);
                                 Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
                             }
                         }
                     } else if (i == *(s32*)(p + 0x248)) {
                         if (i == *(s32*)(p + 0x240)) {
-                            u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                            param = bits + (*(u32*)(p + 0x240) << 26);
                             param = *(s32*)(p + 0x234) + param;
-                            s32 room = fn_8023DE58(i);
+                            room = fn_8023DE58(i);
                             Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
                         } else {
-                            u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                            param = bits + (*(u32*)(p + 0x240) << 26);
                             param |= 0x10000000;
                             param = *(s32*)(p + 0x234) + param;
-                            s32 room = fn_8023DE58(i);
+                            room = fn_8023DE58(i);
                             Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
                         }
                     }
                 } else {
-                    ret = *(s32*)(p + 0x240);
-                    if (i == ret) {
-                        s32 room = fn_8023DE58(i);
-                        Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, k + (bits + ((u32)ret << 26)), -1, -1);
+                    pl = *(s32*)(p + 0x240);
+                    if (i == pl) {
+                        room = fn_8023DE58(i);
+                        Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, k + (bits + ((u32)pl << 26)), -1, -1);
                     } else {
-                        s32 room = fn_8023DE58(i);
-                        u32 param = bits + ((u32)ret << 26);
+                        room = fn_8023DE58(i);
+                        param = bits + ((u32)pl << 26);
                         param |= 0x10000000;
                         Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, k + param, -1, -1);
                     }
@@ -199,17 +199,17 @@ extern "C" u8 fn_802EB314(char* p) {
             } else {
                 if ((u8)fn_8022F514(i) == 1 && *(s32*)(p + 0x248) == fn_8022F3DC(i)) {
                     if (i == *(s32*)(p + 0x240)) {
-                        u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                        param = bits + (*(u32*)(p + 0x240) << 26);
                         param |= 0x800000;
                         param = *(s32*)(p + 0x234) + param;
-                        s32 room = fn_8023DE58(i);
+                        room = fn_8023DE58(i);
                         Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
                     }
                 } else if (i == *(s32*)(p + 0x248) && i == *(s32*)(p + 0x240)) {
-                    u32 param = bits + (*(u32*)(p + 0x240) << 26);
+                    param = bits + (*(u32*)(p + 0x240) << 26);
                     param |= 0x800000;
                     param = *(s32*)(p + 0x234) + param;
-                    s32 room = fn_8023DE58(i);
+                    room = fn_8023DE58(i);
                     Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1);
                 }
             }
@@ -217,7 +217,7 @@ extern "C" u8 fn_802EB314(char* p) {
         if (*(s32*)(p + 0x238) == 0) {
             fn_80230FD0(*(s32*)(p + 0x240), 0x20013);
             fn_802A3948(lbl_8053AC98, p + 0x25c, 0, *(s32*)(p + 4), 0x10);
-            s32 r = fn_802D4C10(fn_802D6A9C(), *(s32*)(p + 4), (u16)*(u32*)(p + 0x23c));
+            r = fn_802D4C10(fn_802D6A9C(), *(s32*)(p + 4), *(u32*)(p + 0x23c));
             if (r != -1) {
                 fn_802D7D00(fn_802D6A9C(), *(s32*)(p + 4), r, 1);
             }
