@@ -180,6 +180,11 @@ static inline f32 ipotRandom() {
     return *(f32*)&bits - 1.0f;
 }
 
+static inline f32 ipotRandom(JMARandFast* rng) {
+    u32 bits = (rng->get_bit32() >> 9) | 0x3f800000;
+    return *(f32*)&bits - 1.0f;
+}
+
 struct RupyDrop {
     u32 param;
     s32 count;
