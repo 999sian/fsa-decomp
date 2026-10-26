@@ -527,10 +527,10 @@ extern "C" void fn_8032B7C0(void* this_) {
                     *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541DB0, *(f32*)(p + 0x40), lbl_80541D88);
                     break;
                 case 2:
-                    *(JGeometry::TVec3f*)(p + 0x3c) = RupyVec3(lbl_80541D88, *(f32*)(p + 0x40), lbl_80541D88);
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(0.0f, *(f32*)(p + 0x40), 0.0f);
                     break;
                 case 3:
-                    *(JGeometry::TVec3f*)(p + 0x3c) = RupyVec3(lbl_80541D88, *(f32*)(p + 0x40), lbl_80541D88);
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(0.0f, *(f32*)(p + 0x40), 0.0f);
                     break;
                 }
                 *(s32*)(p + 0x260) = 1;
