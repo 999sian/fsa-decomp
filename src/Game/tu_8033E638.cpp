@@ -102,8 +102,8 @@ static inline void platformPolar(JGeometry::TVec3<f32>& point, const f32 radius,
     const f32* trig = &JMath::sincosTable_.mTable[(u16)angle >> 5].first;
     f32 y;
     f32 x;
-    f32 sine;
     f32 cosine;
+    f32 sine;
     sine = *trig;
     cosine = trig[1];
     y = radius * sine;
