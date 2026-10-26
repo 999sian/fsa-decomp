@@ -227,6 +227,7 @@ extern const J2DTevSwapModeTableInfo j2dDefaultTevSwapModeTable;
 extern const u8 j2dDefaultTevSwapTable;
 
 inline u8 J2DCalcTevSwapTable(const u8 r, const u8 g, const u8 b, const u8 a) { return (r << 6) + (g << 4) + (b << 2) + a; }
+inline u8 J2DCalcTevSwapTable2(const u8 r, u8 g, const u8 b, const u8 a) { return (r << 6) + (g << 4) + (b << 2) + a; }
 
 struct J2DTevSwapModeTable {
     J2DTevSwapModeTable() { _00 = j2dDefaultTevSwapTable; }
@@ -235,7 +236,7 @@ struct J2DTevSwapModeTable {
 
     void setTevSwapModeTableInfo(const J2DTevSwapModeTableInfo& info)
     {
-        _00  = J2DCalcTevSwapTable(info.mR, info.mG, info.mB, info.mA);
+        _00  = J2DCalcTevSwapTable2(info.mR, info.mG, info.mB, info.mA);
     }
 
     u8 getR() { return _00 >> 6 & 3; }
