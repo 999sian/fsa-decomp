@@ -204,7 +204,7 @@ extern "C" void* fn_804461D0(void* self_) {
     self->screen = new J2DScreen();
     self->screen->setPriority(lbl_80490020, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
     for (int i = 0; i < 4; i++) {
-        u64* row = &lbl_8048FC08[i * 24];
+        const u64* row = &lbl_8048FC08[i * 24];
         void* obj = operator new(0x2c);
         if (obj != 0) {
             *(void**)obj = lbl_804AF86C;
