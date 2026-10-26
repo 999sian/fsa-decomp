@@ -151,6 +151,10 @@ static inline f32 paneSpan(const f32* bounds) {
 	return bounds[2] - bounds[0];
 }
 
+static inline bool menuReached(f32 position, f32 origin) {
+	return position <= origin - 400.0f;
+}
+
 struct Slots208 {
 	u8 pad0[0x208];
 	u8* slot[16]; // 0x208, indexed by the s32 at 0x340
@@ -1459,45 +1463,48 @@ extern "C" void fn_8040B388(u8* self) {
 	}
 }
 
-#pragma opt_strength_reduction off
-extern "C" void fn_8040B5A0(u8* self) {
+#pragma opt_common_subs off
+extern "C" void fn_8040B5A0(Slots208* obj) {
+ u8* self = (u8*)obj;
  ++*(s32*)(self+0x380);
  s32 phase = (*(s32*)(self+0x380) % 36) / 9;
  switch (*(s16*)(self+0x428)) {
  case 0:
   *(f32*)(self+0x3b8) += lbl_8054396C;
   {
-   u8* x = *(u8**)(self+*(s32*)(self+0x340)*4+0x208);
+   u8* x = obj->slot[*(s32*)(self+0x340)];
    if (*(f32*)(self+0x3b8) >= *(f32*)(x+0xc)) {
     *(f32*)(self+0x3b8) = *(f32*)(x+0xc);
-    *(s16*)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+0x22)=0;
-    fn_80402E08(*(u8**)(self+*(s32*)(self+0x340)*4+0x208),0.0f,0.0f);
+    *(s16*)(obj->slot[*(s32*)(self+0x340)]+0x22)=0;
+    fn_80402E08(obj->slot[*(s32*)(self+0x340)],0.0f,0.0f);
     *(s16*)(self+0x428)=1;
     u32 id = 0x30081;
     (*(SoundHolder**)(self+0x2c8))->play(&id);
    } else {
     f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
-    f32 offset = (f32)(*(u16*)(*(u8**)(sManager__8JUTVideo+4)+6) * lbl_80543890[phase])/lbl_805438E4;
+    u16 h = *(u16*)(*(u8**)(sManager__8JUTVideo+4)+6);
+ s16 sample = lbl_80543890[phase];
+ f32 offset = (f32)(sample*h)/lbl_805438E4;
     fn_80402E08(x,lbl_80543898,delta+offset);
    }
   }
   {
- u8* x = *(u8**)(self+*(s32*)(self+0x340)*4+0x208);
- u8* y = *(u8**)(x+4);
- f32 half = lbl_805438C8;
- f32 right = *(f32*)(y+0x28);
- f32 left = *(f32*)(y+0x20);
- *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
- y = *(u8**)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+4);
+ u8* x = obj->slot[*(s32*)(self+0x340)];
+ J2DPane* y = *(J2DPane**)(x+4);
+ f32 width = y->getWidth();
+ width = width * lbl_805438C8 + *(f32*)((u8*)y+0x30);
+ *(f32*)(self+0x3ac) = width;
+ y = *(J2DPane**)(obj->slot[*(s32*)(self+0x340)]+4);
  u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
- f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
- f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
+ f32 base = *(f32*)(bounds+4);
+ base = *(f32*)(self+0x3b8) + base;
+ f32 height = y->getHeight();
  *(f32*)(self+0x3b0) = (height*lbl_805438C8 + base);
 }
   break;
- case 1:
+ case 1: {
   *(f32*)(self+0x3b8) -= lbl_8054396C;
-  if (*(f32*)(self+0x3b8) <= *(f32*)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+0xc)-lbl_80543970) {
+  if (*(f32*)(self+0x3b8) <= *(f32*)(obj->slot[*(s32*)(self+0x340)]+0xc)-400.0f) {
    lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a |= (u8)(1 << *(s32*)(self+0x340));
    if (*(s32*)(self+0x340)==7) *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+1);
    else *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+2);
@@ -1507,23 +1514,25 @@ extern "C" void fn_8040B5A0(u8* self) {
    *(s32*)(self+0x350)=0x12;
   }
   {
- u8* x = *(u8**)(self+*(s32*)(self+0x340)*4+0x208);
- u8* y = *(u8**)(x+4);
- f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
- f32 half = lbl_805438C8;
- f32 right = *(f32*)(y+0x28);
- f32 left = *(f32*)(y+0x20);
- *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
- y = *(u8**)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+4);
+ u8* x = obj->slot[*(s32*)(self+0x340)];
+ J2DPane* y = *(J2DPane**)(x+4);
+ f32 delta = *(f32*)(x+0xc);
+ delta = *(f32*)(self+0x3b8) - delta;
+ f32 width = y->getWidth();
+ width = width * lbl_805438C8 + *(f32*)((u8*)y+0x30);
+ *(f32*)(self+0x3ac) = width;
+ y = *(J2DPane**)(obj->slot[*(s32*)(self+0x340)]+4);
  u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
- f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
- f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
+ f32 base = *(f32*)(bounds+4);
+ base = *(f32*)(self+0x3b8) + base;
+ f32 height = y->getHeight();
  *(f32*)(self+0x3b0) = delta + (height*lbl_805438C8 + base);
 }
   break;
  }
+ }
 }
-#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 extern "C" u8 fn_804446A4(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern "C" void fn_80402CE0(void*, f32, f32);
@@ -2379,6 +2388,57 @@ extern "C" void fn_80405FC0(u8* self) {
 	}
 }
 
+#pragma opt_strength_reduction off
+extern "C" void fn_80406634(u8* self, s32 style, s32 enabled) {
+    u8* tbl = (u8*)&lbl_8048C1F8;
+    DrawRec rec;
+    f32 pos[3];
+    *(s16*)(self + 0x432) += 1;
+    if (*(s16*)(self + 0x432) >= 6000) {
+        *(s16*)(self + 0x432) = 0;
+    }
+    PanePos411* coords = (PanePos411*)(tbl + 0x764);
+    s32 index = *(s32*)(self + 0x348) + *(s32*)(self + 0x340) * 4;
+    f32 x = coords[index].x;
+    f32 y = coords[index].y;
+    if (!(u8)enabled) y -= lbl_805438D8;
+    u8* mode = *(u8**)((u8*)sManager__8JUTVideo + 4);
+    pos[0] = x * (lbl_805438C4 / (f32)(s32)*(u16*)(mode + 4)) + *(f32*)(self + 0x3a0);
+    pos[1] = y * (lbl_805438CC / (f32)(s32)*(u16*)(mode + 6)) + *(f32*)(self + 0x3a4);
+    pos[2] = lbl_80543898;
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetTevDirect(GX_TEVSTAGE1);
+    GXSetTevDirect(GX_TEVSTAGE2);
+    GXSetTevDirect(GX_TEVSTAGE3);
+    rec.b26 = 0;
+    rec.b1d = 1;
+    rec.b1c = 1;
+    ((u8*)&rec.w10)[3] = (s32)(lbl_805438DC * *(f32*)(self + 0x400));
+    if (*(void**)(self + 0x308) == 0) {
+        *(void**)(self + 0x308) = fn_8013CC50(0, lbl_805438BC, pos, 0x32c, 1, 0, 0, 0, 1);
+        u8 (*colors)[3] = (u8 (*)[3])(tbl + 0x988);
+        s32 colorIndex = *(s32*)(self + 0x340);
+        u8* emitter = *(u8**)(self + 0x308);
+        u8 red = colors[colorIndex][0];
+        u8 green = colors[colorIndex][1];
+        emitter[0xbc] = red;
+        u8 blue = colors[colorIndex][2];
+        emitter[0xbd] = green;
+        emitter[0xbe] = blue;
+    } else {
+        fn_8013CB44(*(void**)(self + 0x308), pos, 1, 0, 1);
+    }
+    if (*(void**)(self + 0x30c) == 0) {
+        *(void**)(self + 0x30c) = fn_8013CC50(0, lbl_805438BC, pos, 0x184, 1, 0, 0, 0, 1);
+    } else {
+        fn_8013CB44(*(void**)(self + 0x30c), pos, 1, 0, 1);
+    }
+    s32 frame = *(s16*)(self + 0x432) % 6 + ((s32 (*)[1])(tbl + 0x970))[style][0];
+    Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+    void* res = mgr->get('SOB ', (const char*)(tbl + 0xa34));
+    fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, frame, &rec, lbl_805438BC, lbl_805438BC);
+}
+#pragma opt_strength_reduction on
 extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out);
 extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 lbl_8048CC40[];
