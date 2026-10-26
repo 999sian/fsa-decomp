@@ -60,7 +60,7 @@ extern "C" void* fn_80144134(void* this_, s16 freeFlag) {
     return this_;
 }
 
-static inline void bzbrRotScale(f32 m[3][4], f32* angle, f32* scale) {
+static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale) {
     f32 ang;
     f32 s;
     m[0][3] = 0.0f;
@@ -135,7 +135,7 @@ extern "C" void fn_80144194(u8* this_) {
     if (*(s32*)(this_ + 0x230) == 4) {
         DrawRec rec2;
         f32 m2[3][4];
-        bzbrRotScale(m2, (f32*)(this_ + 0x254), (f32*)(this_ + 0x250));
+        bzbrRotScaleActor(m2, this_);
         rec2.w18 = m2;
         s32 id = lbl_8049F408[*(s32*)(this_ + 0x244)] + 0x10;
         if (*(s32*)(this_ + 4) < 8) {
