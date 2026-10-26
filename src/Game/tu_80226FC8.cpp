@@ -172,12 +172,6 @@ extern "C" u8 fn_802317F0(s32,s32,void*,void*,u32);
 extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" s32 fn_8022F3DC(s32);
-static inline u8 gateEnter(s32 player, u32 param, void* pos, void* target) {
-    s32 rawRoom=(param>>24)&7;
-    s32 room=rawRoom+7;
-    if (!rawRoom) room=rawRoom;
-    return fn_802317F0(player,room,pos,target,param&0x7f);
-}
 #pragma opt_propagation off
 extern "C" void fn_80227530(u8* p, f32* out) {
     s32 i;
