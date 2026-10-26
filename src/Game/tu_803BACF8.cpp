@@ -25,10 +25,10 @@ struct CardSaveBlock {
 };
 
 static inline u32 calcCardChecksum(u8* data) {
-    u16 sum = 0;
+    u32 sum = 0;
     u16 inv = 0;
-    for (u32 i = 0; i < 0x1ffc; i += 2) {
-        u16 value = *(u16*)(data + i);
+    for (s32 remaining = 0x1ffc; remaining > 0; remaining -= 2, data += 2) {
+        u16 value = *(u16*)data;
         inv += ~value;
         sum += value;
     }
@@ -168,8 +168,8 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     CARDStat stat;
     CARDStat tailStat;
     s32 result;
-    u16* buf0;
-    u16* buf1;
+    CardSaveBlock* buf0;
+    CardSaveBlock* buf1;
     u32 chk0;
     u32 chk1;
     u8* res0;
@@ -215,12 +215,12 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
         memset(saveData0, 0, 0x1d4c);
         memset(saveData1, 0, 0x1d4c);
     }
-    buf0 = (u16*)saveBlock0;
-    buf1 = (u16*)saveBlock1;
-    *(u16*)buf0 = 0;
-    *(u16*)buf1 = 0;
-    memcpy((u8*)buf0 + 0xa, src, size);
-    memcpy((u8*)buf1 + 0xa, src, size);
+    buf0 = (CardSaveBlock*)saveBlock0;
+    buf1 = (CardSaveBlock*)saveBlock1;
+    buf0->revision = 0;
+    buf1->revision = 0;
+    memcpy(buf0->payload, src, size);
+    memcpy(buf1->payload, src, size);
     memcpy((u8*)buf0 + 0x262, saveData0, 0x1d4c);
     memcpy((u8*)buf1 + 0x262, saveData1, 0x1d4c);
     u8 v0 = lbl_80529DEC[0x245];
@@ -230,9 +230,9 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     ((u8*)buf0)[3] = ((u8*)buf1)[3] = v1;
     ((u8*)buf0)[4] = ((u8*)buf1)[4] = v2;
     chk0 = calcCardChecksum((u8*)buf0);
-    *(u32*)((u8*)buf0 + 0x1ffc) = chk0;
+    buf0->checksum = chk0;
     chk1 = calcCardChecksum((u8*)buf1);
-    *(u32*)((u8*)buf1 + 0x1ffc) = chk1;
+    buf1->checksum = chk1;
     result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x2000);
     if (result != 0) {
         return result;
