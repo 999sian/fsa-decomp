@@ -374,6 +374,12 @@ extern "C" void fn_80331D38(char* this_) {
     }
 }
 
+static inline void warpSqrtInPlace80331(f32& x) {
+    if (x <= 0.0f) return;
+    f32 y = (f32)__frsqrte(x);
+    y = 0.5f * y * (3.0f - x * (y * y));
+    x *= y;
+}
 static inline f32 warpSqrt80331(f32 x) {
     if (x <= 0.0f) return x;
     f32 y = (f32)__frsqrte(x);
@@ -419,7 +425,7 @@ extern "C" void fn_80331E6C(char* this_) {
                     f32 sx = dx * dx;
                     f32 sy = dy * dy;
                     f32 sq = sx + sy;
-                    sq = JGeometry::TUtilf::sqrt(sq);
+                    sq = warpSqrt80331(sq);
                     if (!(sq < lbl_80541F10)) continue;
                 }
             }
@@ -449,8 +455,9 @@ extern "C" void fn_80331E6C(char* this_) {
             }
             {
                 s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
-                room = v;
-                if (v != 0) room += 7;
+                s32 next = v + 7;
+                if (v == 0) next = v;
+                room = next;
             }
             kind = *(s32*)(o + 0x90) & 0x7f;
         } else if (r26 > 0) {
@@ -463,24 +470,31 @@ extern "C" void fn_80331E6C(char* this_) {
             }
             {
                 s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
-                room = v;
-                if (v != 0) room += 7;
+                s32 next = v + 7;
+                if (v == 0) next = v;
+                room = next;
             }
             kind = 6;
         }
 
         if (kind == 6 || kind == 0x14 || kind == 4 || kind == 0x20 || kind == 0x24) {
             if (*(f32*)(self + 0x14) >= lbl_80541EFC) goto end;
-        } else if (kind == 0 || kind == 3 || kind == 0x15 || kind == 0x23) {
+            goto warp;
+        }
+        if (kind == 0 || kind == 3 || kind == 0x15 || kind == 0x23) {
             if (*(f32*)(self + 0x40) >= lbl_80541E9C) goto end;
-        } else if (kind == 1 || kind == 2) {
+        }
+        if (kind == 1 || kind == 2) {
             if (*(f32*)(self + 0x40) <= lbl_80541E9C) goto end;
-        } else if (kind == 0x17) {
+        }
+        if (kind == 0x17) {
             if (*(f32*)(self + 0x3c) <= lbl_80541E9C) goto end;
-        } else if (kind == 0x18) {
+        }
+        if (kind == 0x18) {
             if (*(f32*)(self + 0x3c) >= lbl_80541E9C) goto end;
         }
 
+warp:
         *(JGeometry::TVec3<f32>*)(self + 0xc) = pos;
         *(s32*)(self + 4) = room;
         *(s32*)(self + 0x284) = 0x14;
@@ -539,7 +553,7 @@ extern "C" void fn_80331E6C(char* this_) {
         f32 sx = dx * dx;
         f32 sy = dy * dy;
         f32 sq = sx + sy;
-        sq = JGeometry::TUtilf::sqrt(sq);
+        sq = warpSqrt80331(sq);
         if (!(sq > lbl_80541F10)) goto end;
     }
 
@@ -945,8 +959,8 @@ extern "C" void fn_80333148(char* this_) {
             shift += 2;
         }
     }
-    s32 idx = 0;
-    *(u8*)(obj + 0x2a6) = idx;
+    s32 idx;
+    *(u8*)(obj + 0x2a6) = 0;
     *(float*)(obj + 0x2b8) = 0.0f;
     *(float*)(obj + 0x2bc) = 0.0f;
     *(float*)(obj + 0x2c0) = 0.0f;
@@ -957,7 +971,7 @@ extern "C" void fn_80333148(char* this_) {
     *(float*)(obj + 0x2c8) = 0.0f;
     *(float*)(obj + 0x2c4) = 0.0f;
     *(float*)(obj + 0x184) = 20.0f;
-    *(s32*)(obj + 0x284) = idx;
+    *(s32*)(obj + 0x284) = 0;
     *(JGeometry::TVec3<f32>*)(obj + 0x2e8) = *(JGeometry::TVec3<f32>*)(obj + 0xc);
 
     switch (*(s32*)(obj + 0x290)) {
@@ -996,7 +1010,10 @@ extern "C" void fn_80333148(char* this_) {
         *(s32*)(obj + 0x290) = 0;
         fn_8023061C(*(s32*)(obj + 0x25c), 0);
         idx = *(s32*)(obj + 0x25c);
+        goto checkFlag;
     case 5:
+        idx = 0;
+    checkFlag:
         if (fn_8022F9E4(idx, *(s32*)(obj + 0x198), 0, 0) == 1) {
             *(s32*)(obj + 0x230) = 3;
         } else {
