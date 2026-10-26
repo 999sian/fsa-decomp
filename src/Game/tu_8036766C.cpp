@@ -78,7 +78,7 @@ extern "C" const f32 lbl_80542C34;
 extern "C" const f32 lbl_80542C38;
 extern "C" const f64 lbl_80542C40;
 static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 height) {
- out.set(width * lbl_80542C28, height * lbl_80542C28, lbl_80542C24);
+ out.set(width * 0.5f, height * 0.5f, lbl_80542C24);
 }
 
 struct Tu80367888Owner : Actor {
@@ -105,13 +105,15 @@ extern "C" void fn_80367888(u8* p) {
             break;
         }
         *(f32*)(p + 0x10) = lbl_80542C0C + *(f32*)(p + 0x25c);
-    case 1:
+    case 1: {
+ s16 zero = 0;
         *(f32*)(p + 0x244) = *(f32*)(p + 0xc);
         *(f32*)(p + 0x248) = *(f32*)(p + 0x10);
         *(f32*)(p + 0x24c) = *(f32*)(p + 0x14);
         *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
-        *(s16*)(p + 0x240) = 0;
+        *(s16*)(p + 0x240) = zero;
         break;
+ }
     case 2:
         if (*(u8*)(p + 0x230) == 0) {
             if (*(s16*)(p + 0x240) >= 0) {
@@ -151,16 +153,17 @@ extern "C" void fn_80367888(u8* p) {
         s16 b;
         if (ang != 0 && (u16)ang != 0x8000) {
             *(s16*)(p + 0x240) = ang + 0x200;
-            b = *(s16*)(p + 0x240);
-            *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x244) + JGeometry::TVec3<f32>(lbl_80542C1C * JMath::sincosTable_.sinShort(b), lbl_80542C20 * JMath::sincosTable_.sinShort(b * 2), lbl_80542C24);
+            f32 y = lbl_80542C20 * JMath::sincosTable_.sinShort(*(s16*)(p + 0x240) * 2);
+ *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x244) + JGeometry::TVec3<f32>(lbl_80542C1C * JMath::sincosTable_.sinShort(*(s16*)(p + 0x240)), y, lbl_80542C24);
             break;
         }
         {
             u8* vid = *(u8**)((u8*)sManager__8JUTVideo + 4);
-            screen.set((f32)(s32)*(u16*)(vid + 4) * lbl_80542C28, (f32)(s32)*(u16*)(vid + 6) * lbl_80542C28, lbl_80542C24);
+            orbitScreenCenter(screen, *(u16*)(vid + 4), *(u16*)(vid + 6));
  screen.y -= lbl_80542C2C;
             fn_8022FE80(0, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
-            ((u8 (*)(s32, s32, s32, JGeometry::TVec3<f32>, s32))fn_8038BD08)(0, 0x83a, *(s32*)(p + 4), screen, 0x62);
+            s32 player = *(s32*)(p + 4);
+ ((u8 (*)(s32, s32, s32, JGeometry::TVec3<f32>, s32))fn_8038BD08)(0, 0x83a, player, screen, 0x62);
             *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
         }
         break;
@@ -186,7 +189,9 @@ extern "C" void fn_80367888(u8* p) {
         } else {
         *(f32*)(p + 0x14) -= lbl_80542C34;
         d = lbl_80542C38 - *(f32*)(p + 0x23c);
-        orbit.set(JMath::sincosTable_.cosShort(*(s16*)(p + 0x240)) * __fabsf(d), JMath::sincosTable_.sinShort(*(s16*)(p + 0x240)) * __fabsf(d), lbl_80542C24);
+        orbit.x = JMath::sincosTable_.cosShort(*(s16*)(p + 0x240)) * __fabsf(d);
+ orbit.y = JMath::sincosTable_.sinShort(*(s16*)(p + 0x240)) * __fabsf(d);
+ orbit.z = lbl_80542C24;
         if (*(f32*)(p + 0x23c) >= lbl_80542C38) {
             u8* q = *(u8**)(p + 0x254);
             ((Tu80367888Owner*)q)->setState(0xc);
