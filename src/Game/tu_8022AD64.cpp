@@ -1398,8 +1398,8 @@ static inline u8 playerMgrBusy()
 static inline int playerUnavailable(int index)
 {
     if (lbl_8053AC90 == NULL) return 0;
-    if (isPlayerEnabled(index)) return fn_80240670(lbl_8053AC90->players[index]);
-    return 1;
+    if (!isPlayerEnabled(index)) return 1;
+    return fn_80240670(lbl_8053AC90->players[index]);
 }
 static inline int playerRoom(int index)
 {
@@ -1411,22 +1411,22 @@ int fn_80231A50(void)
 {
     if (playerMgrBusy()) return -1;
     if (playerMgrByte(0x73)) return -1;
-    s32 x = 0;
-    s32 y = 0;
+    JGeometry::TVec2<s32> value;
+    value.zero();
     int selected = -1;
     for (int i = 0; i < 4; i++) {
         Player* player = lbl_8053AC90->players[i];
-        if (player != NULL && isPlayerEnabled(i) && !playerUnavailable(i)) {
+        if (player != NULL && isPlayerEnabled(i) && !(u8)playerUnavailable(i)) {
             s32 pos[2];
             if (!fn_802527B0(player, pos)) {
                 if (selected == -1) selected = i;
                 else return -1;
             } else {
-                if (x*x + y*y <= (s32)(lbl_8054000C * FLT_EPSILON)) {
-                    x = pos[0];
-                    y = pos[1];
+                if (value.x*value.x + value.y*value.y <= (s32)(lbl_8054000C * FLT_EPSILON)) {
+                    value.x = pos[0];
+                    value.y = pos[1];
                 } else {
-                    u8 same = x == pos[0] && y == pos[1];
+                    u8 same = value.x == pos[0] && value.y == pos[1];
                     if (!same) return -1;
                 }
             }
