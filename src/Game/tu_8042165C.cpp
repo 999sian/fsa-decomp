@@ -31,9 +31,7 @@ extern const f32 lbl_80543A48;
 extern const f32 lbl_80543A4C;
 
 extern u8* lbl_8053AAF8;
-static inline bool hudPlayerActive(u8 mask) {
-    return (lbl_8053AAF8[0x82] & mask) != 0;
-}
+
 extern u8 lbl_80529DEC[];
 extern "C" u32 fn_80237774(s32 i);
 extern "C" u8 fn_8022F514(s32 i);
@@ -277,11 +275,17 @@ static inline void ReleaseSlot(void** slot) {
     }
     *slot = 0;
 }
-extern "C" void fn_8042165C(u8* this_) {
+extern "C" void fn_8042165C(u8* self) {
     u8* base = (u8*)lbl_8048E1B8;
-    s32 j;
+    u8* flags;
+    u8* timers;
     s32 i;
+    s32 j;
     s32 k;
+    f32* ys;
+    u8* this_ = self;
+    f32* xs;
+    u32 mask;
     f32 pos[2];
 
     *(u16*)(this_ + 0x1f0) = 0;
@@ -289,26 +293,25 @@ extern "C" void fn_8042165C(u8* this_) {
     *(u16*)(this_ + 0x1f4) = 0;
     *(u16*)(this_ + 0x1f6) = 0;
     for (i = 0; i < 4; i++) {
-        s32 mask = 1 << i;
-        bool on = (lbl_8053AAF8[0x82] & (u8)mask) != 0;
+        mask = 1 << i;
+        s32 active = lbl_8053AAF8[0x82] & (u8)mask;
+        u32 on = (u32)(-active | active) >> 31;
         if (on && !fn_8022C8EC(i)) {
             for (k = 0; k < 4; k++) {
                 if (k != i) ((u16*)(this_ + 0x1f0))[k] |= (u16)mask;
             }
             if (fn_8023DE58(i) < 8) {
-                f32* xs;
-                f32* ys;
                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(i), 0, 0, pos);
-                xs = (f32*)(base + 0xfd0);
                 ys = (f32*)(base + 0xff8);
+                xs = (f32*)(base + 0xfd0);
                 for (j = 0; j < 10; j++) {
                     if (!fn_8043DF24(lbl_8053AED0, *xs, *ys, pos[0], pos[1], lbl_80543A40)) {
                         for (k = 0; k < 4; k++) {
                             ((u16*)(this_ + 0x1f0))[k] |= (u16)(1 << j);
                         }
                     }
-                    xs++;
                     ys++;
+                    xs++;
                 }
             }
         }
@@ -320,16 +323,16 @@ extern "C" void fn_8042165C(u8* this_) {
     }
 
     {
-        u8* flags = this_;
-        u8* timers = this_;
-        u8* row = base + 0x1020;
-        for (i = 0; i < 4; i++) {
+        flags = this_;
+        timers = this_;
+        base += 0x1020;
+        for (s32 i = 0; i < 4; i++) {
             if ((lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0 && !fn_8022C8EC(i) && fn_8023DE58(i) < 8) {
-                u8* p = row;
+                u8* p = base;
                 for (j = 0; j < 10; j++) {
                     if (((u16)(1 << *p) & *(u16*)(flags + 0x1f0)) == 0) {
-                        if (this_[i + 0x251] != row[j] && this_[i + 0x24d] == 0xff) {
-                            this_[i + 0x24d] = row[j];
+                        if (this_[i + 0x251] != base[j] && this_[i + 0x24d] == 0xff) {
+                            this_[i + 0x24d] = base[j];
                             *(s32*)(timers + 0x198) = 0;
                             for (k = 0; k < 4; k++) {
                                 ((u16*)(this_ + 0x1f0))[k] |= (u16)(1 << this_[i + 0x24d]);
@@ -352,9 +355,9 @@ extern "C" void fn_8042165C(u8* this_) {
                     }
                 }
             }
+            base += 10;
             flags += 2;
             timers += 4;
-            row += 10;
         }
     }
 }
@@ -423,15 +426,13 @@ extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag) {
 }
 #pragma opt_lifetimes reset
 extern "C" void fn_80421D78(u8* this_, s32 idx) {
-    s32 n;
-    u8* p;
+    u8* p2;
     u8* q;
+    s32 n;
     u32 s;
 
-    fn_8022EA0C(idx);
-    if (fn_802366CC() > 0) {
-        fn_8022EA0C(idx);
-        if (fn_802366CC() < 300) {
+    if ((fn_8022EA0C(idx), fn_802366CC()) > 0 &&
+        (fn_8022EA0C(idx), fn_802366CC()) < 300) {
             fn_8022EA0C(idx);
             n = fn_802366CC() / 60 + 1;
             q = this_ + idx;
@@ -444,36 +445,39 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
                 }
                 if (n < 10) {
                     s = fn_804030C4(0x54494d47, lbl_804B1434[n]);
-                    p = this_ + idx * 4;
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[0]), s);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[1]), s);
+                    u8* p = this_ + idx * 4;
+                    ((TimerPicture*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[0]))->changeTexture(s, 0);
+                    ((TimerPicture*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[1]))->changeTexture(s, 0);
                     if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 1) {
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] = 0;
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]))[0xb0] = 0;
+                        u8* pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]);
+                        pane[0xb0] = 0;
+                        pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]);
+                        pane[0xb0] = 0;
                     }
                 } else {
                     s = fn_804030C4(0x54494d47, lbl_804B1434[n / 10]);
-                    p = this_ + idx * 4;
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[0]), s);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[1]), s);
+                    p2 = this_ + idx * 4;
+                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[0]))->changeTexture(s, 0);
+                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[1]))->changeTexture(s, 0);
                     s = fn_804030C4(0x54494d47, lbl_804B1434[n % 10]);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]), s);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]), s);
-                    if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 0) {
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] = 1;
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]))[0xb0] = 1;
+                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[2]))->changeTexture(s, 0);
+                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[3]))->changeTexture(s, 0);
+                    if (((u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 0) {
+                        u8* pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[2]);
+                        pane[0xb0] = 1;
+                        pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[3]);
+                        pane[0xb0] = 1;
                     }
                 }
                 q[0x25e] = n;
             }
-        } else {
-            this_[idx + 0x25e] = 0;
-        }
     } else {
         this_[idx + 0x25e] = 0;
     }
-    if (*(s16*)(this_ + idx * 2 + 0x208) > 0) {
-        *(s16*)(this_ + idx * 2 + 0x208) = *(s16*)(this_ + idx * 2 + 0x208) - 1;
+    u8* timer = this_ + idx * 2;
+    s16 ticks = *(s16*)(timer + 0x208);
+    if (ticks > 0) {
+        *(s16*)(timer + 0x208) = ticks - 1;
     }
 }
 
