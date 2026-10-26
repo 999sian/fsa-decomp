@@ -17,21 +17,32 @@ extern "C" char lbl_804724E0[];
 extern "C" void fn_802F745C(void*, const void*, void*, DrawRec*);
 static inline void rotation80359E18(f32 m[3][4], f32 scale, s16 angle)
 {
-    f32 sx = ((f32*)(sincosTable___5JMath + ((u16)angle >> 5) * 8))[0];
-    f32 sy = ((f32*)sincosTable___5JMath)[0];
-    f32 sz = sy;
-    f32 cx = ((f32*)(sincosTable___5JMath + ((u16)angle >> 5) * 8))[1];
-    f32 cy = ((f32*)sincosTable___5JMath)[1];
-    f32 cz = cy;
-    m[0][0] = scale * (cz * cy);
-    m[0][1] = scale * ((sx * sy) * cz - cx * sz);
-    m[0][2] = scale * ((cx * cz) * sy + sx * sz);
-    m[1][0] = scale * (cz * sz);
-    m[1][1] = scale * ((sx * sy) * sz + cx * cz);
-    m[1][2] = scale * ((cx * sz) * sy - sx * cz);
-    m[2][0] = scale * -sy;
-    m[2][1] = scale * (sx * cy);
-    m[2][2] = scale * (cx * cy);
+    u32 offset = ((u16)angle >> 5) * 2;
+    f32* table = (f32*)sincosTable___5JMath;
+    f32 sy = table[0];
+    f32 cy = table[1];
+    f32 sx = table[offset];
+    f32 cx = (table + 1)[offset];
+    f32 cc = cy * cy;
+    f32 ssx = sx * sy;
+    f32 ccx = cx * cy;
+    f32 csx = cx * sy;
+    f32 scx = sx * cy;
+    f32 cs = cy * sy;
+    f32 negsy = -sy;
+    f32 r01 = ssx * cy - csx;
+    f32 r11 = ssx * sy + ccx;
+    f32 r02 = ccx * sy + ssx;
+    f32 r12 = csx * sy - scx;
+    m[0][0] = scale * cc;
+    m[1][0] = scale * cs;
+    m[2][0] = scale * negsy;
+    m[0][1] = scale * r01;
+    m[1][1] = scale * r11;
+    m[2][1] = scale * scx;
+    m[0][2] = scale * r02;
+    m[1][2] = scale * r12;
+    m[2][2] = scale * ccx;
 }
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
@@ -699,6 +710,49 @@ extern "C" void fn_803597EC(u8* self) {
     if (vel < 0) {
         if (ang > 0x4000 && *(s16*)(self + 0x230) <= 0x4000) {
             *(u8*)(self + 0x244) ^= 1;
+        }
+    }
+}
+
+extern "C" void fn_80359E18(u8* self)
+{
+    DrawRec rec;
+    Mtx mtx;
+    mtx[0][3] = mtx[1][3] = mtx[2][3] = lbl_8054286C;
+    if (((*(u32*)(self + 0x90) >> 7) & 0x1f) == 4 && *(s16*)(self + 0x230) == 0) {
+        rotation80359E18(mtx, lbl_80542878, *(s16*)(self + 0x23c));
+    } else {
+        rotation80359E18(mtx, lbl_80542878, *(s16*)(self + 0x230));
+    }
+    rec.w18 = mtx;
+    rec.b21 = 1;
+    rec.b1d = -2;
+    rec.b25 = 1;
+    if ((*(u32*)(self + 0x90) & 0x7f) == 1) rec.b24 = 1;
+    u32 resource = lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f];
+    if (*(s32*)(self + 4) < 8) {
+        void* texture = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18('TIMG', resource);
+        fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), self + 0xc, texture, &rec);
+    }
+    if (((*(u32*)(self + 0x90) >> 7) & 0x1f) < 2) {
+        rec.b1c = 0xff;
+        rec.b1d = -2;
+        mtx[0][3] = mtx[1][3] = mtx[2][3] = lbl_8054286C;
+        mtx[0][0] = 1.5f;
+        mtx[0][1] = lbl_8054286C;
+        mtx[0][2] = lbl_8054286C;
+        mtx[1][0] = lbl_8054286C;
+        mtx[1][1] = 1.5f;
+        mtx[1][2] = lbl_8054286C;
+        mtx[2][0] = lbl_8054286C;
+        mtx[2][1] = lbl_8054286C;
+        mtx[2][2] = 1.5f;
+        rec.w18 = mtx;
+        void* texture = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18('TIMG', (u32)lbl_804724E0);
+        JGeometry::TVec3<f32> pos;
+        pos.set(*(f32*)(self + 0xc), *(f32*)(self + 0x10), lbl_8054286C);
+        if (*(s32*)(self + 4) < 8) {
+            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, texture, &rec);
         }
     }
 }
