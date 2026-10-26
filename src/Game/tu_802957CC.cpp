@@ -241,6 +241,8 @@ struct HOUSLinks {
 };
 
 
+static inline f32 addHouseOffset(f32 value, const f32 offset) { value += offset; return value; }
+
 static inline s32 WarpDestination(const char* actor) {
     s32 room = (*(const u32*)(actor + 0x90) >> 24) & 7;
     s32 result = room + 7;
@@ -1351,17 +1353,17 @@ extern "C" void fn_80299AD0(char* self) {
     m = (char*)fn_802D6A9C();
     src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
     ok = 1;
-    memcpy(&pt.area, src, sizeof(pt.area));
     pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
+    HouseCopyBounds(pt.area, *src);
     pt.pos.x += *(f32*)(self + 0x68);
-    pt.pos.x += 8.0f;
-    x0 = (pt.area.i.x -= -32.0f);
-    y0 = (pt.area.i.y -= -32.0f);
-    x1 = (pt.area.f.x += -32.0f);
-    y1 = (pt.area.f.y += -32.0f);
+    pt.pos.x += lbl_80540678;
+    x0 = (pt.area.i.x -= lbl_80540670);
+    y0 = (pt.area.i.y -= lbl_80540670);
+    x1 = (pt.area.f.x += lbl_80540670);
+    y1 = (pt.area.f.y += lbl_80540670);
     pt.pos.y += *(f32*)(self + 0x64);
-    pt.pos.y += 8.0f;
-    pt.pos.z = 0.0f;
+    pt.pos.y += lbl_80540678;
+    pt.pos.z = lbl_80540674;
     for (i = 0; i < 6; i++) {
         if (!fn_802A1554(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
             ok = 0;
@@ -1375,7 +1377,7 @@ extern "C" void fn_80299AD0(char* self) {
             ok = 0;
             break;
         }
-        pt.pos.y += 16.0f;
+        pt.pos.y += lbl_8054067C;
     }
     if (!fn_802957CC(self, 0)) {
         ok = 0;
@@ -1384,28 +1386,28 @@ extern "C" void fn_80299AD0(char* self) {
         if (dir == 0) {
             fn_80238E08(*(void**)(self + 0x198));
         }
-        *(f32*)(self + 0x3c) = 0.32f;
+        *(f32*)(self + 0x3c) = lbl_805406F0;
         *(u8*)(self + 0x2b8) = 1;
         fn_801F0E34(self, 0x30004, 0);
-        *(f32*)(self + 0x250) = 16.0f;
+        *(f32*)(self + 0x250) = lbl_8054067C;
         *(s32*)(self + 0x248) = 0;
         if (*(u8*)(self + 0x24c) == 0) {
             *(u8*)(self + 0x24c) = 1;
             gridBase = *(JGeometry::TVec3f*)(self + 0xc);
             gridBase.x += *(f32*)(self + 0x60);
             gridBase.y += *(f32*)(self + 0x64);
-            gridBase.x += 8.0f;
-            gridBase.y += 8.0f;
-            gridBase.z = 0.0f;
+            gridBase.x += lbl_80540678;
+            gridBase.y += lbl_80540678;
+            gridBase.z = lbl_80540674;
             grid = gridBase;
             for (i = 0; i < 6; i++) {
                 grid.y = gridBase.y;
                 for (j = 0, col = self; j < 6; j++, col += 2) {
                     fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
                     fn_802A381C(lbl_8053AC98, &grid, 1, 0);
-                    grid.y += 16.0f;
+                    grid.y += lbl_8054067C;
                 }
-                grid.x += 16.0f;
+                grid.x += lbl_8054067C;
                 self += 0xc;
             }
         }
