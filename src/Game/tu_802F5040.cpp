@@ -169,6 +169,15 @@ struct Tu802F5040Effects {
     u8 pad[0xbf9c];
     Tu802F5040Effect entries[16];
 };
+struct Tu802F6800Tables {
+    u8 pad[0x1720];
+    GXColor primary[18];
+    GXColor additive[18];
+    s32 lifetime[18];
+    f32 scale[18];
+    s32 period[18];
+};
+
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
     u8* m_tbl[8];
@@ -1597,11 +1606,11 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     } else {
         base = src;
     }
-    u32 offset = idx * 4;
+    s32 offset = idx * 4;
     u8* table = this_ + offset;
     u32 length = len;
     d = *(u8**)(table + 0xc) + dstOff;
-    s = srcOff + base;
+    s = (u8*)(srcOff + (u32)base);
     for (i = 0; (u32)i < length; i += 2) {
         if (i != 0 && !(i & 0x1f)) v=0;
         else {
@@ -1637,7 +1646,9 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
         t[0x1b5] = x;
     }
     s = *(u8**)(table + 0xc) + dstOff;
-    d = *(u8**)((char*)this_ + offset + 0x18) + dstOff;
+    u8* outputTable = this_;
+    outputTable += offset;
+    d = *(u8**)(outputTable + 0x18) + dstOff;
     for (i = 0; (u32)i < length; i += 2) {
         u16 v = (s[i] << 8) | s[i + 1];
         if (v & 0x8000) {
