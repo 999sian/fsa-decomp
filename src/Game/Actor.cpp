@@ -70,7 +70,7 @@ struct EffArgs {
     u32 x30, x34, x38;
 };
 
-static inline void EffArgsSetLayer(EffArgs& args, const u8 a, const u8 b) {
+static inline void EffArgsSetLayer(EffArgs& args, const u8 b, const u8 a) {
     args.b1c = a;
     args.b1d = b;
 }
@@ -2690,20 +2690,17 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6,
     args.x38 = 2;
     args.f10.b[3] = 0xdf;
     if (zPositive) {
-        f32 t = (f32)args.f10.b[3] - lbl_8053F74C * z;
-        f32 m = lbl_8053F778 >= t ? lbl_8053F778 : t;
+        f32 m;
+        f32 t;
+        t = (f32)args.f10.b[3] - lbl_8053F74C * z;
+        m = EffAlphaClamp(lbl_8053F778, t);
         args.f10.b[3] = (u8)(s32)m;
     }
     if (p3 != 0) {
         if ((mask & 0x400) != 0) {
             args.f10.b[3] = (u8)((args.f10.b[3] * p3[0x13]) / 0xff);
         }
-        u8 y;
-        u8 x;
-        x = p3[0x1c];
-        y = p3[0x1d];
-        args.b1c = x;
-        args.b1d = y;
+        EffArgsSetLayer(args, p3[0x1c], p3[0x1d]);
     }
     args.b1d = args.b1d - 1;
     args.w28 = 1;
