@@ -251,7 +251,9 @@ static inline s32 WarpDestination(const char* actor) {
 }
 static inline s32 HouseDestination(const char* actor) {
     int room = (*(const u32*)(actor + 0x90) >> 7) & 31;
-    return (room + 7) & ~-(room == 0);
+    int zero = room == 0;
+    s32 result = room + 7;
+    return result & ~-zero;
 }
 static inline bool WarpDestinationIs(const char* other, s32 room) { return room == WarpDestination(other); }
 
@@ -1878,7 +1880,7 @@ extern "C" void fn_8029A974(char* self) {
 }
 #pragma opt_common_subs reset
 extern "C" void fn_8029AE58(char* p) {
-    f32 center = lbl_80540678;
+    const f32 center = lbl_80540678;
     JGeometry::TVec3f v;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f origin;
@@ -1934,7 +1936,7 @@ extern "C" void fn_8029AE58(char* p) {
         if (stage != *(s32*)(other + 0x248)) continue;
         {
             s32 otherRoom = *(s32*)(other + 4);
-            if (otherRoom == HouseDestination(p) && *(s32*)(p + 4) == WarpDestination(other)) {
+            if (otherRoom == HouseDestination(p) && WarpDestinationIs(other, *(s32*)(p + 4))) {
                 if (*(s32*)(p + 0x29c) < 4) {
                     ((HOUSLinks*)p)->outgoing[((HOUSLinks*)p)->outgoingCount] = warp;
                     *(s32*)(p + 0x29c) += 1;
