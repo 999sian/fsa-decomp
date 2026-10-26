@@ -649,16 +649,28 @@ extern "C" bool fn_801CF144(const u8* this_) {
 extern "C" s32 fn_801CF6B8(u8* this_);
 extern "C" s32 fn_801CD354(s32 side);
 extern void* lbl_8053AAF8;
+static inline s32 choosePointDirection(const u8* self, const f32* pt, u8 swap) {
+    f32 dx = pt[0] - *(const f32*)(self + 0xc);
+    f32 dy = pt[1] - *(const f32*)(self + 0x10);
+    f32 absY = __fabsf(dy);
+    f32 absX = __fabsf(dx);
+    if ((absX > absY && swap == 0) || (absX <= absY && swap == 1)) {
+        return *(const f32*)(self + 0xc) < pt[0] ? 0 : 1;
+    }
+    return *(const f32*)(self + 0x10) < pt[1] ? 2 : 3;
+}
 extern "C" s32 fn_801CF1B0(u8* this_, u8 flag, f32 a, f32 b) {
-    s32 i = 0;
+    s32 i;
     s32 best = -1;
     s32 ok;
-    u8 found = 0;
+    u8 found;
     u8* q = this_;
     f32 minDist = *(f32*)__float_max;
     f32 aSq = a * a;
     s32 ret = flag;
 
+    for (i = 0; i < 4; i++, q += 12) {
+    found = 0;
     if (fn_801CCFE4(i)) {
         ok = 0;
         switch (*(u32*)(this_ + 0x1a0)) {
@@ -672,7 +684,8 @@ extern "C" s32 fn_801CF1B0(u8* this_, u8 flag, f32 a, f32 b) {
         case 0x4E415649:
         case 0x545A4F4B: {
             s32 room = *(s32*)(this_ + 4);
-            if (fn_8023DE58(i) == room) {
+            s32 owner = fn_8023DE58(i);
+            if (owner == room) {
                 ok = 1;
             }
             break;
@@ -702,12 +715,10 @@ extern "C" s32 fn_801CF1B0(u8* this_, u8 flag, f32 a, f32 b) {
         }
     }
 
-    for (; i < 4; i++, q += 12) {
         if (found) {
-            f32 dx = *(f32*)(q + 0x1ac) - *(f32*)(this_ + 0xc);
-            f32 dy = *(f32*)(q + 0x1b0) - *(f32*)(this_ + 0x10);
-            f32 dist = dy * dy + dx * dx;
-            if (dist < minDist && (a == lbl_8053EFC4 || dist <= aSq)) {
+            JGeometry::TVec2<f32> delta(*(f32*)(q + 0x1ac) - *(f32*)(this_ + 0xc), *(f32*)(q + 0x1b0) - *(f32*)(this_ + 0x10));
+            f32 dist = delta.squared();
+            if (dist < minDist && (lbl_8053EFC4 == a || dist <= aSq)) {
                 minDist = dist;
                 best = i;
             }
@@ -715,33 +726,33 @@ extern "C" s32 fn_801CF1B0(u8* this_, u8 flag, f32 a, f32 b) {
     }
 
     if (best < 0) {
-        return fn_801CF6B8(this_);
-    }
-
-    {
-        u8 rnd = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < b;
+        ret = fn_801CF6B8(this_);
+    } else {
+        u8 rnd = 0;
+        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < b) rnd = 1;
         f32* pt = (f32*)(this_ + 0x1ac + best * 12);
         s32 dir;
         f32 dx = pt[0] - *(f32*)(this_ + 0xc);
         f32 dy = pt[1] - *(f32*)(this_ + 0x10);
 
-        if (__fabsf(dx) > __fabsf(dy) && rnd == 1) {
-            dir = *(f32*)(this_ + 0xc) >= pt[0] ? 1 : 0;
+        f32 absY = __fabsf(dy); f32 absX = __fabsf(dx);
+        if ((absX > absY && rnd == 0) || (absX <= absY && rnd == 1)) {
+            dir = *(f32*)(this_ + 0xc) < pt[0] ? 0 : 1;
         } else {
-            dir = *(f32*)(this_ + 0x10) >= pt[1] ? 3 : 2;
+            dir = *(f32*)(this_ + 0x10) < pt[1] ? 2 : 3;
         }
 
         ret = dir;
         if (flag) {
             if (dir == *(s32*)(this_ + 0x98)) {
                 s32 side;
-                ret = fn_801CF720(this_, dir);
+                ret = fn_801CF720(this_, *(s32*)(this_ + 0x98));
                 dx = pt[0] - *(f32*)(this_ + 0xc);
                 dy = pt[1] - *(f32*)(this_ + 0x10);
                 if (__fabsf(dx) > __fabsf(dy)) {
-                    side = *(f32*)(this_ + 0xc) >= pt[0] ? 1 : 0;
+                    side = *(f32*)(this_ + 0xc) < pt[0] ? 0 : 1;
                 } else {
-                    side = *(f32*)(this_ + 0x10) >= pt[1] ? 3 : 2;
+                    side = *(f32*)(this_ + 0x10) < pt[1] ? 2 : 3;
                 }
                 if (ret == fn_801CD354(side)) {
                     ret = fn_801CF798(this_, ret, *(s32*)(this_ + 0x98));
@@ -750,10 +761,11 @@ extern "C" s32 fn_801CF1B0(u8* this_, u8 flag, f32 a, f32 b) {
         } else if (fn_801CFCF0(this_, dir)) {
             dx = pt[0] - *(f32*)(this_ + 0xc);
             dy = pt[1] - *(f32*)(this_ + 0x10);
-            if (__fabsf(dx) > __fabsf(dy) && rnd == 0) {
-                dir = *(f32*)(this_ + 0xc) >= pt[0] ? 1 : 0;
+            f32 absY = __fabsf(dy); f32 absX = __fabsf(dx);
+            if ((absX > absY && rnd != 0) || (absX <= absY && !rnd == 1)) {
+                dir = *(f32*)(this_ + 0xc) < pt[0] ? 0 : 1;
             } else {
-                dir = *(f32*)(this_ + 0x10) >= pt[1] ? 3 : 2;
+                dir = *(f32*)(this_ + 0x10) < pt[1] ? 2 : 3;
             }
             ret = dir;
         }
