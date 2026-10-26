@@ -93,6 +93,10 @@ struct SubObj {
     virtual SubObj* w13(u64 x);
 };
 
+static inline J2DPicture* GetPicture(u8* this_, u64 key) {
+    return (J2DPicture*)(*(SubObj**)(this_ + 4))->w13(key);
+}
+
 typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
 
 // Virtual slot 68 of object returned by SubObj::w13: calls (u32, 0).
@@ -265,13 +269,13 @@ extern "C" void fn_80418D08(u8* self, s32 idx, s32 flag) {
 }
 
 extern "C" void fn_8041918C(u8* this_, s32 idx) {
+    u8* p2;
     u8* q;
     s32 n;
+    u32 s;
 
-    fn_8022EA0C(idx);
-    if (fn_802366CC() > 0) {
-        fn_8022EA0C(idx);
-        if (fn_802366CC() < 300) {
+    if ((fn_8022EA0C(idx), fn_802366CC()) > 0 &&
+        (fn_8022EA0C(idx), fn_802366CC()) < 300) {
             fn_8022EA0C(idx);
             n = fn_802366CC() / 60 + 1;
             q = this_ + idx;
@@ -283,37 +287,43 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
                     n = 0;
                 }
                 if (n < 10) {
-                    u32 s = fn_804030C4(0x54494d47, lbl_804B139C[n]);
+                    s = fn_804030C4(0x54494d47, lbl_804B139C[n]);
                     u8* p = this_ + idx * 4;
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]), s);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]), s);
+                    ((J2DPicture*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]))->changeTexture((const ResTIMG*)s, 0);
+                    ((J2DPicture*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]))->changeTexture((const ResTIMG*)s, 0);
                     if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 1) {
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] = 0;
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]))[0xb0] = 0;
+                        u8* pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]);
+                        pane[0xb0] = 0;
+                        pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]);
+                        pane[0xb0] = 0;
                     }
                 } else {
-                    u32 s = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
-                    u8* p = this_ + idx * 4;
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]), s);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]), s);
+                    void* image = (void*)fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
+                    p2 = this_ + idx * 4;
+                    ((J2DPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048DDD0[0]))->changeTexture((const ResTIMG*)image, 0);
+                    ((J2DPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048DDD0[1]))->changeTexture((const ResTIMG*)image, 0);
                     s = fn_804030C4(0x54494d47, lbl_804B139C[n % 10]);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]), s);
-                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]), s);
-                    if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 0) {
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] = 1;
-                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]))[0xb0] = 1;
+                    ((J2DPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048DDD0[2]))->changeTexture((const ResTIMG*)s, 0);
+                    ((J2DPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048DDD0[3]))->changeTexture((const ResTIMG*)s, 0);
+                    if (((u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 0) {
+                        u8* pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048DDD0[2]);
+                        const u64 key = lbl_8048DDD0[3];
+                        pane[0xb0] = 1;
+                        pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(key);
+                        pane[0xb0] = 1;
                     }
                 }
                 q[0x294] = n;
             }
-        } else {
-            this_[idx + 0x294] = 0;
-        }
     } else {
         this_[idx + 0x294] = 0;
     }
-    if (*(s16*)(this_ + idx * 2 + 0x234) > 0) {
-        *(s16*)(this_ + idx * 2 + 0x234) = *(s16*)(this_ + idx * 2 + 0x234) - 1;
+    s32 ticks;
+    u8* timer;
+    timer = this_ + idx * 2;
+    ticks = *(s16*)(timer + 0x234);
+    if (ticks > 0) {
+        *(s16*)(timer + 0x234) = ticks - 1;
     }
 }
 
