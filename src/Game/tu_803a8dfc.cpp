@@ -2167,7 +2167,7 @@ struct IntroTags {
 static inline void IntroFade(Menu_Intro* p, const u64* tags, const s32 count, const s32 elapsed, const s32 duration, const u32 alphaOffset) {
     if (p->cur < 2) {
         for (s32 k = 0; k < count; k++) {
-            p->screens[p->cur]->search(tags[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
+            p->screens[p->cur]->search(((const u64*)tags)[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
         }
     }
 }
@@ -2180,7 +2180,7 @@ extern const u8 lbl_80476208[];
 
 // NONMATCHING (97.5%): register allocation of the timing locals.
 extern "C" void fn_803B03E8(Menu_Intro* p) {
-    IntroTags* tbl = (IntroTags*)lbl_80476208;
+    const IntroTags& tbl = *(const IntroTags*)lbl_80476208;
     s32 d;
     s32 t0 = *(s16*)(lbl_8050DB0C + 0x260);
     s32 t1 = *(s16*)(lbl_8050DB0C + 0x262);
@@ -2197,12 +2197,12 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
         f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
         f32 y = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
         p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c - y);
-        IntroFade(p, tbl->title, 13, d, t1, 0x4c9);
+        IntroFade(p, tbl.title, 13, d, t1, 0x4c9);
     }
     if (p->timer > start && p->timer <= start + dur + gap * (p->count - 1)) {
         s32 off = 0;
-        u64 (*r3)[3] = (u64 (*)[3])tbl->p3;
-        u64 (*r2)[2] = (u64 (*)[2])tbl->p2;
+        const u64 (*r3)[3] =tbl.p3;
+        const u64 (*r2)[2] =tbl.p2;
         for (s32 i = 0; i < p->count; i++, r3++, r2++) {
             if (p->timer >= start + off) {
                 s32 d = p->timer - (start + off);
@@ -2840,14 +2840,15 @@ extern "C" void fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_80458FF0(void* mgr, u32 id, s32 a, s32 b);
 extern void* sManager__8JUTVideo;
 extern "C" void fn_803B6768(void* this_) {
-    s32* c320 = (s32*)this_;
-    s16* c460 = (s16*)this_;
-    u8* c2f0 = (u8*)this_;
+    s32 count;
+    s32* c320;
+    s16* c460;
+    u8* c2f0;
     s32 i;
     u8* p = (u8*)this_;
-    s32 count = 0;
-    for (i = 0; i < 4; i++) {
-        if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) {
+    count = 0;
+    for (s32 j = 0; j < 4; j++) {
+        if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << j)) {
             count++;
         }
     }
@@ -2913,10 +2914,10 @@ extern "C" void fn_803B6768(void* this_) {
         *(s32*)((u8*)c320 + 0x390) = 0;
         *(s32*)((u8*)c320 + 0x3a0) = 0;
         *(s32*)((u8*)c320 + 0x3b0) = 0;
+        *(u8*)(p + 0x4ac + i) = 0;
         *(s32*)((u8*)c320 + 0x3c0) = 0x3e;
         *(s32*)((u8*)c320 + 0x3d0) = 0;
         *(s32*)((u8*)c320 + 0x3e0) = 0;
-        *(u8*)(p + 0x4ac + i) = 0;
         *(u8*)(p + 0x4b0 + i) = 0;
         *(u8*)(p + 0x4b4 + i) = 0xff;
         *(u8*)(p + 0x4b8 + i) = 0xff;
@@ -2924,17 +2925,22 @@ extern "C" void fn_803B6768(void* this_) {
         *(s16*)((u8*)c460 + 0x460) = 0;
         if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) {
             J2DPane* pane = *(J2DPane**)((u8*)c320 + 0x158);
+            f32 x0;
             f32 width = *(f32*)((u8*)pane + 0x28) - *(f32*)((u8*)pane + 0x20);
-            f32 x0 = *(f32*)pane->getBounds();
+            s32 texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
+            x0 = *(f32*)pane->getBounds();
             f32 cx = *(f32*)(*(J2DPane**)(p + 0x168))->getBounds() + x0;
-            u16 texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
-            *(f32*)(c2f0 + 0x2f0) = 256.0f * (width * 0.5f + cx) / (f32)texW;
+            f32 scale = lbl_805433CC;
+            f32 center = width * lbl_805433E8 + cx;
+            *(f32*)(c2f0 + 0x2f0) = scale * center / (f32)texW;
 
-            u16 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+            s32 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+            pane = *(J2DPane**)((u8*)c320 + 0x158);
+            f32 by = ((f32*)(*(J2DPane**)(p + 0x168))->getBounds())[1];
             f32 h = *(f32*)((u8*)pane + 0x2c) - *(f32*)((u8*)pane + 0x24);
-            f32 y = *(f32*)pane->getBounds() + h;
-            *(f32*)(c2f0 + 0x2f4) = 192.0f * (*(f32*)(p + 0x3f0) + y - 526.0f - 18.0f) / (f32)texH;
-            *(f32*)(c2f0 + 0x2f8) = 0.0f;
+            f32 y = by + h;
+            *(f32*)(c2f0 + 0x2f4) = lbl_805433D0 * (*(f32*)(p + 0x3f0) + y - lbl_805433FC - lbl_80543400) / (f32)texH;
+            *(f32*)(c2f0 + 0x2f8) = lbl_805433C8;
         }
     }
     *(u8*)(p + 0x4c3) = 0;
