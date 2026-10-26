@@ -144,6 +144,7 @@ static inline s32 getFileIcon(u32 slot) {
     }
     return ((const s32*)(lbl_804765D0 + 0x730))[7];
 }
+#pragma opt_loop_invariants reset
 
 static inline void startObj(char* this_, s32 off) {
     f32 d = *(f32*)(*(char**)(this_ + 0x3c) + 0xc) - *(f32*)(*(char**)(this_ + 0x38) + 0xc);
