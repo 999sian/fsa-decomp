@@ -690,7 +690,7 @@ struct MsgProc {
         str2c0[m2d0++] = -2;
         str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0 && lineRow(lineTab[layout->m15c], slotLine[slot]) == 0) {
+        if (layout->m1a1 != 0 && lineRow(slotLine[slot], lineTab[layout->m15c]) == 0) {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
         } else {
             str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
@@ -1098,7 +1098,8 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         n *= -1;
         neg = true;
     }
-    if (p->m2d6 && !p->testBit(p->cur)) {
+    if (p->m2d6) {
+        if (!p->testBit(p->cur)) {
             MsgLayout* l = p->layout;
             if (l->m16c == 0 || !p->testBit(p->cur)) {
                 f32 base;
@@ -1124,6 +1125,7 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
                 }
             }
             p->m2d6 = 0;
+        }
     }
     char buf[3];
     buf[2] = 0;
