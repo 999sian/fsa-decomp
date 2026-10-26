@@ -177,29 +177,61 @@ extern "C" void fn_801D1C18(void*);
 extern s32 lbl_804652A4[];
 extern f32 lbl_8053CD38, lbl_8053CD3C, lbl_8053CD40, lbl_8053CD44;
 #pragma opt_propagation off
+#pragma opt_propagation off
+static inline void crnvSetState(u8* p, s32 state) {
+*(s32*)(p+0x230)=state;
+switch (*(s32*)(p+0x230)) {
+case 0: *(s32*)(p+0x238)=-1; break;
+case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
+case 3: {
+u32 zero; s32 i; u8* q;
+zero=0; i=zero; q=p;
+do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
+detach__5ActorFv(p); break;
+}
+}
+}
+static inline s32 crnvTryTalk(u8* p,s32 msg) {
+s32 r;
+
+JGeometry::TVec3f pos;
+JGeometry::TBox2f box2;
+box2.set(*(JGeometry::TBox2f*)(p+0x60));
+box2.i.x += *(f32*)(p+0xc); box2.i.y += *(f32*)(p+0x10); box2.f.x += *(f32*)(p+0xc); box2.f.y += *(f32*)(p+0x10);
+fn_8022FEB8(&box2,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
+r=fn_8022FD8C(*(s32*)(p+0x198));
+if(r<0 || r>=4) return -1;
+if(!fn_802300EC(r)) return -1;
+{ s32 handle=*(s32*)(p+0x198); s32 area=*(s32*)(p+4); if(fn_8038AD24(r,msg,handle,area,(pos = *(JGeometry::TVec3f*)(p+0xc),pos),0x28)) return r; }
+return -1;
+}
+#pragma opt_propagation reset
+
 extern "C" void fn_80133DD0(u8* p) {
 v03__5ActorFv(p);
 JGeometry::TBox2f box;
 box.set(*(JGeometry::TBox2f*)(p+0x60));
-box.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+box.i.x += *(f32*)(p+0xc); box.i.y += *(f32*)(p+0x10); box.f.x += *(f32*)(p+0xc); box.f.y += *(f32*)(p+0x10);
 switch(*(s32*)(p+0x230)) {
 case 0: {
 fn_801339EC(p);
+s32 r;
 s32 msg=lbl_804652A4[*(s32*)(p+0x234)];
+JGeometry::TVec3f pos;
 JGeometry::TBox2f box2;
 box2.set(*(JGeometry::TBox2f*)(p+0x60));
-box2.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+box2.i.x += *(f32*)(p+0xc); box2.i.y += *(f32*)(p+0x10); box2.f.x += *(f32*)(p+0xc); box2.f.y += *(f32*)(p+0x10);
 fn_8022FEB8(&box2,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
-s32 r=fn_8022FD8C(*(s32*)(p+0x198));
+r=fn_8022FD8C(*(s32*)(p+0x198));
 if(r<0 || r>=4) r=-1;
 else if(!fn_802300EC(r)) r=-1;
-else if(fn_8038AD24(r,msg,*(s32*)(p+0x198),*(s32*)(p+4),*(JGeometry::TVec3f*)(p+0xc),0x28)) {} else r=-1;
+else { s32 handle=*(s32*)(p+0x198); s32 area=*(s32*)(p+4); if(fn_8038AD24(r,msg,handle,area,(pos = *(JGeometry::TVec3f*)(p+0xc),pos),0x28)) {} else r=-1; }
 *(s32*)(p+0x238)=r;
 if(*(s32*)(p+0x238)>=0) { *(s32*)(p+0x230)=1; switch (*(s32*)(p + 0x230)) {
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-s32 i=0; u8* q=p; u32 zero=0;
+u32 zero; s32 i; u8* q; zero=0; i=zero; q=p;
 do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
 detach__5ActorFv(p); break;
 }
@@ -212,7 +244,7 @@ if(fn_80388CAC(*(s32*)(p+0x238),*(s32*)(p+0x198))) { *(s32*)(p+0x230)=0; switch 
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-s32 i=0; u8* q=p; u32 zero=0;
+u32 zero; s32 i; u8* q; zero=0; i=zero; q=p;
 do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
 detach__5ActorFv(p); break;
 }
@@ -226,7 +258,7 @@ if(*(f32*)(p+0x14)>=lbl_8053CD44) { *(s32*)(p+0x230)=3; switch (*(s32*)(p + 0x23
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-s32 i=0; u8* q=p; u32 zero=0;
+u32 zero; s32 i; u8* q; zero=0; i=zero; q=p;
 do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
 detach__5ActorFv(p); break;
 }
