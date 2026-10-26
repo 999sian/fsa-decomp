@@ -73,7 +73,7 @@ extern "C" void* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(void* a, s32 room, void* v, void* h, s32 c);
 extern "C" u8 fn_802A1490(void* g, void* v);
 extern "C" u8 fn_8023B0F4(s32 idx, void* box, s32 room, s32 a, f32 f);
-extern "C" const JGeometry::TVec3f lbl_8046C268[];
+extern "C" JGeometry::TVec3f lbl_8046C268[];
 extern "C" f32 lbl_8046C298[];
 extern "C" u8 fn_802957CC(void* p, u8 mode);
 extern "C" s32 fn_80239108(void* h);
@@ -287,6 +287,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     char* self = (char*)p;
     u8 ok = 1;
     s32 i;
+    s32 probeStep;
     s32 room;
     char* m;
     JGeometry::TBox2f* src;
@@ -298,10 +299,10 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
 
     pt.save = *(JGeometry::TVec3f*)(self + 0xc);
     const JGeometry::TVec3f& direction = lbl_8046C268[mode];
-    const f32 dy = direction.y;
-    const f32 dx = direction.x;
+    f32 dx = direction.x;
+    f32 dy = direction.y;
     *(f32*)(self + 0x3c) = dx;
-    const f32 dz = direction.z;
+    f32 dz = direction.z;
     *(f32*)(self + 0x40) = dy;
     *(f32*)(self + 0x44) = dz;
     *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
@@ -328,7 +329,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         }
         pt.pos.y += *(f32*)(self + 0x64);
         pt.pos.y += 8.0f;
-        for (i = 0; i < 6; i++) {
+        for (probeStep = 0; probeStep < 6; probeStep++) {
             if (!fn_802A1490(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
                 ok = 0;
                 break;
@@ -345,7 +346,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         }
         pt.pos.x += *(f32*)(self + 0x60);
         pt.pos.x += 8.0f;
-        for (i = 0; i < 6; i++) {
+        for (probeStep = 0; probeStep < 6; probeStep++) {
             if (!fn_802A1490(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
                 ok = 0;
                 break;
