@@ -1295,6 +1295,10 @@ static inline void HudOrthoDraw8041(u8* self, u8* slot, f32 x, f32 y, f32 ex, f3
     ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
     ((J2DScreen*)*(u8**)slot)->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
 }
+static inline void HudSetProjection8041(J2DOrthoGraph* graph, f32 ex, f32 ey, const f32 zero) {
+    JGeometry::TBox2f box(zero, zero, ex, ey);
+    graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+}
 static inline u8 HudHideTimer8041() {
     if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return 1;
     return lbl_8053AAF8[0x88] == 2;
@@ -1333,13 +1337,20 @@ extern "C" void fn_8041F720(u8* self) {
                         JUTVideo* vp = JUTVideo::getManager();
                         s32 fa = vp->getFbWidth();
                         s32 fb = vp->getEfbHeight();
+                        f32 y;
+                        f32 x;
+                        J2DOrthoGraph* graph = (J2DOrthoGraph*)*(u8**)(self + 0x4c);
                         f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
                         f32 xx = sx * (buf[0] / (f32)fa);
-                        f32 x = xx - (f32)fa * lbl_80543A34;
+                        x = xx - (f32)fa * lbl_80543A34;
                         f32 yy = sy * (buf[1] / (f32)fb);
-                        f32 y = c + (yy - (f32)fb * lbl_80543A34);
-                        JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
-                        ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+                        y = c + (yy - (f32)fb * lbl_80543A34);
+                        JGeometry::TBox2f box;
+                        box.i.x = lbl_80543A00;
+                        box.i.y = lbl_80543A00;
+                        box.f.x = ex;
+                        box.f.y = ey;
+                        graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
                         ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
                         ((J2DScreen*)*(u8**)(p4 + 8))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
                         *(s16*)(p2 + 0x234) = 0;
@@ -1353,13 +1364,18 @@ extern "C" void fn_8041F720(u8* self) {
                                 JUTVideo* vp = JUTVideo::getManager();
                                 s32 fa = vp->getFbWidth();
                                 s32 fb = vp->getEfbHeight();
-                                f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
+                                J2DOrthoGraph* graph = (J2DOrthoGraph*)*(u8**)(self + 0x4c);
+                        f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
                                 f32 xx = sx * (buf[0] / (f32)fa);
                                 f32 x = xx - (f32)fa * lbl_80543A34;
                                 f32 yy = sy * (buf[1] / (f32)fb);
                                 f32 y = c + (yy - (f32)fb * lbl_80543A34);
-                                JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
-                                ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+                                JGeometry::TBox2f box;
+                        box.i.x = lbl_80543A00;
+                        box.i.y = lbl_80543A00;
+                        box.f.x = ex;
+                        box.f.y = ey;
+                                graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
                                 ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
                                 ((J2DScreen*)*(u8**)(p4 + 0x2c))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
                             }
