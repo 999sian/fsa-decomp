@@ -141,7 +141,7 @@ extern "C" void* lbl_8053AEC0;
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AED8;
 extern "C" void* lbl_8053AF80;
-extern "C" const char lbl_80476F80[];
+extern "C" const u64 lbl_80476F80[];
 extern "C" char lbl_80529DEC[];
 extern "C" const f32 lbl_80543530;
 extern "C" f32 lbl_80543538;
@@ -487,7 +487,7 @@ extern "C" void fn_803D8718(u8* param_1) {
 extern "C" void fn_803D87C0(u8* param_1) {
     u8 mask;
     u8* lbl;
-    const u8* base;
+    register u8* base = (u8*)lbl_80476F80;
     s32 j;
     s32 count;
     const u64* k26;
@@ -503,7 +503,6 @@ extern "C" void fn_803D87C0(u8* param_1) {
     s32 n;
     J2DPane* p;
 
-    base = (const u8*)&lbl_80476F80[0];
     fn_804310CC(lbl_8053AEC0);
     k19 = (const u64*)(base + 0x420);
     k20 = (const u64*)(base + 0x438);
@@ -533,12 +532,12 @@ extern "C" void fn_803D87C0(u8* param_1) {
     k23 = (const u64*)(base + 0x468);
     k22 = (const u64*)(base + 0x400);
     cnt = (s32*)lbl;
-    k26o = (const u64*)(base + 0);
+    k26o = (const u64*)((u8*)k23 - 0x468);
     k25o = (const u64*)(base + 0x200);
     for (s32 i = 0; i < 4; i++) {
         mask = (u8)(1 << i);
         count = *(s32*)((u8*)cnt + 0x140);
-        if (bool(lbl[0x243] & mask)) {
+        if (fsaSelectionFlag(lbl, mask) & 1) {
             *(s16*)(param_1 + 0x68) = i;
             p = (*(J2DPane**)(param_1 + 4))->search(*k23);
             p->show();
@@ -574,14 +573,14 @@ extern "C" void fn_803D87C0(u8* param_1) {
                 p = (*(J2DPane**)(param_1 + 4))->search(*k25);
                 p->hide();
             }
-            k25++;
             k26++;
+            k25++;
         }
+        cnt++;
         k23++;
         k22++;
         k26o += 0x10;
         k25o += 0x10;
-        cnt++;
     }
 
     p = (*(J2DPane**)(param_1 + 8))->search(0x0050306b616b3030ULL);
@@ -598,8 +597,8 @@ extern "C" void fn_803D87C0(u8* param_1) {
         fn_80402E08(*(u8**)(param_1 + 0x34 + i * 4), lbl_80543534, lbl_80543538);
         *(u16*)(*(u8**)(param_1 + 0x34 + i * 4) + 0x22) = 0;
     }
-    p = (J2DPane*)fn_804030C4(0x54494d47, (void*)(base + 0x4a8));
-    fn_80440D78(lbl_8053AED8, p);
+    void* resource = fn_804030C4(0x54494d47, (void*)(base + 0x4a8));
+    fn_80440D78(lbl_8053AED8, resource);
     fn_804030C4(0x54494d47, (void*)(base + 0x4bc));
     fn_80440BF4(lbl_8053AED8, 0);
     (*(u8**)(*(u8**)(param_1 + 0x2c) + 4))[0xb0] = 0;
