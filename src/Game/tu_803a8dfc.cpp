@@ -2180,6 +2180,14 @@ struct IntroTags {
     u64 p2[4][2];
 };
 
+static inline void IntroAppear(Menu_Intro* p, const u64* tags, f32 factor) {
+    if (p->cur < 2) {
+        for (s32 k=0;k<2;k++) {
+            p->screens[p->cur]->search(tags[k])->setAlpha((u8)(p->alpha[k]*factor));
+        }
+    }
+}
+
 static inline void IntroFade(Menu_Intro* p, const u64* tags, const s32 count, const s32 elapsed, const s32 duration, const u32 alphaOffset) {
     if (p->cur < 2) {
         for (s32 k = 0; k < count; k++) {
@@ -2392,7 +2400,6 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
 }
 #pragma opt_lifetimes reset
 extern "C" void fn_803B14F8(void* this_) {
-    Menu_Intro* p = (Menu_Intro*)this_;
     u64 (*tags3)[3] = (u64 (*)[3])lbl_80476270;
     TagPair* tags2 = lbl_804762D0;
     s32 total;
@@ -2407,6 +2414,7 @@ extern "C" void fn_803B14F8(void* this_) {
     f32 x;
     f32 ratio;
     f32 span;
+    Menu_Intro* p = (Menu_Intro*)this_;
     a = *(s16*)(lbl_8050DB0C + 0x256);
     b = *(s16*)(lbl_8050DB0C + 0x252);
     c = *(s16*)(lbl_8050DB0C + 0x254);
@@ -2419,8 +2427,8 @@ extern "C" void fn_803B14F8(void* this_) {
     for (i = 0; i < p->count; i++, tags3++, tags2++) {
         if (p->selected[i] == 0xff && (u8)fn_80388EEC(i)) {
             p->m460[i] = 0;
-            x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
-            p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
+            x = introSearch(p, (*tags3)[2])->getBounds()->i.x;
+            introSearch(p, (*tags3)[2])->move(x, p->y420);
             p->selected[i] = fn_803A8DFC(p, i);
             fn_80458880(lbl_8053AF80, 0xb, -1);
         }
@@ -2430,25 +2438,25 @@ extern "C" void fn_803B14F8(void* this_) {
                 if (p->m460[i] <= b) {
                     s32 t = p->m460[i];
                     ratio = (f32)(t * t) / (f32)b2;
-                    x = p->screens[p->cur]->search(tags2->tag[1])->getBounds()->i.x;
+                    x = introSearch(p, tags2->tag[1])->getBounds()->i.x;
                     f32 offset = span * ratio;
-                    p->screens[p->cur]->search(tags2->tag[1])->move(x, (p->y424 - lbl_80543428) + offset);
-                    x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+                    introSearch(p, tags2->tag[1])->move(x, (p->y424 - lbl_80543428) + offset);
+                    x = introSearch(p, (*tags3)[2])->getBounds()->i.x;
                     offset = (f32)a * ratio;
-                    p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + offset);
+                    introSearch(p, (*tags3)[2])->move(x, p->y420 + offset);
                     ratio = (f32)p->m460[i] / (f32)b;
                     if (p->cur < 2) {
                         for (s32 k = 0; k < 2; k++) {
-                            p->screens[p->cur]->search(tags2->tag[k])->setAlpha((u8)(p->alpha[k] * ratio));
+                            introSearch(p, tags2->tag[k])->setAlpha((u8)(p->alpha[k] * ratio));
                         }
                     }
                 } else if (p->m460[i] <= total) {
                     s32 t = total - p->m460[i];
                     ratio = (f32)a * ((f32)(t * t) / (f32)c2);
-                    x = p->screens[p->cur]->search(tags2->tag[1])->getBounds()->i.x;
-                    p->screens[p->cur]->search(tags2->tag[1])->move(x, p->y424 + ratio);
-                    x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
-                    p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + ratio);
+                    x = introSearch(p, tags2->tag[1])->getBounds()->i.x;
+                    introSearch(p, tags2->tag[1])->move(x, p->y424 + ratio);
+                    x = introSearch(p, (*tags3)[2])->getBounds()->i.x;
+                    introSearch(p, (*tags3)[2])->move(x, p->y420 + ratio);
                 }
             }
             if (p->m460[i] == total) done++;
@@ -2458,8 +2466,8 @@ extern "C" void fn_803B14F8(void* this_) {
             f32 rate = lbl_80543430 / (f32)d;
             s16 angle = (s16)(rate * (f32)p->m460[i]);
             ratio = lbl_8054342C * JMath::sincosTable_.sinShort(angle);
-            x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
-            p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + ratio);
+            x = introSearch(p, (*tags3)[2])->getBounds()->i.x;
+            introSearch(p, (*tags3)[2])->move(x, p->y420 + ratio);
         }
     }
     if (done == p->count) {
