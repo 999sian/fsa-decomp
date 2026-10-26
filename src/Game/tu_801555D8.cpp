@@ -44,7 +44,7 @@ extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, DrawRec*);
 extern const char lbl_80465E00[];
 extern const char lbl_80465E14[];
 extern u8* lbl_8053AB10;
-extern f32 lbl_8053D384;
+extern const f32 lbl_8053D384;
 extern "C" void fn_801555D8(char* self) {
     if (*(u16*)(self + 0x94) == 2) {
         return;
@@ -54,49 +54,67 @@ extern "C" void fn_801555D8(char* self) {
     }
     DrawRec rec;
     f32 mtx[3][4];
-    mtx[0][3] = lbl_8053D378;
-    mtx[1][3] = lbl_8053D378;
-    mtx[2][3] = lbl_8053D378;
-    if (*(s32*)(lbl_80529DEC + 0x118) == 0) {
-        if (*(s32*)(lbl_80529DEC + 0x11c) == 3) {
-            if (*(u32*)(self + 0x90) == 2) {
-                rec.ids[2] = 4;
-            }
-        }
+    f32 ss;
+    f32 cz;
+    f32 cs,a0,a1,a2,a3,a4,a5,a6,a7,a8;
+    f32 cc;
+    f32 sx;
+    f32 sy;
+    f32 sz;
+    f32 cx;
+    f32 cy;
+    f32 ay;
+    f32 s;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 3 && *(u32*)(self + 0x90) == 2) {
+        rec.ids[2] = 4;
     }
     if (*(s32*)(self + 0x230) == 0xd) {
-        f32 ay = *(f32*)(self + 0x29c);
-        f32 cx;
-        f32 s = *(f32*)(self + 0x2a0);
-        f32 sx = (f32)sin(lbl_8053D378);
-        f32 sy = (f32)sin(ay);
-        f32 sz = (f32)sin(lbl_8053D378);
+        ay = *(f32*)(self + 0x29c);
+        s = *(f32*)(self + 0x2a0);
+        sx = (f32)sin(lbl_8053D378);
+        sy = (f32)sin(ay);
+        sz = (f32)sin(lbl_8053D378);
         cx = (f32)cos(lbl_8053D378);
-        f32 cy = (f32)cos(ay);
-        f32 cz = (f32)cos(lbl_8053D378);
-        mtx[0][0] = s * (cy * cz);
-        mtx[1][0] = s * (cy * sz);
-        mtx[2][0] = s * -sy;
-        mtx[0][1] = s * ((sx * sy) * cz - cx * sz);
-        mtx[1][1] = s * ((sx * sy) * sz + cx * cz);
-        mtx[2][1] = s * (sx * cy);
-        mtx[0][2] = s * ((cx * cz) * sy + sx * sz);
-        mtx[1][2] = s * ((cx * sz) * sy - sx * cz);
-        mtx[2][2] = s * (cx * cy);
+        cy = (f32)cos(ay);
+        cz = (f32)cos(lbl_8053D378);
         rec.w18 = mtx;
+        cc = cx * cz;
+        ss = sx * sy;
+        cs = cx * sz;
+        a0 = cy * cz;
+        a1 = cy * sz;
+        a2 = -sy;
+        a3 = ss * cz - cs;
+        a4 = ss * sz + cc;
+        a5 = sx * cy;
+        a6 = cc * sy + sx * sz;
+        a7 = cs * sy - sx * cz;
+        a8 = cx * cy;
+        mtx[0][0] = s * a0;
+        mtx[1][0] = s * a1;
+        mtx[2][0] = s * a2;
+        mtx[0][1] = s * a3;
+        mtx[1][1] = s * a4;
+        mtx[2][1] = s * a5;
+        mtx[0][2] = s * a6;
+        mtx[1][2] = s * a7;
+        mtx[2][2] = s * a8;
         if (*(u32*)(self + 0x90) == 2) {
             fn_801F06F0(self, lbl_80465E00, *(s32*)(self + 0x274) + 0x114, &rec, 0, lbl_8053D37C, lbl_8053D37C);
             return;
         }
         if (*(f32*)(self + 0x29c) == lbl_8053D378) {
+            s32 id = *(s32*)(self + 0x274) + 0x4f;
             if (*(s32*)(self + 0x4) < 8) {
-                s32 id = *(s32*)(self + 0x274) + 0x4f;
                 void* res = (*(ActorResMgr**)((u8*)lbl_8053AAF8 + 0xa4))->vf18('SOB ', lbl_80465E00);
                 fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), self + 0xc, res, id, lbl_8053D37C, lbl_8053D37C, &rec);
             }
         } else {
+            s32 id = *(s32*)(self + 0x274) + 0x8f;
             if (*(s32*)(self + 0x4) < 8) {
-                s32 id = *(s32*)(self + 0x274) + 0x8f;
                 void* res = (*(ActorResMgr**)((u8*)lbl_8053AAF8 + 0xa4))->vf18('SOB ', lbl_80465E14);
                 fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), self + 0xc, res, id, lbl_8053D37C, lbl_8053D37C, &rec);
             }
@@ -122,11 +140,14 @@ extern "C" void fn_801555D8(char* self) {
         fn_801F06F0(self, lbl_80465E00, *(s32*)(self + 0x274) + 0x4f, &rec, 0, lbl_8053D37C, lbl_8053D37C);
     }
     if (*(u32*)(self + 0x90) == 3) {
-        Vec saved = *(Vec*)(self + 0xc);
-        ((Vec*)(self + 0xc))->y = ((Vec*)(self + 0xc))->y - lbl_8053D380;
+        f32 newY = ((Vec*)(self + 0xc))->y - lbl_8053D380;
+        JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(self + 0xc);
+        ((Vec*)(self + 0xc))->y = newY;
         fn_801F06F0(self, lbl_80465E00, *(s32*)(self + 0x274) + 0x4f, &rec, -1, lbl_8053D37C, lbl_8053D37C);
-        *(Vec*)(self + 0xc) = saved;
-        f32 s = lbl_8053D384;
+        ((Vec*)(self + 0xc))->x = saved.x;
+        ((Vec*)(self + 0xc))->y = saved.y;
+        ((Vec*)(self + 0xc))->z = saved.z;
+        f32 s = 1.3f;
         mtx[0][0] = s;
         mtx[0][1] = lbl_8053D378;
         mtx[0][2] = lbl_8053D378;
