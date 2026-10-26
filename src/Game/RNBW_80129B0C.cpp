@@ -60,8 +60,12 @@ extern const f32 lbl_8053CB3C;
 
 
 static inline void rnbwPolar(JGeometry::TVec3f& pos, const f32 radius, const s32 angle) {
-    pos.x = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
-    pos.y = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    f32 cosine = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+    f32 sine = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    cosine = radius * cosine;
+    sine = radius * sine;
+    pos.x = cosine;
+    pos.y = sine;
 }
 
 static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos) {
