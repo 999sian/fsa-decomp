@@ -177,7 +177,8 @@ extern const f32 lbl_80540C70;
 extern const f32 lbl_80540C78;
 extern "C" u16 fn_8022461C(void* pos, s32 room);
 extern "C" u16 fn_80226850(void* pos, s32 room);
-extern "C" u8 fn_802C1970(char* p, s32 room, void* pos) {
+extern "C" u8 fn_802C1970(char* p, s32 roomArg, void* pos) {
+    int room = roomArg;
     u16 kind;
     s32 type;
     type = (u16)fn_8022461C(pos, room);
@@ -212,9 +213,8 @@ extern "C" u8 fn_802C1970(char* p, s32 room, void* pos) {
             }
             if (*(f32*)(p + 0x14) > lbl_80540C70 && *(f32*)(p + 0x3c) == lbl_80540C74) {
                 *(s32*)(p + 0x288) = 300;
-                f32 minHeight = lbl_80540C78;
-                if (*(f32*)(p + 0x14) < minHeight) {
-                    *(f32*)(p + 0x14) = minHeight;
+                if (*(f32*)(p + 0x14) < 18.0f) {
+                    *(f32*)(p + 0x14) = 18.0f;
                 }
                 return 0;
             }
