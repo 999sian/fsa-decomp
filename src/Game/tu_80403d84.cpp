@@ -2454,28 +2454,6 @@ extern "C" void fn_80406634(u8* self, s32 style, s32 enabled) {
 extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out);
 extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 lbl_8048CC40[];
-static inline void menuMarkerMtx(f32 m[3][4], const f32 s) {
-    f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
- f32 zero = 0.0f;
-    sx = sin(zero); sy = sin(zero); sz = sin(zero);
-    cx = cos(zero); cy = cos(zero); cz = cos(zero);
-    m[0][3] = 0.0f; m[1][3] = 0.0f; m[2][3] = 0.0f;
-    f32 cxcz = cx * cz;
-    sxsy = sx * sy;
-    f32 cxsz = cx * sz;
-    f32 sxsz = sx * sz;
-    f32 sxcz = sx * cz;
-    m[0][0] = s * (cy * cz);
-    m[1][0] = s * (cy * sz);
-    m[2][0] = s * -sy;
-    m[0][1] = s * (sxsy * cz - cxsz);
-    m[1][1] = s * (sxsy * sz + cxcz);
-    m[2][1] = s * (sx * cy);
-    m[0][2] = s * (cxcz * sy + sxsz);
-    m[1][2] = s * (cxsz * sy - sxcz);
-    m[2][2] = s * (cx * cy);
-}
-
 static inline void menuMarkerEulerMtx(f32 m[3][4], const f32 s, const f32 ax, const f32 ay, const f32 az) {
     f32 sz, cy, cx, cz, sy, sx;
  f32 zero = 0.0f;
