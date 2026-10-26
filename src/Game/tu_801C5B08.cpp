@@ -77,7 +77,7 @@ static inline f32 tuRand01() {
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
 }
-extern "C" s32 fn_800FE2E4(void* slot, Vec pos, s32 room);
+extern "C" u8 fn_800FE2E4(void* slot, const JGeometry::TVec3f& pos, s32 room);
 #pragma opt_lifetimes off
 #pragma opt_propagation off
 extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
