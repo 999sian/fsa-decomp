@@ -156,7 +156,7 @@ static inline f32 paneSpan(const f32* bounds) {
 	return bounds[2] - bounds[0];
 }
 
-static inline bool menuReached(const f32 position, const f32 origin) {
+static inline bool menuReached(const f32 origin, const f32 position) {
 	return position <= origin - 400.0f;
 }
 
