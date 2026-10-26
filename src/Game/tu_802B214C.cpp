@@ -18,7 +18,12 @@ extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801F71A4(void* p, f32 target, f32 a, f32 b);
 extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
 
-static inline f32 movementInvSqrt(f32 x) { return JGeometry::TUtilf::inv_sqrt(x); }
+static inline f32 movementInvSqrt(const f32 x) {
+    if (x <= 0.0f) return x;
+    f32 y = __frsqrte(x);
+    y = 0.5f * y * (3.0f - x * (y * y));
+    return y;
+}
 static inline void movementNormalize(JGeometry::TVec3<f32>* v) {
     f32 squared = v->squared();
     if (squared <= JGeometry::TUtilf::epsilon()) return;
