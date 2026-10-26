@@ -38,9 +38,9 @@ extern "C" s32 fn_8015C888(void* this_, void* arg1, void* targetPos) {
 
 struct KethRandom {
     u32 seed;
-    f32 get_ufloat_1() {
+    f32 get_ufloat_1(int mul = 0x19660d) {
         union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
+        seed = seed * mul + 0x3c6ef35f;
         out.s = (seed >> 9) | 0x3f800000;
         return out.f - 1.0f;
     }
@@ -97,26 +97,59 @@ extern "C" void fn_8015C8B0(char* this_) {
     }
     DrawRec rec;
     f32 mtx[3][4];
-    mtx[0][3] = 0.0f;
-    mtx[1][3] = 0.0f;
-    mtx[2][3] = 0.0f;
+    f32 zero = 0.0f;
+    mtx[0][3] = zero;
+    mtx[1][3] = zero;
+    mtx[2][3] = zero;
     if (*(s32*)(this_ + 0x264) == 1) {
         return;
     }
     rec.w30 = *(s32*)(this_ + 0x150);
-    kethRotMtx(mtx, 0.0f, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, 0.0f, 1.0f);
+    kethRotMtx(mtx, zero, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, zero, 1.0f);
     rec.w18 = mtx;
     s32 big = 0;
     if (*(s32*)(this_ + 0x260) != 0) {
         big = 1;
     }
     if (*(s32*)(this_ + 0x4) == 8 && *(s32*)(this_ + 0x260) != 0) {
-        kethRotMtx(mtx, 0.0f, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, 0.0f, 2.0f);
+        kethRotMtx(mtx, zero, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, zero, 2.0f);
         rec.w18 = mtx;
         fn_801F06F0(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, 1.0f, 1.0f);
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, 0x176, 0, 2, -1, 0, 0, 0);
     } else {
         fn_801F02BC(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, big, 0, 1.0f, 1.0f);
+    }
+}
+
+extern "C" u16 fn_80226998(void* pos, s32 room);
+extern "C" void fn_802D6A9C();
+extern "C" u8 fn_802DCD0C();
+extern "C" void fn_8015CCF8(char* this_) {
+    if (*(u32*)(this_ + 0x90) >> 27) {
+        if (!((KethVT*)this_)->isVisible()) {
+            return;
+        }
+    }
+    *(u32*)(this_ + 0xb0) = 0x31201;
+    if (*(s32*)(this_ + 0x264) == 1) {
+        if (*(u16*)(this_ + 0x26a) == 0xffff) {
+            fn_802D6A9C();
+            if (fn_802DCD0C() == 0) {
+                f32 pos[2];
+                pos[0] = *(f32*)(this_ + 0xc);
+                pos[1] = *(f32*)(this_ + 0x10);
+                *(u16*)(this_ + 0x26a) = fn_80226998(pos, *(s32*)(this_ + 0x4));
+            }
+            return;
+        }
+        f32 pos[2];
+        pos[0] = *(f32*)(this_ + 0xc);
+        pos[1] = *(f32*)(this_ + 0x10);
+        u16 r = fn_80226998(pos, *(s32*)(this_ + 0x4));
+        if (*(u16*)(this_ + 0x26a) == r) {
+            return;
+        }
+        *(s32*)(this_ + 0x264) = 0;
     }
 }
 
@@ -163,10 +196,8 @@ extern "C" void fn_8015D844(char* this_) {
         }
     }
     if (*(s32*)(this_ + 0x264) == 2) {
-        KethGame* g = lbl_8053AAF8;
-        *(f32*)(this_ + 0xc) += (f32)((s32)(9.0f * g->rnd.get_ufloat_1()) - 4);
-        KethGame* g2 = lbl_8053AAF8;
-        *(f32*)(this_ + 0x10) += (f32)((s32)(9.0f * g2->rnd.get_ufloat_1()) - 4);
+        *(f32*)(this_ + 0xc) += (f32)((s32)(9.0f * lbl_8053AAF8->rnd.get_ufloat_1()) - 4);
+        *(f32*)(this_ + 0x10) += (f32)((s32)(9.0f * lbl_8053AAF8->rnd.get_ufloat_1()) - 4);
         *(JGeometry::TVec3<f32>*)(this_ + 0x24) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
     }
     *(f32*)(this_ + 0x26c) = 0.0f;
