@@ -13,7 +13,7 @@ struct EzzrMgr {
     u8 mFlags[1];
 };
 
-static inline f32 EZZR_Sqrt(f32 x) {
+static inline f32 EZZR_Sqrt(const f32 x) {
     if (x <= 0.0f) {
         return x;
     }
@@ -131,8 +131,7 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         break;
     case 5: {
         *((u8*)p + 0x330) = 1;
-        s32 room = *(s32*)((u8*)p + 0x4);
-        if ((fn_802D6A9C() + 0x10000)[room + 0x31df] != 0) {
+        if (((EzzrMgr*)fn_802D6A9C())->flag(p->field_04) != 0) {
             fn_801D22DC((u8*)p + 0x230, 6, 2, 0);
         } else {
             fn_801D22DC((u8*)p + 0x230, 7, 2, 0);
@@ -193,8 +192,8 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
             dy = p->field_0C.y - b.y;
             dx2 = dx * dx;
             dy2 = dy * dy;
-            f32 distB = EZZR_Sqrt(dx2 + dy2);
-            if (distA > distB) {
+            dx = EZZR_Sqrt(dx2 + dy2);
+            if (distA > dx) {
                 if (*((u8*)p + 0x3c4) != 0) {
                     fn_80127ED8(fn_801283E8(), &b);
                 } else {
@@ -217,8 +216,7 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         *(s32*)((u8*)p + 0x3c8) = 0;
         break;
     case 15: {
-        s32 vid = ((s32 (**)(void*))*(void**)p)[15](p);
-        fn_802D8050(fn_802D6A9C(), vid, 1, 0xff);
+        fn_802D8050(fn_802D6A9C(), p->v13(), 1, 0xff);
         *((u8*)p + 0x11e) = 0;
         *((u8*)p + 0x11d) = 0;
         *((u8*)p + 0x11c) = 0;
