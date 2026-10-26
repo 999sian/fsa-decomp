@@ -2,6 +2,7 @@
 #include "sdk/stl/float.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 // Reciprocal square root from frsqrte with one Newton step; x must be > 0.
 static inline f32 rsqrt_step(f32 x) {
@@ -111,6 +112,70 @@ extern "C" s32 fn_8030B110(u8* p, s32 id, f32* rect) {
     return 1;
 }
 
+extern "C" int* fn_8030B1E8(u8* p, u8 arg1, u8 arg2, int arg3) {
+    if (arg1 != *(u8*)(p + 0x2bc)) {
+        if (arg2 == 0 || arg2 == 6) {
+            *(u16*)(p + 0x2b8) = 0;
+            *(s16*)(p + 0x2ba) = 0;
+            *(u8*)(p + 0x2bc) = 0xff;
+            *(u8*)(p + 0x284) = 0;
+        } else {
+            if (arg2 == 4) {
+                *(u16*)(p + 0x2b8) = 0x60;
+            } else if (arg2 == 5) {
+                *(u16*)(p + 0x2b8) = 3;
+            } else {
+                *(u16*)(p + 0x2b8) = 8;
+            }
+            *(s16*)(p + 0x2ba) = 0;
+            *(u8*)(p + 0x2bc) = arg1;
+            *(u8*)(p + 0x284) = arg2;
+        }
+    } else if (arg2 != 6 && arg2 != *(u8*)(p + 0x284)) {
+        if (arg2 == 4) {
+            *(u16*)(p + 0x2b8) = 0x60;
+        } else if (arg2 == 5) {
+            *(u16*)(p + 0x2b8) = 3;
+        } else {
+            *(u16*)(p + 0x2b8) = 8;
+        }
+        *(s16*)(p + 0x2ba) = 0;
+        *(u8*)(p + 0x2bc) = arg1;
+        *(u8*)(p + 0x284) = arg2;
+    }
+
+    if (*(u16*)(p + 0x2b8) == 0) {
+        return 0;
+    }
+
+    switch (*(u8*)(p + 0x284)) {
+    case 2:
+        *(s16*)(p + 0x2ba) += (0x160 - arg3) * 7 + 0xc0;
+        break;
+    case 3:
+        *(s16*)(p + 0x2ba) += arg3 * 7 + 0xc0;
+        break;
+    case 5:
+        *(s16*)(p + 0x2ba) += 0x120;
+        break;
+    default:
+        *(s16*)(p + 0x2ba) += (*(u16*)(p + 0x2b8) << 4) + 0x100;
+        break;
+    }
+
+    s16 angle = *(s16*)(p + 0x2ba);
+    for (int i = 0; i < 160; i++) {
+        *(int*)(p + i * 4 + 4) = (int)((f32)*(u16*)(p + 0x2b8) * JMath::sincosTable_.sinShort(angle));
+        angle += 0x200;
+    }
+
+    if (*(u8*)(p + 0x284) == 0 || *(u8*)(p + 0x284) == 4) {
+        *(u16*)(p + 0x2b8) -= 1;
+    }
+
+    return (int*)(p + 4);
+}
+
 #pragma opt_propagation off
 extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
     int id = fn_8022EA0C(*(int*)(p + 0x288));
@@ -142,14 +207,14 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
         f32 px = pos[0];
         f32 ax = *(f32*)(a + 0xcc);
         f32 bx = *(f32*)(b + 0xdc);
-        x = (int)(bx + (px - ax));
+        x = (int)((px - ax) + bx);
         a = fn_802D6A9C();
         b = fn_802D6A9C();
         pos = fn_8023E724(id);
         f32 py = pos[1];
         f32 ay = *(f32*)(a + 0xd0);
         f32 by = *(f32*)(b + 0xe0);
-        y = (int)(by + (py - ay));
+        y = (int)((py - ay) + by);
     }
 
     y -= 0x50;
