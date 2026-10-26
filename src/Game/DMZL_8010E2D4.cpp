@@ -663,10 +663,13 @@ extern "C" void fn_8011093C(void* this_) {
         if (!fn_8023F264(result)) { result = -1; goto checked; }
         pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
         pos.y += lbl_8053C570;
+        s32 handle = *(s32*)(p + 0x198);
+        s32 room = *(s32*)(p + 4);
         argPos = pos;
-        if (!fn_8038AD24(result, 0x2d2, *(s32*)(p + 0x198), *(s32*)(p + 4), &argPos, 0x20)) { result = -1; goto checked; }
+        if (!fn_8038AD24(result, 0x2d2, handle, room, &argPos, 0x20)) { result = -1; goto checked; }
         *(s32*)(p + 0x23c) = result;
-        fn_801D22DC(p + 0x2f4, fn_801CD354(fn_80230CFC(*(s32*)(p + 0x23c))) + 6, 2, 0);
+        s32 anim2 = fn_801CD354(fn_80230CFC(*(s32*)(p + 0x23c))) + 6;
+        fn_801D22DC(p + 0x2f4, anim2, 2, 0);
         fn_801D1F14(p + 0x2f4, lbl_8053C55C);
         for (i = 0; i < 4; i++) fn_80230C6C(i);
     checked:
