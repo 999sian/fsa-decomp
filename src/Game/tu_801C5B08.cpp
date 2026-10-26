@@ -75,8 +75,10 @@ struct TuRandom {
 };
 
 static inline f32 tuRandStored(u32& bits) {
+    u32 factor = 0x19660d;
     TuRandom* rng = (TuRandom*)((u8*)lbl_8053AAF8 + 0xb4);
-    bits = (rng->get() >> 9) | 0x3f800000;
+    rng->seed = rng->seed * factor + 0x3c6ef35f;
+    bits = (rng->seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
 }
 
@@ -260,6 +262,7 @@ extern const f32 lbl_8053EEA0;
 extern const f32 lbl_8053EEA4;
 extern const f32 lbl_8053EEA8;
 extern "C" void fn_801C6260(void* p) {
+    u32 randGate, randAttack, randVariant, randLeft, randRight, randTurn, randDirection;
     Unk801C5B08* self = (Unk801C5B08*)p;
     f32 d = fn_801D0DA0(p, self->field_338, &self->field_0C);
     u8 r31 = fn_801D183C(p, lbl_8053EDF4);
@@ -272,7 +275,7 @@ extern "C" void fn_801C6260(void* p) {
         return;
     }
     if (self->field_59A == 0 && fn_801D0DD4(p) && !(self->field_524 & 0x40)) {
-        if (!(u8)r30 || ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+        if (!(u8)r30 || tuRandStored(randGate) < lbl_8053EE70) {
             s32 state = self->field_338;
             u32 room = self->field_04;
             u8 (*manager)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
@@ -284,7 +287,7 @@ extern "C" void fn_801C6260(void* p) {
                     if (self->field_0C < pf[0]) {
                         self->field_33C = -0x4000;
                     } else {
-                        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0) { self->field_33C = -0x4000; } else { self->field_33C = 0x4000; }
+                        if (tuRandStored(randLeft) < lbl_8053EEA0) { self->field_33C = -0x4000; } else { self->field_33C = 0x4000; }
                     }
                 } else {
                     t = (f32)(s16)(self->field_33C - 0x4000);
@@ -292,11 +295,11 @@ extern "C" void fn_801C6260(void* p) {
                         if (self->field_0C > pf[0]) {
                             self->field_33C = 0x4000;
                         } else {
-                            if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0) { self->field_33C = 0x4000; } else { self->field_33C = -0x4000; }
+                            if (tuRandStored(randRight) < lbl_8053EEA0) { self->field_33C = 0x4000; } else { self->field_33C = -0x4000; }
                         }
                     } else {
-                        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE7C) {
-                            if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) { self->field_33C = 0x4000; } else { self->field_33C = -0x4000; }
+                        if (tuRandStored(randTurn) < lbl_8053EE7C) {
+                            if (tuRandStored(randDirection) < lbl_8053EE70) { self->field_33C = 0x4000; } else { self->field_33C = -0x4000; }
                         } else {
                             if (self->field_0C < pf[0]) { self->field_33C = -0x4000; } else { self->field_33C = 0x4000; }
                         }
@@ -313,9 +316,9 @@ extern "C" void fn_801C6260(void* p) {
     }
     if (self->field_597 == 0 && (u8)r30) {
     if (self->field_524 & 0x10) {
-        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA4) {
+        if (tuRandStored(randAttack) < lbl_8053EEA4) {
             if (self->field_524 & 0x20) {
-                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA8) {
+                if (tuRandStored(randVariant) < lbl_8053EEA8) {
                     fn_801C3B7C(p, 0x26);
                 } else {
                     fn_801C3B7C(p, 0x25);
