@@ -2,6 +2,7 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 // ---- fn_8020F474_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
@@ -606,17 +607,18 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
                 }
             } else if (fn_80230188(*(s32*)(this_ + 0x2b8))) {
                 fn_80230224(*(s32*)(this_ + 0x2b8), 0);
-                *(f32*)(this_ + 0x60) = lbl_8053FA70;
-                *(f32*)(this_ + 0x64) = lbl_8053FA54;
-                *(f32*)(this_ + 0x68) = lbl_8053FA40;
-                *(f32*)(this_ + 0x6c) = lbl_8053FA40;
-                *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
-                *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
-                *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
-                *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
-                *(f32*)(this_ + 0x258) = lbl_8053FA2C;
+
             }
         }
+        *(f32*)(this_ + 0x60) = lbl_8053FA70;
+        *(f32*)(this_ + 0x64) = lbl_8053FA54;
+        *(f32*)(this_ + 0x68) = lbl_8053FA40;
+        *(f32*)(this_ + 0x6c) = lbl_8053FA40;
+        *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+        *(f32*)(this_ + 0x258) = lbl_8053FA2C;
         break;
     case 5:
         *(f32*)(this_ + 0x60) = lbl_8053FA70;
@@ -694,7 +696,9 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
     *(s32*)(this_ + 0x24c) = 0;
     *(s32*)(this_ + 0x248) = st;
     if (*(s32*)(this_ + 0x2b8) >= 0) {
-        if (*(s32*)(this_ + 0x248) < 4 && *(s32*)(this_ + 0x248) >= 2) {
+        switch (*(s32*)(this_ + 0x248)) {
+        case 2:
+        case 3:
             f32* p = (f32*)fn_8023E724(*(s32*)(this_ + 0x2b8));
             if (*(f32*)(this_ + 0xc) >= p[0] - lbl_8053FA84) {
                 if (p[0] + lbl_8053FA84 < *(f32*)(this_ + 0xc)) {
@@ -703,6 +707,7 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
             } else {
                 *(u32*)(this_ + 0x230) &= ~0x8000;
             }
+        break;
         }
     }
 }
