@@ -28,6 +28,7 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c);
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern const f32 lbl_8053CFDC;
+extern const f32 lbl_8053CFD8;
 extern BzbrGame* lbl_8053AAF8;
 
 // Resource manager at game+0xa4; vtable +0x18 looks a resource up by type and name.
@@ -120,6 +121,50 @@ extern "C" void fn_80144194(u8* this_) {
     } else {
         fn_801F06F0(this_, lbl_80465B80, lbl_8049F418[*(s32*)(this_ + 0x244)] + 0x10, 0, 0, 1.0f, 1.0f);
     }
+}
+
+extern "C" void fn_8013CC50(s32 room, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+void detach__5ActorFv(void* this_);
+extern "C" void fn_8014462C(u8* this_) {
+    f32 box[4];
+    s32 room;
+
+    if (fn_801F3D94(this_, 1) != 0) {
+        *(f32*)(this_ + 0x258) = lbl_8053CFDC;
+        *(f32*)(this_ + 0x25c) = lbl_8053CFDC;
+        *(f32*)(this_ + 0x260) = lbl_8053CFDC;
+        fn_801F2618(this_, 0, 0);
+        return;
+    }
+    if (*(s32*)(this_ + 0x234) > 0) *(s32*)(this_ + 0x234) -= 1;
+    if (*(s32*)(this_ + 0x238) > 0) *(s32*)(this_ + 0x238) -= 1;
+    if (*(s32*)(this_ + 0x23c) > 0) *(s32*)(this_ + 0x23c) -= 1;
+    if (*(s32*)(this_ + 0x240) > 0) *(s32*)(this_ + 0x240) -= 1;
+    ((f32*)(this_ + 0xc))[0] += ((f32*)(this_ + 0x3c))[0];
+    ((f32*)(this_ + 0xc))[1] += ((f32*)(this_ + 0x3c))[1];
+    ((f32*)(this_ + 0xc))[2] += ((f32*)(this_ + 0x3c))[2];
+
+    if (*(s32*)(this_ + 0x230) != 4) {
+        if (fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4)) == 0xe) {
+            fn_801F0E34(this_, 0x4001a, 0);
+            *(s32*)(this_ + 0x230) = 4;
+            return;
+        }
+        box[0] = ((f32*)(this_ + 0x60))[0];
+        box[1] = ((f32*)(this_ + 0x60))[1];
+        box[2] = ((f32*)(this_ + 0x60))[2];
+        box[3] = ((f32*)(this_ + 0x60))[3];
+        box[0] += ((f32*)(this_ + 0xc))[0];
+        box[1] += ((f32*)(this_ + 0x10))[0];
+        box[2] += ((f32*)(this_ + 0xc))[0];
+        box[3] += ((f32*)(this_ + 0x10))[0];
+        room = fn_8023B004(box, *(s32*)(this_ + 4));
+        if (room >= 0 && fn_8023E854() == 0) {
+            fn_80238548(room, 1, box, 0xa);
+        }
+    }
+    room = 0;
+    (void)room;
 }
 
 extern const f32 lbl_8053CFD8;
