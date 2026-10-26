@@ -110,8 +110,8 @@ extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
 static inline void fsaDrawEntries(FsaSlot* slots, const s32 index, const bool textured) {
-    s32 i;
     s32 n = slots[index].count;
+    s32 i;
     for (i = 0; i < n; i++) {
         if (slots[index].entries[i].actor) {
             if (textured) fn_801E801C(slots[index].entries[i].actor);
@@ -133,12 +133,12 @@ extern "C" void fn_801E9C74(u8* param) {
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
     if (both) {
-        a = (u8)(fsaHasEntries(&slots[0]) || fsaHasEntries(&slots[1]));
-        b = (u8)(a || fsaHasActors(&slots[0]) || fsaHasActors(&slots[1]));
+        a = (u8)(slots[0].count > 0 || slots[1].count > 0);
+        b = (u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
     } else {
         FsaSlot* s = &slots[self[0xf0]];
         a = fsaHasEntries(s);
-        b = (u8)(a || fsaHasActors(s));
+        b = (u8)(a || s->unk74 > 0);
     }
     if (!a && !b) {
         return;
@@ -168,18 +168,8 @@ extern "C" void fn_801E9C74(u8* param) {
 
     if (a) {
         if (both) {
-            n = slots[0].count;
-            for (i = 0; i < n; i++) {
-                if (slots[0].entries[i].actor != NULL) {
-                    fn_801E8080(slots[0].entries[i].actor);
-                }
-            }
-            n = slots[1].count;
-            for (i = 0; i < n; i++) {
-                if (slots[1].entries[i].actor != NULL) {
-                    fn_801E8080(slots[1].entries[i].actor);
-                }
-            }
+            fsaDrawEntries(slots, 0, false);
+            fsaDrawEntries(slots, 1, false);
         } else {
             FsaSlot* s = &slots[self[0xf0]];
             for (i = 0; i < s->count; i++) {
@@ -196,12 +186,7 @@ extern "C" void fn_801E9C74(u8* param) {
         GXLoadTlut((GXTlutObj*)(self + 0x16c), 0);
         GXLoadTexObj((GXTexObj*)(self + 0x134), GX_TEXMAP0);
         if (both) {
-            n = slots[0].count;
-            for (i = 0; i < n; i++) {
-                if (slots[0].entries[i].actor != NULL) {
-                    fn_801E801C(slots[0].entries[i].actor);
-                }
-            }
+            fsaDrawEntries(slots, 0, true);
             n = slots[0].unk74;
             for (i = 0; i < n; i++) {
                 s32 id = slots[0].unk64[i];
@@ -212,12 +197,7 @@ extern "C" void fn_801E9C74(u8* param) {
                     }
                 }
             }
-            n = slots[1].count;
-            for (i = 0; i < n; i++) {
-                if (slots[1].entries[i].actor != NULL) {
-                    fn_801E801C(slots[1].entries[i].actor);
-                }
-            }
+            fsaDrawEntries(slots, 1, true);
             n = slots[1].unk74;
             for (i = 0; i < n; i++) {
                 s32 id = slots[1].unk64[i];
