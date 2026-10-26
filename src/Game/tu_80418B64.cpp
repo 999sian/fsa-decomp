@@ -1450,6 +1450,43 @@ extern "C" void fn_8041FC2C(u8* self) {
     }
 }
 
+extern "C" void* fn_804201E0(void* this_, s16 how) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804B13D4;
+        if (*(void**)((u8*)this_+0x50)) {
+            ReleaseSlot((void**)((u8*)this_+0x50));
+        }
+        ReleaseSlot((void**)((u8*)this_+0x4c));
+        ReleaseSlot((void**)((u8*)this_+0x4));
+        void** slot=(void**)this_;
+        for(s32 i=0;i<4;i++) {
+            ReleaseSlot(slot+2);
+            ReleaseSlot(slot+11);
+            slot++;
+        }
+        ReleaseSlot((void**)((u8*)this_+0x18));
+        ReleaseSlot((void**)((u8*)this_+0x54));
+        ReleaseSlot((void**)((u8*)this_+0x58));
+        ReleaseSlot((void**)((u8*)this_+0x5c));
+        ReleaseSlot((void**)((u8*)this_+0x6c));
+        ReleaseSlot((void**)((u8*)this_+0x70));
+        void** base=(void**)this_;
+        for(s32 i=0;i<4;i++) {
+            ReleaseSlot(base+29);
+            ReleaseSlot(base+33);
+            ReleaseSlot(base+37);
+            ReleaseSlot(base+41);
+            ReleaseSlot(base+45);
+            ReleaseSlot(base+49);
+            ReleaseSlot(base+53);
+            ReleaseSlot(base+57);
+            base++;
+        }
+        if(how>0) __dl__FPv(this_);
+    }
+    return this_;
+}
+
 extern u8 lbl_804B1390[];
 extern "C" u8* fn_80420574(u8* self) {
     *(u8**)self = lbl_804B1390 + 0x44;
