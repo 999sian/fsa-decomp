@@ -713,7 +713,7 @@ extern "C" s32 fn_801A6108(s32 h, void* p, void* q);
 extern "C" s32 fn_801A4F5C(s32 h, void* p, void* q);
 extern "C" s32 fn_801A46FC(s32 h, void* p, void* q);
 extern float lbl_80541F28;
-static inline u8 enemyFlameHit(char* self, char* target, u8& hit) {
+static inline u32 enemyFlameHit(char* self, char* target, u32& hit) {
     bool flame=false;
     if (target==0) return 0;
     if (*(u32*)(target+0x1a0)=='FLME') flame=true;
@@ -733,7 +733,7 @@ extern "C" void fn_80332A60(char* this_) {
     extern float lbl_80541F14, lbl_80541F18, lbl_80541EE8;
     s32 kind;
     char* p=this_;
-    u8 hit;
+    u32 hit;
     char* a;
     s32 idx;
     JGeometry::TVec2<f32> offset;
