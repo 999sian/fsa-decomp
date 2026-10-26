@@ -6,6 +6,12 @@
 #include "dolphin/gx/GXEnum.h"
 #include "types.h"
 
+static inline void initializeSwapModeTable(J2DTevSwapModeTable& table, const J2DTevSwapModeTableInfo& info)
+{
+    const u8* channels = reinterpret_cast<const u8*>(&info);
+    table._00 = J2DCalcTevSwapTable(channels[0], channels[1], channels[2], channels[3]);
+}
+
 void J2DColorBlock::initialize() {
     for (int i = 0; i < 2; i++) {
         mColors[i] = j2dDefaultColInfo;
@@ -419,7 +425,7 @@ void J2DTevBlock2::initialize()
     mOrders[0].setTevOrderInfo(j2dDefaultTevOrderInfoNull);
     mOrders[1].setTevOrderInfo(j2dDefaultTevOrderInfoNull);
 
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         mColors[i] = j2dDefaultTevColor;
     }
 
@@ -427,7 +433,7 @@ void J2DTevBlock2::initialize()
     mStages[0].setStageNo(0);
     mStages[1].setStageNo(1);
 
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         mKColors[i] = j2dDefaultTevKColor;
     }
 
@@ -437,7 +443,7 @@ void J2DTevBlock2::initialize()
     mKAlphaSels[0] = 0xff;
     mKAlphaSels[1] = 0xff;
 
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         mSwapModeTables[i].setTevSwapModeTableInfo(j2dDefaultTevSwapModeTable);
     }
 
