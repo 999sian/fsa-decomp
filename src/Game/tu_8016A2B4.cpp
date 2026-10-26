@@ -6,13 +6,6 @@
 #include "JSystem/JKernel/JKRArchive.h"
 #include "JSystem/JKernel/JKRHeap.h"
 extern "C" void* fn_800CECCC(const void*, u32);
-static inline void createMaterialAnimations(J3DModelData* data, JKRHeap* heap) {
-    for (u16 i = 0; i < data->getMaterialNum(); i++) {
-        J3DMaterialAnm* anm = new (heap, 0) J3DMaterialAnm;
-        data->getMaterialNodePointer(i)->change();
-        data->getMaterialNodePointer(i)->setMaterialAnm(anm);
-    }
-}
 static inline void loadTextureAnimation(JKRArchive* archive, const char* name, J3DModelData* data, J3DAnmTextureSRTKey** out) {
     *out = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, name), 0);
     (*out)->searchUpdateMaterialID(data);
@@ -145,9 +138,8 @@ extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const ch
     if (resource) {
         J3DModelData* data = J3DModelLoaderDataBase::load(resource, flags);
         if (tex1) {
-            J3DAnmTextureSRTKey*& animation = *outTex1;
-            animation = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex1), 0);
-            animation->searchUpdateMaterialID(data);
+            *outTex1 = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex1), 0);
+            (*outTex1)->searchUpdateMaterialID(data);
         } else if (outTex1) {
             *outTex1 = 0;
         }
@@ -169,10 +161,10 @@ extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const ch
         } else if (outTev2) {
             *outTev2 = 0;
         }
-        for (u16 i = 0; i < data->getMaterialNum(); i++) {
+        for (u16 i = 0; i < data->mMaterialTable.mMaterialNum; i++) {
             J3DMaterialAnm* anm = new (heap, 0) J3DMaterialAnm;
-            data->getMaterialNodePointer(i)->change();
-            data->getMaterialNodePointer(i)->setMaterialAnm(anm);
+            data->mMaterialTable.mMaterials[i]->change();
+            data->mMaterialTable.mMaterials[i]->setMaterialAnm(anm);
         }
         if (tex1) j3dSys.ErrorReport(data->mMaterialTable.entryTexMtxAnimator(*outTex1));
         if (tex2) j3dSys.ErrorReport(data->mMaterialTable.entryTexMtxAnimator(*outTex2));
