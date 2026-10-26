@@ -1034,9 +1034,9 @@ static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
 
 #pragma opt_propagation off
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
-    int cnt;
+    s32 cnt;
     s32 i;
-    int flag;
+    s32 flag;
     u32 bit;
     u8 mask;
 
@@ -1286,9 +1286,13 @@ extern "C" void fn_8041F5FC(void* this_) {
 }
 
 extern "C" void fn_8013B490(void* p);
-extern f32 lbl_80543A34;
-extern f32 lbl_80543A38;
-extern f32 lbl_80543A3C;
+extern const f32 lbl_80543A34;
+extern const f32 lbl_80543A38;
+extern const f32 lbl_80543A3C;
+static inline u8 HudHideTimer8041() {
+    if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return 1;
+    return lbl_8053AAF8[0x88] == 2;
+}
 extern "C" void fn_8041F720(u8* self) {
     f32 buf[3];
     s32 st = *(s32*)(lbl_80529DEC + 0x118);
@@ -1321,13 +1325,13 @@ extern "C" void fn_8041F720(u8* self) {
                         fn_8022EA0C(i);
                         fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
                         u8* vp = *(u8**)(sManager__8JUTVideo + 4);
-                        f32 fa = (f32)(s32)*(u16*)(vp + 4);
-                        f32 fb = (f32)(s32)*(u16*)(vp + 6);
+                        s32 fa = *(u16*)(vp + 4);
+                        s32 fb = *(u16*)(vp + 6);
                         f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
-                        f32 xx = sx * (buf[0] / fa);
-                        f32 x = xx - fa * lbl_80543A34;
-                        f32 yy = sy * (buf[1] / fb);
-                        f32 y = c + (yy - fb * lbl_80543A34);
+                        f32 xx = sx * (buf[0] / (f32)fa);
+                        f32 x = xx - (f32)fa * lbl_80543A34;
+                        f32 yy = sy * (buf[1] / (f32)fb);
+                        f32 y = c + (yy - (f32)fb * lbl_80543A34);
                         JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
                         ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
                         ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
@@ -1341,13 +1345,13 @@ extern "C" void fn_8041F720(u8* self) {
                                 fn_8022EA0C(i);
                                 fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(), 0, 0, buf);
                                 u8* vp = *(u8**)(sManager__8JUTVideo + 4);
-                                f32 fa = (f32)(s32)*(u16*)(vp + 4);
-                                f32 fb = (f32)(s32)*(u16*)(vp + 6);
+                                s32 fa = *(u16*)(vp + 4);
+                                s32 fb = *(u16*)(vp + 6);
                                 f32 c = (f32)(s32)*(s16*)(lbl_8050DB0C + 0x4e);
-                                f32 xx = sx * (buf[0] / fa);
-                                f32 x = xx - fa * lbl_80543A34;
-                                f32 yy = sy * (buf[1] / fb);
-                                f32 y = c + (yy - fb * lbl_80543A34);
+                                f32 xx = sx * (buf[0] / (f32)fa);
+                                f32 x = xx - (f32)fa * lbl_80543A34;
+                                f32 yy = sy * (buf[1] / (f32)fb);
+                                f32 y = c + (yy - (f32)fb * lbl_80543A34);
                                 JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
                                 ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
                                 ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
