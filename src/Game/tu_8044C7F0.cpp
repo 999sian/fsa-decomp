@@ -281,6 +281,7 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     f[0xb0] = 0;
 }
 
+#pragma dont_inline on
 extern "C" void fn_8044D894(u8* self) {
     u8* p;
     s32 i;
@@ -343,11 +344,13 @@ extern "C" u8* lbl_8053AAF8;
 extern f32 lbl_80543E18;
 extern "C" void fn_80452350(u8* self) {
 	s32 i;
-	u8* p = self;
+	u8* p;
 	fn_804310CC(lbl_8053AEC0);
-	*(s16*)(self + 0xf8) = 0;
-	*(s16*)(self + 0xfe) = 0;
-	for (i = 0; i < 3; i++) {
+	i = 0;
+	p = self;
+	*(s16*)(self + 0xf8) = i;
+	*(s16*)(self + 0xfe) = i;
+	for (; i < 3; i++) {
 		fn_80402E08(*(void**)(p + 0x48), lbl_80543DF8, lbl_80543DFC);
 		fn_80402E08(*(void**)(p + 0x60), lbl_80543DF8, lbl_80543DFC);
 		*(s16*)(*(u8**)(p + 0x48) + 0x20) = 0;
@@ -368,7 +371,7 @@ extern "C" void fn_80452350(u8* self) {
 	*(s16*)(self + 0xfe) = 0;
 	*(s16*)(self + 0xfa) = 2;
 	*(s16*)(self + 0xfc) = 0;
-	(*(UlPane**)(self + 8))->setAlpha(0);
+	(*(UlPane**)(*(u8**)(self + 8) + 4))->setAlpha(0);
 	*(s16*)(*(u8**)(self + 8) + 0x26) = 0;
 	p = self;
 	for (i = 0; i < 0xf; i++) {
@@ -386,73 +389,58 @@ extern "C" void fn_80452350(u8* self) {
 		(*(s32*)(lbl_80529DEC + 0x118) == 6 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
 		(*(s32*)(lbl_80529DEC + 0x118) == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1))) {
 		u32 h = fn_804030C4(0x54494d47, lbl_80491400);
-		(*(UlPane**)(self + 4))->find(0x7363000050ULL);
+		((J2DPicture*)(*(UlPane**)(self + 4))->find(0x5073633031ULL))->changeTexture((const ResTIMG*)h, 0);
 	} else {
 		u32 h = fn_80403084(0x54494d47, lbl_80491414);
+		((J2DPicture*)(*(UlPane**)(self + 4))->find(0x5073633031ULL))->changeTexture((const ResTIMG*)h, 0);
 	}
 	fn_8044D894(self);
 	*(s32*)(self + 0x184) = 9;
 }
 
+#pragma opt_lifetimes reset
 extern "C" void* fn_8045270C(u8* self, s16 deleting) {
-    s32 i;
-    u8* p;
     if (self != NULL) {
         *(void***)(self) = lbl_804B1D58;
         fn_80459274(lbl_8053AF80);
-        for (i = 0; i < 7; i++) {
-            p = *(u8**)(self + 0x6c + i * 4);
-            if (p != NULL) {
-                *(u32*)(p + 0xf4) |= 1;
-                *(s32*)(p + 0x24) = 1;
-                *(u8**)(self + 0x6c + i * 4) = NULL;
-            }
-            p = *(u8**)(self + 0x88 + i * 4);
-            if (p != NULL) {
-                *(u32*)(p + 0xf4) |= 1;
-                *(s32*)(p + 0x24) = 1;
-                *(u8**)(self + 0x88 + i * 4) = NULL;
-            }
+    for (int i = 0; i < 7; i++) {
+        if (((MenuEmitters8044*)self)->a[i] != NULL) {
+            ((MenuEmitters8044*)self)->a[i]->becomeInvalidEmitter();
+            ((MenuEmitters8044*)self)->a[i] = NULL;
         }
-        p = *(u8**)(self + 0xb0);
-        if (p != NULL) {
-            *(u32*)(p + 0xf4) |= 1;
-            *(s32*)(p + 0x24) = 1;
-            *(u8**)(self + 0xb0) = NULL;
+        if (((MenuEmitters8044*)self)->b[i] != NULL) {
+            ((MenuEmitters8044*)self)->b[i]->becomeInvalidEmitter();
+            ((MenuEmitters8044*)self)->b[i] = NULL;
         }
-        p = *(u8**)(self + 0xb4);
-        if (p != NULL) {
-            *(u32*)(p + 0xf4) |= 1;
-            *(s32*)(p + 0x24) = 1;
-            *(u8**)(self + 0xb4) = NULL;
+    }
+    for (int j = 0; j < 2; j++) {
+        JPABaseEmitter** __restrict d = ((MenuEmitters8044*)self)->d[j];
+        if (d[0] != NULL) {
+            d[0]->becomeInvalidEmitter();
+            d[0] = NULL;
         }
-        p = *(u8**)(self + 0xb8);
-        if (p != NULL) {
-            *(u32*)(p + 0xf4) |= 1;
-            *(s32*)(p + 0x24) = 1;
-            *(u8**)(self + 0xb8) = NULL;
+        if (d[1] != NULL) {
+            d[1]->becomeInvalidEmitter();
+            d[1] = NULL;
         }
-        p = *(u8**)(self + 0xbc);
-        if (p != NULL) {
-            *(u32*)(p + 0xf4) |= 1;
-            *(s32*)(p + 0x24) = 1;
-            *(u8**)(self + 0xbc) = NULL;
+    }
+    for (int k = 0; k < 3; k++) {
+        if (((MenuEmitters8044*)self)->c[k] != NULL) {
+            JPAEmitterManager* mgr = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+            mgr->forceDeleteEmitter(((MenuEmitters8044*)self)->c[k]);
+            ((MenuEmitters8044*)self)->c[k] = NULL;
         }
-        for (i = 0; i < 3; i++) {
-            if (*(void**)(self + 0xa4 + i * 4) != NULL) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(self + 0xa4 + i * 4));
-                *(void**)(self + 0xa4 + i * 4) = NULL;
-            }
-            if (*(void**)(self + 0xc0 + i * 4) != NULL) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(self + 0xc0 + i * 4));
-                *(void**)(self + 0xc0 + i * 4) = NULL;
-            }
+        if (((MenuEmitters8044*)self)->e[k] != NULL) {
+            JPAEmitterManager* mgr = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+            mgr->forceDeleteEmitter(((MenuEmitters8044*)self)->e[k]);
+            ((MenuEmitters8044*)self)->e[k] = NULL;
         }
+    }
         if (*(Deletable**)(self + 0x4) != NULL) {
             (*(Deletable**)(self + 0x4))->del(1);
         }
         *(void**)(self + 0x4) = NULL;
-        for (i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (*(Deletable**)(self + 0xd8 + i * 4) != NULL) {
                 (*(Deletable**)(self + 0xd8 + i * 4))->del(1);
             }
@@ -474,13 +462,13 @@ extern "C" void* fn_8045270C(u8* self, s16 deleting) {
             (*(Deletable**)(self + 0x8))->del(1);
         }
         *(void**)(self + 0x8) = NULL;
-        for (i = 0; i < 15; i++) {
+        for (int i = 0; i < 15; i++) {
             if (*(Deletable**)(self + 0xc + i * 4) != NULL) {
                 (*(Deletable**)(self + 0xc + i * 4))->del(1);
             }
             *(void**)(self + 0xc + i * 4) = NULL;
         }
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             if (*(Deletable**)(self + 0x48 + i * 4) != NULL) {
                 (*(Deletable**)(self + 0x48 + i * 4))->del(1);
             }
@@ -501,7 +489,6 @@ extern "C" void* fn_8045270C(u8* self, s16 deleting) {
     }
     return self;
 }
-
 extern "C" void __construct_array(void*, void*, void*, u32, u32);
 extern "C" void __ct__Q28JUtility6TColorFv(void*);
 extern "C" void fn_80453830(void*);
