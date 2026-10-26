@@ -13,13 +13,13 @@ extern "C" u8 fn_8038C678(s32, s32, void*, s32, void*, s32);
 extern "C" u8 fn_80388CAC(s32, void*);
 extern "C" void fn_80458880(void*, s32, s32);
 extern "C" void fn_802A3948(void*, void*, s32, s32, s32);
-extern "C" f32 lbl_805417B8;
-extern "C" f32 lbl_805417BC;
-extern "C" f32 lbl_805417C0;
+extern "C" const f32 lbl_805417B8;
+extern "C" const f32 lbl_805417BC;
+extern "C" const f32 lbl_805417C0;
 extern "C" const f32 lbl_805417C4;
-extern "C" f32 lbl_805417C8;
-extern "C" f32 lbl_805417CC;
-extern "C" f32 lbl_805417D0;
+extern "C" const f32 lbl_805417C8;
+extern "C" const f32 lbl_805417CC;
+extern "C" const f32 lbl_805417D0;
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AF80;
 extern "C" void* lbl_8053AC98;
@@ -103,26 +103,26 @@ extern "C" void fn_80311C58(void* p) {
     fn_803075AC(*(void**)((u8*)p + 0x198), *(s32*)((u8*)p + 4), (u8*)p + 0xc, 0x386, 0, 2, -1, 0, 0, 0);
 }
 
-extern "C" void fn_80311CD0(u8* p) {
+extern "C" void fn_80311CD0(Actor* actor) {
+    u8* p=(u8*)actor;
     JGeometry::TBox2<f32> bounds;
-    JGeometry::TVec3<f32> copy28, pos, saved10;
+    JGeometry::TVec3<f32> dialog58, dialog4c, dialog40, dialog34, copy28, pos, saved10;
     f32 step, zero, fy2, fx2, fx, fy, fx1, fy1;
-    s32 r29, r30, r28;
-    u8* self=p;
+    s32 r30, r29, r28;
     s32 state;
     bool found;
-    bounds.i.x = *(f32*)(self + 0x60);
-    bounds.i.y = *(f32*)(self + 0x64);
-    bounds.f.x = *(f32*)(self + 0x68);
-    bounds.f.y = *(f32*)(self + 0x6c);
-    bounds.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
-    fn_80239914(&bounds, *(s32*)(self + 4), *(void**)(self + 0x198));
+    bounds.i.x = *(f32*)(p + 0x60);
+    bounds.i.y = *(f32*)(p + 0x64);
+    bounds.f.x = *(f32*)(p + 0x68);
+    bounds.f.y = *(f32*)(p + 0x6c);
+    bounds.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
+    fn_80239914(&bounds, *(s32*)(p + 4), *(void**)(p + 0x198));
 
-    state = *(s32*)(self + 0x24c);
+    state = *(s32*)(p + 0x24c);
     switch (state) {
     case 0:
-        fn_8022FEB8(&bounds.i.x, *(s32*)(self + 4), *(void**)(self + 0x198), 1, 0);
-        r29 = fn_8022FD8C(*(void**)(self + 0x198));
+        fn_8022FEB8(&bounds.i.x, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        r29 = fn_8022FD8C(*(void**)(p + 0x198));
         if (r29 < 0) {
             break;
         }
@@ -130,18 +130,25 @@ extern "C" void fn_80311CD0(u8* p) {
             break;
         }
         if ((u8)fn_802D800C(fn_802D6A9C(), 0x14)) {
-            if (((u8(*)(s32,s32,void*,s32,JGeometry::TVec3<f32>,s32))fn_8038C678)(r29, 0x834, *(void**)(self + 0x198), *(s32*)(self + 4), *(JGeometry::TVec3<f32>*)(self+0xc), 0x28)) {
-                *(s32*)(self + 0x254) = r29;
-                *(s32*)(self + 0x24c) = 3;
+            void* handledialog58=*(void**)(p+0x198);
+            s32 roomdialog58=*(s32*)(p+4);
+            dialog58=*(JGeometry::TVec3<f32>*)(p+0xc);
+            if (fn_8038C678(r29, 0x834,handledialog58,roomdialog58,&dialog58, 0x28)) {
+                *(s32*)(p + 0x254) = r29;
+                *(s32*)(p + 0x24c) = 3;
             }
             break;
         }
-        fx = *(f32*)(self+0x230) + lbl_805417B8;
-        fy = *(f32*)(self+0x234) + lbl_805417BC;
-        fx1 = *(f32*)(self+0x238) - lbl_805417BC;
-        fy1 = *(f32*)(self+0x23c) - lbl_805417BC;
-        fx2 = lbl_805417C0 * tu311Random() + fx;
-        fy2 = lbl_805417C8 * tu311Random() + fy;
+        fx=*(f32*)(p+0x230);
+        fy=*(f32*)(p+0x234);
+        fx1=*(f32*)(p+0x238);
+        fy1=*(f32*)(p+0x23c);
+        fx+=lbl_805417B8;
+        fy+=lbl_805417BC;
+        fx1-=lbl_805417BC;
+        fy1-=lbl_805417BC;
+        fx2 = lbl_805417C0 * tu311Random((u8*)lbl_8053AAF8,0x19660d) + fx;
+        fy2 = lbl_805417C8 * tu311Random((u8*)lbl_8053AAF8,0x19660d) + fy;
         zero = lbl_805417CC;
         step = lbl_805417D0;
         for (r30 = 0; r30 < 0x14; r30++) {
@@ -152,9 +159,9 @@ extern "C" void fn_80311CD0(u8* p) {
                 if (fn_80226850(&pos.x, 0) == 0x1b0) {
                     pos.x = (f32)(__cvt_fp2unsigned(pos.x) & ~0xf);
                     pos.y = (f32)(__cvt_fp2unsigned(pos.y) & ~0xf);
-                    *(f32*)(self + 0x240) = pos.x;
-                    *(f32*)(self + 0x244) = pos.y;
-                    *(f32*)(self + 0x248) = pos.z;
+                    *(f32*)(p + 0x240) = pos.x;
+                    *(f32*)(p + 0x244) = pos.y;
+                    *(f32*)(p + 0x248) = pos.z;
                     copy28 = pos;
                     saved10 = copy28;
                     u8* manager = (u8*)fn_802D6A9C()+0x10000;
@@ -177,38 +184,44 @@ extern "C" void fn_80311CD0(u8* p) {
         found=false;
 searchDone:
         if (!found) {
-            if (((u8(*)(s32,s32,void*,s32,JGeometry::TVec3<f32>,s32))fn_8038C678)(r29,0x84f,*(void**)(self+0x198),*(s32*)(self+4),*(JGeometry::TVec3<f32>*)(self+0xc),0x28)) {
-                *(s32*)(self+0x254)=r29;
-                *(s32*)(self+0x24c)=3;
+            void* handledialog4c=*(void**)(p+0x198);
+            s32 roomdialog4c=*(s32*)(p+4);
+            dialog4c=*(JGeometry::TVec3<f32>*)(p+0xc);
+            if (fn_8038C678(r29,0x84f,handledialog4c,roomdialog4c,&dialog4c,0x28)) {
+                *(s32*)(p+0x254)=r29;
+                *(s32*)(p+0x24c)=3;
             }
         } else {
-            if (((u8(*)(s32,s32,void*,s32,JGeometry::TVec3<f32>,s32))fn_8038C678)(r29,0x835,*(void**)(self+0x198),*(s32*)(self+4),*(JGeometry::TVec3<f32>*)(self+0xc),8)) {
-                *(s32*)(self+0x250)=r29;
-                *(s32*)(self+0x24c)=1;
+            void* handledialog40=*(void**)(p+0x198);
+            s32 roomdialog40=*(s32*)(p+4);
+            dialog40=*(JGeometry::TVec3<f32>*)(p+0xc);
+            if (fn_8038C678(r29,0x835,handledialog40,roomdialog40,&dialog40,8)) {
+                *(s32*)(p+0x250)=r29;
+                *(s32*)(p+0x24c)=1;
             }
         }
         break;
     case 1:
-        fn_8022FF8C(*(s32*)(self + 0x250), &bounds.i.x, *(s32*)(self + 4), *(void**)(self + 0x198), 1, 0);
-        if (fn_80388CAC(*(s32*)(self + 0x250), *(void**)(self + 0x198))) {
-            *(f32*)(self + 0x240) = *(f32*)(self + 0x240) + lbl_805417E0;
-            *(f32*)(self + 0x244) = *(f32*)(self + 0x244) + lbl_805417E0;
-            self[0x258] = 0;
-            self[0x259] = 1;
-            *(s32*)(self + 0x24c) = 2;
+        fn_8022FF8C(*(s32*)(p + 0x250), &bounds.i.x, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(p + 0x250), *(void**)(p + 0x198))) {
+            *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + lbl_805417E0;
+            *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + lbl_805417E0;
+            p[0x258] = 0;
+            p[0x259] = 1;
+            *(s32*)(p + 0x24c) = 2;
         }
         break;
     case 2:
         if ((u8)fn_802D800C(fn_802D6A9C(),0x14)==0) {
-            fn_8031179C(self);
-        } else if (self[0x25a]==0) {
-            fn_802A3948(lbl_8053AC98,self+0x240,0,0,0x7a);
+            fn_8031179C(p);
+        } else if (p[0x25a]==0) {
+            fn_802A3948(lbl_8053AC98,p+0x240,0,0,0x7a);
             fn_80458880(lbl_8053AF80,3,-1);
-            self[0x25a]=1;
+            p[0x25a]=1;
         }
-        if (self[0x258] == 0) {
-            fn_8022FEB8(&bounds.i.x, *(s32*)(self + 4), *(void**)(self + 0x198), 1, 0);
-            r28 = fn_8022FD8C(*(void**)(self + 0x198));
+        if (p[0x258] == 0) {
+            fn_8022FEB8(&bounds.i.x, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            r28 = fn_8022FD8C(*(void**)(p + 0x198));
             if (r28 < 0) {
                 break;
             }
@@ -216,27 +229,30 @@ searchDone:
                 break;
             }
             s32 message;
-            if (fn_8022E438(r28,*(s32*)(self+0x250))) {
+            if (fn_8022E438(r28,*(s32*)(p+0x250))) {
                 if ((u8)fn_802D800C(fn_802D6A9C(),0x14)) message=0x834;
                 else message=0x832;
             } else message=0x833;
-            if (((u8(*)(s32,s32,void*,s32,JGeometry::TVec3<f32>,s32))fn_8038C678)(r28,message,*(void**)(self+0x198),*(s32*)(self+4),*(JGeometry::TVec3<f32>*)(self+0xc),8)) {
-                *(s32*)(self+0x254)=r28;
-                self[0x258]=1;
+            void* handledialog34=*(void**)(p+0x198);
+            s32 roomdialog34=*(s32*)(p+4);
+            dialog34=*(JGeometry::TVec3<f32>*)(p+0xc);
+            if (fn_8038C678(r28,message,handledialog34,roomdialog34,&dialog34,8)) {
+                *(s32*)(p+0x254)=r28;
+                p[0x258]=1;
             }
         } else {
-            fn_8022FF8C(*(s32*)(self + 0x254), &bounds.i.x, *(s32*)(self + 4), *(void**)(self + 0x198), 1, 0);
-            if (fn_80388CAC(*(s32*)(self + 0x254), *(void**)(self + 0x198))) {
-                *(s32*)(self + 0x254) = -1;
-                self[0x258] = 0;
+            fn_8022FF8C(*(s32*)(p + 0x254), &bounds.i.x, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            if (fn_80388CAC(*(s32*)(p + 0x254), *(void**)(p + 0x198))) {
+                *(s32*)(p + 0x254) = -1;
+                p[0x258] = 0;
             }
         }
         break;
     case 3:
-        fn_8022FF8C(*(s32*)(self + 0x254), &bounds.i.x, *(s32*)(self + 4), *(void**)(self + 0x198), 1, 0);
-        if (fn_80388CAC(*(s32*)(self + 0x254), *(void**)(self + 0x198))) {
-            *(s32*)(self + 0x254) = -1;
-            *(s32*)(self + 0x24c) = 0;
+        fn_8022FF8C(*(s32*)(p + 0x254), &bounds.i.x, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(p + 0x254), *(void**)(p + 0x198))) {
+            *(s32*)(p + 0x254) = -1;
+            *(s32*)(p + 0x24c) = 0;
         }
         break;
     }
