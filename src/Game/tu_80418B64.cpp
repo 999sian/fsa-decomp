@@ -135,10 +135,7 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
 }
 
 typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
-static inline void HudChangeDigit8041(u8* self, const u64* digits, const u64* shadows, s32 index, u32 tag) {
-    ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(digits[index]))->changeTexture((ResTIMG*)tag, 0);
-    ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(shadows[index]))->changeTexture((ResTIMG*)tag, 0);
-}
+
 
 
 // Sets the digit pane pair idx (names at 0x338 and 0x360 tables) to the glyph tag.
@@ -702,9 +699,11 @@ extern "C" void fn_8041C67C(u8* this_) {
 		}
 	}
 }
+#pragma opt_common_subs on
 #pragma opt_strength_reduction on
-extern "C" void fn_8041CC04(u8* self) {
-    const u8* base = (const u8*)lbl_8048D320;
+extern "C" void fn_8041CC04(u8* this_) {
+    u8* self = this_;
+    const u64* base = lbl_8048D320;
     s32 n;
     s32 which;
     s32 i;
@@ -717,23 +716,21 @@ extern "C" void fn_8041CC04(u8* self) {
         n = v;
         if (v > 9999) n = 9999;
         if (n < 0) {
-            const u64* first = (const u64*)(base + 0x338);
+            const u64* first = base + 0x67;
             p = first;
-            i = 0;
-            do {
+            for (i = 0; i < 5; i++, p++) {
                 ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*p))->setBlackWhite(JUtility::TColor(0,0,0,0), JUtility::TColor(255,85,65,255));
-                p++;
-            } while (++i < 5);
+            }
             if (n < -5000) n = -5000;
             n *= -1;
             tag = fn_804030C4(0x54494d47, (u32)((u8*)base + 0xe38));
             ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*first))->changeTexture((ResTIMG*)tag, 0);
-            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)(base+0x360)))->changeTexture((ResTIMG*)tag, 0);
+            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(base[0x6c]))->changeTexture((ResTIMG*)tag, 0);
             (*(J2DScreen**)(self + 4))->search(((const u64*)((u32)base+0x338))[4])->show();
             (*(J2DScreen**)(self + 4))->search(((const u64*)((u32)base+0x360))[4])->show();
             which = 1;
         } else {
-            for (i = 0, p = (const u64*)(base+0x338); i < 5; i++, p++) {
+            for (i = 0, p = base + 0x67; i < 5; i++, p++) {
                 ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*p))->setBlackWhite(*(JUtility::TColor*)(self+0x248), *(JUtility::TColor*)(self+0x244));
             }
             (*(J2DScreen**)(self + 4))->search(((const u64*)((u32)base+0x338))[4])->hide();
@@ -743,27 +740,28 @@ extern "C" void fn_8041CC04(u8* self) {
         n %= 1000;
         tag = fn_804030C4(0x54494d47, lbl_804B139C[digit1000]);
         off = (which) * 8;
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x338)+off)))->changeTexture((ResTIMG*)tag, 0);
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x360)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x67)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x6c)+off)))->changeTexture((ResTIMG*)tag, 0);
         s32 digit100 = n / 100;
         n %= 100;
         tag = fn_804030C4(0x54494d47, lbl_804B139C[digit100]);
         off = (which+1) * 8;
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x338)+off)))->changeTexture((ResTIMG*)tag, 0);
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x360)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x67)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x6c)+off)))->changeTexture((ResTIMG*)tag, 0);
         s32 digit10 = n / 10;
         n %= 10;
         tag = fn_804030C4(0x54494d47, lbl_804B139C[digit10]);
         off = (which+2) * 8;
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x338)+off)))->changeTexture((ResTIMG*)tag, 0);
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x360)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x67)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x6c)+off)))->changeTexture((ResTIMG*)tag, 0);
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n]);
         off = (which+3) * 8;
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x338)+off)))->changeTexture((ResTIMG*)tag, 0);
-        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x360)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x67)+off)))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*(const u64*)((u32)(base+0x6c)+off)))->changeTexture((ResTIMG*)tag, 0);
     }
 }
 #pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 extern u8* lbl_8053AD30;
 extern "C" u8 fn_80230188(s32);
 extern "C" u8 fn_8023BE0C(void);
