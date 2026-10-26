@@ -62,7 +62,7 @@ extern "C" void* fn_80144134(void* this_, s16 freeFlag) {
 
 static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale) {
     f32 ang;
-    f32 s;
+    f64 s;
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
@@ -82,24 +82,15 @@ static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale)
     f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
-    m[0][0] = (ang * cz);
-    m[1][0] = (ang * sz);
-    m[2][0] = -sy;
-    m[0][1] = (sxsy * cz - cxsz);
-    m[1][1] = (sxsy * sz + cxcz);
-    m[2][1] = (sx * ang);
-    m[0][2] = (cxcz * sy + sxsz);
-    m[1][2] = (cxsz * sy - sxcz);
-    m[2][2] = (cx * ang);
-    m[0][0] *= s;
-    m[1][0] *= s;
-    m[2][0] *= s;
-    m[0][1] *= s;
-    m[1][1] *= s;
-    m[2][1] *= s;
-    m[0][2] *= s;
-    m[1][2] *= s;
-    m[2][2] *= s;
+    m[0][0] = (f32)s * (ang * cz);
+    m[1][0] = (f32)s * (ang * sz);
+    m[2][0] = (f32)s * -sy;
+    m[0][1] = (f32)s * (sxsy * cz - cxsz);
+    m[1][1] = (f32)s * (sxsy * sz + cxcz);
+    m[2][1] = (f32)s * (sx * ang);
+    m[0][2] = (f32)s * (cxcz * sy + sxsz);
+    m[1][2] = (f32)s * (cxsz * sy - sxcz);
+    m[2][2] = (f32)s * (cx * ang);
 }
 
 static inline void bzbrRotScaleValue(f32 m[3][4], f32 ang, f32 s) {
