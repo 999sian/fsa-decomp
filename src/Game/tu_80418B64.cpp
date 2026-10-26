@@ -990,6 +990,21 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
     this_[0x28B] |= (u8)(1 << idx);
 }
 
+struct HudCounters8041 {
+    u8 pad000[0x198];
+    s32 countDelay[4];
+    s32 gaugeDelay[4];
+    u8 pad1b8[0x21a - 0x1b8];
+    s16 transition[4];
+    u8 pad222[2];
+    s16 timer[4];
+    s16 cooldown[4];
+};
+
+static inline bool HudCountPending8041(u8 mask) {
+    return (lbl_80529DEC[0x239] & mask) != 0;
+}
+
 static inline void HudSyncCount8041(s32 idx) {
     u8* dst = lbl_80529DEC;
     s32* src = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -1009,32 +1024,26 @@ static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
     *(s32*)(self + idx * 4 + 0x1f8) = fn_80237810(idx);
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     s32 cnt;
     s32 i;
-    bool flag;
+    s32 flag;
     u32 bit;
     u8 mask;
 
     bit = 1 << idx;
     mask = bit;
 
-    flag = lbl_80529DEC[0x239] & mask;
+    flag = (lbl_80529DEC[0x239] & mask) != 0;
     if (flag) {
-        s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         cnt = fn_80237774(idx);
+        s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) = cnt;
-        for (i = 0; i < 4; i++) {
-            if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-                *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
-            }
-        }
-        this_[0x28a] |= bit;
+        HudSyncCount8041(idx);
+        this_[0x28a] |= (u8)bit;
         *(s32*)(this_ + idx * 4 + 0x198) = 0;
-        *(s16*)(this_ + idx * 2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
-        *(s32*)(this_ + idx * 4 + 0x1e8) = *(s32*)(this_ + idx * 4 + 0x1d8);
-        *(s32*)(this_ + idx * 4 + 0x1d8) = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
-        *(s32*)(this_ + idx * 4 + 0x1f8) = fn_80237810(idx);
+        HudSetCountTransition8041(this_, idx, slot);
         lbl_80529DEC[0x239] &= ~mask;
     } else {
         s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -1043,39 +1052,25 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
             *(s32*)(this_ + idx * 4 + 0x198) += 1;
             if (*(s32*)(this_ + idx * 4 + 0x198) >= 10) {
                 *slot += 1;
-                for (i = 0; i < 4; i++) {
-                    if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-                        *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *slot;
-                    }
-                }
-                this_[0x28a] |= bit;
+                HudSyncCount8041(idx);
+                this_[0x28a] |= (u8)bit;
                 *(s32*)(this_ + idx * 4 + 0x198) = 0;
                 fn_80230EB8(idx, 9);
             }
             if (this_[0x291] != 0) {
-                *(s16*)(this_ + idx * 2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
-                *(s32*)(this_ + idx * 4 + 0x1e8) = *(s32*)(this_ + idx * 4 + 0x1d8);
-                *(s32*)(this_ + idx * 4 + 0x1d8) = *slot;
-                *(s32*)(this_ + idx * 4 + 0x1f8) = fn_80237810(idx);
+                HudSetCountTransition8041(this_, idx, slot);
             }
-        } else if (cnt > (s32)fn_80237774(idx)) {
+        } else if (*slot > (s32)fn_80237774(idx)) {
             lbl_80529DEC[0x24a] |= mask;
             *(s32*)(this_ + idx * 4 + 0x198) += 1;
             if (*(s32*)(this_ + idx * 4 + 0x198) >= 10) {
                 *slot -= 1;
-                for (i = 0; i < 4; i++) {
-                    if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-                        *(s32*)(lbl_80529DEC + i * 4 + 0xd8) = *slot;
-                    }
-                }
-                this_[0x28a] |= bit;
+                HudSyncCount8041(idx);
+                this_[0x28a] |= (u8)bit;
                 *(s32*)(this_ + idx * 4 + 0x198) = 0;
             }
             if (this_[0x291] != 0) {
-                *(s16*)(this_ + idx * 2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
-                *(s32*)(this_ + idx * 4 + 0x1e8) = *(s32*)(this_ + idx * 4 + 0x1d8);
-                *(s32*)(this_ + idx * 4 + 0x1d8) = *slot;
-                *(s32*)(this_ + idx * 4 + 0x1f8) = fn_80237810(idx);
+                HudSetCountTransition8041(this_, idx, slot);
             }
         } else {
             *(s32*)(this_ + idx * 4 + 0x198) = 0;
@@ -1093,10 +1088,10 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                 *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) = fn_80236100(idx);
                 fn_80230EB8(idx, 0x51);
             }
-            this_[0x28b] |= bit;
+            this_[0x28b] |= (u8)bit;
             *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
         }
-    } else if (cnt > (s32)fn_80236100(idx)) {
+    } else if (*(s32*)(lbl_80529DEC + idx * 4 + 0xe8) > (s32)fn_80236100(idx)) {
         *(s32*)(this_ + idx * 4 + 0x1a8) += 1;
         if (*(s32*)(this_ + idx * 4 + 0x1a8) >= 2) {
             *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) -= 2;
@@ -1106,7 +1101,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                 *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) = fn_80236100(idx);
                 fn_80230EB8(idx, 0x51);
             }
-            this_[0x28b] |= bit;
+            this_[0x28b] |= (u8)bit;
             *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
         }
     } else {
@@ -1125,9 +1120,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
         }
     }
 }
-
-#pragma opt_propagation off
-#pragma opt_common_subs off
+#pragma opt_lifetimes reset
 extern "C" void fn_8041EDB0(u8* self) {
     u64* tags = lbl_8048D320;
     int i;
