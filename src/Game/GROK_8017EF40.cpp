@@ -193,6 +193,8 @@ extern "C" s32 lbl_80539FA4;
 extern "C" u8 lbl_8053AB74;
 extern "C" u8 lbl_8053AB75;
 extern "C" char lbl_80466E74[];
+extern const f32 lbl_8053DDE0;
+extern const f32 lbl_8053DDE8;
 struct GrokResources {
     virtual void v00();
     virtual void v01();
@@ -285,7 +287,7 @@ extern "C" void fn_801820B4(void* this_) {
             }
             {
                 void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
-                void* res = ((void* (*)(void*, u32, void*))((*(void***)obj)[6]))(obj, 0x53434820, lbl_80466E74);
+                void* res = ((GrokResources*)obj)->getResource(0x53434820, lbl_80466E74);
                 fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
             }
             *(u32*)(self + 0xb0) = 0x9040004;
@@ -295,7 +297,9 @@ extern "C" void fn_801820B4(void* this_) {
             *(s32*)(self + 0x230) = 0;
         } else {
         case 1:
-            *(u32*)(self + 0xb0) = 0x9040004;
+            u32 value = 0x9040004;
+            *(u32*)(self + 0xb0) = value;
+            value = 0x10;
             *(u8*)(self + 0x1a8) = 0;
             *(f32*)(self + 0x60) = -16.0f;
             *(f32*)(self + 0x64) = -16.0f;
@@ -305,7 +309,7 @@ extern "C" void fn_801820B4(void* this_) {
             *(f32*)(self + 0x74) = -16.0f;
             *(f32*)(self + 0x78) = 16.0f;
             *(f32*)(self + 0x7c) = 16.0f;
-            *(s32*)(self + 0x230) = 0x10;
+            *(s32*)(self + 0x230) = value;
         }
         break;
     case 4:
@@ -324,10 +328,10 @@ extern "C" void fn_801820B4(void* this_) {
         *(s32*)(self + 0x230) = 0x11;
         break;
     case 6: {
-        u8* mgr = lbl_8053AAF8;
         u32 bits;
         f32 r;
         *(u8*)(self + 0x1a8) = 0;
+        u8* mgr = lbl_8053AAF8;
         *(u32*)(mgr + 0xb4) = *(u32*)(mgr + 0xb4) * 0x19660d + 0x3c6ef35f;
         bits = (*(u32*)(mgr + 0xb4) >> 9) | 0x3f800000;
         r = *(f32*)&bits - 1.0f;
