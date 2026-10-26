@@ -2839,6 +2839,8 @@ extern "C" void fn_803B5378(void* this_);
 extern "C" void fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_80458FF0(void* mgr, u32 id, s32 a, s32 b);
 extern void* sManager__8JUTVideo;
+static inline f32 MenuScaleX803B(const f32 value, s32 width) { return lbl_805433CC * value / (f32)width; }
+static inline f32 MenuScaleY803B(const f32 value, s32 height) { return lbl_805433D0 * (value - lbl_805433FC - lbl_80543400) / (f32)height; }
 static inline bool MenuPlayerActive803B(MsgGame* game, s32 i) {
     u8 mask = 1 << i;
     return (((u8*)game)[0x82] & mask) != 0;
@@ -2856,7 +2858,7 @@ extern "C" void fn_803B6768(void* this_) {
     u8* c2f0;
     s32 i;
     u8* p = (u8*)this_;
-    count = MenuPlayerCount803B(lbl_8053AAF8);
+    count = MenuPlayerCount803B(lbl_8053AAF8, 0);
     switch (count) {
     case 2:
         *(s32*)(p + 0x450) = 2;
