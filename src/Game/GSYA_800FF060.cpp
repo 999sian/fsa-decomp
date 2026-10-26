@@ -78,7 +78,6 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
 }
 
 #pragma opt_common_subs off
-#pragma opt_strength_reduction off
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 minutes;
     s32 value;
