@@ -25,7 +25,8 @@ extern "C" const f32 lbl_80543EC4;
 extern "C" const f32 lbl_80543EC8;
 extern "C" const f32 lbl_80543ECC;
 
-static inline void calcAudioManager(JAUSoundMgr* const manager) {
+static inline void calcAudioManager(u8* p) {
+    JAUSoundMgr* manager=*(JAUSoundMgr**)(p+0x30);
     manager->calc();
     manager->mixOut();
 }
