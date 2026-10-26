@@ -20,10 +20,13 @@ static inline u32 calcCardChecksum(u8* data) {
     u32 sum = 0;
     u16 inv = 0;
     u16* p = (u16*)data;
-    for (int i = 0; i < 0xffe; i++) {
-        u16 value = *p++;
-        sum += value;
-        inv += ~value;
+    int i;
+    for (i = 0; i < 0x7ff; i++) {
+        sum += p[0];
+        inv += ~p[0];
+        sum += p[1];
+        inv += ~p[1];
+        p += 2;
     }
     return (sum << 16) | inv;
 }
