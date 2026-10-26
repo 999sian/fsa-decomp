@@ -2,6 +2,7 @@
 // TU 80187144-8018A8D8 (FGN2). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // from src/Game/stub_8018a6a0.cpp
 extern void* lbl_8053AF80[2];
