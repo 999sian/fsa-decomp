@@ -723,65 +723,79 @@ static inline u8 enemyFlameHit(char* self, char* target, u8& hit) {
         fn_801F3128(target,&v.x);
         v -= *(JGeometry::TVec3<f32>*)(target+0x3c);
         hit=fn_801F37AC(self,*(u32*)(target+0x118),&v,0,*(u32*)(target+0x168),*(u32*)(target+0x110));
-        if(hit) *(u8*)(target+0x164)=1;
+        if((u8)hit) *(u8*)(target+0x164)=1;
     }
     return hit;
 }
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
-    extern const float lbl_80541EBC;
-    extern float lbl_80541F28;
-    extern float lbl_80541F14;
-    extern float lbl_80541F18;
+    extern const f32 lbl_80541ED0;
+    extern float lbl_80541F14, lbl_80541F18, lbl_80541EE8;
+    s32 kind;
+    char* p=this_;
+    u8 hit;
     char* a;
-    f32 v[3];
-    f32 box[4];
-    s32 r31 = 0;
     s32 idx;
-    s32 hit;
-    u32 seed;
-    u32 bits;
-    s32 rnd;
-
-    if (fn_801F3D94(this_, 1) == 0 && *(s32*)(this_ + 0x284) <= 0 && *(u8*)(this_ + 0xc4) == 0) {
-        *(u32*)(this_ + 0xb0) = 0x41302;
-        if (*(s32*)(this_ + 0x268) > 0) {
-            box[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-            box[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
-            box[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
-            box[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
-            idx = fn_801F82CC(fn_801F856C(), this_, *(u8*)(this_ + 0x195), lbl_80541F28);
-            if (idx >= 0 && idx != *(s32*)(this_ + 0x198)) {
-                a = (char*)fn_801F666C(fn_801F856C(), idx);
-                if (a != 0 && *(u32*)(a + 0x1a0) == 0x464c4d45) {
-                    v[0] = lbl_80541E9C;
-                    v[1] = lbl_80541E9C;
-                    v[2] = lbl_80541E9C;
-                    fn_801F3128(a, v);
-                    v[0] = v[0] - *(f32*)(a + 0x3c);
-                    v[1] = v[1] - *(f32*)(a + 0x40);
-                    v[2] = v[2] - *(f32*)(a + 0x44);
-                    hit = fn_801F37AC(this_, *(u32*)(a + 0x118), v, 0, *(u32*)(a + 0x168), *(u32*)(a + 0x110));
-                    if (hit) {
-                        *(u8*)(a + 0x164) = 1;
-                        r31 = 2;
-                    }
-                }
-            }
+    JGeometry::TVec2<f32> offset;
+    JGeometry::TBox2<f32> box;
+    if (fn_801F3D94(p,1)!=0 || *(s32*)(p+0x284)>0 || *(u8*)(p+0xc4)!=0) return;
+    *(u32*)(p+0xb0)=0x41302;
+    if (*(s32*)(p+0x268)>0) {
+        kind=0;
+        hit=0;
+        box=*(JGeometry::TBox2<f32>*)(p+0x60);
+        offset.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
+        box.addPos(offset);
+        idx=fn_801F82CC(fn_801F856C(),p,*(u8*)(p+0x195),lbl_80541F28);
+        u8 result=hit;
+        if(idx>=0 && idx!=*(s32*)(p+0x198)) {
+            a=(char*)fn_801F666C(fn_801F856C(),idx);
+            result=enemyFlameHit(p,a,hit);
         }
-        if (r31 > 0) {
-            seed = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-            *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
-            bits = (seed >> 9) | 0x3f800000;
-            if (*(u8*)(this_ + 0x2a2) == 1) {
-                rnd = (s32)((*(f32*)&bits - lbl_80541EBC) * lbl_80541F14);
-                *(s32*)(this_ + 0x240) = rnd + 0xc8;
+        if(result) kind=2;
+        else if ((u8)fn_801F2DB4(p,'NULL','FLME',0) || fn_801F2FAC(p) ||
+                 fn_801A4D1C(*(s32*)(p+0x198),&box,&offset)!=0 ||
+                 fn_801A6108(*(s32*)(p+0x198),&box,&offset)!=0 ||
+                 fn_801A4F5C(*(s32*)(p+0x198),&box,&offset)!=0 ||
+                 fn_801A46FC(*(s32*)(p+0x198),&box,&offset)!=0) kind=1;
+        if(kind>0) {
+            if(*(u8*)(p+0x2a2)==1)
+                *(s32*)(p+0x240)=(s32)(enemyRandUnit((u32*)(lbl_8053AAF8+0xb4))*lbl_80541F14)+200;
+            else
+                *(s32*)(p+0x240)=(s32)(enemyRandUnit((u32*)(lbl_8053AAF8+0xb4))*lbl_80541F18)+100;
+            if(*(s32*)((char*)fn_802D6A9C()+4)!=1 || *(s32*)((char*)fn_802D6A9C()+8)!=2)
+                *(s32*)(p+0x268)-=1;
+            if(*(u8*)(p+0x2a1)==0)
+                fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80541EBC,0x348,0,0,0,0,1);
+            else
+                fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80541EBC,0xd2,0,0,0,0,1);
+            fn_801F0E34(p,0x40001,0);
+            if(*(s32*)(p+0x268)==0)
+                *(s32*)(p+0x240)=(s32)(enemyRandUnit((u32*)(lbl_8053AAF8+0xb4))*lbl_80541F14)+200;
+            if(kind==1 || *(s32*)(p+0x268)==0) {
+                *(s32*)(p+0x238)=0;
+                *(s32*)(p+0x258)=0;
+                *(f32*)(p+0x14)=lbl_80541E9C;
+                *(f32*)(p+0x44)=lbl_80541E9C;
+                if(((JGeometry::TVec3<f32>*)(p+0x3c))->length()>lbl_80541EE8) {
+                    ((JGeometry::TVec3<f32>*)(p+0x3c))->normalize();
+                    ((JGeometry::TVec3<f32>*)(p+0x3c))->scale(lbl_80541EE8);
+                }
             } else {
-                rnd = (s32)((*(f32*)&bits - lbl_80541EBC) * lbl_80541F18);
-                *(s32*)(this_ + 0x240) = rnd + 0x64;
+                *(s32*)(p+0x238)=*(s32*)(p+0x240);
+                *(s32*)(p+0x258)=0;
+                *(f32*)(p+0x14)=lbl_80541E9C;
+                *(f32*)(p+0x44)=lbl_80541E9C;
+                *(JGeometry::TVec3<f32>*)(p+0x2b8)=*(JGeometry::TVec3<f32>*)(p+0x3c);
+                ((JGeometry::TVec3<f32>*)(p+0x2b8))->normalize();
+                f32 speed=lbl_80541ED0;
+                if(*(u8*)(p+0x2a3)==1) speed=lbl_80541EE8;
+                ((JGeometry::TVec3<f32>*)(p+0x2b8))->scale(speed);
             }
+            *(s32*)(p+0x230)=1;
         }
     }
+    *(u32*)(p+0xb0)=0x1000;
 }
 
 #pragma opt_propagation off
