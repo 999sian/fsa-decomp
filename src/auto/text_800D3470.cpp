@@ -1004,15 +1004,6 @@ extern "C" void fn_800D516C(void* param) {
     DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
-static inline void patchColorChannelData(u8* start, u8* p) {
-    J3DGDWriteXFCmdHdr(0x100e, 4);
-    ((J3DColorChan*)(p + 0x0e))->load();
-    ((J3DColorChan*)(p + 0x12))->load();
-    ((J3DColorChan*)(p + 0x10))->load();
-    ((J3DColorChan*)(p + 0x14))->load();
-    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
-}
-
 extern "C" void fn_800D5318(u8* p) {
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 0x1c);
     u8* start = __GDCurrentDL->pDisplayListData;
