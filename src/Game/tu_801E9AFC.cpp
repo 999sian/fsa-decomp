@@ -110,8 +110,8 @@ extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
 static inline void fsaDrawEntries(FsaSlot* slots, s32 index, bool textured) {
-    int n = slots[index].count;
     int i;
+    int n = slots[index].count;
     for (i = 0; i < n; i++) {
         if (slots[index].entries[i].actor) {
             if (textured) fn_801E801C(slots[index].entries[i].actor);
@@ -150,13 +150,13 @@ extern "C" void fn_801E9C74(u8* param) {
     bool b;
     u8* self = param;
     FsaSlot* slots = (FsaSlot*)self;
-    u8 a;
+    bool a;
 
 
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
     if (both) {
-        a = (bool)(u8)(slots[0].count > 0 || slots[1].count > 0);
+        a = (u8)(slots[0].count > 0 || slots[1].count > 0);
         b = (u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
     } else {
         FsaSlot* s = &slots[self[0xf0]];
