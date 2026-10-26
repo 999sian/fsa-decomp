@@ -54,37 +54,6 @@ extern "C" char* fn_800303AC(char* base, unsigned long off);
 extern "C" char* fn_80030394(char* base, unsigned long off);
 extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key);
 extern "C" short* fn_80030380(short* p);
-static inline JASOscillator::Data* createOscData8002FB90(char* base, const JASBNKParser::TOsc* rec, JKRHeap* heap) {
-                        JASOscillator::Data* osc = new (heap, 0) JASOscillator::Data;
-                        osc->mTarget = rec->target;
-                        osc->_04 = rec->_4;
-
-                        char* table = fn_80030424(base, ((unsigned long*)rec)[2]);
-                        if (table != 0) {
-                            int size = ((int)fn_80030380((short*)table) - (int)table) / 6 * 6;
-                            char* copy = new (heap, 0) char[size];
-                            JASCalc::bcopy(table, copy, size);
-                            osc->mTable = (JASOscillator::Point*)copy;
-                        } else {
-                            osc->mTable = 0;
-                        }
-
-                        char* relTable = fn_80030424(base, ((unsigned long*)rec)[3]);
-                        if (relTable != 0) {
-                            int size = ((int)fn_80030380((short*)relTable) - (int)relTable) / 6 * 6;
-                            char* copy = new (heap, 0) char[size];
-                            JASCalc::bcopy(relTable, copy, size);
-                            osc->rel_table = (JASOscillator::Point*)copy;
-                        } else {
-                            osc->rel_table = 0;
-                        }
-
-                        osc->mScale = rec->scale;
-                        osc->_14 = rec->_14;
-
-    return osc;
-}
-
 static inline JASBasicInst* createInst8002FB90(char* base, JASBNKParser::TInst* inst, JKRHeap* heap, JASBasicBank* bank) {
             JASBasicInst* basicInst = new (heap, 0) JASBasicInst;
             basicInst->setVolume(inst->volume);
@@ -370,13 +339,13 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
     }
     return bank;
 }
-#pragma opt_common_subs reset
+#pragma opt_lifetimes off
 extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
     if (heap == 0) {
         heap = JASDram;
     }
     char* base = (char*)data;
-    JASBNKParser::TInst* inst;
+    const JASBNKParser::TInst* inst;
     JASBasicBank* bank = new (heap, 0) JASBasicBank;
     if (bank == 0) {
         return 0;
@@ -385,26 +354,32 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
     int i;
     unsigned long* instOff;
     for (i = 0, instOff = (unsigned long*)base; i < 0x80; i++, instOff++) {
-        inst = (JASBNKParser::TInst*)fn_80030454(base, instOff[9]);
+        inst = (const JASBNKParser::TInst*)fn_80030454(base, instOff[9]);
         if (inst != 0) {
             JASBasicInst* basicInst = new (heap, 0) JASBasicInst;
             basicInst->setVolume(inst->volume);
             basicInst->setPitch(inst->pitch);
 
-            int oscIndex = 0;
-            unsigned long* oscOff = (unsigned long*)inst;
-            for (int j = 0; j < 2; j++, oscOff++) {
-                JASBNKParser::TOsc* rec = (JASBNKParser::TOsc*)fn_8003043C(base, oscOff[4]);
+            JASBNKParser::TOsc* rec;
+            char* table;
+            JASOscillator::Data* osc;
+            int oscIndex;
+            unsigned long* oscOff;
+            int j;
+            oscIndex = 0;
+            oscOff = (unsigned long*)inst;
+            for (j = 0; j < 2; j++, oscOff++) {
+                rec = (JASBNKParser::TOsc*)fn_8003043C(base, oscOff[4]);
                 if (rec != 0) {
-                    JASOscillator::Data* osc = (JASOscillator::Data*)fn_8003026C(bank, base, (char*)rec);
-                    if (osc != 0) {
-                        basicInst->setOsc(oscIndex, osc);
+                    JASOscillator::Data* shared = (JASOscillator::Data*)fn_8003026C(bank, base, (char*)rec);
+                    if (shared != 0) {
+                        basicInst->setOsc(oscIndex, shared);
                     } else {
                         osc = new (heap, 0) JASOscillator::Data;
                         osc->mTarget = rec->target;
                         osc->_04 = rec->_4;
 
-                        char* table = fn_80030424(base, ((unsigned long*)rec)[2]);
+                        table = fn_80030424(base, ((unsigned long*)rec)[2]);
                         if (table != 0) {
                             int size = ((int)fn_80030380((short*)table) - (int)table) / 6 * 6;
                             char* copy = new (heap, 0) char[size];
@@ -414,11 +389,11 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
                             osc->mTable = 0;
                         }
 
-                        char* relTable = fn_80030424(base, ((unsigned long*)rec)[3]);
-                        if (relTable != 0) {
-                            int size = ((int)fn_80030380((short*)relTable) - (int)relTable) / 6 * 6;
+                        table = fn_80030424(base, ((unsigned long*)rec)[3]);
+                        if (table != 0) {
+                            int size = ((int)fn_80030380((short*)table) - (int)table) / 6 * 6;
                             char* copy = new (heap, 0) char[size];
-                            JASCalc::bcopy(relTable, copy, size);
+                            JASCalc::bcopy(table, copy, size);
                             osc->rel_table = (JASOscillator::Point*)copy;
                         } else {
                             osc->rel_table = 0;
@@ -460,13 +435,18 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
             }
 
             basicInst->setKeyRegionCount(inst->keyRegionCount, heap);
-            unsigned long* keyOff = (unsigned long*)inst;
-            for (unsigned long k = 0; k < inst->keyRegionCount; keyOff++, k++) {
-                JASBasicInst::TKeymap* keymap = basicInst->getKeyRegion(k);
-                char* velo = fn_800303DC(base, keyOff[11]);
+            char* velo;
+            unsigned long* veloOff;
+            unsigned long* keyOff;
+            unsigned long k;
+            JASBasicInst::TKeymap* keymap;
+            keyOff = (unsigned long*)inst;
+            for (k = 0; k < inst->keyRegionCount; keyOff++, k++) {
+                keymap = basicInst->getKeyRegion(k);
+                velo = fn_800303DC(base, keyOff[11]);
                 keymap->mHighKey = (unsigned char)velo[0];
                 keymap->setVeloRegionCount(*(unsigned long*)(velo + 4), heap);
-                unsigned long* veloOff = (unsigned long*)velo;
+                veloOff = (unsigned long*)velo;
                 for (unsigned long j = 0; j < *(unsigned long*)(velo + 4); veloOff++, j++) {
                     JASVelo* dst = keymap->getVeloRegion(j);
                     char* src = fn_800303C4(base, veloOff[2]);
@@ -531,7 +511,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
     }
     return bank;
 }
-
+#pragma opt_lifetimes reset
 extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key) {
     char* p;
     unsigned long* off = (unsigned long*)(data + 0x20);
