@@ -103,7 +103,7 @@ extern "C" void fn_8037D8F4(u8* this_) {
             *(f32*)(this_ + 0x40) += lbl_80543098;
             f32 offset = *(u32*)(this_ + 0x90) == 0 ? lbl_8054309C : lbl_805430A0;
             v.set(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) + offset, *(f32*)(this_ + 0x14));
-            if (((u8 (*)(u8*, s32, f32*))(*(void***)this_)[19])(this_, *(s32*)(this_ + 4), (f32*)&v) == 1) {
+            if ((u8)((Actor*)this_)->v17(*(s32*)(this_ + 4), (f32*)&v) == 1) {
                 *(s32*)(this_ + 0x238) -= 1;
                 t = *(s32*)(this_ + 0x238);
                 if (t <= 0) {
