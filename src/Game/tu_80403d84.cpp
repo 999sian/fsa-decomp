@@ -2335,6 +2335,10 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 	}
 }
 #pragma opt_propagation reset
+static inline f32 cursorSpan80405FC0(const f32 delta, const s32 width) {
+	return lbl_805438C4 * (lbl_805438C8 * delta) / (f32)width;
+}
+
 extern "C" void fn_80405FC0(u8* self) {
 	f32 pos[3];
 	f32 p2[3];
@@ -2343,7 +2347,10 @@ extern "C" void fn_80405FC0(u8* self) {
 	s32 work = JUTVideo::getManager()->getFbWidth();
 	f32 x1 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
 	f32 x2 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693032ULL));
-	f32 span = ((x2 - x1) * lbl_805438C8) * lbl_805438C4 / (f32)work;
+	f32 delta = x2 - x1;
+	f32 half = lbl_805438C8;
+	f32 scaled = half * delta;
+	f32 span = lbl_805438C4 * scaled / (f32)work;
 	getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693033ULL));
 	getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
 
