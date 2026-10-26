@@ -96,6 +96,7 @@ struct ICWLBox {
 };
 
 static inline void icwlScaleMatrix(f32* m, const JGeometry::TVec3<f32>& v) {
+    f32 z = v.z;
     f32 zero = 0.0f;
     m[3] = zero; m[7] = zero; m[11] = zero;
     f32 y = v.y;
@@ -134,7 +135,7 @@ extern "C" void fn_8011DA20(u8* this_) {
     JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
     if (!(v.squared() <= lbl_8053C8C4 * (*(f32*)__float_epsilon))) {
-        icwlScaleMatrix(m, v.x, v.y, v.z);
+        icwlScaleMatrix(m, v);
         a.w18 = m;
     }
     if ((*(s32*)(this_ + 0x230) == 0 && v.x >= lbl_8053C8C8) || (*(s32*)(this_ + 0x230) == 1 && v.x >= lbl_8053C8CC)) {
