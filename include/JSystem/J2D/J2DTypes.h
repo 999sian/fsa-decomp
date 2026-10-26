@@ -219,7 +219,11 @@ extern J2DTevSwapModeInfo j2dDefaultTevSwapMode;
 #else
 extern const J2DTevSwapModeInfo j2dDefaultTevSwapMode;
 #endif
+#ifdef J2D_NONCONST_DEFAULTS
+extern J2DTevSwapModeTableInfo j2dDefaultTevSwapModeTable;
+#else
 extern const J2DTevSwapModeTableInfo j2dDefaultTevSwapModeTable;
+#endif
 extern const u8 j2dDefaultTevSwapTable;
 
 inline u8 J2DCalcTevSwapTable(const u8 r, const u8 g, const u8 b, const u8 a) { return (r << 6) + (g << 4) + (b << 2) + a; }
