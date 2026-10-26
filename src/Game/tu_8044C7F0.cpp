@@ -343,15 +343,14 @@ extern "C" char lbl_80491400[];
 extern "C" char lbl_80491414[];
 extern "C" u8* lbl_8053AAF8;
 extern f32 lbl_80543E18;
+#pragma auto_inline off
 extern "C" void fn_80452350(u8* self) {
-	s32 i;
 	u8* p;
+	int i;
 	fn_804310CC(lbl_8053AEC0);
-	i = 0;
+	*(s16*)(self + 0xfe) = *(s16*)(self + 0xf8) = i = 0;
 	p = self;
-	*(s16*)(self + 0xf8) = i;
-	*(s16*)(self + 0xfe) = i;
-	for (; i < 3; i++) {
+	do {
 		fn_80402E08(*(void**)(p + 0x48), lbl_80543DF8, lbl_80543DFC);
 		fn_80402E08(*(void**)(p + 0x60), lbl_80543DF8, lbl_80543DFC);
 		*(s16*)(*(u8**)(p + 0x48) + 0x20) = 0;
@@ -363,7 +362,8 @@ extern "C" void fn_80452350(u8* self) {
 		(*(UlPane**)(*(u8**)(p + 0x60) + 4))->setAlpha(0);
 		*(s16*)(*(u8**)(p + 0x60) + 0x26) = 0;
 		p += 4;
-	}
+		i++;
+	} while (i < 3);
 	(*(UlPane**)(self + 4))->find(0x5063756c3031ULL)
 		->move(lbl_80543DF8 + *(f32*)(self + 0x114),
 		       *(f32*)(self + 0x118) + ((f32*)(self + 0x108))[*(s16*)(self + 0xf8)]);
@@ -375,7 +375,7 @@ extern "C" void fn_80452350(u8* self) {
 	(*(UlPane**)(*(u8**)(self + 8) + 4))->setAlpha(0);
 	*(s16*)(*(u8**)(self + 8) + 0x26) = 0;
 	p = self;
-	for (i = 0; i < 0xf; i++) {
+	for (int j = 0; j < 0xf; j++) {
 		fn_80402E08(*(void**)(p + 0xc), lbl_80543DFC, lbl_80543E18);
 		*(s16*)(*(u8**)(p + 0xc) + 0x22) = 0;
 		p += 4;
@@ -398,8 +398,7 @@ extern "C" void fn_80452350(u8* self) {
 	fn_8044D894(self);
 	*(s32*)(self + 0x184) = 9;
 }
-
-#pragma opt_lifetimes reset
+#pragma auto_inline reset
 extern "C" void* fn_8045270C(u8* self, s16 deleting) {
     if (self != NULL) {
         *(void***)(self) = lbl_804B1D58;
