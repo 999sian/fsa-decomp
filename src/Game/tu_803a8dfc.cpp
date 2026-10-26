@@ -41,7 +41,7 @@ struct MsgGame {
     bool activePlayer(s32 i) const { return (pad[0x82] & (u8)(1 << i)) != 0; }
     s32 countPlayers() const {
         s32 i;
-        s32 count = 0;
+        u32 count = 0;
         for (i = 0; i < 4; i++) {
             if (activePlayer(i)) count++;
         }
