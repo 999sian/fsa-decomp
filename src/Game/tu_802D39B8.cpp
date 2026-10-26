@@ -1404,6 +1404,24 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     *(s32*)(p+0xec)=50;
 }
 
+static inline char* RoomExtraPath802D(char* p, s32 index, const char* format, s32 offset) {
+    s32 x = *(s32*)(p + 0x14);
+    if (x >= 0 && x < 10) {
+        s32 y = *(s32*)(p + 0x18);
+        if (y >= 0 && y < 10) {
+            const char* name;
+            s32 col = *(s32*)(p + 8);
+            s32 row = *(s32*)(p + 4);
+            if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1) name = lbl_804A9530[row][col];
+            else name = lbl_80541128;
+            s32 no = ((u8*)p)[y * 10 + x + 0x60];
+            if (no == 255) no = 0;
+            sprintf(p + offset, format, name, no / 10, no % 10, index + 1);
+            return p + offset;
+        }
+    }
+    return 0;
+}
 extern "C" void fn_802D8D50(char* this_, u8 flag) {
     extern void fn_802D4CCC(char* p, s32 index);
     extern void fn_802F6BBC(char* base, s32 src, s32 dst);
