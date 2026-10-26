@@ -3,6 +3,7 @@
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 
 extern "C" u8 lbl_804A8F74[];
@@ -15,7 +16,7 @@ extern "C" u8 fn_802DE814(void);
 extern "C" s32 fn_80237774(s32);
 typedef f32 Mtx[3][4];
 extern "C" u8* fn_802D6A9C(void);
-extern "C" void fn_8022EA0C(s32 i, void* m);
+extern "C" s32 fn_8022EA0C(s32 i, void* m);
 extern "C" Vec* fn_8023E724(s32 i = 0);
 extern "C" void* fn_804030C4(u32 tag, const char* name);
 extern "C" void fn_802F745C(void* obj, Vec* pos, void* tex, u8* idx);
@@ -387,40 +388,32 @@ extern "C" void fn_802CADB0(u8* this_) {
     this_[0x11f] = 1;
 }
 
+#pragma optimization_level 4
+#pragma opt_propagation off
 extern "C" Actor* fn_802CAEB0(Actor* self, s16 flag)
 {
-    struct SubObj802CA {
-        u8 pad[0x24];
-        s32 f24;
-        u8 pad2[0xf4 - 0x28];
-        u32 f0f4;
-    };
-    u8* p = (u8*)self;
     if (self != 0) {
-        *(u8**)p = lbl_804A8F74;
-        SubObj802CA* s;
-        for (int i = 0; i < 2; i++) {
-            s = *(SubObj802CA**)(p + 0x234 + i * 8);
-            if (s != 0) {
-                s->f0f4 |= 1;
-                s->f24 = 1;
-                *(SubObj802CA**)(p + 0x234 + i * 8) = 0;
+        *(void**)self = lbl_804A8F74;
+        u8* p = (u8*)self;
+        for (s32 i = 0; i < 2; i++, p += 8) {
+            JPABaseEmitter* emitter = *(JPABaseEmitter**)(p + 0x234);
+            if (emitter) {
+                emitter->becomeInvalidEmitter();
+                *(JPABaseEmitter**)(p + 0x234) = 0;
             }
-            s = *(SubObj802CA**)(p + 0x238 + i * 8);
-            if (s != 0) {
-                s->f0f4 |= 1;
-                s->f24 = 1;
-                *(SubObj802CA**)(p + 0x238 + i * 8) = 0;
+            emitter = *(JPABaseEmitter**)(p + 0x238);
+            if (emitter) {
+                emitter->becomeInvalidEmitter();
+                *(JPABaseEmitter**)(p + 0x238) = 0;
             }
         }
         __dt__5ActorFv(self, 0);
-        if (flag > 0) {
-            __dl__FPv(self);
-        }
+        if (flag > 0) __dl__FPv(self);
     }
     return self;
 }
-
+#pragma opt_propagation reset
+#pragma optimization_level reset
 extern "C" void fn_802CAFA0(void) {
 }
 
