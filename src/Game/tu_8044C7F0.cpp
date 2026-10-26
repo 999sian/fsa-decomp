@@ -216,9 +216,12 @@ extern "C" void* fn_8013CC50(void*, f32*, u16, s32, s32, s32, s32, s32, f32);
 extern f32 lbl_80543E00;
 extern f32 lbl_80543E04;
 extern "C" u16 lbl_80543DD8[];
+#pragma opt_strength_reduction off
 extern "C" void fn_8044D298(u8* self, s32 index) {
+    MenuTables8044* data = (MenuTables8044*)lbl_80490FC8;
+    u64* a;
+    u64* b;
     s32 i;
-    s32 idx;
     u8* f;
     f32 f29;
     f32 f30;
@@ -235,51 +238,43 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     self[0x137] = 1;
     *(s16*)(self + 0x134) = 0;
     self[0x138] = index;
-    for (i = 0; i < 3; i++) {
-        JUtility::TColor c3c = JUtility::TColor(100, 100, 100, self[0x15f]);
-        JUtility::TColor c44 = JUtility::TColor(0, 0, 0, self[0x157]);
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[i]);
-        (*(void (**)(void*, JUtility::TColor*, JUtility::TColor*))(*(u32*)f + 0x130))(f, &c44, &c3c);
-        JUtility::TColor c28 = JUtility::TColor(80, 80, 80, self[0x14f]);
-        JUtility::TColor c30 = JUtility::TColor(80, 80, 80, self[0x147]);
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[3 + i]);
-        (*(void (**)(void*, JUtility::TColor*, JUtility::TColor*))(*(u32*)f + 0xa8))(f, &c30, &c28);
-        JUtility::TColor c24 = JUtility::TColor(150, 150, 150, self[0x167]);
-        JUtility::TColor c1c = JUtility::TColor(150, 150, 150, self[0x16b]);
-        JUtility::TColor c14 = JUtility::TColor(150, 150, 150, self[0x16f]);
-        JUtility::TColor c0c = JUtility::TColor(150, 150, 150, self[0x173]);
-        ((J2DWindow*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[3 + i]))->setContentsColor(c24, c1c, c14, c0c);
-        (*(J2DPane**)(self + 4))->search(lbl_80490FC8[3 + i])->setAlpha(0xc8);
+    a = data->picture;
+    b = data->window;
+    for (i = 0; i < 3; i++, a++, b++) {
+        ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*a))->setBlackWhite(JUtility::TColor(0, 0, 0, self[0x157]), JUtility::TColor(100, 100, 100, self[0x15f]));
+        ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setBlackWhite(JUtility::TColor(80, 80, 80, self[0x147]), JUtility::TColor(80, 80, 80, self[0x14f]));
+        ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setContentsColor(JUtility::TColor(150, 150, 150, self[0x167]), JUtility::TColor(150, 150, 150, self[0x16b]), JUtility::TColor(150, 150, 150, self[0x16f]), JUtility::TColor(150, 150, 150, self[0x173]));
+        (*(J2DPane**)(self + 4))->search(*b)->setAlpha(200);
     }
-    idx = self[0x138];
-    (*(J2DPane**)(self + 4))->search(lbl_80490FC8[73 + idx])->setAlpha(0);
-    ((u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[73 + idx]))[0xb0] = 1;
-    (*(J2DPane**)(self + 4))->search(lbl_80490FC8[73 + idx])->setAlpha(0);
-    (*(J2DPane**)(self + 4))->search(lbl_80490FC8[77 + idx])->setAlpha(0);
-    (*(J2DPane**)(self + 4))->search(lbl_80490FC8[81 + idx])->setAlpha(0);
-    if (*(void**)(self + 0xb0 + idx * 4) == NULL) {
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[77 + idx]);
+    ((u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8)))[0xb0] = 1;
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8))->setAlpha(0);
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8))->setAlpha(0);
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha288 + (u32)self[0x138]*8))->setAlpha(0);
+    if (*(void**)(self + 0xb0 + self[0x138] * 4) == NULL) {
+        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f30 = *(f32*)(f + 0x2c) - *(f32*)(f + 0x24);
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[73 + idx]);
+        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.y;
         f = (u8*)(*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
         f31 = ((J2DPane*)f)->getBounds()->i.y + f31;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[77 + idx]);
+        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
+        f30 = ((J2DPane*)f)->getBounds()->i.y + f31 + f30 * lbl_80543E00;
+        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f29 = *(f32*)(f + 0x28) - *(f32*)(f + 0x20);
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[73 + idx]);
+        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.x;
         f = (u8*)(*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
         f31 = ((J2DPane*)f)->getBounds()->i.x + f31;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(lbl_80490FC8[77 + idx]);
+        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         pos[0] = ((J2DPane*)f)->getBounds()->i.x + f31;
         pos[0] = f29 * lbl_80543E00 + pos[0];
         pos[1] = f30;
         pos[2] = lbl_80543DFC;
-        *(void**)(self + 0xb0 + idx * 4) = fn_8013CC50(0, pos, lbl_80543DD8[idx], 0, 0, 0, 0, 1, lbl_80543E04);
-        *(u32*)((u8*)*(void**)(self + 0xb0 + idx * 4) + 0xf4) |= 1;
-        *(u32*)((u8*)*(void**)(self + 0xb0 + idx * 4) + 0xf4) |= 2;
-        *(u32*)((u8*)*(void**)(self + 0xb0 + idx * 4) + 0xf4) |= 4;
+        *(void**)(self + 0xb0 + self[0x138] * 4) = fn_8013CC50(0, pos, lbl_80543DD8[self[0x138]], 0, 0, 0, 0, 1, lbl_80543E04);
     }
+    *(u32*)((u8*)*(void**)(self + 0xb0 + self[0x138] * 4) + 0xf4) |= 1;
+        *(u32*)((u8*)*(void**)(self + 0xb0 + self[0x138] * 4) + 0xf4) |= 2;
+        *(u32*)((u8*)*(void**)(self + 0xb0 + self[0x138] * 4) + 0xf4) |= 4;
     f = (u8*)(*(J2DPane**)(self + 4))->search(0x5063756c3031ULL);
     f[0xb0] = 0;
 }
