@@ -124,8 +124,6 @@ extern u8 lbl_8053AD20[4];
 extern u8 lbl_80541618[4];
 
 struct TextCall_80301CD0 {
-    virtual void v00();
-    virtual void v04();
     virtual void v08();
     virtual void v0c();
     virtual void v10();
