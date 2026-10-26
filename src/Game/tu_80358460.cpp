@@ -44,7 +44,7 @@ static inline void rotation80359E18(f32 m[3][4], const f32 scale, s16 angle)
     m[1][2] = scale * (cxsz * sy - sxcz);
     m[2][2] = scale * (cx * cy);
 }
-static inline void rotationEuler80359E18(f32 m[3][4], const f32 scale, s16 rx, s16 ry, s16 rz)
+static inline void rotationEuler80359E18(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32 scale)
 {
     f32 cz;
     f32 cy;
@@ -58,27 +58,15 @@ static inline void rotationEuler80359E18(f32 m[3][4], const f32 scale, s16 rx, s
     cx = JMath::sincosTable_.cosShort(rx);
     cy = JMath::sincosTable_.cosShort(ry);
     cz = JMath::sincosTable_.cosShort(rz);
-    f32 r00 = cy * cz;
-    f32 r10 = cy * sz;
-    f32 r20 = -sy;
-    f32 a = sx * sy;
-    f32 b = cx * cz;
-    f32 c = cx * sz;
-    f32 d = sx * cy;
-    f32 r01 = a * cz - c;
-    f32 r11 = a * sz + b;
-    f32 r02 = b * sy + sx * sz;
-    f32 r12 = c * sy - sx * cz;
-    f32 r22 = cx * cy;
-    m[0][0] = scale * r00;
-    m[1][0] = scale * r10;
-    m[2][0] = scale * r20;
-    m[0][1] = scale * r01;
-    m[1][1] = scale * r11;
-    m[2][1] = scale * d;
-    m[0][2] = scale * r02;
-    m[1][2] = scale * r12;
-    m[2][2] = scale * r22;
+    m[0][0] = scale * (cy * cz);
+    m[1][0] = scale * (cy * sz);
+    m[2][0] = scale * -sy;
+    m[0][1] = scale * ((sx * sy) * cz - cx * sz);
+    m[1][1] = scale * ((sx * sy) * sz + cx * cz);
+    m[2][1] = scale * (sx * cy);
+    m[0][2] = scale * ((cx * cz) * sy + sx * sz);
+    m[1][2] = scale * ((cx * sz) * sy - sx * cz);
+    m[2][2] = scale * (cx * cy);
 }
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
