@@ -215,6 +215,19 @@ struct Ctl3_80301CD0 {
     u8 flag : 1;
 };
 
+static inline void tu80301_clearCtl(u8* q, int count) {
+    for (; count > 0; count--) {
+        ((Ctl3_80301CD0*)(q + 0x1b))->flag = 1;
+        q[0x1a] = 0x80;
+        q[0x19] = 0xe0;
+        ((Ctl3_80301CD0*)(q + 0x1b))->mode = 0;
+        q[0x18] = 0;
+        ((Ctl3_80301CD0*)(q + 0x1b))->yh = 0;
+        ((Ctl3_80301CD0*)(q + 0x1b))->yl = 0;
+        q += 4;
+    }
+}
+
 struct Packet_80301CD0 {
     u8 checksum, f1, f2;
     u8 code : 4;
@@ -1853,14 +1866,16 @@ extern "C" void fn_80307B58(s32 unused, s32 player, u8 flag) {
 #pragma opt_strength_reduction reset
 extern "C" u8 fn_8022F5B0(s32);
 extern "C" void fn_8030801C(s32 param_1, s32 i) {
+    u8 active;
     u8* pf;
     u8* pl;
     u8* p;
-    u8* q;
     u8* ent;
+    s32 room;
     u8 lv;
     s32 ret;
-    s32 cnt;
+    int cnt;
+    u8* q;
     s32 n;
     s32 done;
     s32 sum;
@@ -1868,7 +1883,7 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
 
     if (*((u8*)lbl_8053AAF0 + 0x78) >= 4) {
         s32 st = *(s32*)((u8*)lbl_8053AAF8 + 0x4c);
-        if ((tu80301_isState7(st) & 1) || st == 0xb || st == 0xc) {
+        if ((tu80301_isState7(st) & 0xff) || st == 0xb || st == 0xc) {
             ((Hi_80301CD0*)(lbl_80506DE8 + i * 0x68 + 3))->y = 9;
         } else {
             ((Hi_80301CD0*)(lbl_80506DE8 + i * 0x68 + 3))->y = 13;
@@ -1913,8 +1928,6 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
         if (fn_8037F1E4(i) >= 1 && fn_8037F1E4(i) <= 5) lv = 1;
         ((Ctl4_80301CD0*)pf)->x = lv != 0;
         if (lbl_8053ACD0 != 0 && (*((u8*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
-            u8 active;
-            s32 room;
             active = 0;
             if (fn_8022F5B0(ret)) {
                 room = fn_8023DE58(ret);
