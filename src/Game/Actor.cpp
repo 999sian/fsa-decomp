@@ -2698,8 +2698,9 @@ extern "C" void fn_801EF830(s32 idx, const f32* pos, const u8* p3, u32 mask, u8*
     args.w28 = 1;
     args.b2e = args.f10.b[3] >> 1;
     if ((u16)kind == 0x39 && uVar3 == 0 && 0.0f == pos[2]) {
-        unsigned int sel = (*(u32*)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x34) >> 2) & 3;
+        u32 flags = *(u32*)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x34);
         args.b1d++;
+        u32 sel = (flags >> 2) & 3;
         id2 = lbl_8053F738[sel] + 0x18f;
         v14.set(pos[0], 0.1f + pos[1], pos[2]);
         if (idx < 8) {
