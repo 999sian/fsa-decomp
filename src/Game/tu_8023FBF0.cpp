@@ -3926,6 +3926,14 @@ void fn_8024E500(char* p) {
     }
 }
 
+static inline s32 availableRupees(char* p) {
+    s32 linked = S32(p,0xd60);
+    if(linked>=0) return fn_80236228(linked);
+    s32 v = S32(p,0xc04);
+    if(v>=0) return v;
+    return 0;
+}
+
 static inline void adjustRupees(char* p, s32 n) {
     s32 linked = S32(p, 0xd60);
     if (linked >= 0) {
@@ -3974,51 +3982,10 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
     s32 linked;
     s32 st, lim, idx, k, j, c;
 
-    for (i = 0; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            cnt++;
-        } else if (fn_8022F514(i)) {
-            if ((linked = S32(p, 0xd60)) >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    cnt++;
-                }
-            } else {
-                kk = S32(p, 0x4);
-                if (kk == fn_8022F3DC(i)) {
-                    cnt++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            cnt++;
-        }
-    }
-
-    if (cnt <= 1) {
-        st = 5;
-    } else {
-        if (S32(p, 0xd60) >= 0) {
-            st = fn_8022CAF8(S32(p, 0xd60));
-        } else {
-            st = S32(p, 0x120c);
-        }
-    }
+    st = getMode4(p);
     if (st == 4) {
-        if (S32(p, 0xd60) >= 0) {
-            kk = fn_80234004(S32(p, 0xd60));
-        } else {
-            kk = S32(p, 0x1224);
-        }
-        if (S32(p, 0xd60) >= 0) {
-            j = 0;
-            for (idx = 0; idx < S32(p, 0x4); idx++) {
-                if (S32(p, 0xd60) == fn_8022F3DC(idx)) {
-                    j++;
-                }
-            }
-            k = j + 1;
-        } else {
-            k = 0;
-        }
+        kk = linkIdx(p);
+        k = linkRank2(p);
         if (kk != k) {
             JGeometry::TVec3<f32>* src = (JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(S32(p, 0x4)));
             pos.x = src->x;
@@ -4082,7 +4049,7 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
         flag = 1;
     }
 
-    if (flag) {
+    if ((u8)flag) {
         switch (a) {
         case 1:
             idx = 0;
