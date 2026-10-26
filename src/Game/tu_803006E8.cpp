@@ -8,7 +8,12 @@ extern "C" u32 OSGetTick(void);
 extern "C" void OSInitMessageQueue(void* queue, void* msgs, s32 count);
 extern "C" void OSCreateThread(void* thread, void* (*start)(void*), void* arg, void* stack, u32 size, s32 prio, u32 attr);
 extern "C" void* memset(void* dst, s32 c, u32 n);
-extern "C" void* fn_80300A8C(void* p);
+extern "C" BOOL OSSendMessage(void* mq, void* msg, s32 flags);
+extern "C" int memcmp(const void* a, const void* b, u32 n);
+extern "C" int GBAGetStatus(s32 chan, u8* status);
+extern "C" int GBARead(s32 chan, u8* dst, u8* status);
+extern "C" int GBAWrite(s32 chan, u8* src, u8* status);
+extern "C" void fn_80300A8C(void* p);
 extern "C" void* fn_80300E1C(void* p);
 extern u8 lbl_804D6AB8[];
 extern u8 lbl_804711F0[];
@@ -77,20 +82,19 @@ extern "C" void fn_803007A0(void) {
     lbl_8053ACB8->vf0C();
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_803007D0(void) {
     u8* base = lbl_804D6AB8;
-    u8* obj;
     u8* id;
     u8* ub;
     u8* ud;
-    u8* p;
+    u32 off;
     u8* thread;
+    u8* p;
+    s32 j;
     s32 i;
     s32 crc;
-    u32 off;
     u32 tick;
-    void* fn1;
-    void* fn2;
 
     lbl_8053ACC4 = (u8*)DVDGetCurrentDiskID();
     GBAInit();
@@ -102,37 +106,26 @@ extern "C" void fn_803007D0(void) {
     *(u32*)(lbl_8053ACBC + 0xc8) = tick;
 
     id = lbl_8053ACC4;
-    obj = lbl_8053ACBC;
-    obj[0xac] = id[0];
-    obj[0xad] = id[1];
-    obj[0xae] = id[2];
-    obj[0xaf] = id[3];
-    crc = 0xe7;
-    i = 0xa0;
-    if (i < 0xbd) {
-        crc = crc - obj[0xa0] - obj[0xa1] - obj[0xa2] - obj[0xa3] - obj[0xa4] - obj[0xa5] - obj[0xa6] - obj[0xa7] -
-              obj[0xa8] - obj[0xa9] - obj[0xaa] - obj[0xab] - obj[0xac] - obj[0xad] - obj[0xae] - obj[0xaf] -
-              obj[0xb0] - obj[0xb1] - obj[0xb2] - obj[0xb3] - obj[0xb4] - obj[0xb5] - obj[0xb6] - obj[0xb7] -
-              obj[0xb8] - obj[0xb9] - obj[0xba] - obj[0xbb];
-        i = 0xbc;
-        do {
-            crc -= obj[i];
-            i++;
-        } while (i < 0xbd);
-    }
-    obj[i] = crc;
-
-    fn1 = (void*)fn_80300A8C;
-    fn2 = (void*)fn_80300E1C;
-    ud = lbl_8053ACC0;
     ub = lbl_8053ACBC;
+    ub[0xac] = id[0];
+    ub[0xad] = id[1];
+    ub[0xae] = id[2];
+    ub[0xaf] = id[3];
+    crc = 0xe7;
+    for (i = 0xa0; i < 0xbd; i++) {
+        crc -= ub[i];
+    }
+    ub[i] = crc;
+
     p = base + 0x4ce0;
     thread = base + 0x80;
     off = 0x1000;
-    for (i = 0; i < 4; i++) {
+    for (j = 0; j < 4; j++) {
+        ud = lbl_8053ACC0;
+        ub = lbl_8053ACBC;
         memset(p, 0, 0xe0);
-        p[0xd0] = i;
-        *(void**)(p + 0x24) = fn1;
+        p[0xd0] = j;
+        *(void**)(p + 0x24) = (void*)fn_80300A8C;
         *(u8**)(p + 0x4c) = ub;
         *(u8**)(p + 0x50) = ud;
         p[0xda] = 0x1a;
@@ -140,14 +133,14 @@ extern "C" void fn_803007D0(void) {
         p[0xdd] = 0;
         p[0xde] = 0;
         OSInitMessageQueue(p, p + 0x20, 1);
-        OSCreateThread(thread, (void* (*)(void*))fn2, p, base + 0xce0 + off, 0x1000, 8, 0);
+        OSCreateThread(thread, fn_80300E1C, p, base + 0xce0 + off, 0x1000, 8, 0);
         OSResumeThread(thread);
         off += 0x1000;
         thread += 0x318;
         p += 0xe0;
     }
 }
-
+#pragma opt_strength_reduction reset
 
 extern "C" s32 fn_80301A88(void* this_) {
     return OSResumeThread(*(void**)((char*)this_ + 0x28));
