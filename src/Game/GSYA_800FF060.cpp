@@ -1,6 +1,17 @@
 // GSYA_800FF060: .text 0x800FF060-0x8010089C (actor GSYA)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#define Vec SDKVec
+#define PSVECMag SDK_PSVECMag
+#define PSMTXScale SDK_PSMTXScale
+#define PSMTXConcat SDK_PSMTXConcat
+#define PSMTXIdentity SDK_PSMTXIdentity
+#include "JSystem/JGeometry/Vec.h"
+#undef PSMTXIdentity
+#undef PSMTXConcat
+#undef PSMTXScale
+#undef PSVECMag
+#undef Vec
 #include "Game/Actor.h"
 
 extern void* lbl_8053AAF8;
@@ -115,6 +126,7 @@ extern "C" void fn_802D7844(void* mgr, s32 flag, s32 idx);
 extern void* lbl_8053AAF8;
 extern u32 lbl_80543F18;
 extern "C" void fn_801003F4(s32* this_) {
+    s32* out;
     s32* p;
     s32 k = 0;
     u32 used = lbl_80543F18;
@@ -129,23 +141,23 @@ extern "C" void fn_801003F4(s32* this_) {
         }
         p++;
     }
-    s32* out = this_;
+    out = this_;
     for (; k != count; k++) {
-        s32* q = this_;
         u8* f = (u8*)&used;
+        p = this_;
         s32 best = 1000000;
         s32 idx = -1;
         for (s32 j = 0; j < count; j++) {
-            if (best > q[0x94] && *f == 0) {
-                best = q[0x94];
+            if (best > p[0x94] && *f == 0) {
+                best = p[0x94];
                 idx = j;
             }
-            q++;
+            p++;
             f++;
         }
         out[0x99] = idx;
-        out++;
         ((u8*)&used)[idx] = 1;
+        out++;
     }
     this_[0x9d] = 0;
     if (this_[0x94 + this_[0x99]] == this_[0x94 + this_[0x9a]]) {
