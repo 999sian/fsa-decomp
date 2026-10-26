@@ -1,6 +1,8 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801A908C-801AAC8C (TTAT). Remaining functions are not yet decompiled.
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
 
@@ -161,7 +163,7 @@ extern "C" void fn_801A96B4(void* this_) {
     if (*(s32*)(t + 0x240) != *(s32*)(t + 0x250) && *(s32*)(t + 0x250) > 0) {
         *(s32*)(t + 0x238) = 50;
         *(s32*)(t + 0x240) = *(s32*)(t + 0x250);
-        if (*(s32*)(t + 0x2b8) != 0) {
+        if (*(void**)(t + 0x2b8) != 0) {
             forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(t + 0x2b8));
             *(s32*)(t + 0x2b8) = 0;
         }
@@ -184,7 +186,7 @@ extern "C" void fn_801A96B4(void* this_) {
         break;
     case 0:
         if (*(s32*)(t + 0x230) != 4) {
-            if (*(s32*)(t + 0x2b8) != 0) {
+            if (*(void**)(t + 0x2b8) != 0) {
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(t + 0x2b8));
                 *(s32*)(t + 0x2b8) = 0;
             }
@@ -193,7 +195,8 @@ extern "C" void fn_801A96B4(void* this_) {
         break;
     }
 
-    if (*(s32*)(t + 0x230) != 4 && *(s32*)(t + 0x230) != 3 && *(s32*)(t + 0x238) == 0) {
+    if (*(s32*)(t + 0x230) != 4 && *(s32*)(t + 0x230) != 3 ) {
+    if (*(s32*)(t + 0x238) == 0) {
         if (*(s32*)(t + 0x244) == 0) {
             *(f32*)(t + 0x2b4) = *(f32*)(t + 0x2b4) - *(s32*)(t + 0x248);
         } else {
@@ -219,9 +222,7 @@ extern "C" void fn_801A96B4(void* this_) {
                 *(f32*)((char*)c + 0x2b4) = (f32)((u16)ang + 0x8000);
                 v[0] = v[0] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
                 v[1] = v[1] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
-                *(f32*)((char*)c + 0xc) = v[0];
-                *(f32*)((char*)c + 0x10) = v[1];
-                *(f32*)((char*)c + 0x14) = v[2];
+                *(JGeometry::TVec3<f32>*)((char*)c+0xc) = *(JGeometry::TVec3<f32>*)v;
             }
         }
 
@@ -246,10 +247,9 @@ extern "C" void fn_801A96B4(void* this_) {
     }
 
     *(u8*)(t + 0x26c) = 0;
-    *(f32*)(t + 0xc) = *(f32*)(t + 0xc) + *(f32*)(t + 0x3c);
-    *(f32*)(t + 0x10) = *(f32*)(t + 0x10) + *(f32*)(t + 0x40);
-    *(f32*)(t + 0x14) = *(f32*)(t + 0x14) + *(f32*)(t + 0x44);
+    *(JGeometry::TVec3<f32>*)(t+0xc) += *(JGeometry::TVec3<f32>*)(t+0x3c);
     fn_801F2B7C(t, -100, -1, 1);
+    }
 
     if (*(s32*)(t + 0x254) == 1 && *(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
         if (*(s32*)(t + 0x258) != 5 && lbl_8053ABD0 == 0) {
@@ -274,9 +274,10 @@ extern "C" void fn_801A96B4(void* this_) {
             u32 bits;
             f32 f;
             *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
-            bits = (seed >> 9) | 0x3f800000;
+            bits = (*(u32*)(lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
             f = *(f32*)&bits;
-            *(s32*)(t + 0x244) = (s32)((f - lbl_8053E6E8) * lbl_8053E700) & 1;
+            *(s32*)(t + 0x244) = (s32)((f - lbl_8053E6E8) * lbl_8053E700);
+            *(s32*)(t + 0x244) &= 1;
         }
         *(s32*)(t + 0x230) = 2;
         /* fall through */
@@ -432,7 +433,7 @@ if (*(s32*)(p+0x258)!=0 && *(s32*)(p+0x258)!=5) {
  *(s32*)(p+0x250)=4; *(s32*)(p+0x240)=*(s32*)(p+0x250);
  *(f32*)(p+0x80)=lbl_8053E738; *(f32*)(p+0x84)=lbl_8053E738;
  *(f32*)(p+0x88)=lbl_8053E73C; *(f32*)(p+0x8c)=lbl_8053E73C;
- *(void**)(p+0x2b8)=fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_8053A108[0],0,0,0,0,1,lbl_8053E6E8);
+ *(void**)(p+0x2b8)=fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_8053A108[0],0,0,0,0,1,1.0f);
  pos=p; handles=p;
  for(i=0;i<4;i++,pos+=12,handles+=4) {
  *(s32*)(handles+0x270)=Actor_CreateByID(fn_801F856C(),0x54544154,*(s32*)(p+4),pos+0x280,i+1,-1,-1);
