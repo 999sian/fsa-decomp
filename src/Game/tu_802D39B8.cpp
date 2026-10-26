@@ -1413,6 +1413,8 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
 }
 
 static inline char* RoomExtraPath802D(char* p, s32 index, const char* format, s32 offset) {
+    s32 col;
+    s32 row;
     s32 x = *(s32*)(p + 0x14);
     if (x >= 0 && x < 10) {
         s32 y = *(s32*)(p + 0x18);
