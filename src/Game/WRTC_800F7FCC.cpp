@@ -1210,6 +1210,11 @@ extern "C" void fn_800FB070(u8* this_) {
     }
 }
 
+static inline f32 WRTC_velocityDot(WrtcVec* v, const JGeometry::TVec3<f32>& n) {
+    f32 d = v->x * n.x + v->y * n.y;
+    return d + v->z * n.z;
+}
+
 extern "C" void fn_800FB32C(void* this_) {
     u8* p = (u8*)this_;
     JGeometry::TVec3f* pos = (JGeometry::TVec3f*)(p + 0xc);
@@ -1240,12 +1245,15 @@ extern "C" void fn_800FB32C(void* this_) {
     vel->z = vel->z - lbl_8053C080;
     pos->add(*vel);
 
-    if (pos->z > lbl_8053BFAC) {
+    if (pos->z <= lbl_8053BFAC) {
         if (p[0x257] == 0) {
             fn_800FB6E0(this_, 0);
             fn_801F0E34(this_, 0x4002C, 0);
             JGeometry::TVec3f tmp = *pos;
-            *(JGeometry::TVec3f*)(p + 0x290) = tmp;
+            s32 room = *(s32*)(p + 4);
+            *(f32*)(p + 0x290) = tmp.x;
+            *(f32*)(p + 0x294) = tmp.y;
+            *(f32*)(p + 0x298) = tmp.z;
             *(u8*)(p + 0x29c) = 1;
             *(f32*)(p + 0x2a0) = lbl_8053BFAC;
             *(s16*)(p + 0x2a4) = 0;
@@ -1267,7 +1275,7 @@ extern "C" void fn_800FB32C(void* this_) {
                 scale = lbl_8053BFC0;
                 break;
             }
-            if (*(s32*)(p + 4) < 8) {
+            if (room < 8) {
                 fn_802F601C(*(void**)(lbl_8053AB10 + 0x20), p + 0x290, 2, 0, scale, lbl_8053BFCC);
             }
             fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 4), 0, lbl_8053BFF4, lbl_8053BFAC);
@@ -1297,7 +1305,7 @@ extern "C" void fn_800FB32C(void* this_) {
         *(s16*)(p + 0x262) = (s16)(lbl_8053C050 * JMath::atanTable_.atan2_(vel->x, vel->y));
     }
     if (vel->z > lbl_8053BFAC) {
-        *(u32*)(p + 0x238) |= 1;
+        *(u32*)(p + (s32)0x238) |= 1;
     } else {
         *(u32*)(p + 0x238) &= ~1;
     }
@@ -1475,11 +1483,6 @@ extern "C" void fn_800FBA14(char* this_) {
 }
 
 extern const f32 lbl_8053C07C;
-static inline f32 WRTC_velocityDot(WrtcVec* v, const JGeometry::TVec3<f32>& n) {
-    f32 d = v->x * n.x + v->y * n.y;
-    return d + v->z * n.z;
-}
-
 extern "C" void fn_800FBD90(void* this_) {
     char* p = (char*)this_;
     if (*(u8*)(p + 0x256) != 0) --*(u8*)(p + 0x256);
