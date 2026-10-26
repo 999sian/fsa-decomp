@@ -844,7 +844,12 @@ extern "C" void fn_80119998(u8* self, u32 frames, u32 b, s32 mode, u32 d, u32 e,
         self[2] = 0;
     }
     if (*(s32*)(self + 0x24) == 2) {
-        *(u32*)(self + 0x8) = (mode == 2 || mode >= 2 || mode < 0) ? 0x46 : 0x23;
+        u32 duration;
+        switch(mode) {
+        case 0: case 1: duration=0x23; break;
+        case 2: default: duration=0x46; break;
+        }
+        *(u32*)(self+8)=duration;
     }
     switch (*(s32*)(self + 0x1c)) {
     case 0:
