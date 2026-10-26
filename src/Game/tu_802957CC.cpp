@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" const f32 lbl_80540668, lbl_8054066C, lbl_80540680, lbl_80540684;
 extern "C" const f32 lbl_805406F4, lbl_805406E4;
 extern "C" const f32 lbl_80540674, lbl_8054067C, lbl_80540688, lbl_8054068C, lbl_805406F0;
 extern "C" f32 lbl_805406A8;
@@ -257,6 +258,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         Probe() {}
         JGeometry::TVec3f pos;
         JGeometry::TBox2f area;
+        JGeometry::TVec3f save;
     };
     char* self = (char*)p;
     u8 ok = 1;
@@ -265,13 +267,12 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     char* m;
     JGeometry::TBox2f* src;
     JGeometry::TVec3f* v;
-    JGeometry::TVec3f save;
     Probe pt;
     JGeometry::TBox2f box;
     JGeometry::TVec3f q;
     JGeometry::TVec3f ofs;
 
-    save = *(JGeometry::TVec3f*)(self + 0xc);
+    pt.save = *(JGeometry::TVec3f*)(self + 0xc);
     ((JGeometry::TVec3f*)(self + 0x3c))->x = lbl_8046C268[mode].x;
     ((JGeometry::TVec3f*)(self + 0x3c))->y = lbl_8046C268[mode].y;
     ((JGeometry::TVec3f*)(self + 0x3c))->z = lbl_8046C268[mode].z;
@@ -281,10 +282,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     *(f32*)(self + 0x68) = 44.0f;
     *(f32*)(self + 0x6c) = 44.0f;
 
-    room = *(s32*)(self + 4);
-    m = (char*)fn_802D6A9C();
-    src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
-    pt.area = *src;
+    pt.area = *RoomBounds(self);
     pt.area.i.x -= -32.0f;
     pt.area.i.y -= -32.0f;
     pt.area.f.x += -32.0f;
@@ -338,8 +336,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         for (i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, *(s32*)(self + 4), 0, 0.0f)) {
                 v = (JGeometry::TVec3f*)fn_8023E724(i);
-                ofs.set(((JGeometry::TVec3f*)lbl_8046C298)[mode].x, ((JGeometry::TVec3f*)lbl_8046C298)[mode].y,
-                        ((JGeometry::TVec3f*)lbl_8046C298)[mode].z);
+                ofs.set(((JGeometry::TVec3f*)lbl_8046C298)[mode]);
                 q = *v;
                 q += ofs;
                 if (fn_802A1490(lbl_8053AC98, &q) != 1 || HitsRect(self, &q)) {
@@ -349,7 +346,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         }
     }
 
-    *(JGeometry::TVec3f*)(self + 0xc) = save;
+    *(JGeometry::TVec3f*)(self + 0xc) = pt.save;
     *(f32*)(self + 0x3c) = 0.0f;
     *(f32*)(self + 0x40) = 0.0f;
     *(f32*)(self + 0x44) = 0.0f;
