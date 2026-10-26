@@ -22,6 +22,34 @@ extern "C" Actor* fn_8031A210(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" void fn_801F856C(void);
+extern "C" void fn_8013CC50(void);
+extern "C" void fn_801F0D20(Actor*, s32);
+extern "C" void fn_801F71A4(void*, f32, f32, f32);
+extern "C" void fn_8023AF14(void);
+extern "C" void fn_801F2618(void);
+extern "C" void Actor_CreateByID(void);
+extern "C" void fn_8023E724(void);
+extern "C" f32 PSVECDistance(const Vec*, const Vec*);
+extern "C" void fn_8031A6A4(Actor* p) {
+    u32 room;
+    if (*(u8*)((char*)p + 0x281) == 1) {
+        if ((u8)((Actor*)p)->v11() == 1) {
+            room = *(u32*)((char*)p + 4);
+            if (room >= 8) {
+                fn_801F856C();
+                Actor_CreateByID();
+            } else {
+                fn_8013CC50();
+                fn_801F0D20(p, 0x42);
+                *(u8*)((char*)p + 0x281) = 0;
+            }
+        }
+        return;
+    }
+    *(f32*)((char*)p + 0x14) = *(f32*)((char*)p + 0x10);
+}
+
 struct ActorRoomModes {
     u8 pad_0x0[0x131df];
     u8 mode[16];
