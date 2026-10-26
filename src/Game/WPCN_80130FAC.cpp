@@ -364,37 +364,37 @@ extern "C" void fn_801313BC(char* p) {
         }
         {
             bool bounced;
-    if (lbl_8053AAD4 == 0) {
-        lbl_8053AAD0 = 0;
-        lbl_8053AAD4 = 1;
-    }
-    if (lbl_8053AADC == 0) {
-        lbl_8053AADC = 1;
-        lbl_8053AAD8 = lbl_8053CCA0;
-    }
-    lbl_8053AAD8 += lbl_8053CCA4;
-    if (lbl_8053AAD8 >= 1.0f) {
-        lbl_8053AAD8 = 1.0f;
-    }
-    lbl_8053AAD0++;
-    f32 dy;
-    if (lbl_8053AAD8 <= lbl_8053CCB8) {
-        dy = lbl_8053CCAC * (lbl_8053CCB0 - lbl_8053AAD8);
-    } else {
-        dy = lbl_8053CCB4 * (lbl_8053CCB8 - lbl_8053AAD8);
-    }
-    WpcnVec d(0.0f, dy, 0.0f);
-    ((WpcnVec*)(p + 0xc))->add(d);
-    if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
-    }
-    if (lbl_8053AAD8 >= lbl_8053CCA8 && lbl_8053AAD0 >= 30) {
-        lbl_8053AAD0 = 0;
-        lbl_8053AAD8 = lbl_8053CCA0;
-        bounced = true;
-    } else {
-        bounced = false;
-    }
+            if (lbl_8053AAD4 == 0) {
+                lbl_8053AAD0 = 0;
+                lbl_8053AAD4 = 1;
+            }
+            if (lbl_8053AADC == 0) {
+                lbl_8053AADC = 1;
+                lbl_8053AAD8 = lbl_8053CCA0;
+            }
+            lbl_8053AAD8 += lbl_8053CCA4;
+            if (lbl_8053AAD8 >= 1.0f) {
+                lbl_8053AAD8 = 1.0f;
+            }
+            lbl_8053AAD0++;
+            f32 dy;
+            if (lbl_8053AAD8 <= lbl_8053CCB8) {
+                dy = lbl_8053CCAC * (lbl_8053CCB0 - lbl_8053AAD8);
+            } else {
+                dy = lbl_8053CCB4 * (lbl_8053CCB8 - lbl_8053AAD8);
+            }
+            WpcnVec d(0.0f, dy, 0.0f);
+            ((WpcnVec*)(p + 0xc))->add(d);
+            if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
+                *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
+            }
+            if (lbl_8053AAD8 >= lbl_8053CCA8 && lbl_8053AAD0 >= 30) {
+                lbl_8053AAD0 = 0;
+                lbl_8053AAD8 = lbl_8053CCA0;
+                bounced = true;
+            } else {
+                bounced = false;
+            }
 
             if (bounced) {
                 fn_80130FAC(p, 3);
