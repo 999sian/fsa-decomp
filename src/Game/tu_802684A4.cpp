@@ -2,6 +2,13 @@
 // SetField_0x98 from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+static inline JGeometry::TVec2<f32> playerDifference2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    JGeometry::TVec2<f32> v;
+    v.set(a);
+    v.x -= b.x;
+    v.y -= b.y;
+    return v;
+}
 static inline void playerSubtract2(JGeometry::TVec2<f32>& v, const JGeometry::TVec2<f32>& rhs) {
     v.x -= rhs.x;
     v.y -= rhs.y;
@@ -122,8 +129,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
             JGeometry::TVec2<f32> b(*(f32*)(p + 0x2c), *(f32*)(p + 0xc));
             if (fn_802265FC((Vec2f*)&b, *(s32*)(p + 0x3b4)) == 1) {
                 JGeometry::TVec2<f32> d(*(f32*)(p + 8), *(f32*)(p + 0xc));
-                d.x -= *(f32*)(p + 0x2c);
-                d.y -= *(f32*)(p + 0x30);
+                playerSubtract2(d, *(JGeometry::TVec2<f32>*)(p + 0x2c));
                 if (d.squared() >= 25.0f) {
                     d.normalize();
                     d.scale(lbl_80540234);
@@ -137,8 +143,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
     JGeometry::TVec2<f32> c(*(f32*)(p + 8), *(f32*)(p + 0xc));
     if (fn_802265FC((Vec2f*)&c, *(s32*)(p + 0x3b4)) == 1) {
         JGeometry::TVec2<f32> d(*(f32*)(p + 8), *(f32*)(p + 0xc));
-                d.x -= *(f32*)(p + 0x2c);
-                d.y -= *(f32*)(p + 0x30);
+                playerSubtract2(d, *(JGeometry::TVec2<f32>*)(p + 0x2c));
         if (d.squared() >= 25.0f) {
             d.normalize();
             d.scale(lbl_80540234);
@@ -148,8 +153,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         goto move;
     }
     JGeometry::TVec2<f32> e(*(f32*)(p + 8), *(f32*)(p + 0xc));
-    e.x -= *(f32*)(p + 0x2c);
-    e.y -= *(f32*)(p + 0x30);
+    playerSubtract2(e, *(JGeometry::TVec2<f32>*)(p + 0x2c));
     f32 sq = e.squared();
     if (!(sq >= lbl_80540238)) {
         goto move;
