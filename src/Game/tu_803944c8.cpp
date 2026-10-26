@@ -1076,6 +1076,12 @@ extern "C" void fn_8039C258(MsgProc* p, s32 n) {
     msgPutWide(p, n + '0');
 }
 
+static inline BOOL msgTestBit(s32 n, const u32* bits) {
+    if (n < 32) return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
+    if (n < 64) return (bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
+    return FALSE;
+}
+
 static inline void msgAppendChar(MsgProc* p, char* buf) {
     strcat(p->str2c0, buf);
     strcat(p->str2c4, buf);
@@ -1083,6 +1089,7 @@ static inline void msgAppendChar(MsgProc* p, char* buf) {
 }
 
 // NONMATCHING (99%): cur/layout register swap in the bit test (same as fn_8039D0DC).
+#pragma opt_common_subs on
 extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
     MsgProc* p = &object;
     bool lead = false;
@@ -1092,19 +1099,25 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         neg = true;
     }
     if (p->m2d6) {
-        if (!p->testBit(p->cur)) {
+        int cur = p->cur;
+        if (!p->testBit(cur)) {
             MsgLayout* l = p->layout;
-            if (l->m16c == 0 || !p->testBit(p->cur)) {
-                f32 base;
+            if (l->m16c == 0 || !p->testBit(cur)) {
                 f32 pos;
+                f32 base;
                 if (!(l->font->flags & 0x40)) {
                     base = l->baseE8;
-                    pos = p->posA[p->cur];
+                    pos = p->posA[cur];
                 } else {
                     base = l->baseF0;
-                    pos = p->posA[p->cur] + (p->posB[p->cur] - lbl_805431E8);
+                    f32 left = p->posA[cur];
+                    f32 extra = p->posB[cur];
+                    extra -= lbl_805431E8;
+                    pos = left + extra;
                 }
-                s32 x = (base - pos) * lbl_805431E4 + lbl_805431E4;
+                f32 delta = base;
+                delta -= pos;
+                s32 x = delta * lbl_805431E4 + lbl_805431E4;
                 if (x > 0) {
                     snprintf(lbl_8050E528, 0xf, "\x1b" "CR[%d]", x);
                     strcat(p->str2c0, lbl_8050E528);
@@ -1124,7 +1137,7 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         msgAppendChar(p, buf);
     }
     s32 d = n / 10000;
-    int remainder = n % 10000;
+    s32 remainder = n % 10000;
     if (d != 0) {
         buf[0] = d + '0';
         lead = true;
@@ -1153,7 +1166,7 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
     buf[0] = remainder + '0';
     msgAppendChar(p, buf);
 }
-
+#pragma opt_common_subs reset
 static inline void msgMeasureChar(MsgMeasure* m, int c, f32 ratio, f32 add) {
     JUTFont::TWidth w;
     m->font->getWidthEntry(c, &w);
