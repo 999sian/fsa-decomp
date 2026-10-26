@@ -35,7 +35,17 @@ struct MsgRandom {
         return out.f - 1.0f;
     }
 };
-struct MsgGame { u8 pad[0xb4]; MsgRandom rnd; };
+struct MsgGame {
+    u8 pad[0xb4];
+    MsgRandom rnd;
+    s32 countPlayers() const {
+        s32 count = 0;
+        for (s32 i = 0; i < 4; i++) {
+            if (((const u8*)this)[0x82] & (u8)(1 << i)) count++;
+        }
+        return count;
+    }
+};
 extern MsgGame* lbl_8053AAF8;
 
 extern "C" void __dl__FPv(void* p);
@@ -2861,7 +2871,7 @@ extern "C" void fn_803B6768(void* this_) {
     u8* p = (u8*)this_;
     MsgGame* game = lbl_8053AAF8;
     count = 0;
-    for (s32 j = 0; j < 4; j++) {
+    for (int j = 0; j < 4; j++) {
         if (((u8*)game)[0x82] & (u8)(1 << j)) {
             count++;
         }
