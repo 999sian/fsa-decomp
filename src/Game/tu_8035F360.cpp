@@ -90,6 +90,36 @@ struct FsaCurEntry {
 };
 extern "C" s32 lbl_804742A8[];
 extern "C" const JMathSinCos sincosTable___5JMath[];
+extern "C" u8 fn_802E948C(char* p, f32 target, s32 frames);
+static inline void executeCurEntry(u8* p) {
+    FsaCurEntry* entry=*(FsaCurEntry**)(p+0x298);
+    s32 key=entry->key;
+    if(key<0) {
+        if(key==-1) fn_802E948C(*(char**)(p+0x29c),entry->pos.x,(s32)entry->pos.y);
+        else *(s32*)(p+0x230)=key+5;
+    } else {
+        s8 kind=key;
+        s32 count=getActorList()->getCount();
+        for(s32 i=0;i<count;++i) {
+            u8* actor=getActorList()->getActor(i);
+            if(actor && *(u32*)(actor+0x1a0)==0x45455443 && *(s8*)(actor+0x230)==kind) {
+                *(u8*)(actor+0x230)=0;
+                break;
+            }
+        }
+    }
+}
+static inline u8 advanceCurEntry(u8* p) {
+    *(FsaCurEntry**)(p+0x298)+=1;
+    if((*(FsaCurEntry**)(p+0x298))->key==-1000) *(FsaCurEntry**)(p+0x298)=0;
+    return 1;
+}
+static inline u8 triggerCurEntry(u8* p) {
+    executeCurEntry(p);
+    *(u8*)(p+0x294)=(*(FsaCurEntry**)(p+0x298))->type;
+    return advanceCurEntry(p);
+}
+
 extern "C" u8 fn_8035F3C0(u8* p);
 extern "C" f32 lbl_80542A00;
 extern "C" f32 lbl_80542A04;
