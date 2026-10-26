@@ -113,7 +113,7 @@ static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u
         fn_802D7D00(fn_802D6A9C(), room, idx, 1);
     }
 }
-static inline void WaveCopyPos(JGeometry::TVec2<f32>& dst, f32 x, f32 y) {
+static inline void WaveCopyPos(JGeometry::TVec2<f32>& dst, const f32 x, const f32 y) {
     dst.y = y;
     dst.x = x;
 }
