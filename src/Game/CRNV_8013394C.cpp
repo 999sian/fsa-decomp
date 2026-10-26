@@ -184,8 +184,8 @@ switch (*(s32*)(p+0x230)) {
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-int i=0; u8* q=p;
-do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=0; q+=4; } while(i<2);
+s32 i=0; void** q=(void**)(p+0x278);
+do { fn_801EE434(*q); i++; *q=NULL; q++; } while(i<2);
 detach__5ActorFv(p); break;
 }
 }
@@ -208,6 +208,7 @@ return -1;
 
 #pragma opt_propagation off
 extern "C" void fn_80133DD0(u8* p) {
+s32 player;
 v03__5ActorFv(p);
 JGeometry::TBox2f box;
 box.set(*(JGeometry::TBox2f*)(p+0x60));
@@ -215,7 +216,8 @@ box.i.x += *(f32*)(p+0xc); box.i.y += *(f32*)(p+0x10); box.f.x += *(f32*)(p+0xc)
 switch(*(s32*)(p+0x230)) {
 case 0:
 fn_801339EC(p);
-*(s32*)(p+0x238)=crnvTryTalk(p,lbl_804652A4[*(s32*)(p+0x234)]);
+player=crnvTryTalk(p,lbl_804652A4[*(s32*)(p+0x234)]);
+*(s32*)(p+0x238)=player;
 if(*(s32*)(p+0x238)>=0) crnvSetState(p,1);
 break;
 case 1:
