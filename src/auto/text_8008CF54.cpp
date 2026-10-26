@@ -65,7 +65,7 @@ extern "C" void fn_8008D910(void *);
 extern "C" void fn_8008D538(void *);
 extern "C" void fn_8008DADC(u32 *);
 extern "C" void fn_8008DE64(u32 *, int);
-extern "C" void fn_8008D0D4(void);
+extern "C" void fn_8008D0D4(void* = 0);
 extern "C" void fn_8008D148(int);
 extern "C" void fn_8008DFA0(u32 *param_1, s16 param_2);
 extern "C" void fn_8008E530(int param_1, int param_2, u32 param_3);
@@ -121,7 +121,7 @@ extern "C" void* dtor_8008D028(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8008D0D4(void)
+extern "C" void fn_8008D0D4(void* this_)
 {
     if (lbl_8053A920 == 0) {
         initiate__10JSUPtrListFv((void *)lbl_8052E8A0);
@@ -270,17 +270,16 @@ extern "C" void fn_8008D4CC(int param_1, int param_2, s64 param_3)
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8008D538(void* this_) {
-    u8* p = (u8*)this_;
+    u8* __restrict p = (u8*)this_;
     if (*(s16*)(p + 0x7c) != -1) {
         if (*(s16*)(p + 0x7c) >= 0 && *(s16*)(p + 0x7c) < 4) {
-            u32 first;
-            u8* a = (u8*)lbl_8052EA58 + *(s16*)(p + 0x7c) * 0x30;
-            u8* b = (u8*)lbl_8052EB18;
+            u8* __restrict a = (u8*)lbl_8052EA58 + *(s16*)(p + 0x7c) * 0x30;
+            u8* __restrict b = (u8*)lbl_8052EB18;
             u8* __restrict c = (u8*)lbl_8052EB58;
-            u8* d = (u8*)lbl_8052EA28;
-            first = *(u32*)(a + 0x0);
-            *(u32*)(p + 0x18) = first;
+            u8* __restrict d = (u8*)lbl_8052EA28;
+            *(u32*)(p + 0x18) = *(u32*)(a + 0x0);
             *(u32*)(p + 0x1c) = *(u32*)(a + 0x4);
             *(u32*)(p + 0x20) = *(u32*)(a + 0x8);
             p[0x24] = a[0xc];
@@ -356,7 +355,7 @@ extern "C" void fn_8008D538(void* this_) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8008D864(void)
 {
     if (lbl_8053A951 != 0) {
