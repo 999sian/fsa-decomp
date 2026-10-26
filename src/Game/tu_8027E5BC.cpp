@@ -569,7 +569,8 @@ void fn_8027F854(char* p, JGeometry::TVec3<f32>* out, s32 i) {
 
 void fn_8027FA08(char* p, f32* outp) {
     JGeometry::TVec3<f32>& out = *(JGeometry::TVec3<f32>*)outp;
-    int area;
+    s32 area;
+    u8* base;
     if (!Player_IsLinked(p) && U8(p, 0x1216)) {
         out = VEC(p, 0x38);
         return;
@@ -607,7 +608,8 @@ void fn_8027FA08(char* p, f32* outp) {
             JGeometry::TVec3<f32> tmp(*Fairy_GetField_0x11b4Ptr(p));
             out.x = lbl_80540368 * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x11c0) >> 5].second + tmp.x;
             area = S32(p, 0x3b4);
-            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
                 out.y = lbl_80540384 * -JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x11c0) >> 5].first + tmp.y;
             } else {
                 out.y = lbl_80540368 * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x11c0) >> 5].first + tmp.y;
@@ -621,7 +623,8 @@ void fn_8027FA08(char* p, f32* outp) {
         switch (Player_GetLinkTargetIndex(p)) {
         case 0:
             area = S32(p, 0x3b4);
-            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
                 out.y -= lbl_80540384;
             } else {
                 out.y += lbl_80540368;
@@ -635,7 +638,8 @@ void fn_8027FA08(char* p, f32* outp) {
             break;
         case 3:
             area = S32(p, 0x3b4);
-            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
                 out.y += lbl_80540384;
             } else {
                 out.y -= lbl_80540368;
@@ -645,7 +649,8 @@ void fn_8027FA08(char* p, f32* outp) {
         switch (S32(p, 0x4)) {
         case 0:
             area = S32(p, 0x3b4);
-            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
                 out.y += lbl_80540384;
             } else {
                 out.y -= lbl_80540368;
@@ -659,7 +664,8 @@ void fn_8027FA08(char* p, f32* outp) {
             break;
         case 3:
             area = S32(p, 0x3b4);
-            if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+            base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
                 out.y -= lbl_80540384;
             } else {
                 out.y += lbl_80540368;
@@ -670,10 +676,13 @@ void fn_8027FA08(char* p, f32* outp) {
     case 2:
         out.x += lbl_80540368 * (f32)(fn_80248778(p) & 1);
         area = S32(p, 0x3b4);
-        if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
-            out.y -= (lbl_80540368 * (f32)(fn_80248778(p) & 2)) * lbl_8054037C;
+        base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
+            f32 v = lbl_80540368 * (f32)(fn_80248778(p) & 2);
+            out.y -= v * lbl_8054037C;
         } else {
-            out.y += (lbl_80540368 * (f32)(fn_80248778(p) & 2)) * lbl_8054037C;
+            f32 v = lbl_80540368 * (f32)(fn_80248778(p) & 2);
+            out.y += v * lbl_8054037C;
         }
         break;
     case 0:
@@ -681,7 +690,8 @@ void fn_8027FA08(char* p, f32* outp) {
         break;
     case 1:
         area = S32(p, 0x3b4);
-        if (*((u8*)fn_802D6A9C() + area + 0x131df) != 0) {
+        base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[area + 0x31df] != 0) {
             out.y -= lbl_80540368 * (f32)fn_80248778(p);
         } else {
             out.y += lbl_80540368 * (f32)fn_80248778(p);
@@ -689,8 +699,8 @@ void fn_8027FA08(char* p, f32* outp) {
         break;
     case 5:
         if (Player_IsLinked(p)) {
-            s32 s = fn_80248778(p);
-            JGeometry::TVec3<f32>* q = fn_8023E4E4(Player_GetLinkTargetIndex(p), s * 12);
+            s32 s = fn_80248778(p) * 12;
+            JGeometry::TVec3<f32>* q = fn_8023E4E4(Player_GetLinkTargetIndex(p), s);
             out.x = q->x;
             out.y = q->y;
             out.z = q->z;
