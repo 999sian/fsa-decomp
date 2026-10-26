@@ -2,6 +2,8 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 extern "C" u8 fn_802DEBA0(void);
 
