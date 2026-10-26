@@ -193,6 +193,27 @@ extern void* lbl_8053AAF8;
 extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5FF4(f32 x);
+static inline f32 SpriteDepthScale802F(f32 x) {
+    f32 a = lbl_805414FC;
+    f32 v = (x >= lbl_80541500) ? lbl_80541500 : x;
+    return a / (a - v);
+}
+static inline u8 SpriteDepthEnabled802F(u8* ent) {
+    u8 flag = *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0xe461);
+    if (flag) flag = ent[0x20];
+    return flag;
+}
+static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
+    u8 flag = SpriteDepthEnabled802F(ent);
+    if (flag) flag = pos[2] > lbl_805414F8;
+    int a = (s8)ent[0x1c];
+    int b = (s8)ent[0x1d];
+    if (flag && a < 1) {
+        a++;
+        b--;
+    }
+    return (f32)((a << 10) + (b << 7));
+}
 extern "C" void fn_8013B1E8(void* mgr);
 static inline int Tu802F93F4_c5(int v) {
     f32 f = __fmadds((f32)v, lbl_80541518, lbl_805414F8);
@@ -217,10 +238,9 @@ extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     u32 c;
 
     if (ent != NULL) {
-        zpos = FALSE;
-        if (*(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0xe461) && ent[0x20]) {
-            zpos = pos[2] > lbl_805414F8;
-        }
+        zpos = *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0xe461);
+        if (zpos) zpos = ent[0x20];
+        if (zpos) zpos = pos[2] > lbl_805414F8;
         a = (s8)ent[0x1c];
         b = (s8)ent[0x1d];
         if (zpos && a < 1) {
@@ -232,32 +252,26 @@ extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
         t = lbl_805414F8;
     }
 
-    small = 0;
-    if (ent != NULL && *(void**)(ent + 0x18) != NULL) {
-        small = ent[0x25] != 0;
-    } else if (pos[2] == lbl_805414F8 || (ent != NULL && ent[0x1f] == 0)) {
-        small = 1;
-    }
-
-    if (small == 0) {
+    if (!(ent && *(void**)(ent+0x18) && ent[0x25]) &&
+        ((ent && *(void**)(ent+0x18)) || (lbl_805414F8 != pos[2] && (!ent || ent[0x1f])))) {
         if (ent != NULL && *(void**)(ent + 0x18) != NULL) {
-            PSMTXCopy(*(MtxPtr*)(ent + 0x18), m);
+            JMath::gekko_ps_copy12(m, *(void**)(ent + 0x18));
         } else {
             PSMTXIdentity(m);
         }
-        if (pos[2] != lbl_805414F8 && (ent == NULL || ent[0x1f] != 0)) {
-            s = fn_802F5FF4(pos[2]);
-            for (i = 0; i < 12; i++) {
-                ((f32*)m)[i] *= s;
-            }
+        if (lbl_805414F8 != pos[2] && (ent == NULL || ent[0x1f] != 0)) {
+            f32 v = (pos[2] >= lbl_80541500) ? lbl_80541500 : pos[2];
+            s = lbl_805414FC / (lbl_805414FC - v);
+            m[0][0] *= s; m[1][0] *= s; m[2][0] *= s;
+            m[0][1] *= s; m[1][1] *= s; m[2][1] *= s;
+            m[0][2] *= s; m[1][2] *= s; m[2][2] *= s;
+            m[0][3] *= s; m[1][3] *= s; m[2][3] *= s;
         }
         m[0][3] += pos[0];
         m[1][3] += pos[1] + t;
         m[2][3] += pos[2] + t;
         fn_8013B3CC(lbl_8053AB10, m);
-        out[0] = lbl_805414F8;
-        out[1] = lbl_805414F8;
-        out[2] = lbl_805414F8;
+        out[0] = out[1] = out[2] = lbl_805414F8;
     } else {
         fn_8013B3F0(lbl_8053AB10);
         out[0] = pos[0];
@@ -274,10 +288,8 @@ extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
         GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     }
     if (ent != NULL) {
-        c = *(u32*)(ent + 0x10);
-        GXSetTevColor(GX_TEVREG1, *(GXColor*)&c);
-        c = *(u32*)(ent + 0x14);
-        GXSetTevColor(GX_TEVREG2, *(GXColor*)&c);
+        GXSetTevColor(GX_TEVREG1, *(GXColor*)(ent+0x10));
+        GXSetTevColor(GX_TEVREG2, *(GXColor*)(ent+0x14));
         GXSetZMode(ent[0x26], GX_LEQUAL, ent[0x2c]);
     }
     if (ent != NULL && ent[0x2d] != 0) {
@@ -382,13 +394,13 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
                     y=src[1];loY=*(f32*)(this_+0x236c);
                     if (y>=loY && y<lbl_80541510*(f32)*(s32*)(this_+0x2384)+loY) {
                         f32 dx=x-loX; f32 dy=y-loY;
-                        s32 iy; s32 ix;
+                        int iy; int ix;
                         ix=(s32)(0.125f*dx); iy=(s32)(0.125f*dy);
                         u8* table=this_; table+=*(s32*)(this_+0x2388)*4;
                         Vec (*grid)[65]=*(Vec(**)[65])(table+0x100);
                         u8* cell=(u8*)&grid[iy][ix];
-                        f32 fx=0.125f*(dx-lbl_80541510*(f32)ix);
-                        f32 fy=0.125f*(dy-lbl_80541510*(f32)iy);
+                        f32 fx=(dx-lbl_80541510*(f32)ix)*0.125f;
+                        f32 fy=(dy-lbl_80541510*(f32)iy)*0.125f;
                         height+= (1.0f-fy)*(*(f32*)(cell+8)*(1.0f-fx)+*(f32*)(cell+0x14)*fx) + fy*((1.0f-fx)**(f32*)(cell+0x314)+fx**(f32*)(cell+0x320));
                     }
                 }
