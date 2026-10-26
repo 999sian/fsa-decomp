@@ -192,7 +192,7 @@ extern "C" s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
 extern "C" s32 fn_801F6874(u32 x);
 extern "C" u8 lbl_8052EBC0[];
 extern "C" f32 lbl_8053F73C;
-extern "C" f32 lbl_8053F7A4;
+extern "C" const f32 lbl_8053F7A4;
 extern f32 lbl_8053F740; /* 0.0 */
 extern f32 lbl_8053F744; /* 512.0 */
 
