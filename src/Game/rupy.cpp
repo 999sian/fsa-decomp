@@ -125,8 +125,8 @@ extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 room, void* pos, u32 pa
 extern "C" void* fn_801F856C(void);
 struct RupyVec3 : JGeometry::TVec3f {
     RupyVec3(const f32& x_, const f32& y_, const f32& z_) {
-        x = x_;
         y = y_;
+        x = x_;
         z = z_;
     }
 };
@@ -521,16 +521,12 @@ extern "C" void fn_8032B7C0(void* this_) {
                 case 1:
                     *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541DB0, *(f32*)(p + 0x40), lbl_80541D88);
                     break;
-                case 2: {
-                    f32 vy = *(f32*)(p + 0x40);
-                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541D88, vy, lbl_80541D88);
+                case 2:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = RupyVec3(lbl_80541D88, *(f32*)(p + 0x40), lbl_80541D88);
                     break;
-                }
-                case 3: {
-                    f32 vy = *(f32*)(p + 0x40);
-                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541D88, vy, lbl_80541D88);
+                case 3:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = RupyVec3(lbl_80541D88, *(f32*)(p + 0x40), lbl_80541D88);
                     break;
-                }
                 }
                 *(s32*)(p + 0x260) = 1;
                 *(s32*)(p + 0x230) = 0;
