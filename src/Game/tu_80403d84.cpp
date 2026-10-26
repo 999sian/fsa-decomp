@@ -9,6 +9,11 @@ extern "C" f32 lbl_80543970;
 extern "C" f32 lbl_805438E4;
 extern "C" s16 lbl_80543890[4];
 #include "JSystem/J2D/J2DPane.h"
+extern "C" f32 lbl_805438E0;
+extern "C" f32 lbl_805438E8;
+extern "C" f32 lbl_805438EC;
+extern "C" f32 lbl_805438F0;
+extern "C" f32 lbl_805438F4;
 extern "C" void fn_8013CB44(void*, f32*, s32, s32, s32);
 extern "C" f32 lbl_805438D8;
 extern "C" f32 lbl_805438DC;
