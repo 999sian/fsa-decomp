@@ -16,6 +16,7 @@ extern "C" char lbl_80476578[];
 extern "C" void* fn_804030C4(u32 tag, char* name);
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 
+#pragma optimization_level 3
 static inline u32 calcCardChecksum(u8* data) {
     u32 sum = 0;
     u16 inv = 0;
@@ -30,6 +31,7 @@ static inline u32 calcCardChecksum(u8* data) {
     }
     return (sum << 16) | inv;
 }
+#pragma optimization_level reset
 #pragma optimization_level 3
 extern "C" void fn_803BACF8(u8* param_1, u8 param_2) {
 param_1 += param_2 * 200;
