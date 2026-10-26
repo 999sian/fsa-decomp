@@ -5,10 +5,7 @@
 #include "JSystem/JAudio/System/JASDrumSet.h"
 #include "JSystem/JAudio/System/JASCalc.h"
 
-class JASBNKParser {
-public:
-    static void* createBank(const void*, JKRHeap*);
-};
+#include "JSystem/JAudio/System/JASBNKParser.h"
 
 extern JKRHeap* JASDram;
 static inline unsigned long BankAlign8002F34C(unsigned long address) { return (address + 3) & ~3; }
@@ -61,8 +58,8 @@ extern "C" int lbl_80557688;
 extern "C" void* fn_8002FB90(const void*, JKRHeap*);
 extern "C" void* fn_8002F34C(const void*, JKRHeap*);
 extern "C" void* fn_8002F294(const void* data, JKRHeap* heap);
-void* JASBNKParser::createBank(const void* data, JKRHeap* heap) {
-    return fn_8002F294(data, heap);
+JASBank* JASBNKParser::createBank(const void* data, JKRHeap* heap) {
+    return (JASBank*)fn_8002F294(data, heap);
 }
 
 extern "C" void* fn_8002F294(const void* data, JKRHeap* heap) {
