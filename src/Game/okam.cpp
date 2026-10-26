@@ -2,6 +2,7 @@
 // TU 801AE9C4-801AFB38 (OKAM). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 // from src/Game/fn_801AE9C4_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -216,15 +217,14 @@ extern "C" void fn_8013CC50(s32 handle, void* pos, f32 scale, s32 id, s32 a, s32
 extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
 extern "C" void fn_801AF1EC(char* this_) {
     s32 flag = -1;
-    s32 res = -1;
+    register int res = -1;
     s32 i = 0;
     f32 pos[2];
     s32 state;
 
-    if (res < 0) {
-        for (; i < 4; i++) {
-            res = fn_801F285C(this_, 0, 0, 1, i);
-        }
+    for (; i < 4; i++) {
+        if (res >= 0) break;
+        res = fn_801F285C(this_, 0, 0, 1, i);
     }
     state = *(s32*)(this_ + 0x258);
     switch (state) {
@@ -249,23 +249,23 @@ extern "C" void fn_801AF1EC(char* this_) {
         fn_801F2B7C(this_, -100, -1, 1);
         break;
     case 2: {
-        f32 b = *(f32*)(this_ + 0x270);
+        register f32 b = *(f32*)(this_ + 0x270);
         f32 a = *(f32*)(this_ + 0x26c);
         *(f32*)(this_ + 0x60) = -6.0f + a;
         *(f32*)(this_ + 0x64) = -6.0f + b;
         *(f32*)(this_ + 0x68) = 6.0f + a;
         *(f32*)(this_ + 0x6c) = 6.0f + b;
-        if (res >= 0) {
+        if (0 <= res) {
             fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, &flag, 0, 0, res, 2);
-            if (flag >= 0) {
+            if (0 <= flag) {
                 if ((flag & 2) != 0) {
                     if (fn_801F305C(this_)) {
                         fn_801F2618(this_, 0, 0);
+                        return;
                     }
                 }
             }
         }
-        break;
     }
     case 1: {
         f32 b = *(f32*)(this_ + 0x270);
@@ -285,17 +285,17 @@ extern "C" void fn_801AF1EC(char* this_) {
         *(f32*)(this_ + 0x64) = -6.0f + b;
         *(f32*)(this_ + 0x68) = 6.0f + a;
         *(f32*)(this_ + 0x6c) = 6.0f + b;
-        if (res >= 0) {
+        if (0 <= res) {
             fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, &flag, 0, 0, res, 2);
             if (flag >= 0) {
                 if ((flag & 2) == 0) {
                     if (fn_801F305C(this_)) {
                         fn_801F2618(this_, 0, 0);
+                        return;
                     }
                 }
             }
         }
-        break;
     }
     case 5: {
         f32 b = *(f32*)(this_ + 0x270);
@@ -313,12 +313,12 @@ extern "C" void fn_801AF1EC(char* this_) {
     f32 x0 = *(f32*)(this_ + 0x60);
     f32 y0 = *(f32*)(this_ + 0x64);
     f32 x1 = *(f32*)(this_ + 0x68);
-    f32 y1 = *(f32*)(this_ + 0x6c);
+    register f32 y1 = *(f32*)(this_ + 0x6c);
     f32 px = *(f32*)(this_ + 0xc);
     f32 py = *(f32*)(this_ + 0x10);
     for (i = 0; i < 4; i++) {
         s32 hit = fn_801F285C(this_, 0, 0, 0, i);
-        if (hit >= 0) {
+        if (0 <= hit) {
             x0 += px;
             x1 += px;
             y0 += py;
