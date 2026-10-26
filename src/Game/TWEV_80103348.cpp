@@ -41,23 +41,29 @@ extern f32 lbl_8053C1D0;
 extern f32 lbl_8053C1D4;
 extern f32 lbl_8053C1D8;
 
+static inline f32 twevSin(f32 x) { return sin(x); }
+static inline f32 twevCos(f32 x) { return cos(x); }
 static inline void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
-    f32 sa = sin(ax);
-    f32 sb = sin(ay);
-    f32 sc = sin(az);
-    f32 ca = cos(ax);
-    f32 cb = cos(ay);
-    f32 cc = cos(az);
+    f32 cx;
+    f32 sx = twevSin(ax);
+    f32 sy = twevSin(ay);
+    f32 sz = twevSin(az);
+    cx = twevCos(ax);
+    f32 cy = twevCos(ay);
+    f32 cz = twevCos(az);
+    f32 cc = cx * cz;
+    f32 ss = sx * sy;
+    f32 cs = cx * sz;
     f32 s = lbl_8053C1D8;
-    m[0][0] = s * (cb * cc);
-    m[0][1] = s * (sa * sb * cc - ca * sc);
-    m[0][2] = s * (ca * cc * sb + sa * sc);
-    m[1][0] = s * (cb * sc);
-    m[1][1] = s * (sa * sb * sc + ca * cc);
-    m[1][2] = s * (ca * sc * sb - sa * cc);
-    m[2][0] = s * -sb;
-    m[2][1] = s * (sa * cb);
-    m[2][2] = s * (ca * cb);
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (ss * cz - cs);
+    m[1][1] = s * (ss * sz + cc);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cc * sy + sx * sz);
+    m[1][2] = s * (cs * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
 }
 
 // ---- from Game/fn_80103F28_dtor.cpp
