@@ -76,12 +76,11 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
     return this_;
 }
 
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void fn_800FF0C0(Actor* this_) {
-    int fraction;
-    int remainder;
-    int minutes;
-    int value;
+    s32 fraction;
+    s32 minutes;
+    s32 value;
     s32 i;
     s32 count;
     JGeometry::TVec3<f32> saved;
@@ -92,8 +91,8 @@ extern "C" void fn_800FF0C0(Actor* this_) {
             lbl_8053AF00[0x30] |= (u8)(1 << i);
             value = *(s32*)((u8*)this_ + 0x250 + i * 4);
             minutes = value / 60;
-            remainder = value - minutes * 60;
-            fraction = (s32)((f32)remainder / lbl_8053C110);
+            value -= minutes * 60;
+            fraction = (s32)((f32)value / lbl_8053C110);
             lbl_8053AF00[0x2c + i] = minutes;
             lbl_8053AF00[0x28 + i] = fraction;
         }
