@@ -33,7 +33,7 @@ struct GSYATimeState {
     u8 flags;
 };
 extern f32 lbl_8053C110;
-extern f32 lbl_8053C118;
+extern const f32 lbl_8053C118;
 extern u8 lbl_80463B8C[];
 extern u8 lbl_80463B78[];
 extern "C" s32 fn_8023DE58(s32 i);
@@ -94,7 +94,7 @@ extern "C" void fn_800FF0C0(Actor* this_) {
         }
         lbl_8053AF00[0x30] |= (u8)(1 << (*(s32*)((u8*)this_ + 0x240) + 4));
         if (*(s32*)((u8*)this_ + 0x230) == 4) {
-            saved = *(JGeometry::TVec3<f32>*)((u8*)this_ + 0xc);
+            JGeometry::setTVec3f(&this_->field_0C.x, &saved.x);
             Vec* q = (Vec*)fn_8023E724(*(s32*)((u8*)this_ + 0x240));
             this_->field_0C.x = q->x;
             this_->field_0C.y = q->y;
