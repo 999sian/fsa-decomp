@@ -204,10 +204,10 @@ struct J2DTevSwapModeInfo {
 };
 
 struct J2DTevSwapModeTableInfo {
-    u8 mR; // _00
-    u8 mG; // _01
-    u8 mB; // _02
-    u8 mA; // _03
+    u8 mR;       // _00
+    const u8 mG; // _01
+    u8 mB;       // _02
+    u8 mA;       // _03
 };
 
 // FSA: J2DMatBlock, J2DMaterialFactory and J2DBloSaver see some of the j2dDefault* tables as
