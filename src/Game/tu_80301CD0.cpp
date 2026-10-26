@@ -193,7 +193,7 @@ struct Rec5_80301CD0 {
     u8 lo : 4;
 };
 
-static inline bool tu80301_isState7(s32 state) { return state == 7; }
+static inline u8 tu80301_isState7(s32 state) { return state == 7; }
 
 struct Hi_80301CD0 {
     u8 y : 4;
@@ -1868,7 +1868,7 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
 
     if (*((u8*)lbl_8053AAF0 + 0x78) >= 4) {
         s32 st = *(s32*)((u8*)lbl_8053AAF8 + 0x4c);
-        if (st == 7 || st == 0xb || st == 0xc) {
+        if ((tu80301_isState7(st) & 1) || st == 0xb || st == 0xc) {
             ((Hi_80301CD0*)(lbl_80506DE8 + i * 0x68 + 3))->y = 9;
         } else {
             ((Hi_80301CD0*)(lbl_80506DE8 + i * 0x68 + 3))->y = 13;
@@ -1913,9 +1913,11 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
         if (fn_8037F1E4(i) >= 1 && fn_8037F1E4(i) <= 5) lv = 1;
         ((Ctl4_80301CD0*)pf)->x = lv != 0;
         if (lbl_8053ACD0 != 0 && (*((u8*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
-            u8 active = 0;
+            u8 active;
+            s32 room;
+            active = 0;
             if (fn_8022F5B0(ret)) {
-                s32 room = fn_8023DE58(ret);
+                room = fn_8023DE58(ret);
                 if (!fn_802D7804(fn_802D6A9C(), room, 2)) active = 1;
             }
             ((Ctl4_80301CD0*)pl)->x = active != 0;
@@ -1927,9 +1929,8 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
         ((Ctl4_80301CD0*)pl)->x = 0;
     }
 
-    cnt = lbl_80541618[lbl_8053AD08] - 7;
     q = p;
-    for (s32 remaining = cnt; remaining > 0; remaining--) {
+    for (cnt = lbl_80541618[lbl_8053AD08] - 7; cnt > 0; cnt--) {
         ((Ctl3_80301CD0*)(q + 0x1b))->flag = 1;
         q[0x1a] = 0x80;
         q[0x19] = 0xe0;
