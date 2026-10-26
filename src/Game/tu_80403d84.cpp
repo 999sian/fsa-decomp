@@ -2477,7 +2477,7 @@ static inline void menuMarkerMtx(f32 m[3][4], const f32 s) {
 }
 
 static inline void menuMarkerEulerMtx(f32 m[3][4], const f32 s, const f32 ax, const f32 ay, const f32 az) {
-    f32 sz, cx, cy, cz, sy, sx;
+    f32 sz, cy, cx, cz, sy, sx;
  f32 zero = 0.0f;
     sx = sin(ax); sy = sin(ay); sz = sin(az);
     cx = cos(ax); cy = cos(ay); cz = cos(az);
@@ -2499,8 +2499,7 @@ static inline void menuMarkerEulerMtx(f32 m[3][4], const f32 s, const f32 ax, co
 }
 
 extern "C" void fn_804069E8(u8* self) {
-	f32 cx; f32 cy; f64 s; f32 sx; f32 sy; f32 sz; f32 sxsy; f32 cz;
- DrawRec rec;
+	DrawRec rec;
 	s32 out = -1;
 	f32 mtx[3][4];
 	f32 pos[3];
@@ -2513,26 +2512,7 @@ extern "C" void fn_804069E8(u8* self) {
 	} else {
 		idx = idx0;
 	}
-	s = *(f32*)(lbl_8050DB0C + 8);
- 
-    sx = sin(zero); sy = sin(zero); sz = sin(zero);
-    cx = cos(zero); cy = cos(zero); cz = cos(zero);
-    mtx[0][3] = 0.0f; mtx[1][3] = 0.0f; mtx[2][3] = 0.0f;
-    f32 cxcz = cx * cz;
-    sxsy = sx * sy;
-    f32 cxsz = cx * sz;
-    f32 sxsz = sx * sz;
-    f32 sxcz = sx * cz;
-    mtx[0][0] = (f32)s * (cy * cz);
-    mtx[1][0] = (f32)s * (cy * sz);
-    mtx[2][0] = (f32)s * -sy;
-    mtx[0][1] = (f32)s * (sxsy * cz - cxsz);
-    mtx[1][1] = (f32)s * (sxsy * sz + cxcz);
-    mtx[2][1] = (f32)s * (sx * cy);
-    mtx[0][2] = (f32)s * (cxcz * sy + sxsz);
-    mtx[1][2] = (f32)s * (cxsz * sy - sxcz);
-    mtx[2][2] = (f32)s * (cx * cy);
-
+	menuMarkerEulerMtx(mtx, *(f32*)(lbl_8050DB0C + 8), zero, zero, zero);
  rec.w18 = mtx;
 	q = self;
 	for (int i = 0; i < 4; i++, q += 4) {
