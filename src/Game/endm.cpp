@@ -54,6 +54,8 @@ extern "C" u8 fn_802E948C(char* p, f32 target, s32 frames) {
 extern "C" void fn_802E94F4(char* p) {
     JGeometry::TVec3<f32> vel;
     JGeometry::TBox2<f32> bounds;
+    JGeometry::TVec2<f32> pos;
+    JGeometry::TVec2<f32> tmp;
     f32 tx;
     f32 ty;
     ty = *(f32*)(p + 0x248);
@@ -74,32 +76,51 @@ extern "C" void fn_802E94F4(char* p) {
             *(f32*)(p + 0x254) = ty;
             *(u8*)(p + 0x298) = 1;
         } else if (dist <= 2.0f * speed) {
-            *(f32*)(p + 0x250) = (*(f32*)(p + 0x244) - *(f32*)(p + 0x250)) * 0.5f + *(f32*)(p + 0x250);
-            *(f32*)(p + 0x254) = (*(f32*)(p + 0x248) - *(f32*)(p + 0x254)) * 0.5f + *(f32*)(p + 0x254);
+            *(f32*)(p + 0x250) += (*(f32*)(p + 0x244) - *(f32*)(p + 0x250)) * 0.5f;
+            *(f32*)(p + 0x254) += (*(f32*)(p + 0x248) - *(f32*)(p + 0x254)) * 0.5f;
         } else if (0.1f * dist < 2.5f) {
-            *(f32*)(p + 0x250) = (*(f32*)(p + 0x244) - *(f32*)(p + 0x250)) * 0.1f + *(f32*)(p + 0x250);
-            *(f32*)(p + 0x254) = (*(f32*)(p + 0x248) - *(f32*)(p + 0x254)) * 0.1f + *(f32*)(p + 0x254);
+            f32 cx, cy;
+            *(f32*)(p + 0x250) = (*(f32*)(p + 0x244) - (cx = *(f32*)(p + 0x250))) * 0.1f + cx;
+            *(f32*)(p + 0x254) = (*(f32*)(p + 0x248) - (cy = *(f32*)(p + 0x254))) * 0.1f + cy;
         } else {
             f32 ang = JMath::atanTable_.atan2_(*(f32*)(p + 0x248) - *(f32*)(p + 0x254), *(f32*)(p + 0x244) - *(f32*)(p + 0x250));
-            s16 idx = (s16)(ang * 10430.4f);
+            f32 scale = 10430.4f;
+            s16 idx = (s16)(ang * scale);
             *(f32*)(p + 0x250) = 2.5f * JMACosShort(idx) + *(f32*)(p + 0x250);
             *(f32*)(p + 0x254) = 2.5f * JMASinShort(idx) + *(f32*)(p + 0x254);
         }
     }
-    JGeometry::TBox2<f32> box(*(f32*)(p + 0x250), *(f32*)(p + 0x254), JGeometry::TVec2<f32>(0.0f, -30.0f));
-    bounds = *(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10 + 0x24) + 0x164);
     {
-        f32 hw = (bounds.f.x - bounds.i.x) * 0.5f;
-        f32 hh = (bounds.f.y - bounds.i.y) * 0.5f;
-        if (box.f.x + hw < *(f32*)(p + 0x268)) {
-            box.f.x = *(f32*)(p + 0x268) - hw;
-        } else if (box.f.x - hw > *(f32*)(p + 0x260)) {
-            box.f.x = *(f32*)(p + 0x260) + hw;
+        f32* dummy = &tmp.x;
+        f32 y0;
+        f32 x0;
+        x0 = *(f32*)(p + 0x250);
+        y0 = *(f32*)(p + 0x254);
+        JGeometry::TVec2<f32> off(0.0f, -30.0f);
+        tmp.x = x0;
+        tmp.y = y0;
+        pos.x = x0 + off.x;
+        f64 d = pos.x;
+        f32 px = (f32)d;
+        pos.y = y0 + off.y;
+        bounds = *(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10 + 0x24) + 0x164);
+        tmp.x = pos.x;
+        tmp.y = pos.y;
+        f32 half = 0.5f;
+        f32 w = bounds.f.x - bounds.i.x;
+        f32 hw = w * half;
+        f32 h = bounds.f.y - bounds.i.y;
+        f32 hh = h * half;
+        f32 hh2 = h * half;
+        if (px + hw >= *(f32*)(p + 0x268)) {
+            pos.x = *(f32*)(p + 0x268) - hw;
+        } else if (px - hw <= *(f32*)(p + 0x260)) {
+            pos.x = *(f32*)(p + 0x260) + hw;
         }
-        if (box.f.y + hh < *(f32*)(p + 0x26c)) {
-            box.f.y = *(f32*)(p + 0x26c) - hh;
-        } else if (box.f.y - hh > *(f32*)(p + 0x264)) {
-            box.f.y = *(f32*)(p + 0x264) + hh;
+        if (pos.y + hh >= *(f32*)(p + 0x26c)) {
+            pos.y = *(f32*)(p + 0x26c) - hh2;
+        } else if (pos.y - h * half <= *(f32*)(p + 0x264)) {
+            pos.y = *(f32*)(p + 0x264) + h * half;
         }
     }
     if (*(f32*)(p + 0x270) != *(f32*)(p + 0x274)) {
@@ -114,7 +135,7 @@ extern "C" void fn_802E94F4(char* p) {
             }
         }
     }
-    fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &box.f.x, (f32)(s32)*(f32*)(p + 0x270));
+    fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &pos.x, (f32)(s32)*(f32*)(p + 0x270));
 }
 
 extern "C" void* fn_802D6A9C(void);
