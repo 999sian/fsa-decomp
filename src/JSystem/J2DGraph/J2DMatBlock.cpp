@@ -10,6 +10,10 @@ static inline u8 initializeSwapModeTable(const u8 r, u8 g, const u8 b, const u8 
 {
     return (r << 6) + (g << 4) + (b << 2) + a;
 }
+static inline void initializeSwapModeTableInfo(J2DTevSwapModeTable& table, const J2DTevSwapModeTableInfo& info)
+{
+    table._00 = initializeSwapModeTable(info.mR, info.mG, info.mB, info.mA);
+}
 
 void J2DColorBlock::initialize() {
     for (int i = 0; i < 2; i++) {
