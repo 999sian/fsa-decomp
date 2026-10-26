@@ -142,6 +142,7 @@ extern "C" s32 fn_8013056C(char* p, s32 id, s32 mode, s32 val) {
     }
     return -1;
 }
+#pragma dont_inline reset
 extern const f32 lbl_8053CC88;
 extern const f32 lbl_8053CC8C;
 extern "C" u8 lbl_8049EA58[];
