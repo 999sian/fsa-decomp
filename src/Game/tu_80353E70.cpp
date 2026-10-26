@@ -71,13 +71,16 @@ extern "C" void fn_80353EE0(void* this_) {
     fn_801F06F0(this_, lbl_80472298, lbl_80472288[*(s32*)((char*)this_ + 0x2c8)] + 0x466, &rec, 7, lbl_80542750, lbl_80542750);
 }
 
+static inline bool tugfNear(f32 x, f32 y) {
+    return x*x + y*y <= lbl_8054273C;
+}
+
 extern "C" void fn_80354030(char* this_) {
     if (*(s32*)(this_ + 0x2b8) != 0) {
         char* p = *(char**)((char*)lbl_8053AB10 + 0x30);
         if (*(u8*)(p + 0x284) == 0) {
-            f32 f = lbl_80542754;
             *(u8*)(p + 0x284) = 1;
-            *(f32*)(p + 0x28c) = f;
+            *(f32*)(p + 0x28c) = 1.0f;
         }
         p = *(char**)((char*)lbl_8053AB10 + 0x24);
         if (*(u8*)(p + 0x7f4) == 0) {
@@ -97,11 +100,11 @@ extern "C" void fn_80354030(char* this_) {
         JMathInlineVEC::PSVECAdd((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x3c), (Vec*)(this_ + 0xc));
         if (*(s32*)(this_ + 0x2c0) <= 0) {
             fn_801F0E34(this_, 0x4003f, 0);
-            f32 scale = lbl_8054275C;
             *(f32*)(this_ + 0x288) = lbl_80542758;
             *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x44) = lbl_8054273C;
             *(s32*)(this_ + 0x2c0) = 0;
             *(s32*)(this_ + 0x2b8) = 2;
+            f32 scale = lbl_8054275C;
             *(f32*)(this_ + 0x2d8) = scale * (f32)(*(u32*)(this_ + 0x2d4) >> 24);
             *(f32*)(this_ + 0x2dc) = scale * (f32)((*(u32*)(this_ + 0x2d4) >> 16) & 0xff);
             *(f32*)(this_ + 0x2e0) = scale * (f32)((*(u32*)(this_ + 0x2d4) >> 8) & 0xff);
@@ -131,28 +134,34 @@ extern "C" void fn_80354030(char* this_) {
             if (*(s32*)(this_ + 0x2c0) <= 0) {
                 *(f32*)(this_ + 0x290) = *(f32*)(this_ + 0x2a8) - lbl_80542730;
                 *(f32*)(this_ + 0x294) = (*(f32*)(this_ + 0x2ac) + *(f32*)(this_ + 0x2b4)) * lbl_80542738 + lbl_80542734;
+            } else {
+                f32 x = *(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc);
+                f32 y = *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10);
+                (x*x + y*y <= lbl_8054273C);
             }
             f32 ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
-            *(s16*)(this_ + 0x2d0) = (s16)(s32)(lbl_80542740 * ang);
+            *(s16*)(this_ + 0x2d0) = (s16)(s32)(ang * lbl_80542740);
             *(s32*)(this_ + 0x2c4) = 6;
         }
         fn_801F714C(this_ + 0x2cc, *(u16*)(this_ + 0x2d0), 0x14, 0x1000);
-        *(f32*)(this_ + 0x2a0) = lbl_80542744 * JMath::sincosTable_.mTable[*(u16*)(this_ + 0x2cc) >> 5].first;
-        *(f32*)(this_ + 0x2a4) = lbl_80542744 * JMath::sincosTable_.mTable[*(u16*)(this_ + 0x2cc) >> 5].second;
+        *(f32*)(this_ + 0x2a0) = lbl_80542744 * JMath::sincosTable_.mTable[(u32)*(u16*)(this_ + 0x2cc) >> 5].first;
+        *(f32*)(this_ + 0x2a4) = lbl_80542744 * JMath::sincosTable_.mTable[(u32)*(u16*)(this_ + 0x2cc) >> 5].second;
         fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x2a0), lbl_80542748, lbl_8054274C);
         fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x2a4), lbl_80542748, lbl_8054274C);
         *(s32*)(this_ + 0x2c4) = *(s32*)(this_ + 0x2c4) - 1;
         JMathInlineVEC::PSVECAdd((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x3c), (Vec*)(this_ + 0xc));
         fn_801EB418(this_ + 0x230, this_ + 0xc);
-        if (*(s32*)(this_ + 0x2c0) > 0) {
+        if (*(s32*)(this_ + 0x2c0) <= 0) {
+            if (*(f32*)(this_ + 0x2a8) - lbl_80542730 > *(f32*)(this_ + 0xc)) {
+                *(s32*)(this_ + 0x2b8) = 4;
+            }
+        } else {
             if (*(s32*)(this_ + 0x2c0) <= 0x28 && *(u8*)(this_ + 0x2f8) == 1) {
                 fn_801F0E34(this_, 0x40041, 0);
                 *(u8*)(this_ + 0x2f8) = 0;
                 *(s32*)(this_ + 0x2c0) = *(s32*)(this_ + 0x2c0) - 1;
                 fn_801F0E34(this_, 0x40051, 0);
             }
-        } else if (*(f32*)(this_ + 0x2a8) - lbl_80542730 > *(f32*)(this_ + 0xc)) {
-            *(s32*)(this_ + 0x2b8) = 4;
         }
         *(s32*)(this_ + 0x2bc) = *(s32*)(this_ + 0x2bc) - 1;
         if (*(s32*)(this_ + 0x2bc) < 0) {
@@ -187,19 +196,20 @@ extern "C" void fn_803545A4(char* this_) {
     } rec;
     s32 tmp;
     char* p;
-    s32 v0;
-    s32 v1;
 
     fn_801EBA14(&rec);
     p = (char*)fn_802D6A9C();
-    v0 = *(s32*)(p + 0xcc);
-    v1 = *(s32*)(p + 0xd0);
-    *(s32*)(this_ + 0x2a8) = v0;
-    *(s32*)(this_ + 0x2ac) = v1;
-    v0 = *(s32*)(p + 0xd4);
-    v1 = *(s32*)(p + 0xd8);
-    *(s32*)(this_ + 0x2b0) = v0;
-    *(s32*)(this_ + 0x2b4) = v1;
+    {
+        s32* src = (s32*)(p + 0xcc);
+        s32* dst = (s32*)(this_ + 0x2a8);
+        s32 x = src[0], y = src[1];
+        dst[0] = x;
+        dst[1] = y;
+        x = src[2];
+        y = src[3];
+        dst[2] = x;
+        dst[3] = y;
+    }
     *(f32*)(this_ + 0xc) = lbl_80542768 + *(f32*)(this_ + 0x2b0);
     *(f32*)(this_ + 0x10) = (*(f32*)(this_ + 0x2ac) + *(f32*)(this_ + 0x2b4)) * lbl_80542738 + lbl_80542734;
     *(f32*)(this_ + 0x14) = lbl_8054276C;
@@ -237,10 +247,10 @@ extern "C" void fn_803545A4(char* this_) {
     *(u8*)(this_ + 0x2f8) = 1;
     fn_8018330C(&tmp);
     *(s32*)(this_ + 0x2d4) = tmp;
-    *(f32*)(this_ + 0x2d8) = (f32)(f64)(*(u32*)(this_ + 0x2d4) >> 24);
-    *(f32*)(this_ + 0x2dc) = (f32)(f64)((*(u32*)(this_ + 0x2d4) >> 16) & 0xff);
-    *(f32*)(this_ + 0x2e0) = (f32)(f64)((*(u32*)(this_ + 0x2d4) >> 8) & 0xff);
-    *(f32*)(this_ + 0x2e4) = (f32)(f64)((*(u32*)(this_ + 0x2d4)) & 0xff);
+    *(f32*)(this_ + 0x2d8) = (f32)(*(u32*)(this_ + 0x2d4) >> 24);
+    *(f32*)(this_ + 0x2dc) = (f32)((*(u32*)(this_ + 0x2d4) >> 16) & 0xff);
+    *(f32*)(this_ + 0x2e0) = (f32)((*(u32*)(this_ + 0x2d4) >> 8) & 0xff);
+    *(f32*)(this_ + 0x2e4) = (f32)((*(u32*)(this_ + 0x2d4)) & 0xff);
     *(f32*)(this_ + 0x2e8) = -(lbl_80542778 * *(f32*)(this_ + 0x2d8)) / lbl_8054277C;
     *(f32*)(this_ + 0x2ec) = -(lbl_80542778 * *(f32*)(this_ + 0x2dc)) / lbl_8054277C;
     *(f32*)(this_ + 0x2f0) = -(lbl_80542778 * *(f32*)(this_ + 0x2e0)) / lbl_8054277C;
