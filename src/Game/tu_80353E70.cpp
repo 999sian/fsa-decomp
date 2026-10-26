@@ -144,13 +144,10 @@ extern "C" void fn_80354030(char* this_) {
                 x -= lbl_80542730;
                 *(f32*)(this_ + 0x290) = x;
                 f32 y = *(f32*)(this_ + 0x2ac);
-                y += *(f32*)(this_ + 0x2b4);
-                *(f32*)(this_ + 0x294) = y * factor + lbl_80542734;
+                x = y + *(f32*)(this_ + 0x2b4);
+                *(f32*)(this_ + 0x294) = x * factor + lbl_80542734;
             } else {
-                f32 x = *(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc);
-                f32 y = *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10);
-                JGeometry::TVec2<f32> delta(x, y);
-                delta.length();
+                tugfDistance(*(JGeometry::TVec2<f32>*)(this_ + 0x290), *(JGeometry::TVec2<f32>*)(this_ + 0xc));
             }
 calculateAngle:
             f32 ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
@@ -174,10 +171,10 @@ calculateAngle:
             if (*(s32*)(this_ + 0x2c0) <= 0x28 && *(u8*)(this_ + 0x2f8) == 1) {
                 fn_801F0E34(this_, 0x40041, 0);
                 *(u8*)(this_ + 0x2f8) = 0;
-                *(s32*)(this_ + 0x2c0) = *(s32*)(this_ + 0x2c0) - 1;
-                fn_801F0E34(this_, 0x40051, 0);
             }
         }
+        *(s32*)(this_ + 0x2c0) = *(s32*)(this_ + 0x2c0) - 1;
+        fn_801F0E34(this_, 0x40051, 0);
         *(s32*)(this_ + 0x2bc) = *(s32*)(this_ + 0x2bc) - 1;
         if (*(s32*)(this_ + 0x2bc) < 0) {
             *(s32*)(this_ + 0x2bc) = 10;
