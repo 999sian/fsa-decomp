@@ -1437,6 +1437,15 @@ static inline bool HouseInsideBounds(f32 x0, f32 y0, f32 x1, f32 y1, const JGeom
     }
     return inside;
 }
+static inline bool HouseInsideEdges(f32 x0, f32 y1, f32 x1, f32 y0, const JGeometry::TVec3f& pos) {
+    bool inside = false;
+    f32 x = pos.x;
+    if (x >= x0) {
+        f32 y = pos.y;
+        if (y >= y0 && x < x1 && y < y1) inside = true;
+    }
+    return inside;
+}
 
 static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f& box) {
     if (fn_80239470(&box, *(s32*)(self + 4), *(void**)(self + 0x198)) >= 0
@@ -1520,11 +1529,12 @@ static inline u8 HouseHitsRect(char* self, void* pos, s32& room, void*& handle) 
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, handle, 0);
 }
 
-extern "C" void fn_80299FB0(void* p) {
+extern "C" void fn_80299FB0(char* self) {
+    s32 room;
+    void* handle;
     s32 mode;
     u8 found;
     s32 i;
-    char* self = (char*)p;
     s32 j;
     char* row;
     char* col;
@@ -1534,7 +1544,7 @@ extern "C" void fn_80299FB0(void* p) {
     JGeometry::TVec3f grid;
     JGeometry::TVec3f gridBase;
 
-    if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= lbl_805406A8 * FLT_EPSILON)) {
+    if (!(JMathInlineVEC::PSVECSquareMag((JGeometry::TVec3f*)(self + 0x250)) <= 32.0f * FLT_EPSILON)) {
         return;
     }
     if (*(u8*)(self + 0x2c0) == 1) {
@@ -1546,7 +1556,7 @@ extern "C" void fn_80299FB0(void* p) {
     }
     mode = -1;
     if (*(u8*)(self + 0x2b9) == 0) {
-        mode = PushDirFromLink(self);
+        mode = HouseContactMode(self, room);
         if (mode == -1) {
             mode = PushDirFromContact(self, box);
         }
@@ -1554,7 +1564,9 @@ extern "C" void fn_80299FB0(void* p) {
     if (mode != 1) {
         return;
     }
-    area = *RoomBounds(self);
+    room = *(s32*)(self + 4);
+    char* manager = (char*)fn_802D6A9C();
+    area = *(JGeometry::TBox2f*)(room < 8 ? manager + 0xcc : manager + 0xdc);
     found = 1;
     v = *(JGeometry::TVec3f*)(self + 0xc);
     area.i.x -= lbl_80540670;
@@ -1562,12 +1574,12 @@ extern "C" void fn_80299FB0(void* p) {
     area.f.x += lbl_80540670;
     area.f.y += lbl_80540670;
     v.x += *(f32*)(self + 0x60);
-    v.x -= lbl_80540678;
+    v.x -= 8.0f;
     v.y += *(f32*)(self + 0x64);
-    v.y += lbl_80540678;
+    v.y += 8.0f;
     v.z = lbl_80540674;
     for (i = 0; i < 6; i++) {
-        if (fn_802A1554(lbl_8053AC98, &v) && HitsRect(self, &v) == 1) {
+        if (!fn_802A1554(lbl_8053AC98, &v) || HouseHitsRect(self, &v, room, handle) == 1) {
             found = 0;
             break;
         }
@@ -1581,7 +1593,7 @@ extern "C" void fn_80299FB0(void* p) {
         }
         v.y += lbl_8054067C;
     }
-    if (!fn_802957CC(p, 1)) {
+    if (!fn_802957CC(self, 1)) {
         found = 0;
     }
     if (found != 1) {
@@ -1589,11 +1601,11 @@ extern "C" void fn_80299FB0(void* p) {
     }
     if (mode == 1) {
         fn_80238E08(*(void**)(self + 0x198));
-        *(f32*)(self + 0x3c) = -0.32f;
+        *(f32*)(self + 0x3c) = lbl_805406F4;
         *(u8*)(self + 0x2b8) = 1;
         fn_801F0E34(self, 0x30004, 0);
     }
-    *(f32*)(self + 0x250) = -16.0f;
+    *(f32*)(self + 0x250) = lbl_805406E4;
     *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
@@ -1604,10 +1616,10 @@ extern "C" void fn_80299FB0(void* p) {
         gridBase.y += lbl_80540678;
         gridBase.z = lbl_80540674;
         grid = gridBase;
-        for (row = self; i < 6; i++, row += 0xc) {
+        for (; i < 6; i++, self += 0xc) {
             grid.y = gridBase.y;
-            for (j = 0, col = row; j < 6; j++, col += 2) {
-                fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
+            for (room = 0, handle = self; room < 6; room++, handle = (char*)handle + 2) {
+                fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)((char*)handle + 0x3b0));
                 fn_802A381C(lbl_8053AC98, &grid, 1, 0);
                 grid.y += lbl_8054067C;
             }
@@ -1668,11 +1680,10 @@ extern "C" void fn_8029A494(char* self) {
         u8 flag = 1;
         s32 i = 0;
         f32 y0, x1, y1, step;
-        const f32 x0 = zone.i.x - -32.0f;
-        y0 = zone.i.y - -32.0f;
-        x1 = zone.f.x + -32.0f;
-        y1 = zone.f.y + -32.0f;
-        zone.i.x = x0;
+        zone.i.x -= lbl_80540670;
+        y0 = zone.i.y - lbl_80540670;
+        x1 = zone.f.x + lbl_80540670;
+        y1 = zone.f.y + lbl_80540670;
         zone.i.y = y0;
         zone.f.x = x1;
         zone.f.y = y1;
@@ -1688,7 +1699,7 @@ extern "C" void fn_8029A494(char* self) {
                 flag = 0;
                 break;
             }
-            ok = HouseInsideBounds(x0, y0, x1, y1, v);
+            ok = HouseInsideBounds(zone.i.x, y0, x1, y1, v);
             if (!ok) {
                 flag = 0;
                 break;
@@ -1885,7 +1896,7 @@ extern "C" void fn_8029AE58(char* p) {
     origin.y += *(f32*)(p + 0x64);
     origin.x += center;
     origin.y += center;
-    origin.z = lbl_80540674;
+    origin.z = 0.0f;
     pos = origin;
     s32 j;
     s32 i;
@@ -1903,10 +1914,10 @@ extern "C" void fn_8029AE58(char* p) {
                 else
                     *(u16*)(col + 0x3b0) = 0x360;
             }
-            pos.y += lbl_8054067C;
+            pos.y += 16.0f;
         }
         row += 12;
-        pos.x += lbl_8054067C;
+        pos.x += 16.0f;
     }
     *(u8*)(p + 0x2b5) = 1;
     s32 warp = -1;
