@@ -48,13 +48,29 @@ extern "C" JGeometry::TVec3f fn_800FE294(void* slot, s32 room);
 extern "C" u8 fn_800FD5E8(void* slot, s32 room);
 extern "C" s16 fn_801D02E0(void* p, void* pos);
 extern void* lbl_8053AAF8;
-extern f32 lbl_8053EE68;
-extern f32 lbl_8053EE6C;
-extern f32 lbl_8053EE70;
-extern f32 lbl_8053EE74;
-extern f32 lbl_8053EE78;
-extern f32 lbl_8053EE7C;
-extern f32 lbl_8053EE80;
+extern const f32 lbl_8053EE68;
+extern const f32 lbl_8053EE6C;
+extern const f32 lbl_8053EE70;
+extern const f32 lbl_8053EE74;
+extern const f32 lbl_8053EE78;
+extern const f32 lbl_8053EE7C;
+extern const f32 lbl_8053EE80;
+
+struct TuRandom {
+    u32 seed;
+    u32 get() {
+        seed = (seed * 0x19660d) + 0x3c6ef35f;
+        return seed;
+    }
+    f32 get_ufloat_1() {
+        union {
+            f32 f;
+            u32 s;
+        } out;
+        out.s = (this->get() >> 9) | 0x3f800000;
+        return out.f - lbl_8053EE68;
+    }
+};
 
 static inline f32 tuRand01() {
     u8* g = (u8*)lbl_8053AAF8;
@@ -149,12 +165,6 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern void fn_801CD930(void*, s32, s32);
     extern void* lbl_8053AAF8;
     extern int __float_epsilon[];
-    extern f32 lbl_8053EE70;
-    extern f32 lbl_8053EE78;
-    extern f32 lbl_8053EE7C;
-    extern f32 lbl_8053EE80;
-    extern f32 lbl_8053EE90;
-    extern f32 lbl_8053EE94;
 
     s32 off = *(s32*)(this_ + 4);
     u8 cVar6 = *(u8*)((u32)fn_802D6A9C() + 0x10000 + off + 0x31df);
@@ -169,7 +179,7 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
                 *(s16*)(this_ + 0x33c) = 0x4000;
                 break;
             default:
-                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.5f) {
                     *(s16*)(this_ + 0x33c) = 0x4000;
                 } else {
                     *(s16*)(this_ + 0x33c) = -0x4000;
@@ -186,14 +196,14 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
             *(u8*)(this_ + 0x596) = fn_801CD664(0x15) + 0x14;
             f32* pf = (f32*)(this_ + state * 0xc + 0x1ac);
             if (cVar6 != 0 && fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) == 0) {
-                if (lbl_8053EE78 * fabs((f32)(s16)(*(s16*)(this_ + 0x33c) + 0x4000)) < lbl_8053EE80 &&
+                if ((1.0f / 32768.0f) * __fabsf((f32)(s16)(*(s16*)(this_ + 0x33c) + 0x4000)) < 0.05f &&
                     fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) == 1) {
                     *(s16*)(this_ + 0x33c) = -0x4000;
-                } else if (lbl_8053EE78 * fabs((f32)(s16)(*(s16*)(this_ + 0x33c) - 0x4000)) < lbl_8053EE80 &&
+                } else if ((1.0f / 32768.0f) * __fabsf((f32)(s16)(*(s16*)(this_ + 0x33c) - 0x4000)) < 0.05f &&
                            fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) == 1) {
                     *(s16*)(this_ + 0x33c) = 0x4000;
-                } else if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE7C) {
-                    if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+                } else if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.3f) {
+                    if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.5f) {
                         *(s16*)(this_ + 0x33c) = 0x4000;
                     } else {
                         *(s16*)(this_ + 0x33c) = -0x4000;
@@ -209,9 +219,9 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
                 f32 dy = *(f32*)(this_ + 0x10) - pf[1];
                 f32 dx = *(f32*)(this_ + 0xc) - pf[0];
                 s16 a = *(s16*)(this_ + 0x33c);
-                if (!(dx * dx + dy * dy <= lbl_8053EE90 * *(f32*)__float_epsilon)) {
+                if (!(dx * dx + dy * dy <= 32.0f * *(f32*)__float_epsilon)) {
                     f32 ang = JMath::atanTable_.atan2_(dx, dy);
-                    a = (s32)(ang * lbl_8053EE94);
+                    a = (s32)(ang * 10430.3779296875f);
                 }
                 a += fn_801CD664(0x4001) - 0x2000;
                 fn_801CD930(this_ + 0x33c, a, 0xaaa);
