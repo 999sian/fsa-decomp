@@ -48,6 +48,13 @@ extern "C" void* fn_80309C4C(void* a, u32 b, s32 c);
 extern "C" void fn_801F0E34(void* a, u32 b, u32 c);
 extern "C" s32 fn_8013CC50(void* obj, void* v, u16 a, s32 b, f32 c, u32 d, s32 e, s32 f, s32 g);
 
+static inline BOOL stateEventFlag(s32 index) {
+    if (index < 0 || index > 7) return FALSE;
+    u32 mask = 1u << (index * 4 + 3);
+    char* base = lbl_8050EC80;
+    return (*(u32*)(base + *(s32*)(base + 0x10) * 0xc8 + 0x28) & mask) != 0;
+}
+
 struct StateActor80113788 {
     virtual void v0();
     virtual void v1();
@@ -484,30 +491,30 @@ extern "C" void fn_80114C98(char* self) {
     case 14:
     case 15:
     case 16: {
-        Vec3xy_80113B54 v = *(Vec3xy_80113B54*)(self + 0xc);
-        v.xy.y = v.xy.y + lbl_8053C67C;
+        JGeometry::TVec3f v = *(JGeometry::TVec3f*)(self + 0xc);
+        v.y = v.y + lbl_8053C67C;
         fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
         o = *(char**)((char*)lbl_8053AB10 + 0x24);
         if (*(u8*)(o + 0x7f5) == 0) {
             o[0x7f4] = 1;
             *(s32*)(o + 0x7f8) = 4;
-            *(f32*)(o + 0x7fc) = v.xy.x;
-            *(f32*)(o + 0x800) = v.xy.y;
+            *(f32*)(o + 0x7fc) = v.x;
+            *(f32*)(o + 0x800) = v.y;
             *(f32*)(o + 0x804) = v.z;
             o[0x7f6] = 0;
         }
         break;
     }
     default: {
-        Vec3xy_80113B54 v = *(Vec3xy_80113B54*)(self + 0xc);
-        v.xy.y = v.xy.y + (lbl_8053C680 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_8053C67C));
+        JGeometry::TVec3f v = *(JGeometry::TVec3f*)(self + 0xc);
+        v.y = v.y + (lbl_8053C680 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_8053C67C));
         fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
         o = *(char**)((char*)lbl_8053AB10 + 0x24);
         if (*(u8*)(o + 0x7f5) == 0) {
             o[0x7f4] = 1;
             *(s32*)(o + 0x7f8) = 4;
-            *(f32*)(o + 0x7fc) = v.xy.x;
-            *(f32*)(o + 0x800) = v.xy.y;
+            *(f32*)(o + 0x7fc) = v.x;
+            *(f32*)(o + 0x800) = v.y;
             *(f32*)(o + 0x804) = v.z;
             o[0x7f6] = 0;
         }
@@ -529,7 +536,7 @@ extern "C" void fn_80114C98(char* self) {
             if (r27 <= 0x1e) {
                 r27 = 0;
             }
-            Vec3_80113B54 v = *(Vec3_80113B54*)fn_8023E724(i);
+            JGeometry::TVec3f v = *(JGeometry::TVec3f*)fn_8023E724(i);
             fn_80230498(i, &v, fn_8023CBC0(i), (u8)r27, -0x80, -0x80, 1);
         }
         if (*(s32*)((char*)fn_8011921C() + 8) == 0x1b8) {
