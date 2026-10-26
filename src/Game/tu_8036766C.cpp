@@ -81,7 +81,17 @@ static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 
  out.set(width * scale, height * scale, zero);
 }
 static inline void orbitOffset(JGeometry::TVec3<f32>& out, s16 angle, const f32 radius) {
- out.set(JMath::sincosTable_.cosShort(angle) * radius, JMath::sincosTable_.sinShort(angle) * radius, lbl_80542C24);
+ f32 y;
+ f32 x;
+ f32 sine;
+ f32 cosine;
+ sine = JMath::sincosTable_.sinShort(angle);
+ cosine = JMath::sincosTable_.cosShort(angle);
+ x = cosine * radius;
+ y = sine * radius;
+ out.x = x;
+ out.y = y;
+ out.z = lbl_80542C24;
 }
 
 static inline void orbitInit(u8* p, s16 angle) {
@@ -116,9 +126,15 @@ extern "C" void fn_80367888(u8* p) {
             break;
         }
         *(f32*)(p + 0x10) = lbl_80542C0C + *(f32*)(p + 0x25c);
-    case 1:
- orbitInit(p, 0);
- break;
+    case 1: {
+ s16 zero = 0;
+        *(f32*)(p + 0x244) = *(f32*)(p + 0xc);
+        *(f32*)(p + 0x248) = *(f32*)(p + 0x10);
+        *(f32*)(p + 0x24c) = *(f32*)(p + 0x14);
+        *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
+        *(s16*)(p + 0x240) = zero;
+        break;
+ }
     case 2:
         if (*(u8*)(p + 0x230) == 0) {
             if (*(s16*)(p + 0x240) >= 0) {
@@ -195,8 +211,7 @@ extern "C" void fn_80367888(u8* p) {
         *(f32*)(p + 0x14) -= lbl_80542C34;
         f32 radius = *(f32*)(p + 0x23c);
  f32 bound = lbl_80542C38;
- d = bound - radius;
- orbitOffset(orbit, *(s16*)(p + 0x240), __fabsf(d));
+ orbitOffset(orbit, *(s16*)(p + 0x240), __fabsf(bound - radius));
         if (radius >= bound) {
             u8* q = *(u8**)(p + 0x254);
             ((Tu80367888Owner*)q)->setState(0xc);
