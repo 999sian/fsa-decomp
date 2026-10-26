@@ -616,6 +616,7 @@ extern "C" void fn_80422824(u8* p) {
 
 extern "C" void fn_80423248(u8* this_, u32 idx) {
     u8* base = (u8*)lbl_8048E1B8;
+    HudTimerTables* tables = (HudTimerTables*)base;
     if (this_[0x257] & (u8)(1 << idx)) {
         s32 t;
         s32 sel = 0;
@@ -628,7 +629,7 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
         }
         if (t < 0) {
             s32 off = idx * 0x28;
-            u64* key = (u64*)(base + 0xa28 + off);
+            u64* key = tables->digitsA[idx];
             u64* p = key;
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xff, 0x55, 0x41, 0xff));
@@ -640,33 +641,34 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
             t *= -1;
             u32 s = fn_804030C4(0x54494d47, (u32)(base + 0x1058));
             GetPicture(this_, *key)->changeTexture(s, 0);
-            GetPicture(this_, *(u64*)(base + 0xac8 + off))->changeTexture(s, 0);
-            ((u8*)GetPicture(this_, ((u64*)(base + 0xa28 + off))[4]))[0xb0] = 1;
-            ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + off))[4]))[0xb0] = 1;
+            GetPicture(this_, tables->digitsB[idx][0])->changeTexture(s, 0);
+            ((u8*)GetPicture(this_, tables->digitsA[idx][4]))[0xb0] = 1;
+            ((u8*)GetPicture(this_, tables->digitsB[idx][4]))[0xb0] = 1;
             sel = 1;
         } else {
             s32 off = idx * 0x28;
-            u64* p = (u64*)(base + 0xa28 + off);
+            u64* p = tables->digitsA[idx];
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(*(JUtility::TColor*)(this_ + 0x214), *(JUtility::TColor*)(this_ + 0x210));
                 p++;
             }
-            ((u8*)GetPicture(this_, ((u64*)(base + 0xa28 + off))[4]))[0xb0] = 0;
-            ((u8*)GetPicture(this_, ((u64*)(base + 0xac8 + off))[4]))[0xb0] = 0;
+            ((u8*)GetPicture(this_, tables->digitsA[idx][4]))[0xb0] = 0;
+            ((u8*)GetPicture(this_, tables->digitsB[idx][4]))[0xb0] = 0;
         }
         name = lbl_804B1434[t / 1000];
         t %= 1000;
-        SetTimerDigit(this_, base, idx, sel, fn_804030C4(0x54494d47, name));
+        SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel, fn_804030C4(0x54494d47, name));
         name = lbl_804B1434[t / 100];
         t %= 100;
-        SetTimerDigit(this_, base, idx, sel + 1, fn_804030C4(0x54494d47, name));
+        SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel + 1, fn_804030C4(0x54494d47, name));
         name = lbl_804B1434[t / 10];
         t %= 10;
-        SetTimerDigit(this_, base, idx, sel + 2, fn_804030C4(0x54494d47, name));
-        SetTimerDigit(this_, base, idx, sel + 3, fn_804030C4(0x54494d47, lbl_804B1434[t]));
+        SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel + 2, fn_804030C4(0x54494d47, name));
+        SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel + 3, fn_804030C4(0x54494d47, lbl_804B1434[t]));
     }
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_80423804(u8* this_, u32 idx) {
     u64* a;
     u64* b;
