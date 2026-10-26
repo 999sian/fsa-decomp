@@ -193,6 +193,7 @@ static inline bool wpcnAllActive() {
     return true;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_80130FAC(char* p, s32 state) {
     s32 i;
     *(s32*)(p + 0x268) = state;
@@ -256,7 +257,7 @@ extern "C" void fn_80130FAC(char* p, s32 state) {
         break;
     }
 }
-
+#pragma opt_common_subs reset
 #include "JSystem/JGeometry/Box.h"
 typedef JGeometry::TBox2<f32> WpcnBox;
 extern const f32 lbl_8053CCA4;
@@ -275,6 +276,17 @@ extern "C" void fn_802308E0(s32 i);
 extern "C" s32 fn_801CD950(f32* v, f32 target, f32 step);
 extern "C" char* fn_80119DD0(void);
 extern "C" void fn_801D1C18(void* p);
+
+static inline f32 wpcnAdvance(const f32 value, const f32 step) {
+    return value + step;
+}
+static inline bool wpcnClamp(f32* value, const f32 limit) {
+    if (*value >= limit) {
+        *value = limit;
+        return true;
+    }
+    return false;
+}
 
 static inline bool wpcnAllReady() {
     for (s32 i = 0; i < 4; i++) {
@@ -313,6 +325,7 @@ static inline bool wpcnBounce(char* p) {
 }
 
 extern "C" void fn_801313BC(char* p) {
+    s32 i;
     switch (*(s32*)(p + 0x268)) {
     case 0: {
         WpcnBox box = *(WpcnBox*)(p + 0x60);
@@ -320,8 +333,10 @@ extern "C" void fn_801313BC(char* p) {
         s32 i;
         for (i = 0; i < 4; i++) {
             if ((*(u8*)(lbl_8053AAF8 + 0x82) & (u8)(1 << i)) &&
-                fn_8023B0F4(i, &box, *(s32*)(p + 0x4), 0, lbl_8053CCD4) && !fn_80230188(i) &&
-                *(s32*)(p + 0x26c) < 0) {
+                fn_8023B0F4(i, &box, *(s32*)(p + 0x4), 0, lbl_8053CCD4) && !fn_80230188(i)) {
+                if (*(s32*)(p + 0x26c) >= 0) {
+                    continue;
+                }
                 goto found;
             }
         }
@@ -336,19 +351,18 @@ extern "C" void fn_801313BC(char* p) {
         }
         break;
     }
-    case 1:
+    case 1: {
         fn_802308E0(*(s32*)(p + 0x26c));
         bool up;
-        *(f32*)(p + 0x280) += lbl_8053CCBC;
-        {
-            WpcnVec d(lbl_8053CCA0, lbl_8053CCC0 * (lbl_8053CCB0 - *(f32*)(p + 0x280)), lbl_8053CCA0);
-            ((WpcnVec*)(p + 0xc))->add(d);
-        }
+        *(f32*)(p + 0x280) += 0.05f;
+        register f32 dy = lbl_8053CCB0 - *(f32*)(p + 0x280);
+        WpcnVec d(0.0f, 2.0f * dy, 0.0f);
+        ((WpcnVec*)(p + 0xc))->add(d);
         if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
             *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
         }
-        if (*(f32*)(p + 0x280) >= lbl_8053CCA8) {
-            *(f32*)(p + 0x280) = lbl_8053CCA8;
+        if (*(f32*)(p + 0x280) >= 1.0f) {
+            *(f32*)(p + 0x280) = 1.0f;
             up = true;
         } else {
             up = false;
@@ -358,15 +372,45 @@ extern "C" void fn_801313BC(char* p) {
             fn_80130FAC(p, 0);
         }
         break;
+    }
     case 2:
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             pos.y -= *(f32*)(p + 0x27c);
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
         }
-        if (wpcnBounce(p)) {
-            fn_80130FAC(p, 3);
+        {
+            bool bounced;
+    static s32 sCount = 0;
+    static f32 sT = lbl_8053CCA0;
+    sT += lbl_8053CCA4;
+    if (sT >= lbl_8053CCA8) {
+        sT = lbl_8053CCA8;
+    }
+    sCount++;
+    f32 dy;
+    if (sT <= lbl_8053CCB8) {
+        dy = lbl_8053CCAC * (lbl_8053CCB0 - sT);
+    } else {
+        dy = lbl_8053CCB4 * (lbl_8053CCB8 - sT);
+    }
+    WpcnVec d(0.0f, dy, 0.0f);
+    ((WpcnVec*)(p + 0xc))->add(d);
+    if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
+    }
+    if (sT >= lbl_8053CCA8 && sCount >= 30) {
+        sCount = 0;
+        sT = lbl_8053CCA0;
+        bounced = true;
+    } else {
+        bounced = false;
+    }
+
+            if (bounced) {
+                fn_80130FAC(p, 3);
+            }
         }
         break;
     case 3:
@@ -377,7 +421,7 @@ extern "C" void fn_801313BC(char* p) {
         break;
     case 4:
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCD0);
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             fn_801CD950(&pos.z, lbl_8053CCD4, *(f32*)(p + 0x27c));
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
@@ -388,7 +432,7 @@ extern "C" void fn_801313BC(char* p) {
         break;
     case 5:
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCD0);
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             fn_801CD950(&pos.z, lbl_8053CCD4, *(f32*)(p + 0x27c));
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
@@ -401,9 +445,9 @@ extern "C" void fn_801313BC(char* p) {
         fn_80130FAC(p, 7);
         break;
     case 7: {
-        fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
         u8 done = 0;
-        for (s32 i = 0; i < 4; i++) {
+        fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
+        for (i = 0; i < 4; i++) {
             WpcnVec pos(*fn_8023E724(i));
             if (fn_801CD950(&pos.z, lbl_8053CCA0, *(f32*)(p + 0x27c)) == 0) {
                 done = 1;
