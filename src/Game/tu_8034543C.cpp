@@ -101,7 +101,7 @@ extern const f64 lbl_80542410;
 extern const f32 lbl_80542418;
 
 static inline f64 sqrtStep(f64 tmpd, f32 mag) {
-    return tmpd * lbl_80542400 * (lbl_80542408 - mag * (tmpd * tmpd));
+    return lbl_80542400 * tmpd * (lbl_80542408 - mag * (tmpd * tmpd));
 }
 
 static inline f32 tuSqrt(f32 mag) {
