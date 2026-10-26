@@ -1005,8 +1005,8 @@ extern "C" void fn_800D516C(void* param) {
 }
 
 extern "C" void fn_800D5318(u8* p) {
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 0x1c);
-    u8* start = __GDCurrentDL->pDisplayListData;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((unsigned short)p + 0x1c);
+    register u8* start = __GDCurrentDL->pDisplayListData;
     if (start + lbl_80539E18 > __GDCurrentDL->end) GDOverflowed();
     J3DGDWriteXFCmdHdr(0x100e, 4);
     ((J3DColorChan*)(p + 0x0e))->load();
@@ -1325,8 +1325,8 @@ extern "C" void fn_800D7020(u8* p) {
         v = *(u32*)(p + 0x60 + i * 4) | ((i + 0x10) << 24);
         J3DGDWriteBPCmd(v);
     }
-    for (int j = 0; j < 4; j++) {
-        int st = j * 4;
+    for (int st = 0; st < 16; st += 4) {
+        int j = st / 4;
         J3DGDSetTevKonstantSel_SwapModeTable(GXTevStageID(st), (GXTevKColorSel)p[0x55], (GXTevKAlphaSel)p[0x57],
                                              (GXTevKColorSel)p[0x56], (GXTevKAlphaSel)p[0x58],
                                              (GXTevColorChan)j3dTevSwapTableTable[p[j + 0x59] * 4],
