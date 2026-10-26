@@ -445,10 +445,10 @@ static inline u8 pameLanded(u8* this_, s32 st) {
     return r;
 }
 
-static inline s32 pameFirstPlayer(s32 value) {
-    const u32 mask = (u8)value;
+static inline s32 pameFirstPlayer(u8 mask) {
+    s32 i;
     s32 r = -1;
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (mask & (1 << i)) {
             r = i;
             break;
