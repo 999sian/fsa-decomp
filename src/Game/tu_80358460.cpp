@@ -58,15 +58,24 @@ static inline void rotationEuler80359E18(f32 m[3][4], s16 rx, s16 ry, s16 rz, co
     cx = JMath::sincosTable_.cosShort(rx);
     cy = JMath::sincosTable_.cosShort(ry);
     cz = JMath::sincosTable_.cosShort(rz);
-    m[0][0] = scale * (cy * cz);
-    m[1][0] = scale * (cy * sz);
-    m[2][0] = scale * -sy;
-    m[0][1] = scale * ((sx * sy) * cz - cx * sz);
-    m[1][1] = scale * ((sx * sy) * sz + cx * cz);
-    m[2][1] = scale * (sx * cy);
-    m[0][2] = scale * ((cx * cz) * sy + sx * sz);
-    m[1][2] = scale * ((cx * sz) * sy - sx * cz);
-    m[2][2] = scale * (cx * cy);
+    m[0][0] = (cy * cz);
+    m[1][0] = (cy * sz);
+    m[2][0] = -sy;
+    m[0][1] = ((sx * sy) * cz - cx * sz);
+    m[1][1] = ((sx * sy) * sz + cx * cz);
+    m[2][1] = (sx * cy);
+    m[0][2] = ((cx * cz) * sy + sx * sz);
+    m[1][2] = ((cx * sz) * sy - sx * cz);
+    m[2][2] = (cx * cy);
+    m[0][0] *= scale;
+    m[1][0] *= scale;
+    m[2][0] *= scale;
+    m[0][1] *= scale;
+    m[1][1] *= scale;
+    m[2][1] *= scale;
+    m[0][2] *= scale;
+    m[1][2] *= scale;
+    m[2][2] *= scale;
 }
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
@@ -746,9 +755,9 @@ extern "C" void fn_80359E18(u8* self)
     mtx[1][3] = lbl_8054286C;
     mtx[2][3] = lbl_8054286C;
     if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) == 4 && *(s16*)(self + 0x230) == 0) {
-        rotationEuler80359E18(mtx, lbl_80542878, *(s16*)(self + 0x23c), 0, 0);
+        rotationEuler80359E18(mtx, *(s16*)(self + 0x23c), 0, 0, lbl_80542878);
     } else {
-        rotationEuler80359E18(mtx, lbl_80542878, *(s16*)(self + 0x230), 0, 0);
+        rotationEuler80359E18(mtx, *(s16*)(self + 0x230), 0, 0, lbl_80542878);
     }
     rec.w18 = mtx;
     rec.b21 = 1;
