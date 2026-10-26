@@ -22,7 +22,7 @@ extern "C" void* lbl_8053AF80;
 extern "C" void fn_80400DC4(s32, s32);
 extern "C" void fn_804595E4(void*, s32);
 extern "C" f32 lbl_80543830;
-extern "C" f32 lbl_80543834;
+extern "C" const f32 lbl_80543834;
 extern "C" f32 lbl_80543838;
 extern "C" f32 lbl_8054383C;
 extern "C" f32 lbl_80543840;
@@ -34,20 +34,33 @@ extern "C" f32 lbl_80543844;
 extern "C" f32 lbl_80543848;
 extern "C" f32 lbl_8054384C;
 extern "C" void fn_80400DC4(s32 param_1, s32 param_2) {
+    J2DTextBox::TFontSize size;
+    size.x = lbl_80543830;
+    size.y = lbl_80543830;
     u8* base = lbl_80479CA0 + 0x20;
-    u8* str = base + 8 + *(u32*)(base + 4) + *(u32*)(base + param_2 * 4 + 0x10);
+    char* str = (char*)base + (8 + (*(u32*)(base + 4) + *(u32*)(base + param_2 * 4 + 0x10)));
     const GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
     f32 f31 = (f32)(s32)mode->fbWidth;
     f32 f30 = lbl_80543834 + f31;
     J2DTextBox tb1(0x5445585431ULL, JGeometry::TBox2f(lbl_80543834, lbl_80543834, f30, lbl_80543838), (ResFONT*)lbl_80479F00, (const char*)str, -1, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
     J2DTextBox tb2(0x5445585432ULL, JGeometry::TBox2f(lbl_80543834, lbl_80543834, f30, lbl_80543838), (ResFONT*)lbl_80479F00, (const char*)str, -1, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-    J2DPicture pic(0x5049435431ULL, JGeometry::TBox2f(lbl_80543830, lbl_80543830, lbl_8054383C, lbl_80543840), (ResTIMG*)lbl_80479C60, (ResTLUT*)0);
+    J2DPicture pic(0x5049435431ULL, JGeometry::TBox2f(lbl_80543834, lbl_80543834, lbl_8054383C, lbl_80543840), (ResTIMG*)lbl_80479C60, (ResTLUT*)0);
+    tb1.setFontSize(size);
+    tb1.setFontColor(JUtility::TColor(255, 200, 0, 255), JUtility::TColor(255, 180, 0, 255));
+    tb1.setCharSpace(lbl_80543834);
+    tb1.setLineSpace(lbl_80543830);
+    tb1.setBlack(JUtility::TColor(255, 255, 255, 0));
+    tb2.setFontSize(size);
+    tb2.setFontColor(JUtility::TColor(0, 0, 0, 200), JUtility::TColor(0, 0, 0, 200));
+    tb2.setCharSpace(lbl_80543834);
+    tb2.setLineSpace(lbl_80543830);
+    pic.setAlpha(130);
     JUTResFont font((ResFONT*)lbl_80479F00, (JKRHeap*)0);
     JUTFont::TWidth tw;
     f32 lines[6];
     f32 maxW;
     f32 f29;
-    u8* p;
+    char* p;
     f32* lp;
     s32 yy;
 
@@ -131,4 +144,14 @@ extern "C" s32 fn_80401518(s32 param_1) {
     if (status2 == 1) lbl_80529DEC[0x250] = 1;
     return status2;
 }
+
+extern "C" void __register_global_object(void*, void*, void*);
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void fn_80401848(void);
+extern "C" u8 lbl_8053ADE8[];
+extern "C" u8 lbl_80528868[];
+void __sinit_tu_80400DC4_cpp(void) {
+    __register_global_object(&lbl_8053ADE8, (void*)fn_80401848, lbl_80528868);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
