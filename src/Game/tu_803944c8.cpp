@@ -686,7 +686,7 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
-    void putSlotPos(s32 x, s32 base) {
+    void putSlotPos(const s32 x, const s32 base) {
         str2c0[m2d0++] = -2;
         str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
         str2c0[m2d0++] = -2;
