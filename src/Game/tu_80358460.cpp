@@ -21,12 +21,12 @@ static inline void rotation80359E18(f32 m[3][4], f32 scale, s16 angle)
     f32 sx, sy, sz, cx, cy, cz;
     u32 offset = ((u16)angle >> 5) * 8;
     f32* table = (f32*)sincosTable___5JMath;
-    sx = *(f32*)((u32)table + offset);
     sy = table[0];
     sz = table[0];
-    cx = *(f32*)((u32)(table + 1) + offset);
     cy = table[1];
     cz = table[1];
+    sx = *(f32*)((u32)table + offset);
+    cx = *(f32*)((u32)(table + 1) + offset);
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
@@ -730,14 +730,14 @@ extern "C" void fn_80359E18(u8* self)
     rec.b21 = 1;
     rec.b1d = -2;
     rec.b25 = 1;
-    if ((*(u32*)(self + 0x90) & 0x7f) == 1) rec.b24 = 1;
+    if ((s32)(*(u32*)(self + 0x90) & 0x7f) == 1) rec.b24 = 1;
     u32 resource = lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f];
     if (*(s32*)(self + 4) < 8) {
         void* texture = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18('TIMG', resource);
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), self + 0xc, texture, &rec);
     }
     if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) < 2) {
-        rec.b1c = 0xff;
+        rec.b1c = -1;
         rec.b1d = -2;
         mtx[0][3] = lbl_8054286C;
     mtx[1][3] = lbl_8054286C;
