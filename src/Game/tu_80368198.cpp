@@ -235,7 +235,7 @@ extern "C" void fn_803683AC(void* this_) {
     }
     *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
 }
-extern f32 lbl_80542C78;
+extern const f32 lbl_80542C78;
 extern "C" void fn_801F06F0(void* self, void* tbl, s32 idx, EffArgs* args, s32 n, f32 a, f32 b);
 extern "C" void fn_8013CB44(void* obj, Vec3f* v, s32 a, s32 b, s32 c);
 extern "C" void fn_80368660(void* this_) {
