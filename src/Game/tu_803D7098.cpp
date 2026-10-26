@@ -25,6 +25,10 @@ struct FsaNode {
     virtual FsaNode* v15(u64);
 };
 
+static inline bool fsaSelectionFlag(const u8* data, u8 mask) {
+    return data[0x243] & mask;
+}
+
 struct FsaVt15 {
     void* v[15];
     FsaNode* (*v15)(void* a, u64 b);
@@ -499,7 +503,7 @@ extern "C" void fn_803D87C0(u8* param_1) {
     s32 n;
     J2DPane* p;
 
-    base = (const u8*)lbl_80476F80;
+    base = (const u8*)&lbl_80476F80[0];
     fn_804310CC(lbl_8053AEC0);
     k19 = (const u64*)(base + 0x420);
     k20 = (const u64*)(base + 0x438);
@@ -546,8 +550,8 @@ extern "C" void fn_803D87C0(u8* param_1) {
             p = (*(J2DPane**)(param_1 + 4))->search(*k22);
             p->hide();
         }
-        k25 = k25o;
         k26 = k26o;
+        k25 = k25o;
         for (j = 0; j < 16; j++) {
             if (j < count && (((u8*)lbl_8053AAF8)[0x82] & mask)) {
                 if ((lbl[0x243] & mask) && j == count - 1) {
@@ -573,10 +577,10 @@ extern "C" void fn_803D87C0(u8* param_1) {
             k25++;
             k26++;
         }
-        k25o += 0x10;
-        k26o += 0x10;
-        k22++;
         k23++;
+        k22++;
+        k26o += 0x10;
+        k25o += 0x10;
         cnt++;
     }
 
