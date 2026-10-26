@@ -77,7 +77,7 @@ struct TuRandom {
 static inline f32 tuRandStored(u32& bits) {
     u32 factor = 0x19660d;
     TuRandom* rng = (TuRandom*)((u8*)lbl_8053AAF8 + 0xb4);
-    rng->seed = rng->seed * factor + 0x3c6ef35f;
+    rng->seed = factor * rng->seed + 0x3c6ef35f;
     bits = (rng->seed >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
 }
