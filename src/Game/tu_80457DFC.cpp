@@ -35,7 +35,7 @@ struct Unk80459674Message : Unk80459674MessageBase {
     virtual void v0();
     virtual void v1();
     virtual void v2();
-    virtual void v3(JAISoundID id);
+    virtual void v3(const JAISoundID& id);
 };
 struct Unk804580DCTrack {
     virtual void v0();
@@ -332,54 +332,56 @@ extern "C" u32 fn_804580DC(char* this_, u8 idx) {
     return 0;
 }
 
+#pragma opt_dead_code off
 extern "C" void fn_8045815C(u8* this_, u8 mode) {
     Unk80458F04* self = (Unk80458F04*)this_;
-    s32 id;
-    Unk8045815COut* out;
-    Unk80458408Obj* obj;
-    u32 irq;
+    JAITempoMgr* out;
+    JAISound* obj;
     s32 i;
 
     self->m8B = mode;
     if (self->m80 != NULL || self->m84 != NULL) {
-        id = -1;
+        JAISoundID id(-1);
         if (self->m80 != NULL) {
-            id = self->m80->mID;
+            id = JAISoundID(((JAISound*)self->m80)->getID());
         }
         if (self->m84 != NULL) {
-            id = self->m84->mID;
+            id = JAISoundID(((JAISound*)self->m84)->getID());
         }
-        if (id != 0x1000002 && id != 0x1000023 && id != 0x100002D && id != 0x1000001) {
+        if (id != 0x1000002 && id != 0x1000023 && id != 0x100002D) {
+            if ((u32)id == 0x1000001) { return; } else {
             if (self->m80 != NULL) {
                 id = self->m80->mID;
             }
-            if (id != 0x100000D && (id > 0x100000C || id != 0x1000004)) {
+            switch ((s32)(u32)id) {
+            case 0x100000d:
+            case 0x1000004:
+                return;
+            default: {
                 if (mode != 0) {
                     if (self->m80 != NULL) {
-                        out = self->m80->v10();
+                        out = ((JAISound*)self->m80)->getTempoMgr();
                         if (out != NULL) {
                             u32 a = lbl_8053A26C;
                             f32 b = lbl_8053A268;
                             if (a == 0) {
-                                out->m0 = b;
-                                out->m4 = lbl_80543EB0;
-                                out->mC = 0;
-                                out->m8 = lbl_80543EB0;
+                                out->mTempo = b;
+                                out->mTransition._0 = lbl_80543EB0;
+                                out->mTransition.mCount = 0;
+                                out->mTransition._4 = lbl_80543EB0;
                             } else {
-                                out->mC = a;
-                                out->m4 = (b - out->m0) / (f32)out->mC;
-                                out->m8 = b;
+                                out->mTransition.set(b, out->mTempo, a);
                             }
                         }
                     }
                 } else {
                     if (self->m80 != NULL) {
-                        out = self->m80->v10();
+                        out = ((JAISound*)self->m80)->getTempoMgr();
                         if (out != NULL) {
-                            out->m0 = lbl_80543EB4;
-                            out->m4 = lbl_80543EB0;
-                            out->mC = 0;
-                            out->m8 = lbl_80543EB0;
+                            out->mTempo = lbl_80543EB4;
+                            out->mTransition._0 = lbl_80543EB0;
+                            out->mTransition.mCount = 0;
+                            out->mTransition._4 = lbl_80543EB0;
                         }
                     }
                 }
@@ -394,26 +396,27 @@ extern "C" void fn_8045815C(u8* this_, u8 mode) {
                     self->m80->mMove.moveFxMix(lbl_80543EB0, 0);
                 }
                 if (self->m84 != NULL) {
-                    obj = self->m84->v6();
+                    obj = (JAISound*)((JAISound*)self->m84)->asSeq();
                 } else {
-                    obj = self->m80->v6();
+                    obj = (JAISound*)((JAISound*)self->m80)->asSeq();
                 }
                 if (obj != NULL) {
-                    irq = OSDisableInterrupts();
+                    JASThreadingModel::InterruptsDisable<JAISound>::Lock lock(*obj);
                     for (i = 0; i < 16; i++) {
-                        JASTrack* track = obj->v9(i);
+                        JASTrack* track = obj->getChildTrack(i);
                         if (track != NULL) {
                             writePort__8JASTrackFUlUs(track, 0, mode);
                         }
                     }
                     self->m8B = mode;
-                    OSRestoreInterrupts(irq);
                 }
+            }
+            }
             }
         }
     }
 }
-
+#pragma opt_dead_code reset
 extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
     Unk80458408Obj* obj = *(Unk80458408Obj**)(this_ + 0x80);
     if (obj != NULL) {
@@ -966,6 +969,7 @@ extern "C" const f32 lbl_80543EC0;
 extern "C" u32 lbl_8053A250;
 extern "C" u32 lbl_8053A254;
 extern "C" void fn_80459674(u8* p) {
+    JAISoundID message;
     volatile BOOL irq;
     JAUSoundMgr* mgr;
     s32 i;
@@ -1043,7 +1047,8 @@ soundStarted:
     if (p[0x75]) {
         ++*(u32*)(p+0x78);
         if (*(u32*)(p+0x78)>45) {
-            ((Unk80459674Message*)*(void**)(p+0x28))->v3(JAISoundID(0x30089));
+            message.mId.mFullId=0x30089;
+            ((Unk80459674Message*)*(void**)(p+0x28))->v3(message);
         }
     } else *(u32*)(p+0x78)=0;
     p[0x75]=0;
