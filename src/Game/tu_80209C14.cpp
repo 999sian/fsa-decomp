@@ -60,7 +60,7 @@ extern "C" f32 lbl_8053F99C;
 extern "C" f32 lbl_8053F9A0;
 extern "C" f32 lbl_8053F9A4;
 extern "C" f32 lbl_8053F9A8;
-extern "C" f32 lbl_8053F988;
+extern "C" const f32 lbl_8053F988;
 extern "C" u8 sincosTable___5JMath[];
 extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801D22DC(u8* p, s32 a, s32 b, s32 c);
@@ -571,7 +571,7 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
         break;
     case 5: {
         fn_801D22DC(this_ + 0x270, 1, 0, 0);
-        ((JGeometry::TVec3<f32>*)(this_ + 0x2b4))->set(lbl_8053F988 * *(f32*)(this_ + 0x2c0), lbl_8053F988 * *(f32*)(this_ + 0x2c4), lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
+        setFobrVelocity(this_, lbl_8053F988 * *(f32*)(this_ + 0x2c0), lbl_8053F988 * *(f32*)(this_ + 0x2c4), lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
         break;
     }
     case 6:
@@ -621,13 +621,13 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
         }
         }
         idx = (u16)ang >> 5;
-        ((JGeometry::TVec3<f32>*)(this_ + 0x2b4))->set(JMath::sincosTable_.mTable[idx].first * lbl_8053F99C, JMath::sincosTable_.mTable[idx].second * lbl_8053F99C, lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
+        setFobrVelocity(this_, JMath::sincosTable_.mTable[idx].first * lbl_8053F99C, JMath::sincosTable_.mTable[idx].second * lbl_8053F99C, lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
         *(u8*)(this_ + 0x2b1) = 3;
         break;
     case 9: {
         *(u32*)(this_ + 0x230) &= ~0x8000;
         fn_801D22DC(this_ + 0x270, 1, 0, 0);
-        ((JGeometry::TVec3<f32>*)(this_ + 0x2b4))->set(lbl_8053F9A0 * (*(f32*)(this_ + 0x2c8) - *(f32*)(this_ + 0xC)), lbl_8053F9A0 * (*(f32*)(this_ + 0x2cc) - *(f32*)(this_ + 0x10)), lbl_8053F98C * (lbl_8053F9A4 * -lbl_8053EFB8));
+        setFobrVelocity(this_, lbl_8053F9A0 * (*(f32*)(this_ + 0x2c8) - *(f32*)(this_ + 0xC)), lbl_8053F9A0 * (*(f32*)(this_ + 0x2cc) - *(f32*)(this_ + 0x10)), lbl_8053F98C * (lbl_8053F9A4 * -lbl_8053EFB8));
         break;
     }
     case 10:
