@@ -69,7 +69,7 @@ extern "C" char lbl_80543B8C;
 extern "C" f32 lbl_80543AF8;
 extern "C" f32 lbl_80543B18;
 extern "C" f32 lbl_80543B28;
-extern "C" f32 lbl_80543B94;
+extern "C" const f32 lbl_80543B94;
 extern "C" f64 lbl_80543B10;
 
 void fn_8042EB14(T8042EB14* self) {
