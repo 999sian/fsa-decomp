@@ -244,13 +244,13 @@ struct HOUSLinks {
 static inline f32 addHouseOffset(f32 value, const f32 offset) { value += offset; return value; }
 
 static inline s32 WarpDestination(const char* actor) {
-    int room = (*(const u32*)(actor + 0x90) >> 24) & 7;
+    s32 room = (*(const u32*)(actor + 0x90) >> 24) & 7;
     s32 result = room + 7;
     if (room == 0) result = room;
     return result;
 }
 static inline s32 HouseDestination(const char* actor) {
-    int room = (*(const u32*)(actor + 0x90) >> 7) & 31;
+    s32 room = (*(const u32*)(actor + 0x90) >> 7) & 31;
     return (room + 7) & ~-(room == 0);
 }
 
