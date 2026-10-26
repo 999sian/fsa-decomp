@@ -126,7 +126,7 @@ Actor* fn_801F666C(void* mgr, s32 idx);
 void fn_801CB538(u32 id, void* p, u32 a, u32 b);
 u8 fn_801EAC54(void* sub, s32 v);
 s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
-extern f32 lbl_8053F774;
+extern const f32 lbl_8053F774;
 void fn_801F0E34(Actor* a, u32 code, u32 z);
 s32 fn_801F285C(Actor* a, f32* b, u32* c, u32 e, s32 d);
 void* fn_8023E724(u32 i);
