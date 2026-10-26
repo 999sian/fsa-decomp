@@ -229,6 +229,11 @@ static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
     return (f32)((a << 10) + (b << 7));
 }
 extern "C" void fn_8013B1E8(void* mgr);
+#pragma peephole off
+static inline int PaletteHighByte802F(u16 color) {
+    return color >> 8;
+}
+#pragma peephole reset
 static inline u16 PaletteRGB444802F(u16 color) {
     return ((color >> 3) & 0xf00) | 0x4000 | ((color >> 2) & 0xf0) | ((color >> 1) & 0xf);
 }
@@ -816,7 +821,7 @@ extern "C" u8 fn_802F654C(u8* self, f32* __restrict pos, s32 a, s32 b, s32 c, s3
 
 extern "C" u8 lbl_8046F940[];
 extern "C" void* lbl_8053AAF8;
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 param_5, s32 param_6, u8* __restrict param_7) {
     u8* table = lbl_8046F940;
     s32 i;
@@ -825,7 +830,7 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
     u8* c2;
     s32 off;
     s32 div;
-    u8 done;
+    BOOL done;
     s32 t;
     u8 a0;
     u8 a1;
