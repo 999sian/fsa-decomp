@@ -77,7 +77,10 @@ static inline bool showExceptionAddress(u32 addr, char* base = lbl_8045E878)
                         s32 n = 0;
                         while (*last && n < 0x20) {
                             if (*last == '.') break;
-                            n++; *out++ = *last++;
+                            *out = *last;
+                            last++;
+                            out++;
+                            n++;
                         }
                         *out = 0;
                         lbl_8053A914->print_f(base + 0x3a4, zero, name, sectionOffset, sectionIndex);
