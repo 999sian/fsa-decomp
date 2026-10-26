@@ -244,7 +244,14 @@ static inline u8 HitsRect(char* self, void* pos) {
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
 }
 
-struct HouseProbeBounds { u32 words[4]; };
+static inline void setHouseVelocity(JGeometry::TVec3f& dst, const JGeometry::TVec3f& src) {
+    const f32 x = src.x;
+    const f32 y = src.y;
+    dst.x = x;
+    f32 z = src.z;
+    dst.y = y;
+    dst.z = z;
+}
 
 // Scroll bounds of the screen (TV or GBA) this actor's room is on.
 static inline JGeometry::TBox2f* RoomBounds(char* self) {
@@ -273,9 +280,13 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     JGeometry::TVec3f ofs;
 
     pt.save = *(JGeometry::TVec3f*)(self + 0xc);
-    ((JGeometry::TVec3f*)(self + 0x3c))->x = lbl_8046C268[mode].x;
-    ((JGeometry::TVec3f*)(self + 0x3c))->y = lbl_8046C268[mode].y;
-    ((JGeometry::TVec3f*)(self + 0x3c))->z = lbl_8046C268[mode].z;
+    const JGeometry::TVec3f& direction = lbl_8046C268[mode];
+    f32 dx = direction.x;
+    f32 dy = direction.y;
+    *(f32*)(self + 0x3c) = dx;
+    f32 dz = direction.z;
+    *(f32*)(self + 0x40) = dy;
+    *(f32*)(self + 0x44) = dz;
     *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
     *(f32*)(self + 0x60) = -44.0f;
     *(f32*)(self + 0x64) = -44.0f;
