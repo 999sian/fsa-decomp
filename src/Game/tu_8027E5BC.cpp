@@ -29,8 +29,8 @@ struct PlayerModeTbl {
 };
 
 static inline void copyPlayerDirection(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& in) {
-    const f32 x = in.x;
     const f32 y = in.y;
+    const f32 x = in.x;
     out.x = x;
     f32 z = in.z;
     out.y = y;
@@ -751,20 +751,20 @@ extern "C" void fn_80280074(char* p) {
         }
         speed = PSVECMag((Vec*)(p + 0x344));
         if (fn_80244FFC(p)) {
-            speed -= 0.025f;
             f32 minimum = lbl_80540390;
+            speed -= lbl_8054038C;
             if (speed < minimum) speed = minimum;
         } else if (fn_80246F28(p) > lbl_80540360) {
-            speed -= 0.025f;
             f32 minimum = lbl_8054036C;
+            speed -= lbl_8054038C;
             if (speed < minimum) speed = minimum;
         } else {
-            speed -= 0.025f;
+            speed -= lbl_8054038C;
             if (speed < lbl_80540360) speed = lbl_80540360;
         }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
-        f32 x = direction.x;
         f32 y = direction.y;
+        f32 x = direction.x;
         F32(p, 0x344) = x;
         f32 z = direction.z;
         F32(p, 0x348) = y;
@@ -784,13 +784,13 @@ extern "C" void fn_80280074(char* p) {
         speed += lbl_80540398;
     } else {
         speed = PSVECMag((Vec*)(p + 0x344));
-        speed -= 0.025f;
         f32 minimum = lbl_80540390;
+        speed -= lbl_8054038C;
         if (speed < minimum) speed = minimum;
     }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
-        f32 x = direction.x;
         f32 y = direction.y;
+        f32 x = direction.x;
         F32(p, 0x344) = x;
         f32 z = direction.z;
         F32(p, 0x348) = y;
@@ -841,7 +841,7 @@ void fn_802804E0(char* p) {
     }
     speed = PSVECMag((Vec*)(p + 0x344));
     if (S32(p, 0x430) > 0) {
-        speed -= lbl_8054038C;
+        speed -= 0.025f;
         if (speed < lbl_80540360) {
             speed = lbl_80540360;
         }
@@ -850,17 +850,17 @@ void fn_802804E0(char* p) {
             U8(p, 0x3ff) = 1;
             fn_8024F0E8(p, 0x20039);
         } else if (fn_80244FFC(p)) {
-            speed -= lbl_8054038C;
+            speed -= 0.025f;
             if (speed < lbl_80540390) {
                 speed = lbl_80540390;
             }
         } else if (fn_80246F28(p) > lbl_80540360) {
-            speed -= lbl_8054038C;
+            speed -= 0.025f;
             if (speed < lbl_8054036C) {
                 speed = lbl_8054036C;
             }
         } else {
-            speed -= lbl_8054038C;
+            speed -= 0.025f;
             if (speed < lbl_80540360) {
                 speed = lbl_80540360;
             }
@@ -874,7 +874,7 @@ void fn_802804E0(char* p) {
             } else if (st < 16) {
                 speed += lbl_8054039C;
             } else {
-                speed -= lbl_8054038C;
+                speed -= 0.025f;
                 if (speed < lbl_80540390) {
                     speed = lbl_80540390;
                 }
