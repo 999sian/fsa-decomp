@@ -990,6 +990,19 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
     this_[0x28B] |= (u8)(1 << idx);
 }
 
+struct HudCounterFields8041 {
+    u8 pad000[0x198];
+    s32 countDelay;
+    u8 pad19c[12];
+    s32 gaugeDelay;
+    u8 pad1ac[0x21a - 0x1ac];
+    s16 transition;
+    u8 pad21c[8];
+    s16 timer;
+    u8 pad226[6];
+    s16 cooldown;
+};
+
 struct HudCounters8041 {
     u8 pad000[0x198];
     s32 countDelay[4];
