@@ -265,6 +265,7 @@ extern u8 lbl_80539FBC;
 extern u8 lbl_8053AB84;
 extern char lbl_804A19F0[];
 extern "C" s32 fn_8013CC50(void* room, void* pos, u16 id, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e);
+static u8 lbl_804C17A8[0x10];
 extern "C" void fn_8018A070(char* this_) {
     char* tbl;
     char* p;
@@ -425,6 +426,6 @@ tail:
     return;
 }
 
-static u8 lbl_804C17A8[0x10];
+
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
