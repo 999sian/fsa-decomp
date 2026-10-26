@@ -172,6 +172,12 @@ extern "C" u8 fn_802317F0(s32,s32,void*,void*,u32);
 extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" s32 fn_8022F3DC(s32);
+static inline u8 gateEnter(s32 player, u32 param, void* pos, void* target) {
+    s32 rawRoom=(param>>24)&7;
+    s32 room=rawRoom+7;
+    if (!rawRoom) room=rawRoom;
+    return fn_802317F0(player,room,pos,target,param&0x7f);
+}
 #pragma opt_propagation off
 extern "C" void fn_80227530(u8* p, f32* out) {
     s32 i;
@@ -185,7 +191,7 @@ extern "C" void fn_80227530(u8* p, f32* out) {
         y1=*(f32*)(p+0x6c); out[3]=y1;
         y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
         y0+=y; x0+=x; x1+=x; y1+=y;
-        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
+        *(volatile f32*)(out+1)=y0; out[0]=x0; out[2]=x1; out[3]=y1;
         if (global[0x7e] && !fn_8022C8EC(i)) {
             s32 room=(*(u32*)(p+0x90)>>24)&7;
             s32 id=room+7; if (!room) id=room;
@@ -221,7 +227,7 @@ extern "C" void fn_80227530(u8* p, f32* out) {
             f32 a,x1,y0,x0,v;
             x0=out[0]; v=lbl_8053FF78; y0=out[1]; x1=out[2];
             a=x0-v; y1=out[3]; b=y0-v; c=x1+v; d=y1+v;
-            out[0]=a; out[1]=b; out[2]=c; out[3]=d;
+            *(volatile f32*)out=a; out[1]=b; out[2]=c; out[3]=d;
             if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF74)) p[i+0x234]=0;
         }
     }
@@ -259,7 +265,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
         y1=*(f32*)(p+0x6c); out[3]=y1;
         y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
         y0+=y; x0+=x; x1+=x; y1+=y;
-        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
+        *(volatile f32*)(out+1)=y0; out[0]=x0; out[2]=x1; out[3]=y1;
         if (!fn_8022D75C(i) && fn_8022D534(i)) { p[i+0x234]=1; continue; }
         if ((*(s32*)(p+0x90)&0x7f)==0x10) return;
         if (fn_8022F514(i)) {
@@ -287,8 +293,13 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             if (fn_8022F478(i) && (*(s32*)(p+0x90)&0x7f)!=4) continue;
             if (((*(s32*)(p+0x90)&0x7f)==4 || (*(s32*)(p+0x90)&0x7f)==0x20 || (*(s32*)(p+0x90)&0x7f)==0x24) &&
                 fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
-            s32 kind=*(s32*)(p+0x90)&0x7f;
-            if (fn_802317F0(i,gateRoom(*(s32*)(p+0x90)),p+0xc,p+0x238,kind) &&
+            int targetRoom;
+            int rawRoom;
+            u32 param=*(u32*)(p+0x90);
+            rawRoom=(param>>24)&7;
+            u32 kind=param&0x7f;
+            targetRoom=rawRoom+7; if (!rawRoom) targetRoom=rawRoom;
+            if (fn_802317F0(i,targetRoom,p+0xc,p+0x238,kind) &&
                 (*(s32*)(p+0x90)&0x7f)==4 && fn_8022F514(i)) {
                 s32 a=fn_8023DE58(i);
                 if (((GateRoomFlags*)fn_802D6A9C())->flag(a) || fn_8022CAF8(i)==4 || fn_8022CAF8(i)==5) continue;
@@ -298,8 +309,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
                 }
             }
         } else {
-            f32 v=lbl_8053FF78;
-            ((JGeometry::TBox2f*)out)->set(out[0]-v,out[1]-v,out[2]+v,out[3]+v);
+            ((GateBox*)out)->expand(lbl_8053FF78);
             if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,0.0f)) p[i+0x234]=0;
         }
     }
