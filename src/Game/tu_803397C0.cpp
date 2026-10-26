@@ -233,7 +233,7 @@ extern "C" void fn_8033B9D8(u8* self) {
     }
 }
 
-extern "C" void fn_802D9C4C(void);
+extern "C" void* fn_802D9C4C(void* mgr = 0);
 extern "C" void fn_8033BAC8(u8* self) {
     *(u32*)(self + 0x244) = *(u32*)(self + 0x90) & 0x7ff;
     *(u32*)(self + 0x250) = (*(u32*)(self + 0x90) >> 11) & 0x1f;
