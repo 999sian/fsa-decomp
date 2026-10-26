@@ -1,6 +1,8 @@
 // TU 0x8026fc20-0x8027e5bc: player-class methods (Link object, see tu_8023FBF0).
 // A few small bodies originally from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 extern "C" const f32 lbl_805402D4;
 extern "C" const f32 lbl_8054028C;
 extern "C" const f32 lbl_80540298;
@@ -888,9 +890,16 @@ BOOL fn_80272C20(char* p, const f32* box, s32 a, s32 b) {
     x1 += 2.5f;
     y1 += 2.5f;
     for (s32 i = 0; i < 8; i++) {
-        JGeometry::TVec3<f32> v;
-        fn_8024B298(p, i, &v.x);
-        if (!(u8)inRect(*(JGeometry::TVec2<f32>*)&v, x0, y0, x1, y1)) {
+        JGeometry::TVec2<f32> pt;
+        fn_8024B298(p, i, &pt.x);
+        u8 in = 0;
+        f32 x = pt.x;
+        if (x >= x0) {
+            if (pt.y >= y0 && x < x1 && pt.y < y1) {
+                in = 1;
+            }
+        }
+        if (!in) {
             goto add;
         }
     }
@@ -968,7 +977,12 @@ inline bool boxHit(const JGeometry::TBox2<f32>& m, const JGeometry::TBox2<f32>& 
     }
     return r;
 }
+#pragma opt_lifetimes off
 bool fn_80273518(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out) {
+    char* obj;
+    s32 area;
+    f32 fx1, fy0, fx0, bx0, by0, bx1, by1, fy1;
+    f32 sx0, sy1, sx1, sy0;
     if (!fn_802413F0(p)) {
         return 0;
     }
@@ -981,36 +995,55 @@ bool fn_80273518(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out) 
     if (room != S32(p, 0x3b4)) {
         return 0;
     }
-    JGeometry::TBox2<f32> b = *box;
+    bx0 = box->i.x; by0 = box->i.y; bx1 = box->f.x; by1 = box->f.y;
     f32* o = roomOffset(room);
     JGeometry::TVec2<f32> n;
     n.x = -o[0];
     n.y = -o[1];
-    b.addPos(n);
+    bx0 += n.x; by0 += n.y; bx1 += n.x; by1 += n.y;
     if (room != S32(p, 0x3b4) && (S32(p, 0x3b4) != 8 || room >= 8)) {
         return 0;
     }
     if (U8(p, 0x459) != 0) {
         if (fn_8025F590(p)) {
-            JGeometry::TBox2<f32> m(-8.0f, -8.0f, 8.0f, 8.0f);
+            fx0 = -8.0f; fy0 = -8.0f; fx1 = 8.0f; fy1 = 8.0f;
             f32* o2 = roomOffset(S32(p, 0x3b4));
-            m.addPos(-o2[0], -o2[1]);
-            m.addPos(F32(p, 0x2f4), F32(p, 0x2f8));
-            if (boxHit(m, b)) {
-                out[0] = 0.5f * (m.i.x - m.f.x) + m.f.x;
-                out[1] = 0.5f * (m.i.y - m.f.y) + m.f.y;
+            f32 nx = -o2[0], ny = -o2[1];
+            fx0 += nx; fy0 += ny; fx1 += nx; fy1 += ny;
+            f32 px = F32(p,0x2f4), py = F32(p,0x2f8);
+            fx0 += px; fy0 += py; fx1 += px; fy1 += py;
+            f32 x0 = fx0, y0 = fy0, x1 = fx1, y1 = fy1;
+            if (x0 <= bx0) x0 = bx0;
+            if (y0 <= by0) y0 = by0;
+            if (x1 >= bx1) x1 = bx1;
+            if (y1 >= by1) y1 = by1;
+            bool hit = false;
+            if (x1 >= x0 && y1 >= y0) hit = true;
+            if (hit) {
+                out[0] = 0.5f * (fx0 - fx1) + fx1;
+                out[1] = 0.5f * (fy0 - fy1) + fy1;
                 return 1;
             }
         } else {
-            char* obj = (char*)fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+            obj = (char*)fn_801F666C(fn_801F856C(), S32(p, 0xd68));
             if (obj != NULL) {
-                JGeometry::TBox2<f32> m(*(JGeometry::TBox2<f32>*)(obj + 0x60));
-                f32* o2 = roomOffset(S32(p, 0x3b4));
-                m.addPos(-o2[0], -o2[1]);
-                m.addPos(F32(p, 0x2f4), F32(p, 0x2f8));
-                if (boxHit(m, b)) {
-                    out[0] = 0.5f * (m.i.x - m.f.x) + m.f.x;
-                    out[1] = 0.5f * (m.i.y - m.f.y) + m.f.y;
+                sx0 = F32(obj,0x60); sy0 = F32(obj,0x64); sx1 = F32(obj,0x68); sy1 = F32(obj,0x6c);
+                area = S32(p, 0x3b4);
+                f32* o2 = roomOffset(area);
+                f32 nx = -o2[0], ny = -o2[1];
+                sx0 += nx; sy0 += ny; sx1 += nx; sy1 += ny;
+                f32 px = F32(p,0x2f4), py = F32(p,0x2f8);
+                sx0 += px; sy0 += py; sx1 += px; sy1 += py;
+                f32 x0 = sx0, y0 = sy0, x1 = sx1, y1 = sy1;
+                if (x0 <= bx0) x0 = bx0;
+                if (y0 <= by0) y0 = by0;
+                if (x1 >= bx1) x1 = bx1;
+                if (y1 >= by1) y1 = by1;
+                bool hit = false;
+                if (x1 >= x0 && y1 >= y0) hit = true;
+                if (hit) {
+                    out[0] = 0.5f * (sx0 - sx1) + sx1;
+                    out[1] = 0.5f * (sy0 - sy1) + sy1;
                     (*(void (**)(char*))(*(char**)obj + 0x48))(obj);
                     return 1;
                 }
@@ -1019,6 +1052,7 @@ bool fn_80273518(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out) 
     }
     return 0;
 }
+#pragma opt_lifetimes reset
 s32 fn_80241864(char*);
 bool fn_802724E0(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
     if (!fn_802413F0(p)) {
