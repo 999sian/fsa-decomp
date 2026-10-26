@@ -684,15 +684,15 @@ extern "C" void fn_80371284(char* self)
 	}
 	fn_803703C8(self);
 	do {
-		if (*(f32*)(self + 0x328) > lbl_80542E24) {
+		if (*(f32*)(self + 0x328) > 1720.0f) {
 			*(f32*)(self + 0x328) -= lbl_80542E04;
 			for (i = 0, p = self; i < 4; i++, p += 4) {
             drawPlayerFrames803712(self, p, i);
         }
-			if (*(f32*)(self + 0x328) > lbl_80542E24) {
+			if (*(f32*)(self + 0x328) > 1720.0f) {
 				return;
 			}
-			*(f32*)(self + 0x328) = lbl_80542E24;
+			*(f32*)(self + 0x328) = 1720.0f;
 			*(s32*)(self + 0x384) = 0;
 			*(s32*)(self + 0x388) = 0;
 			*(s32*)(self + 0x38c) = 0;
