@@ -1311,19 +1311,19 @@ extern f32 lbl_805434C0;
 extern f32 lbl_805434C8;
 extern u8 lbl_80476F20[];
 extern void* lbl_8053AD78;
-extern void* lbl_804AF86C;
+extern void* lbl_804AF86C[];
 typedef void* (*VtSearch)(void*, u32, u32, u32);
 extern void* __nw__FUl(u32 size);
 extern "C" void* __nw__FUl(u32 size);
 extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
-	u8* tbl = lbl_80476F20;
+	const char* tbl = (const char*)lbl_80476F20;
 	MemCardMenu* self = (MemCardMenu*)this_;
 	*(void**)this_ = lbl_804B0288;
 	getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
 	lbl_8053ADB8 = self;
 	self->f2176 = flag;
-	self->f50 = 0;
 	self->f54 = 0;
+	self->f50 = 0;
 	self->f216e = 0;
 	self->f78 = 0;
 	self->f216d = 2;
@@ -1343,19 +1343,14 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	self->f1b4 = 0;
 
 	self->screen = new J2DScreen();
-	setPriority__9J2DScreenFPCcUlP10JKRArchive(self->screen, (const char*)tbl + 0x40, 0x1100000, archive);
-	void* p = ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x50610000, 0x50616363, 0x75723032);
-	((void (*)(void*, s32))(*(void***)p)[9])(p, 0x9c);
+	self->screen->setPriority(tbl+0x40,0x1100000,(JKRArchive*)archive);
+	void* p = self->screen->search(0x5061636375723032ULL);
+	((J2DPane*)p)->setAlpha(0x9c);
 	void* res = fn_804030C4(0x54494d47, (const char*)tbl + 0x4c);
 	self->f08 = new J2DPicture((const ResTIMG*)res);
-	u32 colors[4];
-	colors[0] = 0;
-	colors[1] = 0;
-	colors[2] = 0xff;
-	colors[3] = 0xff;
-	((void (*)(void*, void*, void*))(*(void***)self->f08)[76])(self->f08, &colors[3], &colors[1]);
-	self->f0c = (J2DTextBox*)((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x540000, 0x547361, 0x76653031);
-	self->f10 = (J2DTextBox*)((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x540000, 0x547361, 0x76653032);
+	self->f08->setBlackWhite(JUtility::TColor(0xff),JUtility::TColor(0));
+	self->f0c = (J2DTextBox*)self->screen->search(0x54736176653031ULL);
+	self->f10 = (J2DTextBox*)self->screen->search(0x54736176653032ULL);
 	*(f32*)((u8*)this_ + 0x58) = self->f0c->getBounds()->i.x;
 	*(f32*)((u8*)this_ + 0x5c) = self->f10->getBounds()->i.x;
 	*(f32*)((u8*)this_ + 0x60) = self->f0c->getBounds()->i.y;
@@ -1364,59 +1359,58 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	*(f32*)((u8*)this_ + 0x6c) = ((MCBounds*)self->f10)->x1 - ((MCBounds*)self->f10)->x0;
 	*(f32*)((u8*)this_ + 0x74) = lbl_805434C0;
 	*(f32*)((u8*)this_ + 0x70) = lbl_805434C0;
-	((void (*)(void*, u32))(*(void***)self->f0c)[39])(self->f0c, *(u32*)((u8*)lbl_8053AD78 + 0x154));
-	((void (*)(void*, u32))(*(void***)self->f10)[39])(self->f10, *(u32*)((u8*)lbl_8053AD78 + 0x154));
+	self->f0c->setFont(*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+	self->f10->setFont(*(JUTFont**)((u8*)lbl_8053AD78+0x154));
 
 	u32 v29 = *(u32*)((u8*)lbl_8053AD78 + 0x154);
-	void* t = ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x6e6f0000, 0x54, 0x6e6f3031);
-	((void (*)(void*, u32))(*(void***)t)[39])(t, v29);
+	void* t = self->screen->search(0x546e6f3031ULL);
+	((J2DTextBox*)t)->setFont((JUTFont*)v29);
 	v29 = *(u32*)((u8*)lbl_8053AD78 + 0x154);
-	t = ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x65730000, 0x5479, 0x65733031);
+	t = self->screen->search(0x547965733031ULL);
 	((void (*)(void*, u32))(*(void***)t)[39])(t, v29);
-	t = ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x65730000, 0x5479, 0x65733031);
+	t = self->screen->search(0x547965733031ULL);
 	fn_803832BC(((J2DTextBox*)t)->getStringPtr(), 0x11e, 0, 0, 0);
-	t = ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x6e6f0000, 0x54, 0x6e6f3031);
+	t = self->screen->search(0x546e6f3031ULL);
 	fn_803832BC(((J2DTextBox*)t)->getStringPtr(), 0x11f, 0, 0, 0);
 
-	void* o = __nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = &lbl_804AF86C;
-		self->f14 = (MCAlpha*)o;
-		fn_80402F04(self->f14, ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x500000, 0x507361, 0x6261636b));
-	}
-	o = __nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = &lbl_804AF86C;
-		self->f18 = (MCAnim*)o;
-		fn_80402F04(self->f18, ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x50730000, 0x50736162, 0x626b3033));
-	}
-	o = __nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = &lbl_804AF86C;
-		self->f1c[0] = (MCAnim*)o;
-		fn_80402F04(self->f1c[0], ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x500000, 0x507965, 0x73623034));
-	}
-	o = __nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = &lbl_804AF86C;
-		self->f24 = (MCAnim*)o;
-		fn_80402F04(self->f24, ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x50740000, 0x50746f70, 0x62623037));
-	}
-	o = __nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = &lbl_804AF86C;
-		self->f28 = (MCPaneHolder*)o;
-		fn_80402F04(self->f28, ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x50610000, 0x50616363, 0x75723032));
-	}
+	void* o;
+	o=__nw__FUl(0x2c);
+	if(o) *(void**)o=&lbl_804AF86C;
+	self->f14=(MCAlpha*)o;
+	fn_80402F04(self->f14,self->screen->search(0x5073616261636bULL));
 
-	for (s32 i = 0; i < 8; i++) {
-		void** slots = (void**)((u8*)this_ + 0x2c);
-		slots[i] = __nw__FUl(0x2c);
-		if (slots[i] != 0) {
-			*(void**)slots[i] = &lbl_804AF86C;
-			fn_80402F04(slots[i], ((VtSearch)(*(void***)self->screen)[15])(self->screen, 0x804A0000, ((u32*)(tbl + i * 8))[0], ((u32*)(tbl + i * 8))[1]));
-		}
-	}
+	o=__nw__FUl(0x2c);
+	if(o) *(void**)o=&lbl_804AF86C;
+	self->f18=(MCAnim*)o;
+	fn_80402F04(self->f18,self->screen->search(0x507361626b3033ULL));
+
+	o=__nw__FUl(0x2c);
+	if(o) *(void**)o=&lbl_804AF86C;
+	self->f1c[0]=(MCAnim*)o;
+	fn_80402F04(self->f1c[0],self->screen->search(0x50796573623034ULL));
+
+	o=__nw__FUl(0x2c);
+	if(o) *(void**)o=&lbl_804AF86C;
+	self->f1c[1]=(MCAnim*)o;
+	fn_80402F04(self->f1c[1],self->screen->search(0x506e6f623034ULL));
+
+	o=__nw__FUl(0x2c);
+	if(o) *(void**)o=&lbl_804AF86C;
+	self->f24=(MCAnim*)o;
+	fn_80402F04(self->f24,self->screen->search(0x50746f7062623037ULL));
+
+	o=__nw__FUl(0x2c);
+	if(o) *(void**)o=&lbl_804AF86C;
+	self->f28=(MCPaneHolder*)o;
+	fn_80402F04(self->f28,self->screen->search(0x5061636375723032ULL));
+
+    for(s32 i=0;i<8;i++) {
+        void** slots=(void**)((u8*)this_+0x2c);
+        o=__nw__FUl(0x2c);
+        if(o) *(void**)o=&lbl_804AF86C;
+        slots[i]=o;
+        fn_80402F04(slots[i],self->screen->search(((u64*)tbl)[i]));
+    }
 
 	self->f4c = (MCAnim*)*(void**)((u8*)lbl_8053AED8 + 8);
 	if (self->f2176 != 0) {
