@@ -108,7 +108,7 @@ extern "C" u8 fn_801C5340(void);
 extern "C" u8 fn_801C53C4(char* this_);
 extern "C" BOOL fn_801C7BD0(char* this_);
 extern "C" s32 fn_801D05F8(void* p, void* pos, f32 radius);
-extern "C" s16 fn_801D0280(void* p);
+extern "C" s32 fn_801D0280(void* p, s32 id = -1);
 extern "C" u8 fn_801D0DD4(void* p);
 extern "C" u8 fn_8029E248(void* p, void* pos, s32 room);
 extern "C" u8 fn_801CCB1C(void* p, s32 room);
@@ -208,58 +208,43 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
                 return;
             }
             rnd = (JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4);
-            if (rnd->get_ufloat_1() >= lbl_8053EED8) {
+            if (!(rnd->get_ufloat_1() < lbl_8053EED8)) {
                 return;
             }
-            s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-            a = s[3];
-            fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), 1);
-            b = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
-            s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-            if (a < s[2]) {
-                s[3] = a;
-            }
-            fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
-            c = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
-            s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
-            if ((u8)(s8)a < s[2]) {
-                s[3] = a;
-            }
-            if (&c8) c8 = c;
-            if (&c9) c9 = b;
+            getSlotNeighbours(this_, &c8, &c9);
             s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
             if (s[1] != 0) {
                 room = *(s32*)(this_ + 0x4);
                 if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c8)) {
                     const JGeometry::TVec3<f32>& v1c = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), c8);
-                    if (*(f32*)(this_ + 0xc) >= v1c.x) {
-                        *(s16*)(this_ + 0x33c) = -0x4000;
-                    } else {
+                    if (*(f32*)(this_ + 0xc) < v1c.x) {
                         *(s16*)(this_ + 0x33c) = 0x4000;
+                    } else {
+                        *(s16*)(this_ + 0x33c) = -0x4000;
                     }
                 } else {
                     rnd = (JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4);
-                    if (rnd->get_ufloat_1() >= lbl_8053EED8) {
-                        *(s16*)(this_ + 0x33c) = -0x4000;
-                    } else {
+                    if (rnd->get_ufloat_1() < lbl_8053EED8) {
                         *(s16*)(this_ + 0x33c) = 0x4000;
+                    } else {
+                        *(s16*)(this_ + 0x33c) = -0x4000;
                     }
                 }
             } else {
                 room = *(s32*)(this_ + 0x4);
                 if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), c9)) {
                     const JGeometry::TVec3<f32>& v28 = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), c9);
-                    if (*(f32*)(this_ + 0xc) >= v28.x) {
-                        *(s16*)(this_ + 0x33c) = -0x4000;
-                    } else {
+                    if (*(f32*)(this_ + 0xc) < v28.x) {
                         *(s16*)(this_ + 0x33c) = 0x4000;
+                    } else {
+                        *(s16*)(this_ + 0x33c) = -0x4000;
                     }
                 } else {
                     rnd = (JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4);
-                    if (rnd->get_ufloat_1() >= lbl_8053EED8) {
-                        *(s16*)(this_ + 0x33c) = -0x4000;
-                    } else {
+                    if (rnd->get_ufloat_1() < lbl_8053EED8) {
                         *(s16*)(this_ + 0x33c) = 0x4000;
+                    } else {
+                        *(s16*)(this_ + 0x33c) = -0x4000;
                     }
                 }
             }
@@ -283,11 +268,11 @@ extern "C" void fn_801C7370(char* this_, u8 param_2) {
         if (d >= 0) {
             s15 = fn_801D0280(this_);
             s14 = *(s16*)(this_ + 0x33c);
-            if (lbl_8053EEE0 * fabs((f32)(s16)(s14 - s15)) <= lbl_8053EEE4) {
+            if (lbl_8053EEE0 * __fabsf((f32)(s16)(s14 - s15)) <= lbl_8053EEE4) {
                 r28 = 1;
             }
         }
-        if (r28) {
+        if ((u8)r28) {
             fn_801C8B50(this_);
         }
     }
