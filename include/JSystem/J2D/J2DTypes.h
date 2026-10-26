@@ -205,7 +205,7 @@ struct J2DTevSwapModeInfo {
 
 struct J2DTevSwapModeTableInfo {
     u8 mR;       // _00
-    const u8 mG; // _01
+    u8 mG;       // _01
     u8 mB;       // _02
     u8 mA;       // _03
 };
