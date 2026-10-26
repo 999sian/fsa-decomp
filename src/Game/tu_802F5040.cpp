@@ -169,6 +169,9 @@ struct Tu802F5040Effects {
     u8 pad[0xbf9c];
     Tu802F5040Effect entries[16];
 };
+static inline s32 EffectTableValue802F(s32* values, s32 index) { return values[index]; }
+static inline f32 EffectTableScale802F(f32* values, s32 index) { return values[index]; }
+
 struct Tu802F6800Tables {
     u8 pad[0x1720];
     GXColor primary[18];
@@ -841,6 +844,10 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
                 c2 = table + 0x1768 + off;
                 *(s32*)(p + 0x2398) = ((s32*)(table + 0x17b0))[index];
                 *(f32*)(p + 0x23a0) = ((f32*)(table + 0x17f8))[*(s32*)(param_7 + 0x30)];
+                int alpha = (param_7[0x13] * c1[3]) / 255;
+                int green = (param_7[0x11] * c1[1]) / 255;
+                int blue = (param_7[0x12] * c1[2]) / 255;
+                int red = (param_7[0x10] * c1[0]) / 255;
                 *(s32*)(p + 0x239c) = *(s32*)(p + 0x2398);
                 *(f32*)(p + 0x23a4) = src[0];
                 *(f32*)(p + 0x23a8) = src[1];
@@ -849,11 +856,7 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
                 *(s32*)(p + 0x23b4) = param_4;
                 *(s32*)(p + 0x23b8) = param_5;
                 *(s32*)(p + 0x23bc) = param_6;
-                ((JUtility::TColor*)(p + 0x242c))->set(
-                    (param_7[0x10] * c1[0]) / 255,
-                    (param_7[0x11] * c1[1]) / 255,
-                    (param_7[0x12] * c1[2]) / 255,
-                    (param_7[0x13] * c1[3]) / 255);
+                ((JUtility::TColor*)(p + 0x242c))->set(red, green, blue, alpha);
                 a3 = 0xff;
                 t = param_7[0x17] + c2[3];
                 if (t < 0xff) {
@@ -1579,9 +1582,9 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
 #pragma opt_propagation off
 extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff, u32 size, u8 flag) {
     u8* base;
-    u8* d;
-    u8* s;
     s32 i;
+    u8* s;
+    u8* d;
     s32 len;
     u16 keep;
     u16 v;
@@ -1628,7 +1631,7 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
         u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b0] << 8) | t[0x1b1];
         u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
-        t[0x1b0] = (int)x >> 8;
+        t[0x1b0] = (s32)x >> 8;
         t[0x1b1] = x;
     }
     {
