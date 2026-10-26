@@ -3,7 +3,9 @@
 #include "Game/Actor.h"
 #include "JSystem/JMath/Inline.h"
 #include "Game/ItemBase.h"
+#pragma exceptions off
 #include "Game/SinitPoolChain.h"
+#pragma exceptions on
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 
