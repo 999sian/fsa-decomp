@@ -46,7 +46,7 @@ struct GbaChan {
     u8 f_df;
 };
 
-extern "C" void fn_80300A8C(void* p);
+extern "C" void fn_80300A8C(GbaChan* c);
 extern "C" void* fn_80300E1C(void* p);
 extern GbaPkt lbl_804D6AB8[];
 extern u8 lbl_804711F0[];
@@ -175,13 +175,12 @@ extern "C" void fn_803007D0(void) {
 }
 #pragma opt_strength_reduction reset
 
-extern "C" void fn_80300A8C(void* p) {
+extern "C" void fn_80300A8C(GbaChan* c) {
     BOOL b28;
     u8 saved_f02;
     u32 saved_f0c;
     u32 v25;
     BOOL b24;
-    GbaChan* c = (GbaChan*)p;
 
     b28 = 1;
     b24 = 0;
