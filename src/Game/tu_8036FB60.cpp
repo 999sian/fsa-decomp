@@ -33,42 +33,7 @@ extern s32 lbl_80474F30[];
 extern const s32 lbl_80474F40[];
 
 struct FSAPoolBlock {
-	u32 mWord0;
-	u32 mWord1;
-	u32 mWord2;
-	u32 mWord3;
-	u32 mWord4;
-	u32 mWord5;
-	u32 mWord6;
-	u32 mWord7;
-	u32 mWord8;
-	u32 mWord9;
-	u32 mWord10;
-	u32 mWord11;
-	u32 mWord12;
-	u32 mWord13;
-	u32 mWord14;
-	u32 mWord15;
-	u32 mWord16;
-	u32 mWord17;
-	u32 mWord18;
-	u32 mWord19;
-	u32 mWord20;
-	u32 mWord21;
-	u32 mWord22;
-	u32 mWord23;
-	u32 mWord24;
-	u32 mWord25;
-	u32 mWord26;
-	u32 mWord27;
-	u32 mWord28;
-	u32 mWord29;
-	u32 mWord30;
-	u32 mWord31;
-	u32 mWord32;
-	u32 mWord33;
-	u32 mWord34;
-	u32 mWord35;
+	u32 mWord[36];
 };
 
 
@@ -1263,9 +1228,12 @@ static inline void CopyFSAPoolBlock(FSAPoolBlock* dst, const FSAPoolBlock* src) 
 }
 
 extern "C" void fn_80372B00(void) {
+    u32 first = ((u32*)lbl_804AE390)[0];
     FSAStateFn* src = (FSAStateFn*)lbl_804AE390;
     FSAStateFn* dst = lbl_804AE420;
-    dst[0] = src[0];
+    ((u32*)lbl_804AE390)[36] = first;
+    ((u32*)lbl_804AE390)[37] = ((u32*)lbl_804AE390)[1];
+    ((u32*)lbl_804AE390)[38] = ((u32*)lbl_804AE390)[2];
     dst[1] = src[1];
     dst[2] = src[2];
     dst[3] = src[3];
