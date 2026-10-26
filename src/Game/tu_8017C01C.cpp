@@ -2,6 +2,7 @@
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/ItemBase.h"
 
 struct PendingPositionRequest {
     u8 pad[0x7f4];
@@ -37,6 +38,95 @@ struct ActorVt_tu8017C01C {
 extern "C" void fn_8017C01C(ActorVt_tu8017C01C* this_) {
     fn_801F0E34(this_, 0x40047, 0);
     this_->setShadow(*(s8*)((char*)this_ + 0x2ba), 8.0f, -16.0f);
+}
+
+extern const f32 lbl_8053DD2C;
+extern const f32 lbl_8053DD30;
+extern "C" void* fn_804032E8(u32, const char*);
+extern "C" void fn_801EFD34(void*, void*, DrawRec*, s32, f32, f32, f32);
+#pragma opt_propagation off
+extern "C" void fn_8017C078(char* this_) {
+    const char* tbl = (const char*)lbl_804A1210;
+    DrawRec rec;
+    f32 sy = lbl_8053DD28;
+    f32 sx = sy;
+    JGeometry::TVec3<f32> pos(*(Vec*)(this_ + 0xc));
+    f32 mtx[3][4];
+    void* tex;
+    u8* tag = (u8*)&rec.w10;
+    mtx[0][3] = sy;
+    mtx[1][3] = sy;
+    mtx[2][3] = sy;
+    rec.b1f = 0;
+    rec.b2d = 1;
+    if (*(u32*)(this_ + 0x90) != 0 && *(u32*)(this_ + 0x90) != 1) {
+        return;
+    }
+    *(f32*)(this_ + 0x14) = lbl_8053DD28;
+    switch (*(s32*)(this_ + 0x27c)) {
+    case 0: {
+        const char* const* p = (const char* const*)(tbl + 0x80);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x268)]);
+        break;
+    }
+    case 1: {
+        const char* const* p = (const char* const*)(tbl + 0xc0);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x268)]);
+        const f32 (*sc)[2] = (const f32 (*)[2])(tbl + 0x98);
+        sx = sc[*(s32*)(this_ + 0x268)][0];
+        sy = sc[*(s32*)(this_ + 0x268)][1];
+        break;
+    }
+    case 2: {
+        const char* const* p = (const char* const*)(tbl + 0xd4);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x268)]);
+        sy = lbl_8053DD2C;
+        break;
+    }
+    case 3: {
+        const char* const* p = (const char* const*)(tbl + 0xf4);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x268)]);
+        break;
+    }
+    }
+    if (*(u32*)(this_+0x90) == 0) {
+    rec.b1d = -2;
+    rec.b1c = 0;
+    tag[0] = 0;
+    tag[1] = 0;
+    tag[2] = 0;
+    tag[3] = 100;
+    mtx[0][0] = *(f32*)(this_ + 0x2ac);
+    mtx[0][1] = lbl_8053DD28;
+    mtx[0][2] = lbl_8053DD28;
+    mtx[1][0] = lbl_8053DD28;
+    mtx[1][1] = (lbl_8053DD30 * *(f32*)(this_ + 0x2b0));
+    mtx[1][2] = lbl_8053DD28;
+    mtx[2][0] = lbl_8053DD28;
+    mtx[2][1] = lbl_8053DD28;
+    mtx[2][2] = mtx[1][1];
+    rec.w18 = mtx;
+    fn_801EFD34(this_, tex, &rec, -1, sx, sy, lbl_8053DD28);
+    }
+    *(Vec*)(this_ + 0xc) = pos;
+    rec.b1d = *(u8*)(this_ + 0x2ba);
+    rec.w30 = 14;
+    f32 sy2 = *(f32*)(this_ + 0x2b0);
+    mtx[0][0] = *(f32*)(this_ + 0x2ac);
+    mtx[0][1] = lbl_8053DD28;
+    mtx[0][2] = lbl_8053DD28;
+    mtx[1][0] = lbl_8053DD28;
+    mtx[1][1] = sy2;
+    mtx[1][2] = lbl_8053DD28;
+    mtx[2][0] = lbl_8053DD28;
+    mtx[2][1] = lbl_8053DD28;
+    mtx[2][2] = sy2;
+    rec.w18 = mtx;
+    tag[0] = 0xff;
+    tag[1] = 0xff;
+    tag[2] = 0xff;
+    tag[3] = (u8)*(f32*)(this_ + 0x290);
+    fn_801EFD34(this_, tex, &rec, -1, sx, sy, lbl_8053DD28);
 }
 
 extern "C" void fn_801546F4(void* dst, void* src);
@@ -97,6 +187,7 @@ extern "C" void* fn_8017E640(char* this_, s16 freeFlag) {
     return this_;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8017E770(char* this_) {
     s32 off = 0;
     *(u16*)(this_ + 0x94) = (*(u32*)(this_ + 0x90) >> 4) & 0xf;
@@ -137,7 +228,7 @@ extern "C" void fn_8017E770(char* this_) {
     *(s32*)(this_ + 0x26c) = 0xd2;
     *(u32*)(this_ + 0x270) = off;
     *(s32*)(this_ + 0x108) = 10000;
-    *(u16*)(this_ + 0x2b8) = 0;
+    *(u16*)(this_ + 0x2b8) = off;
     *(f32*)(this_ + 0x290) = 255.0f;
     *(f32*)(this_ + 0x284) = 0.0f;
     *(f32*)(this_ + 0x288) = 0.0f;
@@ -148,7 +239,7 @@ extern "C" void fn_8017E770(char* this_) {
     *(f32*)(this_ + 0x2a0) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2a8) = *(f32*)(this_ + 0x14);
-    *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0x2a4) + 16.0f;
+    *(f32*)(this_ + 0x2a4) += 16.0f;
 
     switch (*(u32*)(this_ + 0x90)) {
     case 0:
@@ -174,10 +265,13 @@ extern "C" void fn_8017E770(char* this_) {
         break;
     case 10: {
         char* p = this_;
-        u8* tbl = (u8*)lbl_804A1210;
+        u8* tbl;
+        u16* e;
         s32 i;
-        for (i = 0; i < 4; i++) {
-            u16* e = (u16*)(tbl + off);
+        i = 0;
+        tbl = (u8*)lbl_804A1210;
+        do {
+            e = (u16*)(tbl + off);
             *(void**)(p + 0x2bc) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, e[0], 1, 2, 0, 0, 1, 1.0f);
             *(void**)(p + 0x2cc) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, e[1], 1, 2, 0, 0, 1, 1.0f);
             if (i != 0) {
@@ -188,9 +282,10 @@ extern "C" void fn_8017E770(char* this_) {
                     *(u32*)((char*)*(void**)(p + 0x2cc) + 0xf4) |= 4;
                 }
             }
-            p += 4;
+            i++;
             off += 4;
-        }
+            p += 4;
+        } while (i < 4);
         *(u32*)(this_ + 0x118) = 4;
         *(f32*)(this_ + 0x2b4) = 0.0f;
         *(f32*)(this_ + 0x2b0) = 0.0f;
@@ -209,7 +304,7 @@ extern "C" void fn_8017E770(char* this_) {
     }
     case 11:
         *(u8*)(this_ + 0x2bb) = lbl_80539F88[4];
-        *(u16*)(this_ + 0x94) = 0;
+        *(u16*)(this_ + 0x94) = off;
         *(u32*)(this_ + 0x118) = 2;
         *(u32*)(this_ + 0x234) = 0x1e;
         *(u8*)(this_ + 0x2ba) = 2;
@@ -225,7 +320,7 @@ extern "C" void fn_8017E770(char* this_) {
         return;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8017EAB4(void* thisPtr) {
     *(u32*)((char*)thisPtr + 0xf4) |= 1;
     *(u32*)((char*)thisPtr + 0x24) = 1;
@@ -258,45 +353,46 @@ extern "C" u32 fn_8017EB1C(f32 value) {
     return 0;
 }
 
+#pragma global_optimizer off
 extern "C" u8 fn_8017EB44(const f32* pos) {
-    void* base = lbl_8053AB10;
-    u32 done = 0;
-    void* p = *(void**)((char*)base + 0x24);
-    if (*(u8*)((char*)p + 0x7f5) == 0) {
-        *(u8*)((char*)p + 0x7f4) = 1;
-        *(u32*)((char*)p + 0x7f8) = 4;
-        *(f32*)((char*)p + 0x7fc) = pos[0];
-        *(f32*)((char*)p + 0x800) = pos[1];
-        *(f32*)((char*)p + 0x804) = pos[2];
-        *(u8*)((char*)p + 0x7f6) = 0;
-        done = *(u8*)((char*)p + 0x7f4);
+    char* base;
+    s32 done;
+    s32 one;
+    char* p;
+    base = (char*)lbl_8053AB10;
+    done = 0;
+    p = *(char**)(base + 0x24);
+    if (*(u8*)(p + 0x7f5) == 0) {
+        one = 1;
+        *(u8*)(p + 0x7f4) = one;
+        *(u32*)(p + 0x7f8) = 4;
+        *(f32*)(p + 0x7fc) = pos[0];
+        *(f32*)(p + 0x800) = pos[1];
+        *(f32*)(p + 0x804) = pos[2];
+        *(u8*)(p + 0x7f6) = done;
+        do {} while (0);
+        done = one;
     }
     return done;
 }
-
+#pragma global_optimizer reset
 extern "C" u32 fn_8017EB94(f32* param_1) {
-    f32 v1[3];
-    f32 v0[3];
-    f32 x0 = param_1[0];
-    f32 y0 = param_1[1];
+    JGeometry::TVec3<f32> v1;
+    JGeometry::TVec3<f32> v0;
+    f32 x, y, z;
+    y = ((volatile f32*)param_1)[1];
+    x = ((volatile f32*)param_1)[0];
+    z = lbl_8053DD28;
     void* p = *(void**)((char*)lbl_8053AB10 + 0x24);
     u32 result = 0;
-    v0[0] = x0;
-    v0[1] = y0;
-    v0[2] = lbl_8053DD28;
-    if (fn_8030C2A8(p, v0)) {
-        f32 x1 = param_1[2];
-        f32 y1 = param_1[3];
-        v1[0] = x1;
-        v1[1] = y1;
-        v1[2] = lbl_8053DD28;
-        if (fn_8030C2A8(p, v1)) {
-            result = 1;
-        }
+    v0.set(x, y, z);
+    if (fn_8030C2A8(p, (f32*)&v0)) {
+        v1.set(param_1[2], param_1[3], lbl_8053DD28);
+        if (fn_8030C2A8(p, (f32*)&v1)) result = 1;
     }
     return result;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8017EC38(u32* dst, const u32* src) {
     dst[0] = src[0];
     dst[1] = src[1];
