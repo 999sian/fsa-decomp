@@ -1095,7 +1095,7 @@ extern "C" u8 fn_80388EEC(s32 p) {
 
 
 extern f32 lbl_805430D0;
-extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3);
+extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3);
 extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, const JUtility::TColor* __restrict color, f32 x, f32 y, f32 w, f32 h) {
     if (!lbl_8053AD78->be4) {
         if (lbl_8053AD78->w3c != id) {
@@ -2186,7 +2186,7 @@ extern f32 lbl_805430EC;
     else if (mode == 2 && out3) { out3[len] = (ch); } \
     else { out[len] = (ch); }
 static inline JUTFont* msgFont() { return *(JUTFont**)((u8*)lbl_8053AD78 + 0x154); }
-extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
+extern "C" f32 fn_803832BC(char* out, u32 id, s32 num, char* out2, char* out3) {
     f32 width = lbl_805430C8;
     Inf1* inf = &lbl_8053AD78->p8->inf;
     s8* data = (s8*)inf + inf->size + inf->entries[id].offset + 8;
