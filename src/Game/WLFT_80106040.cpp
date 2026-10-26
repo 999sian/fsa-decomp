@@ -172,11 +172,42 @@ static inline bool wlftOnLift(u8* this_, s32 i) {
 }
 
 extern "C" void fn_8010645C(u8* this_) {
+    struct Local {
+        static inline bool eq(s32 a, s32 b) {
+            return a == b;
+        }
+        static inline bool onLift(u8* this_, s32 i) {
+            f32 y1, x1, x0, y0, cx, cy;
+            s32 room = *(s32*)(this_ + 4);
+            if (!eq(fn_8023DE58(i), room)) {
+                return false;
+            }
+            JGeometry::TVec3<f32> p(*fn_8023E724(i));
+            cx = lbl_8053C270 + *(f32*)(this_ + 0xc);
+            cy = lbl_8053C270 + *(f32*)(this_ + 0x10);
+            x0 = *(f32*)(this_ + 0x60);
+            y0 = *(f32*)(this_ + 0x64);
+            x1 = *(f32*)(this_ + 0x68);
+            y1 = *(f32*)(this_ + 0x6c);
+            x0 += cx;
+            y0 += cy;
+            y1 += cy;
+            x1 += cx;
+            u8 in = 0;
+            if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
+                in = 1;
+            }
+            if (in) {
+                return true;
+            }
+            return false;
+        }
+    };
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x290)) {
     case 0: {
         for (s32 i = 0; i < 4; i++) {
-            if (!wlftOnLift(this_, i)) {
+            if (!Local::onLift(this_, i)) {
                 return;
             }
         }
@@ -242,21 +273,79 @@ static inline void wlftMakeMtx(f32 (*m)[4], const f32* s) {
     m[2][2] = sy * (ca * cb);
 }
 
+extern const f32 lbl_8053C278;
 extern "C" void fn_801060A0(WLFT* this_) {
     v06__5ActorFv(this_);
-    this_->m238.color = 0xff;
+    *(s8*)&this_->m238.color = -1;
     f32 m0[3][4];
-    wlftMakeMtx(m0, &this_->m288);
+    {
+        f32 ca, cb, sx, sb, sa, sc, sy;
+        f32 rx = 0.0f;
+        f32 sz = 1.0f;
+        f32 sasb;
+        f32 cc;
+        f32 casc, cacc;
+        PSMTXTrans(m0, rx, rx, rx);
+        sx = this_->m288;
+        sy = this_->m28C;
+        sa = sin(rx);
+        sb = sin(rx);
+        sc = sin(rx);
+        ca = cos(rx);
+        cb = cos(rx);
+        cc = cos(rx);
+        cacc = ca * cc;
+        sasb = sa * sb;
+        casc = ca * sc;
+        m0[0][0] = sx * (cb * cc);
+        m0[1][0] = sx * (cb * sc);
+        m0[2][0] = sx * -sb;
+        m0[0][1] = sz * (sasb * cc - casc);
+        m0[1][1] = sz * (sasb * sc + cacc);
+        m0[2][1] = sz * (sa * cb);
+        m0[0][2] = sy * (cacc * sb + sa * sc);
+        m0[1][2] = sy * (casc * sb - sa * cc);
+        m0[2][2] = sy * (ca * cb);
+    }
     this_->m238.c = (s32)m0;
     WLFT_DrawParam prm;
     prm.color = 0;
     f32 m1[3][4];
-    wlftMakeMtx(m1, &this_->m280);
-    prm.c = (s32)m1;
+    {
+        f32 sa, sc, sx, cb, sb, ca, sy;
+        f32 rx = 0.0f;
+        f32 sz = 1.0f;
+        f32 sasb;
+        f32 cc;
+        f32 casc, cacc;
+        PSMTXTrans(m1, rx, rx, rx);
+        sx = this_->m280;
+        sy = this_->m284;
+        sa = sin(rx);
+        sb = sin(rx);
+        sc = sin(rx);
+        ca = cos(rx);
+        cb = cos(rx);
+        cc = cos(rx);
+        cacc = ca * cc;
+        sasb = sa * sb;
+        casc = ca * sc;
+        m1[0][0] = sx * (cb * cc);
+        m1[1][0] = sx * (cb * sc);
+        m1[2][0] = sx * -sb;
+        m1[0][1] = sz * (sasb * cc - casc);
+        m1[1][1] = sz * (sasb * sc + cacc);
+        m1[2][1] = sz * (sa * cb);
+        m1[0][2] = sy * (cacc * sb + sa * sc);
+        m1[1][2] = sy * (casc * sb - sa * cc);
+        m1[2][2] = sy * (ca * cb);
+    }
+    ((volatile WLFT_DrawParam*)&prm)->c = (s32)m1;
+    const char* name = lbl_80539EC8[0];
     if (*(s32*)((u8*)this_ + 4) < 8) {
-        void* tex = (*(WLFT_ResMgr**)(lbl_8053AAF8 + 0xA4))->vf18('TIMG', lbl_80539EC8[0]);
+        void* tex = (*(WLFT_ResMgr**)(lbl_8053AAF8 + 0xA4))->vf18('TIMG', name);
         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), (u8*)this_ + 0xc, tex, &this_->m238);
     }
 }
-
+#pragma opt_dead_assignments reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
