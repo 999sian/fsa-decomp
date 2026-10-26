@@ -72,7 +72,7 @@ extern "C" void fn_801D267C(void*);
 extern "C" u8* lbl_8053AB10;
 extern "C" f32 lbl_8053C748;
 extern "C" f32 lbl_8053C74C;
-extern "C" f32 lbl_8053C750;
+extern "C" const f32 lbl_8053C750;
 extern "C" f32 lbl_8053C754;
 extern "C" f32 lbl_8053C758;
 extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
