@@ -372,6 +372,17 @@ extern "C" void fn_80390E68(Tu80390818* t) {
     }
 }
 
+#include "JSystem/JGeometry/Vec.h"
+
+static inline void Tu80390818_setMessage(Tu80390818_Sub* s, u32 code, JGeometry::TVec3<f32> pos, JGeometry::TVec3<f32> anchor) {
+    s->m14C = code;
+    s->m08->setMessageCode(code >> 16, code & 0xFFFF);
+    JGeometry::setTVec3f(&pos.x, s->m98);
+    s->mA4[0] = anchor.x;
+    s->mA4[1] = anchor.y;
+    s->mA4[2] = anchor.z;
+}
+
 extern "C" void fn_80390EBC(Tu80390818* t) {
     switch (t->m24) {
     case 1:
@@ -547,10 +558,10 @@ extern "C" void fn_803913E0(Tu80390818* t) {
         i++;
     } while (i < 4);
 }
-#pragma opt_strength_reduction reset
+#pragma opt_strength_reduction off
 extern "C" void fn_80391678(Tu80390818* t) {
-    t->m08 = 0;
     Tu80390818* p = t;
+    p->m08 = 0;
     p->m20 = 0;
     p->m24 = 0;
     p->m25 = p->m24;
@@ -574,9 +585,9 @@ extern "C" void fn_80391678(Tu80390818* t) {
     if (lbl_8053AD78->mED != 0 && p->m18 == lbl_8053AD78->m110) {
         lbl_8053AD78->mED = 0;
     }
-    s32 off = 0;
     s32 id;
-    for (s32 i = 0; i < 4; i++, off += 4) {
+    s32 off = 0;
+    for (int i = 0; i < 4; i++, off += 4) {
         id = *(s32*)((u8*)p->m48 + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
@@ -599,7 +610,7 @@ extern "C" void fn_80391678(Tu80390818* t) {
         }
     }
 }
-
+#pragma opt_strength_reduction reset
 // ---- from src/Game/Dtor_lbl804AF490_80391974.cpp ----
 // fn_80391974 - actor@lbl_804AF490: destructor. Reinstalls the base
 // vtable, calls own virtual slot 0 (byte offset 0x8) on this->0x48 and
