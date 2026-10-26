@@ -337,13 +337,6 @@ extern "C" void fn_80158E88(void) {
 extern "C" u8* sManager__8JUTVideo;
 extern "C" u32 lbl_80543F28;
 extern "C" void fn_8013B460(void* this_);
-static inline void drawFadeQuad(f32 w, f32 h) {
-    f32 z = lbl_8053D440;
-    GXPosition3f32(z, z, z);
-    GXPosition3f32(w, z, z);
-    GXPosition3f32(w, h, z);
-    GXPosition3f32(z, h, z);
-}
 extern "C" void fn_80158F70(char* p) {
     f32 w;
     f32 h;
@@ -384,13 +377,14 @@ extern "C" void fn_80158F70(char* p) {
     GXSetAlphaUpdate(1);
     GXBegin(0x80, 0, 4);
     {
-        const f32 z = lbl_8053D440;
+        f32 z = lbl_8053D440;
         GXPosition3f32(z, z, z);
         GXPosition3f32(w, z, z);
         GXPosition3f32(w, h, z);
         GXPosition3f32(z, h, z);
     }
-    GXSetColorUpdate((u8)1);
+    u8 colorUpdate = 1;
+    GXSetColorUpdate(colorUpdate);
     GXSetAlphaUpdate(0);
     }
     if (*(u32*)(p + 0x4) != 0xFFFFFF00) {
