@@ -1,4 +1,7 @@
 #include "types.h"
+extern "C" const f32 lbl_80543BE4;
+extern "C" const f32 lbl_80543BE8;
+extern "C" const f32 lbl_80543BEC;
 extern "C" char lbl_80529DEC[];
 
 struct DtorSlot2 {
@@ -238,19 +241,25 @@ extern "C" void fn_80402E08(void*,f32,f32);
 extern "C" const f32 lbl_80543BF0;
 extern "C" const f32 lbl_80543BF4;
 extern "C" void fn_8043670C(char* this_, s32 flag) {
+    f32 f29;
+    f32 f30;
     f32 f31 = *(f32*)((char*)((VtSlots*)*(void**)(this_ + 0x4))->s13(0x54713031ULL) + 0x11c);
     *(s16*)(this_ + 0x58) = 0;
     *(s16*)(this_ + 0x5a) = 0;
-    union { f32 f; u32 s; } u;
-    u32 seed;
-    seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
-    u.s = (seed >> 9) | 0x3f800000;
-    *(s16*)(this_ + 0x5c) = (s16)((s32)((u.f - lbl_80543BE0) * lbl_80543BDC) + 10);
-    seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
-    u.s = (seed >> 9) | 0x3f800000;
-    *(s16*)(this_ + 0x5e) = (s16)((s32)((u.f - lbl_80543BE0) * lbl_80543BDC) + 10);
+    {
+        char* game=(char*)lbl_8053AAF8;
+        union {f32 f;u32 s;} first;
+        *(volatile u32*)(game+0xb4)=*(volatile u32*)(game+0xb4)*0x19660d+0x3c6ef35f;
+        first.s=(*(volatile u32*)(game+0xb4)>>9)|0x3f800000;
+        *(s16*)(this_+0x5c)=(s32)((first.f-lbl_80543BE0)*lbl_80543BDC)+10;
+    }
+    {
+        char* game=(char*)lbl_8053AAF8;
+        union {f32 f;u32 s;} second;
+        *(volatile u32*)(game+0xb4)=*(volatile u32*)(game+0xb4)*0x19660d+0x3c6ef35f;
+        second.s=(*(volatile u32*)(game+0xb4)>>9)|0x3f800000;
+        *(s16*)(this_+0x5e)=(s32)((second.f-lbl_80543BE0)*lbl_80543BDC)+10;
+    }
     *(s16*)(this_ + 0x60) = 0;
     *(s16*)(this_ + 0x66) = -6;
     *(u8*)(this_ + 0x6b) = 0;
@@ -265,88 +274,94 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         rotate__7J2DPaneFff13J2DRotateAxisf(pane,lbl_80543BC8*(*(f32*)(pane+0x28)-*(f32*)(pane+0x20)),lbl_80543BC8*(*(f32*)(pane+0x2c)-*(f32*)(pane+0x24)),0x7a,*(s16*)(this_+0x64)+*(s16*)(this_+0x66));
     }
     if (*(u8*)(this_+0x6c)==0) {
-        f32 width=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0x129,0,0,0);
-        f32 ratio=f31/lbl_80543BF8;
+        f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0x129,0,0,0);
+        f30=f31/lbl_80543BF8;
         *(u8*)(this_+0x68)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x7c];
-        width=width*ratio+lbl_80543BF8;
-        f32 half=width*lbl_80543BC8;
+        f29*=f30;
+        f29+=lbl_80543BF8;
+        f31=f29*lbl_80543BC8;
         {
         char* rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f31,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         {
         char* rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f31,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
-        width=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0x24d,0,0,0);
+        f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x69)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x88];
-        width=width*ratio+lbl_80543BF8;
-        half=width*lbl_80543BC8;
+        f29*=f30;
+        f29+=lbl_80543BF8;
+        f30=f29*lbl_80543BC8;
         {
         char* rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         {
         char* rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
     } else {
-        f32 width=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0xf8,0,0,0);
-        f32 ratio=f31/lbl_80543BF8;
+        f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0xf8,0,0,0);
+        f31/=lbl_80543BF8;
         *(u8*)(this_+0x68)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x7d];
-        width=width*ratio+lbl_80543BF8;
-        f32 half=width*lbl_80543BC8;
+        f29*=f31;
+        f29+=lbl_80543BF8;
+        f30=f29*lbl_80543BC8;
         {
         char* rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         {
         char* rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
-        width=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0xf9,0,0,0);
+        f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0xf9,0,0,0);
         *(u8*)(this_+0x69)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x7f];
-        width=width*ratio+lbl_80543BF8;
-        half=width*lbl_80543BC8;
+        f29*=f31;
+        f29+=lbl_80543BF8;
+        f30=f29*lbl_80543BC8;
         {
         char* rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         {
         char* rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
-        width=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713033ULL))->getStringPtr(),0x24d,0,0,0);
+        f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713033ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x6a)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x89];
-        width=width*ratio+lbl_80543BF8;
-        half=width*lbl_80543BC8;
+        f32 width3=f29*f31;
+        f31=width3;
+        f31+=lbl_80543BF8;
+        f30=f31*lbl_80543BC8;
         {
         char* rec=*(char**)(this_+0x2c);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x2c);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f31,*(f32*)(rec+0x1c));
     }
         {
         char* rec=*(char**)(this_+0x30);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-half,*(f32*)(rec+0xc));
+        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
         rec=*(char**)(this_+0x30);
-        ((VtSlots*)*(void**)(rec+4))->s4(width,*(f32*)(rec+0x1c));
+        ((VtSlots*)*(void**)(rec+4))->s4(f31,*(f32*)(rec+0x1c));
     }
     }
     if(*(u8*)(this_+0x68)) *(f32*)(this_+0x48)=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54613031ULL))->getStringPtr(),0xfc,0,0,0);
@@ -380,21 +395,28 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
 }
 
 extern "C" void* fn_8043711C(char* this_, s16 how) {
-	if (this_ != 0) {
-		*(void**)this_ = lbl_804B16A8;
+	s16 h = how;
+	char* p = this_;
+	if (p != 0) {
+		*(void**)p = lbl_804B16A8;
 
-		DispatchSlot2(this_ + 0x4);
-		DispatchSlot2(this_ + 0x8);
-		DispatchSlot2(this_ + 0xc);
-		DispatchSlot2(this_ + 0x10);
-		DispatchSlot2(this_ + 0x14);
-		DispatchSlot2(this_ + 0x18);
+		DispatchSlot2(p + 0x4);
+		DispatchSlot2(p + 0x8);
+		DispatchSlot2(p + 0xc);
+		DispatchSlot2(p + 0x10);
+		DispatchSlot2(p + 0x14);
+		DispatchSlot2(p + 0x18);
+		char* q = p;
 		for (s32 i = 0; i < 6; i++) {
-			DispatchSlot2(this_ + 0x1c + i * 4);
+			if (*(DtorSlot2**)(q + 0x1c) != 0) {
+				(*(DtorSlot2**)(q + 0x1c))->destroy(1);
+			}
+			*(void**)(q + 0x1c) = 0;
+			q += 4;
 		}
-		DispatchSlot2(this_ + 0x34);
-		if (how > 0) {
-			__dl__FPv(this_);
+		DispatchSlot2(p + 0x34);
+		if (h > 0) {
+			__dl__FPv(p);
 		}
 	}
 	return this_;
