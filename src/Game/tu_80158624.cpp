@@ -337,15 +337,19 @@ extern "C" void fn_80158E88(void) {
 extern "C" u8* sManager__8JUTVideo;
 extern "C" u32 lbl_80543F28;
 extern "C" void fn_8013B460(void* this_);
+static inline void drawFadeQuad(f32 w, f32 h) {
+    f32 z = lbl_8053D440;
+    GXPosition3f32(z, z, z);
+    GXPosition3f32(w, z, z);
+    GXPosition3f32(w, h, z);
+    GXPosition3f32(z, h, z);
+}
 extern "C" void fn_80158F70(char* p) {
     f32 w;
     f32 h;
 
-    if (*(u32*)(p + 0x4) != 0xFFFFFF00) {
-        return;
-    }
-    if (*(u8*)(p + 0xc) >= 0xff) {
-        return;
+    if (*(u32*)(p + 0x4) == 0xFFFFFF00) {
+        if (*(u8*)(p + 0xc) >= 0xff) return;
     }
     w = (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 0x4) + 0x4);
     h = (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 0x4) + 0x6);
@@ -373,7 +377,6 @@ extern "C" void fn_80158F70(char* p) {
         tmp[3] = alpha;
         c = *(u32*)tmp;
         GXSetTevColor(1, &c);
-    }
     GXSetTevColorIn(0, 0xf, 0xf, 0xf, 0xf);
     GXSetTevAlphaIn(0, 7, 7, 7, 1);
     GXSetBlendMode(1, 1, 1, 0xf);
@@ -381,14 +384,16 @@ extern "C" void fn_80158F70(char* p) {
     GXSetAlphaUpdate(1);
     GXBegin(0x80, 0, 4);
     {
-        const f32 z = lbl_8053D440;
-        GXPosition3f32(z, z, z);
-        GXPosition3f32(w, z, z);
-        GXPosition3f32(w, h, z);
-        GXPosition3f32(z, h, z);
+        f32 z = lbl_8053D440;
+        volatile f32* fifo = (volatile f32*)0xCC008000;
+        *fifo = z; *fifo = z; *fifo = z;
+        *fifo = w; *fifo = z; *fifo = z;
+        *fifo = w; *fifo = h; *fifo = z;
+        *fifo = z; *fifo = h; *fifo = z;
     }
     GXSetColorUpdate(1);
     GXSetAlphaUpdate(0);
+    }
     if (*(u32*)(p + 0x4) != 0xFFFFFF00) {
         u32 c = *(u32*)(p + 0x4);
         GXSetTevColor(1, &c);
@@ -400,7 +405,7 @@ extern "C" void fn_80158F70(char* p) {
             GXSetBlendMode(1, 4, 2, 0xf);
         }
         GXBegin(0x80, 0, 4);
-        const f32 z2 = lbl_8053D440;
+        f32 z2 = lbl_8053D440;
         GXPosition3f32(z2, z2, z2);
         GXPosition3f32(w, z2, z2);
         GXPosition3f32(w, h, z2);
@@ -413,7 +418,7 @@ extern "C" void fn_80158F70(char* p) {
     GXSetColorUpdate(1);
     GXSetAlphaUpdate(0);
     GXBegin(0x80, 0, 4);
-    const f32 z3 = lbl_8053D440;
+    f32 z3 = lbl_8053D440;
     GXPosition3f32(z3, z3, z3);
     GXPosition3f32(w, z3, z3);
     GXPosition3f32(w, h, z3);
