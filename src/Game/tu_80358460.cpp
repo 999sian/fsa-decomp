@@ -61,12 +61,13 @@ static inline void rotationEuler80359E18(f32 m[3][4], s16 rx, s16 ry, s16 rz, co
     m[0][0] = scale * (cy * cz);
     m[1][0] = scale * (cy * sz);
     m[2][0] = scale * -sy;
+    f32 cxcz = cx * cz;
     f32 cxsz = cx * sz;
     f32 sxcz = sx * cz;
     m[0][1] = scale * ((sx * sy) * cz - cxsz);
-    m[1][1] = scale * ((sx * sy) * sz + cx * cz);
+    m[1][1] = scale * ((sx * sy) * sz + cxcz);
     m[2][1] = scale * (sx * cy);
-    m[0][2] = scale * ((cx * cz) * sy + sx * sz);
+    m[0][2] = scale * (cxcz * sy + sx * sz);
     m[1][2] = scale * (cxsz * sy - sxcz);
     m[2][2] = scale * (cx * cy);
 }
