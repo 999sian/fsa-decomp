@@ -1082,6 +1082,7 @@ static StateMenuFn sIntroFns[4] = {
 #include "Game/ItemBase.h"
 #include "dolphin/gx.h"
 #include "JSystem/JUtility/JUTVideo.h"
+#include "Game/TlwpDrawParam.h"
 
 struct Pane408 {
 	virtual void v08(); virtual void v0c();
@@ -2475,14 +2476,14 @@ static inline void menuMarkerMtx(f32 m[3][4], const f32 s) {
     m[2][2] = s * (cx * cy);
 }
 
-static inline void menuMarkerEulerMtx(f32 m[3][4], f32 ax, f32 ay, const f32 az, const f32 scale) {
-    f32 cx; f32 cy; f32 s = scale; f32 sx; f32 sy; f32 sz; f32 sxsy; f32 cz;
+static inline void menuMarkerEulerMtx(f32 m[3][4], const f32 s, f32 ax, f32 ay, f32 az) {
+    f32 sz, sy, sx, cz, cy, cx;
  f32 zero = 0.0f;
     sx = sin(ax); sy = sin(ay); sz = sin(az);
     cx = cos(ax); cy = cos(ay); cz = cos(az);
     m[0][3] = 0.0f; m[1][3] = 0.0f; m[2][3] = 0.0f;
     f32 cxcz = cx * cz;
-    sxsy = sx * sy;
+    f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
@@ -2498,7 +2499,8 @@ static inline void menuMarkerEulerMtx(f32 m[3][4], f32 ax, f32 ay, const f32 az,
 }
 
 extern "C" void fn_804069E8(u8* self) {
-	DrawRec rec;
+	register f32 cx; register f32 cy; f32 s; f32 sx; f32 sy; f32 sz; f32 sxsy; f32 cz;
+ DrawRec rec;
 	s32 out = -1;
 	f32 mtx[3][4];
 	f32 pos[3];
@@ -2511,14 +2513,35 @@ extern "C" void fn_804069E8(u8* self) {
 	} else {
 		idx = idx0;
 	}
-	menuMarkerEulerMtx(mtx, zero, zero, zero, *(f32*)(lbl_8050DB0C + 8));
+	s = *(f32*)(lbl_8050DB0C + 8);
+ 
+    sx = sin(zero); sy = sin(zero); sz = sin(zero);
+    cx = cos(zero); cy = cos(zero); cz = cos(zero);
+    mtx[0][3] = 0.0f; mtx[1][3] = 0.0f; mtx[2][3] = 0.0f;
+    f32 cxcz = cx * cz;
+    sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    mtx[0][0] = s * (cy * cz);
+    mtx[1][0] = s * (cy * sz);
+    mtx[2][0] = s * -sy;
+    mtx[0][1] = s * (sxsy * cz - cxsz);
+    mtx[1][1] = s * (sxsy * sz + cxcz);
+    mtx[2][1] = s * (sx * cy);
+    mtx[0][2] = s * (cxcz * sy + sxsz);
+    mtx[1][2] = s * (cxsz * sy - sxcz);
+    mtx[2][2] = s * (cx * cy);
+
  rec.w18 = mtx;
 	q = self;
 	for (int i = 0; i < 4; i++, q += 4) {
 		if ((u8)fn_80404074(self, idx, i, &out)) {
 			_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-			pos[0] = lbl_8048C95C[(idx * 4 + i) * 2] * (lbl_805438C4 / (s32)mode->fbWidth);
-			pos[1] = lbl_8048C95C[(idx * 4 + i) * 2 + 1] * (lbl_805438CC / (s32)mode->efbHeight);
+			f32 x = lbl_8048C95C[(idx * 4 + i) * 2];
+ f32 y = lbl_8048C95C[(idx * 4 + i) * 2 + 1];
+ pos[0] = x * (lbl_805438C4 / (s32)mode->fbWidth);
+ pos[1] = y * (lbl_805438CC / (s32)mode->efbHeight);
 			pos[2] = 0.0f;
 			GXSetTevDirect(GX_TEVSTAGE0);
 			GXSetTevDirect(GX_TEVSTAGE1);
@@ -2551,11 +2574,13 @@ extern "C" void fn_804069E8(u8* self) {
 				}
 				if (*(s32*)(self + 0x35c) <= 10) {
 					Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
-					fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC40), 0x25b, &rec, 1.0f, 1.0f);
+					void* res = mgr->get('SOB ', (const char*)lbl_8048CC40);
+ fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, 0x25b, &rec, 1.0f, 1.0f);
 				}
 			} else {
 				Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
-				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC40), 0x25a, &rec, 1.0f, 1.0f);
+				void* res = mgr->get('SOB ', (const char*)lbl_8048CC40);
+ fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, 0x25a, &rec, 1.0f, 1.0f);
 			}
 		}
 	}
