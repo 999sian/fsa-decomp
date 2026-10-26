@@ -193,9 +193,17 @@ extern "C" void fn_8029C584(void* this_) {
 }
 
 extern "C" void fn_8029C9AC(void* this_) {
-    const int (*tbl)[6] = lbl_8046C400;
+    static const int leftA[6] = {3,0,1,2,4,5};
+    static const int leftB[6] = {1,0,2,3,4,5};
+    static const int rightA[6] = {1,2,3,0,4,5};
+    static const int rightB[6] = {1,0,2,3,4,5};
+    static const int animA[6] = {0x3a,0x3b,0x3c,0x39,0x3e,0x3e};
+    static const int animB[6] = {0x41,0x42,0x39,0x39,0x39,0x40};
+    unsigned char flag;
+    int dir;
     char* p = (char*)this_;
-    char* obj = *(char**)(p + 0x254);
+    this_ = *(void**)((char*)this_ + 0x254);
+    char* obj = (char*)this_;
     if (obj != 0) {
         int state = *(int*)(obj + 0x230);
         if (state >= 1 && state <= 10) {
@@ -231,8 +239,6 @@ extern "C" void fn_8029C9AC(void* this_) {
                 }
             }
         } else {
-            unsigned char flag;
-            int dir;
             char* pad;
             flag = 0;
             dir = -1;
@@ -270,6 +276,8 @@ extern "C" void fn_8029C9AC(void* this_) {
                     } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 2)) {
                         dir = 3;
                     }
+                } else {
+                    goto flagTest;
                 }
             } else {
                 goto eBlock;
@@ -295,6 +303,7 @@ dirTest:
                 }
                 flag = 1;
             }
+flagTest:
             if (flag == 1) {
                 *(unsigned char*)(p + 0x244) = 0;
                 if (*(int*)(p + 0x240) == *(int*)(p + 0x23c)) {
@@ -320,29 +329,29 @@ eBlock:
                 goto dirTest;
             }
             if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 1)) {
-                fn_801F0D20(this_, 0x46);
+                fn_801F0D20(p, 0x46);
                 if (*(unsigned char*)(p + 0x24c) != 0) {
-                    const int* row = (const int*)((const char*)tbl + 0x0);
+                    const int* row = leftA;
                     *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
                 } else {
-                    const int* row = (const int*)((const char*)tbl + 0x18);
+                    const int* row = leftB;
                     *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
                 }
             } else if (fn_8022C5EC(*(int*)(p + 0x90) & 3, 2)) {
-                fn_801F0D20(this_, 0x46);
+                fn_801F0D20(p, 0x46);
                 if (*(unsigned char*)(p + 0x24c) != 0) {
-                    const int* row = (const int*)((const char*)tbl + 0x30);
+                    const int* row = rightA;
                     *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
                 } else {
-                    const int* row = (const int*)((const char*)tbl + 0x48);
+                    const int* row = rightB;
                     *(int*)(p + 0x23c) = row[*(int*)(p + 0x23c)];
                 }
             }
 setAnim:
             if (*(unsigned char*)(p + 0x24c) != 0) {
-                *(int*)(p + 0x230) = tbl[4][*(int*)(p + 0x23c)];
+                *(int*)(p + 0x230) = animA[*(int*)(p + 0x23c)];
             } else {
-                *(int*)(p + 0x230) = tbl[5][*(int*)(p + 0x23c)];
+                *(int*)(p + 0x230) = animB[*(int*)(p + 0x23c)];
             }
         }
     }
