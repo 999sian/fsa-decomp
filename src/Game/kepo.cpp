@@ -150,38 +150,50 @@ extern "C" void fn_801D2608(void* anim, void* arg, s32 n);
 extern "C" void fn_801D22DC(void* anim, s32 a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, u32 kind);
 extern "C" void fn_8021ABC0(void* p);
+#pragma float_expressions on
+#pragma opt_propagation off
+static inline BOOL kepoStageFlag(s32 a, s32 b) {
+    if (a < 0 || a > 7) return FALSE;
+    if (b < 0 || b > 3) return FALSE;
+    return ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
+}
 extern "C" void fn_80219E4C(u8* self) {
-    u32 flag = 0;
+    u32 flag;
+    BOOL unlocked;
     s32 a;
     s32 b;
-    u8 bVar1;
+    u32 bVar1;
     u8* base;
 
     fn_801D0ED0(self);
     a = *(s32*)(lbl_80529DEC + 0x118);
     b = *(s32*)(lbl_80529DEC + 0x11c);
-    if (a >= 0 && a <= 7 && b >= 0 && b <= 3) {
-        flag = ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
+    if (a < 0 || a > 7) {
+        unlocked = FALSE;
+    } else if (b < 0 || b > 3) {
+        unlocked = FALSE;
+    } else {
+        unlocked = ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
     }
+    flag = unlocked != 0;
     base = (u8*)fn_802D6A9C();
-    bVar1 = base[0x131f9];
+    bVar1 = base[0x131f9] != 0;
 
     *(s32*)(self + 0x2a8) = (*(u32*)(self + 0x90) & 0xffff) + 299;
     {
         u32 v = (*(u32*)(self + 0x90) >> 20) & 0x1f;
-        f32 fv = (f32)v;
-        *(f32*)(self + 0x2ac) = (fv - 1.5f >= 0.0f) ? fv : 1.5f;
+        *(f32*)(self + 0x2ac) = __fsel((f32)v - 1.5f, (f32)v, 1.5f);
     }
     *(s32*)(self + 0x2b0) = (*(u32*)(self + 0x90) >> 25) & 0x1f;
 
-    if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 0 && *(s32*)(self + 0x90) < 0) {
+    if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 0 && (*(u32*)(self + 0x90) >> 31) != 0) {
         *(u32*)(self + 0x230) |= 0x10000;
     }
     if ((*(u32*)(self + 0x90) >> 19) & 1) {
         *(s32*)(self + 0x2b4) = 2;
     } else {
         s32 v2 = *(s32*)(self + 0x2b0);
-        if (flag == 0 && bVar1 == 0 && v2 != 0 && fn_802D800C(fn_802D6A9C(), v2)) {
+        if (flag != 0 || bVar1 != 0 || (v2 != 0 && fn_802D800C(fn_802D6A9C(), v2))) {
             *(s32*)(self + 0x2b4) = 1;
             *(u32*)(self + 0x230) &= ~0x10000;
         } else {
@@ -189,12 +201,8 @@ extern "C" void fn_80219E4C(u8* self) {
         }
     }
 
-    if (*(s32*)(self + 0x2b4) == 3 || (*(s32*)(self + 0x2b4) < 3 && *(s32*)(self + 0x2b4) == 0)) {
-        *(u32*)(self + 0x230) |= 0x4000;
-    }
-    if ((*(s32*)(self + 0x2b4) == 3 || (*(s32*)(self + 0x2b4) < 3 && *(s32*)(self + 0x2b4) == 0)) && ((*(u32*)(self + 0x90) >> 30) & 1)) {
-        *(u32*)(self + 0x230) |= 0x8000;
-    }
+    switch (*(s32*)(self + 0x2b4)) { case 0: case 3: *(u32*)(self + 0x230) |= 0x4000; break; }
+    switch (*(s32*)(self + 0x2b4)) { case 0: case 3: if ((*(u32*)(self + 0x90) >> 30) & 1) *(u32*)(self + 0x230) |= 0x8000; break; }
 
     *(f32*)(self + 0x60) = -8.0f;
     *(f32*)(self + 0x64) = -8.0f;
@@ -263,7 +271,8 @@ extern "C" void fn_80219E4C(u8* self) {
         g[0xc] = (u8)(s32)*(f32*)(self + 0x2d8);
     }
 }
-
+#pragma opt_propagation reset
+#pragma float_expressions reset
 // ---- fn_8021A234_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
