@@ -60,9 +60,9 @@ extern "C" void* fn_802C1614(void* this_, s16 freeFlag) {
 
 // KEY0: register this key's tile with the room config.
 static inline u32 key0PackFlags(const u8& flag, u32 mode, const u32& room, u32 kind) {
-    u32 highFlag;
-    u32 highMode;
-    u32 kindValue;
+    int highFlag;
+    int highMode;
+    int kindValue;
     highMode = mode << 30;
     highFlag = flag << 29;
     kindValue = kind;
@@ -1002,8 +1002,10 @@ extern "C" void fn_802D7584(void* mgr, s32 index, s32 value);
 extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, s32 index);
 extern "C" u8 fn_802DCD0C(void* mgr);
+#pragma opt_lifetimes off
 extern "C" void fn_802C52DC(u8* p) {
     u32 packed;
+    s32 x18;
     *(u32*)(p + 0x280) = *(u32*)(p + 0x90) & 0x1f;
     *(u32*)(p + 0x27c) = *(u32*)(p + 0x90) >> 7 & 0xf;
     *(u32*)(p + 0x278) = *(u32*)(p + 0x90) >> 12 & 0x1f;
@@ -1024,7 +1026,7 @@ extern "C" void fn_802C52DC(u8* p) {
         f32 x = *(f32*)(p + 0xc);
         *(f32*)(p + 0x230) = x;
         *(f32*)(p + 0x234) = y;
-        s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
         u32 x14 = *(u32*)((u8*)fn_802D6A9C() + 0x14);
         *(u32*)(p + 0x238) = ((*(u32*)(p + 0x280) & 0x1f) << 24) | ((x14 & 0xff) << 16) | ((x18 & 0xff) << 8) | (*(u32*)(p + 4) & 0xff);
         *(s32*)(p + 0x23c) = 0;
@@ -1070,7 +1072,7 @@ extern "C" void fn_802C52DC(u8* p) {
         *(u8*)(p + 0x2b1) = 1;
         packed = key0PackFlags(*(u8*)(p + 0x2b5), *(u32*)(p + 0x23c), *(u32*)(p + 4), *(u32*)(p + 0x280));
         if (!fn_802DCD0C(fn_802D6A9C())) {
-            s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+            x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
             packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
         } else {
             packed = *(u16*)(p + 0x2aa) << 8;
@@ -1138,14 +1140,14 @@ extern "C" void fn_802C52DC(u8* p) {
     *(u16*)(p + 0x2a8) = 0xffff;
     *(s32*)(p + 0x298) = -1;
     *(s32*)(p + 0x29c) = -1;
-    s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-    *(u16*)(p + 0x2aa) = (x18 & 0xff) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 8);
+    s32 x18End = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+    *(u16*)(p + 0x2aa) = (x18End & 0xff) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 8);
     *(s32*)(p + 0x2a0) = -1;
     if (flag == 0) {
         *(s32*)(p + 0x2a4) = -1;
     }
 }
-
+#pragma opt_lifetimes reset
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
