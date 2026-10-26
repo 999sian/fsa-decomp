@@ -131,6 +131,7 @@ extern "C" f32 lbl_805434A0;
 extern "C" f32 lbl_8054345C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
+#pragma opt_loop_invariants off
 static inline s32 getFileIcon(u32 slot) {
     u32 k = 0;
     s32 j;
@@ -3120,15 +3121,16 @@ extern "C" void fn_803C9338(u8* p) {
     s16 d = *(s16*)(tbl + 0x1f2);
     s32 max = a + b;
     s32 i;
+    s32 idx;
     u8* selected;
     if (max < c + d) {
         max = c + d;
     }
     *(s16*)(p + 0xd8) = *(s16*)(p + 0xd8) + 1;
     if (*(s16*)(p + 0xd8) > a) {
-        s32 idx = *(s32*)(p + 0xa0);
-        fn_80402940(menuSlot((char*)p, idx), b, *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(menuSlot((char*)p, idx) + 0xc), *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(menuSlot((char*)p, idx) + 0xc), 0);
-        fn_80402628(menuSlot((char*)p, *(s32*)(p + 0xa0)), b, 0, *(u8*)(menuSlot((char*)p, *(s32*)(p + 0xa0)) + 0x28));
+        idx = *(s32*)(p + 0xa0);
+        fn_80402940(((MenuSlots38*)p)->slot[idx], b, *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(((MenuSlots38*)p)->slot[idx] + 0xc), *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(((MenuSlots38*)p)->slot[idx] + 0xc), 0);
+        fn_80402628(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa0)], b, 0, *(u8*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa0)] + 0x28));
         idx = *(s32*)(p + 0xa0);
         {
             void* obj = *(void**)(p + 8);
@@ -3216,23 +3218,26 @@ extern "C" void fn_803C9338(u8* p) {
         fn_80402628(*(void**)(p + 0x18), b, 0, *(u8*)(*(u8**)(p + 0x18) + 0x28));
         fn_80402940(*(void**)(p + 0x1c), b, lbl_80543458, *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc), 0);
         fn_80402628(*(void**)(p + 0x1c), b, 0, *(u8*)(*(u8**)(p + 0x1c) + 0x28));
-        for (i = 0; i < 0x51; i++) {
+        i = 0;
+        for (const u64* key = (const u64*)(base + 0x48); i < 0x51; i++, key++) {
             u8* obj = *(u8**)(p + 0x4);
-            void* o = keyObj(obj, *(u64*)(base + 0x48 + i * 8));
+            void* o = keyObj(obj, *key);
             fn_804023D0(*(void**)(p + 0x14), o, p[0x132 + i]);
         }
-        for (i = 0; i < 0x13; i++) {
+        i = 0;
+        for (const u64* key = (const u64*)(base + 0x2d0); i < 0x13; i++, key++) {
             u8* obj = *(u8**)(p + 0x8);
-            void* o = keyObj(obj, *(u64*)(base + 0x2d0 + i * 8));
+            void* o = keyObj(obj, *key);
             fn_804023D0(*(void**)(p + 0x14), o, p[0x183 + i]);
         }
     }
     if (*(s16*)(p + 0xd8) > c) {
         ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x20), d, 0, lbl_80543458, lbl_805434AC);
         fn_80402628(*(void**)(p + 0x20), d, *(u8*)(*(u8**)(p + 0x20) + 0x28), 0);
-        for (i = 0; i < 9; i++) {
+        i = 0;
+        for (const u64* key = (const u64*)(base + 0x368); i < 9; i++, key++) {
             u8* obj = *(u8**)(p + 0x4);
-            void* o = keyObj(obj, *(u64*)(base + 0x368 + i * 8));
+            void* o = keyObj(obj, *key);
             fn_804023D0(*(void**)(p + 0x20), o, p[0x196 + i]);
         }
     }
