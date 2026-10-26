@@ -277,3 +277,4 @@ extern "C" void fn_801468AC(void* this_) {
     }
 }
 #pragma global_optimizer reset
+#include "Game/SinitPoolChain.h"
