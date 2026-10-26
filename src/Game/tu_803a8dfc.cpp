@@ -2197,7 +2197,11 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
         f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
         f32 y = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
         p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c - y);
-        IntroFade(p, tbl->title, 13, d, t1, 0x4c9);
+        if (p->cur < 2) {
+            for (s32 k = 0; k < 13; k++) {
+                p->screens[p->cur]->search(tbl->title[k])->setAlpha((u8)(p->alphaTitle[k] * (1.0f - (f32)d / (f32)t1)));
+            }
+        }
     }
     if (p->timer > start && p->timer <= start + dur + gap * (p->count - 1)) {
         s32 off = 0;
@@ -2839,6 +2843,10 @@ extern "C" void fn_803B5378(void* this_);
 extern "C" void fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_80458FF0(void* mgr, u32 id, s32 a, s32 b);
 extern void* sManager__8JUTVideo;
+static inline bool MenuPlayerActive803B(MsgGame* game, s32 i) {
+    u8 mask = 1 << i;
+    return (((u8*)game)[0x82] & mask) != 0;
+}
 static inline int MenuPlayerCount803B(MsgGame* game) {
     int count = 0;
     for (s32 i = 0; i < 4; i++) {
@@ -2847,7 +2855,7 @@ static inline int MenuPlayerCount803B(MsgGame* game) {
     return count;
 }
 extern "C" void fn_803B6768(void* this_) {
-    s32 count;
+    int count;
     s32* c320;
     s16* c460;
     u8* c2f0;
