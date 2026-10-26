@@ -86,11 +86,10 @@ extern "C" u8 fn_802EB27C(TkraObj* p) {
 }
 
 extern "C" u8 fn_802EB314(char* p) {
+    u8 ret;
+    u8 ok;
     u32 bits;
     int i;
-    s32 k;
-    u8 ok;
-    u8 ret;
     f32 dy;
     f32 dx;
     ret = 0;
@@ -120,7 +119,7 @@ extern "C" u8 fn_802EB314(char* p) {
                 bit = bit != 0;
             }
             if (bit != 0) {
-                k = *(s32*)(p + 0x234);
+                s32 k = *(s32*)(p + 0x234);
                 if (k <= 2 || k == 0x2f) {
                     s32 n = fn_80138A30(lbl_8053AAF8);
                     if (*(s32*)(p + 0x240) == fn_801F6058(fn_801F856C(), n - 1)) {
@@ -147,7 +146,7 @@ extern "C" u8 fn_802EB314(char* p) {
             pos.x = dx + v.x;
             pos.y = v.y - dy;
             pos.z = v.z;
-            k = *(s32*)(p + 0x234);
+            s32 k = *(s32*)(p + 0x234);
             if (k >= 0x30) {
                 if (lbl_8053AAF8[0x7e] == 1) {
                     if ((u8)fn_8022F514(i) == 1) {
@@ -310,7 +309,7 @@ inline void tkraCreateItems(char* p) {
     u32 bits;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f v;
-        f32 dx = lbl_805413B0;
+        f32 dx = 1.0f;
         out = p;
         f32 dy = lbl_805413B4;
         for (i=0, bits=0UL; i<4; i++, bits+=0x1000000, out+=4) {
