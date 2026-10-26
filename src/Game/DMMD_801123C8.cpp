@@ -323,10 +323,8 @@ extern "C" void fn_80112E68(u8* this_) {
 }
 
 extern const f32 lbl_8053C63C;
-static inline s16 dmmdAngle(f32 x, f32 y) {
- f32 angle=JMath::atanTable_.atan2_(x,y);
- angle*=lbl_8053C63C;
- return (s16)angle;
+static inline f32 dmmdAngle(const f32 angle) {
+ return angle*lbl_8053C63C;
 }
 #pragma opt_propagation off
 extern "C" void fn_80112FC8(u8* this_) {
