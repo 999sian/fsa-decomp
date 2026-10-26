@@ -665,6 +665,7 @@ extern "C" void fn_80302C34(u8* __restrict p, s32 player, s32 index, s32 bits, u
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 
+extern const f32 lbl_80541630;
 extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     const char* names;
     s32 id;
@@ -697,13 +698,13 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     }
     pos[0] = (f32)x;
     pos[1] = (f32)y;
-    pos[2] = 0.0f;
+    pos[2] = lbl_80541630;
 
+    id = p[0] | ((p[3] & 6) << 7);
     DrawRec rec;
     f32 mtx[3][4];
-    id = p[0] | ((p[3] & 6) << 7);
-    rec.b26 = 0;
     rec.b2c = 0;
+    rec.b26 = 0;
     rec.b2d = 0;
     if (a2 == 0) {
         rec.w34 = 2;
@@ -711,49 +712,19 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
         rec.w38 = 0;
     }
 
-    if (((p[3] >> 5) & 7) == 2 && id >= 0x200) {
+    if ((((u32)p[3] >> 5) & 7) == 2 && id >= 0x200) {
         id &= 0x1ff;
-        if (((p[3] >> 4) & 1) == 1) {
+        if ((((u32)p[3] >> 4) & 1) == 1) {
             PSMTXScale(mtx, 2.0f, 2.0f, -2.0f);
         } else {
             PSMTXScale(mtx, 1.0f, 1.0f, -1.0f);
         }
-    } else if (((p[3] >> 3) & 1) == 1) {
+    } else if ((((u32)p[3] >> 3) & 1) == 1) {
         PSMTXScale(mtx, 1.0f, 1.0f, 1.0f);
-        if (((p[3] >> 4) & 1) == 1) {
-            sx = sin(0.0f);
-            sy = sin(ang);
-            sz = sin(0.0f);
-            cx = cos(0.0f);
-            cy = cos(ang);
-            cz = cos(0.0f);
-            s = 1.5f;
-            mtx[0][0] = s * (cy * cz);
-            mtx[1][0] = s * (cy * sz);
-            mtx[2][0] = s * -sy;
-            mtx[0][1] = s * (sx * sy * cz - cx * sz);
-            mtx[1][1] = s * (sx * sy * sz + cx * cz);
-            mtx[2][1] = s * (sx * cy);
-            mtx[0][2] = s * (cx * cz * sy + sx * sz);
-            mtx[1][2] = s * (cx * sz * sy - sx * cz);
-            mtx[2][2] = s * (cx * cy);
+        if ((((u32)p[3] >> 4) & 1) == 1) {
+            sobRotMtx(mtx, lbl_80541630, ang, lbl_80541630, 1.5f);
         } else {
-            sx = sin(0.0f);
-            sy = sin(ang);
-            sz = sin(0.0f);
-            cx = cos(0.0f);
-            cy = cos(ang);
-            cz = cos(0.0f);
-            s = 0.75f;
-            mtx[0][0] = s * (cy * cz);
-            mtx[1][0] = s * (cy * sz);
-            mtx[2][0] = s * -sy;
-            mtx[0][1] = s * (sx * sy * cz - cx * sz);
-            mtx[1][1] = s * (sx * sy * sz + cx * cz);
-            mtx[2][1] = s * (sx * cy);
-            mtx[0][2] = s * (cx * cz * sy + sx * sz);
-            mtx[1][2] = s * (cx * sz * sy - sx * cz);
-            mtx[2][2] = s * (cx * cy);
+            sobRotMtx(mtx, lbl_80541630, ang, lbl_80541630, 0.75f);
         }
         rec.ids[0] = 7;
         rec.ids[1] = 7;
@@ -772,7 +743,7 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
         rec.ids[14] = 7;
         rec.ids[15] = 7;
     } else {
-        if (((p[3] >> 4) & 1) == 1 || (((p[3] >> 5) & 7) == 2 && id >= 0x39 && id < 0x45)) {
+        if ((((u32)p[3] >> 4) & 1) == 1 || ((((u32)p[3] >> 5) & 7) == 2 && id >= 0x39 && id < 0x45)) {
             PSMTXScale(mtx, 2.0f, 2.0f, 2.0f);
         } else {
             PSMTXScale(mtx, 1.0f, 1.0f, 1.0f);
@@ -780,9 +751,10 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     }
 
     rec.w18 = mtx;
-    rec.b1e = a3 != 0 ? 2 : 1;
+    if (a3) rec.b1e = 2;
+    else rec.b1e = 1;
 
-    if (((p[3] >> 5) & 7) < 2) {
+    if ((((u32)p[3] >> 5) & 7) < 2) {
         if ((id >= 0x37 && id < 0x41) || (id >= 0x3cd && id < 0x3ce)) {
             ((u8*)&rec.w10)[3] = 0xa0;
         } else if (id == 0x2a8 || id == 0x2a9) {
@@ -793,14 +765,14 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, 1.0f, 1.0f, &rec);
         return;
     }
-    if (((p[3] >> 5) & 7) == 2) {
+    if ((((u32)p[3] >> 5) & 7) == 2) {
         obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
         res = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534F4220, names + 0x24);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, 1.0f, 1.0f, &rec);
         return;
     }
-    if (((p[3] >> 5) & 7) & 4) {
-        rec.ids[7] = (((p[3] >> 5) & 7) & 3) + 0xc;
+    if ((((u32)p[3] >> 5) & 7) & 4) {
+        rec.ids[7] = ((((u32)p[3] >> 5) & 7) & 3) + 0xc;
     }
     obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
     res = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534F4220, names);
