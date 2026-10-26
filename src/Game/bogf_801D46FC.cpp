@@ -514,6 +514,12 @@ struct BogfRandom {
 };
 struct BogfGame { u8 pad[0xb4]; BogfRandom rnd; };
 static inline f32 bogfRand() { return lbl_8053AAF8->rnd.get_ufloat_1(); }
+static inline f32 bogfRandFrom(BogfGame* game, int multiplier) {
+    union { f32 f; u32 bits; } random;
+    game->rnd.seed = game->rnd.seed * multiplier + 0x3c6ef35f;
+    random.bits = (game->rnd.seed >> 9) | 0x3f800000;
+    return random.f-lbl_8053F0D8;
+}
 static inline f32 bogfRandF(f32 s) { return s * lbl_8053AAF8->rnd.get_ufloat_1(); }
 static inline f32 bogfRandPM(f32 s) { return s * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8); }
 
