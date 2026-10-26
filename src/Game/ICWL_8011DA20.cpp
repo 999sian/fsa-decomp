@@ -95,6 +95,20 @@ struct ICWLBox {
     }
 };
 
+static inline void icwlScaleMatrix(f32* m, f32 x, f32 y, f32 z) {
+    m[3] = 0.0f;
+    m[7] = 0.0f;
+    m[11] = 0.0f;
+    m[0] = x;
+    m[1] = 0.0f;
+    m[2] = 0.0f;
+    m[4] = 0.0f;
+    m[5] = y;
+    m[6] = 0.0f;
+    m[8] = 0.0f;
+    m[9] = 0.0f;
+    m[10] = z;
+}
 static inline void icwlDrawSprite(void* pos, const char* name, s32 id, DrawRec* rec) {
     void* res = (*(JKRArchive**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, name);
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, id, rec, lbl_8053C8BC, lbl_8053C8BC);
@@ -108,7 +122,7 @@ extern "C" void fn_8011DA20(u8* this_) {
     f32 m[12];
     JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
-    if (v.squared() > lbl_8053C8C4 * (*(f32*)__float_epsilon)) {
+    if (!(v.squared() <= lbl_8053C8C4 * (*(f32*)__float_epsilon))) {
         m[0] = v.x;
         m[1] = 0.0f;
         m[2] = 0.0f;
@@ -124,23 +138,24 @@ extern "C" void fn_8011DA20(u8* this_) {
         a.w18 = m;
     }
     if ((*(s32*)(this_ + 0x230) == 0 && v.x >= lbl_8053C8C8) || (*(s32*)(this_ + 0x230) == 1 && v.x >= lbl_8053C8CC)) {
-            pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+            JGeometry::TVec3<f32>* drawPos = (JGeometry::TVec3<f32>*)(this_ + 0xc);
+            pos = *drawPos;
             switch (*(s32*)(this_ + 0x23c)) {
             case 0: case 7: break;
             case 1:
                 if (*(s32*)(this_ + 0x4) < 8) {
-                    icwlDrawSprite(this_ + 0xc, lbl_80464C30, 0xe9, 0);
+                    icwlDrawSprite(drawPos, lbl_80464C30, 0xe9, 0);
                 }
                 break;
             case 2:
                 if (*(s32*)(this_ + 0x4) < 8) {
-                    icwlDrawSprite(this_ + 0xc, lbl_80464C44, 0x11, 0);
+                    icwlDrawSprite(drawPos, lbl_80464C44, 0x11, 0);
                 }
                 break;
             case 3:
                 b.ids[2] = 4;
                 if (*(s32*)(this_ + 0x4) < 8) {
-                    icwlDrawSprite(this_ + 0xc, lbl_80464C44, 0x200, &b);
+                    icwlDrawSprite(drawPos, lbl_80464C44, 0x200, &b);
                 }
                 break;
             case 4:
