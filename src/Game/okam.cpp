@@ -192,7 +192,6 @@ extern "C" void fn_801AF05C(char* this_) {
     *(s32*)(this_ + 0x230) = 0;
 }
 
-extern "C" const f32 lbl_8053E868, lbl_8053E86C, lbl_8053E84C, lbl_8053E864, lbl_8053E874, lbl_8053E870, lbl_8053E87C, lbl_8053E878, lbl_8053E884, lbl_8053E880;
 struct OkamBox {
     u32 w[4];
 };
