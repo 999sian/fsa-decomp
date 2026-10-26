@@ -29,12 +29,9 @@ struct PlayerModeTbl {
 };
 
 static inline void copyPlayerDirection(JGeometry::TVec3<f32>& out, const JGeometry::TVec3<f32>& in) {
-    const f32 y = in.y;
-    const f32 x = in.x;
-    out.x = x;
-    f32 z = in.z;
-    out.y = y;
-    out.z = z;
+    out.x = in.x;
+    out.y = in.y;
+    out.z = in.z;
 }
 
 extern "C" {
@@ -841,26 +838,26 @@ void fn_802804E0(char* p) {
     }
     speed = PSVECMag((Vec*)(p + 0x344));
     if (S32(p, 0x430) > 0) {
-        speed -= 0.025f;
-        if (speed < lbl_80540360) {
-            speed = lbl_80540360;
+        speed -= lbl_8054038C;
+        if (speed < 0.0f) {
+            speed = 0.0f;
         }
     } else if (U8(p, 0x3ff) == 0) {
         if (fn_80245238(p)) {
             U8(p, 0x3ff) = 1;
             fn_8024F0E8(p, 0x20039);
         } else if (fn_80244FFC(p)) {
-            speed -= 0.025f;
-            if (speed < lbl_80540390) {
-                speed = lbl_80540390;
+            speed -= lbl_8054038C;
+            if (speed < 1.2f) {
+                speed = 1.2f;
             }
         } else if (fn_80246F28(p) > lbl_80540360) {
-            speed -= 0.025f;
-            if (speed < lbl_8054036C) {
-                speed = lbl_8054036C;
+            speed -= lbl_8054038C;
+            if (speed < 1.0f) {
+                speed = 1.0f;
             }
         } else {
-            speed -= 0.025f;
+            speed -= lbl_8054038C;
             if (speed < lbl_80540360) {
                 speed = lbl_80540360;
             }
@@ -870,13 +867,13 @@ void fn_802804E0(char* p) {
         if (st >= 10) {
             if (st == 10) {
                 F32(p, 0x410) = lbl_80540394;
-                speed = lbl_8054036C;
+                speed = 1.0f;
             } else if (st < 16) {
                 speed += lbl_8054039C;
             } else {
-                speed -= 0.025f;
-                if (speed < lbl_80540390) {
-                    speed = lbl_80540390;
+                speed -= lbl_8054038C;
+                if (speed < 1.2f) {
+                    speed = 1.2f;
                 }
             }
         }
