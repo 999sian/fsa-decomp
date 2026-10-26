@@ -190,7 +190,7 @@ static inline u8* FindHudPane(u8* self, const u64* __restrict tag) {
 static inline bool HudHasFlag(u8* self, u32 mask) {
     return (self[0x259] & (u8)mask) != 0;
 }
-extern u64 lbl_8048F158[];
+extern const u64 lbl_8048F158[];
 extern u32 lbl_804B1434[];
 extern "C" s32 fn_802366CC(void);
 extern "C" u32 fn_804030C4(u32 tag, u32 id);
