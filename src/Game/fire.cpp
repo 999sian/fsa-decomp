@@ -31,6 +31,7 @@ extern u16 lbl_8046CB88[];
 extern f32 lbl_80540B50;
 extern void* lbl_8053AB10;
 typedef void (*FireVFn)(void* self, void* v, s32 flag);
+typedef void (*FireVecVFn)(void* self, JGeometry::TVec3<f32> v, s32 flag);
 extern f32 lbl_80540B60;
 extern f32 lbl_80540B64;
 extern f32 lbl_80540B68;
