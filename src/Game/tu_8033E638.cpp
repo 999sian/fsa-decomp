@@ -98,7 +98,7 @@ static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& d
     fn_8023DEDC(player, &delta);
 }
 
-static inline u8 platformContains(const f32* bounds, const JGeometry::TVec3<f32>& point) {
+static inline BOOL platformContains(const f32* bounds, const JGeometry::TVec3<f32>& point) {
     f32 minX, maxY, minY, maxX;
     BOOL inside;
     minX = bounds[0];
@@ -125,7 +125,7 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
         f32 yy = point.y * point.y;
         f32 length = JGeometry::TUtilf::sqrt(xx + yy);
         point.set(length * JMath::sincosTable_.cosShort(angle), length * JMath::sincosTable_.sinShort(angle), 0.0f);
-        if (platformContains((f32*)(p + 0x60), point)) {
+        if ((u8)platformContains((f32*)(p + 0x60), point)) {
             fn_8022DF48(player);
             return 1;
         }
