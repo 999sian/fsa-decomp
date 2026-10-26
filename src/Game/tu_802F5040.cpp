@@ -262,9 +262,12 @@ extern "C" void fn_802F5040(f32* __restrict pos, u8* ent, f32* out) {
         out[0] = out[1] = out[2] = lbl_805414F8;
     } else {
         fn_8013B3F0(lbl_8053AB10);
-        out[0] = pos[0];
-        out[1] = pos[1] + t;
-        out[2] = pos[2] + t;
+        f32 x=pos[0];
+        f32 y=pos[1];
+        f32 z=pos[2];
+        out[0]=x;
+        out[1]=y+t;
+        out[2]=z+t;
     }
     fn_8013B1E8(lbl_8053AB10);
 
