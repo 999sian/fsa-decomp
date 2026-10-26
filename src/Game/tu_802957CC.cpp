@@ -244,14 +244,6 @@ static inline u8 HitsRect(char* self, void* pos) {
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
 }
 
-static inline void setHouseVelocity(JGeometry::TVec3f& dst, const JGeometry::TVec3f& src) {
-    const f32 x = src.x;
-    const f32 y = src.y;
-    dst.x = x;
-    f32 z = src.z;
-    dst.y = y;
-    dst.z = z;
-}
 
 static inline u8 HouseLeadingHitsRect(char* self, void* pos) {
     void* h;
@@ -306,6 +298,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     };
     char* self = (char*)p;
     u8 ok = 1;
+    f32 dx, dy, dz;
     s32 i;
     s32 probeStep;
     s32 room;
@@ -319,10 +312,10 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
 
     pt.save = *(JGeometry::TVec3f*)(self + 0xc);
     const JGeometry::TVec3f& direction = lbl_8046C268[mode];
-    f32 dx = direction.x;
-    f32 dy = direction.y;
+    dx = direction.x;
+    dy = direction.y;
     *(f32*)(self + 0x3c) = dx;
-    f32 dz = direction.z;
+    dz = direction.z;
     *(f32*)(self + 0x40) = dy;
     *(f32*)(self + 0x44) = dz;
     *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
@@ -337,7 +330,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     pt.area.f.x += -32.0f;
 
     pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
-    pt.pos.z = 0.0f;
+    pt.pos.z = lbl_80540674;
 
     if (mode == 0 || mode == 1) {
         if (mode == 0) {
@@ -350,7 +343,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         pt.pos.y += *(f32*)(self + 0x64);
         pt.pos.y += 8.0f;
         for (s32 firstStep = 0; firstStep < 6; firstStep++) {
-            if (!fn_802A1490(lbl_8053AC98, &pt) || HouseLeadingHitsRect(self, &pt) == 1) {
+            if (!fn_802A1490(lbl_8053AC98, &pt.pos) || HouseLeadingHitsRect(self, &pt.pos) == 1) {
                 ok = 0;
                 break;
             }
@@ -367,7 +360,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         pt.pos.x += *(f32*)(self + 0x60);
         pt.pos.x += 8.0f;
         for (probeStep = 0; probeStep < 6; probeStep++) {
-            if (!fn_802A1490(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
+            if (!fn_802A1490(lbl_8053AC98, &pt.pos) || HitsRect(self, &pt.pos) == 1) {
                 ok = 0;
                 break;
             }
@@ -383,7 +376,7 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         box.f.y = *(f32*)(self + 0x6c);
         box.addPos(*(JGeometry::TVec2f*)(self + 0xc));
         for (i = 0; i < 4; i++) {
-            if (fn_8023B0F4(i, &box, *(s32*)(self + 4), 0, 0.0f)) {
+            if (fn_8023B0F4(i, &box, *(s32*)(self + 4), 0, lbl_80540674)) {
                 v = (JGeometry::TVec3f*)fn_8023E724(i);
                 ofs.set(((JGeometry::TVec3f*)lbl_8046C298)[mode]);
                 q = *v;
@@ -396,13 +389,13 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     }
 
     *(JGeometry::TVec3f*)(self + 0xc) = pt.save;
-    *(f32*)(self + 0x3c) = 0.0f;
-    *(f32*)(self + 0x40) = 0.0f;
-    *(f32*)(self + 0x44) = 0.0f;
-    *(f32*)(self + 0x60) = -48.0f;
-    *(f32*)(self + 0x64) = -48.0f;
-    *(f32*)(self + 0x68) = 48.0f;
-    *(f32*)(self + 0x6c) = 48.0f;
+    *(f32*)(self + 0x3c) = lbl_80540674;
+    *(f32*)(self + 0x40) = lbl_80540674;
+    *(f32*)(self + 0x44) = lbl_80540674;
+    *(f32*)(self + 0x60) = lbl_80540680;
+    *(f32*)(self + 0x64) = lbl_80540680;
+    *(f32*)(self + 0x68) = lbl_80540684;
+    *(f32*)(self + 0x6c) = lbl_80540684;
     return ok;
 }
 
