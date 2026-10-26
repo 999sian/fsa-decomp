@@ -2186,11 +2186,6 @@ extern f32 lbl_805430EC;
     else if (mode == 2 && out3) { out3[len] = (ch); } \
     else { out[len] = (ch); }
 static inline JUTFont* msgFont() { return *(JUTFont**)((u8*)lbl_8053AD78 + 0x154); }
-static inline char msgNextChar(const s8* data, s32* index) {
-    char c = data[*index];
-    ++*index;
-    return c;
-}
 #pragma opt_loop_invariants off
 extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     s8* p;
@@ -2261,9 +2256,8 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
             if (msgFont()->isLeadByte(code)) {
                 code <<= 8;
                 PUT_CH(data[pos]);
-                s32 lo = *(char*)(data + pos++);
+                code |= (u8)data[pos++];
                 len++;
-                code |= static_cast<unsigned char>(lo);
             }
             JUTFont::TWidth tw;
             msgFont()->getWidthEntry(code, &tw);
