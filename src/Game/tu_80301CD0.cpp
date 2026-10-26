@@ -790,29 +790,27 @@ extern "C" u8 fn_8030381C(void* p) {
 }
 
 extern "C" int sprintf(char*, const char*, ...);
-extern "C" char* fn_802D9C4C();
-extern "C" char* fn_802D9C1C();
+extern "C" const char* fn_802D9C4C(char*);
+extern "C" const char* fn_802D9C1C(char*);
 extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id);
 extern u8 lbl_80471208[];
 extern u8 lbl_8053ACE4[4];
 extern "C" void fn_80303870(s32 i) {
     char buf28[0x20];
     char buf8[0x20];
-    char* str;
-    char (*base)[352] = (char (*)[352])lbl_80471208;
+    const char* str;
+    const char* base = (char*)lbl_80471208;
 
-    fn_802D6A9C();
-    str = fn_802D9C4C();
+    str = fn_802D9C4C((char*)fn_802D6A9C());
     if (str[0] != 'c') {
-        sprintf(buf28, *base + 0x38, str);
+        sprintf(buf28, base + 0x38, str);
         tu80301_pushMeasured(i, buf28, 0x6000000);
     } else {
-        tu80301_pushMeasured(i, *base + 0x48, 0x6000000);
+        tu80301_pushMeasured(i, base + 0x48, 0x6000000);
     }
-    sprintf(buf8, *base + 0x58, str);
+    sprintf(buf8, base + 0x58, str);
     tu80301_pushMeasured(i, buf8, 0x5000001);
-    fn_802D6A9C();
-    sprintf(buf28, *base + 0x6c, fn_802D9C1C());
+    sprintf(buf28, base + 0x6c, fn_802D9C1C((char*)fn_802D6A9C()));
     tu80301_pushMeasured(i, buf28, 0x6017000);
     lbl_8053ACE4[i] = 1;
 }
