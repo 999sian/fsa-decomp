@@ -12,10 +12,9 @@ extern "C" u8* sManager__8JUTVideo;
 extern "C" u8* sManager__10JFWDisplay;
 extern "C" void setRenderMode__8JUTVideoFPC16_GXRenderModeObj(void* self, const _GXRenderModeObj* mode);
 
-class J2DScreen {
-public:
-	void draw(f32, f32, const J2DGrafContext*);
-};
+#include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JFramework/JFWDisplay.h"
 
 
 // ---- from src/Game/fn_804007C4.cpp ----
@@ -117,6 +116,94 @@ extern "C" void fn_803FF2C4(void* this_) {
 	}
 }
 
+extern "C" void fn_803FF420(void* this_) {
+	u8* p = (u8*)this_;
+	if (p[0x79] > 1) {
+		if (!((lbl_80529DEC[0x21a] == 0xa7) || (lbl_80529DEC[0x21b] == 0xa5)) || p[0x7a] != 0) {
+			u8* fb = *(u8**)(sManager__8JUTVideo + 4);
+			J2DOrthoGraph ortho(0.0f, 0.0f, (f32)*(u16*)(fb + 4), (f32)*(u16*)(fb + 6), -1.0f, 1.0f);
+			GXColor clear = {0, 0, 0, 0};
+			*(GXColor*)(sManager__10JFWDisplay + 8) = clear;
+			ortho.setPort();
+			void* o = ((void* (*)(void*, u32, u32, u32))((void**)*(void**)*(void**)(p + 0x18))[15])(*(void**)(p + 0x18), 0x4e490000, 0x4e494e5f, 0x4c6f676f);
+			((void (*)(void*, s32))((void**)*(void**)o)[9])(o, (s32)*(f32*)(p + 0x64));
+			((J2DScreen*)*(void**)(p + 0x18))->draw(0.0f, 0.0f, &ortho);
+			switch (lbl_80529DEC[0x238]) {
+			case 9:
+				if (OSGetProgressiveMode() == 0) {
+					setRenderMode__8JUTVideoFPC16_GXRenderModeObj(sManager__8JUTVideo, (const _GXRenderModeObj*)lbl_8048C17C);
+				}
+				break;
+			case 10:
+			case 11:
+				break;
+			case 5:
+			case 6:
+				setRenderMode__8JUTVideoFPC16_GXRenderModeObj(sManager__8JUTVideo, (const _GXRenderModeObj*)lbl_8048C1B8);
+				lbl_80529DEC[0x251] = 1;
+				return;
+			case 2:
+			case 3:
+			case 4: {
+				void* oa = *(void**)(p + 0x1c);
+				((void (*)(void*, s32))((void**)*(void**)oa)[9])(oa, (s32)*(f32*)(p + 0x68));
+				((void (*)(void*, u32, u32, u32, f32, f32))((void**)*(void**)oa)[57])(oa, 0, 0, 0, 113.0f, 281.0f);
+				s16 sv = *(s16*)(p + 0x70);
+				f32 t = (sv < 30) ? ((f32)sv / 30.0f) : ((60.0f - (f32)sv) / 30.0f);
+				s32 r30 = (s32)(255.0f * t);
+				s32 r29 = (s32)(200.0f * t);
+				if (p[0x76] == 0) {
+					GXColor c1 = {0xff, 0xc8, 0, 0xff};
+					GXColor c2 = {(u8)r30, (u8)r29, 0, 0};
+					void* o28 = *(void**)(p + 0x28);
+					((void (*)(void*, GXColor*, GXColor*))((void**)*(void**)o28)[76])(o28, &c2, &c1);
+					GXColor c3 = {0xa0, 0xa0, 0xa0, 0xff};
+					GXColor c4 = {0, 0, 0, 0};
+					void* o2c = *(void**)(p + 0x2c);
+					((void (*)(void*, GXColor*, GXColor*))((void**)*(void**)o2c)[76])(o2c, &c4, &c3);
+				} else {
+					GXColor c5 = {0xa0, 0xa0, 0xa0, 0xff};
+					GXColor c6 = {0, 0, 0, 0};
+					void* o28 = *(void**)(p + 0x28);
+					((void (*)(void*, GXColor*, GXColor*))((void**)*(void**)o28)[76])(o28, &c6, &c5);
+					GXColor c7 = {0xff, 0xc8, 0, 0xff};
+					GXColor c8 = {(u8)r30, (u8)r29, 0, 0};
+					void* o2c = *(void**)(p + 0x2c);
+					((void (*)(void*, GXColor*, GXColor*))((void**)*(void**)o2c)[76])(o2c, &c8, &c7);
+				}
+				void* ob = *(void**)(p + 0x28);
+				((void (*)(void*, s32))((void**)*(void**)ob)[9])(ob, (s32)*(f32*)(p + 0x68));
+				((void (*)(void*, u32, u32, u32, f32, f32))((void**)*(void**)ob)[57])(ob, 0, 0, 0, 211.0f, 372.0f);
+				void* oc = *(void**)(p + 0x2c);
+				((void (*)(void*, s32))((void**)*(void**)oc)[9])(oc, (s32)*(f32*)(p + 0x68));
+				((void (*)(void*, u32, u32, u32, f32, f32))((void**)*(void**)oc)[57])(oc, 0, 0, 0, 350.0f, 372.0f);
+				return;
+			}
+			default:
+				return;
+			}
+			if (p[0x76] == 0) {
+				void* o24 = *(void**)(p + 0x24);
+				((void (*)(void*, s32))((void**)*(void**)o24)[9])(o24, (s32)*(f32*)(p + 0x68));
+				((void (*)(void*, u32, u32, u32, f32, f32))((void**)*(void**)o24)[57])(o24, 0, 0, 0, 153.0f, 309.0f);
+			} else {
+				void* o20 = *(void**)(p + 0x20);
+				((void (*)(void*, s32))((void**)*(void**)o20)[9])(o20, (s32)*(f32*)(p + 0x68));
+				((void (*)(void*, u32, u32, u32, f32, f32))((void**)*(void**)o20)[57])(o20, 0, 0, 0, 153.0f, 309.0f);
+			}
+		} else {
+			u8* fb = *(u8**)(sManager__8JUTVideo + 4);
+			J2DOrthoGraph ortho(0.0f, 0.0f, (f32)*(u16*)(fb + 4), (f32)*(u16*)(fb + 6), -1.0f, 1.0f);
+			GXColor clear = {0, 0, 0, 0};
+			*(GXColor*)(sManager__10JFWDisplay + 8) = clear;
+			ortho.setPort();
+			void* o30 = *(void**)(p + 0x30);
+			((void (*)(void*, u32, u32, u32, f32, f32, f32, f32))((void**)*(void**)o30)[59])(o30, 0, 0, 0, 105.0f, 78.0f, 400.0f, 240.0f);
+			lbl_80529DEC[0x225] = 1;
+		}
+	}
+}
+
 // fn_804007C4 - actor@lbl_804B0F50: destructor (0x208). Unconditionally
 // dispatches through a global manager sub-object first
 // (lbl_80529DEC->0x18's own vtable, slot1() at offset 0xc, no arg - the
@@ -204,11 +291,7 @@ class J2DPrint {
 public:
 	static void* setBuffer(u32 size);
 };
-class JUTVideo {
-public:
-	void setRenderMode(const _GXRenderModeObj* mode);
-	static JUTVideo* sManager;
-};
+
 extern "C" u32 OSGetResetCode();
 extern "C" u32 VIGetDTVStatus();
 extern "C" void OSSetProgressiveMode(u32 on);
