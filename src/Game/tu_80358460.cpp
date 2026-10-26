@@ -190,6 +190,21 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
         }
     }
 }
+static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
+    JGeometry::TVec3f vec;
+    JGeometry::TVec3f saved;
+    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+    saved = vec;
+    *(s32*)(self + 0x258) = state;
+    for (s32 k = 0; k < 6; ++k) {
+        for (s32 j = 0; j < 6; ++j) {
+            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
+            vec.y += lbl_80542870;
+        }
+        vec.y = saved.y;
+        vec.x += lbl_80542870;
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -666,7 +681,7 @@ extern "C" void fn_803597EC(u8* object) {
         fn_801F317C(self, box);
         ang = *(s16*)(self + 0x230);
         py = *(f32*)(self + 0x10);
-        const f32 csd = __fabsf(JMath::sincosTable_.mTable[(u16)ang >> 5].second);
+        f32 csd = __fabsf(JMath::sincosTable_.mTable[(u16)ang >> 5].second);
         box[1] = (box[1] - py) * csd + py;
         box[3] = (box[3] - py) * csd + py;
         s32 hit;
@@ -783,83 +798,57 @@ extern "C" const f32 lbl_805428AC;
 extern "C" const f32 lbl_805428BC;
 extern "C" const f32 lbl_805428C0;
 extern "C" void fn_8035A210(u8* self) {
+    f32 cv[3];
     f32 box[4];
-    Vec8035A860 tmp;
-    Vec8035A860 v;
+    f32 tmp[2];
     u8* p;
-    s32 i;
     s32 m;
+    u8* q;
+    s32 i;
     s32 r;
     s32 flags;
     s16 rot;
-    f32 k;
-    f32 sn;
-    f32 dy;
-    f32 c;
     f32 py;
+    s16 vel;
+    s16 old;
+    f32 c;
+    f32 dy;
+    f32 sn;
+    f32 k;
 
     p = self;
-    *(f32*)(p + 0x240) = 0.0f;
+    *(f32*)(p + 0x240) = lbl_8054286C;
     for (i = 0; i < 4; i++) {
-        p[0x246 + i] = 0;
-        p[0x24a + i] = 0;
+        q = p + i;
+        q[0x246] = 0;
+        q[0x24a] = 0;
         if (fn_8023F264(i)) {
-            p[0x246 + i] = fn_8035AE9C(p, (void*)i);
+            q[0x246] = fn_8035AE9C(p, (void*)i);
             fn_801F317C(p, box);
             rot = *(s16*)(p + 0x230);
             py = *(f32*)(p + 0x10);
             c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)rot >> 5) * 8 + 4));
-            box[1] = c * (box[1] - py) + py;
-            box[3] = c * (box[3] - py) + py;
-            r = 0;
-            if (fn_8023AAF8(i, box, *(s32*)(p + 4), &tmp)) {
-                dy = py - tmp.y;
-                if (p[0x24e] != 0 && dy == 0.0f) {
-                    r = 1;
-                } else {
-                    r = -1;
-                }
-                *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + 1.0f;
+            box[1] = (box[1] - py) * c + py;
+            box[3] = (box[3] - py) * c + py;
+            if (fn_8023AAF8(i, box, *(s32*)(p + 4), (Vec8035A860*)tmp)) {
+                dy = py - tmp[1];
+                if (p[0x24e] != 0 && lbl_8054286C == dy) dy = lbl_8054287C;
+                if (p[0x24e] == 0 && __fabs(dy) <= lbl_80542880) dy = lbl_8054286C;
+                *(f32*)(p + 0x240) += lbl_80542884 * dy;
+                r = dy >= lbl_8054286C ? 1 : -1;
+            } else {
+                r = 0;
             }
-            p[0x24a + i] = r;
-        } else {
-            p[0x24a + i] = 0;
+            q[0x24a] = r;
         }
     }
 
     flags = (s8)p[0x24a] | (s8)p[0x24b] | (s8)p[0x24c] | (s8)p[0x24d];
-    if (flags != 0 && *(f32*)(p + 0x240) != 0.0f) {
+    if (flags != 0 && lbl_8054286C != *(f32*)(p + 0x240)) {
         fn_801F0D20(p, 3);
     }
 
-    for (i = 0; i < 4; i++) {
-        if (!fn_8023F264(i)) continue;
-        if ((s8)p[0x246 + i] == 0) continue;
-        if (fn_8022D75C((void*)i)) continue;
-        if (fn_80230188((void*)i)) continue;
-        if (fn_8022F514((void*)i)) continue;
-        rot = *(s16*)(p + 0x230);
-        sn = *(f32*)(sincosTable___5JMath + ((u16)rot >> 5) * 8);
-        k = lbl_8054288C * (sn * __fabsf(sn));
-        if (lbl_8053AAF8[0x7e] != 0 && ((*(u32*)(p + 0x90) >> 7) & 0x1f) >= 2) {
-            k = k * lbl_80542890;
-        }
-        if (p[0x244] == 0) {
-            if (*(s32*)(p + 0x258) == 1) {
-                v.x = 0.0f;
-                v.y = lbl_80542894 * k;
-                v.z = 0.0f;
-                fn_8023DF68(i, &v);
-            }
-        } else {
-            if (*(s32*)(p + 0x258) == 1) {
-                v.x = 0.0f;
-                v.y = k;
-                v.z = 0.0f;
-                fn_8023DF68(i, &v);
-            }
-        }
-    }
+    applyRotationCounter803597EC(p, i);
 
     for (m = 0; m < 4; m++) {
         if ((s8)p[0x24a + m] != 0) {
@@ -868,16 +857,35 @@ extern "C" void fn_8035A210(u8* self) {
                 if ((s8)p[0x24a + i] != 0) continue;
                 if ((s8)p[0x246 + i] == 0) continue;
                 if ((s8)p[0x24a + m] * (s8)p[0x246 + i] >= 0) continue;
-                v.x = 0.0f;
-                v.y = 0.0f;
-                v.z = lbl_80542898;
-                fn_802314D8(i, (f32*)&v);
+                cv[0] = lbl_8054286C;
+                cv[1] = lbl_8054286C;
+                cv[2] = lbl_80542898;
+                fn_802314D8(i, cv);
             }
         }
     }
 
     if (p[0x244] == 0) {
         *(s16*)(p + 0x23a) = (s16)((*(f32*)(p + 0x240) - lbl_805428BC * (f32)*(s16*)(p + 0x238) - lbl_805428C0 * (f32)*(s16*)(p + 0x230)) / lbl_805428AC);
+    }
+    else if (*(s16*)(p + 0x230) > 0) {
+        *(s16*)(p + 0x23a) = (s16)((*(f32*)(p + 0x240) - lbl_805428BC * (f32)*(s16*)(p + 0x238) - lbl_805428C0 * (f32)(*(s16*)(p + 0x230) - 0x8000)) / lbl_805428AC);
+    } else {
+        *(s16*)(p + 0x23a) = (s16)((*(f32*)(p + 0x240) - lbl_805428BC * (f32)*(s16*)(p + 0x238) - lbl_805428C0 * (f32)(*(s16*)(p + 0x230) + 0x8000)) / lbl_805428AC);
+    }
+    if (*(s16*)(p + 0x238) == 0 && *(s16*)(p + 0x23a) != 0) {
+        spawnGridCounter803597EC(p, lbl_80542868[1], 1, m);
+    }
+    *(s16*)(p + 0x238) += *(s16*)(p + 0x23a);
+    old = *(s16*)(p + 0x230);
+    *(s16*)(p + 0x230) = old + *(s16*)(p + 0x238);
+    vel = *(s16*)(p + 0x238);
+    if (vel < 0) {
+        if ((old > 0x4000 && *(s16*)(p + 0x230) <= 0x4000) ||
+            (old >= -0x4000 && *(s16*)(p + 0x230) < -0x4000)) p[0x244] ^= 1;
+    } else if (vel > 0) {
+        if ((old <= 0x4000 && *(s16*)(p + 0x230) > 0x4000) ||
+            (old < -0x4000 && *(s16*)(p + 0x230) >= -0x4000)) p[0x244] ^= 1;
     }
 }
 
