@@ -1076,19 +1076,6 @@ extern "C" void fn_8039C258(MsgProc* p, s32 n) {
     msgPutWide(p, n + '0');
 }
 
-static inline BOOL msgCurrentBit(MsgProc* p) {
-    int n = p->cur;
-    if (n < 32) {
-        u64 mask = (u64)(1 << n);
-        return (p->bits[0] & mask) ? TRUE : FALSE;
-    }
-    if (n < 64) {
-        u64 mask = (u64)(1 << (n - 32));
-        return (p->bits[1] & mask) ? TRUE : FALSE;
-    }
-    return FALSE;
-}
-
 static inline void msgAppendChar(MsgProc* p, char* buf) {
     strcat(p->str2c0, buf);
     strcat(p->str2c4, buf);
@@ -1105,9 +1092,9 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         neg = true;
     }
     if (p->m2d6) {
-        if (!msgCurrentBit(p)) {
+        if (!p->testBit(p->cur)) {
             MsgLayout* l = p->layout;
-            if (l->m16c == 0 || !msgCurrentBit(p)) {
+            if (l->m16c == 0 || !p->testBit(p->cur)) {
                 f32 base;
                 f32 pos;
                 if (!(l->font->flags & 0x40)) {
@@ -1115,9 +1102,9 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
                     pos = p->posA[p->cur];
                 } else {
                     base = l->baseF0;
-                    pos = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+                    pos = p->posA[p->cur] + (p->posB[p->cur] - lbl_805431E8);
                 }
-                s32 x = (base - pos) * 0.5f + 0.5f;
+                s32 x = (base - pos) * lbl_805431E4 + lbl_805431E4;
                 if (x > 0) {
                     snprintf(lbl_8050E528, 0xf, "\x1b" "CR[%d]", x);
                     strcat(p->str2c0, lbl_8050E528);
@@ -1137,33 +1124,33 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         msgAppendChar(p, buf);
     }
     s32 d = n / 10000;
-    n %= 10000;
+    int remainder = n % 10000;
     if (d != 0) {
         buf[0] = d + '0';
         lead = true;
         msgAppendChar(p, buf);
     }
-    d = n / 1000;
-    n %= 1000;
+    d = remainder / 1000;
+    remainder %= 1000;
     if (d != 0 || lead) {
         buf[0] = d + '0';
         lead = true;
         msgAppendChar(p, buf);
     }
-    d = n / 100;
-    n %= 100;
+    d = remainder / 100;
+    remainder %= 100;
     if (d != 0 || lead) {
         buf[0] = d + '0';
         lead = true;
         msgAppendChar(p, buf);
     }
-    d = n / 10;
-    n %= 10;
+    d = remainder / 10;
+    remainder %= 10;
     if (d != 0 || lead) {
         buf[0] = d + '0';
         msgAppendChar(p, buf);
     }
-    buf[0] = n + '0';
+    buf[0] = remainder + '0';
     msgAppendChar(p, buf);
 }
 
