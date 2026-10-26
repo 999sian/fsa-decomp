@@ -217,7 +217,7 @@ static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
     return (f32)((a << 10) + (b << 7));
 }
 extern "C" void fn_8013B1E8(void* mgr);
-static inline int Tu802F93F4_c5(const int v) {
+static inline int Tu802F93F4_c5(int v) {
     f32 f = __fmadds((f32)v, lbl_80541518, lbl_805414F8);
     int r = (int)f;
     if (r < 0) {
