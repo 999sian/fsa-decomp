@@ -237,8 +237,9 @@ static inline s32 HouseDestination(const char* actor) {
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
+    void* h;
     s32 room;
-    void* h = *(void**)(self + 0x198);
+    h = *(void**)(self + 0x198);
     room = *(s32*)(self + 4);
     char* base = (char*)fn_8020D58C();
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
@@ -262,7 +263,7 @@ static inline JGeometry::TBox2f* RoomBounds(char* self) {
 
 extern "C" u8 fn_802957CC(void* p, u8 mode) {
     struct Probe {
-        Probe() {}
+        Probe(const JGeometry::TVec3f& value) : save(value) {}
         JGeometry::TVec3f pos;
         JGeometry::TBox2f area;
         JGeometry::TVec3f save;
@@ -274,12 +275,11 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     char* m;
     JGeometry::TBox2f* src;
     JGeometry::TVec3f* v;
-    Probe pt;
+    Probe pt(*(JGeometry::TVec3f*)(self + 0xc));
     JGeometry::TBox2f box;
     JGeometry::TVec3f q;
     JGeometry::TVec3f ofs;
 
-    pt.save = *(JGeometry::TVec3f*)(self + 0xc);
     const JGeometry::TVec3f& direction = lbl_8046C268[mode];
     f32 dx = direction.x;
     f32 dy = direction.y;
