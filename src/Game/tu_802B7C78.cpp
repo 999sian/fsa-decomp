@@ -280,10 +280,8 @@ extern "C" void fn_802B848C(char* this_) {
     }
 }
 
-static inline JGeometry::TVec2f subtractPosition(JGeometry::TVec2f value, const JGeometry::TVec2f& pos) {
-    value.x -= pos.x;
-    value.y -= pos.y;
-    return value;
+static inline JGeometry::TVec2f subtractPosition(const JGeometry::TVec2f& value, const JGeometry::TVec2f& pos) {
+    return JGeometry::TVec2f(value.x - pos.x, value.y - pos.y);
 }
 
 extern "C" void fn_802B8078(char* this_);
