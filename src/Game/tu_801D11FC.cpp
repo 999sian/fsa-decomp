@@ -60,9 +60,9 @@ struct fn_801D1974_obj {
     }
     void popPoint() {
         if (m2a8 >= 1) {
-            s32 n = m2a8 - 1;
-            for (s32 i = 0; i < n; i++) {
-                s32 j = i + 1;
+            int n = m2a8 - 1;
+            for (int i = 0; i < n; i++) {
+                int j = i + 1;
                 trail().pts[i].x = m2ac[j].x;
                 trail().pts[i].y = m2ac[j].y;
             }
@@ -126,15 +126,14 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     u8 ret = 0;
     u8 lost;
     u8 far_;
-
+    int idx;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
 
     if (this_->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(this_, this_->m338)) {
-        lost = 0;
-        s32 idx = this_->m338;
+        idx = this_->m338;
         fn_8022E114(idx, &pos);
         if (fn_801F329C(this_, idx)) {
             fn_801CD150(&pos, &tmp);
@@ -178,7 +177,7 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
             if (this_->m2a8 == 0) {
                 lost = 1;
             } else {
-                JGeometry::TVec2<f32> q1 = this_->point(this_->m2a8 - 1);
+                JGeometry::TVec2<f32> q1 = this_->m2ac[this_->pointIndex(this_->m2a8 - 1)];
                 if (fn_801CF888(this_, &q1, &v, *(s32*)((u8*)this_ + 4))) {
                     lost = 1;
                 } else {
@@ -187,7 +186,7 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
                     if (ex * ex + ey * ey >= lbl_8053F030) {
                         far_ = 1;
                         if (this_->m2a8 >= 2) {
-                            JGeometry::TVec2<f32> q2 = this_->point(this_->m2a8 - 2);
+                            JGeometry::TVec2<f32> q2 = this_->m2ac[this_->pointIndex(this_->m2a8 - 2)];
                             if (!fn_801CF888(this_, &q2, &v, *(s32*)((u8*)this_ + 4))) {
                                 if (this_->m2a8 > 0) {
                                     this_->m2a8--;
@@ -210,7 +209,7 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
                     this_->pushPoint(*(JGeometry::TVec2<f32>*)&v);
                 }
             }
-            ((JGeometry::TVec3<f32>*)&this_->m32c)->set(this_->point(0).x, this_->point(0).y, lbl_8053F028);
+            ((JGeometry::TVec3<f32>*)&this_->m32c)->set(this_->m2ac[this_->pointIndex(0)].x, this_->m2ac[this_->pointIndex(0)].y, lbl_8053F028);
         }
     }
     if (!ret) {
