@@ -600,11 +600,10 @@ extern "C" void fn_801C7F98(char* this_) {
 extern "C" void fn_801C887C(char*);
 extern "C" void fn_800FE2E4(void*, void*, s32);
 extern "C" f32 lbl_8053EF00;
-static inline u8 tndrCurrentCursor(char* p) {
+static inline u8 tndrCurrentCursor(char* const p) {
     return ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
 }
 extern "C" void fn_801C844C(char* p) {
-#pragma opt_propagation off
     JGeometry::TVec3<f32> nextA;
     JGeometry::TVec3<f32> nextB;
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
@@ -626,7 +625,7 @@ extern "C" void fn_801C844C(char* p) {
     if ((*(u32*)(p + 0x524) & 0x100) != 0) {
         u8* current = (u8*)GetCurrentSlotPtr(p + 0x358);
         if (fn_800FD5E8(GetCurrentSlotPtr(p + 0x358), current[3])) {
-            a = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
+            a = tndrCurrentCursor(p);
             fn_800FD818(GetCurrentSlotPtr(p + 0x358), 1);
             b = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
             slot = (u8*)GetCurrentSlotPtr(p + 0x358);
@@ -672,15 +671,15 @@ extern "C" void fn_801C844C(char* p) {
     bitsSecond = (*seed >> 9) | 0x3f800000;
     one = *(f32*)&bitsSecond - one;
     if (!(one < threshold)) return;
-    c = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
+    room = tndrCurrentCursor(p);
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), 1);
     b = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
-    if (c < slot[2]) slot[3] = c;
+    if ((u32)room < slot[2]) slot[3] = room;
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), -1);
     a = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
-    if ((u8)c < slot[2]) slot[3] = c;
+    if ((u8)room < slot[2]) slot[3] = room;
     if (&pairB1 != 0) pairB1 = a;
     if (&pairB0 != 0) pairB0 = b;
     one = 1.0f;
@@ -710,7 +709,6 @@ extern "C" void fn_801C844C(char* p) {
             }
         }
     }
-#pragma opt_propagation on
 }
 
 #pragma opt_lifetimes off
