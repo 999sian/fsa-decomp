@@ -1077,14 +1077,14 @@ extern "C" void fn_8039C258(MsgProc* p, s32 n) {
 }
 
 static inline BOOL msgCurrentBit(MsgProc* p) {
-    s32 n = p->cur;
+    int n = p->cur;
     if (n < 32) {
         s64 mask = (s64)(1 << n);
-        return (p->bits[0] & mask) != 0;
+        return (p->bits[0] & mask) ? TRUE : FALSE;
     }
     if (n < 64) {
         s64 mask = (s64)(1 << (n - 32));
-        return (p->bits[1] & mask) != 0;
+        return (p->bits[1] & mask) ? TRUE : FALSE;
     }
     return FALSE;
 }
