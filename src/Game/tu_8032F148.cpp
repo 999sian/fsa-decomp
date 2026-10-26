@@ -713,20 +713,7 @@ extern "C" s32 fn_801A6108(s32 h, void* p, void* q);
 extern "C" s32 fn_801A4F5C(s32 h, void* p, void* q);
 extern "C" s32 fn_801A46FC(s32 h, void* p, void* q);
 extern float lbl_80541F28;
-static inline u8 enemyFlameHit(char* self, char* target, u8& hit) {
-    u8 result=0;
-    if(target==0) return result;
-    if(*(u32*)(target+0x1a0)=='FLME') result=1;
-    if(result) {
-        JGeometry::TVec3<f32> v;
-        v.zero();
-        fn_801F3128(target,&v.x);
-        v -= *(JGeometry::TVec3<f32>*)(target+0x3c);
-        hit=fn_801F37AC(self,*(u32*)(target+0x118),&v,0,*(u32*)(target+0x168),*(u32*)(target+0x110));
-        if(hit) *(u8*)(target+0x164)=1;
-    }
-    return hit;
-}
+
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern const f32 lbl_80541ED0;
@@ -756,7 +743,9 @@ extern "C" void fn_80332A60(char* this_) {
         if(idx>=0 && idx!=*(s32*)(p+0x198)) {
             a=(char*)fn_801F666C(fn_801F856C(),idx);
             result=0;
-            if(a==0) goto resultCheck;
+            if(a!=0) goto flameTarget;
+            goto resultCheck;
+flameTarget:
             {
                 if(*(u32*)(a+0x1a0)=='FLME') result=1;
                 if(result) {
