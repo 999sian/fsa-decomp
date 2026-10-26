@@ -7,6 +7,14 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 #pragma auto_inline off
+static inline u32 RoomResourceTag802D(const char* name) {
+    s32 a = name[0] - 0x20;
+    s32 b = name[1] - 0x20;
+    s32 c = name[2];
+    u32 key = 0x4d202020;
+    key += (a << 16) + (b << 8) + c;
+    return key - 0x20;
+}
 
 
 #if defined(VERSION_G4SP01)
@@ -1408,13 +1416,13 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
 
     char* tbl;
     const char* fmt;
-    s32 tens;
     const char* name;
+    s32 tens;
     s32 ones;
-    s32 key;
+    u32 key;
     s32 number;
-    char buf32[32];
     char buf104[32];
+    char buf32[32];
 
     fmt = lbl_8046E148;
     name = lbl_80540FDC;
@@ -1441,7 +1449,12 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     }
     tens = number / 10;
     ones = number % 10;
-    key = ((name[0] - 0x20) << 16) + ((name[1] - 0x20) << 8) + name[2] + 0x4d202020 - 0x20;
+    s32 n0 = name[0];
+    s32 n1 = name[1];
+    s32 n2 = name[2];
+    key = 0x4d202020;
+    key += ((n0 - 0x20) << 16) + ((n1 - 0x20) << 8) + n2;
+    key -= 0x20;
     sprintf(buf104, fmt + 0x6f0, name, tens, ones);
     sprintf(buf32, fmt + 0x70c, name, tens, ones);
     if (flag != 0) {
@@ -1452,11 +1465,11 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     tbl = (char*)lbl_80529DEC;
     {
         char* base = *(char**)(lbl_8053AB10 + 0x20);
-        fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, buf104), 0, 0, 0, 0);
+        fn_802F99DC(base, (char*)((JKRArchive*)*(void**)(tbl + 0x10))->getResource(key, buf104), 0, 0, 0, 0);
     }
     {
         char* base = *(char**)(lbl_8053AB10 + 0x20);
-        fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, buf32), 0, 1, 0, 0);
+        fn_802F99DC(base, (char*)((JKRArchive*)*(void**)(tbl + 0x10))->getResource(key, buf32), 0, 1, 0, 0);
     }
 
     *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x235c) = 1;
@@ -1469,7 +1482,7 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     } else {
         char* g4 = *(char**)(lbl_8053AAF8 + 4);
         if ((*(s32*)(*(char**)(g4 + 0xc) + 4) == 9 && *(s32*)(*(char**)(g4 + 0xc) + 8) == 3) ||
-            *(s32*)(*(char**)(g4 + 0xc) + 4) >= 0xd) {
+            *(s32*)((char*)roomArrays() + 4) >= 0xd) {
             skip = true;
         } else {
             skip = false;
@@ -1532,19 +1545,21 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
             if (s1 != 0) {
                 {
                     char* base = *(char**)(lbl_8053AB10 + 0x20);
-                    fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, s1), 0, i + 8, 0, 0);
+                    fn_802F99DC(base, (char*)((JKRArchive*)*(void**)(tbl + 0x10))->getResource(key, s1), 0, i + 8, 0, 0);
                 }
                 {
                     char* base = *(char**)(lbl_8053AB10 + 0x20);
-                    fn_802F99DC(base, ((char* (*)(char*, s32, char*))(*(void***)(*(char**)(tbl + 0x10)))[6])(*(char**)(tbl + 0x10), key, s2), 0, i + 0x10, 0, 0);
+                    fn_802F99DC(base, (char*)((JKRArchive*)*(void**)(tbl + 0x10))->getResource(key, s2), 0, i + 0x10, 0, 0);
                 }
             }
             fn_802D4CCC(this_, i + 8);
         }
     }
 
-    f32 l = lbl_80541144 * (f32)*(s32*)(this_ + 0x14);
-    f32 t = lbl_80541140 * (f32)*(s32*)(this_ + 0x18);
+    f32 t;
+    f32 l;
+    l = lbl_80541144 * (f32)*(s32*)(this_ + 0x14);
+    t = lbl_80541140 * (f32)*(s32*)(this_ + 0x18);
     *(f32*)(this_ + 0xcc) = l;
     *(f32*)(this_ + 0xd0) = t;
     *(f32*)(this_ + 0xd4) = lbl_80541144 + l;
@@ -2434,6 +2449,8 @@ extern "C" void fn_802DCDF4(char* p) {
 }
 
 extern "C" u8 fn_802DCE5C(char* p, s32 value) {
+    int i;
+    int j;
     u32 ret = 0;
     if (*(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8) == 0) {
         *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + 0x131EF) = 0;
@@ -2468,26 +2485,18 @@ extern "C" u8 fn_802DCE5C(char* p, s32 value) {
         char* e = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + *(s32*)(p + 0x18) * 0x28;
         e += *(s32*)(p + 0x14) * 4;
         *(u32*)(e + 0x178) &= 0xFFFF0000;
-        for (int i = 0; i < 16; i++) {
+        for (i = 0; i < 16; i++) {
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counters308[i] = 0;
         }
         u32 b = 0;
-        for (u32 w = 0; w < 128; w += 4, b++) {
-            s32 o = w + 0x12f68;
+        for (u32 w = 0; w < 32; w++, b++) {
             *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + b + 0x328) = 0xff;
-            *(u32*)((u32)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c) + o) = 0;
+            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0c))->flags12F68[w] = 0;
         }
-        for (s32 i = 0; i < 8; i++) {
+        for (i = 0; i < 8; i++) {
             ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counts6748[i] = 0;
-            for (s32 j = 0; j < 64; j += 8) {
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 0] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 1] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 2] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 3] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 4] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 5] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 6] = 0;
-                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j + 7] = 0;
+            for (j = 0; j < 64; j++) {
+                ((RoomArrays*)*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[i][j] = 0;
             }
         }
         if (((s32*)value)[0] > 0) {
