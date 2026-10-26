@@ -117,6 +117,12 @@ extern "C" s32 fn_8013056C(char*, s32, s32, s32);
 #pragma dont_inline reset
 extern const f32 lbl_8053CC88;
 extern const f32 lbl_8053CC8C;
+struct MRMTEvent {
+    u16 id;
+    u16 pad;
+    s32 mode;
+    s32 value;
+};
 extern "C" u8 lbl_8049EA58[];
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* a, s32 b);
@@ -130,14 +136,22 @@ extern "C" void fn_801306BC(u8* p) {
     if (st >= 2 && st <= 4) {
         u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
         obj[0x179] = 1;
-        f32 r = lbl_8053CC88;
-        f32 y = *(f32*)(p + 0x10);
+        f32 lower;
+        f32 upper;
+        f32 r;
+        f32 y;
+        f32 x;
+        r = lbl_8053CC88;
+        y = *(f32*)(p + 0x10);
         obj = *(u8**)(lbl_8053AB10 + 0x24);
+        upper = r + y;
+        x = *(f32*)(p + 0xc);
+        lower = y - r;
         JGeometry::TBox2f bounds;
-        bounds.f.y = r + y;
-        bounds.i.x = *(f32*)(p + 0xc);
-        bounds.f.x = bounds.i.x;
-        bounds.i.y = y - r;
+        bounds.i.y = upper;
+        bounds.i.x = x;
+        bounds.f.x = x;
+        bounds.f.y = lower;
         MRMTSetBounds(obj, bounds);
     }
     st = *(s32*)(p + 0x230);
