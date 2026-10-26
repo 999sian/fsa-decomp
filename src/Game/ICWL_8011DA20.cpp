@@ -95,6 +95,17 @@ struct ICWLBox {
     }
 };
 
+static inline void icwlScaleMatrix(f32* m, const JGeometry::TVec3<f32>& v) {
+    f32 zero = 0.0f;
+    m[3] = zero; m[7] = zero; m[11] = zero;
+    f32 y = v.y;
+    f32 x = v.x;
+    m[0] = x;
+    m[1] = zero; m[2] = zero; m[4] = zero;
+    m[5] = y;
+    m[6] = zero; m[8] = zero; m[9] = zero;
+    m[10] = v.z;
+}
 static inline void icwlScaleMatrix(f32* m, f32 x, f32 y, f32 z) {
     m[3] = 0.0f;
     m[7] = 0.0f;
@@ -123,18 +134,7 @@ extern "C" void fn_8011DA20(u8* this_) {
     JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
     if (!(v.squared() <= lbl_8053C8C4 * (*(f32*)__float_epsilon))) {
-        m[0] = v.x;
-        m[1] = 0.0f;
-        m[2] = 0.0f;
-        m[3] = 0.0f;
-        m[4] = 0.0f;
-        m[5] = v.y;
-        m[6] = 0.0f;
-        m[7] = 0.0f;
-        m[8] = 0.0f;
-        m[9] = 0.0f;
-        m[10] = v.z;
-        m[11] = 0.0f;
+        icwlScaleMatrix(m, v.x, v.y, v.z);
         a.w18 = m;
     }
     if ((*(s32*)(this_ + 0x230) == 0 && v.x >= lbl_8053C8C8) || (*(s32*)(this_ + 0x230) == 1 && v.x >= lbl_8053C8CC)) {
@@ -185,8 +185,8 @@ extern "C" void fn_8011DA20(u8* this_) {
     fn_801F02BC(this_, lbl_80464C44, *(s32*)(this_ + 0x254) + 0x1ca, &a, 7, 0, 0, lbl_8053C8BC, lbl_8053C8BC);
     if (*(s32*)(this_ + 0x230) == 0) {
         a.b1c = 1;
-        fn_801F02BC(this_, lbl_80464C44, *(s32*)(this_ + 0x254) + 0x1cb, &a, 7, 0, 0, lbl_8053C8BC, lbl_8053C8BC);
     }
+    fn_801F02BC(this_, lbl_80464C44, *(s32*)(this_ + 0x254) + 0x1cb, &a, 7, 0, 0, lbl_8053C8BC, lbl_8053C8BC);
 }
 
 static inline void icwlGetBox(u8* this_, ICWLBox* box) {
