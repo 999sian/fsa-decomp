@@ -67,6 +67,9 @@ static inline Key0Pt key0Point(const char* p) {
     return Key0Pt(*(const f32*)p, *(const f32*)(p + 4));
 }
 extern "C" void* fn_802D6A9C(void);
+static inline u8 key0StageIndex() {
+    return *(u32*)((u8*)fn_802D6A9C() + 0x18);
+}
 extern "C" void fn_802D6C10(void* rec, Key0Pt pt, u32 id);
 
 static inline u8 key0RoomFlag(s32 room) {
@@ -991,7 +994,7 @@ extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, s32 index);
 extern "C" u8 fn_802DCD0C(void* mgr);
 extern "C" void fn_802C52DC(u8* p) {
-    u32 packed;
+    int packed;
     *(u32*)(p + 0x280) = *(u32*)(p + 0x90) & 0x1f;
     *(u32*)(p + 0x27c) = *(u32*)(p + 0x90) >> 7 & 0xf;
     *(u32*)(p + 0x278) = *(u32*)(p + 0x90) >> 12 & 0x1f;
@@ -1056,8 +1059,8 @@ extern "C" void fn_802C52DC(u8* p) {
     case 5: {
         *(s32*)(p + 0x240) = 4;
         *(u8*)(p + 0x2b1) = 1;
-        u32 a = *(u32*)(p + 0x23c);
-        u32 b = *(u8*)(p + 0x2b5);
+        int a = *(u32*)(p + 0x23c);
+        int b = *(u8*)(p + 0x2b5);
         packed = (a << 30) | (b << 29);
         packed = __rlwimi(packed, *(u32*)(p + 0x280), 24, 3, 7);
         packed = __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
@@ -1070,7 +1073,7 @@ extern "C" void fn_802C52DC(u8* p) {
         Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
         Key0Pt pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
         u32 id = *(u32*)(p + 0x238);
-        fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+        key0LinkPoints(key, pos, packed, id);
         break;
     }
     case 6:
