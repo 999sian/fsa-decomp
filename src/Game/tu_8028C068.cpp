@@ -243,11 +243,10 @@ extern "C" u8 fn_8028D4DC(f32* this_, int a, void* c) {
     if (r == 0) {
         return 0;
     }
-    const Vec* const table = (const Vec*)lbl_8046C150;
     s32 off = (u8)(r - 1);
     Vec v;
-    v.x = 16.0f * ((f32)(a + 1) * table[off].x);
-    v.y = 16.0f * ((f32)(a + 1) * table[off].y);
+    v.x = 16.0f * ((f32)(a + 1) * lbl_8046C150[off].x);
+    v.y = 16.0f * ((f32)(a + 1) * lbl_8046C150[off].y);
     v.z = 0.0f;
     JMathInlineVEC::PSVECAdd((Vec*)this_, &v, (Vec*)this_);
     return 1;
