@@ -1223,10 +1223,6 @@ extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
 extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
-static inline void CopyFSAPoolBlock(FSAPoolBlock* dst, const FSAPoolBlock* src) {
-    *dst = *src;
-}
-
 extern "C" void fn_80372B00(void) {
     u32 first = ((u32*)lbl_804AE390)[0];
     FSAStateFn* src = (FSAStateFn*)lbl_804AE390;
