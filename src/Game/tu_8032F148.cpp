@@ -36,6 +36,10 @@ extern "C" u8 fn_8022D534(s32);
 extern "C" void* fn_8023E724(s32);
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
 extern const f32 lbl_80541EB8;
+static inline s16 enemyAngle(f32 y, f32 x) {
+    f32 angle = JMath::atanTable_.atan2_(y, x);
+    return angle * lbl_80541EB8;
+}
 extern "C" void fn_8032F148(void* p1, s32 idx, u16* outAng, s32* outQuad, f32* outDist, s32* outFlag, s32 slot) {
     s32 room;
     char* a = (char*)fn_801F666C(fn_801F856C(), idx);
@@ -371,20 +375,21 @@ extern "C" void fn_80331D38(char* this_) {
 }
 
 extern "C" void fn_80331E6C(char* this_) {
-    char* self = this_;
+    u8* self = (u8*)this_;
+
+    if (*(u8*)(self + 0x2a4) == 1) {
     char* o;
     s32 n;
     s32 off;
     s32 r27;
     s32 r26;
     s32 i;
-    Vec pos;
+    JGeometry::TVec3<f32> pos;
     f32 mag;
     s32 kind;
     s32 room;
     s32 id;
 
-    if (*(u8*)(self + 0x2a4) == 1) {
         r27 = -1;
         r26 = -1;
         if (*(s32*)(self + 0x230) == 3) {
@@ -393,35 +398,29 @@ extern "C" void fn_80331E6C(char* this_) {
         n = *(s32*)((char*)fn_801F856C() + 0x1008);
         i = 0;
         off = 0;
-        for (; i < n; i++, off += 4) {
+        for (; i < n; off += 4, i++) {
             o = *(char**)((char*)fn_801F856C() + off + 8);
             if (o == 0) continue;
             id = *(s32*)(o + 0x1a0);
-            if (id != 'WARP') {
-                if (id != 'CIRC') continue;
-                if (*(s32*)(o + 4) != *(s32*)(self + 4)) continue;
+            if (id != 'WARP' && id != 'CIRC') continue;
+            {
+                if (*(s32*)(self + 4) != *(s32*)(o + 4)) continue;
                 {
                     f32 dx = *(f32*)(o + 0xc) - *(f32*)(self + 0xc);
                     f32 dy = *(f32*)(o + 0x10) - *(f32*)(self + 0x10);
                     f32 sx = dx * dx;
                     f32 sy = dy * dy;
                     f32 sq = sx + sy;
-                    f32 len = lbl_80541E9C;
-                    if (sq > lbl_80541E9C) {
-                        f32 y = (f32)__frsqrte(sq);
-                        len = sq * (lbl_80541EE4 * y * (lbl_80541ECC - sq * (y * y)));
-                    }
-                    if (len >= lbl_80541F10) continue;
+                    sq = JGeometry::TUtilf::sqrt(sq);
+                    if (!(sq < lbl_80541F10)) continue;
                 }
             }
             if (*(s32*)(o + 0x1a0) == 'WARP') {
-                if (((int (*)(void*))(*(void***)o)[15])(o) != 0) {
-                    if ((((int (*)(void*))(*(void***)o)[13])(o) & 0xff) == 1) {
-                        r27 = *(s32*)(o + 0x198);
-                        break;
-                    }
-                    continue;
+                if (((ItemBase*)o)->v13() != 0) {
+                    if ((u8)((int (*)(void*))(*(void***)o)[13])(o) != 1) continue;
                 }
+                r27 = *(s32*)(o + 0x198);
+                break;
             }
             if (*(u8*)(o + 0x262) == 1) {
                 r26 = *(s32*)(o + 0x198);
@@ -429,36 +428,41 @@ extern "C" void fn_80331E6C(char* this_) {
             }
         }
         if (r27 < 0 && r26 < 0) goto end;
+        room = 0;
+        kind = 0;
+        pos.zero();
         if (r27 >= 0) {
             o = (char*)fn_801F666C(fn_801F856C(), r27);
             if (o == 0) goto end;
-            pos = *(Vec*)(o + 0x238);
+            pos = *(JGeometry::TVec3<f32>*)(o + 0x238);
             room = *(s32*)(self + 4);
-            if (*(u8*)((char*)fn_802D6A9C() + room + 0x131df) == 0) {
+            if (((RoomMgr131DF*)fn_802D6A9C())->flag(room) == 0) {
                 pos.z = *(f32*)(self + 0x14);
             }
             {
-                s32 v = (*(s32*)(o + 0x90) >> 3) & 7;
-                room = v != 0 ? v + 7 : 0;
+                s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
+                room = v;
+                if (v != 0) room += 7;
             }
             kind = *(s32*)(o + 0x90) & 0x7f;
-        } else {
+        } else if (r26 > 0) {
             o = (char*)fn_801F666C(fn_801F856C(), r26);
             if (o == 0) goto end;
-            pos = *(Vec*)(o + 0x268);
+            pos = *(JGeometry::TVec3<f32>*)(o + 0x268);
             room = *(s32*)(self + 4);
-            if (*(u8*)((char*)fn_802D6A9C() + room + 0x131df) == 0) {
+            if (((RoomMgr131DF*)fn_802D6A9C())->flag(room) == 0) {
                 pos.z = *(f32*)(self + 0x14);
             }
             {
-                s32 v = (*(s32*)(o + 0x90) >> 3) & 7;
-                room = v != 0 ? v + 7 : 0;
+                s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
+                room = v;
+                if (v != 0) room += 7;
             }
             kind = 6;
         }
 
         if (kind == 6 || kind == 0x14 || kind == 4 || kind == 0x20 || kind == 0x24) {
-            if (*(f32*)(self + 0x14) < lbl_80541EFC) goto end;
+            if (*(f32*)(self + 0x14) >= lbl_80541EFC) goto end;
         } else if (kind == 0 || kind == 3 || kind == 0x15 || kind == 0x23) {
             if (*(f32*)(self + 0x40) >= lbl_80541E9C) goto end;
         } else if (kind == 1 || kind == 2) {
@@ -466,17 +470,14 @@ extern "C" void fn_80331E6C(char* this_) {
         } else if (kind == 0x17) {
             if (*(f32*)(self + 0x3c) <= lbl_80541E9C) goto end;
         } else if (kind == 0x18) {
-            if (*(f32*)(self + 0x3c) < lbl_80541E9C) goto end;
+            if (*(f32*)(self + 0x3c) >= lbl_80541E9C) goto end;
         }
 
-        *(Vec*)(self + 0xc) = pos;
-        *(f32*)(self + 0x14) = pos.z;
+        *(JGeometry::TVec3<f32>*)(self + 0xc) = pos;
         *(s32*)(self + 4) = room;
         *(s32*)(self + 0x284) = 0x14;
-        *(Vec*)(self + 0x2e8) = pos;
-        *(f32*)(self + 0x2f0) = pos.z;
-        *(Vec*)(self + 0x2d0) = pos;
-        *(f32*)(self + 0x2d8) = pos.z;
+        *(JGeometry::TVec3<f32>*)(self + 0x2e8) = pos;
+        *(JGeometry::TVec3<f32>*)(self + 0x2d0) = pos;
         *(u8*)(self + 0x2a4) = 0;
         *(u8*)(self + 0x2a5) = 0;
         mag = PSVECMag((Vec*)(self + 0x2b8));
@@ -485,6 +486,7 @@ extern "C" void fn_80331E6C(char* this_) {
         } else if (mag > lbl_80541ECC) {
             mag = lbl_80541ECC;
         }
+        f32 halfMag = mag * lbl_80541EE4;
         if (kind != 6 && kind != 0x14) {
             *(f32*)(self + 0x44) = lbl_80541E9C;
             *(f32*)(self + 0x40) = lbl_80541E9C;
@@ -498,20 +500,20 @@ extern "C" void fn_80331E6C(char* this_) {
         switch (kind) {
         case 0:
         case 3:
-            *(f32*)(self + 0x40) = mag * lbl_80541EE4;
-            *(f32*)(self + 0x2bc) = mag;
+            *(f32*)(self + 0x40) = -halfMag;
+            *(f32*)(self + 0x2bc) = -mag;
             break;
         case 1:
         case 2:
-            *(f32*)(self + 0x40) = -(mag * lbl_80541EE4);
-            *(f32*)(self + 0x2bc) = -mag;
+            *(f32*)(self + 0x40) = halfMag;
+            *(f32*)(self + 0x2bc) = mag;
             break;
         case 0x17:
-            *(f32*)(self + 0x3c) = mag * lbl_80541EE4;
+            *(f32*)(self + 0x3c) = halfMag;
             *(f32*)(self + 0x2b8) = mag;
             break;
         case 0x18:
-            *(f32*)(self + 0x3c) = -(mag * lbl_80541EE4);
+            *(f32*)(self + 0x3c) = -halfMag;
             *(f32*)(self + 0x2b8) = -mag;
             break;
         }
@@ -529,16 +531,13 @@ extern "C" void fn_80331E6C(char* this_) {
         f32 sx = dx * dx;
         f32 sy = dy * dy;
         f32 sq = sx + sy;
-        f32 dist = lbl_80541E9C;
-        if (sq > lbl_80541E9C) {
-            f32 y = (f32)__frsqrte(sq);
-            dist = sq * (lbl_80541EE4 * y * (lbl_80541ECC - sq * (y * y)));
-        }
-        if (dist <= lbl_80541F10) goto end;
+        sq = JGeometry::TUtilf::sqrt(sq);
+        if (!(sq > lbl_80541F10)) goto end;
     }
 
-end:
     *(u8*)(self + 0x2a4) = 1;
+end:
+    ;
 }
 
 extern "C" unsigned char fn_801F2618(char* a, float* out, unsigned int c);
@@ -834,7 +833,7 @@ extern "C" void fn_80333148(char* this_) {
     extern char* fn_802D6A9C(void);
     extern int fn_80138A30(unsigned char* a);
     extern int fn_801EEC98(char* a, void* h, u16* p5, int p6, int p7, s32* p8, int p9, int p10);
-    extern void fn_8023061C(int a);
+    extern void fn_8023061C(int a, int b);
     extern unsigned char fn_8022F9E4(int idx, int a0, unsigned char a1, unsigned char a2);
 
     struct VT14 {
@@ -854,9 +853,8 @@ extern "C" void fn_80333148(char* this_) {
         virtual void s13();
     };
 
-    s32 idx;
     s32 local_18;
-    u16 local_8 = 0;
+    volatile u16 local_8 = 0;
     char* obj = this_;
 
     *(float*)(this_ + 0x60) = -7.0f;
@@ -892,19 +890,22 @@ extern "C" void fn_80333148(char* this_) {
     obj[0x2a4] = 1;
     obj[0x2a5] = 1;
     *(s32*)(obj + 0x290) = *(u32*)(obj + 0x90) & 0xf;
-    *(s32*)(obj + 0x108) = 1000;
-    *(s32*)(obj + 0x264) = 0;
-    *(s32*)(obj + 0x26c) = 0;
     *(float*)(obj + 0x2d0) = *(float*)(obj + 0xc);
     *(float*)(obj + 0x2d4) = *(float*)(obj + 0x10);
     *(float*)(obj + 0x2d8) = *(float*)(obj + 0x14);
-    *(u32*)(lbl_8053AAF8 + 0xb4) = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+    *(s32*)(obj + 0x108) = 1000;
+    *(s32*)(obj + 0x264) = 0;
+    *(s32*)(obj + 0x26c) = 0;
     {
-        u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+    unsigned char* rng = lbl_8053AAF8;
+    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+    {
+        u32 a = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
         *(s16*)(obj + 0x29c) = 65536.0f * (*(float*)&a - 1.0f);
     }
+    }
     *(s16*)(obj + 0x29e) = 0;
-    obj[0x288] = (u8)0xff;
+    *(u8*)(obj + 0x288) = 0xff;
     *(float*)(obj + 0x2b0) = 0.0f;
     *(s32*)(obj + 0x2ac) = 0;
     *(s32*)(obj + 0x298) = 0;
@@ -913,7 +914,7 @@ extern "C" void fn_80333148(char* this_) {
     *(s32*)(obj + 0x278) = 0;
     *(s32*)(obj + 0x27c) = 50;
     *(s32*)(obj + 0x280) = 0;
-    *(Vec*)(obj + 0x2dc) = *(Vec*)(obj + 0xc);
+    *(JGeometry::TVec3<f32>*)(obj + 0x2dc) = *(JGeometry::TVec3<f32>*)(obj + 0xc);
     *(s32*)(obj + 0x294) = *(s32*)(obj + 4);
     *(s32*)(obj + 0x268) = 10;
     *(s32*)(obj + 0x2f4) = 0;
@@ -926,19 +927,18 @@ extern "C" void fn_80333148(char* this_) {
     *(s32*)(obj + 0x28c) = 1;
     if (lbl_8053AAF8[0x7f] == 0) {
         *(s32*)(obj + 0x28c) = 4;
-    }
-    {
         s32 n = fn_80138A30(lbl_8053AAF8);
         s32 shift = 0;
         for (; n > 0; n--) {
-            if (((lbl_8053AAF8[0x83] >> shift) & 3) == 2) {
+            if (((lbl_8053AAF8[0x83] >> shift) & 3U) == 2) {
                 obj[0x2a0] = 0;
                 break;
             }
             shift += 2;
         }
     }
-    obj[0x2a6] = 0;
+    u32 idx = 0;
+    *(u8*)(obj + 0x2a6) = idx;
     *(float*)(obj + 0x2b8) = 0.0f;
     *(float*)(obj + 0x2bc) = 0.0f;
     *(float*)(obj + 0x2c0) = 0.0f;
@@ -949,22 +949,31 @@ extern "C" void fn_80333148(char* this_) {
     *(float*)(obj + 0x2c8) = 0.0f;
     *(float*)(obj + 0x2c4) = 0.0f;
     *(float*)(obj + 0x184) = 20.0f;
-    *(s32*)(obj + 0x284) = 0;
-    *(Vec*)(obj + 0x2e8) = *(Vec*)(obj + 0xc);
-    *(float*)(obj + 0x2f0) = *(float*)(obj + 0x14);
+    *(s32*)(obj + 0x284) = idx;
+    *(JGeometry::TVec3<f32>*)(obj + 0x2e8) = *(JGeometry::TVec3<f32>*)(obj + 0xc);
 
     switch (*(s32*)(obj + 0x290)) {
+    default:
+        *(s32*)(obj + 0x230) = 0;
+        *(s32*)(obj + 0xb8) = 2;
+        break;
+    case 2:
+    case 3:
+    case 8:
+        *(s32*)(obj + 0x230) = 3;
+        break;
     case 1: {
-        fn_801EEC98(obj, *(void**)(obj + 0x198), &local_8, 0, 0, &local_18, 0, *(s32*)(obj + 0x28c));
+        fn_801EEC98(obj, *(void**)(obj + 0x198), (u16*)&local_8, 0, 0, &local_18, 0, *(s32*)(obj + 0x28c));
         *(s32*)(obj + 0x240) = 10;
         if (local_18 == -1) {
             char* m = fn_802D6A9C();
             float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(obj + 0xc);
             float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(obj + 0x10);
-            local_8 = JMath::atanTable_.atan2_(y, x) * 10430.378f;
-            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].first;
-            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].second;
-            *(s32*)(obj + 0x98) = (*(float*)(obj + 0x2b8) >= 0.0f) ? 1 : 0;
+            local_8 = (s16)(s32)(JMath::atanTable_.atan2_(y, x) * 10430.378f);
+            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.sinShort(local_8);
+            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.cosShort(local_8);
+            if (*(float*)(obj + 0x2b8) >= 0.0f) *(s32*)(obj + 0x98) = 0;
+            else *(s32*)(obj + 0x98) = 1;
             obj[0x2a6] = 1;
             *(s32*)(obj + 0x230) = 7;
         } else {
@@ -974,15 +983,10 @@ extern "C" void fn_80333148(char* this_) {
         }
         break;
     }
-    case 2:
-    case 3:
-    case 8:
-        *(s32*)(obj + 0x230) = 3;
-        break;
     case 4:
         *(s32*)(obj + 0xb8) = 2;
         *(s32*)(obj + 0x290) = 0;
-        fn_8023061C(*(s32*)(obj + 0x25c));
+        fn_8023061C(*(s32*)(obj + 0x25c), 0);
         idx = *(s32*)(obj + 0x25c);
     case 5:
         if (fn_8022F9E4(idx, *(s32*)(obj + 0x198), 0, 0) == 1) {
@@ -993,21 +997,20 @@ extern "C" void fn_80333148(char* this_) {
         break;
     case 6:
     case 7:
-    default:
         *(s32*)(obj + 0x230) = 0;
         *(s32*)(obj + 0xb8) = 2;
         if (*(s32*)(obj + 0x290) == 7) {
             *(s32*)(obj + 0x290) = 6;
             *(s32*)(obj + 0x230) = 1;
-            if (obj[0x2a2] == 1) {
-                u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f);
-                *(u32*)(lbl_8053AAF8 + 0xb4) = a;
-                a = (a >> 9) | 0x3f800000;
+            if (*(u8*)(obj + 0x2a2) == 1) {
+                unsigned char* rng = lbl_8053AAF8;
+                *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+                u32 a = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
                 *(s32*)(obj + 0x240) = (s32)(200.0f * (*(float*)&a - 1.0f)) + 0xc8;
             } else {
-                u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f);
-                *(u32*)(lbl_8053AAF8 + 0xb4) = a;
-                a = (a >> 9) | 0x3f800000;
+                unsigned char* rng = lbl_8053AAF8;
+                *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+                u32 a = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
                 *(s32*)(obj + 0x240) = (s32)(100.0f * (*(float*)&a - 1.0f)) + 0x64;
             }
         }
