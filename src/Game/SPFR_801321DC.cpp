@@ -36,8 +36,8 @@ extern void* lbl_8053AD70;
 extern f32 lbl_8053CCF0;
 extern f32 lbl_8053CCF4;
 extern f32 lbl_8053CCF8;
-extern f32 lbl_8053CCFC;
-extern f32 lbl_8053CD04;
+extern const f32 lbl_8053CCFC;
+extern const f32 lbl_8053CD04;
 extern f32 lbl_8053CD14;
 extern const f32 lbl_8053CD08;
 extern f32 lbl_8053CD0C;
@@ -591,10 +591,15 @@ extern "C" void fn_80132E18(void* param_1) {
 
 extern "C" void fn_80132F60(char* p) {
     JGeometry::TBox2f box;
+    JGeometry::TVec3f v;
+    JGeometry::TVec3f spawnV;
+    JGeometry::TVec3f spawnPos;
+    JGeometry::TBox2f spawnBox;
+    JGeometry::TVec3f pos;
     s32 id;
     f32 height, one, width;
     int multiplier;
-    u32* seed;
+    u8* random;
 
     fn_8010DF78();
     box.i.x = *(f32*)(p + 0x60);
@@ -624,7 +629,7 @@ extern "C" void fn_80132F60(char* p) {
     case 1:
         *(s32*)(p + 0x244) += 1;
         if (*(s32*)(p + 0x244) >= 0x28) {
-            JGeometry::TVec3f v = *(JGeometry::TVec3f*)(p + 0xc);
+            v = *(JGeometry::TVec3f*)(p + 0xc);
             *(s32*)(p + 0x288) = fn_8013CC50(*(void**)(p + 4), &v, 0x184, 0, -1, 0, 0, 1, lbl_8053CD00);
             *(u8*)(p + 0x11d) = 1;
             fn_801F0E34(p, 0x40090, 0);
@@ -637,7 +642,7 @@ extern "C" void fn_80132F60(char* p) {
         default:
             break;
         case 1: {
-            id = spfrTrySpawn(p);
+            id = spfrTrySpawn(p, spawnBox, spawnPos, spawnV);
             if (id >= 0) {
                 *(s32*)(p + 0x23c) = id;
                 fn_80132454(p, 3);
@@ -663,7 +668,6 @@ extern "C" void fn_80132F60(char* p) {
     case 8:
         *(s32*)(p + 0x24c) += 1;
         if (*(s32*)(p + 0x24c) >= 0xf) {
-            JGeometry::TVec3f pos;
             void* obj;
 
             *(s32*)(p + 0x24c) = 0;
@@ -677,20 +681,20 @@ extern "C" void fn_80132F60(char* p) {
             }
             pos.x -= lbl_8053CCF4;
             pos.y += lbl_8053CCF8;
-            one = 1.0f;
             width = lbl_8053CCFC;
             height = lbl_8053CD04;
+            one = lbl_8053CD00;
             multiplier = 0x19660d;
             {
-                seed = (u32*)(lbl_8053AAF8 + 0xb4);
-                *seed = *seed * multiplier + 0x3c6ef35f;
-                u32 bits = (*seed >> 9) | 0x3f800000;
+                random = lbl_8053AAF8;
+                *(u32*)(random + 0xb4) = *(u32*)(random + 0xb4) * multiplier + 0x3c6ef35f;
+                u32 bits = (*(u32*)(random + 0xb4) >> 9) | 0x3f800000;
                 pos.x += (*(f32*)&bits - one) * width;
             }
             {
-                seed = (u32*)(lbl_8053AAF8 + 0xb4);
-                *seed = *seed * multiplier + 0x3c6ef35f;
-                u32 bits = (*seed >> 9) | 0x3f800000;
+                random = lbl_8053AAF8;
+                *(u32*)(random + 0xb4) = *(u32*)(random + 0xb4) * multiplier + 0x3c6ef35f;
+                u32 bits = (*(u32*)(random + 0xb4) >> 9) | 0x3f800000;
                 pos.y += (*(f32*)&bits - one) * height;
             }
             Actor_CreateByID(fn_801F856C(), 0x534c5231, *(u32*)(p + 4), (f32*)&pos, 0x102, -1, -1);
