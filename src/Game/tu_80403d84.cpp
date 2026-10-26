@@ -196,7 +196,7 @@ void fn_80403E24(T80403D84* self) {
 	self->f659 = 3;
 }
 
-u8 fn_804045F8(void*, s32 bit) {
+BOOL fn_804045F8(void*, s32 bit) {
 	if (lbl_8053AAF8[0x7e]) {
 		return (lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a & (u8)(1 << bit)) != 0;
 	}
@@ -617,24 +617,26 @@ struct SoundHolder {
 u8 fn_80404270(void* self, s32 idx) {
 	if (!((u8*)lbl_80529DEC)[0x23f] && lbl_8053AAF8[0x7e] && !((u8*)self)[0x656] && !fn_804045F8(self, idx)) {
 		if (idx == 0) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 1) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 2) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 3) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 4) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 5) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 6) {
-			if (EC80Bit28(idx, 1)) return 1;
+			if (EC80Bit28(idx, 1)) goto found;
 		} else if (idx == 7) {
-			if (EC80Bit28(idx, 2)) return 1;
+			if (EC80Bit28(idx, 2)) goto found;
 		}
 	}
 	return 0;
+found:
+	return 1;
 }
 
 extern "C" void fn_8040E298(u8* self) {
