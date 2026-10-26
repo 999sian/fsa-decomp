@@ -536,6 +536,8 @@ struct J2DTextBox : public J2DPane
         mFontSize.y = y;
     }
 
+    inline void setFontSize(TFontSize size) { setFontSize(size.x, size.y); }
+
     inline void setCharSpace(f32 space) { mCharSpacing = space; }
     inline f32 getCharSpace() const { return mCharSpacing; }
     inline void setLineSpace(f32 space) { mLineSpacing = space; }
