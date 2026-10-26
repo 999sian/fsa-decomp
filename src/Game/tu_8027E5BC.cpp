@@ -11,7 +11,7 @@ static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry
 #include "JSystem/JGeometry/Box.h"
 #include "string.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-extern "C" const JGeometry::TVec3<f32> lbl_8046BF38[];
+extern "C" JGeometry::TVec3<f32> lbl_8046BF38[];
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define S32(p, o) (*(s32*)((char*)(p) + (o)))
