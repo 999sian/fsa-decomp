@@ -2839,8 +2839,8 @@ extern "C" void fn_803B5378(void* this_);
 extern "C" void fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_80458FF0(void* mgr, u32 id, s32 a, s32 b);
 extern void* sManager__8JUTVideo;
-static inline s32 MenuPlayerCount803B(MsgGame* game) {
-    s32 count = 0;
+static inline int MenuPlayerCount803B(MsgGame* game) {
+    int count = 0;
     for (s32 i = 0; i < 4; i++) {
         if (((u8*)game)[0x82] & (u8)(1 << i)) count++;
     }
@@ -2853,12 +2853,7 @@ extern "C" void fn_803B6768(void* this_) {
     u8* c2f0;
     s32 i;
     u8* p = (u8*)this_;
-    count = 0;
-    for (s32 j = 0; j < 4; j++) {
-        if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << j)) {
-            count++;
-        }
-    }
+    count = MenuPlayerCount803B(lbl_8053AAF8);
     switch (count) {
     case 2:
         *(s32*)(p + 0x450) = 2;
@@ -2936,17 +2931,22 @@ extern "C" void fn_803B6768(void* this_) {
             f32 width = *(f32*)((u8*)pane + 0x28) - *(f32*)((u8*)pane + 0x20);
             s32 texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
             x0 = *(f32*)pane->getBounds();
-            f32 cx = *(f32*)(*(J2DPane**)(p + 0x168))->getBounds() + x0;
-            f32 scale = lbl_805433CC;
-            f32 center = width * lbl_805433E8 + cx;
+            f32 cx = *(f32*)(*(J2DPane**)(p + 0x168))->getBounds();
+            cx += x0;
+            f32 center;
+            f32 scale;
+            scale = lbl_805433CC;
+            center = width * lbl_805433E8 + cx;
             *(f32*)(c2f0 + 0x2f0) = scale * center / (f32)texW;
 
             s32 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
             pane = *(J2DPane**)((u8*)c320 + 0x158);
             f32 by = ((f32*)(*(J2DPane**)(p + 0x168))->getBounds())[1];
+            f32 baseY;
             f32 h = *(f32*)((u8*)pane + 0x2c) - *(f32*)((u8*)pane + 0x24);
             f32 y = by + h;
-            *(f32*)(c2f0 + 0x2f4) = lbl_805433D0 * (*(f32*)(p + 0x3f0) + y - lbl_805433FC - lbl_80543400) / (f32)texH;
+            baseY = *(f32*)(p + 0x3f0);
+            *(f32*)(c2f0 + 0x2f4) = lbl_805433D0 * (baseY + y - lbl_805433FC - lbl_80543400) / (f32)texH;
             *(f32*)(c2f0 + 0x2f8) = lbl_805433C8;
         }
     }
