@@ -681,9 +681,9 @@ extern "C" void fn_80132F60(char* p) {
             }
             pos.x -= lbl_8053CCF4;
             pos.y += lbl_8053CCF8;
+            one = lbl_8053CD00;
             width = lbl_8053CCFC;
             height = lbl_8053CD04;
-            one = lbl_8053CD00;
             multiplier = 0x19660d;
             {
                 random = lbl_8053AAF8;
