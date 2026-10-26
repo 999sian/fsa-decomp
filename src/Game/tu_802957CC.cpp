@@ -483,8 +483,9 @@ extern "C" void fn_80295EE8(char* this_) {
 extern "C" s32 fn_801F2718(void* p, u32 id);
 extern "C" void fn_802A381C(void* mgr, void* v, s32 a, s32 b);
 static inline void restoreHouseGrid(char* self) {
+    char* row;
     s32 i, j;
-    char *row, *col;
+    char* col;
     JGeometry::TVec3f gridBase;
             *(u8*)(self + 0x24c) = 0;
             if (*(u8*)(self + 0x24c) == 0) {
@@ -514,15 +515,14 @@ extern "C" void fn_802961AC(void* p) {
     char* other;
     s32 i;
     char* row;
-    s32 mode;
     char* col;
     JGeometry::TVec3f* dir;
     JGeometry::TVec3f v;
-    JGeometry::TVec3f gridBase;
     f32 ox;
     s32 id;
     s32 j;
     u32 n;
+    s32 mode;
 
     id = fn_801F2718(self, 0x534C5233);
     if (id < 0) {
@@ -556,26 +556,7 @@ extern "C" void fn_802961AC(void* p) {
             clearHouseActors(self, 0x2a0, 0x26c);
             clearHouseFollowers(self, 0x29c, 0x25c);
 
-            *(u8*)(self + 0x24c) = 0;
-            if (*(u8*)(self + 0x24c) == 0) {
-                *(u8*)(self + 0x24c) = 1;
-                gridBase = *(JGeometry::TVec3f*)(self + 0xc);
-                gridBase.x += *(f32*)(self + 0x60);
-                gridBase.x += 8.0f;
-                gridBase.y += *(f32*)(self + 0x64);
-                gridBase.y += 8.0f;
-                gridBase.z = 0.0f;
-                JGeometry::TVec3f grid(gridBase);
-                for (i = 0, row = self; i < 6; i++, row += 0xc) {
-                    grid.y = gridBase.y;
-                    for (j = 0, col = row; j < 6; j++, col += 2) {
-                        fn_802A381C(lbl_8053AC98, &grid, 0, *(u16*)(col + 0x3b0));
-                        fn_802A381C(lbl_8053AC98, &grid, 1, 0);
-                        grid.y += 16.0f;
-                    }
-                    grid.x += 16.0f;
-                }
-            }
+            restoreHouseGrid(self);
             *(s32*)(self + 0x2c4) = 120;
             *(s32*)(self + 0x2c8) = 120;
             *(u8*)(self + 0x2ba) = 1;
