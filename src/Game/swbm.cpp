@@ -173,17 +173,18 @@ extern "C" u8 fn_801F2B20(void* this_, s32 a);
 extern "C" u8 fn_801F2A10(void* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_802A20F0(void* a, void* pos, s32 b, s32 room, s32 c, s32 d);
 extern "C" void* fn_801F856C(void);
-extern "C" void Actor_CreateByID(...);
+#include "JSystem/JGeometry/Vec.h"
+extern "C" void Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
 extern "C" void fn_8030C210(void* a, void* pos);
 extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" f64 __ps_add(f64 a, f64 b);
 extern "C" void fn_8017A68C(char* this_) {
-    __psq_st(__ps_add(__psq_l(this_ + 0xc, 0, 0, 0), __psq_l(this_ + 0x3c, 0, 0, 0)), this_ + 0xc, 0, 0, 0);
-    __psq_st(__ps_add(__psq_l(this_ + 0x14, 0, 1, 0), __psq_l(this_ + 0x44, 0, 1, 0)), this_ + 0x14, 0, 1, 0);
+    *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
 
     if (*(s32*)(this_ + 0x25c) == 1) {
-        s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98)) + 0x2000;
+        s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98));
+        ang += 0x2000;
         f32 r = lbl_8053DC7C;
         for (s32 i = 0; i < 2; i++) {
             TVec3f pos;
@@ -209,8 +210,7 @@ extern "C" void fn_8017A68C(char* this_) {
             if (room < 8) {
                 fn_8013CC50(room, this_ + 0xc, lbl_8053DC78, 0x339, 0, 1, 0, 0, 1);
             } else {
-                fn_801F856C();
-                Actor_CreateByID(0x48544d4b, room, this_ + 0xc, 0, -1, -1);
+                Actor_CreateByID(fn_801F856C(), 0x48544d4b, room, this_ + 0xc, 0, -1, -1);
             }
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x244) = 0x24;
@@ -249,9 +249,9 @@ extern "C" void fn_8017A68C(char* this_) {
                     *(f32*)(this_ + 0x3c) = lbl_8053DC84;
                     *(f32*)(this_ + 0x40) = lbl_8053DC88;
                     *(f32*)(this_ + 0x44) = lbl_8053DC84;
-                    *(s32*)(this_ + 0x230) = 1;
                     break;
                 }
+                *(s32*)(this_ + 0x230) = 1;
             }
         }
         break;
@@ -261,17 +261,17 @@ extern "C" void fn_8017A68C(char* this_) {
             if (room < 8) {
                 fn_8013CC50(room, this_ + 0xc, lbl_8053DC78, 0x339, 0, 1, 0, 0, 1);
             } else {
-                fn_801F856C();
-                Actor_CreateByID(0x48544d4b, room, this_ + 0xc, 0, -1, -1);
+                Actor_CreateByID(fn_801F856C(), 0x48544d4b, room, this_ + 0xc, 0, -1, -1);
             }
             *(u8*)(this_ + 0x11c) = 0;
             return;
         }
-        break;
+        if (*(s32*)(this_ + 0x23c) == 0) {
+            *(s32*)(this_ + 0x23c) = 2;
+            *(s32*)(this_ + 0x248) += 1;
+            if (*(s32*)(this_ + 0x248) > 2) *(s32*)(this_ + 0x248) = 0;
+        }
     case 2:
-        break;
-    }
-
     if (*(s32*)(this_ + 0x240) == 0) {
         *(f32*)(this_ + 0x44) = lbl_8053DC84;
         *(f32*)(this_ + 0x40) = lbl_8053DC84;
@@ -282,6 +282,8 @@ extern "C" void fn_8017A68C(char* this_) {
     }
     if (*(s32*)(this_ + 4) < 8) {
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), this_ + 0xc);
+    }
+    break;
     }
     if (*(s32*)(this_ + 0x230) == 0) {
         *(s32*)(this_ + 0x254) = lbl_804A10A0[*(s32*)(this_ + 0x98) * 3 + *(s32*)(this_ + 0x248)];
@@ -299,15 +301,15 @@ extern "C" void fn_8017A68C(char* this_) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" s32 fn_8017AAF8(char* this_, s32 p1, s32 p2) {
+    void* handle;
     s32 id;
     s32 sub;
     s32 kind;
-    void* handle;
-    u8* base;
-    id = p1;
     handle = *(void**)(this_ + 0x198);
-    base = (u8*)fn_8020D58C();
+    u8* base = (u8*)fn_8020D58C();
+    id = p1;
     if (fn_8020D6AC(base + base[1] * 0x784 + 4, p1, p2, handle, lbl_80466880) == 1) {
         return 1;
     }
@@ -361,5 +363,5 @@ extern "C" s32 fn_8017AAF8(char* this_, s32 p1, s32 p2) {
     }
     return 0;
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
