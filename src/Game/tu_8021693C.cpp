@@ -115,17 +115,17 @@ extern "C" void fn_80216A8C(TuBox* box) {
         if (*(u8*)(o + 0x34d) < 2) return;
         switch (*(s32*)(o + 0x348) - 0x8f) {
             case 1: case 12: case 18:
-                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC1C, lbl_8053FC00, 1); break;
+                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC18, lbl_8053FC00, 0); break;
             case 2: case 13: case 19:
-                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC00, lbl_8053FC18, 2); break;
+                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC20, lbl_8053FC20, 2); break;
             case 3: case 14: case 20:
-                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC00, lbl_8053FC1C, 3); break;
+                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC00, lbl_8053FC18, 2); break;
             case 4: case 15: case 21:
                 TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC24, lbl_8053FC20, 1); break;
             case 5: case 8: case 22:
                 TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC1C, lbl_8053FC00, 1); break;
             case 6: case 9: case 23:
-                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC20, lbl_8053FC20, 2); break;
+                TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC24, lbl_8053FC24, 3); break;
             case 7: case 10: case 16:
                 TuBoxSetQuad(box, lbl_8053FC10, lbl_8053FC14, lbl_8053FC00, lbl_8053FC1C, 3); break;
             case 0: case 11: case 17:
