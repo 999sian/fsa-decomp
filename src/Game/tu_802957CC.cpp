@@ -241,8 +241,6 @@ struct HOUSLinks {
 };
 
 
-static inline f32 addHouseOffset(f32 value, const f32 offset) { value += offset; return value; }
-
 static inline s32 WarpDestination(const char* actor) {
     int room = (*(const u32*)(actor + 0x90) >> 24) & 7;
     s32 result = room + 7;
@@ -1289,10 +1287,10 @@ extern "C" void fn_80299AD0(char* self) {
     s32 d;
     s32 dir;
     u8 ok;
+    f32 x0;
     f32 y0;
     f32 x1;
     f32 y1;
-    f32 x0;
     JGeometry::TBox2f box;
     JGeometry::TVec3f grid;
     JGeometry::TVec3f gridBase;
@@ -1879,16 +1877,16 @@ extern "C" void fn_8029A974(char* self) {
 }
 #pragma opt_common_subs reset
 extern "C" void fn_8029AE58(char* p) {
-        JGeometry::TVec3f v;
+    const f32 center = lbl_80540678;
+    JGeometry::TVec3f v;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f origin;
     origin = *(JGeometry::TVec3f*)(p + 0xc);
     origin.x += *(f32*)(p + 0x60);
     origin.y += *(f32*)(p + 0x64);
-    const f32 center = lbl_80540678;
     origin.x += center;
     origin.y += center;
-    origin.z = 0.0f;
+    origin.z = lbl_80540674;
     pos = origin;
     s32 j;
     s32 i;
@@ -1906,10 +1904,10 @@ extern "C" void fn_8029AE58(char* p) {
                 else
                     *(u16*)(col + 0x3b0) = 0x360;
             }
-            pos.y += 16.0f;
+            pos.y += lbl_8054067C;
         }
         row += 12;
-        pos.x += 16.0f;
+        pos.x += lbl_8054067C;
     }
     *(u8*)(p + 0x2b5) = 1;
     s32 warp = -1;
