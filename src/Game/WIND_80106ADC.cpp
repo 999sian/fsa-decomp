@@ -187,6 +187,34 @@ struct WIND_Vec {
     f32 x, y, z;
 };
 
+extern "C" const f32 lbl_8053C2A0;
+extern "C" const f32 lbl_8053C2A4;
+extern "C" const f32 lbl_8053C2B4;
+
+static inline void spawnWINDInner(u8* this_, s32 state) {
+    WIND_Box box = *(WIND_Box*)(fn_802D6A9C() + 0xCC);
+    f32 pos[3];
+    f32 cy = box.y1;
+    f32 cx = box.x1;
+    f32 k = lbl_8053C2B4;
+    f32 x, y;
+    x = box.x0 - cx;
+    x = k * x + cx;
+    y = box.y0 - cy;
+    y = k * y + cy;
+    pos[0] = x;
+    pos[1] = y;
+    pos[2] = lbl_8053C2A0;
+    switch (state) {
+    case 0:
+        *(void**)(this_ + 0x240) = fn_8013CC50(*(s32*)(this_ + 4), pos, 0x505, 0, 0, 0, 0, 1, lbl_8053C2A4);
+        break;
+    case 1:
+        *(void**)(this_ + 0x240) = fn_8013CC50(*(s32*)(this_ + 4), pos, 0x504, 0, 0, 0, 0, 1, lbl_8053C2A4);
+        break;
+    }
+}
+
 extern "C" void fn_80106EE0(u8* this_) {
     v01__5ActorFv(this_);
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xF;
@@ -194,8 +222,8 @@ extern "C" void fn_80106EE0(u8* this_) {
     s32 state = *(s32*)(this_ + 0x234);
     WIND_Vec pos;
     WIND_Box b = *(WIND_Box*)(fn_802D6A9C() + 0xCC);
-    const f32 x1 = b.x1;
-    const f32 y1 = b.y1;
+    f32 x1 = b.x1;
+    f32 y1 = b.y1;
     pos.set(0.5f * (b.x0 - x1) + x1, 0.5f * (b.y0 - y1) + y1, 0.0f);
     switch (state) {
     case 0:
