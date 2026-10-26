@@ -77,8 +77,11 @@ extern "C" const f32 lbl_80542C30;
 extern "C" const f32 lbl_80542C34;
 extern "C" const f32 lbl_80542C38;
 extern "C" const f64 lbl_80542C40;
-static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 height, f32 scale = lbl_80542C28) {
- out.set(width * scale, height * scale, lbl_80542C24);
+static inline f32 orbitScreenHalf(s32 value) {
+ return value * lbl_80542C28;
+}
+static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 height) {
+ out.set(orbitScreenHalf(width), orbitScreenHalf(height), lbl_80542C24);
 }
 static inline void orbitOffset(JGeometry::TVec3<f32>& out, s16 angle, const f32 radius) {
  out.set(JMath::sincosTable_.cosShort(angle) * radius, JMath::sincosTable_.sinShort(angle) * radius, lbl_80542C24);
@@ -116,15 +119,9 @@ extern "C" void fn_80367888(u8* p) {
             break;
         }
         *(f32*)(p + 0x10) = lbl_80542C0C + *(f32*)(p + 0x25c);
-    case 1: {
- s16 zero = 0;
-        *(f32*)(p + 0x244) = *(f32*)(p + 0xc);
-        *(f32*)(p + 0x248) = *(f32*)(p + 0x10);
-        *(f32*)(p + 0x24c) = *(f32*)(p + 0x14);
-        *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
-        *(s16*)(p + 0x240) = zero;
-        break;
- }
+    case 1:
+ orbitInit(p, 0);
+ break;
     case 2:
         if (*(u8*)(p + 0x230) == 0) {
             if (*(s16*)(p + 0x240) >= 0) {
