@@ -1119,23 +1119,7 @@ extern void* lbl_8053AF80;
 extern u8 lbl_80529DEC[];
 
 struct TwtgOrd { u8 pad[0x244]; s32 order[4]; };
-static inline void twtgSortOrder(TwtgOrd* actor) {
-    TwtgOrd* o;
-    s32 j;
-    s32 k;
-    for (k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
-        o = actor;
-        for (j = 0; j < k; j++) {
-            s32 nv = fn_80236228(o->order[1]);
-            if (fn_80236228(o->order[0]) < nv) {
-                s32 t = o->order[0];
-                o->order[0] = o->order[1];
-                o->order[1] = t;
-            }
-            o = (TwtgOrd*)((char*)o + 4);
-        }
-    }
-}
+
 #pragma optimization_level 3
 extern "C" void fn_80315864(TwtgOrd* actor) {
     char* p = (char*)actor;
@@ -1155,17 +1139,16 @@ extern "C" void fn_80315864(TwtgOrd* actor) {
             if (twtgAsk(p, 0x486)) {
                 s32 j;
                 s32 k;
-                s32* o;
                 for (k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
-                    o = (s32*)p;
+                    TwtgOrd* o = actor;
                     for (j = 0; j < k; j++) {
-                        s32 nv = fn_80236228(o[0x248 / 4]);
-                        if (fn_80236228(o[0x244 / 4]) < nv) {
-                            s32 t = o[0x244 / 4];
-                            o[0x244 / 4] = o[0x248 / 4];
-                            o[0x248 / 4] = t;
+                        s32 nv = fn_80236228(o->order[1]);
+                        if (fn_80236228(o->order[0]) < nv) {
+                            s32 t = o->order[0];
+                            o->order[0] = o->order[1];
+                            o->order[1] = t;
                         }
-                        o++;
+                        o = (TwtgOrd*)((char*)o + 4);
                     }
                 }
             }
