@@ -2,6 +2,10 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
+static inline void clampPlayerSpeed(f32& speed, const f32 minimum, const f32 deceleration) {
+    speed -= deceleration;
+    if (speed < minimum) speed = minimum;
+}
 static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -z; v[1] = -y; }
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
@@ -704,6 +708,7 @@ void fn_8027FA08(char* p, f32* outp) {
     }
 }
 
+#pragma opt_propagation on
 extern "C" void fn_80280074(char* p) {
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> step;
@@ -750,20 +755,20 @@ extern "C" void fn_80280074(char* p) {
         }
         speed = PSVECMag((Vec*)(p + 0x344));
         if (fn_80244FFC(p)) {
+            speed -= 0.025f;
             f32 minimum = lbl_80540390;
-            speed -= lbl_8054038C;
             if (speed < minimum) speed = minimum;
         } else if (fn_80246F28(p) > lbl_80540360) {
+            speed -= 0.025f;
             f32 minimum = lbl_8054036C;
-            speed -= lbl_8054038C;
             if (speed < minimum) speed = minimum;
         } else {
-            speed -= lbl_8054038C;
+            speed -= 0.025f;
             if (speed < lbl_80540360) speed = lbl_80540360;
         }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
-        f32 y = direction.y;
         f32 x = direction.x;
+        f32 y = direction.y;
         F32(p, 0x344) = x;
         f32 z = direction.z;
         F32(p, 0x348) = y;
@@ -783,13 +788,13 @@ extern "C" void fn_80280074(char* p) {
         speed += lbl_80540398;
     } else {
         speed = PSVECMag((Vec*)(p + 0x344));
+        speed -= 0.025f;
         f32 minimum = lbl_80540390;
-        speed -= lbl_8054038C;
         if (speed < minimum) speed = minimum;
     }
         const JGeometry::TVec3<f32>& direction = lbl_8046BF38[S32(p, 0x3e8)];
-        f32 y = direction.y;
         f32 x = direction.x;
+        f32 y = direction.y;
         F32(p, 0x344) = x;
         f32 z = direction.z;
         F32(p, 0x348) = y;
@@ -799,7 +804,7 @@ extern "C" void fn_80280074(char* p) {
     if (U8(p, 0x3ff) >= 0x21) U8(p, 0x3ff) = 0;
     else U8(p, 0x3ff)++;
 }
-
+#pragma opt_propagation reset
 void fn_802804E0(char* p) {
     f32 speed;
     JGeometry::TVec3<f32> a;
