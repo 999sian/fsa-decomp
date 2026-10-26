@@ -245,15 +245,13 @@ static inline f32 addHouseOffset(f32 value, const f32 offset) { value += offset;
 
 static inline s32 WarpDestination(const char* actor) {
     int room = (*(const u32*)(actor + 0x90) >> 24) & 7;
-    int result = room + 7;
+    s32 result = room + 7;
     if (room == 0) result = room;
     return result;
 }
 static inline s32 HouseDestination(const char* actor) {
     int room = (*(const u32*)(actor + 0x90) >> 7) & 31;
-    int result = room + 7;
-    result &= ~-(room == 0);
-    return result;
+    return (room + 7) & ~-(room == 0);
 }
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
@@ -1309,19 +1307,7 @@ extern "C" void fn_80299AD0(char* self) {
     }
     dir = -1;
     if (*(u8*)(self + 0x2b9) == 0) {
-        if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
-            room = *(s32*)(self + 4);
-            if (fn_8023DE58(0) == room) {
-                d = fn_80238BC4(*(void**)(self + 0x198));
-                if (d >= 0 && d < 4) {
-                    *(s32*)(self + 0x2cc) = 1;
-                    goto gotPlayer;
-                }
-            }
-        }
-        d = -1;
-    gotPlayer:
-        dir = d;
+        dir = PushDirFromPlayer(self);
         if (dir == -1) {
             box.i.x = *(f32*)(self + 0x80);
             box.i.y = *(f32*)(self + 0x84);
