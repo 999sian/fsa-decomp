@@ -998,7 +998,6 @@ extern "C" void fn_802D7584(void* mgr, s32 index, s32 value);
 extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, s32 index);
 extern "C" u8 fn_802DCD0C(void* mgr);
-#pragma opt_lifetimes off
 extern "C" void fn_802C52DC(u8* p) {
     u32 packed;
     s32 x18;
