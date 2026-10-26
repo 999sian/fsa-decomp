@@ -69,7 +69,6 @@ struct RupyRotation {
 
 static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& ang, const f32& scale) {
         f32 cx;
-        const f32 s = scale;
         f32 sz;
         f32 sy;
         f32 sx;
@@ -91,15 +90,15 @@ static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& ang, cons
         rec.w18 = mtx;
         rec.b2d = 1;
         rec.b20 = 0;
-        mtx[0][0] = s * cycz;
-        mtx[1][0] = s * cysz;
-        mtx[2][0] = s * -sy;
-        mtx[0][1] = s * (sxsy * cz - cxsz);
-        mtx[1][1] = s * (sxsy * sz + cxcz);
-        mtx[2][1] = s * (sx * cy);
-        mtx[0][2] = s * (cxcz * sy + sxsz);
-        mtx[1][2] = s * (cxsz * sy - sxcz);
-        mtx[2][2] = s * (cx * cy);
+        mtx[0][0] = scale * cycz;
+        mtx[1][0] = scale * cysz;
+        mtx[2][0] = scale * -sy;
+        mtx[0][1] = scale * (sxsy * cz - cxsz);
+        mtx[1][1] = scale * (sxsy * sz + cxcz);
+        mtx[2][1] = scale * (sx * cy);
+        mtx[0][2] = scale * (cxcz * sy + sxsz);
+        mtx[1][2] = scale * (cxsz * sy - sxcz);
+        mtx[2][2] = scale * (cx * cy);
 }
 
 static inline void RupyDrawMtxConfig(f32 (*mtx)[4], DrawRec& rec, const JGeometry::TVec2f& config) {
