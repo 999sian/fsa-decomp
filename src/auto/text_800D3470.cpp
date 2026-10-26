@@ -1004,6 +1004,15 @@ extern "C" void fn_800D516C(void* param) {
     DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
+static inline void patchColorChannelData(u8* start, u8* p) {
+    J3DGDWriteXFCmdHdr(0x100e, 4);
+    ((J3DColorChan*)(p + 0x0e))->load();
+    ((J3DColorChan*)(p + 0x12))->load();
+    ((J3DColorChan*)(p + 0x10))->load();
+    ((J3DColorChan*)(p + 0x14))->load();
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
 extern "C" void fn_800D5318(u8* p) {
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 0x1c);
     u8* start = __GDCurrentDL->pDisplayListData;
@@ -2655,7 +2664,6 @@ extern "C" void fn_800DC934(u8* this_, Unk800DC64CSrc* src) {
 
 extern "C" void fn_800DCDD4(u8* this_, Unk800DCDD4Src* src) {
     u32 i;
-    u8* r;
     u8* q;
 
     *(this_ + 0x58) = src->m38();
@@ -2667,42 +2675,45 @@ extern "C" void fn_800DCDD4(u8* this_, Unk800DCDD4Src* src) {
         *(u32*)(q + 0x18) = *src->m23(i);
         q += 4;
     }
-    for (i = 0, q = this_, r = this_; i < 16; i++) {
-        u8* s = src->m41(i);
+    u8* r;
+    u32 j;
+    for (j = 0, q = this_, r = this_; j < 16; j++) {
+        u8* s = src->m41(j);
         q[0x5a] = s[1];
         q[0x5b] = s[2];
         q[0x5c] = s[3];
         q[0x5e] = s[5];
         q[0x5f] = s[6];
         q[0x60] = s[7];
-        *(u32*)(r + 0x130) = *src->m49(i);
+        *(u32*)(r + 0x130) = *src->m49(j);
         q += 8;
         r += 4;
     }
-    for (i = 0, r = this_; i < 4; i++) {
-        s16* s = src->m26(i);
+    u32 k;
+    for (k = 0, r = this_; k < 4; k++) {
+        s16* s = src->m26(k);
         *(s16*)(r + 0xda) = s[0];
         *(s16*)(r + 0xdc) = s[1];
         *(s16*)(r + 0xde) = s[2];
         *(s16*)(r + 0xe0) = s[3];
         r += 8;
     }
-    for (i = 0, r = this_; i < 4; i++) {
-        u8* s = src->m29(i);
+    for (k = 0, r = this_; k < 4; k++) {
+        u8* s = src->m29(k);
         r[0xfa] = s[0];
         r[0xfb] = s[1];
         r[0xfc] = s[2];
         r[0xfd] = s[3];
         r += 4;
     }
-    for (i = 0; i < 16; i++) {
-        this_[i + 0x10a] = src->m32(i);
+    for (k = 0; k < 16; k++) {
+        this_[k + 0x10a] = src->m32(k);
     }
-    for (i = 0; i < 16; i++) {
-        this_[i + 0x11a] = src->m35(i);
+    for (k = 0; k < 16; k++) {
+        this_[k + 0x11a] = src->m35(k);
     }
-    for (i = 0; i < 4; i++) {
-        this_[i + 0x12a] = *src->m46(i);
+    for (k = 0; k < 4; k++) {
+        this_[k + 0x12a] = *src->m46(k);
     }
 }
 
