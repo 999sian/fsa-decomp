@@ -160,66 +160,68 @@ extern "C" void fn_8033CD44(UnkObj8033CD44* this_) {
             name = (const char*)(base + 0x44);
             id = 0x1c1;
         } else {
-            name = (const char*)(base + 0x44);
             id = 0x37c;
+            name = (const char*)(base + 0x44);
         }
-        fn_801F06F0(this_, name, id, NULL, 3, lbl_805421A0, lbl_805421A0);
+        fn_801F06F0(this_, name, id, NULL, 3, 1.0f, 1.0f);
         fn_803075AC(this_->unk198, this_->unk4, &this_->mPos, id, 0, 2, -1, 0, 0, 0);
         return;
     case 2:
     case 6:
         if (state == 2) {
-            f32 b0 = lbl_805421B0;
-            f32 ac = lbl_805421AC;
+            f32 b0 = 0.0f;
+            f32 ac = -24.0f;
             f32 x;
-            f32 a8 = lbl_805421A8;
-            f32 a4 = lbl_805421A4;
+            f32 a8 = 32.0f;
+            f32 a4 = -16.0f;
             id = lbl_804ABCA0[this_->unk254][this_->unk250] + 0x3b4;
             for (s32 j = 0; j < 2; j++) {
                 x = a8 * (f32)j + a4;
                 for (s32 i = 0; i < 2; i++) {
                     f32 y = a8 * (f32)i + ac;
-                    JGeometry::TVec3f saved = this_->mPos;
+                    JGeometry::TVec3f saved;
+                    saved = this_->mPos;
                     this_->mPos.add(JGeometry::TVec3f(x, y, b0));
-                    fn_801F06F0(this_, (const char*)(base + 0x44), id, NULL, 3, lbl_805421A0, lbl_805421A0);
+                    fn_801F06F0(this_, (const char*)(base + 0x44), id, NULL, 3, 1.0f, 1.0f);
                     this_->mPos = saved;
                 }
             }
         } else {
             JGeometry::TVec3f saved = this_->mPos;
-            this_->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421A4, lbl_805421B0));
-            fn_801F06F0(this_, (const char*)(base + 0x44), 0x37d, NULL, 3, lbl_805421A0, lbl_805421A0);
+            this_->mPos.add(JGeometry::TVec3f(0.0f, -16.0f, 0.0f));
+            fn_801F06F0(this_, (const char*)(base + 0x44), 0x37d, NULL, 3, 1.0f, 1.0f);
             this_->mPos = saved;
         }
         {
+            s32 tile = this_->state == 2 ? lbl_804ABCA0[0][this_->unk250] + 0x3ca : 0x37d;
             JGeometry::TVec3f saved = this_->mPos;
-            this_->mPos.add(JGeometry::TVec3f(lbl_805421B0, lbl_805421A4, lbl_805421B0));
+            this_->mPos.add(JGeometry::TVec3f(0.0f, -16.0f, 0.0f));
             fn_803075AC(this_->unk198, this_->unk4, &this_->mPos,
-                        this_->state == 2 ? lbl_804ABCA0[0][this_->unk250] + 0x3ca : 0x37d, 0, 2, -1, 0, 0, 0);
+                        tile, 0, 2, -1, 0, 0, 0);
             this_->mPos = saved;
         }
         return;
     case 3: {
-        Mtx m;
         DrawRec rec;
+        Mtx m;
         PSMTXIdentity(m);
         m[0][0] = lbl_805421B4;
-        m[0][1] = lbl_805421B0;
-        m[0][2] = lbl_805421B0;
-        m[1][0] = lbl_805421B0;
+        m[0][1] = 0.0f;
+        m[0][2] = 0.0f;
+        m[1][0] = 0.0f;
         m[1][1] = lbl_805421B4;
-        m[1][2] = lbl_805421B0;
-        m[2][0] = lbl_805421B0;
-        m[2][1] = lbl_805421B0;
+        m[1][2] = 0.0f;
+        m[2][0] = 0.0f;
+        m[2][1] = 0.0f;
         m[2][2] = lbl_805421B4;
         rec.w18 = m;
-        fn_801F06F0(this_, (const char*)(base + 0x44), 0x1c1, &rec, 3, lbl_805421A0, lbl_805421A0);
+        fn_801F06F0(this_, (const char*)(base + 0x44), 0x1c1, &rec, 3, 1.0f, 1.0f);
         fn_803075AC(this_->unk198, this_->unk4, &this_->mPos, 0x1c1, 1, 2, -1, 0, 0, 0);
         return;
     }
     case 4: {
         void* res = fn_804032E8(0x54494d47, (const char*)(base + 0x58));
-        fn_801EFD34(this_, res, NULL, 7, lbl_805421B0, lbl_805421B0, lbl_805421B0);
+        fn_801EFD34(this_, res, NULL, 7, 0.0f, 0.0f, 0.0f);
         return;
     }
     default:
