@@ -727,6 +727,21 @@ static inline u8 enemyFlameHit(char* self, char* target, u8& hit) {
     }
     return hit;
 }
+static inline u8 enemyFlameHitResult(char* self, char* target) {
+    u8 hit=0;
+    bool flame=false;
+    if (target==0) return 0;
+    if (*(u32*)(target+0x1a0)=='FLME') flame=true;
+    if (flame) {
+        JGeometry::TVec3<f32> v;
+        v.zero();
+        fn_801F3128(target,&v.x);
+        v -= *(JGeometry::TVec3<f32>*)(target+0x3c);
+        hit=fn_801F37AC(self,*(u32*)(target+0x118),&v,0,*(u32*)(target+0x168),*(u32*)(target+0x110));
+        if((u8)hit) *(u8*)(target+0x164)=1;
+    }
+    return hit;
+}
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern const f32 lbl_80541ED0;
@@ -744,12 +759,18 @@ extern "C" void fn_80332A60(char* this_) {
         kind=0;
         hit=0;
         box.set(*(JGeometry::TBox2<f32>*)(p+0x60));
-        box.i.x += (offset.x=*(f32*)(p+0xc));
-        box.f.x += offset.x;
-        box.i.y += (offset.y=*(f32*)(p+0x10));
-        box.f.y += offset.y;
+        f32 x0=box.i.x;
+        f32 y0=box.i.y;
+        f32 x1=box.f.x;
+        f32 y1=box.f.y;
+        offset.x=*(f32*)(p+0xc);
+        x0+=offset.x; x1+=offset.x;
+        offset.y=*(f32*)(p+0x10);
+        y0+=offset.y; y1+=offset.y;
+        box.i.x=x0; box.i.y=y0; box.f.x=x1; box.f.y=y1;
+
         idx=fn_801F82CC(fn_801F856C(),p,*(u8*)(p+0x195),lbl_80541F28);
-        u32 result;
+        u8 result;
         if(idx>=0 && idx!=*(s32*)(p+0x198)) {
             a=(char*)fn_801F666C(fn_801F856C(),idx);
             result=enemyFlameHit(p,a,hit);
