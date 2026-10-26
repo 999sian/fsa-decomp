@@ -212,7 +212,7 @@ struct FSAPad {
     u8 _98;
     u8 _99[0x17];
 };
-extern "C" u64 lbl_804993B0[4];
+extern "C" s64 lbl_804993B0[4];
 extern "C" void fn_8008CF54(FSAPad* this_, s32 index);
 extern "C" void fn_8008D4CC(FSAPad* this_, s64 elapsed);
 extern "C" void dtor_8008D028(FSAPad* this_, s16 freeFlag);
@@ -653,20 +653,32 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
         fn_8008CF54(&pad3, 3);
         fn_8008D15C();
 
-        bool active0 = pad0._7c != -1 && pad0._98 != 0;
-        s64 t0 = active0 ? (lbl_804993B0[0] != 0 ? lbl_804993B0[0] : OSGetTime()) : 0;
+        bool active = false;
+        if (pad0._7c != -1 && pad0._98 != 0) {
+            active = true;
+        }
+        s64 t0 = active ? (lbl_804993B0[0] != 0 ? lbl_804993B0[0] : OSGetTime()) : 0;
         lbl_804993B0[0] = t0;
 
-        bool active1 = pad1._7c != -1 && pad1._98 != 0;
-        s64 t1 = active1 ? (lbl_804993B0[1] != 0 ? lbl_804993B0[1] : OSGetTime()) : 0;
+        active = false;
+        if (pad1._7c != -1 && pad1._98 != 0) {
+            active = true;
+        }
+        s64 t1 = active ? (lbl_804993B0[1] != 0 ? lbl_804993B0[1] : OSGetTime()) : 0;
         lbl_804993B0[1] = t1;
 
-        bool active2 = pad2._7c != -1 && pad2._98 != 0;
-        s64 t2 = active2 ? (lbl_804993B0[2] != 0 ? lbl_804993B0[2] : OSGetTime()) : 0;
+        active = false;
+        if (pad2._7c != -1 && pad2._98 != 0) {
+            active = true;
+        }
+        s64 t2 = active ? (lbl_804993B0[2] != 0 ? lbl_804993B0[2] : OSGetTime()) : 0;
         lbl_804993B0[2] = t2;
 
-        bool active3 = pad3._7c != -1 && pad3._98 != 0;
-        s64 t3 = active3 ? (lbl_804993B0[3] != 0 ? lbl_804993B0[3] : OSGetTime()) : 0;
+        active = false;
+        if (pad3._7c != -1 && pad3._98 != 0) {
+            active = true;
+        }
+        s64 t3 = active ? (lbl_804993B0[3] != 0 ? lbl_804993B0[3] : OSGetTime()) : 0;
         lbl_804993B0[3] = t3;
 
         s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
@@ -689,22 +701,13 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
         dtor_8008D028(&pad2, -1);
         dtor_8008D028(&pad1, -1);
         dtor_8008D028(&pad0, -1);
-    } else if (*(s32*)((u8*)this_ + 0x88) < 0) {
-        if (*(s32*)((u8*)this_ + 0x84) != 0) {
-            FSAPad* pad = (FSAPad*)*(s32*)((u8*)this_ + 0x84);
-            fn_8008D15C();
-            if (param_1 != nullptr) {
-                *param_1 = pad->_1c;
-            }
-            if (param_2 != nullptr) {
-                *param_2 = pad->_18;
-            }
-            result = TRUE;
-        }
-    } else {
+    } else if (*(s32*)((u8*)this_ + 0x88) >= 0) {
         FSAPad pad;
         fn_8008CF54(&pad, *(s32*)((u8*)this_ + 0x88));
-        bool active = pad._7c != -1 && pad._98 != 0;
+        bool active = false;
+        if (pad._7c != -1 && pad._98 != 0) {
+            active = true;
+        }
         s64 t0 = active ? (lbl_804993B0[0] != 0 ? lbl_804993B0[0] : OSGetTime()) : 0;
         lbl_804993B0[0] = t0;
         s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
@@ -718,6 +721,17 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
         }
         result = TRUE;
         dtor_8008D028(&pad, -1);
+    } else {
+        if (*(s32*)((u8*)this_ + 0x84) != 0) {
+            fn_8008D15C();
+            if (param_1 != nullptr) {
+                *param_1 = ((FSAPad*)*(u32*)((u8*)this_ + 0x84))->_1c;
+            }
+            if (param_2 != nullptr) {
+                *param_2 = ((FSAPad*)*(u32*)((u8*)this_ + 0x84))->_18;
+            }
+            result = TRUE;
+        }
     }
     return result;
 }
