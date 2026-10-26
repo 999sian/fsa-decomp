@@ -44,6 +44,32 @@ static inline void rotation80359E18(f32 m[3][4], const f32 scale, s16 angle)
     m[1][2] = scale * (cxsz * sy - sxcz);
     m[2][2] = scale * (cx * cy);
 }
+static inline void rotationEuler80359E18(f32 m[3][4], f32 scale, s16 rx, s16 ry, s16 rz)
+{
+    f32 sx, sy, sz, cx, cy, cz;
+    sx = JMath::sincosTable_.sinShort(rx);
+    sy = JMath::sincosTable_.sinShort(ry);
+    sz = JMath::sincosTable_.sinShort(rz);
+    cx = JMath::sincosTable_.cosShort(rx);
+    cy = JMath::sincosTable_.cosShort(ry);
+    cz = JMath::sincosTable_.cosShort(rz);
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    f32 cycz = cy * cz;
+    f32 cysz = cy * sz;
+    m[0][0] = scale * cycz;
+    m[1][0] = scale * cysz;
+    m[2][0] = scale * -sy;
+    m[0][1] = scale * (sxsy * cz - cxsz);
+    m[1][1] = scale * (sxsy * sz + cxcz);
+    m[2][1] = scale * (sx * cy);
+    m[0][2] = scale * (cxcz * sy + sxsz);
+    m[1][2] = scale * (cxsz * sy - sxcz);
+    m[2][2] = scale * (cx * cy);
+}
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 
