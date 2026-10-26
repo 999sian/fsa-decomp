@@ -1024,6 +1024,10 @@ static inline void HudSetCountTransitionOffset8041(u8* self, s32 idx, s32 off, s
     *(s32*)(self + off + 0x1f8) = fn_80237810(idx);
 }
 
+static inline void HudStoreCountResult8041(u8* self, s32 idx, s32 result) {
+    *(s32*)(self + idx * 4 + 0x1f8) = result;
+}
+
 static inline void HudSyncCount8041(s32 idx) {
     u8* dst = lbl_80529DEC;
     s32* src = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -1040,10 +1044,10 @@ static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
     *(s16*)(p2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
     *(s32*)(p4 + 0x1e8) = *(s32*)(p4 + 0x1d8);
     *(s32*)(p4 + 0x1d8) = *source;
-    *(s32*)(self + idx * 4 + 0x1f8) = fn_80237810(idx);
+    HudStoreCountResult8041(self, idx, fn_80237810(idx));
 }
 
-#pragma opt_lifetimes off
+#pragma opt_propagation off
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     s32 cnt;
     s32 i;
@@ -1150,7 +1154,7 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
         }
     }
 }
-#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void fn_8041EDB0(u8* self) {
     u64* tags = lbl_8048D320;
     int i;
