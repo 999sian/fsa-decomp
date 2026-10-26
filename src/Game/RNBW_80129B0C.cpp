@@ -76,8 +76,14 @@ static inline bool rnbwContains(Actor* actor, s32 player, JGeometry::TVec3f& pos
         s32 angle = radians;
         f32 radius = JGeometry::TUtilf::sqrt(pos.x * pos.x + pos.y * pos.y);
         pos.z = 0.0f;
-        pos.x = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
-        pos.y = radius * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+        f32 y;
+        f32 x;
+        f32 cosine = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+        f32 sine = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+        x = radius * cosine;
+        y = radius * sine;
+        pos.x = x;
+        pos.y = y;
         bool hit = false;
         if (pos.x >= x0 && pos.y >= y0 && pos.x < x1 && pos.y < y1) hit = true;
         if (hit) {
@@ -151,14 +157,14 @@ extern "C" void fn_80129B0C(void* this_) {
             case 1:
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39f, 0, -1, 0, 0, 1, lbl_8053CB48);
-                rnbwSpawn(lbl_80465098, actor);
+                rnbwUpdateSpawn(lbl_80465098, actor);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x3a0, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39b, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39c, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39d, 0, -1, 0, 0, 1, lbl_8053CB48);
                 fn_8013CC50(actor->field_04, &actor->field_0C, 0x39e, 0, -1, 0, 0, 1, lbl_8053CB48);
             } else {
-                rnbwSpawn(actor, lbl_804650A4);
+                rnbwUpdateSpawn(actor, lbl_804650A4);
             }
             if (fn_802D800C(fn_802D6A9C(), *(s32*)((char*)this_ + 0x230)) == 0) {
                 fn_801F0E34(this_, 0x5004d, 0);
