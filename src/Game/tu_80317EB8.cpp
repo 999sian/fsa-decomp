@@ -55,7 +55,11 @@ extern "C" u8 lbl_8053A1B0[2];
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_8023DE58(s32 player = 0);
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
-struct Tu80317WordPair { u32 first, second; void set(u32 b, u32 a) { first = a; second = b; } };
+struct Tu80317WordPair {
+    u32 first, second;
+    void set(u32 b, u32 a) { first = a; second = b; }
+    void setOrdered(u32 a, u32 b) { first = a; second = b; }
+};
 static inline u8 activate80317F18(u8* self, s32 idx) {
     s32 slot = *(s32*)(self + 0x244);
     s32 room = *(s32*)(self + 0x198);
@@ -205,8 +209,17 @@ extern "C" void fn_8031825C(Actor* this_) {
         }
     }
 
-    *(Tu80317WordPair*)&rect = *(Tu80317WordPair*)(self + 0x248);
-    *((Tu80317WordPair*)&rect + 1) = *(Tu80317WordPair*)(self + 0x250);
+    const u32* __restrict words = (u32*)(self + 0x248);
+    u32 second;
+    u32 first;
+    first = words[0];
+    second = words[1];
+    ((u32*)&rect)[0] = first;
+    ((u32*)&rect)[1] = second;
+    first = words[2];
+    second = words[3];
+    ((u32*)&rect)[2] = first;
+    ((u32*)&rect)[3] = second;
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);
@@ -346,11 +359,10 @@ extern "C" void fn_803187F4(Actor* this_)
 {
     u8* self = (u8*)this_;
     Tu80317Rect rect;
-    Tu80317Vec3 vec;
-    Tu80317Vec2 dir;
+    JGeometry::TVec3<f32> dir;
     f32 len;
     s32 handle;
-    bool ok;
+    s32 room, owner;
 
     rect = *(Tu80317Rect*)(self + 0x60);
     rect.x0 += *(f32*)(self + 0xc);
@@ -358,8 +370,9 @@ extern "C" void fn_803187F4(Actor* this_)
     rect.x1 += *(f32*)(self + 0xc);
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
-    *(u64*)&rect.x0 = *(u64*)(self + 0x248);
-    *(u64*)&rect.x1 = *(u64*)(self + 0x250);
+    const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
+    ((Tu80317WordPair*)&rect)->set(box[0].second, box[0].first);
+    ((Tu80317WordPair*)&rect + 1)->set(box[1].second, box[1].first);
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);
@@ -370,7 +383,7 @@ extern "C" void fn_803187F4(Actor* this_)
         if (*(s32*)(self + 0x268) <= 0)
         {
             *(s32*)(self + 0x268) = 0x14;
-            if (*(s32*)(self + 0x234) < 0 || fn_8023DE58() != *(s32*)(self + 0x4))
+            if (*(s32*)(self + 0x234) < 0 || (room = *(s32*)(self + 4), owner = fn_8023DE58(*(s32*)(self + 0x234)), owner != room))
             {
                 fn_801EE558(this_, &dir, &len, 0);
             }
@@ -378,29 +391,14 @@ extern "C" void fn_803187F4(Actor* this_)
             {
                 fn_801EE558(this_, &dir, &len, *(s32*)(self + 0x234) + 1);
             }
-            if (len >= lbl_805418F8)
-            {
-                *(s32*)(self + 0x264) = 2;
-            }
-            else
-            {
+            if (len < lbl_805418F8) {
                 u16 angle = (u16)(s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * lbl_805418FC);
-                if (angle < 0x2000 || angle >= 0xe000)
-                {
-                    *(s32*)(self + 0x264) = 3;
-                }
-                else if (angle < 0x6000)
-                {
-                    *(s32*)(self + 0x264) = 1;
-                }
-                else if (angle <= 0xa000)
-                {
-                    *(s32*)(self + 0x264) = 2;
-                }
-                else
-                {
-                    *(s32*)(self + 0x264) = 0;
-                }
+                if (angle < 0x2000 || angle >= 0xe000) *(s32*)(self + 0x264) = 3;
+                else if (angle >= 0x2000 && angle < 0x6000) *(s32*)(self + 0x264) = 1;
+                else if (angle >= 0x6000 && angle <= 0xa000) *(s32*)(self + 0x264) = 2;
+                else *(s32*)(self + 0x264) = 0;
+            } else {
+                *(s32*)(self + 0x264) = 2;
             }
         }
         else
@@ -411,23 +409,13 @@ extern "C" void fn_803187F4(Actor* this_)
         {
             fn_8022FEB8(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198), 1, 0);
             handle = fn_8022FD8C(*(s32*)(self + 0x198));
-            ok = false;
-            if (handle >= 0 && fn_802300EC())
-            {
-                s32 anim = fn_802D7F40(fn_802D6A9C(), 1) == 1 ? 0x578 : 0x577;
-                *(s32*)(self + 0x244) = anim;
-                vec = *(Tu80317Vec3*)(self + 0xc);
-                ok = fn_8038AD24(handle, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 0x4), &vec, 0x10);
-                if (ok)
-                {
-                    *(s32*)(self + 0x234) = handle;
-                    *(s32*)(self + 0x230) = 1;
+            if (handle >= 0 && fn_802300EC()) {
+                if (fn_802D7F40(fn_802D6A9C(), 1) == 1) *(s32*)(self + 0x244) = 0x578;
+                else *(s32*)(self + 0x244) = 0x577;
+                if (activate80317F18(self, handle)) {
+                    *(u32*)(self + 0x25c) &= 1;
+                    *(u32*)(self + 0x25c) |= *(s32*)(self + 0x264) << 1;
                 }
-            }
-            if (ok)
-            {
-                *(u32*)(self + 0x25c) = *(u32*)(self + 0x25c) & 1;
-                *(u32*)(self + 0x25c) = *(u32*)(self + 0x25c) | (*(s32*)(self + 0x264) << 1);
             }
         }
         if (*(s32*)(self + 0x230) == 0)
