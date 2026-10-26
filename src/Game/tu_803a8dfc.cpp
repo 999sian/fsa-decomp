@@ -38,7 +38,7 @@ struct MsgRandom {
 struct MsgGame {
     u8 pad[0xb4];
     MsgRandom rnd;
-    bool activePlayer(s32 i) const { return (pad[0x82] & (u8)(1 << i)) != 0; }
+    bool activePlayer(s32 i) const { u8 mask = 1 << i; return (pad[0x82] & mask) != 0; }
     s32 countPlayers() const {
         s32 i;
         u32 count = 0;
