@@ -63,7 +63,7 @@ static inline bool roomScalarNear(f32 a, f32 b, f32 eps) {
 static inline bool roomPositionEquals(JGeometry::TVec2<f32>& a, JGeometry::TVec2<f32>& b) {
     bool same = false;
     const f32 eps = 32.0f * FLT_EPSILON;
-    if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, eps) && JGeometry::TUtilf::epsilonEquals(a.y, b.y, eps)) same = true;
+    if (roomScalarNear(a.x, b.x, eps) && roomScalarNear(a.y, b.y, eps)) same = true;
     return same;
 }
 
