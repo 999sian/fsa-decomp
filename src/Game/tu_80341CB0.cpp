@@ -4,6 +4,7 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/ActorDrawRec.h"
 
 
 static inline void bombSetRotation(Mtx m, f32 sx, f32 sy, f32 sz,
@@ -80,45 +81,46 @@ extern "C" void fn_80341CB0(s32 id, f32* pos) {
 
 extern "C" void fn_801EF830(s32 idx, f32* pos, DrawRec* p3, u32 mask, void* p5, u32 p6, s32 p7);
 extern const f32 lbl_805422E8;
-extern "C" void fn_80341D08(Actor* this_, s32 id, f32 x, f32 y, f32 z, DrawRec* args, u32 mask) {
+extern "C" void fn_80341D08(Actor* this_, s32 id, f32 x, f32 y, f32 z, const void* args, u32 mask) {
     u8* p = (u8*)this_;
-    f32 pos[3];
-    if (*(s32*)(p + 4) != 0) return;
-    if (*(s32*)(p + 0x138) == 0) {
-        fn_801EF830(*(s32*)(p + 4), (f32*)(p + 0xc), args, mask, 0, 0, id);
+    if (*(s32*)(p+4) != 0) return;
+    if (*(u32*)(p+0x138) == 0) fn_801EF830(*(s32*)(p+4), (f32*)(p+0xc), (DrawRec*)args, mask, 0, 0, id);
+    UnkDrawRec rec;
+    *(u32*)&rec.field_10 = -1;
+    *(u32*)&rec.field_14 = -1;
+    for (u8 i=0; i<0x10; ++i) rec.field_00[i]=i;
+    *(u32*)&rec.field_10 = -1;
+    *(u32*)&rec.field_14 = 0;
+    rec.field_18=0;
+    rec.field_1C=0; rec.field_1D=0; rec.field_1E=0;
+    rec.field_1F=1; rec.field_20=1; rec.field_21=0;
+    rec.field_22=0; rec.field_23=0; rec.field_24=0; rec.field_25=0;
+    rec.field_26=1; rec.field_28=3; rec.field_2C=1; rec.field_2D=0;
+    rec.field_2E=0; rec.field_30=-1; rec.field_34=0; rec.field_38=2;
+    if (*(s32*)(p+0xd8)>0) {
+        if(args) rec=*(const UnkDrawRec*)args;
+        s32 b=*(s32*)(p+0xdc);
+        s32 a=*(s32*)(p+0xd8);
+        u8 color;
+        s32 lim=b-25;
+        if(a>lim || b<25) {
+            color=rec.field_14;
+            rec.field_14 = color + (b<25 ? a*150/b : (a-lim)*150/25);
+        }
+        if(((JGeometry::TVec3f*)(p+0x3c))->squared()>lbl_805422E8) rec.field_30=8;
+    } else if (*(s32*)(p+0x238)>0) {
+        if(args) rec=*(const UnkDrawRec*)args;
+        rec.field_14 += *(s32*)(p+0x238)*150/15;
+        if(((JGeometry::TVec3f*)(p+0x3c))->squared()>lbl_805422E8) rec.field_30=8;
+    } else {
+        if(args) rec=*(const UnkDrawRec*)args;
+        else rec.field_30=*(s32*)(p+0x150);
+        if(*(u32*)(p+0x138)) rec.field_18=*(u32*)(p+0x138);
     }
-    DrawRec rec;
-    if (*(s32*)(p + 0xd8) > 0) {
-        if (args != 0) {
-            rec = *args;
-        }
-        s32 a = *(s32*)(p + 0xd8);
-        s32 b = *(s32*)(p + 0xdc);
-        s32 lim = b - 25;
-        s32 t;
-        if (a > lim) {
-            t = ((a - lim) * 150) / 100;
-        } else if (b < 25) {
-            t = (a * 150) / b;
-        } else {
-            t = 0;
-        }
-        ((u8*)&rec)[0x14] = ((u8*)&rec)[0x14] + t;
-        f32 vx = *(f32*)(p + 0x3c);
-        f32 vy = *(f32*)(p + 0x40);
-        f32 vz = *(f32*)(p + 0x44);
-        if (vx * vx + vy * vy + vz * vz > lbl_805422E8) {
-            rec.w30 = 8;
-        }
-    }
-    if (*(s32*)(p + 0x138) != 0) {
-        pos[0] = *(f32*)(p + 0xc) + x;
-        pos[1] = *(f32*)(p + 0x10) + y;
-        pos[2] = *(f32*)(p + 0x14) + z;
-        if (*(s32*)(p + 4) < 8) {
-            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, (void*)id, &rec);
-        }
-    }
+    JGeometry::TVec3f pos;
+    pos=*(JGeometry::TVec3f*)(p+0xc);
+    pos.x+=x; pos.y+=y; pos.z+=z;
+    if(*(s32*)(p+4)<8) fn_802F745C(*(void**)((u8*)lbl_8053AB10+0x20),&pos,(void*)id,(DrawRec*)&rec);
 }
 
 extern "C" void fn_80342368(Actor* actor) {
@@ -136,10 +138,9 @@ extern "C" void fn_80342368(Actor* actor) {
     DrawRec rec;
     Mtx mtx;
     PSMTXIdentity(mtx);
-    JGeometry::TVec3f saved;
     zero = lbl_805422EC;
     scaleX = *(f32*)(p + 0x254);
-    saved = *(JGeometry::TVec3f*)(p + 0xc);
+    JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(p + 0xc);
     if (zero == scaleX) return;
     f32 scaleY, scaleZ;
     scaleZ = *(f32*)(p + 0x25c);
@@ -174,10 +175,10 @@ extern "C" void fn_80342368(Actor* actor) {
     }
     if (*(s32*)(p + 0x23c) == 1) ((u8*)&rec)[0x14] = 150;
     if (*(s32*)(p + 0x230) == 6 && n < 10) {
-        register void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FBC);
+        void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FBC);
         ((BombDrawActor*)actor)->drawTexture(texture, &rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
     } else {
-        register void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FCC);
+        void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FCC);
         ((BombDrawActor*)actor)->drawTexture(texture, &rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
     }
     *(JGeometry::TVec3f*)(p + 0xc) = saved;
