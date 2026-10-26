@@ -1,6 +1,7 @@
 #include "types.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 
@@ -122,6 +123,7 @@ extern "C" u8 fn_802D800C(void* a, s32 b);
 extern "C" void fn_80125BF4(void);
 extern "C" u8 fn_803865B8(s32 idx);
 extern "C" void fn_80388EEC(s32 idx);
+#pragma optimization_level 3
 extern "C" void fn_801306BC(u8* p) {
     v03__5ActorFv(p);
     s32 st = *(s32*)(p + 0x230);
@@ -241,7 +243,7 @@ extern "C" void fn_801306BC(u8* p) {
         break;
     }
 }
-
+#pragma optimization_level reset
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F7884(void* mgr, u32 tag, s32 id);
 extern "C" u8* fn_801F666C(void* mgr, s32 idx);
