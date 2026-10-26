@@ -433,6 +433,7 @@ Actor::~Actor() {
 /* --- Actor::Actor (0x801F5AE0): default-initialise every member.  MWCC emits
  * the vtable store; the rest is field initialisation in retail order.  Field
  * names are the placeholders from Actor.h. */
+#pragma opt_propagation on
 Actor::Actor() {
     field_04 = 0;
     field_08 = 0;
@@ -491,8 +492,8 @@ Actor::Actor() {
     field_11F = 0;
     field_130 = -1;
     field_134 = -1;
-    for (u8 i = 0; i < 0x10; ++i) {
-        field_120[i] = i;
+    for (u32 i = 0; (u8)i < 0x10; ++i) {
+        field_120[(u8)i] = i;
     }
     field_130 = -1;
     field_134 = 0;
@@ -545,7 +546,6 @@ Actor::Actor() {
     field_1AC[2].x = 0.0f; field_1AC[2].y = 0.0f; field_1AC[2].z = 0.0f;
     field_1AC[3].x = 0.0f; field_1AC[3].y = 0.0f; field_1AC[3].z = 0.0f;
 }
-
 /* --- 0x801EE3C0: true for the handful of actor ids that get special-cased --- */
 extern "C" int fn_801EE3C0(int id) {
     if ((u16)(id - 0x68) <= 3 || (u16)(id - 0x70) <= 1 || (u16)(id - 0xaa) <= 1 ||
@@ -1907,9 +1907,12 @@ inline f32 blkSqrt(f32 x) {
 }
 } // namespace
 
+static inline u8 ee8f4_eq(s32 a, s32 b);
+static inline u8 ee8f4_t(Actor* a, s32 i);
+
 extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
+    u8 first = true;
     s32 slot = 0;
-    bool first = true;
     Actor* aa = a;
     Vec best;
     Vec p;
@@ -1930,13 +1933,8 @@ extern "C" void fn_801EE558(Actor* a, Vec* b, f32* c, s32 d) {
         if (fn_8023F264(slot)) {
             s32 t = aa->field_04;
             bool ok = false;
-            if (t != fn_8023DE58(slot)) {
-                t = 0;
-                if (fn_8023DE58(slot) < 8 && (s32)aa->field_04 == 8) {
-                    t = 1;
-                }
-            }
-            if ((u8)t) {
+            s32 room = fn_8023DE58(slot);
+            if (room == t || (u8)(t = 0, (fn_8023DE58(slot) < 8 && (s32)aa->field_04 == 8) ? t = 1 : t)) {
                 ok = true;
             }
             if (ok) {
