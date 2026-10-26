@@ -3062,9 +3062,23 @@ void fn_8027C6C4(char* p) {
         r.x1 += -16.0f;
         r.y1 += -16.0f;
         if (F32(p, 0x34c) < 0.0f) {
-            if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8))) {
-                F32(p, 0x10) = 0.0f;
+            if (U8(PTR(p, 0xbf0), 0x4a) != 0) {
+                goto resetHeight;
+            } else {
+                bool inside = false;
+                f32 y;
+                f32 x;
+                x = F32(p, 8);
+                if (x >= r.x0) {
+                    y = F32(p, 0xc);
+                    if (y >= r.y0 && x < r.x1 && y < r.y1) inside = true;
+                }
+                if (inside) goto keepHeight;
             }
+        resetHeight:
+            F32(p, 0x10) = 0.0f;
+        keepHeight:;
+
         }
     } else {
         JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x344), (Vec*)(p + 8));
