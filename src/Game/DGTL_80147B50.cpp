@@ -2,6 +2,7 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 struct DgtlEffMgr {
     u8 pad[0xc];
@@ -287,7 +288,8 @@ extern "C" s32 fn_80149AEC(char* p) {
         *(s32*)(p + 0xdc) = 0;
         if (*(s32*)(p + 0x90) == 1) lbl_80539F58 = -1;
         if (*(s32*)(p + 0x90) == 0) lbl_80539F5C = -1;
-        for (int i = 0; i < 9; ++i) ((s32*)(p + 0x234))[i] = 0;
+        u32* flags = (u32*)(p + 0x234);
+        for (u32 j = 0; j < 9; ++j) flags[j] = 0;
         *(s32*)(p + 0x23c) = 0xa8;
         dgtlStopBodyEffects((DgtlObj*)p);
         fn_80134DE4(lbl_8053AAF8, 0xa8, 0);
@@ -648,8 +650,8 @@ extern "C" void fn_8014A5F4(char* this_) {
     *(s32*)(p + 0x7b8) = 0;
     *(s32*)(p + 0x7bc) = 0;
     *(f32*)(p + 0x290) = lbl_8053D120;
-    *(f32*)(p + 0x2a0) = *(f32*)(p + 0x290) * *(f32*)(sincosTable___5JMath + (((u16)*(u16*)(p + 0x284) >> 2) & 0x3ff8));
-    *(f32*)(p + 0x2a4) = *(f32*)(p + 0x290) * *(f32*)(sincosTable___5JMath + (((u16)*(u16*)(p + 0x284) >> 2) & 0x3ff8) + 4);
+    *(f32*)(p + 0x2a0) = *(f32*)(p + 0x290) * JMath::sincosTable_.sinShort(*(u16*)(p + 0x284));
+    *(f32*)(p + 0x2a4) = *(f32*)(p + 0x290) * JMath::sincosTable_.cosShort(*(u16*)(p + 0x284));
     *(f32*)(p + 0x2a8) = lbl_8053D0B0;
     *(f32*)(p + 0x288) = lbl_8053D124;
     *(f32*)(p + 0x28c) = lbl_8053D0B4;
@@ -686,4 +688,4 @@ extern "C" void fn_8014A5F4(char* this_) {
         return;
     }
 }
-
+#pragma peephole reset
