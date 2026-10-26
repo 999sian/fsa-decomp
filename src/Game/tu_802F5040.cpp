@@ -471,7 +471,6 @@ extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
     return (u8)ret;
 }
 
-#pragma opt_common_subs on
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
     f32 z = pos[2];
     if (*(s32*)(this_ + 0xc21c) > 0) {
