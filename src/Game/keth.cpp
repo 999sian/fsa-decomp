@@ -91,14 +91,17 @@ static inline void kethRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
     cx = kcos(ax);
     f32 cy = kcos(ay);
     f32 cz = kcos(az);
+    f32 cc = cx * cz;
+    f32 ss = sx * sy;
+    f32 cs = cx * sz;
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
-    m[0][1] = s * (sx * sy * cz - cx * sz);
-    m[1][1] = s * (sx * sy * sz + cx * cz);
+    m[0][1] = s * (ss * cz - cs);
+    m[1][1] = s * (ss * sz + cc);
     m[2][1] = s * (sx * cy);
-    m[0][2] = s * (cx * cz * sy + sx * sz);
-    m[1][2] = s * (cx * sz * sy - sx * cz);
+    m[0][2] = s * (cc * sy + sx * sz);
+    m[1][2] = s * (cs * sy - sx * cz);
     m[2][2] = s * (cx * cy);
 }
 
@@ -111,30 +114,12 @@ extern "C" void fn_8015C8B0(char* this_) {
     mtx[0][3] = zero; mtx[1][3] = zero; mtx[2][3] = zero;
     if (*(s32*)(this_ + 0x264) == 1) return;
     rec.w30 = *(s32*)(this_ + 0x150);
-    {
-        f32 cx, ay, sx, sy, sz, cy, cz;
-        ay = (f32)*(u16*)(this_ + 0x25c) / -10430.228f;
-        sx=ksin(zero); sy=ksin(ay); sz=ksin(zero);
-        cx=kcos(zero); cy=kcos(ay); cz=kcos(zero);
-        f32 ss=sx*sy, cs=cx*sz, cc=cx*cz;
-        mtx[0][0]=1.0f*(cy*cz);mtx[1][0]=1.0f*(cy*sz);mtx[2][0]=1.0f*-sy;
-        mtx[0][1]=1.0f*(ss*cz-cs);mtx[1][1]=1.0f*(ss*sz+cc);mtx[2][1]=1.0f*(sx*cy);
-        mtx[0][2]=1.0f*(cc*sy+sx*sz);mtx[1][2]=1.0f*(cs*sy-sx*cz);mtx[2][2]=1.0f*(cx*cy);
-    }
+    kethRotMtx(mtx, zero, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, zero, 1.0f);
     rec.w18 = mtx;
     s32 big = 0;
     if (*(s32*)(this_ + 0x260) != 0) big = 1;
     if (*(s32*)(this_ + 4) == 8 && *(s32*)(this_ + 0x260) != 0) {
-        {
-        f32 cx, ay, sx, sy, sz, cy, cz;
-        ay = (f32)*(u16*)(this_ + 0x25c) / -10430.228f;
-        sx=ksin(zero); sy=ksin(ay); sz=ksin(zero);
-        cx=kcos(zero); cy=kcos(ay); cz=kcos(zero);
-        f32 ss=sx*sy, cs=cx*sz, cc=cx*cz;
-        mtx[0][0]=2.0f*(cy*cz);mtx[1][0]=2.0f*(cy*sz);mtx[2][0]=2.0f*-sy;
-        mtx[0][1]=2.0f*(ss*cz-cs);mtx[1][1]=2.0f*(ss*sz+cc);mtx[2][1]=2.0f*(sx*cy);
-        mtx[0][2]=2.0f*(cc*sy+sx*sz);mtx[1][2]=2.0f*(cs*sy-sx*cz);mtx[2][2]=2.0f*(cx*cy);
-    }
+        kethRotMtx(mtx, zero, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, zero, 2.0f);
         rec.w18 = mtx;
         fn_801F06F0(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, 1.0f, 1.0f);
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, 0x176, 0, 2, -1, 0, 0, 0);
