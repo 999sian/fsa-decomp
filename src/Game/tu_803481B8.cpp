@@ -1,6 +1,8 @@
 #include "types.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "Game/Actor.h"
+extern "C" char* fn_802D6A9C();
+extern "C" bool fn_802D800C(char*,s32);
 
 
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
