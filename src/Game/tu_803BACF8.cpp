@@ -16,6 +16,14 @@ extern "C" char lbl_80476578[];
 extern "C" void* fn_804030C4(u32 tag, char* name);
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 
+struct CardSaveBlock {
+    u16 revision;
+    u8 options[3];
+    u8 reserved[5];
+    u8 payload[0x1ff2];
+    u32 checksum;
+};
+
 static inline u32 calcCardChecksum(u8* data) {
     u16 sum = 0;
     u16 inv = 0;
@@ -151,6 +159,7 @@ static inline void setupCardStat(CARDStat& stat) {
     stat.iconSpeed &= 0xfff;
 }
 
+#pragma optimization_level 3
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
     CARDFileInfo* fileInfo = info;
     void* src = data;
@@ -270,7 +279,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
     return result;
 }
-#pragma peephole reset
+#pragma optimization_level reset
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
 extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
