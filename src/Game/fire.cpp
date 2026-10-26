@@ -30,8 +30,6 @@ extern "C" void* fn_802D6A9C(void);
 extern u16 lbl_8046CB88[];
 extern f32 lbl_80540B50;
 extern void* lbl_8053AB10;
-typedef void (*FireVFn)(void* self, void* v, s32 flag);
-typedef void (*FireVecVFn)(void* self, JGeometry::TVec3<f32> v, s32 flag);
 extern f32 lbl_80540B60;
 extern f32 lbl_80540B64;
 extern f32 lbl_80540B68;
@@ -49,19 +47,19 @@ public:
 
 
 // FIRE: small accessors.
-extern "C" u8 fn_802BA558(char* this_, int a, f32* b) {
+extern "C" u8 fn_802BA558(char* this_, s32 arg, f32* b) {
     char* p = this_;
     u32 names[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     f32 v[3];
-    JGeometry::TVec3<f32> tmp;
-    char* h;
     char* base;
     u8 r;
     s32 q;
     s32 mode;
     int idx;
-    int c;
+    s32 c;
+    char* h;
     u16 sv;
+    int a = arg;
 
     if (*(s32*)(p + 0x264) != 1) {
         names[3] = 'NULL';
@@ -79,9 +77,9 @@ extern "C" u8 fn_802BA558(char* this_, int a, f32* b) {
         *(s16*)(p + 0x288) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), a);
         if (fn_801EE3C0(*(u16*)(p + 0x288)) == 1) {
             fn_80226CA8(a, *(s32*)(p + 4), v);
-            v[0] = v[0] + lbl_80540B50;
-            v[1] = v[1] + lbl_80540B50;
-            ((FireActorInterface*)p)->v21(*(JGeometry::TVec3<f32>*)v, 0);
+            v[0] += 8.0f;
+            v[1] += 8.0f;
+            ((FireActorInterface*)p)->v19(*(JGeometry::TVec3<f32>*)v, 0);
             *(s32*)(p + 0x254) = 5;
             *(u8*)(p + 0x291) = 1;
             return 1;
@@ -99,9 +97,9 @@ extern "C" u8 fn_802BA558(char* this_, int a, f32* b) {
         }
         if (sv == 0x3eb || sv == 0x34 || sv == 0x33) {
             fn_80226CA8(c, *(s32*)(p + 4), v);
-            v[0] = v[0] + lbl_80540B50;
-            v[1] = v[1] + lbl_80540B50;
-            ((FireActorInterface*)p)->v21(*(JGeometry::TVec3<f32>*)v, 1);
+            v[0] += 8.0f;
+            v[1] += 8.0f;
+            ((FireActorInterface*)p)->v19(*(JGeometry::TVec3<f32>*)v, 1);
             return 0;
         }
         *(s32*)(p + 0x27c) = lbl_8046CB88[sv];
@@ -145,8 +143,8 @@ extern "C" u8 fn_802BA558(char* this_, int a, f32* b) {
             }
             return 0;
         }
-        sv = *(u16*)(p + 0x288);
-        if (sv == 0x3a || (u16)(sv - 0x8b) <= 3 || sv == 0x3d) {
+        u16 tile = *(u16*)(p + 0x288);
+        if (tile == 0x3a || (u16)(tile - 0x8b) <= 3 || tile == 0x3d) {
             return 0;
         }
         if (idx == 0x25) {
@@ -170,7 +168,7 @@ reject:
         if (*(s32*)(p + 0x254) > 0) {
             return 0;
         }
-        tmp = *(JGeometry::TVec3<f32>*)b;
+        JGeometry::TVec3<f32> tmp(*(JGeometry::TVec3<f32>*)b);
         q = (u16)fn_8022461C(&tmp, a);
         if (q == 0) {
             goto end_reject;
