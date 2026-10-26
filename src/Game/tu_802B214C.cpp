@@ -18,22 +18,6 @@ extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801F71A4(void* p, f32 target, f32 a, f32 b);
 extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
 
-extern "C" const f32 lbl_805409DC, lbl_805409E4;
-static inline void movementInvSqrt(f32 x, f32& result) {
-    if (x <= lbl_805409DC) result = x;
-    else {
-        f32 y = __frsqrte(x);
-        result = lbl_80540A04 * y * (lbl_805409E4 - x * (y * y));
-    }
-}
-static inline void movementNormalize(JGeometry::TVec3<f32>* v) {
-    f32 squared = v->squared();
-    if (squared <= JGeometry::TUtilf::epsilon()) return;
-    f32 inverse;
-    movementInvSqrt(squared, inverse);
-    v->scale(inverse);
-}
-
 struct Color4 {
     Color4(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
     u8 r, g, b, a;
