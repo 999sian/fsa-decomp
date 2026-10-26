@@ -10,10 +10,7 @@ extern "C" const f32 lbl_80540670;
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 
-static inline JGeometry::TVec3f translatedBlockPosition(JGeometry::TVec3f pos, JGeometry::TVec3f& offset) {
-    pos += offset;
-    return pos;
-}
+
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
@@ -925,8 +922,7 @@ extern "C" void* lbl_8053AC98;
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_8046C238[];
 #pragma opt_common_subs off
-extern "C" void fn_80298FC4(void* p) {
-    char* self = (char*)p;
+extern "C" void fn_80298FC4(char* self) {
     s32 i;
     char* q;
     s32 n;
@@ -989,7 +985,7 @@ extern "C" void fn_80298FC4(void* p) {
             for (i = 0; i < *(s32*)(self + 0x2a8); i++) {
                 obj = fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    *(JGeometry::TVec3f*)((char*)obj + 0xc) = translatedBlockPosition(*(JGeometry::TVec3f*)((char*)obj + 0xc), vec);
+                    *(JGeometry::TVec3f*)((char*)obj + 0xc) = *(JGeometry::TVec3f*)((char*)obj + 0xc) + vec;
                     fn_802C59B0(obj);
                 }
                 q += 4;
@@ -1045,7 +1041,7 @@ extern "C" void fn_80299374(char* self) {
     s32 bits;
     f32 lenSq;
     JGeometry::TVec3f tmp;
-    JGeometry::TVec3f v;
+    JGeometry::TVec3f v[1];
     JGeometry::TVec3f d;
     JGeometry::TVec3f sum;
 
@@ -1091,15 +1087,14 @@ extern "C" void fn_80299374(char* self) {
 
         lenSq = ((JGeometry::TVec3f*)(self + 0x250))->squared();
         if (lenSq <= lbl_805406A8 * FLT_EPSILON) {
-            v.x = lbl_80540674;
-            v.y = lbl_8054067C;
-            v.z = lbl_80540674;
+            v[0].x = lbl_80540674;
+            v[0].y = lbl_8054067C;
+            v[0].z = lbl_80540674;
             q = self;
             for (k = 0; k < *(s32*)(self + 0x2a8); k++) {
                 obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    register const JGeometry::TVec3f* offset = &v;
-                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + *offset;
+                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + v[0];
                     fn_802C59B0(obj);
                 }
                 q += 4;
