@@ -1811,8 +1811,8 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
 
 static inline u16 msgToWideScan(u16 c) {
     const MsgCharMap* entry = lbl_80475830;
-    for (int i = 0; entry->ascii != 0xffff; ++i, ++entry) {
-        if (entry->ascii == c) return lbl_80475830[i].code;
+    for (int i = 0; entry->ascii != 0xffff; ++entry, ++i) {
+        if (c == entry->ascii) return lbl_80475830[i].code;
     }
     return 0x1420;
 }
@@ -1858,7 +1858,7 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
                     }
                     difference = fa - fb;
                     half = lbl_805431E4;
-                    s32 w = (s32)(half * difference + half);
+                    s32 w = (s32)(difference * half + half);
                     if (w > 0) {
                         snprintf(lbl_8050E518, 0xf, lbl_80543298, w);
                         strcat(p->str2c0, lbl_8050E518);
@@ -1915,7 +1915,9 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
         }
         p->m2d6 = 0;
     }
-    msgPutWide(p, ch);
+    u16 wide = msgToWideScan((u16)ch);
+    p->str2c0[p->m2d0++] = wide >> 8;
+    p->str2c0[p->m2d0++] = wide;
 }
 
 #pragma opt_propagation reset
