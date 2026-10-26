@@ -1060,14 +1060,6 @@ soundStarted:
 #include "JSystem/JAudio/JAUInitializer.h"
 #include "JSystem/JAudio/JAUAudioArchive.h"
 extern "C" void fn_8003C984(void*);
-static inline void initFsaAudienceMtx(u8* const base, u8* owner) {
-    fn_8003C984(owner);
-    *(void**)owner = lbl_80495480;
-    *(void**)base = lbl_804954F8;
-    *(u32*)(base + 0x50) = 1;
-    PSMTXIdentity((MtxPtr)(base + 0x54));
-}
-
 struct FsaAudienceBase {
     FsaAudienceBase() {
         fn_8003C984(this);
