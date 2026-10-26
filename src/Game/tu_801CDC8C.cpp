@@ -650,10 +650,8 @@ extern "C" s32 fn_801CF6B8(u8* this_);
 extern "C" s32 fn_801CD354(s32 side);
 extern void* lbl_8053AAF8;
 static inline s32 choosePointDirection(const u8* self, const f32* pt, const u8 swap) {
-    f32 dx = pt[0] - *(const f32*)(self + 0xc);
-    f32 dy = pt[1] - *(const f32*)(self + 0x10);
-    dx = __fabsf(dx);
-    dy = __fabsf(dy);
+    f32 dy = __fabsf(pt[1] - *(const f32*)(self + 0x10));
+    f32 dx = __fabsf(pt[0] - *(const f32*)(self + 0xc));
     if ((dx > dy && swap == 0) || (dx <= dy && swap == 1)) {
         return *(const f32*)(self + 0xc) < pt[0] ? 0 : 1;
     }
