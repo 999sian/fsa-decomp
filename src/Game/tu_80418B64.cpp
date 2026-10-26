@@ -465,6 +465,7 @@ extern "C" void fn_8041A868(u8* self, s32 arg) {
 
 #pragma dont_inline reset
 static inline u64 HudNameAt8041(const u64* const& names, int i) { return names[i]; }
+struct HudTable8041 { u8 pad[0x398]; u64 names[4]; };
 struct HudPaneNames8041 { u64 names[4]; const u64& operator[](int i) const { return names[i]; } };
 static inline void HudHideIndexed8041(u8* self, const HudPaneNames8041* names, s32 index) {
     (*(J2DPane**)(self + 4))->search(names->names[index])->hide();
