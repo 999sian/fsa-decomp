@@ -173,8 +173,9 @@ static inline f32 ItemRandom321200() {
 
 static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) {
     f32 ang;
+    f32 s;
     ang = *angle;
-    const f32& s = *scale;
+    s = *scale;
     f32 sz, sy, sx;
     f32 cz, cx;
     sx = sin(lbl_80541AE0);
@@ -183,20 +184,21 @@ static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) 
     cx = cos(lbl_80541AE0);
     ang = cos(ang);
     cz = cos(lbl_80541AE0);
+    JGeometry::TVec3f factors(s, s, s);
     f32 cxcz = cx * cz;
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
-    m[0][0] = s * (ang * cz);
-    m[1][0] = s * (ang * sz);
-    m[2][0] = s * -sy;
-    m[0][1] = s * (sxsy * cz - cxsz);
-    m[1][1] = s * (sxsy * sz + cxcz);
-    m[2][1] = s * (sx * ang);
-    m[0][2] = s * (cxcz * sy + sxsz);
-    m[1][2] = s * (cxsz * sy - sxcz);
-    m[2][2] = s * (cx * ang);
+    m[0][0] = factors.x * (ang * cz);
+    m[1][0] = factors.y * (ang * sz);
+    m[2][0] = factors.z * -sy;
+    m[0][1] = factors.x * (sxsy * cz - cxsz);
+    m[1][1] = factors.y * (sxsy * sz + cxcz);
+    m[2][1] = factors.z * (sx * ang);
+    m[0][2] = factors.x * (cxcz * sy + sxsz);
+    m[1][2] = factors.y * (cxsz * sy - sxcz);
+    m[2][2] = factors.z * (cx * ang);
 }
 
 extern "C" void fn_80320D18(char* p) {
