@@ -583,9 +583,10 @@ extern "C" void fn_80174B44(void* this_) {
         if (fn_802DE814() == 1) {
             *(s32*)(p + 0x108) = lbl_804A0AF8[*(u32*)(p + 0x90) & 0xff];
         }
-        room = *(s32*)(p + 0x4);
+        s32 originalRoom = *(s32*)(p + 0x4);
+        room = originalRoom;
         a = 7;
-        if (room >= 8) {
+        if (originalRoom >= 8) {
             a = 8;
             room = 0;
         }
