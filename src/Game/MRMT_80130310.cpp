@@ -100,48 +100,7 @@ extern "C" s32 fn_80130370(u8* p) {
 }
 
 #pragma dont_inline reset
-extern "C" s32 fn_8013056C(char* p, s32 id, s32 mode, s32 val) {
-    u8* actor;
-    Vec pos;
-    s32 which = *(s32*)(p + 0x238);
-    if (mode == 1) {
-        which = *(s32*)(p + 0x234);
-    }
-    fn_8022FE80(0, *(void**)(p + 4), which, 1, 0);
-    void* room = *(void**)(p + 4);
-    JGeometry::setTVec3f((const f32*)(p + 0xc), (f32*)&pos);
-    if (fn_8038BD08(0, (u16)id, room, &pos, 0x22) != 0) {
-        switch (mode) {
-        case 0:
-            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
-            if (actor != 0) {
-                *(s32*)(actor + 0x98) = val;
-                fn_80125C58(actor, 1);
-            }
-            break;
-        case 1:
-            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
-            if (actor != 0) {
-                *(s32*)(actor + 0x98) = val;
-                fn_80125C58(actor, 1);
-            }
-            break;
-        case 2:
-            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
-            if (actor != 0) {
-                *(s32*)(actor + 0x98) = val;
-                fn_80125C58(actor, 1);
-                actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
-                if (actor != 0) {
-                    *(s32*)(actor + 0x98) = val;
-                }
-            }
-            break;
-        }
-        return 0;
-    }
-    return -1;
-}
+extern "C" s32 fn_8013056C(char*, s32, s32, s32);
 #pragma dont_inline reset
 extern const f32 lbl_8053CC88;
 extern const f32 lbl_8053CC8C;
@@ -310,4 +269,48 @@ extern "C" void fn_80130CEC(char* p) {
     *(u32*)(p + 0x23c) = (*(u32*)(p + 0x90) >> 0x16) & 0x1f;
     *(u32*)(p + 0x240) = (*(u32*)(p + 0x90) >> 0x11) & 0x1f;
 }
+
+extern "C" s32 fn_8013056C(char* p, s32 id, s32 mode, s32 val) {
+    u8* actor;
+    Vec pos;
+    s32 which = *(s32*)(p + 0x238);
+    if (mode == 1) {
+        which = *(s32*)(p + 0x234);
+    }
+    fn_8022FE80(0, *(void**)(p + 4), which, 1, 0);
+    void* room = *(void**)(p + 4);
+    JGeometry::setTVec3f((const f32*)(p + 0xc), (f32*)&pos);
+    if (fn_8038BD08(0, (u16)id, room, &pos, 0x22) != 0) {
+        switch (mode) {
+        case 0:
+            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
+            if (actor != 0) {
+                *(s32*)(actor + 0x98) = val;
+                fn_80125C58(actor, 1);
+            }
+            break;
+        case 1:
+            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+            if (actor != 0) {
+                *(s32*)(actor + 0x98) = val;
+                fn_80125C58(actor, 1);
+            }
+            break;
+        case 2:
+            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+            if (actor != 0) {
+                *(s32*)(actor + 0x98) = val;
+                fn_80125C58(actor, 1);
+                actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
+                if (actor != 0) {
+                    *(s32*)(actor + 0x98) = val;
+                }
+            }
+            break;
+        }
+        return 0;
+    }
+    return -1;
+}
+
 
