@@ -202,6 +202,8 @@ typedef void (*SetBlackWhiteFn)(u8* self, JUtility::TColor black, JUtility::TCol
 
 // Picture pane reached through GetSub: changeTexture(img, id) at vtable 0x110, setBlackWhite(black, white) at 0x130.
 struct TimerPicture {
+    void show() { ((u8*)this)[0xb0] = 1; }
+    void hide() { ((u8*)this)[0xb0] = 0; }
     virtual void p00(); virtual void p01(); virtual void p02(); virtual void p03();
     virtual void p04(); virtual void p05(); virtual void p06(); virtual void p07();
     virtual void p08(); virtual void p09(); virtual void p10(); virtual void p11();
@@ -451,21 +453,22 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
                     if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 1) {
                         u8* pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]);
                         pane[0xb0] = 0;
-                        pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]);
+                        pane = (u8*)GetPicture(p + 0x28, lbl_8048F158[3]);
                         pane[0xb0] = 0;
                     }
                 } else {
-                    s = fn_804030C4(0x54494d47, lbl_804B1434[n / 10]);
+                    void* image = (void*)fn_804030C4(0x54494d47, lbl_804B1434[n / 10]);
                     p2 = this_ + idx * 4;
-                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[0]))->changeTexture(s, 0);
-                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[1]))->changeTexture(s, 0);
+                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[0]))->changeTexture((u32)image, 0);
+                    ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[1]))->changeTexture((u32)image, 0);
                     s = fn_804030C4(0x54494d47, lbl_804B1434[n % 10]);
                     ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[2]))->changeTexture(s, 0);
                     ((TimerPicture*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[3]))->changeTexture(s, 0);
                     if (((u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 0) {
                         u8* pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[2]);
+                        const u64 key = lbl_8048F158[3];
                         pane[0xb0] = 1;
-                        pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(lbl_8048F158[3]);
+                        pane = (u8*)((SubObj*)*(u8**)(p2 + 0x2c))->w13(key);
                         pane[0xb0] = 1;
                     }
                 }
@@ -474,8 +477,10 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
     } else {
         this_[idx + 0x25e] = 0;
     }
-    u8* timer = this_ + idx * 2;
-    s16 ticks = *(s16*)(timer + 0x208);
+    s32 ticks;
+    u8* timer;
+    timer = this_ + idx * 2;
+    ticks = *(s16*)(timer + 0x208);
     if (ticks > 0) {
         *(s16*)(timer + 0x208) = ticks - 1;
     }
