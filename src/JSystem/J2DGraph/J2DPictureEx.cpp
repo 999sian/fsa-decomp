@@ -413,6 +413,16 @@ bool J2DPictureEx::isRemove(u8 index) const
     return true;
 }
 
+void J2DPictureEx::draw(f32 p1, f32 p2, u8 index, bool p4, bool p5, bool p6)
+{
+    if (mMaterial && mMaterial->mTevBlock && mIsVisible && index < mMaterial->mTexGenBlock.mTexGenNum) {
+        JUTTexture* texture = mMaterial->mTevBlock->getTexture(index);
+        if (texture) {
+            draw(p1, p2, texture->getWidth(), texture->getHeight(), p4, p5, p6);
+        }
+    }
+}
+
 void J2DPictureEx::draw(f32 x, f32 y, f32 width, f32 height, bool p5, bool p6, bool p7)
 {
     if (!isVisible()) {
@@ -534,16 +544,6 @@ void J2DPictureEx::draw(f32 x, f32 y, f32 width, f32 height, bool p5, bool p6, b
     GXLoadPosMtxImm(posMtx, 0);
     GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, 0, GX_DF_NONE, GX_AF_NONE);
     GXSetVtxDesc(GX_VA_TEX0, GX_NONE);
-}
-
-void J2DPictureEx::draw(f32 p1, f32 p2, u8 index, bool p4, bool p5, bool p6)
-{
-    if (mMaterial && mMaterial->mTevBlock && mIsVisible && index < mMaterial->mTexGenBlock.mTexGenNum) {
-        JUTTexture* texture = mMaterial->mTevBlock->getTexture(index);
-        if (texture) {
-            draw(p1, p2, texture->getWidth(), texture->getHeight(), p4, p5, p6);
-        }
-    }
 }
 
 void J2DPictureEx::drawOut(f32 p1, f32 p2, f32 p3, f32 p4, f32 p5, f32 p6)
