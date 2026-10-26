@@ -9,6 +9,9 @@ extern "C" f32 lbl_80543970;
 extern "C" f32 lbl_805438E4;
 extern "C" s16 lbl_80543890[4];
 #include "JSystem/J2D/J2DPane.h"
+extern "C" void fn_8013CB44(void*, f32*, s32, s32, s32);
+extern "C" f32 lbl_805438D8;
+extern "C" f32 lbl_805438DC;
 extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
 extern "C" u8 fn_8040271C(void*, s32, f32, f32);
 extern "C" void fn_80402628(void*, s32, s32, u8);
@@ -1456,6 +1459,7 @@ extern "C" void fn_8040B388(u8* self) {
 	}
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_8040B5A0(u8* self) {
  ++*(s32*)(self+0x380);
  s32 phase = (*(s32*)(self+0x380) % 36) / 9;
@@ -1463,28 +1467,28 @@ extern "C" void fn_8040B5A0(u8* self) {
  case 0:
   *(f32*)(self+0x3b8) += lbl_8054396C;
   {
-   u8* x = ((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0];
+   u8* x = *(u8**)(self+*(s32*)(self+0x340)*4+0x208);
    if (*(f32*)(self+0x3b8) >= *(f32*)(x+0xc)) {
     *(f32*)(self+0x3b8) = *(f32*)(x+0xc);
-    *(s16*)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+0x22)=0;
-    fn_80402E08(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0],0.0f,0.0f);
+    *(s16*)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+0x22)=0;
+    fn_80402E08(*(u8**)(self+*(s32*)(self+0x340)*4+0x208),0.0f,0.0f);
     *(s16*)(self+0x428)=1;
     u32 id = 0x30081;
     (*(SoundHolder**)(self+0x2c8))->play(&id);
    } else {
     f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
-    f32 offset = (f32)(lbl_80543890[phase] * *(u16*)(*(u8**)(sManager__8JUTVideo+4)+6))/lbl_805438E4;
+    f32 offset = (f32)(*(u16*)(*(u8**)(sManager__8JUTVideo+4)+6) * lbl_80543890[phase])/lbl_805438E4;
     fn_80402E08(x,lbl_80543898,delta+offset);
    }
   }
   {
- u8* x = ((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0];
+ u8* x = *(u8**)(self+*(s32*)(self+0x340)*4+0x208);
  u8* y = *(u8**)(x+4);
  f32 half = lbl_805438C8;
  f32 right = *(f32*)(y+0x28);
  f32 left = *(f32*)(y+0x20);
  *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
- y = *(u8**)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+4);
+ y = *(u8**)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+4);
  u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
  f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
  f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
@@ -1493,7 +1497,7 @@ extern "C" void fn_8040B5A0(u8* self) {
   break;
  case 1:
   *(f32*)(self+0x3b8) -= lbl_8054396C;
-  if (*(f32*)(self+0x3b8) <= *(f32*)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+0xc)-lbl_80543970) {
+  if (*(f32*)(self+0x3b8) <= *(f32*)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+0xc)-lbl_80543970) {
    lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a |= (u8)(1 << *(s32*)(self+0x340));
    if (*(s32*)(self+0x340)==7) *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+1);
    else *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+2);
@@ -1503,14 +1507,14 @@ extern "C" void fn_8040B5A0(u8* self) {
    *(s32*)(self+0x350)=0x12;
   }
   {
- u8* x = ((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0];
+ u8* x = *(u8**)(self+*(s32*)(self+0x340)*4+0x208);
  u8* y = *(u8**)(x+4);
  f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
  f32 half = lbl_805438C8;
  f32 right = *(f32*)(y+0x28);
  f32 left = *(f32*)(y+0x20);
  *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
- y = *(u8**)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+4);
+ y = *(u8**)(*(u8**)(self+*(s32*)(self+0x340)*4+0x208)+4);
  u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
  f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
  f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
@@ -1519,7 +1523,7 @@ extern "C" void fn_8040B5A0(u8* self) {
   break;
  }
 }
-
+#pragma opt_strength_reduction reset
 extern "C" u8 fn_804446A4(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
 extern "C" void fn_80402CE0(void*, f32, f32);
