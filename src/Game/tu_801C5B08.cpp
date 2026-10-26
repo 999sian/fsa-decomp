@@ -43,7 +43,7 @@ extern "C" void fn_801C6260(void* p);
 extern "C" u8 fn_801D0DD4(void* p);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" void* GetCurrentSlotPtr(void* p);
-extern "C" JGeometry::TVec3f fn_800FE294(void* slot, s32 room);
+extern "C" Vec fn_800FE294(void* slot, s32 room);
 extern "C" u8 fn_800FD5E8(void* slot, s32 room);
 extern "C" s32 fn_801D02E0(void* p, void* pos);
 extern void* lbl_8053AAF8;
@@ -120,13 +120,13 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
                     flag = 0;
                     if (self->field_599 == 0) {
                         u8 r26 = ((u8*)GetCurrentSlotPtr(self->field_358))[3];
+                        JGeometry::TVec3f v;
                         JGeometry::TVec3f pos(*(JGeometry::TVec3f*)&self->field_0C);
                         u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), pos, self->field_04);
                         u8* slot = (u8*)GetCurrentSlotPtr(self->field_358);
                         if (r26 < slot[2]) {
                             slot[3] = r26;
                         }
-                        JGeometry::TVec3f v;
                         v = fn_800FE294(GetCurrentSlotPtr(self->field_358), r27);
                         f32 dx = v.x - self->field_0C;
                         f32 dy = v.y - self->field_10;
@@ -138,7 +138,7 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
                             } else {
                                 s16 ang;
                                 ang = fn_801D02E0(self, &v);
-                                if (lbl_8053EE78 * fabs((f32)(s16)(self->field_33C - ang)) <= lbl_8053EE7C) {
+                                if (lbl_8053EE78 * JMAAbs((f32)(s16)(self->field_33C - ang)) <= lbl_8053EE7C) {
                                     if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE80) {
                                         flag = 1;
                                     }
