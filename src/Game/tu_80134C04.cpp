@@ -3,6 +3,9 @@
 #include "types.h"
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JGeometry/Box.h"
+static inline JGeometry::TBox2f screenBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
+    return JGeometry::TBox2f(x0, y0, x1, y1);
+}
 #include "JSystem/J3D/J3DSys.h"
 void* operator new(unsigned long size, JKRHeap* heap, int align);
 
@@ -1111,6 +1114,7 @@ extern "C" void* fn_804030C4(u32, void*);
 extern "C" void fn_8008C494(void*);
 extern "C" void fn_8008C484(void*);
 extern "C" void __ct__Q25JMath13TRandom_fast_FUl(void*, u32);
+#pragma opt_propagation on
 extern "C" void* fn_80139300(char* this_) {
     u8* base = (u8*)lbl_804652F0;
     *(void**)this_ = lbl_8049EF20;
@@ -1238,5 +1242,5 @@ extern "C" void* fn_80139300(char* this_) {
     fn_8008C484((void*)fn_80134C04);
     return this_;
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
