@@ -53,17 +53,23 @@ void* __nw__FUl(u32);
 void becomeCurrentHeap__7JKRHeapFv(void*);
 }
 
+#pragma opt_strength_reduction off
+static inline bool mainStateReady(const u8* state) {
+    return state[0x78] >= 4;
+}
+
 void main(void)
 {
+    void* game;
     FSAStackObj obj0;
     FSAStackObj obj1;
     FSAStackObj obj2;
     FSAStackObj obj3;
-    s32 i;
+    int i;
     s32 n;
     void* p;
     void* solidHeap;
-    void* expHeap;
+    JKRHeap* expHeap;
     bool bVar1;
     bool bVar2;
     s32 t;
@@ -72,32 +78,9 @@ void main(void)
     JFWSystem::CSetUpParam::sysHeapSize = 0x200000;
     JFWSystem::CSetUpParam::fifoBufSize = 0x40000;
 
-    i = 0;
-    n = 2;
-    do {
-        u8* src = (u8*)(0x80700000 + i);
-        u8* dst = lbl_80529DEC + i;
-        dst[0x216] = src[0];
-        dst[0x217] = src[1];
-        dst[0x218] = src[2];
-        dst[0x219] = src[3];
-        dst[0x21a] = src[4];
-        dst[0x21b] = src[5];
-        dst[0x21c] = src[6];
-        dst[0x21d] = src[7];
-        i += 8;
-        src = (u8*)(0x80700000 + i);
-        dst = lbl_80529DEC + i;
-        dst[0x216] = src[0];
-        dst[0x217] = src[1];
-        dst[0x218] = src[2];
-        dst[0x219] = src[3];
-        dst[0x21a] = src[4];
-        dst[0x21b] = src[5];
-        dst[0x21c] = src[6];
-        dst[0x21d] = src[7];
-        i += 8;
-    } while (--n != 0);
+    for (i = 0; i < 32; ++i) {
+        lbl_80529DEC[0x216 + i] = *(u8*)(0x80700000 + i);
+    }
 
     OSSetSaveRegion((void*)0x80700000, (void*)0x8070001F);
 
@@ -148,7 +131,7 @@ void main(void)
     JFWDisplay::getManager()->clearAllXfb();
     fn_803BA980(lbl_8051C1A0);
     solidHeap = create__12JKRSolidHeapFUlP7JKRHeapb(0x180000, JKRHeap::sRootHeap, false);
-    expHeap = create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false);
+    expHeap = (JKRHeap*)create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false);
     p = __nw__FUlP7JKRHeapi(0x90, expHeap, 0);
     if (p != NULL) {
         p = fn_8045A080(p);
@@ -188,7 +171,7 @@ void main(void)
                     fn_802B1D98(lbl_8053ACA8);
                 }
             }
-            if (lbl_80529DEC[0x251] != 0 && lbl_80529DEC[0x251] < 0x5b) {
+            if (lbl_80529DEC[0x251] != 0 && lbl_80529DEC[0x251] <= 0x5a) {
                 lbl_80529DEC[0x251]++;
             }
         } while (fn_80401518(&lbl_8053ADE8) != 0);
@@ -197,34 +180,31 @@ void main(void)
             JFWDisplay::getManager()->beginRender();
             if (lbl_80529DEC[0x251] == 0) {
                 fn_80136828(lbl_8053AAF8);
-                JFWDisplay::getManager()->endRender();
-                fn_80137300(lbl_8053AAF8);
-                JFWDisplay::getManager()->endFrame();
-                continue;
             }
+            JFWDisplay::getManager()->endRender();
+            fn_80137300(lbl_8053AAF8);
+            JFWDisplay::getManager()->endFrame();
+        } else {
             JFWDisplay::getManager()->beginRender();
             fn_803FF420(lbl_8053AAF0);
             JFWDisplay::getManager()->endRender();
             fn_803FFAA8(lbl_8053AAF0);
-        }
-        if (lbl_8053AAF0[0x78] >= 4) {
-            fn_803FF2C4();
-            p = __nw__FUl(0x11c);
-            if (p != NULL) {
-                fn_80139300();
+            u32 state = lbl_8053AAF0[0x78];
+            if (((state | ~4U) - ((state - 4U) >> 1)) >> 31) {
+                fn_803FF2C4();
+                game = __nw__FUl(0x11c);
+                if (game != NULL) fn_80139300();
+                lbl_8053AAF8 = (u8*)game;
+                fn_80138C9C(game);
+                JFWDisplay::getManager()->endFrame();
+            } else {
+                if (!bVar1) bVar1 = true;
+                JFWDisplay::getManager()->endFrame();
             }
-            lbl_8053AAF8 = (u8*)p;
-            fn_80138C9C(p);
-            JFWDisplay::getManager()->endFrame();
-        } else {
-            if (!bVar1) {
-                bVar1 = true;
-            }
-            JFWDisplay::getManager()->endFrame();
         }
     }
 }
-
+#pragma opt_strength_reduction reset
 void __sinit_tu_801344C0_cpp(void)
 {
 }
