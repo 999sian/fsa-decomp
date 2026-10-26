@@ -239,6 +239,8 @@ struct HudTimerTables {
     u8 pad[0xa28];
     u64 digitsA[4][5];
     u64 digitsB[4][5];
+    u64* rowA(u32 idx) { return digitsA[idx]; }
+    u64* rowB(u32 idx) { return digitsB[idx]; }
 };
 
 // Sets digit `pos` of player idx's timer (both picture layers) to texture tex.
@@ -615,9 +617,8 @@ extern "C" void fn_80422824(u8* p) {
 }
 
 #pragma opt_strength_reduction off
-extern "C" void fn_80423248(u8* this_, u32 idx) {
+extern "C" void fn_80423248(u8* this_, int idx) {
     u8* base = (u8*)lbl_8048E1B8;
-    u32 off;
     HudTimerTables* tables = (HudTimerTables*)base;
     if (this_[0x257] & (u8)(1 << idx)) {
         s32 t;
@@ -630,7 +631,7 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
             t = 9999;
         }
         if (t < 0) {
-            off = idx * 0x28;
+            s32 off = idx * 0x28;
             u64* key = tables->digitsA[idx];
             u64* p = key;
             for (j = 0; j < 5; j++) {
@@ -648,7 +649,7 @@ extern "C" void fn_80423248(u8* this_, u32 idx) {
             ((u8*)GetPicture(this_, tables->digitsB[idx][4]))[0xb0] = 1;
             sel = 1;
         } else {
-            off = idx * 0x28;
+            s32 off = idx * 0x28;
             u64* p = tables->digitsA[idx];
             for (j = 0; j < 5; j++) {
                 GetPicture(this_, *p)->setBlackWhite(*(JUtility::TColor*)(this_ + 0x214), *(JUtility::TColor*)(this_ + 0x210));
@@ -677,7 +678,7 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
     u64* c;
     u64* d;
     s32 j;
-    s32 n;
+    int n;
     const u8* base = lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
         n = fn_80237810(idx);
