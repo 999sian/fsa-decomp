@@ -136,6 +136,8 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
 
 typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
 
+static inline u64 HudDigitName8041(const u64* table, s32 index) { return table[index]; }
+
 // Sets the digit pane pair idx (names at 0x338 and 0x360 tables) to the glyph tag.
 static inline void SetDigitPanes(u8* self, s32 idx, u32 tag) {
     CallSlot68(FindPaneOfSub(self, lbl_8048D320[0x67 + idx]), tag);
@@ -731,16 +733,19 @@ extern "C" void fn_8041CC04(u8* self) {
             (*(J2DScreen**)(self + 4))->search(base[0x6b])->hide();
             (*(J2DScreen**)(self + 4))->search(base[0x70])->hide();
         }
-        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 1000]);
+        s32 digit1000 = n / 1000;
         n %= 1000;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[digit1000]);
         ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which]))->changeTexture((ResTIMG*)tag, 0);
         ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which]))->changeTexture((ResTIMG*)tag, 0);
-        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 100]);
+        s32 digit100 = n / 100;
         n %= 100;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[digit100]);
         ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which+1]))->changeTexture((ResTIMG*)tag, 0);
         ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which+1]))->changeTexture((ResTIMG*)tag, 0);
-        tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
+        s32 digit10 = n / 10;
         n %= 10;
+        tag = fn_804030C4(0x54494d47, lbl_804B139C[digit10]);
         ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which+2]))->changeTexture((ResTIMG*)tag, 0);
         ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which+2]))->changeTexture((ResTIMG*)tag, 0);
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n]);
