@@ -20,8 +20,9 @@ extern "C" void detach__5ActorFv(void*);
 extern "C" void Actor_CreateByID(void*, s32, s32, void*, s32, s32, s32);
 extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
-inline u8 requestMessage(s32 player, s32 id, u32 room, JGeometry::TVec3<f32> pos, s32 flags) {
-    return fn_8038BD08(player, id, room, &pos, flags);
+inline u8 requestMessage(s32 player, s32 id, u32 room, const JGeometry::TVec3<f32>& pos, s32 flags) {
+    JGeometry::TVec3<f32> copy(pos);
+    return fn_8038BD08(player, id, room, &copy, flags);
 }
 extern "C" void* sManager__8JUTVideo;
 extern "C" void* lbl_8053AF80;
@@ -29,6 +30,30 @@ extern "C" const f32 lbl_8053CAE0;
 extern "C" const f32 lbl_8053CAE4;
 extern "C" const f32 lbl_8053CAE8;
 extern "C" const f32 lbl_8053CAEC;
+
+struct Box4 {
+    f32 a, b, c, d;
+};
+static inline void spawnCase4Inner(void* p) {
+    f32 pos[3];
+    Box4 box = *(Box4*)((char*)fn_802D6A9C() + 0xcc);
+    f32 cx = box.c;
+    f32 cy = box.d;
+    f32 dx = box.a - cx;
+    f32 k = lbl_8053CAE0;
+    f32 dy = box.b - cy;
+    pos[0] = k * dx + cx;
+    pos[1] = k * dy + cy;
+    pos[2] = lbl_8053CAE4;
+    fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33c, 1, 2, 0, 0, 1);
+    fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33d, 1, 2, 0, 0, 1);
+}
+static inline void spawnCase4(void* p) {
+    fn_80458F9C(lbl_8053AF80, 0x3c);
+    u8* obj = (u8*)fn_80119DD0();
+    obj[1] = 0;
+    spawnCase4Inner(p);
+}
 
 extern "C" void* fn_8011921C(void);
 extern "C" void fn_80128728(void* p, s32 x);
@@ -57,7 +82,6 @@ extern "C" void fn_80128728(void* p, s32 x) {
     struct Box4 {
         f32 a, b, c, d;
     };
-    u8* this_ = (u8*)p;
 
     switch (x) {
     case 0: {
@@ -90,28 +114,26 @@ extern "C" void fn_80128728(void* p, s32 x) {
         pos[0] = lbl_8053CAE0 * (box.a - box.c) + box.c;
         pos[1] = lbl_8053CAE0 * (box.b - box.d) + box.d;
         pos[2] = lbl_8053CAE4;
-        fn_8013CC50(*(s32*)(this_ + 4), pos, lbl_8053CAE8, 0x33c, 1, 2, 0, 0, 1);
-        fn_8013CC50(*(s32*)(this_ + 4), pos, lbl_8053CAE8, 0x33d, 1, 2, 0, 0, 1);
+        fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33c, 1, 2, 0, 0, 1);
+        fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33d, 1, 2, 0, 0, 1);
         break;
     }
     case 5: {
         JGeometry::TVec3<f32> pos((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f, (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f - lbl_8053CAEC, lbl_8053CAE4);
-        fn_8022FE80(0, *(void**)(this_ + 4), *(void**)(this_ + 0x198), 1, 0);
-        JGeometry::TVec3<f32> copy(pos);
-        if (fn_8038BD08(0, 0x231, *(u32*)(this_ + 4), &copy, 0x62)) {
+        fn_8022FE80(0, *(void**)((u8*)p + 4), *(void**)((u8*)p + 0x198), 1, 0);
+        if (requestMessage(0, 0x231, *(u32*)((u8*)p + 4), pos, 0x62)) {
             fn_80118454(fn_8011921C());
         }
         break;
     }
     case 6:
         fn_80458FF0(lbl_8053AF80, 0x100001d, 0, 0);
-        Actor_CreateByID(fn_801F856C(), 0x53455632, *(s32*)(this_ + 4), this_ + 0xc, 0x2000, -1, -1);
+        Actor_CreateByID(fn_801F856C(), 0x53455632, *(s32*)((u8*)p + 4), (u8*)p + 0xc, 0x2000, -1, -1);
         break;
     case 7: {
         JGeometry::TVec3<f32> pos((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f, (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f - lbl_8053CAEC, lbl_8053CAE4);
-        fn_8022FE80(0, *(void**)(this_ + 4), *(void**)(this_ + 0x198), 1, 0);
-        JGeometry::TVec3<f32> copy(pos);
-        if (fn_8038BD08(0, 0x23c, *(u32*)(this_ + 4), &copy, 0x62)) {
+        fn_8022FE80(0, *(void**)((u8*)p + 4), *(void**)((u8*)p + 0x198), 1, 0);
+        if (requestMessage(0, 0x23c, *(u32*)((u8*)p + 4), pos, 0x62)) {
             fn_80118454(fn_8011921C());
         }
         break;
@@ -137,7 +159,7 @@ extern "C" void fn_80128728(void* p, s32 x) {
     case 2:
         break;
     }
-    *(s32*)(this_ + 0x230) = x;
+    *(s32*)((u8*)p + 0x230) = x;
 }
 
 extern "C" u8 fn_80128B18(char* p) {
