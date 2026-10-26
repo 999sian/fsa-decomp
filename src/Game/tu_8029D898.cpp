@@ -113,6 +113,11 @@ static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u
         fn_802D7D00(fn_802D6A9C(), room, idx, 1);
     }
 }
+static inline void WaveCopyPos(JGeometry::TVec2<f32>& dst, f32 x, f32 y) {
+    dst.y = y;
+    dst.x = x;
+}
+
 // Replaces the room-0 tile at pos with tile `value` and refreshes it.
 static inline void SetTile0(JGeometry::TVec2<f32>* pos, u16 value) {
     JGeometry::TVec2<f32> t;
@@ -893,10 +898,11 @@ extern "C" u32 fn_802A0800(char* self, void* p3, u32 room) {
     return 0;
 }
 
-extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
+extern "C" void fn_802A1050(char* self, const volatile JGeometry::TVec2<f32>* pos) {
     JGeometry::TVec2<f32> p;
-    f32 x = pos->x;
-    f32 y = pos->y;
+    f32 x, y;
+    y = pos->y;
+    x = pos->x;
     p.y = y;
     p.x = x;
     *(s32*)(self + 0x20) = fn_80226BC4(&p, 0);
@@ -906,74 +912,88 @@ extern "C" void fn_802A1050(char* self, JGeometry::TVec2<f32>* pos) {
         (u16)(*(u16*)(self + 0x24) - 0x70) <= 3 || (u16)(*(u16*)(self + 0x24) - 0x40) <= 4 ||
         *(u16*)(self + 0x24) == 0xe5) {
         u16 kind = *(u16*)(self + 0x24);
-        void* mgr;
-        s32 idx;
-        s32 n;
+        
         switch (kind) {
         case 0x72:
         case 0x73:
         case 0x82: {
             if (kind == 0x72 || kind == 0x73) {
-                JGeometry::TVec2<f32> t = *pos;
-                mgr = lbl_8053AC98;
-                *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-                idx = *(s32*)((char*)mgr + 0x20);
+                JGeometry::TVec2<f32> t;
+                f32 x, y;
+                y = pos->y;
+                x = pos->x;
+                t.y = y; t.x = x;
+                self = (char*)lbl_8053AC98;
+                *(s32*)(self + 0x20) = fn_80226BC4(&t, 0);
+                int idx = *(s32*)(self + 0x20);
                 fn_802D782C(fn_802D6A9C(), 1);
                 fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x7c);
-                n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+                int n = (int)fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)(self + 0x20));
                 if (n != -1) {
                     fn_802D7D00(fn_802D6A9C(), 0, n, 1);
                 }
             } else {
-                JGeometry::TVec2<f32> t = *pos;
-                mgr = lbl_8053AC98;
-                *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-                idx = *(s32*)((char*)mgr + 0x20);
+                JGeometry::TVec2<f32> t;
+                f32 x, y;
+                y = pos->y;
+                x = pos->x;
+                t.y = y; t.x = x;
+                self = (char*)lbl_8053AC98;
+                *(s32*)(self + 0x20) = fn_80226BC4(&t, 0);
+                int idx = *(s32*)(self + 0x20);
                 fn_802D782C(fn_802D6A9C(), 1);
                 fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x83);
-                n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+                int n = (int)fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)(self + 0x20));
                 if (n != -1) {
                     fn_802D7D00(fn_802D6A9C(), 0, n, 1);
                 }
             }
-            void* id = Actor_CreateByID(fn_801F856C(), 0x53544f4e, 0, pos, 0, -1, -1);
-            ActorVt* actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
+            u32 id = (u32)Actor_CreateByID(fn_801F856C(), 0x53544f4e, 0, (JGeometry::TVec2<f32>*)pos, 0, -1, -1);
+            ActorVt* actor = (ActorVt*)fn_801F666C(fn_801F856C(), (void*)id);
             if (actor != 0) {
                 actor->activate();
             }
             break;
         }
         case 0x5f: {
-            JGeometry::TVec2<f32> t = *pos;
-            mgr = lbl_8053AC98;
-            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-            idx = *(s32*)((char*)mgr + 0x20);
+            JGeometry::TVec2<f32> t;
+                f32 x, y;
+                y = pos->y;
+                x = pos->x;
+                t.y = y; t.x = x;
+            self = (char*)lbl_8053AC98;
+            *(s32*)(self + 0x20) = fn_80226BC4(&t, 0);
+            int idx = *(s32*)(self + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
             fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x83);
-            n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+            int n = (int)fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)(self + 0x20));
             if (n != -1) {
                 fn_802D7D00(fn_802D6A9C(), 0, n, 1);
             }
-            void* id = Actor_CreateByID(fn_801F856C(), 0x59415349, 0, pos, 0, -1, -1);
-            ActorVt* actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
+            u32 id = (u32)Actor_CreateByID(fn_801F856C(), 0x59415349, 0, (JGeometry::TVec2<f32>*)pos, 0, -1, -1);
+            ActorVt* actor = (ActorVt*)fn_801F666C(fn_801F856C(), (void*)id);
             if (actor != 0) {
                 actor->activate();
             }
             break;
         }
         case 0xe5: {
-            JGeometry::TVec2<f32> t = *pos;
-            mgr = lbl_8053AC98;
+            JGeometry::TVec2<f32> t;
+                f32 x, y;
+                y = pos->y;
+                x = pos->x;
+                t.y = y; t.x = x;
+            void* mgr = lbl_8053AC98;
             *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&t, 0);
-            idx = *(s32*)((char*)mgr + 0x20);
+            int idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
             fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, idx, 0x9d);
-            n = fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
+            int n = (int)fn_802D4C10(fn_802D6A9C(), 0, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
                 fn_802D7D00(fn_802D6A9C(), 0, n, 1);
             }
-            fn_8013CC50(0, pos, 0xf9, 1, 0, 0, 0, 1, lbl_80540790);
-            fn_8013CC50(0, pos, 0xfa, 1, 0, 0, 0, 1, lbl_80540790);
+            fn_8013CC50(0, (JGeometry::TVec2<f32>*)pos, 0xf9, 1, 0, 0, 0, 1, lbl_80540790);
+            fn_8013CC50(0, (JGeometry::TVec2<f32>*)pos, 0xfa, 1, 0, 0, 0, 1, lbl_80540790);
             u32 msg = 0x50045;
             ((WaveMsgSink*)((WaveOwner*)self)->mpSub)->post(&msg);
             break;
