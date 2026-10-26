@@ -125,22 +125,18 @@ extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 	char* buf = TBL_RES->get(0x454e4d20, lbl_8046A048);
 	s32 size = TBL_RES->getSize(TBL_RES->get(0x454e4d20, lbl_8046A048));
 	this_->cols = 0;
-	for (char* p = buf;; p++) {
-		if (*p == ',') {
+	for (s32 i = 0;; i++) {
+		if (buf[i] == ',') {
 			this_->cols++;
-		} else if (*p == '\n') {
+		} else if (buf[i] == '\n') {
 			break;
 		}
 	}
 	this_->cols--;
 	this_->rows = 0;
-	{
-		char* p = buf;
-		for (s32 i = 0; i <= size; i++) {
-			if (*p == '\n') {
-				this_->rows++;
-			}
-			p++;
+	for (s32 i = 0; i <= size; i++) {
+		if (buf[i] == '\n') {
+			this_->rows++;
 		}
 	}
 	this_->rows--;
@@ -149,68 +145,64 @@ extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
 	this_->colKeys = (u32*)new (heap, 0) u32[((u32)this_->cols + 0x1f) & ~31U];
 	this_->table = (s32*)new (heap, 0) u32[((u32)(this_->rows * this_->cols) + 0x1f) & ~31U];
 	{
-		char* p;
-        s32 start;
-        s32 off;
-        s32 n;
-        s32 col;
-        p=buf; n=0; col=0; start=0; off=0;
-		for (;; p++) {
-            char c=*p;
-			if (c == ',' || *p == '\n') {
+		s32 i = 0;
+		s32 col = 0;
+		s32 start = 0;
+		for (;; i++) {
+			char c = buf[i];
+			if (c == ',' || c == '\n') {
 				if (col > 1) {
-					*(u32*)((char*)this_->colKeys + off - 8) = READ4(buf + start);
+					this_->colKeys[col - 2] =
+					    ((u8)buf[start] << 24) |
+					    ((u8)buf[start + 1] << 16) |
+					    ((u8)buf[start + 2] << 8) |
+					    (u8)buf[start + 3];
 				}
 				if (c != ',') {
 					break;
 				}
-				off += 4;
 				col++;
-				start = n + 1;
+				start = i + 1;
 			}
-			n++;
 		}
 	}
 	{
-		s32 roff;
-        s32 i;
-        s32 col;
-        s32 row;
-        s32 fs;
-        char c;
-        char* p;
-        p=buf; i=0; col=0; fs=0; row=0; roff=0;
-        for (; i <= size; i++, p++) {
-            c=*p;
+		s32 i = 0;
+		s32 col = 0;
+		s32 fs = 0;
+		s32 row = 0;
+		for (; i <= size; i++) {
+			char c = buf[i];
 			if (c == ',' || c == '\n' || c == 0) {
 				if (row > 0 && (c != 0 || col >= 2)) {
 					if (col == 0) {
-						*(u32*)((char*)this_->rowKeys + roff - 4) = READ4(buf + fs);
+						this_->rowKeys[row - 1] =
+						    ((u8)buf[fs] << 24) |
+						    ((u8)buf[fs + 1] << 16) |
+						    ((u8)buf[fs + 2] << 8) |
+						    (u8)buf[fs + 3];
 					} else if (col == 1) {
-						*(char**)((char*)this_->rowNames + roff - 4) = buf + fs;
-						*p = 0;
+						this_->rowNames[row - 1] = buf + fs;
+						buf[i] = 0;
 					} else {
 						s32 v = 0;
 						for (s32 k = fs; k < i; k++) {
-							s32 digit = buf[k];
-							if (digit >= '0' && digit <= '9') {
+							if (buf[k] >= '0' && buf[k] <= '9') {
 								v *= 10;
-                                v += digit;
-                                v -= '0';
+								v += buf[k] - '0';
 							}
 						}
 						this_->table[(row - 1) * this_->cols + col - 2] = v;
 					}
 				}
 				if (c == ',' || c == 0) {
-                    col++;
-                    fs = i + 1;
-                } else if (c == '\n') {
-                    fs = i + 1;
-                    col = 0;
-                    roff += 4;
-                    row++;
-                }
+					col++;
+					fs = i + 1;
+				} else if (c == '\n') {
+					fs = i + 1;
+					col = 0;
+					row++;
+				}
 			}
 		}
 	}
