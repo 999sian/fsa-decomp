@@ -84,6 +84,14 @@ static inline void orbitOffset(JGeometry::TVec3<f32>& out, s16 angle, const f32 
  out.set(JMath::sincosTable_.cosShort(angle) * radius, JMath::sincosTable_.sinShort(angle) * radius, lbl_80542C24);
 }
 
+static inline void orbitInit(u8* p, s16 angle) {
+ *(f32*)(p + 0x244) = *(f32*)(p + 0xc);
+ *(f32*)(p + 0x248) = *(f32*)(p + 0x10);
+ *(f32*)(p + 0x24c) = *(f32*)(p + 0x14);
+ *(s32*)(p + 0x238) += 1;
+ *(s16*)(p + 0x240) = angle;
+}
+
 struct Tu80367888Owner : Actor {
  virtual void v19();
  virtual void v20();
@@ -191,11 +199,11 @@ extern "C" void fn_80367888(u8* p) {
             orbit.z = lbl_80542C24;
         } else {
         *(f32*)(p + 0x14) -= lbl_80542C34;
-        d = lbl_80542C38 - *(f32*)(p + 0x23c);
-        orbit.x = JMath::sincosTable_.cosShort(*(s16*)(p + 0x240)) * __fabsf(d);
- orbit.y = JMath::sincosTable_.sinShort(*(s16*)(p + 0x240)) * __fabsf(d);
- orbit.z = lbl_80542C24;
-        if (*(f32*)(p + 0x23c) >= lbl_80542C38) {
+        f32 radius = *(f32*)(p + 0x23c);
+ f32 bound = lbl_80542C38;
+ d = bound - radius;
+ orbitOffset(orbit, *(s16*)(p + 0x240), __fabsf(d));
+        if (radius >= bound) {
             u8* q = *(u8**)(p + 0x254);
             ((Tu80367888Owner*)q)->setState(0xc);
             if (*(u8**)(p + 0x270) != 0) {
