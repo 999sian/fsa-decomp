@@ -243,6 +243,10 @@ struct JijiTable {
     char res2[0x18];
 };
 extern const JijiTable lbl_804753C0;
+static inline s32 jijiFullFrame(const JijiTable* t, u8* p) {
+    const s32* frames = &t->frames[0][0];
+    return *(s32*)(p+0x25c) + (*(s32*)(p+0x238) + frames[*(s32*)(p+0x264)*4 + *(s32*)(p+0x248)]);
+}
 static inline s32 jijiFrame(const s32 (*fr)[4], u8* p) { return *(const s32*)((const u8*)fr + *(s32*)(p + 0x264) * 16 + *(s32*)(p + 0x248) * 4); }
 #define JIJI_FRAME(t, p) (*(s32*)((p) + 0x238) + ((const s32(*)[4])((const u8*)(t) + 0xd8))[*(s32*)((p) + 0x264)][*(s32*)((p) + 0x248)])
 extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
@@ -287,14 +291,14 @@ extern "C" void fn_8037B7F8(u8* this_) {
                     *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 7, 1.0f, 1.0f);
         fn_80307AC8(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const int*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 0, -1);
     } else {
         fn_801F06F0(this_, t->res1,
                     *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 7, 1.0f, 1.0f);
         fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
-                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const s32*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
+                    *(s32*)(this_ + 0x25c) + (*(s32*)(this_ + 0x238) + *(const int*)((u32)t->frames + (*(s32*)(this_ + 0x264) * 16 + *(s32*)(this_ + 0x248) * 4))),
                     0, 2, -1, 0, 0, 0);
     }
 }
