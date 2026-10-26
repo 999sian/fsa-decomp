@@ -3,6 +3,7 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/JFramework/JFWDisplay.h"
 
 // ---- from src/Game/fn_8041769C_dtor.cpp ----
 // vtable slot 2 (byte offset 8) - see [[reference_fsa_virtual_dispatch_codegen_trick]]
@@ -147,16 +148,16 @@ void TU80414F6C::fn_80416038() {
     }
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_80416BD0(u8* p) {
     u8* slot;
     u8* slotA;
     u8* slotB;
-    s32 k;
-    s32 i;
+    int k;
+    int i;
     const u64* first;
-    i = 0;
     const u64* t = lbl_8048CD50;
-    first = t + i;
+    first = t;
 
     fn_8042EB24(lbl_8053AEC4);
     *(s32*)(p + 0x1c) = -1;
@@ -196,7 +197,7 @@ extern "C" void fn_80416BD0(u8* p) {
 
     }
     const u64* row;
-    s32 j;
+    int j;
     s32 outer;
     t += 37;
     for (outer = 0; outer < 0xa; outer++, t += 10) {
@@ -246,26 +247,30 @@ extern "C" void fn_80416BD0(u8* p) {
 
     *(s32*)(p + 0xe0) = 6;
 }
-
+#pragma opt_common_subs on
 void TU80414F6C::fn_804170B0() {
     (((TU80414F6C*)lbl_8053AE00)->*lbl_804B1354[f109])();
 }
 
-extern "C" void fn_804170EC(void* this_) {
-    u8* p = (u8*)this_;
+extern "C" void fn_804170EC(u8* this_) {
+    u8* p = this_;
     f32 f31;
     f32 f30;
     s32 idx;
     T804170EC_Color tmp;
     T804170EC_Color clr;
+    s32 col;
+    s32 row;
     T804170EC_Color* dst;
     u8* pane;
 
+    row = *(s32*)(p + 0xc);
+    col = *(s32*)(p + 0x10);
+    idx = col + row * 5;
     clr.r = 0;
     clr.g = 0;
     clr.b = 0;
     clr.a = 0;
-    idx = *(s32*)(p + 0x10) + *(s32*)(p + 0xc) * 5;
     *(u32*)&tmp = *(u32*)&clr;
     dst = (T804170EC_Color*)((u8*)sManager__10JFWDisplay + 0x8);
     dst->r = tmp.r;
@@ -340,17 +345,17 @@ extern "C" void fn_804170EC(void* this_) {
             (*(J2DScreen**)(p + 0x24))->search(0x004E646174613035ULL)->move(f31, *(f32*)(p + 0x4) + f30);
             f31 = (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->getBounds()->i.x;
             (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->move(f31, *(f32*)(p + 0x8) + f30);
+        }
             ((T80416BD0_Child*)(*(J2DScreen**)(p + 0x24))->search(0x00506F6375723031ULL))->slot9(idx);
             ((T80416BD0_Child*)(*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL))->slot9(idx);
-        }
 
-        (*(J2DScreen**)(p + 0x24))->draw(lbl_805439CC, lbl_805439CC, lbl_8053AB10->ctx);
     }
+        (*(J2DScreen**)(p + 0x24))->draw(lbl_805439CC, lbl_805439CC, lbl_8053AB10->ctx);
 
     if (*(u8*)(p + 0x109) == 2) {
         fn_8042EB98(lbl_8053AEC4);
-        fn_80440EE8(lbl_8053AED8);
     }
+        fn_80440EE8(lbl_8053AED8);
 }
 
 // actor@lbl_804B1378: destructor (0x1E0). Resets the vtable pointer, then
