@@ -25,6 +25,11 @@ extern "C" const f32 lbl_80543EC4;
 extern "C" const f32 lbl_80543EC8;
 extern "C" const f32 lbl_80543ECC;
 
+static inline void calcAudioManager(JAUSoundMgr* const manager) {
+    manager->calc();
+    manager->mixOut();
+}
+
 static inline void startQueuedAudio(JAUSoundMgr* mgr, u32 sound, JAISoundHandle* handle) {
     JAISoundID id(sound);
     mgr->startSound(id,handle,0);
@@ -1018,7 +1023,7 @@ extern "C" void fn_80459674(u8* p) {
                         switch (*(s32*)(p+0x5c)) { case 0x100001a: break; default: goto soundStarted; }
                         bank=(*(Unk80458408Obj**)(p+0x80))->v4();
                         if (bank) {
-                            JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
+                            const JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock& lock = JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock(*bank);
                             for (i=0;i<16;i++) {
                                 JASTrack* track=bank->v7(i);
                                 if (track) {
