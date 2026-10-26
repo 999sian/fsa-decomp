@@ -688,4 +688,4 @@ extern "C" void fn_8014A5F4(char* this_) {
         return;
     }
 }
-#pragma peephole reset
+#pragma opt_common_subs reset
