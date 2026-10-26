@@ -48,6 +48,34 @@ extern "C" void* fn_80309C4C(void* a, u32 b, s32 c);
 extern "C" void fn_801F0E34(void* a, u32 b, u32 c);
 extern "C" s32 fn_8013CC50(void* obj, void* v, u16 a, s32 b, f32 c, u32 d, s32 e, s32 f, s32 g);
 
+struct StateActor80113788 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void setState(s32 state);
+};
+
 static inline void CallVfn24(char* obj, s32 arg) {
     (*(void (***)(char*, s32))obj)[24](obj, arg);
 }
