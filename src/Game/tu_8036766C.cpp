@@ -72,7 +72,7 @@ extern "C" const f32 lbl_80542C30;
 extern "C" const f32 lbl_80542C34;
 extern "C" const f32 lbl_80542C38;
 extern "C" const f64 lbl_80542C40;
-static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, int width, int height, const f32 zero = lbl_80542C24, const f32 scale = lbl_80542C28) {
+static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, int width, int height, const f32 zero = lbl_80542C24) {
  out.set((f32)width / 2.0f, (f32)height / 2.0f, zero);
 }
 static inline void orbitOffset(JGeometry::TVec3<f32>& out, s16 angle, const f32 radius) {
