@@ -618,19 +618,26 @@ u8 fn_80404270(void* self, s32 idx) {
 	if (!((u8*)lbl_80529DEC)[0x23f] && lbl_8053AAF8[0x7e] && !((u8*)self)[0x656] && !fn_804045F8(self, idx)) {
 		if (idx == 0) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 1) {
+		}
+        if (idx == 1) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 2) {
+		}
+        if (idx == 2) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 3) {
+		}
+        if (idx == 3) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 4) {
+		}
+        if (idx == 4) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 5) {
+		}
+        if (idx == 5) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 6) {
+		}
+        if (idx == 6) {
 			if (EC80Bit28(idx, 1)) goto found;
-		} else if (idx == 7) {
+		}
+        if (idx == 7) {
 			if (EC80Bit28(idx, 2)) goto found;
 		}
 	}
