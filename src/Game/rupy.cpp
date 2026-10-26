@@ -123,8 +123,12 @@ extern "C" void fn_80230498(s32 idx, void* vec, s32 a, s32 b, s32 c, s32 d, s32 
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 room, void* pos, u32 param, s32 a, s32 b);
 extern "C" void* fn_801F856C(void);
-struct RupyVec3 {
-    f32 x, y, z;
+struct RupyVec3 : JGeometry::TVec3f {
+    RupyVec3(const f32& x_, const f32& y_, const f32& z_) {
+        x = x_;
+        y = y_;
+        z = z_;
+    }
 };
 
 // Fast LCG at lbl_8053AAF8+0xB4; returns a value in [0,1).
@@ -439,7 +443,101 @@ extern const f32 lbl_80541DBC;
 extern const f32 lbl_80541DC0;
 extern "C" u8 fn_801F2618(void* a, s32 b, s32 c);
 extern void* lbl_8053AB10;
-extern "C" void fn_8032B7C0(void* this_) {}
+extern "C" void fn_8032B7C0(void* this_) {
+    u8* p = (u8*)this_;
+    bool found;
+    s32 room;
+    u16 subtype = *(u16*)(p + 0x94);
+    if (subtype == 0x23 || subtype == 0x24) {
+        return;
+    }
+    room = *(s32*)(p + 4);
+    found = false;
+    u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
+    if (tbl[room + 0x31df] == 0) {
+        if (*(s32*)(p + 0x230) == 1 || *(s32*)(p + 0x230) == 9) {
+            for (s32 i = 0; i < 4; i++) {
+                if (!fn_8023A51C(i)) continue;
+                room = *(s32*)(p + 4);
+                if (room != fn_8023DE58(i)) continue;
+                f32* pos = (f32*)fn_8023A478(i);
+                f32 dx = pos[0] - *(f32*)(p + 0xc);
+                f32 dy = pos[1] - *(f32*)(p + 0x10);
+                f32 dx2 = dx * dx;
+                f32 dy2 = dy * dy;
+                if (dx2 + dy2 > lbl_80541DB8) continue;
+                found = true;
+                break;
+            }
+            if (found && *(f32*)(p + 0x14) <= lbl_80541D98) {
+                *(f32*)(p + 0x44) = lbl_80541DBC;
+                switch (fn_8023A240()) {
+                case 0:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541DB0, lbl_80541D88, *(f32*)(p + 0x44));
+                    break;
+                case 1:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541DA0, lbl_80541D88, *(f32*)(p + 0x44));
+                    break;
+                case 2:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541D88, lbl_80541DB0, *(f32*)(p + 0x44));
+                    break;
+                case 3:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541D88, lbl_80541DA0, *(f32*)(p + 0x44));
+                    break;
+                }
+                *(s32*)(p + 0x260) = 1;
+                *(s32*)(p + 0x230) = 0;
+            }
+        }
+    } else if (*(s32*)(p + 0x230) == 0 || *(s32*)(p + 0x230) == 1 || *(s32*)(p + 0x230) == 9) {
+        *(f32*)(p + 0x28c) = lbl_80541D88;
+        *(f32*)(p + 0x288) = lbl_80541D88;
+        *(f32*)(p + 0x284) = lbl_80541D88;
+        p[0x283] = 1;
+        p[0x27e] = fn_801F2618(this_, (s32)(p + 0x284), 0);
+        if (p[0x283] == 1) {
+            *(JGeometry::TVec3f*)(p + 0xc) = *(JGeometry::TVec3f*)(p + 0x29c);
+        }
+        if (*(s32*)(p + 0x230) != 0) {
+            for (s32 i = 0; i < 4; i++) {
+                if (!fn_8023A51C(i)) continue;
+                room = *(s32*)(p + 4);
+                if (room != fn_8023DE58(i)) continue;
+                f32* pos = (f32*)fn_8023A478(i);
+                f32 dx = pos[0] - *(f32*)(p + 0xc);
+                f32 dy = pos[1] - *(f32*)(p + 0x10);
+                f32 dx2 = dx * dx;
+                f32 dy2 = dy * dy;
+                if (dx2 + dy2 > lbl_80541DB8) continue;
+                found = true;
+                break;
+            }
+            if (found && p[0x27e] != 0) {
+                *(f32*)(p + 0x40) = lbl_80541DC0;
+                switch (fn_8023A240()) {
+                case 0:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541DA0, *(f32*)(p + 0x40), lbl_80541D88);
+                    break;
+                case 1:
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541DB0, *(f32*)(p + 0x40), lbl_80541D88);
+                    break;
+                case 2: {
+                    f32 vy = *(f32*)(p + 0x40);
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541D88, vy, lbl_80541D88);
+                    break;
+                }
+                case 3: {
+                    f32 vy = *(f32*)(p + 0x40);
+                    *(JGeometry::TVec3f*)(p + 0x3c) = JGeometry::TVec3f(lbl_80541D88, vy, lbl_80541D88);
+                    break;
+                }
+                }
+                *(s32*)(p + 0x260) = 1;
+                *(s32*)(p + 0x230) = 0;
+            }
+        }
+    }
+}
 extern "C" void fn_8032BB90(char* this_) {
 s32 room;
 u32 kind;
