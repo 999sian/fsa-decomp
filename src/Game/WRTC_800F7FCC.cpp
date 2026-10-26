@@ -88,7 +88,7 @@ extern "C" s32 fn_801F3D94(void* this_, s32 a);
 static inline f32 WRTC_sinShort(s16 v) {
     return JMath::sincosTable_.mTable[(u32)(u16)v >> 5].first;
 }
-static inline f32 WRTC_cosShort(const s16 v) {
+static inline f32 WRTC_cosShort(s16 v) {
     return JMath::sincosTable_.mTable[(u32)(u16)v >> 5].second;
 }
 
