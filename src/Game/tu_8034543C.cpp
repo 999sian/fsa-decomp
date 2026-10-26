@@ -94,7 +94,27 @@ extern "C" Vec* fn_8023E724(s32);
 extern "C" s32 ClassifyBamAngleToQuadrant(u16);
 extern const f32 lbl_805423A0;
 extern const f32 lbl_805423FC;
+extern const f64 lbl_80542400;
+extern const f64 lbl_80542408;
+extern const f64 lbl_80542410;
 extern const f32 lbl_80542418;
+
+static inline f32 tuSqrt(const f32 mag) {
+    if (mag > lbl_805423A0) {
+        f64 xd = mag;
+        f64 tmpd = __frsqrte(xd);
+        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * xd));
+        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * xd));
+        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * xd));
+        return (f32)(xd * tmpd);
+    } else if (mag < lbl_80542410) {
+        return *(f32*)__float_nan;
+    } else if (fpclassify(mag) == 1) {
+        return *(f32*)__float_nan;
+    } else {
+        return mag;
+    }
+}
 extern "C" s32 fn_80346330(u8* this_) {
     s32 i;
     u8* self = this_;
