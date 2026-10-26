@@ -2,10 +2,6 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
-static inline void clampPlayerSpeed(f32& speed, const f32 minimum, const f32 deceleration) {
-    speed -= deceleration;
-    if (speed < minimum) speed = minimum;
-}
 static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -z; v[1] = -y; }
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
