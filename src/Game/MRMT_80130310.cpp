@@ -17,9 +17,9 @@ static inline void MRMTSetBounds(u8* obj, const JGeometry::TBox2f& bounds) {
         obj[0x7f4] = 1;
         *(s32*)(obj + 0x7f8) = 5;
         *(f32*)(obj + 0x808) = bounds.i.x;
-        *(f32*)(obj + 0x80c) = bounds.i.y;
+        *(f32*)(obj + 0x80c) = bounds.f.y;
         *(f32*)(obj + 0x810) = bounds.f.x;
-        *(f32*)(obj + 0x814) = bounds.f.y;
+        *(f32*)(obj + 0x814) = bounds.i.y;
         obj[0x7f6] = 0;
     }
 }
@@ -132,19 +132,13 @@ extern "C" void fn_801306BC(u8* p) {
         obj[0x179] = 1;
         f32 r = lbl_8053CC88;
         f32 y = *(f32*)(p + 0x10);
-        f32 upper = r + y;
-        f32 lower = y - r;
-        f32 x = *(f32*)(p + 0xc);
         obj = *(u8**)(lbl_8053AB10 + 0x24);
-        if (obj[0x7f5] == 0) {
-            obj[0x7f4] = 1;
-            *(s32*)(obj + 0x7f8) = 5;
-            *(f32*)(obj + 0x808) = x;
-            *(f32*)(obj + 0x80c) = y - r;
-            *(f32*)(obj + 0x810) = x;
-            *(f32*)(obj + 0x814) = r + y;
-            obj[0x7f6] = 0;
-        }
+        JGeometry::TBox2f bounds;
+        bounds.f.y = r + y;
+        bounds.i.x = *(f32*)(p + 0xc);
+        bounds.f.x = bounds.i.x;
+        bounds.i.y = y - r;
+        MRMTSetBounds(obj, bounds);
     }
     st = *(s32*)(p + 0x230);
     switch (st) {
@@ -194,8 +188,10 @@ extern "C" void fn_801306BC(u8* p) {
             if (*(s32*)(p + 0x244) >= 4) {
                 setState(p, 5);
             } else {
-                u8* e = lbl_8049EA58 + *(s32*)(p + 0x244) * 12;
-                if (fn_8013056C((char*)p, *(u16*)e, *(s32*)(e + 4), *(s32*)(e + 8)) >= 0) {
+                s32 off = *(s32*)(p + 0x244) * 12;
+                u8* table = lbl_8049EA58;
+                u8* e = table + off;
+                if (fn_8013056C((char*)p, *(u16*)(table + off), *(s32*)(e + 4), *(s32*)(e + 8)) >= 0) {
                     setState(p, 4);
                 }
             }
@@ -215,7 +211,9 @@ extern "C" void fn_801306BC(u8* p) {
         } else {
             fn_80388EEC(0);
             s32 which = 0;
-            u8* e = lbl_8049EA58 + *(s32*)(p + 0x244) * 12;
+            s32 off = *(s32*)(p + 0x244) * 12;
+            u8* table = lbl_8049EA58;
+            u8* e = table + off;
             switch (*(s32*)(e + 4)) {
             case 1:
                 which = *(s32*)(p + 0x238);
