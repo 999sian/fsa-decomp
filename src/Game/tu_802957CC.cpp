@@ -253,6 +253,15 @@ static inline void setHouseVelocity(JGeometry::TVec3f& dst, const JGeometry::TVe
     dst.z = z;
 }
 
+static inline u8 HouseLeadingHitsRect(char* self, void* pos) {
+    void* h;
+    s32 room;
+    h = *(void**)(self + 0x198);
+    room = *(s32*)(self + 4);
+    char* base = (char*)fn_8020D58C();
+    return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
+}
+
 // Scroll bounds of the screen (TV or GBA) this actor's room is on.
 static inline JGeometry::TBox2f* RoomBounds(char* self) {
     s32 room = *(s32*)(self + 4);
