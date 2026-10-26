@@ -917,6 +917,7 @@ extern const f32 lbl_80541910;
 extern const f32 lbl_80541914;
 extern const f32 lbl_80541918;
 extern const f32 lbl_8054191C;
+#pragma opt_propagation off
 extern "C" void fn_80319B4C(Actor* this_)
 {
     u8* self = (u8*)this_;
@@ -1032,8 +1033,18 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(f32*)(self + 0x250) = lbl_8054191C;
         *(f32*)(self + 0x254) = lbl_8054191C;
         const Tu80317WordPair* __restrict box=(Tu80317WordPair*)(self+0x248);
-        ((Tu80317WordPair*)(self+0x60))->set(box[0].second,box[0].first);
-        ((Tu80317WordPair*)(self+0x68))->set(box[1].second,box[1].first);
+        u32 second;
+        u32 first;
+        first=box[0].first;
+        second=box[0].second;
+        *(u32*)(self+0x60)=first;
+        *(u32*)(self+0x64)=second;
+        u32 second2;
+        u32 first2;
+        first2=box[1].first;
+        second2=box[1].second;
+        *(u32*)(self+0x68)=first2;
+        *(u32*)(self+0x6c)=second2;
     }
 
     if ((*(u32*)(self + 0x90) >> 27) != 0) {
@@ -1050,7 +1061,7 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(u8*)(self + 0x270) = 1;
     }
 }
-
+#pragma opt_propagation reset
 
 
 
