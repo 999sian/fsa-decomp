@@ -1528,9 +1528,12 @@ extern const f32 lbl_805401DC;
 
 #pragma opt_common_subs off
 #pragma opt_propagation off
+static inline f32 carriedPositionDelta(f32 goal, f32 value) {
+    return goal - value;
+}
+
 static inline f32 stepCarriedPosition(f32* pos, const f32 target, const f32 step) {
-    f32 delta = target;
-    delta -= *pos;
+    f32 delta = carriedPositionDelta(target, *pos);
     if (delta >= step) {
         *pos += step;
     } else if (delta <= lbl_805401CC) {
@@ -1584,7 +1587,6 @@ static inline bool carriedPositionUnchanged(char* p) {
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
 
-#pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_80262BAC(char* p) {
     if (U32(p, 0xd6c) == 0x4e495741 && U8(p, 0x441) == 0) {
@@ -1661,7 +1663,6 @@ end:
     }
 }
 #pragma opt_common_subs reset
-#pragma opt_propagation reset
 extern "C" void fn_80263078(char* p) {
     JGeometry::TVec2<f32> pos;
     fn_8028414C(p);
