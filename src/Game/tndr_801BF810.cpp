@@ -435,6 +435,11 @@ extern "C" u8 fn_80230188(s32 i);
 extern "C" u8 fn_801D0B44(void* this_, s32 id);
 extern "C" u8 fn_8022E438(u32 i, s32 b);
 extern "C" s32 fn_802265FC(void* a, s32 b);
+static inline f32 tndrAddOffset(const f32 offset, f32 value) {
+    value = offset + value;
+    return value;
+}
+
 extern "C" void fn_801BFF04(char* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
@@ -446,8 +451,8 @@ extern "C" void fn_801BFF04(char* this_) {
         }
         return;
     case 1:
-        if (*(f32*)(this_ + 0x14) >= lbl_8053ED44) {
-            *(f32*)(this_ + 0x14) = lbl_8053ED44;
+        if (*(f32*)(this_ + 0x14) >= 18.0f) {
+            *(f32*)(this_ + 0x14) = 18.0f;
             *(f32*)(this_ + 0x2ac) = (f32)(fn_801CD664(0x21) + 0x30);
             *(s16*)(this_ + 0x2b0) = fn_801CD664(0x101) + 0x200;
             if (fn_801CD664(2) == 0) {
@@ -460,7 +465,8 @@ extern "C" void fn_801BFF04(char* this_) {
         return;
     case 2: {
         s32 a = *(s32*)(this_ + 0x2a8);
-        if (a >= 0 && !fn_80230188(a) && !fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
+        if (a < 0) goto findTarget;
+        if ( !fn_80230188(a) && !fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
             s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
             if (v >= 0 && v != *(s32*)(this_ + 0x2a8) && fn_8022E438(v, *(s32*)(this_ + 0x2a8))) {
                 *(s32*)(this_ + 0x2a8) = v;
@@ -481,7 +487,7 @@ extern "C" void fn_801BFF04(char* this_) {
         fn_801C0634(this_);
         return;
     }
-    case 3:
+findTarget:
         *(s32*)(this_ + 0x2a8) = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
         if (*(s32*)(this_ + 0x2a8) >= 0) {
             fn_801C0438(this_, 2);
@@ -489,7 +495,7 @@ extern "C" void fn_801BFF04(char* this_) {
             fn_801C0634(this_);
         }
         return;
-    case 4:
+    case 3:
         if (*(s32*)(this_ + 0x24c) >= 0xf) {
             if (!fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
                 s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
@@ -504,7 +510,7 @@ extern "C" void fn_801BFF04(char* this_) {
             }
         }
         return;
-    case 5:
+    case 4:
         if (*(s32*)(this_ + 0x24c) >= 0x32) {
             if (!fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
                 s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
@@ -519,7 +525,7 @@ extern "C" void fn_801BFF04(char* this_) {
             }
         }
         return;
-    case 6:
+    case 5:
         if (!fn_801D0B44(this_, *(s32*)(this_ + 0x2a8))) {
             s32 v = fn_801D05F8(this_, this_ + 0xc, lbl_8053ED38 * (f32)*(u8*)(this_ + 0x2b4));
             if (v >= 0 && v != *(s32*)(this_ + 0x2a8) && fn_8022E438(v, *(s32*)(this_ + 0x2a8))) {
@@ -533,24 +539,26 @@ extern "C" void fn_801BFF04(char* this_) {
         fn_801C0634(this_);
         if (*(s32*)(this_ + 0x24c) >= 0x14) {
             fn_801C0438(this_, 2);
-            return;
         }
-        break;
-    default:
         return;
-    }
-
-    if (*(f32*)(this_ + 0x14) <= lbl_8053ED30) {
-        *(f32*)(this_ + 0x14) = lbl_8053ED30;
-    }
+    case 6: {
+    if (!(*(f32*)(this_ + 0x14) <= 1.0f)) return;
+    *(f32*)(this_ + 0x14) = 1.0f;
     u8 flag = 0;
     s32 id = *(s32*)(this_ + 0x4);
-    if (fn_802D6A9C()->arr[id] != 0) {
+    u8 (*manager)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
+    if (manager[1][id+0x31df] != 0) {
         f32 pos[2];
-        f32 y = lbl_8053ED58 + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
-        pos[0] = *(f32*)(this_ + 0xc);
-        pos[1] = y;
-        if ((u16)fn_802265FC(pos, *(s32*)(this_ + 0x4)) == 2) {
+        f32 y = *(f32*)(this_ + 0x10);
+        f32 z = *(f32*)(this_ + 0x14);
+        f32 offset = lbl_8053ED58;
+        y -= z;
+        s32 room = *(s32*)(this_ + 4);
+        f32 x = *(f32*)(this_ + 0xc);
+        offset = offset + y;
+        pos[0] = x;
+        pos[1] = offset;
+        if ((u16)fn_802265FC(pos, room) == 2) {
             flag = 1;
         }
     }
@@ -559,6 +567,9 @@ extern "C" void fn_801BFF04(char* this_) {
         fn_801C0438(this_, 1);
     } else {
         fn_801C0438(this_, 0);
+    }
+        break;
+    }
     }
 }
 
