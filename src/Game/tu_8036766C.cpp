@@ -77,11 +77,8 @@ extern "C" const f32 lbl_80542C30;
 extern "C" const f32 lbl_80542C34;
 extern "C" const f32 lbl_80542C38;
 extern "C" const f64 lbl_80542C40;
-static inline f32 orbitScreenHalf(s32 value) {
- return value * lbl_80542C28;
-}
-static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 height) {
- out.set(orbitScreenHalf(width), orbitScreenHalf(height), lbl_80542C24);
+static inline void orbitScreenCenter(JGeometry::TVec3<f32>& out, s32 width, s32 height, const f32 zero = lbl_80542C24, const f32 scale = lbl_80542C28) {
+ out.set(width * scale, height * scale, zero);
 }
 static inline void orbitOffset(JGeometry::TVec3<f32>& out, s16 angle, const f32 radius) {
  out.set(JMath::sincosTable_.cosShort(angle) * radius, JMath::sincosTable_.sinShort(angle) * radius, lbl_80542C24);
