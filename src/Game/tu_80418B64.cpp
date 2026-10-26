@@ -95,6 +95,10 @@ struct SubObj {
     virtual SubObj* w13(u64 x);
 };
 
+static inline void HudPaneVisible8041(u8* self, u64 key, bool visible) {
+    (*(J2DPane**)(self + 4))->search(key)->mIsVisible = visible;
+}
+
 static inline J2DPicture* GetPicture(u8* this_, u64 key) {
     return (J2DPicture*)(*(SubObj**)(this_ + 4))->w13(key);
 }
