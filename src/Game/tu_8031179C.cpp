@@ -51,64 +51,36 @@ extern "C" void fn_8031179C(u8* p) {
     s32 i = 0;
     f32 pos[2];
     do {
-        s32 t;
         if (fn_8023A97C(i, p + 0x230, 0, pos) && fn_80226998(pos, 0) == 0x1b0) {
             if (*(p + 0x259) == 0) {
-                t = *(s32*)(p + 0x250);
-                if (t == *(s32*)(p + 0x250) || (fn_8022E438(t, *(s32*)(p + 0x250)) && fn_8022CAF8(t) == 4)) {
-                    fn_8043D67C(lbl_8053AED0, 0x826, t, 0);
-                }
+                tuPlayerMessage(p, 0x826, *(s32*)(p + 0x250));
             } else {
                 s32 dx = ((__cvt_fp2unsigned(pos[0]) & 0xfffffff0) + 8) - (s32)*(f32*)(p + 0x240);
                 s32 dy = ((__cvt_fp2unsigned(pos[1]) & 0xfffffff0) + 8) - (s32)*(f32*)(p + 0x244);
                 if (dy < -0x30) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x825, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x825, i);
                 } else if (dy > 0x30) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x826, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x826, i);
                 } else if (dx < -0x30) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x827, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x827, i);
                 } else if (dx > 0x30) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x828, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x828, i);
                 } else if (dy < -0x10) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x829, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x829, i);
                 } else if (dy > 0x10) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x82a, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x82a, i);
                 } else if (dx < -0x10) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x82b, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x82b, i);
                 } else if (dx > 0x10) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x82c, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x82c, i);
                 } else if (dy < -8) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x82d, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x82d, i);
                 } else if (dy > 8) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x82e, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x82e, i);
                 } else if (dx < -8) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x82f, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x82f, i);
                 } else if (dx > 8) {
-                    if (i == *(s32*)(p + 0x250) || (fn_8022E438(i, *(s32*)(p + 0x250)) && fn_8022CAF8(i) == 4)) {
-                        fn_8043D67C(lbl_8053AED0, 0x830, i, 0);
-                    }
+                    tuPlayerMessage(p, 0x830, i);
                 } else {
                     fn_802D8050(fn_802D6A9C(), 0x14, 1, 0xff);
                 }
