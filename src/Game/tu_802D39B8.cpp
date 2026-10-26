@@ -62,8 +62,16 @@ static inline bool roomScalarNear(f32 a, f32 b, f32 eps) {
 
 static inline bool roomPositionEquals(JGeometry::TVec2<f32>& a, JGeometry::TVec2<f32>& b) {
     bool same = false;
-    const f32 eps = 32.0f * FLT_EPSILON;
-    if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, eps) && JGeometry::TUtilf::epsilonEquals(a.y, b.y, eps)) same = true;
+    bool equal = false;
+    f32 eps = 32.0f * FLT_EPSILON;
+    f32 dx = a.x - b.x;
+    if (-eps <= dx && dx <= eps) equal = true;
+    if (equal) {
+        equal = false;
+        f32 dy = a.y - b.y;
+        if (-eps <= dy && dy <= eps) equal = true;
+        if (equal) same = true;
+    }
     return same;
 }
 
@@ -756,14 +764,15 @@ insert:
         return;
     }
 
-    s32 off4 = 0;
-    s32 off8 = 0;
-    for (i = 0; i < 8; i++) {
-        u32 k = ((RoomArrays*)((u8*)p+off4))->keys13068[0] & 0xFFFFF07F;
-        if (k == (key & 0xFFFFF07F)) {
-            bool bVar5 = roomPositionEquals(((RoomArrays*)((u8*)p+off8))->positions13088[0], *(JGeometry::TVec2<f32>*)pos);
-            if (bVar5 && ((RoomArrays*)((u8*)p+off4))->owners130C8[0] == owner) {
-                for (s32 j = i; j < 7; j++) {
+    RoomArrays* word = p;
+    RoomArrays* pairBase = p;
+    u32 maskedKey = key & 0xFFFFF07F;
+    for (s32 idx = 0; idx < 8; idx++) {
+        u32 k = word->keys13068[0] & 0xFFFFF07F;
+        if (k == maskedKey) {
+            bool bVar5 = roomPositionEquals(pairBase->positions13088[0], *(JGeometry::TVec2<f32>*)pos);
+            if (bVar5 && word->owners130C8[0] == owner) {
+                for (s32 j = idx; j < 7; j++) {
                     p->keys13068[j] = p->keys13068[j + 1];
                     p->positions13088[j].x = p->positions13088[j+1].x;
                     p->positions13088[j].y = p->positions13088[j+1].y;
@@ -776,8 +785,8 @@ insert:
                 return;
             }
         }
-        off4 += 4;
-        off8 += 8;
+        word = (RoomArrays*)((u8*)word+4);
+        pairBase = (RoomArrays*)((u8*)pairBase+8);
     }
 }
 #pragma opt_common_subs reset
