@@ -64,45 +64,56 @@ extern "C" void* fn_804032E8(u32, const char*);
 extern "C" void fn_801EFD34(void*, void*, DrawRec*, s32, f32, f32, f32);
 extern const char lbl_804A1960[];
 extern const f32 lbl_8053DFE8, lbl_8053DFEC, lbl_8053DFF0, lbl_8053DFF4, lbl_8053DFF8;
+#pragma opt_propagation off
 extern "C" void fn_801871A0(char* this_) {
+    const char* tbl = lbl_804A1960;
     DrawRec rec;
-    f32 pos[3];
+    f32 sy = lbl_8053DFE8;
+    f32 sx = sy;
+    JGeometry::TVec3<f32> pos(*(Vec*)(this_ + 0xc));
     f32 mtx[3][4];
     void* tex;
-    f32 sx = lbl_8053DFE8;
-    f32 sy = lbl_8053DFE8;
-    pos[0] = *(f32*)(this_ + 0xc);
-    pos[1] = *(f32*)(this_ + 0x10);
-    pos[2] = *(f32*)(this_ + 0x14);
-    mtx[0][3] = lbl_8053DFE8;
-    mtx[1][3] = lbl_8053DFE8;
-    mtx[2][3] = lbl_8053DFE8;
+    u8* tag = (u8*)&rec.w10;
+    mtx[0][3] = sy;
+    mtx[1][3] = sy;
+    mtx[2][3] = sy;
     rec.b1f = 0;
-    if (*(u32*)(this_ + 0x90) != 1) return;
+    if (*(u32*)(this_ + 0x90) != 0 && *(u32*)(this_ + 0x90) != 1) {
+        return;
+    }
     *(f32*)(this_ + 0x14) = lbl_8053DFE8;
     switch (*(s32*)(this_ + 0x278)) {
-    case 0:
-        tex = fn_804032E8('FGAN', ((const char* const*)(lbl_804A1960 + 0xb0))[*(s32*)(this_ + 0x26c)]);
+    case 0: {
+        const char* const* p = (const char* const*)(tbl + 0xb0);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x26c)]);
         break;
-    case 1:
-        tex = fn_804032E8('FGAN', ((const char* const*)(lbl_804A1960 + 0xf0))[*(s32*)(this_ + 0x26c)]);
-        sx = ((const f32*)(lbl_804A1960 + 0xc8))[*(s32*)(this_ + 0x26c) * 2];
-        sy = ((const f32*)(lbl_804A1960 + 0xc8))[*(s32*)(this_ + 0x26c) * 2 + 1];
+    }
+    case 1: {
+        const char* const* p = (const char* const*)(tbl + 0xf0);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x26c)]);
+        const f32 (*sc)[2] = (const f32 (*)[2])(tbl + 0xc8);
+        sx = sc[*(s32*)(this_ + 0x26c)][0];
+        sy = sc[*(s32*)(this_ + 0x26c)][1];
         break;
-    case 2:
-        tex = fn_804032E8('FGAN', ((const char* const*)(lbl_804A1960 + 0x104))[*(s32*)(this_ + 0x26c)]);
+    }
+    case 2: {
+        const char* const* p = (const char* const*)(tbl + 0x104);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x26c)]);
         sy = lbl_8053DFEC;
         break;
-    case 3:
-        tex = fn_804032E8('FGAN', ((const char* const*)(lbl_804A1960 + 0x124))[*(s32*)(this_ + 0x26c)]);
+    }
+    case 3: {
+        const char* const* p = (const char* const*)(tbl + 0x124);
+        tex = fn_804032E8('FGAN', p[*(s32*)(this_ + 0x26c)]);
         break;
-    default:
-        return;
+    }
     }
     rec.b1d = -2;
     rec.b1c = 0;
-    rec.w18 = mtx;
-    rec.b1e = 0;
+    tag[0] = 0;
+    tag[1] = 0;
+    tag[2] = 0;
+    tag[3] = (u8)(lbl_8053DFF0 * *(f32*)(this_ + 0x290));
     mtx[0][0] = lbl_8053DFF4;
     mtx[0][1] = lbl_8053DFE8;
     mtx[0][2] = lbl_8053DFE8;
@@ -111,23 +122,30 @@ extern "C" void fn_801871A0(char* this_) {
     mtx[1][2] = lbl_8053DFE8;
     mtx[2][0] = lbl_8053DFE8;
     mtx[2][1] = lbl_8053DFE8;
-    mtx[2][2] = lbl_8053DFF8;
-    rec.b1f = (u8)(lbl_8053DFF0 * *(f32*)(this_ + 0x290));
+    mtx[2][2] = mtx[1][1];
+    rec.w18 = mtx;
     fn_801EFD34(this_, tex, &rec, -1, sx, sy, lbl_8053DFE8);
-    *(f32*)(this_ + 0xc) = pos[0];
-    *(f32*)(this_ + 0x10) = pos[1];
-    *(f32*)(this_ + 0x14) = pos[2];
+    *(Vec*)(this_ + 0xc) = pos;
     rec.b1d = *(u8*)(this_ + 0x2ee);
     rec.w30 = 14;
+    f32 sy2 = *(f32*)(this_ + 0x2cc);
     mtx[0][0] = *(f32*)(this_ + 0x2c8);
-    mtx[1][1] = *(f32*)(this_ + 0x2cc);
-    mtx[2][2] = *(f32*)(this_ + 0x2cc);
+    mtx[0][1] = lbl_8053DFE8;
+    mtx[0][2] = lbl_8053DFE8;
+    mtx[1][0] = lbl_8053DFE8;
+    mtx[1][1] = sy2;
+    mtx[1][2] = lbl_8053DFE8;
+    mtx[2][0] = lbl_8053DFE8;
+    mtx[2][1] = lbl_8053DFE8;
+    mtx[2][2] = sy2;
     rec.w18 = mtx;
-    rec.w10 = -1;
-    rec.b1f = (u8)*(f32*)(this_ + 0x290);
+    tag[0] = 0xff;
+    tag[1] = 0xff;
+    tag[2] = 0xff;
+    tag[3] = (u8)*(f32*)(this_ + 0x290);
     fn_801EFD34(this_, tex, &rec, -1, sx, sy, lbl_8053DFE8);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80187530(char* this_) {
 }
 
