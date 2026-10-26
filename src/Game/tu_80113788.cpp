@@ -567,9 +567,8 @@ extern "C" void fn_80114C98(char* self) {
         fn_801CD950(self + 0x25c, lbl_8053C6B8, lbl_8053C6BC);
         fn_801CD950(self + 0x254, lbl_8053C6C0, lbl_8053C6C4);
         *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - *(f32*)(self + 0x254);
-        f32 lim = *(f32*)(self + 0x28) - lbl_8053C684;
-        if (*(f32*)(self + 0x10) <= lim) {
-            *(f32*)(self + 0x10) = lim;
+        if (*(f32*)(self + 0x10) <= *(f32*)(self + 0x28) - lbl_8053C684) {
+            *(f32*)(self + 0x10) = *(f32*)(self + 0x28) - lbl_8053C684;
         }
         *(s32*)(self + 0x248) = *(s32*)(self + 0x248) + 2;
         if (*(s32*)(self + 0x248) >= 0xe1) {
