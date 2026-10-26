@@ -238,7 +238,7 @@ extern "C" int fn_8028D470(Actor* this_, int a, float* b) {
 extern "C" char lbl_8046C150[];
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7544(void* a, void* b);
-extern "C" u8 fn_8028D4DC(f32* this_, s32 a, void* c) {
+extern "C" u8 fn_8028D4DC(f32* this_, int a, void* c) {
     u8 r = fn_802D7544(fn_802D6A9C(), c);
     if (r == 0) {
         return 0;
@@ -377,11 +377,8 @@ extern "C" void fn_8028D5D0(u8* this_) {
     *(JGeometry::TVec3<f32>*)(this_+0x18) = *(JGeometry::TVec3<f32>*)(this_+0xc);
     if (((s32)*(u32*)(this_ + 0x90)&3) == 0) {
         ((JGeometry::TVec3<f32>*)(this_+0x3c))->set(sv.x,sv.y,sv.z);
-    u32 dir;
-    u32 kind;
-    u32 flags = *(u32*)(this_ + 0x90);
-    kind = (flags >> 4) & 7;
-    dir = (flags >> 2) & 3;
+    u32 kind = (*(u32*)(this_ + 0x90) >> 4) & 7;
+    u8 dir = (*(u32*)(this_+0x90) >> 2)&3;
     fn_8029E9EC(lbl_8053AC98, this_+0xc, *(u32*)(this_ + 4), (u16)(kind + 0x21), 0, dir);
     fn_801F0E34(this_, 0x30004, 0);
     }
