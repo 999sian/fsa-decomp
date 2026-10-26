@@ -137,7 +137,7 @@ extern "C" void* lbl_8053AEC0;
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AED8;
 extern "C" void* lbl_8053AF80;
-extern "C" char lbl_80476F80[];
+extern "C" const char lbl_80476F80[];
 extern "C" char lbl_80529DEC[];
 extern "C" f32 lbl_80543530;
 extern "C" f32 lbl_80543538;
@@ -282,7 +282,7 @@ extern "C" void fn_803D7098(u8* param_1) {
         if (a >= 0 && a < 4) {
             b = *(s16*)(param_1 + 0x6a);
             if (b >= 0) {
-                f32 baseX, originX, tmpX, targetX;
+                f32 baseX, tmpX, originX, targetX;
                 tmpX = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
                 f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
                 baseX = f0 + tmpX;
@@ -483,42 +483,42 @@ extern "C" void fn_803D8718(u8* param_1) {
 extern "C" void fn_803D87C0(u8* param_1) {
     u8 mask;
     u8* lbl;
-    u8* base;
+    const u8* base;
     s32 j;
     s32 count;
-    u64* k26;
-    u64* k25;
+    const u64* k26;
+    const u64* k25;
     s32* cnt;
-    u64* k23;
-    u64* k22;
-    u64* k21;
-    u64* k20;
-    u64* k19;
-    u64* k26o;
-    u64* k25o;
+    const u64* k23;
+    const u64* k22;
+    const u64* k19;
+    const u64* k20;
+    const u64* k21;
+    const u64* k26o;
+    const u64* k25o;
     s32 i;
-    FsaNode* p;
+    J2DPane* p;
 
-    base = (u8*)lbl_80476F80;
+    base = (const u8*)lbl_80476F80;
     fn_804310CC(lbl_8053AEC0);
-    k19 = (u64*)(base + 0x420);
-    k20 = (u64*)(base + 0x438);
-    k21 = (u64*)(base + 0x450);
+    k19 = (const u64*)(base + 0x420);
+    k20 = (const u64*)(base + 0x438);
+    k21 = (const u64*)(base + 0x450);
     for (i = 0; i < 3; i++) {
         if (i >= fn_80138A30(lbl_8053AAF8) - 1) {
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k19);
-            ((u8*)p)[0xb0] = 1;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k20);
-            ((u8*)p)[0xb0] = 0;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k21);
-            ((u8*)p)[0xb0] = 0;
+            p = (*(J2DPane**)(param_1 + 4))->search(*k19);
+            p->show();
+            p = (*(J2DPane**)(param_1 + 4))->search(*k20);
+            p->hide();
+            p = (*(J2DPane**)(param_1 + 4))->search(*k21);
+            p->hide();
         } else {
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k19);
-            ((u8*)p)[0xb0] = 0;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k20);
-            ((u8*)p)[0xb0] = 1;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k21);
-            ((u8*)p)[0xb0] = 1;
+            p = (*(J2DPane**)(param_1 + 4))->search(*k19);
+            p->hide();
+            p = (*(J2DPane**)(param_1 + 4))->search(*k20);
+            p->show();
+            p = (*(J2DPane**)(param_1 + 4))->search(*k21);
+            p->show();
         }
         k19++;
         k20++;
@@ -526,49 +526,49 @@ extern "C" void fn_803D87C0(u8* param_1) {
     }
 
     lbl = (u8*)lbl_80529DEC;
-    k22 = (u64*)(base + 0x400);
-    k23 = (u64*)(base + 0x468);
+    k22 = (const u64*)(base + 0x400);
+    k23 = (const u64*)(base + 0x468);
     cnt = (s32*)lbl;
-    k25o = (u64*)(base + 0x200);
-    k26o = (u64*)base;
+    k25o = (const u64*)(base + 0x200);
+    k26o = (const u64*)base;
     for (i = 0; i < 4; i++) {
         mask = (u8)(1 << i);
         count = *(s32*)((u8*)cnt + 0x140);
-        if (lbl[0x243] & mask) {
+        if (bool(lbl[0x243] & mask)) {
             *(s16*)(param_1 + 0x68) = i;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k23);
-            ((u8*)p)[0xb0] = 1;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k22);
-            ((u8*)p)[0xb0] = 1;
+            p = (*(J2DPane**)(param_1 + 4))->search(*k23);
+            p->show();
+            p = (*(J2DPane**)(param_1 + 4))->search(*k22);
+            p->show();
         } else {
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k23);
-            ((u8*)p)[0xb0] = 0;
-            p = (*(FsaNode**)(param_1 + 4))->v15(*k22);
-            ((u8*)p)[0xb0] = 0;
+            p = (*(J2DPane**)(param_1 + 4))->search(*k23);
+            p->hide();
+            p = (*(J2DPane**)(param_1 + 4))->search(*k22);
+            p->hide();
         }
         k25 = k25o;
         k26 = k26o;
         for (j = 0; j < 16; j++) {
             if (j < count && (((u8*)lbl_8053AAF8)[0x82] & mask)) {
-                if (!(lbl[0x243] & mask) || j != count - 1) {
-                    p = (*(FsaNode**)(param_1 + 4))->v15(*k26);
-                    ((u8*)p)[0xb0] = 1;
-                    p = (*(FsaNode**)(param_1 + 4))->v15(*k25);
-                    ((u8*)p)[0xb0] = 1;
-                    p = (*(FsaNode**)(param_1 + 4))->v15(*k25);
-                    p->v9(0);
-                } else {
+                if ((lbl[0x243] & mask) && j == count - 1) {
                     *(s16*)(param_1 + 0x6a) = j;
-                    p = (*(FsaNode**)(param_1 + 4))->v15(*k26);
-                    ((u8*)p)[0xb0] = 0;
-                    p = (*(FsaNode**)(param_1 + 4))->v15(*k25);
-                    ((u8*)p)[0xb0] = 0;
+                    p = (*(J2DPane**)(param_1 + 4))->search(*k26);
+                    p->hide();
+                    p = (*(J2DPane**)(param_1 + 4))->search(*k25);
+                    p->hide();
+                } else {
+                    p = (*(J2DPane**)(param_1 + 4))->search(*k26);
+                    p->show();
+                    p = (*(J2DPane**)(param_1 + 4))->search(*k25);
+                    p->show();
+                    p = (*(J2DPane**)(param_1 + 4))->search(*k25);
+                    p->setAlpha(0);
                 }
             } else {
-                p = (*(FsaNode**)(param_1 + 4))->v15(*k26);
-                ((u8*)p)[0xb0] = 0;
-                p = (*(FsaNode**)(param_1 + 4))->v15(*k25);
-                ((u8*)p)[0xb0] = 0;
+                p = (*(J2DPane**)(param_1 + 4))->search(*k26);
+                p->hide();
+                p = (*(J2DPane**)(param_1 + 4))->search(*k25);
+                p->hide();
             }
             k25++;
             k26++;
@@ -580,12 +580,12 @@ extern "C" void fn_803D87C0(u8* param_1) {
         cnt++;
     }
 
-    p = (*(FsaNode**)(param_1 + 8))->v15(0x0050306b616b3030ULL);
-    p->v9(0);
-    p = (*(FsaNode**)(param_1 + 8))->v15(0x000050306b613030ULL);
-    p->v9(0);
-    p = (*(FsaNode**)(param_1 + 8))->v15(0x0050737461726c69ULL);
-    p->v9(0);
+    p = (*(J2DPane**)(param_1 + 8))->search(0x0050306b616b3030ULL);
+    p->setAlpha(0);
+    p = (*(J2DPane**)(param_1 + 8))->search(0x000050306b613030ULL);
+    p->setAlpha(0);
+    p = (*(J2DPane**)(param_1 + 8))->search(0x0050737461726c69ULL);
+    p->setAlpha(0);
     fn_80402E08(*(u8**)(param_1 + 0x30), lbl_80543534, lbl_80543530);
     *(u16*)(*(u8**)(param_1 + 0x30) + 0x22) = 0;
     fn_80402E08(*(u8**)(param_1 + 0x48), lbl_80543534, lbl_80543530);
@@ -594,15 +594,15 @@ extern "C" void fn_803D87C0(u8* param_1) {
         fn_80402E08(*(u8**)(param_1 + 0x34 + i * 4), lbl_80543534, lbl_80543538);
         *(u16*)(*(u8**)(param_1 + 0x34 + i * 4) + 0x22) = 0;
     }
-    p = (FsaNode*)fn_804030C4(0x54494d47, base + 0x4a8);
+    p = (J2DPane*)fn_804030C4(0x54494d47, (void*)(base + 0x4a8));
     fn_80440D78(lbl_8053AED8, p);
-    fn_804030C4(0x54494d47, base + 0x4bc);
+    fn_804030C4(0x54494d47, (void*)(base + 0x4bc));
     fn_80440BF4(lbl_8053AED8, 0);
     (*(u8**)(*(u8**)(param_1 + 0x2c) + 4))[0xb0] = 0;
-    p = (FsaNode*)*(u8**)(*(u8**)(param_1 + 0x2c) + 4);
-    p->v9(0);
-    p = (*(FsaNode**)(param_1 + 4))->v15(0x5061636375723031ULL);
-    p->v9(0);
+    p = (J2DPane*)*(u8**)(*(u8**)(param_1 + 0x2c) + 4);
+    p->setAlpha(0);
+    p = (*(J2DPane**)(param_1 + 4))->search(0x5061636375723031ULL);
+    p->setAlpha(0);
     for (i = 0; i < 2; i++) {
         fn_80402E08(*(u8**)(param_1 + 0x24 + i * 4), lbl_80543534, lbl_8054353C);
         *(u16*)(*(u8**)(param_1 + 0x24 + i * 4) + 0x22) = 0;
