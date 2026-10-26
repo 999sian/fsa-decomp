@@ -2170,14 +2170,6 @@ struct Menu_Intro {
     u8 alpha[2];                // 0x4d9
 };
 
-static inline u8& introEntry(Menu_Intro* p, s32 offset) {
-    return ((u8*)p)[offset];
-}
-
-static inline J2DPane* introSearch(Menu_Intro* p, u64 tag) {
-    return p->screens[p->cur]->search(tag);
-}
-
 struct IntroTags {
     u64 title[13];
     u64 p3[4][3];
@@ -2270,6 +2262,7 @@ extern "C" void fn_803B0978(void* arg) {
     s32 dist;
     s32 period;
     s32 i;
+    u8* bytes = (u8*)arg;
     p = (Menu_Intro*)arg;
     dist = *(s16*)(lbl_8050DB0C + 0x256);
     first = *(s16*)(lbl_8050DB0C + 0x252);
@@ -2282,15 +2275,15 @@ extern "C" void fn_803B0978(void* arg) {
     end = first + second;
     f32 span = lbl_80543428 + (f32)dist;
     done = 0;
-    for (q=p, i = 0; i < p->count; i++, tags3++, tags2++, q=(Menu_Intro*)((u8*)q+2)) {
-        if (p->ready[i] == 0xff && (u8)fn_80388EEC(i) != 0) {
+    for (q=p, i = 0; i < p->count; q=(Menu_Intro*)((u8*)q+2), tags3++, tags2++, i++) {
+        if (bytes[0x4bc+i] == 0xff && (u8)fn_80388EEC(i) != 0) {
             q->m460[0] = 0;
             f32 x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
             p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
-            p->ready[i] = fn_803A8DFC(p, i);
+            bytes[0x4bc+i] = fn_803A8DFC(p, i);
             fn_80458880(lbl_8053AF80, 0xb, -1);
         }
-        if (p->ready[i] != 0xff) {
+        if (bytes[0x4bc+i] != 0xff) {
             if (q->m460[0] < end) {
                 q->m460[0]++;
                 if (q->m460[0] <= first) {
@@ -2408,13 +2401,13 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
 }
 #pragma opt_lifetimes reset
 extern "C" void fn_803B14F8(void* this_) {
-    Menu_Intro* p = (Menu_Intro*)this_;
+    char* base = (char*)this_;
+    Menu_Intro* p = (Menu_Intro*)base;
     s32 k;
-    s32 ready;
     const u64* fadeTag;
     char* row;
-    u64 (*tags3)[3] = (u64 (*)[3])lbl_80476270;
-    TagPair* tags2 = lbl_804762D0;
+    u64 (*tags3)[3];
+    TagPair* tags2;
     s32 total;
     s32 b2;
     s32 c2;
@@ -2430,23 +2423,25 @@ extern "C" void fn_803B14F8(void* this_) {
     a = *(s16*)(lbl_8050DB0C + 0x256);
     b = *(s16*)(lbl_8050DB0C + 0x252);
     c = *(s16*)(lbl_8050DB0C + 0x254);
-    d = *(s16*)(lbl_8050DB0C + 0x258);
     b2 = b * b;
-    c2 = c * c;
-    total = b + c;
+    tags3 = (u64 (*)[3])lbl_80476270;
+    tags2 = lbl_804762D0;
     span = lbl_80543428 + (f32)a;
-    done = 0;
+    c2 = c * c;
+    d = *(s16*)(lbl_8050DB0C + 0x258);
     row = (char*)p;
-    for (i = 0; i < p->count; i++, row += 2, tags3++, tags2++) {
-        ready = i + 0x4b8;
-        if (introEntry(p, ready) == 0xff && (u8)fn_80388EEC(i)) {
+    total = b + c;
+    done = 0;
+    i = 0;
+    while (i < p->count) {
+        if (p->selected[i] == 0xff && (u8)fn_80388EEC(i)) {
             (*(s16*)(row + 0x460)) = 0;
             x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
             p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
-            introEntry(p, ready) = fn_803A8DFC(p, i);
+            p->selected[i] = fn_803A8DFC(p, i);
             fn_80458880(lbl_8053AF80, 0xb, -1);
         }
-        if (introEntry(p, ready) != 0xff) {
+        if (p->selected[i] != 0xff) {
             if ((*(s16*)(row + 0x460)) < total) {
                 (*(s16*)(row + 0x460))++;
                 if ((*(s16*)(row + 0x460)) <= b) {
@@ -2484,12 +2479,16 @@ extern "C" void fn_803B14F8(void* this_) {
             x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
             p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + ratio);
         }
+        row += 2;
+        tags3++;
+        tags2++;
+        i++;
     }
     if (done == p->count) {
         p->timer = 0;
-        for (i = 0; i < p->count; i++) {
-            p->ready[i] = 0xff;
-            p->m460[i] = 0;
+        for (s32 j = 0; j < p->count; j++) {
+            p->ready[j] = 0xff;
+            p->m460[j] = 0;
         }
         p->m4c1 = 4;
     }
