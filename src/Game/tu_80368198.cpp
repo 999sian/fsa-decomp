@@ -95,8 +95,8 @@ public:
     virtual void* vf18(u32 type, const char* name);
 };
 extern void* lbl_8053AB10;
-extern f32 lbl_80542C58;
-extern f32 lbl_80542C6C;
+extern const f32 lbl_80542C58;
+extern const f32 lbl_80542C6C;
 extern f32 lbl_80542CC0;
 extern "C" void PSMTXTrans(f32 m[3][4], f32 x, f32 y, f32 z);
 extern "C" void fn_802F745C(void* mgr, f32* pos, void* tgt, EffArgs* args);
@@ -239,29 +239,24 @@ extern f32 lbl_80542C78;
 extern "C" void fn_801F06F0(void* self, void* tbl, s32 idx, EffArgs* args, s32 n, f32 a, f32 b);
 extern "C" void fn_8013CB44(void* obj, Vec3f* v, s32 a, s32 b, s32 c);
 extern "C" void fn_80368660(void* this_) {
+    char* base=lbl_80474C38;
+    Vec3f* pos;
+    char* objects;
+    char* vertices;
+    s32* tableA;
+    s32* tableB;
+    s32 i;
     char* self = (char*)this_;
     void* res;
     void* mgr;
-    Vec3f* pos;
     Vec3f* vtx;
-    JGeometry::TVec3<f32> sum;
     EffArgs args;
     s32 idx;
     s32 st;
-    s32 i;
 
     args.f10.w = -1;
     args.f14.w = -1;
-    for (u8 k = 0; k < 0x10; k += 8) {
-        args.order[(u8)(k)] = k;
-        args.order[(u8)(k + 1)] = k + 1;
-        args.order[(u8)(k + 2)] = k + 2;
-        args.order[(u8)(k + 3)] = k + 3;
-        args.order[(u8)(k + 4)] = k + 4;
-        args.order[(u8)(k + 5)] = k + 5;
-        args.order[(u8)(k + 6)] = k + 6;
-        args.order[(u8)(k + 7)] = k + 7;
-    }
+    for (u8 k=0;k<16;k++) args.order[k]=k;
     args.f10.w = -1;
     args.f14.w = 0;
     args.ptr = 0;
@@ -295,11 +290,11 @@ extern "C" void fn_80368660(void* this_) {
             if (*(s32*)(self + 0x260) == 0) {
                 *(s32*)(self + 0x260) = 1;
                 *(s32*)(self + 0x264) += 1;
-                if (*(s32*)(self + 0x264) > 5) {
+                if (*(s32*)(self + 0x264) >= 6) {
                     *(s32*)(self + 0x264) = 0;
                 }
             }
-        } else if ((u32)(st - 0x1c) < 2 || st == 0x1e) {
+        } else if ((u32)(st - 0x1c) <= 1 || st == 0x1e) {
             if (st == 0x1c) {
                 *(s32*)(self + 0x264) = 8;
             } else if (st == 0x1d) {
@@ -316,17 +311,23 @@ extern "C" void fn_80368660(void* this_) {
                     } else {
                         *(s32*)(self + 0x260) = 9;
                         *(s32*)(self + 0x264) += 1;
-                        if (*(s32*)(self + 0x264) > 5) {
+                        if (*(s32*)(self + 0x264) >= 6) {
                             *(s32*)(self + 0x264) = 0;
                         }
                     }
+                }
+            } else {
+                if (*(s32*)(self+0x260)==0) {
+                    *(s32*)(self+0x260)=9;
+                    *(s32*)(self+0x264)+=1;
+                    if (*(s32*)(self+0x264)>=6) *(s32*)(self+0x264)=0;
                 }
             }
         } else if (st == 0x22 || st == 0x21) {
             if (*(s32*)(self + 0x260) == 0) {
                 *(s32*)(self + 0x260) = 9;
                 *(s32*)(self + 0x264) += 1;
-                if (*(s32*)(self + 0x264) > 5) {
+                if (*(s32*)(self + 0x264) >= 6) {
                     *(s32*)(self + 0x264) = 0;
                 }
             }
@@ -345,67 +346,64 @@ extern "C" void fn_80368660(void* this_) {
             } else if (*(s32*)(self + 0x260) == 0) {
                 *(s32*)(self + 0x260) = 9;
                 *(s32*)(self + 0x264) += 1;
-                if (*(s32*)(self + 0x264) > 5) {
+                if (*(s32*)(self + 0x264) >= 6) {
                     *(s32*)(self + 0x264) = 0;
                 }
             }
         }
 
         JGeometry::TVec3<f32> saved(*(Vec*)(self + 0xc));
-        vtx = (Vec3f*)(self + 0x2a8);
-        pos = (Vec3f*)(self + 0xc);
-        for (i = 0; i < 5; i++) {
+        objects=self;
+        vertices=self;
+        tableA=(s32*)(base+0x1a0);
+        tableB=(s32*)(base+0x18c);
+        for (i = 0; i < 5; i++,objects+=4,vertices+=12,tableA++,tableB++) {
             st = *(s32*)(self + 0x240);
             if (st < 0x1c) {
-                if (((s32*)(self + 0x294))[i] == 0) {
-                    *pos = vtx[i];
-                    pos->z = lbl_80542C78;
-                    fn_801F06F0(self, lbl_80474C38 + 0x224,
-                                *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x1a0))[i],
+                if (*(s32*)(objects+0x294) == 0) {
+                    *(JGeometry::TVec3<f32>*)(self+0xc)=*(JGeometry::TVec3<f32>*)(vertices+0x2a8);
+                    *(f32*)(self+0x14)=lbl_80542C78;
+                    fn_801F06F0(self, base + 0x224,
+                                *(s32*)(self + 0x264) + *tableA,
                                 &args, 7, lbl_80542C58, lbl_80542C58);
-                    if (((s32*)(self + 0x3bc))[i] != 0) {
-                        JGeometry::TVec3<f32> off(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
-                        sum = off + JGeometry::TVec3<f32>(*(Vec*)&vtx[i]);
-                        fn_8013CB44((void*)((s32*)(self + 0x3bc))[i], (Vec3f*)&sum, 0, -1, 1);
+                    if (*(void**)(objects+0x3bc) != 0) {
+                        ((void (*)(void*,JGeometry::TVec3<f32>,s32,s32,s32))fn_8013CB44)(*(void**)(objects+0x3bc), *(JGeometry::TVec3<f32>*)(vertices+0x2a8) + JGeometry::TVec3<f32>(lbl_80542C6C,lbl_80542C6C,lbl_80542C78), 0, -1, 1);
                     }
-                    if (((s32*)(self + 0x3d4))[i] != 0) {
-                        JGeometry::TVec3<f32> off(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
-                        sum = off + JGeometry::TVec3<f32>(*(Vec*)&vtx[i]);
-                        fn_8013CB44((void*)((s32*)(self + 0x3d4))[i], (Vec3f*)&sum, 0, -1, 1);
+                    if (*(void**)(objects+0x3d4) != 0) {
+                        ((void (*)(void*,JGeometry::TVec3<f32>,s32,s32,s32))fn_8013CB44)(*(void**)(objects+0x3d4), *(JGeometry::TVec3<f32>*)(vertices+0x2a8) + JGeometry::TVec3<f32>(lbl_80542C6C,lbl_80542C6C,lbl_80542C78), 0, -1, 1);
                     }
                 }
-            } else if (st >= 0x21) {
-                *pos = vtx[i];
-                fn_801F06F0(self, lbl_80474C38 + 0x210,
-                            *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x18c))[i],
-                            &args, 7, lbl_80542C58, lbl_80542C58);
-            } else {
-                *pos = vtx[i];
+            } else if(st<0x21) {
+                *(JGeometry::TVec3<f32>*)(self+0xc)=*(JGeometry::TVec3<f32>*)(vertices+0x2a8);
                 if (*(s32*)(self + 0x240) >= 0x1e && *(s32*)(self + 0x240) < 0x21) {
                     if (*(s32*)(self + 0x24c) < 0xc0 && *(s32*)(self + 0x138) == 0) {
-                        fn_801EF830(*(s32*)(self + 0x4), pos, (u8*)&args, 7, (u8*)(lbl_80474C38 + 0x210),
-                                    *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x18c))[i], 0);
+                        fn_801EF830(*(s32*)(self + 0x4), self+0xc, (u8*)&args, 7, (u8*)(base + 0x210),
+                                    *(s32*)(self + 0x264) + *tableB, 0);
                     }
                     args.f10.b[0] = 0xff;
                     args.f10.b[1] = 0xff;
                     args.f10.b[2] = 0xff;
                     args.f10.b[3] = 0xff - *(s32*)(self + 0x24c);
-                    idx = *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x18c))[i];
+                    idx = *(s32*)(self + 0x264) + *tableB;
                     if (*(s32*)(self + 0x4) < 8) {
-                        mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
-                        res = ((void* (*)(void*, u32, char*))(*(void***)mgr)[6])(mgr, 0x534F4220, lbl_80474C38 + 0x210);
+                        res = (*(SobResMgr**)((char*)lbl_8053AAF8+0xa4))->vf18(0x534F4220,base+0x210);
                         fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos, res, idx, lbl_80542C58, lbl_80542C58, &args);
                     }
                     fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 0x4), pos,
-                                *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x18c))[i], 0, 1, -1, 0, 0, 0);
+                                *(s32*)(self + 0x264) + *tableB, 0, 1, -1, 0, 0, 0);
                 } else {
-                    fn_801F06F0(self, lbl_80474C38 + 0x210,
-                                *(s32*)(self + 0x264) + ((s32*)(lbl_80474C38 + 0x18c))[i],
+                    fn_801F06F0(self, base + 0x210,
+                                *(s32*)(self + 0x264) + *tableB,
                                 &args, 7, lbl_80542C58, lbl_80542C58);
                 }
+            } else {
+                *(f32*)(self+0xc)=*(f32*)(vertices+0x2a8);
+                *(f32*)(self+0x10)=*(f32*)(vertices+0x2ac);
+                *(f32*)(self+0x14)=*(f32*)(vertices+0x2b0);
+                fn_801F06F0(self,base+0x210,*(s32*)(self+0x264)+*tableB,&args,7,lbl_80542C58,lbl_80542C58);
             }
         }
-        *pos = *(Vec3f*)&saved;
+        *(JGeometry::TVec3<f32>*)(self+0xc)=saved;
     }
 }
 
