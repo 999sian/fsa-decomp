@@ -43,7 +43,7 @@ extern "C" void fn_801C6260(void* p);
 extern "C" u8 fn_801D0DD4(void* p);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" void* GetCurrentSlotPtr(void* p);
-extern "C" JGeometry::TVec3f fn_800FE294(void* slot, s32 room);
+extern "C" Vec fn_800FE294(void* slot, s32 room);
 extern "C" u8 fn_800FD5E8(void* slot, s32 room);
 extern "C" s16 fn_801D02E0(void* p, void* pos);
 extern void* lbl_8053AAF8;
@@ -77,16 +77,15 @@ static inline f32 tuRand01() {
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
 }
-#pragma opt_lifetimes off
+extern "C" s32 fn_800FE2E4(void* slot, JGeometry::TVec3f pos, s32 room);
 #pragma opt_propagation off
 extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
-    extern u8 fn_800FE2E4(void* slot, JGeometry::TVec3f pos, s32 room);
     if (fn_801C5340() != 0) {
         self->field_230 |= 0x2000000;
         fn_801C3B7C(self, 0x1e);
     } else {
-        s32 d;
         u8 flag;
+        s32 d;
         s32 r = fn_801D05F8(self, &self->field_0C, self->field_5AC);
         if (r < 0) {
             if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE6C) {
@@ -135,9 +134,9 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
                             if (fn_800FD5E8(GetCurrentSlotPtr(self->field_358), r27)) {
                                 flag = 1;
                             } else {
-                                s16 ang = fn_801D02E0(self, &v);
-                                f32 diff = (f32)(s16)(self->field_33C - ang);
-                                if (lbl_8053EE78 * __fabsf(diff) <= lbl_8053EE7C) {
+                                s16 ang;
+                                ang = fn_801D02E0(self, &v);
+                                if (lbl_8053EE78 * fabs((f32)(s16)(self->field_33C - ang)) <= lbl_8053EE7C) {
                                     if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE80) {
                                         flag = 1;
                                     }
@@ -158,7 +157,6 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
         }
     }
 }
-#pragma opt_lifetimes reset
 #pragma opt_propagation reset
 extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern u8* fn_802D6A9C(void);
