@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JKernel/JKRArchive.h"
 #include "Game/ItemBase.h"
+#include "Game/ActorDrawRec.h"
 struct SpriteOam802F {
     u8 y;
     u8 affine : 2;
@@ -815,14 +816,14 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
 
     done = 0;
     off = *(s32*)(param_7 + 0x30) * 4;
-    div = *(s32*)(lbl_8046F940 + 0x1840 + off);
+    div = ((s32*)(lbl_8046F940 + 0x1840))[*(s32*)(param_7 + 0x30)];
     if (this_[0xbf98] != 0 && (u32)(param_3 + (param_5 + param_6)) % (u32)div == *(s32*)((u8*)lbl_8053AAF8 + 0x5c) % div) {
         p = this_;
         for (i = 0; i < 0x100; i++) {
             if (*(s32*)(p + 0x2398) == 0) {
                 c1 = lbl_8046F940 + 0x1720 + off;
                 c2 = lbl_8046F940 + 0x1768 + off;
-                *(s32*)(p + 0x2398) = *(s32*)(lbl_8046F940 + 0x17b0 + off);
+                *(s32*)(p + 0x2398) = ((s32*)(lbl_8046F940 + 0x17b0))[*(s32*)(param_7 + 0x30)];
                 *(f32*)(p + 0x23a0) = ((f32*)(lbl_8046F940 + 0x17f8))[*(s32*)(param_7 + 0x30)];
                 *(s32*)(p + 0x239c) = *(s32*)(p + 0x2398);
                 *(f32*)(p + 0x23a4) = src[0];
@@ -899,14 +900,14 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
                 *(u8*)(p + 0x23dc) = param_7[0x1c];
                 *(u8*)(p + 0x23dd) = param_7[0x1d] - 1;
                 if (*(u32*)(param_7 + 0x18) != 0) {
-                    PSMTXCopy((MtxPtr)*(u32*)(param_7 + 0x18), (MtxPtr)(p + 0x23fc));
+                    JMath::gekko_ps_copy12(p + 0x23fc, *(void**)(param_7 + 0x18));
                     *(u32*)(p + 0x23d8) = (u32)(p + 0x23fc);
                 } else if (lbl_80541518 != *(f32*)(p + 0x23a0)) {
                     PSMTXIdentity((MtxPtr)(p + 0x23fc));
                     *(u32*)(p + 0x23d8) = (u32)(p + 0x23fc);
-                    done = 1;
-                    break;
                 }
+                done = 1;
+                break;
             }
             p += 0x9c;
         }
@@ -1556,12 +1557,13 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
   }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff, u32 size, u8 flag) {
     u8* base;
     u8* d;
     u8* s;
-    u32 i;
-    u32 len;
+    s32 i;
+    s32 len;
     u16 keep;
     u16 v;
     if (size == 0) {
@@ -1569,8 +1571,7 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
         if (JKRDecomp::checkCompressed(src)) {
             r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
         } else {
-            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
+            r = (*(JKRArchive**)((u8*)lbl_8053AAF8+0xa4))->getResSize(src);
         }
         if (r < 0) {
             len = 0x200;
@@ -1586,19 +1587,17 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     } else {
         base = src;
     }
-    base += srcOff;
-    d = *(u8**)(this_ + idx * 4 + 0xc) + dstOff;
-    s = base;
-    for (i = 0; i < len; i += 2) {
-        v = 0;
-        if (i == 0 || (i & 0x1f) != 0) {
-            u32 w = s[0] | (s[1] << 8);
-            u16 c = ((w & 0x1f) << 10) | (w & 0x3e0) | ((w >> 10) & 0x1f) | 0x8000;
-            if (i == 0) {
-                keep = c;
-            } else {
-                v = c;
-            }
+    u32 offset = idx * 4;
+    u8* table = this_ + offset;
+    u32 length = len;
+    d = *(u8**)(table + 0xc) + dstOff;
+    s = srcOff + base;
+    for (i = 0; (u32)i < length; i += 2) {
+        if (i != 0 && !(i & 0x1f)) v=0;
+        else {
+            u16 w=s[0] | (s[1]<<8);
+            v=((w & 0x1f)<<10) | (w & 0x3e0) | ((w>>10)&0x1f) | 0x8000;
+            if (i==0) {keep=v; v=0;}
         }
         d[i] = v >> 8;
         d[i + 1] = v;
@@ -1606,57 +1605,35 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     }
     *(u16*)(this_ + idx * 2 + 0x114) = keep;
     {
-        u8* t = *(u8**)(this_ + idx * 4 + 0xc);
+        u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b0] << 8) | t[0x1b1];
-        u16 x = 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
-        t[0x1b0] = x >> 8;
+        u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        t[0x1b0] = (int)x >> 8;
         t[0x1b1] = x;
     }
     {
-        u8* t = *(u8**)(this_ + idx * 4 + 0xc);
+        u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b2] << 8) | t[0x1b3];
-        u16 x = 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
         t[0x1b2] = x >> 8;
         t[0x1b3] = x;
     }
     {
-        u8* t = *(u8**)(this_ + idx * 4 + 0xc);
+        u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b4] << 8) | t[0x1b5];
-        u16 x = 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        u16 x = ((w >> 3) & 0xf00) | 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
         t[0x1b4] = x >> 8;
         t[0x1b5] = x;
     }
-    s = *(u8**)(this_ + idx * 4 + 0xc) + dstOff;
-    d = *(u8**)(this_ + idx * 4 + 0x18) + dstOff;
-    for (i = 0; i < len; i += 2) {
+    s = *(u8**)(table + 0xc) + dstOff;
+    d = *(u8**)(this_ + offset + 0x18) + dstOff;
+    for (i = 0; (u32)i < length; i += 2) {
         u16 w = (s[i] << 8) | s[i + 1];
         v = w;
         if (w & 0x8000) {
-            s32 r;
-            u8 a;
-            u8 b;
-            u8 c;
-            r = (s32)((f32)((w >> 10) & 0x1f) * lbl_80541518 + lbl_805414F8);
-            if (r < 0) {
-                r = 0;
-            } else if (r > 0x1f) {
-                r = 0x1f;
-            }
-            a = r;
-            r = (s32)((f32)((w >> 5) & 0x1f) * lbl_80541518 + lbl_805414F8);
-            if (r < 0) {
-                r = 0;
-            } else if (r > 0x1f) {
-                r = 0x1f;
-            }
-            b = r;
-            r = (s32)((f32)(w & 0x1f) * lbl_80541518 + lbl_805414F8);
-            if (r < 0) {
-                r = 0;
-            } else if (r > 0x1f) {
-                r = 0x1f;
-            }
-            c = r;
+            u8 a=Tu802F93F4_c5((w>>10)&31);
+            u8 b=Tu802F93F4_c5((w>>5)&31);
+            u8 c=Tu802F93F4_c5(w&31);
             if (flag != 0) {
                 v = 0x8000 | (c << 10) | (a << 5) | b;
             } else {
@@ -1666,11 +1643,9 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
         d[i] = v >> 8;
         d[i + 1] = v;
     }
-    DCFlushRange(d, len);
+    DCFlushRange(d, length);
 }
-
-#pragma opt_propagation on
-#pragma opt_lifetimes on
+#pragma opt_propagation reset
 extern "C" void fn_802FA160(u8* this_, const u8* src, u32 a, s32 idx, u8* dst, u32 size) {
     u8* __restrict out; u8* self; s32 index;
     self=this_; index=idx; out=dst;
