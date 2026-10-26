@@ -363,6 +363,7 @@ static inline void initPane(void* obj) {
     stopPane(*(void**)((u8*)obj + 4));
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
+#pragma dont_inline on
 void fn_803BC6F0(char* this_, u32 a, f32 t) {
     f32 k = t;
     if (k > lbl_80543478) {
@@ -890,9 +891,10 @@ extern "C" void fn_803BF698(u8* this_) {
 
 extern "C" void fn_803BF9C4(u8* p) {
     const u8* tbl = lbl_804765D0;
+    u8* q;
     s32 i;
     s32 k;
-    u8* q;
+    const u64* keys;
     u8* o;
     void* r;
     void* obj;
@@ -935,9 +937,10 @@ extern "C" void fn_803BF9C4(u8* p) {
     obj = *(void**)(*(u8**)(p + 0x20) + 4);
     ((Obj9*)obj)->v9(*(u8*)(*(u8**)(p + 0x20) + 0x28));
 
-    for (i = 0; i < 9; i++) {
+    keys = (const u64*)(tbl + 0x368);
+    for (i = 0; i < 9; i++, keys++) {
         obj = *(void**)(p + 4);
-        r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x368 + i * 8));
+        r = ((J2DPane*)obj)->search(*keys);
         fn_804023D0(*(void**)(p + 0x20), r, p[i + 0x196]);
     }
     *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
@@ -956,30 +959,34 @@ extern "C" void fn_803BF9C4(u8* p) {
         *(s16*)(*(u8**)(q + 0x24) + 0x26) = 0;
         switch (i) {
         case 0:
-            for (k = 0; k < 4; k++) {
+            keys = (const u64*)(tbl + 0x7f8);
+            for (k = 0; k < 4; k++, keys++) {
                 obj = *(void**)(p + 8);
-                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x7f8 + k * 8));
+                r = ((J2DPane*)obj)->search(*keys);
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
         case 1:
-            for (k = 0; k < 4; k++) {
+            keys = (const u64*)(tbl + 0x7d8);
+            for (k = 0; k < 4; k++, keys++) {
                 obj = *(void**)(p + 8);
-                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x7d8 + k * 8));
+                r = ((J2DPane*)obj)->search(*keys);
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
         case 2:
-            for (k = 0; k < 4; k++) {
+            keys = (const u64*)(tbl + 0x7b8);
+            for (k = 0; k < 4; k++, keys++) {
                 obj = *(void**)(p + 8);
-                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x7b8 + k * 8));
+                r = ((J2DPane*)obj)->search(*keys);
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
         case 3:
-            for (k = 0; k < 4; k++) {
+            keys = (const u64*)(tbl + 0x798);
+            for (k = 0; k < 4; k++, keys++) {
                 obj = *(void**)(p + 8);
-                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x798 + k * 8));
+                r = ((J2DPane*)obj)->search(*keys);
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
@@ -991,7 +998,7 @@ extern "C" void fn_803BF9C4(u8* p) {
     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x54636f703031ULL)), 0x11f, 0, 0, 0);
 
     {
-        s16 sum = *(s16*)(lbl_8050DB0C + 0x1e4) + *(s16*)(lbl_8050DB0C + 0x1e2) + *(s16*)(lbl_8050DB0C + 0x1e0);
+        s16 sum = *(s16*)(lbl_8050DB0C + 0x1e0) + (*(s16*)(lbl_8050DB0C + 0x1e4) + *(s16*)(lbl_8050DB0C + 0x1e2));
         *(s16*)(p + 0xd8) = *(s16*)(lbl_8050DB0C + 0x1e6);
         if (*(s16*)(p + 0xd8) < sum) {
             *(s16*)(p + 0xd8) = sum;
