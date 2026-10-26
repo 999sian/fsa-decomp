@@ -64,7 +64,7 @@ extern "C" void* fn_802D6A9C(void);
 static inline void thnkTryActor(void*& obj, s32 idx) {
     if (idx >= 0) obj = fn_801F666C(fn_801F856C(), idx);
 }
-static inline char* thnkFieldAt(s32 room) {
+static inline char* thnkFieldAt(const s32 room) {
     char* rec = (char*)fn_802D6A9C();
     if (room < 8) return rec + 0xcc;
     return rec + 0xdc;
@@ -777,7 +777,7 @@ extern "C" void fn_801E1300(void* this_) {
 }
 
 extern "C" void fn_801E1594(void* this_, s32 state) {
-    bool flag;
+    register u8 flag;
     char* field;
     char* rec;
     void* obj;
@@ -837,7 +837,7 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             f32 py = *(f32*)(p + 0x10);
             *(f32*)(p + 0x2c4) = px;
             *(f32*)(p + 0x2c8) = py;
-            *(int*)(p + 0xb0) = 0x51303;
+            *(u32*)(p + 0xb0) = 0x51303U;
             *(s32*)(p + 0x250) = -1;
             if (*(s32*)(p + 0x2bc) >= 0) {
                 *(f32*)(p + 0x258) = lbl_8053F490;
