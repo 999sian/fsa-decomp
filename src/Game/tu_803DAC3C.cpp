@@ -848,12 +848,15 @@ extern "C" void fn_803DE58C(u8* self)
 extern "C" void fn_803832BC(char* a, char* b, s32 c, s32 d, s32 e);
 extern "C" char* lbl_8047788C[];
 extern "C" char* lbl_80477880[];
+struct FsaMenuPaneSlot {
+    u8 pad[0x44];
+    u8* pane;
+};
 typedef void* (*FsaFindPaneFn)(void*, u32, u32, u32);
 extern "C" void fn_803DEC44(u8* self)
 {
     f32 k;
     f32 k2;
-    s32 i;
     if (*(s32*)(self + 0x88) != 0) {
         *(s32*)(self + 0x88) += 1;
         if (*(s32*)(self + 0x88) > 10) {
@@ -866,7 +869,7 @@ extern "C" void fn_803DEC44(u8* self)
             *(s32*)(self + 0x68) = 5;
         } else {
             *(s16*)(self + 0x9c) = 0;
-            for (i = 0; i < 2; i++) {
+            for (s32 i = 0; i < 2; i++) {
                 k = *(volatile f32*)&lbl_80543604;
                 fn_80402E08(*(void**)(self + 0x34 + i * 4), k, k);
                 *(s16*)(*(u8**)(self + 0x34 + i * 4) + 0x20) = 0;
@@ -880,40 +883,44 @@ extern "C" void fn_803DEC44(u8* self)
             fn_80402E08(*(void**)(self + 0x30), k, k);
             *(s16*)(*(u8**)(self + 0x30) + 0x22) = 0;
             *(u8*)(*(u8**)(*(u8**)(self + 0x40) + 4) + 0xb0) = 0;
-            for (i = 0; i < 7; i++) {
+            for (s32 i = 0; i < 7; i++) {
                 k = *(volatile f32*)&lbl_80543614;
                 k2 = *(volatile f32*)&lbl_80543604;
                 *(u8*)(*(u8**)(*(u8**)(self + 0x14 + i * 4) + 4) + 0xb0) = 1;
                 fn_80402E08(*(void**)(self + 0x14 + i * 4), k, k2);
                 *(s16*)(*(u8**)(self + 0x14 + i * 4) + 0x20) = 0;
             }
-            for (i = 0; i < 2; i++) {
+            for (s32 i = 0; i < 2; i++) {
                 *(u8*)(*(u8**)(*(u8**)(self + 0x50 + i * 4) + 4) + 0xb0) = 1;
                 k = *(volatile f32*)&lbl_80543604;
                 fn_80402E08(*(void**)(self + 0x50 + i * 4), k, lbl_8054361C);
                 *(s16*)(*(u8**)(self + 0x50 + i * 4) + 0x22) = 0;
             }
             switch (self[0x9e]) {
-            case 0: {
-                u32 a4 = 0x636f3031;
-                u32 a3 = 0x576762;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x570000, a3, a4) + 0xb0) = 0;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x6f700000, 0x576e, 0x6f703031) + 0xb0) = 0;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x6f700000, 0x576e, 0x6f703032) + 0xb0) = 1;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x570000, 0x576762, 0x636f3032) + 0xb0) = 1;
+            case 0:
+                (*(J2DScreen**)(self + 4))->search(0x576762636f3031ULL)->hide();
+                (*(J2DScreen**)(self + 4))->search(0x576e6f703031ULL)->hide();
+                (*(J2DScreen**)(self + 4))->search(0x576e6f703032ULL)->show();
+                (*(J2DScreen**)(self + 4))->search(0x576762636f3032ULL)->show();
                 break;
-            }
             case 1:
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x570000, 0x576762, 0x636f3031) + 0xb0) = 1;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x6f700000, 0x576e, 0x6f703031) + 0xb0) = 1;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x6f700000, 0x576e, 0x6f703032) + 0xb0) = 0;
-                *(u8*)((u8*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x570000, 0x576762, 0x636f3032) + 0xb0) = 0;
+                (*(J2DScreen**)(self + 4))->search(0x576762636f3031ULL)->show();
+                (*(J2DScreen**)(self + 4))->search(0x576e6f703031ULL)->show();
+                (*(J2DScreen**)(self + 4))->search(0x576e6f703032ULL)->hide();
+                (*(J2DScreen**)(self + 4))->search(0x576762636f3032ULL)->hide();
+                break;
+            default:
+                (*(J2DScreen**)(self + 4))->search(0x576762636f3031ULL)->show();
+                (*(J2DScreen**)(self + 4))->search(0x576e6f703031ULL)->show();
+                (*(J2DScreen**)(self + 4))->search(0x576e6f703032ULL)->hide();
+                (*(J2DScreen**)(self + 4))->search(0x576762636f3032ULL)->hide();
                 break;
             }
-            fn_803832BC(((J2DTextBox*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x6f700000, 0x546e, 0x6f703031))->getStringPtr(), lbl_8047788C[self[0x9e]], 0, 0, 0);
-            fn_803832BC(((J2DTextBox*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x6f700000, 0x546e, 0x6f703032))->getStringPtr(), lbl_8047788C[self[0x9e]], 0, 0, 0);
-            fn_803832BC(((J2DTextBox*)((FsaFindPaneFn)(*(void***)*(void**)(self + 4))[0x3c / 4])(*(void**)(self + 4), 0x78700000, 0x5465, 0x78703031))->getStringPtr(), lbl_80477880[self[0x9e]], 0, 0, 0);
-            *(u8*)(*(u8**)(*(u8**)(self + self[0x9e] * 4 + 0x44) + 4) + 0xb0) = 0;
+            fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 4))->search(0x546e6f703031ULL))->getStringPtr(), lbl_8047788C[self[0x9e]], 0, 0, 0);
+            fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 4))->search(0x546e6f703032ULL))->getStringPtr(), lbl_8047788C[self[0x9e]], 0, 0, 0);
+            fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(self + 4))->search(0x546578703031ULL))->getStringPtr(), lbl_80477880[self[0x9e]], 0, 0, 0);
+            u8* selected = self + self[0x9e] * 4;
+            *(u8*)(*(u8**)(*(u8**)(selected + 0x44) + 4) + 0xb0) = 0;
             *(s32*)(self + 0x84) = 2;
             self[0x9f] = self[0x9e];
             *(s32*)(self + 0x90) = 1;
