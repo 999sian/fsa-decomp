@@ -51,11 +51,14 @@ struct fn_801D1974_obj {
 
     PointTrail& trail() { return *(PointTrail*)&m2a8; }
     JGeometry::TVec2<f32>& pointAt(s32 i) { return m2ac[i]; }
-    JGeometry::TVec2<f32>& point(s32 i) {
+    JGeometry::TVec2<f32> point(s32 i) {
         if (m2a8 <= i) {
             i = 0;
         }
-        return pointAt(i);
+        JGeometry::TVec2<f32> p;
+        p.x = m2ac[i].x;
+        p.y = m2ac[i].y;
+        return p;
     }
     void popPoint() {
         if (m2a8 >= 1) {
@@ -122,32 +125,31 @@ extern "C" void fn_801D11FC(u8* this_)
 #pragma opt_propagation reset
 extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     s32 ret = 0;
-    u8 far_;
     u8 lost;
+    u8 far_;
+    int idx;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
 
     if (this_->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(this_, this_->m338)) {
-        {
-            s32 idx = this_->m338;
-            fn_8022E114(idx, &pos);
-            if (fn_801F329C(this_, idx)) {
-                fn_801CD150(&pos, &tmp);
-                v.x = tmp.x;
-                v.y = tmp.y;
-                v.z = tmp.z;
-            } else {
-                v.x = pos.x;
-                v.y = pos.y;
-                v.z = pos.z;
-            }
+        idx = this_->m338;
+        fn_8022E114(idx, &pos);
+        if (fn_801F329C(this_, idx)) {
+            fn_801CD150(&pos, &tmp);
+            v.x = tmp.x;
+            v.y = tmp.y;
+            v.z = tmp.z;
+        } else {
+            v.x = pos.x;
+            v.y = pos.y;
+            v.z = pos.z;
         }
         p.x = v.x;
         p.y = v.y;
         p.z = lbl_8053F028;
-        if ((*(VirtFn**)this_)[19](this_, *(s32*)((u8*)this_ + 4), &p)) {
+        if ((u8)((Actor*)this_)->v17(*(s32*)((u8*)this_ + 4), (f32*)&p)) {
             s32 kind = fn_802265FC(&v, *(s32*)((u8*)this_ + 4));
             if (kind >= 0x2c || kind < 0x27) {
                 this_->m2a8 = 0;
@@ -160,8 +162,10 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
             ((JGeometry::TVec3<f32>*)&this_->m32c)->set(v.x, v.y, lbl_8053F028);
         } else {
             if (this_->m2a8 >= 1) {
-                f32 dx = this_->m32c - this_->m00c.x;
-                f32 dy = this_->m330 - this_->m00c.y;
+                f32 dy;
+                f32 dx;
+                dx = this_->m32c - this_->m00c.x;
+                dy = this_->m330 - this_->m00c.y;
                 f32 r = lbl_8053F02C + *(f32*)((u8*)this_ + 0x258);
                 f32 dx2 = dx * dx;
                 f32 dy2 = dy * dy;
