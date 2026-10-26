@@ -206,8 +206,8 @@ static inline u8 SpriteDepthEnabled802F(u8* ent) {
 static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
     u8 flag = SpriteDepthEnabled802F(ent);
     if (flag) flag = pos[2] > lbl_805414F8;
-    int a = (s8)ent[0x1c];
-    int b = (s8)ent[0x1d];
+    s32 a = (s8)ent[0x1c];
+    s32 b = (s8)ent[0x1d];
     if (flag && a < 1) {
         a++;
         b--;
@@ -226,7 +226,7 @@ static inline int Tu802F93F4_c5(int v) {
     return r;
 }
 
-extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
+extern "C" void fn_802F5040(f32* __restrict pos, u8* ent, f32* out) {
     f32 t;
     s32 a;
     s32 b;
@@ -237,20 +237,8 @@ extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     f32 s;
     u32 c;
 
-    if (ent != NULL) {
-        zpos = *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0xe461);
-        if (zpos) zpos = ent[0x20];
-        if (zpos) zpos = pos[2] > lbl_805414F8;
-        a = (s8)ent[0x1c];
-        b = (s8)ent[0x1d];
-        if (zpos && a < 1) {
-            a += 1;
-            b -= 1;
-        }
-        t = (f32)((a << 10) + (b << 7));
-    } else {
-        t = lbl_805414F8;
-    }
+    if(ent) t = SpriteDepthOffset802F(pos, ent);
+    else t = lbl_805414F8;
 
     if (!(ent && *(void**)(ent+0x18) && ent[0x25]) &&
         ((ent && *(void**)(ent+0x18)) || (lbl_805414F8 != pos[2] && (!ent || ent[0x1f])))) {
@@ -260,8 +248,7 @@ extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
             PSMTXIdentity(m);
         }
         if (lbl_805414F8 != pos[2] && (ent == NULL || ent[0x1f] != 0)) {
-            f32 v = (pos[2] >= lbl_80541500) ? lbl_80541500 : pos[2];
-            s = lbl_805414FC / (lbl_805414FC - v);
+            s = SpriteDepthScale802F(pos[2]);
             m[0][0] *= s; m[1][0] *= s; m[2][0] *= s;
             m[0][1] *= s; m[1][1] *= s; m[2][1] *= s;
             m[0][2] *= s; m[1][2] *= s; m[2][2] *= s;
@@ -288,8 +275,8 @@ extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
         GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     }
     if (ent != NULL) {
-        GXSetTevColor(GX_TEVREG1, *(GXColor*)(ent+0x10));
-        GXSetTevColor(GX_TEVREG2, *(GXColor*)(ent+0x14));
+        GXSetTevColor(GX_TEVREG0, *(GXColor*)(ent+0x10));
+        GXSetTevColor(GX_TEVREG1, *(GXColor*)(ent+0x14));
         GXSetZMode(ent[0x26], GX_LEQUAL, ent[0x2c]);
     }
     if (ent != NULL && ent[0x2d] != 0) {
