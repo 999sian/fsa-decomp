@@ -1367,41 +1367,53 @@ extern "C" void* fn_8043EED8(u8* this_, s16 how) {
         *(void**)this_ = lbl_804B1920;
         Fn8043EED8_Obj* o;
         o = *(Fn8043EED8_Obj**)(this_ + 0x290);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x290) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x290) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x294);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x294) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x294) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x298);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x298) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x298) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2b8);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2b8) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2b8) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2b0);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2b0) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2b0) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x29c);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x29c) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x29c) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2a8);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2a8) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2a8) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2b4);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2b4) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2b4) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2ac);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2ac) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2ac) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2a4);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2a4) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2a4) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2a0);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2a0) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2a0) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x2bc);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x2bc) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x2bc) = 0;
+        }
         o = *(Fn8043EED8_Obj**)(this_ + 0x4);
         if (o) o->v02(1);
         *(void**)(this_ + 0x4) = 0;
@@ -1473,8 +1485,9 @@ extern "C" void* fn_8043EED8(u8* this_, s16 how) {
         if (o) o->v02(1);
         *(void**)(this_ + 0x24) = 0;
         o = *(Fn8043EED8_Obj**)(this_ + 0x10);
-        if (o) { if (o) o->v02(1); }
-        *(void**)(this_ + 0x10) = 0;
+        if (o) { if (o) o->v02(1);
+            *(void**)(this_ + 0x10) = 0;
+        }
         lbl_8053AED0 = 0;
         if (how > 0) {
             delete this_;
