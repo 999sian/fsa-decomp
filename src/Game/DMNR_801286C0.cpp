@@ -35,15 +35,13 @@ struct Box4 {
     f32 a, b, c, d;
 };
 static inline void spawnCase4Inner(void* p) {
-    f32 pos[3];
     Box4 box = *(Box4*)((char*)fn_802D6A9C() + 0xcc);
-    f32 cx = box.c;
+    f32 pos[3];
     f32 cy = box.d;
-    f32 dx = box.a - cx;
+    f32 cx = box.c;
     f32 k = lbl_8053CAE0;
-    f32 dy = box.b - cy;
-    pos[0] = k * dx + cx;
-    pos[1] = k * dy + cy;
+    pos[0] = k * (box.a - cx) + cx;
+    pos[1] = k * (box.b - cy) + cy;
     pos[2] = lbl_8053CAE4;
     fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33c, 1, 2, 0, 0, 1);
     fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33d, 1, 2, 0, 0, 1);
@@ -79,10 +77,6 @@ extern "C" void* fn_801286C0(void* p, s16 n) {
 }
 
 extern "C" void fn_80128728(void* p, s32 x) {
-    struct Box4 {
-        f32 a, b, c, d;
-    };
-
     switch (x) {
     case 0: {
         u8* obj = (u8*)fn_80119DD0();
@@ -105,19 +99,9 @@ extern "C" void fn_80128728(void* p, s32 x) {
         obj[1] = 0;
         break;
     }
-    case 4: {
-        f32 pos[3];
-        fn_80458F9C(lbl_8053AF80, 0x3c);
-        u8* obj = (u8*)fn_80119DD0();
-        obj[1] = 0;
-        Box4 box = *(Box4*)((char*)fn_802D6A9C() + 0xcc);
-        pos[0] = lbl_8053CAE0 * (box.a - box.c) + box.c;
-        pos[1] = lbl_8053CAE0 * (box.b - box.d) + box.d;
-        pos[2] = lbl_8053CAE4;
-        fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33c, 1, 2, 0, 0, 1);
-        fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33d, 1, 2, 0, 0, 1);
+    case 4:
+        spawnCase4(p);
         break;
-    }
     case 5: {
         JGeometry::TVec3<f32> pos((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f, (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f - lbl_8053CAEC, lbl_8053CAE4);
         fn_8022FE80(0, *(void**)((u8*)p + 4), *(void**)((u8*)p + 0x198), 1, 0);
