@@ -55,6 +55,13 @@ extern f32 lbl_8053EE74;
 extern f32 lbl_8053EE78;
 extern f32 lbl_8053EE7C;
 extern f32 lbl_8053EE80;
+
+static inline f32 tuRand01() {
+    u8* g = (u8*)lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    return *(f32*)&bits - lbl_8053EE68;
+}
 extern "C" void fn_801C5B08(void* p, s32 param_2) {
     Unk801C5B08* self = (Unk801C5B08*)p;
     if (fn_801C5340() != 0) {
@@ -150,76 +157,149 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern f32 lbl_8053EE94;
 
     s32 off = *(s32*)(this_ + 4);
-    u8 cVar6 = fn_802D6A9C()[0x10000 + off + 0x31df];
+    u8 cVar6 = *(u8*)((u32)fn_802D6A9C() + 0x10000 + off + 0x31df);
     if (flag != 0) {
         *(u8*)(this_ + 0x595) = 0;
-        if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) != 0) {
-            fn_801D11FC(this_);
-        } else {
+        if (cVar6 != 0 && fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) == 0) {
             switch (*(s32*)(this_ + 0x98)) {
-            case 1:
-                *(s16*)(this_ + 0x33c) = 0x4000;
-                break;
             case 0:
                 *(s16*)(this_ + 0x33c) = -0x4000;
                 break;
-            default: {
-                f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-                if (r >= lbl_8053EE70) {
-                    *(s16*)(this_ + 0x33c) = -0x4000;
-                } else {
+            case 1:
+                *(s16*)(this_ + 0x33c) = 0x4000;
+                break;
+            default:
+                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
                     *(s16*)(this_ + 0x33c) = 0x4000;
+                } else {
+                    *(s16*)(this_ + 0x33c) = -0x4000;
                 }
+                break;
             }
-            }
+        } else {
+            fn_801D11FC(this_);
         }
     } else {
-        f32 dx, dy;
-        f32* pf;
-        s16 a;
         *(u8*)(this_ + 0x595) = *(u8*)(this_ + 0x595) + 1;
-        if (*(u8*)(this_ + 0x596) <= *(u8*)(this_ + 0x595)) {
+        if (*(u8*)(this_ + 0x595) >= *(u8*)(this_ + 0x596)) {
             *(u8*)(this_ + 0x595) = 0;
             *(u8*)(this_ + 0x596) = fn_801CD664(0x15) + 0x14;
-            pf = (f32*)(this_ + state * 0xc + 0x1ac);
-            if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) != 0) {
-                dx = *(f32*)(this_ + 0xc) - pf[0];
-                dy = *(f32*)(this_ + 0x10) - pf[1];
-                a = *(s16*)(this_ + 0x33c);
-                if (dx * dx + dy * dy > lbl_8053EE90 * *(f32*)__float_epsilon) {
-                    a = (s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EE94);
-                }
-                a = a + fn_801CD664(0x4001) - 0x2000;
-                fn_801CD930(this_ + 0x33c, a, 0xaaa);
-            } else {
-                a = *(s16*)(this_ + 0x33c);
-                if (lbl_8053EE78 * (f32)(a + 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) != 1) {
-                    if (lbl_8053EE78 * (f32)(a - 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) != 1) {
-                        f32 r1 = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-                        if (r1 >= lbl_8053EE7C) {
-                            if (*(f32*)(this_ + 0xc) >= pf[0]) {
-                                *(s16*)(this_ + 0x33c) = 0x4000;
-                            } else {
-                                *(s16*)(this_ + 0x33c) = -0x4000;
-                            }
-                        } else {
-                            f32 r2 = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-                            if (r2 >= lbl_8053EE70) {
-                                *(s16*)(this_ + 0x33c) = -0x4000;
-                            } else {
-                                *(s16*)(this_ + 0x33c) = 0x4000;
-                            }
-                        }
+            f32* pf = (f32*)(this_ + state * 0xc + 0x1ac);
+            if (cVar6 != 0 && fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) == 0) {
+                if (lbl_8053EE78 * fabs((f32)(s16)(*(s16*)(this_ + 0x33c) + 0x4000)) < lbl_8053EE80 &&
+                    fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) == 1) {
+                    *(s16*)(this_ + 0x33c) = -0x4000;
+                } else if (lbl_8053EE78 * fabs((f32)(s16)(*(s16*)(this_ + 0x33c) - 0x4000)) < lbl_8053EE80 &&
+                           fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) == 1) {
+                    *(s16*)(this_ + 0x33c) = 0x4000;
+                } else if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE7C) {
+                    if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+                        *(s16*)(this_ + 0x33c) = 0x4000;
+                    } else {
+                        *(s16*)(this_ + 0x33c) = -0x4000;
+                    }
+                } else {
+                    if (*(f32*)(this_ + 0xc) < pf[0]) {
+                        *(s16*)(this_ + 0x33c) = -0x4000;
                     } else {
                         *(s16*)(this_ + 0x33c) = 0x4000;
                     }
-                } else {
-                    *(s16*)(this_ + 0x33c) = -0x4000;
                 }
+            } else {
+                f32 dy = *(f32*)(this_ + 0x10) - pf[1];
+                f32 dx = *(f32*)(this_ + 0xc) - pf[0];
+                s16 a = *(s16*)(this_ + 0x33c);
+                if (!(dx * dx + dy * dy <= lbl_8053EE90 * *(f32*)__float_epsilon)) {
+                    f32 ang = JMath::atanTable_.atan2_(dx, dy);
+                    a = (s32)(ang * lbl_8053EE94);
+                }
+                a += fn_801CD664(0x4001) - 0x2000;
+                fn_801CD930(this_ + 0x33c, a, 0xaaa);
             }
         }
     }
-    *(s32*)(this_ + 0x230) = state;
+}
+
+extern "C" f32 fn_801D0DA0(void* p, s32 state, void* pos);
+extern "C" u8 fn_801D183C(void* p, f32 f);
+extern "C" u8 fn_801CAED4(void* p, s32 state);
+extern "C" u8 fn_801CFCF0(void* p, s32 arg);
+extern f32 lbl_8053EDF4;
+extern f32 lbl_8053EE98;
+extern f32 lbl_8053EE9C;
+extern f32 lbl_8053EEA0;
+extern f32 lbl_8053EEA4;
+extern f32 lbl_8053EEA8;
+extern "C" void fn_801C6260(void* p) {
+    Unk801C5B08* self = (Unk801C5B08*)p;
+    f32 d = fn_801D0DA0(p, self->field_338, &self->field_0C);
+    u8 r31 = fn_801D183C(p, lbl_8053EDF4);
+    s32 r30 = fn_801CAED4(p, self->field_338) == 0;
+    if (self->field_597 == 0 && r31 && (u8)r30 && (self->field_524 & 0x10) && d <= lbl_8053EE98) {
+        fn_801C3B7C(p, 0x22);
+        return;
+    }
+    if (!(d <= lbl_8053EE9C)) {
+        return;
+    }
+    if (self->field_59A == 0 && fn_801D0DD4(p) && !(self->field_524 & 0x40)) {
+        if (!(u8)r30 || ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+            s32 state = self->field_338;
+            s32 room = self->field_04;
+            if (fn_802D6A9C()[0x10000 + room + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
+                f32* pf = (f32*)((u8*)self + state * 0xc + 0x1ac);
+                f32 t;
+                t = (f32)(s16)(self->field_33C + 0x4000);
+                if (lbl_8053EE78 * fabs(t) < lbl_8053EE80 && !fn_801CFCF0(p, 1)) {
+                    if (self->field_0C < pf[0]) {
+                        self->field_33C = -0x4000;
+                    } else {
+                        self->field_33C = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0 ? -0x4000 : 0x4000;
+                    }
+                } else {
+                    t = (f32)(s16)(self->field_33C - 0x4000);
+                    if (lbl_8053EE78 * fabs(t) < lbl_8053EE80 && !fn_801CFCF0(p, 0)) {
+                        if (self->field_0C > pf[0]) {
+                            self->field_33C = 0x4000;
+                        } else {
+                            self->field_33C = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0 ? 0x4000 : -0x4000;
+                        }
+                    } else {
+                        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE7C) {
+                            self->field_33C = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70 ? 0x4000 : -0x4000;
+                        } else {
+                            self->field_33C = self->field_0C < pf[0] ? -0x4000 : 0x4000;
+                        }
+                    }
+                }
+            } else {
+                self->field_33C -= 0x8000;
+                self->field_33C += fn_801CD664(0x4001) - 0x2000;
+            }
+            fn_801C3B7C(p, 0x1c);
+            return;
+        }
+    }
+    if (self->field_597 != 0 || !(u8)r30) {
+        return;
+    }
+    if (self->field_524 & 0x10) {
+        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA4) {
+            if (self->field_524 & 0x20) {
+                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA8) {
+                    fn_801C3B7C(p, 0x26);
+                } else {
+                    fn_801C3B7C(p, 0x25);
+                }
+            } else {
+                fn_801C3B7C(p, 0x25);
+            }
+            return;
+        }
+    }
+    if (r31 && (self->field_524 & 0x8)) {
+        fn_801C3B7C(p, 0x22);
+    }
 }
 
 extern "C" void fn_801C6784(void* p) {
