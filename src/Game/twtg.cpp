@@ -1119,6 +1119,15 @@ extern void* lbl_8053AF80;
 extern u8 lbl_80529DEC[];
 
 struct TwtgOrd { u8 pad[0x244]; s32 order[4]; };
+static inline u8 twtgAskOrder(char* p, const s32 msg) {
+    if (fn_8038470C(*(s32*)(p + 0x254), msg)) {
+        *(s32*)(p + 0x268) = msg;
+        *(s32*)(p + 0x234) = 1;
+        return 1;
+    }
+    return 0;
+}
+#pragma optimization_level 3
 extern "C" void fn_80315864(TwtgOrd* actor) {
     char* p = (char*)actor;
     TwtgBox b;
@@ -1224,7 +1233,7 @@ extern "C" void fn_80315864(TwtgOrd* actor) {
         }
     }
 }
-
+#pragma optimization_level 4
 // fn_803167F4 - TWTG: setParams().
 extern const f32 lbl_80541898;
 extern const f32 lbl_8054189C;
