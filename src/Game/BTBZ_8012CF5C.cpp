@@ -153,13 +153,7 @@ extern "C" void fn_8012D6E8(u8* this_) {
     *(u8*)(this_ + 0x230) = *(u32*)(this_ + 0x90) & 1;
     *(u8*)(this_ + 0x231) = (*(u32*)(this_ + 0x90) >> 1) & 1;
     if (*(void**)(this_ + 0x23C) == 0) {
-        BTBZ_Vec pos;
-        BTBZ_Box b = *(BTBZ_Box*)(fn_802D6A9C() + 0xCC);
-        f32 y, x;
-        x = 0.5f * (b.x0 - b.x1) + b.x1;
-        y = 0.5f * (b.y0 - b.y1) + b.y1;
-        pos.set(x, y, 0.0f);
-        *(void**)(this_ + 0x23C) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x58, 1, 0, 0, 0, 1, 1.0f);
+        spawnBTBZInner(this_);
     }
     if (*(u8**)(this_ + 0x23C) != 0) {
         *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) |= 1;
