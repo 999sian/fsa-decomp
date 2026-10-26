@@ -69,9 +69,9 @@ static inline bool showExceptionAddress(const u32 addr, char* const base = lbl_8
                     char* zero = &lbl_8053B868;
                     bool mapped = findModuleAddress(addr, &sectionBase, &sectionIndex, &sectionOffset, &mapName);
                     if (mapped == true) {
-                        char* out = name;
                         const u8* last = (const u8*)mapName;
                         const u8* p = (const u8*)mapName;
+                        char* out = name;
                         while (*p) { if (*p == '\\') last = p; p++; }
                         if (*last == '\\') last++;
                         int n = 0;
