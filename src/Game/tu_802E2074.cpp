@@ -142,10 +142,8 @@ void fn_802E20D8(u8* this_)
                 s32 room;
                 GenRecordReader reader(data+4);
                 destination=reader.read8();
-                reader.p = data+6;
-                y=reader.read8();
-                reader.p = data+5;
-                x=reader.read8();
+                x=reader.readCoord();
+                y=reader.readCoord();
                 u32 param=(data[7]<<24)|(data[8]<<16)|(data[9]<<8)|data[10];
                 f32 baseX, baseY;
                 if (destination == 0) {
