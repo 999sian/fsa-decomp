@@ -176,14 +176,12 @@ extern "C" void fn_803007D0(void) {
 #pragma opt_strength_reduction reset
 
 extern "C" void fn_80300A8C(GbaChan* c) {
-    BOOL b28;
+    BOOL b28 = 1;
     u8 saved_f02;
     u32 saved_f0c;
     u32 v25;
-    BOOL b24;
+    BOOL b24 = 0;
 
-    b28 = 1;
-    b24 = 0;
     c->f_d8 = 0;
     c->f_d9 = 1;
     c->f_d3 = 3;
