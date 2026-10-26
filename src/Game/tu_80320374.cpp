@@ -172,17 +172,18 @@ static inline f32 ItemRandom321200() {
 }
 
 static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) {
+    f64 angleValue;
     f32 ang;
     f32 s;
-    ang = *angle;
+    angleValue = *angle;
     s = *scale;
     f32 sz, sy, sx;
     f32 cz, cx;
     sx = sin(lbl_80541AE0);
-    sy = sin(ang);
+    sy = sin(angleValue);
     sz = sin(lbl_80541AE0);
     cx = cos(lbl_80541AE0);
-    ang = cos(ang);
+    ang = cos(angleValue);
     cz = cos(lbl_80541AE0);
     f32 cxcz = cx * cz;
     f32 sxsy = sx * sy;
