@@ -103,7 +103,7 @@ extern "C" void fn_8031C0B0(Actor* p) {
         }
         old = *(JGeometry::TVec3<f32>*)(self + 0xc);
         *(JGeometry::TVec3<f32>*)(self + 0xc) += *(JGeometry::TVec3<f32>*)(self + 0x294);
-        fn_801F06F0(p, lbl_804716F0, *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)], &rec, 7, lbl_805419BC, lbl_805419BC);
+        fn_801F06F0(p, lbl_804716F0, *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)], &rec, 7, 1.0f, 1.0f);
         fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc,
             *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)], 0, 2, -1, 0, 0, 0);
         *(JGeometry::TVec3<f32>*)(self + 0xc) = old;
@@ -120,6 +120,22 @@ extern "C" void fn_8031C0B0(Actor* p) {
         }
         fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc,
             *(s32*)(self + 0x254) + lbl_804AB130[*(s32*)(self + 0x268)], 0, 2, -1, 0, 0, 0);
+    }
+}
+
+extern "C" void fn_8031C598(Actor* p) {
+    u8* self = (u8*)p;
+    JGeometry::TVec3<f32> old;
+    s32 state;
+    if (*(u16*)(self + 0x94) == 1) {
+        return;
+    }
+    if (*(s32*)(self + 0x250) != 0) {
+        return;
+    }
+    state = *(s32*)(self + 0x230);
+    if (state == 0) {
+        return;
     }
 }
 
