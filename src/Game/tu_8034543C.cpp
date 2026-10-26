@@ -12,6 +12,7 @@ extern "C" void fn_801F06F0(void*, const char*, s32, DrawRec*, s32, f32, f32);
 namespace JMath {
 template <int length, typename T>
 struct TAtanTable {
+    T mTable[length];
     T atan2_(T, T) const;
 };
 extern TAtanTable<1024, f32> atanTable_;
@@ -117,31 +118,30 @@ static inline f32 tuSqrt(const f32 mag) {
 }
 extern "C" s32 fn_80346330(u8* this_) {
     s32 i;
-    u8* self = this_;
+    s32 room;
 
-    *(f32*)(self + 0x264) = lbl_805423A0;
-    *(u16*)(self + 0x268) = 0;
-    *(s32*)(self + 0x26c) = -1;
-    *(s32*)(self + 0x270) = -1;
-    fn_801EEC98(self, *(s32*)(self + 0x198), (u16*)(self + 0x268), (s32*)(self + 0x26c), (f32*)(self + 0x264), (s32*)(self + 0x270), 0, 0);
+    *(f32*)(this_ + 0x264) = lbl_805423A0;
+    *(u16*)(this_ + 0x268) = 0;
+    *(s32*)(this_ + 0x26c) = -1;
+    *(s32*)(this_ + 0x270) = -1;
+    fn_801EEC98(this_, *(s32*)(this_ + 0x198), (u16*)(this_ + 0x268), (s32*)(this_ + 0x26c), (f32*)(this_ + 0x264), (s32*)(this_ + 0x270), 0, 0);
 
-    if (*(s32*)(self + 0x26c) >= 0 && *(f32*)(self + 0x264) < lbl_805423FC) {
-        if (*(s32*)(self + 0x270) >= 0) {
-            if (fn_80233E40(*(s32*)(self + 0x270)) == 1 || fn_8022B7C4(*(s32*)(self + 0x270)) == 1) {
+    if (*(s32*)(this_ + 0x26c) >= 0 && *(f32*)(this_ + 0x264) < lbl_805423FC) {
+        if (*(s32*)(this_ + 0x270) >= 0) {
+            if (fn_80233E40(*(s32*)(this_ + 0x270)) == 1 || fn_8022B7C4(*(s32*)(this_ + 0x270)) == 1) {
                 return 1;
             }
         }
     }
 
     for (i = 0; i < 4; i++) {
-        s32 room;
         if (fn_8022CAF8(i) == 4 || fn_8022CAF8(i) == 5) {
             continue;
         }
-        if (*(s32*)(self + 0x270) == i) {
+        if (*(s32*)(this_ + 0x270) == i) {
             continue;
         }
-        room = *(s32*)(self + 0x4);
+        room = *(s32*)(this_ + 0x4);
         if (room != fn_8023DE58(i)) {
             continue;
         }
@@ -149,15 +149,14 @@ extern "C" s32 fn_80346330(u8* this_) {
             continue;
         }
         {
-            f32 dx = *(f32*)(self + 0xc) - fn_8023E724(i)->x;
-            f32 dy = *(f32*)(self + 0x10) - fn_8023E724(i)->y;
-            f32 dist = sqrt(dx * dx + dy * dy);
+            f32 dx = *(f32*)(this_ + 0xc) - fn_8023E724(i)->x;
+            f32 dy = *(f32*)(this_ + 0x10) - fn_8023E724(i)->y;
 
-            if (dist < lbl_805423FC) {
-                *(f32*)(self + 0x264) = dist;
-                *(s16*)(self + 0x268) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * lbl_80542418);
-                *(s32*)(self + 0x270) = i;
-                *(s32*)(self + 0x26c) = ClassifyBamAngleToQuadrant(*(u16*)(self + 0x268));
+            if (tuSqrt(dx * dx + dy * dy) < lbl_805423FC) {
+                *(f32*)(this_ + 0x264) = tuSqrt(dx * dx + dy * dy);
+                *(s16*)(this_ + 0x268) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * lbl_80542418);
+                *(s32*)(this_ + 0x270) = i;
+                *(s32*)(this_ + 0x26c) = ClassifyBamAngleToQuadrant(*(u16*)(this_ + 0x268));
                 return 1;
             }
         }
