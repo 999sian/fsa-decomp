@@ -129,6 +129,7 @@ extern "C" void fn_8017C078(char* this_) {
     fn_801EFD34(this_, tex, &rec, -1, sx, sy, lbl_8053DD28);
 }
 
+#pragma opt_propagation reset
 extern "C" void fn_801546F4(void* dst, void* src);
 extern "C" void fn_8017ECE8(void* dst, f32 x, f32 y);
 extern "C" void fn_801546BC(void* v);
