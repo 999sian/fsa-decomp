@@ -376,6 +376,7 @@ void fn_803BC6F0(char* this_, u32 a, f32 t) {
     (void)vt;
     (void)a;
 }
+#pragma dont_inline reset
 
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     u8* base = (u8*)lbl_804765D0;
