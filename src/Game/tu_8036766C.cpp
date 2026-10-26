@@ -16,11 +16,6 @@ extern "C" u8 fn_803865B8(s32 a);
 extern "C" void fn_80388EEC(s32 a);
 extern "C" u8 fn_8038BD08(s32 a, s32 b, s32 c, void* d, s32 e);
 extern "C" void detach__5ActorFv(void* this_);
-static inline void fn_80367888_addVec(u8* p, f32* v) {
-    *(f32*)(p + 0xc) = *(f32*)(p + 0x244) + v[0];
-    *(f32*)(p + 0x10) = *(f32*)(p + 0x248) + v[1];
-    *(f32*)(p + 0x14) = *(f32*)(p + 0x24c) + v[2];
-}
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_8036766C(Actor* p, s16 n) {
     if (p) {
