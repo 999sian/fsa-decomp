@@ -157,11 +157,11 @@ static inline f32 paneSpan(const f32* bounds) {
 }
 
 #pragma fp_contract off
-static inline u8 menuFadeAlpha(s32 elapsed, s32 duration) {
-    f32 t = (f32)elapsed / duration;
-    f32 square = t * t;
-    f32 alpha = 1.0f - square;
-    return (s32)(255.0f * alpha);
+static inline u8 menuFadeAlpha(const f32 elapsed, const f32 duration) {
+    f32 t = elapsed / duration;
+    t *= t;
+    t = 1.0f - t;
+    return (s32)(255.0f * t);
 }
 #pragma fp_contract on
 
