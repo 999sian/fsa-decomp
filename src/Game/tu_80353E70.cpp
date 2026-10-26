@@ -71,9 +71,14 @@ extern "C" void fn_80353EE0(void* this_) {
     fn_801F06F0(this_, lbl_80472298, lbl_80472288[*(s32*)((char*)this_ + 0x2c8)] + 0x466, &rec, 7, lbl_80542750, lbl_80542750);
 }
 
+#pragma fp_contract off
 static inline bool tugfNear(f32 x, f32 y) {
-    return x*x + y*y <= lbl_8054273C;
+    f32 xx = x*x;
+    f32 yy = y*y;
+    if (xx + yy <= lbl_8054273C) return true;
+    return false;
 }
+#pragma fp_contract on
 
 extern "C" void fn_80354030(char* this_) {
     if (*(s32*)(this_ + 0x2b8) != 0) {
@@ -102,9 +107,9 @@ extern "C" void fn_80354030(char* this_) {
             fn_801F0E34(this_, 0x4003f, 0);
             *(f32*)(this_ + 0x288) = lbl_80542758;
             *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x44) = lbl_8054273C;
+            f32 scale = 0.6f;
             *(s32*)(this_ + 0x2c0) = 0;
             *(s32*)(this_ + 0x2b8) = 2;
-            f32 scale = lbl_8054275C;
             *(f32*)(this_ + 0x2d8) = scale * (f32)(*(u32*)(this_ + 0x2d4) >> 24);
             *(f32*)(this_ + 0x2dc) = scale * (f32)((*(u32*)(this_ + 0x2d4) >> 16) & 0xff);
             *(f32*)(this_ + 0x2e0) = scale * (f32)((*(u32*)(this_ + 0x2d4) >> 8) & 0xff);
@@ -131,21 +136,29 @@ extern "C" void fn_80354030(char* this_) {
         break;
     case 3:
         if (*(s32*)(this_ + 0x2c4) <= 0 || (*(s32*)(this_ + 0x2c0) <= 0 && *(f32*)(this_ + 0xc) >= *(f32*)(this_ + 0x290) && *(f32*)(this_ + 0x10) >= *(f32*)(this_ + 0x294))) {
+            f32 ang;
             if (*(s32*)(this_ + 0x2c0) <= 0) {
                 *(f32*)(this_ + 0x290) = *(f32*)(this_ + 0x2a8) - lbl_80542730;
                 *(f32*)(this_ + 0x294) = (*(f32*)(this_ + 0x2ac) + *(f32*)(this_ + 0x2b4)) * lbl_80542738 + lbl_80542734;
             } else {
                 f32 x = *(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc);
                 f32 y = *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10);
-                (x*x + y*y <= lbl_8054273C);
+                if (tugfNear(x, y)) {
+                    ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
+                } else {
+                    ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
+                }
+                goto angleReady;
             }
-            f32 ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
+            ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
+angleReady:
             *(s16*)(this_ + 0x2d0) = (s16)(s32)(ang * lbl_80542740);
             *(s32*)(this_ + 0x2c4) = 6;
         }
         fn_801F714C(this_ + 0x2cc, *(u16*)(this_ + 0x2d0), 0x14, 0x1000);
-        *(f32*)(this_ + 0x2a0) = lbl_80542744 * JMath::sincosTable_.mTable[(u32)*(u16*)(this_ + 0x2cc) >> 5].first;
-        *(f32*)(this_ + 0x2a4) = lbl_80542744 * JMath::sincosTable_.mTable[(u32)*(u16*)(this_ + 0x2cc) >> 5].second;
+        const f32 speed = lbl_80542744;
+        *(f32*)(this_ + 0x2a0) = speed * JMath::sincosTable_.mTable[((u32)*(u16*)(this_ + 0x2cc) & 0xffffU) >> 5].first;
+        *(f32*)(this_ + 0x2a4) = speed * JMath::sincosTable_.mTable[((u32)*(u16*)(this_ + 0x2cc) & 0xffffU) >> 5].second;
         fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x2a0), lbl_80542748, lbl_8054274C);
         fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x2a4), lbl_80542748, lbl_8054274C);
         *(s32*)(this_ + 0x2c4) = *(s32*)(this_ + 0x2c4) - 1;
