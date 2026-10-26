@@ -1645,6 +1645,7 @@ extern "C" f32 lbl_80543898;
 extern "C" f32 lbl_805438D0;
 extern "C" f32 lbl_8054397C;
 extern "C" f32 lbl_80543980;
+#pragma fp_contract off
 extern "C" void fn_8040C950(u8* self) {
 	(*(s16*)(self + 0x426))++;
 	if (*(s16*)(self + 0x426) >= 8) {
@@ -1676,7 +1677,6 @@ extern "C" void fn_8040C950(u8* self) {
 	} else {
 		s32 t = *(s16*)(self + 0x426);
 		f32 w;
-		f32 one = 1.0f;
 		if (t < 5) {
 			w = -7.0f * (f32)(t * t) / 25.0f;
 			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
@@ -1687,13 +1687,13 @@ extern "C" void fn_8040C950(u8* self) {
 			fn_80402E08(*(void**)(self + 0x22c), 0.0f, w);
 		}
 		f32 a;
-		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * (a = one - (f32)*(s16*)(self + 0x426) * 0.125f)));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - (f32)*(s16*)(self + 0x426) * lbl_80543980)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
-		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (a = one - a)));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - a)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 	}
 }
-
+#pragma fp_contract reset
 extern "C" f64 lbl_805438B0;
 extern "C" void fn_8040CE90(u8* self) {
 	(*(s16*)(self + 0x426))++;
