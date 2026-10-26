@@ -260,9 +260,26 @@ static inline JGeometry::TBox2f* RoomBounds(char* self) {
     return (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
 }
 
+static inline void moveHouseProbe(char* self, u8 mode, JGeometry::TVec3f& saved) {
+    saved = *(JGeometry::TVec3f*)(self + 0xc);
+    const JGeometry::TVec3f& direction = lbl_8046C268[mode];
+    f32 dx = direction.x;
+    f32 dy = direction.y;
+    *(f32*)(self + 0x3c) = dx;
+    f32 dz = direction.z;
+    *(f32*)(self + 0x40) = dy;
+    *(f32*)(self + 0x44) = dz;
+    *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
+    *(f32*)(self + 0x60) = -44.0f;
+    *(f32*)(self + 0x64) = -44.0f;
+    *(f32*)(self + 0x68) = 44.0f;
+    *(f32*)(self + 0x6c) = 44.0f;
+
+}
+
 extern "C" u8 fn_802957CC(void* p, u8 mode) {
     struct Probe {
-        Probe(const JGeometry::TVec3f& value) : save(value) {}
+        Probe() {}
         JGeometry::TVec3f pos;
         JGeometry::TBox2f area;
         JGeometry::TVec3f save;
@@ -274,16 +291,17 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
     char* m;
     JGeometry::TBox2f* src;
     JGeometry::TVec3f* v;
-    Probe pt(*(JGeometry::TVec3f*)(self + 0xc));
+    Probe pt;
     JGeometry::TBox2f box;
     JGeometry::TVec3f q;
     JGeometry::TVec3f ofs;
 
+    pt.save = *(JGeometry::TVec3f*)(self + 0xc);
     const JGeometry::TVec3f& direction = lbl_8046C268[mode];
-    f32 dx = direction.x;
-    f32 dy = direction.y;
+    const f32 dy = direction.y;
+    const f32 dx = direction.x;
     *(f32*)(self + 0x3c) = dx;
-    f32 dz = direction.z;
+    const f32 dz = direction.z;
     *(f32*)(self + 0x40) = dy;
     *(f32*)(self + 0x44) = dz;
     *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
