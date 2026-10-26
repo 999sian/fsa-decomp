@@ -33,10 +33,29 @@ static inline void* PrtcSpawnA(char* p, s32 id) {
     return fn_8013CC50(*(s32*)(p + 4), &pos, id, *(s32*)(p + 0x254), 0, 0, 0, 1, 1.0f);
 }
 
+struct NonPolyBase {
+    void* pad0;
+    void* pad1;
+};
+
+struct NotifyTarget : NonPolyBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3(s32* arg);
+    virtual void v4();
+    virtual void v5(void* arg);
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void Notify(int arg);
+};
+
 static inline void PrtcNotify(char* p) {
     s32 code = 0x30074;
     void* obj = *(void**)(p + 0x230);
-    ((void (*)(void*, s32*))(*(void***)((char*)obj + 8))[5])(obj, &code);
+    ((NotifyTarget*)obj)->v3(&code);
 }
 
 static inline void PrtcNotifyCheck(char* p) {
@@ -69,15 +88,9 @@ extern "C" void fn_802E0AB8(void* this_) {
     if (*(s32*)(p + 0x250) <= 1) {
         fn_801F0E34(this_, 0x30033, 0);
     }
-    s32 state = *(s32*)(p + 0x240);
-    if (state == 1) {
-    } else if (state > 1) {
-        return;
-    } else if (state < 0) {
-        return;
-    } else if (!((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
-        return;
-    } else {
+    switch (*(s32*)(p + 0x240)) {
+    case 0:
+        if ((u8)((Actor*)this_)->v11()) {
         switch (*(s32*)(p + 0x250)) {
         case 0:
             *(void**)(p + 0x234) = PrtcSpawnA(p, 0x188);
@@ -110,13 +123,19 @@ extern "C" void fn_802E0AB8(void* this_) {
             break;
         case 8:
             *(void**)(p + 0x234) = PrtcSpawnA(p, 0x6f);
-            *(s32*)(p + 0x240) = 1;
-            return;
+            break;
         }
-    }
-    s32 phase = *(s32*)(p + 0x250);
-    if (phase == 6 || phase == 8) {
-        PrtcNotify(p);
+            *(s32*)(p + 0x240) = 1;
+        }
+        break;
+    case 1:
+        switch (*(s32*)(p + 0x250)) {
+        case 6:
+        case 8:
+            PrtcNotify(p);
+            break;
+        }
+        break;
     }
 }
 
@@ -128,24 +147,6 @@ extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804A9AC8[];
 
-struct NonPolyBase {
-    void* pad0;
-    void* pad1;
-};
-
-struct NotifyTarget : NonPolyBase {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual void v5(void* arg);
-    virtual void v6();
-    virtual void v7();
-    virtual void v8();
-    virtual void v9();
-    virtual void Notify(int arg);
-};
 
 static inline void NotifySub(void* obj, int arg) {
     if (obj) {
