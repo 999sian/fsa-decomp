@@ -1307,7 +1307,7 @@ extern "C" void fn_80440BF4(void* a, s32 b);
 extern "C" void fn_80440C6C(void* a, s32 b);
 extern "C" void fn_803832BC(char* a, s32 b, s32 c, s32 d, s32 e);
 extern void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* self, const char* name, u32 flags, void* archive);
-extern f32 lbl_805434C0;
+extern const f32 lbl_805434C0;
 extern f32 lbl_805434C8;
 extern u8 lbl_80476F20[];
 extern void* lbl_8053AD78;
