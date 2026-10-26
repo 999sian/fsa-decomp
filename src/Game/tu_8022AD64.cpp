@@ -1395,7 +1395,7 @@ static inline u8 playerMgrBusy()
     if (playerMgrByte(0x72)) return 1;
     return 0;
 }
-static inline u8 playerUnavailable(int index)
+static inline int playerUnavailable(int index)
 {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(index)) return fn_80240670(lbl_8053AC90->players[index]);
@@ -1407,8 +1407,33 @@ static inline int playerRoom(int index)
     if (!isPlayerEnabled(index)) return 0;
     return *((int*)((u8*)lbl_8053AC90->players[index] + 0x3b4));
 }
-int fn_80231A50(void) {
-    return 0;
+int fn_80231A50(void)
+{
+    if (playerMgrBusy()) return -1;
+    if (playerMgrByte(0x73)) return -1;
+    s32 x = 0;
+    s32 y = 0;
+    int selected = -1;
+    for (int i = 0; i < 4; i++) {
+        Player* player = lbl_8053AC90->players[i];
+        if (player != NULL && isPlayerEnabled(i) && !playerUnavailable(i)) {
+            s32 pos[2];
+            if (!fn_802527B0(player, pos)) {
+                if (selected == -1) selected = i;
+                else return -1;
+            } else {
+                if (x*x + y*y <= (s32)(lbl_8054000C * FLT_EPSILON)) {
+                    x = pos[0];
+                    y = pos[1];
+                } else {
+                    u8 same = x == pos[0] && y == pos[1];
+                    if (!same) return -1;
+                }
+            }
+        }
+    }
+    if (selected < 0) return -1;
+    return playerRoom(selected) < 8 ? -1 : selected;
 }
 
 u8 fn_802527B0(Player*, s32*);
