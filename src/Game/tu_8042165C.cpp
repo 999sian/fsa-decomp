@@ -953,7 +953,7 @@ extern "C" void fn_80230EB8(s32 i, s32 a);
 extern u8 lbl_8050DB0C[];
 
 // Steps player i's displayed count toward the real one by 2 every other frame.
-static inline void StepCount2(u8* this_, const s32 i) {
+static inline void StepCount2(u8* this_, s32 i) {
     s32* q = &((s32*)(lbl_80529DEC + 0xe8))[i];
     s32 c = *q;
     if (c < (s32)fn_80236100(i)) {
