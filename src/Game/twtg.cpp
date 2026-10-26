@@ -215,7 +215,8 @@ static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
         s32 room;
-        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) != room)) {
+        s32 owner;
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), owner = fn_8023DE58(*(s32*)(p + 0x254)), owner != room)) {
             fn_801EE558(p, &v, &dist, 0);
         } else {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
@@ -1328,14 +1329,14 @@ Twtg::Twtg() : Actor() {
 }
 
 extern "C" void __sinit_twtg_cpp();
-#pragma opt_lifetimes off
+#pragma opt_strength_reduction off
 extern "C" void fn_80316ABC() {
     TwtgInitData* src = (TwtgInitData*)lbl_804AAC58;
     TwtgInitData* dst = src+1;
-    *dst = *src;
+    copyTwtgInit(dst, src);
     __sinit_twtg_cpp();
 }
-#pragma opt_lifetimes on
+#pragma opt_strength_reduction on
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
