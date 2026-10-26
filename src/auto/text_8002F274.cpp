@@ -54,6 +54,37 @@ extern "C" char* fn_800303AC(char* base, unsigned long off);
 extern "C" char* fn_80030394(char* base, unsigned long off);
 extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key);
 extern "C" short* fn_80030380(short* p);
+static inline JASOscillator::Data* createOscData8002FB90(char* base, const JASBNKParser::TOsc* rec, JKRHeap* heap) {
+                        JASOscillator::Data* osc = new (heap, 0) JASOscillator::Data;
+                        osc->mTarget = rec->target;
+                        osc->_04 = rec->_4;
+
+                        char* table = fn_80030424(base, ((unsigned long*)rec)[2]);
+                        if (table != 0) {
+                            int size = ((int)fn_80030380((short*)table) - (int)table) / 6 * 6;
+                            char* copy = new (heap, 0) char[size];
+                            JASCalc::bcopy(table, copy, size);
+                            osc->mTable = (JASOscillator::Point*)copy;
+                        } else {
+                            osc->mTable = 0;
+                        }
+
+                        char* relTable = fn_80030424(base, ((unsigned long*)rec)[3]);
+                        if (relTable != 0) {
+                            int size = ((int)fn_80030380((short*)relTable) - (int)relTable) / 6 * 6;
+                            char* copy = new (heap, 0) char[size];
+                            JASCalc::bcopy(relTable, copy, size);
+                            osc->rel_table = (JASOscillator::Point*)copy;
+                        } else {
+                            osc->rel_table = 0;
+                        }
+
+                        osc->mScale = rec->scale;
+                        osc->_14 = rec->_14;
+
+    return osc;
+}
+
 extern "C" int lbl_80557688;
 extern "C" void* fn_8002FB90(const void*, JKRHeap*);
 extern "C" void* fn_8002F34C(const void*, JKRHeap*);
@@ -251,8 +282,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
         heap = JASDram;
     }
     char* base = (char*)data;
-    char* inst;
-    JASBasicInst* basicInst;
+    JASBNKParser::TInst* inst;
     JASBasicBank* bank = new (heap, 0) JASBasicBank;
     if (bank == 0) {
         return 0;
@@ -261,24 +291,24 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
     int i;
     unsigned long* instOff;
     for (i = 0, instOff = (unsigned long*)base; i < 0x80; i++, instOff++) {
-        inst = fn_80030454(base, instOff[9]);
+        inst = (JASBNKParser::TInst*)fn_80030454(base, instOff[9]);
         if (inst != 0) {
-            basicInst = new (heap, 0) JASBasicInst;
-            basicInst->setVolume(*(f32*)(inst + 8));
-            basicInst->setPitch(*(f32*)(inst + 0xc));
+            JASBasicInst* basicInst = new (heap, 0) JASBasicInst;
+            basicInst->setVolume(inst->volume);
+            basicInst->setPitch(inst->pitch);
 
             int oscIndex = 0;
             unsigned long* oscOff = (unsigned long*)inst;
             for (int j = 0; j < 2; j++, oscOff++) {
-                char* rec = fn_8003043C(base, oscOff[4]);
+                JASBNKParser::TOsc* rec = (JASBNKParser::TOsc*)fn_8003043C(base, oscOff[4]);
                 if (rec != 0) {
-                    JASOscillator::Data* shared = (JASOscillator::Data*)fn_8003026C(bank, base, rec);
-                    if (shared != 0) {
-                        basicInst->setOsc(oscIndex, shared);
+                    JASOscillator::Data* osc = (JASOscillator::Data*)fn_8003026C(bank, base, (char*)rec);
+                    if (osc != 0) {
+                        basicInst->setOsc(oscIndex, osc);
                     } else {
-                        JASOscillator::Data* osc = new (heap, 0) JASOscillator::Data;
-                        osc->mTarget = (unsigned char)rec[0];
-                        osc->_04 = *(f32*)(rec + 4);
+                        osc = new (heap, 0) JASOscillator::Data;
+                        osc->mTarget = rec->target;
+                        osc->_04 = rec->_4;
 
                         char* table = fn_80030424(base, ((unsigned long*)rec)[2]);
                         if (table != 0) {
@@ -300,28 +330,31 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
                             osc->rel_table = 0;
                         }
 
-                        osc->mScale = *(f32*)(rec + 0x10);
-                        osc->_14 = *(f32*)(rec + 0x14);
+                        osc->mScale = rec->scale;
+                        osc->_14 = rec->_14;
                         basicInst->setOsc(oscIndex, osc);
                     }
                     oscIndex++;
                 }
             }
 
-            unsigned long* randOff = (unsigned long*)inst;
-            for (int j = 0; j < 2; j++, randOff++) {
+            unsigned long* randOff;
+            int randIndex;
+            for (randIndex = 0, randOff = (unsigned long*)inst; randIndex < 2; randIndex++, randOff++) {
                 char* rec = fn_8003040C(base, randOff[6]);
                 if (rec != 0) {
                     JASInstRand* rndEffect = new (heap, 0) JASInstRand;
                     rndEffect->setType((unsigned char)rec[0]);
-                    rndEffect->set(*(f32*)(rec + 4), *(f32*)(rec + 8));
+                    rndEffect->setFloor(*(f32*)(rec + 4));
+                    rndEffect->setCeiling(*(f32*)(rec + 8));
                     JASInstEffectLink* link = new (heap, 0) JASInstEffectLink(rndEffect);
                     basicInst->appendEffect(link);
                 }
             }
 
-            unsigned long* senseOff = (unsigned long*)inst;
-            for (int j = 0; j < 2; j++, senseOff++) {
+            unsigned long* senseOff;
+            int senseIndex;
+            for (senseIndex = 0, senseOff = (unsigned long*)inst; senseIndex < 2; senseIndex++, senseOff++) {
                 char* rec = fn_800303F4(base, senseOff[8]);
                 if (rec != 0) {
                     JASInstSense* sense = new (heap, 0) JASInstSense;
@@ -332,15 +365,15 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
                 }
             }
 
-            basicInst->setKeyRegionCount(*(unsigned long*)(inst + 0x28), heap);
+            basicInst->setKeyRegionCount(inst->keyRegionCount, heap);
             unsigned long* keyOff = (unsigned long*)inst;
-            for (unsigned long k = 0; k < *(unsigned long*)(inst + 0x28); k++, keyOff++) {
+            for (unsigned long k = 0; k < inst->keyRegionCount; keyOff++, k++) {
                 JASBasicInst::TKeymap* keymap = basicInst->getKeyRegion(k);
                 char* velo = fn_800303DC(base, keyOff[11]);
                 keymap->mHighKey = (unsigned char)velo[0];
                 keymap->setVeloRegionCount(*(unsigned long*)(velo + 4), heap);
                 unsigned long* veloOff = (unsigned long*)velo;
-                for (unsigned long j = 0; j < *(unsigned long*)(velo + 4); j++, veloOff++) {
+                for (unsigned long j = 0; j < *(unsigned long*)(velo + 4); veloOff++, j++) {
                     JASVelo* dst = keymap->getVeloRegion(j);
                     char* src = fn_800303C4(base, veloOff[2]);
                     dst->_0 = (unsigned char)src[0];
@@ -353,31 +386,34 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
         }
     }
 
-    unsigned long* drumOff = (unsigned long*)base;
-    for (int i = 0; i < 0xc; i++, drumOff++) {
+    unsigned long* drumOff;
+    int drumIndex;
+    for (drumIndex = 0, drumOff = (unsigned long*)base; drumIndex < 0xc; drumIndex++, drumOff++) {
         char* drum = fn_800303AC(base, drumOff[0xed]);
         if (drum != 0) {
             JASDrumSet* drumSet = new (heap, 0) JASDrumSet;
-            unsigned long* percOff = (unsigned long*)(drum + 0x88);
-            unsigned short* releaseOff = (unsigned short*)(drum + 0x308);
+            unsigned long* percOff = (unsigned long*)drum;
+            unsigned short* releaseOff = (unsigned short*)drum;
             for (int j = 0; j < 0x80; j++, percOff++, releaseOff++) {
-                char* perc = fn_80030394(base, *percOff);
+                char* perc = fn_80030394(base, percOff[0x22]);
                 if (perc != 0) {
                     JASDrumSet::TPerc* tperc = new (heap, 0) JASDrumSet::TPerc;
                     tperc->setVolume(*(f32*)perc);
                     tperc->setPitch(*(f32*)(perc + 4));
                     if (*(unsigned long*)drum == 0x50455232) {
                         tperc->setPan((f32)drum[0x288 + j] / 127.0f);
-                        tperc->setRelease(*releaseOff);
+                        tperc->setRelease(releaseOff[0x184]);
                     }
 
-                    unsigned long* percRand = (unsigned long*)perc;
-                    for (int k = 0; k < 2; k++, percRand++) {
+                    unsigned long* percRand;
+                    int randIndex;
+                    for (randIndex = 0, percRand = (unsigned long*)perc; randIndex < 2; randIndex++, percRand++) {
                         char* rec = fn_8003040C(base, percRand[2]);
                         if (rec != 0) {
                             JASInstRand* rndEffect = new (heap, 0) JASInstRand;
                             rndEffect->setType((unsigned char)rec[0]);
-                            rndEffect->set(*(f32*)(rec + 4), *(f32*)(rec + 8));
+                            rndEffect->setFloor(*(f32*)(rec + 4));
+                    rndEffect->setCeiling(*(f32*)(rec + 8));
                             JASInstEffectLink* link = new (heap, 0) JASInstEffectLink(rndEffect);
                             tperc->appendEffect(link);
                         }
@@ -385,7 +421,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
 
                     tperc->setVeloRegionCount(((unsigned long*)perc)[4], heap);
                     unsigned long* veloOff = (unsigned long*)perc;
-                    for (unsigned long k = 0; k < ((unsigned long*)perc)[4]; k++, veloOff++) {
+                    for (unsigned long k = 0; k < ((unsigned long*)perc)[4]; veloOff++, k++) {
                         JASVelo* dst = tperc->getVeloRegion(k);
                         char* src = fn_800303C4(base, veloOff[5]);
                         dst->_0 = (unsigned char)src[0];
@@ -396,7 +432,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
                     drumSet->setPerc(j, tperc);
                 }
             }
-            bank->setInst(0xe4 + i, drumSet);
+            bank->setInst(0xe4 + drumIndex, drumSet);
         }
     }
     return bank;
