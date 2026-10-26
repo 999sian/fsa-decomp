@@ -58,6 +58,14 @@ static inline void clearHouseActors(char* self, s32 countOffset, s32 handleOffse
         if (actor) *(u8*)(actor + 0x11c) = 0;
     }
 }
+static inline void clearHouseFollowers(char* self, s32 countOffset, s32 handleOffset) {
+    s32 index;
+    char* entry;
+    for (index = 0, entry = self; index < *(s32*)(self + countOffset); entry += 4, index++) {
+        char* actor = (char*)fn_801F666C(fn_801F856C(), *(s32*)(entry + handleOffset));
+        if (actor) *(u8*)(actor + 0x11c) = 0;
+    }
+}
 extern "C" s32 fn_801F78F4(void*, u32, s32);
 extern "C" u16 fn_80226850(void*, s32);
 extern "C" void* fn_8020D58C(void);
