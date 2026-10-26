@@ -521,6 +521,20 @@ extern "C" void fn_801E002C(void* this_, s32 state) {
     }
 }
 
+static inline s32 thnkCollectRooms(s32* rooms) {
+    s32 count=0;
+    for(s32 i=count;i<4;++i) {
+        s32 room=fn_8023DE58(i);
+        if(fn_801CD2F8(room) && room!=8 && !fn_801E3250(room,0)) {
+            if(fn_801F750C(fn_801F856C(),(void*)room,-1)>=0 ||
+               fn_801F7464(fn_801F856C(),(void*)room,-1)>=0) {
+                *rooms++=room;
+                ++count;
+            }
+        }
+    }
+    return count;
+}
 static inline char* thnkLookupActor(s32 index) {
     if(index<0) return 0;
     return (char*)fn_801F666C(fn_801F856C(),index);
@@ -563,9 +577,9 @@ static inline u8 thnkResetCached(char* p, s32 state, u32 flags, u32 active) {
 }
 extern "C" void fn_801E0CF4(char* this_) {
     s32 id;
-    int i;
+    s32 i;
     char* p = this_;
-    int n;
+    s32 n;
     s32 found[4];
     s32* piVar;
     s32 st;
@@ -583,19 +597,21 @@ extern "C" void fn_801E0CF4(char* this_) {
         if (*(s32*)(p + 0x2a8) >= 0) {
             *(s32*)(p + 4) = fn_8023DE58(*(s32*)(p + 0x2a8));
         } else {
-            n = 0;
+            i = n = 0;
             piVar = found;
-            for (i = n; i < 4; i++) {
+            do {
                 id = fn_8023DE58(i);
                 if (fn_801CD2F8(id) && id != 8 && fn_801E3250(id, 0) == 0) {
                     if (fn_801F750C(fn_801F856C(), (void*)id, -1) < 0 && fn_801F7464(fn_801F856C(), (void*)id, -1) < 0) {
-                        continue;
+                        goto nextRoom;
                     }
                     *piVar = id;
                     piVar++;
                     n++;
                 }
-            }
+nextRoom:
+                i++;
+            } while (i < 4);
             if (n == 0) {
                 *(s32*)(p + 4) = 0;
             } else {
