@@ -536,10 +536,6 @@ static inline s32 thnkCollectRooms(s32* rooms) {
     }
     return count;
 }
-static inline char* thnkLookupActor(s32 index) {
-    if(index<0) return 0;
-    return (char*)fn_801F666C(fn_801F856C(),index);
-}
 static inline void thnkStoreTurn(char* p, f32 x, u8& hit) {
     hit=0;
     switch(*(s32*)(p+0x98)) {
