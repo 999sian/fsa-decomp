@@ -6,6 +6,10 @@
 #include "JSystem/JKernel/JKRArchive.h"
 #include "JSystem/JKernel/JKRHeap.h"
 extern "C" void* fn_800CECCC(const void*, u32);
+static inline void loadTextureAnimation(JKRArchive* archive, const char* name, J3DModelData* data, J3DAnmTextureSRTKey** out) {
+    *out = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, name), 0);
+    (*out)->searchUpdateMaterialID(data);
+}
 #include "Game/SinitPoolChain.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
@@ -127,14 +131,12 @@ extern "C" void* fn_8016A3AC() {
     return *(void**)(*(u8**)(lbl_8053AAF8 + 4) + 0x24);
 }
 
-extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const char* tex1, const char* tex2, const char* tev1, const char* tev2, u32 flags, JKRHeap* heap, J3DModel** model, J3DAnmTextureSRTKey** outTex1, J3DAnmTextureSRTKey** outTex2, J3DAnmTevRegKey** outTev1, J3DAnmTevRegKey** outTev2)
+extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const char* tex1, const char* tex2, const char* tev1, const char* tev2, u32 flags, JKRHeap* heap, J3DModel** model, J3DAnmTextureSRTKey** const outTex1, J3DAnmTextureSRTKey** outTex2, J3DAnmTevRegKey** outTev1, J3DAnmTevRegKey** outTev2)
 {
-    J3DMaterialAnm* anm;
-    J3DModelData* data;
     void* resource = 0;
     if (archive) resource = archive->getResource(0x4a334420, modelName);
     if (resource) {
-        data = J3DModelLoaderDataBase::load(resource, flags);
+        J3DModelData* data = J3DModelLoaderDataBase::load(resource, flags);
         if (tex1) {
             *outTex1 = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex1), 0);
             (*outTex1)->searchUpdateMaterialID(data);
@@ -160,7 +162,7 @@ extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const ch
             *outTev2 = 0;
         }
         for (u16 i = 0; i < data->getMaterialNum(); i++) {
-            anm = new (heap, 0) J3DMaterialAnm;
+            J3DMaterialAnm* anm = new (heap, 0) J3DMaterialAnm;
             data->getMaterialNodePointer(i)->change();
             data->getMaterialNodePointer(i)->setMaterialAnm(anm);
         }
@@ -497,45 +499,74 @@ extern "C" void fn_8016B248(u8* self) {
         GXTexCoord2f32(pos.x - size.x, pos.y + size.y);
     }
 }
-#pragma opt_propagation reset
+#pragma opt_propagation off
 extern "C" void fn_8016B4D4(u8* self) {
     extern f32 lbl_8053D980;
-    extern f32 lbl_8053D984;
-    if (self[0x1CC] == 0 || *(void**)(self + 0x110) == 0) {
-        if (self[0x1CD] == 0) return;
-        if (*(void**)(self + 0x118) == 0) return;
+    
+    
+    if (self[0x1cc] == 0 || *(void**)(self+0x110)==0) {
+        if (self[0x1cd]==0) return;
+        if (*(void**)(self+0x118)==0) return;
     }
-    u8* r3 = lbl_8053AB10;
-    u8* r7 = *(u8**)(r3 + 0x20);
-    u8* r8 = *(u8**)(r3 + 0x24);
-    u32 a = *(u32*)(r7 + 0x2380);
-    u32 b = *(u32*)(r7 + 0x2384);
-    u8* vid = *(u8**)(sManager__8JUTVideo + 0x4);
-    f32 sx = lbl_8053D938 / (f32)a;
-    f32 k = lbl_8053D93C / *(f32*)(r8 + 0x858);
-    f32 sy = lbl_8053D938 / (f32)b;
-    f32 fw = (f32)*(u16*)(vid + 0x4);
-    f32 fh = (f32)*(u16*)(vid + 0x6);
-    f32 v = (f32)(*(u32*)(self + 0x1c0) & 0xfff);
-    f32 hx = k * (lbl_8053D940 * (sx * fw));
-    f32 hy = k * (lbl_8053D940 * (sy * fh));
-    f32 cx = -*(f32*)(r8 + 0x10) * sx - lbl_8053D980 * v;
-    f32 cy = -*(f32*)(r8 + 0x20) * sy - lbl_8053D984 * v;
-    fn_8013B460(r3);
-    fn_8013B1E8(r3);
-    load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x114), 0);
-    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
-    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-    GXPosition3f32(0.0f, 0.0f, 0.0f);
-    GXTexCoord2f32(cx - hx, cy - hy);
-    GXPosition3f32(fw, 0.0f, 0.0f);
-    GXTexCoord2f32(cx + hx, cy - hy);
-    GXPosition3f32(fw, fh, 0.0f);
-    GXTexCoord2f32(cx + hx, cy + hy);
-    GXPosition3f32(0.0f, fh, 0.0f);
-    GXTexCoord2f32(cx - hx, cy + hy);
+    JGeometry::TVec3f posA, posB, sizeA, sizeB;
+    JGeometry::TVec3f scalePA;
+    JGeometry::TVec3f scaleSA;
+    JGeometry::TVec3f scalePB;
+    JGeometry::TVec3f scaleSB;
+    f32 fw,fh;
+    const u8* __restrict screen = *(u8**)(lbl_8053AB10+0x20);
+    const u8* __restrict camera = *(u8**)(lbl_8053AB10+0x24);
+    const u8* __restrict mode = *(u8**)(sManager__8JUTVideo+4);
+    fw=(f32)(int)*(u16*)(mode+4);
+    fh=(f32)(int)*(u16*)(mode+6);
+    f32 offset = lbl_8053D980*(f32)(*(s32*)(self+0x1c0)&0xfff);
+    f32 sx = lbl_8053D938/(f32)*(s32*)(screen+0x2380);
+    f32 sy = lbl_8053D938/(f32)*(s32*)(screen+0x2384);
+    f32 k = 1.0f / *(f32*)(camera+0x858);
+    posA.x = -*(f32*)(camera+0x10)*sx;
+    posA.y = -*(f32*)(camera+0x20)*sy;
+    posA.z = 0.0f;
+    sizeA.x = k * (0.5f*(sx*(f32)(int)*(u16*)(mode+4)));
+    sizeA.y = k * (0.5f*(sy*(f32)(int)*(u16*)(mode+6)));
+    sizeA.z = 0.0f;
+    sizeB.set(sizeA.x,sizeA.y,sizeA.z);
+    posB.set(posA.x,posA.y,posA.z);
+    scalePA.set(1.0f,3.0f,1.0f);
+    posA.mul(scalePA);
+    scaleSA.set(1.0f,3.0f,1.0f);
+    sizeA.mul(scaleSA);
+    posA.x -= offset;
+    scalePB.set(1.0f,0.75f,1.0f);
+    posB.mul(scalePB);
+    scaleSB.set(1.0f,1.5f,1.0f);
+    sizeB.mul(scaleSB);
+    fn_8013B460(lbl_8053AB10);
+    fn_8013B1E8(lbl_8053AB10);
+    GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
+    if (self[0x1cc]) load__10JUTTextureF11_GXTexMapID(*(void**)(self+0x114),0);
+    else load__10JUTTextureF11_GXTexMapID(*(void**)(self+0x11c),0);
+    GXBegin(GX_QUADS,GX_VTXFMT0,4);
+    GXPosition3f32(0.0f,0.0f,0.0f);
+    GXTexCoord2f32(posA.x-sizeA.x,posA.y-sizeA.y);
+    GXPosition3f32(fw,0.0f,0.0f);
+    GXTexCoord2f32(posA.x+sizeA.x,posA.y-sizeA.y);
+    GXPosition3f32(fw,fh,0.0f);
+    GXTexCoord2f32(posA.x+sizeA.x,posA.y+sizeA.y);
+    GXPosition3f32(0.0f,fh,0.0f);
+    GXTexCoord2f32(posA.x-sizeA.x,posA.y+sizeA.y);
+    if(self[0x1cc]) load__10JUTTextureF11_GXTexMapID(*(void**)(self+0x110),0);
+    else load__10JUTTextureF11_GXTexMapID(*(void**)(self+0x118),0);
+    GXBegin(GX_QUADS,GX_VTXFMT0,4);
+    GXPosition3f32(0.0f,0.0f,0.0f);
+    GXTexCoord2f32(posB.x-sizeB.x,posB.y-sizeB.y);
+    GXPosition3f32(fw,0.0f,0.0f);
+    GXTexCoord2f32(posB.x+sizeB.x,posB.y-sizeB.y);
+    GXPosition3f32(fw,fh,0.0f);
+    GXTexCoord2f32(posB.x+sizeB.x,posB.y+sizeB.y);
+    GXPosition3f32(0.0f,fh,0.0f);
+    GXTexCoord2f32(posB.x-sizeB.x,posB.y+sizeB.y);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8016B8AC(u8* self) {
     if (self[0x1CB]) {
         JGeometry::TVec3<f32> offset(lbl_8053D958, lbl_8053D958 + *(f32*)(self + 0x1E4), lbl_8053D944);
