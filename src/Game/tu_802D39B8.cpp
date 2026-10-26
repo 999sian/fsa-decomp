@@ -83,7 +83,7 @@ inline RoomArrays* roomArrays() {
 inline u32* roomValueFlag(int i) {
     return &roomArrays()->flags12F68[i];
 }
-static inline void clearRoomFlag12F68(int i) {
+static inline void clearRoomFlag12F68(const unsigned int i) {
     roomArrays()->flags12F68[i] = 0;
 }
 
@@ -1774,22 +1774,12 @@ extern "C" void fn_802DA010(char* p) {
         (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counters308[i] = 0;
     }
     {
-        int k = 0;
-        int j = 0;
-        for (unsigned int i = 0; i < 8; i++) {
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 0] = 0xFF;
-            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
-            j += 4;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 1] = 0xFF;
-            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
-            j += 4;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 2] = 0xFF;
-            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
-            j += 4;
-            (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 3] = 0xFF;
-            *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
-            j += 4;
-            k += 4;
+        unsigned int word = 0;
+        for (unsigned int byte = 0; byte < 32; byte += 2) {
+            roomArrays()->values328[byte + 0] = 0xff;
+            clearRoomFlag12F68(word++);
+            roomArrays()->values328[byte + 1] = 0xff;
+            clearRoomFlag12F68(word++);
         }
     }
     for (s32 i = 0; i < 8; i++) {
