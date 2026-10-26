@@ -3,6 +3,7 @@
 #include "JSystem/JGeometry.h"
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JUtility/JUTVideo.h"
 
 union EffWord {
     u32 w;
@@ -203,8 +204,8 @@ extern "C" void fn_80115D8C(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<
         f32 dyy = dy * dy;
         f32 d2 = dxx + dyy;
         if (d2 <= lbl_8053C6FC) {
-            f32 s = sincosTable___5JMath[4000];
             f32 c = sincosTable___5JMath[4001];
+            f32 s = sincosTable___5JMath[4000];
             f32 x = dx * c - dy * s;
             f32 y = dx * s + dy * c;
             f32 r2 = x * x + y * y;
@@ -243,6 +244,7 @@ extern "C" void fn_80115D8C(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<
     }
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_80115F9C(u8* this_, s32 state) {
     extern void fn_801EB710(void*, s32, void*);
     extern void fn_80134DE4(void*, s32, s32);
@@ -250,7 +252,7 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
     extern void* fn_8011921C(void);
     extern void fn_80118454(void);
     extern void fn_80230FD0(s32, s32);
-    extern s32 fn_8013CC50(f32, s32, void*, s32, s32, s32, s32, s32, s32);
+    extern s32 fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
     extern void fn_801F0E34(void*, s32, s32);
     extern void fn_801EE434(void*);
     extern s32 fn_80119DD0(void);
@@ -259,7 +261,6 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
     extern u32 fn_801F7A08(void*, u32);
     extern u32 fn_801F666C(void*, u32);
     extern void fn_802B3A3C(void);
-    extern void fn_8022FE80(s32, s32, void*, s32, s32, f32);
     extern u8 fn_8038BD08(s32, s32, s32, void*, s32);
     extern void fn_80136798(void*, s32, s32);
     extern u8* sManager__8JUTVideo;
@@ -280,15 +281,15 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
         fn_80118454();
         break;
     case 3:
-        *(f32*)(this_ + 0x40) = lbl_8053C6D0;
+        *(f32*)(this_ + 0x40) = 0.0f;
         for (s32 i = 0; i < 4; i++) {
             fn_80230FD0(i, 0x10003);
         }
         break;
     case 4:
         *(u8*)(this_ + 0x11d) = 1;
-        *(s32*)(this_ + 0x314) = fn_8013CC50(lbl_8053C6D8, *(s32*)(this_ + 4), this_ + 0xc, 0x228, 1, 1, 0, 0, 1);
-        *(s32*)(this_ + 0x318) = fn_8013CC50(lbl_8053C6D8, *(s32*)(this_ + 4), this_ + 0xc, 0x229, 1, 1, 0, 0, 1);
+        *(s32*)(this_ + 0x314) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x228, 1, 1, 0, 0, 1);
+        *(s32*)(this_ + 0x318) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x229, 1, 1, 0, 0, 1);
         fn_801F0E34(this_, 0x40089, 0);
         break;
     case 5:
@@ -300,8 +301,8 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
         *(s32*)(this_ + 0x314) = 0;
         fn_801EE434(*(void**)(this_ + 0x318));
         *(s32*)(this_ + 0x318) = 0;
-        *(f32*)(this_ + 0x300) = lbl_8053C6D0;
         *(u8*)(this_ + 0x304) = 1;
+        *(f32*)(this_ + 0x300) = 0.0f;
         fn_801F0E34(this_, 0x400ba, 0);
         break;
     case 7:
@@ -312,13 +313,16 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
         }
         break;
     case 8: {
-        JGeometry::TVec3<f32> v;
         *(u8*)(this_ + 0x11d) = 1;
-        v.x = (f32)(s16)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4) * lbl_8053C6F0;
-        v.y = (f32)(s16)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6) * lbl_8053C6F0 - lbl_8053C6E4;
-        v.z = lbl_8053C6D0;
-        fn_8022FE80(0, *(s32*)(this_ + 4), *(void**)(this_ + 0x198), 1, 0, v.x);
-        if (fn_8038BD08(0, 0x4b4, *(s32*)(this_ + 4), &v, 0x62)) {
+        JGeometry::TVec3<f32> v(
+            (f32)(s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
+            (f32)(s32)JUTVideo::getManager()->getEfbHeight() * 0.5f - lbl_8053C6E4,
+            0.0f);
+        fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+        s32 room = *(s32*)(this_ + 4);
+        JGeometry::TVec3<f32> copy;
+        copy = v;
+        if (fn_8038BD08(0, 0x4b4, room, &copy, 0x62)) {
             fn_8011921C();
             fn_80118454();
             fn_801F0E34(this_, 0x4006c, 0);
@@ -326,12 +330,15 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
         break;
     }
     case 9: {
-        u8* e;
-        *(u8*)(lbl_80529DEC + 0x237) = 6;
-        *(s32*)(lbl_80529DEC + 0x118) = 0;
-        *(s32*)(lbl_80529DEC + 0x11c) = 0;
-        e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-        e[0x85] |= 1;
+        u8* save = lbl_8050EC80;
+        u8* scene = lbl_80529DEC;
+        s32 index = *(s32*)(save + 0x10);
+        scene[0x237] = 6;
+        *(s32*)(scene + 0x118) = 0;
+        u8* e = save + index * 0xc8;
+        u8 flags = e[0x85];
+        *(s32*)(scene + 0x11c) = 0;
+        e[0x85] = flags | 1;
         fn_80136798(lbl_8053AAF8, 6, 0);
         break;
     }
@@ -341,7 +348,7 @@ extern "C" void fn_80115F9C(u8* this_, s32 state) {
     }
     *(s32*)(this_ + 0x230) = state;
 }
-
+#pragma opt_common_subs reset
 extern "C" s32 fn_801162B8(char* p) {
     switch (*(s32*)(p + 0x230)) {
     case 11:
@@ -455,7 +462,7 @@ extern "C" void fn_8011661C(u8* this_) {
     if (*(s32*)(this_ + 0x230) >= 2 && *(s32*)(this_ + 0x230) <= 0xa) {
         u8* obj = *(u8**)((u8*)lbl_8053AB10 + 0x30);
         if (obj[0x284] == 0) {
-            f32 value = lbl_8053C734;
+            f32 value = 0.05f;
             obj[0x284] = 1;
             *(f32*)(obj + 0x28c) = value;
         }
