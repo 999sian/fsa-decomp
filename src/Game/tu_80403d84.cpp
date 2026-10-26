@@ -2335,10 +2335,6 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 	}
 }
 #pragma opt_propagation reset
-static inline f32 cursorSpan80405FC0(const f32 delta, const s32 width) {
-	return lbl_805438C4 * (lbl_805438C8 * delta) / (f32)width;
-}
-
 #pragma opt_lifetimes off
 extern "C" void fn_80405FC0(u8* self) {
 	f32 pos[3];
