@@ -251,7 +251,7 @@ static inline s32 WarpDestination(const char* actor) {
 }
 static inline s32 HouseDestination(const char* actor) {
     int room = (*(const u32*)(actor + 0x90) >> 7) & 31;
-    return (room + 7) & ~-(room == 0);
+    return (room + 7) & ~-(s32)(room == 0);
 }
 static inline bool WarpDestinationIs(const char* other, s32 room) { return room == WarpDestination(other); }
 
