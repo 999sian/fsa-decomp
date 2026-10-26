@@ -455,7 +455,7 @@ extern "C" void fn_8011B3F0(u8* p) {
     }
     switch (*(s32*)(p + 0x238)) {
     case 7: {
-        s32 elapsed = dmlkElapsed(*(s32*)((u8*)fn_8011921C() + 8));
+        s32 elapsed = dmlkElapsed(fn_8011921C());
         if (elapsed < 180) {
             dmlkRequestBounds(p);
             break;
@@ -509,11 +509,11 @@ extern "C" void fn_8011B3F0(u8* p) {
     case 11:
         view = *(u8**)(lbl_8053AB10 + 0x24);
         if (view[0x840] == 0) {
-            f32 zero;
             f32 step;
+            f32 zero;
             step = 1.0f;
             view[0x840] = 1;
-            zero = lbl_8053C7FC;
+            zero = -1.0f;
             f32 x = *(f32*)(p + 0xc);
             *(f32*)(view + 0x84c) = x;
             *(f32*)(view + 0x844) = x;
