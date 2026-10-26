@@ -105,7 +105,7 @@ static inline void icwlScaleMatrix(f32* m, const JGeometry::TVec3<f32>& v) {
     m[1] = zero; m[2] = zero; m[4] = zero;
     m[5] = y;
     m[6] = zero; m[8] = zero; m[9] = zero;
-    m[10] = v.z;
+    m[10] = z;
 }
 static inline void icwlScaleMatrix(f32* m, f32 x, f32 y, f32 z) {
     m[3] = 0.0f;
