@@ -1,5 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 struct JMathSinCos {
@@ -21,6 +23,61 @@ extern "C" Actor* fn_8031A210(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void PSMTXIdentity(f32 (*)[4]);
+extern "C" s32 fn_8023CB24(s32);
+extern "C" s32 fn_8023CA88(s32);
+extern "C" void fn_801F06F0(void*, void*, s32, DrawRec*, s32, f32, f32);
+extern "C" void fn_801EF830(s32, void*, DrawRec*, s32, void*, s32, s32);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+extern "C" s32 lbl_804AB038[];
+extern "C" char lbl_804716C8[];
+extern "C" const f32 lbl_80541948, lbl_80541934, lbl_80541930, lbl_80541920;
+extern "C" void fn_8031A270(Actor* p) {
+    char* self = (char*)p;
+    if (*(u8*)(self+0x281)==1) return;
+    if (*(s32*)(self+0x230)==1 || *(s32*)(self+0x230)==2) return;
+    DrawRec rec;
+    s32 index;
+    if (*(s32*)(self+0x270)==4) {
+        if (*(s32*)(self+0x278)<3) index=0; else index=3;
+    } else index=*(s32*)(self+0x270);
+    rec.b20=0;
+    rec.b2d=1;
+    if (*(u8*)(self+0x284)==0) {rec.b1c=1;rec.b1d=1;}
+    else {rec.b1c=0;rec.b1d=3;}
+    if (*(s32*)(self+0x230)==5 || *(s32*)(self+0x230)==6) {
+        rec.b2d=1; rec.b1f=0;
+        index += 8;
+        if (*(s32*)(self+0x26c)>=0 && *(s32*)(self+0x26c)<=3) {
+            rec.b1d=fn_8023CB24(*(s32*)(self+0x26c))+1;
+            rec.b1c=fn_8023CA88(*(s32*)(self+0x26c));
+        }
+        fn_801F06F0(p,lbl_804716C8,*(s32*)(self+0x25c)+lbl_804AB038[index],&rec,-1,1.0f,1.0f);
+        fn_803075AC(*(void**)(self+0x198),*(s32*)(self+4),self+0xc,*(s32*)(self+0x25c)+lbl_804AB038[index],0,2,-1,1,0,0);
+    } else {
+        JGeometry::TVec3<f32> save=*(JGeometry::TVec3<f32>*)(self+0xc);
+        *(JGeometry::TVec3<f32>*)(self+0xc)+=*(JGeometry::TVec3<f32>*)(self+0x2b0);
+        *(f32*)(self+0x14)+=*(f32*)(self+0x248);
+        f32 scale=lbl_80541948+lbl_80541934 * *(f32*)(self+0x248)/lbl_80541930;
+        f32 m[3][4];
+        PSMTXIdentity(m);
+        m[0][0]=scale;m[0][1]=lbl_80541920;m[0][2]=lbl_80541920;
+        m[1][0]=lbl_80541920;m[1][1]=scale;m[1][2]=lbl_80541920;
+        m[2][0]=lbl_80541920;m[2][1]=lbl_80541920;m[2][2]=scale;
+        rec.w18=m;
+        if (*(s32*)(self+0x274)==1) {
+            fn_801F06F0(p,lbl_804716C8,*(s32*)(self+0x25c)+lbl_804AB038[index],&rec,-1,1.0f,1.0f);
+            rec.b1d=-1;rec.b1c=0;
+            s32 id=*(s32*)(self+0x25c)+lbl_804AB038[index];
+            if (*(u32*)(self+0x138)==0) fn_801EF830(*(s32*)(self+4),self+0xc,&rec,7,lbl_804716C8,id,0);
+        } else {
+            fn_801F06F0(p,lbl_804716C8,*(s32*)(self+0x25c)+lbl_804AB038[index],&rec,7,1.0f,1.0f);
+        }
+        fn_803075AC(*(void**)(self+0x198),*(s32*)(self+4),self+0xc,*(s32*)(self+0x25c)+lbl_804AB038[index],0,2,-1,0,0,0);
+        *(JGeometry::TVec3<f32>*)(self+0xc)=save;
+    }
 }
 
 extern "C" void fn_801F856C(void);
