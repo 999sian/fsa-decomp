@@ -61,11 +61,17 @@ static inline void rotationEuler80359E18(f32 m[3][4], const f32 scale, s16 rx, s
     m[0][0] = scale * (cy * cz);
     m[1][0] = scale * (cy * sz);
     m[2][0] = scale * -sy;
-    m[0][1] = scale * (cz * (sx * sy) - cx * sz);
-    m[1][1] = scale * (sz * (sx * sy) + (cx * cz));
+    f32 sxcz, sxsz, cxcz, cxsz, sxsy;
+    sxsy = sx * sy;
+    cxsz = cx * sz;
+    cxcz = cx * cz;
+    sxsz = sx * sz;
+    sxcz = sx * cz;
+    m[0][1] = scale * (sxsy * cz - cxsz);
+    m[1][1] = scale * (sxsy * sz + cxcz);
     m[2][1] = scale * (sx * cy);
-    m[0][2] = scale * (sy * (cx * cz) + sx * sz);
-    m[1][2] = scale * (sy * (cx * sz) - sx * cz);
+    m[0][2] = scale * (cxcz * sy + sxsz);
+    m[1][2] = scale * (cxsz * sy - sxcz);
     m[2][2] = scale * (cx * cy);
 }
 #define GAME_ACTOR_USE_SDK_VEC
@@ -761,7 +767,7 @@ extern "C" void fn_80359E18(u8* self)
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), self + 0xc, texture, &rec);
     }
     if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) < 2) {
-        rec.b1c = -1;
+        *(s8*)&rec.b1c = -1;
         rec.b1d = -2;
         mtx[0][3] = lbl_8054286C;
     mtx[1][3] = lbl_8054286C;
