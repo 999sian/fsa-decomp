@@ -38,6 +38,24 @@ extern "C" void fn_801EE434(void);
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(int a, int b);
 extern char lbl_804AE678[];
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_802D6A9C(void);
+extern "C" unsigned char fn_802D800C(void* mgr, unsigned int kind);
+extern "C" void fn_802A3948(void* mgr, void* pos, unsigned int room, int value, int kind);
+extern "C" void fn_802A3884(void* mgr, void* pos, unsigned int room, int value, int kind);
+extern unsigned int lbl_80475138[];
+extern void* lbl_8053AC98;
+extern "C" void fn_80239914(void* box, s32 room, s32 handle);
+extern "C" u8* fn_8020D58C(void);
+extern "C" void fn_8020D7D0(void* entry, s32 handle);
+extern "C" u8* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 fn_8023BA68(void* box, s32 room, void* pos, s32 a);
+extern "C" s32 fn_801F8108(void* actor, u32 type, s32 handle, f32 radius);
+extern "C" void fn_802D78B4(void* mgr, s32 bit, u8 set);
+extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* actor, u32 a, s32 b);
+extern const f32 lbl_80542F20;
+extern const f32 lbl_80542F24;
 extern "C" void __dt__5ActorFv(void* p, int how);
 extern "C" void fn_80375970(int param_1) {
     if (*(unsigned int*)(param_1 + 0x230) != 0) {
