@@ -190,6 +190,55 @@ static inline void applyRotation803597EC(u8* self) {
         }
     }
 }
+static inline void spawnGridCounter803597EC(u8* self, u16 idx, s32 state, s32& k) {
+    JGeometry::TVec3f vec;
+    JGeometry::TVec3f saved;
+    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+    saved = vec;
+    *(s32*)(self + 0x258) = state;
+    for (k = 0; k < 6; ++k) {
+        for (s32 j = 0; j < 6; ++j) {
+            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
+            vec.y += lbl_80542870;
+        }
+        vec.y = saved.y;
+        vec.x += lbl_80542870;
+    }
+}
+static inline void applyRotationCounter803597EC(u8* self, s32& i) {
+    s16 ang;
+    f32 d;
+    f32 cs;
+    for (i = 0; i < 4; i++) {
+        if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
+            ang = *(s16*)(self + 0x230);
+            cs = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+            d = __fabsf(cs);
+            cs = cs * d;
+            cs = lbl_8054288C * cs;
+            if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && (s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
+                cs = cs * lbl_80542890;
+            }
+            if (*(u8*)(self + 0x244) == 0) {
+                if (*(s32*)(self + 0x258) == 1) {
+                    Vec8035A860 vec;
+                    vec.x = lbl_8054286C;
+                    vec.y = lbl_80542894 * cs;
+                    vec.z = lbl_8054286C;
+                    fn_8023DF68(i, &vec);
+                }
+            } else {
+                if (*(s32*)(self + 0x258) == 1) {
+                    Vec8035A860 vec;
+                    vec.x = lbl_8054286C;
+                    vec.y = cs;
+                    vec.z = lbl_8054286C;
+                    fn_8023DF68(i, &vec);
+                }
+            }
+        }
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
