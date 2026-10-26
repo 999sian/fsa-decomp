@@ -136,6 +136,10 @@ struct RupyVec3 : JGeometry::TVec3f {
     }
 };
 
+static inline void rupyInitSetState(void* obj, s32 state) {
+    *(s32*)((u8*)obj + 0x230) = state;
+}
+
 static inline f32 rupyInitRand01() {
     u32* s = (u32*)lbl_8053AAF8;
     s[45] = s[45] * 0x19660du + 0x3c6ef35fu;
@@ -1226,7 +1230,7 @@ extern "C" void fn_8032D6C0(void* this_) {
     *(s32*)(p + 0x264) = -1;
     *(f32*)(p + 0x238) = lbl_80541D90;
     *(f32*)(p + 0x23c) = lbl_80541D88;
-    *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyRand01()) + 0x3c;
+    *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyInitRand01()) + 0x3c;
     *(f32*)(p + 0x80) = lbl_80541E1C;
     *(f32*)(p + 0x84) = lbl_80541D88;
     *(f32*)(p + 0x88) = lbl_80541D98;
@@ -1362,10 +1366,10 @@ extern "C" void fn_8032D6C0(void* this_) {
         *(s32*)(p + 0x230) = 0xc;
         break;
     case 27:
-        if (*(u32*)(p + 0x198) & 1) {
-            *(s16*)(p + 0x242) = (s16)(lbl_80541E38 - lbl_80541E34 * rupyRand01());
+        if (!(*(u32*)(p + 0x198) & 1)) {
+            *(s16*)(p + 0x242) = (s16)(rupyInitRand01() * lbl_80541E34 + lbl_80541E34);
         } else {
-            *(s16*)(p + 0x242) = (s16)(rupyRand01() * lbl_80541E34 + lbl_80541E34);
+            *(s16*)(p + 0x242) = (s16)(lbl_80541E38 - lbl_80541E34 * rupyInitRand01());
         }
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
             *(s32*)(p + 0x24c) = 0x3f2;
@@ -1393,7 +1397,7 @@ extern "C" void fn_8032D6C0(void* this_) {
         *(s32*)(p + 0x274) = 0xa;
         *(s32*)(p + 0x24c) = 0x30c;
         *(u8*)(p + 0x27d) = 1;
-        *(s32*)(p + 0x230) = 9;
+        *(s32*)(p + 0x230) = 0;
         break;
     case 38:
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
@@ -1422,10 +1426,10 @@ extern "C" void fn_8032D6C0(void* this_) {
         *(s32*)(p + 0x234) = *(s32*)(p + 0x230);
         *(s32*)(p + 0x230) = 0x11;
     }
-    if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
-        *(u8*)(p + 0x194) = 1;
-    } else {
+    if (((u8*)lbl_8053AAF8)[0x7f] == 0) {
         detach__5ActorFv(this_);
+    } else {
+        *(u8*)(p + 0x194) = 1;
     }
 }
 
