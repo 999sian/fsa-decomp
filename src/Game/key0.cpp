@@ -66,7 +66,7 @@ static inline u32 key0PackFlags(const u8& flag, u32 mode, const u32& room, u32 k
     highMode = mode << 30;
     highFlag = flag << 29;
     kindValue = kind;
-    u32 packed = highMode | highFlag;
+    u32 packed = highFlag | highMode;
     packed = __rlwimi(packed, kindValue, 24, 3, 7);
     return __rlwimi(packed, room, 0, 24, 31);
 }
