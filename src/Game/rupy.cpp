@@ -102,6 +102,42 @@ static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& ang, cons
         mtx[2][2] = s * (cx * cy);
 }
 
+static inline void RupyDrawMtxConfig(f32 (*mtx)[4], DrawRec& rec, const JGeometry::TVec2f& config) {
+        f32 cx;
+        const f32 s = config.x;
+        const f32 ang = config.y;
+        f32 sz;
+        f32 sy;
+        f32 sx;
+        f32 cy;
+        f32 cz;
+        sx = sin(lbl_80541D88);
+        sy = sin(ang);
+        sz = sin(lbl_80541D88);
+        cx = cos(lbl_80541D88);
+        cy = cos(ang);
+        cz = cos(lbl_80541D88);
+        f32 sxsy = sx * sy;
+        f32 cxsz = cx * sz;
+        f32 cxcz = cx * cz;
+        f32 sxsz = sx * sz;
+        f32 sxcz = sx * cz;
+        f32 cycz = cy * cz;
+        f32 cysz = cy * sz;
+        rec.w18 = mtx;
+        rec.b2d = 1;
+        rec.b20 = 0;
+        mtx[0][0] = s * cycz;
+        mtx[1][0] = s * cysz;
+        mtx[2][0] = s * -sy;
+        mtx[0][1] = s * (sxsy * cz - cxsz);
+        mtx[1][1] = s * (sxsy * sz + cxcz);
+        mtx[2][1] = s * (sx * cy);
+        mtx[0][2] = s * (cxcz * sy + sxsz);
+        mtx[1][2] = s * (cxsz * sy - sxcz);
+        mtx[2][2] = s * (cx * cy);
+}
+
 // Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
 struct RupyResMgr {
     virtual void r0();
@@ -682,10 +718,9 @@ extern const f32 lbl_80541DC4;
 extern const f32 lbl_80541DC8;
 extern const f32 lbl_80541DCC;
 extern const f32 lbl_80541DD0;
-#pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_8032BFB0(char* p) {
-    u8* base = lbl_80471948;
+    RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 big;
     const char* name;
     s32 mode;
@@ -716,11 +751,11 @@ extern "C" void fn_8032BFB0(char* p) {
             return;
         }
     }
-    name = (const char*)(base + 0xe0);
+    name = (const char*)((u8*)base + 0xe0);
     scale = *(f32*)(p + 0x238);
     big = 0;
     if (*(s32*)(p + 0x268) >= 8) {
-        name = (const char*)(base + 0xf4);
+        name = (const char*)((u8*)base + 0xf4);
         big = 1;
     }
     DrawRec rec;
@@ -734,7 +769,7 @@ extern "C" void fn_8032BFB0(char* p) {
     st = *(s32*)(p + 0x230);
     if (st == 5 || st == 6) {
         ((u8*)&rec.w10)[3] = (s32)((lbl_80541DC4 * (f32)*(s32*)(p + 0x24c)) / lbl_80541DC8);
-        id = *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268)];
+        id = *(s32*)(p + 0x254) + base->frame[*(s32*)(p + 0x268)];
         if (*(s32*)(p + 4) >= 8) {
             return;
         }
@@ -782,10 +817,10 @@ extern "C" void fn_8032BFB0(char* p) {
     }
     save = *(JGeometry::TVec3<f32>*)(p + 0xc);
     *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x290);
-    fn_801F06F0(p, name, *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268)], &rec, mode, lbl_80541D90, lbl_80541D90);
-    id = *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268)];
+    fn_801F06F0(p, name, *(s32*)(p + 0x254) + base->frame[*(s32*)(p + 0x268)], &rec, mode, lbl_80541D90, lbl_80541D90);
+    id = *(s32*)(p + 0x254) + base->frame[*(s32*)(p + 0x268)];
     if (*(s32*)(p + 0x268) >= 8) {
-        id = *(s32*)(p + 0x254) + ((s32*)base)[*(s32*)(p + 0x268) - 4];
+        id = *(s32*)(p + 0x254) + base->frame[*(s32*)(p + 0x268) - 4];
     }
     if (*(s32*)(p + 0x230) == 0xb) {
         fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, id, big != 0, 2, -1, 1, 0, 0);
@@ -795,7 +830,6 @@ extern "C" void fn_8032BFB0(char* p) {
     *(JGeometry::TVec3<f32>*)(p + 0xc) = save;
 }
 #pragma opt_common_subs reset
-#pragma opt_propagation reset
 extern const f32 lbl_80541DE0;
 extern const f32 lbl_80541DE4;
 extern const f32 lbl_80541DE8;
