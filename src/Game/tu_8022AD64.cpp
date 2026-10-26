@@ -1412,7 +1412,7 @@ int fn_80231A50(void)
     if (playerMgrBusy()) return -1;
     if (playerMgrByte(0x73)) return -1;
     JGeometry::TVec2<s32> value;
-    value.zero();
+    value.set(0, 0);
     int selected = -1;
     for (int i = 0; i < 4; i++) {
         Player* player = lbl_8053AC90->players[i];
