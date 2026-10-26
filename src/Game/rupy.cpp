@@ -129,6 +129,11 @@ struct RupyVec3 : JGeometry::TVec3f {
         x = x_;
         z = z_;
     }
+    RupyVec3(f32 y_, f32 x_) {
+        x = x_;
+        y = y_;
+        z = x_;
+    }
 };
 
 // Fast LCG at lbl_8053AAF8+0xB4; returns a value in [0,1).
