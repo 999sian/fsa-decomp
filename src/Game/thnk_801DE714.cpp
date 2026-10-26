@@ -310,15 +310,14 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
                 f32 lower;
                 f32 upper;
                 f32 pos;
-                s32 room = *(s32*)(p + 4);
-                char* rec = (char*)fn_802D6A9C();
-                char* field = (room < 8) ? rec + 0xcc : rec + 0xdc;
+                char* field=thnkFieldAt(*(s32*)(p+4));
                 upper = lbl_8053F4A4 + *(f32*)(field + 0x8);
+                s32 room2;
                 u8 flag = 0;
                 pos = *(f32*)(p + 0xc);
                 lower = *(f32*)field - lbl_8053F4A4;
-                s32 room2 = *(s32*)(p + 4);
-                rec = (char*)fn_802D6A9C();
+                room2 = *(s32*)(p + 4);
+                char* rec = (char*)fn_802D6A9C();
                 field = (room2 < 8) ? rec + 0xcc : rec + 0xdc;
                 if (pos < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 0x8))) {
                     flag = 1;
@@ -335,8 +334,8 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
                     } else {
                         *(s32*)(p + 0x98) = 1;
                     }
-                    if (*(f32*)(p + 0x14) >= lbl_8053F4A4) {
-                        *(f32*)(p + 0x14) = lbl_8053F4A4;
+                    if (*(f32*)(p + 0x14) >= 30.0f) {
+                        *(f32*)(p + 0x14) = 30.0f;
                         fn_801E1594(this_, 1);
                     } else {
                         fn_801E1594(this_, 4);
@@ -382,8 +381,8 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
                     if (hit) {
                         fn_801E1594(this_, 5);
                     } else {
-                        if (*(f32*)(p + 0x14) >= lbl_8053F4A4) {
-                            *(f32*)(p + 0x14) = lbl_8053F4A4;
+                        if (*(f32*)(p + 0x14) >= 30.0f) {
+                            *(f32*)(p + 0x14) = 30.0f;
                             fn_801E1594(this_, 1);
                         } else {
                             fn_801E1594(this_, 4);
@@ -397,7 +396,7 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
     } else if (!(*(u32*)(p + 0x230) & 0x2000) && obj != 0) {
         {
             u8 hit = 0;
-            *(u32*)(p + 0x230) |= 0x2000;
+            *(volatile u32*)(p + 0x230) |= 0x2000;
             f32 v = *(f32*)((char*)obj + 0xc);
             switch (*(s32*)(p + 0x98)) {
             case 0:
@@ -421,8 +420,8 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
         *(u32*)(p + 0x230) |= 0x4000;
         *(f32*)(p + 0x2c8) = *(f32*)(p + 0x10);
         {
-            s32 room;
             u8 flag;
+            s32 room;
             f32 pos;
             f32 lower;
             f32 upper;
@@ -433,12 +432,7 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
             upper = lbl_8053F4A4 + *(f32*)(field + 0x8);
             pos = *(f32*)(p + 0xc);
             lower = *(f32*)field - lbl_8053F4A4;
-            s32 room2 = *(s32*)(p + 4);
-            rec = (char*)fn_802D6A9C();
-            field = (room2 < 8) ? rec + 0xcc : rec + 0xdc;
-            if (pos < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 0x8))) {
-                flag = 1;
-            }
+            flag=thnkIsLeft(pos,*(s32*)(p+4));
             if (flag && lower < *(f32*)(p + 0xc)) {
                 *(f32*)(p + 0x2c4) = upper;
             } else {
@@ -451,8 +445,8 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
                 } else {
                     *(s32*)(p + 0x98) = 1;
                 }
-                if (*(f32*)(p + 0x14) >= lbl_8053F4A4) {
-                    *(f32*)(p + 0x14) = lbl_8053F4A4;
+                if (*(f32*)(p + 0x14) >= 30.0f) {
+                    *(f32*)(p + 0x14) = 30.0f;
                     fn_801E1594(this_, 1);
                 } else {
                     fn_801E1594(this_, 4);
@@ -498,8 +492,8 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
                 if (hit) {
                     fn_801E1594(this_, 5);
                 } else {
-                    if (*(f32*)(p + 0x14) >= lbl_8053F4A4) {
-                        *(f32*)(p + 0x14) = lbl_8053F4A4;
+                    if (*(f32*)(p + 0x14) >= 30.0f) {
+                        *(f32*)(p + 0x14) = 30.0f;
                         fn_801E1594(this_, 1);
                     } else {
                         fn_801E1594(this_, 4);
