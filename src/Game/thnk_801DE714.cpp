@@ -61,6 +61,15 @@ extern "C" u8 fn_801E2F40(void* this_);
 extern "C" void fn_801E2EE4(void* this_);
 extern "C" void fn_801F7AB8(void* base, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+static inline void* thnkActorAt(s32 idx) {
+    if (idx >= 0) return fn_801F666C(fn_801F856C(), idx);
+    return 0;
+}
+static inline char* thnkFieldAt(s32 room) {
+    char* rec = (char*)fn_802D6A9C();
+    if (room < 8) return rec + 0xcc;
+    return rec + 0xdc;
+}
 extern f32 lbl_8053F4A4;
 extern f32 lbl_8053F480;
 extern void* lbl_804A51E4[];
@@ -772,14 +781,16 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
     char* field;
     char* rec;
     void* obj;
-    u8 flag;
     s32 idx;
+    u32 flag;
     char* p = (char*)this_;
     switch (state) {
     case 0:
         fn_801E1E08(this_);
         break;
     case 1:
+    case 2:
+    case 4:
         if (*(s32*)(p + 0x248) == 0 && state == 1) {
             f32 y;
             f32 x;
@@ -814,23 +825,25 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             if (x < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 0x8))) {
                 flag = 1;
             }
-            if (flag != 0) {
+            if ((u8)flag != 0) {
                 idx = *(s32*)(p + 0x4);
                 rec = (char*)fn_802D6A9C();
                 field = (idx < 8) ? (rec + 0xcc) : (rec + 0xdc);
-                *(f32*)(p + 0xc) = lbl_8053F4A4 + *(f32*)(field + 0x8);
+                *(f32*)(p + 0xc) = 30.0f + *(f32*)(field + 0x8);
                 *(s32*)(p + 0x98) = 1;
             } else {
                 idx = *(s32*)(p + 0x4);
                 rec = (char*)fn_802D6A9C();
                 field = (idx < 8) ? (rec + 0xcc) : (rec + 0xdc);
-                *(f32*)(p + 0xc) = *(f32*)field - lbl_8053F4A4;
+                *(f32*)(p + 0xc) = *(f32*)field - 30.0f;
                 *(s32*)(p + 0x98) = 0;
             }
             *(f32*)(p + 0x10) = y;
-            *(f32*)(p + 0x14) = lbl_8053F4A4;
-            *(f32*)(p + 0x2c4) = *(f32*)(p + 0xc);
-            *(f32*)(p + 0x2c8) = *(f32*)(p + 0x10);
+            *(f32*)(p + 0x14) = 30.0f;
+            f32 px = *(f32*)(p + 0xc);
+            f32 py = *(f32*)(p + 0x10);
+            *(f32*)(p + 0x2c4) = px;
+            *(f32*)(p + 0x2c8) = py;
             *(s32*)(p + 0xb0) = 0x51303;
             *(s32*)(p + 0x250) = -1;
             if (*(s32*)(p + 0x2bc) >= 0) {
@@ -838,7 +851,7 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             } else if (*(u32*)(p + 0x230) & 0x4000) {
                 *(f32*)(p + 0x258) = lbl_8053F490;
             } else {
-                *(f32*)(p + 0x258) = lbl_8053F4BC;
+                *(f32*)(p + 0x258) = 0.6f;
             }
             if (*(s32*)(p + 0x248) == 0xd) {
                 fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 0xd, 0, 0);
@@ -847,7 +860,7 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             }
         } else {
             *(s32*)(p + 0x250) = -1;
-            *(f32*)(p + 0x258) = lbl_8053F4BC;
+            *(f32*)(p + 0x258) = 0.6f;
             if (*(s32*)(p + 0x2ac) >= 0) {
                 fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 0xf, 2, 0);
             } else {
@@ -855,83 +868,87 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             }
         }
         break;
-    case 2:
+    case 5:
+    case 6:
         *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x258) = lbl_8053F480;
+        *(f32*)(p + 0x258) = 0.0f;
         fn_801D22DC(p + 0x270, 2, 0, 0);
         break;
-    case 3:
+    case 7:
         *(s32*)(p + 0x250) = fn_801CD664(1) + 0x5a;
-        *(f32*)(p + 0x254) = lbl_8053F480;
-        *(f32*)(p + 0x258) = lbl_8053F480;
+        *(f32*)(p + 0x254) = 0.0f;
+        *(f32*)(p + 0x258) = 0.0f;
         *(u16*)(p + 0x2ce) = 0x2d;
         fn_8020D2AC(this_);
-        if (!(*(u32*)(p + 0x230) & 0x4000) && fn_80218538(this_)) {
+        if (!(*(u32*)(p + 0x230) & 0x20000) && fn_80218538(this_)) {
             fn_801F0E34(this_, 0x40070, 0);
         }
         break;
-    case 4:
-        *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x258) = lbl_8053F480;
-        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 3, 0, 0);
-        break;
-    case 5:
-        *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x258) = lbl_8053F480;
-        fn_801D22DC(p + 0x270, 5, 0, 0);
-        break;
-    case 6:
-        *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x258) = lbl_8053F480;
-        fn_801D22DC(p + 0x270, 6, 0, 0);
-        break;
-    case 7:
-        fn_8020D16C(this_);
-        *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x258) = lbl_8053F480;
-        fn_801D22DC(p + 0x270, 7, 0, 0);
-        break;
     case 8:
-        *(s32*)(p + 0x98) = 2;
-        *(s32*)(p + 0x250) = fn_801CD664(0x259) + 0x12c;
-        *(f32*)(p + 0x258) = lbl_8053F480;
-        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 8, 0, 0);
+        *(s32*)(p + 0x250) = -1;
+        *(f32*)(p + 0x258) = 0.0f;
+        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 3, 0, 0);
         break;
     case 9:
         *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x258) = lbl_8053F480;
-        fn_801D22DC(p + 0x270, 0xc, 0, 0);
+        *(f32*)(p + 0x258) = 0.0f;
+        fn_801D22DC(p + 0x270, 5, 0, 0);
         break;
     case 10:
+        *(s32*)(p + 0x250) = -1;
+        *(f32*)(p + 0x258) = 0.0f;
+        fn_801D22DC(p + 0x270, 6, 0, 0);
+        break;
+    case 11:
+        fn_8020D16C(this_);
+        *(s32*)(p + 0x250) = -1;
+        *(f32*)(p + 0x258) = 0.0f;
+        fn_801D22DC(p + 0x270, 7, 0, 0);
+        break;
+    case 12:
+        *(s32*)(p + 0x98) = 2;
+        *(s32*)(p + 0x250) = fn_801CD664(0x259) + 0x12c;
+        *(f32*)(p + 0x258) = 0.0f;
+        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 8, 0, 0);
+        break;
+    case 13:
+        *(s32*)(p + 0x250) = -1;
+        *(f32*)(p + 0x258) = 0.0f;
+        fn_801D22DC(p + 0x270, 0xc, 0, 0);
+        break;
+    case 14:
         fn_8020CFC4(this_);
-        *(f32*)(p + 0x3c) = lbl_8053F480;
-        *(f32*)(p + 0x40) = lbl_8053F480;
-        *(f32*)(p + 0x60) = lbl_8053F4C0;
-        *(f32*)(p + 0x64) = lbl_8053F4C0;
-        *(f32*)(p + 0x68) = lbl_8053F4C4;
-        *(f32*)(p + 0x6c) = lbl_8053F4C4;
+        *(f32*)(p + 0x40) = 0.0f;
+        *(f32*)(p + 0x3c) = 0.0f;
+        *(f32*)(p + 0x60) = 1.0f;
+        *(f32*)(p + 0x64) = 1.0f;
+        *(f32*)(p + 0x68) = -1.0f;
+        *(f32*)(p + 0x6c) = -1.0f;
         *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
         *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
         *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
         *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
         *(s32*)(p + 0xb0) = 0;
         *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x254) = lbl_8053F480;
-        *(f32*)(p + 0x258) = lbl_8053F480;
+        *(f32*)(p + 0x254) = 0.0f;
+        *(f32*)(p + 0x258) = 0.0f;
         fn_801D22DC(p + 0x270, 6, 0, 0);
         break;
-    case 11:
+    case 15:
         *(s32*)(p + 0x250) = -1;
-        *(f32*)(p + 0x254) = lbl_8053F480;
-        *(f32*)(p + 0x258) = lbl_8053F480;
+        *(f32*)(p + 0x254) = 0.0f;
+        *(f32*)(p + 0x258) = 0.0f;
         fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 2);
         break;
-    case 0x12:
+    case 16:
         fn_801F0E34(this_, 0x5001d, 0);
-        *(s32*)(p + 0x24c) = 0;
-        *(s32*)(p + 0x248) = state;
+        break;
+    case 17:
+    case 18:
         break;
     }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = state;
 }
 
 extern "C" void* fn_801F856C(void);
