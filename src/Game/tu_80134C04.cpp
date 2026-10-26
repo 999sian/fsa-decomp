@@ -377,7 +377,7 @@ u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
                                 fn_80458F04(*(void**)(this_ + 0xa0), tu80134SoundID(st));
                             } else {
                                 u32 id = tu80134SoundID(st);
-                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
+                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, (u8)uVar1);
                                 char* manager = (char*)fn_802D6A9C();
                                 *(u32*)(manager + 0x1328c) = uVar1 + 1;
                             }
