@@ -4,6 +4,8 @@
 #include "JSystem/JMath/Inline.h"
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" const f32 lbl_8053D050;
 extern "C" const f32 lbl_8053D060;
@@ -101,7 +103,10 @@ extern "C" void fn_80146364(void* this_) {
     Vec* pos = (Vec*)((u8*)this_ + 0xc);
     Vec* vel = (Vec*)((u8*)this_ + 0x3c);
     f32 py = pos->y;
-    f32 px = pos->x;
+    register f32 px = pos->x;
+    f32 box[4];
+    Vec v;
+    Vec renderPos;
     f32 pos2[2];
     pos2[0] = px;
     pos2[1] = py;
@@ -137,10 +142,10 @@ extern "C" void fn_80146364(void* this_) {
         }
         s32 ang = *(s32*)((u8*)this_ + 0x23c);
         pos->x = pos->x + *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
-        if (pos->z <= lbl_8053D050) {
-            vel->x = lbl_8053D050;
-            vel->z = lbl_8053D050;
-            pos->z = lbl_8053D050;
+        if (pos->z <= 0.0f) {
+            vel->x = 0.0f;
+            vel->z = 0.0f;
+            pos->z = 0.0f;
             *(s32*)((u8*)this_ + 0x230) = 4;
         }
         break;
@@ -149,7 +154,7 @@ extern "C" void fn_80146364(void* this_) {
         vel->y += lbl_8053D04C;
         if (vel->y > lbl_8053D050) {
             *(s32*)((u8*)this_ + 0x238) = 0;
-            u8* g = (u8*)lbl_8053AAF8;
+            register u8* g = (u8*)lbl_8053AAF8;
             *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
             u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
             if (*(f32*)&bits - lbl_8053D048 < lbl_8053D054) {
@@ -160,10 +165,9 @@ extern "C" void fn_80146364(void* this_) {
         }
         break;
     case 3: {
-        Vec v;
         vel->y += lbl_8053D058;
-        if (vel->y > lbl_8053D05C) {
-            vel->y = lbl_8053D05C;
+        if (vel->y > 5.0f) {
+            vel->y = 5.0f;
         }
         if (*(s32*)((u8*)this_ + 0x238) == 0) {
             *(s32*)((u8*)this_ + 0x23c) += 0x700;
@@ -171,13 +175,12 @@ extern "C" void fn_80146364(void* this_) {
             *(s32*)((u8*)this_ + 0x23c) -= 0x700;
         }
         s32 ang = *(s32*)((u8*)this_ + 0x23c);
-        pos->x = pos->x + *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
+        pos->x += JMath::sincosTable_.sinShort(ang);
         v.x = pos->x;
         v.y = pos->y;
         v.z = pos->z;
         v.y = v.y + lbl_8053D060;
-        u8 (*vfn)(void*, u32, Vec*) = *(u8 (**)(void*, u32, Vec*))((u8*)*(void**)this_ + 0x4c);
-        if (vfn(this_, *(u32*)((u8*)this_ + 4), &v) == 1) {
+        if ((u8)((Actor*)this_)->v17(*(s32*)((u8*)this_ + 4), (f32*)&v) == 1) {
             vel->x = lbl_8053D050;
             vel->y = lbl_8053D050;
             *(s32*)((u8*)this_ + 0x230) = 4;
@@ -185,7 +188,6 @@ extern "C" void fn_80146364(void* this_) {
         break;
     }
     case 4: {
-        f32 box[4];
         box[0] = *(f32*)((u8*)this_ + 0x60);
         box[1] = *(f32*)((u8*)this_ + 0x64);
         box[2] = *(f32*)((u8*)this_ + 0x68);
@@ -198,22 +200,19 @@ extern "C" void fn_80146364(void* this_) {
         if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
             flag = 0;
         }
-        u32 room = *(u32*)((u8*)this_ + 4);
-        s32 a = fn_8023AF14(box, room, flag, lbl_8053D050);
-        s32 b = fn_8023B8E4(box, room, pos2, 1);
-        if (b < 0) {
-            fn_8023B768(box, room, pos2);
+        s32 a = fn_8023AF14(box, *(u32*)((u8*)this_ + 4), flag, lbl_8053D050);
+        long b = fn_8023B8E4(box, *(u32*)((u8*)this_ + 4), pos2, 1);
+        if (0 > b) {
+            fn_8023B768(box, *(u32*)((u8*)this_ + 4), pos2);
         }
-        if (a >= 0) {
-            s32 t = fn_80237810(a);
-            if (fn_80237774(a) == t) {
+        if (0 <= a) {
+            if (fn_80237774(a) == fn_80237810(a)) {
                 fn_80230EB8(a, 9);
             }
             fn_80236554(a, 4, 0);
             *(u8*)((u8*)this_ + 0x11c) = 0;
         } else if (b >= 0) {
-            s32 t = fn_80237810(b);
-            if (fn_80237774(b) == t) {
+            if (fn_80237774(b) == fn_80237810(b)) {
                 fn_80230EB8(b, 9);
             }
             fn_80236554(b, 4, 0);
@@ -231,11 +230,8 @@ extern "C" void fn_80146364(void* this_) {
     }
     }
     if (*(s32*)((u8*)this_ + 4) < 8) {
-        Vec v;
-        v.x = pos->x;
-        v.y = pos->y - pos->z;
-        v.z = lbl_8053D050;
-        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &v);
+        ((JGeometry::TVec3f*)&renderPos)->set(pos->x, pos->y - pos->z, lbl_8053D050);
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &renderPos);
     }
 }
 
