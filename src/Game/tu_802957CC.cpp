@@ -1510,6 +1510,12 @@ static inline s32 PushDirFromContact(char* self, JGeometry::TBox2f& box) {
 extern "C" const f32 lbl_80540670;
 extern "C" const f32 lbl_80540674;
 extern "C" const f32 lbl_8054067C;
+static inline bool HouseContains(const JGeometry::TBox2f& area, const JGeometry::TVec3f& pos) {
+    bool inside = false;
+    if (pos.x >= area.i.x && pos.y >= area.i.y && pos.x < area.f.x && pos.y < area.f.y) inside = true;
+    return inside;
+}
+
 static inline s32 HouseContactMode(char* self, s32& room) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
         room = *(s32*)(self + 4);
@@ -1700,7 +1706,7 @@ extern "C" void fn_8029A494(char* self) {
                 flag = 0;
                 break;
             }
-            ok = HouseInsideBounds(zone.i.x, y0, x1, y1, v);
+            ok = HouseInsideEdges(zone.i.x, y1, x1, y0, v);
             if (!ok) {
                 flag = 0;
                 break;
