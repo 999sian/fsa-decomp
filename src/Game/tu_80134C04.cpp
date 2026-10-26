@@ -33,7 +33,7 @@ struct TuStateObject {
     u32 unk0;
     u8 state;
     u8 pad5[3];
-    virtual void v0();
+    virtual void v0(s32 flags);
     virtual void v1();
     virtual void v2(s32 flags);
 };
@@ -404,11 +404,11 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
         fn_80390088(lbl_8053AD80);
         obj = *(char**)(this_ + 0xac);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)(obj + 8))[2])(obj, 1);
+            ((TuStateObject*)obj)->v2(1);
         }
         obj = *(char**)(this_ + 0xb0);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)(obj + 8))[2])(obj, 1);
+            ((TuStateObject*)obj)->v2(1);
         }
         bVar2 = 1;
     } else if (cmd == 0xc && lbl_80529DEC[0x24d] == 1 && *(s16*)(this_ + 0x7c) < 0x78) {
