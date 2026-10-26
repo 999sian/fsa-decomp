@@ -704,7 +704,7 @@ struct MsgProc {
     s32 slotCol(s32 x) {
         return x + (s8)slotLine[slot + 0x10];
     }
-    static s32 lineRow(const s8 top, u8 line) {
+    static s32 lineRow(const s8 top, const int line) {
         return (u8)line - top - 1;
     }
     BOOL testBit(s32 n) {
