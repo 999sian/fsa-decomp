@@ -116,6 +116,7 @@ extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 extern const f32 lbl_80543730;
 extern const f64 lbl_80543738;
 extern const f64 lbl_80543740;
+static inline f32 MenuSquare803F(s32 n) { return n * n; }
 union MenuFloatScratch803F { f64 value; u32 words[2]; };
 static inline f32 MenuSignedFloat803F(s32 n, MenuFloatScratch803F& scratch) {
     scratch.words[0] = 0x43300000;
