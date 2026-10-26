@@ -61,9 +61,8 @@ extern "C" u8 fn_801E2F40(void* this_);
 extern "C" void fn_801E2EE4(void* this_);
 extern "C" void fn_801F7AB8(void* base, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
-static inline void* thnkActorAt(s32 idx) {
-    if (idx >= 0) return fn_801F666C(fn_801F856C(), idx);
-    return 0;
+static inline void thnkTryActor(void*& obj, s32 idx) {
+    if (idx >= 0) obj = fn_801F666C(fn_801F856C(), idx);
 }
 static inline char* thnkFieldAt(s32 room) {
     char* rec = (char*)fn_802D6A9C();
@@ -778,11 +777,11 @@ extern "C" void fn_801E1300(void* this_) {
 }
 
 extern "C" void fn_801E1594(void* this_, s32 state) {
+    bool flag;
     char* field;
     char* rec;
     void* obj;
     s32 idx;
-    u32 flag;
     char* p = (char*)this_;
     switch (state) {
     case 0:
@@ -818,23 +817,17 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
                 x = *(f32*)((char*)obj + 0xc);
                 y = *(f32*)((char*)obj + 0x10);
             }
-            idx = *(s32*)(p + 0x4);
             flag = 0;
-            rec = (char*)fn_802D6A9C();
-            field = (idx < 8) ? (rec + 0xcc) : (rec + 0xdc);
+            field = thnkFieldAt(*(s32*)(p + 4));
             if (x < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 0x8))) {
                 flag = 1;
             }
-            if ((u8)flag != 0) {
-                idx = *(s32*)(p + 0x4);
-                rec = (char*)fn_802D6A9C();
-                field = (idx < 8) ? (rec + 0xcc) : (rec + 0xdc);
+            if (flag != 0) {
+                field = thnkFieldAt(*(s32*)(p + 4));
                 *(f32*)(p + 0xc) = 30.0f + *(f32*)(field + 0x8);
                 *(s32*)(p + 0x98) = 1;
             } else {
-                idx = *(s32*)(p + 0x4);
-                rec = (char*)fn_802D6A9C();
-                field = (idx < 8) ? (rec + 0xcc) : (rec + 0xdc);
+                field = thnkFieldAt(*(s32*)(p + 4));
                 *(f32*)(p + 0xc) = *(f32*)field - 30.0f;
                 *(s32*)(p + 0x98) = 0;
             }
@@ -844,7 +837,7 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             f32 py = *(f32*)(p + 0x10);
             *(f32*)(p + 0x2c4) = px;
             *(f32*)(p + 0x2c8) = py;
-            *(s32*)(p + 0xb0) = 0x51303;
+            *(int*)(p + 0xb0) = 0x51303;
             *(s32*)(p + 0x250) = -1;
             if (*(s32*)(p + 0x2bc) >= 0) {
                 *(f32*)(p + 0x258) = lbl_8053F490;
