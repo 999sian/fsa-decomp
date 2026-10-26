@@ -44,6 +44,19 @@ static inline void RupyRotScaleMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
     m[2][2] = s * (cx * cy);
 }
 
+// Rotation coefficients kept together while constructing a scaled matrix.
+struct RupyRotation {
+    f32 sx, sy, sz, cx, cy, cz;
+    void set(f32 ry) {
+        sx = sin(lbl_80541D88);
+        sy = sin(ry);
+        sz = sin(lbl_80541D88);
+        cx = cos(lbl_80541D88);
+        cy = cos(ry);
+        cz = cos(lbl_80541D88);
+    }
+};
+
 // Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
 struct RupyResMgr {
     virtual void r0();
@@ -1228,7 +1241,7 @@ extern "C" void fn_8032D6C0(void* this_) {
     *(s32*)(p + 0x278) = (*(u32*)(p + 0x90) >> 8) & 0xff;
     *(s32*)(p + 0x234) = 0x12;
     *(s32*)(p + 0x264) = -1;
-    *(f32*)(p + 0x238) = lbl_80541D90;
+    *(volatile f32*)(p + 0x238) = lbl_80541D90;
     *(f32*)(p + 0x23c) = lbl_80541D88;
     *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyInitRand01()) + 0x3c;
     *(f32*)(p + 0x80) = lbl_80541E1C;
@@ -1313,7 +1326,7 @@ extern "C" void fn_8032D6C0(void* this_) {
         {
             u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
             if (tbl[room + 0x31df] == 1) {
-                *(f32*)(p + 0x40) = lbl_80541DB4;
+                *(volatile f32*)(p + 0x40) = lbl_80541DB4;
                 *(s32*)(p + 0x24c) = 0x30c;
                 *(u8*)(p + 0x27d) = 1;
                 *(s32*)(p + 0x230) = 9;
@@ -1350,7 +1363,7 @@ extern "C" void fn_8032D6C0(void* this_) {
         *(s32*)(p + 0x274) = 0xa;
         if (((ActorSlot13*)this_)->slot13() != 0) {
             if (*(u16*)(p + 0x94) == 0x1a) {
-                *(f32*)(p + 0x238) = lbl_80541D90;
+                *(volatile f32*)(p + 0x238) = lbl_80541D90;
                 *(s32*)(p + 0x230) = 0xa;
                 break;
             }
