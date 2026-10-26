@@ -688,7 +688,8 @@ struct MsgProc {
     }
     void putSlotPos(const s32 x, const s32 base) {
         str2c0[m2d0++] = -2;
-        str2c0[m2d0++] = x + (s8)slotLine[slot + 0x10] + base;
+        u8 col = x + (s8)slotLine[slot + 0x10];
+        str2c0[m2d0++] = col + base;
         str2c0[m2d0++] = -2;
         if (layout->m1a1 != 0) {
             const s8 top = lineTab[layout->m15c];
