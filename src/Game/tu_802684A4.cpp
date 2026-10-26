@@ -13,8 +13,7 @@ static inline JGeometry::TVec2<f32> playerDifferenceValue(JGeometry::TVec2<f32> 
     return v;
 }
 static inline JGeometry::TVec2<f32> playerDifference2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
-    JGeometry::TVec2<f32> v;
-    v.set(a);
+    JGeometry::TVec2<f32> v(a);
     v.x -= b.x;
     v.y -= b.y;
     return v;
@@ -138,7 +137,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         if (fn_802265FC((Vec2f*)&a, *(s32*)(p + 0x3b4)) == 1) {
             JGeometry::TVec2<f32> b(*(f32*)(p + 0x2c), *(f32*)(p + 0xc));
             if (fn_802265FC((Vec2f*)&b, *(s32*)(p + 0x3b4)) == 1) {
-                JGeometry::TVec2<f32> d = playerDifference2(JGeometry::TVec2<f32>(*(f32*)(p + 8), *(f32*)(p + 0xc)), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+                JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
                 if (d.squared() >= 25.0f) {
                     d.normalize();
                     d.scale(lbl_80540234);
@@ -151,7 +150,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
     }
     JGeometry::TVec2<f32> c(*(f32*)(p + 8), *(f32*)(p + 0xc));
     if (fn_802265FC((Vec2f*)&c, *(s32*)(p + 0x3b4)) == 1) {
-        JGeometry::TVec2<f32> d = playerDifference2(JGeometry::TVec2<f32>(*(f32*)(p + 8), *(f32*)(p + 0xc)), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+        JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
         if (d.squared() >= 25.0f) {
             d.normalize();
             d.scale(lbl_80540234);
@@ -160,7 +159,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + d.y;
         goto move;
     }
-    JGeometry::TVec2<f32> e = playerDifference2(JGeometry::TVec2<f32>(*(f32*)(p + 8), *(f32*)(p + 0xc)), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+    JGeometry::TVec2<f32> e = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
     f32 sq = e.squared();
     if (!(sq >= lbl_80540238)) {
         goto move;
@@ -192,12 +191,12 @@ move:
         *(f32*)(p + 0x428) = 0.0f;
     } else {
         if (k == 0xa4) {
-            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) - 0.05f;
+            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) - lbl_80540244;
             if (*(f32*)(p + 0x424) < -0.5f) {
                 *(f32*)(p + 0x424) = -0.5f;
             }
         } else if (k == 0xa5) {
-            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) + 0.05f;
+            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) + lbl_80540244;
             if (*(f32*)(p + 0x424) > 0.5f) {
                 *(f32*)(p + 0x424) = 0.5f;
             }
@@ -206,18 +205,18 @@ move:
             if (v > 0.025f) {
                 *(f32*)(p + 0x424) = v - 0.025f;
             } else if (v < -0.025f) {
-                *(f32*)(p + 0x424) = v + 0.025f;
+                *(f32*)(p + 0x424) = 0.025f + v;
             } else {
                 *(f32*)(p + 0x424) = 0.0f;
             }
         }
         if (k == 0xa7) {
-            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) + 0.05f;
+            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) + lbl_80540244;
             if (*(f32*)(p + 0x420) > 0.5f) {
                 *(f32*)(p + 0x420) = 0.5f;
             }
         } else if (k == 0xa6) {
-            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) - 0.05f;
+            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) - lbl_80540244;
             if (*(f32*)(p + 0x420) < -0.5f) {
                 *(f32*)(p + 0x420) = -0.5f;
             }
