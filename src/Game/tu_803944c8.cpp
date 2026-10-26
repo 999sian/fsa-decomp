@@ -705,7 +705,7 @@ struct MsgProc {
     s32 slotCol(s32 x) {
         return x + (s8)slotLine[slot + 0x10];
     }
-    static s32 lineRow(const s8 top, const s16 line) {
+    static s32 lineRow(s8 top, const s16 line) {
         return (u8)line - top - 1;
     }
     BOOL testBit(s32 n) {
@@ -1209,6 +1209,7 @@ extern "C" void fn_80398EF4(MsgMeasure* m, s32 a, s32 b) {
 }
 
 // NONMATCHING (96%): furigana row compare codegen (subic. vs cmplwi) and regalloc.
+#pragma opt_common_subs on
 extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
     s32 x = 0;
     if (!p->testBit(p->cur)) {
@@ -1230,7 +1231,7 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
     p->layout->slotTag[p->slot] = tag;
     p->slot++;
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8039CDF8(MsgProc*, u8);
 extern "C" void fn_8039D0DC(MsgProc*, u8);
 extern "C" void fn_8039D30C(MsgProc*, u8);
