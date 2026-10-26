@@ -144,10 +144,12 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
 #pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_802B8078(char* this_) {
+    s32 oldRoom;
+    s32 nextRoom;
     *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
-    int room = *(s32*)(this_ + 0x29c);
-    if (room < 8) {
-        if (*(s32*)(this_ + 4) >= 8) {
+    nextRoom = *(s32*)(this_ + 0x29c);
+    if (nextRoom < 8) {
+        if (*(volatile s32*)(this_ + 4) >= 8) {
             *(JGeometry::TVec3f*)(this_ + 0xc) = *(JGeometry::TVec3f*)(this_ + 0x28c);
             *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
             JGeometry::TVec3f v;
@@ -166,8 +168,9 @@ extern "C" void fn_802B8078(char* this_) {
             *(s32*)(this_ + 0x244) = 300;
         }
     } else {
-        if (*(s32*)(this_ + 4) >= 8) {
-            if (room == *(s32*)(this_ + 4)) {
+        oldRoom = *(volatile s32*)(this_ + 4);
+        if (oldRoom >= 8) {
+            if (nextRoom == oldRoom) {
                 *(s32*)(this_ + 0x230) = 7;
                 *(s32*)(this_ + 0x244) = 300;
             } else {
