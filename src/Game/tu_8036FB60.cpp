@@ -647,8 +647,8 @@ extern f32 lbl_80542DD8;
 extern f32 lbl_80542E24;
 static inline void drawPlayerFrames803712(char* self)
 {
-    s32 i;
     char* p;
+    s32 i;
     for (i = 0, p = self; i < 4; i++, p += 4) {
 				if (*(s32*)(p + 0x374) != 0) {
 					*(s32*)(p + 0x374) -= 1;
