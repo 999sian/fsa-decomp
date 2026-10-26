@@ -156,8 +156,9 @@ static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
         vec.x += lbl_80542870;
     }
 }
-static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state, JGeometry::TVec3f vec) {
-    JGeometry::TVec3f saved(vec);
+static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state, JGeometry::TVec3f origin) {
+    JGeometry::TVec3f saved(origin);
+    JGeometry::TVec3f vec(origin);
     *(s32*)(self + 0x258) = state;
     for (s32 k = 0; k < 6; ++k) {
         for (s32 j = 0; j < 6; ++j) {
