@@ -5,6 +5,7 @@ struct FsaInitBlock { u32 w0; u32 w1; u32 w2; u32 w3; u32 w4; u32 w5; u32 w6; u3
 struct FsaInitTriple { u32 a, b, c; };
 struct FsaInitTriples { FsaInitTriple t0; FsaInitTriple t1; FsaInitTriple t2; FsaInitTriple t3; FsaInitTriple t4; FsaInitTriple t5; FsaInitTriple t6; FsaInitTriple t7; };
 class FsaInitOwner;
+
 typedef void (FsaInitOwner::*FsaInitFn)();
 struct FsaInitFns { FsaInitFn t0; FsaInitFn t1; FsaInitFn t2; FsaInitFn t3; FsaInitFn t4; FsaInitFn t5; FsaInitFn t6; FsaInitFn t7; };
 extern "C" FsaInitTriples lbl_804B0508[];
