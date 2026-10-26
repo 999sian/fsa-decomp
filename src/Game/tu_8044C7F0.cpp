@@ -281,6 +281,7 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
 
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
 #pragma dont_inline on
 extern "C" void fn_8044D894(u8* self) {
     u8* p;
