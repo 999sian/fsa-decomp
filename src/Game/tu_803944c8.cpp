@@ -692,21 +692,19 @@ struct MsgProc {
         col += (s8)slotLine[slot + 0x10];
         str2c0[m2d0++] = col + base;
         str2c0[m2d0++] = -2;
-        if (layout->m1a1 != 0) {
-            const s8 line = slotLine[slot];
-            const s8 top = lineTab[layout->m15c];
-            if (lineRow(top, line) == 0) {
-                str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
-                return;
-            }
+        if (layout->m1a1 != 0 && lineRow(&lineTab[layout->m15c], (s8*)&slotLine[slot]) == 0) {
+            str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
+        } else {
+            str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
         }
-        str2c0[m2d0++] = slotLine[slot] + (base + 0x1f) - lineTab[layout->m15c];
     }
     s32 slotCol(s32 x) {
         return x + (s8)slotLine[slot + 0x10];
     }
-    static s32 lineRow(const s8 top, const s8 line) {
-        return (u8)line - top - 1;
+    static s32 lineRow(const s8* top, const s8* line) {
+        const s8 topValue = *top;
+        const s8 lineValue = *line;
+        return (u8)lineValue - topValue - 1;
     }
     BOOL testBit(s32 n) {
         if (n < 32) {
