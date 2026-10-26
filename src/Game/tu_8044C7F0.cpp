@@ -220,14 +220,15 @@ extern "C" u16 lbl_80543DD8[4];
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" void fn_8044D298(u8* self, s32 index) {
-    register MenuTables8044* data = &lbl_80490FC8;
+    MenuTables8044* data;
+    data = &lbl_80490FC8;
     u64* a;
     u64* b;
     s32 i;
     u8* f;
+    f32 f31;
     f32 f29;
     f32 f30;
-    f32 f31;
     f32 pos[3];
     if (index < 0) {
         return;
@@ -248,17 +249,17 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
         ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setContentsColor(JUtility::TColor(150, 150, 150, self[0x167]), JUtility::TColor(150, 150, 150, self[0x16b]), JUtility::TColor(150, 150, 150, self[0x16f]), JUtility::TColor(150, 150, 150, self[0x173]));
         (*(J2DPane**)(self + 4))->search(*b)->setAlpha(200);
     }
-    ((u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8)))[0xb0] = 1;
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8))->show();
     (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8))->setAlpha(0);
     (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8))->setAlpha(0);
     (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha288 + (u32)self[0x138]*8))->setAlpha(0);
-    if (((void**)(self + 0xb0))[self[0x138]] == NULL) {
+    if (*(void**)(self + self[0x138] * 4 + 0xb0) == NULL) {
         f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f30 = *(f32*)(f + 0x2c) - *(f32*)(f + 0x24);
         f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.y;
         f = (u8*)(*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
-        f31 = ((J2DPane*)f)->getBounds()->i.y + f31;
+        f31 += ((J2DPane*)f)->getBounds()->i.y;
         f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f30 = ((J2DPane*)f)->getBounds()->i.y + f31 + f30 * lbl_80543E00;
         f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
@@ -266,7 +267,7 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
         f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.x;
         f = (u8*)(*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
-        f31 = ((J2DPane*)f)->getBounds()->i.x + f31;
+        f31 += ((J2DPane*)f)->getBounds()->i.x;
         f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         pos[0] = ((J2DPane*)f)->getBounds()->i.x + f31 + f29 * lbl_80543E00;
         pos[1] = f30;
@@ -283,6 +284,7 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
+#pragma peephole reset
 #pragma dont_inline on
 extern "C" void fn_8044D894(u8* self) {
     u8* p;
