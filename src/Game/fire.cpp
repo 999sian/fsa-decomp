@@ -38,17 +38,39 @@ extern f32 lbl_80540B68;
 extern "C" u32 __cvt_fp2unsigned(f64);
 extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+class FireActorInterface : public Actor {
+public:
+    virtual void v19();
+    virtual void v20();
+    virtual void v21(JGeometry::TVec3<f32> pos, s32 flag);
+};
+
+static inline bool fireIgniteCell(char* p, s32 cell, f32* v) {
+    *(s16*)(p + 0x288) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), cell);
+    if (fn_801EE3C0(*(u16*)(p + 0x288)) == 1) {
+        fn_80226CA8(cell, *(s32*)(p + 4), v);
+        v[0] += lbl_80540B50;
+        v[1] += lbl_80540B50;
+        ((FireActorInterface*)p)->v21(*(JGeometry::TVec3<f32>*)v, 0);
+        *(s32*)(p + 0x254) = 5;
+        *(u8*)(p + 0x291) = 1;
+        return true;
+    }
+    return false;
+}
+
 // FIRE: small accessors.
-extern "C" BOOL fn_802BA558(char* p, s32 a, f32* b) {
+extern "C" u8 fn_802BA558(char* this_, s32 a, f32* b) {
+    char* p = this_;
     u32 names[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     f32 v[3];
     JGeometry::TVec3<f32> tmp;
-    f32 t[3];
-    f32 w[3];
     char* h;
     char* base;
     u8 r;
-    u16 q;
+    s32 q;
     s32 mode;
     s32 idx;
     s32 c;
@@ -64,9 +86,7 @@ extern "C" BOOL fn_802BA558(char* p, s32 a, f32* b) {
         return 1;
     }
     if (*(s32*)(p + 0x264) != 3 && *(s32*)(p + 0x264) != 4) {
-        if (*(s32*)(p + 0x254) != 0) {
-            return 0;
-        }
+        if (*(s32*)(p + 0x254) == 0) {
         a = fn_80226AE0(b, *(s32*)(p + 4));
         c = a;
         *(s16*)(p + 0x288) = fn_802F9908(*(void**)((char*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), a);
@@ -74,10 +94,7 @@ extern "C" BOOL fn_802BA558(char* p, s32 a, f32* b) {
             fn_80226CA8(a, *(s32*)(p + 4), v);
             v[0] = v[0] + lbl_80540B50;
             v[1] = v[1] + lbl_80540B50;
-            t[0] = v[0];
-            t[1] = v[1];
-            t[2] = v[2];
-            ((FireVFn*)(*(void**)p))[21](p, t, 0);
+            ((FireVecVFn*)(*(void**)p))[21](p, *(JGeometry::TVec3<f32>*)v, 0);
             *(s32*)(p + 0x254) = 5;
             *(u8*)(p + 0x291) = 1;
             return 1;
@@ -97,43 +114,40 @@ extern "C" BOOL fn_802BA558(char* p, s32 a, f32* b) {
             fn_80226CA8(c, *(s32*)(p + 4), v);
             v[0] = v[0] + lbl_80540B50;
             v[1] = v[1] + lbl_80540B50;
-            w[0] = v[0];
-            w[1] = v[1];
-            w[2] = v[2];
-            ((FireVFn*)(*(void**)p))[21](p, w, 1);
+            ((FireVecVFn*)(*(void**)p))[21](p, *(JGeometry::TVec3<f32>*)v, 1);
             return 0;
         }
         *(s32*)(p + 0x27c) = lbl_8046CB88[sv];
         idx = *(s32*)(p + 0x27c);
         if (idx == 0 || idx == 0x61) {
-            return 0;
+            goto reject;
         }
         if ((u32)(idx - 2) <= 5) {
-            return 0;
+            goto reject;
         }
         if (idx == 0x50) {
-            return 0;
+            goto reject;
         }
         if ((u32)(idx - 0x27) <= 8) {
-            return 0;
+            goto reject;
         }
         if (idx == 0x20) {
-            return 0;
+            goto reject;
         }
         if ((u32)(idx - 0xc) <= 2) {
-            return 0;
+            goto reject;
         }
         if ((u32)(idx - 0x39) <= 2) {
-            return 0;
+            goto reject;
         }
         if ((u32)(idx - 0x23) <= 1) {
-            return 0;
+            goto reject;
         }
         if (idx >= 4 && idx <= 7) {
-            return 0;
+            goto reject;
         }
         if (idx >= 0x18 && idx <= 0x1f) {
-            return 0;
+            goto reject;
         }
         if ((u32)(idx - 0x10) <= 6 || idx == 0x17) {
             *(s32*)(p + 0x254) = 0x10;
@@ -156,47 +170,35 @@ extern "C" BOOL fn_802BA558(char* p, s32 a, f32* b) {
         }
         if (idx == 0x22) {
             if (*(u8*)((char*)fn_802D6A9C() + 0x170) != 1) {
-                return 0;
+                goto reject;
             }
         }
-        return *(u8*)(p + 0x290) == 0;
+        if (*(u8*)(p + 0x290) == 0) return 1;
+        return 0;
+
+        }
+reject:
+        return 0;
     } else {
         if (*(s32*)(p + 0x254) > 0) {
             return 0;
         }
         tmp = *(JGeometry::TVec3<f32>*)b;
-        q = fn_8022461C(&tmp, a);
+        q = (u16)fn_8022461C(&tmp, a);
         if (q == 0) {
-            return 0;
+            goto end_reject;
         }
         if (q >= 0x28 && q <= 0x2b) {
-            return 0;
+            goto end_reject;
         }
         mode = *(s32*)(p + 0x98);
-        if (mode == 2) {
-            if (q == 0x40) {
-                return 0;
-            }
-            return 1;
+        switch (mode) {
+        case 2: if (q == 0x40) break; return 1;
+        case 3: if (q == 0x41) break; return 1;
+        case 0: if (q == 0x42) break; return 1;
+        case 1: if (q == 0x43) break; return 1;
         }
-        if (mode == 0) {
-            if (q == 0x42) {
-                return 0;
-            }
-            return 1;
-        }
-        if (mode == 1) {
-            if (q == 0x43) {
-                return 0;
-            }
-            return 1;
-        }
-        if (mode == 3) {
-            if (q == 0x41) {
-                return 0;
-            }
-            return 1;
-        }
+end_reject:
         return 0;
     }
 }
