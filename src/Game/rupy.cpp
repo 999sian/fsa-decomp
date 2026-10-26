@@ -57,7 +57,7 @@ struct RupyRotation {
     }
 };
 
-static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& ang, const f32& scale) {
+static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f64& ang, const f32& scale) {
         f32 cx;
         f32 s;
         f32 sz;
@@ -673,6 +673,7 @@ extern const f32 lbl_80541DC4;
 extern const f32 lbl_80541DC8;
 extern const f32 lbl_80541DCC;
 extern const f32 lbl_80541DD0;
+#pragma opt_common_subs off
 extern "C" void fn_8032BFB0(char* p) {
     u8* base = lbl_80471948;
     s32 big;
@@ -783,7 +784,7 @@ extern "C" void fn_8032BFB0(char* p) {
     }
     *(JGeometry::TVec3<f32>*)(p + 0xc) = save;
 }
-
+#pragma opt_common_subs reset
 extern const f32 lbl_80541DE0;
 extern const f32 lbl_80541DE4;
 extern const f32 lbl_80541DE8;
@@ -1410,7 +1411,8 @@ extern "C" void fn_8032D6C0(void* this_) {
         break;
     case 29:
         *(s32*)(p + 0x24c) = 0x30c;
-        *(s32*)(p + 0x230) = (*(u8*)(p + 0x27d) = 1, 9);
+        *(u8*)(p + 0x27d) = 1;
+        *(s32*)(p + 0x230) = 9;
         break;
     case 30:
         *(s32*)(p + 0x274) = 0xa;
