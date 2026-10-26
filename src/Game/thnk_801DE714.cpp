@@ -61,9 +61,6 @@ extern "C" u8 fn_801E2F40(void* this_);
 extern "C" void fn_801E2EE4(void* this_);
 extern "C" void fn_801F7AB8(void* base, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
-static inline void thnkTryActor(void*& obj, s32 idx) {
-    if (idx >= 0) obj = fn_801F666C(fn_801F856C(), idx);
-}
 static inline char* thnkFieldAt(const s32 room) {
     char* rec = (char*)fn_802D6A9C();
     if (room < 8) return rec + 0xcc;
