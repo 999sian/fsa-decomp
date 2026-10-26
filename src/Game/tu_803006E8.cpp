@@ -48,7 +48,7 @@ struct GbaChan {
 
 extern "C" void fn_80300A8C(void* p);
 extern "C" void* fn_80300E1C(void* p);
-extern u8 lbl_804D6AB8[];
+extern GbaPkt lbl_804D6AB8[];
 extern u8 lbl_804711F0[];
 extern u8 lbl_80529DEC[];
 extern u8* lbl_8053ACBC;
@@ -117,7 +117,7 @@ extern "C" void fn_803007A0(void) {
 
 #pragma opt_strength_reduction off
 extern "C" void fn_803007D0(void) {
-    u8* base = lbl_804D6AB8;
+    u8* base = (u8*)lbl_804D6AB8;
     u8* id;
     u8* ub;
     u8* ud;
@@ -173,6 +173,90 @@ extern "C" void fn_803007D0(void) {
         p += 0xe0;
     }
 }
+
+extern "C" void fn_80300A8C(void* p) {
+    GbaChan* c = (GbaChan*)p;
+    GbaPkt* table = (GbaPkt*)lbl_804D6AB8;
+    BOOL b28 = 1;
+    BOOL b24 = 0;
+
+    c->f_d8 = 0;
+    c->f_d9 = 1;
+    c->f_d3 = 3;
+
+    u32 v25 = c->pkt.f08;
+    c->pkt.f08 = table[c->chan].f08;
+
+    if (c->pkt.f00 == 0) {
+        if (c->pkt.f03 == 0) {
+            GbaPkt* entry = &table[c->chan];
+            memset(entry, 0, sizeof(GbaPkt));
+            entry->f01 = c->chan;
+            entry->f03 = 1;
+            entry->f04 = lbl_8053ACC8;
+            table[c->chan].f02 = c->pkt.f02;
+            table[c->chan].f0c = c->pkt.f0c;
+            c->tick = OSGetTick();
+            table[c->chan].f08 = c->tick;
+            OSSendMessage(c, (void*)5, 1);
+        } else {
+            if (memcmp(&c->pkt, &table[c->chan], sizeof(GbaPkt)) == 0 && c->f_dd == 0 &&
+                (v25 == table[c->chan].f08 || v25 == c->tick)) {
+                table[c->chan].f08 = v25;
+                c->tick = v25;
+                b28 = 0;
+            }
+            if (b28) {
+                OSSendMessage(c, (void*)4, 1);
+                c->f_dd = 0;
+                b24 = 1;
+            }
+        }
+    } else {
+        u8 saved_f02 = c->pkt.f02;
+        c->pkt.f02 = table[c->chan].f02;
+        u32 saved_f0c = c->pkt.f0c;
+        c->pkt.f0c = table[c->chan].f0c;
+        if (memcmp(&c->pkt, &table[c->chan], sizeof(GbaPkt)) == 0 && c->f_dd == 0 &&
+            (v25 == table[c->chan].f08 || v25 == c->tick)) {
+            table[c->chan].f08 = v25;
+            c->tick = v25;
+            table[c->chan].f02 = saved_f02;
+            table[c->chan].f0c = saved_f0c;
+            b28 = 0;
+        }
+        if (b28) {
+            OSSendMessage(c, (void*)3, 1);
+            c->f_dd = 0;
+        }
+    }
+
+    if (!b28 || b24) {
+        if (GBAGetStatus(c->chan, c->status) == 0 && c->status[0] == 0x30) {
+            u32 writeVal;
+            u32 readVal;
+            if (b24) {
+                writeVal = v25;
+            } else {
+                writeVal = OSGetTick();
+                table[c->chan].f08 = writeVal;
+            }
+            if (GBAWrite(c->chan, (u8*)&writeVal, c->status) == 0 && (c->status[0] & 0x30) == 0x30) {
+                if (GBAGetStatus(c->chan, c->status) == 0 && c->status[0] == 0x38) {
+                    int err = GBARead(c->chan, (u8*)&readVal, c->status);
+                    if (!b24 && err == 0 && writeVal == readVal && (c->status[0] & 0x30) == 0x30) {
+                        c->tick = writeVal;
+                        c->f_d8 = 1;
+                        c->f_d9 = 0;
+                        c->f_d3 = 0;
+                        c->f_de = 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
 #pragma opt_strength_reduction reset
 
 extern "C" s32 fn_80301A88(void* this_) {
