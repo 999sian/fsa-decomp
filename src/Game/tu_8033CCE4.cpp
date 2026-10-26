@@ -88,8 +88,8 @@ struct UnkObj8033D4CC {
     u8 m272;
 };
 
-static inline bool isGroundHeight(const f32 height) {
-    return lbl_805421B0 == height;
+static inline bool isGroundHeight(const f32 zero, const f32 height) {
+    return zero == height;
 }
 
 extern "C" void fn_8033D4CC(UnkObj8033D4CC* self);
@@ -454,7 +454,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
         f32* p = fn_8023E724(self->m258);
         f32 height = p[2];
         f32 zero = lbl_805421B0;
-        if (zero != height) {
+        if (height != zero) {
             return;
         }
         if (!fn_802300EC(self->m258)) {
