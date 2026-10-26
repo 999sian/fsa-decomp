@@ -150,7 +150,7 @@ struct Obj240 {
 	u8 pad24[2];
 	s16 f26;
 };
-extern "C" const f32 lbl_805438C8;
+extern "C" f32 lbl_805438C8;
 
 static inline f32 paneSpan(const f32* bounds) {
 	return bounds[2] - bounds[0];
