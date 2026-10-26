@@ -419,7 +419,7 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         t->m4C->m17C = t->m38;
         Tu80390818_reset(t->m4C, 0);
         t->m44 = 2;
-        Tu80390818_setMessage(t->m20, t->m4C, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
+        Tu80390818_setMessage(t->m4C, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
         t->m24 = 2;
         break;
     }
@@ -476,9 +476,9 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
                 if (a != 0) v = *(Tu80390818_Vec*)(a + 0xc);
                 else v = *(Tu80390818_Vec*)&t->m50;
-                Tu80390818_setMessage(t->m20, t->m48, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&v);
+                Tu80390818_setMessage(t->m48, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&v);
             } else {
-                Tu80390818_setMessage(t->m20, t->m48, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
+                Tu80390818_setMessage(t->m48, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
             }
         }
         t->m24 = 7;
