@@ -69,6 +69,14 @@ struct fn_801D1974_obj {
             m2a8 = n;
         }
     }
+    void pushPoint(f32 x, f32 y) {
+        if (m2a8 < 16) {
+            fn_801D1974_obj* dst = (fn_801D1974_obj*)((u8*)this + m2a8 * 8);
+            dst->m2ac[0].x = x;
+            dst->m2ac[0].y = y;
+            m2a8++;
+        }
+    }
     void pushPoint(const JGeometry::TVec2<f32>& p) {
         if (m2a8 < 16) {
             fn_801D1974_obj* dst = (fn_801D1974_obj*)((u8*)this + m2a8 * 8);
@@ -125,8 +133,9 @@ extern "C" void fn_801D11FC(u8* this_)
 #pragma opt_propagation reset
 extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     fn_801D1974_obj* object = this_;
-    s32 lost;
     s32 ret = 0;
+    u8 lost;
+    s32 idx;
     u8 far_;
     s32 i;
     s32 n;
@@ -139,9 +148,9 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
     JGeometry::TVec3<f32> pos;
 
     if (object->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(object, object->m338)) {
-        lost = object->m338;
-        fn_8022E114(lost, &pos);
-        if (fn_801F329C(object, lost)) {
+        idx = object->m338;
+        fn_8022E114(idx, &pos);
+        if (fn_801F329C(object, idx)) {
             fn_801CD150(&pos, &tmp);
             v.x = tmp.x;
             v.y = tmp.y;
