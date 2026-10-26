@@ -115,9 +115,9 @@ extern "C" u8 fn_801CCB1C(void* p, s32 room);
 extern "C" void fn_801CD930(void* p, s32 v, s32 n);
 #pragma opt_lifetimes off
 static inline void getSlotNeighbours(char* this_, u8* prev, u8* next) {
-    u8 c;
-    u8 b;
-    u8 a = ((u8*)GetCurrentSlotPtr(this_+0x358))[3];
+    u32 c;
+    u32 b;
+    u32 a = ((u8*)GetCurrentSlotPtr(this_+0x358))[3];
     fn_800FD818(GetCurrentSlotPtr(this_+0x358),1);
     b = ((u8*)GetCurrentSlotPtr(this_+0x358))[3];
     u8* s = (u8*)GetCurrentSlotPtr(this_+0x358);
