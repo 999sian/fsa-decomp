@@ -252,7 +252,6 @@ static inline s32 HouseDestination(const char* actor) {
     return (room + 7) & ~-(s32)(room == 0);
 }
 static inline bool WarpDestinationIs(const char* other, s32 room) { return room == WarpDestination(other); }
-static inline bool HouseDestinationIs(const char* self, s32 room) { return room == HouseDestination(self); }
 
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
