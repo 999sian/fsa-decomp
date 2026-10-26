@@ -245,7 +245,12 @@ struct JijiTable {
 extern const JijiTable lbl_804753C0;
 static inline s32 jijiFullFrame(const JijiTable* t, u8* p) {
     const s32* frames = &t->frames[0][0];
-    return *(s32*)(p+0x25c) + (*(s32*)(p+0x238) + frames[*(s32*)(p+0x264)*4 + *(s32*)(p+0x248)]);
+    s32 row=*(s32*)(p+0x264);
+    s32 column=*(s32*)(p+0x248);
+    s32 frame=*(s32*)(p+0x238);
+    s32 bank=*(s32*)(p+0x25c);
+    u32 offset=row*16+column*4;
+    return bank + (frame + *(const s32*)((u32)frames+offset));
 }
 static inline s32 jijiFrame(const s32 (*fr)[4], u8* p) { return *(const s32*)((const u8*)fr + *(s32*)(p + 0x264) * 16 + *(s32*)(p + 0x248) * 4); }
 #define JIJI_FRAME(t, p) (*(s32*)((p) + 0x238) + ((const s32(*)[4])((const u8*)(t) + 0xd8))[*(s32*)((p) + 0x264)][*(s32*)((p) + 0x248)])
