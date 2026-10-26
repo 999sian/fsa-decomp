@@ -1516,6 +1516,15 @@ static inline bool HouseContains(const JGeometry::TBox2f& area, JGeometry::TVec3
     return inside;
 }
 
+static inline void HouseGridBase(JGeometry::TVec3f& out, const JGeometry::TVec3f& pos, const JGeometry::TVec2f& offset, const f32 border) {
+    out = pos;
+    out.x += offset.x;
+    out.y += offset.y;
+    out.x += border;
+    out.y += border;
+    out.z = lbl_80540674;
+}
+
 static inline s32 HouseContactMode(char* self, s32& room) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
         room = *(s32*)(self + 4);
