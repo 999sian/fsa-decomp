@@ -14,6 +14,7 @@ static inline JGeometry::TVec3f translatedBlockPosition(JGeometry::TVec3f pos, c
     pos += offset;
     return pos;
 }
+#pragma peephole on
 #include "dolphin/mtx.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
 #include "JSystem/JAudio/System/JASTrack.h"
@@ -982,7 +983,7 @@ extern "C" void fn_80298FC4(void* p) {
             for (i = 0; i < *(s32*)(self + 0x2a8); i++) {
                 obj = fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    *(JGeometry::TVec3f*)((char*)obj + 0xc) = *(JGeometry::TVec3f*)((char*)obj + 0xc) + vec;
+                    *(JGeometry::TVec3f*)((char*)obj + 0xc) = translatedBlockPosition(*(JGeometry::TVec3f*)((char*)obj + 0xc), vec);
                     fn_802C59B0(obj);
                 }
                 q += 4;
@@ -1091,7 +1092,9 @@ extern "C" void fn_80299374(char* self) {
             for (k = 0; k < *(s32*)(self + 0x2a8); k++) {
                 obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    moveBlockChild(obj, v);
+                    register const JGeometry::TVec3f* offset = &v;
+                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + *offset;
+                    fn_802C59B0(obj);
                 }
                 q += 4;
             }
