@@ -1155,9 +1155,8 @@ extern "C" void fn_803DF9E8(u8* self) {
     *(s32*)(self + 0x8c) = 0;
     *(s32*)(self + 0x90) = 0;
     *(s16*)(self + 0x9c) = 0;
-    f32 zero = lbl_80543604;
-    *(f32*)(self + 0x7c) = zero;
-    *(f32*)(self + 0x78) = zero;
+    *(f32*)(self + 0x7c) = lbl_80543604;
+    *(f32*)(self + 0x78) = lbl_80543604;
     *(s16*)(self + 0x9a) = 0;
     *(s16*)(self + 0x98) = 0x3c;
     self[0xa1] = 0;
