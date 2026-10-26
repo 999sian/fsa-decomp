@@ -728,74 +728,44 @@ static inline void drawShadow8036(char* self, DrawRec& args, u32 index)
 }
 extern "C" void fn_8036AC58(void* this_, void* param) {
     char* self = (char*)this_;
-    EffArgs args;
-    u8 i;
+
     if (*(u8*)(self + 0x270) != 1 || *(s32*)(self + 0x274) >= 0x80) {
-        args.f10.w = -1;
-        args.f14.w = -1;
-        for (i = 0; i < 0x10; i += 8) {
-            args.order[i] = i;
-            args.order[(u8)(i + 1)] = i + 1;
-            args.order[(u8)(i + 2)] = i + 2;
-            args.order[(u8)(i + 3)] = i + 3;
-            args.order[(u8)(i + 4)] = i + 4;
-            args.order[(u8)(i + 5)] = i + 5;
-            args.order[(u8)(i + 6)] = i + 6;
-            args.order[(u8)(i + 7)] = i + 7;
-        }
-        args.f10.w = -1;
-        args.f14.w = 0;
-        args.ptr = 0;
-        args.b1c = 0;
-        args.b1d = 0;
-        args.b1e = 0;
-        args.b1f = 1;
-        args.b20 = 1;
-        args.b21 = 0;
-        args.b22 = 0;
-        args.b23 = 0;
-        args.b24 = 0;
-        args.b25 = 0;
-        args.b26 = 1;
-        args.w28 = 3;
-        args.b2c = 1;
-        args.b2d = 0;
-        args.b2e = 0;
-        args.x30 = -1;
-        args.x34 = 0;
-        args.x38 = 2;
+        DrawRec args;
         if (!(*(s32*)(self + 0x23c) == 5 && *(s32*)(self + 0x240) >= 0x1e && *(s32*)(self + 0x240) < 0x21)) {
             s32 id = *(s32*)(self + 0x240);
-            if (id == 0x1c || (u32)(id - 0x1d) < 2 || (u32)(id - 0x21) < 2 || id == 0x23) {
-                if (*(s32*)(self + 0x138) == 0) {
-                    fn_801EF830(*(s32*)(self + 4), self + 0xc, args.order, 7, lbl_80474E48, *(s32*)(self + 0x264) + 0x1b3, 0);
-                }
-            } else if (*(s32*)(self + 0x138) == 0) {
-                fn_801EF830(*(s32*)(self + 4), self + 0xc, args.order, 7, lbl_80474E48, (u32)param + *(s32*)(self + 0x328), 0);
+            if (id == 0x1c || (u32)(id - 0x1d) <= 1 || (u32)(id - 0x21) <= 1 || id == 0x23) {
+                drawShadow8036(self, args, *(s32*)(self + 0x264) + 0x1b3);
+            } else {
+                drawShadow8036(self, args, (u32)param + *(s32*)(self + 0x328));
             }
         } else {
-            if (*(s32*)(self + 0x24c) < 0xc0 && *(s32*)(self + 0x138) == 0) {
-                fn_801EF830(*(s32*)(self + 4), self + 0xc, args.order, 7, lbl_80474E48, (u32)param + *(s32*)(self + 0x328), 0);
+            if (*(s32*)(self + 0x24c) < 0xc0) {
+                drawShadow8036(self, args, (u32)param + *(s32*)(self + 0x328));
             }
-            args.f10.b[0] = 0xff;
-            args.f10.b[1] = 0xff;
-            args.f10.b[2] = 0xff;
-            args.f10.b[3] = 0xff - *(s32*)(self + 0x24c);
+            u8 alpha = 0xff - *(s32*)(self + 0x24c);
+            ((u8*)&args.w10)[0] = 0xff;
+            ((u8*)&args.w10)[1] = 0xff;
+            ((u8*)&args.w10)[2] = 0xff;
+            ((u8*)&args.w10)[3] = alpha;
         }
         {
             s32 id = *(s32*)(self + 0x240);
-            if (id == 0x1c || (u32)(id - 0x1d) < 2 || (u32)(id - 0x21) < 2 || id == 0x23) {
-                void* pos = self + 0xc;
-                s32 idx = *(s32*)(self + 0x264) + 0x1b3;
+            if (id == 0x1c || (u32)(id - 0x1d) <= 1 || (u32)(id - 0x21) <= 1 || id == 0x23) {
+                s32 idx;
+                void* pos;
+                pos = self + 0xc;
+                idx = *(s32*)(self + 0x264) + 0x1b3;
                 void* res;
                 if (*(s32*)(self + 4) < 8) {
                     res = ((SobResMgr*)(*(void**)((u8*)lbl_8053AAF8 + 0xa4)))->vf18('SOB ', (const char*)lbl_80474E48);
                     fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, idx, 1.0f, 1.0f, &args);
                 }
-                fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc, idx, 0, 1, -1, 0, 0, 0);
+                fn_803075AC(*(void**)(self + 0x198), *(s32*)(self + 4), self + 0xc, *(s32*)(self + 0x264) + 0x1b3, 0, 1, -1, 0, 0, 0);
             } else {
-                void* pos = self + 0xc;
-                u32 idx = (u32)param + *(s32*)(self + 0x328);
+                u32 idx;
+                void* pos;
+                pos = self + 0xc;
+                idx = (u32)param + *(s32*)(self + 0x328);
                 void* res;
                 if (*(s32*)(self + 4) < 8) {
                     res = ((SobResMgr*)(*(void**)((u8*)lbl_8053AAF8 + 0xa4)))->vf18('SOB ', (const char*)lbl_80474E48);
