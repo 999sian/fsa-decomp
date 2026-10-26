@@ -87,8 +87,8 @@ extern "C" u8 fn_802C1970(char* p, s32 room, void* pos);
 // NONMATCHING (~87%): retail builds both points in temporaries (0x18/0x20)
 // and copies them to the argument slots; packed-id scheduling differs.
 extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
-static inline void key0LinkPoints(void* rec, const Key0Pt& key, const Key0Pt& pos, u32 packed, u32 id) {
-    fn_802D6D70(rec, pos, key, packed, id);
+static inline void key0LinkPoints(const Key0Pt& key, const Key0Pt& pos, u32 packed, u32 id) {
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
 }
 extern "C" u8 fn_8022F478(s32 player);
 extern "C" s32 fn_8023EF50(s32 player);
