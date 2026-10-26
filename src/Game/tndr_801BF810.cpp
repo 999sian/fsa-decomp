@@ -435,11 +435,6 @@ extern "C" u8 fn_80230188(s32 i);
 extern "C" u8 fn_801D0B44(void* this_, s32 id);
 extern "C" u8 fn_8022E438(u32 i, s32 b);
 extern "C" s32 fn_802265FC(void* a, s32 b);
-static inline f32 tndrAddOffset(const f32 offset, f32 value) {
-    value = offset + value;
-    return value;
-}
-
 extern "C" void fn_801BFF04(char* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
@@ -549,9 +544,9 @@ findTarget:
     u8 (*manager)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
     if (manager[1][id+0x31df] != 0) {
         f32 pos[2];
-        f32 y = *(f32*)(this_ + 0x10);
+        register f32 y = *(f32*)(this_ + 0x10);
         f32 z = *(f32*)(this_ + 0x14);
-        f32 offset = lbl_8053ED58;
+        register f32 offset = lbl_8053ED58;
         y -= z;
         s32 room = *(s32*)(this_ + 4);
         f32 x = *(f32*)(this_ + 0xc);
