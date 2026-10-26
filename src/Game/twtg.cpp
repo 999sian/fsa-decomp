@@ -1010,13 +1010,14 @@ extern "C" void fn_803146DC(char* p) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80314B1C(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
     f32 dist;
     s32 n;
     s32 slot;
-    s32 k;
+    s32 state;
     
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
@@ -1028,7 +1029,9 @@ extern "C" void fn_80314B1C(char* p) {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
         }
         if (dist < lbl_80541880) {
-            f32 ang = JMAAtan2Radian(-v.x, -v.y);
+            f32 x = -v.x;
+            f32 y = -v.y;
+            f32 ang = JMAAtan2Radian(x, y);
             u16 a = (s32)(ang * lbl_80541884);
             if (a < 0x2000 || a >= 0xe000) {
                 *(s32*)(p + 0x270) = 3;
@@ -1077,12 +1080,12 @@ extern "C" void fn_80314B1C(char* p) {
         case 2:
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             twtgAsk(p, 0x4d3);
-            for (k = 0; k < n; k++) {
-                if (twtgPlayerFlag(k)) {
+            for (slot = 0; slot < n; slot++) {
+                if (twtgPlayerFlag(slot)) {
                     break;
                 }
             }
-            if (k >= n) {
+            if (slot >= n) {
                 *(s32*)(p + 0x238) = 7;
             }
             break;
@@ -1091,23 +1094,27 @@ extern "C" void fn_80314B1C(char* p) {
         case 5:
         case 6:
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
-            while ((k = *(s32*)(p + 0x238)) < 7) {
-                k -= 3;
-                if (twtgPlayerFlag(k)) {
+            while ((state = *(s32*)(p + 0x238)) < 7) {
+                slot = state - 3;
+                if (twtgPlayerFlag(slot)) {
                     break;
                 }
                 (*(s32*)(p + 0x238))++;
             }
             if (*(s32*)(p + 0x238) < n + 3) {
-                twtgAsk(p, *(s32*)(p + 0x238) + 0x4d1);
+                state = *(s32*)(p + 0x238) + 0x4d1;
+                if (fn_8038470C(*(s32*)(p + 0x254), state)) {
+                    *(s32*)(p + 0x268) = state;
+                    *(s32*)(p + 0x234) = 1;
+                }
                 break;
             }
         case 7:
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             if (twtgAsk(p, 0x4d8)) {
-                for (k = 0; k < 4; k++) {
-                    if (twtgPlayerFlag(k)) {
-                        fn_8043D874(lbl_8053AED0, k, 0x12c, 0);
+                for (state = 0; state < 4; state++) {
+                    if (twtgPlayerFlag(state)) {
+                        fn_8043D874(lbl_8053AED0, state, 0x12c, 0);
                     }
                 }
                 *(s32*)(p + 0x238) = 8;
