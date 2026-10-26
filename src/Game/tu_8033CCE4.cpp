@@ -88,10 +88,6 @@ struct UnkObj8033D4CC {
     u8 m272;
 };
 
-static inline bool isGroundHeight(const f32 zero, const f32 height) {
-    return zero == height;
-}
-
 extern "C" void fn_8033D4CC(UnkObj8033D4CC* self);
 extern "C" int __float_epsilon[];
 extern "C" const f32 lbl_805421C4;
