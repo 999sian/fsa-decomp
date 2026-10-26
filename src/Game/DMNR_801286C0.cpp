@@ -40,8 +40,13 @@ static inline void spawnCase4Inner(void* p) {
     f32 cy = box.d;
     f32 cx = box.c;
     f32 k = lbl_8053CAE0;
-    pos[0] = k * (box.a - cx) + cx;
-    pos[1] = k * (box.b - cy) + cy;
+    f32 y, x;
+    x = box.a - cx;
+    x = k * x + cx;
+    y = box.b - cy;
+    y = k * y + cy;
+    pos[0] = x;
+    pos[1] = y;
     pos[2] = lbl_8053CAE4;
     fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33c, 1, 2, 0, 0, 1);
     fn_8013CC50(*(s32*)((u8*)p + 4), pos, lbl_8053CAE8, 0x33d, 1, 2, 0, 0, 1);
