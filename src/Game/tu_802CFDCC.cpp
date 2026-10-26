@@ -109,7 +109,7 @@ extern "C" void fn_801F71A4(void* a, f32 b, f32 c, f32 d);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" u8 fn_802DE764(s32 a, s32 b, s32 c);
 extern "C" void fn_80458FF0(void* a, s32 b, s32 c, s32 d);
-extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, f32 g);
+extern "C" s32 fn_8013CC50(u32 id, void* p, u32 f, u32 a, u32 b, u32 c, u32 d, u32 e, f32 g);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" const f32 lbl_80540E88;
 extern "C" const f32 lbl_80540E8C;
