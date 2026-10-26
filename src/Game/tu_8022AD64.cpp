@@ -1344,10 +1344,10 @@ int fn_802316C8(int idx, int p2, const JGeometry::TVec3<f32>& p3) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
     if (lbl_8053AC90 == NULL) {
-        pos = &lbl_804CF460;
+        pos = (const JGeometry::TVec3<f32>*)(u32)&lbl_804CF460;
     } else {
         if (!isPlayerEnabled(idx)) {
-            pos = &lbl_804CF460;
+            pos = (const JGeometry::TVec3<f32>*)(u32)&lbl_804CF460;
         } else {
             pos = (const JGeometry::TVec3<f32>*)((u8*)lbl_8053AC90->players[idx] + 8);
         }
@@ -1382,8 +1382,100 @@ int fn_802319B4(int index, int a0)
     return 0;
 }
 
+static inline u8 playerMgrBusy()
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    if (playerMgrByte(0x6c)) return 1;
+    if (playerMgrByte(0x6d)) return 1;
+    if (playerMgrByte(0x6e)) return 1;
+    if (playerMgrByte(0x6f)) return 1;
+    if (playerMgrByte(0x70)) return 1;
+    if (playerMgrByte(0x71)) return 1;
+    if (playerMgrByte(0x72)) return 1;
+    return 0;
+}
+static inline u8 playerUnavailable(int index)
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(index)) return fn_80240670(lbl_8053AC90->players[index]);
+    return 1;
+}
+static inline int playerRoom(int index)
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(index)) return 0;
+    return *((int*)((u8*)lbl_8053AC90->players[index] + 0x3b4));
+}
 int fn_80231A50(void) {
     return 0;
+}
+
+u8 fn_802527B0(Player*, s32*);
+void fn_80248DB8(Player*);
+void* fn_802D6A9C(void);
+int fn_80124600(s32*);
+int fn_802DD3D4(void*, s32*);
+void fn_80457F60(f32);
+void fn_802DCE5C(void*, s32*);
+void fn_802520C0(Player*, s32*);
+int fn_8025F590(void);
+int fn_8025F418(Player*);
+int fn_80270A8C(Player*);
+int fn_80270A04(Player*);
+int fn_80270A58(Player*);
+int fn_8025F448(Player*);
+void fn_80231DE4(void)
+{
+    s32 local[2];
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) {
+            local[0] = 0;
+            local[1] = 0;
+            if (fn_802527B0(lbl_8053AC90->players[i], local)) {
+                for (j = 0; j < 4; j++) {
+                    if (fn_8022E438(i, j) && lbl_8053AC90 != NULL && isPlayerEnabled(j)) {
+                        fn_80248DB8(lbl_8053AC90->players[j]);
+                    }
+                }
+            }
+        }
+    }
+
+    if (lbl_8053AC90 != NULL && (((u8*)lbl_8053AC90)[0x6c] || ((u8*)lbl_8053AC90)[0x6d] || ((u8*)lbl_8053AC90)[0x6e] || ((u8*)lbl_8053AC90)[0x6f] || ((u8*)lbl_8053AC90)[0x70] || ((u8*)lbl_8053AC90)[0x71] || ((u8*)lbl_8053AC90)[0x72])) {
+        return;
+    }
+    if (((u8*)lbl_8053AAF8)[0x96] != 0) {
+        return;
+    }
+    if (lbl_8053AC90 != NULL && ((u8*)lbl_8053AC90)[0x73] != 0) {
+        return;
+    }
+
+    fn_802D6A9C();
+    for (i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && Player_GetField_0x454(lbl_8053AC90->players[i])) {
+            return;
+        }
+        if (isPlayerEnabled(i) && fn_80240818(lbl_8053AC90->players[i])) {
+            return;
+        }
+        if (isPlayerEnabled(i) && Player_GetField_0xce8(lbl_8053AC90->players[i])) {
+            if (!(isPlayerEnabled(i) && ((u8*)lbl_8053AC90->players[i])[0x43f])) {
+                return;
+            }
+        }
+    }
+}
+
+void fn_80232A0C(void)
+{
+    if (lbl_8053AC90->players[0] != NULL) *((u8*)lbl_8053AC90->players[0] + 0xafc) = 0;
+    if (lbl_8053AC90->players[1] != NULL) *((u8*)lbl_8053AC90->players[1] + 0xafc) = 0;
+    if (lbl_8053AC90->players[2] != NULL) *((u8*)lbl_8053AC90->players[2] + 0xafc) = 0;
+    if (lbl_8053AC90->players[3] != NULL) *((u8*)lbl_8053AC90->players[3] + 0xafc) = 0;
 }
 
 JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGeometry::TBox2<f32>& source)
@@ -1395,13 +1487,16 @@ JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGe
     return destination;
 }
 
+#pragma optimization_level 3
+#pragma peephole off
 JGeometry::TVec3<f32> fn_80233BC4(JGeometry::TVec3<f32>& left, const JGeometry::TVec3<f32>& right)
 {
-    JGeometry::TVec3<f32> difference;
-    difference.sub(left, right);
+    JGeometry::TVec3<f32> difference(left);
+    difference.sub(right);
     return difference;
 }
-
+#pragma peephole reset
+#pragma optimization_level reset
 f32 fn_80233C08(JGeometry::TVec3<f32>& value)
 {
     f32 squared = value.squared();
