@@ -37,10 +37,19 @@ extern "C" void fn_8022E088(s32 idx, s32 n, JGeometry::TVec3f* out);
 extern "C" void fn_8022DF48(s32 idx);
 extern "C" void fn_8023DF68(s32 idx, const JGeometry::TVec3f& v);
 
+extern "C" const f32 lbl_80540460, lbl_80540464;
 static inline void tuGetCenter(u8* self, JGeometry::TVec3f& c) {
-    c.z = 0.0f;
-    c.x = 0.5f * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
-    c.y = 0.5f * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
+    f32 cx = *(f32*)(self + 0x68);
+    f32 cy = *(f32*)(self + 0x6c);
+    f32 k = lbl_80540460;
+    f32 x, y;
+    x = *(f32*)(self + 0x60) - cx;
+    x = k * x + cx;
+    y = *(f32*)(self + 0x64) - cy;
+    y = k * y + cy;
+    c.z = lbl_80540464;
+    c.x = x;
+    c.y = y;
 }
 
 static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
@@ -92,6 +101,7 @@ extern "C" Actor* fn_80289648(Actor* p, s16 n)
     return p;
 }
 
+extern "C" const f32 lbl_80540460, lbl_80540464, lbl_80540468;
 extern "C" void fn_802896A8(Actor* this_)
 {
     DrawRec rec;
@@ -99,48 +109,70 @@ extern "C" void fn_802896A8(Actor* this_)
 
     rec.b1d = -1;
     switch ((*(u32*)((u8*)this_ + 0x90) >> 12) & 0x1f) {
-    case 0:
-        PSMTXTrans(mtx, *(u16*)(*(u8**)((u8*)this_ + 0x240) + 2) * *(f32*)((u8*)this_ + 0x230) * 0.5f, 0.0f, -*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4) * *(f32*)((u8*)this_ + 0x234) * 0.5f);
-        break;
-    case 1:
-        PSMTXTrans(mtx, -*(u16*)(*(u8**)((u8*)this_ + 0x240) + 2) * *(f32*)((u8*)this_ + 0x230) * 0.5f, 0.0f, -*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4) * *(f32*)((u8*)this_ + 0x234) * 0.5f);
-        break;
-    case 2:
-        PSMTXTrans(mtx, *(u16*)(*(u8**)((u8*)this_ + 0x240) + 2) * *(f32*)((u8*)this_ + 0x230) * 0.5f, 0.0f, -*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4) * *(f32*)((u8*)this_ + 0x234) * 0.5f);
-        break;
-    case 3:
-        PSMTXTrans(mtx, *(u16*)(*(u8**)((u8*)this_ + 0x240) + 2) * *(f32*)((u8*)this_ + 0x230) * 0.5f, 0.0f, *(u16*)(*(u8**)((u8*)this_ + 0x240) + 4) * *(f32*)((u8*)this_ + 0x234) * 0.5f);
-        break;
+    case 0: {
+ const f32 x0=*(u16*)(*(u8**)((u8*)this_ + 0x240) + 2);
+ const f32 z0=-*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4);
+ f32 x=x0 * *(f32*)((u8*)this_ + 0x230);
+ f32 z=z0 * *(f32*)((u8*)this_ + 0x234);
+ f32 half=lbl_80540460;
+ PSMTXTrans(mtx,half*x,lbl_80540464,z*half);
+ break;
+}
+    case 1: {
+ const f32 x0=-*(u16*)(*(u8**)((u8*)this_ + 0x240) + 2);
+ const f32 z0=-*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4);
+ f32 x=x0 * *(f32*)((u8*)this_ + 0x230);
+ f32 z=z0 * *(f32*)((u8*)this_ + 0x234);
+ f32 half=lbl_80540460;
+ PSMTXTrans(mtx,half*x,lbl_80540464,z*half);
+ break;
+}
+    case 2: {
+ const f32 x0=*(u16*)(*(u8**)((u8*)this_ + 0x240) + 2);
+ const f32 z0=-*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4);
+ f32 x=x0 * *(f32*)((u8*)this_ + 0x230);
+ f32 z=z0 * *(f32*)((u8*)this_ + 0x234);
+ f32 half=lbl_80540460;
+ PSMTXTrans(mtx,half*x,lbl_80540464,z*half);
+ break;
+}
+    case 3: {
+ const f32 x0=*(u16*)(*(u8**)((u8*)this_ + 0x240) + 2);
+ const f32 z0=*(u16*)(*(u8**)((u8*)this_ + 0x240) + 4);
+ f32 x=x0 * *(f32*)((u8*)this_ + 0x230);
+ f32 z=z0 * *(f32*)((u8*)this_ + 0x234);
+ f32 half=lbl_80540460;
+ PSMTXTrans(mtx,half*x,lbl_80540464,z*half);
+ break;
+}
     default:
-        mtx[0][3] = 0.0f;
-        mtx[1][3] = 0.0f;
-        mtx[2][3] = 0.0f;
+        mtx[0][3] = lbl_80540464;
+        mtx[1][3] = lbl_80540464;
+        mtx[2][3] = lbl_80540464;
         break;
     }
 
     {
-        f32 s = sincosTable___5JMath[0];
-        f32 c = sincosTable___5JMath[1];
-        f32 a = *(f32*)((u8*)this_ + 0x230);
-        f32 b = *(f32*)((u8*)this_ + 0x234);
-
-        mtx[0][0] = a * (c * c);
-        mtx[1][0] = a * (c * s);
-        mtx[2][0] = a * -s;
-        mtx[0][1] = 1.0f * (s * s * c - c * s);
-        mtx[1][1] = 1.0f * (s * s * s + c * c);
-        mtx[2][1] = 1.0f * (c * s);
-        mtx[0][2] = b * (c * c * s + s * s);
-        mtx[1][2] = b * (c * s * s - c * s);
-        mtx[2][2] = b * (c * c);
-    }
+ f32 sasb,cc,casc,a0,a1,a2,a3,a4,a5,a6,a7,a8,cacc;
+ f32 sa,sc,sx,sy,sb,ca,cb,sz;
+ sa = sincosTable___5JMath[0]; sb=sa; sc=sa;
+ ca = sincosTable___5JMath[1]; cb=ca; cc=ca;
+ sx=*(f32*)((u8*)this_+0x230); sy=*(f32*)((u8*)this_+0x234); sz=lbl_80540468;
+ cacc=ca*cc; sasb=sa*sb; casc=ca*sc;
+ a0=cb*cc; a1=cb*sc; a2=-sb; a3=sasb*cc-casc; a4=sasb*sc+cacc; a5=sa*cb;
+ a6=cacc*sb+sa*sc; a7=casc*sb-sa*cc; a8=ca*cb;
+ mtx[0][0]=sx*a0; mtx[1][0]=sx*a1; mtx[2][0]=sx*a2;
+ mtx[0][1]=sz*a3; mtx[1][1]=sz*a4; mtx[2][1]=sz*a5;
+ mtx[0][2]=sy*a6; mtx[1][2]=sy*a7; mtx[2][2]=sy*a8;
+ }
 
     rec.w18 = (void*)mtx;
     rec.b21 = 1;
     rec.b1d = -2;
+    void* name=lbl_8053A198;
     if (*(s32*)((u8*)this_ + 4) < 8) {
         void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* tex = ((void* (*)(void*, u32))(*(void***)obj)[6])(obj, 0x54494d47);
+        void* tex = ((void* (*)(void*, u32, void*))(*(void***)obj)[6])(obj, 0x54494d47, name);
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), (u8*)this_ + 0xc, tex, &rec);
     }
 }
