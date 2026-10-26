@@ -42,7 +42,7 @@ extern "C" void GXSetBlendMode(s32 type, s32 src, s32 dst, s32 op);
 extern "C" void GXSetZMode(s32 enable, s32 func, s32 update);
 extern "C" void GXSetZCompLoc(s32 before);
 extern "C" void GXSetAlphaCompare(s32 comp0, s32 ref0, s32 op, s32 comp1, s32 ref1);
-extern "C" void GXSetColorUpdate(s32 enable);
+extern "C" void GXSetColorUpdate(u8 enable);
 extern "C" void GXSetAlphaUpdate(s32 enable);
 extern "C" void GXSetCullMode(s32 mode);
 extern "C" void GXBegin(s32 prim, s32 fmt, s32 nverts);
@@ -205,7 +205,7 @@ extern "C" void GXSetBlendMode(s32 type, s32 src, s32 dst, s32 op);
 extern "C" void GXSetZMode(s32 enable, s32 func, s32 update);
 extern "C" void GXSetZCompLoc(s32 before);
 extern "C" void GXSetAlphaCompare(s32 comp0, s32 ref0, s32 op, s32 comp1, s32 ref1);
-extern "C" void GXSetColorUpdate(s32 enable);
+extern "C" void GXSetColorUpdate(u8 enable);
 extern "C" void GXSetAlphaUpdate(s32 enable);
 extern "C" void GXSetCullMode(s32 mode);
 extern "C" void GXBegin(s32 prim, s32 fmt, s32 nverts);
@@ -383,14 +383,7 @@ extern "C" void fn_80158F70(char* p) {
     GXSetColorUpdate(0);
     GXSetAlphaUpdate(1);
     GXBegin(0x80, 0, 4);
-    {
-        f32 z = lbl_8053D440;
-        volatile f32* fifo = (volatile f32*)0xCC008000;
-        *fifo = z; *fifo = z; *fifo = z;
-        *fifo = w; *fifo = z; *fifo = z;
-        *fifo = w; *fifo = h; *fifo = z;
-        *fifo = z; *fifo = h; *fifo = z;
-    }
+    drawFadeQuad(w, h);
     GXSetColorUpdate(1);
     GXSetAlphaUpdate(0);
     }
