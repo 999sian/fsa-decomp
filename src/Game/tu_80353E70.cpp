@@ -2,6 +2,7 @@
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JMath/Inline.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct Actor;
 extern "C" void detach__5ActorFv(Actor* a);
@@ -72,11 +73,10 @@ extern "C" void fn_80353EE0(void* this_) {
 }
 
 #pragma fp_contract off
-static inline bool tugfNear(f32 x, f32 y) {
-    f32 xx = x*x;
-    f32 yy = y*y;
-    if (xx + yy <= lbl_8054273C) return true;
-    return false;
+static inline f32 tugfDistance(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    f32 x = a.x - b.x;
+    f32 y = a.y - b.y;
+    return JGeometry::TUtilf::sqrt(x*x + y*y);
 }
 #pragma fp_contract on
 
@@ -136,22 +136,22 @@ extern "C" void fn_80354030(char* this_) {
         break;
     case 3:
         if (*(s32*)(this_ + 0x2c4) <= 0 || (*(s32*)(this_ + 0x2c0) <= 0 && *(f32*)(this_ + 0xc) >= *(f32*)(this_ + 0x290) && *(f32*)(this_ + 0x10) >= *(f32*)(this_ + 0x294))) {
-            f32 ang;
             if (*(s32*)(this_ + 0x2c0) <= 0) {
-                *(f32*)(this_ + 0x290) = *(f32*)(this_ + 0x2a8) - lbl_80542730;
-                *(f32*)(this_ + 0x294) = (*(f32*)(this_ + 0x2ac) + *(f32*)(this_ + 0x2b4)) * lbl_80542738 + lbl_80542734;
+                f32 factor = 0.5f;
+                f32 x = *(f32*)(this_ + 0x2a8);
+                x -= lbl_80542730;
+                *(f32*)(this_ + 0x290) = x;
+                f32 y = *(f32*)(this_ + 0x2ac);
+                y += *(f32*)(this_ + 0x2b4);
+                *(f32*)(this_ + 0x294) = y * factor + lbl_80542734;
             } else {
                 f32 x = *(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc);
                 f32 y = *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10);
-                if (tugfNear(x, y)) {
-                    ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
-                } else {
-                    ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
-                }
-                goto angleReady;
+                JGeometry::TVec2<f32> delta(x, y);
+                delta.length();
             }
-            ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
-angleReady:
+calculateAngle:
+            f32 ang = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x290) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x294) - *(f32*)(this_ + 0x10));
             *(s16*)(this_ + 0x2d0) = (s16)(s32)(ang * lbl_80542740);
             *(s32*)(this_ + 0x2c4) = 6;
         }
