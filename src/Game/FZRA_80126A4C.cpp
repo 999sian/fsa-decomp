@@ -88,9 +88,9 @@ extern "C" void fn_80126A4C(void* this_, s32 state) {
         f32 q0 = lbl_8053CAB8;
         f32 q1 = lbl_8053CABC;
         *(f32*)(p + 0x60) = q0;
-        f32 q2 = lbl_8053CAC0;
+        f32 q2 = 20.0f;
         *(f32*)(p + 0x64) = q1;
-        f32 q3 = lbl_8053CAA0;
+        f32 q3 = 8.0f;
         *(f32*)(p + 0x68) = q2;
         *(f32*)(p + 0x6c) = q3;
         *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
