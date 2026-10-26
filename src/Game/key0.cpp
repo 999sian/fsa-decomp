@@ -70,6 +70,13 @@ static inline u32 key0PackFlags(const u8& flag, u32 mode, const u32& room, u32 k
     packed = __rlwimi(packed, kindValue, 24, 3, 7);
     return __rlwimi(packed, room, 0, 24, 31);
 }
+static inline u32 key0PackActorFlags(const u8* p) {
+    u32 mode = *(const u32*)(p + 0x23c);
+    u32 flag = p[0x2b5];
+    u32 packed = (mode << 30) | (flag << 29);
+    packed = __rlwimi(packed, *(const u32*)(p + 0x280), 24, 3, 7);
+    return __rlwimi(packed, *(const u32*)(p + 4), 0, 24, 31);
+}
 struct Key0Pt {
     f32 x, y;
     Key0Pt(f32 x_, f32 y_) { x = x_; y = y_; }
