@@ -190,7 +190,7 @@ extern "C" void fn_802CA7F4(u8* this_) {
     s32 j;
     s32 v;
     s32 w;
-    s32 arr1[7];
+    s32 arr1[5];
     s32 arr2[4];
     u8 mode;
     u32 hit;
@@ -234,6 +234,11 @@ extern "C" void fn_802CA7F4(u8* this_) {
         }
     }
 
+    {
+    u8* p;
+    s32 i;
+    s32 k;
+    u8* q;
     p = this_;
     for (i = 0; i < 4; i++) {
         if (*(s32*)(p + 0x244) != *(s32*)(p + 0x254)) {
@@ -303,8 +308,10 @@ extern "C" void fn_802CA7F4(u8* this_) {
         p += 4;
     }
 
-    p = this_;
+    }
+    {
     for (i = 0; i < 4; i++) {
+        p = this_ + i*4;
         this_[0x274 + i] = 0xff;
         if (fn_8022D75C(i)) {
             this_[0x274 + i] = fn_8023BCD4(i);
@@ -322,15 +329,8 @@ extern "C" void fn_802CA7F4(u8* this_) {
                 z = fn_8023E724(i)->z;
                 yy = fn_8023E724(i)->y - lbl_80540D9C;
                 x = fn_8023E724(i)->x;
-                o = (u8*)*(u32*)(p + 0x234);
-                *(f32*)(o + 0xa4) = x;
-                *(f32*)(o + 0xa8) = yy;
-                *(f32*)(o + 0xac) = z;
-                *(f32*)(o + 0x98) = lbl_80540D98;
-                *(f32*)(o + 0x9c) = lbl_80540D98;
-                *(f32*)(o + 0xa0) = lbl_80540D98;
-                *(f32*)(o + 0xb0) = lbl_80540D98;
-                *(f32*)(o + 0xb4) = lbl_80540D98;
+                (*(JPABaseEmitter**)(p + 0x234))->setGlobalTranslation(x, yy, z);
+                (*(JPABaseEmitter**)(p + 0x234))->setScale(lbl_80540D98, lbl_80540D98);
             }
         } else {
             if (*(u32*)(p + 0x234) != 0) {
@@ -340,8 +340,7 @@ extern "C" void fn_802CA7F4(u8* this_) {
                 *(s32*)(p + 0x234) = 0;
             }
         }
-        p += 4;
-    }
+    }    }
 }
 
 extern "C" void fn_802CADB0(u8* this_) {
