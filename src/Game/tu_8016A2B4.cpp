@@ -6,6 +6,13 @@
 #include "JSystem/JKernel/JKRArchive.h"
 #include "JSystem/JKernel/JKRHeap.h"
 extern "C" void* fn_800CECCC(const void*, u32);
+static inline void createMaterialAnimations(J3DModelData* data, JKRHeap* heap) {
+    for (u16 i = 0; i < data->getMaterialNum(); i++) {
+        J3DMaterialAnm* anm = new (heap, 0) J3DMaterialAnm;
+        data->getMaterialNodePointer(i)->change();
+        data->getMaterialNodePointer(i)->setMaterialAnm(anm);
+    }
+}
 static inline void loadTextureAnimation(JKRArchive* archive, const char* name, J3DModelData* data, J3DAnmTextureSRTKey** out) {
     *out = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, name), 0);
     (*out)->searchUpdateMaterialID(data);
@@ -131,15 +138,16 @@ extern "C" void* fn_8016A3AC() {
     return *(void**)(*(u8**)(lbl_8053AAF8 + 4) + 0x24);
 }
 
-extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const char* tex1, const char* tex2, const char* tev1, const char* tev2, u32 flags, JKRHeap* heap, J3DModel** model, J3DAnmTextureSRTKey** const outTex1, J3DAnmTextureSRTKey** outTex2, J3DAnmTevRegKey** outTev1, J3DAnmTevRegKey** outTev2)
+extern "C" void fn_8016A3BC(JKRArchive* archive, const char* modelName, const char* tex1, const char* tex2, const char* tev1, const char* tev2, u32 flags, JKRHeap* heap, J3DModel** model, J3DAnmTextureSRTKey** outTex1, J3DAnmTextureSRTKey** outTex2, J3DAnmTevRegKey** outTev1, J3DAnmTevRegKey** outTev2)
 {
     void* resource = 0;
     if (archive) resource = archive->getResource(0x4a334420, modelName);
     if (resource) {
         J3DModelData* data = J3DModelLoaderDataBase::load(resource, flags);
         if (tex1) {
-            *outTex1 = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex1), 0);
-            (*outTex1)->searchUpdateMaterialID(data);
+            J3DAnmTextureSRTKey*& animation = *outTex1;
+            animation = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, tex1), 0);
+            animation->searchUpdateMaterialID(data);
         } else if (outTex1) {
             *outTex1 = 0;
         }
