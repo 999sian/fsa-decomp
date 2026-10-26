@@ -113,7 +113,7 @@ extern "C" void fn_801A96B4(void* this_);
 extern "C" void fn_801A9CF4(void* this_);
 struct TtatTimers { u8 pad[0x234]; s32 t[3]; };
 struct TtatHandles { u8 pad[0x270]; s32 handles[4]; };
-static inline s32 ttatChildHandle(char* p, s32 index) {
+static inline s32& ttatChildHandle(char* p, s32 index) {
     TtatHandles* slot = (TtatHandles*)(p + index * 4);
     return slot->handles[0];
 }
@@ -231,10 +231,10 @@ extern "C" void fn_801A96B4(void* this_) {
                     *(s32*)(t + 0x238) = 50;
                 }
                 ang = (int)*(f32*)(t + 0x2b4);
-                v[0] = ((Actor*)t)->field_0C.x;
+                v[0] = *(f32*)(t+0xc);
                 ang += (u16)phase;
-                v[1] = ((Actor*)t)->field_0C.y;
-                v[2] = ((Actor*)t)->field_0C.z;
+                v[1] = *(f32*)(t + 0x10);
+                v[2] = *(f32*)(t + 0x14);
                 f32 childAngle = (f32)((u16)ang + 0x8000);
                 *(f32*)((char*)c + 0x2b4) = childAngle;
                 v[0] = v[0] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
@@ -330,9 +330,9 @@ extern "C" void fn_801A96B4(void* this_) {
             if (*(s32*)(t + 0x244) > 3) {
                 ((Actor*)t)->v07();
             } else {
-                s32 id2 = ((TtatHandles*)t)->handles[*(s32*)(t+0x244)];
-                if (id2 >= 0) {
-                    void* c2 = fn_801F666C(fn_801F856C(), id2);
+                id = ttatChildHandle(t, *(s32*)(t+0x244));
+                if (id >= 0) {
+                    void* c2 = fn_801F666C(fn_801F856C(), id);
                     if (c2 != 0) {
                         ((Actor*)c2)->v07();
                         *(s32*)(t + 0x234) = 10;
