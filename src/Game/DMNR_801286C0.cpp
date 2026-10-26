@@ -40,7 +40,7 @@ static inline void spawnCase4Inner(void* p) {
     f32 cy = box.d;
     f32 cx = box.c;
     f32 k = lbl_8053CAE0;
-    f32 y, x;
+    f32 x, y;
     x = box.a - cx;
     x = k * x + cx;
     y = box.b - cy;
