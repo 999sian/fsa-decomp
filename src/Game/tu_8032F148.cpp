@@ -742,7 +742,6 @@ static inline u8 enemyFlameHitResult(char* self, char* target) {
     }
     return hit;
 }
-#pragma opt_propagation off
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern const f32 lbl_80541ED0;
