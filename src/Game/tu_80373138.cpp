@@ -102,6 +102,17 @@ extern "C" s32 fn_80238A68(s32 handle);
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
 extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 arg);
 extern "C" f32 lbl_80474F98[];
+struct PlateTimer : Actor {
+    u8 pad_230[0x18];
+    s32 timer;
+    void tick() {
+        if (timer > 0) {
+            timer -= 1;
+            fn_80373198(this);
+        }
+    }
+};
+#pragma peephole off
 extern "C" void fn_803734B4(Actor* this_) {
     u8* p = (u8*)this_;
     f32 box[4];
@@ -111,8 +122,9 @@ extern "C" void fn_803734B4(Actor* this_) {
     *(f32*)(p + 0x3c) = 0.0f;
     *(f32*)(p + 0x40) = 0.0f;
     *(f32*)(p + 0x44) = 0.0f;
-    if (*(s32*)(p + 0x248) > 0) {
-        *(s32*)(p + 0x248) -= 1;
+    int timer = *(int*)(p + 0x248);
+    if (timer > 0) {
+        *(int*)(p + 0x248) = timer - 1;
         fn_80373198(this_);
     } else {
     }
@@ -208,7 +220,7 @@ extern "C" void fn_803734B4(Actor* this_) {
         *(s32*)(p + 0x23c) = 4;
     }
 }
-
+#pragma peephole reset
 extern "C" const f32 lbl_80542E50;
 extern "C" const f32 lbl_80542E58;
 extern "C" const f32 lbl_80542E5C;
