@@ -847,7 +847,7 @@ extern "C" void fn_8010E2D4(void* this_, s32 param) {
     case 32:
     case 33:
     case 34:
-        ((void (*)(void*, s32, s32))((void**)*(void**)this_)[12])(this_, 0xff, 1);
+        ((Actor*)this_)->v10(0xff, 1);
         break;
     case 35:
         fn_801D22DC(p + 0x2f4, 0x8, 2, 0);
