@@ -106,12 +106,12 @@ struct DrawObj {
 };
 
 
-extern f32 lbl_805430C8;
-extern f32 lbl_805430B8;
-extern f32 lbl_805430BC;
-extern f32 lbl_805430C0;
-extern f32 lbl_805430C4;
-extern f32 lbl_805430CC;
+extern const f32 lbl_805430C8;
+extern const f32 lbl_805430B8;
+extern const f32 lbl_805430BC;
+extern const f32 lbl_805430C0;
+extern const f32 lbl_805430C4;
+extern const f32 lbl_805430CC;
 extern void* lbl_804AF32C[];
 class J2DTextBox {
 public:
