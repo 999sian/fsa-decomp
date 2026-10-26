@@ -85,7 +85,7 @@ extern "C" void* fn_801F1184(void* this_);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
-static inline f32 WRTC_sinShort(s16 v) {
+static inline f32 WRTC_sinShort(const s16 v) {
     return JMath::sincosTable_.mTable[(u32)(u16)v >> 5].first;
 }
 static inline f32 WRTC_cosShort(s16 v) {
@@ -325,8 +325,8 @@ extern "C" void fn_800F8BAC(void* this_) {
                 ang = owner->m2b4;
             }
             JGeometry::TVec3<f32> res;
-            res.x = k * JMath::sincosTable_.mTable[(u32)(u16)ang >> 5].first + owner->x;
-            res.y = k * JMath::sincosTable_.mTable[(u32)(u16)ang >> 5].second + owner->y;
+            res.x = k * WRTC_sinShort(ang) + owner->x;
+            res.y = k * WRTC_cosShort(ang) + owner->y;
             res.z = 10.0f + owner->z;
             return res;
         }
