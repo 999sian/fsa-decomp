@@ -413,7 +413,7 @@ extern "C" void fn_802F5570(u8* this_, f32* __restrict src, u8* ent, f32* outPos
 #pragma opt_common_subs reset
 extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
     typedef JGeometry::TVec3<f32> V3;
-    s32 ret = 0;
+    bool ret = false;
     if (*(s32*)(this_ + 0xc21c) > 0) {
         f32 loX; f32 x;
         x = src[0]; loX = *(f32*)(this_ + 0x2368);
@@ -460,25 +460,17 @@ extern "C" u8 fn_802F58A8(u8* this_, f32* src, MtxPtr mtx) {
                 n2.y = lbl_805414F8;
                 n2.normalize();
                 n1.cross(V3(lbl_805414F8, lbl_80541518, lbl_805414F8), n2);
-                mtx[0][0] = n1.x;
-                mtx[0][1] = lbl_805414F8;
-                mtx[0][2] = n2.x;
-                mtx[0][3] = pos.x - dx;
-                mtx[1][0] = n1.y;
-                mtx[1][1] = lbl_80541518;
-                mtx[1][2] = n2.y;
-                mtx[1][3] = pos.y - dy;
-                mtx[2][0] = n1.z;
-                mtx[2][1] = lbl_805414F8;
-                mtx[2][2] = n2.z;
-                mtx[2][3] = pos.z;
-                ret = 1;
+                WarpMatrixSet802F(mtx, n1.x, 0.0f, n2.x, pos.x - dx,
+                                  n1.y, 1.0f, n2.y, pos.y - dy,
+                                  n1.z, 0.0f, n2.z, pos.z);
+                ret = true;
             }
         }
     }
     return (u8)ret;
 }
 
+#pragma opt_common_subs on
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
     f32 z = pos[2];
     if (*(s32*)(this_ + 0xc21c) > 0) {
@@ -2030,18 +2022,16 @@ extern "C" u32 lbl_8046F9F0[];
 extern "C" f32 lbl_80541598;
 #pragma opt_lifetimes off
 extern "C" void fn_802FC268(u8* self, u8* arr, s32 a, u32 v) {
-    JGeometry::TVec3<f32> trans;
-    trans = *(JGeometry::TVec3<f32>*)arr;
+    JGeometry::TVec3<f32> trans(*(JGeometry::TVec3<f32>*)arr);
     GXTexObj texObj;
     Mtx m;
     s32 cnt[16];
     GXTlutObj tlut[16];
     f32* pos=(f32*)arr;
     u16* idx=(u16*)v;
-    const f32 z=trans.z;
     f32 k=lbl_80541598*((f32)a-lbl_80541520);
     trans.y+=k;
-    trans.z=z+k;
+    trans.z+=k;
     PSMTXTrans(m,trans.x,trans.y,trans.z);
     fn_8013B3CC(lbl_8053AB10,m);
     for(int i=0;i<16;i++) {
