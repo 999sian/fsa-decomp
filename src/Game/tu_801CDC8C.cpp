@@ -649,15 +649,11 @@ extern "C" bool fn_801CF144(const u8* this_) {
 extern "C" s32 fn_801CF6B8(u8* this_);
 extern "C" s32 fn_801CD354(s32 side);
 extern void* lbl_8053AAF8;
-static inline s32 choosePointDirection(const u8* self, const f32* pt, u8 swap) {
-    f32 px = pt[0];
-    f32 sx = *(const f32*)(self + 0xc);
-    f32 py = pt[1];
-    f32 sy = *(const f32*)(self + 0x10);
-    f32 absY = py - sy;
-    f32 absX = px - sx;
-    absX = __fabsf(absX);
-    absY = __fabsf(absY);
+static inline s32 choosePointDirection(const u8* self, const f32* pt, const u8 swap) {
+    f32 dx = pt[0] - *(const f32*)(self + 0xc);
+    f32 dy = pt[1] - *(const f32*)(self + 0x10);
+    f32 absY = __fabsf(dy);
+    f32 absX = __fabsf(dx);
     if ((absX > absY && swap == 0) || (absX <= absY && swap == 1)) {
         return *(const f32*)(self + 0xc) < pt[0] ? 0 : 1;
     }
