@@ -2743,12 +2743,17 @@ static inline void playerMovementDelta(JGeometry::TVec3<f32>& out, const JGeomet
 }
 
 void fn_8027B648(char* p) {
+    JGeometry::TVec3<f32> t;
+    JGeometry::TVec3<f32> d;
+    JGeometry::TVec3<f32> v;
+    JGeometry::TVec3<f32> delta;
+    JGeometry::TVec3<f32> w;
     fn_80274988(p);
     if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4)) && U8(p, 0x3fa) >= 11 && U8(p, 0x3fa) < 35) {
-        JGeometry::TVec3<f32> t;
         fn_8027FA08(p, &t);
         JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 8);
-        JGeometry::TVec3<f32> d = t - pos;
+        playerMovementDelta(delta, t, pos);
+        d = delta;
         d.z = 0.0f;
         if (PSVECMag((Vec*)&d) >= 6.0f) {
             d.normalize();
@@ -2760,8 +2765,6 @@ void fn_8027B648(char* p) {
     }
     fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
     fn_80268B3C(p);
-    JGeometry::TVec3<f32> v;
-    JGeometry::TVec3<f32> w;
     if (U8(p, 0x3fa) == 10) {
         s32 dir = S32(p, 0x3dc);
         if (S32(p, 0xb38) < 0) {
