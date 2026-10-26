@@ -645,10 +645,10 @@ extern "C" u8 fn_8023EA28(s32 idx);
 extern "C" void fn_80230498(s32 i, JGeometry::TVec3<f32>* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern f32 lbl_80542DD8;
 extern f32 lbl_80542E24;
-static inline void drawPlayerFrames803712(char* self)
+static inline void drawPlayerFrames803712(char* self, char* p)
 {
-    for (s32 i = 0; i < 4; i++) {
-        char* p = self + i * 4;
+    s32 i;
+    for (i = 0; i < 4; i++, p += 4) {
 				if (*(s32*)(p + 0x374) != 0) {
 					*(s32*)(p + 0x374) -= 1;
 				}
