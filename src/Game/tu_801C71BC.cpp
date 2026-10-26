@@ -600,8 +600,8 @@ extern "C" void fn_801C7F98(char* this_) {
 extern "C" void fn_801C887C(char*);
 extern "C" void fn_800FE2E4(void*, void*, s32);
 extern "C" f32 lbl_8053EF00;
-static inline u8 tndrCurrentCursor(char* const p) {
-    return ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
+static inline u8 tndrCurrentCursor(void* p) {
+    return ((u8*)GetCurrentSlotPtr((char*)p + 0x358))[3];
 }
 extern "C" void fn_801C844C(char* p) {
     JGeometry::TVec3<f32> nextA;
@@ -615,7 +615,7 @@ extern "C" void fn_801C844C(char* p) {
     u8 pairA1;
     u8 pairA0;
     u8 x;
-    u8 c;
+    s32 c;
     u8 b;
     u32 a;
     u8* slot;
@@ -671,15 +671,15 @@ extern "C" void fn_801C844C(char* p) {
     bitsSecond = (*seed >> 9) | 0x3f800000;
     one = *(f32*)&bitsSecond - one;
     if (!(one < threshold)) return;
-    room = tndrCurrentCursor(p);
+    c = tndrCurrentCursor(p);
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), 1);
     b = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
-    if ((u32)room < slot[2]) slot[3] = room;
+    if ((u32)c < slot[2]) slot[3] = c;
     fn_800FD818(GetCurrentSlotPtr(p + 0x358), -1);
     a = ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
     slot = (u8*)GetCurrentSlotPtr(p + 0x358);
-    if ((u8)room < slot[2]) slot[3] = room;
+    if ((u8)c < slot[2]) slot[3] = c;
     if (&pairB1 != 0) pairB1 = a;
     if (&pairB0 != 0) pairB0 = b;
     one = 1.0f;
