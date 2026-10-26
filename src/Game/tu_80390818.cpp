@@ -393,15 +393,6 @@ static inline void Tu80390818_setMessage(Tu80390818_Sub* s, const u32 code, cons
     s->mA4[2] = anchor.z;
 }
 
-static inline void Tu80390818_setMessage(u32 code, Tu80390818_Sub* s, JGeometry::TVec3<f32> pos, JGeometry::TVec3<f32> anchor) {
-    s->m14C = code;
-    s->m08->setMessageCode(code >> 16, code & 0xffff);
-    JGeometry::setTVec3f(&pos.x, s->m98);
-    s->mA4[0] = anchor.x;
-    s->mA4[1] = anchor.y;
-    s->mA4[2] = anchor.z;
-}
-
 extern "C" void fn_80390EBC(Tu80390818* t) {
     switch (t->m24) {
     case 0:
