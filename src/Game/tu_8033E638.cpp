@@ -125,7 +125,13 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
         f32 yy = point.y * point.y;
         f32 length = JGeometry::TUtilf::sqrt(xx + yy);
         const f32* entry = &JMath::sincosTable_.mTable[(u16)angle >> 5].first;
-        point.set(length * entry[1], length * entry[0], 0.0f);
+        f32 y;
+        f32 x;
+        y = length * entry[0];
+        x = length * entry[1];
+        point.z = 0.0f;
+        point.y = y;
+        point.x = x;
         if ((u8)platformContains((f32*)(p + 0x60), point)) {
             fn_8022DF48(player);
             return 1;
