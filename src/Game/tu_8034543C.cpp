@@ -100,14 +100,13 @@ extern const f64 lbl_80542408;
 extern const f64 lbl_80542410;
 extern const f32 lbl_80542418;
 
-static inline f32 tuSqrt(const f32 mag) {
+static inline f32 tuSqrt(f32 mag) {
     if (mag > lbl_805423A0) {
-        f64 xd = mag;
-        f64 tmpd = __frsqrte(xd);
-        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * xd));
-        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * xd));
-        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * xd));
-        return (f32)(xd * tmpd);
+        f64 tmpd = __frsqrte(mag);
+        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * mag));
+        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * mag));
+        tmpd = lbl_80542400 * tmpd * (lbl_80542408 - (tmpd * tmpd * mag));
+        return (f32)(mag * tmpd);
     } else if (mag < lbl_80542410) {
         return *(f32*)__float_nan;
     } else if (fpclassify(mag) == 1) {
