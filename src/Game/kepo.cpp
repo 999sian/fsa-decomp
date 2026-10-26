@@ -161,15 +161,12 @@ static inline BOOL kepoStageFlag(s32 a, s32 b) {
 #pragma opt_propagation on
 extern "C" void fn_80219E4C(u8* self) {
     u8* globals;
-    unsigned int flag;
+    u32 flag;
     BOOL unlocked;
     s32 a;
     s32 b;
     u32 bVar1;
     u8* base;
-    f32 x;
-    f32 y;
-    f32 min;
 
     fn_801D0ED0(self);
     globals = lbl_80529DEC;
@@ -182,9 +179,9 @@ extern "C" void fn_80219E4C(u8* self) {
     *(s32*)(self + 0x2a8) = (*(u32*)(self + 0x90) & 0xffff) + 299;
     {
         u32 v = (*(u32*)(self + 0x90) >> 20) & 0x1f;
-        min = 1.5f;
-        x = (f32)v;
-        y = (f32)v;
+        f32 min = lbl_8053FC94;
+        f32 x = (f32)v;
+        f32 y = (f32)v;
         *(f32*)(self + 0x2ac) = __fsel(x - min, y, min);
     }
     *(s32*)(self + 0x2b0) = (*(u32*)(self + 0x90) >> 25) & 0x1f;
@@ -775,4 +772,5 @@ extern "C" void fn_8021906C(u8* self, void* arg) {
     fn_8021B548(self);
 }
 
+#pragma float_expressions on
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
