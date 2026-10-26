@@ -489,11 +489,15 @@ void fn_80265E88(char*);
 void fn_802490A8(char*);
 void fn_8026FD14(char*);
 void fn_80251D50(char* p) {
-    u8 airborne = 0;
-    s32 i = 0;
-    char* q = p;
+    s32 room;
+    char* q;
+    u8 airborne;
+    s32 i;
+    airborne = 0;
+    i = 0;
+    q = p;
     for (; i < 0x31; i++, q += 12) {
-        s32 room = S32(p, 0x3b4);
+        room = S32(p, 0x3b4);
         if (U8(fn_802D6A9C(), room + 0x131df) != 0) {
             if (F32(q, 0x40) > 0.0f) { airborne = 1; break; }
             if (i == 0x30) {
@@ -507,7 +511,7 @@ void fn_80251D50(char* p) {
         if (U8(p, 0xce8) == 0 && U8(p, 0x454) == 0 && S32(p, 0x11f4) == 0 &&
             U8(p, 0x435) == 0 && U8(p, 0x1216) == 0) {
             PlayerTrail* t = (PlayerTrail*)p;
-            for (int n = 0x30; n > 0; n--) {
+            for (s32 n = 0x30; n > 0; n--) {
                 t->pos[n] = t->pos[n-1];
                 t->onGround[n] = t->onGround[n-1];
             }
@@ -1740,8 +1744,9 @@ void fn_80242CB0(char* p) {
 }
 
 extern "C" u16 fn_80226850(f32* pos, u32 room);
+#pragma opt_common_subs off
 void fn_80242DAC(char* p) {
-    u16 code = fn_80226850((f32*)(p + 0x8), S32(p, 0x3b4));
+    register u16 code = fn_80226850((f32*)(p + 0x8), S32(p, 0x3b4));
     if (code == 0xb7) {
         F32(p, 0x414) += 0.05f;
     } else if (code == 0xb6) {
@@ -1759,9 +1764,10 @@ void fn_80242DAC(char* p) {
     } else if (code == 0x95) {
         F32(p, 0x418) -= 0.15f;
     } else {
-        f32 len = V3(p, 0x414).length() - 0.05f;
+        f32 len = V3(p, 0x414).length();
+        len -= 0.05f;
         if (len <= 0.0f) {
-            V3(p, 0x414).zero();
+            V3(p, 0x414).setAll(0.0f);
         } else {
             V3(p, 0x414).normalize();
             V3(p, 0x414).scale(len);
@@ -1770,20 +1776,20 @@ void fn_80242DAC(char* p) {
         return;
     }
     f32 len = V3(p, 0x414).length();
-    if (code - 0x96 <= 2 || code == 0x95) {
-        if (len < 2.0f) {
+    if ((u16)(code - 0x96) <= 2 || code == 0x95) {
+        if (len >= 2.0f) {
             V3(p, 0x414).normalize();
             V3(p, 0x414).scale(2.0f);
         }
     } else {
-        if (len < 0.5f) {
+        if (len >= 0.5f) {
             V3(p, 0x414).normalize();
             V3(p, 0x414).scale(0.5f);
         }
     }
     V3(p, 0x8) += V3(p, 0x414);
 }
-
+#pragma opt_common_subs on
 u8 fn_80243194(char* p, s32 i) { return fn_8022E438(S32(p, 0x4), i); }
 BOOL fn_802431B8(char* p) {
     for (int i = 0; i < 4; i++) {
