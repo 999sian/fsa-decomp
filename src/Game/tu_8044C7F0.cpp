@@ -65,7 +65,10 @@ struct MenuEmitters8044 {
     JPABaseEmitter* a[7];
     JPABaseEmitter* b[7];
     JPABaseEmitter* c[3];
-    JPABaseEmitter* d[2][2];
+    union {
+        JPABaseEmitter* d[2][2];
+        JPABaseEmitter* four[4];
+    };
     JPABaseEmitter* e[3];
 };
 
@@ -226,10 +229,10 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     u64* a;
     u64* b;
     s32 i;
-    u8* f;
-    f32 f31;
+    J2DPane* f;
     f32 f29;
     f32 f30;
+    f32 f31;
     f32 pos[3];
     if (index < 0) {
         return;
@@ -254,22 +257,22 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8))->setAlpha(0);
     (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8))->setAlpha(0);
     (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha288 + (u32)self[0x138]*8))->setAlpha(0);
-    if (*(void**)(self + self[0x138] * 4 + 0xb0) == NULL) {
-        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
-        f30 = *(f32*)(f + 0x2c) - *(f32*)(f + 0x24);
-        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
+    if (((void**)(self + 0xb0))[self[0x138]] == NULL) {
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
+        f30 = *(f32*)((u8*)f + 0x2c) - *(f32*)((u8*)f + 0x24);
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.y;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
+        f = (*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
         f31 += ((J2DPane*)f)->getBounds()->i.y;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f30 = ((J2DPane*)f)->getBounds()->i.y + f31 + f30 * lbl_80543E00;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
-        f29 = *(f32*)(f + 0x28) - *(f32*)(f + 0x20);
-        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
+        f29 = *(f32*)((u8*)f + 0x28) - *(f32*)((u8*)f + 0x20);
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.x;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
+        f = (*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
         f31 += ((J2DPane*)f)->getBounds()->i.x;
-        f = (u8*)(*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         pos[0] = ((J2DPane*)f)->getBounds()->i.x + f31 + f29 * lbl_80543E00;
         pos[1] = f30;
         pos[2] = lbl_80543DFC;
@@ -278,8 +281,8 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     *(u32*)((u8*)*(void**)(self + 0xb0 + self[0x138] * 4) + 0xf4) |= 1;
         *(u32*)((u8*)*(void**)(self + 0xb0 + self[0x138] * 4) + 0xf4) |= 2;
         *(u32*)((u8*)*(void**)(self + 0xb0 + self[0x138] * 4) + 0xf4) |= 4;
-    f = (u8*)(*(J2DPane**)(self + 4))->search(0x5063756c3031ULL);
-    f[0xb0] = 0;
+    f = (*(J2DPane**)(self + 4))->search(0x5063756c3031ULL);
+    f->hide();
 }
 
 #pragma opt_strength_reduction reset
