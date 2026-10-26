@@ -53,6 +53,13 @@ struct RoomArrays {
     u8 values1327C[4];
 };
 
+static inline bool roomPositionEquals(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    bool same = false;
+    f32 eps = JGeometry::TUtilf::epsilon();
+    if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, eps) && JGeometry::TUtilf::epsilonEquals(a.y, b.y, eps)) same = true;
+    return same;
+}
+
 extern char* lbl_8053AAF8;
 inline RoomArrays* roomArrays() {
     return *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
@@ -712,11 +719,16 @@ extern "C" bool fn_802D6D70(void* unused, f32* a, f32* b, s32 owner, u32 key) {
     return found;
 }
 
+#pragma opt_loop_invariants off
+#pragma opt_common_subs on
 extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode) {
     s32 i = 0;
     if (mode == 1) {
-        while (p->owners130C8[i] != (u32)-1) {
-            if (++i >= 8) {
+        do {
+            if (p->owners130C8[i] == (u32)-1) goto insert;
+        ++i;
+        } while(i < 8);
+        {
         i = 7;
         for (s32 j = 0; j < 7; j++) {
             p->keys13068[j] = p->keys13068[j + 1];
@@ -724,11 +736,15 @@ extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode
             p->positions13088[j].y = p->positions13088[j+1].y;
             p->owners130C8[j] = p->owners130C8[j + 1];
         }
-        break;
         }
-        }
+insert:
         p->keys13068[i] = key;
-        p->positions13088[i].set(pos[0], pos[1]);
+        f32 x;
+ f32 y;
+ y=pos[1];
+ x=pos[0];
+ p->positions13088[i].x=x;
+ p->positions13088[i].y=y;
         p->owners130C8[i] = owner;
         return;
     }
@@ -736,7 +752,8 @@ extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode
     s32 off4 = 0;
     s32 off8 = 0;
     for (i = 0; i < 8; i++) {
-        if ((((RoomArrays*)((u8*)p+off4))->keys13068[0] & 0xFFFFF07F) == (key & 0xFFFFF07F)) {
+        u32 k = ((RoomArrays*)((u8*)p+off4))->keys13068[0] & 0xFFFFF07F;
+        if (k == (key & 0xFFFFF07F)) {
             bool bVar4 = false;
             bool bVar5 = false;
             f32 eps = lbl_80541120 * FLT_EPSILON;
@@ -747,7 +764,7 @@ extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode
             }
             if (bVar4) {
                 bVar4 = false;
-                f32 dy = pair[1] - pos[1];
+                f32 dy = ((RoomArrays*)((u8*)p+off8))->positions13088[0].y - pos[1];
                 if (-eps <= dy && dy <= eps) {
                     bVar4 = true;
                 }
@@ -773,7 +790,8 @@ extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode
         off8 += 8;
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 extern "C" bool fn_802D72BC(char*, s32 bit) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     return (((u32*)(p + 0x12FE8))[bit / 32] & (1U << (bit % 32))) != 0;
