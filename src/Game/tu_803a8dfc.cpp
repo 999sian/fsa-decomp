@@ -2158,7 +2158,8 @@ struct Menu_Intro {
     s32 count;                  // 0x454
     u8 pad458[0x460 - 0x458];
     s16 m460[4];                // 0x460
-    u8 pad468[0x4bc - 0x468];
+    u8 pad468[0x4b8 - 0x468];
+    u8 selected[4];              // 0x4b8
     u8 ready[4];                // 0x4bc
     u8 pad4c0;
     u8 m4c1;
@@ -2235,41 +2236,80 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
     }
 }
 
-extern "C" void fn_803B0978(Menu_Intro* p) {
-    s16 t19 = *(s16*)(lbl_8050DB0C + 0x256);
-    s16 t20 = *(s16*)(lbl_8050DB0C + 0x252);
-    s16 t7 = *(s16*)(lbl_8050DB0C + 0x254);
-    s16 t18 = *(s16*)(lbl_8050DB0C + 0x258);
-    s32 r23 = t20 * t20;
-    s32 r22 = t7 * t7;
-    s32 r24 = t20 + t7;
-    f32 f31 = lbl_80543428 + (f32)t19;
-    s32 r21 = 0;
+#pragma opt_lifetimes off
+extern "C" void fn_803B0978(void* arg) {
+    Menu_Intro* p = (Menu_Intro*)arg;
+    Menu_Intro* q;
+    u64 (*tags3)[3];
+    TagPair* tags2;
+    s32 end;
+    s32 firstSq;
+    s32 secondSq;
+    s32 done;
+    s32 first;
+    s32 dist;
+    s32 period;
     s32 i;
-    u64 (*r26)[3] = (u64 (*)[3])lbl_80476270;
-    TagPair* r25 = lbl_804762D0;
-    for (i = 0; i < p->count; i++, r26++, r25++) {
-        if (p->ready[i] == 0xff && fn_80388EEC(i) != 0) {
-            p->m460[i] = 0;
-            f32 x = p->screens[p->cur]->search((*r26)[2])->getBounds()->i.x;
-            p->screens[p->cur]->search(r25->tag[1])->move(x, p->y420);
+    dist = *(s16*)(lbl_8050DB0C + 0x256);
+    first = *(s16*)(lbl_8050DB0C + 0x252);
+    s32 second = *(s16*)(lbl_8050DB0C + 0x254);
+    period = *(s16*)(lbl_8050DB0C + 0x258);
+    firstSq = first * first;
+    secondSq = second * second;
+    end = first + second;
+    f32 span = lbl_80543428 + (f32)dist;
+    done = 0;
+    tags3 = (u64 (*)[3])lbl_80476270;
+    tags2 = lbl_804762D0;
+    for (q=p, i = 0; i < p->count; i++, tags3++, tags2++, q=(Menu_Intro*)((u8*)q+2)) {
+        if (p->ready[i] == 0xff && (u8)fn_80388EEC(i) != 0) {
+            q->m460[0] = 0;
+            f32 x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+            p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
             p->ready[i] = fn_803A8DFC(p, i);
             fn_80458880(lbl_8053AF80, 0xb, -1);
         }
-        if (p->ready[i] == 0xff) {
-            if (p->m460[i] < r24) {
-                p->m460[i]++;
+        if (p->ready[i] != 0xff) {
+            if (q->m460[0] < end) {
+                q->m460[0]++;
+                if (q->m460[0] <= first) {
+                    s32 t = q->m460[0];
+                    f32 a = (f32)(t*t) / (f32)firstSq;
+                    f32 x = p->screens[p->cur]->search(tags2->tag[1])->getBounds()->i.x;
+                    p->screens[p->cur]->search(tags2->tag[1])->move(x, (p->y424 - lbl_80543428) + span*a);
+                    x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+                    p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + (f32)dist*a);
+                    a = (f32)q->m460[0] / (f32)first;
+                    if (p->cur < 2) {
+                        for(s32 k=0;k<2;k++) {
+                            p->screens[p->cur]->search(tags2->tag[k])->setAlpha((u8)(p->alpha[k]*a));
+                        }
+                    }
+                } else if (q->m460[0] <= end) {
+                    s32 t = end - q->m460[0];
+                    f32 off = (f32)dist * ((f32)(t*t) / (f32)secondSq);
+                    f32 x = p->screens[p->cur]->search(tags2->tag[1])->getBounds()->i.x;
+                    p->screens[p->cur]->search(tags2->tag[1])->move(x, p->y424 + off);
+                    x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+                    p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + off);
+                }
             }
+            if (q->m460[0] == end) done++;
         } else {
-            p->m460[i] = 0;
+            if (q->m460[0] < period) q->m460[0]++;
+            else q->m460[0] = 0;
+            f32 off = lbl_8054342C * JMASinShort((s16)((lbl_80543430/(f32)period)*(f32)q->m460[0]));
+            f32 x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+            p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + off);
         }
     }
-    for (i = 0; i < p->count; i++) {
-        p->m460[i] = 0;
+    if (done == p->count) {
+        p->timer = 0;
+        for (s32 i=0;i<p->count;i++) p->m460[i]=0;
+        p->m4c1=7;
     }
-    p->m4c1 = 7;
 }
-
+#pragma opt_lifetimes reset
 // NONMATCHING (99.5%): register allocation in the slide loops.
 #pragma opt_lifetimes off
 extern "C" void fn_803B0FD4(Menu_Intro* p) {
@@ -2344,49 +2384,86 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
 }
 #pragma opt_lifetimes reset
 extern "C" void fn_803B14F8(void* this_) {
-    char* p = (char*)this_;
+    Menu_Intro* p = (Menu_Intro*)this_;
+    u64 (*tags3)[3];
+    TagPair* tags2;
+    s32 total;
+    s32 b2;
+    s32 c2;
+    s32 done;
+    s32 b;
+    s32 a;
+    s32 d;
     s32 i;
-    s32 cnt;
-    s32 r21 = 0;
-    s16 a = *(s16*)(lbl_8050DB0C + 0x256);
-    s16 b = *(s16*)(lbl_8050DB0C + 0x252);
-    s16 c = *(s16*)(lbl_8050DB0C + 0x254);
-    s16 d = *(s16*)(lbl_8050DB0C + 0x258);
-    s32 bc = b + c;
-    VScreen_803B14F8* scr;
-    VPane_803B14F8* pn;
-    f32 f30;
-    f32 f31;
-    f32 f29;
-
-    f31 = lbl_80543428 + (f32)a;
-    cnt = *(s32*)(p + 0x454);
-    for (i = 0; i < cnt; i++) {
-        if (*(u8*)(p + 0x4b8 + i) == 0xff) {
-            if (fn_80388EEC(i) != 0) {
-                *(s16*)(p + 0x460 + i * 2) = 0;
-                scr = *(VScreen_803B14F8**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-                pn = scr->v3C(*(s32*)(lbl_8050DB0C + 0x10), *(s32*)(lbl_8050DB0C + 0x14));
-                f30 = getBounds__7J2DPaneFv(pn)[0];
-                pn = scr->v3C(*(s32*)(lbl_8050DB0C + 0x10), *(s32*)(lbl_8050DB0C + 0x14));
-                pn->move(f30, *(f32*)(p + 0x420));
-                *(u8*)(p + 0x4b8 + i) = (u8)fn_803A8DFC(this_, i);
-                fn_80458880(lbl_8053AF80, 0xb, -1);
-            }
+    s32 c;
+    f32 x;
+    f32 ratio;
+    f32 span;
+    a = *(s16*)(lbl_8050DB0C + 0x256);
+    b = *(s16*)(lbl_8050DB0C + 0x252);
+    c = *(s16*)(lbl_8050DB0C + 0x254);
+    d = *(s16*)(lbl_8050DB0C + 0x258);
+    b2 = b * b;
+    c2 = c * c;
+    total = b + c;
+    span = lbl_80543428 + (f32)a;
+    done = 0;
+    tags3 = (u64 (*)[3])lbl_80476270;
+    tags2 = lbl_804762D0;
+    for (i = 0; i < p->count; i++, tags3++, tags2++) {
+        u8* ready = (u8*)p + 0x4b8 + i;
+        if (*ready == 0xff && (u8)fn_80388EEC(i)) {
+            p->m460[i] = 0;
+            x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+            p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
+            *ready = fn_803A8DFC(p, i);
+            fn_80458880(lbl_8053AF80, 0xb, -1);
         }
-        if (*(u8*)(p + 0x4b8 + i) != 0xff) {
-            if (*(s16*)(p + 0x460 + i * 2) < bc) {
-                *(s16*)(p + 0x460 + i * 2) += 1;
-                if (*(s16*)(p + 0x460 + i * 2) > b) {
-                    r21++;
+        if (*ready != 0xff) {
+            if (p->m460[i] < total) {
+                p->m460[i]++;
+                if (p->m460[i] <= b) {
+                    s32 t = p->m460[i];
+                    ratio = (f32)(t * t) / (f32)b2;
+                    x = p->screens[p->cur]->search(tags2->tag[1])->getBounds()->i.x;
+                    f32 offset = span * ratio;
+                    p->screens[p->cur]->search(tags2->tag[1])->move(x, (p->y424 - lbl_80543428) + offset);
+                    x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+                    offset = (f32)a * ratio;
+                    p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + offset);
+                    ratio = (f32)p->m460[i] / (f32)b;
+                    if (p->cur < 2) {
+                        for (s32 k = 0; k < 2; k++) {
+                            p->screens[p->cur]->search(tags2->tag[k])->setAlpha((u8)(p->alpha[k] * ratio));
+                        }
+                    }
+                } else if (p->m460[i] <= total) {
+                    s32 t = total - p->m460[i];
+                    ratio = (f32)a * ((f32)(t * t) / (f32)c2);
+                    x = p->screens[p->cur]->search(tags2->tag[1])->getBounds()->i.x;
+                    p->screens[p->cur]->search(tags2->tag[1])->move(x, p->y424 + ratio);
+                    x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+                    p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + ratio);
                 }
             }
+            if (p->m460[i] == total) done++;
+        } else {
+            if (p->m460[i] < d) p->m460[i]++;
+            else p->m460[i] = 0;
+            f32 rate = lbl_80543430 / (f32)d;
+            s16 angle = (s16)(rate * (f32)p->m460[i]);
+            ratio = lbl_8054342C * JMath::sincosTable_.sinShort(angle);
+            x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
+            p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + ratio);
         }
     }
-    *(s32*)(p + 0x440) = 0;
-    (void)d; (void)f29; (void)cnt;
-    if (r21 != *(s32*)(p + 0x454)) {
-        r21 = 0;
+    if (done == p->count) {
+        p->timer = 0;
+        for (i = 0; i < p->count; i++) {
+            p->ready[i] = 0xff;
+            p->m460[i] = 0;
+        }
+        p->m4c1 = 4;
     }
 }
 
@@ -3182,6 +3259,7 @@ extern "C" void fn_803B6FD8(void* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
 extern const f32 lbl_805433CC, lbl_805433D0, lbl_805433D4, lbl_805433E8, lbl_805433EC, lbl_805433F0, lbl_805433F4, lbl_805433F8, lbl_805433FC, lbl_80543400;
 extern u8 lbl_8050EC80[];
 extern "C" u32 fn_80309D6C(void*, s32, s32);
