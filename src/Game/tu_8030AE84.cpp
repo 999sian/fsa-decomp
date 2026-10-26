@@ -286,6 +286,98 @@ extern "C" void fn_8030B774(u8* p) {
     }
 }
 
+extern "C" u16 fn_80226850(void* pos, int room);
+extern "C" void fn_8030B97C(u8* p) {
+    int room = fn_8023DE58(*(int*)(p + 0x288));
+    u32 ux;
+    u32 uy;
+    u16 ret;
+
+    if (room < 8) {
+        room = 8;
+    }
+
+    JGeometry::TVec3<f32> pos(*(Vec*)fn_8023E724(*(int*)(p + 0x288)));
+    ux = (u32)pos.x & ~7;
+    uy = (u32)pos.y & ~7;
+    pos.set((f32)ux, (f32)uy, 0.0f);
+
+    for (int i = 0; i < 0x40; i++) {
+        if (pos.x >= 512.0f) {
+            pos.x = 512.0f;
+            break;
+        }
+        ret = fn_80226850(&pos, room);
+        if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+            break;
+        }
+        pos.x += 8.0f;
+    }
+    *(int*)(p + 0x2a0) = (int)pos.x;
+    if (*(int*)(p + 0x2a0) < 0xf0) {
+        *(int*)(p + 0x2a0) = 0xf0;
+    }
+
+    pos.x = (f32)ux;
+    for (int i = 0; i < 0x40; i++) {
+        if (pos.x < 8.0f) {
+            pos.x = 0.0f;
+            break;
+        }
+        ret = fn_80226850(&pos, room);
+        if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+            pos.x += 8.0f;
+            break;
+        }
+        pos.x -= 8.0f;
+    }
+    *(int*)(p + 0x2a4) = (int)pos.x;
+    if (*(int*)(p + 0x2a4) < 0) {
+        *(int*)(p + 0x2a4) = 0;
+    }
+    if (*(int*)(p + 0x2a0) - *(int*)(p + 0x2a4) < 0xf0) {
+        *(int*)(p + 0x2a4) = *(int*)(p + 0x2a0) - 0xf0;
+    }
+
+    pos.set((f32)ux, (f32)uy, 0.0f);
+    for (int i = 0; i < 0x40; i++) {
+        if (pos.y >= 512.0f) {
+            pos.y = 512.0f;
+            break;
+        }
+        ret = fn_80226850(&pos, room);
+        if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+            break;
+        }
+        pos.y += 8.0f;
+    }
+    *(int*)(p + 0x2a8) = (int)pos.y;
+    if (*(int*)(p + 0x2a8) < 0xa0) {
+        *(int*)(p + 0x2a8) = 0xa0;
+    }
+
+    pos.y = (f32)uy;
+    for (int i = 0; i < 0x40; i++) {
+        if (pos.y < 8.0f) {
+            pos.y = 0.0f;
+            break;
+        }
+        ret = fn_80226850(&pos, room);
+        if (ret >= 8 && ret < 0x10 && (ret & 1)) {
+            pos.y += 8.0f;
+            break;
+        }
+        pos.y -= 8.0f;
+    }
+    *(int*)(p + 0x2ac) = (int)pos.y;
+    if (*(int*)(p + 0x2ac) < 0) {
+        *(int*)(p + 0x2ac) = 0;
+    }
+    if (*(int*)(p + 0x2a8) - *(int*)(p + 0x2ac) < 0xa0) {
+        *(int*)(p + 0x2ac) = *(int*)(p + 0x2a8) - 0xa0;
+    }
+}
+
 extern "C" int fn_8023DE58(int);
 extern "C" void fn_8030B97C(u8*);
 extern "C" int fn_8030B570(u8*, int*, int*);
