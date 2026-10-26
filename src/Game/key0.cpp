@@ -59,16 +59,11 @@ extern "C" void* fn_802C1614(void* this_, s16 freeFlag) {
 }
 
 // KEY0: register this key's tile with the room config.
-union Key0Packed {
-    u32 word;
-    struct {
-        u32 mode : 2;
-        u32 flag : 1;
-        u32 kind : 5;
-        u32 area : 16;
-        u32 room : 8;
-    } fields;
-};
+static inline u32 key0PackFlags(u32 mode, u32 flag, u32 kind, u32 room) {
+    u32 packed = (mode << 30) | (flag << 29);
+    packed = __rlwimi(packed, kind, 24, 3, 7);
+    return __rlwimi(packed, room, 0, 24, 31);
+}
 struct Key0Pt {
     f32 x, y;
     Key0Pt(f32 x_, f32 y_) { x = x_; y = y_; }
