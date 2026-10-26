@@ -2126,7 +2126,6 @@ struct Tbl8048C1F8 {
 	s32 cursorFrames[30]; // 0x99c
 	s32 waitFrames[4];    // 0xa14
 	static s32 frame(const s32* values, s32 index) { return values[index]; }
-	static s32 frame(s32 index, const s32* values) { return values[index]; }
 };
 extern Tbl8048C1F8 lbl_8048C1F8;
 
@@ -2340,6 +2339,7 @@ static inline f32 cursorSpan80405FC0(const f32 delta, const s32 width) {
 	return lbl_805438C4 * (lbl_805438C8 * delta) / (f32)width;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_80405FC0(u8* self) {
 	f32 pos[3];
 	f32 p2[3];
@@ -2420,8 +2420,7 @@ extern "C" void fn_80405FC0(u8* self) {
 		q += 4;
 	}
 }
-
-#pragma opt_strength_reduction off
+#pragma opt_lifetimes reset
 extern "C" void fn_80406634(u8* self, s32 style, s32 enabled) {
     u8* tbl = (u8*)&lbl_8048C1F8;
     DrawRec rec;
