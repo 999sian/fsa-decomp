@@ -122,14 +122,16 @@ extern "C" void fn_8034EE3C(u8* self) {
             if (*(s32*)(self + 4) < 8) {
                 int q = v % 40;
                 if (q > 20) {
-                    f32 center = lbl_805425E0;
+                    f32 range;
+                    f32 center;
                     f32 f = q;
-                    f32 range = lbl_805425DC;
+                    center = 20.0f;
+                    range = 255.0f;
                     mode = (s32)(range * ((f - center) / center));
                 } else {
                     f32 f = q;
-                    f32 center = lbl_805425E0;
-                    f32 range = lbl_805425DC;
+                    f32 center = 20.0f;
+                    f32 range = 255.0f;
                     mode = (s32)(range * ((center - f) / center));
                 }
             } else if (v % 40 < 20) {
