@@ -70,6 +70,12 @@ extern f32 lbl_8054024C;
 extern f32 lbl_80540250;
 
 struct Vec2f {
+    f32 squared() const { return x * x + y * y; }
+    void scale(f32 n) { x *= n; y *= n; }
+    void normalize() {
+        f32 s = squared();
+        if (!(s <= JGeometry::TUtilf::epsilon())) scale(JGeometry::TUtilf::inv_sqrt(s));
+    }
     void set(const Vec2f& o) {
         f32 ox = o.x;
         f32 oy = o.y;
@@ -115,6 +121,7 @@ extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     return 0;
 }
 
+#pragma opt_pointer_aliasing off
 extern "C" void fn_802685D4(void* thisPtr) {
     u8* p = (u8*)thisPtr;
     u16 k;
@@ -233,7 +240,7 @@ move:
     }
     ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(p + 0x420));
 }
-
+#pragma opt_pointer_aliasing reset
 extern "C" void fn_80268B3C(u8* p) {
     if (fn_802486A0(p) == 5 && Player_IsLinked(p)) {
         fn_802685D4(p);
