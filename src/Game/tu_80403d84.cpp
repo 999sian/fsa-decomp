@@ -1463,11 +1463,11 @@ extern "C" void fn_8040B5A0(u8* self) {
  case 0:
   *(f32*)(self+0x3b8) += lbl_8054396C;
   {
-   u8* x = ((Slots208*)self)->slot[*(s32*)(self+0x340)];
+   u8* x = ((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0];
    if (*(f32*)(self+0x3b8) >= *(f32*)(x+0xc)) {
     *(f32*)(self+0x3b8) = *(f32*)(x+0xc);
-    *(s16*)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+0x22)=0;
-    fn_80402E08(((Slots208*)self)->slot[*(s32*)(self+0x340)],lbl_80543898,lbl_80543898);
+    *(s16*)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+0x22)=0;
+    fn_80402E08(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0],0.0f,0.0f);
     *(s16*)(self+0x428)=1;
     u32 id = 0x30081;
     (*(SoundHolder**)(self+0x2c8))->play(&id);
@@ -1478,14 +1478,13 @@ extern "C" void fn_8040B5A0(u8* self) {
    }
   }
   {
- u8* x = ((Slots208*)self)->slot[*(s32*)(self+0x340)];
+ u8* x = ((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0];
  u8* y = *(u8**)(x+4);
- 
  f32 half = lbl_805438C8;
  f32 right = *(f32*)(y+0x28);
  f32 left = *(f32*)(y+0x20);
  *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
- y = *(u8**)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+4);
+ y = *(u8**)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+4);
  u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
  f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
  f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
@@ -1494,7 +1493,7 @@ extern "C" void fn_8040B5A0(u8* self) {
   break;
  case 1:
   *(f32*)(self+0x3b8) -= lbl_8054396C;
-  if (*(f32*)(self+0x3b8) <= *(f32*)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+0xc)-lbl_80543970) {
+  if (*(f32*)(self+0x3b8) <= *(f32*)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+0xc)-lbl_80543970) {
    lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a |= (u8)(1 << *(s32*)(self+0x340));
    if (*(s32*)(self+0x340)==7) *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+1);
    else *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+2);
@@ -1504,14 +1503,14 @@ extern "C" void fn_8040B5A0(u8* self) {
    *(s32*)(self+0x350)=0x12;
   }
   {
- u8* x = ((Slots208*)self)->slot[*(s32*)(self+0x340)];
+ u8* x = ((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0];
  u8* y = *(u8**)(x+4);
  f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
  f32 half = lbl_805438C8;
  f32 right = *(f32*)(y+0x28);
  f32 left = *(f32*)(y+0x20);
  *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
- y = *(u8**)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+4);
+ y = *(u8**)(((Slots208*)(self+*(s32*)(self+0x340)*4))->slot[0]+4);
  u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
  f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
  f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
@@ -2514,6 +2513,7 @@ extern "C" f32 lbl_805438F8;
 extern "C" f32 lbl_805438FC;
 extern "C" f32 lbl_80543898;
 extern "C" f32 lbl_80543900;
+extern "C" void fn_8013CB44(void*, f32*, s32, s32, s32);
 extern "C" f32 lbl_805438D8;
 extern "C" f32 lbl_805438DC;
 extern "C" f32 lbl_80543904;
