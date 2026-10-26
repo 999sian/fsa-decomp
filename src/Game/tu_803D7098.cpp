@@ -145,8 +145,8 @@ extern "C" f32 lbl_8054353C;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void*, f32, f32, void*);
 extern "C" u8 fn_80402940(void*, s32, s32, f32, f32);
 extern "C" f32* getBounds__7J2DPaneFv(void*);
-extern "C" u64 lbl_80477180[][16];
-extern "C" u64 lbl_80477408[];
+extern "C" const u64 lbl_80477180[][16];
+extern "C" const u64 lbl_80477408[];
 
 struct FsaVtJ2D {
     virtual void v2(void);
@@ -225,6 +225,7 @@ struct FsaVtJ2D {
     virtual void v75(void);
     virtual void set76(void*, void*);
 };
+#pragma opt_common_subs off
 extern "C" void fn_803D7098(u8* param_1) {
     f32 f28;
     f32 f29;
@@ -282,21 +283,22 @@ extern "C" void fn_803D7098(u8* param_1) {
         if (a >= 0 && a < 4) {
             b = *(s16*)(param_1 + 0x6a);
             if (b >= 0) {
-                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
+                f32 tmpX, baseX, originX, targetX;
+                tmpX = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
                 f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
-                f31 = f0 + f28;
-                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[a][b])->getBounds())[0];
-                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[a])->getBounds())[0];
-                f30 = f0 + f28;
-                f29 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x8))->search(0x0050306B616B3030ULL)->getBounds())[0];
-                f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
+                baseX = f0 + tmpX;
+                tmpX = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[a][b])->getBounds())[0];
+                f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[*(s16*)(param_1 + 0x68)])->getBounds())[0];
+                targetX = f0 + tmpX;
+                originX = ((f32*)((J2DPane*)*(void**)(param_1 + 0x8))->search(0x0050306B616B3030ULL)->getBounds())[0];
+                tmpX = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477408[0])->getBounds())[0];
                 f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(0x004E646174613033ULL)->getBounds())[0];
-                f28 = f0 + f28;
+                tmpX = f0 + tmpX;
                 f0 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[0];
-                f0 = f0 + f28;
-                f0 = f0 - f29;
-                f0 = f0 + f30;
-                f0 = f0 - f31;
+                f0 = f0 + tmpX;
+                f0 = f0 - originX;
+                f0 = f0 + targetX;
+                f0 = f0 - baseX;
                 *(f32*)(param_1 + 0x58) = f0;
 
                 f28 = ((f32*)((J2DPane*)*(void**)(param_1 + 0x4))->search(lbl_80477180[0][0])->getBounds())[1];
@@ -320,7 +322,7 @@ extern "C" void fn_803D7098(u8* param_1) {
     }
     fn_80402E08(*(void**)(param_1 + 0x44), *(f32*)(param_1 + 0x58), *(f32*)(param_1 + 0x5c));
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_80431174(void*, u8);
 extern "C" s32 fn_80309C4C(void*, s32, s32);
 extern "C" void fn_80458880(void*, s32, s32);
