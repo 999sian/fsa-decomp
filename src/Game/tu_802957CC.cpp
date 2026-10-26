@@ -1429,7 +1429,7 @@ extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" f32 lbl_805406A8;
-static inline bool HouseInsideBounds(f32 x0, f32 y0, f32 x1, f32 y1, const JGeometry::TVec3f& pos) {
+static inline bool HouseInsideBounds(f32 x0, const f32 y0, f32 x1, const f32 y1, const JGeometry::TVec3f& pos) {
     bool inside = false;
     f32 x = pos.x;
     if (x >= x0) {
@@ -1622,14 +1622,19 @@ extern "C" void fn_80299FB0(char* self) {
     if (mode == 1) {
         fn_80238E08(*(void**)(self + 0x198));
         *(f32*)(self + 0x3c) = lbl_805406F4;
-        *(u8*)(self + 0x2b8) = 1;
+        *(volatile u8*)(self + 0x2b8) = 1;
         fn_801F0E34(self, 0x30004, 0);
     }
     *(f32*)(self + 0x250) = lbl_805406E4;
     *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
-        HouseGridBase(gridBase, *(JGeometry::TVec3f*)(self + 0xc), *(JGeometry::TVec2f*)(self + 0x60), lbl_80540678);
+        gridBase = *(JGeometry::TVec3f*)(self + 0xc);
+        gridBase.x += *(f32*)(self + 0x60);
+        gridBase.y += *(f32*)(self + 0x64);
+        gridBase.x += lbl_80540678;
+        gridBase.y += lbl_80540678;
+        gridBase.z = lbl_80540674;
         grid = gridBase;
         for (; i < 6; i++, self += 0xc) {
             grid.y = gridBase.y;
