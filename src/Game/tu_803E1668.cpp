@@ -577,6 +577,7 @@ extern "C" void fn_803E51C4(u8* param_1) {
     (void)lbl_80543664;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
