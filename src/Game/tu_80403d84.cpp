@@ -2156,16 +2156,20 @@ struct T5B10 {
 	u8 f65e;
 };
 
+static inline Pane408* menuPairPane(T5B10* self, const u64 (*names)[2], u32 index) {
+    return self->scr->search(names[index][0]);
+}
+
 extern "C" void fn_804054B8(T5B10* self) {
 	Tbl8048C1F8* t = &lbl_8048C1F8;
 	if (!self->scr->search(0x4E646174613130ULL)->f0b0) {
-		self->scr->search(0x4E646174613130ULL)->f0b0 = 1;
+		((J2DPane*)self->scr->search(0x4E646174613130ULL))->show();
 		self->scr->search(0x4E646174613130ULL)->v10(self->f394, self->f398);
 		self->f424 = 0;
 		u64* e = (u64*)((u8*)t + 0x420);
 		for (int i = 0; i < 4; i++, e += 2) {
-			self->scr->search(e[0])->f0b0 = 0;
-			self->scr->search(e[1])->f0b0 = 0;
+			((J2DPane*)self->scr->search(e[0]))->hide();
+			((J2DPane*)self->scr->search(e[1]))->hide();
 		}
 		s32 n = 0;
 		for (int j = 0; j < 4; j++) {
@@ -2173,39 +2177,44 @@ extern "C" void fn_804054B8(T5B10* self) {
 		}
 		if (n > 1) {
 			if (fn_804045F8(self, self->f340)) {
-				if ((self->f340 <= 5 || self->f340 == 6) && !(self->f38c & (1 << (self->f340 * 4 + 1)))) {
+				if (((u32)self->f340 <= 5 || self->f340 == 6) && !(self->f38c & (1 << (self->f340 * 4 + 1)))) {
 					if (self->f34c == 0) {
-						self->scr->search(t->names[lbl_80543880[self->f340]][0])->f0b0 = 1;
+						((J2DPane*)self->scr->search(t->names[lbl_80543880[self->f340]][0]))->show();
 					}
 					if (self->f34c == 2) {
-						self->scr->search(t->names[lbl_80543888[self->f340]][0])->f0b0 = 1;
+						((J2DPane*)self->scr->search(t->names[lbl_80543888[self->f340]][0]))->show();
 					}
-				} else if (self->f34c < n - 1) {
-					self->scr->search(t->names[((u8*)t)[0x714 + self->f340 * 3 + self->f34c]][0])->f0b0 = 1;
-					if (self->f34c > 0) {
-						self->scr->search(t->names[((u8*)t)[0x72c + self->f340 * 3 + self->f34c - 1]][0])->f0b0 = 1;
-					}
-				} else {
-					if (n - 1 == 4 && self->f34c < 2) {
-						self->scr->search(t->names[t->next[self->f340][self->f34c]][0])->f0b0 = 1;
-					}
-					if (self->f34c > 0) {
-						self->scr->search(t->names[t->prev[self->f340][self->f34c - 1]][0])->f0b0 = 1;
-					}
-				}
+
+                } else {
+                    if (self->f34c < n - 1) {
+                        ((J2DPane*)self->scr->search(t->names[((u8*)t)[0x714 + self->f340 * 3 + self->f34c]][0]))->show();
+                    }
+                    if (self->f34c > 0) {
+                        ((J2DPane*)self->scr->search(t->names[((u8*)t)[0x72c + self->f340 * 3 + self->f34c - 1]][0]))->show();
+                    }
+                }
+            } else {
+                if (n == 4) n = 3;
+                if (self->f34c < n - 1) {
+                    ((J2DPane*)self->scr->search(t->names[t->next[self->f340][self->f34c]][0]))->show();
+                }
+                if (self->f34c > 0) {
+                    ((J2DPane*)self->scr->search(t->names[t->prev[self->f340][self->f34c - 1]][0]))->show();
+                }
 			}
 		}
 	}
-	if (++self->f424 >= 15) {
+	self->f424++;
+	if (self->f424 >= 15) {
 		self->f424 = 0;
 		u64* e = (u64*)((u8*)t + 0x420);
 		for (int i = 0; i < 4; i++, e += 2) {
 			if (self->scr->search(e[0])->f0b0) {
-				self->scr->search(e[0])->f0b0 = 0;
-				self->scr->search(e[1])->f0b0 = 1;
+				((J2DPane*)self->scr->search(e[0]))->hide();
+				((J2DPane*)self->scr->search(e[1]))->show();
 			} else if (self->scr->search(e[1])->f0b0) {
-				self->scr->search(e[0])->f0b0 = 1;
-				self->scr->search(e[1])->f0b0 = 0;
+				((J2DPane*)self->scr->search(e[0]))->show();
+				((J2DPane*)self->scr->search(e[1]))->hide();
 			}
 		}
 	}
