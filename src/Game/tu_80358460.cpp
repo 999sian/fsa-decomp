@@ -239,6 +239,20 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
         }
     }
 }
+static inline void rotationForceDown803597EC(s32 i, const f32 cs) {
+    Vec8035A860 vec;
+    vec.x = lbl_8054286C;
+    vec.y = lbl_80542894 * cs;
+    vec.z = lbl_8054286C;
+    fn_8023DF68(i, &vec);
+}
+static inline void rotationForceUp803597EC(s32 i, const f32 cs) {
+    Vec8035A860 vec;
+    vec.x = lbl_8054286C;
+    vec.y = cs;
+    vec.z = lbl_8054286C;
+    fn_8023DF68(i, &vec);
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -680,8 +694,8 @@ extern "C" void fn_803597EC(u8* object) {
     s32 i;
     s32 a;
     s32 b;
-    s16 ang;
     s16 vel;
+    s16 ang;
     f32 cs;
     f32 cv[3];
     f32 box[4];
@@ -735,7 +749,7 @@ extern "C" void fn_803597EC(u8* object) {
     if (flags != 0) {
         if (*(s16*)(self + 0x238) == 0 && lbl_8054286C != *(f32*)(self + 0x240)) {
             *(s32*)(self + 0x254) = 30;
-            spawnGrid803597EC(self, lbl_80542868[1], 1);
+            spawnGridCounter803597EC(self, lbl_80542868[1], 1, flags);
         }
         if (*(f32*)(self + 0x240) > lbl_8054286C) {
             *(s16*)(self + 0x238) = 0x200;
@@ -743,7 +757,7 @@ extern "C" void fn_803597EC(u8* object) {
             *(s16*)(self + 0x238) = -0x200;
         }
     }
-    applyRotation803597EC(self);
+    applyRotationCounter803597EC(self, i);
     for (a = 0; a < 4; a++) {
         if ((s8)self[0x24a + a] != 0) {
             for (b = 0; b < 4; b++) {
@@ -769,7 +783,7 @@ extern "C" void fn_803597EC(u8* object) {
     }
     if (*(s16*)(self + 0x230) == 0 || *(s16*)(self + 0x230) == -0x8000) {
         if (*(s16*)(self + 0x238) != 0) {
-            spawnGrid803597EC(self, lbl_80542868[0], 0);
+            spawnGridCounter803597EC(self, lbl_80542868[0], 0, flags);
         }
         *(s16*)(self + 0x238) = 0;
     }
