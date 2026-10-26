@@ -19,7 +19,7 @@ extern "C" unsigned char fn_801F6758(void* pos, int idx, float margin);
 extern const float lbl_80541EEC;
 extern "C" int fn_8013CC50(int, char*, float, int, int, int, int, int, int);
 extern "C" void fn_8013CB44(void*, void*, int, int, int);
-extern float lbl_80541EBC;
+extern const float lbl_80541EBC;
 static inline f32 enemyRandUnit(u32* seed) {
     union { f32 f; u32 s; } out;
     f32 one = lbl_80541EBC;
@@ -31,7 +31,7 @@ static inline f32 enemyRandUnit(u32* seed) {
 struct RoomMgr131DF { u8 flag(u32 i) { return mFlags[i]; } u8 pad[0x131df]; u8 mFlags[1]; };
 extern float lbl_80541E98;
 extern const float lbl_80541E9C;
-extern float lbl_80541EBC;
+extern const float lbl_80541EBC;
 extern float lbl_80541ECC;
 extern float lbl_80541EE4;
 extern float lbl_80541EFC;
@@ -258,7 +258,7 @@ extern "C" void fn_803319B8(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern int fn_801F0E34(void* this_, unsigned int id, int c);
     extern float lbl_80541EFC;
-    extern float lbl_80541EBC;
+    extern const float lbl_80541EBC;
     int table[4] = {0, 1, 0, 1};
     *(int*)(this_ + 0x264) = table[*(int*)(this_ + 0x254)] + ((*(int*)(this_ + 0x98) & 1) << 1);
     if (*(int*)(this_ + 0x230) == 9) {
@@ -597,7 +597,7 @@ extern "C" unsigned char fn_80332378(char* this_) {
 #pragma opt_propagation reset
 extern "C" void fn_803324A8(char* this_) {
     extern unsigned char* lbl_8053AAF8;
-    extern float lbl_80541EBC;
+    extern const float lbl_80541EBC;
     extern float lbl_80541ED0;
     extern float lbl_80541ED8;
     extern float lbl_80541EE0;
@@ -623,9 +623,11 @@ extern "C" void fn_803324A8(char* this_) {
         fn_801EEC98(this_, *(void**)(this_ + 0x198), 0, &a, &b, 0, 0, 0);
         if (b < lbl_80541ED8 && a >= 0) {
             if (*(u8*)(this_ + 0x2a2) == 1) {
-                *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F14) + 0xc8;
+                f32 m = lbl_80541F14;
+            *(s32*)(this_ + 0x240) = (s32)(enemyRandUnit((u32*)(lbl_8053AAF8 + 0xb4)) * m) + 0xc8;
             } else {
-                *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F18) + 0x64;
+                f32 m = lbl_80541F18;
+            *(s32*)(this_ + 0x240) = (s32)(enemyRandUnit((u32*)(lbl_8053AAF8 + 0xb4)) * m) + 0x64;
             }
             if (*(u8*)(this_ + 0x2a1) == 0) {
                 fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80541EBC, 0x348, 0, 0, 0, 0, 1);
@@ -668,9 +670,11 @@ extern "C" void fn_803324A8(char* this_) {
                    (*(u8*)(this_ + 0x2a3) == 1 && b < lbl_80541F20))) {
         *(s32*)(this_ + 0x238) = 0x32;
         if (*(u8*)(this_ + 0x2a2) == 1) {
-            *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F14) + 0xc8;
+            f32 m = lbl_80541F14;
+            *(s32*)(this_ + 0x240) = (s32)(enemyRandUnit((u32*)(lbl_8053AAF8 + 0xb4)) * m) + 0xc8;
         } else {
-            *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F18) + 0x64;
+            f32 m = lbl_80541F18;
+            *(s32*)(this_ + 0x240) = (s32)(enemyRandUnit((u32*)(lbl_8053AAF8 + 0xb4)) * m) + 0x64;
         }
         if (*(u8*)(this_ + 0x2a1) == 0) {
             fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80541EBC, 0x348, 0, 0, 0, 0, 1);
@@ -685,15 +689,10 @@ extern "C" void fn_803324A8(char* this_) {
         }
         s32 room = *(s32*)(this_ + 4);
         if (((u8*)fn_802D6A9C() + 0x131df)[room] == 0 || *(f32*)(this_ + 0x2b4) == 0.0f) {
-            u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
-            union {
-                f32 f;
-                u32 s;
-            } r;
             f32 k = lbl_80541EBC;
-            *seed = *seed * 0x19660d + 0x3c6ef35f;
-            r.s = (*seed >> 9) | 0x3f800000;
-            ang = (u16)(ang + (s32)(lbl_80541F24 * (lbl_80541ED0 * (r.f - k) - k)));
+            f32 scale = lbl_80541ED0;
+            f32 spread = lbl_80541F24;
+            ang = (u16)(ang + (s32)(spread * (scale * enemyRandUnit((u32*)(lbl_8053AAF8 + 0xb4)) - k)));
             *(f32*)(this_ + 0x2b8) = f31 * JMath::sincosTable_.sinShort(ang);
             *(f32*)(this_ + 0x2bc) = f31 * JMath::sincosTable_.cosShort(ang);        } else {
             *(f32*)(this_ + 0x2b8) = f31 * JMath::sincosTable_.sinShort(ang);
@@ -718,7 +717,7 @@ extern "C" s32 fn_801A46FC(s32 h, void* p, void* q);
 extern float lbl_80541F28;
 extern "C" void fn_80332A60(char* this_) {
     extern unsigned char* lbl_8053AAF8;
-    extern float lbl_80541EBC;
+    extern const float lbl_80541EBC;
     extern float lbl_80541F28;
     extern float lbl_80541F14;
     extern float lbl_80541F18;
