@@ -59,6 +59,12 @@ struct Tu80317WordPair {
     u32 first, second;
     void set(u32 b, u32 a) { first = a; second = b; }
     void setOrdered(const u32 a, const u32 b) { first = a; second = b; }
+    void setFrom(const Tu80317WordPair& src) {
+        u32 a = src.first;
+        u32 b = src.second;
+        first = a;
+        second = b;
+    }
 };
 static inline u8 activate80317F18(u8* self, s32 idx) {
     s32 slot = *(s32*)(self + 0x244);
@@ -914,10 +920,11 @@ extern const f32 lbl_8054191C;
 extern "C" void fn_80319B4C(Actor* this_)
 {
     u8* self = (u8*)this_;
-    Vec vec;
+    JGeometry::TVec3f vec;
     s32 idx;
     u8* p;
-    u8 c;
+    int c;
+    u32 state;
 
     *(s32*)(self + 0x230) = 0;
     *(s32*)(self + 0x234) = -1;
@@ -971,7 +978,7 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(s32*)(self + 0x264) = 0;
         break;
     case 7:
-        vec = *(Vec*)(self + 0xc);
+        vec = *(JGeometry::TVec3f*)(self + 0xc);
         vec.x += lbl_80541904;
         *(s32*)(self + 0x258) = Actor_CreateByID(fn_801F856C(), 0x534e5043, *(s32*)(self + 4), (char*)&vec, 0x80000, -1, -1);
         idx = *(s32*)(self + 0x258);
@@ -1024,14 +1031,16 @@ extern "C" void fn_80319B4C(Actor* this_)
         *(f32*)(self + 0x24c) = lbl_80541918;
         *(f32*)(self + 0x250) = lbl_8054191C;
         *(f32*)(self + 0x254) = lbl_8054191C;
-        *(u64*)(self + 0x60) = *(u64*)(self + 0x248);
-        *(u64*)(self + 0x68) = *(u64*)(self + 0x250);
+        const Tu80317WordPair* __restrict box=(Tu80317WordPair*)(self+0x248);
+        ((Tu80317WordPair*)(self+0x60))->setOrdered(box[0].first,box[0].second);
+        ((Tu80317WordPair*)(self+0x68))->setOrdered(box[1].first,box[1].second);
     }
 
     if ((*(u32*)(self + 0x90) >> 27) != 0) {
         *(u32*)(self + 0x240) = (*(u32*)(self + 0x90) >> 24) & 3;
-        c = (u8)this_->v11();
-        if ((*(u32*)(self + 0x240) == 1 && c == 1) || (*(u32*)(self + 0x240) == 2 && c == 0)) {
+        c = this_->v11();
+        state=*(u32*)(self+0x240);
+        if ((state == 1 && (u8)c == 1) || (state == 2 && (u8)c == 0)) {
             *(u8*)(self + 0x270) = 0;
         } else {
             *(u8*)(self + 0x270) = 1;
