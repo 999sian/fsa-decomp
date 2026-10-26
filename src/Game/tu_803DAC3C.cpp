@@ -8,6 +8,7 @@ class FsaInitOwner;
 
 typedef void (FsaInitOwner::*FsaInitFn)();
 struct FsaInitFns { FsaInitFn t0; FsaInitFn t1; FsaInitFn t2; FsaInitFn t3; FsaInitFn t4; FsaInitFn t5; FsaInitFn t6; FsaInitFn t7; };
+struct FsaInitFnArray { FsaInitFn t[8]; };
 extern "C" FsaInitTriples lbl_804B0508[];
 extern "C" char lbl_80528468[];
 extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
