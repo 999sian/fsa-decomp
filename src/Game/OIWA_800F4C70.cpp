@@ -208,12 +208,6 @@ extern const f32 lbl_80463678[4][2];
 
 extern const f32 lbl_8053BE94;
 extern const f32 lbl_8053BF00;
-static inline bool oiwaInside(const Vec& point, const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
-    bool in = false;
-    if (point.x >= x0 && point.y >= y0 && point.x < x1 && point.y < y1) in = true;
-    return in;
-}
-
 extern "C" void fn_800F5E08(char* this_) {
     JGeometry::TVec3<f32> d;
     JGeometry::TVec3<f32> pt;
