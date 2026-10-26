@@ -173,9 +173,8 @@ static inline f32 ItemRandom321200() {
 
 static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) {
     f32 ang;
-    f32 s;
     ang = *angle;
-    s = *scale;
+    JGeometry::TVec3f factors(*scale, *scale, *scale);
     f32 sz, sy, sx;
     f32 cz, cx;
     sx = sin(lbl_80541AE0);
@@ -184,7 +183,6 @@ static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) 
     cx = cos(lbl_80541AE0);
     ang = cos(ang);
     cz = cos(lbl_80541AE0);
-    JGeometry::TVec3f factors(s, s, s);
     f32 cxcz = cx * cz;
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
