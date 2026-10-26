@@ -2164,6 +2164,14 @@ struct IntroTags {
     u64 p2[4][2];
 };
 
+static inline void IntroFade(Menu_Intro* p, const u64* tags, s32 count, s32 elapsed, s32 duration, u32 alphaOffset) {
+    if (p->cur < 2) {
+        for (s32 k = 0; k < count; k++) {
+            p->screens[p->cur]->search(tags[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
+        }
+    }
+}
+
 extern TagPair lbl_804762D0[];
 extern u8 lbl_8050DB0C[];
 extern "C" u8 fn_80389BF0(s32 idx, s32 id);
