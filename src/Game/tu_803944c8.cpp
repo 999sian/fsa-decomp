@@ -1835,6 +1835,9 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
         if (p->m2d6 != 0) {
             if (!p->testBit(p->cur)) {
                 if (!(p->layout->m16c != 0 && p->testBit(p->cur))) {
+                    f32 half;
+                    f32 difference;
+                    f32 spacing;
                     f32 fa;
                     f32 fb;
                     if ((p->layout->font->flags & 0x40) == 0) {
@@ -1842,9 +1845,12 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
                         fb = p->posA[p->cur];
                     } else {
                         fa = p->layout->baseF0;
-                        fb = p->posA[p->cur] + (p->posB[p->cur] - lbl_805431E8);
+                        spacing = p->posB[p->cur] - lbl_805431E8;
+                        fb = p->posA[p->cur] + spacing;
                     }
-                    s32 w = (s32)((fa - fb) * lbl_805431E4 + lbl_805431E4);
+                    difference = fa - fb;
+                    half = lbl_805431E4;
+                    s32 w = (s32)(half * difference + half);
                     if (w > 0) {
                         snprintf(lbl_8050E518, 0xf, lbl_80543298, w);
                         strcat(p->str2c0, lbl_8050E518);
@@ -1852,13 +1858,13 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
                         p->m2d0 += strlen(lbl_8050E518);
                     }
                 }
-                p->m2d6 = 0;
             }
+            p->m2d6 = 0;
         }
         if (ch == 10) {
             return;
         }
-        char c1 = (char)((u32)ch >> 8);
+        char c1 = (char)(((u32)ch >> 8) & 0xff);
         s32 has2 = 0;
         if (c1 != 0) {
             has2 = 1;
@@ -1904,6 +1910,7 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
     msgPutWide(p, ch);
 }
 
+#pragma opt_propagation reset
 extern "C" void fn_8039934C(MsgMeasure* m, s32 a, s32 b) {
     f32 ratio = m->fontW / (f32)m->font->getCellWidth();
     if (a > 0) {
