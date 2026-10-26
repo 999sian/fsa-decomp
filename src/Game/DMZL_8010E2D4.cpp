@@ -18,9 +18,6 @@ extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
 extern "C" u8 fn_802300EC(s32);
 extern "C" u8 fn_8023F264(s32);
 extern "C" u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
-static inline u8 DMZLRequest(s32 a, s32 b, s32 c, s32 d, JGeometry::TVec3<f32> pos, s32 e) {
-    return fn_8038AD24(a, b, c, d, &pos, e);
-}
 extern "C" s32 fn_80230CFC(s32);
 extern "C" s32 fn_801CD354(s32);
 extern "C" void fn_80230C6C(s32);
