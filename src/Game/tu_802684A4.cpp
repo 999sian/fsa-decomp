@@ -2,6 +2,10 @@
 // SetField_0x98 from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+static inline void playerSubtract2(JGeometry::TVec2<f32>& v, const JGeometry::TVec2<f32>& rhs) {
+    v.x -= rhs.x;
+    v.y -= rhs.y;
+}
 
 extern "C" void __dl__FPv(void*);
 extern "C" s32 fn_802486A0(void*);
@@ -101,64 +105,75 @@ extern "C" void fn_802685D4(void* thisPtr) {
     p[0x3c1] = 0;
     p[0x3c2] = 0;
     if (Player_GetField_0xce8(p)) {
-        return;
+        goto move;
     }
     if (fn_8025F418(p) && p[0x1216] == 0 && *(s32*)(p + 0x1228) == 0) {
         if (fn_8022D75C(*(s32*)(p + 0xd70))) {
-            return;
+            goto move;
         }
         if (Player_GetField_0x454(p)) {
-            return;
+            goto move;
         }
         if (!fn_80241E28(p, *(s32*)(p + 0x3bc), p + 0x2c)) {
-            return;
+            goto move;
         }
         JGeometry::TVec2<f32> a(*(f32*)(p + 8), *(f32*)(p + 0x30));
         if (fn_802265FC((Vec2f*)&a, *(s32*)(p + 0x3b4)) == 1) {
             JGeometry::TVec2<f32> b(*(f32*)(p + 0x2c), *(f32*)(p + 0xc));
             if (fn_802265FC((Vec2f*)&b, *(s32*)(p + 0x3b4)) == 1) {
-                JGeometry::TVec2<f32> d(*(f32*)(p + 8) - *(f32*)(p + 0x2c), *(f32*)(p + 0xc) - *(f32*)(p + 0x30));
-                d.normalize();
-                d.scale(lbl_80540234);
+                JGeometry::TVec2<f32> d(*(f32*)(p + 8), *(f32*)(p + 0xc));
+                d.x -= *(f32*)(p + 0x2c);
+                d.y -= *(f32*)(p + 0x30);
+                if (d.squared() >= 25.0f) {
+                    d.normalize();
+                    d.scale(lbl_80540234);
+                }
                 *(f32*)(p + 8) = *(f32*)(p + 0x2c) + d.x;
                 *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + d.y;
-                return;
+                goto move;
             }
         }
     }
     JGeometry::TVec2<f32> c(*(f32*)(p + 8), *(f32*)(p + 0xc));
     if (fn_802265FC((Vec2f*)&c, *(s32*)(p + 0x3b4)) == 1) {
-        JGeometry::TVec2<f32> d(*(f32*)(p + 8) - *(f32*)(p + 0x2c), *(f32*)(p + 0xc) - *(f32*)(p + 0x30));
-        d.normalize();
-        d.scale(lbl_80540234);
+        JGeometry::TVec2<f32> d(*(f32*)(p + 8), *(f32*)(p + 0xc));
+                d.x -= *(f32*)(p + 0x2c);
+                d.y -= *(f32*)(p + 0x30);
+        if (d.squared() >= 25.0f) {
+            d.normalize();
+            d.scale(lbl_80540234);
+        }
         *(f32*)(p + 8) = *(f32*)(p + 0x2c) + d.x;
         *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + d.y;
-        return;
+        goto move;
     }
-    JGeometry::TVec2<f32> e(*(f32*)(p + 8) - *(f32*)(p + 0x2c), *(f32*)(p + 0xc) - *(f32*)(p + 0x30));
+    JGeometry::TVec2<f32> e(*(f32*)(p + 8), *(f32*)(p + 0xc));
+    e.x -= *(f32*)(p + 0x2c);
+    e.y -= *(f32*)(p + 0x30);
     f32 sq = e.squared();
-    if (sq >= lbl_80540238) {
-        return;
+    if (!(sq >= lbl_80540238)) {
+        goto move;
     }
-    if (sq <= lbl_8054023C) {
-        return;
+    if (!(sq <= lbl_8054023C)) {
+        goto move;
     }
     if (p[0xce8]) {
-        return;
+        goto move;
     }
     if (fn_80240D64(p)) {
-        return;
+        goto move;
     }
     e.normalize();
     e.scale(lbl_80540240);
     *(f32*)(p + 8) = *(f32*)(p + 0x2c) + e.x;
     *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + e.y;
     fn_80268BC4((u8*)*(void**)(p + 0xbf0));
+move:
     *(f32*)(p + 0x2c) = *(f32*)(p + 8);
     *(f32*)(p + 0x30) = *(f32*)(p + 0xc);
     *(f32*)(p + 0x34) = *(f32*)(p + 0x10);
-    p[0x3c0] = 1;
     *(s32*)(p + 0x3bc) = *(s32*)(p + 0x3b4);
+    p[0x3c0] = 1;
     k = fn_80226850((Vec2f*)(p + 8), *(s32*)(p + 0x3b4));
     if (*(f32*)(p + 0x10) > lbl_80540228) {
         *(f32*)(p + 0x420) = lbl_80540228;
