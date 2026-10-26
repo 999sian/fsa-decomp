@@ -482,6 +482,12 @@ struct J2DTextBox : public J2DPane
         mGradientColor = b;
     }
 
+    void setFontColor(GXColor a, GXColor b)
+    {
+        mCharColor = a;
+        mGradientColor = b;
+    }
+
     // unused/inlined:
     void setFontSize();
     void setLineSpace();
