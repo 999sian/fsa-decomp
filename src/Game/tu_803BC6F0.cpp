@@ -207,6 +207,12 @@ typedef void* (*KeyGetFn)(void* self, u64 key);
 typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 
 // Virtual slot 15 of this_+8 maps a u64 key from the lbl_804765D0 table to an object, which is set on this_[cell+idx*4].
+static inline u8* menuSlot(char* p, s32 index) {
+    char* selected = p;
+    selected += index * 4;
+    return *(u8**)(selected + 0x38);
+}
+
 static inline void setCell(u8* this_, s32 cell, s32 idx, s32 keyOff, u8 flag) {
     u8* sub = *(u8**)(this_ + 8);
     void* o = ((KeyGetFn)(*(void***)sub)[15])(sub, *(u64*)(lbl_804765D0 + keyOff + idx * 8));
