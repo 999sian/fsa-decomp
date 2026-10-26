@@ -223,6 +223,7 @@ extern "C" void fn_802B8078(char* this_) {
 }
 
 #pragma opt_propagation on
+#pragma opt_common_subs on
 extern "C" void fn_802B8420(char* this_) {
     fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x173, 1, 0, 0, 0, 1, 1.0f);
     *(u8*)(this_ + 0x11c) = 0;
