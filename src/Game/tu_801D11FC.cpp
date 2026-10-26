@@ -69,7 +69,7 @@ struct fn_801D1974_obj {
             m2a8 = n;
         }
     }
-    void pushPoint(const JGeometry::TVec2<f32>& p) {
+    void pushPoint(JGeometry::TVec2<f32> p) {
         if (m2a8 < 16) {
             m2ac[m2a8].x = p.x;
             m2ac[m2a8].y = p.y;
@@ -123,19 +123,25 @@ extern "C" void fn_801D11FC(u8* this_)
 }
 #pragma opt_propagation reset
 extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
-    u8 ret = 0;
-    u8 lost;
+    fn_801D1974_obj* object = this_;
+    s32 ret;
+    s32 lost;
     u8 far_;
-    int idx;
+    s32 i;
+    s32 n;
+    s32 j;
+    PointTrail* trail;
+    fn_801D1974_obj* from;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
 
-    if (this_->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(this_, this_->m338)) {
-        idx = this_->m338;
-        fn_8022E114(idx, &pos);
-        if (fn_801F329C(this_, idx)) {
+    ret = 0;
+    if (object->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(object, object->m338)) {
+        lost = object->m338;
+        fn_8022E114(lost, &pos);
+        if (fn_801F329C(object, lost)) {
             fn_801CD150(&pos, &tmp);
             v.x = tmp.x;
             v.y = tmp.y;
@@ -148,72 +154,81 @@ extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
         p.x = v.x;
         p.y = v.y;
         p.z = lbl_8053F028;
-        if ((u8)((Actor*)this_)->v17(*(s32*)((u8*)this_ + 4), (f32*)&p)) {
-            s32 kind = fn_802265FC(&v, *(s32*)((u8*)this_ + 4));
+        if ((u8)((Actor*)object)->v17(*(s32*)((u8*)object + 4), (f32*)&p)) {
+            s32 kind = fn_802265FC(&v, *(s32*)((u8*)object + 4));
             if (kind >= 0x2c || kind < 0x27) {
-                this_->m2a8 = 0;
+                object->m2a8 = 0;
                 return 0;
             }
         }
         ret = 1;
-        if (!fn_801CF888(this_, &this_->m00c, &v, *(s32*)((u8*)this_ + 4))) {
-            this_->m2a8 = 0;
-            ((JGeometry::TVec3<f32>*)&this_->m32c)->set(v.x, v.y, lbl_8053F028);
+        if (!fn_801CF888(object, &object->m00c, &v, *(s32*)((u8*)object + 4))) {
+            object->m2a8 = 0;
+            ((JGeometry::TVec3<f32>*)&object->m32c)->set(v.x, v.y, lbl_8053F028);
         } else {
-            if (this_->m2a8 >= 1) {
+            if (object->m2a8 >= 1) {
                 f32 dy;
                 f32 dx;
-                dx = this_->m32c - this_->m00c.x;
-                dy = this_->m330 - this_->m00c.y;
-                f32 r = lbl_8053F02C + *(f32*)((u8*)this_ + 0x258);
+                dx = object->m32c - object->m00c.x;
+                dy = object->m330 - object->m00c.y;
+                f32 r = lbl_8053F02C + *(f32*)((u8*)object + 0x258);
                 f32 dx2 = dx * dx;
                 f32 dy2 = dy * dy;
                 if (dx2 + dy2 <= r * r) {
-                    this_->popPoint();
+                    if (object->m2a8 >= 1) {
+                        n = object->m2a8 - 1;
+                        for (i = 0; i < n; i++) {
+                            j = i + 1;
+                            from = (fn_801D1974_obj*)((u8*)object + j * 8);
+                            object->trail().pts[i].x = from->m2ac[0].x;
+                            object->trail().pts[i].y = from->m2ac[0].y;
+                        }
+                        object->m2a8 = n;
+                    }
                 }
             }
             far_ = 0;
             lost = 0;
-            if (this_->m2a8 == 0) {
+            if (object->m2a8 == 0) {
                 lost = 1;
             } else {
-                JGeometry::TVec2<f32> q1 = this_->m2ac[this_->pointIndex(this_->m2a8 - 1)];
-                if (fn_801CF888(this_, &q1, &v, *(s32*)((u8*)this_ + 4))) {
+                JGeometry::TVec2<f32> q1 = object->m2ac[object->pointIndex(object->m2a8 - 1)];
+                if (fn_801CF888(object, &q1, &v, *(s32*)((u8*)object + 4))) {
                     lost = 1;
                 } else {
                     f32 ex = v.x - q1.x;
                     f32 ey = v.y - q1.y;
                     if (ex * ex + ey * ey >= lbl_8053F030) {
                         far_ = 1;
-                        if (this_->m2a8 >= 2) {
-                            JGeometry::TVec2<f32> q2 = this_->m2ac[this_->pointIndex(this_->m2a8 - 2)];
-                            if (!fn_801CF888(this_, &q2, &v, *(s32*)((u8*)this_ + 4))) {
-                                if (this_->m2a8 > 0) {
-                                    this_->m2a8--;
+                        if (object->m2a8 >= 2) {
+                            JGeometry::TVec2<f32> q2 = object->m2ac[object->pointIndex(object->m2a8 - 2)];
+                            if (!fn_801CF888(object, &q2, &v, *(s32*)((u8*)object + 4))) {
+                                if (object->m2a8 > 0) {
+                                    object->m2a8--;
                                 }
                             }
                         }
                     }
                 }
             }
-            if (far_ || lost) {
-                if (this_->m2a8 >= 0x10) {
-                    this_->m2a8 = 0;
+            if (far_ || (u8)lost) {
+                if (object->m2a8 >= 0x10) {
+                    object->m2a8 = 0;
                     return 0;
                 }
-                if (lost && *(s32*)((u8*)this_ + 0x24c) > 2) {
-                    f32 y = v.y - (fn_8023E724(this_->m338)->y - fn_8023E578(this_->m338)->y);
-                    f32 x = v.x - (fn_8023E724(this_->m338)->x - fn_8023E578(this_->m338)->x);
-                    this_->pushPoint(JGeometry::TVec2<f32>(x, y));
+                if ((u8)lost && *(s32*)((u8*)object + 0x24c) > 2) {
+                    f32 y = v.y - (fn_8023E724(object->m338)->y - fn_8023E578(object->m338)->y);
+                    f32 x = v.x - (fn_8023E724(object->m338)->x - fn_8023E578(object->m338)->x);
+                    object->pushPoint(JGeometry::TVec2<f32>(x, y));
                 } else {
-                    this_->pushPoint(*(JGeometry::TVec2<f32>*)&v);
+                    object->pushPoint(*(JGeometry::TVec2<f32>*)&v);
                 }
             }
-            ((JGeometry::TVec3<f32>*)&this_->m32c)->set(this_->m2ac[this_->pointIndex(0)].x, this_->m2ac[this_->pointIndex(0)].y, lbl_8053F028);
+            ((JGeometry::TVec3<f32>*)&object->m32c)->set(object->m2ac[object->pointIndex(0)].x, object->m2ac[object->pointIndex(0)].y, lbl_8053F028);
         }
     }
-    if (!ret) {
-        this_->m2a8 = 0;
+    if (!(u8)ret) {
+        object->m2a8 = 0;
     }
     return ret;
 }
