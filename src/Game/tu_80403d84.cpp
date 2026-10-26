@@ -212,55 +212,6 @@ extern "C" void fn_80458880(void*, s32, s32);
 extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 extern "C" void fn_804023D0(void* p, void* q, u8 b);
 #pragma opt_common_subs off
-static inline void ClearPaneTimers80404648(u8* self, s16 value) {
-        u8* p = self;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = value;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = value;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x26) = value;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x20) = value;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x24) = value;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x26) = value;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x20) = value;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = value;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = value;
-		for (s32 i = 0; i < 3; i++, p += 0x18) {
-			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = value;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = value;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = value;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x26) = value;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x20) = value;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x22) = value;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x24) = value;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x26) = value;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x20) = value;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x22) = value;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x24) = value;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x26) = value;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x20) = value;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x22) = value;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x24) = value;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x26) = value;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x20) = value;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x22) = value;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x24) = value;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x26) = value;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x20) = value;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x22) = value;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x24) = value;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x26) = value;
-		}
-		*(s16*)(*(u8**)(self + 0x228) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0x22c) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0x230) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0x234) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0x238) + 0x22) = value;
-		*(s16*)(*(u8**)(self + 0x23c) + 0x22) = value;
-		*(s16*)(self + 0x41e) = value;
-}
-
 extern "C" void fn_80404648(u8* self) {
 	if (*(u32*)(self + 0x38c) & 0x10) {
         u8* p = self + 0xc;
