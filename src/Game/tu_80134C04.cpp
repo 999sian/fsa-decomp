@@ -4,7 +4,9 @@
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JGeometry/Box.h"
 static inline JGeometry::TBox2f screenBox(const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
-    return JGeometry::TBox2f(x0, y0, x1, y1);
+    JGeometry::TBox2f box;
+    box.i.x=x0; box.i.y=y0; box.f.x=x1; box.f.y=y1;
+    return box;
 }
 #include "JSystem/J3D/J3DSys.h"
 void* operator new(unsigned long size, JKRHeap* heap, int align);
@@ -1222,17 +1224,17 @@ extern "C" void* fn_80139300(char* this_) {
 
     if (((s32 (*)(void))fn_80021840)() == 2) {
         *(J2DTextBox**)(this_+0xc0) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585431ULL,
-            screenBox(lbl_8053CD90,lbl_8053CDB8,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            JGeometry::TBox2f(-30000.0f,210.0f,60000.0f+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),180.0f),
             (char*)(base+0x5f8),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
         *(J2DTextBox**)(this_+0xc4) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585432ULL,
-            screenBox(lbl_8053CD84,lbl_8053CDBC,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            JGeometry::TBox2f(-29997.0f,213.0f,60000.0f+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),180.0f),
             (char*)(base+0x5f8),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
     } else {
         *(J2DTextBox**)(this_+0xc0) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585431ULL,
-            screenBox(lbl_8053CD90,lbl_8053CDB8,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            JGeometry::TBox2f(-30000.0f,210.0f,60000.0f+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),180.0f),
             (char*)(base+0x60c),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
         *(J2DTextBox**)(this_+0xc4) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585432ULL,
-            screenBox(lbl_8053CD84,lbl_8053CDBC,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            JGeometry::TBox2f(-29997.0f,213.0f,60000.0f+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),180.0f),
             (char*)(base+0x60c),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
     }
     (*(J2DTextBox**)(this_+0xc0))->setBlackWhite(JUtility::TColor(0x50502800),JUtility::TColor(0xffff50ff));
