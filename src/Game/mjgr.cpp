@@ -230,17 +230,16 @@ static inline void mjgrKill(char* p, s32 off) {
     }
 }
 
-// near-match (~97%): callee-saved GPR assignment and box copy scheduling differ
-extern "C" void fn_802E83DC(char* p) {
-    s32 i;
-    switch (*(s32*)(p + 0x244)) {
-    case 0: {
+static inline void mjgrIdle(char* p) {
+    int i;
         ((JGeometry::TBox2<f32>*)(p + 0x80))->set(lbl_8054128C, lbl_8054128C, lbl_80541290, lbl_80541290);
         JGeometry::TBox2<f32> b;
-        u64* bd = (u64*)&b;
-        u64* sd = (u64*)(p + 0x80);
-        bd[0] = sd[0];
-        bd[1] = sd[1];
+        u32* bd = (u32*)&b;
+        u32* sd = (u32*)(p + 0x80);
+        u32 c, a;
+        a = sd[0]; c = sd[1]; bd[0] = a; bd[1] = c;
+        u32 e, d;
+        d = sd[2]; e = sd[3]; bd[2] = d; bd[3] = e;
         f32 px = *(f32*)(p + 0xc);
         f32 py = *(f32*)(p + 0x10);
         b.addPos(px, py);
@@ -321,6 +320,102 @@ extern "C" void fn_802E83DC(char* p) {
             }
         }
         fn_802E80A0(p);
+}
+
+// near-match (~97%): callee-saved GPR assignment and box copy scheduling differ
+#pragma opt_propagation off
+extern "C" void fn_802E83DC(char* p) {
+    u32 i;
+    switch (*(s32*)(p + 0x244)) {
+    case 0: {
+        ((JGeometry::TBox2<f32>*)(p + 0x80))->set(lbl_8054128C, lbl_8054128C, lbl_80541290, lbl_80541290);
+        JGeometry::TBox2<f32> b;
+        u32* bd = (u32*)&b;
+        u32* sd = (u32*)(p + 0x80);
+        u32 c, a;
+        a = sd[0]; c = sd[1]; bd[0] = a; bd[1] = c;
+        u32 e, d;
+        d = sd[2]; e = sd[3]; bd[2] = d; bd[3] = e;
+        f32 px = *(f32*)(p + 0xc);
+        f32 py = *(f32*)(p + 0x10);
+        b.addPos(px, py);
+        ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lbl_80541294, lbl_80541294, lbl_80541298, lbl_80541298);
+        b.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+        b.addPos(px, py);
+        *(s32*)(p + 0x250) = fn_8023AF14(&b, *(u32*)(p + 0x4), 0, lbl_80541268);
+        if (*(s32*)(p + 0x250) >= 0) {
+            if (*(void**)(p + 0x234) == 0) {
+                JGeometry::TVec3<f32> pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14));
+                *(void**)(p + 0x234) = fn_8013CC50(*(u32*)(p + 0x4), &pos, 0x2a7, 1, 0, 0, 0, 1, lbl_8054126C);
+                fn_80134DE4(lbl_8053AAF8, 9, 0);
+                if (*(s32*)((char*)fn_802D6A9C() + 0x4) == 1 && *(s32*)((char*)fn_802D6A9C() + 0x8) == 1
+                    && !fn_802D46D8(fn_802D6A9C(), *(s32*)(p + 0x250), 0x24e, 0)) {
+                    fn_8043D67C(lbl_8053AED0, 0x24e, *(s32*)(p + 0x250), 0);
+                    fn_802D46D8(fn_802D6A9C(), *(s32*)(p + 0x250), 0x24e, 1);
+                }
+            }
+            fn_801F0E34(p, 0x30050, 0);
+        } else {
+            if (*(void**)(p + 0x230) != 0) {
+                fn_801EE434(*(void**)(p + 0x230));
+                *(void**)(p + 0x230) = 0;
+            }
+            if (*(void**)(p + 0x234) != 0) {
+                fn_801EE434(*(void**)(p + 0x234));
+                *(void**)(p + 0x234) = 0;
+            }
+        }
+        fn_802E7DB8(p);
+        if (*(s32*)(p + 0x244) != 1) {
+            ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lbl_80541260, lbl_8054129C, lbl_80541264, lbl_805412A0);
+            b.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+            b.addPos(px, py);
+            for (i = 0; (s32)i < 4; i++) {
+                if (fn_8023B0F4(i, &b, *(u32*)(p + 0x4), lbl_80541268, 0) == 1 && fn_8023EEB4(i) == 'KEY0') {
+                    char* key = fn_801F666C(fn_801F856C(), fn_8023EF50(i));
+                    if (key != 0 && *(s32*)(key + 0x280) == 6) {
+                        JGeometry::TVec3<f32> kp(*(JGeometry::TVec3<f32>*)(key + 0xc));
+                        *(s32*)(p + 0x244) = 1;
+                        *(s32*)(p + 0x24c) = 20;
+                        s32 room = *(s32*)(p + 0x4);
+                        if (room >= 8) {
+                            Actor_CreateByID(fn_801F856C(), 'KMRI', room, &kp, 0, -1, -1);
+                        } else {
+                            JGeometry::TVec3<f32> fx(kp);
+                            if (*(void**)(p + 0x230) != 0) {
+                                fn_801EE434(*(void**)(p + 0x230));
+                            }
+                            if (*(void**)(p + 0x234) != 0) {
+                                fn_801EE434(*(void**)(p + 0x234));
+                            }
+                            if (*(void**)(p + 0x238) != 0) {
+                                fn_801EE434(*(void**)(p + 0x238));
+                            }
+                            if (*(void**)(p + 0x23c) != 0) {
+                                fn_801EE434(*(void**)(p + 0x23c));
+                            }
+                            if (*(void**)(p + 0x240) != 0) {
+                                fn_801EE434(*(void**)(p + 0x240));
+                            }
+                            *(s32*)(p + 0x230) = 0;
+                            *(s32*)(p + 0x234) = 0;
+                            *(s32*)(p + 0x238) = 0;
+                            *(s32*)(p + 0x23c) = 0;
+                            *(s32*)(p + 0x240) = 0;
+                            fn_8013CC50(*(u32*)(p + 0x4), &fx, 0x85, 0, 0, 0, 0, 1, lbl_8054126C);
+                            fn_8013CC50(*(u32*)(p + 0x4), &fx, 0x86, 0, 0, 0, 0, 1, lbl_8054126C);
+                            fn_8013CC50(*(u32*)(p + 0x4), &fx, 0x87, 0, 0, 0, 0, 1, lbl_8054126C);
+                            fn_801F0E34(p, 0x30069, 0);
+                        }
+                        fn_802C5284(key);
+                        fn_8023EE28(i);
+                        fn_801F34DC(p);
+                        break;
+                    }
+                }
+            }
+        }
+        fn_802E80A0(p);
         break;
     }
     case 1:
@@ -355,7 +450,7 @@ extern "C" void fn_802E83DC(char* p) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 // ---- fn_802E8A64_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
