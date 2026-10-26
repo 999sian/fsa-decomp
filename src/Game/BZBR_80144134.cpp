@@ -93,35 +93,31 @@ static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale)
     m[2][2] = s * (cx * ang);
 }
 
-static inline void bzbrRotScaleValue(f32 m[3][4], f32 s, const f32* angle) {
-    f32 ang;
-    m[0][3] = 0.0f;
-    m[1][3] = 0.0f;
-    m[2][3] = 0.0f;
-    ang = *angle;
+static inline void bzbrRotScaleValue(f32 m[3][4], const f32 s, f32 ang) {
+    f32 cx;
     f32 sz, sy, sx;
-    f32 cz, cy, cx;
+    f32 cz;
     f32 rx = 0.0f;
     sx = sin(rx);
     sy = sin(ang);
     sz = sin(rx);
     cx = cos(rx);
-    cy = cos(ang);
+    ang = cos(ang);
     cz = cos(rx);
     f32 cxcz = cx * cz;
     f32 sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
-    m[0][0] = s * (cy * cz);
-    m[1][0] = s * (cy * sz);
+    m[0][0] = s * (ang * cz);
+    m[1][0] = s * (ang * sz);
     m[2][0] = s * -sy;
     m[0][1] = s * (sxsy * cz - cxsz);
     m[1][1] = s * (sxsy * sz + cxcz);
-    m[2][1] = s * (sx * cy);
+    m[2][1] = s * (sx * ang);
     m[0][2] = s * (cxcz * sy + sxsz);
     m[1][2] = s * (cxsz * sy - sxcz);
-    m[2][2] = s * (cx * cy);
+    m[2][2] = s * (cx * ang);
 }
 
 extern "C" void fn_80144194(u8* this_) {
