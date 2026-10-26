@@ -280,8 +280,10 @@ extern "C" void fn_802B848C(char* this_) {
     }
 }
 
-static inline JGeometry::TVec2f subtractPosition(const JGeometry::TVec2f& value, const JGeometry::TVec2f& pos) {
-    return JGeometry::TVec2f(value.x - pos.x, value.y - pos.y);
+static inline JGeometry::TVec2f& subtractPosition(JGeometry::TVec2f& value, const JGeometry::TVec2f& pos) {
+    value.x -= pos.x;
+    value.y -= pos.y;
+    return value;
 }
 
 extern "C" void fn_802B8078(char* this_);
@@ -354,21 +356,9 @@ L156:
         } else {
             JGeometry::TVec3f p = *(JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_ + 0x298));
             p.y -= lbl_80540AD8;
-            JGeometry::TVec2f delta;
-            delta.x = p.x;
-            delta.y = p.y;
-            delta.x -= *(f32*)(this_+0xc);
-            delta.y -= *(f32*)(this_+0x10);
-            *(JGeometry::TVec2f*)(this_+0x284)=delta;
-            f32 len2 = ((JGeometry::TVec2f*)(this_+0x284))->squared();
-            if (!(len2 <= lbl_80540AB8 * *(f32*)&__float_epsilon)) {
-                f32 inv = len2;
-                if (!(len2 <= lbl_80540ABC)) {
-                    f32 r = __frsqrte(len2);
-                    inv = lbl_80540AC0 * r * (lbl_80540AC4 - len2 * (r * r));
-                }
-                ((JGeometry::TVec2f*)(this_+0x284))->scale(inv);
-            }
+            JGeometry::TVec2f delta(p.x,p.y);
+            *(JGeometry::TVec2f*)(this_+0x284)=subtractPosition(delta, *(JGeometry::TVec2f*)(this_+0xc));
+            ((JGeometry::TVec2f*)(this_+0x284))->normalize();
             *(f32*)(this_ + 0x254) = *(f32*)(this_ + 0x284) * *(f32*)(this_ + 0x26c);
             *(f32*)(this_ + 0x258) = *(f32*)(this_ + 0x288) * *(f32*)(this_ + 0x26c);
             fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x254), lbl_80540AC8, *(f32*)(this_ + 0x264));
