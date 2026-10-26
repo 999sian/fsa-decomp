@@ -324,6 +324,13 @@ extern "C" void fn_80132454(char* p, s32 state) {
     char* obj;
     f32 x;
     f32 y1;
+    JGeometry::TVec3<f32> tmp12;
+    JGeometry::TVec3<f32> vv6;
+    JGeometry::TVec3<f32> vv9;
+    JGeometry::TVec3<f32> vv15;
+    JGeometry::TVec3<f32> vv20;
+    JGeometry::TVec3<f32> tmp5;
+    JGeometry::TVec3<f32> v;
     *(s32*)(p + 0x234) = state;
     switch (state) {
     case 0:
@@ -333,7 +340,6 @@ extern "C" void fn_80132454(char* p, s32 state) {
     case 26:
         break;
     case 1:
-    case 4:
         fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x31, 0, 0, 0, 0, 1, lbl_8053CD00);
         fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x32, 0, 0, 0, 0, 1, lbl_8053CD00);
         fn_801F0E34(p, 0x400d9, 0);
@@ -341,25 +347,29 @@ extern "C" void fn_80132454(char* p, s32 state) {
     case 2:
         *(s32*)(p + 0x23c) = -1;
         break;
+    case 4:
+        fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x31, 0, 0, 0, 0, 1, lbl_8053CD00);
+        fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x32, 0, 0, 0, 0, 1, lbl_8053CD00);
+        fn_801F0E34(p, 0x400d9, 0);
+        break;
     case 5: {
-        JGeometry::TVec3<f32> tmp = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        *(s32*)(p + 0x288) = fn_8013CC50(*(void**)(p + 4), &tmp, 0x184, 0, -1, 0, 0, 1, lbl_8053CD00);
+        tmp5 = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        *(s32*)(p + 0x288) = fn_8013CC50(*(void**)(p + 4), &tmp5, 0x184, 0, -1, 0, 0, 1, lbl_8053CD00);
         *(u8*)(p + 0x11d) = 1;
         fn_801F0E34(p, 0x40090, 0);
         break;
     }
     case 6: {
-        JGeometry::TVec3<f32> vv;
         fn_8022FE80(0, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
         fn_8022FD8C(*(void**)(p + 0x198));
         sfx = 0x2b5;
         if (*(s32*)(p + 0x238) == 1) {
             sfx = 0x2b6;
         }
-        vv.x = lbl_8053CCF0;
-        vv.y = lbl_8053CD24;
-        vv.z = lbl_8053CCF0;
-        fn_8038BD08(0, (u16)sfx, *(s32*)(p + 4), &vv, 0x4022);
+        vv6.x = lbl_8053CCF0;
+        vv6.y = lbl_8053CD24;
+        vv6.z = lbl_8053CCF0;
+        fn_8038BD08(0, (u16)sfx, *(s32*)(p + 4), &vv6, 0x4022);
         fn_8011921C();
         fn_80118454();
         break;
@@ -371,13 +381,12 @@ extern "C" void fn_80132454(char* p, s32 state) {
         fn_80458FF0(lbl_8053AF80, 0x1000021, 0, 0);
         break;
     case 9: {
-        JGeometry::TVec3<f32> vv;
         fn_8022FE80(0, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
         fn_8022FD8C(*(void**)(p + 0x198));
-        vv.x = lbl_8053CCF0;
-        vv.y = lbl_8053CD24;
-        vv.z = lbl_8053CCF0;
-        fn_8038BD08(0, 0x2b0, *(s32*)(p + 4), &vv, 0x4022);
+        vv9.x = lbl_8053CCF0;
+        vv9.y = lbl_8053CD24;
+        vv9.z = lbl_8053CCF0;
+        fn_8038BD08(0, 0x2b0, *(s32*)(p + 4), &vv9, 0x4022);
         fn_8011921C();
         fn_80118454();
         break;
@@ -388,9 +397,9 @@ extern "C" void fn_80132454(char* p, s32 state) {
         fn_801F0E34(p, 0x400ef, 0);
         break;
     case 12: {
-        JGeometry::TVec3<f32> tmp = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        tmp.y = tmp.y - lbl_8053CD10;
-        Actor_CreateByID(fn_801F856C(), 0x414C4345, *(s32*)(p + 4), (f32*)&tmp, 3, -1, -1);
+        tmp12 = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        tmp12.y = tmp12.y - lbl_8053CD10;
+        Actor_CreateByID(fn_801F856C(), 0x414C4345, *(s32*)(p + 4), (f32*)&tmp12, 3, -1, -1);
         break;
     }
     case 13:
@@ -401,8 +410,7 @@ extern "C" void fn_80132454(char* p, s32 state) {
         fn_8037AE00(lbl_8053AD70);
         break;
     case 14: {
-        JGeometry::TVec3<f32> v;
-        f32 k = lbl_8053CD10;
+        f32 k;
         v.x = lbl_8053CCF0;
         v.y = lbl_8053CCF0;
         v.z = lbl_8053CCF0;
@@ -411,31 +419,32 @@ extern "C" void fn_80132454(char* p, s32 state) {
             obj = (char*)fn_801F666C(fn_801F856C(), id);
             if (obj != 0) {
                 v = *(JGeometry::TVec3<f32>*)(obj + 0xc);
-                x = v.x;
-                y1 = v.y + lbl_8053CD04;
-                *(f32*)(p + 0xc) = x;
-                *(f32*)(p + 0x10) = y1;
-                *(f32*)(p + 0x14) = lbl_8053CD08;
-                v.y = y1 + lbl_8053CD04;
-                v.x = x - lbl_8053CD0C;
-                for (i = 0; i < 4; i++) {
-                    v.x = v.x + k;
-                    fn_80230BF4((void*)i, 3);
-                    fn_80230498((void*)i, &v, 0x3f, 0xff, -0x80, -0x80, 1);
-                    fn_802303FC((void*)i, &v, 0xff);
-                }
             }
+        }
+        v.y += 32.0f;
+        x = v.x;
+        y1 = v.y;
+        ((Actor*)p)->field_0C.x = x;
+        ((Actor*)p)->field_0C.y = y1;
+        ((Actor*)p)->field_0C.z = 8.0f;
+        v.y += 32.0f;
+        v.x -= 50.0f;
+        k = 20.0f;
+        for (i = 0; i < 4; i++) {
+            v.x += k;
+            fn_80230BF4((void*)i, 3);
+            fn_80230498((void*)i, &v, 0x3f, 0xff, -0x80, -0x80, 1);
+            fn_802303FC((void*)i, &v, 0xff);
         }
         break;
     }
     case 15: {
-        JGeometry::TVec3<f32> vv;
         fn_8022FE80(0, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
         fn_8022FD8C(*(void**)(p + 0x198));
-        vv.x = lbl_8053CCF0;
-        vv.y = lbl_8053CD24;
-        vv.z = lbl_8053CCF0;
-        fn_8038BD08(0, 0x2b8, *(s32*)(p + 4), &vv, 0x4022);
+        vv15.x = lbl_8053CCF0;
+        vv15.y = lbl_8053CD24;
+        vv15.z = lbl_8053CCF0;
+        fn_8038BD08(0, 0x2b8, *(s32*)(p + 4), &vv15, 0x4022);
         fn_8011921C();
         fn_80118454();
         break;
@@ -446,23 +455,24 @@ extern "C" void fn_80132454(char* p, s32 state) {
         fn_801F0E34(p, 0x400ef, 0);
         break;
     case 17: {
-        void* o = ((void* (*)(void*))(*(void***)p)[15])(p);
+        void* o = (void*)((Actor*)p)->v13();
         fn_802D8050(fn_802D6A9C(), o, 1, 0xff);
         break;
     }
     case 18:
-    case 19:
         fn_801D22DC(p + 0x250, 0, 2, 0);
         fn_801D1F14(p + 0x250, lbl_8053CCF0);
         break;
+    case 19:
+        fn_801D22DC(p + 0x250, 0, 2, 0);
+        fn_801D1F14(p + 0x250, lbl_8053CCF0);
     case 20: {
-        JGeometry::TVec3<f32> vv;
         fn_8022FE80(0, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
         fn_8022FD8C(*(void**)(p + 0x198));
-        vv.x = lbl_8053CCF0;
-        vv.y = lbl_8053CD24;
-        vv.z = lbl_8053CCF0;
-        fn_8038BD08(0, 0x2b9, *(s32*)(p + 4), &vv, 0x4022);
+        vv20.x = lbl_8053CCF0;
+        vv20.y = lbl_8053CD24;
+        vv20.z = lbl_8053CCF0;
+        fn_8038BD08(0, 0x2b9, *(s32*)(p + 4), &vv20, 0x4022);
         fn_8011921C();
         fn_80118454();
         break;
@@ -472,10 +482,10 @@ extern "C" void fn_80132454(char* p, s32 state) {
         if (obj != 0) {
             *(u32*)(obj + 0xf4) = *(u32*)(obj + 0xf4) | 1;
             *(s32*)(obj + 0x24) = 1;
-            fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x31, 0, 0, 0, 0, 1, lbl_8053CD00);
+        }
+        fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x31, 0, 0, 0, 0, 1, lbl_8053CD00);
             fn_8013CC50(*(void**)(p + 4), p + 0xc, 0x32, 0, 0, 0, 0, 1, lbl_8053CD00);
             fn_801F0E34(p, 0x400d9, 0);
-        }
         *(u8*)(p + 0x11d) = 0;
         fn_801F0E34(p, 0x40090, 0);
         break;
