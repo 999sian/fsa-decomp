@@ -174,6 +174,11 @@ extern f32 lbl_8053F5DC;
 extern f32 lbl_8053F5E0;
 extern f32 lbl_8053F5E4;
 
+static inline f32 ipotRandom() {
+    u32 bits = (lbl_8053AAF8->rnd.get_bit32() >> 9) | 0x3f800000;
+    return *(f32*)&bits - 1.0f;
+}
+
 struct RupyDrop {
     u32 param;
     s32 count;
@@ -240,16 +245,16 @@ extern "C" void fn_801E728C(char* p, s32 type) {
         if (*(u32*)(p + 0x230) & 0x2000) {
             fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x262, 0, 0, 0, 0, 1, 1.0f);
             for (s32 i = 0; i < 4; i++) {
-                const RupyDrop& drop = lbl_80469C40[i];
                 s32 j;
-                s32 n = drop.count;
+                register s32 n = lbl_80469C40[i].count;
                 for (j = 0; j < n; j++) {
-                    s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, drop.param);
+                    s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, lbl_80469C40[i].param);
                     if (idx >= 0) {
                         char* rupy;
                         rupy = fn_801F666C(fn_801F856C(), idx);
                         if (rupy != 0) {
-                            JGeometry::TVec3<f32> vel(0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
+                            JGeometry::TVec3<f32> vel;
+                            vel.set(0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
                                                       0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
                                                       6.0f * lbl_8053AAF8->rnd.get_ufloat_1() + 6.0f);
                             *(JGeometry::TVec3<f32>*)(rupy + 0x3c) = vel;
