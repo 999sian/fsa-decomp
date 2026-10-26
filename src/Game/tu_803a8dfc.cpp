@@ -2839,6 +2839,13 @@ extern "C" void fn_803B5378(void* this_);
 extern "C" void fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_80458FF0(void* mgr, u32 id, s32 a, s32 b);
 extern void* sManager__8JUTVideo;
+static inline s32 MenuPlayerCount803B(MsgGame* game) {
+    s32 count = 0;
+    for (s32 i = 0; i < 4; i++) {
+        if (((u8*)game)[0x82] & (u8)(1 << i)) count++;
+    }
+    return count;
+}
 extern "C" void fn_803B6768(void* this_) {
     s32 count;
     s32* c320;
