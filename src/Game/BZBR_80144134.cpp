@@ -93,11 +93,16 @@ static inline void bzbrRotScale(f32 m[3][4], f32* angle, f32* scale) {
     m[2][2] = s * (cx * ang);
 }
 
-static inline void bzbrRotScaleValue(f32 m[3][4], const f32 ay, f32 s) {
-    f32 ang = ay;
-    f32 cx;
+static inline void bzbrRotScaleActor(f32 m[3][4], const u8* actor) {
+    f32 ang;
+    f32 s;
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    ang = *(const f32*)(actor + 0x254);
+    s = *(const f32*)(actor + 0x250);
     f32 sz, sy, sx;
-    f32 cz;
+    f32 cz, cx;
     f32 rx = 0.0f;
     sx = sin(rx);
     sy = sin(ang);
