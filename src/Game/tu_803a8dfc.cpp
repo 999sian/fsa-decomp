@@ -3431,7 +3431,7 @@ extern "C" void fn_803AA8F8(void* this_) {
         fn_803B1B60(this_);
         break;
     case 0x01:
-        fn_803B14F8((Menu_Intro*)this_);
+        fn_803B14F8(this_);
         break;
     case 0x02:
         fn_803B0FD4((Menu_Intro*)this_);
