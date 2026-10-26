@@ -16,6 +16,7 @@ struct fn_804461D0_Self {
 };
 extern "C" const u64 lbl_8048FC08[];
 extern "C" char lbl_80490020[];
+static inline const u64* getMenuRows(const u64* rows = lbl_8048FC08) { return rows; }
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_804AF86C[];
 extern "C" void fn_80402F04(void*, void*);
@@ -41,17 +42,20 @@ extern "C" u8* lbl_8053AED0;
 extern "C" f32 fn_8043D514(u8*);
 extern "C" f32 fn_8043D57C(u8*);
 extern "C" void fn_80402E08(void*, f32, f32);
+#pragma opt_propagation off
+#pragma opt_lifetimes on
 extern "C" void fn_804455E0(void* self_) {
     void** ptr = (void**)self_;
-    const u64* row = lbl_8048FC08;
+    const u64* row;
     int s;
     int d;
     int sTens;
     int dTens;
     int i;
     fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
-    void* anm;
-    for (i = 0; i < 4; i++, row += 24, ptr++) {
+    const ResTIMG* anm;
+    row = lbl_8048FC08;
+    for (i = 0; i < 4; i++, ptr++, row += 24) {
         if (i < 2) {
             fn_80402E08(ptr[2], lbl_80543D88, fn_8043D514(lbl_8053AED0));
             fn_80402E08(ptr[6], lbl_80543D88, fn_8043D514(lbl_8053AED0));
@@ -63,17 +67,13 @@ extern "C" void fn_804455E0(void* self_) {
         }
         if (self->g & (u8)(1 << i)) {
             if (((u8*)self->screen->search(row[23]))[0xb0] == 0) {
-                u8* pane = (u8*)self->screen->search(row[8]);
-                pane[0xb0] = 1;
-                pane = (u8*)self->screen->search(row[23]);
-                pane[0xb0] = 1;
+                self->screen->search(row[8])->show();
+                self->screen->search(row[23])->show();
             }
         } else {
             if (((u8*)self->screen->search(row[23]))[0xb0] != 0) {
-                u8* pane = (u8*)self->screen->search(row[8]);
-                pane[0xb0] = 0;
-                pane = (u8*)self->screen->search(row[23]);
-                pane[0xb0] = 0;
+                self->screen->search(row[8])->hide();
+                self->screen->search(row[23])->hide();
             }
         }
         if (((u8*)self->screen->search(row[23]))[0xb0] != 0) {
@@ -85,43 +85,44 @@ extern "C" void fn_804455E0(void* self_) {
             s = e % 60;
             sTens = s / 10;
             dTens = d / 10;
-            anm = fn_804030C4(0x54494D47, lbl_804B1B78[e / 60]);
-            SetAnimation(self->screen->search(row[13]), anm);
-            SetAnimation(self->screen->search(row[14]), anm);
-            anm = fn_804030C4(0x54494D47, lbl_804B1B78[sTens]);
-            SetAnimation(self->screen->search(row[15]), anm);
-            SetAnimation(self->screen->search(row[16]), anm);
-            anm = fn_804030C4(0x54494D47, lbl_804B1B78[s % 10]);
-            SetAnimation(self->screen->search(row[17]), anm);
-            SetAnimation(self->screen->search(row[18]), anm);
-            anm = fn_804030C4(0x54494D47, lbl_804B1B78[dTens]);
-            SetAnimation(self->screen->search(row[19]), anm);
-            SetAnimation(self->screen->search(row[20]), anm);
-            anm = fn_804030C4(0x54494D47, lbl_804B1B78[d % 10]);
-            SetAnimation(self->screen->search(row[21]), anm);
-            SetAnimation(self->screen->search(row[22]), anm);
+            anm = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1B78[e / 60]);
+            ((J2DPicture*)self->screen->search(row[13]))->changeTexture(anm, 0);
+            ((J2DPicture*)self->screen->search(row[14]))->changeTexture(anm, 0);
+            anm = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1B78[sTens]);
+            ((J2DPicture*)self->screen->search(row[15]))->changeTexture(anm, 0);
+            ((J2DPicture*)self->screen->search(row[16]))->changeTexture(anm, 0);
+            anm = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1B78[s % 10]);
+            ((J2DPicture*)self->screen->search(row[17]))->changeTexture(anm, 0);
+            ((J2DPicture*)self->screen->search(row[18]))->changeTexture(anm, 0);
+            anm = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1B78[dTens]);
+            ((J2DPicture*)self->screen->search(row[19]))->changeTexture(anm, 0);
+            ((J2DPicture*)self->screen->search(row[20]))->changeTexture(anm, 0);
+            anm = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1B78[d % 10]);
+            ((J2DPicture*)self->screen->search(row[21]))->changeTexture(anm, 0);
+            ((J2DPicture*)self->screen->search(row[22]))->changeTexture(anm, 0);
         }
         if (self->g & (u8)(1 << (i + 4))) {
             if (((u8*)self->screen->search(row[1]))[0xb0] == 0) {
-                ((u8*)self->screen->search(row[1]))[0xb0] = 1;
+                self->screen->search(row[1])->show();
             }
         } else {
             if (((u8*)self->screen->search(row[1]))[0xb0] != 0) {
-                ((u8*)self->screen->search(row[1]))[0xb0] = 0;
+                self->screen->search(row[1])->hide();
             }
         }
         if (((u8*)self->screen->search(row[1]))[0xb0] != 0) {
             u8 f = self->f[i];
             if (f >= 1 && f <= 4) {
-                anm = fn_804030C4(0x54494D47, lbl_804B1BA0[f - 1]);
-                SetAnimation(self->screen->search(row[0]), anm);
-                SetAnimation(self->screen->search(row[1]), anm);
+                anm = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1BA0[f - 1]);
+                ((J2DPicture*)self->screen->search(row[0]))->changeTexture(anm, 0);
+                ((J2DPicture*)self->screen->search(row[1]))->changeTexture(anm, 0);
             }
         }
     }
     self->g = 0;
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void fn_80445CDC(void* self_) {
     u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
