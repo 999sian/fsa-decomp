@@ -340,6 +340,7 @@ static inline bool wpcnBounce(char* p) {
 }
 
 extern "C" void fn_801313BC(char* p) {
+    s32 player;
     switch (*(s32*)(p + 0x268)) {
     case 0: {
         WpcnBox box = *(WpcnBox*)(p + 0x60);
@@ -357,9 +358,18 @@ extern "C" void fn_801313BC(char* p) {
     case 1: {
         fn_802308E0(*(s32*)(p + 0x26c));
         bool up;
-        *(f32*)(p + 0x280) += 0.05f;
-        register f32 dy = lbl_8053CCB0 - *(f32*)(p + 0x280);
-        WpcnVec d(0.0f, 2.0f * dy, 0.0f);
+        f32 zero;
+        f32 step;
+        f32 rate;
+        f32 scale;
+        f32 base;
+        zero = 0.0f;
+        step = 0.05f;
+        rate = *(f32*)(p + 0x280);
+        *(f32*)(p + 0x280) = rate + step;
+        base = lbl_8053CCB0;
+        scale = lbl_8053CCC0;
+        WpcnVec d(zero, scale * (base - *(f32*)(p + 0x280)), zero);
         ((WpcnVec*)(p + 0xc))->add(d);
         if (*(f32*)(p + 0x10) < *(f32*)(p + 0x288)) {
             *(f32*)(p + 0x10) = *(f32*)(p + 0x288);
@@ -376,20 +386,23 @@ extern "C" void fn_801313BC(char* p) {
         }
         break;
     }
-    case 2:
+    case 2: {
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
-        for (s32 i = 0; i < 4; i++) {
-            WpcnVec pos(*fn_8023E724(i));
-            pos.y -= *(f32*)(p + 0x27c);
-            fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
+        WpcnVec pos;
+        s32 i = 0;
+        WpcnVec* posPtr = &pos;
+        for (; i < 4; i++) {
+            *posPtr = *fn_8023E724(i);
+            posPtr->y -= *(f32*)(p + 0x27c);
+            fn_80230498(i, *posPtr, 0xb0, 0xff, -0x80, -0x80, 1);
         }
         {
             bool bounced;
     static s32 sCount = 0;
     static f32 sT = lbl_8053CCA0;
     sT += lbl_8053CCA4;
-    if (sT >= lbl_8053CCA8) {
-        sT = lbl_8053CCA8;
+    if (sT >= 1.0f) {
+        sT = 1.0f;
     }
     sCount++;
     f32 dy;
@@ -416,43 +429,55 @@ extern "C" void fn_801313BC(char* p) {
             }
         }
         break;
+    }
     case 3:
         (*(s32*)(p + 0x278))++;
         if (*(s32*)(p + 0x278) >= 60) {
             fn_80130FAC(p, 4);
         }
         break;
-    case 4:
+    case 4: {
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCD0);
-        for (s32 i = 0; i < 4; i++) {
-            WpcnVec pos(*fn_8023E724(i));
-            fn_801CD950(&pos.z, lbl_8053CCD4, *(f32*)(p + 0x27c));
-            fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
+        WpcnVec pos;
+        player = 0;
+        f32* height = &pos.z;
+        for (; player < 4; player++) {
+            pos = *fn_8023E724(player);
+            fn_801CD950(height, lbl_8053CCD4, *(f32*)(p + 0x27c));
+            fn_80230498(player, pos, 0xb0, 0xff, -0x80, -0x80, 1);
         }
         if (fn_8023E724(0)->z >= lbl_8053CCCC) {
             fn_80130FAC(p, 6);
         }
         break;
-    case 5:
+    }
+    case 5: {
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCD0);
-        for (s32 i = 0; i < 4; i++) {
-            WpcnVec pos(*fn_8023E724(i));
-            fn_801CD950(&pos.z, lbl_8053CCD4, *(f32*)(p + 0x27c));
-            fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
+        WpcnVec pos;
+        player = 0;
+        f32* height = &pos.z;
+        for (; player < 4; player++) {
+            pos = *fn_8023E724(player);
+            fn_801CD950(height, lbl_8053CCD4, *(f32*)(p + 0x27c));
+            fn_80230498(player, pos, 0xb0, 0xff, -0x80, -0x80, 1);
         }
         if (*(f32*)(fn_80119DD0() + 0x14) >= lbl_8053CCE4) {
             fn_80130FAC(p, 6);
         }
         break;
+    }
     case 6:
         fn_80130FAC(p, 7);
         break;
     case 7: {
         u8 done = 0;
         fn_801CD950((f32*)(p + 0x27c), lbl_8053CCC4, lbl_8053CCC8);
-        for (s32 i = 0; i < 4; i++) {
-            WpcnVec pos(*fn_8023E724(i));
-            if (fn_801CD950(&pos.z, lbl_8053CCA0, *(f32*)(p + 0x27c)) == 0) {
+        WpcnVec pos;
+        s32 i = 0;
+        f32* height = &pos.z;
+        for (; i < 4; i++) {
+            pos = *fn_8023E724(i);
+            if (fn_801CD950(height, lbl_8053CCA0, *(f32*)(p + 0x27c)) == 0) {
                 done = 1;
             }
             fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
