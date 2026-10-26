@@ -178,15 +178,14 @@ extern s32 lbl_804652A4[];
 extern f32 lbl_8053CD38, lbl_8053CD3C, lbl_8053CD40, lbl_8053CD44;
 #pragma opt_propagation off
 #pragma opt_propagation off
+static inline void crnvClearEffects(u8* p) { s32 i=0; u8* q=p; do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=0; q+=4; } while(i<2); }
 static inline void crnvSetState(u8* p, s32 state) {
-s32 i; u8* q;
 *(s32*)(p+0x230)=state;
 switch (*(s32*)(p+0x230)) {
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-i=0; q=p;
-do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=0; q+=4; } while(i<2);
+crnvClearEffects(p);
 detach__5ActorFv(p); break;
 }
 }
