@@ -532,6 +532,29 @@ extern "C" void fn_801220C4(u8* self) {
     fn_801F0E34(self, 0x400ED, 0);
 }
 
+static inline bool PlayerIsHidden(s32 idx) {
+    s32 slot = idx;
+    for (s32 i = 0; i < 4; i++) {
+        if (idx == fn_8023ECF0(i)) {
+            slot = i;
+            break;
+        }
+    }
+    return fn_80234E30(slot) || fn_80235448(idx);
+}
+
+static inline s32 FindActivePlayerSlot(s32 slot) {
+    if (!fn_8023E98C(slot)) {
+        return -1;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_8023ED8C(i) && slot == fn_8023ECF0(i) && fn_8022D75C(i)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 extern "C" void fn_80122148(u8* self) {
     s32 idx;
     s32 i;
@@ -558,20 +581,22 @@ extern "C" void fn_80122148(u8* self) {
             break;
         }
     }
-    if (fn_80234E30(slot) || fn_80235448(idx)) {
-        self[0x11d] = 0;
-    } else {
+    bool blocked = fn_80234E30(slot) || fn_80235448(idx);
+    if (!blocked) {
         player = *(s32*)(self + 0x344);
         if (player < 0 || player >= 4) {
             idx = -1;
         } else {
             idx = fn_8022EA0C(player);
         }
-        if (fn_8023BCD4(idx)) {
-            self[0x11d] = 1;
+        if (!fn_8023BCD4(idx)) {
+            goto invisible;
         } else {
-            self[0x11d] = 0;
+            self[0x11d] = 1;
         }
+    } else {
+invisible:
+        self[0x11d] = 0;
     }
     self[0x331] = 0;
     player = *(s32*)(self + 0x344);
@@ -588,17 +613,18 @@ extern "C" void fn_80122148(u8* self) {
         idx = fn_8022EA0C(player);
     }
     s32 slot2 = idx;
-    s32 k = -1;
-    if (fn_8023E98C(slot2)) {
+    s32 k;
+    if (!fn_8023E98C(slot2)) {
+        k = -1;
+    } else {
         for (k = 0; k < 4; k++) {
             if (fn_8023ED8C(k) && slot2 == fn_8023ECF0(k) && fn_8022D75C(k)) {
-                break;
+                goto found;
             }
         }
-        if (k == 4) {
-            k = -1;
-        }
+        k = -1;
     }
+found:
     if (k >= 0) {
         player = *(s32*)(self + 0x344);
         if (player < 0 || player >= 4) {
