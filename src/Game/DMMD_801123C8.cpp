@@ -94,7 +94,7 @@ extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
     }
 }
 
-extern "C" void fn_80112654(u8* this_, s32 n) {
+static inline bool dmmdSetAction(u8* this_, s32 n) {
     extern s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
     extern void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
     extern void fn_801D1F14(void* p, f32 f);
@@ -191,9 +191,114 @@ extern "C" void fn_80112654(u8* this_, s32 n) {
     case 13:
     case 14:
     case 15:
+        return false;
+    }
+    return true;
+}
+
+
+extern "C" void fn_80112654(u8* this_, s32 n) {
+    extern s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+    extern void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+    extern void fn_801D1F14(void* p, f32 f);
+    extern const f32 lbl_8053C648;
+
+    switch (n) {
+    case 3:
+        *(s32*)(this_ + 0x298) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(0, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        *(s32*)(this_ + 0x29c) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(1, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        fn_801D22DC(this_ + 0x260, 0xa, 0, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        goto set_flag;
+    case 4:
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(2, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(3, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(4, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        *(s32*)(this_ + 0x2a0) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(5, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        goto set_flag;
+    case 5:
+        fn_801D22DC(this_ + 0x260, 0x8, 0x2, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        goto set_flag;
+    case 6: {
+        u8* e;
+        e = *(u8**)(this_ + 0x298);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+            *(s32*)(this_ + 0x298) = 0;
+        }
+        e = *(u8**)(this_ + 0x29c);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+            *(s32*)(this_ + 0x29c) = 0;
+        }
+        e = *(u8**)(this_ + 0x2a0);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+            *(s32*)(this_ + 0x2a0) = 0;
+        }
+        fn_801D22DC(this_ + 0x260, 0xb, 0, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        goto set_flag;
+    }
+    case 7: {
+        JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
+        v.y += lbl_8053C648;
+        fn_8013CC50(*(s32*)(this_ + 0x4), &v, lbl_8053C644, 0x33b, 0, 0, 0, 0, 1);
+        goto set_flag;
+    }
+    case 8:
+        switch (*(s32*)(this_ + 0x234)) {
+        case 0:
+            fn_801D22DC(this_ + 0x260, 1, 2, 0);
+            break;
+        case 1:
+            fn_801D22DC(this_ + 0x260, 1, 2, 0);
+            break;
+        case 2:
+            fn_801D22DC(this_ + 0x260, 3, 2, 0);
+            break;
+        case 3:
+            fn_801D22DC(this_ + 0x260, 3, 2, 0);
+            break;
+        case 4:
+            fn_801D22DC(this_ + 0x260, 2, 2, 0);
+            break;
+        case 5:
+            fn_801D22DC(this_ + 0x260, 2, 2, 0);
+            break;
+        }
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        goto set_flag;
+    case 9:
+        fn_801D22DC(this_ + 0x260, 3, 2, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        goto set_flag;
+    case 10:
+        fn_801D22DC(this_ + 0x260, 6, 0, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc1, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc2, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc3, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc4, 0, 0, 0, 0, 1);
+        goto set_flag;
+    case 11:
+    default:
+set_flag:
+        this_[0x230] = 1;
+        break;
+    case 0:
+    case 1:
+    case 2:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
         goto set_state;
     }
-    this_[0x230] = 1;
 set_state:
     *(s32*)(this_ + 0x238) = n;
 }
@@ -422,9 +527,7 @@ extern "C" void fn_80112FC8(u8* this_) {
         f32 rad = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x254) - *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x258) - *(f32*)(this_ + 0x10));
         rad *= lbl_8053C63C;
         s32 ang = (s32)rad;
-        f32 sine=sincosTable___5JMath[(u16)ang >> 5].sin;
-        f32 speed=*(f32*)(this_+0x24c);
-        *(f32*)(this_ + 0x3c)=speed*sine;
+        *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x24c) * sincosTable___5JMath[(u16)ang >> 5].sin;
         *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x24c) * sincosTable___5JMath[(u16)ang >> 5].cos;
         s32 r29 = fn_801CD950((f32*)(this_ + 0xc), *(f32*)(this_ + 0x254), *(f32*)(this_ + 0x3c));
         s32 r30 = fn_801CD950((f32*)(this_ + 0x10), *(f32*)(this_ + 0x258), *(f32*)(this_ + 0x40));
