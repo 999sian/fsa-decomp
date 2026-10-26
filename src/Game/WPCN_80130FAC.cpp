@@ -288,6 +288,17 @@ static inline bool wpcnClamp(f32* value, const f32 limit) {
     return false;
 }
 
+static inline s32 wpcnFindPlayer(char* p, WpcnBox& box) {
+    for (s32 i = 0; i < 4; ++i) {
+        if ((*(u8*)(lbl_8053AAF8 + 0x82) & (u8)(1 << i)) &&
+            fn_8023B0F4(i, &box, *(s32*)(p + 4), 0, lbl_8053CCD4) &&
+            !fn_80230188(i) && *(s32*)(p + 0x26c) < 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 static inline bool wpcnAllReady() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i)) {
@@ -330,7 +341,6 @@ extern "C" void fn_801313BC(char* p) {
     case 0: {
         WpcnBox box = *(WpcnBox*)(p + 0x60);
         box.addPos(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14));
-        s32 i;
         for (i = 0; i < 4; i++) {
             if ((*(u8*)(lbl_8053AAF8 + 0x82) & (u8)(1 << i)) &&
                 fn_8023B0F4(i, &box, *(s32*)(p + 0x4), 0, lbl_8053CCD4) && !fn_80230188(i)) {
