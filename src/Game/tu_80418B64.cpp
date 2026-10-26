@@ -990,12 +990,6 @@ extern "C" void fn_8041E708(u8* this_, s32 i, s32 val, u8 flag) {
     this_[0x28B] |= (u8)(1 << idx);
 }
 
-static inline s32* HudReadCounter8041(s32 idx, s32 offset, s32& value) {
-    u8* p = lbl_80529DEC + idx * 4;
-    p += offset;
-    value = *(s32*)p;
-    return (s32*)p;
-}
 
 struct HudCounterFields8041 {
     u8 pad000[0x198];
@@ -1077,12 +1071,11 @@ static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
     HudStoreCountResult8041(self, idx, fn_80237810(idx));
 }
 
-#pragma optimization_level 3
 #pragma opt_propagation off
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
-    s32 cnt;
+    int cnt;
     s32 i;
-    s32 flag;
+    int flag;
     u32 bit;
     u8 mask;
 
@@ -1186,7 +1179,6 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     }
 }
 #pragma opt_propagation reset
-#pragma optimization_level reset
 extern "C" void fn_8041EDB0(u8* self) {
     u64* tags = lbl_8048D320;
     int i;
