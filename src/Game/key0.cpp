@@ -59,7 +59,7 @@ extern "C" void* fn_802C1614(void* this_, s16 freeFlag) {
 }
 
 // KEY0: register this key's tile with the room config.
-static inline u32 key0PackFlags(u32 flag, u32 mode, u32 room, u32 kind) {
+static inline u32 key0PackFlags(const u32 flag, const u32 mode, const u32 room, const u32 kind) {
     u32 packed = (mode << 30) | (flag << 29);
     packed = __rlwimi(packed, kind, 24, 3, 7);
     return __rlwimi(packed, room, 0, 24, 31);
@@ -1062,7 +1062,7 @@ extern "C" void fn_802C52DC(u8* p) {
     case 5: {
         *(s32*)(p + 0x240) = 4;
         *(u8*)(p + 0x2b1) = 1;
-        packed = key0PackFlags(*(u32*)(p + 0x23c), *(u8*)(p + 0x2b5), *(u32*)(p + 0x280), *(u32*)(p + 4));
+        packed = key0PackFlags(*(u8*)(p + 0x2b5), *(u32*)(p + 0x23c), *(u32*)(p + 4), *(u32*)(p + 0x280));
         if (!fn_802DCD0C(fn_802D6A9C())) {
             s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
             packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
