@@ -36,6 +36,13 @@ struct T804170EC_Color {
 };
 extern s32 lbl_8053AE00;
 extern const u64 lbl_8048CD50[];
+struct T80416BD0_Tags {
+    u64 first[11];
+    u64 second[11];
+    u64 third[9];
+    u64 fourth[6];
+    u64 grid[10][10];
+};
 extern const f32 lbl_805439C8;
 extern const f32 lbl_805439CC;
 extern const f32 lbl_805439D4;
@@ -119,11 +126,37 @@ void TU80414F6C::fn_80414F78() {
     }
 }
 
+void TU80414F6C::fn_80415028() {
+    u8* p = (u8*)this;
+    if (*(s32*)(p + 0x1c) < 0) {
+        return;
+    }
+    *(s32*)(p + 0x20) = *(s32*)(p + 0x20) - 1;
+    if (*(s32*)(p + 0x1c) > 0 && *(s32*)(p + 0x20) <= 0) {
+        return;
+    }
+}
+
+extern "C" f32 fn_80402940(void* obj, s32 idx, f32 a, s32 b, f32 c);
+void TU80414F6C::fn_80416038() {
+    s16* cnt = (s16*)((char*)this + 0x102);
+    *cnt = *cnt + 1;
+    s32 n = *cnt;
+    for (s32 i = 0; i < n; i++) {
+        fn_80402940(*(void**)((char*)this + 0x28), 0xf, 0.0f, 0, 0.0f);
+    }
+}
+
 extern "C" void fn_80416BD0(u8* p) {
-    int i;
+    u8* slot;
+    u8* slotA;
+    u8* slotB;
+    s32 k;
+    s32 i;
     const u64* first;
+    i = 0;
     const u64* t = lbl_8048CD50;
-    first = t;
+    first = t + i;
 
     fn_8042EB24(lbl_8053AEC4);
     *(s32*)(p + 0x1c) = -1;
@@ -133,43 +166,51 @@ extern "C" void fn_80416BD0(u8* p) {
     *(u16*)(p + 0x102) = 0;
 
     for (i = 0; i < 0xb; i++) {
-        (*(T80416BD0_Child**)(p + 0x24))->slot15(*first)->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * lbl_805439CC));
+        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*first);
+        pane->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * lbl_805439CC));
         first++;
     }
     {
     const u64* q = t + 11;
     for (i = 0; i < 0xb; i++) {
-        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x12e + i) * lbl_805439CC));
+        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*q);
+        pane->slot9((s32)((f32)*(u8*)(p + 0x12e + i) * lbl_805439CC));
         q++;
     }
     }
     {
     const u64* q = t + 22;
     for (i = 0; i < 9; i++) {
-        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x139 + i) * lbl_805439CC));
+        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*q);
+        pane->slot9((s32)((f32)*(u8*)(p + 0x139 + i) * lbl_805439CC));
         q++;
     }
     }
     {
     const u64* q = t + 31;
     for (i = 0; i < 6; i++) {
-        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x142 + i) * lbl_805439CC));
+        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*q);
+        pane->slot9((s32)((f32)*(u8*)(p + 0x142 + i) * lbl_805439CC));
         q++;
     }
 
     }
+    const u64* row;
+    s32 j;
+    s32 outer;
     t += 37;
-    for (s32 outer = 0; outer < 0xa; outer++, t += 10) {
-        const u64* row = t;
-        for (int j = 0; j < 0xa; j++) {
+    for (outer = 0; outer < 0xa; outer++, t += 10) {
+        row = t;
+        for (j = 0; j < 0xa; j++) {
             if (row[j] != 0) {
-                (*(T80416BD0_Child**)(p + 0x24))->slot15(row[j])->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439CC));
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(row[j]);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439CC));
             }
         }
     }
 
-    for (int i = 0; i < 3; i++) {
-        u8* slot = p + 0x28 + i * 4;
+    for (k = 0; k < 3; k++) {
+        slot = p + 0x28 + k * 4;
         fn_80402E08(*(void**)slot, lbl_805439CC, lbl_805439C8);
         *(u16*)((u8*)*(void**)slot + 0x22) = 0;
     }
@@ -179,11 +220,11 @@ extern "C" void fn_80416BD0(u8* p) {
     fn_80402E08(*(void**)(p + 0x38), lbl_805439CC, lbl_805439DC);
     *(u16*)((u8*)*(void**)(p + 0x38) + 0x22) = 0;
 
-    for (int i = 0; i < 0xa; i++) {
-        u8* slotA = p + 0x3c + i * 4;
+    for (k = 0; k < 0xa; k++) {
+        slotA = p + 0x3c + k * 4;
         fn_80402E08(*(void**)slotA, lbl_805439CC, lbl_805439C8);
         *(u16*)((u8*)*(void**)slotA + 0x22) = 0;
-        u8* slotB = p + 0x6c + i * 4;
+        slotB = p + 0x6c + k * 4;
         fn_80402E08(*(void**)slotB, lbl_805439CC, lbl_805439C8);
         *(u16*)((u8*)*(void**)slotB + 0x22) = 0;
     }
@@ -215,10 +256,22 @@ extern "C" void fn_804170EC(void* this_) {
     f32 f31;
     f32 f30;
     s32 idx;
-    T804170EC_Color clr = {0, 0, 0, 0};
+    T804170EC_Color tmp;
+    T804170EC_Color clr;
+    T804170EC_Color* dst;
+    u8* pane;
 
-    *(T804170EC_Color*)((u8*)sManager__10JFWDisplay + 0x8) = clr;
+    clr.r = 0;
+    clr.g = 0;
+    clr.b = 0;
+    clr.a = 0;
     idx = *(s32*)(p + 0x10) + *(s32*)(p + 0xc) * 5;
+    *(u32*)&tmp = *(u32*)&clr;
+    dst = (T804170EC_Color*)((u8*)sManager__10JFWDisplay + 0x8);
+    dst->r = tmp.r;
+    dst->g = tmp.g;
+    dst->b = tmp.b;
+    dst->a = tmp.a;
     fn_8013B490(lbl_8053AB10);
 
     if (*(u8*)(p + 0x109) != 0) {
@@ -228,49 +281,67 @@ extern "C" void fn_804170EC(void* this_) {
                 *(s32*)(p + 0x14) = 0;
             }
             if (*(s32*)(p + 0x14) < 0xa) {
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 1;
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 0;
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 0;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL);
+                pane[0xb0] = 1;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL);
+                pane[0xb0] = 0;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL);
+                pane[0xb0] = 0;
             } else if (*(s32*)(p + 0x14) < 0x14) {
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 0;
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 1;
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 0;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL);
+                pane[0xb0] = 0;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL);
+                pane[0xb0] = 1;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL);
+                pane[0xb0] = 0;
             } else {
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 0;
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 0;
-                *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 1;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL);
+                pane[0xb0] = 0;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL);
+                pane[0xb0] = 0;
+                pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL);
+                pane[0xb0] = 1;
             }
             idx = 0;
         } else {
+            s32 sq;
             *(s32*)(p + 0x14) += 1;
             if (*(s32*)(p + 0x14) >= 0x3c) {
                 *(s32*)(p + 0x14) = 0;
             }
             if (*(s32*)(p + 0x14) < 0x1e) {
-                f31 = (f32)(*(s32*)(p + 0x14) * *(s32*)(p + 0x14)) / lbl_805439E8;
+                sq = *(s32*)(p + 0x14) * *(s32*)(p + 0x14);
+                f31 = (f32)sq / lbl_805439E8;
             } else {
-                f31 = lbl_805439B8 - (f32)((*(s32*)(p + 0x14) - 0x1e) * (*(s32*)(p + 0x14) - 0x1e)) / lbl_805439E8;
+                sq = (*(s32*)(p + 0x14) - 0x1e) * (*(s32*)(p + 0x14) - 0x1e);
+                f31 = lbl_805439B8 - (f32)sq / lbl_805439E8;
             }
-            *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL) + 0xb0) = 0;
-            *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL) + 0xb0) = 0;
-            *((u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL) + 0xb0) = 0;
+            pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723031ULL);
+            pane[0xb0] = 0;
+            pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723032ULL);
+            pane[0xb0] = 0;
+            pane = (u8*)(*(J2DScreen**)(p + 0x24))->search(0x0050736375723033ULL);
+            pane[0xb0] = 0;
             idx = (s32)(f31 * (f32)*(u8*)(p + 0x108));
         }
 
         if (*(s32*)(p + 0x18) > 0) {
-            s32 t = *(s32*)(p + 0x18) < 5 ? *(s32*)(p + 0x18) : 10 - *(s32*)(p + 0x18);
-            if (*(s32*)(p + 0x18) < 10) {
-                *(s32*)(p + 0x18) += 1;
-            } else {
+            s32 t = 10 - *(s32*)(p + 0x18);
+            if (*(s32*)(p + 0x18) < 5) {
+                t = *(s32*)(p + 0x18);
+            }
+            if (*(s32*)(p + 0x18) >= 10) {
                 *(s32*)(p + 0x18) = 0;
+            } else {
+                *(s32*)(p + 0x18) += 1;
             }
             f30 = lbl_805439EC * (f32)(t * t) / lbl_805439D8;
             f31 = (*(J2DScreen**)(p + 0x24))->search(0x004E646174613035ULL)->getBounds()->i.x;
             (*(J2DScreen**)(p + 0x24))->search(0x004E646174613035ULL)->move(f31, *(f32*)(p + 0x4) + f30);
             f31 = (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->getBounds()->i.x;
             (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->move(f31, *(f32*)(p + 0x8) + f30);
-            (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723031ULL)->setAlpha(idx);
-            (*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL)->setAlpha(idx);
+            ((T80416BD0_Child*)(*(J2DScreen**)(p + 0x24))->search(0x00506F6375723031ULL))->slot9(idx);
+            ((T80416BD0_Child*)(*(J2DScreen**)(p + 0x24))->search(0x00506F6375723032ULL))->slot9(idx);
         }
 
         (*(J2DScreen**)(p + 0x24))->draw(lbl_805439CC, lbl_805439CC, lbl_8053AB10->ctx);
@@ -360,6 +431,13 @@ extern "C" void* fn_8041769C(void* this_, s16 how) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8041787C(void* this_) {
+    u8* p = (u8*)this_;
+    *(void**)p = lbl_804B1378;
+    p[0xe4] = 0;
+    *(J2DScreen**)(p + 0x24) = new J2DScreen();
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
