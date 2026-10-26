@@ -319,7 +319,7 @@ extern "C" s32 fn_801A4D1C(void* this_, void* a4, void* a5) {
 }
 
 extern "C" s32 fn_8023AC74(void* a, s32 room, void* b);
-extern "C" s32 fn_8023B22C(void);
+extern "C" s32 fn_8023B22C(s32 id);
 extern "C" u8 fn_801EAC20(void* list, s32 idx);
 extern "C" s32 fn_8022F514(void* a);
 extern "C" s32 fn_8022F3DC(void* a);
