@@ -141,6 +141,7 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
 }
 #pragma opt_lifetimes reset
 #pragma opt_strength_reduction reset
+#pragma opt_propagation off
 extern "C" void fn_802B8078(char* this_) {
     *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
     int room = *(s32*)(this_ + 0x29c);
