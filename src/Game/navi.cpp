@@ -82,6 +82,7 @@ extern "C" void fn_801CE120(void* this_);
 extern "C" void fn_801D0F40(void* this_);
 struct NaviVec {
     f32 x, y, z;
+    NaviVec() {}
     NaviVec(f32 a, f32 b, f32 c) { x = a; y = b; z = c; }
 };
 extern "C" void fn_8030C210(void* p, NaviVec* v);
@@ -657,7 +658,7 @@ extern "C" void fn_8021E4F8(char* p) {
     dp[1] = dz;
     f32 len2 = dx * dx + dz * dz;
     if (!(len2 <= lbl_8053FDA4 * *(f32*)__float_epsilon)) {
-        len2 = navi_invsqrt(len2);
+        navi_invsqrt_inplace(len2);
         dx *= len2;
         dz *= len2;
     }
@@ -716,12 +717,8 @@ moved:
     fp[0] = xx;
     fp[1] = yy;
     len2 = yy * yy + xx * xx;
-    s16 ang = 0x622;
-    f32 len = len2;
-    if (!(len <= lbl_8053FD58)) {
-        f32 y = __frsqrte(len);
-        len *= (lbl_8053FDA8 * y) * (lbl_8053FDAC - len * (y * y));
-    }
+    f32 len = navi_sqrt(len2);
+    s32 ang = 0x622;
     if (len > lbl_8053FDB8) {
         s32 v = (s32)((lbl_8053FD5C / len) * (lbl_8053FDBC * *(f32*)(p + 0x2bc)));
         if ((s16)v > 0x622) {
