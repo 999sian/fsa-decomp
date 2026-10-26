@@ -479,6 +479,7 @@ extern "C" void fn_803E462C(u8* param_1) {
     fn_80436668(*(void**)(param_1 + 0x5c));
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_803E4650(u8* p) {
     u8* q;
     u64* tA = (u64*)(lbl_80477970 + 0x9c0);
@@ -494,14 +495,14 @@ extern "C" void fn_803E4650(u8* p) {
     i = 0;
     q = p;
     sp = p;
-    do {
+    for (; i < 4; i++, q += 4, tA++, tB++, tC++, sp += 2) {
 
     n = *(s32*)(q + 0x1e0);
     if (n < 30) {
-        t = (f32)(n * n) / 900.0f;
+        t = MenuAlpha803E(n);
     } else {
-        n -= 30;
-        t = 1.0f - (f32)(n * n) / 900.0f;
+        t = MenuAlpha803E(n - 30);
+        t = 1.0f - t;
     }
         if (i <= *(s32*)(p + 0x1bc)) {
             if (*(s32*)(q + 0x1c0) < 4) {
@@ -527,13 +528,11 @@ extern "C" void fn_803E4650(u8* p) {
                     fn_80402E08(*(void**)(q + 0x68), 0.0f, off);
                 }
             }
-        i++;
-        tA++; tB++; tC++; sp += 2; q += 4;
-    } while (i < 4);
+    }
     draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x10), 0.0f, 0.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
     fn_80440EE8(lbl_8053AED8);
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_803E4940(u8* p) {
     s32 state = *(s32*)(p + 0x1d4);
     f32 f31;
@@ -1816,8 +1815,6 @@ extern "C" void fn_804310CC(void* p);
 extern "C" u8 fn_8030A388(void* a, s32 b);
 extern "C" void fn_803E3564(u8* p);
 extern "C" void fn_803EDBF0(u8* param_1, u8 param_2) {
-    void* obj;
-    Pane803E4650* pane;
     s32 i;
 
     fn_804310CC(lbl_8053AEC0);
@@ -1847,44 +1844,28 @@ extern "C" void fn_803EDBF0(u8* param_1, u8 param_2) {
             }
         }
         *(s32*)(param_1 + 0x1d4) = 2;
-        *(f32*)(param_1 + 0xf8) = -150.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x62620000, 0x506d6164, 0x62623037);
-        pane->v10(*(f32*)(param_1 + 0xf0), *(f32*)(param_1 + 0xf4) + *(f32*)(param_1 + 0xf8));
-        *(f32*)(param_1 + 0xfc) = -200.0f;
-        fn_80402E08(*(void**)(param_1 + 0x78), 0.0f, *(f32*)(param_1 + 0xfc));
-        *(f32*)(param_1 + 0x120) = -350.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623034);
-        pane->v10(*(f32*)(param_1 + 0x100) + *(f32*)(param_1 + 0x120), *(f32*)(param_1 + 0x110));
-        *(f32*)(param_1 + 0x124) = -350.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623038);
-        pane->v10(*(f32*)(param_1 + 0x104) + *(f32*)(param_1 + 0x124), *(f32*)(param_1 + 0x114));
-        *(f32*)(param_1 + 0x128) = -350.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623132);
-        pane->v10(*(f32*)(param_1 + 0x108) + *(f32*)(param_1 + 0x128), *(f32*)(param_1 + 0x118));
-        *(f32*)(param_1 + 0x12c) = -350.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623136);
-        pane->v10(*(f32*)(param_1 + 0x10c) + *(f32*)(param_1 + 0x12c), *(f32*)(param_1 + 0x11c));
-        *(f32*)(param_1 + 0x138) = 400.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x74610000, 0x4e6461, 0x74613032);
-        pane->v10(*(f32*)(param_1 + 0x130) + *(f32*)(param_1 + 0x138), *(f32*)(param_1 + 0x134));
-        *(f32*)(param_1 + 0x14c) = 400.0f;
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x74610000, 0x4e6461, 0x74613035);
-        pane->v10(*(f32*)(param_1 + 0x13c) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x140));
-        obj = *(void**)(param_1 + 4);
-        pane = ((Screen803EDBF0*)obj)->v3C(0x4e0000, 0x4e6461, 0x74613037);
-        pane->v10(*(f32*)(param_1 + 0x144) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x148));
-        *(s32*)(param_1 + 0x220) = 0;
-        *(s32*)(param_1 + 0x1e0) = 0;
-        *(s16*)(param_1 + 0x254) = 0;
-        *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
-        *(s32*)(param_1 + 0x1d4) = 2;
+    *(f32*)(param_1 + 0xf8) = lbl_805436A8;
+    (*(J2DPane**)(param_1 + 4))->search(0x506d616462623037ULL)->move(*(f32*)(param_1 + 0xf0), *(f32*)(param_1 + 0xf4) + *(f32*)(param_1 + 0xf8));
+    *(f32*)(param_1 + 0xfc) = lbl_8054368C;
+    fn_80402E08(*(void**)(param_1 + 0x78), lbl_80543664, *(f32*)(param_1 + 0xfc));
+    *(f32*)(param_1 + 0x120) = lbl_805436AC;
+    (*(J2DPane**)(param_1 + 4))->search(0x00506e6f70623034ULL)->move(*(f32*)(param_1 + 0x100) + *(f32*)(param_1 + 0x120), *(f32*)(param_1 + 0x110));
+    *(f32*)(param_1 + 0x124) = lbl_805436AC;
+    (*(J2DPane**)(param_1 + 4))->search(0x00506e6f70623038ULL)->move(*(f32*)(param_1 + 0x104) + *(f32*)(param_1 + 0x124), *(f32*)(param_1 + 0x114));
+    *(f32*)(param_1 + 0x128) = lbl_805436AC;
+    (*(J2DPane**)(param_1 + 4))->search(0x00506e6f70623132ULL)->move(*(f32*)(param_1 + 0x108) + *(f32*)(param_1 + 0x128), *(f32*)(param_1 + 0x118));
+    *(f32*)(param_1 + 0x12c) = lbl_805436AC;
+    (*(J2DPane**)(param_1 + 4))->search(0x00506e6f70623136ULL)->move(*(f32*)(param_1 + 0x10c) + *(f32*)(param_1 + 0x12c), *(f32*)(param_1 + 0x11c));
+    *(f32*)(param_1 + 0x138) = lbl_805436B0;
+    (*(J2DPane**)(param_1 + 4))->search(0x004e646174613032ULL)->move(*(f32*)(param_1 + 0x130) + *(f32*)(param_1 + 0x138), *(f32*)(param_1 + 0x134));
+    *(f32*)(param_1 + 0x14c) = lbl_805436B0;
+    (*(J2DPane**)(param_1 + 4))->search(0x004e646174613035ULL)->move(*(f32*)(param_1 + 0x13c) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x140));
+    (*(J2DPane**)(param_1 + 4))->search(0x004e646174613037ULL)->move(*(f32*)(param_1 + 0x144) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x148));
+    *(s32*)(param_1 + 0x220) = 0;
+    *(s32*)(param_1 + 0x1e0) = 0;
+    *(s16*)(param_1 + 0x254) = 0;
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 2;
         break;
     }
     *(s32*)(param_1 + 0x360) = 4;
