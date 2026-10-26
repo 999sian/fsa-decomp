@@ -1,6 +1,9 @@
 // TU 0x802e2074-0x802e2990.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- fn_802E2074_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -43,80 +46,178 @@ extern "C" {
 
 void EmptyHook_802E20D4(void) {}
 
-void fn_802E20D8(u8* this_) {}
+void fn_802E20D8(u8* this_)
+{
+    s32 room = *(s32*)(this_ + 4);
+    u8* game = (u8*)fn_802D6A9C();
+    Box4 box = *(Box4*)(game + (room < 8 ? 0xcc : 0xdc));
+    s32 offset = 0;
+    u8 finished = 0;
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        if (lbl_8053ACB0 != 0) {
+            s32* entry = (s32*)lbl_804D4768;
+            for (s32 i = 0; i < 80; i++, entry++) {
+                s32 id = *entry;
+                if (id >= 0 && fn_801F666C(fn_801F856C(), id) == 0) {
+                    *entry = -1;
+                    if (--lbl_8053ACB0 == 0) {
+                        u8* list[1024];
+                        s32 count = fn_801F7818(fn_801F856C(), 0x47454e32, *(u32*)(this_ + 4), list, -1);
+                        for (s32 j = 0; j < count; j++) {
+                            u8* actor = list[j];
+                            if (actor != 0) {
+                                if (actor != 0) *(s32*)(actor + 0x230) = 1;
+                            }
+                        }
+                        *(s32*)(this_ + 0x230) = 1;
+                        return;
+                    }
+                }
+            }
+            return;
+        }
+        *(s32*)(this_ + 0x230) = 1;
+    case 1:
+        *(s32*)(this_ + 0x240) = 0;
+        do {
+            u8 found = 1;
+            u32 name;
+            for (;;) {
+                u8* data = *(u8**)(this_ + 0x244) + offset;
+                name = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+                if (name == 0x20202020) {
+                    *(u16*)(this_ + 0x24c) += 2;
+                    offset = 0;
+                    found = 0;
+                    ++*(s32*)(this_ + 0x240);
+                    if (*(u16*)(this_ + 0x24c) != *(u16*)(this_ + 0x24e)) continue;
+                    finished = 1;
+                    if (*(u16*)(this_ + 0x24c) == 64) detach__5ActorFv(this_);
+                    else *(u16*)(this_ + 0x24e) += 8;
+                    break;
+                }
+                if (*(s32*)(this_ + 0x23c) < 2) {
+                    if (*(u16*)(this_ + 0x24c) == data[6]) break;
+                } else {
+                    if (*(u16*)(this_ + 0x24c) == data[5]) break;
+                }
+                offset += 11;
+            }
+            if (found == 1) {
+                u8* data = *(u8**)(this_ + 0x244) + offset;
+                offset += 11;
+                u32 param = (data[7] << 24) | (data[8] << 16) | (data[9] << 8) | data[10];
+                u8 destination = data[4];
+                u8 x = data[5];
+                u8 y = data[6];
+                s32 room;
+                f32 baseX, baseY;
+                if (destination == 0) {
+                    baseX = box.x0; baseY = box.y0; room = 0;
+                } else {
+                    baseX = baseY = 0.0f; room = destination + 7;
+                }
+                s32 direction = *(s32*)(this_ + 0x23c);
+                if (direction < 2) {
+                    f32 pos[3];
+                    pos[0] = 8.0f * (u16)x + baseX;
+                    pos[1] = 8.0f * lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)] + baseY;
+                    pos[2] = 0.0f;
+                    ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, pos, param, 0, -1);
+                } else {
+                    f32 pos[3];
+                    pos[0] = 8.0f * lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)] + baseX;
+                    pos[1] = 8.0f * (u16)y + baseY;
+                    pos[2] = 0.0f;
+                    ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, pos, param, 0, -1);
+                }
+                if (((s32*)lbl_804D4768)[lbl_8053ACB0] >= 0) {
+                    if ((s32)++lbl_8053ACB0 >= 80) { detach__5ActorFv(this_); break; }
+                }
+            }
+        } while (finished != 1);
+        *(s32*)(this_ + 0x230) = 0;
+        break;
+    case 2:
+        if ((*(u32*)(this_ + 0x90) >> 27) == 0 || ((u8 (*)(u8*))(*(void***)this_)[13])(this_) == 1) *(s32*)(this_ + 0x230) = 1;
+        break;
+    }
+}
 
 extern "C" void fn_802E2548(u8* param_1)
 {
-  u32* puVar8 = (u32*)lbl_804D4768;
+  u8* base = param_1;
+  u8* p = lbl_804D4768;
   s32 i;
-  char buf[56];
   for (i = 0; i < 2; i++) {
-    puVar8[0x00] = 0xffffffff;
-    puVar8[0x01] = 0xffffffff;
-    puVar8[0x02] = 0xffffffff;
-    puVar8[0x03] = 0xffffffff;
-    puVar8[0x04] = 0xffffffff;
-    puVar8[0x05] = 0xffffffff;
-    puVar8[0x06] = 0xffffffff;
-    puVar8[0x07] = 0xffffffff;
-    puVar8[0x08] = 0xffffffff;
-    puVar8[0x09] = 0xffffffff;
-    puVar8[0x0a] = 0xffffffff;
-    puVar8[0x0b] = 0xffffffff;
-    puVar8[0x0c] = 0xffffffff;
-    puVar8[0x0d] = 0xffffffff;
-    puVar8[0x0e] = 0xffffffff;
-    puVar8[0x0f] = 0xffffffff;
-    puVar8[0x10] = 0xffffffff;
-    puVar8[0x11] = 0xffffffff;
-    puVar8[0x12] = 0xffffffff;
-    puVar8[0x13] = 0xffffffff;
-    puVar8[0x14] = 0xffffffff;
-    puVar8[0x15] = 0xffffffff;
-    puVar8[0x16] = 0xffffffff;
-    puVar8[0x17] = 0xffffffff;
-    puVar8[0x18] = 0xffffffff;
-    puVar8[0x19] = 0xffffffff;
-    puVar8[0x1a] = 0xffffffff;
-    puVar8[0x1b] = 0xffffffff;
-    puVar8[0x1c] = 0xffffffff;
-    puVar8[0x1d] = 0xffffffff;
-    puVar8[0x1e] = 0xffffffff;
-    puVar8[0x1f] = 0xffffffff;
-    puVar8[0x20] = 0xffffffff;
-    puVar8[0x21] = 0xffffffff;
-    puVar8[0x22] = 0xffffffff;
-    puVar8[0x23] = 0xffffffff;
-    puVar8[0x24] = 0xffffffff;
-    puVar8[0x25] = 0xffffffff;
-    puVar8[0x26] = 0xffffffff;
-    puVar8[0x27] = 0xffffffff;
-    puVar8 += 0x28;
+    *(u32*)(p + 0x00) = 0xffffffff;
+    *(u32*)(p + 0x04) = 0xffffffff;
+    *(u32*)(p + 0x08) = 0xffffffff;
+    *(u32*)(p + 0x0c) = 0xffffffff;
+    *(u32*)(p + 0x10) = 0xffffffff;
+    *(u32*)(p + 0x14) = 0xffffffff;
+    *(u32*)(p + 0x18) = 0xffffffff;
+    *(u32*)(p + 0x1c) = 0xffffffff;
+    *(u32*)(p + 0x20) = 0xffffffff;
+    *(u32*)(p + 0x24) = 0xffffffff;
+    *(u32*)(p + 0x28) = 0xffffffff;
+    *(u32*)(p + 0x2c) = 0xffffffff;
+    *(u32*)(p + 0x30) = 0xffffffff;
+    *(u32*)(p + 0x34) = 0xffffffff;
+    *(u32*)(p + 0x38) = 0xffffffff;
+    *(u32*)(p + 0x3c) = 0xffffffff;
+    *(u32*)(p + 0x40) = 0xffffffff;
+    *(u32*)(p + 0x44) = 0xffffffff;
+    *(u32*)(p + 0x48) = 0xffffffff;
+    *(u32*)(p + 0x4c) = 0xffffffff;
+    *(u32*)(p + 0x50) = 0xffffffff;
+    *(u32*)(p + 0x54) = 0xffffffff;
+    *(u32*)(p + 0x58) = 0xffffffff;
+    *(u32*)(p + 0x5c) = 0xffffffff;
+    *(u32*)(p + 0x60) = 0xffffffff;
+    *(u32*)(p + 0x64) = 0xffffffff;
+    *(u32*)(p + 0x68) = 0xffffffff;
+    *(u32*)(p + 0x6c) = 0xffffffff;
+    *(u32*)(p + 0x70) = 0xffffffff;
+    *(u32*)(p + 0x74) = 0xffffffff;
+    *(u32*)(p + 0x78) = 0xffffffff;
+    *(u32*)(p + 0x7c) = 0xffffffff;
+    *(u32*)(p + 0x80) = 0xffffffff;
+    *(u32*)(p + 0x84) = 0xffffffff;
+    *(u32*)(p + 0x88) = 0xffffffff;
+    *(u32*)(p + 0x8c) = 0xffffffff;
+    *(u32*)(p + 0x90) = 0xffffffff;
+    *(u32*)(p + 0x94) = 0xffffffff;
+    *(u32*)(p + 0x98) = 0xffffffff;
+    *(u32*)(p + 0x9c) = 0xffffffff;
+    p += 0xa0;
   }
   lbl_8053ACB0 = 0;
-  *(u32*)(param_1 + 0x234) = (*(u32*)(param_1 + 0x90) >> 23) & 0xf;
-  *(u32*)(param_1 + 0x238) = (*(u32*)(param_1 + 0x90) >> 19) & 0xf;
+  *(u32*)(base + 0x234) = (*(u32*)(base + 0x90) >> 23) & 0xf;
+  *(u32*)(base + 0x238) = (*(u32*)(base + 0x90) >> 19) & 0xf;
   u8* a = (u8*)fn_802D6A9C();
   u32 uVar7 = *(u32*)(a + 4);
   u8* b = (u8*)fn_802D6A9C();
   void* c = fn_802D6A9C();
   char* pcVar5 = fn_802D9C7C(c, uVar7, *(u32*)(b + 8));
-  s32 iVar3 = *(s32*)(param_1 + 0x234);
+  s32 iVar3 = *(s32*)(base + 0x234);
   s32 iVar6 = (s32)fn_802D6A9C();
-  u8 bVar1 = *(u8*)(iVar3 + iVar6 + *(s32*)(param_1 + 0x238) * 10 + 0x60);
+  u8 bVar1 = *(u8*)(iVar3 + iVar6 + *(s32*)(base + 0x238) * 10 + 0x60);
   u32 uVar2 = bVar1;
   if (bVar1 == 0xff) {
     uVar2 = 0;
   }
+  char buf[44];
   sprintf(buf, lbl_8046E9F8, pcVar5, uVar2 / 10, uVar2 % 10);
   u32 uVar7b = fn_804032E8((pcVar5[0] - 0x20) * 0x10000 + (pcVar5[1] - 0x20) * 0x100 + pcVar5[2] + 0x42202000, buf);
-  *(u32*)(param_1 + 0x244) = uVar7b;
-  *(u32*)(param_1 + 0x248) = 0;
-  *(u32*)(param_1 + 0x23c) = (*(u32*)(param_1 + 0x90) >> 16) & 7;
-  *(u16*)(param_1 + 0x24c) = 0;
-  *(u16*)(param_1 + 0x24e) = 8;
-  *(u32*)(param_1 + 0x240) = 0;
-  *(u32*)(param_1 + 0x230) = 2;
+  *(u32*)(base + 0x244) = uVar7b;
+  *(u32*)(base + 0x248) = 0;
+  *(u32*)(base + 0x23c) = (*(u32*)(base + 0x90) >> 16) & 7;
+  *(u16*)(base + 0x24c) = 0;
+  *(u16*)(base + 0x24e) = 8;
+  *(u32*)(base + 0x240) = 0;
+  *(u32*)(base + 0x230) = 2;
 }
 
 }
