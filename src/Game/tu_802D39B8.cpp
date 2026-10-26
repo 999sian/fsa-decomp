@@ -53,11 +53,6 @@ struct RoomArrays {
     u8 values1327C[4];
 };
 
-static inline void roomSetPosition(JGeometry::TVec2<f32>& dst, f32 y, f32 x) {
-    dst.x = x;
-    dst.y = y;
-}
-
 static inline bool roomPositionEquals(JGeometry::TVec2<f32>& a, JGeometry::TVec2<f32>& b) {
     bool same = false;
     bool equal = false;
@@ -752,12 +747,12 @@ extern "C" void fn_802D6F38(RoomArrays* p, u32 key, f32* pos, s32 owner, u8 mode
         }
 insert:
         p->keys13068[i] = key;
-        f32 x;
- f32 y;
+        register f32 y;
+ register f32 x;
  y=pos[1];
  x=pos[0];
- p->positions13088[i].y=y;
  p->positions13088[i].x=x;
+ p->positions13088[i].y=y;
         p->owners130C8[i] = owner;
         return;
     }
