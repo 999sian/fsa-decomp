@@ -464,6 +464,7 @@ extern "C" void fn_8041A868(u8* self, s32 arg) {
 #pragma dont_inline reset
 
 #pragma dont_inline reset
+static inline u64 HudNameAt8041(const u64* const& names, int i) { return names[i]; }
 struct HudPaneNames8041 { u64 names[4]; const u64& operator[](int i) const { return names[i]; } };
 static inline void HudHideIndexed8041(u8* self, const HudPaneNames8041* names, s32 index) {
     (*(J2DPane**)(self + 4))->search(names->names[index])->hide();
@@ -1471,8 +1472,8 @@ extern "C" void fn_8041FC2C(u8* self_) {
         (*(J2DPane**)(self + 4))->search(0x5068317069696233ULL)->show();
         (*(J2DPane**)(self + 4))->search(*(u64*)(tbl + 0x398))->hide();
         (*(J2DPane**)(self + 4))->search(lbl_8048D6B8[1])->hide();
-        HudHideIndexed8041(self, (HudPaneNames8041*)(tbl + 0x398), 2);
-        HudHideIndexed8041(self, (HudPaneNames8041*)(tbl + 0x398), 3);
+        (*(J2DPane**)(self + 4))->search(lbl_8048D6B8[2])->hide();
+        (*(J2DPane**)(self + 4))->search(lbl_8048D6B8[3])->hide();
         if ((lbl_8053AAF8[0x83] & 3U) == 2) {
             (*(J2DPane**)(self + 4))->search(0x004E646174613136ULL)->show();
         } else {
