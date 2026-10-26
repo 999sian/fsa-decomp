@@ -22,10 +22,9 @@ extern "C" void fn_8013CB44(void*, void*, int, int, int);
 extern const float lbl_80541EBC;
 static inline f32 enemyRandUnit(u32* seed) {
     union { f32 f; u32 s; } out;
-    f32 one = lbl_80541EBC;
     *seed = *seed * 0x19660d + 0x3c6ef35f;
     out.s = (*seed >> 9) | 0x3f800000;
-    return out.f - one;
+    return out.f - lbl_80541EBC;
 }
 
 struct RoomMgr131DF { u8 flag(u32 i) { return mFlags[i]; } u8 pad[0x131df]; u8 mFlags[1]; };
