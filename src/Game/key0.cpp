@@ -59,6 +59,16 @@ extern "C" void* fn_802C1614(void* this_, s16 freeFlag) {
 }
 
 // KEY0: register this key's tile with the room config.
+union Key0Packed {
+    u32 word;
+    struct {
+        u32 mode : 2;
+        u32 flag : 1;
+        u32 kind : 5;
+        u32 area : 16;
+        u32 room : 8;
+    } fields;
+};
 struct Key0Pt {
     f32 x, y;
     Key0Pt(f32 x_, f32 y_) { x = x_; y = y_; }
@@ -992,7 +1002,6 @@ extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, s32 index);
 extern "C" u8 fn_802DCD0C(void* mgr);
 extern "C" void fn_802C52DC(u8* p) {
-    int packed;
     *(u32*)(p + 0x280) = *(u32*)(p + 0x90) & 0x1f;
     *(u32*)(p + 0x27c) = *(u32*)(p + 0x90) >> 7 & 0xf;
     *(u32*)(p + 0x278) = *(u32*)(p + 0x90) >> 12 & 0x1f;
@@ -1057,9 +1066,9 @@ extern "C" void fn_802C52DC(u8* p) {
     case 5: {
         *(s32*)(p + 0x240) = 4;
         *(u8*)(p + 0x2b1) = 1;
-        int a = *(u32*)(p + 0x23c);
-        int b = *(u8*)(p + 0x2b5);
-        packed = (a << 30) | (b << 29);
+        u32 a = *(u32*)(p + 0x23c);
+        u32 b = *(u8*)(p + 0x2b5);
+        u32 packed = (a << 30) | (b << 29);
         packed = __rlwimi(packed, *(u32*)(p + 0x280), 24, 3, 7);
         packed = __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
         if (!fn_802DCD0C(fn_802D6A9C())) {
