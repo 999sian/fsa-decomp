@@ -445,6 +445,7 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
 }
 #pragma dont_inline reset
 
+#pragma dont_inline on
 extern "C" void fn_8041A868(u8* self, s32 arg) {
     s32 flag = (lbl_8053AAF8[0x83] & 3) == 2;
     s32 r25 = 0;
@@ -460,6 +461,7 @@ extern "C" void fn_8041A868(u8* self, s32 arg) {
     (void)off;
     (void)r25;
 }
+#pragma dont_inline reset
 
 #pragma dont_inline reset
 static inline void HudHideIndexed8041(u8* self, const u64* names, s32 index) {
