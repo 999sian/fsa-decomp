@@ -693,28 +693,79 @@ extern "C" void fn_803BE3D8(void* a) {
 
 #pragma opt_propagation off
 extern "C" void fn_803BF004(char* p) {
+    char* selected;
+    s32 idx;
     const u8* table = lbl_804765D0;
+    f32 zero = 0.0f;
     *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
-    fn_80402E08(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)], lbl_80543458,
-        *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0xc));
-    *(s16*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0x22) = 0;
-    *(s16*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0x26) = 0;
-    ((J2DPane*)*(void**)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 4))->setAlpha(*(u8*)(((MenuSlots38*)p)->slot[*(s32*)(p + 0xa4)] + 0x28));
-    s32 idx = *(s32*)(p + 0xa4);
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x780))[idx]), *(u8*)(p + 0x125));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x768))[idx]), *(u8*)(p + 0x126));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x750))[idx]), *(u8*)(p + 0x127));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x6c8))[idx]), *(u8*)(p + 0x128));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x6b0))[idx]), *(u8*)(p + 0x129));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x698))[idx]), *(u8*)(p + 0x12a));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x680))[idx]), *(u8*)(p + 0x12b));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x668))[idx]), *(u8*)(p + 0x12c));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x650))[idx]), *(u8*)(p + 0x12d));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x638))[idx]), *(u8*)(p + 0x12e));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x620))[idx]), *(u8*)(p + 0x12f));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x608))[idx]), *(u8*)(p + 0x130));
-    fn_804023D0(((MenuSlots38*)p)->slot[idx], ((J2DPane*)*(void**)(p + 8))->search(((u64*)(table + 0x5f0))[idx]), *(u8*)(p + 0x131));
+    f32 delta = *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(menuSlot(p, *(s32*)(p + 0xa4)) + 0xc);
+    fn_80402E08(menuSlot(p, *(s32*)(p + 0xa4)), zero, delta);
+    {
+        char* q = p;
+        q += *(s32*)(p + 0xa4) * 4;
+        *(s16*)(*(u8**)(q + 0x38) + 0x22) = 0;
+        q = p;
+        q += *(s32*)(p + 0xa4) * 4;
+        *(s16*)(*(u8**)(q + 0x38) + 0x26) = 0;
+    }
+    ((J2DPane*)*(void**)(menuSlot(p, *(s32*)(p + 0xa4)) + 4))->setAlpha(*(u8*)(menuSlot(p, *(s32*)(p + 0xa4)) + 0x28));
+    idx = *(s32*)(p + 0xa4);
+    {
+        const u64* key = (const u64*)(table + 0x780);
+        void* found = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        selected = p;
+        selected += idx * 4;
+        fn_804023D0(*(void**)(selected + 0x38), found, *(u8*)(p + 0x125));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x768);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x126));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x750);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x127));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x6c8);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x128));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x6b0);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x129));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x698);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x12a));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x680);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x12b));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x668);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x12c));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x650);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x12d));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x638);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x12e));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x620);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x12f));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x608);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x130));
+    }
+    {
+        const u64* key = (const u64*)(table + 0x5f0);
+        fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), *(u8*)(p + 0x131));
+    }
     *(s16*)(p + 0xd8) = 0;
     *(s16*)(p + 0xda) = 0;
     p[0x112] = p[0x110];
@@ -1076,6 +1127,7 @@ extern "C" void fn_803C02CC(u8* p) {
 
 extern "C" void fn_803C05D8(u8* p) {
     s32 i;
+    s32 j;
     u32* q;
 
     for (i = 0; i < 8; i++) {
@@ -1088,8 +1140,8 @@ extern "C" void fn_803C05D8(u8* p) {
 
     *(u32*)(p + 0xa8) = *(u32*)(p + 0xa0);
     q = (u32*)p;
-    for (i = 0; i < 8; i++) {
-        q[0x2e] = fn_803B8CAC(*(u32*)(p + 0xa0), i);
+    for (j = 0; j < 8; j++) {
+        q[0x2e] = fn_803B8CAC(*(u32*)(p + 0xa0), j);
         q++;
     }
 
