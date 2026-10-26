@@ -1076,6 +1076,13 @@ extern "C" void fn_8039C258(MsgProc* p, s32 n) {
     msgPutWide(p, n + '0');
 }
 
+static inline BOOL msgCurrentBit(MsgProc* p) {
+    s32 n = p->cur;
+    if (n < 32) return (p->bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
+    if (n < 64) return (p->bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
+    return FALSE;
+}
+
 static inline void msgAppendChar(MsgProc* p, char* buf) {
     strcat(p->str2c0, buf);
     strcat(p->str2c4, buf);
