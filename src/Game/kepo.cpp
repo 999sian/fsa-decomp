@@ -160,7 +160,7 @@ static inline BOOL kepoStageFlag(s32 a, s32 b) {
 }
 #pragma opt_propagation on
 extern "C" void fn_80219E4C(u8* self) {
-    u8* globals;
+    s32* globals;
     u32 flag;
     BOOL unlocked;
     s32 a;
@@ -169,9 +169,9 @@ extern "C" void fn_80219E4C(u8* self) {
     u8* base;
 
     fn_801D0ED0(self);
-    globals = lbl_80529DEC;
-    a = *(s32*)(globals + 0x118);
-    b = *(s32*)(globals + 0x11c);
+    globals = (s32*)lbl_80529DEC;
+    a = globals[0x46];
+    b = globals[0x47];
     flag = kepoStageFlag(a, b) != 0;
     base = (u8*)fn_802D6A9C();
     bVar1 = base[0x131f9] != 0;
@@ -186,7 +186,7 @@ extern "C" void fn_80219E4C(u8* self) {
     }
     *(s32*)(self + 0x2b0) = (*(u32*)(self + 0x90) >> 25) & 0x1f;
 
-    if (*(s32*)(globals + 0x118) == 0 && *(s32*)(globals + 0x11c) == 0 && (*(u32*)(self + 0x90) >> 31) != 0) {
+    if (globals[0x46] == 0 && globals[0x47] == 0 && (*(u32*)(self + 0x90) >> 31) != 0) {
         *(u32*)(self + 0x230) |= 0x10000;
     }
     if ((*(u32*)(self + 0x90) >> 19) & 1) {
@@ -260,6 +260,7 @@ extern "C" void fn_80219E4C(u8* self) {
         g[0xc] = (u8)(s32)*(f32*)(self + 0x2d8);
     }
 }
+#pragma float_expressions on
 // ---- fn_8021A234_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
