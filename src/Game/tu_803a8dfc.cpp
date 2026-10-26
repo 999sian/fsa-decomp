@@ -2164,7 +2164,7 @@ struct IntroTags {
     u64 p2[4][2];
 };
 
-static inline void IntroFade(Menu_Intro* p, const u64* tags, s32 count, s32 elapsed, s32 duration, u32 alphaOffset) {
+static inline void IntroFade(Menu_Intro* p, const u64* tags, const s32 count, const s32 elapsed, const s32 duration, const u32 alphaOffset) {
     if (p->cur < 2) {
         for (s32 k = 0; k < count; k++) {
             p->screens[p->cur]->search(tags[k])->setAlpha((u8)(((u8*)p)[alphaOffset + k] * (1.0f - (f32)elapsed / (f32)duration)));
@@ -2180,7 +2180,7 @@ extern const u8 lbl_80476208[];
 
 // NONMATCHING (97.5%): register allocation of the timing locals.
 extern "C" void fn_803B03E8(Menu_Intro* p) {
-    u8* base = (u8*)&lbl_80476208;
+    IntroTags* tbl = (IntroTags*)lbl_80476208;
     s32 d;
     s32 t0 = *(s16*)(lbl_8050DB0C + 0x260);
     s32 t1 = *(s16*)(lbl_8050DB0C + 0x262);
@@ -2197,16 +2197,12 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
         f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
         f32 y = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
         p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c - y);
-        if (p->cur < 2) {
-            for (s32 k = 0; k < 13; k++) {
-                p->screens[p->cur]->search(((IntroTags*)base)->title[k])->setAlpha((u8)(p->alphaTitle[k] * (1.0f - (f32)d / (f32)t1)));
-            }
-        }
+        IntroFade(p, tbl->title, 13, d, t1, 0x4c9);
     }
     if (p->timer > start && p->timer <= start + dur + gap * (p->count - 1)) {
         s32 off = 0;
-        u64 (*r3)[3] = ((IntroTags*)base)->p3;
-        u64 (*r2)[2] = ((IntroTags*)base)->p2;
+        u64 (*r3)[3] = (u64 (*)[3])tbl->p3;
+        u64 (*r2)[2] = (u64 (*)[2])tbl->p2;
         for (s32 i = 0; i < p->count; i++, r3++, r2++) {
             if (p->timer >= start + off) {
                 s32 d = p->timer - (start + off);
@@ -2215,16 +2211,8 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
                 p->screens[p->cur]->search((*r3)[2])->move(x, p->y420 + y);
                 x = p->screens[p->cur]->search((*r2)[1])->getBounds()->i.x;
                 p->screens[p->cur]->search((*r2)[1])->move(x, p->y424 + y);
-                if (p->cur < 2) {
-                    for (s32 k = 0; k < 3; k++) {
-                        p->screens[p->cur]->search((*r3)[k])->setAlpha((u8)(p->alpha3[k] * (1.0f - (f32)d / (f32)dur)));
-                    }
-                }
-                if (p->cur < 2) {
-                    for (s32 k = 0; k < 2; k++) {
-                        p->screens[p->cur]->search((*r2)[k])->setAlpha((u8)(p->alpha[k] * (1.0f - (f32)d / (f32)dur)));
-                    }
-                }
+                IntroFade(p, *r3, 3, d, dur, 0x4d6);
+                IntroFade(p, *r2, 2, d, dur, 0x4d9);
             }
             off += gap;
         }
