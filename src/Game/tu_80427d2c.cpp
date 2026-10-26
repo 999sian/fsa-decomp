@@ -1290,6 +1290,7 @@ extern "C" void fn_80429DF4(s16 x, s16 y, s16 z) {
 }
 #pragma dont_inline off
 
+extern "C" f32 lbl_80543AC4;
 extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     s32 scrWidth;
     s32 scrHeight;
@@ -1301,7 +1302,7 @@ extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     static const GXColor kcolor2 = {0xff, 0x00, 0xff, 0x80};
     scrWidth = rmode->fbWidth;
     scrHeight = rmode->efbHeight;
-    C_MTXOrtho(pMtx, 0.0f, scrHeight, 0.0f, scrWidth, 0.0f, -1.0f);
+    C_MTXOrtho(pMtx, 0.0f, scrHeight, 0.0f, scrWidth, 0.0f, lbl_80543AC4);
     GXSetProjection(pMtx, GX_ORTHOGRAPHIC);
     GXSetViewport(0.0f, 0.0f, scrWidth, scrHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, scrWidth, scrHeight);
@@ -2951,6 +2952,7 @@ static inline s16 roundADPCM(s64 sample) {
 struct BitReader;
 extern "C" void fn_8042DC88(BitReader* r, u8* p);
 extern "C" s32 fn_8042DCC4(BitReader* r);
+#pragma dont_inline off
 extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
     u32 base;
     s32 stride;
@@ -2996,9 +2998,9 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             b8 = br.b8;
             b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
-            c = (v << b9) << 11;
             pa = (s32)tp[5] * x2;
             pb = (s32)tp[4] * x1;
+            c = (v << b9) << 11;
             s64 w = ((s64)pa + (s64)pb + (s64)c) << 5;
             if ((u16)(w & 0xffffLL) > 0x8000) {
                 w += 0x10000;
@@ -3028,9 +3030,9 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             b8 = br.b8;
             b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
-            c = (v << b9) << 11;
             pa = (s32)tp[5] * x2;
             pb = (s32)tp[4] * x1;
+            c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
             if ((u16)(w & 0xffffLL) > 0x8000) {
                 w += 0x10000;
@@ -3057,9 +3059,9 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             b8 = br.b8;
             b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
-            c = (v << b9) << 11;
             pa = (s32)tp[0x15] * x2;
             pb = (s32)tp[0x14] * x1;
+            c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
             if ((u16)(w & 0xffffLL) > 0x8000) {
                 w += 0x10000;
@@ -3081,7 +3083,7 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
     }
     return *(s32*)(param_2 + 4);
 }
-
+#pragma dont_inline on
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
 #pragma dont_inline off
 
