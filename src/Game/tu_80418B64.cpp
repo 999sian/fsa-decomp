@@ -103,8 +103,6 @@ static inline J2DPicture* GetPicture(u8* this_, u64 key) {
     return (J2DPicture*)(*(SubObj**)(this_ + 4))->w13(key);
 }
 
-static inline u32 HudTexture8041(u32 name) { return fn_804030C4(0x54494d47, name); }
-
 typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
 
 // Virtual slot 68 of object returned by SubObj::w13: calls (u32, 0).
@@ -610,6 +608,7 @@ extern const u64 lbl_8048D320[];
 extern const char* lbl_804B13C4[];
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80419C38(u8* self, s32 i, s32 v);
+#pragma opt_lifetimes off
 extern "C" void fn_8041C67C(u8* this_) {
     u8* state;
     const u8* base;
@@ -683,13 +682,14 @@ extern "C" void fn_8041C67C(u8* this_) {
 	}
 
 	const u64* q22 = (const u64*)(base + 0xb00);
-	for (s32 i = 0; i < 4; i++) {
+	s32 digit = 0;
+    do {
         u32 texture = fn_804030C4(0x54494d47, (u32)lbl_804B13C4[0]);
         ((J2DPicture*)(*(SubObj**)(self + 0x18))->w13(*p20))->changeTexture((const ResTIMG*)texture, 0);
         ((J2DPicture*)(*(SubObj**)(self + 0x18))->w13(*q22))->changeTexture((const ResTIMG*)texture, 0);
         p20++;
         q22++;
-    }
+    } while (++digit < 4);
 
 	for (s32 i = 0; i < 4; i++) {
 		if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
@@ -697,76 +697,58 @@ extern "C" void fn_8041C67C(u8* this_) {
 		}
 	}
 }
-
+#pragma opt_common_subs off
 extern "C" void fn_8041CC04(u8* self) {
-    u8* base = (u8*)lbl_8048D320;
+    const u64* base = lbl_8048D320;
     s32 n;
     s32 which;
     s32 i;
-    u8* p;
+    const u64* p;
     u32 tag;
-
     if (self[0x28b] & 1) {
         which = 0;
         s32 v = *(s32*)(lbl_80529DEC + 0xe8);
         n = v;
-        if (v > 9999) {
-            n = 9999;
-        }
+        if (v > 9999) n = 9999;
         if (n < 0) {
-            p = base + 0x338;
-            for (i = 0; i < 5; i++) {
-                GXColor col;
-                GXColor zero;
-                col.r = 0xff;
-                col.g = 0x55;
-                col.b = 0x41;
-                col.a = 0xff;
-                zero.r = 0;
-                zero.g = 0;
-                zero.b = 0;
-                zero.a = 0;
-                u8* obj = FindPaneOfSub(self, *(const u64*)p);
-                ((PaneColorsFn)(*(void***)obj)[76])(obj, &zero, &col);
-                p += 8;
+            const u64* first = base + 0x67;
+            p = first;
+            for (i = 0; i < 5; i++, p++) {
+                ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*p))->setBlackWhite(JUtility::TColor(0,0,0,0), JUtility::TColor(255,85,65,255));
             }
-            if (n < -5000) {
-                n = -5000;
-            }
-            n = -n;
-            tag = fn_804030C4(0x54494d47, (u32)(base + 0xe38));
-            SetDigitPanes(self, 0, tag);
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x338 + 0x20), 1);
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x360 + 0x20), 1);
+            if (n < -5000) n = -5000;
+            n *= -1;
+            tag = fn_804030C4(0x54494d47, (u32)((u8*)base + 0xe38));
+            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*first))->changeTexture((ResTIMG*)tag, 0);
+            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(base[0x6c]))->changeTexture((ResTIMG*)tag, 0);
+            (*(J2DScreen**)(self + 4))->search(base[0x6b])->show();
+            (*(J2DScreen**)(self + 4))->search(base[0x70])->show();
             which = 1;
         } else {
-            for (i = 0; i < 5; i++) {
-                u32 a = *(u32*)(self + 0x244);
-                u32 b = *(u32*)(self + 0x248);
-                u8* obj = FindPaneOfSub(self, *(const u64*)(base + 0x338 + i * 8));
-                ((PaneColorsFn)(*(void***)obj)[76])(obj, &b, &a);
+            for (i = 0, p = base + 0x67; i < 5; i++, p++) {
+                ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*p))->setBlackWhite(*(JUtility::TColor*)(self+0x248), *(JUtility::TColor*)(self+0x244));
             }
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x338 + 0x20), 0);
-            SetPaneVisibleOfSub(self, *(const u64*)(base + 0x360 + 0x20), 0);
+            (*(J2DScreen**)(self + 4))->search(base[0x6b])->hide();
+            (*(J2DScreen**)(self + 4))->search(base[0x70])->hide();
         }
-
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 1000]);
-        n = n % 1000;
-        SetDigitPanes(self, which, tag);
-
+        n %= 1000;
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which]))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which]))->changeTexture((ResTIMG*)tag, 0);
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 100]);
-        n = n % 100;
-        SetDigitPanes(self, which + 1, tag);
-
+        n %= 100;
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which+1]))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which+1]))->changeTexture((ResTIMG*)tag, 0);
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
-        n = n % 10;
-        SetDigitPanes(self, which + 2, tag);
-
+        n %= 10;
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which+2]))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which+2]))->changeTexture((ResTIMG*)tag, 0);
         tag = fn_804030C4(0x54494d47, lbl_804B139C[n]);
-        SetDigitPanes(self, which + 3, tag);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x338))[which+3]))->changeTexture((ResTIMG*)tag, 0);
+        ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(((const u64*)((const u8*)base+0x360))[which+3]))->changeTexture((ResTIMG*)tag, 0);
     }
 }
-
+#pragma opt_common_subs reset
 extern u8* lbl_8053AD30;
 extern "C" u8 fn_80230188(s32);
 extern "C" u8 fn_8023BE0C(void);
