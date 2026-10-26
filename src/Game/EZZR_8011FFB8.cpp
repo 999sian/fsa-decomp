@@ -23,7 +23,8 @@ static inline f32 EZZR_Sqrt(f32 x) {
     }
     f32 y = __frsqrte(x);
     y = 0.5f * y * (3.0f - (x * (y * y)));
-    return x * y;
+    x *= y;
+    return x;
 }
 
 class EZZR : public Actor {
@@ -187,16 +188,9 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
             id = fn_801F78F4(fn_801F856C(), 0x5241494c, id);
         }
         {
-            f32 dx = p->field_0C.x - a.x;
-            f32 dy = p->field_0C.y - a.y;
-            f32 dx2 = dx * dx;
-            f32 dy2 = dy * dy;
-            f32 distA = EZZR_Sqrt(dx2 + dy2);
-            f32 bx = p->field_0C.x - b.x;
-            f32 by = p->field_0C.y - b.y;
-            f32 bx2 = bx * bx;
-            f32 by2 = by * by;
-            if (distA > EZZR_Sqrt(bx2 + by2)) {
+            f32 distA = EZZR_Sqrt(EZZR_Sqr(p->field_0C.x - a.x) + EZZR_Sqr(p->field_0C.y - a.y));
+            f32 distB = EZZR_Sqrt(EZZR_Sqr(p->field_0C.x - b.x) + EZZR_Sqr(p->field_0C.y - b.y));
+            if (distA > distB) {
                 if (*((u8*)p + 0x3c4) != 0) {
                     fn_80127ED8(fn_801283E8(), &b);
                 } else {
