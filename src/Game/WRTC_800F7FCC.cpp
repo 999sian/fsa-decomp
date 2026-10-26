@@ -1219,6 +1219,7 @@ extern "C" void fn_800FB32C(void* this_) {
     u8* p = (u8*)this_;
     JGeometry::TVec3f* pos = (JGeometry::TVec3f*)(p + 0xc);
     JGeometry::TVec3f* vel = (JGeometry::TVec3f*)(p + 0x3c);
+    JGeometry::TVec3f n;
 
     fn_800FA1A4(this_);
     if (p[0x256] != 0) {
@@ -1243,13 +1244,14 @@ extern "C" void fn_800FB32C(void* this_) {
     }
 
     vel->z = vel->z - lbl_8053C080;
-    pos->add(*vel);
+    pos->add(*(JGeometry::TVec3f*)vel);
 
     if (pos->z <= lbl_8053BFAC) {
         if (p[0x257] == 0) {
             fn_800FB6E0(this_, 0);
             fn_801F0E34(this_, 0x4002C, 0);
-            JGeometry::TVec3f tmp = *pos;
+            JGeometry::TVec3f tmp;
+            tmp = *pos;
             s32 room = *(s32*)(p + 4);
             *(f32*)(p + 0x290) = tmp.x;
             *(f32*)(p + 0x294) = tmp.y;
@@ -1295,14 +1297,16 @@ extern "C" void fn_800FB32C(void* this_) {
         pos->z = lbl_8053BFAC;
     }
 
-    JGeometry::TVec3f n;
     if (fn_801F2618(this_, &n, 0)) {
-        f32 dot = vel->x * n.x + vel->y * n.y + vel->z * n.z;
+        WrtcVec* reflected = (WrtcVec*)(p + 0x3c);
+        f32 dot = WRTC_velocityDot(reflected, n);
         f32 k = lbl_8053BFF0 * dot;
-        vel->x = vel->x - k * n.x;
-        vel->y = vel->y - k * n.y;
-        vel->z = vel->z - k * n.z;
-        *(s16*)(p + 0x262) = (s16)(lbl_8053C050 * JMath::atanTable_.atan2_(vel->x, vel->y));
+        reflected->x -= k * n.x;
+        reflected->y -= k * n.y;
+        reflected->z -= k * n.z;
+        f32 angle = JMath::atanTable_.atan2_(reflected->x, reflected->y);
+        angle *= lbl_8053C050;
+        *(s16*)(p + 0x262) = (s16)angle;
     }
     if (vel->z > lbl_8053BFAC) {
         *(u32*)(p + (s32)0x238) |= 1;
