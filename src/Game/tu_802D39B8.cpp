@@ -7,6 +7,14 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 #pragma auto_inline off
+static inline void SetRoomBounds802D(char* p, f32 left, f32 top) {
+    extern const f32 lbl_80541140;
+    extern const f32 lbl_80541144;
+    *(f32*)(p + 0xcc) = left;
+    *(f32*)(p + 0xd0) = top;
+    *(f32*)(p + 0xd4) = lbl_80541144 + left;
+    *(f32*)(p + 0xd8) = lbl_80541140 + top;
+}
 static inline u32 RoomResourceTag802D(const char* name) {
     s32 a = name[0] - 0x20;
     s32 b = name[1] - 0x20;
@@ -1437,7 +1445,7 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     const char* name;
     s32 tens;
     s32 ones;
-    u32 key;
+    s32 key;
     s32 number;
     char buf104[32];
     char buf32[32];
@@ -1447,12 +1455,14 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     number = 0;
     *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0xc) + 0x5c) = 0;
     {
+        s32 col;
+        s32 row;
         s32 x = *(s32*)(this_ + 0x14);
         if (x >= 0 && x < 10) {
             s32 y = *(s32*)(this_ + 0x18);
             if (y >= 0 && y < 10) {
-                s32 col = *(s32*)(this_ + 8);
-                s32 row = *(s32*)(this_ + 4);
+                col = *(s32*)(this_ + 8);
+                row = *(s32*)(this_ + 4);
                 if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
                     name = lbl_804A9530[row][col];
                 } else {
@@ -1508,58 +1518,8 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
     }
     if (!skip) {
         for (s32 i = 0; i < 7; i++) {
-            char* s1;
-            char* s2;
-            {
-                s32 x = *(s32*)(this_ + 0x14);
-                if (x >= 0 && x < 10) {
-                    s32 y = *(s32*)(this_ + 0x18);
-                    if (y >= 0 && y < 10) {
-                        s32 col = *(s32*)(this_ + 8);
-                        s32 row = *(s32*)(this_ + 4);
-                        const char* nm;
-                        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                            nm = lbl_804A9530[row][col];
-                        } else {
-                            nm = lbl_80541128;
-                        }
-                        s32 no = ((u8*)this_)[y * 10 + x + 0x60];
-                        if (no == 0xff) {
-                            no = 0;
-                        }
-                        sprintf(this_ + 0x131fa, fmt + 0x6bc, nm, no / 10, no % 10, i + 1);
-                        s1 = this_ + 0x131fa;
-                        goto have1;
-                    }
-                }
-                s1 = 0;
-            }
-        have1:
-            {
-                s32 x = *(s32*)(this_ + 0x14);
-                if (x >= 0 && x < 10) {
-                    s32 y = *(s32*)(this_ + 0x18);
-                    if (y >= 0 && y < 10) {
-                        s32 col = *(s32*)(this_ + 8);
-                        s32 row = *(s32*)(this_ + 4);
-                        const char* nm;
-                        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                            nm = lbl_804A9530[row][col];
-                        } else {
-                            nm = lbl_80541128;
-                        }
-                        s32 no = ((u8*)this_)[y * 10 + x + 0x60];
-                        if (no == 0xff) {
-                            no = 0;
-                        }
-                        sprintf(this_ + 0x1321a, fmt + 0x6a0, nm, no / 10, no % 10, i + 1);
-                        s2 = this_ + 0x1321a;
-                        goto have2;
-                    }
-                }
-                s2 = 0;
-            }
-        have2:
+            char* s1 = RoomExtraPath802D(this_, i, fmt + 0x6bc, 0x131fa);
+            char* s2 = RoomExtraPath802D(this_, i, fmt + 0x6a0, 0x1321a);
             if (s1 != 0) {
                 {
                     char* base = *(char**)(lbl_8053AB10 + 0x20);
@@ -1569,8 +1529,8 @@ extern "C" void fn_802D8D50(char* this_, u8 flag) {
                     char* base = *(char**)(lbl_8053AB10 + 0x20);
                     fn_802F99DC(base, (char*)((JKRArchive*)*(void**)(tbl + 0x10))->getResource(key, s2), 0, i + 0x10, 0, 0);
                 }
+                fn_802D4CCC(this_, i + 8);
             }
-            fn_802D4CCC(this_, i + 8);
         }
     }
 
