@@ -894,6 +894,15 @@ static inline int menuWidthPair(const u8* p) {
     return *(const s16*)(p + 0x1e4) + *(const s16*)(p + 0x1e2);
 }
 
+#pragma opt_propagation off
+static inline s16 menuWidthSum(const u8* p) {
+    int a = *(const s16*)(p + 0x1e2);
+    int b = *(const s16*)(p + 0x1e4);
+    int c = *(const s16*)(p + 0x1e0);
+    return c + (b + a);
+}
+#pragma opt_propagation reset
+
 static inline void bindMenuNine(u8* p, const u8* tbl) {
     int i;
     const u64* keys;
@@ -1011,7 +1020,7 @@ extern "C" void fn_803BF9C4(u8* p) {
 
     {
         const s16* widths = (const s16*)(lbl_8050DB0C + 0x1e0);
-        s16 sum = widths[0] + (widths[2] + widths[1]);
+        s16 sum = *(s16*)(lbl_8050DB0C + 0x1e0) + menuWidthPair(lbl_8050DB0C);
         *(s16*)(p + 0xd8) = *(s16*)(lbl_8050DB0C + 0x1e6);
         if (*(s16*)(p + 0xd8) < sum) {
             *(s16*)(p + 0xd8) = sum;
@@ -3283,7 +3292,8 @@ extern "C" void fn_803C9338(u8* p) {
 
 extern "C" f32 lbl_80543478;
 #pragma opt_strength_reduction off
-extern "C" void fn_803C9898(u8* p) {
+extern "C" void fn_803C9898(char* pc) {
+    u8* p = (u8*)pc;
     const u8* timing = lbl_8050DB0C;
     u8* base = (u8*)lbl_804765D0;
     s16 a = *(s16*)(timing + 0x1d0);
