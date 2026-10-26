@@ -1093,12 +1093,12 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
 
 extern u8 lbl_8049EF20[];
 extern u8* sManager__8JUTVideo;
-extern f32 lbl_8053CD80;
-extern f32 lbl_8053CD84;
-extern f32 lbl_8053CD8C;
-extern f32 lbl_8053CD90;
-extern f32 lbl_8053CDB8;
-extern f32 lbl_8053CDBC;
+extern const f32 lbl_8053CD80;
+extern const f32 lbl_8053CD84;
+extern const f32 lbl_8053CD8C;
+extern const f32 lbl_8053CD90;
+extern const f32 lbl_8053CDB8;
+extern const f32 lbl_8053CDBC;
 extern "C" void* __ct__6MsgMgrFv(void*);
 extern "C" void* __ct__10J2DPictureFPC7ResTIMG(void*, const void*);
 extern "C" void* fn_8013BFEC(void*, void*);
@@ -1131,11 +1131,10 @@ extern "C" void* fn_80139300(char* this_) {
     *(void**)(this_ + 0x18) = p;
 
     p = operator new(0x3c, *(JKRHeap**)(this_ + 0x98), 0);
-    void* q = 0;
     if (p != 0) {
-        q = fn_8013BFEC(p, *(JKRHeap**)(this_ + 0x98));
+        p = fn_8013BFEC(p, *(JKRHeap**)(this_ + 0x98));
     }
-    lbl_8053AB10 = (char*)q;
+    lbl_8053AB10 = (char*)p;
 
     *(s32*)(this_ + 8) = *(s32*)(lbl_80529DEC + 0x5c);
     *(s32*)(this_ + 0xc) = *(s32*)(lbl_80529DEC + 0x60);
@@ -1208,24 +1207,8 @@ extern "C" void* fn_80139300(char* this_) {
         p = __ct__10J2DPictureFPC7ResTIMG(p, tex);
     }
     *(void**)(this_ + 0xb8) = p;
-
-    u8 c1[4];
-    u8 c2[4];
-    c1[0] = 0xff;
-    c1[1] = 0xd2;
-    c1[2] = 0;
-    c1[3] = 0xff;
-    c2[0] = 0;
-    c2[1] = 0;
-    c2[2] = 0;
-    c2[3] = 0;
-    u32 t1 = *(u32*)c1;
-    u32 t2 = *(u32*)c2;
-    void* obj = *(void**)(this_ + 0xb8);
-    (*(void (**)(void*, void*, void*))((*(char**)obj) + 0x130))(obj, &t2, &t1);
-
-    obj = *(void**)(lbl_8053AAF8 + 0xa4);
-    tex = (*(void* (**)(void*, u32, s32))((*(char**)obj) + 0x18))(obj, 0x54494d47, 0);
+    (*(J2DPicture**)(this_+0xb8))->setBlackWhite(JUtility::TColor(0,0,0,0), JUtility::TColor(255,210,0,255));
+    tex = (*(JKRFileLoader**)(lbl_8053AAF8+0xa4))->getResource('TIMG', lbl_8053CDB0);
     p = operator new(0x168, *(JKRHeap**)(this_ + 0x98), 0);
     if (p != 0) {
         p = __ct__10J2DPictureFPC7ResTIMG(p, tex);
@@ -1233,30 +1216,23 @@ extern "C" void* fn_80139300(char* this_) {
     *(void**)(this_ + 0xbc) = p;
 
     if (((s32 (*)(void))fn_80021840)() == 2) {
-        u16 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
-        JGeometry::TBox2f boxA(lbl_8053CD90, lbl_8053CDB8, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxA, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-        *(void**)(this_ + 0xc0) = p;
-        JGeometry::TBox2f boxB(lbl_8053CD84, lbl_8053CDBC, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxB, (ResFONT*)(base + 0x5f8), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-        *(void**)(this_ + 0xc4) = p;
+        *(J2DTextBox**)(this_+0xc0) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585431ULL,
+            JGeometry::TBox2f(lbl_8053CD90,lbl_8053CDB8,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            (char*)(base+0x5f8),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
+        *(J2DTextBox**)(this_+0xc4) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585432ULL,
+            JGeometry::TBox2f(lbl_8053CD84,lbl_8053CDBC,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            (char*)(base+0x5f8),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
     } else {
-        u16 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
-        JGeometry::TBox2f boxC(lbl_8053CD90, lbl_8053CDB8, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585431ULL, boxC, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-        *(void**)(this_ + 0xc0) = p;
-        JGeometry::TBox2f boxD(lbl_8053CD84, lbl_8053CDBC, lbl_8053CD8C + (f32)w, lbl_8053CD80);
-        p = new (*(JKRHeap**)(this_ + 0x98), 0) J2DTextBox(0x0000005445585432ULL, boxD, (ResFONT*)(base + 0x60c), (char*)(this_ + 0xc8), 0x28, (J2DTextBoxHBinding)0, (J2DTextBoxVBinding)0);
-        *(void**)(this_ + 0xc4) = p;
+        *(J2DTextBox**)(this_+0xc0) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585431ULL,
+            JGeometry::TBox2f(lbl_8053CD90,lbl_8053CDB8,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            (char*)(base+0x60c),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
+        *(J2DTextBox**)(this_+0xc4) = new (*(JKRHeap**)(this_+0x98),0) J2DTextBox(0x5445585432ULL,
+            JGeometry::TBox2f(lbl_8053CD84,lbl_8053CDBC,lbl_8053CD8C+(f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4),lbl_8053CD80),
+            (char*)(base+0x60c),this_+0xc8,0x28,(J2DTextBoxHBinding)0,(J2DTextBoxVBinding)0);
     }
-
-    u32 colA[4];
-    colA[0] = 0xffff50ff;
-    colA[1] = 0xffff50ff;
-    colA[2] = 0x50502800;
-    colA[3] = 0x50502800;
-    obj = *(void**)(this_ + 0xc0);
-    (*(void (**)(void*, void*, void*))((*(char**)obj) + 0xac))(obj, &colA[3], &colA[1]);
+    (*(J2DTextBox**)(this_+0xc0))->setBlackWhite(JUtility::TColor(0x50502800),JUtility::TColor(0xffff50ff));
+    (*(J2DTextBox**)(this_+0xc4))->setFontColor(JUtility::TColor(0xff),JUtility::TColor(0xff));
+    *(s32*)(this_+0x104)=0;
 
     fn_8008C494(base + 0x620);
     fn_8008C484((void*)fn_80134C04);
