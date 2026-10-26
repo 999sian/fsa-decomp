@@ -91,6 +91,10 @@ static inline void clearRoomFlag12F68(const unsigned int i) {
     roomArrays()->flags12F68[i] = 0;
 }
 
+static inline void clearNextRoomFlag12F68(unsigned int& i) {
+    roomArrays()->flags12F68[i++] = 0;
+}
+
 inline u16* roomValueColumn(int i) {
     return &roomArrays()->values2948[0][i];
 }
@@ -1774,9 +1778,7 @@ extern "C" void fn_802DA010(char* p) {
     }
     RoomArrays* base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     base->flags178[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)] &= 0xFFFF0000;
-    for (unsigned int i = 0; i < 16; i++) {
-        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counters308[i] = 0;
-    }
+    clearRoomCounters308();
     {
         unsigned int word = 0;
         for (unsigned int byte = 0; byte < 32; byte += 2) {
