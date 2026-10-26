@@ -1,4 +1,12 @@
 #include "types.h"
+#include "JSystem/JKernel/JKRArchive.h"
+
+class WaveController {
+public:
+    WaveController(s32 a, s32 b, s32 c);
+private:
+    u8 pad[0x5c];
+};
 struct WaveSubBase { u8 pad[8]; };
 struct WaveSub : WaveSubBase {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
