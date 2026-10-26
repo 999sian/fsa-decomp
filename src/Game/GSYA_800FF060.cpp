@@ -27,22 +27,6 @@ extern const f32 lbl_8053C114;
 extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
 
-static inline void fsaSetTimeSlot(Actor* this_, s32 idx) {
-    lbl_8053AF00[0x30] |= (u8)(1 << idx);
-    s32 value = *(s32*)((u8*)this_ + 0x250 + idx * 4);
-    s32 minutes = value / 60;
-    value -= minutes * 60;
-    value = (s32)((f32)value / lbl_8053C110);
-    lbl_8053AF00[0x2c + idx] = minutes;
-    lbl_8053AF00[0x28 + idx] = value;
-}
-
-static inline void fsaSetTimeValue(s32 v, s32 idx) {
-    lbl_8053AF00[0x30] |= (u8)(1 << idx);
-    lbl_8053AF00[0x2c + idx] = (u8)(v / 60);
-    lbl_8053AF00[0x28 + idx] = (u8)((f32)(v % 60) / lbl_8053C110);
-}
-
 // ---- from Game/fn_800FF060_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
