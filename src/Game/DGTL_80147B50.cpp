@@ -486,6 +486,37 @@ extern "C" void* lbl_8053AF80;
 extern s32 lbl_8053AB30;
 extern s32 lbl_8053AB34;
 extern s32 lbl_8053AB38;
+static inline u16 dgtlAngleFromIndex(u32 index) {
+    u16 angle;
+    switch (index) {
+    case 0:
+        angle = 0;
+        break;
+    case 1:
+        angle = 0x2000;
+        break;
+    case 2:
+        angle = 0x4000;
+        break;
+    case 3:
+        angle = 0x6000;
+        break;
+    case 4:
+        angle = 0x8000;
+        break;
+    case 5:
+        angle = 0xa000;
+        break;
+    case 6:
+        angle = 0xc000;
+        break;
+    case 7:
+        angle = 0xe000;
+        break;
+    }
+    return angle;
+}
+
 extern "C" void fn_8014A5F4(char* this_) {
     char* p = this_;
     u8* g;
