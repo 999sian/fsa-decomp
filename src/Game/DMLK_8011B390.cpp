@@ -542,6 +542,24 @@ extern "C" void fn_80230BF4(s32 i, s32 n);
 extern "C" f32 lbl_8053C81C;
 extern "C" f32 lbl_8053C820;
 extern "C" f32 lbl_8053C818;
+static inline void dmlkEmitBurst(u8* this_) {
+        JGeometry::TVec3f tmp12;
+        tmp12 = *(JGeometry::TVec3f*)(this_ + 0xc);
+        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp12, lbl_8053C7F8, 0x41d, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp12, lbl_8053C7F8, 0x41e, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp12, lbl_8053C7F8, 0x41f, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp12, lbl_8053C7F8, 0x420, 0, 0, 0, 0, 1);
+        fn_801F0E34(this_, 0x30091, 0);
+}
+static inline void dmlkEmitPuff(u8* this_) {
+        JGeometry::TVec3f tmp16;
+        *(s32*)(this_ + 0x98) = 2;
+        *(s32*)(this_ + 0x278) = 0;
+        *(u8*)(this_ + 0x284) = 2;
+        tmp16 = *(JGeometry::TVec3f*)(this_ + 0xc);
+        tmp16.y = tmp16.y + lbl_8053C818;
+        fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp16, lbl_8053C7F8, 0x33b, 0, 0, 0, 0, 1);
+}
 extern "C" void fn_8011B878(u8* this_, s32 id) {
     JGeometry::TVec3f tmp9;
     JGeometry::TVec3f result;
