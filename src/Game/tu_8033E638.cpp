@@ -99,7 +99,8 @@ static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& d
 }
 
 static inline u8 platformHasPlayer(u8* p, int player, int room) {
-    if (fn_8023DE58(player) != room) return 0;
+    int actualRoom = fn_8023DE58(player);
+    if (actualRoom != room) return 0;
     for (int j = 0; j < 8; ++j) {
         JGeometry::TVec3<f32> point;
         fn_8022E088(player, j, (JGeometry::TVec2<f32>*)&point);
@@ -111,9 +112,12 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
         f32 xx = point.x * point.x;
         f32 yy = point.y * point.y;
         f32 length = JGeometry::TUtilf::sqrt(xx + yy);
+        f32 x, y;
+        y = length * JMath::sincosTable_.sinShort(angle);
+        x = length * JMath::sincosTable_.cosShort(angle);
         point.z = 0.0f;
-        point.y = length * JMath::sincosTable_.sinShort(angle);
-        point.x = length * JMath::sincosTable_.cosShort(angle);
+        point.y = y;
+        point.x = x;
         f32 minX = *(f32*)(p + 0x60);
         f32 minY = *(f32*)(p + 0x64);
         f32 maxX = *(f32*)(p + 0x68);
@@ -128,8 +132,9 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
     return 0;
 }
 
-extern "C" void fn_8033EA54(Actor* this_) {
-    u8* p = (u8*)this_;
+extern "C" void fn_8033EA54(u8* p) {
+    u8 hit;
+    s32 room;
     int player;
     if (*(s32*)(p + 0x230) == 1) {
         ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
@@ -215,7 +220,8 @@ stop:
         }
     }
     for (player = 0; player < 4; ++player) {
-        u8 hit = platformHasPlayer(p, player, *(s32*)(p + 4));
+        room = *(s32*)(p + 4);
+        hit = platformHasPlayer(p, player, room);
         if (hit && ((JGeometry::TVec3<f32>*)fn_8023E724(player))->z <= lbl_80542210) {
             movePlatformPlayer(player, *(JGeometry::TVec3<f32>*)(p + 0xc) - *(JGeometry::TVec3<f32>*)(p + 0x18));
             for (int j = 0; j < 3; ++j) fn_8022CB94(player);
