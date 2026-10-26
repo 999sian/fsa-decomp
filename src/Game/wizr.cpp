@@ -123,8 +123,10 @@ extern const f32 lbl_8053DBB8;
 extern const f32 lbl_8053DBF4;
 extern void* lbl_8053AAF8;
 #pragma opt_propagation off
+enum WizrState { WIZR_STATE_0 = 0 };
+
 static inline void wizrSetState(char* p, s32 state) {
-    *(s32*)(p + 0x230) = state;
+    *(WizrState*)(p + 0x230) = (WizrState)state;
 }
 
 extern "C" void fn_801788B4(char* this_) {
@@ -208,7 +210,7 @@ extern "C" void fn_801788B4(char* this_) {
         if ((*(u32*)(this_ + 0x90) >> 27) != 0 && (u8)((Actor*)this_)->v11() == 0) {
             *(u8*)(this_ + 0x1a8) = 0;
             *(u8*)(this_ + 0x2e5) = 1;
-            *(s32*)(this_ + 0x230) = 0;
+            wizrSetState(this_, 0);
             break;
         }
     }
