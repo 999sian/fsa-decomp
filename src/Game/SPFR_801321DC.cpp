@@ -43,6 +43,33 @@ extern const f32 lbl_8053CD08;
 extern f32 lbl_8053CD0C;
 extern f32 lbl_8053CD10;
 extern f32 lbl_8053CD24;
+static inline s32 spfrTrySpawn(char* p) {
+    JGeometry::TVec3f v;
+    JGeometry::TVec3f pos;
+    JGeometry::TBox2f box2;
+    box2.i.x = *(f32*)(p + 0x60);
+    box2.i.y = *(f32*)(p + 0x64);
+    box2.f.x = *(f32*)(p + 0x68);
+    box2.f.y = *(f32*)(p + 0x6c);
+    box2.i.x += *(f32*)(p + 0xc);
+    box2.i.y += *(f32*)(p + 0x10);
+    box2.f.x += *(f32*)(p + 0xc);
+    box2.f.y += *(f32*)(p + 0x10);
+    fn_8022FEB8(&box2, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+    s32 id = fn_8022FD8C(*(void**)(p + 0x198));
+    if (id < 0) return -1;
+    if (!fn_802300EC()) return -1;
+    pos = *(JGeometry::TVec3f*)(p + 0xc);
+    pos.y -= lbl_8053CD14;
+    void* handle = *(void**)(p + 0x198);
+    s32 room = *(s32*)(p + 4);
+    v = pos;
+    if (fn_8038AD24(id, 0x2b6, handle, room, &v, 0x28)) {
+        return id;
+    }
+    return -1;
+}
+
 static inline f32 spfrRand01() {
     u32* s = (u32*)(lbl_8053AAF8 + 0xb4);
     *s = *s * 0x19660du + 0x3c6ef35fu;
@@ -541,6 +568,9 @@ extern "C" void fn_80132E18(void* param_1) {
 extern "C" void fn_80132F60(char* p) {
     JGeometry::TBox2f box;
     s32 id;
+    f32 height, one, width;
+    u32 multiplier;
+    u32* seed;
 
     fn_8010DF78();
     box.i.x = *(f32*)(p + 0x60);
@@ -561,7 +591,7 @@ extern "C" void fn_80132F60(char* p) {
             fn_80132454(p, 4);
             break;
         case 1:
-            if ((*(bool(**)(char*))(*(char**)p + 0x34))(p)) {
+            if ((u8)((Actor*)p)->v11()) {
                 fn_801186B0(fn_8011921C(), 0xe);
             }
             break;
@@ -603,11 +633,15 @@ extern "C" void fn_80132F60(char* p) {
             } else {
                 pos = *(JGeometry::TVec3f*)(p + 0xc);
                 pos.y -= lbl_8053CD14;
+                void* handle = *(void**)(p + 0x198);
+                s32 room = *(s32*)(p + 4);
                 v = pos;
-                if (!fn_8038AD24(id, 0x2b6, *(void**)(p + 0x198), *(s32*)(p + 4), &v, 0x28)) {
-                    id = -1;
+                if (fn_8038AD24(id, 0x2b6, handle, room, &v, 0x28)) {
+                    goto found;
                 }
+                id = -1;
             }
+            found:
             if (id >= 0) {
                 *(s32*)(p + 0x23c) = id;
                 fn_80132454(p, 3);
@@ -637,9 +671,7 @@ extern "C" void fn_80132F60(char* p) {
             void* obj;
 
             *(s32*)(p + 0x24c) = 0;
-            pos.x = lbl_8053CCF0;
-            pos.y = lbl_8053CCF0;
-            pos.z = lbl_8053CCF0;
+            pos.set(0.0f, 0.0f, 0.0f);
             id = fn_801F7A08(fn_801F856C(), 0x42415249);
             if (id >= 0) {
                 obj = fn_801F666C(fn_801F856C(), id);
@@ -649,8 +681,22 @@ extern "C" void fn_80132F60(char* p) {
             }
             pos.x -= lbl_8053CCF4;
             pos.y += lbl_8053CCF8;
-            pos.x += (spfrRand01()) * lbl_8053CCFC;
-            pos.y += (spfrRand01()) * lbl_8053CD04;
+            one = lbl_8053CD00;
+            width = lbl_8053CCFC;
+            height = lbl_8053CD04;
+            multiplier = 0x19660d;
+            {
+                seed = (u32*)(lbl_8053AAF8 + 0xb4);
+                *seed = *seed * multiplier + 0x3c6ef35f;
+                u32 bits = (*seed >> 9) | 0x3f800000;
+                pos.x += (*(f32*)&bits - one) * width;
+            }
+            {
+                seed = (u32*)(lbl_8053AAF8 + 0xb4);
+                *seed = *seed * multiplier + 0x3c6ef35f;
+                u32 bits = (*seed >> 9) | 0x3f800000;
+                pos.y += (*(f32*)&bits - one) * height;
+            }
             Actor_CreateByID(fn_801F856C(), 0x534c5231, *(u32*)(p + 4), (f32*)&pos, 0x102, -1, -1);
         }
         break;
