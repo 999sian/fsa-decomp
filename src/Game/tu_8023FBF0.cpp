@@ -2802,99 +2802,46 @@ void fn_8025250C(char* p) {
 }
 
 s32 fn_802527B0(char* p, s32* out) {
-    out[0] = 0;
-    out[1] = 0;
-    if (!fn_80251BFC(p, 0x1b)) {
-        return 0;
-    }
-    if (S32(p, 0x1240) == 0x1b) {
-        return 0;
-    }
-    if (U8(p, 0x454) != 0) {
-        return 0;
-    }
-    if (S32(p, 0x3b4) >= 8) {
-        return 0;
-    }
-    if (U8(p, 0x1216) == 1) {
-        return 0;
-    }
+    out[0] = 0; out[1] = 0;
+    if (!fn_80251BFC(p, 0x1b)) return 0;
+    if (S32(p, 0x1240) == 0x1b) return 0;
+    if (U8(p, 0x454) != 0) return 0;
+    if (S32(p, 0x3b4) >= 8) return 0;
+    if (U8(p, 0x1216) == 1) return 0;
     JGeometry::TVec3<f32> v = V3(p, 0x8);
-    if (!fn_8025F448(p) && v.z > lbl_80540070) {
-        return 0;
-    }
+    if (!fn_8025F448(p) && v.z > lbl_80540070) return 0;
     JGeometry::TBox2<f32> box;
     box = *(JGeometry::TBox2<f32>*)(fn_802D6A9C() + 0xcc);
-    if (!(v.x <= lbl_80540078 + box.i.x)) {
-        if (U8(lbl_8053AAF8, 0x7e) == 0 && fn_8022C82C(S32(p, 0x4)) >= lbl_80540034) {
-            if (fn_80225EF4(&v, 0)) {
-                JGeometry::TVec2<f32> pos(lbl_80540050 + box.i.x, v.y);
-                switch (fn_802265FC(&pos, S32(p, 0x3b4))) {
-                    case 0x22:
-                        if (U8(fn_802D6A9C(), 0x170) == 1) {
-                            return 0;
-                        }
-                        break;
-                    case 1:
-                        out[0] = -1;
-                        out[1] = 0;
-                        return 1;
-                }
-            }
+    if (v.x <= lbl_80540078 + box.i.x) {
+        if (U8(lbl_8053AAF8, 0x7e) != 0 || fn_8022C82C(S32(p, 0x4)) < lbl_80540034 || (u8)fn_80225EF4(&v, 0)) {
+            JGeometry::TVec2<f32> pos(lbl_80540050 + box.i.x, v.y);
+            u16 kind = fn_802265FC(&pos, S32(p, 0x3b4));
+            if (kind == 1 || (kind == 0x22 && U8(fn_802D6A9C(), 0x170) == 1)) return 0;
+            out[0] = -1; out[1] = 0; return 1;
         }
     }
-    if (!(v.x >= box.f.x - lbl_80540078)) {
-        if (U8(lbl_8053AAF8, 0x7e) == 0 && fn_8022C82C(S32(p, 0x4)) <= lbl_80540034) {
-            if (fn_80225EF4(&v, 0)) {
-                JGeometry::TVec2<f32> pos(box.f.x - lbl_80540050, v.y);
-                switch (fn_802265FC(&pos, S32(p, 0x3b4))) {
-                    case 0x22:
-                        if (U8(fn_802D6A9C(), 0x170) == 1) {
-                            return 0;
-                        }
-                        break;
-                    case 1:
-                        out[0] = 1;
-                        out[1] = 0;
-                        return 1;
-                }
-            }
+    if (v.x >= box.f.x - lbl_80540078) {
+        if (U8(lbl_8053AAF8, 0x7e) != 0 || fn_8022C82C(S32(p, 0x4)) > lbl_80540034 || (u8)fn_80225EF4(&v, 0)) {
+            JGeometry::TVec2<f32> pos(box.f.x - lbl_80540050, v.y);
+            u16 kind = fn_802265FC(&pos, S32(p, 0x3b4));
+            if (kind == 1 || (kind == 0x22 && U8(fn_802D6A9C(), 0x170) == 1)) return 0;
+            out[0] = 1; out[1] = 0; return 1;
         }
     }
-    if (!(v.y <= lbl_80540078 + box.i.y)) {
-        if (U8(lbl_8053AAF8, 0x7e) == 0 && fn_8022C76C(S32(p, 0x4)) <= lbl_80540034) {
-            if (fn_80225EF4(&v, 0)) {
-                JGeometry::TVec2<f32> pos(v.x, lbl_80540050 + box.i.y);
-                switch (fn_802265FC(&pos, S32(p, 0x3b4))) {
-                    case 0x22:
-                        if (U8(fn_802D6A9C(), 0x170) == 1) {
-                            return 0;
-                        }
-                        break;
-                    case 1:
-                        out[0] = 0;
-                        out[1] = -1;
-                        return 1;
-                }
-            }
+    if (v.y <= lbl_80540078 + box.i.y) {
+        if (U8(lbl_8053AAF8, 0x7e) != 0 || fn_8022C76C(S32(p, 0x4)) > lbl_80540034 || (u8)fn_80225EF4(&v, 0)) {
+            JGeometry::TVec2<f32> pos(v.x, lbl_80540050 + box.i.y);
+            u16 kind = fn_802265FC(&pos, S32(p, 0x3b4));
+            if (kind == 1 || (kind == 0x22 && U8(fn_802D6A9C(), 0x170) == 1)) return 0;
+            out[0] = 0; out[1] = -1; return 1;
         }
     }
-    if (!(v.y >= box.f.y - lbl_80540078)) {
-        if (U8(lbl_8053AAF8, 0x7e) == 0 && fn_8022C76C(S32(p, 0x4)) >= lbl_80540034) {
-            if (fn_80225EF4(&v, 0)) {
-                JGeometry::TVec2<f32> pos(v.x, box.f.y - lbl_80540050);
-                switch (fn_802265FC(&pos, S32(p, 0x3b4))) {
-                    case 0x22:
-                        if (U8(fn_802D6A9C(), 0x170) == 1) {
-                            return 0;
-                        }
-                        break;
-                    case 1:
-                        out[0] = 0;
-                        out[1] = 1;
-                        return 1;
-                }
-            }
+    if (v.y >= box.f.y - lbl_80540078) {
+        if (U8(lbl_8053AAF8, 0x7e) != 0 || fn_8022C76C(S32(p, 0x4)) < lbl_80540034 || (u8)fn_80225EF4(&v, 0)) {
+            JGeometry::TVec2<f32> pos(v.x, box.f.y - lbl_80540050);
+            u16 kind = fn_802265FC(&pos, S32(p, 0x3b4));
+            if (kind == 1 || (kind == 0x22 && U8(fn_802D6A9C(), 0x170) == 1)) return 0;
+            out[0] = 0; out[1] = 1; return 1;
         }
     }
     return 0;
