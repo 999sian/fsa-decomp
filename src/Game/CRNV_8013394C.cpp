@@ -184,8 +184,8 @@ switch (*(s32*)(p+0x230)) {
 case 0: *(s32*)(p+0x238)=-1; break;
 case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
 case 3: {
-u32 zero; s32 i; u8* q;
-zero=0; i=zero; q=p;
+u8* q; u32 zero; s32 i;
+i=0; q=p; zero=i;
 do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
 detach__5ActorFv(p); break;
 }
@@ -194,8 +194,8 @@ detach__5ActorFv(p); break;
 static inline s32 crnvTryTalk(u8* p,s32 msg) {
 s32 r;
 
-JGeometry::TVec3f pos;
 JGeometry::TBox2f box2;
+JGeometry::TVec3f pos;
 box2.set(*(JGeometry::TBox2f*)(p+0x60));
 box2.i.x += *(f32*)(p+0xc); box2.i.y += *(f32*)(p+0x10); box2.f.x += *(f32*)(p+0xc); box2.f.y += *(f32*)(p+0x10);
 fn_8022FEB8(&box2,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
@@ -207,62 +207,27 @@ return -1;
 }
 #pragma opt_propagation reset
 
+#pragma opt_propagation off
 extern "C" void fn_80133DD0(u8* p) {
 v03__5ActorFv(p);
 JGeometry::TBox2f box;
 box.set(*(JGeometry::TBox2f*)(p+0x60));
 box.i.x += *(f32*)(p+0xc); box.i.y += *(f32*)(p+0x10); box.f.x += *(f32*)(p+0xc); box.f.y += *(f32*)(p+0x10);
 switch(*(s32*)(p+0x230)) {
-case 0: {
+case 0:
 fn_801339EC(p);
-s32 r;
-s32 msg=lbl_804652A4[*(s32*)(p+0x234)];
-JGeometry::TVec3f pos;
-JGeometry::TBox2f box2;
-box2.set(*(JGeometry::TBox2f*)(p+0x60));
-box2.i.x += *(f32*)(p+0xc); box2.i.y += *(f32*)(p+0x10); box2.f.x += *(f32*)(p+0xc); box2.f.y += *(f32*)(p+0x10);
-fn_8022FEB8(&box2,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
-r=fn_8022FD8C(*(s32*)(p+0x198));
-if(r<0 || r>=4) r=-1;
-else if(!fn_802300EC(r)) r=-1;
-else { s32 handle=*(s32*)(p+0x198); s32 area=*(s32*)(p+4); if(fn_8038AD24(r,msg,handle,area,(pos = *(JGeometry::TVec3f*)(p+0xc),pos),0x28)) {} else r=-1; }
-*(s32*)(p+0x238)=r;
-if(*(s32*)(p+0x238)>=0) { *(s32*)(p+0x230)=1; switch (*(s32*)(p + 0x230)) {
-case 0: *(s32*)(p+0x238)=-1; break;
-case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
-case 3: {
-u32 zero; s32 i; u8* q; zero=0; i=zero; q=p;
-do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
-detach__5ActorFv(p); break;
-}
-} }
+*(s32*)(p+0x238)=crnvTryTalk(p,lbl_804652A4[*(s32*)(p+0x234)]);
+if(*(s32*)(p+0x238)>=0) crnvSetState(p,1);
 break;
-}
 case 1:
 fn_8022FF8C(*(s32*)(p+0x238),&box,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
-if(fn_80388CAC(*(s32*)(p+0x238),*(s32*)(p+0x198))) { *(s32*)(p+0x230)=0; switch (*(s32*)(p + 0x230)) {
-case 0: *(s32*)(p+0x238)=-1; break;
-case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
-case 3: {
-u32 zero; s32 i; u8* q; zero=0; i=zero; q=p;
-do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
-detach__5ActorFv(p); break;
-}
-} }
+if(fn_80388CAC(*(s32*)(p+0x238),*(s32*)(p+0x198))) crnvSetState(p,0);
 break;
 case 2:
 fn_801CD950((f32*)(p+0x23c),lbl_8053CD38,lbl_8053CD3C);
 fn_801CD950((f32*)(p+0x14),lbl_8053CD40,*(f32*)(p+0x23c));
 fn_801339EC(p);
-if(*(f32*)(p+0x14)>=lbl_8053CD44) { *(s32*)(p+0x230)=3; switch (*(s32*)(p + 0x230)) {
-case 0: *(s32*)(p+0x238)=-1; break;
-case 2: *(f32*)(p+0x23c)=lbl_8053CD34; break;
-case 3: {
-u32 zero; s32 i; u8* q; zero=0; i=zero; q=p;
-do { fn_801EE434(*(void**)(q+0x278)); i++; *(u32*)(q+0x278)=zero; q+=4; } while(i<2);
-detach__5ActorFv(p); break;
-}
-} }
+if(*(f32*)(p+0x14)>=lbl_8053CD44) crnvSetState(p,3);
 break;
 case 3: default: break;
 }
