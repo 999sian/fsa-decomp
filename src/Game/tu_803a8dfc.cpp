@@ -2170,6 +2170,10 @@ struct Menu_Intro {
     u8 alpha[2];                // 0x4d9
 };
 
+static inline J2DPane* introSearch(Menu_Intro* p, u64 tag) {
+    return p->screens[p->cur]->search(tag);
+}
+
 struct IntroTags {
     u64 title[13];
     u64 p3[4][3];
@@ -2237,8 +2241,11 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
 }
 
 #pragma opt_lifetimes off
+#pragma fp_contract off
 extern "C" void fn_803B0978(void* arg) {
     Menu_Intro* p = (Menu_Intro*)arg;
+    s32 k;
+    const u64* fadeTags;
     Menu_Intro* q;
     u64 (*tags3)[3];
     TagPair* tags2;
@@ -2281,8 +2288,8 @@ extern "C" void fn_803B0978(void* arg) {
                     p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420 + (f32)dist*a);
                     a = (f32)q->m460[0] / (f32)first;
                     if (p->cur < 2) {
-                        for(s32 k=0;k<2;k++) {
-                            p->screens[p->cur]->search(tags2->tag[k])->setAlpha((u8)(p->alpha[k]*a));
+                        for(k=0,fadeTags=tags2->tag;k<2;k++,fadeTags++) {
+                            p->screens[p->cur]->search(*fadeTags)->setAlpha((u8)(p->alpha[k]*a));
                         }
                     }
                 } else if (q->m460[0] <= end) {
@@ -2309,6 +2316,7 @@ extern "C" void fn_803B0978(void* arg) {
         p->m4c1=7;
     }
 }
+#pragma fp_contract reset
 #pragma opt_lifetimes reset
 // NONMATCHING (99.5%): register allocation in the slide loops.
 #pragma opt_lifetimes off
@@ -2385,8 +2393,8 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
 #pragma opt_lifetimes reset
 extern "C" void fn_803B14F8(void* this_) {
     Menu_Intro* p = (Menu_Intro*)this_;
-    u64 (*tags3)[3];
-    TagPair* tags2;
+    u64 (*tags3)[3] = (u64 (*)[3])lbl_80476270;
+    TagPair* tags2 = lbl_804762D0;
     s32 total;
     s32 b2;
     s32 c2;
@@ -2408,18 +2416,15 @@ extern "C" void fn_803B14F8(void* this_) {
     total = b + c;
     span = lbl_80543428 + (f32)a;
     done = 0;
-    tags3 = (u64 (*)[3])lbl_80476270;
-    tags2 = lbl_804762D0;
     for (i = 0; i < p->count; i++, tags3++, tags2++) {
-        u8* ready = (u8*)p + 0x4b8 + i;
-        if (*ready == 0xff && (u8)fn_80388EEC(i)) {
+        if (p->selected[i] == 0xff && (u8)fn_80388EEC(i)) {
             p->m460[i] = 0;
             x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
             p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
-            *ready = fn_803A8DFC(p, i);
+            p->selected[i] = fn_803A8DFC(p, i);
             fn_80458880(lbl_8053AF80, 0xb, -1);
         }
-        if (*ready != 0xff) {
+        if (p->selected[i] != 0xff) {
             if (p->m460[i] < total) {
                 p->m460[i]++;
                 if (p->m460[i] <= b) {
