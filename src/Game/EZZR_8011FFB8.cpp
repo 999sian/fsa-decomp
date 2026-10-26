@@ -13,13 +13,12 @@ struct EzzrMgr {
     u8 mFlags[1];
 };
 
-static inline f32 EZZR_Sqrt(const f32 x) {
+static inline f32 EZZR_Sqrt(f32 x) {
     if (x <= 0.0f) {
         return x;
     }
     f32 y = __frsqrte(x);
-    y = 0.5f * y * (3.0f - (x * (y * y)));
-    return x * y;
+    return 0.5f * y * (3.0f - (x * (y * y))) * x;
 }
 
 class EZZR : public Actor {
