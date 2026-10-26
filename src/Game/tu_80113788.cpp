@@ -55,6 +55,11 @@ static inline BOOL stateEventFlag(s32 index) {
     return (*(u32*)(base + *(s32*)(base + 0x10) * 0xc8 + 0x28) & mask) != 0;
 }
 
+static inline u8 stateRequestFlag(s32 index) {
+    if (!stateEventFlag(index)) return 0;
+    return fn_80309C4C((void*)lbl_8053AD30, 0x1000, -1) != 0;
+}
+
 struct StateActor80113788 {
     virtual void v0();
     virtual void v1();
@@ -472,8 +477,12 @@ extern "C" void fn_80114C1C(char* self) {
 }
 
 extern "C" void fn_80114C98(char* self) {
+    JGeometry::TVec3f player;
+    JGeometry::TVec3f second;
+    JGeometry::TVec3f first;
     s32 st;
     s32 r27;
+    char* q;
     s32 i;
     s32 k;
     char* o;
@@ -491,31 +500,31 @@ extern "C" void fn_80114C98(char* self) {
     case 14:
     case 15:
     case 16: {
-        JGeometry::TVec3f v = *(JGeometry::TVec3f*)(self + 0xc);
-        v.y = v.y + lbl_8053C67C;
-        fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
+        first = *(JGeometry::TVec3f*)(self + 0xc);
+        first.y = first.y + lbl_8053C67C;
+        fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &first);
         o = *(char**)((char*)lbl_8053AB10 + 0x24);
         if (*(u8*)(o + 0x7f5) == 0) {
             o[0x7f4] = 1;
             *(s32*)(o + 0x7f8) = 4;
-            *(f32*)(o + 0x7fc) = v.x;
-            *(f32*)(o + 0x800) = v.y;
-            *(f32*)(o + 0x804) = v.z;
+            *(f32*)(o + 0x7fc) = first.x;
+            *(f32*)(o + 0x800) = first.y;
+            *(f32*)(o + 0x804) = first.z;
             o[0x7f6] = 0;
         }
         break;
     }
     default: {
-        JGeometry::TVec3f v = *(JGeometry::TVec3f*)(self + 0xc);
-        v.y = v.y + (lbl_8053C680 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_8053C67C));
-        fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
+        second = *(JGeometry::TVec3f*)(self + 0xc);
+        second.y = second.y + (lbl_8053C680 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_8053C67C));
+        fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &second);
         o = *(char**)((char*)lbl_8053AB10 + 0x24);
         if (*(u8*)(o + 0x7f5) == 0) {
             o[0x7f4] = 1;
             *(s32*)(o + 0x7f8) = 4;
-            *(f32*)(o + 0x7fc) = v.x;
-            *(f32*)(o + 0x800) = v.y;
-            *(f32*)(o + 0x804) = v.z;
+            *(f32*)(o + 0x7fc) = second.x;
+            *(f32*)(o + 0x800) = second.y;
+            *(f32*)(o + 0x804) = second.z;
             o[0x7f6] = 0;
         }
         break;
@@ -524,7 +533,7 @@ extern "C" void fn_80114C98(char* self) {
     switch (*(s32*)(self + 0x23c)) {
     case 0: {
         fn_80458FF0((void*)lbl_8053AF80, 0x100001b, 0, 0);
-        CallVfn24(self, 1);
+        ((StateActor80113788*)self)->setState(1);
         break;
     }
     case 1:
@@ -536,14 +545,14 @@ extern "C" void fn_80114C98(char* self) {
             if (r27 <= 0x1e) {
                 r27 = 0;
             }
-            JGeometry::TVec3f v = *(JGeometry::TVec3f*)fn_8023E724(i);
-            fn_80230498(i, &v, fn_8023CBC0(i), (u8)r27, -0x80, -0x80, 1);
+            player = *(JGeometry::TVec3f*)fn_8023E724(i);
+            fn_80230498(i, &player, (u16)fn_8023CBC0(i), (u8)r27, -0x80, -0x80, 1);
         }
         if (*(s32*)((char*)fn_8011921C() + 8) == 0x1b8) {
             fn_80458F9C(lbl_8053AF80, 0x3c);
         }
         o = (char*)fn_8016A3AC();
-        if (*(u8*)(o + 0x1ef) == 0 && *(s32*)(self + 0x2e4) == 0) {
+        if (*(u8*)(o + 0x1ef) == 0 && *(u32*)(self + 0x2e4) == 0) {
             *(s32*)(self + 0x2e4) = fn_8013CC50(*(void**)(self + 4), self + 0xc, 0x54c, 0, lbl_8053C690, 0, 0, 0, 1);
         }
         break;
@@ -563,13 +572,7 @@ extern "C" void fn_80114C98(char* self) {
         break;
     }
     case 5: {
-        k = *(s32*)(self + 0x238);
-        if (k < 0 || k > 7) {
-            k = 0;
-        }
-        o = lbl_8050EC80 + k * 4;
-        o += *(s32*)(o + 0x10) * 0xc8;
-        if (*(u32*)(o + 0x28) & (1u << (k * 4 + 3))) {
+        if (stateEventFlag(*(s32*)(self + 0x238))) {
             *(u8*)((char*)lbl_8053AAF8 + 0x85) = 2;
         }
         *(s32*)(self + 0x248) = 0xe1;
@@ -583,18 +586,14 @@ extern "C" void fn_80114C98(char* self) {
             fn_801183BC();
             break;
         }
-        k = *(s32*)(self + 0x238);
-        if (k < 0 || k > 7) {
-            k = 0;
+        bool request = false;
+        if (stateEventFlag(*(s32*)(self + 0x238))) {
+            if (fn_80309C4C((void*)lbl_8053AD30, 0x1000, -1) != 0) request = true;
         }
-        o = lbl_8050EC80 + k * 4;
-        o += *(s32*)(o + 0x10) * 0xc8;
-        if (*(u32*)(o + 0x28) & (1u << (k * 4 + 3))) {
-            if (fn_80309C4C((void*)lbl_8053AD30, 0x1000, -1) != 0) {
-                fn_80387494(0);
-                fn_8011921C();
-                fn_801183BC();
-            }
+        if (request) {
+            fn_80387494(0);
+            fn_8011921C();
+            fn_801183BC();
         }
         break;
     }
@@ -634,7 +633,7 @@ extern "C" void fn_80114C98(char* self) {
     case 15:
         break;
     case 16: {
-        char* q = self;
+        q = self;
         for (r27 = 0; r27 < 2; r27++) {
             o = *(char**)(q + 0x2e8);
             if (o != 0) {
@@ -642,7 +641,7 @@ extern "C" void fn_80114C98(char* self) {
                 o = *(char**)(q + 0x2e8);
                 o[0xbc] = 0x2d;
                 o[0xbd] = 0x78;
-                o[0xbe] = 0xff;
+                *(u8*)(o + 0xbe) = 0xff;
             }
             q += 4;
         }
