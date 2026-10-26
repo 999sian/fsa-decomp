@@ -610,14 +610,14 @@ extern "C" void fn_803264C0(Actor* a) {
         *(u8*)(p + 0x275) = 0;
         break;
     case 4: {
-        s32 t;
+        s32 ang;
         *(s32*)(p + 0x23c) = 300;
         *(s32*)(p + 0x248) = 120;
         *(s32*)(p + 0x230) = 2;
         *(u32*)(p + 0xb0) = 0x73308;
-        t = ((s32)(65536.0f * rand01()) >> 2) & 0x3ff8;
-        a->field_3C.x = k * *(f32*)(sincosTable___5JMath + t);
-        a->field_3C.y = k * *(f32*)(sincosTable___5JMath + t + 4);
+        ang = (s32)(65536.0f * rand01());
+        a->field_3C.x = k * sincosTable___5JMath[(u16)ang >> 5].sin;
+        a->field_3C.y = k * sincosTable___5JMath[(u16)ang >> 5].cos;
         a->field_3C.z = 0.0f;
         *(u8*)(p + 0x275) = 0;
         break;
