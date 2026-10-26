@@ -2850,7 +2850,7 @@ static inline bool MenuPlayerActive803B(MsgGame* game, s32 i) {
 static inline int MenuPlayerCount803B(MsgGame* game) {
     int count = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (((u8*)game)[0x82] & (u8)(1 << i)) count++;
+        if (MenuPlayerActive803B(game, i)) count++;
     }
     return count;
 }
