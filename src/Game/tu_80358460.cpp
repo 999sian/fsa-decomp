@@ -205,6 +205,21 @@ static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
         vec.x += lbl_80542870;
     }
 }
+static inline void spawnGridIndices8035A210(u8* self, u16 idx, s32 state, s32& k, s32& j) {
+    JGeometry::TVec3f vec;
+    JGeometry::TVec3f saved;
+    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+    saved = vec;
+    *(s32*)(self + 0x258) = state;
+    for (k = 0; k < 6; ++k) {
+        for (j = 0; j < 6; ++j) {
+            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
+            vec.y += lbl_80542870;
+        }
+        vec.y = saved.y;
+        vec.x += lbl_80542870;
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -802,9 +817,9 @@ extern "C" void fn_8035A210(u8* self) {
     f32 box[4];
     f32 tmp[2];
     u8* p;
-    s32 m;
     u8* q;
     s32 i;
+    s32 m;
     s32 r;
     s32 flags;
     s16 rot;
@@ -855,8 +870,10 @@ extern "C" void fn_8035A210(u8* self) {
             for (i = 0; i < 4; i++) {
                 if (fn_8022F514((void*)i)) continue;
                 if ((s8)p[0x24a + i] != 0) continue;
-                if ((s8)p[0x246 + i] == 0) continue;
-                if ((s8)p[0x24a + m] * (s8)p[0x246 + i] >= 0) continue;
+                u8 contact = p[0x246 + i];
+                if ((s8)contact == 0) continue;
+                s8 direction = p[0x24a + m];
+                if (direction * (s8)contact >= 0) continue;
                 cv[0] = lbl_8054286C;
                 cv[1] = lbl_8054286C;
                 cv[2] = lbl_80542898;
