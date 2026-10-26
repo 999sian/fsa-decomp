@@ -128,6 +128,19 @@ static inline s32 PushDirFromPull(char* self) {
     return -1;
 }
 
+static inline void HouseCopyBounds(JGeometry::TBox2f& dst, const JGeometry::TBox2f& src) {
+    const u32* in = (const u32*)&src;
+    u32* out = (u32*)&dst;
+    u32 a = in[0];
+    u32 b = in[1];
+    u32 c = in[2];
+    u32 d = in[3];
+    out[0] = a;
+    out[1] = b;
+    out[2] = c;
+    out[3] = d;
+}
+
 struct PushProbe {
     PushProbe() {}
     JGeometry::TVec3f pos;
@@ -1258,13 +1271,13 @@ extern "C" void fn_80299720(char* self) {
 }
 #pragma opt_common_subs reset
 extern "C" void fn_80299AD0(char* self) {
+    char* col;
+    s32 j;
     s32 room;
     char* m;
     JGeometry::TBox2f* src;
-    s32 d;
-    s32 j;
-    char* col;
     s32 i;
+    s32 d;
     s32 dir;
     u8 ok;
     f32 x0;
@@ -1334,21 +1347,17 @@ extern "C" void fn_80299AD0(char* self) {
     m = (char*)fn_802D6A9C();
     src = (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
     ok = 1;
-    pt.area = *src;
+    memcpy(&pt.area, src, sizeof(pt.area));
     pt.pos = *(JGeometry::TVec3f*)(self + 0xc);
     pt.pos.x += *(f32*)(self + 0x68);
     pt.pos.x += 8.0f;
-    pt.area.i.x -= -32.0f;
-    pt.area.i.y -= -32.0f;
-    pt.area.f.x += -32.0f;
-    pt.area.f.y += -32.0f;
+    x0 = (pt.area.i.x -= -32.0f);
+    y0 = (pt.area.i.y -= -32.0f);
+    x1 = (pt.area.f.x += -32.0f);
+    y1 = (pt.area.f.y += -32.0f);
     pt.pos.y += *(f32*)(self + 0x64);
     pt.pos.y += 8.0f;
     pt.pos.z = 0.0f;
-    x0 = pt.area.i.x;
-    y0 = pt.area.i.y;
-    x1 = pt.area.f.x;
-    y1 = pt.area.f.y;
     for (i = 0; i < 6; i++) {
         if (!fn_802A1554(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
             ok = 0;
@@ -1861,7 +1870,7 @@ extern "C" void fn_8029A974(char* self) {
 }
 #pragma opt_common_subs reset
 extern "C" void fn_8029AE58(char* p) {
-    const f32 center = lbl_80540678;
+    f32 center = lbl_80540678;
     JGeometry::TVec3f v;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f origin;
@@ -2087,4 +2096,5 @@ extern "C" void* fn_8029B484(void* p, s16 flag) {
 
 #pragma merge_bss off
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "string.h"
 #pragma merge_bss reset
