@@ -383,7 +383,7 @@ static inline void Tu80390818_reset(Tu80390818_Sub* s, u8 kind) {
     s->m1A2 = kind;
 }
 
-static inline void Tu80390818_setMessage(Tu80390818_Sub* s, u32 code, const JGeometry::TVec3<f32> pos, const JGeometry::TVec3<f32> anchor) {
+static inline void Tu80390818_setMessage(Tu80390818_Sub* s, const u32 code, const JGeometry::TVec3<f32> pos, const JGeometry::TVec3<f32> anchor) {
     s->m14C = code;
     s->m08->setMessageCode(code >> 16, code & 0xFFFF);
     JGeometry::setTVec3f(&pos.x, s->m98);
