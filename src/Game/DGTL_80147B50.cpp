@@ -21,14 +21,10 @@ struct DgtlObj {
 };
 
 static inline void dgtlStopBodyEffects(DgtlObj* obj) {
-    s32 i;
-    char* p;
-    p = (char*)obj;
-    for (i = 0; i < 10; ++i, p += 4) {
-        JPABaseEmitter* emitter = *(JPABaseEmitter**)(p + 0x798);
-        if (emitter) {
-            emitter->becomeInvalidEmitter();
-            *(JPABaseEmitter**)(p + 0x798) = 0;
+    for (int i = 0; i < 10; ++i) {
+        if (obj->bodyEff[i]) {
+            obj->bodyEff[i]->becomeInvalidEmitter();
+            obj->bodyEff[i] = 0;
         }
     }
 }
