@@ -363,15 +363,20 @@ static inline void* tu80134_load(const char* name) {
     return fn_80401E10(name, 0, *(void**)(lbl_80529DEC + 8));
 }
 
-static inline void tu80134PlayTransition(char* this_) {
+static inline u32 tu80134SoundID(const s32 st) {
+    const u32* table = lbl_804652F0;
+    return table[st];
+}
+
+static inline void tu80134PlayTransition(char* const this_) {
 u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-                    const s32& st = *(s32*)((char*)fn_802D6A9C() + 0x34);
+                    s32 st = *(s32*)((char*)fn_802D6A9C() + 0x34);
                     if (st != 0x11) {
                         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
                             if (st == 0x14 || st == 0x1e) {
-                                fn_80458F04(*(void**)(this_ + 0xa0), *(const u32*)((const u8*)lbl_804652F0 + st * 4));
+                                fn_80458F04(*(void**)(this_ + 0xa0), tu80134SoundID(st));
                             } else {
-                                u32 id = *(const u32*)((const u8*)lbl_804652F0 + st * 4);
+                                u32 id = tu80134SoundID(st);
                                 fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
                                 char* manager = (char*)fn_802D6A9C();
                                 *(u32*)(manager + 0x1328c) = uVar1 + 1;
