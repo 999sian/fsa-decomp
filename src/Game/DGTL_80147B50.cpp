@@ -21,6 +21,9 @@ struct DgtlObj {
 };
 
 static inline void dgtlStopBodyEffects(DgtlObj* obj) {
+    char* p = (char*)obj;
+    for (int i = 0; i < 9; ++i) ((s32*)(p + 0x234))[i] = 0;
+    *(s32*)(p + 0x23c) = 0xa8;
     for (s32 i = 0; i < 10; ++i) {
         if (obj->bodyEff[i]) {
             obj->bodyEff[i]->becomeInvalidEmitter();
@@ -286,15 +289,7 @@ extern "C" s32 fn_80149AEC(char* p) {
         if (*(s32*)(p + 0x90) == 0) lbl_80539F5C = -1;
         for (int i = 0; i < 9; ++i) ((s32*)(p + 0x234))[i] = 0;
         *(s32*)(p + 0x23c) = 0xa8;
-        q = p;
-        for (s32 j = 0; j < 10; ++j, q += 4) {
-            char* emitter = *(char**)(q + 0x798);
-            if (emitter) {
-                *(u32*)(emitter + 0xf4) |= 1;
-                *(s32*)(emitter + 0x24) = 1;
-                *(char**)(q + 0x798) = 0;
-            }
-        }
+        dgtlStopBodyEffects((DgtlObj*)p);
         fn_80134DE4(lbl_8053AAF8, 0xa8, 0);
         *(s32*)(p + 0x230) = 6;
     } else {
