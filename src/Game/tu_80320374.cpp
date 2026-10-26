@@ -197,7 +197,8 @@ static inline void tu320RotMtx(f32 m[3][4], const f32* angle, const f32* scale) 
     m[2][1] = s * (sx * ang);
     m[0][2] = s * (cxcz * sy + sxsz);
     m[1][2] = s * (cxsz * sy - sxcz);
-    m[2][2] = s * (cx * ang);
+    s = s * (cx * ang);
+    m[2][2] = s;
 }
 
 extern "C" void fn_80320D18(char* p) {
@@ -221,11 +222,7 @@ extern "C" void fn_80320D18(char* p) {
     rec.palette = 1;
     if (*(s32*)(p + 0x2a8) == 1) {
         PSMTXIdentity(m);
-        f32 angle;
-        f32 scale;
-        angle = *(f32*)(p + 0x238);
-        scale = *(f32*)(p + 0x234);
-        tlwpRotMtx(m, lbl_80541AE0, angle, lbl_80541AE0, scale);
+        tu320RotMtx(m, (f32*)(p + 0x238), (f32*)(p + 0x234));
         rec.c = m;
         rec.color = 0;
         rec.palette = 0;
