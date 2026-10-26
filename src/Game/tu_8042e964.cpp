@@ -209,15 +209,8 @@ struct T80431_Pane {
     f32 f118;
 };
 
-static inline f32 paneWidth80431(T80431_Pane* pane) {
-    f32 width = pane->sw;
-    width -= pane->w;
-    return width;
-}
-static inline f32 paneHeight80431(T80431_Pane* pane) {
-    f32 height = pane->sh;
-    height -= pane->h;
-    return height;
+static inline f32 centerOffset80431(const f32 width, const f32 paneWidth, const f32 offset) {
+    return (width - paneWidth) * 0.5f + offset;
 }
 
 struct T80431_Owner {
@@ -379,31 +372,54 @@ BOOL fn_80431174(T80431_Owner* self, u8 flag) {
             }
         }
         T80431_Pane* tb = (T80431_Pane*)self->screen->search('Twt01');
-        x = self->screen->search('Twt01')->getBounds()->i.x + lbl_80543B18 * (tb->sw - tb->w);
+        f32 width;
+        f32 bx = self->screen->search('Twt01')->getBounds()->i.x;
+        width = tb->sw;
+        width -= tb->w;
+        x = width * lbl_80543B18 + bx;
         tb = (T80431_Pane*)self->screen->search('Twt01');
-        y = self->screen->search('Twt01')->getBounds()->i.y + lbl_80543B18 * (tb->sh - tb->h);
+        f32 height;
+        f32 by = self->screen->search('Twt01')->getBounds()->i.y;
+        height = tb->sh;
+        height -= tb->h;
+        y = height * lbl_80543B18 + by;
         if (flag == 0) {
             T80431_Pane* cur = (T80431_Pane*)self->screen->search('Pwcur01');
-            x += lbl_80543B18 * ((*(f32*)((char*)self + 0xbc) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w));
+            f32 cw;
+            f32 space;
+            space = self->choiceWidth[0];
+            space -= self->choiceWidth[3];
+            cw = cur->sw - cur->w;
+            cw = space - cw;
+            x += cw * lbl_80543B18;
         } else {
             T80431_Pane* cur = (T80431_Pane*)self->screen->search('Pwcur01');
-            x += lbl_80543B18 * ((*(f32*)((char*)self + 0xc0) - *(f32*)((char*)self + 0xc8)) - (cur->sw - cur->w)) + (*(f32*)((char*)self + 0xd0) - *(f32*)((char*)self + 0xcc));
+            f32 space = self->choiceWidth[1] - self->choiceWidth[3];
+            f32 cw = cur->sw - cur->w;
+            f32 offset = self->choiceX[1] - self->choiceX[0];
+            f32 half = 0.5f;
+            x += offset + half * (space - cw);
         }
         T80431_Pane* pcur = (T80431_Pane*)self->screen->search('Pwcur01');
         f32 hdiff = pcur->sh - pcur->h;
         f32 fa = ((T80431_Pane*)self->screen->search('Twt01'))->f118;
         tb = (T80431_Pane*)self->screen->search('Twt01');
-        y += lbl_80543B18 * (fa - hdiff) + (((f32*)((char*)self + 0xd8))[flag] - lbl_80543B18 * (f32)*(s32*)((char*)self + 0xe4) - lbl_80543B28) * tb->f118;
+        f32 sizeOffset = (fa - hdiff) * 0.5f;
+        f32 lines = (f32)self->lineCount;
+        f32 lineOffset = ((f32*)((char*)self + 0xd8))[flag] - lines * 0.5f - lbl_80543B28;
+        y += sizeOffset + lineOffset * tb->f118;
         self->screen->search('Pwcur01')->move(x, y);
         self->screen->search('Pwcur02')->move(x, y);
         T80431_Pane* pa = (T80431_Pane*)self->screen->search('Pwcur01');
         f32 hh = pa->sh - pa->h;
         T80431_Pane* pb = (T80431_Pane*)self->screen->search('Pwcur01');
-        self->screen->search('Pwcur01')->rotate(lbl_80543B18 * (pb->sw - pb->w), lbl_80543B18 * hh, J2DROTATE_Z, (f32)lbl_80543AE8[self->feb]);
+        J2DPane* rotate1 = self->screen->search('Pwcur01');
+        rotate1->rotate(lbl_80543B18 * (pb->sw - pb->w), lbl_80543B18 * hh, J2DROTATE_Z, (f32)lbl_80543AE8[self->feb]);
         T80431_Pane* pa2 = (T80431_Pane*)self->screen->search('Pwcur02');
         f32 hh2 = pa2->sh - pa2->h;
         T80431_Pane* pb2 = (T80431_Pane*)self->screen->search('Pwcur02');
-        self->screen->search('Pwcur02')->rotate(lbl_80543B18 * (pb2->sw - pb2->w), lbl_80543B18 * hh2, J2DROTATE_Z, (f32)lbl_80543AF0[self->feb]);
+        J2DPane* rotate2 = self->screen->search('Pwcur02');
+        rotate2->rotate(lbl_80543B18 * (pb2->sw - pb2->w), lbl_80543B18 * hh2, J2DROTATE_Z, (f32)lbl_80543AF0[self->feb]);
     }
     return FALSE;
 }
