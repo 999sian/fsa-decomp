@@ -135,7 +135,10 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
 }
 
 typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
-struct HudDigitNames8041 { u8 pad[0x338]; u64 digits[5]; u64 shadows[5]; };
+static inline void HudChangeDigit8041(u8* self, const u64* digits, const u64* shadows, s32 index, u32 tag) {
+    ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(digits[index]))->changeTexture((ResTIMG*)tag, 0);
+    ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(shadows[index]))->changeTexture((ResTIMG*)tag, 0);
+}
 
 
 // Sets the digit pane pair idx (names at 0x338 and 0x360 tables) to the glyph tag.
@@ -705,7 +708,7 @@ extern "C" void fn_8041CC04(u8* self) {
     s32 n;
     s32 which;
     s32 i;
-    const u64* first;
+    const u64* p;
     s32 off;
     u32 tag;
     if (self[0x28b] & 1) {
@@ -714,11 +717,13 @@ extern "C" void fn_8041CC04(u8* self) {
         n = v;
         if (v > 9999) n = 9999;
         if (n < 0) {
-            first = (const u64*)(base + 0x338);
-            const u64* p = first;
-            for (i = 0; i < 5; i++, p++) {
+            const u64* first = (const u64*)(base + 0x338);
+            p = first;
+            i = 0;
+            do {
                 ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*p))->setBlackWhite(JUtility::TColor(0,0,0,0), JUtility::TColor(255,85,65,255));
-            }
+                p++;
+            } while (++i < 5);
             if (n < -5000) n = -5000;
             n *= -1;
             tag = fn_804030C4(0x54494d47, (u32)((u8*)base + 0xe38));
@@ -728,8 +733,8 @@ extern "C" void fn_8041CC04(u8* self) {
             (*(J2DScreen**)(self + 4))->search(((const u64*)((u32)base+0x360))[4])->show();
             which = 1;
         } else {
-            for (i = 0, first = (const u64*)(base+0x338); i < 5; i++, first++) {
-                ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*first))->setBlackWhite(*(JUtility::TColor*)(self+0x248), *(JUtility::TColor*)(self+0x244));
+            for (i = 0, p = (const u64*)(base+0x338); i < 5; i++, p++) {
+                ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*p))->setBlackWhite(*(JUtility::TColor*)(self+0x248), *(JUtility::TColor*)(self+0x244));
             }
             (*(J2DScreen**)(self + 4))->search(((const u64*)((u32)base+0x338))[4])->hide();
             (*(J2DScreen**)(self + 4))->search(((const u64*)((u32)base+0x360))[4])->hide();
