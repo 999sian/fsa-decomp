@@ -1299,6 +1299,7 @@ static inline void HudSetProjection8041(J2DOrthoGraph* graph, f32 ex, f32 ey, co
     JGeometry::TBox2f box(zero, zero, ex, ey);
     graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
 }
+static inline f32 HudFloat8041(const s32 value) { return (f32)value; }
 static inline u8 HudHideTimer8041() {
     if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return 1;
     return lbl_8053AAF8[0x88] == 2;
@@ -1345,12 +1346,7 @@ extern "C" void fn_8041F720(u8* self) {
                         x = xx - (f32)fa * lbl_80543A34;
                         f32 yy = sy * (buf[1] / (f32)fb);
                         y = c + (yy - (f32)fb * lbl_80543A34);
-                        JGeometry::TBox2f box;
-                        box.i.x = lbl_80543A00;
-                        box.i.y = lbl_80543A00;
-                        box.f.x = ex;
-                        box.f.y = ey;
-                        graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+                        HudSetProjection8041(graph, ex, ey, lbl_80543A00);
                         ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
                         ((J2DScreen*)*(u8**)(p4 + 8))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
                         *(s16*)(p2 + 0x234) = 0;
@@ -1370,12 +1366,7 @@ extern "C" void fn_8041F720(u8* self) {
                                 f32 x = xx - (f32)fa * lbl_80543A34;
                                 f32 yy = sy * (buf[1] / (f32)fb);
                                 f32 y = c + (yy - (f32)fb * lbl_80543A34);
-                                JGeometry::TBox2f box;
-                        box.i.x = lbl_80543A00;
-                        box.i.y = lbl_80543A00;
-                        box.f.x = ex;
-                        box.f.y = ey;
-                                graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
+                                HudSetProjection8041(graph, ex, ey, lbl_80543A00);
                                 ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
                                 ((J2DScreen*)*(u8**)(p4 + 0x2c))->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
                             }
