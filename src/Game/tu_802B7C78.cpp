@@ -280,7 +280,14 @@ extern "C" void fn_802B848C(char* this_) {
     }
 }
 
+static inline JGeometry::TVec2f subtractPosition(JGeometry::TVec2f value, const JGeometry::TVec2f& pos) {
+    value.x -= pos.x;
+    value.y -= pos.y;
+    return value;
+}
+
 extern "C" void fn_802B8078(char* this_);
+#pragma opt_dead_code off
 extern "C" void fn_802B85EC(char* this_) {
     if (*(u8*)((char*)lbl_8053AAF8 + 0xfe) == 0) {
         ((ActorSlot9*)this_)->slot9();
@@ -314,11 +321,7 @@ extern "C" void fn_802B85EC(char* this_) {
                         *(s32*)(this_ + 0x27c) += 1;
                         if (*(s32*)(this_ + 0x27c) >= 4) *(s32*)(this_ + 0x27c) = 0;
                     } else {
-                        if (*(s32*)(this_ + 0x27c) >= 4) {
-                            *(u8*)(this_ + 0x11c) = 0;
-                            fn_801F0E34(this_, 0x40041, 0);
-                            break;
-                        }
+                        if (*(s32*)(this_ + 0x27c) < 4) {
                         do {
                             *(s32*)(this_ + 0x298) = *(s32*)(this_ + 0x2a0 + *(s32*)(this_ + 0x27c) * 4);
                             u32 bit = (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << *(s32*)(this_ + 0x298))) != 0;
@@ -333,6 +336,10 @@ L156:
                         if (*(u8*)(this_ + 0x11c) != 0) {
                             fn_802B8078(this_);
                             *(s32*)(this_ + 0x27c) += 1;
+                        }
+                        } else {
+                            *(u8*)(this_ + 0x11c) = 0;
+                            fn_801F0E34(this_, 0x40041, 0);
                         }
                     }
                 } else {
@@ -426,7 +433,7 @@ L156:
         *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x250) - 1;
     }
 }
-
+#pragma opt_dead_code reset
 extern "C" void fn_802B8C44(u8* this_) {
     f32 f2 = lbl_80540AE4;
     f32 f3 = lbl_80540ACC;
