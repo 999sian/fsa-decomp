@@ -58,13 +58,15 @@ static inline void rotationEuler80359E18(f32 m[3][4], const f32 scale, s16 rx, s
     cx = JMath::sincosTable_.cosShort(rx);
     cy = JMath::sincosTable_.cosShort(ry);
     cz = JMath::sincosTable_.cosShort(rz);
+    f32 sxsy = sx * sy;
+    f32 cxcz = cx * cz;
     m[0][0] = scale * (cy * cz);
     m[1][0] = scale * (cy * sz);
     m[2][0] = scale * -sy;
-    m[0][1] = scale * ((sx * sy) * cz - cx * sz);
-    m[1][1] = scale * ((sx * sy) * sz + cx * cz);
+    m[0][1] = scale * (sxsy * cz - cx * sz);
+    m[1][1] = scale * (sxsy * sz + cxcz);
     m[2][1] = scale * (sx * cy);
-    m[0][2] = scale * ((cx * cz) * sy + sx * sz);
+    m[0][2] = scale * ((cxcz) * sy + sx * sz);
     m[1][2] = scale * ((cx * sz) * sy - sx * cz);
     m[2][2] = scale * (cx * cy);
 }
