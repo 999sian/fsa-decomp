@@ -1010,7 +1010,6 @@ extern "C" void fn_803146DC(char* p) {
     }
 }
 
-#pragma opt_propagation off
 extern "C" void fn_80314B1C(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
