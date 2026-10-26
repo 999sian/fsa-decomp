@@ -436,7 +436,10 @@ extern "C" void* fn_801F666C(void* table, s32 idx);
 extern "C" void detach__5ActorFv(void* this_);
 extern const f32 lbl_80541DB8;
 extern const f32 lbl_80541DBC;
+extern const f32 lbl_80541DC0;
+extern "C" u8 fn_801F2618(void* a, s32 b, s32 c);
 extern void* lbl_8053AB10;
+extern "C" void fn_8032B7C0(void* this_) {}
 extern "C" void fn_8032BB90(char* this_) {
 s32 room;
 u32 kind;
