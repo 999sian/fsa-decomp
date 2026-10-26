@@ -70,8 +70,27 @@ static inline s32 spfrTrySpawn(char* p) {
     return -1;
 }
 
-static inline s32 spfrSpawnResult(s32 id, bool result) {
-    if (result) return id;
+static inline s32 spfrTrySpawn(char* p, JGeometry::TBox2f& box2, JGeometry::TVec3f& pos, JGeometry::TVec3f& v) {
+    box2.i.x = *(f32*)(p + 0x60);
+    box2.i.y = *(f32*)(p + 0x64);
+    box2.f.x = *(f32*)(p + 0x68);
+    box2.f.y = *(f32*)(p + 0x6c);
+    box2.i.x += *(f32*)(p + 0xc);
+    box2.i.y += *(f32*)(p + 0x10);
+    box2.f.x += *(f32*)(p + 0xc);
+    box2.f.y += *(f32*)(p + 0x10);
+    fn_8022FEB8(&box2, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+    s32 id = fn_8022FD8C(*(void**)(p + 0x198));
+    if (id < 0) return -1;
+    if (!fn_802300EC()) return -1;
+    pos = *(JGeometry::TVec3f*)(p + 0xc);
+    pos.y -= lbl_8053CD14;
+    void* handle = *(void**)(p + 0x198);
+    s32 room = *(s32*)(p + 4);
+    v = pos;
+    if (fn_8038AD24(id, 0x2b6, handle, room, &v, 0x28)) {
+        return id;
+    }
     return -1;
 }
 
