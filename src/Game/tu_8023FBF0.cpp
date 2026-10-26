@@ -3926,13 +3926,49 @@ void fn_8024E500(char* p) {
     }
 }
 
+static inline void adjustRupees(char* p, s32 n) {
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        ((void (*)(s32, s32))fn_802362C4)(linked, n);
+        return;
+    }
+    s32 old = S32(p, 0xc04);
+    if (old > 9999) {
+        for (;;) {}
+    }
+    S32(p, 0xc04) = old + 1;
+    if (S32(p, 0xc04) == old) {
+        for (;;) {}
+    }
+    S32(p, 0xc04) = old;
+    if (n >= 0) {
+        S32(p, 0xc04) += n;
+        if (S32(p, 0xc04) > 9999) {
+            S32(p, 0xc04) = 9999;
+        }
+    } else {
+        s32 cur = S32(p, 0xc04);
+        if (cur < 0) {
+            return;
+        }
+        if (cur + n >= 0) {
+            S32(p, 0xc04) = cur + n;
+        } else {
+            S32(p, 0xc04) = 0;
+        }
+    }
+    if (n == 1) {
+        fn_802702C4(p);
+    }
+}
+
 void fn_8024E694(char* p, s32 a0, s32 flag0) {
     s32 a = a0;
     JGeometry::TVec3<f32> pos = V3(p, 0x8);
     s32 kind = S32(p, 0x3b4);
     s32 kk;
-    s32 flag = flag0;
     u8 f2;
+    s32 flag = flag0;
     s32 cnt = 0;
     s32 i;
     s32 linked;
@@ -3988,9 +4024,9 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
             pos.x = src->x;
             pos.y = src->y;
             pos.z = src->z;
+            kind = fn_8023DE58(fn_8022EA0C(S32(p, 0x4)));
         }
     }
-    kind = fn_8023DE58(fn_8022EA0C(S32(p, 0x4)));
     f2 = 0;
     if (S32(p, 0x1240) == 0x51) {
         f2 = 1;
