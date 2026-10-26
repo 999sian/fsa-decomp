@@ -1021,6 +1021,14 @@ struct HudCounters8041 {
     s16 cooldown[4];
 };
 
+static inline s32 HudAdvanceGaugeDelay8041(HudCounters8041* player) {
+    player->gaugeDelay[0]++;
+    return player->gaugeDelay[0];
+}
+static inline void HudClearGaugeDelay8041(HudCounters8041* player) {
+    player->gaugeDelay[0] = 0;
+}
+
 static inline bool HudCountPending8041(u8 mask) {
     return (lbl_80529DEC[0x239] & mask) != 0;
 }
@@ -1069,6 +1077,7 @@ static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
     HudStoreCountResult8041(self, idx, fn_80237810(idx));
 }
 
+#pragma optimization_level 3
 #pragma opt_propagation off
 extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     s32 cnt;
@@ -1087,19 +1096,19 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
         *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) = cnt;
         HudSyncCount8041(idx);
         this_[0x28a] |= (u8)bit;
-        ((HudCounterFields8041*)(this_ + idx * 4))->countDelay = 0;
+        ((HudCounters8041*)(this_ + idx * 4))->countDelay[0] = 0;
         HudSetCountTransition8041(this_, idx, slot);
         lbl_80529DEC[0x239] &= ~mask;
     } else {
         s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         cnt = *slot;
         if (cnt < (s32)fn_80237774(idx)) {
-            ((HudCounterFields8041*)(this_ + idx * 4))->countDelay += 1;
-            if (((HudCounterFields8041*)(this_ + idx * 4))->countDelay >= 10) {
+            ((HudCounters8041*)(this_ + idx * 4))->countDelay[0] += 1;
+            if (((HudCounters8041*)(this_ + idx * 4))->countDelay[0] >= 10) {
                 *slot += 1;
                 HudSyncCount8041(idx);
                 this_[0x28a] |= (u8)bit;
-                ((HudCounterFields8041*)(this_ + idx * 4))->countDelay = 0;
+                ((HudCounters8041*)(this_ + idx * 4))->countDelay[0] = 0;
                 fn_80230EB8(idx, 9);
             }
             if (this_[0x291] != 0) {
@@ -1109,18 +1118,18 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
             cnt = *slot;
             if (cnt > (s32)fn_80237774(idx)) {
             lbl_80529DEC[0x24a] |= mask;
-            ((HudCounterFields8041*)(this_ + idx * 4))->countDelay += 1;
-            if (((HudCounterFields8041*)(this_ + idx * 4))->countDelay >= 10) {
+            ((HudCounters8041*)(this_ + idx * 4))->countDelay[0] += 1;
+            if (((HudCounters8041*)(this_ + idx * 4))->countDelay[0] >= 10) {
                 *slot -= 1;
                 HudSyncCount8041(idx);
                 this_[0x28a] |= (u8)bit;
-                ((HudCounterFields8041*)(this_ + idx * 4))->countDelay = 0;
+                ((HudCounters8041*)(this_ + idx * 4))->countDelay[0] = 0;
             }
             if (this_[0x291] != 0) {
                 HudSetCountTransition8041(this_, idx, slot);
             }
         } else {
-            ((HudCounterFields8041*)(this_ + idx * 4))->countDelay = 0;
+            ((HudCounters8041*)(this_ + idx * 4))->countDelay[0] = 0;
         }
     }
 
@@ -1129,8 +1138,8 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
         s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xe8);
         cnt = *slot;
         if (cnt < (s32)fn_80236100(idx)) {
-            ((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay++;
-            if (((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay >= 2) {
+            ((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0]++;
+            if (((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0] >= 2) {
                 *slot += 2;
                 cnt = *slot;
                 if (cnt >= (s32)fn_80236100(idx)) {
@@ -1140,13 +1149,13 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                     fn_80230EB8(idx, 4);
                 }
                 this_[0x28b] |= (u8)bit;
-                ((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay = 0;
+                ((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0] = 0;
             }
         } else {
             cnt = *slot;
             if (cnt > (s32)fn_80236100(idx)) {
-                ((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay++;
-                if (((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay >= 2) {
+                ((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0]++;
+                if (((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0] >= 2) {
                     *slot -= 2;
                     cnt = *slot;
                     if (cnt <= (s32)fn_80236100(idx)) {
@@ -1156,27 +1165,28 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
                         fn_80230EB8(idx, 0x4e);
                     }
                     this_[0x28b] |= (u8)bit;
-                    ((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay = 0;
+                    ((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0] = 0;
                 }
             } else {
-                ((HudCounterFields8041*)(this_ + idx * 4))->gaugeDelay = 0;
+                ((HudCounters8041*)(this_ + idx * 4))->gaugeDelay[0] = 0;
             }
         }
     }
 
-    if (((HudCounterFields8041*)(this_ + idx * 2))->timer > 0) {
-        if (((HudCounterFields8041*)(this_ + idx * 2))->cooldown == 0) {
-            ((HudCounterFields8041*)(this_ + idx * 2))->timer -= 1;
+    if (((HudCounters8041*)(this_ + idx * 2))->timer[0] > 0) {
+        if (((HudCounters8041*)(this_ + idx * 2))->cooldown[0] == 0) {
+            ((HudCounters8041*)(this_ + idx * 2))->timer[0] -= 1;
             fn_80230FD0(idx, 0x20034);
-            if (((HudCounterFields8041*)(this_ + idx * 2))->timer != 0) {
-                ((HudCounterFields8041*)(this_ + idx * 2))->cooldown = 0xc;
+            if (((HudCounters8041*)(this_ + idx * 2))->timer[0] != 0) {
+                ((HudCounters8041*)(this_ + idx * 2))->cooldown[0] = 0xc;
             }
         } else {
-            ((HudCounterFields8041*)(this_ + idx * 2))->cooldown -= 1;
+            ((HudCounters8041*)(this_ + idx * 2))->cooldown[0] -= 1;
         }
     }
 }
 #pragma opt_propagation reset
+#pragma optimization_level reset
 extern "C" void fn_8041EDB0(u8* self) {
     u64* tags = lbl_8048D320;
     int i;
