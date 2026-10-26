@@ -2125,7 +2125,7 @@ struct Tbl8048C1F8 {
 	u8 pad764[0x99c - 0x764];
 	s32 cursorFrames[30]; // 0x99c
 	s32 waitFrames[4];    // 0xa14
-	static s32 frame(const s32* const values, const s32 index) { return values[index]; }
+	static s32 frame(const s32* const values, s32 index) { return values[index]; }
 };
 extern Tbl8048C1F8 lbl_8048C1F8;
 
