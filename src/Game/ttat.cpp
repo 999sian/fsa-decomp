@@ -113,6 +113,10 @@ extern "C" void fn_801A96B4(void* this_);
 extern "C" void fn_801A9CF4(void* this_);
 struct TtatTimers { u8 pad[0x234]; s32 t[3]; };
 struct TtatHandles { u8 pad[0x270]; s32 handles[4]; };
+static inline s32 ttatChildHandle(char* p, s32 index) {
+    TtatHandles* slot = (TtatHandles*)(p + index * 4);
+    return slot->handles[0];
+}
 
 // TTAT update (vtable slot 3)
 extern "C" void fn_801A961C(char* this_) {
@@ -147,13 +151,17 @@ extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80458FF0(void* obj, s32 a, s32 b, s32 c);
 extern u8 sincosTable___5JMath[];
 extern const u16 lbl_8053A108[4];
+#pragma opt_propagation off
 extern "C" void fn_801A96B4(void* this_) {
     f32 s = lbl_8053E6E0;
+    char* handles;
+    char* positions;
+    int phase;
+    s32 i;
+    char* t = (char*)this_;
     s32 id;
     f32* v;
     int ang;
-    s32 i;
-    char* t = (char*)this_;
 
     void* pos = t+0xc;
     fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), pos);
@@ -208,22 +216,27 @@ extern "C" void fn_801A96B4(void* this_) {
         }
     }
 
-    for (i = 0; i < 4; i++) {
+    handles=t;
+    positions=t;
+    i=0;
+    for (phase = 0; i < 4; i++,handles+=4,positions+=12,phase+=0x4000) {
         void* c;
-        id = *(s32*)(t + 0x270 + i * 4);
+        id = *(s32*)(handles + 0x270);
         if (id != 0) {
             c = fn_801F666C(fn_801F856C(), id);
             if (c != 0) {
-                v = (f32*)(t + 0x280 + i * 0xc);
+                v = (f32*)(positions + 0x280);
                 if (*(u8*)(t + 0x26c) == 1) {
                     *(u8*)((char*)c + 0x26c) = 1;
                     *(s32*)(t + 0x238) = 50;
                 }
-                ang = (s32)*(f32*)(t + 0x2b4) + (u16)(i * 0x4000);
-                v[0] = *(f32*)(t + 0xc);
-                v[1] = *(f32*)(t + 0x10);
-                v[2] = *(f32*)(t + 0x14);
-                *(f32*)((char*)c + 0x2b4) = (f32)((u16)ang + 0x8000);
+                ang = (int)*(f32*)(t + 0x2b4);
+                v[0] = ((Actor*)t)->field_0C.x;
+                ang += (u16)phase;
+                v[1] = ((Actor*)t)->field_0C.y;
+                v[2] = ((Actor*)t)->field_0C.z;
+                f32 childAngle = (f32)((u16)ang + 0x8000);
+                *(f32*)((char*)c + 0x2b4) = childAngle;
                 v[0] = v[0] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
                 v[1] = v[1] + lbl_8053E6F4 * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
                 *(JGeometry::TVec3<f32>*)((char*)c+0xc) = *(JGeometry::TVec3<f32>*)v;
@@ -274,7 +287,11 @@ extern "C" void fn_801A96B4(void* this_) {
         /* fall through */
     case 1:
         {
-            *(s32*)(t+0x244) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()*lbl_8053E700);
+            u32* seed=(u32*)(lbl_8053AAF8+0xb4);
+            union { u32 bits; f32 f; } random;
+            *seed = *seed * 0x19660d + 0x3c6ef35f;
+            random.bits = (*seed >> 9) | 0x3f800000;
+            *(s32*)(t+0x244) = (s32)((random.f-lbl_8053E6E8)*lbl_8053E700);
             *(s32*)(t+0x244) &= 1;
         }
         *(s32*)(t + 0x230) = 2;
@@ -313,7 +330,7 @@ extern "C" void fn_801A96B4(void* this_) {
             if (*(s32*)(t + 0x244) > 3) {
                 ((Actor*)t)->v07();
             } else {
-                s32 id2 = *(s32*)((t + *(s32*)(t + 0x244) * 4) + 0x270);
+                s32 id2 = ((TtatHandles*)t)->handles[*(s32*)(t+0x244)];
                 if (id2 >= 0) {
                     void* c2 = fn_801F666C(fn_801F856C(), id2);
                     if (c2 != 0) {
@@ -327,7 +344,7 @@ extern "C" void fn_801A96B4(void* this_) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
