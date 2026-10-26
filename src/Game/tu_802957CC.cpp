@@ -482,6 +482,16 @@ extern "C" void fn_80295EE8(char* this_) {
 
 extern "C" s32 fn_801F2718(void* p, u32 id);
 extern "C" void fn_802A381C(void* mgr, void* v, s32 a, s32 b);
+static inline void shakeHouse(char* self) {
+    u32 n;
+    s32 mode;
+            n = (*(u32*)(self + 0x90) >> 7) & 0x1f;
+            if (n == 0) mode = 0; else mode = n + 7;
+            fn_802D79E8(fn_802D6A9C(), mode, 16.0f, 0.0f, 1);
+
+
+}
+
 static inline void restoreHouseGrid(char* self) {
     char* row;
     s32 i, j;
@@ -522,7 +532,6 @@ extern "C" void fn_802961AC(void* p) {
     s32 id;
     s32 j;
     u32 n;
-    s32 mode;
 
     id = fn_801F2718(self, 0x534C5233);
     if (id < 0) {
@@ -550,8 +559,8 @@ extern "C" void fn_802961AC(void* p) {
             }
 
             n = (*(u32*)(self + 0x90) >> 7) & 0x1f;
-            if (n == 0) mode = 0; else mode = n + 7;
-            fn_802D79E8(fn_802D6A9C(), mode, 16.0f, 0.0f, 1);
+            if (n == 0) n = 0; else n = n + 7;
+            fn_802D79E8(fn_802D6A9C(), n, 16.0f, 0.0f, 1);
 
             clearHouseActors(self, 0x2a0, 0x26c);
             clearHouseFollowers(self, 0x29c, 0x25c);
