@@ -1518,18 +1518,6 @@ static inline bool HouseContains(const JGeometry::TBox2f& area, JGeometry::TVec3
 }
 #pragma opt_common_subs on
 
-static inline void HouseGridBase(JGeometry::TVec3f& out, const JGeometry::TVec3f& pos, const JGeometry::TVec2f& offset, f32 border) {
-    f32 y;
-    f32 x;
-    out = pos;
-    x = out.x + offset.x;
-    y = out.y + offset.y;
-    out.x = x;
-    out.y = y;
-    out.x = x + border;
-    out.y = y + border;
-    out.z = lbl_80540674;
-}
 
 static inline s32 HouseContactMode(char* self, s32& room) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
@@ -1605,10 +1593,7 @@ extern "C" void fn_80299FB0(char* self) {
             found = 0;
             break;
         }
-        bool in = false;
-        if (v.x >= area.i.x && v.y >= area.i.y && v.x < area.f.x && v.y < area.f.y) {
-            in = true;
-        }
+        bool in = HouseContains(area, v);
         if (!in) {
             found = 0;
             break;
@@ -1624,7 +1609,7 @@ extern "C" void fn_80299FB0(char* self) {
     if (mode == 1) {
         fn_80238E08(*(void**)(self + 0x198));
         *(f32*)(self + 0x3c) = lbl_805406F4;
-        *(volatile u8*)(self + 0x2b8) = 1;
+        *(u8*)(self + 0x2b8) = 1;
         fn_801F0E34(self, 0x30004, 0);
     }
     *(f32*)(self + 0x250) = lbl_805406E4;
@@ -1650,6 +1635,7 @@ extern "C" void fn_80299FB0(char* self) {
     }
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8029A494(char* self) {
     s32 mode;
     s32 room;
@@ -1764,7 +1750,7 @@ extern "C" void fn_8029A494(char* self) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 static inline int HouseFallMode(char* self) {
     if (fn_80239108(*(void**)(self + 0x198)) >= 4) {
         int room = *(s32*)(self + 4);
