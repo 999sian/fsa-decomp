@@ -267,7 +267,7 @@ extern "C" const f32 lbl_80540560;
 extern "C" const f32 lbl_80540564;
 extern "C" const f32 lbl_80540568;
 extern "C" const char lbl_8046C120[];
-extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c);
+
 extern "C" u8 fn_8028C518(u8* p, u8 idx);
 extern "C" void fn_8029E9EC(void* sys, void* pos, u32 room, u32 id, s32 c, u32 idx);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
@@ -284,15 +284,15 @@ extern "C" void fn_8028D5D0(u8* this_) {
         *(f32*)(this_ + 0xc) = (f32)(x / 16 * 16 + 8);
         x = (s32)*(f32*)(this_ + 0x10);
         *(f32*)(this_ + 0x10) = (f32)(x / 16 * 16 + 8);
-        f32* t = (f32*)(lbl_8046C120 + ((*(u32*)(this_ + 0x90)>>2)&3)*12);
-        ((JGeometry::TVec3<f32>*)(this_+0x3c))->set(*(JGeometry::TVec3<f32>*)t);
+        const f32* t = (const f32*)(lbl_8046C120 + ((*(u32*)(this_ + 0x90)>>2)&3)*12);
+        ((JGeometry::TVec3<f32>*)(this_+0x3c))->set(*(const JGeometry::TVec3<f32>*)t);
         v = *(JGeometry::TVec3<f32>*)(this_+0x3c);
         v.normalize();
-        v *= lbl_80540520;
+        v *= 16.0f;
         v += *(JGeometry::TVec3<f32>*)(this_+0xc);
         if ((u16)fn_8022461C(&v.x, *(s32*)(this_+4)) == 0x50) {
             ((JGeometry::TVec3<f32>*)(this_+0x3c))->normalize();
-            *(JGeometry::TVec3<f32>*)(this_+0x3c) *= lbl_80540500;
+            *(JGeometry::TVec3<f32>*)(this_+0x3c) *= 1.0f;
         }
     } else {
         if (((*(u32*)(this_+0x90)>>9)&1)==0) {
