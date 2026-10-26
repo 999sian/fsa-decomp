@@ -98,6 +98,16 @@ static inline void movePlatformPlayer(int player, const JGeometry::TVec3<f32>& d
     fn_8023DEDC(player, &delta);
 }
 
+static inline bool platformContains(const f32* bounds, const JGeometry::TVec3<f32>& point) {
+    f32 minX = bounds[0];
+    f32 minY = bounds[1];
+    f32 maxX = bounds[2];
+    f32 maxY = bounds[3];
+    bool inside = false;
+    if (point.x >= minX && point.y >= minY && point.x < maxX && point.y < maxY) inside = true;
+    return inside;
+}
+
 static inline u8 platformHasPlayer(u8* p, int player, int room) {
     int actualRoom = fn_8023DE58(player);
     if (actualRoom != room) return 0;
@@ -118,13 +128,7 @@ static inline u8 platformHasPlayer(u8* p, int player, int room) {
         point.z = 0.0f;
         point.y = y;
         point.x = x;
-        f32 minX = *(f32*)(p + 0x60);
-        f32 minY = *(f32*)(p + 0x64);
-        f32 maxX = *(f32*)(p + 0x68);
-        f32 maxY = *(f32*)(p + 0x6c);
-        bool inside = false;
-        if (point.x >= minX && point.y >= minY && point.x < maxX && point.y < maxY) inside = true;
-        if (inside) {
+        if (platformContains((f32*)(p + 0x60), point)) {
             fn_8022DF48(player);
             return 1;
         }
