@@ -128,6 +128,29 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
 #pragma optimization_level reset
 #pragma opt_unroll_loops reset
 #pragma peephole on
+static inline void setupCardStat(CARDStat& stat) {
+    CARDSetIconFormat(&stat, 0, 1);
+    CARDSetIconSpeed(&stat, 0, 3);
+    CARDSetBannerFormat(&stat, 1);
+    CARDSetIconFormat(&stat, 1, 0);
+    CARDSetIconSpeed(&stat, 1, 0);
+    CARDSetIconFormat(&stat, 2, 0);
+    CARDSetIconSpeed(&stat, 2, 0);
+    CARDSetIconFormat(&stat, 3, 0);
+    CARDSetIconSpeed(&stat, 3, 0);
+    CARDSetIconFormat(&stat, 4, 0);
+    CARDSetIconSpeed(&stat, 4, 0);
+    CARDSetIconFormat(&stat, 5, 0);
+    CARDSetIconSpeed(&stat, 5, 0);
+    CARDSetIconFormat(&stat, 6, 0);
+    CARDSetIconSpeed(&stat, 6, 0);
+    stat.iconAddr = 0;
+    stat.commentAddr = 0x1c00;
+    CARDSetIconAnim(&stat,0);
+    stat.iconFormat &= 0xfff;
+    stat.iconSpeed &= 0xfff;
+}
+
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
     CARDFileInfo* fileInfo = info;
     void* src = data;
