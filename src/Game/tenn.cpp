@@ -175,11 +175,11 @@ extern "C" void fn_801A0B8C(void* this_) {
 }
 
 extern "C" void fn_801A0BE4(void* this_) {
-    char* p = (char*)this_;
-    s32 id;
-    s32 i;
-    char* owner;
     char* entry;
+    char* owner;
+    s32 i;
+    s32 id;
+    char* p = (char*)this_;
     ((JGeometry::TVec3<f32>*)(p+0xc))->add(*(JGeometry::TVec3<f32>*)(p+0x3c));
     fn_8030C210(*(void**)((char*)lbl_8053AB10+0x24), p+0xc);
     switch (*(s32*)(p+0x230)) {
@@ -194,8 +194,8 @@ extern "C" void fn_801A0BE4(void* this_) {
             *(s32*)(p+0x230) = 0x13;
             break;
         }
-        owner = (char*)fn_801F666C(fn_801F856C(),id);
-        if (!owner) {
+        char* found = (char*)fn_801F666C(fn_801F856C(),id);
+        if (!found) {
             *(s32*)(p+0x23c) = 50;
             *(f32*)(p+0x3c) = lbl_8053E4F0;
             *(f32*)(p+0x40) = lbl_8053E518;
@@ -205,7 +205,8 @@ extern "C" void fn_801A0BE4(void* this_) {
             break;
         }
         entry = p;
-        for(i=0;i<4;i++,owner+=4,entry+=4) {
+        owner = found;
+        for(i=0;i<4;i++,entry+=4,owner+=4) {
             if (*(s32*)(entry+0x27c) >= 0) {
                 f32 dx = *(f32*)(p+0xc)-fn_8023E724(i)->x;
                 f32 dy = *(f32*)(p+0x10)-fn_8023E724(i)->y;
