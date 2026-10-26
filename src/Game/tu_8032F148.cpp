@@ -380,7 +380,7 @@ static inline void warpSqrtInPlace80331(f32& x) {
     y = 0.5f * y * (3.0f - x * (y * y));
     x *= y;
 }
-static inline f32 warpSqrt80331(f32 x) {
+static inline f32 warpSqrt80331(register f32 x) {
     if (x <= 0.0f) return x;
     f32 y = (f32)__frsqrte(x);
     y = 0.5f * y * (3.0f - x * (y * y));
@@ -424,8 +424,7 @@ extern "C" void fn_80331E6C(char* this_) {
                     f32 dy = *(f32*)(o + 0x10) - *(f32*)(self + 0x10);
                     f32 sx = dx * dx;
                     f32 sy = dy * dy;
-                    f32 sq = sx + sy;
-                    sq = warpSqrt80331(sq);
+                    f32 sq = warpSqrt80331(sx + sy);
                     if (!(sq < lbl_80541F10)) continue;
                 }
             }
@@ -552,8 +551,7 @@ warp:
         f32 dy = *(f32*)(self + 0x2ec) - *(f32*)(self + 0x10);
         f32 sx = dx * dx;
         f32 sy = dy * dy;
-        f32 sq = sx + sy;
-        sq = warpSqrt80331(sq);
+        f32 sq = warpSqrt80331(sx + sy);
         if (!(sq > lbl_80541F10)) goto end;
     }
 
@@ -876,7 +874,7 @@ extern "C" void fn_80333148(char* this_) {
     };
 
     s32 local_18;
-    volatile u16 local_8 = 0;
+    s16 local_8 = 0;
     char* obj = this_;
 
     *(float*)(this_ + 0x60) = -7.0f;
@@ -992,8 +990,8 @@ extern "C" void fn_80333148(char* this_) {
             float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(obj + 0xc);
             float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(obj + 0x10);
             local_8 = enemyAngle(y, x);
-            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.sinShort(local_8);
-            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.cosShort(local_8);
+            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.sinShort(*(volatile u16*)&local_8);
+            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.cosShort(*(volatile u16*)&local_8);
             if (*(float*)(obj + 0x2b8) >= 0.0f) *(s32*)(obj + 0x98) = 0;
             else *(s32*)(obj + 0x98) = 1;
             obj[0x2a6] = 1;
