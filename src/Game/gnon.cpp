@@ -379,25 +379,33 @@ u8* delays2[16];
 };
 extern u8 lbl_804A1FF8[];
 #pragma opt_propagation off
+static inline void gnonReadTrack(u8* p, u8** frames, s16* offsets, u8** delays, s32& frame, s32& timer, s32& index) {
+frame=frames[*(s32*)(p+0x28c)][index];
+frame+=offsets[*(s32*)(p+0x28c)];
+timer=delays[*(s32*)(p+0x28c)][index];
+index++;
+}
 extern "C" void fn_801964AC(u8* p) {
-u8* tables=lbl_804A1FF8;
+GnonAnimTables* tables=(GnonAnimTables*)lbl_804A1FF8;
 if(*(s32*)(p+0x28c)!=*(s32*)(p+0x290)) {
 *(s32*)(p+0x290)=*(s32*)(p+0x28c);
 p[0x2a4]=0; *(s32*)(p+0x234)=0; *(s32*)(p+0x238)=0; *(s32*)(p+0x25c)=0; *(s32*)(p+0x260)=0;
 }
 if(*(s32*)(p+0x234)==0) {
-u8** frames=(u8**)(tables+0x120);
-s16* offsets=(s16*)tables;
-u8** delays=(u8**)(tables+0x160);
+{
+u8** delays; s16* offsets; u8** frames;
+frames=tables->frames1; offsets=tables->offsets; delays=tables->delays1;
 *(s32*)(p+0x284)=frames[*(s32*)(p+0x28c)][*(s32*)(p+0x25c)];
 *(s32*)(p+0x284)+=offsets[*(s32*)(p+0x28c)];
 *(s32*)(p+0x234)=delays[*(s32*)(p+0x28c)][*(s32*)(p+0x25c)];
 (*(s32*)(p+0x25c))++;
+}
 if(*(s32*)(p+0x28c)==8) {
 if(*(s32*)(p+0x264)==0) { if(*(s32*)(p+0x25c)>2) *(s32*)(p+0x25c)=0; }
 else p[0x2a5]=0;
 }
 s32 state=*(s32*)(p+0x28c);
+u8** frames=tables->frames1;
 if(frames[state][*(s32*)(p+0x25c)]==0xff) {
 if((u32)state<=1 || state==5 || state==3 || state==10 || state==12) {
 *(s32*)(p+0x25c)=0;
@@ -411,15 +419,17 @@ if(*(s32*)(p+0x28c)==9) { *(s32*)(p+0x28c)=10; fn_801F0E34(p,0x50006,0); *(s32*)
 }
 }
 if(*(s32*)(p+0x238)==0) {
-u8** frames=(u8**)(tables+0x2a0);
-s16* offsets=(s16*)tables;
-u8** delays=(u8**)(tables+0x2e0);
+{
+u8** delays; s16* offsets; u8** frames;
+frames=tables->frames2; offsets=tables->offsets; delays=tables->delays2;
 *(s32*)(p+0x288)=frames[*(s32*)(p+0x28c)][*(s32*)(p+0x260)];
 *(s32*)(p+0x288)+=offsets[*(s32*)(p+0x28c)];
 *(s32*)(p+0x238)=delays[*(s32*)(p+0x28c)][*(s32*)(p+0x260)];
 (*(s32*)(p+0x260))++;
+}
 if(*(s32*)(p+0x28c)==8 && *(s32*)(p+0x264)==0 && *(s32*)(p+0x260)>2) *(s32*)(p+0x260)=0;
 s32 state=*(s32*)(p+0x28c);
+u8** frames=tables->frames2;
 if(frames[state][*(s32*)(p+0x260)]==0xff) {
 if((u32)state<=1 || state==5 || state==3 || state==10 || state==12) *(s32*)(p+0x260)=0;
 else if(state==6) *(s32*)(p+0x260)=4;
