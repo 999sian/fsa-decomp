@@ -199,16 +199,16 @@ extern "C" void fn_8015D844(char* this_) {
     }
     *(u32*)(this_ + 0x264) = *(u32*)(this_ + 0x90) & 0xf;
     if (*(s32*)(this_ + 0x264) == 3) {
-        *(s32*)(this_ + 0x24c) = (s32)(1.99f * lbl_8053AAF8->rnd.get_ufloat_1());
-        if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) {
-            *(s32*)(this_ + 0x254) = -((s32)(512.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x200);
+        *(s32*)(this_ + 0x24c) = (s32)(1.99f * kethRandFrom(lbl_8053AAF8));
+        if (kethRandFrom(lbl_8053AAF8) < 0.5f) {
+            *(s32*)(this_ + 0x254) = -((s32)(512.0f * kethRandFrom(lbl_8053AAF8)) + 0x200);
         } else {
-            *(s32*)(this_ + 0x254) = (s32)(512.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x200;
+            *(s32*)(this_ + 0x254) = (s32)(512.0f * kethRandFrom(lbl_8053AAF8)) + 0x200;
         }
     }
     if (*(s32*)(this_ + 0x264) == 2) {
-        *(f32*)(this_ + 0xc) += (f32)((s32)(9.0f * lbl_8053AAF8->rnd.get_ufloat_1()) - 4);
-        *(f32*)(this_ + 0x10) += (f32)((s32)(9.0f * lbl_8053AAF8->rnd.get_ufloat_1()) - 4);
+        *(f32*)(this_ + 0xc) += (f32)((s32)(9.0f * kethRandFrom(lbl_8053AAF8)) - 4);
+        *(f32*)(this_ + 0x10) += (f32)((s32)(9.0f * kethRandFrom(lbl_8053AAF8)) - 4);
         *(JGeometry::TVec3<f32>*)(this_ + 0x24) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
     }
     *(f32*)(this_ + 0x26c) = 0.0f;
