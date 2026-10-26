@@ -38,7 +38,7 @@ extern u8 lbl_80463B8C[];
 extern u8 lbl_80463B78[];
 extern "C" s32 fn_8023DE58(s32 i);
 extern "C" void* fn_8023E724(s32 i);
-extern f32 lbl_8053C114;
+extern const f32 lbl_8053C114;
 extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
 
