@@ -5,6 +5,12 @@
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
 
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void* fn_8023E724(s32);
+extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern "C" void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
+
 extern "C" s32 fn_8023AD54(void* box, s32 room, void* out);
 extern "C" s32 fn_8023B358(s32 id);
 extern "C" s32 fn_8023B5B4(s32 id);
