@@ -1291,6 +1291,12 @@ extern "C" void fn_80429DF4(s16 x, s16 y, s16 z) {
 #pragma dont_inline off
 
 extern "C" f32 lbl_80543AC4;
+#pragma dont_inline off
+static inline void movieOrtho(Mtx44 mtx, s32 width, s32 height) {
+    C_MTXOrtho(mtx, 0.0f, height, 0.0f, width, 0.0f, lbl_80543AC4);
+}
+#pragma dont_inline on
+
 extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     s32 scrWidth;
     s32 scrHeight;
@@ -1302,7 +1308,9 @@ extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     static const GXColor kcolor2 = {0xff, 0x00, 0xff, 0x80};
     scrWidth = rmode->fbWidth;
     scrHeight = rmode->efbHeight;
-    C_MTXOrtho(pMtx, 0.0f, scrHeight, 0.0f, scrWidth, 0.0f, lbl_80543AC4);
+    f32 width = scrWidth;
+    f32 height = scrHeight;
+    C_MTXOrtho(pMtx, 0.0f, height, 0.0f, width, 0.0f, lbl_80543AC4);
     GXSetProjection(pMtx, GX_ORTHOGRAPHIC);
     GXSetViewport(0.0f, 0.0f, scrWidth, scrHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, scrWidth, scrHeight);
