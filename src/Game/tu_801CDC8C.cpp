@@ -652,9 +652,9 @@ extern void* lbl_8053AAF8;
 static inline s32 choosePointDirection(const u8* self, const f32* pt, const u8 swap) {
     f32 dx = pt[0] - *(const f32*)(self + 0xc);
     f32 dy = pt[1] - *(const f32*)(self + 0x10);
-    f32 absY = __fabsf(dy);
-    f32 absX = __fabsf(dx);
-    if ((absX > absY && swap == 0) || (absX <= absY && swap == 1)) {
+    dx = __fabsf(dx);
+    dy = __fabsf(dy);
+    if ((dx > dy && swap == 0) || (dx <= dy && swap == 1)) {
         return *(const f32*)(self + 0xc) < pt[0] ? 0 : 1;
     }
     return *(const f32*)(self + 0x10) < pt[1] ? 2 : 3;
