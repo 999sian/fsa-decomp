@@ -25,6 +25,10 @@ struct FsaNode {
     virtual FsaNode* v15(u64);
 };
 
+static inline const u64* fsaTagTable(u8* base, int offset) {
+    return (const u64*)(base + offset);
+}
+
 static inline bool fsaSelectionFlag(const u8* data, u8 mask) {
     return data[0x243] & mask;
 }
@@ -532,7 +536,7 @@ extern "C" void fn_803D87C0(u8* param_1) {
     k23 = (const u64*)(base + 0x468);
     k22 = (const u64*)(base + 0x400);
     cnt = (s32*)lbl;
-    k26o = (const u64*)((u8*)k23 - 0x468);
+    k26o = k23 - 141;
     k25o = (const u64*)(base + 0x200);
     for (s32 i = 0; i < 4; i++) {
         mask = (u8)(1 << i);
