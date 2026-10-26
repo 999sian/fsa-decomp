@@ -527,20 +527,28 @@ struct TwtgRandom {
     }
 };
 
+#pragma opt_propagation off
 extern "C" void fn_80313D7C(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
     f32 dist;
+    s32 n;
+    s32 slot;
+    s32 state;
+    
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
-        s32 room;
-        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) != room)) {
+        
+        s32 owner;
+        if (*(s32*)(p + 0x254) < 0 || (slot = *(s32*)(p + 0x4), owner = fn_8023DE58(*(s32*)(p + 0x254)), owner != slot)) {
             fn_801EE558(p, &v, &dist, 0);
         } else {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
         }
         if (dist < lbl_80541880) {
-            f32 ang = JMath::atanTable_.atan2_(-v.x, -v.y);
+            f32 x = -v.x;
+            f32 y = -v.y;
+            f32 ang = JMAAtan2Radian(x, y);
             u16 a = (s32)(ang * lbl_80541884);
             if (a < 0x2000 || a >= 0xe000) {
                 *(s32*)(p + 0x270) = 3;
@@ -557,6 +565,7 @@ extern "C" void fn_80313D7C(char* p) {
     } else {
         (*(s32*)(p + 0x274))--;
     }
+
     b.min.x = *(f32*)(p + 0x258);
     b.min.y = *(f32*)(p + 0x25c);
     b.max.x = *(f32*)(p + 0x260);
@@ -565,8 +574,6 @@ extern "C" void fn_80313D7C(char* p) {
     b.min.y += *(f32*)(p + 0x10);
     b.max.x += *(f32*)(p + 0xc);
     b.max.y += *(f32*)(p + 0x10);
-    s32 n;
-    s32 slot;
     if (*(s32*)(p + 0x234) == 0) {
         n = fn_80138A30(lbl_8053AAF8);
         switch (*(s32*)(p + 0x238)) {
@@ -587,42 +594,44 @@ extern "C" void fn_80313D7C(char* p) {
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             twtgAsk(p, 0x4cf);
             break;
-        case 2: {
+        case 2:
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             twtgAsk(p, 0x4dc);
-            s32 i;
-            for (i = 0; i < n; i++) {
-                if (twtgPlayerFlag(i)) {
+            for (slot = 0; slot < n; slot++) {
+                if (twtgPlayerFlag(slot)) {
                     break;
                 }
             }
-            if (i >= n) {
+            if (slot >= n) {
                 *(s32*)(p + 0x238) = 7;
             }
             break;
-        }
         case 3:
         case 4:
         case 5:
         case 6:
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
-            for (; *(s32*)(p + 0x238) < 7; (*(s32*)(p + 0x238))++) {
-                if (twtgPlayerFlag(*(s32*)(p + 0x238) - 3)) {
+            while ((state = *(s32*)(p + 0x238)) < 7) {
+                slot = state - 3;
+                if (twtgPlayerFlag(slot)) {
                     break;
                 }
+                (*(s32*)(p + 0x238))++;
             }
             if (*(s32*)(p + 0x238) < n + 3) {
-                twtgAsk(p, *(s32*)(p + 0x238) + 0x4d1);
+                state = *(s32*)(p + 0x238) + 0x4d1;
+                if (fn_8038470C(*(s32*)(p + 0x254), state)) {
+                    *(s32*)(p + 0x268) = state;
+                    *(s32*)(p + 0x234) = 1;
+                }
                 break;
             }
-            /* fall through */
         case 7:
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             if (twtgAsk(p, 0x4dd)) {
-                s32 i;
-                for (i = 0; i < n; i++) {
-                    if (twtgPlayerFlag(i)) {
-                        fn_8043D874(lbl_8053AED0, i, -0x12c, 0);
+                for (state = 0; state < n; state++) {
+                    if (twtgPlayerFlag(state)) {
+                        fn_8043D874(lbl_8053AED0, state, -0x12c, 0);
                     }
                 }
                 *(s32*)(p + 0x238) = 8;
@@ -643,7 +652,7 @@ extern "C" void fn_80313D7C(char* p) {
         fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
         if (fn_803865B8(*(s32*)(p + 0x254))) {
             if (*(s32*)(p + 0x238) < 8) {
-                (*(s32*)(p + 0x238))++;
+                *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
                 *(s32*)(p + 0x234) = 0;
             } else {
                 *(s32*)(p + 0x230) = 4;
@@ -653,7 +662,7 @@ extern "C" void fn_80313D7C(char* p) {
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_803142E4(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
