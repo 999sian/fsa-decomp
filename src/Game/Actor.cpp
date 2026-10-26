@@ -70,10 +70,6 @@ struct EffArgs {
     u32 x30, x34, x38;
 };
 
-static inline void EffRaiseLayer(EffArgs& args, const u8 layer) {
-    args.b1d = layer + 1;
-}
-
 struct Rec {
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
