@@ -109,6 +109,16 @@ extern "C" void fn_801E8080(void* actor);
 extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
+static inline void fsaDrawEntries(FsaSlot* slots, const s32 index, const bool textured) {
+    s32 i;
+    s32 n = slots[index].count;
+    for (i = 0; i < n; i++) {
+        if (slots[index].entries[i].actor) {
+            if (textured) fn_801E801C(slots[index].entries[i].actor);
+            else fn_801E8080(slots[index].entries[i].actor);
+        }
+    }
+}
 static inline u8 fsaHasEntries(FsaSlot* s) { return s->count > 0; }
 static inline u8 fsaHasActors(FsaSlot* s) { return s->unk74 > 0; }
 extern "C" void fn_801E9C74(u8* param) {
@@ -123,12 +133,12 @@ extern "C" void fn_801E9C74(u8* param) {
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
     if (both) {
-        a = (u8)(slots[0].count > 0 || slots[1].count > 0);
-        b = (u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
+        a = (u8)(fsaHasEntries(&slots[0]) || fsaHasEntries(&slots[1]));
+        b = (u8)(a || fsaHasActors(&slots[0]) || fsaHasActors(&slots[1]));
     } else {
         FsaSlot* s = &slots[self[0xf0]];
-        a = s->count > 0;
-        b = (u8)(a || s->unk74 > 0);
+        a = fsaHasEntries(s);
+        b = (u8)(a || fsaHasActors(s));
     }
     if (!a && !b) {
         return;
