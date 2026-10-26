@@ -89,13 +89,6 @@ static inline void orbitOffset(JGeometry::TVec3<f32>& out, s16 angle, const f32 
  out.z = lbl_80542C24;
 }
 
-static inline void orbitInit(u8* p, s16 angle) {
- *(f32*)(p + 0x244) = *(f32*)(p + 0xc);
- *(f32*)(p + 0x248) = *(f32*)(p + 0x10);
- *(f32*)(p + 0x24c) = *(f32*)(p + 0x14);
- *(s32*)(p + 0x238) += 1;
- *(s16*)(p + 0x240) = angle;
-}
 
 struct Tu80367888Owner : Actor {
  virtual void v19();
