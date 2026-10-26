@@ -55,7 +55,7 @@ struct RoomArrays {
 
 static inline bool roomPositionEquals(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
     bool same = false;
-    f32 eps = 32.0f * FLT_EPSILON;
+    const f32 eps = 32.0f * FLT_EPSILON;
     if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, eps) && JGeometry::TUtilf::epsilonEquals(a.y, b.y, eps)) same = true;
     return same;
 }
