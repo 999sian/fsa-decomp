@@ -129,6 +129,23 @@ extern "C" void fn_8012CF5C(u8* this_) {
     }
 }
 
+static inline void spawnBTBZInner(u8* this_) {
+    BTBZ_Box box = *(BTBZ_Box*)(fn_802D6A9C() + 0xCC);
+    f32 pos[3];
+    f32 cy = box.y1;
+    f32 cx = box.x1;
+    f32 k = 0.5f;
+    f32 x, y;
+    x = box.x0 - cx;
+    x = k * x + cx;
+    y = box.y0 - cy;
+    y = k * y + cy;
+    pos[0] = x;
+    pos[1] = y;
+    pos[2] = 0.0f;
+    *(void**)(this_ + 0x23C) = fn_8013CC50(*(s32*)(this_ + 4), pos, 0x58, 1, 0, 0, 0, 1, 1.0f);
+}
+
 extern "C" void fn_8012D6E8(u8* this_) {
     v01__5ActorFv(this_);
     *(u8*)(this_ + 0x230) = *(u32*)(this_ + 0x90) & 1;
