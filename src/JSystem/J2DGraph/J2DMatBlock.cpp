@@ -14,6 +14,14 @@ static inline void initializeSwapModeTableInfo(J2DTevSwapModeTable& table, const
 {
     table._00 = initializeSwapModeTable(info.mR, info.mG, info.mB, info.mA);
 }
+static inline u8 initializeSwapModeTableGB(const u8 r, const u8 b, u8 g, const u8 a)
+{
+    return (r << 6) + (g << 4) + (b << 2) + a;
+}
+static inline void initializeSwapModeTableGBInfo(J2DTevSwapModeTable& table, const J2DTevSwapModeTableInfo& info)
+{
+    table._00 = initializeSwapModeTableGB(info.mR, info.mB, info.mG, info.mA);
+}
 
 void J2DColorBlock::initialize() {
     for (int i = 0; i < 2; i++) {
