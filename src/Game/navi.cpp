@@ -2,6 +2,20 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
+static inline JGeometry::TVec2<f32> navi_sub2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    JGeometry::TVec2<f32> result;
+    result.set(a);
+    result.x -= b.x;
+    result.y -= b.y;
+    return result;
+}
+static inline JGeometry::TVec2<f32> navi_add2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
+    JGeometry::TVec2<f32> result;
+    result.set(a);
+    result.add(b);
+    return result;
+}
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // ---- fn_8021ED04_dtor.cpp ----
