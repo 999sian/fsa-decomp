@@ -1028,16 +1028,18 @@ static inline void HudStoreCountResult8041(u8* self, s32 idx, s32 result) {
     *(s32*)(self + idx * 4 + 0x1f8) = result;
 }
 
+#pragma opt_common_subs off
 static inline void HudSyncCount8041(s32 idx) {
-    u32* dst = (u32*)lbl_80529DEC;
-    u32* src = (u32*)lbl_80529DEC + idx + 0x36;
-    for (s32 i = 0; i < 4; i++, dst++) {
+    u8* dst = lbl_80529DEC;
+    s32* src = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+    for (s32 i = 0; i < 4; i++, dst += 4) {
         if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-            dst[0x36] = *src;
+            *(s32*)(dst + 0xd8) = *src;
         }
     }
 }
 
+#pragma opt_common_subs reset
 static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
     u8* p2 = self + idx * 2;
     u8* p4 = self + idx * 4;
