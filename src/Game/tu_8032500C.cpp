@@ -170,7 +170,7 @@ extern "C" void fn_8013CC50(u32 a, Vec* b, f32 c, s32 d, s32 e, s32 f, s32 g, s3
 extern "C" void* lbl_8053AAF8;
 extern "C" u32 lbl_804AB440[];
 struct JMathSinCos { f32 sin; f32 cos; };
-extern "C" const JMathSinCos sincosTable___5JMath[];
+extern "C" JMathSinCos sincosTable___5JMath[];
 
 static inline f32 rand01() {
     u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
