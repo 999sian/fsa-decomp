@@ -714,31 +714,16 @@ extern "C" s32 fn_801A4F5C(s32 h, void* p, void* q);
 extern "C" s32 fn_801A46FC(s32 h, void* p, void* q);
 extern float lbl_80541F28;
 static inline u8 enemyFlameHit(char* self, char* target, u8& hit) {
-    bool flame=false;
-    if (target==0) return 0;
-    if (*(u32*)(target+0x1a0)=='FLME') flame=true;
-    if (flame) {
+    u8 result=0;
+    if(target==0) return result;
+    if(*(u32*)(target+0x1a0)=='FLME') result=1;
+    if(result) {
         JGeometry::TVec3<f32> v;
         v.zero();
         fn_801F3128(target,&v.x);
         v -= *(JGeometry::TVec3<f32>*)(target+0x3c);
         hit=fn_801F37AC(self,*(u32*)(target+0x118),&v,0,*(u32*)(target+0x168),*(u32*)(target+0x110));
-        if((u8)hit) *(u8*)(target+0x164)=1;
-    }
-    return hit;
-}
-static inline u8 enemyFlameHitResult(char* self, char* target) {
-    u8 hit=0;
-    bool flame=false;
-    if (target==0) return 0;
-    if (*(u32*)(target+0x1a0)=='FLME') flame=true;
-    if (flame) {
-        JGeometry::TVec3<f32> v;
-        v.zero();
-        fn_801F3128(target,&v.x);
-        v -= *(JGeometry::TVec3<f32>*)(target+0x3c);
-        hit=fn_801F37AC(self,*(u32*)(target+0x118),&v,0,*(u32*)(target+0x168),*(u32*)(target+0x110));
-        if((u8)hit) *(u8*)(target+0x164)=1;
+        if(hit) *(u8*)(target+0x164)=1;
     }
     return hit;
 }
@@ -771,9 +756,8 @@ extern "C" void fn_80332A60(char* this_) {
         if(idx>=0 && idx!=*(s32*)(p+0x198)) {
             a=(char*)fn_801F666C(fn_801F856C(),idx);
             result=0;
-            switch((u32)a) {
-            case 0: goto resultCheck;
-            default: {
+            if(a==0) goto resultCheck;
+            {
                 if(*(u32*)(a+0x1a0)=='FLME') result=1;
                 if(result) {
                     JGeometry::TVec3<f32> v;
@@ -783,7 +767,6 @@ extern "C" void fn_80332A60(char* this_) {
                     hit=fn_801F37AC(p,*(u32*)(a+0x118),&v,0,*(u32*)(a+0x168),*(u32*)(a+0x110));
                     if(hit) *(u8*)(a+0x164)=1;
                 }
-            } break;
             }
         }
         result=hit;
