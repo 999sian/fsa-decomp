@@ -9,6 +9,30 @@ public:
 };
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "Game/ItemBase.h"
+extern "C" unsigned char sincosTable___5JMath[];
+extern "C" void* lbl_8053AB10;
+extern "C" u32 lbl_8053A1B8[2];
+extern "C" char lbl_804724E0[];
+extern "C" void fn_802F745C(void*, const void*, void*, DrawRec*);
+static inline void rotation80359E18(f32 m[3][4], f32 scale, s16 angle)
+{
+    f32 sx = ((f32*)(sincosTable___5JMath + ((u16)angle >> 5) * 8))[0];
+    f32 sy = ((f32*)sincosTable___5JMath)[0];
+    f32 sz = sy;
+    f32 cx = ((f32*)(sincosTable___5JMath + ((u16)angle >> 5) * 8))[1];
+    f32 cy = ((f32*)sincosTable___5JMath)[1];
+    f32 cz = cy;
+    m[0][0] = scale * (cz * cy);
+    m[0][1] = scale * ((sx * sy) * cz - cx * sz);
+    m[0][2] = scale * ((cx * cz) * sy + sx * sz);
+    m[1][0] = scale * (cz * sz);
+    m[1][1] = scale * ((sx * sy) * sz + cx * cz);
+    m[1][2] = scale * ((cx * sz) * sy - sx * cz);
+    m[2][0] = scale * -sy;
+    m[2][1] = scale * (sx * cy);
+    m[2][2] = scale * (cx * cy);
+}
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 
