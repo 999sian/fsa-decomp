@@ -210,9 +210,7 @@ struct T80431_Pane {
 };
 
 static inline f32 centerOffset80431(f32 width, const f32 paneWidth, const f32 offset) {
-    f32 difference = width;
-    difference -= paneWidth;
-    return difference / 2.0f + offset;
+    return (width - paneWidth) / 2.0f + offset;
 }
 
 struct T80431_Owner {
