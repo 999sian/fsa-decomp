@@ -269,6 +269,17 @@ static inline JGeometry::TBox2f* RoomBounds(char* self) {
     return (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
 }
 
+static inline void resetHouseProbe(char* self, const JGeometry::TVec3f& saved) {
+    *(JGeometry::TVec3f*)(self + 0xc) = saved;
+    *(f32*)(self + 0x3c) = 0.0f;
+    *(f32*)(self + 0x40) = 0.0f;
+    *(f32*)(self + 0x44) = 0.0f;
+    *(f32*)(self + 0x60) = -48.0f;
+    *(f32*)(self + 0x64) = -48.0f;
+    *(f32*)(self + 0x68) = 48.0f;
+    *(f32*)(self + 0x6c) = 48.0f;
+}
+
 static inline void moveHouseProbe(char* self, u8 mode, JGeometry::TVec3f& saved) {
     saved = *(JGeometry::TVec3f*)(self + 0xc);
     const JGeometry::TVec3f& direction = lbl_8046C268[mode];
@@ -338,8 +349,8 @@ extern "C" u8 fn_802957CC(void* p, u8 mode) {
         }
         pt.pos.y += *(f32*)(self + 0x64);
         pt.pos.y += 8.0f;
-        for (probeStep = 0; probeStep < 6; probeStep++) {
-            if (!fn_802A1490(lbl_8053AC98, &pt) || HitsRect(self, &pt) == 1) {
+        for (s32 firstStep = 0; firstStep < 6; firstStep++) {
+            if (!fn_802A1490(lbl_8053AC98, &pt) || HouseLeadingHitsRect(self, &pt) == 1) {
                 ok = 0;
                 break;
             }
