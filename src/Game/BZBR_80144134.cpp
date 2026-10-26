@@ -60,6 +60,36 @@ extern "C" void* fn_80144134(void* this_, s16 freeFlag) {
     return this_;
 }
 
+static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale) {
+    f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    f32 s = *scale;
+    ang = *angle;
+    f32 rx = 0.0f;
+    sx = sin(rx);
+    sy = sin(ang);
+    sz = sin(rx);
+    cx = cos(rx);
+    cy = cos(ang);
+    cz = cos(rx);
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
 extern "C" void fn_80144194(u8* this_) {
     DrawRec rec;
     f32 mtx[3][4];
