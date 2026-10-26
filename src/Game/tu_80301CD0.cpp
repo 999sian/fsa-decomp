@@ -140,7 +140,7 @@ struct Game_80301CD0;
 extern Game_80301CD0* lbl_8053AAF8;
 extern "C" char* strcpy(char*, const char*);
 
-static inline void tu80301_pushMeasured(const s32 i, char* str, u32 color) {
+static inline void tu80301_pushMeasured(s32 i, const char* str, u32 color) {
     if (str == NULL) {
         return;
     }
@@ -795,11 +795,11 @@ extern "C" char* fn_802D9C1C();
 extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id);
 extern u8 lbl_80471208[];
 extern u8 lbl_8053ACE4[4];
-extern "C" void fn_80303870(int i) {
+extern "C" void fn_80303870(s32 i) {
     char buf28[0x20];
     char buf8[0x20];
     char* str;
-    char* base = (char*)lbl_80471208;
+    register char* base = (char*)lbl_80471208;
 
     fn_802D6A9C();
     str = fn_802D9C4C();
