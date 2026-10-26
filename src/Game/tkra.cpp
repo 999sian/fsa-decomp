@@ -312,9 +312,7 @@ inline void tkraCreateItems(char* p) {
         f32 dx = lbl_805413B0;
         out = p;
         f32 dy = lbl_805413B4;
-        i = 0;
-        bits = (i << 24);
-        for (; i<4; i++, bits+=0x1000000, out+=4) {
+        for (i=0, bits=0UL; i<4; i++, bits+=0x1000000, out+=4) {
             v = *fn_8023E724(i);
             pos = v;
             pos.x=dx+v.x;
