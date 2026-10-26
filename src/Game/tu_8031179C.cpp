@@ -41,6 +41,14 @@ extern "C" s32 fn_8022CAF8(s32 i);
 extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" u32 __cvt_fp2unsigned(f64);
 
+static inline f32 tu311Random() {
+    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    union { u32 bits; f32 value; } out;
+    out.bits = (*seed >> 9) | 0x3f800000;
+    return out.value - lbl_805417C4;
+}
+
 static inline void tuPlayerMessage(u8* p, s32 id, s32 player) {
     if (player == *(s32*)(p + 0x250) ||
         (fn_8022E438(player, *(s32*)(p + 0x250)) && fn_8022CAF8(player) == 4)) {
