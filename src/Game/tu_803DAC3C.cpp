@@ -969,19 +969,15 @@ extern "C" void fn_803DEC44(u8* self)
 extern "C" void fn_803DF2B4(u8* self) {
     u64* tbl = lbl_804774C8;
     s32 k;
-    u8* q;
-    u8 a;
-    u8 b;
-    u8 c;
+    u8* q = self;
+    u8 a = 0;
+    u8 b = 0;
+    u8 c = 0;
     s32 i;
     s32 n;
     f32 f30;
 
-    q = self;
-    *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
-    a = 0;
-    b = 0;
-    c = 0;
+    *(s16*)(self + 0x9c) += 1;
     for (i = 0, k = 0; i < 2; i++, k += 3, q += 4) {
         if (*(s16*)(self + 0x9c) > k) {
             a = fn_80402B10(*(void**)(q + 0x34), 0x14, lbl_80543614, 0, lbl_80543604);
