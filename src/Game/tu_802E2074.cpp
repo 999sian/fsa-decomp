@@ -32,9 +32,6 @@ extern "C" void* fn_802E2074(void* this_, s16 freeFlag) {
 // Unnamed actor cluster, part 2/4. EmptyHook_802E20D4 - empty override (bare
 // blr), no extab.
 static inline s32 genDestinationRoom(const u8 destination) { return destination + 7; }
-static inline void genSetPosition(JGeometry::TVec3<f32>& pos, const u16 x, const u16 y, f32 baseX, f32 baseY) {
-    pos.set(8.0f * x + baseX, 8.0f * y + baseY, 0.0f);
-}
 
 #pragma opt_propagation reset
 struct GenRecordReader {
