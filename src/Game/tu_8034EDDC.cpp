@@ -68,12 +68,6 @@ extern "C" void PSMTXIdentity(f32 (*m)[4]);
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" char lbl_80472228[];
-static inline f32 enemyDrawAlphaUp(f32 range, f32 q, f32 center) {
-    return range * ((q - center) / center);
-}
-static inline f32 enemyDrawAlphaDown(f32 range, f32 q, f32 center) {
-    return range * ((center - q) / center);
-}
 static inline f32 enemyDrawSin(f32 x) { return sin(x); }
 static inline f32 enemyDrawCos(f32 x) { return cos(x); }
 static inline void enemyDrawRot(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
