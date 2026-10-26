@@ -13,15 +13,6 @@ extern "C" u8 fn_802DE9A0();
 extern "C" u8 fn_802DEB58();
 extern "C" u8 fn_802DEBF8();
 extern "C" s32 fn_801CD664(s32 range);
-static inline void yasiDropPosition(YasiVec& pos, char* p, f32 y) {
-    f32 x;
-    f32 delta;
-    delta = (f32)(fn_801CD664(13) - 6);
-    x = *(f32*)(p + 0xc);
-    pos.x = x + delta;
-    pos.y = y;
-    pos.z = lbl_80540E48;
-}
 extern "C" void fn_802CEC10(char* p);
 extern "C" BOOL fn_802CF598(char* p);
 extern "C" void* fn_801F856C();
@@ -64,48 +55,55 @@ extern "C" void fn_802CEBEC(void* this_, void* b, void* c) {
 }
 
 extern "C" void fn_802CEC10(char* p) {
+    YasiVec pos0;
+    YasiVec pos1;
+    YasiVec pos2;
+    YasiVec pos3;
+    YasiVec pos4;
+    YasiVec pos5;
     f32 x;
     f32 delta;
+    f32 y;
     if (*(s32*)(p + 0x234) == 1) {
         if (*(s32*)(p + 0x230) == 4) {
             if (fn_801CD664(100) < 60) {
                 Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
             }
         } else if (*(s32*)(p + 0x238) == 3) {
-            f32 y = *(f32*)(p + 0x10);
-            YasiVec a;
-            delta = (f32)(fn_801CD664(13) - 6);
-            x = *(f32*)(p + 0xc);
-            a.x = x + delta;
-            a.y = y;
-            a.z = lbl_80540E48;
-            Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &a, 0, -1, -1);
             y = *(f32*)(p + 0x10);
-            YasiVec b;
+            
             delta = (f32)(fn_801CD664(13) - 6);
             x = *(f32*)(p + 0xc);
-            b.x = x + delta;
-            b.y = y;
-            b.z = lbl_80540E48;
-            Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &b, 0, -1, -1);
+            pos0.x = x + delta;
+            pos0.y = y;
+            pos0.z = lbl_80540E48;
+            Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &pos0, 0, -1, -1);
+            y = *(f32*)(p + 0x10);
+            
+            delta = (f32)(fn_801CD664(13) - 6);
+            x = *(f32*)(p + 0xc);
+            pos1.x = x + delta;
+            pos1.y = y;
+            pos1.z = lbl_80540E48;
+            Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &pos1, 0, -1, -1);
         } else if (*(s32*)(p + 0x238) == 2) {
-            f32 y = *(f32*)(p + 0x10) + (f32)(fn_801CD664(13) - 6);
-            YasiVec a;
+            y = *(f32*)(p + 0x10) + (f32)(fn_801CD664(13) - 6);
+            
             delta = (f32)(fn_801CD664(13) - 6);
             x = *(f32*)(p + 0xc);
-            a.x = x + delta;
-            a.y = y;
-            a.z = lbl_80540E48;
-            Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(p + 0x4), &a, 0x262d01, -1, -1);
+            pos2.x = x + delta;
+            pos2.y = y;
+            pos2.z = lbl_80540E48;
+            Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(p + 0x4), &pos2, 0x262d01, -1, -1);
         } else {
-            f32 y = *(f32*)(p + 0x10) + (f32)(fn_801CD664(13) - 6);
-            YasiVec a;
+            y = *(f32*)(p + 0x10) + (f32)(fn_801CD664(13) - 6);
+            
             delta = (f32)(fn_801CD664(13) - 6);
             x = *(f32*)(p + 0xc);
-            a.x = x + delta;
-            a.y = y;
-            a.z = lbl_80540E48;
-            Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(p + 0x4), &a, 0x262d00, -1, -1);
+            pos3.x = x + delta;
+            pos3.y = y;
+            pos3.z = lbl_80540E48;
+            Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(p + 0x4), &pos3, 0x262d00, -1, -1);
         }
     } else if (*(s32*)(p + 0x238) != 2 && !fn_802DEBF8()) {
         if (*(s32*)(p + 0x230) < 1) {
@@ -135,22 +133,22 @@ extern "C" void fn_802CEC10(char* p) {
             } else if (*(s32*)(p + 0x230) == 2) {
                 Actor_CreateByID(fn_801F856C(), 0x4d54424f, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
             } else if (*(s32*)(p + 0x230) == 3) {
-                f32 y = *(f32*)(p + 0x10);
-                YasiVec a;
-                delta = (f32)(fn_801CD664(13) - 6);
-            x = *(f32*)(p + 0xc);
-            a.x = x + delta;
-                a.y = y;
-                a.z = lbl_80540E48;
-                Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &a, 0, -1, -1);
                 y = *(f32*)(p + 0x10);
-                YasiVec b;
+                
                 delta = (f32)(fn_801CD664(13) - 6);
             x = *(f32*)(p + 0xc);
-            b.x = x + delta;
-                b.y = y;
-                b.z = lbl_80540E48;
-                Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &b, 0, -1, -1);
+            pos4.x = x + delta;
+                pos4.y = y;
+                pos4.z = lbl_80540E48;
+                Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &pos4, 0, -1, -1);
+                y = *(f32*)(p + 0x10);
+                
+                delta = (f32)(fn_801CD664(13) - 6);
+            x = *(f32*)(p + 0xc);
+            pos5.x = x + delta;
+                pos5.y = y;
+                pos5.z = lbl_80540E48;
+                Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &pos5, 0, -1, -1);
             }
         }
     }
