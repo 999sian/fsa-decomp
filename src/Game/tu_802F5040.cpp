@@ -217,6 +217,10 @@ static inline f32 SpriteDepthOffset802F(f32* pos, u8* ent) {
     return (f32)((a << 10) + (b << 7));
 }
 extern "C" void fn_8013B1E8(void* mgr);
+static inline u16 PaletteRGB444802F(u16 color) {
+    return ((color >> 3) & 0xf00) | 0x4000 | ((color >> 2) & 0xf0) | ((color >> 1) & 0xf);
+}
+
 static inline int Tu802F93F4_c5(int v) {
     f32 f = __fmadds((f32)v, lbl_80541518, lbl_805414F8);
     int r = (int)f;
@@ -800,7 +804,9 @@ extern "C" u8 fn_802F654C(u8* self, f32* __restrict pos, s32 a, s32 b, s32 c, s3
 
 extern "C" u8 lbl_8046F940[];
 extern "C" void* lbl_8053AAF8;
-extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 param_5, s32 param_6, u8* param_7) {
+#pragma opt_common_subs off
+extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 param_5, s32 param_6, u8* __restrict param_7) {
+    u8* table = lbl_8046F940;
     s32 i;
     u8* p;
     u8* c1;
@@ -815,16 +821,17 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
     u8 a3;
 
     done = 0;
-    off = *(s32*)(param_7 + 0x30) * 4;
-    div = ((s32*)(lbl_8046F940 + 0x1840))[*(s32*)(param_7 + 0x30)];
+    s32 index = *(s32*)(param_7 + 0x30);
+    off = index * 4;
+    div = ((s32*)(table + 0x1840))[index];
     if (this_[0xbf98] != 0 && (u32)(param_3 + (param_5 + param_6)) % (u32)div == *(s32*)((u8*)lbl_8053AAF8 + 0x5c) % div) {
         p = this_;
         for (i = 0; i < 0x100; i++) {
             if (*(s32*)(p + 0x2398) == 0) {
-                c1 = lbl_8046F940 + 0x1720 + off;
-                c2 = lbl_8046F940 + 0x1768 + off;
-                *(s32*)(p + 0x2398) = ((s32*)(lbl_8046F940 + 0x17b0))[*(s32*)(param_7 + 0x30)];
-                *(f32*)(p + 0x23a0) = ((f32*)(lbl_8046F940 + 0x17f8))[*(s32*)(param_7 + 0x30)];
+                c1 = table + 0x1720 + off;
+                c2 = table + 0x1768 + off;
+                *(s32*)(p + 0x2398) = ((s32*)(table + 0x17b0))[index];
+                *(f32*)(p + 0x23a0) = ((f32*)(table + 0x17f8))[*(s32*)(param_7 + 0x30)];
                 *(s32*)(p + 0x239c) = *(s32*)(p + 0x2398);
                 *(f32*)(p + 0x23a4) = src[0];
                 *(f32*)(p + 0x23a8) = src[1];
@@ -833,10 +840,11 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
                 *(s32*)(p + 0x23b4) = param_4;
                 *(s32*)(p + 0x23b8) = param_5;
                 *(s32*)(p + 0x23bc) = param_6;
-                *(u8*)(p + 0x242c) = (u8)((param_7[0x10] * c1[0]) / 0xff);
-                *(u8*)(p + 0x242d) = (u8)((param_7[0x11] * c1[1]) / 0xff);
-                *(u8*)(p + 0x242e) = (u8)((param_7[0x12] * c1[2]) / 0xff);
-                *(u8*)(p + 0x242f) = (u8)((param_7[0x13] * c1[3]) / 0xff);
+                ((JUtility::TColor*)(p + 0x242c))->set(
+                    (param_7[0x10] * c1[0]) / 255,
+                    (param_7[0x11] * c1[1]) / 255,
+                    (param_7[0x12] * c1[2]) / 255,
+                    (param_7[0x13] * c1[3]) / 255);
                 a3 = 0xff;
                 t = param_7[0x17] + c2[3];
                 if (t < 0xff) {
@@ -861,6 +869,9 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
                 *(u8*)(p + 0x2431) = a1;
                 *(u8*)(p + 0x2432) = a2;
                 *(u8*)(p + 0x2433) = a3;
+                void* matrix = *(void**)(param_7 + 0x18);
+                u8 layer = param_7[0x1c];
+                u8 priority = param_7[0x1d];
                 *(u32*)(p + 0x23c0) = *(u32*)(param_7 + 0x0);
                 *(u32*)(p + 0x23c4) = *(u32*)(param_7 + 0x4);
                 *(u32*)(p + 0x23c8) = *(u32*)(param_7 + 0x8);
@@ -897,10 +908,10 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
                 *(u8*)(p + 0x23ee) = 0;
                 *(s32*)(p + 0x23f0) = -1;
                 *(s32*)(p + 0x23f8) = 0;
-                *(u8*)(p + 0x23dc) = param_7[0x1c];
-                *(u8*)(p + 0x23dd) = param_7[0x1d] - 1;
-                if (*(u32*)(param_7 + 0x18) != 0) {
-                    JMath::gekko_ps_copy12(p + 0x23fc, *(void**)(param_7 + 0x18));
+                *(u8*)(p + 0x23dc) = layer;
+                *(u8*)(p + 0x23dd) = priority - 1;
+                if (matrix != 0) {
+                    JMath::gekko_ps_copy12(p + 0x23fc, matrix);
                     *(u32*)(p + 0x23d8) = (u32)(p + 0x23fc);
                 } else if (lbl_80541518 != *(f32*)(p + 0x23a0)) {
                     PSMTXIdentity((MtxPtr)(p + 0x23fc));
@@ -914,8 +925,7 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
     }
     return done;
 }
-
-#pragma opt_unroll_loops off
+#pragma opt_common_subs on
 extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
     u16* s;
     u16* d;
@@ -1603,7 +1613,8 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
         d[i + 1] = v;
         s += 2;
     }
-    *(u16*)(this_ + idx * 2 + 0x114) = keep;
+    u8* timer = this_ + idx * 2;
+    *(u16*)(timer + 0x114) = keep;
     {
         u8* t = *(u8**)(table + 0xc);
         u16 w = (t[0x1b0] << 8) | t[0x1b1];
@@ -1626,14 +1637,13 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
         t[0x1b5] = x;
     }
     s = *(u8**)(table + 0xc) + dstOff;
-    d = *(u8**)(this_ + offset + 0x18) + dstOff;
+    d = *(u8**)((char*)this_ + offset + 0x18) + dstOff;
     for (i = 0; (u32)i < length; i += 2) {
-        u16 w = (s[i] << 8) | s[i + 1];
-        v = w;
-        if (w & 0x8000) {
-            u8 a=Tu802F93F4_c5((w>>10)&31);
-            u8 b=Tu802F93F4_c5((w>>5)&31);
-            u8 c=Tu802F93F4_c5(w&31);
+        u16 v = (s[i] << 8) | s[i + 1];
+        if (v & 0x8000) {
+            u8 a=Tu802F93F4_c5((v>>10)&31);
+            u8 b=Tu802F93F4_c5((v>>5)&31);
+            u8 c=Tu802F93F4_c5(v&31);
             if (flag != 0) {
                 v = 0x8000 | (c << 10) | (a << 5) | b;
             } else {
