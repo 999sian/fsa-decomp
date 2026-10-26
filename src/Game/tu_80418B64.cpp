@@ -1003,13 +1003,6 @@ struct HudCounters8041 {
     s16 cooldown[4];
 };
 
-static inline s32 HudAdvanceGaugeDelay8041(HudCounters8041* player) {
-    player->gaugeDelay[0]++;
-    return player->gaugeDelay[0];
-}
-static inline void HudClearGaugeDelay8041(HudCounters8041* player) {
-    player->gaugeDelay[0] = 0;
-}
 
 static inline bool HudCountPending8041(u8 mask) {
     return (lbl_80529DEC[0x239] & mask) != 0;
