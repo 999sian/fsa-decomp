@@ -891,19 +891,21 @@ extern "C" void fn_803BF698(u8* this_) {
 }
 
 static inline void bindMenuNine(u8* p, const u8* tbl) {
-    const u64* keys = (const u64*)(tbl + 0x368);
     int i;
-    for (i = 0; i < 9; ++i, ++keys) {
+    const u64* keys;
+    i = 0;
+    keys = (const u64*)(tbl + 0x368);
+    for (; i < 9; ++i, ++keys) {
         void* pane = ((J2DPane*)*(void**)(p + 4))->search(*keys);
         fn_804023D0(*(void**)(p + 0x20), pane, p[i + 0x196]);
     }
 }
 
 extern "C" void fn_803BF9C4(u8* p) {
-    const u8* tbl = lbl_804765D0;
+    u8* tbl = (u8*)lbl_804765D0;
     u8* q;
     s32 i;
-    s32 k;
+    int k;
     const u64* keys;
     u8* o;
     void* r;
@@ -1004,10 +1006,7 @@ extern "C" void fn_803BF9C4(u8* p) {
     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x54636f703031ULL)), 0x11f, 0, 0, 0);
 
     {
-        s16 a = *(s16*)(lbl_8050DB0C + 0x1e2);
-        s16 b = *(s16*)(lbl_8050DB0C + 0x1e4);
-        s16 c = *(s16*)(lbl_8050DB0C + 0x1e0);
-        s16 sum = c + (b + a);
+        s16 sum = (*(s16*)(lbl_8050DB0C + 0x1e4) + *(s16*)(lbl_8050DB0C + 0x1e2)) + *(s16*)(lbl_8050DB0C + 0x1e0);
         *(s16*)(p + 0xd8) = *(s16*)(lbl_8050DB0C + 0x1e6);
         if (*(s16*)(p + 0xd8) < sum) {
             *(s16*)(p + 0xd8) = sum;
