@@ -303,17 +303,17 @@ inline s32 tkraCreateItem(s32 player, JGeometry::TVec3f* pos, u32 param) {
     return Actor_CreateByID(fn_801F856C(), 'IMUP', room, pos, param, -1, -1);
 }
 
-#pragma opt_propagation off
 inline void tkraCreateItems(char* p) {
     int i;
     char* out;
     u32 bits;
     JGeometry::TVec3f pos;
     JGeometry::TVec3f v;
+        bits = 0;
         f32 dx = lbl_805413B0;
         out = p;
         f32 dy = lbl_805413B4;
-        for (i=0, bits=0UL; i<4; i++, bits+=0x1000000, out+=4) {
+        for (i=0; i<4; i++, bits+=0x1000000, out+=4) {
             v = *fn_8023E724(i);
             pos = v;
             pos.x=dx+v.x;
@@ -333,7 +333,6 @@ inline void tkraCreateItems(char* p) {
         }
 
 }
-#pragma opt_propagation reset
 
 extern "C" void fn_802EB90C(char* this_) {
     char* p = this_;
