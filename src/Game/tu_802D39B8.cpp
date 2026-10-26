@@ -1420,8 +1420,8 @@ static inline char* RoomExtraPath802D(char* p, s32 index, const char* format, s3
         s32 y = *(s32*)(p + 0x18);
         if (y >= 0 && y < 10) {
             const char* name;
-            s32 col = *(s32*)(p + 8);
-            s32 row = *(s32*)(p + 4);
+            col = *(s32*)(p + 8);
+            row = *(s32*)(p + 4);
             if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1) name = lbl_804A9530[row][col];
             else name = lbl_80541128;
             s32 no = ((u8*)p)[y * 10 + x + 0x60];
