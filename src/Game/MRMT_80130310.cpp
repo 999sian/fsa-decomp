@@ -11,7 +11,7 @@ extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_80230534(s32 idx);
 extern "C" u8* lbl_8053AB10;
 
-static inline void MRMTSetBounds(u8* obj, f32 x0, f32 y0, f32 x1, f32 y1) {
+static inline void MRMTSetBounds(u8* obj, const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
     if (obj[0x7f5] == 0) {
         obj[0x7f4] = 1;
         *(s32*)(obj + 0x7f8) = 5;
