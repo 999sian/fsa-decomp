@@ -1526,6 +1526,8 @@ extern const f32 lbl_805401D4;
 extern const f32 lbl_805401D8;
 extern const f32 lbl_805401DC;
 
+#pragma opt_common_subs off
+#pragma opt_propagation off
 static inline f32 stepCarriedPosition(f32* pos, f32 target, f32 step) {
     f32 delta = target - *pos;
     if (delta >= step) {
@@ -1578,21 +1580,14 @@ static inline bool carriedPositionUnchanged(char* p) {
 
     return inZ;
 }
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 
 #pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_80262BAC(char* p) {
     if (U32(p, 0xd6c) == 0x4e495741 && U8(p, 0x441) == 0) {
-        f32 goal = F32(p, 0x324);
-        f32 d = goal;
-        d -= F32(p, 0x8);
-        if (d >= lbl_80540178) {
-            VEC(p, 0x8).x += lbl_80540178;
-        } else if (d <= lbl_805401CC) {
-            VEC(p, 0x8).x -= lbl_80540178;
-        } else if (lbl_80540150 != d) {
-            F32(p, 0x8) = goal;
-        }
+        f32 d = stepCarriedPosition((f32*)(p + 8), F32(p, 0x324), lbl_80540178);
         if (lbl_80540150 != d) {
             F32(p, 0x34c) -= lbl_805401BC;
             if (F32(p, 0x34c) <= lbl_80540150)
@@ -1636,42 +1631,7 @@ extern "C" void fn_80262BAC(char* p) {
             fn_80251AEC(p, 0x12);
         }
     }
-    bool inX;
-    bool inY;
-    bool inZ;
-    inZ = false;
-    inY = inZ;
-    inX = inZ;
-    f32 eps;
-    f32 neg;
-    f32 d;
-    f32 machineEps = *(f32*)__float_epsilon;
-    eps = lbl_8054017C * machineEps;
-    neg = -eps;
-    d = F32(p, 0x8) - F32(p, 0x14);
-    if (neg <= d && d <= eps) {
-        inX = 1;
-    }
-    if (inX) {
-        inX = 0;
-        d = F32(p, 0xc) - F32(p, 0x18);
-        if (neg <= d && d <= eps) {
-            inX = 1;
-        }
-        if (inX) {
-            inY = 1;
-        }
-    }
-    if (inY) {
-        inY = 0;
-        d = F32(p, 0x10) - F32(p, 0x1c);
-        if (neg <= d && d <= eps) {
-            inY = 1;
-        }
-        if (inY) {
-            inZ = 1;
-        }
-    }
+    bool inZ = carriedPositionUnchanged(p);
     if (inZ && VEC(p, 0x368).squared() <= lbl_8054017C * *(f32*)__float_epsilon) {
         U8(p, 0x3f8) = 0;
     } else {
