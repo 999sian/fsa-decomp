@@ -141,7 +141,7 @@ extern "C" void fn_802314D8(s32, f32*);
 extern "C" u8 fn_80235448(s32 i);
 extern "C" void fn_802A381C(u8* a, Vec8035A860* v, s32 room, u16 idx);
 extern "C" u8 fn_8023AAF8(s32 i, f32* box, s32 room, Vec8035A860* out);
-static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
+static inline void spawnGrid803597EC(u8* self, s32 idx, s32 state) {
     u16 tile;
     s32 k;
     s32 j;
