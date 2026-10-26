@@ -607,7 +607,7 @@ extern "C" void fn_8041C0C0(u8* self, s32 idx) {
 }
 
 extern const u64 lbl_8048D320[];
-extern u32 lbl_804B13C4[];
+extern const char* lbl_804B13C4[];
 extern u8 lbl_8050EC80[];
 extern "C" void fn_80419C38(u8* self, s32 i, s32 v);
 extern "C" void fn_8041C67C(u8* this_) {
@@ -684,7 +684,7 @@ extern "C" void fn_8041C67C(u8* this_) {
 
 	const u64* q22 = (const u64*)(base + 0xb00);
 	for (s32 i = 0; i < 4; i++) {
-        u32 texture = fn_804030C4(0x54494d47, lbl_804B13C4[0]);
+        u32 texture = fn_804030C4(0x54494d47, (u32)lbl_804B13C4[0]);
         ((J2DPicture*)(*(SubObj**)(self + 0x18))->w13(*p20))->changeTexture((const ResTIMG*)texture, 0);
         ((J2DPicture*)(*(SubObj**)(self + 0x18))->w13(*q22))->changeTexture((const ResTIMG*)texture, 0);
         p20++;
