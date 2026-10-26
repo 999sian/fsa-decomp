@@ -429,31 +429,24 @@ static inline s32 railGetId(RailRing* ring, u8 i) {
     return ring->mNodes[i]->mId;
 }
 
-static inline u32 railLoopMode(RailRing* ring, const u8 n) {
+static inline u32 railLoopMode(RailRing* ring, u8 n) {
     return ((RailNode**)ring)[n]->mFlags & 3;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_800FD818(RailRing* ring, s8 step) {
     u32 mode = railLoopMode(ring, ring->mSize);
     s32 idx = ring->mCur + step;
     if ((s16)idx < 0) {
-        if (mode == 1) {
-            ring->mCur = ring->mSize + idx;
-        } else {
-            ring->mCur = 0;
-        }
+        if (mode == 1) ring->mCur = ring->mSize + idx;
+        else ring->mCur = 0;
     } else if ((s16)idx >= ring->mSize) {
         idx -= ring->mSize;
-        if (mode == 1) {
-            ring->mCur = idx;
-        } else {
-            ring->mCur = ring->mSize - 1;
-        }
-    } else {
-        ring->mCur = idx;
-    }
+        if (mode == 1) ring->mCur = idx;
+        else ring->mCur = ring->mSize - 1;
+    } else ring->mCur = idx;
 }
-
+#pragma opt_propagation reset
 extern "C" u8 fn_800FD894(RailRing* ring, s32 id, u8* out, s32 max) {
     if (id == -1) {
         if (out != NULL) {
