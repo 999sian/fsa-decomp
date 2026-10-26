@@ -29,13 +29,14 @@ extern "C" const char* lbl_804A8F60[];
 extern "C" char lbl_8046D8CC[];
 extern "C" char lbl_8046D8E0[];
 extern "C" f32 lbl_80540D94;
-extern "C" f32 lbl_80540D98;
+extern "C" const f32 lbl_80540D98;
 extern "C" f32 lbl_80540D9C;
 extern "C" f32 lbl_80540DA0;
 static inline u32 Tu802CA284_isActive(s32 i) {
     return (lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_802CA284(u8* this_) {
     u8* p;
     s32 i;
@@ -166,7 +167,7 @@ extern "C" void fn_802CA284(u8* this_) {
         p += 4;
     }
 }
-
+#pragma opt_common_subs on
 extern "C" u8 lbl_8050EC80[];
 extern "C" s32 fn_80138A30(void* p);
 extern "C" s32 fn_80236100(s32 i);
@@ -189,11 +190,10 @@ extern "C" void fn_802CA7F4(u8* this_) {
     s32 j;
     s32 v;
     s32 w;
-    s32 arr1[8];
+    s32 arr1[7];
     s32 arr2[4];
     u8 mode;
     u32 hit;
-    Vec tmp;
 
     *(Vec*)(this_ + 0xc) = *fn_8023E724(0);
 
@@ -243,11 +243,9 @@ extern "C" void fn_802CA7F4(u8* this_) {
                     hit = (lbl_8053AAF8[0x82] & (u8)((u32)1 << k)) != 0;
                     if (hit) {
                         mode = lbl_8053AAF8[0x7f];
-                        if (mode == 1) {
-                            ent = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-                            if (ent[0x88] == 0 && mode == 0) {
-                                ent = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-                                if (ent[0x89] != 0 && fn_8023DE58(k) < 8) {
+                        if ((mode == 1 && (lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10)*0xc8)[0x88] != 0) ||
+                            (mode == 0 && (lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10)*0xc8)[0x89] != 0)) {
+                            if (fn_8023DE58(k) < 8) {
                                     *(s32*)(q + 0x27c) = 0xb4;
                                     *(s32*)(q + 0x28c) = 1;
                                     if (*(s32*)(q + 0x244) < *(s32*)(q + 0x254)) {
@@ -258,6 +256,7 @@ extern "C" void fn_802CA7F4(u8* this_) {
                                             *(s32*)(q + 0x234) = 0;
                                         }
                                         if (*(u32*)(q + 0x234) == 0) {
+                                            Vec tmp;
                                             f32 yy;
                                             f32 z;
                                             z = fn_8023E724(k)->z;
@@ -275,6 +274,7 @@ extern "C" void fn_802CA7F4(u8* this_) {
                                             *(s32*)(q + 0x234) = 0;
                                         }
                                         if (*(u32*)(q + 0x234) == 0) {
+                                            Vec tmp;
                                             f32 yy;
                                             f32 z;
                                             z = fn_8023E724(k)->z;
@@ -285,13 +285,12 @@ extern "C" void fn_802CA7F4(u8* this_) {
                                             *(s32*)(q + 0x234) = fn_8013CC50(0, &tmp, 0x3a5, 0, 0, 0, 0, 1, lbl_80540D98);
                                         }
                                     }
-                                }
                             }
                         }
                     }
                 }
-                *(s32*)(p + 0x254) = *(s32*)(p + 0x244);
             }
+            *(s32*)(p + 0x254) = *(s32*)(p + 0x244);
         }
         if (fn_8023BE0C(i)) {
             if (fn_8023DE58(i) < 8) {
