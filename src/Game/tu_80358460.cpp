@@ -152,13 +152,13 @@ static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
     vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
     saved = vec;
     *(s32*)(self + 0x258) = state;
-    for (s32 k = 0; k < 6; ++k) {
-        for (s32 j = 0; j < 6; ++j) {
-            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), idx);
-            vec.y += lbl_80542870;
+    for (k = 0; k < 6; ++k) {
+        for (j = 0; j < 6; ++j) {
+            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), tile);
+            vec.y += step;
         }
         vec.y = saved.y;
-        vec.x += lbl_80542870;
+        vec.x += step;
     }
 }
 static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state, const JGeometry::TVec3f& origin) {
