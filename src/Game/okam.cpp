@@ -2,7 +2,6 @@
 // TU 801AE9C4-801AFB38 (OKAM). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
-#include "JSystem/JGeometry/Box.h"
 
 // from src/Game/fn_801AE9C4_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -216,10 +215,11 @@ extern "C" u8 fn_801F2618(char* this_, s32 a, s32 b);
 extern "C" u8 fn_80237948(s32 idx, f32* pos);
 extern "C" void fn_8013CC50(s32 handle, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
+#pragma opt_common_subs off
 extern "C" void fn_801AF1EC(char* this_) {
     s32 flag = -1;
-    register int res = -1;
-    s32 i = 0;
+    s32 res = -1;
+    int i = 0;
     f32 pos[2];
     s32 state;
 
@@ -234,29 +234,17 @@ extern "C" void fn_801AF1EC(char* this_) {
         if (state == 0) {
             f32 b = *(f32*)(this_ + 0x270);
             f32 a = *(f32*)(this_ + 0x26c);
-            f32 right = 16.0f;
-            f32 bottom = 7.0f;
-            f32 left = -16.0f + a;
-            f32 top = -7.0f + b;
-            *(f32*)(this_ + 0x60) = left;
-            left = right + a;
-            *(f32*)(this_ + 0x64) = top;
-            top = bottom + b;
-            *(f32*)(this_ + 0x68) = left;
-            *(f32*)(this_ + 0x6c) = top;
+            *(f32*)(this_ + 0x60) = -16.0f + a;
+            *(f32*)(this_ + 0x64) = -7.0f + b;
+            *(f32*)(this_ + 0x68) = 16.0f + a;
+            *(f32*)(this_ + 0x6c) = 7.0f + b;
         } else {
             f32 b = *(f32*)(this_ + 0x270);
             f32 a = *(f32*)(this_ + 0x26c);
-            f32 right = 7.0f;
-            f32 bottom = 18.0f;
-            f32 left = -7.0f + a;
-            f32 top = -18.0f + b;
-            *(f32*)(this_ + 0x60) = left;
-            left = right + a;
-            *(f32*)(this_ + 0x64) = top;
-            top = bottom + b;
-            *(f32*)(this_ + 0x68) = left;
-            *(f32*)(this_ + 0x6c) = top;
+            *(f32*)(this_ + 0x60) = -7.0f + a;
+            *(f32*)(this_ + 0x64) = -18.0f + b;
+            *(f32*)(this_ + 0x68) = 7.0f + a;
+            *(f32*)(this_ + 0x6c) = 18.0f + b;
         }
         *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
@@ -264,16 +252,10 @@ extern "C" void fn_801AF1EC(char* this_) {
     case 2: {
         register f32 b = *(f32*)(this_ + 0x270);
         f32 a = *(f32*)(this_ + 0x26c);
-        f32 right = 6.0f;
-            f32 bottom = 6.0f;
-            f32 left = -6.0f + a;
-            f32 top = -6.0f + b;
-            *(f32*)(this_ + 0x60) = left;
-            left = right + a;
-            *(f32*)(this_ + 0x64) = top;
-            top = bottom + b;
-            *(f32*)(this_ + 0x68) = left;
-            *(f32*)(this_ + 0x6c) = top;
+        *(f32*)(this_ + 0x60) = -6.0f + a;
+        *(f32*)(this_ + 0x64) = -6.0f + b;
+        *(f32*)(this_ + 0x68) = 6.0f + a;
+        *(f32*)(this_ + 0x6c) = 6.0f + b;
         if (0 <= res) {
             fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, &flag, 0, 0, res, 2);
             if (0 <= flag) {
@@ -289,16 +271,10 @@ extern "C" void fn_801AF1EC(char* this_) {
     case 1: {
         f32 b = *(f32*)(this_ + 0x270);
         f32 a = *(f32*)(this_ + 0x26c);
-        f32 right = 28.0f;
-            f32 bottom = 7.0f;
-            f32 left = -28.0f + a;
-            f32 top = -7.0f + b;
-            *(f32*)(this_ + 0x60) = left;
-            left = right + a;
-            *(f32*)(this_ + 0x64) = top;
-            top = bottom + b;
-            *(f32*)(this_ + 0x68) = left;
-            *(f32*)(this_ + 0x6c) = top;
+        *(f32*)(this_ + 0x60) = -28.0f + a;
+        *(f32*)(this_ + 0x64) = -7.0f + b;
+        *(f32*)(this_ + 0x68) = 28.0f + a;
+        *(f32*)(this_ + 0x6c) = 7.0f + b;
         *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
@@ -306,16 +282,10 @@ extern "C" void fn_801AF1EC(char* this_) {
     case 6: {
         f32 b = *(f32*)(this_ + 0x270);
         f32 a = *(f32*)(this_ + 0x26c);
-        f32 right = 6.0f;
-            f32 bottom = 6.0f;
-            f32 left = -6.0f + a;
-            f32 top = -6.0f + b;
-            *(f32*)(this_ + 0x60) = left;
-            left = right + a;
-            *(f32*)(this_ + 0x64) = top;
-            top = bottom + b;
-            *(f32*)(this_ + 0x68) = left;
-            *(f32*)(this_ + 0x6c) = top;
+        *(f32*)(this_ + 0x60) = -6.0f + a;
+        *(f32*)(this_ + 0x64) = -6.0f + b;
+        *(f32*)(this_ + 0x68) = 6.0f + a;
+        *(f32*)(this_ + 0x6c) = 6.0f + b;
         if (0 <= res) {
             fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, &flag, 0, 0, res, 2);
             if (flag >= 0) {
@@ -331,16 +301,10 @@ extern "C" void fn_801AF1EC(char* this_) {
     case 5: {
         f32 b = *(f32*)(this_ + 0x270);
         f32 a = *(f32*)(this_ + 0x26c);
-        f32 right = 7.0f;
-            f32 bottom = 28.0f;
-            f32 left = -7.0f + a;
-            f32 top = -28.0f + b;
-            *(f32*)(this_ + 0x60) = left;
-            left = right + a;
-            *(f32*)(this_ + 0x64) = top;
-            top = bottom + b;
-            *(f32*)(this_ + 0x68) = left;
-            *(f32*)(this_ + 0x6c) = top;
+        *(f32*)(this_ + 0x60) = -7.0f + a;
+        *(f32*)(this_ + 0x64) = -28.0f + b;
+        *(f32*)(this_ + 0x68) = 7.0f + a;
+        *(f32*)(this_ + 0x6c) = 28.0f + b;
         *(OkamBox*)(this_ + 0x80) = *(OkamBox*)(this_ + 0x60);
         fn_801F2B7C(this_, -100, -1, 1);
         break;
@@ -370,7 +334,7 @@ extern "C" void fn_801AF1EC(char* this_) {
         }
     }
 }
-
+#pragma opt_common_subs reset
 static inline double okamAbs(double x) { return __fabs(x); }
 
 struct OkamDrawParam {
