@@ -61,8 +61,6 @@ struct MCBounds {
 };
 
 struct MCAlpha {
-    f32 width() { return f18; }
-    f32 height() { return f1c; }
     u8 pad0[0x4];
     MCVis* vis;
     u8 pad8[0x18 - 0x8];
