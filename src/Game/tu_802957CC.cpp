@@ -128,13 +128,17 @@ static inline s32 PushDirFromPull(char* self) {
     return -1;
 }
 
-static inline void HouseCopyBounds(JGeometry::TBox2f& dst, JGeometry::TBox2f src) {
+static inline void HouseCopyBounds(JGeometry::TBox2f& dst, const JGeometry::TBox2f& src) {
     const u32* in = (const u32*)&src;
     u32* out = (u32*)&dst;
-    u32 a = in[0];
-    u32 b = in[1];
-    u32 c = in[2];
-    u32 d = in[3];
+    u32 d;
+    u32 a;
+    u32 b;
+    u32 c;
+    a = in[0];
+    b = in[1];
+    c = in[2];
+    d = in[3];
     out[0] = a;
     out[1] = b;
     out[2] = c;
