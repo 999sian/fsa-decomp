@@ -2454,13 +2454,13 @@ extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out);
 extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 lbl_8048CC40[];
 static inline void menuMarkerMtx(f32 m[3][4], f32 s) {
-    f32 sz, sy, sx, cz, cy, cx;
+    f32 cx, cy, sx, sy, sz, sxsy, cz;
  f32 zero = 0.0f;
     sx = sin(zero); sy = sin(zero); sz = sin(zero);
     cx = cos(zero); cy = cos(zero); cz = cos(zero);
     m[0][3] = 0.0f; m[1][3] = 0.0f; m[2][3] = 0.0f;
     f32 cxcz = cx * cz;
-    f32 sxsy = sx * sy;
+    sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
@@ -2488,39 +2488,14 @@ extern "C" void fn_804069E8(u8* self) {
 	} else {
 		idx = idx0;
 	}
-	f32 cx; f32 cy; f32 s; f32 sx; f32 sy; f32 sz; f32 sxsy; f32 cz;
- s = *(f32*)(lbl_8050DB0C + 8);
-	sx = sin(zero);
-	sy = sin(zero);
-	sz = sin(zero);
-	cx = cos(zero);
-	cy = cos(zero);
-	cz = cos(zero);
-	sxsy = sx * sy;
- f32 cxcz = cx * cz;
- f32 cxsz = cx * sz;
- f32 sxsz = sx * sz;
- f32 sxcz = sx * cz;
- mtx[0][3] = 0.0f;
-	mtx[1][3] = 0.0f;
-	mtx[2][3] = 0.0f;
-	mtx[0][0] = s * (cy * cz);
-	mtx[1][0] = s * (cy * sz);
-	mtx[2][0] = s * -sy;
-	mtx[0][1] = s * (sxsy * cz - cxsz);
-	mtx[1][1] = s * (sxsy * sz + cxcz);
-	mtx[2][1] = s * (sx * cy);
-	mtx[0][2] = s * ((cxcz) * sy + sxsz);
-	mtx[1][2] = s * ((cxsz) * sy - sxcz);
-	mtx[2][2] = s * (cx * cy);
-	rec.w18 = mtx;
+	menuMarkerMtx(mtx, *(f32*)(lbl_8050DB0C + 8));
+ rec.w18 = mtx;
 	u8* q = self;
- int off = idx * 16;
 	for (int i = 0; i < 4; i++, q += 4) {
-		if (fn_80404074(self, idx, i, &out)) {
+		if ((u8)fn_80404074(self, idx, i, &out)) {
 			_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-			pos[0] = lbl_8048C95C[(idx * 4 + i) * 2] * (384.0f / mode->fbWidth);
-			pos[1] = lbl_8048C95C[(idx * 4 + i) * 2 + 1] * (288.0f / mode->efbHeight);
+			pos[0] = lbl_8048C95C[(idx * 4 + i) * 2] * (lbl_805438C4 / (s32)mode->fbWidth);
+			pos[1] = lbl_8048C95C[(idx * 4 + i) * 2 + 1] * (lbl_805438CC / (s32)mode->efbHeight);
 			pos[2] = 0.0f;
 			GXSetTevDirect(GX_TEVSTAGE0);
 			GXSetTevDirect(GX_TEVSTAGE1);
