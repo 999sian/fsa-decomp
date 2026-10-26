@@ -91,6 +91,12 @@ extern "C" void fn_8020D16C(void* this_);
 extern "C" void fn_8020CFC4(void* this_);
 extern "C" s32 fn_801CD664(s32 kind);
 extern f32 lbl_8053F4A8;
+static inline u8 thnkIsLeft(f32 x, s32 room) {
+    u8 result = 0;
+    char* field = thnkFieldAt(room);
+    if (x < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 8))) result = 1;
+    return result;
+}
 extern "C" void fn_801E1594(void* this_, s32 state);
 extern f32 lbl_8053F4BC;
 extern f32 lbl_8053F490;
@@ -777,7 +783,7 @@ extern "C" void fn_801E1300(void* this_) {
 }
 
 extern "C" void fn_801E1594(void* this_, s32 state) {
-    register u8 flag;
+    s32 flag;
     char* field;
     char* rec;
     void* obj;
@@ -822,7 +828,7 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             if (x < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field + 0x8))) {
                 flag = 1;
             }
-            if (flag != 0) {
+            if ((u8)flag != 0) {
                 field = thnkFieldAt(*(s32*)(p + 4));
                 *(f32*)(p + 0xc) = 30.0f + *(f32*)(field + 0x8);
                 *(s32*)(p + 0x98) = 1;
@@ -837,7 +843,7 @@ extern "C" void fn_801E1594(void* this_, s32 state) {
             f32 py = *(f32*)(p + 0x10);
             *(f32*)(p + 0x2c4) = px;
             *(f32*)(p + 0x2c8) = py;
-            *(u32*)(p + 0xb0) = 0x51303U;
+            *(s32*)(p + 0xb0) = 0x51303;
             *(s32*)(p + 0x250) = -1;
             if (*(s32*)(p + 0x2bc) >= 0) {
                 *(f32*)(p + 0x258) = lbl_8053F490;
