@@ -36,6 +36,7 @@ static inline void genSetPosition(JGeometry::TVec3<f32>& pos, const u16 x, const
     pos.set(8.0f * x + baseX, 8.0f * y + baseY, 0.0f);
 }
 
+#pragma opt_propagation reset
 struct Box4 {
     f32 x0, y0, x1, y1;
 };
@@ -51,6 +52,7 @@ extern "C" {
 
 void EmptyHook_802E20D4(void) {}
 
+#pragma peephole off
 void fn_802E20D8(u8* this_)
 {
     s32 room = *(s32*)(this_ + 4);
@@ -63,9 +65,10 @@ void fn_802E20D8(u8* this_)
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
         if ((s32)lbl_8053ACB0 != 0) {
-            s32* entry = (s32*)lbl_804D4768;
+            s32* entry;
             s32 id;
-            for (s32 i = 0; i < 80; i++, entry++) {
+            for (s32 i = 0; i < 80; i++) {
+                entry = &((s32*)lbl_804D4768)[i];
                 id = *entry;
                 if (id >= 0 && fn_801F666C(fn_801F856C(), id) == 0) {
                     *entry = -1;
@@ -150,7 +153,7 @@ void fn_802E20D8(u8* this_)
         break;
     }
 }
-
+#pragma peephole reset
 extern "C" void fn_802E2548(u8* param_1)
 {
   u8* base = param_1;
