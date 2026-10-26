@@ -2186,7 +2186,14 @@ extern f32 lbl_805430EC;
     else if (mode == 2 && out3) { out3[len] = (ch); } \
     else { out[len] = (ch); }
 static inline JUTFont* msgFont() { return *(JUTFont**)((u8*)lbl_8053AD78 + 0x154); }
+static inline s32 msgNextChar(const s8* data, s32* index) {
+    s32 c = data[*index];
+    ++*index;
+    return c;
+}
+#pragma opt_loop_invariants off
 extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
+    s8* p;
     f32 width = lbl_805430C8;
     Inf1* inf = &lbl_8053AD78->p8->inf;
     s8* data = (s8*)inf + inf->size + inf->entries[id].offset + 8;
@@ -2194,9 +2201,7 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     s32 col = 1;
     u8 mode = 0;
     s32 len = 0;
-    s8* p;
     s8 c;
-    s32 n = num;
     while ((c = (p = data + pos)[0]) != 0) {
         if (c == '\n') {
             PUT_CH(c);
@@ -2239,25 +2244,25 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
                     }
                 }
             } else if (p[2] == 3) {
-                s32 ch = n + '0';
+                int ch = num + '0';
                 PUT_CH(ch);
                 len++;
                 JUTFont::TWidth tw;
-                msgFont()->getWidthEntry(n, &tw);
+                msgFont()->getWidthEntry(ch, &tw);
                 width += (s32)tw.w1;
-                width += fn_8037F580(p[5], n, out, &len, lbl_805430C4);
+                width += fn_8037F580(p[5], num, out, &len, lbl_805430C4);
             }
             pos += p[1];
         } else {
             PUT_CH(c);
+            u32 code = (u8)*p;
             len++;
-            s32 code = (u8)*p;
             pos++;
             if (msgFont()->isLeadByte(code)) {
                 code <<= 8;
                 PUT_CH(data[pos]);
+                s8 lo = data[pos++];
                 len++;
-                s32 lo = data[pos++];
                 code |= (u8)lo;
             }
             JUTFont::TWidth tw;
@@ -2268,7 +2273,7 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     PUT_CH(c);
     return width;
 }
-
+#pragma opt_loop_invariants reset
 extern "C" void fn_803837A4(char* out, s32 idx, s32 mode, s32 val, f32 fa, f32 fb) {
     MsgData* md = lbl_8053AD78->p8;
     u8* str = (u8*)&md->inf + md->inf.size + md->inf.entries[idx].offset + 8;
