@@ -72,7 +72,7 @@ extern "C" void* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(void* a, s32 room, void* v, void* h, s32 c);
 extern "C" u8 fn_802A1490(void* g, void* v);
 extern "C" u8 fn_8023B0F4(s32 idx, void* box, s32 room, s32 a, f32 f);
-extern "C" JGeometry::TVec3f lbl_8046C268[];
+extern "C" const JGeometry::TVec3f lbl_8046C268[];
 extern "C" f32 lbl_8046C298[];
 extern "C" u8 fn_802957CC(void* p, u8 mode);
 extern "C" s32 fn_80239108(void* h);
@@ -521,6 +521,8 @@ extern "C" void fn_802961AC(void* p) {
     f32 ox;
     s32 id;
     s32 j;
+    u32 n;
+    s32 mode;
 
     id = fn_801F2718(self, 0x534C5233);
     if (id < 0) {
@@ -547,8 +549,7 @@ extern "C" void fn_802961AC(void* p) {
                 }
             }
 
-            u32 n = (*(u32*)(self + 0x90) >> 7) & 0x1f;
-            s32 mode;
+            n = (*(u32*)(self + 0x90) >> 7) & 0x1f;
             if (n == 0) mode = 0; else mode = n + 7;
             fn_802D79E8(fn_802D6A9C(), mode, 16.0f, 0.0f, 1);
 
