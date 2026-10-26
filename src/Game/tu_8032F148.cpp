@@ -20,6 +20,14 @@ extern const float lbl_80541EEC;
 extern "C" int fn_8013CC50(int, char*, float, int, int, int, int, int, int);
 extern "C" void fn_8013CB44(void*, void*, int, int, int);
 extern float lbl_80541EBC;
+static inline f32 enemyRandUnit(u32* seed) {
+    union { f32 f; u32 s; } out;
+    f32 one = lbl_80541EBC;
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    out.s = (*seed >> 9) | 0x3f800000;
+    return out.f - one;
+}
+
 struct RoomMgr131DF { u8 flag(u32 i) { return mFlags[i]; } u8 pad[0x131df]; u8 mFlags[1]; };
 extern float lbl_80541E98;
 extern const float lbl_80541E9C;
@@ -615,27 +623,9 @@ extern "C" void fn_803324A8(char* this_) {
         fn_801EEC98(this_, *(void**)(this_ + 0x198), 0, &a, &b, 0, 0, 0);
         if (b < lbl_80541ED8 && a >= 0) {
             if (*(u8*)(this_ + 0x2a2) == 1) {
-                u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
-                union {
-                    f32 f;
-                    u32 s;
-                } r;
-                f32 k = lbl_80541EBC;
-                f32 m = lbl_80541F14;
-                *seed = *seed * 0x19660d + 0x3c6ef35f;
-                r.s = (*seed >> 9) | 0x3f800000;
-                *(s32*)(this_ + 0x240) = (s32)(m * (r.f - k)) + 0xc8;
+                *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F14) + 0xc8;
             } else {
-                u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
-                union {
-                    f32 f;
-                    u32 s;
-                } r;
-                f32 k = lbl_80541EBC;
-                f32 m = lbl_80541F18;
-                *seed = *seed * 0x19660d + 0x3c6ef35f;
-                r.s = (*seed >> 9) | 0x3f800000;
-                *(s32*)(this_ + 0x240) = (s32)(m * (r.f - k)) + 0x64;
+                *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F18) + 0x64;
             }
             if (*(u8*)(this_ + 0x2a1) == 0) {
                 fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80541EBC, 0x348, 0, 0, 0, 0, 1);
@@ -647,66 +637,40 @@ extern "C" void fn_803324A8(char* this_) {
             *(s32*)(this_ + 0x258) = 0;
             *(f32*)(this_ + 0x14) = lbl_80541E9C;
             *(f32*)(this_ + 0x44) = lbl_80541E9C;
-            *(u64*)(this_ + 0x2dc) = *(u64*)(this_ + 0xc);
-            *(f32*)(this_ + 0x2e4) = *(f32*)(this_ + 0x14);
+            *(JGeometry::TVec3<f32>*)(this_ + 0x2dc) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
             *(s32*)(this_ + 0x294) = *(s32*)(this_ + 4);
             *(s32*)(this_ + 0x230) = 1;
         } else {
+            *(s32*)(this_ + 0x280) = 0;
         }
     }
 
-    *(s32*)(this_ + 0x280) = 0;
     if (*(s32*)(this_ + 0x290) == 6 && *(s32*)(this_ + 0x230) == 1) {
         *(s32*)(this_ + 0x280) += 1;
         if (*(s32*)(this_ + 0x240) % 4 == 0) {
             if (*(s32*)(this_ + 0x290) == 6) {
                 f32 dx = *(f32*)(this_ + 0xc) - *(f32*)(this_ + 0x2dc);
                 f32 dy = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x2e0);
-                f32 dist = dx * dx + dy * dy;
-                *(f32*)(this_ + 0x2dc) = *(f32*)(this_ + 0xc);
-                *(f32*)(this_ + 0x2e0) = *(f32*)(this_ + 0x10);
-                *(f32*)(this_ + 0x2e4) = *(f32*)(this_ + 0x14);
+                dx *= dx;
+                dy *= dy;
+                f32 dist = dx + dy;
                 *(s32*)(this_ + 0x294) = *(s32*)(this_ + 4);
-                if (*(s32*)(this_ + 0x294) == *(s32*)(this_ + 4) && dist >= lbl_80541F1C) {
+                *(JGeometry::TVec3<f32>*)(this_ + 0x2dc) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+                if (*(s32*)(this_ + 0x294) != *(s32*)(this_ + 4) || !(dist < lbl_80541F1C)) {
                     *(s32*)(this_ + 0x280) = 0;
                     return;
                 }
             }
         }
-    }
-
-    if (*(u8*)(this_ + 0x2a3) == 1 && *(s32*)(this_ + 0x280) < 10) {
-        return;
-    }
-    if (*(s32*)(this_ + 0x280) < 0x2d) {
-        return;
-    }
+        if (!((*(u8*)(this_ + 0x2a3) == 1 && *(s32*)(this_ + 0x280) >= 10) || (*(u8*)(this_ + 0x2a3) == 0 && *(s32*)(this_ + 0x280) >= 45))) return;
     fn_801EEC98(this_, *(void**)(this_ + 0x198), &ang, &a, &b, 0, 0, 0);
     if (a >= 0 && ((*(u8*)(this_ + 0x2a3) == 0 && b < lbl_80541EE0) ||
                    (*(u8*)(this_ + 0x2a3) == 1 && b < lbl_80541F20))) {
         *(s32*)(this_ + 0x238) = 0x32;
         if (*(u8*)(this_ + 0x2a2) == 1) {
-            u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
-            union {
-                f32 f;
-                u32 s;
-            } r;
-            f32 k = lbl_80541EBC;
-            f32 m = lbl_80541F14;
-            *seed = *seed * 0x19660d + 0x3c6ef35f;
-            r.s = (*seed >> 9) | 0x3f800000;
-            *(s32*)(this_ + 0x240) = (s32)(m * (r.f - k)) + 0xc8;
+            *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F14) + 0xc8;
         } else {
-            u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
-            union {
-                f32 f;
-                u32 s;
-            } r;
-            f32 k = lbl_80541EBC;
-            f32 m = lbl_80541F18;
-            *seed = *seed * 0x19660d + 0x3c6ef35f;
-            r.s = (*seed >> 9) | 0x3f800000;
-            *(s32*)(this_ + 0x240) = (s32)(m * (r.f - k)) + 0x64;
+            *(s32*)(this_ + 0x240) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() * lbl_80541F18) + 0x64;
         }
         if (*(u8*)(this_ + 0x2a1) == 0) {
             fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80541EBC, 0x348, 0, 0, 0, 0, 1);
@@ -720,9 +684,7 @@ extern "C" void fn_803324A8(char* this_) {
             f31 = lbl_80541EE8;
         }
         s32 room = *(s32*)(this_ + 4);
-        if (fn_802D6A9C()[room + 0x131df] != 0 && *(f32*)(this_ + 0x2b4) != 0.0f) {
-            *(f32*)(this_ + 0x2b8) = f31 * sincosTable___5JMath[(ang >> 5) * 2];
-        } else {
+        if (((u8*)fn_802D6A9C() + 0x131df)[room] == 0 || *(f32*)(this_ + 0x2b4) == 0.0f) {
             u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
             union {
                 f32 f;
@@ -732,11 +694,14 @@ extern "C" void fn_803324A8(char* this_) {
             *seed = *seed * 0x19660d + 0x3c6ef35f;
             r.s = (*seed >> 9) | 0x3f800000;
             ang = (u16)(ang + (s32)(lbl_80541F24 * (lbl_80541ED0 * (r.f - k) - k)));
-            *(f32*)(this_ + 0x2b8) = f31 * sincosTable___5JMath[(ang >> 5) * 2];
-            *(f32*)(this_ + 0x2bc) = f31 * sincosTable___5JMath[(ang >> 5) * 2 + 1];
+            *(f32*)(this_ + 0x2b8) = f31 * JMath::sincosTable_.sinShort(ang);
+            *(f32*)(this_ + 0x2bc) = f31 * JMath::sincosTable_.cosShort(ang);        } else {
+            *(f32*)(this_ + 0x2b8) = f31 * JMath::sincosTable_.sinShort(ang);
+
         }
     }
     *(s32*)(this_ + 0x280) = 0;
+    }
 }
 
 extern "C" s32 fn_801F3D94(char* self, s32 n);
