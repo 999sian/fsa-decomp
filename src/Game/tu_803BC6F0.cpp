@@ -9,6 +9,11 @@ struct Tu803CE9ECObj {
 typedef void (Tu803CE9ECObj::*Tu803CE9ECFn)();
 extern Tu803CE9ECFn lbl_804AFD70[];
 
+struct MenuSlots38 {
+    u8 pad0[0x38];
+    u8* slot[3];
+};
+
 struct MenuSlots24 {
     u8 pad0[0x24];
     u8* slot[2];
@@ -678,6 +683,35 @@ extern "C" void fn_803BE3D8(void* a) {
     for (i = 0; i < 0x10; i++) {
         tbl[i] = (u8)i;
     }
+}
+
+extern "C" void fn_803BF004(char* p) {
+    *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
+    *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
+    fn_80402E08(*(void**)(p + 0x38 + *(s32*)(p + 0xa4) * 4), lbl_80543458,
+        *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0xc));
+    *(s16*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0x22) = 0;
+    *(s16*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0x26) = 0;
+    ((J2DPane*)*(void**)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 4))->setAlpha(*(u8*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0x28));
+    s32 idx = *(s32*)(p + 0xa4);
+    setCell((u8*)p, 0x38, idx, 0x780, *(u8*)(p + 0x125));
+    setCell((u8*)p, 0x38, idx, 0x768, *(u8*)(p + 0x126));
+    setCell((u8*)p, 0x38, idx, 0x750, *(u8*)(p + 0x127));
+    setCell((u8*)p, 0x38, idx, 0x6c8, *(u8*)(p + 0x128));
+    setCell((u8*)p, 0x38, idx, 0x6b0, *(u8*)(p + 0x129));
+    setCell((u8*)p, 0x38, idx, 0x698, *(u8*)(p + 0x12a));
+    setCell((u8*)p, 0x38, idx, 0x680, *(u8*)(p + 0x12b));
+    setCell((u8*)p, 0x38, idx, 0x668, *(u8*)(p + 0x12c));
+    setCell((u8*)p, 0x38, idx, 0x650, *(u8*)(p + 0x12d));
+    setCell((u8*)p, 0x38, idx, 0x638, *(u8*)(p + 0x12e));
+    setCell((u8*)p, 0x38, idx, 0x620, *(u8*)(p + 0x12f));
+    setCell((u8*)p, 0x38, idx, 0x608, *(u8*)(p + 0x130));
+    setCell((u8*)p, 0x38, idx, 0x5f0, *(u8*)(p + 0x131));
+    *(s16*)(p + 0xd8) = 0;
+    *(s16*)(p + 0xda) = 0;
+    p[0x112] = p[0x110];
+    p[0x110] = 0x23;
+    fn_80458880(lbl_8053AF80, 0x62, -1);
 }
 
 #pragma opt_lifetimes off
