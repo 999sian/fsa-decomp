@@ -275,17 +275,18 @@ extern "C" void fn_802D8050(s32, s32, s32, s32);
 extern "C" u8* sManager__8JUTVideo;
 extern "C" void fn_8012AA84(u8* p)
 {
+    JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32> v4;
     JGeometry::TVec3<f32> v3;
     JGeometry::TVec3<f32> v2;
     JGeometry::TVec3<f32> v1;
     JGeometry::TVec3<f32> v0;
     u8* obj;
-    f32 f4;
-    f32 f1;
     f32 f0;
+    f32 f1;
     f32 f2;
     f32 f3;
+    f32 f4;
 
     if (*(s32*)(p + 0x250) >= 0x514) {
         if (*(s32*)(p + 0x250) == 0x514) {
@@ -315,8 +316,8 @@ extern "C" void fn_8012AA84(u8* p)
             *(s32*)(p + 0x2c0) = 0;
         } else if (*(s32*)(p + 0x250) == 0x51d) {
             *(s32*)(p + 0x2c0) = 0xb;
-            fn_8012A5EC(p);
         }
+        fn_8012A5EC(p);
         return;
     }
 
@@ -324,39 +325,36 @@ extern "C" void fn_8012AA84(u8* p)
         if (*(s32*)(p + 0x250) >= 0x2da) {
             if (*(s32*)(p + 0x2bc) == 0) {
                 *(s32*)(p + 0x2c0) += 1;
-                if (*(s32*)(p + 0x2c0) >= 6) {
+                if (*(s32*)(p + 0x2c0) >= 6)
                     *(s32*)(p + 0x2c0) = 0;
-                    *(s32*)(p + 0x2bc) = 9;
-                    if (*(s32*)(p + 0x250) == 0x2da) {
-                        *(s32*)(p + 0x2c0) = 0xe;
-                        *(s32*)(p + 0x2bc) = 9;
-                        fn_801F0E34(p, 0x50064, 0);
-                    }
-                }
+                *(s32*)(p + 0x2bc) = 9;
+            }
+            if (*(s32*)(p + 0x250) == 0x2da) {
+                *(s32*)(p + 0x2c0) = 0xe;
+                *(s32*)(p + 0x2bc) = 9;
+                fn_801F0E34(p, 0x50064, 0);
             }
         } else {
             if (*(s32*)(p + 0x2bc) == 0) {
                 *(s32*)(p + 0x2c0) += 1;
-                if (*(s32*)(p + 0x2c0) >= 0x14) {
-                    f64 k = 1.0 - (f64)(*(s32*)(p + 0x250) - 0x190) / 330.0;
+                if (*(s32*)(p + 0x2c0) >= 0x14)
                     *(s32*)(p + 0x2c0) = 0xe;
-                    *(s32*)(p + 0x2bc) = 9;
-                    *(f32*)(p + 0x3fc) = (f32)fn_801CD664((s32)k);
-                    *(f32*)(p + 0x400) = (f32)fn_801CD664((s32)k);
-                    fn_80134DE4(lbl_8053AAF8, 3, 0);
-                }
+                *(s32*)(p + 0x2bc) = 9;
             }
-            fn_8012A5EC(p);
-            return;
+            f64 k = 1.0 - (f64)(*(s32*)(p + 0x250) - 0x190) / 330.0;
+            *(f32*)(p + 0x3fc) = (f32)fn_801CD664((s32)k);
+            *(f32*)(p + 0x400) = (f32)fn_801CD664((s32)k);
+            fn_80134DE4(lbl_8053AAF8, 3, 0);
         }
+        fn_8012A5EC(p);
+        return;
     } else {
         if (*(s32*)(p + 0x250) > 0x84) {
             if (*(s32*)(p + 0x2bc) == 0) {
                 *(s32*)(p + 0x2c0) += 1;
-                if (*(s32*)(p + 0x2c0) >= 0x14) {
+                if (*(s32*)(p + 0x2c0) >= 0x14)
                     *(s32*)(p + 0x2c0) = 0xe;
-                    *(s32*)(p + 0x2bc) = 9;
-                }
+                *(s32*)(p + 0x2bc) = 9;
             }
         } else if (*(s32*)(p + 0x250) > 0x7b) {
             *(s32*)(p + 0x2c0) = 0x14;
@@ -383,22 +381,20 @@ extern "C" void fn_8012AA84(u8* p)
         *(f32*)(p + 0x248) = 186.0f;
         *(f32*)(p + 0x23c) = 154.0f + *(f32*)(p + 0x3f4) - 270.0f;
     } else if (*(s32*)(p + 0x250) == 0) {
-        u8* vid = *(u8**)(sManager__8JUTVideo + 4);
-        f32 sx = (f32)*(u16*)(vid + 4) * 0.5f;
-        f32 sy = (f32)*(u16*)(vid + 6) * 0.5f;
-        v4.x = sx;
-        v4.y = sy + 1.0f;
-        v4.z = 0.0f;
+        pos.set((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
+        pos.y += -16.0f;
         fn_8022FE80(0, *(s32*)(p + 4), *(s32*)(p + 0x198), 1, 0);
-        if (!fn_8038BD08((s32)0, lbl_804650C8[*(s32*)(p + 0x254)], (u32)*(s32*)(p + 4), &v4, (s32)0x22)) {
+        u32 owner = *(u32*)(p + 4);
+        v4 = pos;
+        if (!fn_8038BD08((s32)0, lbl_804650C8[*(s32*)(p + 0x254)], owner, &v4, (s32)0x22)) {
             return;
         }
+        *(s32*)(p + 0x254) += 1;
+        fn_8011921C();
+        fn_80118454();
+        *(s32*)(p + 0x230) += 1;
     }
-
-    *(s32*)(p + 0x254) += 1;
-    fn_8011921C();
-    fn_80118454();
-    *(s32*)(p + 0x230) += 1;
     f1 = *(f32*)(p + 0x23c);
     f0 = *(f32*)(p + 0x248);
     f4 = *(f32*)(p + 0x238);
@@ -413,9 +409,9 @@ extern "C" void fn_8012AA84(u8* p)
         *(f32*)(obj + 0x848) = f2;
         *(f32*)(obj + 0x84c) = f4;
         *(f32*)(obj + 0x850) = f3;
-        *(f32*)(obj + 0x854) = lbl_8053CB90;
-        *(f32*)(obj + 0x1d4) = 0.0f;
-        *(f32*)(obj + 0x1d8) = 0.0f;
+        *(f32*)(obj + 0x854) = 1.0f;
+        *(f32*)(obj + 0x1d4) = -1.0f;
+        *(f32*)(obj + 0x1d8) = -1.0f;
     }
 }
 
@@ -1015,12 +1011,13 @@ extern "C" void fn_8012C914(char* this_) {
     f32 e = *(f32*)(this_ + 0x248);
     initDmtwCamera(a, b-e, b+e);
 }
-#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_8012CBE4(void)
 {
-    u8* __restrict p = lbl_8049E668;
+    u8* p = lbl_8049E668;
     JGeometry::TVec3<f32>* base = lbl_804BD790;
-    *(FsaBlock84*)(p + 0x84) = *(FsaBlock84*)p;
+    FsaBlock84* __restrict dst = (FsaBlock84*)(p + 0x84);
+    *dst = *(FsaBlock84*)p;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, (u8*)base + 0x60);
@@ -1067,4 +1064,4 @@ extern "C" void fn_8012CBE4(void)
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-#pragma opt_propagation reset
+#pragma opt_common_subs reset
