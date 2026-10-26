@@ -20,8 +20,8 @@ struct DgtlObj {
     JPABaseEmitter* eff[2];
 };
 
-static inline void dgtlStopBodyEffects(DgtlObj* obj) {
-    for (int i = 0; i < 10; ++i) {
+static inline void dgtlStopBodyEffects(DgtlObj* obj, int i = 0) {
+    for (; i < 10; ++i) {
         if (obj->bodyEff[i]) {
             obj->bodyEff[i]->becomeInvalidEmitter();
             obj->bodyEff[i] = 0;
@@ -284,7 +284,15 @@ extern "C" s32 fn_80149AEC(char* p) {
         *(s32*)(p + 0xdc) = 0;
         if (*(s32*)(p + 0x90) == 1) lbl_80539F58 = -1;
         if (*(s32*)(p + 0x90) == 0) lbl_80539F5C = -1;
-        for (int i = 0; i < 9; ++i) ((s32*)(p + 0x234))[i] = 0;
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x238) = 0;
+        *(s32*)(p + 0x23c) = 0;
+        *(s32*)(p + 0x240) = 0;
+        *(s32*)(p + 0x244) = 0;
+        *(s32*)(p + 0x248) = 0;
+        *(s32*)(p + 0x24c) = 0;
+        *(s32*)(p + 0x250) = 0;
+        *(s32*)(p + 0x254) = 0;
         *(s32*)(p + 0x23c) = 0xa8;
         dgtlStopBodyEffects((DgtlObj*)p);
         fn_80134DE4(lbl_8053AAF8, 0xa8, 0);
