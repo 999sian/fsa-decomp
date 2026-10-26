@@ -169,7 +169,8 @@ extern "C" void fn_80236074(s32 a, s32 b, s32 c);
 extern "C" void fn_8013CC50(u32 a, Vec* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern "C" void* lbl_8053AAF8;
 extern "C" u32 lbl_804AB440[];
-extern "C" u8 sincosTable___5JMath[];
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
 
 static inline f32 rand01() {
     u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
@@ -610,26 +611,26 @@ extern "C" void fn_803264C0(Actor* a) {
         break;
     case 4: {
         s32 t;
-        u8* sc;
         *(s32*)(p + 0x23c) = 300;
         *(s32*)(p + 0x248) = 120;
         *(s32*)(p + 0x230) = 2;
         *(u32*)(p + 0xb0) = 0x73308;
         t = ((s32)(65536.0f * rand01()) >> 2) & 0x3ff8;
-        sc = sincosTable___5JMath + t;
-        a->field_3C.x = k * *(f32*)sc;
-        a->field_3C.y = k * *(f32*)(sc + 4);
+        a->field_3C.x = k * *(f32*)(sincosTable___5JMath + t);
+        a->field_3C.y = k * *(f32*)(sincosTable___5JMath + t + 4);
         a->field_3C.z = 0.0f;
         *(u8*)(p + 0x275) = 0;
         break;
     }
-    case 3:
+    case 3: {
+        s32 r;
         *(s32*)(p + 0x23c) = 300;
         *(s32*)(p + 0x24c) = 10;
         *(s32*)(p + 0x230) = 2;
         *(u32*)(p + 0xb0) = 0x73308;
+        r = (s32)(2.0f * rand01());
         *(u8*)(p + 0x277) = 0;
-        if ((s32)(2.0f * rand01()) != 0) {
+        if (r != 0) {
             a->field_3C.x = k;
         } else {
             a->field_3C.x = -k;
@@ -638,6 +639,7 @@ extern "C" void fn_803264C0(Actor* a) {
         a->field_3C.z = 0.0f;
         *(u8*)(p + 0x275) = 0;
         break;
+    }
     case 5:
         *(s32*)(p + 0x23c) = 300;
         a->field_90 = 0;
