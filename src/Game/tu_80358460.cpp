@@ -169,6 +169,40 @@ static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state, const JGeomet
         vec.x += lbl_80542870;
     }
 }
+static inline void applyRotation803597EC(u8* self) {
+    s16 ang;
+    f32 cs;
+    f32 d;
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
+            ang = *(s16*)(self + 0x230);
+            cs = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+            d = __fabsf(cs);
+            cs = cs * d;
+            cs = lbl_8054288C * cs;
+            if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && (s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
+                cs = cs * lbl_80542890;
+            }
+            if (*(u8*)(self + 0x244) == 0) {
+                if (*(s32*)(self + 0x258) == 1) {
+                    Vec8035A860 vec;
+                    vec.x = lbl_8054286C;
+                    vec.y = lbl_80542894 * cs;
+                    vec.z = lbl_8054286C;
+                    fn_8023DF68(i, &vec);
+                }
+            } else {
+                if (*(s32*)(self + 0x258) == 1) {
+                    Vec8035A860 vec;
+                    vec.x = lbl_8054286C;
+                    vec.y = cs;
+                    vec.z = lbl_8054286C;
+                    fn_8023DF68(i, &vec);
+                }
+            }
+        }
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
