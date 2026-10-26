@@ -150,8 +150,6 @@ extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80458FF0(void* obj, s32 a, s32 b, s32 c);
 extern u8 sincosTable___5JMath[];
-static inline f32 ttatSin(u16 angle) { return *(f32*)(sincosTable___5JMath + ((angle >> 2) & 0x3ff8)); }
-static inline f32 ttatCos(u16 angle) { return *(f32*)(sincosTable___5JMath + ((angle >> 2) & 0x3ff8) + 4); }
 extern const u16 lbl_8053A108[4];
 #pragma opt_propagation off
 extern "C" void fn_801A96B4(void* this_) {
