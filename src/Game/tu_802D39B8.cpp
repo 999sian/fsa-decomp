@@ -40,7 +40,10 @@ struct RoomArrays {
     u32 flagsFD68[10][10][32];
     u32 flags12F68[32];
     u32 flags12FE8[32];
-    u8 pad13068[0x150];
+    u32 keys13068[8];
+    JGeometry::TVec2<f32> positions13088[8];
+    u32 owners130C8[8];
+    u8 pad130E8[0xD0];
     u16 flags131B8[16];
     u8 values131D8[4];
     u8 pad131DC[0x70];
@@ -156,6 +159,7 @@ extern "C" void fn_8043D67C(void*, s32, s32, s32);
 extern "C" void fn_8043EDE8(void*, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, u32, f32*, u32, s32, s32);
 extern void* lbl_8053AED0;
+#pragma opt_propagation off
 extern "C" void fn_802D3A18(char* p) {
     u8 flag = *(u8*)(lbl_8053AAF8 + 0x94);
     if (*(u8*)(lbl_8053AAF8 + 0x96) != 0) {
@@ -199,10 +203,13 @@ extern "C" void fn_802D3A18(char* p) {
                 fn_80458880(lbl_8053AF80, 0x35, -1);
             } else if (t == 0) {
                 f32 pos[3];
-                f32 zero = lbl_8054111C;
-                pos[0] = -*(f32*)(*(char**)(lbl_8053AB10 + 0x24) + 0x10);
+                f32 coordinate;
+                f64 zero = lbl_8054111C;
+                coordinate = -*(f32*)(*(char**)(lbl_8053AB10 + 0x24) + 0x10);
+                pos[0] = coordinate;
+                coordinate = -*(f32*)(*(char**)(lbl_8053AB10 + 0x24) + 0x20);
+                pos[1] = coordinate;
                 pos[2] = zero;
-                pos[1] = -*(f32*)(*(char**)(lbl_8053AB10 + 0x24) + 0x20);
                 pos[2] = zero;
                 if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
                     Actor_CreateByID(fn_801F856C(), 0x5455544d, 0, pos, 0, -1, -1);
@@ -214,7 +221,7 @@ extern "C" void fn_802D3A18(char* p) {
         }
     }
 }
-
+#pragma opt_propagation on
 extern "C" u8* fn_80403328(const char*);
 extern "C" void fn_80134DC0();
 extern const char* lbl_804A9710[][4];
@@ -1655,6 +1662,7 @@ void fn_802D92F0(char*);
 void fn_8016A3AC();
 void fn_8016A330();
 void fn_80158B3C(void*);
+#pragma opt_common_subs off
 extern "C" void fn_802D9CD8(char* p) {
     fn_802D3D48(p);
     for (s32 i = 0; i < 10; i++) {
@@ -1713,7 +1721,7 @@ extern "C" void fn_802D9CD8(char* p) {
     *(f32*)(a + 0x160) = *(f32*)(p + 0xd8);
     *(Vec*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2368) = v;
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_802D9FBC(char* p) {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1)
         *(s32*)(p + 0xC4) = 0x8CA0;
