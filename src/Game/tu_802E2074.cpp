@@ -40,7 +40,7 @@ static inline void genSetPosition(JGeometry::TVec3<f32>& pos, const u16 x, const
 struct GenRecordReader {
     u8* p;
     GenRecordReader(u8* data) : p(data) {}
-    u8 read8() { return *p++; }
+    u32 read8() { return *p++; }
     u16 readCoord() { return read8(); }
     u32 read32() {
         u32 a=read8(), b=read8(), c=read8(), d=read8();
