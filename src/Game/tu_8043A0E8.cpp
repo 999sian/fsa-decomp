@@ -1252,7 +1252,7 @@ extern "C" void fn_8043E80C(u8* param_1, s32 param_2, u8 param_3, u32 param_4, u
     f32 y;
     f32 sx;
     f32 sy;
-    if ((lbl_80543CE0 == param_8) | (lbl_80543CD4 == param_8) | (lbl_80543CE4 == param_8)) {
+    if ((lbl_80543CD4 == param_8) | (lbl_80543CE0 == param_8) | (lbl_80543CE4 == param_8)) {
         sx = lbl_80543D14;
         sy = sx;
     } else if (param_8 > lbl_80543CCC) {
