@@ -53,6 +53,13 @@ struct RoomArrays {
     u8 values1327C[4];
 };
 
+static inline bool roomScalarNear(f32 a, f32 b, f32 eps) {
+    bool same = false;
+    b = a - b;
+    if (-eps <= b && b <= eps) same = true;
+    return same;
+}
+
 static inline bool roomPositionEquals(JGeometry::TVec2<f32>& a, JGeometry::TVec2<f32>& b) {
     bool same = false;
     const f32 eps = 32.0f * FLT_EPSILON;
