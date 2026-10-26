@@ -14,8 +14,6 @@ extern "C" u8 fn_8020D6AC(void* entry, s32 a, s32 b, void* d, const char* e);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
-static inline void swbmOffsetAngle(s32& angle) { angle += 0x2000; }
-
 struct SinCos {
     f32 first;
     f32 second;
@@ -187,7 +185,7 @@ extern "C" void fn_8017A68C(char* this_) {
     *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
 
     if (*(s32*)(this_ + 0x25c) == 1) {
-        register s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98));
+        u32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98));
         f32 r = 8.0f;
         s32 i = 0;
         for (ang += 0x2000; i < 2; i++) {
