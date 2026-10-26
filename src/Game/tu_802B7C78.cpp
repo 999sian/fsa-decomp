@@ -142,6 +142,7 @@ extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
 #pragma opt_lifetimes reset
 #pragma opt_strength_reduction reset
 #pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_802B8078(char* this_) {
     *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
     int room = *(s32*)(this_ + 0x29c);
@@ -153,8 +154,8 @@ extern "C" void fn_802B8078(char* this_) {
             v.x = *(f32*)(this_+0xc);
             v.y = *(f32*)(this_+0x10);
             v.z = *(f32*)(this_+0x14);
-            v.y += lbl_80540AB8;
-            v.z += lbl_80540AD4;
+            v.y += 32.0f;
+            v.z += 16.0f;
             fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
             fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
             *(s32*)(this_ + 0x244) = 0x32;
@@ -176,8 +177,8 @@ extern "C" void fn_802B8078(char* this_) {
             v.x = *(f32*)(this_+0xc);
             v.y = *(f32*)(this_+0x10);
             v.z = *(f32*)(this_+0x14);
-                v.y += lbl_80540AB8;
-                v.z += lbl_80540AD4;
+                v.y += 32.0f;
+                v.z += 16.0f;
                 fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
                 fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
                 *(s32*)(this_ + 0x244) = 0x32;
@@ -189,8 +190,8 @@ extern "C" void fn_802B8078(char* this_) {
             v.x = *(f32*)(this_+0xc);
             v.y = *(f32*)(this_+0x10);
             v.z = *(f32*)(this_+0x14);
-            v.y += lbl_80540AB8;
-            v.z += lbl_80540AD4;
+            v.y += 32.0f;
+            v.z += 16.0f;
             fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
             fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
             *(JGeometry::TVec3f*)(this_ + 0x28c) = *(JGeometry::TVec3f*)(this_ + 0xc);
@@ -201,20 +202,20 @@ extern "C" void fn_802B8078(char* this_) {
             *(s32*)(this_ + 0x24c) = 0;
             *(s32*)(this_ + 0x230) = 5;
             Vec t;
-            t.x = *(f32*)(this_ + 0xc) - lbl_80540AD4;
-            t.y = *(f32*)(this_ + 0x10) - lbl_80540AD4;
+            t.x = *(f32*)(this_ + 0xc) - 16.0f;
+            t.y = *(f32*)(this_ + 0x10) - 16.0f;
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
-            t.x = lbl_80540AD4 + *(f32*)(this_ + 0xc);
-            t.y = *(f32*)(this_ + 0x10) - lbl_80540AD4;
+            t.x = 16.0f + *(f32*)(this_ + 0xc);
+            t.y = *(f32*)(this_ + 0x10) - 16.0f;
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
-            t.x = *(f32*)(this_ + 0xc) - lbl_80540AD4;
-            t.y = lbl_80540AD4 + *(f32*)(this_ + 0x10);
+            t.x = *(f32*)(this_ + 0xc) - 16.0f;
+            t.y = 16.0f + *(f32*)(this_ + 0x10);
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
-            t.x = lbl_80540AD4 + *(f32*)(this_ + 0xc);
-            t.y = lbl_80540AD4 + *(f32*)(this_ + 0x10);
+            t.x = 16.0f + *(f32*)(this_ + 0xc);
+            t.y = 16.0f + *(f32*)(this_ + 0x10);
             t.z = *(f32*)(this_ + 0x14);
             Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
         }
