@@ -461,6 +461,10 @@ extern "C" void fn_8041A868(u8* self, s32 arg) {
     (void)r25;
 }
 
+#pragma dont_inline reset
+static inline void HudHideIndexed8041(u8* self, const u64* names, s32 index) {
+    (*(J2DPane**)(self + 4))->search(names[index])->hide();
+}
 extern const u64 lbl_8048DE00[];
 extern const u64 lbl_8048DE20[];
 extern "C" void fn_8041B69C(u8* self) {
@@ -1395,30 +1399,29 @@ extern "C" void fn_8041C67C(u8* self);
 extern "C" void fn_80418D08(u8* self, s32 i, s32 j);
 extern "C" void fn_8043A608(u8* x);
 extern "C" void fn_8044172C(u8* x);
-extern "C" void fn_8041FC2C(u8* self) {
-    u8* tbl;
-    u8* lbl;
+#pragma auto_inline off
+extern "C" void fn_8041FC2C(u8* self_) {
+    s32 i;
     u8* p;
     u8* q;
-    s32 i;
+    u8* lbl;
+    u8* self = self_;
+    u8* tbl;
     s32 j;
     f32 f;
-    u32* w;
 
     tbl = (u8*)lbl_8048D320;
     lbl = (u8*)lbl_80529DEC;
     f = lbl_80543A00;
     p = self;
     q = self;
-    w = (u32*)(lbl + 0xd8);
 
-    i = 0;
+    for (i = 0; i < 4; i++, p += 4, q += 2, lbl += 4) {
     fn_8041E3B4(self, i);
     *(u32*)(lbl + 0xd8) = fn_80237774(i);
     *(u32*)(lbl + 0xe8) = fn_80236100(i);
     *(u32*)(lbl + 0x108) = fn_802375B0(i);
 
-    while (i < 4) {
         *(u32*)(p + 0x188) = 0x180;
         *(u32*)(p + 0x198) = 0;
         *(u32*)(p + 0x1a8) = 0;
@@ -1443,40 +1446,40 @@ extern "C" void fn_8041FC2C(u8* self) {
         *(u16*)(q + 0x22c) = 0;
         *(u32*)(p + 0x208) = 0;
         *(u16*)(q + 0x234) = 0;
-        p += 4;
-        q += 2;
-        w++;
-        i++;
     }
     *(s16*)(self + 0x222) = -1;
 
     if (lbl_8053AAF8[0x7e] == 0) {
-        SetPaneVisible(*(u8**)(self + 4), 0x004E646174613133ULL, 1);
-        SetPaneVisible(*(u8**)(self + 4), 0x506870316E693032ULL, 0);
-        SetPaneVisible(*(u8**)(self + 4), 0x5068317069696233ULL, 1);
-        SetPaneVisible(*(u8**)(self + 4), *(const u64*)(tbl + 0x398), 0);
-        SetPaneVisible(*(u8**)(self + 4), *(const u64*)(tbl + 0x3a0), 0);
-        SetPaneVisible(*(u8**)(self + 4), *(const u64*)(tbl + 0x3a8), 0);
-        SetPaneVisible(*(u8**)(self + 4), *(const u64*)(tbl + 0x3b0), 0);
-        SetPaneVisible(*(u8**)(self + 4), 0x004E646174613136ULL, (lbl_8053AAF8[0x83] & 3) == 2);
+        (*(J2DPane**)(self + 4))->search(0x004E646174613133ULL)->show();
+        (*(J2DPane**)(self + 4))->search(0x506870316E693032ULL)->hide();
+        (*(J2DPane**)(self + 4))->search(0x5068317069696233ULL)->show();
+        (*(J2DPane**)(self + 4))->search(*(u64*)(tbl + 0x398))->hide();
+        (*(J2DPane**)(self + 4))->search(((u64*)(tbl + 0x398))[1])->hide();
+        (*(J2DPane**)(self + 4))->search(((u64*)(tbl + 0x398))[2])->hide();
+        (*(J2DPane**)(self + 4))->search(((u64*)(tbl + 0x398))[3])->hide();
+        if ((lbl_8053AAF8[0x83] & 3U) == 2) {
+            (*(J2DPane**)(self + 4))->search(0x004E646174613136ULL)->show();
+        } else {
+            (*(J2DPane**)(self + 4))->search(0x004E646174613136ULL)->hide();
+        }
 
-        const u64* n0 = (const u64*)(tbl + 0xae0);
-        const u64* n1 = (const u64*)(tbl + 0xb20);
-        const u64* n2 = (const u64*)(tbl + 0xb40);
-        const u64* n3 = (const u64*)(tbl + 0xb60);
-        const u64* n4 = (const u64*)(tbl + 0xb80);
-        const u64* n5 = (const u64*)(tbl + 0xbc0);
-        const u64* n6 = (const u64*)(tbl + 0xbe0);
-        const u64* n7 = (const u64*)(tbl + 0xc00);
+        u64* n0 = (u64*)(tbl + 0xae0);
+        u64* n1 = (u64*)(tbl + 0xb20);
+        u64* n2 = (u64*)(tbl + 0xb40);
+        u64* n3 = (u64*)(tbl + 0xb60);
+        u64* n4 = (u64*)(tbl + 0xb80);
+        u64* n5 = (u64*)(tbl + 0xbc0);
+        u64* n6 = (u64*)(tbl + 0xbe0);
+        u64* n7 = (u64*)(tbl + 0xc00);
         for (j = 0; j < 4; j++, n0++, n1++, n2++, n3++, n4++, n5++, n6++, n7++) {
-            SetPaneVisible(*(u8**)(self + 0x18), *n0, 0);
-            SetPaneVisible(*(u8**)(self + 0x18), *n1, 0);
-            SetPaneVisible(*(u8**)(self + 4), *n2, 0);
-            SetPaneVisible(*(u8**)(self + 4), *n3, 0);
-            SetPaneVisible(*(u8**)(self + 4), *n4, 0);
-            SetPaneVisible(*(u8**)(self + 4), *n5, 0);
-            SetPaneVisible(*(u8**)(self + 4), *n6, 0);
-            SetPaneVisible(*(u8**)(self + 4), *n7, 0);
+            (*(J2DPane**)(self + 0x18))->search(*n0)->hide();
+            (*(J2DPane**)(self + 0x18))->search(*n1)->hide();
+            (*(J2DPane**)(self + 4))->search(*n2)->hide();
+            (*(J2DPane**)(self + 4))->search(*n3)->hide();
+            (*(J2DPane**)(self + 4))->search(*n4)->hide();
+            (*(J2DPane**)(self + 4))->search(*n5)->hide();
+            (*(J2DPane**)(self + 4))->search(*n6)->hide();
+            (*(J2DPane**)(self + 4))->search(*n7)->hide();
         }
         fn_8041A868(self, 1);
     } else {
@@ -1484,9 +1487,9 @@ extern "C" void fn_8041FC2C(u8* self) {
     }
 
     if (self[0x291] != 0) {
-        for (i = 0; i < 4; i++) {
-            if (lbl_8053AAF8[0x82] & (1 << i)) {
-                fn_80418D08(self, i, 1);
+        for (s32 k = 0; k < 4; k++) {
+            if (lbl_8053AAF8[0x82] & (u8)(1 << k)) {
+                fn_80418D08(self, k, 1);
             }
         }
     }
@@ -1501,26 +1504,32 @@ extern "C" void fn_8041FC2C(u8* self) {
     *(s32*)(self + 0x180) = -2;
     *(s32*)(self + 0x184) = -2;
     {
-        s32 a = *(s32*)(lbl + 0x118);
-        s32 b = *(s32*)(lbl + 0x11c);
-        if (a < 8 && b < 4) {
+        s32 a = *(s32*)((u8*)lbl_80529DEC + 0x118);
+        if (a < 8) {
+            s32 b = *(s32*)((u8*)lbl_80529DEC + 0x11c);
+            if (b >= 4) goto done;
             if (a == 0 && b == 0) {
                 u8* e = (u8*)lbl_8050EC80 + 0xc8 * *(s32*)((u8*)lbl_8050EC80 + 0x10);
-                if (*(s32*)(e + 0x28) & 1) {
-                    fn_8043A608(lbl_8053AED0);
-                }
-            } else if (!((a == 0 && b == 1) || (a == 1 && b == 3) || (a == 2 && b == 3) ||
-                         (a == 4 && b == 3) || (a == 5 && (b == 1 || b == 3)) ||
-                         (a == 6 && (b == 1 || b == 3)) || (a == 7 && b == 3))) {
-                fn_8043A608(lbl_8053AED0);
+                if (!(*(s32*)(e + 0x28) & 1)) goto done;
             }
+            if (a == 0 && b == 1) goto done;
+            if (a == 1 && b == 3) goto done;
+            if (a == 2 && b == 3) goto done;
+            if (a == 4 && b == 3) goto done;
+            if (a == 5 && b == 1) goto done;
+            if (a == 5 && b == 3) goto done;
+            if (a == 6 && b == 1) goto done;
+            if (a == 6 && b == 3) goto done;
+            if (a == 7 && b == 3) goto done;
+            fn_8043A608(lbl_8053AED0);
         }
     }
+done:
     if (*(u8**)(self + 0x50) != 0) {
         fn_8044172C(*(u8**)(self + 0x50));
     }
 }
-
+#pragma auto_inline reset
 extern "C" void* fn_804201E0(void* this_, s16 how) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B13D4;
