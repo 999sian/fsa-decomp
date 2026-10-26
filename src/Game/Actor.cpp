@@ -70,6 +70,16 @@ struct EffArgs {
     u32 x30, x34, x38;
 };
 
+struct ActorSpriteRec {
+    u32 w00, w04, w08, w0c;
+    u8 c10, c11, c12, c13, c14, c15, c16, c17;
+    void* w18;
+    u8 b1c, b1d, b1e, b1f, b20, b21, b22, b23, b24, b25, b26;
+    u32 w28;
+    u8 b2c, b2d, b2e;
+    s32 w30, w34, w38;
+};
+
 struct Rec {
     /* 0x00 */ u32 w00;
     /* 0x04 */ u32 w04;
@@ -2753,67 +2763,177 @@ extern "C" void fn_801EF830(s32 idx, const f32* pos, const u8* p3, u32 mask, u8*
     }
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_801EFD34(Actor* this_, void* res, DrawRec* rec, u32 mask, f32 dx, f32 dy, f32 dz) {
-    s32 room = this_->field_04;
-    if (room >= 8) {
-        return;
-    }
-    if (this_->field_138 == 0) {
-        fn_801EF830(room, (f32*)&this_->field_0C, (u8*)rec, mask, 0, 0, (u8*)res);
-    }
+    if ((s32)this_->field_04 >= 8) return;
+    if (this_->field_138 == 0) fn_801EF830(this_->field_04, (f32*)&this_->field_0C, (u8*)rec, mask, 0, 0, (u8*)res);
     DrawRec args;
-    if (this_->field_D8 > 0) {
-        if (rec != 0) {
-            args = *rec;
-        }
+    if ((s32)this_->field_D8 > 0) {
+        if (rec) {
+ UnkDrawRec* p = (UnkDrawRec*)rec;
+ volatile u32 t2d=p->field_2D;
+ args.w28=p->field_28;
+ volatile u32 t2e=p->field_2E;
+ args.b2d=t2d;
+ volatile u32 t30=p->field_30;
+ args.b2e=t2e;
+ volatile u32 t34=p->field_34;
+u32 t00 = *(u32*)(p->field_00 + 0x00);
+u32 t04 = *(u32*)(p->field_00 + 0x04);
+u32 t08 = *(u32*)(p->field_00 + 0x08);
+u32 t0c = *(u32*)(p->field_00 + 0x0c);
+u32 t10 = p->field_10;
+u32 t11 = p->field_11;
+u32 t12 = p->field_12;
+u32 t13 = p->field_13;
+u32 t14 = p->field_14;
+u32 t15 = p->field_15;
+u32 t16 = p->field_16;
+u32 t17 = p->field_17;
+u32 t18 = p->field_18;
+u32 t1C = p->field_1C;
+u32 t1D = p->field_1D;
+u32 t1E = p->field_1E;
+u32 t1F = p->field_1F;
+u32 t20 = p->field_20;
+u32 t21 = p->field_21;
+u32 t22 = p->field_22;
+u32 t23 = p->field_23;
+u32 t24 = p->field_24;
+u32 t25 = p->field_25;
+u32 t26 = p->field_26;
+u32 t2C = p->field_2C;
+u32 t38 = p->field_38;
+ args.w30=t30;
+*(u32*)(args.ids + 0x00) = t00;
+*(u32*)(args.ids + 0x04) = t04;
+*(u32*)(args.ids + 0x08) = t08;
+*(u32*)(args.ids + 0x0c) = t0c;
+*((u8*)&args + 0x10) = t10;
+*((u8*)&args + 0x11) = t11;
+*((u8*)&args + 0x12) = t12;
+*((u8*)&args + 0x13) = t13;
+*((u8*)&args + 0x14) = t14;
+*((u8*)&args + 0x15) = t15;
+*((u8*)&args + 0x16) = t16;
+*((u8*)&args + 0x17) = t17;
+args.w18 = (void*)t18;
+args.b1c = t1C;
+args.b1d = t1D;
+args.b1e = t1E;
+args.b1f = t1F;
+args.b20 = t20;
+args.b21 = t21;
+args.b22 = t22;
+args.b23 = t23;
+args.b24 = t24;
+args.b25 = t25;
+args.b26 = t26;
+args.b2c = t2C;
+args.w38 = t38;
+ args.w34=t34;
+}
         s32 a = this_->field_D8;
         s32 b = this_->field_DC;
-        s32 q;
-        if (b < 25) {
-            q = (a * 0xff) / b;
-        } else {
-            q = ((a - (b - 25)) * 0xff) / 100;
-        }
-        if (this_->field_F8 == 2) {
-            f32 t = (f32)q - lbl_8053F790 * this_->field_0C.z;
-            q = (s32)t;
-            if (q < 0) {
-                q = 0;
+        s32 end = b - 25;
+        if (a > end || b < 25) {
+            s32 q;
+            if (b < 25) q = a * 255 / b;
+            else q = (a - (end)) * 255 / 25;
+            if ((s32)this_->field_F8 == 2) {
+                q = (s32)((f32)q - lbl_8053F790 * this_->field_0C.z);
+                q = q < 0 ? 0 : q;
+            }
+            if ((s32)this_->field_FC == 5) {
+                *((u8*)&args + 0x14) += q;
+                *((u8*)&args + 0x15) += q >> 1;
+            } else {
+                *((u8*)&args + 0x14) += q;
+                *((u8*)&args + 0x15) += q;
+                *((u8*)&args + 0x16) += q;
             }
         }
-        args.b2c += q;
-        if (this_->field_FC == 5) {
-            args.b2d += q >> 1;
-        } else {
-            args.b2d += q;
-            args.b2e += q;
-        }
-        Vec vel = this_->field_3C;
-        if (vel.x * vel.x + vel.y * vel.y + vel.z * vel.z > lbl_8053F774) {
-            args.w30 = 8;
-        }
+        if (((JGeometry::TVec3<f32>*)&this_->field_3C)->squared() > lbl_8053F774) args.w30 = 8;
     } else {
-        if (rec != 0) {
-            args = *rec;
-        } else {
-            args.w30 = this_->field_150;
+        if (rec) {
+ UnkDrawRec* p = (UnkDrawRec*)rec;
+ volatile u32 t2d=p->field_2D;
+ args.w28=p->field_28;
+ volatile u32 t2e=p->field_2E;
+ args.b2d=t2d;
+ volatile u32 t30=p->field_30;
+ args.b2e=t2e;
+ volatile u32 t34=p->field_34;
+u32 t00 = *(u32*)(p->field_00 + 0x00);
+u32 t04 = *(u32*)(p->field_00 + 0x04);
+u32 t08 = *(u32*)(p->field_00 + 0x08);
+u32 t0c = *(u32*)(p->field_00 + 0x0c);
+u32 t10 = p->field_10;
+u32 t11 = p->field_11;
+u32 t12 = p->field_12;
+u32 t13 = p->field_13;
+u32 t14 = p->field_14;
+u32 t15 = p->field_15;
+u32 t16 = p->field_16;
+u32 t17 = p->field_17;
+u32 t18 = p->field_18;
+u32 t1C = p->field_1C;
+u32 t1D = p->field_1D;
+u32 t1E = p->field_1E;
+u32 t1F = p->field_1F;
+u32 t20 = p->field_20;
+u32 t21 = p->field_21;
+u32 t22 = p->field_22;
+u32 t23 = p->field_23;
+u32 t24 = p->field_24;
+u32 t25 = p->field_25;
+u32 t26 = p->field_26;
+u32 t2C = p->field_2C;
+u32 t38 = p->field_38;
+ args.w30=t30;
+*(u32*)(args.ids + 0x00) = t00;
+*(u32*)(args.ids + 0x04) = t04;
+*(u32*)(args.ids + 0x08) = t08;
+*(u32*)(args.ids + 0x0c) = t0c;
+*((u8*)&args + 0x10) = t10;
+*((u8*)&args + 0x11) = t11;
+*((u8*)&args + 0x12) = t12;
+*((u8*)&args + 0x13) = t13;
+*((u8*)&args + 0x14) = t14;
+*((u8*)&args + 0x15) = t15;
+*((u8*)&args + 0x16) = t16;
+*((u8*)&args + 0x17) = t17;
+args.w18 = (void*)t18;
+args.b1c = t1C;
+args.b1d = t1D;
+args.b1e = t1E;
+args.b1f = t1F;
+args.b20 = t20;
+args.b21 = t21;
+args.b22 = t22;
+args.b23 = t23;
+args.b24 = t24;
+args.b25 = t25;
+args.b26 = t26;
+args.b2c = t2C;
+args.w38 = t38;
+ args.w34=t34;
+}
+        else args.w30 = this_->field_150;
+        if (this_->field_138) args.w18 = (void*)this_->field_138;
+        if (this_->field_188 > 0) {
+            *((u8*)&args + 0x14) = 200;
+            *((u8*)&args + 0x15) = 65;
         }
     }
-    if (this_->field_138 != 0) {
-        args.w18 = (void*)this_->field_138;
-    }
-    Vec v;
-    if (this_->field_188 > 0) {
-        args.b2c = 0xc8;
-        args.b2d = 0x41;
-        v = this_->field_0C;
-        v.x = v.x + dx;
-        v.y = v.y + dy;
-        v.z = this_->field_0C.z + dz;
-    }
-    fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &v, res, &args);
+    JGeometry::TVec3<f32> v;
+    v = *(JGeometry::TVec3<f32>*)&this_->field_0C;
+    v.x += dx;
+    v.y += dy;
+    v.z += dz;
+    if ((s32)this_->field_04 < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &v, res, &args);
 }
-
+#pragma opt_common_subs reset
 /* --- 0x801F02BC: build the actor's hit/query record and submit it ----------
  * The record handed to fn_801F06F0 is either the caller's (p4, byte 0x13 must
  * be set) or a fixed template; the actor's kind (field_04) decides whether the
