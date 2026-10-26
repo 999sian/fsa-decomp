@@ -365,13 +365,13 @@ static inline void* tu80134_load(const char* name) {
 
 static inline void tu80134PlayTransition(char* this_) {
 u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-                    s32 st = *(s32*)((char*)fn_802D6A9C() + 0x34);
+                    int st = *(s32*)((char*)fn_802D6A9C() + 0x34);
                     if (st != 0x11) {
                         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
                             if (st == 0x14 || st == 0x1e) {
-                                fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[st]);
+                                fn_80458F04(*(void**)(this_ + 0xa0), *(const u32*)((const u8*)lbl_804652F0 + st * 4));
                             } else {
-                                u32 id = lbl_804652F0[st];
+                                u32 id = *(const u32*)((const u8*)lbl_804652F0 + st * 4);
                                 fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
                                 char* manager = (char*)fn_802D6A9C();
                                 *(u32*)(manager + 0x1328c) = uVar1 + 1;
@@ -473,54 +473,12 @@ extern "C" void fn_80135494(char* this_, s32 cmd) {
                 if (*(s32*)((char*)fn_802D6A9C() + 4) != 0 || *(s32*)((char*)fn_802D6A9C() + 8) != 0 ||
                     (*(s32*)((char*)fn_802D6A9C() + 4) == 0 && *(s32*)((char*)fn_802D6A9C() + 8) == 0 &&
                      (*(s32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28) & 1) != 0)) {
-                    u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-                    cmd = *(s32*)((char*)fn_802D6A9C() + 0x34);
-                    if (cmd != 0x11) {
-                        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                            if (cmd == 0x14 || cmd == 0x1e) {
-                                fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[cmd]);
-                            } else {
-                                u32 id = lbl_804652F0[cmd];
-                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
-                                char* manager = (char*)fn_802D6A9C();
-                                *(u32*)(manager + 0x1328c) = uVar1 + 1;
-                            }
-                         } else if (cmd != 0x19) {
-                            if (*(u8*)(this_ + 0x86) == 0) {
-                                fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000004, 0, 0);
-                            } else {
-                                fn_80458FF0(*(void**)(this_ + 0xa0), 0x100000d, 0, 0);
-                            }
-                        } else {
-                            fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000019, 0, 0);
-                        }
-                    }
+                    tu80134PlayTransition(this_);
                 }
             }
         } else if (*(s32*)(this_ + 0x50) == 0xe) {
             *(s32*)(this_ + 0x60) = 4;
-            u32 uVar1 = *(u32*)((char*)fn_802D6A9C() + 0x1328c);
-            cmd = *(s32*)((char*)fn_802D6A9C() + 0x34);
-            if (cmd != 0x11) {
-                if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                    if (cmd == 0x14 || cmd == 0x1e) {
-                        fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[cmd]);
-                    } else {
-                        u32 id = lbl_804652F0[cmd];
-                                fn_80458FF0(*(void**)(this_ + 0xa0), id, 0, uVar1 & 0xff);
-                        char* manager = (char*)fn_802D6A9C();
-                                *(u32*)(manager + 0x1328c) = uVar1 + 1;
-                    }
-                 } else if (cmd != 0x19) {
-                            if (*(u8*)(this_ + 0x86) == 0) {
-                                fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000004, 0, 0);
-                            } else {
-                                fn_80458FF0(*(void**)(this_ + 0xa0), 0x100000d, 0, 0);
-                            }
-                        } else {
-                            fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000019, 0, 0);
-                        }
-            }
+            tu80134PlayTransition(this_);
         }
     }
 }
