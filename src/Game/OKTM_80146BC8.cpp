@@ -39,13 +39,7 @@ extern "C" s32 ClassifyBamAngleToQuadrant(s32 angle);
 extern "C" s32 lbl_8049F548[];
 extern "C" s32 lbl_8049F558[];
 extern "C" f32 sincosTable___5JMath[];
-namespace JMath {
-template <int N, typename T> class TAtanTable {
-public:
-    T atan2(T, T) const;
-};
-extern TAtanTable<1024, f32> atanTable_;
-}
+#include "JSystem/JMath/JMath.h"
 
 struct Tmp16 {
     u32 x;
@@ -140,8 +134,7 @@ extern "C" void fn_80146C28(char* this_) {
     }
 }
 #pragma opt_propagation reset
-extern "C" void fn_80146F58(char* self) {
-    char* this_ = self;
+extern "C" void fn_80146F58(char* this_) {
     s32 r30;
     u8 r29 = 0;
     JMathInlineVEC::PSVECAdd((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x3c), (Vec*)(this_ + 0xc));
@@ -155,7 +148,7 @@ extern "C" void fn_80146F58(char* self) {
             }
             r29 = fn_801F2618(this_, 0, 0);
         }
-        if (*(s32*)(this_ + 0x90) == 2 || *(s32*)(this_ + 0x90) == 3) {
+        if (*(u32*)(this_ + 0x90) == 2 || *(u32*)(this_ + 0x90) == 3) {
             r30 = -1;
         }
         if (fn_801F2A10(this_, -1, r30, 1, 1)) {
@@ -165,11 +158,19 @@ extern "C" void fn_80146F58(char* self) {
         if (r29 == 0 && !fn_801F2B7C(this_, *(s32*)(this_ + 0x114), -1, 1)) {
             break;
         }
+        if (*(s32*)(this_ + 0x90) == 1 || *(s32*)(this_ + 0x90) == 5) {
+            if (r29 != 0) goto bounce;
+        }
         if (r29 == 0) {
             fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x24a, 0, 1, 0, 0, 1);
             fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x24b, 0, 1, 0, 0, 1);
             *(u8*)(this_ + 0x11c) = 0;
-        } else if (*(s32*)(this_ + 0x90) == 1 || *(s32*)(this_ + 0x90) == 5) {
+        } else {
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x339, 0, 1, 0, 0, 1);
+            *(u8*)(this_ + 0x11c) = 0;
+        }
+        break;
+bounce:
             fn_801F0E34(this_, 0x30000, 0);
             *(f32*)(this_ + 0x3c) = 0.0f;
             *(f32*)(this_ + 0x40) = 0.0f;
@@ -177,14 +178,10 @@ extern "C" void fn_80146F58(char* self) {
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x234) = 0;
             *(s32*)(this_ + 0x230) = 3;
-        } else {
-            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x339, 0, 1, 0, 0, 1);
-            *(u8*)(this_ + 0x11c) = 0;
-        }
         break;
     case 1:
         fn_801F0E34(this_, 0x400D1, 0);
-        if (*(s32*)(this_ + 0x90) == 1) {
+        if (*(u32*)(this_ + 0x90) == 1) {
             *(s32*)(this_ + 0x238) = 100;
             switch (*(s32*)(this_ + 0x98)) {
             case 0:
@@ -215,7 +212,8 @@ extern "C" void fn_80146F58(char* self) {
         break;
     case 2:
         if (*(s32*)(this_ + 0x90) == 1 && (*(s32*)(this_ + 0x238) & 1) == 0) {
-            *(s32*)(this_ + 0x240) = (*(s32*)(this_ + 0x240) + 1) & 3;
+            *(s32*)(this_ + 0x240) += 1;
+            *(s32*)(this_ + 0x240) &= 3;
             *(s32*)(this_ + 0x98) = lbl_8049F548[*(s32*)(this_ + 0x240)];
         }
         *(s32*)(this_ + 0x248) -= 10;
@@ -248,18 +246,18 @@ extern "C" void fn_80146F58(char* self) {
         if (id >= 0) {
             tgt = (char*)fn_801F666C(fn_801F856C(), id);
             if (tgt != 0) {
-                f32 scale = *(f32*)(this_ + 0x254);
                 s32 i = ((u16)(fn_801F6874(*(s32*)(tgt + 0x98)) - *(u16*)(this_ + 0x25c)) >> 5) * 2;
                 f32 dx;
                 f32 dy;
-                *(f32*)(this_ + 0xc) = scale * sincosTable___5JMath[i];
-                *(f32*)(this_ + 0x10) = scale * sincosTable___5JMath[i + 1];
+                *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x254) * sincosTable___5JMath[i];
+                i = ((u16)(fn_801F6874(*(s32*)(tgt + 0x98)) - *(u16*)(this_ + 0x25c)) >> 5) * 2;
+                *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x254) * sincosTable___5JMath[i + 1];
                 *(f32*)(this_ + 0xc) += *(f32*)(tgt + 0xc);
                 *(f32*)(this_ + 0x10) += *(f32*)(tgt + 0x10);
                 *(f32*)(this_ + 0x14) = *(f32*)(tgt + 0x14);
                 dx = *(f32*)(this_ + 0xc) - *(f32*)(tgt + 0xc);
                 dy = *(f32*)(this_ + 0x10) - *(f32*)(tgt + 0x10);
-                *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)(JMath::atanTable_.atan2(-dx, -dy) * 10430.4f));
+                *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.4f));
                 if (*(s32*)(this_ + 0x240) < 6) {
                     *(s32*)(this_ + 0x240) += 1;
                 } else if (*(s32*)(this_ + 0x230) == 6) {
