@@ -77,49 +77,50 @@ static inline f32 tuRand01() {
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_8053EE68;
 }
-extern "C" void fn_801C5B08(void* p, s32 param_2) {
-    extern s32 fn_800FE2E4(void* slot, void* pos, s32 room);
-    Unk801C5B08* self = (Unk801C5B08*)p;
+#pragma opt_lifetimes off
+#pragma opt_propagation off
+extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
+    extern u8 fn_800FE2E4(void* slot, JGeometry::TVec3f pos, s32 room);
     if (fn_801C5340() != 0) {
         self->field_230 |= 0x2000000;
-        fn_801C3B7C(p, 0x1e);
+        fn_801C3B7C(self, 0x1e);
     } else {
+        s32 d;
         u8 flag;
-        s32 d = fn_801D05F8(p, &self->field_0C, self->field_5AC);
-        if (d < 0) {
-            f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-            if (r < lbl_8053EE6C) {
-                fn_801C3B7C(p, 0xf);
+        s32 r = fn_801D05F8(self, &self->field_0C, self->field_5AC);
+        if (r < 0) {
+            if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE6C) {
+                fn_801C3B7C(self, 0xf);
             } else {
-                fn_801C3B7C(p, 0x11);
+                fn_801C3B7C(self, 0x11);
             }
         } else {
+            d = r;
             self->field_338 = d;
-            fn_801C6260(p);
+            fn_801C6260(self);
             if (self->field_248 == 0x1b) {
-                if (self->field_59A == 0 && self->field_24C >= 0xf0 && fn_801D0DD4(p) != 0 &&
+                if (self->field_59A == 0 && self->field_24C >= 0xf0 && fn_801D0DD4(self) != 0 &&
                     (self->field_524 & 0x40) == 0) {
                     s32 off = self->field_04;
                     u8* base = fn_802D6A9C();
                     if (base[0x10000 + off + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
-                        f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-                        if (r < lbl_8053EE70) {
+                        if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
                             self->field_33C = 0x4000;
                         } else {
                             self->field_33C = -0x4000;
                         }
                     } else {
-                        self->field_33C = fn_801D0280(p, d);
-                        self->field_33C += fn_801CD664(0x4001) - 0x2000;
+                        self->field_33C = fn_801D0280(self, d);
+                        s32 rnd = fn_801CD664(0x4001) - 0x2000;
+                        self->field_33C += rnd;
                     }
-                    fn_801C3B7C(p, 0x1c);
+                    fn_801C3B7C(self, 0x1c);
                     self->field_59A = 0xb4;
                 } else {
                     flag = 0;
                     if (self->field_599 == 0) {
                         u8 r26 = ((u8*)GetCurrentSlotPtr(self->field_358))[3];
-                        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)&self->field_0C;
-                        u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), &pos, self->field_04);
+                        u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), *(JGeometry::TVec3f*)&self->field_0C, self->field_04);
                         u8* slot = (u8*)GetCurrentSlotPtr(self->field_358);
                         if (r26 < slot[2]) {
                             slot[3] = r26;
@@ -128,14 +129,16 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
                         v = fn_800FE294(GetCurrentSlotPtr(self->field_358), r27);
                         f32 dx = v.x - self->field_0C;
                         f32 dy = v.y - self->field_10;
-                        if (dx * dx + dy * dy > lbl_8053EE74) {
+                        f32 dx2 = dx * dx;
+                        f32 dy2 = dy * dy;
+                        if (dx2 + dy2 <= lbl_8053EE74) {
                             if (fn_800FD5E8(GetCurrentSlotPtr(self->field_358), r27)) {
                                 flag = 1;
                             } else {
-                                f32 diff = (f32)(s16)(self->field_33C - fn_801D02E0(p, &v));
-                                if (lbl_8053EE78 * fabs(diff) > lbl_8053EE7C) {
-                                    f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
-                                    if (r < lbl_8053EE80) {
+                                s16 ang = fn_801D02E0(self, &v);
+                                f32 diff = (f32)(s16)(self->field_33C - ang);
+                                if (lbl_8053EE78 * __fabsf(diff) <= lbl_8053EE7C) {
+                                    if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE80) {
                                         flag = 1;
                                     }
                                 }
@@ -144,18 +147,19 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
                     }
                     if (flag) {
                         self->field_230 |= 0x200000;
-                        fn_801C3B7C(p, 0x11);
+                        fn_801C3B7C(self, 0x11);
                         self->field_230 &= ~0x200000;
                         self->field_598 = 0x78;
                     } else {
-                        fn_801C5EBC((u8*)p, d, param_2);
+                        fn_801C5EBC((u8*)self, d, param_2);
                     }
                 }
             }
         }
     }
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern u8* fn_802D6A9C(void);
     extern u8 fn_801CC9F8(void*, s32);
@@ -165,6 +169,9 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern void fn_801CD930(void*, s32, s32);
     extern void* lbl_8053AAF8;
     extern int __float_epsilon[];
+    extern const f32 lbl_8053EE90;
+    extern const f32 lbl_8053EE94;
+    struct TuGame { u8 pad[0xb4]; TuRandom rnd; };
 
     s32 off = *(s32*)(this_ + 4);
     u8 cVar6 = *(u8*)((u32)fn_802D6A9C() + 0x10000 + off + 0x31df);
@@ -179,7 +186,7 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
                 *(s16*)(this_ + 0x33c) = 0x4000;
                 break;
             default:
-                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.5f) {
+                if (((TuGame*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_8053EE70) {
                     *(s16*)(this_ + 0x33c) = 0x4000;
                 } else {
                     *(s16*)(this_ + 0x33c) = -0x4000;
@@ -196,14 +203,15 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
             *(u8*)(this_ + 0x596) = fn_801CD664(0x15) + 0x14;
             f32* pf = (f32*)(this_ + state * 0xc + 0x1ac);
             if (cVar6 != 0 && fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) == 0) {
-                if ((1.0f / 32768.0f) * __fabsf((f32)(s16)(*(s16*)(this_ + 0x33c) + 0x4000)) < 0.05f &&
+                if (lbl_8053EE78 * JMAAbs((f32)(s16)(*(s16*)(this_ + 0x33c) + 0x4000)) < lbl_8053EE80 &&
                     fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) == 1) {
                     *(s16*)(this_ + 0x33c) = -0x4000;
-                } else if ((1.0f / 32768.0f) * __fabsf((f32)(s16)(*(s16*)(this_ + 0x33c) - 0x4000)) < 0.05f &&
+                } else if (lbl_8053EE78 * JMAAbs((f32)(s16)(*(s16*)(this_ + 0x33c) - 0x4000)) < lbl_8053EE80 &&
                            fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) == 1) {
                     *(s16*)(this_ + 0x33c) = 0x4000;
-                } else if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.3f) {
-                    if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < 0.5f) {
+                } else if (((TuGame*)lbl_8053AAF8)->rnd.get_ufloat_1() < lbl_8053EE7C) {
+                    TuGame* game = (TuGame*)lbl_8053AAF8;
+                    if (game->rnd.get_ufloat_1() < lbl_8053EE70) {
                         *(s16*)(this_ + 0x33c) = 0x4000;
                     } else {
                         *(s16*)(this_ + 0x33c) = -0x4000;
@@ -219,11 +227,12 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
                 f32 dy = *(f32*)(this_ + 0x10) - pf[1];
                 f32 dx = *(f32*)(this_ + 0xc) - pf[0];
                 s16 a = *(s16*)(this_ + 0x33c);
-                if (!(dx * dx + dy * dy <= 32.0f * *(f32*)__float_epsilon)) {
+                if (!(dx * dx + dy * dy <= lbl_8053EE90 * *(f32*)__float_epsilon)) {
                     f32 ang = JMath::atanTable_.atan2_(dx, dy);
-                    a = (s32)(ang * 10430.3779296875f);
+                    a = ang * lbl_8053EE94;
                 }
-                a += fn_801CD664(0x4001) - 0x2000;
+                s32 r = fn_801CD664(0x4001) - 0x2000;
+                a += r;
                 fn_801CD930(this_ + 0x33c, a, 0xaaa);
             }
         }
