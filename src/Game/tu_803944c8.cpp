@@ -936,96 +936,69 @@ extern "C" void fn_80398700(MsgMeasure* m, u8 kind, s32 count) {
 typedef s32 (*TuCall0)(void*);
 typedef void (*TuCall3)(void*, s32, void*);
 extern f32 lbl_805431E8;
-extern "C" void fn_80398A34(char* p, s32 n) {
-    void* obj = *(void**)(p + 0x38);
-    s32 printed = 0;
-    f32 scale = *(f32*)(p + 0x48) / (f32)(((TuCall0*)(*(void**)obj))[12](obj));
+extern "C" void fn_80398A34(MsgMeasure* m, s32 n) {
+    bool printed = false;
+    f32 scale = m->fontW / (f32)m->font->getCellWidth();
     s32 q;
-    s32 x;
-    char* e;
-    u8 wm[4];
-    u8 w10000[4];
-    u8 w1000[4];
-    u8 w100[4];
-    u8 w10[4];
-    u8 w1[4];
+    JUTFont::TWidth wm;
+    JUTFont::TWidth w10000;
+    JUTFont::TWidth w1000;
+    JUTFont::TWidth w100;
+    JUTFont::TWidth w10;
+    JUTFont::TWidth w1;
 
     if (n < 0) {
         n *= -1;
-        obj = *(void**)(p + 0x38);
-        ((TuCall3*)(*(void**)obj))[11](obj, 0x2d, wm);
-        x = wm[1];
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
+        m->font->getWidthEntry(0x2d, &wm);
+        m->lineW[m->line] += scale * (m->scale * (f32)(s32)wm.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
     }
 
     q = n / 10000;
     n = n % 10000;
     if (q != 0) {
         printed = 1;
-        obj = *(void**)(p + 0x38);
-        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w10000);
-        x = w10000[1];
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
+        m->font->getWidthEntry(q + 0x30, &w10000);
+        m->lineW[m->line] += scale * (m->scale * (f32)(s32)w10000.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
     }
 
     q = n / 1000;
     n = n % 1000;
     if (q != 0 || printed != 0) {
         printed = 1;
-        obj = *(void**)(p + 0x38);
-        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w1000);
-        x = w1000[1];
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
+        m->font->getWidthEntry(q + 0x30, &w1000);
+        m->lineW[m->line] += scale * (m->scale * (f32)(s32)w1000.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
     }
 
     q = n / 100;
     n = n % 100;
     if (q != 0 || printed != 0) {
         printed = 1;
-        obj = *(void**)(p + 0x38);
-        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w100);
-        x = w100[1];
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
+        m->font->getWidthEntry(q + 0x30, &w100);
+        m->lineW[m->line] += scale * (m->scale * (f32)(s32)w100.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
     }
 
     q = n / 10;
     n = n % 10;
     if (q != 0 || printed != 0) {
         printed = 1;
-        obj = *(void**)(p + 0x38);
-        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w10);
-        x = w10[1];
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
-        e = p + *(u8*)(p + 0x201) * 4;
-        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-        *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
+        m->font->getWidthEntry(q + 0x30, &w10);
+        m->lineW[m->line] += scale * (m->scale * (f32)(s32)w10.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
     }
 
-    obj = *(void**)(p + 0x38);
-    ((TuCall3*)(*(void**)obj))[11](obj, n + 0x30, w1);
-    x = w1[1];
-    e = p + *(u8*)(p + 0x201) * 4;
-    *(f32*)(e + 0x4c) = *(f32*)(e + 0x4c) + scale * (*(f32*)(p + 0x44) * (f32)x);
-    e = p + *(u8*)(p + 0x201) * 4;
-    *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
-    *(u8*)(p + *(u8*)(p + 0x201) + 0x22d) += 1;
+    m->font->getWidthEntry(n + 0x30, &w1);
+    m->lineW[m->line] += scale * (m->scale * (f32)(s32)w1.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
 }
 
 // ---- ASCII -> font code table helpers ----
