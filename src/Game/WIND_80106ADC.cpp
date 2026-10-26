@@ -220,19 +220,7 @@ extern "C" void fn_80106EE0(u8* this_) {
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xF;
     *(s32*)(this_ + 0x238) = (*(u32*)(this_ + 0x90) >> 4) & 0xF;
     s32 state = *(s32*)(this_ + 0x234);
-    WIND_Vec pos;
-    WIND_Box b = *(WIND_Box*)(fn_802D6A9C() + 0xCC);
-    f32 x1 = b.x1;
-    f32 y1 = b.y1;
-    pos.set(0.5f * (b.x0 - x1) + x1, 0.5f * (b.y0 - y1) + y1, 0.0f);
-    switch (state) {
-    case 0:
-        *(void**)(this_ + 0x240) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x505, 0, 0, 0, 0, 1, 1.0f);
-        break;
-    case 1:
-        *(void**)(this_ + 0x240) = fn_8013CC50(*(s32*)(this_ + 4), &pos, 0x504, 0, 0, 0, 0, 1, 1.0f);
-        break;
-    }
+    spawnWINDInner(this_, state);
     if (*(u8**)(this_ + 0x240) != 0) {
         *(u32*)(*(u8**)(this_ + 0x240) + 0xF4) |= 1;
     }
