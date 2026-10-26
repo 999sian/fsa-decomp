@@ -44,7 +44,7 @@ extern "C" u32 __cvt_fp2unsigned(f64);
 template <class T> static inline f32 tu311Random(T* base, const int multiplier, const f32 one) {
     unsigned int* seed = (unsigned int*)((u8*)base + 0xb4);
     *seed = *seed * multiplier + 0x3c6ef35f;
-    union { u32 bits; f32 value; } out;
+    union { unsigned int bits; f32 value; } out;
     out.bits = (*seed >> 9) | 0x3f800000;
     return out.value - one;
 }
@@ -144,10 +144,10 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy1=*(f32*)(((u8*)actor)+0x23c);
         f32 offsetY, offsetX, rangeY, one, rangeX;
         one=lbl_805417C4;
-        offsetX=lbl_805417B8;
-        offsetY=lbl_805417BC;
-        rangeX=lbl_805417C0;
-        rangeY=lbl_805417C8;
+        offsetX=64.0f;
+        offsetY=32.0f;
+        rangeX=416.0f;
+        rangeY=320.0f;
         fx+=offsetX;
         fy+=offsetY;
         fx1-=offsetY;
