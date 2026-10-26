@@ -1005,6 +1005,25 @@ static inline bool HudCountPending8041(u8 mask) {
     return (lbl_80529DEC[0x239] & mask) != 0;
 }
 
+static inline void HudSyncCountOffset8041(s32 idx, s32 off) {
+    u8* dst = lbl_80529DEC;
+    s32* src = (s32*)(lbl_80529DEC + off + 0xd8);
+    for (s32 i = 0; i < 4; i++, dst += 4) {
+        if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
+            *(s32*)(dst + 0xd8) = *src;
+        }
+    }
+}
+
+static inline void HudSetCountTransitionOffset8041(u8* self, s32 idx, s32 off, s32* source) {
+    u8* p2 = self + idx * 2;
+    u8* p4 = self + off;
+    *(s16*)(p2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
+    *(s32*)(p4 + 0x1e8) = *(s32*)(p4 + 0x1d8);
+    *(s32*)(p4 + 0x1d8) = *source;
+    *(s32*)(self + off + 0x1f8) = fn_80237810(idx);
+}
+
 static inline void HudSyncCount8041(s32 idx) {
     u8* dst = lbl_80529DEC;
     s32* src = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -1035,88 +1054,99 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     bit = 1 << idx;
     mask = bit;
 
-    flag = (lbl_80529DEC[0x239] & mask) != 0;
+    flag = HudCountPending8041(mask);
     if (flag) {
         cnt = fn_80237774(idx);
         s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         *(s32*)(lbl_80529DEC + idx * 4 + 0xd8) = cnt;
         HudSyncCount8041(idx);
         this_[0x28a] |= (u8)bit;
-        *(s32*)(this_ + idx * 4 + 0x198) = 0;
+        ((HudCounters8041*)this_)->countDelay[idx] = 0;
         HudSetCountTransition8041(this_, idx, slot);
         lbl_80529DEC[0x239] &= ~mask;
     } else {
         s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
         cnt = *slot;
         if (cnt < (s32)fn_80237774(idx)) {
-            *(s32*)(this_ + idx * 4 + 0x198) += 1;
-            if (*(s32*)(this_ + idx * 4 + 0x198) >= 10) {
+            ((HudCounters8041*)this_)->countDelay[idx] += 1;
+            if (((HudCounters8041*)this_)->countDelay[idx] >= 10) {
                 *slot += 1;
                 HudSyncCount8041(idx);
                 this_[0x28a] |= (u8)bit;
-                *(s32*)(this_ + idx * 4 + 0x198) = 0;
+                ((HudCounters8041*)this_)->countDelay[idx] = 0;
                 fn_80230EB8(idx, 9);
             }
             if (this_[0x291] != 0) {
                 HudSetCountTransition8041(this_, idx, slot);
             }
-        } else if (*slot > (s32)fn_80237774(idx)) {
+        } else {
+            cnt = *slot;
+            if (cnt > (s32)fn_80237774(idx)) {
             lbl_80529DEC[0x24a] |= mask;
-            *(s32*)(this_ + idx * 4 + 0x198) += 1;
-            if (*(s32*)(this_ + idx * 4 + 0x198) >= 10) {
+            ((HudCounters8041*)this_)->countDelay[idx] += 1;
+            if (((HudCounters8041*)this_)->countDelay[idx] >= 10) {
                 *slot -= 1;
                 HudSyncCount8041(idx);
                 this_[0x28a] |= (u8)bit;
-                *(s32*)(this_ + idx * 4 + 0x198) = 0;
+                ((HudCounters8041*)this_)->countDelay[idx] = 0;
             }
             if (this_[0x291] != 0) {
                 HudSetCountTransition8041(this_, idx, slot);
             }
         } else {
-            *(s32*)(this_ + idx * 4 + 0x198) = 0;
+            ((HudCounters8041*)this_)->countDelay[idx] = 0;
         }
     }
 
-    cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xe8);
-    if (cnt < (s32)fn_80236100(idx)) {
-        *(s32*)(this_ + idx * 4 + 0x1a8) += 1;
-        if (*(s32*)(this_ + idx * 4 + 0x1a8) >= 2) {
-            *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) += 2;
-            if (*(s32*)(lbl_80529DEC + idx * 4 + 0xe8) < (s32)fn_80236100(idx)) {
-                fn_80230EB8(idx, 4);
-            } else {
-                *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) = fn_80236100(idx);
-                fn_80230EB8(idx, 0x51);
-            }
-            this_[0x28b] |= (u8)bit;
-            *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
-        }
-    } else if (*(s32*)(lbl_80529DEC + idx * 4 + 0xe8) > (s32)fn_80236100(idx)) {
-        *(s32*)(this_ + idx * 4 + 0x1a8) += 1;
-        if (*(s32*)(this_ + idx * 4 + 0x1a8) >= 2) {
-            *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) -= 2;
-            if (*(s32*)(lbl_80529DEC + idx * 4 + 0xe8) > (s32)fn_80236100(idx)) {
-                fn_80230EB8(idx, 0x4e);
-            } else {
-                *(s32*)(lbl_80529DEC + idx * 4 + 0xe8) = fn_80236100(idx);
-                fn_80230EB8(idx, 0x51);
-            }
-            this_[0x28b] |= (u8)bit;
-            *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
-        }
-    } else {
-        *(s32*)(this_ + idx * 4 + 0x1a8) = 0;
     }
-
-    if (*(s16*)(this_ + idx * 2 + 0x224) > 0) {
-        if (*(s16*)(this_ + idx * 2 + 0x22c) == 0) {
-            *(s16*)(this_ + idx * 2 + 0x224) -= 1;
-            fn_80230FD0(idx, 0x20034);
-            if (*(s16*)(this_ + idx * 2 + 0x224) != 0) {
-                *(s16*)(this_ + idx * 2 + 0x22c) = 0xc;
+    {
+        s32* slot = (s32*)(lbl_80529DEC + idx * 4 + 0xe8);
+        cnt = *slot;
+        if (cnt < (s32)fn_80236100(idx)) {
+            ((HudCounters8041*)this_)->gaugeDelay[idx]++;
+            if (((HudCounters8041*)this_)->gaugeDelay[idx] >= 2) {
+                *slot += 2;
+                cnt = *slot;
+                if (cnt >= (s32)fn_80236100(idx)) {
+                    *slot = fn_80236100(idx);
+                    fn_80230EB8(idx, 0x51);
+                } else {
+                    fn_80230EB8(idx, 4);
+                }
+                this_[0x28b] |= (u8)bit;
+                ((HudCounters8041*)this_)->gaugeDelay[idx] = 0;
             }
         } else {
-            *(s16*)(this_ + idx * 2 + 0x22c) -= 1;
+            cnt = *slot;
+            if (cnt > (s32)fn_80236100(idx)) {
+                ((HudCounters8041*)this_)->gaugeDelay[idx]++;
+                if (((HudCounters8041*)this_)->gaugeDelay[idx] >= 2) {
+                    *slot -= 2;
+                    cnt = *slot;
+                    if (cnt <= (s32)fn_80236100(idx)) {
+                        *slot = fn_80236100(idx);
+                        fn_80230EB8(idx, 0x51);
+                    } else {
+                        fn_80230EB8(idx, 0x4e);
+                    }
+                    this_[0x28b] |= (u8)bit;
+                    ((HudCounters8041*)this_)->gaugeDelay[idx] = 0;
+                }
+            } else {
+                ((HudCounters8041*)this_)->gaugeDelay[idx] = 0;
+            }
+        }
+    }
+
+    if (((HudCounters8041*)this_)->timer[idx] > 0) {
+        if (((HudCounters8041*)this_)->cooldown[idx] == 0) {
+            ((HudCounters8041*)this_)->timer[idx] -= 1;
+            fn_80230FD0(idx, 0x20034);
+            if (((HudCounters8041*)this_)->timer[idx] != 0) {
+                ((HudCounters8041*)this_)->cooldown[idx] = 0xc;
+            }
+        } else {
+            ((HudCounters8041*)this_)->cooldown[idx] -= 1;
         }
     }
 }
