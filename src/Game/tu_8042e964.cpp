@@ -209,6 +209,17 @@ struct T80431_Pane {
     f32 f118;
 };
 
+static inline f32 paneWidth80431(T80431_Pane* pane) {
+    f32 width = pane->sw;
+    width -= pane->w;
+    return width;
+}
+static inline f32 paneHeight80431(T80431_Pane* pane) {
+    f32 height = pane->sh;
+    height -= pane->h;
+    return height;
+}
+
 struct T80431_Owner {
     void* vt;
     u8 pad4[0x4];
@@ -296,6 +307,44 @@ f32 fn_80430368(void* self, u8 type, s32 count, char* buf) {
         break;
     }
     return 0.0f;
+}
+
+f32 fn_80430518(void* self, u8 type, s32 count, f32 scale) {
+    JUTFont::TWidth w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, wa, wb;
+    f32 width = lbl_80543AF8;
+    switch (type) {
+    case 3:
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0xa0, &w0);
+        width += scale * (f32)(int)w0.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x46, &w1);
+        width += scale * (f32)(int)w1.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x6f, &w2);
+        width += scale * (f32)(int)w2.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x72, &w3);
+        width += scale * (f32)(int)w3.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x63, &w4);
+        width += scale * (f32)(int)w4.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x65, &w5);
+        width += scale * (f32)(int)w5.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0xa0, &w6);
+        width += scale * (f32)(int)w6.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x47, &w7);
+        width += scale * (f32)(int)w7.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x65, &w8);
+        width += scale * (f32)(int)w8.w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x6d, &w9);
+        width += scale * (f32)(int)w9.w1;
+        if (count != 1) {
+            (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x73, &wa);
+            width += scale * (f32)(int)wa.w1;
+            (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0xa0, &wb);
+            width += scale * (f32)(int)wb.w1;
+        }
+        break;
+    default:
+        break;
+    }
+    return width;
 }
 
 void fn_804310BC(T80431_Owner* self) {
@@ -648,3 +697,13 @@ else {chunk[0]=p[0];chunk[1]=0;strcat(out,chunk);idx++;}
 }
 chunk[0]=*p;chunk[1]=0;strcat(out,chunk);
 }
+
+extern "C" f32 lbl_80543B2C;
+void fn_8042F6DC(T80431_Owner* self) {
+    u8* p = (u8*)self;
+    f32 f30 = *(f32*)(p + 0xb8) + lbl_80543B2C;
+    s32 r = *(s32*)(p + 0xe4);
+    (void)r;
+    (void)f30;
+}
+
