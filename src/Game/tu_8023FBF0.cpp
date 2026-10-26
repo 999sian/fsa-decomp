@@ -2378,11 +2378,26 @@ inline s32 counter476(char* p) {
 }
 inline BOOL owner476(char* p) {
  if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4))) && S32(p, 0xd60) < 0) return 1;
- if (getMode4(p) == 4) {
+ s32 me;
+ if (getMode5(p, me) == 4) {
   s32 a = linkIdx(p);
   return a != linkRank2(p);
  }
  return ((u32)S32(p, 0xd60) >> 31) ^ 1;
+}
+inline bool resetState476(char* p) {
+ if (!fn_80251BFC(p, 0)) return false;
+ if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4))) && S32(p, 0xd60) < 0) {
+  S32(p, 0x1244) = 1;
+ } else if (U8(p, 0x434) != 0) {
+  if (S32(p, 0x1240) == 2) return false;
+  S32(p, 0x1244) = 2;
+ } else {
+  S32(p, 0x1244) = 0;
+ }
+ U8(p, 0x124c) = 1;
+ if (S32(p, 0xd60) < 0 && U8(p, 0xcfe) == 1 && S32(p, 0x1244) != 0) U8(p, 0xcfe) = 0;
+ return true;
 }
 
 void fn_8024762C(char* p) {
@@ -2403,50 +2418,13 @@ void fn_8024762C(char* p) {
     if (U8(p, 0x454) != 0) {
         return;
     }
-    s32 moved = 1;
-    if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) || S32(p, 0xd60) >= 0) {
-        s32 n = countSharing(p);
-        s32 mode;
-        if (n < 2) {
-            mode = 5;
-        } else if (S32(p, 0xd60) < 0) {
-            mode = S32(p, 0x120c);
-        } else {
-            mode = fn_8022CAF8(S32(p, 0xd60));
-        }
-        if (mode == 4) {
-            u32 a;
-            s32 lv;
-            if (S32(p, 0xd60) < 0) {
-                a = S32(p, 0x1224);
-            } else {
-                a = fn_80234004(S32(p, 0xd60));
-            }
-            if (S32(p, 0xd60) < 0) {
-                lv = 0;
-            } else {
-                s32 i;
-                s32 c = 0;
-                for (i = 0; i < S32(p, 0x4); i++) {
-                    if (S32(p, 0xd60) == fn_8022F3DC(i)) {
-                        c++;
-                    }
-                }
-                lv = c + 1;
-            }
-            moved = ((u32)(lv - a) | (u32)(a - lv)) >> 31;
-        } else {
-            moved = ((u32)S32(p, 0xd60) >> 31) ^ 1;
-        }
-    }
     s32 cv;
-    if (moved == 0) {
+    if (!(u8)owner476(p)) {
         cv = S32(p, 0x1240) == 0x1b || S32(p, 0x1244) == 0x1b;
     } else {
-        fn_8022EA0C(S32(p, 0x4));
         cv = fn_80233EDC(fn_8022EA0C(S32(p, 0x4)));
     }
-    if (cv) {
+    if ((u8)cv) {
         return;
     }
     if (U8(p, 0xce8) != 0) {
@@ -2465,19 +2443,14 @@ void fn_8024762C(char* p) {
             S32(p, 0xbc0) -= 1;
         }
     } else {
-        s32 t = fn_8023C36C(S32(p, 0xd60));
+        s32 t = timer476(p);
         if (t > 0 && S32(p, 0x48c) == 0) {
             U8(p, 0x490) = 1;
         }
-        S32(p, 0x48c) = fn_8023C36C(S32(p, 0xd60));
-        S32(p, 0xbc0) = fn_8023BEA8(S32(p, 0xd60));
+        S32(p, 0x48c) = timer476(p);
+        S32(p, 0xbc0) = counter476(p);
     }
-    s32 iv;
-    if (S32(p, 0xd60) < 0) {
-        iv = S32(p, 0x48c);
-    } else {
-        iv = fn_8023C36C(S32(p, 0xd60));
-    }
+    s32 iv = timer476(p);
     if (iv > 0 && S32(p, 0x1240) != 0xb) {
         if (fn_80251BFC(p, 0xb)) {
             S32(p, 0x1244) = 0xb;
@@ -2487,8 +2460,8 @@ void fn_8024762C(char* p) {
                 U8(p, 0xcfe) = 0;
             }
         }
-    } else if (iv == 0 && S32(p, 0x1240) == 0xb) {
-        s32 ok = 0;
+    } else if (timer476(p) == 0 && S32(p, 0x1240) == 0xb) {
+        bool ok = 0;
         if (fn_80251BFC(p, 0)) {
             ok = 1;
             if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && S32(p, 0xd60) < 0) {
