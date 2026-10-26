@@ -16,22 +16,20 @@ extern "C" char lbl_80476578[];
 extern "C" void* fn_804030C4(u32 tag, char* name);
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 
-#pragma optimization_level 3
 static inline u32 calcCardChecksum(u8* data) {
-    u32 sum = 0;
     u16 inv = 0;
+    u32 sum = 0;
     u16* p = (u16*)data;
-    int i;
-    for (i = 0; i < 0x7ff; i++) {
-        sum += p[0];
-        inv += ~p[0];
-        sum += p[1];
-        inv += ~p[1];
-        p += 2;
+    for (int i = 0; i < 0x7ff; i++) {
+        u32 value = *p++;
+        sum += value;
+        inv += ~value;
+        value = *p++;
+        sum += value;
+        inv += ~value;
     }
     return (sum << 16) | inv;
 }
-#pragma optimization_level reset
 #pragma optimization_level 3
 extern "C" void fn_803BACF8(u8* param_1, u8 param_2) {
 param_1 += param_2 * 200;
@@ -131,6 +129,7 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     return 0;
 }
 
+#pragma opt_unroll_loops off
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
     CARDFileInfo* fileInfo = info;
     void* src = data;
@@ -197,33 +196,33 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     u8 v0 = lbl_80529DEC[0x245];
     u8 v1 = lbl_80529DEC[0x244];
     u8 v2 = lbl_80529DEC[0x246];
-    buf1[2] = buf0[2] = v0;
-    buf1[3] = buf0[3] = v1;
-    buf1[4] = buf0[4] = v2;
+    buf0[2] = buf1[2] = v0;
+    buf0[3] = buf1[3] = v1;
+    buf0[4] = buf1[4] = v2;
     chk0 = calcCardChecksum(buf0);
     *(u32*)(buf0 + 0x1ffc) = chk0;
     chk1 = calcCardChecksum(buf1);
     *(u32*)(buf1 + 0x1ffc) = chk1;
-    result = CARDWrite(fileInfo, buf0, 0x2000, 0x2000);
+    result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x2000);
     if (result != 0) {
         return result;
     }
-    result = CARDRead(fileInfo, buf0, 0x2000, 0x2000);
+    result = CARDRead(fileInfo, saveBlock0, 0x2000, 0x2000);
     if (result != 0) {
         return result;
     }
-    if (chk0 != calcCardChecksum(buf0)) {
+    if (chk0 != calcCardChecksum(saveBlock0)) {
         return result;
     }
-    result = CARDWrite(fileInfo, buf1, 0x2000, 0x4000);
+    result = CARDWrite(fileInfo, saveBlock1, 0x2000, 0x4000);
     if (result != 0) {
         return result;
     }
-    result = CARDRead(fileInfo, buf1, 0x2000, 0x4000);
+    result = CARDRead(fileInfo, saveBlock1, 0x2000, 0x4000);
     if (result != 0) {
         return result;
     }
-    if (chk1 != calcCardChecksum(buf1)) {
+    if (chk1 != calcCardChecksum(saveBlock1)) {
         return result;
     }
     CARDGetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
@@ -250,7 +249,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
     return result;
 }
-
+#pragma opt_unroll_loops reset
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
 extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
