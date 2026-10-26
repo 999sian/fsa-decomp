@@ -6,10 +6,9 @@
 #include "dolphin/gx/GXEnum.h"
 #include "types.h"
 
-static inline void initializeSwapModeTable(J2DTevSwapModeTable& table, const J2DTevSwapModeTableInfo& info)
+static inline u8 initializeSwapModeTable(const u8 r, u8 g, const u8 b, const u8 a)
 {
-    const u8* channels = reinterpret_cast<const u8*>(&info);
-    table._00 = J2DCalcTevSwapTable(channels[0], channels[1], channels[2], channels[3]);
+    return (r << 6) + (g << 4) + (b << 2) + a;
 }
 
 void J2DColorBlock::initialize() {
