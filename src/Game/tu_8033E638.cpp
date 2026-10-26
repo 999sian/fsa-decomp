@@ -104,8 +104,8 @@ static inline void platformPolar(JGeometry::TVec3<f32>& point, const f32 radius,
     f32 x;
     f32 cosine;
     f32 sine;
-    sine = *trig;
-    cosine = trig[1];
+    sine = *trig++;
+    cosine = *trig;
     y = radius * sine;
     x = radius * cosine;
     point.y = y;
