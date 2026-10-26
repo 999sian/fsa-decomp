@@ -1866,9 +1866,9 @@ extern "C" void fn_8040E838(u8* self) {
 	if (*(s32*)(self + 0x37c) >= *(s16*)(*(u8**)(self + 0x20) + 6)) {
 		*(s32*)(self + 0x37c) = *(s16*)(*(u8**)(self + 0x20) + 6) - 1;
 	}
-	*(f32*)(*(u8**)(self + 0x1c) + 8) = (f32)(u32)*(s32*)(self + 0x378);
+	*(f32*)(*(u8**)(self + 0x1c) + 8) = (f32)*(s32*)(self + 0x378);
 	animationTransform__7J2DPaneFv((*(Tu80403Pane**)(self + 0xc))->search(0x4e646174613038ULL));
-	*(f32*)(*(u8**)(self + 0x20) + 8) = (f32)(u32)*(s32*)(self + 0x37c);
+	*(f32*)(*(u8**)(self + 0x20) + 8) = (f32)*(s32*)(self + 0x37c);
 	animation__9J2DScreenFv(*(void**)(self + 0xc));
 	if (*(s32*)(self + 0x378) >= *(s32*)(self + 0x364) * 200) {
 		for (s32 i = 0; i < 18; i++) {
@@ -1880,34 +1880,34 @@ extern "C" void fn_8040E838(u8* self) {
 		*(s32*)(self + 0x37c) = *(s32*)(self + 0x364) * 200;
 		switch (*(s32*)(self + 0x364)) {
 		case 1:
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503231ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503232ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503233ULL))[0xb0] = 0;
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503231ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503232ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503233ULL))->hide();
 			break;
 		case 2:
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503331ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503332ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503333ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503334ULL))[0xb0] = 0;
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503331ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503332ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503333ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503334ULL))->hide();
 			break;
 		case 3:
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503431ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503432ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503433ULL))[0xb0] = 0;
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503431ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503432ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503433ULL))->hide();
 			break;
 		case 4:
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503531ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503532ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503533ULL))[0xb0] = 0;
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503531ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503532ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503533ULL))->hide();
 			break;
 		case 5:
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503631ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503632ULL))[0xb0] = 0;
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503631ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503632ULL))->hide();
 			break;
 		case 6:
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503731ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503732ULL))[0xb0] = 0;
-			((u8*)(*(Tu80403Pane**)(self + 0xc))->search(0x503733ULL))[0xb0] = 0;
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503731ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503732ULL))->hide();
+			((J2DPane*)(*(Tu80403Pane**)(self + 0xc))->search(0x503733ULL))->hide();
 			break;
 		}
 		u8* row = (u8*)&lbl_8050EC80[lbl_8050EC80[0].selfIndex];
@@ -1946,14 +1946,10 @@ extern "C" void fn_8040ED20(u8* self) {
     if (*(s16*)(self + 0x432) > *(s16*)(lbl_8050DB0C + 0x2ce)) {
         s32 delta = *(s16*)(self + 0x432) - *(s16*)(lbl_8050DB0C + 0x2ce);
         if (delta < *(s16*)(lbl_8050DB0C + 0x2d0)) {
-            f32 t;
-            f32 one = 1.0f;
-            f32 max = 255.0f;
-            t = (f32)delta / *(s16*)(lbl_8050DB0C + 0x2d0);
+            f32 t = (f32)delta / *(s16*)(lbl_8050DB0C + 0x2d0);
             t = t * t;
-            t = one - t;
-            t = max * t;
-            self[0x665] = (s32)t;
+            f32 alpha = 1.0f - t;
+            self[0x665] = (s32)(255.0f * alpha);
         } else self[0x665] = 0;
     }
     if (*(s16*)(self + 0x432) > *(s16*)(lbl_8050DB0C + 0x2c6)) {
@@ -1972,10 +1968,10 @@ extern "C" void fn_8040ED20(u8* self) {
                 u8* p;
                 u8* q;
                 s32 i;
-                i = *(int*)(self + 0x340) * 4;
-                p = self + *(int*)(self + 0x340) * 16;
-                q = lbl_8048C2F8 + *(int*)(self + 0x340) * 64;
-                while (i < *(int*)(self + 0x340) * 4 + 4) {
+                i = *(s32*)(self + 0x340) * 4;
+                p = self + *(s32*)(self + 0x340) * 16;
+                q = lbl_8048C2F8 + *(s32*)(self + 0x340) * 64;
+                while (i < *(s32*)(self + 0x340) * 4 + 4) {
                     *(s16*)(*(u8**)(p + 0x128) + 0x26) = 0;
                     u8* obj = *(u8**)(*(u8**)(p + 0x128) + 4);
                     ((Pane408*)obj)->setAlpha(0);
@@ -1987,17 +1983,17 @@ extern "C" void fn_8040ED20(u8* self) {
                 }
                 s32 j;
                 u8* p2;
-                j = *(int*)(self + 0x340) * 3;
+                j = *(s32*)(self + 0x340) * 3;
                 p2 = self + j * 4;
-                while (j < *(int*)(self + 0x340) * 3 + 3) {
+                while (j < *(s32*)(self + 0x340) * 3 + 3) {
                     *(s16*)(*(u8**)(p2 + 0x1a8) + 0x26) = 0;
                     u8* obj = *(u8**)(*(u8**)(p2 + 0x1a8) + 4);
                     ((Pane408*)obj)->setAlpha(0);
                     p2 += 4;
                     j++;
                 }
-                *(s16*)(*(u8**)((self + *(int*)(self + 0x340) * 4) + 0x208) + 0x26) = 0;
-                u8* obj = *(u8**)(*(u8**)((self + *(int*)(self + 0x340) * 4) + 0x208) + 4);
+                *(s16*)(*(u8**)((self + *(s32*)(self + 0x340) * 4) + 0x208) + 0x26) = 0;
+                u8* obj = *(u8**)(*(u8**)((self + *(s32*)(self + 0x340) * 4) + 0x208) + 4);
                 ((Pane408*)obj)->setAlpha(0);
                 *(s32*)(self + 0x350) = 0x13;
             }
