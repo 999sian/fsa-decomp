@@ -41,7 +41,7 @@ extern "C" s32 fn_8022CAF8(s32 i);
 extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" u32 __cvt_fp2unsigned(f64);
 
-static inline f32 tu311Random(u8* base=(u8*)lbl_8053AAF8, int multiplier=0x19660d, f32 one=lbl_805417C4) {
+template <class T> static inline f32 tu311Random(T* base, int multiplier, f32 one) {
     unsigned int* seed = (unsigned int*)(base + 0xb4);
     *seed = *seed * multiplier + 0x3c6ef35f;
     union { u32 bits; f32 value; } out;
@@ -142,7 +142,8 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy=*(f32*)(((u8*)actor)+0x234);
         fx1=*(f32*)(((u8*)actor)+0x238);
         fy1=*(f32*)(((u8*)actor)+0x23c);
-        f32 offsetY, offsetX, rangeY, rangeX;
+        f32 offsetY, offsetX, rangeY, rangeX, one;
+        one=lbl_805417C4;
         offsetX=lbl_805417B8;
         offsetY=lbl_805417BC;
         rangeX=lbl_805417C0;
@@ -153,8 +154,8 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy1-=offsetY;
         zero=lbl_805417CC;
         step=lbl_805417D0;
-        fx2=rangeX*tu311Random((u8*)lbl_8053AAF8,0x19660d)+fx;
-        fy2=rangeY*tu311Random((u8*)lbl_8053AAF8,0x19660d)+fy;
+        fx2=rangeX*tu311Random((u8*)lbl_8053AAF8,0x19660d,one)+fx;
+        fy2=rangeY*tu311Random((u8*)lbl_8053AAF8,0x19660d,one)+fy;
         for (r30 = 0; r30 < 0x14; r30++) {
             for (r28 = 0; r28 < 0x1a; r28++) {
                 pos.x = fx2;
@@ -225,23 +226,23 @@ searchDone:
         }
         if (((u8*)actor)[0x258] == 0) {
             fn_8022FEB8(&bounds.i.x, *(s32*)(((u8*)actor) + 4), *(void**)(((u8*)actor) + 0x198), 1, 0);
-            r28 = fn_8022FD8C(*(void**)(((u8*)actor) + 0x198));
-            if (r28 < 0) {
+            s32 player = fn_8022FD8C(*(void**)(((u8*)actor) + 0x198));
+            if (player < 0) {
                 break;
             }
             if (!fn_802300EC()) {
                 break;
             }
             s32 message;
-            if (fn_8022E438(r28,*(s32*)(((u8*)actor)+0x250))) {
+            if (fn_8022E438(player,*(s32*)(((u8*)actor)+0x250))) {
                 if ((u8)fn_802D800C(fn_802D6A9C(),0x14)) message=0x834;
                 else message=0x832;
             } else message=0x833;
             void* handledialog34=*(void**)(((u8*)actor)+0x198);
             s32 roomdialog34=*(s32*)(((u8*)actor)+4);
             dialog34=*(JGeometry::TVec3<f32>*)(((u8*)actor)+0xc);
-            if (fn_8038C678(r28,message,handledialog34,roomdialog34,&dialog34,8)) {
-                *(s32*)(((u8*)actor)+0x254)=r28;
+            if (fn_8038C678(player,message,handledialog34,roomdialog34,&dialog34,8)) {
+                *(s32*)(((u8*)actor)+0x254)=player;
                 ((u8*)actor)[0x258]=1;
             }
         } else {
