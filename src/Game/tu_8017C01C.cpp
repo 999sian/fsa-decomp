@@ -96,11 +96,12 @@ extern "C" void fn_8017C078(char* this_) {
     tag[1] = 0;
     tag[2] = 0;
     tag[3] = 100;
+    f32 scale = lbl_8053DD30 * *(f32*)(this_ + 0x2b0);
     mtx[0][0] = *(f32*)(this_ + 0x2ac);
     mtx[0][1] = lbl_8053DD28;
     mtx[0][2] = lbl_8053DD28;
     mtx[1][0] = lbl_8053DD28;
-    mtx[1][1] = (lbl_8053DD30 * *(f32*)(this_ + 0x2b0));
+    mtx[1][1] = scale;
     mtx[1][2] = lbl_8053DD28;
     mtx[2][0] = lbl_8053DD28;
     mtx[2][1] = lbl_8053DD28;
