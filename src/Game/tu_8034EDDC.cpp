@@ -68,6 +68,29 @@ extern "C" void PSMTXIdentity(f32 (*m)[4]);
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" char lbl_80472228[];
+static inline f32 enemyDrawSin(f32 x) { return sin(x); }
+static inline f32 enemyDrawCos(f32 x) { return cos(x); }
+static inline void enemyDrawRot(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+    f32 cx;
+    f32 sx = enemyDrawSin(ax);
+    f32 sy = enemyDrawSin(ay);
+    f32 sz = enemyDrawSin(az);
+    cx = enemyDrawCos(ax);
+    f32 cy = enemyDrawCos(ay);
+    f32 cz = enemyDrawCos(az);
+    f32 cc = cx * cz;
+    f32 ss = sx * sy;
+    f32 cs = cx * sz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (ss * cz - cs);
+    m[1][1] = s * (ss * sz + cc);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cc * sy + sx * sz);
+    m[1][2] = s * (cs * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
+}
 extern "C" void fn_8034EE3C(u8* self) {
     s32 mode = 0xff;
     s32 t;
