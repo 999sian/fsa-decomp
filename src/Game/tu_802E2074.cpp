@@ -37,6 +37,16 @@ static inline void genSetPosition(JGeometry::TVec3<f32>& pos, const u16 x, const
 }
 
 #pragma opt_propagation reset
+struct GenRecordReader {
+    u8* p;
+    GenRecordReader(u8* data) : p(data) {}
+    u8 read8() { return *p++; }
+    u32 read32() {
+        u32 a=read8(), b=read8(), c=read8(), d=read8();
+        return (a<<24)|(b<<16)|(c<<8)|d;
+    }
+};
+
 struct Box4 {
     f32 x0, y0, x1, y1;
 };
@@ -53,6 +63,7 @@ extern "C" {
 void EmptyHook_802E20D4(void) {}
 
 #pragma peephole off
+extern const f32 lbl_805411BC, lbl_805411B8;
 void fn_802E20D8(u8* this_)
 {
     s32 room = *(s32*)(this_ + 4);
@@ -117,7 +128,7 @@ void fn_802E20D8(u8* this_)
             }
             if (found == 1) {
                 u8 destination;
-                u8 y, x;
+                u16 y, x;
                 u8* data = *(u8**)(this_ + 0x244) + offset;
                 offset += 11;
                 s32 room;
@@ -129,16 +140,16 @@ void fn_802E20D8(u8* this_)
                 if (destination == 0) {
                     baseX = box.x0; baseY = box.y0; room = 0;
                 } else {
-                    baseX = baseY = 0.0f; room = genDestinationRoom(destination);
+                    baseX = baseY = lbl_805411B8; room = genDestinationRoom(destination);
                 }
                 s32 direction = *(s32*)(this_ + 0x23c);
                 if (direction < 2) {
                     JGeometry::TVec3<f32> pos;
-                    genSetPosition(pos, x, lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)], baseX, baseY);
+                    pos.set(lbl_805411BC*(u16)x+baseX, lbl_805411BC*lbl_8046E9D8[direction][*(s32*)(this_+0x240)]+baseY, lbl_805411B8);
                     ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, (f32*)&pos, param, 0, -1);
                 } else {
                     JGeometry::TVec3<f32> pos;
-                    genSetPosition(pos, lbl_8046E9D8[direction][*(s32*)(this_ + 0x240)], y, baseX, baseY);
+                    pos.set(lbl_805411BC*lbl_8046E9D8[direction][*(s32*)(this_+0x240)]+baseX, lbl_805411BC*(u16)y+baseY, lbl_805411B8);
                     ((s32*)lbl_804D4768)[lbl_8053ACB0] = Actor_CreateByID(fn_801F856C(), name, room, (f32*)&pos, param, 0, -1);
                 }
                 if (((s32*)lbl_804D4768)[lbl_8053ACB0] >= 0) {
