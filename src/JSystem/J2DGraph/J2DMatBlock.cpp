@@ -6,22 +6,6 @@
 #include "dolphin/gx/GXEnum.h"
 #include "types.h"
 
-static inline u8 initializeSwapModeTable(const u8 r, u8 g, const u8 b, const u8 a)
-{
-    return (r << 6) + (g << 4) + (b << 2) + a;
-}
-static inline void initializeSwapModeTableInfo(J2DTevSwapModeTable& table, const J2DTevSwapModeTableInfo& info)
-{
-    table._00 = initializeSwapModeTable(info.mR, info.mG, info.mB, info.mA);
-}
-static inline u8 initializeSwapModeTableGB(const u8 r, const u8 b, u8 g, const u8 a)
-{
-    return (r << 6) + (g << 4) + (b << 2) + a;
-}
-static inline void initializeSwapModeTableGBInfo(J2DTevSwapModeTable& table, const J2DTevSwapModeTableInfo& info)
-{
-    table._00 = initializeSwapModeTableGB(info.mR, info.mB, info.mG, info.mA);
-}
 
 void J2DColorBlock::initialize() {
     for (int i = 0; i < 2; i++) {
@@ -1327,9 +1311,12 @@ void J2DTevBlock8::initialize()
         mKColorSels[i] = -1;
         mKAlphaSels[i] = -1;
     }
-    for (int i = 0; i < 4; i++) {
-        mSwapModeTables[i].setTevSwapModeTableInfo(j2dDefaultTevSwapModeTable);
+    for (int i = 0; i < 3; i++) {
+        const J2DTevSwapModeTableInfo& info = j2dDefaultTevSwapModeTable;
+        u8 green = info.mG;
+        mSwapModeTables[i]._00 = (info.mR << 6) + (green * 16) + (info.mB * 4) + info.mA;
     }
+    mSwapModeTables[3].setTevSwapModeTableInfo(j2dDefaultTevSwapModeTable);
     for (int i = 0; i < 8; i++) {
         mIndStages[i].setIndTevStageInfo(j2dDefaultIndTevStageInfo);
     }
