@@ -704,13 +704,14 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
     } else if (*(s32*)((u8*)this_ + 0x88) >= 0) {
         FSAPad pad;
         fn_8008CF54(&pad, *(s32*)((u8*)this_ + 0x88));
+        s64* times = lbl_804993B0;
         bool active = false;
         if (pad._7c != -1 && pad._98 != 0) {
             active = true;
         }
-        s64 t0 = active ? (lbl_804993B0[0] != 0 ? lbl_804993B0[0] : OSGetTime()) : 0;
-        lbl_804993B0[0] = t0;
-        s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
+        s64 t0 = active ? (times[0] != 0 ? times[0] : OSGetTime()) : 0;
+        times[0] = t0;
+        s64 e0 = times[0] != 0 ? OSGetTime() - times[0] : 0;
         fn_8008D4CC(&pad, e0);
         fn_8008D15C();
         if (param_1 != nullptr) {
@@ -722,7 +723,7 @@ extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
         result = TRUE;
         dtor_8008D028(&pad, -1);
     } else {
-        if (*(s32*)((u8*)this_ + 0x84) != 0) {
+        if (*(u32*)((u8*)this_ + 0x84) != 0) {
             fn_8008D15C();
             if (param_1 != nullptr) {
                 *param_1 = ((FSAPad*)*(u32*)((u8*)this_ + 0x84))->_1c;
