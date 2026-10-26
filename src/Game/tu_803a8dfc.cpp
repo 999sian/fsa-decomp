@@ -2168,11 +2168,11 @@ extern TagPair lbl_804762D0[];
 extern u8 lbl_8050DB0C[];
 extern "C" u8 fn_80389BF0(s32 idx, s32 id);
 
-extern IntroTags lbl_80476208;
+extern const u8 lbl_80476208[];
 
 // NONMATCHING (97.5%): register allocation of the timing locals.
 extern "C" void fn_803B03E8(Menu_Intro* p) {
-    IntroTags* tbl = &lbl_80476208;
+    u8* base = (u8*)&lbl_80476208;
     s32 d;
     s32 t0 = *(s16*)(lbl_8050DB0C + 0x260);
     s32 t1 = *(s16*)(lbl_8050DB0C + 0x262);
@@ -2191,14 +2191,14 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
         p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c - y);
         if (p->cur < 2) {
             for (s32 k = 0; k < 13; k++) {
-                p->screens[p->cur]->search(tbl->title[k])->setAlpha((u8)(p->alphaTitle[k] * (1.0f - (f32)d / (f32)t1)));
+                p->screens[p->cur]->search(((IntroTags*)base)->title[k])->setAlpha((u8)(p->alphaTitle[k] * (1.0f - (f32)d / (f32)t1)));
             }
         }
     }
     if (p->timer > start && p->timer <= start + dur + gap * (p->count - 1)) {
         s32 off = 0;
-        u64 (*r3)[3] = (u64 (*)[3])tbl->p3;
-        u64 (*r2)[2] = (u64 (*)[2])tbl->p2;
+        u64 (*r3)[3] = ((IntroTags*)base)->p3;
+        u64 (*r2)[2] = ((IntroTags*)base)->p2;
         for (s32 i = 0; i < p->count; i++, r3++, r2++) {
             if (p->timer >= start + off) {
                 s32 d = p->timer - (start + off);
@@ -2264,6 +2264,7 @@ extern "C" void fn_803B0978(Menu_Intro* p) {
 }
 
 // NONMATCHING (99.5%): register allocation in the slide loops.
+#pragma opt_lifetimes off
 extern "C" void fn_803B0FD4(Menu_Intro* p) {
     s32 end;
     s32 t1;
@@ -2272,7 +2273,6 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
     s32 d;
     f32 x;
     f32 a;
-    f32 off;
     p->timer++;
     t1 = *(s16*)(lbl_8050DB0C + 0x25a);
     t2 = *(s16*)(lbl_8050DB0C + 0x25c);
@@ -2280,14 +2280,14 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
     end = t1 + t2;
     if (p->timer <= end) {
         if (p->timer <= t1) {
-            off = (f32)dist * ((f32)(p->timer * p->timer) / (f32)(t1 * t1));
-            for (int i = 0; i < p->count; i++) {
+            a = (f32)dist * ((f32)(p->timer * p->timer) / (f32)(t1 * t1));
+            for (s32 i = 0; i < p->count; i++) {
                 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
-                p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, p->y424 + off);
+                p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, p->y424 + a);
             }
         } else if (p->timer <= end) {
             d = p->timer - t1;
-            off = ((f32)dist + 40.0f) * ((f32)(d * d) / (f32)(t2 * t2));
+            f32 off = ((f32)dist + 40.0f) * ((f32)(d * d) / (f32)(t2 * t2));
             for (s32 i = 0; i < p->count; i++) {
                 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
                 p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, (p->y424 + (f32)dist) - off);
@@ -2335,7 +2335,7 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_803B14F8(void* this_) {
     char* p = (char*)this_;
     s32 i;
