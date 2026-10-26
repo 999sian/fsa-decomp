@@ -704,7 +704,7 @@ extern "C" void fn_803324A8(char* this_) {
 extern "C" s32 fn_801F3D94(char* self, s32 n);
 extern "C" s32 fn_801F82CC(void* mgr, char* a, u8 c, f32 f);
 extern "C" void fn_801F3128(char* a, f32* out);
-extern "C" u32 fn_801F37AC(char* a, u32 x, void* p, u32 d, u32 buf, u32 i);
+extern "C" u8 fn_801F37AC(char* a, u32 x, void* p, u32 d, u32 buf, u32 i);
 extern "C" u32 fn_801F2DB4(char* a, u32 b, u32 c, void* buf);
 extern "C" u8 fn_801F2FAC(char* a);
 extern "C" void fn_801F0E34(char* a, u32 code, u32 z);
@@ -713,7 +713,7 @@ extern "C" s32 fn_801A6108(s32 h, void* p, void* q);
 extern "C" s32 fn_801A4F5C(s32 h, void* p, void* q);
 extern "C" s32 fn_801A46FC(s32 h, void* p, void* q);
 extern float lbl_80541F28;
-static inline u32 enemyFlameHit(char* self, char* target, u32& hit) {
+static inline u8 enemyFlameHit(char* self, char* target, u8& hit) {
     bool flame=false;
     if (target==0) return 0;
     if (*(u32*)(target+0x1a0)=='FLME') flame=true;
@@ -733,26 +733,28 @@ extern "C" void fn_80332A60(char* this_) {
     extern float lbl_80541F14, lbl_80541F18, lbl_80541EE8;
     s32 kind;
     char* p=this_;
-    u32 hit;
+    u8 hit;
     char* a;
     s32 idx;
     JGeometry::TVec2<f32> offset;
     JGeometry::TBox2<f32> box;
-    if (fn_801F3D94(p,1)!=0 || *(s32*)(p+0x284)>0 || *(u8*)(p+0xc4)!=0) return;
+    if (fn_801F3D94(p,1)==0 && *(s32*)(p+0x284)<=0 && *(u8*)(p+0xc4)==0) {
     *(u32*)(p+0xb0)=0x41302;
     if (*(s32*)(p+0x268)>0) {
         kind=0;
         hit=0;
-        box=*(JGeometry::TBox2<f32>*)(p+0x60);
-        offset.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
-        box.addPos(offset);
+        box.set(*(JGeometry::TBox2<f32>*)(p+0x60));
+        box.i.x += (offset.x=*(f32*)(p+0xc));
+        box.f.x += offset.x;
+        box.i.y += (offset.y=*(f32*)(p+0x10));
+        box.f.y += offset.y;
         idx=fn_801F82CC(fn_801F856C(),p,*(u8*)(p+0x195),lbl_80541F28);
-        u8 result=hit;
+        u32 result;
         if(idx>=0 && idx!=*(s32*)(p+0x198)) {
             a=(char*)fn_801F666C(fn_801F856C(),idx);
             result=enemyFlameHit(p,a,hit);
-        }
-        if(result) kind=2;
+        } else result=hit;
+        if((u8)result) kind=2;
         else if ((u8)fn_801F2DB4(p,'NULL','FLME',0) || fn_801F2FAC(p) ||
                  fn_801A4D1C(*(s32*)(p+0x198),&box,&offset)!=0 ||
                  fn_801A6108(*(s32*)(p+0x198),&box,&offset)!=0 ||
@@ -760,9 +762,9 @@ extern "C" void fn_80332A60(char* this_) {
                  fn_801A46FC(*(s32*)(p+0x198),&box,&offset)!=0) kind=1;
         if(kind>0) {
             if(*(u8*)(p+0x2a2)==1)
-                *(s32*)(p+0x240)=(s32)(enemyRandUnit((u32*)(lbl_8053AAF8+0xb4))*lbl_80541F14)+200;
+                *(s32*)(p+0x240)=(s32)(lbl_80541F14*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+200;
             else
-                *(s32*)(p+0x240)=(s32)(enemyRandUnit((u32*)(lbl_8053AAF8+0xb4))*lbl_80541F18)+100;
+                *(s32*)(p+0x240)=(s32)(lbl_80541F18*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+100;
             if(*(s32*)((char*)fn_802D6A9C()+4)!=1 || *(s32*)((char*)fn_802D6A9C()+8)!=2)
                 *(s32*)(p+0x268)-=1;
             if(*(u8*)(p+0x2a1)==0)
@@ -771,15 +773,16 @@ extern "C" void fn_80332A60(char* this_) {
                 fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80541EBC,0xd2,0,0,0,0,1);
             fn_801F0E34(p,0x40001,0);
             if(*(s32*)(p+0x268)==0)
-                *(s32*)(p+0x240)=(s32)(enemyRandUnit((u32*)(lbl_8053AAF8+0xb4))*lbl_80541F14)+200;
+                *(s32*)(p+0x240)=(s32)(lbl_80541F14*enemyRandUnit((u32*)(lbl_8053AAF8+0xb4)))+200;
             if(kind==1 || *(s32*)(p+0x268)==0) {
                 *(s32*)(p+0x238)=0;
                 *(s32*)(p+0x258)=0;
                 *(f32*)(p+0x14)=lbl_80541E9C;
                 *(f32*)(p+0x44)=lbl_80541E9C;
                 if(((JGeometry::TVec3<f32>*)(p+0x3c))->length()>lbl_80541EE8) {
+                    f32 limit=lbl_80541EE8;
                     ((JGeometry::TVec3<f32>*)(p+0x3c))->normalize();
-                    ((JGeometry::TVec3<f32>*)(p+0x3c))->scale(lbl_80541EE8);
+                    ((JGeometry::TVec3<f32>*)(p+0x3c))->scale(limit);
                 }
             } else {
                 *(s32*)(p+0x238)=*(s32*)(p+0x240);
@@ -796,6 +799,7 @@ extern "C" void fn_80332A60(char* this_) {
         }
     }
     *(u32*)(p+0xb0)=0x1000;
+    }
 }
 
 #pragma opt_propagation off
