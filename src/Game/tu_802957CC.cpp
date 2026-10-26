@@ -261,17 +261,6 @@ static inline JGeometry::TBox2f* RoomBounds(char* self) {
     return (JGeometry::TBox2f*)(room < 8 ? m + 0xcc : m + 0xdc);
 }
 
-static inline void resetHouseProbe(char* self, const JGeometry::TVec3f& saved) {
-    *(JGeometry::TVec3f*)(self + 0xc) = saved;
-    *(f32*)(self + 0x3c) = 0.0f;
-    *(f32*)(self + 0x40) = 0.0f;
-    *(f32*)(self + 0x44) = 0.0f;
-    *(f32*)(self + 0x60) = -48.0f;
-    *(f32*)(self + 0x64) = -48.0f;
-    *(f32*)(self + 0x68) = 48.0f;
-    *(f32*)(self + 0x6c) = 48.0f;
-}
-
 extern "C" u8 fn_802957CC(void* p, u8 mode) {
     struct Probe {
         Probe() {}
