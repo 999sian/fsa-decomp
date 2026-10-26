@@ -5,7 +5,7 @@
 
 struct Actor;
 extern "C" f32 sincosTable___5JMath[];
-extern f32 lbl_80541C28, lbl_80541C30, lbl_80541C34, lbl_80541C38, lbl_80541C3C, lbl_80541C40, lbl_80541C44, lbl_80541C48, lbl_80541C4C, lbl_80541C50, lbl_80541C54, lbl_80541C58;
+extern const f32 lbl_80541C28, lbl_80541C30, lbl_80541C34, lbl_80541C38, lbl_80541C3C, lbl_80541C40, lbl_80541C44, lbl_80541C48, lbl_80541C4C, lbl_80541C50, lbl_80541C54, lbl_80541C58;
 extern "C" void fn_801F71A4(f32* v, f32 target, f32 rate, f32 limit);
 extern "C" s32 fn_8023AF14(f32* box, s32 room, f32 f, s32 flag);
 extern "C" f32* fn_8023E724(s32 i);
