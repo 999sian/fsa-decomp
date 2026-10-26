@@ -6,10 +6,6 @@
 #include "JSystem/JKernel/JKRArchive.h"
 #include "JSystem/JKernel/JKRHeap.h"
 extern "C" void* fn_800CECCC(const void*, u32);
-static inline void loadTextureAnimation(JKRArchive* archive, const char* name, J3DModelData* data, J3DAnmTextureSRTKey** out) {
-    *out = (J3DAnmTextureSRTKey*)fn_800CECCC(archive->getResource(0x4a334420, name), 0);
-    (*out)->searchUpdateMaterialID(data);
-}
 #include "Game/SinitPoolChain.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
