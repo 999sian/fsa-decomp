@@ -73,7 +73,8 @@ struct fn_801D1974_obj {
     }
     void pushPoint(const JGeometry::TVec2<f32>& p) {
         if (m2a8 < 16) {
-            pointAt(m2a8).set(p);
+            m2ac[m2a8].x = p.x;
+            m2ac[m2a8].y = p.y;
             m2a8++;
         }
     }
