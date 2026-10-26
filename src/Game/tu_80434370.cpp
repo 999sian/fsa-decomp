@@ -2,6 +2,10 @@
 extern "C" const f32 lbl_80543BE4;
 extern "C" const f32 lbl_80543BE8;
 extern "C" const f32 lbl_80543BEC;
+extern "C" const f32 lbl_80543BDC;
+extern "C" const f32 lbl_80543BE0;
+extern "C" void rotate__7J2DPaneFff13J2DRotateAxisf(void*,f32,f32,u32,f32);
+extern "C" void fn_80402E08(void*,f32,f32);
 extern "C" char lbl_80529DEC[];
 
 struct DtorSlot2 {
