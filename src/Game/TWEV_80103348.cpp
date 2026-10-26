@@ -10,7 +10,7 @@ extern "C" void fn_80134DE4(void*, s32, s32);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void*, u32, s32, s32);
 extern void* lbl_8053AAF8;
-extern f32 lbl_8053C1E8;
+extern const f32 lbl_8053C1E8;
 
 struct TWEVParam {
     u8 buf[16];
@@ -260,16 +260,16 @@ extern "C" void fn_80103A90(void* this_) {
             fn_801F0E34(this_, 0x3006f, 0);
             ++*(s32*)(p + 0x288);
             if (*(s32*)(p + 0x288) > 1) {
-                *(f32*)(p + 0x290) += 0.08f;
+                *(f32*)(p + 0x290) += lbl_8053C1E8;
                 *(s32*)(p + 0x268) += 0x20;
             }
             if (*(s32*)(p + 0x288) > 30) {
-                *(f32*)(p + 0x28c) += 0.08f;
+                *(f32*)(p + 0x28c) += lbl_8053C1E8;
                 *(s32*)(p + 0x264) -= 0x40;
                 *(f32*)(p + 0x238) += 1.0f;
             }
             if (*(s32*)(p + 0x288) > 60) {
-                *(f32*)(p + 0x294) += 0.08f;
+                *(f32*)(p + 0x294) += lbl_8053C1E8;
                 *(s32*)(p + 0x26c) -= 0x40;
             }
             if (*(s32*)(p + 0x288) == 1) {
