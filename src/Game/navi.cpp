@@ -308,12 +308,12 @@ extern const f32 lbl_8053FDB8;
 extern const f32 lbl_8053FDBC;
 
 static inline f32 navi_invsqrt(f32 x) {
-    if (x <= 0.0f) {
+    if (x <= lbl_8053FD58) {
         return x;
     }
     f32 y = __frsqrte(x);
-    y = 0.5f * y * (3.0f - (x * (y * y)));
-    return y;
+    x = lbl_8053FDA8 * y * (lbl_8053FDAC - (x * (y * y)));
+    return x;
 }
 
 static inline f32 navi_sqrt(f32 x) {
@@ -612,6 +612,7 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
     *(s32*)(p + 0x248) = state;
 }
 
+#pragma opt_deadcode off
 extern "C" void fn_8021E4F8(char* p) {
     switch (*(s32*)(p + 0x248)) {
     case 4: {
@@ -619,7 +620,9 @@ extern "C" void fn_8021E4F8(char* p) {
         if (t < *(f32*)__float_epsilon) {
             *(f32*)(p + 0x2bc) = lbl_8053FDA0;
         } else {
-            *(f32*)(p + 0x2bc) = *(f32*)(p + 0x2bc) + (lbl_8053FD5C / t) * (lbl_8053FDA0 - *(f32*)(p + 0x2bc));
+            t = lbl_8053FD5C / t;
+            f32 delta = lbl_8053FDA0 - *(f32*)(p + 0x2bc);
+            *(f32*)(p + 0x2bc) = t * delta + *(f32*)(p + 0x2bc);
         }
         break;
     }
@@ -628,31 +631,44 @@ extern "C" void fn_8021E4F8(char* p) {
         if (t < *(f32*)__float_epsilon) {
             *(f32*)(p + 0x2bc) = lbl_8053FD5C;
         } else {
-            *(f32*)(p + 0x2bc) = *(f32*)(p + 0x2bc) + (lbl_8053FD5C / t) * (lbl_8053FD5C - *(f32*)(p + 0x2bc));
+            t = lbl_8053FD5C / t;
+            *(f32*)(p + 0x2bc) = t * (lbl_8053FD5C - *(f32*)(p + 0x2bc)) + *(f32*)(p + 0x2bc);
         }
         break;
     }
     }
 
-    f32 dx = *(f32*)(p + 0x2c0) - *(f32*)(p + 0x2c8);
-    f32 dz = *(f32*)(p + 0x2c4) - *(f32*)(p + 0x2cc);
+    f32 tgt[2];
+    f32 d[2];
+    f32* dp = d;
+    dp[0] = *(f32*)(p + 0x2c0);
+    dp[1] = *(f32*)(p + 0x2c4);
+    f32 dz = dp[1] - *(f32*)(p + 0x2cc);
+    f32 dx = dp[0] - *(f32*)(p + 0x2c8);
+    dp[0] = dx;
+    dp[1] = dz;
     f32 len2 = dx * dx + dz * dz;
-    if (len2 > lbl_8053FDA4 * *(f32*)__float_epsilon) {
-        f32 inv = navi_invsqrt(len2);
-        dx = dx * inv;
-        dz = dz * inv;
+    if (!(len2 <= lbl_8053FDA4 * *(f32*)__float_epsilon)) {
+        f32 inv = len2;
+        if (!(inv <= lbl_8053FD58)) {
+            f32 y = __frsqrte(inv);
+            inv = (lbl_8053FDA8 * y) * (lbl_8053FDAC - inv * (y * y));
+        }
+        dx *= inv;
+        dz *= inv;
     }
-    dx = dx * *(f32*)(p + 0x2bc);
-    dz = dz * *(f32*)(p + 0x2bc);
+    dx *= *(f32*)(p + 0x2bc);
+    dz *= *(f32*)(p + 0x2bc);
 
+    s32 idx = *(s32*)(p + 0x2b4);
     u8 flag = 0;
-    if (*(s32*)(p + 0x2b4) >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
+    if (idx >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
         flag = 1;
     }
     f32 tx;
     f32 tz;
     if (flag) {
-        f32* q = (f32*)fn_8023E724(*(s32*)(p + 0x2b4));
+        f32* q = (f32*)fn_8023E724(idx);
         tx = q[0];
         tz = q[1];
     } else {
@@ -662,28 +678,46 @@ extern "C" void fn_8021E4F8(char* p) {
     fn_801CD8E4(p + 0x2c8, tx, lbl_8053FD5C, lbl_8053FD58);
     fn_801CD8E4(p + 0x2cc, tz, lbl_8053FD5C, lbl_8053FD58);
 
-    f32 tgt[2];
-    tgt[0] = *(f32*)(p + 0x2c8) + dx;
-    tgt[1] = *(f32*)(p + 0x2cc) + dz;
+    f32 next[2];
+    f32* np = next;
+    np[0] = *(f32*)(p + 0x2c8);
+    np[1] = *(f32*)(p + 0x2cc);
+    np[0] += dx;
+    np[1] += dz;
+    tgt[0] = np[0];
+    tgt[1] = np[1];
 
-    u8 flag2 = 0;
     if (*(s32*)(p + 0x248) == 7) {
+        u8 flag2 = 0;
         if (*(s32*)(p + 0x2b4) >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
             flag2 = 1;
         }
+        if (flag2) {
+            fn_801CD754(p + 0x2c0, lbl_8053FDB0, lbl_8053FD5C, tgt, lbl_8053FDB4);
+            goto moved;
+        }
     }
-    if (flag2) {
-        fn_801CD754(p + 0x2c0, lbl_8053FDB0, lbl_8053FD5C, tgt, lbl_8053FDB4);
-    } else {
+    {
         *(f32*)(p + 0x2c0) = tgt[0];
         *(f32*)(p + 0x2c4) = tgt[1];
     }
 
-    dx = *(f32*)(p + 0x2c0) - *(f32*)(p + 0x2c8);
-    dz = *(f32*)(p + 0x2c4) - *(f32*)(p + 0x2cc);
-    len2 = dx * dx + dz * dz;
-    s32 ang = 0x622;
-    f32 len = navi_sqrt(len2);
+moved:
+    f32 diff[2];
+    f32* fp = diff;
+    fp[0] = *(f32*)(p + 0x2c0);
+    fp[1] = *(f32*)(p + 0x2c4);
+    f32 xx = fp[0] - *(f32*)(p + 0x2c8);
+    f32 yy = fp[1] - *(f32*)(p + 0x2cc);
+    fp[0] = xx;
+    fp[1] = yy;
+    len2 = yy * yy + xx * xx;
+    s16 ang = 0x622;
+    f32 len = len2;
+    if (!(len <= lbl_8053FD58)) {
+        f32 y = __frsqrte(len);
+        len *= (lbl_8053FDA8 * y) * (lbl_8053FDAC - len * (y * y));
+    }
     if (len > lbl_8053FDB8) {
         s32 v = (s32)((lbl_8053FD5C / len) * (lbl_8053FDBC * *(f32*)(p + 0x2bc)));
         if ((s16)v > 0x622) {
@@ -695,16 +729,22 @@ extern "C" void fn_8021E4F8(char* p) {
         }
     }
     if (*(s32*)(p + 0x248) == 7) {
-        ang = -(s16)(-ang);
+        ang = (s16)-ang;
     }
-    f32 sn = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-    f32 cs = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    f32 sn = JMath::sincosTable_.mTable[(u16)-ang >> 5].first;
+    f32 cs = JMath::sincosTable_.mTable[(u16)-ang >> 5].second;
     f32 cx = *(f32*)(p + 0x2c8);
     f32 cz = *(f32*)(p + 0x2cc);
-    *(f32*)(p + 0x2c0) = cx + (dx * cs - dz * sn);
-    *(f32*)(p + 0x2c4) = cz + (dx * sn + dz * cs);
+    f32 out[2];
+    f32* op = out;
+    op[0] = cx;
+    op[1] = cz;
+    op[0] += fp[0] * cs - yy * sn;
+    op[1] += fp[0] * sn + yy * cs;
+    *(f32*)(p + 0x2c0) = op[0];
+    *(f32*)(p + 0x2c4) = op[1];
 }
-
+#pragma opt_deadcode reset
 extern "C" void fn_801D0ED0(char* p);
 extern "C" void fn_801D2608(char* anim, u8* arg, s32 n);
 extern "C" void fn_801D22DC(char* anim, s32 a, s32 b, s32 c);
