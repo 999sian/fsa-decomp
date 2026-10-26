@@ -1312,13 +1312,18 @@ extern "C" void fn_803832BC(char* a, s32 b, s32 c, s32 d, s32 e);
 extern void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* self, const char* name, u32 flags, void* archive);
 extern const f32 lbl_805434C0;
 extern f32 lbl_805434C8;
+struct MCResources {
+    u64 tags[8];
+    char screenName[12];
+    char pictureName[1];
+};
 extern u8 lbl_80476F20[];
 extern void* lbl_8053AD78;
 extern void* lbl_804AF86C[];
 typedef void* (*VtSearch)(void*, u32, u32, u32);
 extern "C" void* __nw__FUl(u32 size);
 extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
-	const char* tbl = (const char*)lbl_80476F20;
+	u8* tbl = lbl_80476F20;
 	MemCardMenu* self = (MemCardMenu*)this_;
 	*(void**)this_ = lbl_804B0288;
 	getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
@@ -1345,7 +1350,7 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	self->f1b4 = 0;
 
 	self->screen = new J2DScreen();
-	self->screen->setPriority(tbl+0x40,0x1100000,(JKRArchive*)archive);
+	self->screen->setPriority((const char*)tbl+0x40,0x1100000,(JKRArchive*)archive);
 	void* p = self->screen->search(0x5061636375723032ULL);
 	((J2DPane*)p)->setAlpha(0x9c);
 	void* res = fn_804030C4(0x54494d47, (const char*)tbl + 0x4c);
@@ -1406,12 +1411,13 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	self->f28=(MCPaneHolder*)o;
 	fn_80402F04(self->f28,self->screen->search(0x5061636375723032ULL));
 
+    u64* tags=(u64*)tbl;
     for(s32 i=0;i<8;i++) {
         MemCardMenu* slots=(MemCardMenu*)((u8*)this_+i*4);
-        o=__nw__FUl(0x2c);
-        if(o) *(void**)o=lbl_804AF86C;
+        o=new MCAlpha;
         slots->f2c[0]=(MCAlpha*)o;
-        fn_80402F04(slots->f2c[0],self->screen->search(((u64*)tbl)[i]));
+        u64 tag=tags[i];
+        fn_80402F04(slots->f2c[0],self->screen->search(tag));
     }
 
 	self->f4c = (MCAnim*)*(void**)((u8*)lbl_8053AED8 + 8);
