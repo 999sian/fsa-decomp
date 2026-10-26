@@ -7,7 +7,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
-extern "C" void fn_8030C210(void*, ...);
+extern "C" void fn_8030C210(void*, void*);
 extern "C" Vec* fn_8023E724(s32);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
@@ -174,6 +174,75 @@ extern "C" void fn_801A0B8C(void* this_) {
     }
 }
 
+extern "C" void fn_801A0BE4(void* this_) {
+    char* p = (char*)this_;
+    s32 id;
+    s32 i;
+    char* owner;
+    char* entry;
+    ((JGeometry::TVec3<f32>*)(p+0xc))->add(*(JGeometry::TVec3<f32>*)(p+0x3c));
+    fn_8030C210(*(void**)((char*)lbl_8053AB10+0x24), p+0xc);
+    switch (*(s32*)(p+0x230)) {
+    case 0x12:
+        id = *(s32*)(p+0x320);
+        if (id < 0) {
+            *(s32*)(p+0x23c) = 50;
+            *(f32*)(p+0x3c) = lbl_8053E4F0;
+            *(f32*)(p+0x40) = lbl_8053E518;
+            *(f32*)(p+0x44) = lbl_8053E51C;
+            fn_801F0E34(p,0x3004d,0);
+            *(s32*)(p+0x230) = 0x13;
+            break;
+        }
+        owner = (char*)fn_801F666C(fn_801F856C(),id);
+        if (!owner) {
+            *(s32*)(p+0x23c) = 50;
+            *(f32*)(p+0x3c) = lbl_8053E4F0;
+            *(f32*)(p+0x40) = lbl_8053E518;
+            *(f32*)(p+0x44) = lbl_8053E51C;
+            fn_801F0E34(p,0x3004d,0);
+            *(s32*)(p+0x230) = 0x13;
+            break;
+        }
+        entry = p;
+        for(i=0;i<4;i++,owner+=4,entry+=4) {
+            if (*(s32*)(entry+0x27c) >= 0) {
+                f32 dx = *(f32*)(p+0xc)-fn_8023E724(i)->x;
+                f32 dy = *(f32*)(p+0x10)-fn_8023E724(i)->y;
+                f32 dist = std::sqrtf(dx*dx+dy*dy);
+                if (dist > lbl_8053E500) {
+                    f32 angle = JMath::atanTable_.atan2_(-dx,-dy);
+                    angle *= lbl_8053E538;
+                    s32 a = (s32)angle;
+                    f32* sc = (f32*)((char*)JMath::sincosTable_.mTable + (((u16)a>>2)&0x3ff8));
+                    *(f32*)(p+0x3c) = lbl_8053E53C * sc[0];
+                    *(f32*)(p+0x40) = lbl_8053E53C * sc[1];
+                } else {
+                    *(s32*)(owner+0x2ac) = 1;
+                    *(s32*)(p+0x23c) = 50;
+                    *(f32*)(p+0x3c) *= lbl_8053E540;
+                    *(f32*)(p+0x40) *= lbl_8053E540;
+                    *(f32*)(p+0x44) = lbl_8053E51C;
+                    fn_801F0E34(p,0x3004d,0);
+                    *(s32*)(p+0x230) = 0x13;
+                }
+            }
+        }
+        break;
+    case 0x13:
+        fn_801F71A4((f32*)(p+0x340),lbl_8053E4F0,lbl_8053E544,lbl_8053E518);
+        if (*(f32*)(p+0x14) <= lbl_8053E4F0) {
+            fn_801F0E34(p,0x3004c,0);
+            *(f32*)(p+0x14) = lbl_8053E4F0;
+            *(f32*)(p+0x44) = lbl_8053E51C;
+        } else {
+            *(f32*)(p+0x44) -= lbl_8053E544;
+        }
+        if (*(s32*)(p+0x23c)==0 || *(f32*)(p+0x340) < lbl_8053E4FC) p[0x11c]=0;
+        break;
+    }
+}
+
 extern "C" void fn_801F0E34(void*, s32, s32);
 extern "C" void fn_801F71A4(f32*, f32, f32, f32);
 extern "C" u8 fn_801F2740(void*, s32);
@@ -193,7 +262,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
 extern "C" Vec* fn_8023E724(s32);
 extern "C" s32 fn_801F2718(void*, u32);
-extern "C" void fn_8030C210(void*, ...);
+extern "C" void fn_8030C210(void*, void*);
 extern "C" u8 fn_801F6758(void*, s32, f32);
 extern "C" void fn_801A0F90(void* this_) {
     s32 flag = 0;
