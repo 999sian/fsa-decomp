@@ -2575,11 +2575,13 @@ extern "C" void fn_80230FD0(s32, s32);
 extern "C" void fn_80238244(s32);
 extern "C" s32 fn_80138A30(void*);
 void fn_80248004(char* p, s32 param2, s32 param3) {
-    s32 cnt = countSharing(p);
+    s32 i;
+    s32 cnt = countSharing3(p);
     if (cnt > 1 && U8(p, 0x1216) != 1 && U8(p, 0xcfe) != 1 &&
         (U8(lbl_8053AAF8, 0x7e) == 0 || U8(p, 0xcfe) != 1)) {
         s32 r28 = fn_8023DE58(fn_8022EA0C(S32(p, 4)));
-        if (U8(fn_802D6A9C(), 0x131df + r28) != 0 && param2 != 4) {
+        u8 (*map)[0x10000]=(u8(*)[0x10000])fn_802D6A9C();
+        if (map[1][r28+0x31df] != 0 && param2 != 4) {
             param2 = 5;
         }
         if (fn_80138A30(lbl_8053AAF8) == 2 || fn_80138A30(lbl_8053AAF8) == 3) {
@@ -2589,16 +2591,19 @@ void fn_80248004(char* p, s32 param2, s32 param3) {
                 param2 = 0;
             }
         }
-        if ((((u8)param3 != 1) || fn_8025F448(p) == 0 || (S32(p, 0x120c) == 4 && param2 == 5)) &&
-            (U8(p, 0x1214) != 0 || S32(p, 0x120c) != param2)) {
-            if (((1 << (S32(p, 4) & 0x3f)) & 0xff & U8(lbl_8053AAF8, 0x82)) != 0 && param2 != 4 &&
+        if ((u8)param3 == 1 && (u8)fn_8025F448(p)) {
+            if (S32(p,0x120c) != 4) return;
+            switch (param2) { case 5: break; default: return; }
+        }
+        if (U8(p,0x1214)==0 && S32(p,0x120c)==param2) return;
+        {
+            if (playerSelected(p) && param2 != 4 &&
                 S32(p, 0x120c) == 4) {
-                s32 t = S32(p, 0xd60) < 0 ? S32(p, 0x1224) : fn_80234004(S32(p, 0xd60));
+                s32 t = linkIdx(p);
                 if (t != 0) {
                     f32* s = fn_8023E724(fn_8022EA0C(S32(p, 4)));
                     s32 idx = fn_8023DE58(fn_8022EA0C(S32(p, 4)));
-                    JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)s;
-                    if (!fn_8030B110(PTR(p, 0xbec), idx, v)) {
+                    if (!(u8)fn_8030B110(PTR(p, 0xbec), idx, *(JGeometry::TVec3<f32>*)s)) {
                         s32 old = S32(p, 0x3b4);
                         S32(p, 0x3b4) = fn_8023DE58(fn_8022EA0C(S32(p, 4)));
                         S32(p, 0xce0) = old;
@@ -2617,12 +2622,10 @@ void fn_80248004(char* p, s32 param2, s32 param3) {
                         F32(p, 0x30) = F32(p, 0xc);
                         F32(p, 0x34) = F32(p, 0x10);
                         V3(p, 0xcbc) = V3(p, 0x8);
-                        F32(p, 0xcc4) = F32(p, 0x10);
                         V3(p, 0xd1c) = V3(p, 0xcbc);
-                        F32(p, 0xd24) = F32(p, 0xcc4);
                     }
                     PlayerTrail* tr = (PlayerTrail*)p;
-                    for (s32 i = 0; i < 0x31; i++) {
+                    for (i = 0; i < 0x31; i++) {
                         f32* s3 = fn_8023E4E4(fn_8022EA0C(S32(p, 4)), 0);
                         tr->pos[i].x = s3[0];
                         tr->pos[i].y = s3[1];
@@ -2634,7 +2637,7 @@ void fn_80248004(char* p, s32 param2, s32 param3) {
                     }
                 }
             }
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (fn_8022E438(S32(p, 4), i) && fn_8023ED8C(i) &&
                     (fn_8022F478(i) || (S32(p, 0x120c) == 4 && param2 != 4))) {
                     fn_8023ECF0(i);
@@ -2648,7 +2651,7 @@ void fn_80248004(char* p, s32 param2, s32 param3) {
             if (S32(p, 0x120c) != 4) {
                 fn_802382D0(S32(p, 4), 0);
             }
-            if (((1 << (S32(p, 4) & 0x3f)) & 0xff & U8(lbl_8053AAF8, 0x82)) != 0 && (u8)param3 == 1) {
+            if (playerSelected(p) && (u8)param3 == 1) {
                 U8(p, 0x121d) = 1;
             }
             if (S32(p, 0xd60) < 0) {
@@ -2659,20 +2662,14 @@ void fn_80248004(char* p, s32 param2, s32 param3) {
                     S32(p, 0x123c) = 1;
                 } else {
                     if (U8(p, 0x1216) == 0) {
-                        if (U8(p, 0x454) == 0) {
-                            PlayerTrail* tr = (PlayerTrail*)p;
-                            for (s32 i = 0; i < 0x31; i++) {
-                                tr->pos[i].x = F32(p, 0x8);
-                                tr->pos[i].y = F32(p, 0xc);
-                                tr->pos[i].z = F32(p, 0x10);
-                                tr->onGround[i] = F32(p, 0x10) > lbl_80540034;
-                            }
-                        } else {
+                        if (U8(p, 0x454) != 0) {
                             fn_8024B2E0(p);
+                        } else {
+                            resetTrail(p);
                         }
                     }
                     if (S32(p, 0x1210) == 4) {
-                        for (s32 i = 0; i < 4; i++) {
+                        for (i = 0; i < 4; i++) {
                             if (fn_8022E438(S32(p, 4), i)) {
                                 if ((u8)param3 == 1) {
                                     fn_80230FD0(i, 0x10011);
@@ -2686,7 +2683,7 @@ void fn_80248004(char* p, s32 param2, s32 param3) {
                         if (param2 != 5) {
                             fn_8024F0E8(p, 0x20037);
                         }
-                        for (s32 i = 0; i < 4; i++) {
+                        for (i = 0; i < 4; i++) {
                             if (param2 == 0) {
                                 fn_80230FD0(i, 0x10018);
                             } else if (param2 == 1) {
@@ -3358,10 +3355,12 @@ inline s32 countSharing50090R(const char* p, s32& linked, s32& me) {
     return c;
 }
 
+#pragma opt_common_subs off
 void fn_8024BDBC(char* p) {
     s32 me;
+    s32 linked;
     if (U8(p,0x454)) return;
-    if (countSharing3(p)>=2) return;
+    if (countSharing50090R(p,linked,me)>=2) return;
     if (!U8(lbl_8053AAF8,0x7f)) return;
     u32 pressed = !padActive4(p) ? 0 : fn_80309D24(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec)),0x40);
     if (!pressed) return;
@@ -3384,7 +3383,7 @@ void fn_8024BDBC(char* p) {
     if (S32(p,0x3b4)>=8) fn_8030381C(S32(p,4));
     fn_80458880(lbl_8053AF80,0x1e,(s8)S32(p,4));
 }
-#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 u8 Player_GetField_0xce8(char* p) { return U8(p, 0xce8); }
 BOOL fn_8024C35C(char* p) { return S32(p, 0x3b4) >= 8 ? 1 : 0; }
 JGeometry::TVec3<f32>* fn_8024C378(char* p) {
