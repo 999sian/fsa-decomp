@@ -116,6 +116,17 @@ extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 extern const f32 lbl_80543730;
 extern const f64 lbl_80543738;
 extern const f64 lbl_80543740;
+union MenuFloatScratch803F { f64 value; u32 words[2]; };
+static inline f32 MenuSignedFloat803F(s32 n, MenuFloatScratch803F& scratch) {
+    scratch.words[0] = 0x43300000;
+    scratch.words[1] = (u32)n ^ 0x80000000;
+    return scratch.value - lbl_80543740;
+}
+static inline f32 MenuUnsignedFloat803F(u32 n, MenuFloatScratch803F& scratch) {
+    scratch.words[0] = 0x43300000;
+    scratch.words[1] = n;
+    return scratch.value - lbl_80543738;
+}
 extern const f32 lbl_80543784;
 extern const f32 lbl_80543788;
 extern const f32 lbl_8054378C;
@@ -818,10 +829,15 @@ extern "C" void fn_803F4120(u8* p) {
     (void)base;
 }
 
+#pragma opt_lifetimes on
 extern "C" void fn_803F5410(u8* p) {
     s32 state = *(s32*)(p + 0x1c4);
     u8* base = lbl_80478A60;
-    u8* q = p;
+    u8* q;
+    f32 f29;
+    f32 f28;
+    f32 f27;
+    f32 f31;
     f32 f30;
     f32 f3;
     if (state != 2) {
@@ -842,41 +858,38 @@ extern "C" void fn_803F5410(u8* p) {
     s32 r0;
     if (state == 1 || (state == 2 && *(s16*)(p + 0x240) <= 10)) {
         r0 = *(s16*)(p + 0x240);
-        if (r0 >= 5) {
-            r0 = 10 - r0;
-        }
+        if (r0 < 5) { r0 = *(s16*)(p + 0x240); } else { r0 = 10 - r0; }
     } else {
         r0 = 0;
     }
-    f32 f31 = lbl_805437AC * f3;
-    f32 f27 = lbl_80543784 * (f32)(s32)(r0 * r0) / lbl_80543788;
+    f31 = lbl_805437AC * f3;
+    f27 = lbl_80543784 * (f32)(s32)(r0 * r0) / lbl_80543788;
+    q = p;
     u64* a = (u64*)(base + 0xe60);
     u64* b = (u64*)(base + 0xe78);
     u64* c = (u64*)(base + 0xe90);
-    f32 f28;
-    f32 f29;
-    for (s32 i = 0; i < 3; i++, q += 4) {
+    for (s32 i = 0; i < 3; i++, a++, b++, c++, q += 4) {
         if (i == *(s32*)(p + 0x1ac)) {
-            f28 = ((J2DPane*)*(void**)(p + 4))->search(a[i])->getBounds()->i.x;
-            ((J2DPane*)*(void**)(p + 4))->search(a[i])->move(f28, *(f32*)(q + 0x124) + f27);
+            f28 = ((J2DPane*)*(void**)(p + 4))->search(*a)->getBounds()->i.x;
+            ((J2DPane*)*(void**)(p + 4))->search(*a)->move(f28, *(f32*)(q + 0x124) + f27);
             if (i == 0) {
                 f28 = ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->getBounds()->i.x;
                 ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->move(f28, *(f32*)(p + 0xf0) + f27);
             } else {
-                f28 = ((J2DPane*)*(void**)(p + 4))->search(a[0])->getBounds()->i.y;
-                f32 t = ((J2DPane*)*(void**)(p + 4))->search(a[i])->getBounds()->i.y;
+                f28 = ((J2DPane*)*(void**)(p + 4))->search(*(u64*)(base + 0xe60))->getBounds()->i.y;
+                f32 t = ((J2DPane*)*(void**)(p + 4))->search(*a)->getBounds()->i.y;
                 f28 = (*(f32*)(p + 0xf0) + t) - f28;
                 f29 = ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->getBounds()->i.x;
                 ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3032ULL)->move(f29, f28);
             }
-            ((u8*)((J2DPane*)*(void**)(p + 4))->search(b[i]))[0xb0] = 0;
-            ((u8*)((J2DPane*)*(void**)(p + 4))->search(c[i]))[0xb0] = 1;
-            ((J2DPane*)*(void**)(p + 4))->search(c[i])->setAlpha((u8)f31);
+            ((J2DPane*)*(void**)(p + 4))->search(*b)->hide();
+            ((J2DPane*)*(void**)(p + 4))->search(*c)->show();
+            ((J2DPane*)*(void**)(p + 4))->search(*c)->setAlpha((u8)f31);
         } else {
-            f29 = ((J2DPane*)*(void**)(p + 4))->search(a[i])->getBounds()->i.x;
-            ((J2DPane*)*(void**)(p + 4))->search(a[i])->move(f29, *(f32*)(q + 0x124));
-            ((u8*)((J2DPane*)*(void**)(p + 4))->search(b[i]))[0xb0] = 1;
-            ((u8*)((J2DPane*)*(void**)(p + 4))->search(c[i]))[0xb0] = 0;
+            f29 = ((J2DPane*)*(void**)(p + 4))->search(*a)->getBounds()->i.x;
+            ((J2DPane*)*(void**)(p + 4))->search(*a)->move(f29, *(f32*)(q + 0x124));
+            ((J2DPane*)*(void**)(p + 4))->search(*b)->show();
+            ((J2DPane*)*(void**)(p + 4))->search(*c)->hide();
         }
     }
     ((J2DPane*)*(void**)(p + 4))->search(0x50736375726f3031ULL)->setAlpha((u8)f30);
@@ -884,7 +897,7 @@ extern "C" void fn_803F5410(u8* p) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 4), lbl_8054372C, lbl_8054372C, ((void**)lbl_8053AB10)[4]);
     fn_80440EE8(lbl_8053AED8);
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_803F59A0(u8* p) {
     if (fn_804366B8(*(void**)(p + 0x58))) {
         if (p[0x25e] == 0) {
