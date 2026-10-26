@@ -1783,7 +1783,7 @@ fail:
 s32 fn_801F6874(u32 x);
 u8 lbl_8052EBC0[];
 f32 lbl_8053F740;
-f32 lbl_8053F7A4;
+
 
 /* --- 0x801F11B4: teleport the actor onto its spawn point -------------------
  * Only runs while the actor's bounds are still degenerate (a spawn marker);
