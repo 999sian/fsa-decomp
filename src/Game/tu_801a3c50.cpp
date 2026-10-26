@@ -17,8 +17,8 @@ extern "C" s32 fn_8023B5B4(s32 id);
 extern "C" void fn_80235B68(s32 id, s32 h);
 extern "C" void fn_801F3780(void* a, s32 v);
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
-extern f32 lbl_8053E5E4;
-extern f32 lbl_8053E5E8;
+extern const f32 lbl_8053E5E4;
+extern const f32 lbl_8053E5E8;
 
 class SayaActor {
 public:
@@ -394,9 +394,8 @@ extern "C" s32 fn_801A4754(u8* this_, void* a4, void* a5) {
         if (kind != 1) break;
     case 5:
         if (*(f32*)(this_ + 0x14) == lbl_8053E5D4) {
-            f32 z = 4.0f;
-            z += lbl_8053AAF8->rnd.get_sfloat_1();
-            *(JGeometry::TVec3f*)(this_ + 0x3C) = JGeometry::TVec3f(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), z);
+            const f32 base = 4.0f;
+            *(JGeometry::TVec3f*)(this_ + 0x3C) = JGeometry::TVec3f(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), base + lbl_8053AAF8->rnd.get_sfloat_1());
             *(JGeometry::TVec3f*)(this_ + 0xC) = JGeometry::TVec3f(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) + *(f32*)(this_ + 0x44));
         }
         fn_801F3780(this_, 0x12C);
