@@ -245,8 +245,9 @@ extern "C" u8 fn_8028D4DC(f32* this_, s32 a, void* c) {
     }
     u32 off = (u8)(r - 1) * 12;
     Vec v;
-    v.x = 16.0f * ((f32)(a + 1) * *(f32*)(lbl_8046C150 + off));
-    v.y = 16.0f * ((f32)(a + 1) * *(f32*)(lbl_8046C150 + off + 4));
+    f32* table = (f32*)lbl_8046C150;
+    v.x = 16.0f * ((f32)(a + 1) * table[off / 4]);
+    v.y = 16.0f * ((f32)(a + 1) * table[off / 4 + 1]);
     v.z = 0.0f;
     JMathInlineVEC::PSVECAdd((Vec*)this_, &v, (Vec*)this_);
     return 1;
@@ -276,7 +277,6 @@ extern "C" void fn_8028D5D0(u8* this_) {
     JGeometry::TVec3<f32> sv;
     s32 n;
     s32 x;
-    f32 b, a;
     this_[0x244] = 0;
     n = *(u32*)(this_ + 0x90) & 3;
     if (n == 0) {
@@ -288,17 +288,17 @@ extern "C" void fn_8028D5D0(u8* this_) {
         ((JGeometry::TVec3<f32>*)(this_+0x3c))->set(*(const JGeometry::TVec3<f32>*)t);
         v = *(JGeometry::TVec3<f32>*)(this_+0x3c);
         v.normalize();
-        v *= 16.0f;
+        v.scale(lbl_80540520, v);
         v += *(JGeometry::TVec3<f32>*)(this_+0xc);
         if ((u16)fn_8022461C(&v.x, *(s32*)(this_+4)) == 0x50) {
             ((JGeometry::TVec3<f32>*)(this_+0x3c))->normalize();
-            *(JGeometry::TVec3<f32>*)(this_+0x3c) *= 1.0f;
+            ((JGeometry::TVec3<f32>*)(this_+0x3c))->scale(lbl_80540500, *(JGeometry::TVec3<f32>*)(this_+0x3c));
         }
     } else {
         if (((*(u32*)(this_+0x90)>>9)&1)==0) {
             if ((u8)fn_8028D4DC((f32*)(this_+0xc),n,*(void**)(this_+0x16c))) {
                 this_[0x244]=1;
-                ((void (*)(void*,u32,s32))(*(void***)this_)[12])(this_,0xff,1);
+                ((Actor*)this_)->v10(0xff,1);
             }
         }
         *(f32*)(this_+0x3c)=lbl_80540504;
@@ -310,6 +310,8 @@ extern "C" void fn_8028D5D0(u8* this_) {
     this_[0x24c] = 1;
 
     if (((s32)*(u32*)(this_ + 0x90)&3) == 0) {
+        f32 b;
+        f32 a;
         a = lbl_8054054C;
         b = lbl_80540550;
         *(f32*)(this_ + 0x60) = a;
@@ -323,6 +325,8 @@ extern "C" void fn_8028D5D0(u8* this_) {
         *(s32*)(this_+0x1a4) = 1;
         this_[0x24c] = 0;
     } else if (((s32)*(u32*)(this_ + 0x90)&3) == 1) {
+        f32 b;
+        f32 a;
         a = lbl_80540554;
         b = lbl_80540558;
         *(f32*)(this_ + 0x60) = a;
@@ -335,6 +339,8 @@ extern "C" void fn_8028D5D0(u8* this_) {
         *(f32*)(this_ + 0x8c) = b;
         *(s32*)(this_+0x1a4) = 2;
     } else if (((s32)*(u32*)(this_ + 0x90)&3) == 2) {
+        f32 b;
+        f32 a;
         a = lbl_8054055C;
         b = lbl_80540560;
         *(f32*)(this_ + 0x60) = a;
@@ -347,6 +353,8 @@ extern "C" void fn_8028D5D0(u8* this_) {
         *(f32*)(this_ + 0x8c) = b;
         *(s32*)(this_+0x1a4) = 3;
     } else if (((s32)*(u32*)(this_ + 0x90)&3) == 3) {
+        f32 b;
+        f32 a;
         a = lbl_80540564;
         b = lbl_80540568;
         *(f32*)(this_ + 0x60) = a;
@@ -369,7 +377,10 @@ extern "C" void fn_8028D5D0(u8* this_) {
     *(JGeometry::TVec3<f32>*)(this_+0x18) = *(JGeometry::TVec3<f32>*)(this_+0xc);
     if (((s32)*(u32*)(this_ + 0x90)&3) == 0) {
         ((JGeometry::TVec3<f32>*)(this_+0x3c))->set(sv.x,sv.y,sv.z);
-    fn_8029E9EC(lbl_8053AC98, this_+0xc, *(u32*)(this_ + 4), (u16)(((*(u32*)(this_ + 0x90) >> 4) & 7) + 0x21), 0, (*(u32*)(this_+0x90)>>2)&3);
+    u32 flags = *(u32*)(this_ + 0x90);
+    u32 kind = (flags >> 4) & 7;
+    u32 dir = (flags >> 2) & 3;
+    fn_8029E9EC(lbl_8053AC98, this_+0xc, *(u32*)(this_ + 4), (u16)(kind + 0x21), 0, dir);
     fn_801F0E34(this_, 0x30004, 0);
     }
     *(s32*)(this_ + 0x23c) = 0;
