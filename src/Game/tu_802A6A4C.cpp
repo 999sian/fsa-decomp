@@ -1,5 +1,19 @@
 #include "Game/Actor.h"
 
+class Tu2A6A4CActor : public Actor {
+public:
+    virtual void v19(s32);
+};
+
+extern "C" s32 fn_80226AE0(void*, u32);
+extern "C" u16 fn_802F9908(void*, u32, s32);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D800C(void*, s32);
+extern "C" void fn_802A3884(void*, void*, s32, u32, u16);
+extern void* lbl_8053AB10;
+extern const u32 lbl_8046C828[];
+
 
 extern "C" char lbl_804A7F38[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -38,16 +52,31 @@ extern "C" void fn_802A6AAC(Actor* p, s32 player) {
 
 extern "C" void fn_802A6BC0(void) {}
 
+extern "C" s32 fn_801F8108(void* p, u32 id, s32 n);
+extern "C" s32 fn_8023AF14(void* box, u32 room, s32 flag);
+extern "C" void fn_802A6BC4(void* p) {
+    f32 box[4];
+    s32 r;
+
+    box[0] = *(f32*)((u8*)p + 0x60) + *(f32*)((u8*)p + 0xc);
+    box[1] = *(f32*)((u8*)p + 0x64) + *(f32*)((u8*)p + 0x10);
+    box[2] = *(f32*)((u8*)p + 0x68) + *(f32*)((u8*)p + 0xc);
+    box[3] = *(f32*)((u8*)p + 0x6c) + *(f32*)((u8*)p + 0x10);
+    r = fn_801F8108(p, 0x54424f32, -1);
+    if (r < 0) {
+        r = fn_8023AF14(box, *(u32*)((u8*)p + 4), 1);
+    }
+}
+
 extern f32 lbl_80540804;
 extern f32 lbl_80540808;
 extern f32 lbl_8054080C;
 extern f32 lbl_80540810;
 extern "C" void fn_802A7978(Actor* p) {
-    u8* base = (u8*)p;
-    f32 k;
-    f32 c;
+    register u8* base = (u8*)p;
+    register f32 c;
     f32 d;
-    s32 v;
+    f32 k;
 
     *(u32*)(base + 0x238) = ((*(u32*)(base + 0x90) >> 0x16) & 0x1f) + 1;
     *(u32*)(base + 0x23c) = ((*(u32*)(base + 0x90) >> 0x11) & 0x1f) + 1;
@@ -61,31 +90,30 @@ extern "C" void fn_802A7978(Actor* p) {
     if (*(s32*)(base + 0x234) == 8 && *(s32*)(base + 0x240) == 0) {
         *(s32*)(base + 0x240) = 0x3c;
     }
-    v = *(s32*)(base + 0x240);
+    *(s32*)(base + 0x24c) = *(s32*)(base + 0x240);
     k = lbl_80540804;
-    *(s32*)(base + 0x24c) = v;
     *(f32*)(base + 0xc) = *(f32*)(base + 0xc) + k;
     *(f32*)(base + 0x10) = *(f32*)(base + 0x10) + k;
     if (*(s32*)(base + 0x234) == 2 || *(s32*)(base + 0x234) == 3) {
         d = lbl_8054080C;
         c = lbl_80540808;
         *(f32*)(base + 0x60) = c;
-        *(f32*)(base + 0x64) = c;
         *(f32*)(base + 0x68) = d;
+        *(f32*)(base + 0x64) = c;
         *(f32*)(base + 0x6c) = d;
     } else if (*(s32*)(base + 0x234) == 7) {
-        f32 a = lbl_80540810 * (f32)*(s32*)(base + 0x238);
+        register f32 a = lbl_80540810 * (f32)*(s32*)(base + 0x238);
         f32 b = lbl_80540810 * (f32)*(s32*)(base + 0x23c);
-        *(f32*)(base + 0x60) = -a;
         *(f32*)(base + 0x64) = -b;
-        *(f32*)(base + 0x68) = a;
+        *(f32*)(base + 0x60) = -a;
         *(f32*)(base + 0x6c) = b;
+        *(f32*)(base + 0x68) = a;
     } else {
         d = lbl_8054080C;
         c = lbl_80540808;
         *(f32*)(base + 0x60) = c;
-        *(f32*)(base + 0x64) = c;
         *(f32*)(base + 0x68) = d;
+        *(f32*)(base + 0x64) = c;
         *(f32*)(base + 0x6c) = d;
     }
     *(s32*)(base + 0x248) = 0;
