@@ -59,7 +59,7 @@ extern "C" void* fn_802C1614(void* this_, s16 freeFlag) {
 }
 
 // KEY0: register this key's tile with the room config.
-static inline u32 key0PackFlags(u32 flag, const u32& mode, const u32& room, u32 kind) {
+static inline u32 key0PackFlags(const u8& flag, u32 mode, const u32& room, u32 kind) {
     u32 highFlag;
     u32 highMode;
     u32 kindValue;
