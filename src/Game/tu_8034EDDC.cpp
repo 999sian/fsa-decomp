@@ -68,6 +68,12 @@ extern "C" void PSMTXIdentity(f32 (*m)[4]);
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" char lbl_80472228[];
+static inline f32 enemyDrawFadeUp(f32 x) {
+    return (x - lbl_805425E0) / lbl_805425E0;
+}
+static inline f32 enemyDrawFadeDown(f32 x) {
+    return (lbl_805425E0 - x) / lbl_805425E0;
+}
 static inline f32 enemyDrawSin(f32 x) { return sin(x); }
 static inline f32 enemyDrawCos(f32 x) { return cos(x); }
 static inline void enemyDrawRot(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
@@ -93,8 +99,8 @@ static inline void enemyDrawRot(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
 }
 extern "C" void fn_8034EE3C(u8* self) {
     s32 mode = 0xff;
-    s32 t;
-    s32 v;
+    int t;
+    int v;
 
     if (*(s32*)(self + 0x230) == 4) {
         return;
@@ -104,27 +110,34 @@ extern "C" void fn_8034EE3C(u8* self) {
         if (t % 40 < 20) {
             return;
         }
+    }
         if (*(s32*)(self + 0x254) > 0) {
             return;
         }
         if (*(f32*)(self + 0x28c) <= lbl_805425D8) {
             return;
         }
-        v = *(s32*)(self + 0x250);
+    v = *(s32*)(self + 0x250);
         if (v > 120) {
             if (*(s32*)(self + 4) < 8) {
-                s32 q = v % 40;
+                int q = v % 40;
                 if (q > 20) {
-                    mode = (s32)(lbl_805425DC * (((f32)q - lbl_805425E0) / lbl_805425E0));
+                    f32 range;
+                    f32 center;
+                    f32 f = q;
+                    center = lbl_805425E0;
+                    range = lbl_805425DC;
+                    mode = (s32)(range * ((f - center) / center));
                 } else {
-                    mode = (s32)(lbl_805425DC * ((lbl_805425E0 - (f32)q) / lbl_805425E0));
+                    f32 f = q;
+                    f32 center = lbl_805425E0;
+                    f32 range = lbl_805425DC;
+                    mode = (s32)(range * ((center - f) / center));
                 }
+            } else if (v % 40 < 20) {
+                return;
             }
         }
-        if (*(s32*)(self + 0x250) % 40 < 20) {
-            return;
-        }
-    }
 
     DrawRec rec;
     f32 mtx[3][4];
@@ -154,39 +167,33 @@ extern "C" void fn_8034EE3C(u8* self) {
         mtx[2][1] = 0.0f;
         mtx[2][2] = *(f32*)(self + 0x28c);
     } else if (*(s32*)(self + 0x258) == 0x13) {
+        f32 ca;
+        f32 ab;
+        f32 cc;
+        f32 b;
+        f32 s;
         f32 a = JMath::sincosTable_.mTable[0].first;
-        f32 s = *(f32*)(self + 0x28c);
-        f32 b = JMath::sincosTable_.mTable[1536].first;
+        s = *(f32*)(self + 0x28c);
+        b = JMath::sincosTable_.mTable[1536].first;
         f32 c = JMath::sincosTable_.mTable[0].second;
         f32 d = JMath::sincosTable_.mTable[1536].second;
+        f32 aa = a * a;
+        cc = c * c;
+        ab = a * b;
+        ca = c * a;
         mtx[0][0] = s * (d * c);
-        mtx[0][1] = s * ((a * b) * c - c * a);
-        mtx[0][2] = s * ((c * c) * b + a * a);
         mtx[1][0] = s * (d * a);
-        mtx[1][1] = s * ((a * b) * a + c * c);
-        mtx[1][2] = s * ((c * a) * b - c * a);
         mtx[2][0] = s * -b;
+        mtx[0][1] = s * (ab * c - ca);
+        mtx[1][1] = s * (ab * a + cc);
         mtx[2][1] = s * (d * a);
+        mtx[0][2] = s * (cc * b + aa);
+        mtx[1][2] = s * (ca * b - ca);
         mtx[2][2] = s * (d * c);
     } else if (*(s32*)(self + 0x258) == 5) {
-        f32 s;
-        f32 q = lbl_805425F0 - (s = *(f32*)(self + 0x28c));
-        f32 ang = lbl_805425E8 * (lbl_805425EC * q);
-        f32 sx = (f32)sin(lbl_805425D8);
-        f32 sA = (f32)sin(ang);
-        f32 sy = (f32)sin(lbl_805425D8);
-        f32 cx = (f32)cos(lbl_805425D8);
-        f32 cA = (f32)cos(ang);
-        f32 cy = (f32)cos(lbl_805425D8);
-        mtx[0][0] = s * (cA * cy);
-        mtx[0][1] = s * ((sx * sA) * cy - cx * sy);
-        mtx[0][2] = s * ((cx * cy) * sA + sx * sy);
-        mtx[1][0] = s * (cA * sy);
-        mtx[1][1] = s * ((sx * sA) * sy + cx * cy);
-        mtx[1][2] = s * ((cx * sy) * sA - sx * cy);
-        mtx[2][0] = s * -sA;
-        mtx[2][1] = s * (sx * cA);
-        mtx[2][2] = s * (cx * cA);
+        f32 scale;
+        f32 ang = lbl_805425E8 * (lbl_805425EC * (lbl_805425F0 - (scale = *(f32*)(self + 0x28c))));
+        enemyDrawRot(mtx, lbl_805425D8, ang, lbl_805425D8, scale);
     } else {
         mtx[0][0] = *(f32*)(self + 0x28c);
         mtx[0][1] = 0.0f;
@@ -203,15 +210,13 @@ extern "C" void fn_8034EE3C(u8* self) {
     rec.b21 = 1;
     if ((*(s32*)(self + 0x258) <= 4 && *(s32*)(self + 0x268) == 2 &&
          (*(s32*)(self + 0x230) == 1 || *(s32*)(self + 0x230) == 3 || *(s32*)(self + 0x230) == 6)) ||
-        (*(s32*)(self + 0x268) == 3 && (*(s32*)(self + 0x230) == 1 || *(s32*)(self + 0x230) == 3) &&
-         *(s32*)(self + 0x244) > 0)) {
-        rec.b1c = 0;
-        rec.b1d = -3;
-    } else if (*(s32*)(self + 0x268) == 3 && *(s32*)(self + 0x230) == 5) {
-        rec.b1c = -1;
+        (*(s32*)(self + 0x268) == 3 && (((*(s32*)(self + 0x230) == 1 || *(s32*)(self + 0x230) == 3) &&
+         *(s32*)(self + 0x244) > 0) || *(s32*)(self + 0x230) == 5))) {
+        ((s8*)&rec)[0x1c] = -1;
     } else {
-        rec.b1d = -3;
+        ((s8*)&rec)[0x1c] = 0;
     }
+    rec.b1d = -3;
     if (*(s32*)(self + 0x258) == 0xb) {
         rec.b1d = -4;
     }
