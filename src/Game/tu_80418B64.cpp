@@ -59,7 +59,7 @@ extern "C" void fn_8030C5F0(void*, void*, s32, s32, f32*);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" u8* lbl_8053AB10;
 extern "C" u8* sManager__8JUTVideo;
-extern u64 lbl_8048DDD0[];
+extern const u64 lbl_8048DDD0[];
 extern u32 lbl_804B139C[];
 extern "C" s32 fn_802366CC(void);
 extern "C" u32 fn_804030C4(u32 tag, u32 id);
@@ -294,7 +294,7 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
                     if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 1) {
                         u8* pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]);
                         pane[0xb0] = 0;
-                        pane = (u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]);
+                        pane = (u8*)GetPicture(p + 0x28, lbl_8048DDD0[3]);
                         pane[0xb0] = 0;
                     }
                 } else {
