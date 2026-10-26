@@ -52,21 +52,62 @@ extern const f32 lbl_8053D268;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern char lbl_80465DBC[];
 extern char lbl_80465DD0[];
+static inline void slrRotation(f32 mtx[3][4], const f32 ang, const f32 s) {
+    f32 cA;
+    f32 sA;
+    f32 sB;
+    f32 sC;
+    f32 cB;
+    f32 sAsB;
+    f32 cC;
+    f32 rx = 0.0f;
+    sA = sin(rx);
+    sB = sin(ang);
+    sC = sin(rx);
+    cA = cos(rx);
+    cB = cos(ang);
+    cC = cos(rx);
+    f32 cAsC;
+    f32 cAcC;
+    cAcC = cA * cC;
+    sAsB = sA * sB;
+    cAsC = cA * sC;
+    f32 sAsC = sA * sC;
+    f32 sAcC = sA * cC;
+    mtx[0][0] = s * (cB * cC);
+    mtx[1][0] = s * (cB * sC);
+    mtx[2][0] = s * -sB;
+    mtx[0][1] = s * (sAsB * cC - cAsC);
+    mtx[1][1] = s * (sAsB * sC + cAcC);
+    mtx[2][1] = s * (sA * cB);
+    mtx[0][2] = s * (cAcC * sB + sAsC);
+    mtx[1][2] = s * (cAsC * sB - sAcC);
+    mtx[2][2] = s * (cA * cB);
+}
+
 extern "C" void fn_8014FD5C(Actor* actor)
 {
     u8* base = (u8*)actor;
     DrawRec rec;
     f32 mtx[3][4];
     s32 flag = 0;
-    s32 kind;
-    s32 m90;
+    u8 kind;
+    u32 m90;
     s32 m230;
     u16 state;
-    f32 sA, sB, cC, cA, cB, sC;
+    f32 ang;
+    f32 s;
+    f32 cA;
+    f32 sA;
+    f32 sB;
+    f32 sC;
+    f32 cB;
+    f32 sAsB;
+    f32 cC;
 
-    mtx[0][3] = lbl_8053D258;
-    mtx[1][3] = lbl_8053D258;
-    mtx[2][3] = lbl_8053D258;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
 
     state = *(u16*)(base + 0x94);
     if (state == 2) {
@@ -74,58 +115,67 @@ extern "C" void fn_8014FD5C(Actor* actor)
     }
     rec.ids[2] = *(u8*)(base + 0x234);
     if (*(s32*)(base + 0x288) != 1 && *(s32*)(base + 0x288) != 3) {
-        if (*(s32*)(base + 0x90) == 2 || *(s32*)(base + 0x90) == 3 || *(s32*)(base + 0x90) == 1) {
+        if (*(u32*)(base + 0x90) == 2 || *(u32*)(base + 0x90) == 3 || *(u32*)(base + 0x90) == 1) {
             rec.ids[8] = *(u8*)(base + 0x234);
         }
         if (*(u16*)(base + 0x94) >= 6 && *(u16*)(base + 0x94) <= 9) {
             rec.ids[2] = 0xb;
         }
         if (*(s32*)(base + 0x230) == 0xe) {
-            f32 ang = *(f32*)(base + 0x294);
-            f32 s = *(f32*)(base + 0x298);
-            sA = sin(lbl_8053D258);
+            ang = *(f32*)(base + 0x294);
+            s = *(f32*)(base + 0x298);
+            f32 rx = 0.0f;
+            sA = sin(rx);
             sB = sin(ang);
-            sC = sin(lbl_8053D258);
-            cA = cos(lbl_8053D258);
+            sC = sin(rx);
+            cA = cos(rx);
             cB = cos(ang);
-            cC = cos(lbl_8053D258);
+            cC = cos(rx);
+            f32 cAsC;
+            f32 cAcC;
+            cAcC = cA * cC;
+            sAsB = sA * sB;
+            cAsC = cA * sC;
+            f32 sAsC = sA * sC;
+            f32 sAcC = sA * cC;
             mtx[0][0] = s * (cB * cC);
             mtx[1][0] = s * (cB * sC);
             mtx[2][0] = s * -sB;
-            mtx[0][1] = s * (sA * sB * cC - cA * sC);
-            mtx[1][1] = s * (sA * sB * sC + cA * cC);
+            mtx[0][1] = s * (sAsB * cC - cAsC);
+            mtx[1][1] = s * (sAsB * sC + cAcC);
             mtx[2][1] = s * (sA * cB);
-            mtx[0][2] = s * (cA * cC * sB + sA * sC);
-            mtx[1][2] = s * (cA * sC * sB - sA * cC);
+            mtx[0][2] = s * (cAcC * sB + sAsC);
+            mtx[1][2] = s * (cAsC * sB - sAcC);
             mtx[2][2] = s * (cA * cB);
             rec.w18 = mtx;
-            m90 = *(s32*)(base + 0x90);
-            if (m90 == 1) {
+            if (*(u32*)(base + 0x90) == 2 || *(u32*)(base + 0x90) == 3 || *(u32*)(base + 0x90) == 1) {
                 fn_801F02BC(actor, lbl_80465DBC, *(s32*)(base + 0x274) + 0x1f4, &rec, 0, 0, 0, lbl_8053D25C, lbl_8053D25C);
                 return;
             }
-            if (m90 != 2 && m90 != 3) {
+            {
                 fn_801F02BC(actor, lbl_80465DD0, *(s32*)(base + 0x274) + 0x8f, &rec, 0, 0, 0, lbl_8053D25C, lbl_8053D25C);
                 return;
             }
         }
     }
 
-    m90 = *(s32*)(base + 0x90);
-    if (m90 != 6) {
-        if (*(s32*)(base + 0x288) == 3) {
-            mtx[0][0] = *(f32*)(base + 0x54);
-            mtx[0][1] = lbl_8053D258;
-            mtx[0][2] = lbl_8053D258;
-            mtx[1][0] = lbl_8053D258;
-            mtx[1][1] = *(f32*)(base + 0x58);
-            mtx[1][2] = lbl_8053D258;
-            mtx[2][0] = lbl_8053D258;
-            mtx[2][1] = lbl_8053D258;
-            mtx[2][2] = *(f32*)(base + 0x5c);
+    m90 = *(u32*)(base + 0x90);
+    if (m90 == 6 || *(s32*)(base + 0x288) == 3) {
+            f32 x,y,z;
+            z = *(f32*)(base + 0x5c);
+            y = *(f32*)(base + 0x58);
+            x = *(f32*)(base + 0x54);
+            mtx[0][0] = x;
+            mtx[0][1] = 0.0f;
+            mtx[0][2] = 0.0f;
+            mtx[1][0] = 0.0f;
+            mtx[1][1] = y;
+            mtx[1][2] = 0.0f;
+            mtx[2][0] = 0.0f;
+            mtx[2][1] = 0.0f;
+            mtx[2][2] = z;
             rec.w18 = mtx;
-            flag = 1;
-        }
+            flag = 3;
     }
 
     m230 = *(s32*)(base + 0x230);
@@ -133,12 +183,12 @@ extern "C" void fn_8014FD5C(Actor* actor)
         s32 x = *(s32*)(base + 0x248);
         kind = 0;
         if (x < 100) {
-            if (x >= 50) {
-                if ((x & 8) == 0) {
+            if (x < 50) {
+                if ((x & 4) == 0) {
                     kind = 1;
                 }
             } else {
-                if ((x & 4) == 0) {
+                if ((x & 8) == 0) {
                     kind = 1;
                 }
             }
@@ -147,17 +197,33 @@ extern "C" void fn_8014FD5C(Actor* actor)
             *((u8*)&rec + 0x14) = 0x50;
         }
     }
-    if (m230 == 9) {
-        mtx[0][0] = *(f32*)(base + 0x54);
-        mtx[0][1] = lbl_8053D258;
-        mtx[0][2] = lbl_8053D258;
-        mtx[1][0] = lbl_8053D258;
-        mtx[1][1] = *(f32*)(base + 0x58);
-        mtx[1][2] = lbl_8053D258;
-        mtx[2][0] = lbl_8053D258;
-        mtx[2][1] = lbl_8053D258;
-        mtx[2][2] = *(f32*)(base + 0x5c);
+    if (*(s32*)(base + 0x230) == 9) {
+        f32 x,y,z;
+        z = *(f32*)(base + 0x5c);
+        y = *(f32*)(base + 0x58);
+        x = *(f32*)(base + 0x54);
+        mtx[0][0] = x;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = y;
+        mtx[1][2] = 0.0f;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = z;
         rec.w18 = mtx;
+    }
+
+    s32 gba = 0;
+    if (*(s32*)(base + 4) >= 8 && (*(u32*)(base + 0x90) == 6 || *(s32*)(base + 0x288) == 3)) {
+        gba = 1;
+    }
+    if (*(s32*)(base + 0x288) == 1 || *(s32*)(base + 0x288) == 3) {
+        fn_801F02BC(actor, lbl_80465DD0, *(s32*)(base + 0x274) + 0xa8, &rec, flag, gba, 0, lbl_8053D25C, lbl_8053D25C);
+    } else if (*(u32*)(base + 0x90) != 2 && *(u32*)(base + 0x90) != 3 && *(u32*)(base + 0x90) != 1) {
+        fn_801F02BC(actor, lbl_80465DD0, *(s32*)(base + 0x274) + 0x8f, &rec, flag, gba, 0, lbl_8053D25C, lbl_8053D25C);
+    } else {
+        fn_801F02BC(actor, lbl_80465DBC, *(s32*)(base + 0x274) + 0x1f4, &rec, flag, gba, 0, lbl_8053D25C, lbl_8053D25C);
     }
 }
 
