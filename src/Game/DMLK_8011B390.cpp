@@ -546,7 +546,7 @@ static inline JGeometry::TVec3f dmlkDivide(const JGeometry::TVec3f& value, const
     JGeometry::TVec3f copy(value);
     return JGeometry::TVec3f(copy.x / divisor, copy.y / divisor, copy.z / divisor);
 }
-static inline void dmlkEmitBurst(u8* this_) {
+static inline void dmlkEmitBurstImpl(u8* this_) {
         JGeometry::TVec3f tmp12;
         tmp12 = *(JGeometry::TVec3f*)(this_ + 0xc);
         fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp12, lbl_8053C7F8, 0x41d, 0, 0, 0, 0, 1);
@@ -555,7 +555,7 @@ static inline void dmlkEmitBurst(u8* this_) {
         fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp12, lbl_8053C7F8, 0x420, 0, 0, 0, 0, 1);
         fn_801F0E34(this_, 0x30091, 0);
 }
-static inline void dmlkEmitPuff(u8* this_) {
+static inline void dmlkEmitPuffImpl(u8* this_) {
         JGeometry::TVec3f tmp16;
         *(s32*)(this_ + 0x98) = 2;
         *(s32*)(this_ + 0x278) = 0;
@@ -564,10 +564,10 @@ static inline void dmlkEmitPuff(u8* this_) {
         tmp16.y = tmp16.y + lbl_8053C818;
         fn_8013CC50(*(u32*)(this_ + 4), (Vec*)&tmp16, 1.0f, 0x33b, 0, 0, 0, 0, 1);
 }
+static inline void dmlkEmitBurst(u8* this_) { dmlkEmitBurstImpl(this_); }
+static inline void dmlkEmitPuff(u8* this_) { dmlkEmitPuffImpl(this_); }
 extern "C" void fn_8011B878(u8* this_, s32 id) {
     JGeometry::TVec3f tmp9;
-    JGeometry::TVec3f result;
-    JGeometry::TVec3f diff;
     switch (id) {
     case 0:
         *(u8*)(this_ + 0x11d) = 0;
@@ -612,9 +612,7 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
         }
         *(JGeometry::TVec3f*)(this_ + 0x260) = *(JGeometry::TVec3f*)(this_ + 0x24);
         p = (Vec*)fn_8023E724(0);
-        diff = *(JGeometry::TVec3f*)(this_ + 0x24) - *(JGeometry::TVec3f*)p;
-        result.set(diff.x / lbl_8053C820, diff.y / lbl_8053C820, diff.z / lbl_8053C820);
-        *(JGeometry::TVec3f*)(this_ + 0x26c) = result;
+        *(JGeometry::TVec3f*)(this_ + 0x26c) = dmlkDivide(*(JGeometry::TVec3f*)(this_ + 0x24) - *(JGeometry::TVec3f*)p, lbl_8053C820);
         break;
     }
     case 11:
