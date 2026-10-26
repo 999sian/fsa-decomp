@@ -65,7 +65,7 @@ extern "C" void fn_80238E08(void* h);
 extern "C" u8 fn_802A1554(void* g, void* v);
 extern "C" void fn_802A381C(void* g, void* v, s32 a, s32 b);
 
-static inline void moveBlockChild(char* obj, const JGeometry::TVec3f& offset) {
+static inline void moveBlockChild(char* obj, JGeometry::TVec3f offset) {
     *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + offset;
     fn_802C59B0(obj);
 }
@@ -791,6 +791,7 @@ extern "C" void fn_80298978(void* p) {
 #pragma opt_common_subs off
 extern "C" void fn_80298C18(void* p) {
     char* self = (char*)p;
+    const JGeometry::TVec3f* step;
     s32 i;
     char* q;
     s32 n;
@@ -849,11 +850,12 @@ extern "C" void fn_80298C18(void* p) {
         lenSq = vel->squared();
         if (lenSq <= lbl_805406A8 * FLT_EPSILON) {
             vec.set(lbl_8054067C,lbl_80540674,lbl_80540674);
+            step = &vec;
             q = self;
             for (i = 0; i < *(s32*)(self + 0x2a8); i++) {
                 obj = fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    *(JGeometry::TVec3f*)((char*)obj + 0xc) = *(JGeometry::TVec3f*)((char*)obj + 0xc) + vec;
+                    *(JGeometry::TVec3f*)((char*)obj + 0xc) = *(JGeometry::TVec3f*)((char*)obj + 0xc) + *step;
                     fn_802C59B0(obj);
                 }
                 q += 4;
@@ -1015,8 +1017,7 @@ extern "C" void fn_80298FC4(void* p) {
 }
 
 #pragma opt_common_subs on
-extern "C" void fn_80299374(void* p) {
-    char* self = (char*)p;
+extern "C" void fn_80299374(char* self) {
     char* obj;
     s32 mode;
     s32 idx;
@@ -1029,7 +1030,7 @@ extern "C" void fn_80299374(void* p) {
     JGeometry::TVec3f d;
     JGeometry::TVec3f sum;
 
-    if (*(f32*)(self + 0x254) > 0.0f) {
+    if (*(f32*)(self + 0x254) > lbl_80540674) {
         *(s32*)(self + 0x248) += 1;
         mode = (*(u32*)(self + 0x90) >> 7) & 0x1f;
         mode = (mode == 0) ? 0 : mode + 7;
@@ -1078,9 +1079,7 @@ extern "C" void fn_80299374(void* p) {
             for (k = 0; k < *(s32*)(self + 0x2a8); k++) {
                 obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(q + 0x28c));
                 if (obj != 0) {
-                    JGeometry::TVec3f* offset = &v;
-                    *(JGeometry::TVec3f*)(obj + 0xc) = *(JGeometry::TVec3f*)(obj + 0xc) + *offset;
-                    fn_802C59B0(obj);
+                    moveBlockChild(obj, v);
                 }
                 q += 4;
             }
