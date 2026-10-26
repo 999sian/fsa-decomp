@@ -52,7 +52,7 @@ extern const f32 lbl_8053D268;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern char lbl_80465DBC[];
 extern char lbl_80465DD0[];
-static inline void slrRotation(f32 mtx[3][4], const f32 s, const f32 ang) {
+static inline void slrRotation(f32 mtx[3][4], f32 s, f32 ang) {
     f32 cA;
     f32 sC;
     f32 sB;
@@ -95,8 +95,8 @@ extern "C" void fn_8014FD5C(Actor* actor)
     u32 m90;
     s32 m230;
     u16 state;
-    f32 ang;
     f32 s;
+    f32 ang;
     f32 cA;
     f32 sA;
     f32 sB;
