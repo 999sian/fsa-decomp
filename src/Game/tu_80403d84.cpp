@@ -2453,8 +2453,8 @@ extern "C" void fn_80406634(u8* self, s32 style, s32 enabled) {
 extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out);
 extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 lbl_8048CC40[];
-static inline void menuMarkerMtx(f32 m[3][4], f32 s) {
-    f32 cx, cy, sx, sy, sz, sxsy, cz;
+static inline void menuMarkerMtx(f32 m[3][4], const f32 s) {
+    f32 cx; f32 sx; f32 sy; f32 sz; f32 cy; f32 sxsy; f32 cz;
  f32 zero = 0.0f;
     sx = sin(zero); sy = sin(zero); sz = sin(zero);
     cx = cos(zero); cy = cos(zero); cz = cos(zero);
