@@ -61,13 +61,13 @@ extern "C" void* fn_80144134(void* this_, s16 freeFlag) {
 }
 
 static inline void bzbrRotScale(f32 m[3][4], const f32* angle, const f32* scale) {
-    f32 s;
     f32 ang;
+    f32 s;
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
-    s = *scale;
     ang = *angle;
+    s = *scale;
     f32 sz, sy, sx;
     f32 cz, cy, cx;
     f32 rx = 0.0f;
@@ -102,33 +102,7 @@ extern "C" void fn_80144194(u8* this_) {
     if (*(s32*)(this_ + 0x230) == 4) {
         DrawRec rec2;
         f32 m2[3][4];
-        f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
-        m2[0][3] = 0.0f;
-        m2[1][3] = 0.0f;
-        m2[2][3] = 0.0f;
-        const f32 s = *(f32*)(this_ + 0x250);
-        ang = *(f32*)(this_ + 0x254);
-        f32 rx = 0.0f;
-        sx = sin(rx);
-        sy = sin(ang);
-        sz = sin(rx);
-        cx = cos(rx);
-        cy = cos(ang);
-        cz = cos(rx);
-        f32 sxsy = sx * sy;
-        f32 cxsz = cx * sz;
-        f32 cxcz = cx * cz;
-        f32 sxsz = sx * sz;
-        f32 sxcz = sx * cz;
-        m2[0][0] = s * (cy * cz);
-        m2[1][0] = s * (cy * sz);
-        m2[2][0] = s * -sy;
-        m2[0][1] = s * (sxsy * cz - cxsz);
-        m2[1][1] = s * (sxsy * sz + cxcz);
-        m2[2][1] = s * (sx * cy);
-        m2[0][2] = s * (cxcz * sy + sxsz);
-        m2[1][2] = s * (cxsz * sy - sxcz);
-        m2[2][2] = s * (cx * cy);
+        bzbrRotScale(m2, (f32*)(this_ + 0x254), (f32*)(this_ + 0x250));
         rec2.w18 = m2;
         s32 id = lbl_8049F408[*(s32*)(this_ + 0x244)] + 0x10;
         if (*(s32*)(this_ + 4) < 8) {
@@ -148,7 +122,7 @@ extern "C" void fn_80144194(u8* this_) {
         mtx[2][1] = 0.0f;
         mtx[2][2] = ys;
         rec.w18 = mtx;
-        if (0.0f != *(f32*)(this_ + 0x14)) {
+        if (*(f32*)(this_ + 0x14) != 0.0f) {
             rec.w30 = 0x11;
         }
         fn_801F06F0(this_, lbl_80465B80, lbl_8049F408[*(s32*)(this_ + 0x244)] + 0x10, &rec, 0, 1.0f, 1.0f);
