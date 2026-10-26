@@ -257,26 +257,14 @@ extern "C" void fn_804170EC(u8* this_) {
     f32 f31;
     f32 f30;
     s32 idx;
-    T804170EC_Color tmp;
-    T804170EC_Color clr;
-    s32 col;
     s32 row;
-    T804170EC_Color* dst;
+    s32 col;
     u8* pane;
 
     row = *(s32*)(p + 0xc);
     col = *(s32*)(p + 0x10);
     idx = col + row * 5;
-    clr.r = 0;
-    clr.g = 0;
-    clr.b = 0;
-    clr.a = 0;
-    *(u32*)&tmp = *(u32*)&clr;
-    dst = (T804170EC_Color*)((u8*)sManager__10JFWDisplay + 0x8);
-    dst->r = tmp.r;
-    dst->g = tmp.g;
-    dst->b = tmp.b;
-    dst->a = tmp.a;
+    JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
     fn_8013B490(lbl_8053AB10);
 
     if (*(u8*)(p + 0x109) != 0) {
