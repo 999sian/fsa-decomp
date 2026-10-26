@@ -1008,24 +1008,6 @@ static inline bool HudCountPending8041(u8 mask) {
     return (lbl_80529DEC[0x239] & mask) != 0;
 }
 
-static inline void HudSyncCountOffset8041(s32 idx, s32 off) {
-    u8* dst = lbl_80529DEC;
-    s32* src = (s32*)(lbl_80529DEC + off + 0xd8);
-    for (s32 i = 0; i < 4; i++, dst += 4) {
-        if (i != idx && fn_8022F514(i) && fn_8022F3DC(i) == idx) {
-            *(s32*)(dst + 0xd8) = *src;
-        }
-    }
-}
-
-static inline void HudSetCountTransitionOffset8041(u8* self, s32 idx, s32 off, s32* source) {
-    u8* p2 = self + idx * 2;
-    u8* p4 = self + off;
-    *(s16*)(p2 + 0x21a) = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
-    *(s32*)(p4 + 0x1e8) = *(s32*)(p4 + 0x1d8);
-    *(s32*)(p4 + 0x1d8) = *source;
-    *(s32*)(self + off + 0x1f8) = fn_80237810(idx);
-}
 
 static inline void HudStoreCountResult8041(u8* self, s32 idx, s32 result) {
     *(s32*)(self + idx * 4 + 0x1f8) = result;
