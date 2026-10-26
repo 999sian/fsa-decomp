@@ -2125,6 +2125,7 @@ struct Tbl8048C1F8 {
 	u8 pad764[0x99c - 0x764];
 	s32 cursorFrames[30]; // 0x99c
 	s32 waitFrames[4];    // 0xa14
+	static s32 frame(const s32* values, s32 index) { return values[index]; }
 };
 extern Tbl8048C1F8 lbl_8048C1F8;
 
@@ -2208,7 +2209,7 @@ extern "C" void fn_804054B8(T5B10* self) {
 			}
 		}
 	}
-	self->f424 += 1;
+	self->f424++;
 	if (self->f424 >= 15) {
 		self->f424 = 0;
 		u64* e = (u64*)((u8*)t + 0x420);
@@ -2342,7 +2343,10 @@ extern "C" void fn_80405FC0(u8* self) {
 	s32 w = *(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
 	f32 x1 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
 	f32 x2 = *(f32*)getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693032ULL));
-	f32 span = 384.0f * (0.5f * (x2 - x1)) / (f32)w;
+	f32 delta = x2 - x1;
+	f32 half = lbl_805438C8;
+	f32 scaled = half * delta;
+	f32 span = lbl_805438C4 * scaled / (f32)w;
 	getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693033ULL));
 	getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(0x506C693031ULL));
 
@@ -2394,7 +2398,7 @@ extern "C" void fn_80405FC0(u8* self) {
 				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, resource, 0xe8, &rec, 1.0f, 1.0f);
 			}
 		} else if (st == 0x2) {
-			s32 id = ((s32*)(tbl + 0xa14))[(*(s32*)(self + 0x358) / 5) % 4];
+			s32 id = ((Tbl8048C1F8*)tbl)->waitFrames[(*(s32*)(self + 0x358) / 5) % 4];
 			void* resource = ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24));
 			fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, resource, id, &rec, 1.0f, 1.0f);
 		} else if (st == 0x4) {
@@ -2405,7 +2409,7 @@ extern "C" void fn_80405FC0(u8* self) {
 			if (*(s32*)(self + 0x358) >= 0x1e) {
 				*(s32*)(self + 0x358) = 0;
 			}
-			s32 id = *(s32*)(self + 0x360) + ((s32*)(tbl + 0x99c))[*(s32*)(self + 0x358)];
+			s32 id = *(s32*)(self + 0x360) + ((Tbl8048C1F8*)tbl)->cursorFrames[*(s32*)(self + 0x358)];
 			void* resource = ((Tu80406ResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, (char*)(tbl + 0xa24));
 			fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, resource, id, &rec, 1.0f, 1.0f);
 		}
