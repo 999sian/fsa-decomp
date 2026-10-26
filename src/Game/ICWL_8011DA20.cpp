@@ -126,6 +126,10 @@ static inline void icwlDrawSprite(void* pos, const char* name, s32 id, DrawRec* 
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, id, rec, lbl_8053C8BC, lbl_8053C8BC);
 }
 
+extern "C" f64 __psq_l(const void*, s32, s32, s32);
+extern "C" f64 __ps_mul(f64, f64);
+extern "C" f64 __ps_madd(f64, f64, f64);
+extern "C" f64 __ps_sum0(f64, f64, f64);
 extern int __float_epsilon[];
 extern "C" void fn_8011DA20(u8* this_) {
     v06__5ActorFv(this_);
