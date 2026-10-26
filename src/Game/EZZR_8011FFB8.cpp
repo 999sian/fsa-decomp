@@ -7,6 +7,12 @@ class GateRegistry;
 extern "C" GateRegistry* fn_80131F0C(void);
 extern "C" u8* fn_80131E30(GateRegistry*, s32);
 
+struct EzzrMgr {
+    u8 flag(u32 i) { return mFlags[i]; }
+    u8 pad[0x131df];
+    u8 mFlags[1];
+};
+
 static inline f32 EZZR_Sqrt(f32 x) {
     if (x <= 0.0f) {
         return x;
@@ -106,8 +112,6 @@ extern "C" s32 fn_80123E80(u8*, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, u32, f32*, u32, s32, s32);
 extern s32 lbl_80539F30;
 extern "C" void fn_80120174(EZZR* p, s32 param) {
-    s32 id;
-    void* other;
     *((u8*)p + 0x330) = 0;
     switch (param) {
     case 0:
@@ -126,10 +130,9 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         *((u8*)p + 0x331) = 0;
         break;
     case 5: {
-        s32 room;
         *((u8*)p + 0x330) = 1;
-        room = *(s32*)((u8*)p + 0x4);
-        if (((u8*)fn_802D6A9C())[room + 0x131df] != 0) {
+        s32 room = *(s32*)((u8*)p + 0x4);
+        if ((fn_802D6A9C() + 0x10000)[room + 0x31df] != 0) {
             fn_801D22DC((u8*)p + 0x230, 6, 2, 0);
         } else {
             fn_801D22DC((u8*)p + 0x230, 7, 2, 0);
@@ -140,9 +143,9 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         *((u8*)p + 0x11e) = 1;
         break;
     case 8: {
-        u32 flags;
         p->detach();
-        flags = *(u32*)((u8*)p + 0x90) | 4;
+        u32 flags = *(u32*)((u8*)p + 0x90);
+        flags |= 4;
         flags |= fn_8012285C(p) << 3;
         Actor_CreateByID(fn_801F856C(), 0x46415A52, *(u32*)((u8*)p + 0x4), (f32*)((u8*)p + 0xc), flags, -1, -1);
         break;
@@ -161,20 +164,21 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         fn_801D22DC((u8*)p + 0x230, fn_80230CFC(fn_8012285C(p)), 2, 0);
         break;
     case 13: {
-        Vec a = p->field_0C;
-        Vec b = p->field_0C;
-        id = fn_801F7A08(fn_801F856C(), 0x5241494c);
+        JGeometry::TVec3f b, a;
+        a = *(JGeometry::TVec3f*)&p->field_0C;
+        b = *(JGeometry::TVec3f*)&p->field_0C;
+        s32 id = fn_801F7A08(fn_801F856C(), 0x5241494c);
         while (id != -1) {
-            other = fn_801F666C(fn_801F856C(), id);
+            void* other = fn_801F666C(fn_801F856C(), id);
             if (other == 0) {
                 break;
             }
             {
                 s32 kind = (*(u32*)((u8*)other + 0x90) >> 8) & 0xff;
                 if (kind == *(s32*)((u8*)p + 0x35c)) {
-                    a = *(Vec*)((u8*)other + 0xc);
+                    a = *(JGeometry::TVec3f*)((u8*)other + 0xc);
                 } else if (kind == *(s32*)((u8*)p + 0x3d0)) {
-                    b = *(Vec*)((u8*)other + 0xc);
+                    b = *(JGeometry::TVec3f*)((u8*)other + 0xc);
                 }
             }
             id = fn_801F78F4(fn_801F856C(), 0x5241494c, id);
@@ -182,10 +186,14 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         {
             f32 dx = p->field_0C.x - a.x;
             f32 dy = p->field_0C.y - a.y;
-            f32 distA = EZZR_Sqrt(dx * dx + dy * dy);
+            f32 dx2 = dx * dx;
+            f32 dy2 = dy * dy;
+            f32 distA = EZZR_Sqrt(dx2 + dy2);
             dx = p->field_0C.x - b.x;
             dy = p->field_0C.y - b.y;
-            f32 distB = EZZR_Sqrt(dx * dx + dy * dy);
+            dx2 = dx * dx;
+            dy2 = dy * dy;
+            f32 distB = EZZR_Sqrt(dx2 + dy2);
             if (distA > distB) {
                 if (*((u8*)p + 0x3c4) != 0) {
                     fn_80127ED8(fn_801283E8(), &b);
