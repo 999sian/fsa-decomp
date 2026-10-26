@@ -104,7 +104,7 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
             if (self->field_248 == 0x1b) {
                 if (self->field_59A == 0 && self->field_24C >= 0xf0 && fn_801D0DD4(self) != 0 &&
                     (self->field_524 & 0x40) == 0) {
-                    s32 off = self->field_04;
+                    u32 off = self->field_04;
                     u8* base = fn_802D6A9C();
                     if (base[0x10000 + off + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
                         if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
@@ -122,15 +122,16 @@ extern "C" void fn_801C5B08(Unk801C5B08* self, u8 param_2) {
                 } else {
                     flag = 0;
                     if (self->field_599 == 0) {
+                        u8 r27;
                         u8 r26 = ((u8*)GetCurrentSlotPtr(self->field_358))[3];
                         JGeometry::TVec3f v;
                         JGeometry::TVec3f pos(*(JGeometry::TVec3f*)&self->field_0C);
-                        u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), pos, self->field_04);
+                        r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), pos, self->field_04);
                         u8* slot = (u8*)GetCurrentSlotPtr(self->field_358);
                         if (r26 < slot[2]) {
                             slot[3] = r26;
                         }
-                        v = fn_800FE294(GetCurrentSlotPtr(self->field_358), r27);
+                        tuGetRailPosition(v, GetCurrentSlotPtr(self->field_358), r27);
                         f32 dx = v.x - self->field_0C;
                         f32 dy = v.y - self->field_10;
                         f32 dx2 = dx * dx;
@@ -249,14 +250,14 @@ extern "C" u8 fn_801CFCF0(void* p, s32 arg);
 extern f32 lbl_8053EDF4;
 extern f32 lbl_8053EE98;
 extern f32 lbl_8053EE9C;
-extern f32 lbl_8053EEA0;
-extern f32 lbl_8053EEA4;
-extern f32 lbl_8053EEA8;
+extern const f32 lbl_8053EEA0;
+extern const f32 lbl_8053EEA4;
+extern const f32 lbl_8053EEA8;
 extern "C" void fn_801C6260(void* p) {
     Unk801C5B08* self = (Unk801C5B08*)p;
     f32 d = fn_801D0DA0(p, self->field_338, &self->field_0C);
     u8 r31 = fn_801D183C(p, lbl_8053EDF4);
-    s32 r30 = fn_801CAED4(p, self->field_338) == 0;
+    bool r30 = fn_801CAED4(p, self->field_338) == 0;
     if (self->field_597 == 0 && r31 && (u8)r30 && (self->field_524 & 0x10) && d <= lbl_8053EE98) {
         fn_801C3B7C(p, 0x22);
         return;
@@ -265,30 +266,30 @@ extern "C" void fn_801C6260(void* p) {
         return;
     }
     if (self->field_59A == 0 && fn_801D0DD4(p) && !(self->field_524 & 0x40)) {
-        if (!(u8)r30 || ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+        if (!(u8)r30 || ((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
             s32 state = self->field_338;
             s32 room = self->field_04;
-            if (fn_802D6A9C()[0x10000 + room + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
+            if (((u8 (*)[0x10000])fn_802D6A9C())[1][room + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
                 f32* pf = (f32*)((u8*)self + state * 0xc + 0x1ac);
                 f32 t;
                 t = (f32)(s16)(self->field_33C + 0x4000);
-                if (lbl_8053EE78 * fabs(t) < lbl_8053EE80 && !fn_801CFCF0(p, 1)) {
+                if (lbl_8053EE78 * JMAAbs(t) < lbl_8053EE80 && !fn_801CFCF0(p, 1)) {
                     if (self->field_0C < pf[0]) {
                         self->field_33C = -0x4000;
                     } else {
-                        self->field_33C = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0 ? -0x4000 : 0x4000;
+                        if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0) { self->field_33C = -0x4000; } else { self->field_33C = 0x4000; }
                     }
                 } else {
                     t = (f32)(s16)(self->field_33C - 0x4000);
-                    if (lbl_8053EE78 * fabs(t) < lbl_8053EE80 && !fn_801CFCF0(p, 0)) {
+                    if (lbl_8053EE78 * JMAAbs(t) < lbl_8053EE80 && !fn_801CFCF0(p, 0)) {
                         if (self->field_0C > pf[0]) {
                             self->field_33C = 0x4000;
                         } else {
-                            self->field_33C = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0 ? 0x4000 : -0x4000;
+                            if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA0) { self->field_33C = 0x4000; } else { self->field_33C = -0x4000; }
                         }
                     } else {
-                        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE7C) {
-                            self->field_33C = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70 ? 0x4000 : -0x4000;
+                        if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE7C) {
+                            self->field_33C = ((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70 ? 0x4000 : -0x4000;
                         } else {
                             self->field_33C = self->field_0C < pf[0] ? -0x4000 : 0x4000;
                         }
@@ -306,9 +307,9 @@ extern "C" void fn_801C6260(void* p) {
         return;
     }
     if (self->field_524 & 0x10) {
-        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA4) {
+        if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA4) {
             if (self->field_524 & 0x20) {
-                if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA8) {
+                if (((TuRandom*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EEA8) {
                     fn_801C3B7C(p, 0x26);
                 } else {
                     fn_801C3B7C(p, 0x25);
