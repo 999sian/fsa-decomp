@@ -693,11 +693,9 @@ struct MsgProc {
         str2c0[m2d0++] = col + base;
         str2c0[m2d0++] = -2;
         if (layout->m1a1 != 0) {
-            char* topData = (char*)this + layout->m15c;
-            char* lineData = (char*)this + slot;
-            const s32 top = topData[0x23a];
-            const s32 line = lineData[0x226];
-            if ((u8)line - top - 1 == 0) {
+            const s8 top = lineTab[layout->m15c];
+            const u8 line = slotLine[slot];
+            if (lineRow(top, line) == 0) {
                 str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
                 return;
             }
@@ -707,7 +705,7 @@ struct MsgProc {
     s32 slotCol(s32 x) {
         return x + (s8)slotLine[slot + 0x10];
     }
-    static s32 lineRow(const s8 top, const int line) {
+    static s32 lineRow(const s8 top, const s16 line) {
         return (u8)line - top - 1;
     }
     BOOL testBit(s32 n) {
