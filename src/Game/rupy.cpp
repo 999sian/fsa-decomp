@@ -57,6 +57,42 @@ struct RupyRotation {
     }
 };
 
+static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& scale, f32 ang) {
+        f32 cx;
+        f32 s;
+        f32 sx;
+        f32 sy;
+        f32 sz;
+        f32 cy;
+        f32 cz;
+        sx = sin(lbl_80541D88);
+        sy = sin(ang);
+        sz = sin(lbl_80541D88);
+        cx = cos(lbl_80541D88);
+        cy = cos(ang);
+        cz = cos(lbl_80541D88);
+        s = scale;
+        f32 sxsy = sx * sy;
+        f32 cxsz = cx * sz;
+        f32 cxcz = cx * cz;
+        f32 sxsz = sx * sz;
+        f32 sxcz = sx * cz;
+        f32 cycz = cy * cz;
+        f32 cysz = cy * sz;
+        rec.w18 = mtx;
+        rec.b2d = 1;
+        rec.b20 = 0;
+        mtx[0][0] = s * cycz;
+        mtx[1][0] = s * cysz;
+        mtx[2][0] = s * -sy;
+        mtx[0][1] = s * (sxsy * cz - cxsz);
+        mtx[1][1] = s * (sxsy * sz + cxcz);
+        mtx[2][1] = s * (sx * cy);
+        mtx[0][2] = s * (cxcz * sy + sxsz);
+        mtx[1][2] = s * (cxsz * sy - sxcz);
+        mtx[2][2] = s * (cx * cy);
+}
+
 // Resource manager at lbl_8053AAF8+0xA4: vtable 0x18 looks up a resource by type and name.
 struct RupyResMgr {
     virtual void r0();
@@ -1227,7 +1263,7 @@ extern "C" void fn_8032D6C0(void* this_) {
 
     *(u16*)(p + 0x94) = (*(u32*)(p + 0x90) >> 16) & 0xff;
     *(s32*)(p + 0x268) = *(u32*)(p + 0x90) & 0xff;
-    *(s32*)(p + 0x24c) = 0;
+    *(int*)(p + 0x24c) = 0;
     *(s32*)(p + 0x250) = 0;
     *(s32*)(p + 0x254) = 0;
     *(u16*)(p + 0x240) = 0;
@@ -1241,7 +1277,7 @@ extern "C" void fn_8032D6C0(void* this_) {
     *(s32*)(p + 0x278) = (*(u32*)(p + 0x90) >> 8) & 0xff;
     *(s32*)(p + 0x234) = 0x12;
     *(s32*)(p + 0x264) = -1;
-    *(volatile f32*)(p + 0x238) = lbl_80541D90;
+    *(f32*)(p + 0x238) = lbl_80541D90;
     *(f32*)(p + 0x23c) = lbl_80541D88;
     *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * rupyInitRand01()) + 0x3c;
     *(f32*)(p + 0x80) = lbl_80541E1C;
@@ -1253,9 +1289,9 @@ extern "C" void fn_8032D6C0(void* this_) {
     *(f32*)(p + 0x68) = lbl_80541E20;
     *(f32*)(p + 0x6c) = lbl_80541E20;
     if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
-        *(s32*)(p + 0x24c) = 0x3f2;
+        *(int*)(p + 0x24c) = 0x3f2;
     } else {
-        *(s32*)(p + 0x24c) = 0x33e;
+        *(int*)(p + 0x24c) = 0x33e;
     }
     *(s32*)(p + 0x248) = 0;
     if (*(s32*)(p + 0x268) >= 8) {
@@ -1299,23 +1335,23 @@ extern "C" void fn_8032D6C0(void* this_) {
                 *(f32*)(p + 0x14) = lbl_80541D88;
                 *(f32*)(p + 0x40) = *(f32*)(p + 0x40) - *(f32*)(p + 0x44);
                 *(f32*)(p + 0x44) = lbl_80541D88;
-                *(s32*)(p + 0x230) = 0;
+                *(int*)(p + 0x230) = 0;
                 break;
             }
         }
         /* fall through */
     case 1:
-        *(s32*)(p + 0x230) = 0xb;
+        *(int*)(p + 0x230) = 0xb;
         break;
     case 2:
-        *(s32*)(p + 0x24c) = 0x12c;
+        *(int*)(p + 0x24c) = 0x12c;
         *(f32*)(p + 0x80) = lbl_80541E1C;
         *(f32*)(p + 0x84) = lbl_80541E1C;
         *(f32*)(p + 0x88) = lbl_80541D98;
         *(f32*)(p + 0x8c) = lbl_80541D98;
         *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + lbl_80541D98;
         *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_80541D98;
-        *(s32*)(p + 0x230) = 2;
+        *(int*)(p + 0x230) = 2;
         break;
     case 3:
         *(s32*)(p + 0xb0) = 0x20000;
@@ -1326,10 +1362,10 @@ extern "C" void fn_8032D6C0(void* this_) {
         {
             u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
             if (tbl[room + 0x31df] == 1) {
-                *(volatile f32*)(p + 0x40) = lbl_80541DB4;
-                *(s32*)(p + 0x24c) = 0x30c;
+                *(f32*)(p + 0x40) = lbl_80541DB4;
+                *(int*)(p + 0x24c) = 0x30c;
                 *(u8*)(p + 0x27d) = 1;
-                *(s32*)(p + 0x230) = 9;
+                *(int*)(p + 0x230) = 9;
                 break;
             }
         }
@@ -1341,8 +1377,8 @@ extern "C" void fn_8032D6C0(void* this_) {
             detach__5ActorFv(this_);
             return;
         }
-        *(s32*)(p + 0x24c) = 0;
-        *(s32*)(p + 0x230) = 8;
+        *(int*)(p + 0x24c) = 0;
+        *(int*)(p + 0x230) = 8;
         *(u8*)(p + 0x280) = 1;
         break;
     case 17: case 18: case 19: case 20:
@@ -1353,8 +1389,8 @@ extern "C" void fn_8032D6C0(void* this_) {
             return;
         }
     case 8: case 9: case 10: case 11:
-        *(s32*)(p + 0x24c) = 0;
-        *(s32*)(p + 0x230) = 7;
+        *(int*)(p + 0x24c) = 0;
+        *(int*)(p + 0x230) = 7;
         *(u8*)(p + 0x280) = 1;
         break;
     case 24: case 25: case 26:
@@ -1363,8 +1399,8 @@ extern "C" void fn_8032D6C0(void* this_) {
         *(s32*)(p + 0x274) = 0xa;
         if (((ActorSlot13*)this_)->slot13() != 0) {
             if (*(u16*)(p + 0x94) == 0x1a) {
-                *(volatile f32*)(p + 0x238) = lbl_80541D90;
-                *(s32*)(p + 0x230) = 0xa;
+                *(f32*)(p + 0x238) = lbl_80541D90;
+                *(int*)(p + 0x230) = 0xa;
                 break;
             }
         }
@@ -1376,7 +1412,7 @@ extern "C" void fn_8032D6C0(void* this_) {
         }
         *(f32*)(p + 0x14) = lbl_80541E30;
         *(u8*)(p + 0x280) = 1;
-        *(s32*)(p + 0x230) = 0xc;
+        *(int*)(p + 0x230) = 0xc;
         break;
     case 27:
         if (!(*(u32*)(p + 0x198) & 1)) {
@@ -1385,15 +1421,15 @@ extern "C" void fn_8032D6C0(void* this_) {
             *(s16*)(p + 0x242) = (s16)(lbl_80541E38 - lbl_80541E34 * rupyInitRand01());
         }
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
-            *(s32*)(p + 0x24c) = 0x3f2;
+            *(int*)(p + 0x24c) = 0x3f2;
         } else {
-            *(s32*)(p + 0x24c) = 0x33e;
+            *(int*)(p + 0x24c) = 0x33e;
         }
-        *(s32*)(p + 0x230) = 0xd;
+        *(int*)(p + 0x230) = 0xd;
         break;
     case 28:
         *(f32*)(p + 0x14) = lbl_80541E30;
-        *(s32*)(p + 0x230) = 0xe;
+        *(int*)(p + 0x230) = 0xe;
         if (*(s32*)(p + 0x268) >= 4) {
             room = *(s32*)(p + 0x4);
             if (room >= 8) {
@@ -1402,21 +1438,21 @@ extern "C" void fn_8032D6C0(void* this_) {
         }
         break;
     case 29:
-        *(s32*)(p + 0x24c) = 0x30c;
+        *(int*)(p + 0x24c) = 0x30c;
         *(u8*)(p + 0x27d) = 1;
-        *(s32*)(p + 0x230) = 9;
+        *(int*)(p + 0x230) = 9;
         break;
     case 30:
         *(s32*)(p + 0x274) = 0xa;
-        *(s32*)(p + 0x24c) = 0x30c;
+        *(int*)(p + 0x24c) = 0x30c;
         *(u8*)(p + 0x27d) = 1;
-        *(s32*)(p + 0x230) = 0;
+        *(int*)(p + 0x230) = 0;
         break;
     case 38:
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
-            *(s32*)(p + 0x24c) = 0x3d9;
+            *(int*)(p + 0x24c) = 0x3d9;
         } else {
-            *(s32*)(p + 0x24c) = 0x325;
+            *(int*)(p + 0x24c) = 0x325;
         }
         *(s32*)(p + 0x274) = 0xa;
         room = *(s32*)(p + 0x4);
@@ -1429,7 +1465,7 @@ extern "C" void fn_8032D6C0(void* this_) {
                 *(f32*)(p + 0x44) = lbl_80541D88;
             }
         }
-        *(s32*)(p + 0x230) = 0xf;
+        *(int*)(p + 0x230) = 0xf;
         break;
     default:
         break;
@@ -1437,7 +1473,7 @@ extern "C" void fn_8032D6C0(void* this_) {
 
     if (*(s32*)(p + 0x278) > 0) {
         *(s32*)(p + 0x234) = *(s32*)(p + 0x230);
-        *(s32*)(p + 0x230) = 0x11;
+        *(int*)(p + 0x230) = 0x11;
     }
     if (((u8*)lbl_8053AAF8)[0x7f] == 0) {
         detach__5ActorFv(this_);
