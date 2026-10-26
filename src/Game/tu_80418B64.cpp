@@ -1289,31 +1289,12 @@ extern "C" void fn_8013B490(void* p);
 extern const f32 lbl_80543A34;
 extern const f32 lbl_80543A38;
 extern const f32 lbl_80543A3C;
-static inline void HudOrthoDraw8041(u8* self, u8* slot, f32 x, f32 y, f32 ex, f32 ey) {
-    JGeometry::TBox2f box(lbl_80543A00, lbl_80543A00, ex, ey);
-    ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setOrtho(box, lbl_80543A38, lbl_80543A3C);
-    ((J2DOrthoGraph*)*(u8**)(self + 0x4c))->setPort();
-    ((J2DScreen*)*(u8**)slot)->draw(x, y, *(J2DGrafContext**)(self + 0x4c));
-}
-static inline void HudSetProjection8041(J2DOrthoGraph* graph, f32 ex, f32 ey, const f32 zero) {
-    JGeometry::TBox2f box(zero, zero, ex, ey);
-    graph->setOrtho(box, lbl_80543A38, lbl_80543A3C);
-}
-static inline f32 HudFloat8041(const s32 value) { return (f32)value; }
-static inline void HudProjectCoords8041(const f32 sx, const f32 sy, const s32 width, const s32 height, const s16 offset, const f32* point, f32& x, f32& y) {
-    f32 yy = sy * (point[1] / (f32)height);
-    f32 xx = sx * (point[0] / (f32)width);
-    y = (f32)offset + (yy - (f32)height * lbl_80543A34);
-    x = xx - (f32)width * lbl_80543A34;
-}
-static inline f32 HudSettingsScale8041(const u8* settings) { return *(const f32*)(settings + 0x40); }
 static inline bool HudHideTimer8041() {
     if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return 1;
     return lbl_8053AAF8[0x88] == 2;
 }
 #pragma opt_common_subs off
 extern "C" void fn_8041F720(u8* self) {
-    u8* videoManager;
     f32 ay;
     f32 ax;
     f32 by;
@@ -1328,14 +1309,13 @@ extern "C" void fn_8041F720(u8* self) {
     }
 
     if (self[0x291] != 0) {
-        videoManager = sManager__8JUTVideo;
         f32 ex;
         f32 ey;
         f32 sx;
         f32 sy;
         f32 d = *(f32*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x858);
         f32 k = *(f32*)(lbl_8050DB0C + 0x40);
-        u8* vid = *(u8**)(videoManager + 4);
+        u8* vid = *(u8**)(sManager__8JUTVideo + 4);
         sx = k * ((f32)(s32)*(u16*)(vid + 4) / d);
         sy = k * ((f32)(s32)*(u16*)(vid + 6) / d);
         ex = lbl_80543A00 + sx;
