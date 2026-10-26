@@ -53,11 +53,9 @@ struct RoomArrays {
     u8 values1327C[4];
 };
 
-static inline bool roomScalarNear(f32 a, f32 b, f32 eps) {
-    bool same = false;
-    b = a - b;
-    if (-eps <= b && b <= eps) same = true;
-    return same;
+static inline void roomSetPosition(JGeometry::TVec2<f32>& dst, f32 y, f32 x) {
+    dst.x = x;
+    dst.y = y;
 }
 
 static inline bool roomPositionEquals(JGeometry::TVec2<f32>& a, JGeometry::TVec2<f32>& b) {
@@ -758,8 +756,8 @@ insert:
  f32 y;
  y=pos[1];
  x=pos[0];
- p->positions13088[i].x=x;
  p->positions13088[i].y=y;
+ p->positions13088[i].x=x;
         p->owners130C8[i] = owner;
         return;
     }
