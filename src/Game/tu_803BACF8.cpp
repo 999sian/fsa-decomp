@@ -17,10 +17,10 @@ extern "C" void* fn_804030C4(u32 tag, char* name);
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 
 static inline u32 calcCardChecksum(u8* data) {
-    u32 sum = 0;
+    s32 sum = 0;
     u16 inv = 0;
     for (int i = 0; i < 0x1ffc; i += 2) {
-        u16 value = *(u16*)(data + i);
+        u32 value = *(u16*)(data + i);
         sum += value;
         inv += ~value;
     }
@@ -128,7 +128,10 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
 #pragma optimization_level reset
 #pragma opt_unroll_loops reset
 #pragma peephole on
-extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, const void* src, s32 unused, u32 size) {
+extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
+    CARDFileInfo* fileInfo = info;
+    void* src = data;
+    s32 size = len;
     OSCalendarTime cal;
     CARDStat stat;
     CARDStat tailStat;
