@@ -800,13 +800,13 @@ extern void* lbl_8053AAF8;
 extern "C" void fn_8035151C(u8* self) {
     s32 st;
     s32 i;
-    s32 j;
     s32 room;
     u8 flags[4];
     s32 list[4];
     s32 count;
     f32 fv;
     u32 bits;
+    JGeometry::TVec3<f32>* pos=(JGeometry::TVec3<f32>*)(self+0xc);
 
     *(s32*)(self + 0x258) = (*(u32*)(self + 0x90) & 0xf) + ((*(u32*)(self + 0x90) >> 12) & 0xf0);
     *(s32*)(self + 0x260) = (*(u32*)(self + 0x90) >> 4) & 0xf;
@@ -837,12 +837,10 @@ extern "C" void fn_8035151C(u8* self) {
     *(u8*)(self + 0x284) = 0;
     *(u8*)(self + 0x285) = 0;
     *(u8*)(self + 0x286) = 0;
-    *(JGeometry::TVec3<f32>*)(self + 0x234) = *(JGeometry::TVec3<f32>*)(self + 0xc);
-    *(f32*)(self + 0x23c) = *(f32*)(self + 0x14);
+    *(JGeometry::TVec3<f32>*)(self + 0x234) = *pos;
 
     switch (*(s32*)(self + 0x258)) {
     case 0:
-    case 4:
         *(f32*)(self + 0x80) = lbl_80542630;
         *(f32*)(self + 0x84) = lbl_80542630;
         *(f32*)(self + 0x88) = lbl_80542634;
@@ -865,6 +863,12 @@ extern "C" void fn_8035151C(u8* self) {
         *(f32*)(self + 0x84) = lbl_80542638;
         *(f32*)(self + 0x88) = lbl_80542634;
         *(f32*)(self + 0x8c) = lbl_8054263C;
+        break;
+    case 4:
+        *(f32*)(self + 0x80) = lbl_80542630;
+        *(f32*)(self + 0x84) = lbl_80542630;
+        *(f32*)(self + 0x88) = lbl_80542634;
+        *(f32*)(self + 0x8c) = lbl_80542634;
         break;
     case 5:
         *(f32*)(self + 0x80) = lbl_80542640;
@@ -892,42 +896,36 @@ extern "C" void fn_8035151C(u8* self) {
         flags[3] = 1;
         count = 0;
         i = -1;
-        while (count < 4) {
+        for (;;) {
+            if(count>=4) break;
             i = fn_801F78F4(fn_801F856C(), 0x4f424c46, i);
             if (i < 0) {
                 break;
             }
             if (i != *(s32*)(self + 0x198)) {
                 u8* e = fn_801F666C(fn_801F856C(), i);
-                if (e != 0 && *(s32*)(self + 4) == *(s32*)(e + 4)) {
+                if (e != 0) {
                     st = *(s32*)(e + 0x258);
+                    if (*(s32*)(self+4) != *(s32*)(e+4)) continue;
                     if (st >= 6 && st <= 9 && flags[st - 6] == 1) {
-                        flags[st - 6] = 0;
                         count++;
+                        flags[st - 6] = 0;
                     }
                 }
             }
         }
-        {
-            u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-            *seed = *seed * 0x19660d + 0x3c6ef35f;
-            bits = (*seed >> 9) | 0x3f800000;
-            fv = *(f32*)&bits;
-        }
-        if (count == 0) {
-            st = (s32)(lbl_80542650 * (fv - lbl_805425F0)) + 6;
-            *(s32*)(self + 0x258) = st;
+        if(count>=4 || count==0) {
+            *(s32*)(self+0x258)=(s32)(lbl_80542650*((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1())+6;
         } else {
-            count = 0;
-            for (j = 0; j < 4; j++) {
-                if (flags[j] == 1) {
-                    list[count] = j;
-                    count++;
-                }
+            s32* out=list;
+            s32 j;
+            int available=0;
+            for(j=0;j<4;j++) {
+                if(flags[j]==1) { *out++=j; available++; }
             }
-            st = list[(s32)(count * (fv - lbl_805425F0))] + 6;
-            *(s32*)(self + 0x258) = st;
+            *(s32*)(self+0x258)=list[(s32)((f32)available*((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1())]+6;
         }
+        *(s32*)(self+0x240)=*(s32*)(self+0x258);
         break;
     case 11:
         *(f32*)(self + 0x80) = lbl_80542654;
@@ -950,26 +948,27 @@ extern "C" void fn_8035151C(u8* self) {
         *(f32*)(self + 0x68) = lbl_80542658;
         *(f32*)(self + 0x6c) = lbl_80542658;
         *(s32*)(self + 0x240) = 10;
-        room = *(s32*)(self + 4);
-        if (room < 8) {
-            fn_8013CC50(room, 0, lbl_805425E8, 0x503, 1, 0, 0, 0, 1);
-            fn_801F0E34(self, 0x30003, 0);
+        room=*(s32*)(self+4);
+        if(room>=8) {
+            if(room>=8) {
+                Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,self+0xc,0x83,-1,-1);
+                *(f32*)(self+0x28c)=lbl_805425F0;
+            } else {
+                fn_8013CC50(room,self+0xc,0x503,1,lbl_805425E8,0,0,0,1);
+            }
+            fn_801F0E34(self,0x30003,0);
         } else {
-            Actor_CreateByID(fn_801F856C(), 0x4b4d5249, room, (f32*)(self + 0xc), 0x83, -1, -1);
-            *(f32*)(self + 0x28c) = lbl_805425F0;
+            fn_8013CC50(room,self+0xc,0x459,0,lbl_805425F0,-3,0,0,1);
+            fn_8013CC50(*(s32*)(self+4),self+0xc,0x45a,0,lbl_805425F0,-3,0,0,1);
+            fn_8013CC50(*(s32*)(self+4),self+0xc,0x45b,0,lbl_805425F0,-3,0,0,1);
         }
+        fn_801F0E34(self,0x30065,0);
+        *(s32*)(self+0x254)=30;
+        *(s32*)(self+0x258)=12;
+        *(s32*)(self+0x230)=0;
+        *(s32*)(self+0x240)=10;
         break;
-    case 13:
-    case 14:
-    case 15:
-        fn_8013CC50(*(s32*)(self + 4), 0, lbl_805425F0, 0x459, 0, -3, 0, 0, 1);
-        fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_805425F0, 0x45a, 0, -3, 0, 0, 1);
-        fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_805425F0, 0x45b, 0, -3, 0, 0, 1);
-        fn_801F0E34(self, 0x30065, 0);
-        *(s32*)(self + 0x254) = 0x1e;
-        *(s32*)(self + 0x258) = 0xc;
-        *(s32*)(self + 0x230) = 0;
-        *(s32*)(self + 0x240) = 10;
+    case 13: case 14: case 15:
         break;
     case 16:
     case 17:
@@ -993,12 +992,15 @@ extern "C" void fn_8035151C(u8* self) {
         *(f32*)(self + 0x88) = lbl_8054263C;
         *(f32*)(self + 0x8c) = lbl_80542658;
         *(s32*)(self + 0x240) = 0xe;
-        *(f32*)(self + 0x28c) = lbl_805425F0;
-        if (*(s32*)(self + 0x25c) == 2) {
-            *(s32*)(self + 0x230) = 4;
-            *(f32*)(self + 0x28c) = lbl_805425D8;
-        }
         break;
+    }
+    *(f32*)(self+0x28c)=lbl_805425F0;
+    switch(*(s32*)(self+0x25c)) {
+    case 2:
+        *(s32*)(self+0x230)=4;
+        *(f32*)(self+0x28c)=lbl_805425D8;
+        break;
+    default: break;
     }
 }
 
