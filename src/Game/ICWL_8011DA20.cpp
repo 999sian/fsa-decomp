@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
 extern "C" void fn_801F02BC(void* a, const char* name, s32 id, DrawRec* rec, s32 p5, s32 p6, s32 p7, f32 f6, f32 f7);
 extern void* lbl_8053AAF8;
@@ -98,8 +99,77 @@ static inline void icwlDrawSprite(void* pos, const char* name, s32 id, DrawRec* 
     fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, res, id, rec, lbl_8053C8BC, lbl_8053C8BC);
 }
 
+extern int __float_epsilon[];
 extern "C" void fn_8011DA20(u8* this_) {
     v06__5ActorFv(this_);
+    DrawRec a;
+    DrawRec b;
+    f32 m[12];
+    ICWLPos pos;
+    ICWLPos v = *(ICWLPos*)(this_ + 0x54);
+    if (v.x * v.x + v.y * v.y + v.z * v.z > lbl_8053C8C4 * (*(f32*)__float_epsilon)) {
+        m[0] = v.x;
+        m[1] = 0.0f;
+        m[2] = 0.0f;
+        m[3] = 0.0f;
+        m[4] = 0.0f;
+        m[5] = v.y;
+        m[6] = 0.0f;
+        m[7] = 0.0f;
+        m[8] = 0.0f;
+        m[9] = 0.0f;
+        m[10] = v.z;
+        m[11] = 0.0f;
+        a.w18 = m;
+        if ((*(s32*)(this_ + 0x230) == 0 && v.x >= lbl_8053C8C8) || (*(s32*)(this_ + 0x230) == 1 && v.x >= lbl_8053C8CC)) {
+            pos = *(ICWLPos*)(this_ + 0xc);
+            switch (*(s32*)(this_ + 0x23c)) {
+            case 0:
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(this_ + 0xc, lbl_80464C30, 0xe9, 0);
+                }
+                break;
+            case 1:
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(this_ + 0xc, lbl_80464C44, 0x11, 0);
+                }
+                break;
+            case 2:
+                b.ids[2] = 4;
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(this_ + 0xc, lbl_80464C44, 0x200, &b);
+                }
+                break;
+            case 3:
+                b.b1d = -1;
+                pos.y += lbl_8053C8D0;
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(&pos, lbl_80464C30, 0x14c, &b);
+                }
+                break;
+            case 4:
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(&pos, lbl_80464C44, 0x5e, &b);
+                }
+                break;
+            case 5:
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(&pos, lbl_80464C44, 0x31, &b);
+                }
+                break;
+            case 6:
+                if (*(s32*)(this_ + 0x4) < 8) {
+                    icwlDrawSprite(&pos, lbl_80464C44, 0x2c, &b);
+                }
+                break;
+            }
+        }
+        fn_801F02BC(this_, lbl_80464C44, *(s32*)(this_ + 0x254) + 0x1ca, &a, 7, 0, 0, lbl_8053C8BC, lbl_8053C8BC);
+    }
+    if (*(s32*)(this_ + 0x230) == 0) {
+        a.b1c = 1;
+        fn_801F02BC(this_, lbl_80464C44, *(s32*)(this_ + 0x254) + 0x1cb, &a, 7, 0, 0, lbl_8053C8BC, lbl_8053C8BC);
+    }
 }
 
 static inline void icwlGetBox(u8* this_, ICWLBox* box) {
