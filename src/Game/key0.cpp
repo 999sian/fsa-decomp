@@ -70,10 +70,13 @@ static inline u32 key0PackFlags(const u8& flag, u32 mode, const u32& room, u32 k
     packed = __rlwimi(packed, kindValue, 24, 3, 7);
     return __rlwimi(packed, room, 0, 24, 31);
 }
+static inline u32 key0FlagBits(u8 flag) {
+    return (u32)flag << 29;
+}
 static inline u32 key0PackActorFlags(const u8* p) {
     u32 mode = *(const u32*)(p + 0x23c);
     u32 flag = p[0x2b5];
-    u32 packed = (mode << 30) | (flag << 29);
+    u32 packed = (mode << 30) | key0FlagBits(flag);
     packed = __rlwimi(packed, *(const u32*)(p + 0x280), 24, 3, 7);
     return __rlwimi(packed, *(const u32*)(p + 4), 0, 24, 31);
 }
@@ -1077,7 +1080,7 @@ extern "C" void fn_802C52DC(u8* p) {
     case 5: {
         *(s32*)(p + 0x240) = 4;
         *(u8*)(p + 0x2b1) = 1;
-        packed = key0PackFlags(*(u8*)(p + 0x2b5), *(u32*)(p + 0x23c), *(u32*)(p + 4), *(u32*)(p + 0x280));
+        packed = key0PackActorFlags(p);
         if (!fn_802DCD0C(fn_802D6A9C())) {
             x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
             packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
