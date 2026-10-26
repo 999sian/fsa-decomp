@@ -238,7 +238,7 @@ extern "C" int fn_8028D470(Actor* this_, int a, float* b) {
 extern "C" char lbl_8046C150[];
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7544(void* a, void* b);
-extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c) {
+extern "C" u8 fn_8028D4DC(f32* this_, s32 a, void* c) {
     u8 r = fn_802D7544(fn_802D6A9C(), c);
     if (r == 0) {
         return 0;
