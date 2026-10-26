@@ -4,6 +4,30 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+extern "C" void fn_801D22DC(void*, s32, s32, s32);
+extern "C" void fn_801D1F14(void*, f32);
+extern "C" void fn_80110210(u8*);
+extern "C" void fn_80239914(void*, s32, s32);
+extern "C" void fn_8022FF8C(s32, void*, s32, s32, s32, s32);
+extern "C" u8 fn_80388CAC(s32, s32);
+extern "C" u8 fn_803865B8(s32);
+extern "C" void fn_80388EEC(s32);
+extern "C" u8 fn_801D208C(void*);
+extern "C" void fn_801EEC98(void*, s32, u16*, s32*, f32*, s32*, s32, s32);
+extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" s32 fn_801CD354(s32);
+extern "C" void fn_80230C6C(s32);
+extern const f32 lbl_8053C5E8;
+extern const f32 lbl_8053C5EC;
+extern const f32 lbl_8053C564;
+extern const f32 lbl_8053C5F0;
+extern const f32 lbl_8053C5F4;
+extern const f32 lbl_8053C5F8;
+
 
 typedef f32 Mtx[3][4];
 typedef struct MtxBox {
