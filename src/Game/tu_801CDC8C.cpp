@@ -514,16 +514,30 @@ extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void fn_801D2CF0(void* obj, f32* dir);
 extern int __float_max[];
+#pragma fp_contract on
+static inline f32 DirectionInvSqrt(f32 lengthSquared) {
+    if (lengthSquared <= lbl_8053EFC4) {
+        return lengthSquared;
+    }
+    f32 estimate = __frsqrte(lengthSquared);
+    f32 square = estimate * estimate;
+    return (lbl_8053EFE4 * estimate) * (lbl_8053EFE8 - lengthSquared * square);
+}
 #pragma fp_contract off
 extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
     f32 bestDist = *(f32*)__float_max;
     f32 limitSq = limit * limit;
+    s32 created;
+    s32 result;
     s32 best = -1;
-    u8 found = 0;
-    u8 ok;
+    u32 ok;
+    u8 found;
+    u8* scan;
     s32 i;
-    f32 dir[2];
-    for (i = 0; i < 4; i++) {
+    JGeometry::TVec2<f32> dir;
+    scan = this_;
+    for (i = 0; i < 4; i++, scan += 0xc) {
+        found = 0;
         if (fn_801CCFE4(i)) {
             ok = 0;
             switch (*(u32*)(this_ + 0x1a0)) {
@@ -536,7 +550,9 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
             case 0x534c4b32:
             case 0x4e415649:
             case 0x545a4f4b:
-                if (*(s32*)(this_ + 0x4) == fn_8023DE58(i)) {
+                s32 room = *(s32*)(this_ + 0x4);
+                s32 owner = fn_8023DE58(i);
+                if (owner == room) {
                     ok = 1;
                 }
                 break;
@@ -544,7 +560,7 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
                 ok = fn_801F320C(this_, i);
                 break;
             }
-            if (ok) {
+            if ((u8)ok) {
                 switch (*(u32*)(this_ + 0x1a0)) {
                 case 0x4e415649:
                 case 0x48524d4e:
@@ -554,23 +570,22 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
                 case 0x544e4452:
                 case 0x54494e4b:
                 case 0x545a4f4b:
-                    found = 1;
-                    break;
-                default:
                     if (fn_8022CAF8(i) == 4) {
                         found = 1;
                     } else if (!fn_8022F514(i)) {
                         found = 1;
                     }
                     break;
+                default:
+                    found = 1;
+                    break;
                 }
             }
         }
         if (found) {
-            f32 dx = *(f32*)(this_ + 0x1ac + i * 0xc) - *(f32*)(this_ + 0xc);
-            f32 dy = *(f32*)(this_ + 0x1b0 + i * 0xc) - *(f32*)(this_ + 0x10);
-            f32 d2 = dx * dx + dy * dy;
-            if (d2 < bestDist && (limit == lbl_8053EFC4 || d2 <= limitSq)) {
+            JGeometry::TVec2<f32> delta(*(f32*)(scan + 0x1ac) - *(f32*)(this_ + 0xc), *(f32*)(scan + 0x1b0) - *(f32*)(this_ + 0x10));
+            f32 d2 = delta.squared();
+            if (d2 < bestDist && (lbl_8053EFC4 == limit || d2 <= limitSq)) {
                 bestDist = d2;
                 best = i;
             }
@@ -579,30 +594,26 @@ extern "C" s32 fn_801CECF4(u8* this_, u32 name, f32 radius, f32 limit) {
     if (best < 0) {
         return 0;
     }
-    s32 result = 0;
-    s32 created = Actor_CreateByID(fn_801F856C(), name, *(u32*)(this_ + 0x4), (f32*)(this_ + 0xc), 0, -1, -1);
+    result = 0;
+    created = Actor_CreateByID(fn_801F856C(), name, *(u32*)(this_ + 0x4), (f32*)(this_ + 0xc), 0, -1, -1);
     if (created >= 0) {
         void* obj = fn_801F666C(fn_801F856C(), created);
         if (obj != 0) {
             f32* target = (f32*)(this_ + 0x1ac + best * 0xc);
             f32 dx = target[0] - *(f32*)(this_ + 0xc);
             f32 dy = target[1] - *(f32*)(this_ + 0x10);
-            f32 lenSq = dx * dx + dy * dy;
-            dir[0] = dx;
-            dir[1] = dy;
-            if (lenSq <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
-                dir[0] = lbl_8053EFC4;
-                dir[1] = radius;
+            dir.x = dx;
+            dir.y = dy;
+            if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
+                dir.x = lbl_8053EFC4;
+                dir.y = radius;
             } else {
-                if (lenSq > lbl_8053EFC4) {
-                    f32 inv = 1.0f / __frsqrte(lenSq);
-                    dir[0] *= inv;
-                    dir[1] *= inv;
-                }
-                dir[0] *= radius;
-                dir[1] *= radius;
+#pragma fp_contract on
+                dir.normalize();
+#pragma fp_contract off
+                dir.scale(radius);
             }
-            fn_801D2CF0(obj, dir);
+            fn_801D2CF0(obj, (f32*)&dir);
             result = 1;
         }
     }
