@@ -655,15 +655,15 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
         *(s32*)(p + 0x5b0) = -1;
         *(s32*)(p + 0xb0) = 3;
         fn_801E4618(p, box, fn_801CD2F8(*(s32*)(p + 0x4)));
-        f32 dx = box[1].x - box[0].x;
-        f32 dy = box[1].y - box[0].y;
-        f32 cx = box[0].x + lbl_8053F0F8 * dx;
-        f32 cy = box[0].y + lbl_8053F0F8 * dy;
+        f32 dx=box[1].x-box[0].x;
+        f32 dy=box[1].y-box[0].y;
+        f32 cx=box[0].x+0.5f*dx;
+        f32 cy=box[0].y+0.5f*dy;
         *(f32*)(p + 0x60c) = cx;
         *(f32*)(p + 0x610) = cy;
         *(f32*)(p + 0x614) = lbl_8053F0C8;
-        *(f32*)(p + 0x5bc) = box[0].x + (box[1].x - box[0].x) * bogfRand();
-        *(f32*)(p + 0x5c0) = box[0].y + (box[1].y - box[0].y) * bogfRand();
+        *(f32*)(p + 0x5bc) = box[0].x + (box[1].x - box[0].x) * bogfRandFrom(lbl_8053AAF8,0x19660d);
+        *(f32*)(p + 0x5c0) = box[0].y + (box[1].y - box[0].y) * bogfRandFrom(lbl_8053AAF8,0x19660d);
         *(u8*)(p + 0x5d0) = fn_801CD664(2) + 1;
         *(f32*)(p + 0x258) = lbl_8053F0C8;
         break;
@@ -684,6 +684,7 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
         if (*(s32*)(p + 0x508) != 4) {
             fn_801D7638(p + 0x4c4);
             fn_801D76B4(p + 0x4c4);
+        }
             fn_80217A74(p + 0x448);
             *(f32*)(p + 0x254) = lbl_8053F0C8;
             *(f32*)(p + 0x258) = lbl_8053F0C8;
@@ -692,8 +693,6 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
             *(f32*)(p + 0x44) = lbl_8053F0C8;
             *(u8*)(p + 0x5d1) = 0;
             break;
-        }
-        /* fallthrough */
     case 12:
         *(f32*)(p + 0x258) = lbl_8053AAF8->pad[0x7e] ? lbl_8053F104 : lbl_8053F0D8;
         *(s32*)(p + 0x250) = fn_801CD664(0x79) + 0x78;
@@ -703,10 +702,9 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
         *(f32*)(p + 0x258) = lbl_8053F0C8;
         if (*(s32*)(p + 0x508) == 3) {
             *(u8*)(p + 0x51c) = 1;
-            *(u8*)(p + 0x5cf) = 0;
-            break;
         }
-        /* fallthrough */
+        *(u8*)(p + 0x5cf) = 0;
+        break;
     case 14:
         *(f32*)(p + 0x258) = lbl_8053F0C8;
         break;
@@ -743,11 +741,11 @@ extern "C" void fn_801D5D84(u8* p, s32 state) {
         if (fn_801CD2F8(*(s32*)(p + 0x4))) {
             *(s32*)(p + 0x5fc) = *(s32*)(p + 0x5d8);
             *(f32*)(p + 0x608) = lbl_8053F110;
-            fn_801E4618(p, box, fn_801CD2F8(*(s32*)(p + 0x5fc)));
-            *(f32*)(p + 0x600) = box[0].x + (box[1].x - box[0].x) * bogfRand();
-            *(f32*)(p + 0x604) = box[0].y + (box[1].y - box[0].y) * bogfRand();
-            fn_801E44CC(p, box, p + 0x600, 0);
         }
+            fn_801E4618(p, box, fn_801CD2F8(*(s32*)(p + 0x5fc)));
+            *(f32*)(p + 0x600) = box[0].x + (box[1].x - box[0].x) * bogfRandFrom(lbl_8053AAF8,0x19660d);
+            *(f32*)(p + 0x604) = box[0].y + (box[1].y - box[0].y) * bogfRandFrom(lbl_8053AAF8,0x19660d);
+            fn_801E44CC(p, box, p + 0x600, 0);
         *(f32*)(p + 0x254) = lbl_8053F0C8;
         *(f32*)(p + 0x258) = lbl_8053F0C8;
         *(f32*)(p + 0x3c) = lbl_8053F0C8;
