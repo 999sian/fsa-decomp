@@ -145,6 +145,20 @@ extern "C" void fn_801A3CFC(u8* this_) {
 // from src/Game/Saya_ForceState1_801A46FC.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
+struct SayaRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+    f32 get_sfloat_1() {
+        return 1.0f - 2.0f * get_ufloat_1();
+    }
+};
+struct SayaGame { u8 pad[0xb4]; SayaRandom rnd; };
+extern SayaGame* lbl_8053AAF8;
 #pragma dont_inline on
 extern "C" s32 fn_801A41D8(void* this_, void* a4, void* a5) { return 0; }
 #pragma dont_inline reset
@@ -246,20 +260,6 @@ extern "C" s32 fn_801A4F5C(void* this_, void* a4, void* a5) {
 }
 #pragma dont_inline reset
 
-struct SayaRandom {
-    u32 seed;
-    f32 get_ufloat_1() {
-        union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
-        return out.f - 1.0f;
-    }
-    f32 get_sfloat_1() {
-        return 1.0f - 2.0f * get_ufloat_1();
-    }
-};
-struct SayaGame { u8 pad[0xb4]; SayaRandom rnd; };
-extern SayaGame* lbl_8053AAF8;
 extern "C" u8 fn_8023F264(s32 player);
 extern "C" s32 fn_8023DE58(s32 player);
 extern "C" u8 fn_8023A51C(s32 player);
