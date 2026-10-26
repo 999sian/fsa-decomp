@@ -341,6 +341,11 @@ static inline void* keyObj(void* obj, u64 key) {
     return ((KeyLookupVt*)obj)->v15(key);
 }
 
+static inline void tu803C0A_setCell(u8* p, const u64* table, s32 idx, s32 flagOff) {
+    void* o = keyObj(*(void**)(p + 8), table[idx]);
+    fn_804023D0(menuSlot((char*)p, idx), o, p[flagOff]);
+}
+
 static inline void tu803C_setCell(u8* this_, s32 cell, s32 idx, s32 keyOff, s32 flagOff) {
     void* o = keyObj(*(void**)(this_ + 8), *(u64*)(lbl_804765D0 + keyOff + idx * 8));
     fn_804023D0(*(void**)(this_ + cell + idx * 4), o, this_[flagOff]);
@@ -1207,7 +1212,9 @@ extern "C" void fn_803C05D8(u8* p) {
 extern "C" void fn_803C0A34(char* pc) {
     u8* p = (u8*)pc;
     u8* kp;
-    s32 i;
+    int i;
+    int j;
+    u8* keys;
     u8* base;
     s32 idx;
     f32 d;
@@ -1251,47 +1258,47 @@ extern "C" void fn_803C0A34(char* pc) {
     *(s16*)(*(u8**)(p + 0x1c) + 0x22) = 0;
     stopPane(*(void**)(*(u8**)(p + 0x1c) + 4));
 
-    for (i = 0, kp = base + 0x48; i < 0x51; i++, kp += 8) {
-        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 4), *(u64*)kp), p[0x132 + i]);
+    for (j = 0, keys = base + 0x48; j < 0x51; j++, keys += 8) {
+        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 4), *(u64*)keys), p[0x132 + j]);
     }
-    for (i = 0, kp = base + 0x2d0; i < 0x13; i++, kp += 8) {
-        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)kp), p[0x183 + i]);
+    for (j = 0, keys = base + 0x2d0; j < 0x13; j++, keys += 8) {
+        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)keys), p[0x183 + j]);
     }
 
-    *(s16*)(*(u8**)(p + 0x14) + 0x26) = 0;
     {
         f32 one = lbl_80543458;
+        *(s16*)(*(u8**)(p + 0x14) + 0x26) = 0;
         *(s16*)(*(u8**)(p + 0x18) + 0x26) = 0;
         *(s16*)(*(u8**)(p + 0x1c) + 0x26) = 0;
         *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
         *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
 
         idx = *(s32*)(p + 0xa0);
-        d = *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(*(u8**)(p + 0x38 + idx * 4) + 0xc);
-        fn_80402E08(*(void**)(p + 0x38 + idx * 4), one, d);
+        d = *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(menuSlot((char*)p, idx) + 0xc);
+        fn_80402E08((void*)menuSlot((char*)p, idx), one, d);
     }
-    *(s16*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa0) * 4) + 0x22) = 0;
-    *(s16*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa0) * 4) + 0x26) = 0;
-    o = *(u8**)(p + 0x38 + *(s32*)(p + 0xa0) * 4);
+    *(s16*)(menuSlot((char*)p, *(s32*)(p + 0xa0)) + 0x22) = 0;
+    *(s16*)(menuSlot((char*)p, *(s32*)(p + 0xa0)) + 0x26) = 0;
+    o = menuSlot((char*)p, *(s32*)(p + 0xa0));
     {
         void* sub = *(void**)(o + 4);
         ((PaneVirtVt*)sub)->v9(o[0x28]);
     }
 
     idx = *(s32*)(p + 0xa0);
-    setCell(p, 0x38, idx, 0x780, p[0x125]);
-    setCell(p, 0x38, idx, 0x768, p[0x126]);
-    setCell(p, 0x38, idx, 0x750, p[0x127]);
-    setCell(p, 0x38, idx, 0x6c8, p[0x128]);
-    setCell(p, 0x38, idx, 0x6b0, p[0x129]);
-    setCell(p, 0x38, idx, 0x698, p[0x12a]);
-    setCell(p, 0x38, idx, 0x680, p[0x12b]);
-    setCell(p, 0x38, idx, 0x668, p[0x12c]);
-    setCell(p, 0x38, idx, 0x650, p[0x12d]);
-    setCell(p, 0x38, idx, 0x638, p[0x12e]);
-    setCell(p, 0x38, idx, 0x620, p[0x12f]);
-    setCell(p, 0x38, idx, 0x608, p[0x130]);
-    setCell(p, 0x38, idx, 0x5f0, p[0x131]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x780))[idx]), p[0x125]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x768))[idx]), p[0x126]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x750))[idx]), p[0x127]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x6c8))[idx]), p[0x128]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x6b0))[idx]), p[0x129]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x698))[idx]), p[0x12a]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x680))[idx]), p[0x12b]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x668))[idx]), p[0x12c]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x650))[idx]), p[0x12d]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x638))[idx]), p[0x12e]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x620))[idx]), p[0x12f]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x608))[idx]), p[0x130]);
+    fn_804023D0((void*)menuSlot((char*)p, idx), keyObj(*(void**)(p + 8), ((u64*)(base + 0x5f0))[idx]), p[0x131]);
 
     *(s16*)(p + 0xd8) = 0;
     *(s16*)(p + 0xda) = 0;
@@ -2245,20 +2252,20 @@ extern "C" void fn_803C4628(u8* this_) {
     }
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_803C5190(u8* p) {
     u8* tbl = lbl_8050DB0C;
     u8* base = (u8*)lbl_804765D0;
     s16 a = *(s16*)(tbl + 0x21c);
-    s16 b = *(s16*)(tbl + 0x21e);
+    s32 b = *(s16*)(tbl + 0x21e);
     s16 f = *(s16*)(tbl + 0x226);
     s32 sum = a + b;
-    s16 d = *(s16*)(tbl + 0x222);
-    s16 e = *(s16*)(tbl + 0x224);
-    s16 c = *(s16*)(tbl + 0x220);
-    s16 g = *(s16*)(tbl + 0x228);
+    s32 d = *(s16*)(tbl + 0x222);
+    s32 e = *(s16*)(tbl + 0x224);
+    s32 c = *(s16*)(tbl + 0x220);
+    s32 g = *(s16*)(tbl + 0x228);
     s32 lim = c + d + e;
     u8* keys;
-    s32 acc;
     s32 i;
     u8* q;
 
@@ -2275,12 +2282,21 @@ extern "C" void fn_803C5190(u8* p) {
             setFade(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), b, ((u8*)*(void**)(p + 0x20))[0x28], 0);
             keys=base+0x368;
-            setKeyedAt(p, 4, 0x20, keys, 9, 0x196);
+            {
+                u8* walker = keys;
+                for(int j=0;j<9;j++,walker+=8) {
+                    void* obj=((J2DPane*)*(void**)(p+4))->search(*(u64*)walker);
+                    fn_804023D0(*(void**)(p+0x20),obj,p[0x196+j]);
+                }
+            }
             if (*(s16*)(p + 0xd8) == sum) {
                 fn_80402E08(*(void**)(p + 0x20), lbl_80543498, lbl_80543458);
                 *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
                 ((PaneObjVt*)*(void**)(*(u8**)(p + 0x20) + 4))->v9(0);
-                setKeyedAt(p, 4, 0x20, keys, 9, 0x196);
+                for(int j=0;j<9;j++,keys+=8) {
+                    void* obj=((J2DPane*)*(void**)(p+4))->search(*(u64*)keys);
+                    fn_804023D0(*(void**)(p+0x20),obj,p[0x196+j]);
+                }
                 *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
             }
         } else {
@@ -2307,10 +2323,11 @@ extern "C" void fn_803C5190(u8* p) {
         }
     }
 
-    acc = 0;
     q = p;
-    for (i = 0; i < 2; i++) {
-        if (*(s16*)(p + 0xd8) > c + acc) {
+    i = 0;
+    sum = 0;
+    for (; i < 2; i++) {
+        if (*(s16*)(p + 0xd8) > c + sum) {
             fn_80402940(*(void**)(q + 0x24), d, lbl_80543458, lbl_8054349C, 0);
             fn_80402628(*(void**)(q + 0x24), d, ((u8*)*(void**)(q + 0x24))[0x28], 0);
             switch (i) {
@@ -2328,7 +2345,7 @@ extern "C" void fn_803C5190(u8* p) {
                 break;
             }
         }
-        acc += e;
+        sum += e;
         q += 4;
     }
 
@@ -2346,7 +2363,7 @@ extern "C" void fn_803C5190(u8* p) {
         p[0x110] = 0x21;
     }
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_803C579C(char* this_) {
     s32 r = fn_803B9BDC(lbl_8051C1A0);
     if (r == 2) {
@@ -4417,44 +4434,11 @@ extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* a, f32 x, f32 y, voi
 extern "C" void fn_803CEED4(u8* p) {
     f32 f31;
     f32 f30;
-    s32 st = 0;
 
-    if (*(s32*)(p + 0xb8) == 0) {
-        *(s32*)(p + 0xb4) = st;
-    } else {
-        st = 1;
-        if (*(s32*)(p + 0xbc) == 0) {
-            *(s32*)(p + 0xb4) = st;
-        } else {
-            st = 2;
-            if (*(s32*)(p + 0xc0) == 0) {
-                *(s32*)(p + 0xb4) = st;
-            } else {
-                st = 3;
-                if (*(s32*)(p + 0xc4) == 0) {
-                    *(s32*)(p + 0xb4) = st;
-                } else {
-                    st = 4;
-                    if (*(s32*)(p + 0xc8) == 0) {
-                        *(s32*)(p + 0xb4) = st;
-                    } else {
-                        st = 5;
-                        if (*(s32*)(p + 0xcc) == 0) {
-                            *(s32*)(p + 0xb4) = st;
-                        } else {
-                            st = 6;
-                            if (*(s32*)(p + 0xd0) == 0) {
-                                *(s32*)(p + 0xb4) = st;
-                            } else {
-                                st = 7;
-                                if (*(s32*)(p + 0xd4) == 0) {
-                                    *(s32*)(p + 0xb4) = st;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    for (int i = 0; i < 8; ++i) {
+        if (((s32*)(p + 0xb8))[i] == 0) {
+            *(s32*)(p + 0xb4) = i;
+            break;
         }
     }
 
