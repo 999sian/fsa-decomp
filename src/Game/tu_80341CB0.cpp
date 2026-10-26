@@ -3,10 +3,17 @@
 #undef Vec
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 static inline void bombSetRotation(Mtx m, f32 sx, f32 sy, f32 sz,
                                   f32 cx, f32 cy, f32 cz, f32 s) {
+    f32 ss;
+    f32 cs;
+    f32 cc;
+    ss = sx * sy;
+    cc = cx * cz;
+    cs = cx * sz;
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
@@ -71,6 +78,49 @@ extern "C" void fn_80341CB0(s32 id, f32* pos) {
     Actor_CreateByID(fn_801F856C(), 0x42424D42, id, pos, 0x30000, -1, -1);
 }
 
+extern "C" void fn_801EF830(s32 idx, f32* pos, DrawRec* p3, u32 mask, void* p5, u32 p6, s32 p7);
+extern const f32 lbl_805422E8;
+extern "C" void fn_80341D08(Actor* this_, s32 id, f32 x, f32 y, f32 z, DrawRec* args, u32 mask) {
+    u8* p = (u8*)this_;
+    f32 pos[3];
+    if (*(s32*)(p + 4) != 0) return;
+    if (*(s32*)(p + 0x138) == 0) {
+        fn_801EF830(*(s32*)(p + 4), (f32*)(p + 0xc), args, mask, 0, 0, id);
+    }
+    DrawRec rec;
+    if (*(s32*)(p + 0xd8) > 0) {
+        if (args != 0) {
+            rec = *args;
+        }
+        s32 a = *(s32*)(p + 0xd8);
+        s32 b = *(s32*)(p + 0xdc);
+        s32 lim = b - 25;
+        s32 t;
+        if (a > lim) {
+            t = ((a - lim) * 150) / 100;
+        } else if (b < 25) {
+            t = (a * 150) / b;
+        } else {
+            t = 0;
+        }
+        ((u8*)&rec)[0x14] = ((u8*)&rec)[0x14] + t;
+        f32 vx = *(f32*)(p + 0x3c);
+        f32 vy = *(f32*)(p + 0x40);
+        f32 vz = *(f32*)(p + 0x44);
+        if (vx * vx + vy * vy + vz * vz > lbl_805422E8) {
+            rec.w30 = 8;
+        }
+    }
+    if (*(s32*)(p + 0x138) != 0) {
+        pos[0] = *(f32*)(p + 0xc) + x;
+        pos[1] = *(f32*)(p + 0x10) + y;
+        pos[2] = *(f32*)(p + 0x14) + z;
+        if (*(s32*)(p + 4) < 8) {
+            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, (void*)id, &rec);
+        }
+    }
+}
+
 static inline void bombDrawTexture(Actor* actor, const void* texture, DrawRec* rec, s32 mode, f32 height) {
     ((BombDrawActor*)actor)->drawTexture(texture, rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
 }
@@ -83,8 +133,8 @@ extern "C" void fn_80342368(Actor* actor) {
     DrawRec rec;
     Mtx mtx;
     PSMTXIdentity(mtx);
-    f32 zero = 0.0f;
-    f32 scaleX = *(f32*)(p + 0x254);
+    const f32 zero = 0.0f;
+    const f32 scaleX = *(f32*)(p + 0x254);
     JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(p + 0xc);
     if (zero == scaleX) return;
     f32 scaleY, scaleZ;
@@ -137,11 +187,25 @@ extern "C" void fn_80342368(Actor* actor) {
         cx = cos(lbl_805422EC);
         cy = cos(lbl_805422EC);
         cz = cos(lbl_805422EC);
-        bombSetRotation(mtx, sx, sy, sz, cz, cy, cx, lbl_80542304);
+        bombSetRotation(mtx, sx, sy, sz, cx, cy, cz, lbl_80542304);
         rec.w18 = mtx;
         rec.b2c = 0;
         void* res = fn_804030C4('TIMG', lbl_804AC558[n]);
         if (*(s32*)(p + 4) < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), p + 0xc, res, &rec);
+    }
+}
+
+extern "C" void fn_80342850(Actor* a) {
+    u8* p = (u8*)a;
+    f32 box[4];
+    box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+    box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+    box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+    box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+    *(s32*)(p + 0x108) = 10000;
+    if (*(s32*)(p + 0x230) == 4) {
+        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + *(f32*)(p + 0x44);
     }
 }
 
@@ -275,5 +339,8 @@ extern "C" Actor* fn_803437B0(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+void fn_8034384C(void) {
 }
 
