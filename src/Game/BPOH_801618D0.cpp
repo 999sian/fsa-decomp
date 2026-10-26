@@ -137,9 +137,9 @@ extern "C" void fn_801618D0(char* this_, f32* pos, u8* ent) {
     out[0] -= lbl_8053D6BC * w;
     out[2] -= lbl_8053D6BC * h;
     GXBegin((GXPrimitive)0x80, (GXVtxFmt)0, 4);
+    f32 zero = lbl_8053D6C0;
     f32 x0 = out[0];
     *(volatile f32*)0xCC008000 = x0;
-    f32 zero = lbl_8053D6C0;
     f32 x1 = x0 + w;
     f32 y = out[1];
     *(volatile f32*)0xCC008000 = y;
@@ -148,10 +148,10 @@ extern "C" void fn_801618D0(char* this_, f32* pos, u8* ent) {
     *(volatile f32*)0xCC008000 = z1;
     *(volatile f32*)0xCC008000 = zero;
     *(volatile f32*)0xCC008000 = zero;
+    f32 one = lbl_8053D6C4;
     *(volatile f32*)0xCC008000 = x1;
     *(volatile f32*)0xCC008000 = y;
     *(volatile f32*)0xCC008000 = z1;
-    f32 one = lbl_8053D6C4;
     *(volatile f32*)0xCC008000 = one;
     *(volatile f32*)0xCC008000 = zero;
     *(volatile f32*)0xCC008000 = x1;
@@ -227,13 +227,100 @@ extern "C" void fn_80161F98(char* this_, s32 arg, s32 param3) {
     }
 }
 
+#pragma optimization_level 3
+extern "C" void fn_80162208(char* p) {
+    f32 scale, angle, cx, sx, sy, sz, cy, sxsy;
+    f32 sxcz, sxsz, cxsz, cxcz, cz;
+    TlwpDrawParam param;
+    f32 m[3][4];
+    m[0][3] = lbl_8053D6C0;
+    m[1][3] = lbl_8053D6C0;
+    m[2][3] = lbl_8053D6C0;
+    if (*(s32*)(p + 0x268) != 1) {
+        if (*(s32*)(p + 0x268) == 2) {
+            param.color = 3;
+            param.palette = 1;
+            fn_801F02BC(p, lbl_80466274, *(s32*)(p + 0x258) + 0x1b1, &param, 0, 0, 0, lbl_8053D6C4, lbl_8053D6C4);
+        } else {
+            param.palette = 1;
+            if (*(s32*)(p + 0x258) >= 3) param.color = 2;
+            else *(s8*)&param.color = -1;
+            if (*(s32*)(p + 0x188) == 0) {
+                s32 remaining = *(s32*)(p + 0xd8);
+                if (remaining > 0) {
+                    s32 total = *(s32*)(p + 0xdc);
+                    s32 start = total - 25;
+                    if (remaining > start || total < 25) {
+                s32 alpha;
+                if (total < 25) alpha = remaining * 255 / total;
+                else alpha = (remaining - start) * 255 / 25;
+                if (*(s32*)(p + 0xf8) == 2) {
+                    alpha = (s32)((f32)alpha - lbl_8053D6E0 * *(f32*)(p + 0x14));
+                    alpha = alpha <= 0 ? 0 : alpha;
+                }
+                u8* color = (u8*)&param.key.b;
+                if (*(s32*)(p + 0xfc) == 5) {
+                    color[0] += alpha;
+                    color[1] += alpha >> 1;
+                } else {
+                    color[0] += alpha;
+                    color[1] += alpha;
+                    color[2] += alpha;
+                }
+            }
+                }
+                }
+            if (*(s32*)(p + 0x188) > 0) {
+                ((u8*)&param.key.b)[0] = 200;
+                ((u8*)&param.key.b)[1] = 65;
+            }
+            scale = *(f32*)(p + 0x27c);
+            angle = (f32)*(u16*)(p + 0x290) / lbl_8053D6E4;
+            
+    sx = sin(lbl_8053D6C0);
+    sy = sin(angle);
+    sz = sin(lbl_8053D6C0);
+    cx = cos(lbl_8053D6C0);
+    cy = cos(angle);
+    cz = cos(lbl_8053D6C0);
+    m[0][0] = scale * (cy * cz);
+    m[1][0] = scale * (cy * sz);
+    m[2][0] = scale * -sy;
+    cxcz = cx * cz;
+    sxsy = sx * sy;
+    cxsz = cx * sz;
+    sxsz = sx * sz;
+    sxcz = sx * cz;
+    m[0][1] = scale * (sxsy * cz - cxsz);
+    m[1][1] = scale * (sxsy * sz + cxcz);
+    m[2][1] = scale * (sx * cy);
+    m[0][2] = scale * (cxcz * sy + sxsz);
+    m[1][2] = scale * (cxsz * sy - sxcz);
+    m[2][2] = scale * (cx * cy);
+
+            param.f2d = 1;
+            param.c = m;
+            fn_801618D0(p, (f32*)(p + 0xc), (u8*)&param);
+        }
+    }
+}
+#pragma optimization_level 4
+extern "C" void fn_80162628(char* this_) {
+    f32 x0 = *(f32*)(this_ + 0xc);
+    f32 y0 = *(f32*)(this_ + 0x10);
+    *(s32*)(this_ + 0x108) = 10000;
+    if (*(s32*)(this_ + 0x268) != 0) {
+        return;
+    }
+}
+
 extern "C" f32 lbl_804A0410[];
 extern "C" s32 lbl_8053AB58;
 extern "C" void fn_80163E80(char* this_)
 {
-    u8* p = (u8*)this_;
+    register u8* p = (u8*)this_;
 
-    *(u16*)(p + 0x94) = 0;
+    *(u16*)((u32)p + 0x94) = 0;
     *(f32*)(p + 0x60) = -60.0f;
     *(f32*)(p + 0x64) = -60.0f;
     *(f32*)(p + 0x68) = 60.0f;
@@ -266,7 +353,7 @@ extern "C" void fn_80163E80(char* this_)
     *(s32*)(p + 0x260) = 0;
     *(f32*)(p + 0x288) = 0.0f;
     *(f32*)(p + 0x28c) = 0.0f;
-    lbl_8053AB58 = 0;
+    register lbl_8053AB58 = 0;
     *(s32*)(p + 0x2e8) = 0;
     *(f32*)(p + 0x2b8) = *(f32*)(p + 0xc);
     *(f32*)(p + 0x2bc) = *(f32*)(p + 0x10);
