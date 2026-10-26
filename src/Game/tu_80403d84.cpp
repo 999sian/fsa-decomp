@@ -2475,14 +2475,14 @@ static inline void menuMarkerMtx(f32 m[3][4], const f32 s) {
     m[2][2] = s * (cx * cy);
 }
 
-static inline void menuMarkerEulerMtx(f32 m[3][4], f32 ax, f32 ay, const f32 az, const f32 s) {
-    f32 sz, sy, sx, cz, cy, cx;
+static inline void menuMarkerEulerMtx(f32 m[3][4], f32 ax, f32 ay, const f32 az, const f32 scale) {
+    f32 cx; f32 cy; f32 s = scale; f32 sx; f32 sy; f32 sz; f32 sxsy; f32 cz;
  f32 zero = 0.0f;
     sx = sin(ax); sy = sin(ay); sz = sin(az);
     cx = cos(ax); cy = cos(ay); cz = cos(az);
     m[0][3] = 0.0f; m[1][3] = 0.0f; m[2][3] = 0.0f;
     f32 cxcz = cx * cz;
-    f32 sxsy = sx * sy;
+    sxsy = sx * sy;
     f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
