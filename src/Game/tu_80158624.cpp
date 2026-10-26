@@ -52,22 +52,20 @@ struct FscVec3 {
     f32 z;
 };
 
-extern "C" void PSMTXMultVec(void* m, void* src, void* dst);
+#include "JSystem/JMath/Inline.h"
 extern "C" double sin(double x);
 extern "C" double cos(double x);
-
 static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
-    *(volatile u8*)0xCC008000 = r;
-    *(volatile u8*)0xCC008000 = g;
-    *(volatile u8*)0xCC008000 = b;
-    *(volatile u8*)0xCC008000 = a;
+*(volatile u8*)0xCC008000 = r;
+*(volatile u8*)0xCC008000 = g;
+*(volatile u8*)0xCC008000 = b;
+*(volatile u8*)0xCC008000 = a;
 }
-
 extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
     if (*(u8*)(p + 0xc) < 0xff) {
         u32 tevColor;
-        f32 dst[3];
         f32 src[3];
+        f32 dst[3];
         f32 m[3][4];
         f32 c;
         f32 s;
@@ -100,7 +98,9 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
         GXSetCullMode(2);
 
         GXBegin(0xa0, 0, 0x22);
-        GXPosition3f32(pos1[0], pos1[1], pos1[2]);
+        *(volatile f32*)0xCC008000 = pos1[0];
+        *(volatile f32*)0xCC008000 = pos1[1];
+        *(volatile f32*)0xCC008000 = pos1[2];
         GXColor4u8(0, 0, 0, 0);
         for (i = 0; i < 0x21; i++) {
             ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
@@ -121,19 +121,16 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
             src[0] = 0.0f;
             src[1] = size;
             src[2] = 0.0f;
-            PSMTXMultVec(m, src, dst);
+            PSMTXMultVec(m, (Vec*)src, (Vec*)dst);
             dst[1] *= 0.5f;
-            dst[0] += pos2[0];
-            dst[1] += pos2[1];
-            dst[2] += pos2[2];
+            JMathInlineVEC::PSVECAdd((Vec*)dst, (Vec*)pos2, (Vec*)dst);
             GXPosition3f32(dst[0], dst[1], dst[2]);
             GXColor4u8(col[3], col[3], col[3], col[3]);
         }
-    }
-
+    
     {
-        f32 dst[3];
         f32 src[3];
+        f32 dst[3];
         f32 m[3][4];
         f32 c;
         f32 s;
@@ -141,7 +138,9 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
         s32 i;
 
         GXBegin(0xa0, 0, 0x22);
-        GXPosition3f32(pos2[0], pos2[1], pos2[2]);
+        *(volatile f32*)0xCC008000 = pos2[0];
+        *(volatile f32*)0xCC008000 = pos2[1];
+        *(volatile f32*)0xCC008000 = pos2[2];
         GXColor4u8(col[3], col[3], col[3], col[3]);
         for (i = 0; i < 0x21; i++) {
             ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
@@ -162,15 +161,14 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
             src[0] = 0.0f;
             src[1] = size;
             src[2] = 0.0f;
-            PSMTXMultVec(m, src, dst);
+            PSMTXMultVec(m, (Vec*)src, (Vec*)dst);
             dst[1] *= 0.5f;
-            dst[0] += pos2[0];
-            dst[1] += pos2[1];
-            dst[2] += pos2[2];
+            JMathInlineVEC::PSVECAdd((Vec*)dst, (Vec*)pos2, (Vec*)dst);
             GXPosition3f32(dst[0], dst[1], dst[2]);
             GXColor4u8(col[3], col[3], col[3], col[3]);
         }
     }
+}
 }
 
 extern "C" void fn_80158B3C(char* p) {
@@ -377,14 +375,13 @@ extern "C" void fn_80158F70(char* p) {
     GXSetAlphaUpdate(1);
     GXBegin(0x80, 0, 4);
     {
-        f32 z = lbl_8053D440;
+        f32 z = 0.0f;
         GXPosition3f32(z, z, z);
         GXPosition3f32(w, z, z);
         GXPosition3f32(w, h, z);
         GXPosition3f32(z, h, z);
     }
-    u8 colorUpdate = 1;
-    GXSetColorUpdate(colorUpdate);
+    GXSetColorUpdate(1);
     GXSetAlphaUpdate(0);
     }
     if (*(u32*)(p + 0x4) != 0xFFFFFF00) {
