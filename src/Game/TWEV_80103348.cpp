@@ -38,7 +38,7 @@ extern "C" double cos(double);
 
 extern char lbl_80463BD0[];
 extern f32 lbl_8053C1D0;
-extern f32 lbl_8053C1D4;
+extern const f32 lbl_8053C1D4;
 extern f32 lbl_8053C1D8;
 
 static inline f32 twevSin(f32 x) { return sin(x); }
@@ -84,9 +84,7 @@ extern "C" void fn_80103348(void* this_) {
     TWEVMtx mtx;
     JGeometry::TVec3<f32> savedPos;
     s32 i;
-    f32 ang;
     f32 zero = 0.0f;
-    f32 divisor;
 
     param.a = -1;
     param.b = -1;
@@ -133,9 +131,7 @@ extern "C" void fn_80103348(void* this_) {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    divisor = lbl_8053C1D4;
-    ang = *(s32*)(p + 0x264) / divisor;
-    fn_80103348_rotMtx(mtx, zero, ang, zero);
+    fn_80103348_rotMtx(mtx, zero, *(s32*)(p + 0x264) / lbl_8053C1D4, zero, 1.0f);
     param.c = mtx;
     param.d[1] = 1;
     id = fn_804032E8(0x54494d47, names + 0x20);
@@ -147,9 +143,7 @@ extern "C" void fn_80103348(void* this_) {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    divisor = lbl_8053C1D4;
-    ang = *(s32*)(p + 0x268) / divisor;
-    fn_80103348_rotMtx(mtx, zero, ang, zero);
+    fn_80103348_rotMtx(mtx, zero, *(s32*)(p + 0x268) / lbl_8053C1D4, zero, 1.0f);
     param.c = mtx;
     id = fn_804032E8(0x54494d47, names + 0x34);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
@@ -160,9 +154,7 @@ extern "C" void fn_80103348(void* this_) {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    divisor = lbl_8053C1D4;
-    ang = *(s32*)(p + 0x26c) / divisor;
-    fn_80103348_rotMtx(mtx, zero, ang, zero);
+    fn_80103348_rotMtx(mtx, zero, *(s32*)(p + 0x26c) / lbl_8053C1D4, zero, 1.0f);
     param.c = mtx;
     id = fn_804032E8(0x54494d47, names + 0x48);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
