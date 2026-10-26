@@ -14,6 +14,15 @@
 #undef Vec
 #include "Game/Actor.h"
 
+struct GSYAActor : Actor {
+    s32 field_230;
+    u8 field_234, field_235, field_236, field_237;
+    s32 field_238;
+    s32 field_23C;
+    s32 field_240;
+    s32 field_244, field_248, field_24C;
+    s32 field_250[4];
+};
 extern void* lbl_8053AAF8;
 extern "C" s32 fn_80138A30(void* game);
 extern u8* lbl_8053AF00;
@@ -80,8 +89,8 @@ extern "C" void fn_800FF0C0(Actor* this_) {
             s32 value = *(s32*)((u8*)this_ + 0x250 + i * 4);
             s32 minutes = value / 60;
             lbl_8053AF00[0x2c + i] = minutes;
-            value -= minutes * 60;
-            lbl_8053AF00[0x28 + i] = (u8)((f32)value / 0.6f);
+            s32 remainder = value - minutes * 60;
+            lbl_8053AF00[0x28 + i] = (u8)((f32)remainder / 0.6f);
         }
         lbl_8053AF00[0x30] |= (u8)(1 << (*(s32*)((u8*)this_ + 0x240) + 4));
         if (*(s32*)((u8*)this_ + 0x230) == 4) {
