@@ -2,6 +2,12 @@
 // SetField_0x98 from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+static inline JGeometry::TVec2<f32> playerDifferenceXY(const f32 x, const f32 y, const JGeometry::TVec2<f32>& b) {
+    JGeometry::TVec2<f32> v(x, y);
+    v.x -= b.x;
+    v.y -= b.y;
+    return v;
+}
 static inline void playerDifferenceInto(JGeometry::TVec2<f32>* dst, const JGeometry::TVec2<f32>* a, const JGeometry::TVec2<f32>* b) {
     dst->set(*a);
     dst->x -= b->x;
@@ -121,12 +127,11 @@ extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     return 0;
 }
 
-#pragma opt_pointer_aliasing off
+#pragma opt_dead_code off
 extern "C" void fn_802685D4(void* thisPtr) {
     u8* p = (u8*)thisPtr;
     u16 k;
-    p[0x3c1] = 0;
-    p[0x3c2] = 0;
+    p[0x3c2] = p[0x3c1] = 0;
     if (Player_GetField_0xce8(p)) {
         goto move;
     }
@@ -240,7 +245,7 @@ move:
     }
     ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(p + 0x420));
 }
-#pragma opt_pointer_aliasing reset
+#pragma opt_dead_code reset
 extern "C" void fn_80268B3C(u8* p) {
     if (fn_802486A0(p) == 5 && Player_IsLinked(p)) {
         fn_802685D4(p);
