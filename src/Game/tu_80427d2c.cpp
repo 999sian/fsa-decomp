@@ -2935,12 +2935,14 @@ extern "C" s32 fn_8042DCC4(BitReader* r) {
     return v;
 }
 
+#pragma dont_inline off
 static inline s16 roundADPCM(s64 sample) {
     if ((u16)(sample & 0xffffLL) > 0x8000 || ((u16)(sample & 0xffffLL) == 0x8000 && (sample & 0x10000LL))) sample += 0x10000LL;
     if (sample > 0x7fffffffLL) sample = 0x7fffffffLL;
     if (sample < -0x80000000LL) sample = -0x80000000LL;
     return (s16)(sample >> 16);
 }
+#pragma dont_inline on
 
 struct BitReader;
 extern "C" void fn_8042DC88(BitReader* r, u8* p);
