@@ -85,7 +85,7 @@ extern "C" void* fn_801F1184(void* this_);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
-static inline f32 WRTC_sinShort(s16 v) {
+static inline f32 WRTC_sinShort(int v) {
     return JMath::sincosTable_.mTable[(u32)(u16)v >> 5].first;
 }
 static inline f32 WRTC_cosShort(s16 v) {
@@ -314,7 +314,8 @@ extern "C" void fn_800F8BAC(void* this_) {
         u8 m24a;
     };
     struct H {
-        static inline JGeometry::TVec3<f32> calcPos(WrtcOwner* owner, u8 idx) {
+        static inline JGeometry::TVec3<f32> calcPos(void* object, u8 idx) {
+            WrtcOwner* owner = (WrtcOwner*)object;
             s16 ang;
             f32 k;
             if (idx == 0) {
