@@ -71,7 +71,7 @@ extern "C" void fn_802B6358(void* this_) {
     fn_801F06F0(this_, lbl_8046CAB8, 0x29, 0, 0, lbl_80540A3C, lbl_80540A3C);
 }
 
-#pragma optimization_level 3
+#pragma opt_common_subs on
 extern "C" void fn_802B6394(char* p) {
     switch (*(s32*)(p + 0x230)) {
     case 0: {
@@ -137,12 +137,16 @@ extern "C" void fn_802B6394(char* p) {
         break;
     }
     case 3: {
-        JGeometry::TVec2<f32> dir;
+        f32 values[2];
+        JGeometry::TVec2<f32>& dir = *(JGeometry::TVec2<f32>*)values;
         dir.set(*(JGeometry::TVec2<f32>*)fn_8023E724(*(s32*)(p + 0x24c)));
-        dir.y -= *(f32*)(p + 0x10);
-        dir.x -= *(f32*)(p + 0xc);
-        dir.normalize();
-        f32 dx = dir.x, dy = dir.y;
+        f32 y = dir.y - *(f32*)(p + 0x10);
+        f32 x = dir.x - *(f32*)(p + 0xc);
+        dir.x = x;
+        dir.y = y;
+        JGeometry::TVec2<f32> unit(dir);
+        unit.normalize();
+        f32 dx = unit.x, dy = unit.y;
         *(f32*)(p + 0x234) = dx * *(f32*)(p + 0x244);
         *(f32*)(p + 0x238) = dy * *(f32*)(p + 0x244);
         fn_801F71A4(p + 0x3c, *(f32*)(p + 0x234), lbl_80540A4C, *(f32*)(p + 0x240));
@@ -166,7 +170,7 @@ extern "C" void fn_802B6394(char* p) {
     }
     }
 }
-#pragma optimization_level 4
+#pragma opt_common_subs reset
 extern "C" const f32 lbl_80540A38;
 extern "C" const f32 lbl_80540A40;
 extern "C" const f32 lbl_80540A44;
@@ -188,5 +192,7 @@ extern "C" void fn_802B67F8(char* p) {
     *(f32*)(p + 0x240) = lbl_80540A70;
     *(s32*)(p + 0x230) = 0;
 }
+
+void fn_802B684C(void) {}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
