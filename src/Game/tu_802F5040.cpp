@@ -169,18 +169,6 @@ struct Tu802F5040Effects {
     u8 pad[0xbf9c];
     Tu802F5040Effect entries[16];
 };
-static inline s32 EffectTableValue802F(s32* values, s32 index) { return values[index]; }
-static inline f32 EffectTableScale802F(f32* values, s32 index) { return values[index]; }
-
-struct Tu802F6800Tables {
-    u8 pad[0x1720];
-    GXColor primary[18];
-    GXColor additive[18];
-    s32 lifetime[18];
-    f32 scale[18];
-    s32 period[18];
-};
-
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
     u8* m_tbl[8];
@@ -820,7 +808,7 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
     u8* c1;
     u8* c2;
     s32 off;
-    s32 div;
+    int div;
     BOOL done;
     s32 t;
     u8 a0;
@@ -831,7 +819,7 @@ extern "C" u8 fn_802F6800(u8* this_, f32* src, s32 param_3, s32 param_4, s32 par
     done = 0;
     s32 index = *(s32*)(param_7 + 0x30);
     off = index * 4;
-    div = ((s32*)(table + 0x1840))[index];
+    div = ((int*)(table + 0x1840))[index];
     if (this_[0xbf98] != 0 && (u32)(param_3 + (param_5 + param_6)) % (u32)div == *(s32*)((u8*)lbl_8053AAF8 + 0x5c) % div) {
         p = this_;
         for (i = 0; i < 0x100; i++) {
@@ -1579,11 +1567,10 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
 extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff, u32 size, u8 flag) {
     u8* base;
     s32 i;
-    u8* s;
     u8* d;
+    u8* s;
     s32 len;
     u16 keep;
-    u16 v;
     if (size == 0) {
         s32 r;
         if (JKRDecomp::checkCompressed(src)) {
@@ -1611,6 +1598,7 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     d = *(u8**)(table + 0xc) + dstOff;
     s = (u8*)(srcOff + (u32)base);
     for (i = 0; (u32)i < length; i += 2) {
+        u16 v;
         if (i != 0 && !(i & 0x1f)) v=0;
         else {
             u16 w=s[0] | (s[1]<<8);
