@@ -2,6 +2,8 @@
 // TU 801769D8-80179150 (WIZR). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/ItemBase.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 // from src/Game/fn_80178D24.cpp
 extern "C" void* fn_801F856C();
@@ -98,6 +100,16 @@ extern "C" void fn_801769D8(char* p) {
     }
 }
 
+extern "C" void fn_80176B88(char* this_) {
+    char* p = this_;
+    if (p[0x2e5] == 1 && (*(u32*)(p + 0x90) >> 27) != 0) {
+        if (((u8 (*)(void*))(*(void***)p)[13])(p) != 0) {
+            p[0x1a8] = 1;
+            p[0x2e5] = 0;
+        }
+    }
+}
+
 extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern const f32 lbl_8053DBE8;
 extern const f32 lbl_8053DBEC;
@@ -187,7 +199,7 @@ extern "C" void fn_801788B4(char* this_) {
         u32 bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
         *(s32*)(this_ + 0x250) = (s32)(lbl_8053DC10 * (*(f32*)&bits - lbl_8053DBB0));
         *(s32*)(this_ + 0x250) &= 3;
-        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && (*(s32(**)(void*))(*(char**)this_ + 0x34))(this_) == 0) {
+        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && ((u8 (*)(void*))(*(void***)this_)[13])(this_) == 0) {
             *(u8*)(this_ + 0x1a8) = 0;
             *(u8*)(this_ + 0x2e5) = 1;
             *(s32*)(this_ + 0x230) = 0;
@@ -214,6 +226,7 @@ extern "C" void fn_801788B4(char* this_) {
         break;
     case 20:
         *(f32*)(this_ + 0x2dc) = lbl_8053DBF4;
+    case 21:
         *(s32*)(this_ + 0x300) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x506, 0, 1, 0, 0, 1);
         *(s32*)(this_ + 0x304) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x507, 0, 1, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053DBB0, 0x508, 0, 1, 0, 0, 1);
@@ -224,6 +237,7 @@ extern "C" void fn_801788B4(char* this_) {
         break;
     case 22:
         *(f32*)(this_ + 0x2dc) = lbl_8053DBF4;
+    case 23:
         *(s32*)(this_ + 0x300) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x506, 0, 1, 0, 0, 1);
         *(s32*)(this_ + 0x304) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x507, 0, 1, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053DBB0, 0x508, 0, 1, 0, 0, 1);
@@ -232,7 +246,7 @@ extern "C" void fn_801788B4(char* this_) {
         *(s32*)(this_ + 0x108) = 0x2710;
         *(s32*)(this_ + 0x230) = 0xf;
         break;
-    case 23:
+    case 31:
         *(s32*)(this_ + 0x300) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x50d, 1, 1, 0, 0, 1);
         *(s32*)(this_ + 0x304) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, *(f32*)(this_ + 0x2dc), 0x50e, 1, 1, 0, 0, 1);
         *(u8*)(this_ + 0x1a8) = 0;
