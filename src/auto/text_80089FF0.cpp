@@ -91,7 +91,8 @@ static inline bool showExceptionAddress(u32 addr, char* base = lbl_8045E878)
                             result = fn_8008C528(0, addr, -1, (u32)&outA, (u32)&outB, (u32)buf, 0x100, 1, flag);
                         if ((u8)result == 1) return true;
                         return false;
-                    } else ok = false;
+                    }
+                    return false;
                 }
 
 return ok;
