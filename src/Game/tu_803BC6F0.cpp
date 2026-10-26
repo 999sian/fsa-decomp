@@ -3110,6 +3110,69 @@ extern "C" void fn_803C92B8(char* p) {
 }
 
 extern "C" f32 lbl_805434AC;
+static inline void updateMenuCellColours(u8* p, const u8* base) {
+    s32 idx;
+    u8* selected;
+        idx = *(s32*)(p + 0xa0);
+        {
+            void* obj = *(void**)(p + 8);
+            const u64* key = (const u64*)(base + 0x780);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            selected = p;
+            selected += idx * 4;
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x125]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x768);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x126]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x750);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x127]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x6c8);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x128]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x6b0);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x129]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x698);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12a]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x680);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12b]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x668);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12c]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x650);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12d]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x638);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12e]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x620);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12f]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x608);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x130]);
+        }
+        {
+            const u64* key = (const u64*)(base + 0x5f0);
+            fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x131]);
+        }
+
+}
+
 #pragma opt_propagation off
 extern "C" void fn_803C9338(u8* p) {
     int idx;
