@@ -18,7 +18,7 @@ static char lbl_8050E548[0x10];
 extern void* lbl_8053AD78;
 extern u8 lbl_8050EC80[];
 extern f32 lbl_805431E4;
-extern "C" const char lbl_80543298[];
+extern "C" const char lbl_80543298[8];
 extern "C" const char lbl_805432A0[];
 extern "C" const char lbl_805432A4[];
 extern void* lbl_8053AD30;
@@ -1810,9 +1810,11 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
 }
 
 extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
-    MsgLayout* l = p->layout;
+    MsgLayout* l;
+    char* src;
+    l = p->layout;
     l->m3ab = 0;
-    char* src = (char*)&l->m3ab;
+    src = (char*)&l->m3ab;
     if (p->layout->m1aa == 0) {
         char nl[2];
         nl[1] = 0;
@@ -1856,9 +1858,10 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
         if (ch == 10) {
             return;
         }
-        char c1 = (char)(ch >> 8);
-        s32 has2 = c1 != 0;
-        if (has2) {
+        char c1 = (char)((u32)ch >> 8);
+        s32 has2 = 0;
+        if (c1 != 0) {
+            has2 = 1;
             ch &= 0xff;
             p->m2d0++;
             src[0] = c1;
@@ -1889,11 +1892,10 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
     if (p->m2d6 != 0) {
         if (!p->testBit(p->cur)) {
             if (!(p->layout->m16c != 0 && p->testBit(p->cur))) {
-                s32 d = -p->lineTab[p->cur + 0x2b];
-                s32 i = d + 0x1c;
+                s32 i = 0x1c - p->lineTab[p->cur + 0x2b];
                 if (i > 0 && i < 0x1c) {
                     p->str2c0[p->m2d0++] = -1;
-                    p->str2c0[p->m2d0++] = (char)(d - 0x14);
+                    p->str2c0[p->m2d0++] = (char)(i + 0xd0);
                 }
             }
         }
