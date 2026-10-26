@@ -46,7 +46,7 @@ static inline f32 tu311Random(u8* base=(u8*)lbl_8053AAF8, int multiplier=0x19660
     *seed = *seed * multiplier + 0x3c6ef35f;
     union { u32 bits; f32 value; } out;
     out.bits = (*seed >> 9) | 0x3f800000;
-    return out.value - lbl_805417C4;
+    return out.value - one;
 }
 
 static inline void tuPlayerMessage(u8* p, s32 id, s32 player) {
