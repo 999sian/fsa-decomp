@@ -39,17 +39,9 @@ extern "C" void fn_8023DF68(s32 idx, const JGeometry::TVec3f& v);
 
 extern "C" const f32 lbl_80540460, lbl_80540464;
 static inline void tuGetCenter(u8* self, JGeometry::TVec3f& c) {
-    f32 cx = *(f32*)(self + 0x68);
-    f32 cy = *(f32*)(self + 0x6c);
-    f32 k = lbl_80540460;
-    f32 x, y;
-    x = *(f32*)(self + 0x60) - cx;
-    x = k * x + cx;
-    y = *(f32*)(self + 0x64) - cy;
-    y = k * y + cy;
     c.z = lbl_80540464;
-    c.x = x;
-    c.y = y;
+    c.x = lbl_80540460 * (*(f32*)(self + 0x60) - *(f32*)(self + 0x68)) + *(f32*)(self + 0x68);
+    c.y = lbl_80540460 * (*(f32*)(self + 0x64) - *(f32*)(self + 0x6c)) + *(f32*)(self + 0x6c);
 }
 
 static inline void tuSetBox(u8* self, f32 x0, f32 y0, f32 x1, f32 y1) {
