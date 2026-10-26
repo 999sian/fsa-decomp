@@ -1044,7 +1044,7 @@ bool fn_80273518(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out) 
                 if (hit) {
                     out[0] = 0.5f * (sx0 - sx1) + sx1;
                     out[1] = 0.5f * (sy0 - sy1) + sy1;
-                    (*(void (**)(char*))(*(char**)obj + 0x48))(obj);
+                    ((Actor*)obj)->v16();
                     return 1;
                 }
             }
