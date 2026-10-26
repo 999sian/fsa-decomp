@@ -1525,16 +1525,75 @@ extern const f32 lbl_805401C4;
 extern const f32 lbl_805401D4;
 extern const f32 lbl_805401D8;
 extern const f32 lbl_805401DC;
+
+static inline f32 stepCarriedPosition(f32* pos, f32 target, f32 step) {
+    f32 delta = target - *pos;
+    if (delta >= step) {
+        *pos += step;
+    } else if (delta <= lbl_805401CC) {
+        *pos -= step;
+    } else if (lbl_80540150 != delta) {
+        *pos = target;
+    }
+    return delta;
+}
+
+static inline bool carriedPositionUnchanged(char* p) {
+    bool inX;
+    bool inY;
+    bool inZ;
+    inZ = false;
+    inY = inZ;
+    inX = inZ;
+    f32 eps;
+    f32 neg;
+    f32 d;
+    f32 machineEps = *(f32*)__float_epsilon;
+    eps = lbl_8054017C * machineEps;
+    neg = -eps;
+    d = F32(p, 0x8) - F32(p, 0x14);
+    if (neg <= d && d <= eps) {
+        inX = 1;
+    }
+    if (inX) {
+        inX = 0;
+        d = F32(p, 0xc) - F32(p, 0x18);
+        if (neg <= d && d <= eps) {
+            inX = 1;
+        }
+        if (inX) {
+            inY = 1;
+        }
+    }
+    if (inY) {
+        inY = 0;
+        d = F32(p, 0x10) - F32(p, 0x1c);
+        if (neg <= d && d <= eps) {
+            inY = 1;
+        }
+        if (inY) {
+            inZ = 1;
+        }
+    }
+
+    return inZ;
+}
+
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void fn_80262BAC(char* p) {
-    f32 z = F32(p, 0x370);
     if (U32(p, 0xd6c) == 0x4e495741 && U8(p, 0x441) == 0) {
-        f32 d = F32(p, 0x324) - F32(p, 0x8);
+        f32 goal = F32(p, 0x324);
+        f32 d = goal;
+        d -= F32(p, 0x8);
         if (d >= lbl_80540178) {
-            F32(p, 0x8) += lbl_80540178;
+            VEC(p, 0x8).x += lbl_80540178;
         } else if (d <= lbl_805401CC) {
-            F32(p, 0x8) -= lbl_80540178;
-        } else if (d != lbl_80540150) {
-            F32(p, 0x8) = F32(p, 0x324);
+            VEC(p, 0x8).x -= lbl_80540178;
+        } else if (lbl_80540150 != d) {
+            F32(p, 0x8) = goal;
+        }
+        if (lbl_80540150 != d) {
             F32(p, 0x34c) -= lbl_805401BC;
             if (F32(p, 0x34c) <= lbl_80540150)
                 F32(p, 0x34c) = lbl_80540150;
@@ -1546,17 +1605,16 @@ extern "C" void fn_80262BAC(char* p) {
             if (F32(p, 0x34c) <= lbl_805401C0)
                 F32(p, 0x34c) = lbl_805401C0;
             F32(p, 0x10) += F32(p, 0x34c);
-            if (F32(p, 0x10) <= lbl_80540150)
+            if (F32(p, 0x10) <= lbl_80540150) {
                 F32(p, 0x10) = lbl_80540150;
+                if (fn_80251AEC(p, 0x12)) U8(p, 0xce8) = 0;
+            }
         }
-        if (fn_80251AEC(p, 0x12)) {
-            U8(p, 0xce8) = 0;
-            F32(p, 0x2f4) = lbl_80540150;
-            F32(p, 0x2f8) = lbl_80540150;
-            F32(p, 0x2fc) = lbl_805401C4;
-            VEC(p, 0x2f4) += VEC(p, 0x8);
-            return;
-        }
+        F32(p, 0x2f4) = lbl_80540150;
+        F32(p, 0x2f8) = lbl_80540150;
+        F32(p, 0x2fc) = lbl_805401C4;
+        VEC(p, 0x2f4) += VEC(p, 0x8);
+        goto end;
     }
     if (F32(p, 0x10) >= lbl_80540150)
         VEC(p, 0x8) += VEC(p, 0x344);
@@ -1570,7 +1628,7 @@ extern "C" void fn_80262BAC(char* p) {
         F32(p, 0x34c) -= lbl_805401BC;
     }
     if (F32(p, 0x10) <= lbl_80540150) {
-        if (U8(p, 0x43f) == 0 && U8(p, 0x441) != 0 && F32(p, 0xc) < F32(p, 0x328)) {
+        if ((U8(p, 0x43f) != 0 || U8(p, 0x441) != 0) && F32(p, 0xc) < F32(p, 0x328)) {
             F32(p, 0x10) = lbl_805401DC;
         } else {
             F32(p, 0x10) = lbl_80540150;
@@ -1578,30 +1636,71 @@ extern "C" void fn_80262BAC(char* p) {
             fn_80251AEC(p, 0x12);
         }
     }
-    f32 eps = lbl_8054017C * *(f32*)__float_epsilon;
-    f32 dx = F32(p, 0x8) - F32(p, 0x14);
-    f32 dy = F32(p, 0xc) - F32(p, 0x18);
-    f32 dz = F32(p, 0x10) - F32(p, 0x1c);
-    bool near = -eps <= dx && dx <= eps && -eps <= dy && dy <= eps && -eps <= dz && dz <= eps;
-    if (near && VEC(p, 0x368).squared() <= lbl_8054017C * *(f32*)__float_epsilon) {
+    bool inX;
+    bool inY;
+    bool inZ;
+    inZ = false;
+    inY = inZ;
+    inX = inZ;
+    f32 eps;
+    f32 neg;
+    f32 d;
+    f32 machineEps = *(f32*)__float_epsilon;
+    eps = lbl_8054017C * machineEps;
+    neg = -eps;
+    d = F32(p, 0x8) - F32(p, 0x14);
+    if (neg <= d && d <= eps) {
+        inX = 1;
+    }
+    if (inX) {
+        inX = 0;
+        d = F32(p, 0xc) - F32(p, 0x18);
+        if (neg <= d && d <= eps) {
+            inX = 1;
+        }
+        if (inX) {
+            inY = 1;
+        }
+    }
+    if (inY) {
+        inY = 0;
+        d = F32(p, 0x10) - F32(p, 0x1c);
+        if (neg <= d && d <= eps) {
+            inY = 1;
+        }
+        if (inY) {
+            inZ = 1;
+        }
+    }
+    if (inZ && VEC(p, 0x368).squared() <= lbl_8054017C * *(f32*)__float_epsilon) {
         U8(p, 0x3f8) = 0;
     } else {
         U8(p, 0x3f8)++;
         if (U8(p, 0x3f8) >= 0x18)
             U8(p, 0x3f8) = 0;
     }
-    U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 3 + S32(p, 0x3dc) * 8];
-    s32 idx = U8(p, 0x3f9) * 5;
-    F32(p, 0x2f4) = ((f32*)lbl_8046B7B0)[idx] + F32(p, 0x8);
-    F32(p, 0x2f8) = ((f32*)lbl_8046B7B0)[idx + 1] + F32(p, 0xc);
-    F32(p, 0x2fc) = ((f32*)lbl_8046B7B0)[idx + 2] + F32(p, 0x10);
+    U8(p, 0x3f9) = (lbl_8046B790 + S32(p, 0x3dc) * 8)[U8(p, 0x3f8) / 3];
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)((char*)lbl_8046B7B0 + U8(p, 0x3f9) * 0x14);
+    f32 x = pos->x;
+    f32 y = pos->y;
+    F32(p,0x2f4) = x;
+    f32 z = pos->z;
+    F32(p,0x2f8) = y;
+    F32(p,0x2fc) = z;
+    VEC(p, 0x2f4).add(VEC(p, 0x8));
     if (U8(p, 0x440) != 0 && F32(p, 0x34c) < lbl_80540150) {
         fn_8024F0E8(p, 0x1000d);
         fn_8024F0E8(p, 0x2003e);
-        U8(p, 0x3f9) = F32(p, 0x34c) < lbl_805401E0 ? 1 : 0;
+    }
+end:
+    if (F32(p, 0x34c) < lbl_805401E0) {
+        U8(p, 0x3f9) = 1;
+    } else {
+        U8(p, 0x3f9) = 0;
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_80263078(char* p) {
     JGeometry::TVec2<f32> pos;
     fn_8028414C(p);
