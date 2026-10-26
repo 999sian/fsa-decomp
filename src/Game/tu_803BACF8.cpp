@@ -19,7 +19,7 @@ extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 static inline u32 calcCardChecksum(u8* data) {
     u32 sum = 0;
     u16 inv = 0;
-    for (u32 i = 0; i < 0x1ffc; i += 2) {
+    for (int i = 0; i < 0x1ffc; i += 2) {
         u16 value = *(u16*)(data + i);
         sum += value;
         inv += ~value;
@@ -125,11 +125,10 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     return 0;
 }
 
-#pragma opt_unroll_loops off
-extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
-    CARDFileInfo* fileInfo = info;
-    void* src = data;
-    s32 size = len;
+#pragma optimization_level reset
+#pragma opt_unroll_loops reset
+#pragma peephole on
+extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, const void* src, s32 unused, u32 size) {
     OSCalendarTime cal;
     CARDStat stat;
     CARDStat tailStat;
@@ -245,7 +244,7 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
     return result;
 }
-#pragma opt_unroll_loops reset
+#pragma peephole reset
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
 extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
