@@ -25,11 +25,6 @@ extern "C" const f32 lbl_80543EC4;
 extern "C" const f32 lbl_80543EC8;
 extern "C" const f32 lbl_80543ECC;
 
-static inline void startQueuedAudio(JAUSoundMgr* mgr, u32 sound, JAISoundHandle* handle) {
-    JAISoundID id(sound);
-    mgr->startSound(id,handle,0);
-}
-
 static inline JAISoundID currentAudioID(JAISoundHandle* handle) {
     JAISoundID id=-1;
     if (*handle) id=JAISoundID(handle->getSound()->getID());
