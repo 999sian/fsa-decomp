@@ -29,9 +29,10 @@ extern "C" void fn_8029BD84(void* this_) {
     fn_801F06F0(this_, lbl_8046C3E8, 0x17e, 0, 0, 1.0f, 1.0f);
 }
 
-static inline f32 snapToGrid(f32 value, f32 origin) {
-    if (value <= 15.5f + origin && value >= origin - 15.5f) return origin;
-    return (f32)(((s32)value + 4) / 8 * 8);
+static inline void snapToGrid(f32& position, f32 origin, f32 tolerance) {
+    f32 value = position;
+    if (value <= tolerance + origin && value >= origin - tolerance) position = origin;
+    else position = (f32)(((s32)value + 4) / 8 * 8);
 }
 
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
@@ -49,6 +50,8 @@ extern void* lbl_8053AC98;
 extern int __float_epsilon[];
 extern const f32 lbl_8046C398[8];
 extern const f32 lbl_8046C3B8[12];
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
 extern "C" void fn_8029BDC0(Actor* this_) {
     f32 box[4];
     box[0] = this_->field_60;
@@ -62,18 +65,20 @@ extern "C" void fn_8029BDC0(Actor* this_) {
     fn_80239914(box, this_->field_04, this_->field_198);
 
     if (PSVECDistance((SDKVec*)&this_->field_0C, (SDKVec*)((u8*)this_ + 0x230)) >= 15.9f) {
-        const f32 snap=15.5f;
         f32 f = this_->field_24.x;
-        if (this_->field_0C.x <= snap + f && this_->field_0C.x >= f - snap) {
+        f32 value = this_->field_0C.x;
+        const f32 snap=15.5f;
+        if (value <= snap + f && value >= f - snap) {
             this_->field_0C.x = f;
         } else {
-            this_->field_0C.x = (f32)(((s32)this_->field_0C.x + 4) / 8 * 8);
+            this_->field_0C.x = (f32)(((s32)value + 4) / 8 * 8);
         }
         f = this_->field_24.y;
-        if (this_->field_0C.y <= snap + f && this_->field_0C.y >= f - snap) {
+        value = this_->field_0C.y;
+        if (value <= snap + f && value >= f - snap) {
             this_->field_0C.y = f;
         } else {
-            this_->field_0C.y = (f32)(((s32)this_->field_0C.y + 4) / 8 * 8);
+            this_->field_0C.y = (f32)(((s32)value + 4) / 8 * 8);
         }
 
         *(JGeometry::TVec3f*)((u8*)this_+0x230)=*(JGeometry::TVec3f*)&this_->field_0C;
@@ -131,7 +136,8 @@ extern "C" void fn_8029BDC0(Actor* this_) {
         }
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_lifetimes reset
 extern "C" void fn_8029C1D0(Actor* this_) {
     this_->field_0C.x += (f32)(s32)(8.0f - (f32)((s32)this_->field_0C.x % 8));
     this_->field_0C.y += (f32)(s32)(8.0f - (f32)((s32)this_->field_0C.y % 8));
