@@ -235,7 +235,8 @@ static inline void setCellU(u8* this_, u8* tbl, s32 keyOff, s32 flagOff) {
 static inline void drawTextRow(u8* p, u8* q, u8* t) {
     s32 k;
     for (k = 0; k < 4; k++) {
-        void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)t);
+        void* object = *(void**)(p + 0x8);
+        void* s = (*(TextBoxVt15**)object)->v15(object, *(u64*)t);
         fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
         t += 8;
     }
@@ -2461,6 +2462,7 @@ extern "C" void fn_803C61C4(u8* p) {
     s16 A;
     s32 i;
     s32 EF;
+    s32 start;
     s32 j;
     s32 lo;
     s32 n;
@@ -2472,10 +2474,12 @@ extern "C" void fn_803C61C4(u8* p) {
     sVar = *(s16*)(lbl_8050DB0C + 0x1e6);
     E = *(s16*)(lbl_8050DB0C + 0x1e8);
     F = *(s16*)(lbl_8050DB0C + 0x1ea);
-    n = C + (B + A + 1);
+    n = C + (B + A) + 1;
     if (sVar < n) {
         sVar = n;
     }
+    start = sVar;
+    EF = start + (E + F);
     *(s16*)(p + 0xd8) += 1;
     if (p[0x112] != 5) {
         q = p;
@@ -2521,9 +2525,8 @@ extern "C" void fn_803C61C4(u8* p) {
 
     q = p;
     off = 0;
-    EF = E + F;
     for (j = 0; j < 2; j++) {
-        if (*(s16*)(p + 0xd8) > sVar + off) {
+        if (*(s16*)(p + 0xd8) > start + off) {
             fn_80402940(*(void**)(q + 0x24), E, lbl_8054349C, lbl_80543458, 0);
             fn_80402628(*(void**)(q + 0x24), E, 0, *(u8*)(*(u8**)(q + 0x24) + 0x28));
             switch (j) {
@@ -2544,7 +2547,7 @@ extern "C" void fn_803C61C4(u8* p) {
         off += F;
         q += 4;
     }
-    if (*(s16*)(p + 0xd8) > sVar + EF) {
+    if (*(s16*)(p + 0xd8) > EF) {
         p[0x112] = p[0x110];
         p[0x110] = 0x25;
     }
@@ -3775,10 +3778,10 @@ extern "C" void fn_803CD2DC(u8* p) {
         s16 t = *(s16*)(p + 0xda);
         if (t != 0) {
             if (t < 5) {
-                f30 = (5.0f * static_cast<f32>(t * t)) / 25.0f;
+                f30 = (lbl_805434A4 * static_cast<f32>(t * t)) / lbl_805434A8;
                 *(s16*)(p + 0xda) = t + 1;
             } else if (t < 10) {
-                f30 = (5.0f * static_cast<f32>((10 - t) * (10 - t))) / 25.0f;
+                f30 = (lbl_805434A4 * static_cast<f32>((10 - t) * (10 - t))) / lbl_805434A8;
                 *(s16*)(p + 0xda) = t + 1;
             } else {
                 *(s16*)(p + 0xda) = 0;
