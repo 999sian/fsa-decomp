@@ -62,23 +62,23 @@ extern "C" void fn_80432750(char* this_, u8 flag, f32 a, f32 b, f32 c, f32 d) {
         sx = c / *(f32*)(*(char**)(this_ + 0x20) + 0x18);
         sy = d / *(f32*)(*(char**)(this_ + 0x20) + 0x1c);
         t = *(f32*)(*(char**)(this_ + 0x20) + 0x10);
-        f32 x = (a + c * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 4))->search(0x004E646174613031ULL)->getBounds()->i.x);
-        t = *(f32*)(*(char**)(this_ + 0x20) + 0x14);
-        f32 y = (b + d * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 4))->search(0x004E646174613031ULL)->getBounds()->i.y);
+        a = (a + c * lbl_80543BB8) - (t + ((J2DScreen*)*(void**)(this_ + 4))->search(0x004E646174613031ULL)->getBounds()->i.x);
+        f32 y = *(f32*)(*(char**)(this_ + 0x20) + 0x14);
+
+        f32 resultY = (b + d * lbl_80543BB8) - (y + ((J2DScreen*)*(void**)(this_ + 4))->search(0x004E646174613031ULL)->getBounds()->i.y);
         char* p = this_;
         for (s32 i = 0; i < 4; ++i, p += 4) {
-            fn_80402E08(*(void**)(p + 0x18), x, y);
+            fn_80402E08(*(void**)(p + 0x18), a, resultY);
             fn_80402CE0(*(void**)(p + 0x18), sx, sy);
         }
         if (flag != 0 && sx == 1.0f) {
-            u16 v = *(u16*)(this_ + 0x9e);
-            if (v == 1 || v == 2 || v == 3) this_[0xa2] = 1;
+            if (*(u16*)(this_+0x9e) == 1 || *(u16*)(this_+0x9e) == 2 || *(u16*)(this_+0x9e) == 3) this_[0xa2] = 1;
             else this_[0xa2] = 0;
             if (*(u8*)(this_ + 0xa2) == *(u8*)(this_ + 0xa3)) {
                 J2DPane* pane = *(J2DPane**)(*(char**)(this_ + 0x34) + 4);
                 if (!((u8*)pane)[0xb0]) pane->show();
-                if (*(u8*)(this_ + 0xa2) == 1) y += 290.0f;
-                fn_80402E08(*(void**)(this_ + 0x34), x, y);
+                if (*(u8*)(this_ + 0xa2) == 1) resultY += 290.0f;
+                fn_80402E08(*(void**)(this_ + 0x34), a, resultY);
             } else {
                 J2DPane* pane = *(J2DPane**)(*(char**)(this_ + 0x34) + 4);
                 if (((u8*)pane)[0xb0]) pane->hide();
@@ -91,18 +91,20 @@ extern "C" void fn_80432750(char* this_, u8 flag, f32 a, f32 b, f32 c, f32 d) {
         }
         ((J2DScreen*)*(void**)(this_ + 4))->draw(0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
     } else {
-        f32 t;
-        f32 sy;
         f32 sx;
+        f32 sy;
+        f32 t;
         sx = c / *(f32*)(*(char**)(this_ + 0x2c) + 0x18);
         sy = d / *(f32*)(*(char**)(this_ + 0x2c) + 0x1c);
         t = *(f32*)(*(char**)(this_ + 0x2c) + 0x10);
-        f32 x = (a + c * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 8))->search(0x004E646174613031ULL)->getBounds()->i.x);
-        t = *(f32*)(*(char**)(this_ + 0x2c) + 0x14);
-        f32 y = (b + d * 0.5f) - (t + ((J2DScreen*)*(void**)(this_ + 8))->search(0x004E646174613031ULL)->getBounds()->i.y);
+        a = (a + c * lbl_80543BB8) - (t + ((J2DScreen*)*(void**)(this_ + 8))->search(0x004E646174613031ULL)->getBounds()->i.x);
+        f32 y = *(f32*)(*(char**)(this_ + 0x2c) + 0x14);
+
+        f32 resultY = (b + d * lbl_80543BB8) - (y + ((J2DScreen*)*(void**)(this_ + 8))->search(0x004E646174613031ULL)->getBounds()->i.y);
+        s32 i;
         char* p = this_;
-        for (s32 i = 0; i < 3; ++i, p += 4) {
-            fn_80402E08(*(void**)(p + 0x28), x, y);
+        for (i = 0; i < 3; ++i, p += 4) {
+            fn_80402E08(*(void**)(p + 0x28), a, resultY);
             fn_80402CE0(*(void**)(p + 0x28), sx, sy);
         }
         ((J2DScreen*)*(void**)(this_ + 8))->draw(0.0f, 0.0f, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
