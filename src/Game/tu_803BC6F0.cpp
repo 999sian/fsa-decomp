@@ -277,7 +277,7 @@ static inline void setKeyedAt(u8* p, s32 recvOff, s32 tgtOff, u8* keys, s32 n, s
     u8* k = keys;
     for (i = 0; i < n; i++, k += 8) {
         void* object = *(void**)(p + recvOff);
-        void* s = (*(TextBoxVt15**)object)->v15(object, *(u64*)k);
+        void* s = ((J2DPane*)object)->search(*(u64*)k);
         fn_804023D0(*(void**)(p + tgtOff), s, p[i + flagOff]);
     }
 }
@@ -2269,7 +2269,7 @@ extern "C" void fn_803C5190(u8* p) {
     }
 
     *(s16*)(p + 0xd8) += 1;
-    if (a < *(s16*)(p + 0xd8) && *(s16*)(p + 0xd8) <= sum) {
+    if (*(s16*)(p + 0xd8) > a && *(s16*)(p + 0xd8) <= sum) {
         if ((p[0x115] & ((1 << *(u32*)(p + 0xa4)) & 0xff)) != 0) {
             setFade(*(void**)(p + 0x20), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), b, ((u8*)*(void**)(p + 0x20))[0x28], 0);
@@ -2293,13 +2293,13 @@ extern "C" void fn_803C5190(u8* p) {
         }
         if (*(s16*)(p + 0xd8) == sum) {
             *(s32*)(p + 0x84) = 0x5f;
-            void* s = ((TextBoxVt15*)*(void**)(p + 8))->v15(*(void**)(p + 8), 0x5466743031ULL);
+            void* s = ((J2DPane*)*(void**)(p+8))->search(0x5466743031ULL);
             char* str = getStringPtr__10J2DTextBoxCFv(s);
             fn_803832BC(str, *(s32*)(p + 0x84), 0, 0, 0);
             if (*(u32*)(p + 0x84) == 0x60 || *(u32*)(p + 0x84) == 0x64) {
                 *(s32*)(p + 0xb0) = 0x5a;
             }
-            s = ((TextBoxVt15*)*(void**)(p + 4))->v15(*(void**)(p + 4), 0x5464623031ULL);
+            s = ((J2DPane*)*(void**)(p+4))->search(0x5464623031ULL);
             str = getStringPtr__10J2DTextBoxCFv(s);
             fn_803832BC(str, 0x67, 0, 0, 0);
         }
