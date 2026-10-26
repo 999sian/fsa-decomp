@@ -109,7 +109,7 @@ extern "C" void fn_801E8080(void* actor);
 extern "C" void fn_801E801C(void* actor);
 extern "C" void fn_801E6DE8(void* actor);
 extern "C" u8* lbl_8053AB10;
-static inline void fsaDrawEntries(FsaSlot* slots, const s32 index, const bool textured) {
+static inline void fsaDrawEntries(FsaSlot* slots, s32 index, bool textured) {
     int n = slots[index].count;
     int i;
     for (i = 0; i < n; i++) {
@@ -147,21 +147,21 @@ static inline u8 fsaHasActors(FsaSlot* s) { return s->unk74 > 0; }
 extern "C" void fn_801E9C74(u8* param) {
     s32 n;
     s32 i;
-    u8 b;
+    bool b;
     u8* self = param;
     FsaSlot* slots = (FsaSlot*)self;
-    bool a;
+    u8 a;
 
 
     fn_802D6A9C();
     u8 both = fn_802DCD0C();
     if (both) {
-        a = (u8)(slots[0].count > 0 || slots[1].count > 0);
-        b = fsaNormalizeFlag(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
+        a = (bool)(u8)(slots[0].count > 0 || slots[1].count > 0);
+        b = (u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
     } else {
         FsaSlot* s = &slots[self[0xf0]];
         a = fsaHasEntries(s);
-        b = fsaNormalizeFlag(a || s->unk74 > 0);
+        b = (u8)(a || s->unk74 > 0);
     }
     if (!a && !b) {
         return;
