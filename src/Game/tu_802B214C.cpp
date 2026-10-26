@@ -35,10 +35,10 @@ struct VecOp : Vec {
 };
 
 extern "C" char lbl_804A8588[];
-extern "C" f32 lbl_805409D8;
-extern "C" f32 lbl_805409DC;
-extern "C" f32 lbl_805409E0;
-extern "C" f32 lbl_805409E4;
+extern "C" const f32 lbl_805409D8;
+extern "C" const f32 lbl_805409DC;
+extern "C" const f32 lbl_805409E0;
+extern "C" const f32 lbl_805409E4;
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_802B214C(Actor* param_1, s16 param_2)
 {
@@ -65,39 +65,30 @@ extern "C" u8 fn_801F2618(Actor* a, Vec* out, u32 c);
 extern "C" void fn_802B21EC(Actor* param_1)
 {
     u8* p = (u8*)param_1;
-    VecOp* pos = (VecOp*)(p + 0xc);
-    VecOp* vel = (VecOp*)(p + 0x3c);
-    VecOp* acc = (VecOp*)(p + 0x270);
-    VecOp posBak = *pos;
-    VecOp velBak = *vel;
-    VecOp accBak = *acc;
-    VecOp hitE;
-    VecOp hitD;
-    VecOp oldPos;
-    VecOp sum;
-    f32 sign;
-    u8 hit1;
-    u8 hit2;
-    u8 hit3;
-
-    hitE.z = lbl_805409DC;
-    hitD.z = lbl_805409DC;
-    hitE.x = lbl_805409DC;
-    hitE.y = lbl_805409DC;
-    hitD.x = lbl_805409DC;
-    hitD.y = lbl_805409DC;
-    sign = lbl_805409D8;
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(p + 0xc);
+    JGeometry::TVec3<f32>* vel = (JGeometry::TVec3<f32>*)(p + 0x3c);
+    JGeometry::TVec3<f32>* acc = (JGeometry::TVec3<f32>*)(p + 0x270);
+    JGeometry::TVec3<f32> hitE;
+    JGeometry::TVec3<f32> hitD;
+    u8 hit1, hit2, hit3;
+    hitE.zero();
+    hitD.zero();
+    f32 factor;
+    f32 sign = lbl_805409D8;
+    JGeometry::TVec3<f32> posBak(*pos);
+    JGeometry::TVec3<f32> velBak(*vel);
+    JGeometry::TVec3<f32> accBak(*acc);
 
     *(u8*)(p + 0x27c) = 0;
     *pos += *vel;
     hit1 = fn_801F2618(param_1, &hitE, 0);
-    if (acc->x != lbl_805409DC) {
+    if (lbl_805409DC != acc->x) {
         *(u8*)(p + 0x27c) = 1;
         *pos += *acc;
         hit2 = fn_801F2618(param_1, &hitD, 0);
-        if (hit1 == 1 && hitE.y != lbl_805409DC) {
+        if (hit1 == 1 && lbl_805409DC != hitE.y) {
             if (acc->x > lbl_805409DC) {
-                if (vel->y <= lbl_805409DC) {
+                if (!(vel->y > lbl_805409DC)) {
                     sign = lbl_805409E0;
                 }
             } else {
@@ -105,46 +96,48 @@ extern "C" void fn_802B21EC(Actor* param_1)
                     sign = lbl_805409E0;
                 }
             }
+            factor = lbl_805409E4;
             vel->x = -vel->y * sign;
             acc->y = acc->x * sign;
             vel->y = lbl_805409DC;
             acc->x = lbl_805409DC;
-        } else if (!hit2 || hitD.x == lbl_805409DC) {
+        } else if (!hit2 || lbl_805409DC == hitD.x) {
             if (acc->x > lbl_805409DC) {
                 if (vel->y > lbl_805409DC) {
                     sign = lbl_805409E0;
                 }
             } else {
-                if (vel->y <= lbl_805409DC) {
+                if (!(vel->y > lbl_805409DC)) {
                     sign = lbl_805409E0;
                 }
             }
+            factor = lbl_805409E4;
             vel->x = -vel->y * sign;
             acc->y = acc->x * sign;
             vel->y = lbl_805409DC;
             acc->x = lbl_805409DC;
-            oldPos = *pos;
-            sum.x = vel->x * lbl_805409E4 + acc->x;
-            sum.y = vel->y * lbl_805409E4 + acc->y;
-            sum.z = vel->z * lbl_805409E4 + acc->z;
+            JGeometry::TVec3<f32> oldPos(*pos);
+            JGeometry::TVec3<f32> sum(*vel);
+            sum *= factor;
+            sum += *acc;
             *pos += sum;
             hit3 = fn_801F2618(param_1, 0, 0);
-            if (hit3) {
-                *pos = oldPos;
-            } else {
+            if (!hit3) {
                 *pos = posBak;
                 *vel = velBak;
                 *acc = accBak;
                 *pos += *vel;
+            } else {
+                *pos = oldPos;
             }
         }
-    } else if (acc->y != lbl_805409DC) {
+    } else if (lbl_805409DC != acc->y) {
         *(u8*)(p + 0x27c) = 1;
         *pos += *acc;
         hit2 = fn_801F2618(param_1, &hitD, 0);
-        if (hit1 == 1 && hitE.x != lbl_805409DC) {
+        if (hit1 == 1 && lbl_805409DC != hitE.x) {
             if (acc->y > lbl_805409DC) {
-                if (vel->x <= lbl_805409DC) {
+                if (!(vel->x > lbl_805409DC)) {
                     sign = lbl_805409E0;
                 }
             } else {
@@ -152,37 +145,39 @@ extern "C" void fn_802B21EC(Actor* param_1)
                     sign = lbl_805409E0;
                 }
             }
+            factor = lbl_805409E4;
             vel->y = -vel->x * sign;
             acc->x = acc->y * sign;
             vel->x = lbl_805409DC;
             acc->y = lbl_805409DC;
-        } else if (!hit2 || hitD.y == lbl_805409DC) {
+        } else if (!hit2 || lbl_805409DC == hitD.y) {
             if (acc->y > lbl_805409DC) {
                 if (vel->x > lbl_805409DC) {
                     sign = lbl_805409E0;
                 }
             } else {
-                if (vel->x <= lbl_805409DC) {
+                if (!(vel->x > lbl_805409DC)) {
                     sign = lbl_805409E0;
                 }
             }
+            factor = lbl_805409E4;
             vel->y = -vel->x * sign;
             acc->x = acc->y * sign;
             vel->x = lbl_805409DC;
             acc->y = lbl_805409DC;
-            oldPos = *pos;
-            sum.x = vel->x * lbl_805409E4 + acc->x;
-            sum.y = vel->y * lbl_805409E4 + acc->y;
-            sum.z = vel->z * lbl_805409E4 + acc->z;
+            JGeometry::TVec3<f32> oldPos(*pos);
+            JGeometry::TVec3<f32> sum(*vel);
+            sum *= factor;
+            sum += *acc;
             *pos += sum;
             hit3 = fn_801F2618(param_1, 0, 0);
-            if (hit3) {
-                *pos = oldPos;
-            } else {
+            if (!hit3) {
                 *pos = posBak;
                 *vel = velBak;
                 *acc = accBak;
                 *pos += *vel;
+            } else {
+                *pos = oldPos;
             }
         }
     }
@@ -194,7 +189,7 @@ extern "C" void fn_802B21EC(Actor* param_1)
 }
 
 extern "C" char lbl_8046CA80[];
-extern "C" f32 lbl_805409D8;
+extern "C" const f32 lbl_805409D8;
 extern "C" f32 lbl_805409E8;
 extern "C" u8* lbl_8053AB10;
 extern "C" void fn_801F06F0(Actor* a, const char* tbl, s32 id, void* rec, s32 p5, f32 f1, f32 f2);
@@ -204,8 +199,9 @@ extern "C" void fn_802B2728(Actor* param_1)
 {
     if (*(s32*)((u8*)param_1 + 0x25c) != 0) {
         DrawRec rec;
+        DrawRec* recp = &rec;
 
-        fn_801F06F0(param_1, lbl_8046CA80, *(s32*)((u8*)param_1 + 0x258) + 0x78, rec.w18, 1, lbl_805409D8, lbl_805409D8);
+        fn_801F06F0(param_1, lbl_8046CA80, *(s32*)((u8*)param_1 + 0x258) + 0x78, NULL, 1, lbl_805409D8, lbl_805409D8);
         fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(u32*)((u8*)param_1 + 4), (u8*)param_1 + 0xc, Color4(0, 0, 0, 0x80), lbl_805409E8);
         fn_803075AC(*(u32*)((u8*)param_1 + 0x198), *(u32*)((u8*)param_1 + 4), (u8*)param_1 + 0xc, *(s32*)((u8*)param_1 + 0x258) + 0x78, 0, 2, -1, 0, 0, 0);
     }
@@ -306,8 +302,8 @@ extern "C" f32 lbl_80540A0C;
 extern "C" f32 lbl_80540A10;
 extern "C" f32 lbl_80540A14;
 extern "C" f32 lbl_80540A08;
-extern "C" f32 lbl_805409DC;
-extern "C" f32 lbl_805409E0;
+extern "C" const f32 lbl_805409DC;
+extern "C" const f32 lbl_805409E0;
 extern "C" f32 lbl_805409F0;
 extern "C" f32 lbl_805409F4;
 extern "C" f32 lbl_805409C8;
