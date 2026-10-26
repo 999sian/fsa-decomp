@@ -272,23 +272,6 @@ static inline void resetHouseProbe(char* self, const JGeometry::TVec3f& saved) {
     *(f32*)(self + 0x6c) = 48.0f;
 }
 
-static inline void moveHouseProbe(char* self, u8 mode, JGeometry::TVec3f& saved) {
-    saved = *(JGeometry::TVec3f*)(self + 0xc);
-    const JGeometry::TVec3f& direction = lbl_8046C268[mode];
-    f32 dx = direction.x;
-    f32 dy = direction.y;
-    *(f32*)(self + 0x3c) = dx;
-    f32 dz = direction.z;
-    *(f32*)(self + 0x40) = dy;
-    *(f32*)(self + 0x44) = dz;
-    *(JGeometry::TVec3f*)(self + 0xc) += *(JGeometry::TVec3f*)(self + 0x3c);
-    *(f32*)(self + 0x60) = -44.0f;
-    *(f32*)(self + 0x64) = -44.0f;
-    *(f32*)(self + 0x68) = 44.0f;
-    *(f32*)(self + 0x6c) = 44.0f;
-
-}
-
 extern "C" u8 fn_802957CC(void* p, u8 mode) {
     struct Probe {
         Probe() {}
