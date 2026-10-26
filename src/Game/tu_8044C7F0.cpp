@@ -133,7 +133,7 @@ extern "C" void fn_8044C968(u8* self) {
 
 extern "C" void fn_80134D20(u8*, s32);
 extern u8* lbl_8053AAF8;
-extern "C" u64 lbl_80490FC8[];
+extern "C" MenuTables8044 lbl_80490FC8;
 extern "C" void* fn_8013CC50(void*, f32*, u16, s32, s32, s32, s32, s32, f32);
 extern f32 lbl_80543E00;
 extern f32 lbl_80543E04;
@@ -141,7 +141,7 @@ extern "C" u8 fn_8044CB00(u8* p) { return p[0x140]; }
 
 #pragma opt_strength_reduction off
 extern "C" void fn_8044CB08(u8* self, s32 index) {
-    MenuTables8044* data = (MenuTables8044*)lbl_80490FC8;
+    MenuTables8044* data = &lbl_80490FC8;
     MenuParticles8044* menu = (MenuParticles8044*)self;
     u64* a;
     u64* b;
@@ -211,7 +211,7 @@ extern "C" u8 fn_8044D290(u8* p) { return p[0x140]; }
 
 extern "C" void fn_80134D20(u8*, s32);
 extern u8* lbl_8053AAF8;
-extern "C" u64 lbl_80490FC8[];
+extern "C" MenuTables8044 lbl_80490FC8;
 extern "C" void* fn_8013CC50(void*, f32*, u16, s32, s32, s32, s32, s32, f32);
 extern f32 lbl_80543E00;
 extern f32 lbl_80543E04;
@@ -220,7 +220,7 @@ extern "C" u16 lbl_80543DD8[4];
 #pragma opt_common_subs off
 #pragma opt_propagation reset
 extern "C" void fn_8044D298(u8* self, s32 index) {
-    register MenuTables8044* data = (MenuTables8044*)lbl_80490FC8;
+    register MenuTables8044* data = &lbl_80490FC8;
     u64* a;
     u64* b;
     s32 i;
