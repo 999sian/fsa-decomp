@@ -56,8 +56,14 @@ static inline BOOL stateEventFlag(s32 index) {
 }
 
 static inline u8 stateRequestFlag(s32 index) {
-    if (!stateEventFlag(index)) return 0;
-    return fn_80309C4C((void*)lbl_8053AD30, 0x1000, -1) != 0;
+    u8 result;
+    if (!stateEventFlag(index)) {
+        result = 0;
+    } else {
+        if (fn_80309C4C((void*)lbl_8053AD30, 0x1000, -1) != 0) result = 1;
+        else result = 0;
+    }
+    return result;
 }
 
 struct StateActor80113788 {
@@ -586,11 +592,7 @@ extern "C" void fn_80114C98(char* self) {
             fn_801183BC();
             break;
         }
-        bool request = false;
-        if (stateEventFlag(*(s32*)(self + 0x238))) {
-            if (fn_80309C4C((void*)lbl_8053AD30, 0x1000, -1) != 0) request = true;
-        }
-        if (request) {
+        if (stateRequestFlag(*(s32*)(self + 0x238))) {
             fn_80387494(0);
             fn_8011921C();
             fn_801183BC();
