@@ -1291,17 +1291,8 @@ extern "C" void fn_80429DF4(s16 x, s16 y, s16 z) {
 #pragma dont_inline off
 
 extern "C" f32 lbl_80543AC4;
-#pragma dont_inline off
-static inline void movieOrtho(Mtx44 mtx, s32 width, s32 height) {
-    C_MTXOrtho(mtx, 0.0f, height, 0.0f, width, 0.0f, lbl_80543AC4);
-}
-#pragma dont_inline on
-#pragma dont_inline off
-static inline s32 movieWidth(const GXRenderModeObj* mode) { return mode->fbWidth; }
-static inline s32 movieHeight(const GXRenderModeObj* mode) { return mode->efbHeight; }
-#pragma dont_inline on
 
-#pragma dont_inline off
+#pragma opt_common_subs off
 extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     s32 scrWidth;
     s32 scrHeight;
@@ -1311,9 +1302,9 @@ extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     static const GXColor kcolor0 = {0x00, 0x00, 0xe2, 0x58};
     static const GXColor kcolor1 = {0xb3, 0x00, 0x00, 0xb6};
     static const GXColor kcolor2 = {0xff, 0x00, 0xff, 0x80};
-    scrWidth = rmode->fbWidth;
-    scrHeight = rmode->efbHeight;
-    movieOrtho(pMtx, scrWidth, scrHeight);
+    scrWidth = ((const volatile GXRenderModeObj*)rmode)->fbWidth;
+    scrHeight = ((const volatile GXRenderModeObj*)rmode)->efbHeight;
+    C_MTXOrtho(pMtx, 0.0f, scrHeight, 0.0f, scrWidth, 0.0f, lbl_80543AC4);
     GXSetProjection(pMtx, GX_ORTHOGRAPHIC);
     GXSetViewport(0.0f, 0.0f, scrWidth, scrHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, scrWidth, scrHeight);
@@ -1370,7 +1361,7 @@ extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
     GXSetTevKColor((GXTevKColorID)2, kcolor2);
     GXSetTevSwapModeTable((GXTevSwapSel)0, (GXTevColorChan)0, (GXTevColorChan)1, (GXTevColorChan)2, (GXTevColorChan)3);
 }
-#pragma dont_inline on
+#pragma opt_common_subs on
 extern "C" void fn_8042A2A4(GXTexCoordID dst, GXTexGenType func, GXTexGenSrc src, u32 mtx) {
     GXSetTexCoordGen2(dst, func, src, mtx, GX_FALSE, GX_PTIDENTITY);
 }
