@@ -16,7 +16,6 @@ struct fn_804461D0_Self {
 };
 extern "C" const u64 lbl_8048FC08[];
 extern "C" char lbl_80490020[];
-static inline const u64* getMenuRows(const u64* rows = lbl_8048FC08) { return rows; }
 extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_804AF86C[];
 extern "C" void fn_80402F04(void*, void*);
@@ -44,15 +43,14 @@ extern "C" f32 fn_8043D57C(u8*);
 extern "C" void fn_80402E08(void*, f32, f32);
 #pragma opt_propagation off
 #pragma opt_lifetimes on
-extern "C" void fn_804455E0(void* self_) {
-    void** ptr = (void**)self_;
+extern "C" void fn_804455E0(fn_804461D0_Self* self) {
+    void** ptr = (void**)self;
     const u64* row;
     int s;
     int d;
     int sTens;
     int dTens;
     int i;
-    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
     const ResTIMG* anm;
     row = lbl_8048FC08;
     for (i = 0; i < 4; i++, ptr++, row += 24) {
