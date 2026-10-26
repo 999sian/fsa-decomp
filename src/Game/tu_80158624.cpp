@@ -3,7 +3,7 @@
 extern "C" f32 lbl_8053D43C;
 extern "C" f32 lbl_8053D450;
 
-static inline void GXPosition3f32(const f32 x, const f32 y, const f32 z) {
+static inline void GXPosition3f32(f32 x, f32 y, f32 z) {
     *(volatile f32*)0xCC008000 = x;
     *(volatile f32*)0xCC008000 = y;
     *(volatile f32*)0xCC008000 = z;
@@ -383,8 +383,14 @@ extern "C" void fn_80158F70(char* p) {
     GXSetColorUpdate(0);
     GXSetAlphaUpdate(1);
     GXBegin(0x80, 0, 4);
-    drawFadeQuad(w, h);
-    GXSetColorUpdate(1);
+    {
+        const f32 z = lbl_8053D440;
+        GXPosition3f32(z, z, z);
+        GXPosition3f32(w, z, z);
+        GXPosition3f32(w, h, z);
+        GXPosition3f32(z, h, z);
+    }
+    GXSetColorUpdate((u8)1);
     GXSetAlphaUpdate(0);
     }
     if (*(u32*)(p + 0x4) != 0xFFFFFF00) {
