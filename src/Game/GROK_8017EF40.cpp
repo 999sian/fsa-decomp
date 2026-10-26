@@ -30,23 +30,61 @@ extern "C" void fn_8017EF40(ActorVt_grok* this_) {
     this_->setShadow(2, 0.0f, 16.0f);
 }
 
+extern "C" void fn_801F06F0(void* p, s32 a, f32 b, f32 c, f32 d, s32 e);
+extern "C" void fn_803075AC(s32 a, u8* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern "C" void fn_80307AC8(s32 a, u8* b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" s32 fn_804032E8(s32 a);
+extern "C" void fn_801EFD34(u8* a, s32 b, s32 c, f32 d, f32 e, f32 f, s32 g, s32 h, s32 i);
+extern "C" void fn_8017EF98(u8* this_) {
+    s32 idx;
+    s32 type;
+    if (*(s32*)(this_ + 0x230) == 0 || *(s32*)(this_ + 0x230) == 1 || *(s32*)(this_ + 0x230) == 0x17) {
+        return;
+    }
+    type = *(s32*)(this_ + 0x90);
+    if (type == 1) {
+        return;
+    }
+    if (type == 0xa) {
+        return;
+    }
+}
+
+extern "C" void fn_801546F4(void* a, void* b);
+extern "C" void fn_801826E4(f32* dst, f32 a, f32 b);
+extern "C" u8* fn_801826A4(s32 idx);
+extern "C" void fn_8017ECC0(void);
+extern "C" void fn_8017FB10(u8* this_) {
+    fn_801546F4(this_ + 0x60, 0);
+    fn_801826E4((f32*)(this_ + 0x1c), *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+    fn_801826A4(*(s32*)(this_ + 4));
+    *(s32*)(this_ + 0x108) = 0x2710;
+    if (*(u32*)(this_ + 0x90) == 0) {
+        fn_8017ECC0();
+    }
+    *(s32*)(this_ + 0x230) = 8;
+}
+
 extern "C" u8 fn_8023F264(s32 i);
 extern "C" s32 fn_8023DE58(s32 i);
 extern "C" f32* fn_8023E724(s32 i);
 extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
 extern "C" void fn_80230498(s32 i, void* p, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 lbl_804A1440[];
+#pragma optimization_level 3
+extern const f32 lbl_8053DEAC;
 extern "C" void fn_80181BC8(void* this_, u32 param_2, s32 param_3) {
     u8* self = (u8*)this_;
+    s32 iVar12;
     u8* vec = (u8*)this_;
-    u8* cnt = (u8*)this_;
     u32 idx = param_2;
+    u8* cnt = (u8*)this_;
     s32 off = 0;
     s32 i;
 
-    for (i = 0; i < 4; i++, vec += 0xc, cnt += 4) {
+    for (i = 0; i < 4; i++, cnt += 4, vec += 0xc) {
         if (fn_8023F264(i)) {
-            s32 iVar12 = *(s32*)(self + 4);
+            iVar12 = *(s32*)(self + 4);
             if (iVar12 == fn_8023DE58(i)) {
                 switch (param_3) {
                 case 0: {
@@ -93,14 +131,14 @@ extern "C" void fn_80181BC8(void* this_, u32 param_2, s32 param_3) {
                     if (self[iVar12] == 0) {
                         f32* p = fn_8023E724(i);
                         f32 dx = p[0] - *(f32*)(self + 0xc);
-                        f32 dist = sqrt(dx * dx);
+                        f32 dist = std::sqrtf(dx * dx);
                         if (dist < 128.0f) {
                             f32* q = fn_8023E724(i);
                             f32 dy = q[1] - *(f32*)(self + 0x28c);
-                            f32 dist2 = sqrt(dy * dy);
+                            f32 dist2 = std::sqrtf(dy * dy);
                             if (dist2 < 80.0f) {
                                 f32* r = fn_8023E724(i);
-                                *(f32*)(vec + 0x2c8) = 30.0f + r[1];
+                                *(f32*)(vec + 0x2c8) = r[1] + 30.0f;
                                 self[iVar12] = 1;
                             }
                         }
@@ -117,7 +155,7 @@ extern "C" void fn_80181BC8(void* this_, u32 param_2, s32 param_3) {
         }
     }
 }
-
+#pragma optimization_level 4
 extern "C" void* fn_80181FFC(void* this_, s16 param_2) {
     if (this_ != 0) {
         *(void**)this_ = __vt__4GROK;
@@ -155,6 +193,13 @@ extern "C" s32 lbl_80539FA4;
 extern "C" u8 lbl_8053AB74;
 extern "C" u8 lbl_8053AB75;
 extern "C" char lbl_80466E74[];
+struct GrokResources {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void* getResource(u32 type, void* name);
+};
 extern "C" void fn_801820B4(void* this_) {
     u8* self = (u8*)this_;
     u8* vec = (u8*)this_;
@@ -187,7 +232,7 @@ extern "C" void fn_801820B4(void* this_) {
     *(u16*)(self + 0x278) = 0;
     *(s32*)(self + 0x274) = -1;
 
-    for (i = 0; i < 2; i++, vec += 0x18, cnt += 8, idx += 2) {
+    for (i = 0; i < 4; i++, vec += 0xc, cnt += 4, idx += 1) {
         *(f32*)(vec + 0x294) = *(f32*)(self + 0xc);
         *(f32*)(vec + 0x298) = *(f32*)(self + 0x10);
         *(f32*)(vec + 0x29c) = *(f32*)(self + 0x14);
@@ -196,14 +241,6 @@ extern "C" void fn_801820B4(void* this_) {
         *(f32*)(vec + 0x2cc) = *(f32*)(self + 0x14);
         *(u32*)(cnt + 0x2f4) = 0;
         self[idx + 0x304] = 0;
-        *(f32*)(vec + 0x2a0) = *(f32*)(self + 0xc);
-        *(f32*)(vec + 0x2a4) = *(f32*)(self + 0x10);
-        *(f32*)(vec + 0x2a8) = *(f32*)(self + 0x14);
-        *(f32*)(vec + 0x2d0) = *(f32*)(self + 0xc);
-        *(f32*)(vec + 0x2d4) = *(f32*)(self + 0x10);
-        *(f32*)(vec + 0x2d8) = *(f32*)(self + 0x14);
-        *(u32*)(cnt + 0x2f8) = 0;
-        self[idx + 0x305] = 0;
     }
 
     *(u32*)(self + 0x98) = 0;
@@ -249,15 +286,16 @@ extern "C" void fn_801820B4(void* this_) {
             {
                 void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
                 void* res = ((void* (*)(void*, u32, void*))((*(void***)obj)[6]))(obj, 0x53434820, lbl_80466E74);
-                fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0x7000, 0, 0);
+                fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
             }
-            *(u32*)(self + 0xb0) = 0x904004;
+            *(u32*)(self + 0xb0) = 0x9040004;
             *(s32*)(self + 0x98) = 1;
             *(f32*)(self + 0x14) = 500.0f;
             *(f32*)(self + 0x308) = 500.0f;
             *(s32*)(self + 0x230) = 0;
         } else {
-            *(u32*)(self + 0xb0) = 0x904004;
+        case 1:
+            *(u32*)(self + 0xb0) = 0x9040004;
             *(u8*)(self + 0x1a8) = 0;
             *(f32*)(self + 0x60) = -16.0f;
             *(f32*)(self + 0x64) = -16.0f;
@@ -270,8 +308,9 @@ extern "C" void fn_801820B4(void* this_) {
             *(s32*)(self + 0x230) = 0x10;
         }
         break;
-    case 1:
+    case 4:
         *(s32*)(self + 0x98) = 1;
+    case 5:
         *(u32*)(self + 0xb0) = 0x5000000;
         *(u8*)(self + 0x1a8) = 0;
         *(f32*)(self + 0x60) = -32.0f;
@@ -284,7 +323,7 @@ extern "C" void fn_801820B4(void* this_) {
         *(f32*)(self + 0x7c) = 48.0f;
         *(s32*)(self + 0x230) = 0x11;
         break;
-    case 4: {
+    case 6: {
         u8* mgr = lbl_8053AAF8;
         u32 bits;
         f32 r;
@@ -296,13 +335,13 @@ extern "C" void fn_801820B4(void* this_) {
         *(s32*)(self + 0x230) = 0x15;
         break;
     }
-    case 5:
+    case 7:
         *(f32*)(self + 0x308) = 500.0f;
         *(u8*)(self + 0x1a8) = 0;
         *(u32*)(self + 0xb0) = 0x4000000;
         *(s32*)(self + 0x230) = 0x17;
         break;
-    case 6: {
+    case 8: {
         u8* mgr = lbl_8053AAF8;
         u32 bits;
         f32 r;
@@ -314,19 +353,19 @@ extern "C" void fn_801820B4(void* this_) {
         *(s32*)(self + 0x230) = 0x19;
         break;
     }
-    case 7:
+    case 9:
         *(u8*)(self + 0x1a8) = 0;
         *(s32*)(self + 0x234) = 0x14;
         *(s32*)(self + 0x24c) = 1;
-        if (*(s32*)(self + 0x98) != 0) {
-            *(s32*)(self + 0x26c) = 0x17;
-        } else {
+        if (*(s32*)(self + 0x98) == 0) {
             *(s32*)(self + 0x26c) = 0x16;
+        } else {
+            *(s32*)(self + 0x26c) = 0x17;
         }
         *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - 22.0f;
         *(s32*)(self + 0x230) = 0x19;
         break;
-    case 8: {
+    case 10: {
         u8* mgr = lbl_8053AAF8;
         u32 bits;
         f32 r;
@@ -338,9 +377,6 @@ extern "C" void fn_801820B4(void* this_) {
         *(s32*)(self + 0x230) = 0x19;
         break;
     }
-    case 9:
-    case 10:
-        break;
     default:
         if (mode == 2) {
             lbl_80539FA0 = *(s32*)(self + 0x198);
