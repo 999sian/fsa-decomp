@@ -1314,6 +1314,7 @@ extern const f32 lbl_805434C0;
 extern f32 lbl_805434C8;
 struct MCResources {
     u64* getTags() { return tags; }
+    u64 getTag(s32 i) { return tags[i]; }
     u64 tags[8];
     char screenName[12];
     char pictureName[1];
@@ -1412,8 +1413,10 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	self->f28=(MCPaneHolder*)o;
 	fn_80402F04(self->f28,self->screen->search(0x5061636375723032ULL));
 
-    for(s32 i=0;i<8;i++) {
-        MemCardMenu* slots=(MemCardMenu*)((u8*)this_+i*4);
+    MemCardMenu* slots;
+    int i;
+    for(i=0;i<8;i++) {
+        slots=(MemCardMenu*)((u8*)this_+i*4);
         o=new MCAlpha;
         slots->f2c[0]=(MCAlpha*)o;
         fn_80402F04(slots->f2c[0],self->screen->search(((u64*)lbl_80476F20)[i]));
