@@ -40,14 +40,22 @@ extern "C" u8 fn_8022E438(s32 i, s32 b);
 extern "C" s32 fn_8022CAF8(s32 i);
 extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" u32 __cvt_fp2unsigned(f64);
+
+static inline void tuPlayerMessage(u8* p, s32 id, s32 player) {
+    if (player == *(s32*)(p + 0x250) ||
+        (fn_8022E438(player, *(s32*)(p + 0x250)) && fn_8022CAF8(player) == 4)) {
+        fn_8043D67C(lbl_8053AED0, id, player, 0);
+    }
+}
 extern "C" void fn_8031179C(u8* p) {
     s32 i = 0;
     f32 pos[2];
     do {
+        s32 t;
         if (fn_8023A97C(i, p + 0x230, 0, pos) && fn_80226998(pos, 0) == 0x1b0) {
             if (*(p + 0x259) == 0) {
-                s32 t = *(s32*)(p + 0x250);
-                if (t == *(s32*)(p + 0x250) || (fn_8022E438(t, t) && fn_8022CAF8(t) == 4)) {
+                t = *(s32*)(p + 0x250);
+                if (t == *(s32*)(p + 0x250) || (fn_8022E438(t, *(s32*)(p + 0x250)) && fn_8022CAF8(t) == 4)) {
                     fn_8043D67C(lbl_8053AED0, 0x826, t, 0);
                 }
             } else {
@@ -315,4 +323,7 @@ extern "C" void fn_80312358(Actor* p) {
     }
 }
 
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+void fn_80312444(void) {
+}
 
