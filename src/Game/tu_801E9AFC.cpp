@@ -128,12 +128,23 @@ static inline void fsaDrawEntriesShared(FsaSlot* slots, s32 index, bool textured
         }
     }
 }
+static inline void fsaDrawActors(FsaSlot* slots, const s32 index) {
+    s32 n = slots[index].unk74;
+    s32 i;
+    for (i = 0; i < n; i++) {
+        s32 id = slots[index].unk64[i];
+        if (id >= 0) {
+            void* actor = fn_801F666C(fn_801F856C(), id);
+            if (actor) fn_801E6DE8(actor);
+        }
+    }
+}
 static inline u8 fsaHasEntries(FsaSlot* s) { return s->count > 0; }
 static inline u8 fsaHasActors(FsaSlot* s) { return s->unk74 > 0; }
 extern "C" void fn_801E9C74(u8* param) {
     s32 n;
     s32 i;
-    int b;
+    u8 b;
     u8* self = param;
     FsaSlot* slots = (FsaSlot*)self;
     bool a;
@@ -143,13 +154,13 @@ extern "C" void fn_801E9C74(u8* param) {
     u8 both = fn_802DCD0C();
     if (both) {
         a = (u8)(slots[0].count > 0 || slots[1].count > 0);
-        b = (bool)(u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0);
+        b = ((u8)(a || slots[0].unk74 > 0 || slots[1].unk74 > 0) != 0);
     } else {
         FsaSlot* s = &slots[self[0xf0]];
         a = fsaHasEntries(s);
-        b = (bool)(u8)(a || s->unk74 > 0);
+        b = ((u8)(a || fsaHasActors(s)) != 0);
     }
-    if (!a && !(u8)b) {
+    if (!a && !b) {
         return;
     }
 
@@ -188,7 +199,7 @@ extern "C" void fn_801E9C74(u8* param) {
             }
         }
     }
-    if ((u8)b) {
+    if (b) {
         GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, (GXLogicOp)5);
         GXSetZCompLoc(GX_FALSE);
         GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
