@@ -138,7 +138,7 @@ static inline s32 getFileIcon(u32 slot) {
         if (fn_803B8CAC(slot, j)) {
             k++;
         } else {
-            return ((const s32*)lbl_804765D0)[k + 0x1cc];
+            return ((s32*)(lbl_804765D0 + 0x730))[k];
         }
     }
     return ((const s32*)(lbl_804765D0 + 0x730))[7];
@@ -3120,6 +3120,7 @@ extern "C" void fn_803C9338(u8* p) {
     s16 d = *(s16*)(tbl + 0x1f2);
     s32 max = a + b;
     s32 i;
+    u8* selected;
     if (max < c + d) {
         max = c + d;
     }
@@ -3131,68 +3132,83 @@ extern "C" void fn_803C9338(u8* p) {
         idx = *(s32*)(p + 0xa0);
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x780 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x125]);
+            const u64* key = (const u64*)(base + 0x780);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            selected = p;
+            selected += idx * 4;
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x125]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x768 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x126]);
+            const u64* key = (const u64*)(base + 0x768);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x126]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x750 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x127]);
+            const u64* key = (const u64*)(base + 0x750);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x127]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x6c8 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x128]);
+            const u64* key = (const u64*)(base + 0x6c8);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x128]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x6b0 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x129]);
+            const u64* key = (const u64*)(base + 0x6b0);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x129]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x698 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x12a]);
+            const u64* key = (const u64*)(base + 0x698);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x12a]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x680 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x12b]);
+            const u64* key = (const u64*)(base + 0x680);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x12b]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x668 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x12c]);
+            const u64* key = (const u64*)(base + 0x668);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x12c]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x650 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x12d]);
+            const u64* key = (const u64*)(base + 0x650);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x12d]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x638 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x12e]);
+            const u64* key = (const u64*)(base + 0x638);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x12e]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x620 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x12f]);
+            const u64* key = (const u64*)(base + 0x620);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x12f]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x608 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x130]);
+            const u64* key = (const u64*)(base + 0x608);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x130]);
         }
         {
             void* obj = *(void**)(p + 8);
-            void* o = keyObj(obj, *(const u64*)(base + 0x5f0 + idx * 8));
-            fn_804023D0(menuSlot((char*)p, idx), o, p[0x131]);
+            const u64* key = (const u64*)(base + 0x5f0);
+            void* o = ((J2DPane*)obj)->search(key[idx]);
+            fn_804023D0(*(void**)(selected + 0x38), o, p[0x131]);
         }
         fn_80402940(*(void**)(p + 0x14), b, lbl_80543458, *(f32*)(*(u8**)(p + 0x3c) + 0xc) - *(f32*)(*(u8**)(p + 0x38) + 0xc), 0);
         fn_80402628(*(void**)(p + 0x14), b, 0, *(u8*)(*(u8**)(p + 0x14) + 0x28));
