@@ -57,9 +57,9 @@ struct RupyRotation {
     }
 };
 
-static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f64& ang, const f32& scale) {
+static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32& ang, const f32& scale) {
         f32 cx;
-        f32 s;
+        const f32 s = scale;
         f32 sz;
         f32 sy;
         f32 sx;
@@ -71,7 +71,6 @@ static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f64& ang, cons
         cx = cos(lbl_80541D88);
         cy = cos(ang);
         cz = cos(lbl_80541D88);
-        s = scale;
         f32 sxsy = sx * sy;
         f32 cxsz = cx * sz;
         f32 cxcz = cx * cz;
@@ -718,7 +717,7 @@ extern "C" void fn_8032BFB0(char* p) {
     JGeometry::TVec3<f32> save;
     PSMTXIdentity(mtx);
     {
-        f32 angle = *(f32*)(p + 0x23c);
+        f64 angle = *(f32*)(p + 0x23c);
         RupyDrawMtx(mtx, rec, angle, scale);
     }
     st = *(s32*)(p + 0x230);
