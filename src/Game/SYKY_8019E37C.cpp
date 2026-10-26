@@ -133,18 +133,14 @@ extern "C" void fn_8019E37C(u8* p) {
 }
 #pragma opt_propagation reset
 extern "C" void fn_8019E480(u8* self) {
+    u8* p = self;
     DrawRec rec;
     f32 vec[3][4];
     s32 id = 0;
-    u8* p = self;
-    f32 scale;
-    f32 ang;
     vec[0][3] = lbl_8053E464;
     vec[1][3] = lbl_8053E464;
     vec[2][3] = lbl_8053E464;
-    scale = *(f32*)(p+0x290);
-    ang = *(f32*)(p+0x294) / lbl_8053E468;
-    tlwpRotMtx(vec, lbl_8053E464, ang, lbl_8053E464, scale);
+    tlwpRotMtx(vec, lbl_8053E464, *(f32*)(p+0x294) / lbl_8053E468, lbl_8053E464, *(f32*)(p+0x290));
     rec.w18 = vec;
     switch (*(s32*)(p + 0x268)) {
     case 1: id = 9; break;
@@ -300,20 +296,23 @@ extern "C" void fn_8019EE04(u8* p) {
     }
 }
 
-extern "C" void fn_8019EE74(u8* p) {
+extern "C" void fn_8019EE74(u8* self) {
+    int multiplier;
+    u32 id;
+    u8* p = self;
+    s32 i;
     JGeometry::TBox2<f32> box;
     JGeometry::TVec2<f32> ofs;
     box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
-    ofs.x = *(f32*)(p + 0xc);
-    ofs.y = *(f32*)(p + 0x10);
-    box.addPos(ofs);
+    ofs.set(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    box.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
     fn_801F71A4(p + 0x3c, *(f32*)(p + 0x2a0), lbl_8053E46C, lbl_8053E460);
     fn_801F71A4(p + 0x40, *(f32*)(p + 0x2a4), lbl_8053E46C, lbl_8053E460);
     JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
     switch (*(s32*)(p + 0x230)) {
     case 9:
-        *(s32*)(p + 0x238) = (s32)(lbl_8053E4AC * sykyRand01()) + 0x3c;
-        *(s32*)(p + 0x23c) = (s32)(lbl_8053E4B0 * sykyRand01()) + 0x50;
+        *(s32*)(p + 0x238) = (s32)(lbl_8053E4AC * sykyRandFrom(lbl_8053AAF8)) + 0x3c;
+        *(s32*)(p + 0x23c) = (s32)(lbl_8053E4B0 * sykyRandFrom(lbl_8053AAF8)) + 0x50;
         *(f32*)(p + 0x2a0) = lbl_8053E494;
         if (*(s32*)(p + 0x98) != 0) {
             *(f32*)(p + 0x2a0) = lbl_8053E498;
@@ -327,19 +326,23 @@ extern "C" void fn_8019EE74(u8* p) {
             break;
         }
         if (*(s32*)(p + 0x240) == 0 && fn_801A6108(*(s32*)(p + 0x198), &box, &ofs)) {
-            Vec pos = *(Vec*)(p + 0xc);
-            int i;
             *(s32*)(p + 0xb0) = 7;
             *(s32*)(p + 0x248) = fn_8023AE34(&box, *(s32*)(p + 0x4), &ofs);
             if (*(s32*)(p + 0x268) == 1) {
-                fn_8043D874(lbl_8053AED0, 0x12c, *(s32*)(p + 0x248), 0);
+                fn_8043D874(lbl_8053AED0, *(s32*)(p + 0x248), 0x12c, 0);
+                multiplier = 0x19660d;
+                id = 0x53594B59;
                 for (i = 0; i < 20; i++) {
-                    pos.x = pos.x + (lbl_8053E4B4 - lbl_8053E4A8 * sykyRand01());
-                    pos.y = pos.y + (lbl_8053E4B4 - lbl_8053E4A8 * sykyRand01());
-                    Actor_CreateByID(fn_801F856C(), 0x53594B59, *(s32*)(p + 0x4), &pos, 4, -1, -1);
+                    Vec pos;
+                    pos.x = *(f32*)(p + 0xc);
+                    pos.y = *(f32*)(p + 0x10);
+                    pos.z = *(f32*)(p + 0x14);
+                    pos.x = pos.x + (lbl_8053E4B4 - lbl_8053E4A8 * sykyRandFrom(lbl_8053AAF8, multiplier));
+                    pos.y = pos.y + (lbl_8053E4B4 - lbl_8053E4A8 * sykyRandFrom(lbl_8053AAF8, multiplier));
+                    Actor_CreateByID(fn_801F856C(), id, *(s32*)(p + 0x4), &pos, 4, -1, -1);
                 }
             } else {
-                fn_8043D874(lbl_8053AED0, 0x14, *(s32*)(p + 0x248), 0);
+                fn_8043D874(lbl_8053AED0, *(s32*)(p + 0x248), 0x14, 0);
             }
             *(s32*)(p + 0x240) = 2;
             fn_801F0D20(p, 4);
@@ -347,7 +350,7 @@ extern "C" void fn_8019EE74(u8* p) {
         }
         if (*(s32*)(p + 0x268) == 1 && *(s32*)(p + 0x23c) != 0) {
             if (*(s32*)(p + 0x23c) == 1) {
-                if (sykyRand01() < lbl_8053E4B8) {
+                if (sykyRandFrom(lbl_8053AAF8) < lbl_8053E4B8) {
                     *(s32*)(p + 0x98) ^= 1;
                     *(f32*)(p + 0x2a0) = lbl_8053E494;
                     if (*(s32*)(p + 0x98) != 0) {
@@ -372,7 +375,7 @@ extern "C" void fn_8019EE74(u8* p) {
         *(s32*)(p + 0x264) += 1;
         *(s32*)(p + 0x264) &= 3;
         if (*(s32*)(p + 0x264) == 0) {
-            *(s32*)(p + 0x238) = (s32)(lbl_8053E4AC * sykyRand01()) + 0x3c;
+            *(s32*)(p + 0x238) = (s32)(lbl_8053E4AC * sykyRandFrom(lbl_8053AAF8)) + 0x3c;
         } else {
             *(s32*)(p + 0x238) = 2;
         }
