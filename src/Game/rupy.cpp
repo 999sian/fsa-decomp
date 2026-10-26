@@ -129,9 +129,9 @@ struct RupyVec3 {
 
 // Fast LCG at lbl_8053AAF8+0xB4; returns a value in [0,1).
 static inline f32 rupyRand01() {
-    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *s = *s * 0x19660du + 0x3c6ef35fu;
-    u32 a = (*s >> 9) | 0x3f800000u;
+    u32* s = (u32*)lbl_8053AAF8;
+    s[45] = s[45] * 0x19660du + 0x3c6ef35fu;
+    u32 a = (s[45] >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_80541D90;
 }
 
@@ -678,8 +678,12 @@ extern "C" u8 fn_8023F264(s32 a);
 extern "C" void fn_8032C664(u8* p) {
     struct RupyTbl {
         s32 frame[12];
-        u16 se[4][12];
-        s32 ids[2][12];
+        u16 se0[12];
+        u16 se1[12];
+        u16 se2[12];
+        u16 se3[12];
+        u8 pad90[0x30];
+        s32 msg[8];
     };
     RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 i;
@@ -704,7 +708,7 @@ extern "C" void fn_8032C664(u8* p) {
         return;
     case 0:
         if (((JGeometry::TVec3f*)(p + 0x3c))->squared() > lbl_80541DE4) {
-            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541DE8, base->se[0][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541DE8, base->se0[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
         }
         if (*(u16*)(p + 0x94) == 0x22) {
             if (fn_801F6758(p + 0xc, *(s32*)(p + 4), lbl_80541DEC)) {
@@ -751,9 +755,9 @@ extern "C" void fn_8032C664(u8* p) {
         break;
     case 0xf:
         fn_801F0E34(p, 0x5006d, 0);
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se[1][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se[2][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se[3][*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se1[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se2[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se3[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
         *(s32*)(p + 0x230) = 0x10;
     case 0x10: {
         s32 t = *(s32*)(p + 0x274);
@@ -795,7 +799,7 @@ extern "C" void fn_8032C664(u8* p) {
         *(f32*)(p + 0x3c) = lbl_80541D88;
         if (*(s32*)(p + 0x268) >= 4 && *(s32*)(p + 0x264) >= 0 && *(s32*)(p + 4) >= 8 &&
             ((u8*)lbl_8053AAF8)[0x7e] == 1) {
-            fn_8043D67C(lbl_8053AED0, base->ids[1][*(s32*)(p + 0x268) - 4], fn_8022F340(*(s32*)(p + 0x264)), 0);
+            fn_8043D67C(lbl_8053AED0, base->msg[*(s32*)(p + 0x268) - 4], fn_8022F340(*(s32*)(p + 0x264)), 0);
         }
         fn_801F3604(p);
         *(s32*)(p + 0x250) = 0;
