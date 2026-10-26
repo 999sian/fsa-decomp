@@ -83,6 +83,10 @@ inline RoomArrays* roomArrays() {
 inline u32* roomValueFlag(int i) {
     return &roomArrays()->flags12F68[i];
 }
+static inline void clearRoomFlag12F68(int i) {
+    roomArrays()->flags12F68[i] = 0;
+}
+
 inline u16* roomValueColumn(int i) {
     return &roomArrays()->values2948[0][i];
 }
@@ -1772,7 +1776,7 @@ extern "C" void fn_802DA010(char* p) {
     {
         int k = 0;
         int j = 0;
-        for (s32 i = 0; i < 8; i++) {
+        for (unsigned int i = 0; i < 8; i++) {
             (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values328[k + 0] = 0xFF;
             *(u32*)((char*)(*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C)) + j + 0x12f68) = 0;
             j += 4;
