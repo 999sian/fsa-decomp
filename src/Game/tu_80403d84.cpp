@@ -156,6 +156,12 @@ static inline f32 paneSpan(const f32* bounds) {
 	return bounds[2] - bounds[0];
 }
 
+#pragma fp_contract off
+static inline u8 menuFadeAlpha(f32 t) {
+    return (s32)(255.0f * (1.0f - t * t));
+}
+#pragma fp_contract on
+
 struct Slots208 {
 	u8 pad0[0x208];
 	u8* slot[16]; // 0x208, indexed by the s32 at 0x340
@@ -1909,6 +1915,7 @@ extern "C" void fn_8040E838(u8* self) {
 	}
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_8040ED20(u8* self) {
     *(s16*)(self + 0x434) += 0x200;
     *(s16*)(self + 0x436) += 0x400;
@@ -1936,10 +1943,14 @@ extern "C" void fn_8040ED20(u8* self) {
     if (*(s16*)(self + 0x432) > *(s16*)(lbl_8050DB0C + 0x2ce)) {
         s32 delta = *(s16*)(self + 0x432) - *(s16*)(lbl_8050DB0C + 0x2ce);
         if (delta < *(s16*)(lbl_8050DB0C + 0x2d0)) {
-            f32 t = (f32)delta / *(s16*)(lbl_8050DB0C + 0x2d0);
+            f32 t;
+            f32 one = 1.0f;
+            f32 max = 255.0f;
+            t = (f32)delta / *(s16*)(lbl_8050DB0C + 0x2d0);
             t = t * t;
-            f32 alpha = 1.0f - t;
-            self[0x665] = (s32)(255.0f * alpha);
+            t = one - t;
+            t = max * t;
+            self[0x665] = (s32)t;
         } else self[0x665] = 0;
     }
     if (*(s16*)(self + 0x432) > *(s16*)(lbl_8050DB0C + 0x2c6)) {
@@ -1990,7 +2001,7 @@ extern "C" void fn_8040ED20(u8* self) {
         }
     }
 }
-
+#pragma opt_strength_reduction on
 extern "C" void fn_80411A94(u8* self, f32 scale) {
 	(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * scale));
 	(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * scale));
@@ -2529,50 +2540,59 @@ extern "C" void fn_802F86CC(void* obj, f32* pos, void* res, s32 id, DrawRec* rec
 extern "C" s32 lbl_8048CB58[];
 extern "C" u8 lbl_8048CC2C[];
 extern u8* lbl_8053AAF8;
+#pragma opt_common_subs off
+#pragma peephole on
 extern "C" void fn_80406F68(u8* self, f32 a, f32 b) {
-	s32 st = *(s32*)(self + 0x380);
-	s32 seg = (st % 40) / 10;
-	f32 box[4];
-	DrawRec rec;
-	f32 vec[3];
-	f32 pos[3];
+    f32 pos[3];
 
-	box[0] = 0.0f;
-	box[1] = 0.0f;
-	box[2] = 256.0f;
-	box[3] = 192.0f;
+    f32 box[4];
+    DrawRec rec;
+	f32 vec[3];
+
+	const s32 st = *(s32*)(self + 0x380);
+    const s32 seg = (st % 40) / 10;
+	box[0] = lbl_80543898;
+	box[1] = lbl_80543898;
+	box[2] = lbl_805438E0;
+	box[3] = lbl_805438E4;
 	fn_8013B414(lbl_8053AB10, box, 1);
 	_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-	pos[0] = a * (256.0f / mode->fbWidth);
-	pos[1] = b * (192.0f / mode->efbHeight) - 5.0f;
-	pos[2] = 0.0f;
+	pos[0] = a * (lbl_805438E0 / (f32)(s32)mode->fbWidth);
+	pos[1] = b * (lbl_805438E4 / (f32)(s32)mode->efbHeight) - lbl_805438E8;
+	pos[2] = lbl_80543898;
 
 	GXSetTevDirect(GX_TEVSTAGE0);
 	GXSetTevDirect(GX_TEVSTAGE1);
 	GXSetTevDirect(GX_TEVSTAGE2);
 	GXSetTevDirect(GX_TEVSTAGE3);
 
-	vec[0] = pos[0];
-	vec[1] = pos[1] + JMath::sincosTable_.sinShort((s16)(st << 11));
-	vec[2] = 0.0f;
+	rec.b26 = 0;
 	rec.ids[2] = 2;
-	Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
-	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vec, mgr->get('SOB ', (const char*)lbl_8048CC2C), 0xc6, &rec, 1.0f, 1.0f);
+	vec[0] = pos[0];
+	vec[1] = pos[1] + JMath::sincosTable_.mTable[((u32)(st % 128) & 31) << 6].first;
+	vec[2] = pos[2];
+    Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+    void* res = mgr->get('SOB ', (const char*)lbl_8048CC2C);
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vec, res, 0xc6, &rec, lbl_805438BC, lbl_805438BC);
 
-	pos[0] -= 16.0f;
-	pos[1] += 3.0f;
+	pos[0] -= lbl_805438EC;
+	pos[1] += lbl_805438F0;
 	rec.ids[2] = 3;
-	s32 id = lbl_8048CB58[seg] + 0xc0;
+	const s32* const ids = lbl_8048CB58;
+    const s32 offset = seg;
+    const s32 id = ids[offset] + 0xc0;
 	mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
-	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC2C), id, &rec, 1.0f, 1.0f);
+    res = mgr->get('SOB ', (const char*)lbl_8048CC2C);
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, &rec, lbl_805438BC, lbl_805438BC);
 
-	pos[0] += 32.0f;
+	pos[0] += lbl_805438F4;
 	rec.ids[2] = 4;
-	id = lbl_8048CB58[seg] + 0xc3;
+	const s32 id2 = ids[offset] + 0xc3;
 	mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
-	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC2C), id, &rec, 1.0f, 1.0f);
+    res = mgr->get('SOB ', (const char*)lbl_8048CC2C);
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id2, &rec, lbl_805438BC, lbl_805438BC);
 }
-
+#pragma opt_common_subs on
 extern "C" u64 lbl_8048C2B8[];
 extern "C" f32 lbl_805438F8;
 extern "C" f32 lbl_805438FC;
