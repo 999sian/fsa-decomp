@@ -83,10 +83,6 @@ inline RoomArrays* roomArrays() {
 inline u32* roomValueFlag(int i) {
     return &roomArrays()->flags12F68[i];
 }
-static inline void clearRoomCounters308() {
-    for (unsigned int i = 0; i < 16; ++i) roomArrays()->counters308[i] = 0;
-}
-
 static inline void clearRoomFlag12F68(const unsigned int i) {
     roomArrays()->flags12F68[i] = 0;
 }
@@ -1748,6 +1744,7 @@ extern "C" u8 fn_802DA000(char*) {
     return *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_802DA010(char* p) {
     extern const f32 lbl_8046E148[];
     extern const f32 lbl_80541158;
@@ -1778,7 +1775,9 @@ extern "C" void fn_802DA010(char* p) {
     }
     RoomArrays* base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     base->flags178[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)] &= 0xFFFF0000;
-    clearRoomCounters308();
+    for (unsigned int i = 0; i < 16; i++) {
+        (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->counters308[i] = 0;
+    }
     {
         unsigned int word = 0;
         for (unsigned int byte = 0; byte < 32; byte += 2) {
@@ -1848,7 +1847,7 @@ extern "C" void fn_802DA010(char* p) {
         *(s32*)(p + 0xC4) = 0x2A30;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" u8 fn_802DA630(char* p) {
     u8 flag = getRoomTransitionFlag();
     if (flag == 0) {
