@@ -20,6 +20,15 @@ struct DgtlObj {
     JPABaseEmitter* eff[2];
 };
 
+static inline void dgtlStopBodyEffects(DgtlObj* obj) {
+    for (s32 i = 0; i < 10; ++i) {
+        if (obj->bodyEff[i]) {
+            obj->bodyEff[i]->becomeInvalidEmitter();
+            obj->bodyEff[i] = 0;
+        }
+    }
+}
+
 struct TWEVParam {
     u8 buf[16];
     s32 a;
@@ -223,8 +232,9 @@ extern "C" void* fn_80149A10(char* this_, s16 freeFlag) {
 }
 
 extern "C" s32 fn_80149AEC(char* p) {
-    u8 hit;
     char* q;
+    s32 id;
+    u8 hit;
     int count;
     s32 i;
     hit = 0;
@@ -293,7 +303,7 @@ extern "C" s32 fn_80149AEC(char* p) {
         if (*(s32*)(p + 0x274) == 2) {
             if (*(u32*)(p + 0x90) == 1) {
                 Actor_CreateByID(fn_801F856C(), 0x4447544c, *(s32*)(p + 4), p + 0xc, 0, -1, -1);
-                s32 id = lbl_80539F58;
+                id = lbl_80539F58;
                 if (id >= 0) {
                     char* other = (char*)fn_801F666C(fn_801F856C(), id);
                     if (other) {
@@ -432,7 +442,7 @@ extern "C" void fn_8014A2CC(char* p, s32 mode) {
         *(f32*)(pos+0x2d4) = *(f32*)(src+0x3e0);
         *(u16*)((char*)angle+0x2ae) = *(u16*)(p+0x338+index*2);
         if (mode != 0) {
-            *(f32*)(pos+0x2d4) = *(f32*)(p+0x3e0+static_cast<int>((f32)*table*lbl_8053D118)*12);
+            *(f32*)(pos+0x2d4) = *(f32*)(p+0x3e0+(int)((f32)*table*lbl_8053D118)*sizeof(Vec));
         }
         if (i<5) {
             void* emitter = *(void**)(eff+0x798);
@@ -456,9 +466,9 @@ extern "C" void fn_8014A2CC(char* p, s32 mode) {
     eff = p;
     for (s32 j=0;j<2;j++,eff+=4) fn_8013CB44(*(void**)(eff+0x7c0),p+0x314,0,0,1);
     if (mode != 0) {
-    int zindex = static_cast<int>((f32)*tail*lbl_8053D118);
+    s32 zindex = (s32)((f32)*tail*lbl_8053D118);
     char* zsrc = p + zindex*12;
-    obj->joints[7].z = obj->history[zindex].z;
+    obj->joints[7].z = ((Vec*)((char*)obj->history+zindex*sizeof(Vec)))->z;
     }
     *(f32*)(p+0x2c0) = *(f32*)(p+0x3d8);
     *(f32*)(p+0x2c4) = *(f32*)(p+0x3dc);
