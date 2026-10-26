@@ -38,6 +38,7 @@ struct MsgRandom {
 struct MsgGame {
     u8 pad[0xb4];
     MsgRandom rnd;
+    bool activePlayer(s32 i) const { return (pad[0x82] & (u8)(1 << i)) != 0; }
     s32 countPlayers() const {
         s32 count = 0;
         for (s32 i = 0; i < 4; i++) {
@@ -2869,13 +2870,7 @@ extern "C" void fn_803B6768(void* this_) {
     u8* c2f0;
     s32 i;
     u8* p = (u8*)this_;
-    MsgGame* game = lbl_8053AAF8;
-    count = 0;
-    for (int j = 0; j < 4; j++) {
-        if (((u8*)game)[0x82] & (u8)(1 << j)) {
-            count++;
-        }
-    }
+    count = lbl_8053AAF8->countPlayers();
     switch (count) {
     case 2:
         *(s32*)(p + 0x450) = 2;
