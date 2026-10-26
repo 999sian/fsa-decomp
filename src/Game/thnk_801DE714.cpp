@@ -522,8 +522,8 @@ extern "C" void fn_801E002C(void* this_, s32 state) {
 }
 
 static inline s32 thnkCollectRooms(s32* rooms) {
-    s32 room;
     s32 count=0;
+    s32 room;
     for(s32 i=count;i<4;++i) {
         room=fn_8023DE58(i);
         if(fn_801CD2F8(room) && room!=8 && !fn_801E3250(room,0)) {
