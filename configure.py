@@ -1349,7 +1349,7 @@ config.libs = [
         ],
         "progress_category": "game",
         "objects": [
-            Object(NonMatching, "Game/tu_801F6058.cpp"),
+            Object(MatchingFor("G4SE01"), "Game/tu_801F6058.cpp"),
             Object(NonMatching, "Game/tu_801F68E0.cpp"),
             Object(MatchingFor("G4SE01"), "Game/tu_801F9484.cpp"),
             Object(NonMatching, "Game/tu_80204638.cpp"),
