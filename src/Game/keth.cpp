@@ -49,6 +49,14 @@ struct KethRandom {
 struct KethGame { u8 pad[0xb4]; KethRandom rnd; };
 extern KethGame* lbl_8053AAF8;
 
+static inline f32 kethRandFrom(void* __restrict game, int multiplier = 0x19660d) {
+    unsigned int* base = (unsigned int*)game;
+    union { f32 f; u32 s; } out;
+    base[45] = base[45] * multiplier + 0x3c6ef35f;
+    out.s = (base[45] >> 9) | 0x3f800000;
+    return out.f - 1.0f;
+}
+
 extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 a, f32 sx, f32 sy);
