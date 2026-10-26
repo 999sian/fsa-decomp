@@ -2453,6 +2453,27 @@ extern "C" void fn_80406634(u8* self, s32 style, s32 enabled) {
 extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out);
 extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 lbl_8048CC40[];
+static inline void menuMarkerMtx(f32 m[3][4], f32 s) {
+    f32 sx, sy, sz, cx, cy, sxsy, cz;
+    sx = sin(0.0f); sy = sin(0.0f); sz = sin(0.0f);
+    cx = cos(0.0f); cy = cos(0.0f); cz = cos(0.0f);
+    m[0][3] = 0.0f; m[1][3] = 0.0f; m[2][3] = 0.0f;
+    f32 cxcz = cx * cz;
+    sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
 extern "C" void fn_804069E8(u8* self) {
 	DrawRec rec;
 	s32 out = -1;
