@@ -1,7 +1,6 @@
 #include "types.h"
 extern "C" const f32 lbl_80540668, lbl_8054066C, lbl_80540680, lbl_80540684;
-extern "C" f32 lbl_805406F4;
-extern "C" const f32 lbl_805406E4;
+extern "C" const f32 lbl_805406F4, lbl_805406E4;
 extern "C" const f32 lbl_80540674, lbl_8054067C, lbl_80540688, lbl_8054068C, lbl_805406F0;
 extern "C" f32 lbl_805406A8;
 extern "C" const f32 lbl_80540678;
