@@ -579,7 +579,7 @@ extern "C" void fn_803E51C4(u8* param_1) {
 
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
-#pragma opt_propagation off
+#pragma opt_propagation reset
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
