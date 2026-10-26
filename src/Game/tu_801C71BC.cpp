@@ -600,7 +600,7 @@ extern "C" void fn_801C7F98(char* this_) {
 extern "C" void fn_801C887C(char*);
 extern "C" void fn_800FE2E4(void*, void*, s32);
 extern "C" f32 lbl_8053EF00;
-static inline u32 tndrCurrentCursor(char* p) {
+static inline u8 tndrCurrentCursor(char* p) {
     return ((u8*)GetCurrentSlotPtr(p + 0x358))[3];
 }
 extern "C" void fn_801C844C(char* p) {
