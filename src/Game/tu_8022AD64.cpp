@@ -1643,19 +1643,19 @@ u8 fn_802341D0(int idx)
 int fn_8023434C(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
-    if (pIsLinked(idx)) {
+    if ((u8)pIsLinked(idx)) {
         idx = pLinkTarget(idx);
         if (lbl_8053AC90 == NULL) return 0;
         if (!isPlayerEnabled(idx)) return 0;
-        if (isLinked2(idx)) {
+        if ((u8)isLinked2(idx)) {
             idx = linkTarget2(idx);
             if (lbl_8053AC90 == NULL) return 0;
             if (!isEnabled2(idx)) return 0;
-            if (isLinked3(idx)) {
+            if ((u8)isLinked3(idx)) {
                 idx = linkTarget3(idx);
                 if (lbl_8053AC90 == NULL) return 0;
                 if (!fn_8023F264(idx)) return 0;
-                if (fn_8022F514(idx)) return fn_8023434C(fn_8022F3DC(idx));
+                if ((u8)fn_8022F514(idx)) return fn_8023434C(fn_8022F3DC(idx));
                 return fn_80241964(lbl_8053AC90->players[idx]);
             }
             return fn_80241964(lbl_8053AC90->players[idx]);
