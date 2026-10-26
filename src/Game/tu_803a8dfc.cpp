@@ -39,10 +39,10 @@ struct MsgGame {
     u8 pad[0xb4];
     MsgRandom rnd;
     s32 countPlayers() const {
-        s32 count;
-        s32 i;
-        for (i = 0, count = 0; i < 4; i++) {
-            if (pad[0x82] & (u8)(1 << i)) count++;
+        const MsgGame* game = this;
+        s32 count = 0;
+        for (s32 i = 0; i < 4; i++) {
+            if (game->pad[0x82] & (u8)(1 << i)) count++;
         }
         return count;
     }
