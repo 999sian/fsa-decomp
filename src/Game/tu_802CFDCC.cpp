@@ -88,6 +88,12 @@ extern FsaRenderManager* lbl_8053AB10;
 extern "C" const char lbl_8046E040[];
 extern "C" s32 lbl_8046DFD0[];
 
+static inline void cfSetVec(JGeometry::TVec3f& v, const f32 x, const f32 y, const f32 z) {
+    v.x = x;
+    v.y = y;
+    v.z = z;
+}
+
 struct CFActor : Actor {
     s32 field_230;
     s32 field_234[3];
@@ -174,21 +180,24 @@ extern "C" void fn_802CFE2C(Actor* p) {
         drawShadowCF(p->field_04, &pos2, lbl_80540E84, 0x80);
     }
 }
-#pragma opt_propagation reset
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_802D010C(Actor* p) {
-    const s32* tbl = lbl_8046DFD0;
+    s32* tbl = lbl_8046DFD0;
     s32* q;
     s32 r28;
     s32 i;
     s32 r;
-    JGeometry::TVec3f v0;
-    JGeometry::TVec3f v1;
-    JGeometry::TVec3f v2;
+    CFActor* indexed;
+    int spawnParam;
+    s32 offset;
+    f32 x, y, z;
+    s32 created;
 
     switch (*(s32*)((u8*)p + 0x230)) {
     case 0:
     case 1:
-        if (*(s32*)((u8*)p + 0x250) == 0 || p->v13()) {
+        if (*(s32*)((u8*)p + 0x250) == 0 || (u8)p->v11()) {
             if (*(s32*)((u8*)p + 0x230) == 0) {
                 *(s32*)((u8*)p + 0x230) = 1;
                 *(s32*)((u8*)p + 0x268) = 0xc;
@@ -208,10 +217,13 @@ extern "C" void fn_802D010C(Actor* p) {
                 }
                 *(s32*)((u8*)p + 0x248) = *(s32*)((u8*)p + 0x24c);
                 if (*(s32*)((u8*)p + 0x240) < *(s32*)((u8*)p + 0x244)) {
-                    s32 type = ((s32*)((u8*)p + *(s32*)((u8*)p + 0x254) * 4))[0x8d];
+                    indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_254 * 4);
+                    s32 type = indexed->field_234[0];
                     switch (type) {
                     case 0:
-                                                ((s32*)((u8*)p + *(s32*)((u8*)p + 0x240) * 4))[0x9d] = Actor_CreateByID(fn_801F856C(), 0x48494E4F, p->field_04, (f32*)((u8*)p + 0x258), 0, -1, -1);
+                                                created = Actor_CreateByID(fn_801F856C(), 0x48494E4F, p->field_04, (f32*)((u8*)p + 0x258), 0, -1, -1);
+                        indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_240 * 4);
+                        indexed->field_274[0] = created;
                         break;
                     case 1:
                     case 2:
@@ -223,30 +235,48 @@ extern "C" void fn_802D010C(Actor* p) {
                     case 13:
                     case 14:
                     case 18:
-                        r = (tbl + 4)[type];
-                        ((s32*)((u8*)p + *(s32*)((u8*)p + 0x240) * 4))[0x9d] = Actor_CreateByID(fn_801F856C(), 0x534C5231, p->field_04, (f32*)((u8*)p + 0x258), r, -1, -1);
+                        offset = type * 4;
+                        q = tbl + 4;
+                        q = (s32*)*(s32*)((u8*)q + offset);
+                        created = Actor_CreateByID(fn_801F856C(), 0x534C5231, p->field_04, (f32*)((u8*)p + 0x258), (u32)q, -1, -1);
+                        indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_240 * 4);
+                        indexed->field_274[0] = created;
                         break;
                     case 6:
                     case 7:
                     case 8:
                     case 9:
-                        r = (tbl + 4)[type];
-                        ((s32*)((u8*)p + *(s32*)((u8*)p + 0x240) * 4))[0x9d] = Actor_CreateByID(fn_801F856C(), 0x52555059, p->field_04, (f32*)((u8*)p + 0x258), r, -1, -1);
+                        offset = type * 4;
+                        q = tbl + 4;
+                        q = (s32*)*(s32*)((u8*)q + offset);
+                        created = Actor_CreateByID(fn_801F856C(), 0x52555059, p->field_04, (f32*)((u8*)p + 0x258), (u32)q, -1, -1);
+                        indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_240 * 4);
+                        indexed->field_274[0] = created;
                         break;
                     case 12:
                     case 15:
                     case 17:
-                        r = (tbl + 4)[type];
-                        ((s32*)((u8*)p + *(s32*)((u8*)p + 0x240) * 4))[0x9d] = Actor_CreateByID(fn_801F856C(), 0x424D5459, p->field_04, (f32*)((u8*)p + 0x258), r, -1, -1);
+                        offset = type * 4;
+                        q = tbl + 4;
+                        q = (s32*)*(s32*)((u8*)q + offset);
+                        created = Actor_CreateByID(fn_801F856C(), 0x424D5459, p->field_04, (f32*)((u8*)p + 0x258), (u32)q, -1, -1);
+                        indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_240 * 4);
+                        indexed->field_274[0] = created;
+                        break;
+                    case 19:
+                        offset = type * 4;
+                        q = tbl + 4;
+                        q = (s32*)*(s32*)((u8*)q + offset);
+                        created = Actor_CreateByID(fn_801F856C(), 0x484E5259, p->field_04, (f32*)((u8*)p + 0x258), (u32)q, -1, -1);
+                        indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_240 * 4);
+                        indexed->field_274[0] = created;
                         break;
                     case 0x10:
                         if (fn_801F7A08(fn_801F856C(), 0x424D5459) < 0) {
-                                                    ((s32*)((u8*)p + *(s32*)((u8*)p + 0x240) * 4))[0x9d] = Actor_CreateByID(fn_801F856C(), 0x424D5459, p->field_04, (f32*)((u8*)p + 0x258), 0x14, -1, -1);
+                                                    created = Actor_CreateByID(fn_801F856C(), 0x424D5459, p->field_04, (f32*)((u8*)p + 0x258), 0x14, -1, -1);
+                        indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_240 * 4);
+                        indexed->field_274[0] = created;
                         }
-                        break;
-                    case 19:
-                        r = (tbl + 4)[type];
-                        ((s32*)((u8*)p + *(s32*)((u8*)p + 0x240) * 4))[0x9d] = Actor_CreateByID(fn_801F856C(), 0x484E5259, p->field_04, (f32*)((u8*)p + 0x258), r, -1, -1);
                         break;
                     default:
                         break;
@@ -269,18 +299,20 @@ extern "C" void fn_802D010C(Actor* p) {
                 } else {
                     *(s32*)((u8*)p + 0x254) = 0;
                 }
-                if (((s32*)((u8*)p + *(s32*)((u8*)p + 0x254) * 4))[0x8d] == 0x10) {
+                indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_254 * 4);
+                if (indexed->field_234[0] == 0x10) {
                     if (fn_801F7A08(fn_801F856C(), 0x424D5459) < 0) {
                         r28 = 1;
                     }
                 }
-                type = ((s32*)((u8*)p + *(s32*)((u8*)p + 0x254) * 4))[0x8d];
+                indexed = (CFActor*)((u8*)p + ((CFActor*)p)->field_254 * 4);
+                type = indexed->field_234[0];
                 if (!(type == 10 || (u32)(type - 0xb) <= 4 || type == 0x11 || type == 0x13 || type == 0x10) || r28 >= 0) {
-                    v0.set(*(f32*)((u8*)p + 0x258), *(f32*)((u8*)p + 0x25c) - lbl_80540E88, *(f32*)((u8*)p + 0x260));
+                    JGeometry::TVec3f v0(*(f32*)((u8*)p + 0x258), *(f32*)((u8*)p + 0x25c) - lbl_80540E88, *(f32*)((u8*)p + 0x260));
                     fn_8013CC50(p->field_04, &v0, 0x1d3, 0, 0, 0, 0, 1, lbl_80540E80);
-                    v1.set(*(f32*)((u8*)p + 0x258), *(f32*)((u8*)p + 0x25c) - lbl_80540E88, *(f32*)((u8*)p + 0x260));
+                    JGeometry::TVec3f v1(*(f32*)((u8*)p + 0x258), *(f32*)((u8*)p + 0x25c) - lbl_80540E88, *(f32*)((u8*)p + 0x260));
                     fn_8013CC50(p->field_04, &v1, 0x1d4, 0, -1, 0, 0, 1, lbl_80540E80);
-                    v2.set(*(f32*)((u8*)p + 0x258), *(f32*)((u8*)p + 0x25c) - lbl_80540E88, *(f32*)((u8*)p + 0x260));
+                    JGeometry::TVec3f v2(*(f32*)((u8*)p + 0x258), *(f32*)((u8*)p + 0x25c) - lbl_80540E88, *(f32*)((u8*)p + 0x260));
                     fn_8013CC50(p->field_04, &v2, 0x1d5, 0, 0, 0, 0, 1, lbl_80540E80);
                 }
             }
@@ -290,8 +322,10 @@ extern "C" void fn_802D010C(Actor* p) {
         }
         if (*(s32*)((u8*)p + 0x230) == 1) {
             if (*(s32*)((u8*)p + 0x268) == 0) {
-                *(s32*)((u8*)p + 0x268) = tbl[*(s32*)((u8*)p + 0x264) + 24];
-                *(s32*)((u8*)p + 0x264) = tbl[*(s32*)((u8*)p + 0x264)];
+                q = tbl + 24;
+                *(s32*)((u8*)p + 0x268) = q[*(s32*)((u8*)p + 0x264)];
+                q = tbl;
+                *(s32*)((u8*)p + 0x264) = q[*(s32*)((u8*)p + 0x264)];
                 *(f32*)((u8*)p + 0x270) = lbl_80540E8C;
             } else {
                 *(s32*)((u8*)p + 0x268) -= 1;
@@ -316,7 +350,8 @@ extern "C" void fn_802D010C(Actor* p) {
         break;
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" const f32 lbl_80540E7C;
 extern "C" const f32 lbl_80540E8C;
 extern "C" const f32 lbl_80540E9C;
