@@ -319,15 +319,13 @@ inline void tkraCreateItems(char* p) {
             pos.y=v.y-dy;
             pos.z=v.z;
             if ((u8)fn_8022F514(i)==1) {
-                if (i == *(s32*)(p + 0x244)) { s32 room; u32 prefix = 0x80000000 + (*(u32*)(p + 0x244) << 26);
-                    u32 combined = bits + *(u32*)(p + 0x234);
-                    u32 param = prefix + combined;
+                if (i == *(s32*)(p + 0x244)) { s32 room; int param = static_cast<int>(bits + *(u32*)(p + 0x234));
+                    param = static_cast<int>(0x80000000 + (*(u32*)(p + 0x244) << 26)) + param;
                     room = fn_8023DE58(i);
                     *(s32*)(out + 0x24c) = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
             } else {
-                if (i == *(s32*)(p + 0x244)) { u32 prefix = 0x80000000 + (*(u32*)(p + 0x244) << 26);
-                    u32 combined = bits + *(u32*)(p + 0x234);
-                    u32 param = prefix + combined;
+                if (i == *(s32*)(p + 0x244)) { int param = static_cast<int>(bits + *(u32*)(p + 0x234));
+                    param = static_cast<int>(0x80000000 + (*(u32*)(p + 0x244) << 26)) + param;
                     s32 room = fn_8023DE58(i);
                     *(s32*)(out + 0x24c) = Actor_CreateByID(fn_801F856C(), 'IMUP', room, &pos, param, -1, -1); }
             }
