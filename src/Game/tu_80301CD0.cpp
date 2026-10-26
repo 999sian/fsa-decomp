@@ -23,6 +23,29 @@ extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32
 extern "C" void PSMTXScale(f32 m[3][4], f32 xS, f32 yS, f32 zS);
 extern "C" double sin(double);
 extern "C" double cos(double);
+static inline f32 sobSin(f32 x) { return sin(x); }
+static inline f32 sobCos(f32 x) { return cos(x); }
+static inline void sobRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s = 1.0f) {
+    f32 cx;
+    f32 sx = sobSin(ax);
+    f32 sy = sobSin(ay);
+    f32 sz = sobSin(az);
+    cx = sobCos(ax);
+    f32 cy = sobCos(ay);
+    f32 cz = sobCos(az);
+    f32 cc = cx * cz;
+    f32 ss = sx * sy;
+    f32 cs = cx * sz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (ss * cz - cs);
+    m[1][1] = s * (ss * sz + cc);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cc * sy + sx * sz);
+    m[1][2] = s * (cs * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
+}
 extern u8 lbl_8053ACD4[4];
 extern u8 lbl_8053ACE0[4];
 extern u8 lbl_8053ACE8[4];
@@ -645,7 +668,6 @@ extern "C" void fn_80302C34(u8* __restrict p, s32 player, s32 index, s32 bits, u
 extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     const char* names;
     s32 id;
-    f32 mtx[3][4];
     f32 pos[3];
     s32 x;
     s32 y;
@@ -664,10 +686,7 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     y = p[1];
     names = (const char*)lbl_80471208;
     x = b2 | ((b3 & 1) << 8);
-    if (x == 0x180) {
-        return;
-    }
-    if (y == 0xe0) {
+    if (x == 0x180 || y == 0xe0) {
         return;
     }
     if (x >= 0x180) {
@@ -681,6 +700,7 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     pos[2] = 0.0f;
 
     DrawRec rec;
+    f32 mtx[3][4];
     id = p[0] | ((p[3] & 6) << 7);
     rec.b26 = 0;
     rec.b2c = 0;
@@ -763,7 +783,7 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     rec.b1e = a3 != 0 ? 2 : 1;
 
     if (((p[3] >> 5) & 7) < 2) {
-        if ((id >= 0x37 && id < 0x41) || id == 0x3cd) {
+        if ((id >= 0x37 && id < 0x41) || (id >= 0x3cd && id < 0x3ce)) {
             ((u8*)&rec.w10)[3] = 0xa0;
         } else if (id == 0x2a8 || id == 0x2a9) {
             id -= 3;
