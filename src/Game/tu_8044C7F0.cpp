@@ -7,7 +7,10 @@ struct MenuTables8044 {
     u64 alpha1a0[7];
     u64 alpha1d8[7];
     u64 hide210[7];
-    u8 pad248[0x1a0];
+    u64 show248[4];
+    u64 alpha268[4];
+    u64 alpha288[4];
+    u8 pad2a8[0x140];
     u16 particle3e8[8];
     u16 particle3f8[8];
 };
