@@ -2,6 +2,11 @@
 // SetField_0x98 from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+static inline JGeometry::TVec2<f32> playerDifferenceValue(JGeometry::TVec2<f32> v, const JGeometry::TVec2<f32>& b) {
+    v.x -= b.x;
+    v.y -= b.y;
+    return v;
+}
 static inline JGeometry::TVec2<f32> playerDifference2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
     JGeometry::TVec2<f32> v;
     v.set(a);
@@ -128,8 +133,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         if (fn_802265FC((Vec2f*)&a, *(s32*)(p + 0x3b4)) == 1) {
             JGeometry::TVec2<f32> b(*(f32*)(p + 0x2c), *(f32*)(p + 0xc));
             if (fn_802265FC((Vec2f*)&b, *(s32*)(p + 0x3b4)) == 1) {
-                JGeometry::TVec2<f32> d(*(f32*)(p + 8), *(f32*)(p + 0xc));
-                playerSubtract2(d, *(JGeometry::TVec2<f32>*)(p + 0x2c));
+                JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
                 if (d.squared() >= 25.0f) {
                     d.normalize();
                     d.scale(lbl_80540234);
@@ -142,8 +146,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
     }
     JGeometry::TVec2<f32> c(*(f32*)(p + 8), *(f32*)(p + 0xc));
     if (fn_802265FC((Vec2f*)&c, *(s32*)(p + 0x3b4)) == 1) {
-        JGeometry::TVec2<f32> d(*(f32*)(p + 8), *(f32*)(p + 0xc));
-                playerSubtract2(d, *(JGeometry::TVec2<f32>*)(p + 0x2c));
+        JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
         if (d.squared() >= 25.0f) {
             d.normalize();
             d.scale(lbl_80540234);
@@ -152,8 +155,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + d.y;
         goto move;
     }
-    JGeometry::TVec2<f32> e(*(f32*)(p + 8), *(f32*)(p + 0xc));
-    playerSubtract2(e, *(JGeometry::TVec2<f32>*)(p + 0x2c));
+    JGeometry::TVec2<f32> e = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
     f32 sq = e.squared();
     if (!(sq >= lbl_80540238)) {
         goto move;
@@ -179,49 +181,49 @@ move:
     *(s32*)(p + 0x3bc) = *(s32*)(p + 0x3b4);
     p[0x3c0] = 1;
     k = fn_80226850((Vec2f*)(p + 8), *(s32*)(p + 0x3b4));
-    if (*(f32*)(p + 0x10) > lbl_80540228) {
-        *(f32*)(p + 0x420) = lbl_80540228;
-        *(f32*)(p + 0x424) = lbl_80540228;
-        *(f32*)(p + 0x428) = lbl_80540228;
+    if (*(f32*)(p + 0x10) > 0.0f) {
+        *(f32*)(p + 0x420) = 0.0f;
+        *(f32*)(p + 0x424) = 0.0f;
+        *(f32*)(p + 0x428) = 0.0f;
     } else {
         if (k == 0xa4) {
-            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) - lbl_80540244;
-            if (*(f32*)(p + 0x424) < lbl_80540248) {
-                *(f32*)(p + 0x424) = lbl_80540248;
+            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) - 0.05f;
+            if (*(f32*)(p + 0x424) < -0.5f) {
+                *(f32*)(p + 0x424) = -0.5f;
             }
         } else if (k == 0xa5) {
-            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) + lbl_80540244;
-            if (*(f32*)(p + 0x424) > lbl_8054022C) {
-                *(f32*)(p + 0x424) = lbl_8054022C;
+            *(f32*)(p + 0x424) = *(f32*)(p + 0x424) + 0.05f;
+            if (*(f32*)(p + 0x424) > 0.5f) {
+                *(f32*)(p + 0x424) = 0.5f;
             }
         } else {
             f32 v = *(f32*)(p + 0x424);
-            if (v > lbl_8054024C) {
-                *(f32*)(p + 0x424) = v - lbl_8054024C;
-            } else if (v < lbl_80540250) {
-                *(f32*)(p + 0x424) = v + lbl_8054024C;
+            if (v > 0.025f) {
+                *(f32*)(p + 0x424) = v - 0.025f;
+            } else if (v < -0.025f) {
+                *(f32*)(p + 0x424) = v + 0.025f;
             } else {
-                *(f32*)(p + 0x424) = lbl_80540228;
+                *(f32*)(p + 0x424) = 0.0f;
             }
         }
         if (k == 0xa7) {
-            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) + lbl_80540244;
-            if (*(f32*)(p + 0x420) > lbl_8054022C) {
-                *(f32*)(p + 0x420) = lbl_8054022C;
+            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) + 0.05f;
+            if (*(f32*)(p + 0x420) > 0.5f) {
+                *(f32*)(p + 0x420) = 0.5f;
             }
         } else if (k == 0xa6) {
-            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) - lbl_80540244;
-            if (*(f32*)(p + 0x420) < lbl_80540248) {
-                *(f32*)(p + 0x420) = lbl_80540248;
+            *(f32*)(p + 0x420) = *(f32*)(p + 0x420) - 0.05f;
+            if (*(f32*)(p + 0x420) < -0.5f) {
+                *(f32*)(p + 0x420) = -0.5f;
             }
         } else {
             f32 v = *(f32*)(p + 0x420);
-            if (v > lbl_8054024C) {
-                *(f32*)(p + 0x420) = v - lbl_8054024C;
-            } else if (v < lbl_80540250) {
-                *(f32*)(p + 0x420) = v + lbl_8054024C;
+            if (v > 0.025f) {
+                *(f32*)(p + 0x420) = v - 0.025f;
+            } else if (v < -0.025f) {
+                *(f32*)(p + 0x420) = v + 0.025f;
             } else {
-                *(f32*)(p + 0x420) = lbl_80540228;
+                *(f32*)(p + 0x420) = 0.0f;
             }
         }
     }
