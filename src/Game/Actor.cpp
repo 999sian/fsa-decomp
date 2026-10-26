@@ -656,24 +656,23 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
         }
 
         if ((s32)x > 4 && ((s32)buf == 0 || (s32)buf == 1)) {
-            if (lbl_8053F740 == a->field_0C.z) {
-                f32 r;
-                r = ActorRand37AC((unsigned int*)lbl_8053AAF8, 0x19660D);
-                f32 half = lbl_8053F74C;
-                if (r < half) {
-                    v.scale(lbl_8053F7B0);
-                    a->field_F8 = 1;
-                } else {
-                    a->field_F8 = 2;
-                    f32 scale = lbl_8053F7A4;
-                    r = ActorRand37AC((unsigned int*)lbl_8053AAF8, 0x19660D);
-                    v.z += half + r;
-                    v.scale(scale);
-                }
-            } else {
+            f32 half;
+            f32 one;
+            if (lbl_8053F740 != a->field_0C.z ||
+                ((one = lbl_8053F774, half = lbl_8053F74C,
+                  ActorRand37AC((unsigned int*)lbl_8053AAF8, 0x19660D, one)) < half)) {
                 v.scale(lbl_8053F7B0);
-                a->field_F8 = 0;
+                a->field_F8 = 1;
+            } else {
+                a->field_F8 = 2;
+                f32 scale = lbl_8053F7A4;
+                f32 r = ActorRand37AC((unsigned int*)lbl_8053AAF8, 0x19660D, one);
+                v.z += half + r;
+                v.scale(scale);
             }
+        } else {
+            v.scale(lbl_8053F7B0);
+            a->field_F8 = 0;
         }
         if ((s32)a->field_FC != 6) {
             ((JGeometry::TVec3<f32>*)&a->field_3C)->add(v);
