@@ -83,6 +83,10 @@ inline RoomArrays* roomArrays() {
 inline u32* roomValueFlag(int i) {
     return &roomArrays()->flags12F68[i];
 }
+static inline void clearRoomCounters308() {
+    for (unsigned int i = 0; i < 16; ++i) roomArrays()->counters308[i] = 0;
+}
+
 static inline void clearRoomFlag12F68(const unsigned int i) {
     roomArrays()->flags12F68[i] = 0;
 }
@@ -1745,7 +1749,7 @@ extern "C" void fn_802DA010(char* p) {
     extern const f32 lbl_80541158;
     extern const f32 lbl_8054115C;
     extern void* lbl_8053AD70;
-    f32 w[3];
+    JGeometry::TVec3<f32> w;
     f32 v[3];
     *(s32*)(p + 0x14) = *(s32*)(p + 0x24);
     *(s32*)(p + 0x18) = *(s32*)(p + 0x28);
@@ -1817,7 +1821,6 @@ extern "C" void fn_802DA010(char* p) {
     fn_8022BD70();
     fn_8037AE30(lbl_8053AD70);
     fn_802D8328(p, 0, 0);
-    w[2] = lbl_8054111C;
     {
         char* a = *(char**)(lbl_8053AB10 + 0x24);
         *(f32*)(a + 0x154) = *(f32*)(p + 0xCC);
@@ -1825,9 +1828,8 @@ extern "C" void fn_802DA010(char* p) {
         *(f32*)(a + 0x15C) = *(f32*)(p + 0xD4);
         *(f32*)(a + 0x160) = *(f32*)(p + 0xD8);
     }
-    w[1] = *(f32*)(p + 0xD0);
-    w[0] = *(f32*)(p + 0xCC);
-    JGeometry::setTVec3f(w, (f32*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2368));
+    w.set(*(f32*)(p + 0xCC), *(f32*)(p + 0xD0), lbl_8054111C);
+    JGeometry::setTVec3f(&w.x, (f32*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2368));
     f32* pos = (f32*)fn_8023E724(0);
     u8* a = *(u8**)(lbl_8053AB10 + 0x24);
     if (a[0x840] == 0) {
