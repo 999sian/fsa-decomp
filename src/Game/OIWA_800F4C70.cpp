@@ -64,6 +64,7 @@ static inline void oiwaSetBox(char* this_, f32 lo, f32 hi) {
     *(f32*)(this_ + 0x8c) = hi;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_800F6328(char* this_) {
     s32 zero = 0;
     *(s32*)(this_ + 0x23c) = zero;
@@ -111,7 +112,7 @@ extern "C" void fn_800F6328(char* this_) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_800F5E08(char* this_);
 extern "C" void fn_800F555C(char* this_);
 extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, u32 c);
@@ -205,7 +206,25 @@ extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" s32 fn_801F778C(void* mgr, u32 type, void* pos, s32 a);
 extern const f32 lbl_80463678[4][2];
 
+extern const f32 lbl_8053BE94;
+extern const f32 lbl_8053BF00;
+static inline bool oiwaInside(const Vec& point, const f32 x0, const f32 y0, const f32 x1, const f32 y1) {
+    bool in = false;
+    if (point.x >= x0 && point.y >= y0 && point.x < x1 && point.y < y1) in = true;
+    return in;
+}
+
 extern "C" void fn_800F5E08(char* this_) {
+    JGeometry::TVec3<f32> d;
+    JGeometry::TVec3<f32> pt;
+    JGeometry::TVec3<f32> p;
+    s32 j;
+    s32 room;
+    JGeometry::TVec3<f32>* pptr;
+    const f32* off;
+    s32 bid;
+    s32 i;
+    s32 id;
     if (*(s32*)(this_ + 0x240) != 0) {
         *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x244) + 1;
         if (*(s32*)(this_ + 0x240) != 2 && *(s32*)(this_ + 0x244) >= 120) {
@@ -219,18 +238,24 @@ extern "C" void fn_800F5E08(char* this_) {
                 *(u8*)(this_ + 0x11c) = 0;
             }
         } else {
-            s32 j;
-            s32 room;
-            s32 i = 0;
+            i = 0;
             room = *(s32*)(this_ + 4);
             for (; i < 4; i++) {
-                if (fn_8023DE58(i) == room) {
-                    f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-                    f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
-                    f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
-                    f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+                s32 playerRoom = fn_8023DE58(i);
+                if (playerRoom == room) {
+                    f32 x0;
+                    f32 y0;
+                    f32 x1;
+                    f32 y1;
+                    x0 = *(f32*)(this_ + 0x60);
+                    x1 = *(f32*)(this_ + 0x68);
+                    y0 = *(f32*)(this_ + 0x64);
+                    x0 += *(f32*)(this_ + 0xc);
+                    x1 += *(f32*)(this_ + 0xc);
+                    y1 = *(f32*)(this_ + 0x6c);
+                    y0 += *(f32*)(this_ + 0x10);
+                    y1 += *(f32*)(this_ + 0x10);
                     for (j = 0; j < 8; j++) {
-                        JGeometry::TVec3<f32> pt;
                         fn_8022E088(i, j, &pt);
                         u8 in = 0;
                         if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
@@ -253,10 +278,9 @@ extern "C" void fn_800F5E08(char* this_) {
     }
     *(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x23c) & 3;
     fn_801F2B7C(this_, 2, -1, 6);
-    s32 id = fn_801F2718(this_, 'OIWA');
+    id = fn_801F2718(this_, 'OIWA');
     if (id != -1) {
         char* other = (char*)fn_801F666C(fn_801F856C(), id);
-        JGeometry::TVec3<f32> d;
         d.sub(OIWA_POS(this_), OIWA_POS(other));
         if (d.x > 0.0f) {
             *(f32*)(this_ + 0x3c) = 0.5f;
@@ -280,28 +304,29 @@ extern "C" void fn_800F5E08(char* this_) {
             *(f32*)(eff + 0x3c) = 0.0f;
         }
         if (*(u8*)(this_ + 0x230) == 4) {
-            const f32 (*off)[2] = lbl_80463678;
-            for (s32 k = 0; k < 4; k++, off++) {
-                JGeometry::TVec3<f32> p(OIWA_POS(this_));
-                p.x = p.x + (*off)[0];
-                p.y = p.y + (*off)[1];
-                s32 t = (u16)((u32(*)(void*, u32))fn_8022461C)(&p, *(u32*)(this_ + 4));
+            pptr = &p;
+            off = &lbl_80463678[0][0];
+            for (j = 0; j < 4; j++, off += 2) {
+                *pptr = OIWA_POS(this_);
+                pptr->x = pptr->x + off[0];
+                pptr->y = pptr->y + off[1];
+                s32 t = (u16)((u32(*)(void*, u32))fn_8022461C)(pptr, *(u32*)(this_ + 4));
                 if ((t == 3 || t == 0xe || t == 2) && !((OiwaActor*)this_)->v11()) {
                     fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, 4.0f, 0.0f);
                     fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x76, 0, 0, 0, 0, 1, 0.8f);
                     *(s32*)(this_ + 0x240) = 1;
                     ((OiwaActor*)this_)->v10(0xff, 1);
                     fn_801F0E34(this_, 0x4002c, 0);
-                    s32 bid = fn_801F778C(fn_801F856C(), 'BTIN', this_ + 0xc, 0);
+                    bid = fn_801F778C(fn_801F856C(), 'BTIN', this_ + 0xc, 0);
                     char* b = (char*)fn_801F666C(fn_801F856C(), bid);
                     OIWA_POS(this_) = OIWA_POS(b);
-                    *(f32*)(this_ + 0x14) = 0.0f;
-                    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + 8.0f;
+                    *(f32*)(this_ + 0x14) = lbl_8053BE94;
+                    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + lbl_8053BF00;
                 }
             }
         }
     }
-    s32 room = *(s32*)(this_ + 4);
+    room = *(s32*)(this_ + 4);
     u8* mgr = (u8*)fn_802D6A9C();
     f32* r;
     if (room < 8) {
@@ -392,31 +417,35 @@ extern "C" void fn_800F4C70(char* this_) {
         }
         break;
     case 5: {
+        f32 cx; f32 ang; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        f32 s = 1.0f;
-        f32 ca;
-        f32 ang = (f32)*(s32*)(this_ + 0x244) / -10430.228f;
+        ang = (f32)*(s32*)(this_ + 0x244) / -10430.228f;
         f32 rx = 0.0f;
-        f32 sa = sin(rx);
-        f32 sb = sin(ang);
-        f32 sc = sin(rx);
-        ca = cos(rx);
-        f32 cb = cos(ang);
-        f32 cc = cos(rx);
-        f32 sasb = sa * sb;
-        f32 cacc = ca * cc;
-        f32 casc = ca * sc;
-        mtx[0][0] = s * (cb * cc);
-        mtx[1][0] = s * (cb * sc);
-        mtx[2][0] = s * -sb;
-        mtx[0][1] = s * (sasb * cc - casc);
-        mtx[1][1] = s * (sasb * sc + cacc);
-        mtx[2][1] = s * (sa * cb);
-        mtx[0][2] = s * (cacc * sb + sa * sc);
-        mtx[1][2] = s * (casc * sb - sa * cc);
-        mtx[2][2] = s * (ca * cb);
+        sx = sin(rx);
+        sy = sin(ang);
+        sz = sin(rx);
+        cx = cos(rx);
+        cy = cos(ang);
+        cz = cos(rx);
+        f32 s = 1.0f;
+        f32 sxsy = sx * sy;
+        f32 cxsz = cx * sz;
+        f32 cxcz = cx * cz;
+        f32 sxsz = sx * sz;
+        f32 sxcz = sx * cz;
+        f32 cycz = cy * cz;
+        f32 cysz = cy * sz;
+        mtx[0][0] = s * cycz;
+        mtx[1][0] = s * cysz;
+        mtx[2][0] = s * -sy;
+        mtx[0][1] = s * (sxsy * cz - cxsz);
+        mtx[1][1] = s * (sxsy * sz + cxcz);
+        mtx[2][1] = s * (sx * cy);
+        mtx[0][2] = s * (cxcz * sy + sxsz);
+        mtx[1][2] = s * (cxsz * sy - sxcz);
+        mtx[2][2] = s * (cx * cy);
         rec.w18 = mtx;
         fn_801EFD34(this_, fn_804032E8('TIMG', lbl_8049C458[*(s32*)(this_ + 0x240)]), &rec, -1, 0.0f, 0.0f, 0.0f);
         return;
@@ -518,7 +547,8 @@ extern "C" void fn_800F555C(char* this_) {
             fn_80238E08(*(u32*)(this_ + 0x198));
             s32 id = *(s32*)(this_ + 0x198);
             for (s32 i = 0; i < 4; i++) {
-                if (fn_80238CB4(i) == id) {
+                s32 r = fn_80238CB4(i);
+                if (r == id) {
                     fn_80230FD0(i, 0x10012);
                 }
             }
@@ -613,9 +643,11 @@ extern "C" void fn_800F555C(char* this_) {
             }
         }
     } else {
+        s32 room;
         for (s32 i = 0; i < 4; i++) {
-            s32 room = *(s32*)(this_ + 4);
-            if (fn_8023DE58(i) == room) {
+            room = *(s32*)(this_ + 4);
+            s32 r = fn_8023DE58(i);
+            if (r == room) {
                 f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
                 f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
                 f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
