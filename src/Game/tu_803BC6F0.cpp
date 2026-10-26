@@ -894,10 +894,7 @@ extern "C" void fn_803BF698(u8* this_) {
 }
 
 extern "C" void fn_803BF9C4(u8* p) {
-    u32 pa[2];
-    u32 pb[2];
-    u32 pc[2];
-    u32 pd[2];
+    const u8* tbl = lbl_804765D0;
     s32 i;
     s32 k;
     u8* q;
@@ -909,35 +906,15 @@ extern "C" void fn_803BF9C4(u8* p) {
     *(u8*)(*(u8**)(*(u8**)(p + 0x34) + 4) + 0xb0) = 1;
     obj = *(void**)(*(u8**)(p + 0x50) + 4);
     ((Obj9*)obj)->v9(0);
-    r = callVt3(p, 0x500000, 0x506663, 0x75723031);
-    o = *(u8**)(p + 0x50);
-    fn_804023D0(o, r, o[0x28]);
-    r = callVt3(p, 0x500000, 0x506663, 0x75723032);
-    o = *(u8**)(p + 0x50);
-    fn_804023D0(o, r, o[0x28]);
-    r = callVt3(p, 0x500000, 0x506663, 0x75723033);
-    o = *(u8**)(p + 0x50);
-    fn_804023D0(o, r, o[0x28]);
-    r = callVt3(p, 0x500000, 0x506663, 0x75723034);
-    o = *(u8**)(p + 0x50);
-    fn_804023D0(o, r, o[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x50666375723031ULL), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x50666375723032ULL), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x50666375723033ULL), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p+8))->search(0x50666375723034ULL), (*(u8**)(p + 0x50))[0x28]);
 
-    pa[0] = *(u32*)(p + 0xe0);
-    pa[1] = *(u32*)(p + 0xe4);
-    r = callVt3(p, 0x70620000, 0x50636f, 0x70623031);
-    (*(ColorVt**)r)->v76(r, &pa[1], &pa[0]);
-    pb[0] = *(u32*)(p + 0xe0);
-    pb[1] = *(u32*)(p + 0xe4);
-    r = callVt3(p, 0x70620000, 0x50636f, 0x70623032);
-    (*(ColorVt**)r)->v76(r, &pb[1], &pb[0]);
-    pc[0] = *(u32*)(p + 0xe0);
-    pc[1] = *(u32*)(p + 0xe4);
-    r = callVt3(p, 0x6c620000, 0x506465, 0x6c623031);
-    (*(ColorVt**)r)->v76(r, &pc[1], &pc[0]);
-    pd[0] = *(u32*)(p + 0xe0);
-    pd[1] = *(u32*)(p + 0xe4);
-    r = callVt3(p, 0x6c620000, 0x506465, 0x6c623032);
-    (*(ColorVt**)r)->v76(r, &pd[1], &pd[0]);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
 
     *(s16*)(*(u8**)(p + 0x38) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x38) + 0x22) = 0;
@@ -965,15 +942,13 @@ extern "C" void fn_803BF9C4(u8* p) {
 
     for (i = 0; i < 9; i++) {
         obj = *(void**)(p + 4);
-        r = (*(TextBoxVt15**)obj)->v15(obj, *(u64*)(lbl_804765D0 + 0x368 + i * 8));
+        r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x368 + i * 8));
         fn_804023D0(*(void**)(p + 0x20), r, p[i + 0x196]);
     }
     *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
     obj = *(void**)(*(u8**)(p + 0x34) + 4);
     ((Obj9*)obj)->v9(0);
-    r = callVt3(p, 0x50610000, 0x50616363, 0x75723031);
-    o = *(u8**)(p + 0x34);
-    fn_804023D0(o, r, o[0x28]);
+    fn_804023D0(*(void**)(p + 0x34), ((J2DPane*)*(void**)(p+8))->search(0x5061636375723031ULL), (*(u8**)(p + 0x34))[0x28]);
     *(s16*)(*(u8**)(p + 0x34) + 0x26) = 0;
 
     q = p;
@@ -988,28 +963,28 @@ extern "C" void fn_803BF9C4(u8* p) {
         case 0:
             for (k = 0; k < 4; k++) {
                 obj = *(void**)(p + 8);
-                r = (*(TextBoxVt15**)obj)->v15(obj, *(u64*)(lbl_804765D0 + 0x7f8 + k * 8));
+                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x7f8 + k * 8));
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
         case 1:
             for (k = 0; k < 4; k++) {
                 obj = *(void**)(p + 8);
-                r = (*(TextBoxVt15**)obj)->v15(obj, *(u64*)(lbl_804765D0 + 0x7d8 + k * 8));
+                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x7d8 + k * 8));
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
         case 2:
             for (k = 0; k < 4; k++) {
                 obj = *(void**)(p + 8);
-                r = (*(TextBoxVt15**)obj)->v15(obj, *(u64*)(lbl_804765D0 + 0x7b8 + k * 8));
+                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x7b8 + k * 8));
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
         case 3:
             for (k = 0; k < 4; k++) {
                 obj = *(void**)(p + 8);
-                r = (*(TextBoxVt15**)obj)->v15(obj, *(u64*)(lbl_804765D0 + 0x798 + k * 8));
+                r = ((J2DPane*)obj)->search(*(u64*)(tbl + 0x798 + k * 8));
                 fn_804023D0(*(void**)(q + 0x24), r, p[k + 0x19f]);
             }
             break;
@@ -1017,8 +992,8 @@ extern "C" void fn_803BF9C4(u8* p) {
         q += 4;
     }
 
-    fn_803832BC(getStringPtr__10J2DTextBoxCFv(callVt3(p, 0x74720000, 0x5473, 0x74723031)), 0x11e, 0, 0, 0);
-    fn_803832BC(getStringPtr__10J2DTextBoxCFv(callVt3(p, 0x6f700000, 0x5463, 0x6f703031)), 0x11f, 0, 0, 0);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x547374723031ULL)), 0x11e, 0, 0, 0);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x54636f703031ULL)), 0x11f, 0, 0, 0);
 
     {
         s16 sum = *(s16*)(lbl_8050DB0C + 0x1e4) + *(s16*)(lbl_8050DB0C + 0x1e2) + *(s16*)(lbl_8050DB0C + 0x1e0);
@@ -1220,8 +1195,8 @@ extern "C" void fn_803C0A34(char* pc) {
     int j;
     u8* keys;
     u8* base;
-    s32 idx;
     u8* selected;
+    s32 idx;
     f32 d;
     u8* o;
 
@@ -1269,13 +1244,17 @@ extern "C" void fn_803C0A34(char* pc) {
     for (j = 0, keys = base + 0x48; j < 0x51; j++, keys += 8) {
         fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 4), *(u64*)keys), p[0x132 + j]);
     }
-    for (j = 0, keys = base + 0x2d0; j < 0x13; j++, keys += 8) {
-        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)keys), p[0x183 + j]);
+    { int k;
+ u8* key;
+ for (k = 0, key = base + 0x2d0; k < 0x13; k++, key += 8) {
+        fn_804023D0(*(void**)(p + 0x14), keyObj(*(void**)(p + 8), *(u64*)key), p[0x183 + k]);
     }
+}
 
     {
-        f32 one = lbl_80543458;
-        *(s16*)(*(u8**)(p + 0x14) + 0x26) = 0;
+        u8* firstPane = *(u8**)(p + 0x14);
+        *(s16*)(firstPane + 0x26) = 0;
+        f32 one = 0.0f;
         *(s16*)(*(u8**)(p + 0x18) + 0x26) = 0;
         *(s16*)(*(u8**)(p + 0x1c) + 0x26) = 0;
         *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
@@ -1287,8 +1266,14 @@ extern "C" void fn_803C0A34(char* pc) {
         d = first - second;
         fn_80402E08((void*)menuSlot((char*)p, idx), one, d);
     }
-    *(s16*)(menuSlot((char*)p, *(s32*)(p + 0xa0)) + 0x22) = 0;
-    *(s16*)(menuSlot((char*)p, *(s32*)(p + 0xa0)) + 0x26) = 0;
+    {
+        u8* q = p;
+        q += *(s32*)(p + 0xa0) * 4;
+        *(s16*)(*(u8**)(q + 0x38) + 0x22) = 0;
+        q = p;
+        q += *(s32*)(p + 0xa0) * 4;
+        *(s16*)(*(u8**)(q + 0x38) + 0x26) = 0;
+    }
     o = menuSlot((char*)p, *(s32*)(p + 0xa0));
     {
         void* sub = *(void**)(o + 4);
@@ -1298,10 +1283,7 @@ extern "C" void fn_803C0A34(char* pc) {
     idx = *(s32*)(p + 0xa0);
     {
  const u64* key = (const u64*)(base + 0x780);
- void* found = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
- selected = p;
- selected += idx * 4;
- fn_804023D0(*(void**)(selected + 0x38), found, p[0x125]);
+ fn_804023D0(*(void**)((selected = p + idx * 4) + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x125]);
  }
     { const u64* key = (const u64*)(base + 0x768);
  fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x126]);
