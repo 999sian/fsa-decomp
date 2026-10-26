@@ -374,12 +374,6 @@ extern "C" void fn_80331D38(char* this_) {
     }
 }
 
-static inline void warpSqrtInPlace80331(f32& x) {
-    if (x <= 0.0f) return;
-    f32 y = (f32)__frsqrte(x);
-    y = 0.5f * y * (3.0f - x * (y * y));
-    x *= y;
-}
 static inline f32 warpSqrt80331(const f32 x) {
     if (x <= 0.0f) return x;
     f32 y = (f32)__frsqrte(x);
@@ -392,8 +386,8 @@ extern "C" void fn_80331E6C(char* this_) {
 
     if (*(u8*)(self + 0x2a4) == 1) {
 
-        s32 r27 = -1;
-        s32 r26 = -1;
+        int r27 = -1;
+        int r26 = -1;
         if (*(s32*)(self + 0x230) == 3) {
             goto end;
         }
@@ -401,64 +395,64 @@ extern "C" void fn_80331E6C(char* this_) {
         s32 i = 0;
         s32 off = 0;
         for (; i < n; off += 4, i++) {
-            ItemBase* o = *(ItemBase**)((char*)fn_801F856C() + off + 8);
+            char* o = *(char**)((char*)fn_801F856C() + off + 8);
             if (o == 0) continue;
-            s32 id = *(s32*)((u8*)o + 0x1a0);
+            u32 id = *(s32*)(o + 0x1a0);
             if (id != 'WARP' && id != 'CIRC') continue;
             {
-                if (*(s32*)(self + 4) != *(s32*)((u8*)o + 4)) continue;
+                if (*(s32*)(self + 4) != *(s32*)(o + 4)) continue;
                 {
-                    f32 dx = *(f32*)((u8*)o + 0xc) - *(f32*)(self + 0xc);
-                    f32 dy = *(f32*)((u8*)o + 0x10) - *(f32*)(self + 0x10);
+                    f32 dx = *(f32*)(o + 0xc) - *(f32*)(self + 0xc);
+                    f32 dy = *(f32*)(o + 0x10) - *(f32*)(self + 0x10);
                     f32 sx = dx * dx;
                     f32 sy = dy * dy;
                     f32 sq = warpSqrt80331(sx + sy);
                     if (!(sq < lbl_80541F10)) continue;
                 }
             }
-            if (*(s32*)((u8*)o + 0x1a0) == 'WARP') {
+            if (*(s32*)(o + 0x1a0) == 'WARP') {
                 if (((ItemBase*)o)->v13() != 0) {
                     if ((u8)((int (*)(void*))(*(void***)o)[13])(o) != 1) continue;
                 }
-                r27 = *(s32*)((u8*)o + 0x198);
+                r27 = *(s32*)(o + 0x198);
                 break;
             }
-            if (*(u8*)((u8*)o + 0x262) == 1) {
-                r26 = *(s32*)((u8*)o + 0x198);
+            if (*(u8*)(o + 0x262) == 1) {
+                r26 = *(s32*)(o + 0x198);
                 break;
             }
         }
         if (r27 < 0 && r26 < 0) goto end;
-        ItemBase* o;
+        char* o;
         JGeometry::TVec3<f32> pos;
         s32 room = 0;
         s32 kind = 0;
         pos.zero();
         if (r27 >= 0) {
-            o = (ItemBase*)fn_801F666C(fn_801F856C(), r27);
+            o = (char*)fn_801F666C(fn_801F856C(), r27);
             if (o == 0) goto end;
-            pos = *(JGeometry::TVec3<f32>*)((u8*)o + 0x238);
+            pos = *(JGeometry::TVec3<f32>*)(o + 0x238);
             room = *(s32*)(self + 4);
             if (((RoomMgr131DF*)fn_802D6A9C())->flag(room) == 0) {
                 pos.z = *(f32*)(self + 0x14);
             }
             {
-                s32 v = (*(s32*)((u8*)o + 0x90) >> 24) & 7;
+                s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
                 s32 next = v + 7;
                 if (v == 0) next = v;
                 room = next;
             }
-            kind = *(s32*)((u8*)o + 0x90) & 0x7f;
+            kind = *(s32*)(o + 0x90) & 0x7f;
         } else if (r26 > 0) {
-            o = (ItemBase*)fn_801F666C(fn_801F856C(), r26);
+            o = (char*)fn_801F666C(fn_801F856C(), r26);
             if (o == 0) goto end;
-            pos = *(JGeometry::TVec3<f32>*)((u8*)o + 0x268);
+            pos = *(JGeometry::TVec3<f32>*)(o + 0x268);
             room = *(s32*)(self + 4);
             if (((RoomMgr131DF*)fn_802D6A9C())->flag(room) == 0) {
                 pos.z = *(f32*)(self + 0x14);
             }
             {
-                s32 v = (*(s32*)((u8*)o + 0x90) >> 24) & 7;
+                s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
                 s32 next = v + 7;
                 if (v == 0) next = v;
                 room = next;
