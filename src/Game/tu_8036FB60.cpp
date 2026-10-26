@@ -524,41 +524,50 @@ extern f32 lbl_80542DC8;
 extern void* lbl_8053AD70;
 extern "C" void fn_80230498(s32 i, JGeometry::TVec3<f32>* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8037AE30(void* p);
-extern "C" void fn_80370C84(void* this_) {
+extern "C" void fn_80370C84(void* this_)
+{
     char* self = (char*)this_;
-    s32 i;
-
-    for (i = 0; i < 4; i++) {
-        if (!fn_80230188(i) && ((u8 (*)(int))fn_802300EC)(i)) {
-            fn_80230AD4(i);
-        }
+    for (int i = 0; i < 4; i++) {
+        if (!fn_80230188(i) && ((u8 (*)(int))fn_802300EC)(i)) fn_80230AD4(i);
     }
     fn_803703C8(self);
     if (*(s32*)(self + 0x240) == 0x23) {
         *(s32*)(self + 0x234) = 1;
-        for (i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
+            *(JGeometry::TVec3<f32>*)(self + 0x294 + i * 12) =
+                *(JGeometry::TVec3<f32>*)(self + 0xc) + JGeometry::TVec3<f32>(16.0f * i, 0.0f, 0.0f);
+            ((JGeometry::TVec3<f32>*)(self + 0x2f4 + i * 12))->zero();
             *(s32*)(self + 0x350 + i * 4) = 0x38e;
             *(s32*)(self + 0x330 + i * 4) = 0;
             *(s32*)(self + 0x340 + i * 4) = 2;
         }
+        *(JGeometry::TVec3<f32>*)(self + 0x3c) = *(JGeometry::TVec3<f32>*)(self + 0x2f4);
         *(u8*)(self + 0x398) = 1;
         *(s32*)(self + 0x238) = 0x80;
     }
     if (*(s32*)(self + 0x240) <= 0x23) {
-        for (i = 0; i < 4; i++) {
-            JGeometry::TVec3<f32> v;
+        for (int i = 0; i < 4; i++) {
             if (fn_8023EFEC(i)) {
-                v.x = (f32)i * lbl_80542DC8;
+                ((void (*)(int, JGeometry::TVec3<f32>, int, int, int, int, int))fn_80230498)(i,
+                    JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, 0.0f) + JGeometry::TVec3<f32>(16.0f * i, 0.0f, 0.0f),
+                    0x2c8, 0xff, -0x80, -0x80, 1);
             } else {
-                v.x = (f32)i * lbl_80542DC8;
+                ((void (*)(int, JGeometry::TVec3<f32>, int, int, int, int, int))fn_80230498)(i,
+                    JGeometry::TVec3<f32>(lbl_80542DE8, lbl_80542DEC, 0.0f) + JGeometry::TVec3<f32>(16.0f * i, 0.0f, 0.0f),
+                    0x10, 0xff, -0x80, -0x80, 1);
             }
-            fn_80230498(i, &v, 0x2c8, 0xff, -0x80, -0x80, 1);
         }
     }
     if (*(s32*)(self + 0x240) == 0) {
         JGeometry::TVec3<f32> pos;
-        pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
-        fn_8037AE30(lbl_8053AD70);
+        pos.set((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+            (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
+        fn_8022FE80(0, *(int*)(self + 4), *(int*)(self + 0x198), 1, 0);
+        u32 room = *(u32*)(self + 4);
+        if (((u8 (*)(s32, s32, u32, JGeometry::TVec3<f32>, s32))fn_8038BD08)(0, 0x502, room, pos, 0x22)) {
+            *(s32*)(self + 0x230) = 5;
+            fn_8037AE30(lbl_8053AD70);
+        }
     }
 }
 
