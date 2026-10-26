@@ -2255,12 +2255,13 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
 #pragma opt_lifetimes off
 #pragma fp_contract off
 extern "C" void fn_803B0978(void* arg) {
-    Menu_Intro* p = (Menu_Intro*)arg;
+    Menu_Intro* p;
+
     s32 k;
     const u64* fadeTags;
     Menu_Intro* q;
-    u64 (*tags3)[3] = (u64 (*)[3])lbl_80476270;
-    TagPair* tags2 = lbl_804762D0;
+    u64 (*tags3)[3];
+    TagPair* tags2;
     s32 end;
     s32 firstSq;
     s32 secondSq;
@@ -2269,10 +2270,13 @@ extern "C" void fn_803B0978(void* arg) {
     s32 dist;
     s32 period;
     s32 i;
+    p = (Menu_Intro*)arg;
     dist = *(s16*)(lbl_8050DB0C + 0x256);
     first = *(s16*)(lbl_8050DB0C + 0x252);
     s32 second = *(s16*)(lbl_8050DB0C + 0x254);
     period = *(s16*)(lbl_8050DB0C + 0x258);
+    tags3 = (u64 (*)[3])lbl_80476270;
+    tags2 = lbl_804762D0;
     firstSq = first * first;
     secondSq = second * second;
     end = first + second;
@@ -2406,6 +2410,7 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
 extern "C" void fn_803B14F8(void* this_) {
     Menu_Intro* p = (Menu_Intro*)this_;
     s32 k;
+    s32 ready;
     const u64* fadeTag;
     char* row;
     u64 (*tags3)[3] = (u64 (*)[3])lbl_80476270;
@@ -2433,14 +2438,15 @@ extern "C" void fn_803B14F8(void* this_) {
     done = 0;
     row = (char*)p;
     for (i = 0; i < p->count; i++, row += 2, tags3++, tags2++) {
-        if (p->selected[i] == 0xff && (u8)fn_80388EEC(i)) {
+        ready = i + 0x4b8;
+        if (introEntry(p, ready) == 0xff && (u8)fn_80388EEC(i)) {
             (*(s16*)(row + 0x460)) = 0;
             x = p->screens[p->cur]->search((*tags3)[2])->getBounds()->i.x;
             p->screens[p->cur]->search((*tags3)[2])->move(x, p->y420);
-            p->selected[i] = fn_803A8DFC(p, i);
+            introEntry(p, ready) = fn_803A8DFC(p, i);
             fn_80458880(lbl_8053AF80, 0xb, -1);
         }
-        if (p->selected[i] != 0xff) {
+        if (introEntry(p, ready) != 0xff) {
             if ((*(s16*)(row + 0x460)) < total) {
                 (*(s16*)(row + 0x460))++;
                 if ((*(s16*)(row + 0x460)) <= b) {
@@ -2483,7 +2489,7 @@ extern "C" void fn_803B14F8(void* this_) {
         p->timer = 0;
         for (i = 0; i < p->count; i++) {
             p->ready[i] = 0xff;
-            (*(s16*)(row + 0x460)) = 0;
+            p->m460[i] = 0;
         }
         p->m4c1 = 4;
     }
@@ -3426,7 +3432,7 @@ extern "C" void fn_803AA8F8(void* this_) {
         fn_803B1B60(this_);
         break;
     case 0x01:
-        fn_803B14F8(this_);
+        fn_803B14F8((Menu_Intro*)this_);
         break;
     case 0x02:
         fn_803B0FD4((Menu_Intro*)this_);
