@@ -44,7 +44,7 @@ static inline void rotation80359E18(f32 m[3][4], const f32 scale, s16 angle)
     m[1][2] = scale * (cxsz * sy - sxcz);
     m[2][2] = scale * (cx * cy);
 }
-static inline void rotationEuler80359E18(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32 scale)
+static inline void rotationEuler80359E18(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32& scale)
 {
     f32 cz;
     f32 cy;
@@ -740,6 +740,7 @@ extern "C" void fn_803597EC(u8* self) {
     }
 }
 
+#pragma optimization_level 3
 extern "C" void fn_80359E18(u8* self)
 {
     DrawRec rec;
@@ -786,7 +787,7 @@ extern "C" void fn_80359E18(u8* self)
         }
     }
 }
-
+#pragma optimization_level reset
 extern "C" void fn_8035A1D4(Unk8035A1D4* self) {
     u32 v = *(u32*)((u8*)self + 0x90);
     (self->*lbl_804AD30C[(v >> 7) & 0x1f])();
