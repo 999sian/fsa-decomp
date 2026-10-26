@@ -522,7 +522,7 @@ extern "C" void fn_8020EB08(char* this_) {
         }
     }
 }
-#pragma inline_depth(8)
+#pragma opt_propagation off
 extern "C" void fn_8020ED5C(char* this_, s32 st) {
     switch (st) {
     case 0:
@@ -562,13 +562,11 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
             obj[0xb8] = c;
             obj[0xb9] = c;
             obj[0xba] = c;
-            obj = *(char**)(this_ + 0x2b0);
-            u8 r = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA64 + lbl_8053FA5C);
-            u8 g = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA60 + lbl_8053FA5C);
-            u8 b = (u8)(*(f32*)(this_ + 0x2b4) * lbl_8053FA2C + lbl_8053FA5C);
-            obj[0xbc] = r;
-            obj[0xbd] = g;
-            obj[0xbe] = b;
+            s32 blue = (s32)(*(f32*)(this_ + 0x2b4) * lbl_8053FA2C + lbl_8053FA5C);
+            s32 red = (s32)(*(f32*)(this_ + 0x2b4) * lbl_8053FA64 + lbl_8053FA5C);
+            c = (s32)(*(f32*)(this_ + 0x2b4) * lbl_8053FA60 + lbl_8053FA5C);
+            JPABaseEmitter* emitter = *(JPABaseEmitter**)(this_ + 0x2b0);
+            emitter->setGlobalEnvColor(red, c, blue);
         }
         break;
     case 2:
@@ -700,18 +698,20 @@ extern "C" void fn_8020ED5C(char* this_, s32 st) {
         case 2:
         case 3:
             f32* p = (f32*)fn_8023E724(*(s32*)(this_ + 0x2b8));
-            if (*(f32*)(this_ + 0xc) >= p[0] - lbl_8053FA84) {
-                if (p[0] + lbl_8053FA84 < *(f32*)(this_ + 0xc)) {
+            if (*(f32*)(this_ + 0xc) < p[0] - lbl_8053FA84) {
+                *(u32*)(this_ + 0x230) &= ~0x8000;
+            } else {
+                f32 upper = lbl_8053FA84;
+                upper += p[0];
+                if (upper < *(f32*)(this_ + 0xc)) {
                     *(u32*)(this_ + 0x230) |= 0x8000;
                 }
-            } else {
-                *(u32*)(this_ + 0x230) &= ~0x8000;
             }
         break;
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" s32 fn_801F285C(void* this_, f32* pos, void* out, s32 a, s32 idx);
 extern "C" void fn_8023B6CC(s32 idx);
 extern "C" u8 fn_801EAC20(void* list, s32 idx);
