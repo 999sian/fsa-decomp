@@ -4,6 +4,7 @@
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Util.h"
+#include "JSystem/JKernel/JKRHeap.h"
 
 extern char* lbl_8053AB10;
 extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
@@ -300,36 +301,67 @@ extern "C" f32 lbl_805413A0;
 extern "C" f32 lbl_805413A4;
 extern "C" f32 lbl_805413A8;
 extern "C" f32 lbl_805413AC;
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 extern "C" void fn_802EAD78(void) {
-    f32 v28 = lbl_805413A8;
-    f32 v27 = lbl_805413A4;
-    f32 v26 = lbl_805413A0;
-    f32 v25 = lbl_8054139C;
-    f32 v24 = lbl_80541398;
-    f32 v23 = lbl_80541394;
-    f32 v22 = lbl_80541390;
-    f32 v21 = lbl_8054138C;
-    f32 v20 = lbl_80541388;
-    f32 v19 = lbl_80541384;
-    f32 v18 = lbl_80541380;
-    f32 v17 = lbl_8054137C;
-    f32 v16 = lbl_80541378;
-    f32 v15 = lbl_80541374;
-    f32 v14 = lbl_80541370;
-    f32 v13 = lbl_8054136C;
-    f32 v12 = lbl_80541368;
-    f32 v11 = lbl_80541364;
-    f32 v10 = lbl_80541360;
-    f32 v9 = lbl_8054135C;
-    f32 v8 = lbl_80541358;
-    f32 v7 = lbl_80541354;
-    f32 v6 = lbl_80541350;
-    f32 v5 = lbl_8054134C;
-    f32 v4 = lbl_80541348;
-    f32 v3 = lbl_80541344;
-    f32 v2 = lbl_80541340;
-    f32 v1 = lbl_8054133C;
-    f32 v0 = lbl_80541338;
+    f32 v28;
+    f32 v27;
+    f32 v26;
+    f32 v25;
+    f32 v24;
+    f32 v23;
+    f32 v22;
+    f32 v21;
+    f32 v20;
+    f32 v19;
+    f32 v18;
+    f32 v17;
+    f32 v16;
+    f32 v15;
+    f32 v14;
+    f32 v13;
+    f32 v12;
+    f32 v11;
+    f32 v10;
+    f32 v9;
+    f32 v8;
+    f32 v7;
+    f32 v6;
+    f32 v5;
+    f32 v4;
+    f32 v3;
+    f32 v2;
+    f32 v1;
+    f32 v0;
+    v0 = lbl_80541338;
+    v2 = lbl_80541340;
+    v1 = lbl_8054133C;
+    v3 = lbl_80541344;
+    v15 = lbl_80541374;
+    v5 = lbl_8054134C;
+    v4 = lbl_80541348;
+    v6 = lbl_80541350;
+    v7 = lbl_80541354;
+    v8 = lbl_80541358;
+    v9 = lbl_8054135C;
+    v10 = lbl_80541360;
+    v11 = lbl_80541364;
+    v12 = lbl_80541368;
+    v13 = lbl_8054136C;
+    v14 = lbl_80541370;
+    v16 = lbl_80541378;
+    v17 = lbl_8054137C;
+    v18 = lbl_80541380;
+    v19 = lbl_80541384;
+    v20 = lbl_80541388;
+    v21 = lbl_8054138C;
+    v22 = lbl_80541390;
+    v23 = lbl_80541394;
+    v24 = lbl_80541398;
+    v25 = lbl_8054139C;
+    v26 = lbl_805413A0;
+    v27 = lbl_805413A4;
+    v28 = lbl_805413A8;
     char* base = lbl_804D56A8;
     f32* pts = (f32*)base;
     f32* tail = (f32*)(base + 0x88);
@@ -447,7 +479,8 @@ extern "C" void fn_802EAD78(void) {
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
