@@ -160,6 +160,7 @@ static inline void setupCardStat(CARDStat& stat) {
 }
 
 #pragma optimization_level 3
+#pragma opt_loop_invariants off
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
     CARDFileInfo* fileInfo = info;
     void* src = data;
@@ -167,23 +168,16 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     OSCalendarTime cal;
     CARDStat stat;
     CARDStat tailStat;
-    s32 result;
-    CardSaveBlock* buf0;
-    CardSaveBlock* buf1;
-    u32 chk0;
-    u32 chk1;
-    u8* res0;
-    u8* res1;
     bool bVar3;
 
     snprintf((char*)saveBanner + 0x1c00, 0x20, "Four Swords Adventures");
     OSTicksToCalendarTime(OSGetTime(), &cal);
     snprintf((char*)saveBanner + 0x1c20, 0x20, "%d/%d Save Data", cal.mon + 1, cal.mday);
-    res0 = (u8*)fn_804030C4(0x54494D47, "kk_diskbanner_01.bti");
-    res1 = (u8*)fn_804030C4(0x54494D47, "kk_ipl_icon_01.bti");
+    u8* res0 = (u8*)fn_804030C4(0x54494D47, "kk_diskbanner_01.bti");
+    u8* res1 = (u8*)fn_804030C4(0x54494D47, "kk_ipl_icon_01.bti");
     memcpy(saveBanner, res0 + *(u32*)(res0 + 0x1c), *(u16*)(res0 + 0xa) * 2 + 0xc00);
     memcpy(saveBanner + 0xe00, res1 + *(u32*)(res1 + 0x1c), *(u16*)(res1 + 0xa) * 2 + 0x400);
-    result = CARDWrite(fileInfo, saveBanner, 0x2000, 0);
+    s32 result = CARDWrite(fileInfo, saveBanner, 0x2000, 0);
     if (result != 0) {
         return result;
     }
@@ -215,12 +209,12 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
         memset(saveData0, 0, 0x1d4c);
         memset(saveData1, 0, 0x1d4c);
     }
-    buf0 = (CardSaveBlock*)saveBlock0;
-    buf1 = (CardSaveBlock*)saveBlock1;
-    buf0->revision = 0;
-    buf1->revision = 0;
-    memcpy(buf0->payload, src, size);
-    memcpy(buf1->payload, src, size);
+    u16* buf0 = (u16*)saveBlock0;
+    u16* buf1 = (u16*)saveBlock1;
+    *(u16*)buf0 = 0;
+    *(u16*)buf1 = 0;
+    memcpy((u8*)buf0 + 0xa, src, size);
+    memcpy((u8*)buf1 + 0xa, src, size);
     memcpy((u8*)buf0 + 0x262, saveData0, 0x1d4c);
     memcpy((u8*)buf1 + 0x262, saveData1, 0x1d4c);
     u8 v0 = lbl_80529DEC[0x245];
@@ -229,10 +223,10 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) 
     ((u8*)buf0)[2] = ((u8*)buf1)[2] = v0;
     ((u8*)buf0)[3] = ((u8*)buf1)[3] = v1;
     ((u8*)buf0)[4] = ((u8*)buf1)[4] = v2;
-    chk0 = calcCardChecksum((u8*)buf0);
-    buf0->checksum = chk0;
-    chk1 = calcCardChecksum((u8*)buf1);
-    buf1->checksum = chk1;
+    u32 chk0 = calcCardChecksum((u8*)buf0);
+    *(u32*)((u8*)buf0 + 0x1ffc) = chk0;
+    u32 chk1 = calcCardChecksum((u8*)buf1);
+    *(u32*)((u8*)buf1 + 0x1ffc) = chk1;
     result = CARDWrite(fileInfo, saveBlock0, 0x2000, 0x2000);
     if (result != 0) {
         return result;
