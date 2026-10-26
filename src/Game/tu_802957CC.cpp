@@ -237,9 +237,8 @@ static inline s32 HouseDestination(const char* actor) {
 
 // Whether pos hits a collision rect of the current list (excluding this actor's own handle).
 static inline u8 HitsRect(char* self, void* pos) {
-    void* h;
     s32 room;
-    h = *(void**)(self + 0x198);
+    void* h = *(void**)(self + 0x198);
     room = *(s32*)(self + 4);
     char* base = (char*)fn_8020D58C();
     return fn_8020D6AC(base + 4 + *(u8*)(base + 1) * 0x784, room, pos, h, 0);
