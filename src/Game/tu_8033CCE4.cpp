@@ -88,6 +88,10 @@ struct UnkObj8033D4CC {
     u8 m272;
 };
 
+static inline bool isGroundHeight(const f32 height) {
+    return lbl_805421B0 == height;
+}
+
 extern "C" void fn_8033D4CC(UnkObj8033D4CC* self);
 extern "C" int __float_epsilon[];
 extern "C" const f32 lbl_805421C4;
@@ -318,7 +322,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
     JGeometry::TVec3f off;
     JGeometry::TVec3f saved;
     JGeometry::TVec3f tmp;
-    f32 rect[4];
+    JGeometry::TBox2<f32> rect;
     f32 f31;
     if (fn_80239108(self->mHandle) >= self->m260) {
         if (PSVECDistance(&self->mPos, &self->mAnchor) < (f32)(self->m260 << 4) - lbl_805421C8) {
@@ -372,7 +376,6 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
                     self->mVel.scale(f31);
                     break;
                 }
-            }
             if (self->m271 == 1) {
                 self->m271 = 0;
             } else {
@@ -382,6 +385,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
             }
             fn_801F0E34(self, 0x30004, 0);
             self->m272 = 1;
+            }
             if (self->m25c == 4) {
                 if (idx == 0) {
                     self->m230 = fn_8013CC50(self->room, &self->mPos, lbl_805421A0, 0x31a, 1, 1, 0, 0, 1);
@@ -419,8 +423,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
                         self->mVel.x = -f31;
                     } else if (self->mPos.x < self->mAnchor.x) {
                         self->mVel.x = f31;
-                    }
-                    if (self->mPos.y > self->mAnchor.y) {
+                    } else if (self->mPos.y > self->mAnchor.y) {
                         self->mVel.y = -f31;
                     } else if (self->mPos.y < self->mAnchor.y) {
                         self->mVel.y = f31;
@@ -436,33 +439,31 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
             }
         }
 
-        rect[0] = self->mRect[0];
-        rect[1] = self->mRect[1];
-        rect[2] = self->mRect[2];
-        rect[3] = self->mRect[3];
-        rect[0] += self->mPos.x;
-        rect[2] += self->mPos.x;
-        rect[1] += self->mPos.y;
-        rect[3] += self->mPos.y;
+        rect.set(*(JGeometry::TBox2<f32>*)self->mRect);
+        rect.addPos(*(JGeometry::TVec2<f32>*)&self->mPos);
         if (self->m25c != 0) {
             if (self->m25c != 2) {
                 return;
             }
-            fn_8022FEB8(rect, self->room, self->mHandle, 1, 0);
         }
+        fn_8022FEB8((f32*)&rect, self->room, self->mHandle, 1, 0);
         self->m258 = fn_8022FD8C(self->mHandle);
         if (self->m258 < 0) {
             return;
         }
         f32* p = fn_8023E724(self->m258);
-        if (p[2] != lbl_805421B0) {
+        f32 height = p[2];
+        f32 zero = lbl_805421B0;
+        if (zero != height) {
             return;
         }
         if (!fn_802300EC(self->m258)) {
             return;
         }
+        s32 handle = self->mHandle;
+        s32 room = self->room;
         tmp = self->mPos;
-        if (!fn_8038C678(self->m258, self->m268, self->mHandle, self->room, &tmp, 0)) {
+        if (!fn_8038C678(self->m258, self->m268, handle, room, &tmp, 0)) {
             return;
         }
         self->m234 = 1;
