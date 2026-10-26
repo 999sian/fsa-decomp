@@ -953,7 +953,7 @@ extern "C" void fn_80230EB8(s32 i, s32 a);
 extern u8 lbl_8050DB0C[];
 
 // Steps player i's displayed count toward the real one by 2 every other frame.
-static inline void StepCount2(u8* this_, s32 i) {
+static inline void StepCount2(u8* const this_, const s32 i) {
     s32* q = &((s32*)(lbl_80529DEC + 0xe8))[i];
     s32 c = *q;
     if (c < (s32)fn_80236100(i)) {
@@ -1018,37 +1018,52 @@ extern const f32 lbl_80543A7C;
 extern const f32 lbl_80543A80;
 extern const f32 lbl_80543A84;
 
-extern "C" void fn_804253E0(u8* this_, s32 i) {
-    s32& p = ((s32*)(lbl_80529DEC + 0xd8))[i];
-    s32 cur = p;
+extern "C" void fn_804253E0(u8* obj, s32 i) {
+    u8* this_ = obj;
+    s16* t;
+    s32 n, w;
+    s32 j1, j2;
+    u8 *table1, *table2;
+    s32* p = &((s32*)(lbl_80529DEC + 0xd8))[i];
+    s32 cur = *p;
     if (cur < (s32)fn_80237774(i)) {
         ((s32*)(this_ + 0x168))[i] = ((s32*)(this_ + 0x168))[i] + 1;
         if (((s32*)(this_ + 0x168))[i] >= 10) {
-            p = p + 1;
-            SyncLinkedCount(i);
+            *p = *p + 1;
+            table1 = lbl_80529DEC;
+            for (j1 = 0; j1 < 4; j1++) {
+                if (j1 != i && fn_8022F514(j1) && fn_8022F3DC(j1) == i) {
+                    *(s32*)(table1 + j1 * 4 + 0xd8) = *(s32*)(table1 + i * 4 + 0xd8);
+                }
+            }
             this_[0x256] |= (u8)(1 << i);
             ((s32*)(this_ + 0x168))[i] = 0;
             fn_80230EB8(i, 9);
             ((s16*)(this_ + 0x1e8))[i] = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
             ((s32*)(this_ + 0x1b8))[i] = ((s32*)(this_ + 0x1a8))[i];
-            ((s32*)(this_ + 0x1a8))[i] = p;
+            ((s32*)(this_ + 0x1a8))[i] = *p;
             ((s32*)(this_ + 0x1c8))[i] = fn_80237810(i);
         }
     } else {
-        s32 cur2 = p;
+        s32 cur2 = *p;
         if (cur2 > (s32)fn_80237774(i)) {
             s32 bit = 1 << i;
             lbl_80529DEC[0x24a] |= (u8)bit;
             ((s32*)(this_ + 0x168))[i] = ((s32*)(this_ + 0x168))[i] + 1;
             if (((s32*)(this_ + 0x168))[i] >= 10) {
-                p = p - 1;
-                SyncLinkedCount(i);
+                *p = *p - 1;
+                table2 = lbl_80529DEC;
+            for (j2 = 0; j2 < 4; j2++) {
+                if (j2 != i && fn_8022F514(j2) && fn_8022F3DC(j2) == i) {
+                    *(s32*)(table2 + j2 * 4 + 0xd8) = *(s32*)(table2 + i * 4 + 0xd8);
+                }
+            }
                 this_[0x256] |= (u8)bit;
                 ((s32*)(this_ + 0x168))[i] = 0;
             }
             ((s16*)(this_ + 0x1e8))[i] = *(s16*)(lbl_8050DB0C + 0x74) * *(s16*)(lbl_8050DB0C + 0x76) + 0x1e;
             ((s32*)(this_ + 0x1b8))[i] = ((s32*)(this_ + 0x1a8))[i];
-            ((s32*)(this_ + 0x1a8))[i] = p;
+            ((s32*)(this_ + 0x1a8))[i] = *p;
             ((s32*)(this_ + 0x1c8))[i] = fn_80237810(i);
         } else {
             ((s32*)(this_ + 0x168))[i] = 0;
@@ -1057,10 +1072,10 @@ extern "C" void fn_804253E0(u8* this_, s32 i) {
 
     StepCount2(this_, i);
 
-    s16* t = (s16*)(this_ + i * 2);
-    s32 n = t[0x1f8 / 2];
+    t = (s16*)(this_ + i * 2);
+    n = t[0x1f8 / 2];
     if (n > 0) {
-        s32 w = t[0x200 / 2];
+        w = t[0x200 / 2];
         if (w == 0) {
             t[0x1f8 / 2] = n - 1;
             fn_80230FD0(i, 0x20034);
