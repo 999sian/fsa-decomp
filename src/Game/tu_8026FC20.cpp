@@ -3149,11 +3149,13 @@ void fn_802791B0(char* p) {
         r.x1 += -16.0f;
         r.y1 += -16.0f;
         if (!anyBtn(p)) {
+            f32 y;
+            f32 x;
             bool in = 0;
-            if (F32(p, 8) >= r.x0) {
-                if (F32(p, 0xc) >= r.y0) {
-                    if (F32(p, 8) < r.x1) {
-                        if (F32(p, 0xc) < r.y1) {
+            if ((x = F32(p, 8)) >= r.x0) {
+                if ((y = F32(p, 0xc)) >= r.y0) {
+                    if (x < r.x1) {
+                        if (y < r.y1) {
                             in = 1;
                         }
                     }
