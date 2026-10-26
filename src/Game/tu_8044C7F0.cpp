@@ -279,6 +279,7 @@ extern "C" void fn_8044D298(u8* self, s32 index) {
     f[0xb0] = 0;
 }
 
+#pragma opt_strength_reduction reset
 #pragma dont_inline on
 extern "C" void fn_8044D894(u8* self) {
     u8* p;
