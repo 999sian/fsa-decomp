@@ -8,26 +8,6 @@ static inline JGeometry::TVec2<f32> playerDifferenceXY(const f32 x, const f32 y,
     v.y -= b.y;
     return v;
 }
-static inline void playerDifferenceInto(JGeometry::TVec2<f32>* dst, const JGeometry::TVec2<f32>* a, const JGeometry::TVec2<f32>* b) {
-    dst->set(*a);
-    dst->x -= b->x;
-    dst->y -= b->y;
-}
-static inline JGeometry::TVec2<f32> playerDifferenceValue(JGeometry::TVec2<f32> v, const JGeometry::TVec2<f32>& b) {
-    v.x -= b.x;
-    v.y -= b.y;
-    return v;
-}
-static inline JGeometry::TVec2<f32> playerDifference2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
-    JGeometry::TVec2<f32> v(a);
-    v.x -= b.x;
-    v.y -= b.y;
-    return v;
-}
-static inline void playerSubtract2(JGeometry::TVec2<f32>& v, const JGeometry::TVec2<f32>& rhs) {
-    v.x -= rhs.x;
-    v.y -= rhs.y;
-}
 
 extern "C" void __dl__FPv(void*);
 extern "C" s32 fn_802486A0(void*);
@@ -76,12 +56,6 @@ extern f32 lbl_8054024C;
 extern f32 lbl_80540250;
 
 struct Vec2f {
-    f32 squared() const { return x * x + y * y; }
-    void scale(f32 n) { x *= n; y *= n; }
-    void normalize() {
-        f32 s = squared();
-        if (!(s <= JGeometry::TUtilf::epsilon())) scale(JGeometry::TUtilf::inv_sqrt(s));
-    }
     void set(const Vec2f& o) {
         f32 ox = o.x;
         f32 oy = o.y;
@@ -131,7 +105,8 @@ extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
 extern "C" void fn_802685D4(void* thisPtr) {
     u8* p = (u8*)thisPtr;
     u16 k;
-    p[0x3c2] = p[0x3c1] = 0;
+    p[0x3c1] = 0;
+    p[0x3c2] = 0;
     if (Player_GetField_0xce8(p)) {
         goto move;
     }
@@ -149,7 +124,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         if (fn_802265FC((Vec2f*)&a, *(s32*)(p + 0x3b4)) == 1) {
             JGeometry::TVec2<f32> b(*(f32*)(p + 0x2c), *(f32*)(p + 0xc));
             if (fn_802265FC((Vec2f*)&b, *(s32*)(p + 0x3b4)) == 1) {
-                JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+                JGeometry::TVec2<f32> d = playerDifferenceXY(*(f32*)(p + 8), *(f32*)(p + 0xc), *(JGeometry::TVec2<f32>*)(p + 0x2c));
                 if (d.squared() >= 25.0f) {
                     d.normalize();
                     d.scale(lbl_80540234);
@@ -162,7 +137,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
     }
     JGeometry::TVec2<f32> c(*(f32*)(p + 8), *(f32*)(p + 0xc));
     if (fn_802265FC((Vec2f*)&c, *(s32*)(p + 0x3b4)) == 1) {
-        JGeometry::TVec2<f32> d = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+        JGeometry::TVec2<f32> d = playerDifferenceXY(*(f32*)(p + 8), *(f32*)(p + 0xc), *(JGeometry::TVec2<f32>*)(p + 0x2c));
         if (d.squared() >= 25.0f) {
             d.normalize();
             d.scale(lbl_80540234);
@@ -171,7 +146,7 @@ extern "C" void fn_802685D4(void* thisPtr) {
         *(f32*)(p + 0xc) = *(f32*)(p + 0x30) + d.y;
         goto move;
     }
-    JGeometry::TVec2<f32> e = playerDifference2(*(JGeometry::TVec2<f32>*)(p + 8), *(JGeometry::TVec2<f32>*)(p + 0x2c));
+    JGeometry::TVec2<f32> e = playerDifferenceXY(*(f32*)(p + 8), *(f32*)(p + 0xc), *(JGeometry::TVec2<f32>*)(p + 0x2c));
     f32 sq = e.squared();
     if (!(sq >= lbl_80540238)) {
         goto move;
