@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "string.h"
 struct Tu80317Rect { f32 x0, y0, x1, y1; };
 struct Tu80317Vec2 { f32 x, y; };
 struct Tu80317Vec3 { Tu80317Vec2 xy; f32 z; };
