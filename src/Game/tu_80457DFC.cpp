@@ -25,6 +25,11 @@ extern "C" const f32 lbl_80543EC4;
 extern "C" const f32 lbl_80543EC8;
 extern "C" const f32 lbl_80543ECC;
 
+static inline void startQueuedAudio(JAUSoundMgr* mgr, u32 sound, JAISoundHandle* handle) {
+    JAISoundID id(sound);
+    mgr->startSound(id,handle,0);
+}
+
 static inline JAISoundID currentAudioID(JAISoundHandle* handle) {
     JAISoundID id=-1;
     if (*handle) id=JAISoundID(handle->getSound()->getID());
@@ -970,7 +975,7 @@ extern "C" u32 lbl_8053A250;
 extern "C" u32 lbl_8053A254;
 extern "C" void fn_80459674(u8* p) {
     JAISoundID message;
-    volatile BOOL irq;
+    JAISoundID copy;
     JAUSoundMgr* mgr;
     s32 i;
     Unk80458408Obj* bank;
@@ -987,7 +992,10 @@ extern "C" void fn_80459674(u8* p) {
         if (p[0x69]==1) *(f32*)(p+0x54)=lbl_80543EB0;
         else if (p[0x8b]==1) {
             JAISoundID id=-1;
-            if (*(JAISound**)(p+0x80)) id=JAISoundID((*(JAISound**)(p+0x80))->getID());
+            if (*(JAISound**)(p+0x80)) {
+                copy.mId.mFullId=(*(JAISound**)(p+0x80))->getID();
+                id=copy;
+            }
             switch ((s32)(u32)id) {
             case 0x1000001: case 0x1000002: case 0x1000004:
             case 0x100000d: case 0x1000023: case 0x100002d:
@@ -1010,7 +1018,7 @@ extern "C" void fn_80459674(u8* p) {
                         switch (*(s32*)(p+0x5c)) { case 0x100001a: break; default: goto soundStarted; }
                         bank=(*(Unk80458408Obj**)(p+0x80))->v4();
                         if (bank) {
-                            irq=OSDisableInterrupts();
+                            JASThreadingModel::InterruptsDisable<Unk80458408Obj>::Lock lock(*bank);
                             for (i=0;i<16;i++) {
                                 JASTrack* track=bank->v7(i);
                                 if (track) {
@@ -1018,7 +1026,6 @@ extern "C" void fn_80459674(u8* p) {
                                     else track->mute(true);
                                 }
                             }
-                            OSRestoreInterrupts(irq);
                         }
                     }
                     break;
