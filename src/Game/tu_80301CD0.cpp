@@ -163,29 +163,6 @@ static inline void tu80301_pushMeasured(s32 i, const char* str, u32 color) {
     }
 }
 
-static inline void tu80301_queueMeasured(const char* str, u32 color, s32 i) {
-    if (str == NULL) {
-        return;
-    }
-    if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
-        return;
-    }
-    MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]];
-    e->f104 = 0;
-    e->f100 = (((TextCall_80301CD0*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->measure(((TextCall_80301CD0*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->convert(0x3f3f3f3f, str)) + 3) / 4;
-    e->f114 = color;
-    e->f119 = 0;
-    e->f11a = 1;
-    e->f110 = 0;
-    e->f118 = 1;
-    e->f10c = 0;
-    strcpy(e->text, str);
-    lbl_80504A28[i]++;
-    if (lbl_80504A28[i] >= 0x20) {
-        lbl_80504A28[i] = 0;
-    }
-}
-
 struct Slot_80301CD0 {
     u8 id;
     u8 f1;
@@ -822,20 +799,20 @@ extern "C" void fn_80303870(s32 i) {
     char buf28[0x20];
     char buf8[0x20];
     char* str;
-    const char* base = (char*)lbl_80471208;
+    char (*base)[352] = (char (*)[352])lbl_80471208;
 
     fn_802D6A9C();
     str = fn_802D9C4C();
     if (str[0] != 'c') {
-        sprintf(buf28, base + 0x38, str);
+        sprintf(buf28, *base + 0x38, str);
         tu80301_pushMeasured(i, buf28, 0x6000000);
     } else {
-        tu80301_pushMeasured(i, base + 0x48, 0x6000000);
+        tu80301_pushMeasured(i, *base + 0x48, 0x6000000);
     }
-    sprintf(buf8, base + 0x58, str);
+    sprintf(buf8, *base + 0x58, str);
     tu80301_pushMeasured(i, buf8, 0x5000001);
     fn_802D6A9C();
-    sprintf(buf28, base + 0x6c, fn_802D9C1C());
+    sprintf(buf28, *base + 0x6c, fn_802D9C1C());
     tu80301_pushMeasured(i, buf28, 0x6017000);
     lbl_8053ACE4[i] = 1;
 }
