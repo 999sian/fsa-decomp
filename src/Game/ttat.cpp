@@ -2,6 +2,7 @@
 // TU 801A908C-801AAC8C (TTAT). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern char* lbl_8053AB10;
 extern char* lbl_8053AF80;
@@ -358,8 +359,13 @@ extern "C" void* fn_801AA464(char* this_, s16 freeFlag) {
 extern const f32 lbl_8053E724, lbl_8053E728, lbl_8053E72C, lbl_8053E730, lbl_8053E734, lbl_8053E738, lbl_8053E73C;
 extern "C" s32 Actor_CreateByID(void*,u32,s32,void*,s32,s32,s32);
 extern "C" void fn_80458F9C(void*,s32);
-extern "C" void fn_801AA508(void* self) {
- char* p=(char*)self;
+#pragma opt_propagation on
+extern "C" void fn_801AA508(char* p) {
+ char* pos;
+ char* handles;
+ s32 id;
+ s32 i;
+
 *(f32*)(p+0x60)=lbl_8053E724;
 *(f32*)(p+0x64)=lbl_8053E724;
 *(f32*)(p+0x68)=lbl_8053E728;
@@ -399,12 +405,7 @@ extern "C" void fn_801AA508(void* self) {
 *(s32*)(p+0x264)=0;
 *(s32*)(p+0x254)=0;
 *(f32*)(p+0x2b4)=lbl_8053E6E0;
-{
- u32* seed=(u32*)(lbl_8053AAF8+0xb4);
- *seed=*seed*0x19660d+0x3c6ef35f;
- u32 bits=(*seed>>9)|0x3f800000;
- *(u16*)(p+0x2b2)=(s32)(lbl_8053E734*(*(f32*)&bits-lbl_8053E6E8));
-}
+*(u16*)(p+0x2b2)=(s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()*lbl_8053E734);
 *(u16*)(p+0x2b2)&=3; *(u16*)(p+0x2b2)<<=14; *(u16*)(p+0x2b2)+=0x2000;
 *(s32*)(p+0x2b8)=0;
 *(u8*)(p+0x2b0)=0;
@@ -432,27 +433,20 @@ if (*(s32*)(p+0x258)!=0 && *(s32*)(p+0x258)!=5) {
  *(f32*)(p+0x80)=lbl_8053E738; *(f32*)(p+0x84)=lbl_8053E738;
  *(f32*)(p+0x88)=lbl_8053E73C; *(f32*)(p+0x8c)=lbl_8053E73C;
  *(void**)(p+0x2b8)=fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_8053A108[0],0,0,0,0,1,lbl_8053E6E8);
- s32 id;
- s32 i;
- char* pos=p; char* handles=p;
+ pos=p; handles=p;
  for(i=0;i<4;i++,pos+=12,handles+=4) {
  *(s32*)(handles+0x270)=Actor_CreateByID(fn_801F856C(),0x54544154,*(s32*)(p+4),pos+0x280,i+1,-1,-1);
  id=*(s32*)(handles+0x270);
  if(id>=0){char* child=(char*)fn_801F666C(fn_801F856C(),id);if(child) *(s32*)(child+0x268)=*(s32*)(p+0x198);}
  }
- {
- u32* seed=(u32*)(lbl_8053AAF8+0xb4);
- *seed=*seed*0x19660d+0x3c6ef35f;
- u32 bits2=(*seed>>9)|0x3f800000;
- *(s32*)(p+0x244)=(s32)(lbl_8053E700*(*(f32*)&bits2-lbl_8053E6E8));
-}
+ *(s32*)(p+0x244)=(s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()*lbl_8053E700);
 
  *(s32*)(p+0x244)&=1; *(s32*)(p+0x248)=0x100;
  if (*(s32*)(p+0x258)==0 || lbl_8053ABD0!=0) *(s32*)(p+0x230)=1;
  else if(lbl_8053ABD0==0){fn_80458F9C(lbl_8053AF80,60); *(s32*)(p+0x230)=0;lbl_8053ABD0++;}
  }
 }
-
+#pragma opt_propagation reset
 #include "Game/ItemBase.h"
 
 extern "C" double sin(double);
