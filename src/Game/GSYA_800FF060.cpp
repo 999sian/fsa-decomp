@@ -27,7 +27,7 @@ extern f32 lbl_8053C114;
 extern "C" void fn_801F06F0(Actor* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
 
-static inline void fsaSetTimeSlot(Actor* this_, s32 idx) {
+static inline void fsaSetTimeSlot(Actor* this_, int idx) {
     lbl_8053AF00[0x30] |= (u8)(1 << idx);
     s32 value = *(s32*)((u8*)this_ + 0x250 + idx * 4);
     s32 minutes = value / 60;
@@ -64,34 +64,16 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 count;
     s32 i;
-    Vec saved;
-    if (*(s32*)((u8*)this_ + 0x230) == 7) {
+    JGeometry::TVec3<f32> saved;
+    s32 state = *(s32*)((u8*)this_ + 0x230);
+    if (state == 4 || state == 5 || state == 6 || state == 7) {
         count = fn_80138A30(lbl_8053AAF8);
-        i = 0;
-        if (count > 0) {
-            if (count > 8) {
-                s32* p = (s32*)this_;
-                u32 n = (u32)(count - 8 + 7) >> 3;
-                do {
-                    fsaSetTimeValue(p[0x94], i + 0);
-                    fsaSetTimeValue(p[0x95], i + 1);
-                    fsaSetTimeValue(p[0x96], i + 2);
-                    fsaSetTimeValue(p[0x97], i + 3);
-                    fsaSetTimeValue(p[0x98], i + 4);
-                    fsaSetTimeValue(p[0x99], i + 5);
-                    fsaSetTimeValue(p[0x9a], i + 6);
-                    fsaSetTimeValue(p[0x9b], i + 7);
-                    p += 8;
-                    i += 8;
-                } while (--n != 0);
-            }
-            for (; i < count; i++) {
-                fsaSetTimeValue(*(s32*)((u8*)this_ + 0x250 + i * 4), i);
-            }
+        for (i = 0; i < count; i++) {
+            fsaSetTimeSlot(this_, i);
         }
         lbl_8053AF00[0x30] |= (u8)(1 << (*(s32*)((u8*)this_ + 0x240) + 4));
         if (*(s32*)((u8*)this_ + 0x230) == 4) {
-            *(Vec*)&saved = *(Vec*)((u8*)this_ + 0xc);
+            saved = *(JGeometry::TVec3<f32>*)((u8*)this_ + 0xc);
             Vec* q = (Vec*)fn_8023E724(*(s32*)((u8*)this_ + 0x240));
             *(Vec*)((u8*)this_ + 0xc) = *q;
             ((Vec*)((u8*)this_ + 0xc))->y = ((Vec*)((u8*)this_ + 0xc))->y - lbl_8053C114;
@@ -99,7 +81,9 @@ extern "C" void fn_800FF0C0(Actor* this_) {
             if (fn_8023DE58(*(s32*)((u8*)this_ + 0x240)) != 0) {
                 fn_803075AC(*(u32*)((u8*)this_ + 0x198), fn_8023DE58(*(s32*)((u8*)this_ + 0x240)), (u8*)this_ + 0xc, (void*)0x314, 0, 2, -1, 0, 0, 0);
             }
-            *(Vec*)((u8*)this_ + 0xc) = saved;
+            this_->field_0C.x = saved.x;
+            this_->field_0C.y = saved.y;
+            this_->field_0C.z = saved.z;
         }
     }
     fn_801F06F0(this_, lbl_80463B8C, (void*)(((u8)*((u8*)this_ + 0x235) * 2) + *(s32*)((u8*)this_ + 0x23c) + 0x311), 0, 0, lbl_8053C118, lbl_8053C118);
