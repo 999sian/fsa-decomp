@@ -45,7 +45,7 @@ extern "C" void* __nw__FUlP7JKRHeapi(u32 size, void* heap, s32 align);
 extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
 extern "C" void __dt__10JUTTextureFv(void*, int);
 void operator delete(void*);
-extern "C" void fn_8015F454(u8* this_, const JGeometry::TBox2f& pos, const JGeometry::TBox2f& uv, JUtility::TColor color, GXColorS10* color10, u8* tex, u8 useTex1, u8 useBlend) {
+extern "C" void fn_8015F454(u8* this_, const JGeometry::TBox2f& pos, const JGeometry::TBox2f& uv, GXColor* color, GXColorS10* color10, u8* tex, u8 useTex1, u8 useBlend) {
     f32 s0 = uv.i.x;
     f32 t0 = uv.i.y;
     f32 s1 = uv.f.x;
@@ -76,7 +76,7 @@ extern "C" void fn_8015F454(u8* this_, const JGeometry::TBox2f& pos, const JGeom
         }
         GXSetNumTevStages(2);
     }
-    GXSetTevColor(GX_TEVREG0, color);
+    GXSetTevColor(GX_TEVREG0, *color);
     if (color10 != 0) {
         GXSetTevColorS10(GX_TEVREG1, *color10);
     }
@@ -128,10 +128,6 @@ extern "C" void fn_8015F454(u8* this_, const JGeometry::TBox2f& pos, const JGeom
         GXPosition3f32(pos.i.x, pos.f.y, 0.0f);
         GXTexCoord2f32(s0, t1);
     }
-}
-
-static inline void drawOverlay(u8* texture, const JGeometry::TBox2f& box, const JGeometry::TBox2f& uv, JUtility::TColor color, GXColorS10* color10, u8* tex, u8 useTex1, u8 useBlend) {
-    fn_8015F454(texture, box, uv, color, color10, tex, useTex1, useBlend);
 }
 
 extern "C" u8 fn_8015F8FC(char* p, s32 room, f32* pos, s32 flag) {
@@ -193,8 +189,9 @@ extern "C" void fn_8015F9C0(u8* p) {
                     f32 inv = lbl_8053D63C - sq;
                     uv0.set(sq * (out0.x - lbl_8053D64C), sq * (out0.y - lbl_8053D650), sq * (lbl_8053D64C + out0.x) + inv * w, sq * (lbl_8053D650 + out0.y) + inv * h);
                     JUtility::TColor col(0xff, 0xff, 0xff, (u8)c);
+                    GXColor colorCopy = col;
                     box0.set(0.0f, 0.0f, w, h);
-                    fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), box0, uv0, col, 0, 0, 0, 0);
+                    fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), box0, uv0, &colorCopy, 0, 0, 0, 0);
                     break;
                 }
                 case 1: {
@@ -209,8 +206,9 @@ extern "C" void fn_8015F9C0(u8* p) {
                     f32 inv = lbl_8053D63C - sq;
                     uvCase1.set(sq * (out1.x - lbl_8053D64C), sq * (out1.y - lbl_8053D650), sq * (lbl_8053D64C + out1.x) + inv * w, sq * (lbl_8053D650 + out1.y) + inv * h);
                     JUtility::TColor col(0xff, 0xff, 0xff, (u8)c);
+                    GXColor colorCopy = col;
                     boxCase1.set(0.0f, 0.0f, w, h);
-                    fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), boxCase1, uvCase1, col, 0, 0, 0, 0);
+                    fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), boxCase1, uvCase1, &colorCopy, 0, 0, 0, 0);
                     break;
                 }
                 case 5: {
@@ -222,13 +220,15 @@ extern "C" void fn_8015F9C0(u8* p) {
                     f32 dx = outB.x;
                     f32 dy = outB.y;
                     JUtility::TColor white1(0xffffffff);
+                    GXColor copy1 = white1;
                     box1.i.x = outA.x - lbl_8053D660 - lbl_8053D664;
                     box1.i.y = outA.y - lbl_8053D660 - lbl_8053D664;
                     box1.f.x = outA.x + lbl_8053D660 + lbl_8053D664;
                     box1.f.y = outA.y + lbl_8053D660 + lbl_8053D664;
                     uv1.i.x=lbl_8053D658; uv1.i.y=lbl_8053D658; uv1.f.x=lbl_8053D65C; uv1.f.y=lbl_8053D65C;
-                    fn_8015F454(*(u8**)(p + 0x294), box1, uv1, white1, 0, 0, 0, 0);
+                    fn_8015F454(*(u8**)(p + 0x294), box1, uv1, &copy1, 0, 0, 0, 0);
                     JUtility::TColor white2(0xffffffff);
+                    GXColor copy2 = white2;
                     box2.i.x = outA.x - lbl_8053D660;
                     box2.i.y = outA.y - lbl_8053D660;
                     box2.f.x = lbl_8053D660 + outA.x;
@@ -237,7 +237,7 @@ extern "C" void fn_8015F9C0(u8* p) {
                     uv2.i.y = outA.y - dy;
                     uv2.f.x = outA.x + dx;
                     uv2.f.y = outA.y + dy;
-                    fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), box2, uv2, white2, 0, *(u8**)(p + 0x294), 1, 0);
+                    fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), box2, uv2, &copy2, 0, *(u8**)(p + 0x294), 1, 0);
                     break;
                 }
                 }
