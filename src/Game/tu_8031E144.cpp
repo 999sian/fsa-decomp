@@ -247,7 +247,7 @@ extern "C" void fn_8031E640(Actor* p) {
             if (idx >= 0) {
                 Actor* q = (Actor*)fn_801F666C(fn_801F856C(), idx);
                 if (q != 0) {
-                    q->field_3C = JGeometry::TVec3<f32>(lbl_80541A20, lbl_80541A20, lbl_80541A2C);
+                    *(JGeometry::TVec3<f32>*)&q->field_3C = JGeometry::TVec3<f32>(lbl_80541A20, lbl_80541A20, lbl_80541A2C);
                 }
             }
             fn_8013CC50(*(void**)(c + 4), c + 0xc, lbl_80541A30, 0x19d, 0, 0, 0, 0, 1);
@@ -275,8 +275,9 @@ extern "C" void fn_8031E640(Actor* p) {
     if (*(s32*)(c + 0x248) == 1) {
         *(s32*)(c + 0x24c) = *(s32*)(c + 0x24c) - 1;
         if (*(s32*)(c + 0x24c) <= 0) {
-            *(u32*)(c + 0x250) = (*(u32*)(c + 0x250) + 1) & 3;
-            if (*(u32*)(c + 0x250) == 0) {
+            *(s32*)(c + 0x250) = *(s32*)(c + 0x250) + 1;
+            *(s32*)(c + 0x250) = *(s32*)(c + 0x250) & 3;
+            if (*(s32*)(c + 0x250) == 0) {
                 u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
                 *seed = *seed * 0x19660du + 0x3c6ef35fu;
                 u32 bits = (*seed >> 9) | 0x3f800000u;
