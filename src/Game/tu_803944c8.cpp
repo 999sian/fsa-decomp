@@ -699,8 +699,8 @@ struct MsgProc {
     s32 slotCol(s32 x) {
         return x + (s8)slotLine[slot + 0x10];
     }
-    static s32 lineRow(s8 top, u8 line) {
-        return line - top - 1;
+    static s32 lineRow(s8 line, s8 top) {
+        return (u8)line - top - 1;
     }
     BOOL testBit(s32 n) {
         if (n < 32) {
