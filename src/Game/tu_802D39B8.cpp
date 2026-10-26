@@ -87,10 +87,6 @@ static inline void clearRoomFlag12F68(const unsigned int i) {
     roomArrays()->flags12F68[i] = 0;
 }
 
-static inline void clearNextRoomFlag12F68(unsigned int& i) {
-    roomArrays()->flags12F68[i++] = 0;
-}
-
 inline u16* roomValueColumn(int i) {
     return &roomArrays()->values2948[0][i];
 }
