@@ -202,8 +202,6 @@ typedef void (*SetBlackWhiteFn)(u8* self, JUtility::TColor black, JUtility::TCol
 
 // Picture pane reached through GetSub: changeTexture(img, id) at vtable 0x110, setBlackWhite(black, white) at 0x130.
 struct TimerPicture {
-    void show() { ((u8*)this)[0xb0] = 1; }
-    void hide() { ((u8*)this)[0xb0] = 0; }
     virtual void p00(); virtual void p01(); virtual void p02(); virtual void p03();
     virtual void p04(); virtual void p05(); virtual void p06(); virtual void p07();
     virtual void p08(); virtual void p09(); virtual void p10(); virtual void p11();
