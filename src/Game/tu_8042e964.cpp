@@ -212,7 +212,8 @@ struct T80431_Pane {
 static inline f32 centerOffset80431(f32 width, const f32 paneWidth, const f32 offset) {
     f32 difference = width;
     difference -= paneWidth;
-    return difference * 0.5f + offset;
+    difference *= 0.5f;
+    return difference + offset;
 }
 
 static inline f32 halfDifference80431(f32 a, const f32 b) {
@@ -411,8 +412,8 @@ BOOL fn_80431174(T80431_Owner* self, u8 flag) {
         f32 hdiff = pcur->sh - pcur->h;
         f32 fa = ((T80431_Pane*)self->screen->search('Twt01'))->f118;
         tb = (T80431_Pane*)self->screen->search('Twt01');
-        const f32 sizeOffset = (fa - hdiff) * 0.5f;
-        f32 lines = (f32)(int)self->lineCount;
+        f32 sizeOffset = (fa - hdiff) * 0.5f;
+        f32 lines = (f32)self->lineCount;
         f32 lineOffset = ((f32*)((char*)self + 0xd8))[flag] - lines * 0.5f - lbl_80543B28;
         y += lineOffset * tb->f118 + sizeOffset;
         self->screen->search('Pwcur01')->move(x, y);
