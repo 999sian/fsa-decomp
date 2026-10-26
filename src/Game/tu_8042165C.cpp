@@ -31,6 +31,9 @@ extern const f32 lbl_80543A48;
 extern const f32 lbl_80543A4C;
 
 extern u8* lbl_8053AAF8;
+static inline bool hudPlayerActive(u8 mask) {
+    return (lbl_8053AAF8[0x82] & mask) != 0;
+}
 extern u8 lbl_80529DEC[];
 extern "C" u32 fn_80237774(s32 i);
 extern "C" u8 fn_8022F514(s32 i);
