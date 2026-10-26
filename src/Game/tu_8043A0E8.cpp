@@ -13,6 +13,7 @@ extern const f32 lbl_80543D10;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
 
 struct FsaMenuNumber {
     u8 unk_0x0[0x118];
@@ -197,7 +198,7 @@ extern "C" void fn_80425128(void* p);
 extern "C" void fn_8041FC2C(void* p);
 extern "C" void fn_8041F5FC(void* p);
 extern "C" void fn_80425F24(void* p);
-extern "C" void fn_8043E80C(u8* self, s32 digit, s32 alpha, u32 c1, u32 c2, f32 a, f32 b, f32 c);
+extern "C" void fn_8043E80C(u8* self, s32 digit, u8 alpha, u32 c1, u32 c2, f32 a, f32 b, f32 c);
 extern const f32 lbl_80543CA0;
 extern const f32 lbl_80543CD0;
 extern const f32 lbl_80543CD4;
@@ -421,8 +422,8 @@ extern "C" void fn_8043A638(u8* param_1) {
             }
             J2DPane* pdf = (*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL);
             (*(J2DScreen**)(param_1 + 8))->search(0x507730313031ULL)->setAlpha(pdf->getAlpha());
-            s16 cur2 = *(s16*)(param_1 + 0x106);
-            s32 lim = r30 + r31;
+            register s16 cur2 = *(s16*)(param_1 + 0x106);
+            register s32 lim = r30 + r31;
             lim += r28;
             if (cur2 < lim + 0x14) {
                 *(s16*)(param_1 + 0x106) = cur2 + 1;
@@ -1163,14 +1164,14 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), a, 0, 0, &pa);
     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, &pb);
     f32 r = maxMenuExtent(__fabs(pb.x - pa.x), __fabs(pb.y - pa.y));
+    f32 move1, move2;
     f32 left1;
     f32 left2;
-    f32 half = lbl_80543CB8;
-    f32 x = half * (pa.x + pb.x);
-    f32 y = (pa.y + pb.y) * half;
+    f32 x = lbl_80543CB8 * (pa.x + pb.x);
+    f32 y = lbl_80543CB8 * (pa.y + pb.y);
     f32 right1;
     f32 y1;
-    f32 move1 = lbl_80543C88;
+    move1 = lbl_80543C88;
     {
         u8* game = (u8*)lbl_8053AED0;
         if (game[0x10b] != 0 && game[0x10c] == 1) {
@@ -1190,7 +1191,7 @@ extern "C" void fn_8043E398(void* self, void* a, void* b)
     {
     f32 right2;
     f32 y2;
-    f32 move2 = lbl_80543C88;
+    move2 = lbl_80543C88;
     {
         u8* game = (u8*)lbl_8053AED0;
         if (game[0x10b] != 0 && game[0x10c] == 1) {
@@ -1246,7 +1247,7 @@ extern const f32 lbl_80543D18;
 extern const f32 lbl_80543D1C;
 extern const f32 lbl_80543D20;
 extern const f32 lbl_80543D24;
-extern "C" void fn_8043E80C(u8* param_1, s32 param_2, s32 param_3, u32 param_4, u32 param_5, f32 param_6, f32 param_7, f32 param_8) {
+extern "C" void fn_8043E80C(u8* param_1, s32 param_2, u8 param_3, u32 param_4, u32 param_5, f32 param_6, f32 param_7, f32 param_8) {
     f32 x;
     f32 y;
     f32 sx;
@@ -1268,98 +1269,56 @@ extern "C" void fn_8043E80C(u8* param_1, s32 param_2, s32 param_3, u32 param_4, 
     x = (lbl_80543D24 + param_6) - sx * lbl_80543CB8;
     y = (lbl_80543D24 + param_7) - sy * lbl_80543CB8;
     switch ((u32)param_2) {
-    case 0: {
-        u32 a = param_4;
-        u32 b = param_5;
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x258, a, b);
-        obj = *(void**)(param_1 + 0x258);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x258);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 0:
+        (*(J2DPicture**)(param_1 + 0x258))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x258))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x258))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 1: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x25c, param_4, param_5);
-        obj = *(void**)(param_1 + 0x25c);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x25c);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 1:
+        (*(J2DPicture**)(param_1 + 0x25c))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x25c))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x25c))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 2: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x260, param_4, param_5);
-        obj = *(void**)(param_1 + 0x260);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x260);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 2:
+        (*(J2DPicture**)(param_1 + 0x260))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x260))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x260))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 3: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x264, param_4, param_5);
-        obj = *(void**)(param_1 + 0x264);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x264);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 3:
+        (*(J2DPicture**)(param_1 + 0x264))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x264))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x264))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 4: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x268, param_4, param_5);
-        obj = *(void**)(param_1 + 0x268);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x268);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 4:
+        (*(J2DPicture**)(param_1 + 0x268))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x268))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x268))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 5: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x26c, param_4, param_5);
-        obj = *(void**)(param_1 + 0x26c);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x26c);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 5:
+        (*(J2DPicture**)(param_1 + 0x26c))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x26c))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x26c))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 6: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x270, param_4, param_5);
-        obj = *(void**)(param_1 + 0x270);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x270);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 6:
+        (*(J2DPicture**)(param_1 + 0x270))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x270))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x270))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 7: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x274, param_4, param_5);
-        obj = *(void**)(param_1 + 0x274);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x274);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 7:
+        (*(J2DPicture**)(param_1 + 0x274))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x274))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x274))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 8: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x278, param_4, param_5);
-        obj = *(void**)(param_1 + 0x278);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x278);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 8:
+        (*(J2DPicture**)(param_1 + 0x278))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x278))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x278))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
-    case 9: {
-        void* obj;
-        fn_8043E80C_pair(param_1, 0x27c, param_4, param_5);
-        obj = *(void**)(param_1 + 0x27c);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
-        obj = *(void**)(param_1 + 0x27c);
-        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+    case 9:
+        (*(J2DPicture**)(param_1 + 0x27c))->setBlackWhite(JUtility::TColor(param_4), JUtility::TColor(param_5));
+        (*(J2DPicture**)(param_1 + 0x27c))->setAlpha(param_3);
+        (*(J2DPicture**)(param_1 + 0x27c))->draw(x, y, sx, sy, false, false, false);
         break;
-    }
     }
 }
 
