@@ -141,29 +141,11 @@ extern "C" void fn_802314D8(s32, f32*);
 extern "C" u8 fn_80235448(s32 i);
 extern "C" void fn_802A381C(u8* a, Vec8035A860* v, s32 room, u16 idx);
 extern "C" u8 fn_8023AAF8(s32 i, f32* box, s32 room, Vec8035A860* out);
-static inline void spawnGrid803597EC(u8* self, s32 idx, s32 state) {
-    u16 tile;
-    s32 k;
-    s32 j;
-    const f32 step = lbl_80542870;
+static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state) {
     JGeometry::TVec3f vec;
     JGeometry::TVec3f saved;
-    tile = idx;
-    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), lbl_8054286C);
+    vec = *(JGeometry::TVec3f*)(self + 0xc) + JGeometry::TVec3f(*(f32*)(self + 0x60), *(f32*)(self + 0x64), 0.0f);
     saved = vec;
-    *(s32*)(self + 0x258) = state;
-    for (k = 0; k < 6; ++k) {
-        for (j = 0; j < 6; ++j) {
-            fn_802A381C(lbl_8053AC98, (Vec8035A860*)&vec, *(s32*)(self + 4), tile);
-            vec.y += step;
-        }
-        vec.y = saved.y;
-        vec.x += step;
-    }
-}
-static inline void spawnGrid803597EC(u8* self, u16 idx, s32 state, const JGeometry::TVec3f& origin) {
-    JGeometry::TVec3f saved(origin);
-    JGeometry::TVec3f vec(origin);
     *(s32*)(self + 0x258) = state;
     for (s32 k = 0; k < 6; ++k) {
         for (s32 j = 0; j < 6; ++j) {
