@@ -87,6 +87,9 @@ extern "C" u8 fn_802C1970(char* p, s32 room, void* pos);
 // NONMATCHING (~87%): retail builds both points in temporaries (0x18/0x20)
 // and copies them to the argument slots; packed-id scheduling differs.
 extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
+static inline void key0LinkPoints(void* rec, const Key0Pt& key, const Key0Pt& pos, u32 packed, u32 id) {
+    fn_802D6D70(rec, pos, key, packed, id);
+}
 extern "C" u8 fn_8022F478(s32 player);
 extern "C" s32 fn_8023EF50(s32 player);
 
@@ -1053,9 +1056,11 @@ extern "C" void fn_802C52DC(u8* p) {
     case 5: {
         *(s32*)(p + 0x240) = 4;
         *(u8*)(p + 0x2b1) = 1;
-        u32 a = *(u32*)(p + 0x23c) << 30;
-        u32 b = *(u8*)(p + 0x2b5) << 29;
-        packed = a | b | ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | (*(u32*)(p + 4) & 0xff);
+        u32 a = *(u32*)(p + 0x23c);
+        u32 b = *(u8*)(p + 0x2b5);
+        packed = (a << 30) | (b << 29);
+        packed = __rlwimi(packed, *(u32*)(p + 0x280), 24, 3, 7);
+        packed = __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
         if (!fn_802DCD0C(fn_802D6A9C())) {
             s32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
             packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
@@ -1090,14 +1095,14 @@ extern "C" void fn_802C52DC(u8* p) {
     if (*(s32*)(p + 0x280) == 0) {
         f32 a;
         f32 b;
-        b = lbl_80540CA4;
-        a = lbl_80540CA0;
+        b = -6.0f;
+        a = -4.0f;
         *(f32*)(p + 0x60) = a;
         *(f32*)(p + 0x64) = b;
         f32 d;
         f32 c;
-        c = lbl_80540C80;
-        d = lbl_80540C84;
+        c = 4.0f;
+        d = 6.0f;
         *(f32*)(p + 0x68) = c;
         *(f32*)(p + 0x6c) = d;
     } else if (*(s32*)(p + 0x280) == 1 || *(s32*)(p + 0x280) >= 6) {
