@@ -1078,8 +1078,14 @@ extern "C" void fn_8039C258(MsgProc* p, s32 n) {
 
 static inline BOOL msgCurrentBit(MsgProc* p) {
     s32 n = p->cur;
-    if (n < 32) return (p->bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
-    if (n < 64) return (p->bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
+    if (n < 32) {
+        s64 mask = (s64)(1 << n);
+        return (p->bits[0] & mask) != 0;
+    }
+    if (n < 64) {
+        s64 mask = (s64)(1 << (n - 32));
+        return (p->bits[1] & mask) != 0;
+    }
     return FALSE;
 }
 
@@ -1099,9 +1105,9 @@ extern "C" void fn_8039C9A0(MsgProc& object, s32 n) {
         neg = true;
     }
     if (p->m2d6) {
-        if (!p->testBit(p->cur)) {
+        if (!msgCurrentBit(p)) {
             MsgLayout* l = p->layout;
-            if (l->m16c == 0 || !p->testBit(p->cur)) {
+            if (l->m16c == 0 || !msgCurrentBit(p)) {
                 f32 base;
                 f32 pos;
                 if (!(l->font->flags & 0x40)) {
