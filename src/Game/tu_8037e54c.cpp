@@ -2062,7 +2062,7 @@ L_fail:
 
 extern "C" u8 fn_8022FCF0(s32 q, s32 v);
 extern "C" void fn_8022FC54(s32 q, s32 v);
-extern "C" u8 fn_8038A42C(s32 unused, s32 p, s32 q, u32 id, s32 val, JGeometry::TVec3<f32>* pos, u16 flags) {
+extern "C" u8 fn_8038A42C(s32 unused, s32 p, s32 q, u32 id, s32 val, const JGeometry::TVec3<f32>* pos, u16 flags) {
     if (!isActive(p) && (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(p), 0x100) || (flags & 0x19f))) {
         u8 ok = 0;
         if (flags & 0x1000) {
@@ -2084,7 +2084,7 @@ extern "C" u8 fn_8038A42C(s32 unused, s32 p, s32 q, u32 id, s32 val, JGeometry::
                 SUBFLAGS(p) |= 0x400;
             }
             fn_80390E40(lbl_8053AD78->sub[p], id, 0);
-            JGeometry::TVec3<f32> v = *pos;
+            JGeometry::TVec3<f32> v(*pos);
             u8* sub = (u8*)lbl_8053AD78->sub[p];
             *(JGeometry::TVec3<f32>*)(sub + 0x50) = v;
             *(s32*)(sub + 0x30) = val;
