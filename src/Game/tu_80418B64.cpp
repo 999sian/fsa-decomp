@@ -1013,7 +1013,6 @@ static inline void HudStoreCountResult8041(u8* self, s32 idx, s32 result) {
     *(s32*)(self + idx * 4 + 0x1f8) = result;
 }
 
-#pragma opt_common_subs off
 static inline void HudSyncCount8041(s32 idx) {
     u8* dst = lbl_80529DEC;
     s32* src = (s32*)(lbl_80529DEC + idx * 4 + 0xd8);
@@ -1024,7 +1023,6 @@ static inline void HudSyncCount8041(s32 idx) {
     }
 }
 
-#pragma opt_common_subs reset
 static inline void HudSetCountTransition8041(u8* self, s32 idx, s32* source) {
     u8* p2 = self + idx * 2;
     u8* p4 = self + idx * 4;
