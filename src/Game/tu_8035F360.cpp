@@ -141,22 +141,22 @@ extern "C" void* fn_8035F360(void* param_1, s16 param_2) {
 extern "C" u8 fn_8035F3C0(u8* p) {
     if(!p[0x294] || !*(FsaCurEntry**)(p+0x298)) return 0;
     JGeometry::TVec3f pos=*(JGeometry::TVec3f*)(p+0xc);
-    pos.z=lbl_80542A00;
+    pos.z=0.0f;
     JGeometry::TVec3f target;
     FsaCurEntry* entry=*(FsaCurEntry**)(p+0x298);
     if(entry->key==-1) {
         if(lbl_80542A04==entry->radius || lbl_80542A08==entry->radius) {
             target.x=entry->pos.z;
-            target.y=lbl_80542A00;
-            target.z=lbl_80542A00;
+            target.y=0.0f;
+            target.z=0.0f;
         } else if(lbl_80542A0C==entry->radius || lbl_80542A10==entry->radius) {
             target.y=entry->pos.z;
-            target.x=lbl_80542A00;
-            target.z=lbl_80542A00;
+            target.x=0.0f;
+            target.z=0.0f;
         } else return advanceCurEntry(p);
     } else target.set(entry->pos.x,entry->pos.y,entry->pos.z);
     entry=*(FsaCurEntry**)(p+0x298);
-    if(entry->radius>lbl_80542A00) {
+    if(entry->radius>0.0f) {
         if(PSVECDistance(&pos,&target)<(*(FsaCurEntry**)(p+0x298))->radius) return triggerCurEntry(p);
     } else if(lbl_80542A04==entry->radius) {
         if(pos.x<target.x) return triggerCurEntry(p);
