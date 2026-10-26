@@ -50,166 +50,121 @@ extern "C" u32 lbl_8053A93C;
 extern "C" u32 lbl_8053A940;
 extern "C" void* lbl_8053AAF0;
 extern "C" void* lbl_8053AD30;
-extern "C" u8 lbl_8053ACD4[];
+extern "C" u8 lbl_8053ACD4[4];
 extern "C" u32 fn_8030AAF4(s32);
 extern "C" u8 fn_8030A308(void*, u32);
-extern "C" void fn_802B1610(u8* param_1, s32 param_2) {
-    if (lbl_80529DEC[0x21f] != 0) {
-        return;
-    }
-    __PADDisableRecalibration(0);
-    if (param_2 == -1) {
-        fn_8008D8E4();
-        fn_8008E364(0xf0000000);
-    } else {
-        if (lbl_80529DEC[0x221] != 0) {
-            lbl_8053A951 = 0;
-            lbl_8053A93C = (u32)fn_80139994;
-            lbl_8053A940 = 0;
-            return;
-        }
-        u8* ptr = (u8*)lbl_8053ACA8;
-        lbl_80529DEC[0x221] = 1;
-        ptr[6] = 1;
-        ptr = (u8*)lbl_8053ACA8;
-        s32 c = param_2 & 0xff;
-        if (c >= 0 && c <= 3) {
-            lbl_80529DEC[0x222] = c;
-            ptr[7] = c;
+extern "C" void fn_802B1610(void* param_1, s32 param_2) {
+    if (lbl_80529DEC[0x21f] == 0) {
+        __PADDisableRecalibration(0);
+        if (param_2 == -1) {
+            fn_8008D8E4();
+            fn_8008E364(0xf0000000);
         } else {
-            lbl_80529DEC[0x222] = 0xff;
-            ptr[7] = 0xff;
+            if ((s32)lbl_80529DEC[0x221] != 0) {
+                lbl_8053A951 = 0;
+                lbl_8053A93C = (u32)fn_80139994;
+                lbl_8053A940 = 0;
+                return;
+            }
+            u8* ptr = (u8*)lbl_8053ACA8;
+            lbl_80529DEC[0x221] = 1;
+            ptr[6] = 1;
+            ptr = (u8*)lbl_8053ACA8;
+            s32 c = param_2 & 0xff;
+            if (c >= 0 && c <= 3) {
+                lbl_80529DEC[0x222] = c;
+                ptr[7] = c;
+            } else {
+                lbl_80529DEC[0x222] = 0xff;
+                ptr[7] = 0xff;
+            }
+            fn_8008D8E4();
+            fn_8008E364(0xf0000000);
         }
-        fn_8008D8E4();
-        fn_8008E364(0xf0000000);
-    }
-    if (DVDCheckDisk() == 0) {
-        __PADDisableRecalibration(0);
-        fn_802B1558();
+        if (DVDCheckDisk() == 0) {
+            __PADDisableRecalibration(0);
+            fn_802B1558();
+            u8* base = lbl_80529DEC;
+            base[0x21b] = 0xa5;
+            for (s32 i = 0; i < 32; i += 8) {
+                ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
+                ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
+                ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
+                ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
+                ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
+                ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
+                ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
+                ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
+            }
+            OSResetSystem(1, 0x80000000, 0);
+            do {
+                VIWaitForRetrace();
+            } while (true);
+        }
         u8* base = lbl_80529DEC;
-        base[0x21b] = 0xa5;
-        s32 i = 0;
-        for (s32 n = 0; n < 2; n++) {
-            ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
-            ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
-            ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
-            ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
-            ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
-            ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
-            ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
-            ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
-            i += 8;
-            ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
-            ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
-            ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
-            ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
-            ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
-            ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
-            ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
-            ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
-            i += 8;
+        if (base[0x238] != 0xff) {
+            base[0x223] = 1;
+            for (s32 i = 0; i < 32; i += 8) {
+                ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
+                ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
+                ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
+                ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
+                ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
+                ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
+                ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
+                ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
+            }
+            __PADDisableRecalibration(0);
+            fn_802B1558();
+            base[0x21b] = 0xa5;
+            for (s32 i = 0; i < 32; i += 8) {
+                ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
+                ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
+                ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
+                ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
+                ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
+                ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
+                ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
+                ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
+            }
+            OSResetSystem(0, 0, 0);
+            do {
+                VIWaitForRetrace();
+            } while (true);
         }
-        OSResetSystem(1, 0x80000000, 0);
-        do {
-            VIWaitForRetrace();
-        } while (true);
-    }
-    u8* base = lbl_80529DEC;
-    if (base[0x238] != 0xff) {
-        base[0x223] = 1;
-        s32 i = 0;
-        for (s32 n = 0; n < 2; n++) {
-            ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
-            ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
-            ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
-            ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
-            ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
-            ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
-            ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
-            ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
-            i += 8;
-            ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
-            ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
-            ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
-            ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
-            ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
-            ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
-            ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
-            ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
-            i += 8;
+        if (((u8*)lbl_8053AAF0)[0x78] < 4) {
+            base[0x224] = 1;
         }
-        __PADDisableRecalibration(0);
-        fn_802B1558();
-        base[0x21b] = 0xa5;
-        i = 0;
-        for (s32 n = 0; n < 2; n++) {
-            ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
-            ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
-            ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
-            ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
-            ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
-            ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
-            ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
-            ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
-            i += 8;
-            ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
-            ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
-            ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
-            ((u8*)(i - 0x7f900000))[3] = base[i + 0x219];
-            ((u8*)(i - 0x7f900000))[4] = base[i + 0x21a];
-            ((u8*)(i - 0x7f900000))[5] = base[i + 0x21b];
-            ((u8*)(i - 0x7f900000))[6] = base[i + 0x21c];
-            ((u8*)(i - 0x7f900000))[7] = base[i + 0x21d];
-            i += 8;
-        }
-        OSResetSystem(0, 0, 0);
-        do {
-            VIWaitForRetrace();
-        } while (true);
-    }
-    if (((u8*)lbl_8053AAF0)[0x78] < 4) {
-        base[0x224] = 1;
-    }
-    lbl_80529DEC[0x21f] = 1;
-    ((u8*)lbl_8053ACA8)[4] = 1;
-    if (((u8*)lbl_8053AAF0)[0x79] != 0) {
-        s32 r28 = 0;
-        s32 r29 = 0;
-        u8* tbl = lbl_8053ACD4;
-        for (s32 i = 0; i < 4; i++, tbl++) {
-            if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(i)) == 1) {
-                r29++;
-                if (*tbl == 0) {
-                    r28++;
+        lbl_80529DEC[0x21f] = 1;
+        ((u8*)lbl_8053ACA8)[4] = 1;
+        if (((u8*)lbl_8053AAF0)[0x79] != 0) {
+            s32 r28 = 0;
+            s32 r29 = 0;
+            u8* tbl = lbl_8053ACD4;
+            for (s32 i = 0; i < 4; i++, tbl++) {
+                if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(i)) == 1) {
+                    r29++;
+                    if (*tbl == 0) {
+                        r28++;
+                    }
                 }
             }
+            if (r29 == r28) {
+                lbl_80529DEC[0x220] = 1;
+                ((u8*)param_1)[5] = 1;
+            }
         }
-        if (r29 == r28) {
-            lbl_80529DEC[0x220] = 1;
-            param_1[5] = 1;
+        u8* base2 = lbl_80529DEC;
+        for (s32 i = 0; i < 32; i += 8) {
+            ((u8*)(i - 0x7f900000))[0] = base2[i + 0x216];
+            ((u8*)(i - 0x7f900000))[1] = base2[i + 0x217];
+            ((u8*)(i - 0x7f900000))[2] = base2[i + 0x218];
+            ((u8*)(i - 0x7f900000))[3] = base2[i + 0x219];
+            ((u8*)(i - 0x7f900000))[4] = base2[i + 0x21a];
+            ((u8*)(i - 0x7f900000))[5] = base2[i + 0x21b];
+            ((u8*)(i - 0x7f900000))[6] = base2[i + 0x21c];
+            ((u8*)(i - 0x7f900000))[7] = base2[i + 0x21d];
         }
-    }
-    u8* base2 = lbl_80529DEC;
-    s32 i = 0;
-    for (s32 n = 0; n < 2; n++) {
-        ((u8*)(i - 0x7f900000))[0] = base2[i + 0x216];
-        ((u8*)(i - 0x7f900000))[1] = base2[i + 0x217];
-        ((u8*)(i - 0x7f900000))[2] = base2[i + 0x218];
-        ((u8*)(i - 0x7f900000))[3] = base2[i + 0x219];
-        ((u8*)(i - 0x7f900000))[4] = base2[i + 0x21a];
-        ((u8*)(i - 0x7f900000))[5] = base2[i + 0x21b];
-        ((u8*)(i - 0x7f900000))[6] = base2[i + 0x21c];
-        ((u8*)(i - 0x7f900000))[7] = base2[i + 0x21d];
-        i += 8;
-        ((u8*)(i - 0x7f900000))[0] = base2[i + 0x216];
-        ((u8*)(i - 0x7f900000))[1] = base2[i + 0x217];
-        ((u8*)(i - 0x7f900000))[2] = base2[i + 0x218];
-        ((u8*)(i - 0x7f900000))[3] = base2[i + 0x219];
-        ((u8*)(i - 0x7f900000))[4] = base2[i + 0x21a];
-        ((u8*)(i - 0x7f900000))[5] = base2[i + 0x21b];
-        ((u8*)(i - 0x7f900000))[6] = base2[i + 0x21c];
-        ((u8*)(i - 0x7f900000))[7] = base2[i + 0x21d];
-        i += 8;
     }
 }
 
@@ -281,7 +236,7 @@ extern "C" void fn_802B1DE8(u8* p) {
     u8* dst;
     u8* src;
     u8* base;
-    int off;
+    s32 off;
     base = lbl_80529DEC;
     base[0x21f]=0;
     base[0x220]=0;
