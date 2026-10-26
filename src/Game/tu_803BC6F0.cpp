@@ -276,7 +276,8 @@ static inline void setKeyedAt(u8* p, s32 recvOff, s32 tgtOff, u8* keys, s32 n, s
     s32 i;
     u8* k = keys;
     for (i = 0; i < n; i++, k += 8) {
-        void* s = ((TextBoxVt15*)*(void**)(p + recvOff))->v15(*(void**)(p + recvOff), *(u64*)k);
+        void* object = *(void**)(p + recvOff);
+        void* s = (*(TextBoxVt15**)object)->v15(object, *(u64*)k);
         fn_804023D0(*(void**)(p + tgtOff), s, p[i + flagOff]);
     }
 }
