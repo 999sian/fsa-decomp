@@ -2937,7 +2937,8 @@ extern "C" s32 fn_8042DCC4(BitReader* r) {
 
 #pragma dont_inline off
 static inline s16 roundADPCM(s64 sample) {
-    if ((u16)(sample & 0xffffLL) > 0x8000 || ((u16)(sample & 0xffffLL) == 0x8000 && (sample & 0x10000LL))) sample += 0x10000LL;
+    if ((u16)(sample & 0xffffLL) > 0x8000) sample += 0x10000LL;
+    else if ((u16)(sample & 0xffffLL) == 0x8000 && (sample & 0x10000LL)) sample += 0x10000LL;
     if (sample > 0x7fffffffLL) sample = 0x7fffffffLL;
     if (sample < -0x80000000LL) sample = -0x80000000LL;
     return (s16)(sample >> 16);
@@ -2954,6 +2955,7 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
     s16* outB;
     BitReader br;
     u8* bits;
+    u8* secondBits;
     s32 i;
     s32 v;
     s32 c;
@@ -2971,7 +2973,8 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
         return 0;
     }
     base = *(s32*)param_2;
-    bits = param_2 + 0x50 + base;
+    bits = param_2 + 0x50;
+    secondBits = bits + base;
     if (param_3 == 1) {
         stride = 1;
         outB = param_1;
@@ -2982,7 +2985,7 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
         stride = 2;
     }
     if (base == 0) {
-        fn_8042DC88(&br, param_2 + 0x50);
+        fn_8042DC88(&br, bits);
         x1 = *(s16*)(param_2 + 0x48);
         x2 = *(s16*)(param_2 + 0x4a);
         for (i = 0; (u32)i < *(u32*)(param_2 + 4); i++) {
@@ -2990,11 +2993,13 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             b8 = br.b8;
             b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
+            c = (v << b9) << 11;
             pa = (s32)tp[5] * x2;
             pb = (s32)tp[4] * x1;
-            c = (v << b9) << 11;
-            w = ((s64)pa + (s64)pb + (s64)c) << 5;
-            if ((u16)(w & 0xffffLL) > 0x8000 || ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000))) {
+            s64 w = ((s64)pa + (s64)pb + (s64)c) << 5;
+            if ((u16)(w & 0xffffLL) > 0x8000) {
+                w += 0x10000;
+            } else if ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000)) {
                 w += 0x10000;
             }
             if (w > 0x7fffffffLL) {
@@ -3012,7 +3017,7 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             x1 = out;
         }
     } else {
-        fn_8042DC88(&br, param_2 + 0x50);
+        fn_8042DC88(&br, bits);
         x1 = *(s16*)(param_2 + 0x48);
         x2 = *(s16*)(param_2 + 0x4a);
         for (i = 0; (u32)i < *(u32*)(param_2 + 4); i++) {
@@ -3020,11 +3025,13 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             b8 = br.b8;
             b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
+            c = (v << b9) << 11;
             pa = (s32)tp[5] * x2;
             pb = (s32)tp[4] * x1;
-            c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
-            if ((u16)(w & 0xffffLL) > 0x8000 || ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000))) {
+            if ((u16)(w & 0xffffLL) > 0x8000) {
+                w += 0x10000;
+            } else if ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000)) {
                 w += 0x10000;
             }
             if (w > 0x7fffffffLL) {
@@ -3039,7 +3046,7 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             x2 = x1;
             x1 = out;
         }
-        fn_8042DC88(&br, bits);
+        fn_8042DC88(&br, secondBits);
         x1 = *(s16*)(param_2 + 0x4c);
         x2 = *(s16*)(param_2 + 0x4e);
         for (i = 0; (u32)i < *(u32*)(param_2 + 4); i++) {
@@ -3047,11 +3054,13 @@ extern "C" s32 fn_8042DD54(s16* param_1, u8* param_2, s32 param_3) {
             b8 = br.b8;
             b9 = br.b9;
             tp = (s16*)(param_2 + b8 * 4);
+            c = (v << b9) << 11;
             pa = (s32)tp[0x15] * x2;
             pb = (s32)tp[0x14] * x1;
-            c = (v << b9) << 11;
             w = ((s64)pa + (s64)pb + (s64)c) << 5;
-            if ((u16)(w & 0xffffLL) > 0x8000 || ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000))) {
+            if ((u16)(w & 0xffffLL) > 0x8000) {
+                w += 0x10000;
+            } else if ((u16)(w & 0xffffLL) == 0x8000 && (w & 0x10000)) {
                 w += 0x10000;
             }
             if (w > 0x7fffffffLL) {
