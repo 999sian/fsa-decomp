@@ -43,7 +43,7 @@ extern f32 lbl_8053C1D8;
 
 static inline f32 twevSin(f32 x) { return sin(x); }
 static inline f32 twevCos(f32 x) { return cos(x); }
-static inline void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
+static inline void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az, f32 s = 1.0f) {
     f32 cx;
     f32 sx = twevSin(ax);
     f32 sy = twevSin(ay);
@@ -54,7 +54,6 @@ static inline void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
     f32 cc = cx * cz;
     f32 ss = sx * sy;
     f32 cs = cx * sz;
-    f32 s = lbl_8053C1D8;
     m[0][0] = s * (cy * cz);
     m[1][0] = s * (cy * sz);
     m[2][0] = s * -sy;
@@ -83,9 +82,11 @@ extern "C" void fn_80103348(void* this_) {
     char* names = lbl_80463BD0;
     TWEVParam param;
     TWEVMtx mtx;
-    f32 savedPos[3];
+    JGeometry::TVec3<f32> savedPos;
     s32 i;
     f32 ang;
+    f32 zero = 0.0f;
+    f32 divisor;
 
     param.a = -1;
     param.b = -1;
@@ -121,8 +122,7 @@ extern "C" void fn_80103348(void* this_) {
     param.h = 0;
     param.i = 2;
 
-    *(u64*)savedPos = *(u64*)(p + 0xc);
-    savedPos[2] = *(f32*)(p + 0x14);
+    savedPos = *(JGeometry::TVec3<f32>*)(p + 0xc);
     param.d[1] = -3;
     u32 id = fn_804032E8(0x54494d47, names + 0xc);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
@@ -133,8 +133,9 @@ extern "C" void fn_80103348(void* this_) {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    ang = *(s32*)(p + 0x264) / lbl_8053C1D4;
-    fn_80103348_rotMtx(mtx, lbl_8053C1D0, ang, lbl_8053C1D0);
+    divisor = lbl_8053C1D4;
+    ang = *(s32*)(p + 0x264) / divisor;
+    fn_80103348_rotMtx(mtx, zero, ang, zero);
     param.c = mtx;
     param.d[1] = 1;
     id = fn_804032E8(0x54494d47, names + 0x20);
@@ -146,8 +147,9 @@ extern "C" void fn_80103348(void* this_) {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    ang = *(s32*)(p + 0x268) / lbl_8053C1D4;
-    fn_80103348_rotMtx(mtx, lbl_8053C1D0, ang, lbl_8053C1D0);
+    divisor = lbl_8053C1D4;
+    ang = *(s32*)(p + 0x268) / divisor;
+    fn_80103348_rotMtx(mtx, zero, ang, zero);
     param.c = mtx;
     id = fn_804032E8(0x54494d47, names + 0x34);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
@@ -158,15 +160,16 @@ extern "C" void fn_80103348(void* this_) {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    ang = *(s32*)(p + 0x26c) / lbl_8053C1D4;
-    fn_80103348_rotMtx(mtx, lbl_8053C1D0, ang, lbl_8053C1D0);
+    divisor = lbl_8053C1D4;
+    ang = *(s32*)(p + 0x26c) / divisor;
+    fn_80103348_rotMtx(mtx, zero, ang, zero);
     param.c = mtx;
     id = fn_804032E8(0x54494d47, names + 0x48);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
 
-    *(f32*)(p + 0xc) = savedPos[0];
-    *(f32*)(p + 0x10) = savedPos[1];
-    *(f32*)(p + 0x14) = savedPos[2];
+    *(f32*)(p + 0xc) = savedPos.x;
+    *(f32*)(p + 0x10) = savedPos.y;
+    *(f32*)(p + 0x14) = savedPos.z;
 }
 
 extern "C" void fn_80103914(void* this_) {
