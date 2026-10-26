@@ -7,7 +7,7 @@ extern "C" void fn_8042EDAC(void*, s32, s32);
 extern "C" f32 lbl_8054396C;
 extern "C" f32 lbl_80543970;
 extern "C" f32 lbl_805438E4;
-extern "C" s16 lbl_80543890[];
+extern "C" s16 lbl_80543890[4];
 #include "JSystem/J2D/J2DPane.h"
 extern "C" u8 fn_80402B10(void*, s32, f32, f32, s32);
 extern "C" u8 fn_8040271C(void*, s32, f32, f32);
@@ -325,44 +325,43 @@ extern "C" void fn_80404648(u8* self) {
 extern "C" void fn_804049DC(u8* self) {
 	if (*(u32*)(self + 0x38c) & 0x10) {
         u8* p = self;
-        int clearValue = 0;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = clearValue;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = clearValue;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = clearValue;
-		*(s16*)(*(u8**)(self + 0xc8) + 0x26) = clearValue;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x20) = clearValue;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x22) = clearValue;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x24) = clearValue;
-		*(s16*)(*(u8**)(self + 0xcc) + 0x26) = clearValue;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x20) = clearValue;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = clearValue;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = clearValue;
-		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = clearValue;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x20) = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x24) = 0;
+		*(s16*)(*(u8**)(self + 0xc8) + 0x26) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x20) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x24) = 0;
+		*(s16*)(*(u8**)(self + 0xcc) + 0x26) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x20) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x24) = 0;
+		*(s16*)(*(u8**)(self + 0xd0) + 0x26) = 0;
 		for (s32 i = 0; i < 3; i++, p += 0x18) {
-			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd4) + 0x26) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x20) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x22) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x24) = clearValue;
-			*(s16*)(*(u8**)(p + 0xd8) + 0x26) = clearValue;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x20) = clearValue;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x22) = clearValue;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x24) = clearValue;
-			*(s16*)(*(u8**)(p + 0xdc) + 0x26) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x20) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x22) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x24) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe0) + 0x26) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x20) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x22) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x24) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe4) + 0x26) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x20) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x22) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x24) = clearValue;
-			*(s16*)(*(u8**)(p + 0xe8) + 0x26) = clearValue;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xd4) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xd8) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xdc) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xe0) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xe4) + 0x26) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x20) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x22) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x24) = 0;
+			*(s16*)(*(u8**)(p + 0xe8) + 0x26) = 0;
 		}
 		*(s16*)(*(u8**)(self + 0x228) + 0x22) = 0;
 		*(s16*)(*(u8**)(self + 0x22c) + 0x22) = 0;
@@ -1455,6 +1454,71 @@ extern "C" void fn_8040B388(u8* self) {
 		}
 		break;
 	}
+}
+
+extern "C" void fn_8040B5A0(u8* self) {
+ ++*(s32*)(self+0x380);
+ s32 phase = (*(s32*)(self+0x380) % 36) / 9;
+ switch (*(s16*)(self+0x428)) {
+ case 0:
+  *(f32*)(self+0x3b8) += lbl_8054396C;
+  {
+   u8* x = ((Slots208*)self)->slot[*(s32*)(self+0x340)];
+   if (*(f32*)(self+0x3b8) >= *(f32*)(x+0xc)) {
+    *(f32*)(self+0x3b8) = *(f32*)(x+0xc);
+    *(s16*)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+0x22)=0;
+    fn_80402E08(((Slots208*)self)->slot[*(s32*)(self+0x340)],lbl_80543898,lbl_80543898);
+    *(s16*)(self+0x428)=1;
+    u32 id = 0x30081;
+    (*(SoundHolder**)(self+0x2c8))->play(&id);
+   } else {
+    f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
+    f32 offset = (f32)(lbl_80543890[phase] * *(u16*)(*(u8**)(sManager__8JUTVideo+4)+6))/lbl_805438E4;
+    fn_80402E08(x,lbl_80543898,delta+offset);
+   }
+  }
+  {
+ u8* x = ((Slots208*)self)->slot[*(s32*)(self+0x340)];
+ u8* y = *(u8**)(x+4);
+ 
+ f32 half = lbl_805438C8;
+ f32 right = *(f32*)(y+0x28);
+ f32 left = *(f32*)(y+0x20);
+ *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
+ y = *(u8**)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+4);
+ u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
+ f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
+ f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
+ *(f32*)(self+0x3b0) = (height*lbl_805438C8 + base);
+}
+  break;
+ case 1:
+  *(f32*)(self+0x3b8) -= lbl_8054396C;
+  if (*(f32*)(self+0x3b8) <= *(f32*)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+0xc)-lbl_80543970) {
+   lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a |= (u8)(1 << *(s32*)(self+0x340));
+   if (*(s32*)(self+0x340)==7) *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+1);
+   else *(u32*)(self+0x38c) |= 1 << (*(s32*)(self+0x340)*4+2);
+   *(s16*)(self+0x428)=0;
+   self[0x662]=1;
+   fn_8042EDAC(lbl_8053AEC4,0x24f,0);
+   *(s32*)(self+0x350)=0x12;
+  }
+  {
+ u8* x = ((Slots208*)self)->slot[*(s32*)(self+0x340)];
+ u8* y = *(u8**)(x+4);
+ f32 delta = *(f32*)(self+0x3b8) - *(f32*)(x+0xc);
+ f32 half = lbl_805438C8;
+ f32 right = *(f32*)(y+0x28);
+ f32 left = *(f32*)(y+0x20);
+ *(f32*)(self+0x3ac) = (right-left)*half + *(f32*)(y+0x30);
+ y = *(u8**)(((Slots208*)self)->slot[*(s32*)(self+0x340)]+4);
+ u8* bounds = getBounds__7J2DPaneFv((*(Screen408**)(self+0x10))->search(lbl_8048C4F8[*(s32*)(self+0x340)]));
+ f32 base = *(f32*)(self+0x3b8) + *(f32*)(bounds+4);
+ f32 height = *(f32*)(y+0x2c) - *(f32*)(y+0x24);
+ *(f32*)(self+0x3b0) = delta + (height*lbl_805438C8 + base);
+}
+  break;
+ }
 }
 
 extern "C" u8 fn_804446A4(void*);
