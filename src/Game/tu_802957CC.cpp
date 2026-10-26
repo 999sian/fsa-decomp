@@ -1516,7 +1516,7 @@ static inline bool HouseContains(const JGeometry::TBox2f& area, JGeometry::TVec3
     return inside;
 }
 
-static inline void HouseGridBase(JGeometry::TVec3f& out, const JGeometry::TVec3f& pos, const JGeometry::TVec2f& offset, const f32 border) {
+static inline void HouseGridBase(JGeometry::TVec3f& out, const JGeometry::TVec3f& pos, const JGeometry::TVec2f& offset, f32 border) {
     out = pos;
     out.x += offset.x;
     out.y += offset.y;
@@ -1599,7 +1599,10 @@ extern "C" void fn_80299FB0(char* self) {
             found = 0;
             break;
         }
-        bool in = HouseContains(area, v);
+        bool in = false;
+        if (v.x >= area.i.x && v.y >= area.i.y && v.x < area.f.x && v.y < area.f.y) {
+            in = true;
+        }
         if (!in) {
             found = 0;
             break;
@@ -1622,12 +1625,7 @@ extern "C" void fn_80299FB0(char* self) {
     *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
-        gridBase = *(JGeometry::TVec3f*)(self + 0xc);
-        gridBase.x += *(f32*)(self + 0x60);
-        gridBase.y += *(f32*)(self + 0x64);
-        gridBase.x += lbl_80540678;
-        gridBase.y += lbl_80540678;
-        gridBase.z = lbl_80540674;
+        HouseGridBase(gridBase, *(JGeometry::TVec3f*)(self + 0xc), *(JGeometry::TVec2f*)(self + 0x60), lbl_80540678);
         grid = gridBase;
         for (; i < 6; i++, self += 0xc) {
             grid.y = gridBase.y;
