@@ -380,95 +380,85 @@ static inline void warpSqrtInPlace80331(f32& x) {
     y = 0.5f * y * (3.0f - x * (y * y));
     x *= y;
 }
-static inline f32 warpSqrt80331(register f32 x) {
+static inline f32 warpSqrt80331(const f32 x) {
     if (x <= 0.0f) return x;
     f32 y = (f32)__frsqrte(x);
     y = 0.5f * y * (3.0f - x * (y * y));
-    x *= y;
-    return x;
+    return x * y;
 }
 
 extern "C" void fn_80331E6C(char* this_) {
     u8* self = (u8*)this_;
 
     if (*(u8*)(self + 0x2a4) == 1) {
-    char* o;
-    s32 n;
-    s32 off;
-    s32 r27;
-    s32 r26;
-    s32 i;
-    JGeometry::TVec3<f32> pos;
-    f32 mag;
-    s32 kind;
-    s32 room;
-    s32 id;
 
-        r27 = -1;
-        r26 = -1;
+        s32 r27 = -1;
+        s32 r26 = -1;
         if (*(s32*)(self + 0x230) == 3) {
             goto end;
         }
-        n = *(s32*)((char*)fn_801F856C() + 0x1008);
-        i = 0;
-        off = 0;
+        s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
+        s32 i = 0;
+        s32 off = 0;
         for (; i < n; off += 4, i++) {
-            o = *(char**)((char*)fn_801F856C() + off + 8);
+            ItemBase* o = *(ItemBase**)((char*)fn_801F856C() + off + 8);
             if (o == 0) continue;
-            id = *(s32*)(o + 0x1a0);
+            s32 id = *(s32*)((u8*)o + 0x1a0);
             if (id != 'WARP' && id != 'CIRC') continue;
             {
-                if (*(s32*)(self + 4) != *(s32*)(o + 4)) continue;
+                if (*(s32*)(self + 4) != *(s32*)((u8*)o + 4)) continue;
                 {
-                    f32 dx = *(f32*)(o + 0xc) - *(f32*)(self + 0xc);
-                    f32 dy = *(f32*)(o + 0x10) - *(f32*)(self + 0x10);
+                    f32 dx = *(f32*)((u8*)o + 0xc) - *(f32*)(self + 0xc);
+                    f32 dy = *(f32*)((u8*)o + 0x10) - *(f32*)(self + 0x10);
                     f32 sx = dx * dx;
                     f32 sy = dy * dy;
                     f32 sq = warpSqrt80331(sx + sy);
                     if (!(sq < lbl_80541F10)) continue;
                 }
             }
-            if (*(s32*)(o + 0x1a0) == 'WARP') {
+            if (*(s32*)((u8*)o + 0x1a0) == 'WARP') {
                 if (((ItemBase*)o)->v13() != 0) {
                     if ((u8)((int (*)(void*))(*(void***)o)[13])(o) != 1) continue;
                 }
-                r27 = *(s32*)(o + 0x198);
+                r27 = *(s32*)((u8*)o + 0x198);
                 break;
             }
-            if (*(u8*)(o + 0x262) == 1) {
-                r26 = *(s32*)(o + 0x198);
+            if (*(u8*)((u8*)o + 0x262) == 1) {
+                r26 = *(s32*)((u8*)o + 0x198);
                 break;
             }
         }
         if (r27 < 0 && r26 < 0) goto end;
-        room = 0;
-        kind = 0;
+        ItemBase* o;
+        JGeometry::TVec3<f32> pos;
+        s32 room = 0;
+        s32 kind = 0;
         pos.zero();
         if (r27 >= 0) {
-            o = (char*)fn_801F666C(fn_801F856C(), r27);
+            o = (ItemBase*)fn_801F666C(fn_801F856C(), r27);
             if (o == 0) goto end;
-            pos = *(JGeometry::TVec3<f32>*)(o + 0x238);
+            pos = *(JGeometry::TVec3<f32>*)((u8*)o + 0x238);
             room = *(s32*)(self + 4);
             if (((RoomMgr131DF*)fn_802D6A9C())->flag(room) == 0) {
                 pos.z = *(f32*)(self + 0x14);
             }
             {
-                s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
+                s32 v = (*(s32*)((u8*)o + 0x90) >> 24) & 7;
                 s32 next = v + 7;
                 if (v == 0) next = v;
                 room = next;
             }
-            kind = *(s32*)(o + 0x90) & 0x7f;
+            kind = *(s32*)((u8*)o + 0x90) & 0x7f;
         } else if (r26 > 0) {
-            o = (char*)fn_801F666C(fn_801F856C(), r26);
+            o = (ItemBase*)fn_801F666C(fn_801F856C(), r26);
             if (o == 0) goto end;
-            pos = *(JGeometry::TVec3<f32>*)(o + 0x268);
+            pos = *(JGeometry::TVec3<f32>*)((u8*)o + 0x268);
             room = *(s32*)(self + 4);
             if (((RoomMgr131DF*)fn_802D6A9C())->flag(room) == 0) {
                 pos.z = *(f32*)(self + 0x14);
             }
             {
-                s32 v = (*(s32*)(o + 0x90) >> 24) & 7;
+                s32 v = (*(s32*)((u8*)o + 0x90) >> 24) & 7;
                 s32 next = v + 7;
                 if (v == 0) next = v;
                 room = next;
@@ -501,7 +491,7 @@ warp:
         *(JGeometry::TVec3<f32>*)(self + 0x2d0) = pos;
         *(u8*)(self + 0x2a4) = 0;
         *(u8*)(self + 0x2a5) = 0;
-        mag = PSVECMag((Vec*)(self + 0x2b8));
+        f32 mag = PSVECMag((Vec*)(self + 0x2b8));
         if (mag < lbl_80541EBC) {
             mag = lbl_80541EBC;
         } else if (mag > lbl_80541ECC) {
@@ -874,7 +864,7 @@ extern "C" void fn_80333148(char* this_) {
     };
 
     s32 local_18;
-    s16 local_8 = 0;
+    volatile u16 local_8 = 0;
     char* obj = this_;
 
     *(float*)(this_ + 0x60) = -7.0f;
@@ -990,8 +980,8 @@ extern "C" void fn_80333148(char* this_) {
             float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(obj + 0xc);
             float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(obj + 0x10);
             local_8 = enemyAngle(y, x);
-            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.sinShort(*(volatile u16*)&local_8);
-            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.cosShort(*(volatile u16*)&local_8);
+            *(float*)(obj + 0x2b8) = 3.0f * JMath::sincosTable_.sinShort(local_8);
+            *(float*)(obj + 0x2bc) = 3.0f * JMath::sincosTable_.cosShort(local_8);
             if (*(float*)(obj + 0x2b8) >= 0.0f) *(s32*)(obj + 0x98) = 0;
             else *(s32*)(obj + 0x98) = 1;
             obj[0x2a6] = 1;
