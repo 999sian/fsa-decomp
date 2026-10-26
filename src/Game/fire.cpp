@@ -41,8 +41,6 @@ extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s
 class FireActorInterface : public Actor {
 public:
     virtual void v19(JGeometry::TVec3<f32> pos, s32 flag);
-    virtual void v20();
-    virtual void v21(JGeometry::TVec3<f32> pos, s32 flag);
 };
 
 
