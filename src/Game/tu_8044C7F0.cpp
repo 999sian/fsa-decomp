@@ -215,7 +215,7 @@ extern "C" u64 lbl_80490FC8[];
 extern "C" void* fn_8013CC50(void*, f32*, u16, s32, s32, s32, s32, s32, f32);
 extern f32 lbl_80543E00;
 extern f32 lbl_80543E04;
-extern "C" u16 lbl_80543DD8[];
+extern "C" u16 lbl_80543DD8[4];
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 extern "C" void fn_8044D298(u8* self, s32 index) {
