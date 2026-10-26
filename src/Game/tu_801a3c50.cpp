@@ -145,7 +145,9 @@ extern "C" void fn_801A3CFC(u8* this_) {
 // from src/Game/Saya_ForceState1_801A46FC.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
-extern "C" s32 fn_801A41D8(void* this_, void* a4, void* a5);
+#pragma dont_inline on
+extern "C" s32 fn_801A41D8(void* this_, void* a4, void* a5) { return 0; }
+#pragma dont_inline reset
 
 // SAYA cluster, part 4/18 (88B). Vtable-slot wrapper that directly
 // invokes state-handler fn_801A41D8 (an external "force-run this
