@@ -322,13 +322,6 @@ extern "C" void fn_80404648(u8* self) {
 	}
 }
 
-static inline void ClearPaneFields804049DC(u8** slot) {
-    *(s16*)(*slot + 0x20) = 0;
-    *(s16*)(*slot + 0x22) = 0;
-    *(s16*)(*slot + 0x24) = 0;
-    *(s16*)(*slot + 0x26) = 0;
-}
-
 extern "C" void fn_804049DC(u8* self) {
 	if (*(u32*)(self + 0x38c) & 0x10) {
         u8* p = self;
