@@ -55,10 +55,6 @@ void becomeCurrentHeap__7JKRHeapFv(void*);
 }
 
 #pragma opt_strength_reduction off
-static inline u32 mainAtLeast(const u32 value, const u32 minimum) {
-    return ((value | ~minimum) - ((value - minimum) >> 1)) >> 31;
-}
-
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 void main(void)
@@ -72,7 +68,7 @@ void main(void)
     void* initObject;
     void* p;
     void* solidHeap;
-    JKRExpHeap* expHeap;
+    void* expHeap;
     bool bVar1;
     bool bVar2;
     s32 t;
@@ -135,8 +131,8 @@ void main(void)
     JFWDisplay::getManager()->clearAllXfb();
     fn_803BA980(lbl_8051C1A0);
     solidHeap = create__12JKRSolidHeapFUlP7JKRHeapb(0x180000, JKRHeap::sRootHeap, false);
-    expHeap = JKRExpHeap::create(0xffffffff, JKRHeap::sRootHeap, false);
-    initObject = __nw__FUlP7JKRHeapi(0x90, expHeap, 0);
+    initObject = __nw__FUlP7JKRHeapi(0x90,
+        expHeap = create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false), 0);
     if (initObject != NULL) {
         initObject = fn_8045A080(initObject);
     }
@@ -146,7 +142,7 @@ void main(void)
     *(void**)&lbl_80529DEC[0xc] = initObject;
     *(u8*)((u8*)JUTProcBar::getManager() + 0x10c) = 0;
     *(u8*)((u8*)JUTProcBar::getManager() + 0x130) = 0;
-    solidHeap = JKRExpHeap::create(0x800, expHeap, false);
+    solidHeap = create__10JKRExpHeapFUlP7JKRHeapb(0x800, expHeap, false);
     fn_80401FEC(OSGetThreadPriority(OSGetCurrentThread()) - 1, solidHeap, 0);
     p = __nw__FUlP7JKRHeapi(0x7c, expHeap, 0);
     if (p != NULL) {
