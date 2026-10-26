@@ -694,8 +694,8 @@ struct MsgProc {
         str2c0[m2d0++] = -2;
         if (layout->m1a1 != 0) {
             const s8 top = lineTab[layout->m15c];
-            const u8 line = slotLine[slot];
-            if (lineRow(top, line) == 0) {
+            const s8 line = slotLine[slot];
+            if ((u8)line - top - 1 == 0) {
                 str2c0[m2d0++] = slotLine[slot] + (base + 0x20) - lineTab[layout->m15c];
                 return;
             }
