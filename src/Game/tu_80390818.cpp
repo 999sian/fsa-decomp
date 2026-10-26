@@ -374,6 +374,15 @@ extern "C" void fn_80390E68(Tu80390818* t) {
 
 #include "JSystem/JGeometry/Vec.h"
 
+static inline void Tu80390818_reset(Tu80390818_Sub* s, u8 kind) {
+    s->m08->reset();
+    JMessage::TControl* c = s->m08;
+    if (c->mBaseProcSeq != 0) ((Tu80390818_Proc*)c->mBaseProcSeq)->m08 = 0;
+    if (c->mBaseProcRender != 0) ((Tu80390818_Proc*)c->mBaseProcRender)->m08 = 0;
+    c->mResourceCache = 0;
+    s->m1A2 = kind;
+}
+
 static inline void Tu80390818_setMessage(Tu80390818_Sub* s, u32 code, JGeometry::TVec3<f32> pos, JGeometry::TVec3<f32> anchor) {
     s->m14C = code;
     s->m08->setMessageCode(code >> 16, code & 0xFFFF);
@@ -410,10 +419,7 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         c->mResourceCache = 0;
         s->m1A2 = 0;
         t->m44 = 2;
-        s->m14C = t->m20;
-        s->m08->setMessageCode(t->m20 >> 16, t->m20 & 0xFFFF);
-        *(Tu80390818_Vec*)s->m98 = *(Tu80390818_Vec*)&t->m50;
-        *(Tu80390818_Vec*)s->mA4 = *(Tu80390818_Vec*)&t->m50;
+        Tu80390818_setMessage(t->m4C, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
         t->m24 = 2;
         break;
     }
@@ -441,9 +447,10 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         break;
     case 6: {
         Tu80390818_Sub* s;
+        Tu80390818_Proc* proc;
         JMessage::TControl* c;
         Tu80390818_Vec v;
-        u8 r31 = 0;
+        u8 r31;
         if (t->m28 & 0x40) {
             fn_803944EC(t->m48, *(f32*)(lbl_8050DB0C + 0x38));
         } else {
@@ -456,7 +463,8 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         t->m48->m178 = t->m34;
         t->m48->m17C = t->m38;
         t->m44 = 1;
-        if (t->m28 & 0x200) {
+        r31 = 0;
+        if ((t->m28 >> 9) & 1) {
             r31 = 1;
         } else if (t->m28 & 0x400) {
             r31 = 2;
@@ -464,28 +472,23 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         s = t->m48;
         s->m08->reset();
         c = s->m08;
-        if (c->mBaseProcSeq != 0) {
-            ((Tu80390818_Proc*)c->mBaseProcSeq)->m08 = 0;
-        }
-        if (c->mBaseProcRender != 0) {
-            ((Tu80390818_Proc*)c->mBaseProcRender)->m08 = 0;
-        }
+        proc = (Tu80390818_Proc*)c->mBaseProcSeq;
+        if (proc != 0) proc->m08 = 0;
+        proc = (Tu80390818_Proc*)c->mBaseProcRender;
+        if (proc != 0) proc->m08 = 0;
         c->mResourceCache = 0;
         s->m1A2 = r31;
         {
             s32 id = t->m30;
-            v = *(Tu80390818_Vec*)&t->m50;
             if (id != -1) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
-                if (a != 0) {
-                    v = *(Tu80390818_Vec*)(a + 0xC);
-                }
+                if (a != 0) v = *(Tu80390818_Vec*)(a + 0xc);
+                else v = *(Tu80390818_Vec*)&t->m50;
+                Tu80390818_setMessage(s = t->m48, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&v);
+            } else {
+                Tu80390818_setMessage(s = t->m48, t->m20, *(JGeometry::TVec3<f32>*)&t->m50, *(JGeometry::TVec3<f32>*)&t->m50);
             }
         }
-        s->m14C = t->m20;
-        s->m08->setMessageCode(t->m20 >> 16, t->m20 & 0xFFFF);
-        *(Tu80390818_Vec*)s->m98 = *(Tu80390818_Vec*)&t->m50;
-        *(Tu80390818_Vec*)s->mA4 = v;
         t->m24 = 7;
         break;
     }
@@ -506,13 +509,13 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         break;
     }
     if (lbl_8053AD78->m44 == 0) {
-        if (t->m48->m3B1 != 0 || (t->m4C->m3B1 != 0 && t->m24 == 0)) {
+        if ((t->m48->m3B1 != 0 || t->m4C->m3B1 != 0) && t->m24 == 0) {
             t->m48->m3B1 = 0;
             t->m4C->m3B1 = 0;
             lbl_8053AD78->mE9 = 1;
-            t->m25 = t->m24;
         }
     }
+    t->m25 = t->m24;
     if (t->m24 == 6 || t->m24 == 7 || t->m24 == 8) {
         if (lbl_8053AB10->m24->m179 == 0) {
             lbl_8053AB10->m24->m17B = 1;
