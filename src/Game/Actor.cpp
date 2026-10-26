@@ -594,6 +594,13 @@ extern "C" void fn_801F3780(Actor* a, u32 v) {
 extern "C" void fn_801CB5CC(u32 room, Vec* pos, u32 a, u32 b);
 extern "C" void fn_801CB688(u32 room, Vec* pos, u32 a, u32 b);
 extern u32 lbl_80469EF8[];
+static inline f32 ActorRand37AC(unsigned int* base, int multiplier)
+{
+    union { unsigned int bits; f32 value; } out;
+    base[0xB4 / 4] = base[0xB4 / 4] * multiplier + 0x3C6EF35F;
+    out.bits = (base[0xB4 / 4] >> 9) | 0x3F800000;
+    return out.value - lbl_8053F774;
+}
 u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
 {
     s32 dd;
@@ -631,7 +638,7 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
 
     {
         Vec* pv = (Vec*)p;
-        v.set(a->field_0C.x - pv->x, (a->field_0C.y - a->field_0C.z) - (pv->y - pv->z), lbl_8053F740);
+        v.set(a->field_0C.x - pv->x, (a->field_0C.y - a->field_0C.z) - (pv->y - pv->z), 0.0f);
         v.normalize();
         a->field_EC.x = v.x;
         a->field_EC.y = v.y;
@@ -652,15 +659,16 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
             if (lbl_8053F740 == a->field_0C.z) {
                 f32 r;
                 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xB4))->get_ufloat_1();
-                if (r < lbl_8053F74C) {
+                f32 half = lbl_8053F74C;
+                if (r < half) {
                     v.scale(lbl_8053F7B0);
                     a->field_F8 = 1;
                 } else {
                     a->field_F8 = 2;
-                    f32 vz = v.z;
-                    v.scale(lbl_8053F7A4);
+                    f32 scale = lbl_8053F7A4;
                     r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xB4))->get_ufloat_1();
-                    v.z = (vz + (lbl_8053F74C + r)) * lbl_8053F7A4;
+                    v.z += half + r;
+                    v.scale(scale);
                 }
             } else {
                 v.scale(lbl_8053F7B0);
@@ -681,15 +689,20 @@ u32 fn_801F37AC(Actor* a, u32 x, void* p, u32 d, u32 buf, u32 i)
     }
     a->field_FC = buf;
     if ((s32)a->field_FC == 5) {
-        u32 id = a->field_1A0;
-        if (id != 0x545A4F4B && id != 0x534C4B32) {
+        s32 id = a->field_1A0;
+        switch (id) {
+        case 0x545A4F4B:
+        case 0x534C4B32: break;
+        default:
             if (id == 0x54494E4B || (s32)(a->field_108 - x) <= 0) {
                 if (a->field_100 != 0) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xC), a->field_100);
+                    void* manager = fn_8013C824();
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)manager + 0xC), a->field_100);
                     a->field_100 = 0;
                 }
                 if (a->field_104 != 0) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xC), a->field_104);
+                    void* manager = fn_8013C824();
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)manager + 0xC), a->field_104);
                     a->field_104 = 0;
                 }
                 f32 sc = lbl_8046A00C[a->field_C0];
@@ -2790,7 +2803,7 @@ extern "C" void fn_801EFD34(Actor* this_, void* res, const void* rec, u32 mask, 
     s32 room = (s32)this_->field_04;
     v.x += dx;
     v.y += dy;
-    v.z = this_->field_0C.z + dz;
+    v.z += dz;
     if (room < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &v, res, &args);
 }
 #pragma opt_lifetimes reset
