@@ -164,9 +164,6 @@ struct SayaRandom {
     }
 };
 struct SayaGame { u8 pad[0xb4]; SayaRandom rnd; };
-static inline f32 sayaRandomBounce(SayaRandom* rnd, const f32 base) {
-    return base + rnd->get_sfloat_1();
-}
 extern SayaGame* lbl_8053AAF8;
 extern const f32 lbl_8053E5E0;
 #pragma dont_inline reset
@@ -394,8 +391,8 @@ extern "C" s32 fn_801A4754(u8* this_, void* a4, void* a5) {
         if (kind != 1) break;
     case 5:
         if (*(f32*)(this_ + 0x14) == lbl_8053E5D4) {
-            const f32 base = 4.0f;
-            *(JGeometry::TVec3f*)(this_ + 0x3C) = JGeometry::TVec3f(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), base + lbl_8053AAF8->rnd.get_sfloat_1());
+            f32 one = 1.0f;
+            *(JGeometry::TVec3f*)(this_ + 0x3C) = JGeometry::TVec3f(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), lbl_8053E5E4 + (one - lbl_8053E5E8 * lbl_8053AAF8->rnd.get_ufloat_1()));
             *(JGeometry::TVec3f*)(this_ + 0xC) = JGeometry::TVec3f(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) + *(f32*)(this_ + 0x44));
         }
         fn_801F3780(this_, 0x12C);
