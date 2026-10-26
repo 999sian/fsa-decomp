@@ -808,7 +808,7 @@ void fn_802804E0(char* p) {
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> step;
     bool linked = Player_IsLinked(p);
-    if (fn_802486A0(p) == 4 && fn_80248778(p) == fn_80240888(p)) {
+    if (fn_802486A0(p) == 4 && fn_80240888(p) == fn_80248778(p)) {
         linked = false;
     }
     if (linked) {
