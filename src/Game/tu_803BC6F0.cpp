@@ -679,6 +679,7 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v20, &v24);
 }
 
+#pragma dont_inline on
 extern "C" void fn_803BE3D8(void* a) {
     char* this_ = (char*)a;
     s16 cnt;
@@ -697,6 +698,7 @@ extern "C" void fn_803BE3D8(void* a) {
         tbl[i] = (u8)i;
     }
 }
+#pragma dont_inline reset
 #pragma dont_inline reset
 
 #pragma opt_propagation off
@@ -1210,6 +1212,7 @@ extern "C" void fn_803C05D8(u8* p) {
     p[0x110] = 0x1a;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803C0A34(char* pc) {
     u8* p = (u8*)pc;
     u8* kp;
@@ -1217,7 +1220,8 @@ extern "C" void fn_803C0A34(char* pc) {
     int j;
     u8* keys;
     u8* base;
-    u32 idx;
+    s32 idx;
+    u8* selected;
     f32 d;
     u8* o;
 
@@ -1292,19 +1296,49 @@ extern "C" void fn_803C0A34(char* pc) {
     }
 
     idx = *(s32*)(p + 0xa0);
-    tu803C0A_setCell(p, (const u64*)(base + 0x780), idx, 0x125);
-    tu803C0A_setCell(p, (const u64*)(base + 0x768), idx, 0x126);
-    tu803C0A_setCell(p, (const u64*)(base + 0x750), idx, 0x127);
-    tu803C0A_setCell(p, (const u64*)(base + 0x6c8), idx, 0x128);
-    tu803C0A_setCell(p, (const u64*)(base + 0x6b0), idx, 0x129);
-    tu803C0A_setCell(p, (const u64*)(base + 0x698), idx, 0x12a);
-    tu803C0A_setCell(p, (const u64*)(base + 0x680), idx, 0x12b);
-    tu803C0A_setCell(p, (const u64*)(base + 0x668), idx, 0x12c);
-    tu803C0A_setCell(p, (const u64*)(base + 0x650), idx, 0x12d);
-    tu803C0A_setCell(p, (const u64*)(base + 0x638), idx, 0x12e);
-    tu803C0A_setCell(p, (const u64*)(base + 0x620), idx, 0x12f);
-    tu803C0A_setCell(p, (const u64*)(base + 0x608), idx, 0x130);
-    tu803C0A_setCell(p, (const u64*)(base + 0x5f0), idx, 0x131);
+    {
+ const u64* key = (const u64*)(base + 0x780);
+ void* found = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+ selected = p;
+ selected += idx * 4;
+ fn_804023D0(*(void**)(selected + 0x38), found, p[0x125]);
+ }
+    { const u64* key = (const u64*)(base + 0x768);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x126]);
+ }
+    { const u64* key = (const u64*)(base + 0x750);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x127]);
+ }
+    { const u64* key = (const u64*)(base + 0x6c8);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x128]);
+ }
+    { const u64* key = (const u64*)(base + 0x6b0);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x129]);
+ }
+    { const u64* key = (const u64*)(base + 0x698);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12a]);
+ }
+    { const u64* key = (const u64*)(base + 0x680);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12b]);
+ }
+    { const u64* key = (const u64*)(base + 0x668);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12c]);
+ }
+    { const u64* key = (const u64*)(base + 0x650);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12d]);
+ }
+    { const u64* key = (const u64*)(base + 0x638);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12e]);
+ }
+    { const u64* key = (const u64*)(base + 0x620);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x12f]);
+ }
+    { const u64* key = (const u64*)(base + 0x608);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x130]);
+ }
+    { const u64* key = (const u64*)(base + 0x5f0);
+ fn_804023D0(*(void**)(selected + 0x38), ((J2DPane*)*(void**)(p + 8))->search(key[idx]), p[0x131]);
+ }
 
     *(s16*)(p + 0xd8) = 0;
     *(s16*)(p + 0xda) = 0;
@@ -1312,7 +1346,7 @@ extern "C" void fn_803C0A34(char* pc) {
     p[0x110] = 0x17;
     fn_80458880(lbl_8053AF80, 0x5b, -1);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_803C1054(u8* p) {
     s32 i;
     const u64* pair;
