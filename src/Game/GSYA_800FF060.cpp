@@ -17,6 +17,12 @@
 extern void* lbl_8053AAF8;
 extern "C" s32 fn_80138A30(void* game);
 extern u8* lbl_8053AF00;
+struct GSYATimeState {
+    u8 pad[0x28];
+    u8 centiseconds[4];
+    u8 seconds[4];
+    u8 flags;
+};
 extern f32 lbl_8053C110;
 extern f32 lbl_8053C118;
 extern u8 lbl_80463B8C[];
@@ -61,22 +67,30 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
     return this_;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 count;
     s32 i;
     JGeometry::TVec3<f32> saved;
     s32 state = *(s32*)((u8*)this_ + 0x230);
-    if (state == 4 || state == 5 || state == 6 || state == 7) {
+    if (state == 4 || (u32)(state - 5) <= 1 || state == 7) {
         count = fn_80138A30(lbl_8053AAF8);
         for (i = 0; i < count; i++) {
-            fsaSetTimeSlot(this_, i);
+            lbl_8053AF00[0x30] |= (u8)(1 << i);
+            s32 value = *(s32*)((u8*)this_ + 0x250 + i * 4);
+            s32 minutes = value / 60;
+            lbl_8053AF00[0x2c + i] = minutes;
+            value -= minutes * 60;
+            lbl_8053AF00[0x28 + i] = (u8)((f32)value / 0.6f);
         }
         lbl_8053AF00[0x30] |= (u8)(1 << (*(s32*)((u8*)this_ + 0x240) + 4));
         if (*(s32*)((u8*)this_ + 0x230) == 4) {
             saved = *(JGeometry::TVec3<f32>*)((u8*)this_ + 0xc);
             Vec* q = (Vec*)fn_8023E724(*(s32*)((u8*)this_ + 0x240));
-            *(Vec*)((u8*)this_ + 0xc) = *q;
-            ((Vec*)((u8*)this_ + 0xc))->y = ((Vec*)((u8*)this_ + 0xc))->y - lbl_8053C114;
+            this_->field_0C.x = q->x;
+            this_->field_0C.y = q->y;
+            this_->field_0C.z = q->z;
+            this_->field_0C.y -= lbl_8053C114;
             fn_801F06F0(this_, lbl_80463B78, (void*)0x314, 0, (void*)-1, lbl_8053C118, lbl_8053C118);
             if (fn_8023DE58(*(s32*)((u8*)this_ + 0x240)) != 0) {
                 fn_803075AC(*(u32*)((u8*)this_ + 0x198), fn_8023DE58(*(s32*)((u8*)this_ + 0x240)), (u8*)this_ + 0xc, (void*)0x314, 0, 2, -1, 0, 0, 0);
@@ -86,9 +100,13 @@ extern "C" void fn_800FF0C0(Actor* this_) {
             this_->field_0C.z = saved.z;
         }
     }
-    fn_801F06F0(this_, lbl_80463B8C, (void*)(((u8)*((u8*)this_ + 0x235) * 2) + *(s32*)((u8*)this_ + 0x23c) + 0x311), 0, 0, lbl_8053C118, lbl_8053C118);
+    s32 id = *(u8*)((u8*)this_ + 0x235);
+    id <<= 1;
+    id += *(s32*)((u8*)this_ + 0x23c);
+    id += 0x311;
+    fn_801F06F0(this_, lbl_80463B8C, (void*)id, 0, 0, lbl_8053C118, lbl_8053C118);
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_80239914(s32 a, s32 b);
 extern "C" void fn_8022FEB8(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" s32 fn_8022FD8C(s32 a);
