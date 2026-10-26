@@ -1094,7 +1094,6 @@ void fn_8028126C(char* p) {
     if (F32(p, 0x10) <= lbl_80540360 && F32(p, 0x34c) <= lbl_80540360) {
         F32(p, 0x34c) = lbl_80540360;
         fn_8027EB04(p);
-    }
     JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x344), (Vec*)(p + 8));
     switch (S32(p, 0x3dc)) {
     case 0:
@@ -1119,10 +1118,9 @@ void fn_8028126C(char* p) {
         break;
     }
     S32(p, 0x408)++;
-    if (S32(p, 0x408) < 300) {
-        if ((u16)fn_8022461C(p + 8, S32(p, 0x3b4)) == 0x39) {
-            fn_80251AEC(p, 0);
-        }
+    if (S32(p, 0x408) >= 300 || (u16)fn_8022461C(p + 8, S32(p, 0x3b4)) == 0x39) {
+        fn_80251AEC(p, 0);
+    }
     } else {
         F32(p, 0x34c) -= lbl_80540398;
         F32(p, 0x10) += F32(p, 0x34c);
