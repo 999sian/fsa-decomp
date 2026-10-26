@@ -17,14 +17,10 @@ extern "C" void* fn_804030C4(u32 tag, char* name);
 extern "C" int snprintf(char* s, unsigned long n, const char* fmt, ...);
 
 static inline u32 calcCardChecksum(u8* data) {
-    u16 inv = 0;
     u32 sum = 0;
-    u16* p = (u16*)data;
-    for (int i = 0; i < 0x7ff; i++) {
-        u32 value = *p++;
-        sum += value;
-        inv += ~value;
-        value = *p++;
+    u16 inv = 0;
+    for (u32 i = 0; i < 0x1ffc; i += 2) {
+        u16 value = *(u16*)(data + i);
         sum += value;
         inv += ~value;
     }
