@@ -51,14 +51,12 @@ struct fn_801D1974_obj {
 
     PointTrail& trail() { return *(PointTrail*)&m2a8; }
     JGeometry::TVec2<f32>& pointAt(s32 i) { return m2ac[i]; }
-    JGeometry::TVec2<f32> point(s32 i) {
-        if (m2a8 <= i) {
-            i = 0;
-        }
-        JGeometry::TVec2<f32> p;
-        p.x = m2ac[i].x;
-        p.y = m2ac[i].y;
-        return p;
+    s32 pointIndex(s32 i) {
+        if (m2a8 <= i) i = 0;
+        return i;
+    }
+    JGeometry::TVec2<f32>& point(s32 i) {
+        return m2ac[pointIndex(i)];
     }
     void popPoint() {
         if (m2a8 >= 1) {
@@ -125,17 +123,18 @@ extern "C" void fn_801D11FC(u8* this_)
 }
 #pragma opt_propagation reset
 extern "C" s32 fn_801D12CC(fn_801D1974_obj* this_) {
-    s32 ret = 0;
+    u8 ret = 0;
     u8 lost;
     u8 far_;
-    int idx;
+
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> p;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
 
     if (this_->m338 >= 0 && ((u8 (*)(void*, s32))fn_801D0B44)(this_, this_->m338)) {
-        idx = this_->m338;
+        lost = 0;
+        s32 idx = this_->m338;
         fn_8022E114(idx, &pos);
         if (fn_801F329C(this_, idx)) {
             fn_801CD150(&pos, &tmp);
