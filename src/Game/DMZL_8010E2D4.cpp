@@ -473,7 +473,7 @@ extern "C" void fn_80110454(u8* p) {
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
 
         JGeometry::TVec3<f32> tmp = *(Vec*)(p + 0x24);
-        tmp.y = DMZLShiftY(tmp.y, lbl_8053C5A0);
+        tmp.y += lbl_8053C5A0;
         DMZLSetBox(tmp.x, tmp.y - 180.0f, tmp.x, 180.0f + tmp.y);
         break;
     }
@@ -493,7 +493,7 @@ extern "C" void fn_80110454(u8* p) {
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
 
         JGeometry::TVec3<f32> tmp = *(Vec*)(p + 0xc);
-        tmp.y = DMZLShiftY(tmp.y, lbl_8053C5E4);
+        tmp.y += lbl_8053C5E4;
         DMZLSetBox(tmp.x, tmp.y - 130.0f, tmp.x, 130.0f + tmp.y);
         break;
     }
@@ -501,7 +501,7 @@ extern "C" void fn_80110454(u8* p) {
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
 
         JGeometry::TVec3<f32> tmp = *(Vec*)(p + 0xc);
-        tmp.y = DMZLShiftY(tmp.y, lbl_8053C5E4);
+        tmp.y += lbl_8053C5E4;
         DMZLSetBoxAlt(tmp.x, tmp.y - 130.0f, tmp.x, 130.0f + tmp.y);
         break;
     }
