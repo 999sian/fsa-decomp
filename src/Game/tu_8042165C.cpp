@@ -748,6 +748,7 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
     }
 }
 
+#pragma opt_strength_reduction reset
 #pragma opt_lifetimes off
 #pragma opt_propagation off
 extern "C" void fn_80423DF0(u8* self, s32 player) {
