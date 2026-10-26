@@ -121,33 +121,37 @@ extern "C" void fn_80341D08(Actor* this_, s32 id, f32 x, f32 y, f32 z, DrawRec* 
     }
 }
 
-static inline void bombDrawTexture(Actor* actor, const void* texture, DrawRec* rec, s32 mode, f32 height) {
-    ((BombDrawActor*)actor)->drawTexture(texture, rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
-}
 extern "C" void fn_80342368(Actor* actor) {
     u8* p = (u8*)actor;
     if (*(s32*)(p + 0x230) == 2 || *(s32*)(p + 0x230) == 7) return;
     s32 n = *(s32*)(p + 0x234) / 60 + 1;
-    f32 cx, cy, sx, sy, sz, cz;
+    f32 zero;
+    f32 scaleX;
+    f32 ss;
+    f32 cz;
+    f32 cs;
+    f32 cc;
+    f32 cx, cy, sx, sy, sz;
     f32 height;
     DrawRec rec;
     Mtx mtx;
     PSMTXIdentity(mtx);
-    const f32 zero = 0.0f;
-    const f32 scaleX = *(f32*)(p + 0x254);
-    JGeometry::TVec3f saved = *(JGeometry::TVec3f*)(p + 0xc);
+    JGeometry::TVec3f saved;
+    zero = lbl_805422EC;
+    scaleX = *(f32*)(p + 0x254);
+    saved = *(JGeometry::TVec3f*)(p + 0xc);
     if (zero == scaleX) return;
     f32 scaleY, scaleZ;
     scaleZ = *(f32*)(p + 0x25c);
     scaleY = *(f32*)(p + 0x258);
     mtx[0][0] = scaleX;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
+    mtx[0][1] = zero;
+    mtx[0][2] = zero;
+    mtx[1][0] = zero;
     mtx[1][1] = scaleY;
-    mtx[1][2] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
+    mtx[1][2] = zero;
+    mtx[2][0] = zero;
+    mtx[2][1] = zero;
     mtx[2][2] = scaleZ;
     rec.w18 = mtx;
     if (*(s32*)(p + 0x230) >= 5) {
@@ -170,10 +174,10 @@ extern "C" void fn_80342368(Actor* actor) {
     }
     if (*(s32*)(p + 0x23c) == 1) ((u8*)&rec)[0x14] = 150;
     if (*(s32*)(p + 0x230) == 6 && n < 10) {
-        void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FBC);
+        register void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FBC);
         ((BombDrawActor*)actor)->drawTexture(texture, &rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
     } else {
-        void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FCC);
+        register void* texture = (*(BombResourceMgr**)((u8*)lbl_8053AAF8 + 0xa4))->getResource('TIMG', lbl_80471FCC);
         ((BombDrawActor*)actor)->drawTexture(texture, &rec, mode, 0.0f, height - lbl_805422F0, 0.0f);
     }
     *(JGeometry::TVec3f*)(p + 0xc) = saved;
@@ -187,7 +191,18 @@ extern "C" void fn_80342368(Actor* actor) {
         cx = cos(lbl_805422EC);
         cy = cos(lbl_805422EC);
         cz = cos(lbl_805422EC);
-        bombSetRotation(mtx, sx, sy, sz, cx, cy, cz, lbl_80542304);
+        cc = cx * cz;
+        ss = sx * sy;
+        cs = cx * sz;
+        mtx[0][0] = lbl_80542304 * (cy * cz);
+        mtx[1][0] = lbl_80542304 * (cy * sz);
+        mtx[2][0] = lbl_80542304 * -sy;
+        mtx[0][1] = lbl_80542304 * (ss * cz - cs);
+        mtx[1][1] = lbl_80542304 * (ss * sz + cc);
+        mtx[2][1] = lbl_80542304 * (sx * cy);
+        mtx[0][2] = lbl_80542304 * (cc * sy + sx * sz);
+        mtx[1][2] = lbl_80542304 * (cs * sy - sx * cz);
+        mtx[2][2] = lbl_80542304 * (cx * cy);
         rec.w18 = mtx;
         rec.b2c = 0;
         void* res = fn_804030C4('TIMG', lbl_804AC558[n]);
