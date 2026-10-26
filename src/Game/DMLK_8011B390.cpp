@@ -539,7 +539,7 @@ extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" void fn_8013CC50(u32 room, Vec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80230498(s32 i, Vec* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80230BF4(s32 i, s32 n);
-extern "C" f32 lbl_8053C81C;
+extern "C" const f32 lbl_8053C81C;
 extern "C" f32 lbl_8053C820;
 extern "C" const f32 lbl_8053C818;
 static inline JGeometry::TVec3f dmlkDivide(JGeometry::TVec3f value, f32 divisor) {
@@ -566,6 +566,7 @@ static inline void dmlkEmitPuff(u8* this_) {
 extern "C" void fn_8011B878(u8* this_, s32 id) {
     JGeometry::TVec3f tmp9;
     JGeometry::TVec3f result;
+    JGeometry::TVec3f diff;
     switch (id) {
     case 0:
         *(u8*)(this_ + 0x11d) = 0;
@@ -610,9 +611,8 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
         }
         *(JGeometry::TVec3f*)(this_ + 0x260) = *(JGeometry::TVec3f*)(this_ + 0x24);
         p = (Vec*)fn_8023E724(0);
-        JGeometry::TVec3f diff = *(JGeometry::TVec3f*)(this_ + 0x24) - *(JGeometry::TVec3f*)p;
-        k = lbl_8053C820;
-        result.set(diff.x / k, diff.y / k, diff.z / k);
+        diff = *(JGeometry::TVec3f*)(this_ + 0x24) - *(JGeometry::TVec3f*)p;
+        result.set(diff.x / lbl_8053C820, diff.y / lbl_8053C820, diff.z / lbl_8053C820);
         *(JGeometry::TVec3f*)(this_ + 0x26c) = result;
         break;
     }
@@ -672,7 +672,7 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
         break;
     case 23:
         fn_800FEB78(this_ + 0x278, 4);
-        *(u8*)(this_ + 0x231) = *(u8*)(this_ + 0x231) == 0;
+        *(u8*)(this_ + 0x231) = *(u8*)(this_ + 0x231) ? 0U : 1U;
         *(s32*)(this_ + 0x23c) = 0;
         *(f32*)(this_ + 0x14) = lbl_8053C7D8;
         fn_801F0E34(this_, 0x400c7, 0);
