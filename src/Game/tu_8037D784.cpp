@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 
 void operator delete(void* p);
