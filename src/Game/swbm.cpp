@@ -14,6 +14,8 @@ extern "C" u8 fn_8020D6AC(void* entry, s32 a, s32 b, void* d, const char* e);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+static inline void swbmOffsetAngle(s32& angle) { angle += 0x2000; }
+
 struct SinCos {
     f32 first;
     f32 second;
@@ -179,12 +181,13 @@ extern "C" void fn_8030C210(void* a, void* pos);
 extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" f64 __ps_add(f64 a, f64 b);
+#pragma opt_common_subs off
 extern "C" void fn_8017A68C(char* this_) {
     s32 room;
     *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
 
     if (*(s32*)(this_ + 0x25c) == 1) {
-        s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98));
+        register s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98));
         f32 r = 8.0f;
         s32 i = 0;
         for (ang += 0x2000; i < 2; i++) {
@@ -301,8 +304,7 @@ extern "C" void fn_8017A68C(char* this_) {
         *(s32*)(this_ + 0x244) -= 1;
     }
 }
-
-#pragma opt_propagation off
+#pragma opt_common_subs on
 extern "C" s32 fn_8017AAF8(char* this_, s32 p1, s32 p2) {
     void* handle;
     s32 id;
