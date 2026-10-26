@@ -22,9 +22,8 @@ static inline f32 EZZR_Sqrt(f32 x) {
         return x;
     }
     f32 y = __frsqrte(x);
-    y = 0.5f * y * (3.0f - (x * (y * y)));
-    x *= y;
-    return x;
+    y = 0.5f * y * __fnmsubs(x, y * y, 3.0f);
+    return x * y;
 }
 
 class EZZR : public Actor {
