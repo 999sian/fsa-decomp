@@ -112,6 +112,7 @@ extern "C" void fn_801AA8F4(void* this_) {
 extern "C" void fn_801A96B4(void* this_);
 extern "C" void fn_801A9CF4(void* this_);
 struct TtatTimers { u8 pad[0x234]; s32 t[3]; };
+struct TtatHandles { u8 pad[0x270]; s32 handles[4]; };
 
 // TTAT update (vtable slot 3)
 extern "C" void fn_801A961C(char* this_) {
@@ -150,20 +151,23 @@ extern "C" void fn_801A96B4(void* this_) {
     f32 s = lbl_8053E6E0;
     s32 id;
     f32* v;
-    s32 ang;
+    int ang;
     s32 i;
     char* t = (char*)this_;
 
-    fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), t + 0xc);
+    void* pos = t+0xc;
+    fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), pos);
     *(f32*)(t + 0x80) = lbl_8053E6EC;
     *(f32*)(t + 0x84) = lbl_8053E6EC;
     *(f32*)(t + 0x88) = lbl_8053E6F0;
     *(f32*)(t + 0x8c) = lbl_8053E6F0;
 
-    if (*(s32*)(t + 0x240) != *(s32*)(t + 0x250) && *(s32*)(t + 0x250) > 0) {
+    s32 old = *(s32*)(t+0x240);
+    s32 current = *(s32*)(t+0x250);
+    if (old != current && current > 0) {
         *(s32*)(t + 0x238) = 50;
         *(s32*)(t + 0x240) = *(s32*)(t + 0x250);
-        if (*(void**)(t + 0x2b8) != 0) {
+        if (*(u32*)(t + 0x2b8) != 0) {
             forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(t + 0x2b8));
             *(s32*)(t + 0x2b8) = 0;
         }
@@ -186,7 +190,7 @@ extern "C" void fn_801A96B4(void* this_) {
         break;
     case 0:
         if (*(s32*)(t + 0x230) != 4) {
-            if (*(void**)(t + 0x2b8) != 0) {
+            if (*(u32*)(t + 0x2b8) != 0) {
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(t + 0x2b8));
                 *(s32*)(t + 0x2b8) = 0;
             }
@@ -270,14 +274,8 @@ extern "C" void fn_801A96B4(void* this_) {
         /* fall through */
     case 1:
         {
-            u32 seed = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-            u32 bits;
-            f32 f;
-            *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
-            bits = (*(u32*)(lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-            f = *(f32*)&bits;
-            *(s32*)(t + 0x244) = (s32)((f - lbl_8053E6E8) * lbl_8053E700);
-            *(s32*)(t + 0x244) &= 1;
+            *(s32*)(t+0x244) = (s32)(((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()*lbl_8053E700);
+            *(s32*)(t+0x244) &= 1;
         }
         *(s32*)(t + 0x230) = 2;
         /* fall through */
@@ -313,13 +311,13 @@ extern "C" void fn_801A96B4(void* this_) {
     case 4:
         if (*(s32*)(t + 0x234) == 0) {
             if (*(s32*)(t + 0x244) > 3) {
-                ((void (*)(void*))((void**)*(void**)t)[9])(t);
+                ((Actor*)t)->v07();
             } else {
-                s32 id2 = *(s32*)(t + 0x270 + *(s32*)(t + 0x244) * 4);
+                s32 id2 = *(s32*)((t + *(s32*)(t + 0x244) * 4) + 0x270);
                 if (id2 >= 0) {
                     void* c2 = fn_801F666C(fn_801F856C(), id2);
                     if (c2 != 0) {
-                        ((void (*)(void*))((void**)*(void**)c2)[9])(c2);
+                        ((Actor*)c2)->v07();
                         *(s32*)(t + 0x234) = 10;
                         *(s32*)(t + 0x244) = *(s32*)(t + 0x244) + 1;
                     }
