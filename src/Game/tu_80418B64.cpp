@@ -1,4 +1,14 @@
 #include "types.h"
+extern void* lbl_804B13D4[];
+extern "C" void __dl__FPv(void*);
+struct DtorSlot2 {
+    virtual void destroy(s32 freeFlag);
+};
+static inline void ReleaseSlot(void** slot) {
+    DtorSlot2* obj = (DtorSlot2*)*slot;
+    if (obj != 0) obj->destroy(1);
+    *slot = 0;
+}
 extern "C" void fn_8041E8B4(u8*, s32);
 extern "C" void fn_8041E3B4(u8*, u32);
 extern "C" void fn_8041DD24(void*);
