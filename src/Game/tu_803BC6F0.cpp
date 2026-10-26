@@ -891,8 +891,10 @@ extern "C" void fn_803BF698(u8* this_) {
 }
 
 static inline void bindMenuNine(u8* p, const u8* tbl) {
-    for (int i = 0; i < 9; ++i) {
-        void* pane = ((J2DPane*)*(void**)(p + 4))->search(((const u64*)(tbl + 0x368))[i]);
+    const u64* keys = (const u64*)(tbl + 0x368);
+    int i;
+    for (i = 0; i < 9; ++i, ++keys) {
+        void* pane = ((J2DPane*)*(void**)(p + 4))->search(*keys);
         fn_804023D0(*(void**)(p + 0x20), pane, p[i + 0x196]);
     }
 }
@@ -900,9 +902,8 @@ static inline void bindMenuNine(u8* p, const u8* tbl) {
 extern "C" void fn_803BF9C4(u8* p) {
     const u8* tbl = lbl_804765D0;
     u8* q;
-    int j;
-    int i;
-    int k;
+    s32 i;
+    s32 k;
     const u64* keys;
     u8* o;
     void* r;
@@ -946,12 +947,7 @@ extern "C" void fn_803BF9C4(u8* p) {
     obj = *(void**)(*(u8**)(p + 0x20) + 4);
     ((Obj9*)obj)->v9(*(u8*)(*(u8**)(p + 0x20) + 0x28));
 
-    keys = (const u64*)(tbl + 0x368);
-    for (j = 0; j < 9; j++, keys++) {
-        obj = *(void**)(p + 4);
-        r = ((J2DPane*)obj)->search(*keys);
-        fn_804023D0(*(void**)(p + 0x20), r, p[j + 0x196]);
-    }
+    bindMenuNine(p, tbl);
     *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
     obj = *(void**)(*(u8**)(p + 0x34) + 4);
     ((Obj9*)obj)->v9(0);
@@ -961,12 +957,12 @@ extern "C" void fn_803BF9C4(u8* p) {
     q = p;
     for (i = 0; i < 4; i++) {
         *(u8*)(*(u8**)(*(u8**)(q + 0x24) + 4) + 0xb0) = 1;
-        fn_80402E08(*(void**)(q + 0x24), 0.0f, lbl_8054349C);
+        fn_80402E08(*(void**)(q + 0x24), 0.0f, 100.0f);
         *(s16*)(*(u8**)(q + 0x24) + 0x22) = 0;
         obj = *(void**)(*(u8**)(q + 0x24) + 4);
         ((Obj9*)obj)->v9(0);
-        *(s16*)(*(u8**)(q + 0x24) + 0x26) = 0;
         k = 0;
+        *(s16*)(*(u8**)(q + 0x24) + 0x26) = k;
         switch (i) {
         case 0:
             keys = (const u64*)(tbl + 0x7f8);
@@ -1008,7 +1004,10 @@ extern "C" void fn_803BF9C4(u8* p) {
     fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x54636f703031ULL)), 0x11f, 0, 0, 0);
 
     {
-        s16 sum = *(s16*)(lbl_8050DB0C + 0x1e0) + (*(s16*)(lbl_8050DB0C + 0x1e4) + *(s16*)(lbl_8050DB0C + 0x1e2));
+        s16 a = *(s16*)(lbl_8050DB0C + 0x1e2);
+        s16 b = *(s16*)(lbl_8050DB0C + 0x1e4);
+        s16 c = *(s16*)(lbl_8050DB0C + 0x1e0);
+        s16 sum = c + (b + a);
         *(s16*)(p + 0xd8) = *(s16*)(lbl_8050DB0C + 0x1e6);
         if (*(s16*)(p + 0xd8) < sum) {
             *(s16*)(p + 0xd8) = sum;
@@ -3279,6 +3278,7 @@ extern "C" void fn_803C9338(u8* p) {
 #pragma opt_propagation reset
 
 extern "C" f32 lbl_80543478;
+#pragma opt_strength_reduction off
 extern "C" void fn_803C9898(u8* p) {
     u8* base;
     s16 d;
@@ -3409,7 +3409,7 @@ extern "C" void fn_803C9898(u8* p) {
         p[0x110] = 0x15;
     }
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_803C0A34(char* p);
 extern "C" void fn_803CE4CC(char* p);
 extern "C" void fn_803C9F14(char* this_) {
