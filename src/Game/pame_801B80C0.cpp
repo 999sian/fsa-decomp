@@ -445,7 +445,7 @@ static inline u8 pameLanded(u8* this_, s32 st) {
     return r;
 }
 
-static inline s32 pameFirstPlayer(const u8 mask) {
+static inline s32 pameFirstPlayer(const u8& mask) {
     s32 r = -1;
     for (s32 i = 0; i < 4; i++) {
         if (mask & (1 << i)) {
