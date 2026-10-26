@@ -43,16 +43,6 @@ extern "C" void __dt__10JUTTextureFv(void* self, s32 flags);
 extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out);
 extern "C" u32 lbl_8053D6B8;
 extern "C" u32 lbl_80543F30;
-static inline void emitBPOHPosition(const f32 x, const f32 y, const f32 z) {
-    *(volatile f32*)0xCC008000 = x;
-    *(volatile f32*)0xCC008000 = y;
-    *(volatile f32*)0xCC008000 = z;
-}
-static inline void emitBPOHTexCoord(const f32 s, const f32 t) {
-    *(volatile f32*)0xCC008000 = s;
-    *(volatile f32*)0xCC008000 = t;
-}
-
 extern "C" void fn_801618D0(char* this_, f32* pos, u8* ent) {
     char* names = (char*)lbl_804661E0;
     char tex0[0x40];
