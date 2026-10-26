@@ -2936,6 +2936,9 @@ extern "C" s32 fn_8042DCC4(BitReader* r) {
 }
 
 #pragma dont_inline off
+static inline s64 predictADPCM(s32 value, u8 shift, const s16* coef, s16 previous, s16 older) {
+    return ((s64)(coef[1] * older) + (s64)(coef[0] * previous) + (s64)((value << shift) << 11)) << 5;
+}
 static inline s16 roundADPCM(s64 sample) {
     if ((u16)(sample & 0xffffLL) > 0x8000) sample += 0x10000LL;
     else if ((u16)(sample & 0xffffLL) == 0x8000 && (sample & 0x10000LL)) sample += 0x10000LL;
