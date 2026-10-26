@@ -12,6 +12,16 @@
 extern const f32 lbl_80541D88;
 extern const f32 lbl_80541DFC;
 
+struct RupyTbl {
+    s32 frame[12];
+    u16 se0[12];
+    u16 se1[12];
+    u16 se2[12];
+    u16 se3[12];
+    u8 pad90[0x30];
+    s32 msg[8];
+};
+
 // Scaled rotation matrix (X, Y, Z angles) into the upper 3x3 of m.
 static inline void RupyRotScaleMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
     f32 cz;
@@ -672,6 +682,7 @@ extern const f32 lbl_80541DC4;
 extern const f32 lbl_80541DC8;
 extern const f32 lbl_80541DCC;
 extern const f32 lbl_80541DD0;
+#pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_8032BFB0(char* p) {
     u8* base = lbl_80471948;
@@ -717,7 +728,7 @@ extern "C" void fn_8032BFB0(char* p) {
     JGeometry::TVec3<f32> save;
     PSMTXIdentity(mtx);
     {
-        f64 angle = *(f32*)(p + 0x23c);
+        f32 angle = *(f32*)(p + 0x23c);
         RupyDrawMtx(mtx, rec, angle, scale);
     }
     st = *(s32*)(p + 0x230);
@@ -784,6 +795,7 @@ extern "C" void fn_8032BFB0(char* p) {
     *(JGeometry::TVec3<f32>*)(p + 0xc) = save;
 }
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern const f32 lbl_80541DE0;
 extern const f32 lbl_80541DE4;
 extern const f32 lbl_80541DE8;
@@ -802,15 +814,6 @@ extern "C" s32 fn_8022F340(s32 a);
 extern "C" void fn_801F3604(void* a);
 extern "C" u8 fn_8023F264(s32 a);
 extern "C" void fn_8032C664(u8* p) {
-    struct RupyTbl {
-        s32 frame[12];
-        u16 se0[12];
-        u16 se1[12];
-        u16 se2[12];
-        u16 se3[12];
-        u8 pad90[0x30];
-        s32 msg[8];
-    };
     RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 i;
     s32 room;
