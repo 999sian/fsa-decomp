@@ -1093,7 +1093,6 @@ extern "C" void* fn_80138E78(u8* p, s16 how) {
 
 extern u8 lbl_8049EF20[];
 extern u8* sManager__8JUTVideo;
-static inline f32 screenWidth() { return (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4); }
 extern const f32 lbl_8053CD80;
 extern const f32 lbl_8053CD84;
 extern const f32 lbl_8053CD8C;
