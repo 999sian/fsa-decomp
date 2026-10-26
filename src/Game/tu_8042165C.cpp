@@ -244,7 +244,7 @@ struct HudTimerTables {
 };
 
 // Sets digit `pos` of player idx's timer (both picture layers) to texture tex.
-static inline void SetTimerDigitAt(u8* this_, u64* a, u64* b, u32 pos, u32 tex) {
+static inline void SetTimerDigitAt(u8* this_, const u64* a, const u64* b, u32 pos, u32 tex) {
     GetPicture(this_, a[pos])->changeTexture(tex, 0);
     GetPicture(this_, b[pos])->changeTexture(tex, 0);
 }
@@ -617,7 +617,7 @@ extern "C" void fn_80422824(u8* p) {
 }
 
 #pragma opt_strength_reduction off
-extern "C" void fn_80423248(u8* this_, int idx) {
+extern "C" void fn_80423248(u8* this_, u32 idx) {
     u8* base = (u8*)lbl_8048E1B8;
     HudTimerTables* tables = (HudTimerTables*)base;
     if (this_[0x257] & (u8)(1 << idx)) {
@@ -658,13 +658,13 @@ extern "C" void fn_80423248(u8* this_, int idx) {
             ((u8*)GetPicture(this_, tables->digitsA[idx][4]))[0xb0] = 0;
             ((u8*)GetPicture(this_, tables->digitsB[idx][4]))[0xb0] = 0;
         }
-        name = lbl_804B1434[t / 1000];
+        name = lbl_804B1434[(int)t / 1000];
         t %= 1000;
         SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel, fn_804030C4(0x54494d47, name));
-        name = lbl_804B1434[t / 100];
+        name = lbl_804B1434[(int)t / 100];
         t %= 100;
         SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel + 1, fn_804030C4(0x54494d47, name));
-        name = lbl_804B1434[t / 10];
+        name = lbl_804B1434[(int)t / 10];
         t %= 10;
         SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel + 2, fn_804030C4(0x54494d47, name));
         SetTimerDigitAt(this_, tables->digitsA[idx], tables->digitsB[idx], sel + 3, fn_804030C4(0x54494d47, lbl_804B1434[t]));
@@ -678,7 +678,7 @@ extern "C" void fn_80423804(u8* this_, u32 idx) {
     u64* c;
     u64* d;
     s32 j;
-    int n;
+    s32 n;
     const u8* base = lbl_8048E1B8;
     if (this_[0x256] & (u8)(1 << idx)) {
         n = fn_80237810(idx);
