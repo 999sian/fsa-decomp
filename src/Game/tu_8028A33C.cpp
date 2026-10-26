@@ -1,3 +1,5 @@
+#include "JSystem/JGeometry/Vec.h"
+#define Vec ActorVec
 #include "Game/Actor.h"
 
 
