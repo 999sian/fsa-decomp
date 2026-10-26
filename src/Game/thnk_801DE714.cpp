@@ -234,7 +234,7 @@ extern "C" void fn_801DE9F4(void* this_) {
     }
 }
 
-extern "C" void fn_801E0CF4(void* this_);
+extern "C" void fn_801E0CF4(char* this_);
 extern "C" void fn_801DEA70(void* this_) {
     char* p = (char*)this_;
     s32 state;
@@ -244,7 +244,7 @@ extern "C" void fn_801DEA70(void* this_) {
     if (*(u16*)(p + 0x2cc) != 0) {
         return;
     }
-    fn_801E0CF4(this_);
+    fn_801E0CF4((char*)this_);
     fn_801CCF7C();
     idx = *(s32*)(p + 0x2ac);
     found = 0;
@@ -557,10 +557,10 @@ static inline u8 thnkResetCached(char* p, s32 state, u32 flags, u32 active) {
     }
     return hit;
 }
-extern "C" void fn_801E0CF4(void* this_) {
-    s32 i;
-    char* p = (char*)this_;
+extern "C" void fn_801E0CF4(char* this_) {
     s32 id;
+    s32 i;
+    char* p = static_cast<char*>(this_);
     s32 n;
     s32 found[4];
     s32* piVar;
@@ -609,7 +609,7 @@ extern "C" void fn_801E0CF4(void* this_) {
             fn_801E1594(p, 0);
             return;
         }
-        if ((*(u32*)(p + 0x230) & 0x10000) != 0) {
+        if ((*(volatile u32*)(p + 0x230) & 0x10000) != 0) {
             *(u32*)(p + 0x230) &= 0xfffeffff;
             st = *(s32*)(p + 0x248);
             switch (st) {
@@ -660,11 +660,11 @@ extern "C" void fn_801E0CF4(void* this_) {
         if(!isTwo) {
             flags = *(u32*)(p + 0x230);
             if ((flags & 0x4000) != 0) {
-                b3=thnkNeedsTurn(p,*(f32*)(p+0x2c4));
+                thnkStoreTurn(p,*(f32*)(p+0x2c4),b3);
             } else if ((flags & 0x20000) != 0) {
                 if (*(s32*)(p + 0x2a8) >= 0 && *(s32*)(p + 0x2a8) == -1) {
                     pf = (f32*)fn_8023E724(*(s32*)(p + 0x2a8));
-                    b3=thnkNeedsTurn(p,*pf);
+                    thnkStoreTurn(p,*pf,b3);
                 }
             } else {
                 idx = *(s32*)(p + 0x2ac);
@@ -681,7 +681,7 @@ extern "C" void fn_801E0CF4(void* this_) {
                     if(idx>=0) obj=(char*)fn_801F666C(fn_801F856C(),idx);
                 }
                 if (obj != 0) {
-                    b3=thnkNeedsTurn(p,*(f32*)(obj+0xc));
+                    thnkStoreTurn(p,*(f32*)(obj+0xc),b3);
                 }
             }
             if (b3) {
