@@ -1,6 +1,6 @@
 #include "types.h"
 
-extern "C" f32 lbl_8053D43C;
+extern "C" const f32 lbl_8053D43C;
 extern "C" f32 lbl_8053D450;
 
 static inline void GXPosition3f32(f32 x, f32 y, f32 z) {
@@ -20,11 +20,11 @@ extern "C" u8 fn_802DCD0C(void* room);
 
 extern "C" char* lbl_8053AB10;
 extern "C" void fn_8013B438(char* p);
-extern "C" f32 lbl_8053D430;
-extern "C" f32 lbl_8053D434;
-extern "C" f32 lbl_8053D438;
-extern "C" f32 lbl_8053D440;
-extern "C" f32 lbl_8053D444;
+extern "C" const f32 lbl_8053D430;
+extern "C" const f32 lbl_8053D434;
+extern "C" const f32 lbl_8053D438;
+extern "C" const f32 lbl_8053D440;
+extern "C" const f32 lbl_8053D444;
 extern "C" void GXClearVtxDesc(void);
 extern "C" void GXSetVtxDesc(s32 attr, s32 type);
 extern "C" void GXSetVtxAttrFmt(s32 vtxfmt, s32 attr, s32 cnt, s32 fmt, s32 frac);
@@ -61,15 +61,14 @@ static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
 *(volatile u8*)0xCC008000 = b;
 *(volatile u8*)0xCC008000 = a;
 }
-extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
+extern "C" void fn_80158624(char* p, const f32* pos1, f32 size, const f32* pos2, u8* col) {
+    f32 dst1[3], dst2[3], src1[3], src2[3];
+    Mtx m1, m2;
     if (*(u8*)(p + 0xc) < 0xff) {
         u32 tevColor;
-        f32 src[3];
-        f32 dst[3];
-        f32 m[3][4];
         f32 c;
-        f32 s;
         f32 ang;
+        f32 s;
         s32 i;
 
         fn_8013B438(lbl_8053AB10);
@@ -106,35 +105,34 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
             ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
             s = sin(ang);
             c = cos(ang);
-            m[0][0] = c;
-            m[0][1] = -s;
-            m[0][2] = 0.0f;
-            m[0][3] = 0.0f;
-            m[1][0] = s;
-            m[1][1] = c;
-            m[1][2] = 0.0f;
-            m[1][3] = 0.0f;
-            m[2][0] = 0.0f;
-            m[2][1] = 0.0f;
-            m[2][2] = 1.0f;
-            m[2][3] = 0.0f;
-            src[0] = 0.0f;
-            src[1] = size;
-            src[2] = 0.0f;
-            PSMTXMultVec(m, (Vec*)src, (Vec*)dst);
-            dst[1] *= 0.5f;
-            JMathInlineVEC::PSVECAdd((Vec*)dst, (Vec*)pos2, (Vec*)dst);
-            GXPosition3f32(dst[0], dst[1], dst[2]);
+            m1[1][0] = s;
+            m1[2][2] = 1.0f;
+            m1[0][0] = c;
+            m1[0][1] = -s;
+            m1[1][1] = c;
+            m1[2][1] = 0.0f;
+            m1[1][2] = 0.0f;
+            m1[2][0] = 0.0f;
+            m1[0][2] = 0.0f;
+            m1[0][3] = 0.0f;
+            m1[1][3] = 0.0f;
+            m1[2][3] = 0.0f;
+            src1[0] = 0.0f;
+            src1[1] = size;
+            src1[2] = 0.0f;
+            PSMTXMultVec(m1, (Vec*)src1, (Vec*)dst1);
+            dst1[1] *= 0.5f;
+            JMathInlineVEC::PSVECAdd((Vec*)dst1, (Vec*)pos2, (Vec*)dst1);
+            *(volatile f32*)0xCC008000 = dst1[0];
+            *(volatile f32*)0xCC008000 = dst1[1];
+            *(volatile f32*)0xCC008000 = dst1[2];
             GXColor4u8(col[3], col[3], col[3], col[3]);
         }
     
     {
-        f32 src[3];
-        f32 dst[3];
-        f32 m[3][4];
         f32 c;
-        f32 s;
         f32 ang;
+        f32 s;
         s32 i;
 
         GXBegin(0xa0, 0, 0x22);
@@ -146,25 +144,27 @@ extern "C" void fn_80158624(char* p, f32* pos1, f32 size, f32* pos2, u8* col) {
             ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
             s = sin(ang);
             c = cos(ang);
-            m[0][0] = c;
-            m[0][1] = -s;
-            m[0][2] = 0.0f;
-            m[0][3] = 0.0f;
-            m[1][0] = s;
-            m[1][1] = c;
-            m[1][2] = 0.0f;
-            m[1][3] = 0.0f;
-            m[2][0] = 0.0f;
-            m[2][1] = 0.0f;
-            m[2][2] = 1.0f;
-            m[2][3] = 0.0f;
-            src[0] = 0.0f;
-            src[1] = size;
-            src[2] = 0.0f;
-            PSMTXMultVec(m, (Vec*)src, (Vec*)dst);
-            dst[1] *= 0.5f;
-            JMathInlineVEC::PSVECAdd((Vec*)dst, (Vec*)pos2, (Vec*)dst);
-            GXPosition3f32(dst[0], dst[1], dst[2]);
+            m2[1][0] = s;
+            m2[2][2] = 1.0f;
+            m2[0][0] = c;
+            m2[0][1] = -s;
+            m2[1][1] = c;
+            m2[2][1] = 0.0f;
+            m2[1][2] = 0.0f;
+            m2[2][0] = 0.0f;
+            m2[0][2] = 0.0f;
+            m2[0][3] = 0.0f;
+            m2[1][3] = 0.0f;
+            m2[2][3] = 0.0f;
+            src2[0] = 0.0f;
+            src2[1] = size;
+            src2[2] = 0.0f;
+            PSMTXMultVec(m2, (Vec*)src2, (Vec*)dst2);
+            dst2[1] *= 0.5f;
+            JMathInlineVEC::PSVECAdd((Vec*)dst2, (Vec*)pos2, (Vec*)dst2);
+            *(volatile f32*)0xCC008000 = dst2[0];
+            *(volatile f32*)0xCC008000 = dst2[1];
+            *(volatile f32*)0xCC008000 = dst2[2];
             GXColor4u8(col[3], col[3], col[3], col[3]);
         }
     }
@@ -298,8 +298,8 @@ extern "C" void fn_80158B5C(char* p, s32 kind, f32 size, f32* pos, u8* col) {
 }
 #pragma opt_propagation reset
 extern "C" char lbl_804BFB60[];
-extern "C" f32 lbl_8053D440;
-extern "C" f32 lbl_8053D43C;
+extern "C" const f32 lbl_8053D440;
+extern "C" const f32 lbl_8053D43C;
 extern "C" const f32 lbl_8053D454;
 extern "C" const f32 lbl_8053D458;
 extern "C" u32 lbl_8053D420;
