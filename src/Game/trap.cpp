@@ -127,9 +127,9 @@ struct TrapActor : Actor {
     JGeometry::TVec3<f32> home;
 };
 
-static inline void trapGetCenter(const JGeometry::TBox2f* box, JGeometry::TVec2<f32>* point) {
-    point->x = lbl_8053D77C * (box->i.x - box->f.x) + box->f.x;
-    point->y = lbl_8053D77C * (box->i.y - box->f.y) + box->f.y;
+static inline void trapGetCenter(const JGeometry::TBox2f* box, JGeometry::TVec2<f32>* point, const f32 half = lbl_8053D77C) {
+    point->x = half * (box->i.x - box->f.x) + box->f.x;
+    point->y = half * (box->i.y - box->f.y) + box->f.y;
 }
 
 static inline void trapSetTarget(TrapActor* p) {
@@ -164,8 +164,7 @@ extern "C" void fn_80164834(char* this_) {
         JGeometry::TBox2f box;
         box.set(*(JGeometry::TBox2f*)&p->field_60);
         box.addPos(pos.x, pos.y);
-        point.set(lbl_8053D77C * (box.i.x - box.f.x) + box.f.x,
-                  lbl_8053D77C * (box.i.y - box.f.y) + box.f.y);
+        trapGetCenter(&box, &point);
         if (fn_80237948(hit, &point.x)) {
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x117, 0, 1, 0, 0, 1);
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x118, 0, 1, 0, 0, 1);
