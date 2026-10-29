@@ -110,7 +110,7 @@ extern "C" void fn_803771AC(u8* this_) {
         box[2] += -1.0f;
         box[3] += -1.0f;
         {
-            u8* p = fn_8020D58C(*(u32*)(this_ + 0x198));
+            u8* p = ((u8*(*)(void))fn_8020D58C)();
             fn_8020D7D0(p + p[0] * 0x784 + 4, *(u32*)(this_ + 0x198));
         }
         if (this_[0x264] == 0) {
