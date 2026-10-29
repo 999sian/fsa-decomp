@@ -2882,8 +2882,10 @@ u8 fn_80246464(char*);
 }
 struct RoomRect { f32 x0, y0, x1, y1; };
 inline bool rectIn(const RoomRect& r, const JGeometry::TVec2<f32>& v) {
+    f32 y;
+    f32 x;
     bool in = 0;
-    if (v.x >= r.x0 && v.y >= r.y0 && v.x < r.x1 && v.y < r.y1) {
+    if ((x = v.x) >= r.x0 && (y = v.y) >= r.y0 && x < r.x1 && y < r.y1) {
         in = 1;
     }
     return in;
@@ -3410,7 +3412,13 @@ void fn_8027CC90(char* p) {
         fn_80251AEC(p, 6);
     }
     PlayerOfs* po = (PlayerOfs*)p;
-    po->ofs.set(lbl_8046BB78[S32(p, 0x3dc)]);
+    const f32* src = (const f32*)&lbl_8046BB78[S32(p, 0x3dc)];
+    f32 sx = *src++;
+    f32 sy = *src++;
+    po->ofs.x = sx;
+    f32 sz = *src;
+    po->ofs.y = sy;
+    po->ofs.z = sz;
     po->ofs += po->pos;
     if (PTR(p, 0x1274) != NULL) {
         F32(p, 0x127c) = F32(p, 0x12a4);
