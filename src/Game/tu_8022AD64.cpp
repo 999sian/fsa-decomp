@@ -767,6 +767,58 @@ int fn_8022D498(int index)
     return 0;
 }
 
+int fn_8022F514(int);
+int fn_8022F3DC(int);
+int fn_80234004(int);
+
+static inline int linkMode3(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!fn_8023F264(i)) return 0;
+    return fn_802486A0(lbl_8053AC90->players[i]);
+}
+static inline int linkCount3(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!fn_8023F264(i)) return 0;
+    return fn_80240888(lbl_8053AC90->players[i]);
+}
+static inline int linkCount1(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80240888(lbl_8053AC90->players[i]);
+}
+static inline bool sameLinkDeep(int a, int b) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (a < 0) return 0;
+    if (a >= 4) return 0;
+    if (b < 0) return 0;
+    if (b >= 4) return 0;
+    if (!fn_8023F264(a)) return 0;
+    if (!fn_8023F264(b)) return 0;
+    if (a == b) return 1;
+    if ((u8)fn_8022F514(a)) {
+        if (b == fn_8022F3DC(a)) return 1;
+        return (u8)(fn_8022F3DC(a) == fn_8022F3DC(b));
+    }
+    if ((u8)fn_8022F514(b)) return fn_8022F3DC(b) == a;
+    return 0;
+}
+static inline bool sameLinkOuter(int a, int b) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (a < 0) return 0;
+    if (a >= 4) return 0;
+    if (b < 0) return 0;
+    if (b >= 4) return 0;
+    if (!isEnabled2(a)) return 0;
+    if (!isEnabled2(b)) return 0;
+    if (a == b) return 1;
+    if ((u8)isLinked3(a)) {
+        if (b == linkTarget3(a)) return 1;
+        return (u8)(linkTarget3(a) == linkTarget3(b));
+    }
+    if ((u8)isLinked3(b)) return linkTarget3(b) == a;
+    return 0;
+}
+
 int fn_8022EA0C(int idx);
 int fn_8022D534(int idx) {
     int cVar;
