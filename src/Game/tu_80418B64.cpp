@@ -354,6 +354,7 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
 }
 
 extern "C" void fn_80419570(u8* self, s32 idx) {
+    const u8* base = (const u8*)lbl_8048D320;
     s16* timer = (s16*)(self + idx * 2);
     if (timer[0x10d] == 0) {
         ((u32*)(self + 0x1d8))[idx] = fn_80237774(idx);
@@ -365,64 +366,59 @@ extern "C" void fn_80419570(u8* self, s32 idx) {
         if (cnt < 0) cnt = 0;
         if (cnt < n) n = cnt;
         if (n < 0) n = 0;
-        u8* base = (u8*)lbl_8048D320;
         const u64* a = (const u64*)(base + 0xc20);
         const u64* b = (const u64*)(base + 0xca0);
         const u64* c = (const u64*)(base + 0xc60);
         const u64* d = (const u64*)(base + 0xce0);
         for (s32 k = 0; k < 8; k++) {
             if (n >= 4) {
-                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
-                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
-                PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
-                SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
-                cnt -= 4;
+                GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k])[0xb0] = 1;
+                GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k])[0xb0] = 1;
+                SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k]), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k]), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                GetScreenPane(*(u8**)(self + idx * 4 + 8), c[k])[0xb0] = 0;
+                GetScreenPane(*(u8**)(self + idx * 4 + 8), d[k])[0xb0] = 0;
                 n -= 4;
+                cnt -= 4;
             } else {
                 if (n == 0) {
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 0);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 0);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k])[0xb0] = 0;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k])[0xb0] = 0;
                     if (cnt > 0) {
-                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 1);
-                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 1);
+                        GetScreenPane(*(u8**)(self + idx * 4 + 8), c[k])[0xb0] = 1;
+                        GetScreenPane(*(u8**)(self + idx * 4 + 8), d[k])[0xb0] = 1;
                         cnt -= 4;
                     } else {
-                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
-                        SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                        GetScreenPane(*(u8**)(self + idx * 4 + 8), c[k])[0xb0] = 0;
+                        GetScreenPane(*(u8**)(self + idx * 4 + 8), d[k])[0xb0] = 0;
                     }
                 } else if (n == 1) {
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
-                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k])[0xb0] = 1;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k])[0xb0] = 1;
+                    SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k]), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k]), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), c[k])[0xb0] = 0;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), d[k])[0xb0] = 0;
                     cnt -= 4;
                 } else if (n == 2) {
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
-                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k])[0xb0] = 1;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k])[0xb0] = 1;
+                    SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k]), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k]), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), c[k])[0xb0] = 0;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), d[k])[0xb0] = 0;
                     cnt -= 4;
                 } else if (n == 3) {
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *a, 1);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *b, 1);
-                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *a), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    PaneSetFloats(((SearchByName)(*(void***)*(u8**)(self + idx * 4 + 8))[15])(*(u8**)(self + idx * 4 + 8), *b), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *c, 0);
-                    SetPaneVisible(*(u8**)(self + idx * 4 + 8), *d, 0);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k])[0xb0] = 1;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k])[0xb0] = 1;
+                    SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), a[k]), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetPaneBlend(GetScreenPane(*(u8**)(self + idx * 4 + 8), b[k]), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), c[k])[0xb0] = 0;
+                    GetScreenPane(*(u8**)(self + idx * 4 + 8), d[k])[0xb0] = 0;
                     cnt -= 4;
                 }
                 n = 0;
             }
-            a++;
-            b++;
-            c++;
-            d++;
         }
         timer[0x10d]--;
     }
