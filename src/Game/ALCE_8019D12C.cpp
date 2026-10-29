@@ -41,7 +41,7 @@ extern char lbl_804A2AB0[];
 extern void* lbl_8053AAF8;
 extern void* lbl_8053AD70;
 extern u8 lbl_8053ABB0;
-static inline f32 alceRandom(void* game, int multiplier) {
+static inline f32 alceRandom(void* game, u32 multiplier) {
     union { unsigned int bits; f32 value; } random;
     unsigned int* state = (unsigned int*)((char*)game + 0xb4);
     *state = *state * multiplier + 0x3c6ef35f;
@@ -133,10 +133,10 @@ extern "C" void fn_8019D2AC(char* this_) {
     ALCEWork* base = (ALCEWork*)lbl_804C1E30;
     s32 i = 0;
     char* p;
+    char* actor;
     u8* flags;
     s32 off;
     s32* words;
-    char* actor;
     f32 pos[3];
     u32 bits1;
     u32 bits0;
@@ -198,10 +198,9 @@ extern "C" void fn_8019D2AC(char* this_) {
                         if (actor != 0) {
                         if (words[0] == 4) {
                             void* r;
-                            f32* src = base->positions[i];
-                            pos[0] = src[0];
-                            pos[1] = src[1];
-                            pos[2] = src[2];
+                            pos[0] = base->positions[i][0];
+                            pos[1] = base->positions[i][1];
+                            pos[2] = base->positions[i][2];
                             fn_8013CC50(*(u32*)(p + 4), pos, lbl_8053E444, 0x18, 1, 7, 0, 0, 1);
                             f32 scale = fn_801EE4F0(actor);
                             r = fn_8013CC50(*(u32*)(p + 4), pos, scale, 0x19, 1, 7, 0, 0, 1);
@@ -229,8 +228,8 @@ extern "C" void fn_8019D2AC(char* this_) {
                         }
                     }
                     flags++;
-                    words++;
                     off += 4;
+                    words++;
                 }
             }
         }
