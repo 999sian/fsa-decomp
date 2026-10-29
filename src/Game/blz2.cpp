@@ -146,10 +146,10 @@ extern "C" void fn_801F0E34(void* self, u32 a, u32 b);
 extern "C" void* Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 flag, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* mgr, u32 v, s32 a, s32 b);
-static inline void blz2CreateGrid(u8* self, JGeometry::TVec3<f32>& pos) {
+static inline void blz2CreateGrid(u8* self, JGeometry::TVec3<f32>& pos, s32& i, s32& j) {
     ((ActorSlot21*)self)->slot21();
-    for (s32 i = 0; i < *(s32*)(self + 0x2f4); i++) {
-        for (s32 j = 0; j < *(s32*)(self + 0x2f8); j++) {
+    for (i = 0; i < *(s32*)(self + 0x2f4); i++) {
+        for (j = 0; j < *(s32*)(self + 0x2f8); j++) {
             Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(self + 4), &pos, (*(u32*)(self + 0x98) << 4) | 15, -1, -1);
             *(u32*)(self + 0x1a0) = 0x424c5a45;
             pos.y += 16.0f;
