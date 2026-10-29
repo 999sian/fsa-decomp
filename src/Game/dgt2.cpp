@@ -83,23 +83,28 @@ static inline void dgt2RotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
 }
 
 static void dgt2Rot(f32 (*m)[4], f32 th) {
-    f32 cZ, sA, sT, sZ, cA, cT;
+    f32 cZ, sZ, sT, sA, cT, cA;
     sA = sin(lbl_8053E1D8);
     sT = sin(th);
     sZ = sin(lbl_8053E1D8);
     cA = cos(lbl_8053E1D8);
     cT = cos(th);
     cZ = cos(lbl_8053E1D8);
-    f32 S = lbl_8053E1DC;
-    m[0][0] = S * (cT * cZ);
-    m[0][1] = S * ((sA * sT) * cZ - cA * sZ);
-    m[0][2] = S * ((cA * cZ) * sT + sA * sZ);
-    m[1][0] = S * (cT * sZ);
-    m[1][1] = S * ((sA * sT) * sZ + cA * cZ);
-    m[1][2] = S * ((cA * sZ) * sT - sA * cZ);
-    m[2][0] = S * -sT;
-    m[2][1] = S * (sA * cT);
-    m[2][2] = S * (cA * cT);
+    m[0][0] = lbl_8053E1DC * (cT * cZ);
+    m[1][0] = lbl_8053E1DC * (cT * sZ);
+    m[2][0] = lbl_8053E1DC * -sT;
+    f32 sacz, sasz, cacz, casz, sast;
+    sast = sA * sT;
+    casz = cA * sZ;
+    cacz = cA * cZ;
+    sasz = sA * sZ;
+    sacz = sA * cZ;
+    m[0][1] = lbl_8053E1DC * (sast * cZ - casz);
+    m[1][1] = lbl_8053E1DC * (sast * sZ + cacz);
+    m[2][1] = lbl_8053E1DC * (sA * cT);
+    m[0][2] = lbl_8053E1DC * (cacz * sT + sasz);
+    m[1][2] = lbl_8053E1DC * (casz * sT - sacz);
+    m[2][2] = lbl_8053E1DC * (cA * cT);
 }
 
 extern "C" void* fn_8018FB24(void* this_, s16 freeFlag) {
