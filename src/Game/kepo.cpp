@@ -337,13 +337,7 @@ extern "C" void fn_8021917C(u8* self) {
     }
 }
 
-inline int kepoPlayerRoom(s32 i) {
-    u8 fn_8022F514(u32);
-    int fn_8022F3DC(u32);
-    int fn_8030AAF4(s32);
-    if(fn_8022F514(i)) return fn_8022F3DC(i);
-    return fn_8030AAF4(i);
-}
+
 
 #pragma opt_propagation off
 extern "C" void fn_8021923C(u8* self) {
