@@ -200,7 +200,7 @@ static inline f32 ltzrSqrt(f32 x) {
 static inline void ltzrBlink(f32* t, u8* dir, f32 hi, f32 lo, f32 step) {
     if (*dir == 1) {
         *t += step;
-        if (hi <= *t) {
+        if (*t >= hi) {
             *t = hi;
             *dir = 0;
         }
