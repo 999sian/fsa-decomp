@@ -440,7 +440,7 @@ extern "C" void fn_8030C210(void* eff, Vec3f* v);
 extern f32 lbl_80542CA0;
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8036AA60(char*);
-static inline void cutsceneCameraBox(f32 x1,f32 y1,f32 x2,f32 y2) {
+static inline void cutsceneCameraBox(const f32 x1,const f32 y1,const f32 x2,const f32 y2) {
     u8* eff=*(u8**)((u8*)lbl_8053AB10+0x24);
     if(!eff[0x7f5]) {
         eff[0x7f4]=1;
