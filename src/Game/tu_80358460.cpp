@@ -194,6 +194,23 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
         }
     }
 }
+static inline void pushOpposedCounter80358F98(u8* self, s32& a, s32& b) {
+    Vec8035A860 cv;
+    for (a = 0; a < 4; a++) {
+        if ((s8)self[0x24a + a] != 0) {
+            for (b = 0; b < 4; b++) {
+                u8 t;
+                if (!fn_8022F514((void*)b) && (s8)self[0x24a + b] == 0 && (s8)(t = self[0x246 + b]) != 0 &&
+                    (s8)self[0x24a + a] * (s8)t < 0) {
+                    cv.x = lbl_8054286C;
+                    cv.y = lbl_8054286C;
+                    cv.z = lbl_80542898;
+                    fn_802314D8(b, (f32*)&cv);
+                }
+            }
+        }
+    }
+}
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
@@ -478,8 +495,6 @@ extern "C" void fn_80358F98(u8* self) {
     f32 d;
     f32 py;
     s32 i;
-    s32 a;
-    s32 b;
     s32 k;
     s8 r;
     s16 old;
@@ -496,18 +511,17 @@ extern "C" void fn_80358F98(u8* self) {
         }
     }
     *(f32*)(self + 0x240) = lbl_8054286C;
-    for (i = 0; i < 4; i++) {
-        u8* q = self + i;
-        q[0x246] = 0;
-        q[0x24a] = 0;
-        if (!fn_8023F264(i)) continue;
-        q[0x246] = fn_8035AE9C(self, (void*)i);
+    for (s32 n = 0; n < 4; n++) {
+        self[0x246 + n] = 0;
+        self[0x24a + n] = 0;
+        if (!fn_8023F264(n)) continue;
+        self[0x246 + n] = fn_8035AE9C(self, (void*)n);
         fn_801F317C(self, box);
         py = *(f32*)(self + 0x10);
         f32 c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
-        box[1] = (box[1] - py) * c + py;
-        box[3] = (box[3] - py) * c + py;
-        if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
+        box[1] = c * (box[1] - py) + py;
+        box[3] = c * (box[3] - py) + py;
+        if (fn_8023AAF8(n, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
             d = py - v8[1];
             if (self[0x24e] != 0 && lbl_8054286C == d) {
                 d = lbl_8054287C;
@@ -524,16 +538,16 @@ extern "C" void fn_80358F98(u8* self) {
         } else {
             r = 0;
         }
-        q[0x24a] = r;
+        self[0x24a + n] = r;
     }
     if (((s8)self[0x24a] | (s8)self[0x24b] | (s8)self[0x24c] | (s8)self[0x24d]) != 0 &&
         lbl_8054286C != *(f32*)(self + 0x240)) {
         fn_801F0D20(self, 3);
     }
     applyRotationCounter803597EC(self, i);
-    for (a = 0; a < 4; a++) {
+    for (s32 a = 0; a < 4; a++) {
         if ((s8)self[0x24a + a] != 0) {
-            for (b = 0; b < 4; b++) {
+            for (s32 b = 0; b < 4; b++) {
                 u8 t;
                 if (!fn_8022F514((void*)b) && (s8)self[0x24a + b] == 0 && (s8)(t = self[0x246 + b]) != 0 &&
                     (s8)self[0x24a + a] * (s8)t < 0) {
