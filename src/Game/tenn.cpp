@@ -281,14 +281,15 @@ struct TennScoreBoard {
 };
 
 #pragma opt_propagation off
-static inline void tennUpdateTimers(char* p, int offset = 0) {
-    char* timers = p + offset;
-    if (*(s32*)(timers + 0x238) > 0) --*(s32*)(timers + 0x238);
-    if (*(s32*)(timers + 0x23c) > 0) --*(s32*)(timers + 0x23c);
+static inline void tennUpdateTimers(char*& p) {
+    if (*(s32*)(p + 0x238) > 0) --*(s32*)(p + 0x238);
+    if (*(s32*)(p + 0x23c) > 0) --*(s32*)(p + 0x23c);
+    p += 8;
 }
 #pragma opt_propagation reset
 
 extern "C" u8 fn_801F6758(void*, f32, s32);
+#pragma optimization_level 3
 #pragma opt_propagation off
 extern "C" void fn_801A0F90(void* this_) {
     s32 flag = 0;
@@ -508,13 +509,14 @@ L_FE8:
     lbl_8053ABC0 = 1;
     *(s32*)(p + 0x230) = 0x11;
 L_1030:
-    if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
-    if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
-    char* tail = p + 8;
-    if (*(s32*)(tail + 0x238) > 0) *(s32*)(tail + 0x238) -= 1;
-    if (*(s32*)(tail + 0x23c) > 0) *(s32*)(tail + 0x23c) -= 1;
+    char* tail = p;
+    for (s32 i = 0; i < 2; ++i, tail += 8) {
+        if (*(s32*)(tail + 0x238) > 0) --*(s32*)(tail + 0x238);
+        if (*(s32*)(tail + 0x23c) > 0) --*(s32*)(tail + 0x23c);
+    }
 }
 #pragma opt_propagation reset
+#pragma optimization_level 4
 extern "C" void fn_801A17B8(void* this_) {
     char* p = (char*)this_;
     fn_801F71A4((f32*)(p + 0x324), 0.0f, 0.0f, 0.0f);
