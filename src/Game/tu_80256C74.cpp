@@ -165,6 +165,8 @@ struct Tu80256Tables {
     u8 frames290[4][8];
     s32 rotations2B0[4];
     s32 rotations2C0[4];
+    static u8 frame(const u8* table,s32 direction,s32 index) { return table[direction*8+index]; }
+    static s32 rotation(const s32* table,s32 direction) { return table[direction]; }
 };
 static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
@@ -1213,6 +1215,7 @@ static inline bool tu8025_eq3(u8* a, u8* b, f32 eps) {
 
 extern "C" void fn_80259830(u8* p0) {
     u8* tbl = (u8*)lbl_8046AF00;
+    const Tu80256Tables* tables=(const Tu80256Tables*)lbl_8046AF00;
     u8* p = p0;
     if (S32(p, 0xb8c) > 0) {
         S32(p, 0xb8c) = S32(p, 0xb8c) - 1;
@@ -1270,20 +1273,20 @@ extern "C" void fn_80259830(u8* p0) {
         JGeometry::TBox2<f32> box;
         switch (S32(p, 0x3dc)) {
         case 0:
-            pos.x += lbl_80540110;
-            box.set(pos.x,pos.y-lbl_80540114,pos.x+lbl_80540118,lbl_80540114+pos.y);
+            pos.x += 18.0f;
+            box.set(pos.x,pos.y-6.0f,pos.x+lbl_80540118,6.0f+pos.y);
             BOX(p,0x580).set(box);break;
         case 1:
-            pos.x -= lbl_80540110;
-            box.set(pos.x-lbl_80540118,pos.y-lbl_80540114,pos.x,lbl_80540114+pos.y);
+            pos.x -= 18.0f;
+            box.set(pos.x-lbl_80540118,pos.y-6.0f,pos.x,6.0f+pos.y);
             BOX(p,0x580).set(box);break;
         case 2:
-            pos.x += lbl_805400E0;pos.y += lbl_8054011C;
-            box.set(pos.x-lbl_80540114,pos.y,lbl_80540114+pos.x,pos.y+lbl_80540118);
+            pos.x += 4.0f;pos.y += 12.0f;
+            box.set(pos.x-6.0f,pos.y,6.0f+pos.x,pos.y+lbl_80540118);
             BOX(p,0x580).set(box);break;
         case 3:
-            pos.x -= lbl_805400E0;pos.y -= lbl_80540120;
-            box.set(pos.x-lbl_80540114,pos.y-lbl_80540118,lbl_80540114+pos.x,pos.y);
+            pos.x -= 4.0f;pos.y -= 20.0f;
+            box.set(pos.x-6.0f,pos.y-lbl_80540118,6.0f+pos.x,pos.y);
             BOX(p,0x580).set(box);break;
         }
         if (U8(p, 0xb84) != 0) {
@@ -1297,21 +1300,21 @@ extern "C" void fn_80259830(u8* p0) {
                 }
             }
                         if (U8(p, 0x3f8) < 4) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][0];
             } else if (U8(p, 0x3f8) < 6) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+1];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][1];
             } else if (U8(p, 0x3f8) < 10) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+2];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][2];
             } else if (U8(p, 0x3f8) < 14) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+3];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][3];
             } else if (U8(p, 0x3f8) < 18) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+4];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][4];
             } else if (U8(p, 0x3f8) < 20) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+5];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][5];
             } else if (U8(p, 0x3f8) < 24) {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+6];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][6];
             } else {
-                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+7];
+                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][7];
             }
             if (!fn_80247594(p, 1)) {
                 U8(p, 0xb84) = 0;
@@ -1335,7 +1338,7 @@ extern "C" void fn_80259830(u8* p0) {
             PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
         }
         if (PTR(p, 0x12c4) != 0) {
-            JPAGetXYZRotateMtx(0, (s16)*(u32*)(tbl + 0x2b0 + (S32(p, 0x3dc) << 2)), -0x8000,
+            JPAGetXYZRotateMtx(0, (s16)tables->rotations2B0[S32(p,0x3dc)], -0x8000,
                                (f32(*)[4])(PTR(p, 0x12c4) + 0x68));
             fn_8013CB44(PTR(p, 0x12c4), &pos, 0, 2, 1);
         }
@@ -1343,7 +1346,7 @@ extern "C" void fn_80259830(u8* p0) {
             PTR(p, 0x12c8) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x54a, -1, 0, 0, 0, 1, lbl_805400D4);
         }
         if (PTR(p, 0x12c8) != 0) {
-            JPAGetXYZRotateMtx(0, 0, (s16)*(u32*)(tbl + 0x2c0 + (S32(p, 0x3dc) << 2)),
+            JPAGetXYZRotateMtx(0, 0, (s16)tables->rotations2C0[S32(p,0x3dc)],
                                (f32(*)[4])(PTR(p, 0x12c8) + 0x68));
             fn_8013CB44(PTR(p, 0x12c8), &pos, -1, 0, 1);
         }
