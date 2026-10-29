@@ -528,6 +528,7 @@ extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803BDD44(u8* p, s32 idx) {
     const u8* table = lbl_804765D0;
     {
