@@ -55,9 +55,9 @@ static inline void fn_80147B50_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az, f32 s) 
     f32 sx = dgtlSin(ax);
     f32 sy = dgtlSin(ay);
     f32 sz = dgtlSin(az);
-    cx = cos(ax);
-    f32 cy = cos(ay);
-    f32 cz = cos(az);
+    cx = dgtlCos(ax);
+    f32 cy = dgtlCos(ay);
+    f32 cz = dgtlCos(az);
     f32 cc = cx * cz;
     f32 ss = sx * sy;
     f32 cs = cx * sz;
