@@ -229,6 +229,33 @@ struct Rec5_80301CD0 {
     u8 lo : 4;
 };
 
+// Nibble / bit-field views of bytes 1, 4, 5 and 6 of the 0x68-byte status record.
+struct Nib_80301CD0 {
+    u8 hi : 4;
+    u8 lo : 4;
+};
+struct Rec4a_80301CD0 {
+    u8 hi : 3;
+    u8 lo : 5;
+};
+struct Rec4b_80301CD0 {
+    u8 flag : 1;
+    u8 two : 2;
+    u8 lo : 5;
+};
+struct Rec5a_80301CD0 {
+    u8 flag : 1;
+    u8 lo : 7;
+};
+struct Rec6_80301CD0 {
+    u8 hi : 6;
+    u8 lo : 2;
+};
+
+static inline bool tu80301_isPlayerOn(s32 i) {
+    return (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) != 0;
+}
+
 static inline u8 tu80301_isState7(s32 state) { return state == 7; }
 
 struct Hi_80301CD0 {
