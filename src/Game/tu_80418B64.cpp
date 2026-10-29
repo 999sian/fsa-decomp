@@ -804,11 +804,11 @@ extern "C" void fn_8041DD24(void* this_) {
     s32 cnt;
     u8* self = (u8*)this_;
     u8* base;
-    s32 n;
-    const u64* p28;
-    const u64* p29;
-    const u64* p30;
     const u64* p31;
+    const u64* p30;
+    const u64* p29;
+    const u64* p28;
+    s32 n;
     s32 i;
 
     base = (u8*)lbl_8048D320;
@@ -835,49 +835,49 @@ extern "C" void fn_8041DD24(void* this_) {
         p28 = (const u64*)(base + 0x208);
         for (i = 0; i < 8; i++) {
             if (cnt >= 4) {
-                SetPaneVisibleOfSub(self, *p31, 1);
-                SetPaneVisibleOfSub(self, *p30, 1);
-                PaneSetFloats(FindPaneOfSub(self, *p31), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                PaneSetFloats(FindPaneOfSub(self, *p30), 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                SetPaneVisibleOfSub(self, *p29, 0);
-                SetPaneVisibleOfSub(self, *p28, 0);
-                n -= 4;
+                SetScreenPaneVisible(self, *p31, 1);
+                SetScreenPaneVisible(self, *p30, 1);
+                SetScreenPaneBlend(self, *p31, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                SetScreenPaneBlend(self, *p30, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                SetScreenPaneVisible(self, *p29, 0);
+                SetScreenPaneVisible(self, *p28, 0);
                 cnt -= 4;
+                n -= 4;
             } else {
                 if (cnt == 0) {
-                    SetPaneVisibleOfSub(self, *p31, 0);
-                    SetPaneVisibleOfSub(self, *p30, 0);
+                    SetScreenPaneVisible(self, *p31, 0);
+                    SetScreenPaneVisible(self, *p30, 0);
                     if (n > 0) {
-                        SetPaneVisibleOfSub(self, *p29, 1);
-                        SetPaneVisibleOfSub(self, *p28, 1);
+                        SetScreenPaneVisible(self, *p29, 1);
+                        SetScreenPaneVisible(self, *p28, 1);
                         n -= 4;
                     } else {
-                        SetPaneVisibleOfSub(self, *p29, 0);
-                        SetPaneVisibleOfSub(self, *p28, 0);
+                        SetScreenPaneVisible(self, *p29, 0);
+                        SetScreenPaneVisible(self, *p28, 0);
                     }
                 } else if (cnt == 1) {
-                    SetPaneVisibleOfSub(self, *p31, 1);
-                    SetPaneVisibleOfSub(self, *p30, 1);
-                    PaneSetFloats(FindPaneOfSub(self, *p31), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    PaneSetFloats(FindPaneOfSub(self, *p30), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    SetPaneVisibleOfSub(self, *p29, 0);
-                    SetPaneVisibleOfSub(self, *p28, 0);
+                    SetScreenPaneVisible(self, *p31, 1);
+                    SetScreenPaneVisible(self, *p30, 1);
+                    SetScreenPaneBlend(self, *p31, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetScreenPaneBlend(self, *p30, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetScreenPaneVisible(self, *p29, 0);
+                    SetScreenPaneVisible(self, *p28, 0);
                     n -= 4;
                 } else if (cnt == 2) {
-                    SetPaneVisibleOfSub(self, *p31, 1);
-                    SetPaneVisibleOfSub(self, *p30, 1);
-                    PaneSetFloats(FindPaneOfSub(self, *p31), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    PaneSetFloats(FindPaneOfSub(self, *p30), 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    SetPaneVisibleOfSub(self, *p29, 0);
-                    SetPaneVisibleOfSub(self, *p28, 0);
+                    SetScreenPaneVisible(self, *p31, 1);
+                    SetScreenPaneVisible(self, *p30, 1);
+                    SetScreenPaneBlend(self, *p31, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetScreenPaneBlend(self, *p30, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetScreenPaneVisible(self, *p29, 0);
+                    SetScreenPaneVisible(self, *p28, 0);
                     n -= 4;
                 } else if (cnt == 3) {
-                    SetPaneVisibleOfSub(self, *p31, 1);
-                    SetPaneVisibleOfSub(self, *p30, 1);
-                    PaneSetFloats(FindPaneOfSub(self, *p31), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    PaneSetFloats(FindPaneOfSub(self, *p30), 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                    SetPaneVisibleOfSub(self, *p29, 0);
-                    SetPaneVisibleOfSub(self, *p28, 0);
+                    SetScreenPaneVisible(self, *p31, 1);
+                    SetScreenPaneVisible(self, *p30, 1);
+                    SetScreenPaneBlend(self, *p31, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetScreenPaneBlend(self, *p30, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                    SetScreenPaneVisible(self, *p29, 0);
+                    SetScreenPaneVisible(self, *p28, 0);
                     n -= 4;
                 }
                 cnt = 0;
