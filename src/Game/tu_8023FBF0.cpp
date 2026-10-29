@@ -361,6 +361,38 @@ inline s32 getMode(char* p) {
     }
     return S32(p, 0x120c);
 }
+inline s32 countSharingD134(const char* p) {
+    s32 linked;
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline bool isSpecialD134(char* p) {
+    s32 state = S32(p,0x1240);
+    bool result = false;
+    if (state == 9 || state == 10) result = true;
+    return result;
+}
+
 inline s32 getModeH(const char* p) {
     if (countSharingH(p) <= 1) {
         return 5;
@@ -3488,74 +3520,58 @@ void fn_8024D134(char* p) {
     s32 st;
     s32 n;
     JGeometry::TVec3<f32> v;
-
     if (U8(lbl_8053AAF8, 0x7e) == 0 && S32(p, 0xd60) < 0) {
-        n = countSharingT(p);
-        st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-        if (st != 5) {
-            n = countSharingT(p);
-            st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-            if (st != 4) {
-                U8(p, 0x121d) = 0;
-                if (S32(p, 0x1388) != 0) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)S32(p, 0x1388));
-                    S32(p, 0x1388) = 0;
-                }
-                v.set(V3(p, 0x8));
-                v.z = lbl_80540034;
-                n = countSharingT(p);
-                st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-                if (st == 2) {
-                    v.x += lbl_80540050;
-                    v.y += lbl_80540050;
-                } else if (st < 2) {
-                    if (st == 0) {
-                        n = countSharingT(p);
-                        st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-                        n = st == 4 ? 1 : countSharingT(p);
-                        v.x += lbl_80540050 * (f32)(n - 1);
-                    } else if (st >= 0) {
-                        n = countSharingT(p);
-                        st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-                        n = st == 4 ? 1 : countSharingT(p);
-                        v.y += lbl_80540050 * (f32)(n - 1);
-                    }
-                } else if (st < 4) {
-                    if (S32(p, 0x1240) == 9 || S32(p, 0x1240) == 10) {
-                        v.x = F32(p, 0x11b4);
-                        v.y = F32(p, 0x11b8);
-                        v.z = F32(p, 0x11bc);
-                    } else {
-                        n = S32(p, 0x4);
-                        if (n == 2) {
-                            v.x -= lbl_80540070;
-                        } else if (n < 2) {
-                            if (n == 0) {
-                                v.y += lbl_80540070;
-                            } else if (n >= 0) {
-                                v.x += lbl_80540070;
-                            }
-                        } else if (n < 4) {
-                            v.y -= lbl_80540070;
-                        }
-                    }
-                }
-                n = countSharingT(p);
-                st = n < 2 ? 5 : (S32(p, 0xd60) >= 0 ? fn_8022CAF8(S32(p, 0xd60)) : S32(p, 0x120c));
-                if (st == 2) {
-                    PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x35f, 0, -1, 0, 0, 1);
-                } else if (st < 2) {
-                    if (st == 0) {
-                        PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x35e, 0, -1, 0, 0, 1);
-                    } else if (st >= 0) {
-                        PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x360, 0, -1, 0, 0, 1);
-                    }
-                } else if (st < 4) {
-                    PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x361, 0, -1, 0, 0, 1);
-                }
-            }
-        }
+    st = getModeB(p);
+    if (st == 5) return;
+    st = getModeB(p);
+    switch(st) {case 4: break; default: {
+    U8(p, 0x121d) = 0;
+    if (PTR(p, 0x1388) != 0) {
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)S32(p, 0x1388));
+        PTR(p, 0x1388) = 0;
     }
+    v.set(V3(p, 0x8));
+    v.z = lbl_80540034;
+    st = getModeB(p);
+    switch(st) {
+    case 0:
+        st = getModeB(p);
+        n = st == 4 ? 1 : countSharingH(p);
+        v.x += lbl_80540050 * (f32)(n - 1);
+        break;
+    case 1:
+        st = getModeB(p);
+        n = st == 4 ? 1 : countSharingT(p);
+        v.y += lbl_80540050 * (f32)(n - 1);
+        break;
+    case 2:
+        v.x += lbl_80540050;
+        v.y += lbl_80540050;
+        break;
+    case 3: {
+        s32 state = S32(p,0x1240);
+        bool special = false;
+        if(state == 9 || state == 10) special = true;
+        if(special) v.set(V3(p,0x11b4));
+        else switch(S32(p, 4)) {
+        case 0: v.y += lbl_80540070; break;
+        case 1: v.x += lbl_80540070; break;
+        case 2: v.x -= lbl_80540070; break;
+        case 3: v.y -= lbl_80540070; break;
+        }
+        break;
+    }
+    }
+    st = getModeB(p);
+    switch(st) {
+    case 0: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x35e, 0, -1, 0, 0, 1); break;
+    case 1: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x360, 0, -1, 0, 0, 1); break;
+    case 2: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x35f, 0, -1, 0, 0, 1); break;
+    case 3: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x361, 0, -1, 0, 0, 1); break;
+    }
+}
+}
+}
 }
 
 s32 fn_8024D98C(char* p) {
@@ -4320,7 +4336,7 @@ u8 fn_8024F63C(char* p) {
     f32 hi;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TBox2f box;
-    f32* t2;
+    JGeometry::TVec2f* t2;
 
     if (!grabPressed(p)) {
         if (S32(p, 0xdac) >= 0) {
@@ -4350,20 +4366,20 @@ u8 fn_8024F63C(char* p) {
 
     tmp.set(*(JGeometry::TVec3<f32>*)(lbl_8046AE28 + S32(p, 0x3dc) * 12));
     tmp += V3(p, 0x8);
-    if (!fn_802265DC(&tmp, S32(p, 0x3b4), 1)) {
-        if (fn_802684A4(p, &tmp, S32(p, 0x3b4))) {
+    if (fn_802265DC(&tmp, S32(p, 0x3b4), 1) || fn_802684A4(p, &tmp, S32(p, 0x3b4))) {
             S32(p, 0xdac) = -1;
             S32(p, 0xda8) = 0;
             return 0;
-        }
     }
 
     lo=lbl_80540084;
     hi=lbl_80540030;
     box.set(lo,lo,hi,hi);
     box.addPos(*(JGeometry::TVec2f*)(p+8));
-    t2=(f32*)lbl_8046AE58+S32(p,0x3dc)*2;
-    box.addPos(t2[0],t2[1]);
+    f32 x=((JGeometry::TVec2f*)lbl_8046AE58)[S32(p,0x3dc)].x;
+    t2=(JGeometry::TVec2f*)lbl_8046AE58+S32(p,0x3dc);
+    f32 y=t2->y;
+    box.addPos(x,y);
 
     for (r30 = 0; r30 < 4; r30++) {
         if (r30 == S32(p, 0x4)) {
@@ -4400,7 +4416,7 @@ u8 fn_8024F63C(char* p) {
         }
         S32(p, 0xdac) = r30;
         S32(p, 0xda8) = 3;
-        goto success;
+        return 1;
     }
     if (S32(p, 0xda8) <= 0) goto failure;
 success:
