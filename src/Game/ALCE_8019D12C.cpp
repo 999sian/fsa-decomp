@@ -20,7 +20,7 @@ struct ALCEWork {
     u32 words[1024];
     u8 flags[1024];
 };
-u8 lbl_804C1E30[0x4500];
+extern u8 lbl_804C1E30[];
 extern "C" void* fn_801F856C(void);
 extern "C" f32 fn_801EE4F0(void*);
 extern "C" void* fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
@@ -131,7 +131,7 @@ extern "C" void fn_8019D12C(char* this_) {
 
 extern "C" void fn_8019D2AC(char* this_) {
     ALCEWork* base = (ALCEWork*)lbl_804C1E30;
-    int i;
+    s32 i = 0;
     char* p;
     u8* flags;
     s32 off;
@@ -192,7 +192,7 @@ extern "C" void fn_8019D2AC(char* this_) {
             if (*(s32*)(p + 0x258) < *(s32*)(p + 0x250)) {
                 flags = base->flags;
                 words = (s32*)base->words;
-                for (i = 0; i < *(s32*)(p + 0x254); i++) {
+                for (; i < *(s32*)(p + 0x254); i++) {
                     if (*flags == 1) {
                         actor = *(char**)((char*)fn_801F856C() + off + 8);
                         if (actor != 0) {
