@@ -264,6 +264,11 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" Vec* fn_8023E724(s32);
 extern "C" s32 fn_801F2718(void*, u32);
 extern "C" void fn_8030C210(void*, void*);
+static inline void tennUpdateTimers(char* p) {
+    if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
+    if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
+}
+
 struct TennScoreBoard {
     u8 pad_0[0x28c];
     s32 counts[4];
@@ -297,20 +302,20 @@ L_8F8:
 L_904:
     *(s32*)(p + 0x230) = 0xf;
 L_90C:
-    if (*(f32*)(p + 0x3c) != lbl_8053E4F0) goto L_974;
-    if (*(f32*)(p + 0x40) != lbl_8053E4F0) goto L_974;
-    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
+    if (*(f32*)(p + 0x3c) != 0.0f) goto L_974;
+    if (*(f32*)(p + 0x40) != 0.0f) goto L_974;
+    if (*(f32*)(p + 0x14) <= 0.0f) {
         fn_801F0E34(this_, 0x3004c, 0);
-        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x14) = 0.0f;
         *(f32*)(p + 0x44) = lbl_8053E518;
     } else {
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E544;
     }
     goto L_F58;
 L_974:
-    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
+    if (*(f32*)(p + 0x14) <= 0.0f) {
         fn_801F0E34(this_, 0x3004c, 0);
-        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x14) = 0.0f;
         *(f32*)(p + 0x44) = lbl_8053E51C;
     } else {
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E548;
@@ -425,7 +430,7 @@ L_D14:
     {
         f32 dx = *(f32*)(o + 0xc) - *(f32*)(p + 0xc);
         f32 dy = *(f32*)(o + 0x10) - *(f32*)(p + 0x10);
-        f32 a = lbl_8053E538 * JMath::atanTable_.atan2_(dx, dy);
+        f32 a = JMath::atanTable_.atan2_(dx, dy) * lbl_8053E538;
         s32 ai = (s32)a;
         ang = (u16)ai;
         *(f32*)(p + 0x3c) = lbl_8053A0F8 * *(f32*)((char*)JMath::sincosTable_.mTable + (((u16)ai >> 2) & 0x3ff8));
@@ -438,9 +443,9 @@ L_E30:
     goto L_F58;
 L_E38:
     r29 = fn_801F2718(this_, 0x54454e4e);
-    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
+    if (*(f32*)(p + 0x14) <= 0.0f) {
         fn_801F0E34(this_, 0x3004c, 0);
-        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x14) = 0.0f;
         *(f32*)(p + 0x44) = lbl_8053E51C;
     } else {
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E548;
@@ -453,10 +458,10 @@ L_E38:
     *(s32*)(p + 0x230) = 0xe;
     goto L_F58;
 L_ED4:
-    fn_801F71A4((f32*)(p + 0x340), lbl_8053E4F0, lbl_8053E544, lbl_8053E518);
-    if (!(*(f32*)(p + 0x14) <= lbl_8053E4F0)) {
+    fn_801F71A4((f32*)(p + 0x340), 0.0f, lbl_8053E544, lbl_8053E518);
+    if (*(f32*)(p + 0x14) <= 0.0f) {
         fn_801F0E34(this_, 0x3004c, 0);
-        *(f32*)(p + 0x14) = lbl_8053E4F0;
+        *(f32*)(p + 0x14) = 0.0f;
         *(f32*)(p + 0x44) = lbl_8053E51C;
     } else {
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_8053E544;
@@ -469,7 +474,7 @@ L_F58:
     if (*(s32*)(p + 0x230) == 0x11) goto L_1030;
     if (*(s32*)(p + 0x108) == 0) goto L_F94;
     if ((u8)flag == 1) goto L_F94;
-    if ((fn_801F6758(p + 0xc, *(s32*)(p + 0x4), lbl_8053E55C) & 0xff) == 0) goto L_1030;
+    if ((fn_801F6758(p + 0xc, lbl_8053E55C, *(s32*)(p + 0x4)) & 0xff) == 0) goto L_1030;
     *(s32*)(p + 0x23c) = 0x32;
 L_F94:
     if (*(s32*)(p + 0x108) == 0) goto L_FE8;
@@ -478,7 +483,7 @@ L_F94:
     o = (char*)fn_801F666C(fn_801F856C(), r29);
     if (o == 0) goto L_FE8;
     *(s32*)(o + 0x268) = *(s32*)(p + 0x264);
-    *(s32*)(o + 0x28c + *(s32*)(p + 0x264) * 4) += 1;
+    ((TennScoreBoard*)o)->counts[*(s32*)(p + 0x264)] += 1;
 L_FE8:
     *(f32*)(p + 0x3c) = *(f32*)(p + 0x3c) * lbl_8053E540;
     *(f32*)(p + 0x40) = *(f32*)(p + 0x40) * lbl_8053E540;
