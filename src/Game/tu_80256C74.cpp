@@ -1468,12 +1468,6 @@ static const u8 fireAnimationFrames[4][8] = {
 static const s32 fireRotationA[4] = {0xc000, 0x4000, 0x8000, 0};
 static const s32 fireRotationB[4] = {0xc000, 0x4000, 0, 0x8000};
 #pragma pool_data reset
-static inline void fireRotateA(const s32* angles, f32 (*matrix)[4], const s32 direction) {
-    JPAGetXYZRotateMtx(0, angles[direction], -0x8000, matrix);
-}
-static inline void fireRotateB(const s32* angles, f32 (*matrix)[4], const s32 direction) {
-    JPAGetXYZRotateMtx(0, 0, angles[direction], matrix);
-}
 #pragma opt_lifetimes off
 #pragma pool_data on
 extern "C" void fn_8025A15C(u8* p) {
