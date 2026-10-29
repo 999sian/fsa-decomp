@@ -337,6 +337,13 @@ extern "C" void fn_8021917C(u8* self) {
     }
 }
 
+inline s32 kepoPlayerRoom(s32 i) {
+    u8 fn_8022F514(u32);
+    s32 fn_8022F3DC(u32);
+    s32 fn_8030AAF4(s32);
+    if(fn_8022F514(i)) return fn_8022F3DC(i);
+    return fn_8030AAF4(i);
+}
 inline void fillKepoBox(f32* box, f32 x, f32 y, f32 radius) {
     box[3]=radius+y;
     box[0]=x-radius;
@@ -388,7 +395,7 @@ extern "C" void fn_8021923C(u8* self) {
     extern void* lbl_8053AF80;
     extern f32 lbl_8046A640[];
 
-    f32 box[4];
+    JGeometry::TBox2<f32> box;
     f32 v0[3];
     f32 v6[3];
     f32 v8[3];
@@ -404,12 +411,12 @@ extern "C" void fn_8021923C(u8* self) {
         f32 upperX = k+x;
         f32 lowerX = x-k;
         f32 lowerY = y-k;
-        box[3] = upperY;
-        box[0] = lowerX;
-        box[1] = lowerY;
-        box[2] = upperX;
+        box.f.y = upperY;
+        box.i.x = lowerX;
+        box.i.y = lowerY;
+        box.f.x = upperX;
     } else {
-        fn_801F31C4(self, box);
+        fn_801F31C4(self, (f32*)&box);
     }
 
     switch (*(s32*)(self + 0x248)) {
@@ -432,7 +439,7 @@ extern "C" void fn_8021923C(u8* self) {
         fn_80219AFC(self, 4);
         break;
     case 2:
-        *(s32*)(self + 0x2b8) = fn_801D05F8(self, (f32*)(self + 0xc), lbl_8053FC8C * *(f32*)(self + 0x2ac));
+        *(s32*)(self + 0x2b8) = fn_801D05F8(self, (f32*)(self + 0xc), 16.0f * *(f32*)(self + 0x2ac));
         if (*(s32*)(self + 0x2b8) < 0) break;
         if (!fn_8023077C()) break;
         if (*(s32*)(self + 0x2b4) == 0) {
@@ -449,7 +456,7 @@ extern "C" void fn_8021923C(u8* self) {
         f32 b2;
         f32 b3;
         f32 k;
-        fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         found = 0;
         k = lbl_8053FC84;
         b3 = k + *(f32*)(self + 0x10);
@@ -499,8 +506,8 @@ extern "C" void fn_8021923C(u8* self) {
         }
         break;
     case 5:
-        if (*(f32*)(self + 0x14) <= lbl_8053FC8C) {
-            *(f32*)(self + 0x14) = lbl_8053FC8C;
+        if (*(f32*)(self + 0x14) <= 16.0f) {
+            *(f32*)(self + 0x14) = 16.0f;
             if (fn_801D21F0(self + 0x270)) {
                 if (*(s32*)(self + 0x2b4) == 0) {
                     fn_80219AFC(self, 8);
@@ -512,7 +519,7 @@ extern "C" void fn_8021923C(u8* self) {
         break;
     case 6:
         if (((u8*)fn_801F856C())[0x3041] == 0) {
-            fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+            fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
             *(s32*)(self + 0x2b8) = fn_8022FD8C(*(s32*)(self + 0x198));
             if (*(s32*)(self + 0x2b8) >= 0) {
                 v6[0] = lbl_8053FC5C;
@@ -525,7 +532,7 @@ extern "C" void fn_8021923C(u8* self) {
         }
         break;
     case 7:
-        fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         if (!fn_80388CAC(*(s32*)(self + 0x2b8), *(s32*)(self + 0x198))) break;
         if (*(u32*)(self + 0x230) & 0x4000) {
             fn_80219AFC(self, 0xa);
@@ -576,8 +583,8 @@ extern "C" void fn_8021923C(u8* self) {
         fn_80219AFC(self, 0xb);
         break;
     case 11:
-        if (!(*(f32*)(self + 0x14) >= lbl_8053FC90)) break;
-        *(f32*)(self + 0x14) = lbl_8053FC90;
+        if (!(*(f32*)(self + 0x14) >= 35.0f)) break;
+        *(f32*)(self + 0x14) = 35.0f;
         if (!fn_801D21F0(self + 0x270)) break;
         fn_80219AFC(self, 0xc);
         break;
@@ -600,7 +607,7 @@ extern "C" void fn_8021923C(u8* self) {
         case 2:
             if(*(s32*)(self+0x2b4)==3) active=true;
             break;
-        case 6: case 7: case 8: case 9: active=true; break;
+        case 6: case 7: case 8: case 9: case 10: active=true; break;
         }
         if(active) play=true;
     }
