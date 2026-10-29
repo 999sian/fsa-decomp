@@ -168,7 +168,9 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
     for (i = 0; i < 4; i++) {
         if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
             ang = *(s16*)(self + 0x230);
-            cs = lbl_8054288C * (JMath::sincosTable_.mTable[(u16)ang >> 5].first * __fabsf(JMath::sincosTable_.mTable[(u16)ang >> 5].first));
+            f32 sn = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+            f32 an = __fabsf(sn);
+            cs = lbl_8054288C * (sn * an);
             if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && (s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
                 cs = cs * lbl_80542890;
             }
@@ -502,8 +504,9 @@ extern "C" void fn_80358F98(u8* self) {
         q[0x246] = fn_8035AE9C(self, (void*)i);
         fn_801F317C(self, box);
         py = *(f32*)(self + 0x10);
-        box[1] = (box[1] - py) * __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4)) + py;
-        box[3] = (box[3] - py) * __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4)) + py;
+        f32 c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
+        box[1] = (box[1] - py) * c + py;
+        box[3] = (box[3] - py) * c + py;
         if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
             d = py - v8[1];
             if (self[0x24e] != 0 && lbl_8054286C == d) {
