@@ -58,15 +58,12 @@ extern "C" void fn_802D7584(void*,s32,u8);
 extern "C" void fn_80238E08(s32);
 extern "C" void fn_801F0E34(Actor*,s32,s32);
 extern "C" JGeometry::TVec3f lbl_804A79E0[];
-extern "C" const JGeometry::TVec3f lbl_804750C0[];
+extern "C" JGeometry::TVec3f lbl_804750C0[];
 extern "C" void fn_80374BAC(Actor* this_) {
     u8* p = (u8*)this_;
     JGeometry::TBox2f bounds;
     bounds.set(*(JGeometry::TBox2f*)(p + 0x60));
-    bounds.i.x += *(f32*)(p + 0xc);
-    bounds.f.x += *(f32*)(p + 0xc);
-    bounds.i.y += *(f32*)(p + 0x10);
-    bounds.f.y += *(f32*)(p + 0x10);
+    bounds.addPos(*(JGeometry::TVec2f*)(p + 0xc));
     if (*(s32*)(p + 0x244) != 0) {
         ((f32*)&bounds)[0] -= lbl_80542EE0;
         ((f32*)&bounds)[1] -= lbl_80542EE0;
@@ -158,8 +155,8 @@ extern "C" void fn_80374BAC(Actor* this_) {
     if (*(s32*)(p + 0x240) != 0) {
         s32 hit = fn_80239558((f32*)&bounds, *(s32*)(p + 4), *(s32*)(p + 0x198));
         if (*(s32*)(p + 0x240) - 1 != hit) return;
-        if (direction != (s32)(*(u32*)(p + 0x90) & 3)) return;
     }
+    if (direction != (s32)(*(u32*)(p + 0x90) & 3)) return;
     if (!fn_80374964(this_, direction)) return;
     if (*(u8*)(p + 0x248) == 0) {
         fn_802D7584(fn_802D6A9C(), *(s32*)(p + 0x16c), direction + 1);
@@ -172,7 +169,14 @@ extern "C" void fn_80374BAC(Actor* this_) {
     (*(JGeometry::TVec3f*)(p + 0xc)) = savedPos;
     if (direction >= 0 && direction < 4) {
     fn_80238E08(*(s32*)(p + 0x198));
-    (*(JGeometry::TVec3f*)(p + 0x3c)).set(lbl_804750C0[direction].x, lbl_804750C0[direction].y, lbl_804750C0[direction].z);
+    const JGeometry::TVec3f* velocity = lbl_804750C0;
+    f32 vx = velocity[direction].x;
+    velocity += direction;
+    f32 vy = velocity->y;
+    (*(JGeometry::TVec3f*)(p + 0x3c)).x = vx;
+    f32 vz = velocity->z;
+    (*(JGeometry::TVec3f*)(p + 0x3c)).y = vy;
+    (*(JGeometry::TVec3f*)(p + 0x3c)).z = vz;
     probe = (*(JGeometry::TVec3f*)(p + 0x3c));
     probe.normalize();
     probe.scale(lbl_80542EFC);
