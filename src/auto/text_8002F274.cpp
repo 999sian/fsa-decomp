@@ -14,7 +14,7 @@ static inline unsigned long* BankChunk8002F34C(char* base, unsigned long tag) {
     unsigned long* chunk = (unsigned long*)(base + 0x20);
     while ((char*)chunk < end) {
         if (*chunk == tag) return chunk;
-        chunk = (unsigned long*)(((unsigned long)((char*)chunk + chunk[1]) + 0xb) & ~3);
+        chunk = (unsigned long*)((chunk[1] + (unsigned long)chunk + 0xb) & ~3);
     }
     return 0;
 }
@@ -129,9 +129,9 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
 
                 unsigned long effCount = *p++;
                 for (unsigned long j = 0; j < effCount; j++) {
-                    int* effectData = (int*)(base + *p++);
-                    long effectTag = *effectData++;
-                    char* fx = (char*)effectData;
+                    char* rec = base + *p++;
+                    long effectTag = *(int*)rec;
+                    char* fx = rec + 4;
                     JASInstEffect* effect;
                     switch (effectTag) {
                     case 0x52616e64: {
@@ -195,9 +195,9 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
                         unsigned long effCountFromPointer = *effp++;
                         effCount = effCountFromPointer;
                         for (unsigned long k = 0; k < effCount; k++) {
-                            int* effectData = (int*)(base + *effp++);
-                            long effectTag = *effectData++;
-                            char* fx = (char*)effectData;
+                            char* erec = base + *effp++;
+                            long effectTag = *(int*)erec;
+                            char* fx = erec + 4;
                             JASInstEffect* effect;
                             switch (effectTag) {
                             case 0x52616e64: {
