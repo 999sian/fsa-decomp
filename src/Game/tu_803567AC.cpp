@@ -161,7 +161,15 @@ static inline void movingBeginJump(char* p) {
                        (*(f32*)(p+0x27c)-*(f32*)(p+0x10))/40.0f, 4.0f);
     *(JGeometry::TVec3f*)(p+0x3c) = v;
     *(f32*)(p+0x260) = 0.2f;
-    *(s32*)(p+0x230) = 3;
+}
+static inline void movingRepeatJump(char* p) { movingBeginJump(p); }
+static inline void movingSetState(char* p, s32 state) {
+    *(s32*)(p+0x230) = state;
+    *(s32*)(p+0x238) = 0;
+    if (state == 3 || state == 5)
+        *(s32*)(p+0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].moving[0];
+    else
+        *(s32*)(p+0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].idle[0];
 }
 extern "C" void fn_80356B60(char* this_) {
     JGeometry::TBox2f box;
@@ -183,19 +191,16 @@ extern "C" void fn_80356B60(char* this_) {
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
         if (*(u8*)(this_ + 0x268) == 0 && (u8)fn_8023A30C()) {
-            f32 vy = (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / 40.0f;
-            f32 vx = (*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / 40.0f;
-            JGeometry::TVec3f v(vx, vy, 4.0f);
-            *(JGeometry::TVec3f*)(this_ + 0x3c) = v;
-            *(f32*)(this_ + 0x260) = 0.2f;
-            *(s32*)(this_ + 0x230) = 3;
+            movingBeginJump(this_);
             break;
         }
         fn_8022FEB8(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198), 1, 0);
         *(s32*)(this_ + 0x24c) = fn_8022FD8C(*(u32*)(this_ + 0x198));
         if (*(s32*)(this_ + 0x24c) >= 0 && 0.0f == *(f32*)((char*)fn_8023E724(*(s32*)(this_ + 0x24c)) + 8) && fn_802300EC(*(s32*)(this_ + 0x24c))) {
+            u32 room = *(u32*)(this_ + 4);
+            u32 handle = *(u32*)(this_ + 0x198);
             tmp = *(JGeometry::TVec3f*)(this_ + 0xc);
-            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(u32*)(this_ + 0x198), *(u32*)(this_ + 4), &tmp, 0)) {
+            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), handle, room, &tmp, 0)) {
                 *(s32*)(this_ + 0x230) = 4;
             }
         }
@@ -207,15 +212,17 @@ extern "C" void fn_80356B60(char* this_) {
             if (!(0.0f == *(f32*)((char*)fn_8023E724(*(s32*)(this_ + 0x24c)) + 8) && fn_802300EC(*(s32*)(this_ + 0x24c)))) {
                 break;
             }
+            u32 room = *(u32*)(this_ + 4);
+            u32 handle = *(u32*)(this_ + 0x198);
             tmp2 = *(JGeometry::TVec3f*)(this_ + 0xc);
-            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(u32*)(this_ + 0x198), *(u32*)(this_ + 4), &tmp2, 0)) {
+            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), handle, room, &tmp2, 0)) {
                 *(s32*)(this_ + 0x230) = 4;
                 break;
             }
         }
         /* fall through */
     case 2: {
-        if ((u8)((int (*)(void*))(*(void***)this_)[13])(this_) != 1) {
+        if ((u8)((Actor*)this_)->v11() != 1) {
             break;
         }
         fn_802D6A9C();
@@ -233,7 +240,7 @@ extern "C" void fn_80356B60(char* this_) {
             *(s32*)(this_ + 0x240) = *(s32*)(this_ + 0x23c);
             *(s32*)(this_ + 0x230) = 5;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + *(s32*)(this_ + 0x250) * 16 + 4))[0];
+            *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[0];
         }
         break;
     }
@@ -255,7 +262,7 @@ extern "C" void fn_80356B60(char* this_) {
                 *(s32*)(this_ + 0x240) = *(s32*)(this_ + 0x23c);
                 *(s32*)(this_ + 0x230) = 5;
                 *(s32*)(this_ + 0x238) = 0;
-                *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + *(s32*)(this_ + 0x250) * 16 + 4))[0];
+                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[0];
             }
         }
         break;
@@ -269,7 +276,7 @@ extern "C" void fn_80356B60(char* this_) {
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x230) = 3;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + *(s32*)(this_ + 0x250) * 16 + 4))[0];
+            *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[0];
             break;
         }
         if (*(s32*)(this_ + 0x240) <= 0 ||
@@ -280,7 +287,7 @@ extern "C" void fn_80356B60(char* this_) {
             *(f32*)(this_ + 0x3c) = 0.0f;
             *(s32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + *(s32*)(this_ + 0x250) * 16))[0];
+            *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[0];
         }
         break;
     case 4:
@@ -312,13 +319,11 @@ extern "C" void fn_80356B60(char* this_) {
         {
             s32 st = *(s32*)(this_ + 0x230);
             if (st == 0 || st == 1 || st == 3 || st == 4) {
-                s32 idx = *(s32*)(this_ + 0x238) & 1;
-                *(s32*)(this_ + 0x238) = idx;
-                *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + kind * 16))[idx];
+                *(s32*)(this_ + 0x238) &= 1;
+                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[*(s32*)(this_ + 0x238)];
             } else if (st == 5) {
-                s32 idx = *(s32*)(this_ + 0x238) & 3;
-                *(s32*)(this_ + 0x238) = idx;
-                *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + kind * 16 + 4))[idx];
+                *(s32*)(this_ + 0x238) &= 3;
+                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[*(s32*)(this_ + 0x238)];
             }
         }
         break;
@@ -328,13 +333,11 @@ extern "C" void fn_80356B60(char* this_) {
         {
             s32 st = *(s32*)(this_ + 0x230);
             if (st == 0 || st == 1 || st == 3 || st == 4) {
-                s32 idx = *(s32*)(this_ + 0x238) & 1;
-                *(s32*)(this_ + 0x238) = idx;
-                *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + kind * 16))[idx];
+                *(s32*)(this_ + 0x238) &= 1;
+                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[*(s32*)(this_ + 0x238)];
             } else if (st == 5) {
-                s32 idx = *(s32*)(this_ + 0x238) & 1;
-                *(s32*)(this_ + 0x238) = idx;
-                *(s32*)(this_ + 0x234) = ((s32*)*(s32**)(lbl_80472390 + kind * 16 + 4))[idx];
+                *(s32*)(this_ + 0x238) &= 1;
+                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[*(s32*)(this_ + 0x238)];
             }
         }
         break;
