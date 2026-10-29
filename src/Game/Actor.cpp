@@ -771,10 +771,13 @@ inline void ActorMotionTrailOrdered(Actor* a, const JGeometry::TVec3<f32>& old,
     }
 }
 
+inline s32 ActorClampTimer(s32 value) { return value <= 0 ? 0 : value; }
+inline bool ActorTrailMoving(const JGeometry::TVec3<f32>& v) { return v.squared() > 1.0f; }
 extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 	typedef JGeometry::TVec3<f32> V3;
 	u32 id;
     V3 old, randomPos, effectPos, d;
+    V3* trailPos;
     f32 t, s, dist;
     s32 result = 0;
 	if ((s32)a->field_D8 != 0) {
@@ -832,7 +835,8 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 					} else {
 						id = 0x3d3;
 					}
-                    ActorMotionTrail(a,old,d,effectPos,dist,s,id);
+                    trailPos = &effectPos;
+                    ActorMotionTrail(a,old,d,*trailPos,dist,s,id);
 				}
 			}
 		} else {
@@ -840,7 +844,7 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 		}
 		s32 lim;
 		if ((s32)a->field_108 <= 0 && (s32)a->field_E0 == 0 &&
-			(s32)a->field_D8 <= ((lim = (s32)a->field_DC - 8) > 0 ? lim : 0)) {
+			(s32)a->field_D8 <= ((lim = (s32)a->field_DC - 8) <= 0 ? 0 : lim)) {
 			if ((s32)a->field_FC == 0) {
 				a->field_E0 = 1;
 			} else {
@@ -887,13 +891,18 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 				effect = 0x17c;
 				break;
 			case 3:
-				if (__fabs(a->field_EC.x) > __fabs(a->field_EC.y)) {
-					if (a->field_EC.x < 0.0f) {
+				f32 x;
+                f32 y = a->field_EC.y;
+                x = a->field_EC.x;
+                f64 ay = __fabs(y);
+                f64 ax = __fabs(x);
+                if (ax > ay) {
+					if (x < 0.0f) {
 						effect = 0x176;
 					} else {
 						effect = 0x177;
 					}
-				} else if (a->field_EC.y < 0.0f) {
+				} else if (y < 0.0f) {
 					effect = 0x178;
 				} else {
 					effect = 0x175;
@@ -920,8 +929,8 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 			a->field_E4--;
 		} else {
             randomPos.set(
-                8.0f*(2.0f*(((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1())-1.0f)+a->field_0C.x,
-                8.0f*(2.0f*(((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1())-1.0f)+a->field_0C.y,
+                8.0f*(2.0f*ActorRand37AC((unsigned int*)lbl_8053AAF8,0x19660d,1.0f)-1.0f)+a->field_0C.x,
+                8.0f*(2.0f*ActorRand37AC((unsigned int*)lbl_8053AAF8,0x19660d,1.0f)-1.0f)+a->field_0C.y,
                 a->field_0C.z);
 			if ((s32)a->field_FC == 5) {
 				fn_8013CC50(a->field_04, &randomPos, 1.0f, 0x19d, 0, 2, 0, 0, 1);
