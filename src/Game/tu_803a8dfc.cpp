@@ -384,8 +384,8 @@ extern "C" void fn_803A8F5C(char* p) {
         box[3] = lbl_805433D0;
         fn_8013B414(lbl_8053AB10, box, 1);
     }
-    q = p;
     pos = p;
+    q = p;
     for (j = 0; j < *(s32*)(p + 0x454); j++) {
         DrawRec rec;
         rec.ids[7] = (u8)(j + 12);
@@ -424,8 +424,8 @@ extern "C" void fn_803A8F5C(char* p) {
         *((u8*)lbl_8053AB10 + 0x20) = 1;
         *((u8*)lbl_8053AB10 + 0x21) = 4;
     }
-    ((void (*)(void*, u8))(*(void***)(p + 0x170))[9])(*(void**)(p + 0x170), *(u8*)(p + 0x4c2));
-    ((void (*)(void*, s32, s32, s32))(*(void***)(p + 0x170))[59])(*(void**)(p + 0x170), 0, 0, 0);
+    (*(VPane_803A8F5C**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
+    (*(VPane_803A8F5C**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
 }
 
 extern "C" void fn_803A97A0(void* this_) {
@@ -699,6 +699,8 @@ extern "C" void fn_803A9AB8(void* this_) {
     }
 }
 
+extern const u64 lbl_80476310[][2];
+extern "C" void* fn_80403104(u32,const char*);
 extern "C" void fn_803AB494(void* this_) {
     char* p = (char*)this_;
     s32 rank[4];
@@ -2703,8 +2705,8 @@ extern "C" void fn_803B1B60(Menu_Intro* p) {
     s32 start1;
     s32 start2;
     s32 a;
-    s32 b;
     s32 t;
+    s32 b;
     s32 c;
     s32 start1b;
     s32 end2;
@@ -2779,12 +2781,13 @@ extern "C" void fn_803B1B60(Menu_Intro* p) {
         }
         if (p->timer <= end2) {
             if (p->timer >= start2) {
+                f32 fade;
                 s32 dt = p->timer - start2;
                 f32 off = (lbl_80543428 + (f32)g) * (lbl_805433D4 - (f32)(dt * dt) / (f32)(e * e));
                 for (s32 i = 0; i < p->count; i++) {
                     f32 x = p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][2])->getBounds()->i.x;
                     p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][2])->move(x, (p->y420 - lbl_80543428) + off);
-                    f32 fade = lbl_805433D4 - (f32)(p->timer - start2) / (f32)e;
+                    fade = lbl_805433D4 - (f32)(p->timer - start2) / (f32)e;
                     if (p->cur < 2) {
                         for (s32 k = 0; k < 3; k++) {
                             p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][k])->setAlpha((u8)(p->alpha3[k] * fade));
