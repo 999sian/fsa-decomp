@@ -1,3 +1,4 @@
+#define J3D_GX_COLOR_WORD_COPY
 #include "JSystem/J3D/J3DMaterialFactory.h"
 #include "JSystem/JSupport.h"
 #include "JSystem/J3D/J3DMaterial.h"
