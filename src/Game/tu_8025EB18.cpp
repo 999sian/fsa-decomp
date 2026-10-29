@@ -1989,38 +1989,58 @@ static inline void updateCarrySnap(char* p) {
     VEC(p, 0x2f4).add(VEC(p, 0x8));
 }
 
+extern const f32 lbl_805401E8;
 extern "C" void fn_80263C64(char* p) {
     JGeometry::TVec3<f32> v;
     char* actor;
     fn_8027FA08(p, &v);
-    if (lbl_80540150 == v.z && lbl_80540150 != F32(p, 0x10) && U8(p, 0x434) == 0) {
+    if (lbl_80540150 == v.z && lbl_80540150 != F32(p, 0x10) && U8(p, 0x434) == 0)
         F32(p, 0x10) = lbl_80540150;
-        actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
-        if (fn_8022C13C(S32(p, 0x4))) {
-            if (fn_802416C4(p) == 7) {
-                goto end;
-            }
-            if (fn_8024B24C(p) == 0) {
-                if (isCarriedByPlayer(p)) {
-                    if (fn_80236B50(S32(p, 0xd70))) {
-                        fn_80251AEC(p, 0x16);
-                        goto end;
-                    }
+    actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+    if (fn_8022C13C(S32(p, 4))) {
+        if (fn_802416C4(p) != 7) {
+            if (fn_8024B24C(p)) goto play16;
+            {
+                if ((isCarriedByPlayer(p) && !fn_80236B50(S32(p, 0xd70))) ||
+                    (U8(p, 0xd64) == 1 ? U32(p, 0xd6c) : (u32)'NULL') == 'HBMB' ||
+                    (U8(p, 0xd64) == 1 ? U32(p, 0xd6c) : (u32)'NULL') == 'KEY0') {
+                    fn_80251AEC(p, 0x18);
+                } else {
+play16:
+                    fn_80251AEC(p, 0x16);
                 }
-            } else if (fn_8022C0A0(S32(p, 0x4))) {
-                fn_80251AEC(p, 0x16);
-                goto end;
             }
         }
-        if (isCarriedByPlayer(p)) {
-            if (fn_8023EA28(S32(p, 0xd70))) {
-                fn_802808E8(p, lbl_805401E4);
-                fn_8027EB04(p);
-                fn_80263C64_snap(p);
-            }
-        }
+    } else if (fn_8022C0A0(S32(p, 4))) {
+        fn_80251AEC(p, 0x16);
+    } else if (fn_802466B4(p)) {
+        if (!actor || S32(actor, 0x1a4) < 2)
+            fn_80251AEC(p, 0x15);
     }
-end:
+    if (isCarriedByPlayer(p)) {
+        if (fn_8023EA28(S32(p, 0xd70))) {
+            fn_802808E8(p, lbl_805401E4);
+            fn_8027EB04(p);
+            updateCarrySnap(p);
+        } else {
+            fn_80251AEC(p, 0);
+            S32(p, 0xd70) = -1;
+        }
+    } else if (actor) {
+        if (S32(actor, 0x1a4) == 0) {
+            fn_802808E8(p, lbl_805401E8);
+            fn_8027EB04(p);
+            updateCarrySnap(p);
+        } else {
+            fn_8027EB04(p);
+            updateCarrySnap(p);
+        }
+    } else {
+        fn_80251AEC(p, 0);
+        U8(p, 0xd64) = 0;
+        S32(p, 0xd68) = -1;
+        U32(p, 0xd6c) = 'NULL';
+    }
     fn_80268B3C(p);
 }
 
