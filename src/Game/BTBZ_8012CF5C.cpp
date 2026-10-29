@@ -30,8 +30,6 @@ extern f32 lbl_8053CC24;
 extern f32 lbl_8053CC2C;
 
 struct BTBZ_VObj {
-    virtual void v0();
-    virtual void v1();
     virtual void v2();
     virtual void v3();
     virtual void v4();
@@ -100,9 +98,9 @@ extern "C" void fn_8012CF5C(u8* this_) {
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
-        if ((*(s32 (**)(u8*))(*(u8**)this_ + 0x3C))(this_) == 0) {
+        if (((BTBZ_VObj*)this_)->v15() == 0) {
             BTBZ_setState(this_, 1);
-        } else if ((*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_)) {
+        } else if (((BTBZ_VObj*)this_)->v13()) {
             BTBZ_setState(this_, 1);
             if (*(u8*)(this_ + 0x231) != 0) {
                 fn_801F0D20(this_, 6);
@@ -110,8 +108,8 @@ extern "C" void fn_8012CF5C(u8* this_) {
         }
         break;
     case 1:
-        if ((*(s32 (**)(u8*))(*(u8**)this_ + 0x3C))(this_) > 0 &&
-            !(*(u8 (**)(u8*))(*(u8**)this_ + 0x34))(this_)) {
+        if (((BTBZ_VObj*)this_)->v15() > 0 &&
+            !((BTBZ_VObj*)this_)->v13()) {
             BTBZ_setState(this_, 0);
         }
         fn_801F0E34(this_, 0x30032, 0);
@@ -136,8 +134,8 @@ extern "C" void fn_8012CF5C(u8* this_) {
                 pos[0] = pf[0] + lbl_8053CC2C;
                 pos[1] = pf[1] - lbl_8053CC2C;
                 fn_80238548(i, 1, pos, 1);
+                lbl_80529DEC[0x239] |= (u8)(1 << i);
             }
-            lbl_80529DEC[0x239] |= (u8)(1 << i);
         }
         *(s32*)(this_ + 0x238) += 1;
         if (*(s32*)(this_ + 0x238) > 0xA9) {
