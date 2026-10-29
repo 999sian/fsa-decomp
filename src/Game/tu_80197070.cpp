@@ -353,6 +353,49 @@ extern "C" void fn_801979C4(u8* p) {
 }
 
 extern "C" u8 fn_801F6758(f32* p, f32 r, s32 room);
+
+extern "C" const f32 lbl_8053E3C8;
+extern "C" const f32 lbl_8053E3CC;
+extern "C" const f32 lbl_8053E3D0;
+extern "C" const f32 lbl_8053E3D4;
+extern "C" const f32 lbl_8053E3D8;
+extern "C" void lbl_80529DEC();
+extern "C" int fn_8022F514(int);
+extern "C" int fn_8022F3DC(int);
+static inline void captureOrbitTarget(u8* p) {
+    s32 id = *(s32*)(p + 0x25c);
+    if (id >= 0) {
+        u8* target = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (target && *(s32*)(p + 0x250) != 0) {
+            f32 x = *(f32*)(target + 0xc) - *(f32*)(p + 0xc);
+            f32 y = *(f32*)(target + 0x10) - *(f32*)(p + 0x10);
+            f32 distance = std::sqrtf(x*x + y*y);
+            if (*(s32*)(p + 0x250) >= 1 && distance <= lbl_8053E3D4) {
+                *(u16*)(target + 0x94) = 5;
+                --*(s32*)(p + 0x250);
+                if (*(s32*)(p + 0x250) < 0) *(s32*)(p + 0x250) = 0;
+                if ((u8)fn_8022F514(*(s32*)(p + 0x250))) {
+                    *(s32*)((u8*)lbl_80529DEC + 0x1a4) = fn_8022F3DC(*(s32*)(p + 0x250));
+                } else {
+                    *(s32*)((u8*)lbl_80529DEC + 0x1a4) = *(s32*)(p + 0x250);
+                }
+                *(s32*)(p + 0x238) = 50;
+                *(s32*)(p + 0x230) = 0x49;
+                if (*(void**)(p + 0x304)) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x304));
+                    *(void**)(p + 0x304) = 0;
+                }
+                if (*(void**)(p + 0x308)) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x308));
+                    *(void**)(p + 0x308) = 0;
+                }
+            } else {
+                *(s32*)(p + 0x258) = 0;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80197EB0(u8* this_) {
     switch (*(s32*)(this_ + 0x230)) {
     case 0x46: {
