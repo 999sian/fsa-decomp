@@ -61,8 +61,12 @@ namespace JGeometry {
                   TVec2() {}
 #endif
 
-        template <typename TY>
-        TVec2(TY X, TY Y) { set(X, Y); }
+        #ifdef JGEOMETRY_VEC2_EXPLICIT_COPY
+          TVec2(const TVec2& other) { set(other); }
+#endif
+
+          template <typename TY>
+          TVec2(TY X, TY Y) { set(X, Y); }
 
         template <typename TY>
         void set(TY X, TY Y)
