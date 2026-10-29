@@ -443,15 +443,15 @@ extern "C" void fn_80153AA4(Actor* actor)
 
     room = *(s32*)(base + 0x4);
     {
-        u8* tbl = (u8*)fn_802D6A9C() + 0x10000 + room;
-        if (*(u8*)(tbl + 0x31DF)) {
+        u8* tbl = (u8*)fn_802D6A9C() + 0x10000;
+        if (tbl[room + 0x31DF]) {
             *(s32*)(base + 0x98) = *(s32*)(base + 0x98) & 1;
         }
     }
     *(s32*)(base + 0x238) = 8;
     *(s32*)(base + 0x278) = lbl_8053AB40;
     lbl_8053AB40 = lbl_8053AB40 + 1;
-    *(s16*)(base + 0x29c) = -1;
+    *(u16*)(base + 0x29c) = 0xffff;
     *(s32*)(base + 0xb0) = 0x12205;
     *(s32*)(base + 0xbc) = 2;
     *(s32*)(base + 0x90) = *(s32*)(base + 0x90) & 7;
@@ -575,9 +575,9 @@ lab_230:
                 break;
             }
             case 3: {
-                f32 v = *(f32*)(base + 0x290);
+                f32 v = -*(f32*)(base + 0x290);
                 *(f32*)(base + 0x2ac) = lbl_8053D258;
-                *(f32*)(base + 0x2b0) = -v;
+                *(f32*)(base + 0x2b0) = v;
                 *(f32*)(base + 0x2b4) = lbl_8053D258;
                 break;
             }
