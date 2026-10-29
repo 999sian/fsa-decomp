@@ -115,10 +115,8 @@ static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u
 }
 static inline void fn_802A3164_sub(const JGeometry::TVec2<f32>* pos, s32 room, u16 param, s32 flag) {
     JGeometry::TVec2<f32> t;
-    f32 y = pos->y;
-    f32 x = pos->x;
-    t.y = y;
-    t.x = x;
+    t.y=pos->y;
+    t.x=pos->x;
     void* mgr = lbl_8053AC98;
     *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
     s32 tile = *(s32*)((u8*)mgr + 0x20);
