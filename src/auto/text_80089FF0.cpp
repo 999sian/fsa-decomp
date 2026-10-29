@@ -105,7 +105,8 @@ static int fpKind(f32 value)
     int kind;
     switch (exp) {
     case 0x7f800000:
-        kind = (bits & 0x7fffff) ? 1 : 2;
+        if (bits & 0x7fffff) kind = 1;
+        else kind = 2;
         break;
     case 0:
         kind = (bits & 0x7fffff) ? 5 : 3;
