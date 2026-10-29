@@ -756,11 +756,26 @@ inline void ActorMotionTrail(Actor* a, const JGeometry::TVec3<f32>& old,
     }
 }
 
+inline void ActorMotionTrailOrdered(Actor* a, const JGeometry::TVec3<f32>& old,
+    const JGeometry::TVec3<f32>& direction, f32 distance, f32 scale, u32 id,
+    JGeometry::TVec3<f32>& pos) {
+    for(f32 t=0.0f;t<distance;t+=4.0f) {
+        pos=direction;
+        pos.scale(t);
+        pos.add(old);
+        u8* e=(u8*)fn_8013CC50(a->field_04,&pos,1.0f,id,0,0,0,0,1);
+        if(e) {
+            *(s32*)(e+0x24)=1; *(f32*)(e+0x28)=2.0f;
+            *(f32*)(e+0xb0)=scale; *(f32*)(e+0xb4)=scale;
+        }
+    }
+}
+
 extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 	typedef JGeometry::TVec3<f32> V3;
 	u32 id;
     V3 old, randomPos, effectPos, d;
-    f32 s, dist;
+    f32 t, s, dist;
     s32 result = 0;
 	if ((s32)a->field_D8 != 0) {
 		result = 0;
@@ -803,10 +818,11 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 				break;
 			}
 			if (0.0f == a->field_0C.z && ((V3*)&a->field_3C)->squared() > 1.0f) {
-				if (a->field_1A0 == 0x534c4b32) {
+				f32 ratio = lbl_8053F784;
+                if (a->field_1A0 == 0x534c4b32) {
 					s = a->field_3C.z;
 				} else {
-					s = .9f * lbl_8046A00C[a->field_C0];
+					s = ratio * lbl_8046A00C[a->field_C0];
 				}
 				if (s > 0.0f) {
 					d.sub(*(V3*)&a->field_0C, old);
@@ -816,18 +832,7 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 					} else {
 						id = 0x3d3;
 					}
-					for (f32 t = 0.0f; t < dist; t += 4.0f) {
-						effectPos = d;
-						effectPos.scale(t);
-						effectPos.add(old);
-						u8* e = (u8*)fn_8013CC50(a->field_04, &effectPos, 1.0f, id, 0, 0, 0, 0, 1);
-						if (e) {
-							*(s32*)(e + 0x24) = 1;
-							*(f32*)(e + 0x28) = 2.0f;
-							*(f32*)(e + 0xb0) = s;
-							*(f32*)(e + 0xb4) = s;
-						}
-					}
+                    ActorMotionTrail(a,old,d,effectPos,dist,s,id);
 				}
 			}
 		} else {
