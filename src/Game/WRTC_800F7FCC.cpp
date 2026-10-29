@@ -506,9 +506,10 @@ static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,f32 k)
             JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
             fn_80238548(idx,0,(f32*)&pos,0x10);
         }
-        *(f32*)(self+0xc)=k*((f32)(s32)(10000.0f*(out.x-*(f32*)(self+0xc)))*0.0001f)+*(f32*)(self+0xc);
-        *(f32*)(self+0x10)=k*((f32)(s32)(10000.0f*(out.y-*(f32*)(self+0x10)))*0.0001f)+*(f32*)(self+0x10);
-        *(f32*)(self+0x14)=k*((f32)(s32)(10000.0f*(out.z-*(f32*)(self+0x14)))*0.0001f)+*(f32*)(self+0x14);
+        f32 x=out.x,y=out.y,z=out.z;
+        *(f32*)(self+0xc)=k*((f32)(s32)(10000.0f*(x-*(f32*)(self+0xc)))*0.0001f)+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=k*((f32)(s32)(10000.0f*(y-*(f32*)(self+0x10)))*0.0001f)+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=k*((f32)(s32)(10000.0f*(z-*(f32*)(self+0x14)))*0.0001f)+*(f32*)(self+0x14);
         fn_801F2B7C(self,2,-1,1);
     }
 }
@@ -564,24 +565,24 @@ extern "C" void fn_800F953C(void* this_) {
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out=v;
         k=lbl_8053BFC0;
-        *(u8*)(self+0x249)=1;
+        *(bool*)(self+0x249)=true;
     }else if(state==4){
         s32 n=p[0x2ac];
         const JGeometry::TVec3f& v=WRTC_linePosition(p,n);
         out=v;
         s32 half=(n>>1)+1;
         k=(0.001f*(f32)lbl_8049C3B8[8]+0.36f)-(0.001f*(f32)lbl_8049C3B8[9]+0.032f)*(f32)half;
-        *(u8*)(self+0x249)=1;
+        *(bool*)(self+0x249)=true;
     }else if(state==1){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out=v;
         k=lbl_8053C028;
-        *(u8*)(self+0x249)=1;
+        *(bool*)(self+0x249)=true;
     }else{
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out=v;
         k=lbl_8053C00C;
-        *(u8*)(self+0x249)=0;
+        *(bool*)(self+0x249)=false;
     }
     WRTC_moveTowards(self,*(const JGeometry::TVec3f*)&out,k);
 }
