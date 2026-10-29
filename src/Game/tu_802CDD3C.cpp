@@ -109,13 +109,13 @@ static inline void cddRotation(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32* s
     f32 s1 = scale[1];
     f32 s2 = scale[2];
     m[0][0] = s0 * cycz;
-    m[1][0] = s0 * cysz;
-    m[2][0] = s0 * -sy;
     m[0][1] = s1 * (sxsy * cz - cxsz);
-    m[1][1] = s1 * (sxsy * sz + cxcz);
-    m[2][1] = s1 * sxcy;
     m[0][2] = s2 * (cxcz * sy + sxsz);
+    m[1][0] = s0 * cysz;
+    m[1][1] = s1 * (sxsy * sz + cxcz);
     m[1][2] = s2 * (cxsz * sy - sxcz);
+    m[2][0] = s0 * -sy;
+    m[2][1] = s1 * sxcy;
     m[2][2] = s2 * (cx * cy);
 }
 
@@ -158,7 +158,7 @@ extern "C" void fn_802CDD9C(char* this_)
             s32 t;
             tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234)]);
             fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-            new (&rec) DrawRec();
+            cddResetDrawRec(rec);
             rec.b1c = lbl_80540E28[*(s32*)(this_ + 0x238)] + 1;
             rec.b1d = lbl_80540E28[*(s32*)(this_ + 0x23c)];
             t = *(s32*)(this_ + 0x234);
