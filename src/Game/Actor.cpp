@@ -773,6 +773,9 @@ inline void ActorMotionTrailOrdered(Actor* a, const JGeometry::TVec3<f32>& old,
 
 inline s32 ActorClampTimer(s32 value) { return value <= 0 ? 0 : value; }
 inline bool ActorTrailMoving(const JGeometry::TVec3<f32>& v) { return v.squared() > 1.0f; }
+inline bool ActorTrailThreshold(JGeometry::TVec3<f32>& v, const f32 threshold) {
+    return v.squared() > threshold;
+}
 extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 	typedef JGeometry::TVec3<f32> V3;
 	u32 id;
@@ -820,7 +823,7 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 				}
 				break;
 			}
-			if (0.0f == a->field_0C.z && ((V3*)&a->field_3C)->squared() > 1.0f) {
+			if (0.0f == a->field_0C.z && 1.0f < ((V3*)&a->field_3C)->squared()) {
 				f32 ratio = lbl_8053F784;
                 if (a->field_1A0 == 0x534c4b32) {
 					s = a->field_3C.z;
@@ -844,7 +847,7 @@ extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 		}
 		s32 lim;
 		if ((s32)a->field_108 <= 0 && (s32)a->field_E0 == 0 &&
-			(s32)a->field_D8 <= ((lim = (s32)a->field_DC - 8) <= 0 ? 0 : lim)) {
+			(s32)a->field_D8 <= ActorClampTimer((s32)a->field_DC - 8)) {
 			if ((s32)a->field_FC == 0) {
 				a->field_E0 = 1;
 			} else {
