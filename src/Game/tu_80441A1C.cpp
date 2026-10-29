@@ -11,6 +11,10 @@ struct Menu80441A1C {
 };
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+static inline void capPaneFrame(PaneState* pane, s16 limit) {
+    if (pane->alphaFrame > limit) pane->alphaFrame = limit;
+}
+
 struct Slot0 {
     virtual void slot0(s32 arg);
 };
@@ -139,111 +143,130 @@ struct Unk80442254Vt {
     virtual void* m13(s32, s32, u32, s32) = 0;
 };
 
-extern "C" s32 fn_80441A1C(char* this_) {
-    u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (*(s32*)(this_ + 0x14) << 1)) & 3;
+extern "C" s32 fn_80441A1C(Menu80441A1C* menu) {
+    u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (menu->player << 1)) & 3;
     if (f == 1) {
-        if (fn_8030A258(lbl_8053AD30, fn_8030AAF4(*(s32*)(this_ + 0x14)))) {
-            s16* tbl = (s16*)lbl_8050DB0C;
-            char* p8 = *(char**)(this_ + 0x8);
-            if (*(s16*)(p8 + 0x26) > tbl[0x94 / 2]) {
-                *(s16*)(p8 + 0x26) = tbl[0x94 / 2];
+        if (fn_8030A258(lbl_8053AD30, fn_8030AAF4(menu->player))) {
+            PaneState* p8;
+            s16* tbl;
+            s16 frame;
+            s16 limit;
+            p8 = menu->alphaPane;
+            tbl = (s16*)lbl_8050DB0C;
+            frame = p8->alphaFrame;
+            limit = tbl[0x94 / 2];
+            if (frame > limit) {
+                p8->alphaFrame = limit;
             }
-            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
-                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
+            if (menu->movePane->alphaFrame > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
+                menu->movePane->alphaFrame = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
             }
-            *(s32*)(this_ + 0x18) = 0xb;
+            menu->state = 0xb;
         }
     } else if (f == 2) {
-        if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(*(s32*)(this_ + 0x14)))) {
-            s16* tbl = (s16*)lbl_8050DB0C;
-            char* p8 = *(char**)(this_ + 0x8);
-            if (*(s16*)(p8 + 0x26) > tbl[0x94 / 2]) {
-                *(s16*)(p8 + 0x26) = tbl[0x94 / 2];
+        if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(menu->player))) {
+            PaneState* p8;
+            s16* tbl;
+            s16 frame;
+            s16 limit;
+            p8 = menu->alphaPane;
+            tbl = (s16*)lbl_8050DB0C;
+            frame = p8->alphaFrame;
+            limit = tbl[0x94 / 2];
+            if (frame > limit) {
+                p8->alphaFrame = limit;
             }
-            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
-                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
+            if (menu->movePane->alphaFrame > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
+                menu->movePane->alphaFrame = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
             }
-            *(s32*)(this_ + 0x18) = 0xb;
+            menu->state = 0xb;
         }
     }
-    switch (*(s32*)(this_ + 0x18)) {
+    switch (menu->state) {
     case 1: {
-        u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (*(s32*)(this_ + 0x14) << 1)) & 3;
+        u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (menu->player << 1)) & 3;
         if (f == 2) {
-            if (!AnimTable_IsField0xdcLessThan3(lbl_8053AD30, fn_8030AAF4(*(s32*)(this_ + 0x14)))) {
+            if (!AnimTable_IsField0xdcLessThan3(lbl_8053AD30, fn_8030AAF4(menu->player))) {
                 break;
             }
         }
-        (*(s32*)(this_ + 0x1c))++;
+        (menu->timer)++;
         s16* tbl = (s16*)lbl_8050DB0C;
-        if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) < tbl[0x8c / 2] + 2) {
-            *(s16*)(*(char**)(this_ + 0x8) + 0x26) += 1;
-            Unk80441A1CVt* obj = (Unk80441A1CVt*)*(void**)(*(char**)(this_ + 0x8) + 0x4);
-            obj->m7((s32)(((f32)(*(s16*)(*(char**)(this_ + 0x8) + 0x26) * *(s16*)(*(char**)(this_ + 0x8) + 0x26)) / (f32)((tbl[0x8c / 2] + 2) * (tbl[0x8c / 2] + 2))) * (f32)(u8)(*(char**)(this_ + 0x8))[0x28]));
+        if (menu->alphaPane->alphaFrame < tbl[0x8c / 2] + 2) {
+            menu->alphaPane->alphaFrame += 1;
+            f32 ratio = ((f32)(menu->alphaPane->alphaFrame * menu->alphaPane->alphaFrame) / (f32)((tbl[0x8c / 2] + 2) * (tbl[0x8c / 2] + 2)));
+            J2DPane* obj = menu->alphaPane->pane;
+            obj->setAlpha(ratio * (f32)menu->alphaPane->alpha);
         }
-        if (*(s32*)(this_ + 0x1c) >= 0x78) {
-            *(s32*)(this_ + 0x1c) = 0;
-            *(s32*)(this_ + 0x18) = 2;
+        if (menu->timer >= 0x78) {
+            menu->timer = 0;
+            menu->state = 2;
         }
         break;
     }
     case 2: {
-        (*(s32*)(this_ + 0x1c))++;
+        (menu->timer)++;
         s16* tbl = (s16*)lbl_8050DB0C;
         s32 t = tbl[0x8c / 2] + 2;
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) < t) {
-            *(s16*)(*(char**)(this_ + 0xc) + 0x26) += 1;
-            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, ((f32)(*(s16*)(*(char**)(this_ + 0xc) + 0x26) * *(s16*)(*(char**)(this_ + 0xc) + 0x26)) / (f32)(t * t)) * (lbl_80543D48 + (f32)tbl[0x90 / 2]) + lbl_80543D44);
+        if (menu->movePane->alphaFrame < t) {
+            menu->movePane->alphaFrame += 1;
+            fn_80402E08(menu->movePane, 0.0f, ((f32)(menu->movePane->alphaFrame * menu->movePane->alphaFrame) / (f32)(t * t)) * (480.0f + (f32)tbl[0x90 / 2]) + -480.0f);
         }
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) >= t) {
-            *(s32*)(this_ + 0x18) = 3;
+        if (menu->movePane->alphaFrame >= t) {
+            menu->state = 3;
         }
         break;
     }
     case 3: {
-        (*(s32*)(this_ + 0x1c))++;
+        (menu->timer)++;
         s16* tbl = (s16*)lbl_8050DB0C;
-        s32 t = tbl[0x8c / 2] + tbl[0x8e / 2] + 2;
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) < t) {
-            *(s16*)(*(char**)(this_ + 0xc) + 0x26) += 1;
-            s32 d = t - *(s16*)(*(char**)(this_ + 0xc) + 0x26);
+        s32 t = 2;
+        t += tbl[0x8c / 2];
+        t += tbl[0x8e / 2];
+        if (menu->movePane->alphaFrame < t) {
+            menu->movePane->alphaFrame += 1;
+            s32 d = t - menu->movePane->alphaFrame;
             s32 g8e = tbl[0x8e / 2];
-            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, (f32)tbl[0x90 / 2] * ((f32)(d * d) / (f32)(g8e * g8e)));
+            fn_80402E08(menu->movePane, 0.0f, (f32)tbl[0x90 / 2] * ((f32)(d * d) / (f32)(g8e * g8e)));
         }
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) >= t) {
-            *(s32*)(this_ + 0x18) = 4;
+        if (menu->movePane->alphaFrame >= t) {
+            menu->state = 4;
         }
         break;
     }
     case 4:
-        *(s32*)(this_ + 0x1c) += 1;
-        if (*(s32*)(this_ + 0x1c) >= 0xb4) {
-            *(s32*)(this_ + 0x1c) = 0;
-            *(s32*)(this_ + 0x18) = 5;
+        menu->timer += 1;
+        if (menu->timer >= 0xb4) {
+            menu->timer = 0;
+            menu->state = 5;
         }
         break;
     case 5:
-        *(s32*)(this_ + 0x1c) += 1;
-        if (*(s32*)(this_ + 0x1c) >= 0xb4) {
-            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0xa) {
-                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = 0xa;
+        menu->timer += 1;
+        if (menu->timer >= 0xb4) {
+            if (menu->movePane->alphaFrame > 0xa) {
+                menu->movePane->alphaFrame = 0xa;
             }
-            *(s32*)(this_ + 0x18) = 0xd;
+            menu->state = 0xd;
         }
         break;
     case 6: {
         if (fn_80309C4C(lbl_8053AD30, 0x1300, -1)) {
-            if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0xa) {
-                *(s16*)(*(char**)(this_ + 0xc) + 0x26) = 0xa;
+            if (menu->movePane->alphaFrame > 0xa) {
+                menu->movePane->alphaFrame = 0xa;
             }
-            *(s32*)(this_ + 0x18) = 0xd;
+            menu->state = 0xd;
             break;
         }
-        s32 sh = 0;
+        s32 sh;
+        s32 cnt1;
+        s32 cnt2;
         s32 i;
-        s32 cnt2 = 0;
-        s32 cnt1 = 0;
-        for (i = 0; i < 4; i++, sh += 2) {
+        cnt1 = 0;
+        cnt2 = 0;
+        i = 0;
+        sh = 0;
+        for (; i < 4; i++, sh += 2) {
             if (((u32)((s32)((u8*)lbl_8053AAF8)[0x83] >> sh) & 3) != 0) {
                 cnt1++;
                 if (((u32)((s32)((u8*)lbl_8053AAF8)[0x83] >> sh) & 3) == 1) {
@@ -261,44 +284,44 @@ extern "C" s32 fn_80441A1C(char* this_) {
         if (cnt1 != cnt2) {
             break;
         }
-        *(s32*)(this_ + 0x1c) = 0;
-        *(s32*)(this_ + 0x18) = 5;
+        menu->timer = 0;
+        menu->state = 5;
         break;
     }
     case 11: {
         s16* tbl = (s16*)lbl_8050DB0C;
         s32 sum = tbl[0x92 / 2] + tbl[0x94 / 2];
-        if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) > 0 && *(s16*)(*(char**)(this_ + 0x8) + 0x26) >= *(s16*)(*(char**)(this_ + 0xc) + 0x26)) {
-            *(s16*)(*(char**)(this_ + 0x8) + 0x26) -= 1;
-            Unk80441A1CVt* obj = (Unk80441A1CVt*)*(void**)(*(char**)(this_ + 0x8) + 0x4);
-            obj->m7((s32)(((f32)(*(s16*)(*(char**)(this_ + 0x8) + 0x26) * *(s16*)(*(char**)(this_ + 0x8) + 0x26)) / (f32)(tbl[0x94 / 2] * tbl[0x94 / 2])) * (f32)(u8)(*(char**)(this_ + 0x8))[0x28]));
+        if (menu->alphaPane->alphaFrame > 0 && menu->alphaPane->alphaFrame >= menu->movePane->alphaFrame) {
+            menu->alphaPane->alphaFrame -= 1;
+            f32 ratio = ((f32)(menu->alphaPane->alphaFrame * menu->alphaPane->alphaFrame) / (f32)(tbl[0x94 / 2] * tbl[0x94 / 2]));
+            J2DPane* obj = menu->alphaPane->pane;
+            obj->setAlpha(ratio * (f32)menu->alphaPane->alpha);
         }
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
-            *(s16*)(*(char**)(this_ + 0xc) + 0x26) -= 1;
+        if ((s16)menu->movePane->alphaFrame > 0) {
+            menu->movePane->alphaFrame -= 1;
         }
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > tbl[0x94 / 2]) {
-            s32 d = sum - *(s16*)(*(char**)(this_ + 0xc) + 0x26);
-            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, (f32)tbl[0x90 / 2] * ((f32)(d * d) / (f32)(tbl[0x92 / 2] * tbl[0x92 / 2])));
-        } else if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
-            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, ((f32)(*(s16*)(*(char**)(this_ + 0xc) + 0x26) * *(s16*)(*(char**)(this_ + 0xc) + 0x26)) / (f32)(tbl[0x94 / 2] * tbl[0x94 / 2])) * (lbl_80543D48 + (f32)tbl[0x90 / 2]) + lbl_80543D44);
+        if (menu->movePane->alphaFrame > tbl[0x94 / 2]) {
+            s32 d = sum - menu->movePane->alphaFrame;
+            fn_80402E08(menu->movePane, 0.0f, (f32)((s16*)lbl_8050DB0C)[0x90 / 2] * ((f32)(d * d) / (f32)(tbl[0x92 / 2] * tbl[0x92 / 2])));
+        } else if (menu->movePane->alphaFrame > 0) {
+            fn_80402E08(menu->movePane, 0.0f, ((f32)(menu->movePane->alphaFrame * menu->movePane->alphaFrame) / (f32)(tbl[0x94 / 2] * tbl[0x94 / 2])) * (480.0f + (f32)((s16*)lbl_8050DB0C)[0x90 / 2]) + -480.0f);
         } else {
-            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, lbl_80543D44);
+            fn_80402E08(menu->movePane, 0.0f, -480.0f);
         }
-        if (*(s16*)(*(char**)(this_ + 0x8) + 0x26) > 0) {
+        if (menu->alphaPane->alphaFrame > 0) {
             break;
         }
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+        if (menu->movePane->alphaFrame > 0) {
             break;
         }
-        return *(s32*)(this_ + 0x10);
+        return menu->result;
     }
     case 13: {
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
-            *(s16*)(*(char**)(this_ + 0xc) + 0x26) -= 1;
-            s32 d = 10 - *(s16*)(*(char**)(this_ + 0xc) + 0x26);
-            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, lbl_80543D48 * ((f32)(d * d) / lbl_80543D4C));
+        if ((s16)menu->movePane->alphaFrame > 0) {
+            menu->movePane->alphaFrame -= 1;
+            fn_80402E08(menu->movePane, 0.0f, 480.0f * ((f32)((10 - (s32)menu->movePane->alphaFrame) * (10 - (int)menu->movePane->alphaFrame)) / 100.0f));
         }
-        if (*(s16*)(*(char**)(this_ + 0xc) + 0x26) > 0) {
+        if (menu->movePane->alphaFrame > 0) {
             break;
         }
         fn_80458F9C(lbl_8053AF80, 0);
