@@ -17,7 +17,7 @@ extern "C" char* lbl_8053AB10;
 extern "C" void* lbl_8053AC98;
 extern "C" void fn_802A3948(void* mgr, void* pos, int player, unsigned long room, int id);
 extern "C" unsigned long fn_8013CC50(unsigned long id, void* pos, unsigned long seId, int a, int b, int c, int d, int e, float f);
-extern "C" char* fn_802D6A9C(void* this_);
+extern "C" char* fn_802D6A9C(...);
 
 struct Vec3CC {
     float x;
@@ -51,40 +51,84 @@ static inline void ccStop(JPABaseEmitter*& emitter) {
 }
 extern "C" void fn_802CC21C(void* this_) {
     char* p = (char*)this_;
-    float pos2[2];
-    float box[4];
-    Vec3CC pos;
-    unsigned long uVar2;
-    int iVar1;
-    int iVar3;
-    unsigned char cVar4;
-
-    pos2[0] = 8.0f + *(float*)(p + 0xc);
-    pos2[1] = 8.0f + *(float*)(p + 0x10);
-    box[0] = *(float*)(p + 0x60) + pos2[0];
-    box[1] = *(float*)(p + 0x64) + pos2[1];
-    box[2] = *(float*)(p + 0x68) + pos2[0];
-    box[3] = *(float*)(p + 0x6c) + pos2[1];
-    iVar1 = fn_8023BA68(box, *(unsigned long*)(p + 4), pos2, 1);
+    JGeometry::TBox2<f32> box;
+    JGeometry::TVec2<f32> pos(8.0f + *(f32*)(p + 0xc), 8.0f + *(f32*)(p + 0x10));
+    box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+    box.addPos(pos);
+    int player = fn_8023BA68((f32*)&box, *(unsigned long*)(p + 4), (f32*)&pos, 1);
     *(unsigned long*)(p + 0xd8) = 0;
-    iVar3 = *(int*)(p + 0x240);
-    if (iVar3 == 2) {
-        if (iVar1 < 0 && (cVar4 = fn_801F2DB4(p, 0x48424d42, 0x4e554c4c, 0)) == 0) {
-            if (*(unsigned char*)(fn_802D6A9C(p) + 0x171) != 1) {
-                return;
-            }
-            fn_802A3884(lbl_8053AC98, p + 0xc, iVar1, *(unsigned long*)(p + 4), 0xae);
-            pos.x = *(float*)(p + 0x14);
-            pos.y = 8.0f + *(float*)(p + 0x10);
-            pos.z = 8.0f + *(float*)(p + 0xc);
-            *(unsigned long*)(p + 0x238) = fn_8013CC50(*(unsigned long*)(p + 4), &pos, 0x42d, 1, 0, 0, 0, 1, 1.0f);
-            pos.y = 8.0f + *(float*)(p + 0x10);
-            pos.z = *(float*)(p + 0x14);
-            pos.x = 8.0f + *(float*)(p + 0xc);
-            *(unsigned long*)(p + 0x23c) = fn_8013CC50(*(unsigned long*)(p + 4), &pos, 0x42e, 1, 0, 0, 0, 1, 1.0f);
-            *(unsigned long*)(p + 0x240) = 0;
-            return;
+    switch (*(int*)(p + 0x240)) {
+    case 0:
+        if (player >= 0 || fn_801F2DB4(p, 0x48424d42, 0x4e554c4c, 0)) {
+            fn_802A3948(lbl_8053AC98, p + 0xc, player, *(unsigned long*)(p + 4), 0xaf);
+            {
+    void* resource = (*(JKRFileLoader**)(lbl_8053AAF8 + 0xa4))->getResource(0x53434820, lbl_8046D908);
+    fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), (unsigned long)resource, 704, 0, 0x5c0, 0x40);
+}
+            {
+    void* resource = (*(JKRFileLoader**)(lbl_8053AAF8 + 0xa4))->getResource(0x53434820, lbl_8046D908);
+    fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), (unsigned long)resource, 768, 0, 0x7c0, 0x40);
+}
+            *(int*)(p + 0x240) = 1;
+            fn_801F0E34(p, 0x30051, 0);
+            *(int*)(p + 0x244) = 60;
+            fn_802D790C((unsigned long)fn_802D6A9C(p), 0);
+            ccEffect(p, 0x42a);
+            *(unsigned long*)(p + 0x230) = ccEffect(p, 0x426);
+            *(unsigned long*)(p + 0x234) = ccEffect(p, 0x427);
+            ccStop(*(JPABaseEmitter**)(p + 0x238));
+            ccStop(*(JPABaseEmitter**)(p + 0x23c));
+        } else {
+            if ((u8)fn_802D6A9C(p)[0x171] != 0) break;
+            fn_802A3948(lbl_8053AC98, p + 0xc, player, *(unsigned long*)(p + 4), 0xaf);
+            *(unsigned long*)(p + 0x230) = ccEffect(p, 0x426);
+            *(unsigned long*)(p + 0x234) = ccEffect(p, 0x427);
+            ccStop(*(JPABaseEmitter**)(p + 0x238));
+            ccStop(*(JPABaseEmitter**)(p + 0x23c));
+            *(int*)(p + 0x240) = 2;
         }
+        break;
+    case 1:
+        if (*(int*)(p + 0x244) == 0) *(int*)(p + 0x240) = 2;
+        else *(int*)(p + 0x244) -= 1;
+        break;
+    case 2:
+        if (player >= 0 || fn_801F2DB4(p, 0x48424d42, 0x4e554c4c, 0)) {
+            fn_802A3884(lbl_8053AC98, p + 0xc, player, *(unsigned long*)(p + 4), 0xae);
+            {
+    void* resource = (*(JKRFileLoader**)(lbl_8053AAF8 + 0xa4))->getResource(0x53434820, lbl_8046D908);
+    fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), (unsigned long)resource, 576, 0, 0x5c0, 0x40);
+}
+            {
+    void* resource = (*(JKRFileLoader**)(lbl_8053AAF8 + 0xa4))->getResource(0x53434820, lbl_8046D908);
+    fn_802FA160(*(void**)(lbl_8053AB10 + 0x20), (unsigned long)resource, 640, 0, 0x7c0, 0x40);
+}
+            *(int*)(p + 0x240) = 3;
+            fn_801F0E34(p, 0x30051, 0);
+            fn_802D790C((unsigned long)fn_802D6A9C(p), 1);
+            ccEffect(p, 0x42c);
+            *(unsigned long*)(p + 0x238) = ccEffect(p, 0x42d);
+            *(unsigned long*)(p + 0x23c) = ccEffect(p, 0x42e);
+            ccStop(*(JPABaseEmitter**)(p + 0x230));
+            ccStop(*(JPABaseEmitter**)(p + 0x234));
+            *(int*)(p + 0x244) = 60;
+        } else {
+            if ((u8)fn_802D6A9C(p)[0x171] != 1) break;
+            fn_802A3884(lbl_8053AC98, p + 0xc, player, *(unsigned long*)(p + 4), 0xae);
+            *(unsigned long*)(p + 0x238) = ccEffect(p, 0x42d);
+            *(unsigned long*)(p + 0x23c) = ccEffect(p, 0x42e);
+            ccStop(*(JPABaseEmitter**)(p + 0x230));
+            ccStop(*(JPABaseEmitter**)(p + 0x234));
+            *(int*)(p + 0x240) = 0;
+        }
+        break;
+    case 3:
+        if (*(int*)(p + 0x244) == 0) *(int*)(p + 0x240) = 0;
+        else *(int*)(p + 0x244) -= 1;
+        break;
+    default:
+        *(int*)(p + 0xd8) = 1;
+        break;
     }
 }
 
