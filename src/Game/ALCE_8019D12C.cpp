@@ -43,11 +43,10 @@ extern void* lbl_8053AD70;
 extern u8 lbl_8053ABB0;
 static inline f32 alceRandom(void* game, u32 multiplier) {
     union { unsigned int bits; f32 value; } random;
-    unsigned int* state = (unsigned int*)((char*)game + 0xb4);
-    *state = *state * multiplier + 0x3c6ef35f;
-    random.bits = (*state >> 9) | 0x3f800000;
-    f32 value = random.value - lbl_8053E444;
-    return value;
+    unsigned int& state = *(unsigned int*)((char*)game + 0xb4);
+    state = state * multiplier + 0x3c6ef35f;
+    random.bits = (state >> 9) | 0x3f800000;
+    return random.value - lbl_8053E444;
 }
 
 struct Quad {
