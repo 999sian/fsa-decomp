@@ -51,6 +51,36 @@ extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
     return p;
 }
 
+static inline void cddRotation(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32* scale) {
+    f32 cz, cy, cx, sz, sy, sx;
+    sx = JMASinShort(rx);
+    sy = JMASinShort(ry);
+    sz = JMASinShort(rz);
+    cx = JMACosShort(rx);
+    cy = JMACosShort(ry);
+    cz = JMACosShort(rz);
+    f32 cysz = cy * sz;
+    f32 cycz = cy * cz;
+    f32 sxcy = sx * cy;
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    f32 s0 = scale[0];
+    f32 s1 = scale[1];
+    f32 s2 = scale[2];
+    m[0][0] = s0 * cycz;
+    m[1][0] = s0 * cysz;
+    m[2][0] = s0 * -sy;
+    m[0][1] = s1 * (sxsy * cz - cxsz);
+    m[1][1] = s1 * (sxsy * sz + cxcz);
+    m[2][1] = s1 * sxcy;
+    m[0][2] = s2 * (cxcz * sy + sxsz);
+    m[1][2] = s2 * (cxsz * sy - sxcz);
+    m[2][2] = s2 * (cx * cy);
+}
+
 extern "C" void fn_802CDD9C(char* this_)
 {
     Vec v;
@@ -71,40 +101,25 @@ extern "C" void fn_802CDD9C(char* this_)
             f32 sy = *(f32*)(this_ + 0x250);
             f32 sz = *(f32*)(this_ + 0x254);
             f32* tbl = (f32*)sincosTable___5JMath;
-            f32 s0 = tbl[0];
-            f32 s = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8));
-            f32 c0 = tbl[1];
-            f32 c = *(f32*)((char*)(tbl + 1) + (((u16)ang >> 5) * 8));
-            f32 ss = s0 * s0;
-            f32 ssY = s0 * s;
-            f32 cc = c0 * c0;
-            f32 cs = c0 * s0;
-            f32 cycz = c * c0;
-            f32 cysz = c * s0;
-            f32 yy = ssY * s0 + cc;
-            f32 xy = ssY * c0 - cs;
-            f32 xz = cc * s + ss;
-            f32 neg = -s;
+            f32 s0 = JMASinShort(0);
+            f32 s = JMASinShort(ang);
+            f32 c0 = JMACosShort(0);
+            f32 c = JMACosShort(ang);
+            f32 cxcz = c0 * c0;
+            f32 sxsy = s0 * s;
+            f32 cxsz = c0 * s0;
+            f32 sxsz = s0 * s0;
+            f32 sxcz = s0 * c0;
             rec.w18 = mtx;
-            f32 yz = cs * s - cs;
-            f32 a01 = sy * xy;
-            f32 a20 = sx * neg;
-            f32 a11 = sy * yy;
-            f32 a02 = sz * xz;
-            mtx[0][1] = a01;
-            f32 a12 = sz * yz;
-            f32 a00 = sx * cycz;
-            mtx[2][0] = a20;
-            f32 a10 = sx * cysz;
-            f32 a21 = sy * cysz;
-            mtx[1][1] = a11;
-            f32 a22 = sz * cycz;
-            mtx[0][0] = a00;
-            mtx[1][0] = a10;
-            mtx[2][1] = a21;
-            mtx[0][2] = a02;
-            mtx[1][2] = a12;
-            mtx[2][2] = a22;
+            mtx[0][0] = sx * (c * c0);
+            mtx[1][0] = sx * (c * s0);
+            mtx[2][0] = sx * -s;
+            mtx[0][1] = sy * (sxsy * c0 - cxsz);
+            mtx[1][1] = sy * (sxsy * s0 + cxcz);
+            mtx[2][1] = sy * (s0 * c);
+            mtx[0][2] = sz * (cxcz * s + sxsz);
+            mtx[1][2] = sz * (cxsz * s - sxcz);
+            mtx[2][2] = sz * (c * c0);
         } else if (*(s32*)(this_ + 0x234) == 0x15) {
             rec.b2d = 1;
         } else {
