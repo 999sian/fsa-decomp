@@ -535,7 +535,7 @@ static inline u8 enemyTouchPlayer(u8* self, s32 player) {
     self[0x283 + player] = result;
     return result;
 }
-static inline u16 enemyPlayerTile(s32 player) {
+static inline u16 enemyPlayerTile(const s32 player) {
     int room = fn_8023DE58(player);
     return fn_8022461C(fn_8023E724(player), room);
 }
@@ -552,7 +552,7 @@ extern "C" s32 fn_80350974(u8* self) {
     s32 cnt;
     s32 room;
     JGeometry::TVec2<f32>* pos;
-    s32 i;
+    int i;
     s32 j;
     s32 k;
     s32 st;
@@ -585,7 +585,7 @@ extern "C" s32 fn_80350974(u8* self) {
                 *(f32*)(self + 0x88) = p[2];
                 *(f32*)(self + 0x8c) = p[3];
                 r = fn_80351020(self, i);
-                self[i + 0x283] = r;
+                *(self + 0x283 + i) = r;
                 if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                     cnt++;
                     break;
@@ -624,7 +624,8 @@ extern "C" s32 fn_80350974(u8* self) {
                 self[0x280] = r;
             }
         } else {
-            r = enemyTouchPlayer(self, i);
+            r = fn_80351020(self, i);
+            self[i + 0x283] = r;
             if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                 cnt++;
             }
