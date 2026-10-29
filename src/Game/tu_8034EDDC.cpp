@@ -536,7 +536,7 @@ static inline u8 enemyTouchPlayer(u8* self, s32 player) {
     return result;
 }
 static inline u16 enemyPlayerTile(s32 player) {
-    const s32 room = fn_8023DE58(player);
+    int room = fn_8023DE58(player);
     return fn_8022461C(fn_8023E724(player), room);
 }
 static inline f32 enemyDistance2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
@@ -624,10 +624,8 @@ extern "C" s32 fn_80350974(u8* self) {
                 self[0x280] = r;
             }
         } else {
-            r = fn_80351020(self, i);
-            bool hit = (u8)r == 1;
-            self[i + 0x283] = r;
-            if (hit && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
+            r = enemyTouchPlayer(self, i);
+            if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                 cnt++;
             }
         }
