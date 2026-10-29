@@ -21,7 +21,7 @@ extern "C" void fn_802D7584(void* a, void* b, u8 c);
 extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
 extern "C" void* lbl_8053AC98;
 extern "C" f32 lbl_80475178[];
-extern "C" f32 lbl_80475148[];
+extern "C" Vec lbl_80475148[4];
 extern "C" void fn_801F0D20(u8* self, s32 a);
 extern "C" void fn_8022E088(s32 i, s32 j, Vec* out);
 extern "C" void fn_8022DF48(s32 i);
@@ -200,7 +200,7 @@ extern "C" void fn_803771AC(u8* this_) {
                     tmp.x = x;
                     tmp.y = y;
                     tmp.z = z;
-                    f32* offset = lbl_80475178;
+                    const f32* offset = lbl_80475178;
                     for (j = 0; j < 4; j++, offset++) {
                         tmp.y = y + *offset;
                         fn_802A3948(lbl_8053AC98, &tmp, 0, *(u32*)(this_ + 4), 0);
