@@ -1359,6 +1359,7 @@ extern "C" void fn_80425F6C(u8* self) {
     fn_8044148C(*(void**)(self + 0xf0));
 }
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_804263A8(u8* this_) {
     u8* config = lbl_80529DEC;
     const u8* base = lbl_8048E1B8;
