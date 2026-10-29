@@ -89,7 +89,7 @@ static inline void cddResetDrawRec(DrawRec& rec) {
         rec.w34 = 0;
         rec.w38 = 2;
 }
-static inline void cddRotation(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32* scale) {
+static inline void cddRotation(f32 m[3][4], const s16 rx, const s16 ry, const s16 rz, const f32* scale) {
     f32 cz, cy, cx, sz, sy, sx;
     sx = JMASinShort(rx);
     sy = JMASinShort(ry);
