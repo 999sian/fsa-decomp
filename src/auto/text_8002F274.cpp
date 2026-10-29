@@ -14,7 +14,7 @@ static inline unsigned long* BankChunk8002F34C(char* base, unsigned long tag) {
     unsigned long* chunk = (unsigned long*)(base + 0x20);
     while ((char*)chunk < end) {
         if (*chunk == tag) return chunk;
-        chunk = (unsigned long*)((chunk[1] + (unsigned long)chunk + 0xb) & ~3);
+        chunk = (unsigned long*)BankAlign8002F34C((unsigned long)(chunk + 2) + chunk[1]);
     }
     return 0;
 }
