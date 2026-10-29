@@ -346,9 +346,8 @@ extern "C" void fn_80124EA4(u8* this_) {
     if (*(s32*)(this_ + 0x33c) >= 0xd) {
         u8* o = *(u8**)(lbl_8053AB10 + 0x30);
         if (o[0x284] == 0) {
-            f32 c = lbl_8053CA44;
             o[0x284] = 1;
-            *(f32*)(o + 0x28c) = c;
+            *(f32*)(o + 0x28c) = 0.05f;
         }
     }
 
@@ -373,9 +372,9 @@ extern "C" void fn_80124EA4(u8* this_) {
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), this_ + 0xc);
         u8* o = *(u8**)(lbl_8053AB10 + 0x24);
         if (o[0x840] == 0) {
-            f32 a = lbl_8053CA4C;
+            f32 a = 1.0f;
             o[0x840] = 1;
-            f32 b = lbl_8053CA50;
+            f32 b = -1.0f;
             f32 px = *(f32*)(this_ + 0xc);
             *(f32*)(o + 0x84c) = px;
             *(f32*)(o + 0x844) = px;
@@ -385,13 +384,13 @@ extern "C" void fn_80124EA4(u8* this_) {
             *(f32*)(o + 0x854) = a;
             *(f32*)(o + 0x1d4) = b;
             *(f32*)(o + 0x1d8) = b;
+        }
             fn_8012285C(this_);
             fn_8022FE80(fn_8022EA0C(), *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 0, 0);
             fn_8012285C(this_);
             if (fn_80388CAC((s32)fn_8022EA0C(), *(s32*)(this_ + 0x198))) {
                 self->v1b(*(s32*)(this_ + 0x3d0));
             }
-        }
         break;
     }
     case 4: {
@@ -404,9 +403,9 @@ extern "C" void fn_80124EA4(u8* this_) {
             break;
         }
         if (fn_80138A30(lbl_8053AAF8) > 1) {
-            self->v27(fn_8012285C(this_), lbl_8053CA54, lbl_8053CA58, lbl_8053CA4C, lbl_8053CA5C, lbl_8053CA60);
+            self->v27(fn_8012285C(this_), lbl_8053CA54, lbl_8053CA58, 1.0f, lbl_8053CA5C, lbl_8053CA60);
         } else {
-            self->v27(fn_8012285C(this_), lbl_8053CA54, lbl_8053CA58, lbl_8053CA4C, lbl_8053CA5C, lbl_8053CA64);
+            self->v27(fn_8012285C(this_), lbl_8053CA54, lbl_8053CA58, 1.0f, lbl_8053CA5C, 8.0f);
         }
         s32 r30 = fn_801F2718(this_, 0x48415254);
         if (r30 < 0) {
@@ -420,11 +419,10 @@ extern "C" void fn_80124EA4(u8* this_) {
         *(s32*)(this_ + 0x108) += 4;
         if (*(s32*)(this_ + 0x108) >= *(s32*)(this_ + 0x360) << 2) {
             *(s32*)(this_ + 0x108) = *(s32*)(this_ + 0x360) << 2;
-            this_[0x335] = 1;
-            break;
         }
+        this_[0x335] = 1;
+        break;
     }
-    /* fallthrough */
     case 5:
         if (fn_8012285C(this_) < 0) {
             self->v1b(0);
@@ -439,7 +437,6 @@ extern "C" void fn_80124EA4(u8* this_) {
     case 6:
         if (fn_8012285C(this_) < 0) {
             self->v1b(0);
-            break;
         }
         if ((u8)fn_80122804(this_)) {
             self->v1b(4);
@@ -464,7 +461,7 @@ extern "C" void fn_80124EA4(u8* this_) {
         break;
     case 9:
         if (fn_80121E40(this_) && fn_801D208C(this_ + 0x230)) {
-            f32 z = lbl_8053CA40;
+            f32 z = 0.0f;
             *(f32*)(this_ + 0x44) = z;
             *(f32*)(this_ + 0x40) = z;
             *(f32*)(this_ + 0x3c) = z;
@@ -505,8 +502,9 @@ extern "C" void fn_80124EA4(u8* this_) {
             break;
         }
         {
-            Vec v = *(Vec*)(this_ + 0xc);
-            if (fn_8038BD08(0, 0x4ba, *(s32*)(this_ + 4), &v, 0x22)) {
+            s32 room=*(s32*)(this_+4);
+            JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
+            if (fn_8038BD08(0, 0x4ba, room, &v, 0x22)) {
                 *(s32*)(this_ + 0x3c4) = 0;
                 self->v1b(0x10);
             }
@@ -528,15 +526,15 @@ extern "C" void fn_80124EA4(u8* this_) {
             *(f32*)(g + 0x800) = *(f32*)(this_ + 0x10);
             *(f32*)(g + 0x804) = *(f32*)(this_ + 0x14);
             g[0x7f6] = 0;
-            *(f32*)(this_ + 0x380) = lbl_8053CA68;
+        }
+            *(f32*)(this_ + 0x380) = 0.7f;
             Vec v;
-            v.x = lbl_8053CA40;
-            v.y = lbl_8053CA64;
-            v.z = lbl_8053CA40;
+            v.x = 0.0f;
+            v.y = 8.0f;
+            v.z = 0.0f;
             if (self->v32(&v, *(f32*)(this_ + 0x380))) {
                 self->v1b(0x11);
             }
-        }
         break;
     }
     case 2:
