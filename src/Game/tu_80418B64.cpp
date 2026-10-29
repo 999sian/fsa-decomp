@@ -140,6 +140,14 @@ static inline void SetScreenPaneVisible(u8* self, u64 name, u8 vis) {
     pane[0xb0] = vis;
 }
 
+static inline u8* GetScreenPane(u8* screen, u64 name) {
+    return (u8*)((J2DScreen*)screen)->search(name);
+}
+
+static inline void SetPaneBlend(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    ((J2DPicture*)pane)->setBlendRatio(a, b, c, d, e, f, g, h);
+}
+
 static inline void SetScreenPaneBlend(u8* self, u64 name, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
     ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(name))->setBlendRatio(a, b, c, d, e, f, g, h);
 }
