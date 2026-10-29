@@ -205,10 +205,10 @@ extern const f32 lbl_8053F108;
 extern const f32 lbl_8053F114;
 static inline s32 fn_801D5390_pick(u8* this_) {
     s32 out[4];
-    s32 count = 0;
-    s32 i;
     s32 pick = -1;
     s32* o = out;
+    s32 i;
+    s32 count = 0;
     for (i = 0; i < 4; i++) {
         if (i != *(s32*)(this_ + 0x5b0) && this_[0x2a8 + i * 0x18] == 0 && fn_801D0B44(this_, i)) {
             *o++ = i;
