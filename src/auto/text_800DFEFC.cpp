@@ -14,11 +14,7 @@ extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, i
 extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, int no);
 // Packed tev konst colour returned by fn_800E0DF8 (word copies, sret).
-struct TevKColorWord {
-	TevKColorWord(u32 rgba) : mRGBA(rgba) {}
-	operator const J3DGXColor&() const { return *(const J3DGXColor*)&mRGBA; }
-	u32 mRGBA;
-};
+typedef J3DGXColor TevKColorWord;
 extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no);
 struct TevColorWords {
 	TevColorWords(u32 first, u32 second) { mWords[0] = first; mWords[1] = second; }
