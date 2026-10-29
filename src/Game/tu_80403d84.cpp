@@ -2787,59 +2787,72 @@ extern "C" void fn_804083D8(u8* self) {
 }
 #pragma opt_common_subs reset
 #pragma opt_propagation off
+static inline f32 menuScaledOffset(const f32 factor, const f32 value, const f32 origin, const s16 offset) {
+    f32 delta = value - origin;
+    f32 scaled = factor * delta;
+    return scaled + (f32)offset;
+}
 static inline f32 menuLayoutSize(const f32* table, s32 index) { return table[index]; }
 static inline s16 menuLayoutCoord(const s16* table, s32 index) { return table[index]; }
 static inline u32 menuLayoutText(const u32* table, s32 index) { return table[index]; }
 #pragma opt_propagation reset
 extern "C" void* fn_80403184(u32, const char*);
 extern "C" int snprintf(char*, unsigned long, const char*, ...);
+#pragma opt_lifetimes off
 #pragma opt_common_subs off
 extern "C" void fn_8040873C(u8* self) {
+    ResTIMG* resource;
     Tbl8048C1F8* tbl = &lbl_8048C1F8;
     if (*(s32*)(self + 0x340) == 7) {
+        s32 i;
         u64* names = tbl->alphaNames;
-        for (s32 i = 0; i < 9; i++, names++) {
+        for (i = 0; i < 9; i++, names++) {
             J2DPane* pane = (*(J2DPane**)(self + 0x14))->search(*names);
             f32 alpha = self[0x642 + i];
             alpha *= lbl_805438BC;
             pane->setAlpha((u8)alpha);
         }
         fn_80402E08((*(PaneRef**)(self + 0x120)), 0.0f, 0.0f);
+        i = 0;
         u8* p = self;
-        for (s32 i = 0; i < 2; i++, p += 4) {
+        for (; i < 2; i++, p += 4) {
             (*(PaneRef**)(p + 0x120))->pane->setAlpha((*(PaneRef**)(p + 0x120))->alpha);
         }
         self[0x65e] = 1;
     } else {
         if (*(s32*)(self + 0x340) < 7) {
-            fn_80402E08((*(PaneRef**)(self + 0xc8)), (f32)tbl->posX[*(s32*)(self + 0x340)], (f32)tbl->posY[*(s32*)(self + 0x340)]);
-            f32 scale = tbl->sizes[*(s32*)(self + 0x340)] / (*(PaneRef**)(self + 0xc8))->w;
+            fn_80402E08((*(PaneRef**)(self + 0xc8)), (f32)menuLayoutCoord((s16*)((u32)tbl + 0x674), *(s32*)(self + 0x340)), (f32)menuLayoutCoord((s16*)((u32)tbl + 0x684), *(s32*)(self + 0x340)));
+            f32 scale = menuLayoutSize((f32*)((u32)tbl + 0x658), *(s32*)(self + 0x340)) / (*(PaneRef**)(self + 0xc8))->w;
             fn_80402CE0((*(PaneRef**)(self + 0xc8)), scale, scale);
-            f32 factor = tbl->sizes[*(s32*)(self + 0x340)] / (*(PaneRef**)(self + 0xc8))->w - lbl_805438BC;
+            f32 factor = menuLayoutSize((f32*)((u32)tbl + 0x658), *(s32*)(self + 0x340)) / (*(PaneRef**)(self + 0xc8))->w - lbl_805438BC;
             {
+    s32 px = menuLayoutCoord((s16*)((u32)tbl + 0x674), *(s32*)(self + 0x340));
+    s32 py = menuLayoutCoord((s16*)((u32)tbl + 0x684), *(s32*)(self + 0x340));
     f32 dx = (*(PaneRef**)(self + 0xcc))->centerX - (*(PaneRef**)(self + 0xc8))->centerX;
     f32 dy = (*(PaneRef**)(self + 0xcc))->centerY - (*(PaneRef**)(self + 0xc8))->centerY;
     f32 x = factor * dx;
     f32 y = factor * dy;
-    x += (f32)tbl->posX[*(s32*)(self + 0x340)];
-    y += (f32)tbl->posY[*(s32*)(self + 0x340)];
+    x += (f32)px;
+    y += (f32)py;
     fn_80402E08((*(PaneRef**)(self + 0xcc)), x, y);
-    f32 scale = tbl->sizes[*(s32*)(self + 0x340)] / (*(PaneRef**)(self + 0xc8))->w;
+    f32 scale = menuLayoutSize((f32*)((u32)tbl + 0x658), *(s32*)(self + 0x340)) / (*(PaneRef**)(self + 0xc8))->w;
     fn_80402CE0((*(PaneRef**)(self + 0xcc)), scale, scale);
 }
             {
+    s32 px = menuLayoutCoord((s16*)((u32)tbl + 0x674), *(s32*)(self + 0x340));
+    s32 py = menuLayoutCoord((s16*)((u32)tbl + 0x684), *(s32*)(self + 0x340));
     f32 dx = (*(PaneRef**)(self + 0xd0))->centerX - (*(PaneRef**)(self + 0xc8))->centerX;
     f32 dy = (*(PaneRef**)(self + 0xd0))->centerY - (*(PaneRef**)(self + 0xc8))->centerY;
     f32 x = factor * dx;
     f32 y = factor * dy;
-    x += (f32)tbl->posX[*(s32*)(self + 0x340)];
-    y += (f32)tbl->posY[*(s32*)(self + 0x340)];
+    x += (f32)px;
+    y += (f32)py;
     fn_80402E08((*(PaneRef**)(self + 0xd0)), x, y);
-    f32 scale = tbl->sizes[*(s32*)(self + 0x340)] / (*(PaneRef**)(self + 0xc8))->w;
+    f32 scale = menuLayoutSize((f32*)((u32)tbl + 0x658), *(s32*)(self + 0x340)) / (*(PaneRef**)(self + 0xc8))->w;
     fn_80402CE0((*(PaneRef**)(self + 0xd0)), scale, scale);
 }
             u8* p = self;
-            f32* sizes = tbl->sizes;
+            f32* sizes = (f32*)((u32)tbl + 0x658);
             for (s32 i = 0; i < 18; i++, p += 4) {
                 PaneRef* ref = *(PaneRef**)(p + 0xd4);
                 fn_80402E08(ref, factor * ref->centerX, factor * ref->centerY);
@@ -2848,14 +2861,16 @@ extern "C" void fn_8040873C(u8* self) {
             }
         }
         fn_80402E08((*(PaneRef**)(self + 0x120)), 0.0f, 0.0f);
+        s32 i = 0;
         u8* p = self;
-        for (s32 i = 0; i < 2; i++, p += 4) {
+        for (; i < 2; i++, p += 4) {
             (*(PaneRef**)(p + 0x120))->pane->setAlpha((*(PaneRef**)(p + 0x120))->alpha);
         }
         self[0x65e] = 1;
     }
+    s32 i;
     u8* row = self;
-    for (s32 i = 0; i < 8; i++, row += 0x14) {
+    for (i = 0; i < 8; i++, row += 0x14) {
         fn_80402E08(*(PaneRef**)(row + 0x28), -150.0f, 0.0f);
         (*(PaneRef**)(row + 0x28))->frame20 = 0;
         u8* p = row;
@@ -2875,8 +2890,10 @@ extern "C" void fn_8040873C(u8* self) {
     if (*(s32*)(self + 0x340) <= 7) {
         if (*(s32*)(self + 0x350) != 6) {
             s16* coords = tbl->cursorPos[*(s32*)(self + 0x340)][*(s32*)(self + 0x348)];
-            *(f32*)(self + 0x394) = (f32)coords[0];
-            *(f32*)(self + 0x398) = (f32)coords[1];
+            f32 x = (f32)coords[0];
+            f32 y = (f32)coords[1];
+            *(f32*)(self + 0x394) = x;
+            *(f32*)(self + 0x398) = y;
         }
     } else {
         *(f32*)(self + 0x398) = 0.0f;
@@ -2890,7 +2907,7 @@ extern "C" void fn_8040873C(u8* self) {
     if (*(s32*)(self + 0x340) != 8 && *(s32*)(self + 0x340) != 9 && *(s32*)(self + 0x340) != 10 && *(s32*)(self + 0x340) != 11 && *(s32*)(self + 0x340) != 12) {
         char name[11];
         snprintf(name, 11, tbl->pictureFormat, *(s32*)(self + 0x340) + 1, *(s32*)(self + 0x348) + 1);
-        ResTIMG* resource = (ResTIMG*)fn_80403184('TIMG', name);
+        resource = (ResTIMG*)fn_80403184('TIMG', name);
         ((J2DPicture*)(*(J2DPane**)(self + 0x10))->search(0x0050706c616e3031ULL))->remove((u8)0);
         ((J2DPicture*)(*(J2DPane**)(self + 0x10))->search(0x0050706c616e3031ULL))->append(resource, 1.0f);
         ((J2DPicture*)(*(J2DPane**)(self + 0x10))->search(0x0050706c616e3031ULL))->setBlendRatio(0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
@@ -2898,12 +2915,13 @@ extern "C" void fn_8040873C(u8* self) {
         ((J2DPicture*)(*(J2DPane**)(self + 0x10))->search(0x0050706c616e3032ULL))->append(resource, 1.0f);
         ((J2DPicture*)(*(J2DPane**)(self + 0x10))->search(0x0050706c616e3032ULL))->setBlendRatio(0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     }
-    fn_803832BC(self + 0x564, tbl->text[0][*(s32*)(self + 0x340)], 0, 0, 0);
-    fn_803832BC(self + 0x582, tbl->text[1][*(s32*)(self + 0x340)], 0, 0, 0);
-    fn_803832BC(self + 0x5a0, tbl->text[2][*(s32*)(self + 0x340)], 0, 0, 0);
-    fn_803832BC(self + 0x5be, tbl->text[3][*(s32*)(self + 0x340)], 0, 0, 0);
+    fn_803832BC(self + 0x564, menuLayoutText((u32*)((u32)tbl + 0x40), *(s32*)(self + 0x340)), 0, 0, 0);
+    fn_803832BC(self + 0x582, menuLayoutText((u32*)((u32)tbl + 0x60), *(s32*)(self + 0x340)), 0, 0, 0);
+    fn_803832BC(self + 0x5a0, menuLayoutText((u32*)((u32)tbl + 0x80), *(s32*)(self + 0x340)), 0, 0, 0);
+    fn_803832BC(self + 0x5be, menuLayoutText((u32*)((u32)tbl + 0xa0), *(s32*)(self + 0x340)), 0, 0, 0);
 }
 #pragma opt_common_subs reset
+#pragma opt_lifetimes reset
 static inline bool checkRowBit(u32 idx, int p, int j) {
 	if (p < 0 || p > 7) return false;
 	if (j < 0 || j > 3) return false;
