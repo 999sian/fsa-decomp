@@ -124,31 +124,6 @@ static inline bool movingBlockContainsPlayerCached(u8* self, s32 player, s32& j)
     return false;
 }
 
-static inline bool movingBlockContainsPlayerRef(u8* self, s32 player, s32& j, f32& maxY, f32& minX, f32& minY, f32& maxX) {
-    j = *(s32*)(self + 4);
-    if (fn_8023DE58(player) != j) return false;
-    minX = *(f32*)(self + 0x60);
-    maxX = *(f32*)(self + 0x68);
-    minY = *(f32*)(self + 0x64);
-    minX += *(f32*)(self + 0xc);
-    maxX += *(f32*)(self + 0xc);
-    maxY = *(f32*)(self + 0x6c);
-    minY += *(f32*)(self + 0x10);
-    maxY += *(f32*)(self + 0x10);
-    for (j = 0; j < 8; j++) {
-        Vec point;
-        fn_8022E088(player, j, &point);
-        point.z = 0.0f;
-        f32 x = point.x;
-        bool inside = false;
-        if (x >= minX) {
-            f32 y = point.y;
-            if (y >= minY && x < maxX && y < maxY) inside = true;
-        }
-        if (inside) return true;
-    }
-    return false;
-}
 #pragma opt_lifetimes off
 extern "C" void fn_803771AC(u8* this_) {
     JGeometry::TBox2<f32> box;
