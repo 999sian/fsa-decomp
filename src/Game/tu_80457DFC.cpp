@@ -159,7 +159,7 @@ struct AudioChannelBase { u8 pad[0x18]; JAUSoundObject* object; };
 struct AudioContext { u8 pad[0x18]; JAUSoundObject* channels[4]; };
 
 static inline JAUSoundObject* getAudioChannel(u8* self, const s8 channel) {
-    return ((AudioContext*)self)->channels[channel];
+    return ((AudioContext*)self)->channels[(int)channel];
 }
 static inline f32 getPlayerAudioPan(const u8* self, s32 channel) {
     if(channel>=self[5])return 0.5f;
