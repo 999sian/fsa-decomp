@@ -238,8 +238,8 @@ static inline void ltzrTouch(char* p, s32 i) {
         f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
         cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
         pt.z = lbl_80542268;
-        pt.y = len * sy;
         pt.x = len * cy;
+        pt.y = len * sy;
         minx = *(f32*)(p + 0x60);
         miny = *(f32*)(p + 0x64);
         maxx = *(f32*)(p + 0x68);
@@ -289,9 +289,9 @@ extern "C" void fn_8033FE04(char* p) {
     }
     }
     if (*(s32*)(p + 0x248) == 1) {
-        ltzrBlink((f32*)(p + 0x2b4), (u8*)(p + 0x2b1), lbl_8054229C, lbl_8054227C, lbl_80542298);
-    } else if (lbl_8054227C != *(f32*)(p + 0x2b4)) {
-        *(f32*)(p + 0x2b4) = lbl_8054227C;
+        ltzrBlink((f32*)(p + 0x2b4), (u8*)(p + 0x2b1), 1.2f, 1.0f, 0.03f);
+    } else if (1.0f != *(f32*)(p + 0x2b4)) {
+        *(f32*)(p + 0x2b4) = 1.0f;
     }
     switch (*(s32*)(p + 0x248)) {
     case 0:
@@ -331,10 +331,10 @@ extern "C" void fn_8033FE04(char* p) {
         }
         if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
             fn_801BACE8(p, 0);
-            ((Ltzr*)p)->v41();
         }
         break;
     }
+    ((Ltzr*)p)->v41();
 }
 
 extern "C" s32 fn_80340650(void) { return 0; }
