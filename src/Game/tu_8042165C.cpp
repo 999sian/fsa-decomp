@@ -1508,7 +1508,6 @@ extern "C" void fn_804263A8(u8* this_) {
     }
     fn_8044172C(*(void**)(this_ + 0xf0));
 }
-#pragma opt_lifetimes reset
 #pragma opt_propagation reset
 extern "C" void* fn_80426AD4(void* this_, s16 how) {
     if (this_ != 0) {
