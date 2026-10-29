@@ -113,6 +113,33 @@ static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
     return false;
 }
 
+static inline bool movingBlockContainsPlayerCached(u8* self, s32 player, s32& j) {
+    j = *(s32*)(self + 4);
+    if (fn_8023DE58(player) != j) return false;
+    f32 maxY, minX, minY, maxX;
+    minX = *(f32*)(self + 0x60);
+    maxX = *(f32*)(self + 0x68);
+    minY = *(f32*)(self + 0x64);
+    minX += *(f32*)(self + 0xc);
+    maxX += *(f32*)(self + 0xc);
+    maxY = *(f32*)(self + 0x6c);
+    minY += *(f32*)(self + 0x10);
+    maxY += *(f32*)(self + 0x10);
+    for (j = 0; j < 8; j++) {
+        Vec point;
+        fn_8022E088(player, j, &point);
+        point.z = 0.0f;
+        f32 x = point.x;
+        bool inside = false;
+        if (x >= minX) {
+            f32 y = point.y;
+            if (y >= minY && x < maxX && y < maxY) inside = true;
+        }
+        if (inside) return true;
+    }
+    return false;
+}
+
 static inline bool movingBlockContainsPlayerRef(u8* self, s32 player, s32& j, f32& maxY, f32& minX, f32& minY, f32& maxX) {
     j = *(s32*)(self + 4);
     if (fn_8023DE58(player) != j) return false;
@@ -193,9 +220,9 @@ extern "C" void fn_803771AC(u8* this_) {
             if (PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24))) >= 63.9) {
                 ((Actor*)this_)->v10(0xff, 1);
                 x = ((Vec*)(this_ + 0xc))->x;
-                x -= 24.0f;
                 y = ((Vec*)(this_ + 0xc))->y;
                 z = ((Vec*)(this_ + 0xc))->z;
+                x -= 24.0f;
                 for (i = 0; i < 4; i++) {
                     tmp.x = x;
                     tmp.y = y;
@@ -268,14 +295,9 @@ extern "C" void fn_803771AC(u8* this_) {
                     break;
                 }
                 fn_80238E08(*(u32*)(this_ + 0x198));
-                const Vec* table = (const Vec*)lbl_80475148;
-                f32 x = table[idx].x;
-                const Vec* source = table + idx;
-                f32 y = source->y;
-                ((Vec*)(this_ + 0x3c))->x = x;
-                f32 z = source->z;
-                ((Vec*)(this_ + 0x3c))->y = y;
-                ((Vec*)(this_ + 0x3c))->z = z;
+                ((Vec*)(this_ + 0x3c))->x = lbl_80475148[idx].x;
+                ((Vec*)(this_ + 0x3c))->y = lbl_80475148[idx].y;
+                ((Vec*)(this_ + 0x3c))->z = lbl_80475148[idx].z;
                 ((Vec*)(this_ + 0x248))->x = ((Vec*)(this_ + 0xc))->x;
                 ((Vec*)(this_ + 0x248))->y = ((Vec*)(this_ + 0xc))->y;
                 ((Vec*)(this_ + 0x248))->z = ((Vec*)(this_ + 0xc))->z;
