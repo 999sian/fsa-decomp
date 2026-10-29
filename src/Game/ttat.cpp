@@ -159,6 +159,14 @@ extern "C" void fn_80458880(void* obj, s32 a, s32 b);
 extern "C" s32 ClassifyBamAngleToQuadrant(s32 angle);
 extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
 extern const u16 lbl_804A2F18[][2];
+
+static inline char* ttatFindActor(s32 id) {
+    char* c = 0;
+    if (id >= 0) {
+        c = (char*)fn_801F666C(fn_801F856C(), id);
+    }
+    return c;
+}
 extern const f32 lbl_8053E710;
 extern const f32 lbl_8053E714;
 extern const f32 lbl_8053E718;
@@ -382,6 +390,130 @@ extern "C" void fn_801A96B4(void* this_) {
         break;
     }
 }
+
+extern "C" void fn_801A9CF4(void* this_) {
+    char* t = (char*)this_;
+    char* c;
+    s32 id;
+    s32 r;
+    s32 n;
+
+    *(s32*)(t + 0x108) = 10000;
+    fn_801F3D94(this_, 0);
+    if (*(s32*)(t + 0x250) > 0 && *(u8*)(t + 0x26c) == 0) {
+        id = *(s32*)(t + 0x268);
+        if (id >= 0) {
+            c = (char*)fn_801F666C(fn_801F856C(), id);
+            if (c != 0 && *(s32*)(c + 0x250) > 0) {
+                *(f32*)(t + 0x60) = lbl_8053E710;
+                *(f32*)(t + 0x64) = lbl_8053E710;
+                *(f32*)(t + 0x68) = lbl_8053E714;
+                *(f32*)(t + 0x6c) = lbl_8053E714;
+                r = fn_801F285C(this_, 0, 0, 1, -1);
+                n = *(s32*)(t + 0x264);
+                if (r >= 0) {
+                    if (r == n) {
+                        fn_801F37AC(this_, 0, t + 0xc, 3, 0, -1);
+                        *(f32*)(t + 0x60) = lbl_8053E6E8;
+                        *(f32*)(t + 0x64) = lbl_8053E718;
+                        *(f32*)(t + 0x68) = lbl_8053E6E8;
+                        *(f32*)(t + 0x6c) = lbl_8053E718;
+                        fn_801F0E34(this_, 0x5002d, 0);
+                        fn_8013CC50(*(s32*)(t + 0x4), t + 0xc, lbl_804A2F18[n][0], 0, 0, 0, 0, 1, lbl_8053E700);
+                        fn_8013CC50(*(s32*)(t + 0x4), t + 0xc, lbl_804A2F18[n][1], 0, 0, 0, 0, 1, lbl_8053E700);
+                        *(s32*)(t + 0x250) = 0;
+                        *(s32*)(c + 0x250) -= 1;
+                    } else {
+                        fn_80458880(lbl_8053AF80, 6, -1);
+                        *(s32*)(t + 0x244) = 1;
+                        fn_8013CC50(*(s32*)(t + 0x4), t + 0xc, 0x482, 0, 0, 0, 0, 1, lbl_8053E700);
+                        fn_8013CC50(*(s32*)(t + 0x4), t + 0xc, 0x483, 0, 0, 0, 0, 1, lbl_8053E700);
+                        *(u8*)(c + 0x26c) = 1;
+                    }
+                    fn_8023B6CC(r);
+                    ttatSetMode(t, 3);
+                    *(s32*)(t + 0x230) = 7;
+                }
+            }
+        }
+        fn_801F2B7C(t, -100, -1, 1);
+    }
+
+    switch (*(s32*)(t + 0x230)) {
+    case 5:
+        *(s32*)(t + 0x244) = 0;
+        ttatSetMode(t, 0);
+        *(s32*)(t + 0x230) = 6;
+    case 6:
+        id = *(s32*)(t + 0x268);
+        if (id >= 0) {
+            c = (char*)fn_801F666C(fn_801F856C(), id);
+            if (c != 0 && *(s32*)(c + 0x250) <= 0) {
+                break;
+            }
+        }
+        if (*(u8*)(t + 0x26c) == 1) {
+            ttatSetMode(t, 1);
+            *(s32*)(t + 0x230) = 10;
+        }
+        break;
+    case 7:
+        if (*(u8*)(t + 0x2b0) != 0 && *(u8*)(t + 0x26c) == 1) {
+            *(s32*)(t + 0x230) = 8;
+        }
+        break;
+    case 8:
+        if (*(s32*)(t + 0x250) == 0) {
+            id = *(s32*)(t + 0x268);
+            if (id >= 0) {
+                c = (char*)fn_801F666C(fn_801F856C(), id);
+                if (c != 0) {
+                    *(s32*)(c + 0x250) += 1;
+                }
+            }
+            *(s32*)(t + 0x250) = 1;
+        }
+        ttatSetMode(t, 4);
+        *(s32*)(t + 0x230) = 9;
+    case 9:
+        if (*(u8*)(t + 0x2b0) == 0) {
+            break;
+        }
+        ttatSetMode(t, 1);
+        *(s32*)(t + 0x230) = 10;
+    case 10:
+        if (*(u8*)(t + 0x2b0) == 0) {
+            break;
+        }
+        if (*(s32*)(t + 0x244) == 0) {
+            fn_801F0E34(this_, 0x5002e, 0);
+            id = Actor_CreateByID(fn_801F856C(), 'OKTM', *(s32*)(t + 0x4), t + 0xc, 4, -1, -1);
+            if (id >= 0) {
+                c = (char*)fn_801F666C(fn_801F856C(), id);
+                if (c != 0) {
+                    JGeometry::TVec3<f32> v;
+                    v.z = lbl_8053E6E0;
+                    v.y = lbl_8053E71C * *(f32*)(sincosTable___5JMath + ((((s32)(lbl_8053E720 + *(f32*)(t + 0x2b4))) >> 2) & 0x3ff8) + 4);
+                    v.x = lbl_8053E71C * *(f32*)(sincosTable___5JMath + ((((s32)(lbl_8053E720 + *(f32*)(t + 0x2b4))) >> 2) & 0x3ff8));
+                    *(JGeometry::TVec3<f32>*)(c + 0x3c) = v;
+                    *(s32*)(c + 0x98) = ClassifyBamAngleToQuadrant((s32)*(f32*)(t + 0x2b4));
+                }
+            }
+        }
+        ttatSetMode(t, 2);
+        *(s32*)(t + 0x230) = 11;
+        break;
+    case 11:
+        if (*(u8*)(t + 0x2b0) == 1) {
+            *(s32*)(t + 0x244) = 0;
+            *(u8*)(t + 0x26c) = 0;
+            *(s32*)(t + 0x230) = 5;
+        }
+        break;
+    }
+    fn_801AA8F4(this_);
+}
+
 #pragma opt_propagation reset
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
