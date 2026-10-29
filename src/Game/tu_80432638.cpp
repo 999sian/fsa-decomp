@@ -4,6 +4,7 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
 
 
 extern "C" void* fn_802D6A9C(void);
@@ -355,7 +356,6 @@ struct T80431_Res {
     u8 pad[0x24];
     T80431_Res() { vt = lbl_804AF86C; }
     f32 getWidth() const { return ((J2DPane*)data)->getWidth(); }
-    f32 getOffsetX() const { return *(f32*)((const u8*)this + 0x10); }
     f32 getHeight() const { return ((J2DPane*)data)->getHeight(); }
 };
 
@@ -373,7 +373,7 @@ extern "C" void* fn_8043395C(void* this_) {
 	*(J2DScreen**)(self + 4) = new J2DScreen;
 	mgr = (u8*)lbl_80529DEC;
 	((J2DScreen*)*(void**)(self + 0x4))->setPriority((const char*)(base + 0xf8), 0x01100000, *(JKRArchive**)(mgr + 0x20));
-	*(void**)(self + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x10c), *(void**)(mgr + 0x20)));
+	*(void**)(self + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(JKRFileLoader::getGlbResource((const char*)(base + 0x10c), *(JKRFileLoader**)(mgr + 0x20)));
 	((J2DScreen*)*(void**)(self + 0x4))->setAnimation((J2DAnmTextureSRTKey*)*(void**)(self + 0x10));
 
 	*(T80431_Res**)(self + 0x18) = new T80431_Res;
@@ -418,7 +418,7 @@ extern "C" void* fn_8043395C(void* this_) {
 
 	*(J2DScreen**)(self + 0x8) = new J2DScreen;
 	((J2DScreen*)*(void**)(self + 0x8))->setPriority((const char*)(base + 0x120), 0x01100000, *(JKRArchive**)(mgr + 0x20));
-	*(void**)(self + 0x14) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x138), *(void**)(mgr + 0x20)));
+	*(void**)(self + 0x14) = load__20J2DAnmLoaderDataBaseFPCv(JKRFileLoader::getGlbResource((const char*)(base + 0x138), *(JKRFileLoader**)(mgr + 0x20)));
 	((J2DScreen*)*(void**)(self + 0x8))->setAnimation((J2DAnmTextureSRTKey*)*(void**)(self + 0x14));
 
 	*(T80431_Res**)(self + 0x28) = new T80431_Res;
@@ -469,7 +469,7 @@ extern "C" void* fn_8043395C(void* this_) {
 	*(u32*)(self + 0x98) = 0;
 	self[0xac] = 0;
 	for (s32 i = 0; i < 6; i++) {
-		self[0xa6 + i] = *(u8*)((char*)((J2DScreen*)*(void**)(self + 0xc))->search(lbl_8048F438[i]) + 0xb2);
+		self[0xa6 + i] = *(u8*)((char*)((J2DScreen*)*(void**)(self + 0xc))->search(((u64*)lbl_8048F438)[i]) + 0xb2);
 
 	}
 	return this_;
