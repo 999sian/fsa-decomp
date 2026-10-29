@@ -2316,7 +2316,8 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     return width;
 }
 #pragma opt_loop_invariants reset
-static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb) {
+static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb, char* padbuf = NULL) {
+    s32 row = col - 1;
     s32 pad = (s32)((fa - width * fb) * lbl_805430BC + lbl_805430BC);
     if (lbl_8053AD78->f64 == (f32)(col - 1)) lbl_8053AD78->f5c += pad;
     if (lbl_8053AD78->f68 == (f32)(col - 1)) lbl_8053AD78->f60 += pad;
@@ -2329,50 +2330,102 @@ static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, 
 }
 extern "C" void fn_80230E1C(s32, s32);
 
-extern "C" void fn_803837A4(char* out, s32 idx, s32 mode, s32 val, f32 fa, f32 fb) {
+extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 fb) {
+    s8* p;
     MsgData* md = lbl_8053AD78->p8;
-    u8* str = (u8*)&md->inf + md->inf.size + md->inf.entries[idx].offset + 8;
-    u8 flag = (u8)(1 << (mode - 1));
-    s32 shift = (mode - 1) * 2;
-    f32 acc = lbl_805430C8;
-    s32 n = 1;
+    s8* str = (s8*)&md->inf + md->inf.size + md->inf.entries[idx].offset + 8;
+    u8 flag = (u8)(1 << (player - 1));
+    s32 shift = (player - 1) * 2;
+    f32 width = lbl_805430C8;
+    s32 col = 1;
     s32 pos = 0;
-    s32 k = 0;
-    s32 cnt = 0;
-    char buf[16];
-    char tmp[0x10];
-    u8 cmd;
-    u8* sp;
-
+    u8 mode = 0;
+    s32 len = 0;
+    s32 num = val;
+    char line[100];
+    s8 c;
+    lbl_8053AD78->f5c = width;
+    lbl_8053AD78->f64 = width;
+    lbl_8053AD78->f60 = width;
+    lbl_8053AD78->f68 = width;
     out[0] = 0;
-    lbl_8053AD78->f5c = lbl_805430C8;
-    lbl_8053AD78->f60 = lbl_805430C8;
-    lbl_8053AD78->f64 = lbl_805430C8;
-    lbl_8053AD78->f68 = lbl_805430C8;
-
-    while ((cmd = str[pos]) != 0) {
-        switch (cmd) {
-        case 0x0a:
-            break;
-        case 0x1a:
-            break;
-        case 0x19:
-            break;
-        case 0x2e:
-            break;
-        case 0x03:
-            break;
-        case 0x02:
-            break;
-        case 0x12:
-            break;
-        case 0x01:
-        case 0x09:
-        case 0x11:
-            break;
+    while ((c = (p = str + pos)[0]) != 0) {
+        if (c == '\n') {
+            line[len] = c;
+            line[len + 1] = 0;
+            finishMessageLine(out, line, col, width, fa, fb);
+            width = lbl_805430C8;
+            len = 0;
+            col++;
+            pos++;
+        } else if (c == 0x1a) {
+            if (p[2] == 2) {
+                s8 t = p[4];
+                if (t == 0 || t == 10 || t == 0x12 || t == 0x19) {
+                    if (mode < 2) {
+                        (&lbl_8053AD78->f5c)[mode] = width;
+                        (&lbl_8053AD78->f64)[mode] = col - 1;
+                        mode++;
+                    }
+                } else if (t == 1 || t == 9 || t == 0x11 || t == 0x1a) {
+                    if (mode < 2) {
+                        (&lbl_8053AD78->f5c)[mode] = width;
+                        (&lbl_8053AD78->f64)[mode] = col - 1;
+                        lbl_8053AD78->be6 = mode;
+                        mode++;
+                    }
+                } else if (t == 0x2e) {
+                    if (player >= 1 && player <= 4 && (lbl_8053AAF8->b82 & flag) != 0 &&
+                        (((u8*)lbl_8053AAF8)[0x83] >> shift & 3) == 1 && fn_8023DE58(player - 1) >= 8) {
+                        fn_80230E1C(player - 1, 0);
+                    }
+                }
+            } else if (p[2] == 3) {
+                if (p[4] == 0) {
+                    s32 ch = player + '0';
+                    line[len++] = ch;
+                    JUTFont::TWidth tw;
+                    msgFont()->getWidthEntry(ch, &tw);
+                    width += (s32)tw.w1;
+                    width += fn_8037F580(p[5], player, line, &len, lbl_805430C4);
+                } else if (p[4] == 2) {
+                    s32 divisor = 1000;
+                    bool started = false;
+                    s32 digit = 0;
+                    do {
+                        if (val >= divisor) started = true;
+                        if (started || divisor == 1) {
+                            s32 ch = val / divisor + '0';
+                            line[len++] = ch;
+                            JUTFont::TWidth tw;
+                            msgFont()->getWidthEntry(ch, &tw);
+                            width += (s32)tw.w1;
+                        }
+                        val -= val / divisor * divisor;
+                        divisor /= 10;
+                        digit++;
+                    } while (digit < 4);
+                    width += fn_8037F580(p[5], num, line, &len, lbl_805430C4);
+                }
+            }
+            pos += p[1];
+        } else {
+            line[len++] = c;
+            unsigned int code = *(u8*)p;
+            pos++;
+            if (msgFont()->isLeadByte(code)) {
+                line[len++] = str[pos];
+                c = str[pos++];
+                code = (code << 8) | (u8)c;
+            }
+            JUTFont::TWidth tw;
+            msgFont()->getWidthEntry(code, &tw);
+            width += (s32)tw.w1;
         }
-        pos++;
     }
+    line[len] = c;
+    finishMessageLine(out, line, col, width, fa, fb);
+    return col;
 }
 
 struct T37Config {
