@@ -326,7 +326,7 @@ extern "C" void fn_803771AC(u8* this_) {
             if (*(s32*)(this_ + 0x25c) == 0) fn_801F0D20(this_, 3);
         }
         for (s32 player = 0; player < 4; player++) {
-            if (movingBlockContainsPlayer(this_, player)) fn_8022DF48(player);
+            if (movingBlockContainsPlayerCached(this_, player, i)) fn_8022DF48(player);
         }
         break;
     }
@@ -338,6 +338,7 @@ extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
 extern "C" void* lbl_8053AC98;
 extern "C" f32 lbl_80475178[];
 #pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void fn_80377A38(u8* this_) {
     *(s32*)(this_ + 0x244) = 0;
     this_[0x264] = 0;
