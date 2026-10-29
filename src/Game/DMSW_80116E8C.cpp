@@ -71,7 +71,7 @@ extern "C" void fn_8010E074(void*);
 extern "C" void fn_801D267C(void*);
 extern "C" u8* lbl_8053AB10;
 extern "C" f32 lbl_8053C748;
-extern "C" f32 lbl_8053C74C;
+extern "C" const f32 lbl_8053C74C;
 extern "C" const f32 lbl_8053C750;
 extern "C" f32 lbl_8053C754;
 extern "C" f32 lbl_8053C758;
@@ -455,7 +455,7 @@ extern "C" void fn_801177C0(char* this_) {
         break;
     case 1:
         fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
-        if (fn_803865B8(0)) {
+        if ((u8)fn_803865B8(0)) {
             switch (fn_8037EFB4(0)) {
             case 0:
                 fn_80388CAC(0, *(s32*)(this_ + 0x198));
@@ -518,8 +518,12 @@ extern "C" void fn_801177C0(char* this_) {
             fn_801CD950((f32*)&tmp, lbl_8053C778 * (f32)(s32)lbl_80464AB0[i] + *(f32*)(this_ + 0x244), *(f32*)(this_ + 0x23c) * (f32)(s32)lbl_80464AB0[i]);
             fn_80230BF4(i, 2);
             fn_80230498(i, &tmp, *(s32*)(this_ + 0x260), 0xff, -0x80, -0x80, 1);
-            *(JGeometry::TVec3<f32>*)(*(char**)(this_ + 0x288 + i * 4) + 0xa4) = tmp;
-            *(JGeometry::TVec3<f32>*)(*(char**)(this_ + 0x298 + i * 4) + 0xa4) = tmp;
+            *(f32*)(*(char**)(this_ + 0x288 + i * 4) + 0xa4) = tmp.x;
+            *(f32*)(*(char**)(this_ + 0x288 + i * 4) + 0xa8) = tmp.y;
+            *(f32*)(*(char**)(this_ + 0x288 + i * 4) + 0xac) = tmp.z;
+            *(f32*)(*(char**)(this_ + 0x298 + i * 4) + 0xa4) = tmp.x;
+            *(f32*)(*(char**)(this_ + 0x298 + i * 4) + 0xa8) = tmp.y;
+            *(f32*)(*(char**)(this_ + 0x298 + i * 4) + 0xac) = tmp.z;
             if (i == 0 && *(f32*)(this_ + 0x244) - tmp.x >= lbl_8053C77C) {
                 flag = 1;
             }
@@ -539,8 +543,8 @@ extern "C" void fn_801177C0(char* this_) {
         if (*(s32*)((char*)fn_8011921C() + 8) != lbl_80464A7C[9] - 0x1e) {
             break;
         }
-        DmswRect r = *(DmswRect*)((char*)fn_802D6A9C() + 0xcc);
         JGeometry::TVec3<f32> vv;
+        DmswRect r = *(DmswRect*)((char*)fn_802D6A9C() + 0xcc);
         vv.x = lbl_8053C750 * (r.x0 - r.x1) + r.x1;
         vv.y = lbl_8053C750 * (r.y0 - r.y1) + r.y1;
         vv.z = lbl_8053C75C;
