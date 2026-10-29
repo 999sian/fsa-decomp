@@ -146,6 +146,20 @@ extern "C" void fn_801F0E34(void* self, u32 a, u32 b);
 extern "C" void* Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 flag, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* mgr, u32 v, s32 a, s32 b);
+static inline void blz2CreateGrid(u8* self, JGeometry::TVec3<f32>& pos) {
+    ((ActorSlot21*)self)->slot21();
+    for (s32 i = 0; i < *(s32*)(self + 0x2f4); i++) {
+        for (s32 j = 0; j < *(s32*)(self + 0x2f8); j++) {
+            Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(self + 4), &pos, (*(u32*)(self + 0x98) << 4) | 15, -1, -1);
+            *(u32*)(self + 0x1a0) = 0x424c5a45;
+            pos.y += 16.0f;
+        }
+        pos.y = *(f32*)(self + 0x10);
+        pos.x += 16.0f;
+    }
+    *(u16*)(self + 0x94) = 0;
+    ((ActorSlot21*)self)->v7();
+}
 static inline void blz2TouchRoom(u32 handle) {
     u8* mgr = (u8*)fn_8020D58C();
     fn_8020D7D0(mgr + mgr[0] * 0x784 + 4, handle);
@@ -153,7 +167,6 @@ static inline void blz2TouchRoom(u32 handle) {
 extern "C" const f32 lbl_8046F0C8[];
 extern "C" const f32 lbl_8046F108[];
 extern "C" void fn_802E4FD8(u8* self) {
-    f32 spacing3;
     JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32> grid;
     Blz2Vec probe;
@@ -164,13 +177,12 @@ extern "C" void fn_802E4FD8(u8* self) {
     s32 i;
     f32 savedY;
     u8* q;
-    int h;
+    s32 h;
     u8* p;
+    f32 spacing3;
     pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
     if (*(s32*)(self + 0x2f0) >= 1) {
-        h = *(s32*)(self + 0x198);
-        void* mgr = fn_8020D58C();
-        fn_8020D7D0((u8*)mgr + *(u8*)mgr * 0x784 + 4, h);
+        blz2TouchRoom(*(u32*)(self + 0x198));
     }
     pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
     fn_801F2718(self, 0x5455424f);
@@ -265,16 +277,15 @@ extern "C" void fn_802E4FD8(u8* self) {
         break;
     case 3: {
         ((ActorSlot21*)self)->slot21();
-        spacing3 = lbl_80541210;
         for (j = 0; j < *(s32*)(self + 0x2f4); j++) {
             for (i = 0; i < *(s32*)(self + 0x2f8); ) {
                 Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(self + 4), &pos, (*(u32*)(self + 0x98) << 4) | 15, -1, -1);
                 *(u32*)(self + 0x1a0) = 0x424c5a45;
                 i++;
-                pos.y += spacing3;
+                pos.y += 16.0f;
             }
             pos.y = *(f32*)(self + 0x10);
-            pos.x += spacing3;
+            pos.x += 16.0f;
         }
         *(u16*)(self + 0x94) = 0;
         ((ActorSlot21*)self)->v7();
