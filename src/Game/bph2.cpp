@@ -93,7 +93,6 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
     f32 sxcz, sxsz, cxcz, cxsz, sxsy;
     sxsy = sx * sy; cxsz = cx * sz; cxcz = cx * cz;
     sxsz = sx * sz; sxcz = sx * cz;
-    rec.b1d = 2; rec.b1c = 1;
     mtx[0][0] = scale * (cy * cz);
     mtx[1][0] = scale * (cy * sz);
     mtx[2][0] = scale * -sy;
@@ -103,6 +102,7 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
     mtx[0][2] = scale * (cxcz * sy + sxsz);
     mtx[1][2] = scale * (cxsz * sy - sxcz);
     mtx[2][2] = scale * (cx * cy);
+    rec.b1d = 2; rec.b1c = 1;
 }
 
 static inline void bph2_billboardMtx(f32 mtx[3][4], f32& s) {
