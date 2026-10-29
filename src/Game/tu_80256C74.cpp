@@ -1467,15 +1467,17 @@ static const u8 fireAnimationFrames[4][8] = {
 static const s32 fireRotationA[4] = {0xc000, 0x4000, 0x8000, 0};
 static const s32 fireRotationB[4] = {0xc000, 0x4000, 0, 0x8000};
 #pragma pool_data reset
+static inline void fireRotateA(f32 (*matrix)[4], const s32 direction) {
+    JPAGetXYZRotateMtx(0, fireRotationA[direction], -0x8000, matrix);
+}
+static inline void fireRotateB(f32 (*matrix)[4], const s32 direction) {
+    JPAGetXYZRotateMtx(0, 0, fireRotationB[direction], matrix);
+}
 #pragma pool_data on
 extern "C" void fn_8025A15C(u8* p) {
     s32 actorID;
     PlayerFirePosition* fire = (PlayerFirePosition*)p;
-    u8* base = (u8*)lbl_8046AF00;
-    static const u8 frames[4][8] = {
-        {0,1,2,3,0,1,2,3}, {0,1,2,3,0,1,2,3},
-        {0,1,2,3,0,4,5,6}, {0,1,2,3,0,4,5,6}
-    };
+    u8* base = (u8*)fireTablePrefix;
     JGeometry::TVec3<f32> pos;
     JGeometry::TBox2<f32> box;
     JGeometry::TVec3<f32> pos2;
@@ -1540,21 +1542,21 @@ extern "C" void fn_8025A15C(u8* p) {
             }
             u8 c = U8(p, 0x3f8);
             if (c < 4) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][0];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][0];
             } else if (c < 6) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][1];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][1];
             } else if (c < 10) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][2];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][2];
             } else if (c < 14) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][3];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][3];
             } else if (c < 18) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][4];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][4];
             } else if (c < 20) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][5];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][5];
             } else if (c < 24) {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][6];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][6];
             } else {
-                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][7];
+                U8(p, 0x3f9) = fireAnimationFrames[S32(p, 0x3dc)][7];
             }
             if (!fn_80247594(p, 1)) {
                 U8(p, 0xb84) = 0;
@@ -1577,14 +1579,14 @@ extern "C" void fn_8025A15C(u8* p) {
                 PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
             }
             if (PTR(p, 0x12c4)) {
-                JPAGetXYZRotateMtx(0, *(s32*)((base + 0x270) + S32(p, 0x3dc) * 4), -0x8000, (f32(*)[4])(PTR(p, 0x12c4) + 0x68));
+                JPAGetXYZRotateMtx(0, fireRotationA[S32(p, 0x3dc)], -0x8000, (f32(*)[4])(PTR(p, 0x12c4) + 0x68));
                 fn_8013CB44(PTR(p, 0x12c4), &pos, 0, 2, 1);
             }
             if (PTR(p, 0x12c8) == 0) {
                 PTR(p, 0x12c8) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x54a, -1, 0, 0, 0, 1, lbl_805400D4);
             }
             if (PTR(p, 0x12c8)) {
-                JPAGetXYZRotateMtx(0, 0, *(s32*)((base + 0x280) + S32(p, 0x3dc) * 4), (f32(*)[4])(PTR(p, 0x12c8) + 0x68));
+                JPAGetXYZRotateMtx(0, 0, fireRotationB[S32(p, 0x3dc)], (f32(*)[4])(PTR(p, 0x12c8) + 0x68));
                 fn_8013CB44(PTR(p, 0x12c8), &pos, -1, 0, 1);
             }
             fn_8024F0E8(p, 0x30011);
