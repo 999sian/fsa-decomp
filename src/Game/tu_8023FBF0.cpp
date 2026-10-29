@@ -4220,6 +4220,31 @@ extern "C" s32 fn_80230CFC(s32);
 extern "C" s32 fn_80238EDC(s32);
 extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
 extern "C" u8 fn_8025F590(char*);
+inline bool grabPadActive(char* p) {
+    bool ok;
+    s32 v;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank6(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+
 inline bool grabPressed(char* p) {
     if(!padActive(p))return false;
     if(U8(p,0x456)!=0)return false;
@@ -4234,13 +4259,13 @@ inline bool grabHeld(char* p) {
 }
 u8 fn_8024F63C(char* p) {
     u8 bVar1;
+    bool found;
     s32 i;
     s32 cnt;
     s32 r30;
     s32 tgt;
     s32 mode;
     s32 st;
-    bool found;
     f32 lo;
     f32 hi;
     JGeometry::TVec3<f32> tmp;
@@ -4265,7 +4290,7 @@ u8 fn_8024F63C(char* p) {
         }
     }
 
-    mode=getMode6(p);
+    mode=getMode3(p);
     if (mode == 5 && S32(p, 0xd60) >= 0) {
         S32(p, 0xdac) = -1;
         S32(p, 0xda8) = 0;
@@ -4287,7 +4312,8 @@ u8 fn_8024F63C(char* p) {
     hi=lbl_80540030;
     box.set(lo,lo,hi,hi);
     box.addPos(*(JGeometry::TVec2f*)(p+8));
-    box.addPos(*(JGeometry::TVec2f*)(lbl_8046AE58+S32(p,0x3dc)*8));
+    t2=(f32*)lbl_8046AE58+S32(p,0x3dc)*2;
+    box.addPos(t2[0],t2[1]);
 
     for (r30 = 0; r30 < 4; r30++) {
         if (r30 == S32(p, 0x4)) {
@@ -4316,7 +4342,7 @@ u8 fn_8024F63C(char* p) {
         st=S32(p,0x1240);
         if(st!=0x1a) {
             if(st==0 || (u32)(st-2)<=1 || (st==0x11 && !fn_8025F500(p) && !fn_8025F590(p))) {
-                if(changeState(p,0x1a,1))return 1;
+                if(changeState(p,0x1a,1))goto success;
             }
         }
         if (fn_8022D7F8(r30) >= 0) {
@@ -4324,11 +4350,12 @@ u8 fn_8024F63C(char* p) {
         }
         S32(p, 0xdac) = r30;
         S32(p, 0xda8) = 3;
-        return 1;
+        goto success;
     }
-    if (S32(p, 0xda8) > 0) {
-        return 1;
-    }
+    if (S32(p, 0xda8) <= 0) goto failure;
+success:
+    return 1;
+failure:
     return 0;
 }
 
