@@ -440,6 +440,12 @@ extern "C" void fn_8030C210(void* eff, Vec3f* v);
 extern f32 lbl_80542CA0;
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8036AA60(char*);
+static inline f32 cutsceneHeight(const f32 top,const f32 bottom) {
+    return lbl_80542C80+((bottom-top)-lbl_80542C84);
+}
+static inline void cutsceneScreenPos(Vec3f& out,const f32 x,const f32 y,const f32 z) {
+    out.x=x;out.y=y;out.z=z;
+}
 static inline void cutsceneCameraBox(const f32 x1,const f32 y1,const f32 x2,const f32 y2) {
     u8* eff=*(u8**)((u8*)lbl_8053AB10+0x24);
     if(!eff[0x7f5]) {
@@ -512,10 +518,8 @@ void Unk8036C300::state0() {
             if (*(s32*)(self+0x240) >= 3 && *(s32*)(self+0x240) < 0xe) {
                 u8* p = *(u8**)((char*)lbl_8053AB10 + 0x30);
                 if (p[0x284] == 0) {
-                    u8 flag=1;
-                    f32 value=lbl_80542C7C;
-                    p[0x284]=flag;
-                    *(f32*)(p+0x28c)=value;
+                    p[0x284]=1;
+                    *(f32*)(p+0x28c)=0.05f;
                 }
             }
             v=*(Vec3f*)(self+0xc);
@@ -530,21 +534,10 @@ void Unk8036C300::state0() {
             }
             if (*(s32*)(self+0x240) >= 3) {
                 u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
-                f32 y=v.y;
                 f32 x=v.x;
-                f32 high=lbl_80542C88+y;
-                f32 low=y-lbl_80542C88;
-                eff[0x179] = 1;
-                eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
-                if (eff[0x7f5] == 0) {
-                    eff[0x7f4] = 1;
-                    *(s32*)(eff + 0x7f8) = 5;
-                    *(f32*)(eff + 0x808) = x;
-                    *(f32*)(eff + 0x80c) = low;
-                    *(f32*)(eff + 0x810) = x;
-                    *(f32*)(eff + 0x814) = high;
-                    eff[0x7f6] = 0;
-                }
+                f32 y=v.y;
+                eff[0x179]=1;
+                cutsceneCameraBox(x,y-lbl_80542C88,x,lbl_80542C88+y);
             } else {
                 fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
                 {
