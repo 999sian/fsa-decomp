@@ -97,15 +97,15 @@ static inline void dgt2Rot(f32 (*m)[4], f32 th) {
     cA = cos(lbl_8053E1D8);
     cT = cos(th);
     cZ = cos(lbl_8053E1D8);
+    m[0][0] = lbl_8053E1DC * (cT * cZ);
+    m[1][0] = lbl_8053E1DC * (cT * sZ);
+    m[2][0] = lbl_8053E1DC * -sT;
     f32 sacz, sasz, cacz, casz, sast;
     sast = sA * sT;
     casz = cA * sZ;
     cacz = cA * cZ;
     sasz = sA * sZ;
     sacz = sA * cZ;
-    m[0][0] = lbl_8053E1DC * (cT * cZ);
-    m[1][0] = lbl_8053E1DC * (cT * sZ);
-    m[2][0] = lbl_8053E1DC * -sT;
     m[0][1] = lbl_8053E1DC * (sast * cZ - casz);
     m[1][1] = lbl_8053E1DC * (sast * sZ + cacz);
     m[2][1] = lbl_8053E1DC * (sA * cT);
@@ -230,40 +230,30 @@ extern "C" void fn_8018EB94(void* this_) {
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, *(f32*)(p + 0x270));
     rec.w18 = mtx;
-    *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x2a0);
-    *(f32*)(p + 0x14) = z;
-    fn_801F06F0(this_, lbl_804674F0, 0x29, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAt(this_, 0x29, &rec, (JGeometry::TVec3<f32>*)(p + 0x2a0), z, lbl_8053E1E0, lbl_8053E1E0);
 
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, *(f32*)(p + 0x270));
     rec.w18 = mtx;
-    *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x294);
-    *(f32*)(p + 0x14) = z;
     rec.b1d = 2;
-    fn_801F06F0(this_, lbl_804674F0, 0x27, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAt(this_, 0x27, &rec, (JGeometry::TVec3<f32>*)(p + 0x294), z, lbl_8053E1E0, lbl_8053E1E0);
 
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, *(f32*)(p + 0x270));
     rec.w18 = mtx;
-    *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x288);
-    *(f32*)(p + 0x14) = z;
     rec.b1d = 3;
-    fn_801F06F0(this_, lbl_804674F0, 0x26, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAt(this_, 0x26, &rec, (JGeometry::TVec3<f32>*)(p + 0x288), z, lbl_8053E1E0, lbl_8053E1E0);
 
     rec.b1d = 4;
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, *(f32*)(p + 0x274));
     rec.w18 = mtx;
-    *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x2ac);
-    *(f32*)(p + 0x14) = z;
-    fn_801F06F0(this_, lbl_804674F0, 0x2a, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAt(this_, 0x2a, &rec, (JGeometry::TVec3<f32>*)(p + 0x2ac), z, lbl_8053E1E0, lbl_8053E1E0);
 
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, -*(f32*)(p + 0x274));
     rec.w18 = mtx;
-    *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x2b8);
-    *(f32*)(p + 0x14) = z;
-    fn_801F06F0(this_, lbl_804674F0, 0x2a, &rec, -1, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAt(this_, 0x2a, &rec, (JGeometry::TVec3<f32>*)(p + 0x2b8), z, lbl_8053E1E0, lbl_8053E1E0);
 
     *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(p + 0x288);
     *(f32*)(p + 0x14) = z;
