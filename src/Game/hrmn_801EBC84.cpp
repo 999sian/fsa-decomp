@@ -137,8 +137,24 @@ extern "C" void fn_801EBE3C(char* p) {
     fn_801CE4BC(p);
 }
 
+class HrmnActor {
+public:
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30(s32 a, s32 b);
+    virtual u8 v34();
+};
+
 static inline void hrmnCameraFocus(char* p) {
-    char* cam = *(char**)(lbl_8053AB10 + 0x24);
+    u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
     if (!cam[0x7f5]) {
         cam[0x7f4] = 1;
         *(s32*)(cam + 0x7f8) = 4;
