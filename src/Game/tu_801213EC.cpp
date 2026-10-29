@@ -532,6 +532,11 @@ extern "C" void fn_801220C4(u8* self) {
     fn_801F0E34(self, 0x400ED, 0);
 }
 
+static inline s32 CompanionPlayerIndex(const u8* self) {
+    s32 player = *(const s32*)(self + 0x344);
+    if (player < 0 || player >= 4) return -1;
+    return fn_8022EA0C(player);
+}
 static inline bool PlayerIsHidden(s32 idx) {
     s32 slot = idx;
     for (s32 i = 0; i < 4; i++) {
@@ -577,15 +582,7 @@ extern "C" void fn_80122148(u8* self) {
     } else {
         idx = fn_8022EA0C(player);
     }
-    slot = idx;
-    for (i = 0; i < 4; i++) {
-        if (idx == fn_8023ECF0(i)) {
-            slot = i;
-            break;
-        }
-    }
-    bool blocked = fn_80234E30(slot) || fn_80235448(idx);
-    if (!blocked) {
+    if (!PlayerIsHidden(idx)) {
         player = *(s32*)(self + 0x344);
         if (player < 0 || player >= 4) {
             idx = -1;
@@ -593,12 +590,12 @@ extern "C" void fn_80122148(u8* self) {
             idx = fn_8022EA0C(player);
         }
         if (!fn_8023BCD4(idx)) {
-            goto invisible;
+            goto hidden;
         } else {
             self[0x11d] = 1;
         }
     } else {
-invisible:
+hidden:
         self[0x11d] = 0;
     }
     self[0x331] = 0;
@@ -615,19 +612,7 @@ invisible:
     } else {
         idx = fn_8022EA0C(player);
     }
-    s32 slot2 = idx;
-    s32 k;
-    if (!fn_8023E98C(slot2)) {
-        k = -1;
-    } else {
-        for (k = 0; k < 4; k++) {
-            if (fn_8023ED8C(k) && slot2 == fn_8023ECF0(k) && fn_8022D75C(k)) {
-                goto found;
-            }
-        }
-        k = -1;
-    }
-found:
+    s32 k = FindActivePlayerSlot(idx);
     if (k >= 0) {
         player = *(s32*)(self + 0x344);
         if (player < 0 || player >= 4) {
@@ -1071,48 +1056,21 @@ extern "C" void fn_8012309C(u8* self, u16* ang, s32* quad, f32* z, s32* outIdx, 
 }
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
-extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 d, f32 unused, f32 c) {
+extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 c, f32 unused, f32 d) {
     if (arg < 0) {
         return;
     }
+    s32 mapped;
     s32 player = *(s32*)(self + 0x344);
-    s32 mapped = (player < 0 || player >= 4) ? -1 : fn_8022EA0C(player);
-    s32 slot = mapped;
-    for (s32 i = 0; i < 4; i++) {
-        if (mapped == fn_8023ECF0(i)) {
-            slot = i;
-            break;
-        }
-    }
-    if (fn_80234E30(slot) || fn_80235448(mapped)) {
-        self[0x11d] = 0;
-    } else {
-        s32 p2 = *(s32*)(self + 0x344);
-        s32 m2 = (p2 < 0 || p2 >= 4) ? -1 : fn_8022EA0C(p2);
-        if (fn_8023BCD4(m2)) {
-            self[0x11d] = 1;
-        } else {
-            self[0x11d] = 0;
-        }
-    }
+    if (player < 0 || player >= 4) mapped = -1;
+    else mapped = fn_8022EA0C(player);
+    if (!PlayerIsHidden(mapped) && !fn_8023BCD4(fn_8012285C(self))) self[0x11d] = 0;
+    else self[0x11d] = 1;
     if (fn_802DCD0C(fn_802D6A9C())) {
         ((SeekCalls*)self)->v31();
         return;
     }
-    bool ok = fn_8022D75C(arg) != 0;
-    if (!ok) {
-        s32 found = -1;
-        if (fn_8023E98C(arg)) {
-            for (s32 k = 0; k < 4; k++) {
-                if (fn_8023ED8C(k) && fn_8023ECF0(k) == arg && fn_8022D75C(k)) {
-                    found = k;
-                    break;
-                }
-            }
-        }
-        ok = found >= 0;
-    }
-    if (ok) {
+    if (fn_8022D75C(arg) || FindActivePlayerSlot(arg) >= 0)  {
         if (fn_8023E10C(arg) == 8) {
             ((SeekCalls*)self)->v32();
         } else {
@@ -1135,9 +1093,8 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 d, f32 unused, 
     } else {
         fn_801CD950((f32*)(self + 0x380), lbl_8053C9B4, b);
     }
-    f32 scale = *(f32*)(self + 0x380);
-    *(f32*)(self + 0x3c) = scale * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-    *(f32*)(self + 0x40) = scale * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+    *(f32*)(self + 0x3c) = *(f32*)(self + 0x380) * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+    *(f32*)(self + 0x40) = *(f32*)(self + 0x380) * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
     GameLowVec* pos = (GameLowVec*)(self + 0xc);
     GameLowVec* vel = (GameLowVec*)(self + 0x3c);
     *pos += *vel;
@@ -1160,14 +1117,7 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 d, f32 unused, 
         bool useA = true;
         if (fn_8023EA28(arg)) {
             if (fn_802265FC(self + 0xc, 0)) {
-                s32 slot2 = arg;
-                for (s32 k = 0; k < 4; k++) {
-                    if (fn_8023ECF0(k) == arg) {
-                        slot2 = k;
-                        break;
-                    }
-                }
-                useA = fn_80234E30(slot2) || fn_80235448(arg);
+                useA = PlayerIsHidden(arg);
             }
             if (useA) {
                 *pos = *(GameLowVec*)fn_8023E4E4(arg, r29);
@@ -1182,25 +1132,14 @@ extern "C" void fn_80123394(u8* self, s32 arg, f32 a, f32 b, f32 d, f32 unused, 
         f32 dy = pos->y - fn_8023E724(arg)->y;
         f32 ang2 = JMath::atanTable_.atan2_(-dx, -dy);
         quad = ClassifyBamAngleToQuadrant((u16)(s32)(ang2 * lbl_8053C9F0));
-        GameLowVec diff = *pos - *(GameLowVec*)(self + 0x18);
+        const GameLowVec& diff = *pos - *(GameLowVec*)(self + 0x18);
         if (PSVECMag(&diff) >= lbl_8053C9F8) {
             *(f32*)(self + 0x380) = lbl_8053C9C4;
             *(f32*)(self + 0x37c) = lbl_8053C9C4;
         }
     }
-    s32 mapped2 = *(s32*)(self + 0x344);
-    mapped2 = (mapped2 < 0 || mapped2 >= 4) ? -1 : fn_8022EA0C(mapped2);
-    s32 slot3 = mapped2;
-    for (s32 k = 0; k < 4; k++) {
-        if (mapped2 == fn_8023ECF0(k)) {
-            slot3 = k;
-            break;
-        }
-    }
-    if (fn_80234E30(slot3) || fn_80235448(mapped2)) {
-        s32 p3 = *(s32*)(self + 0x344);
-        s32 m3 = (p3 < 0 || p3 >= 4) ? -1 : fn_8022EA0C(p3);
-        *pos = *(GameLowVec*)fn_8023E724(m3);
+    if (PlayerIsHidden(fn_8012285C(self))) {
+        *pos = *(GameLowVec*)fn_8023E724(fn_8012285C(self));
     }
     if (*(f32*)(self + 0x380) <= lbl_8053C9B4) {
         if (quad >= 0) {
