@@ -109,7 +109,8 @@ static int fpKind(f32 value)
         else kind = 2;
         break;
     case 0:
-        kind = (bits & 0x7fffff) ? 5 : 3;
+        if (bits & 0x7fffff) kind = 5;
+        else kind = 3;
         break;
     default:
         kind = 4;
