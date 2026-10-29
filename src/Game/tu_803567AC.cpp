@@ -158,7 +158,7 @@ extern "C" float lbl_805427E0;
 struct MovingAnimEntry { s32* idle; s32* moving; u32 a, b; };
 struct MovingActor : Actor {
     s32 state, timer, frame, duration, remaining, hintTimer, facing, player, kind;
-    s32* frames() { return ((MovingAnimEntry*)lbl_80472390)[kind].moving; }
+    s32* frames() { MovingAnimEntry* table = (MovingAnimEntry*)lbl_80472390; return table[kind].moving; }
     void setState(const int next) {
         MovingAnimEntry* table = (MovingAnimEntry*)lbl_80472390;
         state = next;
