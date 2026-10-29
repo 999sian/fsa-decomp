@@ -197,6 +197,19 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" void fn_801186B0(void* r, s32 v);
 extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" u8 fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
+static inline bool dmlkSink(u8* p, s32 t, f32 vz, f32 vy, f32 vx) {
+    *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
+    *(f32*)(p + 0x40) = vy;
+    *(f32*)(p + 0x3c) = vx;
+    if (t > 1 && *(f32*)(p + 0x14) <= lbl_8053C7D8) {
+        *(f32*)(p + 0x44) = lbl_8053C7D8;
+        *(f32*)(p + 0x40) = lbl_8053C7D8;
+        *(f32*)(p + 0x3c) = lbl_8053C7D8;
+        *(f32*)(p + 0x14) = lbl_8053C7D8;
+        return true;
+    }
+    return false;
+}
 extern "C" void fn_8011C118(u8* this_) {
     u8 buf[0x3c];
     s32 i;
