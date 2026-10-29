@@ -170,7 +170,7 @@ static inline void movingSetState(char* p, const int state) {
     *(s32*)(p+0x230) = state;
     *(s32*)(p+0x238) = 0;
     if (state == 3 || state == 5)
-        *(s32*)(p+0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].moving[0];
+        *(s32*)(p+0x234) = movingFrames(p)[0];
     else
         *(s32*)(p+0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].idle[0];
 }
