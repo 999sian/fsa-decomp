@@ -1,4 +1,6 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JMath/JMath.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "Game/ItemBase.h"
 
@@ -72,17 +74,37 @@ extern "C" void fn_802CDD9C(char* this_)
             f32 s0 = tbl[0];
             f32 s = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8));
             f32 c0 = tbl[1];
-            f32 c = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8) + 4);
+            f32 c = *(f32*)((char*)(tbl + 1) + (((u16)ang >> 5) * 8));
+            f32 ss = s0 * s0;
+            f32 ssY = s0 * s;
+            f32 cc = c0 * c0;
+            f32 cs = c0 * s0;
+            f32 cycz = c * c0;
+            f32 cysz = c * s0;
+            f32 yy = ssY * s0 + cc;
+            f32 xy = ssY * c0 - cs;
+            f32 xz = cc * s + ss;
+            f32 neg = -s;
             rec.w18 = mtx;
-            mtx[0][0] = sx * (c * c0);
-            mtx[0][1] = sy * ((s0 * s) * c0 - c0 * s0);
-            mtx[0][2] = sz * ((c0 * c0) * s + s0 * s0);
-            mtx[1][0] = sx * (c * s0);
-            mtx[1][1] = sy * ((s0 * s) * s0 + c0 * c0);
-            mtx[1][2] = sz * ((c0 * s0) * s - c0 * s0);
-            mtx[2][0] = sx * -s;
-            mtx[2][1] = sy * (c * s0);
-            mtx[2][2] = sz * (c * c0);
+            f32 yz = cs * s - cs;
+            f32 a01 = sy * xy;
+            f32 a20 = sx * neg;
+            f32 a11 = sy * yy;
+            f32 a02 = sz * xz;
+            mtx[0][1] = a01;
+            f32 a12 = sz * yz;
+            f32 a00 = sx * cycz;
+            mtx[2][0] = a20;
+            f32 a10 = sx * cysz;
+            f32 a21 = sy * cysz;
+            mtx[1][1] = a11;
+            f32 a22 = sz * cycz;
+            mtx[0][0] = a00;
+            mtx[1][0] = a10;
+            mtx[2][1] = a21;
+            mtx[0][2] = a02;
+            mtx[1][2] = a12;
+            mtx[2][2] = a22;
         } else if (*(s32*)(this_ + 0x234) == 0x15) {
             rec.b2d = 1;
         } else {
@@ -93,75 +115,61 @@ extern "C" void fn_802CDD9C(char* this_)
         if (*(s32*)(this_ + 0x234) == 0x22) {
             if ((u8)((Actor*)this_)->v11() == 1) {
                 tex = fn_804032E8(0x54494d47, base + 0x608);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                return;
             } else {
                 tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234)]);
+                fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+                return;
             }
-            fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
         } else {
+            s32 t;
             tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234)]);
             fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
             new (&rec) DrawRec();
             rec.b1c = lbl_80540E28[*(s32*)(this_ + 0x238)] + 1;
             rec.b1d = lbl_80540E28[*(s32*)(this_ + 0x23c)];
-            switch (*(s32*)(this_ + 0x234)) {
-            case 0:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
+            t = *(s32*)(this_ + 0x234);
+            if (t == 0 || (t >= 8 && t <= 14)) {
                 rec.w34 = 1;
-                rec.w10 = -0x6a;
+                ((u8*)&rec.w10)[3] = 0x96;
                 rec.b2c = 0;
                 rec.b24 = 0;
-                tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234) + 0x51]);
+                tex = fn_804032E8(0x54494d47, ((void**)((char*)ids + 0x144))[*(s32*)(this_ + 0x234)]);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x15:
+            } else if (t == 0x15) {
                 rec.b2d = 1;
                 tex = fn_804032E8(0x54494d47, base + 0x61c);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x31:
+            } else if (t == 0x31) {
                 tex = fn_804032E8(0x54494d47, base + 0x628);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x33:
+            } else if (t == 0x33) {
                 rec.b24 = 1;
                 tex = fn_804032E8(0x54494d47, base + 0x634);
                 v.x = *(f32*)(this_ + 0xc);
                 v.y = *(f32*)(this_ + 0x10) - lbl_80540E30;
                 v.z = lbl_80540E34;
                 fn_802CDD9C_draw(this_, &v, tex, &rec);
-                break;
-            case 0x34:
+            } else if (t == 0x34) {
                 tex = fn_804032E8(0x54494d47, base + 0x644);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x37:
-            case 0x38:
-            case 0x39:
+            } else if (t >= 0x37 && t <= 0x39) {
                 rec.b2c = 0;
                 rec.b24 = 1;
-                tex = fn_804032E8(0x54494d47, ids[*(s32*)(this_ + 0x234) + 0x29]);
+                tex = fn_804032E8(0x54494d47, ((void**)((char*)ids + 0x180))[*(s32*)(this_ + 0x234) - 0x37]);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x3e:
+            } else if (t == 0x3e) {
                 tex = fn_804032E8(0x54494d47, base + 0x658);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x42:
+            } else if (t == 0x42) {
                 rec.b24 = 1;
                 tex = fn_804032E8(0x54494d47, base + 0x670);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
-            case 0x43:
+            } else if (t == 0x43) {
                 rec.b24 = 1;
                 tex = fn_804032E8(0x54494d47, base + 0x684);
                 fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
-                break;
             }
         }
     }
