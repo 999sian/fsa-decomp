@@ -2,6 +2,8 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+extern "C" f32 lbl_80541210;
 
 // NONMATCHING (91%): retail computes x before y; this computes y first.
 // fn_802E4C74 - BLZ2: true if any of the four probe points around pos lies
@@ -144,30 +146,159 @@ extern "C" void fn_801F0E34(void* self, u32 a, u32 b);
 extern "C" void* Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 flag, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* mgr, u32 v, s32 a, s32 b);
+extern "C" const f32 lbl_8046F0C8[];
+extern "C" const f32 lbl_8046F108[];
 extern "C" void fn_802E4FD8(u8* self) {
-    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self + 0xc));
+    JGeometry::TVec3<f32> pos;
+    JGeometry::TVec3<f32> grid;
+    Blz2Vec probe;
+    JGeometry::TVec3<f32> saved;
+    f32 box[4];
+    JGeometry::TVec3<f32> check;
+    s32 j;
+    s32 i;
+    u8* q;
+    u8* p;
+    pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
     if (*(s32*)(self + 0x2f0) >= 1) {
         u32 h = *(u32*)(self + 0x198);
         void* mgr = fn_8020D58C();
         fn_8020D7D0((u8*)mgr + *(u8*)mgr * 0x784 + 4, h);
     }
+    pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
     fn_801F2718(self, 0x5455424f);
     switch (*(s32*)(self + 0x2f0)) {
     case 0:
+        if (*(s32*)(self + 0x300) == 0 || (*(s32*)(self + 0x300) != 0 && ((ActorSlot21*)self)->v11() == 1)) {
+            grid = *(JGeometry::TVec3<f32>*)(self + 0xc);
+            p = self;
+            for (j = 0; j < *(s32*)(self + 0x2f4); j++) {
+                q = p;
+                for (i = 0; i < *(s32*)(self + 0x2f8); i++) {
+                    *(void**)(q + 0x230) = fn_8013CC50(*(s32*)(self + 4), &grid, 1.0f, 0x34c, 0, 0, 0, 0, 1);
+                    *(void**)(q + 0x270) = fn_8013CC50(*(s32*)(self + 4), &grid, 1.0f, 0x34d, 0, 0, 0, 0, 1);
+                    *(void**)(q + 0x2b0) = fn_8013CC50(*(s32*)(self + 4), &grid, 1.0f, 0x54d, 1, 0, 0, 0, 1);
+                    q += 4;
+                    p += 4;
+                    grid.y += 16.0f;
+                }
+                grid.y = *(f32*)(self + 0x10);
+                grid.x += 16.0f;
+            }
+            if (*(s32*)(self + 0x2fc) == 0) *(s32*)(self + 0x2f0) = 2;
+            else if (*(s32*)(self + 0x2fc) == 3) *(s32*)(self + 0x2f0) = 6;
+            else *(s32*)(self + 0x2f0) = 1;
+            *(u16*)(self + 0x94) = 1;
+        }
         break;
     case 1:
+        for (i = 0; i < 8; i++) {
+            probe.x = *(f32*)(self + 0xc) + lbl_8046F0C8[i];
+            probe.y = *(f32*)(self + 0x10) + lbl_8046F108[i];
+            probe.z = *(f32*)(self + 0x14);
+            if (fn_801EE3C0((u16)fn_80226850(&probe, *(u32*)(self + 4))) == 1) {
+                Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(self + 4), &probe, (*(u32*)(self + 0x98) << 4) | 15, -1, -1);
+                *(u32*)(self + 0x1a0) = 0x424c5a45;
+                *(s32*)(self + 0x2f0) = 4;
+                *(s32*)(self + 0x304) = 40;
+                break;
+            }
+        }
         break;
     case 2:
+        if (*(u16*)(self + 0x94) == 2 || (*(s32*)(self + 0x2fc) == 2 && ((ActorSlot21*)self)->v11() == 1)) {
+            fn_802D8050(fn_802D6A9C(), *(u32*)(self + 0x308), 1, 255);
+            ((ActorSlot21*)self)->slot21();
+            p = self;
+            for (i = 0; i < *(s32*)(self + 0x2f4); i++) {
+                q = p;
+                for (j = 0; j < *(s32*)(self + 0x2f8); j++) {
+                    *(void**)(q + 0x230) = fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x4f2, 1, 0, 0, 0, 1);
+                    q += 4;
+                    p += 4;
+                    pos.y += 16.0f;
+                }
+                pos.y = *(f32*)(self + 0x10);
+                pos.x += 16.0f;
+            }
+            *(s32*)(self + 0x2f0) = 5;
+            *(s32*)(self + 0x304) = 60;
+            *(u16*)(self + 0x94) = 0;
+        } else {
+            saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
+            f32 y = saved.y;
+            for (i = 0; i < *(s32*)(self + 0x2f4); i++) {
+                for (j = 0; j < *(s32*)(self + 0x2f8); j++) {
+                    check = *(JGeometry::TVec3<f32>*)(self + 0xc);
+                    if (((ActorSlot21*)self)->slot22(&check) == 1) {
+                        *(s32*)(self + 0x2f0) = 3;
+                        goto done;
+                    }
+                    box[0] = *(f32*)(self + 0x60); box[1] = *(f32*)(self + 0x64);
+                    box[2] = *(f32*)(self + 0x68); box[3] = *(f32*)(self + 0x6c);
+                    f32 yy = *(f32*)(self + 0x10), x = *(f32*)(self + 0xc);
+                    box[1] += yy; box[0] += x; box[2] += x; box[3] += yy;
+                    fn_801F2B7C(self, *(u32*)(self + 0x114), -1, 7);
+                    {
+                        const u32* src = (u32*)(self + 0x80);
+                        u32 a1, a0;
+                        a0 = *src++; a1 = *src++;
+                        *(u32*)&box[0] = a0; *(u32*)&box[1] = a1;
+                        a0 = *src++; a1 = *src;
+                        *(u32*)&box[2] = a0; *(u32*)&box[3] = a1;
+                        f32 a = box[0], b = box[1], c = box[2], d = box[3];
+                        f32 x = *(f32*)(self + 0xc);
+                        f32 y = *(f32*)(self + 0x10);
+                        a += x; b += y; c += x; d += y;
+                        box[0] = a; box[1] = b; box[2] = c; box[3] = d;
+                    }
+                    fn_80239914(box, *(u32*)(self + 4), *(u32*)(self + 0x198));
+                    *(f32*)(self + 0x10) += 16.0f;
+                }
+                *(f32*)(self + 0x10) = y;
+                *(f32*)(self + 0xc) += 16.0f;
+            }
+            (*(JGeometry::TVec3<f32>*)(self + 0xc)).x = saved.x;
+            (*(JGeometry::TVec3<f32>*)(self + 0xc)).y = saved.y;
+            (*(JGeometry::TVec3<f32>*)(self + 0xc)).z = saved.z;
+        }
         break;
     case 3:
+        ((ActorSlot21*)self)->slot21();
+        for (i = 0; i < *(s32*)(self + 0x2f4); i++) {
+            for (j = 0; j < *(s32*)(self + 0x2f8); j++) {
+                Actor_CreateByID(fn_801F856C(), 0x424c5a45, *(u32*)(self + 4), &pos, (*(u32*)(self + 0x98) << 4) | 15, -1, -1);
+                *(u32*)(self + 0x1a0) = 0x424c5a45;
+                pos.y += 16.0f;
+            }
+            pos.y = *(f32*)(self + 0x10);
+            pos.x += 16.0f;
+        }
+        *(u16*)(self + 0x94) = 0;
+        ((ActorSlot21*)self)->v7();
         break;
     case 4:
+        --*(s32*)(self + 0x304);
+        if (*(s32*)(self + 0x304) == 0) ((ActorSlot21*)self)->v7();
         break;
     case 5:
+        --*(s32*)(self + 0x304);
+        if (*(s32*)(self + 0x304) == 0) ((ActorSlot21*)self)->v7();
+        else if (*(s32*)(self + 0x304) == 52) fn_801F0E34(self, 0x30061, 0);
         break;
     case 6:
+        if (fn_801F2B7C(self, *(u32*)(self + 0x114), -1, 7)) {
+            if (!fn_80234CF8(0)) *(s32*)(self + 0x304) = 1;
+            else *(s32*)(self + 0x304) = 0;
+        }
+        if (*(s32*)(self + 0x300) != 0 && !((ActorSlot21*)self)->v11()) {
+            ((ActorSlot21*)self)->slot21();
+            *(u16*)(self + 0x94) = 0;
+            *(s32*)(self + 0x2f0) = 0;
+        }
         break;
     }
+done:;
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
