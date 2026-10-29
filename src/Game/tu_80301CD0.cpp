@@ -143,6 +143,16 @@ struct MsgEntry_80301CD0 {
     u8 pad11b;
 };
 
+static inline void clearMessageEntry(MsgEntry_80301CD0* entry, int index) {
+    entry->f118 = 0;
+    entry->f119 = 0;
+    entry->f104 = 0;
+    entry->f100 = 0;
+    entry->f114 = 0;
+    entry->f108 = index;
+    entry->f10c = 0;
+    entry->text[0] = 0;
+}
 extern u8 lbl_8053AD20[4];
 extern u8 lbl_80541618[4];
 
@@ -670,8 +680,8 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     const char* names;
     s32 id;
     f32 pos[3];
-    s32 x;
-    s32 y;
+    int x;
+    int y;
     void* obj;
     void* res;
     f32 sx;
@@ -696,6 +706,7 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
     if (y >= 0xe0) {
         y |= -0x100;
     }
+    id = p[0] | ((p[3] & 6) << 7);
     pos[0] = (f32)x;
     pos[1] = (f32)y;
     pos[2] = lbl_80541630;
@@ -761,13 +772,13 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
             id -= 3;
         }
         obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-        res = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534F4220, names + 0x10);
+        res = ((JKRFileLoader*)obj)->getResource(0x534F4220, names + 0x10);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, 1.0f, 1.0f, &rec);
         return;
     }
     if ((((u32)p[3] >> 5) & 7) == 2) {
         obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-        res = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534F4220, names + 0x24);
+        res = ((JKRFileLoader*)obj)->getResource(0x534F4220, names + 0x24);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, 1.0f, 1.0f, &rec);
         return;
     }
@@ -775,7 +786,7 @@ extern "C" void fn_80302F9C(u8* p, u8 a2, u8 a3, f32 ang) {
         rec.ids[7] = ((((u32)p[3] >> 5) & 7) & 3) + 0xc;
     }
     obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-    res = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534F4220, names);
+    res = ((JKRFileLoader*)obj)->getResource(0x534F4220, names);
     fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, 1.0f, 1.0f, &rec);
 }
 
