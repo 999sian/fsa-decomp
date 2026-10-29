@@ -197,6 +197,9 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" void fn_801186B0(void* r, s32 v);
 extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" u8 fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
+static inline s32 dmlkTime(s32 idx) {
+    return *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[idx];
+}
 static inline bool dmlkSink(u8* p, s32 t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
     *(f32*)(p + 0x40) = vy;
@@ -264,45 +267,41 @@ extern "C" void fn_8011C118(u8* this_) {
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x280), 0, 1, -1, 0, 0, 0);
 }
 
+extern "C" const f32 lbl_8053C844;
+extern "C" const f32 lbl_8053C848;
+extern "C" const f32 lbl_8053C84C;
+extern "C" const f32 lbl_8053C850;
+extern "C" const f32 lbl_8053C854;
+extern "C" void fn_800FE8C0(u8* p);
 extern "C" void fn_8011C308(u8* this_) {
+    JGeometry::TVec3f v20;
+    JGeometry::TVec3f v22;
+    JGeometry::TVec3f v11;
     s32 i;
+    s32 j;
     s32 d;
-    s32 cnt;
-    f32 tmp[3];
-    u8 hit;
+    s32 cur;
+    f32 fx;
 
     fn_8010DF78(this_);
     if (*(s32*)(this_ + 0x238) >= 2 && *(s32*)(this_ + 0x238) <= 11) {
         fn_8030C210(*(u8**)(lbl_8053AB10 + 0x24), this_ + 0xc);
         fn_8011B3F0(this_);
     }
-    if ((u32)*(s32*)(this_ + 0x238) > 0x22) {
-        return;
-    }
     switch (*(s32*)(this_ + 0x238)) {
     case 0:
         this_[0x11d] = 0;
         break;
     case 4:
-        d = *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[4];
-        *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * (f32)d;
-        *(f32*)(this_ + 0x40) = lbl_8053C824;
-        *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
-        hit = 0;
-        if (d > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
-            *(f32*)(this_ + 0x44) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x40) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x14) = lbl_8053C7D8;
-            hit = 1;
-        }
-        if (hit) {
+        cur = *(s32*)((u8*)fn_8011921C() + 8);
+        if (dmlkSink(this_, cur - lbl_80464AF8[4], lbl_8053C800, lbl_8053C824, lbl_8053C7D8)) {
             fn_8011B878(this_, 5);
         }
         break;
     case 9:
-        d = *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[9];
-        *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * (f32)d;
+        cur = *(s32*)((u8*)fn_8011921C() + 8);
+        d = cur - lbl_80464AF8[9];
+        *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * d;
         *(f32*)(this_ + 0x40) = lbl_8053C808;
         if (d > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
             *(f32*)(this_ + 0x44) = lbl_8053C7D8;
@@ -313,48 +312,33 @@ extern "C" void fn_8011C308(u8* this_) {
         break;
     case 11:
         for (i = 0; i < 4; i++) {
-            f32* src = (f32*)fn_8023E724(i);
-            tmp[0] = src[0] + *(f32*)(this_ + 0x26c);
-            tmp[1] = src[1] + *(f32*)(this_ + 0x270);
-            tmp[2] = src[2] + *(f32*)(this_ + 0x274);
-            fn_802303FC(i, tmp, 0xff);
+            v11 = *(JGeometry::TVec3f*)fn_8023E724(i);
+            v11 += *(JGeometry::TVec3f*)(this_ + 0x26c);
+            fn_802303FC(i, &v11.x, 0xff);
         }
         break;
     case 16:
-        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) - lbl_8053C828;
-        tmp[0] = *(f32*)(this_ + 0x28) - lbl_8053C7F0;
-        if (*(f32*)(this_ + 0x10) <= tmp[0]) {
-            *(f32*)(this_ + 0x10) = tmp[0];
+        *(f32*)(this_ + 0x10) -= lbl_8053C828;
+        if (*(f32*)(this_ + 0x10) <= *(f32*)(this_ + 0x28) - lbl_8053C7F0) {
+            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28) - lbl_8053C7F0;
         }
         break;
     case 19:
-        d = *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[19];
-        *(f32*)(this_ + 0x44) = lbl_8053C82C - lbl_8053C804 * (f32)d;
-        *(f32*)(this_ + 0x40) = lbl_8053C7D8;
-        *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
-        if (d > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
-            *(f32*)(this_ + 0x44) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x40) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x14) = lbl_8053C7D8;
-        }
+        cur = *(s32*)((u8*)fn_8011921C() + 8);
+        dmlkSink(this_, cur - lbl_80464AF8[19], lbl_8053C82C, lbl_8053C7D8, lbl_8053C7D8);
         break;
     case 20:
-        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) - lbl_8053C830;
-        tmp[0] = *(f32*)(this_ + 0x28) - lbl_8053C834;
-        if (*(f32*)(this_ + 0x10) <= tmp[0]) {
-            *(f32*)(this_ + 0x10) = tmp[0];
+        *(f32*)(this_ + 0x10) -= lbl_8053C830;
+        if (*(f32*)(this_ + 0x10) <= *(f32*)(this_ + 0x28) - lbl_8053C834) {
+            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28) - lbl_8053C834;
             fn_8011B878(this_, 0x17);
             break;
         }
-        d = *(s32*)((u8*)fn_8011921C() + 8);
-        if (d >= 0x52d) {
-            f32* v = (f32*)fn_8023E724(0);
-            tmp[0] = v[0];
-            tmp[1] = v[1] - lbl_8053C838;
-            tmp[2] = v[2];
-            for (i = 0; i < 4; i++) {
-                fn_802303FC(i, tmp, 0xff);
+        if (*(s32*)((u8*)fn_8011921C() + 8) >= 0x52d) {
+            v20 = *(JGeometry::TVec3f*)fn_8023E724(0);
+            v20.y -= lbl_8053C838;
+            for (j = 0; j < 4; j++) {
+                fn_802303FC(j, &v20.x, 0xff);
             }
         }
         break;
@@ -363,40 +347,91 @@ extern "C" void fn_8011C308(u8* this_) {
             fn_801186B0(fn_8011921C(), 0x12);
             *((u8*)fn_8011921C() + 2) = 1;
         }
-        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) - lbl_8053C830;
+        *(f32*)(this_ + 0x10) -= lbl_8053C830;
         if (*(f32*)(this_ + 0x10) <= *(f32*)(this_ + 0x28)) {
             *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
             fn_8011B878(this_, 0x17);
-            break;
-        }
-        tmp[0] = *(f32*)(this_ + 0xc);
-        tmp[1] = *(f32*)(this_ + 0x10);
-        tmp[2] = *(f32*)(this_ + 0x14);
-        tmp[0] = tmp[0];
-        for (i = 0; i < 4; i++) {
-            fn_802303FC(i, tmp, 0xff);
+        } else {
+            v22 = *(JGeometry::TVec3f*)(this_ + 0xc);
+            v22.y += lbl_8053C7E8;
+            for (j = 0; j < 4; j++) {
+                fn_802303FC(j, &v22.x, 0xff);
+            }
         }
         break;
     case 23:
-        cnt = *(s32*)(this_ + 0x23c) + 1;
-        *(s32*)(this_ + 0x23c) = cnt;
-        *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * (f32)cnt;
-        *(f32*)(this_ + 0x40) = lbl_8053C83C;
-        *(f32*)(this_ + 0x3c) = lbl_8053C840;
-        hit = 0;
-        if (cnt > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
-            *(f32*)(this_ + 0x44) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x40) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x14) = lbl_8053C7D8;
-            hit = 1;
-        }
-        if (hit) {
+        (*(s32*)(this_ + 0x23c))++;
+        if (dmlkSink(this_, *(s32*)(this_ + 0x23c), lbl_8053C800, lbl_8053C83C, lbl_8053C840)) {
             fn_8011B878(this_, 0x18);
+        }
+        break;
+    case 24:
+        fn_801F0E34(this_, 0x400c7, 0);
+        fn_8011B878(this_, 0x19);
+        break;
+    case 25:
+        (*(s32*)(this_ + 0x23c))++;
+        if (dmlkSink(this_, *(s32*)(this_ + 0x23c), lbl_8053C82C, lbl_8053C7D8, lbl_8053C7D8)) {
+            *(s32*)(this_ + 0x23c) = 0;
+        }
+        if (fn_801F2B7C(this_, 0, -1, 1)) {
+            fn_8011B878(this_, 0x1a);
+        }
+        break;
+    case 26:
+        fx = lbl_8053C844;
+        (*(s32*)(this_ + 0x23c))++;
+        if (this_[0x231] == 0) {
+            fx = lbl_8053C848;
+        }
+        if (dmlkSink(this_, *(s32*)(this_ + 0x23c), lbl_8053C800, lbl_8053C7D8, fx)) {
+            fn_8011B878(this_, 0x19);
+            if (this_[0x231] != 0) {
+                *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24) - lbl_8053C7F0;
+            } else {
+                *(f32*)(this_ + 0xc) = lbl_8053C7F0 + *(f32*)(this_ + 0x24);
+            }
+        }
+        break;
+    case 27:
+        if (*(s32*)(this_ + 0x240) < 3) {
+            (*(s32*)(this_ + 0x23c))++;
+            if (dmlkSink(this_, *(s32*)(this_ + 0x23c), lbl_8053C82C, lbl_8053C7D8, lbl_8053C7D8)) {
+                *(s32*)(this_ + 0x23c) = 0;
+                (*(s32*)(this_ + 0x240))++;
+            }
+        }
+        break;
+    case 28:
+        fx = lbl_8053C840;
+        if (this_[0x231] == 0) {
+            fx = lbl_8053C84C;
+        }
+        cur = *(s32*)((u8*)fn_8011921C() + 8);
+        if (dmlkSink(this_, cur - lbl_80464AF8[29], lbl_8053C800, lbl_8053C850, fx)) {
+            fn_8011B878(this_, 0x1e);
+        }
+        break;
+    case 34:
+        *(f32*)(this_ + 0x10) += lbl_8053C830;
+        if (*(f32*)(this_ + 0x10) >= lbl_8053C854 + *(f32*)(this_ + 0x28)) {
+            *(f32*)(this_ + 0x10) = lbl_8053C854 + *(f32*)(this_ + 0x28);
         }
         break;
     default:
         break;
+    }
+    ((JGeometry::TVec3f*)(this_ + 0xc))->add(*(JGeometry::TVec3f*)(this_ + 0x3c));
+    this_[0x284] = *(s32*)(this_ + 0x98);
+    if (*(s32*)(this_ + 0x238) == 16) {
+        if (this_[0x230] != 0) {
+            fn_800FE8C0(this_ + 0x278);
+            this_[0x230] = 0;
+        } else {
+            this_[0x230] = 1;
+        }
+    } else {
+        fn_800FE8C0(this_ + 0x278);
     }
 }
 
