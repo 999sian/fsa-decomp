@@ -22,7 +22,7 @@ extern "C" f32* fn_8023E724(s32 idx);
 extern "C" const f32 sincosTable___5JMath[];
 extern const f32 lbl_8053BFF4;
 extern f32 lbl_8053BFF8;
-extern f32 lbl_8053BFFC;
+extern const f32 lbl_8053BFFC;
 extern f32 lbl_8053C00C;
 extern f32 lbl_8053C074;
 extern f32 lbl_8053C0A8;
