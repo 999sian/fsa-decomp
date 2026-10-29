@@ -1,6 +1,7 @@
 // TU 0x80218cf4-0x8021a570 (actor KEPO).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Box.h"
 extern const f32 lbl_8053FC94;
 
 struct KepoGlobals;
@@ -342,6 +343,7 @@ inline void fillKepoBox(f32* box, f32 x, f32 y, f32 radius) {
     box[1]=y-radius;
     box[2]=radius+x;
 }
+#pragma float_expressions off
 extern "C" void fn_8021923C(u8* self) {
     void fn_80219AFC(u8* self, s32 state);
     void fn_801D22DC(void* anim, s32 a, s32 b, s32 c);
@@ -609,7 +611,7 @@ extern "C" void fn_8021923C(u8* self) {
         }
     }
 }
-
+#pragma float_expressions reset
 extern "C" void fn_8021B5A0(void* self);
 extern "C" void fn_8021B5C4(void* self);
 extern "C" void fn_8021ABC0(void* p);
