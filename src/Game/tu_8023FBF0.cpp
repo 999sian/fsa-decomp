@@ -3102,172 +3102,80 @@ void fn_8024B298(char* p, s32 idx, void* out) { fn_8026942C(PTR(p, 0xbf0), idx, 
 s32 fn_8024B2BC(char* p) { return fn_8026947C(PTR(p, 0xbf0)); }
 
 void fn_8024B2E0(char* p) {
-    s32 i;
     s32 k;
-    s32 t;
     s32 j;
+    s32 t;
     s32 off;
     s32 cnt;
-    s32 o;
     TrailPos s;
-    char* q;
-    char* f;
-    char* d;
+    PlayerTrail* tr = (PlayerTrail*)p;
 
     if (U8(p, 0x1216) != 0) {
         return;
     }
     if (S32(p, 0xd60) >= 0) {
-        q = p;
-        o = 0;
-        for (i = 0; i < 7; i++) {
-            F32(q, 0x38) = F32(p, 0x32c);
-            F32(q, 0x3c) = F32(p, 0x330);
-            F32(q, 0x40) = F32(p, 0x334);
-            U8(p + 0x284 + o, 0) = 0;
-            F32(q, 0x44) = F32(p, 0x32c);
-            F32(q, 0x48) = F32(p, 0x330);
-            F32(q, 0x4c) = F32(p, 0x334);
-            U8(p + 0x284 + o, 1) = 0;
-            F32(q, 0x50) = F32(p, 0x32c);
-            F32(q, 0x54) = F32(p, 0x330);
-            F32(q, 0x58) = F32(p, 0x334);
-            U8(p + 0x284 + o, 2) = 0;
-            F32(q, 0x5c) = F32(p, 0x32c);
-            F32(q, 0x60) = F32(p, 0x330);
-            F32(q, 0x64) = F32(p, 0x334);
-            U8(p + 0x284 + o, 3) = 0;
-            F32(q, 0x68) = F32(p, 0x32c);
-            F32(q, 0x6c) = F32(p, 0x330);
-            F32(q, 0x70) = F32(p, 0x334);
-            U8(p + 0x284 + o, 4) = 0;
-            F32(q, 0x74) = F32(p, 0x32c);
-            F32(q, 0x78) = F32(p, 0x330);
-            F32(q, 0x7c) = F32(p, 0x334);
-            U8(p + 0x284 + o, 5) = 0;
-            F32(q, 0x80) = F32(p, 0x32c);
-            F32(q, 0x84) = F32(p, 0x330);
-            F32(q, 0x88) = F32(p, 0x334);
-            U8(p + 0x284 + o, 6) = 0;
-            q += 0x54;
-            o += 7;
+        for (int i = 0; i < 0x31; i++) {
+            tr->pos[i].x = F32(p, 0x32c);
+            tr->pos[i].y = F32(p, 0x330);
+            tr->pos[i].z = F32(p, 0x334);
+            tr->onGround[i] = 0;
         }
         return;
     }
     if (countSharingH(p) <= 1) {
-        q = p;
-        for (i = 0; i < 7; i++) {
-            F32(q, 0x38) = F32(p, 0x32c);
-            F32(q, 0x3c) = F32(p, 0x330);
-            F32(q, 0x40) = F32(p, 0x334);
-            F32(q, 0x44) = F32(p, 0x32c);
-            F32(q, 0x48) = F32(p, 0x330);
-            F32(q, 0x4c) = F32(p, 0x334);
-            F32(q, 0x50) = F32(p, 0x32c);
-            F32(q, 0x54) = F32(p, 0x330);
-            F32(q, 0x58) = F32(p, 0x334);
-            F32(q, 0x5c) = F32(p, 0x32c);
-            F32(q, 0x60) = F32(p, 0x330);
-            F32(q, 0x64) = F32(p, 0x334);
-            F32(q, 0x68) = F32(p, 0x32c);
-            F32(q, 0x6c) = F32(p, 0x330);
-            F32(q, 0x70) = F32(p, 0x334);
-            F32(q, 0x74) = F32(p, 0x32c);
-            F32(q, 0x78) = F32(p, 0x330);
-            F32(q, 0x7c) = F32(p, 0x334);
-            F32(q, 0x80) = F32(p, 0x32c);
-            F32(q, 0x84) = F32(p, 0x330);
-            F32(q, 0x88) = F32(p, 0x334);
-            q += 0x54;
+        for (int i = 0; i < 0x31; i++) {
+            tr->pos[i].x = F32(p, 0x32c);
+            tr->pos[i].y = F32(p, 0x330);
+            tr->pos[i].z = F32(p, 0x334);
         }
     } else {
         s = V3(p, 0x8);
         k = 1;
         j = S32(p, 0x4) + 1;
         while (k < countSharingH(p)) {
-            while (j < 4) {
-                j++;
-                if (fn_8022E438(S32(p, 0x4), j)) {
+            while (!fn_8022E438(S32(p, 0x4), j)) {
+                if (j >= 4) {
                     break;
                 }
+                j++;
             }
             if (j >= 4) {
-                if (fn_8022E438(S32(p, 0x4), j)) {
-                    break;
-                }
-                j++;
-                k++;
-                continue;
+                break;
             }
             {
                 TrailPos* nxt = (TrailPos*)fn_8023E724(j);
                 f32 nx = nxt->x;
                 f32 ny = nxt->y;
                 f32 nz = nxt->z;
-                off = (k - 1) * 0x90;
+                off = (k - 1) * 12;
                 for (t = 0; t < 12; t++) {
-                    d = p + off;
-                    F32(d, 0x38) = s.x * (f32)(12 - t) / 12.0f + nx * (f32)t / 12.0f;
-                    F32(d, 0x3c) = s.y * (f32)(12 - t) / 12.0f + ny * (f32)t / 12.0f;
-                    F32(d, 0x40) = s.z * (f32)(12 - t) / 12.0f + nz * (f32)t / 12.0f;
-                    off += 0xc;
+                    JGeometry::TVec3<f32> w = JGeometry::TVec3<f32>(
+                        s.x * (f32)(12 - t) / 12.0f + nx * (f32)t / 12.0f,
+                        s.y * (f32)(12 - t) / 12.0f + ny * (f32)t / 12.0f,
+                        s.z * (f32)(12 - t) / 12.0f + nz * (f32)t / 12.0f);
+                    V3(p + off * 12, 0x38).set(w);
+                    off++;
                 }
                 s.x = nx;
                 s.y = ny;
                 s.z = nz;
             }
-            j++;
             k++;
+            j++;
         }
         cnt = countSharingH(p);
-        d = p + (cnt - 1) * 0x90;
-        for (i = (cnt - 1) * 12; i < 0x31; i++) {
-            F32(d, 0x38) = s.x;
-            F32(d, 0x3c) = s.y;
-            F32(d, 0x40) = s.z;
-            d += 0xc;
+        for (int i = (cnt - 1) * 12; i < 0x31; i++) {
+            tr->pos[i].x = s.x;
+            tr->pos[i].y = s.y;
+            tr->pos[i].z = s.z;
         }
     }
-    q = p;
-    f = p + 0x284;
-    for (i = 0; i < 7; i++) {
-        if (0.0f < F32(q, 0x40)) {
-            U8(f, 0) = 1;
+    for (int i = 0; i < 0x31; i++) {
+        if (tr->pos[i].z > lbl_80540034) {
+            tr->onGround[i] = 1;
         } else {
-            U8(f, 0) = 0;
+            tr->onGround[i] = 0;
         }
-        if (0.0f < F32(q, 0x4c)) {
-            U8(f, 1) = 1;
-        } else {
-            U8(f, 1) = 0;
-        }
-        if (0.0f < F32(q, 0x58)) {
-            U8(f, 2) = 1;
-        } else {
-            U8(f, 2) = 0;
-        }
-        if (0.0f < F32(q, 0x64)) {
-            U8(f, 3) = 1;
-        } else {
-            U8(f, 3) = 0;
-        }
-        if (0.0f < F32(q, 0x70)) {
-            U8(f, 4) = 1;
-        } else {
-            U8(f, 4) = 0;
-        }
-        if (0.0f < F32(q, 0x7c)) {
-            U8(f, 5) = 1;
-        } else {
-            U8(f, 5) = 0;
-        }
-        if (0.0f < F32(q, 0x88)) {
-            U8(f, 6) = 1;
-        } else {
-            U8(f, 6) = 0;
-        }
-        q += 0x54;
-        f += 7;
     }
 }
 
@@ -3970,11 +3878,12 @@ static inline void adjustRupees(char* p, s32 n) {
     }
 }
 
+#pragma opt_lifetimes off
 void fn_8024E694(char* p, s32 a0, s32 flag0) {
     s32 a = a0;
     JGeometry::TVec3<f32> pos = V3(p, 0x8);
     s32 kind = S32(p, 0x3b4);
-    s32 kk;
+    int kk;
     u8 f2;
     s32 flag = flag0;
     s32 cnt = 0;
@@ -3999,23 +3908,9 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
         f2 = 1;
     }
 
-    if (S32(p, 0xd60) >= 0) {
-        lim = fn_80236228(S32(p, 0xd60));
-    } else {
-        lim = S32(p, 0xc04);
-        if (lim < 0) {
-            lim = 0;
-        }
-    }
+    lim = availableRupees(p);
     if (a > lim) {
-        if (S32(p, 0xd60) >= 0) {
-            a = fn_80236228(S32(p, 0xd60));
-        } else {
-            a = S32(p, 0xc04);
-            if (a < 0) {
-                a = 0;
-            }
-        }
+        a = availableRupees(p);
     }
     if (S32(p, 0x3b4) >= 8) {
         if (a < 1) {
@@ -4097,17 +3992,9 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
         }
         adjustRupees(p, -a);
     } else {
-        if (S32(p, 0xd60) >= 0) {
-            lim = fn_80236228(S32(p, 0xd60));
-        } else {
-            lim = S32(p, 0xc04);
-            if (lim < 0) {
-                lim = 0;
-            }
-        }
+        lim = availableRupees(p);
         if (a > lim) {
-            if (S32(p,0xd60)>=0) a=fn_80236228(S32(p,0xd60));
-            else { a=S32(p,0xc04); if(a<0) a=0; }
+            a=availableRupees(p);
         }
         if (a > 0) {
             if (f2) {
@@ -4119,7 +4006,7 @@ void fn_8024E694(char* p, s32 a0, s32 flag0) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 void fn_8024ECCC(char* p, s32 n) {
     s32 linked = S32(p, 0xd60);
     if (linked >= 0) {
@@ -4333,6 +4220,18 @@ extern "C" s32 fn_80230CFC(s32);
 extern "C" s32 fn_80238EDC(s32);
 extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
 extern "C" u8 fn_8025F590(char*);
+inline bool grabPressed(char* p) {
+    if(!padActive(p))return false;
+    if(U8(p,0x456)!=0)return false;
+    if(S32(p,0x11f0)>0)return false;
+    return fn_80309D24(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec)),0x20)!=0;
+}
+inline bool grabHeld(char* p) {
+    if(!padActive6(p))return false;
+    if(U8(p,0x456)!=0)return false;
+    if(S32(p,0x11f0)>0)return false;
+    return fn_80309D6C(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec)),0x20)!=0;
+}
 u8 fn_8024F63C(char* p) {
     u8 bVar1;
     s32 i;
@@ -4989,6 +4888,7 @@ void fn_80252FC0(char* p) {
     }
 }
 
+#pragma opt_lifetimes off
 void fn_80253E6C(char* p) {
     if (U8(p, 0xcac) != 0) {
         if (S32(p, 0x1234) == 1) {
@@ -5064,8 +4964,10 @@ void fn_80253E6C(char* p) {
             }
             return;
         }
-        f32 z = lbl_80540094;
-        f32 zero = lbl_80540034;
+        f32 zero;
+        f32 z;
+        zero = lbl_80540034;
+        z = lbl_80540094;
         V3(p, 0x2f4).x = zero;
         V3(p, 0x2f4).y = zero;
         V3(p, 0x2f4).z = z;
@@ -5152,7 +5054,9 @@ void fn_80253E6C(char* p) {
                 }
             }
         }
-        fn_80285E58(p);
+        else {
+            fn_80285E58(p);
+        }
         fn_8024BDBC(p);
         fn_80276538(p);
         fn_80276078(p);
@@ -5163,7 +5067,7 @@ void fn_80253E6C(char* p) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 struct PlayerKills { u8 pad[0xc1c]; s32 m[13]; };
 inline void initItemState(char* p) {
     S32(p, 0xc10) = S32(fn_802D6A9C(), 0x48);
