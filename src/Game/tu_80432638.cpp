@@ -360,8 +360,15 @@ struct T80431_Res {
     f32 getHeight() const { return ((J2DPane*)data)->getHeight(); }
 };
 
+struct T804339Layout {
+    void* vt;
+    J2DScreen* screens[3];
+    void* anims[2];
+    T80431_Res* res[10];
+    u8 tail[0x70];
+};
+
 extern "C" void* fn_8043395C(void* this_) {
-	char* mgr;
 	char* base;
 	char* self = (char*)this_;
 	base = (char*)lbl_8048F438;
@@ -370,9 +377,8 @@ extern "C" void* fn_8043395C(void* this_) {
 	__construct_array(self + 0x58, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 2);
 
 	*(J2DScreen**)(self + 4) = new J2DScreen;
-	mgr = (char*)lbl_80529DEC;
-	((J2DScreen*)*(void**)(self + 0x4))->setPriority((const char*)(base + 0xf8), 0x01100000, *(JKRArchive**)(mgr + 0x20));
-	*(void**)(self + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x10c), *(void**)(mgr + 0x20)));
+	((J2DScreen*)*(void**)(self + 0x4))->setPriority((const char*)(base + 0xf8), 0x01100000, *(JKRArchive**)(lbl_80529DEC + 0x20));
+	*(void**)(self + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x10c), *(void**)(lbl_80529DEC + 0x20)));
 	((J2DScreen*)*(void**)(self + 0x4))->setAnimation((J2DAnmTextureSRTKey*)*(void**)(self + 0x10));
 
 	*(T80431_Res**)(self + 0x18) = new T80431_Res;
@@ -417,8 +423,8 @@ extern "C" void* fn_8043395C(void* this_) {
 		__ct__9J2DScreenFv(s2);
 	}
 	*(char**)(self + 0x8) = s2;
-	((J2DScreen*)*(void**)(self + 0x8))->setPriority((const char*)(base + 0x120), 0x01100000, *(JKRArchive**)(mgr + 0x20));
-	*(void**)(self + 0x14) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x138), *(void**)(mgr + 0x20)));
+	((J2DScreen*)*(void**)(self + 0x8))->setPriority((const char*)(base + 0x120), 0x01100000, *(JKRArchive**)(lbl_80529DEC + 0x20));
+	*(void**)(self + 0x14) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x138), *(void**)(lbl_80529DEC + 0x20)));
 	((J2DScreen*)*(void**)(self + 0x8))->setAnimation((J2DAnmTextureSRTKey*)*(void**)(self + 0x14));
 
 	*(T80431_Res**)(self + 0x28) = new T80431_Res;
@@ -456,7 +462,7 @@ extern "C" void* fn_8043395C(void* this_) {
 		__ct__9J2DScreenFv(s3);
 	}
 	*(char**)(self + 0xc) = s3;
-	((J2DScreen*)*(void**)(self + 0xc))->setPriority((const char*)(base + 0x150), 0x01100000, *(JKRArchive**)(mgr + 0x20));
+	((J2DScreen*)*(void**)(self + 0xc))->setPriority((const char*)(base + 0x150), 0x01100000, *(JKRArchive**)(lbl_80529DEC + 0x20));
 	*(T80431_Res**)(self + 0x3c) = new T80431_Res;
 	fn_80402F04(*(void**)(self + 0x3c), ((J2DScreen*)*(void**)(self + 0xc))->search(0x004E646174613030ULL));
 
