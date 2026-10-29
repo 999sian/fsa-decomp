@@ -170,13 +170,9 @@ extern "C" void fn_80164834(char* this_) {
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x118, 0, 1, 0, 0, 1);
             fn_801F0E34(this_, 0x400d1, 0);
         }
-        const volatile f32* saved = &vel.x;
-        f32 vx = saved[0];
-        f32 vy = saved[1];
-        p->field_3C.x = vx;
-        f32 vz = saved[2];
-        p->field_3C.y = vy;
-        p->field_3C.z = vz;
+        p->field_3C.x = vel.x;
+        p->field_3C.y = vel.y;
+        p->field_3C.z = vel.z;
     }
     fn_801F71A4(&p->field_3C.x, p->target.x, 0.3f, 1.0f);
     fn_801F71A4(&p->field_3C.y, p->target.y, 0.3f, 1.0f);
