@@ -1286,6 +1286,7 @@ extern const f32 lbl_80543A88;
 extern const f32 lbl_80543A8C;
 extern "C" void fn_8044148C(void*);
 #pragma fp_contract on
+#pragma opt_propagation off
 extern "C" void fn_80425F6C(u8* self) {
     f32 right;
     f32 bottom;
