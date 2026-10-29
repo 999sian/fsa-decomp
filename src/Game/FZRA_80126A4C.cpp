@@ -275,6 +275,15 @@ static inline void fzraApproachT(T* x, T goal, s32 n) {
     }
 }
 
+template <typename T>
+static inline void fzraApproachR(T& x, const T& goal, const f32 t) {
+    if (t < *(f32*)__float_epsilon) {
+        x = goal;
+    } else {
+        x = x + (goal - x) * (lbl_8053CAA4 / t);
+    }
+}
+
 static inline void fzraApproach2(const f32 t, f32* x, const f32 goal) {
     if (t < *(f32*)__float_epsilon) {
         *x = goal;
@@ -479,31 +488,14 @@ extern "C" void fn_80127088(void* this_) {
             fn_80126A4C(this_, 0xd);
         }
         break;
-    case 13: {
+    case 13:
         *(s32*)(p + 0x250) -= 1;
-        f32 t = (f32)*(s32*)(p + 0x250);
-        if (t < *(f32*)__float_epsilon) {
-            *(s32*)(p + 0x254) = 0xff;
-        } else {
-            f32 inv = lbl_8053CAA4 / t;
-            *(s32*)(p + 0x254) = (s32)(inv * (f32)(0xff - *(s32*)(p + 0x254)) + (f32)*(s32*)(p + 0x254));
-        }
-        f32* x = (f32*)(p + 0xc);
-        f32 goal = *(f32*)(p + 0x270);
-        f32 cur;
-        f32 t2 = (f32)*(s32*)(p + 0x250);
-        if (t2 < *(f32*)__float_epsilon) {
-            *x = goal;
-        } else {
-            f32 one = lbl_8053CAA4;
-            cur = *x;
-            *x = (one / t2) * (goal - cur) + cur;
-        }
+        fzraApproachT<s32>((s32*)(p + 0x254), 0xff, *(s32*)(p + 0x250));
+        fzraApproachT<f32>((f32*)(p + 0xc), *(f32*)(p + 0x270), *(s32*)(p + 0x250));
         if (*(s32*)(p + 0x250) <= 0) {
             fn_80126A4C(this_, 0xe);
         }
         break;
-    }
     case 14:
         *(s32*)(p + 0x250) += 1;
         if (*(s32*)(p + 0x250) >= 0x3c) {
