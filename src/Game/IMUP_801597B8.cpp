@@ -182,18 +182,10 @@ extern "C" void fn_80159C28(char* this_) {
                 fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + lbl_804A01A0[*(s32*)(this_ + 0x234) - 4], flag != 0, 2, -1, 1, 0, 0);
             } else if (id >= 0x10 && id <= 0x19) {
                 s32 n = id + 0x1d;
-                f32 y = *(f32*)(this_ + 0x10);
-                f32 x = *(f32*)(this_ + 0xc);
-                f32 z = *(f32*)(this_ + 0x14);
-                Vec3f pos;
-                pos.xy.x = x;
-                pos.xy.y = y;
-                pos.z = z;
+                JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
                 if (*(s32*)(this_ + 4) < 8) {
-                    void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
-                    void** vt = *(void***)obj;
-                    void* model = ((void* (*)(void*, u32, const char*))vt[6])(obj, 0x534f4220, lbl_804660B8);
-                    fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, n, 1.0f, 1.0f, &rec);
+                    void* model = (*(FSAObjMgr**)(lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, lbl_804660B8);
+                    fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), (Vec3f*)&pos, model, n, 1.0f, 1.0f, &rec);
                 }
                 fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x1d, 0, 2, -1, 1, 0, 0);
             } else if (id == 0x20) {
@@ -220,34 +212,18 @@ extern "C" void fn_80159C28(char* this_) {
             } else if (id != 0x2e) {
                 if (id < 0x40) {
                     s32 n = id + 0x11;
-                    f32 y = *(f32*)(this_ + 0x10);
-                    f32 x = *(f32*)(this_ + 0xc);
-                    f32 z = *(f32*)(this_ + 0x14);
-                    Vec3f pos;
-                    pos.xy.x = x;
-                    pos.xy.y = y;
-                    pos.z = z;
+                    JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
                     if (*(s32*)(this_ + 4) < 8) {
-                        void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
-                        void** vt = *(void***)obj;
-                        void* model = ((void* (*)(void*, u32, const char*))vt[6])(obj, 0x534f4220, lbl_804660B8);
-                        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, n, 1.0f, 1.0f, &rec);
+                        void* model = (*(FSAObjMgr**)(lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, lbl_804660B8);
+                        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), (Vec3f*)&pos, model, n, 1.0f, 1.0f, &rec);
                     }
                     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x11, 0, 2, -1, 1, 0, 0);
                 } else {
                     s32 n = id + 0x1cd;
-                    f32 y = *(f32*)(this_ + 0x10);
-                    f32 x = *(f32*)(this_ + 0xc);
-                    f32 z = *(f32*)(this_ + 0x14);
-                    Vec3f pos;
-                    pos.xy.x = x;
-                    pos.xy.y = y;
-                    pos.z = z;
+                    JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
                     if (*(s32*)(this_ + 4) < 8) {
-                        void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
-                        void** vt = *(void***)obj;
-                        void* model = ((void* (*)(void*, u32, const char*))vt[6])(obj, 0x534f4220, lbl_804660B8);
-                        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, n, 1.0f, 1.0f, &rec);
+                        void* model = (*(FSAObjMgr**)(lbl_8053AAF8 + 0xa4))->getResource(0x534f4220, lbl_804660B8);
+                        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), (Vec3f*)&pos, model, n, 1.0f, 1.0f, &rec);
                     }
                     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x1cd, 0, 2, -1, 1, 0, 0);
                 }
