@@ -313,12 +313,13 @@ extern "C" void fn_8020A2C0(void* this_) {
 }
 
 static inline void fobrApproach(f32* value, const f32 frames) {
+    f32 current;
     if (frames < *(f32*)__float_epsilon) {
         *value = lbl_8053F964;
     } else {
         f32 k = lbl_8053F968 / frames;
         f32 target = lbl_8053F964;
-        f32 current = *value;
+        current = *value;
         *value = k * (target - current) + current;
     }
 }
