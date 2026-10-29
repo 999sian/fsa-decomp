@@ -69,10 +69,11 @@ extern "C" void fn_80377000(u8* this_) {
     }
 }
 
-static inline void movingBlockBreakTiles(u8* self, f32 x, f32 y, f32 z) {
+static inline void movingBlockBreakTiles(u8* self, s32& i, f32 x, f32 y, f32 z) {
     Vec point;
+    x -= 24.0f;
     const f32* offsets = lbl_80475178;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         point.x = x;
         point.y = y;
         point.z = z;
