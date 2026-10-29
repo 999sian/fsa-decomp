@@ -46,7 +46,7 @@ extern "C" void fn_802AB234(void) {}
 
 extern "C" s32 fn_8023AF14(f32* rect, s32 room, s32 zero, f32 z = 0.0f);
 extern "C" void* fn_802D6A9C(void);
-extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 word);
+extern "C" u32 fn_802F9908(void* mgr, s32 room, s32 word);
 extern "C" void fn_802F9974(void* mgr, s32 room, s32 word, u16 val);
 extern "C" u8 fn_80234F68(void);
 extern "C" void fn_802A3884(void* a, f32* pos, s32 zero, s32 room, s32 id);
@@ -67,47 +67,49 @@ extern f32 lbl_805408AC;
 extern "C" void* fn_801F666C(void*, s32);
 extern "C" void fn_802AB238(void* p) {
     char* self = (char*)p;
+    TileSwitchActor* actor = (TileSwitchActor*)p;
     JGeometry::TBox2<f32> rect;
-    f32 oy = 4.0f + *(f32*)(self + 0x10);
-    f32 ox = 4.0f + *(f32*)(self + 0xc);
+    const f32 c = 4.0f;
+    f32 oy = c + actor->field_0C.y;
+    f32 ox = c + *(f32*)(self + 0xc);
     JGeometry::TVec2<f32> offset(ox, oy);
     rect.set(*(JGeometry::TBox2<f32>*)(self + 0x60));
     rect.addPos(offset);
-    s32 r = fn_8023AF14((f32*)&rect, *(s32*)(self + 4), 0, lbl_80540894);
-    switch (*(s32*)(self + 0x230)) {
+    s32 r = fn_8023AF14((f32*)&rect, actor->field_04, 0, lbl_80540894);
+    switch (actor->state) {
     case 0: {
-        s32 room = *(s32*)(self + 4);
+        s32 room = actor->field_04;
         char* mgr = (char*)fn_802D6A9C();
         f32* origin;
         if (room < 8) origin = (f32*)(mgr + 0xcc);
         else origin = (f32*)(mgr + 0xdc);
-        s32 x = (s32)(*(f32*)(self + 0xc) - origin[0]);
-        s32 y = (s32)(*(f32*)(self + 0x10) - origin[1]);
+        s32 x = (s32)(actor->field_0C.x - origin[0]);
+        s32 y = (s32)(actor->field_0C.y - origin[1]);
         if (x < 0) x = 0; else if (x >= 512) x = 511;
         if (y < 0) y = 0; else if (y >= 512) y = 511;
-        *(s32*)(self + 0x23c) = ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf);
-        *(u16*)(self + 0x240) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(self + 4), *(s32*)(self + 0x23c)) & 0x3ff;
-        *(s32*)(self + 0x230) = 1;
+        actor->index = ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf);
+        actor->tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), actor->field_04, actor->index) & 0x3ff;
+        actor->state = 1;
         break;
     }
     case 1: {
-        u32 current = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(self + 4), *(s32*)(self + 0x23c)) & 0x3ff;
-        if ((u32)*(u16*)(self + 0x240) == current) break;
-        switch (*(s32*)(self + 0x234)) {
+        s32 current = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), actor->field_04, actor->index) & 0x3ff;
+        if ((u32)actor->tile == current) break;
+        switch (actor->kind) {
         case 5:
             ((Actor*)self)->v10(0xff, 1);
         case 0:
         case 10:
-            Actor_CreateByID(fn_801F856C(), 0x474f4c44, *(s32*)(self + 4), self + 0xc, 0x30000, -1, -1);
-            if (*(s32*)(self + 0x234) == 10) self[0x11c] = 0;
+            Actor_CreateByID(fn_801F856C(), 0x474f4c44, actor->field_04, self + 0xc, 0x30000, -1, -1);
+            if (actor->kind == 10) self[0x11c] = 0;
             else fn_801F35AC(self);
             break;
         case 1:
-            *(s32*)(self + 0x238) = 100;
-            *(s32*)(self + 0x230) = 2;
+            actor->timer = 100;
+            actor->state = 2;
             break;
         case 2:
-            *(s32*)(self + 0x230) = 2;
+            actor->state = 2;
             break;
         case 3:
             ((Actor*)self)->v10(0xff, 1);
@@ -115,14 +117,14 @@ extern "C" void fn_802AB238(void* p) {
             break;
         case 4:
         case 11:
-            *(s32*)(self + 0x238) = 300;
-            *(s32*)(self + 0x230) = 2;
+            actor->timer = 300;
+            actor->state = 2;
             break;
         case 6: {
             if (abRandom(lbl_8053AAF8, 0x19660d) < 0.2f) {
                 bool spawned = false;
                 if (abRandom(lbl_8053AAF8, 0x19660d) < 0.8f) {
-                    s32 id = Actor_CreateByID(fn_801F856C(), 0x52555059, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+                    s32 id = Actor_CreateByID(fn_801F856C(), 0x52555059, actor->field_04, self + 0xc, 0, -1, -1);
                     char* child = (char*)fn_801F666C(fn_801F856C(), id);
                     if (child) {
                         JGeometry::TVec3<f32> vel(0.0f, 0.0f, 3.0f);
@@ -130,14 +132,14 @@ extern "C" void fn_802AB238(void* p) {
                     }
                 } else {
                     if (abRandom(lbl_8053AAF8, 0x19660d) < 0.5f) {
-                        Actor_CreateByID(fn_801F856C(), 0x4d54424f, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+                        Actor_CreateByID(fn_801F856C(), 0x4d54424f, actor->field_04, self + 0xc, 0, -1, -1);
                         spawned = true;
                     }
                     if (!spawned) {
                         if (abRandom(lbl_8053AAF8, 0x19660d) < 0.2f)
-                            Actor_CreateByID(fn_801F856C(), 0x46415259, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+                            Actor_CreateByID(fn_801F856C(), 0x46415259, actor->field_04, self + 0xc, 0, -1, -1);
                         else
-                            Actor_CreateByID(fn_801F856C(), 0x48415254, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+                            Actor_CreateByID(fn_801F856C(), 0x48415254, actor->field_04, self + 0xc, 0, -1, -1);
                     }
                 }
             }
@@ -145,15 +147,15 @@ extern "C" void fn_802AB238(void* p) {
             break;
         }
         case 7:
-            Actor_CreateByID(fn_801F856C(), 0x48415254, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+            Actor_CreateByID(fn_801F856C(), 0x48415254, actor->field_04, self + 0xc, 0, -1, -1);
             self[0x11c] = 0;
             break;
         case 8:
-            Actor_CreateByID(fn_801F856C(), 0x4d54424f, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+            Actor_CreateByID(fn_801F856C(), 0x4d54424f, actor->field_04, self + 0xc, 0, -1, -1);
             fn_801F35AC(self);
             break;
         case 9:
-            Actor_CreateByID(fn_801F856C(), 0x46415259, *(s32*)(self + 4), self + 0xc, 0, -1, -1);
+            Actor_CreateByID(fn_801F856C(), 0x46415259, actor->field_04, self + 0xc, 0, -1, -1);
             fn_801F35AC(self);
             break;
         default:
@@ -163,40 +165,40 @@ extern "C" void fn_802AB238(void* p) {
         break;
     }
     case 2:
-        switch (*(s32*)(self + 0x234)) {
+        switch (actor->kind) {
         case 1:
-            *(s32*)(self + 0x238) -= 1;
-            if (*(s32*)(self + 0x238) == 0) {
+            actor->timer -= 1;
+            if (actor->timer == 0) {
                 void* manager = *(void**)(lbl_8053AB10 + 0x20);
-                u16 tile = *(u16*)(self + 0x240);
-                fn_802F9974(manager, *(s32*)(self + 4), *(s32*)(self + 0x23c), tile);
-                *(s32*)(self + 0x230) = 1;
+                u32 tile = actor->tile;
+                fn_802F9974(manager, actor->field_04, actor->index, tile);
+                actor->state = 1;
             }
             break;
         case 2:
             if (r >= 0 && fn_80234F68() == 1) {
-                *(s32*)(self + 0x238) = 60;
-                *(s32*)(self + 0x230) = 3;
+                actor->timer = 60;
+                actor->state = 3;
             }
             break;
         case 4:
         case 11:
-            *(s32*)(self + 0x238) -= 1;
-            if (*(s32*)(self + 0x238) == 0) {
+            actor->timer -= 1;
+            if (actor->timer == 0) {
                 if (r < 0) {
                     if (*(s32*)(self + 4) >= 8) {
-                        JGeometry::TVec3<f32> pos(8.0f + *(f32*)(self + 0xc), 8.0f + *(f32*)(self + 0x10), 0.0f);
-                        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(s32*)(self + 4), &pos, 3, -1, -1);
+                        JGeometry::TVec3<f32> pos(8.0f + actor->field_0C.x, 8.0f + actor->field_0C.y, 0.0f);
+                        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, actor->field_04, &pos, 3, -1, -1);
                     } else {
-                        JGeometry::TVec3<f32> pos(8.0f + *(f32*)(self + 0xc), 8.0f + *(f32*)(self + 0x10), 0.0f);
-                        fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x503, 1, 0, 0, 0, 1);
+                        JGeometry::TVec3<f32> pos(8.0f + actor->field_0C.x, 8.0f + actor->field_0C.y, 0.0f);
+                        fn_8013CC50(actor->field_04, &pos, 1.0f, 0x503, 1, 0, 0, 0, 1);
                     }
-                    if (*(s32*)(self + 0x234) == 4)
-                        fn_802A3884(lbl_8053AC98, (f32*)(self + 0xc), 0, *(s32*)(self + 4), 0x4f);
+                    if (actor->kind == 4)
+                        fn_802A3884(lbl_8053AC98, (f32*)(self + 0xc), 0, actor->field_04, 0x4f);
                     else
-                        fn_802A3884(lbl_8053AC98, (f32*)(self + 0xc), 0, *(s32*)(self + 4), 0x4e);
-                    *(s32*)(self + 0x230) = 1;
-                } else *(s32*)(self + 0x238) = 1;
+                        fn_802A3884(lbl_8053AC98, (f32*)(self + 0xc), 0, actor->field_04, 0x4e);
+                    actor->state = 1;
+                } else actor->timer = 1;
             }
             break;
         default:
@@ -205,14 +207,14 @@ extern "C" void fn_802AB238(void* p) {
         }
         break;
     case 3:
-        switch (*(s32*)(self + 0x234)) {
+        switch (actor->kind) {
         case 2:
-            *(s32*)(self + 0x238) -= 1;
-            if (*(s32*)(self + 0x238) == 0) {
+            actor->timer -= 1;
+            if (actor->timer == 0) {
                 void* manager = *(void**)(lbl_8053AB10 + 0x20);
-                u16 tile = *(u16*)(self + 0x240);
-                fn_802F9974(manager, *(s32*)(self + 4), *(s32*)(self + 0x23c), tile);
-                *(s32*)(self + 0x230) = 1;
+                u32 tile = actor->tile;
+                fn_802F9974(manager, actor->field_04, actor->index, tile);
+                actor->state = 1;
             }
             break;
         default:
@@ -221,7 +223,7 @@ extern "C" void fn_802AB238(void* p) {
         }
         break;
     case 4:
-        switch (*(s32*)(self + 0x234)) {
+        switch (actor->kind) {
         case 5:
             ((Actor*)self)->v10(0xff, 1);
             break;
