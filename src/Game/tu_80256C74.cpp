@@ -1420,8 +1420,8 @@ struct Tu8025Data {
 
 
 
-static inline u8 fireAnimationFrame(const Tu8025Data& data, const s32 direction, const s32 frame) {
-    return data.frames[direction][frame];
+static inline u8 fireAnimationFrame(const u8 (&frames)[4][8], const s32 direction, const s32 frame) {
+    return frames[direction][frame];
 }
 extern "C" void fn_8025A15C(u8* p) {
     s32 actorID;
