@@ -22,6 +22,11 @@ struct RupyTbl {
     s32 msg[8];
 };
 
+extern const f32 lbl_80541DC4;
+extern const f32 lbl_80541DD0;
+static inline s32 RupyFrame(const s32* frames, s32 index) { return frames[index]; }
+static inline s32 RupyAlpha(const f32 value) { return lbl_80541DC4 * value * lbl_80541DD0; }
+
 // Scaled rotation matrix (X, Y, Z angles) into the upper 3x3 of m.
 static inline void RupyRotScaleMtx(f32 (*m)[4], f32 s, f32 rx, f32 ry, f32 rz) {
     f32 cz;
