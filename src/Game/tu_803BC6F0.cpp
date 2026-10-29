@@ -20,6 +20,14 @@ struct MenuSlots44 {
     u8* slot[3];
 };
 
+static inline s32* buildMenuOrder(s32* order, u8* menu) {
+    s32* out = order;
+    for (s32 n = 0; n < 3; n++) {
+        if (n != *(s32*)(menu + 0xa4)) *out++ = n;
+    }
+    return order;
+}
+
 static inline void addMenuTiming(s32& total, s32 value) { total = value + total; }
 
 static inline f32 menuPulseSquare(s32 value) { return (f32)(value * value); }
@@ -398,153 +406,41 @@ static inline void setPicBlackWhite(u8* p, const u64* keys, u32 idx, JUtility::T
 }
 
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
-    u8* base = (u8*)lbl_804765D0;
-    u32 off = idx * 8;
-    void* r;
-    Clr a;
-    a.r = 0x80; a.g = 0x80; a.b = 0x80; a.a = 0xff;
-    Clr b;
-    b.r = 0; b.g = 0; b.b = 0; b.a = 0;
-    {
-        Clr a2 = a;
-        Clr b2 = b;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, *(u64*)(base + 0x5d8 + off));
-        (*(ColorVt**)r)->v76(r, &b2, &a2);
-    }
-    Clr c;
-    c.r = 0xb4; c.g = 0xb4; c.b = 0xb4; c.a = 0xff;
-    Clr d;
-    d.r = 0x82; d.g = 0x82; d.b = 0x82; d.a = 0x00;
-    {
-        Clr d2 = d;
-        Clr c2 = c;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&d, *(u64*)(base + 0x5c0 + off));
-        (*(ColorVt**)r)->v76(r, &d2, &c2);
-    }
-    {
-        Clr d3 = d;
-        Clr c3 = c;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&c, *(u64*)(base + 0x5a8 + off));
-        (*(ColorVt**)r)->v76(r, &d3, &c3);
-    }
-    {
-        Clr d4 = d;
-        Clr c4 = c;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&c, *(u64*)(base + 0x590 + off));
-        (*(ColorVt**)r)->v76(r, &d4, &c4);
-    }
-    {
-        Clr d5 = d;
-        Clr c5 = c;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&c, *(u64*)(base + 0x578 + off));
-        (*(ColorVt**)r)->v76(r, &d5, &c5);
-    }
-    {
-        Clr n;
-        n.r = d.r; n.g = d.g; n.b = d.b; n.a = 0xff;
-        Clr n2 = n;
-        Clr c6 = c;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), d.b, *(u64*)(base + 0x560 + off));
-        (*(ColorVt**)r)->v76(r, &n2, &c6);
-    }
-    Clr g;
-    g.r = 0x50; g.g = 0x50; g.b = 0x50; g.a = 0x00;
-    Clr f;
-    f.r = 0x80; f.g = 0x80; f.b = 0x80; f.a = 0xff;
-    {
-        Clr g2 = g;
-        Clr f2 = f;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0, *(u64*)(base + 0x548 + off));
-        (*(ColorVt**)r)->v76(r, &g2, &f2);
-    }
-    {
-        Clr g3 = g;
-        Clr f3 = f;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(base + 0x530 + off));
-        (*(ColorVt**)r)->v76(r, &g3, &f3);
-    }
-    {
-        Clr g4 = g;
-        Clr f4 = f;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(base + 0x518 + off));
-        (*(ColorVt**)r)->v76(r, &g4, &f4);
-    }
-    {
-        Clr g5 = g;
-        Clr f5 = f;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(base + 0x500 + off));
-        (*(ColorVt**)r)->v76(r, &g5, &f5);
-    }
-    {
-        Clr g6 = g;
-        Clr f6 = f;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(base + 0x4e8 + off));
-        (*(ColorVt**)r)->v76(r, &g6, &f6);
-    }
-    Clr h;
-    h.r = 0x82; h.g = 0x82; h.b = 0x82; h.a = 0xff;
-    Clr i;
-    i.r = 0x64; i.g = 0x64; i.b = 0x64; i.a = 0x00;
-    {
-        Clr i2 = i;
-        Clr h2 = h;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&i, *(u64*)(base + 0x6c8 + off));
-        (*(ColorVt**)r)->v76(r, &i2, &h2);
-    }
-    {
-        Clr i3 = i;
-        Clr h3 = h;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&h, *(u64*)(base + 0x6b0 + off));
-        (*(ColorVt**)r)->v76(r, &i3, &h3);
-    }
-    {
-        Clr i4 = i;
-        Clr h4 = h;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&h, *(u64*)(base + 0x698 + off));
-        (*(ColorVt**)r)->v76(r, &i4, &h4);
-    }
-    {
-        Clr i5 = i;
-        Clr h5 = h;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&h, *(u64*)(base + 0x680 + off));
-        (*(ColorVt**)r)->v76(r, &i5, &h5);
-    }
-    {
-        Clr n3;
-        n3.r = i.r; n3.g = i.g; n3.b = i.b; n3.a = 0xff;
-        Clr n4 = n3;
-        Clr h6 = h;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), i.b, *(u64*)(base + 0x668 + off));
-        (*(ColorVt**)r)->v76(r, &n4, &h6);
-    }
-    Clr j;
-    j.r = 0xb4; j.g = 0xb4; j.b = 0xb4; j.a = 0xff;
-    Clr k;
-    k.r = 0xb4; k.g = 0xb4; k.b = 0xb4; k.a = 0x00;
-    {
-        Clr k2 = k;
-        Clr j2 = j;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0, *(u64*)(base + 0x650 + off));
-        (*(ColorVt**)r)->v76(r, &k2, &j2);
-    }
-    {
-        Clr k3 = k;
-        Clr j3 = j;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&j, *(u64*)(base + 0x638 + off));
-        (*(ColorVt**)r)->v76(r, &k3, &j3);
-    }
-    {
-        Clr k4 = k;
-        Clr j4 = j;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&j, *(u64*)(base + 0x620 + off));
-        (*(ColorVt**)r)->v76(r, &k4, &j4);
-    }
-    {
-        Clr k5 = k;
-        Clr j5 = j;
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&j, *(u64*)(base + 0x608 + off));
-        (*(ColorVt**)r)->v76(r, &k5, &j5);
-    }
+    const Tu803BKeyTbl* t = (const Tu803BKeyTbl*)lbl_804765D0;
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[12][idx]))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0x80, 0x80, 0x80, 0xff));
+
+    JUtility::TColor white1(0xb4, 0xb4, 0xb4, 0xff);
+    JUtility::TColor black1(0x82, 0x82, 0x82, 0);
+    JUtility::TColor tmp1 = black1;
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[11][idx]))->setBlackWhite(black1, white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[10][idx]))->setBlackWhite(black1, white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[9][idx]))->setBlackWhite(black1, white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[8][idx]))->setBlackWhite(black1, white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[7][idx]))->setBlackWhite(JUtility::TColor(tmp1.r, tmp1.g, tmp1.b, 0xff), white1);
+
+    JUtility::TColor white2(0x80, 0x80, 0x80, 0xff);
+    JUtility::TColor black2(0x50, 0x50, 0x50, 0);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[6][idx]))->setBlackWhite(black2, white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[5][idx]))->setBlackWhite(black2, white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[4][idx]))->setBlackWhite(black2, white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[3][idx]))->setBlackWhite(black2, white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[2][idx]))->setBlackWhite(black2, white2);
+
+    JUtility::TColor white3(0x82, 0x82, 0x82, 0xff);
+    JUtility::TColor black3(0x64, 0x64, 0x64, 0);
+    JUtility::TColor tmp3 = black3;
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[22][idx]))->setBlackWhite(black3, white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[21][idx]))->setBlackWhite(black3, white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[20][idx]))->setBlackWhite(black3, white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[19][idx]))->setBlackWhite(black3, white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[18][idx]))->setBlackWhite(JUtility::TColor(tmp3.r, tmp3.g, tmp3.b, 0xff), white3);
+
+    JUtility::TColor white4(0xb4, 0xb4, 0xb4, 0xff);
+    JUtility::TColor black4(0xb4, 0xb4, 0xb4, 0);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[17][idx]))->setBlackWhite(black4, white4);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[16][idx]))->setBlackWhite(black4, white4);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[15][idx]))->setBlackWhite(black4, white4);
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[14][idx]))->setBlackWhite(black4, white4);
 }
 
 // Finds the picture keyed by key[idx] on p+8 and sets its black/white colors.
@@ -1945,18 +1841,18 @@ typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 #pragma opt_strength_reduction off
 extern "C" void fn_803C3904(u8* this_) {
     const u8* base = lbl_804765D0;
-    s32 order[2];
-    const s32* ord = order;
-    s32* out = order;
+    int order[2];
+    int* ord = order;
+    int* out = order;
     s32 off;
     s32 k;
-    unsigned int idx;
+    int idx;
     void* pane;
     s32 a = *(s16*)(lbl_8050DB0C + 0x200);
     s32 b = *(s16*)(lbl_8050DB0C + 0x202);
     s32 c = *(s16*)(lbl_8050DB0C + 0x1fe);
-    s32 total = a + b;
-    addMenuTiming(total, c);
+    int total = a + b;
+    total = c + total;
 
     for (s32 n = 0; n < 3; ++n) {
         if (n != *(s32*)(this_ + 0xa4)) {
