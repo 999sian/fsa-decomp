@@ -156,6 +156,7 @@ static inline void startAudioSpecial(u8* self, u32 id) {
     if(*(Unk80458F04Sound**)(self+0x84))(*(Unk80458F04Sound**)(self+0x84))->mMove.moveVolume(*(f32*)(self+0x50),0);
 }
 struct AudioChannelBase { u8 pad[0x18]; JAUSoundObject* object; };
+struct AudioContext { u8 pad[0x18]; JAUSoundObject* channels[4]; };
 
 static inline JAUSoundObject* getAudioChannel(u8* self, const s8 channel) {
     return ((AudioChannelBase*)(self+4*channel))->object;
