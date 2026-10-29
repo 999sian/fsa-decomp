@@ -1420,7 +1420,6 @@ struct Tu8025Data {
 
 
 
-#pragma opt_propagation off
 extern "C" void fn_8025A15C(u8* p) {
     s32 actorID;
     PlayerFirePosition* fire = (PlayerFirePosition*)p;
