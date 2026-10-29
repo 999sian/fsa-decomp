@@ -1,7 +1,6 @@
 // TRAP actor. TU 801643C4-8016545C.
 // Functions: dtor, move check (TODO), draw (slot 6, TODO), update (slot 3, TODO), init (slot 1).
 #include "types.h"
-#pragma auto_inline off
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
