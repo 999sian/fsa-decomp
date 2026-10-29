@@ -2102,10 +2102,10 @@ inline s32 getModeB(char* p) {
     }
     return S32(p, 0x120c);
 }
-inline bool shouldSpawnD134(char* p) {
-    if (getModeB(p) == 5) return false;
-    if (getModeB(p) == 4) return false;
-    return true;
+inline BOOL shouldSpawnD134(char* p) {
+    if (getModeB(p) == 5) return 0;
+    if (getModeB(p) == 4) return 0;
+    return 1;
 }
 
 inline bool padActive3(char* p) {
