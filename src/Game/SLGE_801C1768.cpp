@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 extern "C" char lbl_804A4310[];
 extern "C" char lbl_804A4808[];
@@ -319,10 +321,13 @@ extern "C" void fn_801C2150(u8* this_) {
         virtual void v10();
         virtual bool v11();
     };
+    f32 neg;
+    f32 two;
+    f32 zero;
     fn_801D0ED0(this_);
-    f32 zero = lbl_8053EDC0;
-    f32 two = lbl_8053EDE8;
-    f32 neg = lbl_8053EDD0;
+    zero = lbl_8053EDC0;
+    two = lbl_8053EDE8;
+    neg = lbl_8053EDD0;
     *(u8*)(this_ + 0x2a8) = *(u32*)(this_ + 0x90) >> 8;
     *(u8*)(this_ + 0x2a9) = *(u32*)(this_ + 0x90) >> 16;
     *(f32*)(this_ + 0x60) = zero;
