@@ -100,16 +100,16 @@ static inline s32 ftglPickTarget(char* p) {
     s32 room;
     s32 side;
     s32 best;
-    s32 room0;
+    u32 room0;
     f32 bestD;
     s32 id;
-    s32 i;
+    u32 i;
     s32 j;
     for (i = 0; i < 4; i++) {
         room0 = *(s32*)(p + 0x4);
-        s32 room = room0;
+        u32 faceRoom = room0;
         s32 r = fn_8023DE58(i);
-        if (r == room && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
+        if (r == faceRoom && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
             side = fn_8023E724(i)->x > *(f32*)(p + 0xc) ? 1 : 0;
             fn_80230498(i, fn_8023E724(i), side + 0x3c, 0xff, -0x80, -0x80, 1);
             fn_80230BF4(i, side);
@@ -123,12 +123,7 @@ static inline s32 ftglPickTarget(char* p) {
         room = *(s32*)(p + 0x4);
         s32 r = fn_8023DE58(id);
         if (r == room) {
-            JGeometry::TVec3<f32>* pos = fn_8023E724(id);
-            JGeometry::TVec3<f32> delta;
-            delta.x = *(f32*)(p + 0xc) - pos->x;
-            delta.y = *(f32*)(p + 0x10) - pos->y;
-            delta.z = *(f32*)(p + 0x14) - pos->z;
-            f32 d = delta.squared();
+            f32 d = PSVECSquareDistance((Vec*)(p + 0xc), fn_8023E724(id));
             if (d < bestD) {
                 bestD = d;
                 best = id;
