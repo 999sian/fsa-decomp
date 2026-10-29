@@ -2320,8 +2320,8 @@ static inline s32 messagePadding(f32 value) {
     return (s32)(value * lbl_805430BC + lbl_805430BC);
 }
 static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb, char* padbuf = NULL) {
-    s32 row = col - 1;
-    s32 pad = (s32)((fa - width * fb) * lbl_805430BC + lbl_805430BC);
+    s32 pad = messagePadding(fa - width * fb);
+    const s32 row = col - 1;
     if (lbl_8053AD78->f64 == (f32)row) lbl_8053AD78->f5c += pad;
     if (lbl_8053AD78->f68 == (f32)row) lbl_8053AD78->f60 += pad;
     if (pad > 0) {
