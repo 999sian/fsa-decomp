@@ -606,10 +606,12 @@ void* fn_80431C38(void* this_, s16 flag) {
 }
 
 #pragma placement_new_check off
+extern "C" void __construct_array(void*, void*, void*, u32,u32);
+extern "C" void __ct__Q29JGeometry8TVec2_s_Fv();
 extern "C" T80431D84* fn_80431D84(T80431D84* self) {
 self->vt = lbl_804B1634;
-new (self->c) T80431_Points;
-new (self->d) T80431_Points;
+__construct_array(self->c, (void*)__ct__Q29JGeometry8TVec2_s_Fv, 0, 4,16);
+__construct_array(self->d, (void*)__ct__Q29JGeometry8TVec2_s_Fv, 0, 4,16);
 lbl_8053AEC0 = (s32)self;
 T80431_Helper* h = (T80431_Helper*)__nw__FUl(0x14);
 if(h) {
@@ -650,11 +652,16 @@ fn_80402F04(self->b[3],self->screen->search('Pwb04'));
 self->b[4] = (Slot0*)new T80431_Res;
 fn_80402F04(self->b[4],self->screen->search('Pwb05'));
 ((J2DTextBox*)self->screen->search('Twt01'))->setFont(MessageFont());
+T80431D84* dst = self;
+T80431D84* src = self;
+int offset;
 for(int i=0;i<4;i++) {
- for(u8 j=0;j<4;j++) {
- self->c[i*4+j].set(*(JGeometry::TVec2<s16>*)((u8*)*(void**)((u8*)self->a[i]+4)+0x112+j*4));
- self->d[i*4+j].set(*(JGeometry::TVec2<s16>*)((u8*)*(void**)((u8*)self->b[i]+4)+0x112+j*4));
+ for(int j=0;j<4;j++) {
+offset = (u8)j *4;
+ dst->c[j].set(*(JGeometry::TVec2<s16>*)((u8*)*(void**)((u8*)src->a[0]+4)+0x112+offset));
+ dst->d[j].set(*(JGeometry::TVec2<s16>*)((u8*)*(void**)((u8*)src->b[0]+4)+0x112+offset));
  }
+dst=(T80431D84*)((u8*)dst+16); src=(T80431D84*)((u8*)src+4);
 }
 self->timer=0; *((u8*)self+0xec)=0; return self;
 }
