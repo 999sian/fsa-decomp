@@ -127,6 +127,11 @@ struct TrapActor : Actor {
     JGeometry::TVec3<f32> home;
 };
 
+static inline void trapGetCenter(const JGeometry::TBox2f* box, JGeometry::TVec2<f32>* point) {
+    point->x = lbl_8053D77C * (box->i.x - box->f.x) + box->f.x;
+    point->y = lbl_8053D77C * (box->i.y - box->f.y) + box->f.y;
+}
+
 static inline void trapSetTarget(TrapActor* p) {
     switch ((s32)p->field_98) {
     case 0: p->target.set(3.0f, 0.0f, 0.0f); break;
@@ -156,12 +161,11 @@ extern "C" void fn_80164834(char* this_) {
         if (hit < 0) break;
         JGeometry::TVec3<f32> pos(p->field_0C);
         JGeometry::TVec2<f32> point;
-        f32 left = p->field_60 + pos.x;
-        f32 right = p->field_68 + pos.x;
-        f32 top = p->field_64 + pos.y;
-        f32 bottom = p->field_6C + pos.y;
-        point.x = right + lbl_8053D77C * (left - right);
-        point.y = bottom + lbl_8053D77C * (top - bottom);
+        JGeometry::TBox2f box;
+        box.set(*(JGeometry::TBox2f*)&p->field_60);
+        box.addPos(pos.x, pos.y);
+        point.set(lbl_8053D77C * (box.i.x - box.f.x) + box.f.x,
+                  lbl_8053D77C * (box.i.y - box.f.y) + box.f.y);
         if (fn_80237948(hit, &point.x)) {
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x117, 0, 1, 0, 0, 1);
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x118, 0, 1, 0, 0, 1);
@@ -188,8 +192,9 @@ extern "C" void fn_80164834(char* this_) {
     s32 player = -1;
     s32 dir;
     fn_801EEC98(this_, (void*)p->field_198, 0, &dir, 0, &player, 0, 0);
-    if (p->state != 2 && p->state != 3 && p->state != 0 &&
-        (p->field_9C >= 0 || (p->state == 1 && blocked))) {
+    s32 state = p->state;
+    if (state != 2 && state != 3 && state != 0 &&
+        (p->field_9C >= 0 || (state == 1 && blocked))) {
         JGeometry::TVec3<f32> pos(p->field_0C);
         pos.x += lbl_80466288[p->field_98].x;
         pos.y += lbl_80466288[p->field_98].y;
@@ -202,14 +207,14 @@ extern "C" void fn_80164834(char* this_) {
         p->state = 2;
         return;
     }
-    switch (p->state) {
+    switch (state) {
     case 0:
         if (p->timers[0] == 0 && player >= 0) {
             f32 dx, dy;
             if (fn_8023DE58(player) < 8 && (s32)p->field_04 == 8) {
                 s32 room = fn_8023DE58(player);
                 u8* mgr = fn_802D6A9C();
-                Quaternion box = *(Quaternion*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                TrapRoomRect box = *(TrapRoomRect*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
                 dx = (f32)fabs(p->field_0C.x - (fn_8023E724(player)->x - box.x));
                 dy = (f32)fabs(p->field_0C.y - (fn_8023E724(player)->y - box.y));
             } else {
