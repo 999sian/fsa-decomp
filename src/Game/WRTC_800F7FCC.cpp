@@ -553,8 +553,13 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,f32& k) {
     s32 angle;
     if(n&1){radius=lbl_8053BFF8+(f32)(((n>>1)+1)*20);angle=(s16)*(u16*)(p+0x2b2);}
     else {radius=(f32)(((n>>1)+1)*-20)-lbl_8053BFF8;angle=(s16)*(u16*)(p+0x2b4);}
-    f32 x=radius*WRTC_sinShort(angle)+*(f32*)(p+0xc);
-    f32 y=radius*WRTC_cosShort(angle)+*(f32*)(p+0x10);
+    s32 index=(u16)angle;
+    index >>= 5;
+    const f32* trig=(const f32*)&JMath::sincosTable_.mTable[index];
+    f32 sn=trig[0];
+    f32 cs=trig[1];
+    f32 x=radius*sn+*(f32*)(p+0xc);
+    f32 y=radius*cs+*(f32*)(p+0x10);
     f32 z=lbl_8053BFFC+*(f32*)(p+0x14);
     p[0x2ac]++;
     s32 half=(n>>1)+1;
