@@ -281,6 +281,18 @@ extern const f32 lbl_8053E1E4;
 extern const f32 lbl_8053E1E8;
 extern const f32 lbl_8053E1EC;
 extern const f32 lbl_8053E1C8;
+
+static inline s32 dgt2AngleSlot(f32 x) {
+    s32 n;
+    for (n = 0; n < 15; n++) {
+        x -= lbl_8053E1C8;
+        if (x < lbl_8053E1D8) {
+            break;
+        }
+    }
+    return n;
+}
+
 extern "C" void fn_8018F2DC(void* this_) {
     s32 found = 0;
     char* p = (char*)this_;
@@ -288,28 +300,20 @@ extern "C" void fn_8018F2DC(void* this_) {
     JGeometry::TVec3<f32> vel0 = *(JGeometry::TVec3<f32>*)(p + 0x3c);
     f32 z0 = *(f32*)(p + 0x14);
 
-    if (*(s32*)(p + 0x234) > 0) {
-        *(s32*)(p + 0x234) = *(s32*)(p + 0x234) - 1;
-    }
-    if (*(s32*)(p + 0x238) > 0) {
-        *(s32*)(p + 0x238) = *(s32*)(p + 0x238) - 1;
-    }
-    char* r4 = p + 8;
-    if (*(s32*)(p + 0x23c) > 0) {
-        *(s32*)(r4 + 0x234) = *(s32*)(p + 0x23c) - 1;
-    }
-    if (*(s32*)(r4 + 0x238) > 0) {
-        *(s32*)(r4 + 0x238) = *(s32*)(r4 + 0x238) - 1;
-    }
-    if (*(s32*)(r4 + 0x23c) > 0) {
-        *(s32*)(r4 + 0x23c) = *(s32*)(r4 + 0x23c) - 1;
+    {
+        char* t = p;
+        for (s32 m = 0; m < 5; m++, t += 4) {
+            if (*(s32*)(t + 0x234) > 0) {
+                *(s32*)(t + 0x234) = *(s32*)(t + 0x234) - 1;
+            }
+        }
     }
 
     switch (*(s32*)(p + 0x230)) {
     case 0: {
-        char* q = p;
+        char* q;
         s32 i;
-        for (i = 0; i < 3; i++, q += 0xc) {
+        for (i = 0, q = p; i < 3; i++, q += 0xc) {
             *(JGeometry::TVec3<f32>*)(p + 0xc) = *(JGeometry::TVec3<f32>*)(q + 0x288);
             if (fn_801F3D94(p, 1) != 0 || fn_801F305C(p)) {
                 fn_801F2618(p, 0, 0);
@@ -390,7 +394,7 @@ extern "C" void fn_8018F2DC(void* this_) {
         if (*(void**)(p + 0x3c4) == 0) {
             *(s32*)(p + 0x3c4) = fn_8013CC50(*(s32*)(p + 0x4), p + 0x294, lbl_8053E1E4, 0x11c, 0, -1, 0, 0, 1);
         } else {
-            ((void (*)(void*, void*, s32, s32, s32))fn_8013CB44)(*(void**)(p + 0x3c4), p + 0x294, 0, -1, 1);
+            fn_8013CB44(*(void**)(p + 0x3c4), p + 0x294, 0, -1, 1);
         }
 
         if (*(s32*)(p + 0x23c) == 0 && found == 0) {
@@ -403,7 +407,7 @@ extern "C" void fn_8018F2DC(void* this_) {
 
             s32 n = 0;
             f32 x = (f32)v;
-            for (s32 k = 0; k < 15; k++) {
+            while (n < 15) {
                 x -= lbl_8053E1C8;
                 if (x < lbl_8053E1D8) {
                     break;
