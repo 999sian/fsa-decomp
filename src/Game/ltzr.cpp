@@ -197,6 +197,22 @@ static inline f32 ltzrSqrt(f32 x) {
     return x * y;
 }
 
+static inline void ltzrBlink(f32* t, u8* dir, f32 hi, f32 lo, f32 step) {
+    if (*dir == 1) {
+        *t += step;
+        if (*t >= hi) {
+            *t = hi;
+            *dir = 0;
+        }
+    } else {
+        *t -= step;
+        if (*t <= lo) {
+            *t = lo;
+            *dir = 1;
+        }
+    }
+}
+
 static inline void ltzrTouch(char* p, s32 i) {
     s32 room;
     room = *(s32*)(p + 4);
