@@ -205,9 +205,9 @@ extern const f32 lbl_8053F108;
 extern const f32 lbl_8053F114;
 static inline s32 fn_801D5390_pick(u8* this_) {
     s32 out[4];
-    s32 count = 0;
-    s32 i;
     s32* o = out;
+    s32 i;
+    s32 count = 0;
     s32 pick = -1;
     for (i = 0; i < 4; i++) {
         if (i != *(s32*)(this_ + 0x5b0) && this_[0x2a8 + i * 0x18] == 0 && fn_801D0B44(this_, i)) {
@@ -256,7 +256,7 @@ extern "C" void fn_801D5390(u8* this_) {
         break;
     case 5: {
         s32 cur = *(s32*)(this_ + 0x5b0);
-        if (cur != -1 && (this_[0x2a8 + cur * 0x18] != 0 || !fn_801D0B44(this_, cur))) {
+        if (cur != -1 && (this_[cur * 0x18 + 0x2a8] != 0 || !fn_801D0B44(this_, cur))) {
             *(s32*)(this_ + 0x5b0) = fn_801D5390_pick(this_);
             fn_801D5D84(this_, 5);
         } else if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
