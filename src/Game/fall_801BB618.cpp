@@ -693,9 +693,9 @@ static inline u8 fallLost(char* this_) {
 static inline u8 fallTryGrab(char* this_) {
     u8 grabbed = FALSE;
     s32 st = *(s32*)(this_ + 0x248);
-        s32 id = *(s32*)(this_ + 0x2b8);
-    if ((st == 10 || (st == 3 && *(s32*)(this_ + 0x280) == 1)) && id >= 0 &&
-          !fn_8022DCD8(id) &&
+        if (st == 10 || (st == 3 && *(s32*)(this_ + 0x280) == 1)) {
+    s32 id = *(s32*)(this_ + 0x2b8);
+    if (id >= 0 && !fn_8022DCD8(id) &&
         (fn_801CD2F8(*(s32*)(this_ + 0x4)) || !fn_801CD2F8(*(s32*)(this_ + 0x2ac)) || !fn_801CD1D0(*(s32*)(this_ + 0x2b8)))) {
         *(f32*)(this_ + 0x60) = lbl_8053EC34;
         *(f32*)(this_ + 0x64) = lbl_8053EC38;
@@ -705,6 +705,7 @@ static inline u8 fallTryGrab(char* this_) {
             grabbed = TRUE;
         }
         fallSetBoxHold(this_);
+    }
     }
     return grabbed;
 }
