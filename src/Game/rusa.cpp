@@ -248,7 +248,7 @@ static inline void Rusa_Approach(f32* v, f32 target, s32 remain) {
     if (n < FLT_EPSILON) {
         *v = target;
     } else {
-        *v += (lbl_8053FB14 / n) * (target - *v);
+        *v += (1.0f / n) * (target - *v);
     }
 }
 
@@ -437,7 +437,7 @@ extern "C" void fn_8021148C(char* p) {
                 *(s32*)(p + 0x248) = 3;
             }
         } else {
-            Rusa_Approach((f32*)(p + 0x398), lbl_8053FB14, 60 - *(s32*)(p + 0x24c));
+            Rusa_Approach((f32*)(p + 0x398), 1.0f, 60 - *(s32*)(p + 0x24c));
         }
         break;
     case 2:
