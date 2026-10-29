@@ -6,6 +6,11 @@ extern "C" f32 lbl_80542B84;
 extern "C" const s32 lbl_804745A8[];
 extern "C" const s32 lbl_80474BC4[];
 #include "JSystem/JGeometry/Vec.h"
+extern "C" s8 lbl_8053AD50;
+extern "C" s8 lbl_8053AD51;
+extern "C" JGeometry::TVec3<f32> lbl_8050C0B8[3];
+extern "C" JGeometry::TVec3<f32> lbl_8050C0DC[3];
+extern "C" const s32 lbl_80474A5C[];
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
@@ -628,8 +633,7 @@ extern "C" f32 lbl_80542BB0;
 extern "C" f32 __fres(f32);
 #pragma opt_propagation off
 extern "C" void fn_80363FFC(char* self) {
-    u32 index;
-    u16 nextAng;
+    int nextAng;
     Vec v;
     int rx;
     int ry;
@@ -679,9 +683,8 @@ extern "C" void fn_80363FFC(char* self) {
             dist = PSVECDistance((Vec*)(self + 0xc), &v);
             f32 inv = __fres(lbl_80542BA8 * dist);
             nextAng = ang + (s32)(lbl_80542BAC * (inv * lbl_80542BB0));
-            index = (u16)nextAng >> 5;
-            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[index].second + v.x;
-            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[index].first + v.y;
+            *(f32*)(self + 0xc) = dist * JMath::sincosTable_.mTable[(u16)nextAng >> 5].second + v.x;
+            *(f32*)(self + 0x10) = dist * JMath::sincosTable_.mTable[(u16)nextAng >> 5].first + v.y;
             if ((u16)nextAng >= 0xe000) {
                 *(s32*)(self + 0x23c) = 0;
                 if (*(s32*)(self + 0x238) == 0) {
@@ -738,22 +741,29 @@ extern "C" void fn_80364340(char* self) {
     }
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_803645B4(char* self) {
+    s32 secondIdx;
     JGeometry::TVec3<f32> v;
     if (*(s32*)(self + 0x248) != 0 && *(s32*)(self + 0x238) == 0) {
         return;
     }
     if (*(s32*)(self + 0x238) == 0) {
+        {
         s32 idx = *(s32*)(self + 0x24c);
         if (idx >= 0) {
-            char* obj = *(char**)((char*)fn_801F856C() + idx * 4 + 8);
+            ActorList80362634* __restrict list = (ActorList80362634*)fn_801F856C();
+            char* obj = list->actors[idx];
             if (obj != NULL) {
                 *(u8*)(obj + 0x11c) = 0;
             }
         }
+        }
         s32 count = *(s32*)((char*)fn_801F856C() + 0x1008);
-        s32 i = 0;
-        s32 off = 0;
+        s32 off;
+        s32 i;
+        i = 0;
+        off = 0;
         for (; i < count; off += 4, i++) {
             char* p = *(char**)((char*)fn_801F856C() + off + 8);
             if (p != NULL && *(u32*)(p + 0x1a0) == 0x52555059) {
@@ -763,8 +773,8 @@ extern "C" void fn_803645B4(char* self) {
                     if (PSVECDistance((Vec*)(self + 0xc), (Vec*)&v) < lbl_80542B58 &&
                         PSVECDistance((Vec*)(self + 0xc), &v) > lbl_80542BC0) {
                         *(s32*)(self + 0x238) = 1;
-                        *(f32*)(self + 0x3c) = (v.x - *(f32*)(self + 0xc)) / lbl_80542B28;
-                        *(f32*)(self + 0x40) = (v.y - *(f32*)(self + 0x10)) / lbl_80542B28;
+                        *(f32*)(self + 0x3c) = (v.x - *(f32*)(self + 0xc)) / 40.0f;
+                        *(f32*)(self + 0x40) = (v.y - *(f32*)(self + 0x10)) / 40.0f;
                         *(s32*)(self + 0x24c) = i;
                         *(s32*)(self + 0x264) = 0;
                         *(s32*)(self + 0x268) = 0;
@@ -791,8 +801,9 @@ extern "C" void fn_803645B4(char* self) {
     } else {
         JMathInlineVEC::PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
         fn_801F2618(self, 0, 0);
-        s32 idx = *(s32*)(self + 0x24c);
-        char* obj = *(char**)((char*)fn_801F856C() + idx * 4 + 8);
+        secondIdx = *(s32*)(self + 0x24c);
+        ActorList80362634* __restrict list = (ActorList80362634*)fn_801F856C();
+        char* obj = list->actors[secondIdx];
         if (obj == NULL) {
             *(s32*)(self + 0x24c) = -1;
             *(s32*)(self + 0x238) = 0;
@@ -822,7 +833,7 @@ extern "C" void fn_803645B4(char* self) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_80364900(char* self) {
     if (*(s32*)(self + 0x238) == 0) {
         ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
