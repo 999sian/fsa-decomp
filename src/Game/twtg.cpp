@@ -302,6 +302,17 @@ extern "C" void fn_80315C84(char* p) {
     }
 }
 
+static inline u8 twtgStartCapture(char* p, s32 slot, s32 msg, s32 flags) {
+    void* room = *(void**)(p + 0x198);
+    s32 player = *(s32*)(p + 4);
+    if (fn_8038AD24(slot, msg, room, player, *(JGeometry::TVec3f*)(p + 0xc), flags)) {
+        *(s32*)(p + 0x254) = slot;
+        *(s32*)(p + 0x268) = msg;
+        *(s32*)(p + 0x234) = 1;
+        return 1;
+    }
+    return 0;
+}
 extern "C" void fn_80315EE8(char* p) {
     TwtgBox b;
     JGeometry::TVec3f tmp;
@@ -310,7 +321,8 @@ extern "C" void fn_80315EE8(char* p) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
         s32 room;
-        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) != room)) {
+        s32 owner;
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), owner = fn_8023DE58(*(s32*)(p + 0x254)), owner != room)) {
             fn_801EE558(p, &v, &dist, 0);
         } else {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
@@ -348,8 +360,10 @@ extern "C" void fn_80315EE8(char* p) {
         for (i = 0; i < 4; i++) {
             if (fn_8023EA28(i) == 0 && fn_8022F478(i) == 0 && ((u8 (*)(s32))fn_802300EC)(i) != 0 && fn_80230CFC(i) == 2) {
                 JGeometry::TVec3f* pt = fn_8023E724(i);
+                f32 py;
+                f32 px = pt->x;
                 u8 ok = 0;
-                if (pt->x >= b.min.x && pt->y >= b.min.y && pt->x < b.max.x && pt->y < b.max.y) {
+                if (px >= b.min.x && (py = pt->y) >= b.min.y && px < b.max.x && py < b.max.y) {
                     ok = 1;
                 }
                 if (ok) {
@@ -363,11 +377,11 @@ extern "C" void fn_80315EE8(char* p) {
             void* room = *(void**)(p + 0x198);
             s32 player = *(s32*)(p + 4);
             u8 ok;
-            if (fn_8038AD24(found, 0x47e, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
+            if ((ok = fn_8038AD24(found, 0x47e, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) != 0) {
                 *(s32*)(p + 0x254) = found;
                 *(s32*)(p + 0x268) = 0x47e;
-                *(s32*)(p + 0x234) = 1;
                 ok = 1;
+                *(s32*)(p + 0x234) = ok;
             } else {
                 ok = 0;
             }
