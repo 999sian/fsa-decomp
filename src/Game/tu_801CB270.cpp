@@ -566,7 +566,7 @@ static inline JGeometry::TVec2<f32> projectionDelta(JGeometry::TVec2<f32>& corne
     corner.y -= pt[1];
     return corner;
 }
-static inline u16 projectionAngle(JGeometry::TVec2<f32> v)
+static inline u16 projectionAngle(const JGeometry::TVec2<f32>& v)
 {
     return (u16)(s32)(JMath::atanTable_.atan2_(v.x, v.y) * lbl_8053EF84);
 }
