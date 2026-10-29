@@ -3,6 +3,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "Game/TlwpDrawParam.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" double sin(double);
 extern "C" double cos(double);
