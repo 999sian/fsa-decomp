@@ -84,8 +84,7 @@ struct J3DGXColorS10 : public GXColorS10 {
 	J3DGXColorS10(const J3DGXColorS10& other)
 	{
 #ifdef J3D_GX_COLOR_WORD_COPY
-		((u32*)this)[0] = ((const u32*)&other)[0];
-		((u32*)this)[1] = ((const u32*)&other)[1];
+		*(u64*)this = *(const u64*)&other;
 #else
 		*this = other;
 	#endif
@@ -94,8 +93,7 @@ struct J3DGXColorS10 : public GXColorS10 {
 	J3DGXColorS10(const GXColorS10& other)
 	{
 #ifdef J3D_GX_COLOR_WORD_COPY
-		((u32*)this)[0] = ((const u32*)&other)[0];
-		((u32*)this)[1] = ((const u32*)&other)[1];
+		*(u64*)this = *(const u64*)&other;
 #else
 		r = other.r;
 		g = other.g;
@@ -107,8 +105,7 @@ struct J3DGXColorS10 : public GXColorS10 {
 	J3DGXColorS10(const u64& other)
 	{
 #ifdef J3D_GX_COLOR_WORD_COPY
-		((u32*)this)[0] = ((const u32*)&other)[0];
-		((u32*)this)[1] = ((const u32*)&other)[1];
+		*(u64*)this = *(const u64*)&other;
 #else
 		GXColorS10* otherBytes = (GXColorS10*)&other;
 		r                      = otherBytes->r;
