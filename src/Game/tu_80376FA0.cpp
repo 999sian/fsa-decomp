@@ -340,6 +340,7 @@ extern "C" f32 lbl_80475178[];
 #pragma opt_lifetimes reset
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_80377A38(u8* this_) {
     *(s32*)(this_ + 0x244) = 0;
     this_[0x264] = 0;
