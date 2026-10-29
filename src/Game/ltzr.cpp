@@ -9,6 +9,9 @@
 class Ltzr : public ItemBase {
 public:
     virtual void v39();
+    virtual void v40();
+    virtual void v41();
+    virtual void v42();
 };
 
 // ---- from src/Game/Ltzr_ctor_80340C60.cpp ----
@@ -242,11 +245,11 @@ extern "C" void fn_8033FE04(char* p) {
     case 5: {
         ltzrResetBox(p);
         if (*(s32*)(p + 0x248) == 2 && *(s32*)(p + 0x24c) < 3) {
-            (*(void (**)(void*))(*(char**)p + 0xa4))(p);
+            (*(void (***)(void*))p)[0xa4 / 4](p);
             break;
         }
         JGeometry::TBox2<f32> rect = *(JGeometry::TBox2<f32>*)(p + 0x60);
-        rect.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
+        rect.addPos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
         for (s32 i = 0; i < 4; i++) {
             if (fn_80233E40(i) == 1) {
                 fn_802399D8(i, (f32*)&rect, *(s32*)(p + 4), *(u32*)(p + 0x198));
@@ -270,13 +273,13 @@ extern "C" void fn_8033FE04(char* p) {
     }
     if (*(s32*)(p + 0x248) == 1) {
         if (*(u8*)(p + 0x2b1) == 1) {
-            *(f32*)(p + 0x2b4) += lbl_80542298;
+            *(f32*)(p + 0x2b4) = *(f32*)(p + 0x2b4) + lbl_80542298;
             if (*(f32*)(p + 0x2b4) >= lbl_8054229C) {
                 *(f32*)(p + 0x2b4) = lbl_8054229C;
                 *(u8*)(p + 0x2b1) = 0;
             }
         } else {
-            *(f32*)(p + 0x2b4) -= lbl_80542298;
+            *(f32*)(p + 0x2b4) = *(f32*)(p + 0x2b4) - lbl_80542298;
             if (*(f32*)(p + 0x2b4) <= lbl_8054227C) {
                 *(f32*)(p + 0x2b4) = lbl_8054227C;
                 *(u8*)(p + 0x2b1) = 1;
@@ -288,7 +291,7 @@ extern "C" void fn_8033FE04(char* p) {
     switch (*(s32*)(p + 0x248)) {
     case 0:
         ltzrResetBox(p);
-        (*(void (**)(void*))(*(char**)p + 0xa8))(p);
+        (*(void (***)(void*))p)[0xa8 / 4](p);
         if (*(s32*)(p + 0x24c) >= *(s32*)(p + 0x250) && fn_801D05F8(p, p + 0xc, lbl_805422A0) >= 0) {
             fn_801BACE8(p, 1);
         }
@@ -296,14 +299,14 @@ extern "C" void fn_8033FE04(char* p) {
     case 1:
         fn_801F0E34(p, 0x50081, 0);
         ltzrResetBox(p);
-        (*(void (**)(void*))(*(char**)p + 0xa8))(p);
+        (*(void (***)(void*))p)[0xa8 / 4](p);
         if (lbl_805422A4 != *(f32*)(p + 0x54)) {
             fn_801CD950((f32*)(p + 0x54), lbl_805422A4, lbl_805422A8);
             *(f32*)(p + 0x58) = *(f32*)(p + 0x54);
             *(f32*)(p + 0x5c) = *(f32*)(p + 0x54);
         } else if (*(s32*)(p + 0x24c) >= *(s32*)(p + 0x250) && fn_801D217C(p + 0x270)) {
             fn_801BACE8(p, 2);
-            (*(void (**)(void*))(*(char**)p + 0xb0))(p);
+            (*(void (***)(void*))p)[0xb0 / 4](p);
         }
         break;
     case 2:
@@ -318,7 +321,13 @@ extern "C" void fn_8033FE04(char* p) {
         break;
     case 5:
         ltzrResetBox(p);
-        ltzrTouch(p, 0);
+        for (s32 i = 0; i < 4; i++) {
+            ltzrTouch(p, i);
+        }
+        if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
+            fn_801BACE8(p, 0);
+            (*(void (***)(void*))p)[0xac / 4](p);
+        }
         break;
     }
 }
