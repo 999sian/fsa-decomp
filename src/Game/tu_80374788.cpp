@@ -58,142 +58,134 @@ extern "C" void fn_802D7584(void*,s32,u8);
 extern "C" void fn_80238E08(s32);
 extern "C" void fn_801F0E34(Actor*,s32,s32);
 extern "C" JGeometry::TVec3f lbl_804A79E0[];
-extern "C" JGeometry::TVec3f lbl_804750C0[];
+extern "C" const JGeometry::TVec3f lbl_804750C0[];
 extern "C" void fn_80374BAC(Actor* this_) {
     u8* p = (u8*)this_;
-    f32 box[4];
-
-    box[0] = *(f32*)(p + 0x60);
-    box[1] = *(f32*)(p + 0x64);
-    box[2] = *(f32*)(p + 0x68);
-    box[3] = *(f32*)(p + 0x6c);
-    box[0] += *(f32*)(p + 0xc);
-    box[2] += *(f32*)(p + 0xc);
-    box[1] += *(f32*)(p + 0x10);
-    box[3] += *(f32*)(p + 0x10);
+    JGeometry::TBox2f bounds;
+    bounds.set(*(JGeometry::TBox2f*)(p + 0x60));
+    bounds.i.x += *(f32*)(p + 0xc);
+    bounds.f.x += *(f32*)(p + 0xc);
+    bounds.i.y += *(f32*)(p + 0x10);
+    bounds.f.y += *(f32*)(p + 0x10);
     if (*(s32*)(p + 0x244) != 0) {
-        box[0] -= lbl_80542EE0;
-        box[1] -= lbl_80542EE0;
-        box[2] += lbl_80542EE0;
-        box[3] += lbl_80542EE0;
+        ((f32*)&bounds)[0] -= lbl_80542EE0;
+        ((f32*)&bounds)[1] -= lbl_80542EE0;
+        ((f32*)&bounds)[2] += lbl_80542EE0;
+        ((f32*)&bounds)[3] += lbl_80542EE0;
     } else {
-        box[0] -= lbl_80542ED8;
-        box[1] -= lbl_80542ED8;
-        box[2] += lbl_80542ED8;
-        box[3] += lbl_80542ED8;
+        ((f32*)&bounds)[0] -= lbl_80542ED8;
+        ((f32*)&bounds)[1] -= lbl_80542ED8;
+        ((f32*)&bounds)[2] += lbl_80542ED8;
+        ((f32*)&bounds)[3] += lbl_80542ED8;
     }
-    fn_80239914(box, *(s32*)(p + 4), *(s32*)(p + 0x198));
+    fn_80239914((f32*)&bounds, *(s32*)(p + 4), *(s32*)(p + 0x198));
     if (*(s32*)(p + 0x244) != 0) {
-        box[0] -= lbl_80542EE4;
-        box[1] -= lbl_80542EE4;
-        box[2] += lbl_80542EE4;
-        box[3] += lbl_80542EE4;
+        ((f32*)&bounds)[0] -= lbl_80542EE4;
+        ((f32*)&bounds)[1] -= lbl_80542EE4;
+        ((f32*)&bounds)[2] += lbl_80542EE4;
+        ((f32*)&bounds)[3] += lbl_80542EE4;
     } else {
-        box[0] -= lbl_80542EE8;
-        box[1] -= lbl_80542EE8;
-        box[2] += lbl_80542EE8;
-        box[3] += lbl_80542EE8;
+        ((f32*)&bounds)[0] -= lbl_80542EE8;
+        ((f32*)&bounds)[1] -= lbl_80542EE8;
+        ((f32*)&bounds)[2] += lbl_80542EE8;
+        ((f32*)&bounds)[3] += lbl_80542EE8;
     }
 
     s32 handle = *(s32*)(p + 0x198);
     u8* mgr = ((u8* (*)())fn_8020D58C)();
     fn_8020D7D0(mgr + mgr[0] * 0x784 + 4, handle);
-    JGeometry::TVec3f& pos = *(JGeometry::TVec3f*)(p + 0xc);
-    JGeometry::TVec3f& vel = *(JGeometry::TVec3f*)(p + 0x3c);
-    JGeometry::TVec3f& origin = *(JGeometry::TVec3f*)(p + 0x230);
     JGeometry::TVec3f probe;
     if (*(s32*)(p + 0x244) != 0) {
-        pos.x = (s32)((s32)pos.x + 4) / 8 * 8;
-        pos.y = (s32)((s32)pos.y + 4) / 8 * 8;
+        (*(JGeometry::TVec3f*)(p + 0xc)).x = (s32)((s32)(*(JGeometry::TVec3f*)(p + 0xc)).x + 4) / 8 * 8;
+        (*(JGeometry::TVec3f*)(p + 0xc)).y = (s32)((s32)(*(JGeometry::TVec3f*)(p + 0xc)).y + 4) / 8 * 8;
         return;
     }
-    if (PSVECDistance(&pos, &origin) >= lbl_80542EEC) {
+    if (PSVECDistance(&(*(JGeometry::TVec3f*)(p + 0xc)), &(*(JGeometry::TVec3f*)(p + 0x230))) >= lbl_80542EEC) {
         if (!fn_801F2618(this_, 0, 0)) {
-            probe = vel;
+            probe = (*(JGeometry::TVec3f*)(p + 0x3c));
             probe.normalize();
             probe.scale(lbl_80542EFC);
-            probe.add(pos);
+            probe.add((*(JGeometry::TVec3f*)(p + 0xc)));
             u16 tile = fn_8022461C(&probe, *(s32*)(p + 4));
-            u16 current = fn_8022461C(&pos, *(s32*)(p + 4));
+            u16 current = fn_8022461C(&(*(JGeometry::TVec3f*)(p + 0xc)), *(s32*)(p + 4));
             if (current == 0x50 && (tile == 0 || tile == 0x50)) {
-                JGeometry::TVec3f saved(vel);
+                JGeometry::TVec3f saved((*(JGeometry::TVec3f*)(p + 0x3c)));
                 if (fn_80374964(this_, *(u32*)(p + 0x90) & 3) == 1) {
-                    vel = saved;
-                    origin.x = pos.x;
-                    origin.y = pos.y;
-                    origin.z = pos.z;
-                    origin.x = (s32)((s32)origin.x + 4) / 8 * 8;
-                    origin.y = (s32)((s32)origin.y + 4) / 8 * 8;
+                    (*(JGeometry::TVec3f*)(p + 0x3c)) = saved;
+                    (*(JGeometry::TVec3f*)(p + 0x230)).x = (*(JGeometry::TVec3f*)(p + 0xc)).x;
+                    (*(JGeometry::TVec3f*)(p + 0x230)).y = (*(JGeometry::TVec3f*)(p + 0xc)).y;
+                    (*(JGeometry::TVec3f*)(p + 0x230)).z = (*(JGeometry::TVec3f*)(p + 0xc)).z;
+                    (*(JGeometry::TVec3f*)(p + 0x230)).x = (s32)((s32)(*(JGeometry::TVec3f*)(p + 0x230)).x + 4) / 8 * 8;
+                    (*(JGeometry::TVec3f*)(p + 0x230)).y = (s32)((s32)(*(JGeometry::TVec3f*)(p + 0x230)).y + 4) / 8 * 8;
                     return;
                 }
             }
         }
-        if (pos.x <= *(f32*)(p + 0x24) + lbl_80542F00 && pos.x >= *(f32*)(p + 0x24) - lbl_80542F00) {
-            pos.x = *(f32*)(p + 0x24);
+        if ((*(JGeometry::TVec3f*)(p + 0xc)).x <= lbl_80542F00 + *(f32*)(p + 0x24) && (*(JGeometry::TVec3f*)(p + 0xc)).x >= *(f32*)(p + 0x24) - lbl_80542F00) {
+            (*(JGeometry::TVec3f*)(p + 0xc)).x = *(f32*)(p + 0x24);
         } else {
-            pos.x = (s32)((s32)pos.x + 4) / 8 * 8;
+            (*(JGeometry::TVec3f*)(p + 0xc)).x = (s32)((s32)(*(JGeometry::TVec3f*)(p + 0xc)).x + 4) / 8 * 8;
         }
-        if (pos.y <= *(f32*)(p + 0x28) + lbl_80542F00 && pos.y >= *(f32*)(p + 0x28) - lbl_80542F00) {
-            pos.y = *(f32*)(p + 0x28);
+        if ((*(JGeometry::TVec3f*)(p + 0xc)).y <= lbl_80542F00 + *(f32*)(p + 0x28) && (*(JGeometry::TVec3f*)(p + 0xc)).y >= *(f32*)(p + 0x28) - lbl_80542F00) {
+            (*(JGeometry::TVec3f*)(p + 0xc)).y = *(f32*)(p + 0x28);
         } else {
-            pos.y = (s32)((s32)pos.y + 4) / 8 * 8;
+            (*(JGeometry::TVec3f*)(p + 0xc)).y = (s32)((s32)(*(JGeometry::TVec3f*)(p + 0xc)).y + 4) / 8 * 8;
         }
-        origin = pos;
-        vel.x = lbl_80542EDC;
-        vel.y = lbl_80542EDC;
-        vel.z = lbl_80542EDC;
-        *(JGeometry::TVec3f*)(p + 0x18) = pos;
+        (*(JGeometry::TVec3f*)(p + 0x230)) = (*(JGeometry::TVec3f*)(p + 0xc));
+        (*(JGeometry::TVec3f*)(p + 0x3c)).x = lbl_80542EDC;
+        (*(JGeometry::TVec3f*)(p + 0x3c)).y = lbl_80542EDC;
+        (*(JGeometry::TVec3f*)(p + 0x3c)).z = lbl_80542EDC;
+        *(JGeometry::TVec3f*)(p + 0x18) = (*(JGeometry::TVec3f*)(p + 0xc));
         this_->v10(0xff, 1);
         *(s32*)(p + 0x240) = 0;
         *(s32*)(p + 0x244) = 1;
         return;
     }
-    JGeometry::TVec3f previous(pos);
-    pos.add(vel);
-    if (!vel.isZero()) {
-        if (*(s32*)(p + 0x9c) >= 0) pos = previous;
+    JGeometry::TVec3f previous((*(JGeometry::TVec3f*)(p + 0xc)));
+    (*(JGeometry::TVec3f*)(p + 0xc)).add((*(JGeometry::TVec3f*)(p + 0x3c)));
+    if ((u8)(*(JGeometry::TVec3f*)(p + 0x3c)).isZero() == 0) {
+        if (*(s32*)(p + 0x9c) >= 0) (*(JGeometry::TVec3f*)(p + 0xc)) = previous;
         return;
     }
     if (fn_80239108(*(s32*)(p + 0x198)) < 1) return;
-    if (PSVECDistance(&pos, (JGeometry::TVec3f*)(p + 0x24)) >= lbl_80542EEC) return;
+    if (!(PSVECDistance(&(*(JGeometry::TVec3f*)(p + 0xc)), (JGeometry::TVec3f*)(p + 0x24)) < lbl_80542EEC)) return;
     s32 direction = fn_80238BC4(*(s32*)(p + 0x198));
-    JGeometry::TVec3f savedPos(pos);
     JGeometry::TVec3f step;
+    JGeometry::TVec3f savedPos((*(JGeometry::TVec3f*)(p + 0xc)));
     step.x = lbl_804A79E0[direction].x;
     step.y = lbl_804A79E0[direction].y;
     step.z = lbl_804A79E0[direction].z;
     if (*(s32*)(p + 0x240) != 0) {
-        s32 hit = fn_80239558(box, *(s32*)(p + 4), *(s32*)(p + 0x198));
+        s32 hit = fn_80239558((f32*)&bounds, *(s32*)(p + 4), *(s32*)(p + 0x198));
         if (*(s32*)(p + 0x240) - 1 != hit) return;
-        if (direction != (*(u32*)(p + 0x90) & 3)) return;
+        if (direction != (s32)(*(u32*)(p + 0x90) & 3)) return;
     }
     if (!fn_80374964(this_, direction)) return;
     if (*(u8*)(p + 0x248) == 0) {
         fn_802D7584(fn_802D6A9C(), *(s32*)(p + 0x16c), direction + 1);
     }
-    pos.add(step);
+    (*(JGeometry::TVec3f*)(p + 0xc)).add(step);
     if (fn_801F2618(this_, 0, 0)) {
-        pos = savedPos;
+        (*(JGeometry::TVec3f*)(p + 0xc)) = savedPos;
         return;
     }
-    pos = savedPos;
-    if (direction < 0 || direction >= 4) return;
+    (*(JGeometry::TVec3f*)(p + 0xc)) = savedPos;
+    if (direction >= 0 && direction < 4) {
     fn_80238E08(*(s32*)(p + 0x198));
-    vel.x = lbl_804750C0[direction].x;
-    vel.y = lbl_804750C0[direction].y;
-    vel.z = lbl_804750C0[direction].z;
-    probe = vel;
+    (*(JGeometry::TVec3f*)(p + 0x3c)).set(lbl_804750C0[direction].x, lbl_804750C0[direction].y, lbl_804750C0[direction].z);
+    probe = (*(JGeometry::TVec3f*)(p + 0x3c));
     probe.normalize();
     probe.scale(lbl_80542EFC);
-    probe.add(pos);
+    probe.add((*(JGeometry::TVec3f*)(p + 0xc)));
     if (fn_8022461C(&probe, *(s32*)(p + 4)) == 0x50) {
-        vel.normalize();
-        vel.scale(lbl_80542ED8);
+        (*(JGeometry::TVec3f*)(p + 0x3c)).normalize();
+        (*(JGeometry::TVec3f*)(p + 0x3c)).scale(lbl_80542ED8);
     }
-    origin.x = pos.x;
-    origin.y = pos.y;
-    origin.z = pos.z;
+    (*(JGeometry::TVec3f*)(p + 0x230)).x = (*(JGeometry::TVec3f*)(p + 0xc)).x;
+    (*(JGeometry::TVec3f*)(p + 0x230)).y = (*(JGeometry::TVec3f*)(p + 0xc)).y;
+    (*(JGeometry::TVec3f*)(p + 0x230)).z = (*(JGeometry::TVec3f*)(p + 0xc)).z;
     fn_801F0E34(this_, 0x30004, 0);
+    }
 }
 
 extern "C" void* fn_801F856C(void);
