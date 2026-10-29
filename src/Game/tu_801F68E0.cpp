@@ -1125,9 +1125,9 @@ inline u8* findCollisionActorInPool(s32 handle, ActorPool* pool) {
                 goto done;
             }
         }
-        int count = pool->mCount;
+        s32 count = pool->mCount;
         PoolActor** cur = (PoolActor**)pool;
-        for (s32 i = 0; i < count; cur++, i++) {
+        for (int i = 0; i < count; cur++, i++) {
             scanActor = cur[2];
             if (scanActor && scanActor->mActive && handle == scanActor->mId) {
                 result = pool->mActors[i];
