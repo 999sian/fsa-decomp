@@ -809,53 +809,33 @@ extern "C" u8 fn_802604CC(char* p) {
                 fn_80233DA4(i) || fn_80230188(i) || fn_80236AB4(i) || fn_802354E4(i) || fn_8022D894(i)) continue;
             if (S32(p, 0x3b4) == 8 && fn_8023DE58(i) < 8 && fn_8022CAF8(i) != 4 && fn_8022F514(i)) continue;
             if (fn_802486A0(p) != 4 && fn_8022E438(S32(p, 4), i) && fn_80246F28(p) > lbl_80540150) continue;
-            s32 room = fn_8023DE58(i);
-            char* a = fn_802D6A9C();
-            if (room < 8) a += 0xcc;
-            else a += 0xdc;
-            s32 id = S32(p, 0x3b4);
-            char* b = fn_802D6A9C();
-            if (id < 8) b += 0xcc;
-            else b += 0xdc;
+            char* a = carryRoomOrigin(fn_8023DE58(i));
+            char* b = carryRoomOrigin(S32(p, 0x3b4));
             JGeometry::TVec2f v = (*(JGeometry::TVec2f*)(p + 8) - *(JGeometry::TVec2f*)b) + *(JGeometry::TVec2f*)a;
             if ((fn_802260DC((JGeometry::TVec3f*)&v, fn_8023DE58(i), 1) ||
                  fn_802684A4(p, (JGeometry::TVec3f*)&v, fn_8023DE58(i))) &&
                 fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
-            room = fn_8023DE58(i);
-            a = fn_802D6A9C();
-            if (room < 8) a += 0xcc;
-            else a += 0xdc;
+            a = carryRoomOrigin(fn_8023DE58(i));
             char* target = (char*)fn_8023E724(i);
-            id = S32(p, 0x3b4);
-            b = fn_802D6A9C();
-            if (id < 8) b += 0xcc;
-            else b += 0xdc;
+            b = carryRoomOrigin(S32(p, 0x3b4));
             JGeometry::TVec2f mid = (*(JGeometry::TVec2f*)(p + 8) - *(JGeometry::TVec2f*)b + *(JGeometry::TVec2f*)target) - *(JGeometry::TVec2f*)a;
-            mid.scale(lbl_80540178);
+            mid.scale(0.5f);
             f32 x = mid.x;
             f32 y = mid.y;
-            room = fn_8023DE58(i);
-            a = fn_802D6A9C();
-            if (room < 8) a += 0xcc;
-            else a += 0xdc;
+            a = carryRoomOrigin(fn_8023DE58(i));
             v = mid + *(JGeometry::TVec2f*)a;
             if ((fn_802260DC((JGeometry::TVec3f*)&v, fn_8023DE58(i), 1) ||
                  fn_802684A4(p, (JGeometry::TVec3f*)&v, fn_8023DE58(i))) &&
                 fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
-            if (S32(p, 0x3b4) != fn_8023DE58(i)) {
-                id = S32(p, 0x3b4);
-                b = fn_802D6A9C();
-                if (id < 8) b += 0xcc;
-            else b += 0xdc;
+            s32 ownRoom = S32(p, 0x3b4);
+            if (ownRoom != fn_8023DE58(i)) {
+                b = carryRoomOrigin(S32(p, 0x3b4));
                 v = mid + *(JGeometry::TVec2f*)b;
                 if ((fn_802260DC((JGeometry::TVec3f*)&v, S32(p, 0x3b4), 1) ||
                      fn_802684A4(p, (JGeometry::TVec3f*)&v, S32(p, 0x3b4))) &&
                     fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
             }
-            f32 bounds[4];
-            bounds[0] = base.x; bounds[1] = base.y;
-            bounds[2] = base.x; bounds[3] = base.y;
-            if (!fn_80239C9C(i, (JGeometry::TVec3f*)bounds, S32(p, 0x3b4))) continue;
+            if (!carryPointOverlaps(i, S32(p, 0x3b4), base)) continue;
             if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << i)) ||
                 fn_8022E438(S32(p, 4), i) ||
                 (U8(lbl_8053AAF8, 0x7e) && fn_8022CAF8(i) == 4) ||
