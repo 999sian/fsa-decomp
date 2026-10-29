@@ -3725,8 +3725,7 @@ void fn_8027AAD0(char* p) {
             JGeometry::TVec3<f32> t;
             fn_8027FA08(p, &t);
             JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 8);
-            JGeometry::TVec3<f32> d;
-            d = t - pos;
+            JGeometry::TVec3<f32> d = t - pos;
             d.z = 0.0f;
             if (PSVECMag((Vec*)&d) >= 6.0f) {
                 d.normalize();
@@ -3896,8 +3895,9 @@ void fn_8027D5F0(char* p) {
             s32 dir = S32(p, 0x3dc);
             if (b38 < 0) {
                 JGeometry::TVec3<f32> w;
-                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto check0;
+                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto link0;
                 if (fn_80241544(p) < 2) {
+                    link0:
                     if (Player_IsLinked(p)) {
                         s32 m = fn_80237810(Player_GetLinkTargetIndex(p));
                         if (fn_80237774(Player_GetLinkTargetIndex(p)) >= m) goto create0;
@@ -3933,8 +3933,9 @@ void fn_8027D5F0(char* p) {
             s32 dir = S32(p, 0x3dc);
             if (b38 < 0) {
                 JGeometry::TVec3<f32> w;
-                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto check1;
+                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto link1;
                 if (fn_80241544(p) < 2) {
+                    link1:
                     if (Player_IsLinked(p)) {
                         s32 m = fn_80237810(Player_GetLinkTargetIndex(p));
                         if (fn_80237774(Player_GetLinkTargetIndex(p)) >= m) goto create1;
@@ -3970,8 +3971,9 @@ void fn_8027D5F0(char* p) {
             s32 dir = S32(p, 0x3dc);
             if (b38 < 0) {
                 JGeometry::TVec3<f32> w;
-                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto check2;
+                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto link2;
                 if (fn_80241544(p) < 2) {
+                    link2:
                     if (Player_IsLinked(p)) {
                         s32 m = fn_80237810(Player_GetLinkTargetIndex(p));
                         if (fn_80237774(Player_GetLinkTargetIndex(p)) >= m) goto create2;
@@ -4007,8 +4009,9 @@ void fn_8027D5F0(char* p) {
             s32 dir = S32(p, 0x3dc);
             if (b38 < 0) {
                 JGeometry::TVec3<f32> w;
-                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto check3;
+                if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto link3;
                 if (fn_80241544(p) < 2) {
+                    link3:
                     if (Player_IsLinked(p)) {
                         s32 m = fn_80237810(Player_GetLinkTargetIndex(p));
                         if (fn_80237774(Player_GetLinkTargetIndex(p)) >= m) goto create3;
@@ -4050,15 +4053,16 @@ void fn_8027D5F0(char* p) {
                 s32 dir = S32(p, 0x3dc);
                 if (b38 < 0) {
                     JGeometry::TVec3<f32> w;
-                    if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto check4;
+                    if (!fn_80241284(p) || S32(p, 0x11ac) != 1) goto link4;
                     if (fn_80241544(p) < 2) {
+                        link4:
                         if (Player_IsLinked(p)) {
                             s32 m = fn_80237810(Player_GetLinkTargetIndex(p));
                             if (fn_80237774(Player_GetLinkTargetIndex(p)) >= m) goto create4;
-                            break;
+                            goto landed;
                         } else {
                             register s32 m = fn_802417CC(p);
-                            if (fn_8024189C(p) < m) break;
+                            if (fn_8024189C(p) < m) goto landed;
                         }
                     }
                 create4:
@@ -4079,8 +4083,9 @@ void fn_8027D5F0(char* p) {
                         S32(p, 0xb6c) = S32(p, 0x3b4);
                     }
                 }
-            }
-        }
+            } else goto flags;
+        } else goto flags;
+    landed:
         f32 sx = F32(p, 0x344);
         f32 sy = F32(p, 0x348);
         F32(p, 0x368) = sx;
@@ -4089,6 +4094,7 @@ void fn_8027D5F0(char* p) {
         F32(p, 0x344) = lbl_8054028C;
         F32(p, 0x348) = lbl_8054028C;
         F32(p, 0x34c) = lbl_8054028C;
+    flags:
         if (U8(p, 0x3fa) == 6) {
             U8(p, 0x458) = 1;
         } else if (U8(p, 0x3fa) == 0xf) {
