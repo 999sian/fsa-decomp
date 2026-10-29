@@ -78,10 +78,7 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
         }
         *(s32*)(this_ + 0x238) = 0;
         {
-            a = fn_801F7A08(fn_801F856C(), 0x53574556);
-            if (fn_801F666C(fn_801F856C(), a) != 0) {
-                fn_802B39E8();
-            }
+            BTBZ_startSwitchEvent(fn_801F7A08(fn_801F856C(), 0x53574556));
         }
         break;
     case 2: {
