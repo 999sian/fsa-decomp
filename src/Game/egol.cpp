@@ -158,6 +158,10 @@ struct EgolActorVt {
     virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
 };
 
+static inline f32 egolLerp(f32 a, f32 b, f32 t) {
+    return t * (a - b) + b;
+}
+
 extern "C" int fn_801F3D94(char* this_, s32 flag);
 extern "C" u8 fn_801F2618(char* this_, s32 a, s32 b);
 extern "C" void fn_801EF510(char* this_);
@@ -195,7 +199,7 @@ extern "C" void fn_801AFD54(char* this_) {
         return;
     }
     if (*(s32*)(this_ + 0x108) < 0x3e8) {
-        ((void (*)(char*))(*(void***)this_)[9])(this_);
+        ((EgolActorVt*)this_)->v07();
         *(s32*)(this_ + 0xb0) = 0;
         return;
     }
@@ -210,8 +214,8 @@ extern "C" void fn_801AFD54(char* this_) {
         }
         {
             f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-            f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
             f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+            f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
             f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
             pt[0] = lbl_8053E89C * (x0 - x1) + x1;
             pt[1] = lbl_8053E89C * (y0 - y1) + y1;
@@ -398,11 +402,12 @@ extern "C" void fn_801AFD54(char* this_) {
                 break;
             }
         } else if (*(s32*)(this_ + 0x23c) == 0) {
-            *(s32*)(this_ + 0x234) = 0;
-            *(s32*)(this_ + 0x244) = 0;
+            s32 zero = 0;
+            *(s32*)(this_ + 0x234) = zero;
+            *(s32*)(this_ + 0x244) = zero;
             *(s32*)(this_ + 0x250) = *(s32*)(this_ + 0x98) + 0x10;
             *(s32*)(this_ + 0x23c) = (s32)(lbl_8053E8BC * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x3c;
-            *(s32*)(this_ + 0x230) = 0;
+            *(s32*)(this_ + 0x230) = zero;
         } else {
             if (*(s32*)(this_ + 0x234) == 0) {
                 *(s32*)(this_ + 0x250) = (*(s32*)(this_ + 0x98) << 2) + *(s32*)(this_ + 0x244);
@@ -420,8 +425,8 @@ extern "C" void fn_801AFD54(char* this_) {
         break;
     }
     for (i = 0; i < 4; i++) {
-        if (((s32*)(this_ + 0x234))[i] > 0) {
-            ((s32*)(this_ + 0x234))[i]--;
+        if (*(s32*)(this_ + i * 4 + 0x234) > 0) {
+            (*(s32*)(this_ + i * 4 + 0x234))--;
         }
     }
 }
