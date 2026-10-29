@@ -570,7 +570,7 @@ extern "C" void fn_800F953C(void* this_) {
         const JGeometry::TVec3f& v=WRTC_linePosition(p,n);
         out=v;
         s32 half=(n>>1)+1;
-        k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
+        k=(0.001f*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(0.001f*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
         *(u8*)(self+0x249)=1;
     }else if(state==1){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
