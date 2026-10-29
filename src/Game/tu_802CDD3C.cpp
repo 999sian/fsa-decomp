@@ -51,6 +51,11 @@ extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
     return p;
 }
 
+struct CddDrawTables {
+    void* main[0x51];
+    void* extra[0xf];
+    void* tail[3];
+};
 static inline void cddRotation(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32* scale) {
     f32 cz, cy, cx, sz, sy, sx;
     sx = JMASinShort(rx);
@@ -97,29 +102,8 @@ extern "C" void fn_802CDD9C(char* this_)
         if (*(s32*)(this_ + 0x234) >= 0x1b && *(s32*)(this_ + 0x234) <= 0x1e) {
             PSMTXIdentity(mtx);
             s16 ang = *(s16*)(this_ + 0x248);
-            f32 sx = *(f32*)(this_ + 0x24c);
-            f32 sy = *(f32*)(this_ + 0x250);
-            f32 sz = *(f32*)(this_ + 0x254);
-            f32* tbl = (f32*)sincosTable___5JMath;
-            f32 s0 = JMASinShort(0);
-            f32 s = JMASinShort(ang);
-            f32 c0 = JMACosShort(0);
-            f32 c = JMACosShort(ang);
-            f32 cxcz = c0 * c0;
-            f32 sxsy = s0 * s;
-            f32 cxsz = c0 * s0;
-            f32 sxsz = s0 * s0;
-            f32 sxcz = s0 * c0;
+            cddRotation(mtx, 0, ang, 0, (const f32*)(this_ + 0x24c));
             rec.w18 = mtx;
-            mtx[0][0] = sx * (c * c0);
-            mtx[1][0] = sx * (c * s0);
-            mtx[2][0] = sx * -s;
-            mtx[0][1] = sy * (sxsy * c0 - cxsz);
-            mtx[1][1] = sy * (sxsy * s0 + cxcz);
-            mtx[2][1] = sy * (s0 * c);
-            mtx[0][2] = sz * (cxcz * s + sxsz);
-            mtx[1][2] = sz * (cxsz * s - sxcz);
-            mtx[2][2] = sz * (c * c0);
         } else if (*(s32*)(this_ + 0x234) == 0x15) {
             rec.b2d = 1;
         } else {
