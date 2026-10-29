@@ -228,7 +228,7 @@ static inline void Rusa_Approach(f32* v, f32 target, s32 remain) {
     if (n < FLT_EPSILON) {
         *v = target;
     } else {
-        *v = (lbl_8053FB14 / n) * (target - *v) + *v;
+        *v += (lbl_8053FB14 / n) * (target - *v);
     }
 }
 
@@ -520,6 +520,8 @@ extern "C" void fn_80211C94(char* p) {
 }
 
 // near-match (~97%): fsel result gets an extra frsp; float regs differ
+#pragma opt_propagation on
+#pragma opt_common_subs off
 extern "C" void fn_80211EB0(char* p) {
     if (*(s32*)(p + 0x248) == 0) {
         return;
@@ -530,14 +532,42 @@ extern "C" void fn_80211EB0(char* p) {
                 continue;
             }
             JGeometry::TVec3f push;
-            Rusa_CalcPush(p, fn_8023E724(i), &push);
+            {
+ const JGeometry::TVec3f* v = fn_8023E724(i);
+ JGeometry::TVec3f* out = &push;
+
+    out->set(0.0f, 0.0f, 0.0f);
+    if (v->z <= 0.0f && *(s32*)(p + 0x248) != 0) {
+        f32 scaled = lbl_8053FB00 * *(f32*)(p + 0x54);
+        f32 rad = lbl_8053FAFC * scaled;
+        if (rad > lbl_8053FB04) {
+            f32 dx = v->x - *(f32*)(p + 0xc);
+            f32 dy = v->y - *(f32*)(p + 0x10);
+            f32 dx2 = dx * dx;
+            f32 dy2 = dy * dy;
+            f32 d = JMAFastSqrt(dx2 + dy2);
+            if (*(f32*)&lbl_8053FB04 < d && d <= rad) {
+                out->sub(*(JGeometry::TVec3f*)(p + 0xc), *v);
+                out->z = 0.0f;
+                f32 scale;
+                out->normalize();
+                f32 f = d - lbl_8053FB04;
+                f32 m = *(f32*)(p + 0x3a4);
+                scale = __fsel(f - m, m, f);
+                out->scale(scale);
+            }
+        }
+    }
+
+}
             fn_8023DFF4(i, &push);
             fn_8022CD48(i);
             fn_80230FD0(i, 0x20045);
         }
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" void fn_80212170(char* p) {
     if ((*(u32*)(p + 0x230) & 0x8000) && *(u8*)(p + 0x2bc) != 0) {
         fn_800FE3EC(p + 0x2c0, *(u8*)(p + 0x2bc), *(JGeometry::TVec3f*)(p + 0xc), *(void**)(p + 0x4));
