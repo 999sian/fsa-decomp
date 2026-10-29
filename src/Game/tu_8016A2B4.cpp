@@ -768,9 +768,9 @@ extern "C" void fn_8016D33C(u8* self) {
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JAudio/JAUSoundObject.h"
 
-static inline f32 effectRandom8016D398() {
+static inline f32 effectRandom8016D398(const u32 multiplier=0x19660d) {
     volatile u32* seed=(volatile u32*)(lbl_8053AAF8+0xb4);
-    *seed=*seed*0x19660d+0x3c6ef35f;
+    *seed=*seed*multiplier+0x3c6ef35f;
     union { u32 u; f32 f; } v;
     v.u=(*seed>>9)|0x3f800000;
     return v.f-lbl_8053D93C;
@@ -834,48 +834,13 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
         if(*(s32*)a6>0){--*(s32*)a6;}
         else {
             *(s32*)a6=(s32)(lbl_8053D9BC*effectRandom8016D398());
-            for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
-                if(*(s32*)(p+0x14)==0){
-                    Vec zero;
-                    *(s32*)(p+0x14)=60;
-                    *(u16*)(p+0x10)=0x288;
-                    f32 ry=lbl_8053D9C8*effectRandom8016D398()+lbl_8053D970;
-                    f32 rx=lbl_8053D9C0*effectRandom8016D398()-lbl_8053D9C4;
-                    *(f32*)(p+4)=rx;*(f32*)(p+8)=ry;*(f32*)(p+0xc)=lbl_8053D944;
-                    zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
-                    *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
-                    if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
-                    if(*(JAUSoundObject**)(p+0x18)){
-                        if(*(u8*)a8){
-                            if((u8)a3){(*(JAUSoundObject**)(p+0x18))->startSound(JAISoundID(0x30078));}
-                            else {(*(JAUSoundObject**)(p+0x18))->startSound(JAISoundID(0x30031));}
-                            *(u8*)a8=0;
-                        }else {*(u8*)a8=1;}
-                    }
-                    break;
-                }
-            }
+            spawnEffectA8016D398(a5,a3,a8);
         }
     }
     if(*(s32*)a7>0){--*(s32*)a7;}
     else {
         *(s32*)a7=(s32)(lbl_8053D9D0*effectRandom8016D398());
-        for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
-            if(*(s32*)(p+0x14)==0){
-                Vec zero;
-                *(s32*)(p+0x14)=60;
-                *(u16*)(p+0x10)=0x287;
-                f32 y=lbl_8053D9D4*effectRandom8016D398()-lbl_8053D9D4;
-                f32 sign=lbl_8053D93C;
-                if(effectRandom8016D398()>lbl_8053D940){sign=lbl_8053D9D8;}
-                f32 x=(lbl_8053D9DC*effectRandom8016D398()+lbl_8053D9C8)*sign;
-                *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
-                zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
-                *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
-                if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
-                break;
-            }
-        }
+        spawnEffectB8016D398(a5);
     }
     s32 maxA=0,maxB=0;
     for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
