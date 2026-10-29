@@ -1587,6 +1587,7 @@ extern "C" void fn_8025A15C(u8* p) {
 }
 
 #pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_8025A9C0(u8* p) {
     U8(p, 0x458) = 0;
     if (fn_80241794(p) <= 0) {
