@@ -82,8 +82,8 @@ extern "C" void fn_803410DC(u8* p) {
             *(f32*)(sub + 0x28c) = lbl_805422C8;
         }
         u8* cam = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        f32 y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
         f32 x = *(f32*)(p + 0xc);
+        f32 y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
         if (cam[0x7f5] == 0) {
             cam[0x7f4] = 1;
             *(s32*)(cam + 0x7f8) = 4;
@@ -155,7 +155,7 @@ extern "C" void fn_803410DC(u8* p) {
             *(s32*)(p + 0x234) = 0x50;
             JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(p + 0xc));
             v.z += lbl_805422D0;
-            *(s32*)(p + 0x244) = Actor_CreateByID(fn_801F856C(), 0x42424d42, *(u32*)(p + 4), (f32*)&v, ((*(u32*)(p + 0x90) >> 8) & 0x1000) | 0x50, -1, -1);
+            *(s32*)(p + 0x244) = Actor_CreateByID(fn_801F856C(), 0x42424d42, *(u32*)(p + 4), (f32*)&v, ((*(u32*)(p + 0x90) & 0x100000) >> 8) | 0x50, -1, -1);
             fn_801F0E34(p, 0x50085, 0);
         }
         break;
@@ -234,9 +234,11 @@ extern "C" void fn_803410DC(u8* p) {
     }
     s32 s = *(s32*)(p + 0x230);
     if (s != 0 && s != 1 && s != 9 && s != 10) {
+        f32 x = *(f32*)(p + 0xc);
+        f32 y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
         Vec v;
-        v.x = *(f32*)(p + 0xc);
-        v.y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+        v.x = x;
+        v.y = y;
         v.z = lbl_805422C0;
         fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), &v);
     }
