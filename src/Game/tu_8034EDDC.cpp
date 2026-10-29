@@ -530,6 +530,11 @@ extern "C" u8 fn_80235580(s32 i);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" void fn_8023DEDC(s32,const JGeometry::TVec3<f32>*);
 extern "C" void fn_8022CB94(s32);
+static inline u8 enemyTouchPlayer(u8* self, s32 player) {
+    u8 result = fn_80351020(self, player);
+    self[0x283 + player] = result;
+    return result;
+}
 static inline u16 enemyPlayerTile(s32 player) {
     const s32 room = fn_8023DE58(player);
     return fn_8022461C(fn_8023E724(player), room);
@@ -620,8 +625,9 @@ extern "C" s32 fn_80350974(u8* self) {
             }
         } else {
             r = fn_80351020(self, i);
+            bool hit = (u8)r == 1;
             self[i + 0x283] = r;
-            if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
+            if (hit && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                 cnt++;
             }
         }
@@ -676,8 +682,7 @@ if (*(s32*)(self + 0x258) == 5 && cnt == 0 &&
     if (self[0x289] == 1) {
         for (s32 player = 0; player < 4; player++) {
             if (self[player + 0x283] == 0) {
-                room = fn_8023DE58(player);
-                if ((u16)fn_8022461C(fn_8023E724(player), room) == 0) {
+                if (enemyPlayerTile(player) == 0) {
                     self[0x289] = 0;
                     break;
                 }
