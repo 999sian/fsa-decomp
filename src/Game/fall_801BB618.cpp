@@ -717,6 +717,25 @@ static inline void fallRelease(char* this_) {
     }
 }
 
+static inline u8 fallAdvanceRoute(char* this_) {
+    u8 done = FALSE;
+    if (*(s32*)(this_ + 0x2e4) > 2) {
+        done = TRUE;
+    } else {
+        (*(s32*)(this_ + 0x2ec))++;
+        if (*(s32*)(this_ + 0x2ec) >= ((s32*)(this_ + 0x2d8))[*(s32*)(this_ + 0x2e4)]) {
+            (*(s32*)(this_ + 0x2e4))++;
+            if (*(s32*)(this_ + 0x2e4) > 2) {
+                done = TRUE;
+            } else {
+                *(s32*)(this_ + 0x2e8) = ((FallRoute*)(this_ + 0x2c8))->dir[*(s32*)(this_ + 0x2e4)];
+                *(s32*)(this_ + 0x2ec) = done;
+            }
+        }
+    }
+    return done;
+}
+
 static inline void fallMovePlayer(char* p) {
     JGeometry::TVec3<f32> v(*(f32*)(p+0xc), *(f32*)(p+0x10), *(f32*)(p+0x14)-10.0f);
     fn_802316C8(*(s32*)(p+0x2b8), *(s32*)(p+0x2ac), v);
@@ -741,7 +760,18 @@ extern "C" void fn_801BBA0C(char* this_) {
         } else if (*(s32*)(this_ + 0x24c) >= 0x10) {
             switch (*(s32*)(this_ + 0x278)) {
             case 0: {
-                u8 a = fallAlpha(this_);
+                u8 a;
+                switch (*(s32*)(this_ + 0x248)) {
+                case 0: case 9: a = 0; break;
+                case 7: case 8: a = 255; break;
+                default: {
+                    f32 t = (*(f32*)(this_+0x14) - 100.0f) * lbl_8053EC04;
+                    if (t > 1.0f) t = 1.0f;
+                    else if (t < 0.0f) t = 0.0f;
+                    a = 255.0f * t;
+                    break;
+                }
+                }
                 if (a >= 150 && a <= 200) {
                     fn_801D22DC(this_ + 0x270, 3, 0, 0);
                 }
@@ -813,8 +843,7 @@ extern "C" void fn_801BBA0C(char* this_) {
             *(s32*)(this_ + 0x4) = *(s32*)(this_ + 0x2ac);
             *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x2b0);
             *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x2b4);
-            const JGeometry::TVec3<f32>& v = JGeometry::TVec3<f32>(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) - 10.0f);
-            fn_802316C8(*(s32*)(this_ + 0x2b8), *(s32*)(this_ + 0x2ac), v);
+            fallMovePlayer(this_);
             fn_801BC554(this_, 8);
         }
         break;
@@ -842,7 +871,7 @@ extern "C" void fn_801BBA0C(char* this_) {
                 if (*(s32*)(this_ + 0x2e4) > 2) {
                     done = TRUE;
                 } else {
-                    *(s32*)(this_ + 0x2e8) = ((s32*)(this_ + 0x2cc))[*(s32*)(this_ + 0x2e4)];
+                    *(s32*)(this_ + 0x2e8) = ((FallRoute*)(this_ + 0x2c8))->dir[*(s32*)(this_ + 0x2e4)];
                     *(s32*)(this_ + 0x2ec) = done;
                 }
             }
