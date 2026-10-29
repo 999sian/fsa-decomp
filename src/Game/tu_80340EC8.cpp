@@ -55,8 +55,24 @@ extern "C" void fn_80340EC8(u8* p) {
     }
 }
 
-extern "C" void fn_801F856C(void);
+extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F68E0(void);
+extern "C" void fn_802D8050(s32, s32, s32, s32);
+extern "C" void fn_80458FF0(void*, s32, s32, s32);
+extern "C" void* lbl_8053AF80;
+extern "C" void* lbl_8053AB10;
+extern "C" void* fn_8013CC50(u32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_801F0E34(void* self, s32 id, s32 flag);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void* fn_801F666C(void* mgr, s32 handle);
+extern "C" void fn_801F6884(void* mgr);
+extern "C" void fn_8030C210(void* cam, void* pos);
+extern "C" u8 lbl_804AC4B8[];
+extern "C" u8 lbl_804AC4C4[];
+extern f32 lbl_805422C8;
+extern f32 lbl_805422CC;
+extern f32 lbl_805422D0;
+extern f32 lbl_805422D4;
 extern "C" void fn_803410DC(u8* p) {
     *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
     *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
