@@ -73,11 +73,10 @@ static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
     u8 n = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), ids, 0x30);
     u8 best = 0;
     f32 bestD = lbl_8053F080;
-    u8* id = ids;
-    for (int i = 0; i < n; i++, id++) {
-        if (fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), *id)) {
+    for (int i = 0; i < n; i++) {
+        if (fn_800FD5E8(GetCurrentSlotPtr(this_ + 0x358), ids[i])) {
             Vec3f p;
-            p.set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), *id));
+            p.set(fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), ids[i]));
             if (tu801D3320_isFreeT(&p, this_)) {
                 f32 dx = p.x - *(f32*)(this_ + 0xc);
                 f32 dy = p.y - *(f32*)(this_ + 0x10);
@@ -86,7 +85,7 @@ static inline u8 tu801D3320_farthest2(char* this_, u8* ids) {
                 f32 d = dx2 + dy2;
                 if (d > bestD) {
                     bestD = d;
-                    best = *id;
+                    best = ids[i];
                 }
             }
         }
