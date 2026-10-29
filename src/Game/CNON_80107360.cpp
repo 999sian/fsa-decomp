@@ -214,36 +214,33 @@ static inline s32 CNON_findPlayer(CNON* this_) {
 }
 
 static inline void CNON_swing(CNON* this_) {
-    f32 r, speed, accel, px, cx, amp;
-    amp = this_->m280;
-    if (amp <= lbl_8053C2C0) {
+    if (this_->m280 <= 0.0f) {
         return;
     }
     {
+        f32 speed, accel;
         switch (this_->m27C) {
         case 1:
-            speed = lbl_8053C2D4;
-            accel = lbl_8053C2E0;
+            speed = 1.0f;
+            accel = 4.0f;
             break;
         case 0:
         default:
-            speed = lbl_8053C2DC;
-            accel = lbl_8053C2EC;
+            speed = 0.5f;
+            accel = 2.0f;
             break;
         }
-        px = this_->mPos.x;
-        cx = this_->m288;
-        r = __fabsf((px - cx) / (lbl_8053C2F8 * amp));
-        if (r >= lbl_8053C2FC) {
-            speed -= accel * (r - lbl_8053C2FC);
+        f32 r = __fabsf((this_->mPos.x - this_->m288) / (8.0f * this_->m280));
+        if (r >= 0.8f) {
+            speed -= accel * (r - 0.8f);
         }
         if (this_->m268) {
-            this_->mVel.set(speed, lbl_8053C2C0, lbl_8053C2C0);
+            this_->mVel.set(speed, 0.0f, 0.0f);
         } else {
-            this_->mVel.set(-speed, lbl_8053C2C0, lbl_8053C2C0);
+            this_->mVel.set(-speed, 0.0f, 0.0f);
         }
         this_->mPos.add(this_->mVel);
-        f32 range = lbl_8053C2F8 * this_->m280;
+        f32 range = 8.0f * this_->m280;
         f32 hi = this_->m288 + range;
         if (this_->mPos.x >= hi) {
             this_->mPos.x = hi;
@@ -421,10 +418,10 @@ extern "C" void fn_80107660(CNON* this_) {
     }
     case 3: {
         static s32 cnt = 0;
-        static f32 v = lbl_8053C2C0;
-        v += lbl_8053C2D0;
-        if (v >= lbl_8053C2D4) {
-            v = lbl_8053C2D4;
+        static f32 v = 0.0f;
+        v += 0.1f;
+        if (v >= 1.0f) {
+            v = 1.0f;
         }
         cnt++;
         f32 dy;
