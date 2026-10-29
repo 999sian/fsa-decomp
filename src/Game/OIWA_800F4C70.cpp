@@ -489,7 +489,8 @@ static inline u8 oiwaBallIn(s32 i, s32 j, f32 x0, f32 y0, f32 x1, f32 y1) {
     JGeometry::TVec3<f32> pt;
     fn_8022E088(i, j, &pt);
     u8 in = 0;
-    if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+    f32 px, py;
+    if ((px = pt.x) >= x0 && (py = pt.y) >= y0 && px < x1 && py < y1) {
         in = 1;
     }
     return in;
@@ -604,8 +605,9 @@ extern "C" void fn_800F555C(char* this_) {
             *(u8*)(this_ + 0x231) = 0;
         }
         *(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x23c) & 3;
+        f32 vz;
         if (__fabsf(*(f32*)(this_ + 0x3c)) < 1.5f && __fabsf(*(f32*)(this_ + 0x40)) < 1.5f &&
-            0.0f == __fabsf(*(f32*)(this_ + 0x44))) {
+            (vz = __fabsf(*(f32*)(this_ + 0x44)), 0.0f == vz)) {
             fn_80239914(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
         } else {
             f32 z = 0.0f;
