@@ -221,8 +221,6 @@ static inline void ltzrTouch(char* p, s32 i) {
         return;
     }
     for (s32 j = 0; j < 8; j++) {
-        f32 vy;
-        f32 vx;
         f32 maxy;
         f32 maxx;
         f32 miny;
