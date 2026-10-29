@@ -312,6 +312,17 @@ extern "C" void fn_8020A2C0(void* this_) {
     }
 }
 
+static inline void fobrInterpolate(f32* value, const f32 target, const f32 frames) {
+    f32 current;
+    if (frames < *(f32*)__float_epsilon) {
+        *value = target;
+    } else {
+        f32 k = lbl_8053F968 / frames;
+        current = *value;
+        *value = k * (target - current) + current;
+    }
+}
+
 static inline void fobrApproach(f32* value, const f32 frames) {
     f32 current;
     if (frames < *(f32*)__float_epsilon) {
