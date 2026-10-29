@@ -312,6 +312,15 @@ extern "C" void fn_8020A2C0(void* this_) {
     }
 }
 
+static inline void fobrApproach(f32* value, const f32 target, f32 frames) {
+    if (frames < *(f32*)__float_epsilon) {
+        *value = target;
+    } else {
+        frames = lbl_8053F968 / frames;
+        *value = frames * (target - *value) + *value;
+    }
+}
+
 extern "C" f32 lbl_8053F974;
 extern "C" f32 lbl_8053F978;
 extern "C" void fn_8020AA78(u8* this_, s32 state);
@@ -342,12 +351,7 @@ extern "C" void fn_8020A384(u8* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
         if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
-            f32 a = lbl_8053F978;
-            f32 b = lbl_8053F974;
-            *(f32*)(this_ + 0x60) = b;
-            *(f32*)(this_ + 0x64) = b;
-            *(f32*)(this_ + 0x68) = a;
-            *(f32*)(this_ + 0x6c) = a;
+            ((JGeometry::TBox2<f32>*)(this_ + 0x60))->set(lbl_8053F974, lbl_8053F974, lbl_8053F978, lbl_8053F978);
             *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
             *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
             *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
@@ -400,12 +404,7 @@ extern "C" void fn_8020A384(u8* this_) {
                 break;
             case 3:
                 {
-                    f32 a = lbl_8053F978;
-                    f32 b = lbl_8053F974;
-                    *(f32*)(this_ + 0x60) = b;
-                    *(f32*)(this_ + 0x64) = b;
-                    *(f32*)(this_ + 0x68) = a;
-                    *(f32*)(this_ + 0x6c) = a;
+                    ((JGeometry::TBox2<f32>*)(this_ + 0x60))->set(lbl_8053F974, lbl_8053F974, lbl_8053F978, lbl_8053F978);
                     *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
                     *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
                     *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
@@ -530,7 +529,8 @@ extern "C" void fn_8020A384(u8* this_) {
             if (x < *(f32*)__float_epsilon) {
                 *(f32*)(this_ + 0x54) = lbl_8053F964;
             } else {
-                *(f32*)(this_ + 0x54) = (lbl_8053F968 / x) * (lbl_8053F964 - *(f32*)(this_ + 0x54)) + *(f32*)(this_ + 0x54);
+                f32 k = lbl_8053F968 / x;
+                *(f32*)(this_ + 0x54) = k * (lbl_8053F964 - *(f32*)(this_ + 0x54)) + *(f32*)(this_ + 0x54);
             }
             *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x54);
             *(f32*)(this_ + 0x5c) = *(f32*)(this_ + 0x54);
@@ -542,7 +542,8 @@ extern "C" void fn_8020A384(u8* this_) {
 #pragma opt_propagation on
 extern "C" void fn_8020AA78(u8* this_, s32 state) {
     s16 ang;
-    s32 idx;
+    u32 idx;
+    f32 horizontal, vertical, gravity;
 
     if (*(u32*)(this_ + 0x230) & 0x2000) {
         switch (state) {
@@ -571,7 +572,14 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
         break;
     case 5: {
         fn_801D22DC(this_ + 0x270, 1, 0, 0);
-        setFobrVelocity(this_, lbl_8053F988 * *(f32*)(this_ + 0x2c0), lbl_8053F988 * *(f32*)(this_ + 0x2c4), lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
+        {
+        f32 x = lbl_8053F988 * *(f32*)(this_ + 0x2c0);
+        f32 y = lbl_8053F988 * *(f32*)(this_ + 0x2c4);
+        f32 z = lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8);
+        *(f32*)(this_ + 0x2b4) = x;
+        *(f32*)(this_ + 0x2b8) = y;
+        *(f32*)(this_ + 0x2bc) = z;
+        }
         break;
     }
     case 6:
@@ -615,19 +623,33 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
         {
         s32 target = fn_801D05F8(this_, this_ + 0xC, lbl_8053F964);
         if (target >= 0) {
-            ang = ((s32 (*)(u8*, s32))fn_801D0280)(this_, target) - 0x8000;
+            ang = ((s16 (*)(u8*, s32))fn_801D0280)(this_, target) - 0x8000;
         } else {
             ang = fn_801CD664(0x10000);
         }
         }
         idx = (u16)ang >> 5;
-        setFobrVelocity(this_, JMath::sincosTable_.mTable[idx].first * lbl_8053F99C, JMath::sincosTable_.mTable[idx].second * lbl_8053F99C, lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8));
+        {
+        f32 x = lbl_8053F99C * JMath::sincosTable_.sinShort(ang);
+        f32 y = lbl_8053F99C * JMath::sincosTable_.cosShort(ang);
+        f32 z = lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8);
+        *(f32*)(this_ + 0x2b4) = x;
+        *(f32*)(this_ + 0x2b8) = y;
+        *(f32*)(this_ + 0x2bc) = z;
+        }
         *(u8*)(this_ + 0x2b1) = 3;
         break;
     case 9: {
         *(u32*)(this_ + 0x230) &= ~0x8000;
         fn_801D22DC(this_ + 0x270, 1, 0, 0);
-        setFobrVelocity(this_, lbl_8053F9A0 * (*(f32*)(this_ + 0x2c8) - *(f32*)(this_ + 0xC)), lbl_8053F9A0 * (*(f32*)(this_ + 0x2cc) - *(f32*)(this_ + 0x10)), lbl_8053F98C * (lbl_8053F9A4 * -lbl_8053EFB8));
+        {
+        f32 x = lbl_8053F9A0 * (*(f32*)(this_ + 0x2c8) - *(f32*)(this_ + 0xC));
+        f32 y = lbl_8053F9A0 * (*(f32*)(this_ + 0x2cc) - *(f32*)(this_ + 0x10));
+        f32 z = lbl_8053F98C * (lbl_8053F9A4 * -lbl_8053EFB8);
+        *(f32*)(this_ + 0x2b4) = x;
+        *(f32*)(this_ + 0x2b8) = y;
+        *(f32*)(this_ + 0x2bc) = z;
+        }
         break;
     }
     case 10:
