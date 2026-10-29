@@ -356,25 +356,20 @@ struct T80431_Res {
     u8 pad[0x24];
     T80431_Res() { vt = lbl_804AF86C; }
     f32 getWidth() const { return ((J2DPane*)data)->getWidth(); }
+    f32 getOffsetX() const { return *(f32*)((const u8*)this + 0x10); }
     f32 getHeight() const { return ((J2DPane*)data)->getHeight(); }
 };
 
 extern "C" void* fn_8043395C(void* this_) {
-	char* s1;
 	char* mgr;
 	char* base;
 	char* self = (char*)this_;
-	*(void**)self = lbl_804B1668;
-	void* ctor = (void*)__ct__Q29JGeometry8TVec3_f_Fv;
 	base = (char*)lbl_8048F438;
-	__construct_array(self + 0x40, ctor, 0, 0xc, 2);
+	*(void**)self = lbl_804B1668;
+	__construct_array(self + 0x40, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 2);
 	__construct_array(self + 0x58, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 2);
 
-	s1 = (char*)__nw__FUl(0x118);
-	if (s1 != 0) {
-		__ct__9J2DScreenFv(s1);
-	}
-	*(char**)(self + 0x4) = s1;
+	*(J2DScreen**)(self + 4) = new J2DScreen;
 	mgr = (char*)lbl_80529DEC;
 	((J2DScreen*)*(void**)(self + 0x4))->setPriority((const char*)(base + 0xf8), 0x01100000, *(JKRArchive**)(mgr + 0x20));
 	*(void**)(self + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x10c), *(void**)(mgr + 0x20)));
@@ -399,15 +394,13 @@ extern "C" void* fn_8043395C(void* this_) {
 
 	f32 ox20 = *(f32*)(*(char**)(self + 0x20) + 0x10);
 	f32 w20 = *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x28) - *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x20);
-	f32 bx20 = ((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.x;
-	*(f32*)(self + 0x40) = (ox20 + bx20) - w20 * lbl_80543BB8;
+	*(f32*)(self + 0x40) = -(w20 * lbl_80543BB8 - (ox20 + (((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.x)));
 	f32 oy20 = *(f32*)(*(char**)(self + 0x20) + 0x14);
-	f32 h20 = *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x2c) - *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x24);
-	f32 by20 = ((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.y;
-	*(f32*)(self + 0x44) = (oy20 + by20) - h20 * lbl_80543BB8;
+	f32 h20 = (*(T80431_Res**)(self + 0x20))->getHeight();
+	*(f32*)(self + 0x44) = -(h20 * lbl_80543BB8 - (oy20 + (((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.y)));
 	*(f32*)(self + 0x48) = lbl_80543BA8;
-	*(f32*)(self + 0x70) = *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x28) - *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x20);
-	*(f32*)(self + 0x78) = *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x2c) - *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x24);
+	*(f32*)(self + 0x70) = (*(T80431_Res**)(self + 0x20))->getWidth();
+	*(f32*)(self + 0x78) = (*(T80431_Res**)(self + 0x20))->getHeight();
 
 	f32 mx18 = *(f32*)(*(char**)(self + 0x18) + 0x8);
 	f32 bx18 = ((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613031ULL)->getBounds()->i.x;
@@ -439,16 +432,14 @@ extern "C" void* fn_8043395C(void* this_) {
 
 
 	f32 ox2c = *(f32*)(*(char**)(self + 0x2c) + 0x10);
-	f32 w2c = *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x28) - *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x20);
-	f32 bx2c = ((J2DScreen*)*(void**)(self + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.x;
-	*(f32*)(self + 0x4c) = (ox2c + bx2c) - w2c * lbl_80543BB8;
+	f32 w2c = (*(T80431_Res**)(self + 0x2c))->getWidth();
+	*(f32*)(self + 0x4c) = -(w2c * lbl_80543BB8 - (ox2c + (((J2DScreen*)*(void**)(self + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.x)));
 	f32 oy2c = *(f32*)(*(char**)(self + 0x2c) + 0x14);
-	f32 h2c = *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x2c) - *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x24);
-	f32 by2c = ((J2DScreen*)*(void**)(self + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.y;
-	*(f32*)(self + 0x50) = (oy2c + by2c) - h2c * lbl_80543BB8;
+	f32 h2c = (*(T80431_Res**)(self + 0x2c))->getHeight();
+	*(f32*)(self + 0x50) = -(h2c * lbl_80543BB8 - (oy2c + (((J2DScreen*)*(void**)(self + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.y)));
 	*(f32*)(self + 0x54) = lbl_80543BA8;
-	*(f32*)(self + 0x74) = *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x28) - *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x20);
-	*(f32*)(self + 0x7c) = *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x2c) - *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x24);
+	*(f32*)(self + 0x74) = (*(T80431_Res**)(self + 0x2c))->getWidth();
+	*(f32*)(self + 0x7c) = (*(T80431_Res**)(self + 0x2c))->getHeight();
 
 	f32 mx28 = *(f32*)(*(char**)(self + 0x28) + 0x8);
 	f32 bx28 = ((J2DScreen*)*(void**)(self + 0x8))->search(0x004E646174613031ULL)->getBounds()->i.x;
@@ -481,10 +472,9 @@ extern "C" void* fn_8043395C(void* this_) {
 	self[0xa5] = 0;
 	*(u32*)(self + 0x98) = 0;
 	self[0xac] = 0;
-	char* tbl = base;
 	for (s32 i = 0; i < 6; i++) {
-		self[0xa6 + i] = *(u8*)((char*)((J2DScreen*)*(void**)(self + 0xc))->search(*(u64*)(tbl)) + 0xb2);
-		tbl += 8;
+		self[0xa6 + i] = *(u8*)((char*)((J2DScreen*)*(void**)(self + 0xc))->search(((u64*)lbl_8048F438)[i]) + 0xb2);
+
 	}
 	return this_;
 }
