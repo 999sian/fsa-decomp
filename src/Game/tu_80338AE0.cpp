@@ -1,4 +1,34 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JParticle/JPAEmitter.h"
+#define S32(p,o) (*(s32*)((u8*)(p)+(o)))
+#define U8(p,o) (*(u8*)((u8*)(p)+(o)))
+#define F32(p,o) (*(f32*)((u8*)(p)+(o)))
+#define V3(p,o) (*(JGeometry::TVec3<f32>*)((u8*)(p)+(o)))
+#define EMIT(p,o) (*(JPABaseEmitter**)((u8*)(p)+(o)))
+extern "C" u8* lbl_8053AB10;
+extern "C" void* lbl_8053AAF8;
+extern "C" const u16 lbl_805420A0[];
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_8023EA28(s32);
+extern "C" u8 fn_8023561C(s32);
+extern "C" u8 fn_80236B50(s32);
+extern "C" u8 fn_8023077C();
+extern "C" s32 fn_8022E970(s32);
+extern "C" u8 fn_80234A88(s32);
+extern "C" void fn_8022CA6C(s32,s32,s32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern "C" s32 fn_8022E8D4(s32);
+extern "C" void fn_80230498(s32,void*,s32,u8,s8,s8,s32);
+extern "C" void fn_801F71A4(void*,f32,f32,f32);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D9FF4(void*,s32,s32);
+extern "C" void fn_80136798(void*,s32,s32);
+extern "C" u32 fn_8013CC50(u32, void*, s32, s32, s32, s32, s32, s32, f32);
+inline void stopWarpEmitter(JPABaseEmitter*& e) {
+    if (e != 0) { e->becomeInvalidEmitter(); e = 0; }
+}
 
 
 extern void* lbl_804AC0A8[];
