@@ -407,9 +407,19 @@ extern "C" void fn_803DD93C(void* self_)
     *(int*)(self + 0x84) = 6;
 }
 
+static inline void otherMenuIndices(s32* out, const u8* selected) {
+    for (s32 i = 0; i < 2; i++) {
+        if (*selected != i) *out++ = i;
+    }
+}
+static inline void animateMenuPaneRow(u8* self) {
+    u8* cur = self + 4;
+    for (s32 i = 1; i < 7; i++, cur += 4) {
+        fn_80402B10(*(void**)(cur + 0x14), 0x14, lbl_80543604, 0, lbl_80543614);
+    }
+}
 extern "C" void fn_803DD970(u8* self)
 {
-    void** pp;
     u64* tbl = lbl_804774C8;
     s32 k;
     void** q;
@@ -417,86 +427,85 @@ extern "C" void fn_803DD970(u8* self)
     u8 r27 = 0;
     s32 j;
     s32 i;
+    void** pp;
     s32 n;
     u64* pair;
     s32 buf[2];
     s32* p;
     s32 v;
     s32 t;
-    f32 f30;
     f32 f31;
+    f32 f30;
+    f32 phase;
     void* obj;
 
     *(s16*)(self + 0x9c) += 1;
     p = buf;
-    v = 0;
-    if (self[0x9e] != v) {
-        *p++ = v;
-    }
-    v = 1;
-    if (self[0x9e] != v) {
-        *p = v;
+    for (v = 0; v < 2; v++) {
+        if (self[0x9e] != v) *p++ = v;
     }
     if (*(s16*)(self + 0x9c) > 0) {
         r28 = fn_80402B10(*(void**)(self + 0x14), 0x14, lbl_80543604, 0, lbl_80543614);
-        pp = (void**)(self + 0x4);
-        for (i = 1; i < 7; i++) {
-            fn_80402B10(*(void**)((u8*)pp + 0x14), 0x14, lbl_80543604, 0, lbl_80543614);
-            pp++;
+        u8* cur;
+        int index;
+        cur = self + 4;
+        for (index = 1; index < 7; index++, cur += 4) {
+            fn_80402B10(*(void**)(cur + 0x14), 0x14, lbl_80543604, 0, lbl_80543614);
         }
         t = *(s16*)(self + 0x9c);
         if (t > 20) {
             t = 20;
         }
-        f31 = lbl_805435E8 - (f32)(t * t) / lbl_80543618;
-        pair = tbl;
-        for (n = 0; n < 50; n++) {
+        f31 = 1.0f - (f32)(t * t) / lbl_80543618;
+        u64* pair = tbl;
+        for (s32 n = 0; n < 50; n++) {
             if (n == 0) {
                 obj = *(void**)(self + 0x8);
-                ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-                ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f31 * (f32)self[0xa3 + n]));
+                obj = ((J2DScreen*)obj)->search(*pair);
+                ((J2DPane*)obj)->setAlpha((u8)(f31 * (f32)self[0xa3 + n]));
             } else {
                 obj = *(void**)(self + 0x4);
-                ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-                ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f31 * (f32)self[0xa3 + n]));
+                obj = ((J2DScreen*)obj)->search(*pair);
+                ((J2DPane*)obj)->setAlpha((u8)(f31 * (f32)self[0xa3 + n]));
             }
             pair++;
         }
     }
     q = (void**)self;
-    for (j = 0, k = 10; j < 2; j++, k += 5) {
+    for (j = 0, k = 10; j < 2; j++, k += 5, q++) {
         if (*(s16*)(self + 0x9c) > k) {
             fn_80402940(*(void**)((u8*)q + 0x50), 0x14, lbl_80543604, 0, lbl_8054361C);
             t = *(s16*)(self + 0x9c) - k;
             if (t > 20) {
                 t = 20;
             }
-            f30 = lbl_805435E8 - (f32)(t * t) / lbl_80543618;
+            phase = (f32)(t * t) / lbl_80543618;
             if (j == 0) {
-                pair = tbl + 109;
+                f30 = lbl_805435E8 - phase;
+                u64* pair = tbl + 109;
                 for (i = 0; i < 5; i++) {
                     obj = *(void**)(self + 0x4);
-                    ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-                    ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f30 * (f32)self[0x110 + i]));
+                    obj = ((J2DScreen*)obj)->search(*pair);
+                    ((J2DPane*)obj)->setAlpha((u8)(f30 * (f32)self[0x110 + i]));
                     pair++;
                 }
             } else {
-                pair = tbl + 114;
+                f30 = lbl_805435E8 - phase;
+                u64* pair = tbl + 114;
                 for (i = 0; i < 5; i++) {
                     obj = *(void**)(self + 0x4);
-                    ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-                    ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f30 * (f32)self[0x115 + i]));
+                    obj = ((J2DScreen*)obj)->search(*pair);
+                    ((J2DPane*)obj)->setAlpha((u8)(f30 * (f32)self[0x115 + i]));
                     pair++;
                 }
             }
         }
-        q++;
     }
     if (*(s16*)(self + 0x9c) > 0) {
         fn_80402940(*(void**)(self + 0x34 + self[0x9e] * 4), 0x14, lbl_80543620 - *(f32*)(self + 0x6c + self[0x9e] * 4), 0, lbl_80543604);
         fn_80402940(*(void**)(self + 0x44 + self[0x9e] * 4), 0x14, lbl_80543620 - *(f32*)(self + 0x6c + self[0x9e] * 4), 0, lbl_80543604);
     }
-    if (*(s16*)(self + 0x9c) > 5) {
+    for (s32 delay=5;delay<6;delay++) if (*(s16*)(self + 0x9c) > delay) {
         r28 = fn_80402B10(*(void**)(self + 0x34 + buf[0] * 4), 0x14, lbl_80543614, 0, lbl_80543604);
         fn_80402B10(*(void**)(self + 0x44 + buf[0] * 4), 0x14, lbl_80543614, 0, lbl_80543604);
         t = *(s16*)(self + 0x9c) - 5;
@@ -505,24 +514,26 @@ extern "C" void fn_803DD970(u8* self)
         }
         f30 = (f32)(t * t) / lbl_80543618;
         switch (buf[0]) {
-        case 0:
-            pair = tbl + 56;
-            for (i = 0; i < 17; i++) {
+        case 0: {
+            u64* pair = tbl + 56;
+            for (s32 i = 0; i < 17; i++) {
                 obj = *(void**)(self + 0x4);
-                ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-                ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f30 * (f32)self[0xdb + i]));
+                obj = ((J2DScreen*)obj)->search(*pair);
+                ((J2DPane*)obj)->setAlpha((u8)(f30 * (f32)self[0xdb + i]));
                 pair++;
             }
             break;
-        case 1:
-            pair = tbl + 73;
-            for (i = 0; i < 20; i++) {
+        }
+        case 1: {
+            u64* pair = tbl + 73;
+            for (s32 i = 0; i < 20; i++) {
                 obj = *(void**)(self + 0x4);
-                ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-                ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f30 * (f32)self[0xec + i]));
+                obj = ((J2DScreen*)obj)->search(*pair);
+                ((J2DPane*)obj)->setAlpha((u8)(f30 * (f32)self[0xec + i]));
                 pair++;
             }
             break;
+        }
         }
     }
     if (*(s16*)(self + 0x9c) > 15) {
@@ -532,11 +543,11 @@ extern "C" void fn_803DD970(u8* self)
             t = 15;
         }
         f30 = (f32)(t * t) / lbl_80543624;
-        pair = tbl + 50;
-        for (i = 0; i < 6; i++) {
+        u64* pair = tbl + 50;
+        for (s32 i = 0; i < 6; i++) {
             obj = *(void**)(self + 0x4);
-            ((void (**)(void*, u64))*(void**)obj)[15](obj, *pair);
-            ((void (**)(void*, s32))*(void**)obj)[9](obj, (s32)(f30 * (f32)self[0xd5 + i]));
+            obj = ((J2DScreen*)obj)->search(*pair);
+            ((J2DPane*)obj)->setAlpha((u8)(f30 * (f32)self[0xd5 + i]));
             pair++;
         }
     }
@@ -551,9 +562,9 @@ extern "C" void fn_803DD970(u8* self)
         *(u8*)(*(u8**)(*(u8**)(self + 0x50) + 4) + 0xb0) = 0;
         *(u8*)(*(u8**)(*(u8**)(self + 0x54) + 4) + 0xb0) = 0;
         *(s32*)(self + 0x80) = 0;
-        *(s32*)(self + 0x84) = 1;
         *(s32*)(self + 0x88) = 0;
         *(s32*)(self + 0x8c) = 0;
+        *(s32*)(self + 0x84) = 1;
         *(s32*)(self + 0x90) = 1;
     }
 }
@@ -711,10 +722,9 @@ extern "C" void fn_803DE58C(u8* this_)
     u8* self=this_;
     s32 start;
     u8* cur;
-    register u8* data=(u8*)lbl_804774C8;
+    u8* const data=(u8*)lbl_804774C8;
     s32 sel[2];
-    s32* q;
-    q=sel;
+    s32* q = sel;
     s32 k;
     s32 c;
     s32 e;
