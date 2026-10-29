@@ -33,7 +33,9 @@ static inline f32 MenuAlpha803E(s32 elapsed) {
 }
 static inline f32 MenuEnterSlide803E(s32 remaining, f32 magnitude, f32 denominator) {
     f32 square = (f32)(remaining * remaining);
-    return magnitude * (square / denominator);
+    f32 ratio = square / denominator;
+    magnitude *= ratio;
+    return magnitude;
 }
 static inline f32 MenuSlide803E(s32 remaining, const f32 magnitude, const f32 denominator) {
     f32 square=(f32)(remaining*remaining);
