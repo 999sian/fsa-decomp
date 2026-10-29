@@ -1474,6 +1474,7 @@ static inline void fireRotateA(f32 (*matrix)[4], const s32 direction) {
 static inline void fireRotateB(f32 (*matrix)[4], const s32 direction) {
     JPAGetXYZRotateMtx(0, 0, fireRotationB[direction], matrix);
 }
+#pragma opt_lifetimes off
 #pragma pool_data on
 extern "C" void fn_8025A15C(u8* p) {
     s32 actorID;
