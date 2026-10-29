@@ -401,8 +401,8 @@ struct Tu803BKeyTbl {
     u64 keys[40][3];
 };
 
-static inline void setPicBlackWhite(u8* p, const u64* keys, u32 idx, JUtility::TColor black, JUtility::TColor white) {
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(keys[idx]))->setBlackWhite(black, white);
+static inline void setPicBlackWhite(u8* p, const u64& key, JUtility::TColor black, JUtility::TColor white) {
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
 
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
@@ -1841,12 +1841,12 @@ typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 #pragma opt_strength_reduction off
 extern "C" void fn_803C3904(u8* this_) {
     const u8* base = lbl_804765D0;
-    int order[2];
-    int* ord = order;
-    int* out = order;
+    s32 order[2];
+    u8* ord = (u8*)order;
+    s32* out = order;
     s32 off;
     s32 k;
-    int idx;
+    unsigned int idx;
     void* pane;
     s32 a = *(s16*)(lbl_8050DB0C + 0x200);
     s32 b = *(s16*)(lbl_8050DB0C + 0x202);
@@ -1865,9 +1865,9 @@ extern "C" void fn_803C3904(u8* this_) {
     off = 0;
     do {
         if (*(s16*)(this_ + 0xd8) > c + off) {
-            ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x38 + *ord * 4), a, 0, lbl_80543498, lbl_80543458);
-            fn_80402628(*(void**)(this_ + 0x38 + *ord * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x38 + *ord * 4) + 0x28));
-            idx = *ord;
+            ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x38 + *(s32*)ord * 4), a, 0, lbl_80543498, lbl_80543458);
+            fn_80402628(*(void**)(this_ + 0x38 + *(s32*)ord * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x38 + *(s32*)ord * 4) + 0x28));
+            idx = *(s32*)ord;
             {
                 const u64* keys = (const u64*)(base + 0x780);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
@@ -1933,9 +1933,9 @@ extern "C" void fn_803C3904(u8* this_) {
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
                 fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x131]);
             }
-            ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x44 + *ord * 4), a, 0, lbl_80543498, lbl_80543458);
-            fn_80402628(*(void**)(this_ + 0x44 + *ord * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x44 + *ord * 4) + 0x28));
-            idx = *ord;
+            ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x44 + *(s32*)ord * 4), a, 0, lbl_80543498, lbl_80543458);
+            fn_80402628(*(void**)(this_ + 0x44 + *(s32*)ord * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x44 + *(s32*)ord * 4) + 0x28));
+            idx = *(s32*)ord;
             {
                 const u64* keys = (const u64*)(base + 0x5d8);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
@@ -2004,7 +2004,7 @@ extern "C" void fn_803C3904(u8* this_) {
         }
         k++;
         off += b;
-        ord++;
+        ord += 4;
     } while (k < 2);
 
     if (*(s32*)(this_ + 0xa4) != 0 && *(s16*)(this_ + 0xd8) > c) {
