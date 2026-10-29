@@ -1082,13 +1082,13 @@ done:
     return result;
 }
 inline u8* ActorPool::findCollisionActor(s32 handle) {
-    u8* result = NULL;
+    PoolActor* result = NULL;
     if (handle >= 0) {
         s32 cached = *(s32*)((u8*)this + 0x2014);
         if (cached >= 0) {
             PoolActor* actor = this->mActors[cached];
             if (actor && actor->mActive && handle == actor->mId) {
-                result = (u8*)actor;
+                result = actor;
                 goto done;
             }
         }
@@ -1097,13 +1097,13 @@ inline u8* ActorPool::findCollisionActor(s32 handle) {
         for (s32 i = 0; i < count; cur++, i++) {
             PoolActor* actor = cur[2];
             if (actor && actor->mActive && handle == actor->mId) {
-                result = (u8*)this->mActors[i];
+                result = this->mActors[i];
                 break;
             }
         }
     }
 done:
-    return result;
+    return (u8*)result;
 }
 inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     const f32* pos = (const f32*)(actor + 0xc);
