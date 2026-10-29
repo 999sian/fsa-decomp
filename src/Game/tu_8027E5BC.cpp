@@ -1956,12 +1956,12 @@ tail2:
         fn_80251AEC(p, 0);
     }
     fn_80268B3C(p);
-    dx = F32(p, 0x8) - F32(p, 0x14);
-    dy = F32(p, 0xc) - F32(p, 0x18);
+    dx = F32(p, 0x8);
+    dy = F32(p, 0xc);
+    dx -= F32(p, 0x14);
+    dy -= F32(p, 0x18);
     const JGeometry::TVec2<f32>& delta=JGeometry::TVec2<f32>(dx,dy);
-    f32 dx2=delta.x*delta.x;
-    f32 dy2=delta.y*delta.y;
-    dist = JGeometry::TUtil<f32>::sqrt(dx2+dy2);
+    dist=playerWalkStepLength(delta);
     if (dist > lbl_8054036C) {
         U8(p, 0x401) += 6;
     } else if (dist > lbl_805403B8) {
