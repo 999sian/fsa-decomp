@@ -528,6 +528,20 @@ static inline void WRTC_moveTowards(u8* self,WrtcVec out,const f32 k) {
     }
 }
 
+static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,const f32 k) {
+    if(fn_801F3D94(self,1)==0){
+        s32 idx=fn_801F285C(self,0,0,1,-1);
+        if(idx>=0){
+            JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
+            fn_80238548(idx,0,(f32*)&pos,0x10);
+        }
+        *(f32*)(self+0xc)=(f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0*k+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=(f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0*k+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=(f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0*k+*(f32*)(self+0x14);
+        fn_801F2B7C(self,2,-1,1);
+    }
+}
+
 static inline JGeometry::TVec3f WRTC_circlePosition(u8* p) {
     u32 n=p[0x2ac];
     s32 kind,step;
