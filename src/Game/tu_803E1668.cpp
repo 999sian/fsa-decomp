@@ -148,6 +148,7 @@ extern "C" void fn_8043670C(void* p, s32 a);
 extern "C" void fn_80431A9C(void* mgr, s32 id, u8 v, s32 a);
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 extern "C" void fn_802F86CC(void* a, s32 b, s32 c, s32 d, s32 e, s32 f);
+#pragma dont_inline on
 extern "C" void fn_803E1668(u8* p) {
     s32 i;
     s32 j = 0;
@@ -167,6 +168,7 @@ extern "C" void fn_803E1668(u8* p) {
     t = b;
     fn_802F86CC(p, t, a, j, 0, 0);
 }
+#pragma dont_inline reset
 
 #pragma dont_inline reset
 extern "C" void fn_803E29C8(u8* param_1) {
