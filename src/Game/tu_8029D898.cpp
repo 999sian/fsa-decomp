@@ -113,10 +113,10 @@ static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u
         fn_802D7D00(fn_802D6A9C(), room, idx, 1);
     }
 }
+static inline void WaveCopyPos(JGeometry::TVec2<f32>& dst, const f32 x, const f32 y);
 static inline void fn_802A3164_sub(const JGeometry::TVec2<f32>* pos, s32 room, u16 param, s32 flag) {
     JGeometry::TVec2<f32> t;
-    t.y=pos->y;
-    t.x=pos->x;
+    WaveCopyPos(t, pos->x, pos->y);
     void* mgr = lbl_8053AC98;
     *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
     s32 tile = *(s32*)((u8*)mgr + 0x20);
@@ -1371,9 +1371,9 @@ extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, 
                 }
             }
         } else if (*(u16*)(this_ + 0x24) == 0x43) {
-            fn_8029E9EC_sub(pos, room, 0x50);
+            fn_802A3164_sub(pos, room, 0x50, 1);
         } else {
-            fn_8029E9EC_sub(pos, room, 0x11);
+            fn_802A3164_sub(pos, room, 0x11, 1);
         }
         id = Actor_CreateByID(fn_801F856C(), 0x5455424f, room, pos, *(u16*)(this_ + 0x24) - 0x40, -1, -1);
         actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
@@ -1382,11 +1382,11 @@ extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, 
         }
     } else if (*(u16*)(this_ + 0x24) >= 0x45 && *(u16*)(this_ + 0x24) <= 0x49) {
         if (*(u16*)(this_ + 0x24) == 0x46) {
-            fn_8029E9EC_sub(pos, room, 0x14);
+            fn_802A3164_sub(pos, room, 0x14, 1);
         } else if (*(u16*)(this_ + 0x24) == 0x48) {
-            fn_8029E9EC_sub(pos, room, 0x52);
+            fn_802A3164_sub(pos, room, 0x52, 1);
         } else {
-            fn_8029E9EC_sub(pos, room, 0x15);
+            fn_802A3164_sub(pos, room, 0x15, 1);
         }
         id = Actor_CreateByID(fn_801F856C(), 0x5455424f, room, pos, *(u16*)(this_ + 0x24) - 0x45, -1, -1);
         actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
@@ -1394,14 +1394,14 @@ extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, 
             actor->activate();
         }
     } else if (*(u16*)(this_ + 0x24) == 0x4e) {
-        fn_8029E9EC_sub(pos, room, 0x11);
+        fn_802A3164_sub(pos, room, 0x11, 1);
         id = Actor_CreateByID(fn_801F856C(), 0x5455424f, room, pos, 0x80, -1, -1);
         actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
         if (actor != 0) {
             actor->activate();
         }
     } else if (*(u16*)(this_ + 0x24) == 0x4f) {
-        fn_8029E9EC_sub(pos, room, 0x11);
+        fn_802A3164_sub(pos, room, 0x11, 1);
         id = Actor_CreateByID(fn_801F856C(), 0x5455424f, room, pos, 0x100, -1, -1);
         actor = (ActorVt*)fn_801F666C(fn_801F856C(), id);
         if (actor != 0) {
