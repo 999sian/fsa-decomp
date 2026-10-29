@@ -906,9 +906,9 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
 extern "C" u32 lbl_80471020[];
 extern "C" f32 lbl_80541528, lbl_80541530, lbl_80541538, lbl_8054153C;
 extern "C" void fn_802F6CF4(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
-u8* this_=(u8*)base;
-f32* pos=(f32*)elem;
 u8* tiles=(u8*)a;
+f32* pos=(f32*)elem;
+u8* this_=(u8*)base;
 u8* ent=(u8*)ptr;
 f32 origin[3];
 GXTexObj texObj;
@@ -960,9 +960,9 @@ GXInitTlutObj(&tlut[i],*(u8**)(this_+0x18)+i*0x20,(GXTlutFmt)2,16);
 GXLoadTlut(&tlut[i],lbl_80471020[i]);
 }
 for(int n=0;n<16;n++) counts[n]=0;
-for(row=0;row<16;row++) {
-for(col=0;col<16;col++) {
-u16 tile=tiles[(row*16+col)*2]|tiles[(row*16+col)*2+1]<<8;
+for(int countRow=0;countRow<16;countRow++) {
+for(int countCol=0;countCol<16;countCol++) {
+u16 tile=tiles[(countRow*16+countCol)*2]|tiles[(countRow*16+countCol)*2+1]<<8;
 if(tile) {
 u16* list=*(u16**)(this_+0x24);
 for(int dy=0;dy<2;dy++) { for(int dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++; }
@@ -985,25 +985,26 @@ for(y=0;y<2;y++) {
 for(x=0;x<2;x++) {
 u16 t=(*(u16**)(this_+0x24))[tile*4+y*2+x];
 if(((t>>12)&15)==i) {
-s32 px=(col*2+x)*8;
-s32 py=(row*2+y)*8;
-f32 vx=(f32)px+ox;
-f32 vy=(f32)py+oy;
+int px=(col*2+x)*8;
+int py=(row*2+y)*8;
+const f32 vx=(f32)px+ox;
+const f32 vy=(f32)py+oy;
+f32 v;
+f32 u2,v2;
 const f32 unit=0.0078125f;
 const f32 halfPixel=0.501f;
-f32 u=(f32)(int)(t&15);
-f32 v=(f32)(int)((t>>4)&63);
-u=8.0f*u+halfPixel;
+f32 rawU=(f32)(int)(t&15);
+v=(f32)(int)((t>>4)&63);
+rawU=8.0f*rawU+halfPixel;
 v=8.0f*v+halfPixel;
-u*=0.0078125f;
+f32 u=rawU*0.0078125f;
 v*=0.001953125f;
 f32 su=__fmadds((f32)px,unit,0.0f);
 f32 sv=__fmadds((f32)py,unit,0.0f);
 f32 eu=0.0625f+su;
 f32 ev=0.0625f+sv;
-f32 u2,v2;
-if(t&0x400) {u2=u;u+=6.98f/128.0f;} else u2=u+6.98f/128.0f;
-if(t&0x800) {v2=v;v+=6.98f/512.0f;} else v2=v+6.98f/512.0f;
+if(t&0x400) {u2=u;u=6.98f/128.0f+u;} else u2=u+6.98f/128.0f;
+if(t&0x800) {v2=v;v=6.98f/512.0f+v;} else v2=v+6.98f/512.0f;
 GXWGFifo.f32=vx; GXWGFifo.f32=vy; GXWGFifo.f32=oz;
 GXWGFifo.f32=u; GXWGFifo.f32=v; GXWGFifo.f32=su; GXWGFifo.f32=sv;
 GXWGFifo.f32=vx+8.0f; GXWGFifo.f32=vy; GXWGFifo.f32=oz;
@@ -1633,6 +1634,15 @@ extern "C" void fn_802FA160(u8* this_, const u8* src, u32 a, s32 idx, u8* dst, u
         for(u32 i=0;i<0x100;i++) *q++=*p++;
     }
 }
+extern "C" f32 lbl_80541524;
+extern "C" f32 lbl_80541564;
+extern "C" f32 lbl_80541568;
+extern "C" f32 lbl_8054156C;
+extern "C" f32 lbl_80541570;
+extern "C" f32 lbl_80541578;
+extern "C" GXColor lbl_80543F54;
+extern "C" GXColor lbl_80543F58;
+extern "C" GXColor lbl_80543F5C;
 extern "C" void fn_802FA3FC(void* mgr) {
     u8* p = (u8*)mgr;
     char tex[0x48];
