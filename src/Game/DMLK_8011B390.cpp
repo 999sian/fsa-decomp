@@ -205,10 +205,11 @@ static inline bool dmlkSink(u8* p, int t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x40) = vy;
     *(f32*)(p + 0x3c) = vx;
     if (t > 1 && *(f32*)(p + 0x14) <= lbl_8053C7D8) {
-        *(f32*)(p + 0x44) = lbl_8053C7D8;
-        *(f32*)(p + 0x40) = lbl_8053C7D8;
-        *(f32*)(p + 0x3c) = lbl_8053C7D8;
-        *(f32*)(p + 0x14) = lbl_8053C7D8;
+        f32 zero = lbl_8053C7D8;
+        *(f32*)(p + 0x44) = zero;
+        *(f32*)(p + 0x40) = zero;
+        *(f32*)(p + 0x3c) = zero;
+        *(f32*)(p + 0x14) = zero;
         return true;
     }
     return false;
@@ -279,8 +280,7 @@ extern "C" void fn_8011C308(u8* this_) {
     JGeometry::TVec3f v11;
     s32 i;
     s32 j;
-    s32 d;
-    s32 cur;
+    int d;
     f32 fx;
 
     fn_8010DF78(this_);
@@ -293,14 +293,12 @@ extern "C" void fn_8011C308(u8* this_) {
         this_[0x11d] = 0;
         break;
     case 4:
-        cur = *(s32*)((u8*)fn_8011921C() + 8);
-        if (dmlkSink(this_, cur - lbl_80464AF8[4], lbl_8053C800, lbl_8053C824, lbl_8053C7D8)) {
+        if (dmlkSink(this_, dmlkTime(4), lbl_8053C800, lbl_8053C824, lbl_8053C7D8)) {
             fn_8011B878(this_, 5);
         }
         break;
     case 9:
-        cur = *(s32*)((u8*)fn_8011921C() + 8);
-        d = cur - lbl_80464AF8[9];
+        d = dmlkTime(9);
         *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * d;
         *(f32*)(this_ + 0x40) = lbl_8053C808;
         if (d > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
@@ -324,8 +322,7 @@ extern "C" void fn_8011C308(u8* this_) {
         }
         break;
     case 19:
-        cur = *(s32*)((u8*)fn_8011921C() + 8);
-        dmlkSink(this_, cur - lbl_80464AF8[19], lbl_8053C82C, lbl_8053C7D8, lbl_8053C7D8);
+        dmlkSink(this_, dmlkTime(19), lbl_8053C82C, lbl_8053C7D8, lbl_8053C7D8);
         break;
     case 20:
         *(f32*)(this_ + 0x10) -= lbl_8053C830;
@@ -407,8 +404,7 @@ extern "C" void fn_8011C308(u8* this_) {
         if (this_[0x231] == 0) {
             fx = lbl_8053C84C;
         }
-        cur = *(s32*)((u8*)fn_8011921C() + 8);
-        if (dmlkSink(this_, cur - lbl_80464AF8[29], lbl_8053C800, lbl_8053C850, fx)) {
+        if (dmlkSink(this_, dmlkTime(29), lbl_8053C800, lbl_8053C850, fx)) {
             fn_8011B878(this_, 0x1e);
         }
         break;
