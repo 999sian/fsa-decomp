@@ -171,6 +171,56 @@ extern const f32 lbl_8054229C;
 extern const f32 lbl_805422A0;
 extern const f32 lbl_805422A4;
 extern const f32 lbl_805422A8;
+extern const f32 lbl_80542290;
+extern const f32 lbl_80542294;
+
+static inline void ltzrResetBox(char* p) {
+    if (*(u32*)(p + 0x1a0) == 0x4c545a52) {
+        *(f32*)(p + 0x60) = lbl_80542280;
+        *(f32*)(p + 0x64) = lbl_80542280;
+        *(f32*)(p + 0x68) = lbl_80542284;
+        *(f32*)(p + 0x6c) = lbl_80542284;
+        *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+        *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+        *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+        *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+    }
+}
+
+static inline void ltzrTouch(char* p, s32 i) {
+    s32 room = *(s32*)(p + 4);
+    if (fn_8023DE58(i) != room) {
+        return;
+    }
+    for (s32 j = 0; j < 8; j++) {
+        JGeometry::TVec3<f32> pt;
+        fn_8022E088(i, j, (f32*)&pt);
+        pt.sub(*(JGeometry::TVec3<f32>*)(p + 0xc));
+        pt.z = lbl_80542268;
+        f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
+        s32 a = (s32)(ang * lbl_8054228C);
+        f32 len = pt.x * pt.x + pt.y * pt.y;
+        if (len > lbl_80542268) {
+            f32 y = __frsqrte(len);
+            y = lbl_80542290 * y * (lbl_80542294 - len * (y * y));
+            len = len * y;
+        }
+        pt.z = lbl_80542268;
+        f32 vy = len * JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
+        f32 vx = len * JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
+        pt.y = vy;
+        pt.x = vx;
+        u8 inside = 0;
+        if (pt.x >= *(f32*)(p + 0x60) && pt.y >= *(f32*)(p + 0x64) && pt.x < *(f32*)(p + 0x68) && pt.y < *(f32*)(p + 0x6c)) {
+            inside = 1;
+        }
+        if (inside) {
+            fn_8022DF48(i);
+            return;
+        }
+    }
+}
+
 extern "C" void fn_8033FE04(char* p) {
     s32 st = *(s32*)(p + 0x248);
     if (st == 4) {
