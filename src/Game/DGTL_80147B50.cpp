@@ -48,6 +48,8 @@ struct TWEVParam {
 
 typedef f32 TWEVMtx[3][4];
 
+static inline f32 dgtlSin(f32 x) { return sin(x); }
+static inline f32 dgtlCos(f32 x) { return cos(x); }
 static inline void fn_80147B50_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az, f32 s) {
     f32 cx;
     f32 sx = sin(ax);
