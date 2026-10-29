@@ -476,6 +476,32 @@ static inline void oiwaBox(OiwaRect* b, char* this_) {
     ((JGeometry::TBox2<f32>*)b)->set(p.x - r, p.y - r, r + p.x, r + p.y);
 }
 
+static inline void oiwaHitBalls(char* this_) {
+    s32 room;
+    for (s32 i = 0; i < 4; i++) {
+        room = *(s32*)(this_ + 4);
+        s32 r = fn_8023DE58(i);
+        if (r == room) {
+            f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+            f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+            f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+            f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+            for (s32 j = 0; j < 8; j++) {
+                JGeometry::TVec3<f32> pt;
+                fn_8022E088(i, j, &pt);
+                u8 in = 0;
+                if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+                    in = 1;
+                }
+                if (in) {
+                    fn_8022DF48(i);
+                    break;
+                }
+            }
+        }
+    }
+}
+
 extern "C" void fn_800F555C(char* this_) {
     OiwaRect box;
     s32 dir;
