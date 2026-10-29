@@ -765,6 +765,7 @@ extern "C" void fn_8026022C(char* p) {
 #pragma opt_common_subs reset
 extern JGeometry::TVec3<f32> lbl_8046B86C[];
 
+#pragma opt_propagation off
 static inline JGeometry::TVec2f carryAdd(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b)
 {
     JGeometry::TVec2f v(a);
