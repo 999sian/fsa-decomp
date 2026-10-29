@@ -495,9 +495,9 @@ extern "C" void fn_800F9170(void* this_) {
 extern const f32 lbl_8053BFD0;
 extern const f32 lbl_8053BFD4;
 extern f32 lbl_8053C028;
-extern f32 lbl_8053C024;
-extern f32 lbl_8053C004;
-extern f32 lbl_8053C000;
+extern const f32 lbl_8053C024;
+extern const f32 lbl_8053C004;
+extern const f32 lbl_8053C000;
 extern "C" s16 lbl_8049C3B8[];
 static inline void WRTC_moveTowards(u8* self,const volatile JGeometry::TVec3f& out,const f32 k) {
     if(fn_801F3D94(self,1)==0){
