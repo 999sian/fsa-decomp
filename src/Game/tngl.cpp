@@ -47,6 +47,70 @@ extern "C" void fn_803D9944(u8* this_) {
     }
 }
 
+extern "C" void* fn_8013CC50(u32 room, void* pos, f32 f, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_80237810(s32 i);
+extern "C" s32 fn_80237774(s32 i);
+extern "C" void fn_80236554(s32 i, s32 a, s32 b);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
+extern "C" void fn_801F71A4(void* box, f32 a, f32 b, f32 c);
+extern "C" s32 fn_80388CAC(s32 handle, void* room);
+extern "C" s32 fn_80138A30(void* game);
+extern "C" void fn_80384C58(s32 handle, void* room);
+extern "C" s32 fn_8022FD8C(void* room);
+extern "C" void fn_8022FEB8(void* box, s32 room, void* handle, s32 a, s32 b);
+extern "C" u8 fn_8038BD08(s32 handle, s32 id, s32 room, void* v, s32 n);
+extern "C" f32 lbl_80543590;
+extern "C" f32 lbl_80543594;
+extern "C" u8* lbl_8053AB10;
+extern "C" u8* lbl_8053AAF8;
+extern "C" void fn_803D9AA4(u8* this_) {
+    s32 i;
+    s32 st = *(s32*)(this_ + 0x230);
+    if ((u32)st > 10) {
+        goto tail;
+    }
+    switch (st) {
+    case 0:
+        if (*(s32*)(this_ + 0x240) < 0x3c) {
+            *(s32*)(this_ + 0x240) += 1;
+            break;
+        }
+        *(s32*)(this_ + 0x240) = 0;
+        *(s32*)(this_ + 0x244) = -1;
+        *(s32*)(this_ + 0x248) = 0;
+        for (i = 0; i < 4; i++) {
+            if (fn_8023DE58(i) < 8) {
+                s32 id = 0x3ae;
+                JGeometry::TVec3<f32>* pos;
+                if (fn_80237060(0) == 2) {
+                    id = 0x3af;
+                }
+                pos = fn_8023E724(i);
+                fn_8013CC50(fn_8023DE58(i), pos, lbl_80543590, id, 1, 1, 0, 0, 1);
+                id = 0x3ac;
+                if (fn_80237060(0) == 2) {
+                    id = 0x3ad;
+                }
+                pos = fn_8023E724(i);
+                *(void**)(this_ + 0x290 + i * 4) = fn_8013CC50(fn_8023DE58(i), pos, lbl_80543590, id, 1, 1, 0, 0, 1);
+            }
+        }
+        *(s32*)(this_ + 0x238) = 0x3c;
+        *(s32*)(this_ + 0x230) = 1;
+        break;
+    }
+tail:
+    if (*(s32*)(this_ + 0x234) > 0) {
+        *(s32*)(this_ + 0x234) -= 1;
+    }
+    if (*(s32*)(this_ + 0x238) > 0) {
+        *(s32*)(this_ + 0x238) -= 1;
+    }
+    if (*(s32*)(this_ + 0x23C) > 0) {
+        *(s32*)(this_ + 0x23C) -= 1;
+    }
+}
+
 // ---- from src/Game/Tngl_dtor_803DA260.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int how);
