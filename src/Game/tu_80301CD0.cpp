@@ -2176,7 +2176,6 @@ chain2:
 end:
     lbl_8053ACDC[i] = 0;
 }
-#pragma opt_propagation reset
 
 extern void* lbl_804AA8B8[];
 extern "C" void fn_80308D0C() {
