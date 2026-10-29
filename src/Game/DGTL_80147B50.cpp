@@ -50,7 +50,7 @@ typedef f32 TWEVMtx[3][4];
 
 static inline f32 dgtlSin(f32 x) { return sin(x); }
 static inline f32 dgtlCos(f32 x) { return cos(x); }
-static inline void fn_80147B50_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az, f32 s) {
+static inline void fn_80147B50_rotMtx(TWEVMtx m, const f32 ax, const f32 ay, const f32 az, const f32 s) {
     f32 cx;
     f32 sx = dgtlSin(ax);
     f32 sy = dgtlSin(ay);
@@ -113,6 +113,7 @@ extern "C" void fn_80147B50(void* this_) {
     TWEVMtx mtx;
     s32 i;
     u32 mode;
+    f32 x0, y0, z0;
 
     param.a = -1;
     param.b = -1;
@@ -158,9 +159,9 @@ extern "C" void fn_80147B50(void* this_) {
             fn_801F02BC(this_, lbl_80465D30, 0x176, lbl_8053D0B4, lbl_8053D0B4, 0, -1, 1, 0);
         }
     } else {
-        f32 x0 = *(f32*)(p + 0xc);
-        f32 y0 = *(f32*)(p + 0x10);
-        f32 z0 = *(f32*)(p + 0x14);
+        x0 = *(f32*)(p + 0xc);
+        y0 = *(f32*)(p + 0x10);
+        z0 = *(f32*)(p + 0x14);
         *(f32*)(p + 0xc) = *(f32*)(p + 0x314);
         *(f32*)(p + 0x10) = *(f32*)(p + 0x318);
         *(f32*)(p + 0x14) = *(f32*)(p + 0x31c);
