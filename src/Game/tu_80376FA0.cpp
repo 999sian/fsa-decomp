@@ -13,7 +13,7 @@ extern "C" void fn_8020D7D0(u8* p, u32 handle);
 extern "C" f32 PSVECDistance(const Vec* a, const Vec* b);
 extern "C" f32 fn_8033D4AC(f32 cur, f32 target, f32 speed);
 extern "C" void fn_801EE434(u32 p);
-extern "C" u32 fn_8013CC50(u32 room, Vec* pos, f32 scale, u32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u32 fn_8013CC50(u32 room, Vec* pos, u32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_8013CB44(u32 h, Vec* pos, s32 a, s32 b, s32 c);
 extern "C" void fn_801F0E34(u8* self, u32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
@@ -99,6 +99,8 @@ static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
 extern "C" void fn_803771AC(u8* this_) {
     JGeometry::TBox2<f32> box;
     Vec tmp;
+    f32 x, y, z;
+    s32 j, i;
     box.set(*(JGeometry::TBox2<f32>*)(this_ + 0x60));
     box.addPos(*(JGeometry::TVec2<f32>*)(this_ + 0xc));
     switch (*(s32*)(this_ + 0x244)) {
@@ -113,9 +115,9 @@ extern "C" void fn_803771AC(u8* this_) {
         box.f.x += -1.0f;
         box.f.y += -1.0f;
         {
-            u32 handle = *(u32*)(this_ + 0x198);
+            i = *(s32*)(this_ + 0x198);
             HitRectMgr* manager = (HitRectMgr*)fn_8020D58C();
-            fn_8020D7D0((u8*)&manager->lists[manager->cur], handle);
+            fn_8020D7D0((u8*)&manager->lists[manager->cur], i);
         }
         if (this_[0x264] == 0) {
             f32 dist = PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24)));
@@ -147,11 +149,10 @@ extern "C" void fn_803771AC(u8* this_) {
             JGeometry::setTVec3f((f32*)((Vec*)(this_ + 0xc)), (f32*)(this_ + 0x18));
             if (PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24))) >= 63.9) {
                 ((Actor*)this_)->v10(0xff, 1);
-                f32 x = ((Vec*)(this_ + 0xc))->x;
+                x = ((Vec*)(this_ + 0xc))->x;
                 x -= 24.0f;
-                f32 y = ((Vec*)(this_ + 0xc))->y;
-                f32 z = ((Vec*)(this_ + 0xc))->z;
-                s32 j, i;
+                y = ((Vec*)(this_ + 0xc))->y;
+                z = ((Vec*)(this_ + 0xc))->z;
                 for (i = 0; i < 4; i++) {
                     tmp.x = x;
                     tmp.y = y;
@@ -167,23 +168,23 @@ extern "C" void fn_803771AC(u8* this_) {
                 *(s32*)(this_ + 0x25c) = 50;
                 *(s32*)(this_ + 0x260) = 0;
                 if (*(u32*)(this_ + 0x230) == 0) {
-                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0x542, 0, 0, 0, 0, 1);
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0x542, 0, 0, 0, 0, 1, 1.0f);
                     fn_8013CB44(*(u32*)(this_ + 0x230), ((Vec*)(this_ + 0xc)), -1, -1, 1);
                 }
                 if (*(u32*)(this_ + 0x234) == 0) {
-                    *(u32*)(this_ + 0x234) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0xb7, 0, 0, 0, 0, 1);
+                    *(u32*)(this_ + 0x234) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0xb7, 0, 0, 0, 0, 1, 1.0f);
                     fn_8013CB44(*(u32*)(this_ + 0x234), ((Vec*)(this_ + 0xc)), -1, -1, 1);
                 }
                 if (*(u32*)(this_ + 0x238) == 0) {
-                    *(u32*)(this_ + 0x238) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0xb8, 0, 0, 0, 0, 1);
+                    *(u32*)(this_ + 0x238) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0xb8, 0, 0, 0, 0, 1, 1.0f);
                     fn_8013CB44(*(u32*)(this_ + 0x238), ((Vec*)(this_ + 0xc)), 0, 0, 1);
                 }
                 if (*(u32*)(this_ + 0x23c) == 0) {
-                    *(u32*)(this_ + 0x23c) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0xb9, 0, 0, 0, 0, 1);
+                    *(u32*)(this_ + 0x23c) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0xb9, 0, 0, 0, 0, 1, 1.0f);
                     fn_8013CB44(*(u32*)(this_ + 0x23c), ((Vec*)(this_ + 0xc)), 0, 0, 1);
                 }
                 if (*(u32*)(this_ + 0x240) == 0) {
-                    *(u32*)(this_ + 0x240) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0xba, 0, 0, 0, 0, 1);
+                    *(u32*)(this_ + 0x240) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0xba, 0, 0, 0, 0, 1, 1.0f);
                     fn_8013CB44(*(u32*)(this_ + 0x240), ((Vec*)(this_ + 0xc)), 0, 0, 1);
                 }
                 fn_801F0E34(this_, 0x50065, 0);
@@ -224,11 +225,12 @@ extern "C" void fn_803771AC(u8* this_) {
                     break;
                 }
                 fn_80238E08(*(u32*)(this_ + 0x198));
-                const f32* source = lbl_80475148 + idx * 3;
-                f32 x = source[0];
-                f32 y = source[1];
+                const Vec* table = (const Vec*)lbl_80475148;
+                f32 x = table[idx].x;
+                const Vec* source = table + idx;
+                f32 y = source->y;
                 ((Vec*)(this_ + 0x3c))->x = x;
-                f32 z = source[2];
+                f32 z = source->z;
                 ((Vec*)(this_ + 0x3c))->y = y;
                 ((Vec*)(this_ + 0x3c))->z = z;
                 ((Vec*)(this_ + 0x248))->x = ((Vec*)(this_ + 0xc))->x;
@@ -237,13 +239,13 @@ extern "C" void fn_803771AC(u8* this_) {
                 fn_801F0E34(this_, 0x30004, 0);
                 JMathInlineVEC::PSVECAdd(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x3c)), ((Vec*)(this_ + 0xc)));
                 if (idx == 0) {
-                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0x31a, 1, 1, 0, 0, 1);
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0x31a, 1, 1, 0, 0, 1, 1.0f);
                 } else if (idx == 1) {
-                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0x31b, 1, 1, 0, 0, 1);
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0x31b, 1, 1, 0, 0, 1, 1.0f);
                 } else if (idx == 2) {
-                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0x31c, 1, 1, 0, 0, 1);
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0x31c, 1, 1, 0, 0, 1, 1.0f);
                 } else {
-                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0x319, 1, 1, 0, 0, 1);
+                    *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 0x319, 1, 1, 0, 0, 1, 1.0f);
                 }
             }
         } else if (*(u32*)(this_ + 0x230) != 0) {
