@@ -355,56 +355,47 @@ struct T80431_Res {
     u8* data;
     u8 pad[0x24];
     T80431_Res() { vt = lbl_804AF86C; }
+    f32 getWidth() const { return ((J2DPane*)data)->getWidth(); }
+    f32 getHeight() const { return ((J2DPane*)data)->getHeight(); }
 };
 
 extern "C" void* fn_8043395C(void* this_) {
-	char* base = (char*)lbl_8048F438;
+	char* s1;
+	char* mgr;
+	char* base;
 	char* self = (char*)this_;
 	*(void**)self = lbl_804B1668;
-	__construct_array(self + 0x40, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 2);
+	void* ctor = (void*)__ct__Q29JGeometry8TVec3_f_Fv;
+	base = (char*)lbl_8048F438;
+	__construct_array(self + 0x40, ctor, 0, 0xc, 2);
 	__construct_array(self + 0x58, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 2);
 
-	char* s1 = (char*)__nw__FUl(0x118);
+	s1 = (char*)__nw__FUl(0x118);
 	if (s1 != 0) {
 		__ct__9J2DScreenFv(s1);
 	}
 	*(char**)(self + 0x4) = s1;
-	char* mgr = (char*)lbl_80529DEC;
+	mgr = (char*)lbl_80529DEC;
 	((J2DScreen*)*(void**)(self + 0x4))->setPriority((const char*)(base + 0xf8), 0x01100000, *(JKRArchive**)(mgr + 0x20));
 	*(void**)(self + 0x10) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x10c), *(void**)(mgr + 0x20)));
 	((J2DScreen*)*(void**)(self + 0x4))->setAnimation((J2DAnmTextureSRTKey*)*(void**)(self + 0x10));
 
-	char* o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x18) = o;
-		fn_80402F04(*(void**)(self + 0x18), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703031ULL));
-	}
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x1c) = o;
-		fn_80402F04(*(void**)(self + 0x1c), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703032ULL));
-	}
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x20) = o;
-		fn_80402F04(*(void**)(self + 0x20), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703033ULL));
-	}
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x24) = o;
-		fn_80402F04(*(void**)(self + 0x24), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703034ULL));
-	}
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x34) = o;
-		fn_80402F04(*(void**)(self + 0x34), ((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613032ULL));
-		*(u8*)(*(char**)(*(char**)(self + 0x34) + 4) + 0xb0) = 0;
-	}
+	*(T80431_Res**)(self + 0x18) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x18), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703031ULL));
+
+	*(T80431_Res**)(self + 0x1c) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x1c), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703032ULL));
+
+	*(T80431_Res**)(self + 0x20) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x20), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703033ULL));
+
+	*(T80431_Res**)(self + 0x24) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x24), ((J2DScreen*)*(void**)(self + 0x4))->search(0x0000005073703034ULL));
+
+	*(T80431_Res**)(self + 0x34) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x34), ((J2DScreen*)*(void**)(self + 0x4))->search(0x004E646174613032ULL));
+	*(u8*)(*(char**)(*(char**)(self + 0x34) + 4) + 0xb0) = 0;
+
 
 	f32 ox20 = *(f32*)(*(char**)(self + 0x20) + 0x10);
 	f32 w20 = *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x28) - *(f32*)(*(char**)(*(char**)(self + 0x20) + 4) + 0x20);
@@ -437,24 +428,15 @@ extern "C" void* fn_8043395C(void* this_) {
 	*(void**)(self + 0x14) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader((const char*)(base + 0x138), *(void**)(mgr + 0x20)));
 	((J2DScreen*)*(void**)(self + 0x8))->setAnimation((J2DAnmTextureSRTKey*)*(void**)(self + 0x14));
 
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x28) = o;
-		fn_80402F04(*(void**)(self + 0x28), ((J2DScreen*)*(void**)(self + 0x8))->search(0x0000005073703031ULL));
-	}
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x2c) = o;
-		fn_80402F04(*(void**)(self + 0x2c), ((J2DScreen*)*(void**)(self + 0x8))->search(0x0000005073703033ULL));
-	}
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x30) = o;
-		fn_80402F04(*(void**)(self + 0x30), ((J2DScreen*)*(void**)(self + 0x8))->search(0x0000005073703034ULL));
-	}
+	*(T80431_Res**)(self + 0x28) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x28), ((J2DScreen*)*(void**)(self + 0x8))->search(0x0000005073703031ULL));
+
+	*(T80431_Res**)(self + 0x2c) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x2c), ((J2DScreen*)*(void**)(self + 0x8))->search(0x0000005073703033ULL));
+
+	*(T80431_Res**)(self + 0x30) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x30), ((J2DScreen*)*(void**)(self + 0x8))->search(0x0000005073703034ULL));
+
 
 	f32 ox2c = *(f32*)(*(char**)(self + 0x2c) + 0x10);
 	f32 w2c = *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x28) - *(f32*)(*(char**)(*(char**)(self + 0x2c) + 4) + 0x20);
@@ -484,12 +466,9 @@ extern "C" void* fn_8043395C(void* this_) {
 	}
 	*(char**)(self + 0xc) = s3;
 	((J2DScreen*)*(void**)(self + 0xc))->setPriority((const char*)(base + 0x150), 0x01100000, *(JKRArchive**)(mgr + 0x20));
-	o = (char*)__nw__FUl(0x2c);
-	if (o != 0) {
-		*(void**)o = lbl_804AF86C;
-		*(char**)(self + 0x3c) = o;
-		fn_80402F04(*(void**)(self + 0x3c), ((J2DScreen*)*(void**)(self + 0xc))->search(0x004E646174613030ULL));
-	}
+	*(T80431_Res**)(self + 0x3c) = new T80431_Res;
+	fn_80402F04(*(void**)(self + 0x3c), ((J2DScreen*)*(void**)(self + 0xc))->search(0x004E646174613030ULL));
+
 
 	*(u32*)(self + 0x90) = 0;
 	*(u32*)(self + 0x94) = 0;
