@@ -2316,7 +2316,7 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     return width;
 }
 #pragma opt_loop_invariants reset
-static inline s32 messagePadding(f32 value) {
+static inline s32 messagePadding(const f32 value) {
     return (s32)(value * lbl_805430BC + lbl_805430BC);
 }
 static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb, char* padbuf = NULL) {
@@ -2332,7 +2332,7 @@ static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, 
 }
 extern "C" void fn_80230E1C(s32, s32);
 
-#pragma optimization_level 4
+#pragma optimization_level 3
 extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 fb) {
     char* p;
     Inf1* inf = &lbl_8053AD78->p8->inf;
@@ -2431,7 +2431,6 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
     finishMessageLine(out, line, col, width, fa, fb, padbuf);
     return col;
 }
-#pragma optimization_level 3
 struct T37Config {
     T37Config();
     ~T37Config();
