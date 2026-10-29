@@ -14,8 +14,7 @@ static inline unsigned long* BankChunk8002F34C(char* base, unsigned long tag) {
     unsigned long* chunk = (unsigned long*)(base + 0x20);
     while ((char*)chunk < end) {
         if (*chunk == tag) return chunk;
-        long address = (long)chunk + (long)chunk[1];
-        chunk = (unsigned long*)((address + 0xb) & ~3);
+        chunk = (unsigned long*)BankAlign8002F34C((unsigned long)((char*)chunk + chunk[1] + 8));
     }
     return 0;
 }
@@ -344,7 +343,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
             char* velo;
             unsigned long* veloOff;
             unsigned long* keyOff;
-            unsigned long k;
+            unsigned int k;
             JASBasicInst::TKeymap* keymap;
             keyOff = (unsigned long*)inst;
             for (k = 0; k < inst->keyRegionCount; keyOff++, k++) {
@@ -353,7 +352,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
                 keymap->mHighKey = (unsigned char)velo[0];
                 keymap->setVeloRegionCount(*(unsigned long*)(velo + 4), heap);
                 veloOff = (unsigned long*)velo;
-                for (unsigned long j = 0; j < *(unsigned long*)(velo + 4); veloOff++, j++) {
+                for (unsigned int j = 0; j < *(unsigned long*)(velo + 4); veloOff++, j++) {
                     JASVelo* dst = keymap->getVeloRegion(j);
                     char* src = fn_800303C4(base, veloOff[2]);
                     dst->_0 = (unsigned char)src[0];
@@ -401,7 +400,7 @@ extern "C" void* fn_8002FB90(const void* data, JKRHeap* heap) {
 
                     tperc->setVeloRegionCount(((unsigned long*)perc)[4], heap);
                     unsigned long* veloOff = (unsigned long*)perc;
-                    for (unsigned long k = 0; k < ((unsigned long*)perc)[4]; veloOff++, k++) {
+                    for (unsigned int k = 0; k < ((unsigned long*)perc)[4]; veloOff++, k++) {
                         JASVelo* dst = tperc->getVeloRegion(k);
                         char* src = fn_800303C4(base, veloOff[5]);
                         dst->_0 = (unsigned char)src[0];
