@@ -166,7 +166,6 @@ static inline bool movingBlockContainsPlayerRef(u8* self, s32 player, s32& j, f3
     return false;
 }
 #pragma opt_lifetimes off
-#pragma opt_strength_reduction off
 extern "C" void fn_803771AC(u8* this_) {
     JGeometry::TBox2<f32> box;
     Vec tmp;
