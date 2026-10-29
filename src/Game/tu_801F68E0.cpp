@@ -1113,6 +1113,31 @@ inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     box.addPos(x, y);
 }
 
+inline u8* findCollisionActorInPool(s32 handle, ActorPool* pool) {
+    PoolActor* result = NULL;
+    if (handle >= 0) {
+        s32 cached = *(s32*)((u8*)pool + 0x2014);
+        if (cached >= 0) {
+            PoolActor* actor = pool->mActors[cached];
+            if (actor && actor->mActive && handle == actor->mId) {
+                result = actor;
+                goto done;
+            }
+        }
+        s32 count = pool->mCount;
+        PoolActor** cur = (PoolActor**)pool;
+        for (s32 i = 0; i < count; cur++, i++) {
+            PoolActor* actor = cur[2];
+            if (actor && actor->mActive && handle == actor->mId) {
+                result = pool->mActors[i];
+                break;
+            }
+        }
+    }
+done:
+    return (u8*)result;
+}
+
 inline f32 collisionSine(f32 dx, f32 dy) {
     f32 angle = JMath::atanTable_.atan2_(dx, dy);
     return JMath::sincosTable_.mTable[(u16)(s32)(angle * lbl_8053F80C) >> 5].first;
