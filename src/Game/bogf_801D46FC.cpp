@@ -207,10 +207,12 @@ static inline s32 fn_801D5390_pick(u8* this_) {
     s32 out[4];
     s32 count = 0;
     s32 i;
+    s32* o = out;
     s32 pick = -1;
     for (i = 0; i < 4; i++) {
         if (i != *(s32*)(this_ + 0x5b0) && this_[0x2a8 + i * 0x18] == 0 && fn_801D0B44(this_, i)) {
-            out[count++] = i;
+            *o++ = i;
+            count++;
         }
     }
     if (count > 0) {
