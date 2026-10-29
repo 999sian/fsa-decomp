@@ -153,6 +153,19 @@ extern "C" const f32 lbl_80540F00;
 extern "C" s32 fn_801F7818(void*, u32, s32, void*, s32);
 extern "C" void* fn_801F856C(void);
 extern "C" u32 lbl_8053ADF8;
+extern "C" const f32 lbl_80540EE4;
+extern "C" const f32 lbl_80540F04;
+inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
+    if (*(s32*)(p + 0x244) != direction) {
+        if (*(void**)(p + 0x230) != NULL) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(
+                *(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x230));
+            *(void**)(p + 0x230) = NULL;
+        }
+        *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540ECC, effect, 0, 0, 0, 0, 1);
+        *(s32*)(p + 0x244) = direction;
+    }
+}
 extern "C" void fn_802D1FEC(void* this_) {
     char* p = (char*)this_;
     u8 buf[0x400 * 4];
