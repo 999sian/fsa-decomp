@@ -151,6 +151,19 @@ extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80458FF0(void* obj, s32 a, s32 b, s32 c);
 extern u8 sincosTable___5JMath[];
 extern const u16 lbl_8053A108[4];
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_801F37AC(void* this_, s32 kind, void* pos, s32 a, s32 b, s32 id);
+extern "C" void fn_8023B6CC(s32 idx);
+extern "C" void fn_80458880(void* obj, s32 a, s32 b);
+extern "C" s32 ClassifyBamAngleToQuadrant(s32 angle);
+extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
+extern const u16 lbl_804A2F18[][2];
+extern const f32 lbl_8053E710;
+extern const f32 lbl_8053E714;
+extern const f32 lbl_8053E718;
+extern const f32 lbl_8053E71C;
+extern const f32 lbl_8053E720;
 #pragma opt_propagation off
 extern "C" void fn_801A96B4(void* this_) {
     f32 s = lbl_8053E6E0;
