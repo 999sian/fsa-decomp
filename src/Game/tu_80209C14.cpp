@@ -321,8 +321,8 @@ static inline void fobrApproach(f32* value, const f32 target, f32 frames) {
     }
 }
 
-extern "C" f32 lbl_8053F974;
-extern "C" f32 lbl_8053F978;
+extern "C" const f32 lbl_8053F974;
+extern "C" const f32 lbl_8053F978;
 extern "C" void fn_8020AA78(u8* this_, s32 state);
 extern "C" u8 fn_801D21F0(void* p);
 extern "C" u8 fn_801D217C(void* p);
