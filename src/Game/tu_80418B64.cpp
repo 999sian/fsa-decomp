@@ -135,6 +135,14 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
 
 typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
 
+static inline void SetScreenPaneVisible(u8* self, u64 name, u8 vis) {
+    (*(J2DScreen**)(self + 4))->search(name)->mIsVisible = vis;
+}
+
+static inline void SetScreenPaneBlend(u8* self, u64 name, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(name))->setBlendRatio(a, b, c, d, e, f, g, h);
+}
+
 
 
 // Sets the digit pane pair idx (names at 0x338 and 0x360 tables) to the glyph tag.
@@ -539,7 +547,7 @@ extern "C" void fn_8041B69C(u8* self) {
 }
 
 extern "C" void fn_8041C0C0(u8* self_, s32 idx) {
-    const u8* base = (u8*)lbl_8048D320;
+    u8* base = (u8*)lbl_8048D320;
     u8* self = self_;
     s32 n;
     s32 which;
@@ -548,7 +556,7 @@ extern "C" void fn_8041C0C0(u8* self_, s32 idx) {
 
     if (self[0x28b] & (u8)(1 << idx)) {
         which = 0;
-        s32 value = *(s32*)(idx * 4 + (u8*)lbl_80529DEC + 0xe8);
+        s32 value = ((s32*)lbl_80529DEC)[idx + 0x3a];
         n = value;
         if (value > 9999) n = 9999;
         if (n < 0) {
@@ -574,7 +582,7 @@ extern "C" void fn_8041C0C0(u8* self_, s32 idx) {
             s32 off = idx * 0x28;
             u64* p = (u64*)(base + 0x3b8);
             p = (u64*)((u8*)p + off);
-            for (i = 0; i < 5; i++, p++) {
+            for (s32 j = 0; j < 5; j++, p++) {
                 ((J2DPicture*)(*(J2DPane**)(self + 4))->search(*p))->setBlackWhite(*(JUtility::TColor*)(self + 0x248), *(JUtility::TColor*)(self + 0x244));
             }
             (*(J2DPane**)(self + 4))->search(*(u64*)(((u8*)((u64*)(base + 0x3b8) + idx * 5)) + 0x20))->hide();
