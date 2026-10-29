@@ -375,11 +375,11 @@ extern "C" void fn_80239914(f32* box, s32 room, s32 h);
 extern "C" u32 lbl_80464AB0[];
 extern "C" f32 lbl_8053C760;
 extern "C" f32 lbl_8053C764;
-extern "C" f32 lbl_8053C768;
-extern "C" f32 lbl_8053C76C;
+extern "C" const f32 lbl_8053C768;
+extern "C" const f32 lbl_8053C76C;
 extern "C" f32 lbl_8053C770;
 extern "C" f32 lbl_8053C774;
-extern "C" f32 lbl_8053C778;
+extern "C" const f32 lbl_8053C778;
 extern "C" f32 lbl_8053C77C;
 extern "C" f32 lbl_8053C780;
 
@@ -437,11 +437,16 @@ extern "C" void fn_801177C0(char* this_) {
             fn_8023077C();
             fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
             fn_8022FD8C(*(s32*)(this_ + 0x198));
+            s32 id = 0x4b2;
+            if (*(u8*)(this_ + 0x230) != 0) {
+                id = 0x4b3;
+            }
             f32 v[3];
             v[0] = lbl_8053C75C;
             v[1] = lbl_8053C760;
             v[2] = lbl_8053C75C;
-            if (fn_8038BD08(0, (u16)(*(u8*)(this_ + 0x230) ? 0x4b3 : 0x4b2), *(s32*)(this_ + 4), v, 0x22) != 0) {
+            bool ok = fn_8038BD08(0, (u16)id, *(s32*)(this_ + 4), v, 0x22);
+            if (ok) {
                 fn_80117074(this_, 1);
             }
         } else {
@@ -562,6 +567,8 @@ extern "C" void fn_801177C0(char* this_) {
         }
         break;
     }
+    case 12:
+        break;
     }
     s32 t238 = *(s32*)(this_ + 0x238);
     if (t238 >= 0) {
