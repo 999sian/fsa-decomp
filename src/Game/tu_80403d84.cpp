@@ -2792,14 +2792,16 @@ static inline f32 menuScaledOffset(const f32 factor, const f32 value, const f32 
     f32 scaled = factor * delta;
     return scaled + (f32)offset;
 }
+#ifndef MENU_LAYOUT_HELPERS
 static inline f32 menuLayoutSize(const f32* table, s32 index) { return table[index]; }
 static inline s16 menuLayoutCoord(const s16* table, s32 index) { return table[index]; }
 static inline u32 menuLayoutText(const u32* table, s32 index) { return table[index]; }
+#endif
 #pragma opt_propagation reset
 extern "C" void* fn_80403184(u32, const char*);
 extern "C" int snprintf(char*, unsigned long, const char*, ...);
-#pragma opt_lifetimes off
-#pragma opt_common_subs off
+#pragma fp_contract off
+#pragma opt_common_subs on
 extern "C" void fn_8040873C(u8* self) {
     ResTIMG* resource;
     Tbl8048C1F8* tbl = &lbl_8048C1F8;
@@ -2889,7 +2891,7 @@ extern "C" void fn_8040873C(u8* self) {
     fn_80402E08((*(PaneRef**)(self + 0x23c)), 0.0f, -150.0f);
     if (*(s32*)(self + 0x340) <= 7) {
         if (*(s32*)(self + 0x350) != 6) {
-            s16* coords = tbl->cursorPos[*(s32*)(self + 0x340)][*(s32*)(self + 0x348)];
+            s16* coords = (s16*)tbl->cursorPos + (*(s32*)(self + 0x348) + *(s32*)(self + 0x340) * 4) * 2;
             f32 x = (f32)coords[0];
             f32 y = (f32)coords[1];
             *(f32*)(self + 0x394) = x;
@@ -2900,7 +2902,9 @@ extern "C" void fn_8040873C(u8* self) {
         *(f32*)(self + 0x394) = 0.0f;
     }
     if (fn_804045F8(self, *(s32*)(self + 0x340))) {
-        PaneRef* selected = *(PaneRef**)(self + 0x208 + *(s32*)(self + 0x340) * 4);
+        u8* selectedBase = self;
+        selectedBase += *(s32*)(self + 0x340) * 4;
+        PaneRef* selected = *(PaneRef**)(selectedBase + 0x208);
         selected->pane->setAlpha(selected->alpha);
     }
     *(f32*)(self + 0x400) = 1.0f;
@@ -2921,7 +2925,7 @@ extern "C" void fn_8040873C(u8* self) {
     fn_803832BC(self + 0x5be, menuLayoutText((u32*)((u32)tbl + 0xa0), *(s32*)(self + 0x340)), 0, 0, 0);
 }
 #pragma opt_common_subs reset
-#pragma opt_lifetimes reset
+#pragma fp_contract reset
 static inline bool checkRowBit(u32 idx, int p, int j) {
 	if (p < 0 || p > 7) return false;
 	if (j < 0 || j > 3) return false;
