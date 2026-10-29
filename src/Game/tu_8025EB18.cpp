@@ -1481,6 +1481,13 @@ extern "C" u8 fn_8022C310(s32);
 extern "C" void fn_80259778(char*);
 extern "C" u8 fn_80245938(char*);
 extern "C" s32 fn_802415CC(char*);
+extern const f32 lbl_805401C4;
+extern const f32 lbl_805401C8;
+extern JGeometry::TVec3<f32> lbl_8046B670[];
+extern "C" void fn_8024B298(char*,s32,JGeometry::TVec3<f32>*);
+static inline f32 playerVelocitySquared(const JGeometry::TVec3<f32>& velocity) {
+    return velocity.squared();
+}
 extern "C" void fn_80262254(char* p) {
     if (fn_8022C6AC(S32(p, 0x4)) > lbl_80540150) {
         if (F32(p, 0x344) == lbl_80540150) {
