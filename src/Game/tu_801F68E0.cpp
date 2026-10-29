@@ -1082,23 +1082,22 @@ done:
     return result;
 }
 inline u8* ActorPool::findCollisionActor(s32 handle) {
-    ActorPool* pool = this;
     u8* result = NULL;
     if (handle >= 0) {
-        s32 cached = *(s32*)((u8*)pool + 0x2014);
+        s32 cached = *(s32*)((u8*)this + 0x2014);
         if (cached >= 0) {
-            PoolActor* actor = pool->mActors[cached];
+            PoolActor* actor = this->mActors[cached];
             if (actor && actor->mActive && handle == actor->mId) {
                 result = (u8*)actor;
                 goto done;
             }
         }
-        s32 count = pool->mCount;
-        PoolActor** cur = (PoolActor**)pool;
+        s32 count = this->mCount;
+        PoolActor** cur = (PoolActor**)this;
         for (s32 i = 0; i < count; cur++, i++) {
             PoolActor* actor = cur[2];
             if (actor && actor->mActive && handle == actor->mId) {
-                result = (u8*)pool->mActors[i];
+                result = (u8*)this->mActors[i];
                 break;
             }
         }
@@ -1198,7 +1197,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 				tp = *(JGeometry::TVec3<f32>*)(a + 0xc);
 				f32 dx = *(f32*)(a + 0xc) - *(f32*)(b + 0xc);
 				f32 dy = *(f32*)(a + 0x10) - *(f32*)(b + 0x10);
-				bx.set(*(JGeometry::TBox2<f32>*)(a + 0x60));
+				copyCollisionBox(bx, a);
 
 				f32 ang = JMath::atanTable_.atan2_(dx, dy);
 				s32 ai = (s32)(ang * lbl_8053F80C);
