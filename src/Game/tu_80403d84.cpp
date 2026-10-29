@@ -1304,6 +1304,7 @@ static inline s16 menuLayoutCoord(const s16* table, s32 index) { return table[in
 static inline u32 menuLayoutText(const u32* table, s32 index) { return table[index]; }
 #pragma opt_common_subs off
 #pragma opt_propagation off
+#pragma peephole off
 extern "C" void fn_804096E8(u8* self) {
     Tbl8048C1F8* tbl = &lbl_8048C1F8;
     u8 scaleDone=0;
