@@ -4246,7 +4246,7 @@ inline bool grabPadActive(char* p) {
 }
 
 inline bool grabPressed(char* p) {
-    if(!padActive(p))return false;
+    if(!grabPadActive(p))return false;
     if(U8(p,0x456)!=0)return false;
     if(S32(p,0x11f0)>0)return false;
     return fn_80309D24(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec)),0x20)!=0;
