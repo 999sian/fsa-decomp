@@ -5,6 +5,20 @@
 #include "PowerPC_EABI_Support/Runtime/MWCPlusPlusLib.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "dolphin/mtx.h"
+extern "C" void fn_80458FF0(void*,u32,s32,s32);
+extern "C" void fn_80458F9C(void*,int);
+extern void* lbl_8053AF80;
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" s16 fn_8023CBC0(s32);
+extern "C" void fn_80230498(s32,void*,u16,s32,s32,s32,s32);
+extern "C" void fn_801CD950(f32*,f32,f32);
+extern "C" void fn_8022FE80(s32,s32,s32,s32,s32);
+extern u32 lbl_80474C68[];
+extern "C" u8 fn_8038BD08(s32,u32,s32,void*,s32);
+extern "C" void fn_80118454(void*);
+extern "C" u8 fn_803865B8(s32);
+extern "C" void fn_80388EEC(s32);
+
 
 union EffWord {
     u32 w;
