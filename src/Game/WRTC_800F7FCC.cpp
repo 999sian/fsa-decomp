@@ -506,9 +506,9 @@ static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,f32 k)
             JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
             fn_80238548(idx,0,(f32*)&pos,0x10);
         }
-        *(f32*)(self+0xc)=k*((f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0)+*(f32*)(self+0xc);
-        *(f32*)(self+0x10)=k*((f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0)+*(f32*)(self+0x10);
-        *(f32*)(self+0x14)=k*((f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0)+*(f32*)(self+0x14);
+        *(f32*)(self+0xc)=k*((f32)(s32)(10000.0f*(out.x-*(f32*)(self+0xc)))*0.0001f)+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=k*((f32)(s32)(10000.0f*(out.y-*(f32*)(self+0x10)))*0.0001f)+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=k*((f32)(s32)(10000.0f*(out.z-*(f32*)(self+0x14)))*0.0001f)+*(f32*)(self+0x14);
         fn_801F2B7C(self,2,-1,1);
     }
 }
