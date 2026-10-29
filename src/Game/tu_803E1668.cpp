@@ -1,4 +1,35 @@
 #include "types.h"
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __register_global_object(void*, void*, void*);
+extern "C" char lbl_80528568[];
+extern "C" u32 lbl_804B06A0[];
 #include "Game/FsaMenuAction.h"
 #include "JSystem/J2D/J2DPane.h"
 extern const f32 lbl_805436E8;
@@ -958,10 +989,11 @@ extern "C" void fn_803E9034(u8* p) {
 	}
 }
 
+#pragma optimization_level 3
 #pragma opt_common_subs off
 extern "C" void fn_803E926C(u8* p) {
     u8* base = lbl_80477970;
-    s32 i;
+    int i;
     J2DPane* pane;
     f32 t;
     s32 frame;
@@ -998,13 +1030,13 @@ extern "C" void fn_803E926C(u8* p) {
             *(f32*)(p + 0x168) = MenuSlide803E(d, lbl_8054368C, lbl_805436B0);
         } else *(f32*)(p + 0x168) = lbl_80543664;
     }
-    u64* keys;
     long lo;
     int hi;
-    s32 lo2;
     u8* offsets;
+    int lo2;
     u8* bytes;
-    s32 group;
+    u64* keys;
+    int group;
     group = 0;
     for (; group < 3; group++) {
         lo = (long)group * 10;
@@ -1098,11 +1130,12 @@ extern "C" void fn_803E926C(u8* p) {
     pane->move(*(f32*)(p + 0x190) + *(f32*)(p + 0x198), *(f32*)(p + 0x194));
 
     pane = (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL);
-    f32 h = getBounds__7J2DPaneFv(pane)[1];
+    t = getBounds__7J2DPaneFv(pane)[1];
     pane = (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL);
-    pane->move(*(f32*)(p + 0x1a4), h);
+    pane->move(*(f32*)(p + 0x1a4), t);
 }
 #pragma opt_common_subs reset
+#pragma optimization_level reset
 extern "C" s32 fn_804317AC(void*);
 extern "C" s32 fn_80431740(void*);
 extern "C" void fn_8013CC50(s32, f32*, s32, s32, s32, s32, s32, s32, f32);
