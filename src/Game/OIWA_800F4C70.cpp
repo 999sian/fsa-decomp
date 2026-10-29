@@ -488,11 +488,10 @@ static inline void oiwaNotifyPlayers(s32 id) {
 static inline u8 oiwaBallIn(s32 i, s32 j, f32 x0, f32 y0, f32 x1, f32 y1) {
     JGeometry::TVec3<f32> pt;
     fn_8022E088(i, j, &pt);
-    u8 in = 0;
     if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
-        in = 1;
+        return 1;
     }
-    return in;
+    return 0;
 }
 
 static inline void oiwaHitBalls(char* this_) {
