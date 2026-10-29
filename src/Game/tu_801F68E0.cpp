@@ -1108,8 +1108,9 @@ done:
 }
 inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     const f32* pos = (const f32*)(actor + 0xc);
+    f32 y;
     f32 x = *pos++;
-    f32 y = *pos;
+    y = *pos;
     box.addPos(x, y);
 }
 
@@ -1126,6 +1127,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 	s32 j;
 	s32 k;
 	u8* self = (u8*)pool;
+	f32 vz;
 	JGeometry::TVec3<f32> tp;
 	JGeometry::TBox2<f32> bb;
 	JGeometry::TBox2<f32> bx;
@@ -1134,18 +1136,18 @@ extern "C" void fn_801F6A4C(void* pool) {
 		if (handle == -1) {
 			continue;
 		}
-		a = findCollisionActor(handle);
+		a = ((ActorPool*)lbl_8053AAF8->m4->m8)->findCollisionActor(handle);
 		if (a == NULL || a[0x11c] == 0) {
 			continue;
 		}
 
 		bx = *(JGeometry::TBox2<f32>*)(a + 0x60);
-		bx.addPos(*(f32*)(a + 0xc), *(f32*)(a + 0x10));
+		addCollisionPosition(bx, a);
 		*(s32*)(a + 0x9c) = -1;
 
 		for (j = 0; j < *(s32*)(self + 0x301c); j++) {
 			s32 hb = *(s32*)(self + 0x201c + j * 4);
-			b = findCollisionActor(hb);
+			b = ((ActorPool*)lbl_8053AAF8->m4->m8)->findCollisionActor(hb);
 			if (b == NULL || b[0x11c] == 0) {
 				continue;
 			}
@@ -1160,7 +1162,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 			}
 
 		bb = *(JGeometry::TBox2<f32>*)(b + 0x60);
-		bb.addPos(*(f32*)(b + 0xc), *(f32*)(b + 0x10));
+		addCollisionPosition(bb, b);
 
 			if ((*(u32*)(a + 0xb8) & 0xff) == 2) {
 				if (collisionBoxesOverlap(bx, bb)) {
@@ -1176,7 +1178,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 				tp = *(JGeometry::TVec3<f32>*)(a + 0xc);
 				f32 dx = *(f32*)(a + 0xc) - *(f32*)(b + 0xc);
 				f32 dy = *(f32*)(a + 0x10) - *(f32*)(b + 0x10);
-				bx = *(JGeometry::TBox2<f32>*)(a + 0x60);
+				bx.set(*(JGeometry::TBox2<f32>*)(a + 0x60));
 
 				f32 ang = JMath::atanTable_.atan2_(dx, dy);
 				s32 ai = (s32)(ang * lbl_8053F80C);
@@ -1192,7 +1194,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 				tp.y = tp.y + cs;
 
 				if (*(u32*)(b + 0x1a0) == 0x424f594f) {
-					f32 vz = *(f32*)(a + 0x44);
+					vz = *(f32*)(a + 0x44);
 					f32 ang2 = JMath::atanTable_.atan2_(dx, dy);
 					s32 i2 = (s32)(ang2 * lbl_8053F80C);
 					f32 c2 = JMath::sincosTable_.mTable[(u16)i2 >> 5].second;
@@ -1206,7 +1208,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 				if (!fn_801F23BC(a, *(u32*)(a + 4), &tp, a + 0xc, a + 0x80, NULL, NULL, 0)) {
 					*(JGeometry::TVec3<f32>*)(a + 0xc) = tp;
 					retry++;
-					bx.addPos(*(f32*)(a + 0xc), *(f32*)(a + 0x10));
+					addCollisionPosition(bx, a);
 				} else {
 					retry = 100;
 				}
