@@ -1,4 +1,8 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 
 struct GXColor_CC {
