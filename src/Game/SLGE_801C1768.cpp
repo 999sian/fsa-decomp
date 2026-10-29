@@ -3,6 +3,7 @@
 #include "Game/ItemBase.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 extern "C" char lbl_804A4310[];
 extern "C" char lbl_804A4808[];
@@ -93,10 +94,17 @@ extern "C" void fn_801C1918(u8* this_) {
     }
 }
 
+static inline void SLGEClearEmitter(void*& emitter) {
+    if (emitter) {
+        void* mgr=*(void**)((u8*)fn_8013C824()+0xc);
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr,emitter);
+    }
+    emitter=0;
+}
 extern "C" void fn_801C1A58(u8* this_) {
-    int i;
     int lo;
     int hi;
+    int i;
     fn_8021C2B4(this_ + 0x2d8);
     *(s32*)(this_ + 0x24c) += 1;
     if (*(s32*)(this_ + 0x24c) < 0) {
@@ -124,7 +132,7 @@ extern "C" void fn_801C1A58(u8* this_) {
                     lo = *(u8*)(this_ + 0x2a8);
                     hi = *(u8*)(this_ + 0x2a9);
                     s32 n = fn_801CD664(hi-lo+1);
-                    n += lo;
+                    n = lo + n;
                     u32 r = fn_801C5660(8,0,n,0,0);
                     s32 id = Actor_CreateByID(fn_801F856C(), 0x534c4b32, *(u32*)(this_ + 4), (f32*)(this_ + 0xc), r, -1, -1);
                     if (id >= 0) {
@@ -179,8 +187,10 @@ extern "C" void fn_801C1A58(u8* this_) {
             if(!lbl_8053AC24) {lbl_8053AC20=lbl_80469430;lbl_8053AC24=1;}
             *(void**)(this_+0x2d4)=fn_804032E8(0x54494d47,lbl_8053AC20);
             f32 vec[3];
-            vec[1]=lbl_8053EDCC+*(f32*)(this_+0x10);
-            vec[0]=*(f32*)(this_+0xc);
+            f32 y=lbl_8053EDCC+*(f32*)(this_+0x10);
+            f32 x=*(f32*)(this_+0xc);
+            vec[0]=x;
+            vec[1]=y;
             vec[2]=lbl_8053EDD0;
             fn_8021F9AC(this_+0x3f8,vec);
             *(s32*)(this_+0x24c)=0; *(s32*)(this_+0x248)=7;
@@ -214,11 +224,11 @@ extern "C" void fn_801C1A58(u8* this_) {
                 }
             } else {
                 f32 alpha=lbl_8053EDC8*(lbl_8053EDD4*(f32)(u32)*(u16*)(this_+0x2ac));
-                if(*(u8**)(this_+0x2c0)) (*(u8**)(this_+0x2c0))[0xbb]=(u8)(s32)alpha;
-                if(*(u8**)(this_+0x2c4)) (*(u8**)(this_+0x2c4))[0xbb]=(u8)(s32)alpha;
-                if(*(u8**)(this_+0x2c8)) (*(u8**)(this_+0x2c8))[0xbb]=(u8)(s32)alpha;
-                if(*(u8**)(this_+0x2cc)) (*(u8**)(this_+0x2cc))[0xbb]=(u8)(s32)alpha;
-                if(*(u8**)(this_+0x2d0)) (*(u8**)(this_+0x2d0))[0xbb]=(u8)(s32)alpha;
+                if(*(JPABaseEmitter**)(this_+0x2c0)) (*(JPABaseEmitter**)(this_+0x2c0))->setGlobalAlpha(alpha);
+                if(*(JPABaseEmitter**)(this_+0x2c4)) (*(JPABaseEmitter**)(this_+0x2c4))->setGlobalAlpha(alpha);
+                if(*(JPABaseEmitter**)(this_+0x2c8)) (*(JPABaseEmitter**)(this_+0x2c8))->setGlobalAlpha(alpha);
+                if(*(JPABaseEmitter**)(this_+0x2cc)) (*(JPABaseEmitter**)(this_+0x2cc))->setGlobalAlpha(alpha);
+                if(*(JPABaseEmitter**)(this_+0x2d0)) (*(JPABaseEmitter**)(this_+0x2d0))->setGlobalAlpha(alpha);
             }
         } else if(*(s32*)(this_+0x24c)==0xf0) *(u16*)(this_+0x2ac)=0x78;
         break;
@@ -257,8 +267,9 @@ extern "C" void fn_801C1A58(u8* this_) {
         u32 n=*(u32*)(*(u8**)(this_+0x2b4)+0x100);
         if(n>=0x14 && (n-0x14)%90==0) fn_801F0E34(this_,0x50048,0);
     }
-    if (*(s32*)(this_ + 0x248) >= 4 && *(s32*)(this_ + 0x248) < 7) {
+    switch (*(s32*)(this_ + 0x248)) { case 4: case 5: case 6:
         fn_801F0E34(this_, 0x5004a, 0);
+        break;
     }
     *(u32*)(this_ + 0x108) = *(u32*)(this_ + 0x244);
 }
