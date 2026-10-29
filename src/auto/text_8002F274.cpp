@@ -14,7 +14,7 @@ static inline unsigned long* BankChunk8002F34C(char* base, unsigned long tag) {
     unsigned long* chunk = (unsigned long*)(base + 0x20);
     while ((char*)chunk < end) {
         if (*chunk == tag) return chunk;
-        chunk = (unsigned long*)BankAlign8002F34C((unsigned long)((char*)chunk + chunk[1] + 8));
+        chunk = (unsigned long*)(((unsigned long)((char*)chunk + chunk[1]) + 0xb) & ~3);
     }
     return 0;
 }
@@ -149,7 +149,7 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
                         effect = sense;
                         break;
                     }
-                            default: effect = 0; break;
+                    default: effect = 0; break;
                     }
                     JASInstEffectLink* link = new (heap, 0) JASInstEffectLink(effect);
                     inst->appendEffect(link);
@@ -196,15 +196,15 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
                         effCount = effCountFromPointer;
                         for (unsigned long k = 0; k < effCount; k++) {
                             int* effectData = (int*)(base + *effp++);
-                    long effectTag = *effectData++;
-                    char* fx = (char*)effectData;
-                    JASInstEffect* effect;
-                    switch (effectTag) {
+                            long effectTag = *effectData++;
+                            char* fx = (char*)effectData;
+                            JASInstEffect* effect;
+                            switch (effectTag) {
                             case 0x52616e64: {
                                 JASInstRand* rnd = new (heap, 0) JASInstRand;
                                 rnd->setType((unsigned char)fx[0]);
                                 rnd->setFloor(*(f32*)(fx + 4));
-                        rnd->setCeiling(*(f32*)(fx + 8));
+                                rnd->setCeiling(*(f32*)(fx + 8));
                                 effect = rnd;
                                 break;
                             }
