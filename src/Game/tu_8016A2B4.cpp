@@ -776,6 +776,7 @@ static inline f32 effectRandom8016D398(u8* base=lbl_8053AAF8, const unsigned int
     return v.f-lbl_8053D93C;
 }
 
+static inline void positionEffectA8016D398(u8*);
 static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
     u8* p;
     s32 i;
@@ -784,9 +785,7 @@ static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
                     Vec zero;
                     *(s32*)(p+0x14)=60;
                     *(u16*)(p+0x10)=0x288;
-                    f32 ry=effectRandom8016D398();
-                    f32 rx=effectRandom8016D398();
-                    *(f32*)(p+4)=lbl_8053D9C0*rx-lbl_8053D9C4;*(f32*)(p+8)=lbl_8053D9C8*ry+lbl_8053D970;*(f32*)(p+0xc)=lbl_8053D944;
+                    positionEffectA8016D398(p);
                     zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
                     *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
                     if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
