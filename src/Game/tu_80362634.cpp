@@ -75,6 +75,10 @@ extern "C" f32 lbl_80542B00;
 extern "C" f32 lbl_80542B04;
 extern "C" f32 lbl_80542B08;
 
+static inline void* fn_80362C44_createEmitter(u32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
+    return fn_8013CC50(room, pos, scale, id, a, b, c, d, e);
+}
+
 static inline void fn_80362C44_deleteEmitter(void*& emitter) {
     if (emitter != NULL) {
         void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
@@ -355,6 +359,9 @@ extern "C" void fn_80362B74(char* self) {
 }
 
 extern "C" void fn_80362C44(char* self) {
+    s32 i;
+    const u16* ids;
+    char* p;
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
     BOOL handled = FALSE;
     switch (*(u32*)(self + 0x238)) {
@@ -393,7 +400,7 @@ extern "C" void fn_80362C44(char* self) {
             (*(s32*)(self + 0x264))++;
             *(s32*)(self + 0x264) &= 7;
         }
-        *(f32*)(self + 0x2f8) += __fabsf(*(f32*)(self + 0x40));
+        *(f32*)(self + 0x2f8) += JMAAbs(*(f32*)(self + 0x40));
         if (*(f32*)(self + 0x2f8) >= 160.0f) {
             (*(s32*)(self + 0x238))++;
             *(f32*)(self + 0x44) = 0.0f;
@@ -433,10 +440,9 @@ extern "C" void fn_80362C44(char* self) {
             *(s32*)(self + 0x264) &= 7;
         }
         handled = TRUE;
-        *(f32*)(self + 0x2f8) += __fabsf(*(f32*)(self + 0x40));
+        *(f32*)(self + 0x2f8) += JMAAbs(*(f32*)(self + 0x40));
         if (*(f32*)(self + 0x2f8) >= 80.0f) {
             JGeometry::TVec3<f32> v;
-            s32 i;
             *(s32*)(self + 0x248) = 0x12c;
             *(f32*)(self + 0x250) = *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc);
             *(f32*)(self + 0x254) = *(f32*)(self + 0x250) / *(s32*)(self + 0x248);
@@ -445,10 +451,16 @@ extern "C" void fn_80362C44(char* self) {
             v.z = 0.0f;
             v.y = y;
             v.x = x;
-            for (i = 0; i < 4; i++) {
-                fn_8013CC50(0, &v, 1.0f, lbl_80542AF0[i], 0, 0, 0, 0, 1);
-                fn_80362C44_deleteEmitter(*(void**)(self + 0x30c + i * 4));
-            }
+            i = 0;
+            p = self;
+            ids = lbl_80542AF0;
+            do {
+                fn_8013CC50(0, &v, 1.0f, *ids, 0, 0, 0, 0, 1);
+                fn_80362C44_deleteEmitter(*(void**)(p + 0x30c));
+                i++;
+                p += 4;
+                ids++;
+            } while (i < 4);
             v.z = 0.0f;
             v.y = 0.0f;
             v.x = 0.0f;
