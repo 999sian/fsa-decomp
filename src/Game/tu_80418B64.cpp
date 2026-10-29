@@ -780,6 +780,7 @@ extern "C" u8 fn_80230188(s32);
 extern "C" u8 fn_8023BE0C(void);
 extern "C" u32 fn_8030AAF4(s32);
 extern "C" s32 fn_80309D24(u8*, u32, s32);
+#pragma dont_inline on
 extern "C" void fn_8041D18C(u8* self, s32 index) {
     typedef u8* (*Call3Fn)(u8*, u32, u32, u32);
     u8 mask = (u8)(1 << index);
@@ -804,6 +805,7 @@ extern "C" void fn_8041D18C(u8* self, s32 index) {
     }
 }
 
+#pragma dont_inline reset
 extern "C" void fn_8041DD24(void* this_) {
     s32 cnt;
     u8* self = (u8*)this_;
