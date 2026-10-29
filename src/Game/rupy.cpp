@@ -68,8 +68,8 @@ struct RupyRotation {
 };
 
 static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32 scale, const f32 ang) {
-        f32 cx;
         f32 cy;
+        f32 cx;
         f32 sz;
         f32 sy;
         f32 sx;
