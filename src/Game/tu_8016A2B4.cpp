@@ -773,7 +773,7 @@ static inline f32 effectRandom8016D398(u8* base=lbl_8053AAF8, const unsigned int
     *seed=*seed*multiplier+0x3c6ef35f;
     union { u32 u; f32 f; } v;
     v.u=(*seed>>9)|0x3f800000;
-    return v.f-lbl_8053D93C;
+    return v.f-1.0f;
 }
 
 static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
@@ -864,15 +864,13 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
     if((u8)a4){
         if(*(s32*)a6>0){--*(s32*)a6;}
         else {
-            const f32 r=effectRandom8016D398();
-            *(s32*)a6=(s32)(r*lbl_8053D9BC);
+            *(s32*)a6=(s32)scaleRandom8016D398(lbl_8053D9BC);
             spawnEffectA8016D398(a5,a3,a8);
         }
     }
     if(*(s32*)a7>0){--*(s32*)a7;}
     else {
-        const f32 r=effectRandom8016D398();
-        *(s32*)a7=(s32)(r*lbl_8053D9D0);
+        *(s32*)a7=(s32)scaleRandom8016D398(lbl_8053D9D0);
         spawnEffectB8016D398(a5);
     }
     maxA=0;maxB=0;
@@ -915,12 +913,12 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
     if(maxB<maxA)maxB=maxA;
     J3DAnmBase** ap=(J3DAnmBase**)a9;
     J3DAnmBase** bp=(J3DAnmBase**)a10;
-    for(s32 j=0;j<6;++j,++ap,++bp){
+    for(s32 j=0;j<6;++ap,++bp,++j){
         J3DAnmBase* a=*ap;
         J3DAnmBase* b=*bp;
         if(a)a->mCurrentFrame=(f32)((s32)a2%a->mMaxFrame);
         if(b){
-            b->mCurrentFrame=(f32)((b->mMaxFrame*(j<4?maxA:maxB))/60);
+            b->mCurrentFrame=(f32)(((j<4?maxA:maxB)*(s32)b->mMaxFrame)/60);
         }
     }
 }
