@@ -374,6 +374,11 @@ static inline void tu803C_setCellK(u8* this_, u8* base, s32 cell, s32 idx, s32 k
     fn_804023D0(*(void**)(this_ + (idx * 4 + cell)), o, this_[flagOff]);
 }
 
+static inline void tu803C_setCellQ(u8* this_, u8* base, u8* tgt, s32 idx, s32 keyOff, s32 flagOff) {
+    void* o = keyObj(*(void**)(this_ + 8), *(u64*)(base + keyOff + idx * 8));
+    fn_804023D0(*(void**)(tgt + 0x44), o, this_[flagOff]);
+}
+
 static inline void tu803C_max(s32* m, s32 v) {
     if (*m < v) {
         *m = v;
@@ -3944,9 +3949,7 @@ extern "C" void fn_803CD2DC(u8* p) {
     }
 }
 
-extern "C" void fn_803CD75C(u8* p_) {
-    u8* base = (u8*)lbl_804765D0;
-    u8* p = p_;
+extern "C" void fn_803CD75C(u8* p) {
     s32 i;
     s32 sum;
     s32 a = *(s16*)(lbl_8050DB0C + 0x158);
@@ -3957,6 +3960,7 @@ extern "C" void fn_803CD75C(u8* p_) {
     s16 f = *(s16*)(lbl_8050DB0C + 0x15e);
     s16 g = *(s16*)(lbl_8050DB0C + 0x160);
     s32 m = c + b;
+    u8* base;
     if (m < c + (b + a * 2)) {
         m = c + (b + a * 2);
     }
@@ -3970,25 +3974,26 @@ extern "C" void fn_803CD75C(u8* p_) {
     if (*(s16*)(p + 0xd8) > c) {
         setFade(*(void**)(p + 0x50), b, 0, lbl_80543494, lbl_80543458);
     }
+    base = (u8*)lbl_804765D0;
     sum = 0;
     for (i = 0; i < 3; i++) {
         if (*(s16*)(p + 0xd8) > c + sum) {
             s32 j = 2 - i;
-            fn_80402940(*(void**)(p + 0x38 + j * 4), b, lbl_805434A0, lbl_80543458, 0);
-            fn_80402628(*(void**)(p + 0x38 + j * 4), b, 0, ((u8*)*(void**)(p + 0x38 + j * 4))[0x28]);
-            tu803C_setCell2(p, base, 0x38, j, 0x780, 0x125);
-            tu803C_setCell2(p, base, 0x38, j, 0x768, 0x126);
-            tu803C_setCell2(p, base, 0x38, j, 0x750, 0x127);
-            tu803C_setCell2(p, base, 0x38, j, 0x6c8, 0x128);
-            tu803C_setCell2(p, base, 0x38, j, 0x6b0, 0x129);
-            tu803C_setCell2(p, base, 0x38, j, 0x698, 0x12a);
-            tu803C_setCell2(p, base, 0x38, j, 0x680, 0x12b);
-            tu803C_setCell2(p, base, 0x38, j, 0x668, 0x12c);
-            tu803C_setCell2(p, base, 0x38, j, 0x650, 0x12d);
-            tu803C_setCell2(p, base, 0x38, j, 0x638, 0x12e);
-            tu803C_setCell2(p, base, 0x38, j, 0x620, 0x12f);
-            tu803C_setCell2(p, base, 0x38, j, 0x608, 0x130);
-            tu803C_setCell2(p, base, 0x38, j, 0x5f0, 0x131);
+            fn_80402940(*(void**)(p + (j * 4 + 0x38)), b, lbl_805434A0, lbl_80543458, 0);
+            fn_80402628(*(void**)(p + (j * 4 + 0x38)), b, 0, ((u8*)*(void**)(p + (j * 4 + 0x38)))[0x28]);
+            tu803C_setCellK(p, base, 0x38, j, 0x780, 0x125);
+            tu803C_setCellK(p, base, 0x38, j, 0x768, 0x126);
+            tu803C_setCellK(p, base, 0x38, j, 0x750, 0x127);
+            tu803C_setCellK(p, base, 0x38, j, 0x6c8, 0x128);
+            tu803C_setCellK(p, base, 0x38, j, 0x6b0, 0x129);
+            tu803C_setCellK(p, base, 0x38, j, 0x698, 0x12a);
+            tu803C_setCellK(p, base, 0x38, j, 0x680, 0x12b);
+            tu803C_setCellK(p, base, 0x38, j, 0x668, 0x12c);
+            tu803C_setCellK(p, base, 0x38, j, 0x650, 0x12d);
+            tu803C_setCellK(p, base, 0x38, j, 0x638, 0x12e);
+            tu803C_setCellK(p, base, 0x38, j, 0x620, 0x12f);
+            tu803C_setCellK(p, base, 0x38, j, 0x608, 0x130);
+            tu803C_setCellK(p, base, 0x38, j, 0x5f0, 0x131);
             setFade(*(void**)(p + 0x44 + i * 4), b, 0, lbl_80543494, lbl_80543458);
             fn_80402628(*(void**)(p + 0x44 + i * 4), b, 0, ((u8*)*(void**)(p + 0x44 + i * 4))[0x28]);
             tu803C_setCell2(p, base, 0x44, i, 0x5d8, 0x118);
