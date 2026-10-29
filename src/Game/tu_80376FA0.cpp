@@ -69,6 +69,22 @@ extern "C" void fn_80377000(u8* this_) {
     }
 }
 
+static inline void movingBlockBreakTiles(u8* self, f32 x, f32 y, f32 z) {
+    Vec point;
+    const f32* offsets = lbl_80475178;
+    for (s32 i = 0; i < 4; i++) {
+        point.x = x;
+        point.y = y;
+        point.z = z;
+        const f32* offset = offsets;
+        for (s32 j = 0; j < 4; j++, offset++) {
+            point.y = y + *offset;
+            fn_802A3948(lbl_8053AC98, &point, 0, *(u32*)(self + 4), 0);
+        }
+        x += 16.0f;
+    }
+}
+
 static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
     s32 room = *(s32*)(self + 4);
     if (fn_8023DE58(player) != room) return false;
