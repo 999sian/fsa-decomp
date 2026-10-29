@@ -163,6 +163,30 @@ struct Scr_803B1B60 {
     virtual Pane_803B1B60* v3C(u64 name);
 };
 
+struct MsgSinkObj2 {
+    u32 m0;
+    u32 m4;
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void send(void* msg);
+};
+
+struct FVec3 {
+    FVec3() {}
+    FVec3(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
+    f32 x, y, z;
+};
+
+struct Menu_803B2FB0;
+extern "C" void fn_803B2FB0(Menu_803B2FB0*);
+extern "C" u32 fn_80309D6C(void*, s32, s32);
+extern "C" u32 fn_80309C4C(void*, s32, s32);
+extern "C" s32 fn_8030AAF4(s32);
+extern "C" void fn_803B236C(void*);
+extern "C" void* fn_8013C824(void);
+extern "C" void* fn_8013CC50(u32, FVec3*, u32, u32, u32, u32, u32, u32, f32);
+
 // Maps another player's index to a compact slot excluding `self`.
 extern "C" s32 fn_803A8DFC(void* this_, s32 self) {
     s32 r = 0;
@@ -562,21 +586,6 @@ extern void* lbl_8053AF80;
 
 extern void* lbl_8053AD30;
 extern "C" u32 fn_80309C4C(void* p, s32 a, s32 b);
-
-struct MsgSinkObj2 {
-    u32 m0;
-    u32 m4;
-    virtual void v08();
-    virtual void v0C();
-    virtual void v10();
-    virtual void send(void* msg);
-};
-
-struct FVec3 {
-    FVec3() {}
-    FVec3(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
-    f32 x, y, z;
-};
 
 struct Menu_Join {
     u8 pad0[0x174];
@@ -2401,8 +2410,7 @@ extern "C" void fn_803B0FD4(Menu_Intro* p) {
 }
 #pragma opt_lifetimes reset
 extern "C" void fn_803B14F8(void* this_) {
-    char* base = (char*)this_;
-    Menu_Intro* p = (Menu_Intro*)base;
+    Menu_Intro* p = (Menu_Intro*)this_;
     s32 k;
     const u64* fadeTag;
     char* row;
@@ -3292,27 +3300,24 @@ extern u8 lbl_8050EC80[];
 extern "C" u32 fn_80309D6C(void*, s32, s32);
 extern "C" void fn_803B236C(void*);
 extern "C" void fn_803AA1F8(void* this_) {
-    u8* q1;
-    s32 n;
-    s32 i;
     u8* q2;
     u8* q3;
     u8* v;
     u8* q4;
-    f32 width;
+    s32 i;
     f32 dy;
     f32 x0;
     u8* p = (u8*)this_;
     if (p[0x4c8] != 0xff) {
-        n = 0;
+        s32 n = 0;
         --*(s32*)(p + 0x444);
         if (*(s32*)(p + 0x444) == 0) {
-            q1 = p;
-            for (i = 0; i < *(s32*)(p + 0x454); q1 += 4, ++i) {
-                if (i == p[0x4ac + n]) {
+            u8* q1 = p;
+            for (s32 j = 0; j < *(s32*)(p + 0x454); q1 += 4, ++j) {
+                if (j == p[0x4ac + n]) {
                     if (*(void**)(q1 + 0x1b8) == 0) {
                         u8* pane = *(u8**)(q1 + 0x158);
-                        width = *(f32*)(pane + 0x28) - *(f32*)(pane + 0x20);
+                        f32 width = *(f32*)(pane + 0x28) - *(f32*)(pane + 0x20);
                         FVec3 pos(lbl_805433E8 * width + *(f32*)(pane + 0x30), lbl_805433C8, lbl_805433C8);
                         *(void**)(q1 + 0x1b8) = fn_8013CC50(0, &pos, 0x241, 0, 0, 0, 0, 1, lbl_805433D4);
                     }
@@ -3342,14 +3347,7 @@ extern "C" void fn_803AA1F8(void* this_) {
     q3 = p;
     v = p;
     for (i = 0; i < *(s32*)(p + 0x454); q3 += 4, ++i, v += 12) {
-        s32 score = *(s32*)(q3 + 0x340) + *(s32*)(q3 + 0x350);
-        score += *(s32*)(q3 + 0x360);
-        score += *(s32*)(q3 + 0x370);
-        score += *(s32*)(q3 + 0x320);
-        score -= *(s32*)(q3 + 0x380);
-        score += *(s32*)(q3 + 0x3b0);
-        score += *(s32*)(q3 + 0x3a0);
-        *(s32*)(q3 + 0x3e0) = score;
+        *(s32*)(q3 + 0x3e0) = *(s32*)(q3 + 0x3a0) + (*(s32*)(q3 + 0x320) + (*(s32*)(q3 + 0x340) + *(s32*)(q3 + 0x350) + *(s32*)(q3 + 0x360) + *(s32*)(q3 + 0x370)) - *(s32*)(q3 + 0x380) + *(s32*)(q3 + 0x3b0));
         if (*(s32*)(q3 + 0x3e0) < -5000) *(s32*)(q3 + 0x3e0) = -5000;
 
         if (*(s32*)(q3 + 0x3e0) < -500) {
@@ -3368,14 +3366,21 @@ extern "C" void fn_803AA1F8(void* this_) {
         if (*(s32*)(q3 + 0x3e0) > 9999) *(s32*)(q3 + 0x3e0) = 9999;
         u8* pane = *(u8**)(q3 + 0x158);
         f32 width = *(f32*)(pane + 0x28) - *(f32*)(pane + 0x20);
-        u16 texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
+        s32 texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
         x0 = getBounds__7J2DPaneFv(pane)[0];
-        f32 cx = x0 + getBounds__7J2DPaneFv(*(void**)(p + 0x168))[0];
-        *(f32*)(v + 0x2f0) = lbl_805433CC * (width * lbl_805433E8 + cx) / (f32)(s32)texW;
-        u16 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+        f32 cx = getBounds__7J2DPaneFv(*(void**)(p + 0x168))[0];
+        cx += x0;
+        f32 scale = lbl_805433CC;
+        f32 center = width * lbl_805433E8 + cx;
+        *(f32*)(v + 0x2f0) = scale * center / (f32)texW;
+        s32 texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
         x0 = getBounds__7J2DPaneFv(*(void**)(q3 + 0x158))[3];
-        f32 cy = x0 + getBounds__7J2DPaneFv(*(void**)(p + 0x168))[1];
-        *(f32*)(v + 0x2f4) = lbl_805433D0 * (cy - lbl_805433FC - lbl_80543400) / (f32)(s32)texH;
+        f32 cy = getBounds__7J2DPaneFv(*(void**)(p + 0x168))[1];
+        cy += x0;
+        const f32 scaleY = lbl_805433D0;
+        const f32 b = lbl_80543400;
+        const f32 a = lbl_805433FC;
+        *(f32*)(v + 0x2f4) = scaleY * (cy - a - b) / (f32)texH;
         *(f32*)(v + 0x2f8) = lbl_805433C8;
     }
     fn_803B2FB0((Menu_803B2FB0*)p);
