@@ -2,6 +2,10 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
+static inline void boundPlayerVelocity(f32& value, const f32 lower, const f32 upper) {
+    if (value < lower) value = lower;
+    else if (value > upper) value = upper;
+}
 static inline void rotatePlayerFall(f32* v, const f32 y, const f32 z) { v[0] = -z; v[1] = -y; }
 static inline bool playerBoxContains(const JGeometry::TBox2f& b, const JGeometry::TVec3<f32>& p) { return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y; }
 #include "JSystem/JGeometry/Box.h"
@@ -1460,8 +1464,6 @@ extern "C" bool fn_8025F684(char*);
 extern "C" bool fn_8022C3AC(s32);
 extern "C" void fn_80290D58(char*);
 extern "C" void fn_80282178(char* p) {
-f32 y;
-f32 z;
 int area;
 S32(p,0x394)++;
 if(S32(p,0x394)==0x48) fn_8024F0E8(p,0x10003);
@@ -1478,12 +1480,10 @@ if(*(u8*)((u32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
 if(F32(p,0x348)>-7.0f) F32(p,0x348)=-7.0f;
 else if(F32(p,0x348)<-10.0f) F32(p,0x348)=-10.0f;
 } else {
-y=F32(p,0x34c);
-z=F32(p,0x348);
-F32(p,0x348)=-y;
-F32(p,0x34c)=-z;
-if(F32(p,0x34c)<7.0f) F32(p,0x34c)=7.0f;
-else if(F32(p,0x34c)>10.0f) F32(p,0x34c)=10.0f;
+f32 limit=7.0f;
+rotatePlayerFall((f32*)(p+0x348),F32(p,0x348),F32(p,0x34c));
+if(F32(p,0x34c)<limit) F32(p,0x34c)=limit;
+else if(F32(p,0x34c)>lbl_80540354) F32(p,0x34c)=lbl_80540354;
 }
 fn_80301D54(S32(p,4));
 U8(p,0xcea)=0;
@@ -1534,7 +1534,7 @@ F32(p,0x10)=lbl_80540360;
 } else {
 { f32 limit=-6.0f;
 F32(p,0x34c)-=0.25f;
-if(F32(p,0x34c)<7.0f) F32(p,0x34c)=7.0f;
+if(F32(p,0x34c)<limit) F32(p,0x34c)=limit;
 }
 if(F32(p,0x10)<lbl_80540360) {
 if(fn_8025F684(p)) fn_80251AEC(p,0x12); else fn_80251AEC(p,0);
