@@ -156,6 +156,16 @@ extern "C" int fn_802DCD0C(void);
 extern "C" u8 fn_80388CAC(s32 id, u32 h);
 extern "C" float lbl_805427E0;
 struct MovingAnimEntry { s32* idle; s32* moving; u32 a, b; };
+struct MovingActor : Actor {
+    s32 state, timer, frame, duration, remaining, hintTimer, facing, player, kind;
+    s32* frames() { return ((MovingAnimEntry*)lbl_80472390)[kind].moving; }
+    void setState(const int next) {
+        state = next;
+        frame = 0;
+        if (next == 3 || next == 5) timer = frames()[0];
+        else timer = ((MovingAnimEntry*)lbl_80472390)[kind].idle[0];
+    }
+};
 static inline void movingBeginJump(char* p) {
     JGeometry::TVec3f v((*(f32*)(p+0x278)-*(f32*)(p+0xc))/40.0f,
                        (*(f32*)(p+0x27c)-*(f32*)(p+0x10))/40.0f, 4.0f);
@@ -314,7 +324,7 @@ extern "C" void fn_80356B60(char* this_) {
                 *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[*(s32*)(this_ + 0x238)];
             } else if (*(s32*)(this_+0x230)==5) {
                 *(s32*)(this_ + 0x238) &= 3;
-                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[*(s32*)(this_ + 0x238)];
+                *(s32*)(this_ + 0x234) = movingFrames(this_)[*(s32*)(this_ + 0x238)];
             }
         }
         break;
@@ -328,7 +338,7 @@ extern "C" void fn_80356B60(char* this_) {
                 *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[*(s32*)(this_ + 0x238)];
             } else if (*(s32*)(this_+0x230)==5) {
                 *(s32*)(this_ + 0x238) &= 1;
-                *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].moving[*(s32*)(this_ + 0x238)];
+                *(s32*)(this_ + 0x234) = movingFrames(this_)[*(s32*)(this_ + 0x238)];
             }
         }
         break;
