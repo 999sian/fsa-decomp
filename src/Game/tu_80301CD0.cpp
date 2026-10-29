@@ -153,8 +153,8 @@ static inline void clearMessageEntry(MsgEntry_80301CD0* entry, const int index) 
     entry->f10c = 0;
     entry->text[0] = 0;
 }
-static inline void clearMessageEntries(MsgEntry_80301CD0* entries) {
-    for (int index = 0; index < 32; index++) clearMessageEntry(entries + index, index);
+static inline void clearMessageEntries(MsgEntry_80301CD0* entries, int index = 0) {
+    for (; index < 32; index++) clearMessageEntry(entries + index, index);
 }
 extern u8 lbl_8053AD20[4];
 extern u8 lbl_80541618[4];
@@ -2190,10 +2190,7 @@ int j;
 *(void**)self=lbl_804AA8B8;
 for(s32 i=0;i<4;i++) {
 lbl_80504A28[i]=lbl_80504A18[i]=j=0;
-for(;j<32;j++) {
-MsgEntry_80301CD0* e=&((MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380))[j];
-clearMessageEntry(e, j);
-}
+clearMessageEntries((MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380));
 for(j=0;j<0x2000;j++) ((u32*)(lbl_804DBC18+i*0x8000))[j]=0xcdcdcdcd;
 lbl_8053AD00[i]=0;
 ((u32*)lbl_80506D48)[i]=0;
