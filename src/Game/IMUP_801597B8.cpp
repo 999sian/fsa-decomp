@@ -22,9 +22,7 @@ struct FSAObjMgr {
     virtual void m1();
     virtual void m2();
     virtual void m3();
-    virtual void m4();
-    virtual void m5();
-    virtual void* m6(u32 id, const char* name);
+    virtual void* getResource(u32 id, const char* name);
 };
 
 struct Vec2f {
