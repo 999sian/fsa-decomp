@@ -43,8 +43,8 @@ static inline void tu801D3320_setCurI(char* this_, int i) {
 }
 
 static inline u8 tu801D3320_isFreeAt(const Vec3f& pos, s32 room) {
-    u8 ok = 1;
     s32 r = room;
+    u8 ok = 1;
     if (fn_801CCBD0(&pos, r) || fn_801CCB1C(&pos, r)) {
         ok = 0;
     }
@@ -259,8 +259,8 @@ extern "C" void fn_801D3320(char* this_) {
             d.scale(lbl_8053F088);
         }
     } else if (b) {
-        f32 len = dir.length();
-        if (d.length() > len - lbl_8053F088) {
+        f32 len = PSVECMag(&dir);
+        if (PSVECMag(&d) > len - lbl_8053F088) {
             d.set(dir);
             tu801D3320_normalizeR(d);
             d.scale(len - lbl_8053F088);
