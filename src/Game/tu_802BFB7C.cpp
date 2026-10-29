@@ -157,6 +157,7 @@ static inline void createRoomItem(s32 player, Vec* position, u32 param) {
     Actor_CreateByID(manager, 0x494D5550, (void*)destination, position, param, -1, -1);
 }
 
+#pragma opt_strength_reduction off
 #pragma opt_propagation off
 extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
     u32 tableOffset;
@@ -198,15 +199,13 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
             if ((u8)fn_8022F514(i) == 1) {
                 if (selected == fn_8022F3DC(i)) {
                     if (i == room) {
-                param = *(const u32*)(table + tableOffset);
-                param += roomBits;
+                u32 baseValue = *(const u32*)(table + tableOffset);
+                param = baseValue + roomBits;
                 param = offset + param;
-                destination = fn_8023DE58(i);
-                void* manager = fn_801F856C();
-                Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
+                createRoomItem(i, &pos, param);
             } else {
-                param = *(const u32*)(table + tableOffset);
-                param += roomBits;
+                u32 baseValue = *(const u32*)(table + tableOffset);
+                param = baseValue + roomBits;
                 param += 0x30000000;
                 param = offset + param;
                 destination = fn_8023DE58(i);
@@ -216,15 +215,15 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
                 }
             } else if (i == selected) {
                 if (i == room) {
-                param = *(const u32*)(table + tableOffset);
-                param += roomBits;
+                u32 baseValue = *(const u32*)(table + tableOffset);
+                param = baseValue + roomBits;
                 param = offset + param;
                 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                param = *(const u32*)(table + tableOffset);
-                param += roomBits;
+                u32 baseValue = *(const u32*)(table + tableOffset);
+                param = baseValue + roomBits;
                 param += 0x30000000;
                 param = offset + param;
                 destination = fn_8023DE58(i);
@@ -234,15 +233,15 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
             }
         } else {
             if (i == room) {
-                param = *(const u32*)(table + tableOffset);
-                param += roomBits;
+                u32 baseValue = *(const u32*)(table + tableOffset);
+                param = baseValue + roomBits;
                 param = offset + param;
                 destination = fn_8023DE58(i);
                 void* manager = fn_801F856C();
                 Actor_CreateByID(manager, 0x494D5550, (void*)destination, &pos, param, -1, -1);
             } else {
-                param = *(const u32*)(table + tableOffset);
-                param += roomBits;
+                u32 baseValue = *(const u32*)(table + tableOffset);
+                param = baseValue + roomBits;
                 param += 0x30000000;
                 param = offset + param;
                 destination = fn_8023DE58(i);
@@ -262,6 +261,7 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
     return 1;
 }
 #pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_802C0278(char* p) {
     s32 iVar1;
     u8* buf;
@@ -359,7 +359,7 @@ extern "C" void fn_802C0570(char* p) {
 
 extern "C" f32 lbl_80540C60;
 extern "C" f32 lbl_80540C68;
-extern "C" s32 fn_8023AF14(f32* box, s32 room, s32 zero);
+extern "C" s32 fn_8023AF14(f32* box, s32 room, s32 zero, f32 z = lbl_80540C40);
 extern "C" void fn_8022FE80(s32 a, s32 room, s32 handle, s32 d, s32 e);
 extern "C" BOOL fn_80388CAC(s32 a, s32 b);
 extern "C" BOOL fn_8023061C(s32 a, s32 b);
