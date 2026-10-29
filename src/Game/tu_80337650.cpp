@@ -26,6 +26,9 @@ struct AnimKindTbl {
 };
 extern char lbl_80471BB8[];
 static inline AnimKindTbl* GetAnimKind(s32 kind) { return (AnimKindTbl*)(lbl_80471BB8 + (kind << 4)); }
+static inline JGeometry::TVec3<f32> JumpVel(const f32* target, const f32* pos, f32 time, f32 vz) {
+    return JGeometry::TVec3<f32>((target[0] - pos[0]) / time, (target[1] - pos[1]) / time, vz);
+}
 static inline s32 AnimMoveFirst(s32 kind) {
     const AnimKindTbl* __restrict base = (const AnimKindTbl*)lbl_80471BB8;
     return *base[kind].move;
@@ -340,8 +343,9 @@ extern "C" void fn_80337DEC(u8* this_) {
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
         if (*(u8*)(this_ + 0x268) == 0 && fn_8023A30C()) {
-            *(V3*)(this_ + 0x3c) = V3((*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / lbl_80542068,
-                                      (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / lbl_80542068, lbl_8054206C);
+            f32 t = lbl_80542068;
+            *(V3*)(this_ + 0x3c) = V3((*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / t,
+                                      (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / t, lbl_8054206C);
             *(f32*)(this_ + 0x260) = lbl_80542070;
             *(s32*)(this_ + 0x230) = 3;
         } else {
@@ -390,13 +394,13 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
+                    *(s32*)(this_ + 0x234) = AnimMoveFirst(*(s32*)(this_ + 0x250));
                 } else {
-                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
+                    *(s32*)(this_ + 0x234) = AnimIdleFirst(*(s32*)(this_ + 0x250));
                 }
                 break;
             default:
-                *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
+                *(s32*)(this_ + 0x234) = AnimMoveFirst(*(s32*)(this_ + 0x250));
                 break;
             }
         }
@@ -417,31 +421,32 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 2:
                 fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, lbl_8054206C, lbl_80542078);
-                *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
+                *(s32*)(this_ + 0x234) = AnimMoveFirst(*(s32*)(this_ + 0x250));
                 break;
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
+                    *(s32*)(this_ + 0x234) = AnimMoveFirst(*(s32*)(this_ + 0x250));
                 } else {
-                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
+                    *(s32*)(this_ + 0x234) = AnimIdleFirst(*(s32*)(this_ + 0x250));
                 }
                 break;
             case 3:
             default:
-                *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
+                *(s32*)(this_ + 0x234) = AnimMoveFirst(*(s32*)(this_ + 0x250));
                 break;
             }
         }
         break;
     case 5:
         if (*(u8*)(this_ + 0x268) == 0 && fn_8023A30C()) {
-            *(V3*)(this_ + 0x3c) = V3((*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / lbl_80542068,
-                                      (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / lbl_80542068, lbl_8054206C);
+            f32 t = lbl_80542068;
+            *(V3*)(this_ + 0x3c) = V3((*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / t,
+                                      (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / t, lbl_8054206C);
             *(f32*)(this_ + 0x260) = lbl_80542070;
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x230) = 3;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
+            *(s32*)(this_ + 0x234) = AnimMoveFirst(*(s32*)(this_ + 0x250));
         } else if (*(s32*)(this_ + 0x240) <= 0 ||
                    (*(f32*)(this_ + 0xc) == *(f32*)(this_ + 0x24) && *(f32*)(this_ + 0x10) == *(f32*)(this_ + 0x28))) {
             *(V3*)(this_ + 0xc) = *(V3*)(this_ + 0x24);
@@ -450,7 +455,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(f32*)(this_ + 0x3c) = lbl_80542078;
             *(s32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
+            *(s32*)(this_ + 0x234) = AnimIdleFirst(*(s32*)(this_ + 0x250));
         }
         break;
     case 4:
