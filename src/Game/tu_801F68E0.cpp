@@ -609,6 +609,24 @@ extern "C" void fn_801F8658(ActorPool* pool) {
     }
 }
 
+static inline bool unlinkPoolNode(LinkActor* const actor, LinkPool* const pool)
+{
+    bool removed = false;
+    if (actor->mPrev != NULL) {
+        actor->mPrev->mNext = actor->mNext;
+        if (actor->mNext != NULL) actor->mNext->mPrev = actor->mPrev;
+        removed = true;
+    } else if (actor == pool->mHead) {
+        pool->mHead = actor->mNext;
+        if (pool->mHead != NULL) pool->mHead->mPrev = NULL;
+        removed = true;
+    }
+    if (removed) {
+        actor->mPrev = NULL;
+        actor->mNext = NULL;
+    }
+    return removed;
+}
 static inline bool updatePoolActorDuringPause(u8 paused, const Actor* actor)
 {
     if (paused) {
@@ -621,6 +639,10 @@ static inline bool updatePoolActorDuringPause(u8 paused, const Actor* actor)
     return false;
 }
 extern "C" void fn_801F871C(ActorPool* base) {
+    u8* n;
+    bool bVar;
+    u8* next;
+    u8* prev;
     u8* pa;
     u8* ph;
     u8* liveSlot;
@@ -723,11 +745,16 @@ extern "C" void fn_801F871C(ActorPool* base) {
                         }
                     }
                     if (!bVar1) {
-                        u32 fc = *(u32*)(a + 0x1a0);
-                        if (cVar13 == 0 || (cVar13 != 0 && (fc == 0x464f524d || fc == 0x414c4345 || fc == 0x494d5550 ||
+                        if (cVar13 == 0) goto updateActor;
+                        if (cVar13 != 0) {
+                            u32 fc = *(u32*)(a + 0x1a0);
+                            if (fc == 0x464f524d || fc == 0x414c4345 || fc == 0x494d5550 ||
                             fc == 0x53574556 || fc == 0x53455632 || fc == 0x4c544556 || fc == 0x50525443 ||
                             fc == 0x5354504e || fc == 0x54554746 || (u32)(fc - 0x5455544c) <= 1 ||
-                            fc == 0x50454646 || fc == 0x5357444c))) {
+                            fc == 0x50454646 || fc == 0x5357444c) goto updateActor;
+                        }
+                        goto afterActorUpdate;
+                        updateActor: {
                             fn_801F32F4(a);
                             fn_801EAB0C((*(u8**)(liveSlot + 8)) + 0x1dc);
                             if (fn_801A6160(*(u8**)(liveSlot + 8)) == 0) {
@@ -739,6 +766,7 @@ extern "C" void fn_801F871C(ActorPool* base) {
                             }
                             fn_801EE508(*(u8**)(liveSlot + 8));
                         }
+                        afterActorUpdate:
                         a = *(u8**)(liveSlot + 8);
                         u8 kind = *(u32*)(a + 0xb8);
                         if (kind == 1 || kind == 2) {
@@ -789,12 +817,33 @@ extern "C" void fn_801F871C(ActorPool* base) {
         fn_80456154(*(void**)((u8*)base + 0x200c));
     }
     fn_801F6A4C(base);
-    u8* n = *(u8**)((u8*)base + 0x2018);
+    n = *(u8**)((u8*)base + 0x2018);
     while (n != 0) {
-        u8* next = *(u8**)(n + 0x160);
+        next = *(u8**)(n + 0x160);
         if (n[0x11c] != 0) {
             if (n[0x165] == 0) {
-                fn_801F8448((LinkPool*)lbl_8053AAF8->m4->m8, (LinkActor*)n);
+                bVar = false;
+                u8* self = *(u8**)(*(u8**)((u8*)lbl_8053AAF8 + 4) + 8);
+                prev = *(u8**)(n + 0x15c);
+                if (prev != 0) {
+                    *(u8**)(prev + 0x160) = next;
+                    if (*(u8**)(n + 0x160) != 0) {
+                        *(void**)(*(u8**)(n + 0x160) + 0x15c) = *(void**)(n + 0x15c);
+                    }
+                    bVar = true;
+                } else {
+                    if (n == *(u8**)(self + 0x2018)) {
+                        *(u8**)(self + 0x2018) = next;
+                        if (*(u8**)(self + 0x2018) != 0) {
+                            *(u8**)(*(u8**)(self + 0x2018) + 0x15c) = prev;
+                        }
+                        bVar = true;
+                    }
+                }
+                if (bVar) {
+                    *(void**)(n + 0x15c) = 0;
+                    *(void**)(n + 0x160) = 0;
+                }
             } else {
                 n[0x165] = 0;
             }
