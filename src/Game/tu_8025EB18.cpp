@@ -780,6 +780,7 @@ static inline JGeometry::TVec2f carrySub(const JGeometry::TVec2f& a, const JGeom
     v.y -= b.y;
     return v;
 }
+#pragma opt_propagation reset
 extern "C" u8 fn_802604CC(char* p) {
     if (fn_8022B1F8(p)) return 0;
     if (fn_8022AF10()) return 0;
