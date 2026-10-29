@@ -17,7 +17,7 @@ extern "C" char* lbl_8053AB10;
 extern "C" void* lbl_8053AC98;
 extern "C" void fn_802A3948(void* mgr, void* pos, int player, unsigned long room, int id);
 extern "C" unsigned long fn_8013CC50(unsigned long id, void* pos, unsigned long seId, int a, int b, int c, int d, int e, float f);
-extern "C" char* fn_802D6A9C(...);
+extern "C" char* fn_802D6A9C(void);
 
 struct Vec3CC {
     float x;
