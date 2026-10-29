@@ -2018,6 +2018,7 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
 
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
+#pragma opt_propagation off
 extern "C" void fn_803085A4(s32 unused, s32 player)
 {
     u8* e;
