@@ -3,6 +3,10 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#include "std/math.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -115,51 +119,45 @@ extern "C" void fn_80164834(char* this_) {
     s32 i;
     s32 hit;
     s32 r;
-    s32 r30;
     u32 flags;
-    f32 pos[3];
-    f32 vel[3];
+    JGeometry::TVec3<f32> vel(*(Vec*)(this_ + 0x3c));
+    JGeometry::TVec3<f32> pos(*(Vec*)(this_ + 0xc));
     f32 pt[2];
-    f32 v;
+    char* self;
 
-    *(s32*)(this_ + 0x108) = 0x3e8;
+    self = this_;
+    *(s32*)(self + 0x108) = 0x3e8;
     i = 0;
-    pos[0] = *(f32*)(this_ + 0xc);
-    pos[1] = *(f32*)(this_ + 0x10);
-    pos[2] = *(f32*)(this_ + 0x14);
-    vel[0] = *(f32*)(this_ + 0x3c);
-    vel[1] = *(f32*)(this_ + 0x40);
-    vel[2] = *(f32*)(this_ + 0x44);
-    r = fn_801F285C(this_, 0, 0, 0, i);
+    r = fn_801F285C(self, 0, 0, 0, i);
     if (r < 0) {
         return;
     }
+    JGeometry::TVec3<f32> p2(*(Vec*)(self + 0xc));
     for (i = 0; i < 4; i++) {
-        pt[0] = (*(f32*)(this_ + 0x60) + pos[0]) + lbl_8053D77C * ((*(f32*)(this_ + 0x60) + pos[0]) - (*(f32*)(this_ + 0x68) + pos[0]));
-        pt[1] = (*(f32*)(this_ + 0x64) + pos[1]) + lbl_8053D77C * ((*(f32*)(this_ + 0x64) + pos[1]) - (*(f32*)(this_ + 0x6c) + pos[1]));
+        pt[0] = (*(f32*)(self + 0x60) + p2.x) + lbl_8053D77C * ((*(f32*)(self + 0x60) + p2.x) - (*(f32*)(self + 0x68) + p2.x));
+        pt[1] = (*(f32*)(self + 0x64) + p2.y) + lbl_8053D77C * ((*(f32*)(self + 0x64) + p2.y) - (*(f32*)(self + 0x6c) + p2.y));
         if (fn_80237948(r, pt)) {
-            fn_8013CC50((void*)*(s32*)(this_ + 4), this_ + 0xc, lbl_8053D778, 0x117, 0, 1, 0, 0, 1);
-            fn_8013CC50((void*)*(s32*)(this_ + 4), this_ + 0xc, lbl_8053D778, 0x118, 0, 1, 0, 0, 1);
-            fn_801F0E34(this_, 0x400d1, 0);
+            fn_8013CC50((void*)*(s32*)(self + 4), self + 0xc, lbl_8053D778, 0x117, 0, 1, 0, 0, 1);
+            fn_8013CC50((void*)*(s32*)(self + 4), self + 0xc, lbl_8053D778, 0x118, 0, 1, 0, 0, 1);
+            fn_801F0E34(self, 0x400d1, 0);
         }
-        *(f32*)(this_ + 0x3c) = vel[0];
-        *(f32*)(this_ + 0x40) = vel[1];
-        *(f32*)(this_ + 0x44) = vel[2];
+        *(f32*)(self + 0x3c) = vel.x;
+        *(f32*)(self + 0x40) = vel.y;
+        *(f32*)(self + 0x44) = vel.z;
     }
-    fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x268), lbl_8053D780, lbl_8053D778);
-    fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x26c), lbl_8053D780, lbl_8053D778);
-    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0xc) + *(f32*)(this_ + 0x3c);
-    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x40);
-    *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x14) + *(f32*)(this_ + 0x44);
-    fn_801F2B7C(this_, -100, -1, 1);
-    if (*(s32*)(this_ + 0x258) != 0 && *(s32*)(this_ + 0x238) == 0) {
-        *(s32*)(this_ + 0x260) = (*(s32*)(this_ + 0x260) + 1) & 3;
-        *(s32*)(this_ + 0x238) = 10;
+    fn_801F71A4((f32*)(self + 0x3c), *(f32*)(self + 0x268), lbl_8053D780, lbl_8053D778);
+    fn_801F71A4((f32*)(self + 0x40), *(f32*)(self + 0x26c), lbl_8053D780, lbl_8053D778);
+    *(f32*)(self + 0xc) = *(f32*)(self + 0xc) + *(f32*)(self + 0x3c);
+    *(f32*)(self + 0x10) = *(f32*)(self + 0x10) + *(f32*)(self + 0x40);
+    *(f32*)(self + 0x14) = *(f32*)(self + 0x14) + *(f32*)(self + 0x44);
+    fn_801F2B7C(self, -100, -1, 1);
+    if (*(s32*)(self + 0x258) != 0 && *(s32*)(self + 0x238) == 0) {
+        *(s32*)(self + 0x260) = (*(s32*)(self + 0x260) + 1) & 3;
+        *(s32*)(self + 0x238) = 10;
     }
-    r30 = fn_801F2618(this_, 0, 0);
+    fn_801F2618(self, 0, 0);
     hit = -1;
-    fn_801EEC98(this_, *(void**)(this_ + 0x198), 0, (void*)&flags, 0, (void*)&hit, 0, 0);
-    v = 0.0f;
+    fn_801EEC98(self, *(void**)(self + 0x198), 0, (void*)&flags, 0, (void*)&hit, 0, 0);
 }
 
 // TRAP init (vtable slot 1)
