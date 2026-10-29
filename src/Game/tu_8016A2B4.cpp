@@ -823,10 +823,6 @@ static inline void spawnEffectB8016D398(void* a5) {
         }
 }
 
-static inline s32 maxEffect8016D398(s32 a,s32 b) {
-    return a>=b?a:b;
-}
-
 static inline void positionEffectA8016D398(u8* p) {
     f32 ry=effectRandom8016D398();
     f32 rx=effectRandom8016D398();
@@ -856,6 +852,7 @@ static inline f32 scaleRandom8016D398(const f32& scale) {
     return scale*raw;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
     u8* p;
     s32 maxA,maxB;
@@ -914,7 +911,7 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
     if(maxB<maxA)maxB=maxA;
     J3DAnmBase** ap=(J3DAnmBase**)a9;
     J3DAnmBase** bp=(J3DAnmBase**)a10;
-    for(s32 j=0;j<6;++ap,++bp,++j){
+    for(int j=0;j<6;++ap,++bp,++j){
         J3DAnmBase* a=*ap;
         J3DAnmBase* b=*bp;
         if(a)a->mCurrentFrame=(f32)((s32)a2%a->mMaxFrame);
@@ -923,7 +920,7 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
         }
     }
 }
-#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 // Retail keeps individual comparisons rather than folding consecutive modes.
 #pragma optimization_level 3
 extern "C" void fn_8016DA6C(u8* self) {
