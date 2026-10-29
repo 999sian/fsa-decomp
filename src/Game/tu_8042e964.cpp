@@ -540,6 +540,10 @@ struct T80431_Helper {
 };
 
 struct T80431_Points { JGeometry::TVec2<s16> points[16]; };
+#pragma push
+#pragma new_may_return_null off
+static inline void InitMessagePoints(void* p) { new (p) T80431_Points; }
+#pragma pop
 extern "C" char lbl_8048F424[];
 struct T80431D84 {
     void* vt;
@@ -601,6 +605,7 @@ void* fn_80431C38(void* this_, s16 flag) {
     return this_;
 }
 
+#pragma placement_new_check off
 extern "C" T80431D84* fn_80431D84(T80431D84* self) {
 self->vt = lbl_804B1634;
 new (self->c) T80431_Points;
@@ -611,9 +616,9 @@ if(h) {
  h->vt = lbl_804B1600; lbl_8053AEC4 = (s32)h;
  h->screen = new J2DScreen;
  h->screen->setPriority(lbl_8048F390,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x20));
- h->objA = __nw__FUl(0x2c); if(h->objA) *(void**)h->objA=lbl_804AF86C;
+ h->objA = new T80431_Res;
  fn_80402F04(h->objA,h->screen->search('Pmmwk02'));
- h->objB = __nw__FUl(0x2c); if(h->objB) *(void**)h->objB=lbl_804AF86C;
+ h->objB = new T80431_Res;
  fn_80402F04(h->objB,h->screen->search('Pbl01'));
  ((J2DTextBox*)h->screen->search('Tmmt01'))->setFont(MessageFont());
  ((J2DTextBox*)h->screen->search('Tmmt02'))->setFont(MessageFont());
@@ -622,27 +627,27 @@ if(h) {
 self->helper=h;
 self->screen=new J2DScreen;
 self->screen->setPriority(lbl_8048F424,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x20));
-self->objC = (void*)__nw__FUl(0x2c); if(self->objC) *(void**)self->objC=lbl_804AF86C;
+self->objC = (Slot0*)new T80431_Res;
 fn_80402F04(self->objC,self->screen->search('Ndata01'));
-self->a[0] = (Slot0*)__nw__FUl(0x2c); if(self->a[0]) *(void**)self->a[0]=lbl_804AF86C;
+self->a[0] = (Slot0*)new T80431_Res;
 fn_80402F04(self->a[0],self->screen->search('Pwbb01'));
-self->a[1] = (Slot0*)__nw__FUl(0x2c); if(self->a[1]) *(void**)self->a[1]=lbl_804AF86C;
+self->a[1] = (Slot0*)new T80431_Res;
 fn_80402F04(self->a[1],self->screen->search('Pwbb02'));
-self->a[2] = (Slot0*)__nw__FUl(0x2c); if(self->a[2]) *(void**)self->a[2]=lbl_804AF86C;
+self->a[2] = (Slot0*)new T80431_Res;
 fn_80402F04(self->a[2],self->screen->search('Pwbb03'));
-self->a[3] = (Slot0*)__nw__FUl(0x2c); if(self->a[3]) *(void**)self->a[3]=lbl_804AF86C;
+self->a[3] = (Slot0*)new T80431_Res;
 fn_80402F04(self->a[3],self->screen->search('Pwbb04'));
-self->a[4] = (Slot0*)__nw__FUl(0x2c); if(self->a[4]) *(void**)self->a[4]=lbl_804AF86C;
+self->a[4] = (Slot0*)new T80431_Res;
 fn_80402F04(self->a[4],self->screen->search('Pwbb05'));
-self->b[0] = (Slot0*)__nw__FUl(0x2c); if(self->b[0]) *(void**)self->b[0]=lbl_804AF86C;
+self->b[0] = (Slot0*)new T80431_Res;
 fn_80402F04(self->b[0],self->screen->search('Pwb01'));
-self->b[1] = (Slot0*)__nw__FUl(0x2c); if(self->b[1]) *(void**)self->b[1]=lbl_804AF86C;
+self->b[1] = (Slot0*)new T80431_Res;
 fn_80402F04(self->b[1],self->screen->search('Pwb02'));
-self->b[2] = (Slot0*)__nw__FUl(0x2c); if(self->b[2]) *(void**)self->b[2]=lbl_804AF86C;
+self->b[2] = (Slot0*)new T80431_Res;
 fn_80402F04(self->b[2],self->screen->search('Pwb03'));
-self->b[3] = (Slot0*)__nw__FUl(0x2c); if(self->b[3]) *(void**)self->b[3]=lbl_804AF86C;
+self->b[3] = (Slot0*)new T80431_Res;
 fn_80402F04(self->b[3],self->screen->search('Pwb04'));
-self->b[4] = (Slot0*)__nw__FUl(0x2c); if(self->b[4]) *(void**)self->b[4]=lbl_804AF86C;
+self->b[4] = (Slot0*)new T80431_Res;
 fn_80402F04(self->b[4],self->screen->search('Pwb05'));
 ((J2DTextBox*)self->screen->search('Twt01'))->setFont(MessageFont());
 for(int i=0;i<4;i++) {
@@ -653,7 +658,7 @@ for(int i=0;i<4;i++) {
 }
 self->timer=0; *((u8*)self+0xec)=0; return self;
 }
-
+#pragma placement_new_check reset
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
