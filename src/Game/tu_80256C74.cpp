@@ -162,13 +162,6 @@ struct Tu80256Tables {
     JGeometry::TVec3<f32> b[8];
     JGeometry::TVec3<f32> c[4];
 };
-static inline void playerMoveArrowEffect(PlayerArrowPosition* arrow, const u32 handle) {
-    if ((s32)handle >= 0) {
-        u8* actor = fn_801F666C(fn_801F856C(), handle);
-        if (actor) V3(actor, 0xc) = arrow->pos;
-    }
-}
-
 static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
     f32 dx = a.x - b.x;
