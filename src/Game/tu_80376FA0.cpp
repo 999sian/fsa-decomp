@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "Game/HitRect.h"
 #include "Game/ItemBase.h"
 
 
@@ -139,16 +140,17 @@ extern "C" void fn_803771AC(u8* this_) {
             ((Vec*)(this_ + 0x3c))->z = 0.0f;
             if (*(u32*)(this_ + 0x230) != 0) {
                 fn_801EE434(*(u32*)(this_ + 0x230));
+                *(u32*)(this_ + 0x230) = 0;
             }
-            *(u32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x254) = 8;
             JGeometry::setTVec3f((f32*)((Vec*)(this_ + 0xc)), (f32*)(this_ + 0x18));
             if (PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24))) >= 63.9) {
                 ((Actor*)this_)->v10(0xff, 1);
-                f32 x = ((Vec*)(this_ + 0xc))->x - 24.0f;
+                f32 x = ((Vec*)(this_ + 0xc))->x;
+                x -= 24.0f;
                 f32 y = ((Vec*)(this_ + 0xc))->y;
                 f32 z = ((Vec*)(this_ + 0xc))->z;
-                s32 i, j;
+                s32 j, i;
                 for (i = 0; i < 4; i++) {
                     tmp.x = x;
                     tmp.y = y;
@@ -201,7 +203,7 @@ extern "C" void fn_803771AC(u8* this_) {
             if (fn_80239108(*(u32*)(this_ + 0x198)) < 4) {
                 break;
             }
-            if (PSVECDistance(((Vec*)(this_ + 0xc)), (Vec*)(this_ + 0x24)) >= 63.9f) {
+            if (!(PSVECDistance(((Vec*)(this_ + 0xc)), (Vec*)(this_ + 0x24)) < 63.9f)) {
                 break;
             }
             if (*(s32*)(this_ + 0x260) < 10) {
