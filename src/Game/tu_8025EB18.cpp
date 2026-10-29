@@ -881,7 +881,7 @@ extern "C" f32 fn_8024712C(char*);
 extern "C" u8 fn_802D6AC4(char*, s32);
 extern "C" void fn_802D6B24(char*, s32, u8);
 extern char* lbl_8053AC98;
-static inline u8 carryCheckOffsetTile(s32 room, s32 player, f32 x, f32 y, f32 z) {
+static inline u8 carryCheckOffsetTile(s32 player, s32 room, f32 x, f32 y, f32 z) {
     JGeometry::TVec3<f32> pos(x, y, z);
     return fn_8029E888(lbl_8053AC98, &pos, player, room);
 }
@@ -910,17 +910,17 @@ extern "C" u8 fn_80260C08(char* p) {
             }
         } else if (S32(p, 0x3dc) == 3) {
             if (fn_80247330(p) < lbl_80540150) {
-                if (fn_8029E888(lbl_8053AC98, (JGeometry::TVec3<f32>*)&(const JGeometry::TVec3<f32>&)JGeometry::TVec3<f32>(v.x - lbl_80540154, v.y, v.z), S32(p, 0x4), S32(p, 0x3b4)) == 1)
+                if (carryCheckOffsetTile(S32(p, 0x3b4), S32(p, 0x4), v.x - lbl_80540154, v.y, v.z) == 1)
                     return 1;
             } else if (fn_80247330(p) > lbl_80540150) {
-                if (fn_8029E888(lbl_8053AC98, (JGeometry::TVec3<f32>*)&(const JGeometry::TVec3<f32>&)JGeometry::TVec3<f32>(lbl_80540154 + v.x, v.y, v.z), S32(p, 0x4), S32(p, 0x3b4)) == 1)
+                if (carryCheckOffsetTile(S32(p, 0x3b4), S32(p, 0x4), lbl_80540154 + v.x, v.y, v.z) == 1)
                     return 1;
             }
             if (fn_8029E888(lbl_8053AC98, &v, S32(p, 0x4), S32(p, 0x3b4)) == 1)
                 return 1;
         } else if (S32(p, 0x3dc) == 1 || S32(p, 0x3dc) == 0) {
             if (fn_8024712C(p) > lbl_80540150) {
-                if (fn_8029E888(lbl_8053AC98, (JGeometry::TVec3<f32>*)&(const JGeometry::TVec3<f32>&)JGeometry::TVec3<f32>(v.x, v.y - lbl_80540154, v.z), S32(p, 0x4), S32(p, 0x3b4)) == 1)
+                if (carryCheckOffsetTile(S32(p, 0x3b4), S32(p, 0x4), v.x, v.y - lbl_80540154, v.z) == 1)
                     return 1;
             }
         }
