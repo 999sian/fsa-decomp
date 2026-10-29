@@ -117,9 +117,10 @@ static inline void WaveCopyPos(JGeometry::TVec2<f32>& dst, const f32 x, const f3
 static inline void fn_802A3164_sub(const JGeometry::TVec2<f32>* pos, s32 room, u16 param, s32 flag) {
     JGeometry::TVec2<f32> t;
     WaveCopyPos(t, pos->x, pos->y);
+    s32 tile;
     void* mgr = lbl_8053AC98;
     *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
-    s32 tile = *(s32*)((u8*)mgr + 0x20);
+    tile = *(s32*)((u8*)mgr + 0x20);
     fn_802D782C(fn_802D6A9C(), 1);
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, tile, param);
     s32 idx = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((u8*)mgr + 0x20));
