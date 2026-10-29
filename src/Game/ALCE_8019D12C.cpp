@@ -41,6 +41,14 @@ extern char lbl_804A2AB0[];
 extern void* lbl_8053AAF8;
 extern void* lbl_8053AD70;
 extern u8 lbl_8053ABB0;
+static inline f32 alceRandom(void* game, unsigned int multiplier) {
+    union { unsigned int bits; f32 value; } random;
+    unsigned int* state = (unsigned int*)((char*)game + 0xb4);
+    *state = *state * multiplier + 0x3c6ef35f;
+    random.bits = (*state >> 9) | 0x3f800000;
+    return random.value - lbl_8053E444;
+}
+
 struct Quad {
     f32 v[4];
 };
@@ -127,6 +135,7 @@ extern "C" void fn_8019D2AC(char* this_) {
     u8* flags;
     s32 off;
     s32* words;
+    char* actor;
     f32 pos[3];
     u32 bits1;
     u32 bits0;
@@ -184,17 +193,17 @@ extern "C" void fn_8019D2AC(char* this_) {
                 words = (s32*)base->words;
                 for (i = 0; i < *(s32*)(this_ + 0x254); i++) {
                     if (*flags == 1) {
-                        char* actor = *(char**)((char*)fn_801F856C() + off + 8);
+                        actor = *(char**)((char*)fn_801F856C() + off + 8);
                         if (actor != 0) {
                         if (words[0] == 4) {
-                            s32 r;
+                            void* r;
                             f32* src = base->positions[i];
                             pos[0] = src[0];
                             pos[1] = src[1];
                             pos[2] = src[2];
                             fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x18, 1, 7, 0, 0, 1);
                             fn_801EE4F0(actor);
-                            r = (s32)fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x19, 1, 7, 0, 0, 1);
+                            r = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x19, 1, 7, 0, 0, 1);
                             fn_801F0E34(this_, 0x3005e, 0);
                             if (r != 0) {
                                 fn_8013C830(fn_8013C824(), *(s32*)(this_ + 0x234), (void*)r);
