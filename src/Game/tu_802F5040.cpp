@@ -25,6 +25,16 @@ struct SpriteTables802F {
     u32 tluts[16];
     s32 sizes[4][4][2];
 };
+extern "C" f64 lbl_80541508;
+static inline f32 spriteS32ToF32(s32 v) {
+    union {
+        f64 d;
+        u32 w[2];
+    } magic;
+    magic.w[0] = 0x43300000;
+    magic.w[1] = (u32)v ^ 0x80000000;
+    return magic.d - lbl_80541508;
+}
 extern "C" void fn_802F8F0C(void*, u8*);
 extern "C" void fn_802F91AC(void*, f32*, u8*, u8*, f32);
 extern "C" u8 lbl_8046F940[];
@@ -1102,6 +1112,7 @@ extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
 }
 
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, void* ptr, f32 scaleX, f32 scaleY) {
+    SpriteTables802F* tables = (SpriteTables802F*)lbl_8046F940;
     u8* data=(u8*)a;
     u8* ent=(u8*)ptr;
     u8* self=(u8*)base;
@@ -1111,7 +1122,6 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
     u8* resolved;
     SpriteOam802F object;
     u8 transformed;
-    u8* tables = lbl_8046F940;
     if (!self[0x2364]) return;
     if (ent && ent[0x21]) {
         if (fn_802F654C(self,pos,(s32)data,frame,0,0,ent)) return;
@@ -1129,8 +1139,7 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
     f32 depth;
     if (resolved) {
         u8 adjust;
-        if ((*(u8**)((u8*)lbl_8053AB10+0x20))[0xe461] && !resolved[0x20]) adjust=0;
-        else adjust=origin[2]>lbl_805414F8;
+        if (!(*(u8**)((u8*)lbl_8053AB10+0x20))[0xe461] || (adjust = resolved[0x20]) != 0) adjust=origin[2]>lbl_805414F8;
         s32 layer=(s8)resolved[0x1c];
         s32 sub=(s8)resolved[0x1d];
         if (adjust && layer<1) { layer++; sub--; }
@@ -1138,9 +1147,9 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
     } else depth=lbl_805414F8;
     fn_802F91AC(self,origin,resolved,&transformed,depth);
     fn_802F8F0C(self,resolved);
-    s32 (*sizes)[2] = (s32 (*)[2])(tables + 0x1680);
     s32 offsetY=lbl_80541548*(lbl_80541518-scaleY);
     s32 offsetX=lbl_80541548*(lbl_80541518-scaleX);
+    s32 (*sizes)[4][2] = tables->sizes;
     u8* source = data + start + (count-1)*6;
     for (s32 index=count-1;index>=0;index--,source-=6) {
         object.y=source[0];
@@ -1164,19 +1173,20 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
         else object.palette=(u32)source[5]>>4;
         object.pad=0;
         s32 priority=(((u32)*((u8*)&object+5)>>4)&3);
-        s32 palette=(*((u8*)&object+5)&15);
-        if (lastPriority!=priority || lastPalette!=palette) {
+        if (lastPriority!=priority || lastPalette!=(*((u8*)&object+5)&15)) {
             lastPriority=priority;
             lastPalette=*((u8*)&object+5)&15;
             s32 bank=0;
             if (resolved) bank=resolved[0x1e];
-            GXLoadTlut((GXTlutObj*)(self+0x25c+bank*0x300+priority*0xc0+palette*0xc), ((GXTlut*)(tables+0x1640))[palette]);
-            u32 map=(((palette&1)<<2)|priority);
-            GXLoadTexObj((GXTexObj*)(self+0xb5c+(bank<<11)+(priority<<9)+(palette<<5)), ((GXTexMapID*)(tables+0x1620))[map]);
-            GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,((GXTexMapID*)(tables+0x1620))[map],GX_COLOR_NULL);
+            u32* tluts = tables->tluts;
+            GXLoadTlut((GXTlutObj*)(self+0x25c+bank*0x300+priority*0xc0+lastPalette*0xc), (GXTlut)tluts[lastPalette]);
+            u32* maps = tables->maps;
+            u32 map=(((lastPalette&1)<<2)|priority);
+            GXLoadTexObj((GXTexObj*)(self+0xb5c+(bank<<11)+(priority<<9)+(lastPalette<<5)), (GXTexMapID)maps[map]);
+            GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,(GXTexMapID)maps[map],GX_COLOR_NULL);
         }
         f32 x, z, y, u, v, u2, v2, width, height;
-        s32* size = sizes[(*((u8*)&object+1)&3)*4+(*((u8*)&object+3)&3)];
+        s32* size = sizes[*((u8*)&object+1)&3][*((u8*)&object+3)&3];
         width=size[0]*8;
         height=size[1]*8;
         if (((u32)*(u16*)((u8*)&object+2)>>7)&0x100) x=(s16)(((u32)*(u16*)((u8*)&object+2)>>7)|0xfe00);
@@ -1650,33 +1660,32 @@ extern "C" GXColor lbl_80543F54;
 extern "C" GXColor lbl_80543F58;
 extern "C" GXColor lbl_80543F5C;
 extern "C" void fn_802FA3FC(void* mgr) {
-    u8* p = (u8*)mgr;
-    u8* base = lbl_8046F940;
-    char tex[0x40];
     f32 k;
-    s32 c;
     u8* cur;
     s32 cnt;
+    s32 c;
+    u16* map;
+    s32 row;
+    s32 col;
+    u16 key;
+    s32 j;
+    u8* ent;
+    f32 ox;
+    f32 oy;
+    f32 ex;
+    f32 ey;
+    f32 px;
+    f32 py;
     s32 n;
     s32 a;
     s32 b;
-    s32 row;
-    s32 col;
-    s32 x;
-    s32 y;
-    s32 j;
-    u8* ent;
-    u16* map;
-    f32 ox;
-    f32 oy;
-    f32 px;
-    f32 py;
-    f32 ex;
-    f32 ey;
     u8 alpha;
     void* res;
+    char tex[0x40];
+    u8* p = (u8*)mgr;
+    u8* base = lbl_8046F940;
 
-    k = 1.0f;
+    k = lbl_80541518;
     c = (s8)*(u8*)fn_802D9C4C(fn_802D6A9C());
     res = ((Tu802F5040ResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x54494D47, (const char*)(base + 0x1888));
     *(s32*)(tex + 0x28) = 0;
@@ -1696,7 +1705,7 @@ extern "C" void fn_802FA3FC(void* mgr) {
         cnt = 0x25;
         break;
     case 0x66:
-        k = 0.85f;
+        k = lbl_80541560;
         cur = base + 0x130;
         cnt = 0x22;
         break;
@@ -1729,11 +1738,11 @@ extern "C" void fn_802FA3FC(void* mgr) {
         if ((n == 0 && p[0x235c]) || (n == 1 && p[0x2361])) {
             for (a = 0; a < 2; a++) {
                 for (b = 0; b < 2; b++) {
-                    for (row = 0, y = a * 16; row < 16 && y < *(s32*)(p + 0x2384) / 2; row++, y++) {
-                        py = 614.4f + (16.0f * (f32)y + oy);
-                        for (col = 0, x = b * 16; col < 16 && x < *(s32*)(p + 0x2380) / 2; col++, x++) {
-                            u16 key = map[((a * 2 + b) * 16 + row) * 16 + col];
-                            px = 16.0f * (f32)x + ox;
+                    for (row = 0; row < 16 && a * 16 + row < *(s32*)(p + 0x2384) / 2; row++) {
+                        py = 614.4f + (16.0f * (f32)(a * 16 + row) + oy);
+                        for (col = 0; col < 16 && b * 16 + col < *(s32*)(p + 0x2380) / 2; col++) {
+                            key = map[((a * 2 + b) * 16 + row) * 16 + col];
+                            px = 16.0f * (f32)(b * 16 + col) + ox;
                             ent = cur;
                             for (j = 0; j < cnt; j++, ent += 0x28) {
                                 if (*(u16*)ent != key) {
@@ -1758,10 +1767,10 @@ extern "C" void fn_802FA3FC(void* mgr) {
                                 case 0: {
                                     GXColor color = lbl_80543F54;
                                     color.a = alpha;
-                                    f32 ux = *(f32*)(ent + 0x18) * 96.0f;
-                                    f32 uy = *(f32*)(ent + 0x1c) * 96.0f;
-                                    f32 vx = *(f32*)(ent + 0x20) * 96.0f;
-                                    f32 vy = *(f32*)(ent + 0x24) * 96.0f;
+                                    f32 ux = *(f32*)(ent + 0x18) * lbl_80541500;
+                                    f32 uy = *(f32*)(ent + 0x1c) * lbl_80541500;
+                                    f32 vx = *(f32*)(ent + 0x20) * lbl_80541500;
+                                    f32 vy = *(f32*)(ent + 0x24) * lbl_80541500;
                                     GXSetTevColor(GX_TEVREG0, color);
                                     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
                                     GXWGFifo.f32 = ex; GXWGFifo.f32 = ey; GXWGFifo.f32 = 614.4f;
@@ -1777,10 +1786,10 @@ extern "C" void fn_802FA3FC(void* mgr) {
                                 case 1: {
                                     GXColor color = lbl_80543F58;
                                     color.a = alpha;
-                                    f32 ux = *(f32*)(ent + 0x18) * 64.0f;
-                                    f32 uy = *(f32*)(ent + 0x1c) * 64.0f;
-                                    f32 hx = *(f32*)(ent + 0x20) * 24.0f;
-                                    f32 hy = *(f32*)(ent + 0x24) * 24.0f;
+                                    f32 ux = *(f32*)(ent + 0x18) * lbl_8054156C;
+                                    f32 uy = *(f32*)(ent + 0x1c) * lbl_8054156C;
+                                    f32 hx = *(f32*)(ent + 0x20) * lbl_80541570;
+                                    f32 hy = *(f32*)(ent + 0x24) * lbl_80541570;
                                     GXSetTevColor(GX_TEVREG0, color);
                                     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
                                     f32 x0 = ex - hx;
@@ -1804,12 +1813,12 @@ extern "C" void fn_802FA3FC(void* mgr) {
                                     f32 wx = ux;
                                     f32 wy = uy;
                                     color.a = alpha;
-                                    ux *= 64.0f;
-                                    uy *= 64.0f;
-                                    f32 hx = *(f32*)(ent + 0x20) * 24.0f;
-                                    f32 hy = *(f32*)(ent + 0x24) * 24.0f;
-                                    wx *= -4.0f;
-                                    wy *= -4.0f;
+                                    ux *= lbl_8054156C;
+                                    uy *= lbl_8054156C;
+                                    f32 hx = *(f32*)(ent + 0x20) * lbl_80541570;
+                                    f32 hy = *(f32*)(ent + 0x24) * lbl_80541570;
+                                    wx *= lbl_80541578;
+                                    wy *= lbl_80541578;
                                     GXSetTevColor(GX_TEVREG0, color);
                                     GXBegin(GX_QUADS, GX_VTXFMT0, 8);
                                     f32 x0 = ex - hx;
