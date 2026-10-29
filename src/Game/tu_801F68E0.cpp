@@ -182,7 +182,6 @@ struct ActorPool {
     PoolActor* mActors[0x400];
     s32 mCount;
     s32 getNum() { return mCount; }
-    u8* findCollisionActor(s32 handle);
     PoolActor* get(s32 i) { return mActors[i]; }
 };
 
