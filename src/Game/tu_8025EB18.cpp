@@ -765,6 +765,19 @@ extern "C" void fn_8026022C(char* p) {
 #pragma opt_common_subs reset
 extern JGeometry::TVec3<f32> lbl_8046B86C[];
 
+static inline char* carryRoomOrigin(s32 room)
+{
+    char* mgr = fn_802D6A9C();
+    if (room < 8) return mgr + 0xcc;
+    return mgr + 0xdc;
+}
+static inline u8 carryPointOverlaps(s32 player, s32 room, const JGeometry::TVec3f& base)
+{
+    f32 bounds[4];
+    bounds[0] = base.x; bounds[1] = base.y;
+    bounds[2] = base.x; bounds[3] = base.y;
+    return fn_80239C9C(player, (JGeometry::TVec3f*)bounds, room);
+}
 #pragma opt_propagation off
 static inline JGeometry::TVec2f carryAdd(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b)
 {
@@ -804,7 +817,7 @@ extern "C" u8 fn_802604CC(char* p) {
             char* b = fn_802D6A9C();
             if (id < 8) b += 0xcc;
             else b += 0xdc;
-            JGeometry::TVec2f v = carryAdd(carrySub(*(JGeometry::TVec2f*)(p + 8), *(JGeometry::TVec2f*)b), *(JGeometry::TVec2f*)a);
+            JGeometry::TVec2f v = (*(JGeometry::TVec2f*)(p + 8) - *(JGeometry::TVec2f*)b) + *(JGeometry::TVec2f*)a;
             if ((fn_802260DC((JGeometry::TVec3f*)&v, fn_8023DE58(i), 1) ||
                  fn_802684A4(p, (JGeometry::TVec3f*)&v, fn_8023DE58(i))) &&
                 fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
@@ -817,7 +830,7 @@ extern "C" u8 fn_802604CC(char* p) {
             b = fn_802D6A9C();
             if (id < 8) b += 0xcc;
             else b += 0xdc;
-            JGeometry::TVec2f mid = carrySub(carryAdd(carrySub(*(JGeometry::TVec2f*)(p + 8), *(JGeometry::TVec2f*)b), *(JGeometry::TVec2f*)target), *(JGeometry::TVec2f*)a);
+            JGeometry::TVec2f mid = (*(JGeometry::TVec2f*)(p + 8) - *(JGeometry::TVec2f*)b + *(JGeometry::TVec2f*)target) - *(JGeometry::TVec2f*)a;
             mid.scale(lbl_80540178);
             f32 x = mid.x;
             f32 y = mid.y;
@@ -825,7 +838,7 @@ extern "C" u8 fn_802604CC(char* p) {
             a = fn_802D6A9C();
             if (room < 8) a += 0xcc;
             else a += 0xdc;
-            v = carryAdd(mid, *(JGeometry::TVec2f*)a);
+            v = mid + *(JGeometry::TVec2f*)a;
             if ((fn_802260DC((JGeometry::TVec3f*)&v, fn_8023DE58(i), 1) ||
                  fn_802684A4(p, (JGeometry::TVec3f*)&v, fn_8023DE58(i))) &&
                 fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
@@ -834,7 +847,7 @@ extern "C" u8 fn_802604CC(char* p) {
                 b = fn_802D6A9C();
                 if (id < 8) b += 0xcc;
             else b += 0xdc;
-                v = carryAdd(mid, *(JGeometry::TVec2f*)b);
+                v = mid + *(JGeometry::TVec2f*)b;
                 if ((fn_802260DC((JGeometry::TVec3f*)&v, S32(p, 0x3b4), 1) ||
                      fn_802684A4(p, (JGeometry::TVec3f*)&v, S32(p, 0x3b4))) &&
                     fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
