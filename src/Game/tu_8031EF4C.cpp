@@ -84,20 +84,20 @@ struct SobDrawParams {
 // Total size: 0x270 bytes (derives from Actor, base size 0x230).
 struct BrryActor : public Actor {
     /* 0x230 */ s32 mState;          // 0 = active/visible, 1 = tile-linked, 2 = dormant
-    /* 0x234 */ u32 mTimer;
+    /* 0x234 */ s32 mTimer;
     /* 0x238 */ s32 mAnimFrame;      // Frame offset added to sSpriteTable[mVariant]
     /* 0x23C */ u32 mField23C;
     /* 0x240 */ s32 mTargetHandle;   // Init -1
     /* 0x244 */ s32 mVariant;        // Unpacked from spawnParam & 3
     /* 0x248 */ u32 mSwitchId;       // Unpacked from (spawnParam >> 8) & 0xFF
-    /* 0x24C */ u32 mField24C;
-    /* 0x250 */ u32 mField250;
-    /* 0x254 */ u32 mField254;
-    /* 0x258 */ u32 mField258;
-    /* 0x25C */ u32 mField25C;
-    /* 0x260 */ u32 mField260;
-    /* 0x264 */ u32 mField264;
-    /* 0x268 */ u32 mField268;
+    /* 0x24C */ s32 mField24C;
+    /* 0x250 */ s32 mField250;
+    /* 0x254 */ s32 mField254;
+    /* 0x258 */ s32 mField258;
+    /* 0x25C */ s32 mField25C;
+    /* 0x260 */ s32 mField260;
+    /* 0x264 */ s32 mField264;
+    /* 0x268 */ s32 mField268;
     /* 0x26C */ u16 mTileId;         // Tile collision ID at actor position
 };
 
