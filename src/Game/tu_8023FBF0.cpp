@@ -3524,7 +3524,7 @@ void fn_8024D134(char* p) {
     st = getModeB(p);
     if (st == 5) return;
     st = getModeB(p);
-    switch(st) {default: {
+    switch(st) {case 4: goto done; default: break;}
     U8(p, 0x121d) = 0;
     if (PTR(p, 0x1388) != 0) {
         forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)S32(p, 0x1388));
@@ -3567,10 +3567,7 @@ void fn_8024D134(char* p) {
     case 2: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x35f, 0, -1, 0, 0, 1); break;
     case 3: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x361, 0, -1, 0, 0, 1); break;
     }
-}
-break;
-case 4: break;
-}
+done:;
 }
 }
 
@@ -4364,6 +4361,7 @@ u8 fn_8024F63C(char* p) {
     s32 cnt;
     s32 r30;
     s32 tgt;
+    s32 direction;
     s32 mode;
     s32 st;
     f32 lo;
@@ -4390,7 +4388,7 @@ u8 fn_8024F63C(char* p) {
         }
     }
 
-    mode=getGrabMode(p);
+    mode=getGrabModeRef(p, direction);
     if (mode == 5 && S32(p, 0xd60) >= 0) {
         S32(p, 0xdac) = -1;
         S32(p, 0xda8) = 0;
@@ -4406,13 +4404,13 @@ u8 fn_8024F63C(char* p) {
             return 0;
     }
 
+    t2=(JGeometry::TVec2f*)lbl_8046AE58;
     lo=lbl_80540084;
     hi=lbl_80540030;
     box.set(lo,lo,hi,hi);
     box.addPos(*(JGeometry::TVec2f*)(p+8));
-    f32 x=((JGeometry::TVec2f*)lbl_8046AE58)[S32(p,0x3dc)].x;
-    t2=(JGeometry::TVec2f*)lbl_8046AE58+S32(p,0x3dc);
-    f32 y=t2->y;
+    f32 x=t2[S32(p,0x3dc)].x;
+    f32 y=t2[S32(p,0x3dc)].y;
     box.addPos(x,y);
 
     for (r30 = 0; r30 < 4; r30++) {
@@ -4422,7 +4420,7 @@ u8 fn_8024F63C(char* p) {
         if (!fn_8022D894(r30)) {
             continue;
         }
-        s32 direction=S32(p,0x3dc);
+        direction=S32(p,0x3dc);
         if (direction != fn_80230CFC(r30)) {
             continue;
         }
@@ -4442,7 +4440,7 @@ u8 fn_8024F63C(char* p) {
         st=S32(p,0x1240);
         if(st!=0x1a) {
             if(st==0 || (u32)(st-2)<=1 || (st==0x11 && !fn_8025F500(p) && !fn_8025F590(p))) {
-                if(changeState(p,0x1a,1))goto success;
+                if(changeState(p,0x1a,1))goto finish;
             }
         }
         if (fn_8022D7F8(r30) >= 0) {
@@ -4452,6 +4450,7 @@ u8 fn_8024F63C(char* p) {
         S32(p, 0xda8) = 3;
         return 1;
     }
+finish:
     if (S32(p, 0xda8) <= 0) goto failure;
 success:
     return 1;
