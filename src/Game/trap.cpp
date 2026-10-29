@@ -115,6 +115,33 @@ extern "C" void fn_801EEC98(char* this_, void* a, s32 b, void* c, s32 d, void* e
 extern f32 lbl_8053D77C;
 extern f32 lbl_8053D778;
 extern f32 lbl_8053D780;
+struct TrapActor : Actor {
+    s32 state;
+    s32 timers[3];
+    s32 a240, a244, a248, a24C, a250, a254, a258, a25C, anim;
+    u8 aim;
+    u8 pad265[3];
+    JGeometry::TVec3<f32> target;
+    JGeometry::TVec3<f32> home;
+};
+
+static inline void trapSetTarget(TrapActor* p) {
+    switch ((s32)p->field_98) {
+    case 0: p->target.set(3.0f, 0.0f, 0.0f); break;
+    case 1: p->target.set(-3.0f, 0.0f, 0.0f); break;
+    case 2: p->target.set(0.0f, 3.0f, 0.0f); break;
+    case 3: p->target.set(0.0f, -3.0f, 0.0f); break;
+    }
+}
+static inline void trapStop(TrapActor* p) {
+    p->target.set(0.0f, 0.0f, 0.0f);
+    p->field_3C.x = 0.0f;
+    p->field_3C.y = 0.0f;
+    p->field_3C.z = 0.0f;
+}
+extern "C" s32 fn_8023DE58(s32);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
+extern const JGeometry::TVec2<f32> lbl_80466288[];
 extern "C" void fn_80164834(char* this_) {
     s32 i;
     s32 hit;
