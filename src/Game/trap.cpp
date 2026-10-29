@@ -110,7 +110,7 @@ extern "C" void fn_8013CC50(void* snd, void* pos, f32 vol, s32 a, s32 b, s32 c, 
 extern "C" void fn_801F0E34(char* this_, s32 anim, s32 flag);
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern "C" void fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
-extern "C" s32 fn_801F2618(char* this_, s32 a, s32 b);
+extern "C" u8 fn_801F2618(char* this_, s32 a, s32 b);
 extern "C" void fn_801EEC98(char* this_, void* a, s32 b, void* c, s32 d, void* e, s32 f, s32 g);
 extern f32 lbl_8053D77C;
 extern f32 lbl_8053D778;
@@ -143,48 +143,121 @@ extern "C" s32 fn_8023DE58(s32);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
 extern const JGeometry::TVec2<f32> lbl_80466288[];
 extern "C" void fn_80164834(char* this_) {
-    s32 i;
-    s32 hit;
-    s32 r;
-    u32 flags;
-    JGeometry::TVec3<f32> vel(*(Vec*)(this_ + 0x3c));
-    JGeometry::TVec3<f32> pos(*(Vec*)(this_ + 0xc));
-    f32 pt[2];
-    char* self;
-
-    self = this_;
-    *(s32*)(self + 0x108) = 0x3e8;
-    i = 0;
-    r = fn_801F285C(self, 0, 0, 0, i);
-    if (r < 0) {
+    TrapActor* p = (TrapActor*)this_;
+    JGeometry::TVec3<f32> vel(p->field_3C);
+    JGeometry::TVec3<f32> oldPos(p->field_0C);
+    p->field_108 = 1000;
+    s32 i = 0;
+    for (; i < 4; ++i) {
+        s32 hit = fn_801F285C(this_, 0, 0, 0, i);
+        if (hit < 0) break;
+        JGeometry::TVec3<f32> pos(p->field_0C);
+        JGeometry::TVec2<f32> point;
+        f32 left = p->field_60 + pos.x;
+        f32 right = p->field_68 + pos.x;
+        f32 top = p->field_64 + pos.y;
+        f32 bottom = p->field_6C + pos.y;
+        point.x = right + 0.5f * (left - right);
+        point.y = bottom + 0.5f * (top - bottom);
+        if (fn_80237948(hit, &point.x)) {
+            fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x117, 0, 1, 0, 0, 1);
+            fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x118, 0, 1, 0, 0, 1);
+            fn_801F0E34(this_, 0x400d1, 0);
+        }
+        p->field_3C.x = vel.x;
+        p->field_3C.y = vel.y;
+        p->field_3C.z = vel.z;
+    }
+    fn_801F71A4(&p->field_3C.x, p->target.x, 0.3f, 1.0f);
+    fn_801F71A4(&p->field_3C.y, p->target.y, 0.3f, 1.0f);
+    (*(JGeometry::TVec3<f32>*)&p->field_0C) += *(JGeometry::TVec3<f32>*)&p->field_3C;
+    fn_801F2B7C(this_, -100, -1, 1);
+    if (p->a258 != 0 && p->timers[1] == 0) {
+        p->anim++;
+        p->anim &= 3;
+        p->timers[1] = 10;
+    }
+    u8 blocked = fn_801F2618(this_, 0, 0);
+    s32 player = -1;
+    s32 dir;
+    fn_801EEC98(this_, (void*)p->field_198, 0, &dir, 0, &player, 0, 0);
+    if (p->state != 2 && p->state != 3 && p->state != 0 &&
+        (p->field_9C >= 0 || (p->state == 1 && blocked))) {
+        JGeometry::TVec3<f32> pos(p->field_0C);
+        pos.x += lbl_80466288[p->field_98].x;
+        pos.y += lbl_80466288[p->field_98].y;
+        if (p->timers[2] == 0) {
+            fn_8013CC50((void*)p->field_04, &pos, 1.0f, 0x4a1, 0, 1, 0, 0, 1);
+            fn_801F0E34(this_, 0x30014, 0);
+            p->timers[2] = 4;
+        }
+        trapStop(p);
+        p->state = 2;
         return;
     }
-    JGeometry::TVec3<f32> p2(*(Vec*)(self + 0xc));
-    for (i = 0; i < 4; i++) {
-        pt[0] = (*(f32*)(self + 0x60) + p2.x) + lbl_8053D77C * ((*(f32*)(self + 0x60) + p2.x) - (*(f32*)(self + 0x68) + p2.x));
-        pt[1] = (*(f32*)(self + 0x64) + p2.y) + lbl_8053D77C * ((*(f32*)(self + 0x64) + p2.y) - (*(f32*)(self + 0x6c) + p2.y));
-        if (fn_80237948(r, pt)) {
-            fn_8013CC50((void*)*(s32*)(self + 4), self + 0xc, lbl_8053D778, 0x117, 0, 1, 0, 0, 1);
-            fn_8013CC50((void*)*(s32*)(self + 4), self + 0xc, lbl_8053D778, 0x118, 0, 1, 0, 0, 1);
-            fn_801F0E34(self, 0x400d1, 0);
+    switch (p->state) {
+    case 0:
+        if (p->timers[0] == 0 && player >= 0) {
+            f32 dx, dy;
+            if (fn_8023DE58(player) < 8 && (s32)p->field_04 == 8) {
+                s32 room = fn_8023DE58(player);
+                u8* mgr = fn_802D6A9C();
+                JGeometry::TBox2f box = *(JGeometry::TBox2f*)(mgr + (room < 8 ? 0xcc : 0xdc));
+                dx = (f32)__fabs(p->field_0C.x - (fn_8023E724(player)->x - box.i.x));
+                dy = (f32)__fabs(p->field_0C.y - (fn_8023E724(player)->y - box.i.y));
+            } else {
+                dx = (f32)__fabs(p->field_0C.x - fn_8023E724(player)->x);
+                dy = (f32)__fabs(p->field_0C.y - fn_8023E724(player)->y);
+            }
+            if (p->aim == 1) {
+                if (((dir & 2) == 0 && dy < 22.0f) || ((dir & 2) != 0 && dx < 22.0f))
+                    p->field_98 = dir;
+            }
+            s32 d = p->field_98;
+            if (((d & 2) == 0 && dy < 22.0f) || ((d & 2) != 0 && dx < 22.0f)) {
+                trapSetTarget(p);
+                fn_801F0E34(this_, 0x30013, 0);
+                p->state = 1;
+            }
         }
-        *(f32*)(self + 0x3c) = vel.x;
-        *(f32*)(self + 0x40) = vel.y;
-        *(f32*)(self + 0x44) = vel.z;
+        break;
+    case 2:
+        if (!blocked) {
+            fn_801F71A4(&p->field_0C.x, p->home.x, 0.3f, 0.5f);
+            fn_801F71A4(&p->field_0C.y, p->home.y, 0.3f, 0.5f);
+            f32 dy = p->field_0C.y - p->home.y;
+            f32 dx = p->field_0C.x - p->home.x;
+            if (std::sqrtf(dx*dx + dy*dy) < 1.0f || blocked) {
+                p->timers[0] = 10;
+                if (blocked) p->home.set(p->field_0C.x, p->field_0C.y, p->field_0C.z);
+                p->field_0C.x = p->home.x;
+                p->field_0C.y = p->home.y;
+                p->field_0C.z = p->home.z;
+                p->state = 0;
+            }
+        }
+        break;
+    case 3:
+        if (p->field_9C >= 0 || blocked) {
+            JGeometry::TVec3<f32> pos(p->field_0C);
+            pos.x += lbl_80466288[p->field_98].x;
+            pos.y += lbl_80466288[p->field_98].y;
+            if (p->timers[2] == 0) {
+                fn_8013CC50((void*)p->field_04, &pos, 1.0f, 0x4a1, 0, 1, 0, 0, 1);
+                fn_801F0E34(this_, 0x30014, 0);
+                p->timers[2] = 4;
+            }
+            p->field_98 ^= 1;
+            p->field_3C.x = 0.0f;
+            p->field_3C.y = 0.0f;
+            p->field_3C.z = 0.0f;
+        }
+        trapSetTarget(p);
+        break;
     }
-    fn_801F71A4((f32*)(self + 0x3c), *(f32*)(self + 0x268), lbl_8053D780, lbl_8053D778);
-    fn_801F71A4((f32*)(self + 0x40), *(f32*)(self + 0x26c), lbl_8053D780, lbl_8053D778);
-    *(f32*)(self + 0xc) = *(f32*)(self + 0xc) + *(f32*)(self + 0x3c);
-    *(f32*)(self + 0x10) = *(f32*)(self + 0x10) + *(f32*)(self + 0x40);
-    *(f32*)(self + 0x14) = *(f32*)(self + 0x14) + *(f32*)(self + 0x44);
-    fn_801F2B7C(self, -100, -1, 1);
-    if (*(s32*)(self + 0x258) != 0 && *(s32*)(self + 0x238) == 0) {
-        *(s32*)(self + 0x260) = (*(s32*)(self + 0x260) + 1) & 3;
-        *(s32*)(self + 0x238) = 10;
-    }
-    fn_801F2618(self, 0, 0);
-    hit = -1;
-    fn_801EEC98(self, *(void**)(self + 0x198), 0, (void*)&flags, 0, (void*)&hit, 0, 0);
+    if (p->timers[0] > 0) --p->timers[0];
+    if (p->timers[1] > 0) --p->timers[1];
+    if (p->timers[2] > 0) --p->timers[2];
 }
 
 // TRAP init (vtable slot 1)
