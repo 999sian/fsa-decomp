@@ -20,7 +20,7 @@ struct ALCEWork {
     u32 words[1024];
     u8 flags[1024];
 };
-extern u8 lbl_804C1E30[];
+u8 lbl_804C1E30[0x4500];
 extern "C" void* fn_801F856C(void);
 extern "C" f32 fn_801EE4F0(void*);
 extern "C" void* fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
