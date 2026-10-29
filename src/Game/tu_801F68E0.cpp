@@ -2,23 +2,11 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "float.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 
-namespace JMath {
-template <int length, typename T>
-struct TAtanTable;
-template <>
-struct TAtanTable<1024, f32> {
-    f32 atan2_(f32, f32) const;
-};
-extern const TAtanTable<1024, f32> atanTable_;
-
-struct TSinCosPair {
-    f32 first;
-    f32 second;
-};
-extern const TSinCosPair sincosTable_[2048] __attribute__((aligned(32)));
-}
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D39B8(void* mgr, s32 idx, s32 value);
@@ -1206,18 +1194,18 @@ extern "C" void fn_801F6A4C(void* pool) {
 				f32 rf = *(f32*)&bits - lbl_8053F818;
 				s32 ri = (s32)(lbl_8053F810 - lbl_8053F814 * rf);
 				s32 si = ai + ri;
-				f32 sn = JMath::sincosTable_[(u16)si >> 5].first;
-				f32 cs = JMath::sincosTable_[(u16)si >> 5].second;
+				f32 sn = JMath::sincosTable_.mTable[(u16)si >> 5].first;
+				f32 cs = JMath::sincosTable_.mTable[(u16)si >> 5].second;
 				tp[0] = tp[0] + sn;
 				tp[1] = tp[1] + cs;
 
 				if (*(u32*)(b + 0x1a0) == 0x424f594f) {
 					f32 ang2 = JMath::atanTable_.atan2_(dx, dy);
 					s32 i2 = (s32)(ang2 * lbl_8053F80C);
-					f32 c2 = JMath::sincosTable_[(u16)i2 >> 5].second;
+					f32 c2 = JMath::sincosTable_.mTable[(u16)i2 >> 5].second;
 					f32 ang3 = JMath::atanTable_.atan2_(dx, c2);
 					s32 i3 = (s32)(ang3 * lbl_8053F80C);
-					f32 s3 = JMath::sincosTable_[(u16)i3 >> 5].first;
+					f32 s3 = JMath::sincosTable_.mTable[(u16)i3 >> 5].first;
 					*(f32*)(a + 0x3c) = lbl_8053F81C * s3;
 					*(f32*)(a + 0x40) = lbl_8053F81C * c2;
 					*(u16*)(b + 0x94) = 1;
