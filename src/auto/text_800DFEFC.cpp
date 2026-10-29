@@ -21,7 +21,7 @@ struct TevKColorWord {
 extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no);
 struct TevColorWords {
 	TevColorWords(u32 first, u32 second) { mWords[0] = first; mWords[1] = second; }
-	operator J3DGXColorS10() const { return J3DGXColorS10(*(const GXColorS10*)mWords); }
+	operator const J3DGXColorS10&() const { return *(const J3DGXColorS10*)mWords; }
 	u32 mWords[2];
 };
 extern "C" TevColorWords fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no);
