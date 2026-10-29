@@ -69,22 +69,6 @@ extern "C" void fn_80377000(u8* this_) {
     }
 }
 
-static inline void movingBlockBreakTiles(u8* self, s32& i, s32& j, f32 x, const f32 y, const f32 z) {
-    Vec point;
-    x -= 24.0f;
-    const f32* offsets = lbl_80475178;
-    for (i = 0; i < 4; i++) {
-        point.x = x;
-        point.y = y;
-        point.z = z;
-        const f32* offset = offsets;
-        for (j = 0; j < 4; j++, offset++) {
-            point.y = y + *offset;
-            fn_802A3948(lbl_8053AC98, &point, 0, *(u32*)(self + 4), 0);
-        }
-        x += 16.0f;
-    }
-}
 
 static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
     s32 room = *(s32*)(self + 4);
@@ -169,7 +153,6 @@ static inline bool movingBlockContainsPlayerRef(u8* self, s32 player, s32& j, f3
 extern "C" void fn_803771AC(u8* this_) {
     JGeometry::TBox2<f32> box;
     Vec tmp;
-    f32 x, y, z;
     s32 j, i;
     box.set(*(JGeometry::TBox2<f32>*)(this_ + 0x60));
     box.addPos(*(JGeometry::TVec2<f32>*)(this_ + 0xc));
@@ -219,20 +202,19 @@ extern "C" void fn_803771AC(u8* this_) {
             JGeometry::setTVec3f((f32*)((Vec*)(this_ + 0xc)), (f32*)(this_ + 0x18));
             if (PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24))) >= 63.9) {
                 ((Actor*)this_)->v10(0xff, 1);
-                x = ((Vec*)(this_ + 0xc))->x;
-                y = ((Vec*)(this_ + 0xc))->y;
-                z = ((Vec*)(this_ + 0xc))->z;
-                x -= 24.0f;
+                Vec origin;
+                origin.x = ((Vec*)(this_ + 0xc))->x;
+                origin.y = ((Vec*)(this_ + 0xc))->y;
+                origin.z = ((Vec*)(this_ + 0xc))->z;
+                origin.x -= 24.0f;
                 for (i = 0; i < 4; i++) {
-                    tmp.x = x;
-                    tmp.y = y;
-                    tmp.z = z;
+                    tmp = origin;
                     const f32* offset = lbl_80475178;
                     for (j = 0; j < 4; j++, offset++) {
-                        tmp.y = y + *offset;
+                        tmp.y = origin.y + *offset;
                         fn_802A3948(lbl_8053AC98, &tmp, 0, *(u32*)(this_ + 4), 0);
                     }
-                    x += 16.0f;
+                    origin.x += 16.0f;
                 }
                 *(s32*)(this_ + 0x244) = 1;
                 *(s32*)(this_ + 0x25c) = 50;
