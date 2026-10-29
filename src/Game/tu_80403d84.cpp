@@ -1442,7 +1442,6 @@ extern "C" void fn_804096E8(u8* self) {
     }
     if (*(s16*)(self+0x41e)>=0) fn_80458880(lbl_8053AF80,0x54,-1);
 }
-#pragma peephole on
 #pragma opt_propagation on
 
 extern "C" void fn_80409FDC(char* this_) {
