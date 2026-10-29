@@ -101,17 +101,6 @@ extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     return 0;
 }
 
-inline u8 hitOwnRoom(HitRectTable* t, const Vec2f* p) {
-    s32 type = t->room;
-    for (u32 i = 0; i < 80; i++) {
-        if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
-            t->hits[i] = t->ids[i];
-            return 1;
-        }
-    }
-    return 0;
-}
-
 #pragma opt_dead_code off
 extern "C" void fn_802685D4(void* thisPtr) {
     u8* p = (u8*)thisPtr;
