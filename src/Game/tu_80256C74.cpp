@@ -1420,6 +1420,9 @@ struct Tu8025Data {
 
 
 
+static inline u8 fireAnimationFrame(const Tu8025Data& data, const s32 direction, const s32 frame) {
+    return data.frames[direction][frame];
+}
 extern "C" void fn_8025A15C(u8* p) {
     s32 actorID;
     PlayerFirePosition* fire = (PlayerFirePosition*)p;
@@ -1563,13 +1566,12 @@ extern "C" void fn_8025A15C(u8* p) {
                     case 3:
                         break;
                     }
-                    s32 i;
-                    u8* q;
-                    for (i = 0, q = p; i < 3; i++, q += 4) {
-                        if (S32(q, 0xb1c) < 0) {
+                    int i;
+                    for (i = 0, base = p; i < 3; i++, base += 4) {
+                        if (S32(base, 0xb1c) < 0) {
                             actorID = S32(p, 0x4);
-                            S32(q, 0xb1c) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos2, ((S32(p, 0x3dc) & 3) << 4) | 0x1000 | (actorID & 3), -1, actorID);
-                            if (S32(q, 0xb1c) >= 0) {
+                            S32(base, 0xb1c) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos2, ((S32(p, 0x3dc) & 3) << 4) | 0x1000 | (actorID & 3), -1, actorID);
+                            if (S32(base, 0xb1c) >= 0) {
                                 fire->rooms[i] = S32(p, 0x3b4);
                                 U8(p, 0xb78) = 1;
                                 break;
