@@ -25,7 +25,7 @@ extern "C" u16 lbl_8053EDB8;
 extern "C" f32 lbl_8053EDD0;
 extern "C" void* fn_801C0D70(void);
 extern "C" void* fn_804032E8(u32 name, void* str);
-extern "C" u16 lbl_8053EDB0[];
+extern "C" u16 lbl_8053EDB0[3];
 extern "C" u16 lbl_80469418[];
 extern "C" char lbl_80469430[];
 extern "C" char* lbl_8053AC20;
@@ -94,24 +94,9 @@ extern "C" void fn_801C1918(u8* this_) {
 }
 
 extern "C" void fn_801C1A58(u8* this_) {
-    struct ItemBaseVT {
-        virtual void v00();
-        virtual void v01();
-        virtual void v02();
-        virtual void v03();
-        virtual void v04();
-        virtual void v05();
-        virtual void v06();
-        virtual void v07();
-        virtual void v08();
-        virtual void v09();
-        virtual void v10();
-        virtual void v11();
-        virtual void v12(s32 a, s32 b);
-    };
     int i;
-    u8 lo;
-    u8 hi;
+    int lo;
+    int hi;
     fn_8021C2B4(this_ + 0x2d8);
     *(s32*)(this_ + 0x24c) += 1;
     if (*(s32*)(this_ + 0x24c) < 0) {
@@ -138,7 +123,9 @@ extern "C" void fn_801C1A58(u8* this_) {
                 for (i = 0; i < 4; i++) {
                     lo = *(u8*)(this_ + 0x2a8);
                     hi = *(u8*)(this_ + 0x2a9);
-                    u32 r = fn_801C5660(8, 0, fn_801CD664(hi - lo + 1) + lo, 0, 0);
+                    s32 n = fn_801CD664(hi-lo+1);
+                    n += lo;
+                    u32 r = fn_801C5660(8,0,n,0,0);
                     s32 id = Actor_CreateByID(fn_801F856C(), 0x534c4b32, *(u32*)(this_ + 4), (f32*)(this_ + 0xc), r, -1, -1);
                     if (id >= 0) {
                         if (fn_801F666C(fn_801F856C(), id) != 0) {
@@ -158,7 +145,8 @@ extern "C" void fn_801C1A58(u8* this_) {
         if (*(s32*)(this_ + 0x24c) >= 0x3c) {
             for (i = 0; i < 3; i++) {
                 if (*(void**)(this_ + 0x2b4 + i * 4)) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x2b4 + i * 4));
+                    void* mgr = *(void**)((u8*)fn_8013C824()+0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(this_ + 0x2b4 + i * 4));
                 }
                 *(void**)(this_ + 0x2b4 + i * 4) = 0;
             }
@@ -167,8 +155,9 @@ extern "C" void fn_801C1A58(u8* this_) {
         } else {
             f32 t = lbl_8053EDC4 * (f32)(0x3c - *(s32*)(this_ + 0x24c));
             if (*(u8**)(this_ + 0x2b8)) {
-                *(f32*)(*(u8**)(this_ + 0x2b8) + 0xb0) = t;
-                *(f32*)(*(u8**)(this_ + 0x2b8) + 0xb4) = lbl_8053EDC0;
+                u8* em=*(u8**)(this_+0x2b8);
+                *(f32*)(em+0xb0)=t;
+                *(f32*)(em+0xb4)=lbl_8053EDC0;
             }
             if (*(u8**)(this_ + 0x2bc)) {
                 *(u8*)(*(u8**)(this_ + 0x2bc) + 0xbb) = (u8)(s32)(lbl_8053EDC8 * t);
@@ -176,83 +165,62 @@ extern "C" void fn_801C1A58(u8* this_) {
         }
         break;
     case 5:
-        if (*(s32*)(this_ + 0x24c) == 0xb4) {
-            fn_801F0E34(this_, 0x5004b, 0);
-            if (!(*(u16*)fn_801C0D70() & 0x80)) {
-                break;
-            }
-            ((ItemBaseVT*)this_)->v12(0xff, 1);
-            for (i = 0; i < 3; i++) {
-                fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053EDB0[i], 0, 0, 0, 0, 1, lbl_8053EDC0);
-            }
-            *(s32*)(this_ + 0x24c) = 0;
-            *(s32*)(this_ + 0x248) = 6;
-            break;
+        if (*(s32*)(this_+0x24c)==0xb4) fn_801F0E34(this_,0x5004b,0);
+        if (*(u16*)fn_801C0D70() & 0x80) {
+            ((Actor*)this_)->v10(0xff,1);
+            for(i=0;i<3;i++) fn_8013CC50(*(u32*)(this_+4),this_+0xc,lbl_8053EDB0[i],0,0,0,0,1,lbl_8053EDC0);
+            *(s32*)(this_+0x24c)=0;
+            *(s32*)(this_+0x248)=6;
         }
-        /* fallthrough */
+        break;
     case 6:
-        fn_801F0E34(this_, 0x5004c, 0);
-        if (*(s32*)(this_ + 0x24c) < 0x78) {
-            break;
-        }
-        if (!lbl_8053AC24) {
+        fn_801F0E34(this_,0x5004c,0);
+        if (*(s32*)(this_+0x24c)>=0x78) {
+            if(!lbl_8053AC24) {lbl_8053AC20=lbl_80469430;lbl_8053AC24=1;}
+            *(void**)(this_+0x2d4)=fn_804032E8(0x54494d47,lbl_8053AC20);
             f32 vec[3];
-            lbl_8053AC24 = 1;
-            lbl_8053AC20 = lbl_80469430;
-            *(void**)(this_ + 0x2d4) = fn_804032E8(0x54494d47, lbl_8053AC20);
-            vec[0] = *(f32*)(this_ + 0xc);
-            vec[1] = lbl_8053EDCC + *(f32*)(this_ + 0x10);
-            vec[2] = lbl_8053EDD0;
-            fn_8021F9AC(this_ + 0x3f8, vec);
-            *(s32*)(this_ + 0x24c) = 0;
-            *(s32*)(this_ + 0x248) = 7;
-            break;
+            vec[1]=lbl_8053EDCC+*(f32*)(this_+0x10);
+            vec[0]=*(f32*)(this_+0xc);
+            vec[2]=lbl_8053EDD0;
+            fn_8021F9AC(this_+0x3f8,vec);
+            *(s32*)(this_+0x24c)=0; *(s32*)(this_+0x248)=7;
         }
-        /* fallthrough */
+        break;
     case 7:
-        fn_801F0E34(this_, 0x5004c, 0);
-        if (fn_8021F4B0(this_ + 0x3f8)) {
-            for (i = 0; i < 5; i++) {
-                if (*(void**)(this_ + 0x2c0 + i * 4)) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x2c0 + i * 4));
+        fn_801F0E34(this_,0x5004c,0);
+        if(fn_8021F4B0(this_+0x3f8)) {
+            for (i=0;i<5;i++) {
+                if(*(void**)(this_+0x2c0+i*4)) {
+                    void* mgr = *(void**)((u8*)fn_8013C824()+0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(this_+0x2c0+i*4));
                 }
-                *(void**)(this_ + 0x2c0 + i * 4) = 0;
+                *(void**)(this_+0x2c0+i*4)=0;
             }
-            if (fn_801F7884(fn_801F856C(), 0x444d5a4c, *(u32*)(this_ + 4)) >= 0) {
-                s32 id = fn_801F7884(fn_801F856C(), 0x444d5a4c, *(u32*)(this_ + 4));
-                if (fn_801F666C(fn_801F856C(), id) != 0) {
-                    fn_8010F9F0();
-                    *(u16*)fn_801C0D70() |= 0x1000;
-                    *(s32*)(this_ + 0x24c) = 0;
-                    *(s32*)(this_ + 0x248) = 8;
-                    break;
-                }
-            }
-        }
-        if (*(u16*)(this_ + 0x2ac) != 0) {
-            *(u16*)(this_ + 0x2ac) -= 1;
-            if (*(u16*)(this_ + 0x2ac) == 0) {
-                for (i = 0; i < 5; i++) {
-                    if (*(void**)(this_ + 0x2c0 + i * 4)) {
-                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(this_ + 0x2c0 + i * 4));
-                    }
-                    *(void**)(this_ + 0x2c0 + i * 4) = 0;
-                }
-                break;
-            }
-            if (*(s32*)(this_ + 0x24c) == 0xf0) {
-                *(u16*)(this_ + 0x2ac) = 0x78;
-            }
+            s32 id=fn_801F7884(fn_801F856C(),0x444d5a4c,*(u32*)(this_+4));
+            if(id>=0 && fn_801F666C(fn_801F856C(),id)) fn_8010F9F0();
+            *(u16*)fn_801C0D70() |= 0x1000;
+            *(s32*)(this_+0x24c)=0; *(s32*)(this_+0x248)=8;
             break;
         }
-        {
-            u8 a = (u8)(s32)(lbl_8053EDC8 * (lbl_8053EDD4 * (f32)(u32)*(u16*)(this_ + 0x2ac)));
-            if (*(u8**)(this_ + 0x2c0)) { *(u8*)(*(u8**)(this_ + 0x2c0) + 0xbb) = a; }
-            if (*(u8**)(this_ + 0x2c4)) { *(u8*)(*(u8**)(this_ + 0x2c4) + 0xbb) = a; }
-            if (*(u8**)(this_ + 0x2c8)) { *(u8*)(*(u8**)(this_ + 0x2c8) + 0xbb) = a; }
-            if (*(u8**)(this_ + 0x2cc)) { *(u8*)(*(u8**)(this_ + 0x2cc) + 0xbb) = a; }
-            if (*(u8**)(this_ + 0x2d0)) { *(u8*)(*(u8**)(this_ + 0x2d0) + 0xbb) = a; }
-        }
+        if(*(u16*)(this_+0x2ac)) {
+            --*(u16*)(this_+0x2ac);
+            if(!*(u16*)(this_+0x2ac)) {
+                for (i=0;i<5;i++) {
+                    if(*(void**)(this_+0x2c0+i*4)) {
+                        void* mgr = *(void**)((u8*)fn_8013C824()+0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(this_+0x2c0+i*4));
+                    }
+                    *(void**)(this_+0x2c0+i*4)=0;
+                }
+            } else {
+                f32 alpha=lbl_8053EDC8*(lbl_8053EDD4*(f32)(u32)*(u16*)(this_+0x2ac));
+                if(*(u8**)(this_+0x2c0)) (*(u8**)(this_+0x2c0))[0xbb]=(u8)(s32)alpha;
+                if(*(u8**)(this_+0x2c4)) (*(u8**)(this_+0x2c4))[0xbb]=(u8)(s32)alpha;
+                if(*(u8**)(this_+0x2c8)) (*(u8**)(this_+0x2c8))[0xbb]=(u8)(s32)alpha;
+                if(*(u8**)(this_+0x2cc)) (*(u8**)(this_+0x2cc))[0xbb]=(u8)(s32)alpha;
+                if(*(u8**)(this_+0x2d0)) (*(u8**)(this_+0x2d0))[0xbb]=(u8)(s32)alpha;
+            }
+        } else if(*(s32*)(this_+0x24c)==0xf0) *(u16*)(this_+0x2ac)=0x78;
         break;
     case 8:
         fn_801F0E34(this_, 0x5004c, 0);
@@ -280,16 +248,14 @@ extern "C" void fn_801C1A58(u8* this_) {
             fn_8022ADCC();
             *(s32*)(this_ + 0x24c) = 0;
             *(s32*)(this_ + 0x248) = 11;
-            if (*(u8**)(this_ + 0x2b4)) {
-                u32 n = *(u32*)(*(u8**)(this_ + 0x2b4) + 0x100);
-                if (n >= 0x14 && (n - 0x14) % 90 == 0) {
-                    fn_801F0E34(this_, 0x50048, 0);
-                }
-            }
         }
         break;
     case 11:
         break;
+    }
+    if (*(u8**)(this_+0x2b4)) {
+        u32 n=*(u32*)(*(u8**)(this_+0x2b4)+0x100);
+        if(n>=0x14 && (n-0x14)%90==0) fn_801F0E34(this_,0x50048,0);
     }
     if (*(s32*)(this_ + 0x248) >= 4 && *(s32*)(this_ + 0x248) < 7) {
         fn_801F0E34(this_, 0x5004a, 0);
