@@ -551,6 +551,7 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
     return result;
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_800F953C(void* this_) {
     u8* self=(u8*)this_;
     Vec out;
@@ -569,7 +570,7 @@ extern "C" void fn_800F953C(void* this_) {
         const JGeometry::TVec3f& v=WRTC_linePosition(p,n);
         out=v;
         s32 half=(n>>1)+1;
-        k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(f32)half*(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004);
+        k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
         *(u8*)(self+0x249)=1;
     }else if(state==1){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
@@ -584,7 +585,7 @@ extern "C" void fn_800F953C(void* this_) {
     }
     WRTC_moveTowards(self,*(const JGeometry::TVec3f*)&out,k);
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_800F9C20(void* this_) {
     char* rng;
     unsigned int multiplier;
@@ -2164,3 +2165,4 @@ extern "C" void fn_800F87E4(void* this_) {
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JMath/Inline.h"
+
