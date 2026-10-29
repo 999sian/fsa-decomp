@@ -544,8 +544,8 @@ static inline JGeometry::TVec3f WRTC_circlePosition(u8* p) {
     f32 x=*(f32*)(p+0x2a8)*(radius*sn)+*(f32*)(p+0xc);
     f32 y=*(f32*)(p+0x2a8)*(radius*cs)+*(f32*)(p+0x10);
     f32 z=(f32)(kind*13)+(lbl_8053BFFC+*(f32*)(p+0x14));
-    p[0x2ac]++;
     JGeometry::TVec3f result(x,y,z);
+    p[0x2ac]++;
     return result;
 }
 static inline JGeometry::TVec3f WRTC_linePosition(u8* p,f32& k) {
