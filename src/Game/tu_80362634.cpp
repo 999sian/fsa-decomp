@@ -141,7 +141,7 @@ static s32 fn_80363880_quadrant(u16 a) {
     return 3;
 }
 
-static void fn_80363880_aim(char* self, f32 dy, f32 dx, const f32& speed) {
+static void fn_80363880_aim(char* self, f32 dy, f32 dx, const f32 speed) {
     f32 angle = JMath::atanTable_.atan2_(dy, dx);
     f32 value = speed;
     *(s16*)(self + 0x240) = (s16)(s32)(angle * lbl_80542B50);
@@ -521,14 +521,9 @@ extern "C" void fn_80363664(char* self) {
 }
 
 extern "C" void fn_80363880(char* p) {
-    s32 i;
-    s32 count;
-    char* item;
-    s32 state;
-    s32 offset;
-    state = *(s32*)(p + 0x24c);
+    s32 state = *(s32*)(p + 0x24c);
     if (state >= 0) {
-        item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
+        char* item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
         if (item != NULL) {
             JGeometry::TVec3<f32> tgt(*(JGeometry::TVec3<f32>*)(item + 0xc));
             if (PSVECDistance((Vec*)(p + 0xc), &tgt) >= lbl_80542B4C) {
@@ -536,7 +531,7 @@ extern "C" void fn_80363880(char* p) {
             } else {
                 tgt.z = 0.0f;
                 if (PSVECDistance((Vec*)(p + 0xc), &tgt) >= lbl_80542B88) {
-                    fn_80363880_aim(p, tgt.y - *(f32*)(p + 0x10), tgt.x - *(f32*)(p + 0xc), lbl_80542B8C);
+                    fn_80363880_aim(p, tgt.y - *(f32*)(p + 0x10), tgt.x - *(f32*)(p + 0xc), 0.5f);
                 }
                 fn_80363880_setQuadrant(p);
             }
@@ -544,14 +539,15 @@ extern "C" void fn_80363880(char* p) {
             fn_80363880_reset(p);
         }
     } else {
-        count = *(s32*)((char*)fn_801F856C() + 0x1008);
-        for (i = 0, offset = 0; i < count; i++, offset += 4) {
-            item = *(char**)((char*)fn_801F856C() + (offset + 8));
+        s32 i = 0;
+        s32 count = *(s32*)((char*)fn_801F856C() + 0x1008);
+        for (; i < count; i++) {
+            char* item = ((ActorList80362634*)fn_801F856C())->actors[i];
             if (item == NULL || *(s32*)(item + 0x1a0) != 0x454f574c || *(u8*)(item + 0x11c) != 1 || *(s32*)(item + 0x278) != 0) continue;
             if (!(PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) < lbl_80542B4C)) break;
             *(s32*)(p + 0x24c) = i;
             JGeometry::TVec3<f32> tgt(*(JGeometry::TVec3<f32>*)(item + 0xc));
-            fn_80363880_aim(p, *(f32*)(item + 0x10) - *(f32*)(p + 0x10), *(f32*)(item + 0xc) - *(f32*)(p + 0xc), lbl_80542B54);
+            fn_80363880_aim(p, *(f32*)(item + 0x10) - *(f32*)(p + 0x10), *(f32*)(item + 0xc) - *(f32*)(p + 0xc), 0.8f);
             fn_80363880_setQuadrant(p);
             *(u8**)(p + 0x270) = lbl_80542AD8;
             *(u8**)(p + 0x274) = lbl_80542AC8;
@@ -573,14 +569,14 @@ extern "C" void fn_80363880(char* p) {
                     } else {
                         *(s16*)(p + 0x240) -= 0x1000;
                     }
-                    *(f32*)(p + 0x3c) = lbl_80542B8C * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x240) >> 5].second;
-                    *(f32*)(p + 0x40) = lbl_80542B8C * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x240) >> 5].first;
+                    *(f32*)(p + 0x3c) = 0.5f * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x240) >> 5].second;
+                    *(f32*)(p + 0x40) = 0.5f * JMath::sincosTable_.mTable[(u16)*(s16*)(p + 0x240) >> 5].first;
                     *(s32*)(p + 0x248) = 0x40;
                 }
             }
             if (PSVECDistance((Vec*)(p + 0xc), (Vec*)(p + 0x27c)) >= lbl_80542B90) {
                 *(s32*)(p + 0x248) = 0x80;
-                fn_80363880_aim(p, *(f32*)(p + 0x280) - *(f32*)(p + 0x10), *(f32*)(p + 0x27c) - *(f32*)(p + 0xc), lbl_80542B8C);
+                fn_80363880_aim(p, *(f32*)(p + 0x280) - *(f32*)(p + 0x10), *(f32*)(p + 0x27c) - *(f32*)(p + 0xc), 0.5f);
             }
         }
     }
@@ -589,9 +585,9 @@ extern "C" void fn_80363880(char* p) {
         ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
         if (*(s32*)(p + 0x25c) == 0) {
             ++*(s32*)(p + 0x268);
-            if (((s8*)*(void**)(p + 0x270))[*(s32*)(p + 0x268)] < 0) *(s32*)(p + 0x268) = 0;
-            *(s32*)(p + 0x25c) = ((s8*)*(void**)(p + 0x270))[*(s32*)(p + 0x268)];
-            *(s32*)(p + 0x264) = ((s8*)*(void**)(p + 0x274))[*(s32*)(p + 0x268)];
+            if (*(*(s32*)(p + 0x268) + (s8*)*(void**)(p + 0x270)) < 0) *(s32*)(p + 0x268) = 0;
+            *(s32*)(p + 0x25c) = *(*(s32*)(p + 0x268) + (s8*)*(void**)(p + 0x270));
+            *(s32*)(p + 0x264) = *(*(s32*)(p + 0x268) + (s8*)*(void**)(p + 0x274));
         }
     }
 }
