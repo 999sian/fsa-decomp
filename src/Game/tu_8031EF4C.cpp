@@ -129,30 +129,157 @@ extern "C" Actor* fn_8031EF4C(Actor* p, s16 freeFlag) {
     return p;
 }
 
+extern "C" s32 fn_8023A89C(void*, s32, void*);
+extern "C" const JGeometry::TVec3<f32>* fn_8023E724(s32);
+extern "C" void fn_8023A654(s32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F8544(void*, u32, u32, const void*, s32);
+extern "C" Actor* fn_801F666C(void*, s32);
+extern "C" void fn_801F0D20(Actor*, s32);
+extern "C" void fn_801F0E34(Actor*, u32, s32);
+extern "C" u8 fn_8022F478(s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" s32 fn_8023725C(s32);
+extern "C" s32 fn_8022F340(s32);
+extern "C" void fn_80134DE4(void*, s32, s32);
+extern "C" void fn_803037D4(s32, s32);
+extern s32 lbl_80471740[];
 extern "C" void fn_8031F190(BrryActor* this_) {
-    Vec pos = this_->field_0C;
-    pos.x += this_->field_3C.x;
-    pos.y += this_->field_3C.y;
-    pos.z += this_->field_3C.z;
-    this_->field_0C = pos;
-    f32 box[4];
-    box[0] = this_->field_60 + pos.x;
-    box[1] = this_->field_64 + pos.y;
-    box[2] = this_->field_68 + pos.x;
-    box[3] = this_->field_6C + pos.y;
+    JGeometry::TVec2<f32> xy;
+    xy.set(this_->field_0C.x, this_->field_0C.y);
+    (*(JGeometry::TVec3<f32>*)&this_->field_0C) += *(JGeometry::TVec3<f32>*)&this_->field_3C;
+    JGeometry::TBox2f box;
+    box.set(*(JGeometry::TBox2f*)&this_->field_60);
+    box.addPos(xy.x, xy.y);
     switch (this_->mState) {
-    case 0:
-        if (this_->field_94 == 2) {
-            if ((u8)((Actor*)this_)->v11() == 0) {
-                this_->mState = 2;
+    case 0: {
+        if (this_->field_94 == 2 && (u8)this_->v11() == 0) {
+            this_->mState = 2;
+            break;
+        }
+        s32 player;
+        s32 handle;
+        JGeometry::TVec2<f32> contact;
+        player = fn_8023A89C(&box, this_->field_04, &contact);
+        if (player < 0) break;
+        JGeometry::TVec3<f32> pos = *fn_8023E724(player);
+        JGeometry::TVec3<f32> vel;
+        fn_8023A654(player);
+        s32 dir = fn_80230CFC(player);
+        if (dir == 0) {
+            pos.x += 14.0f;
+            vel.set(1.0f, 0.0f, 3.0f);
+        } else if (dir == 1) {
+            pos.x -= 14.0f;
+            vel.set(-1.0f, 0.0f, 3.0f);
+        } else if (dir == 2) {
+            pos.y += 14.0f;
+            vel.set(0.0f, 1.0f, 3.0f);
+        } else {
+            pos.y -= 14.0f;
+            vel.set(0.0f, -1.0f, 3.0f);
+        }
+        if ((s32)this_->mSwitchId == 0) {
+            handle = fn_801F8544(fn_801F856C(), 'RUPY', this_->field_04, &pos, this_->mVariant + 4);
+        } else if ((s32)this_->mSwitchId == 1) {
+            handle = fn_801F8544(fn_801F856C(), 'ESRY', this_->field_04, &pos, this_->mVariant + 0x10000);
+        }
+        if (handle >= 0) {
+            Actor* item = fn_801F666C(fn_801F856C(), handle);
+            if (item != 0) *(JGeometry::TVec3<f32>*)&item->field_3C = vel;
+        }
+        this_->detach();
+        break;
+    }
+    case 1:
+        if ((this_->field_94 == 3 || this_->field_94 == 5) && (u8)this_->v11() == 0) {
+            this_->mState = 2;
+            break;
+        }
+        if (this_->mTileId != (u16)fn_80226850(&this_->field_0C, this_->field_04)) {
+            if (this_->field_94 == 4 || this_->field_94 == 5) {
+                fn_801F0D20(this_, 3);
+                this_->detach();
+                return;
+            }
+            fn_801F0D20(this_, 0x42);
+            this_->mState = 0;
+            break;
+        }
+        for (s32 i = 0; i < 4; ++i) {
+            if (fn_8022F478(i)) continue;
+            if (fn_802373EC(i) != 9) continue;
+            if (fn_8023725C(i) != 2) continue;
+            JGeometry::TVec3<f32> pos = *fn_8023E724(i);
+            switch (fn_80230CFC(i)) {
+            case 0: pos += JGeometry::TVec3<f32>(16.0f, 0.0f, 0.0f); break;
+            case 1: pos += JGeometry::TVec3<f32>(-16.0f, 0.0f, 0.0f); break;
+            case 2: pos += JGeometry::TVec3<f32>(0.0f, 16.0f, 0.0f); break;
+            case 3: pos += JGeometry::TVec3<f32>(0.0f, -16.0f, 0.0f); break;
+            }
+            if (PSVECDistance(&this_->field_0C, &pos) < 8.0f) {
+                if ((&this_->mField25C)[i] < 3) {
+                    s32 shift = fn_8022F340(i);
+                    u32 mode = (s32)((u8*)lbl_8053AAF8)[0x83] >> (shift * 2);
+                    if ((mode & 3) == 2) {
+                        fn_80134DE4(lbl_8053AAF8, 8, 0);
+                        fn_801F0E34(this_, 0x30080, 0);
+                    } else fn_803037D4(i, 3);
+                    (&this_->mField24C)[i] = 0x18;
+                    (&this_->mField25C)[i] = 3;
+                }
+            } else if (PSVECDistance(&this_->field_0C, &pos) < 16.0f) {
+                if ((&this_->mField25C)[i] < 2) {
+                    s32 shift = fn_8022F340(i);
+                    u32 mode = (s32)((u8*)lbl_8053AAF8)[0x83] >> (shift * 2);
+                    if ((mode & 3) == 2) {
+                        fn_80134DE4(lbl_8053AAF8, 7, 0);
+                        fn_801F0E34(this_, 0x3007f, 0);
+                    } else fn_803037D4(i, 2);
+                    (&this_->mField24C)[i] = 0x38;
+                    (&this_->mField25C)[i] = 2;
+                }
+            } else if (PSVECDistance(&this_->field_0C, &pos) < 32.0f) {
+                if ((&this_->mField25C)[i] < 1) {
+                    s32 shift = fn_8022F340(i);
+                    u32 mode = (s32)((u8*)lbl_8053AAF8)[0x83] >> (shift * 2);
+                    if ((mode & 3) == 2) {
+                        fn_80134DE4(lbl_8053AAF8, 6, 0);
+                        fn_801F0E34(this_, 0x3007e, 0);
+                    } else fn_803037D4(i, 1);
+                    (&this_->mField24C)[i] = 0x4a;
+                    (&this_->mField25C)[i] = 1;
+                }
             }
         }
         break;
-    case 1:
-        break;
     case 2:
+        if ((u8)this_->v11() == 1) {
+            if (this_->field_94 == 2) {
+                fn_801F0D20(this_, 3);
+                this_->mState = 0;
+            } else if (this_->field_94 == 3 || this_->field_94 == 5) {
+                this_->mTileId = fn_80226850(&this_->field_0C, this_->field_04);
+                this_->mState = 1;
+            }
+        }
         break;
     }
+    if (this_->mTimer <= lbl_80471740[this_->mAnimFrame]) {
+        this_->mAnimFrame++;
+        if (this_->mAnimFrame >= 3) {
+            this_->mAnimFrame = 0;
+            this_->mTimer = (s32)(60.0f * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1()) + 60;
+        }
+    }
+    for (s32 i = 0; i < 4; ++i) {
+        if ((&this_->mField24C)[i] > 0) {
+            --(&this_->mField24C)[i];
+            if ((&this_->mField24C)[i] <= 0) (&this_->mField25C)[i] = 0;
+        }
+    }
+    if (this_->mTimer > 0) this_->mTimer--;
 }
 
 extern "C" void Brry_Draw(BrryActor* this_) {
