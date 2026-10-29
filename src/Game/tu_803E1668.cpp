@@ -31,11 +31,9 @@ static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 
 static inline f32 MenuAlpha803E(s32 elapsed) {
     return (f32)(elapsed * elapsed) / 900.0f;
 }
-static inline f32 MenuEnterSlide803E(s32 remaining, f32 magnitude, f32 denominator) {
+static inline f32 MenuEnterSlide803E(const f32 magnitude, const f32 denominator, const s32 remaining) {
     f32 square = (f32)(remaining * remaining);
-    f32 ratio = square / denominator;
-    magnitude *= ratio;
-    return magnitude;
+    return magnitude * (square / denominator);
 }
 static inline f32 MenuSlide803E(s32 remaining, const f32 magnitude, const f32 denominator) {
     f32 square=(f32)(remaining*remaining);
@@ -1000,12 +998,12 @@ extern "C" void fn_803E926C(u8* p) {
             *(f32*)(p + 0x168) = MenuSlide803E(d, lbl_8054368C, lbl_805436B0);
         } else *(f32*)(p + 0x168) = lbl_80543664;
     }
+    u64* keys;
     long lo;
     int hi;
-    u8* offsets;
     s32 lo2;
+    u8* offsets;
     u8* bytes;
-    u64* keys;
     s32 group;
     group = 0;
     for (; group < 3; group++) {
