@@ -530,20 +530,21 @@ extern "C" void fn_803BD5E0(u8* p, u32 idx) {
 }
 
 // Finds the picture keyed by key[idx] on p+8 and sets its black/white colors.
-static inline void setPictureBlackWhite(u8* p, const u64* key, s32 idx, JUtility::TColor black, JUtility::TColor white) {
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+static inline void setPictureBlackWhite(u8* p, const u64* key, s32 idx, Clr black, Clr white) {
+    FsaVObj* r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+    r->v76((u32*)&black, (u32*)&white);
 }
 
 #pragma opt_propagation off
 extern "C" void fn_803BDD44(u8* p, s32 idx) {
     const u8* table = lbl_804765D0;
-    void* r;
+    FsaVObj* r;
     {
         Clr w = *(Clr*)(p + 0xe8);
         Clr b = *(Clr*)(p + 0xfc);
         const u64* key = (const u64*)(table + 0x5d8);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &b, &w);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&b, (u32*)&w);
     }
     Clr c = *(Clr*)(p + 0xec);
     Clr d = *(Clr*)(p + 0x100);
@@ -551,29 +552,29 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x5c0);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &d2, &c2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&d2, (u32*)&c2);
     }
     {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x5a8);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &d2, &c2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&d2, (u32*)&c2);
     }
     {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x590);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &d2, &c2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&d2, (u32*)&c2);
     }
     {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x578);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &d2, &c2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&d2, (u32*)&c2);
     }
     {
         Clr n;
@@ -581,8 +582,8 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr c2 = c;
         Clr n2 = n;
         const u64* key = (const u64*)(table + 0x560);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &n2, &c2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&n2, (u32*)&c2);
     }
     Clr e = *(Clr*)(p + 0xf0);
     Clr f = *(Clr*)(p + 0x104);
@@ -590,36 +591,36 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x548);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &f2, &e2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&f2, (u32*)&e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x530);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &f2, &e2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&f2, (u32*)&e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x518);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &f2, &e2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&f2, (u32*)&e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x500);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &f2, &e2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&f2, (u32*)&e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x4e8);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &f2, &e2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&f2, (u32*)&e2);
     }
     Clr g = *(Clr*)(p + 0xf4);
     Clr h = *(Clr*)(p + 0x108);
@@ -627,29 +628,29 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x6c8);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &h2, &g2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&h2, (u32*)&g2);
     }
     {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x6b0);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &h2, &g2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&h2, (u32*)&g2);
     }
     {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x698);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &h2, &g2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&h2, (u32*)&g2);
     }
     {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x680);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &h2, &g2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&h2, (u32*)&g2);
     }
     {
         Clr n;
@@ -657,8 +658,8 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr g2 = g;
         Clr n2 = n;
         const u64* key = (const u64*)(table + 0x668);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &n2, &g2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&n2, (u32*)&g2);
     }
     Clr i = *(Clr*)(p + 0xf8);
     Clr j = *(Clr*)(p + 0x10c);
@@ -666,29 +667,29 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x650);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &j2, &i2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&j2, (u32*)&i2);
     }
     {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x638);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &j2, &i2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&j2, (u32*)&i2);
     }
     {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x620);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &j2, &i2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&j2, (u32*)&i2);
     }
     {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x608);
-        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
-        (*(ColorVt**)r)->v76(r, &j2, &i2);
+        r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
+        r->v76((u32*)&j2, (u32*)&i2);
     }
 }
 #pragma opt_propagation reset
