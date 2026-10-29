@@ -835,13 +835,6 @@ static inline f32 signEffect8016D398() {
     if(effectRandom8016D398()>lbl_8053D940)sign=lbl_8053D9D8;
     return sign;
 }
-static inline void positionEffectB8016D398(u8* p) {
-    f32 y=lbl_8053D9D4*effectRandom8016D398()-lbl_8053D9D4;
-    f32 sign=signEffect8016D398();
-    f32 x=(lbl_8053D9DC*effectRandom8016D398()+lbl_8053D9C8)*sign;
-    *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
-}
-
 #pragma opt_propagation off
 static inline bool deleteEffect8016D398(const JPABaseEmitter* e) {
     return e->checkStatus(8)!=0 && e->mAlivePtclChld.getNum()+e->mAlivePtclBase.getNum()==0;
