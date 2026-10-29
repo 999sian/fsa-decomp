@@ -388,28 +388,29 @@ extern "C" void fn_80107660(CNON* this_) {
         break;
     case 2: {
         CNON_swing(this_);
-        this_->m284 += lbl_8053C2E8;
-        JGeometry::TVec3f d(lbl_8053C2C0, lbl_8053C2EC * (lbl_8053C2DC - this_->m284), lbl_8053C2C0);
+        this_->m284 += 0.05f;
+        JGeometry::TVec3f d(0.0f, 2.0f * (0.5f - this_->m284), 0.0f);
         this_->mPos.add(d);
         if (this_->mPos.y < this_->m28C) {
             this_->mPos.y = this_->m28C;
         }
-        if (this_->m284 >= lbl_8053C2D4) {
-            this_->m284 = lbl_8053C2D4;
+        if (this_->m284 >= 1.0f) {
+            this_->m284 = 1.0f;
         }
         this_->mState++;
         if (this_->mState >= 0xb4 && this_->mState < 0x12c) {
             s32 t = this_->mState - 0xb4;
             f32 s = CNON_sinDeg((s16)(t * t / 6));
-            this_->mPos.y = s * (f32)((200 - t) / 200 * 12 + 2) + this_->m28C;
+            s32 amp = (200 - t) / 200 * 12 + 2;
+            this_->mPos.y = amp * s + this_->m28C;
         } else if (this_->mState >= 0x12c) {
             fn_80231590(this_->m26C, this_->m198);
         }
-        f32 out[2];
+        JGeometry::TVec3f out;
         CNON_Box wbox;
         if (fn_801F285C(this_, 0, 0, 1, -1) >= 0) {
             fn_80231590(this_->m26C, this_->m198);
-        } else if (CNON_hitWallBox(this_, wbox, out)) {
+        } else if (CNON_hitWallBox(this_, wbox, &out.x)) {
             fn_80231590(this_->m26C, this_->m198);
         } else if (fn_801F2DB4(this_, this_->m1A0, 'NULL', 0)) {
             fn_80231590(this_->m26C, this_->m198);
@@ -425,20 +426,20 @@ extern "C" void fn_80107660(CNON* this_) {
         }
         cnt++;
         f32 dy;
-        if (v <= lbl_8053C2E4) {
-            dy = lbl_8053C2D8 * (lbl_8053C2DC - v);
+        if (v <= 0.2f) {
+            dy = 12.0f * (0.5f - v);
         } else {
-            dy = lbl_8053C2E0 * (lbl_8053C2E4 - v);
+            dy = 4.0f * (0.2f - v);
         }
-        JGeometry::TVec3f d(lbl_8053C2C0, dy, lbl_8053C2C0);
+        JGeometry::TVec3f d(0.0f, dy, 0.0f);
         this_->mPos.add(d);
         if (this_->mPos.y < this_->m28C) {
             this_->mPos.y = this_->m28C;
         }
         bool done;
-        if (v >= lbl_8053C2D4 && cnt >= 30) {
+        if (v >= 1.0f && cnt >= 30) {
             cnt = 0;
-            v = lbl_8053C2C0;
+            v = 0.0f;
             done = true;
         } else {
             done = false;
