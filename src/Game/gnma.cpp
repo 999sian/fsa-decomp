@@ -51,7 +51,7 @@ extern "C" u32 fn_801F2618(void* p, s32 a, s32 b);
 extern "C" u8 fn_801F2DB4(void* p, u32 a, u32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
 extern "C" void fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
-extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f = 0.0f);
+extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
@@ -79,6 +79,7 @@ extern "C" void fn_801AAE88(char* this_) {
     }
 }
 
+#pragma fp_contract off
 extern "C" void fn_801AAF44(char* p) {
     fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), p + 0xc);
     if (fn_801F3D94(p, 1) != 0) {
@@ -123,7 +124,7 @@ extern "C" void fn_801AAF44(char* p) {
     *(f32*)(p + 0x7c) = lbl_8053E76C;
     switch (*(s32*)(p + 0x230)) {
     case 7: {
-        fn_80458FF0(lbl_8053AF80, 0x100004, 0, 0);
+        fn_80458FF0(lbl_8053AF80, 0x1000004, 0, 0);
         *(s32*)(p + 0x230) = 8;
     }
     // fall through
@@ -199,14 +200,15 @@ extern "C" void fn_801AAF44(char* p) {
             *(s32*)(p + 0x98) = 2;
         }
         if (*(s32*)(p + 0x238) == 0) {
-            f32 oldy = *(f32*)(p + 0x10);
-            f32 keepx = *(f32*)(p + 0xc);
-            f32 keepz = *(f32*)(p + 0x14);
-            *(f32*)(p + 0x10) = oldy + lbl_8053E794;
+            f32 keepz, oldy, keepx;
+            keepx = *(f32*)(p + 0xc);
+            oldy = *(f32*)(p + 0x10);
+            keepz = *(f32*)(p + 0x14);
+            *(f32*)(p + 0x10) += lbl_8053E794;
             u16 angle = 0;
             s32 n = 1;
             s32 key = 0;
-            fn_801EEC98(p, *(void**)(p + 0x198), &angle, 0, 0, 0, 0, 4, oldy);
+            fn_801EEC98(p, *(void**)(p + 0x198), &angle, 0, 0, 0, 0, 4);
             if (*(s32*)(p + 0x258) == 1) {
                 angle -= 0x2000;
                 n = 3;
@@ -217,7 +219,7 @@ extern "C" void fn_801AAF44(char* p) {
                 if (id >= 0) {
                     char* na = (char*)fn_801F666C(fn_801F856C(), id);
                     if (na != 0) {
-                        f32* tab = (f32*)((char*)sincosTable___5JMath + ((angle >> 5) << 3));
+                        f32* tab = (f32*)((char*)sincosTable___5JMath + (((u32)angle >> 2) & 0x3ff8));
                         JGeometry::TVec3f velocity;
                         velocity.set(lbl_8053E798 * tab[0], lbl_8053E798 * tab[1], lbl_8053E744);
                         *(JGeometry::TVec3f*)(na + 0x3c) = velocity;
@@ -292,7 +294,7 @@ extern "C" void fn_801AAF44(char* p) {
         break;
     }
 }
-
+#pragma fp_contract reset
 extern "C" void fn_801AB6A8(void* this_) {
     char* p = (char*)this_;
     f32 a = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
