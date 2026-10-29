@@ -22,7 +22,7 @@ extern "C" u8 fn_8040271C(void*, s32, f32, f32);
 extern "C" void fn_80402628(void*, s32, s32, u8);
 extern "C" const f32 lbl_8054391C;
 extern "C" f32 lbl_80543944;
-extern "C" f32 lbl_805438BC;
+extern "C" const f32 lbl_805438BC;
 extern "C" f32 lbl_80543898;
 extern "C" f32 lbl_805438C0;
 extern "C" void fn_803832BC(u8*, u32, s32, s32, s32);
