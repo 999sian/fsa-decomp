@@ -2,6 +2,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
+static inline f32 negativePlayerVelocity(const f32& value) { return -value; }
 static inline void boundPlayerVelocity(f32& value, const f32 lower, const f32 upper) {
     if (value < lower) value = lower;
     else if (value > upper) value = upper;
@@ -1480,8 +1481,14 @@ if(*(u8*)((u32)fn_802D6A9C() + 0x10000 + area + 0x31df)) {
 if(F32(p,0x348)>-7.0f) F32(p,0x348)=-7.0f;
 else if(F32(p,0x348)<-10.0f) F32(p,0x348)=-10.0f;
 } else {
-f32 limit=7.0f;
-rotatePlayerFall((f32*)(p+0x348),F32(p,0x348),F32(p,0x34c));
+f32 y;
+f32 z;
+f32 limit;
+y=-F32(p,0x34c);
+z=-F32(p,0x348);
+limit=7.0f;
+F32(p,0x348)=y;
+F32(p,0x34c)=z;
 if(F32(p,0x34c)<limit) F32(p,0x34c)=limit;
 else if(F32(p,0x34c)>lbl_80540354) F32(p,0x34c)=lbl_80540354;
 }
