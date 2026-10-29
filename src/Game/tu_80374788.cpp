@@ -59,6 +59,7 @@ extern "C" void fn_80238E08(s32);
 extern "C" void fn_801F0E34(Actor*,s32,s32);
 extern "C" JGeometry::TVec3f lbl_804A79E0[];
 extern "C" const JGeometry::TVec3f lbl_804750C0[];
+static inline f32 blockVelocityY(const JGeometry::TVec3f* velocity) { return velocity->y; }
 static inline void blockSetVelocity(Actor* actor, const JGeometry::TVec3f& velocity) {
     f32 x = velocity.x;
     f32 y = velocity.y;
