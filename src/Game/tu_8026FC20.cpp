@@ -2895,6 +2895,11 @@ inline bool pointInRect(const JGeometry::TVec2<f32>& v, const RoomRect& r) {
     }
     return in;
 }
+inline bool rectContains(f32 x, f32 y, const RoomRect& r) {
+    bool in = 0;
+    if (x >= r.x0 && y >= r.y0 && x < r.x1 && y < r.y1) in = 1;
+    return in;
+}
 inline void stopVel(char* p) {
     ((JGeometry::TVec3<f32>*)(p + 0x368))->set(F32(p, 0x344), F32(p, 0x348), 0.0f);
     F32(p, 0x344) = 0.0f;
@@ -3352,7 +3357,7 @@ void fn_8027CC90(char* p) {
             r.x1 += -16.0f;
             r.y1 += -16.0f;
             if (F32(p, 0x34c) < 0.0f) {
-                if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8))) {
+                if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !pointInRect(*(JGeometry::TVec2<f32>*)(p + 8), r)) {
                     stopVel(p);
                     F32(p, 0x10) = 0.0f;
                 }
