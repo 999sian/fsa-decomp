@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #include "Game/ItemBase.h"
 
 
@@ -110,8 +111,9 @@ extern "C" void fn_803771AC(u8* this_) {
         box[2] += -1.0f;
         box[3] += -1.0f;
         {
-            u8* p = ((u8*(*)(void))fn_8020D58C)();
-            fn_8020D7D0(p + p[0] * 0x784 + 4, *(u32*)(this_ + 0x198));
+            u32 handle = *(u32*)(this_ + 0x198);
+            u8* p = fn_8020D58C();
+            fn_8020D7D0(p + (p[0] * 0x784 + 4), handle);
         }
         if (this_[0x264] == 0) {
             Vec* target = (Vec*)(this_ + 0x24);
@@ -127,7 +129,7 @@ extern "C" void fn_803771AC(u8* this_) {
                 speed = 11.9f;
             }
             f32 d2 = PSVECDistance(pos, home);
-            if (d2 < speed) {
+            if (d2 >= speed) {
                 if (pos->x <= target->x + 11.5f && pos->x >= target->x - 11.5f) {
                     pos->x = target->x;
                 } else {
@@ -138,7 +140,6 @@ extern "C" void fn_803771AC(u8* this_) {
                 } else {
                     pos->y = fn_8033D4AC(pos->y, home->y, speed);
                 }
-            }
             JGeometry::setTVec3f((f32*)pos, (f32*)home);
             vel->x = 0.0f;
             vel->y = 0.0f;
@@ -152,14 +153,16 @@ extern "C" void fn_803771AC(u8* this_) {
             if (PSVECDistance(pos, target) < 63.9) {
                 ((Actor*)this_)->v10(0xff, 1);
                 f32 x = pos->x - 24.0f;
+                f32 y = pos->y;
+                f32 z = pos->z;
                 s32 i, j;
                 for (i = 0; i < 4; i++) {
                     tmp.x = x;
-                    tmp.y = pos->y;
-                    tmp.z = pos->z;
+                    tmp.y = y;
+                    tmp.z = z;
                     f32* offset = lbl_80475178;
                     for (j = 0; j < 4; j++, offset++) {
-                        tmp.y = pos->y + *offset;
+                        tmp.y = y + *offset;
                         fn_802A3948(lbl_8053AC98, &tmp, 0, *(u32*)(this_ + 4), 0);
                     }
                     x += 16.0f;
@@ -192,13 +195,8 @@ extern "C" void fn_803771AC(u8* this_) {
                     fn_802D7584(fn_802D6A9C(), *(void**)(this_ + 0x16c), (u8)*(u32*)(this_ + 0x258));
                 }
             }
-        }
-        break;
-    }
-    case 1: {
-        pos->x += vel->x;
-        pos->y += vel->y;
-        pos->z += vel->z;
+            } else {
+        JMathInlineVEC::PSVECAdd(pos, vel, pos);
         if (*(s32*)(this_ + 0x254) > 0) {
             (*(s32*)(this_ + 0x254))--;
             break;
@@ -207,17 +205,10 @@ extern "C" void fn_803771AC(u8* this_) {
             break;
         }
         if (JMathInlineVEC::PSVECSquareMag(vel) <= 32.0f * FLT_EPSILON) {
-            if (*(s32*)(this_ + 0x25c) != 0) {
-                (*(s32*)(this_ + 0x25c))--;
-            }
-            if (*(s32*)(this_ + 0x25c) == 0) {
-                fn_801F0D20(this_, 3);
-            }
-        } else {
             if (fn_80239108(*(u32*)(this_ + 0x198)) < 4) {
                 break;
             }
-            if (PSVECDistance(pos, (Vec*)(this_ + 0x24)) >= 63.9) {
+            if (PSVECDistance(pos, (Vec*)(this_ + 0x24)) >= 63.9f) {
                 break;
             }
             if (*(s32*)(this_ + 0x260) >= 10) {
@@ -232,7 +223,7 @@ extern "C" void fn_803771AC(u8* this_) {
                 if (idx < 0 || idx >= 4) {
                     break;
                 }
-                fn_80238E08(h);
+                fn_80238E08(*(u32*)(this_ + 0x198));
                 Vec* v = (Vec*)((u8*)lbl_80475148 + idx * 0xc);
                 vel->x = v->x;
                 vel->y = v->y;
@@ -241,9 +232,7 @@ extern "C" void fn_803771AC(u8* this_) {
                 home->y = pos->y;
                 home->z = pos->z;
                 fn_801F0E34(this_, 0x30004, 0);
-                pos->x += vel->x;
-                pos->y += vel->y;
-                pos->z += vel->z;
+                JMathInlineVEC::PSVECAdd(pos, vel, pos);
                 if (idx == 0) {
                     *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x31a, 1, 1, 0, 0, 1);
                 } else if (idx == 1) {
@@ -253,12 +242,23 @@ extern "C" void fn_803771AC(u8* this_) {
                 } else {
                     *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), pos, 1.0f, 0x319, 1, 1, 0, 0, 1);
                 }
-                if (*(u32*)(this_ + 0x230) != 0) {
-                    fn_8013CB44(*(u32*)(this_ + 0x230), pos, 0, 0, 1);
-                }
             } else {
                 (*(s32*)(this_ + 0x260))++;
             }
+        } else if (*(u32*)(this_ + 0x230) != 0) {
+            fn_8013CB44(*(u32*)(this_ + 0x230), pos, 0, 0, 1);
+        }
+            }
+        }
+        break;
+    }
+    case 1: {
+        if (*(s32*)(this_ + 0x25c) != 0) {
+            --*(s32*)(this_ + 0x25c);
+            if (*(s32*)(this_ + 0x25c) == 0) fn_801F0D20(this_, 3);
+        }
+        for (s32 player = 0; player < 4; player++) {
+            if (movingBlockContainsPlayer(this_, player)) fn_8022DF48(player);
         }
         break;
     }
