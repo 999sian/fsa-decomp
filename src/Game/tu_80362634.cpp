@@ -18,7 +18,7 @@ struct ActorList80362634 {
     u32 pad[2];
     char* actors[0x400];
     s32 count;
-    char* getActor(s32 index) { return actors[index]; }
+    char* getActor(const s32 index) { return actors[index]; }
 };
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
