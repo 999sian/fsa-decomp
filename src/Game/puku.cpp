@@ -420,8 +420,4 @@ extern "C" void fn_8017BBFC(char* this_) {
     }
 }
 
-#pragma exceptions off
-#include "JSystem/JAudio/System/JASHeapCtrl.h"
-#include "JSystem/JAudio/System/JASTrack.h"
-#pragma exceptions reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
