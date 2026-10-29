@@ -157,7 +157,7 @@ static inline void startAudioSpecial(u8* self, u32 id) {
 }
 struct AudioChannelBase { u8 pad[0x18]; JAUSoundObject* object; };
 
-static inline f32 getAudioPan(const u8* self, const s8 mode) {
+static inline f32 getAudioPan(const u8* self, s32 mode) {
     if(mode<0)return lbl_80543EC4;
     if(mode>=self[5])return lbl_80543EC4;
     f32 pan=lbl_80543EC4;
@@ -660,15 +660,12 @@ extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
         ((JAUSoundObject*)*(void**)(self+0x14))->stopSound(JAISoundID(0x42),0);
         break;
     case 0x38:case 0x57:
-        if(self[4])return;
-        if(self[5]==1 && *(Unk80458F04Sound**)(self+0x84) && id==(*(Unk80458F04Sound**)(self+0x84))->mID)return;
-        ((JAISoundStarter*)*(void**)(self+0x30))->startSound(JAISoundID(id),(JAISoundHandle*)(self+0x84),0);
-        if(*(Unk80458F04Sound**)(self+0x84))(*(Unk80458F04Sound**)(self+0x84))->mMove.moveVolume(*(f32*)(self+0x50),0);
+        startAudioSpecial(self,id);
         return;
     }
     if(mode>=0){
         if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
-            ((JAUSoundObject**)(self+mode*4))[6]->stopSound(JAISoundID(id),0);
+            ((AudioChannelBase*)(self+mode*4))->object->stopSound(JAISoundID(id),0);
         u8* channelBase=self+mode*4;
         stopAudioGroup(*(JAUSoundObject**)(channelBase+0x18));
         JAISoundHandle* h=(*(JAUSoundObject**)(channelBase+0x18))->startSound(JAISoundID(id));
