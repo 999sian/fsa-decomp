@@ -80,9 +80,9 @@ static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32 scale, con
         cx = cos(lbl_80541D88);
         cy = cos(ang);
         cz = cos(lbl_80541D88);
-        f32 sxsy = sx * sy;
-        f32 cxsz = cx * sz;
         f32 cxcz = cx * cz;
+        f32 cxsz = cx * sz;
+        f32 sxsy = sx * sy;
         f32 sxsz = sx * sz;
         f32 sxcz = sx * cz;
         f32 cycz = cy * cz;
