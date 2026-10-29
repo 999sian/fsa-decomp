@@ -3668,7 +3668,7 @@ u8 fn_802265DC(const JGeometry::TVec3<f32>&, void*, s32);
 f32 fn_8022C82C(s32);
 extern const JGeometry::TVec3<f32> lbl_8046BBD8[];
 }
-inline u8 hitWall(void* obj, const JGeometry::TVec3<f32>& v) {
+inline u8 hitWall(void* obj, JGeometry::TVec3<f32> v) {
     return fn_802265DC(v, obj, 1);
 }
 inline bool wallAt(char* p, f32 x, f32 y) {
