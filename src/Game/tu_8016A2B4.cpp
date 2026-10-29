@@ -823,13 +823,16 @@ static inline void spawnEffectB8016D398(void* a5) {
         }
 }
 
+static inline s32 maxEffect8016D398(s32 a,s32 b) {
+    return a>=b?a:b;
+}
+
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
     u8* p;
+    s32 maxA,maxB;
     s32 i;
-    Vec neg, pos;
-    neg.y=-*(f32*)((u8*)a1+0x1c);
-    neg.x=-*(f32*)((u8*)a1+0xc);
-    neg.z=lbl_8053D944;
+    JGeometry::TVec3f neg(-*(f32*)((u8*)a1+0xc),-*(f32*)((u8*)a1+0x1c),lbl_8053D944);
+    Vec pos;
     if((u8)a4){
         if(*(s32*)a6>0){--*(s32*)a6;}
         else {
@@ -842,7 +845,7 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
         *(s32*)a7=(s32)(lbl_8053D9D0*effectRandom8016D398());
         spawnEffectB8016D398(a5);
     }
-    s32 maxA=0,maxB=0;
+    maxA=0;maxB=0;
     for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
         if(*(u16*)(p+0x10)==0x287){
             maxB=maxB<*(s32*)(p+0x14)?*(s32*)(p+0x14):maxB;
