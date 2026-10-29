@@ -105,8 +105,8 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
     mtx[2][2] = scale * (cx * cy);
 }
 
-static inline void bph2_billboardMtx(f32 mtx[3][4], const f32 s) {
-    f32 sx, sy, sz, cx, cy, cz;
+static inline void bph2_billboardMtx(f32 mtx[3][4], f32& s) {
+    f32 cx, cy, sx, sy, sz, cz;
     sx = sin(lbl_8053E0C8); sy = sin(lbl_8053E0C8); sz = sin(lbl_8053E0C8);
     cx = cos(lbl_8053E0C8); cy = cos(lbl_8053E0C8); cz = cos(lbl_8053E0C8);
     f32 cxcz = cx * cz;
