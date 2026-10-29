@@ -541,7 +541,14 @@ extern "C" void fn_8020A384(u8* this_) {
             }
             *(u8*)(this_ + 0x11c) = 0;
         } else {
-            fobrApproach((f32*)(this_ + 0x54), (f32)(0xc - *(s32*)(this_ + 0x24c)));
+            f32 x = (f32)(0xc - *(s32*)(this_ + 0x24c));
+            if (x < *(f32*)__float_epsilon) {
+                *(f32*)(this_ + 0x54) = lbl_8053F964;
+            } else {
+                f32 k = lbl_8053F968;
+                x = k / x;
+                *(f32*)(this_ + 0x54) += x * (lbl_8053F964 - *(f32*)(this_ + 0x54));
+            }
             *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x54);
             *(f32*)(this_ + 0x5c) = *(f32*)(this_ + 0x54);
         }
