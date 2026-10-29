@@ -166,7 +166,7 @@ static inline void hrmnCameraFocus(char* p) {
 }
 
 static inline void hrmnCameraLock(char* p) {
-    char* cam = *(char**)(lbl_8053AB10 + 0x24);
+    u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
     if (!cam[0x840]) {
         cam[0x840] = 1;
         *(f32*)(cam + 0x844) = *(f32*)(cam + 0x84c) = *(f32*)(p + 0xc);
