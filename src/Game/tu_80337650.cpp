@@ -26,6 +26,14 @@ struct AnimKindTbl {
 };
 extern char lbl_80471BB8[];
 static inline AnimKindTbl* GetAnimKind(s32 kind) { return (AnimKindTbl*)(lbl_80471BB8 + (kind << 4)); }
+static inline s32 AnimMoveFirst(s32 kind) {
+    const AnimKindTbl* __restrict base = (const AnimKindTbl*)lbl_80471BB8;
+    return *base[kind].move;
+}
+static inline s32 AnimIdleFirst(s32 kind) {
+    const AnimKindTbl* __restrict base = (const AnimKindTbl*)lbl_80471BB8;
+    return *base[kind].idle;
+}
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802DCD0C(void* mgr);
 extern "C" void fn_802D79E8(void* mgr, u32 room, s32 a, f32 x, f32 y);
@@ -341,8 +349,10 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(s32*)(this_ + 0x24c) = fn_8022FD8C(*(s32*)(this_ + 0x198));
             if (*(s32*)(this_ + 0x24c) >= 0 && lbl_80542078 == fn_8023E724(*(s32*)(this_ + 0x24c))[2] &&
                 fn_802300EC(*(s32*)(this_ + 0x24c))) {
+                s32 id = *(s32*)(this_ + 0x198);
+                u32 room = *(u32*)(this_ + 4);
                 V3 pos = *(V3*)(this_ + 0xc);
-                if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(s32*)(this_ + 0x198), *(u32*)(this_ + 4), &pos, 0)) {
+                if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), id, room, &pos, 0)) {
                     *(s32*)(this_ + 0x230) = 4;
                 }
             }
@@ -358,8 +368,10 @@ extern "C" void fn_80337DEC(u8* this_) {
             if (!fn_802300EC(*(s32*)(this_ + 0x24c))) {
                 break;
             }
+            s32 id = *(s32*)(this_ + 0x198);
+            u32 room = *(u32*)(this_ + 4);
             V3 pos = *(V3*)(this_ + 0xc);
-            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), *(s32*)(this_ + 0x198), *(u32*)(this_ + 4), &pos, 0)) {
+            if (fn_8038C678(*(s32*)(this_ + 0x24c), *(s32*)(this_ + 0x264), id, room, &pos, 0)) {
                 *(s32*)(this_ + 0x230) = 4;
                 break;
             }
@@ -378,13 +390,13 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
                 } else {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->idle;
+                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
                 }
                 break;
             default:
-                *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
                 break;
             }
         }
@@ -405,18 +417,18 @@ extern "C" void fn_80337DEC(u8* this_) {
             switch (*(s32*)(this_ + 0x250)) {
             case 2:
                 fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, lbl_8054206C, lbl_80542078);
-                *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
                 break;
             case 4:
                 if (*(s32*)(this_ + 0x248) >= 2) {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
                 } else {
-                    *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->idle;
+                    *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
                 }
                 break;
             case 3:
             default:
-                *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+                *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
                 break;
             }
         }
@@ -429,7 +441,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x230) = 3;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->move;
+            *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16 + 4);
         } else if (*(s32*)(this_ + 0x240) <= 0 ||
                    (*(f32*)(this_ + 0xc) == *(f32*)(this_ + 0x24) && *(f32*)(this_ + 0x10) == *(f32*)(this_ + 0x28))) {
             *(V3*)(this_ + 0xc) = *(V3*)(this_ + 0x24);
@@ -438,7 +450,7 @@ extern "C" void fn_80337DEC(u8* this_) {
             *(f32*)(this_ + 0x3c) = lbl_80542078;
             *(s32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x238) = 0;
-            *(s32*)(this_ + 0x234) = *GetAnimKind(*(s32*)(this_ + 0x250))->idle;
+            *(s32*)(this_ + 0x234) = **(s32**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16);
         }
         break;
     case 4:
