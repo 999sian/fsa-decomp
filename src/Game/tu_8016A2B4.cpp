@@ -852,7 +852,8 @@ static inline bool deleteEffect8016D398(const JPABaseEmitter* e) {
 }
 
 static inline f32 scaleRandom8016D398(f32 scale) {
-    return scale*effectRandom8016D398();
+    const f32 raw=effectRandom8016D398();
+    return scale*raw;
 }
 
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
