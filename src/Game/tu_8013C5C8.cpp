@@ -49,8 +49,8 @@ struct EffSlotTable {
 static inline void tu13_setOffsetVec(f32* v, f32 x, f32 y, f32 z, s32 offset) {
     f32 off = (f32)offset;
     v[0] = x;
-    v[1] = y + off;
     v[2] = z + off;
+    v[1] = y + off;
 }
 
 static inline void tu13_setVec(f32* v, f32 x, f32 y, f32 z) {
