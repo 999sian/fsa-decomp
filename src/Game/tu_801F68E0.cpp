@@ -1050,7 +1050,7 @@ extern "C" BOOL fn_801F68E0(u8* self) {
 }
 
 extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c);
-extern f32 lbl_8053F80C;
+extern const f32 lbl_8053F80C;
 extern f32 lbl_8053F810;
 extern f32 lbl_8053F814;
 extern f32 lbl_8053F818;
@@ -1081,75 +1081,35 @@ inline bool collisionBoxesOverlap(const JGeometry::TBox2<f32>& a, const JGeometr
 extern "C" void fn_801F6A4C(void* pool) {
 	u8* b;
 	u8* a;
-	s32 k;
 	s32 retry;
 	s32 i;
 	s32 j;
+	s32 k;
 	u8* self = (u8*)pool;
 	for (i = 0; i <= *(s32*)(self + 0x301c); i++) {
 		s32 handle = *(s32*)(self + 0x201c + i * 4);
 		if (handle == -1) {
 			continue;
 		}
-		u8* ap = (u8*)lbl_8053AAF8->m4->m8;
-		a = NULL;
-		if (handle >= 0) {
-			s32 idx = *(s32*)(ap + 0x2014);
-			if (idx >= 0) {
-				u8* c = *(u8**)(ap + 8 + idx * 4);
-				if (c != NULL && c[0x11c] != 0 && handle == *(s32*)(c + 0x198)) {
-					a = c;
-				}
-			}
-			if (a == NULL) {
-				s32 cnt = *(s32*)(ap + 0x1008);
-				for (k = 0; k < cnt; k++) {
-					u8* c = *(u8**)(ap + 8 + k * 4);
-					if (c != NULL && c[0x11c] != 0 && handle == *(s32*)(c + 0x198)) {
-						a = c;
-						break;
-					}
-				}
-			}
-		}
+		a = findCollisionActor(handle);
 		if (a == NULL || a[0x11c] == 0) {
 			continue;
 		}
 
-		f32 bx[4];
-		*(u32*)&bx[0] = *(u32*)(a + 0x60);
-		*(u32*)&bx[1] = *(u32*)(a + 0x64);
-		*(u32*)&bx[2] = *(u32*)(a + 0x68);
-		*(u32*)&bx[3] = *(u32*)(a + 0x6c);
-		bx[0] += *(f32*)(a + 0xc);
-		bx[1] += *(f32*)(a + 0x10);
-		bx[2] += *(f32*)(a + 0xc);
-		bx[3] += *(f32*)(a + 0x10);
+		JGeometry::TBox2<f32> bx;
+		*(u32*)&bx.i.x = *(u32*)(a + 0x60);
+		*(u32*)&bx.i.y = *(u32*)(a + 0x64);
+		*(u32*)&bx.f.x = *(u32*)(a + 0x68);
+		*(u32*)&bx.f.y = *(u32*)(a + 0x6c);
+		bx.i.x += *(f32*)(a + 0xc);
+		bx.i.y += *(f32*)(a + 0x10);
+		bx.f.x += *(f32*)(a + 0xc);
+		bx.f.y += *(f32*)(a + 0x10);
 		*(s32*)(a + 0x9c) = -1;
 
 		for (j = 0; j < *(s32*)(self + 0x301c); j++) {
 			s32 hb = *(s32*)(self + 0x201c + j * 4);
-			b = NULL;
-			ap = (u8*)lbl_8053AAF8->m4->m8;
-			if (hb >= 0) {
-				s32 idx = *(s32*)(ap + 0x2014);
-				if (idx >= 0) {
-					u8* c = *(u8**)(ap + 8 + idx * 4);
-					if (c != NULL && c[0x11c] != 0 && hb == *(s32*)(c + 0x198)) {
-						b = c;
-					}
-				}
-				if (b == NULL) {
-					s32 cnt = *(s32*)(ap + 0x1008);
-					for (k = 0; k < cnt; k++) {
-						u8* c = *(u8**)(ap + 8 + k * 4);
-						if (c != NULL && c[0x11c] != 0 && hb == *(s32*)(c + 0x198)) {
-							b = c;
-							break;
-						}
-					}
-				}
-			}
+			b = findCollisionActor(hb);
 			if (b == NULL || b[0x11c] == 0) {
 				continue;
 			}
@@ -1163,51 +1123,40 @@ extern "C" void fn_801F6A4C(void* pool) {
 				continue;
 			}
 
-			f32 bb[4];
-			*(u32*)&bb[0] = *(u32*)(b + 0x60);
-			*(u32*)&bb[1] = *(u32*)(b + 0x64);
-			*(u32*)&bb[2] = *(u32*)(b + 0x68);
-			*(u32*)&bb[3] = *(u32*)(b + 0x6c);
-			bb[0] += *(f32*)(b + 0xc);
-			bb[1] += *(f32*)(b + 0x10);
-			bb[2] += *(f32*)(b + 0xc);
-			bb[3] += *(f32*)(b + 0x10);
+			JGeometry::TBox2<f32> bb;
+			*(u32*)&bb.i.x = *(u32*)(b + 0x60);
+			*(u32*)&bb.i.y = *(u32*)(b + 0x64);
+			*(u32*)&bb.f.x = *(u32*)(b + 0x68);
+			*(u32*)&bb.f.y = *(u32*)(b + 0x6c);
+			bb.i.x += *(f32*)(b + 0xc);
+			bb.i.y += *(f32*)(b + 0x10);
+			bb.f.x += *(f32*)(b + 0xc);
+			bb.f.y += *(f32*)(b + 0x10);
 
 			if ((*(u32*)(a + 0xb8) & 0xff) == 2) {
-				f32 mn0 = bx[0] <= bb[0] ? bx[0] : bb[0];
-				f32 mn1 = bx[1] <= bb[1] ? bx[1] : bb[1];
-				f32 mx2 = bx[2] >= bb[2] ? bx[2] : bb[2];
-				f32 mx3 = bx[3] >= bb[3] ? bx[3] : bb[3];
-				if (mx2 < mn0 && mx3 < mn1) {
+				if (collisionBoxesOverlap(bx, bb)) {
 					*(s32*)(a + 0x9c) = *(s32*)(b + 0x198);
-					break;
+					j = 0x400;
 				}
 				continue;
 			}
 
 			retry = 0;
 			for (;;) {
-				f32 mn0 = bx[0] <= bb[0] ? bx[0] : bb[0];
-				f32 mn1 = bx[1] <= bb[1] ? bx[1] : bb[1];
-				f32 mx2 = bx[2] >= bb[2] ? bx[2] : bb[2];
-				f32 mx3 = bx[3] >= bb[3] ? bx[3] : bb[3];
-				if (!(mx2 < mn0 && mx3 < mn1)) {
+				if (!collisionBoxesOverlap(bx, bb)) {
 					break;
 				}
 				if (retry >= 8) {
 					break;
 				}
 				*(s32*)(a + 0x9c) = *(s32*)(b + 0x198);
-				f32 tp[3];
-				*(u32*)&tp[0] = *(u32*)(a + 0xc);
-				*(u32*)&tp[1] = *(u32*)(a + 0x10);
-				tp[2] = *(f32*)(a + 0x14);
+				JGeometry::TVec3<f32> tp(*(JGeometry::TVec3<f32>*)(a + 0xc));
 				f32 dx = *(f32*)(a + 0xc) - *(f32*)(b + 0xc);
 				f32 dy = *(f32*)(a + 0x10) - *(f32*)(b + 0x10);
-				*(u32*)&bx[0] = *(u32*)(a + 0x60);
-				*(u32*)&bx[1] = *(u32*)(a + 0x64);
-				*(u32*)&bx[2] = *(u32*)(a + 0x68);
-				*(u32*)&bx[3] = *(u32*)(a + 0x6c);
+				*(u32*)&bx.i.x = *(u32*)(a + 0x60);
+				*(u32*)&bx.i.y = *(u32*)(a + 0x64);
+				*(u32*)&bx.f.x = *(u32*)(a + 0x68);
+				*(u32*)&bx.f.y = *(u32*)(a + 0x6c);
 
 				f32 ang = JMath::atanTable_.atan2_(dx, dy);
 				s32 ai = (s32)(ang * lbl_8053F80C);
@@ -1219,32 +1168,29 @@ extern "C" void fn_801F6A4C(void* pool) {
 				s32 si = ai + ri;
 				f32 sn = JMath::sincosTable_.mTable[(u16)si >> 5].first;
 				f32 cs = JMath::sincosTable_.mTable[(u16)si >> 5].second;
-				tp[0] = tp[0] + sn;
-				tp[1] = tp[1] + cs;
+				tp.x = tp.x + sn;
+				tp.y = tp.y + cs;
 
 				if (*(u32*)(b + 0x1a0) == 0x424f594f) {
 					f32 ang2 = JMath::atanTable_.atan2_(dx, dy);
 					s32 i2 = (s32)(ang2 * lbl_8053F80C);
 					f32 c2 = JMath::sincosTable_.mTable[(u16)i2 >> 5].second;
-					f32 ang3 = JMath::atanTable_.atan2_(dx, c2);
+					f32 ang3 = JMath::atanTable_.atan2_(dx, dy);
 					s32 i3 = (s32)(ang3 * lbl_8053F80C);
 					f32 s3 = JMath::sincosTable_.mTable[(u16)i3 >> 5].first;
-					*(f32*)(a + 0x3c) = lbl_8053F81C * s3;
-					*(f32*)(a + 0x40) = lbl_8053F81C * c2;
+					*(JGeometry::TVec3<f32>*)(a + 0x3c) = JGeometry::TVec3<f32>(lbl_8053F81C * s3, lbl_8053F81C * c2, *(f32*)(a + 0x44));
 					*(u16*)(b + 0x94) = 1;
 				}
 
-				if (fn_801F23BC(a, *(u32*)(a + 4), tp, a + 0xc, a + 0x80, NULL, NULL, 0)) {
+				if (fn_801F23BC(a, *(u32*)(a + 4), &tp, a + 0xc, a + 0x80, NULL, NULL, 0)) {
 					retry = 100;
 				} else {
-					*(f32*)(a + 0xc) = tp[0];
-					*(f32*)(a + 0x10) = tp[1];
-					*(f32*)(a + 0x14) = tp[2];
+					*(JGeometry::TVec3<f32>*)(a + 0xc) = tp;
 					retry++;
-					bx[0] += *(f32*)(a + 0xc);
-					bx[1] += *(f32*)(a + 0x10);
-					bx[2] += *(f32*)(a + 0xc);
-					bx[3] += *(f32*)(a + 0x10);
+					bx.i.x += *(f32*)(a + 0xc);
+					bx.i.y += *(f32*)(a + 0x10);
+					bx.f.x += *(f32*)(a + 0xc);
+					bx.f.y += *(f32*)(a + 0x10);
 				}
 			}
 		}
