@@ -701,6 +701,42 @@ extern "C" void fn_803A9AB8(void* this_) {
 
 extern const u64 lbl_80476310[][2];
 extern "C" void* fn_80403104(u32,const char*);
+struct Menu_Join {
+    u8 pad0[0x174];
+    MsgSinkObj2* sinks[4];      // 0x174
+    u8 pad184[0x244 - 0x184];
+    FVec3 pos;                  // 0x244
+    u8 pad250[0x2f0 - 0x250];
+    FVec3 icons[4];             // 0x2f0
+    s32 a320[4];                // 0x320
+    s32 a330[4];
+    s32 a340[4];
+    s32 a350[4];
+    s32 a360[4];
+    s32 a370[4];
+    s32 a380[4];
+    s32 a390[4];
+    s32 a3a0[4];
+    s32 a3b0[4];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x440 - 0x3d0];
+    s32 timer;                  // 0x440
+    u8 pad444[0x454 - 0x444];
+    s32 count;                  // 0x454
+    u8 pad458[0x4ac - 0x458];
+    u8 ids[4];                  // 0x4ac
+    u8 pad4b0[0x4c1 - 0x4b0];
+    u8 m4c1;
+    u8 m4c2;
+    u8 m4c3;
+    u8 m4c4;
+    u8 m4c5;
+    u8 m4c6;
+    u8 m4c7;
+    u8 m4c8;
+};
+
+
 extern "C" void fn_803AB494(void* this_) {
     char* p = (char*)this_;
     s32 rank[4];
@@ -849,40 +885,6 @@ extern void* lbl_8053AF80;
 extern void* lbl_8053AD30;
 extern "C" u32 fn_80309C4C(void* p, s32 a, s32 b);
 
-struct Menu_Join {
-    u8 pad0[0x174];
-    MsgSinkObj2* sinks[4];      // 0x174
-    u8 pad184[0x244 - 0x184];
-    FVec3 pos;                  // 0x244
-    u8 pad250[0x2f0 - 0x250];
-    FVec3 icons[4];             // 0x2f0
-    s32 a320[4];                // 0x320
-    s32 a330[4];
-    s32 a340[4];
-    s32 a350[4];
-    s32 a360[4];
-    s32 a370[4];
-    s32 a380[4];
-    s32 a390[4];
-    s32 a3a0[4];
-    s32 a3b0[4];
-    s32 state[4];               // 0x3c0
-    u8 pad3d0[0x440 - 0x3d0];
-    s32 timer;                  // 0x440
-    u8 pad444[0x454 - 0x444];
-    s32 count;                  // 0x454
-    u8 pad458[0x4ac - 0x458];
-    u8 ids[4];                  // 0x4ac
-    u8 pad4b0[0x4c1 - 0x4b0];
-    u8 m4c1;
-    u8 m4c2;
-    u8 m4c3;
-    u8 m4c4;
-    u8 m4c5;
-    u8 m4c6;
-    u8 m4c7;
-    u8 m4c8;
-};
 
 extern s32 lbl_804AF888[];
 extern s32 lbl_804AF8CC[];
