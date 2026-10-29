@@ -149,9 +149,12 @@ static void fn_80363880_aim(char* self, f32 dy, f32 dx, f32 speed) {
 
 static void fn_80363880_setQuadrant(char* self) {
     f32 ang = JMath::atanTable_.atan2_(*(f32*)(self + 0x40), *(f32*)(self + 0x3c));
-    s32 q = fn_80363880_quadrant((u16)(s32)(ang * lbl_80542B50));
-    *(s32*)(self + 0x23c) = q;
-    *(s32*)(self + 0x26c) = lbl_80474858[q];
+    u16 a = (u16)(s32)(ang * lbl_80542B50);
+    if (a >= 0x2000 && a < 0x6000) *(s32*)(self + 0x23c) = 0;
+    else if (a >= 0x6000 && a < 0xa000) *(s32*)(self + 0x23c) = 2;
+    else if (a >= 0xa000 && a < 0xe000) *(s32*)(self + 0x23c) = 1;
+    else *(s32*)(self + 0x23c) = 3;
+    *(s32*)(self + 0x26c) = lbl_80474858[*(s32*)(self + 0x23c)];
 }
 
 extern "C" void fn_80362634(char* self) {
