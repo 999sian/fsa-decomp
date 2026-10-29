@@ -194,7 +194,8 @@ extern "C" void fn_801C1A58(u8* this_) {
         if (*(s32*)(this_+0x24c)>=0x78) {
             if(!lbl_8053AC24) {lbl_8053AC20=lbl_80469430;lbl_8053AC24=1;}
             *(void**)(this_+0x2d4)=fn_804032E8(0x54494d47,lbl_8053AC20);
-            SLGESetPosition(this_,lbl_8053EDCC);
+            JGeometry::TVec3f vec(*(f32*)(this_+0xc),lbl_8053EDCC+*(f32*)(this_+0x10),lbl_8053EDD0);
+            fn_8021F9AC(this_+0x3f8,(f32*)&vec);
             *(s32*)(this_+0x24c)=0; *(s32*)(this_+0x248)=7;
         }
         break;
