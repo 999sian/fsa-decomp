@@ -82,6 +82,13 @@ static inline void dgt2RotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
     m[2][2] = s * (cx * cy);
 }
 
+static inline void dgt2DrawAt(void* this_, s32 idx, DrawRec* rec, const JGeometry::TVec3<f32>* pos, f32 z, f32 a, f32 b) {
+    char* p = (char*)this_;
+    *(JGeometry::TVec3<f32>*)(p + 0xc) = *pos;
+    *(f32*)(p + 0x14) = z;
+    fn_801F06F0(this_, lbl_804674F0, idx, rec, -1, a, b);
+}
+
 static inline void dgt2Rot(f32 (*m)[4], f32 th) {
     f32 cZ, sZ, sT, sA, cT, cA;
     sA = sin(lbl_8053E1D8);
