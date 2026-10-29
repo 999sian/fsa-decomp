@@ -14,6 +14,24 @@ struct MenuTables8044 {
     u16 particle3e8[8];
     u16 particle3f8[8];
 };
+struct MenuTag8044 {
+    u64 id;
+};
+struct MenuTagTables8044 {
+    MenuTag8044 picture[3];
+    MenuTag8044 window[3];
+    u8 pad30[0x138];
+    MenuTag8044 hide168[7];
+    MenuTag8044 alpha1a0[7];
+    MenuTag8044 alpha1d8[7];
+    MenuTag8044 hide210[7];
+    MenuTag8044 show248[4];
+    MenuTag8044 alpha268[4];
+    MenuTag8044 alpha288[4];
+    u8 pad2a8[0x140];
+    u16 particle3e8[8];
+    u16 particle3f8[8];
+};
 struct MenuParticles8044 {
     u8 pad[0x6c];
     void* first[7];
@@ -250,26 +268,26 @@ extern "C" void fn_8044D298(u8* self, int index) {
         ((J2DWindow*)(*(J2DPane**)(self + 4))->search(*b))->setContentsColor(JUtility::TColor(150, 150, 150, self[0x167]), JUtility::TColor(150, 150, 150, self[0x16b]), JUtility::TColor(150, 150, 150, self[0x16f]), JUtility::TColor(150, 150, 150, self[0x173]));
         (*(J2DPane**)(self + 4))->search(*b)->setAlpha(200);
     }
-    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->show248[0] + (u32)self[0x138]*8))->show();
-    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->show248[0] + (u32)self[0x138]*8))->setAlpha(0);
-    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->alpha268[0] + (u32)self[0x138]*8))->setAlpha(0);
-    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->alpha288[0] + (u32)self[0x138]*8))->setAlpha(0);
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8))->show();
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8))->setAlpha(0);
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8))->setAlpha(0);
+    (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha288 + (u32)self[0x138]*8))->setAlpha(0);
     if (((void**)(self + 0xb0))[self[0x138]] == NULL) {
-        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->alpha268[0] + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f30 = *(f32*)((u8*)f + 0x2c) - *(f32*)((u8*)f + 0x24);
-        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->show248[0] + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.y;
         f = (*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
         f31 += ((J2DPane*)f)->getBounds()->i.y;
-        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->alpha268[0] + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f30 = ((J2DPane*)f)->getBounds()->i.y + f31 + f30 * lbl_80543E00;
-        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->alpha268[0] + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         f29 = *(f32*)((u8*)f + 0x28) - *(f32*)((u8*)f + 0x20);
-        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->show248[0] + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->show248 + (u32)self[0x138]*8));
         f31 = ((J2DPane*)f)->getBounds()->i.x;
         f = (*(J2DPane**)(self + 4))->search(0x4E646174616A3031ULL);
         f31 += ((J2DPane*)f)->getBounds()->i.x;
-        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)&data->alpha268[0] + (u32)self[0x138]*8));
+        f = (*(J2DPane**)(self + 4))->search(*(u64*)((u32)data->alpha268 + (u32)self[0x138]*8));
         pos[0] = ((J2DPane*)f)->getBounds()->i.x + f31 + f29 * lbl_80543E00;
         pos[1] = f30;
         pos[2] = lbl_80543DFC;
