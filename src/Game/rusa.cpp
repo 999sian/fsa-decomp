@@ -491,7 +491,7 @@ extern "C" void fn_8021148C(char* p) {
                 detach__5ActorFv(p);
             }
         } else {
-            Rusa_Approach((f32*)(p + 0x398), lbl_8053FAF8, 30 - *(s32*)(p + 0x24c));
+            Rusa_Approach((f32*)(p + 0x398), 0.0f, 30 - *(s32*)(p + 0x24c));
         }
         break;
     }
