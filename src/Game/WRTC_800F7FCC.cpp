@@ -601,6 +601,7 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p) {
     return result;
 }
 static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
+    f32 sn;
     s16 angle;
     f32 radius;
     if(n&1){radius=lbl_8053BFF8+(f32)(((n>>1)+1)*20);angle=(s16)*(u16*)(p+0x2b2);}
@@ -608,7 +609,7 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
     s32 index=(u16)angle;
     index >>= 5;
     const f32* trig=(const f32*)&JMath::sincosTable_.mTable[index];
-    f32 sn=trig[0];
+    sn=trig[0];
     f32 cs=trig[1];
     f32 x=radius*sn+*(f32*)(p+0xc);
     f32 y=radius*cs+*(f32*)(p+0x10);
@@ -632,10 +633,10 @@ extern "C" void fn_800F953C(void* this_) {
         k=lbl_8053BFC0;
         *(u8*)(self+0x249)=1;
     }else if(state==4){
-        int n=p[0x2ac];
+        s32 n=p[0x2ac];
         const JGeometry::TVec3f& v=WRTC_linePosition(p,n);
         out=v;
-        int half=(n>>1)+1;
+        s32 half=(n>>1)+1;
         k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
         *(u8*)(self+0x249)=1;
     }else if(state==1){
