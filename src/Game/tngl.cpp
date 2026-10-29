@@ -3,6 +3,7 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" s32 fn_80237060(s32 arg);
 extern "C" s32 fn_8023DE58(s32 player);
