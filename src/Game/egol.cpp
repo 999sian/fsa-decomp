@@ -213,12 +213,18 @@ extern "C" void fn_801AFD54(char* this_) {
             continue;
         }
         {
-            f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-            f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
-            f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
-            f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
-            pt[0] = lbl_8053E89C * (x0 - x1) + x1;
-            pt[1] = lbl_8053E89C * (y0 - y1) + y1;
+            f32 k;
+            f32 x0 = *(f32*)(this_ + 0x60);
+            f32 y0 = *(f32*)(this_ + 0x64);
+            f32 x1 = *(f32*)(this_ + 0x68);
+            f32 y1 = *(f32*)(this_ + 0x6c);
+            x0 += *(f32*)(this_ + 0xc);
+            x1 += *(f32*)(this_ + 0xc);
+            y0 += *(f32*)(this_ + 0x10);
+            y1 += *(f32*)(this_ + 0x10);
+            k = lbl_8053E89C;
+            pt[0] = k * (x0 - x1) + x1;
+            pt[1] = k * (y0 - y1) + y1;
         }
         if (fn_80237948(r, pt) == 0) {
             continue;
@@ -402,12 +408,12 @@ extern "C" void fn_801AFD54(char* this_) {
                 break;
             }
         } else if (*(s32*)(this_ + 0x23c) == 0) {
-            s32 zero = 0;
-            *(s32*)(this_ + 0x234) = zero;
-            *(s32*)(this_ + 0x244) = zero;
+            *(s32*)(this_ + 0x234) = 0;
+            *(s32*)(this_ + 0x244) = 0;
             *(s32*)(this_ + 0x250) = *(s32*)(this_ + 0x98) + 0x10;
-            *(s32*)(this_ + 0x23c) = (s32)(lbl_8053E8BC * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x3c;
-            *(s32*)(this_ + 0x230) = zero;
+            EgolGame* g = lbl_8053AAF8;
+            *(s32*)(this_ + 0x23c) = (s32)(lbl_8053E8BC * g->rnd.get_ufloat_1()) + 0x3c;
+            *(s32*)(this_ + 0x230) = 0;
         } else {
             if (*(s32*)(this_ + 0x234) == 0) {
                 *(s32*)(this_ + 0x250) = (*(s32*)(this_ + 0x98) << 2) + *(s32*)(this_ + 0x244);
