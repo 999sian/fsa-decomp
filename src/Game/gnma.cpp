@@ -51,7 +51,7 @@ extern "C" u32 fn_801F2618(void* p, s32 a, s32 b);
 extern "C" u8 fn_801F2DB4(void* p, u32 a, u32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
 extern "C" void fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
-extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
+extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f = 0.0f);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
@@ -86,23 +86,23 @@ extern "C" void fn_801AAF44(char* p) {
         return;
     }
     if (*(s32*)(p + 0x108) < 1000) {
-        void (**vt)(char*) = *(void (***)(char*))p;
-        vt[9](p);
+        ((Actor*)p)->v07();
         *(s32*)(p + 0xb0) = 0;
         return;
     }
-    f32 sz = *(f32*)(p + 0x44);
-    f32 sy = *(f32*)(p + 0x40);
-    f32 sx = *(f32*)(p + 0x3c);
+    f32 sz, sy, sx;
+    sx = *(f32*)(p + 0x3c);
+    sy = *(f32*)(p + 0x40);
+    sz = *(f32*)(p + 0x44);
     if (fn_801F2DB4(p, 'NULL', 'HBMB', 0)) {
         *(f32*)(p + 0x3c) = sx;
         *(f32*)(p + 0x40) = sy;
         *(f32*)(p + 0x44) = sz;
         *(s32*)(p + 0xd8) = 0;
         *(s32*)(p + 0xdc) = 0;
-        fn_801F71A4(p + 0x3c, *(f32*)(p + 0x264), lbl_8053E750, lbl_8053E754);
-        fn_801F71A4(p + 0x40, *(f32*)(p + 0x268), lbl_8053E750, lbl_8053E754);
     }
+    fn_801F71A4(p + 0x3c, *(f32*)(p + 0x264), lbl_8053E750, lbl_8053E754);
+    fn_801F71A4(p + 0x40, *(f32*)(p + 0x268), lbl_8053E750, lbl_8053E754);
     *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
     fn_801F2B7C(p, -100, -1, 1);
     u32 r31 = fn_801F2618(p, 0, 0);
@@ -125,6 +125,9 @@ extern "C" void fn_801AAF44(char* p) {
     case 7: {
         fn_80458FF0(lbl_8053AF80, 0x100004, 0, 0);
         *(s32*)(p + 0x230) = 8;
+    }
+    // fall through
+    case 8: {
         *(s32*)(p + 0x234) = 0;
         *(u32*)(lbl_8053AAF8 + 0xb4) = 0x19660d * *(u32*)(lbl_8053AAF8 + 0xb4) + 0x3c6ef35f;
         union { f32 f; u32 s; } out;
@@ -161,6 +164,9 @@ extern "C" void fn_801AAF44(char* p) {
         *(s32*)(p + 0x98) = 2;
         *(s32*)(p + 0x238) = (s32)(lbl_8053E78C - lbl_8053E790 * (f32)(3 - *(s32*)(p + 0x258)));
         *(s32*)(p + 0x230) = 9;
+    }
+    // fall through
+    case 9: {
         if (r31 & 0xff) {
             *(s32*)(p + 0x260) ^= 1;
             *(s32*)(p + 0x98) = *(s32*)(p + 0x260);
@@ -212,9 +218,9 @@ extern "C" void fn_801AAF44(char* p) {
                     char* na = (char*)fn_801F666C(fn_801F856C(), id);
                     if (na != 0) {
                         f32* tab = (f32*)((char*)sincosTable___5JMath + ((angle >> 5) << 3));
-                        *(f32*)(na + 0x3c) = lbl_8053E798 * tab[0];
-                        *(f32*)(na + 0x40) = lbl_8053E798 * tab[1];
-                        *(f32*)(na + 0x44) = lbl_8053E744;
+                        JGeometry::TVec3f velocity;
+                        velocity.set(lbl_8053E798 * tab[0], lbl_8053E798 * tab[1], lbl_8053E744);
+                        *(JGeometry::TVec3f*)(na + 0x3c) = velocity;
                         *(s32*)(na + 0x98) = ClassifyBamAngleToQuadrant(angle);
                         *(s32*)(p + 0x238) = (s32)(lbl_8053E78C - lbl_8053E790 * (f32)(3 - *(s32*)(p + 0x258)));
                     }
@@ -249,15 +255,12 @@ extern "C" void fn_801AAF44(char* p) {
             *(s32*)(p + 0x248) ^= 1;
         }
     } break;
-    case 8:
-    case 9:
     case 10:
-    case 12:
-        break;
-    case 11:
         *(s32*)(p + 0x234) = 0;
         *(s32*)(p + 0x244) = 0;
         *(s32*)(p + 0x230) = 11;
+        // fall through
+    case 11:
         if (*(s32*)(p + 0x234) == 0) {
             *(s32*)(p + 0x234) = 12;
             *(s32*)(p + 0x250) = *(s32*)(p + 0x244) + 0x10;
@@ -269,11 +272,13 @@ extern "C" void fn_801AAF44(char* p) {
             }
         }
         break;
-    case 13:
+    case 12:
         *(u32*)(p + 0xb0) = 0xa040004;
         *(s32*)(p + 0x234) = 0;
         *(s32*)(p + 0x244) = 2;
         *(s32*)(p + 0x230) = 13;
+        // fall through
+    case 13:
         if (*(s32*)(p + 0x234) == 0) {
             *(s32*)(p + 0x234) = 12;
             *(s32*)(p + 0x250) = *(s32*)(p + 0x244) + 0x10;
