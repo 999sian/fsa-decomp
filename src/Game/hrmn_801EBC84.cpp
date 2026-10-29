@@ -154,7 +154,8 @@ public:
 };
 
 static inline bool hrmnQueueFull(char* q) {
-    return fn_80215E98(q) == *(s32*)q;
+    bool r = fn_80215E98(q) == *(s32*)q;
+    return r;
 }
 
 static inline void hrmnCameraFocus(char* p) {
@@ -182,6 +183,7 @@ static inline void hrmnCameraLock(char* p) {
 }
 
 extern "C" void fn_801EBE7C(char* p) {
+    s32 i;
     HrmnRect rect(*(f32*)(p + 0xc) - lbl_8053F6BC, *(f32*)(p + 0x10) - lbl_8053F6BC, lbl_8053F6BC + *(f32*)(p + 0xc), lbl_8053F6BC + *(f32*)(p + 0x10));
     switch (*(u32*)(p + 0x248)) {
     case 0: {
@@ -276,7 +278,7 @@ extern "C" void fn_801EBE7C(char* p) {
             fn_801ECB08(p, 10);
         } else if (*(s32*)(p + 0x24c) >= 0x78) {
             s32 base = fn_8021C024(p + 0x34c);
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 fn_80230498(i, fn_8023E724(i), base + 0x33a, 0xff, -0x80, -0x80, 1);
             }
         }
@@ -291,7 +293,7 @@ extern "C" void fn_801EBE7C(char* p) {
             if (fn_80215D38(p + 0x2b8)) {
                 fn_801ECB08(p, 0xc);
             }
-        } else if ((u8)(fn_80215E98(p + 0x2b8) == *(s32*)(p + 0x2b8))) {
+        } else if (hrmnQueueFull(p + 0x2b8)) {
             if (*(s32*)(p + 0x24c) == 0xf) {
                 fn_801F0D20(p, 0x3a);
             }
@@ -355,15 +357,15 @@ extern "C" void fn_801EBE7C(char* p) {
         fn_8022FE80(*(s32*)(p + 0x2b0), *(u32*)(p + 0x4), *(u32*)(p + 0x198), 0, 0);
         if (fn_803865B8(*(void**)(p + 0x2b0)) && fn_80384C58(*(void**)(p + 0x2b0), *(void**)(p + 0x198))) {
             fn_80230534(0);
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 fn_802D7844(fn_802D6A9C(), 0, i);
             }
             if (*(u32*)(p + 0x230) & 0x2000) {
-                s32 id = *(s32*)(p + 0x2b0);
-                if (fn_8022F514(id)) {
-                    id = fn_8022F3DC(*(s32*)(p + 0x2b0));
+                i = *(s32*)(p + 0x2b0);
+                if (fn_8022F514(i)) {
+                    i = fn_8022F3DC(*(s32*)(p + 0x2b0));
                 }
-                fn_80215BCC(p + 0x2b8, id);
+                fn_80215BCC(p + 0x2b8, i);
             }
             ((HrmnActor*)p)->v30(0xff, 1);
             fn_801ECB08(p, 0);
