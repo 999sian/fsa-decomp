@@ -24,6 +24,69 @@ struct SprMgr_803A8F5C {
     virtual void* v18(s32 kind, char* name);
 };
 
+struct VPane_803A8F5C {
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void setAlpha(u8 a);
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual void v3C();
+    virtual void v40();
+    virtual void v44();
+    virtual void v48();
+    virtual void v4C();
+    virtual void v50();
+    virtual void v54();
+    virtual void v58();
+    virtual void v5C();
+    virtual void v60();
+    virtual void v64();
+    virtual void v68();
+    virtual void v6C();
+    virtual void v70();
+    virtual void v74();
+    virtual void v78();
+    virtual void v7C();
+    virtual void v80();
+    virtual void v84();
+    virtual void v88();
+    virtual void v8C();
+    virtual void v90();
+    virtual void v94();
+    virtual void v98();
+    virtual void v9C();
+    virtual void vA0();
+    virtual void vA4();
+    virtual void vA8();
+    virtual void vAC();
+    virtual void vB0();
+    virtual void vB4();
+    virtual void vB8();
+    virtual void vBC();
+    virtual void vC0();
+    virtual void vC4();
+    virtual void vC8();
+    virtual void vCC();
+    virtual void vD0();
+    virtual void vD4();
+    virtual void vD8();
+    virtual void vDC();
+    virtual void vE0();
+    virtual void vE4();
+    virtual void vE8();
+    virtual void drawRect(s32 a, s32 b, s32 c, f32 x, f32 y, f32 w, f32 h);
+};
+extern const f32 lbl_805433D8;
+extern const f32 lbl_805433DC;
+
 struct MsgRandom {
     u32 seed;
     f32 get_ufloat_1() {
@@ -223,15 +286,15 @@ extern "C" s32 fn_803A8DFC(void* this_, s32 self) {
 
 extern "C" void fn_803A8F5C(char* p) {
     char* q;
+    char* pos;
     s32 i;
     s32 a;
+    s32 id;
     u8 shown;
     u8 neg;
     s32 d;
     void* res;
-    s32 id;
-    s32 cur;
-    char* pos;
+    s32 j;
     fn_8013B490(lbl_8053AB10);
     if (*(u8*)(p + 0x4c0) >= 2) {
         q = p;
@@ -312,8 +375,7 @@ extern "C" void fn_803A8F5C(char* p) {
             q += 4;
         }
     }
-    cur = *(s32*)(p + 0x450);
-    ((J2DScreen*)*(void**)(p + 4 + cur * 4))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
+    ((J2DScreen**)(p + 4))[*(s32*)(p + 0x450)]->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
     {
         f32 box[4];
         box[0] = lbl_805433C8;
@@ -322,43 +384,41 @@ extern "C" void fn_803A8F5C(char* p) {
         box[3] = lbl_805433D0;
         fn_8013B414(lbl_8053AB10, box, 1);
     }
-    {
-        char* q2 = p;
-        pos = p;
-        for (i = 0; i < *(s32*)(p + 0x454); i++) {
-            DrawRec rec;
-            rec.ids[7] = (u8)(i + 12);
-            if (*(u8*)(p + 0x4c0) >= 3) {
-                rec.b1c = 0xff;
-                rec.b1d = 0xff;
-            }
-            id = *(s32*)(q2 + 0x3c0);
-            res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
-            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec, 1.0f, 1.0f);
-            if (*(u8*)(p + 0x4db) & ((1 << i) & 0xff)) {
-                DrawRec rec2;
-                u8 b;
-                if (*(u8*)(p + 0x4db) & ((1 << (i + 4)) & 0xff)) {
-                    b = *(u8*)(p + 0x4dd);
-                } else {
-                    b = *(u8*)(p + 0x4dc);
-                }
-                rec2.w10 = (s32)(0xffffff00 | b);
-                rec2.ids[7] = 7;
-                if (*(u8*)(p + 0x4c0) >= 3) {
-                    rec2.b1c = 0xff;
-                    rec2.b1d = 0xff;
-                }
-                res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
-                fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec2, 1.0f, 1.0f);
-            }
-            q2 += 4;
-            pos += 12;
+    q = p;
+    pos = p;
+    for (j = 0; j < *(s32*)(p + 0x454); j++) {
+        DrawRec rec;
+        rec.ids[7] = (u8)(j + 12);
+        rec.b26 = 1;
+        if (*(u8*)(p + 0x4c0) >= 3) {
+            rec.b1d = 0xff;
+            rec.b1c = 0xff;
         }
+        id = *(s32*)(q + 0x3c0);
+        res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
+        fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec, 1.0f, 1.0f);
+        if (*(u8*)(p + 0x4db) & ((1 << j) & 0xff)) {
+            DrawRec rec2;
+            if (*(u8*)(p + 0x4db) & ((1 << (j + 4)) & 0xff)) {
+                ((u8*)&rec2.w10)[3] = *(u8*)(p + 0x4dd);
+            } else {
+                ((u8*)&rec2.w10)[3] = *(u8*)(p + 0x4dc);
+            }
+            rec2.ids[7] = 7;
+            rec2.b26 = 1;
+            if (*(u8*)(p + 0x4c0) >= 3) {
+                rec2.b1d = 0xff;
+                rec2.b1c = 0xff;
+            }
+            id = *(s32*)(q + 0x3c0);
+            res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec2, 1.0f, 1.0f);
+        }
+        q += 4;
+        pos += 12;
     }
     fn_8013B490(lbl_8053AB10);
-    cur = *(s32*)(p + 0x450);
-    ((J2DScreen*)*(void**)(p + 0x10 + cur * 4))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
+    ((J2DScreen**)(p + 0x10))[*(s32*)(p + 0x450)]->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
     ((J2DScreen*)*(void**)(p + 0x20))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
     if (*(u8*)(p + 0x4c0) == 3 || *(u8*)(p + 0x4c0) == 4) {
         *((u8*)lbl_8053AB10 + 0x20) = 1;
@@ -2640,11 +2700,11 @@ extern "C" void fn_803B14F8(void* this_) {
 
 #pragma fp_contract off
 extern "C" void fn_803B1B60(Menu_Intro* p) {
-    s32 t;
     s32 start1;
     s32 start2;
     s32 a;
     s32 b;
+    s32 t;
     s32 c;
     s32 start1b;
     s32 end2;
@@ -2709,10 +2769,8 @@ extern "C" void fn_803B1B60(Menu_Intro* p) {
             p->screens[p->cur]->search('Pmmwk02')->move(x, (p->y41c - lbl_80543424) + (lbl_80543424 + (f32)c) * (lbl_805433D4 - (f32)((t - start1) * (t - start1)) / (f32)(a * a)));
             f32 fade = lbl_805433D4 - (f32)(p->timer - start1) / (f32)a;
             if (p->cur < 2) {
-                s32 i;
-                const u64* tags;
-                for (i = 0, tags = (const u64*)lbl_80476208; i < 13; i++, tags++) {
-                    p->screens[p->cur]->search(*tags)->setAlpha((u8)(p->alphaTitle[i] * fade));
+                for (s32 i = 0; i < 13; i++) {
+                    p->screens[p->cur]->search(((const u64*)lbl_80476208)[i])->setAlpha((u8)(p->alphaTitle[i] * fade));
                 }
             }
         } else if (t >= start1b) {
@@ -2723,28 +2781,22 @@ extern "C" void fn_803B1B60(Menu_Intro* p) {
             if (p->timer >= start2) {
                 s32 dt = p->timer - start2;
                 f32 off = (lbl_80543428 + (f32)g) * (lbl_805433D4 - (f32)(dt * dt) / (f32)(e * e));
-                s32 i;
-                u64 (*r3)[3];
-                for (i = 0, r3 = (u64 (*)[3])lbl_80476270; i < p->count; i++, r3++) {
-                    f32 x = p->screens[p->cur]->search((*r3)[2])->getBounds()->i.x;
-                    p->screens[p->cur]->search((*r3)[2])->move(x, (p->y420 - lbl_80543428) + off);
+                for (s32 i = 0; i < p->count; i++) {
+                    f32 x = p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][2])->getBounds()->i.x;
+                    p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][2])->move(x, (p->y420 - lbl_80543428) + off);
                     f32 fade = lbl_805433D4 - (f32)(p->timer - start2) / (f32)e;
                     if (p->cur < 2) {
-                        s32 k;
-                        const u64* tags;
-                        for (k = 0, tags = *r3; k < 3; k++, tags++) {
-                            p->screens[p->cur]->search(*tags)->setAlpha((u8)(p->alpha3[k] * fade));
+                        for (s32 k = 0; k < 3; k++) {
+                            p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][k])->setAlpha((u8)(p->alpha3[k] * fade));
                         }
                     }
                 }
             } else if (p->timer >= start2b) {
                 s32 dt = p->timer - start2b;
                 f32 off = (f32)g * ((f32)(dt * dt) / (f32)(f * f));
-                s32 i;
-                u64 (*r3)[3];
-                for (i = 0, r3 = (u64 (*)[3])lbl_80476270; i < p->count; i++, r3++) {
-                    f32 x = p->screens[p->cur]->search((*r3)[2])->getBounds()->i.x;
-                    p->screens[p->cur]->search((*r3)[2])->move(x, p->y420 + off);
+                for (s32 i = 0; i < p->count; i++) {
+                    f32 x = p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][2])->getBounds()->i.x;
+                    p->screens[p->cur]->search(((u64 (*)[3])lbl_80476270)[i][2])->move(x, p->y420 + off);
                 }
             }
         }
