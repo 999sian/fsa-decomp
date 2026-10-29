@@ -163,6 +163,9 @@ inline void markNearbyYasi(char* actor, const char* p) {
         if (d < lbl_80540F00) *(s16*)(actor + 0x94) = 2;
     }
 }
+inline void markYasiNeighbour(const char* p, char* actor) {
+    markNearbyYasi(actor, p);
+}
 inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
     if (*(s32*)(p + 0x244) != direction) {
         if (*(void**)(p + 0x230) != NULL) {
@@ -175,8 +178,10 @@ inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
     }
 }
 extern "C" void fn_802D1FEC(void* this_) {
+    char* actor;
+    char** e;
     char* p = (char*)this_;
-    u8 buf[0x400 * 4];
+    char* buf[0x400];
 
     *(u8*)(p + 0x254) = 0xff;
     if (*(u8*)(p + 0xc4) != 0) {
@@ -220,9 +225,9 @@ extern "C" void fn_802D1FEC(void* this_) {
                 }
                 if (*(s32*)(p + 0x234) == 2) {
                     s32 n = fn_801F7818(fn_801F856C(), 0x424c5a32, *(s32*)(p + 4), buf, -1);
-                    void** e = (void**)buf;
+                    e = buf;
                     for (s32 i = 0; i < n; e++, i++) {
-                        char* actor = (char*)*e;
+                        actor = *e;
                         if (actor != NULL) {
                             if (actor != NULL) {
                                 f32 dy = *(f32*)(actor + 0x10) - *(f32*)(p + 0x10);
