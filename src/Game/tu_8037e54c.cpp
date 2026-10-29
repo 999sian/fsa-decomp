@@ -2319,10 +2319,9 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
 static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb, char* padbuf = NULL) {
     s32 row = col - 1;
     s32 pad = (s32)((fa - width * fb) * lbl_805430BC + lbl_805430BC);
-    if (lbl_8053AD78->f64 == (f32)(col - 1)) lbl_8053AD78->f5c += pad;
-    if (lbl_8053AD78->f68 == (f32)(col - 1)) lbl_8053AD78->f60 += pad;
+    if (lbl_8053AD78->f64 == (f32)row) lbl_8053AD78->f5c += pad;
+    if (lbl_8053AD78->f68 == (f32)row) lbl_8053AD78->f60 += pad;
     if (pad > 0) {
-        char padbuf[16];
         snprintf(padbuf, 0xf, "\x1b" "CR[%d]", pad);
         strcat(out, padbuf);
     }
