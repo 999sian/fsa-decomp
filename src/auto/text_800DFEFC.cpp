@@ -15,7 +15,7 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 // Packed tev konst colour returned by fn_800E0DF8 (word copies, sret).
 struct TevKColorWord {
 	TevKColorWord(u32 rgba) : mRGBA(rgba) {}
-	operator J3DGXColor() const { return J3DGXColor(mRGBA); }
+	operator const J3DGXColor&() const { return *(const J3DGXColor*)&mRGBA; }
 	u32 mRGBA;
 };
 extern "C" TevKColorWord fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no);
