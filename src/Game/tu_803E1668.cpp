@@ -168,6 +168,7 @@ extern "C" void fn_803E1668(u8* p) {
     fn_802F86CC(p, t, a, j, 0, 0);
 }
 
+#pragma dont_inline reset
 extern "C" void fn_803E29C8(u8* param_1) {
     fn_8043670C(*(void**)(param_1 + 0x5c), 0);
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
@@ -569,24 +570,92 @@ extern "C" void fn_803E4650(u8* p) {
     fn_80440EE8(lbl_8053AED8);
 }
 #pragma opt_common_subs reset
+extern const f32 lbl_80543654;
+extern const f32 lbl_8054365C;
+extern "C" void fn_8013B414(void*, void*, s32);
+#pragma auto_inline off
 extern "C" void fn_803E4940(u8* p) {
     s32 state = *(s32*)(p + 0x1d4);
-    f32 f31;
-    if (state == 0xb) {
-        return;
-    }
-    {
-        s32 v = *(s32*)(p + 0x1e0);
-        f32 f2;
-        if (v < 0x1e) {
-            f2 = (f32)(v * v) / lbl_805436B4;
+    f32 f2;
+    f32 alpha;
+    f32 off;
+    f32 t;
+    s32 n;
+    if (state != 11) {
+        if (*(s32*)(p + 0x1e0) < 0x1e) {
+            f2 = MenuSquare803E(*(s32*)(p + 0x1e0)) / lbl_805436B4;
         } else {
-            f2 = lbl_80543668 - (f32)((v - 0x1e) * (v - 0x1e)) / lbl_805436B4;
+            f2 = lbl_80543668 - MenuSquare803E(*(s32*)(p + 0x1e0) - 0x1e) / lbl_805436B4;
         }
-        f31 = f2 * ((f32)*(u8*)(p + 0x269) - lbl_80543670);
+        alpha = f2 * (f32)*(u8*)(p + 0x269);
+    } else if (*(s32*)(p + 0x1dc) == 2) {
+        alpha = lbl_80543664;
+    } else {
+        if (*(s32*)(p + 0x1e0) < 0xf) {
+            f2 = MenuSquare803E(*(s32*)(p + 0x1e0)) / lbl_805436C4;
+        } else {
+            f2 = lbl_80543668 - MenuSquare803E(*(s32*)(p + 0x1e0) - 0xf) / lbl_805436C4;
+        }
+        alpha = lbl_805436C8 * f2;
     }
+    if (state == 0 || state == 10 || (state == 11 && *(s32*)(p + 0x1dc) != 2 && *(s16*)(p + 0x254) <= 10)) {
+        n = *(s16*)(p + 0x254);
+        if (n < 5) {
+            n = *(s16*)(p + 0x254);
+        } else {
+            n = 10 - n;
+        }
+    } else {
+        n = 0;
+    }
+    off = lbl_805436BC * MenuSquare803E(n) / lbl_805436C0;
+    if (*(s32*)(p + 0x1b8) == 0) {
+        t = (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->move(t, *(f32*)(p + 0x150) + off);
+        t = (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->move(t, *(f32*)(p + 0x154));
+        t = (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->move(t, *(f32*)(p + 0x158));
+        t = (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->move(t, *(f32*)(p + 0x1a8) + off);
+    } else if (*(s32*)(p + 0x1b8) == 1) {
+        t = (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->move(t, *(f32*)(p + 0x150));
+        t = (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->move(t, *(f32*)(p + 0x154) + off);
+        t = (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->move(t, *(f32*)(p + 0x158));
+        t = (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->getBounds()->i.y;
+        off = (*(f32*)(p + 0x1a8) + (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->getBounds()->i.y) - t;
+        t = (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->move(t, off);
+    } else {
+        t = (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->move(t, *(f32*)(p + 0x150));
+        t = (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x005068616e623034ULL)->move(t, *(f32*)(p + 0x154));
+        t = (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->move(t, *(f32*)(p + 0x158) + off);
+        t = (*(J2DPane**)(p + 0xc))->search(0x0050737461623034ULL)->getBounds()->i.y;
+        t = (*(f32*)(p + 0x1a8) + (*(J2DPane**)(p + 0xc))->search(0x0000507275623034ULL)->getBounds()->i.y) - t;
+        off = (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->getBounds()->i.x;
+        (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->move(off, t);
+    }
+    (*(J2DPane**)(p + 0xc))->search(0x50736375726f3031ULL)->setAlpha((u8)alpha);
+    (*(J2DPane**)(p + 0xc))->search(0x50736375726f3032ULL)->setAlpha((u8)alpha);
+    draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0xc), lbl_80543664, lbl_80543664, ((void**)lbl_8053AB10)[4]);
+    {
+        f32 box[4];
+        box[0] = lbl_80543664;
+        box[1] = lbl_80543664;
+        box[2] = lbl_80543654;
+        box[3] = lbl_8054365C;
+        fn_8013B414(lbl_8053AB10, box, 1);
+    }
+    fn_803E1668(p);
+    fn_80440EE8(lbl_8053AED8);
 }
-
+#pragma auto_inline reset
 extern const f32 lbl_805436CC;
 extern const f32 lbl_80543690;
 extern const f32 lbl_805436D4;
