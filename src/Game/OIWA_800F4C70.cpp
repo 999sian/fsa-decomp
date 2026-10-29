@@ -476,6 +476,15 @@ static inline void oiwaBox(OiwaRect* b, char* this_) {
     ((JGeometry::TBox2<f32>*)b)->set(p.x - r, p.y - r, r + p.x, r + p.y);
 }
 
+static inline void oiwaNotifyPlayers(s32 id) {
+    for (s32 i = 0; i < 4; i++) {
+        s32 r = fn_80238CB4(i);
+        if (r == id) {
+            fn_80230FD0(i, 0x10012);
+        }
+    }
+}
+
 static inline u8 oiwaBallIn(s32 i, s32 j, f32 x0, f32 y0, f32 x1, f32 y1) {
     JGeometry::TVec3<f32> pt;
     fn_8022E088(i, j, &pt);
