@@ -197,6 +197,11 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" void fn_801186B0(void* r, s32 v);
 extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" u8 fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
+static inline void dmlkSetAll(f32* v) {
+    for (s32 i = 0; i < 4; i++) {
+        fn_802303FC(i, v, 0xff);
+    }
+}
 static inline s32 dmlkTime(s32 idx) {
     s32 cur = *(s32*)((u8*)fn_8011921C() + 8);
     return cur - lbl_80464AF8[idx];
@@ -278,8 +283,8 @@ extern "C" void fn_8011C308(u8* this_) {
     JGeometry::TVec3f v20;
     JGeometry::TVec3f v22;
     JGeometry::TVec3f v11;
-    s32 i;
     s32 j;
+    s32 i;
     int d;
     f32 fx;
 
@@ -302,20 +307,22 @@ extern "C" void fn_8011C308(u8* this_) {
         *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * d;
         *(f32*)(this_ + 0x40) = lbl_8053C808;
         if (d > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
-            fx = lbl_8053C7D8;
-            *(f32*)(this_ + 0x44) = fx;
-            *(f32*)(this_ + 0x40) = fx;
-            *(f32*)(this_ + 0x3c) = fx;
-            *(f32*)(this_ + 0x14) = fx;
+            *(f32*)(this_ + 0x44) = lbl_8053C7D8;
+            *(f32*)(this_ + 0x40) = lbl_8053C7D8;
+            *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
+            *(f32*)(this_ + 0x14) = lbl_8053C7D8;
         }
         break;
-    case 11:
-        for (i = 0; i < 4; i++) {
-            v11 = *(JGeometry::TVec3f*)fn_8023E724(i);
-            v11 += *(JGeometry::TVec3f*)(this_ + 0x26c);
-            fn_802303FC(i, &v11.x, 0xff);
+    case 11: {
+        j = 0;
+        JGeometry::TVec3f* pv = &v11;
+        for (; j < 4; j++) {
+            *pv = *(JGeometry::TVec3f*)fn_8023E724(j);
+            *pv += *(JGeometry::TVec3f*)(this_ + 0x26c);
+            fn_802303FC(j, &pv->x, 0xff);
         }
         break;
+    }
     case 16:
         *(f32*)(this_ + 0x10) -= lbl_8053C828;
         if (*(f32*)(this_ + 0x10) <= *(f32*)(this_ + 0x28) - lbl_8053C7F0) {
@@ -335,8 +342,8 @@ extern "C" void fn_8011C308(u8* this_) {
         if (*(s32*)((u8*)fn_8011921C() + 8) >= 0x52d) {
             v20 = *(JGeometry::TVec3f*)fn_8023E724(0);
             v20.y -= lbl_8053C838;
-            for (j = 0; j < 4; j++) {
-                fn_802303FC(j, &v20.x, 0xff);
+            for (i = 0; i < 4; i++) {
+                fn_802303FC(i, &v20.x, 0xff);
             }
         }
         break;
@@ -352,8 +359,8 @@ extern "C" void fn_8011C308(u8* this_) {
         } else {
             v22 = *(JGeometry::TVec3f*)(this_ + 0xc);
             v22.y += lbl_8053C7E8;
-            for (j = 0; j < 4; j++) {
-                fn_802303FC(j, &v22.x, 0xff);
+            for (i = 0; i < 4; i++) {
+                fn_802303FC(i, &v22.x, 0xff);
             }
         }
         break;
