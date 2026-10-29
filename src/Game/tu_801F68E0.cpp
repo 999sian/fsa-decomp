@@ -1126,6 +1126,15 @@ inline JGeometry::TVec3<f32> collisionVelocity(f32 sine, f32 cosine, f32 z) {
     return JGeometry::TVec3<f32>(lbl_8053F81C * sine, lbl_8053F81C * cosine, z);
 }
 
+inline void copyCollisionBox(JGeometry::TBox2<f32>& box, const u8* actor) {
+    const f32* src = (const f32*)(actor + 0x60);
+    f32 x0 = *src++;
+    f32 y0 = *src++;
+    f32 x1 = *src++;
+    f32 y1 = *src;
+    box.set(x0, y0, x1, y1);
+}
+
 inline bool collisionBoxesOverlap(const JGeometry::TBox2<f32>& a, const JGeometry::TBox2<f32>& b) {
     JGeometry::TBox2<f32> intersection(a);
     return intersection.intersect(b);
@@ -1139,7 +1148,6 @@ extern "C" void fn_801F6A4C(void* pool) {
 	s32 j;
 	s32 k;
 	u8* self = (u8*)pool;
-	f32 vz;
 	JGeometry::TVec3<f32> tp;
 	JGeometry::TBox2<f32> bb;
 	JGeometry::TBox2<f32> bx;
@@ -1194,9 +1202,10 @@ extern "C" void fn_801F6A4C(void* pool) {
 
 				f32 ang = JMath::atanTable_.atan2_(dx, dy);
 				s32 ai = (s32)(ang * lbl_8053F80C);
-				u32 seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-				*(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
-				u32 bits = (*(u32*)((u8*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+				unsigned int* rng = (unsigned int*)lbl_8053AAF8;
+				u32 seed = rng[0xb4/4] * 0x19660d + 0x3c6ef35f;
+				rng[0xb4/4] = seed;
+				u32 bits = (rng[0xb4/4] >> 9) | 0x3f800000;
 				f32 rf = *(f32*)&bits - lbl_8053F818;
 				s32 ri = (s32)(lbl_8053F810 - lbl_8053F814 * rf);
 				s32 si = ai + ri;
@@ -1206,17 +1215,9 @@ extern "C" void fn_801F6A4C(void* pool) {
 				tp.y = tp.y + cs;
 
 				if (*(u32*)(b + 0x1a0) == 0x424f594f) {
-					vz = *(f32*)(a + 0x44);
-					f32 ang2 = JMath::atanTable_.atan2_(dx, dy);
-					s32 i2 = (s32)(ang2 * lbl_8053F80C);
-					f32 c2 = JMath::sincosTable_.mTable[(u16)i2 >> 5].second;
-					f32 ang3 = JMath::atanTable_.atan2_(dx, dy);
-					s32 i3 = (s32)(ang3 * lbl_8053F80C);
-					f32 s3 = JMath::sincosTable_.mTable[(u16)i3 >> 5].first;
-					*(JGeometry::TVec3<f32>*)(a + 0x3c) = JGeometry::TVec3<f32>(lbl_8053F81C * s3, lbl_8053F81C * c2, vz);
-					*(u16*)(b + 0x94) = 1;
-				}
-
+                    *(JGeometry::TVec3<f32>*)(a + 0x3c) = collisionVelocity(collisionSine(dx, dy), collisionCosine(dx, dy), *(f32*)(a + 0x44));
+                    *(u16*)(b + 0x94) = 1;
+                }
 				if (!fn_801F23BC(a, *(u32*)(a + 4), &tp, a + 0xc, a + 0x80, NULL, NULL, 0)) {
 					*(JGeometry::TVec3<f32>*)(a + 0xc) = tp;
 					retry++;
