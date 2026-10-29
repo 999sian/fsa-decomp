@@ -521,7 +521,6 @@ end:
     ;
 }
 
-#pragma opt_lifetimes reset
 extern "C" void fn_803613D0(u8* param_1) {
   u8* e = *(u8**)(param_1 + 0x2b4);
   if (e != 0) {
