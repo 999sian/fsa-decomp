@@ -773,7 +773,7 @@ static inline f32 effectRandom8016D398(u8* base=lbl_8053AAF8, const unsigned int
     *seed=*seed*multiplier+0x3c6ef35f;
     union { u32 u; f32 f; } v;
     v.u=(*seed>>9)|0x3f800000;
-    return v.f-1.0f;
+    return v.f-lbl_8053D93C;
 }
 
 static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
