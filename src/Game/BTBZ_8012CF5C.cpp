@@ -78,7 +78,11 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
         }
         *(s32*)(this_ + 0x238) = 0;
         {
-            BTBZ_startSwitchEvent(fn_801F7A08(fn_801F856C(), 0x53574556));
+            void* manager = fn_801F856C();
+            s32 index = fn_801F7A08(manager, 0x53574556);
+            manager = fn_801F856C();
+            void* actor = fn_801F666C(manager, index);
+            if (actor != 0) fn_802B39E8();
         }
         break;
     case 2: {
