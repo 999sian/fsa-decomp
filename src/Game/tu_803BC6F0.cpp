@@ -529,152 +529,105 @@ extern "C" void fn_803BD5E0(u8* p, u32 idx) {
 }
 
 extern "C" void fn_803BDD44(u8* p, s32 idx) {
-    u8* tbl;
-    s32 off;
-    u32* e;
-    void* q;
-    u32 v08, v0c, v10, v14, v18, v1c, v20, v24, v28, v2c, v30, v34, v38, v3c, v40, v44;
-    u32 v48, v4c, v50, v54, v58, v5c, v60, v64, v68, v6c, v70, v74, v78, v7c, v80, v84;
-    u32 v88, v8c, v90, v94, v98, v9c, va0, va4, va8, vb0, vb4, vb8, vbc, vc0, vc4, vc8, vcc;
-
-    off = idx * 8;
-    tbl = (u8*)lbl_804765D0;
-    vc8 = *(u32*)(p + 0xe8);
-    vcc = *(u32*)(p + 0xfc);
-    e = (u32*)(tbl + 0x5d8 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), idx, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &vcc, &vc8);
-
-    vc0 = *(u32*)(p + 0xec);
-    v80 = vc0;
-    v7c = *(u32*)(p + 0x100);
-    vc4 = v7c;
-    e = (u32*)(tbl + 0x5c0 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc4, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v7c, &v80);
-
-    v88 = vc0;
-    v84 = vc4;
-    e = (u32*)(tbl + 0x5a8 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc0, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v84, &v88);
-
-    v90 = vc0;
-    v8c = vc4;
-    e = (u32*)(tbl + 0x590 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc0, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v8c, &v90);
-
-    v98 = vc0;
-    v94 = vc4;
-    e = (u32*)(tbl + 0x578 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc0, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v94, &v98);
-
-    va4 = vc0;
-    ((u8*)&va0)[0] = ((u8*)&vc4)[0];
-    ((u8*)&va0)[1] = ((u8*)&vc4)[1];
-    ((u8*)&va0)[2] = ((u8*)&vc4)[2];
-    ((u8*)&va0)[3] = 0xff;
-    v9c = va0;
-    e = (u32*)(tbl + 0x560 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&vc4)[2], e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v9c, &va4);
-
-    vb8 = *(u32*)(p + 0xf0);
-    vbc = *(u32*)(p + 0x104);
-    v58 = vb8;
-    v54 = vbc;
-    e = (u32*)(tbl + 0x548 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vbc, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v54, &v58);
-
-    v60 = vb8;
-    v5c = vbc;
-    e = (u32*)(tbl + 0x530 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v5c, &v60);
-
-    v68 = vb8;
-    v64 = vbc;
-    e = (u32*)(tbl + 0x518 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v64, &v68);
-
-    v70 = vb8;
-    v6c = vbc;
-    e = (u32*)(tbl + 0x500 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v6c, &v70);
-
-    v78 = vb8;
-    v74 = vbc;
-    e = (u32*)(tbl + 0x4e8 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v74, &v78);
-
-    vb0 = *(u32*)(p + 0xf4);
-    vb4 = *(u32*)(p + 0x108);
-    v2c = vb0;
-    v28 = vb4;
-    e = (u32*)(tbl + 0x6c8 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v28, &v2c);
-
-    v34 = vb0;
-    v30 = vb4;
-    e = (u32*)(tbl + 0x6b0 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v30, &v34);
-
-    v3c = vb0;
-    v38 = vb4;
-    e = (u32*)(tbl + 0x698 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v38, &v3c);
-
-    v44 = vb0;
-    v40 = vb4;
-    e = (u32*)(tbl + 0x680 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v40, &v44);
-
-    ((u8*)&v4c)[0] = ((u8*)&vb4)[0];
-    ((u8*)&v4c)[1] = ((u8*)&vb4)[1];
-    ((u8*)&v4c)[2] = ((u8*)&vb4)[2];
-    ((u8*)&v4c)[3] = 0xff;
-    v48 = v4c;
-    v50 = vb0;
-    e = (u32*)(tbl + 0x668 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&vb4)[2], e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v48, &v50);
-
-    va8 = *(u32*)(p + 0xf8);
-    vb4 = *(u32*)(p + 0x10c);
-    v0c = va8;
-    v08 = vb4;
-    e = (u32*)(tbl + 0x650 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v08, &v0c);
-
-    v14 = va8;
-    v10 = vb4;
-    e = (u32*)(tbl + 0x638 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v10, &v14);
-
-    v1c = va8;
-    v18 = vb4;
-    e = (u32*)(tbl + 0x620 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v18, &v1c);
-
-    v24 = va8;
-    v20 = vb4;
-    e = (u32*)(tbl + 0x608 + off);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, e[0], e[1]);
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v20, &v24);
+    const u8* table = lbl_804765D0;
+    {
+        const u64* key = (const u64*)(table + 0x5d8);
+        ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(*(JUtility::TColor*)(p + 0xfc), *(JUtility::TColor*)(p + 0xe8));
+    }
+    {
+        JUtility::TColor white = *(JUtility::TColor*)(p + 0xec);
+        JUtility::TColor black = *(JUtility::TColor*)(p + 0x100);
+        {
+            const u64* key = (const u64*)(table + 0x5c0);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x5a8);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x590);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x578);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x560);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(JUtility::TColor(black.r, black.g, black.b, 0xff), white);
+        }
+    }
+    {
+        JUtility::TColor white = *(JUtility::TColor*)(p + 0xf0);
+        JUtility::TColor black = *(JUtility::TColor*)(p + 0x104);
+        {
+            const u64* key = (const u64*)(table + 0x548);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x530);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x518);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x500);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x4e8);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+    }
+    {
+        JUtility::TColor white = *(JUtility::TColor*)(p + 0xf4);
+        JUtility::TColor black = *(JUtility::TColor*)(p + 0x108);
+        {
+            const u64* key = (const u64*)(table + 0x6c8);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x6b0);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x698);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x680);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x668);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(JUtility::TColor(black.r, black.g, black.b, 0xff), white);
+        }
+    }
+    {
+        JUtility::TColor white = *(JUtility::TColor*)(p + 0xf8);
+        JUtility::TColor black = *(JUtility::TColor*)(p + 0x10c);
+        {
+            const u64* key = (const u64*)(table + 0x650);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x638);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x620);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+        {
+            const u64* key = (const u64*)(table + 0x608);
+            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+        }
+    }
 }
+#pragma opt_propagation reset
 
 #pragma dont_inline on
 extern "C" void fn_803BE3D8(void* a) {
@@ -1020,7 +973,10 @@ extern "C" void fn_803BF9C4(u8* p) {
 
     {
         const s16* widths = (const s16*)(lbl_8050DB0C + 0x1e0);
-        s16 sum = *(s16*)(lbl_8050DB0C + 0x1e0) + menuWidthPair(lbl_8050DB0C);
+        int a = widths[1];
+        int b = widths[2];
+        int partial = b + a;
+        s16 sum = widths[0] + partial;
         *(s16*)(p + 0xd8) = *(s16*)(lbl_8050DB0C + 0x1e6);
         if (*(s16*)(p + 0xd8) < sum) {
             *(s16*)(p + 0xd8) = sum;
@@ -3292,8 +3248,7 @@ extern "C" void fn_803C9338(u8* p) {
 
 extern "C" f32 lbl_80543478;
 #pragma opt_strength_reduction off
-extern "C" void fn_803C9898(char* pc) {
-    u8* p = (u8*)pc;
+extern "C" void fn_803C9898(u8* p) {
     const u8* timing = lbl_8050DB0C;
     u8* base = (u8*)lbl_804765D0;
     s16 a = *(s16*)(timing + 0x1d0);
@@ -3350,15 +3305,19 @@ extern "C" void fn_803C9898(char* pc) {
             fn_80402628(*(void**)(p + 0x18), b, *(u8*)(*(u8**)(p + 0x18) + 0x28), 0);
             ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), b, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x1c), b, *(u8*)(*(u8**)(p + 0x1c) + 0x28), 0);
-            for (i = 0, kp = base + 0x48; i < 0x51; i++, kp += 8) {
-                void* o = ((J2DPane*)*(void**)(p + 0x4))->search(*(u64*)kp);
+            { u8* key;
+            for (i = 0, key = base + 0x48; i < 0x51; i++, key += 8) {
+                void* o = ((J2DPane*)*(void**)(p + 0x4))->search(*(u64*)key);
                 fn_804023D0(*(void**)(p + 0x14), o, p[0x132 + i]);
 
             }
-            for (i = 0, kp = base + 0x2d0; i < 0x13; i++, kp += 8) {
-                void* o = ((J2DPane*)*(void**)(p + 0x8))->search(*(u64*)kp);
+            }
+            { u8* key;
+            for (i = 0, key = base + 0x2d0; i < 0x13; i++, key += 8) {
+                void* o = ((J2DPane*)*(void**)(p + 0x8))->search(*(u64*)key);
                 fn_804023D0(*(void**)(p + 0x14), o, p[0x183 + i]);
 
+            }
             }
         }
         fn_803BC6F0((char*)p, *(u32*)(p + 0xa4), lbl_80543478 - (f32)(*(s16*)(p + 0xd8) - a) / (f32)b);
