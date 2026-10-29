@@ -1057,30 +1057,7 @@ extern const f32 lbl_8053F814;
 extern const f32 lbl_8053F818;
 extern f32 lbl_8053F81C;
 
-inline u8* ActorPool::findCollisionActor(s32 handle) {
-    PoolActor* result = NULL;
-    if (handle >= 0) {
-        s32 cached = *(s32*)((u8*)this + 0x2014);
-        if (cached >= 0) {
-            PoolActor* actor = this->mActors[cached];
-            if (actor && actor->mActive && handle == actor->mId) {
-                result = actor;
-                goto done;
-            }
-        }
-        s32 count = this->mCount;
-        ActorPool* cur = this;
-        for (s32 i = 0; i < count; cur = (ActorPool*)((u8*)cur + 4), i++) {
-            PoolActor* actor = cur->mActors[0];
-            if (actor && actor->mActive && handle == actor->mId) {
-                result = this->mActors[i];
-                break;
-            }
-        }
-    }
-done:
-    return (u8*)result;
-}
+
 inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     const f32* pos = (const f32*)(actor + 0xc);
     f32 y;
