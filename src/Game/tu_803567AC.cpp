@@ -173,10 +173,6 @@ static inline void movingBeginJump(char* p) {
     *(JGeometry::TVec3f*)(p+0x3c) = v;
     *(f32*)(p+0x260) = 0.2f;
 }
-static inline void movingRepeatJump(char* p) { movingBeginJump(p); }
-static inline s32* movingFrames(char* p) {
-    return ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].moving;
-}
 static inline void movingSetState(char* p, const int state) { ((MovingActor*)p)->setState(state); }
 extern "C" void fn_80356B60(char* this_) {
     JGeometry::TBox2f box;
