@@ -1055,6 +1055,29 @@ extern f32 lbl_8053F810;
 extern f32 lbl_8053F814;
 extern f32 lbl_8053F818;
 extern f32 lbl_8053F81C;
+inline u8* findCollisionActor(s32 handle) {
+    ActorPool* pool = (ActorPool*)lbl_8053AAF8->m4->m8;
+    if (handle >= 0) {
+        s32 cached = *(s32*)((u8*)pool + 0x2014);
+        if (cached >= 0) {
+            PoolActor* actor = pool->mActors[cached];
+            if (actor && actor->mActive && handle == actor->mId) return (u8*)actor;
+        }
+        s32 count = pool->mCount;
+        PoolActor** cur = (PoolActor**)pool;
+        for (s32 i = 0; i < count; i++, cur++) {
+            PoolActor* actor = cur[2];
+            if (actor && actor->mActive && handle == actor->mId) return (u8*)pool->mActors[i];
+        }
+    }
+    return NULL;
+}
+
+inline bool collisionBoxesOverlap(const JGeometry::TBox2<f32>& a, const JGeometry::TBox2<f32>& b) {
+    JGeometry::TBox2<f32> intersection(a);
+    return intersection.intersect(b);
+}
+
 extern "C" void fn_801F6A4C(void* pool) {
 	u8* b;
 	u8* a;
