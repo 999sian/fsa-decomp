@@ -216,6 +216,27 @@ static inline void Rusa_Exit(char* p) {
     }
 }
 
+static inline u8 Rusa_CanStart(char* p) {
+    u8 go = 0;
+    switch (*(s32*)(p + 0x2ac)) {
+    case 1:
+    case 4:
+        if (fn_801D05F8(p, p + 0xc, *(f32*)(p + 0x39c)) >= 0) {
+            go = 1;
+        }
+        break;
+    case 2:
+    case 3: {
+        s32 sw = *(s32*)(p + 0x2b0);
+        if (sw != 0 && fn_802D800C(fn_802D6A9C(), sw)) {
+            go = 1;
+        }
+        break;
+    }
+    }
+    return go;
+}
+
 static inline void Rusa_SetScale(char* p, f32 s) {
     *(f32*)(p + 0x54) = s;
     *(f32*)(p + 0x58) = s;
