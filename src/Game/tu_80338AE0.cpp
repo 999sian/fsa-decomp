@@ -52,7 +52,7 @@ extern "C" void fn_80338AE0(void) {
 extern "C" void fn_801F0E34(void* obj, u32 a, u32 b);
 extern "C" u8 fn_80230188(s32 i);
 extern "C" void* fn_8023E724(s32 i);
-inline void sortWarpPlayers(s32* order) {
+inline void sortWarpPlayers(s32 (&order)[5]) {
     int n;
     s32* start;
     s32* cur;
