@@ -94,15 +94,15 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, const f32 a) {
     sxsy = sx * sy; cxsz = cx * sz; cxcz = cx * cz;
     sxsz = sx * sz; sxcz = sx * cz;
     rec.b1d = 2; rec.b1c = 1;
-    mtx[0][0] = lbl_8053E0D0 * (cy * cz);
-    mtx[1][0] = lbl_8053E0D0 * (cy * sz);
-    mtx[2][0] = lbl_8053E0D0 * -sy;
-    mtx[0][1] = lbl_8053E0D0 * (sxsy * cz - cxsz);
-    mtx[1][1] = lbl_8053E0D0 * (sxsy * sz + cxcz);
-    mtx[2][1] = lbl_8053E0D0 * (sx * cy);
-    mtx[0][2] = lbl_8053E0D0 * (cxcz * sy + sxsz);
-    mtx[1][2] = lbl_8053E0D0 * (cxsz * sy - sxcz);
-    mtx[2][2] = lbl_8053E0D0 * (cx * cy);
+    mtx[0][0] = 1.0f * (cy * cz);
+    mtx[1][0] = 1.0f * (cy * sz);
+    mtx[2][0] = 1.0f * -sy;
+    mtx[0][1] = 1.0f * (sxsy * cz - cxsz);
+    mtx[1][1] = 1.0f * (sxsy * sz + cxcz);
+    mtx[2][1] = 1.0f * (sx * cy);
+    mtx[0][2] = 1.0f * (cxcz * sy + sxsz);
+    mtx[1][2] = 1.0f * (cxsz * sy - sxcz);
+    mtx[2][2] = 1.0f * (cx * cy);
 }
 
 // from src/Game/Bph2_SetVec2.cpp
