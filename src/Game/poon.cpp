@@ -144,6 +144,18 @@ extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
 extern "C" void fn_8013CC50(s32 a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" double sqrt(double);
+static inline f32 poonSqrt(f32 x) {
+    if (x > 0.0f) {
+        f64 g = __frsqrte(x);
+        g = 0.5 * g * (3.0 - g * g * x);
+        g = 0.5 * g * (3.0 - g * g * x);
+        g = 0.5 * g * (3.0 - g * g * x);
+        x = x * g;
+    } else if (x < 0.0 || isnan(x)) {
+        x = NAN;
+    }
+    return x;
+}
 
 static inline void poonTickTimers(char* p) {
     for (int i = 0; i < 4; i++, p += 4) {
