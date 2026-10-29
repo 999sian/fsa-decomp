@@ -769,11 +769,12 @@ extern "C" void fn_8016D33C(u8* self) {
 #include "JSystem/JAudio/JAUSoundObject.h"
 
 static inline f32 effectRandom8016D398(u8* base=lbl_8053AAF8, const unsigned int multiplier=0x19660d) {
+    const f32 one=lbl_8053D93C;
     volatile u32* seed=(volatile u32*)(base+0xb4);
     *seed=*seed*multiplier+0x3c6ef35f;
     union { u32 u; f32 f; } v;
     v.u=(*seed>>9)|0x3f800000;
-    return v.f-lbl_8053D93C;
+    return v.f-one;
 }
 
 static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
@@ -846,10 +847,11 @@ static inline void positionEffectB8016D398(u8* p) {
     *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
     u8* p;
-    int maxA,maxB;
-    int i;
+    s32 maxA,maxB;
+    s32 i;
     JGeometry::TVec3f neg(-*(f32*)((u8*)a1+0xc),-*(f32*)((u8*)a1+0x1c),lbl_8053D944);
     Vec pos;
     if((u8)a4){
@@ -905,7 +907,7 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
         }
     }
 }
-
+#pragma opt_propagation reset
 // Retail keeps individual comparisons rather than folding consecutive modes.
 #pragma optimization_level 3
 extern "C" void fn_8016DA6C(u8* self) {
