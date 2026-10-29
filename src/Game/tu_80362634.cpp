@@ -142,9 +142,11 @@ static s32 fn_80363880_quadrant(u16 a) {
 }
 
 static void fn_80363880_aim(char* self, f32 dy, f32 dx, const f32& speed) {
-    *(s16*)(self + 0x240) = (s16)(s32)(JMath::atanTable_.atan2_(dy, dx) * lbl_80542B50);
-    *(f32*)(self + 0x3c) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].second;
-    *(f32*)(self + 0x40) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].first;
+    f32 angle = JMath::atanTable_.atan2_(dy, dx);
+    f32 value = speed;
+    *(s16*)(self + 0x240) = (s16)(s32)(angle * lbl_80542B50);
+    *(f32*)(self + 0x3c) = value * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].second;
+    *(f32*)(self + 0x40) = value * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].first;
 }
 
 static void fn_80363880_setQuadrant(char* self) {
@@ -519,9 +521,13 @@ extern "C" void fn_80363664(char* self) {
 }
 
 extern "C" void fn_80363880(char* p) {
-    s32 state = *(s32*)(p + 0x24c);
+    s32 state;
+    char* item;
+    s32 count;
+    s32 i;
+    state = *(s32*)(p + 0x24c);
     if (state >= 0) {
-        char* item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
+        item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
         if (item != NULL) {
             JGeometry::TVec3<f32> tgt(*(JGeometry::TVec3<f32>*)(item + 0xc));
             if (PSVECDistance((Vec*)(p + 0xc), &tgt) >= lbl_80542B4C) {
@@ -537,9 +543,9 @@ extern "C" void fn_80363880(char* p) {
             fn_80363880_reset(p);
         }
     } else {
-        s32 count = *(s32*)((char*)fn_801F856C() + 0x1008);
-        for (s32 i = 0; i < count; i++) {
-            char* item = (char*)((void**)((char*)fn_801F856C() + 8))[i];
+        count = *(s32*)((char*)fn_801F856C() + 0x1008);
+        for (i = 0; i < count; i++) {
+            item = (char*)((void**)((char*)fn_801F856C() + 8))[i];
             if (item == NULL || *(s32*)(item + 0x1a0) != 0x454f574c || *(u8*)(item + 0x11c) != 1 || *(s32*)(item + 0x278) != 0) continue;
             if (PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) >= lbl_80542B4C) break;
             *(s32*)(p + 0x24c) = i;
