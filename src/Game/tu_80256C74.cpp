@@ -158,8 +158,15 @@ struct Tu80256Tables {
 };
 static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
-    if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, epsilon) &&
-        JGeometry::TUtilf::epsilonEquals(a.y, b.y, epsilon)) equal = true;
+    f32 dx = a.x - b.x;
+    bool xEqual = false;
+    if (-epsilon <= dx && dx <= epsilon) xEqual = true;
+    if (xEqual) {
+        f32 dy = a.y - b.y;
+        bool yEqual = false;
+        if (-epsilon <= dy && dy <= epsilon) yEqual = true;
+        if (yEqual) equal = true;
+    }
     return equal;
 }
 
@@ -2123,6 +2130,7 @@ extern "C" void fn_8025C7BC(u8* p) {
 }
 
 extern "C" void fn_8025C894(u8* p) {
+    s32 handle;
     PlayerArrowPosition* arrow = (PlayerArrowPosition*)p;
     u8 state = U8(p, 0x3fa);
     if (state < 3) {
@@ -2194,7 +2202,7 @@ extern "C" void fn_8025C894(u8* p) {
                     F32(p,0x12f0) = arrow->pos.y;
                     F32(p,0x12f4) = arrow->pos.z;
             }
-            s32 handle = S32(p, 0x12c0);
+            handle = S32(p, 0x12c0);
             if (handle >= 0) {
                 u8* actor = fn_801F666C(fn_801F856C(), handle);
                 if (actor) {
