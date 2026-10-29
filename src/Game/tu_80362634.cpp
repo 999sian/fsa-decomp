@@ -13,6 +13,8 @@ extern "C" JGeometry::TVec3<f32> lbl_8050C0DC[3];
 extern "C" const s32 lbl_80474A5C[];
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 struct Anim80363880 {
     char pad[0x268];
