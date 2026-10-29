@@ -153,6 +153,10 @@ public:
     virtual u8 v34();
 };
 
+static inline bool hrmnQueueFull(char* q) {
+    return fn_80215E98(q) == *(s32*)q;
+}
+
 static inline void hrmnCameraFocus(char* p) {
     u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
     if (!cam[0x7f5]) {
@@ -187,7 +191,7 @@ extern "C" void fn_801EBE7C(char* p) {
             break;
         }
         s32 snd = 0x364;
-        u8 ready = (*(u8 (**)(void*))((char*)*(void**)p + 0x34))(p);
+        u8 ready = ((HrmnActor*)p)->v34();
         if (!ready) {
             snd = 0x35d;
         }
@@ -361,7 +365,7 @@ extern "C" void fn_801EBE7C(char* p) {
                 }
                 fn_80215BCC(p + 0x2b8, id);
             }
-            (*(void (**)(void*, s32, s32))((char*)*(void**)p + 0x30))(p, 0xff, 1);
+            ((HrmnActor*)p)->v30(0xff, 1);
             fn_801ECB08(p, 0);
         }
         break;
