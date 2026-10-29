@@ -499,6 +499,20 @@ extern f32 lbl_8053C024;
 extern f32 lbl_8053C004;
 extern f32 lbl_8053C000;
 extern "C" s16 lbl_8049C3B8[];
+static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,const f32 k) {
+    if(fn_801F3D94(self,1)==0){
+        s32 idx=fn_801F285C(self,0,0,1,-1);
+        if(idx>=0){
+            JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
+            fn_80238548(idx,0,(f32*)&pos,0x10);
+        }
+        *(f32*)(self+0xc)=(f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0*k+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=(f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0*k+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=(f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0*k+*(f32*)(self+0x14);
+        fn_801F2B7C(self,2,-1,1);
+    }
+}
+
 static inline JGeometry::TVec3f WRTC_circlePosition(u8* p) {
     u32 n=p[0x2ac];
     s32 kind,step;
@@ -536,172 +550,39 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,f32& k) {
 }
 
 extern "C" void fn_800F953C(void* this_) {
-    u8* self = (u8*)this_;
-    u8* p;
-    s32 state;
-    u32 n;
-    u32 kind;
-    u32 step;
-    s32 ang;
-    s32 half;
-    f32 amp;
-    f32 sn;
-    f32 cs;
-    f32 rr;
-    f32 vx;
-    f32 vy;
-    f32 vz;
+    u8* self=(u8*)this_;
+    JGeometry::TVec3f out;
     f32 k;
-    s32 flag;
-    WrtcVec out;
-
-    *(s32*)(self + 0xb0) = 0x80004;
-    self[0x1a8] = 1;
-    p = *(u8**)(self + 0x240);
-    state = *(s32*)(p + 0x230);
-    if (state == 3) {
-        n = p[0x2ac];
-        if (n < 8) {
-            kind = 0;
-            step = 0x2000;
-        } else if (n < 0x10) {
-            kind = 1;
-            step = 0x2000;
-        } else if (n < 0x15) {
-            kind = 2;
-            step = 0x3332;
-        } else if (n < 0x18) {
-            kind = 3;
-            step = 0x5554;
-        } else if (n < 0x1a) {
-            kind = 4;
-            step = 0x8000;
-        } else {
-            kind = 5;
-            step = 0x2000;
-        }
-        ang = (u16)(*(u16*)(p + 0x2ae) + n * step + kind * 0x1000);
-        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
-        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
-        rr = lbl_8049C634[kind];
-        amp = *(f32*)(p + 0x2a8);
-        vx = amp * (rr * sn) + *(f32*)(p + 0xc);
-        vy = amp * (rr * cs) + *(f32*)(p + 0x10);
-        vz = (f32)(kind * 13) + (lbl_8053BFFC + *(f32*)(p + 0x14));
-        p[0x2ac]++;
-        k = lbl_8053BFC0;
-        flag = 1;
-        out.x = vx;
-        out.y = vy;
-        out.z = vz;
-    } else if (state == 4) {
-        n = p[0x2ac];
-        half = (n >> 1) + 1;
-        if (n & 1) {
-            amp = lbl_8053BFF8 + (f32)(half * 20);
-            ang = *(s16*)(p + 0x2b2);
-        } else {
-            amp = (f32)(half * -20) - lbl_8053BFF8;
-            ang = *(s16*)(p + 0x2b4);
-        }
-        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
-        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
-        vx = amp * sn + *(f32*)(p + 0xc);
-        vy = amp * cs + *(f32*)(p + 0x10);
-        vz = lbl_8053BFFC + *(f32*)(p + 0x14);
-        p[0x2ac]++;
-        k = lbl_8053C00C;
-        flag = 1;
-        out.x = vx;
-        out.y = vy;
-        out.z = vz;
-    } else if (state == 1) {
-        n = p[0x2ac];
-        if (n < 8) {
-            kind = 0;
-            step = 0x2000;
-        } else if (n < 0x10) {
-            kind = 1;
-            step = 0x2000;
-        } else if (n < 0x15) {
-            kind = 2;
-            step = 0x3332;
-        } else if (n < 0x18) {
-            kind = 3;
-            step = 0x5554;
-        } else if (n < 0x1a) {
-            kind = 4;
-            step = 0x8000;
-        } else {
-            kind = 5;
-            step = 0x2000;
-        }
-        ang = (u16)(*(u16*)(p + 0x2ae) + n * step + kind * 0x1000);
-        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
-        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
-        rr = lbl_8049C634[kind];
-        amp = *(f32*)(p + 0x2a8);
-        vx = amp * (rr * sn) + *(f32*)(p + 0xc);
-        vy = amp * (rr * cs) + *(f32*)(p + 0x10);
-        vz = (f32)(kind * 13) + (lbl_8053BFFC + *(f32*)(p + 0x14));
-        p[0x2ac]++;
-        k = lbl_8053C028;
-        flag = 1;
-        out.x = vx;
-        out.y = vy;
-        out.z = vz;
-    } else {
-        n = p[0x2ac];
-        if (n < 8) {
-            kind = 0;
-            step = 0x2000;
-        } else if (n < 0x10) {
-            kind = 1;
-            step = 0x2000;
-        } else if (n < 0x15) {
-            kind = 2;
-            step = 0x3332;
-        } else if (n < 0x18) {
-            kind = 3;
-            step = 0x5554;
-        } else if (n < 0x1a) {
-            kind = 4;
-            step = 0x8000;
-        } else {
-            kind = 5;
-            step = 0x2000;
-        }
-        ang = (u16)(*(u16*)(p + 0x2ae) + n * step + kind * 0x1000);
-        sn = sincosTable___5JMath[((u16)ang >> 5) * 2];
-        cs = sincosTable___5JMath[((u16)ang >> 5) * 2 + 1];
-        rr = lbl_8049C634[kind];
-        amp = *(f32*)(p + 0x2a8);
-        vx = amp * (rr * sn) + *(f32*)(p + 0xc);
-        vy = amp * (rr * cs) + *(f32*)(p + 0x10);
-        vz = (f32)(kind * 13) + (lbl_8053BFFC + *(f32*)(p + 0x14));
-        p[0x2ac]++;
-        k = lbl_8053C00C;
-        flag = 0;
-        out.x = vx;
-        out.y = vy;
-        out.z = vz;
+    *(s32*)(self+0xb0)=0x80004;
+    self[0x1a8]=1;
+    u8* p=*(u8**)(self+0x240);
+    s32 state=*(s32*)(p+0x230);
+    if(state==3){
+        out.set(WRTC_circlePosition(p));
+        k=lbl_8053BFC0;
+        self[0x249]=1;
+    }else if(state==4){
+        out.set(WRTC_linePosition(p,k));
+        self[0x249]=1;
+    }else if(state==1){
+        out.set(WRTC_circlePosition(p));
+        k=lbl_8053C028;
+        self[0x249]=1;
+    }else{
+        out.set(WRTC_circlePosition(p));
+        k=lbl_8053C00C;
+        self[0x249]=0;
     }
-    self[0x249] = flag;
-    if (fn_801F3D94(self, 1) == 0) {
-        s32 idx = fn_801F285C(self, 0, 0, 1, -1);
-        if (idx >= 0) {
-            f32 pos[2];
-            f32 sx = *(f32*)(self + 0xc);
-            f32 sy = *(f32*)(self + 0x10);
-            f32 sz = *(f32*)(self + 0x14);
-            pos[0] = sx;
-            pos[1] = sy;
-            fn_80238548(idx, 0, pos, 0x10);
-            *(f32*)(self + 0xc) = (f32)(s32)(lbl_8053BFD4 * (out.x - sx)) * lbl_8053BFD0 * k + sx;
-            *(f32*)(self + 0x10) = (f32)(s32)(lbl_8053BFD4 * (out.y - sy)) * lbl_8053BFD0 * k + sy;
-            *(f32*)(self + 0x14) = (f32)(s32)(lbl_8053BFD4 * (out.z - sz)) * lbl_8053BFD0 * k + sz;
+    if(fn_801F3D94(self,1)==0){
+        s32 idx=fn_801F285C(self,0,0,1,-1);
+        if(idx>=0){
+            JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
+            fn_80238548(idx,0,(f32*)&pos,0x10);
         }
-        fn_801F2B7C(self, 2, -1, 1);
+        *(f32*)(self+0xc)=(f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0*k+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=(f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0*k+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=(f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0*k+*(f32*)(self+0x14);
+        fn_801F2B7C(self,2,-1,1);
     }
 }
 
