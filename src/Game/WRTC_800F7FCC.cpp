@@ -499,7 +499,7 @@ extern f32 lbl_8053C024;
 extern f32 lbl_8053C004;
 extern f32 lbl_8053C000;
 extern "C" s16 lbl_8049C3B8[];
-static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,const f32 k) {
+static inline void WRTC_moveTowards(u8* self,const volatile JGeometry::TVec3f& out,const f32 k) {
     if(fn_801F3D94(self,1)==0){
         s32 idx=fn_801F285C(self,0,0,1,-1);
         if(idx>=0){
@@ -573,17 +573,7 @@ extern "C" void fn_800F953C(void* this_) {
         k=lbl_8053C00C;
         self[0x249]=0;
     }
-    if(fn_801F3D94(self,1)==0){
-        s32 idx=fn_801F285C(self,0,0,1,-1);
-        if(idx>=0){
-            JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
-            fn_80238548(idx,0,(f32*)&pos,0x10);
-        }
-        *(f32*)(self+0xc)=(f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0*k+*(f32*)(self+0xc);
-        *(f32*)(self+0x10)=(f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0*k+*(f32*)(self+0x10);
-        *(f32*)(self+0x14)=(f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0*k+*(f32*)(self+0x14);
-        fn_801F2B7C(self,2,-1,1);
-    }
+    WRTC_moveTowards(self,out,k);
 }
 
 extern "C" void fn_800F9C20(void* this_) {
