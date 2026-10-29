@@ -801,6 +801,7 @@ static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
             }
 }
 
+static inline f32 signEffect8016D398();
 static inline void spawnEffectB8016D398(void* a5) {
     u8* p;
     s32 i;
@@ -810,9 +811,9 @@ static inline void spawnEffectB8016D398(void* a5) {
                 *(s32*)(p+0x14)=60;
                 *(u16*)(p+0x10)=0x287;
                 f32 y=lbl_8053D9D4*effectRandom8016D398()-lbl_8053D9D4;
-                f32 sign=lbl_8053D93C;
-                if(effectRandom8016D398()>lbl_8053D940){sign=lbl_8053D9D8;}
-                f32 x=(lbl_8053D9DC*effectRandom8016D398()+lbl_8053D9C8)*sign;
+                f32 sign=signEffect8016D398();
+                f32 rx=effectRandom8016D398();
+                f32 x=(lbl_8053D9DC*rx+lbl_8053D9C8)*sign;
                 *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
                 zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
                 *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
