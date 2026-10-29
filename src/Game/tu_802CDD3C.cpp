@@ -97,12 +97,12 @@ static inline void cddRotation(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32* s
     cx = JMACosShort(rx);
     cy = JMACosShort(ry);
     cz = JMACosShort(rz);
-    f32 cysz = cy * sz;
     f32 cycz = cy * cz;
+    f32 cysz = cy * sz;
     f32 sxcy = sx * cy;
     f32 sxsy = sx * sy;
-    f32 cxsz = cx * sz;
     f32 cxcz = cx * cz;
+    f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
     f32 s0 = scale[0];
@@ -179,8 +179,9 @@ extern "C" void fn_802CDD9C(char* this_)
             } else if (t == 0x33) {
                 rec.b24 = 1;
                 tex = fn_804032E8(0x54494d47, base + 0x634);
+                f32 y = *(f32*)(this_ + 0x10) - lbl_80540E30;
                 v.x = *(f32*)(this_ + 0xc);
-                v.y = *(f32*)(this_ + 0x10) - lbl_80540E30;
+                v.y = y;
                 v.z = lbl_80540E34;
                 fn_802CDD9C_draw(this_, &v, tex, &rec);
             } else if (t == 0x34) {
