@@ -382,11 +382,13 @@ static inline void captureOrbitTarget(u8* p) {
                 *(s32*)(p + 0x238) = 50;
                 *(s32*)(p + 0x230) = 0x49;
                 if (*(void**)(p + 0x304)) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x304));
+                    void* manager = *(void**)((u8*)fn_8013C824() + 0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(manager, *(void**)(p + 0x304));
                     *(void**)(p + 0x304) = 0;
                 }
                 if (*(void**)(p + 0x308)) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(p + 0x308));
+                    void* manager = *(void**)((u8*)fn_8013C824() + 0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(manager, *(void**)(p + 0x308));
                     *(void**)(p + 0x308) = 0;
                 }
             } else {
@@ -396,29 +398,98 @@ static inline void captureOrbitTarget(u8* p) {
     }
 }
 
-extern "C" void fn_80197EB0(u8* this_) {
-    switch (*(s32*)(this_ + 0x230)) {
-    case 0x46: {
-        u8* e;
-        *(s32*)(this_ + 0x230) = 0x47;
-        fn_801F0E34(this_, 0x30056, 0);
-        if (*(s32*)(this_ + 0x250) != 0 || *(f32*)(this_ + 0x3c) != lbl_8053E388 || *(f32*)(this_ + 0x40) == lbl_8053E388) {
+extern "C" void fn_80197EB0(u8* p)
+{
+    s32 id;
+    u8* target;
+    switch (*(s32*)(p + 0x230)) {
+    case 0x46:
+        *(s32*)(p + 0x230) = 0x47;
+    case 0x47: {
+        fn_801F0E34(p, 0x30056, 0);
+        if (*(s32*)(p + 0x250) == 0 &&
+            *(f32*)(p + 0x3c) == lbl_8053E388 &&
+            *(f32*)(p + 0x40) == lbl_8053E388) break;
+        JPABaseEmitter* e = *(JPABaseEmitter**)(p + 0x30c);
+        if (e) {
+            e->becomeInvalidEmitter();
+            *(void**)(p + 0x30c) = 0;
+        }
+        if (fn_801F6758((f32*)(p + 0xc), lbl_8053E38C, *(s32*)(p + 4))) {
+            *(s32*)(p + 0x258) = 0;
             break;
         }
-        e = *(u8**)(this_ + 0x30c);
-        if (e != 0) {
-            *(u32*)(e + 0xf4) |= 1;
-            *(s32*)(e + 0x24) = 1;
-        }
-        *(s32*)(this_ + 0x30c) = 0;
-        if (fn_801F6758((f32*)(this_ + 0xc), lbl_8053E38C, *(s32*)(this_ + 4))) {
-            *(s32*)(this_ + 0x258) = 0;
-            break;
+        id = *(s32*)(p + 0x25c);
+        if (id >= 0 && (target = (u8*)fn_801F666C(fn_801F856C(), id)) != 0) {
+            f32 x = *(f32*)(target + 0xc) - *(f32*)(p + 0xc);
+            f32 y = *(f32*)(target + 0x10) - *(f32*)(p + 0x10);
+            f32 squared = x*x + y*y;
+            if (std::sqrtf(squared) <= lbl_8053E3C8) {
+                *(f32*)(p + 0x27c) = lbl_8053E388;
+                *(f32*)(p + 0x278) = lbl_8053E388;
+                *(f32*)(p + 0x274) = lbl_8053E388;
+                *(f32*)(p + 0x44) = lbl_8053E388;
+                *(f32*)(p + 0x40) = lbl_8053E388;
+                *(f32*)(p + 0x3c) = lbl_8053E388;
+                *(s32*)(p + 0x248) = (s16)(JMAAtan2Radian(x, y)*lbl_8053E3A4) + 0x8000;
+                *(s32*)(p + 0x24c) = (s32)std::sqrtf(squared);
+                for (s32 i=0; i<13; ++i) {
+                    JPABaseEmitter* emitter = *(JPABaseEmitter**)(p + 0x304 + i*4);
+                    if (emitter) {
+                        *(f32*)((u8*)emitter + 0xb0) = lbl_8053E3CC;
+                        *(f32*)((u8*)emitter + 0xb4) = lbl_8053E3CC;
+                    }
+                }
+                *(f32*)(p + 0x60) = lbl_8053E3D0;
+                *(f32*)(p + 0x64) = lbl_8053E3D0;
+                *(f32*)(p + 0x68) = lbl_8053E384;
+                *(f32*)(p + 0x6c) = lbl_8053E384;
+                *(s32*)(p + 0x230) = 0x48;
+            }
+            captureOrbitTarget(p);
+        } else {
+            *(s32*)(p + 0x258) = 0;
         }
         break;
     }
-    default:
+    case 0x48:
+        fn_801F0E34(p, 0x30056, 0);
+        id = *(s32*)(p + 0x25c);
+        if (id >= 0 && (target = (u8*)fn_801F666C(fn_801F856C(), id)) != 0) {
+            if ((*(u32*)(target + 0xb0) & 0xff) != 0xe) {
+                *(s32*)(p + 0x258) = 0;
+                break;
+            }
+            if (*(s32*)(p + 0x250) == 0) {
+                fn_801F71A4((f32*)(p + 0xc),
+                    *(f32*)(target + 0xc) + (f32)*(s32*)(p + 0x24c)*JMASinShort(*(s32*)(p + 0x248)),
+                    lbl_8053E3D8, lbl_8053E384);
+                fn_801F71A4((f32*)(p + 0x10),
+                    *(f32*)(target + 0x10) + (f32)*(s32*)(p + 0x24c)*JMACosShort(*(s32*)(p + 0x248)),
+                    lbl_8053E3D8, lbl_8053E384);
+                *(s32*)(p + 0x248) += 0x150;
+            } else {
+                captureOrbitTarget(p);
+            }
+        } else {
+            *(s32*)(p + 0x258) = 0;
+        }
         break;
+    case 0x49:
+        if (*(s32*)(p + 0x238) == 0) *(s32*)(p + 0x258) = 0;
+        break;
+    }
+    if (*(s32*)(p + 0x258) <= 0) {
+        for (s32 i=0; i<13; ++i) {
+            JPABaseEmitter* emitter = *(JPABaseEmitter**)(p + 0x304 + i*4);
+            if (emitter) {
+                emitter->becomeInvalidEmitter();
+                *(void**)(p + 0x304 + i*4) = 0;
+            }
+        }
+        *(u8*)(p + 0x11c) = 0;
+    } else {
+        for (s32 i=0; i<13; ++i) fn_8013CB44(*(void**)(p + 0x304 + i*4), p + 0xc, 1, 5, 1);
     }
 }
 
