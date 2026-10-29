@@ -94,6 +94,10 @@ extern "C" void fn_801C1918(u8* this_) {
     }
 }
 
+static inline void SLGESetPosition(u8* self, const f32 yOffset) {
+    JGeometry::TVec3f vec(*(f32*)(self+0xc),yOffset+*(f32*)(self+0x10),lbl_8053EDD0);
+    fn_8021F9AC(self+0x3f8,(f32*)&vec);
+}
 static inline void SLGEEffect(u8* self, const u16 kind) {
     fn_8013CC50(*(u32*)(self+4),self+0xc,kind,0,0,0,0,1,lbl_8053EDC0);
 }
@@ -180,7 +184,7 @@ extern "C" void fn_801C1A58(u8* this_) {
         if (*(s32*)(this_+0x24c)==0xb4) fn_801F0E34(this_,0x5004b,0);
         if (*(u16*)fn_801C0D70() & 0x80) {
             ((Actor*)this_)->v10(0xff,1);
-            for(lo=0;lo<3;lo++) {u16 id=lbl_8053EDB0[lo]; fn_8013CC50(*(u32*)(this_+4),this_+0xc,id,0,0,0,0,1,lbl_8053EDC0);}
+            for(lo=0;lo<3;lo++) SLGEEffect(this_,lbl_8053EDB0[lo]);
             *(s32*)(this_+0x24c)=0;
             *(s32*)(this_+0x248)=6;
         }
@@ -190,13 +194,8 @@ extern "C" void fn_801C1A58(u8* this_) {
         if (*(s32*)(this_+0x24c)>=0x78) {
             if(!lbl_8053AC24) {lbl_8053AC20=lbl_80469430;lbl_8053AC24=1;}
             *(void**)(this_+0x2d4)=fn_804032E8(0x54494d47,lbl_8053AC20);
-            f32 vec[3];
-            f32 y=lbl_8053EDCC+*(f32*)(this_+0x10);
-            f32 x=*(f32*)(this_+0xc);
-            vec[0]=x;
-            vec[1]=y;
-            vec[2]=lbl_8053EDD0;
-            fn_8021F9AC(this_+0x3f8,vec);
+            JGeometry::TVec3f vec(*(f32*)(this_+0xc),lbl_8053EDCC+*(f32*)(this_+0x10),lbl_8053EDD0);
+            fn_8021F9AC(this_+0x3f8,(f32*)&vec);
             *(s32*)(this_+0x24c)=0; *(s32*)(this_+0x248)=7;
         }
         break;
@@ -249,8 +248,7 @@ extern "C" void fn_801C1A58(u8* this_) {
         if (*(s32*)(this_ + 0x24c) >= 0x5a) {
             fn_8021F924(this_ + 0x3f8);
             for (lo = 0; lo < 5; lo++) {
-                u16 id=lbl_80469418[lo];
-                fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, id, 0, 0, 0, 0, 1, lbl_8053EDC0);
+                SLGEEffect(this_,lbl_80469418[lo]);
             }
             fn_801F0E34(this_, 0x5006f, 0);
             *(s32*)(this_ + 0x24c) = 0;
