@@ -76,10 +76,6 @@ static inline u8 HudPlayerActive8041(s32 index) {
     u8 mask = 1 << index;
     return (lbl_8053AAF8[0x82] & mask) != 0;
 }
-static inline u8 HudPlayerMaskActive8041(const u32 mask) {
-    u8 bits = mask;
-    return (lbl_8053AAF8[0x82] & bits) != 0;
-}
 // Sub-object virtual slots 13 called by fn_8041918C.
 struct SubObj {
     virtual void w00();
