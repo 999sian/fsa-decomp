@@ -46,7 +46,7 @@ extern "C" void fn_802AB234(void) {}
 
 extern "C" s32 fn_8023AF14(f32* rect, s32 room, s32 zero, f32 z = 0.0f);
 extern "C" void* fn_802D6A9C(void);
-extern "C" u32 fn_802F9908(void* mgr, s32 room, s32 word);
+extern "C" unsigned int fn_802F9908(void* mgr, int room, int word);
 extern "C" void fn_802F9974(void* mgr, s32 room, s32 word, u16 val);
 extern "C" u8 fn_80234F68(void);
 extern "C" void fn_802A3884(void* a, f32* pos, s32 zero, s32 room, s32 id);
@@ -65,17 +65,14 @@ extern f32 lbl_805408A4;
 extern f32 lbl_805408A8;
 extern f32 lbl_805408AC;
 extern "C" void* fn_801F666C(void*, s32);
-extern "C" void fn_802AB238(void* p) {
-    char* self = (char*)p;
-    TileSwitchActor* actor = (TileSwitchActor*)p;
+extern "C" void fn_802AB238(TileSwitchActor* actor) {
+    char* self = (char*)actor;
     JGeometry::TBox2<f32> rect;
     const f32 c = 4.0f;
-    f32 oy = c + actor->field_0C.y;
-    f32 ox = c + *(f32*)(self + 0xc);
-    JGeometry::TVec2<f32> offset(ox, oy);
+    JGeometry::TVec2<f32> offset(c + actor->field_0C.x, c + actor->field_0C.y);
     rect.set(*(JGeometry::TBox2<f32>*)(self + 0x60));
     rect.addPos(offset);
-    s32 r = fn_8023AF14((f32*)&rect, actor->field_04, 0, lbl_80540894);
+    int r = fn_8023AF14((f32*)&rect, actor->field_04, 0, lbl_80540894);
     switch (actor->state) {
     case 0: {
         s32 room = actor->field_04;
@@ -93,8 +90,8 @@ extern "C" void fn_802AB238(void* p) {
         break;
     }
     case 1: {
-        s32 current = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), actor->field_04, actor->index) & 0x3ff;
-        if ((u32)actor->tile == current) break;
+        unsigned int current = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), actor->field_04, actor->index) & 0x3ff;
+        if ((unsigned int)actor->tile == current) break;
         switch (actor->kind) {
         case 5:
             ((Actor*)self)->v10(0xff, 1);
