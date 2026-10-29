@@ -59,6 +59,14 @@ extern "C" void fn_80238E08(s32);
 extern "C" void fn_801F0E34(Actor*,s32,s32);
 extern "C" JGeometry::TVec3f lbl_804A79E0[];
 extern "C" const JGeometry::TVec3f lbl_804750C0[];
+static inline void blockSetVelocity(Actor* actor, const JGeometry::TVec3f& velocity) {
+    f32 x = velocity.x;
+    f32 y = velocity.y;
+    actor->field_3C.x = x;
+    f32 z = velocity.z;
+    actor->field_3C.y = y;
+    actor->field_3C.z = z;
+}
 extern "C" void fn_80374BAC(Actor* this_) {
     u8* p = (u8*)this_;
     JGeometry::TBox2f bounds;
@@ -169,7 +177,9 @@ extern "C" void fn_80374BAC(Actor* this_) {
     (*(JGeometry::TVec3f*)(p + 0xc)) = savedPos;
     if (direction >= 0 && direction < 4) {
     fn_80238E08(*(s32*)(p + 0x198));
-    (*(JGeometry::TVec3f*)(p + 0x3c)).set(lbl_804750C0[direction]);
+    this_->field_3C.x = lbl_804750C0[direction].x;
+    this_->field_3C.y = lbl_804750C0[direction].y;
+    this_->field_3C.z = lbl_804750C0[direction].z;
     probe = (*(JGeometry::TVec3f*)(p + 0x3c));
     probe.normalize();
     probe.scale(lbl_80542EFC);
