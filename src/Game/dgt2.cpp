@@ -50,9 +50,9 @@ extern "C" double sin(double);
 extern "C" double cos(double);
 extern "C" void PSMTXIdentity(f32 (*m)[4]);
 extern "C" void fn_801F06F0(void* a, const char* tbl, s32 idx, DrawRec* rec, s32 p5, f32 f6, f32 f7);
-extern f32 lbl_8053E1D8;
-extern f32 lbl_8053E1DC;
-extern f32 lbl_8053E1E0;
+extern const f32 lbl_8053E1D8;
+extern const f32 lbl_8053E1DC;
+extern const f32 lbl_8053E1E0;
 extern char lbl_804674F0[];
 
 struct Dgt2Vec { f32 x; f32 y; f32 z; };
