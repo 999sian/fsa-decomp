@@ -344,17 +344,7 @@ inline s32 kepoPlayerRoom(s32 i) {
     if(fn_8022F514(i)) return fn_8022F3DC(i);
     return fn_8030AAF4(i);
 }
-#pragma opt_propagation off
-inline void fillKepoBox(u8* self, f32* box) {
-    extern f32 lbl_8053FC84;
-    f32 k,x,upperX,upperY,y,lowerX,lowerY;
-    k=lbl_8053FC84;
-    y=*(f32*)(self+0x10);
-    x=*(f32*)(self+0xc);
-    upperY=k+y;upperX=k+x;lowerX=x-k;lowerY=y-k;
-    box[3]=upperY;box[0]=lowerX;box[1]=lowerY;box[2]=upperX;
-}
-#pragma opt_propagation reset
+
 #pragma opt_propagation off
 extern "C" void fn_8021923C(u8* self) {
     void fn_80219AFC(u8* self, s32 state);
