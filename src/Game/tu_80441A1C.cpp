@@ -1,5 +1,14 @@
 #include "types.h"
 #include "Game/PaneState.h"
+struct MenuAnimParams80441 {
+    u8 pad[0x8c];
+    s16 appearFrames;
+    s16 slideFrames;
+    s16 slideDistance;
+    s16 leaveFrames;
+    s16 fadeFrames;
+};
+
 struct Menu80441A1C {
     u8 pad[8];
     PaneState* alphaPane;
@@ -153,11 +162,7 @@ extern "C" s32 fn_80441A1C(Menu80441A1C* menu) {
             s16 limit;
             p8 = menu->alphaPane;
             tbl = (s16*)lbl_8050DB0C;
-            frame = p8->alphaFrame;
-            limit = tbl[0x94 / 2];
-            if (frame > limit) {
-                p8->alphaFrame = limit;
-            }
+            capPaneFrame(p8, tbl[0x94 / 2]);
             if (menu->movePane->alphaFrame > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
                 menu->movePane->alphaFrame = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
             }
@@ -171,11 +176,7 @@ extern "C" s32 fn_80441A1C(Menu80441A1C* menu) {
             s16 limit;
             p8 = menu->alphaPane;
             tbl = (s16*)lbl_8050DB0C;
-            frame = p8->alphaFrame;
-            limit = tbl[0x94 / 2];
-            if (frame > limit) {
-                p8->alphaFrame = limit;
-            }
+            capPaneFrame(p8, tbl[0x94 / 2]);
             if (menu->movePane->alphaFrame > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
                 menu->movePane->alphaFrame = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
             }
