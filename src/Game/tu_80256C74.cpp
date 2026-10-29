@@ -1580,15 +1580,17 @@ extern "C" void fn_8025A15C(u8* p) {
             if (PTR(p, 0x12c4) == 0) {
                 PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
             }
-            if (PTR(p, 0x12c4)) {
-                fireRotateA(fireRotationA, (f32(*)[4])(PTR(p, 0x12c4) + 0x68), S32(p, 0x3dc));
+            JPABaseEmitter* emitterA = (JPABaseEmitter*)PTR(p, 0x12c4);
+            if (emitterA) {
+                JPAGetXYZRotateMtx(0, fireRotationA[S32(p, 0x3dc)], -0x8000, emitterA->mGlobalRot);
                 fn_8013CB44(PTR(p, 0x12c4), &pos, 0, 2, 1);
             }
             if (PTR(p, 0x12c8) == 0) {
                 PTR(p, 0x12c8) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x54a, -1, 0, 0, 0, 1, lbl_805400D4);
             }
-            if (PTR(p, 0x12c8)) {
-                fireRotateB(fireRotationB, (f32(*)[4])(PTR(p, 0x12c8) + 0x68), S32(p, 0x3dc));
+            JPABaseEmitter* emitterB = (JPABaseEmitter*)PTR(p, 0x12c8);
+            if (emitterB) {
+                JPAGetXYZRotateMtx(0, 0, fireRotationB[S32(p, 0x3dc)], emitterB->mGlobalRot);
                 fn_8013CB44(PTR(p, 0x12c8), &pos, -1, 0, 1);
             }
             fn_8024F0E8(p, 0x30011);
@@ -1645,6 +1647,7 @@ extern "C" void fn_8025A15C(u8* p) {
 #pragma opt_strength_reduction reset
 #pragma pool_data reset
 #pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 extern "C" void fn_8025A9C0(u8* p) {
     U8(p, 0x458) = 0;
     if (fn_80241794(p) <= 0) {
