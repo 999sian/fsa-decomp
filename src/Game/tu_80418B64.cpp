@@ -1176,6 +1176,8 @@ extern "C" void fn_8041E8B4(u8* this_, s32 idx) {
     }
 }
 #pragma opt_propagation reset
+#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_8041EDB0(u8* self) {
     const u64* tags = lbl_8048D320;
     int i;
