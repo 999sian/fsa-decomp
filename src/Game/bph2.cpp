@@ -105,6 +105,23 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
     mtx[2][2] = scale * (cx * cy);
 }
 
+static inline void bph2_billboardMtx(f32 mtx[3][4], const f32 s) {
+    f32 sx, sy, sz, cx, cy, cz;
+    sx = sin(lbl_8053E0C8); sy = sin(lbl_8053E0C8); sz = sin(lbl_8053E0C8);
+    cx = cos(lbl_8053E0C8); cy = cos(lbl_8053E0C8); cz = cos(lbl_8053E0C8);
+    f32 cxcz = cx * cz;
+    f32 cxsz = cx * sz;
+    f32 sxsy = sx * sy;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    f32 cycz = cy * cz;
+    f32 cysz = cy * sz;
+    mtx[0][0] = s * cycz; mtx[1][0] = s * cysz; mtx[2][0] = s * -sy;
+    mtx[0][1] = s * (sxsy * cz - cxsz); mtx[1][1] = s * (sxsy * sz + cxcz);
+    mtx[2][1] = s * (sx * cy); mtx[0][2] = s * (cxcz * sy + sxsz);
+    mtx[1][2] = s * (cxsz * sy - sxcz); mtx[2][2] = s * (cx * cy);
+}
+
 // from src/Game/Bph2_SetVec2.cpp
 // BPH2 cluster, part 5 (final piece). fn_8018E964 - trivial 2-float
 // setter, no extab entry (leaf).
@@ -163,25 +180,7 @@ extern "C" void fn_8018A930(char* this_) {
         rec.b1f = 0;
         void* res = fn_804032E8(0x42494750, lbl_804674C8);
         a = *(f32*)(this_ + 0x28c);
-        {
-            f32 sx = (f32)sin(lbl_8053E0C8);
-            f32 sy = (f32)sin(a);
-            f32 sz = (f32)sin(lbl_8053E0C8);
-            f32 cx = (f32)cos(lbl_8053E0C8);
-            f32 cy = (f32)cos(a);
-            f32 cz = (f32)cos(lbl_8053E0C8);
-            rec.b1d = 2;
-            rec.b1c = 1;
-            mtx[0][0] = lbl_8053E0D0 * (cy * cz);
-            mtx[1][0] = lbl_8053E0D0 * (cy * sz);
-            mtx[2][0] = lbl_8053E0D0 * -sy;
-            mtx[0][1] = lbl_8053E0D0 * ((sx * sy) * cz - cx * sz);
-            mtx[1][1] = lbl_8053E0D0 * ((sx * sy) * sz + cx * cz);
-            mtx[2][1] = lbl_8053E0D0 * (sx * cy);
-            mtx[0][2] = lbl_8053E0D0 * ((cx * cz) * sy + sx * sz);
-            mtx[1][2] = lbl_8053E0D0 * ((cx * sz) * sy - sx * cz);
-            mtx[2][2] = lbl_8053E0D0 * (cx * cy);
-        }
+        bph2_drawMtx(mtx, rec, a, 1.0f);
         ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x288);
         rec.w18 = mtx;
         fn_801EFD34(this_, res, &rec, -1, lbl_8053E0D4, lbl_8053E0D8, lbl_8053E0C8);
