@@ -315,8 +315,8 @@ extern "C" void fn_800F8BAC(void* this_) {
     };
     struct H {
         static inline JGeometry::TVec3<f32> calcPos(WrtcOwner* owner, u8 idx) {
-            s16 ang;
-            f32 k;
+            register s16 ang;
+            register f32 k;
             if (idx == 0) {
                 k = 20.0f + (f32)(((owner->m2ac >> 1) + 1) * 20);
                 ang = owner->m2b2;
@@ -495,6 +495,46 @@ extern "C" void fn_800F9170(void* this_) {
 extern f32 lbl_8053BFD0;
 extern f32 lbl_8053BFD4;
 extern f32 lbl_8053C028;
+extern f32 lbl_8053C024;
+extern f32 lbl_8053C004;
+extern f32 lbl_8053C000;
+extern "C" s16 lbl_8049C3B8[];
+static inline JGeometry::TVec3f WRTC_circlePosition(u8* p) {
+    u32 n=p[0x2ac];
+    s32 kind,step;
+    if(n<8){kind=0;step=0x2000;}
+    else if(n<16){kind=1;step=0x2000;}
+    else if(n<21){kind=2;step=0x3332;}
+    else if(n<24){kind=3;step=0x5554;}
+    else if(n<26){kind=4;step=0x8000;}
+    else {kind=5;step=0x2000;}
+    u16 angle=*(u16*)(p+0x2ae)+n*step+kind*0x1000;
+    f32 radius=lbl_8049C634[kind];
+    f32 sn=WRTC_sinShort(angle);
+    f32 cs=WRTC_cosShort(angle);
+    f32 x=*(f32*)(p+0x2a8)*(radius*sn)+*(f32*)(p+0xc);
+    f32 y=*(f32*)(p+0x2a8)*(radius*cs)+*(f32*)(p+0x10);
+    f32 z=(f32)(kind*13)+(lbl_8053BFFC+*(f32*)(p+0x14));
+    p[0x2ac]++;
+    JGeometry::TVec3f result(x,y,z);
+    return result;
+}
+static inline JGeometry::TVec3f WRTC_linePosition(u8* p,f32& k) {
+    s32 n=p[0x2ac];
+    s32 half=(n>>1)+1;
+    f32 radius;
+    s32 angle;
+    if(n&1){radius=lbl_8053BFF8+(f32)(half*20);angle=(s16)*(u16*)(p+0x2b2);}
+    else {radius=(f32)(half*-20)-lbl_8053BFF8;angle=(s16)*(u16*)(p+0x2b4);}
+    f32 x=radius*WRTC_sinShort(angle)+*(f32*)(p+0xc);
+    f32 y=radius*WRTC_cosShort(angle)+*(f32*)(p+0x10);
+    f32 z=lbl_8053BFFC+*(f32*)(p+0x14);
+    p[0x2ac]++;
+    k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
+    JGeometry::TVec3f result(x,y,z);
+    return result;
+}
+
 extern "C" void fn_800F953C(void* this_) {
     u8* self = (u8*)this_;
     u8* p;
