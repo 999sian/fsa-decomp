@@ -25,16 +25,6 @@ struct SpriteTables802F {
     u32 tluts[16];
     s32 sizes[4][4][2];
 };
-extern "C" f64 lbl_80541508;
-static inline f32 spriteS32ToF32(s32 v) {
-    union {
-        f64 d;
-        u32 w[2];
-    } magic;
-    magic.w[0] = 0x43300000;
-    magic.w[1] = (u32)v ^ 0x80000000;
-    return magic.d - lbl_80541508;
-}
 extern "C" void fn_802F8F0C(void*, u8*);
 extern "C" void fn_802F91AC(void*, f32*, u8*, u8*, f32);
 extern "C" u8 lbl_8046F940[];
