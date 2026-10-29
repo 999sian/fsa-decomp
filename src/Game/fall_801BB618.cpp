@@ -690,11 +690,11 @@ static inline u8 fallLost(char* this_) {
     return r;
 }
 
-static inline u8 fallTryGrab(char* this_) {
+static inline u8 fallTryGrab(char* this_, const s32* player = 0) {
     u8 grabbed = FALSE;
     s32 st = *(s32*)(this_ + 0x248);
-        if (st == 10 || (st == 3 && *(s32*)(this_ + 0x280) == 1)) {
-    s32 id = *(s32*)(this_ + 0x2b8);
+    if (st == 10 || (st == 3 && *(s32*)(this_ + 0x280) == 1)) {
+    s32 id = player ? *player : *(s32*)(this_ + 0x2b8);
     if (id >= 0 && !fn_8022DCD8(id) &&
         (fn_801CD2F8(*(s32*)(this_ + 0x4)) || !fn_801CD2F8(*(s32*)(this_ + 0x2ac)) || !fn_801CD1D0(*(s32*)(this_ + 0x2b8)))) {
         *(f32*)(this_ + 0x60) = lbl_8053EC34;
@@ -861,21 +861,7 @@ extern "C" void fn_801BBA0C(char* this_) {
         }
         break;
     case 10: {
-        u8 done = FALSE;
-        if (*(s32*)(this_ + 0x2e4) > 2) {
-            done = TRUE;
-        } else {
-            (*(s32*)(this_ + 0x2ec))++;
-            if (*(s32*)(this_ + 0x2ec) >= ((s32*)(this_ + 0x2d8))[*(s32*)(this_ + 0x2e4)]) {
-                (*(s32*)(this_ + 0x2e4))++;
-                if (*(s32*)(this_ + 0x2e4) > 2) {
-                    done = TRUE;
-                } else {
-                    *(s32*)(this_ + 0x2e8) = ((FallRoute*)(this_ + 0x2c8))->dir[*(s32*)(this_ + 0x2e4)];
-                    *(s32*)(this_ + 0x2ec) = done;
-                }
-            }
-        }
+        u8 done = fallAdvanceRoute(this_);
         if (done) {
             Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(s32*)(this_ + 0x4), this_ + 0xc, 3, -1, -1);
             fn_801BC554(this_, 9);
