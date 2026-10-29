@@ -136,13 +136,13 @@ extern "C" void fn_802E4E6C(u8* self) {
 extern "C" void fn_8020D7D0(void* a, u32 b);
 extern "C" void* fn_8020D58C(void);
 extern "C" void fn_801F2718(void* self, u32 kind);
-extern "C" void fn_801F856C(void);
-extern "C" void fn_801F2B7C(void* self, u32 a, s32 b, s32 c);
-extern "C" void fn_80239914(u32 a, void* pos, u32 b);
-extern "C" void fn_80234CF8(s32 a);
+extern "C" void* fn_801F856C(void);
+extern "C" u8 fn_801F2B7C(void* self, u32 a, s32 b, s32 c);
+extern "C" void fn_80239914(void* box, u32 room, u32 handle);
+extern "C" u8 fn_80234CF8(s32 a);
 extern "C" void fn_801F0E34(void* self, u32 a, u32 b);
-extern "C" void* Actor_CreateByID(u32 id, void* room, void* pos, u32 flag, s32 a, s32 b);
-extern "C" void fn_802D6A9C(void);
+extern "C" void* Actor_CreateByID(void* mgr, u32 id, u32 room, void* pos, u32 flag, s32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* mgr, u32 v, s32 a, s32 b);
 extern "C" void fn_802E4FD8(u8* self) {
     JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self + 0xc));
