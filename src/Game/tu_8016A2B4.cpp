@@ -847,6 +847,10 @@ static inline void positionEffectB8016D398(u8* p) {
 }
 
 #pragma opt_propagation off
+static inline bool deleteEffect8016D398(const JPABaseEmitter* e) {
+    return e->checkStatus(8)!=0 && e->mAlivePtclChld.getNum()+e->mAlivePtclBase.getNum()==0;
+}
+
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
     u8* p;
     s32 maxA,maxB;
@@ -856,21 +860,31 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
     if((u8)a4){
         if(*(s32*)a6>0){--*(s32*)a6;}
         else {
-            *(s32*)a6=(s32)(lbl_8053D9BC*effectRandom8016D398());
+            const f32 r=effectRandom8016D398();
+            *(s32*)a6=(s32)(r*lbl_8053D9BC);
             spawnEffectA8016D398(a5,a3,a8);
         }
     }
     if(*(s32*)a7>0){--*(s32*)a7;}
     else {
-        *(s32*)a7=(s32)(lbl_8053D9D0*effectRandom8016D398());
+        const f32 r=effectRandom8016D398();
+        *(s32*)a7=(s32)(r*lbl_8053D9D0);
         spawnEffectB8016D398(a5);
     }
     maxA=0;maxB=0;
     for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
         if(*(u16*)(p+0x10)==0x287){
-            maxB=maxB<*(s32*)(p+0x14)?*(s32*)(p+0x14):maxB;
+            s32 timer=*(s32*)(p+0x14);
+            if(maxB<timer)goto setB;
+            timer=maxB;
+        setB:
+            maxB=timer;
         }else{
-            maxA=maxA<*(s32*)(p+0x14)?*(s32*)(p+0x14):maxA;
+            s32 timer=*(s32*)(p+0x14);
+            if(maxA<timer)goto setA;
+            timer=maxA;
+        setA:
+            maxA=timer;
         }
         if(*(s32*)(p+0x14)>0)--*(s32*)(p+0x14);
         JPABaseEmitter* e=*(JPABaseEmitter**)p;
