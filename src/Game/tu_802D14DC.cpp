@@ -155,6 +155,14 @@ extern "C" void* fn_801F856C(void);
 extern "C" u32 lbl_8053ADF8;
 extern "C" const f32 lbl_80540EE4;
 extern "C" const f32 lbl_80540F04;
+inline void markNearbyYasi(char* actor, const char* p) {
+    if (actor != NULL) {
+        f32 dy = *(f32*)(actor + 0x10) - *(f32*)(p + 0x10);
+        f32 dx = *(f32*)(actor + 0xc) - *(f32*)(p + 0xc);
+        f32 d = std::sqrtf(dx * dx + dy * dy);
+        if (d < lbl_80540F00) *(s16*)(actor + 0x94) = 2;
+    }
+}
 inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
     if (*(s32*)(p + 0x244) != direction) {
         if (*(void**)(p + 0x230) != NULL) {
@@ -198,9 +206,7 @@ extern "C" void fn_802D1FEC(void* this_) {
         s32 mode = *(s32*)(p + 0x114);
         if (lbl_8053AAF8[0x7f] != 0) mode = 0;
         id = *(s32*)(p + 4);
-        char* mgr = (char*)fn_802D6A9C() + 0x10000;
-        char* room = mgr + id;
-        if (*(u8*)(room + 0x31df) == 0) {
+        if (((YasiMgr*)fn_802D6A9C())->flag(id) == 0) {
             *(f32*)(p + 0x44) += lbl_80540EE4;
             *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
             if (*(f32*)(p + 0x14) < 0.0f || fn_801F2618(p, 0, 0)) {
@@ -250,8 +256,10 @@ extern "C" void fn_802D1FEC(void* this_) {
         fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), p + 0xc);
     }
     if (*(s32*)(p + 0x234) == 1) {
-        f32 x = *(f32*)(p + 0xc);
-        f32 oldX = *(f32*)(p + 0x18);
+        f32 oldX;
+        f32 x;
+        x = *(f32*)(p + 0xc);
+        oldX = *(f32*)(p + 0x18);
         if (x != oldX || *(f32*)(p + 0x10) != *(f32*)(p + 0x1c)) {
             if (x != oldX) {
                 if (x < oldX) setYasiEmitter(p, 1, 0x1a7);
@@ -263,7 +271,7 @@ extern "C" void fn_802D1FEC(void* this_) {
         } else {
             setYasiEmitter(p, 0, 0x1a8);
         }
-        if (*(s32*)(p + 0x230) != 0) {
+        if (*(void**)(p + 0x230) != NULL) {
             fn_8013CB44(*(s32*)(p + 0x230), p + 0xc, 0, 1, 1);
             *(u8*)(*(s32*)(p + 0x230) + 0xbb) = *(u8*)(p + 0x254);
         }
