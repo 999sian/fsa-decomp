@@ -101,7 +101,7 @@ extern "C" void fn_801EFD34(void* this_, u32 id, void* param, s32 n, f32 a, f32 
 extern "C" void fn_801F02BC(void* this_, void* name, s32 id, f32 a, f32 b, s32 c, s32 d, s32 e, s32 f);
 extern "C" char lbl_80465D30[];
 extern "C" void* lbl_8049F698[];
-extern "C" u8 lbl_80539F60[];
+extern "C" u8 lbl_80539F60[4];
 extern "C" s32 lbl_8053AB34;
 extern "C" const f32 lbl_8053D0B8;
 extern "C" const f32 lbl_8053D0BC;
@@ -110,7 +110,7 @@ extern "C" void fn_80147B50(void* this_) {
     TWEVParam param;
     TWEVMtx mtx;
     s32 i;
-    s32 mode;
+    u32 mode;
 
     param.a = -1;
     param.b = -1;
