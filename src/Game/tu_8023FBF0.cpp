@@ -4220,6 +4220,43 @@ extern "C" s32 fn_80230CFC(s32);
 extern "C" s32 fn_80238EDC(s32);
 extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
 extern "C" u8 fn_8025F590(char*);
+inline s32 countGrabSharing(char* p) {
+    s32 me;
+    s32 linked;
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getGrabMode(char* p) {
+    if (countGrabSharing(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+
 inline s32 grabLinkRank(char* p) {
     s32 l;
     s32 i;
