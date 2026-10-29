@@ -199,7 +199,7 @@ extern "C" void fn_802179EC(void* p);
 extern "C" void fn_80217874(void* p, f32 t);
 extern "C" void fn_8021775C(void* p, f32 t);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
-extern "C" void fn_801E4790(void*, s32);
+extern "C" void fn_801E4790(void*, bool);
 extern const f32 lbl_8053F0CC;
 extern const f32 lbl_8053F108;
 extern const f32 lbl_8053F114;
