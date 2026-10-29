@@ -70,32 +70,6 @@ extern "C" void fn_80377000(u8* this_) {
 }
 
 
-static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
-    s32 room = *(s32*)(self + 4);
-    if (fn_8023DE58(player) != room) return false;
-    f32 maxY, minX, minY, maxX;
-    minX = *(f32*)(self + 0x60);
-    maxX = *(f32*)(self + 0x68);
-    minY = *(f32*)(self + 0x64);
-    minX += *(f32*)(self + 0xc);
-    maxX += *(f32*)(self + 0xc);
-    maxY = *(f32*)(self + 0x6c);
-    minY += *(f32*)(self + 0x10);
-    maxY += *(f32*)(self + 0x10);
-    for (s32 j = 0; j < 8; j++) {
-        Vec point;
-        fn_8022E088(player, j, &point);
-        point.z = 0.0f;
-        f32 x = point.x;
-        bool inside = false;
-        if (x >= minX) {
-            f32 y = point.y;
-            if (y >= minY && x < maxX && y < maxY) inside = true;
-        }
-        if (inside) return true;
-    }
-    return false;
-}
 
 static inline bool movingBlockContainsPlayerCached(u8* self, s32 player, s32& j) {
     j = *(s32*)(self + 4);
