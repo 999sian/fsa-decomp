@@ -85,7 +85,6 @@ extern "C" void fn_802F86CC(void* obj, f32* pos, void* res, s32 id, DrawRec* rec
 
 extern "C" s16 lbl_8048C95C[];
 
-#define TBL8048C1F8_DEFINED
 struct Tbl8048C1F8 {
     u8 pad[0x40];
     u32 text[4][8];
