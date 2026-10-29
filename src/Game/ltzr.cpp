@@ -215,13 +215,7 @@ static inline void ltzrTouch(char* p, s32 i) {
         pt.z = lbl_80542268;
         f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
         s32 a = (s32)(ang * lbl_8054228C);
-        f32 len = pt.x * pt.x + pt.y * pt.y;
-        if (len <= lbl_80542268) {
-        } else {
-            f32 y = __frsqrte(len);
-            y = lbl_80542290 * y * (lbl_80542294 - len * (y * y));
-            len = len * y;
-        }
+        f32 len = ltzrSqrt(pt.x * pt.x + pt.y * pt.y);
         f32 cy;
         f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
         cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
