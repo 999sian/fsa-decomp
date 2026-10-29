@@ -19,6 +19,12 @@ struct SpriteOam802F {
     u16 palette : 4;
     u16 pad;
 };
+struct SpriteTables802F {
+    u8 pad[0x1620];
+    u32 maps[8];
+    u32 tluts[16];
+    s32 sizes[4][4][2];
+};
 extern "C" void fn_802F8F0C(void*, u8*);
 extern "C" void fn_802F91AC(void*, f32*, u8*, u8*, f32);
 extern "C" u8 lbl_8046F940[];
@@ -1645,62 +1651,61 @@ extern "C" GXColor lbl_80543F58;
 extern "C" GXColor lbl_80543F5C;
 extern "C" void fn_802FA3FC(void* mgr) {
     u8* p = (u8*)mgr;
-    char tex[0x48];
+    u8* base = lbl_8046F940;
+    char tex[0x40];
+    f32 k;
     s32 c;
     u8* cur;
     s32 cnt;
-    f32 k;
     s32 n;
-    s32 q;
-    s32 m;
-    s32 i;
-    s32 j;
-    s32 r;
-    s32 col;
+    s32 a;
+    s32 b;
     s32 row;
-    s32 idx;
-    u8* buf;
+    s32 col;
+    s32 x;
+    s32 y;
+    s32 j;
     u8* ent;
-    u16 key;
-    u8 flag;
-    f32 f27;
-    f32 f26;
-    f32 f25;
-    f32 f24;
-    f32 f23;
-    f32 f22;
-    f32 f21;
-    f32 f20;
+    u16* map;
+    f32 ox;
+    f32 oy;
+    f32 px;
+    f32 py;
+    f32 ex;
+    f32 ey;
+    u8 alpha;
+    void* res;
 
-    k = lbl_80541518;
+    k = 1.0f;
     c = (s8)*(u8*)fn_802D9C4C(fn_802D6A9C());
-    tex[0x28] = 0;
-    storeTIMG__10JUTTextureFPC7ResTIMGUc(tex, ((Tu802F5040ResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x54494D47, (const char*)(lbl_8046F940 + 0x1888)), 0);
+    res = ((Tu802F5040ResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->getResource(0x54494D47, (const char*)(base + 0x1888));
+    *(s32*)(tex + 0x28) = 0;
+    storeTIMG__10JUTTextureFPC7ResTIMGUc(tex, res, 0);
     tex[0x3b] &= 2;
     switch (c) {
-    case 0x62:
-        cur = p + 0xba8;
+    case 0x63:
+        cur = base + 0xba8;
         cnt = 6;
         break;
-    case 0x63:
-        cur = p + 0x680;
+    case 0x62:
+        cur = base + 0x680;
         cnt = 0x21;
         break;
-    case 0x64:
-        cur = p + 0xc98;
+    case 0x65:
+        cur = base + 0xc98;
         cnt = 0x25;
         break;
-    case 0x65:
-        k = lbl_80541560;
-        cur = p + 0x130;
+    case 0x66:
+        k = 0.85f;
+        cur = base + 0x130;
         cnt = 0x22;
         break;
-    case 0x66:
-        cur = p + 0x1260;
+    case 0x69:
+        cur = base + 0x1260;
         cnt = 0x18;
         break;
     default:
-        cur = p + 0x130;
+        cur = base + 0x130;
         cnt = 0x22;
         break;
     }
@@ -1713,30 +1718,126 @@ extern "C" void fn_802FA3FC(void* mgr) {
     load__10JUTTextureF11_GXTexMapID(tex, GX_TEXMAP0);
     for (n = 0; n < 2; n++) {
         if (n == 0) {
-            f27 = *(f32*)(p + 0x2368);
-            f26 = *(f32*)(p + 0x236c);
-            buf = *(u8**)(p + 0x28);
+            ox = *(f32*)(p + 0x2368);
+            oy = *(f32*)(p + 0x236c);
+            map = *(u16**)(p + 0x28);
         } else {
-            f27 = *(f32*)(p + 0x2374);
-            f26 = *(f32*)(p + 0x2378);
-            buf = *(u8**)(p + 0x38);
+            ox = *(f32*)(p + 0x2374);
+            oy = *(f32*)(p + 0x2378);
+            map = *(u16**)(p + 0x38);
         }
         if ((n == 0 && p[0x235c]) || (n == 1 && p[0x2361])) {
-            for (q = 0; q < 2; q++) {
-                for (m = 0; m < 2; m++) {
-                    for (row = 0; row < 16; row++) {
-                        for (col = 0; col < 16; col++) {
-                            idx = row * 16 + col;
-                            key = *(u16*)(buf + idx * 2);
+            for (a = 0; a < 2; a++) {
+                for (b = 0; b < 2; b++) {
+                    for (row = 0, y = a * 16; row < 16 && y < *(s32*)(p + 0x2384) / 2; row++, y++) {
+                        py = 614.4f + (16.0f * (f32)y + oy);
+                        for (col = 0, x = b * 16; col < 16 && x < *(s32*)(p + 0x2380) / 2; col++, x++) {
+                            u16 key = map[((a * 2 + b) * 16 + row) * 16 + col];
+                            px = 16.0f * (f32)x + ox;
                             ent = cur;
-                            for (j = 0; j < cnt; j++) {
-                                if (*(u16*)ent == key) {
-                                    f25 = f27 + *(f32*)(ent + 0xc);
-                                    f24 = f26 + *(f32*)(ent + 0x10);
-                                    ent += 0x28;
+                            for (j = 0; j < cnt; j++, ent += 0x28) {
+                                if (*(u16*)ent != key) {
+                                    continue;
+                                }
+                                ex = px + *(f32*)(ent + 0xc);
+                                ey = py + *(f32*)(ent + 0x10);
+                                alpha = (u8)((f32)ent[0xb] * k);
+                                if (c == 0x62) {
+                                    if (*(f32*)(ent + 0xc) < 8.0f) {
+                                        ex += 3.0f;
+                                    } else {
+                                        ex -= 3.0f;
+                                    }
+                                    if (*(f32*)(ent + 0x10) < 8.0f) {
+                                        ey += 3.0f;
+                                    } else {
+                                        ey -= 3.0f;
+                                    }
+                                }
+                                switch (*(s32*)(ent + 0x14)) {
+                                case 0: {
+                                    GXColor color = lbl_80543F54;
+                                    color.a = alpha;
+                                    f32 ux = *(f32*)(ent + 0x18) * 96.0f;
+                                    f32 uy = *(f32*)(ent + 0x1c) * 96.0f;
+                                    f32 vx = *(f32*)(ent + 0x20) * 96.0f;
+                                    f32 vy = *(f32*)(ent + 0x24) * 96.0f;
+                                    GXSetTevColor(GX_TEVREG0, color);
+                                    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+                                    GXWGFifo.f32 = ex; GXWGFifo.f32 = ey; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = 0.0f;
+                                    GXWGFifo.f32 = ex + ux; GXWGFifo.f32 = ey + uy; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = 0.0f;
+                                    GXWGFifo.f32 = vx + (ex + ux); GXWGFifo.f32 = vy + (ey + uy); GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = 1.0f;
+                                    GXWGFifo.f32 = ex + vx; GXWGFifo.f32 = ey + vy; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = 1.0f;
                                     break;
                                 }
-                                ent += 0x28;
+                                case 1: {
+                                    GXColor color = lbl_80543F58;
+                                    color.a = alpha;
+                                    f32 ux = *(f32*)(ent + 0x18) * 64.0f;
+                                    f32 uy = *(f32*)(ent + 0x1c) * 64.0f;
+                                    f32 hx = *(f32*)(ent + 0x20) * 24.0f;
+                                    f32 hy = *(f32*)(ent + 0x24) * 24.0f;
+                                    GXSetTevColor(GX_TEVREG0, color);
+                                    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+                                    f32 x0 = ex - hx;
+                                    f32 y0 = ey - hy;
+                                    f32 x1 = ex + hx;
+                                    f32 y1 = ey + hy;
+                                    GXWGFifo.f32 = x0; GXWGFifo.f32 = y0; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = -1.0f;
+                                    GXWGFifo.f32 = ux + x0; GXWGFifo.f32 = uy + y0; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = -1.0f;
+                                    GXWGFifo.f32 = ux + x1; GXWGFifo.f32 = uy + y1; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = 1.0f;
+                                    GXWGFifo.f32 = x1; GXWGFifo.f32 = y1; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = 1.0f;
+                                    break;
+                                }
+                                case 2: {
+                                    GXColor color = lbl_80543F5C;
+                                    f32 ux = *(f32*)(ent + 0x18);
+                                    f32 uy = *(f32*)(ent + 0x1c);
+                                    f32 wx = ux;
+                                    f32 wy = uy;
+                                    color.a = alpha;
+                                    ux *= 64.0f;
+                                    uy *= 64.0f;
+                                    f32 hx = *(f32*)(ent + 0x20) * 24.0f;
+                                    f32 hy = *(f32*)(ent + 0x24) * 24.0f;
+                                    wx *= -4.0f;
+                                    wy *= -4.0f;
+                                    GXSetTevColor(GX_TEVREG0, color);
+                                    GXBegin(GX_QUADS, GX_VTXFMT0, 8);
+                                    f32 x0 = ex - hx;
+                                    f32 y0 = ey - hy;
+                                    f32 x1 = ex + hx;
+                                    f32 y1 = ey + hy;
+                                    GXWGFifo.f32 = x0; GXWGFifo.f32 = y0; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = -1.0f;
+                                    GXWGFifo.f32 = ux + x0; GXWGFifo.f32 = uy + y0; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = -1.0f;
+                                    GXWGFifo.f32 = ux + x1; GXWGFifo.f32 = uy + y1; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = 1.0f;
+                                    GXWGFifo.f32 = x1; GXWGFifo.f32 = y1; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = 1.0f;
+                                    GXWGFifo.f32 = x0; GXWGFifo.f32 = y0; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = -1.0f;
+                                    GXWGFifo.f32 = wx + x0; GXWGFifo.f32 = wy + y0; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = -1.0f;
+                                    GXWGFifo.f32 = wx + x1; GXWGFifo.f32 = wy + y1; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 1.0f; GXWGFifo.f32 = 1.0f;
+                                    GXWGFifo.f32 = x1; GXWGFifo.f32 = y1; GXWGFifo.f32 = 614.4f;
+                                    GXWGFifo.f32 = 0.0f; GXWGFifo.f32 = 1.0f;
+                                    break;
+                                }
+                                }
+                                if (ent[0xa] == 0) {
+                                    break;
+                                }
                             }
                         }
                     }
