@@ -478,56 +478,79 @@ extern "C" s16 fn_801CB7CC(s16 angle) {
 
 extern const f32 lbl_8053EF84;
 extern const f32 lbl_8053EF88;
+#pragma opt_lifetimes off
 extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y) {
-    f32* pa = (f32*)a;
-    f32* pb = (f32*)b;
-    f32 dirY = c[1] - pa[1];
-    f32 dirX = c[0] - pa[0];
-    f32 dv2 = dirY * dirY + dirX * dirX;
+    f32* __restrict pa = (f32*)a;
+    f32* __restrict pb = (f32*)b;
+    f32 dirX;
+    f32 dirY;
+    dirY = c[1] - pa[1];
+    dirX = c[0] - pa[0];
+    f32 dv2 = dirX * dirX + dirY * dirY;
     u8 moved = 0;
-    u8 aim = 0;
     if (dv2 <= lbl_8053EF78 * *(f32*)__float_epsilon) {
         moved = 1;
-        if (pb[1] * pb[1] + pb[0] * pb[0] <= lbl_8053EF78 * *(f32*)__float_epsilon) {
-            if (fn_801CD664(2) == 0) {
-                f32 sn = JMath::sincosTable_.mTable[0x700].first;
+        f32 vx = pb[0];
+        f32 vy = pb[1];
+        if (vx * vx + vy * vy <= lbl_8053EF78 * *(f32*)__float_epsilon) {
+            vx = lbl_8053EF7C;
+            vy = lbl_8053EF60;
+            u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+            *seed = *seed * 0x19660d + 0x3c6ef35f;
+            u32 bits = (*seed >> 9) | 0x3f800000;
+            s32 choice = lbl_8053EF80 * (*(f32*)&bits - 1.0f);
+            if (choice == 0) {
                 f32 cs = JMath::sincosTable_.mTable[0x700].second;
-                dirX = lbl_8053EF7C * cs - lbl_8053EF60 * sn;
-                dirY = lbl_8053EF7C * sn + lbl_8053EF60 * cs;
+                f32 sn = JMath::sincosTable_.mTable[0x700].first;
+                dirX = vx * cs - vy * sn;
+                dirY = vx * sn + vy * cs;
             } else {
-                f32 sn = JMath::sincosTable_.mTable[0x100].first;
                 f32 cs = JMath::sincosTable_.mTable[0x100].second;
-                dirX = lbl_8053EF7C * cs - lbl_8053EF60 * sn;
-                dirY = lbl_8053EF7C * sn + lbl_8053EF60 * cs;
+                f32 sn = JMath::sincosTable_.mTable[0x100].first;
+                dirX = vx * cs - vy * sn;
+                dirY = vx * sn + vy * cs;
             }
         } else {
-            aim = 1;
+            goto aim;
         }
     } else if (dv2 <= x * x) {
-        moved = 1;
-        aim = 1;
+        goto aim;
     }
-    if (aim) {
-        s16 ang1 = (s16)(JMath::atanTable_.atan2_(pb[0], pb[1]) * lbl_8053EF84);
-        s16 ang2 = (s16)(JMath::atanTable_.atan2_(dirX, dirY) * lbl_8053EF84);
+    goto finish;
+    aim: {
+        moved = 1;
+        f32 angle1 = JMath::atanTable_.atan2_(pb[0], pb[1]);
+        s16 ang1 = (s16)(angle1 * lbl_8053EF84);
+        f32 angle2 = JMath::atanTable_.atan2_(dirX, dirY);
+        s16 ang2 = (s16)(angle2 * lbl_8053EF84);
         s16 diff = ang1 - ang2;
         if (__fabsf((f32)diff) * lbl_8053EF88 > lbl_8053EF8C) {
-            f32 dMinus = (f32)(s16)(ang2 - (s16)(ang1 - 0x4000));
-            f32 dPlus = (f32)(s16)(ang2 - (s16)(ang1 + 0x4000));
-            s16 ang = (s16)(ang1 + 0x4000);
-            if (__fabsf(dPlus) * lbl_8053EF88 < __fabsf(dMinus) * lbl_8053EF88) {
-                ang = (s16)(ang1 - 0x4000);
+            s16 minus;
+            s16 plus;
+            plus = ang1 + 0x4000;
+            minus = ang1 - 0x4000;
+            f32 dMinus = (f32)(s16)(ang2 - minus);
+            f32 dPlus = (f32)(s16)(ang2 - plus);
+            f32 absMinus = __fabsf(dMinus);
+            f32 absPlus = __fabsf(dPlus);
+            f32 scaledMinus = lbl_8053EF88 * absMinus;
+            f32 scaledPlus = lbl_8053EF88 * absPlus;
+            if (scaledPlus < scaledMinus) {
+                dirX = JMath::sincosTable_.mTable[(u16)plus >> 5].first;
+                dirY = JMath::sincosTable_.mTable[(u16)plus >> 5].second;
+            } else {
+                dirX = JMath::sincosTable_.mTable[(u16)minus >> 5].first;
+                dirY = JMath::sincosTable_.mTable[(u16)minus >> 5].second;
             }
-            dirX = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-            dirY = JMath::sincosTable_.mTable[(u16)ang >> 5].second;
         }
     }
+    finish:
     if (moved) {
-        f32 len2 = dirY * dirY + dirX * dirX;
-        if (len2 > lbl_8053EF78 * *(f32*)__float_epsilon) {
-            f32 inv = JGeometry::TUtilf::inv_sqrt(len2);
-            dirX *= inv;
-            dirY *= inv;
+        f32 len2 = dirX * dirX + dirY * dirY;
+        if (!(len2 <= lbl_8053EF78 * *(f32*)__float_epsilon)) {
+            len2 = JGeometry::TUtilf::inv_sqrt(len2);
+            dirX *= len2;
+            dirY *= len2;
         }
         dirX *= y;
         dirY *= y;
@@ -535,6 +558,15 @@ extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y) {
         c[1] += dirY;
     }
     return moved;
+}
+#pragma opt_lifetimes reset
+static inline f32 projectionTangent(s16 angle)
+{
+    f32 c = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+    f32 t = lbl_8053EF7C;
+    if (__fabsf(c) > *(f32*)__float_epsilon)
+        t = (lbl_8053EF60 / c) * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    return __fabsf(t);
 }
 
 extern "C" void fn_801CBB98(f32* box, f32* pt, u16 ang, f32* out, f32 d) {
@@ -1011,8 +1043,8 @@ extern "C" s32 fn_801CD398(s32 a, s32 b) {
     if (a == b) {
         s32 list[3];
         s32* p = list;
+        s32 n = 0;
         s32 i = 0;
-        s32 n = i;
         for (; i < 4; i++) {
             if (i != a) {
                 *p++ = i;
