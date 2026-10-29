@@ -210,7 +210,7 @@ static inline bool dmlkSink(u8* p, int t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
     *(f32*)(p + 0x40) = vy;
     *(f32*)(p + 0x3c) = vx;
-    if (t > 1 && *(f32*)(p + 0x14) <= lbl_8053C7D8) {
+    if (t > 1 && *(f32*)(p + 0x14) <= (f32)lbl_8053C7D8) {
         *(f32*)(p + 0x44) = lbl_8053C7D8;
         *(f32*)(p + 0x40) = lbl_8053C7D8;
         *(f32*)(p + 0x3c) = lbl_8053C7D8;
@@ -284,7 +284,6 @@ extern "C" void fn_8011C308(u8* this_) {
     JGeometry::TVec3f v22;
     JGeometry::TVec3f v11;
     s32 j;
-    s32 i;
     int d;
     f32 fx;
 
@@ -342,9 +341,7 @@ extern "C" void fn_8011C308(u8* this_) {
         if (*(s32*)((u8*)fn_8011921C() + 8) >= 0x52d) {
             v20 = *(JGeometry::TVec3f*)fn_8023E724(0);
             v20.y -= lbl_8053C838;
-            for (i = 0; i < 4; i++) {
-                fn_802303FC(i, &v20.x, 0xff);
-            }
+            dmlkSetAll(&v20.x);
         }
         break;
     case 22:
@@ -359,9 +356,7 @@ extern "C" void fn_8011C308(u8* this_) {
         } else {
             v22 = *(JGeometry::TVec3f*)(this_ + 0xc);
             v22.y += lbl_8053C7E8;
-            for (i = 0; i < 4; i++) {
-                fn_802303FC(i, &v22.x, 0xff);
-            }
+            dmlkSetAll(&v22.x);
         }
         break;
     case 23:
