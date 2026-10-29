@@ -42,6 +42,18 @@ struct BzbrRandom {
 };
 struct BzbrGame { u8 pad[0xb4]; BzbrRandom rnd; };
 extern BzbrGame* lbl_8053AAF8;
+extern const f32 lbl_8053CFE0;
+extern const f32 lbl_8053CFE4;
+extern const f32 lbl_8053CFE8;
+extern const f32 lbl_8053CFEC;
+extern const f32 lbl_8053CFF0;
+extern const f32 lbl_8053CFF4;
+extern const f32 lbl_8053CFF8;
+extern const f32 lbl_8053CFFC;
+extern const f32 lbl_8053D000;
+extern const f32 lbl_8053D004;
+extern const f32 lbl_8053D008;
+extern const f32 lbl_8053D00C;
 
 // Resource manager at game+0xa4; vtable +0x18 looks a resource up by type and name.
 struct BzbrResMgr {
