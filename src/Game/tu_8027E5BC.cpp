@@ -30,6 +30,13 @@ struct PlayerWalk {
     JGeometry::TVec3<f32> velocity;
 };
 
+static inline JGeometry::TVec2<f32> playerWalkStep(const PlayerWalk* player) {
+    JGeometry::TVec2<f32> step;
+    step.x = player->pos.x - player->oldPos.x;
+    step.y = player->pos.y - player->oldPos.y;
+    return step;
+}
+
 // Per-mode player tables at lbl_8046BDA8.
 struct PlayerModeTbl {
     u8 pad0[0x60];
@@ -1816,10 +1823,12 @@ bool fn_80225BE4(char*, s32);
 bool fn_8024B24C(char*);
 void fn_80242DAC(char*);
 extern const f32 lbl_805403B8;
+#pragma opt_propagation off
 void fn_80282FE0(char* this_) {
     char* p=this_;
+    PlayerWalk* player=(PlayerWalk*)p;
     s32 i;
-    s32 t;
+    int t;
     s32 area;
     f32 dx, dy, dist;
 
@@ -1830,18 +1839,19 @@ void fn_80282FE0(char* this_) {
         S32(p, 0x3b4) = fn_8023DE58(Player_GetLinkTargetIndex(p));
         VEC(p, 0x8) = *fn_8023E724(Player_GetLinkTargetIndex(p));
         area = S32(p, 0x3b4);
-        if (((u8*)fn_802D6A9C()+0x10000)[area+0x31df] != 0) {
+        u8* table=(u8*)fn_802D6A9C()+0x10000;
+        if (table[area+0x31df] != 0) {
             fn_80251AEC(p, 0x4b);
         }
         return;
     }
     F32(p, 0x10) = lbl_80540360;
-    if (PSVECMag(&VEC(p, 0x344)) > lbl_8054036C) {
+    if (PSVECMag(&player->velocity) > lbl_8054036C) {
         U8(p, 0x3f8) += 2;
     } else {
         U8(p, 0x3f8) += 1;
     }
-    if (U8(p, 0x3f8) > 0x17) {
+    if (U8(p, 0x3f8) >= 0x18) {
         U8(p, 0x3f8) = 0;
     }
     if (fn_80240670(p)) {
@@ -1855,9 +1865,9 @@ void fn_80282FE0(char* this_) {
             U8(p, 0x42c) = 0;
             U8(p, 0x42d) = 0;
             S32(p, 0x430) = 0x5a;
-            F32(p, 0x344) = lbl_80540360;
-            F32(p, 0x348) = lbl_80540360;
-            F32(p, 0x34c) = lbl_80540360;
+            player->velocity.x = lbl_80540360;
+            player->velocity.y = lbl_80540360;
+            player->velocity.z = lbl_80540360;
             fn_8013CC50(S32(p, 0x3b4), p + 8, 0x15b, 0, 1, 0, 0, 1, lbl_8054036C);
             fn_8013CC50(S32(p, 0x3b4), p + 8, 0x15c, -1, 0, 0, 0, 1, lbl_8054036C);
             fn_8024F0E8(p, 0x20041);
@@ -1865,7 +1875,7 @@ void fn_80282FE0(char* this_) {
         } else {
             if (fn_802486A0(p) == 4) {
                 t = fn_80248778(p);
-                if (t != fn_80240888(p)) {
+                if (fn_80240888(p) != t) {
                     if (U8(p, 0x42c) == 1) {
                         U8(p, 0x42c) = 0;
                         S32(p, 0xbe0) = 0;
@@ -1917,9 +1927,9 @@ void fn_80282FE0(char* this_) {
             if (S32(p, 0xbe0) == 0) {
                 U8(p, 0x42c) = 0;
                 S32(p, 0x430) = 0x5a;
-                F32(p, 0x344) = lbl_80540360;
-                F32(p, 0x348) = lbl_80540360;
-                F32(p, 0x34c) = lbl_80540360;
+                player->velocity.x = lbl_80540360;
+                player->velocity.y = lbl_80540360;
+                player->velocity.z = lbl_80540360;
                 fn_8013CC50(S32(p, 0x3b4), p + 8, 0x15b, 0, 1, 0, 0, 1, lbl_8054036C);
                 fn_8013CC50(S32(p, 0x3b4), p + 8, 0x15c, -1, 0, 0, 0, 1, lbl_8054036C);
                 fn_8024F0E8(p, 0x20041);
@@ -1948,10 +1958,12 @@ tail2:
         fn_80251AEC(p, 0);
     }
     fn_80268B3C(p);
-    dx = F32(p, 0x8) - F32(p, 0x14);
-    dy = F32(p, 0xc) - F32(p, 0x18);
-    JGeometry::TVec2<f32> delta(dx,dy);
-    dist = delta.length();
+    JGeometry::TVec2<f32> delta;
+    delta.x = F32(p, 0x8) - F32(p, 0x14);
+    delta.y = F32(p, 0xc) - F32(p, 0x18);
+    f32 dx2=delta.x*delta.x;
+    f32 dy2=delta.y*delta.y;
+    dist = JGeometry::TUtil<f32>::sqrt(dx2+dy2);
     if (dist > lbl_8054036C) {
         U8(p, 0x401) += 6;
     } else if (dist > lbl_805403B8) {
@@ -1989,7 +2001,7 @@ tail2:
         U8(p, 0x3f9) = U8(p, 0x3f8) / 6;
     }
 }
-
+#pragma opt_propagation reset
 void fn_80283848(char* p) {
     U8(p, 0x458) = 0;
     F32(p, 0x344) = lbl_80540360;
