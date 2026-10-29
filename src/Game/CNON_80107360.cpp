@@ -293,6 +293,61 @@ static inline bool CNON_hitWall(CNON* this_) {
     return false;
 }
 
+static inline s32 CNON_findPlayerBox(CNON* this_, CNON_Box& box) {
+    box.x0 = this_->m60[0];
+    box.y0 = this_->m60[1];
+    box.x1 = this_->m60[2];
+    box.y1 = this_->m60[3];
+    f32 x = this_->mPos.x;
+    f32 y = this_->mPos.y - this_->mPos.z;
+    box.x0 += x;
+    box.y0 += y;
+    box.x1 += x;
+    box.y1 += y;
+    for (s32 i = 0; i < 4; i++) {
+        if (((*((u8*)lbl_8053AAF8 + 0x82) & (u8)(1 << i)) || fn_8022CAF8(i) == 4)
+            && fn_8023B0F4(i, &box, this_->m04, 0, lbl_8053C2F0) && this_->m26C < 0
+            && fn_8023162C(i, this_->m198))
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline bool CNON_hitWallBox(CNON* this_, CNON_Box& box, f32* out) {
+    f32 zero[2];
+    zero[0] = lbl_8053C2C0;
+    zero[1] = lbl_8053C2C0;
+    f32 y = this_->mPos.y - this_->mPos.z;
+    f32 x = this_->mPos.x;
+    box.x0 = this_->m70[0];
+    box.y0 = this_->m70[1];
+    box.x1 = this_->m70[2];
+    box.y1 = this_->m70[3];
+    box.x0 += x;
+    box.y0 += y;
+    box.x1 += x;
+    box.y1 += y;
+    s32 h;
+    if ((h = fn_8023AA18(&box, this_->m04, zero)) >= 0) {
+        return true;
+    }
+    if ((h = fn_8023AE34(&box, this_->m04, zero)) >= 0) {
+        fn_801CC820(h, 0);
+        return true;
+    }
+    if ((h = fn_8023AC74(&box, this_->m04, zero)) >= 0) {
+        fn_801CC538(h, zero, out, 0);
+        return true;
+    }
+    if ((h = fn_8023AD54(&box, this_->m04, zero)) >= 0) {
+        fn_801CC640(h, 0, 0);
+        return true;
+    }
+    return false;
+}
+
 extern "C" void fn_80107660(CNON* this_) {
     if (this_->v3C() != 0 && (this_->m274 == 0 || this_->m274 == 1)) {
         if (!this_->v34()) {
