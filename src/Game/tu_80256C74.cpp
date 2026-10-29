@@ -160,6 +160,13 @@ struct Tu80256Tables {
     JGeometry::TVec3<f32> b[8];
     JGeometry::TVec3<f32> c[4];
 };
+static inline void playerMoveArrowEffect(PlayerArrowPosition* arrow, s32 handle) {
+    if (handle >= 0) {
+        u8* actor = fn_801F666C(fn_801F856C(), handle);
+        if (actor) V3(actor, 0xc) = arrow->pos;
+    }
+}
+
 static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
     f32 dx = a.x - b.x;
@@ -2205,7 +2212,7 @@ extern "C" void fn_8025C894(u8* p) {
                     F32(p,0x12f0) = arrow->pos.y;
                     F32(p,0x12f4) = arrow->pos.z;
             }
-            s32 handle = S32(p, 0x12c0);
+            const s32 handle = S32(p, 0x12c0);
             if (handle >= 0) {
                 u8* actor = fn_801F666C(fn_801F856C(), handle);
                 if (actor) {
@@ -2266,13 +2273,13 @@ extern "C" void fn_8025C894(u8* p) {
                 }
                 if (U8(p, 0x3fc) >= 0x30) {
                     s32 owner = S32(p, 4);
-                    S32(p, 0xb00+i*4) = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((U32(p,0x3dc) << 4) & 0x30) | ((u32)owner & 3), -1, owner);
+                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((U32(p,0x3dc) << 4) & 0x30) | ((u32)owner & 3), -1, owner);
                 } else {
                     s32 owner = S32(p, 4);
-                    S32(p, 0xb00+i*4) = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((S32(p,0x3dc)&3)<<4) | 0x100 | (owner&3), -1, owner);
+                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((S32(p,0x3dc)&3)<<4) | 0x100 | (owner&3), -1, owner);
                 }
-                if (S32(p,0xb00+i*4) >= 0) {
-                    S32(p,0xb40+i*4) = S32(p,0x3b4);
+                if (arrow->ids[i] >= 0) {
+                    arrow->rooms[i] = S32(p,0x3b4);
                     fn_8024F0E8(p, 0x20004);
                     if (((u8(*)(void))fn_8022B160)()) S32(p,0xb74) = 60;
                     else Player_IsLinked(p);
