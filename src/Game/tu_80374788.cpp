@@ -58,7 +58,7 @@ extern "C" void fn_802D7584(void*,s32,u8);
 extern "C" void fn_80238E08(s32);
 extern "C" void fn_801F0E34(Actor*,s32,s32);
 extern "C" JGeometry::TVec3f lbl_804A79E0[];
-extern "C" JGeometry::TVec3f lbl_804750C0[];
+extern "C" const JGeometry::TVec3f lbl_804750C0[];
 extern "C" void fn_80374BAC(Actor* this_) {
     u8* p = (u8*)this_;
     JGeometry::TBox2f bounds;
@@ -169,14 +169,7 @@ extern "C" void fn_80374BAC(Actor* this_) {
     (*(JGeometry::TVec3f*)(p + 0xc)) = savedPos;
     if (direction >= 0 && direction < 4) {
     fn_80238E08(*(s32*)(p + 0x198));
-    const JGeometry::TVec3f* velocity = lbl_804750C0;
-    f32 vx = velocity[direction].x;
-    velocity += direction;
-    f32 vy = velocity->y;
-    (*(JGeometry::TVec3f*)(p + 0x3c)).x = vx;
-    f32 vz = velocity->z;
-    (*(JGeometry::TVec3f*)(p + 0x3c)).y = vy;
-    (*(JGeometry::TVec3f*)(p + 0x3c)).z = vz;
+    (*(JGeometry::TVec3f*)(p + 0x3c)).set(lbl_804750C0[direction]);
     probe = (*(JGeometry::TVec3f*)(p + 0x3c));
     probe.normalize();
     probe.scale(lbl_80542EFC);
