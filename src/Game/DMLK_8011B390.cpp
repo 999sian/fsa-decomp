@@ -210,7 +210,7 @@ static inline bool dmlkSink(u8* p, int t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
     *(f32*)(p + 0x40) = vy;
     *(f32*)(p + 0x3c) = vx;
-    if (t > 1 && *(f32*)(p + 0x14) <= (f32)lbl_8053C7D8) {
+    if (t > 1 && *(f32*)(p + 0x14) <= lbl_8053C7D8) {
         *(f32*)(p + 0x44) = lbl_8053C7D8;
         *(f32*)(p + 0x40) = lbl_8053C7D8;
         *(f32*)(p + 0x3c) = lbl_8053C7D8;
