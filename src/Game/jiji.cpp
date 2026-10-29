@@ -45,6 +45,7 @@ Jiji::Jiji() : Actor() {
     *(ResourceHandle**)((char*)this + 0x274) = h;
 }
 
+typedef void (Jiji::*JijiAction)();
 extern "C" void fn_8037CE5C(void) {
     u32* src = (u32*)lbl_804AE9C0;
     u32* dst = (u32*)(lbl_804AE9C0 + 0x288);
