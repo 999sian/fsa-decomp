@@ -1816,7 +1816,7 @@ static inline void delSlot(u8* p) {
 
 static inline void delSlot2(u8* p) {
 	void* o = *(void**)p;
-	if (o) ((void (*)(void*, s32))(*(void***)((u8*)o + 8))[12])(o, 1);
+	if (o) ((SoundHolder*)o)->v10(1);
 	*(void**)p = 0;
 }
 
