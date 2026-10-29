@@ -4221,10 +4221,10 @@ extern "C" s32 fn_80238EDC(s32);
 extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
 extern "C" u8 fn_8025F590(char*);
 inline s32 countGrabSharing(char* p) {
-    s32 c;
-    s32 i;
     s32 me;
     s32 linked;
+    s32 c;
+    s32 i;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
