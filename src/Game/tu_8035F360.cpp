@@ -370,30 +370,15 @@ static inline void restartMovingAnim(u8* p, s32 animation) {
     *(s32*)(p + 0x240) = 0;
     advanceMovingAnim(p, animation);
 }
+static inline f32 movingCosVelocity(const f32 speed, const s16 angle) {
+    return speed * sincosTable___5JMath[(u16)angle >> 5].cos;
+}
 extern "C" void fn_8036003C(u8* p) {
-    struct Entry {
-        s32 m_0;
-        u32 m_4;
-    };
     s32 oldState = *(s32*)(p + 0x274);
     *(s32*)(p + 0x248) = *(s32*)(p + 0x244);
     if (*(s32*)(p + 0x270) == 0) {
         s32 tbl = *(s32*)(p + 0x244);
-        u8 done;
-        if (*(s32*)(p + 0x234) == 0) {
-            s32 idx = *(s32*)(p + 0x240);
-            Entry* base = (Entry*)lbl_804ADA98[tbl];
-            if (base[idx].m_0 < 0) {
-                done = 1;
-            } else {
-                *(u32*)(p + 0x234) = base[idx].m_4;
-                *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
-                *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
-                done = 0;
-            }
-        } else {
-            done = 0;
-        }
+        u8 done = advanceMovingAnim(p, tbl);
         if (done == 1 && *(u8*)(p + 0x2b0) == 1) {
             *(s32*)(p + 0x244) = lbl_80474020[*(s32*)(p + 0x274)];
             if (fn_801CD664(100) < 5 || (*(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x27c) != 0 && *(s32*)(p + 0x27c) != 1 && *(f32*)(p + 0x26c) < lbl_80542A38)) {
@@ -402,27 +387,11 @@ extern "C" void fn_8036003C(u8* p) {
             tbl = *(s32*)(p + 0x244);
             *(s32*)(p + 0x234) = 0;
             *(s32*)(p + 0x240) = 0;
-            if (*(s32*)(p + 0x234) == 0) {
-                s32 idx = *(s32*)(p + 0x240);
-                Entry* base = (Entry*)lbl_804ADA98[tbl];
-                if (base[idx].m_0 >= 0) {
-                    *(u32*)(p + 0x234) = base[idx].m_4;
-                    *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
-                    *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
-                }
-            }
+            advanceMovingAnim(p, tbl);
             if ((*(u32*)(p + 0x248) & 1) == 0 && (*(u32*)(p + 0x244) & 1) != 0) {
                 *(s32*)(p + 0x240) = 4;
                 *(s32*)(p + 0x234) = 0;
-                if (*(s32*)(p + 0x234) == 0) {
-                    s32 idx = *(s32*)(p + 0x240);
-                    Entry* base = (Entry*)lbl_804ADA98[tbl];
-                    if (base[idx].m_0 >= 0) {
-                        *(u32*)(p + 0x234) = base[idx].m_4;
-                        *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
-                        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
-                    }
-                }
+                advanceMovingAnim(p, *(s32*)(p + 0x244));
                 *(s32*)(p + 0x240) = 0;
                 *(s32*)(p + 0x234) = 6;
             }
@@ -470,7 +439,9 @@ extern "C" void fn_8036003C(u8* p) {
         } else {
             *(s16*)(p + 0x254) = *(s16*)(p + 0x254) - step;
         }
-        *(f32*)(p + 0x3c) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
+        f32 speed = *(f32*)(p + 0x268);
+        f32 cosine = sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
+        *(f32*)(p + 0x3c) = speed * cosine;
         *(f32*)(p + 0x40) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].sin;
         *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
         *(s32*)(p + 0x264) += (s16)step;
@@ -511,58 +482,40 @@ extern "C" void fn_8036003C(u8* p) {
     {
         f32 ang = JMath::atanTable_.atan2_(*(f32*)(p + 0x40), *(f32*)(p + 0x3c));
         u16 q = (u16)(s32)(ang * lbl_80542A14);
-        s32 ns;
         if (q >= 0x2000 && q < 0x6000) {
-            ns = 3;
+            *(s32*)(p + 0x274) = 3;
         } else if (q >= 0x6000 && q < 0xa000) {
-            ns = 1;
+            *(s32*)(p + 0x274) = 1;
         } else if (q >= 0xa000 && q < 0xe000) {
-            ns = 2;
+            *(s32*)(p + 0x274) = 2;
         } else {
-            ns = 0;
+            *(s32*)(p + 0x274) = 0;
         }
-        *(s32*)(p + 0x274) = ns;
         if (*(s32*)(p + 0x270) == 0 && *(u8*)(p + 0x2b0) == 1 && *(s32*)(p + 0x274) != oldState) {
-            s32 tbl = lbl_80474020[*(s32*)(p + 0x274)];
-            *(s32*)(p + 0x244) = tbl;
-            if ((*(u32*)(p + 0x248) & 1) != 1 && fn_801CD664(100) >= 5 && *(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x27c) != 0 && *(s32*)(p + 0x27c) != 1 && *(f32*)(p + 0x26c) < lbl_80542A38) {
-                *(s32*)(p + 0x244) = *(s32*)(p + 0x244) + 1;
-            }
-            tbl = *(s32*)(p + 0x244);
-            if ((*(u32*)(p + 0x248) & 1) == 0) {
-                *(s32*)(p + 0x234) = 0;
-                *(s32*)(p + 0x240) = 0;
-                if (*(s32*)(p + 0x234) == 0) {
-                    s32 idx = *(s32*)(p + 0x240);
-                    Entry* base = (Entry*)lbl_804ADA98[tbl];
-                    if (base[idx].m_0 >= 0) {
-                        *(u32*)(p + 0x234) = base[idx].m_4;
-                        *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
-                        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
-                    }
-                }
-                if ((*(u32*)(p + 0x244) & 1) != 0) {
+            *(s32*)(p + 0x244) = lbl_80474020[*(s32*)(p + 0x274)];
+            if ((*(s32*)(p + 0x248) & 1) == 1 || fn_801CD664(100) < 5 ||
+                (*(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x27c) != 0 &&
+                 *(s32*)(p + 0x27c) != 1 && *(f32*)(p + 0x26c) < lbl_80542A38)) {
+                *(s32*)(p + 0x244) += 1;
+                if ((*(u32*)(p + 0x248) & 1) == 0) {
+                    restartMovingAnim(p, *(s32*)(p + 0x244));
                     *(s32*)(p + 0x240) = 4;
                     *(s32*)(p + 0x234) = 0;
-                    if (*(s32*)(p + 0x234) == 0) {
-                        s32 idx = *(s32*)(p + 0x240);
-                        Entry* base = (Entry*)lbl_804ADA98[tbl];
-                        if (base[idx].m_0 >= 0) {
-                            *(u32*)(p + 0x234) = base[idx].m_4;
-                            *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240)].m_0;
-                            *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
-                        }
-                    }
+                    advanceMovingAnim(p, *(s32*)(p + 0x244));
                     *(s32*)(p + 0x240) = 0;
                     *(s32*)(p + 0x234) = 6;
+                } else {
+                    s32 animation = *(s32*)(p + 0x244);
+                    MovingAnimFrame* table = (MovingAnimFrame*)lbl_804ADA98[animation];
+                    s32 index = *(s32*)(p + 0x240);
+                    if (index == 0) *(s32*)(p + 0x23c) = table[4].m_0;
+                    else {
+                        index -= 1;
+                        *(s32*)(p + 0x23c) = table[index].m_0;
+                    }
                 }
             } else {
-                Entry* base = (Entry*)lbl_804ADA98[tbl];
-                if (*(s32*)(p + 0x240) == 0) {
-                    *(s32*)(p + 0x23c) = base[4].m_0;
-                } else {
-                    *(s32*)(p + 0x23c) = base[*(s32*)(p + 0x240) - 1].m_0;
-                }
+                restartMovingAnim(p, *(s32*)(p + 0x244));
             }
         }
     }
