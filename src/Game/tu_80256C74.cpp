@@ -1181,7 +1181,31 @@ extern "C" void fn_80259784(u8* p) {
     }
 }
 
-extern "C" void fn_80259830(u8* p0) {
+static inline bool tu8025_eq1(f32 a, f32 b, f32 eps) {
+    bool equal = false;
+    f32 d = a - b;
+    if (-eps <= d && d <= eps) {
+        equal = true;
+    }
+    return equal;
+}
+
+static inline bool tu8025_eq2(u8* a, u8* b, f32 eps) {
+    bool equal = false;
+    if (tu8025_eq1(F32(a, 0x0), F32(b, 0x0), eps) &&
+        tu8025_eq1(F32(a, 0x4), F32(b, 0x4), eps)) {
+        equal = true;
+    }
+    return equal;
+}
+
+static inline bool tu8025_eq3(u8* a, u8* b, f32 eps) {
+    bool equal = false;
+    if (tu8025_eq2(a, b, eps) && tu8025_eq1(F32(a, 0x8), F32(b, 0x8), eps)) {
+        equal = true;
+    }
+    return equal;
+}extern "C" void fn_80259830(u8* p0) {
     u8* tbl = (u8*)lbl_8046AF00;
     u8* p = p0;
     if (S32(p, 0xb8c) > 0) {
@@ -1405,31 +1429,7 @@ struct Tu8025Data {
     s32 rotB[4];
 };
 
-static inline bool tu8025_eq1(f32 a, f32 b, f32 eps) {
-    bool equal = false;
-    f32 d = a - b;
-    if (-eps <= d && d <= eps) {
-        equal = true;
-    }
-    return equal;
-}
 
-static inline bool tu8025_eq2(u8* a, u8* b, f32 eps) {
-    bool equal = false;
-    if (tu8025_eq1(F32(a, 0x0), F32(b, 0x0), eps) &&
-        tu8025_eq1(F32(a, 0x4), F32(b, 0x4), eps)) {
-        equal = true;
-    }
-    return equal;
-}
-
-static inline bool tu8025_eq3(u8* a, u8* b, f32 eps) {
-    bool equal = false;
-    if (tu8025_eq2(a, b, eps) && tu8025_eq1(F32(a, 0x8), F32(b, 0x8), eps)) {
-        equal = true;
-    }
-    return equal;
-}
 
 extern "C" void fn_8025A15C(u8* p) {
     u8* base = (u8*)lbl_8046AF00;
