@@ -383,6 +383,13 @@ extern "C" f32 lbl_8053C778;
 extern "C" f32 lbl_8053C77C;
 extern "C" f32 lbl_8053C780;
 
+struct DmswRect {
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+};
+
 static inline u8 dmswCanSwitch(char* this_) {
     s32 kind;
     s32 type;
