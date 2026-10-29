@@ -225,6 +225,10 @@ extern "C" const f32 lbl_8053FFEC;
 extern "C" const f32 lbl_8053FFF0;
 extern "C" const f32 lbl_8053FFF4;
 
+static inline bool playerAtGoal(u32 idx) {
+    return fn_80237774(idx) == lbl_80529DEC[idx + 0x36];
+}
+
 static inline u8 playerLinkState(u32 idx) {
     s32 slot = fn_8022F340(idx);
     return (lbl_8053AAF8[0x83] >> (slot << 1)) & 3;
@@ -233,7 +237,6 @@ static inline u8 playerLinkState(u32 idx) {
 extern "C" void fn_80229F1C(Actor* this_) {
     u8* p = (u8*)this_;
     const f32 (*tbl)[2] = lbl_8046ACC8;
-    u32 idx;
     const f32* t;
     s32 i;
     *(u32*)(p + 0x230) = *(u32*)(p + 0x230) + 1;
@@ -255,7 +258,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
     case 1: {
         JGeometry::setTVec3f(fn_8023E724(flags & 3), (f32*)(p + 0xc));
         *(s32*)(p + 0x234) = ((*(u32*)(p + 0x230) >> 1) & 7) + 0x7d;
-        idx = *(u32*)(p + 0x90) & 3;
+        u32 idx = *(u32*)(p + 0x90) & 3;
         s32 r = fn_80237774(idx);
         if (r == lbl_80529DEC[idx + 0x36]) {
             *(u8*)(p + 0x11c) = 0;
@@ -346,8 +349,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
         if (fn_8022FA80(*(u32*)(p + 0x90) & 3) == 1 || (s32)((*(u32*)(p + 0x90) >> 2) & 0x3f) == 8) {
             if (*(u32*)(p + 0x230) >= 2 && *(s32*)(p + 0x234) == 0x2a3) {
                 *(u32*)(p + 0x230) = 2;
-                u8 st = (lbl_8053AAF8[0x83] >> (2 * fn_8022F340(*(u32*)(p + 0x90) & 3))) & 3;
-                if (st == 2) {
+                if (playerLinkState(*(u32*)(p + 0x90) & 3) == 2) {
                     *(s32*)(p + 0x234) = 0x2a5;
                 } else if (fn_8037E694(*(u32*)(p + 0x90) & 3) == 1) {
                     if (*(s32*)(p + 0x4) < 8) {
@@ -379,8 +381,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
         if (fn_8022FA80(*(u32*)(p + 0x90) & 3) == 1 || (s32)((*(u32*)(p + 0x90) >> 2) & 0x3f) == 9) {
             if (*(u32*)(p + 0x230) > 2 && *(s32*)(p + 0x234) == 0x2a3) {
                 *(u32*)(p + 0x230) = 2;
-                u8 st = (lbl_8053AAF8[0x83] >> (2 * fn_8022F340(*(u32*)(p + 0x90) & 3))) & 3;
-                if (st == 2) {
+                if (playerLinkState(*(u32*)(p + 0x90) & 3) == 2) {
                     *(s32*)(p + 0x234) = 0x2a6;
                 } else if (fn_8037E694(*(u32*)(p + 0x90) & 3) == 1) {
                     if (*(s32*)(p + 0x4) < 8) {
