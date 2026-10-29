@@ -267,13 +267,11 @@ static inline void fzraApproach3(f32* x, f32* goal, s32 n) {
 
 template <typename T>
 static inline void fzraApproachT(T* x, T goal, s32 n) {
-    T cur;
     f32 t = n;
     if (t < *(f32*)__float_epsilon) {
         *x = goal;
     } else {
-        cur = *x;
-        *x = (lbl_8053CAA4 / t) * (goal - cur) + cur;
+        *x += (lbl_8053CAA4 / t) * (goal - *x);
     }
 }
 
