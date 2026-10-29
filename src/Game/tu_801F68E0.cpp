@@ -1051,7 +1051,7 @@ extern "C" BOOL fn_801F68E0(u8* self) {
 
 extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c);
 extern const f32 lbl_8053F80C;
-extern f32 lbl_8053F810;
+extern const f32 lbl_8053F810;
 extern f32 lbl_8053F814;
 extern f32 lbl_8053F818;
 extern f32 lbl_8053F81C;
