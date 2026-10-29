@@ -106,19 +106,113 @@ extern "C" void fn_801F0E34(void*,s32,s32);
 extern "C" s32 fn_80226AE0(void*,s32);
 extern "C" void fn_802F9908(void*,s32,s32);
 extern "C" void fn_80226CA8(s32,s32,void*);
+struct YasiBreakOffsets {
+    f32 smallX[5], smallY[5];
+    f32 largeX[13], largeY[13];
+};
 extern "C" const f32 lbl_8046E070[36];
 #define S32(p,o) (*(s32*)((char*)(p)+(o)))
 #define F32(p,o) (*(f32*)((char*)(p)+(o)))
 extern "C" void fn_802D152C(char* p) {
-    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
-    if (*(s32*)(p + 0x234) == 0) {
-        pos.z = 0.0f;
-        s32 kind = *(s32*)(p + 4);
-        if (kind >= 8) {
-            void* mgr = fn_801F856C();
-            Actor_CreateByID(mgr, 0x4b4d5249, kind, &pos, 0, -1, -1);
+    JGeometry::TVec3<f32> tilePos;
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p+0xc));
+    if(S32(p,0x234)==0) {
+        pos.z=0.0f;
+        s32 room=S32(p,4);
+        if(room>=8) Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,&pos,0,-1,-1);
+        if(S32(p,0x240)<=1) {
+            s32 random=fn_801CD664(100);
+            if((S32(fn_802D6A9C(),4)==5 && S32(fn_802D6A9C(),8)==3) ||
+               (S32(fn_802D6A9C(),4)==3 && S32(fn_802D6A9C(),8)==3)) {
+                s32 color;
+                if(random<25) color=0;
+                else if(random<50) color=1;
+                else if(random<75) color=2;
+                else color=1;
+                if(F32(p,0x14)>0.0f)
+                    Actor_CreateByID(fn_801F856C(),0x52555059,S32(p,4),&pos,0x260a00+color,-1,-1);
+                else Actor_CreateByID(fn_801F856C(),0x52555059,S32(p,4),&pos,0x260000+color,-1,-1);
+            } else if(random<=25) {
+                if(random&1) {
+                    if(F32(p,0x14)>0.0f)
+                        Actor_CreateByID(fn_801F856C(),0x52555059,S32(p,4),&pos,0x260a00,-1,-1);
+                    else Actor_CreateByID(fn_801F856C(),0x52555059,S32(p,4),&pos,0x260000,-1,-1);
+                } else Actor_CreateByID(fn_801F856C(),0x48415254,S32(p,4),&pos,0,-1,-1);
+            }
+        } else if(S32(p,0x240)==2) {
+            Actor_CreateByID(fn_801F856C(),0x48415254,S32(p,4),&pos,0,-1,-1);
+        } else if(S32(p,0x240)==3) {
+            Actor_CreateByID(fn_801F856C(),0x4d54424f,S32(p,4),&pos,0,-1,-1);
+        } else if(S32(p,0x240)==4) {
+            JGeometry::TVec3<f32> v1(pos.x+(f32)(fn_801CD664(13)-6),pos.y,0.0f);
+            Actor_CreateByID(fn_801F856C(),0x48415254,S32(p,4),&v1,0,-1,-1);
+            JGeometry::TVec3<f32> v2(pos.x+(f32)(fn_801CD664(13)-6),pos.y,0.0f);
+            Actor_CreateByID(fn_801F856C(),0x48415254,S32(p,4),&v2,0,-1,-1);
+        } else if(S32(p,0x240)==5) {
+            if(fn_801CD664(100)<60)
+                Actor_CreateByID(fn_801F856C(),0x48415254,S32(p,4),&pos,0,-1,-1);
         }
+        if((u16)fn_8022461C(p+0xc,S32(p,4))==13 || (u16)fn_8022461C(p+0xc,S32(p,4))==57) {
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x3d0,0,1,0,0,1);
+            fn_801F0E34(p,0x30022,0);
+        } else if((u16)fn_8022461C(p+0xc,S32(p,4))==14) {
+            if(fn_802DE9A0()) {
+                fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x2a9,-1,1,0,0,1);
+                fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x2aa,0,0,0,0,1);
+                fn_801F0E34(p,0x5005f,0);
+            } else if(fn_802DEB58()) {
+                fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x45e,-1,1,0,0,1);
+                fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x45f,0,0,0,0,1);
+                fn_801F0E34(p,0x5003f,0);
+            }
+        } else {
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0xab,1,0,0,0,1);
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0xac,1,0,0,0,1);
+            fn_801F0E34(p,0x3000b,0);
+        }
+    } else if(S32(p,0x234)==1) {
+        fn_801F0E34(p,0x3000b,0);
+        s32 room=S32(p,4);
+        if(room>=8) {
+            Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,&pos,0,-1,-1);
+            for(s32 i=0;i<5;i++) {
+                pos.x=F32(p,0xc)+lbl_8046E070[i];
+                pos.y=F32(p,0x10)+lbl_8046E070[5+i];
+                pos.z=0.0f;
+                s32 tile=fn_80226AE0(&pos,S32(p,4));
+                fn_802F9908(*(void**)(lbl_8053AB10+0x20),S32(p,4),tile);
+                fn_80226CA8(tile,S32(p,4),&tilePos);
+                tilePos.x+=8.0f;
+                tilePos.y+=8.0f;
+                Actor_CreateByID(fn_801F856C(),0x424c5a45,S32(p,4),&tilePos,15,-1,-1);
+            }
+        } else {
+            fn_8013CC50(room,p+0xc,lbl_80540ECC,0x1a3,0,-1,0,0,1);
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x1a4,0,0,0,0,1);
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x1a4,0,0,0,0,1);
+            for(s32 i=0;i<13;i++) {
+                pos.x=F32(p,0xc)+lbl_8046E070[10+i];
+                pos.y=F32(p,0x10)+lbl_8046E070[23+i];
+                pos.z=0.0f;
+                s32 tile=fn_80226AE0(&pos,S32(p,4));
+                fn_802F9908(*(void**)(lbl_8053AB10+0x20),S32(p,4),tile);
+                fn_80226CA8(tile,S32(p,4),&tilePos);
+                tilePos.x+=8.0f;
+                tilePos.y+=8.0f;
+                Actor_CreateByID(fn_801F856C(),0x424c5a45,S32(p,4),&tilePos,15,-1,-1);
+            }
+        }
+    } else {
+        s32 room=S32(p,4);
+        if(room>=8) Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,&pos,5,-1,-1);
+        else {
+            fn_8013CC50(room,p+0xc,lbl_80540ECC,0x4ef,0,-1,0,0,1);
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x4f0,0,0,0,0,1);
+            fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x4f1,0,0,0,0,1);
+        }
+        fn_801F0E34(p,0x3000b,0);
     }
+    *(u8*)(p+0x11c)=0;
 }
 
 extern "C" void fn_802D1DB4(char* p) {
