@@ -440,6 +440,19 @@ extern "C" void fn_8030C210(void* eff, Vec3f* v);
 extern f32 lbl_80542CA0;
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8036AA60(char*);
+static inline void cutsceneCameraBox(f32 x1,f32 y1,f32 x2,f32 y2) {
+    u8* eff=*(u8**)((u8*)lbl_8053AB10+0x24);
+    if(!eff[0x7f5]) {
+        eff[0x7f4]=1;
+        *(s32*)(eff+0x7f8)=5;
+        *(f32*)(eff+0x808)=x1;
+        *(f32*)(eff+0x80c)=y1;
+        *(f32*)(eff+0x810)=x2;
+        *(f32*)(eff+0x814)=y2;
+        eff[0x7f6]=0;
+    }
+}
+
 static inline s32 cutsceneFlag(s32 idx,s32 bit) {
     if(idx<0 || idx>7)return 0;
     if(bit<0 || bit>3)return 0;
@@ -471,13 +484,7 @@ void Unk8036C300::state0() {
     {
         s32 idx = *(s32*)(lbl_80529DEC + 0x118);
         s32 bit = *(s32*)(lbl_80529DEC + 0x11c);
-        s32 vis = 0;
-        if (idx >= 0 && idx <= 7) {
-            if (bit >= 0 && bit <= 3) {
-                u32 word = *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x28);
-                vis = (word & (1 << (bit + idx * 4))) != 0;
-            }
-        }
+        s32 vis=cutsceneFlag(idx,bit);
         if (vis) {
             s32 st = *(s32*)(self + 0x240);
             if (st >= 5 && st <= 13) {
@@ -505,14 +512,16 @@ void Unk8036C300::state0() {
             if (*(s32*)(self+0x240) >= 3 && *(s32*)(self+0x240) < 0xe) {
                 u8* p = *(u8**)((char*)lbl_8053AB10 + 0x30);
                 if (p[0x284] == 0) {
-                    p[0x284] = 1;
-                    *(f32*)(p + 0x28c) = lbl_80542C7C;
+                    u8 flag=1;
+                    f32 value=lbl_80542C7C;
+                    p[0x284]=flag;
+                    *(f32*)(p+0x28c)=value;
                 }
             }
-            v.x = *(f32*)(self + 0xc);
-            v.y = *(f32*)(self + 0x10);
-            v.z = *(f32*)(self + 0x14);
-            v.y += lbl_80542C80 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_80542C84);
+            v=*(Vec3f*)(self+0xc);
+            f32 bottom=*(f32*)(self+0x28);
+            f32 oldY=*(f32*)(self+0x10);
+            v.y += lbl_80542C80 + ((bottom-oldY) - lbl_80542C84);
             if (*(s32*)(self+0x240) == 5) {
                 v.y = v.y + lbl_80542CB4;
             }
@@ -521,15 +530,19 @@ void Unk8036C300::state0() {
             }
             if (*(s32*)(self+0x240) >= 3) {
                 u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
+                f32 y=v.y;
+                f32 x=v.x;
+                f32 high=lbl_80542C88+y;
+                f32 low=y-lbl_80542C88;
                 eff[0x179] = 1;
                 eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
                 if (eff[0x7f5] == 0) {
                     eff[0x7f4] = 1;
                     *(s32*)(eff + 0x7f8) = 5;
-                    *(f32*)(eff + 0x808) = v.x;
-                    *(f32*)(eff + 0x80c) = v.y - lbl_80542C88;
-                    *(f32*)(eff + 0x810) = v.x;
-                    *(f32*)(eff + 0x814) = lbl_80542C88 + v.y;
+                    *(f32*)(eff + 0x808) = x;
+                    *(f32*)(eff + 0x80c) = low;
+                    *(f32*)(eff + 0x810) = x;
+                    *(f32*)(eff + 0x814) = high;
                     eff[0x7f6] = 0;
                 }
             } else {
@@ -577,13 +590,16 @@ void Unk8036C300::state0() {
         if(*(s32*)(self+0x258)!=0) {
             if(*(s32*)(self+0x258)==1) {
                 u8* mode=*(u8**)((char*)sManager__8JUTVideo+4);
-                v.x=(f32)(s32)*(u16*)(mode+4)*lbl_80542CA4;
-                v.y=(f32)(s32)*(u16*)(mode+6)*lbl_80542CA4;
+                s32 height=*(u16*)(mode+6);
+                s32 width=*(u16*)(mode+4);
+                v.x=(f32)width*lbl_80542CA4;
+                v.y=(f32)height*lbl_80542CA4;
                 v.z=lbl_80542C6C;
                 v.y+=-16.0f;
                 fn_8022FE80(0,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+                s32 room=*(s32*)(self+4);
                 spawnPos=*(JGeometry::TVec3f*)&v;
-                if(fn_8038BD08(0,lbl_80474C68[*(s32*)(self+0x268)],*(s32*)(self+4),&spawnPos,0x62)) {
+                if(fn_8038BD08(0,lbl_80474C68[*(s32*)(self+0x268)],room,&spawnPos,0x62)) {
                     *(s32*)(self+0x268)+=1;
                     fn_80118454(fn_8011921C());
                 }
@@ -625,6 +641,7 @@ void Unk8036C300::state0() {
         }
         break;
     }
+    case 9: *(s32*)(self+0x24c)=225; break;
     case 10: {
         *(s32*)(self+0x24c)=225;
         u8* mgr=*(u8**)((char*)lbl_8053AB10+0x24);
@@ -641,7 +658,7 @@ void Unk8036C300::state0() {
         }
         break;
     }
-    case 9:case 11: *(s32*)(self+0x24c)=225; break;
+    case 11: *(s32*)(self+0x24c)=225; break;
     case 12:
         *(s32*)(self+0x24c)=225;
         if(*(s32*)(self+0x258)==0)((Sub8036C0EC*)this)->v24(13);
