@@ -233,7 +233,7 @@ static inline void CNON_swing(CNON* this_) {
         }
         px = this_->mPos.x;
         cx = this_->m288;
-        f32 r = __fabsf((px - cx) / (lbl_8053C2F8 * amp));
+        r = __fabsf((px - cx) / (lbl_8053C2F8 * amp));
         if (r >= lbl_8053C2FC) {
             speed -= accel * (r - lbl_8053C2FC);
         }
