@@ -31,11 +31,10 @@ struct PlayerWalk {
     JGeometry::TVec3<f32> velocity;
 };
 
-static inline JGeometry::TVec2<f32> playerWalkStep(const PlayerWalk* player) {
-    JGeometry::TVec2<f32> step;
-    step.x = player->pos.x - player->oldPos.x;
-    step.y = player->pos.y - player->oldPos.y;
-    return step;
+static inline f32 playerWalkStepLength(const JGeometry::TVec2<f32>& step) {
+    f32 x2=step.x*step.x;
+    f32 y2=step.y*step.y;
+    return JGeometry::TUtil<f32>::sqrt(x2+y2);
 }
 
 // Per-mode player tables at lbl_8046BDA8.
@@ -1875,8 +1874,7 @@ void fn_80282FE0(char* this_) {
             fn_8024F0E8(p, 0x1000f);
         } else {
             if (fn_802486A0(p) == 4) {
-                t = fn_80248778(p);
-                if (fn_80240888(p) != t) {
+                if (fn_80248778(p) != fn_80240888(p)) {
                     if (U8(p, 0x42c) == 1) {
                         U8(p, 0x42c) = 0;
                         S32(p, 0xbe0) = 0;
@@ -1947,8 +1945,7 @@ tail:
     fn_802804E0(p);
     fn_80242DAC(p);
     if (fn_802486A0(p) == 4) {
-        t = fn_80248778(p);
-        if (fn_80240888(p) != t) {
+        if (fn_80248778(p) != fn_80240888(p)) {
             fn_8027E7E0(p);
             goto tail2;
         }
@@ -1959,7 +1956,9 @@ tail2:
         fn_80251AEC(p, 0);
     }
     fn_80268B3C(p);
-    JGeometry::TVec2<f32> delta = playerWalkStep(player);
+    dx = F32(p, 0x8) - F32(p, 0x14);
+    dy = F32(p, 0xc) - F32(p, 0x18);
+    const JGeometry::TVec2<f32>& delta=JGeometry::TVec2<f32>(dx,dy);
     f32 dx2=delta.x*delta.x;
     f32 dy2=delta.y*delta.y;
     dist = JGeometry::TUtil<f32>::sqrt(dx2+dy2);
