@@ -748,6 +748,13 @@ struct SoundHolder {
     virtual void v1();
     virtual void v2();
     virtual void play(u32* id);
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10(s32);
 };
 
 u8 fn_80404270(void* self, s32 idx) {
@@ -2014,11 +2021,13 @@ extern "C" void fn_8042EB14(void*);
 extern "C" void __dl__FPv(void*);
 extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	if (self) {
-		void* zero = 0;
-		*(u8**)self = lbl_804B1288;
+				*(u8**)self = lbl_804B1288;
 		fn_8042EB14(lbl_8053AEC4);
-		u8* q = self;
-		for (s32 i = 0; i < 4; i++, q += 4) {
+		s32 i;
+        u8* q;
+        i = 0;
+        q = self;
+		for (; i < 4; i++, q += 4) {
 			if (*(JPABaseEmitter**)(q + 0x2cc)) {
                 JPAEmitterManager* manager = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
                 manager->forceDeleteEmitter(*(JPABaseEmitter**)(q + 0x2cc));
@@ -2034,8 +2043,9 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 				*(void**)(q + 0x2f8) = 0;
 			}
 		}
-		u8* p = self;
-		for (s32 i = 0; i < 3; i++, p += 4) {
+		void* zero = 0;
+        u8* p = self;
+		for (i = 0; i < 3; i++, p += 4) {
 			if (*(JPABaseEmitter**)(p + 0x2ec)) {
                 JPAEmitterManager* manager = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
                 manager->forceDeleteEmitter(*(JPABaseEmitter**)(p + 0x2ec));
