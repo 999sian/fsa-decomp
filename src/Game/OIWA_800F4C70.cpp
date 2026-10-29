@@ -480,7 +480,9 @@ static inline u8 oiwaBallIn(s32 i, s32 j, f32 x0, f32 y0, f32 x1, f32 y1) {
     JGeometry::TVec3<f32> pt;
     fn_8022E088(i, j, &pt);
     u8 in = 0;
-    if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+    f32 y = pt.y;
+    f32 x = pt.x;
+    if (x >= x0 && y >= y0 && x < x1 && y < y1) {
         in = 1;
     }
     return in;
@@ -691,13 +693,7 @@ extern "C" void fn_800F555C(char* this_) {
                 x1 += *(f32*)(this_ + 0xc);
                 y1 += *(f32*)(this_ + 0x10);
                 for (s32 j = 0; j < 8; j++) {
-                    JGeometry::TVec3<f32> pt;
-                    fn_8022E088(i, j, &pt);
-                    u8 in = 0;
-                    if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
-                        in = 1;
-                    }
-                    if (in) {
+                    if (oiwaBallIn(i, j, x0, y0, x1, y1)) {
                         fn_8022DF48(i);
                         break;
                     }
@@ -707,26 +703,28 @@ extern "C" void fn_800F555C(char* this_) {
         return;
     }
     switch (*(s8*)(this_ + 0x232)) {
+    case -1:
+        break;
     case 0:
-        *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x3c) + 0.1f;
+        *(f32*)(this_ + 0x3c) += 0.1f;
         if (*(f32*)(this_ + 0x3c) >= 2.0f) {
             *(f32*)(this_ + 0x3c) = 2.0f;
         }
         break;
     case 1:
-        *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x3c) - 0.1f;
+        *(f32*)(this_ + 0x3c) -= 0.1f;
         if (*(f32*)(this_ + 0x3c) <= -2.0f) {
             *(f32*)(this_ + 0x3c) = -2.0f;
         }
         break;
     case 2:
-        *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x40) + 0.1f;
+        *(f32*)(this_ + 0x40) += 0.1f;
         if (*(f32*)(this_ + 0x40) >= 2.0f) {
             *(f32*)(this_ + 0x40) = 2.0f;
         }
         break;
     case 3:
-        *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x40) - 0.1f;
+        *(f32*)(this_ + 0x40) -= 0.1f;
         if (*(f32*)(this_ + 0x40) <= -2.0f) {
             *(f32*)(this_ + 0x40) = -2.0f;
         }
