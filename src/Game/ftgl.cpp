@@ -123,8 +123,11 @@ static inline s32 ftglPickTarget(char* p) {
         room = *(s32*)(p + 0x4);
         s32 r = fn_8023DE58(id);
         if (r == room) {
+            JGeometry::TVec3<f32>* pos = fn_8023E724(id);
             JGeometry::TVec3<f32> delta;
-            delta.sub(*(JGeometry::TVec3<f32>*)(p + 0xc), *fn_8023E724(id));
+            delta.x = *(f32*)(p + 0xc) - pos->x;
+            delta.y = *(f32*)(p + 0x10) - pos->y;
+            delta.z = *(f32*)(p + 0x14) - pos->z;
             f32 d = delta.squared();
             if (d < bestD) {
                 bestD = d;
