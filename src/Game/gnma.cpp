@@ -80,6 +80,13 @@ extern "C" void fn_801AAE88(char* this_) {
 }
 
 #pragma fp_contract off
+static inline f32 gnmaRand01() {
+    char* game = lbl_8053AAF8;
+    *(u32*)(game + 0xb4) = *(u32*)(game + 0xb4) * 0x19660d + 0x3c6ef35f;
+    union { u32 bits; f32 value; } out;
+    out.bits = (*(u32*)(game + 0xb4) >> 9) | 0x3f800000;
+    return out.value - lbl_8053E754;
+}
 extern "C" void fn_801AAF44(char* p) {
     fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), p + 0xc);
     if (fn_801F3D94(p, 1) != 0) {
