@@ -1,3 +1,5 @@
+#define GAME_ACTOR_USE_SDK_VEC
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 extern "C" char lbl_804AB258[];
@@ -124,6 +126,32 @@ extern "C" Actor* fn_8031EF4C(Actor* p, s16 freeFlag) {
         }
     }
     return p;
+}
+
+extern "C" void fn_8031F190(BrryActor* this_) {
+    Vec pos = this_->field_0C;
+    pos.x += this_->field_3C.x;
+    pos.y += this_->field_3C.y;
+    pos.z += this_->field_3C.z;
+    this_->field_0C = pos;
+    f32 box[4];
+    box[0] = this_->field_60 + pos.x;
+    box[1] = this_->field_64 + pos.y;
+    box[2] = this_->field_68 + pos.x;
+    box[3] = this_->field_6C + pos.y;
+    switch (this_->mState) {
+    case 0:
+        if (this_->field_94 == 2) {
+            if ((u8)((Actor*)this_)->v11() == 0) {
+                this_->mState = 2;
+            }
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    }
 }
 
 extern "C" void Brry_Draw(BrryActor* this_) {
