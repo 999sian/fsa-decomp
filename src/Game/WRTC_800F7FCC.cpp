@@ -492,8 +492,8 @@ extern "C" void fn_800F9170(void* this_) {
     }
 }
 
-extern f32 lbl_8053BFD0;
-extern f32 lbl_8053BFD4;
+extern const f32 lbl_8053BFD0;
+extern const f32 lbl_8053BFD4;
 extern f32 lbl_8053C028;
 extern f32 lbl_8053C024;
 extern f32 lbl_8053C004;
