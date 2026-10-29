@@ -72,14 +72,14 @@ extern "C" void fn_802CC21C(void* this_) {
             *(int*)(p + 0x240) = 1;
             fn_801F0E34(p, 0x30051, 0);
             *(int*)(p + 0x244) = 60;
-            fn_802D790C((unsigned long)fn_802D6A9C(p), 0);
+            fn_802D790C((unsigned long)fn_802D6A9C(), 0);
             ccEffect(p, 0x42a);
             *(unsigned long*)(p + 0x230) = ccEffect(p, 0x426);
             *(unsigned long*)(p + 0x234) = ccEffect(p, 0x427);
             ccStop(*(JPABaseEmitter**)(p + 0x238));
             ccStop(*(JPABaseEmitter**)(p + 0x23c));
         } else {
-            if ((u8)fn_802D6A9C(p)[0x171] != 0) break;
+            if ((u8)fn_802D6A9C()[0x171] != 0) break;
             fn_802A3948(lbl_8053AC98, p + 0xc, player, *(unsigned long*)(p + 4), 0xaf);
             *(unsigned long*)(p + 0x230) = ccEffect(p, 0x426);
             *(unsigned long*)(p + 0x234) = ccEffect(p, 0x427);
@@ -105,7 +105,7 @@ extern "C" void fn_802CC21C(void* this_) {
 }
             *(int*)(p + 0x240) = 3;
             fn_801F0E34(p, 0x30051, 0);
-            fn_802D790C((unsigned long)fn_802D6A9C(p), 1);
+            fn_802D790C((unsigned long)fn_802D6A9C(), 1);
             ccEffect(p, 0x42c);
             *(unsigned long*)(p + 0x238) = ccEffect(p, 0x42d);
             *(unsigned long*)(p + 0x23c) = ccEffect(p, 0x42e);
@@ -113,7 +113,7 @@ extern "C" void fn_802CC21C(void* this_) {
             ccStop(*(JPABaseEmitter**)(p + 0x234));
             *(int*)(p + 0x244) = 60;
         } else {
-            if ((u8)fn_802D6A9C(p)[0x171] != 1) break;
+            if ((u8)fn_802D6A9C()[0x171] != 1) break;
             fn_802A3884(lbl_8053AC98, p + 0xc, player, *(unsigned long*)(p + 4), 0xae);
             *(unsigned long*)(p + 0x238) = ccEffect(p, 0x42d);
             *(unsigned long*)(p + 0x23c) = ccEffect(p, 0x42e);
@@ -127,7 +127,7 @@ extern "C" void fn_802CC21C(void* this_) {
         else *(int*)(p + 0x244) -= 1;
         break;
     default:
-        *(int*)(p + 0xd8) = 1;
+        *(u8*)(p + 0x11c) = 0;
         break;
     }
 }
@@ -169,7 +169,7 @@ extern "C" void fn_802CCAB4(void* this_) {
     *(float*)(p + 0x64) = lbl_80540DDC;
     *(float*)(p + 0x68) = lbl_80540DD4;
     *(float*)(p + 0x6c) = lbl_80540DD4;
-    char* iVar2 = fn_802D6A9C(this_);
+    char* iVar2 = fn_802D6A9C();
     if (*(unsigned char*)(iVar2 + 0x171) == 0) {
         Vec3CC a;
         Vec3CC b;
