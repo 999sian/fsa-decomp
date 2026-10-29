@@ -2796,11 +2796,6 @@ static inline f32 menuScaledOffset(const f32 factor, const f32 value, const f32 
     f32 scaled = factor * delta;
     return scaled + (f32)offset;
 }
-#ifndef MENU_LAYOUT_HELPERS
-static inline f32 menuLayoutSize(const f32* table, s32 index) { return table[index]; }
-static inline s16 menuLayoutCoord(const s16* table, s32 index) { return table[index]; }
-static inline u32 menuLayoutText(const u32* table, s32 index) { return table[index]; }
-#endif
 #pragma opt_propagation reset
 extern "C" void* fn_80403184(u32, const char*);
 extern "C" int snprintf(char*, unsigned long, const char*, ...);
