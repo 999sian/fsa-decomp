@@ -563,7 +563,7 @@ extern "C" void fn_8033DA78(UnkObj8033D4CC* this_) {
                 else {
                     saved = this_->mVel;
                     u8 flag;
-                    if (this_->m260 == 2 && 19.9f == f30 && PSVECDistance(pos, &this_->mPrev) >= lbl_805421C4 && this_->m26c != 0 && !fn_8033D264(this_, (u8)(this_->m26c - 1))) flag = 0;
+                    if (this_->m260 == 2 && 19.9f == f30 && PSVECDistance(pos, &this_->mPrev) >= lbl_805421C4 && this_->m26c != 0 && !fn_8033D264((UnkObj8033D264*)this_, (u8)(this_->m26c - 1))) flag = 0;
                     else {
                         this_->mVel = saved;
                         flag = 1;
