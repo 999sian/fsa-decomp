@@ -1421,6 +1421,8 @@ struct Tu8025Data {
 
 
 extern "C" void fn_8025A15C(u8* p) {
+    s32 actorID;
+    PlayerFirePosition* fire = (PlayerFirePosition*)p;
     u8* base = (u8*)lbl_8046AF00;
     JGeometry::TVec3<f32> pos;
     JGeometry::TBox2<f32> box;
@@ -1506,12 +1508,12 @@ extern "C" void fn_8025A15C(u8* p) {
                 U8(p, 0xb84) = 0;
             }
             if (S32(p, 0xb8c) <= 0 && S32(p, 0xb28) < 0) {
-                s32 owner = S32(p, 0x4);
-                S32(p, 0xb28) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos, ((S32(p, 0x3dc) & 3) << 4) | 0x1040 | (owner & 3), -1, owner);
+                actorID = S32(p, 0x4);
+                S32(p, 0xb28) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos, ((S32(p, 0x3dc) & 3) << 4) | 0x1040 | (actorID & 3), -1, actorID);
             }
-                s32 id = S32(p, 0xb28);
-                if (id >= 0) {
-                    u8* a = fn_801F666C(fn_801F856C(), id);
+                actorID = S32(p, 0xb28);
+                if (actorID >= 0) {
+                    u8* a = fn_801F666C(fn_801F856C(), actorID);
                     if (a) {
                         fn_802BAA0C(a, &box);
                     } else {
@@ -1565,10 +1567,10 @@ extern "C" void fn_8025A15C(u8* p) {
                     u8* q;
                     for (i = 0, q = p; i < 3; i++, q += 4) {
                         if (S32(q, 0xb1c) < 0) {
-                            s32 owner = S32(p, 0x4);
-                            S32(q, 0xb1c) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos2, ((S32(p, 0x3dc) & 3) << 4) | 0x1000 | (owner & 3), -1, owner);
+                            actorID = S32(p, 0x4);
+                            S32(q, 0xb1c) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos2, ((S32(p, 0x3dc) & 3) << 4) | 0x1000 | (actorID & 3), -1, actorID);
                             if (S32(q, 0xb1c) >= 0) {
-                                S32(p + i * 4, 0xb5c) = S32(p, 0x3b4);
+                                fire->rooms[i] = S32(p, 0x3b4);
                                 U8(p, 0xb78) = 1;
                                 break;
                             }
@@ -1584,6 +1586,7 @@ extern "C" void fn_8025A15C(u8* p) {
     fn_80268B3C(p);
 }
 
+#pragma opt_propagation reset
 extern "C" void fn_8025A9C0(u8* p) {
     U8(p, 0x458) = 0;
     if (fn_80241794(p) <= 0) {
