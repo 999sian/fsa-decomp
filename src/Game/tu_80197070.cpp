@@ -362,6 +362,20 @@ extern "C" const f32 lbl_8053E3D8;
 extern "C" void lbl_80529DEC();
 extern "C" int fn_8022F514(int);
 extern "C" int fn_8022F3DC(int);
+static inline void orbitSqrt(f32& squared)
+{
+if (squared > 0.0f) {
+                    f64 guess = __frsqrte((f64)squared);
+                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
+                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
+                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
+                    squared = (f32)(squared * guess);
+                } else if (squared < 0.0) {
+                    squared = NAN;
+                } else if (isnan(squared)) {
+                    squared = NAN;
+                }
+}
 static inline void captureOrbitTarget(u8* p) {
     s32 id = *(s32*)(p + 0x25c);
     if (id >= 0) {
@@ -431,8 +445,21 @@ extern "C" void fn_80197EB0(u8* p)
                 *(f32*)(p + 0x44) = lbl_8053E388;
                 *(f32*)(p + 0x40) = lbl_8053E388;
                 *(f32*)(p + 0x3c) = lbl_8053E388;
-                *(s32*)(p + 0x248) = (s16)(JMAAtan2Radian(x, y)*lbl_8053E3A4) + 0x8000;
-                *(s32*)(p + 0x24c) = (s32)std::sqrtf(squared);
+                f32 direction = JMAAtan2Radian(x, y);
+                direction *= lbl_8053E3A4;
+                *(s32*)(p + 0x248) = (s16)direction + 0x8000;
+                if (squared > 0.0f) {
+                    f64 guess = __frsqrte((f64)squared);
+                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
+                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
+                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
+                    squared = (f32)(squared * guess);
+                } else if (squared < 0.0) {
+                    squared = NAN;
+                } else if (isnan(squared)) {
+                    squared = NAN;
+                }
+                *(s32*)(p + 0x24c) = (s32)squared;
                 for (s32 i=0; i<13; ++i) {
                     JPABaseEmitter* emitter = *(JPABaseEmitter**)(p + 0x304 + i*4);
                     if (emitter) {
