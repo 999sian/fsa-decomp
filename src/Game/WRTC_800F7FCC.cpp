@@ -601,8 +601,8 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p) {
     return result;
 }
 static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
+    s16 angle;
     f32 radius;
-    s32 angle;
     if(n&1){radius=lbl_8053BFF8+(f32)(((n>>1)+1)*20);angle=(s16)*(u16*)(p+0x2b2);}
     else {radius=(f32)(((n>>1)+1)*-20)-lbl_8053BFF8;angle=(s16)*(u16*)(p+0x2b4);}
     s32 index=(u16)angle;
@@ -628,24 +628,24 @@ extern "C" void fn_800F953C(void* this_) {
     s32 state=*(s32*)(p+0x230);
     if(state==3){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
-        out.x=v.x;out.y=v.y;out.z=v.z;
+        out=v;
         k=lbl_8053BFC0;
         *(u8*)(self+0x249)=1;
     }else if(state==4){
-        s32 n=p[0x2ac];
-        const JGeometry::TVec3f& v=WRTC_linePosition(p);
-        out.x=v.x;out.y=v.y;out.z=v.z;
-        s32 half=(n>>1)+1;
+        int n=p[0x2ac];
+        const JGeometry::TVec3f& v=WRTC_linePosition(p,n);
+        out=v;
+        int half=(n>>1)+1;
         k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
         *(u8*)(self+0x249)=1;
     }else if(state==1){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
-        out.x=v.x;out.y=v.y;out.z=v.z;
+        out=v;
         k=lbl_8053C028;
         *(u8*)(self+0x249)=1;
     }else{
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
-        out.x=v.x;out.y=v.y;out.z=v.z;
+        out=v;
         k=lbl_8053C00C;
         *(u8*)(self+0x249)=0;
     }
