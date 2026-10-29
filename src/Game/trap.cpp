@@ -115,6 +115,8 @@ extern "C" void fn_801EEC98(char* this_, void* a, s32 b, void* c, s32 d, void* e
 extern f32 lbl_8053D77C;
 extern f32 lbl_8053D778;
 extern f32 lbl_8053D780;
+struct TrapRoomRect { f32 x, y, x1, y1; };
+
 struct TrapActor : Actor {
     s32 state;
     s32 timers[3];
@@ -143,11 +145,12 @@ extern "C" s32 fn_8023DE58(s32);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
 extern const JGeometry::TVec2<f32> lbl_80466288[];
 extern "C" void fn_80164834(char* this_) {
+    s32 i;
     TrapActor* p = (TrapActor*)this_;
     JGeometry::TVec3<f32> vel(p->field_3C);
     JGeometry::TVec3<f32> oldPos(p->field_0C);
     p->field_108 = 1000;
-    s32 i = 0;
+    i = 0;
     for (; i < 4; ++i) {
         s32 hit = fn_801F285C(this_, 0, 0, 0, i);
         if (hit < 0) break;
@@ -157,16 +160,20 @@ extern "C" void fn_80164834(char* this_) {
         f32 right = p->field_68 + pos.x;
         f32 top = p->field_64 + pos.y;
         f32 bottom = p->field_6C + pos.y;
-        point.x = right + 0.5f * (left - right);
-        point.y = bottom + 0.5f * (top - bottom);
+        point.x = right + lbl_8053D77C * (left - right);
+        point.y = bottom + lbl_8053D77C * (top - bottom);
         if (fn_80237948(hit, &point.x)) {
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x117, 0, 1, 0, 0, 1);
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x118, 0, 1, 0, 0, 1);
             fn_801F0E34(this_, 0x400d1, 0);
         }
-        p->field_3C.x = vel.x;
-        p->field_3C.y = vel.y;
-        p->field_3C.z = vel.z;
+        const volatile f32* saved = &vel.x;
+        f32 vx = saved[0];
+        f32 vy = saved[1];
+        p->field_3C.x = vx;
+        f32 vz = saved[2];
+        p->field_3C.y = vy;
+        p->field_3C.z = vz;
     }
     fn_801F71A4(&p->field_3C.x, p->target.x, 0.3f, 1.0f);
     fn_801F71A4(&p->field_3C.y, p->target.y, 0.3f, 1.0f);
@@ -202,12 +209,12 @@ extern "C" void fn_80164834(char* this_) {
             if (fn_8023DE58(player) < 8 && (s32)p->field_04 == 8) {
                 s32 room = fn_8023DE58(player);
                 u8* mgr = fn_802D6A9C();
-                JGeometry::TBox2f box = *(JGeometry::TBox2f*)(mgr + (room < 8 ? 0xcc : 0xdc));
-                dx = (f32)__fabs(p->field_0C.x - (fn_8023E724(player)->x - box.i.x));
-                dy = (f32)__fabs(p->field_0C.y - (fn_8023E724(player)->y - box.i.y));
+                Quaternion box = *(Quaternion*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                dx = (f32)fabs(p->field_0C.x - (fn_8023E724(player)->x - box.x));
+                dy = (f32)fabs(p->field_0C.y - (fn_8023E724(player)->y - box.y));
             } else {
-                dx = (f32)__fabs(p->field_0C.x - fn_8023E724(player)->x);
-                dy = (f32)__fabs(p->field_0C.y - fn_8023E724(player)->y);
+                dx = (f32)fabs(p->field_0C.x - fn_8023E724(player)->x);
+                dy = (f32)fabs(p->field_0C.y - fn_8023E724(player)->y);
             }
             if (p->aim == 1) {
                 if (((dir & 2) == 0 && dy < 22.0f) || ((dir & 2) != 0 && dx < 22.0f))
@@ -229,7 +236,7 @@ extern "C" void fn_80164834(char* this_) {
             f32 dx = p->field_0C.x - p->home.x;
             if (std::sqrtf(dx*dx + dy*dy) < 1.0f || blocked) {
                 p->timers[0] = 10;
-                if (blocked) p->home.set(p->field_0C.x, p->field_0C.y, p->field_0C.z);
+                if (blocked) p->home.set(*(JGeometry::TVec3<f32>*)&p->field_0C);
                 p->field_0C.x = p->home.x;
                 p->field_0C.y = p->home.y;
                 p->field_0C.z = p->home.z;
