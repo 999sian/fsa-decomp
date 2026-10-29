@@ -10,14 +10,14 @@ extern "C" u16 fn_80226850(void* a, s32 b);
 extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 extern "C" f32 lbl_8046D3B0[];
 extern "C" f32 lbl_8046D3F0[];
-extern "C" f32 lbl_80540BB8;
+extern "C" const f32 lbl_80540BB8;
 extern "C" void* lbl_8053AC98;
 extern "C" void* lbl_8053AB10;
-extern "C" f32 lbl_80540BBC;
-extern "C" f32 lbl_80540BC0;
-extern "C" f32 lbl_80540BC4;
+extern "C" const f32 lbl_80540BBC;
+extern "C" const f32 lbl_80540BC0;
+extern "C" const f32 lbl_80540BC4;
 extern "C" f32 lbl_80540BC8;
-extern "C" f32 lbl_80540BCC;
+extern "C" const f32 lbl_80540BCC;
 extern "C" f32 lbl_8046D3B0[];
 extern "C" f32 lbl_8046D3F0[];
 extern "C" u8 fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
@@ -79,7 +79,7 @@ extern "C" void fn_802BC88C(u8* p) {
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_801F06F0(void*, char*, s32, s32, s32, f32, f32);
 extern "C" char lbl_8046D430[];
-extern "C" f32 lbl_80540BB8;
+extern "C" const f32 lbl_80540BB8;
 extern "C" void fn_802BC930(u8* p) {
     if (*(s32*)(p + 0x240) != 6) {
         s32 n = *(s32*)(p + 0x4);
@@ -115,29 +115,29 @@ extern "C" void fn_802BC9F8(u8* p) {
         } else if(*(u16*)(p+0x29c)==0x3eb) {
             fn_802A381C(lbl_8053AC98,p+0xc,*(s32*)(p+4),0xf);
             fn_801F0E34(p,0x30061,0);
-            fn_8013CC50(*(s32*)(p+4),p+0xc,1.0f,0x254,0,0,0,0,1);
-            fn_8013CC50(*(s32*)(p+4),p+0xc,1.0f,0x255,0,0,0,0,1);
-            tmpB.set(*(f32*)(p+0xc),*(f32*)(p+0x10)-16.0f,0.0f);
+            fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540BB8,0x254,0,0,0,0,1);
+            fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540BB8,0x255,0,0,0,0,1);
+            tmpB.set(*(f32*)(p+0xc),*(f32*)(p+0x10)-lbl_80540BBC,lbl_80540BC0);
             if(fn_80226850(&tmpB,*(s32*)(p+4))==0x3eb) {
                 *(JGeometry::TVec3<f32>*)(p+0x284)=*(JGeometry::TVec3<f32>*)(p+0xc);
-                *(f32*)(p+0x10)-=16.0f;
+                *(f32*)(p+0x10)-=lbl_80540BBC;
                 *(s32*)(p+0x240)=5;
             } else fn_802A3948(lbl_8053AC98,p+0xc,0,*(s32*)(p+4),0x3e0);
         } else if(*(u16*)(p+0x29c)==0x33) {
             fn_801F0E34(p,0x30061,0);
             fn_802A3948(lbl_8053AC98,p+0xc,0,*(s32*)(p+4),0xad);
-            fn_8013CC50(*(s32*)(p+4),p+0xc,1.0f,0x254,0,0,0,0,1);
-            fn_8013CC50(*(s32*)(p+4),p+0xc,1.0f,0x255,0,0,0,0,1);
+            fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540BB8,0x254,0,0,0,0,1);
+            fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540BB8,0x255,0,0,0,0,1);
         } else if(*(u16*)(p+0x29c)==0x34) {
             fn_801F0E34(p,0x30061,0);
             fn_802A3948(lbl_8053AC98,p+0xc,0,*(s32*)(p+4),0x251);
-            fn_8013CC50(*(s32*)(p+4),p+0xc,1.0f,0x254,0,0,0,0,1);
-            fn_8013CC50(*(s32*)(p+4),p+0xc,1.0f,0x255,0,0,0,0,1);
+            fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540BB8,0x254,0,0,0,0,1);
+            fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540BB8,0x255,0,0,0,0,1);
         }
         s=(u32*)((u8*)lbl_8053AAF8+0xb4);
         *s=*s*0x19660d+0x3c6ef35f;
         bits=(*s>>9)|0x3f800000;
-        *(u32*)(p+0x27c)=(s32)(1000.88f*(*(f32*)&bits-1.0f))&7;
+        *(u32*)(p+0x27c)=(s32)(lbl_80540BC4*(*(f32*)&bits-lbl_80540BB8))&7;
         *(s32*)(p+0x298)=8;
         break;
     case 1:
@@ -211,10 +211,10 @@ extern "C" void fn_802BC9F8(u8* p) {
             fn_802A381C(lbl_8053AC98,p+0xc,*(s32*)(p+4),0x3eb);
             room=*(s32*)(p+4);
             if(room>=8) Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,p+0xc,0,-1,-1);
-            *(f32*)(p+0x288)-=16.0f;
-            *(f32*)(p+0x10)-=32.0f;
+            *(f32*)(p+0x288)-=lbl_80540BBC;
+            *(f32*)(p+0x10)-=lbl_80540BCC;
             if(fn_80226850(p+0xc,*(s32*)(p+4))!=0x3eb) {
-                *(f32*)(p+0x10)+=16.0f;
+                *(f32*)(p+0x10)+=lbl_80540BBC;
                 fn_802A3948(lbl_8053AC98,p+0xc,0,*(s32*)(p+4),0x3e0);
                 ((Actor*)p)->v07();
                 break;
