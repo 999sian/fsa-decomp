@@ -362,6 +362,11 @@ extern "C" void fn_803F1C5C(u8* p) {
 
 extern "C" s32 fn_80403070(s32 a);
 extern "C" s32 fn_8040305C(s32 a);
+extern "C" ResTIMG* fn_804030C4(u32, const void*);
+extern const char* lbl_804B0EE8[];
+extern const s16 lbl_80543710[];
+extern const f32 lbl_80543754;
+extern const f32 lbl_80543758;
 extern "C" void fn_803F1C70(u8* p) {
     s32 i;
     s32 j;
