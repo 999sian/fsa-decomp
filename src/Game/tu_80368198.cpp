@@ -420,7 +420,7 @@ extern "C" void* fn_8016A3AC(void);
 extern "C" void* fn_8013CC50(s32 room, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" s32 fn_80309C4C(void* p, s32 a, s32 b);
 extern "C" void fn_80387494(s32 a);
-extern "C" void fn_803676CC(void);
+extern "C" void fn_803676CC(void* = 0);
 extern "C" void detach__5ActorFv(void* self);
 extern "C" void fn_8030C210(void* eff, Vec3f* v);
 void Unk8036C300::state0() {
