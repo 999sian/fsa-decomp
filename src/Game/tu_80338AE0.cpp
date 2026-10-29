@@ -52,15 +52,11 @@ extern "C" void fn_80338AE0(void) {
 extern "C" void fn_801F0E34(void* obj, u32 a, u32 b);
 extern "C" u8 fn_80230188(s32 i);
 extern "C" void* fn_8023E724(s32 i);
-inline void sortWarpPlayers(s32 (&order)[5]) {
-    int n;
-    s32* start;
-    s32* cur;
-    s32 i;
-    start = &order[1];
-    for(n=4;n>0;n--) {
-        cur=start;
-        for(i=1;i<n;i++) {
+inline void sortWarpPlayers(s32* order) {
+    s32* start = &order[1];
+    for(s32 n=4;n>0;n--) {
+        s32* cur=start;
+        for(s32 i=1;i<n;i++) {
             JGeometry::TVec3<f32> a(*(JGeometry::TVec3<f32>*)fn_8023E724(cur[-1]));
             JGeometry::TVec3<f32> b(*(JGeometry::TVec3<f32>*)fn_8023E724(cur[0]));
             if(a.x>b.x) {
