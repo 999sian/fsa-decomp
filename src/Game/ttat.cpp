@@ -164,6 +164,29 @@ extern const f32 lbl_8053E714;
 extern const f32 lbl_8053E718;
 extern const f32 lbl_8053E71C;
 extern const f32 lbl_8053E720;
+
+static inline void ttatSetMode(char* p, s32 mode) {
+    if (*(s32*)(p + 0x260) != mode) {
+        *(s32*)(p + 0x260) = mode;
+        *(u8*)(p + 0x2b0) = 0;
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x240) = 0;
+        *(s32*)(p + 0x25c) = *(s32*)(p + 0x264) << 3;
+        switch (*(s32*)(p + 0x260)) {
+        case 2:
+            *(s32*)(p + 0x240) = 3;
+            break;
+        case 4:
+            *(s32*)(p + 0x240) = 3;
+        case 3:
+            *(s32*)(p + 0x25c) += 4;
+            break;
+        default:
+            break;
+        }
+        *(s32*)(p + 0x24c) = *(s32*)(p + 0x25c) + *(s32*)(p + 0x240);
+    }
+}
 #pragma opt_propagation off
 extern "C" void fn_801A96B4(void* this_) {
     f32 s = lbl_8053E6E0;
