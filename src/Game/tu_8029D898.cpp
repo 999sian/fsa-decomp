@@ -811,7 +811,8 @@ extern "C" s32 fn_802A02A8(char* self_, const JGeometry::TVec2<f32>* pos_, void*
     }
     case 0x16:
     case 0x17:
-        switch ((u8)fn_802A0800(self, p3, room)) { case 1: return 0x25; default: return -1; }
+        u8 reward = fn_802A0800(self, p3, room);
+        switch (reward) { case 1: return 0x25; default: return -1; }
     case 0x68: {
         JGeometry::TVec2<f32> q;
         q.y = pos->y;
