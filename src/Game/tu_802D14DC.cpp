@@ -118,9 +118,14 @@ static const f32 yasiLargeY[13] = {-32.0f,-16.0f,-16.0f,-16.0f,0.0f,0.0f,0.0f,0.
 #define F32(p,o) (*(f32*)((char*)(p)+(o)))
 #pragma opt_lifetimes on
 extern "C" void fn_802D152C(char* p) {
+    const f32* x1;
+    const f32* y1;
+    int room;
+    s32 roomB;
+    s32 roomC;
+    s32 tile1;
+    s32 i1;
     s32 color;
-    s32 room;
-    const YasiBreakOffsets* table = (const YasiBreakOffsets*)lbl_8046E070;
     JGeometry::TVec3<f32> tilePos;
     JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p+0xc));
     if(S32(p,0x234)==0) {
@@ -184,45 +189,51 @@ extern "C" void fn_802D152C(char* p) {
         }
     } else if(S32(p,0x234)==1) {
         fn_801F0E34(p,0x3000b,0);
-        room=S32(p,4);
-        if(room>=8) {
-            Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,&pos,0,-1,-1);
-            const f32* x=table->smallX;
-            const f32* y=table->smallY;
-            for(s32 i=0;i<5;i++,x++,y++) {
-                pos.x=F32(p,0xc)+*x;
-                pos.y=F32(p,0x10)+*y;
+        roomB=S32(p,4);
+        if(roomB>=8) {
+            Actor_CreateByID(fn_801F856C(),0x4b4d5249,roomB,&pos,0,-1,-1);
+            x1=lbl_8046E070;
+            y1=yasiSmallY;
+            for(i1=0;i1<5;i1++,x1++,y1++) {
+                pos.x=F32(p,0xc)+*x1;
+                pos.y=F32(p,0x10)+*y1;
                 pos.z=0.0f;
-                s32 tile=fn_80226AE0(&pos,S32(p,4));
-                fn_802F9908(*(void**)(lbl_8053AB10+0x20),S32(p,4),tile);
-                fn_80226CA8(tile,S32(p,4),&tilePos);
+                tile1=fn_80226AE0(&pos,S32(p,4));
+                fn_802F9908(*(void**)(lbl_8053AB10+0x20),S32(p,4),tile1);
+                fn_80226CA8(tile1,S32(p,4),&tilePos);
                 tilePos.x+=8.0f;
                 tilePos.y+=8.0f;
                 Actor_CreateByID(fn_801F856C(),0x424c5a45,S32(p,4),&tilePos,15,-1,-1);
             }
         } else {
-            fn_8013CC50(room,p+0xc,lbl_80540ECC,0x1a3,0,-1,0,0,1);
+            fn_8013CC50(roomB,p+0xc,lbl_80540ECC,0x1a3,0,-1,0,0,1);
             fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x1a4,0,0,0,0,1);
             fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x1a4,0,0,0,0,1);
-            const f32* y=table->largeY;
-            const f32* x=table->largeX;
-            for(s32 i=0;i<13;i++,y++,x++) {
+            s32 tile;
+            s32 i;
+            const f32* x;
+            const f32* y;
+            x=yasiLargeX;
+            y=yasiLargeY;
+            for(i=0;i<13;i++) {
                 pos.x=F32(p,0xc)+*x;
                 pos.y=F32(p,0x10)+*y;
                 pos.z=0.0f;
-                s32 tile=fn_80226AE0(&pos,S32(p,4));
+                tile=fn_80226AE0(&pos,S32(p,4));
                 fn_802F9908(*(void**)(lbl_8053AB10+0x20),S32(p,4),tile);
                 fn_80226CA8(tile,S32(p,4),&tilePos);
                 tilePos.x+=8.0f;
                 tilePos.y+=8.0f;
                 Actor_CreateByID(fn_801F856C(),0x424c5a45,S32(p,4),&tilePos,15,-1,-1);
+                x++;
+                y++;
             }
         }
     } else {
-        room=S32(p,4);
-        if(room>=8) Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,&pos,5,-1,-1);
+        roomC=S32(p,4);
+        if(roomC>=8) Actor_CreateByID(fn_801F856C(),0x4b4d5249,roomC,&pos,5,-1,-1);
         else {
-            fn_8013CC50(room,p+0xc,lbl_80540ECC,0x4ef,0,-1,0,0,1);
+            fn_8013CC50(roomC,p+0xc,lbl_80540ECC,0x4ef,0,-1,0,0,1);
             fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x4f0,0,0,0,0,1);
             fn_8013CC50(S32(p,4),p+0xc,lbl_80540ECC,0x4f1,0,0,0,0,1);
         }
