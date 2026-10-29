@@ -83,7 +83,7 @@ static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) 
 }
 
 static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 scale) {
-    f32 sz, sy, sx, cz, cy, cx;
+    f32 sz, sy, sx, cz, cx, cy;
     sx = sin(lbl_8053E0C8);
     sy = sin(a);
     sz = sin(lbl_8053E0C8);
