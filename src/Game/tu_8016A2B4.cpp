@@ -851,6 +851,10 @@ static inline bool deleteEffect8016D398(const JPABaseEmitter* e) {
     return e->checkStatus(8)!=0 && e->mAlivePtclChld.getNum()+e->mAlivePtclBase.getNum()==0;
 }
 
+static inline f32 scaleRandom8016D398(const f32 scale) {
+    return scale*effectRandom8016D398();
+}
+
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
     u8* p;
     s32 maxA,maxB;
@@ -889,7 +893,7 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
         if(*(s32*)(p+0x14)>0)--*(s32*)(p+0x14);
         JPABaseEmitter* e=*(JPABaseEmitter**)p;
         if(e){
-            if(e->isEnableDeleteEmitter()){
+            if(deleteEffect8016D398(e)){
                 void* mgr=*(void**)((u8*)fn_8013C824()+0xc);
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr,*(void**)p);
                 *(void**)p=0;
@@ -904,19 +908,19 @@ extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* 
                     pos.z+=lbl_8053D9F0;
                 }
                 if((u8)a3){pos.x+=lbl_8053D9F4;pos.y+=lbl_8053D9F8;}
-                (*(JPABaseEmitter**)p)->setGlobalTranslation(pos.x,pos.y,pos.z);
+                (*(JPABaseEmitter**)p)->setGlobalTranslation(*(JGeometry::TVec3f*)&pos);
             }
         }
     }
     if(maxB<maxA)maxB=maxA;
     J3DAnmBase** ap=(J3DAnmBase**)a9;
     J3DAnmBase** bp=(J3DAnmBase**)a10;
-    for(i=0;i<6;++i,++ap,++bp){
+    for(s32 j=0;j<6;++j,++ap,++bp){
         J3DAnmBase* a=*ap;
         J3DAnmBase* b=*bp;
         if(a)a->mCurrentFrame=(f32)((s32)a2%a->mMaxFrame);
         if(b){
-            b->mCurrentFrame=(f32)(((i<4?maxA:maxB)*b->mMaxFrame)/60);
+            b->mCurrentFrame=(f32)((b->mMaxFrame*(j<4?maxA:maxB))/60);
         }
     }
 }
