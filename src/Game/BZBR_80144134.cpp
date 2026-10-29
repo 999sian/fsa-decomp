@@ -30,7 +30,6 @@ extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32*
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern const f32 lbl_8053CFDC;
 extern const f32 lbl_8053CFD8;
-#define BZBR_RANDOM_DEFINED
 struct BzbrRandom {
     u32 seed;
     f32 get_ufloat_1() {
