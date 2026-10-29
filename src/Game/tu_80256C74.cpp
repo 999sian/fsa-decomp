@@ -160,8 +160,8 @@ struct Tu80256Tables {
     JGeometry::TVec3<f32> b[8];
     JGeometry::TVec3<f32> c[4];
 };
-static inline void playerMoveArrowEffect(PlayerArrowPosition* arrow, s32 handle) {
-    if (handle >= 0) {
+static inline void playerMoveArrowEffect(PlayerArrowPosition* arrow, const u32 handle) {
+    if ((s32)handle >= 0) {
         u8* actor = fn_801F666C(fn_801F856C(), handle);
         if (actor) V3(actor, 0xc) = arrow->pos;
     }
@@ -2212,13 +2212,7 @@ extern "C" void fn_8025C894(u8* p) {
                     F32(p,0x12f0) = arrow->pos.y;
                     F32(p,0x12f4) = arrow->pos.z;
             }
-            const s32 handle = S32(p, 0x12c0);
-            if (handle >= 0) {
-                u8* actor = fn_801F666C(fn_801F856C(), handle);
-                if (actor) {
-                    V3(actor, 0xc) = arrow->pos;
-                }
-            }
+            playerMoveArrowEffect(arrow, S32(p, 0x12c0));
         }
         if (!(playerVelocitySquared(V3(p, 0x344)) <= lbl_805400D8 * *(f32*)__float_epsilon) || F32(p, 0x10) > 0.0f) {
             V3(p, 8) += V3(p, 0x344);
