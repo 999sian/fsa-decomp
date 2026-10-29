@@ -3536,7 +3536,7 @@ void fn_8024D134(char* p) {
     switch(st) {
     case 0:
         st = getModeB(p);
-        n = st == 4 ? 1 : countSharingH(p);
+        n = st == 4 ? 1 : countSharingD134(p);
         v.x += lbl_80540050 * (f32)(n - 1);
         break;
     case 1:
@@ -3549,9 +3549,7 @@ void fn_8024D134(char* p) {
         v.y += lbl_80540050;
         break;
     case 3: {
-        s32 state = S32(p,0x1240);
-        bool special = false;
-        if(state == 9 || state == 10) special = true;
+        bool special = isSpecialD134(p);
         if(special) v.set(V3(p,0x11b4));
         else switch(S32(p, 4)) {
         case 0: v.y += lbl_80540070; break;
@@ -4264,6 +4262,40 @@ inline s32 countGrabSharing(char* p) {
 }
 inline s32 getGrabMode(char* p) {
     if (countGrabSharing(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline s32 countGrabSharingRef(char* p, s32& target) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((target = S32(p, 0xd60)) >= 0) {
+                if (target == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                target = S32(p, 0x4);
+                if (target == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getGrabModeRef(char* p, s32& target) {
+    if (countGrabSharingRef(p, target) <= 1) {
         return 5;
     }
     s32 linked = S32(p, 0xd60);
