@@ -31,6 +31,119 @@ extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void*, void*);
 extern "C" u32 lbl_804ADB60[];
+struct EetcInitTable {
+    u32 field_0;
+    u32 field_4;
+    u32 field_8;
+    u32 field_c;
+    u32 field_10;
+    u32 field_14;
+    u32 field_18;
+    u32 field_1c;
+    u32 field_20;
+    u32 field_24;
+    u32 field_28;
+    u32 field_2c;
+    u32 field_30;
+    u32 field_34;
+    u32 field_38;
+    u32 field_3c;
+    u32 field_40;
+    u32 field_44;
+    u32 field_48;
+    u32 field_4c;
+    u32 field_50;
+    u32 field_54;
+    u32 field_58;
+    u32 field_5c;
+    u32 field_60;
+    u32 field_64;
+    u32 field_68;
+    u32 field_6c;
+    u32 field_70;
+    u32 field_74;
+    u32 field_78;
+    u32 field_7c;
+    u32 field_80;
+    u32 field_84;
+    u32 field_88;
+    u32 field_8c;
+    u32 field_90;
+    u32 field_94;
+    u32 field_98;
+    u32 field_9c;
+    u32 field_a0;
+    u32 field_a4;
+    u32 field_a8;
+    u32 field_ac;
+    u32 field_b0;
+    u32 field_b4;
+    u32 field_b8;
+    u32 field_bc;
+    u32 field_c0;
+    u32 field_c4;
+    u32 field_c8;
+    u32 field_cc;
+    u32 field_d0;
+    u32 field_d4;
+};
+static inline void copyEetcInitTable(EetcInitTable* dst, const EetcInitTable* src) {
+    dst->field_0 = src->field_0;
+    dst->field_4 = src->field_4;
+    dst->field_8 = src->field_8;
+    dst->field_c = src->field_c;
+    dst->field_10 = src->field_10;
+    dst->field_14 = src->field_14;
+    dst->field_18 = src->field_18;
+    dst->field_1c = src->field_1c;
+    dst->field_20 = src->field_20;
+    dst->field_24 = src->field_24;
+    dst->field_28 = src->field_28;
+    dst->field_2c = src->field_2c;
+    dst->field_30 = src->field_30;
+    dst->field_34 = src->field_34;
+    dst->field_38 = src->field_38;
+    dst->field_3c = src->field_3c;
+    dst->field_40 = src->field_40;
+    dst->field_44 = src->field_44;
+    dst->field_48 = src->field_48;
+    dst->field_4c = src->field_4c;
+    dst->field_50 = src->field_50;
+    dst->field_54 = src->field_54;
+    dst->field_58 = src->field_58;
+    dst->field_5c = src->field_5c;
+    dst->field_60 = src->field_60;
+    dst->field_64 = src->field_64;
+    dst->field_68 = src->field_68;
+    dst->field_6c = src->field_6c;
+    dst->field_70 = src->field_70;
+    dst->field_74 = src->field_74;
+    dst->field_78 = src->field_78;
+    dst->field_7c = src->field_7c;
+    dst->field_80 = src->field_80;
+    dst->field_84 = src->field_84;
+    dst->field_88 = src->field_88;
+    dst->field_8c = src->field_8c;
+    dst->field_90 = src->field_90;
+    dst->field_94 = src->field_94;
+    dst->field_98 = src->field_98;
+    dst->field_9c = src->field_9c;
+    dst->field_a0 = src->field_a0;
+    dst->field_a4 = src->field_a4;
+    dst->field_a8 = src->field_a8;
+    dst->field_ac = src->field_ac;
+    dst->field_b0 = src->field_b0;
+    dst->field_b4 = src->field_b4;
+    dst->field_b8 = src->field_b8;
+    dst->field_bc = src->field_bc;
+    dst->field_c0 = src->field_c0;
+    dst->field_c4 = src->field_c4;
+    dst->field_c8 = src->field_c8;
+    dst->field_cc = src->field_cc;
+    dst->field_d0 = src->field_d0;
+    dst->field_d4 = src->field_d4;
+}
+
 
 extern "C" f32 lbl_80542B80;
 extern "C" f32 lbl_80542B84;
@@ -1503,3 +1616,186 @@ extern "C" void* fn_80366D44(void* this_, short how) {
     }
     return this_;
 }
+
+#pragma opt_propagation off
+extern "C" void fn_80366E60(void) {
+    char* registrations = (char*)lbl_8050C028;
+    u32* b = lbl_804ADB60;
+    u32* first = b + 54;
+    u32* second = b + 162;
+    first[0] = b[0];
+    first[1] = b[1];
+    first[2] = b[2];
+    first[3] = b[3];
+    first[4] = b[4];
+    first[5] = b[5];
+    first[6] = b[6];
+    first[7] = b[7];
+    first[8] = b[8];
+    first[9] = b[9];
+    first[10] = b[10];
+    first[11] = b[11];
+    first[12] = b[12];
+    first[13] = b[13];
+    first[14] = b[14];
+    first[15] = b[15];
+    first[16] = b[16];
+    first[17] = b[17];
+    first[18] = b[18];
+    first[19] = b[19];
+    first[20] = b[20];
+    first[21] = b[21];
+    first[22] = b[22];
+    first[23] = b[23];
+    first[24] = b[24];
+    first[25] = b[25];
+    first[26] = b[26];
+    first[27] = b[27];
+    first[28] = b[28];
+    first[29] = b[29];
+    first[30] = b[30];
+    first[31] = b[31];
+    first[32] = b[32];
+    first[33] = b[33];
+    first[34] = b[34];
+    first[35] = b[35];
+    first[36] = b[36];
+    first[37] = b[37];
+    first[38] = b[38];
+    first[39] = b[39];
+    first[40] = b[40];
+    first[41] = b[41];
+    first[42] = b[42];
+    first[43] = b[43];
+    first[44] = b[44];
+    first[45] = b[45];
+    first[46] = b[46];
+    first[47] = b[47];
+    first[48] = b[48];
+    first[49] = b[49];
+    first[50] = b[50];
+    first[51] = b[51];
+    first[52] = b[52];
+    first[53] = b[53];
+    second[0] = b[108];
+    second[1] = b[109];
+    second[2] = b[110];
+    second[3] = b[111];
+    second[4] = b[112];
+    second[5] = b[113];
+    second[6] = b[114];
+    second[7] = b[115];
+    second[8] = b[116];
+    second[9] = b[117];
+    second[10] = b[118];
+    second[11] = b[119];
+    second[12] = b[120];
+    second[13] = b[121];
+    second[14] = b[122];
+    second[15] = b[123];
+    second[16] = b[124];
+    second[17] = b[125];
+    second[18] = b[126];
+    second[19] = b[127];
+    second[20] = b[128];
+    second[21] = b[129];
+    second[22] = b[130];
+    second[23] = b[131];
+    second[24] = b[132];
+    second[25] = b[133];
+    second[26] = b[134];
+    second[27] = b[135];
+    second[28] = b[136];
+    second[29] = b[137];
+    second[30] = b[138];
+    second[31] = b[139];
+    second[32] = b[140];
+    second[33] = b[141];
+    second[34] = b[142];
+    second[35] = b[143];
+    second[36] = b[144];
+    second[37] = b[145];
+    second[38] = b[146];
+    second[39] = b[147];
+    second[40] = b[148];
+    second[41] = b[149];
+    second[42] = b[150];
+    second[43] = b[151];
+    second[44] = b[152];
+    second[45] = b[153];
+    second[46] = b[154];
+    second[47] = b[155];
+    second[48] = b[156];
+    second[49] = b[157];
+    second[50] = b[158];
+    second[51] = b[159];
+    second[52] = b[160];
+    second[53] = b[161];
+    ((JGeometry::TVec3<f32>*)registrations)[0] = JGeometry::TVec3<f32>(0.0f, 1.3f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[1] = JGeometry::TVec3<f32>(0.0f, -1.3f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[2] = JGeometry::TVec3<f32>(-1.3f, 0.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[3] = JGeometry::TVec3<f32>(1.3f, 0.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[4] = JGeometry::TVec3<f32>(0.0f, 0.3f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[5] = JGeometry::TVec3<f32>(0.0f, -0.3f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[6] = JGeometry::TVec3<f32>(-0.3f, 0.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[7] = JGeometry::TVec3<f32>(0.3f, 0.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[8] = JGeometry::TVec3<f32>(0.0f, 1.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[9] = JGeometry::TVec3<f32>(0.0f, -1.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[10] = JGeometry::TVec3<f32>(-1.0f, 0.0f, 0.0f);
+    ((JGeometry::TVec3<f32>*)registrations)[11] = JGeometry::TVec3<f32>(1.0f, 0.0f, 0.0f);
+    if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr,
+                                 __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, registrations + 0xd8);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (!__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack,
+                                 __dt__35JASMemPool_MultiThreaded_8JASTrackFv, registrations + 0xe4);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+    if (!__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel) {
+        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel,
+                                 __dt__38JASMemPool_MultiThreaded_10JASChannelFv, registrations + 0xf0);
+        __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
+    }
+    if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA,
+                                 __dt__29JASMemPool_15JASPoolObj3_FSAFv, registrations + 0xfc);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
+    }
+    if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA,
+                                 __dt__29JASMemPool_15JASPoolObj4_FSAFv, registrations + 0x108);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
+    }
+    if (!__init__memPool___30JASPoolAllocObject_9JAIStream) {
+        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream,
+                                 __dt__22JASMemPool_9JAIStreamFv, registrations + 0x114);
+        __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
+    }
+    if (!__init__memPool___35JASPoolAllocObject_13JAISoundChild) {
+        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild,
+                                 __dt__27JASMemPool_13JAISoundChildFv, registrations + 0x120);
+        __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
+    }
+    if (!__init__memPool___27JASPoolAllocObject_6JAISeq) {
+        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq,
+                                 __dt__19JASMemPool_6JAISeqFv, registrations + 0x12c);
+        __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
+    }
+    if (!__init__memPool___26JASPoolAllocObject_5JAISe) {
+        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe,
+                                 __dt__18JASMemPool_5JAISeFv, registrations + 0x138);
+        __init__memPool___26JASPoolAllocObject_5JAISe = 1;
+    }
+}
+#pragma opt_propagation reset
