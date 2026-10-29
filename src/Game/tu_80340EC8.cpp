@@ -9,7 +9,7 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void fn_80138B7C(void* mgr);
 extern "C" void __dt__5ActorFv(Actor* self, s32 flag);
 extern f32 lbl_805422E0;
-extern f32 lbl_805422C4;
+extern const f32 lbl_805422C4;
 extern "C" s32 fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(s32, s32);
 extern "C" s32 fn_802D6A9C();
