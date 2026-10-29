@@ -83,7 +83,7 @@ static inline void dgt2RotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
 }
 
 static void dgt2Rot(f32 (*m)[4], f32 th) {
-    f32 cZ, cA, cT, sA, sT, sZ;
+    f32 cZ, sA, sT, sZ, cA, cT;
     sA = sin(lbl_8053E1D8);
     sT = sin(th);
     sZ = sin(lbl_8053E1D8);
