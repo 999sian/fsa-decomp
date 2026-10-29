@@ -6,7 +6,7 @@
 
 extern "C" char lbl_804AE7D8[];
 extern "C" void fn_80239914(f32* box, u32 room, u32 handle);
-extern "C" u8* fn_8020D58C(u32 handle);
+extern "C" u8* fn_8020D58C(void);
 extern "C" void fn_8020D7D0(u8* p, u32 handle);
 extern "C" f32 PSVECDistance(const Vec* a, const Vec* b);
 extern "C" f32 fn_8033D4AC(f32 cur, f32 target, f32 speed);
