@@ -111,8 +111,8 @@ static bool fn_80364340_isBadPos(Vec* p, Vec& v1) {
 extern "C" const s32 lbl_80474A98[];
 extern "C" const s32 lbl_80474AD8[];
 extern "C" const s32 lbl_80474858[];
-extern "C" u8 lbl_80542AD8[];
-extern "C" u8 lbl_80542AC8[];
+extern "C" u8 lbl_80542AD8[16];
+extern "C" u8 lbl_80542AC8[16];
 extern "C" f32 lbl_80542B88;
 extern "C" f32 lbl_80542B90;
 extern "C" f32 lbl_80542B6C;
@@ -521,10 +521,10 @@ extern "C" void fn_80363664(char* self) {
 }
 
 extern "C" void fn_80363880(char* p) {
-    s32 state;
-    char* item;
-    s32 count;
     s32 i;
+    s32 count;
+    char* item;
+    s32 state;
     state = *(s32*)(p + 0x24c);
     if (state >= 0) {
         item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
@@ -545,7 +545,7 @@ extern "C" void fn_80363880(char* p) {
     } else {
         count = *(s32*)((char*)fn_801F856C() + 0x1008);
         for (i = 0; i < count; i++) {
-            item = (char*)((void**)((char*)fn_801F856C() + 8))[i];
+            item = *(char**)((char*)fn_801F856C() + (i * 4 + 8));
             if (item == NULL || *(s32*)(item + 0x1a0) != 0x454f574c || *(u8*)(item + 0x11c) != 1 || *(s32*)(item + 0x278) != 0) continue;
             if (PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) >= lbl_80542B4C) break;
             *(s32*)(p + 0x24c) = i;
