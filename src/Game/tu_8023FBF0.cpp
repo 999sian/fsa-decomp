@@ -4220,6 +4220,19 @@ extern "C" s32 fn_80230CFC(s32);
 extern "C" s32 fn_80238EDC(s32);
 extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
 extern "C" u8 fn_8025F590(char*);
+inline s32 grabLinkRank(char* p) {
+    s32 l;
+    s32 i;
+    s32 c;
+    if (S32(p, 0xd60) < 0) return 0;
+    c = 0;
+    for (i = 0; i < S32(p, 4); i++) {
+        l = S32(p, 0xd60);
+        if (l == fn_8022F3DC(i)) c++;
+    }
+    return c + 1;
+}
+
 inline bool grabPadActive(char* p) {
     bool ok;
     s32 v;
