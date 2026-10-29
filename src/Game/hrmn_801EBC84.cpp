@@ -132,7 +132,7 @@ extern "C" void fn_801EBE7C(char* p) {
             vals[0] = lbl_8053F6C0;
             vals[1] = lbl_8053F6C0;
             vals[2] = lbl_8053F6C0;
-            if (!fn_8038AD24(*(void**)(p + 0x2b0), snd, *(u32*)(p + 0x4), vals, 0)) {
+            if (!((s32(*)(s32, s32, u32, u32, f32*, s32))fn_8038AD24)(*(s32*)(p + 0x2b0), snd, *(u32*)(p + 0x198), *(u32*)(p + 0x4), vals, 0)) {
                 break;
             }
         }
