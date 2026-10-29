@@ -1,4 +1,5 @@
 #include "types.h"
+#define JGEOMETRY_VEC2_EXPLICIT_COPY
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
@@ -1828,7 +1829,7 @@ void fn_80282FE0(char* this_) {
     char* p=this_;
     PlayerWalk* player=(PlayerWalk*)p;
     s32 i;
-    int t;
+    s32 t;
     s32 area;
     f32 dx, dy, dist;
 
@@ -1958,9 +1959,7 @@ tail2:
         fn_80251AEC(p, 0);
     }
     fn_80268B3C(p);
-    JGeometry::TVec2<f32> delta;
-    delta.x = F32(p, 0x8) - F32(p, 0x14);
-    delta.y = F32(p, 0xc) - F32(p, 0x18);
+    JGeometry::TVec2<f32> delta = playerWalkStep(player);
     f32 dx2=delta.x*delta.x;
     f32 dy2=delta.y*delta.y;
     dist = JGeometry::TUtil<f32>::sqrt(dx2+dy2);
