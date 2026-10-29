@@ -190,9 +190,16 @@ static inline void ltzrResetBox(char* p) {
     }
 }
 
+static inline f32 ltzrSqrt(f32 x) {
+    if (x <= lbl_80542268) return x;
+    f32 y = __frsqrte(x);
+    y = lbl_80542290 * y * (lbl_80542294 - x * (y * y));
+    return x * y;
+}
+
 static inline void ltzrTouch(char* p, s32 i) {
     s32 room = *(s32*)(p + 4);
-    if (fn_8023DE58(i) != room) {
+    if (room != fn_8023DE58(i)) {
         return;
     }
     for (s32 j = 0; j < 8; j++) {
