@@ -3524,7 +3524,7 @@ void fn_8024D134(char* p) {
     st = getModeB(p);
     if (st == 5) return;
     st = getModeB(p);
-    switch(st) {case 4: break; default: {
+    switch(st) {default: {
     U8(p, 0x121d) = 0;
     if (PTR(p, 0x1388) != 0) {
         forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)S32(p, 0x1388));
@@ -3568,6 +3568,8 @@ void fn_8024D134(char* p) {
     case 3: PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &v, lbl_80540030, 0x361, 0, -1, 0, 0, 1); break;
     }
 }
+break;
+case 4: break;
 }
 }
 }
@@ -4307,8 +4309,8 @@ inline s32 getGrabModeRef(char* p, s32& target) {
 
 inline s32 grabLinkRank(char* p) {
     s32 l;
-    s32 i;
     s32 c;
+    s32 i;
     if (S32(p, 0xd60) < 0) return 0;
     c = 0;
     for (i = 0; i < S32(p, 4); i++) {
