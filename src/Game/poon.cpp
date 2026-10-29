@@ -153,6 +153,7 @@ static inline void poonTickTimers(char* p) {
     }
 }
 
+#pragma opt_propagation reset
 static inline JGeometry::TVec2f poonCenter(const JGeometry::TVec3f& pos, const f32* bounds) {
     f32 x0 = bounds[0] + pos.x;
     f32 y0 = bounds[1] + pos.y;
