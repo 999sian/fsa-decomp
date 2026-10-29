@@ -55,8 +55,8 @@ extern "C" void* fn_8023E724(s32 i);
 inline void sortWarpPlayers(s32* order) {
     s32* start;
     s32 n;
-    s32 i;
     s32* cur;
+    s32 i;
     start = &order[1];
     for(n=4;n>0;n--) {
         cur=start;
