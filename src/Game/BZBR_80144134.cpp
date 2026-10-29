@@ -30,6 +30,17 @@ extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32*
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern const f32 lbl_8053CFDC;
 extern const f32 lbl_8053CFD8;
+#define BZBR_RANDOM_DEFINED
+struct BzbrRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_8053CFDC;
+    }
+};
+struct BzbrGame { u8 pad[0xb4]; BzbrRandom rnd; };
 extern BzbrGame* lbl_8053AAF8;
 
 // Resource manager at game+0xa4; vtable +0x18 looks a resource up by type and name.
