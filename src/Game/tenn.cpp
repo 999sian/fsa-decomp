@@ -264,15 +264,25 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" Vec* fn_8023E724(s32);
 extern "C" s32 fn_801F2718(void*, u32);
 extern "C" void fn_8030C210(void*, void*);
-static inline void tennUpdateTimers(char* p) {
-    if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
-    if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
-}
+struct TennTimers {
+    u8 pad_0[0x238];
+    s32 first;
+    s32 second;
+    void update() {
+        if (first > 0) first--;
+        if (second > 0) second--;
+    }
+};
 
 struct TennScoreBoard {
     u8 pad_0[0x28c];
     s32 counts[4];
+    void addScore(s32 index) { counts[index]++; }
 };
+
+static inline void tennUpdateTimers(char* p) {
+    ((TennTimers*)p)->update();
+}
 
 extern "C" u8 fn_801F6758(void*, f32, s32);
 extern "C" void fn_801A0F90(void* this_) {
@@ -302,8 +312,8 @@ L_8F8:
 L_904:
     *(s32*)(p + 0x230) = 0xf;
 L_90C:
-    if (*(f32*)(p + 0x3c) != 0.0f) goto L_974;
-    if (*(f32*)(p + 0x40) != 0.0f) goto L_974;
+    if (*(f32*)(p + 0x3c) != lbl_8053E4F0) goto L_974;
+    if (*(f32*)(p + 0x40) != lbl_8053E4F0) goto L_974;
     if (*(f32*)(p + 0x14) <= 0.0f) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = 0.0f;
@@ -430,7 +440,8 @@ L_D14:
     {
         f32 dx = *(f32*)(o + 0xc) - *(f32*)(p + 0xc);
         f32 dy = *(f32*)(o + 0x10) - *(f32*)(p + 0x10);
-        f32 a = JMath::atanTable_.atan2_(dx, dy) * lbl_8053E538;
+        f32 a = JMath::atanTable_.atan2_(dx, dy);
+        a *= lbl_8053E538;
         s32 ai = (s32)a;
         ang = (u16)ai;
         *(f32*)(p + 0x3c) = lbl_8053A0F8 * *(f32*)((char*)JMath::sincosTable_.mTable + (((u16)ai >> 2) & 0x3ff8));
@@ -483,7 +494,7 @@ L_F94:
     o = (char*)fn_801F666C(fn_801F856C(), r29);
     if (o == 0) goto L_FE8;
     *(s32*)(o + 0x268) = *(s32*)(p + 0x264);
-    ((TennScoreBoard*)o)->counts[*(s32*)(p + 0x264)] += 1;
+    ((TennScoreBoard*)((s32*)o + *(s32*)(p + 0x264)))->counts[0] += 1;
 L_FE8:
     *(f32*)(p + 0x3c) = *(f32*)(p + 0x3c) * lbl_8053E540;
     *(f32*)(p + 0x40) = *(f32*)(p + 0x40) * lbl_8053E540;
@@ -492,10 +503,8 @@ L_FE8:
     lbl_8053ABC0 = 1;
     *(s32*)(p + 0x230) = 0x11;
 L_1030:
-    if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
-    if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
-    if (*(s32*)(p + 0x240) > 0) *(s32*)(p + 0x240) -= 1;
-    if (*(s32*)(p + 0x244) > 0) *(s32*)(p + 0x244) -= 1;
+    tennUpdateTimers(p);
+    tennUpdateTimers(p + 8);
 }
 
 extern "C" void fn_801A17B8(void* this_) {
