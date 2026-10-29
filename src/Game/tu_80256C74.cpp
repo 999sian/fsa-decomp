@@ -1404,6 +1404,13 @@ extern "C" void fn_8025A0B0(u8* p) {
 
 extern "C" u8 fn_8023B400(s32);
 extern const f32 lbl_80540128;
+struct PlayerFirePosition {
+    u8 pad[0xb1c];
+    s32 ids[3];
+    s32 activeId;
+    u8 padB2C[0xb5c - 0xb2c];
+    s32 rooms[3];
+};
 struct Tu8025Data {
     u8 pad[0x250];
     u8 frames[4][8];
