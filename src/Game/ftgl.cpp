@@ -100,16 +100,16 @@ static inline s32 ftglPickTarget(char* p) {
     s32 room;
     s32 side;
     s32 best;
-    u32 room0;
     f32 bestD;
     s32 id;
-    u32 i;
+    s32 i;
+    s32 room0;
     s32 j;
     for (i = 0; i < 4; i++) {
         room0 = *(s32*)(p + 0x4);
-        u32 faceRoom = room0;
+        s32 room = room0;
         s32 r = fn_8023DE58(i);
-        if (r == faceRoom && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
+        if (r == room && !fn_80233E40(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
             side = fn_8023E724(i)->x > *(f32*)(p + 0xc) ? 1 : 0;
             fn_80230498(i, fn_8023E724(i), side + 0x3c, 0xff, -0x80, -0x80, 1);
             fn_80230BF4(i, side);
