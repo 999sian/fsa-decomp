@@ -475,7 +475,7 @@ extern "C" void fn_8020D7D0(void*, s32);
 extern "C" void fn_80239914(f32*, s32, s32);
 extern "C" void fn_801EE434(s32);
 void fn_801F0D20(void*, s32, s32);
-void fn_8013CB44(s32, s32, s32, s32, s32 last = 1);
+extern "C" void fn_8013CB44(s32, s32, s32, s32, s32 last = 1);
 s32 fn_80388CAC(s32, s32);
 extern "C" u8* fn_8020D58C(void);
 extern "C" void fn_801F0D20(void* this_, s32 n);
