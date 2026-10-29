@@ -95,6 +95,7 @@ static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
     }
     return false;
 }
+#pragma opt_lifetimes off
 extern "C" void fn_803771AC(u8* this_) {
     JGeometry::TBox2<f32> box;
     Vec tmp;
