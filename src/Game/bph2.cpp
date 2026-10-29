@@ -106,7 +106,7 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
 }
 
 static inline void bph2_billboardMtx(f32 mtx[3][4], f32& s) {
-    f32 cx, cy, sx, sy, sz, cz;
+    f32 cx, cy, sz, sy, sx, cz;
     sx = sin(lbl_8053E0C8); sy = sin(lbl_8053E0C8); sz = sin(lbl_8053E0C8);
     cx = cos(lbl_8053E0C8); cy = cos(lbl_8053E0C8); cz = cos(lbl_8053E0C8);
     f32 cxcz = cx * cz;
@@ -224,31 +224,8 @@ extern "C" void fn_8018A930(char* this_) {
             rec.b26 = 0;
         }
         bph2_drawShadow(*(s32*)(this_ + 0x4), pos, *(f32*)(this_ + 0x280), lbl_8053E100);
-        {
-            f32 sx;
-            f32 sy;
-            f32 sz;
-            f32 cx;
-            f32 cy;
-            f32 s;
-            f32 cz;
-            s = *(f32*)(this_ + 0x294);
-            sx = (f32)sin(lbl_8053E0C8);
-            sy = (f32)sin(lbl_8053E0C8);
-            sz = (f32)sin(lbl_8053E0C8);
-            cx = (f32)cos(lbl_8053E0C8);
-            cy = (f32)cos(lbl_8053E0C8);
-            cz = (f32)cos(lbl_8053E0C8);
-            mtx[0][0] = s * (cy * cz);
-            mtx[1][0] = s * (cy * sz);
-            mtx[2][0] = s * -sy;
-            mtx[0][1] = s * ((sx * sy) * cz - cx * sz);
-            mtx[1][1] = s * ((sx * sy) * sz + cx * cz);
-            mtx[2][1] = s * (sx * cy);
-            mtx[0][2] = s * ((cx * cz) * sy + sx * sz);
-            mtx[1][2] = s * ((cx * sz) * sy - sx * cz);
-            mtx[2][2] = s * (cx * cy);
-        }
+        f32 scale = *(f32*)(this_ + 0x294);
+        bph2_billboardMtx(mtx, scale);
         rec.w18 = mtx;
         res = fn_804032E8(0x42494750, lbl_804A1D24[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)]);
         fn_801EFD34(this_, res, &rec, -1, lbl_8053E0C8, lbl_8053E104, lbl_8053E0C8);
