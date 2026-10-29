@@ -188,6 +188,36 @@ skip:
 }
 
 extern "C" s32 fn_80458FF0(void* mgr, s32 handle, s32 a, s32 b);
+extern "C" void fn_801D5B70(u8* this_);
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 range);
+extern "C" void fn_801D72C0(void* p, void* pos);
+extern "C" void fn_801D70BC(void* p, void* pos, s32 player);
+extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
+extern "C" void fn_801E667C(void* p);
+extern "C" void fn_80217A30(void* p);
+extern "C" void fn_802179EC(void* p);
+extern "C" void fn_80217874(void* p, f32 t);
+extern "C" void fn_8021775C(void* p, f32 t);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void fn_801E4790(void*, s32);
+extern const f32 lbl_8053F0CC;
+extern const f32 lbl_8053F108;
+extern const f32 lbl_8053F114;
+static inline s32 fn_801D5390_pick(u8* this_) {
+    s32 out[4];
+    s32 count = 0;
+    s32 i;
+    s32 pick = -1;
+    for (i = 0; i < 4; i++) {
+        if (i != *(s32*)(this_ + 0x5b0) && this_[0x2a8 + i * 0x18] == 0 && fn_801D0B44(this_, i)) {
+            out[count++] = i;
+        }
+    }
+    if (count > 0) {
+        pick = out[fn_801CD664(count)];
+    }
+    return pick;
+}
 extern "C" void fn_801D5390(u8* this_) {
     s32 state = *(s32*)(this_ + 0x248);
     if ((u32)state > 0x1a) {
