@@ -337,10 +337,10 @@ extern "C" void fn_8021917C(u8* self) {
     }
 }
 
-inline s32 kepoPlayerRoom(s32 i) {
+inline int kepoPlayerRoom(s32 i) {
     u8 fn_8022F514(u32);
-    s32 fn_8022F3DC(u32);
-    s32 fn_8030AAF4(s32);
+    int fn_8022F3DC(u32);
+    int fn_8030AAF4(s32);
     if(fn_8022F514(i)) return fn_8022F3DC(i);
     return fn_8030AAF4(i);
 }
@@ -363,16 +363,16 @@ extern "C" void fn_8021923C(u8* self) {
     u8 fn_8023077C(void);
     u8 fn_801D0B44(u8* self, s32 i);
     u8 fn_8022F514(u32 i);
-    s32 fn_8022F3DC(u32 i);
-    s32 fn_8030AAF4(s32 i);
+    int fn_8022F3DC(u32 i);
+    int fn_8030AAF4(s32 i);
     u32 fn_80309D6C(void* w, s32 h, s32 flags);
     s32 fn_80230CFC(s32 i);
     u8 fn_801D21F0(void* anim);
     void* fn_801F856C(void);
-    void fn_801D0020(u8* self, f32* pos, s32 i, s32 c);
+    s32 fn_801D0020(u8* self, f32* pos, s32 i, u8 c);
     void fn_80230534(s32);
     u8 fn_8021A570(void*, bool);
-    void* fn_801CD354(void);
+    s32 fn_801CD354(s32);
     void fn_80138B7C(void* p);
     void fn_80458880(void* p, u32 a, s32 b);
     void fn_80230BF4(s32 player, s32 a);
@@ -472,7 +472,7 @@ extern "C" void fn_8021923C(u8* self) {
         i = found;
         do {
             if (!fn_801D0B44(self, i)) continue;
-            s32 room;
+            int room;
             if (fn_8022F514(i)) room = fn_8022F3DC(i);
             else room = fn_8030AAF4(i);
             if (fn_80309D6C(lbl_8053AD30,room,0x100)==0) continue;
@@ -547,7 +547,9 @@ extern "C" void fn_8021923C(u8* self) {
             fn_80219AFC(self, 6);
         }
         break;
-    case 8:
+    case 8: {
+        s32 obj;
+        s32 player;
         fn_8022FE80(*(s32*)(self + 0x2b8), *(s32*)(self + 4), *(s32*)(self + 0x198), 0, 0);
         if (fn_8022FD8C(*(s32*)(self + 0x198)) != *(s32*)(self + 0x2b8)) break;
         v8[0] = lbl_8053FC5C;
@@ -557,16 +559,15 @@ extern "C" void fn_8021923C(u8* self) {
         if (*(u32*)(self + 0x230) & 0x10000) {
             fn_80138B7C(lbl_8053AAF8);
             n = fn_80138A30(lbl_8053AAF8);
-            for (i = 0; i < n; i++) {
-                void* obj;
-                fn_801D0020(self, (f32*)(self + 0xc), i, 0);
-                obj = fn_801CD354();
-                fn_80230BF4(i, (s32)obj);
-                fn_80230498(i, fn_8023E724(i), (s32)obj + 0x3c, 0xff, -0x80, -0x80, 1);
+            for (player = 0; player < n; player++) {
+                obj = fn_801CD354(fn_801D0020(self, (f32*)(self + 0xc), player, 0));
+                fn_80230BF4(player, obj);
+                fn_80230498(player, fn_8023E724(player), obj + 0x3c, 0xff, -0x80, -0x80, 1);
             }
         }
         fn_80219AFC(self, 9);
         break;
+    }
     case 9:
         fn_8022FE80(*(s32*)(self + 0x2b8), *(s32*)(self + 4), *(s32*)(self + 0x198), 0, 0);
         if (!fn_803865B8(*(s32*)(self + 0x2b8))) break;
