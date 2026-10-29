@@ -154,7 +154,7 @@ extern "C" void fn_801AFB98(char* this_) {
 }
 
 extern "C" int fn_801F3D94(char* this_, s32 flag);
-extern "C" void fn_801F2618(char* this_, s32 a, s32 b);
+extern "C" u8 fn_801F2618(char* this_, s32 a, s32 b);
 extern "C" void fn_801EF510(char* this_);
 extern "C" void fn_801F71A4(void* vec, f32 a, f32 b, f32 c);
 extern "C" int fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 idx);
@@ -169,17 +169,17 @@ extern "C" const f32 lbl_8053E898;
 extern const f32 lbl_8053E89C;
 extern const f32 lbl_8053E898;
 extern "C" void fn_801AFD54(char* this_) {
+    s32 i;
     s32 idx;
     f32 fv;
     f32 pt[2];
-    s32 i;
 
     idx = -1;
     if (fn_801F3D94(this_, 1) != 0) {
         fn_801F2618(this_, 0, 0);
         return;
     }
-    if (*(s32*)(this_ + 0x108) >= 0x3e8) {
+    if (*(s32*)(this_ + 0x108) < 0x3e8) {
         ((void (*)(char*))(*(void***)this_)[9])(this_);
         *(s32*)(this_ + 0xb0) = 0;
         return;
@@ -187,12 +187,9 @@ extern "C" void fn_801AFD54(char* this_) {
     fn_801EF510(this_);
     fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x25c), lbl_8053E898, lbl_8053E888);
     fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x260), lbl_8053E898, lbl_8053E888);
-    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
-    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
-    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
     for (i = 0; i < 4; i++) {
-        idx = fn_801F285C(this_, 0, 0, 0, i);
-        if (idx < 0) {
+        if (fn_801F285C(this_, 0, 0, 0, i) < 0) {
             continue;
         }
         {
