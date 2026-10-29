@@ -797,7 +797,8 @@ static inline bool sameLinkDeep(int a, int b) {
     if (a == b) return 1;
     if ((u8)fn_8022F514(a)) {
         if (b == fn_8022F3DC(a)) return 1;
-        return (u8)(fn_8022F3DC(a) == fn_8022F3DC(b));
+        if (fn_8022F3DC(a) == fn_8022F3DC(b)) return 1;
+        else return 0;
     }
     if ((u8)fn_8022F514(b)) return fn_8022F3DC(b) == a;
     return 0;
@@ -813,7 +814,8 @@ static inline bool sameLinkOuter(int a, int b) {
     if (a == b) return 1;
     if ((u8)isLinked3(a)) {
         if (b == linkTarget3(a)) return 1;
-        return (u8)(linkTarget3(a) == linkTarget3(b));
+        if (linkTarget3(a) == linkTarget3(b)) return 1;
+        else return 0;
     }
     if ((u8)isLinked3(b)) return linkTarget3(b) == a;
     return 0;
@@ -1059,37 +1061,7 @@ int fn_8022EA0C(int index)
 {
     if (lbl_8053AC90 == NULL) return -1;
     if (!isPlayerEnabled(index)) return index;
-    if ((u8)pIsLinked(index)) {
-        int target = pLinkTarget(index);
-        if (lbl_8053AC90 == NULL) return -1;
-        if (!isEnabled2(target)) return target;
-        if ((u8)isLinked3(target)) {
-            target = linkTarget3(target);
-            if (lbl_8053AC90 == NULL) return -1;
-            if (!fn_8023F264(target)) return target;
-            if ((u8)fn_8022F514(target)) target = fn_8022EA0C(fn_8022F3DC(target));
-            else if (fn_8022CAF8(target) == 4) {
-                int scan = target;
-                int count = 0;
-                while (count < fn_80234004(target)) {
-                    ++count;
-                    ++scan;
-                    while (!fn_8022E438(scan, target)) ++scan;
-                }
-                target = scan;
-            }
-        } else if (linkMode3(target) == 4) {
-            int scan = target;
-            int count = 0;
-            while (count < linkCount3(target)) {
-                ++count;
-                ++scan;
-                while (!sameLinkDeep(scan, target)) ++scan;
-            }
-            target = scan;
-        }
-        return target;
-    }
+    if ((u8)pIsLinked(index)) return lastLinkedPlayer(pLinkTarget(index));
     if (p486A0(index) != 4) return index;
     int scan = index;
     int count = 0;
