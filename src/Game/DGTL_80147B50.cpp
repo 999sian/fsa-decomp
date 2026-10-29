@@ -52,9 +52,9 @@ static inline f32 dgtlSin(f32 x) { return sin(x); }
 static inline f32 dgtlCos(f32 x) { return cos(x); }
 static inline void fn_80147B50_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az, f32 s) {
     f32 cx;
-    f32 sx = sin(ax);
-    f32 sy = sin(ay);
-    f32 sz = sin(az);
+    f32 sx = dgtlSin(ax);
+    f32 sy = dgtlSin(ay);
+    f32 sz = dgtlSin(az);
     cx = cos(ax);
     f32 cy = cos(ay);
     f32 cz = cos(az);
