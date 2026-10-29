@@ -20,6 +20,8 @@ struct MenuSlots44 {
     u8* slot[3];
 };
 
+static inline void addMenuTiming(s32& total, s32 value) { total = value + total; }
+
 static inline f32 menuPulseSquare(s32 value) { return (f32)(value * value); }
 
 struct MenuSlots24 {
@@ -4856,9 +4858,9 @@ extern "C" void __dt__19JASMemPool_6JAISeqFv(void* p);
 extern "C" void __dt__18JASMemPool_5JAISeFv(void* p);
 #pragma opt_common_subs off
 extern "C" void fn_803D24E4(void) {
-    u8* const registration=lbl_80527E68;
-    const u32* s = (u32*)lbl_804AFB90;
-    u32* const d = (u32*)(lbl_804AFB90 + 0x1e0);
+    u8* registration=lbl_80527E68;
+    u32* s = (u32*)lbl_804AFB90;
+    u32* d = (u32*)(lbl_804AFB90 + 0x1e0);
     d[0] = s[0]; d[1] = s[1]; d[2] = s[2]; d[3] = s[3]; d[4] = s[4]; d[5] = s[5]; d[6] = s[6]; d[7] = s[7];
     d[8] = s[8]; d[9] = s[9]; d[10] = s[10]; d[11] = s[11]; d[12] = s[12]; d[13] = s[13]; d[14] = s[14]; d[15] = s[15];
     d[16] = s[16]; d[17] = s[17]; d[18] = s[18]; d[19] = s[19]; d[20] = s[20]; d[21] = s[21]; d[22] = s[22]; d[23] = s[23];
