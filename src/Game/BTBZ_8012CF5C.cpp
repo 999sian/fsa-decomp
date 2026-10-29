@@ -72,7 +72,7 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
         }
         *(s32*)(this_ + 0x238) = 0;
         {
-            int a = (int)fn_801F7A08(fn_801F856C(), 0x53574556);
+            a = (int)fn_801F7A08(fn_801F856C(), 0x53574556);
             if (fn_801F666C(fn_801F856C(), (void*)a) != 0) {
                 fn_802B39E8();
             }
