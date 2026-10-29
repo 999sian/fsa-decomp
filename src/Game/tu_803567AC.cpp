@@ -155,6 +155,14 @@ extern "C" u8 fn_8038C678(s32 id, s32 kind, u32 h, u32 room, void* pos, s32 c);
 extern "C" int fn_802DCD0C(void);
 extern "C" u8 fn_80388CAC(s32 id, u32 h);
 extern "C" float lbl_805427E0;
+struct MovingAnimEntry { s32* idle; s32* moving; u32 a, b; };
+static inline void movingBeginJump(char* p) {
+    JGeometry::TVec3f v((*(f32*)(p+0x278)-*(f32*)(p+0xc))/40.0f,
+                       (*(f32*)(p+0x27c)-*(f32*)(p+0x10))/40.0f, 4.0f);
+    *(JGeometry::TVec3f*)(p+0x3c) = v;
+    *(f32*)(p+0x260) = 0.2f;
+    *(s32*)(p+0x230) = 3;
+}
 extern "C" void fn_80356B60(char* this_) {
     JGeometry::TBox2f box;
     box.set(*(JGeometry::TBox2f*)(this_ + 0x60));
