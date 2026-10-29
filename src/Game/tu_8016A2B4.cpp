@@ -851,7 +851,7 @@ static inline bool deleteEffect8016D398(const JPABaseEmitter* e) {
     return e->checkStatus(8)!=0 && e->mAlivePtclChld.getNum()+e->mAlivePtclBase.getNum()==0;
 }
 
-static inline f32 scaleRandom8016D398(const f32 scale) {
+static inline f32 scaleRandom8016D398(f32 scale) {
     return scale*effectRandom8016D398();
 }
 
