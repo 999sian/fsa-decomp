@@ -87,6 +87,9 @@ extern "C" const f32 lbl_805424EC;
 static inline u8* fobeChild(u8* p, s32 i) {
 	return (u8*)fn_801F666C(fn_801F856C(), *(u32*)(p + i * 4 + 0x240));
 }
+static inline u32 fobeSpawnRupee(u8* p, f32* pos, s32 type) {
+	return Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(p + 4), pos, type | 0x1000000, -1, -1);
+}
 static inline f32 fobeRandom(u8* game, u32 multiplier) {
 	union { u32 bits; f32 value; } r;
 	u32* state = (u32*)(game + 0xb4);
@@ -102,6 +105,7 @@ extern "C" f32 lbl_805424FC;
 extern "C" f32 lbl_80542500;
 extern "C" void fn_80349B18(u8* this_) {
 	s32 i;
+	u8* h;
 
 	if (*(s32*)(this_ + 0x230) != 0 && *(s32*)(this_ + 0x230) != 4) {
 		*(s16*)(this_ + 0x280) += 0x222;
@@ -113,7 +117,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		}
 		if (this_[0x282] == 0) {
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					if (*(s32*)(this_ + 0x238) >= 0 && fn_8022F514(*(s32*)(this_ + 0x238)) == 1) {
 						*(s32*)(this_ + 0x238) = fn_8022F3DC(*(s32*)(this_ + 0x238));
@@ -127,7 +131,7 @@ extern "C" void fn_80349B18(u8* this_) {
 			s32 zeros = 0;
 			*(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x238);
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h == 0) {
 					if (++zeros >= 5) {
 						this_[0x282] = 1;
@@ -143,11 +147,11 @@ extern "C" void fn_80349B18(u8* this_) {
 	if (this_[0x282] == 1) {
 		u8 allStopped = 1;
 		for (i = 0; i < 0xe; i++) {
-			u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+			h = fobeChild(this_, i);
 			if (h != 0) {
-				*(s32*)(h + 0x230) = 4;
 				JGeometry::TVec3f v(*(JGeometry::TVec3f*)(h + 0x3c));
 				v *= lbl_805424E0;
+				*(s32*)(h + 0x230) = 4;
 				*(JGeometry::TVec3f*)(h + 0x3c) = v;
 				if (h[0x264] == 0) {
 					allStopped = 0;
@@ -157,7 +161,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		*(s32*)(this_ + 0x230) = 4;
 		if (allStopped == 1) {
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					h[0x265] = 1;
 				}
@@ -196,7 +200,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		if (*(s32*)(this_ + 0x230) == 1) {
 			for (i = 0; i < 0xe; i++) {
 				*(u32*)(this_ + i * 4 + 0x240) = Actor_CreateByID(fn_801F856C(), 0x464F4245, *(u32*)(this_ + 4), (f32*)(this_ + 0xc), 0, -1, -1);
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					*(u32*)(h + 0x250) = *(u32*)(this_ + 0x198);
 					*(s32*)(h + 0x254) = i;
@@ -209,7 +213,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		u8 noneWaiting = 1;
 		u8 allReady = 1;
 		for (i = 0; i < 0xe; i++) {
-			u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+			h = fobeChild(this_, i);
 			if (h != 0) {
 				if (noneWaiting == 1 && *(s32*)(h + 0x230) == 1) {
 					noneWaiting = 0;
@@ -226,7 +230,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		} else if (noneWaiting == 1) {
 			fn_801EEC98(this_, *(u32*)(this_ + 0x198), 0, 0, 0, this_ + 0x238, 0, 0);
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					*(s32*)(h + 0x244) = *(s32*)(this_ + 0x238);
 				}
@@ -238,7 +242,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		if (*(s32*)(this_ + 0x234) <= 0) {
 			f32 t = lbl_805424F0;
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					*(f32*)(h + 0x25c) = t;
 					*(s32*)(h + 0x230) = 3;
@@ -250,7 +254,7 @@ extern "C" void fn_80349B18(u8* this_) {
 	case 3: {
 		u8 found = 0;
 		for (i = 0; i < 0xe; i++) {
-			u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+			h = fobeChild(this_, i);
 			if (h != 0 && *(s32*)(h + 0x230) == 2) {
 				found = 1;
 				*(s32*)(this_ + 0x234) = (s32)(lbl_805424E8 * fobeRandom(lbl_8053AAF8, 0x19660d)) + 0xb4;
@@ -259,7 +263,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		}
 		if (found == 1) {
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					*(s32*)(h + 0x230) = 2;
 				}
@@ -272,7 +276,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		u8 noneAlive = 1;
 		u8 allDone = 1;
 		for (i = 0; i < 0xe; i++) {
-			u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+			h = fobeChild(this_, i);
 			if (h != 0) {
 				noneAlive = 0;
 				if (h[0x262] == 0) {
@@ -289,9 +293,9 @@ extern "C" void fn_80349B18(u8* this_) {
 			fn_80349914(this_, pos);
 			s16 ang = (s32)(lbl_805424F8 * fobeRandom(lbl_8053AAF8, 0x19660d));
 			for (s32 k = 0; k < 14; k++) {
-				s32 type = (k & 1) + 1;
+				u8 type = (k & 1) + 1;
 				u32 id = Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(this_ + 4), pos, type | 0x1000000, -1, -1);
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), id);
+				h = (u8*)fn_801F666C(fn_801F856C(), id);
 				if (h != 0) {
 					JGeometry::TVec3f vel;
 					s16 a = ang + (k * 0x10000) / 14;
@@ -304,7 +308,7 @@ extern "C" void fn_80349B18(u8* this_) {
 		}
 		if (allDone == 1) {
 			for (i = 0; i < 0xe; i++) {
-				u8* h = (u8*)fn_801F666C(fn_801F856C(), *(u32*)(this_ + i * 4 + 0x240));
+				h = fobeChild(this_, i);
 				if (h != 0) {
 					((Actor*)h)->detach();
 				}
