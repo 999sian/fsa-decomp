@@ -506,9 +506,10 @@ static inline void WRTC_moveTowards(u8* self,const volatile JGeometry::TVec3f& o
             JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
             fn_80238548(idx,0,(f32*)&pos,0x10);
         }
-        *(f32*)(self+0xc)=(f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0*k+*(f32*)(self+0xc);
-        *(f32*)(self+0x10)=(f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0*k+*(f32*)(self+0x10);
-        *(f32*)(self+0x14)=(f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0*k+*(f32*)(self+0x14);
+        f32 x=out.x,y=out.y,z=out.z;
+        *(f32*)(self+0xc)=k*((f32)(s32)(lbl_8053BFD4*(x-*(f32*)(self+0xc)))*lbl_8053BFD0)+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=k*((f32)(s32)(lbl_8053BFD4*(y-*(f32*)(self+0x10)))*lbl_8053BFD0)+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=k*((f32)(s32)(lbl_8053BFD4*(z-*(f32*)(self+0x14)))*lbl_8053BFD0)+*(f32*)(self+0x14);
         fn_801F2B7C(self,2,-1,1);
     }
 }
