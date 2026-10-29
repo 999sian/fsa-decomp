@@ -160,10 +160,11 @@ struct MovingActor : Actor {
     s32 state, timer, frame, duration, remaining, hintTimer, facing, player, kind;
     s32* frames() { return ((MovingAnimEntry*)lbl_80472390)[kind].moving; }
     void setState(const int next) {
+        MovingAnimEntry* table = (MovingAnimEntry*)lbl_80472390;
         state = next;
         frame = 0;
-        if (next == 3 || next == 5) timer = frames()[0];
-        else timer = ((MovingAnimEntry*)lbl_80472390)[kind].idle[0];
+        if (next == 3 || next == 5) timer = table[kind].moving[0];
+        else timer = table[kind].idle[0];
     }
 };
 static inline void movingBeginJump(char* p) {
@@ -317,7 +318,7 @@ extern "C" void fn_80356B60(char* this_) {
                 *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[*(s32*)(this_ + 0x238)];
             } else if (*(s32*)(this_+0x230)==5) {
                 *(s32*)(this_ + 0x238) &= 3;
-                *(s32*)(this_ + 0x234) = movingFrames(this_)[*(s32*)(this_ + 0x238)];
+                *(s32*)(this_ + 0x234) = ((MovingActor*)this_)->frames()[*(s32*)(this_ + 0x238)];
             }
         }
         break;
@@ -331,7 +332,7 @@ extern "C" void fn_80356B60(char* this_) {
                 *(s32*)(this_ + 0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(this_ + 0x250)].idle[*(s32*)(this_ + 0x238)];
             } else if (*(s32*)(this_+0x230)==5) {
                 *(s32*)(this_ + 0x238) &= 1;
-                *(s32*)(this_ + 0x234) = movingFrames(this_)[*(s32*)(this_ + 0x238)];
+                *(s32*)(this_ + 0x234) = ((MovingActor*)this_)->frames()[*(s32*)(this_ + 0x238)];
             }
         }
         break;
