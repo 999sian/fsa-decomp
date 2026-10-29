@@ -611,20 +611,21 @@ extern "C" void fn_801F8658(ActorPool* pool) {
 
 static inline bool unlinkPoolNode(LinkActor* const actor, LinkPool* const pool)
 {
+    LinkActor* node = actor;
     bool removed = false;
-    LinkActor* prev = actor->mPrev;
+    LinkActor* prev = node->mPrev;
     if (prev != NULL) {
-        prev->mNext = actor->mNext;
-        if (actor->mNext != NULL) actor->mNext->mPrev = actor->mPrev;
+        prev->mNext = node->mNext;
+        if (node->mNext != NULL) node->mNext->mPrev = node->mPrev;
         removed = true;
-    } else if (actor == pool->mHead) {
-        pool->mHead = actor->mNext;
+    } else if (node == pool->mHead) {
+        pool->mHead = node->mNext;
         if (pool->mHead != NULL) pool->mHead->mPrev = NULL;
         removed = true;
     }
     if (removed) {
-        actor->mPrev = NULL;
-        actor->mNext = NULL;
+        node->mPrev = NULL;
+        node->mNext = NULL;
     }
     return removed;
 }
