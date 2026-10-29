@@ -1,5 +1,6 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 extern "C" char lbl_804AB258[];
