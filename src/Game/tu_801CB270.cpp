@@ -560,7 +560,7 @@ extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y) {
     return moved;
 }
 #pragma opt_lifetimes reset
-static inline JGeometry::TVec2<f32> projectionDelta(JGeometry::TVec2<f32> corner, const f32* pt)
+static inline JGeometry::TVec2<f32> projectionDelta(JGeometry::TVec2<f32>& corner, const f32* pt)
 {
     corner.x -= pt[0];
     corner.y -= pt[1];
