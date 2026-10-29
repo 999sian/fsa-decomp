@@ -1081,9 +1081,7 @@ inline u8* findCollisionActor(s32 handle) {
 done:
     return result;
 }
-inline u8* ActorPool::findCollisionActor(s32 handle) {
-    PoolActor* scanActor;
-    s32 i;
+inline u8* ActorPool::findCollisionActor(const s32 handle) {
     PoolActor* result = NULL;
     if (handle >= 0) {
         s32 cached = *(s32*)((u8*)this + 0x2014);
@@ -1096,9 +1094,9 @@ inline u8* ActorPool::findCollisionActor(s32 handle) {
         }
         s32 count = this->mCount;
         PoolActor** cur = (PoolActor**)this;
-        for (i = 0; i < count; cur++, i++) {
-            scanActor = cur[2];
-            if (scanActor && scanActor->mActive && handle == scanActor->mId) {
+        for (s32 i = 0; i < count; cur++, i++) {
+            PoolActor* actor = cur[2];
+            if (actor && actor->mActive && handle == actor->mId) {
                 result = this->mActors[i];
                 break;
             }
