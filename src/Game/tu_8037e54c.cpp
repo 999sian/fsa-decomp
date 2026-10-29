@@ -2317,7 +2317,7 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
 }
 #pragma opt_loop_invariants reset
 static inline s32 messagePadding(const f32 value) {
-    return (s32)(value * lbl_805430BC + lbl_805430BC);
+    return (s32)(value / 2.0f + 0.5f);
 }
 static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb, char* padbuf = NULL) {
     s32 pad = messagePadding(fa - width * fb);
@@ -2334,6 +2334,8 @@ extern "C" void fn_80230E1C(s32, s32);
 
 #pragma optimization_level 3
 extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 fb) {
+    s32 shift;
+    u8 flag;
     char* p;
     Inf1* inf = &lbl_8053AD78->p8->inf;
     char* str = (char*)inf + (inf->size + inf->entries[idx].offset + 8);
@@ -2342,8 +2344,8 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
     s32 col = 1;
     u8 mode = 0;
     s32 len = 0;
-    u8 flag = (u8)(1 << (player - 1));
-    s32 shift = (player - 1) * 2;
+    flag = (u8)(1 << (player - 1));
+    shift = (player - 1) * 2;
     f32 width = lbl_805430C8;
     char padbuf[16];
     char line[100];
