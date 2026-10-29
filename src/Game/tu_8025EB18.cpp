@@ -1968,6 +1968,27 @@ extern "C" void fn_80263BA0(char* p) {
     fn_8024F0E8(p, 0x1000e);
 }
 
+static inline void updateCarrySnap(char* p) {
+    bool inZ = carriedPositionUnchanged(p);
+    if (inZ && VEC(p, 0x368).squared() <= lbl_8054017C * *(f32*)__float_epsilon) {
+        U8(p, 0x3f8) = 0;
+    } else {
+        U8(p, 0x3f8)++;
+        if (U8(p, 0x3f8) >= 0x18)
+            U8(p, 0x3f8) = 0;
+    }
+    U8(p, 0x3f9) = (lbl_8046B790 + S32(p, 0x3dc) * 8)[(s32)U8(p, 0x3f8) / 3];
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)((char*)lbl_8046B7B0 + U8(p, 0x3f9) * 0x14);
+    f32* src = &pos->x;
+    f32 x = *src++;
+    f32 y = *src++;
+    F32(p,0x2f4) = x;
+    f32 z = *src;
+    F32(p,0x2f8) = y;
+    F32(p,0x2fc) = z;
+    VEC(p, 0x2f4).add(VEC(p, 0x8));
+}
+
 extern "C" void fn_80263C64(char* p) {
     JGeometry::TVec3<f32> v;
     char* actor;
