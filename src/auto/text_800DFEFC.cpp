@@ -1,6 +1,7 @@
 #define J3D_GX_COLOR_WORD_COPY
 #include "JSystem/J3D/J3DMaterialFactory.h"
 #include "JSystem/JSupport.h"
+#include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/J3D/J3DMaterial.h"
 #include "JSystem/J3D/J3DColorBlock.h"
 #include "JSystem/J3D/J3DTexGenBlock.h"
@@ -117,10 +118,10 @@ J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32
 	} else {
 		texGenNum = 0;
 	}
+	u32 peFlag = flags & 0x30000000;
 	u32 texGenFlag;
 	u32 colorFlag = flags & 0xc0000000;
 	texGenFlag = texGenNum > 4 ? 0 : flags & 0x0c000000;
-	u32 peFlag = flags & 0x30000000;
 	u32 indFlag = (flags >> 24) & 1;
 	if (material == NULL) {
 		material = new J3DMaterial;
@@ -163,7 +164,7 @@ J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32
 		material->mTevBlock->setTevKColor(i, fn_800E0DF8(this, idx, i));
 	}
 	for (u8 i = 0; i < 4; i++) {
-		material->mTevBlock->setTevColor(i, fn_800E0D88(this, idx, i));
+		material->mTevBlock->setTevColor(i, reinterpret_cast<J3DGXColorS10 (*)(const J3DMaterialFactory_v21*, int, int)>(fn_800E0D88)(this, idx, i));
 	}
 	for (u8 i = 0; i < 4; i++) {
 		material->mTevBlock->setTevSwapModeTable(i, newTevSwapModeTable(idx, i));
