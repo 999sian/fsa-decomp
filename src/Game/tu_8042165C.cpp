@@ -859,6 +859,8 @@ extern "C" void fn_8043D514(void);
 extern "C" void fn_80402E08(void);
 extern "C" void fn_8042165C(u8* this_);
 extern "C" void fn_8037EB4C(void);
+#pragma push
+#pragma dont_inline on
 extern "C" void fn_80424148(u8* this_, s32 i, u8 flag) {
     s32 idx = i;
     u8* p = this_;
@@ -875,6 +877,7 @@ extern "C" void fn_80424148(u8* this_, s32 i, u8 flag) {
     fn_8042165C(this_);
     fn_8037EB4C();
 }
+#pragma pop
 
 extern "C" void fn_80425128(u8* this_) {
     u32* walk;
