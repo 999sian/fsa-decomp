@@ -156,7 +156,7 @@ struct Tu80256Tables {
     JGeometry::TVec3<f32> b[8];
     JGeometry::TVec3<f32> c[4];
 };
-static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, f32 epsilon) {
+static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
     if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, epsilon) &&
         JGeometry::TUtilf::epsilonEquals(a.y, b.y, epsilon)) equal = true;
@@ -2227,10 +2227,7 @@ extern "C" void fn_8025C894(u8* p) {
             } else {
                 fn_802808E8(p, lbl_80540124);
             }
-            f32 epsilon = lbl_805400D8 * *(f32*)__float_epsilon;
-            bool same = false;
-            if (JGeometry::TUtilf::epsilonEquals(F32(p,8), F32(p,0x14), epsilon) &&
-                JGeometry::TUtilf::epsilonEquals(F32(p,0xc), F32(p,0x18), epsilon)) same = true;
+            bool same = playerNearXY(V2(p,8), V2(p,0x14), lbl_805400D8 * *(f32*)__float_epsilon);
             if (same) {
                 U8(p, 0x3f8) = 0;
             } else {
