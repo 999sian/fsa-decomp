@@ -101,6 +101,8 @@ extern "C" u8 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     return 0;
 }
 
+inline s32 tableRoom(const HitRectTable* t) { return t->room; }
+
 #pragma opt_dead_code off
 extern "C" void fn_802685D4(void* thisPtr) {
     u8* p = (u8*)thisPtr;
@@ -310,7 +312,7 @@ extern "C" void fn_80268BC4(u8* p) {
             }
             *(JGeometry::TVec3<f32>*)(p + 8) = saved;
         }
-        if ((u8)fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4))) {
+        if (fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), *(u32*)(*(u8**)(p + 4) + 0x3b4))) {
             p[*(s32*)(p + 0x1c) + 0x28] = 1;
         } else if (fn_8026FC20(*(void**)(p + 4)) <= 0 && !fn_802DCD0C(fn_802D6A9C())) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
