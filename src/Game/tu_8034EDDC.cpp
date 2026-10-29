@@ -530,6 +530,10 @@ extern "C" u8 fn_80235580(s32 i);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" void fn_8023DEDC(s32,const JGeometry::TVec3<f32>*);
 extern "C" void fn_8022CB94(s32);
+static inline u16 enemyPlayerTile(s32 player) {
+    const s32 room = fn_8023DE58(player);
+    return fn_8022461C(fn_8023E724(player), room);
+}
 static inline f32 enemyDistance2(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b) {
     f32 bx = b.x;
     f32 dx = a.x - bx;
@@ -541,7 +545,7 @@ static inline f32 enemyDistance2(const JGeometry::TVec2<f32>& a, const JGeometry
 extern "C" s32 fn_80350974(u8* self) {
     s32 flag;
     s32 cnt;
-    int room;
+    s32 room;
     JGeometry::TVec2<f32>* pos;
     s32 i;
     s32 j;
@@ -615,9 +619,9 @@ extern "C" s32 fn_80350974(u8* self) {
                 self[0x280] = r;
             }
         } else {
-            u8 result = fn_80351020(self, i);
-            self[i + 0x283] = result;
-            if (result == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
+            r = fn_80351020(self, i);
+            self[i + 0x283] = r;
+            if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                 cnt++;
             }
         }
@@ -673,7 +677,7 @@ if (*(s32*)(self + 0x258) == 5 && cnt == 0 &&
         for (s32 player = 0; player < 4; player++) {
             if (self[player + 0x283] == 0) {
                 room = fn_8023DE58(player);
-                if ((u16)((s16(*)(void*,s32))fn_8022461C)(fn_8023E724(player), room) == 0) {
+                if ((u16)fn_8022461C(fn_8023E724(player), room) == 0) {
                     self[0x289] = 0;
                     break;
                 }
