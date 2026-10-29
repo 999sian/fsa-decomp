@@ -3670,8 +3670,7 @@ extern const JGeometry::TVec3<f32> lbl_8046BBD8[];
 }
 inline bool wallAt(char* p, f32 x, f32 y) {
     void* obj = PTR(p, 0x3b4);
-    JGeometry::TVec3<f32> t(x, y, F32(p, 0x11bc));
-    return fn_802265DC(t, obj, 1);
+    return fn_802265DC(JGeometry::TVec3<f32>(x, y, F32(p, 0x11bc)), obj, 1);
 }
 inline void addPos(char* p, const JGeometry::TVec3<f32>& a) {
     JGeometry::TVec3<f32> v;
@@ -3697,28 +3696,28 @@ void fn_8027AAD0(char* p) {
     fn_8027EB04(p);
     if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) {
         if (fn_8022C82C(S32(p, 0x4)) > 0.0f) {
-            if (!fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+            if (!wallAt(p, 24.0f + F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f) &&
+                !wallAt(p, 24.0f + F32(p, 0x11b4), F32(p, 0x11b8)) &&
+                !wallAt(p, 24.0f + F32(p, 0x11b4), 24.0f + F32(p, 0x11b8))) {
                 F32(p, 0x11b4) += 2.0f;
             }
         } else if (fn_8022C82C(S32(p, 0x4)) < 0.0f) {
-            if (!fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+            if (!wallAt(p, F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8) - 24.0f) &&
+                !wallAt(p, F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8)) &&
+                !wallAt(p, F32(p, 0x11b4) - 24.0f, 24.0f + F32(p, 0x11b8))) {
                 F32(p, 0x11b4) -= 2.0f;
             }
         }
         if (fn_8022C76C(S32(p, 0x4)) < 0.0f) {
-            if (!fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4), 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+            if (!wallAt(p, 24.0f + F32(p, 0x11b4), 24.0f + F32(p, 0x11b8)) &&
+                !wallAt(p, F32(p, 0x11b4), 24.0f + F32(p, 0x11b8)) &&
+                !wallAt(p, F32(p, 0x11b4) - 24.0f, 24.0f + F32(p, 0x11b8))) {
                 F32(p, 0x11b8) += 2.0f;
             }
         } else if (fn_8022C76C(S32(p, 0x4)) > 0.0f) {
-            if (!fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
-                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+            if (!wallAt(p, 24.0f + F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f) &&
+                !wallAt(p, F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f) &&
+                !wallAt(p, F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8) - 24.0f)) {
                 F32(p, 0x11b8) -= 2.0f;
             }
         }
