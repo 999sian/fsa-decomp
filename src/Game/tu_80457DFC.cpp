@@ -601,189 +601,79 @@ extern "C" void fn_80458744(void* this_, s32 mode) {
     ((JAISoundParamsMove*)(*(char**)(self + 0x34) + 0x1c))->moveVolume(c, 0);
 }
 
-extern "C" void fn_80458880(u8* this_, s32 id, s8 mode) {
-    if (mode >= 4) {
+#pragma dont_inline reset
+extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
+#pragma dont_inline off
+    u8* self=this_;
+    if(mode>=4)return;
+    if(id==0x48 && self[0x6a]==0)self[0x6a]=1;
+    if(id==12)((JAISeMgr*)*(void**)(self+0x34))->stop(1);
+    switch((s32)id) {
+    case 0: case 1: case 2: case 3: case 8: case 11: case 12: case 13: case 14: case 15: case 16: case 17: case 29: case 31: case 32: case 33: case 34: case 35: case 36: case 37: case 40: case 41: case 42: case 43: case 44: case 46: case 47: case 48: case 49: case 50: case 51: case 52: case 53: case 54: case 55: case 57: case 58: case 59: case 60: case 61: case 62: case 63: case 64: case 65: case 66: case 67: case 68: case 69: case 70: case 71: case 72: case 73: case 74: case 75: case 76: case 77: case 79: case 80: case 82: case 83: case 84: case 85: case 86: case 87: case 88: case 89: case 90: case 91: case 92: case 93: case 94: case 95: case 96: case 97: case 98:
+        mode=-1;break;
+    }
+    switch((s32)id) {
+    case 10:
+        if(self[0x6c])return;
+        self[0x6c]=3;
+        break;
+    case 3:
+        if(self[0x74])return;
+        if(self[0x6d])return;
+        if(((JAISoundHandles*)*(void**)(self+0x14))->getHandleSoundID(JAISoundID(3)))return;
+        ((JAUSoundObject*)*(void**)(self+0x14))->stopSound(JAISoundID(0x42),0);
+        ((JAUSoundObject*)*(void**)(self+0x14))->stopSound(JAISoundID(0x41),0);
+        break;
+    case 0x42:
+        if(self[0x74])return;
+        if(self[0x6d])return;
+        if(((JAISoundHandles*)*(void**)(self+0x14))->getHandleSoundID(JAISoundID(3)))return;
+        if(((JAISoundHandles*)*(void**)(self+0x14))->getHandleSoundID(JAISoundID(0x41)))return;
+        if(((JAISoundHandles*)*(void**)(self+0x14))->getHandleSoundID(JAISoundID(0x42)))return;
+        break;
+    case 0x41:
+        if(((JAISoundHandles*)*(void**)(self+0x14))->getHandleSoundID(JAISoundID(3)))return;
+        if(((JAISoundHandles*)*(void**)(self+0x14))->getHandleSoundID(JAISoundID(0x41)))return;
+        ((JAUSoundObject*)*(void**)(self+0x14))->stopSound(JAISoundID(0x42),0);
+        break;
+    case 0x38:case 0x57:
+        if(self[4])return;
+        if(self[5]==1 && *(Unk80458F04Sound**)(self+0x84) && id==(*(Unk80458F04Sound**)(self+0x84))->mID)return;
+        JAISoundID sid=id;
+        ((Unk80458880Mgr*)*(void**)(self+0x30))->v3(&sid,(Unk80458F04Sound**)(self+0x84),0);
+        if(*(Unk80458F04Sound**)(self+0x84))(*(Unk80458F04Sound**)(self+0x84))->mMove.moveVolume(*(f32*)(self+0x50),0);
         return;
     }
-    if (id == 0x48 && this_[0x6a] == 0) {
-        this_[0x6a] = 1;
-    }
-    if (id == 0xc) {
-        ((JAISeMgr*)*(void**)(this_ + 0x34))->stop(1);
-    }
-    if (id < 0x28) {
-        if (id < 0x12) {
-            if (id == 8) {
-                mode = -1;
-            } else if (id > 8) {
-                if (id >= 0xb) {
-                    mode = -1;
-                }
-            } else if (id < 4 && id >= 0) {
-                mode = -1;
-            }
-        } else if (id == 0x1e) {
-        } else if (id < 0x1e) {
-            if (id >= 0x1d) {
-                mode = -1;
-            }
-        } else if (id < 0x26) {
-            mode = -1;
-        }
-    } else if (id == 0x4e) {
-    } else if (id < 0x4e) {
-        if (id != 0x38 && (id > 0x38 || id != 0x2d)) {
-            mode = -1;
-        }
-    } else if (id != 0x51 && id < 0x63) {
-        mode = -1;
-    }
-
-    if (id == 0x38 || id == 0x57) {
-        if (this_[4] != 0) {
-            return;
-        }
-        if (this_[5] == 1 && *(void**)(this_ + 0x84) != NULL) {
-            if (id == ((Unk80458F04Sound*)*(void**)(this_ + 0x84))->mID) {
-                return;
-            }
-            JAISoundID sid = id;
-            ((Unk80458880Mgr*)*(void**)(this_ + 0x30))->v3(&sid, (Unk80458F04Sound**)(this_ + 0x84), 0);
-            if (*(void**)(this_ + 0x84) != NULL) {
-                ((Unk80458F04Sound*)*(void**)(this_ + 0x84))->mMove.moveVolume(*(f32*)(this_ + 0x50), 0);
-            }
-            return;
-        }
-    } else if (id < 0x38) {
-        if (id == 10) {
-            if (this_[0x6c] != 0) {
-                return;
-            }
-            this_[0x6c] = 3;
-        } else if (id == 3) {
-            if (this_[0x74] != 0) {
-                return;
-            }
-            if (this_[0x6d] != 0) {
-                return;
-            }
-            JAISoundID s0 = 3;
-            if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s0) != NULL) {
-                return;
-            }
-            JAISoundID s1 = 0x42;
-            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(s1, 0);
-            JAISoundID s2 = 0x41;
-            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(s2, 0);
-        }
-    } else if (id == 0x42) {
-        if (this_[0x74] != 0) {
-            return;
-        }
-        if (this_[0x6d] != 0) {
-            return;
-        }
-        JAISoundID s0 = 3;
-        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s0) != NULL) {
-            return;
-        }
-        JAISoundID s1 = 0x41;
-        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s1) != NULL) {
-            return;
-        }
-        JAISoundID s2 = 0x42;
-        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s2) != NULL) {
-            return;
-        }
-    } else if (id < 0x42) {
-        if (id > 0x40) {
-            JAISoundID s0 = 3;
-            if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s0) != NULL) {
-                return;
-            }
-            JAISoundID s1 = 0x41;
-            if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s1) != NULL) {
-                return;
-            }
-            JAISoundID s2 = 0x42;
-            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(s2, 0);
-        }
-    }
-
-    if (mode < 0) {
-        if (id != 0xe && id != 0x1f && id != 0x36 && id != 0x54 && id != 0x55 && id != 0x4f &&
-            id != 0x50) {
-            JAISoundID sid = id;
-            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(sid, 0);
-        }
-        JAUSoundObject* obj = *(JAUSoundObject**)(this_ + 0x14);
-        JAISoundID s0 = 0x13;
-        obj->stopSound(s0, 0);
-        JAISoundID s1 = 0x14;
-        obj->stopSound(s1, 0);
-        JAISoundID s2 = 0x15;
-        obj->stopSound(s2, 0);
-        JAISoundID s3 = 0x16;
-        obj->stopSound(s3, 0);
-        JAISoundID s4 = 0x17;
-        obj->stopSound(s4, 0);
-        JAISoundID s5 = 0x18;
-        obj->stopSound(s5, 0);
-        JAISoundID s6 = 0x19;
-        obj->stopSound(s6, 0);
-        JAISoundID s7 = 0x1a;
-        obj->stopSound(s7, 0);
-        JAISoundID s8 = 0x1b;
-        obj->stopSound(s8, 0);
-        JAISoundID s9 = 0x1c;
-        obj->stopSound(s9, 0);
-        JAISoundID sid = id;
-        void** vt = *(void***)((u8*)obj + 8);
-        ((void* (*)(void*, JAISoundID*))vt[5])(obj, &sid);
-    } else {
-        if (id != 0xe && id != 0x1f && id != 0x36 && id != 0x54 && id != 0x55 && id != 0x4f &&
-            id != 0x50) {
-            JAISoundID sid = id;
-            ((JAUSoundObject*)*(void**)(this_ + mode * 4 + 0x18))->stopSound(sid, 0);
-        }
-        JAUSoundObject* obj = *(JAUSoundObject**)(this_ + mode * 4 + 0x18);
-        JAISoundID s0 = 0x13;
-        obj->stopSound(s0, 0);
-        JAISoundID s1 = 0x14;
-        obj->stopSound(s1, 0);
-        JAISoundID s2 = 0x15;
-        obj->stopSound(s2, 0);
-        JAISoundID s3 = 0x16;
-        obj->stopSound(s3, 0);
-        JAISoundID s4 = 0x17;
-        obj->stopSound(s4, 0);
-        JAISoundID s5 = 0x18;
-        obj->stopSound(s5, 0);
-        JAISoundID s6 = 0x19;
-        obj->stopSound(s6, 0);
-        JAISoundID s7 = 0x1a;
-        obj->stopSound(s7, 0);
-        JAISoundID s8 = 0x1b;
-        obj->stopSound(s8, 0);
-        JAISoundID s9 = 0x1c;
-        obj->stopSound(s9, 0);
-        JAISoundID sid = id;
-        void** vt = *(void***)((u8*)obj + 8);
-        Unk80458F04Sound** piVar3 = (Unk80458F04Sound**)((void* (*)(void*, JAISoundID*))vt[5])(obj, &sid);
-        if (piVar3 != NULL && *piVar3 != NULL) {
-            f32 pan = lbl_80543EC4;
-            if (mode >= 0 && mode < this_[5]) {
-                if (this_[5] > 1 && this_[5] < 5) {
-                    if (mode == 0 || mode == 2) {
-                        pan = lbl_80543EC8;
-                    } else if (mode == 1 || mode == 3) {
-                        pan = lbl_80543ECC;
+    if(mode>=0){
+        if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
+            (*(JAUSoundObject**)(self+mode*4+0x18))->stopSound(JAISoundID(id),0);
+        stopAudioGroup(*(JAUSoundObject**)(self+mode*4+0x18));
+        JAISoundHandle* h=(*(JAUSoundObject**)(self+mode*4+0x18))->startSound(JAISoundID(id));
+        if(h && *h){
+            f32 pan;
+            if(mode<0)pan=lbl_80543EC4;
+            else if(mode>=self[5])pan=lbl_80543EC4;
+            else {
+                pan=lbl_80543EC4;
+                switch(self[5]){
+                case 2:case 3:case 4:
+                    switch(mode) {
+                    case 0:case 2:pan=lbl_80543EC8;break;
+                    case 1:case 3:pan=lbl_80543ECC;break;
                     }
+                    break;
+                default:pan=lbl_80543EC4;break;
                 }
             }
-            (*piVar3)->mMove.movePan(pan, 0);
+            ((JAISoundParamsMove*)((u8*)h->getSound()+0x48))->movePan(pan,0);
         }
+    }else{
+        if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
+            (*(JAUSoundObject**)(self+0x14))->stopSound(JAISoundID(id),0);
+        stopAudioGroup(*(JAUSoundObject**)(self+0x14));
+        (*(JAUSoundObject**)(self+0x14))->startSound(JAISoundID(id));
     }
+#pragma dont_inline on
 }
 
 #pragma dont_inline reset
