@@ -113,8 +113,8 @@ extern "C" void fn_803771AC(u8* this_) {
         box.f.y += -1.0f;
         {
             u32 handle = *(u32*)(this_ + 0x198);
-            u8* p = fn_8020D58C();
-            fn_8020D7D0(p + (p[0] * 0x784 + 4), handle);
+            HitRectMgr* manager = (HitRectMgr*)fn_8020D58C();
+            fn_8020D7D0((u8*)&manager->lists[manager->cur], handle);
         }
         if (this_[0x264] == 0) {
             f32 dist = PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24)));
@@ -269,6 +269,7 @@ extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c);
 extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
 extern "C" void* lbl_8053AC98;
 extern "C" f32 lbl_80475178[];
+#pragma opt_lifetimes reset
 extern "C" void fn_80377A38(u8* this_) {
     *(s32*)(this_ + 0x244) = 0;
     this_[0x264] = 0;
