@@ -66,8 +66,8 @@ namespace JGeometry {
           TVec2& operator=(const TVec2& other) { set(other); return *this; }
           TVec2& operator+=(const TVec2& other) { x += other.x; y += other.y; return *this; }
           TVec2& operator-=(const TVec2& other) { x -= other.x; y -= other.y; return *this; }
-          TVec2 operator+(const TVec2& other) { TVec2 v(*this); v += other; return v; }
-          TVec2 operator-(const TVec2& other) { TVec2 v(*this); v -= other; return v; }
+          TVec2 operator+(const TVec2& other) const { TVec2 v(*this); v += other; return v; }
+          TVec2 operator-(const TVec2& other) const { TVec2 v(*this); v -= other; return v; }
 #endif
 
           template <typename TY>
