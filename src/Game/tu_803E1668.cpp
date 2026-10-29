@@ -168,6 +168,12 @@ extern "C" void fn_803E1668(u8* p) {
 #pragma dont_inline reset
 
 #pragma dont_inline reset
+extern "C" s32 fn_80403070(s32);
+extern "C" s32 fn_8040305C(s32);
+extern "C" void* fn_804030C4(u32, const char*);
+extern const char* lbl_804B0AD8[];
+extern const s16 lbl_80543648[];
+extern const f32 lbl_80543690;
 extern "C" void fn_803E29C8(u8* param_1) {
     fn_8043670C(*(void**)(param_1 + 0x5c), 0);
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
