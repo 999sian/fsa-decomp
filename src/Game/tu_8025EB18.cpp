@@ -1,4 +1,5 @@
 #include "types.h"
+#define JGEOMETRY_VEC2_EXPLICIT_COPY
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 #define GAME_ACTOR_USE_SDK_VEC
