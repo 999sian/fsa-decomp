@@ -369,6 +369,11 @@ static inline void tu803C_setCell2(u8* this_, u8* base, s32 cell, s32 idx, s32 k
     fn_804023D0(*(void**)(this_ + idx * 4 + cell), o, this_[flagOff]);
 }
 
+static inline void tu803C_setCellK(u8* this_, u8* base, s32 cell, s32 idx, s32 keyOff, s32 flagOff) {
+    void* o = keyObj(*(void**)(this_ + 8), ((const u64*)(base + keyOff))[idx]);
+    fn_804023D0(*(void**)(this_ + (idx * 4 + cell)), o, this_[flagOff]);
+}
+
 static inline void tu803C_max(s32* m, s32 v) {
     if (*m < v) {
         *m = v;
@@ -405,44 +410,45 @@ static inline void setPicBlackWhite(u8* p, const u64& key, JUtility::TColor blac
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     const Tu803BKeyTbl* t = (const Tu803BKeyTbl*)lbl_804765D0;
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[12][idx]))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0x80, 0x80, 0x80, 0xff));
+    setPicBlackWhite(p, t->keys[12][idx], JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0x80, 0x80, 0x80, 0xff));
 
     JUtility::TColor white1(0xb4, 0xb4, 0xb4, 0xff);
     JUtility::TColor black1(0x82, 0x82, 0x82, 0);
     JUtility::TColor tmp1 = black1;
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[11][idx]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[10][idx]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[9][idx]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[8][idx]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[7][idx]))->setBlackWhite(JUtility::TColor(tmp1.r, tmp1.g, tmp1.b, 0xff), white1);
+    setPicBlackWhite(p, t->keys[11][idx], black1, white1);
+    setPicBlackWhite(p, t->keys[10][idx], black1, white1);
+    setPicBlackWhite(p, t->keys[9][idx], black1, white1);
+    setPicBlackWhite(p, t->keys[8][idx], black1, white1);
+    setPicBlackWhite(p, t->keys[7][idx], JUtility::TColor(tmp1.r, tmp1.g, tmp1.b, 0xff), white1);
 
     JUtility::TColor white2(0x80, 0x80, 0x80, 0xff);
     JUtility::TColor black2(0x50, 0x50, 0x50, 0);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[6][idx]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[5][idx]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[4][idx]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[3][idx]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[2][idx]))->setBlackWhite(black2, white2);
+    setPicBlackWhite(p, t->keys[6][idx], black2, white2);
+    setPicBlackWhite(p, t->keys[5][idx], black2, white2);
+    setPicBlackWhite(p, t->keys[4][idx], black2, white2);
+    setPicBlackWhite(p, t->keys[3][idx], black2, white2);
+    setPicBlackWhite(p, t->keys[2][idx], black2, white2);
 
     JUtility::TColor white3(0x82, 0x82, 0x82, 0xff);
     JUtility::TColor black3(0x64, 0x64, 0x64, 0);
     JUtility::TColor tmp3 = black3;
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[22][idx]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[21][idx]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[20][idx]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[19][idx]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[18][idx]))->setBlackWhite(JUtility::TColor(tmp3.r, tmp3.g, tmp3.b, 0xff), white3);
+    setPicBlackWhite(p, t->keys[22][idx], black3, white3);
+    setPicBlackWhite(p, t->keys[21][idx], black3, white3);
+    setPicBlackWhite(p, t->keys[20][idx], black3, white3);
+    setPicBlackWhite(p, t->keys[19][idx], black3, white3);
+    setPicBlackWhite(p, t->keys[18][idx], JUtility::TColor(tmp3.r, tmp3.g, tmp3.b, 0xff), white3);
 
     JUtility::TColor white4(0xb4, 0xb4, 0xb4, 0xff);
     JUtility::TColor black4(0xb4, 0xb4, 0xb4, 0);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[17][idx]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[16][idx]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[15][idx]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(t->keys[14][idx]))->setBlackWhite(black4, white4);
+    setPicBlackWhite(p, t->keys[17][idx], black4, white4);
+    setPicBlackWhite(p, t->keys[16][idx], black4, white4);
+    setPicBlackWhite(p, t->keys[15][idx], black4, white4);
+    setPicBlackWhite(p, t->keys[14][idx], black4, white4);
 }
-
+#pragma opt_common_subs on
 // Finds the picture keyed by key[idx] on p+8 and sets its black/white colors.
 static inline void setPictureBlackWhite(u8* p, const u64* key, s32 idx, Clr black, Clr white) {
     FsaVObj* r = (FsaVObj*)((J2DPane*)*(void**)(p + 8))->search(key[idx]);
@@ -3938,19 +3944,21 @@ extern "C" void fn_803CD2DC(u8* p) {
     }
 }
 
-extern "C" void fn_803CD75C(u8* p) {
+extern "C" void fn_803CD75C(u8* p_) {
+    u8* base = (u8*)lbl_804765D0;
+    u8* p = p_;
     s32 i;
-    s32 sum = 0;
+    s32 sum;
+    s32 a = *(s16*)(lbl_8050DB0C + 0x158);
     s16 b = *(s16*)(lbl_8050DB0C + 0x156);
     s16 c = *(s16*)(lbl_8050DB0C + 0x154);
     s16 d = *(s16*)(lbl_8050DB0C + 0x15a);
     s16 e = *(s16*)(lbl_8050DB0C + 0x15c);
     s16 f = *(s16*)(lbl_8050DB0C + 0x15e);
     s16 g = *(s16*)(lbl_8050DB0C + 0x160);
-    s32 a = *(s16*)(lbl_8050DB0C + 0x158);
     s32 m = c + b;
-    if (m < c + b + a * 2) {
-        m = c + b + a * 2;
+    if (m < c + (b + a * 2)) {
+        m = c + (b + a * 2);
     }
     if (m < d + e) {
         m = d + e;
@@ -3962,38 +3970,40 @@ extern "C" void fn_803CD75C(u8* p) {
     if (*(s16*)(p + 0xd8) > c) {
         setFade(*(void**)(p + 0x50), b, 0, lbl_80543494, lbl_80543458);
     }
+    sum = 0;
     for (i = 0; i < 3; i++) {
         if (*(s16*)(p + 0xd8) > c + sum) {
-            fn_80402940(*(void**)(p + 0x38 + (2 - i) * 4), b, lbl_805434A0, lbl_80543458, 0);
-            fn_80402628(*(void**)(p + 0x38 + (2 - i) * 4), b, 0, ((u8*)*(void**)(p + 0x38 + (2 - i) * 4))[0x28]);
-            setCell(p, 0x38, 2 - i, 0x780, p[0x125]);
-            setCell(p, 0x38, 2 - i, 0x768, p[0x126]);
-            setCell(p, 0x38, 2 - i, 0x750, p[0x127]);
-            setCell(p, 0x38, 2 - i, 0x6c8, p[0x128]);
-            setCell(p, 0x38, 2 - i, 0x6b0, p[0x129]);
-            setCell(p, 0x38, 2 - i, 0x698, p[0x12a]);
-            setCell(p, 0x38, 2 - i, 0x680, p[0x12b]);
-            setCell(p, 0x38, 2 - i, 0x668, p[0x12c]);
-            setCell(p, 0x38, 2 - i, 0x650, p[0x12d]);
-            setCell(p, 0x38, 2 - i, 0x638, p[0x12e]);
-            setCell(p, 0x38, 2 - i, 0x620, p[0x12f]);
-            setCell(p, 0x38, 2 - i, 0x608, p[0x130]);
-            setCell(p, 0x38, 2 - i, 0x5f0, p[0x131]);
+            s32 j = 2 - i;
+            fn_80402940(*(void**)(p + 0x38 + j * 4), b, lbl_805434A0, lbl_80543458, 0);
+            fn_80402628(*(void**)(p + 0x38 + j * 4), b, 0, ((u8*)*(void**)(p + 0x38 + j * 4))[0x28]);
+            tu803C_setCell2(p, base, 0x38, j, 0x780, 0x125);
+            tu803C_setCell2(p, base, 0x38, j, 0x768, 0x126);
+            tu803C_setCell2(p, base, 0x38, j, 0x750, 0x127);
+            tu803C_setCell2(p, base, 0x38, j, 0x6c8, 0x128);
+            tu803C_setCell2(p, base, 0x38, j, 0x6b0, 0x129);
+            tu803C_setCell2(p, base, 0x38, j, 0x698, 0x12a);
+            tu803C_setCell2(p, base, 0x38, j, 0x680, 0x12b);
+            tu803C_setCell2(p, base, 0x38, j, 0x668, 0x12c);
+            tu803C_setCell2(p, base, 0x38, j, 0x650, 0x12d);
+            tu803C_setCell2(p, base, 0x38, j, 0x638, 0x12e);
+            tu803C_setCell2(p, base, 0x38, j, 0x620, 0x12f);
+            tu803C_setCell2(p, base, 0x38, j, 0x608, 0x130);
+            tu803C_setCell2(p, base, 0x38, j, 0x5f0, 0x131);
             setFade(*(void**)(p + 0x44 + i * 4), b, 0, lbl_80543494, lbl_80543458);
             fn_80402628(*(void**)(p + 0x44 + i * 4), b, 0, ((u8*)*(void**)(p + 0x44 + i * 4))[0x28]);
-            setCell(p, 0x44, i, 0x5d8, p[0x118]);
-            setCell(p, 0x44, i, 0x5c0, p[0x119]);
-            setCell(p, 0x44, i, 0x5a8, p[0x11a]);
-            setCell(p, 0x44, i, 0x590, p[0x11b]);
-            setCell(p, 0x44, i, 0x578, p[0x11c]);
-            setCell(p, 0x44, i, 0x560, p[0x11d]);
-            setCell(p, 0x44, i, 0x548, p[0x11e]);
-            setCell(p, 0x44, i, 0x530, p[0x11f]);
-            setCell(p, 0x44, i, 0x518, p[0x120]);
-            setCell(p, 0x44, i, 0x500, p[0x121]);
-            setCell(p, 0x44, i, 0x4e8, p[0x122]);
-            setCell(p, 0x44, i, 0x4d0, p[0x123]);
-            setCell(p, 0x44, i, 0x4b8, p[0x124]);
+            tu803C_setCell2(p, base, 0x44, i, 0x5d8, 0x118);
+            tu803C_setCell2(p, base, 0x44, i, 0x5c0, 0x119);
+            tu803C_setCell2(p, base, 0x44, i, 0x5a8, 0x11a);
+            tu803C_setCell2(p, base, 0x44, i, 0x590, 0x11b);
+            tu803C_setCell2(p, base, 0x44, i, 0x578, 0x11c);
+            tu803C_setCell2(p, base, 0x44, i, 0x560, 0x11d);
+            tu803C_setCell2(p, base, 0x44, i, 0x548, 0x11e);
+            tu803C_setCell2(p, base, 0x44, i, 0x530, 0x11f);
+            tu803C_setCell2(p, base, 0x44, i, 0x518, 0x120);
+            tu803C_setCell2(p, base, 0x44, i, 0x500, 0x121);
+            tu803C_setCell2(p, base, 0x44, i, 0x4e8, 0x122);
+            tu803C_setCell2(p, base, 0x44, i, 0x4d0, 0x123);
+            tu803C_setCell2(p, base, 0x44, i, 0x4b8, 0x124);
         }
         sum += a;
     }
