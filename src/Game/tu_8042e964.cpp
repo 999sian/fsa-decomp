@@ -536,6 +536,8 @@ struct T80431_Helper {
     u8 flag;
 };
 
+struct T80431_Points { JGeometry::TVec2<s16> points[16]; };
+extern "C" char lbl_8048F424[];
 struct T80431D84 {
     void* vt;
     T80431_Helper* helper;
