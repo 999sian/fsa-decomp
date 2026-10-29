@@ -67,7 +67,7 @@ struct RupyRotation {
     }
 };
 
-static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, f32& scale, f32& ang) {
+static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32 scale, const f32 ang) {
         f32 cx;
         f32 sz;
         f32 sy;
@@ -763,7 +763,7 @@ extern "C" void fn_8032BFB0(char* p) {
     PSMTXIdentity(mtx);
     {
         f32 angle = *(f32*)(p + 0x23c);
-        RupyDrawMtx(mtx, rec, angle, scale);
+        RupyDrawMtx(mtx, rec, scale, angle);
     }
     st = *(s32*)(p + 0x230);
     if (st == 5 || st == 6) {
