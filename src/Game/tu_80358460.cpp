@@ -113,6 +113,11 @@ extern "C" const f32 lbl_80542894;
 extern "C" const f32 lbl_80542898;
 extern "C" const u16 lbl_80542868[2];
 extern "C" const f32 lbl_80542870;
+extern "C" const f32 lbl_8054289C;
+extern "C" const f32 lbl_805428A0;
+extern "C" const f32 lbl_805428A4;
+extern "C" const f32 lbl_805428A8;
+extern "C" const f32 lbl_805428AC;
 extern "C" s32 fn_8023DE58(void*);
 struct Vec8035A860 {
     f32 x, y, z;
