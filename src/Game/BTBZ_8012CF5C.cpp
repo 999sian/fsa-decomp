@@ -11,8 +11,8 @@ extern "C" void __dl__FPv(void* p);
 extern void* lbl_8049E7F0[];
 extern "C" void v03__5ActorFv(void* this_);
 extern "C" void* fn_801F856C(void);
-extern "C" void* fn_801F7A08(void* a, u32 b);
-extern "C" void* fn_801F666C(void* a, void* b);
+extern "C" s32 fn_801F7A08(void* a, u32 b);
+extern "C" void* fn_801F666C(void* a, s32 b);
 extern "C" void fn_802B39E8(void);
 extern "C" void fn_801F0E34(void* this_, s32 a, s32 b);
 extern "C" void fn_801F0D20(void* this_, s32 a);
@@ -58,7 +58,7 @@ struct BTBZ_Vec {
 
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
-    int a;
+    s32 a;
     *(s32*)(this_ + 0x234) = s;
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
@@ -72,8 +72,8 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
         }
         *(s32*)(this_ + 0x238) = 0;
         {
-            a = (int)fn_801F7A08(fn_801F856C(), 0x53574556);
-            if (fn_801F666C(fn_801F856C(), (void*)a) != 0) {
+            a = fn_801F7A08(fn_801F856C(), 0x53574556);
+            if (fn_801F666C(fn_801F856C(), a) != 0) {
                 fn_802B39E8();
             }
         }
@@ -96,6 +96,7 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
 
 // ---- fn_8012D6E8: init (spawns effect 0x58 at the room centre)
 extern "C" void fn_8012CF5C(u8* this_) {
+    s32 i;
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
@@ -127,15 +128,19 @@ extern "C" void fn_8012CF5C(u8* this_) {
         break;
     case 2: {
         fn_801F0E34(this_, 0x30032, 0);
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (*(s32*)(this_ + 4) == fn_8023DE58(i) && fn_8023F264(i) && !fn_80230188(i) &&
                 !fn_8022F478(i) && !fn_80236D14(i)) {
                 f32* pf = (f32*)fn_8023E724(i);
                 f32 pos[2];
-                pos[0] = pf[0];
-                pos[1] = pf[1];
-                pos[0] += lbl_8053CC2C;
-                pos[1] -= lbl_8053CC2C;
+                f32 x,y;
+                x=pf[0];
+                pos[0]=x;
+                y=pf[1];
+                pos[1]=y;
+                x+=lbl_8053CC2C;
+                pos[0]=x;
+                pos[1]=y-lbl_8053CC2C;
                 fn_80238548(i, 1, pos, 1);
                 lbl_80529DEC[0x239] |= (u8)(1 << i);
             }
