@@ -176,14 +176,7 @@ static inline void movingRepeatJump(char* p) { movingBeginJump(p); }
 static inline s32* movingFrames(char* p) {
     return ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].moving;
 }
-static inline void movingSetState(char* p, const int state) {
-    *(s32*)(p+0x230) = state;
-    *(s32*)(p+0x238) = 0;
-    if (state == 3 || state == 5)
-        *(s32*)(p+0x234) = movingFrames(p)[0];
-    else
-        *(s32*)(p+0x234) = ((MovingAnimEntry*)lbl_80472390)[*(s32*)(p+0x250)].idle[0];
-}
+static inline void movingSetState(char* p, const int state) { ((MovingActor*)p)->setState(state); }
 extern "C" void fn_80356B60(char* this_) {
     JGeometry::TBox2f box;
     box.set(*(JGeometry::TBox2f*)(this_ + 0x60));
