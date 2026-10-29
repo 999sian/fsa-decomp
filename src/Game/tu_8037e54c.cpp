@@ -2316,6 +2316,19 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     return width;
 }
 #pragma opt_loop_invariants reset
+static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb) {
+    s32 pad = (s32)((fa - width * fb) * lbl_805430BC + lbl_805430BC);
+    if (lbl_8053AD78->f64 == (f32)(col - 1)) lbl_8053AD78->f5c += pad;
+    if (lbl_8053AD78->f68 == (f32)(col - 1)) lbl_8053AD78->f60 += pad;
+    if (pad > 0) {
+        char padbuf[16];
+        snprintf(padbuf, 0xf, "\x1b" "CR[%d]", pad);
+        strcat(out, padbuf);
+    }
+    strcat(out, line);
+}
+extern "C" void fn_80230E1C(s32, s32);
+
 extern "C" void fn_803837A4(char* out, s32 idx, s32 mode, s32 val, f32 fa, f32 fb) {
     MsgData* md = lbl_8053AD78->p8;
     u8* str = (u8*)&md->inf + md->inf.size + md->inf.entries[idx].offset + 8;
