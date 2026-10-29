@@ -195,7 +195,18 @@ extern "C" void fn_80116E8C(char* p) {
 }
 
 extern "C" void fn_80117074(char* p, s32 n) {
+    JGeometry::TVec3<f32>* out7;
+    int k;
+    JGeometry::TVec3<f32>* out;
     int i;
+    const u16* ids;
+    void** fx;
+    int j;
+    JGeometry::TVec3<f32> pos5;
+    JGeometry::TVec3<f32> pos7;
+    f32 dy7;
+    f32 dx7;
+    JGeometry::TVec3<f32> pos11;
     switch (n) {
     case 2: {
         fn_80119998(fn_80119DD0(), 0x78, 0, 2, 0, 1, 0, 0);
@@ -214,15 +225,14 @@ extern "C" void fn_80117074(char* p, s32 n) {
         *(f32*)(p + 0x280) = lbl_8053C754;
         break;
     case 5: {
-        JGeometry::TVec3<f32> pos;
-        for (i = 0; i < 4; i++) {
-            void** fx = (void**)(p + i * 4);
-            pos = *fn_8023E724(i);
-            fx[0x288 / 4] = fn_8013CC50(*(s32*)(p + 4), &pos, lbl_8053C740[i], 0, -1, 0, 0, 1, 1.0f);
-            fx[0x298 / 4] = fn_8013CC50(*(s32*)(p + 4), &pos, 0x475, 0, -1, 0, 0, 1, 1.0f);
+        out = &pos5;
+        for (i = 0, ids = lbl_8053C740, fx = (void**)p; i < 4; i++, ids++, fx++) {
+            *out = *fn_8023E724(i);
+            fx[0x288 / 4] = fn_8013CC50(*(s32*)(p + 4), out, *ids, 0, -1, 0, 0, 1, 1.0f);
+            fx[0x298 / 4] = fn_8013CC50(*(s32*)(p + 4), &pos5, 0x475, 0, -1, 0, 0, 1, 1.0f);
         }
-        for (i = 0; i < 4; i++) {
-            fn_80230FD0(i, 0x20048);
+        for (j = 0; j < 4; j++) {
+            fn_80230FD0(j, 0x20048);
         }
         *(f32*)(p + 0x23c) = lbl_8053C75C;
         fn_80118454(fn_8011921C());
@@ -232,27 +242,25 @@ extern "C" void fn_80117074(char* p, s32 n) {
         fn_801183BC(fn_8011921C());
         break;
     case 7: {
-        JGeometry::TVec3<f32> pos;
-        f32 dy;
-        f32 dx;
-        dx = lbl_8053C78C;
-        dy = lbl_8053C790;
-        for (i = 0; i < 4; i++) {
-            pos = *fn_8023E724(i);
-            pos.x += dx;
-            pos.y += dy;
-            fn_8013CC50(*(s32*)(p + 4), &pos, 0xcb, 0, 0, 0, 0, 1, 1.0f);
-            fn_8013CC50(*(s32*)(p + 4), &pos, 0xcc, 0, 0, 0, 0, 1, 1.0f);
+        out7 = &pos7;
+        dx7 = lbl_8053C78C;
+        dy7 = lbl_8053C790;
+        for (k = 0; k < 4; k++) {
+            *out7 = *fn_8023E724(k);
+            pos7.x += dx7;
+            pos7.y += dy7;
+            fn_8013CC50(*(s32*)(p + 4), out7, 0xcb, 0, 0, 0, 0, 1, 1.0f);
+            fn_8013CC50(*(s32*)(p + 4), &pos7, 0xcc, 0, 0, 0, 0, 1, 1.0f);
         }
-        for (i = 0; i < 4; i++) {
-            u8** fx = (u8**)(p + i * 4);
-            u8* e = fx[0x288 / 4];
+        for (k = 0; k < 4; k++) {
+            fx = (void**)(p + k * 4);
+            u8* e = (u8*)fx[0x288 / 4];
             if (e) {
                 *(u32*)(e + 0xf4) |= 1;
                 *(s32*)(e + 0x24) = 1;
                 fx[0x288 / 4] = 0;
             }
-            e = fx[0x298 / 4];
+            e = (u8*)fx[0x298 / 4];
             if (e) {
                 *(u32*)(e + 0xf4) |= 1;
                 *(s32*)(e + 0x24) = 1;
@@ -270,16 +278,15 @@ extern "C" void fn_80117074(char* p, s32 n) {
         }
         break;
     case 11: {
-        f32 dy;
-        JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        dy = lbl_8053C788;
+        pos11 = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        dy7 = lbl_8053C788;
         for (i = 0; i < 4; i++) {
             JGeometry::TVec3<f32>* v = fn_8023E724(i);
-            pos.x = v->x;
-            pos.y = v->y;
-            pos.z = v->z;
-            pos.y += dy;
-            fn_8013CC50(*(s32*)(p + 4), &pos, 0x33a, 0, 0, 0, 0, 1, 1.0f);
+            pos11.x = v->x;
+            pos11.y = v->y;
+            pos11.z = v->z;
+            pos11.y += dy7;
+            fn_8013CC50(*(s32*)(p + 4), &pos11, 0x33a, 0, 0, 0, 0, 1, 1.0f);
         }
         for (i = 0; i < 4; i++) {
             fn_80230BF4(i, 3);
@@ -375,6 +382,29 @@ extern "C" f32 lbl_8053C774;
 extern "C" f32 lbl_8053C778;
 extern "C" f32 lbl_8053C77C;
 extern "C" f32 lbl_8053C780;
+
+static inline u8 dmswCanSwitch(char* this_) {
+    s32 kind;
+    s32 type;
+    s32 id;
+    f32 dist;
+    for (s32 i = 0; i < 4; i++) {
+        if (!fn_8023561C(i)) {
+            return 0;
+        }
+    }
+    if (fn_80230CFC(0) != 3) {
+        return 0;
+    }
+    fn_801EEC98(this_, *(s32*)(this_ + 0x198), &kind, &type, &dist, &id, 0, 0);
+    if (type != 2) {
+        return 0;
+    }
+    if (dist <= lbl_8053C764) {
+        return 1;
+    }
+    return 0;
+}
 extern "C" void fn_801177C0(char* this_) {
     fn_8010DF78(this_);
     f32 box[4];
