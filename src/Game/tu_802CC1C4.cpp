@@ -39,6 +39,16 @@ extern "C" void fn_802D790C(unsigned long a, int b);
 extern "C" void fn_802FA160(void* a, unsigned long b, unsigned long c, int d, unsigned long e, int f);
 extern "C" char* lbl_8053AAF8;
 extern "C" char lbl_8046D908[];
+static inline unsigned long ccEffect(char* p, unsigned long id) {
+    JGeometry::TVec3<f32> pos(8.0f + *(f32*)(p + 0xc), 8.0f + *(f32*)(p + 0x10), *(f32*)(p + 0x14));
+    return fn_8013CC50(*(unsigned long*)(p + 4), &pos, id, 1, 0, 0, 0, 1, 1.0f);
+}
+static inline void ccStop(JPABaseEmitter*& emitter) {
+    if (emitter) {
+        emitter->becomeInvalidEmitter();
+        emitter = 0;
+    }
+}
 extern "C" void fn_802CC21C(void* this_) {
     char* p = (char*)this_;
     float pos2[2];
