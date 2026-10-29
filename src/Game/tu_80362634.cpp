@@ -111,8 +111,8 @@ static bool fn_80364340_isBadPos(Vec* p, Vec& v1) {
 extern "C" const s32 lbl_80474A98[];
 extern "C" const s32 lbl_80474AD8[];
 extern "C" const s32 lbl_80474858[];
-extern "C" u8 lbl_80542AD8[16];
-extern "C" u8 lbl_80542AC8[16];
+extern "C" u8 lbl_80542AD8[8];
+extern "C" u8 lbl_80542AC8[4];
 extern "C" f32 lbl_80542B88;
 extern "C" f32 lbl_80542B90;
 extern "C" f32 lbl_80542B6C;
@@ -525,6 +525,7 @@ extern "C" void fn_80363880(char* p) {
     s32 count;
     char* item;
     s32 state;
+    s32 offset;
     state = *(s32*)(p + 0x24c);
     if (state >= 0) {
         item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
@@ -544,10 +545,10 @@ extern "C" void fn_80363880(char* p) {
         }
     } else {
         count = *(s32*)((char*)fn_801F856C() + 0x1008);
-        for (i = 0; i < count; i++) {
-            item = *(char**)((char*)fn_801F856C() + (i * 4 + 8));
+        for (i = 0, offset = 0; i < count; i++, offset += 4) {
+            item = *(char**)((char*)fn_801F856C() + (offset + 8));
             if (item == NULL || *(s32*)(item + 0x1a0) != 0x454f574c || *(u8*)(item + 0x11c) != 1 || *(s32*)(item + 0x278) != 0) continue;
-            if (PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) >= lbl_80542B4C) break;
+            if (!(PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) < lbl_80542B4C)) break;
             *(s32*)(p + 0x24c) = i;
             JGeometry::TVec3<f32> tgt(*(JGeometry::TVec3<f32>*)(item + 0xc));
             fn_80363880_aim(p, *(f32*)(item + 0x10) - *(f32*)(p + 0x10), *(f32*)(item + 0xc) - *(f32*)(p + 0xc), lbl_80542B54);
@@ -565,7 +566,7 @@ extern "C" void fn_80363880(char* p) {
                 if (r == 0) {
                     fn_80363880_reset(p);
                 } else {
-                    if (((JGeometry::TVec3<f32>*)(p + 0x3c))->squared() <= lbl_80542B6C * JGeometry::TUtilf::epsilon()) {
+                    if (((JGeometry::TVec3<f32>*)(p + 0x3c))->isZero()) {
                         *(s16*)(p + 0x240) = fn_801CD664(0x10000);
                     } else if (r == 1) {
                         *(s16*)(p + 0x240) += 0x1000;
@@ -583,7 +584,7 @@ extern "C" void fn_80363880(char* p) {
             }
         }
     }
-    if (!(((JGeometry::TVec3<f32>*)(p + 0x3c))->squared() <= lbl_80542B6C * JGeometry::TUtilf::epsilon())) {
+    if (!(((JGeometry::TVec3<f32>*)(p + 0x3c))->isZero())) {
         fn_80363880_setQuadrant(p);
         ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
         if (*(s32*)(p + 0x25c) == 0) {
