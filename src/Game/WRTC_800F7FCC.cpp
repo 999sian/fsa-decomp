@@ -543,8 +543,8 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
     index >>= 5;
     f32 sn=JMath::sincosTable_.mTable[index].first;
     f32 cs=JMath::sincosTable_.mTable[index].second;
-    f32 x=radius*sn+*(f32*)(p+0xc);
-    f32 y=radius*cs+*(f32*)(p+0x10);
+    f32 x=sn*radius+*(f32*)(p+0xc);
+    f32 y=cs*radius+*(f32*)(p+0x10);
     f32 z=lbl_8053BFFC+*(f32*)(p+0x14);
     p[0x2ac]++;
     JGeometry::TVec3f result(x,y,z);
