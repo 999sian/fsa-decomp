@@ -198,7 +198,8 @@ extern "C" void fn_801186B0(void* r, s32 v);
 extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" u8 fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
 static inline s32 dmlkTime(s32 idx) {
-    return *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[idx];
+    s32 cur = *(s32*)((u8*)fn_8011921C() + 8);
+    return cur - lbl_80464AF8[idx];
 }
 static inline bool dmlkSink(u8* p, int t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
@@ -302,10 +303,11 @@ extern "C" void fn_8011C308(u8* this_) {
         *(f32*)(this_ + 0x44) = lbl_8053C800 - lbl_8053C804 * d;
         *(f32*)(this_ + 0x40) = lbl_8053C808;
         if (d > 1 && *(f32*)(this_ + 0x14) <= lbl_8053C7D8) {
-            *(f32*)(this_ + 0x44) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x40) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
-            *(f32*)(this_ + 0x14) = lbl_8053C7D8;
+            fx = lbl_8053C7D8;
+            *(f32*)(this_ + 0x44) = fx;
+            *(f32*)(this_ + 0x40) = fx;
+            *(f32*)(this_ + 0x3c) = fx;
+            *(f32*)(this_ + 0x14) = fx;
         }
         break;
     case 11:
