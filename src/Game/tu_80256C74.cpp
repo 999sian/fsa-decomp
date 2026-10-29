@@ -1205,7 +1205,9 @@ static inline bool tu8025_eq3(u8* a, u8* b, f32 eps) {
         equal = true;
     }
     return equal;
-}extern "C" void fn_80259830(u8* p0) {
+}
+
+extern "C" void fn_80259830(u8* p0) {
     u8* tbl = (u8*)lbl_8046AF00;
     u8* p = p0;
     if (S32(p, 0xb8c) > 0) {
