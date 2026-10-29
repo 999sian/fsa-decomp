@@ -1427,6 +1427,10 @@ extern "C" void fn_8025A15C(u8* p) {
     s32 actorID;
     PlayerFirePosition* fire = (PlayerFirePosition*)p;
     u8* base = (u8*)lbl_8046AF00;
+    static const u8 frames[4][8] = {
+        {0,1,2,3,0,1,2,3}, {0,1,2,3,0,1,2,3},
+        {0,1,2,3,0,4,5,6}, {0,1,2,3,0,4,5,6}
+    };
     JGeometry::TVec3<f32> pos;
     JGeometry::TBox2<f32> box;
     JGeometry::TVec3<f32> pos2;
@@ -1491,21 +1495,21 @@ extern "C" void fn_8025A15C(u8* p) {
             }
             u8 c = U8(p, 0x3f8);
             if (c < 4) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][0];
             } else if (c < 6) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 1];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][1];
             } else if (c < 10) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 2];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][2];
             } else if (c < 14) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 3];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][3];
             } else if (c < 18) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 4];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][4];
             } else if (c < 20) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 5];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][5];
             } else if (c < 24) {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 6];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][6];
             } else {
-                U8(p, 0x3f9) = base[0x250 + S32(p, 0x3dc) * 8 + 7];
+                U8(p, 0x3f9) = frames[S32(p, 0x3dc)][7];
             }
             if (!fn_80247594(p, 1)) {
                 U8(p, 0xb84) = 0;
@@ -1590,6 +1594,7 @@ extern "C" void fn_8025A15C(u8* p) {
 
 #pragma opt_propagation reset
 #pragma opt_strength_reduction reset
+#pragma pool_data reset
 extern "C" void fn_8025A9C0(u8* p) {
     U8(p, 0x458) = 0;
     if (fn_80241794(p) <= 0) {
