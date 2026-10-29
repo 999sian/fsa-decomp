@@ -60,6 +60,20 @@ extern "C" f32 lbl_80542B64;
 extern "C" f32 lbl_80542B68;
 extern "C" f32 lbl_80542B6C;
 extern "C" f32 lbl_80542B70;
+extern "C" void* fn_8013CC50(u32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void* fn_80119DD0(void);
+extern "C" void fn_80119958(void);
+extern "C" s32 fn_8030AAF4(s32);
+extern "C" u32 fn_80309D6C(void*, s32, u32);
+extern void* lbl_8053AD30;
+extern void* lbl_8053AAF8;
+extern "C" void fn_8013670C(void*, s32);
+extern "C" const u16 lbl_80542AF0[4];
+extern "C" f32 lbl_80542AF8;
+extern "C" f32 lbl_80542AFC;
+extern "C" f32 lbl_80542B00;
+extern "C" f32 lbl_80542B04;
+extern "C" f32 lbl_80542B08;
 
 struct Unk80365AB8;
 typedef void (Unk80365AB8::*Unk80365AB8Func)();
@@ -534,9 +548,9 @@ extern "C" void fn_80363664(char* self) {
 
 #pragma opt_strength_reduction off
 extern "C" void fn_80363880(char* p) {
-    int i;
     int count;
     char* item;
+    int i;
     int state = *(int*)(p + 0x24c);
     if (state >= 0) {
         item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
