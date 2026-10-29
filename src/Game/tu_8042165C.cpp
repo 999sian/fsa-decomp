@@ -33,6 +33,7 @@ extern const f32 lbl_80543A4C;
 extern u8* lbl_8053AAF8;
 
 extern u8 lbl_80529DEC[];
+static inline s32* HudCounts() { return (s32*)lbl_80529DEC; }
 extern "C" u32 fn_80237774(s32 i);
 extern "C" u8 fn_8022F514(s32 i);
 extern "C" s32 fn_8022F3DC(s32 i);
@@ -1126,8 +1127,10 @@ extern "C" void fn_804257E4(void* obj) {
     off1 = (u64*)(base + 0xde8);
     on2 = (u64*)(base + 0xec8);
     bars = (u64*)(base + 0x148);
+    {
+    s32 i = 0;
     sh = 0;
-    for (s32 i = 0; i < 4; i++) {
+    for (; i < 4; ) {
         bit = 1 << i;
         mask = bit;
         if (HudBitSet(lbl_8053AAF8[0x82], mask) == FALSE) {
@@ -1197,6 +1200,7 @@ extern "C" void fn_804257E4(void* obj) {
             fn_80423248(this_, i);
             fn_80423804(this_, i);
         }
+        i++;
         tv1++;
         on1++;
         off1++;
@@ -1206,6 +1210,7 @@ extern "C" void fn_804257E4(void* obj) {
         sh += 2;
     }
 
+    }
     fn_80422824(this_);
     {
         s32 x;
@@ -1213,7 +1218,7 @@ extern "C" void fn_804257E4(void* obj) {
         s32 off;
         u8* fp;
         s32 k;
-        for (k = 0, fp = this_, off = 0; k < 4; k++) {
+        for (k = 0, fp = this_, off = 0; k < 4; ) {
             fn_80424148(this_, k, 0);
             if ((*(u8**)(lbl_8053AB10 + 0x20))[k + 0x148] != 0) {
                 x = (s32)((J2DPane*)GetHeart(*(u8**)(this_ + 4), *pos))->getBounds()->i.x;
@@ -1255,6 +1260,7 @@ extern "C" void fn_804257E4(void* obj) {
                     }
                 }
             }
+            k++;
             off += 0x10;
             fp += 4;
             pos++;
