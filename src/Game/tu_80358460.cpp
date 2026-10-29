@@ -168,8 +168,8 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
     for (i = 0; i < 4; i++) {
         if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
             ang = *(s16*)(self + 0x230);
-            d = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-            cs = lbl_8054288C * (d * __fabsf(d));
+            f32 sn = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+            cs = lbl_8054288C * (sn * __fabsf(sn));
             if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && (s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
                 cs = cs * lbl_80542890;
             }
@@ -471,6 +471,7 @@ done:
 }
 
 extern "C" void fn_80358F98(u8* self) {
+    Vec8035A860 cv;
     f32 box[4];
     f32 v8[2];
     f32 d;
@@ -495,10 +496,11 @@ extern "C" void fn_80358F98(u8* self) {
     }
     *(f32*)(self + 0x240) = lbl_8054286C;
     for (i = 0; i < 4; i++) {
-        self[0x246 + i] = 0;
-        self[0x24a + i] = 0;
+        u8* q = self + i;
+        q[0x246] = 0;
+        q[0x24a] = 0;
         if (!fn_8023F264(i)) continue;
-        self[0x246 + i] = fn_8035AE9C(self, (void*)i);
+        q[0x246] = fn_8035AE9C(self, (void*)i);
         fn_801F317C(self, box);
         py = *(f32*)(self + 0x10);
         box[1] = (box[1] - py) * __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4)) + py;
@@ -520,7 +522,7 @@ extern "C" void fn_80358F98(u8* self) {
         } else {
             r = 0;
         }
-        self[0x24a + i] = r;
+        q[0x24a] = r;
     }
     if (((s8)self[0x24a] | (s8)self[0x24b] | (s8)self[0x24c] | (s8)self[0x24d]) != 0 &&
         lbl_8054286C != *(f32*)(self + 0x240)) {
@@ -530,16 +532,14 @@ extern "C" void fn_80358F98(u8* self) {
     for (a = 0; a < 4; a++) {
         if ((s8)self[0x24a + a] != 0) {
             for (b = 0; b < 4; b++) {
-                if (fn_8022F514((void*)b)) continue;
-                if ((s8)self[0x24a + b] != 0) continue;
-                u8 t = self[0x246 + b];
-                if ((s8)t == 0) continue;
-                if ((s8)self[0x24a + a] * (s8)t >= 0) continue;
-                Vec8035A860 cv;
-                cv.x = lbl_8054286C;
-                cv.y = lbl_8054286C;
-                cv.z = lbl_80542898;
-                fn_802314D8(b, (f32*)&cv);
+                u8 t;
+                if (!fn_8022F514((void*)b) && (s8)self[0x24a + b] == 0 && (s8)(t = self[0x246 + b]) != 0 &&
+                    (s8)self[0x24a + a] * (s8)t < 0) {
+                    cv.x = lbl_8054286C;
+                    cv.y = lbl_8054286C;
+                    cv.z = lbl_80542898;
+                    fn_802314D8(b, (f32*)&cv);
+                }
             }
         }
     }
@@ -564,7 +564,7 @@ extern "C" void fn_80358F98(u8* self) {
     *(s16*)(self + 0x238) += *(s16*)(self + 0x23a);
     old = *(s16*)(self + 0x230);
     *(s16*)(self + 0x230) = old + *(s16*)(self + 0x238);
-    if (((*(u32*)(self + 0x90) >> 7) & 0x1f) == 2) {
+    if ((s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) == 2) {
         if (*(s16*)(self + 0x230) <= -0x3e00) {
             *(s16*)(self + 0x230) = -0x3e00;
             *(s16*)(self + 0x238) = 0;
