@@ -765,17 +765,19 @@ extern "C" void fn_8026022C(char* p) {
 #pragma opt_common_subs reset
 extern JGeometry::TVec3<f32> lbl_8046B86C[];
 
-static inline JGeometry::TVec2f carryAdd(JGeometry::TVec2f a, const JGeometry::TVec2f& b)
+static inline JGeometry::TVec2f carryAdd(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b)
 {
-    a.x += b.x;
-    a.y += b.y;
-    return a;
+    JGeometry::TVec2f v(a);
+    v.x += b.x;
+    v.y += b.y;
+    return v;
 }
-static inline JGeometry::TVec2f carrySub(JGeometry::TVec2f a, const JGeometry::TVec2f& b)
+static inline JGeometry::TVec2f carrySub(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b)
 {
-    a.x -= b.x;
-    a.y -= b.y;
-    return a;
+    JGeometry::TVec2f v(a);
+    v.x -= b.x;
+    v.y -= b.y;
+    return v;
 }
 extern "C" u8 fn_802604CC(char* p) {
     if (fn_8022B1F8(p)) return 0;
