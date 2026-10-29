@@ -54,7 +54,7 @@ extern "C" void fn_801ECB08(char* p, s32 state);
 extern "C" void fn_8022FEB8(f32* rect, u32 a, u32 b, u32 c, u32 d);
 extern "C" void* fn_8022FD8C(void* h);
 extern "C" u8 fn_8038AD24(s32 obj, s32 snd, u32 a, u32 b, f32* vals, s32 c);
-extern "C" u8 fn_8037EFB4(s32 obj);
+extern "C" s32 fn_8037EFB4(s32 obj);
 extern "C" u8 fn_8038470C(s32 obj, s32 msg);
 extern "C" u8 fn_8023077C(void);
 extern "C" s32 fn_8021C024(void* p);
