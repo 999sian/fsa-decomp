@@ -19,7 +19,7 @@ struct WarpActor : Actor {
 #define EMIT(p,o) (*(JPABaseEmitter**)((u8*)(p)+(o)))
 extern "C" u8* lbl_8053AB10;
 extern "C" void* lbl_8053AAF8;
-extern "C" const u16 lbl_805420A0[];
+extern "C" const u16 lbl_805420A0[4];
 extern "C" u8 fn_8023F264(s32);
 extern "C" u8 fn_8023EA28(s32);
 extern "C" u8 fn_8023561C(s32);
@@ -53,55 +53,62 @@ extern "C" void fn_801F0E34(void* obj, u32 a, u32 b);
 extern "C" u8 fn_80230188(s32 i);
 extern "C" void* fn_8023E724(s32 i);
 extern "C" void fn_80338AE4(void* this_) {
+    s32 order[5];
+    JGeometry::TVec3<f32> firstPos, activatePos, movePos, otherPos, emitterPos, sortB, sortA;
+    s32 i;
+    s32 n;
+    WarpActor* a;
     u8* p = (u8*)this_;
-    f32 left = F32(p,0x60) + F32(p,0xc);
-    f32 bottom = F32(p,0x64) + F32(p,0x10);
-    f32 right = F32(p,0x68) + F32(p,0xc);
-    f32 top = F32(p,0x6c) + F32(p,0x10);
+    a = (WarpActor*)p;
+    f32 bottom=F32(p,0x64), top=F32(p,0x6c), left=F32(p,0x60), right=F32(p,0x68);
+    bottom += F32(p,0x10);
+    top += F32(p,0x10);
+    left += F32(p,0xc);
+    right += F32(p,0xc);
     fn_801F0E34(p,0x5003b,0);
     u8* settings = *(u8**)(lbl_8053AB10+0x2c);
     if (settings[0xc] > 0x80) {
-        u8 a = settings[0xc]-1;
-        if(a <= 0x80) a=0x80;
-        settings[0xc]=a;
+        u32 alpha = settings[0xc]-1;
+        if((u8)alpha <= 0x80) alpha=0x80;
+        settings[0xc]=alpha;
     }
-    for(s32 i=0;i<4;i++) {
+    for(i=0;i<4;i++) {
         if(fn_80230188(i) && (S32(p,0x230)==2 || S32(p,0x230)==3)) {
-            JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
+            firstPos = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
             if(S32(p,0x230)!=1) {
-                pos += V3(p,0x3c);
-                fn_801F71A4(&pos,16.0f*(f32)S32(p,0x248+4*i)+(F32(p,0xc)-24.0f),0.02f,10.0f);
+                firstPos += V3(p,0x3c);
+                fn_801F71A4(&firstPos,16.0f*(f32)a->rank[i]+(F32(p,0xc)-24.0f),0.02f,10.0f);
             }
             if(S32(p,0x230)==3)
-                fn_80230498(i,&pos,0x3cf,(u8)(S32(p,0x244)*255/50),-128,-128,1);
-            else fn_80230498(i,&pos,0x3cf,255,-128,-128,1);
+                fn_80230498(i,&firstPos,0x3cf,(u8)(S32(p,0x244)*255/50),-128,-128,1);
+            else fn_80230498(i,&firstPos,0x3cf,255,-128,-128,1);
         }
     }
     if(S32(p,0x230)!=0 && S32(p,0x230)!=1) F32(p,0x40) -= 0.05f;
     S32(p,0x234)=0;
     switch(S32(p,0x230)) {
     case 0:
-        for(s32 i=0;i<4;i++) {
+        for(i=0;i<4;i++) {
             if(fn_8023F264(i) && !fn_8023EA28(i) && fn_8023561C(i) && !fn_80236B50(i)) {
                 JGeometry::TVec3<f32>* pos=(JGeometry::TVec3<f32>*)fn_8023E724(i);
                 U8(p,0x25c+i) = pos->x >= left && pos->y >= bottom && pos->x < right && pos->y < top;
                 if(U8(p,0x25c+i)) {
                     S32(p,0x234)++;
-                    if(EMIT(p,0x26c+4*i)==0) {
-                        JGeometry::TVec3<f32> v(F32(p,0xc),16.0f+F32(p,0x10),F32(p,0x14));
-                        EMIT(p,0x26c+4*i)=(JPABaseEmitter*)fn_8013CC50(S32(p,4),&v,lbl_805420A0[i],1,2,0,0,1,1.0f);
+                    if(a->emitters[i]==0) {
+                        emitterPos.set(F32(p,0xc),16.0f+F32(p,0x10),F32(p,0x14));
+                        a->emitters[i]=(JPABaseEmitter*)fn_8013CC50(S32(p,4),&emitterPos,lbl_805420A0[i],1,2,0,0,1,1.0f);
                     }
-                } else stopWarpEmitter(EMIT(p,0x26c+4*i));
+                } else stopWarpEmitter(a->emitters[i]);
             }
         }
         if(S32(p,0x234)>=4 && fn_8023077C()) {
-            for(s32 i=0;i<4;i++) {
-                JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
+            for(i=0;i<4;i++) {
+                activatePos = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
                 if(fn_8022E970(i)>1 && fn_80234A88(i)) {
                     fn_8022CA6C(i,5,1);
                     U8(p,0x260+i)=1;
                 }
-                fn_80230498(i,&pos,0x3cd,255,-128,-128,1);
+                fn_80230498(i,&activatePos,0x3cd,255,-128,-128,1);
             }
             S32(p,0x240)=50;
             S32(p,0x230)=1;
@@ -110,50 +117,48 @@ extern "C" void fn_80338AE4(void* this_) {
     case 1:
         S32(p,0x240)--;
         if(S32(p,0x240)<=0) {
-            for(s32 i=0;i<4;i++) {
+            for(i=0;i<4;i++) {
                 if(F32(p,0x258) < ((JGeometry::TVec3<f32>*)fn_8023E724(i))->y)
                     F32(p,0x258)=((JGeometry::TVec3<f32>*)fn_8023E724(i))->y;
             }
-            s32 order[4];
             order[0]=0;order[1]=1;order[2]=2;order[3]=3;
-            s32 temp;
-            for(s32 n=4;n>0;n--) {
-                for(s32 i=1;i<n;i++) {
-                    JGeometry::TVec3<f32> a(*(JGeometry::TVec3<f32>*)fn_8023E724(order[i-1]));
-                    JGeometry::TVec3<f32> b(*(JGeometry::TVec3<f32>*)fn_8023E724(order[i]));
-                    if(a.x>b.x) {temp=order[i-1];order[i-1]=order[i];order[i]=temp;}
+            for(n=4;n>0;n--) {
+                for(i=1;i<n;i++) {
+                    sortA = *(JGeometry::TVec3<f32>*)fn_8023E724(order[i-1]);
+                    sortB = *(JGeometry::TVec3<f32>*)fn_8023E724(order[i]);
+                    if(sortA.x>sortB.x) {order[4]=order[i-1];order[i-1]=order[i];order[i]=order[4];}
                 }
             }
-            S32(p,0x248+4*order[0])=0;
-            S32(p,0x248+4*order[1])=1;
-            S32(p,0x248+4*order[2])=2;
-            S32(p,0x248+4*order[3])=3;
+            a->rank[order[0]]=0;
+            a->rank[order[1]]=1;
+            a->rank[order[2]]=2;
+            a->rank[order[3]]=3;
             F32(p,0x40)=-0.5f;
             S32(p,0x230)=2;
         } else {
-            for(s32 i=0;i<4;i++) {
+            for(i=0;i<4;i++) {
                 s32 owner;
-                if(!fn_8022F514(i)) owner=i; else owner=fn_8022F3DC(i);
-                JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
+                if(fn_8022F514(i)==0) owner=i; else owner=fn_8022F3DC(i);
+                movePos = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
                 if(U8(p,0x260+owner)) {
-                    JGeometry::TVec3<f32> other(*(JGeometry::TVec3<f32>*)fn_8023E724(owner));
+                    otherPos = *(JGeometry::TVec3<f32>*)fn_8023E724(owner);
                     s32 n=fn_8022E8D4(i);
-                    f32 dx=pos.x-other.x;
+                    f32 dx=movePos.x-otherPos.x;
                     if(dx<16.0f*(f32)n && dx > -16.0f*(f32)n) {
-                        if(other.x>F32(p,0xc)) pos.x -= (f32)n;
-                        else pos.x += (f32)n;
+                        if(otherPos.x>F32(p,0xc)) movePos.x -= (f32)n;
+                        else movePos.x += (f32)n;
                     }
                 }
                 s32 effect=0x3cd;
                 if(S32(p,0x240)<=46) effect=0x3ce;
-                fn_80230498(i,&pos,effect,255,-128,-128,1);
+                fn_80230498(i,&movePos,effect,255,-128,-128,1);
             }
         }
         break;
     case 2: {
         fn_801F0E34(p,0x5003a,0);
         f32 maxY=0.0f;
-        for(s32 i=0;i<4;i++) {
+        for(i=0;i<4;i++) {
             if(maxY<((JGeometry::TVec3<f32>*)fn_8023E724(i))->y)
                 maxY=((JGeometry::TVec3<f32>*)fn_8023E724(i))->y;
         }
@@ -168,7 +173,7 @@ extern "C" void fn_80338AE4(void* this_) {
             fn_80136798(lbl_8053AAF8,15,0);
             stopWarpEmitter(EMIT(p,0x264));
             stopWarpEmitter(EMIT(p,0x268));
-            for(s32 i=0;i<4;i++) stopWarpEmitter(EMIT(p,0x26c+4*i));
+            for(i=0;i<4;i++) stopWarpEmitter(a->emitters[i]);
             U8(p,0x11c)=0;
         }
         break;
