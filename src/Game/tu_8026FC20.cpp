@@ -2889,8 +2889,11 @@ inline bool rectIn(const RoomRect& r, const JGeometry::TVec2<f32>& v) {
     return in;
 }
 inline bool pointInRect(const JGeometry::TVec2<f32>& v, const RoomRect& r) {
+    const f32* coords = &v.x;
+    f32 x = *coords++;
+    f32 y;
     bool in = 0;
-    if (v.x >= r.x0 && v.y >= r.y0 && v.x < r.x1 && v.y < r.y1) {
+    if (x >= r.x0 && (y = *coords) >= r.y0 && x < r.x1 && y < r.y1) {
         in = 1;
     }
     return in;
