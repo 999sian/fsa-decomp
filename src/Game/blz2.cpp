@@ -166,6 +166,7 @@ static inline void blz2TouchRoom(u32 handle) {
 }
 extern "C" const f32 lbl_8046F0C8[];
 extern "C" const f32 lbl_8046F108[];
+#pragma opt_common_subs off
 extern "C" void fn_802E4FD8(u8* self) {
     JGeometry::TVec3<f32> pos;
     JGeometry::TVec3<f32> grid;
@@ -189,7 +190,7 @@ extern "C" void fn_802E4FD8(u8* self) {
     switch (*(s32*)(self + 0x2f0)) {
     case 0:
         if (*(s32*)(self + 0x300) == 0 || (*(s32*)(self + 0x300) != 0 && ((ActorSlot21*)self)->v11() == 1)) {
-            f32 spacing = lbl_80541210;
+            const f32 spacing = 16.0f;
             grid = *(JGeometry::TVec3<f32>*)(self + 0xc);
             p = self;
             for (j = 0; j < *(s32*)(self + 0x2f4); j++) {
@@ -230,7 +231,7 @@ extern "C" void fn_802E4FD8(u8* self) {
         if (*(u16*)(self + 0x94) == 2 || (*(s32*)(self + 0x2fc) == 2 && ((ActorSlot21*)self)->v11() == 1)) {
             fn_802D8050(fn_802D6A9C(), *(u32*)(self + 0x308), 1, 255);
             ((ActorSlot21*)self)->slot21();
-            f32 spacing = lbl_80541210;
+            const f32 spacing = 16.0f;
             q = self;
             for (j = 0; j < *(s32*)(self + 0x2f4); j++) {
                 p = q;
@@ -249,7 +250,7 @@ extern "C" void fn_802E4FD8(u8* self) {
             *(u16*)(self + 0x94) = 0;
         } else {
             saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
-            f32 spacing = lbl_80541210;
+            const f32 spacing = 16.0f;
             savedY = saved.y;
             for (j = 0; j < *(s32*)(self + 0x2f4); j++) {
                 for (i = 0; i < *(s32*)(self + 0x2f8); ) {
@@ -314,7 +315,7 @@ extern "C" void fn_802E4FD8(u8* self) {
     }
 done:;
 }
-
+#pragma opt_common_subs reset
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
