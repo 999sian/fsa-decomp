@@ -5,6 +5,8 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -288,12 +290,10 @@ extern "C" void fn_801AAF44(char* p) {
 
 extern "C" void fn_801AB6A8(void* this_) {
     char* p = (char*)this_;
-    f32 y = *(f32*)(p + 0x10);
-    f32 x = *(f32*)(p + 0xc);
-    f32 a = *(f32*)(p + 0x64) + y;
-    f32 b = *(f32*)(p + 0x6c) + y;
-    f32 c = *(f32*)(p + 0x60) + x;
-    f32 d = *(f32*)(p + 0x68) + x;
+    f32 a = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+    f32 b = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+    f32 c = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+    f32 d = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
     if (fn_801F3D94(p, 1) != 0) {
         fn_801F2618(p, 0, 0);
         return;
@@ -305,7 +305,21 @@ extern "C" void fn_801AB6A8(void* this_) {
     }
     u32 r30 = *(u32*)(p + 0x4);
     if (fn_802D6A9C()[r30 + 0x131df] != 0) {
-        return;
+        f32 y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+        *(f32*)(p + 0x10) = y;
+        *(f32*)(p + 0x14) = lbl_8053E744;
+        *(f32*)(p + 0x44) = lbl_8053E744;
+        *(f32*)(p + 0x268) = lbl_8053E7A8;
+        fn_801F71A4(p + 0x3c, *(f32*)(p + 0x264), lbl_8053E750, lbl_8053E754);
+        fn_801F71A4(p + 0x40, *(f32*)(p + 0x268), lbl_8053E750, lbl_8053E754);
+    }
+    *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+    if (*(s32*)(p + 0x230) != 6) {
+        f32 u = c - d;
+        f32 v = a - b;
+        c = lbl_8053E7AC * u + d;
+        b = lbl_8053E7AC * v + b;
+        fn_801F285C(p, 0, 0, 0, 0);
     }
 }
 
