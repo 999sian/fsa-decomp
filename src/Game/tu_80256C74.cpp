@@ -1468,11 +1468,11 @@ static const u8 fireAnimationFrames[4][8] = {
 static const s32 fireRotationA[4] = {0xc000, 0x4000, 0x8000, 0};
 static const s32 fireRotationB[4] = {0xc000, 0x4000, 0, 0x8000};
 #pragma pool_data reset
-static inline void fireRotateA(f32 (*matrix)[4], const s32 direction) {
-    JPAGetXYZRotateMtx(0, fireRotationA[direction], -0x8000, matrix);
+static inline void fireRotateA(const s32* angles, f32 (*matrix)[4], const s32 direction) {
+    JPAGetXYZRotateMtx(0, angles[direction], -0x8000, matrix);
 }
-static inline void fireRotateB(f32 (*matrix)[4], const s32 direction) {
-    JPAGetXYZRotateMtx(0, 0, fireRotationB[direction], matrix);
+static inline void fireRotateB(const s32* angles, f32 (*matrix)[4], const s32 direction) {
+    JPAGetXYZRotateMtx(0, 0, angles[direction], matrix);
 }
 #pragma opt_lifetimes off
 #pragma pool_data on
@@ -1581,18 +1581,14 @@ extern "C" void fn_8025A15C(u8* p) {
                 PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
             }
             if (PTR(p, 0x12c4)) {
-                f32 (*matrix)[4] = (f32(*)[4])(PTR(p, 0x12c4) + 0x68);
-                s16 angle = fireRotationA[S32(p, 0x3dc)];
-                JPAGetXYZRotateMtx(0, angle, -0x8000, matrix);
+                JPAGetXYZRotateMtx(0, fireRotationA[S32(p, 0x3dc)], -0x8000, (f32(*)[4])(PTR(p, 0x12c4) + 0x68));
                 fn_8013CB44(PTR(p, 0x12c4), &pos, 0, 2, 1);
             }
             if (PTR(p, 0x12c8) == 0) {
                 PTR(p, 0x12c8) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x54a, -1, 0, 0, 0, 1, lbl_805400D4);
             }
             if (PTR(p, 0x12c8)) {
-                f32 (*matrix)[4] = (f32(*)[4])(PTR(p, 0x12c8) + 0x68);
-                s16 angle = fireRotationB[S32(p, 0x3dc)];
-                JPAGetXYZRotateMtx(0, 0, angle, matrix);
+                JPAGetXYZRotateMtx(0, 0, fireRotationB[S32(p, 0x3dc)], (f32(*)[4])(PTR(p, 0x12c8) + 0x68));
                 fn_8013CB44(PTR(p, 0x12c8), &pos, -1, 0, 1);
             }
             fn_8024F0E8(p, 0x30011);
