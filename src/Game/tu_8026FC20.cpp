@@ -3668,6 +3668,9 @@ u8 fn_802265DC(const JGeometry::TVec3<f32>&, void*, s32);
 f32 fn_8022C82C(s32);
 extern const JGeometry::TVec3<f32> lbl_8046BBD8[];
 }
+inline u8 hitWall(void* obj, const JGeometry::TVec3<f32>& v) {
+    return fn_802265DC(v, obj, 1);
+}
 inline bool wallAt(char* p, f32 x, f32 y) {
     void* obj = PTR(p, 0x3b4);
     return fn_802265DC(JGeometry::TVec3<f32>(x, y, F32(p, 0x11bc)), obj, 1);
@@ -3725,7 +3728,8 @@ void fn_8027AAD0(char* p) {
             JGeometry::TVec3<f32> t;
             fn_8027FA08(p, &t);
             JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 8);
-            JGeometry::TVec3<f32> d = t - pos;
+            JGeometry::TVec3<f32> d;
+            d = t - pos;
             d.z = 0.0f;
             if (PSVECMag((Vec*)&d) >= 6.0f) {
                 d.normalize();
