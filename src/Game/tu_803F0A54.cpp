@@ -136,7 +136,45 @@ typedef void (T803FC46C::*PMF803FC46C)();
 extern PMF803FC46C lbl_804B0BDC[];
 
 struct FsaBlock156 {
-    PMF803FC46C w[13];
+    u32 field_00;
+    u32 field_04;
+    u32 field_08;
+    u32 field_0C;
+    u32 field_10;
+    u32 field_14;
+    u32 field_18;
+    u32 field_1C;
+    u32 field_20;
+    u32 field_24;
+    u32 field_28;
+    u32 field_2C;
+    u32 field_30;
+    u32 field_34;
+    u32 field_38;
+    u32 field_3C;
+    u32 field_40;
+    u32 field_44;
+    u32 field_48;
+    u32 field_4C;
+    u32 field_50;
+    u32 field_54;
+    u32 field_58;
+    u32 field_5C;
+    u32 field_60;
+    u32 field_64;
+    u32 field_68;
+    u32 field_6C;
+    u32 field_70;
+    u32 field_74;
+    u32 field_78;
+    u32 field_7C;
+    u32 field_80;
+    u32 field_84;
+    u32 field_88;
+    u32 field_8C;
+    u32 field_90;
+    u32 field_94;
+    u32 field_98;
 };
 extern "C" FsaBlock156 lbl_804B0B40[6];
 
@@ -559,21 +597,21 @@ extern "C" void fn_803F2B78(u8* p) {
     if (*(s32*)(p + 0x1ac) == 0) {
         void* uVar1 = fn_804031C4(0x54494d47, base + 0xf30);
         piVar = (*(J2DPane**)(p + 8))->search(0x50746e3032ULL);
-        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
         piVar = (*(J2DPane**)(p + 8))->search(0x50746e3031ULL);
-        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
     } else if (*(s32*)(p + 0x1ac) == 1) {
         void* uVar1 = fn_804031C4(0x54494d47, base + 0xf44);
         piVar = (*(J2DPane**)(p + 8))->search(0x50746e3032ULL);
-        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
         piVar = (*(J2DPane**)(p + 8))->search(0x50746e3031ULL);
-        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
     } else {
         void* uVar1 = fn_804031C4(0x54494d47, base + 0xf58);
         piVar = (*(J2DPane**)(p + 8))->search(0x50746e3032ULL);
-        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
         piVar = (*(J2DPane**)(p + 8))->search(0x50746e3031ULL);
-        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
     }
 
     piVar = (*(J2DPane**)(p + 8))->search(0x54746b673031ULL);
@@ -585,34 +623,34 @@ extern "C" void fn_803F2B78(u8* p) {
 
     *(f32*)(p + 0x9c) = lbl_80543764;
     piVar = (*(J2DPane**)(p + 8))->search(0x4e646174613033ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0x94), *(f32*)(p + 0x98) + *(f32*)(p + 0x9c));
+    piVar->move(*(f32*)(p + 0x94), *(f32*)(p + 0x98) + *(f32*)(p + 0x9c));
 
     *(f32*)(p + 0xa8) = lbl_80543768;
     piVar = (*(J2DPane**)(p + 8))->search(0x4e646174613035ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xa0), *(f32*)(p + 0xa4) + *(f32*)(p + 0xa8));
+    piVar->move(*(f32*)(p + 0xa0), *(f32*)(p + 0xa4) + *(f32*)(p + 0xa8));
 
     *(f32*)(p + 0xb4) = lbl_80543754;
     piVar = (*(J2DPane**)(p + 8))->search(0x4e646174613036ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xac), *(f32*)(p + 0xb0) + *(f32*)(p + 0xb4));
+    piVar->move(*(f32*)(p + 0xac), *(f32*)(p + 0xb0) + *(f32*)(p + 0xb4));
 
     *(f32*)(p + 0xb8) = lbl_80543754;
     fn_80402E08(*(void**)(p + 0x74), lbl_8054372C, *(f32*)(p + 0xb8));
 
     *(f32*)(p + 0xdc) = lbl_8054376C;
     piVar = (*(J2DPane**)(p + 8))->search(0x50706c6c626b3032ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xbc), *(f32*)(p + 0xcc) + *(f32*)(p + 0xdc));
+    piVar->move(*(f32*)(p + 0xbc), *(f32*)(p + 0xcc) + *(f32*)(p + 0xdc));
 
     *(f32*)(p + 0xe0) = lbl_8054376C;
     piVar = (*(J2DPane**)(p + 8))->search(0x50706c6c626b3132ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
+    piVar->move(*(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
 
     *(f32*)(p + 0xe4) = lbl_8054376C;
     piVar = (*(J2DPane**)(p + 8))->search(0x50706c6c626b3232ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
+    piVar->move(*(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
 
     *(f32*)(p + 0xe8) = lbl_8054376C;
     piVar = (*(J2DPane**)(p + 8))->search(0x50706c6c626b3332ULL);
-    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
+    piVar->move(*(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
 
     q = p;
     pt30 = (const u64*)(base + 0x7f8);
@@ -623,54 +661,54 @@ extern "C" void fn_803F2B78(u8* p) {
     pt25 = (const u64*)(base + 0x878);
     pt31 = (const u64*)(base + 0x918);
     for (i = 0; i < 4; i++) {
-        if (*(s32*)(p + 0x1ac) + 1 >= i) {
+        if (i <= *(s32*)(p + 0x1ac) + 1) {
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt30[0]);
-            sp[0xb0] = 1;
+            ((J2DPane*)sp)->show();
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt29[0]);
-            sp[0xb0] = 1;
+            ((J2DPane*)sp)->show();
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt28[0]);
-            sp[0xb0] = 1;
+            ((J2DPane*)sp)->show();
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt27[0]);
-            sp[0xb0] = 1;
+            ((J2DPane*)sp)->show();
             t20 = pt26 + 2;
             for (j = 2; j < 4; j++) {
                 sp = (u8*)(*(J2DPane**)(p + 8))->search(t20[0]);
-                sp[0xb0] = 1;
+                ((J2DPane*)sp)->show();
                 t20 += 1;
             }
             piVar = (*(J2DPane**)(p + 8))->search(pt25[0]);
-            ((void (*)(void*, s32))(*(void***)piVar)[9])(piVar, 0xff);
+            piVar->setAlpha(0xff);
             *(s32*)(q + 0x220) = *(s16*)(*(u8**)(q + 0x38) + 6);
             *(s32*)(q + 0x230) = *(s16*)(*(u8**)(q + 0x48) + 6);
         } else {
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt30[0]);
-            sp[0xb0] = 0;
+            ((J2DPane*)sp)->hide();
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt29[0]);
-            sp[0xb0] = 0;
+            ((J2DPane*)sp)->hide();
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt28[0]);
-            sp[0xb0] = 0;
+            ((J2DPane*)sp)->hide();
             sp = (u8*)(*(J2DPane**)(p + 8))->search(pt27[0]);
-            sp[0xb0] = 0;
+            ((J2DPane*)sp)->hide();
             t20 = pt26 + 2;
             for (j = 2; j < 4; j++) {
                 sp = (u8*)(*(J2DPane**)(p + 8))->search(t20[0]);
-                sp[0xb0] = 0;
+                ((J2DPane*)sp)->hide();
                 t20 += 1;
             }
             piVar = (*(J2DPane**)(p + 8))->search(pt25[0]);
-            ((void (*)(void*, s32))(*(void***)piVar)[9])(piVar, 0x80);
+            piVar->setAlpha(0x80);
             *(s32*)(q + 0x220) = 0;
             *(s32*)(q + 0x230) = 0;
         }
         sp = (u8*)(*(J2DPane**)(p + 8))->search(pt31[0]);
-        sp[0xb0] = 0;
-        q += 4;
+        ((J2DPane*)sp)->hide();
         pt30 += 1;
         pt29 += 1;
         pt28 += 1;
         pt27 += 1;
         pt26 += 4;
         pt25 += 1;
+        q += 4;
         pt31 += 1;
     }
 
