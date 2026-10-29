@@ -1278,6 +1278,10 @@ extern "C" void fn_80409450(void* p) {
 	}
 }
 
+#define MENU_LAYOUT_HELPERS
+static inline f32 menuLayoutSize(const f32* table, s32 index) { return table[index]; }
+static inline s16 menuLayoutCoord(const s16* table, s32 index) { return table[index]; }
+static inline u32 menuLayoutText(const u32* table, s32 index) { return table[index]; }
 #pragma opt_common_subs off
 extern "C" void fn_804096E8(u8* self) {
     u8* table = (u8*)&lbl_8048C1F8;
