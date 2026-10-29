@@ -4221,7 +4221,7 @@ extern "C" s32 fn_80238EDC(s32);
 extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
 extern "C" u8 fn_8025F590(char*);
 inline bool grabPressed(char* p) {
-    if(!padCheck(p))return false;
+    if(!padActive(p))return false;
     if(U8(p,0x456)!=0)return false;
     if(S32(p,0x11f0)>0)return false;
     return fn_80309D24(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec)),0x20)!=0;
