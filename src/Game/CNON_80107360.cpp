@@ -224,6 +224,7 @@ static inline void CNON_swing(CNON* this_) {
             speed = lbl_8053C2D4;
             accel = lbl_8053C2E0;
             break;
+        case 0:
         default:
             speed = lbl_8053C2DC;
             accel = lbl_8053C2EC;
