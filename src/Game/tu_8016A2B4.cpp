@@ -776,55 +776,145 @@ static inline f32 effectRandom8016D398() {
     return v.f-lbl_8053D93C;
 }
 
-extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
-    u8* g;
+static inline void spawnEffectA8016D398(void* a5,s32 a3,void* a8) {
     u8* p;
-    u8* base = (u8*)a1;
     s32 i;
-    Vec neg;
-    u32 seed;
-    u32 bits;
-
-    neg.x = -*(f32*)(base + 0xc);
-    neg.y = -*(f32*)(base + 0x1c);
-    neg.z = lbl_8053D944;
-
-    if ((u8)a4) {
-        if (*(s32*)a6 > 0) {
-            (*(s32*)a6)--;
-        } else {
-            g = (u8*)lbl_8053AAF8;
-            seed = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
-            *(u32*)(g + 0xb4) = seed;
-            bits = (seed >> 9) | 0x3f800000;
-            *(s32*)a6 = (s32)(lbl_8053D9BC * (*(f32*)&bits - lbl_8053D93C));
-            p = (u8*)a5;
-            for (i = 0; i < 4; i++, p += 0x1c) {
-                if (*(s32*)(p + 0x14) == 0) {
-                    f32 ry, rx;
-                    Vec z;
-                    *(s32*)(p + 0x14) = 0x3c;
-                    *(u16*)(p + 0x10) = 0x288;
-                    seed = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-                    *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
-                    bits = (seed >> 9) | 0x3f800000;
-                    ry = *(f32*)&bits - lbl_8053D93C;
-                    seed = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
-                    *(u32*)(lbl_8053AAF8 + 0xb4) = seed;
-                    bits = (seed >> 9) | 0x3f800000;
-                    rx = *(f32*)&bits - lbl_8053D93C;
-                    *(f32*)(p + 0x4) = lbl_8053D9C0 * rx - lbl_8053D9C4;
-                    *(f32*)(p + 0x8) = lbl_8053D9C8 * ry + lbl_8053D970;
-                    *(f32*)(p + 0xc) = lbl_8053D944;
-                    z.x = lbl_8053D944;
-                    z.y = lbl_8053D944;
-                    z.z = lbl_8053D944;
-                    *(void**)p = fn_8013CC50(0, &z, *(u16*)(p + 0x10), 0, 0, 0, 0, 1, lbl_8053D9CC);
-                    if (*(void**)p != 0) {
-                        *(u32*)((u8*)*(void**)p + 0xf4) |= 0x40;
+            for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
+                if(*(s32*)(p+0x14)==0){
+                    Vec zero;
+                    *(s32*)(p+0x14)=60;
+                    *(u16*)(p+0x10)=0x288;
+                    f32 ry=effectRandom8016D398();
+                    f32 rx=effectRandom8016D398();
+                    *(f32*)(p+4)=lbl_8053D9C0*rx-lbl_8053D9C4;*(f32*)(p+8)=lbl_8053D9C8*ry+lbl_8053D970;*(f32*)(p+0xc)=lbl_8053D944;
+                    zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
+                    *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
+                    if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
+                    if(*(JAUSoundObject**)(p+0x18)){
+                        if(*(u8*)a8){
+                            if((u8)a3){(*(JAUSoundObject**)(p+0x18))->startSound(JAISoundID(0x30078));}
+                            else {(*(JAUSoundObject**)(p+0x18))->startSound(JAISoundID(0x30031));}
+                            *(u8*)a8=0;
+                        }else {*(u8*)a8=1;}
                     }
+                    break;
                 }
             }
+}
+
+static inline void spawnEffectB8016D398(void* a5) {
+    u8* p;
+    s32 i;
+        for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
+            if(*(s32*)(p+0x14)==0){
+                Vec zero;
+                *(s32*)(p+0x14)=60;
+                *(u16*)(p+0x10)=0x287;
+                f32 y=lbl_8053D9D4*effectRandom8016D398()-lbl_8053D9D4;
+                f32 sign=lbl_8053D93C;
+                if(effectRandom8016D398()>lbl_8053D940){sign=lbl_8053D9D8;}
+                f32 x=(lbl_8053D9DC*effectRandom8016D398()+lbl_8053D9C8)*sign;
+                *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
+                zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
+                *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
+                if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
+                break;
+            }
+        }
+}
+
+extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
+    u8* p;
+    s32 i;
+    Vec neg, pos;
+    neg.y=-*(f32*)((u8*)a1+0x1c);
+    neg.x=-*(f32*)((u8*)a1+0xc);
+    neg.z=lbl_8053D944;
+    if((u8)a4){
+        if(*(s32*)a6>0){--*(s32*)a6;}
+        else {
+            *(s32*)a6=(s32)(lbl_8053D9BC*effectRandom8016D398());
+            for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
+                if(*(s32*)(p+0x14)==0){
+                    Vec zero;
+                    *(s32*)(p+0x14)=60;
+                    *(u16*)(p+0x10)=0x288;
+                    f32 ry=lbl_8053D9C8*effectRandom8016D398()+lbl_8053D970;
+                    f32 rx=lbl_8053D9C0*effectRandom8016D398()-lbl_8053D9C4;
+                    *(f32*)(p+4)=rx;*(f32*)(p+8)=ry;*(f32*)(p+0xc)=lbl_8053D944;
+                    zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
+                    *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
+                    if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
+                    if(*(JAUSoundObject**)(p+0x18)){
+                        if(*(u8*)a8){
+                            if((u8)a3){(*(JAUSoundObject**)(p+0x18))->startSound(JAISoundID(0x30078));}
+                            else {(*(JAUSoundObject**)(p+0x18))->startSound(JAISoundID(0x30031));}
+                            *(u8*)a8=0;
+                        }else {*(u8*)a8=1;}
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    if(*(s32*)a7>0){--*(s32*)a7;}
+    else {
+        *(s32*)a7=(s32)(lbl_8053D9D0*effectRandom8016D398());
+        for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
+            if(*(s32*)(p+0x14)==0){
+                Vec zero;
+                *(s32*)(p+0x14)=60;
+                *(u16*)(p+0x10)=0x287;
+                f32 y=lbl_8053D9D4*effectRandom8016D398()-lbl_8053D9D4;
+                f32 sign=lbl_8053D93C;
+                if(effectRandom8016D398()>lbl_8053D940){sign=lbl_8053D9D8;}
+                f32 x=(lbl_8053D9DC*effectRandom8016D398()+lbl_8053D9C8)*sign;
+                *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
+                zero.x=lbl_8053D944;zero.y=lbl_8053D944;zero.z=lbl_8053D944;
+                *(void**)p=fn_8013CC50(0,&zero,*(u16*)(p+0x10),0,0,0,0,1,lbl_8053D9CC);
+                if(*(JPABaseEmitter**)p){(*(JPABaseEmitter**)p)->setFlag(0x40);}
+                break;
+            }
+        }
+    }
+    s32 maxA=0,maxB=0;
+    for(i=0,p=(u8*)a5;i<4;++i,p+=0x1c){
+        if(*(u16*)(p+0x10)==0x287){
+            maxB=maxB<*(s32*)(p+0x14)?*(s32*)(p+0x14):maxB;
+        }else{
+            maxA=maxA<*(s32*)(p+0x14)?*(s32*)(p+0x14):maxA;
+        }
+        if(*(s32*)(p+0x14)>0)--*(s32*)(p+0x14);
+        JPABaseEmitter* e=*(JPABaseEmitter**)p;
+        if(e){
+            if(e->isEnableDeleteEmitter()){
+                void* mgr=*(void**)((u8*)fn_8013C824()+0xc);
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr,*(void**)p);
+                *(void**)p=0;
+            }else{
+                e->setScale(scale);
+                JMathInlineVEC::PSVECAdd((Vec*)(p+4),&neg,&pos);
+                if(*(u16*)(p+0x10)==0x287){
+                    if(!(u8)a3){pos.y+=lbl_8053D9E0;pos.z+=lbl_8053D9E4;}
+                    pos.z+=lbl_8053D9E8;
+                }else{
+                    if(!(u8)a3){pos.y+=lbl_8053D9EC;pos.z+=lbl_8053D9E4;}
+                    pos.z+=lbl_8053D9F0;
+                }
+                if((u8)a3){pos.x+=lbl_8053D9F4;pos.y+=lbl_8053D9F8;}
+                (*(JPABaseEmitter**)p)->setGlobalTranslation(pos.x,pos.y,pos.z);
+            }
+        }
+    }
+    if(maxB<maxA)maxB=maxA;
+    J3DAnmBase** ap=(J3DAnmBase**)a9;
+    J3DAnmBase** bp=(J3DAnmBase**)a10;
+    for(i=0;i<6;++i,++ap,++bp){
+        J3DAnmBase* a=*ap;
+        J3DAnmBase* b=*bp;
+        if(a)a->mCurrentFrame=(f32)((s32)a2%a->mMaxFrame);
+        if(b){
+            b->mCurrentFrame=(f32)(((i<4?maxA:maxB)*b->mMaxFrame)/60);
         }
     }
 }
