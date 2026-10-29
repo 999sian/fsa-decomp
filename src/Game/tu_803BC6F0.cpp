@@ -110,6 +110,9 @@ struct J2DTextBoxVt {
 extern "C" char lbl_8051C1A0[];
 extern "C" char lbl_8050EC80[];
 extern "C" u8* lbl_8053AAF8;
+extern "C" void* lbl_8053AEC0;
+extern "C" void fn_804310BC(void* a);
+extern "C" void fn_80403514(void* a);
 extern "C" int fn_803B9A94(void* a, u32 b, int c, u32 d, int e, int f);
 extern "C" void fn_803C24BC(char* p);
 extern "C" s32 fn_803B9BDC(char* this_);
@@ -3961,15 +3964,9 @@ extern "C" void fn_803CD75C(u8* p) {
     s16 g = *(s16*)(lbl_8050DB0C + 0x160);
     s32 m = c + b;
     u8* base;
-    if (m < c + (b + a * 2)) {
-        m = c + (b + a * 2);
-    }
-    if (m < d + e) {
-        m = d + e;
-    }
-    if (m < f + g) {
-        m = f + g;
-    }
+    tu803C_max(&m, c + (b + a * 2));
+    tu803C_max(&m, d + e);
+    tu803C_max(&m, f + g);
     *(s16*)(p + 0xd8) += 1;
     if (*(s16*)(p + 0xd8) > c) {
         setFade(*(void**)(p + 0x50), b, 0, lbl_80543494, lbl_80543458);
