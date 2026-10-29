@@ -209,6 +209,14 @@ struct Slot_80301CD0 {
     u8 flag : 1;
 };
 
+static inline void resetMessageSlots(Slot_80301CD0* slots) {
+    for (int index = 0; index < 19; index++) {
+        slots[index].flag = 1;
+        slots[index].f2 = 0x80;
+        slots[index + 19].flag = 1;
+        slots[index + 19].f2 = 0x80;
+    }
+}
 struct Rec2_80301CD0 {
     u8 a : 2;
     u8 flag : 1;
