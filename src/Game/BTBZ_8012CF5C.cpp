@@ -56,12 +56,6 @@ struct BTBZ_Vec {
     f32 x, y, z;
 };
 
-static inline void BTBZ_startSwitchEvent(const int index) {
-    if (fn_801F666C(fn_801F856C(), index) != 0) {
-        fn_802B39E8();
-    }
-}
-
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
     s32 a;
@@ -102,7 +96,8 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
 }
 
 // ---- fn_8012D6E8: init (spawns effect 0x58 at the room centre)
-extern "C" void fn_8012CF5C(u8* this_) {
+extern "C" void fn_8012CF5C(void* object) {
+    u8* this_=(u8*)object;
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
