@@ -350,6 +350,26 @@ extern "C" f32 lbl_80542A20;
 extern "C" f32 lbl_80542A24;
 extern "C" f32 lbl_80542A38;
 extern "C" f32 lbl_80542A3C;
+struct MovingAnimFrame {
+    s32 m_0;
+    u32 m_4;
+};
+static inline u8 advanceMovingAnim(u8* p, const s32 animation) {
+    if (*(s32*)(p + 0x234) == 0) {
+        s32 index = *(s32*)(p + 0x240);
+        MovingAnimFrame* table = (MovingAnimFrame*)lbl_804ADA98[animation];
+        if (table[index].m_0 < 0) return 1;
+        *(u32*)(p + 0x234) = table[index].m_4;
+        *(s32*)(p + 0x23c) = table[*(s32*)(p + 0x240)].m_0;
+        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) + 1;
+    }
+    return 0;
+}
+static inline void restartMovingAnim(u8* p, s32 animation) {
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x240) = 0;
+    advanceMovingAnim(p, animation);
+}
 extern "C" void fn_8036003C(u8* p) {
     struct Entry {
         s32 m_0;
