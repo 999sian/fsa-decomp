@@ -142,10 +142,9 @@ static s32 fn_80363880_quadrant(u16 a) {
 }
 
 static void fn_80363880_aim(char* self, f32 dy, f32 dx, f32 speed) {
-    s16 angle = (s16)(s32)(JMath::atanTable_.atan2_(dy, dx) * lbl_80542B50);
-    *(s16*)(self + 0x240) = angle;
-    *(f32*)(self + 0x3c) = speed * JMath::sincosTable_.mTable[(u16)angle >> 5].second;
-    *(f32*)(self + 0x40) = speed * JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    *(s16*)(self + 0x240) = (s16)(s32)(JMath::atanTable_.atan2_(dy, dx) * lbl_80542B50);
+    *(f32*)(self + 0x3c) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].second;
+    *(f32*)(self + 0x40) = speed * JMath::sincosTable_.mTable[(u16)*(s16*)(self + 0x240) >> 5].first;
 }
 
 static void fn_80363880_setQuadrant(char* self) {
