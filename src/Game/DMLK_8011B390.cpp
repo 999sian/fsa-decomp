@@ -203,8 +203,8 @@ static inline void dmlkSetAll(f32* v) {
     }
 }
 static inline s32 dmlkTime(s32 idx) {
-    s32 cur = *(s32*)((u8*)fn_8011921C() + 8);
-    return cur - lbl_80464AF8[idx];
+    s32* tbl = lbl_80464AF8;
+    return *(s32*)((u8*)fn_8011921C() + 8) - tbl[idx];
 }
 static inline bool dmlkSink(u8* p, int t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
