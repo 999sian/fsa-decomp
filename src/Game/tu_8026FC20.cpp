@@ -2955,10 +2955,10 @@ void fn_8027BE74(char* p) {
             u8* q = (u8*)PTR(p, 0xbf0);
             if (q[S32(p, 0x3dc) + 0x48] != 0 && fn_80251AEC(p, 0x37)) {
                 const f32* src = (const f32*)&lbl_8046BBA8[S32(p, 0x3dc)];
-                f32 sx = src[0];
-                f32 sy = src[1];
+                f32 sx = *src++;
+                f32 sy = *src++;
                 F32(p, 0x350) = sx;
-                f32 sz = src[2];
+                f32 sz = *src;
                 F32(p, 0x354) = sy;
                 F32(p, 0x358) = sz;
                 fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
