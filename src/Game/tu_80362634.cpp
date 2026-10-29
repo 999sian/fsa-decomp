@@ -75,6 +75,16 @@ extern "C" f32 lbl_80542B00;
 extern "C" f32 lbl_80542B04;
 extern "C" f32 lbl_80542B08;
 
+static u32 fn_80362C44_findPlayer() {
+    for (s32 i = 0; i < 4; i++) {
+        u32 found = fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100);
+        if (found != 0) {
+            return found;
+        }
+    }
+    return 0;
+}
+
 struct Unk80365AB8;
 typedef void (Unk80365AB8::*Unk80365AB8Func)();
 extern Unk80365AB8Func lbl_804ADDE8[];
