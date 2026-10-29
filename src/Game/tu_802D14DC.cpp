@@ -98,6 +98,17 @@ extern "C" void fn_802D1508(char* this_, int a, int b) {
     fn_801F132C(this_, a, b, this_ + 0x248);
 }
 
+extern "C" s32 fn_801CD664(s32);
+extern "C" unsigned int fn_8022461C(void*,unsigned int);
+extern "C" u8 fn_802DE9A0();
+extern "C" u8 fn_802DEB58();
+extern "C" void fn_801F0E34(void*,s32,s32);
+extern "C" s32 fn_80226AE0(void*,s32);
+extern "C" void fn_802F9908(void*,s32,s32);
+extern "C" void fn_80226CA8(s32,s32,void*);
+extern "C" const f32 lbl_8046E070[36];
+#define S32(p,o) (*(s32*)((char*)(p)+(o)))
+#define F32(p,o) (*(f32*)((char*)(p)+(o)))
 extern "C" void fn_802D152C(char* p) {
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
     if (*(s32*)(p + 0x234) == 0) {
