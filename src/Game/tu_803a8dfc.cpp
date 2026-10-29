@@ -224,28 +224,27 @@ extern "C" s32 fn_803A8DFC(void* this_, s32 self) {
 }
 
 extern "C" void fn_803A8F5C(void* this_) {
+    char* p = (char*)this_;
+    char* q;
+    s32 i;
+    s32 a;
+    u8 shown;
+    u8 neg;
+    s32 d;
     void* res;
     s32 id;
     s32 cur;
-    s32 shown;
-    s32 neg;
-    s32 d;
-    s32 a;
-    s32 v;
-    s32 i;
     char* pos;
-    char* q;
-    char* p = (char*)this_;
     fn_8013B490(lbl_8053AB10);
     if (*(u8*)(p + 0x4c0) >= 2) {
         q = p;
         for (i = 0; i < *(s32*)(p + 0x454); i++) {
-            v = *(s32*)(q + 0x3e0);
+            a = *(s32*)(q + 0x3e0);
             shown = 0;
-            neg = v < 0;
-            a = v;
-            if (neg) {
-                a = -v;
+            neg = 0;
+            if (a < 0) {
+                a *= -1;
+                neg = 1;
             }
             *(u8*)(*(char**)(q + 0xa8) + 0xb0) = 0;
             *(u8*)(*(char**)(q + 0xf8) + 0xb0) = 0;
@@ -338,7 +337,7 @@ extern "C" void fn_803A8F5C(void* this_) {
             }
             id = *(s32*)(q2 + 0x3c0);
             res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
-            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec, lbl_805433D4, lbl_805433D4);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec, 1.0f, 1.0f);
             if (*(u8*)(p + 0x4db) & ((1 << i) & 0xff)) {
                 DrawRec rec2;
                 u8 b;
@@ -354,7 +353,7 @@ extern "C" void fn_803A8F5C(void* this_) {
                     rec2.b1d = 0xff;
                 }
                 res = ((SprMgr_803A8F5C*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->v18(0x534f4220, lbl_8047641C);
-                fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec2, lbl_805433D4, lbl_805433D4);
+                fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), pos + 0x2f0, res, id, &rec2, 1.0f, 1.0f);
             }
             q2 += 4;
             pos += 12;
@@ -501,6 +500,146 @@ extern "C" void fn_803A9830(Menu_Main* p) {
     }
     p->anms[p->cur]->frame = p->frame;
     p->screens[p->cur]->animation();
+}
+
+extern "C" void fn_803A9AB8(void* this_) {
+    u8* q2;
+    u8* q3;
+    u8* v;
+    u8* q4;
+    int i;
+    f32 dy;
+    f32 x0;
+    u8* p = (u8*)this_;
+    if (p[0x4c8] != 0xff) {
+        int n = 0;
+        --*(int*)(p + 0x444);
+        if (*(int*)(p + 0x444) == 0) {
+            u8* q1 = p;
+            for (int j = 0; j < *(int*)(p + 0x454); q1 += 4, ++j) {
+                if (j == p[0x4ac + n]) {
+                    if (*(void**)(q1 + 0x1b8) == 0) {
+                        u8* pane = *(u8**)(q1 + 0x158);
+                        f32 width = *(f32*)(pane + 0x28) - *(f32*)(pane + 0x20);
+                        FVec3 pos(width * lbl_805433E8 + *(f32*)(pane + 0x30), lbl_805433C8, lbl_805433C8);
+                        *(void**)(q1 + 0x1b8) = fn_8013CC50(0, &pos, 0x241, 0, 0, 0, 0, 1, lbl_805433D4);
+                    }
+                    if (p[0x4c8] > n) ++n;
+                }
+            }
+            *(int*)(p + 0x444) = 0xf0;
+        }
+    }
+    q2 = p;
+    for (i = 0; i < *(int*)(p + 0x454); q2 += 4, ++i) {
+        if (*(int*)(q2 + 0x3d0) != 0) {
+            ++*(int*)(q2 + 0x3d0);
+            if (*(int*)(q2 + 0x3d0) < 8) *(int*)(q2 + 0x3c0) = 0xc4;
+            else if (*(int*)(q2 + 0x3d0) < 16) *(int*)(q2 + 0x3c0) = 0xc3;
+            else if (*(int*)(q2 + 0x3d0) < 24) *(int*)(q2 + 0x3c0) = 0xc4;
+            else { *(int*)(q2 + 0x3c0) = 0xc3; *(int*)(q2 + 0x3d0) = 0; }
+        } else if (*(int*)(q2 + 0x3c0) == 0xc3) {
+            if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100)) {
+                ++*(int*)(q2 + 0x3d0);
+                *(int*)(q2 + 0x3c0) = 0xc4;
+                u32 msg = 0x20032;
+                (*(MsgSinkObj2**)(p + 0x174 + p[0x4ac + i] * 4))->send(&msg);
+            }
+        }
+    }
+    q3 = p;
+    v = p;
+    for (i = 0; i < *(int*)(p + 0x454); q3 += 4, ++i, v += 12) {
+        *(int*)(q3 + 0x3e0) = *(int*)(q3 + 0x3a0) + (*(int*)(q3 + 0x320) + (*(int*)(q3 + 0x340) + *(int*)(q3 + 0x350) + *(int*)(q3 + 0x360) + *(int*)(q3 + 0x370)) - *(int*)(q3 + 0x380) + *(int*)(q3 + 0x3b0));
+        if (*(int*)(q3 + 0x3e0) < -5000) *(int*)(q3 + 0x3e0) = -5000;
+
+        if (*(int*)(q3 + 0x3e0) < -500) {
+            f32 ratio = lbl_805433EC / (f32)*(int*)(p + 0x434);
+            f32 height = (f32)*(s16*)(lbl_8050DB0C + 0x2b0);
+            dy = ratio * height / lbl_805433F0;
+        } else if (*(int*)(q3 + 0x3e0) > 3000) {
+            f32 ratio = lbl_805433F4 / (f32)*(int*)(p + 0x434);
+            f32 height = (f32)*(s16*)(lbl_8050DB0C + 0x2b0);
+            dy = ratio * height / lbl_805433F0;
+        }
+        else
+            dy = (f32)*(s16*)(lbl_8050DB0C + 0x2b0) * (lbl_805433F8 * (f32)*(int*)(q3 + 0x3e0) / (f32)*(int*)(p + 0x434)) / lbl_805433F0;
+        f32 x = getBounds__7J2DPaneFv(*(void**)(q3 + 0x158))[0];
+        (*(J2DPane**)(q3 + 0x158))->move(x, *(f32*)(p + 0x3f0) - dy);
+        if (*(int*)(q3 + 0x3e0) > 9999) *(int*)(q3 + 0x3e0) = 9999;
+        u8* pane = *(u8**)(q3 + 0x158);
+        f32 width = *(f32*)(pane + 0x28) - *(f32*)(pane + 0x20);
+        int texW = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
+        x0 = getBounds__7J2DPaneFv(pane)[0];
+        f32 cx = getBounds__7J2DPaneFv(*(void**)(p + 0x168))[0];
+        cx += x0;
+        f32 scale = lbl_805433CC;
+        f32 center = width * lbl_805433E8 + cx;
+        *(f32*)(v + 0x2f0) = scale * center / (f32)texW;
+        int texH = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+        x0 = getBounds__7J2DPaneFv(*(void**)(q3 + 0x158))[3];
+        f32 cy = getBounds__7J2DPaneFv(*(void**)(p + 0x168))[1];
+        cy += x0;
+        const f32 scaleY = lbl_805433D0;
+        const f32 b = lbl_80543400;
+        const f32 a = lbl_805433FC;
+        *(f32*)(v + 0x2f4) = scaleY * (cy - a - b) / (f32)texH;
+        *(f32*)(v + 0x2f8) = lbl_805433C8;
+    }
+    fn_803B2FB0((Menu_803B2FB0*)p);
+    if (p[0x4c8] != 0xff) {
+        fn_803B236C(p);
+        for (i = 0; i < 10; ++i) {
+            if (*(int*)(p + 0x2c8 + i * 4) >= 0) {
+                --*(int*)(p + 0x2c8 + i * 4);
+                if (*(int*)(p + 0x2c8 + i * 4) <= -1) {
+                    u8* countdown = p + i*4;
+                    u8* slot = p + i * 12;
+                    *(f32*)(p + 0x244) = *(f32*)(slot + 0x250);
+                    *(f32*)(p + 0x248) = *(f32*)(slot + 0x254);
+                    *(f32*)(p + 0x24c) = *(f32*)(slot + 0x258);
+                    *(int*)(countdown + 0x2c8) = -1;
+                    u32 msg = 0x3002a;
+                    (*(MsgSinkObj2**)(p + 0x184))->send(&msg);
+                    break;
+                }
+            }
+        }
+    }
+    if (fn_80309C4C(lbl_8053AD30, 0x1100, -1)) {
+        u8* game = lbl_8050EC80;
+        u8* entry = game + *(int*)(game + 0x10) * 0xc8;
+        int add = *(int*)(p + 0x324) + *(int*)(p + 0x328);
+        add += *(int*)(p + 0x32c);
+        add += *(int*)(entry + 0x30);
+        *(int*)(entry + 0x30) = *(int*)(p + 0x320) + add;
+        entry = game + *(int*)(game + 0x10) * 0xc8;
+        if (*(int*)(entry + 0x30) > 99999)
+            *(int*)(entry + 0x30) = 99999;
+        entry = lbl_8050EC80 + *(int*)(lbl_8050EC80 + 0x10) * 0xc8;
+        if (*(int*)(entry + 0x30) < -99999)
+            *(int*)(entry + 0x30) = -99999;
+        p[0x4c0] = 6;
+        fn_80458880(lbl_8053AF80, 0xb, -1);
+        q4=p;
+        for(i=0;i<30;q4+=4,++i) {
+            if(*(JPABaseEmitter**)(q4+0x1c8)) {
+                JPAEmitterManager* mgr=*(JPAEmitterManager**)((u8*)fn_8013C824()+0xc);
+                mgr->forceDeleteEmitter(*(JPABaseEmitter**)(q4+0x1c8));
+                *(JPABaseEmitter**)(q4+0x1c8)=0;
+            }
+        }
+    } else {
+    q4 = p;
+    for (i = 0; i < 30; q4 += 4, ++i) {
+        JPABaseEmitter* e = *(JPABaseEmitter**)(q4 + 0x1c8);
+        if (e != 0 && e->isEnableDeleteEmitter()) {
+            JPAEmitterManager* mgr = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+            mgr->forceDeleteEmitter(*(JPABaseEmitter**)(q4 + 0x1c8));
+            *(JPABaseEmitter**)(q4 + 0x1c8) = 0;
+        }
+    }
+    }
 }
 
 extern "C" void fn_803AB494(void* this_) {
@@ -2502,104 +2641,116 @@ extern "C" void fn_803B14F8(void* this_) {
     }
 }
 
+#pragma fp_contract off
 extern "C" void fn_803B1B60(void* this_) {
-    u8* p = (u8*)this_;
-    s32 a = *(s16*)(lbl_8050DB0C + 0x244);
-    s32 d = *(s16*)(lbl_8050DB0C + 0x24a);
-    s32 b = *(s16*)(lbl_8050DB0C + 0x246);
-    s32 c = *(s16*)(lbl_8050DB0C + 0x248);
-    s32 r29;
-    s32 r23;
-    s32 r28;
-    s32 r24;
     s32 t;
-    s32 cur;
-    f32 f28;
-    f32 f29;
-    f32 f2;
-    Pane_803B1B60* pane;
-    Scr_803B1B60* scr;
-    s32 i;
-
-    if (*(s32*)(p + 0x440) > 0) {
-        *(s32*)(p + 0x440) -= 1;
+    Menu_Intro* p = (Menu_Intro*)this_;
+    s32 start1;
+    s32 start2;
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 start1b;
+    s32 end2;
+    s32 e;
+    s32 f;
+    s32 g;
+    s32 start2b;
+    if (p->timer > 0) {
+        p->timer--;
     }
-    r29 = 0x96 - a;
-    r23 = 0x96 - d;
-    r28 = r23 - a;
-    r24 = r29 - b;
-    t = *(s32*)(p + 0x440);
+    t = p->timer;
+    a = *(s16*)(lbl_8050DB0C + 0x244);
+    s32 d = *(s16*)(lbl_8050DB0C + 0x24a);
+    b = *(s16*)(lbl_8050DB0C + 0x246);
+    c = *(s16*)(lbl_8050DB0C + 0x248);
+    e = *(s16*)(lbl_8050DB0C + 0x24c);
+    f = *(s16*)(lbl_8050DB0C + 0x24e);
+    g = *(s16*)(lbl_8050DB0C + 0x250);
+    start1 = 0x96 - a;
+    end2 = 0x96 - d;
+    start2 = end2 - a;
+    start1b = start1 - b;
+    start2b = start2 - b;
 
     if (t == 0) {
-        if (*(s32*)(p + 0x450) == 1) {
-            if (p[0x4b8] == 0xff) {
-                if (fn_80389BF0(0, 0x106)) p[0x4b8] = 1;
+        if (p->cur == 1) {
+            if (p->selected[0] == 0xff && fn_80389BF0(0, 0x106)) {
+                p->selected[0] = 1;
             }
-            if (p[0x4b9] == 0xff) {
-                if (fn_80389BF0(1, 0x107)) p[0x4b9] = 1;
+            if (p->selected[1] == 0xff && fn_80389BF0(1, 0x107)) {
+                p->selected[1] = 1;
             }
-            if (p[0x4ba] == 0xff) {
-                if (fn_80389BF0(2, 0x108)) p[0x4ba] = 1;
+            if (p->selected[2] == 0xff && fn_80389BF0(2, 0x108)) {
+                p->selected[2] = 1;
             }
-            p[0x4bb] = 1;
+            p->selected[3] = 1;
         } else {
-            if (p[0x4b8] == 0xff) {
-                if (fn_80389BF0(0, 0xe2)) p[0x4b8] = 1;
+            if (p->selected[0] == 0xff && fn_80389BF0(0, 0xe2)) {
+                p->selected[0] = 1;
             }
-            if (p[0x4b9] == 0xff) {
-                if (fn_80389BF0(1, 0xe3)) p[0x4b9] = 1;
+            if (p->selected[1] == 0xff && fn_80389BF0(1, 0xe3)) {
+                p->selected[1] = 1;
             }
-            if (p[0x4ba] == 0xff) {
-                if (fn_80389BF0(2, 0xe4)) p[0x4ba] = 1;
+            if (p->selected[2] == 0xff && fn_80389BF0(2, 0xe4)) {
+                p->selected[2] = 1;
             }
-            if (p[0x4bb] == 0xff) {
-                if (fn_80389BF0(3, 0xe5)) p[0x4bb] = 1;
+            if (p->selected[3] == 0xff && fn_80389BF0(3, 0xe5)) {
+                p->selected[3] = 1;
             }
         }
-        if (p[0x4b8] == 1 && p[0x4b9] == 1 && p[0x4ba] == 1 && p[0x4b8] == 1) {
-            for (i = 0; i < *(s32*)(p + 0x454); i++) {
-                p[0x4b8 + i] = 0xff;
-                *(s16*)(p + 0x460 + i * 2) = 0;
+        if (p->selected[0] == 1 && p->selected[1] == 1 && p->selected[2] == 1 && p->selected[0] == 1) {
+            for (s32 i = 0; i < p->count; i++) {
+                p->selected[i] = 0xff;
+                p->m460[i] = 0;
             }
-            *(s32*)(p + 0x440) = 0x96;
-            p[0x4c1] = 3;
+            p->timer = 0x96;
+            p->m4c1 = 3;
         }
-        return;
-    }
-
-    cur = *(s32*)(p + 0x450);
-    if (t < r29) {
-        if (t < r24) {
-            return;
+    } else {
+        if (t >= start1) {
+            f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
+            p->screens[p->cur]->search('Pmmwk02')->move(x, (p->y41c - lbl_80543424) + (lbl_80543424 + (f32)c) * (lbl_805433D4 - (f32)((t - start1) * (t - start1)) / (f32)(a * a)));
+            f32 fade = lbl_805433D4 - (f32)(p->timer - start1) / (f32)a;
+            if (p->cur < 2) {
+                const u64* tags = (const u64*)lbl_80476208;
+                for (s32 i = 0; i < 13; i++, tags++) {
+                    p->screens[p->cur]->search(*tags)->setAlpha((u8)(p->alphaTitle[i] * fade));
+                }
+            }
+        } else if (t >= start1b) {
+            f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
+            p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c + (f32)c * ((f32)((t - start1b) * (t - start1b)) / (f32)(b * b)));
         }
-        scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
-        pane = scr->v3C(0x00506d6d776b3032ULL);
-        f28 = getBounds__7J2DPaneFv(pane)[0];
-        scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
-        pane = scr->v3C(0x00506d6d776b3032ULL);
-        pane->move(f28, f28);
-        return;
-    }
-
-    scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
-    pane = scr->v3C(0x00506d6d776b3032ULL);
-    f28 = getBounds__7J2DPaneFv(pane)[0];
-    scr = *(Scr_803B1B60**)(p + 0x10 + cur * 4);
-    pane = scr->v3C(0x00506d6d776b3032ULL);
-    f2 = (*(f32*)(p + 0x41c) - lbl_80543424) + (lbl_80543424 + (f32)c) * (lbl_805433D4 - (f32)((t - r29) * (t - r29)) / (f32)(a * a));
-    pane->move(f28, f2);
-
-    f29 = lbl_805433D4 - (f32)(t - r29) / (f32)a;
-    if (cur >= 2) {
-        return;
-    }
-    for (i = 0; i < 13; i++) {
-        scr = *(Scr_803B1B60**)(p + 0x10 + *(s32*)(p + 0x450) * 4);
-        pane = scr->v3C(*(u64*)((u8*)&lbl_80476208 + i * 8));
-        pane->v24((s32)(((f32)p[0x4c9 + i] - lbl_805433B8) * f29));
+        if (p->timer <= end2) {
+            if (p->timer >= start2) {
+                s32 dt = p->timer - start2;
+                f32 off = (lbl_80543428 + (f32)g) * (lbl_805433D4 - (f32)(dt * dt) / (f32)(e * e));
+                u64 (*r3)[3] = (u64 (*)[3])lbl_80476270;
+                for (s32 i = 0; i < p->count; i++, r3++) {
+                    f32 x = p->screens[p->cur]->search((*r3)[2])->getBounds()->i.x;
+                    p->screens[p->cur]->search((*r3)[2])->move(x, (p->y420 - lbl_80543428) + off);
+                    f32 fade = lbl_805433D4 - (f32)(p->timer - start2) / (f32)e;
+                    if (p->cur < 2) {
+                        const u64* tags = *r3;
+                        for (s32 k = 0; k < 3; k++, tags++) {
+                            p->screens[p->cur]->search(*tags)->setAlpha((u8)(p->alpha3[k] * fade));
+                        }
+                    }
+                }
+            } else if (p->timer >= start2b) {
+                s32 dt = p->timer - start2b;
+                f32 off = (f32)g * ((f32)(dt * dt) / (f32)(f * f));
+                u64 (*r3)[3] = (u64 (*)[3])lbl_80476270;
+                for (s32 i = 0; i < p->count; i++, r3++) {
+                    f32 x = p->screens[p->cur]->search((*r3)[2])->getBounds()->i.x;
+                    p->screens[p->cur]->search((*r3)[2])->move(x, p->y420 + off);
+                }
+            }
+        }
     }
 }
-
+#pragma fp_contract reset
 extern const f32 lbl_80476368[];
 extern const f32 lbl_80476378[];
 extern const f32 lbl_80543434;
@@ -3433,7 +3584,7 @@ extern "C" void fn_803AA8F8(void* this_) {
     u8* self = (u8*)this_;
     switch (self[0x4c1]) {
     case 0x00:
-        fn_803B1B60(this_);
+        fn_803B1B60((Menu_Intro*)this_);
         break;
     case 0x01:
         fn_803B14F8(this_);
