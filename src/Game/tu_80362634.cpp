@@ -118,8 +118,8 @@ extern "C" f32 lbl_80542B90;
 extern "C" f32 lbl_80542B6C;
 
 static void fn_80363880_reset(char* self) {
-    f32 zero = lbl_80542B0C;
     *(s32*)(self + 0x24c) = -1;
+    f32 zero = 0.0f;
     *(f32*)(self + 0x44) = zero;
     *(f32*)(self + 0x40) = zero;
     *(f32*)(self + 0x3c) = zero;
