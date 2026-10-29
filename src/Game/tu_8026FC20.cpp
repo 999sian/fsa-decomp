@@ -3669,9 +3669,9 @@ f32 fn_8022C82C(s32);
 extern const JGeometry::TVec3<f32> lbl_8046BBD8[];
 }
 inline bool wallAt(char* p, f32 x, f32 y) {
-    JGeometry::TVec3<f32> t;
-    t.set(x, y, F32(p, 0x11bc));
-    return fn_802265DC(t, PTR(p, 0x3b4), 1);
+    void* obj = PTR(p, 0x3b4);
+    JGeometry::TVec3<f32> t(x, y, F32(p, 0x11bc));
+    return fn_802265DC(t, obj, 1);
 }
 inline void addPos(char* p, const JGeometry::TVec3<f32>& a) {
     JGeometry::TVec3<f32> v;
