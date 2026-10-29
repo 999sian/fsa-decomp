@@ -241,6 +241,16 @@ void fn_80290F20(char* p) {
 }
 
 bool fn_802DE9A0(void);
+s32 Player_GetLinkTargetIndex(char*);
+s32 fn_80237774(s32);
+void fn_80272160(char*, s32, char*, s32);
+void fn_8027EDDC(char*);
+void fn_8013CB44(void*, void*, s32, s32, s32);
+extern s32 lbl_8046C228[];
+extern const f32 lbl_80540604;
+extern const f32 lbl_80540608;
+extern const f32 lbl_80540610;
+extern "C++" void JPAGetXYZRotateMtx(s16, s16, s16, f32 (*)[4]);
 void fn_80290FC0(char* p) {
     if (U8(p, 0x3fc) == 0x28) {
         if (S32(p, 0xcf4) == 0xc && fn_802DE9A0()) {
