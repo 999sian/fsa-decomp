@@ -560,6 +560,16 @@ extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y) {
     return moved;
 }
 #pragma opt_lifetimes reset
+static inline JGeometry::TVec2<f32> projectionDelta(JGeometry::TVec2<f32>& corner, const f32* pt)
+{
+    corner.x -= pt[0];
+    corner.y -= pt[1];
+    return corner;
+}
+static inline u16 projectionAngle(const JGeometry::TVec2<f32>& v)
+{
+    return (u16)(s32)(JMath::atanTable_.atan2_(v.x, v.y) * lbl_8053EF84);
+}
 static inline f32 projectionTangent(s16 angle)
 {
     f32 c = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
@@ -569,123 +579,110 @@ static inline f32 projectionTangent(s16 angle)
     return __fabsf(t);
 }
 
-extern "C" void fn_801CBB98(f32* box, f32* pt, u16 ang, f32* out, f32 d) {
-    bool ok = false;
+#pragma opt_lifetimes off
+extern "C" void fn_801CBB98(f32* box, f32* pt, u16 ang, f32* out, f32 d)
+{
     out[0] = pt[0];
     out[1] = pt[1];
-    if (pt[0] < box[0] && pt[1] < box[1] && pt[0] < box[2] && pt[1] < box[3]) {
-        ok = true;
-    }
-    if (!ok) {
+    bool ok = false;
+    if (pt[0] >= box[0] && pt[1] >= box[1] && pt[0] < box[2] && pt[1] < box[3]) ok = true;
+    if (!ok) return;
+    if (__fabsf(JMath::sincosTable_.mTable[ang >> 5].first) <= *(f32*)__float_epsilon) {
+        if (JMath::sincosTable_.mTable[ang >> 5].second > lbl_8053EF7C) out[1] = box[3] + d;
+        else out[1] = box[1] - d;
         return;
     }
-    f32 sn = *(f32*)((u8*)&JMath::sincosTable_ + ((u16)ang >> 2 & 0x3ff8));
-    f32 cs = *(f32*)((u8*)&JMath::sincosTable_ + ((u16)ang >> 2 & 0x3ff8) + 4);
-    if (fabs(sn) > *(f32*)__float_epsilon) {
-        out[1] = (cs > lbl_8053EF7C) ? box[3] + d : box[1] - d;
+    if (__fabsf(JMath::sincosTable_.mTable[ang >> 5].second) <= *(f32*)__float_epsilon) {
+        if (JMath::sincosTable_.mTable[ang >> 5].first > lbl_8053EF7C) out[0] = box[2] + d;
+        else out[0] = box[0] - d;
         return;
     }
-    if (fabs(cs) > *(f32*)__float_epsilon) {
-        out[0] = (cs > lbl_8053EF7C) ? box[2] + d : box[0] - d;
-        return;
+if (ang <= 0x4000) {
+    JGeometry::TVec2<f32> corner(box[2], box[3]);
+    JGeometry::TVec2<f32> delta;
+    delta.x = corner.x - pt[0]; delta.y = corner.y - pt[1];
+    JGeometry::TVec2<f32> v(delta);
+    u16 t = (u16)(s32)(JMath::atanTable_.atan2_(v.x, v.y) * lbl_8053EF84);
+    s16 a = ang;
+    if (ang < t) {
+        f32 distance = __fabsf(box[3] - pt[1]);
+        f32 tangent = projectionTangent(a);
+        out[0] = pt[0] + distance * tangent;
+        out[1] = box[3];
+    } else {
+        out[0] = box[2];
+        f32 distance = __fabsf(box[2] - pt[0]);
+        f32 tangent = projectionTangent(0x4000 - a);
+        out[1] = pt[1] + distance * tangent;
     }
-    if (ang <= 0x4000) {
-        f32 dx = box[2] - pt[0];
-        f32 dy = box[3] - pt[1];
-        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
-        if (ang < t && fabs(cs) > *(f32*)__float_epsilon) {
-            out[0] = pt[0] + fabs(dy) * fabs((lbl_8053EF60 / cs) * sn);
-            out[1] = box[3];
-        } else {
-            u16 comp = 0x4000 - ang;
-            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
-            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
-            out[0] = box[2];
-            out[1] = pt[1];
-            if (fabs(s2) > *(f32*)__float_epsilon) {
-                out[1] = pt[1] + fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
-            }
-        }
-        out[0] += d * sn;
-        out[1] += d * cs;
-        return;
-    }
-    if (ang <= 0x8000) {
-        s16 c = (s16)(0x8000 - ang);
-        u16 uc = (u16)c;
-        f32 sc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8));
-        f32 cc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8) + 4);
-        f32 dx = box[2] - pt[0];
-        f32 dy = box[1] - pt[1];
-        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
-        if (t < ang && fabs(cc) > *(f32*)__float_epsilon) {
-            out[0] = pt[0] + fabs(pt[1] - box[1]) * fabs((lbl_8053EF60 / cc) * sc);
-            out[1] = box[1];
-        } else {
-            u16 comp = 0x4000 - uc;
-            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
-            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
-            out[0] = box[2];
-            out[1] = pt[1];
-            if (fabs(s2) > *(f32*)__float_epsilon) {
-                out[1] = pt[1] - fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
-            }
-        }
-        out[0] += d * sc;
-        out[1] -= d * cc;
-        return;
-    }
-    if (ang <= 0xC000) {
-        s16 c = (s16)(ang - 0x8000);
-        u16 uc = (u16)c;
-        f32 sc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8));
-        f32 cc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8) + 4);
-        f32 dx = box[0] - pt[0];
-        f32 dy = box[1] - pt[1];
-        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
-        if (ang < t && fabs(cc) > *(f32*)__float_epsilon) {
-            out[0] = pt[0] - fabs(dy) * fabs((lbl_8053EF60 / cc) * sc);
-            out[1] = box[1];
-        } else {
-            u16 comp = 0x4000 - uc;
-            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
-            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
-            out[0] = box[0];
-            out[1] = pt[1];
-            if (fabs(s2) > *(f32*)__float_epsilon) {
-                out[1] = pt[1] - fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
-            }
-        }
-        out[0] -= d * sc;
-        out[1] -= d * cc;
-        return;
-    }
-    {
-        s16 c = (s16)(0x10000 - ang);
-        u16 uc = (u16)c;
-        f32 sc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8));
-        f32 cc = *(f32*)((u8*)&JMath::sincosTable_ + (uc >> 2 & 0x3ff8) + 4);
-        f32 dx = box[0] - pt[0];
-        f32 dy = box[3] - pt[1];
-        u16 t = (u16)(s32)(JMath::atanTable_.atan2_(dx, dy) * lbl_8053EF84);
-        if (t < ang && fabs(cc) > *(f32*)__float_epsilon) {
-            out[0] = pt[0] - fabs(dy) * fabs((lbl_8053EF60 / cc) * sc);
-            out[1] = box[3];
-        } else {
-            u16 comp = 0x4000 - uc;
-            f32 s2 = *(f32*)((u8*)&JMath::sincosTable_ + ((comp >> 2 & 0x3ff8) + 4));
-            f32 c2 = *(f32*)((u8*)&JMath::sincosTable_ + (comp >> 2 & 0x3ff8));
-            out[0] = box[0];
-            out[1] = pt[1];
-            if (fabs(s2) > *(f32*)__float_epsilon) {
-                out[1] = pt[1] + fabs(dx) * fabs((lbl_8053EF60 / s2) * c2);
-            }
-        }
-        out[0] -= d * sc;
-        out[1] += d * cc;
-    }
+    out[0] += d * JMath::sincosTable_.mTable[(u16)a >> 5].first;
+    out[1] += d * JMath::sincosTable_.mTable[(u16)a >> 5].second;
 }
-
+else if (ang >= 0x4000 && ang <= 0x8000) {
+    JGeometry::TVec2<f32> corner(box[2], box[1]);
+    JGeometry::TVec2<f32> delta;
+    delta.x = corner.x - pt[0]; delta.y = corner.y - pt[1];
+    JGeometry::TVec2<f32> v(delta);
+    u16 t = (u16)(s32)(JMath::atanTable_.atan2_(v.x, v.y) * lbl_8053EF84);
+    s16 a = (s16)(0x8000 - ang);
+    if ((u32)(t - ang) >> 31) {
+        f32 distance = __fabsf(pt[1] - box[1]);
+        f32 tangent = projectionTangent(a);
+        out[0] = pt[0] + distance * tangent;
+        out[1] = box[1];
+    } else {
+        out[0] = box[2];
+        f32 distance = __fabsf(box[2] - pt[0]);
+        f32 tangent = projectionTangent(0x4000 - a);
+        out[1] = pt[1] - distance * tangent;
+    }
+    out[0] += d * JMath::sincosTable_.mTable[(u16)a >> 5].first;
+    out[1] -= d * JMath::sincosTable_.mTable[(u16)a >> 5].second;
+}
+else if (ang >= 0x8000 && ang <= 0xc000) {
+    JGeometry::TVec2<f32> corner(box[0], box[1]);
+    JGeometry::TVec2<f32> delta;
+    delta.x = corner.x - pt[0]; delta.y = corner.y - pt[1];
+    JGeometry::TVec2<f32> v(delta);
+    u16 t = (u16)(s32)(JMath::atanTable_.atan2_(v.x, v.y) * lbl_8053EF84);
+    s16 a = (s16)(ang - 0x8000);
+    if ((u32)(ang - t) >> 31) {
+        f32 distance = __fabsf(pt[1] - box[1]);
+        f32 tangent = projectionTangent(a);
+        out[0] = pt[0] - distance * tangent;
+        out[1] = box[1];
+    } else {
+        out[0] = box[0];
+        f32 distance = __fabsf(pt[0] - box[0]);
+        f32 tangent = projectionTangent(0x4000 - a);
+        out[1] = pt[1] - distance * tangent;
+    }
+    out[0] -= d * JMath::sincosTable_.mTable[(u16)a >> 5].first;
+    out[1] -= d * JMath::sincosTable_.mTable[(u16)a >> 5].second;
+}
+else {
+    JGeometry::TVec2<f32> corner(box[0], box[3]);
+    JGeometry::TVec2<f32> delta;
+    delta.x = corner.x - pt[0]; delta.y = corner.y - pt[1];
+    JGeometry::TVec2<f32> v(delta);
+    u16 t = (u16)(s32)(JMath::atanTable_.atan2_(v.x, v.y) * lbl_8053EF84);
+    s16 a = (s16)(0x10000 - ang);
+    if ((u32)(t - ang) >> 31) {
+        f32 distance = __fabsf(box[3] - pt[1]);
+        f32 tangent = projectionTangent(a);
+        out[0] = pt[0] - distance * tangent;
+        out[1] = box[3];
+    } else {
+        out[0] = box[0];
+        f32 distance = __fabsf(pt[0] - box[0]);
+        f32 tangent = projectionTangent(0x4000 - a);
+        out[1] = pt[1] + distance * tangent;
+    }
+    out[0] -= d * JMath::sincosTable_.mTable[(u16)a >> 5].first;
+    out[1] += d * JMath::sincosTable_.mTable[(u16)a >> 5].second;
+}
+}
+#pragma opt_lifetimes reset
 extern "C" s32 fn_801CC29C(const f32* a, const f32* b, f32* out) {
     s32 result = 0;
     out[0] = lbl_8053EF7C;
