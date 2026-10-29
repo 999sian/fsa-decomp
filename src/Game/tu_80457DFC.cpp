@@ -149,7 +149,7 @@ struct Unk8045A3D8Src {
     u8 m11;
 };
 
-static inline f32 getAudioPan(const u8* self, s8 mode) {
+static inline f32 getAudioPan(const u8* self, const s8 mode) {
     if(mode<0)return lbl_80543EC4;
     if(mode>=self[5])return lbl_80543EC4;
     f32 pan=lbl_80543EC4;
@@ -654,33 +654,19 @@ extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
     case 0x38:case 0x57:
         if(self[4])return;
         if(self[5]==1 && *(Unk80458F04Sound**)(self+0x84) && id==(*(Unk80458F04Sound**)(self+0x84))->mID)return;
-        JAISoundID sid=id;
-        ((Unk80458880Mgr*)*(void**)(self+0x30))->v3(&sid,(Unk80458F04Sound**)(self+0x84),0);
+        ((JAISoundStarter*)*(void**)(self+0x30))->startSound(JAISoundID(id),(JAISoundHandle*)(self+0x84),0);
         if(*(Unk80458F04Sound**)(self+0x84))(*(Unk80458F04Sound**)(self+0x84))->mMove.moveVolume(*(f32*)(self+0x50),0);
         return;
     }
     if(mode>=0){
         if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
-            (*(JAUSoundObject**)(self+mode*4+0x18))->stopSound(JAISoundID(id),0);
-        stopAudioGroup(*(JAUSoundObject**)(self+mode*4+0x18));
-        JAISoundHandle* h=(*(JAUSoundObject**)(self+mode*4+0x18))->startSound(JAISoundID(id));
+            (*(JAUSoundObject**)((self+mode*4)+0x18))->stopSound(JAISoundID(id),0);
+        u8* channelBase=self+mode*4;
+        stopAudioGroup(*(JAUSoundObject**)(channelBase+0x18));
+        JAISoundHandle* h=(*(JAUSoundObject**)(channelBase+0x18))->startSound(JAISoundID(id));
         if(h && *h){
-            f32 pan;
-            if(mode<0)pan=lbl_80543EC4;
-            else if(mode>=self[5])pan=lbl_80543EC4;
-            else {
-                pan=lbl_80543EC4;
-                switch(self[5]){
-                case 2:case 3:case 4:
-                    switch(mode) {
-                    case 0:case 2:pan=lbl_80543EC8;break;
-                    case 1:case 3:pan=lbl_80543ECC;break;
-                    }
-                    break;
-                default:pan=lbl_80543EC4;break;
-                }
-            }
-            ((JAISoundParamsMove*)((u8*)h->getSound()+0x48))->movePan(pan,0);
+            JAISoundParamsMove* move=(JAISoundParamsMove*)((u8*)h->getSound()+0x48);
+            move->movePan(getAudioPan(self,mode),0);
         }
     }else{
         if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
