@@ -200,6 +200,15 @@ extern "C" u8 fn_80235274(u32 idx);
 extern "C" void fn_802A20F0(void* mgr, void* pos, u32 idx, u32 room, s32 a, s32 b);
 extern "C" void* lbl_8053AC98;
 extern "C" const f32 lbl_8046ACC8[][2];
+static inline void spawnSplash(u8* p, const f32* t, s32 n) {
+    for (s32 i = 0; i < n; i++, t += 2) {
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
+        pos.x = pos.x + t[0];
+        pos.y = pos.y + t[1];
+        fn_802A20F0(lbl_8053AC98, &pos, *(u32*)(p + 0x90) & 3, *(u32*)(p + 0x4), 0, 1);
+    }
+}
+
 struct SplashOffsets {
     f32 small[9][2];
     f32 medium[12][2];
@@ -218,7 +227,7 @@ extern "C" const f32 lbl_8053FFF4;
 
 extern "C" void fn_80229F1C(Actor* this_) {
     u8* p = (u8*)this_;
-    const f32 (*tbl)[2] = lbl_8046ACC8;
+    const SplashOffsets* tbl = (const SplashOffsets*)lbl_8046ACC8;
     const f32* t;
     s32 i;
     *(u32*)(p + 0x230) = *(u32*)(p + 0x230) + 1;
@@ -297,7 +306,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
         break;
     case 5:
         if (*(u32*)(p + 0x230) == 1) {
-            t = &tbl[0][0];
+            t = tbl->small[0];
             for (i = 0; i < 9; i++, t += 2) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
                 pos.x = pos.x + t[0];
@@ -305,7 +314,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
                 fn_802A20F0(lbl_8053AC98, &pos, *(u32*)(p + 0x90) & 3, *(u32*)(p + 0x4), 0, 1);
             }
         } else if (*(u32*)(p + 0x230) == 0xb) {
-            t = &tbl[9][0];
+            t = tbl->medium[0];
             for (i = 0; i < 12; i++, t += 2) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
                 pos.x = pos.x + t[0];
@@ -313,7 +322,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
                 fn_802A20F0(lbl_8053AC98, &pos, *(u32*)(p + 0x90) & 3, *(u32*)(p + 0x4), 0, 1);
             }
         } else if (*(u32*)(p + 0x230) == 0x15) {
-            t = &tbl[21][0];
+            t = tbl->large[0];
             for (i = 0; i < 16; i++, t += 2) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
                 pos.x = pos.x + t[0];
