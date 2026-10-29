@@ -280,11 +280,16 @@ struct TennScoreBoard {
     void addScore(s32 index) { counts[index]++; }
 };
 
-static inline void tennUpdateTimers(char* p) {
-    ((TennTimers*)p)->update();
+#pragma opt_propagation off
+static inline void tennUpdateTimers(char* p, int offset = 0) {
+    char* timers = p + offset;
+    if (*(s32*)(timers + 0x238) > 0) --*(s32*)(timers + 0x238);
+    if (*(s32*)(timers + 0x23c) > 0) --*(s32*)(timers + 0x23c);
 }
+#pragma opt_propagation reset
 
 extern "C" u8 fn_801F6758(void*, f32, s32);
+#pragma opt_propagation off
 extern "C" void fn_801A0F90(void* this_) {
     s32 flag = 0;
     char* p = (char*)this_;
@@ -314,7 +319,7 @@ L_904:
 L_90C:
     if (*(f32*)(p + 0x3c) != lbl_8053E4F0) goto L_974;
     if (*(f32*)(p + 0x40) != lbl_8053E4F0) goto L_974;
-    if (*(f32*)(p + 0x14) <= 0.0f) {
+    if (*(f32*)(p + 0x14) <= lbl_8053E4F0) {
         fn_801F0E34(this_, 0x3004c, 0);
         *(f32*)(p + 0x14) = 0.0f;
         *(f32*)(p + 0x44) = lbl_8053E518;
@@ -399,10 +404,9 @@ L_A8C:
     fn_801EEC98(this_, *(s32*)(p + 0x198), (s16*)&ang, 0, 0, 0, *(s32*)(p + 0x264), 2);
     {
         char* game = lbl_8053AAF8;
-        u32 seed = *(u32*)(game + 0xb4) * 0x19660d + 0x3c6ef35f;
         u32 bits;
         f32 rf;
-        *(u32*)(game + 0xb4) = seed;
+        *(u32*)(game + 0xb4) = *(u32*)(game + 0xb4) * 0x19660d + 0x3c6ef35f;
         bits = (*(u32*)(game + 0xb4) >> 9) | 0x3f800000;
         rf = *(f32*)&bits - lbl_8053E4FC;
         if (rf < lbl_8053E544) ang -= 0x600;
@@ -486,15 +490,16 @@ L_F58:
     if (*(s32*)(p + 0x108) == 0) goto L_F94;
     if ((u8)flag == 1) goto L_F94;
     if ((fn_801F6758(p + 0xc, lbl_8053E55C, *(s32*)(p + 0x4)) & 0xff) == 0) goto L_1030;
-    *(s32*)(p + 0x23c) = 0x32;
 L_F94:
+    *(s32*)(p + 0x23c) = 0x32;
     if (*(s32*)(p + 0x108) == 0) goto L_FE8;
     r29 = *(s32*)(p + 0x320);
     if (r29 < 0) goto L_FE8;
     o = (char*)fn_801F666C(fn_801F856C(), r29);
     if (o == 0) goto L_FE8;
     *(s32*)(o + 0x268) = *(s32*)(p + 0x264);
-    ((TennScoreBoard*)((s32*)o + *(s32*)(p + 0x264)))->counts[0] += 1;
+    char* score = o + *(s32*)(p + 0x264) * 4;
+    ++*(s32*)(score + 0x28c);
 L_FE8:
     *(f32*)(p + 0x3c) = *(f32*)(p + 0x3c) * lbl_8053E540;
     *(f32*)(p + 0x40) = *(f32*)(p + 0x40) * lbl_8053E540;
@@ -503,10 +508,13 @@ L_FE8:
     lbl_8053ABC0 = 1;
     *(s32*)(p + 0x230) = 0x11;
 L_1030:
-    tennUpdateTimers(p);
-    tennUpdateTimers(p + 8);
+    if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
+    if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
+    char* tail = p + 8;
+    if (*(s32*)(tail + 0x238) > 0) *(s32*)(tail + 0x238) -= 1;
+    if (*(s32*)(tail + 0x23c) > 0) *(s32*)(tail + 0x23c) -= 1;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801A17B8(void* this_) {
     char* p = (char*)this_;
     fn_801F71A4((f32*)(p + 0x324), 0.0f, 0.0f, 0.0f);
