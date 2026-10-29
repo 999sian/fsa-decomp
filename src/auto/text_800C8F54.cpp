@@ -509,7 +509,7 @@ extern "C" u8 fn_800CB5BC(u8* p, s32 idx);
 extern "C" J3DIndTexMtx fn_800CB628(u8* p, s32 idx, s32 b);
 extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage);
 extern "C" void fn_800CB6F0(J3DIndTevStage* out, u8* p, s32 idx, s32 stage);
-extern "C" void fn_800CAEE0(s32* param_1, int param_2, int param_3, int param_4);
+extern "C" TevKColorWord fn_800CAEE0(const J3DMaterialFactory* self, int idx, int no);
 extern "C" u8 fn_800CB15C(u8* p, s32 idx);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b);
 struct J3DIndTexCoordScaleInfo;
@@ -936,7 +936,7 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
         }
     }
     for (i = 0; i < 2; i++) {
-        fn_800CAEE0((s32*)&s2c, (int)self, idx, i);
+        ((void (*)(void*,const J3DMaterialFactory*,int,int))fn_800CAEE0)(&s2c, self, idx, i);
         (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x24))[13](*(void**)((u8*)material + 0x24), i, &s2c);
     }
     for (i = 0; i < 4; i++) {
@@ -1292,16 +1292,13 @@ extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags) {
     return result + 0x10;
 }
 
-extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
-    struct Col { s32 v; };
-    u8* p = (u8*)param_2;
-    Col def = *(Col*)&lbl_8053BC70;
-    u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[param_3] * 0x14c + 8))[param_4];
-    if (i != 0xffff) {
-        *param_1 = (*(s32**)(p + 0x10))[i];
-    } else {
-        *(Col*)param_1 = def;
+extern "C" TevKColorWord fn_800CAEE0(const J3DMaterialFactory* self, int idx, int no) {
+    GXColor dflt = *(GXColor*)&lbl_8053BC70;
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (initData->mMatColorIndex[no] != 0xffff) {
+        return TevKColorWord(((u32*)self->unk_0C[1])[initData->mMatColorIndex[no]]);
     }
+    return TevKColorWord(*(u32*)&dflt);
 }
 
 extern "C" u8 fn_800CAF38(u8* p, s32 idx) {
@@ -1437,9 +1434,8 @@ extern "C" u8 fn_800CB428(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
-    idx = (*(u16**)(p + 8))[idx];
-    J3DMaterialInitData* initData = &((J3DMaterialInitData*)*(void**)(p + 4))[idx];
-    u16 v = initData->mTevStageInfoIndex[b];
+    u8* data = (u8*)&((J3DMaterialInitData*)*(void**)(p + 4))[(*(u16**)(p + 8))[idx]] + 0xe4;
+    u16 v = *(u16*)(data + b * 2);
     if (v != 0xffff) {
         fn_800CB4C0(out, *(u8**)(p + 0x50) + v * 0x14);
         return;
@@ -1539,7 +1535,7 @@ struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale(const J3DIndTexCoordScaleInfo& info) { *(J3DIndTexCoordScaleInfo*)this = info; }
     ~J3DIndTexCoordScale() {}
 };
-#pragma opt_lifetimes off
+#pragma opt_lifetimes on
 extern "C" J3DIndTexCoordScale fn_800CB884(u8* p, s32 idx, s32 no) {
     J3DIndTexCoordScale dflt;
     u8* data = *(u8**)(p + 0xc) + idx * 0x138;
