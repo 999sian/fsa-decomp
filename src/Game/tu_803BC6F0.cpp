@@ -388,8 +388,13 @@ void fn_803BC6F0(char* this_, u32 a, f32 t) {
 }
 #pragma dont_inline reset
 
-static inline void setPicBlackWhite(u8* p, const u8* keys, u32 idx, JUtility::TColor black, JUtility::TColor white) {
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(((const u64*)keys)[idx]))->setBlackWhite(black, white);
+struct Tu803BKeyTbl {
+    u8 pad0[0x4b8];
+    u64 keys[40][3];
+};
+
+static inline void setPicBlackWhite(u8* p, const u64* keys, u32 idx, JUtility::TColor black, JUtility::TColor white) {
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(keys[idx]))->setBlackWhite(black, white);
 }
 
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
@@ -1941,7 +1946,7 @@ typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 extern "C" void fn_803C3904(u8* this_) {
     const u8* base = lbl_804765D0;
     s32 order[2];
-    register s32* ord = order;
+    const s32* ord = order;
     s32* out = order;
     s32 off;
     s32 k;
@@ -1950,8 +1955,8 @@ extern "C" void fn_803C3904(u8* this_) {
     s32 a = *(s16*)(lbl_8050DB0C + 0x200);
     s32 b = *(s16*)(lbl_8050DB0C + 0x202);
     s32 c = *(s16*)(lbl_8050DB0C + 0x1fe);
-    int total = a + b;
-    total = c + total;
+    s32 total = a + b;
+    addMenuTiming(total, c);
 
     for (s32 n = 0; n < 3; ++n) {
         if (n != *(s32*)(this_ + 0xa4)) {
