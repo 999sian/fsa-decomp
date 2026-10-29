@@ -277,10 +277,10 @@ extern "C" void fn_8013CB44(void* h, void* pos, s32 a, s32 b, s32 c);
 extern "C" void fn_801EEC98(void* a, void* h, u16* out, s32 x6, s32 x7, s32 x8, s32 x9, s32 x10);
 extern s32 lbl_80539FE0[2];
 extern s32 lbl_80539FD8[2];
-extern f32 lbl_8053E1E4;
-extern f32 lbl_8053E1E8;
-extern f32 lbl_8053E1EC;
-extern f32 lbl_8053E1C8;
+extern const f32 lbl_8053E1E4;
+extern const f32 lbl_8053E1E8;
+extern const f32 lbl_8053E1EC;
+extern const f32 lbl_8053E1C8;
 extern "C" void fn_8018F2DC(void* this_) {
     s32 found = 0;
     char* p = (char*)this_;
