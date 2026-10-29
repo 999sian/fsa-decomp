@@ -2882,10 +2882,15 @@ u8 fn_80246464(char*);
 }
 struct RoomRect { f32 x0, y0, x1, y1; };
 inline bool rectIn(const RoomRect& r, const JGeometry::TVec2<f32>& v) {
-    f32 y;
-    f32 x;
     bool in = 0;
-    if ((x = v.x) >= r.x0 && (y = v.y) >= r.y0 && x < r.x1 && y < r.y1) {
+    if (v.x >= r.x0 && v.y >= r.y0 && v.x < r.x1 && v.y < r.y1) {
+        in = 1;
+    }
+    return in;
+}
+inline bool pointInRect(const JGeometry::TVec2<f32>& v, const RoomRect& r) {
+    bool in = 0;
+    if (v.x >= r.x0 && v.y >= r.y0 && v.x < r.x1 && v.y < r.y1) {
         in = 1;
     }
     return in;
