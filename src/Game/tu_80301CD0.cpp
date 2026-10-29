@@ -154,7 +154,7 @@ static inline void clearMessageEntry(MsgEntry_80301CD0* entry, const int index) 
     entry->text[0] = 0;
 }
 static inline void clearMessageEntries(MsgEntry_80301CD0* entries) {
-    for (int index = 0; index < 32; index++, entries++) clearMessageEntry(entries, index);
+    for (int index = 0; index < 32; index++) clearMessageEntry(entries + index, index);
 }
 static inline void clearMessageQueue(int* head, int* tail, MsgEntry_80301CD0* entries) {
     *head = 0;
