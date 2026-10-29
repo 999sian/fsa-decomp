@@ -82,6 +82,29 @@ static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) 
     m[2][2] = s * (cx * cy);
 }
 
+static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, const f32 a) {
+    f32 cy, cx, sz, sy, sx, cz;
+    sx = sin(lbl_8053E0C8);
+    sy = sin(a);
+    sz = sin(lbl_8053E0C8);
+    cx = cos(lbl_8053E0C8);
+    cy = cos(a);
+    cz = cos(lbl_8053E0C8);
+    f32 sxcz, sxsz, cxcz, cxsz, sxsy;
+    sxsy = sx * sy; cxsz = cx * sz; cxcz = cx * cz;
+    sxsz = sx * sz; sxcz = sx * cz;
+    rec.b1d = 2; rec.b1c = 1;
+    mtx[0][0] = lbl_8053E0D0 * (cy * cz);
+    mtx[1][0] = lbl_8053E0D0 * (cy * sz);
+    mtx[2][0] = lbl_8053E0D0 * -sy;
+    mtx[0][1] = lbl_8053E0D0 * (sxsy * cz - cxsz);
+    mtx[1][1] = lbl_8053E0D0 * (sxsy * sz + cxcz);
+    mtx[2][1] = lbl_8053E0D0 * (sx * cy);
+    mtx[0][2] = lbl_8053E0D0 * (cxcz * sy + sxsz);
+    mtx[1][2] = lbl_8053E0D0 * (cxsz * sy - sxcz);
+    mtx[2][2] = lbl_8053E0D0 * (cx * cy);
+}
+
 // from src/Game/Bph2_SetVec2.cpp
 // BPH2 cluster, part 5 (final piece). fn_8018E964 - trivial 2-float
 // setter, no extab entry (leaf).
@@ -385,6 +408,7 @@ extern "C" s32 fn_8018DA6C(char* this_) {
     return 0;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8018DC70(char* this_, s32 mode) {
     void* list[1024];
     f32 vec[3];
@@ -435,7 +459,9 @@ extern "C" void fn_8018DC70(char* this_, s32 mode) {
         obj = fn_8023E724(i);
         f29 = obj[0] - f31;
         obj = fn_8023E724(i);
-        ang = (s32)(lbl_8053E1B0 * JMath::atanTable_.atan2_(f29, obj[1] - f30));
+        f32 dy = obj[1] - f30;
+        f32 angle = JMath::atanTable_.atan2_(f29, dy);
+        ang = (s32)(angle * lbl_8053E1B0);
         if (mode != 1 && ang >= 0x2000 && ang < 0xe000) {
             continue;
         }
@@ -470,10 +496,12 @@ extern "C" void fn_8018DC70(char* this_, s32 mode) {
                 if (!((f32)fabs(*(f32*)(p + 0xc) - *(f32*)(this_ + 0xc)) < lbl_8053E0EC)) {
                     continue;
                 }
-                if (!(*(f32*)(this_ + 0x10) - lbl_8053E0CC < *(f32*)(p + 0x10))) {
+                f32 py = *(f32*)(p + 0x10);
+                f32 sy = *(f32*)(this_ + 0x10);
+                if (!(sy - lbl_8053E0CC < py)) {
                     continue;
                 }
-                if (!((f32)fabs(*(f32*)(p + 0x10) - *(f32*)(this_ + 0x10)) < lbl_8053E100)) {
+                if (!((f32)fabs(py - sy) < lbl_8053E100)) {
                     continue;
                 }
                 ((ActorVt_bph2*)p)->v7();
@@ -481,12 +509,16 @@ extern "C" void fn_8018DC70(char* this_, s32 mode) {
         }
         if (mode != 1) {
             obj = fn_8023E724(i);
-            vec[0] = vec[0] - lbl_8053E1BC * (f32)fabs(obj[0] - f31);
+            f32 dx = (f32)fabs(obj[0] - f31);
+            f32 kx = lbl_8053E1BC;
+            vec[0] = vec[0] - kx * dx;
             if (vec[0] < lbl_8053E110) {
                 vec[0] = lbl_8053E110;
             }
             obj = fn_8023E724(i);
-            vec[1] = vec[1] - lbl_8053E1C0 * (f32)fabs(obj[1] - f30);
+            f32 dy = (f32)fabs(obj[1] - f30);
+            f32 ky = lbl_8053E1C0;
+            vec[1] = vec[1] - ky * dy;
             if (vec[1] < lbl_8053E110) {
                 vec[1] = lbl_8053E110;
             }
@@ -499,7 +531,7 @@ extern "C" void fn_8018DC70(char* this_, s32 mode) {
         fn_8023DFF4(i, vec);
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8018DFCC(char* this_) {
     f32 x = *(f32*)(this_ + 0xc);
     f32 y = *(f32*)(this_ + 0x10);
