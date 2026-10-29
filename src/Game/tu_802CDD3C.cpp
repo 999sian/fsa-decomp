@@ -89,7 +89,7 @@ static inline void cddResetDrawRec(DrawRec& rec) {
         rec.w34 = 0;
         rec.w38 = 2;
 }
-static inline void cddRotation(f32 m[3][4], const s16 rx, const s16 ry, const s16 rz, const f32* scale) {
+static inline void cddRotation(f32 m[3][4], s16 rx, s16 ry, s16 rz, const f32* scale) {
     f32 cz, cy, cx, sz, sy, sx;
     sx = JMASinShort(rx);
     sy = JMASinShort(ry);
@@ -97,12 +97,12 @@ static inline void cddRotation(f32 m[3][4], const s16 rx, const s16 ry, const s1
     cx = JMACosShort(rx);
     cy = JMACosShort(ry);
     cz = JMACosShort(rz);
-    f32 cycz = cy * cz;
     f32 cysz = cy * sz;
+    f32 cycz = cy * cz;
     f32 sxcy = sx * cy;
     f32 sxsy = sx * sy;
-    f32 cxcz = cx * cz;
     f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
     f32 s0 = scale[0];
@@ -134,7 +134,7 @@ extern "C" void fn_802CDD9C(char* this_)
         rec.b24 = 1;
         if (*(s32*)(this_ + 0x234) >= 0x1b && *(s32*)(this_ + 0x234) <= 0x1e) {
             PSMTXIdentity(mtx);
-            s16 ang = *(s16*)(this_ + 0x248);
+            s32 ang = *(s16*)(this_ + 0x248);
             cddRotation(mtx, 0, ang, 0, (const f32*)(this_ + 0x24c));
             rec.w18 = mtx;
         } else if (*(s32*)(this_ + 0x234) == 0x15) {
