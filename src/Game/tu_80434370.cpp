@@ -501,6 +501,12 @@ extern "C" void* fn_804030C4(u32 tag, const char* name);
 extern "C" void fn_80440D78(void* p, void* r);
 extern "C" void fn_80440CE4(void* p, void* r);
 extern "C" f32 getRotate__7J2DPaneCFv(void* pane);
+struct Menu372C4Names {
+    char screen[0xc];
+    char alternateScreen[0x10];
+    char image[0x14];
+    char alternateImage[1];
+};
 static inline void* allocateMenuPane() {
     void* pane = __nw__FUl(0x2c);
     if (pane) *(char**)pane = lbl_804AF86C;
@@ -508,8 +514,8 @@ static inline void* allocateMenuPane() {
 }
 extern "C" void* fn_804372C4(void* this_) {
     char* self = (char*)this_;
-    char* names = lbl_8048F598;
-    *(char**)this_ = lbl_804B16A8;
+    char (&names)[0x44] = *(char (*)[0x44])lbl_8048F598;
+    *(char**)self = lbl_804B16A8;
     *(J2DScreen**)(self + 0x4) = new J2DScreen;
     if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) == 1) {
         setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), names, 0x1100000, *(void**)(lbl_80529DEC + 0x28));
