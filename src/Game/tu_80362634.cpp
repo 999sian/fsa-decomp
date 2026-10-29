@@ -141,7 +141,6 @@ extern "C" u8 lbl_80542AD8[8];
 extern "C" u8 lbl_80542AC8[4];
 extern "C" f32 lbl_80542B88;
 extern "C" f32 lbl_80542B90;
-extern "C" f32 lbl_80542B6C;
 
 static void fn_80363880_reset(char* self) {
     *(s32*)(self + 0x24c) = -1;
@@ -339,28 +338,29 @@ extern "C" void fn_80362B74(char* self) {
 
 extern "C" void fn_80362C44(char* self) {
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
-    s32 handled = 0;
+    BOOL handled = FALSE;
     switch (*(u32*)(self + 0x238)) {
     case 0:
         if (*(s32*)(self + 0x248) == 0) {
             *(s32*)(self + 0x26c) = 0x9b;
+            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
             *(f32*)(self + 0x3c) = lbl_80542B60;
             *(f32*)(self + 0x40) = lbl_80542B0C;
             *(f32*)(self + 0x44) = lbl_80542B0C;
             *(f32*)(self + 0x2f8) = lbl_80542B0C;
-            *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
-            *(s32*)(self + 0x238) += 1;
+            (*(s32*)(self + 0x238))++;
         }
         break;
     case 1:
         ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
         if (*(s32*)(self + 0x25c) == 0) {
             *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
-            *(s32*)(self + 0x264) = (*(s32*)(self + 0x264) + 1) & 7;
+            (*(s32*)(self + 0x264))++;
+            *(s32*)(self + 0x264) &= 7;
         }
         *(f32*)(self + 0x2f8) += *(f32*)(self + 0x3c);
         if (*(f32*)(self + 0x2f8) >= lbl_80542B64) {
-            *(s32*)(self + 0x238) += 1;
+            (*(s32*)(self + 0x238))++;
             *(f32*)(self + 0x3c) = lbl_80542B0C;
             *(f32*)(self + 0x40) = lbl_80542B68;
             *(f32*)(self + 0x44) = lbl_80542B0C;
@@ -372,65 +372,129 @@ extern "C" void fn_80362C44(char* self) {
         ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
         if (*(s32*)(self + 0x25c) == 0) {
             *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
-            *(s32*)(self + 0x264) = (*(s32*)(self + 0x264) + 1) & 7;
+            (*(s32*)(self + 0x264))++;
+            *(s32*)(self + 0x264) &= 7;
         }
         *(f32*)(self + 0x2f8) += fabs(*(f32*)(self + 0x40));
         if (*(f32*)(self + 0x2f8) >= lbl_80542B64) {
-            *(s32*)(self + 0x238) += 1;
-            *(s32*)(self + 0x264) = 0;
-            *(s32*)(self + 0x248) = 0x3c;
+            (*(s32*)(self + 0x238))++;
             *(f32*)(self + 0x44) = lbl_80542B0C;
             *(f32*)(self + 0x40) = lbl_80542B0C;
             *(f32*)(self + 0x3c) = lbl_80542B0C;
+            *(s32*)(self + 0x264) = 0;
+            *(s32*)(self + 0x248) = 0x3c;
         }
         break;
     case 3:
         if (*(s32*)(self + 0x248) == 0) {
             *(s32*)(self + 0x248) = 0x5c;
             *(u8*)(*(char**)(self + 0x2fc) + 0x294) = 1;
-            *(s32*)(self + 0x238) += 1;
+            (*(s32*)(self + 0x238))++;
         }
         break;
     case 4:
-        if (*(s32*)(self + 0x248) == 0) {
-            *(s32*)(self + 0x238) += 1;
+        if (*(s32*)(self + 0x248) != 0) {
+            if (*(s32*)(self + 0x248) >= 0x3c) {
+                pos.y -= (f32)(0x20 - (*(s32*)(self + 0x248) - 0x3c));
+            } else {
+                pos.y -= lbl_80542B6C;
+            }
+            if (*(s32*)(self + 0x248) == 1) {
+                *(f32*)(self + 0x3c) = lbl_80542B0C;
+                *(f32*)(self + 0x40) = lbl_80542B70;
+                *(f32*)(self + 0x44) = lbl_80542B0C;
+                *(s32*)(self + 0x26c) = 0xb3;
+                *(f32*)(self + 0x2f8) = lbl_80542B0C;
+            }
+            break;
         }
-        break;
-    case 5: {
         ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
         if (*(s32*)(self + 0x25c) == 0) {
             *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
-            *(s32*)(self + 0x264) = (*(s32*)(self + 0x264) + 1) & 7;
+            (*(s32*)(self + 0x264))++;
+            *(s32*)(self + 0x264) &= 7;
         }
+        handled = TRUE;
         *(f32*)(self + 0x2f8) += fabs(*(f32*)(self + 0x40));
         if (*(f32*)(self + 0x2f8) >= lbl_80542B58) {
-            *(s32*)(self + 0x248) = 0x12c;
+            JGeometry::TVec3<f32> v;
             s32 i;
+            *(s32*)(self + 0x248) = 0x12c;
+            *(f32*)(self + 0x250) = *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc);
+            *(f32*)(self + 0x254) = *(f32*)(self + 0x250) / *(s32*)(self + 0x248);
+            v.z = lbl_80542B0C;
+            v.y = lbl_80542AFC * (s32)(*(f32*)(self + 0x10) / lbl_80542AFC) + lbl_80542AF8;
+            v.x = lbl_80542B04 * (s32)(*(f32*)(self + 0xc) * lbl_80542B08) + lbl_80542B00;
             for (i = 0; i < 4; i++) {
-                void* em = self;
-                (void)em;
+                fn_8013CC50(0, &v, lbl_80542B10, lbl_80542AF0[i], 0, 0, 0, 0, 1);
+                if (*(void**)(self + 0x30c + i * 4) != NULL) {
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(self + 0x30c + i * 4));
+                    *(void**)(self + 0x30c + i * 4) = NULL;
+                }
             }
-            *(s32*)(self + 0x238) += 1;
-            handled = 1;
+            v.z = lbl_80542B0C;
+            v.y = lbl_80542B0C;
+            v.x = lbl_80542B0C;
+            fn_8013CC50(0, &v, lbl_80542B10, 0x55a, 0, 0, 0, 0, 1);
+            fn_8013CC50(0, &v, lbl_80542B10, 0x55b, 0, 0, 0, 0, 1);
+            fn_8013CC50(0, &v, lbl_80542B10, 0x55c, 0, 0, 0, 0, 1);
+            fn_8013CC50(0, &v, lbl_80542B10, 0x55d, 0, 0, 0, 0, 1);
+            fn_8013CC50(0, &v, lbl_80542B10, 0x55e, 0, 0, 0, 0, 1);
+            *(void**)(self + 0x304) = fn_8013CC50(0, &v, lbl_80542B10, 0x558, 0, 0, 0, 0, 1);
+            *(void**)(self + 0x308) = fn_8013CC50(0, &v, lbl_80542B10, 0x559, 0, 0, 0, 0, 1);
+            (*(s32*)(self + 0x238))++;
         }
         break;
-    }
-    case 6: {
-        f32 t = *(f32*)(self + 0x250);
-        if (t > lbl_80542B0C) {
-            *(f32*)(self + 0x250) = t - *(f32*)(self + 0x254);
+    case 5:
+        handled = TRUE;
+        if (*(f32*)(self + 0x250) > lbl_80542B0C) {
+            *(f32*)(self + 0x250) -= *(f32*)(self + 0x254);
             if (*(f32*)(self + 0x250) <= lbl_80542B0C) {
                 *(f32*)(self + 0x250) = lbl_80542B0C;
                 *(f32*)(self + 0x254) = lbl_80542B0C;
             }
-            handled = 1;
+        }
+        *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc) = (s32)*(f32*)(self + 0x250);
+        if (*(s32*)(self + 0x248) == 0) {
+            fn_80119DD0();
+            fn_80119958();
+            *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc) = 0;
+            (*(s32*)(self + 0x238))++;
+            *(s32*)(self + 0x244) = 0;
+            *(s32*)(self + 0x248) = 0x1f4;
         }
         break;
-    }
+    case 6:
+        (*(s32*)(self + 0x244))++;
+        *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc) = 0;
+        if (*(s32*)(self + 0x248) == 0) {
+            u32 found;
+            s32 i;
+            handled = TRUE;
+            for (i = 0; i < 4; i++) {
+                found = fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100);
+                if (found != 0) {
+                    goto done;
+                }
+            }
+            found = 0;
+        done:
+            if (found != 0) {
+                (*(s32*)(self + 0x238))++;
+            }
+        }
+        break;
     case 7:
-        pos.z = lbl_80542B0C;
+        *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc) = 0;
+        handled = TRUE;
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(self + 0x304));
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(self + 0x308));
+        fn_8013670C(lbl_8053AAF8, 1);
+        (*(s32*)(self + 0x238))++;
         break;
     default:
+        *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc) = 0;
+        handled = TRUE;
         break;
     }
     if (!handled) {
