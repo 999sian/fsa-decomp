@@ -489,9 +489,8 @@ static inline u8 oiwaBallIn(s32 i, s32 j, f32 x0, f32 y0, f32 x1, f32 y1) {
     JGeometry::TVec3<f32> pt;
     fn_8022E088(i, j, &pt);
     u8 in = 0;
-    f32 y = pt.y;
     f32 x = pt.x;
-    if (x >= x0 && y >= y0 && x < x1 && y < y1) {
+    if (x >= x0 && pt.y >= y0 && x < x1 && pt.y < y1) {
         in = 1;
     }
     return in;
