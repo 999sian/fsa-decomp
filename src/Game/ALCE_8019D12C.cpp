@@ -1,12 +1,12 @@
 #include "types.h"
 
-extern f32 lbl_8053E440;
-extern f32 lbl_8053E444;
-extern f32 lbl_8053E448;
-extern f32 lbl_8053E44C;
-extern f32 lbl_8053E450;
-extern f32 lbl_8053E454;
-extern f32 lbl_8053E458;
+extern const f32 lbl_8053E440;
+extern const f32 lbl_8053E444;
+extern const f32 lbl_8053E448;
+extern const f32 lbl_8053E44C;
+extern const f32 lbl_8053E450;
+extern const f32 lbl_8053E454;
+extern const f32 lbl_8053E458;
 extern "C" void fn_80134DE4(void*, s32, s32);
 extern "C" void fn_8022ADE4(void);
 extern "C" void fn_801F0E34(void*, s32, s32);
@@ -122,7 +122,7 @@ extern "C" void fn_8019D12C(char* this_) {
 }
 
 extern "C" void fn_8019D2AC(char* this_) {
-    u8* base = (u8*)lbl_804C1E30;
+    ALCEWork* base = (ALCEWork*)lbl_804C1E30;
     s32 i;
     u8* flags;
     s32 off;
@@ -177,22 +177,18 @@ extern "C" void fn_8019D2AC(char* this_) {
     case 5:
         *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x24c) + 1;
         if (*(s32*)(this_ + 0x24c) > 2) {
-            *(s32*)(this_ + 0x24c) = 0;
+            off = 0;
+            *(s32*)(this_ + 0x24c) = off;
             if (*(s32*)(this_ + 0x258) < *(s32*)(this_ + 0x250)) {
-                flags = base + 0x4000;
-                words = (s32*)(base + 0x3000);
-                off = 0;
+                flags = base->flags;
+                words = (s32*)base->words;
                 for (i = 0; i < *(s32*)(this_ + 0x254); i++) {
                     if (*flags == 1) {
                         char* actor = *(char**)((char*)fn_801F856C() + off + 8);
-                        if (actor == 0) {
-                            flags[0] = 0;
-                            *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
-                            break;
-                        }
+                        if (actor != 0) {
                         if (words[0] == 4) {
                             s32 r;
-                            f32* src = (f32*)(base + i * 12);
+                            f32* src = base->positions[i];
                             pos[0] = src[0];
                             pos[1] = src[1];
                             pos[2] = src[2];
@@ -205,15 +201,20 @@ extern "C" void fn_8019D2AC(char* this_) {
                             }
                             fn_801EE4F0(actor);
                             fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x1a, 1, 7, 0, 0, 1);
-                            words[i] = words[i] - 1;
+                            ((s32*)base->words)[i]--;
                             break;
                         }
                         words[0] = words[0] - 1;
-                        if (words[0] < 1) {
-                            flags[0] = 0;
+                        if (words[0] <= 0) {
+                            base->flags[i] = 0;
                             *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
                             fn_801F4694(actor);
                             detach__5ActorFv(actor);
+                            break;
+                        }
+                        } else {
+                            base->flags[i] = 0;
+                            *(s32*)(this_ + 0x258) += 1;
                             break;
                         }
                     }
@@ -223,7 +224,7 @@ extern "C" void fn_8019D2AC(char* this_) {
                 }
             }
         }
-        if (*(s32*)(this_ + 0x258) <= *(s32*)(this_ + 0x250)) {
+        if (*(s32*)(this_ + 0x258) >= *(s32*)(this_ + 0x250)) {
             *(s32*)(this_ + 0x254) = 0;
             *(s32*)(this_ + 0x230) = 6;
         }
@@ -231,7 +232,7 @@ extern "C" void fn_8019D2AC(char* this_) {
     case 6:
         if (*(s32*)(this_ + 0x258) < 0x32) {
             *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x24c) + 1;
-            if (*(s32*)(this_ + 0x24c) < 3) {
+            if (*(s32*)(this_ + 0x24c) <= 2) {
                 return;
             }
             *(s32*)(this_ + 0x24c) = 0;
@@ -240,7 +241,7 @@ extern "C" void fn_8019D2AC(char* this_) {
             pos[0] = pos[0] + (lbl_8053E44C - lbl_8053E450 * (*(f32*)&bits0 - lbl_8053E444));
             *(u32*)((char*)lbl_8053AAF8 + 0xb4) = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
             bits1 = (*(u32*)((char*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
-            pos[1] = pos[1] + (lbl_8053E458 - lbl_8053E454 * (*(f32*)&bits1 - lbl_8053E444));
+            pos[1] = pos[1] + (lbl_8053E454 - lbl_8053E458 * (*(f32*)&bits1 - lbl_8053E444));
             fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053E444, 0x18, 1, 7, 0, 0, 1);
             fn_801F0E34(this_, 0x3005f, 0);
             *(s32*)(this_ + 0x258) = *(s32*)(this_ + 0x258) + 1;
@@ -440,7 +441,7 @@ extern "C" void* fn_8019DEB4(char* this_, s16 freeFlag) {
 }
 
 extern u8 lbl_804C1E30[];
-extern f32 lbl_8053E440;
+extern const f32 lbl_8053E440;
 extern "C" void fn_8037AE00(void* p);
 extern "C" void fn_8019DF7C(char* this_) {
     s32 i;
