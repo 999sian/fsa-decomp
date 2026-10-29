@@ -42,6 +42,10 @@ extern "C" void fn_802FA160(void* a, unsigned long b, unsigned long c, int d, un
 extern "C" char* lbl_8053AAF8;
 extern "C" char lbl_8046D908[];
 extern "C" const f32 lbl_80540DD4;
+static inline JGeometry::TVec2<f32> ccPosition(const Actor* actor) {
+    return JGeometry::TVec2<f32>(8.0f + actor->field_0C.x, 8.0f + actor->field_0C.y);
+}
+
 static inline unsigned long ccEffect(char* p, unsigned long id) {
     JGeometry::TVec3<f32> pos(8.0f + *(f32*)(p + 0xc), 8.0f + *(f32*)(p + 0x10), *(f32*)(p + 0x14));
     return fn_8013CC50(*(unsigned long*)(p + 4), &pos, id, 1, 0, 0, 0, 1, 1.0f);
@@ -57,7 +61,7 @@ extern "C" void fn_802CC21C(Actor* this_) {
     const Actor* actor = (const Actor*)this_;
     JGeometry::TBox2<f32> box;
     JGeometry::TVec2<f32> pos;
-    pos.set(8.0f + actor->field_0C.x, 8.0f + actor->field_0C.y);
+    pos.set(lbl_80540DD4 + actor->field_0C.x, lbl_80540DD4 + actor->field_0C.y);
     box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
     box.addPos(pos);
     int player = fn_8023BA68((f32*)&box, *(unsigned long*)(p + 4), (f32*)&pos, 1);
