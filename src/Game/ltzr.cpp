@@ -206,7 +206,7 @@ static inline void ltzrBlink(f32* t, u8* dir, f32 hi, f32 lo, f32 step) {
         }
     } else {
         *t -= step;
-        if (lo >= *t) {
+        if (*t <= lo) {
             *t = lo;
             *dir = 1;
         }
