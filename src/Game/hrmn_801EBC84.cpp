@@ -137,6 +137,30 @@ extern "C" void fn_801EBE3C(char* p) {
     fn_801CE4BC(p);
 }
 
+static inline void hrmnCameraFocus(char* p) {
+    char* cam = *(char**)(lbl_8053AB10 + 0x24);
+    if (!cam[0x7f5]) {
+        cam[0x7f4] = 1;
+        *(s32*)(cam + 0x7f8) = 4;
+        *(f32*)(cam + 0x7fc) = *(f32*)(p + 0xc);
+        *(f32*)(cam + 0x800) = *(f32*)(p + 0x10);
+        *(f32*)(cam + 0x804) = *(f32*)(p + 0x14);
+        cam[0x7f6] = 0;
+    }
+}
+
+static inline void hrmnCameraLock(char* p) {
+    char* cam = *(char**)(lbl_8053AB10 + 0x24);
+    if (!cam[0x840]) {
+        cam[0x840] = 1;
+        *(f32*)(cam + 0x844) = *(f32*)(cam + 0x84c) = *(f32*)(p + 0xc);
+        *(f32*)(cam + 0x848) = *(f32*)(cam + 0x850) = *(f32*)(p + 0x10);
+        *(f32*)(cam + 0x854) = lbl_8053F6B8;
+        *(f32*)(cam + 0x1d4) = lbl_8053F6C4;
+        *(f32*)(cam + 0x1d8) = lbl_8053F6C4;
+    }
+}
+
 extern "C" void fn_801EBE7C(char* p) {
     HrmnRect rect(*(f32*)(p + 0xc) - lbl_8053F6BC, *(f32*)(p + 0x10) - lbl_8053F6BC, lbl_8053F6BC + *(f32*)(p + 0xc), lbl_8053F6BC + *(f32*)(p + 0x10));
     f32 vals[3];
