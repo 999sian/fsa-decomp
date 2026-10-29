@@ -269,7 +269,8 @@ struct Rec6_80301CD0 {
 };
 
 static inline BOOL tu80301_isPlayerOn(s32 i) {
-    return (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) != 0;
+    u8 bits = ((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i);
+    return bits != 0;
 }
 
 static inline u8 tu80301_isState7(s32 state) { return state == 7; }
