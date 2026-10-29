@@ -1474,6 +1474,7 @@ static inline void fireRotateA(const s32* angles, f32 (*matrix)[4], const s32 di
 static inline void fireRotateB(const s32* angles, f32 (*matrix)[4], const s32 direction) {
     JPAGetXYZRotateMtx(0, 0, angles[direction], matrix);
 }
+#pragma opt_common_subs off
 #pragma opt_lifetimes off
 #pragma pool_data on
 extern "C" void fn_8025A15C(u8* p) {
