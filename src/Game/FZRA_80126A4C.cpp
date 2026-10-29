@@ -280,7 +280,7 @@ static inline void fzraApproachR(T& x, const T& goal, const f32 t) {
     if (t < *(f32*)__float_epsilon) {
         x = goal;
     } else {
-        x = x + (goal - x) * (lbl_8053CAA4 / t);
+        x = (lbl_8053CAA4 / t) * (goal - x) + x;
     }
 }
 
