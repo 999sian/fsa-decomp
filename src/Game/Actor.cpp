@@ -756,26 +756,7 @@ inline void ActorMotionTrail(Actor* a, const JGeometry::TVec3<f32>& old,
     }
 }
 
-inline void ActorMotionTrailOrdered(Actor* a, const JGeometry::TVec3<f32>& old,
-    const JGeometry::TVec3<f32>& direction, f32 distance, f32 scale, u32 id,
-    JGeometry::TVec3<f32>& pos) {
-    for(f32 t=0.0f;t<distance;t+=4.0f) {
-        pos=direction;
-        pos.scale(t);
-        pos.add(old);
-        u8* e=(u8*)fn_8013CC50(a->field_04,&pos,1.0f,id,0,0,0,0,1);
-        if(e) {
-            *(s32*)(e+0x24)=1; *(f32*)(e+0x28)=2.0f;
-            *(f32*)(e+0xb0)=scale; *(f32*)(e+0xb4)=scale;
-        }
-    }
-}
-
 inline s32 ActorClampTimer(s32 value) { return value <= 0 ? 0 : value; }
-inline bool ActorTrailMoving(const JGeometry::TVec3<f32>& v) { return v.squared() > 1.0f; }
-inline bool ActorTrailThreshold(JGeometry::TVec3<f32>& v, const f32 threshold) {
-    return v.squared() > threshold;
-}
 extern "C" s32 fn_801F3D94(Actor* a, u8 flag) {
 	typedef JGeometry::TVec3<f32> V3;
 	u32 id;
