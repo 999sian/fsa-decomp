@@ -350,6 +350,13 @@ extern "C" void __construct_array(void* p, void* ctor, void* dtor, u32 size, u32
 extern "C" void* load__20J2DAnmLoaderDataBaseFPCv(const void* p);
 extern "C" void* getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader(const char* name, void* loader);
 extern "C" void __ct__9J2DScreenFv(void* p);
+struct T80431_Res {
+    void* vt;
+    u8* data;
+    u8 pad[0x24];
+    T80431_Res() { vt = lbl_804AF86C; }
+};
+
 extern "C" void* fn_8043395C(void* this_) {
 	char* base = (char*)lbl_8048F438;
 	char* self = (char*)this_;
