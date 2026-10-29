@@ -359,7 +359,6 @@ struct T80431_Res {
     f32 getHeight() const { return ((J2DPane*)data)->getHeight(); }
 };
 
-static inline JKRArchive* MessageArchive() { return *(JKRArchive**)(lbl_80529DEC + 0x20); }
 
 extern "C" void* fn_8043395C(void* this_) {
 	char* base;
