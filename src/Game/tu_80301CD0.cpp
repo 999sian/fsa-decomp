@@ -156,6 +156,11 @@ static inline void clearMessageEntry(MsgEntry_80301CD0* entry, const int index) 
 static inline void clearMessageEntries(MsgEntry_80301CD0* entries) {
     for (int index = 0; index < 32; index++) clearMessageEntry(entries + index, index);
 }
+static inline void clearMessageQueue(int* head, int* tail, MsgEntry_80301CD0* entries) {
+    int index = 0;
+    *tail = *head = index;
+    for (; index < 32; index++) clearMessageEntry(entries + index, index);
+}
 extern u8 lbl_8053AD20[4];
 extern u8 lbl_80541618[4];
 
