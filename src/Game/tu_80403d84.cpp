@@ -2177,31 +2177,6 @@ void fn_804122F4(u8* self) {
 	self[0] = 0;
 }
 
-#ifndef TBL8048C1F8_DEFINED
-struct Tbl8048C1F8 {
-    u8 pad[0x40];
-    u32 text[4][8];
-    u8 padC0[0x3d8 - 0xc0];
-    u64 alphaNames[9];
-    u64 names[4][2];
-    u8 pad460[0x658 - 0x460];
-    f32 sizes[7];
-    s16 posX[8];
-    s16 posY[8];
-    s32 vals[12][3];
-    u8 pad724[0x744 - 0x724];
-    u8 next[8][2];
-    u8 prev[8][2];
-    s16 cursorPos[8][4][2];
-    u8 pad7E4[0x99c - 0x7e4];
-    s32 cursorFrames[30];
-    s32 waitFrames[4];
-    u8 padA24[0xa5c - 0xa24];
-    char pictureFormat[16];
-    static s32 frame(const s32* values, s32 index) { return values[index]; }
-};
-#endif
-extern Tbl8048C1F8 lbl_8048C1F8;
 
 struct T5B10 {
 	u8 pad[0x10];
