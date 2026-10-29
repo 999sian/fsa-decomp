@@ -46,6 +46,13 @@ struct EffSlotTable {
     EffSlot slots[0x400];
 };
 
+static inline void tu13_setOffsetVec(f32* v, f32 x, f32 y, f32 z, s32 offset) {
+    f32 off = (f32)offset;
+    v[0] = x;
+    v[1] = y + off;
+    v[2] = z + off;
+}
+
 static inline void tu13_setVec(f32* v, f32 x, f32 y, f32 z) {
     v[0] = x;
     v[1] = y;
@@ -194,8 +201,14 @@ extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(u8* this_) {
     PSMTXIdentity(info2[0]);
     PSMTXIdentity(info2[1]);
     PSMTXCopy(*(u8**)(lbl_8053AB10 + 0x10) + 0x80, info[0]);
-    s32 w = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4);
-    s32 h = *(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6);
+    struct RenderMode_ {
+        u32 tvMode;
+        u16 fbWidth;
+        u16 efbHeight;
+    };
+    RenderMode_* mode = *(RenderMode_**)((u8*)sManager__8JUTVideo + 4);
+    s32 w = mode->fbWidth;
+    s32 h = mode->efbHeight;
     C_MTXLightOrtho(info[1], 0.0f, (f32)h, 0.0f, (f32)w, 0.5f, 0.5f, 0.5f, 0.5f);
     draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), info, 5);
     fn_8013B438(lbl_8053AB10);
@@ -528,7 +541,7 @@ extern "C" void fn_8013F758(void) {
     char* base = lbl_804BEC38;
     lbl_8053AB18 = __vt__18JPAEmitterCallBack;
     lbl_8053AB18 = lbl_8049F184;
-    __register_global_object(&lbl_8053AB18, (void*)fn_8013F6F8, lbl_804BEC38 + 0);
+    __register_global_object(&lbl_8053AB18, (void*)fn_8013F6F8, (u8*)lbl_804BEC38 + 0);
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x18);
