@@ -499,7 +499,7 @@ extern const f32 lbl_8053C024;
 extern const f32 lbl_8053C004;
 extern const f32 lbl_8053C000;
 extern "C" s16 lbl_8049C3B8[];
-static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,const f32 k) {
+static inline void WRTC_moveTowards(u8* self,const JGeometry::TVec3f& out,f32 k) {
     if(fn_801F3D94(self,1)==0){
         s32 idx=fn_801F285C(self,0,0,1,-1);
         if(idx>=0){
