@@ -1081,6 +1081,37 @@ inline u8* findCollisionActor(s32 handle) {
 done:
     return result;
 }
+inline u8* ActorPool::findCollisionActor(s32 handle) {
+    ActorPool* pool = this;
+    u8* result = NULL;
+    if (handle >= 0) {
+        s32 cached = *(s32*)((u8*)pool + 0x2014);
+        if (cached >= 0) {
+            PoolActor* actor = pool->mActors[cached];
+            if (actor && actor->mActive && handle == actor->mId) {
+                result = (u8*)actor;
+                goto done;
+            }
+        }
+        s32 count = pool->mCount;
+        PoolActor** cur = (PoolActor**)pool;
+        for (s32 i = 0; i < count; cur++, i++) {
+            PoolActor* actor = cur[2];
+            if (actor && actor->mActive && handle == actor->mId) {
+                result = (u8*)pool->mActors[i];
+                break;
+            }
+        }
+    }
+done:
+    return result;
+}
+inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
+    const f32* pos = (const f32*)(actor + 0xc);
+    f32 x = *pos++;
+    f32 y = *pos;
+    box.addPos(x, y);
+}
 
 inline bool collisionBoxesOverlap(const JGeometry::TBox2<f32>& a, const JGeometry::TBox2<f32>& b) {
     JGeometry::TBox2<f32> intersection(a);
