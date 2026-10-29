@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
 
 extern "C" u8* lbl_8053AAF8;
