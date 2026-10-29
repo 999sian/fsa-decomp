@@ -717,6 +717,10 @@ static inline void fallRelease(char* this_) {
     }
 }
 
+static inline void fallMovePlayer(char* p) {
+    JGeometry::TVec3<f32> v(*(f32*)(p+0xc), *(f32*)(p+0x10), *(f32*)(p+0x14)-10.0f);
+    fn_802316C8(*(s32*)(p+0x2b8), *(s32*)(p+0x2ac), v);
+}
 extern "C" void fn_801BBA0C(char* this_) {
     fn_801BC244(this_);
     switch (*(s32*)(this_ + 0x248)) {
