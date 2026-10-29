@@ -312,7 +312,8 @@ extern "C" void fn_80268BC4(u8* p) {
             }
             *(JGeometry::TVec3<f32>*)(p + 8) = saved;
         }
-        if (fn_802684A4((HitRectTable*)*(u8**)(p + 4), (Vec2f*)(p + 8), *(u32*)(*(u8**)(p + 4) + 0x3b4))) {
+        HitRectTable* table = (HitRectTable*)*(u8**)(p + 4);
+        if ((u8)fn_802684A4(table, (Vec2f*)(p + 8), tableRoom(table))) {
             p[*(s32*)(p + 0x1c) + 0x28] = 1;
         } else if (fn_8026FC20(*(void**)(p + 4)) <= 0 && !fn_802DCD0C(fn_802D6A9C())) {
             s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
