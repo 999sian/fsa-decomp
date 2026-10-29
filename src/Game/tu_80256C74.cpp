@@ -1580,17 +1580,15 @@ extern "C" void fn_8025A15C(u8* p) {
             if (PTR(p, 0x12c4) == 0) {
                 PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
             }
-            JPABaseEmitter* emitterA = (JPABaseEmitter*)PTR(p, 0x12c4);
-            if (emitterA) {
-                JPAGetXYZRotateMtx(0, fireRotationA[S32(p, 0x3dc)], -0x8000, emitterA->mGlobalRot);
+            if (PTR(p, 0x12c4)) {
+                ((JPABaseEmitter*)PTR(p, 0x12c4))->setGlobalRotation(JGeometry::TVec3<s16>((s16)0, (s16)fireRotationA[S32(p, 0x3dc)], (s16)-0x8000));
                 fn_8013CB44(PTR(p, 0x12c4), &pos, 0, 2, 1);
             }
             if (PTR(p, 0x12c8) == 0) {
                 PTR(p, 0x12c8) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x54a, -1, 0, 0, 0, 1, lbl_805400D4);
             }
-            JPABaseEmitter* emitterB = (JPABaseEmitter*)PTR(p, 0x12c8);
-            if (emitterB) {
-                JPAGetXYZRotateMtx(0, 0, fireRotationB[S32(p, 0x3dc)], emitterB->mGlobalRot);
+            if (PTR(p, 0x12c8)) {
+                ((JPABaseEmitter*)PTR(p, 0x12c8))->setGlobalRotation(JGeometry::TVec3<s16>((s16)0, (s16)0, (s16)fireRotationB[S32(p, 0x3dc)]));
                 fn_8013CB44(PTR(p, 0x12c8), &pos, -1, 0, 1);
             }
             fn_8024F0E8(p, 0x30011);
