@@ -1,4 +1,5 @@
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 #define Vec ActorVec
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
@@ -93,6 +94,106 @@ extern "C" void fn_80374BAC(Actor* this_) {
         box[2] += lbl_80542EE8;
         box[3] += lbl_80542EE8;
     }
+
+    s32 handle = *(s32*)(p + 0x198);
+    u8* mgr = ((u8* (*)())fn_8020D58C)();
+    fn_8020D7D0(mgr + mgr[0] * 0x784 + 4, handle);
+    JGeometry::TVec3f& pos = *(JGeometry::TVec3f*)(p + 0xc);
+    JGeometry::TVec3f& vel = *(JGeometry::TVec3f*)(p + 0x3c);
+    JGeometry::TVec3f& origin = *(JGeometry::TVec3f*)(p + 0x230);
+    JGeometry::TVec3f probe;
+    if (*(s32*)(p + 0x244) != 0) {
+        pos.x = (s32)((s32)pos.x + 4) / 8 * 8;
+        pos.y = (s32)((s32)pos.y + 4) / 8 * 8;
+        return;
+    }
+    if (PSVECDistance(&pos, &origin) >= lbl_80542EEC) {
+        if (!fn_801F2618(this_, 0, 0)) {
+            probe = vel;
+            probe.normalize();
+            probe.scale(lbl_80542EFC);
+            probe.add(pos);
+            u16 tile = fn_8022461C(&probe, *(s32*)(p + 4));
+            u16 current = fn_8022461C(&pos, *(s32*)(p + 4));
+            if (current == 0x50 && (tile == 0 || tile == 0x50)) {
+                JGeometry::TVec3f saved(vel);
+                if (fn_80374964(this_, *(u32*)(p + 0x90) & 3) == 1) {
+                    vel = saved;
+                    origin.x = pos.x;
+                    origin.y = pos.y;
+                    origin.z = pos.z;
+                    origin.x = (s32)((s32)origin.x + 4) / 8 * 8;
+                    origin.y = (s32)((s32)origin.y + 4) / 8 * 8;
+                    return;
+                }
+            }
+        }
+        if (pos.x <= *(f32*)(p + 0x24) + lbl_80542F00 && pos.x >= *(f32*)(p + 0x24) - lbl_80542F00) {
+            pos.x = *(f32*)(p + 0x24);
+        } else {
+            pos.x = (s32)((s32)pos.x + 4) / 8 * 8;
+        }
+        if (pos.y <= *(f32*)(p + 0x28) + lbl_80542F00 && pos.y >= *(f32*)(p + 0x28) - lbl_80542F00) {
+            pos.y = *(f32*)(p + 0x28);
+        } else {
+            pos.y = (s32)((s32)pos.y + 4) / 8 * 8;
+        }
+        origin = pos;
+        vel.x = lbl_80542EDC;
+        vel.y = lbl_80542EDC;
+        vel.z = lbl_80542EDC;
+        *(JGeometry::TVec3f*)(p + 0x18) = pos;
+        this_->v10(0xff, 1);
+        *(s32*)(p + 0x240) = 0;
+        *(s32*)(p + 0x244) = 1;
+        return;
+    }
+    JGeometry::TVec3f previous(pos);
+    pos.add(vel);
+    if (!vel.isZero()) {
+        if (*(s32*)(p + 0x9c) >= 0) pos = previous;
+        return;
+    }
+    if (fn_80239108(*(s32*)(p + 0x198)) < 1) return;
+    if (PSVECDistance(&pos, (JGeometry::TVec3f*)(p + 0x24)) >= lbl_80542EEC) return;
+    s32 direction = fn_80238BC4(*(s32*)(p + 0x198));
+    JGeometry::TVec3f savedPos(pos);
+    JGeometry::TVec3f step;
+    step.x = lbl_804A79E0[direction].x;
+    step.y = lbl_804A79E0[direction].y;
+    step.z = lbl_804A79E0[direction].z;
+    if (*(s32*)(p + 0x240) != 0) {
+        s32 hit = fn_80239558(box, *(s32*)(p + 4), *(s32*)(p + 0x198));
+        if (*(s32*)(p + 0x240) - 1 != hit) return;
+        if (direction != (*(u32*)(p + 0x90) & 3)) return;
+    }
+    if (!fn_80374964(this_, direction)) return;
+    if (*(u8*)(p + 0x248) == 0) {
+        fn_802D7584(fn_802D6A9C(), *(s32*)(p + 0x16c), direction + 1);
+    }
+    pos.add(step);
+    if (fn_801F2618(this_, 0, 0)) {
+        pos = savedPos;
+        return;
+    }
+    pos = savedPos;
+    if (direction < 0 || direction >= 4) return;
+    fn_80238E08(*(s32*)(p + 0x198));
+    vel.x = lbl_804750C0[direction].x;
+    vel.y = lbl_804750C0[direction].y;
+    vel.z = lbl_804750C0[direction].z;
+    probe = vel;
+    probe.normalize();
+    probe.scale(lbl_80542EFC);
+    probe.add(pos);
+    if (fn_8022461C(&probe, *(s32*)(p + 4)) == 0x50) {
+        vel.normalize();
+        vel.scale(lbl_80542ED8);
+    }
+    origin.x = pos.x;
+    origin.y = pos.y;
+    origin.z = pos.z;
+    fn_801F0E34(this_, 0x30004, 0);
 }
 
 extern "C" void* fn_801F856C(void);
