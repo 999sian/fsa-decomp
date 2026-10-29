@@ -69,10 +69,10 @@ struct RupyRotation {
 
 static inline void RupyDrawMtx(f32 (*mtx)[4], DrawRec& rec, const f32 scale, const f32 ang) {
         f32 cx;
+        f32 cy;
         f32 sz;
         f32 sy;
         f32 sx;
-        f32 cy;
         f32 cz;
         sx = sin(lbl_80541D88);
         sy = sin(ang);
@@ -724,6 +724,7 @@ extern "C" void fn_8032BFB0(char* p) {
     const char* name;
     s32 mode;
     s32 id;
+    f32 angle;
     f32 scale;
     s32 st = *(s32*)(p + 0x230);
     if (st == 7) {
@@ -762,7 +763,7 @@ extern "C" void fn_8032BFB0(char* p) {
     JGeometry::TVec3<f32> save;
     PSMTXIdentity(mtx);
     {
-        f32 angle = *(f32*)(p + 0x23c);
+        angle = *(f32*)(p + 0x23c);
         RupyDrawMtx(mtx, rec, scale, angle);
     }
     st = *(s32*)(p + 0x230);
