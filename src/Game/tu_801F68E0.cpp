@@ -1113,7 +1113,7 @@ inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     box.addPos(x, y);
 }
 
-inline u8* findCollisionActorInPool(const s32 handle, ActorPool* pool) {
+inline u8* findCollisionActorInPool(s32 handle, ActorPool* pool) {
     PoolActor* scanActor;
     PoolActor* result = NULL;
     if (handle >= 0) {
@@ -1126,7 +1126,7 @@ inline u8* findCollisionActorInPool(const s32 handle, ActorPool* pool) {
             }
         }
         s32 count = pool->mCount;
-        PoolActor** cur = (PoolActor**)pool;
+        PoolActor* const* cur = (PoolActor* const*)pool;
         for (s32 i = 0; i < count; cur++, i++) {
             scanActor = cur[2];
             if (scanActor && scanActor->mActive && handle == scanActor->mId) {
