@@ -28,7 +28,7 @@ struct ActorList80362634 {
     u32 pad[2];
     char* actors[0x400];
     s32 count;
-    char* getActor(const s32 index) { return actors[index]; }
+    char* getActor(const s32& index) { return actors[index]; }
     s32 getCount() const { return count; }
 };
 
@@ -532,10 +532,11 @@ extern "C" void fn_80363664(char* self) {
     *(s32*)(self + 0x264) = *(s8*)(*(s8**)(self + 0x274) + *(s32*)(self + 0x268));
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_80363880(char* p) {
-    register int i;
-    register int count;
-    register char* item;
+    int i;
+    int count;
+    char* item;
     int state = *(int*)(p + 0x24c);
     if (state >= 0) {
         item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
@@ -555,7 +556,7 @@ extern "C" void fn_80363880(char* p) {
         }
     } else {
         count = *(int*)((char*)fn_801F856C() + 0x1008);
-        for (i = 0; i < count; ++i) {
+        for (i = 0; i < count; i++) {
             item = ((ActorList80362634*)fn_801F856C())->actors[i];
             if (item == NULL || *(int*)(item + 0x1a0) != 0x454f574c || *(u8*)(item + 0x11c) != 1 || *(int*)(item + 0x278) != 0) continue;
             if (!(PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) < lbl_80542B4C)) break;
@@ -605,7 +606,7 @@ extern "C" void fn_80363880(char* p) {
         }
     }
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_80363F7C(char* self) {
     if (*(s32*)(self + 0x25c) == 0) {
         *(s32*)(self + 0x268) = *(s32*)(self + 0x268) + 1;
