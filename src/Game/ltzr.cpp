@@ -238,8 +238,10 @@ static inline void ltzrTouch(char* p, s32 i) {
         f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
         cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
         pt.z = lbl_80542268;
-        pt.x = len * cy;
-        pt.y = len * sy;
+        vy = len * sy;
+        vx = len * cy;
+        pt.x = vx;
+        pt.y = vy;
         minx = *(f32*)(p + 0x60);
         miny = *(f32*)(p + 0x64);
         maxx = *(f32*)(p + 0x68);
