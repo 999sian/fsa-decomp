@@ -200,7 +200,7 @@ static inline f32 ltzrSqrt(f32 x) {
 static inline void ltzrBlink(f32* t, u8* dir, f32 hi, f32 lo, f32 step) {
     if (*dir == 1) {
         *t += step;
-        if (*t >= hi) {
+        if (hi <= *t) {
             *t = hi;
             *dir = 0;
         }
@@ -289,19 +289,7 @@ extern "C" void fn_8033FE04(char* p) {
     }
     }
     if (*(s32*)(p + 0x248) == 1) {
-        if (*(u8*)(p + 0x2b1) == 1) {
-            *(f32*)(p + 0x2b4) += lbl_80542298;
-            if (*(f32*)(p + 0x2b4) >= lbl_8054229C) {
-                *(f32*)(p + 0x2b4) = lbl_8054229C;
-                *(u8*)(p + 0x2b1) = 0;
-            }
-        } else {
-            *(f32*)(p + 0x2b4) -= lbl_80542298;
-            if (*(f32*)(p + 0x2b4) <= lbl_8054227C) {
-                *(f32*)(p + 0x2b4) = lbl_8054227C;
-                *(u8*)(p + 0x2b1) = 1;
-            }
-        }
+        ltzrBlink((f32*)(p + 0x2b4), (u8*)(p + 0x2b1), lbl_8054229C, lbl_8054227C, lbl_80542298);
     } else if (lbl_8054227C != *(f32*)(p + 0x2b4)) {
         *(f32*)(p + 0x2b4) = lbl_8054227C;
     }
