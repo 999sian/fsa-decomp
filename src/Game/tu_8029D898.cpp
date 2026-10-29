@@ -916,6 +916,15 @@ extern "C" u8 fn_8022F514(void* a);
 extern "C" s32 fn_8022F3DC(void* a);
 extern "C" s32 fn_802373EC(s32 a);
 extern "C" s32 fn_8022EA0C(void* a);
+extern "C" u8 fn_802308E0(s32);
+extern "C" u8 fn_8023077C(void);
+extern "C" void fn_8037AE30(void*);
+extern void* lbl_8053AD70;
+extern "C" void fn_802372F8(void*,s32,s32);
+extern "C" s32 fn_8023DE58(void*);
+extern "C" void fn_80230498(void*,void*,s32,s32,s32,s32,s32);
+extern f32 lbl_80540798;
+
 extern "C" u32 fn_802A0800(char* self, void* p3, u32 room) {
     s32 b = (s32)p3;
     s32 c = (s32)room;
