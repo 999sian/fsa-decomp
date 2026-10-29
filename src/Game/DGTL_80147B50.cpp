@@ -49,21 +49,25 @@ struct TWEVParam {
 typedef f32 TWEVMtx[3][4];
 
 static inline void fn_80147B50_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az, f32 s) {
-    f32 sa = sin(ax);
-    f32 sb = sin(ay);
-    f32 sc = sin(az);
-    f32 ca = cos(ax);
-    f32 cb = cos(ay);
-    f32 cc = cos(az);
-    m[0][0] = s * (cb * cc);
-    m[0][1] = s * (sa * sb * cc - ca * sc);
-    m[0][2] = s * (ca * cc * sb + sa * sc);
-    m[1][0] = s * (cb * sc);
-    m[1][1] = s * (sa * sb * sc + ca * cc);
-    m[1][2] = s * (ca * sc * sb - sa * cc);
-    m[2][0] = s * -sb;
-    m[2][1] = s * (sa * cb);
-    m[2][2] = s * (ca * cb);
+    f32 cx;
+    f32 sx = sin(ax);
+    f32 sy = sin(ay);
+    f32 sz = sin(az);
+    cx = cos(ax);
+    f32 cy = cos(ay);
+    f32 cz = cos(az);
+    f32 cc = cx * cz;
+    f32 ss = sx * sy;
+    f32 cs = cx * sz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (ss * cz - cs);
+    m[1][1] = s * (ss * sz + cc);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cc * sy + sx * sz);
+    m[1][2] = s * (cs * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
 }
 
 extern "C" char __vt__4DGTL[];
