@@ -303,6 +303,8 @@ f32 fn_80430368(void* self, u8 type, s32 count, char* buf) {
     return 0.0f;
 }
 
+#pragma push
+#pragma dont_inline on
 f32 fn_80430518(void* self, u8 type, s32 count, f32 scale) {
     JUTFont::TWidth w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, wa, wb;
     f32 width = lbl_80543AF8;
@@ -340,6 +342,7 @@ f32 fn_80430518(void* self, u8 type, s32 count, f32 scale) {
     }
     return width;
 }
+#pragma pop
 
 void fn_804310BC(T80431_Owner* self) {
     self->timer = 0;
