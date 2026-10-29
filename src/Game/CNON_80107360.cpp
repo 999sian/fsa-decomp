@@ -260,13 +260,13 @@ static inline bool CNON_hitWall(CNON* this_) {
     f32 out[2];
     zero[0] = lbl_8053C2C0;
     zero[1] = lbl_8053C2C0;
+    f32 y = this_->mPos.y - this_->mPos.z;
+    f32 x = this_->mPos.x;
     CNON_Box box;
     box.x0 = this_->m70[0];
     box.y0 = this_->m70[1];
     box.x1 = this_->m70[2];
     box.y1 = this_->m70[3];
-    f32 x = this_->mPos.x;
-    f32 y = this_->mPos.y - this_->mPos.z;
     box.x0 += x;
     box.y0 += y;
     box.x1 += x;
