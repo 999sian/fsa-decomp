@@ -370,9 +370,7 @@ static inline void restartMovingAnim(u8* p, s32 animation) {
     *(s32*)(p + 0x240) = 0;
     advanceMovingAnim(p, animation);
 }
-static inline f32 movingCosVelocity(const f32 speed, const s16 angle) {
-    return speed * sincosTable___5JMath[(u16)angle >> 5].cos;
-}
+
 extern "C" void fn_8036003C(u8* p) {
     s32 oldState = *(s32*)(p + 0x274);
     *(s32*)(p + 0x248) = *(s32*)(p + 0x244);
@@ -441,7 +439,7 @@ extern "C" void fn_8036003C(u8* p) {
         }
         f32 speed = *(f32*)(p + 0x268);
         f32 cosine = sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
-        *(f32*)(p + 0x3c) = speed * cosine;
+        *(f32*)(p + 0x3c) = cosine * speed;
         *(f32*)(p + 0x40) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].sin;
         *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
         *(s32*)(p + 0x264) += (s16)step;
