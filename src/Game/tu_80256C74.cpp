@@ -2142,8 +2142,8 @@ extern "C" void fn_8025C7BC(u8* p) {
     S32(p, 0x40c) = 0;
 }
 
-extern "C" void fn_8025C894(u8* this_) {
-    u8* p = this_;
+extern "C" void fn_8025C894(u8* p) {
+    s32 actorID;
     PlayerArrowPosition* arrow = (PlayerArrowPosition*)p;
     u8 state = U8(p, 0x3fa);
     if (state < 3) {
@@ -2215,9 +2215,9 @@ extern "C" void fn_8025C894(u8* this_) {
                     F32(p,0x12f0) = arrow->pos.y;
                     F32(p,0x12f4) = arrow->pos.z;
             }
-            const s32 handle = S32(p, 0x12c0);
-            if (handle >= 0) {
-                u8* actor = fn_801F666C(fn_801F856C(), handle);
+            actorID = S32(p, 0x12c0);
+            if (actorID >= 0) {
+                u8* actor = fn_801F666C(fn_801F856C(), actorID);
                 if (actor) {
                     V3(actor, 0xc) = arrow->pos;
                 }
@@ -2275,11 +2275,11 @@ extern "C" void fn_8025C894(u8* this_) {
                 case 3: pos.x -= lbl_805400C8; break;
                 }
                 if (U8(p, 0x3fc) >= 0x30) {
-                    s32 owner = S32(p, 4);
-                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((U32(p,0x3dc) << 4) & 0x30) | ((u32)owner & 3), -1, owner);
+                    actorID = S32(p,4);
+                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((U32(p,0x3dc) << 4) & 0x30) | ((u32)actorID & 3), -1, actorID);
                 } else {
-                    s32 owner = S32(p, 4);
-                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((S32(p,0x3dc)&3)<<4) | 0x100 | (owner&3), -1, owner);
+                    actorID = S32(p,4);
+                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'ARRW', S32(p,0x3b4), &pos, ((S32(p,0x3dc)&3)<<4) | 0x100 | (actorID&3), -1, actorID);
                 }
                 if (arrow->ids[i] >= 0) {
                     arrow->rooms[i] = S32(p,0x3b4);
