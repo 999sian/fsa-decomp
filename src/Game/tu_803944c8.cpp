@@ -1816,6 +1816,13 @@ static inline u16 msgToWideScan(u16 c) {
     }
     return 0x1420;
 }
+static inline u16 msgToWideScanFrom(const MsgCharMap* table, u16 c) {
+    const MsgCharMap* entry = table;
+    for (int i = 0; entry->ascii != 0xffff; ++entry, ++i) {
+        if (c == entry->ascii) return lbl_80475830[i].code;
+    }
+    return 0x1420;
+}
 #pragma opt_propagation off
 extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
     MsgLayout* l;
@@ -1866,11 +1873,11 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
                         p->m2d0 += strlen(lbl_8050E518);
                     }
                 }
+                p->m2d6 = 0;
             }
-            p->m2d6 = 0;
-        }
-        if (ch == 10) {
-            return;
+            if (ch == 10) {
+                return;
+            }
         }
         char c1 = (char)(((u32)ch >> 8) & 0xff);
         s32 has2 = 0;
@@ -1880,11 +1887,15 @@ extern "C" void fn_8039F540(MsgProc* p, s32 ch) {
             p->m2d0++;
             src[0] = c1;
         }
-        p->m2d0++;
+        s32 newLength = p->m2d0;
+        s32 count = has2 + 1;
+        p->m2d0 = newLength + 1;
         src[has2] = (char)ch;
-        s32 n = p->m2d0 - (has2 + 1);
-        if (n != p->layout->m170) {
-            p->layout->m170 = n;
+        l = p->layout;
+        s32 n = p->m2d0 - count;
+        s32 oldLength = l->m170;
+        if (n != oldLength) {
+            l->m170 = n;
         }
         strcat(p->str2c0, src);
         strcat(p->str2c4, src);
@@ -3666,10 +3677,13 @@ extern "C" void fn_8039A540(void* thisObj) {
     p[0x1e8] = 0;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8039A638(MsgProc* p, s16 n) {
     char buf[8];
-    s32 bVar1;
+    s32 cur;
+    f32 half, difference, spacing, fVar4, fVar3;
     s32 bVar2;
+    s32 bVar1;
     u8* e;
 
     buf[2] = 0;
@@ -3681,23 +3695,25 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
 
     if (n == 0) {
         if (p->m2d6 != 0) {
-            if (p->testBit(p->cur) == FALSE) {
-                MsgLayout* l = p->layout;
-                if (l->m16c == 0 || p->testBit(p->cur) == FALSE) {
+            cur = p->cur;
+            if (!p->testBit(cur)) {
+                if (!(p->layout->m16c != 0 && p->testBit(cur))) {
+                    MsgLayout* l = p->layout;
                     MsgFontInfo* font = l->font;
-                    f32 fVar3;
-                    f32 fVar4;
                     s32 i;
                     if ((font->flags & 0x40) == 0) {
                         fVar3 = l->baseE8;
-                        fVar4 = p->posA[p->cur];
+                        fVar4 = p->posA[cur];
                     } else {
                         fVar3 = l->baseF0;
-                        fVar4 = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+                        spacing = p->posB[cur] - lbl_805431E8;
+                        fVar4 = p->posA[cur] + spacing;
                     }
-                    i = (s32)((fVar3 - fVar4) * 0.5f + 0.5f);
+                    difference = fVar3 - fVar4;
+                    half = lbl_805431E4;
+                    i = (s32)(difference * half + half);
                     if (i > 0) {
-                        snprintf(lbl_8050E548, 0xf, "\x1b" "CR[%d]", i);
+                        snprintf(lbl_8050E548, 0xf, lbl_80543298, i);
                         strcat(p->str2c0, lbl_8050E548);
                         strcat(p->str2c4, lbl_8050E548);
                         p->m2d0 += strlen(lbl_8050E548);
@@ -3711,11 +3727,12 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
             bVar1 = 99;
         }
         s32 q = bVar1 / 10;
-        if (q != 0) {
+        bVar1 %= 10;
+        if (q > 0) {
             buf[0] = q + '0';
             msgAppendChar(p, buf);
         }
-        buf[0] = bVar1 % 10 + '0';
+        buf[0] = bVar1 + '0';
         msgAppendChar(p, buf);
         strcat(p->str2c0, "'");
         strcat(p->str2c4, "'");
@@ -3737,23 +3754,30 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
             bVar1 = 99;
         }
         s32 q = bVar1 / 10;
-        if (q != 0) {
-            msgPutWide(p, q + '0');
+        s32 rem1 = bVar1 % 10;
+        if (q > 0) {
+            { u16 wide1 = msgToWideScan((u16)(q + '0')); p->str2c0[p->m2d0++] = wide1 >> 8; p->str2c0[p->m2d0++] = wide1; }
         }
-        msgPutWide(p, bVar1 % 10 + '0');
+        const MsgCharMap* table;
+        const MsgCharMap* entry;
+        int i;
+        u16 c, wide;
+        table = lbl_80475830;
+        { entry = table; c = rem1 + '0'; for(i = 0; entry->ascii != 0xffff; ++entry, ++i) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone0;} } wide=0x1420; wideDone0: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
         p->str2c0[p->m2d0++] = 0x39;
         p->str2c0[p->m2d0++] = 0xe0;
         if (bVar2 > 99) {
             bVar2 = 99;
         }
+        s32 rem2 = bVar2 % 10;
         s32 q2 = bVar2 / 10;
-        msgPutWide(p, q2 + '0');
-        msgPutWide(p, bVar2 % 10 + '0');
+        { entry = table; c = q2 + '0'; for(i = 0; entry->ascii != 0xffff; ++entry, ++i) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone1;} } wide=0x1420; wideDone1: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
+        { entry = table; c = rem2 + '0'; for(i = 0; entry->ascii != 0xffff; ++entry, ++i) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone2;} } wide=0x1420; wideDone2: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
         p->str2c0[p->m2d0++] = 0x3c;
         p->str2c0[p->m2d0++] = 0xa0;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8039ACD0(u8* param_1, s16 param_2) {
     char buf[8];
     s32 total;
