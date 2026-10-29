@@ -89,6 +89,14 @@ static inline void dgt2DrawAt(void* this_, s32 idx, DrawRec* rec, const JGeometr
     fn_801F06F0(this_, lbl_804674F0, idx, rec, -1, a, b);
 }
 
+static inline void dgt2DrawAtK(void* this_, s32 idx, DrawRec* rec, s8 kind, const JGeometry::TVec3<f32>* pos, f32 z, f32 a, f32 b) {
+    char* p = (char*)this_;
+    *(JGeometry::TVec3<f32>*)(p + 0xc) = *pos;
+    *(f32*)(p + 0x14) = z;
+    rec->b1d = kind;
+    fn_801F06F0(this_, lbl_804674F0, idx, rec, -1, a, b);
+}
+
 static inline void dgt2Rot(f32 (*m)[4], f32 th) {
     f32 cZ, sZ, sT, sA, cT, cA;
     sA = sin(lbl_8053E1D8);
@@ -218,7 +226,7 @@ extern "C" void fn_8018EB94(void* this_) {
     char* p = (char*)this_;
     DrawRec rec;
     f32 mtx[3][4];
-    f32 z = *(f32*)(p + 0x14);
+    const f32 z = *(f32*)(p + 0x14);
     if ((*(u32*)(p + 0x240) & 1) != 0) {
         u8* r = (u8*)&rec;
         r[0x17] = 0;
