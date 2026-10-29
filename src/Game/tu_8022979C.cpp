@@ -68,8 +68,8 @@ static inline void sobDraw(u8* p, SobDrawParam* prm, s32 flag) {
         SobResMgr* mgr = *(SobResMgr**)(lbl_8053AAF8 + 0xa4);
         void* res = mgr->getRes(0x534F4220, lbl_8046ADF0);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, prm);
-        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, flag, 0, 0);
     }
+    fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, flag, 0, 0);
 }
 
 
