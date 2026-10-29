@@ -58,6 +58,7 @@ struct BTBZ_Vec {
 
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
+    int a;
     *(s32*)(this_ + 0x234) = s;
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
@@ -119,7 +120,7 @@ extern "C" void fn_8012CF5C(u8* this_) {
             if (*(u8*)(this_ + 0x230) != 0) {
                 limit = 1000;
             }
-            if (limit <= *(s32*)(this_ + 0x238)) {
+            if (*(s32*)(this_ + 0x238) >= limit) {
                 BTBZ_setState(this_, 2);
             }
         }
@@ -131,14 +132,16 @@ extern "C" void fn_8012CF5C(u8* this_) {
                 !fn_8022F478(i) && !fn_80236D14(i)) {
                 f32* pf = (f32*)fn_8023E724(i);
                 f32 pos[2];
-                pos[0] = pf[0] + lbl_8053CC2C;
-                pos[1] = pf[1] - lbl_8053CC2C;
+                pos[0] = pf[0];
+                pos[1] = pf[1];
+                pos[0] += lbl_8053CC2C;
+                pos[1] -= lbl_8053CC2C;
                 fn_80238548(i, 1, pos, 1);
                 lbl_80529DEC[0x239] |= (u8)(1 << i);
             }
         }
         *(s32*)(this_ + 0x238) += 1;
-        if (*(s32*)(this_ + 0x238) > 0xA9) {
+        if (*(s32*)(this_ + 0x238) >= 0xAA) {
             BTBZ_setState(this_, 1);
         }
         break;
