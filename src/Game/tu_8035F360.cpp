@@ -371,6 +371,7 @@ static inline void restartMovingAnim(u8* p, s32 animation) {
     advanceMovingAnim(p, animation);
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8036003C(u8* p) {
     s32 oldState = *(s32*)(p + 0x274);
     *(s32*)(p + 0x248) = *(s32*)(p + 0x244);
