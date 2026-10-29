@@ -200,7 +200,7 @@ extern "C" u8 fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
 static inline s32 dmlkTime(s32 idx) {
     return *(s32*)((u8*)fn_8011921C() + 8) - lbl_80464AF8[idx];
 }
-static inline bool dmlkSink(u8* p, s32 t, f32 vz, f32 vy, f32 vx) {
+static inline bool dmlkSink(u8* p, int t, f32 vz, f32 vy, f32 vx) {
     *(f32*)(p + 0x44) = vz - lbl_8053C804 * t;
     *(f32*)(p + 0x40) = vy;
     *(f32*)(p + 0x3c) = vx;
