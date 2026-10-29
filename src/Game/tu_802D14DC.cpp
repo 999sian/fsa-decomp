@@ -158,8 +158,8 @@ extern "C" const f32 lbl_80540F04;
 inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
     if (*(s32*)(p + 0x244) != direction) {
         if (*(void**)(p + 0x230) != NULL) {
-            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(
-                *(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x230));
+            void* manager = *(void**)((char*)fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(manager, *(void**)(p + 0x230));
             *(void**)(p + 0x230) = NULL;
         }
         *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540ECC, effect, 0, 0, 0, 0, 1);
@@ -194,16 +194,16 @@ extern "C" void fn_802D1FEC(void* this_) {
             }
         }
     } else {
+        s32 id;
         s32 mode = *(s32*)(p + 0x114);
-        if (lbl_8053AAF8[0x7f] != 0) {
-            mode = 0;
-        }
-        s32 id = *(s32*)(p + 4);
-        if (*(u8*)((char*)fn_802D6A9C() + 0x10000 + id + 0x31df) == 0) {
-            *(f32*)(p + 0x44) += 1.0f;
+        if (lbl_8053AAF8[0x7f] != 0) mode = 0;
+        id = *(s32*)(p + 4);
+        char* mgr = (char*)fn_802D6A9C() + 0x10000;
+        char* room = mgr + id;
+        if (*(u8*)(room + 0x31df) == 0) {
+            *(f32*)(p + 0x44) += lbl_80540EE4;
             *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
-            *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
-            if (fn_801F2618(p, 0, 0)) {
+            if (*(f32*)(p + 0x14) < 0.0f || fn_801F2618(p, 0, 0)) {
                 if (*(f32*)(p + 0x14) < 0.0f) {
                     if ((u16)fn_80226850(p + 0xc, *(s32*)(p + 4)) == 0x90) {
                         fn_802A381C((void*)lbl_8053AC98, p + 0xc, *(s32*)(p + 4), 0x91);
@@ -213,66 +213,61 @@ extern "C" void fn_802D1FEC(void* this_) {
                     }
                 }
                 if (*(s32*)(p + 0x234) == 2) {
-                    void* mgr = fn_801F856C();
-                    s32 n = fn_801F7818(mgr, 0x424c5a32, *(s32*)(p + 4), buf, -1);
+                    s32 n = fn_801F7818(fn_801F856C(), 0x424c5a32, *(s32*)(p + 4), buf, -1);
                     void** e = (void**)buf;
-                    for (s32 i = 0; i < n; i++, e++) {
-                        char* r5 = (char*)*e;
-                        if (r5 == 0) continue;
-                        f32 dy = *(f32*)(r5 + 0x10) - *(f32*)(p + 0x10);
-                        f32 dx = *(f32*)(r5 + 0xc) - *(f32*)(p + 0xc);
-                        f32 d = std::sqrtf(dx * dx + dy * dy);
-                        if (d < lbl_80540F00) {
-                            *(s16*)(r5 + 0x94) = 2;
+                    for (s32 i = 0; i < n; e++, i++) {
+                        char* actor = (char*)*e;
+                        if (actor != NULL) {
+                            if (actor != NULL) {
+                                f32 dy = *(f32*)(actor + 0x10) - *(f32*)(p + 0x10);
+                                f32 dx = *(f32*)(actor + 0xc) - *(f32*)(p + 0xc);
+                                f32 d = std::sqrtf(dx * dx + dy * dy);
+                                if (d < lbl_80540F00) *(s16*)(actor + 0x94) = 2;
+                            }
                         }
                     }
                 }
-                ((VObj_802D*)p)->m9();
-                return;
-            }
-            if (!fn_801F2B7C(p, mode, *(s32*)(p + 0xc8), 1)) {
-                if (fn_801F2B20(p, 0)) {
-                    ((VObj_802D*)p)->m9();
+                ((VObj_802D*)p)->m7();
+            } else {
+                if (fn_801F2B7C(p, mode, *(s32*)(p + 0xc8), 1) || fn_801F2B20(p, 0)) {
+                    ((VObj_802D*)p)->m7();
                 }
-                return;
+            }
+        } else {
+            if (*(s32*)(p + 0x24c) == 0) {
+                *(f32*)(p + 0x10) -= *(f32*)(p + 0x14);
+                *(f32*)(p + 0x14) = 0.0f;
+                *(f32*)(p + 0x44) = 0.0f;
+                *(s32*)(p + 0x24c) = 1;
+            }
+            *(f32*)(p + 0x40) += lbl_80540F04;
+            *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
+            if (fn_801F2B7C(p, mode, *(s32*)(p + 0xc8), 1) ||
+                fn_801F2B20(p, 0) || fn_801F2618(p, 0, 0)) {
+                ((VObj_802D*)p)->m7();
             }
         }
-        if (*(s32*)(p + 0x24c) == 0) {
-            *(f32*)(p + 0x10) -= *(f32*)(p + 0x14);
-            *(f32*)(p + 0x14) = 0.0f;
-            *(f32*)(p + 0x44) = 0.0f;
-            *(s32*)(p + 0x24c) = 1;
-        }
-        *(f32*)(p + 0x40) += 1.0f;
-        *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
-        if (!fn_801F2B7C(p, mode, *(s32*)(p + 0xc8), 1)) {
-            if (!fn_801F2B20(p, 0)) {
-                return;
-            }
-        }
-        ((VObj_802D*)p)->m9();
-        return;
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), p + 0xc);
     }
     if (*(s32*)(p + 0x234) == 1) {
         f32 x = *(f32*)(p + 0xc);
-        f32 y = *(f32*)(p + 0x18);
-        if (x == y && *(f32*)(p + 0x10) == *(f32*)(p + 0x1c)) {
-            if (*(s32*)(p + 0x244) != 0) {
-                if (*(s32*)(p + 0x230) != 0) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(
-                        *(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x230));
-                    *(s32*)(p + 0x230) = 0;
-                }
-                *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x1a8, 0, 0, 0, 0, 1);
-                *(s32*)(p + 0x244) = 0;
+        f32 oldX = *(f32*)(p + 0x18);
+        if (x != oldX || *(f32*)(p + 0x10) != *(f32*)(p + 0x1c)) {
+            if (x != oldX) {
+                if (x < oldX) setYasiEmitter(p, 1, 0x1a7);
+                else setYasiEmitter(p, 2, 0x1a9);
+            } else {
+                if (*(f32*)(p + 0x10) < *(f32*)(p + 0x1c)) setYasiEmitter(p, 3, 0x1aa);
+                else setYasiEmitter(p, 4, 0x1a6);
             }
+        } else {
+            setYasiEmitter(p, 0, 0x1a8);
+        }
+        if (*(s32*)(p + 0x230) != 0) {
+            fn_8013CB44(*(s32*)(p + 0x230), p + 0xc, 0, 1, 1);
+            *(u8*)(*(s32*)(p + 0x230) + 0xbb) = *(u8*)(p + 0x254);
         }
     }
-    if (*(s32*)(p + 0x230) != 0) {
-        fn_8013CB44(*(s32*)(p + 0x230), p + 0xc, 0, 1, 1);
-        *(u8*)(*(s32*)(p + 0x230) + 0xbb) = *(u8*)(p + 0x254);
-    }
-    lbl_8053ADF8 = 0;
 }
 
 extern "C" char lbl_804A9428[];
