@@ -158,9 +158,8 @@ static inline void startAudioSpecial(u8* self, u32 id) {
 struct AudioChannelBase { u8 pad[0x18]; JAUSoundObject* object; };
 struct AudioContext { u8 pad[0x18]; JAUSoundObject* channels[4]; };
 
-static inline JAUSoundObject* getAudioChannel(u8* self, const s8 channel) {
-    u32 base=(u32)self+channel*4;
-    return *(JAUSoundObject**)(base+0x18);
+static inline JAUSoundObject* getAudioChannel(u8* self, const s32 channel) {
+    return ((AudioContext*)self)->channels[channel];
 }
 static inline f32 getPlayerAudioPan(const u8* self, s32 channel) {
     if(channel>=self[5])return 0.5f;
@@ -635,6 +634,7 @@ extern "C" void fn_80458744(void* this_, s32 mode) {
 }
 
 #pragma dont_inline reset
+#pragma opt_strength_reduction off
 extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
     u8* self=this_;
     if(mode>=4)return;
@@ -689,8 +689,7 @@ extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
         (*(JAUSoundObject**)(self+0x14))->startSound(JAISoundID(id));
     }
 }
-
-#pragma dont_inline reset
+#pragma opt_strength_reduction reset
 
 extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
 {
