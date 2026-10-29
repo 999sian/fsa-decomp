@@ -157,6 +157,24 @@ static inline void startAudioSpecial(u8* self, u32 id) {
 }
 struct AudioChannelBase { u8 pad[0x18]; JAUSoundObject* object; };
 
+static inline JAUSoundObject* getAudioChannel(u8* self, const s8 channel) {
+    return ((AudioChannelBase*)(self+4*channel))->object;
+}
+static inline f32 getPlayerAudioPan(const u8* self, s32 channel) {
+    if(channel>=self[5])return 0.5f;
+    f32 pan=0.5f;
+    switch(self[5]){
+    case 1:default:pan=0.5f;break;
+    case 2:case 3:case 4:
+        switch(channel){
+        case 0:case 2:pan=lbl_80543EC8;break;
+        case 1:case 3:pan=lbl_80543ECC;break;
+        }
+        break;
+    }
+    return pan;
+}
+
 static inline f32 getAudioPan(const u8* self, s32 mode) {
     if(mode<0)return 0.5f;
     if(mode>=self[5])return 0.5f;
