@@ -359,11 +359,11 @@ struct T80431_Res {
     f32 getHeight() const { return ((J2DPane*)data)->getHeight(); }
 };
 
-static inline u64 MessagePaneTag(s32 i) { return ((const u64*)lbl_8048F438)[i]; }
+static inline JKRArchive* MessageArchive() { return *(JKRArchive**)(lbl_80529DEC + 0x20); }
 
 extern "C" void* fn_8043395C(void* this_) {
-	u8* mgr;
 	char* base;
+	u8* mgr;
 	char* self = (char*)this_;
 	base = (char*)lbl_8048F438;
 	*(void**)self = lbl_804B1668;
@@ -469,7 +469,7 @@ extern "C" void* fn_8043395C(void* this_) {
 	*(u32*)(self + 0x98) = 0;
 	self[0xac] = 0;
 	for (s32 i = 0; i < 6; i++) {
-		self[0xa6 + i] = *(u8*)((char*)((J2DScreen*)*(void**)(self + 0xc))->search(((u64*)lbl_8048F438)[i]) + 0xb2);
+		self[0xa6 + i] = *(u8*)((char*)((J2DScreen*)*(void**)(self + 0xc))->search(lbl_8048F438[i]) + 0xb2);
 
 	}
 	return this_;
