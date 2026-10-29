@@ -10,6 +10,8 @@ struct FsaBlock48 {
 
 extern "C" void __dl__FPv(void* p);
 extern const f32 lbl_80543D78;
+extern const f32 lbl_80543D70;
+extern const f32 lbl_80543D74;
 extern "C" void fn_8013B490(void*);
 extern "C" void fn_80402628(void*, s32, s32, u8);
 extern void* lbl_8053AB10;
