@@ -155,17 +155,6 @@ extern "C" void* fn_801F856C(void);
 extern "C" u32 lbl_8053ADF8;
 extern "C" const f32 lbl_80540EE4;
 extern "C" const f32 lbl_80540F04;
-inline void markNearbyYasi(char* actor, const char* p) {
-    if (actor != NULL) {
-        f32 dy = *(f32*)(actor + 0x10) - *(f32*)(p + 0x10);
-        f32 dx = *(f32*)(actor + 0xc) - *(f32*)(p + 0xc);
-        f32 d = std::sqrtf(dx * dx + dy * dy);
-        if (d < lbl_80540F00) *(s16*)(actor + 0x94) = 2;
-    }
-}
-inline void markYasiNeighbour(const char* p, char* actor) {
-    markNearbyYasi(actor, p);
-}
 inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
     if (*(s32*)(p + 0x244) != direction) {
         if (*(void**)(p + 0x230) != NULL) {
@@ -177,8 +166,9 @@ inline void setYasiEmitter(char* p, s32 direction, s32 effect) {
         *(s32*)(p + 0x244) = direction;
     }
 }
+#pragma opt_lifetimes on
 extern "C" void fn_802D1FEC(void* this_) {
-    char* actor;
+    u8* actor;
     char** e;
     char* p = (char*)this_;
     char* buf[0x400];
@@ -227,7 +217,7 @@ extern "C" void fn_802D1FEC(void* this_) {
                     s32 n = fn_801F7818(fn_801F856C(), 0x424c5a32, *(s32*)(p + 4), buf, -1);
                     e = buf;
                     for (s32 i = 0; i < n; e++, i++) {
-                        actor = *e;
+                        actor = (u8*)*e;
                         if (actor != NULL) {
                             if (actor != NULL) {
                                 f32 dy = *(f32*)(actor + 0x10) - *(f32*)(p + 0x10);
@@ -282,7 +272,7 @@ extern "C" void fn_802D1FEC(void* this_) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" char lbl_804A9428[];
 extern "C" Vec3f_802D lbl_804C0EA0;
 extern "C" unsigned int lbl_8053AB68;
