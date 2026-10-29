@@ -312,12 +312,14 @@ extern "C" void fn_8020A2C0(void* this_) {
     }
 }
 
-static inline void fobrApproach(f32* value, const f32 target, f32 frames) {
+static inline void fobrApproach(f32* value, const f32 frames) {
     if (frames < *(f32*)__float_epsilon) {
-        *value = target;
+        *value = lbl_8053F964;
     } else {
-        frames = lbl_8053F968 / frames;
-        *value = frames * (target - *value) + *value;
+        f32 k = lbl_8053F968 / frames;
+        f32 target = lbl_8053F964;
+        f32 current = *value;
+        *value = k * (target - current) + current;
     }
 }
 
@@ -351,7 +353,8 @@ extern "C" void fn_8020A384(u8* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
         if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
-            ((JGeometry::TBox2<f32>*)(this_ + 0x60))->set(lbl_8053F974, lbl_8053F974, lbl_8053F978, lbl_8053F978);
+            ((JGeometry::TBox2<f32>*)(this_ + 0x60))->i.set(lbl_8053F974, lbl_8053F974);
+            ((JGeometry::TBox2<f32>*)(this_ + 0x60))->f.set(lbl_8053F978, lbl_8053F978);
             *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
             *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
             *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
@@ -404,7 +407,8 @@ extern "C" void fn_8020A384(u8* this_) {
                 break;
             case 3:
                 {
-                    ((JGeometry::TBox2<f32>*)(this_ + 0x60))->set(lbl_8053F974, lbl_8053F974, lbl_8053F978, lbl_8053F978);
+                    ((JGeometry::TBox2<f32>*)(this_ + 0x60))->i.set(lbl_8053F974, lbl_8053F974);
+            ((JGeometry::TBox2<f32>*)(this_ + 0x60))->f.set(lbl_8053F978, lbl_8053F978);
                     *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
                     *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
                     *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
