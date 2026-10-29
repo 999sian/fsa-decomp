@@ -344,13 +344,18 @@ inline s32 kepoPlayerRoom(s32 i) {
     if(fn_8022F514(i)) return fn_8022F3DC(i);
     return fn_8030AAF4(i);
 }
-inline void fillKepoBox(f32* box, f32 x, f32 y, f32 radius) {
-    box[3]=radius+y;
-    box[0]=x-radius;
-    box[1]=y-radius;
-    box[2]=radius+x;
+#pragma opt_propagation off
+inline void fillKepoBox(u8* self, f32* box) {
+    extern f32 lbl_8053FC84;
+    f32 k,x,upperX,upperY,y,lowerX,lowerY;
+    k=lbl_8053FC84;
+    y=*(f32*)(self+0x10);
+    x=*(f32*)(self+0xc);
+    upperY=k+y;upperX=k+x;lowerX=x-k;lowerY=y-k;
+    box[3]=upperY;box[0]=lowerX;box[1]=lowerY;box[2]=upperX;
 }
-#pragma float_expressions off
+#pragma opt_propagation reset
+#pragma opt_propagation off
 extern "C" void fn_8021923C(u8* self) {
     void fn_80219AFC(u8* self, s32 state);
     void fn_801D22DC(void* anim, s32 a, s32 b, s32 c);
@@ -395,7 +400,7 @@ extern "C" void fn_8021923C(u8* self) {
     extern void* lbl_8053AF80;
     extern f32 lbl_8046A640[];
 
-    JGeometry::TBox2<f32> box;
+    f32 box[4];
     f32 v0[3];
     f32 v6[3];
     f32 v8[3];
@@ -404,19 +409,26 @@ extern "C" void fn_8021923C(u8* self) {
     s32 i;
 
     if (*(s32*)(self + 0x248) == 3) {
-        f32 k = lbl_8053FC84;
-        f32 y = *(f32*)(self + 0x10);
-        f32 x = *(f32*)(self + 0xc);
-        f32 upperY = k+y;
-        f32 upperX = k+x;
-        f32 lowerX = x-k;
-        f32 lowerY = y-k;
-        box.f.y = upperY;
-        box.i.x = lowerX;
-        box.i.y = lowerY;
-        box.f.x = upperX;
+        f32 k;
+        f32 x;
+        f32 upperX;
+        f32 upperY;
+        f32 y;
+        f32 lowerX;
+        f32 lowerY;
+        k=lbl_8053FC84;
+        y=*(f32*)(self+0x10);
+        x=*(f32*)(self+0xc);
+        upperY=k+y;
+        upperX=k+x;
+        lowerX=x-k;
+        lowerY=y-k;
+        box[3] = upperY;
+        box[0] = lowerX;
+        box[1] = lowerY;
+        box[2] = upperX;
     } else {
-        fn_801F31C4(self, (f32*)&box);
+        fn_801F31C4(self, box);
     }
 
     switch (*(s32*)(self + 0x248)) {
@@ -449,21 +461,26 @@ extern "C" void fn_8021923C(u8* self) {
         }
         break;
     case 3: {
+        f32 k;
+        f32 yOrigin;
+        f32 xOrigin;
         f32 ax;
         f32 ay;
         f32 b0;
         f32 b1;
         f32 b2;
         f32 b3;
-        f32 k;
-        fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         found = 0;
         k = lbl_8053FC84;
-        b3 = k + *(f32*)(self + 0x10);
-        b2 = k + *(f32*)(self + 0xc);
-        b1 = *(f32*)(self + 0x10) - k;
-        b0 = *(f32*)(self + 0xc) - k;
-        for (i = found; i < 4; i++) {
+        yOrigin = *(f32*)(self+0x10);
+        xOrigin = *(f32*)(self+0xc);
+        b3 = k+yOrigin;
+        b2 = k+xOrigin;
+        b1 = yOrigin-k;
+        b0 = xOrigin-k;
+        i = found;
+        do {
             if (!fn_801D0B44(self, i)) continue;
             s32 room;
             if (fn_8022F514(i)) room = fn_8022F3DC(i);
@@ -479,7 +496,7 @@ extern "C" void fn_8021923C(u8* self) {
             if(!inside) continue;
             found = true;
             break;
-        }
+        } while(++i < 4);
         if (found) {
             fn_80458880(lbl_8053AF80, 0x47, -1);
             fn_80219AFC(self, 4);
@@ -519,7 +536,7 @@ extern "C" void fn_8021923C(u8* self) {
         break;
     case 6:
         if (((u8*)fn_801F856C())[0x3041] == 0) {
-            fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+            fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
             *(s32*)(self + 0x2b8) = fn_8022FD8C(*(s32*)(self + 0x198));
             if (*(s32*)(self + 0x2b8) >= 0) {
                 v6[0] = lbl_8053FC5C;
@@ -532,7 +549,7 @@ extern "C" void fn_8021923C(u8* self) {
         }
         break;
     case 7:
-        fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        fn_8022FEB8(box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         if (!fn_80388CAC(*(s32*)(self + 0x2b8), *(s32*)(self + 0x198))) break;
         if (*(u32*)(self + 0x230) & 0x4000) {
             fn_80219AFC(self, 0xa);
@@ -618,7 +635,7 @@ extern "C" void fn_8021923C(u8* self) {
         }
     }
 }
-#pragma float_expressions reset
+#pragma opt_propagation reset
 extern "C" void fn_8021B5A0(void* self);
 extern "C" void fn_8021B5C4(void* self);
 extern "C" void fn_8021ABC0(void* p);
