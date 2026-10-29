@@ -161,6 +161,10 @@ struct Tu80256Tables {
     JGeometry::TVec3<f32> a[4];
     JGeometry::TVec3<f32> b[8];
     JGeometry::TVec3<f32> c[4];
+    u8 pad250[0x40];
+    u8 frames290[4][8];
+    s32 rotations2B0[4];
+    s32 rotations2C0[4];
 };
 static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
@@ -1266,55 +1270,25 @@ extern "C" void fn_80259830(u8* p0) {
         JGeometry::TBox2<f32> box;
         switch (S32(p, 0x3dc)) {
         case 0:
-            pos.x = pos.x + lbl_80540110;
-            box.i.x = pos.x;
-            box.i.y = pos.y - lbl_80540114;
-            box.f.x = pos.x + lbl_80540118;
-            box.f.y = pos.y + lbl_80540114;
-            break;
+            pos.x += lbl_80540110;
+            box.set(pos.x,pos.y-lbl_80540114,pos.x+lbl_80540118,lbl_80540114+pos.y);
+            BOX(p,0x580).set(box);break;
         case 1:
-            pos.x = pos.x - lbl_80540110;
-            box.i.x = pos.x - lbl_80540118;
-            box.i.y = pos.y - lbl_80540114;
-            box.f.x = pos.x;
-            box.f.y = pos.y + lbl_80540114;
-            break;
+            pos.x -= lbl_80540110;
+            box.set(pos.x-lbl_80540118,pos.y-lbl_80540114,pos.x,lbl_80540114+pos.y);
+            BOX(p,0x580).set(box);break;
         case 2:
-            pos.x = pos.x + lbl_805400E0;
-            pos.y = pos.y + lbl_8054011C;
-            box.i.x = pos.x - lbl_80540114;
-            box.i.y = pos.y;
-            box.f.x = pos.x + lbl_80540114;
-            box.f.y = pos.y + lbl_80540118;
-            break;
+            pos.x += lbl_805400E0;pos.y += lbl_8054011C;
+            box.set(pos.x-lbl_80540114,pos.y,lbl_80540114+pos.x,pos.y+lbl_80540118);
+            BOX(p,0x580).set(box);break;
         case 3:
-            pos.x = pos.x - lbl_805400E0;
-            pos.y = pos.y - lbl_80540120;
-            box.i.x = pos.x - lbl_80540114;
-            box.i.y = pos.y - lbl_80540118;
-            box.f.x = pos.x + lbl_80540114;
-            box.f.y = pos.y;
-            break;
+            pos.x -= lbl_805400E0;pos.y -= lbl_80540120;
+            box.set(pos.x-lbl_80540114,pos.y-lbl_80540118,lbl_80540114+pos.x,pos.y);
+            BOX(p,0x580).set(box);break;
         }
-        F32(p, 0x580) = box.i.x;
-        F32(p, 0x584) = box.i.y;
-        F32(p, 0x588) = box.f.x;
-        F32(p, 0x58c) = box.f.y;
         if (U8(p, 0xb84) != 0) {
             fn_802808E8(p, lbl_80540124);
-            f32 eps = *(f32*)__float_epsilon * lbl_805400D8;
-            bool ok = false;
-            f32 d = F32(p, 0x8) - F32(p, 0x14);
-            if (-eps <= d && d <= eps) {
-                d = F32(p, 0xc) - F32(p, 0x18);
-                if (-eps <= d && d <= eps) {
-                    d = F32(p, 0x10) - F32(p, 0x1c);
-                    if (-eps <= d && d <= eps) {
-                        ok = true;
-                    }
-                }
-            }
-            if (ok) {
+            if (tu8025_eq3(p+8,p+0x14,lbl_805400D8 * *(f32*)__float_epsilon)) {
                 U8(p, 0x3f8) = 0;
             } else {
                 U8(p, 0x3f8) = U8(p, 0x3f8) + 1;
@@ -1322,33 +1296,34 @@ extern "C" void fn_80259830(u8* p0) {
                     U8(p, 0x3f8) = 0;
                 }
             }
-            u8* tab = tbl + 0x290 + (S32(p, 0x3dc) << 3);
-            if (U8(p, 0x3f8) < 4) {
-                U8(p, 0x3f9) = tab[0];
+                        if (U8(p, 0x3f8) < 4) {
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8];
             } else if (U8(p, 0x3f8) < 6) {
-                U8(p, 0x3f9) = tab[1];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+1];
             } else if (U8(p, 0x3f8) < 10) {
-                U8(p, 0x3f9) = tab[2];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+2];
             } else if (U8(p, 0x3f8) < 14) {
-                U8(p, 0x3f9) = tab[3];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+3];
             } else if (U8(p, 0x3f8) < 18) {
-                U8(p, 0x3f9) = tab[4];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+4];
             } else if (U8(p, 0x3f8) < 20) {
-                U8(p, 0x3f9) = tab[5];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+5];
             } else if (U8(p, 0x3f8) < 24) {
-                U8(p, 0x3f9) = tab[6];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+6];
             } else {
-                U8(p, 0x3f9) = tab[7];
+                U8(p, 0x3f9) = tbl[0x290+S32(p,0x3dc)*8+7];
             }
             if (!fn_80247594(p, 1)) {
                 U8(p, 0xb84) = 0;
             }
             if (S32(p, 0xb8c) <= 0 && S32(p, 0xb28) < 0) {
+                s32 owner=S32(p,4);
                 S32(p, 0xb28) = Actor_CreateByID(fn_801F856C(), 0x46495245, U32(p, 0x3b4), &pos,
-                                                 ((S32(p, 0x3dc) & 3) << 4) | 0x1040 | (U32(p, 4) & 3), -1, U32(p, 4));
+                                                 ((S32(p, 0x3dc) & 3) << 4) | 0x1040 | (owner & 3), -1, owner);
             }
-            if (S32(p, 0xb28) >= 0) {
-                u8* ret = fn_801F666C(fn_801F856C(), S32(p, 0xb28));
+            s32 id=S32(p,0xb28);
+            if (id >= 0) {
+                u8* ret = fn_801F666C(fn_801F856C(), id);
                 if (ret != 0) {
                     fn_802BAA0C(ret, &box);
                 } else {
@@ -1356,7 +1331,6 @@ extern "C" void fn_80259830(u8* p0) {
                     S32(p, 0xb8c) = 0x3c;
                 }
             }
-        }
         if (PTR(p, 0x12c4) == 0) {
             PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
         }
@@ -1374,7 +1348,8 @@ extern "C" void fn_80259830(u8* p0) {
             fn_8013CB44(PTR(p, 0x12c8), &pos, -1, 0, 1);
         }
         fn_8024F0E8(p, 0x30011);
-    }
+        } else {
+            U8(p,0x3fa)++;
     if (PTR(p, 0x12c8) != 0) {
         u32 fl = U32(PTR(p, 0x12c8), 0xf4);
         U32(PTR(p, 0x12c8), 0xf4) = fl | 1;
@@ -1383,7 +1358,10 @@ extern "C" void fn_80259830(u8* p0) {
         u32 fl = U32(PTR(p, 0x12c4), 0xf4);
         U32(PTR(p, 0x12c4), 0xf4) = fl | 1;
     }
-    U8(p, 0x3fa) = U8(p, 0x3fa) + 1;
+        }
+    } else {
+        U8(p,0x3fa)++;
+    }
     fn_80268B3C(p);
 }
 
