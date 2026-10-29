@@ -35,7 +35,11 @@ static inline bool playerListBusy(u8* list) {
 }
 
 struct PlayerArrowPosition {
-    u8 pad[0x12fc];
+    u8 pad[0xb00];
+    s32 ids[3];
+    u8 padB0C[0xb40 - 0xb0c];
+    s32 rooms[3];
+    u8 padB4C[0x12fc - 0xb4c];
     JGeometry::TVec3<f32> pos;
 };
 
@@ -2130,7 +2134,6 @@ extern "C" void fn_8025C7BC(u8* p) {
 }
 
 extern "C" void fn_8025C894(u8* p) {
-    s32 handle;
     PlayerArrowPosition* arrow = (PlayerArrowPosition*)p;
     u8 state = U8(p, 0x3fa);
     if (state < 3) {
@@ -2202,7 +2205,7 @@ extern "C" void fn_8025C894(u8* p) {
                     F32(p,0x12f0) = arrow->pos.y;
                     F32(p,0x12f4) = arrow->pos.z;
             }
-            handle = S32(p, 0x12c0);
+            s32 handle = S32(p, 0x12c0);
             if (handle >= 0) {
                 u8* actor = fn_801F666C(fn_801F856C(), handle);
                 if (actor) {
