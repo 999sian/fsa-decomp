@@ -94,7 +94,7 @@ static inline f32 fobeRandom(u8* game, u32 multiplier) {
 extern "C" f32 lbl_805424E4;
 extern "C" f32 lbl_805424F0;
 extern "C" f32 lbl_805424F4;
-extern "C" f32 lbl_805424F8;
+extern "C" const f32 lbl_805424F8;
 extern "C" f32 lbl_805424FC;
 extern "C" f32 lbl_80542500;
 extern "C" void fn_80349B18(u8* this_) {
