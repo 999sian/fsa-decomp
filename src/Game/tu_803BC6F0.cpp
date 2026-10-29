@@ -528,104 +528,166 @@ extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     }
 }
 
+// Finds the picture keyed by key[idx] on p+8 and sets its black/white colors.
+static inline void setPictureBlackWhite(u8* p, const u64* key, s32 idx, JUtility::TColor black, JUtility::TColor white) {
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
+}
+
 #pragma opt_propagation off
 extern "C" void fn_803BDD44(u8* p, s32 idx) {
     const u8* table = lbl_804765D0;
+    void* r;
     {
+        Clr w = *(Clr*)(p + 0xe8);
+        Clr b = *(Clr*)(p + 0xfc);
         const u64* key = (const u64*)(table + 0x5d8);
-        ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(*(JUtility::TColor*)(p + 0xfc), *(JUtility::TColor*)(p + 0xe8));
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &b, &w);
+    }
+    Clr c = *(Clr*)(p + 0xec);
+    Clr d = *(Clr*)(p + 0x100);
+    {
+        Clr c2 = c;
+        Clr d2 = d;
+        const u64* key = (const u64*)(table + 0x5c0);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
-        JUtility::TColor white = *(JUtility::TColor*)(p + 0xec);
-        JUtility::TColor black = *(JUtility::TColor*)(p + 0x100);
-        {
-            const u64* key = (const u64*)(table + 0x5c0);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x5a8);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x590);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x578);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x560);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(JUtility::TColor(black.r, black.g, black.b, 0xff), white);
-        }
+        Clr c2 = c;
+        Clr d2 = d;
+        const u64* key = (const u64*)(table + 0x5a8);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
-        JUtility::TColor white = *(JUtility::TColor*)(p + 0xf0);
-        JUtility::TColor black = *(JUtility::TColor*)(p + 0x104);
-        {
-            const u64* key = (const u64*)(table + 0x548);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x530);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x518);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x500);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x4e8);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
+        Clr c2 = c;
+        Clr d2 = d;
+        const u64* key = (const u64*)(table + 0x590);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
-        JUtility::TColor white = *(JUtility::TColor*)(p + 0xf4);
-        JUtility::TColor black = *(JUtility::TColor*)(p + 0x108);
-        {
-            const u64* key = (const u64*)(table + 0x6c8);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x6b0);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x698);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x680);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x668);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(JUtility::TColor(black.r, black.g, black.b, 0xff), white);
-        }
+        Clr c2 = c;
+        Clr d2 = d;
+        const u64* key = (const u64*)(table + 0x578);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
-        JUtility::TColor white = *(JUtility::TColor*)(p + 0xf8);
-        JUtility::TColor black = *(JUtility::TColor*)(p + 0x10c);
-        {
-            const u64* key = (const u64*)(table + 0x650);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x638);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x620);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
-        {
-            const u64* key = (const u64*)(table + 0x608);
-            ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key[idx]))->setBlackWhite(black, white);
-        }
+        Clr n;
+        n.r = d.r; n.g = d.g; n.b = d.b; n.a = 0xff;
+        Clr c2 = c;
+        Clr n2 = n;
+        const u64* key = (const u64*)(table + 0x560);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &n2, &c2);
+    }
+    Clr e = *(Clr*)(p + 0xf0);
+    Clr f = *(Clr*)(p + 0x104);
+    {
+        Clr e2 = e;
+        Clr f2 = f;
+        const u64* key = (const u64*)(table + 0x548);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &f2, &e2);
+    }
+    {
+        Clr e2 = e;
+        Clr f2 = f;
+        const u64* key = (const u64*)(table + 0x530);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &f2, &e2);
+    }
+    {
+        Clr e2 = e;
+        Clr f2 = f;
+        const u64* key = (const u64*)(table + 0x518);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &f2, &e2);
+    }
+    {
+        Clr e2 = e;
+        Clr f2 = f;
+        const u64* key = (const u64*)(table + 0x500);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &f2, &e2);
+    }
+    {
+        Clr e2 = e;
+        Clr f2 = f;
+        const u64* key = (const u64*)(table + 0x4e8);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &f2, &e2);
+    }
+    Clr g = *(Clr*)(p + 0xf4);
+    Clr h = *(Clr*)(p + 0x108);
+    {
+        Clr g2 = g;
+        Clr h2 = h;
+        const u64* key = (const u64*)(table + 0x6c8);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &h2, &g2);
+    }
+    {
+        Clr g2 = g;
+        Clr h2 = h;
+        const u64* key = (const u64*)(table + 0x6b0);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &h2, &g2);
+    }
+    {
+        Clr g2 = g;
+        Clr h2 = h;
+        const u64* key = (const u64*)(table + 0x698);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &h2, &g2);
+    }
+    {
+        Clr g2 = g;
+        Clr h2 = h;
+        const u64* key = (const u64*)(table + 0x680);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &h2, &g2);
+    }
+    {
+        Clr n;
+        n.r = h.r; n.g = h.g; n.b = h.b; n.a = 0xff;
+        Clr g2 = g;
+        Clr n2 = n;
+        const u64* key = (const u64*)(table + 0x668);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &n2, &g2);
+    }
+    Clr i = *(Clr*)(p + 0xf8);
+    Clr j = *(Clr*)(p + 0x10c);
+    {
+        Clr i2 = i;
+        Clr j2 = j;
+        const u64* key = (const u64*)(table + 0x650);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &j2, &i2);
+    }
+    {
+        Clr i2 = i;
+        Clr j2 = j;
+        const u64* key = (const u64*)(table + 0x638);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &j2, &i2);
+    }
+    {
+        Clr i2 = i;
+        Clr j2 = j;
+        const u64* key = (const u64*)(table + 0x620);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &j2, &i2);
+    }
+    {
+        Clr i2 = i;
+        Clr j2 = j;
+        const u64* key = (const u64*)(table + 0x608);
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        (*(ColorVt**)r)->v76(r, &j2, &i2);
     }
 }
 #pragma opt_propagation reset
