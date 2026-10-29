@@ -820,6 +820,39 @@ static inline bool sameLinkOuter(int a, int b) {
 }
 
 int fn_8022EA0C(int idx);
+
+static inline int lastLinkedPlayer(int target)
+{
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isEnabled2(target)) return target;
+    if ((u8)isLinked3(target)) {
+        target = linkTarget3(target);
+        if (lbl_8053AC90 == NULL) return -1;
+        if (!fn_8023F264(target)) return target;
+        if ((u8)fn_8022F514(target)) target = fn_8022EA0C(fn_8022F3DC(target));
+        else if (fn_8022CAF8(target) == 4) {
+            int scan = target;
+            int count = 0;
+            while (count < fn_80234004(target)) {
+                ++count;
+                ++scan;
+                while (!fn_8022E438(scan, target)) ++scan;
+            }
+            target = scan;
+        }
+    } else if (linkMode3(target) == 4) {
+        int scan = target;
+        int count = 0;
+        while (count < linkCount3(target)) {
+            ++count;
+            ++scan;
+            while (!sameLinkDeep(scan, target)) ++scan;
+        }
+        target = scan;
+    }
+    return target;
+}
+
 int fn_8022D534(int idx) {
     int cVar;
     int iVar;
@@ -1020,6 +1053,52 @@ int fn_8022E970(int index)
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(index)) return fn_80248970(lbl_8053AC90->players[index]);
     return 0;
+}
+
+int fn_8022EA0C(int index)
+{
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(index)) return index;
+    if ((u8)pIsLinked(index)) {
+        int target = pLinkTarget(index);
+        if (lbl_8053AC90 == NULL) return -1;
+        if (!isEnabled2(target)) return target;
+        if ((u8)isLinked3(target)) {
+            target = linkTarget3(target);
+            if (lbl_8053AC90 == NULL) return -1;
+            if (!fn_8023F264(target)) return target;
+            if ((u8)fn_8022F514(target)) target = fn_8022EA0C(fn_8022F3DC(target));
+            else if (fn_8022CAF8(target) == 4) {
+                int scan = target;
+                int count = 0;
+                while (count < fn_80234004(target)) {
+                    ++count;
+                    ++scan;
+                    while (!fn_8022E438(scan, target)) ++scan;
+                }
+                target = scan;
+            }
+        } else if (linkMode3(target) == 4) {
+            int scan = target;
+            int count = 0;
+            while (count < linkCount3(target)) {
+                ++count;
+                ++scan;
+                while (!sameLinkDeep(scan, target)) ++scan;
+            }
+            target = scan;
+        }
+        return target;
+    }
+    if (p486A0(index) != 4) return index;
+    int scan = index;
+    int count = 0;
+    while (count < linkCount1(index)) {
+        ++scan;
+        ++count;
+        while (!sameLinkOuter(scan, index)) ++scan;
+    }
+    return scan;
 }
 
 int fn_8022F340(int index)
