@@ -448,17 +448,7 @@ extern "C" void fn_80197EB0(u8* p)
                 f32 direction = JMAAtan2Radian(x, y);
                 direction *= lbl_8053E3A4;
                 *(s32*)(p + 0x248) = (s16)direction + 0x8000;
-                if (squared > 0.0f) {
-                    f64 guess = __frsqrte((f64)squared);
-                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
-                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
-                    guess = 0.5 * guess * (3.0 - guess*guess*squared);
-                    squared = (f32)(squared * guess);
-                } else if (squared < 0.0) {
-                    squared = NAN;
-                } else if (isnan(squared)) {
-                    squared = NAN;
-                }
+                orbitSqrt(squared);
                 *(s32*)(p + 0x24c) = (s32)squared;
                 for (s32 i=0; i<13; ++i) {
                     JPABaseEmitter* emitter = *(JPABaseEmitter**)(p + 0x304 + i*4);
