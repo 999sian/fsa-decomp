@@ -241,6 +241,7 @@ extern "C" void* fn_8023E724(s32 i);
 extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32* out1, f32* out2, u32 c);
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 
+#ifndef BZBR_RANDOM_DEFINED
 struct BzbrRandom {
     u32 seed;
     f32 get_ufloat_1() {
@@ -251,6 +252,7 @@ struct BzbrRandom {
     }
 };
 struct BzbrGame { u8 pad[0xb4]; BzbrRandom rnd; };
+#endif
 extern BzbrGame* lbl_8053AAF8;
 
 extern "C" void fn_80144F9C(u8* this_) {
