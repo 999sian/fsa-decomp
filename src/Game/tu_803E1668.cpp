@@ -108,10 +108,7 @@ extern "C" void fn_803832BC(char* s, s32 a, s32 b, s32 c, s32 d);
 extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
 
 class J2DGrafContext;
-class J2DScreen {
-public:
-    void draw(f32, f32, const J2DGrafContext*);
-};
+#include "JSystem/J2D/J2DPicture.h"
 struct Tu803E1668Obj {};
 typedef void (Tu803E1668Obj::*Tu803E1668Fn)();
 struct T803ED83C;
