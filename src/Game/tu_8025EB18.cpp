@@ -891,8 +891,8 @@ static inline u8 carryCheckOffsetTile(s32 player, s32 room, f32 x, f32 y, f32 z)
 }
 
 extern "C" u8 fn_80260C08(char* p) {
-    int r30;
     u32 r29;
+    s32 r30;
     if (fn_8022B1F8(p))
         return 0;
     if (!fn_80251BFC(p, 0x11))
@@ -905,9 +905,7 @@ extern "C" u8 fn_80260C08(char* p) {
     v += VEC(p, 0x8);
     v.z = lbl_80540150;
     if (fn_8022C1D8(S32(p, 0x4)) || fn_8022C0A0(S32(p, 0x4))) {
-        r30 = S32(p, 0x3b4);
-        u8* table = (u8*)fn_802D6A9C() + 0x10000;
-        if (table[r30 + 0x31df] != 0) {
+        if (carryRoomFlag(S32(p, 0x3b4)) != 0) {
             if (S32(p, 0x3dc) == 3 || S32(p, 0x3dc) == 1 || S32(p, 0x3dc) == 0) {
                 if (fn_8029E888(lbl_8053AC98, &v, S32(p, 0x4), S32(p, 0x3b4)) == 1)
                     return 1;
