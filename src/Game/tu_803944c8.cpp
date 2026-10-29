@@ -3758,12 +3758,13 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
         if (q > 0) {
             { u16 wide1 = msgToWideScan((u16)(q + '0')); p->str2c0[p->m2d0++] = wide1 >> 8; p->str2c0[p->m2d0++] = wide1; }
         }
-        const MsgCharMap* table;
-        const MsgCharMap* entry;
+        u16 wide;
+        u32 c;
         int i;
-        u16 c, wide;
+        const MsgCharMap* entry;
+        const MsgCharMap* table;
         table = lbl_80475830;
-        { entry = table; c = rem1 + '0'; for(i = 0; entry->ascii != 0xffff; ++entry, ++i) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone0;} } wide=0x1420; wideDone0: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
+        { entry = table; c = (u16)(rem1 + '0'); for(i = 0; entry->ascii != 0xffff; ++i, ++entry) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone0;} } wide=0x1420; wideDone0: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
         p->str2c0[p->m2d0++] = 0x39;
         p->str2c0[p->m2d0++] = 0xe0;
         if (bVar2 > 99) {
@@ -3771,69 +3772,78 @@ extern "C" void fn_8039A638(MsgProc* p, s16 n) {
         }
         s32 rem2 = bVar2 % 10;
         s32 q2 = bVar2 / 10;
-        { entry = table; c = q2 + '0'; for(i = 0; entry->ascii != 0xffff; ++entry, ++i) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone1;} } wide=0x1420; wideDone1: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
-        { entry = table; c = rem2 + '0'; for(i = 0; entry->ascii != 0xffff; ++entry, ++i) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone2;} } wide=0x1420; wideDone2: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
+        { entry = table; c = (u16)(q2 + '0'); for(i = 0; entry->ascii != 0xffff; ++i, ++entry) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone1;} } wide=0x1420; wideDone1: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
+        { entry = table; c = (u16)(rem2 + '0'); for(i = 0; entry->ascii != 0xffff; ++i, ++entry) { if (c == entry->ascii) {wide=lbl_80475830[i].code; goto wideDone2;} } wide=0x1420; wideDone2: p->str2c0[p->m2d0++] = wide >> 8; p->str2c0[p->m2d0++] = wide; }
         p->str2c0[p->m2d0++] = 0x3c;
         p->str2c0[p->m2d0++] = 0xa0;
     }
 }
-#pragma opt_propagation reset
+#pragma opt_propagation off
 extern "C" void fn_8039ACD0(u8* param_1, s16 param_2) {
+    MsgProc* p = (MsgProc*)param_1;
     char buf[8];
-    s32 total;
-    s32 hours;
-    s32 mins;
-    s32 secs;
-    s32 tens;
-    s32 ones;
-
-    buf[2] = 0;
-    buf[1] = 0;
-    buf[0] = 0;
-    total = *(s32*)((u8*)lbl_8053AD78 + 0x44);
-    hours = total / 3600;
-    mins = (total / 60) % 60;
-    secs = total % 60;
-    if (hours > 0) {
-        if (hours > 99) {
-            hours = 99;
+    s32 mins, hours;
+    f32 half, difference, spacing, pos, base;
+    buf[2]=0; buf[1]=0; buf[0]=0;
+    s32 total=*(s32*)((u8*)lbl_8053AD78+0x44);
+    hours=total/3600;
+    int minutes=(total/60)%60;
+    if(minutes==0) minutes=1;
+    mins=minutes;
+    if(param_2==0) {
+        if(p->m2d6) {
+            s32 cur=p->cur;
+            if(!p->testBit(cur)) {
+                if(!(p->layout->m16c != 0 && p->testBit(cur))) {
+                    MsgLayout* l=p->layout;
+                    if(!(l->font->flags&0x40)) {
+                        base=l->baseE8; pos=p->posA[cur];
+                    } else {
+                        base=l->baseF0; spacing=p->posB[cur]-lbl_805431E8; pos=p->posA[cur]+spacing;
+                    }
+                    difference=base-pos;
+                    half=lbl_805431E4;
+                    s32 x=difference*half+half;
+                    if(x>0) {
+                        snprintf(lbl_8050E538,0xf,lbl_80543298,x);
+                        strcat(p->str2c0,lbl_8050E538);
+                        strcat(p->str2c4,lbl_8050E538);
+                        p->m2d0+=strlen(lbl_8050E538);
+                    }
+                }
+            }
+            p->m2d6=0;
         }
-        tens = hours / 10;
-        ones = hours % 10;
-        if (tens > 0) {
-            buf[0] = tens + 0x30;
-            strcat(*(char**)(param_1 + 0x2c0), buf);
-            strcat(*(char**)(param_1 + 0x2c4), buf);
-            *(s32*)(param_1 + 0x2d0) += 1;
+        if(hours>0) {
+            if(hours>99) { hours=99; mins=59; }
+            s32 tens=hours/10, ones=hours%10;
+            if(tens>0) {buf[0]=tens+'0'; msgAppendChar(p,buf);}
+            buf[0]=ones+'0'; msgAppendChar(p,buf);
+            strcat(p->str2c0,"'"); strcat(p->str2c4,"'"); p->m2d0++;
         }
-        buf[0] = ones + 0x30;
-        strcat(*(char**)(param_1 + 0x2c0), buf);
-        strcat(*(char**)(param_1 + 0x2c4), buf);
-        *(s32*)(param_1 + 0x2d0) += 1;
-        strcat(*(char**)(param_1 + 0x2c0), lbl_805432A0);
-        strcat(*(char**)(param_1 + 0x2c4), lbl_805432A0);
-        *(s32*)(param_1 + 0x2d0) += 1;
+        if(mins>59) mins=59;
+        s32 tens=mins/10; mins%=10;
+        if(tens>0||hours>0) {buf[0]=tens+'0';msgAppendChar(p,buf);}
+        buf[0]=mins+'0';msgAppendChar(p,buf);
+        strcat(p->str2c0,"''");strcat(p->str2c4,"''");p->m2d0+=2;
+    } else {
+        if(hours>99) {hours=99;mins=59;}
+        s32 tens=hours/10, ones=hours%10;
+        if(hours>0) {
+            if(tens>0) {
+                u16 w=msgToWideScan(tens+'0');p->str2c0[p->m2d0++]=w>>8;p->str2c0[p->m2d0++]=w;
+            }
+            u16 w=msgToWideScan(ones+'0');p->str2c0[p->m2d0++]=w>>8;p->str2c0[p->m2d0++]=w;
+            p->str2c0[p->m2d0++]=0x39;p->str2c0[p->m2d0++]=0xe0;
+        }
+        if(mins>59) mins=59;
+        tens=mins/10; ones=mins%10;
+        if(tens>0) {u16 w=msgToWideScan(tens+'0');p->str2c0[p->m2d0++]=w>>8;p->str2c0[p->m2d0++]=w;}
+        u16 w=msgToWideScan(ones+'0');p->str2c0[p->m2d0++]=w>>8;p->str2c0[p->m2d0++]=w;
+        p->str2c0[p->m2d0++]=0x3c;p->str2c0[p->m2d0++]=0xa0;
     }
-    if (mins > 59) {
-        mins = 59;
-    }
-    tens = mins / 10;
-    ones = mins % 10;
-    if (tens > 0) {
-        buf[0] = tens + 0x30;
-        strcat(*(char**)(param_1 + 0x2c0), buf);
-        strcat(*(char**)(param_1 + 0x2c4), buf);
-        *(s32*)(param_1 + 0x2d0) += 1;
-    }
-    buf[0] = ones + 0x30;
-    strcat(*(char**)(param_1 + 0x2c0), buf);
-    strcat(*(char**)(param_1 + 0x2c4), buf);
-    *(s32*)(param_1 + 0x2d0) += 1;
-    strcat(*(char**)(param_1 + 0x2c0), lbl_805432A4);
-    strcat(*(char**)(param_1 + 0x2c4), lbl_805432A4);
-    *(s32*)(param_1 + 0x2d0) += 1;
 }
-
+#pragma opt_propagation on
 extern "C" void fn_8039B3EC(u8* self, u8 kind, s32 flag) {
     s32 len;
     u8* buf;
