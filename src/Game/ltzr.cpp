@@ -222,10 +222,8 @@ static inline void ltzrTouch(char* p, s32 i) {
         f32 sy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].first;
         cy = JMath::sincosTable_.mTable[(u32)(u16)a >> 5].second;
         pt.z = lbl_80542268;
-        vx = len * cy;
-        vy = len * sy;
-        pt.y = vy;
-        pt.x = vx;
+        pt.y = len * sy;
+        pt.x = len * cy;
         minx = *(f32*)(p + 0x60);
         miny = *(f32*)(p + 0x64);
         maxx = *(f32*)(p + 0x68);
@@ -276,19 +274,15 @@ extern "C" void fn_8033FE04(char* p) {
     }
     if (*(s32*)(p + 0x248) == 1) {
         if (*(u8*)(p + 0x2b1) == 1) {
-            f32 hi = lbl_8054229C;
-            f32 step = lbl_80542298;
-            *(f32*)(p + 0x2b4) += step;
-            if (*(f32*)(p + 0x2b4) >= hi) {
-                *(f32*)(p + 0x2b4) = hi;
+            *(f32*)(p + 0x2b4) += lbl_80542298;
+            if (*(f32*)(p + 0x2b4) >= lbl_8054229C) {
+                *(f32*)(p + 0x2b4) = lbl_8054229C;
                 *(u8*)(p + 0x2b1) = 0;
             }
         } else {
-            f32 lo = lbl_8054227C;
-            f32 step = lbl_80542298;
-            *(f32*)(p + 0x2b4) -= step;
-            if (*(f32*)(p + 0x2b4) <= lo) {
-                *(f32*)(p + 0x2b4) = lo;
+            *(f32*)(p + 0x2b4) -= lbl_80542298;
+            if (*(f32*)(p + 0x2b4) <= lbl_8054227C) {
+                *(f32*)(p + 0x2b4) = lbl_8054227C;
                 *(u8*)(p + 0x2b1) = 1;
             }
         }
