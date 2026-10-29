@@ -1654,7 +1654,6 @@ extern "C" void fn_8040BC1C(T80403D84* self) {
 
 extern "C" void fn_803832BC(u8* p, u32 id, s32 a, s32 b, s32 c);
 extern "C" char* getStringPtr__10J2DTextBoxCFv(void*);
-extern "C" f32 lbl_805438BC;
 extern "C" f32 lbl_80543898;
 extern "C" f32 lbl_805438D0;
 extern "C" f32 lbl_8054397C;
