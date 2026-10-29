@@ -386,6 +386,10 @@ void fn_803BC6F0(char* this_, u32 a, f32 t) {
 }
 #pragma dont_inline reset
 
+static inline void setPicBlackWhite(u8* p, const u8* keys, u32 idx, JUtility::TColor black, JUtility::TColor white) {
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(((const u64*)keys)[idx]))->setBlackWhite(black, white);
+}
+
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     u8* base = (u8*)lbl_804765D0;
     u32 off = idx * 8;
@@ -1935,28 +1939,27 @@ typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 extern "C" void fn_803C3904(u8* this_) {
     const u8* base = lbl_804765D0;
     s32 order[2];
-    s32* ord;
+    s32* ord = order;
+    s32* out = order;
     s32 off;
     s32 k;
-    s32 idx;
-    void* pane;
+    unsigned int idx;
+    J2DPane* pane;
     s32 a = *(s16*)(lbl_8050DB0C + 0x200);
     s32 b = *(s16*)(lbl_8050DB0C + 0x202);
     s32 c = *(s16*)(lbl_8050DB0C + 0x1fe);
-    s32 total = a + b;
+    int total = a + b;
     total = c + total;
 
-    ord = order;
     for (s32 n = 0; n < 3; ++n) {
         if (n != *(s32*)(this_ + 0xa4)) {
-            *ord++ = n;
+            *out++ = n;
         }
     }
     *(s16*)(this_ + 0xd8) = *(s16*)(this_ + 0xd8) + 1;
 
-    off = 0;
     k = 0;
-    ord = order;
+    off = 0;
     do {
         if (*(s16*)(this_ + 0xd8) > c + off) {
             ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x38 + *ord * 4), a, 0, lbl_80543498, lbl_80543458);
@@ -1965,67 +1968,67 @@ extern "C" void fn_803C3904(u8* this_) {
             {
                 const u64* keys = (const u64*)(base + 0x780);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x125]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x125]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x768);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x126]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x126]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x750);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x127]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x127]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x6c8);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x128]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x128]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x6b0);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x129]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x129]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x698);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12a]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12a]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x680);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12b]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12b]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x668);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12c]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12c]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x650);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12d]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12d]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x638);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12e]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12e]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x620);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12f]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x12f]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x608);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x130]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x130]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x5f0);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x131]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x38 + idx * 4), pane, this_[0x131]);
             }
             ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x44 + *ord * 4), a, 0, lbl_80543498, lbl_80543458);
             fn_80402628(*(void**)(this_ + 0x44 + *ord * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x44 + *ord * 4) + 0x28));
@@ -2033,72 +2036,72 @@ extern "C" void fn_803C3904(u8* this_) {
             {
                 const u64* keys = (const u64*)(base + 0x5d8);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x118]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x118]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x5c0);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x119]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x119]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x5a8);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11a]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11a]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x590);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11b]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11b]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x578);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11c]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11c]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x560);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11d]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11d]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x548);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11e]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11e]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x530);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11f]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x11f]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x518);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x120]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x120]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x500);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x121]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x121]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x4e8);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x122]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x122]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x4d0);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x123]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x123]);
             }
             {
                 const u64* keys = (const u64*)(base + 0x4b8);
                 pane = (*(J2DPane**)(this_ + 8))->search(keys[idx]);
-                fn_804023D0(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x124]);
+                ((void (*)(void*, J2DPane*, u8))fn_804023D0)(*(void**)(this_ + 0x44 + idx * 4), pane, this_[0x124]);
             }
         }
+        k++;
         off += b;
         ord++;
-        k++;
     } while (k < 2);
 
     if (*(s32*)(this_ + 0xa4) != 0 && *(s16*)(this_ + 0xd8) > c) {
@@ -3058,10 +3061,12 @@ extern "C" void fn_803C7F7C(u8* p) {
     }
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_803C8B80(u8* p) {
     s32 i;
     f32 f31;
     f32 f30;
+    s16 t;
     s32 state;
 
     if (fn_80309A9C(lbl_8053AD30, 8, 1) != 0) {
@@ -3161,7 +3166,7 @@ extern "C" void fn_803C8B80(u8* p) {
         fn_80458880(lbl_8053AF80, 0xc, -1);
     }
     if (p[0x110] == 0x19) {
-            s16& t = *(s16*)(p + 0xda);
+            t = *(s16*)(p + 0xda);
             f30 = lbl_80543458;
             if (t != 0) {
                 if (t < 5) {
@@ -3194,7 +3199,7 @@ extern "C" void fn_803C8B80(u8* p) {
         fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723034ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_803C92B8(char* p) {
     if (*(s32*)(p + 0xb0) > 0) {
         *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) - 1;
@@ -4850,9 +4855,11 @@ extern "C" void __dt__22JASMemPool_9JAIStreamFv(void* p);
 extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void* p);
 extern "C" void __dt__19JASMemPool_6JAISeqFv(void* p);
 extern "C" void __dt__18JASMemPool_5JAISeFv(void* p);
+#pragma opt_common_subs off
 extern "C" void fn_803D24E4(void) {
-    u32* s = (u32*)lbl_804AFB90;
-    u32* d = (u32*)(lbl_804AFB90 + 0x1e0);
+    u8* const registration=lbl_80527E68;
+    const u32* s = (u32*)lbl_804AFB90;
+    u32* const d = (u32*)(lbl_804AFB90 + 0x1e0);
     d[0] = s[0]; d[1] = s[1]; d[2] = s[2]; d[3] = s[3]; d[4] = s[4]; d[5] = s[5]; d[6] = s[6]; d[7] = s[7];
     d[8] = s[8]; d[9] = s[9]; d[10] = s[10]; d[11] = s[11]; d[12] = s[12]; d[13] = s[13]; d[14] = s[14]; d[15] = s[15];
     d[16] = s[16]; d[17] = s[17]; d[18] = s[18]; d[19] = s[19]; d[20] = s[20]; d[21] = s[21]; d[22] = s[22]; d[23] = s[23];
@@ -4870,48 +4877,48 @@ extern "C" void fn_803D24E4(void) {
     d[112] = s[112]; d[113] = s[113]; d[114] = s[114]; d[115] = s[115]; d[116] = s[116]; d[117] = s[117]; d[118] = s[118]; d[119] = s[119];
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, (void*)__dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, lbl_80527E68);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, (void*)__dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, registration);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
         __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
-        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, (void*)__dt__35JASMemPool_MultiThreaded_8JASTrackFv, lbl_80527E68 + 0xc);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, (void*)__dt__35JASMemPool_MultiThreaded_8JASTrackFv, registration + 0xc);
         __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
     }
     if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
         __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
-        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, (void*)__dt__38JASMemPool_MultiThreaded_10JASChannelFv, lbl_80527E68 + 0x18);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, (void*)__dt__38JASMemPool_MultiThreaded_10JASChannelFv, registration + 0x18);
         __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
     }
     if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
-        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, (void*)__dt__29JASMemPool_15JASPoolObj3_FSAFv, lbl_80527E68 + 36);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, (void*)__dt__29JASMemPool_15JASPoolObj3_FSAFv, registration + 36);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
     }
     if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
-        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, (void*)__dt__29JASMemPool_15JASPoolObj4_FSAFv, lbl_80527E68 + 48);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, (void*)__dt__29JASMemPool_15JASPoolObj4_FSAFv, registration + 48);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
     }
     if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
         __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
-        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, (void*)__dt__22JASMemPool_9JAIStreamFv, lbl_80527E68 + 60);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, (void*)__dt__22JASMemPool_9JAIStreamFv, registration + 60);
         __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
     }
     if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
         __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
-        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, (void*)__dt__27JASMemPool_13JAISoundChildFv, lbl_80527E68 + 72);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, (void*)__dt__27JASMemPool_13JAISoundChildFv, registration + 72);
         __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
     }
     if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
         __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
-        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, (void*)__dt__19JASMemPool_6JAISeqFv, lbl_80527E68 + 84);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, (void*)__dt__19JASMemPool_6JAISeqFv, registration + 84);
         __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
     }
     if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
         __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
-        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, (void*)__dt__18JASMemPool_5JAISeFv, lbl_80527E68 + 96);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, (void*)__dt__18JASMemPool_5JAISeFv, registration + 96);
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
-
+#pragma opt_common_subs on
