@@ -418,7 +418,7 @@ static inline void setPicBlackWhite(u8* p, const u64& key, JUtility::TColor blac
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
 
-static inline void setPicBlackWhiteKey(u8* p, u64 key, JUtility::TColor black, JUtility::TColor white) {
+static inline void setPicBlackWhiteKey(u8* p, u64 key, const JUtility::TColor& black, const JUtility::TColor& white) {
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
 
