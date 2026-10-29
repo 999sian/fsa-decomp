@@ -181,6 +181,12 @@ struct ActorPool {
     u8 pad0[8];
     PoolActor* mActors[0x400];
     s32 mCount;
+    void* mHandles[0x400];
+    void* mFinalHandle;
+    u8 pad2010[8];
+    LinkActor* mHead;
+    s32 mPending[0x400];
+    s32 mPendingCount;
     s32 getNum() { return mCount; }
     PoolActor* get(s32 i) { return mActors[i]; }
 };
@@ -604,21 +610,28 @@ extern "C" void fn_801F8658(ActorPool* pool) {
 }
 
 extern "C" void fn_801F871C(void* actorPoolBase) {
-    s32 nPending;
-    u8 bVar8;
-    u8 cVar13;
+    u8* act;
+    s32 room;
+    void* handle;
     u8* base = (u8*)actorPoolBase;
-    s32 i;
-    s32 j;
+    u32 index;
+    u8 cVar13;
+    u8 bVar8;
+    s32 nPending;
+    u8* ph;
+    u8* pa;
+    u8* liveSlot;
     u8* slot;
     u8* a;
+    u32 i;
+    s32 j;
 
     nPending = 0;
     fn_801F6068();
     base[0x3040] = 0;
     {
         u8* q = base;
-        s32 neg = -1;
+        int neg = -1;
         for (i = 0; i < 0x20; i++) {
             *(s32*)(q + 0x201c) = neg; *(s32*)(q + 0x2020) = neg; *(s32*)(q + 0x2024) = neg; *(s32*)(q + 0x2028) = neg;
             *(s32*)(q + 0x202c) = neg; *(s32*)(q + 0x2030) = neg; *(s32*)(q + 0x2034) = neg; *(s32*)(q + 0x2038) = neg;
@@ -652,8 +665,8 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
     }
     fn_802D6A9C();
     if (fn_802DCD0C() != 0) {
-        u8* pa = base;
-        u8* ph = base;
+        pa = base;
+        ph = base;
         for (i = 0; i < 0x400; i++) {
             a = *(u8**)(pa + 8);
             if (a != 0) {
@@ -661,27 +674,27 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                     u8 need = (a[0x11e] != 0 || a[0xc4] != 0 || a[0xcc] != 0);
                     if (need) {
                         fn_801F32F4(a);
-                        fn_801EAB0C(a + 0x1dc);
-                        ((ActorSlot2*)a)->destroy(0);
-                        fn_801F33C4(a);
-                        ((ActorSlot2*)a)->destroy(0);
-                        fn_801EE508(a);
+                        fn_801EAB0C((*(u8**)(pa + 8)) + 0x1dc);
+                        ((Actor*)*(u8**)(pa + 8))->v05();
+                        fn_801F33C4(*(u8**)(pa + 8));
+                        ((Actor*)*(u8**)(pa + 8))->v03();
+                        fn_801EE508(*(u8**)(pa + 8));
                     }
-                    fn_80456154(*(void**)(ph + 0x100c));
+                    fn_80456154(*(void**)(pa + 0x100c));
                     a = *(u8**)(pa + 8);
-                    if (*(void**)(a + 8) == 0 && a[0x1a8] == 1) {
+                    if (*(s32*)(a + 8) == 0 && a[0x1a8] == 1) {
                         nPending++;
                     }
                 }
                 a = *(u8**)(pa + 8);
-                if (a[0x11c] == 0 && *(void**)(pa + 8) != 0) {
+                if (a[0x11c] == 0 && *(void**)(ph + 8) != 0) {
                     fn_80456120(*(void**)(ph + 0x100c));
-                    a = *(u8**)(pa + 8);
+                    a = *(u8**)(ph + 8);
                     if (a != 0) {
                         ((ActorSlot2*)a)->destroy(1);
                     }
-                    *(void**)(pa + 8) = 0;
-                    if (i + 1 == *(s32*)(base + 0x1008)) {
+                    *(void**)(ph + 8) = 0;
+                    if ((s32)(i + 1) == *(s32*)(base + 0x1008)) {
                         j = *(s32*)(base + 0x1008) - 2;
                         while (j >= 0) {
                             if (*(void**)(base + 8 + j * 4) != 0) break;
@@ -694,16 +707,19 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
             pa += 4;
             ph += 4;
         }
+        fn_80456154(*(void**)(base + 0x200c));
     } else {
-        for (i = 0; i < 0x400; i++) {
-            slot = base + i * 4;
-            a = *(u8**)(slot + 8);
+        liveSlot = base;
+        slot = base;
+        for (index = 0; index < 0x400; index++) {
+            a = *(u8**)(liveSlot + 8);
             if (a != 0) {
                 if (a[0x11c] != 0) {
-                    u8 bVar1 = 0;
+                    int bVar1 = 0;
                     if (bVar8 == 1) {
-                        bVar1 = (a[0x11f] == 0);
-                        if (*(void**)(a + 8) == 0 && a[0x1a8] == 1) {
+                        bVar1 = 1;
+                        if (a[0x11f] != 0) bVar1 = 0;
+                        if (*(s32*)(a + 8) == 0 && a[0x1a8] == 1) {
                             nPending++;
                         }
                         if (((u8*)lbl_8053AAF8)[0x88] == 2 && *(u32*)(a + 0x1a0) == 0x5357444c) {
@@ -712,36 +728,38 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                     }
                     if (!bVar1) {
                         u32 fc = *(u32*)(a + 0x1a0);
-                        if (cVar13 == 0 || fc == 0x464f524d || fc == 0x414c4345 || fc == 0x494d5550 ||
+                        if (cVar13 == 0 || (cVar13 != 0 && (fc == 0x464f524d || fc == 0x414c4345 || fc == 0x494d5550 ||
                             fc == 0x53574556 || fc == 0x53455632 || fc == 0x4c544556 || fc == 0x50525443 ||
-                            fc == 0x5354504e || fc == 0x54554746 || (u32)(fc - 0x5455544c) < 2 ||
-                            fc == 0x50454646 || fc == 0x5357444c) {
+                            fc == 0x5354504e || fc == 0x54554746 || (u32)(fc - 0x5455544c) <= 1 ||
+                            fc == 0x50454646 || fc == 0x5357444c))) {
                             fn_801F32F4(a);
-                            fn_801EAB0C(a + 0x1dc);
-                            if (fn_801A6160(a) == 0) {
-                                ((ActorSlot2*)a)->destroy(0);
-                                fn_801F33C4(a);
-                                ((ActorSlot2*)a)->destroy(0);
-                            } else if (*(void**)(a + 0xa4) != 0) {
-                                ((ActorSlot2*)a)->destroy(0);
+                            fn_801EAB0C((*(u8**)(liveSlot + 8)) + 0x1dc);
+                            if (fn_801A6160(*(u8**)(liveSlot + 8)) == 0) {
+                                ((Actor*)*(u8**)(liveSlot + 8))->v05();
+                                fn_801F33C4(*(u8**)(liveSlot + 8));
+                                ((Actor*)*(u8**)(liveSlot + 8))->v03();
+                            } else if (*(s32*)((*(u8**)(liveSlot + 8)) + 0xa4) != 0) {
+                                ((Actor*)*(u8**)(liveSlot + 8))->v04();
                             }
-                            fn_801EE508(a);
+                            fn_801EE508(*(u8**)(liveSlot + 8));
                         }
-                        u8 kind = a[0xb8];
+                        a = *(u8**)(liveSlot + 8);
+                        u8 kind = *(u32*)(a + 0xb8);
                         if (kind == 1 || kind == 2) {
                             s32 idx = *(s32*)(base + 0x301c);
                             if (*(s32*)(base + 0x201c + idx * 4) == -1) {
                                 *(s32*)(base + 0x201c + idx * 4) = *(s32*)(a + 0x198);
-                                *(s32*)(base + 0x301c) = idx + 1;
+                                *(s32*)(base + 0x301c) += 1;
                             }
                         }
-                        fn_80456154(*(void**)(slot + 0x100c));
-                        if (*(void**)(a + 8) == 0 && a[0x1a8] == 1) {
+                        fn_80456154(*(void**)(liveSlot + 0x100c));
+                        a = *(u8**)(liveSlot + 8);
+                        if (*(s32*)(a + 8) == 0 && a[0x1a8] == 1) {
                             nPending++;
                         }
                     }
                 }
-                a = *(u8**)(slot + 8);
+                a = *(u8**)(liveSlot + 8);
                 if (a[0x11c] == 0) {
                     if (*(void**)(slot + 8) != 0) {
                         fn_80456120(*(void**)(slot + 0x100c));
@@ -750,7 +768,7 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                             ((ActorSlot2*)a)->destroy(1);
                         }
                         *(void**)(slot + 8) = 0;
-                        if (i + 1 == *(s32*)(base + 0x1008)) {
+                        if ((s32)(index + 1) == *(s32*)(base + 0x1008)) {
                             j = *(s32*)(base + 0x1008) - 2;
                             while (j >= 0) {
                                 if (*(void**)(base + 8 + j * 4) != 0) break;
@@ -761,19 +779,21 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
                     }
                 } else if (a[0x1a8] != 0 && a[0x196] == 0 && *(f32*)(a + 0x88) - *(f32*)(a + 0x80) > lbl_8053F828 &&
                            *(f32*)(a + 0x8c) - *(f32*)(a + 0x84) > lbl_8053F828 && *(s32*)(a + 0x108) > 0) {
-                    u8* act = a;
-                    void* handle = *(void**)(act + 0x198);
-                    s32 room = *(s32*)(act + 4);
+                    act = a;
+                    handle = *(void**)(act + 0x198);
+                    room = *(s32*)(act + 4);
                     u8* sys = (u8*)fn_8020D58C();
-                    if (fn_8020D6AC(sys + sys[1] * 0x784 + 4, room, handle, (s32)(act + 0xc), 0)) {
-                        ((ActorSlot2*)act)->destroy(0);
+                    if (fn_8020D6AC(sys + sys[1] * 0x784 + 4, room, act + 0xc, (s32)handle, 0)) {
+                        ((Actor*)*(u8**)(liveSlot + 8))->v07();
                     }
                 }
             }
+            slot += 4;
+            liveSlot += 4;
         }
+        fn_80456154(*(void**)(base + 0x200c));
+        fn_801F6A4C(base);
     }
-    fn_80456154(*(void**)(base + 0x200c));
-    fn_801F6A4C(base);
     u8* n = *(u8**)(base + 0x2018);
     while (n != 0) {
         u8* next = *(u8**)(n + 0x160);
@@ -781,20 +801,20 @@ extern "C" void fn_801F871C(void* actorPoolBase) {
             if (n[0x165] == 0) {
                 u8 bVar = 0;
                 u8* self = *(u8**)(*(u8**)((u8*)lbl_8053AAF8 + 4) + 8);
-                if (*(void**)(n + 0x15c) == 0) {
-                    if (n == *(u8**)(self + 0x2018)) {
-                        *(u8**)(self + 0x2018) = next;
-                        if (*(u8**)(self + 0x2018) != 0) {
-                            *(void**)(*(u8**)(self + 0x2018) + 0x15c) = 0;
-                        }
-                        bVar = 1;
-                    }
-                } else {
+                if (*(void**)(n + 0x15c) != 0) {
                     *(u8**)(*(u8**)(n + 0x15c) + 0x160) = next;
                     if (*(u8**)(n + 0x160) != 0) {
                         *(void**)(*(u8**)(n + 0x160) + 0x15c) = *(void**)(n + 0x15c);
                     }
                     bVar = 1;
+                } else {
+                    if (n == *(u8**)(self + 0x2018)) {
+                        *(u8**)(self + 0x2018) = next;
+                        if (*(u8**)(self + 0x2018) != 0) {
+                            *(s32*)(*(u8**)(self + 0x2018) + 0x15c) = bVar;
+                        }
+                        bVar = 1;
+                    }
                 }
                 if (bVar) {
                     *(void**)(n + 0x15c) = 0;
