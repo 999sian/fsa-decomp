@@ -7,7 +7,7 @@
 
 
 extern "C" void* fn_802D6A9C(void);
-extern "C" u8 lbl_8048F438[];
+extern "C" u64 lbl_8048F438[];
 extern "C" char* lbl_8053AAF8;
 extern "C" const u32 lbl_804B1640[];
 extern "C" void fn_8022EA0C(s32 idx);
