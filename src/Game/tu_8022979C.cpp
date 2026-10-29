@@ -225,9 +225,15 @@ extern "C" const f32 lbl_8053FFEC;
 extern "C" const f32 lbl_8053FFF0;
 extern "C" const f32 lbl_8053FFF4;
 
+static inline u8 playerLinkState(u32 idx) {
+    s32 slot = fn_8022F340(idx);
+    return (lbl_8053AAF8[0x83] >> (slot << 1)) & 3;
+}
+
 extern "C" void fn_80229F1C(Actor* this_) {
     u8* p = (u8*)this_;
-    const SplashOffsets* tbl = (const SplashOffsets*)lbl_8046ACC8;
+    const f32 (*tbl)[2] = lbl_8046ACC8;
+    u32 idx;
     const f32* t;
     s32 i;
     *(u32*)(p + 0x230) = *(u32*)(p + 0x230) + 1;
@@ -249,7 +255,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
     case 1: {
         JGeometry::setTVec3f(fn_8023E724(flags & 3), (f32*)(p + 0xc));
         *(s32*)(p + 0x234) = ((*(u32*)(p + 0x230) >> 1) & 7) + 0x7d;
-        u32 idx = *(u32*)(p + 0x90) & 3;
+        idx = *(u32*)(p + 0x90) & 3;
         s32 r = fn_80237774(idx);
         if (r == lbl_80529DEC[idx + 0x36]) {
             *(u8*)(p + 0x11c) = 0;
@@ -306,7 +312,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
         break;
     case 5:
         if (*(u32*)(p + 0x230) == 1) {
-            t = tbl->small[0];
+            t = tbl[0];
             for (i = 0; i < 9; i++, t += 2) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
                 pos.x = pos.x + t[0];
@@ -314,7 +320,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
                 fn_802A20F0(lbl_8053AC98, &pos, *(u32*)(p + 0x90) & 3, *(u32*)(p + 0x4), 0, 1);
             }
         } else if (*(u32*)(p + 0x230) == 0xb) {
-            t = tbl->medium[0];
+            t = tbl[9];
             for (i = 0; i < 12; i++, t += 2) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
                 pos.x = pos.x + t[0];
@@ -322,7 +328,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
                 fn_802A20F0(lbl_8053AC98, &pos, *(u32*)(p + 0x90) & 3, *(u32*)(p + 0x4), 0, 1);
             }
         } else if (*(u32*)(p + 0x230) == 0x15) {
-            t = tbl->large[0];
+            t = tbl[21];
             for (i = 0; i < 16; i++, t += 2) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
                 pos.x = pos.x + t[0];
@@ -340,7 +346,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
         if (fn_8022FA80(*(u32*)(p + 0x90) & 3) == 1 || (s32)((*(u32*)(p + 0x90) >> 2) & 0x3f) == 8) {
             if (*(u32*)(p + 0x230) >= 2 && *(s32*)(p + 0x234) == 0x2a3) {
                 *(u32*)(p + 0x230) = 2;
-                u8 st = (lbl_8053AAF8[0x83] >> (fn_8022F340(*(u32*)(p + 0x90) & 3) << 1)) & 3;
+                u8 st = (lbl_8053AAF8[0x83] >> (2 * fn_8022F340(*(u32*)(p + 0x90) & 3))) & 3;
                 if (st == 2) {
                     *(s32*)(p + 0x234) = 0x2a5;
                 } else if (fn_8037E694(*(u32*)(p + 0x90) & 3) == 1) {
@@ -373,7 +379,7 @@ extern "C" void fn_80229F1C(Actor* this_) {
         if (fn_8022FA80(*(u32*)(p + 0x90) & 3) == 1 || (s32)((*(u32*)(p + 0x90) >> 2) & 0x3f) == 9) {
             if (*(u32*)(p + 0x230) > 2 && *(s32*)(p + 0x234) == 0x2a3) {
                 *(u32*)(p + 0x230) = 2;
-                u8 st = (lbl_8053AAF8[0x83] >> (fn_8022F340(*(u32*)(p + 0x90) & 3) << 1)) & 3;
+                u8 st = (lbl_8053AAF8[0x83] >> (2 * fn_8022F340(*(u32*)(p + 0x90) & 3))) & 3;
                 if (st == 2) {
                     *(s32*)(p + 0x234) = 0x2a6;
                 } else if (fn_8037E694(*(u32*)(p + 0x90) & 3) == 1) {
