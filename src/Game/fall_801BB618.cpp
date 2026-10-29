@@ -868,7 +868,8 @@ extern "C" void fn_801BBA0C(char* this_) {
         } else {
             *(s32*)(this_ + 0x98) = *(s32*)(this_ + 0x2e8);
             *(s32*)(this_ + 0x2b8) = fn_801D05F8(this_, this_ + 0xc, lbl_8053EC28);
-            if (*(s32*)(this_ + 0x2b8) >= 0 && fallTryGrab(this_) && fn_8022DE10(*(s32*)(this_ + 0x2b8), 0)) {
+            s32 player = *(s32*)(this_ + 0x2b8);
+            if (player >= 0 && fallTryGrab(this_, &player) && fn_8022DE10(*(s32*)(this_ + 0x2b8), 0)) {
                 *(s32*)(this_ + 0x98) = 2;
                 fn_801BC554(this_, 4);
             }
