@@ -143,7 +143,7 @@ struct MsgEntry_80301CD0 {
     u8 pad11b;
 };
 
-static inline void clearMessageEntry(MsgEntry_80301CD0* entry, int index) {
+static inline void clearMessageEntry(MsgEntry_80301CD0* entry, const int index) {
     entry->f118 = 0;
     entry->f119 = 0;
     entry->f104 = 0;
@@ -2189,14 +2189,7 @@ for(s32 i=0;i<4;i++) {
 lbl_80504A28[i]=lbl_80504A18[i]=j=0;
 for(;j<32;j++) {
 MsgEntry_80301CD0* e=&((MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380))[j];
-e->f118=0;
-e->f119=0;
-e->f104=0;
-e->f100=0;
-e->f114=0;
-e->f108=j;
-e->f10c=0;
-e->text[0]=0;
+clearMessageEntry(e, j);
 }
 for(j=0;j<0x2000;j++) ((u32*)(lbl_804DBC18+i*0x8000))[j]=0xcdcdcdcd;
 lbl_8053AD00[i]=0;
