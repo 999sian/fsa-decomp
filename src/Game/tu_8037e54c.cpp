@@ -2316,6 +2316,9 @@ extern "C" f32 fn_803832BC(char* out, u32 id, int num, char* out2, char* out3) {
     return width;
 }
 #pragma opt_loop_invariants reset
+static inline s32 messagePadding(f32 value) {
+    return (s32)(value * lbl_805430BC + lbl_805430BC);
+}
 static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, f32 fa, f32 fb, char* padbuf = NULL) {
     s32 row = col - 1;
     s32 pad = (s32)((fa - width * fb) * lbl_805430BC + lbl_805430BC);
@@ -2329,20 +2332,22 @@ static inline void finishMessageLine(char* out, char* line, s32 col, f32 width, 
 }
 extern "C" void fn_80230E1C(s32, s32);
 
+#pragma optimization_level 4
 extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 fb) {
-    s8* p;
-    MsgData* md = lbl_8053AD78->p8;
-    s8* str = (s8*)&md->inf + md->inf.size + md->inf.entries[idx].offset + 8;
+    char* p;
+    Inf1* inf = &lbl_8053AD78->p8->inf;
+    char* str = (char*)inf + (inf->size + inf->entries[idx].offset + 8);
+    s32 num = val;
+    s32 pos = 0;
+    s32 col = 1;
+    u8 mode = 0;
+    s32 len = 0;
     u8 flag = (u8)(1 << (player - 1));
     s32 shift = (player - 1) * 2;
     f32 width = lbl_805430C8;
-    s32 col = 1;
-    s32 pos = 0;
-    u8 mode = 0;
-    s32 len = 0;
-    s32 num = val;
+    char padbuf[16];
     char line[100];
-    s8 c;
+    char c;
     lbl_8053AD78->f5c = width;
     lbl_8053AD78->f64 = width;
     lbl_8053AD78->f60 = width;
@@ -2352,14 +2357,14 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
         if (c == '\n') {
             line[len] = c;
             line[len + 1] = 0;
-            finishMessageLine(out, line, col, width, fa, fb);
+            finishMessageLine(out, line, col, width, fa, fb, padbuf);
             width = lbl_805430C8;
             len = 0;
             col++;
             pos++;
         } else if (c == 0x1a) {
             if (p[2] == 2) {
-                s8 t = p[4];
+                char t = p[4];
                 if (t == 0 || t == 10 || t == 0x12 || t == 0x19) {
                     if (mode < 2) {
                         (&lbl_8053AD78->f5c)[mode] = width;
@@ -2375,7 +2380,7 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
                     }
                 } else if (t == 0x2e) {
                     if (player >= 1 && player <= 4 && (lbl_8053AAF8->b82 & flag) != 0 &&
-                        (((u8*)lbl_8053AAF8)[0x83] >> shift & 3) == 1 && fn_8023DE58(player - 1) >= 8) {
+                        ((u32)(((u8*)lbl_8053AAF8)[0x83] >> shift) & 3) == 1 && fn_8023DE58(player - 1) >= 8) {
                         fn_80230E1C(player - 1, 0);
                     }
                 }
@@ -2410,7 +2415,7 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
             pos += p[1];
         } else {
             line[len++] = c;
-            unsigned int code = *(u8*)p;
+            u32 code = *(u8*)p;
             pos++;
             if (msgFont()->isLeadByte(code)) {
                 line[len++] = str[pos];
@@ -2423,10 +2428,10 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
         }
     }
     line[len] = c;
-    finishMessageLine(out, line, col, width, fa, fb);
+    finishMessageLine(out, line, col, width, fa, fb, padbuf);
     return col;
 }
-
+#pragma optimization_level 3
 struct T37Config {
     T37Config();
     ~T37Config();
