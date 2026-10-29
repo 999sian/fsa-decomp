@@ -264,7 +264,12 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" Vec* fn_8023E724(s32);
 extern "C" s32 fn_801F2718(void*, u32);
 extern "C" void fn_8030C210(void*, void*);
-extern "C" u8 fn_801F6758(void*, s32, f32);
+struct TennScoreBoard {
+    u8 pad_0[0x28c];
+    s32 counts[4];
+};
+
+extern "C" u8 fn_801F6758(void*, f32, s32);
 extern "C" void fn_801A0F90(void* this_) {
     s32 flag = 0;
     char* p = (char*)this_;
