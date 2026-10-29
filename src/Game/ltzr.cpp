@@ -199,12 +199,12 @@ static inline f32 ltzrSqrt(f32 x) {
 
 static inline void ltzrTouch(char* p, s32 i) {
     s32 room = *(s32*)(p + 4);
-    if (room != fn_8023DE58(i)) {
+    if (fn_8023DE58(i) != room) {
         return;
     }
     for (s32 j = 0; j < 8; j++) {
-        f32 vx;
         f32 vy;
+        f32 vx;
         f32 maxy;
         f32 maxx;
         f32 miny;
@@ -246,7 +246,7 @@ extern "C" void fn_8033FE04(char* p) {
     case 5: {
         ltzrResetBox(p);
         if (*(s32*)(p + 0x248) == 2 && *(s32*)(p + 0x24c) < 3) {
-            (*(void (***)(void*))p)[0xa4 / 4](p);
+            ((Ltzr*)p)->v39();
             break;
         }
         JGeometry::TBox2<f32> rect = *(JGeometry::TBox2<f32>*)(p + 0x60);
@@ -292,7 +292,7 @@ extern "C" void fn_8033FE04(char* p) {
     switch (*(s32*)(p + 0x248)) {
     case 0:
         ltzrResetBox(p);
-        (*(void (***)(void*))p)[0xa8 / 4](p);
+        ((Ltzr*)p)->v40();
         if (*(s32*)(p + 0x24c) >= *(s32*)(p + 0x250) && fn_801D05F8(p, p + 0xc, lbl_805422A0) >= 0) {
             fn_801BACE8(p, 1);
         }
@@ -300,14 +300,14 @@ extern "C" void fn_8033FE04(char* p) {
     case 1:
         fn_801F0E34(p, 0x50081, 0);
         ltzrResetBox(p);
-        (*(void (***)(void*))p)[0xa8 / 4](p);
+        ((Ltzr*)p)->v40();
         if (lbl_805422A4 != *(f32*)(p + 0x54)) {
             fn_801CD950((f32*)(p + 0x54), lbl_805422A4, lbl_805422A8);
             *(f32*)(p + 0x58) = *(f32*)(p + 0x54);
             *(f32*)(p + 0x5c) = *(f32*)(p + 0x54);
         } else if (*(s32*)(p + 0x24c) >= *(s32*)(p + 0x250) && fn_801D217C(p + 0x270)) {
             fn_801BACE8(p, 2);
-            (*(void (***)(void*))p)[0xb0 / 4](p);
+            ((Ltzr*)p)->v42();
         }
         break;
     case 2:
@@ -327,7 +327,7 @@ extern "C" void fn_8033FE04(char* p) {
         }
         if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
             fn_801BACE8(p, 0);
-            (*(void (***)(void*))p)[0xac / 4](p);
+            ((Ltzr*)p)->v41();
         }
         break;
     }
