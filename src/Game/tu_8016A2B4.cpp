@@ -827,10 +827,29 @@ static inline s32 maxEffect8016D398(s32 a,s32 b) {
     return a>=b?a:b;
 }
 
+static inline void positionEffectA8016D398(u8* p) {
+    f32 ry=effectRandom8016D398();
+    f32 rx=effectRandom8016D398();
+    *(f32*)(p+4)=lbl_8053D9C0*rx-lbl_8053D9C4;
+    *(f32*)(p+8)=lbl_8053D9C8*ry+lbl_8053D970;
+    *(f32*)(p+0xc)=lbl_8053D944;
+}
+static inline f32 signEffect8016D398() {
+    f32 sign=lbl_8053D93C;
+    if(effectRandom8016D398()>lbl_8053D940)sign=lbl_8053D9D8;
+    return sign;
+}
+static inline void positionEffectB8016D398(u8* p) {
+    f32 y=lbl_8053D9D4*effectRandom8016D398()-lbl_8053D9D4;
+    f32 sign=signEffect8016D398();
+    f32 x=(lbl_8053D9DC*effectRandom8016D398()+lbl_8053D9C8)*sign;
+    *(f32*)(p+4)=x;*(f32*)(p+8)=y;*(f32*)(p+0xc)=lbl_8053D944;
+}
+
 extern "C" void fn_8016D398(void* a1, void* a2, s32 a3, s32 a4, void* a5, void* a6, void* a7, void* a8, void* a9, void* a10, f32 scale) {
     u8* p;
-    s32 maxA,maxB;
-    s32 i;
+    int maxA,maxB;
+    int i;
     JGeometry::TVec3f neg(-*(f32*)((u8*)a1+0xc),-*(f32*)((u8*)a1+0x1c),lbl_8053D944);
     Vec pos;
     if((u8)a4){
