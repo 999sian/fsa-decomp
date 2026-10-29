@@ -90,9 +90,9 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
     cx = cos(lbl_8053E0C8);
     cy = cos(a);
     cz = cos(lbl_8053E0C8);
+    f32 cxsz = cx * sz;
     f32 sxsy = sx * sy;
     f32 cxcz = cx * cz;
-    f32 cxsz = cx * sz;
     f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
     f32 cycz = cy * cz;
