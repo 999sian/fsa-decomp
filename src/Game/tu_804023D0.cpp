@@ -5,21 +5,7 @@
 
 #pragma auto_inline off
 
-struct PaneState {
-    void* vtable;
-    J2DPane* pane;
-    f32 x;
-    f32 y;
-    f32 centerX;
-    f32 centerY;
-    f32 width;
-    f32 height;
-    s16 field20;
-    s16 field22;
-    s16 field24;
-    s16 alphaFrame;
-    u8 alpha;
-};
+#include "Game/PaneState.h"
 
 struct ResourceState {
     u8 pad00[0x10];
@@ -94,6 +80,41 @@ extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 end
     } else {
         state->field22 = duration;
         state->pane->setAlpha(endAlpha);
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" s32 fn_8040271C(PaneState* state, s16 index, f32 a, f32 b) {
+    f32 y;
+    f32 h;
+    f32 x;
+    f32 w;
+    f32 t;
+    f32 s = b;
+
+    if (state->field24 < index - 1) {
+        state->field24++;
+        t = (f32)(state->field24 * state->field24) / (f32)(index * index);
+        s = a + t * (b - a);
+        w = state->pane->mBounds.f.x - state->pane->mBounds.i.x;
+        x = state->pane->getBounds()->i.x;
+        h = state->pane->mBounds.f.y - state->pane->mBounds.i.y;
+        y = state->pane->getBounds()->i.y;
+        state->pane->resize(state->width * s, state->height * s);
+        x = x + lbl_80543868 * w - lbl_80543868 * (state->pane->mBounds.f.x - state->pane->mBounds.i.x);
+        y = y + lbl_80543868 * h - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
+        state->pane->move(x, y);
+    } else {
+        state->field24 = index;
+        w = state->pane->mBounds.f.x - state->pane->mBounds.i.x;
+        x = state->pane->getBounds()->i.x;
+        h = state->pane->mBounds.f.y - state->pane->mBounds.i.y;
+        y = state->pane->getBounds()->i.y;
+        state->pane->resize(state->width * s, state->height * s);
+        x = x + lbl_80543868 * w - lbl_80543868 * (state->pane->mBounds.f.x - state->pane->mBounds.i.x);
+        y = y + lbl_80543868 * h - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
+        state->pane->move(x, y);
         return 1;
     }
     return 0;
