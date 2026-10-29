@@ -832,25 +832,37 @@ static inline int lastLinkedPlayer(int target)
         if (lbl_8053AC90 == NULL) return -1;
         if (!fn_8023F264(target)) return target;
         if ((u8)fn_8022F514(target)) target = fn_8022EA0C(fn_8022F3DC(target));
-        else if (fn_8022CAF8(target) == 4) {
-            int scan = target;
-            int count = 0;
+        else switch (fn_8022CAF8(target)) {
+        case 4: {
+            int count;
+            int scan;
+            scan = target;
+            count = 0;
             while (count < fn_80234004(target)) {
                 ++count;
                 ++scan;
                 while (!fn_8022E438(scan, target)) ++scan;
             }
             target = scan;
+            break;
         }
-    } else if (linkMode3(target) == 4) {
-        int scan = target;
-        int count = 0;
+        default: break;
+        }
+    } else switch (linkMode3(target)) {
+    case 4: {
+        int count;
+        int scan;
+        scan = target;
+        count = 0;
         while (count < linkCount3(target)) {
             ++count;
             ++scan;
             while (!sameLinkDeep(scan, target)) ++scan;
         }
         target = scan;
+        break;
+    }
+    default: break;
     }
     return target;
 }
