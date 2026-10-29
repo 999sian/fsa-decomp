@@ -1126,11 +1126,11 @@ inline u8* findCollisionActorInPool(s32 handle, ActorPool* pool) {
             }
         }
         s32 count = pool->mCount;
-        PoolActor* const* cur = (PoolActor* const*)pool;
+        PoolActor** cur = (PoolActor**)pool;
         for (s32 i = 0; i < count; cur++, i++) {
             scanActor = cur[2];
             if (scanActor && scanActor->mActive && handle == scanActor->mId) {
-                result = pool->mActors[i];
+                result = pool->get(i);
                 break;
             }
         }
