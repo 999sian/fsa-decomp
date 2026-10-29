@@ -2055,6 +2055,21 @@ extern "C" void fn_8025BDD8(u8* p) {
     S32(p, 0x40c) = 0;
 }
 
+struct PlayerPcdmPosition {
+    u8 pad[0xb0c];
+    s32 ids[3];
+    u8 padB18[0xb4c - 0xb18];
+    s32 rooms[3];
+    u8 padB58[0x12fc - 0xb58];
+    JGeometry::TVec3<f32> pos;
+};
+
+struct PlayerPcdmParam {
+    u32 left;
+    u32 right;
+};
+extern const PlayerPcdmParam lbl_8046B070[];
+
 extern "C" void fn_8025BEB0(u8* p) {
     u8 st = U8(p, 0x3fa);
     if (st < 3) {
