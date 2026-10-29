@@ -1802,8 +1802,8 @@ static inline void stopEmitter(void* e) {
 }
 
 static inline void delSlot(u8* p) {
-	void* o = *(void**)p;
-	if (o) ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+	J2DPane* o = *(J2DPane**)p;
+	delete o;
 	*(void**)p = 0;
 }
 
@@ -2019,8 +2019,16 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		fn_8042EB14(lbl_8053AEC4);
 		u8* q = self;
 		for (s32 i = 0; i < 4; i++, q += 4) {
-			if (*(void**)(q + 0x2cc)) killEmitter((JPABaseEmitter**)(q + 0x2cc));
-			if (*(void**)(q + 0x2dc)) killEmitter((JPABaseEmitter**)(q + 0x2dc));
+			if (*(JPABaseEmitter**)(q + 0x2cc)) {
+                JPAEmitterManager* manager = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+                manager->forceDeleteEmitter(*(JPABaseEmitter**)(q + 0x2cc));
+                *(JPABaseEmitter**)(q + 0x2cc) = 0;
+            }
+			if (*(JPABaseEmitter**)(q + 0x2dc)) {
+                JPAEmitterManager* manager = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+                manager->forceDeleteEmitter(*(JPABaseEmitter**)(q + 0x2dc));
+                *(JPABaseEmitter**)(q + 0x2dc) = 0;
+            }
 			if (*(void**)(q + 0x2f8)) {
 				stopEmitter(*(void**)(q + 0x2f8));
 				*(void**)(q + 0x2f8) = 0;
@@ -2028,8 +2036,11 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		}
 		u8* p = self;
 		for (s32 i = 0; i < 3; i++, p += 4) {
-			if (*(void**)(p + 0x2ec)) killEmitter((JPABaseEmitter**)(p + 0x2ec));
-			*(void**)(p + 0x2ec) = zero;
+			if (*(JPABaseEmitter**)(p + 0x2ec)) {
+                JPAEmitterManager* manager = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+                manager->forceDeleteEmitter(*(JPABaseEmitter**)(p + 0x2ec));
+                *(void**)(p + 0x2ec) = zero;
+            }
 		}
 		if (*(void**)(self + 0x308)) {
 			stopEmitter(*(void**)(self + 0x308));
