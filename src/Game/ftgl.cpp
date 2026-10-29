@@ -98,7 +98,7 @@ static inline void ftglFacePlayers(char* p) {
 static inline s32 ftglPickTarget(char* p) {
     s32 n;
     s32 room;
-    s32 best = 0;
+    s32 best;
     f32 bestD;
     s32 id;
     s32 j;
@@ -112,6 +112,7 @@ static inline s32 ftglPickTarget(char* p) {
         }
     }
     n = fn_80138A30(lbl_8053AAF8);
+    best = 0;
     bestD = lbl_805418C0;
     for (j = 0; j < n; j++) {
         id = fn_8022EA0C(j);
