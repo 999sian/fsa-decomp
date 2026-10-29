@@ -97,15 +97,18 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 s
     f32 sxcz = sx * cz;
     f32 cycz = cy * cz;
     f32 cysz = cy * sz;
-    mtx[0][0] = scale * cycz;
-    mtx[1][0] = scale * cysz;
-    mtx[2][0] = scale * -sy;
-    mtx[0][1] = scale * (sxsy * cz - cxsz);
-    mtx[1][1] = scale * (sxsy * sz + cxcz);
-    mtx[2][1] = scale * (sx * cy);
-    mtx[0][2] = scale * (cxcz * sy + sxsz);
-    mtx[1][2] = scale * (cxsz * sy - sxcz);
-    mtx[2][2] = scale * (cx * cy);
+    f32 m00 = scale * cycz;
+    f32 m10 = scale * cysz;
+    f32 m20 = scale * -sy;
+    f32 m01 = scale * (sxsy * cz - cxsz);
+    f32 m11 = scale * (sxsy * sz + cxcz);
+    f32 m21 = scale * (sx * cy);
+    f32 m02 = scale * (cxcz * sy + sxsz);
+    f32 m12 = scale * (cxsz * sy - sxcz);
+    f32 m22 = scale * (cx * cy);
+    mtx[0][0] = m00; mtx[1][0] = m10; mtx[2][0] = m20;
+    mtx[0][1] = m01; mtx[1][1] = m11; mtx[2][1] = m21;
+    mtx[0][2] = m02; mtx[1][2] = m12; mtx[2][2] = m22;
     rec.b1d = 2; rec.b1c = 1;
 }
 
