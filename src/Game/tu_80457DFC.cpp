@@ -175,20 +175,9 @@ static inline f32 getPlayerAudioPan(const u8* self, s32 channel) {
     return pan;
 }
 
-static inline f32 getAudioPan(const u8* self, s32 mode) {
+static inline f32 getAudioPan(const u8* self, const s8 mode) {
     if(mode<0)return 0.5f;
-    if(mode>=self[5])return 0.5f;
-    f32 pan=0.5f;
-    switch(self[5]){
-    case 1:default:pan=0.5f;break;
-    case 2:case 3:case 4:
-        switch(mode){
-        case 0:case 2:pan=lbl_80543EC8;break;
-        case 1:case 3:pan=lbl_80543ECC;break;
-        }
-        break;
-    }
-    return pan;
+    return getPlayerAudioPan(self,mode);
 }
 
 static inline void stopAudioGroup(JAUSoundObject* obj) {
@@ -683,13 +672,16 @@ extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
     }
     if(mode>=0){
         if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
-            ((AudioChannelBase*)(self+mode*4))->object->stopSound(JAISoundID(id),0);
+            getAudioChannel(self,mode)->stopSound(JAISoundID(id),0);
         u8* channelBase=self+mode*4;
         stopAudioGroup(*(JAUSoundObject**)(channelBase+0x18));
         JAISoundHandle* h=(*(JAUSoundObject**)(channelBase+0x18))->startSound(JAISoundID(id));
         if(h && *h){
             JAISoundParamsMove* move=(JAISoundParamsMove*)((u8*)h->getSound()+0x48);
-            move->movePan(getAudioPan(self,mode),0);
+            f32 pan;
+            if(mode<0)pan=0.5f;
+            else pan=getPlayerAudioPan(self,mode);
+            move->movePan(pan,0);
         }
     }else{
         if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
