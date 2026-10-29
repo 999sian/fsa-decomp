@@ -1,6 +1,9 @@
 // Poon actor ("Poon" actor id, mixed case in the table). TU 80167938-801688AC.
 // Functions: dtor, draw (slot 6, TODO), update (slot 3, TODO), init (slot 1).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -76,43 +79,220 @@ extern const char lbl_80466338[];
 extern "C" void fn_802F86CC(void* map, void* pos, void* res, s32 id, PoonDrawParam* prm, f32 a, f32 b);
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, s32 a, s32 b, f32 sx, f32 sy);
 
+#pragma opt_strength_reduction off
 extern "C" void fn_80167998(char* this_) {
-    if (*(s32*)(this_ + 0x230) == 2) {
-        PoonDrawParam prm;
-        f32 mtx[3][4];
-        prm.reset();
-        mtx[0][3] = 0.0f;
-        mtx[1][3] = 0.0f;
-        mtx[2][3] = 0.0f;
-        prm.mMtx = mtx;
-        f32 ry = *(f32*)(this_ + 0x258);
-        f32 scale = *(f32*)(this_ + 0x254);
-        f32 rx = 0.0f;
-        f32 rz = 0.0f;
-        f32 sx = sin(rx);
-        f32 sy = sin(ry);
-        f32 sz = sin(rz);
-        f32 cx = cos(rx);
-        f32 cy = cos(ry);
-        f32 cz = cos(rz);
-        mtx[0][0] = scale * (cy * cz);
-        mtx[1][0] = scale * (cy * sz);
-        mtx[2][0] = scale * -sy;
-        mtx[0][1] = scale * (sx * sy * cz - cx * sz);
-        mtx[1][1] = scale * (sx * sy * sz + cx * cz);
-        mtx[2][1] = scale * (sx * cy);
-        mtx[0][2] = scale * (cx * cz * sy + sx * sz);
-        mtx[1][2] = scale * (cx * sz * sy - sx * cz);
-        mtx[2][2] = scale * (cx * cy);
-        prm.mMtx = mtx;
-        s32 id = *(s32*)(this_ + 0x250) + 0x92;
-        if (*(s32*)(this_ + 0x4) < 8) {
-            void* res = (*(PoonResMgr**)(lbl_8053AAF8 + 0xa4))->get('SOB ', lbl_80466338);
-            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, &prm, 1.0f, 1.0f);
+             if (*(s32*)(this_ + 0x230) == 2) {
+                 PoonDrawParam prm;
+                 f32 mtx[3][4];
+              register f32 scale;
+            f32 ry;
+            register f32 cx;
+                 prm.reset();
+                 mtx[0][3] = 0.0f;
+                 mtx[1][3] = 0.0f;
+                 mtx[2][3] = 0.0f;
+                 prm.mMtx = mtx;
+                 f32 rx = 0.0f;
+               ry = *(f32*)(this_ + 0x258);
+               scale = *(f32*)(this_ + 0x254);
+                 f32 rz = 0.0f;
+                 f32 sx = sin(rx);
+                 f32 sy = sin(ry);
+                 f32 sz = sin(rz);
+                 cx = cos(rx);
+                 f32 cy = cos(ry);
+                 f32 sxsy;
+                 f32 cz = cos(rz);
+          f32 cxsz, cxcz;
+        cxcz = cx * cz;
+        sxsy = sx * sy;
+        cxsz = cx * sz;
+                 mtx[0][0] = scale * (cy * cz);
+                 mtx[1][0] = scale * (cy * sz);
+                 mtx[2][0] = scale * -sy;
+                 mtx[0][1] = scale * (sxsy * cz - cxsz);
+                 mtx[1][1] = scale * (sxsy * sz + cxcz);
+                 mtx[2][1] = scale * (sx * cy);
+                 mtx[0][2] = scale * (cxcz * sy + sx * sz);
+                 mtx[1][2] = scale * (cxsz * sy - sx * cz);
+                 mtx[2][2] = scale * (cx * cy);
+                 prm.mMtx = mtx;
+                 s32 id = *(s32*)(this_ + 0x250) + 0x92;
+                 if (*(s32*)(this_ + 0x4) < 8) {
+                     void* res = (*(PoonResMgr**)(lbl_8053AAF8 + 0xa4))->get('SOB ', lbl_80466338);
+                     fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, &prm, 1.0f, 1.0f);
+                 }
+             } else {
+                 fn_801F06F0(this_, lbl_80466338, *(s32*)(this_ + 0x250) + 0x92, 0, 0, 1.0f, 1.0f);
+             }
+         }
+#pragma opt_strength_reduction reset
+extern "C" u8 sincosTable___5JMath[];
+extern "C" u16 fn_8022461C(void* p, s32 room);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" s32 fn_801F3D94(char* this_, s32 a);
+extern "C" u8 fn_801F2DB4(char* this_, u32 a, u32 b, s32 c);
+extern "C" void fn_801F2618(char* this_, s32 a, s32 b);
+extern "C" s32 fn_801F285C(char* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" void fn_801EEC98(char* this_, s32 h, s16* a, s32* b, f32* c, s32 d, s32 e, s32 f);
+extern "C" u8 fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
+extern "C" u8 fn_80237948(s32 a, void* v);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* a, s32 b);
+extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
+extern "C" void fn_8013CC50(s32 a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void detach__5ActorFv(void* this_);
+extern "C" double sqrt(double);
+extern "C" void fn_80167C94(char* this_) {
+    s32 i;
+    s32 r29;
+    s16 ang = 0;
+    s32 flag = 0;
+    f32 fv = 0.0f;
+    if (*(s32*)(this_ + 0x230) != 2) {
+        if (*(s32*)(this_ + 0x23c) != 0) {
+            *(f32*)(this_ + 0x260) = *(f32*)(this_ + 0xc);
+            *(f32*)(this_ + 0x264) = *(f32*)(this_ + 0x10);
+            *(f32*)(this_ + 0x268) = *(f32*)(this_ + 0x14);
+            *(f32*)(this_ + 0x260) = (f32)((s32)*(f32*)(this_ + 0x260) & 0xfff8);
+            *(f32*)(this_ + 0x264) = (f32)((s32)*(f32*)(this_ + 0x264) & 0xfff8);
+            *(f32*)(this_ + 0x260) = -16.0f * *(f32*)(sincosTable___5JMath + ((*(u32*)(this_ + 0x24c) >> 2) & 0x3ff8)) + *(f32*)(this_ + 0x260);
+            *(f32*)(this_ + 0x264) = -16.0f * *(f32*)(sincosTable___5JMath + ((*(u32*)(this_ + 0x24c) >> 2) & 0x3ff8) + 4) + *(f32*)(this_ + 0x264);
+            r29 = (u16)fn_8022461C(this_ + 0x260, *(s32*)(this_ + 4));
+            if ((u32)(r29 - 2) < 2 || r29 == 0xe) {
+                if (fn_802DE9A0() == 1 && r29 == 0xe) {
+                    *(u8*)(this_ + 0x25c) = 1;
+                }
+                *(s32*)(this_ + 0xd8) = 0;
+                *(s32*)(this_ + 0xdc) = 0;
+                *(f32*)(this_ + 0x44) = 0.0f;
+                *(f32*)(this_ + 0x40) = 0.0f;
+                *(f32*)(this_ + 0x3c) = 0.0f;
+                *(f32*)(this_ + 0x274) = 0.0f;
+                *(f32*)(this_ + 0x270) = 0.0f;
+                *(f32*)(this_ + 0x26c) = 0.0f;
+                *(f32*)(this_ + 0x258) = 0.0f;
+                *(s32*)(this_ + 0x234) = 0;
+                *(s32*)(this_ + 0x238) = 0x1e;
+                *(s32*)(this_ + 0x230) = 2;
+            }
         }
-    } else {
-        fn_801F06F0(this_, lbl_80466338, *(s32*)(this_ + 0x250) + 0x92, 0, 0, 1.0f, 1.0f);
+        if (fn_801F3D94(this_, 1) == 0 && fn_801F2DB4(this_, 0x4e554c4c, 0x4e554c4c, 0) == 0) {
+            fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x26c), 0.1f, *(f32*)(this_ + 0x278));
+            fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x270), 0.1f, *(f32*)(this_ + 0x27c));
+            *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
+            *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
+            *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+            fn_801EEC98(this_, *(s32*)(this_ + 0x198), &ang, &flag, &fv, 0, 0, 0);
+            if (fn_801F2B7C(this_, -100, -1, 1) && *(s32*)(this_ + 0x230) == 0) {
+                *(f32*)(this_ + 0x3c) = -2.0f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
+                *(f32*)(this_ + 0x40) = -2.0f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
+                *(f32*)(this_ + 0x26c) = 0.0f;
+                *(f32*)(this_ + 0x270) = 0.0f;
+                *(f32*)(this_ + 0x274) = 0.0f;
+                *(s32*)(this_ + 0x248) = 0;
+                *(s32*)(this_ + 0x230) = 1;
+                fn_801F2618(this_, 0, 0);
+            }
+        } else {
+            *(s32*)(this_ + 0x23c) = 0x14;
+            fn_801F2618(this_, 0, 0);
+            return;
+        }
     }
+    if (*(s32*)(this_ + 0x234) > 0) {
+        *(s32*)(this_ + 0x234) -= 1;
+    }
+    if (*(s32*)(this_ + 0x238) > 0) {
+        *(s32*)(this_ + 0x238) -= 1;
+    }
+    if (*(s32*)(this_ + 0x23c) > 0) {
+        *(s32*)(this_ + 0x23c) -= 1;
+    }
+    if (*(s32*)(this_ + 0x240) > 0) {
+        *(s32*)(this_ + 0x240) -= 1;
+    }
+    if (*(s32*)(this_ + 0x230) == 1) {
+        if (*(s32*)(this_ + 0x248) != 0) {
+            *(s32*)(this_ + 0x23c) = 10;
+        }
+        if (*(f32*)(this_ + 0x3c) < 0.2f && *(f32*)(this_ + 0x40) < 0.2f) {
+            *(s32*)(this_ + 0x230) = 0;
+        }
+    } else if (*(s32*)(this_ + 0x230) == 0) {
+        if (*(s32*)(this_ + 0x238) == 0) {
+            *(f32*)(this_ + 0x26c) = 0.5f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
+            *(f32*)(this_ + 0x270) = 0.5f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
+            if (flag < 0) {
+                *(f32*)(this_ + 0x274) = 0.0f;
+                *(f32*)(this_ + 0x270) = 0.0f;
+                *(f32*)(this_ + 0x26c) = 0.0f;
+                *(s32*)(this_ + 0x238) = 0x1e;
+            }
+        }
+        r29 = *(s32*)(this_ + 0x9c);
+        void* o = 0;
+        if (r29 >= 0) {
+            o = fn_801F666C(fn_801F856C(), r29);
+        }
+        if (o != 0) {
+            *(s32*)(this_ + 0x248) = 0;
+            if (*(s32*)(this_ + 0x240) == 0) {
+                fn_801F0E34(this_, 0x400d4, 0);
+                *(s32*)(this_ + 0x240) = 8;
+            }
+            *(s32*)(this_ + 0x230) = 1;
+        } else {
+            for (i = 0; i < 4; i++) {
+                r29 = fn_801F285C(this_, 0, 0, 1, i);
+                if (r29 >= 0) {
+                    fn_80237948(r29, this_ + 0x1c);
+                }
+            }
+        }
+    } else if (*(s32*)(this_ + 0x230) == 2) {
+        fn_801F71A4(this_ + 0xc, *(f32*)(this_ + 0x260), 0.2f, 1.0f);
+        fn_801F71A4(this_ + 0x10, *(f32*)(this_ + 0x264), 0.2f, 1.0f);
+        if (*(s32*)(this_ + 0x238) == 0) {
+            f32 dx = *(f32*)(this_ + 0xc) - *(f32*)(this_ + 0x260);
+            f32 dy = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x264);
+            f32 d2 = dx * dx + dy * dy;
+            if (d2 < 0.2f) {
+                if (*(s32*)(this_ + 0x250) != 3) {
+                    fn_801F0E34(this_, 0x4001a, 0);
+                }
+                *(s32*)(this_ + 0x250) = 3;
+                *(f32*)(this_ + 0x258) += 0.1f;
+                *(f32*)(this_ + 0x254) -= 0.2f;
+                if (*(f32*)(this_ + 0x254) < 0.1f) {
+                    if (*(u8*)(this_ + 0x25c) == 1) {
+                        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 0x2a9, -1, 1, 0, 0, 1);
+                        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 0x2aa, -1, 0, 0, 0, 1);
+                        fn_801F0E34(this_, 0x5005f, 0);
+                    }
+                    detach__5ActorFv(this_);
+                }
+                fn_801F2618(this_, 0, 0);
+                return;
+            }
+        }
+        if (*(s32*)(this_ + 0x234) == 0) {
+            *(s32*)(this_ + 0x234) = 3;
+            *(s32*)(this_ + 0x250) += 1;
+            if (*(s32*)(this_ + 0x250) > 2) {
+                *(s32*)(this_ + 0x250) = 0;
+            }
+        }
+    }
+    if (*(s32*)(this_ + 0x230) != 2 && *(s32*)(this_ + 0x234) == 0) {
+        *(s32*)(this_ + 0x234) = 6;
+        *(s32*)(this_ + 0x250) += 1;
+        if (*(s32*)(this_ + 0x250) > 2) {
+            *(s32*)(this_ + 0x250) = 0;
+        }
+    }
+    fn_801F2618(this_, 0, 0);
 }
 
 struct PoonVec { f32 x, y, z; };
@@ -155,3 +335,4 @@ extern "C" void fn_801685C8(char* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
