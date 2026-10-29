@@ -77,7 +77,8 @@ extern "C" f32 lbl_80542B08;
 
 static inline void fn_80362C44_deleteEmitter(void*& emitter) {
     if (emitter != NULL) {
-        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), emitter);
+        void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, emitter);
         emitter = NULL;
     }
 }
@@ -439,17 +440,14 @@ extern "C" void fn_80362C44(char* self) {
             *(s32*)(self + 0x248) = 0x12c;
             *(f32*)(self + 0x250) = *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc);
             *(f32*)(self + 0x254) = *(f32*)(self + 0x250) / *(s32*)(self + 0x248);
-            s32 iy = (s32)(*(f32*)(self + 0x10) / 384.0f);
-            s32 ix = (s32)(*(f32*)(self + 0xc) * 0.001953125f);
+            f32 y = 384.0f * (s32)(*(f32*)(self + 0x10) / 384.0f) + 192.0f;
+            f32 x = 512.0f * (s32)(*(f32*)(self + 0xc) * 0.001953125f) + 256.0f;
             v.z = 0.0f;
-            v.y = 384.0f * iy + 192.0f;
-            v.x = 512.0f * ix + 256.0f;
+            v.y = y;
+            v.x = x;
             for (i = 0; i < 4; i++) {
                 fn_8013CC50(0, &v, 1.0f, lbl_80542AF0[i], 0, 0, 0, 0, 1);
-                if (*(void**)(self + 0x30c + i * 4) != NULL) {
-                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(self + 0x30c + i * 4));
-                    *(void**)(self + 0x30c + i * 4) = NULL;
-                }
+                fn_80362C44_deleteEmitter(*(void**)(self + 0x30c + i * 4));
             }
             v.z = 0.0f;
             v.y = 0.0f;
