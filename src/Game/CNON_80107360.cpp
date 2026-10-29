@@ -215,7 +215,8 @@ static inline s32 CNON_findPlayer(CNON* this_) {
 
 static inline void CNON_swing(CNON* this_) {
     f32 speed, accel;
-    if (this_->m280 <= lbl_8053C2C0) {
+    f32 amp = this_->m280;
+    if (amp <= lbl_8053C2C0) {
         return;
     }
     {
