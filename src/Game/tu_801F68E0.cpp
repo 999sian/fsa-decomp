@@ -1113,10 +1113,10 @@ inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     box.addPos(x, y);
 }
 
-inline u8* findCollisionActorInPool(s32 handle, ActorPool* pool) {
+inline u8* findCollisionActorInPool(int handle, ActorPool* pool) {
     PoolActor* result = NULL;
     if (handle >= 0) {
-        s32 cached = *(s32*)((u8*)pool + 0x2014);
+        int cached = *(s32*)((u8*)pool + 0x2014);
         if (cached >= 0) {
             PoolActor* actor = pool->mActors[cached];
             if (actor && actor->mActive && handle == actor->mId) {
@@ -1124,9 +1124,9 @@ inline u8* findCollisionActorInPool(s32 handle, ActorPool* pool) {
                 goto done;
             }
         }
-        s32 count = pool->mCount;
+        int count = pool->mCount;
         PoolActor** cur = (PoolActor**)pool;
-        for (s32 i = 0; i < count; cur++, i++) {
+        for (int i = 0; i < count; cur++, i++) {
             PoolActor* actor = cur[2];
             if (actor && actor->mActive && handle == actor->mId) {
                 result = pool->mActors[i];
@@ -1180,7 +1180,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 		if (handle == -1) {
 			continue;
 		}
-		a = ((ActorPool*)lbl_8053AAF8->m4->m8)->findCollisionActor(handle);
+		a = findCollisionActorInPool(handle, (ActorPool*)lbl_8053AAF8->m4->m8);
 		if (a == NULL || a[0x11c] == 0) {
 			continue;
 		}
@@ -1191,7 +1191,7 @@ extern "C" void fn_801F6A4C(void* pool) {
 
 		for (j = 0; j < *(s32*)(self + 0x301c); j++) {
 			s32 hb = *(s32*)(self + 0x201c + j * 4);
-			b = ((ActorPool*)lbl_8053AAF8->m4->m8)->findCollisionActor(hb);
+			b = findCollisionActorInPool(hb, (ActorPool*)lbl_8053AAF8->m4->m8);
 			if (b == NULL || b[0x11c] == 0) {
 				continue;
 			}
