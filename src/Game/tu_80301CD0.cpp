@@ -157,9 +157,10 @@ static inline void clearMessageEntries(MsgEntry_80301CD0* entries) {
     for (int index = 0; index < 32; index++) clearMessageEntry(entries + index, index);
 }
 static inline void clearMessageQueue(int* head, int* tail, MsgEntry_80301CD0* entries) {
-    int index = 0;
-    *tail = *head = index;
-    for (; index < 32; index++) clearMessageEntry(entries + index, index);
+    *head = 0;
+    *tail = 0;
+    int index;
+    for (index = 0; index < 32; index++) clearMessageEntry(entries + index, index);
 }
 extern u8 lbl_8053AD20[4];
 extern u8 lbl_80541618[4];
@@ -2022,7 +2023,6 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
     s32 r25;
     s32 r26;
     s32 x;
-    s32 c;
     u8* e;
     Rec2_80301CD0* q2;
     Rec3_80301CD0* q3;
@@ -2044,18 +2044,13 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
     q2->a = ((s32*)lbl_80506D48)[i];
 
     if (lbl_8053ACD0 != 0 && tu80301_isPlayerOn(i)) {
-        if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 9 || ((u8*)lbl_8053AAF8)[0x80] != 0) {
-            q2->flag = 1;
-        } else if (lbl_8053ACD8[i] == 0) {
-            q2->flag = 0;
-        } else if (fn_8037F1E4(i) < 1) {
-            q2->flag = 1;
-        } else if (fn_8037F1E4(i) > 5) {
+        if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 9 || ((u8*)lbl_8053AAF8)[0x80] != 0 ||
+            (lbl_8053ACD8[i] != 0 && (fn_8037F1E4(i) < 1 || fn_8037F1E4(i) > 5))) {
             q2->flag = 1;
         } else {
             q2->flag = 0;
         }
-        q3->m = lbl_8053ACEC[i] > 1 ? lbl_8053ACE8[i] : 0;
+        q3->m = lbl_8053ACEC[i] > 1 ? lbl_8053ACE8[i] : (u8)0;
     } else {
         q2->flag = 1;
         q3->m = 0;
@@ -2084,21 +2079,21 @@ extern "C" void fn_803085A4(s32 unused, s32 i)
         Rec6_80301CD0* p6;
         ((Rec5a_80301CD0*)(e + 5))->lo = *(s32*)((u8*)lbl_80529DEC + 0xd8 + i * 4);
         ((Rec4a_80301CD0*)p4)->hi = (u8)(*(s32*)((u8*)lbl_80529DEC + 0xc8 + i * 4) / 4 - 1);
+        ((Rec6_80301CD0*)(e + 6))->lo = (u8)fn_8037EE8C(i);
         p6 = (Rec6_80301CD0*)(e + 6);
-        p6->lo = (u8)fn_8037EE8C(i);
         x = *(s32*)((u8*)lbl_80529DEC + 0xe8 + i * 4) + 5000;
         if (x > 14999) {
             x = 14999;
         } else if (x < 0) {
             x = 0;
         }
-        lbl_80506DE8[off + 7] = x >> 6;
-        p6->hi = x;
+        lbl_80506DE8[off + 7] = (x >> 6) & 0xff;
+        p6->hi = x & 0x3f;
     } else if (((s32*)lbl_80506D48)[i] == 1) {
         u8* g = (u8*)lbl_8053AAF8;
         u8* h = (u8*)lbl_8053AEC8;
         u8 g88 = g[0x88];
-        u8 t = *(s32*)(g + 0x4c) == 0xb;
+        BOOL t = *(s32*)(g + 0x4c) == 0xb;
         u8 cc;
         if (h != NULL && (h[0x40] == 1 || (u8)(h[0x40] - 3) <= 1 || h[0x40] == 6)) {
             cc = 1;
@@ -2155,12 +2150,12 @@ chain2:
                 r26 = fn_8023DE58(r25);
                 if (fn_802D7804(fn_802D6A9C(), r26, 0xc)) {
                     r26 = fn_8023DE58(r25);
-                    ((Rec5_80301CD0*)(e + 5))->two = *(u16*)((u8*)fn_802D6A9C() + 0x131b8 + r26 * 2) >> 2;
+                    e[5] = (e[5] & 0xCF) | ((*(u16*)((u8*)fn_802D6A9C() + 0x10000 + r26 * 2 + 0x31b8) << 2) & 0x30);
                 } else {
                     ((Rec5_80301CD0*)(e + 5))->two = (u8)fn_802351D8(r25) != 0;
                 }
                 r25 = fn_8023DE58(r25);
-                p4->two = *(u16*)((u8*)fn_802D6A9C() + 0x131b8 + r25 * 2) >> 12;
+                e[4] = (e[4] & 0x9F) | ((*(u16*)((u8*)fn_802D6A9C() + 0x10000 + r25 * 2 + 0x31b8) >> 7) & 0x60);
                 ((Rec5_80301CD0*)(e + 5))->b6 = (u8)(fn_80237060(i) - 1);
                 p5 = (Rec5_80301CD0*)(e + 5);
                 if (!fn_802DEBF8() && !fn_802DEBA0()) {
@@ -2241,8 +2236,7 @@ extern "C" s32 fn_8030905C(s32 self) {
 int j;
 *(void**)self=lbl_804AA8B8;
 for(s32 i=0;i<4;i++) {
-lbl_80504A28[i]=lbl_80504A18[i]=j=0;
-clearMessageEntries((MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380));
+clearMessageQueue(&lbl_80504A18[i], &lbl_80504A28[i], (MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380));
 for(j=0;j<0x2000;j++) ((u32*)(lbl_804DBC18+i*0x8000))[j]=0xcdcdcdcd;
 lbl_8053AD00[i]=0;
 ((u32*)lbl_80506D48)[i]=0;
