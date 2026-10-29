@@ -158,13 +158,13 @@ extern "C" void fn_80164834(char* this_) {
     i = 0;
     for (; i < 4; ++i) {
         s32 hit = fn_801F285C(this_, 0, 0, 0, i);
-        if (hit < 0) break;
+        if (hit < 0) continue;
         JGeometry::TVec3<f32> pos(p->field_0C);
         JGeometry::TVec2<f32> point;
         JGeometry::TBox2f box;
         box.set(*(JGeometry::TBox2f*)&p->field_60);
         box.addPos(pos.x, pos.y);
-        trapGetCenter(&box, &point);
+        trapGetCenter(&box, &point, lbl_8053D77C);
         if (fn_80237948(hit, &point.x)) {
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x117, 0, 1, 0, 0, 1);
             fn_8013CC50((void*)p->field_04, &p->field_0C, 1.0f, 0x118, 0, 1, 0, 0, 1);
