@@ -103,20 +103,16 @@ static int fpKind(f32 value)
     s32 exp = bits & 0x7f800000;
     s32 expMax = 0x7f800000;
     int kind;
-    if (exp == expMax) {
-        if ((bits & 0x7fffff) == 0) {
-            kind = 2;
-        } else {
-            kind = 1;
-        }
-    } else if (exp < 0x7f800000 && exp == 0) {
-        if ((bits & 0x7fffff) == 0) {
-            kind = 3;
-        } else {
-            kind = 5;
-        }
-    } else {
+    switch (exp) {
+    case 0x7f800000:
+        kind = (bits & 0x7fffff) ? 1 : 2;
+        break;
+    case 0:
+        kind = (bits & 0x7fffff) ? 5 : 3;
+        break;
+    default:
         kind = 4;
+        break;
     }
     return kind;
 }
