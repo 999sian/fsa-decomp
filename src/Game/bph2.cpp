@@ -82,8 +82,8 @@ static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) 
     m[2][2] = s * (cx * cy);
 }
 
-static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, const f32 a) {
-    f32 cy, cx, sz, sy, sx, cz;
+static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 scale) {
+    f32 sz, sy, sx, cz, cy, cx;
     sx = sin(lbl_8053E0C8);
     sy = sin(a);
     sz = sin(lbl_8053E0C8);
@@ -94,15 +94,15 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, const f32 a) {
     sxsy = sx * sy; cxsz = cx * sz; cxcz = cx * cz;
     sxsz = sx * sz; sxcz = sx * cz;
     rec.b1d = 2; rec.b1c = 1;
-    mtx[0][0] = 1.0f * (cy * cz);
-    mtx[1][0] = 1.0f * (cy * sz);
-    mtx[2][0] = 1.0f * -sy;
-    mtx[0][1] = 1.0f * (sxsy * cz - cxsz);
-    mtx[1][1] = 1.0f * (sxsy * sz + cxcz);
-    mtx[2][1] = 1.0f * (sx * cy);
-    mtx[0][2] = 1.0f * (cxcz * sy + sxsz);
-    mtx[1][2] = 1.0f * (cxsz * sy - sxcz);
-    mtx[2][2] = 1.0f * (cx * cy);
+    mtx[0][0] = scale * (cy * cz);
+    mtx[1][0] = scale * (cy * sz);
+    mtx[2][0] = scale * -sy;
+    mtx[0][1] = scale * (sxsy * cz - cxsz);
+    mtx[1][1] = scale * (sxsy * sz + cxcz);
+    mtx[2][1] = scale * (sx * cy);
+    mtx[0][2] = scale * (cxcz * sy + sxsz);
+    mtx[1][2] = scale * (cxsz * sy - sxcz);
+    mtx[2][2] = scale * (cx * cy);
 }
 
 // from src/Game/Bph2_SetVec2.cpp
