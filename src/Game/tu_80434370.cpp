@@ -96,7 +96,7 @@ extern "C" void fn_80434370(char* this_) {
             *(f32*)(this_ + 0x48) = fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_ + 0x4))->s13((u64)0x54613031))->getStringPtr(), 0xfc, 0, 0, 0);
         }
         char* p = (char*)((VtSlots*)*(void**)(this_ + 0x4))->s13((u64)0x54613031);
-        *(f32*)(this_ + 0x40) = 0.5f * ((*(f32*)(p + 0x28) - *(f32*)(p + 0x20)) - *(f32*)(this_ + 0x48) * f31);
+        *(f32*)(this_ + 0x40) = ((*(f32*)(p + 0x28) - *(f32*)(p + 0x20)) - *(f32*)(this_ + 0x48) * f31) * lbl_80543BC8;
     } else if (idx == 1) {
         if (*(u8*)(this_ + 0x6c) == 0) {
             if (*(u8*)(this_ + 0x69) == 1) {
@@ -116,7 +116,7 @@ extern "C" void fn_80434370(char* this_) {
             }
         }
         char* p = (char*)((VtSlots*)*(void**)(this_ + 0x4))->s13((u64)0x54613032);
-        *(f32*)(this_ + 0x40) = 0.5f * ((*(f32*)(p + 0x28) - *(f32*)(p + 0x20)) - *(f32*)(this_ + 0x4c) * f31);
+        *(f32*)(this_ + 0x40) = ((*(f32*)(p + 0x28) - *(f32*)(p + 0x20)) - *(f32*)(this_ + 0x4c) * f31) * lbl_80543BC8;
     } else if (idx == 2) {
         if (*(u8*)(this_ + 0x6c) == 1) {
             if (*(u8*)(this_ + 0x6a) == 1) {
@@ -507,6 +507,11 @@ extern "C" void* fn_804030C4(u32 tag, const char* name);
 extern "C" void fn_80440D78(void* p, void* r);
 extern "C" void fn_80440CE4(void* p, void* r);
 extern "C" f32 getRotate__7J2DPaneCFv(void* pane);
+static inline void* allocateMenuPane() {
+    void* pane = __nw__FUl(0x2c);
+    if (pane) *(char**)pane = lbl_804AF86C;
+    return pane;
+}
 extern "C" void* fn_804372C4(void* this_) {
     char* names = lbl_8048F598;
     *(char**)this_ = lbl_804B16A8;
