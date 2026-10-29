@@ -228,7 +228,7 @@ static inline void Rusa_Approach(f32* v, f32 target, s32 remain) {
     if (n < FLT_EPSILON) {
         *v = target;
     } else {
-        *v = *v + (lbl_8053FB14 / n) * (target - *v);
+        *v += (lbl_8053FB14 / n) * (target - *v);
     }
 }
 
