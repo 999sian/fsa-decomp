@@ -105,22 +105,21 @@ static inline void dgt2Rot(f32 (*m)[4], f32 th) {
     cA = cos(lbl_8053E1D8);
     cT = cos(th);
     cZ = cos(lbl_8053E1D8);
-    const f32 s = lbl_8053E1DC;
-    m[0][0] = s * (cT * cZ);
-    m[1][0] = s * (cT * sZ);
-    m[2][0] = s * -sT;
+    m[0][0] = lbl_8053E1DC * (cT * cZ);
+    m[1][0] = lbl_8053E1DC * (cT * sZ);
+    m[2][0] = lbl_8053E1DC * -sT;
     f32 sacz, sasz, cacz, casz, sast;
     sast = sA * sT;
     casz = cA * sZ;
     cacz = cA * cZ;
     sasz = sA * sZ;
     sacz = sA * cZ;
-    m[0][1] = s * (sast * cZ - casz);
-    m[1][1] = s * (sast * sZ + cacz);
-    m[2][1] = s * (sA * cT);
-    m[0][2] = s * (cacz * sT + sasz);
-    m[1][2] = s * (casz * sT - sacz);
-    m[2][2] = s * (cA * cT);
+    m[0][1] = lbl_8053E1DC * (sast * cZ - casz);
+    m[1][1] = lbl_8053E1DC * (sast * sZ + cacz);
+    m[2][1] = lbl_8053E1DC * (sA * cT);
+    m[0][2] = lbl_8053E1DC * (cacz * sT + sasz);
+    m[1][2] = lbl_8053E1DC * (casz * sT - sacz);
+    m[2][2] = lbl_8053E1DC * (cA * cT);
 }
 
 extern "C" void* fn_8018FB24(void* this_, s16 freeFlag) {
@@ -226,7 +225,7 @@ extern "C" void fn_8018EB94(void* this_) {
     char* p = (char*)this_;
     DrawRec rec;
     f32 mtx[3][4];
-    const f32 z = *(f32*)(p + 0x14);
+    f32 z = *(f32*)(p + 0x14);
     if ((*(u32*)(p + 0x240) & 1) != 0) {
         u8* r = (u8*)&rec;
         r[0x17] = 0;
@@ -244,14 +243,12 @@ extern "C" void fn_8018EB94(void* this_) {
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, *(f32*)(p + 0x270));
     rec.w18 = mtx;
-    rec.b1d = 2;
-    dgt2DrawAt(this_, 0x27, &rec, (JGeometry::TVec3<f32>*)(p + 0x294), z, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAtK(this_, 0x27, &rec, 2, (JGeometry::TVec3<f32>*)(p + 0x294), z, lbl_8053E1E0, lbl_8053E1E0);
 
     PSMTXIdentity(mtx);
     dgt2Rot(mtx, *(f32*)(p + 0x270));
     rec.w18 = mtx;
-    rec.b1d = 3;
-    dgt2DrawAt(this_, 0x26, &rec, (JGeometry::TVec3<f32>*)(p + 0x288), z, lbl_8053E1E0, lbl_8053E1E0);
+    dgt2DrawAtK(this_, 0x26, &rec, 3, (JGeometry::TVec3<f32>*)(p + 0x288), z, lbl_8053E1E0, lbl_8053E1E0);
 
     rec.b1d = 4;
     PSMTXIdentity(mtx);
