@@ -2052,6 +2052,22 @@ extern "C" void fn_803BF698(u8* p);
 extern "C" void fn_80402E08(void* a, f32 b, f32 c);
 extern "C" void fn_8040245C(void* a, s32 b, s32 c, u8 d, s32 e);
 extern "C" f64 lbl_80543468;
+static inline f32 cursorPulse(u8* p) {
+    f32 v = lbl_80543458;
+    s16 t = *(s16*)(p + 0xda);
+    if (t != 0) {
+        if (t < 5) {
+            v = lbl_805434A4 * (f32)(t * t) / lbl_805434A8;
+            *(s16*)(p + 0xda) = t + 1;
+        } else if (t < 10) {
+            v = lbl_805434A4 * (f32)((10 - t) * (10 - t)) / lbl_805434A8;
+            *(s16*)(p + 0xda) = t + 1;
+        } else {
+            *(s16*)(p + 0xda) = 0;
+        }
+    }
+    return v;
+}
 #pragma opt_propagation on
 extern "C" void fn_803C4054(u8* p) {
     f32 zero;
@@ -3495,10 +3511,7 @@ extern "C" void fn_803CABAC(u8* p) {
                 ((J2DPane*)*(void**)(*(u8**)(p + 0x34) + 4))->setAlpha(0);
                 fn_804023D0(*(void**)(p + 0x34), ((J2DPane*)*(void**)(p + 8))->search(0x5061636375723031ULL), *(u8*)(*(char**)(p + 0x34) + 0x28));
                 *(s16*)(*(char**)(p + 0x34) + 0x26) = 0;
-                setPicBlackWhiteKey(p, 0x50636f70623031ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
-                setPicBlackWhiteKey(p, 0x50636f70623032ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
-                setPicBlackWhiteKey(p, 0x5064656c623031ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
-                setPicBlackWhiteKey(p, 0x5064656c623032ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
+                setCopDelColors(p);
                 *(s16*)(*(char**)(p + 0x24) + 0x22) = 0;
                 *(s16*)(*(char**)(p + 0x24) + 0x26) = 0;
                 *(s16*)(*(char**)(p + 0x28) + 0x22) = 0;
@@ -3566,10 +3579,12 @@ extern "C" void fn_803CABAC(u8* p) {
         if (t != 0) {
             if (t < 5) {
                 v = lbl_805434A4 * (f32)(t * t) / lbl_805434A8;
-                *(s16*)(p + 0xda) = t + 1;
+                t++;
+                *(s16*)(p + 0xda) = t;
             } else if (t < 10) {
                 v = lbl_805434A4 * (f32)((10 - t) * (10 - t)) / lbl_805434A8;
-                *(s16*)(p + 0xda) = t + 1;
+                t++;
+                *(s16*)(p + 0xda) = t;
             } else {
                 *(s16*)(p + 0xda) = 0;
             }
