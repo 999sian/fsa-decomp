@@ -87,46 +87,129 @@ extern "C" Actor* fn_8022979C(Actor* p, s16 n) {
     return p;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_802297FC(Actor* this_) {
     u8* p = (u8*)this_;
-    SobDrawParam prm;
-    prm.reset();
+    void* pos;
+    s32 id;
+    DrawRec prm;
     switch ((*(u32*)(p + 0x90) >> 2) & 0x3f) {
     case 0:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 1:
-        sobDraw(p, 0, 0);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 0, 0, 0);
         break;
     case 2:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 3:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 4:
     case 14:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 5:
-        prm.m4C = 2;
-        prm.m5D = 1;
-        sobDraw(p, &prm, 1);
+        prm.b1c = 2;
+        prm.b2d = 1;
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, (SobDrawParam*)&prm);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 6:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 7:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 8:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     case 9:
-        sobDraw(p, 0, 1);
+        id = *(s32*)(p + 0x234);
+        pos = p + 0xc;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = (*(SobResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046ADF0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053FFD8, lbl_8053FFD8, 0);
+        }
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0xc, *(s32*)(p + 0x234), 0, 1, -1, 1, 0, 0);
         break;
     }
 }
+#pragma opt_propagation reset
+extern "C" s32 fn_80237774(u32 idx);
+extern "C" s32 lbl_80529DEC[];
+extern "C" u16 fn_8022461C(void* pos, u32 room);
+extern "C" u8 fn_80239D38(void);
+extern "C" u8 fn_80236B50(u32 idx);
+extern "C" u8 fn_80236AB4(u32 idx);
+extern "C" u8 fn_80235274(u32 idx);
+extern "C" void fn_802A20F0(void* mgr, void* pos, u32 idx, u32 room, s32 a, s32 b);
+extern "C" void* lbl_8053AC98;
+extern "C" const f32 lbl_8046ACC8[][2];
+extern "C" u8 fn_8022FA80(u32 idx);
+extern "C" s32 fn_8022F340(u32 idx);
+extern "C" u8 fn_8037E694(u32 idx);
+extern "C" const f32 lbl_8053FFDC;
+extern "C" const f32 lbl_8053FFE0;
+extern "C" const f32 lbl_8053FFE4;
+extern "C" const f32 lbl_8053FFE8;
+extern "C" const f32 lbl_8053FFEC;
+extern "C" const f32 lbl_8053FFF0;
+extern "C" const f32 lbl_8053FFF4;
 
 extern "C" void fn_80229F1C(Actor* this_) {
     u8* p = (u8*)this_;
