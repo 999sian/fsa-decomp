@@ -439,7 +439,8 @@ extern "C" void fn_8036003C(u8* p) {
         }
         f32 speed = *(f32*)(p + 0x268);
         f32 cosine = sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].cos;
-        *(f32*)(p + 0x3c) = cosine * speed;
+        cosine = speed * cosine;
+        *(f32*)(p + 0x3c) = cosine;
         *(f32*)(p + 0x40) = *(f32*)(p + 0x268) * sincosTable___5JMath[(*(s16*)(p + 0x254) >> 5) & 0x7ff].sin;
         *(JGeometry::TVec3<f32>*)(p + 0xc) += *(JGeometry::TVec3<f32>*)(p + 0x3c);
         *(s32*)(p + 0x264) += (s16)step;
