@@ -4252,7 +4252,7 @@ inline bool grabPadActive(char* p) {
     if (!ok) {
         return false;
     }
-    if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank6(p)) || U8(p, 0x11ea) == 0) {
+    if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != grabLinkRank(p)) || U8(p, 0x11ea) == 0) {
         return false;
     }
     return true;
