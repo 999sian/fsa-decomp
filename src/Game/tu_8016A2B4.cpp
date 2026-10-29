@@ -768,12 +768,12 @@ extern "C" void fn_8016D33C(u8* self) {
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JAudio/JAUSoundObject.h"
 
-static inline f32 effectRandom8016D398(u8* base=lbl_8053AAF8, const unsigned int multiplier=0x19660d) {
+static inline f32 effectRandom8016D398(u8* base=lbl_8053AAF8, const unsigned int multiplier=0x19660d, const f32 one=lbl_8053D93C) {
     volatile u32* seed=(volatile u32*)(base+0xb4);
     *seed=*seed*multiplier+0x3c6ef35f;
     union { u32 u; f32 f; } v;
     v.u=(*seed>>9)|0x3f800000;
-    return v.f-lbl_8053D93C;
+    return v.f-one;
 }
 
 static inline void positionEffectA8016D398(u8*);
