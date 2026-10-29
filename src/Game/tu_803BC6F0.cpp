@@ -2,6 +2,7 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "dolphin/os/OSTime.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "Game/FsaVObj.h"
 
 struct Tu803CE9ECObj {
     virtual void v0();
@@ -541,7 +542,7 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr w = *(Clr*)(p + 0xe8);
         Clr b = *(Clr*)(p + 0xfc);
         const u64* key = (const u64*)(table + 0x5d8);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &b, &w);
     }
     Clr c = *(Clr*)(p + 0xec);
@@ -550,28 +551,28 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x5c0);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x5a8);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x590);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
         Clr c2 = c;
         Clr d2 = d;
         const u64* key = (const u64*)(table + 0x578);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &d2, &c2);
     }
     {
@@ -580,7 +581,7 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr c2 = c;
         Clr n2 = n;
         const u64* key = (const u64*)(table + 0x560);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &n2, &c2);
     }
     Clr e = *(Clr*)(p + 0xf0);
@@ -589,35 +590,35 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x548);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &f2, &e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x530);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &f2, &e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x518);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &f2, &e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x500);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &f2, &e2);
     }
     {
         Clr e2 = e;
         Clr f2 = f;
         const u64* key = (const u64*)(table + 0x4e8);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &f2, &e2);
     }
     Clr g = *(Clr*)(p + 0xf4);
@@ -626,28 +627,28 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x6c8);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &h2, &g2);
     }
     {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x6b0);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &h2, &g2);
     }
     {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x698);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &h2, &g2);
     }
     {
         Clr g2 = g;
         Clr h2 = h;
         const u64* key = (const u64*)(table + 0x680);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &h2, &g2);
     }
     {
@@ -656,7 +657,7 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr g2 = g;
         Clr n2 = n;
         const u64* key = (const u64*)(table + 0x668);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &n2, &g2);
     }
     Clr i = *(Clr*)(p + 0xf8);
@@ -665,28 +666,28 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x650);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &j2, &i2);
     }
     {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x638);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &j2, &i2);
     }
     {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x620);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &j2, &i2);
     }
     {
         Clr i2 = i;
         Clr j2 = j;
         const u64* key = (const u64*)(table + 0x608);
-        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, key[idx]);
+        r = ((J2DPane*)*(void**)(p + 8))->search(key[idx]);
         (*(ColorVt**)r)->v76(r, &j2, &i2);
     }
 }
