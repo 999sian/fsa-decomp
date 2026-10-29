@@ -98,7 +98,7 @@ static inline void dgt2DrawAtK(void* this_, s32 idx, DrawRec* rec, s8 kind, cons
 }
 
 static inline void dgt2Rot(f32 (*m)[4], f32 th) {
-    f32 cZ, sZ, sT, sA, cT, cA;
+    f32 cZ, sZ, sA, sT, cT, cA;
     sA = sin(lbl_8053E1D8);
     sT = sin(th);
     sZ = sin(lbl_8053E1D8);
