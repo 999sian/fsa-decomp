@@ -82,7 +82,7 @@ static inline void bph2_rotScaleMtx(f32 m[3][4], f32 s, f32 rx, f32 ry, f32 rz) 
     m[2][2] = s * (cx * cy);
 }
 
-static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, const f32 a, const f32 scale) {
+static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, f32& a, const f32 scale) {
     f32 sz, sy, sx, cz, cx, cy;
     sx = sin(lbl_8053E0C8);
     sy = sin(a);
@@ -93,8 +93,8 @@ static inline void bph2_drawMtx(f32 mtx[3][4], DrawRec& rec, const f32 a, const 
     f32 cxcz = cx * cz;
     f32 cxsz = cx * sz;
     f32 sxsy = sx * sy;
-    f32 sxsz = sx * sz;
     f32 sxcz = sx * cz;
+    f32 sxsz = sx * sz;
     f32 cycz = cy * cz;
     f32 cysz = cy * sz;
     f32 m00 = scale * cycz;
