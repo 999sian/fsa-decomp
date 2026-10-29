@@ -81,7 +81,7 @@ extern "C" void fn_8017B1A0(char* this_) {
 extern "C" void fn_801F71A4(f32* p, f32 target, f32 a, f32 b);
 extern "C" u8 fn_801F2618(void* this_, JGeometry::TVec3<f32>* out, s32 b);
 extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, s32 c);
-extern "C" u8 fn_801F6758(JGeometry::TVec3<f32>* pos, u32 room, f32 r);
+extern "C" u8 fn_801F6758(JGeometry::TVec3<f32>* pos, f32 r, u32 room);
 extern "C" void fn_801EEC98(void* this_, void* room, s16* a, s32* dir, f32* dist, s32* player, s32 b, s32 c);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
 
@@ -166,14 +166,16 @@ extern "C" void fn_8017B3B4(Puku* p) {
             }
         }
         p->state = 1;
-    case 1:
+    case 1: {
+        f32 r = 16.0f;
         p->target.y = 0.3f * JMASinShort(p->phase);
-        if ((f32)__fabs(p->home.x - p->pos.x) > 96.0f + 16.0f * lbl_8053AAF8->rnd.get_ufloat_1()) {
+        f32 radius = 96.0f + 16.0f * lbl_8053AAF8->rnd.get_ufloat_1();
+        if ((f32)__fabs(p->home.x - p->pos.x) > radius) {
             far = 1;
         }
         p->phase += 300;
         if (p->timers[1] == 0 || blocked) {
-            if (blocked || fn_801F6758(&p->pos, p->room, 16.0f) || far == 1) {
+            if (blocked || fn_801F6758(&p->pos, p->room, r) || far == 1) {
                 s32 old = p->dir;
                 p->dir = 0;
                 if (p->home.x < p->pos.x) {
@@ -201,6 +203,7 @@ extern "C" void fn_8017B3B4(Puku* p) {
             }
         }
         break;
+    }
     case 2:
         pukuStop(p);
         if (p->big == 1) {
