@@ -81,6 +81,12 @@ extern "C" void fn_80285E58(char* p) {
     fn_8024CA20(p);
 }
 
+extern "C" void* fn_802D6A9C();
+static inline u8 playerRoomFlag(char* p) {
+    s32 room = *(s32*)(p + 0x3b4);
+    u8* base = (u8*)fn_802D6A9C() + 0x10000;
+    return base[room + 0x31df];
+}
 extern "C" void fn_80285F44(char* p) {
     s32 kind;
 
