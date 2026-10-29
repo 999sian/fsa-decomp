@@ -115,8 +115,10 @@ static inline void fn_8029E9EC_sub(const JGeometry::TVec2<f32>* pos, s32 room, u
 }
 static inline void fn_802A3164_sub(const JGeometry::TVec2<f32>* pos, s32 room, u16 param, s32 flag) {
     JGeometry::TVec2<f32> t;
-    t.y=pos->y;
-    t.x=pos->x;
+    f32 y = pos->y;
+    f32 x = pos->x;
+    t.y = y;
+    t.x = x;
     void* mgr = lbl_8053AC98;
     *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
     s32 tile = *(s32*)((u8*)mgr + 0x20);
@@ -1355,18 +1357,7 @@ extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, 
     u8 ret = 1;
     if (*(u16*)(this_ + 0x24) >= 0x40 && *(u16*)(this_ + 0x24) <= 0x44) {
         if (*(u16*)(this_ + 0x24) == 0x41) {
-            JGeometry::TVec2<f32> q;
-            q.y = pos->y;
-            q.x = pos->x;
-            void* mgr = lbl_8053AC98;
-            *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&q, room & 0xfe);
-            s32 tile = *(s32*)((u8*)mgr + 0x20);
-            fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, tile, 0x12);
-            s32 n = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((u8*)mgr + 0x20));
-            if (n != -1) {
-                fn_802D7D00(fn_802D6A9C(), room, n, 0);
-            }
+            fn_802A3164_sub(pos, room, 0x12, 0);
             s32 count = *(s32*)((char*)fn_801F856C() + 0x1008);
             s32 i, off;
             for (i = 0, off = 0; i < count; i++, off += 4) {
