@@ -110,8 +110,8 @@ static inline void tu80301_tickA(Elem28_80301CD0* p) {
 // This TU's .bss (0x804DBC18-0x805076E8), in retail order.
 static u8 lbl_804DBC18[0x20000];
 static u8 lbl_804FBC18[0x8E00];
-static int lbl_80504A18[4];
-static int lbl_80504A28[4];
+static s32 lbl_80504A18[4];
+static s32 lbl_80504A28[4];
 static Elem28_80301CD0 lbl_80504A38[4][16];
 static Elem28_80301CD0 lbl_80505438[4][40];
 static u32 lbl_80506D38[4];
