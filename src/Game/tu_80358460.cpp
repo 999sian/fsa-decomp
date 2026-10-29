@@ -194,6 +194,41 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
         }
     }
 }
+static inline void probeContactsCounter80358F98(u8* self, s32& i, f32* box, f32* v8) {
+    f32 d;
+    f32 py;
+    s8 r;
+    for (i = 0; i < 4; i++) {
+        u8* q = self + i;
+        q[0x246] = 0;
+        q[0x24a] = 0;
+        if (!fn_8023F264(i)) continue;
+        q[0x246] = fn_8035AE9C(self, (void*)i);
+        fn_801F317C(self, box);
+        py = *(f32*)(self + 0x10);
+        f32 c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
+        box[1] = c * (box[1] - py) + py;
+        box[3] = c * (box[3] - py) + py;
+        if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
+            d = py - v8[1];
+            if (self[0x24e] != 0 && lbl_8054286C == d) {
+                d = lbl_8054287C;
+            }
+            if (self[0x24e] == 0 && __fabsf(d) <= lbl_80542880) {
+                d = lbl_8054286C;
+            }
+            *(f32*)(self + 0x240) += lbl_80542884 * d;
+            if (d >= lbl_8054286C) {
+                r = 1;
+            } else {
+                r = -1;
+            }
+        } else {
+            r = 0;
+        }
+        q[0x24a] = r;
+    }
+}
 static inline void pushOpposedCounter80358F98(u8* self, s32& a, s32& b) {
     Vec8035A860 cv;
     for (a = 0; a < 4; a++) {
@@ -511,11 +546,12 @@ extern "C" void fn_80358F98(u8* self) {
         }
     }
     *(f32*)(self + 0x240) = lbl_8054286C;
-    for (s32 n = 0; n < 4; n++) {
-        self[0x246 + n] = 0;
-        self[0x24a + n] = 0;
+    for (int n = 0; n < 4; n++) {
+        u8* q = self + n;
+        q[0x246] = 0;
+        q[0x24a] = 0;
         if (!fn_8023F264(n)) continue;
-        self[0x246 + n] = fn_8035AE9C(self, (void*)n);
+        q[0x246] = fn_8035AE9C(self, (void*)n);
         fn_801F317C(self, box);
         py = *(f32*)(self + 0x10);
         f32 c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
@@ -538,16 +574,16 @@ extern "C" void fn_80358F98(u8* self) {
         } else {
             r = 0;
         }
-        self[0x24a + n] = r;
+        q[0x24a] = r;
     }
     if (((s8)self[0x24a] | (s8)self[0x24b] | (s8)self[0x24c] | (s8)self[0x24d]) != 0 &&
         lbl_8054286C != *(f32*)(self + 0x240)) {
         fn_801F0D20(self, 3);
     }
     applyRotationCounter803597EC(self, i);
-    for (s32 a = 0; a < 4; a++) {
+    for (int a = 0; a < 4; a++) {
         if ((s8)self[0x24a + a] != 0) {
-            for (s32 b = 0; b < 4; b++) {
+            for (int b = 0; b < 4; b++) {
                 u8 t;
                 if (!fn_8022F514((void*)b) && (s8)self[0x24a + b] == 0 && (s8)(t = self[0x246 + b]) != 0 &&
                     (s8)self[0x24a + a] * (s8)t < 0) {
