@@ -225,6 +225,16 @@ extern "C" const f32 lbl_8053FFEC;
 extern "C" const f32 lbl_8053FFF0;
 extern "C" const f32 lbl_8053FFF4;
 
+static inline void spawnSplashAt(u8* p, const f32 (*tbl)[2], s32 start, s32 n) {
+    const f32* t = tbl[start];
+    for (s32 i = 0; i < n; i++, t += 2) {
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
+        pos.x = pos.x + t[0];
+        pos.y = pos.y + t[1];
+        fn_802A20F0(lbl_8053AC98, &pos, *(u32*)(p + 0x90) & 3, *(u32*)(p + 0x4), 0, 1);
+    }
+}
+
 static inline bool playerAtGoal(u32 idx) {
     return fn_80237774(idx) == lbl_80529DEC[idx + 0x36];
 }
@@ -237,8 +247,8 @@ static inline u8 playerLinkState(u32 idx) {
 extern "C" void fn_80229F1C(Actor* this_) {
     u8* p = (u8*)this_;
     const f32 (*tbl)[2] = lbl_8046ACC8;
-    const f32* t;
     s32 i;
+    const f32* t;
     *(u32*)(p + 0x230) = *(u32*)(p + 0x230) + 1;
     u32 flags = *(u32*)(p + 0x90);
     switch ((flags >> 2) & 0x3f) {
@@ -258,9 +268,9 @@ extern "C" void fn_80229F1C(Actor* this_) {
     case 1: {
         JGeometry::setTVec3f(fn_8023E724(flags & 3), (f32*)(p + 0xc));
         *(s32*)(p + 0x234) = ((*(u32*)(p + 0x230) >> 1) & 7) + 0x7d;
-        u32 idx = *(u32*)(p + 0x90) & 3;
-        s32 r = fn_80237774(idx);
-        if (r == lbl_80529DEC[idx + 0x36]) {
+        s32 player = *(u32*)(p + 0x90) & 3;
+        s32 r = fn_80237774(player);
+        if (r == lbl_80529DEC[player + 0x36]) {
             *(u8*)(p + 0x11c) = 0;
         }
         break;
