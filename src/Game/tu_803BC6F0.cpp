@@ -422,6 +422,13 @@ static inline void setPicBlackWhiteKey(u8* p, u64 key, const JUtility::TColor& b
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
 
+static inline void setCopDelColors(u8* p) {
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+}
+
 #pragma opt_common_subs off
 extern "C" void fn_803BD5E0(u8* p, u32 idx) {
     const Tu803BKeyTbl* t = (const Tu803BKeyTbl*)lbl_804765D0;
@@ -3429,6 +3436,7 @@ extern "C" void fn_803CABAC(u8* p) {
     f32 zero;
     f32 v;
     s32 i;
+    s16 t;
 
     if (fn_80309C4C(lbl_8053AD30, 0x1100, 1) != 0) {
         switch (*(s32*)(p + 0xa0)) {
@@ -3446,7 +3454,7 @@ extern "C" void fn_803CABAC(u8* p) {
             lbl_80529DEC[0x23b] = *(s32*)(p + 0xa4);
             break;
         case 1:
-            if (lbl_8053AAF8[0xff] != 0) {
+            if ((s32)lbl_8053AAF8[0xff] != 0) {
                 if (*(s32*)(p + 0xa4) == 0) {
                     if (*(u64*)(lbl_8050EC80 + 0xe8) == 0) {
                         *(s32*)(p + 0xa0) = 1;
@@ -3477,7 +3485,7 @@ extern "C" void fn_803CABAC(u8* p) {
             }
             return;
         case 2:
-            if (lbl_8053AAF8[0xff] != 0 && *(u64*)(lbl_8050EC80 + *(s32*)(p + 0xa4) * 200 + 0x20) != 0) {
+            if ((s32)lbl_8053AAF8[0xff] != 0 && *(u64*)(lbl_8050EC80 + *(s32*)(p + 0xa4) * 200 + 0x20) != 0) {
                 p[0x114] = 1;
                 *(s32*)(p + 0x84) = 0x5e;
                 fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466743031ULL)), *(s32*)(p + 0x84), 0, 0, 0);
@@ -3487,10 +3495,10 @@ extern "C" void fn_803CABAC(u8* p) {
                 ((J2DPane*)*(void**)(*(u8**)(p + 0x34) + 4))->setAlpha(0);
                 fn_804023D0(*(void**)(p + 0x34), ((J2DPane*)*(void**)(p + 8))->search(0x5061636375723031ULL), *(u8*)(*(char**)(p + 0x34) + 0x28));
                 *(s16*)(*(char**)(p + 0x34) + 0x26) = 0;
-                ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
-                ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x50636f70623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
-                ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623031ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
-                ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(0x5064656c623032ULL))->setBlackWhite(*(JUtility::TColor*)(p+0xe4),*(JUtility::TColor*)(p+0xe0));
+                setPicBlackWhiteKey(p, 0x50636f70623031ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
+                setPicBlackWhiteKey(p, 0x50636f70623032ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
+                setPicBlackWhiteKey(p, 0x5064656c623031ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
+                setPicBlackWhiteKey(p, 0x5064656c623032ULL, *(JUtility::TColor*)(p+0xe4), *(JUtility::TColor*)(p+0xe0));
                 *(s16*)(*(char**)(p + 0x24) + 0x22) = 0;
                 *(s16*)(*(char**)(p + 0x24) + 0x26) = 0;
                 *(s16*)(*(char**)(p + 0x28) + 0x22) = 0;
@@ -3510,10 +3518,10 @@ extern "C" void fn_803CABAC(u8* p) {
             fn_803C21A8(p);
             break;
         }
-        if (*(s32*)(p + 0xa0) == 3) {
-            fn_80458880(lbl_8053AF80, 0xc, -1);
-        } else {
+        if (*(s32*)(p + 0xa0) != 3) {
             fn_80458880(lbl_8053AF80, 0xb, -1);
+        } else {
+            fn_80458880(lbl_8053AF80, 0xc, -1);
         }
     } else if (fn_80309C4C(lbl_8053AD30, 0x200, 1) != 0) {
         fn_803C21A8(p);
@@ -3554,13 +3562,14 @@ extern "C" void fn_803CABAC(u8* p) {
 
     if (p[0x110] == 0x13) {
         v = lbl_80543458;
-        if (*(s16*)(p + 0xda) != 0) {
-            if (*(s16*)(p + 0xda) < 5) {
-                v = lbl_805434A4 * (f32)(*(s16*)(p + 0xda) * *(s16*)(p + 0xda)) / lbl_805434A8;
-                *(s16*)(p + 0xda) = *(s16*)(p + 0xda) + 1;
-            } else if (*(s16*)(p + 0xda) < 10) {
-                v = lbl_805434A4 * (f32)((10 - *(s16*)(p + 0xda)) * (10 - *(s16*)(p + 0xda))) / lbl_805434A8;
-                *(s16*)(p + 0xda) = *(s16*)(p + 0xda) + 1;
+        t = *(s16*)(p + 0xda);
+        if (t != 0) {
+            if (t < 5) {
+                v = lbl_805434A4 * (f32)(t * t) / lbl_805434A8;
+                *(s16*)(p + 0xda) = t + 1;
+            } else if (t < 10) {
+                v = lbl_805434A4 * (f32)((10 - t) * (10 - t)) / lbl_805434A8;
+                *(s16*)(p + 0xda) = t + 1;
             } else {
                 *(s16*)(p + 0xda) = 0;
             }
