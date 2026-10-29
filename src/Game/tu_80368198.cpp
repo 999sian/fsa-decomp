@@ -437,7 +437,21 @@ extern "C" void fn_80387494(s32 a);
 extern "C" void fn_803676CC(void* = 0);
 extern "C" void detach__5ActorFv(void* self);
 extern "C" void fn_8030C210(void* eff, Vec3f* v);
+extern f32 lbl_80542CA0;
+extern "C" void fn_801D1C18(void*);
+extern "C" void fn_8036AA60(char*);
+static inline s32 cutsceneFlag(s32 idx,s32 bit) {
+    if(idx<0 || idx>7)return 0;
+    if(bit<0 || bit>3)return 0;
+    u32 mask=1 << (bit+idx*4);
+    return (mask & *(u32*)(lbl_8050EC80+*(s32*)(lbl_8050EC80+0x10)*200+0x28))!=0;
+}
+
 void Unk8036C300::state0() {
+    Vec3f v;
+    Vec3f camera;
+    JGeometry::TVec3f loopPos;
+    JGeometry::TVec3f spawnPos;
     char* self = (char*)this;
     if (*(s32*)(self + 0x258) != 0) {
         *(s32*)(self + 0x258) = *(s32*)(self + 0x258) - 1;
@@ -468,13 +482,13 @@ void Unk8036C300::state0() {
             s32 st = *(s32*)(self + 0x240);
             if (st >= 5 && st <= 13) {
                 *(u8*)((char*)lbl_8053AAF8 + 0x85) = 2;
-                if (fn_80309C4C(lbl_8053AD30, 0x1000, -1) != 0) {
+                if ((void*)fn_80309C4C(lbl_8053AD30, 0x1000, -1) != 0) {
                     *(s32*)(self + 0x240) = 0xd;
                     fn_80387494(0);
                     fn_8011921C();
                     fn_801183BC();
                     if (*(void**)(self + 0x230) != 0) {
-                        fn_803676CC();
+                        fn_803676CC(*(void**)(self+0x230));
                         detach__5ActorFv(*(void**)(self + 0x230));
                         *(s32*)(self + 0x230) = 0;
                     }
@@ -482,33 +496,33 @@ void Unk8036C300::state0() {
             }
         }
     }
-    if (*(s32*)(self + 0x240) <= 5 && ((u8*)fn_8016A3AC())[0x1ef] == 0 && *(s32*)(self + 0x398) == 0) {
+    if (*(s32*)(self + 0x240) <= 5 && ((u8*)fn_8016A3AC())[0x1ef] == 0 && *(void**)(self + 0x398) == 0) {
         *(void**)(self + 0x398) = fn_8013CC50(*(u32*)(self + 4), self + 0xc, lbl_80542C58, 0x54c, 0, 1, 0, 0, 1);
     }
     {
-        s32 st = *(s32*)(self + 0x240);
-        Vec3f v;
-        if (st >= 2 && st != 0x11) {
-            if (st >= 3 && st < 0xe) {
-                char* p = *(char**)((char*)lbl_8053AB10 + 0x30);
+        
+        if (*(s32*)(self+0x240) >= 2 && *(s32*)(self+0x240) != 0x11) {
+            if (*(s32*)(self+0x240) >= 3 && *(s32*)(self+0x240) < 0xe) {
+                u8* p = *(u8**)((char*)lbl_8053AB10 + 0x30);
                 if (p[0x284] == 0) {
                     p[0x284] = 1;
                     *(f32*)(p + 0x28c) = lbl_80542C7C;
                 }
             }
             v.x = *(f32*)(self + 0xc);
-            v.y = *(f32*)(self + 0x10) + (lbl_80542C80 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_80542C84));
+            v.y = *(f32*)(self + 0x10);
             v.z = *(f32*)(self + 0x14);
-            if (st == 5) {
+            v.y += lbl_80542C80 + ((*(f32*)(self + 0x28) - *(f32*)(self + 0x10)) - lbl_80542C84);
+            if (*(s32*)(self+0x240) == 5) {
                 v.y = v.y + lbl_80542CB4;
             }
-            if (st >= 8 && st < 0xa) {
+            if (*(s32*)(self+0x240) >= 8 && *(s32*)(self+0x240) < 0xa) {
                 v.y = v.y + lbl_80542CB4;
             }
-            if (st >= 3) {
-                char* eff = *(char**)((char*)lbl_8053AB10 + 0x24);
+            if (*(s32*)(self+0x240) >= 3) {
+                u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
                 eff[0x179] = 1;
-                eff = *(char**)((char*)lbl_8053AB10 + 0x24);
+                eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
                 if (eff[0x7f5] == 0) {
                     eff[0x7f4] = 1;
                     *(s32*)(eff + 0x7f8) = 5;
@@ -521,7 +535,7 @@ void Unk8036C300::state0() {
             } else {
                 fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
                 {
-                    char* eff = *(char**)((char*)lbl_8053AB10 + 0x24);
+                    u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
                     if (eff[0x7f5] == 0) {
                         eff[0x7f4] = 1;
                         *(s32*)(eff + 0x7f8) = 4;
@@ -534,6 +548,121 @@ void Unk8036C300::state0() {
             }
         }
     }
+
+    switch(*(s32*)(self+0x240)) {
+    case 0:
+        fn_80458FF0(lbl_8053AF80,0x100001b,0,0);
+        ((Sub8036C0EC*)this)->v24(1);
+        break;
+    case 3:
+        for(s32 i=0;i<4;i++) {
+            loopPos=*fn_8023E724(i);
+            u16 angle=fn_8023CBC0(i);
+            fn_80230498(i,&loopPos,angle,0,-128,-128,1);
+        }
+        if(*(s32*)((char*)fn_8011921C()+8)==0x1b8)fn_80458F9C(lbl_8053AF80,60);
+        break;
+    case 4:
+        fn_801CD950((f32*)(self+0x284),0.02f,0.0004f);
+        fn_801CD950((f32*)(self+0x27c),0.15f,0.01f);
+        *(f32*)(self+0x10)-=*(f32*)(self+0x27c);
+        if(*(f32*)(self+0x10)<=*(f32*)(self+0x28)-48.0f) {
+            *(f32*)(self+0x10)=*(f32*)(self+0x28)-48.0f;
+        }
+        *(s32*)(self+0x24c)+=2;
+        if(*(s32*)(self+0x24c)>=225)*(s32*)(self+0x24c)=225;
+        break;
+    case 5:
+        *(s32*)(self+0x24c)=225;
+        if(*(s32*)(self+0x258)!=0) {
+            if(*(s32*)(self+0x258)==1) {
+                u8* mode=*(u8**)((char*)sManager__8JUTVideo+4);
+                v.x=(f32)(s32)*(u16*)(mode+4)*lbl_80542CA4;
+                v.y=(f32)(s32)*(u16*)(mode+6)*lbl_80542CA4;
+                v.z=lbl_80542C6C;
+                v.y+=-16.0f;
+                fn_8022FE80(0,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+                spawnPos=*(JGeometry::TVec3f*)&v;
+                if(fn_8038BD08(0,lbl_80474C68[*(s32*)(self+0x268)],*(s32*)(self+4),&spawnPos,0x62)) {
+                    *(s32*)(self+0x268)+=1;
+                    fn_80118454(fn_8011921C());
+                }
+            }
+        } else {
+            fn_8022FE80(0,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+            if(fn_803865B8(0)) {
+                fn_80388EEC(0);
+                ((Sub8036C0EC*)this)->v24(6);
+            }
+        }
+        break;
+    case 6: {
+        *(s32*)(self+0x24c)=225;
+        u8* mgr=*(u8**)((char*)lbl_8053AB10+0x24);
+        camera.x=-*(f32*)(mgr+0x10);
+        camera.y=-*(f32*)(mgr+0x20);
+        camera.z=lbl_80542C6C;
+        if(PSVECDistance((Vec*)&v,(Vec*)&camera)<0.1f)((Sub8036C0EC*)this)->v24(7);
+        break;
+    }
+    case 7:
+        *(s32*)(self+0x24c)=225;
+        fn_8022FE80(0,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+        if(fn_803865B8(0)) {
+            fn_80388EEC(0);
+            ((Sub8036C0EC*)this)->v24(8);
+        }
+        break;
+    case 8: {
+        *(s32*)(self+0x24c)=225;
+        u8* mgr=*(u8**)((char*)lbl_8053AB10+0x24);
+        camera.x=-*(f32*)(mgr+0x10);
+        camera.y=-*(f32*)(mgr+0x20);
+        camera.z=lbl_80542C6C;
+        if(PSVECDistance((Vec*)&v,(Vec*)&camera)<0.1f) {
+            ((Sub8036C0EC*)this)->v24(9);
+            *(s32*)(*(u8**)(self+0x230)+0x238)=2;
+        }
+        break;
+    }
+    case 10: {
+        *(s32*)(self+0x24c)=225;
+        u8* mgr=*(u8**)((char*)lbl_8053AB10+0x24);
+        camera.x=-*(f32*)(mgr+0x10);
+        camera.y=-*(f32*)(mgr+0x20);
+        camera.z=lbl_80542C6C;
+        if(!(PSVECDistance((Vec*)&v,(Vec*)&camera)>=0.1f)) {
+            fn_8022FE80(0,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+            if(fn_803865B8(0)) {
+                fn_80388EEC(0);
+                ((Sub8036C0EC*)this)->v24(11);
+                *(s32*)(*(u8**)(self+0x230)+0x238)=6;
+            }
+        }
+        break;
+    }
+    case 9:case 11: *(s32*)(self+0x24c)=225; break;
+    case 12:
+        *(s32*)(self+0x24c)=225;
+        if(*(s32*)(self+0x258)==0)((Sub8036C0EC*)this)->v24(13);
+        break;
+    case 13:
+        *(s32*)(self+0x24c)=225;
+        if(!*((u8*)fn_8011921C()+1))fn_801CD950((f32*)(self+0x284),0.0f,lbl_80542CA0);
+        fn_8022FE80(0,*(s32*)(self+4),*(s32*)(self+0x198),1,0);
+        if(fn_803865B8(0)) {
+            fn_80388EEC(0);
+            fn_8011921C();
+            fn_801183BC();
+        }
+        break;
+    case 17: break;
+    }
+    if(*((u8*)self+0x237)) {
+        *(f32*)(self+0x280)+=*(f32*)(self+0x284);
+        fn_801D1C18(self+0x318);
+    }
+    if(*((u8*)self+0x234))fn_8036AA60(self);
 }
 
 extern "C" void* fn_8013C824(void);
