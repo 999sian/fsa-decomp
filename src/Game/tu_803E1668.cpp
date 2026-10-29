@@ -168,6 +168,9 @@ extern "C" void fn_803E1668(u8* p) {
 #pragma dont_inline reset
 
 #pragma dont_inline reset
+extern "C" s32 fn_80403414(s32);
+extern "C" s32 fn_804033D4(s32);
+extern "C" s32 fn_8040336C(s32);
 extern "C" s32 fn_80403070(s32);
 extern "C" s32 fn_8040305C(s32);
 extern "C" void* fn_804030C4(u32, const char*);
