@@ -192,28 +192,27 @@ extern "C" void fn_80212F14(char* a);
 extern "C" void detach__5ActorFv(char* p);
 
 static inline void Rusa_Exit(char* p) {
+    s32 v;
     switch (*(s32*)(p + 0x248)) {
-    case 1: {
-        s32 id = *(s32*)(p + 0x388);
-        if (id >= 0) {
-            char* a = fn_801F666C(fn_801F856C(), id);
+    case 1:
+        v = *(s32*)(p + 0x388);
+        if (v >= 0) {
+            char* a = fn_801F666C(fn_801F856C(), v);
             if (a != 0) {
                 fn_80212ECC(a);
             }
         }
-        s32 sw = *(s32*)(p + 0x2b8);
-        if (sw != 0) {
-            fn_802D8050(fn_802D6A9C(), sw, 1, 0xff);
+        v = *(s32*)(p + 0x2b8);
+        if (v != 0) {
+            fn_802D8050(fn_802D6A9C(), v, 1, 0xff);
         }
         break;
-    }
-    case 6: {
-        s32 sw = *(s32*)(p + 0x2b8);
-        if (sw != 0) {
-            fn_802D8050(fn_802D6A9C(), sw, 0, 0xff);
+    case 6:
+        v = *(s32*)(p + 0x2b8);
+        if (v != 0) {
+            fn_802D8050(fn_802D6A9C(), v, 0, 0xff);
         }
         break;
-    }
     }
 }
 
