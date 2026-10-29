@@ -513,6 +513,20 @@ static inline void WRTC_moveTowards(u8* self,const volatile JGeometry::TVec3f& o
     }
 }
 
+static inline void WRTC_moveTowards(u8* self,WrtcVec out,const f32 k) {
+    if(fn_801F3D94(self,1)==0){
+        s32 idx=fn_801F285C(self,0,0,1,-1);
+        if(idx>=0){
+            JGeometry::TVec2f pos(*(f32*)(self+0xc),*(f32*)(self+0x10));
+            fn_80238548(idx,0,(f32*)&pos,0x10);
+        }
+        *(f32*)(self+0xc)=(f32)(s32)(lbl_8053BFD4*(out.x-*(f32*)(self+0xc)))*lbl_8053BFD0*k+*(f32*)(self+0xc);
+        *(f32*)(self+0x10)=(f32)(s32)(lbl_8053BFD4*(out.y-*(f32*)(self+0x10)))*lbl_8053BFD0*k+*(f32*)(self+0x10);
+        *(f32*)(self+0x14)=(f32)(s32)(lbl_8053BFD4*(out.z-*(f32*)(self+0x14)))*lbl_8053BFD0*k+*(f32*)(self+0x14);
+        fn_801F2B7C(self,2,-1,1);
+    }
+}
+
 static inline JGeometry::TVec3f WRTC_circlePosition(u8* p) {
     u32 n=p[0x2ac];
     s32 kind,step;
@@ -551,25 +565,29 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,f32& k) {
 
 extern "C" void fn_800F953C(void* this_) {
     u8* self=(u8*)this_;
-    JGeometry::TVec3f out;
+    volatile JGeometry::TVec3f out;
     f32 k;
     *(s32*)(self+0xb0)=0x80004;
     self[0x1a8]=1;
     u8* p=*(u8**)(self+0x240);
     s32 state=*(s32*)(p+0x230);
     if(state==3){
-        out.set(WRTC_circlePosition(p));
+        const JGeometry::TVec3f& v=WRTC_circlePosition(p);
+        out.x=v.x;out.y=v.y;out.z=v.z;
         k=lbl_8053BFC0;
         self[0x249]=1;
     }else if(state==4){
-        out.set(WRTC_linePosition(p,k));
+        const JGeometry::TVec3f& v=WRTC_linePosition(p,k);
+        out.x=v.x;out.y=v.y;out.z=v.z;
         self[0x249]=1;
     }else if(state==1){
-        out.set(WRTC_circlePosition(p));
+        const JGeometry::TVec3f& v=WRTC_circlePosition(p);
+        out.x=v.x;out.y=v.y;out.z=v.z;
         k=lbl_8053C028;
         self[0x249]=1;
     }else{
-        out.set(WRTC_circlePosition(p));
+        const JGeometry::TVec3f& v=WRTC_circlePosition(p);
+        out.x=v.x;out.y=v.y;out.z=v.z;
         k=lbl_8053C00C;
         self[0x249]=0;
     }
