@@ -177,6 +177,7 @@ extern "C" void* fn_804030C4(u32, const char*);
 extern const char* lbl_804B0AD8[];
 extern const s16 lbl_80543648[4];
 extern const f32 lbl_80543690;
+static inline ResTIMG* MenuDigit803E(s32 n) { return (ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[n]); }
 extern "C" void fn_803E29C8(u8* param_1) {
     fn_8043670C(*(void**)(param_1 + 0x5c), 0);
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
@@ -193,19 +194,23 @@ extern "C" void fn_803E2A20(u8* p) {
     const u64 *aa,*bb,*cc,*dd;
     u8* base = lbl_80477970;
     const u64* group = (const u64*)(base + 0xf08);
-    const u64* hundredsA = (const u64*)(base + 0xaa0);
+    u8* row = p;
     const u64* hundredsB = (const u64*)(base + 0xac0);
     const u64* tensA = (const u64*)(base + 0xa60);
     const u64* tensB = (const u64*)(base + 0xa80);
     const u64* onesA = (const u64*)(base + 0xa20);
     const u64* onesB = (const u64*)(base + 0xa40);
-    const u64* status = (const u64*)(base + 0x9e0);
+    const u64* status;
+    const u64* statusBase;
+
     const u64* a = (const u64*)(base + 0xba8);
     const u64* b = (const u64*)(base + 0xc68);
     const u64* c = (const u64*)(base + 0xd28);
     const u64* d = (const u64*)(base + 0xde8);
-    u8* row = p;
     s32 i;
+    const u64* hundredsA = (const u64*)(base + 0xaa0);
+    statusBase=(const u64*)(base+0x9e0);
+    status = statusBase;
     for (i=0; i<4; i++, row+=4, group++, hundredsA++, hundredsB++, tensA++, tensB++, onesA++, onesB++, status++, a+=6,b+=6,c+=6,d+=6) {
         if(i>=1) {
             if(i>*(s32*)(p+0x1bc)) (*(J2DPane**)(p+0x10))->search(group[-1])->show();
@@ -215,33 +220,57 @@ extern "C" void fn_803E2A20(u8* p) {
         *(s32*)(row+0x200)=fn_804033D4(i);
         *(s32*)(row+0x210)=fn_8040336C(i);
         s32 value=fn_80403070(*(s32*)(row+0x1f0));
-        void* texture=fn_804030C4('TIMG',lbl_804B0AD8[value/100]);
+        ResTIMG* texture=(ResTIMG*)fn_804030C4('TIMG',lbl_804B0AD8[value/100]);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*hundredsA))->changeTexture((ResTIMG*)texture,0);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*hundredsB))->changeTexture((ResTIMG*)texture,0);
-        texture=fn_804030C4('TIMG',lbl_804B0AD8[value%100/10]);
+        texture=(ResTIMG*)fn_804030C4('TIMG',lbl_804B0AD8[value%100/10]);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*tensA))->changeTexture((ResTIMG*)texture,0);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*tensB))->changeTexture((ResTIMG*)texture,0);
-        texture=fn_804030C4('TIMG',lbl_804B0AD8[value%10]);
+        texture=(ResTIMG*)fn_804030C4('TIMG',lbl_804B0AD8[value%10]);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*onesA))->changeTexture((ResTIMG*)texture,0);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*onesB))->changeTexture((ResTIMG*)texture,0);
         max=fn_8040305C(*(s32*)(row+0x200))-1;
         aa=a;bb=b;cc=c;dd=d;
         for(j=0;j<6;j++,aa++,bb++,cc++,dd++){
             if(j<max){
-                (*(J2DPane**)(p+0x10))->search(*aa)->show();
-                (*(J2DPane**)(p+0x10))->search(*bb)->show();
-                (*(J2DPane**)(p+0x10))->search(*cc)->hide();
-                (*(J2DPane**)(p+0x10))->search(*dd)->hide();
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*aa);
+                u64 tag=*bb;
+                pane->show();
+                (*(J2DPane**)(p+0x10))->search(tag)->show();
+                }
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*cc);
+                u64 tag=*dd;
+                pane->hide();
+                (*(J2DPane**)(p+0x10))->search(tag)->hide();
+                }
             }else if(j==max){
-                (*(J2DPane**)(p+0x10))->search(*aa)->hide();
-                (*(J2DPane**)(p+0x10))->search(*bb)->hide();
-                (*(J2DPane**)(p+0x10))->search(*cc)->show();
-                (*(J2DPane**)(p+0x10))->search(*dd)->show();
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*aa);
+                u64 tag=*bb;
+                pane->hide();
+                (*(J2DPane**)(p+0x10))->search(tag)->hide();
+                }
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*cc);
+                u64 tag=*dd;
+                pane->show();
+                (*(J2DPane**)(p+0x10))->search(tag)->show();
+                }
             }else{
-                (*(J2DPane**)(p+0x10))->search(*aa)->hide();
-                (*(J2DPane**)(p+0x10))->search(*bb)->hide();
-                (*(J2DPane**)(p+0x10))->search(*cc)->hide();
-                (*(J2DPane**)(p+0x10))->search(*dd)->hide();
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*aa);
+                u64 tag=*bb;
+                pane->hide();
+                (*(J2DPane**)(p+0x10))->search(tag)->hide();
+                }
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*cc);
+                u64 tag=*dd;
+                pane->hide();
+                (*(J2DPane**)(p+0x10))->search(tag)->hide();
+                }
             }
         }
         (*(J2DPane**)(p+0x10))->search(*status)->hide();
@@ -251,7 +280,7 @@ extern "C" void fn_803E2A20(u8* p) {
     row=p;u8* counter=p;
     const u64* normal=(const u64*)(base+0x9a0);
     const u64* selected=(const u64*)(base+0x9c0);
-    status=(const u64*)(base+0x9e0);
+    status=statusBase;
     for(i=0;i<4;i++,row+=4,counter+=2,normal++,selected++,status++){
         if(i<=*(s32*)(p+0x1bc)){
             fn_80402E08(*(void**)(row+0x68),lbl_80543664,lbl_80543690);
@@ -262,21 +291,37 @@ extern "C" void fn_803E2A20(u8* p) {
         *(s32*)(row+0x1e0)=30;
         if(i<=*(s32*)(p+0x1bc)){
             if(*(s32*)(row+0x1c0)<3){
-                (*(J2DPane**)(p+0x10))->search(*normal)->hide();
-                (*(J2DPane**)(p+0x10))->search(*selected)->show();
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*normal);
+                u64 tag=*selected;
+                pane->hide();
+                (*(J2DPane**)(p+0x10))->search(tag)->show();
+                }
                 (*(J2DPane**)(p+0x10))->search(*status)->hide();
             }else if(*(s32*)(row+0x1c0)==3){
-                (*(J2DPane**)(p+0x10))->search(*normal)->hide();
-                (*(J2DPane**)(p+0x10))->search(*selected)->show();
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*normal);
+                u64 tag=*selected;
+                pane->hide();
+                (*(J2DPane**)(p+0x10))->search(tag)->show();
+                }
                 (*(J2DPane**)(p+0x10))->search(*status)->show();
             }else{
-                (*(J2DPane**)(p+0x10))->search(*normal)->show();
-                (*(J2DPane**)(p+0x10))->search(*selected)->hide();
+                {
+                J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*normal);
+                u64 tag=*selected;
+                pane->show();
+                (*(J2DPane**)(p+0x10))->search(tag)->hide();
+                }
                 (*(J2DPane**)(p+0x10))->search(*status)->hide();
             }
         }else{
-            (*(J2DPane**)(p+0x10))->search(*normal)->hide();
-            (*(J2DPane**)(p+0x10))->search(*selected)->hide();
+            {
+            J2DPane* pane=(*(J2DPane**)(p+0x10))->search(*normal);
+            u64 tag=*selected;
+            pane->hide();
+            (*(J2DPane**)(p+0x10))->search(tag)->hide();
+            }
             (*(J2DPane**)(p+0x10))->search(*status)->hide();
         }
         s32 state=*(s32*)(row+0x1c0);
