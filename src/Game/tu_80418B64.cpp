@@ -136,7 +136,8 @@ static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f3
 typedef void (*PaneColorsFn)(u8* self, void* a, void* b);
 
 static inline void SetScreenPaneVisible(u8* self, u64 name, u8 vis) {
-    (*(J2DScreen**)(self + 4))->search(name)->mIsVisible = vis;
+    u8* pane = (u8*)(*(J2DScreen**)(self + 4))->search(name);
+    pane[0xb0] = vis;
 }
 
 static inline void SetScreenPaneBlend(u8* self, u64 name, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
