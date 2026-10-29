@@ -269,8 +269,7 @@ struct Rec6_80301CD0 {
 };
 
 static inline BOOL tu80301_isPlayerOn(s32 i) {
-    u8 bits = ((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i);
-    return bits != 0;
+    return (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) != 0;
 }
 
 static inline u8 tu80301_isState7(s32 state) { return state == 7; }
@@ -2018,16 +2017,17 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
 
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
-extern "C" void fn_803085A4(s32 unused, s32 i)
+extern "C" void fn_803085A4(s32 unused, s32 player)
 {
-    s32 r25;
-    s32 r26;
-    s32 x;
     u8* e;
     Rec2_80301CD0* q2;
     Rec3_80301CD0* q3;
     Rec4b_80301CD0* p4;
     s32 off;
+    s32 r26;
+    s32 r25;
+    s32 x;
+    s32 i = player;
 
     r25 = fn_8022EA0C(i);
     off = i * 0x68;
@@ -2236,7 +2236,8 @@ extern "C" s32 fn_8030905C(s32 self) {
 int j;
 *(void**)self=lbl_804AA8B8;
 for(s32 i=0;i<4;i++) {
-clearMessageQueue(&lbl_80504A18[i], &lbl_80504A28[i], (MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380));
+lbl_80504A28[i]=lbl_80504A18[i]=j=0;
+clearMessageEntries((MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380));
 for(j=0;j<0x2000;j++) ((u32*)(lbl_804DBC18+i*0x8000))[j]=0xcdcdcdcd;
 lbl_8053AD00[i]=0;
 ((u32*)lbl_80506D48)[i]=0;
