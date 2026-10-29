@@ -27,7 +27,7 @@ extern void* __vt__10J3DAnmBase[];
 extern void* __vt__15J3DAnmTransform[];
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_800CFE2C(void*, void*, void*);
-extern "C" void fn_800CF8F4(void*, void*, void*);
+extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
 extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800D00F0(void*, void*, void*);
@@ -44,7 +44,7 @@ extern "C" J3DAnmColorFull* __ct__15J3DAnmColorFullFv(J3DAnmColorFull*);
 extern "C" J3DAnmTexPattern* __ct__16J3DAnmTexPatternFv(J3DAnmTexPattern*);
 extern "C" J3DAnmVtxColorFull* __ct__18J3DAnmVtxColorFullFv(J3DAnmVtxColorFull*);
 #pragma opt_lifetimes reset
-extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
+extern "C" void* fn_800CECCC(unsigned char* data, register u32 flags) {
     if (data == 0) {
         return 0;
     }
@@ -280,7 +280,7 @@ extern "C" void fn_800CF510(void* param_1, unsigned char* param_2, unsigned char
             fn_800CF998(param_1, param_2, chunk);
             break;
         case 0x56414631:
-            fn_800CF8F4(param_1, param_2, chunk);
+            fn_800CF8F4(param_1, (J3DAnmVisibilityFull*)param_2, (const J3DAnmVisibilityFullData*)chunk);
             break;
         case 0x56434631:
             fn_800CFA2C((void**)param_1, param_2, chunk);
@@ -356,31 +356,17 @@ extern "C" void fn_800CF828(void*, void* anm_, void* data_) {
 #pragma opt_propagation reset
 extern "C" void fn_800CF8CC(void** self, void* data)
 {
-    fn_800CF8F4(self, self[1], data);
+    fn_800CF8F4(self, (J3DAnmVisibilityFull*)self[1], (const J3DAnmVisibilityFullData*)data);
 }
 
-extern "C" void fn_800CF8F4(void* param_1, void* anm_, void* data_) {
-    u8 attr;
-    s16 frame;
-    u16 info1;
-    u16 info2;
-    f32 zero;
-    unsigned char* anm;
-    const J3DAnmVisibilityFullData* data;
-    zero = lbl_8053BC80;
-    data = (const J3DAnmVisibilityFullData*)data_;
-    attr = data->mAttribute;
-    anm = (unsigned char*)anm_;
-    frame = data->mTotalFrameCount;
-    *(s16*)(anm + 6) = frame;
-    info1 = data->mExtraInfo1;
-    anm[4] = attr;
-    info2 = data->mExtraInfo2;
-    *(f32*)(anm + 8) = zero;
-    *(u16*)(anm + 12) = info1;
-    *(u16*)(anm + 14) = info2;
-    *(J3DAnmVisibilityFullTable**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmVisibilityFullTable>(data, (void*)data->mTableOffset);
-    *(unsigned char**)(anm + 0x14) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)data->mValuesOffset);
+extern "C" void fn_800CF8F4(void* loader, J3DAnmVisibilityFull* anm, const J3DAnmVisibilityFullData* data) {
+    anm->mMaxFrame=data->mTotalFrameCount;
+    anm->mAttribute=data->mAttribute;
+    anm->mCurrentFrame=lbl_8053BC80;
+    anm->_0C=data->mExtraInfo1;
+    anm->_0E=data->mExtraInfo2;
+    anm->mTable=JSUConvertOffsetToPtr<J3DAnmVisibilityFullTable>(data,(void*)data->mTableOffset);
+    anm->mValues=JSUConvertOffsetToPtr<u8>(data,(void*)data->mValuesOffset);
 }
 
 extern "C" void fn_800CF998(void*, unsigned char*, const unsigned char*);
