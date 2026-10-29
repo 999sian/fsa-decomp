@@ -14,6 +14,14 @@ extern "C" const s32 lbl_80474A5C[];
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
+struct Anim80363880 {
+    char pad[0x268];
+    s32 frame;
+    s32 animation;
+    s8* durations;
+    s8* frames;
+};
+
 struct ActorList80362634 {
     u32 pad[2];
     char* actors[0x400];
