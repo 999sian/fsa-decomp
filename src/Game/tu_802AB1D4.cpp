@@ -36,7 +36,7 @@ extern "C" void* fn_802AB1D4(void* p, s16 d) {
 
 extern "C" void fn_802AB234(void) {}
 
-extern "C" s32 fn_8023AF14(f32* rect, s32 room, s32 zero);
+extern "C" s32 fn_8023AF14(f32* rect, s32 room, s32 zero, f32 z = 0.0f);
 extern "C" void* fn_802D6A9C(void);
 extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 word);
 extern "C" void fn_802F9974(void* mgr, s32 room, s32 word, u16 val);
