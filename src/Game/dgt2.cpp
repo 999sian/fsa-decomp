@@ -97,21 +97,22 @@ static inline void dgt2Rot(f32 (*m)[4], f32 th) {
     cA = cos(lbl_8053E1D8);
     cT = cos(th);
     cZ = cos(lbl_8053E1D8);
-    m[0][0] = lbl_8053E1DC * (cT * cZ);
-    m[1][0] = lbl_8053E1DC * (cT * sZ);
-    m[2][0] = lbl_8053E1DC * -sT;
+    const f32 s = lbl_8053E1DC;
+    m[0][0] = s * (cT * cZ);
+    m[1][0] = s * (cT * sZ);
+    m[2][0] = s * -sT;
     f32 sacz, sasz, cacz, casz, sast;
     sast = sA * sT;
     casz = cA * sZ;
     cacz = cA * cZ;
     sasz = sA * sZ;
     sacz = sA * cZ;
-    m[0][1] = lbl_8053E1DC * (sast * cZ - casz);
-    m[1][1] = lbl_8053E1DC * (sast * sZ + cacz);
-    m[2][1] = lbl_8053E1DC * (sA * cT);
-    m[0][2] = lbl_8053E1DC * (cacz * sT + sasz);
-    m[1][2] = lbl_8053E1DC * (casz * sT - sacz);
-    m[2][2] = lbl_8053E1DC * (cA * cT);
+    m[0][1] = s * (sast * cZ - casz);
+    m[1][1] = s * (sast * sZ + cacz);
+    m[2][1] = s * (sA * cT);
+    m[0][2] = s * (cacz * sT + sasz);
+    m[1][2] = s * (casz * sT - sacz);
+    m[2][2] = s * (cA * cT);
 }
 
 extern "C" void* fn_8018FB24(void* this_, s16 freeFlag) {
