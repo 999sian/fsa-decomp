@@ -1053,7 +1053,7 @@ extern "C" u8 fn_801F23BC(void* a, u32 id, void* f0C, void* f18, void* p80, f32*
 extern const f32 lbl_8053F80C;
 extern const f32 lbl_8053F810;
 extern const f32 lbl_8053F814;
-extern f32 lbl_8053F818;
+extern const f32 lbl_8053F818;
 extern f32 lbl_8053F81C;
 inline u8* findCollisionActor(s32 handle) {
     ActorPool* pool = (ActorPool*)lbl_8053AAF8->m4->m8;
