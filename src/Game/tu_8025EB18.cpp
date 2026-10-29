@@ -764,19 +764,17 @@ extern "C" void fn_8026022C(char* p) {
 #pragma opt_common_subs reset
 extern JGeometry::TVec3<f32> lbl_8046B86C[];
 
-static inline JGeometry::TVec2f carryAdd(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b)
+static inline JGeometry::TVec2f carryAdd(JGeometry::TVec2f a, const JGeometry::TVec2f& b)
 {
-    JGeometry::TVec2f v(a);
-    v.x += b.x;
-    v.y += b.y;
-    return v;
+    a.x += b.x;
+    a.y += b.y;
+    return a;
 }
-static inline JGeometry::TVec2f carrySub(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b)
+static inline JGeometry::TVec2f carrySub(JGeometry::TVec2f a, const JGeometry::TVec2f& b)
 {
-    JGeometry::TVec2f v(a);
-    v.x -= b.x;
-    v.y -= b.y;
-    return v;
+    a.x -= b.x;
+    a.y -= b.y;
+    return a;
 }
 extern "C" u8 fn_802604CC(char* p) {
     if (fn_8022B1F8(p)) return 0;
@@ -801,7 +799,7 @@ extern "C" u8 fn_802604CC(char* p) {
             char* b = fn_802D6A9C();
             if (id < 8) b += 0xcc;
             else b += 0xdc;
-            JGeometry::TVec2f v(F32(p, 8) - F32(b, 0) + F32(a, 0), F32(p, 0xc) - F32(b, 4) + F32(a, 4));
+            JGeometry::TVec2f v = carryAdd(carrySub(*(JGeometry::TVec2f*)(p + 8), *(JGeometry::TVec2f*)b), *(JGeometry::TVec2f*)a);
             if ((fn_802260DC((JGeometry::TVec3f*)&v, fn_8023DE58(i), 1) ||
                  fn_802684A4(p, (JGeometry::TVec3f*)&v, fn_8023DE58(i))) &&
                 fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
@@ -814,14 +812,15 @@ extern "C" u8 fn_802604CC(char* p) {
             b = fn_802D6A9C();
             if (id < 8) b += 0xcc;
             else b += 0xdc;
-            f32 x = ((F32(p, 8) - F32(b, 0)) + F32(target, 0) - F32(a, 0)) * lbl_80540178;
-            f32 y = ((F32(p, 0xc) - F32(b, 4)) + F32(target, 4) - F32(a, 4)) * lbl_80540178;
+            JGeometry::TVec2f mid = carrySub(carryAdd(carrySub(*(JGeometry::TVec2f*)(p + 8), *(JGeometry::TVec2f*)b), *(JGeometry::TVec2f*)target), *(JGeometry::TVec2f*)a);
+            mid.scale(lbl_80540178);
+            f32 x = mid.x;
+            f32 y = mid.y;
             room = fn_8023DE58(i);
             a = fn_802D6A9C();
             if (room < 8) a += 0xcc;
             else a += 0xdc;
-            v.x = x + F32(a, 0);
-            v.y = y + F32(a, 4);
+            v = carryAdd(mid, *(JGeometry::TVec2f*)a);
             if ((fn_802260DC((JGeometry::TVec3f*)&v, fn_8023DE58(i), 1) ||
                  fn_802684A4(p, (JGeometry::TVec3f*)&v, fn_8023DE58(i))) &&
                 fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
@@ -830,8 +829,7 @@ extern "C" u8 fn_802604CC(char* p) {
                 b = fn_802D6A9C();
                 if (id < 8) b += 0xcc;
             else b += 0xdc;
-                v.x = x + F32(b, 0);
-                v.y = y + F32(b, 4);
+                v = carryAdd(mid, *(JGeometry::TVec2f*)b);
                 if ((fn_802260DC((JGeometry::TVec3f*)&v, S32(p, 0x3b4), 1) ||
                      fn_802684A4(p, (JGeometry::TVec3f*)&v, S32(p, 0x3b4))) &&
                     fn_802265FC(&v, fn_8023DE58(i)) != 0x20) continue;
