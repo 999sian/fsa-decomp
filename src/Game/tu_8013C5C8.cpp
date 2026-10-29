@@ -53,7 +53,7 @@ static inline void tu13_setOffsetVec(f32* v, f32 x, f32 y, f32 z, s32 offset) {
     v[1] = y + off;
 }
 
-static inline void tu13_setVec(f32* v, f32 x, f32 y, f32 z) {
+static inline void tu13_setVec(f32* v, const f32 x, const f32 y, const f32 z) {
     v[0] = x;
     v[1] = y;
     v[2] = z;
@@ -734,7 +734,7 @@ extern "C" u8* fn_8013CC50(s32 mode, f32* pos, f32 scale, u16 effect, s32 dy, s3
                 dy++;
                 dz--;
             }
-            f32 x = pos[0];
+            volatile f32 x = pos[0];
             f32 off = (f32)((dy << 10) + (dz << 7));
             tu13_setVec(v, x, pos[1] + off, pos[2] + off);
             f32 h = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos);
