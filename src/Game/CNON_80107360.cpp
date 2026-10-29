@@ -293,6 +293,10 @@ static inline bool CNON_hitWall(CNON* this_) {
     return false;
 }
 
+struct CNON_Pt {
+    f32 x, y;
+};
+
 static inline s32 CNON_findPlayerBox(CNON* this_, CNON_Box& box) {
     box.x0 = this_->m60[0];
     box.y0 = this_->m60[1];
@@ -349,6 +353,7 @@ static inline bool CNON_hitWallBox(CNON* this_, CNON_Box& box, f32* out) {
 }
 
 extern "C" void fn_80107660(CNON* this_) {
+    CNON_Box pbox;
     if (this_->v3C() != 0 && (this_->m274 == 0 || this_->m274 == 1)) {
         if (!this_->v34()) {
             this_->m269 = 0;
@@ -363,7 +368,7 @@ extern "C" void fn_80107660(CNON* this_) {
     }
 
     if (this_->m274 == 0 || this_->m274 == 1) {
-        s32 pl = CNON_findPlayer(this_);
+        s32 pl = CNON_findPlayerBox(this_, pbox);
         if (pl >= 0) {
             this_->m26C = pl;
             this_->m278 = this_->m274;
@@ -403,9 +408,11 @@ extern "C" void fn_80107660(CNON* this_) {
         } else if (this_->mState >= 0x12c) {
             fn_80231590(this_->m26C, this_->m198);
         }
+        f32 out[2];
+        CNON_Box wbox;
         if (fn_801F285C(this_, 0, 0, 1, -1) >= 0) {
             fn_80231590(this_->m26C, this_->m198);
-        } else if (CNON_hitWall(this_)) {
+        } else if (CNON_hitWallBox(this_, wbox, out)) {
             fn_80231590(this_->m26C, this_->m198);
         } else if (fn_801F2DB4(this_, this_->m1A0, 'NULL', 0)) {
             fn_80231590(this_->m26C, this_->m198);
