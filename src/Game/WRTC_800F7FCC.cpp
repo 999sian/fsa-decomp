@@ -600,10 +600,27 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p) {
     JGeometry::TVec3f result(x,y,z);
     return result;
 }
+static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
+    f32 radius;
+    s32 angle;
+    if(n&1){radius=lbl_8053BFF8+(f32)(((n>>1)+1)*20);angle=(s16)*(u16*)(p+0x2b2);}
+    else {radius=(f32)(((n>>1)+1)*-20)-lbl_8053BFF8;angle=(s16)*(u16*)(p+0x2b4);}
+    s32 index=(u16)angle;
+    index >>= 5;
+    const f32* trig=(const f32*)&JMath::sincosTable_.mTable[index];
+    f32 sn=trig[0];
+    f32 cs=trig[1];
+    f32 x=radius*sn+*(f32*)(p+0xc);
+    f32 y=radius*cs+*(f32*)(p+0x10);
+    f32 z=lbl_8053BFFC+*(f32*)(p+0x14);
+    p[0x2ac]++;
+    JGeometry::TVec3f result(x,y,z);
+    return result;
+}
 
 extern "C" void fn_800F953C(void* this_) {
     u8* self=(u8*)this_;
-    volatile JGeometry::TVec3f out;
+    Vec out;
     f32 k;
     *(s32*)(self+0xb0)=0x80004;
     self[0x1a8]=1;
@@ -613,26 +630,26 @@ extern "C" void fn_800F953C(void* this_) {
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out.x=v.x;out.y=v.y;out.z=v.z;
         k=lbl_8053BFC0;
-        *(volatile u8*)(self+0x249)=1;
+        *(u8*)(self+0x249)=1;
     }else if(state==4){
         s32 n=p[0x2ac];
         const JGeometry::TVec3f& v=WRTC_linePosition(p);
         out.x=v.x;out.y=v.y;out.z=v.z;
         s32 half=(n>>1)+1;
         k=(lbl_8053C024*(f32)lbl_8049C3B8[8]+lbl_8053C000)-(lbl_8053C024*(f32)lbl_8049C3B8[9]+lbl_8053C004)*(f32)half;
-        *(volatile u8*)(self+0x249)=1;
+        *(u8*)(self+0x249)=1;
     }else if(state==1){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out.x=v.x;out.y=v.y;out.z=v.z;
         k=lbl_8053C028;
-        *(volatile u8*)(self+0x249)=1;
+        *(u8*)(self+0x249)=1;
     }else{
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out.x=v.x;out.y=v.y;out.z=v.z;
         k=lbl_8053C00C;
-        *(volatile u8*)(self+0x249)=0;
+        *(u8*)(self+0x249)=0;
     }
-    WRTC_moveTowards(self,const_cast<const JGeometry::TVec3f&>(out),k);
+    WRTC_moveTowards(self,*(const JGeometry::TVec3f*)&out,k);
 }
 
 extern "C" void fn_800F9C20(void* this_) {
