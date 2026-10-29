@@ -168,8 +168,7 @@ static inline void applyRotationCounter803597EC(u8* self, s32& i) {
     for (i = 0; i < 4; i++) {
         if (fn_8023F264(i) && (s8)self[0x246 + i] != 0 && !fn_8022D75C((void*)i) && !fn_80230188((void*)i) && !fn_8022F514((void*)i)) {
             ang = *(s16*)(self + 0x230);
-            f32 sn = JMath::sincosTable_.mTable[(u16)ang >> 5].first;
-            cs = lbl_8054288C * (sn * __fabsf(sn));
+            cs = lbl_8054288C * (JMath::sincosTable_.mTable[(u16)ang >> 5].first * __fabsf(JMath::sincosTable_.mTable[(u16)ang >> 5].first));
             if (*(u8*)(lbl_8053AAF8 + 0x7e) != 0 && (s32)((*(u32*)(self + 0x90) >> 7) & 0x1f) >= 2) {
                 cs = cs * lbl_80542890;
             }
