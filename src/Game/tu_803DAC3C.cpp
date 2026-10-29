@@ -699,134 +699,124 @@ extern "C" void fn_803DE05C(u8* self) {
 
 extern const float lbl_80543628;
 extern const float lbl_805435E0;
-extern "C" void fn_803DE58C(u8* self)
+static inline void fadeMenuGroup(u8* self, const u64* tags, s32 alphaOffset, s32 count, const f32 factor) {
+    for(s32 i=0;i<count;i++){
+        (*(J2DScreen**)(self+4))->search(*tags)->setAlpha((u8)(factor*(f32)self[alphaOffset+i]));
+        tags++;
+    }
+}
+
+extern "C" void fn_803DE58C(u8* this_)
 {
+    u8* self=this_;
+    s32 start;
+    u8* cur;
+    register u8* data=(u8*)lbl_804774C8;
     s32 sel[2];
-    s32* q = sel;
-    s32 i;
+    s32* q;
+    q=sel;
     s32 k;
-    s32 j;
     s32 c;
     s32 e;
-    s32 unk;
     u8 ok1 = 0;
     u8 ok2 = 0;
     f32 f30;
     f32 f1;
     u32* p;
-    void* obj;
+    s32 i;
 
     *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
-    if (self[0x9e] != 0) {
-        *q = 0;
-        q++;
+    for (s32 n=0;n<2;n++) {
+        if(self[0x9e]!=n)*q++=n;
     }
-    if (self[0x9e] != 1) {
-        *q = 1;
-    }
-    if (*(s16*)(self + 0x9c) > 0) {
+    for (s32 n=0;n<1;n++) if (*(s16*)(self + 0x9c) > n) {
         fn_80402B10(*(void**)(self + 0x34 + sel[0] * 4), 8, lbl_80543604, 0, lbl_80543614);
         fn_80402B10(*(void**)(self + 0x44 + sel[0] * 4), 8, lbl_80543604, 0, lbl_80543614);
         c = *(s16*)(self + 0x9c);
         if (c > 8) {
             c = 8;
         }
-        f1 = (f32)(c * c) * lbl_80543628;
+        f1 = (f32)(c * c);
+        f1 *= lbl_80543628;
         switch (sel[0]) {
         case 0:
-            f30 = lbl_805435E8 - f1;
-            p = (u32*)((u8*)lbl_804774C8 + 0x1c0);
+            f30 = 1.0f - f1;
+            p = (u32*)(data + 0x1c0);
             for (i = 0; i < 0x11; i++) {
-                obj = *(void**)(self + 4);
-                ((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, unk, p[0], p[1]);
-                obj = *(void**)(self + 4);
-                ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)(f30 * (f32)self[0xdb + i]));
+                (*(J2DScreen**)(self+4))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0xdb + i]));
                 p += 2;
             }
             break;
         case 1:
             f30 = lbl_805435E8 - f1;
-            p = (u32*)((u8*)lbl_804774C8 + 0x248);
+            p = (u32*)(data + 0x248);
             for (i = 0; i < 0x14; i++) {
-                obj = *(void**)(self + 4);
-                ((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, unk, p[0], p[1]);
-                obj = *(void**)(self + 4);
-                ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)(f30 * (f32)self[0xec + i]));
+                (*(J2DScreen**)(self+4))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0xec + i]));
                 p += 2;
             }
             break;
         }
     }
     if (*(s16*)(self + 0x9c) > 0) {
-        e = self[0x9e];
-        fn_80402940(*(void**)(self + 0x34 + e * 4), 0x14, lbl_80543604, 0, lbl_80543620 - *(f32*)(self + 0x6c + e * 4));
-        fn_80402940(*(void**)(self + 0x44 + e * 4), 0x14, lbl_80543604, 0, lbl_80543620 - *(f32*)(self + 0x6c + e * 4));
+        fn_80402940(*(void**)(self + 0x34 + self[0x9e] * 4), 0x14, lbl_80543604, 0, lbl_80543620 - *(f32*)(self + 0x6c + self[0x9e] * 4));
+        fn_80402940(*(void**)(self + 0x44 + self[0x9e] * 4), 0x14, lbl_80543604, 0, lbl_80543620 - *(f32*)(self + 0x6c + self[0x9e] * 4));
     }
     if (*(s16*)(self + 0x9c) > 0) {
         fn_80402940(*(void**)(self + 0x30), 0xf, lbl_80543604, 0, lbl_8054361C);
-    }
     c = *(s16*)(self + 0x9c);
     if (c > 0xf) {
         c = 0xf;
     }
     f1 = (f32)(c * c);
-    f1 = f1 / lbl_80543624;
-    f30 = lbl_805435E8 - f1;
-    p = (u32*)((u8*)lbl_804774C8 + 0x190);
+    f32 fade=f1 / lbl_80543624;
+    f30 = 1.0f - fade;
+    p = (u32*)(data + 0x190);
     for (i = 0; i < 6; i++) {
-        obj = *(void**)(self + 4);
-        ((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, unk, p[0], p[1]);
-        obj = *(void**)(self + 4);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)(f30 * (f32)self[0xd5 + i]));
+        (*(J2DScreen**)(self+4))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0xd5 + i]));
         p += 2;
+    }
     }
     if (*(s16*)(self + 0x9c) > 0) {
         ok1 = fn_80402B10(*(void**)(self + 0x14), 0x14, lbl_80543614, 0, lbl_80543604);
-        for (i = 1; i < 7; i++) {
-            fn_80402B10(*(void**)(self + 0x14 + i * 4), 0x14, lbl_80543614, 0, lbl_80543604);
+        u8* cur=self+4;
+        for (s32 n = 1; n < 7; n++,cur+=4) {
+            fn_80402B10(*(void**)(cur + 0x14), 0x14, lbl_80543614, 0, lbl_80543604);
         }
-    }
     c = *(s16*)(self + 0x9c);
     if (c > 0x14) {
         c = 0x14;
     }
     f30 = (f32)(c * c) / lbl_80543618;
-    p = (u32*)lbl_804774C8;
+    p = (u32*)data;
     for (k = 0; k < 0x32; k++) {
-        if (k == 0) {
-            obj = *(void**)(self + 8);
-        } else {
-            obj = *(void**)(self + 4);
+        if(k==0) {
+            (*(J2DScreen**)(self+8))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0xa3+k]));
+        }else{
+            (*(J2DScreen**)(self+4))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0xa3+k]));
         }
-        ((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, unk, p[0], p[1]);
-        obj = *(void**)(self + 4);
-        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)(f30 * (f32)self[0xa3 + k]));
         p += 2;
     }
-    if (*(s16*)(self + 0x9c) > 0) {
-        for (j = 0; j < 2; j++) {
-            ok2 = fn_80402940(*(void**)(self + 0x50 + j * 4), 0x14, lbl_8054361C, 0, lbl_80543604);
-            c = *(s16*)(self + 0x9c) - j * 5;
+    }
+    cur=self;
+    start=0;
+    for (i = 0; i < 2; i++,cur+=4,start+=5) {
+        if (*(s16*)(self + 0x9c) > start) {
+            ok2 = fn_80402940(*(void**)(cur + 0x50), 0x14, lbl_8054361C, 0, lbl_80543604);
+            c = *(s16*)(self + 0x9c) - start;
             if (c > 0x14) {
                 c = 0x14;
             }
             f30 = (f32)(c * c) / lbl_80543618;
-            if (j == 0) {
-                p = (u32*)((u8*)lbl_804774C8 + 0x368);
-                for (i = 0; i < 5; i++) {
-                    obj = *(void**)(self + 4);
-                    ((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, unk, p[0], p[1]);
-                    obj = *(void**)(self + 4);
-                    ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)(f30 * (f32)self[0x110 + i]));
+            if (i == 0) {
+                p = (u32*)(data + 0x368);
+                for (s32 idx = 0; idx < 5; idx++) {
+                    (*(J2DScreen**)(self+4))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0x110 + idx]));
                     p += 2;
                 }
             } else {
-                p = (u32*)((u8*)lbl_804774C8 + 0x390);
-                for (i = 0; i < 5; i++) {
-                    obj = *(void**)(self + 4);
-                    ((void (*)(void*, s32, u32, u32))(*(void***)obj)[15])(obj, unk, p[0], p[1]);
-                    obj = *(void**)(self + 4);
-                    ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)(f30 * (f32)self[0x115 + i]));
+                p = (u32*)(data + 0x390);
+                for (s32 idx = 0; idx < 5; idx++) {
+                    (*(J2DScreen**)(self+4))->search(*(u64*)p)->setAlpha((u8)(f30*(f32)self[0x115 + idx]));
                     p += 2;
                 }
             }
