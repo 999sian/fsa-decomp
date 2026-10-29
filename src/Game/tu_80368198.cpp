@@ -440,15 +440,6 @@ extern "C" void fn_8030C210(void* eff, Vec3f* v);
 extern f32 lbl_80542CA0;
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8036AA60(char*);
-static inline void addCutsceneHeight(Vec3f& out,const f32 top,const f32 bottom) {
-    out.y += lbl_80542C80+((bottom-top)-lbl_80542C84);
-}
-static inline f32 cutsceneHeight(const f32 top,const f32 bottom) {
-    return lbl_80542C80+((bottom-top)-lbl_80542C84);
-}
-static inline void cutsceneScreenPos(Vec3f& out,const f32 x,const f32 y,const f32 z) {
-    out.x=x;out.y=y;out.z=z;
-}
 static inline void cutsceneCameraBox(const f32 x1,const f32 y1,const f32 x2,const f32 y2) {
     u8* eff=*(u8**)((u8*)lbl_8053AB10+0x24);
     if(!eff[0x7f5]) {
@@ -469,6 +460,7 @@ static inline s32 cutsceneFlag(s32 idx,s32 bit) {
     return (mask & *(u32*)(lbl_8050EC80+*(s32*)(lbl_8050EC80+0x10)*200+0x28))!=0;
 }
 
+#pragma opt_common_subs off
 void Unk8036C300::state0() {
     Vec3f v;
     Vec3f camera;
@@ -526,8 +518,10 @@ void Unk8036C300::state0() {
                 }
             }
             v=*(Vec3f*)(self+0xc);
-            f32 bottom=*(f32*)(self+0x28);
-            f32 oldY=*(f32*)(self+0x10);
+            f32 oldY;
+            f32 bottom;
+            bottom=*(f32*)(self+0x28);
+            oldY=*(f32*)(self+0x10);
             v.y += lbl_80542C80 + ((bottom-oldY) - lbl_80542C84);
             if (*(s32*)(self+0x240) == 5) {
                 v.y = v.y + lbl_80542CB4;
@@ -537,11 +531,11 @@ void Unk8036C300::state0() {
             }
             if (*(s32*)(self+0x240) >= 3) {
                 u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
-                f32 radius=105.0f;
+                const f32 radius=105.0f;
                 f32 high;
                 f32 low;
-                f32 x;
                 f32 y;
+                f32 x;
                 y=v.y;
                 x=v.x;
                 high=radius+y;
@@ -593,8 +587,8 @@ void Unk8036C300::state0() {
         if(*(s32*)(self+0x258)!=0) {
             if(*(s32*)(self+0x258)==1) {
                 u8* mode=*(u8**)((char*)sManager__8JUTVideo+4);
-                s32 height=*(u16*)(mode+6);
-                s32 width=*(u16*)(mode+4);
+                const s32 height=*(u16*)(mode+6);
+                const s32 width=*(u16*)(mode+4);
                 v.x=(f32)width*lbl_80542CA4;
                 v.y=(f32)height*lbl_80542CA4;
                 v.z=lbl_80542C6C;
@@ -684,7 +678,7 @@ void Unk8036C300::state0() {
     }
     if(*((u8*)self+0x234))fn_8036AA60(self);
 }
-
+#pragma opt_common_subs reset
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern "C" void fn_8036A65C(void* this_) {
