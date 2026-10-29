@@ -476,7 +476,8 @@ static inline void oiwaBox(OiwaRect* b, char* this_) {
     ((JGeometry::TBox2<f32>*)b)->set(p.x - r, p.y - r, r + p.x, r + p.y);
 }
 
-static inline void oiwaNotifyPlayers(s32 id) {
+static inline void oiwaNotifyPlayers(char* this_) {
+    s32 id = *(s32*)(this_ + 0x198);
     for (s32 i = 0; i < 4; i++) {
         s32 r = fn_80238CB4(i);
         if (r == id) {
@@ -529,6 +530,8 @@ static inline void oiwaHitBalls(char* this_) {
 extern "C" void fn_800F555C(char* this_) {
     OiwaRect box;
     s32 dir;
+    s32 id;
+    s32 n;
     s32 present = 0;
     oiwaBox(&box, this_);
     for (s32 i = 0; i < 4; i++) {
@@ -589,11 +592,12 @@ extern "C" void fn_800F555C(char* this_) {
                 break;
             }
             fn_80238E08(*(u32*)(this_ + 0x198));
-            s32 id = *(s32*)(this_ + 0x198);
-            for (s32 i = 0; i < 4; i++) {
-                s32 r = fn_80238CB4(i);
+            n = 0;
+            id = *(s32*)(this_ + 0x198);
+            for (; n < 4; n++) {
+                s32 r = fn_80238CB4(n);
                 if (r == id) {
-                    fn_80230FD0(i, 0x10012);
+                    fn_80230FD0(n, 0x10012);
                 }
             }
             fn_80238D50(*(u32*)(this_ + 0x198));
