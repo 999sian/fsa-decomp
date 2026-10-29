@@ -575,6 +575,7 @@ extern "C" void fn_803F2B5C(u8* p) {
     *(s32*)(p + 0x1c4) = 4;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_803F2B78(u8* p) {
     u8* base;
     const u64* pt30;
@@ -589,8 +590,6 @@ extern "C" void fn_803F2B78(u8* p) {
     s32 j;
     const u64* t20;
     J2DPane* piVar;
-    void* s1;
-    void* s2;
     u8* sp;
 
     base = lbl_80478A60;
@@ -614,12 +613,12 @@ extern "C" void fn_803F2B78(u8* p) {
         ((J2DPicture*)piVar)->changeTexture((const ResTIMG*)uVar1, 0);
     }
 
-    piVar = (*(J2DPane**)(p + 8))->search(0x54746b673031ULL);
-    s1 = getStringPtr__10J2DTextBoxCFv(piVar);
-    piVar = (*(J2DPane**)(p + 8))->search(0x54746b673032ULL);
-    s2 = getStringPtr__10J2DTextBoxCFv(piVar);
-    fn_803832BC(s1, 0x3f, 0, 0, 0);
-    fn_803832BC(s2, 0x3f, 0, 0, 0);
+    {
+        void* s1 = getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(p+8))->search(0x54746b673031ULL));
+        void* s2 = getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(p+8))->search(0x54746b673032ULL));
+        fn_803832BC(s1,0x3f,0,0,0);
+        fn_803832BC(s2,0x3f,0,0,0);
+    }
 
     *(f32*)(p + 0x9c) = lbl_80543764;
     piVar = (*(J2DPane**)(p + 8))->search(0x4e646174613033ULL);
@@ -725,7 +724,7 @@ extern "C" void fn_803F2B78(u8* p) {
     *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
     *(s32*)(p + 0x1c4) = 3;
 }
-
+#pragma opt_propagation on
 extern "C" void fn_803F32E8(u8* p) {
     *(s32*)(p + 0x210) = 0;
     *(s16*)(p + 0x240) = 0;
@@ -1892,7 +1891,50 @@ extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __ct__17JASGenericMemPoolFv(void*);
 extern "C" void __register_global_object(void*, void*, void*);
+static inline void copyMenuRecord(FsaBlock156* dst, const FsaBlock156* src)
+{
+    dst->field_00 = src->field_00;
+    dst->field_04 = src->field_04;
+    dst->field_08 = src->field_08;
+    dst->field_0C = src->field_0C;
+    dst->field_10 = src->field_10;
+    dst->field_14 = src->field_14;
+    dst->field_18 = src->field_18;
+    dst->field_1C = src->field_1C;
+    dst->field_20 = src->field_20;
+    dst->field_24 = src->field_24;
+    dst->field_28 = src->field_28;
+    dst->field_2C = src->field_2C;
+    dst->field_30 = src->field_30;
+    dst->field_34 = src->field_34;
+    dst->field_38 = src->field_38;
+    dst->field_3C = src->field_3C;
+    dst->field_40 = src->field_40;
+    dst->field_44 = src->field_44;
+    dst->field_48 = src->field_48;
+    dst->field_4C = src->field_4C;
+    dst->field_50 = src->field_50;
+    dst->field_54 = src->field_54;
+    dst->field_58 = src->field_58;
+    dst->field_5C = src->field_5C;
+    dst->field_60 = src->field_60;
+    dst->field_64 = src->field_64;
+    dst->field_68 = src->field_68;
+    dst->field_6C = src->field_6C;
+    dst->field_70 = src->field_70;
+    dst->field_74 = src->field_74;
+    dst->field_78 = src->field_78;
+    dst->field_7C = src->field_7C;
+    dst->field_80 = src->field_80;
+    dst->field_84 = src->field_84;
+    dst->field_88 = src->field_88;
+    dst->field_8C = src->field_8C;
+    dst->field_90 = src->field_90;
+    dst->field_94 = src->field_94;
+    dst->field_98 = src->field_98;
+}
 extern "C" void fn_803FEB94(void) {
+    char* registrations = lbl_80528668;
     u32* b = (u32*)lbl_804B0B40;
     b[0x27] = b[0x00]; b[0x28] = b[0x01]; b[0x29] = b[0x02]; b[0x2a] = b[0x03];
     b[0x2b] = b[0x04]; b[0x2c] = b[0x05]; b[0x2d] = b[0x06]; b[0x2e] = b[0x07];
@@ -1928,55 +1970,55 @@ extern "C" void fn_803FEB94(void) {
     if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr,
-                                 __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, lbl_80528668);
+                                 __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, registrations);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (!__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack) {
         __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
         __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack,
-                                 __dt__35JASMemPool_MultiThreaded_8JASTrackFv, lbl_80528668 + 0xc);
+                                 __dt__35JASMemPool_MultiThreaded_8JASTrackFv, registrations + 0xc);
         __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
     }
     if (!__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel) {
         __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
         __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel,
-                                 __dt__38JASMemPool_MultiThreaded_10JASChannelFv, lbl_80528668 + 0x18);
+                                 __dt__38JASMemPool_MultiThreaded_10JASChannelFv, registrations + 0x18);
         __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
     }
     if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
         __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA,
-                                 __dt__29JASMemPool_15JASPoolObj3_FSAFv, lbl_80528668 + 0x24);
+                                 __dt__29JASMemPool_15JASPoolObj3_FSAFv, registrations + 0x24);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
     }
     if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA) {
         __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
         __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA,
-                                 __dt__29JASMemPool_15JASPoolObj4_FSAFv, lbl_80528668 + 0x30);
+                                 __dt__29JASMemPool_15JASPoolObj4_FSAFv, registrations + 0x30);
         __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
     }
     if (!__init__memPool___30JASPoolAllocObject_9JAIStream) {
         __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
         __register_global_object(memPool___30JASPoolAllocObject_9JAIStream,
-                                 __dt__22JASMemPool_9JAIStreamFv, lbl_80528668 + 0x3c);
+                                 __dt__22JASMemPool_9JAIStreamFv, registrations + 0x3c);
         __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
     }
     if (!__init__memPool___35JASPoolAllocObject_13JAISoundChild) {
         __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
         __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild,
-                                 __dt__27JASMemPool_13JAISoundChildFv, lbl_80528668 + 0x48);
+                                 __dt__27JASMemPool_13JAISoundChildFv, registrations + 0x48);
         __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
     }
     if (!__init__memPool___27JASPoolAllocObject_6JAISeq) {
         __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
         __register_global_object(memPool___27JASPoolAllocObject_6JAISeq,
-                                 __dt__19JASMemPool_6JAISeqFv, lbl_80528668 + 0x54);
+                                 __dt__19JASMemPool_6JAISeqFv, registrations + 0x54);
         __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
     }
     if (!__init__memPool___26JASPoolAllocObject_5JAISe) {
         __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
         __register_global_object(memPool___26JASPoolAllocObject_5JAISe,
-                                 __dt__18JASMemPool_5JAISeFv, lbl_80528668 + 0x60);
+                                 __dt__18JASMemPool_5JAISeFv, registrations + 0x60);
         __init__memPool___26JASPoolAllocObject_5JAISe = 1;
     }
 }
