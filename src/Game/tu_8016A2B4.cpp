@@ -585,19 +585,6 @@ extern "C" void fn_8016B910(u8* self) {
     }
 }
 
-static inline void calcScreenUV8016C2FC(f32& cx, f32& cy, JGeometry::TVec3<f32>& size) {
-    const u8* __restrict screen = *(u8**)(lbl_8053AB10 + 0x20);
-    const u8* __restrict camera = *(u8**)(lbl_8053AB10 + 0x24);
-    const u8* __restrict mode = *(u8**)(sManager__8JUTVideo + 4);
-    f32 sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
-    f32 sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
-    f32 k = lbl_8053D93C / *(f32*)(camera + 0x858);
-    cx = -*(f32*)(camera + 0x10) * sx;
-    cy = -*(f32*)(camera + 0x20) * sy;
-    size.x = k * (lbl_8053D940 * (sx * (f32)(int)*(u16*)(mode + 4)));
-    size.y = k * (lbl_8053D940 * (sy * (f32)(int)*(u16*)(mode + 6)));
-    size.z = lbl_8053D944;
-}
 extern "C" void fn_8016C2FC(u8* self) {
     extern f32 lbl_8053D980;
     extern f32 lbl_8053D984;
