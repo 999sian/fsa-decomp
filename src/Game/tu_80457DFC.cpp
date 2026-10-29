@@ -149,6 +149,19 @@ struct Unk8045A3D8Src {
     u8 m11;
 };
 
+static inline void stopAudioGroup(JAUSoundObject* obj) {
+    obj->stopSound(JAISoundID(19), 0);
+    obj->stopSound(JAISoundID(20), 0);
+    obj->stopSound(JAISoundID(21), 0);
+    obj->stopSound(JAISoundID(22), 0);
+    obj->stopSound(JAISoundID(23), 0);
+    obj->stopSound(JAISoundID(24), 0);
+    obj->stopSound(JAISoundID(25), 0);
+    obj->stopSound(JAISoundID(26), 0);
+    obj->stopSound(JAISoundID(27), 0);
+    obj->stopSound(JAISoundID(28), 0);
+}
+
 struct Unk80458880Mgr {
     virtual void v0();
     virtual void v1();
