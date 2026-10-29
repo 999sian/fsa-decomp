@@ -64,6 +64,10 @@ extern "C" f32 lbl_80543590;
 extern "C" f32 lbl_80543594;
 extern "C" u8* lbl_8053AB10;
 extern "C" u8* lbl_8053AAF8;
+static inline s32 tnglSequenceValue(const s32* sequence, s32 index) {
+    return sequence[index];
+}
+
 struct TnglSequence {
     s32 first[3];
     s32 second[3];
@@ -82,19 +86,19 @@ extern "C" u8 lbl_8053ABE8;
 extern "C" void fn_8043D67C(void*, s32, s32, s32);
 extern "C" s32 lbl_8053A210[2];
 extern "C" void fn_803D9AA4(u8* this_) {
-    s32 id;
-    s32 i;
-    JGeometry::TVec3<f32>* pos;
-    u8* q;
-    u8* data = lbl_804B03E8;
+    const TnglSequence* data = (TnglSequence*)lbl_804B03E8;
     switch (*(s32*)(this_ + 0x230)) {
-    case 0:
+    case 0: {
+        u8* q;
+        JGeometry::TVec3<f32>* pos;
+        int i;
+        int id;
         if (*(s32*)(this_ + 0x240) < 0x3c) {
             *(s32*)(this_ + 0x240) += 1;
             break;
         }
-        i = 0;
-        *(s32*)(this_ + 0x240) = i;
+        *(s32*)(this_ + 0x240) = 0;
+        i = *(s32*)(this_ + 0x240);
         *(s32*)(this_ + 0x244) = -1;
         *(s32*)(this_ + 0x248) = i;
         q = this_;
@@ -104,20 +108,24 @@ extern "C" void fn_803D9AA4(u8* this_) {
                 id = 0x3ae;
                 if (fn_80237060(0) == 2) id = 0x3af;
                 pos = fn_8023E724(i);
-                fn_8013CC50(fn_8023DE58(i), pos, lbl_80543590, id, 1, 1, 0, 0, 1);
+                s32 room = fn_8023DE58(i);
+                fn_8013CC50(room, pos, lbl_80543590, id, 1, 1, 0, 0, 1);
                 id = 0x3ac;
                 if (fn_80237060(0) == 2) id = 0x3ad;
                 pos = fn_8023E724(i);
-                handle = fn_8013CC50(fn_8023DE58(i), pos, lbl_80543590, id, 1, 1, 0, 0, 1);
+                room = fn_8023DE58(i);
+                handle = fn_8013CC50(room, pos, lbl_80543590, id, 1, 1, 0, 0, 1);
             }
             *(void**)(q + 0x290) = handle;
         }
         *(s32*)(this_ + 0x238) = 0x3c;
         *(s32*)(this_ + 0x230) = 1;
         break;
+    }
     case 1: {
-        s32 i;
+        JGeometry::TVec3<f32>* pos;
         u8* q;
+        int i;
         (*(u8**)(lbl_8053AB10 + 0x24))[0x17d] = 1;
         for (i = 0; i < 4; i++) {
             for (i = 0, q = this_; i < 4; i++, q += 12) {
@@ -148,7 +156,7 @@ extern "C" void fn_803D9AA4(u8* this_) {
         break;
     }
     case 2: {
-        s32 i;
+        int i;
         (*(u8**)(lbl_8053AB10 + 0x24))[0x17d] = 1;
         if (!(u8)fn_80388CAC(*(s32*)(this_ + 0x244), *(void**)(this_ + 0x198))) break;
         if (fn_80138A30(lbl_8053AAF8) == 1)
@@ -169,7 +177,8 @@ extern "C" void fn_803D9AA4(u8* this_) {
         *(s32*)(this_ + 0x230) = 3;
         break;
     }
-    case 3:
+    case 3: {
+        int i;
         (*(u8**)(lbl_8053AB10 + 0x24))[0x17d] = 1;
         if (*(s32*)(this_ + 0x23c) == 0x1e && fn_80138A30(lbl_8053AAF8) > 1)
             fn_801F0E34(this_, 0x5006c, 0);
@@ -193,6 +202,7 @@ extern "C" void fn_803D9AA4(u8* this_) {
             *(s32*)(this_ + 0x230) = 4;
         }
         break;
+    }
     case 4:
         (*(u8**)(lbl_8053AB10 + 0x24))[0x17d] = 1;
         if (*(s32*)(this_ + 0x238) == 0) {
@@ -223,7 +233,7 @@ extern "C" void fn_803D9AA4(u8* this_) {
     case 7:
         *(s32*)(this_ + 0x244) += 1;
         if (*(s32*)(this_ + 0x234) == 0) {
-            *(s32*)(this_ + 0x24c) = ((s32*)data)[*(s32*)(this_ + 0x240)];
+            *(s32*)(this_ + 0x24c) = data->first[*(s32*)(this_ + 0x240)];
             *(s32*)(this_ + 0x240) += 1;
             *(s32*)(this_ + 0x234) = 2;
             if (*(s32*)(this_ + 0x240) > 2) {
@@ -235,7 +245,7 @@ extern "C" void fn_803D9AA4(u8* this_) {
     case 8:
         *(s32*)(this_ + 0x244) += 1;
         if (*(s32*)(this_ + 0x234) == 0) {
-            *(s32*)(this_ + 0x24c) = ((s32*)(data + 0xc))[*(s32*)(this_ + 0x240)];
+            *(s32*)(this_ + 0x24c) = data->second[*(s32*)(this_ + 0x240)];
             *(s32*)(this_ + 0x240) += 1;
             *(s32*)(this_ + 0x234) = 2;
             if (*(s32*)(this_ + 0x240) > 2) *(s32*)(this_ + 0x240) = 0;
@@ -248,7 +258,7 @@ extern "C" void fn_803D9AA4(u8* this_) {
     case 9:
         *(s32*)(this_ + 0x244) += 1;
         if (*(s32*)(this_ + 0x234) == 0) {
-            *(s32*)(this_ + 0x24c) = ((s32*)(data + 0x18))[*(s32*)(this_ + 0x240)];
+            *(s32*)(this_ + 0x24c) = data->third[*(s32*)(this_ + 0x240)];
             *(s32*)(this_ + 0x240) += 1;
             *(s32*)(this_ + 0x234) = 2;
             if (*(s32*)(this_ + 0x240) > 7) *(s32*)(this_ + 0x240) = 7;
@@ -261,8 +271,8 @@ extern "C" void fn_803D9AA4(u8* this_) {
         break;
     case 10:
         if (*(s32*)(this_ + 0x234) == 0) {
-            *(s32*)(this_ + 0x24c) = ((s32*)(data + 0x38))[*(s32*)(this_ + 0x240)];
-            *(s32*)(this_ + 0x234) = ((s32*)(data + 0x5c))[*(s32*)(this_ + 0x240)];
+            *(s32*)(this_ + 0x24c) = data->last[*(s32*)(this_ + 0x240)];
+            *(s32*)(this_ + 0x234) = data->delay[*(s32*)(this_ + 0x240)];
             *(s32*)(this_ + 0x240) += 1;
             if (*(s32*)(this_ + 0x240) > 9) this_[0x11c] = 0;
         }
