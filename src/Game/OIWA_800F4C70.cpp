@@ -482,10 +482,14 @@ static inline void oiwaHitBalls(char* this_) {
         room = *(s32*)(this_ + 4);
         s32 r = fn_8023DE58(i);
         if (r == room) {
-            f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-            f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
-            f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
-            f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+            f32 x0 = *(f32*)(this_ + 0x60);
+            f32 y0 = *(f32*)(this_ + 0x64);
+            f32 x1 = *(f32*)(this_ + 0x68);
+            f32 y1 = *(f32*)(this_ + 0x6c);
+            x0 += *(f32*)(this_ + 0xc);
+            y0 += *(f32*)(this_ + 0x10);
+            x1 += *(f32*)(this_ + 0xc);
+            y1 += *(f32*)(this_ + 0x10);
             for (s32 j = 0; j < 8; j++) {
                 JGeometry::TVec3<f32> pt;
                 fn_8022E088(i, j, &pt);
