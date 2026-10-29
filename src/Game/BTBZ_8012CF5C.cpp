@@ -58,7 +58,6 @@ struct BTBZ_Vec {
 
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
-    s32 a;
     *(s32*)(this_ + 0x234) = s;
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
