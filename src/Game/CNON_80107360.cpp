@@ -318,8 +318,8 @@ static inline s32 CNON_findPlayerBox(CNON* this_, CNON_Box& box) {
 
 static inline bool CNON_hitWallBox(CNON* this_, CNON_Box& box, f32* out) {
     f32 zero[2];
-    zero[0] = lbl_8053C2C0;
-    zero[1] = lbl_8053C2C0;
+    zero[0] = 0.0f;
+    zero[1] = 0.0f;
     f32 y = this_->mPos.y - this_->mPos.z;
     f32 x = this_->mPos.x;
     box.x0 = this_->m70[0];
