@@ -129,6 +129,7 @@ extern "C" void fn_8017B3B4(Puku* p) {
     p->pos += p->vel;
     JGeometry::TVec3<f32> push;
     push.x = push.y = push.z = 0.0f;
+    f32 classify;
     u8 blocked = fn_801F2618(p, &push, 0);
     if (p->big == 1 && push.y) {
         blocked = 0;
@@ -169,13 +170,18 @@ extern "C" void fn_8017B3B4(Puku* p) {
     case 1: {
         f32 r = 16.0f;
         p->target.y = 0.3f * JMASinShort(p->phase);
-        f32 radius = 96.0f + 16.0f * lbl_8053AAF8->rnd.get_ufloat_1();
-        if ((f32)__fabs(p->home.x - p->pos.x) > radius) {
+        union { f32 f; u32 s; } out;
+        PukuRandom* rng = &lbl_8053AAF8->rnd;
+        rng->seed = rng->seed * 0x19660d + 0x3c6ef35f;
+        out.s = (rng->seed >> 9) | 0x3f800000;
+        f32 value = out.f;
+        value -= 1.0f;
+        if ((f32)__fabs(p->home.x - p->pos.x) > 96.0f + 16.0f * value) {
             far = 1;
         }
         p->phase += 300;
         if (p->timers[1] == 0 || blocked) {
-            if (blocked || fn_801F6758(&p->pos, p->room, r) || far == 1) {
+            if (blocked || fn_801F6758(&p->pos, r, p->room) || far == 1) {
                 s32 old = p->dir;
                 p->dir = 0;
                 if (p->home.x < p->pos.x) {
@@ -244,7 +250,7 @@ extern "C" void fn_8017B3B4(Puku* p) {
             r = -24.0f;
             blocked = far;
         }
-        if (blocked || fn_801F6758(&p->pos, p->room, r) || p->timers[1] == 0) {
+        if (blocked || fn_801F6758(&p->pos, r, p->room) || p->timers[1] == 0) {
             p->dir ^= 1;
             pukuStop(p);
             p->timers[2] = 160;
@@ -283,7 +289,37 @@ extern "C" void fn_8017B3B4(Puku* p) {
         f32 dx = p->home.x - p->pos.x;
         f32 dy = p->home.y - p->pos.y;
         if (p->timers[1] == 0) {
-            if (blocked || std::sqrtf(dx * dx + dy * dy) > p->range) {
+            if (blocked) goto pukuTurn;
+            {
+                f32 length = dx * dx + dy * dy;
+                if (length > 0.0f) {
+                    double xd = length;
+                    double guess = __frsqrte(xd);
+                    guess = 0.5 * guess * (3.0 - guess * guess * xd);
+                    guess = 0.5 * guess * (3.0 - guess * guess * xd);
+                    guess = 0.5 * guess * (3.0 - guess * guess * xd);
+                    length = (float)(xd * guess);
+                } else if (length < 0.0) {
+                    length = NAN;
+                } else {
+                    classify = length;
+                    int kind;
+                    switch ((*(s32*)&classify) & 0x7f800000) {
+                    case 0x7f800000:
+                        if ((*(s32*)&classify) & 0x007fffff) kind = 1;
+                        else kind = 2;
+                        break;
+                    case 0:
+                        if ((*(s32*)&classify) & 0x007fffff) kind = 5;
+                        else kind = 3;
+                        break;
+                    default: kind = 4; break;
+                    }
+                    if (kind == 1) length = NAN;
+                }
+                if (!(length > p->range)) break;
+            }
+            pukuTurn: {
                 p->dir ^= 1;
                 pukuStop(p);
                 p->state = 4;
