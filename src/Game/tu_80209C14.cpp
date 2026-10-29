@@ -49,7 +49,7 @@ extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" f32 lbl_8053F970;
-extern "C" f32 lbl_8053F964;
+extern "C" const f32 lbl_8053F964;
 extern "C" f32 lbl_8053EFB8;
 extern "C" f32 lbl_8053F968;
 extern "C" f32 lbl_8053F98C;
@@ -529,13 +529,7 @@ extern "C" void fn_8020A384(u8* this_) {
             }
             *(u8*)(this_ + 0x11c) = 0;
         } else {
-            f32 x = (f32)(0xc - *(s32*)(this_ + 0x24c));
-            if (x < *(f32*)__float_epsilon) {
-                *(f32*)(this_ + 0x54) = lbl_8053F964;
-            } else {
-                f32 k = lbl_8053F968 / x;
-                *(f32*)(this_ + 0x54) = k * (lbl_8053F964 - *(f32*)(this_ + 0x54)) + *(f32*)(this_ + 0x54);
-            }
+            fobrApproach((f32*)(this_ + 0x54), (f32)(0xc - *(s32*)(this_ + 0x24c)));
             *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x54);
             *(f32*)(this_ + 0x5c) = *(f32*)(this_ + 0x54);
         }
