@@ -217,6 +217,7 @@ static inline void Rusa_Exit(char* p) {
 }
 
 static inline u8 Rusa_CanStart(char* p) {
+    s32 sw;
     u8 go = 0;
     switch (*(s32*)(p + 0x2ac)) {
     case 1:
@@ -226,13 +227,12 @@ static inline u8 Rusa_CanStart(char* p) {
         }
         break;
     case 2:
-    case 3: {
-        s32 sw = *(s32*)(p + 0x2b0);
+    case 3:
+        sw = *(s32*)(p + 0x2b0);
         if (sw != 0 && fn_802D800C(fn_802D6A9C(), sw)) {
             go = 1;
         }
         break;
-    }
     }
     return go;
 }
@@ -401,30 +401,11 @@ extern "C" void fn_80211C94(char* p);
 
 // near-match (98.5%): r29/r30 swapped for the state-exit temps
 extern "C" void fn_8021148C(char* p) {
-    u8 go;
     fn_80211EB0(p);
     fn_80211C94(p);
     switch (*(s32*)(p + 0x248)) {
-    case 0: {
-        s32 id;
-        go = 0;
-        switch (*(s32*)(p + 0x2ac)) {
-        case 1:
-        case 4:
-            if (fn_801D05F8(p, p + 0xc, *(f32*)(p + 0x39c)) >= 0) {
-                go = 1;
-            }
-            break;
-        case 2:
-        case 3: {
-            s32 sw = *(s32*)(p + 0x2b0);
-            if (sw != 0 && fn_802D800C(fn_802D6A9C(), sw)) {
-                go = 1;
-            }
-            break;
-        }
-        }
-        if (go) {
+    case 0:
+        if (Rusa_CanStart(p)) {
             Rusa_Exit(p);
             *(s32*)(p + 0x3ac) = -1;
             *(u8*)(p + 0x3b0) = 0;
@@ -433,7 +414,7 @@ extern "C" void fn_8021148C(char* p) {
             } else {
                 Rusa_SetScale(p, *(f32*)(p + 0x390));
             }
-            id = *(s32*)(p + 0x388);
+            s32 id = *(s32*)(p + 0x388);
             if (id >= 0) {
                 char* a = fn_801F666C(fn_801F856C(), id);
                 if (a != 0) {
@@ -444,7 +425,6 @@ extern "C" void fn_8021148C(char* p) {
             *(s32*)(p + 0x248) = 1;
         }
         break;
-    }
     case 1:
         if (*(s32*)(p + 0x24c) >= 60) {
             if (*(u32*)(p + 0x230) & 0x4000) {
