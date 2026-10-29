@@ -511,7 +511,7 @@ extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage);
 extern "C" void fn_800CB6F0(J3DIndTevStage* out, u8* p, s32 idx, s32 stage);
 extern "C" TevKColorWord fn_800CAEE0(const J3DMaterialFactory* self, int idx, int no);
 extern "C" u8 fn_800CB15C(u8* p, s32 idx);
-extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b);
+extern "C" void* fn_800CB1F4(const J3DMaterialFactory* self, int idx, int no);
 struct J3DIndTexCoordScaleInfo;
 struct J3DIndTexCoordScale;
 extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int no);
@@ -952,7 +952,7 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
     }
     (*(void (***)(void*, u32))*(void**)((u8*)material + 0x28))[15](*(void**)((u8*)material + 0x28), fn_800CB15C((u8*)self, idx));
     for (i = 0; i < 8; i++) {
-        (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x28))[19](*(void**)((u8*)material + 0x28), i, fn_800CB1F4((u8*)self, idx, i));
+        (*(void (***)(void*, u32, void*))*(void**)((u8*)material + 0x28))[19](*(void**)((u8*)material + 0x28), i, fn_800CB1F4(self, idx, i));
     }
     for (i = 0; i < nTex; i++) {
         ((void (*)(u32*, u8*, s32))fn_800CB194)((u32*)s44, (u8*)self, idx);
@@ -1351,9 +1351,9 @@ extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
 extern "C" void* __nw__FUl(u32);
 extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
 #pragma opt_propagation off
-extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
-    u16* ids = ((J3DMaterialFactory*)p)->mMatRemapTable;
-    u8* base = (u8*)((J3DMaterialFactory*)p)->mInitData;
+extern "C" void* fn_800CB1F4(const J3DMaterialFactory* self, int idx, int b) {
+    u16* ids = self->mMatRemapTable;
+    u8* base = (u8*)self->mInitData;
     void* ret;
     u32 materialOffset = ids[idx] * 0x14c + 0x48;
     u32 off = materialOffset + b * 2;
@@ -1361,12 +1361,13 @@ extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
     if (*(u16*)(base + off) != 0xffff) {
         ret = __nw__FUl(0x94);
         if (ret != NULL) {
-            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, (u8*)((J3DMaterialFactory*)p)->unk_0C[9] + *(u16*)(base + off) * 0x64);
+            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, (u8*)self->unk_0C[9] + *(u16*)(base + off) * 0x64);
         }
         result = ret;
     }
     return result;
 }
+
 #pragma opt_propagation reset
 extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
     u8 b = *(u8*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 1);
