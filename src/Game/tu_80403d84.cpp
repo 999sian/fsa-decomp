@@ -131,9 +131,15 @@ struct PaneRef {
 	J2DPane* pane; // 0x4
 	f32 x;      // 0x8
 	f32 y;      // 0xc
-	u8 pad10[8];
+	f32 centerX; // 0x10
+	f32 centerY; // 0x14
 	f32 w;      // 0x18
 	f32 h;      // 0x1c
+	s16 frame20;
+	s16 frame22;
+	s16 frame24;
+	s16 frame26;
+	u8 alpha;
 };
 
 struct PaneEntry {
@@ -2019,11 +2025,13 @@ extern "C" void fn_80411A94(u8* self, f32 scale) {
 extern u8 lbl_804B1288[];
 extern "C" void fn_8042EB14(void*);
 extern "C" void __dl__FPv(void*);
+#pragma opt_propagation off
 extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	if (self) {
 				*(u8**)self = lbl_804B1288;
 		fn_8042EB14(lbl_8053AEC4);
 		s32 i;
+        u8* p;
         u8* q;
         i = 0;
         q = self;
@@ -2043,22 +2051,28 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 				*(void**)(q + 0x2f8) = 0;
 			}
 		}
-		void* zero = 0;
-        u8* p = self;
-		for (i = 0; i < 3; i++, p += 4) {
+		p = self;
+        void* const zero = 0;
+		for (s32 k = 0; k < 3; k++, p += 4) {
 			if (*(JPABaseEmitter**)(p + 0x2ec)) {
                 JPAEmitterManager* manager = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
                 manager->forceDeleteEmitter(*(JPABaseEmitter**)(p + 0x2ec));
                 *(void**)(p + 0x2ec) = zero;
             }
 		}
-		if (*(void**)(self + 0x308)) {
-			stopEmitter(*(void**)(self + 0x308));
-			*(void**)(self + 0x308) = 0;
+		s32 one = 1;
+        s32 nil = 0;
+        if (*(void**)(self + 0x308)) {
+			u8* e = *(u8**)(self + 0x308);
+            *(u32*)(e + 0xf4) |= one;
+            *(s32*)(e + 0x24) = one;
+            *(s32*)(self + 0x308) = nil;
 		}
 		if (*(void**)(self + 0x30c)) {
-			stopEmitter(*(void**)(self + 0x30c));
-			*(void**)(self + 0x30c) = 0;
+			u8* e = *(u8**)(self + 0x30c);
+            *(u32*)(e + 0xf4) |= one;
+            *(s32*)(e + 0x24) = one;
+            *(s32*)(self + 0x30c) = nil;
 		}
 		delSlot(self + 0x4);
 		delSlot(self + 0x8);
@@ -2068,9 +2082,12 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		delSlot(self + 0x10);
 		delSlot(self + 0x14);
 		delSlot(self + 0x18);
-		u8* r = self;
-		for (s32 i = 0; i < 8; i++, r += 0x14) {
-			u8* p2 = r;
+		u8* r;
+        u8* p2;
+        s32 row;
+        r = self;
+		for (row = 0; row < 8; row++, r += 0x14) {
+			p2 = r;
 			for (s32 j = 0; j < 3; j++, p2 += 4) {
 				delSlot(p2 + 0x28);
 			}
@@ -2128,7 +2145,7 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	}
 	return self;
 }
-
+#pragma opt_propagation reset
 extern "C" void* __nw__FUl(u32);
 extern "C" void* fn_804122F4_stub_unused;
 void fn_804122F4(u8* self) {
