@@ -1114,6 +1114,18 @@ inline void addCollisionPosition(JGeometry::TBox2<f32>& box, const u8* actor) {
     box.addPos(x, y);
 }
 
+inline f32 collisionSine(f32 dx, f32 dy) {
+    f32 angle = JMath::atanTable_.atan2_(dx, dy);
+    return JMath::sincosTable_.mTable[(u16)(s32)(angle * lbl_8053F80C) >> 5].first;
+}
+inline f32 collisionCosine(f32 dx, f32 dy) {
+    f32 angle = JMath::atanTable_.atan2_(dx, dy);
+    return JMath::sincosTable_.mTable[(u16)(s32)(angle * lbl_8053F80C) >> 5].second;
+}
+inline JGeometry::TVec3<f32> collisionVelocity(f32 sine, f32 cosine, f32 z) {
+    return JGeometry::TVec3<f32>(lbl_8053F81C * sine, lbl_8053F81C * cosine, z);
+}
+
 inline bool collisionBoxesOverlap(const JGeometry::TBox2<f32>& a, const JGeometry::TBox2<f32>& b) {
     JGeometry::TBox2<f32> intersection(a);
     return intersection.intersect(b);
