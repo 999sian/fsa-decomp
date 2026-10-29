@@ -198,8 +198,10 @@ static inline f32 ltzrSqrt(f32 x) {
 }
 
 static inline void ltzrTouch(char* p, s32 i) {
-    s32 room = *(s32*)(p + 4);
-    if (fn_8023DE58(i) != room) {
+    s32 room;
+    room = *(s32*)(p + 4);
+    s32 current = fn_8023DE58(i);
+    if (current != room) {
         return;
     }
     for (s32 j = 0; j < 8; j++) {
@@ -274,15 +276,19 @@ extern "C" void fn_8033FE04(char* p) {
     }
     if (*(s32*)(p + 0x248) == 1) {
         if (*(u8*)(p + 0x2b1) == 1) {
-            *(f32*)(p + 0x2b4) = *(f32*)(p + 0x2b4) + lbl_80542298;
-            if (*(f32*)(p + 0x2b4) >= lbl_8054229C) {
-                *(f32*)(p + 0x2b4) = lbl_8054229C;
+            f32 hi = lbl_8054229C;
+            f32 step = lbl_80542298;
+            *(f32*)(p + 0x2b4) += step;
+            if (*(f32*)(p + 0x2b4) >= hi) {
+                *(f32*)(p + 0x2b4) = hi;
                 *(u8*)(p + 0x2b1) = 0;
             }
         } else {
-            *(f32*)(p + 0x2b4) = *(f32*)(p + 0x2b4) - lbl_80542298;
-            if (*(f32*)(p + 0x2b4) <= lbl_8054227C) {
-                *(f32*)(p + 0x2b4) = lbl_8054227C;
+            f32 lo = lbl_8054227C;
+            f32 step = lbl_80542298;
+            *(f32*)(p + 0x2b4) -= step;
+            if (*(f32*)(p + 0x2b4) <= lo) {
+                *(f32*)(p + 0x2b4) = lo;
                 *(u8*)(p + 0x2b1) = 1;
             }
         }
