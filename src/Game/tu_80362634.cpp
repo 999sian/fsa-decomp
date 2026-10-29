@@ -27,6 +27,7 @@ struct ActorList80362634 {
     char* actors[0x400];
     s32 count;
     char* getActor(const s32 index) { return actors[index]; }
+    s32 getCount() const { return count; }
 };
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
@@ -530,9 +531,9 @@ extern "C" void fn_80363664(char* self) {
 }
 
 extern "C" void fn_80363880(char* p) {
-    int i;
-    int count;
-    char* item;
+    register int i;
+    register int count;
+    register char* item;
     int state = *(int*)(p + 0x24c);
     if (state >= 0) {
         item = (char*)((void**)((char*)fn_801F856C() + 8))[state];
@@ -552,7 +553,7 @@ extern "C" void fn_80363880(char* p) {
         }
     } else {
         count = *(int*)((char*)fn_801F856C() + 0x1008);
-        for (i = 0; i < count; i++) {
+        for (i = 0; i < count; ++i) {
             item = ((ActorList80362634*)fn_801F856C())->actors[i];
             if (item == NULL || *(int*)(item + 0x1a0) != 0x454f574c || *(u8*)(item + 0x11c) != 1 || *(int*)(item + 0x278) != 0) continue;
             if (!(PSVECDistance((Vec*)(p + 0xc), (Vec*)(item + 0xc)) < lbl_80542B4C)) break;
@@ -596,9 +597,9 @@ extern "C" void fn_80363880(char* p) {
         ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
         if (*(int*)(p + 0x25c) == 0) {
             ++*(int*)(p + 0x268);
-            if (*(*(int*)(p + 0x268) + (s8*)*(void**)(p + 0x270)) < 0) *(int*)(p + 0x268) = 0;
-            *(int*)(p + 0x25c) = *(*(int*)(p + 0x268) + (s8*)*(void**)(p + 0x270));
-            *(int*)(p + 0x264) = *(*(int*)(p + 0x268) + (s8*)*(void**)(p + 0x274));
+            if (((Anim80363880*)p)->durations[((Anim80363880*)p)->frame] < 0) *(int*)(p + 0x268) = 0;
+            *(int*)(p + 0x25c) = ((Anim80363880*)p)->durations[((Anim80363880*)p)->frame];
+            *(int*)(p + 0x264) = ((Anim80363880*)p)->frames[((Anim80363880*)p)->frame];
         }
     }
 }
