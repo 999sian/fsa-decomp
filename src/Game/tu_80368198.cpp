@@ -440,6 +440,9 @@ extern "C" void fn_8030C210(void* eff, Vec3f* v);
 extern f32 lbl_80542CA0;
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8036AA60(char*);
+static inline void addCutsceneHeight(Vec3f& out,const f32 top,const f32 bottom) {
+    out.y += lbl_80542C80+((bottom-top)-lbl_80542C84);
+}
 static inline f32 cutsceneHeight(const f32 top,const f32 bottom) {
     return lbl_80542C80+((bottom-top)-lbl_80542C84);
 }
@@ -534,10 +537,17 @@ void Unk8036C300::state0() {
             }
             if (*(s32*)(self+0x240) >= 3) {
                 u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
-                f32 x=v.x;
-                f32 y=v.y;
+                f32 radius=105.0f;
+                f32 high;
+                f32 low;
+                f32 x;
+                f32 y;
+                y=v.y;
+                x=v.x;
+                high=radius+y;
+                low=y-radius;
                 eff[0x179]=1;
-                cutsceneCameraBox(x,y-lbl_80542C88,x,lbl_80542C88+y);
+                cutsceneCameraBox(x,low,x,high);
             } else {
                 fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
                 {
