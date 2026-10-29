@@ -165,8 +165,6 @@ struct Tu80256Tables {
     u8 frames290[4][8];
     s32 rotations2B0[4];
     s32 rotations2C0[4];
-    static u8 frame(const u8* table,s32 direction,s32 index) { return table[direction*8+index]; }
-    static s32 rotation(const s32* table,s32 direction) { return table[direction]; }
 };
 static inline bool playerNearXY(const JGeometry::TVec2<f32>& a, const JGeometry::TVec2<f32>& b, const f32 epsilon) {
     bool equal = false;
@@ -1213,6 +1211,7 @@ static inline bool tu8025_eq3(u8* a, u8* b, f32 eps) {
     return equal;
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_80259830(u8* p0) {
     u8* tbl = (u8*)lbl_8046AF00;
     const Tu80256Tables* tables=(const Tu80256Tables*)lbl_8046AF00;
@@ -1300,21 +1299,21 @@ extern "C" void fn_80259830(u8* p0) {
                 }
             }
                         if (U8(p, 0x3f8) < 4) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][0];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+0)[0];
             } else if (U8(p, 0x3f8) < 6) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][1];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+1)[0];
             } else if (U8(p, 0x3f8) < 10) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][2];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+2)[0];
             } else if (U8(p, 0x3f8) < 14) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][3];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+3)[0];
             } else if (U8(p, 0x3f8) < 18) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][4];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+4)[0];
             } else if (U8(p, 0x3f8) < 20) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][5];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+5)[0];
             } else if (U8(p, 0x3f8) < 24) {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][6];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+6)[0];
             } else {
-                U8(p, 0x3f9) = tables->frames290[S32(p,0x3dc)][7];
+                U8(p, 0x3f9) = (tables->frames290[S32(p,0x3dc)]+7)[0];
             }
             if (!fn_80247594(p, 1)) {
                 U8(p, 0xb84) = 0;
@@ -1367,7 +1366,7 @@ extern "C" void fn_80259830(u8* p0) {
     }
     fn_80268B3C(p);
 }
-
+#pragma opt_strength_reduction reset
 extern "C" void fn_8025A04C(u8* p) {
     U8(p, 0x458) = 0;
     if (fn_80241794(p) <= 0) {
@@ -1447,24 +1446,24 @@ extern "C" void fn_8025A15C(u8* p) {
         switch (S32(p, 0x3dc)) {
         case 0:
             pos.x += lbl_80540110;
-            box.set(pos.x, pos.y - lbl_80540114, pos.x + lbl_80540118, lbl_80540114 + pos.y);
+            box.set(pos.x, pos.y - 6.0f, pos.x + lbl_80540118, 6.0f + pos.y);
             BOX(p, 0x580).set(box);
             break;
         case 1:
             pos.x -= lbl_80540110;
-            box.set(pos.x - lbl_80540118, pos.y - lbl_80540114, pos.x, lbl_80540114 + pos.y);
+            box.set(pos.x - lbl_80540118, pos.y - 6.0f, pos.x, 6.0f + pos.y);
             BOX(p, 0x580).set(box);
             break;
         case 2:
             pos.x += lbl_805400E0;
             pos.y += lbl_8054011C;
-            box.set(pos.x - lbl_80540114, pos.y, lbl_80540114 + pos.x, pos.y + lbl_80540118);
+            box.set(pos.x - 6.0f, pos.y, 6.0f + pos.x, pos.y + lbl_80540118);
             BOX(p, 0x580).set(box);
             break;
         case 3:
             pos.x -= lbl_805400E0;
             pos.y -= lbl_80540120;
-            box.set(pos.x - lbl_80540114, pos.y - lbl_80540118, lbl_80540114 + pos.x, pos.y);
+            box.set(pos.x - 6.0f, pos.y - lbl_80540118, 6.0f + pos.x, pos.y);
             BOX(p, 0x580).set(box);
             break;
         }
@@ -1502,6 +1501,7 @@ extern "C" void fn_8025A15C(u8* p) {
             if (S32(p, 0xb8c) <= 0 && S32(p, 0xb28) < 0) {
                 s32 owner = S32(p, 0x4);
                 S32(p, 0xb28) = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos, ((S32(p, 0x3dc) & 3) << 4) | 0x1040 | (owner & 3), -1, owner);
+            }
                 s32 id = S32(p, 0xb28);
                 if (id >= 0) {
                     u8* a = fn_801F666C(fn_801F856C(), id);
@@ -1512,7 +1512,6 @@ extern "C" void fn_8025A15C(u8* p) {
                         S32(p, 0xb8c) = 0x3c;
                     }
                 }
-            }
             if (PTR(p, 0x12c4) == 0) {
                 PTR(p, 0x12c4) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ab, 0, 2, 0, 0, 1, lbl_805400D4);
             }
