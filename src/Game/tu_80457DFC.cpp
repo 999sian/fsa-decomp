@@ -149,6 +149,22 @@ struct Unk8045A3D8Src {
     u8 m11;
 };
 
+static inline f32 getAudioPan(const u8* self, s8 mode) {
+    if(mode<0)return lbl_80543EC4;
+    if(mode>=self[5])return lbl_80543EC4;
+    f32 pan=lbl_80543EC4;
+    switch(self[5]){
+    case 1:default:pan=lbl_80543EC4;break;
+    case 2:case 3:case 4:
+        switch(mode){
+        case 0:case 2:pan=lbl_80543EC8;break;
+        case 1:case 3:pan=lbl_80543ECC;break;
+        }
+        break;
+    }
+    return pan;
+}
+
 static inline void stopAudioGroup(JAUSoundObject* obj) {
     obj->stopSound(JAISoundID(19), 0);
     obj->stopSound(JAISoundID(20), 0);
@@ -603,7 +619,6 @@ extern "C" void fn_80458744(void* this_, s32 mode) {
 
 #pragma dont_inline reset
 extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
-#pragma dont_inline off
     u8* self=this_;
     if(mode>=4)return;
     if(id==0x48 && self[0x6a]==0)self[0x6a]=1;
@@ -673,7 +688,6 @@ extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
         stopAudioGroup(*(JAUSoundObject**)(self+0x14));
         (*(JAUSoundObject**)(self+0x14))->startSound(JAISoundID(id));
     }
-#pragma dont_inline on
 }
 
 #pragma dont_inline reset
