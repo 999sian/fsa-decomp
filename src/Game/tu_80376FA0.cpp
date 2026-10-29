@@ -72,16 +72,24 @@ static inline bool movingBlockContainsPlayer(u8* self, s32 player) {
     s32 room = *(s32*)(self + 4);
     if (fn_8023DE58(player) != room) return false;
     f32 maxY, minX, minY, maxX;
-    minX = *(f32*)(self + 0x60) + *(f32*)(self + 0xc);
-    maxX = *(f32*)(self + 0x68) + *(f32*)(self + 0xc);
-    minY = *(f32*)(self + 0x64) + *(f32*)(self + 0x10);
-    maxY = *(f32*)(self + 0x6c) + *(f32*)(self + 0x10);
+    minX = *(f32*)(self + 0x60);
+    maxX = *(f32*)(self + 0x68);
+    minY = *(f32*)(self + 0x64);
+    minX += *(f32*)(self + 0xc);
+    maxX += *(f32*)(self + 0xc);
+    maxY = *(f32*)(self + 0x6c);
+    minY += *(f32*)(self + 0x10);
+    maxY += *(f32*)(self + 0x10);
     for (s32 j = 0; j < 8; j++) {
         Vec point;
         fn_8022E088(player, j, &point);
         point.z = 0.0f;
+        f32 x = point.x;
         bool inside = false;
-        if (point.x >= minX && point.y >= minY && point.x < maxX && point.y < maxY) inside = true;
+        if (x >= minX) {
+            f32 y = point.y;
+            if (y >= minY && x < maxX && y < maxY) inside = true;
+        }
         if (inside) return true;
     }
     return false;
@@ -108,27 +116,20 @@ extern "C" void fn_803771AC(u8* this_) {
             fn_8020D7D0(p + (p[0] * 0x784 + 4), handle);
         }
         if (this_[0x264] == 0) {
-            Vec* target = (Vec*)(this_ + 0x24);
-            f32 dist = PSVECDistance(((Vec*)(this_ + 0xc)), target);
+            f32 dist = PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24)));
             f32 speed;
-            if (dist >= 12.0f) {
-                if (dist >= 44.1f) {
-                    speed = 15.9f;
-                } else {
-                    speed = 19.9f;
-                }
-            } else {
-                speed = 11.9f;
-            }
+            if (dist < 12.0f) speed = 11.9f;
+            else if (dist >= 44.1f) speed = 15.9f;
+            else speed = 19.9f;
             f32 d2 = PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x248)));
             if (d2 >= speed) {
-                if (((Vec*)(this_ + 0xc))->x <= target->x + 11.5f && ((Vec*)(this_ + 0xc))->x >= target->x - 11.5f) {
-                    ((Vec*)(this_ + 0xc))->x = target->x;
+                if (((Vec*)(this_ + 0xc))->x <= ((Vec*)(this_ + 0x24))->x + 11.5f && ((Vec*)(this_ + 0xc))->x >= ((Vec*)(this_ + 0x24))->x - 11.5f) {
+                    ((Vec*)(this_ + 0xc))->x = ((Vec*)(this_ + 0x24))->x;
                 } else {
                     ((Vec*)(this_ + 0xc))->x = fn_8033D4AC(((Vec*)(this_ + 0xc))->x, ((Vec*)(this_ + 0x248))->x, speed);
                 }
-                if (((Vec*)(this_ + 0xc))->y <= target->y + 11.5f && ((Vec*)(this_ + 0xc))->y >= target->y - 11.5f) {
-                    ((Vec*)(this_ + 0xc))->y = target->y;
+                if (((Vec*)(this_ + 0xc))->y <= ((Vec*)(this_ + 0x24))->y + 11.5f && ((Vec*)(this_ + 0xc))->y >= ((Vec*)(this_ + 0x24))->y - 11.5f) {
+                    ((Vec*)(this_ + 0xc))->y = ((Vec*)(this_ + 0x24))->y;
                 } else {
                     ((Vec*)(this_ + 0xc))->y = fn_8033D4AC(((Vec*)(this_ + 0xc))->y, ((Vec*)(this_ + 0x248))->y, speed);
                 }
@@ -142,7 +143,7 @@ extern "C" void fn_803771AC(u8* this_) {
             *(u32*)(this_ + 0x230) = 0;
             *(s32*)(this_ + 0x254) = 8;
             JGeometry::setTVec3f((f32*)((Vec*)(this_ + 0xc)), (f32*)(this_ + 0x18));
-            if (PSVECDistance(((Vec*)(this_ + 0xc)), target) < 63.9) {
+            if (PSVECDistance(((Vec*)(this_ + 0xc)), ((Vec*)(this_ + 0x24))) >= 63.9) {
                 ((Actor*)this_)->v10(0xff, 1);
                 f32 x = ((Vec*)(this_ + 0xc))->x - 24.0f;
                 f32 y = ((Vec*)(this_ + 0xc))->y;
@@ -203,7 +204,11 @@ extern "C" void fn_803771AC(u8* this_) {
             if (PSVECDistance(((Vec*)(this_ + 0xc)), (Vec*)(this_ + 0x24)) >= 63.9f) {
                 break;
             }
-            if (*(s32*)(this_ + 0x260) >= 10) {
+            if (*(s32*)(this_ + 0x260) < 10) {
+                (*(s32*)(this_ + 0x260))++;
+                break;
+            }
+            {
                 u32 h = *(u32*)(this_ + 0x198);
                 s32 idx = fn_80238BC4(h);
                 s32 r4 = *(s32*)(this_ + 0x258);
@@ -216,10 +221,13 @@ extern "C" void fn_803771AC(u8* this_) {
                     break;
                 }
                 fn_80238E08(*(u32*)(this_ + 0x198));
-                Vec* v = (Vec*)((u8*)lbl_80475148 + idx * 0xc);
-                ((Vec*)(this_ + 0x3c))->x = v->x;
-                ((Vec*)(this_ + 0x3c))->y = v->y;
-                ((Vec*)(this_ + 0x3c))->z = v->z;
+                const f32* source = lbl_80475148 + idx * 3;
+                f32 x = source[0];
+                f32 y = source[1];
+                ((Vec*)(this_ + 0x3c))->x = x;
+                f32 z = source[2];
+                ((Vec*)(this_ + 0x3c))->y = y;
+                ((Vec*)(this_ + 0x3c))->z = z;
                 ((Vec*)(this_ + 0x248))->x = ((Vec*)(this_ + 0xc))->x;
                 ((Vec*)(this_ + 0x248))->y = ((Vec*)(this_ + 0xc))->y;
                 ((Vec*)(this_ + 0x248))->z = ((Vec*)(this_ + 0xc))->z;
@@ -234,8 +242,6 @@ extern "C" void fn_803771AC(u8* this_) {
                 } else {
                     *(u32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), ((Vec*)(this_ + 0xc)), 1.0f, 0x319, 1, 1, 0, 0, 1);
                 }
-            } else {
-                (*(s32*)(this_ + 0x260))++;
             }
         } else if (*(u32*)(this_ + 0x230) != 0) {
             fn_8013CB44(*(u32*)(this_ + 0x230), ((Vec*)(this_ + 0xc)), 0, 0, 1);
