@@ -56,6 +56,12 @@ struct BTBZ_Vec {
     f32 x, y, z;
 };
 
+static inline void BTBZ_startSwitchEvent(s32 index) {
+    if (fn_801F666C(fn_801F856C(), index) != 0) {
+        fn_802B39E8();
+    }
+}
+
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
     s32 a;
@@ -96,6 +102,7 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
 
 // ---- fn_8012D6E8: init (spawns effect 0x58 at the room centre)
 extern "C" void fn_8012CF5C(u8* this_) {
+    u8* flags;
     s32 i;
     v03__5ActorFv(this_);
     switch (*(s32*)(this_ + 0x234)) {
@@ -128,6 +135,7 @@ extern "C" void fn_8012CF5C(u8* this_) {
         break;
     case 2: {
         fn_801F0E34(this_, 0x30032, 0);
+        flags=lbl_80529DEC;
         for (i = 0; i < 4; i++) {
             if (*(s32*)(this_ + 4) == fn_8023DE58(i) && fn_8023F264(i) && !fn_80230188(i) &&
                 !fn_8022F478(i) && !fn_80236D14(i)) {
@@ -142,7 +150,7 @@ extern "C" void fn_8012CF5C(u8* this_) {
                 pos[0]=x;
                 pos[1]=y-lbl_8053CC2C;
                 fn_80238548(i, 1, pos, 1);
-                lbl_80529DEC[0x239] |= (u8)(1 << i);
+                flags[0x239] |= (u8)(1 << i);
             }
         }
         *(s32*)(this_ + 0x238) += 1;
