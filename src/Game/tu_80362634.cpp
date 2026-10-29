@@ -355,8 +355,8 @@ extern "C" void fn_80362B74(char* self) {
 }
 
 extern "C" void fn_80362C44(char* self) {
-    s32 i;
-    const u16* ids;
+    int i;
+    u16* ids;
     char* p;
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(self + 0xc);
     BOOL handled = FALSE;
@@ -439,18 +439,16 @@ extern "C" void fn_80362C44(char* self) {
         *(f32*)(self + 0x2f8) += JMAAbs(*(f32*)(self + 0x40));
         if (*(f32*)(self + 0x2f8) >= 80.0f) {
             JGeometry::TVec3<f32> v;
-            f32 x;
-            f32 y;
             *(s32*)(self + 0x248) = 0x12c;
             *(f32*)(self + 0x250) = *(u8*)(*(char**)((char*)lbl_8053AB10 + 0x2c) + 0xc);
             *(f32*)(self + 0x254) = *(f32*)(self + 0x250) / *(s32*)(self + 0x248);
-            y = 384.0f * (s32)(*(f32*)(self + 0x10) / 384.0f) + 192.0f;
-            x = 512.0f * (s32)(*(f32*)(self + 0xc) * 0.001953125f) + 256.0f;
+            f32 y = 384.0f * (s32)(*(f32*)(self + 0x10) / 384.0f) + 192.0f;
+            f32 x = 512.0f * (s32)(*(f32*)(self + 0xc) * 0.001953125f) + 256.0f;
             v.z = 0.0f;
             v.y = y;
             v.x = x;
             p = self;
-            ids = lbl_80542AF0;
+            ids = (u16*)lbl_80542AF0;
             for (i = 0; i < 4; i++) {
                 fn_8013CC50(0, &v, 1.0f, *ids, 0, 0, 0, 0, 1);
                 fn_80362C44_deleteEmitter(*(void**)(p + 0x30c));
@@ -1474,4 +1472,33 @@ extern "C" void* fn_80366D44(void* this_, short how) {
     }
     return this_;
 }
-
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __register_global_object(void*, void*, void*);
+extern "C" u32 lbl_804ADB60[];
