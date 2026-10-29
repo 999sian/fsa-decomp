@@ -607,7 +607,7 @@ J3DMaterial* J3DMaterialFactory::create(J3DMaterial* material, MaterialType type
 extern "C" void* createTexGenBlock__11J3DMaterialFUl(u32);
 extern "C" void* createTevBlock__11J3DMaterialFi(int);
 extern "C" void fn_800CBB9C(J3DNBTScaleInfo* out, u8* p, s32 idx);
-extern "C" void fn_800CB104(s32* out, u8* p, s32 idx, s32 no);
+extern "C" TevKColorWord fn_800CB104(const J3DMaterialFactory* self, int idx, int no);
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 no);
 extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags) {
     u32 nTev, colorFlag, nTex, peFlag, texFlag, indFlag, nTexNo;
@@ -1319,15 +1319,13 @@ extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int
     return J3DColorChan();
 }
 
-extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
-    GXColor def = *(GXColor*)&lbl_8053BC74;
-    const J3DMaterialFactory* self = (const J3DMaterialFactory*)p;
-    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[a]];
-    if (initData->mAmbientColorIndex[b] != 0xffff) {
-        *out = (*(s32**)(p + 0x1c))[initData->mAmbientColorIndex[b]];
-    } else {
-        *out = *(s32*)&def;
+extern "C" TevKColorWord fn_800CB104(const J3DMaterialFactory* self, int idx, int no) {
+    GXColor dflt = *(GXColor*)&lbl_8053BC74;
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (initData->mAmbientColorIndex[no] != 0xffff) {
+        return TevKColorWord(((u32*)self->unk_0C[4])[initData->mAmbientColorIndex[no]]);
     }
+    return TevKColorWord(*(u32*)&dflt);
 }
 
 extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
