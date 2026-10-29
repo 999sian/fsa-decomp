@@ -63,6 +63,7 @@ struct ActorSlot21 {
     virtual void v17();
     virtual void v18();
     virtual void slot21();
+    virtual u8 slot22(void*);
 };
 
 extern "C" void fn_802E4D20(void* this_) {
