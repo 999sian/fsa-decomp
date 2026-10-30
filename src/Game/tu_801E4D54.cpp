@@ -14,7 +14,7 @@ extern "C" void fn_801E4D74(u8* this_) {
     *(f32*)(this_ + 0x4bc) = 255.0f;
 }
 
-extern "C" u8* fn_801F856C(u8* this_);
+extern "C" u8* fn_801F856C(...);
 extern "C" s32 fn_801F7818(u8* this_, u32 fourcc, s32 room, u8** list, s32 max);
 extern "C" s32 fn_801F666C(u8* a, s32 id);
 extern "C" void fn_801D7874(u8* p);
@@ -40,27 +40,96 @@ static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
 
 extern "C" void fn_801E4D88(u8* this_) {
     u8* list[0x400];
+    JGeometry::TVec3<f32> pv;
+    JGeometry::TVec3<f32> sum;
+    JGeometry::TVec3<f32> out;
+    JGeometry::TVec3<f32> zero;
+    JGeometry::TVec3<f32> zero2;
+    JGeometry::TVec3<f32> movePos;
     s32 count;
     s32 i;
     s32 id;
     u8* p;
     u8* e;
-
-    fn_801F856C(this_);
-    count = fn_801F7818(this_, 0x48424D42, *(s32*)(this_ + 4), list, -1);
-    for (i = 0, p = this_ + 0x308; i < 16; i++, p += 0x14) {
-        if (p[4] == 0) continue;
-        id = *(s32*)p;
-        if (id < 0) {
-            fn_801D7874(p);
-            p[4] = 0;
+    count = fn_801F7818(fn_801F856C(this_), 0x48424D42, *(s32*)(this_ + 4), list, -1);
+    for (i = 0, p = this_; i < 16; i++, p += 0x14) {
+        if (p[0x30c] == 0) continue;
+        id = *(s32*)(p+0x308);
+        if (id < 0) goto clear;
+        e = (u8*)fn_801F666C(fn_801F856C(this_), id);
+        if (e == 0) goto clear;
+        if (!e[0x11c] || *(s32*)(e+4)!=*(s32*)(this_+4) || *(u16*)(e+0x94)==1 || *(u32*)(e+0x90)) goto clear;
+        {
+            s32 j;
+            for(j=0;j<count;j++) {
+                if (*(s32*)(e+0x198)==*(s32*)(list[j]+0x198)) break;
+            }
+            if(j<count) continue;
+        }
+clear:
+        u8* slot=p+0x308;
+        fn_801D7874(slot);
+        slot[4]=0;
+    }
+    for (i=0;i<count;i++) {
+        e=list[i];
+        if (e==0 || !e[0x11c] || *(u16*)(e+0x94)==1 || *(u32*)(e+0x90)!=0) continue;
+        if(hasBombSlot(this_,e,0x30c) && hasBombSlot(this_,e,0x30d)) {
+            zero.setAll(lbl_8053F578);
+            *(JGeometry::TVec3<f32>*)(e+0x3c)=zero;
+            p=this_;
+            for(s32 j=0;j<16;j++,p+=0x14) {
+                if(*(s32*)(p+0x308)==*(s32*)(e+0x198) && p[0x30c] && p[0x30d]) {
+                    u8* slot=this_+j*0x14+0x308;
+                    fn_801D7830(slot);
+                    movePos=*(JGeometry::TVec3<f32>*)(e+0xc);
+                    movePos.add(*(JGeometry::TVec3<f32>*)(slot+8));
+                    if(movePos.z<lbl_8053F578) {
+                        ((JGeometry::TVec3<f32>*)(slot+8))->setAll(lbl_8053F578);
+                        movePos.z=lbl_8053F578;
+                    }
+                    *(JGeometry::TVec3<f32>*)(e+0xc)=movePos;
+                    break;
+                }
+            }
             continue;
         }
-        e = (u8*)fn_801F666C(fn_801F856C(this_), id);
-        if (e == 0) {
-            fn_801D7874(p);
-            p[4] = 0;
-            continue;
+        f32 dy=*(f32*)(this_+0x10)-*(f32*)(this_+0x1c);
+        f32 dx=*(f32*)(this_+0xc)-*(f32*)(this_+0x18);
+        pv.x=*(f32*)(e+0xc); pv.y=*(f32*)(e+0x10); pv.z=*(f32*)(e+0x14);
+        if(hasBombSlot(this_,e,0x30c) && !hasBombSlot(this_,e,0x30d)) {
+            pv.x+=dx; pv.y+=dy;
+        }
+        f32 x=pv.x-*(f32*)(this_+0xc);
+        f32 y=pv.y-*(f32*)(this_+0x10);
+        f32 range=*(f32*)(this_+0x47c);
+        if(x*x+y*y > range*range) {
+            fn_801EB00C(this_+0x464,&pv.x,&out.x);
+            u32 flags=*(u32*)(this_+0x230)&0x4000;
+            if(!flags && hasBombSlot(this_,e,0x30c) && !hasBombSlot(this_,e,0x30d)) {
+                fn_801E5BA8(this_,e,&out.x,0);
+            } else if(flags) {
+                if(out.isZero()) continue;
+                if(out.z>lbl_8053F578) {
+                    zero2.setAll(lbl_8053F578);
+                    *(JGeometry::TVec3<f32>*)(e+0x3c)=zero2;
+                    if(!hasBombSlot(this_,e,0x30c)) {
+                        p=this_;
+                        for(s32 j=0;j<16;j++,p+=0x14) {
+                            if(!p[0x30c]) {
+                                u8* slot=this_+j*0x14+0x308;
+                                *(s32*)slot=*(s32*)(e+0x198);
+                                slot[4]=1;
+                                break;
+                            }
+                        }
+                    }
+                }
+                sum.x=pv.x;sum.y=pv.y;sum.z=pv.z;
+                sum.add(out);
+                if(sum.z>*(f32*)(this_+0x478)) fn_801E5BA8(this_,e,&out.x,1);
+                *(JGeometry::TVec3<f32>*)(e+0xc)=sum;
+            }
         }
     }
 }
