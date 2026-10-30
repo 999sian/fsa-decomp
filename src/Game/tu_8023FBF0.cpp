@@ -5121,14 +5121,15 @@ inline s32 linkRankLive(char* p) {
     }
     s32 c = 0;
     for (s32 i = 0; i < S32(p, 0x4); i++) {
-        if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+        s32 linked = S32(p, 0xd60);
+        if (linked == fn_8022F3DC(i)) {
             c++;
         }
     }
     return c + 1;
 }
 
-inline void warpTo(char* p, const JGeometry::TVec3<f32>& v, s32 frame, u8 a, u8 b, u8 c, u8 check) {
+inline void warpTo(char* p, const JGeometry::TVec3<f32>& v, s32 frame, u8 a, s8 b, s8 c, u8 check) {
     *(JGeometry::TVec3<f32>*)(p + 0x32c) = v;
     if (frame >= 0) {
         U16(p, 0x450) = frame;
