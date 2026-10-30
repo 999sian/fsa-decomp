@@ -379,6 +379,8 @@ static inline s32 t84FindPlayer(char* p) {
     }
     return found;
 }
+#pragma opt_propagation on
+#pragma opt_common_subs on
 extern "C" void fn_801D8B28(void* this_) {
     char* p=(char*)this_;
     switch(I(p,0x248)) {
@@ -407,8 +409,8 @@ extern "C" void fn_801D8B28(void* this_) {
         } else if(I(p,0x24c)==6) {
             U(p,0x230)&=~0x4000;
             if(!(U(p,0x230)&0x4000) && !(H(fn_801DAC6C(),0x84)&1)) {
-                s32 n=10;
                 s32 remaining=30-I(fn_801DAC6C(),0x80);
+                s32 n=10;
                 if(remaining<10) n=remaining;
                 if(n>0) {
                     JGeometry::TVec3<f32> pos(F(p,0xc),lbl_8053F1F8+F(p,0x10),F(p,0x14));
@@ -435,8 +437,8 @@ extern "C" void fn_801D8B28(void* this_) {
         if(U(p,0x2bc)&1) fn_801D9C58(p,4);
         else if(I(p,0x24c)==6) {
             if(!(U(p,0x230)&0x4000) && !(H(fn_801DAC6C(),0x84)&1)) {
-                s32 n=10;
                 s32 remaining=30-I(fn_801DAC6C(),0x80);
+                s32 n=10;
                 if(remaining<10) n=remaining;
                 if(n>0) {
                     JGeometry::TVec3<f32> pos(F(p,0xc),lbl_8053F1F8+F(p,0x10),F(p,0x14));
@@ -480,8 +482,7 @@ extern "C" void fn_801D8B28(void* this_) {
         if(U(p,0x2bc)&1) {
             s32 player=t84FindPlayer(p);
             if(player>=0) {
-                if(B(p,0x33e)<2) {fn_801D9C58(p,14);break;}
-                else if(B(p,0x33e)<3 && t84Random()<lbl_8053F210) {fn_801D9C58(p,14);break;}
+                if(B(p,0x33e)<2 || (B(p,0x33e)<3 && t84Random()<lbl_8053F210)) {fn_801D9C58(p,14);break;}
             }
             t84PickTarget(p);
             bool turn=false;
@@ -493,7 +494,7 @@ extern "C" void fn_801D8B28(void* this_) {
             else {if(U(p,0x230)&0x2000) turn=true;}
             if(turn) fn_801D9C58(p,12);else fn_801D9C58(p,11);
             B(p,0x33e)=0;
-        } else if(I(p,0x24c)==10 && fn_801D95F4(p)) {
+        } else if(I(p,0x24c)==10 && (u8)fn_801D95F4(p)) {
             B(p,0x33e)++;
             fn_801F0E34(p,0x30035,0);
         }
@@ -537,18 +538,9 @@ extern "C" void fn_801D8B28(void* this_) {
     case 20:break;
     }
 }
-
 extern "C" s32 fn_801CD664(s32 n);
 
-struct T84List {
-    T84List() : n(0) {}
-    void add(s32 x) {
-        v[n] = x;
-        n++;
-    }
-    s32 v[11];
-    s32 n;
-};
+struct T84List;
 
 static inline void t84PickTarget(char* p);
 
