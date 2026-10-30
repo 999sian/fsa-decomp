@@ -4,9 +4,6 @@
 #include "JSystem/JGeometry/Vec.h"
 struct JMathSinCos { f32 first; f32 second; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
-static inline f32 fobrCosAt(const JMathSinCos* table, const s32 index) {
-    return table[index].second;
-}
 
 union FobrWord {
     u32 w;
@@ -92,17 +89,18 @@ extern "C" const f32 lbl_8053F9C0;
 extern "C" const f32 lbl_8053F9C4;
 #pragma opt_propagation off
 extern "C" void fn_8020B434(u8* this_) {
-    f32 s;
     if (*(s32*)(this_ + 0x248) == 1) {
         fn_801F0E34(this_, 0x400d8, 0);
-        f32 cs;
-        f32 sn;
-        f32 b;
         f32 a;
+        f32 s;
+        f32 b;
+        f32 sn;
+        f32 cs;
         s32 idx;
         const JMathSinCos* tbl;
         a = lbl_8053F9B8;
         tbl = sincosTable___5JMath;
+        s = lbl_8053F9C0;
         b = lbl_8053F9BC;
         *(f32*)(this_ + 0x60) = a;
         *(f32*)(this_ + 0x64) = a;
@@ -113,13 +111,11 @@ extern "C" void fn_8020B434(u8* this_) {
         *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
         *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
         idx = (((*(u16*)(this_ + 0x94) & 3) << 14) - 0x6000) >> 5 & 0x7ff;
-        s = lbl_8053F9C0;
         sn = tbl[idx].first;
-        cs = tbl[idx].second;
-        sn = sn * s;
-        cs = cs * s;
+        sn *= s;
+        s = tbl[idx].second * s;
         *(f32*)(this_ + 0x3c) = sn;
-        *(f32*)(this_ + 0x40) = cs;
+        *(f32*)(this_ + 0x40) = s;
         *(f32*)(this_ + 0x44) = lbl_8053F9C4;
         *(u32*)(this_ + 0x24c) = 0;
         *(u32*)(this_ + 0x248) = 2;
