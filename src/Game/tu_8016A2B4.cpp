@@ -1788,7 +1788,6 @@ static inline JUTTexture* loadSceneTexture(JKRArchive* archive, const char* name
 
 #pragma push
 #pragma opt_propagation off
-#pragma opt_lifetimes off
 extern const char lbl_8053DA04[8];
 extern "C" void* fn_8016F0BC(u8* self, JKRHeap* const heap) {
     void* w;
