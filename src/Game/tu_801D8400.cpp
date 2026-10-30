@@ -363,11 +363,12 @@ static inline s16 t84FaceAngle(char* p) {
 }
 
 static inline s32 t84FindPlayer(char* p) {
+    s16 ang;
     s32 pl;
     s32 found = -1;
     JGeometry::TVec3<f32> v;
     t84FrontPos(p, &v);
-    s16 ang = t84FaceAngle(p);
+    ang = t84FaceAngle(p);
     pl = fn_801D0338(p, &v, ang);
     if (pl >= 0) {
         f32 dy = fn_8023E724(pl)->y - v.y;
@@ -382,11 +383,12 @@ static inline s32 t84FindPlayer(char* p) {
 #pragma opt_propagation on
 #pragma opt_common_subs on
 extern "C" void fn_801D8B28(void* this_) {
+    s32 n;
+    s32 i;
     char* p=(char*)this_;
     switch(I(p,0x248)) {
     case 0:
         if(fn_801CD228((void*)I(p,4))) {
-            s32 i;
             for(i=0;i<4;i++) {
                 if(JGeometry::TUtilf::abs(fn_8023E724(i)->x-F(p,0xc))<=lbl_8053F1F4) break;
                 if(JGeometry::TUtilf::abs(fn_8023E724(i)->y-F(p,0x10))<=lbl_8053F1F4) break;
@@ -410,11 +412,11 @@ extern "C" void fn_801D8B28(void* this_) {
             U(p,0x230)&=~0x4000;
             if(!(U(p,0x230)&0x4000) && !(H(fn_801DAC6C(),0x84)&1)) {
                 s32 remaining=30-I(fn_801DAC6C(),0x80);
-                s32 n=10;
+                n=10;
                 if(remaining<10) n=remaining;
                 if(n>0) {
                     JGeometry::TVec3<f32> pos(F(p,0xc),lbl_8053F1F8+F(p,0x10),F(p,0x14));
-                    for(s32 i=0;i<n;i++) Actor_CreateByID(fn_801F856C(),0x4943484c,I(p,4),&pos,0,-1,-1);
+                    for(i=0;i<n;i++) Actor_CreateByID(fn_801F856C(),0x4943484c,I(p,4),&pos,0,-1,-1);
                     fn_801F0E34(p,0x40053,0);
                 }
             }
@@ -438,11 +440,11 @@ extern "C" void fn_801D8B28(void* this_) {
         else if(I(p,0x24c)==6) {
             if(!(U(p,0x230)&0x4000) && !(H(fn_801DAC6C(),0x84)&1)) {
                 s32 remaining=30-I(fn_801DAC6C(),0x80);
-                s32 n=10;
+                n=10;
                 if(remaining<10) n=remaining;
                 if(n>0) {
                     JGeometry::TVec3<f32> pos(F(p,0xc),lbl_8053F1F8+F(p,0x10),F(p,0x14));
-                    for(s32 i=0;i<n;i++) Actor_CreateByID(fn_801F856C(),0x4943484c,I(p,4),&pos,0,-1,-1);
+                    for(i=0;i<n;i++) Actor_CreateByID(fn_801F856C(),0x4943484c,I(p,4),&pos,0,-1,-1);
                     fn_801F0E34(p,0x40053,0);
                 }
             }
