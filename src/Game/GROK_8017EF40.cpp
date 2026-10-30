@@ -45,7 +45,7 @@ extern const f32 lbl_8053DDD8;
 static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     f32 cz,cy,cx,sz,sy,sx;
     sx=sin(lbl_8053DDD8);sy=sin(lbl_8053DDD8);sz=sin(lbl_8053DDD8);
-    cx=cos(0.0f);cy=cos(0.0f);cz=cos(0.0f);
+    cx=cos(lbl_8053DDD8);cy=cos(lbl_8053DDD8);cz=cos(lbl_8053DDD8);
     f32 ss=sx*sy;
     f32 cs=cx*sz;
     f32 cc=cx*cz;
