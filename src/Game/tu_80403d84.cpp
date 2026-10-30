@@ -2020,6 +2020,10 @@ extern "C" void fn_8040CE90(u8* self) {
 
 extern "C" void fn_804083D8(u8*);
 extern "C" u32 fn_80309B74(void*,s32,s32);
+static inline void resetMenuFrames(PaneRef* const* slot) {
+    (*slot)->frame20=0; (*slot)->frame22=0; (*slot)->frame24=0; (*slot)->frame26=0;
+}
+static inline u32 menuInputText(u32* table, int index) { return table[index]; }
 #pragma opt_propagation on
 #pragma opt_common_subs off
 extern "C" void fn_8040D3D0(u8* self){
