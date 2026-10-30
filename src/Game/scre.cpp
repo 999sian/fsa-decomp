@@ -148,56 +148,56 @@ extern "C" void fn_80391F58(void* this_) {
         screDigitAt(p, 5, alpha);
         break;
     case 2:
-        screDigitOff(p, 2, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,2,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 3:
-        screDigitOff(p, 5, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,5,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 4:
-        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,1,pos,alpha);}
         screDigitAt(p, 0, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 5:
-        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,1,pos,alpha);}
         screDigitAt(p, 5, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 6:
-        screDigitOff(p, 2, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,2,pos,alpha);}
         screDigitAt(p, 0, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 7:
-        screDigitOff(p, 3, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,3,pos,alpha);}
         screDigitAt(p, 0, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 8:
-        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,1,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 9:
-        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
-        screDigitOff(p, 5, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,1,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,5,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 10:
-        screDigitOff(p, 2, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,2,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     case 11:
-        screDigitOff(p, 3, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
-        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,3,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) - lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
+        {JGeometry::TVec3f pos(*(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190,*(f32*)(p+0x10),*(f32*)(p+0x14));screDigitPos(p,0,pos,alpha);}
         break;
     }
 }
