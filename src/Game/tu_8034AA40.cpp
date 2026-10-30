@@ -312,12 +312,17 @@ digit=1;if(best==*(s32*)(self+0x278)){*next=digit;next++;count+=1;}
 digit=2;if(best==*(s32*)(self+0x27c)){*next=digit;next++;count+=1;}
 digit=3;if(best==*(s32*)(self+0x280)){*next=digit;count+=1;}
 if(count==1)return choices[0];
-return choices[(s32)(count*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1())];
+f32 limit=count;
+u32* seed=(u32*)(lbl_8053AAF8+0xb4);*seed=*seed*0x19660d+0x3c6ef35f;
+u32 bits=(*seed>>9)|0x3f800000;
+f32 random=*(f32*)&bits-lbl_80542518;
+return choices[(s32)(limit*random)];
 }
 #pragma opt_propagation reset
 
 struct NwokScoreView {u8 field_000[0x274]; s32 scores[4];};
 
+#pragma opt_propagation off
 extern "C" void fn_8034B088(NwokScoreView* actor){
 u8* self=(u8*)actor;
 JGeometry::TBox2f box;JGeometry::TVec3f msg0,msg4,msg6,msg9,msg11,camera;
@@ -425,9 +430,9 @@ if(angle<0x2000||angle>=0xe000)*(s32*)(self+0x23c)=3;else if(angle>=0x2000&&angl
 case 0:*(s32*)(self+0x238)&=3;*(s32*)(self+0x234)=((s32*)lbl_804720E8)[*(s32*)(self+0x238)];break;
 case 1:*(s32*)(self+0x238)&=1;*(s32*)(self+0x234)=((s32*)&lbl_80542510)[*(s32*)(self+0x238)];break;}}
 if(*(s32*)(self+0x230)>=6&&*(s32*)(self+0x230)<=10){
-camera.set(*(f32*)(self+0xc),*(f32*)(self+0x10)-*(f32*)(self+0x14),lbl_8054254C);fn_8030C210(((void**)lbl_8053AB10)[9],&camera);}
+f32 y=*(f32*)(self+0x10)-*(f32*)(self+0x14);f32 x=*(f32*)(self+0xc);camera.set(x,y,lbl_8054254C);fn_8030C210(((void**)lbl_8053AB10)[9],&camera);}
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
