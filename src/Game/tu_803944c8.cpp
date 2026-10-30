@@ -1282,7 +1282,7 @@ struct MsgMeasureSave {
     f32 spaceW[12]; // 0x1a8
 };
 
-static inline void msgSetLineBit(MsgMeasure* m, s32 n) {
+static inline void msgSetLineBit(MsgMeasure* m, int n) {
     if (n < 32) {
         m->bits[0] = (1 << n) | m->bits[0];
     } else if (n < 64) {
