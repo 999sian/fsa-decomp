@@ -1112,7 +1112,7 @@ extern "C" u8 fn_8037EC98(s32 p, u16 flags) {
 
 static inline s32 resolvePlayerConst(const int p) {
     if(isShared()) {
-        const s32 r=fn_8022F340(p);
+        const int r=fn_8022F340(p);
         if(r>=0 && r<4) return r;
     }
     return p;
