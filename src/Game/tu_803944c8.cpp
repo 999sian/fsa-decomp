@@ -292,7 +292,8 @@ struct MsgPop {
     f32 h;                    // 0x114
     u8 pad118[0x194 - 0x118];
     s16 timer;                // 0x194
-    u8 pad196[0x1a4 - 0x196];
+    s16 fadeTimer;              // 0x196
+    u8 pad198[0x1a4 - 0x198];
     u8 alpha;                 // 0x1a4
 };
 
@@ -457,57 +458,28 @@ if((*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x100) && ((u8*)lbl_8053AAF8)[
 if(!p[0x3af] && !p[0x1a9]) {
 *(s16*)(p+0x194)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-s32 j;
-J2DScreen* screen;
-const u64* child;
 for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
 if(i==n) {if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag); pane->mIsVisible=false; }
-screen = ((MsgDraw*)p)->screens[p[0x1a2]];
-s32 period=*(s16*)(lbl_8050DB0C+0x284);
-++*(s16*)(p+0x196);
-s32 half=period/2;
-if(*(s16*)(p+0x196)>=period) *(s16*)(p+0x196)=0;
-s32 t=*(s16*)(p+0x196);
-s32 v;
-if(t<half)v=t;else v=period-t;
-f32 alpha=(f32)v/(f32)half;
-child=tags;
-for(j=0;j<4;j++,child++) if(*child!=0) screen->search(*child)->setAlpha(alpha*p[j+0x1a5]);
+msgFadeChoice(p,((MsgDraw*)p)->screens[p[0x1a2]],tags);
 if (!*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags); pane->mIsVisible=true; }} else {if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags); pane->mIsVisible=false; }}
 }
 }
 else {if(n!=4)n=0;{
-s32 j;
-J2DScreen* screen;
-const u64* child;
 for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
 if(i==n) {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=false; }
-screen = ((MsgDraw*)p)->screen;
-s32 period=*(s16*)(lbl_8050DB0C+0x284);
-++*(s16*)(p+0x196);
-s32 half=period/2;
-if(*(s16*)(p+0x196)>=period) *(s16*)(p+0x196)=0;
-s32 t=*(s16*)(p+0x196);
-s32 v;
-if(t<half)v=t;else v=period-t;
-f32 alpha=(f32)v/(f32)half;
-child=tags;
-for(j=0;j<4;j++,child++) if(*child!=0) screen->search(*child)->setAlpha(alpha*p[j+0x1a5]);
+msgFadeChoice(p,((MsgDraw*)p)->screen,tags);
 if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=true; }} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=false; }}
 }
 }}
 } else if(*(u32*)(*(u8**)(p+0x10)+0x4c)==99999 && !p[0x1a9]) {
 *(s16*)(p+0x196)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-s32 j;
-J2DScreen* screen;
-const u64* child;
 for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
@@ -515,14 +487,10 @@ const u64* tags=lbl_80475790[i];
 if(i==n) {if (!*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag); pane->mIsVisible=true; }
 fn_80395834((MsgPop2*)p,((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag));
 if (!*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags); pane->mIsVisible=true; }
-child=tags;
-for(j=0;j<4;j++,child++) if(*child!=0) ((MsgDraw*)p)->screens[p[0x1a2]]->search(*child)->setAlpha(p[j+0x1a5]);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags); pane->mIsVisible=false; }}
+msgRestoreChoice(p,tags,false);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags); pane->mIsVisible=false; }}
 }
 }
 else {if(n!=4)n=0;{
-s32 j;
-J2DScreen* screen;
-const u64* child;
 for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
@@ -530,17 +498,13 @@ if(i>=1 && i<=3) continue;
 if(i==n) {if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=true; }
 fn_80395480((MsgPop*)p,((MsgDraw*)p)->screen->search(*tag));
 if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=true; }
-child=tags;
-for(j=0;j<4;j++,child++) if(*child!=0) ((MsgDraw*)p)->screen->search(*child)->setAlpha(p[j+0x1a5]);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=false; }}
+msgRestoreChoice(p,tags,true);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=false; }}
 }
 }}
 } else {
 *(s16*)(p+0x194)=0;
 *(s16*)(p+0x196)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-s32 j;
-J2DScreen* screen;
-const u64* child;
 for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
@@ -549,9 +513,6 @@ if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane*
 }
 }
 else {
-s32 j;
-J2DScreen* screen;
-const u64* child;
 for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
