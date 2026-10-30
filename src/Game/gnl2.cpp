@@ -110,6 +110,61 @@ extern "C" void fn_802E2998(u8* this_) {
     }
 }
 
+#include "JSystem/JGeometry/Box.h"
+extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, s32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
+extern "C" s32 fn_8023B8E4(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* pos, s32 n);
+extern "C" s32 fn_80237060(void);
+extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
+extern "C" void fn_80134DE4(u8* game, s32 a, s32 b);
+extern "C" void fn_80238548(s32 player, s32 a, JGeometry::TVec2<f32>* pos, s32 n);
+extern "C" u8 fn_801F2B7C(u8* p, s32 type, s32 a, s32 b);
+extern "C" void fn_80239914(JGeometry::TBox2<f32>* box, s32 room, s32 id);
+extern "C" u8 fn_802DE7CC(void);
+extern "C" void fn_8043D67C(void* mgr, s32 id, s32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D75BC(void* mgr, s32 id);
+extern "C" void fn_801F34DC(u8* p);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" void fn_801F0D20(void* p, s32 a);
+extern "C" void fn_8030C210(void* view, JGeometry::TVec3<f32>* pos);
+extern u8 lbl_8053AC00;
+extern void* lbl_8053AED0;
+extern u8 lbl_80529DEC[];
+extern u8 lbl_8050EC80[];
+extern const f32 lbl_805411C8;
+extern const f32 lbl_805411D4;
+extern const f32 lbl_805411D8;
+extern const f32 lbl_805411DC;
+extern const f32 lbl_805411E0;
+extern const f32 lbl_805411E4;
+extern const f32 lbl_805411E8;
+extern const f32 lbl_805411EC;
+extern const f32 lbl_805411F0;
+struct Gnl2Layout;
+extern const Gnl2Layout lbl_8046EA10;
+
+class Gnl2Self {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void vf18();
+    virtual void vf1C();
+    virtual void vf20();
+    virtual void vf24();
+    virtual void vf28();
+    virtual void vf2C();
+    virtual void vf30(s32 a, s32 b);
+};
+
+static inline BOOL gnl2StageFlag(s32 a, s32 b) {
+    if (a < 0 || a > 7) return FALSE;
+    if (b < 0 || b > 3) return FALSE;
+    return ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
+}
+
 extern "C" void fn_802E2C28(u8* this_) {
     if (*(s32*)(this_ + 0x230) <= 0) {
         *(s32*)(this_ + 0x248) = *(s32*)(this_ + 0x248) + 1;
@@ -130,6 +185,7 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* mgr, s32 id);
 extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, s32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 
+#pragma opt_lifetimes off
 extern "C" void fn_802E3B2C(u8* this_) {
     const Gnl2Layout* t = &lbl_8046EA10;
     s32 off2;
@@ -206,5 +262,5 @@ extern "C" void fn_802E3B2C(u8* this_) {
         fn_80457E54(lbl_8053AF80, 1);
     }
 }
-
+#pragma opt_lifetimes reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
