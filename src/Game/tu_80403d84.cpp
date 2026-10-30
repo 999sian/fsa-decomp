@@ -108,6 +108,9 @@ struct Tbl8048C1F8 {
     static s32 frame(const s32* values, s32 index) { return values[index]; }
 };
 extern Tbl8048C1F8 lbl_8048C1F8;
+static inline u32 menuBootText(u32* table, const int index) { return table[index]; }
+extern "C" void fn_804446F0(void*, s32);
+extern "C" void fn_80402E70(void*);
 extern u8* sManager__8JUTVideo;
 extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
