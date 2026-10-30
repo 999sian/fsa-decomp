@@ -81,6 +81,11 @@ extern "C" void fn_80192038(ActorVt_gnon* this_) {
 #include "Game/ItemBase.h"
 extern "C" void fn_801EFD34(void* this_, const ResTIMG* tex, DrawRec* rec, s32 mode, f32 x, f32 y, f32 z);
 extern "C" const ResTIMG* fn_804032E8(u32 type, const char* name);
+extern u8 lbl_804A1FF8[];
+extern const char lbl_80467F8C[];
+extern f32 lbl_8053E27C;
+extern f32 lbl_8053E280;
+extern f32 lbl_8053E284;
 static inline void gnonSetRotScale(f32 (*m)[4], f32 angle, f32 scaleX, f32 scaleY) {
     f32 sx, sy, sz, cx, cy, cz;
     f32 ss, cc, cs;
