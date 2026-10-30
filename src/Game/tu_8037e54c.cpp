@@ -207,7 +207,7 @@ static inline u8 fn_8037F580_getw(char* buf, s32* idx) {
 static inline f32 fn_8037F580_adv(f32 acc, f32 scale, u8 w, char* buf, s32* idx, char ch) {
     *idx += 1;
     buf[*idx] = ch;
-    return scale * (f32)w + acc;
+    return scale * (f32)(s32)w + acc;
 }
 
 static inline f32 fn_8037F580_skip(f32 acc, f32 scale, u8 w, s32* idx) {
@@ -819,7 +819,7 @@ extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
 }
 
 #pragma opt_lifetimes off
-extern "C" u8 fn_8038C678(s32 a, u32 id, int p3, s32 room, const JGeometry::TVec3<f32>* pos, u32 flags) {
+extern "C" u8 fn_8038C678(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u32 flags) {
     f32 out[3];
     s32 i;
     s32 q;
@@ -1293,9 +1293,9 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, const JUtility::TColor* __
 extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale) {
     f32 acc = lbl_805430C8;
     u8 w;
-    switch (type) {
-    case 0:
-        out[*len] = 0xA0;
+    switch(type) {
+    case 1:
+        out[*len] = (char)0xa0;
         w = fn_8037F580_getw(out, len);
         acc = fn_8037F580_adv(acc, scale, w, out, len, 'F');
         w = fn_8037F580_getw(out, len);
@@ -1307,7 +1307,7 @@ extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale) {
         w = fn_8037F580_getw(out, len);
         acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
         w = fn_8037F580_getw(out, len);
-        acc = fn_8037F580_adv(acc, scale, w, out, len, 0xA0);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, (char)0xa0);
         w = fn_8037F580_getw(out, len);
         acc = fn_8037F580_adv(acc, scale, w, out, len, 'G');
         w = fn_8037F580_getw(out, len);
@@ -1316,12 +1316,207 @@ extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale) {
         acc = fn_8037F580_adv(acc, scale, w, out, len, 'm');
         w = fn_8037F580_getw(out, len);
         acc = fn_8037F580_skip(acc, scale, w, len);
-        if (num == 1) {
-            break;
+        if(num!=1) {
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
         }
-        out[*len] = 's';
+        break;
+    case 2:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'C');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'u');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'c');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'c');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'o');
         w = fn_8037F580_getw(out, len);
         acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num!=1) {
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 3:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'b');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'a');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'd');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'd');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num==1) {
+            out[*len] = 'y';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        } else {
+            out[*len] = 'i';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+            out[*len] = 'e';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 4:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 't');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'i');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'm');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num!=1) {
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 5:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 's');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'y');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 's');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 't');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'm');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num!=1) {
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 6:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 't');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'h');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'i');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num==1) {
+            out[*len] = 'f';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        } else {
+            out[*len] = 'v';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+            out[*len] = 'e';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 7:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'm');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'o');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'l');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num!=1) {
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 8:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'r');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 't');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'u');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'r');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'n');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num!=1) {
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
+        break;
+    case 9:
+        out[*len] = (char)0xa0;
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'F');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'o');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'r');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'c');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'e');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, (char)0xa0);
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'F');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'a');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'i');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_adv(acc, scale, w, out, len, 'r');
+        w = fn_8037F580_getw(out, len);
+        acc = fn_8037F580_skip(acc, scale, w, len);
+        if(num==1) {
+            out[*len] = 'y';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        } else {
+            out[*len] = 'i';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+            out[*len] = 'e';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+            out[*len] = 's';
+            w = fn_8037F580_getw(out, len);
+            acc = fn_8037F580_skip(acc, scale, w, len);
+        }
         break;
     default:
         break;
@@ -2238,6 +2433,106 @@ L_194d0:
     }
     return 0;
 L_fail:
+    return 0;
+}
+
+#pragma opt_lifetimes on
+extern "C" u8 fn_80387494(s32 param_1) {
+    s32 slot=resolvePlayer(param_1);
+    s32 found;
+    s32 k;
+    u32 bit;
+    s32 idx;
+    u16 flags;
+    if(isActive(slot)==0) return 1;
+    if(isActive(slot)!=5 && isActive(slot)!=8 && isActive(slot)!=1 &&
+       isActive(slot)!=6 && isActive(slot)!=3 && isActive(slot)!=7 && isActive(slot)!=4)
+        goto fail;
+    void* sub=lbl_8053AD78->sub[slot];
+    flags=*(u16*)((u8*)sub+0x28);
+    if((flags&1)==0) {
+        u8 done;
+        idx=resolvePlayer(param_1);
+        u16 f=*(u16*)((u8*)lbl_8053AD78->sub[idx]+0x28);
+        if(((f>>3)&1)||(f&0x80)) done=1;
+        else if(lbl_8053AAF8->b7e==1) done=fn_8023061C(idx,0);
+        else {
+            s32 players[4];
+            s32 i;
+            s32* entry;
+            s32* first;
+            first=players;
+            entry=first;
+            for(i=0;i<4;i++,entry++) {
+                *entry=-1;
+                if(fn_8023F264(i)==1) *entry=i;
+            }
+            for(k=0;k<4;k++,first++) if(*first>=0) fn_80230224(*first,0);
+            done=1;
+        }
+        if(done) {
+            bit=*(u32*)((u8*)lbl_8053AD78->sub[slot]+0x20);
+            fn_802D46D8(fn_802D6A9C(),slot,bit,1);
+            sub=lbl_8053AD78->sub[slot];
+            flags=*(u16*)((u8*)sub+0x28);
+            if(((flags>>3)&1)||(flags&0x80)) {
+                if(isActive(slot)==8) {
+            idx=resolvePlayer(slot);
+            s32 temp[4];
+            s32 i, offset;
+            s32* out;
+            i=0; out=temp; offset=i;
+            for(;i<lbl_8053AD78->wf8;offset+=4,out++,i++) {
+                *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
+                if(idx==*(s32*)((u8*)lbl_8053AD78+offset+0xfc)) {
+                    *(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;
+                    found=i;
+                }
+            }
+            lbl_8053AD78->wf8--;
+            for(;found<lbl_8053AD78->wf8;found++) lbl_8053AD78->wfc[found]=temp[found+1];
+            lbl_8053AD78->wfc[lbl_8053AD78->wf8]=-1;
+            if((*(u16*)((u8*)lbl_8053AD78->sub[slot]+0x28)&0x40)==0)
+                fn_80458880(lbl_8053AF80,0x29,-1);
+        }
+        fn_80391678(lbl_8053AD78->sub[slot]);
+        return 1;
+            }
+            *(u8*)((u8*)sub+0x42)=1;
+        if(isActive(slot)==6 || isActive(slot)==7) setActive(slot,8);
+        else setActive(slot,5);
+        return 0;
+        }
+    } else {
+        if((flags&8)||(flags&0x80)) {
+            if(isActive(slot)==8) {
+            idx=resolvePlayer(slot);
+            s32 temp[4];
+            s32 i, offset;
+            s32* out;
+            i=0; out=temp; offset=i;
+            for(;i<lbl_8053AD78->wf8;offset+=4,out++,i++) {
+                *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
+                if(idx==*(s32*)((u8*)lbl_8053AD78+offset+0xfc)) {
+                    *(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;
+                    found=i;
+                }
+            }
+            lbl_8053AD78->wf8--;
+            for(;found<lbl_8053AD78->wf8;found++) lbl_8053AD78->wfc[found]=temp[found+1];
+            lbl_8053AD78->wfc[lbl_8053AD78->wf8]=-1;
+            if((*(u16*)((u8*)lbl_8053AD78->sub[slot]+0x28)&0x40)==0)
+                fn_80458880(lbl_8053AF80,0x29,-1);
+        }
+        fn_80391678(lbl_8053AD78->sub[slot]);
+        return 1;
+        }
+        *(u8*)((u8*)sub+0x42)=1;
+        if(isActive(slot)==6 || isActive(slot)==7) setActive(slot,8);
+        else setActive(slot,5);
+        return 0;
+    }
+fail:
     return 0;
 }
 #pragma opt_lifetimes reset
