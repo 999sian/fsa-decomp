@@ -23,6 +23,23 @@ extern "C" void fn_80239914(void*,s32,u32);
 extern "C" void fn_8013CB44(s32,void*,s32,s32,s32);
 extern const u8 lbl_80466110[];
 extern u8 lbl_804A0310[];
+#pragma push
+#pragma pool_data on
+static const s32 sFlmeRotZ[4] = {0xc000, 0x4000, 0x8000, 0};
+static const s32 sFlmeUnk[4] = {0x16, 0x16, 0x1a, 0x10};
+static const f32 sFlmeHitBox[4][4] = {
+    {0.0f, -10.0f, 90.0f, 10.0f},
+    {-90.0f, -10.0f, 0.0f, 10.0f},
+    {-10.0f, 0.0f, 10.0f, 90.0f},
+    {-10.0f, -90.0f, 10.0f, 0.0f},
+};
+static const f32 sFlmeAttackBox[4][4] = {
+    {0.0f, -6.0f, 88.0f, 6.0f},
+    {-88.0f, -6.0f, 0.0f, 6.0f},
+    {-6.0f, 0.0f, 6.0f, 88.0f},
+    {-6.0f, -88.0f, 6.0f, 0.0f},
+};
+#pragma pop
 extern u8* lbl_8053AAF8;
 extern const f32 lbl_8053D5A8;
 extern const f32 lbl_8053D5AC;
@@ -91,8 +108,8 @@ extern "C" void fn_8020D7D0(void*,s32);
 extern "C" s16 fn_801F6874(s32);
 extern const f32 lbl_8053D600;
 extern "C" void fn_8015DF7C(void* this_) {
+ char* p=(char*)this_;
  const u8* base=lbl_80466110;
- char* p=(char*)((u32)this_);
  JGeometry::TVec3<f32> pos;
  JGeometry::TBox2f box;
  volatile JGeometry::TVec2<f32> savedDelta;
