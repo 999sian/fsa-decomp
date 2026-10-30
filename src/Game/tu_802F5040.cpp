@@ -2035,14 +2035,15 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
     fn_8013B414(lbl_8053AB10,&box,0);
     GXSetViewport(viewport[0],viewport[1],viewport[2],viewport[3],lbl_805414F8,lbl_80541518);
     GXSetScissor(viewport[0],viewport[1],viewport[2],viewport[3]);
-    s32 scrollX=((((u8*)registerPtr)[0xb]<<1)&0x1f0)|((((u8*)registerPtr)[0xf]>>4)&15);
-    s32 scrollY=((((u8*)registerPtr)[0x13]<<1)&0x1f0)|((((u8*)registerPtr)[0x17]>>4)&15);
+    ScrollByte802F* sb=(ScrollByte802F*)registerPtr;
+    s32 scrollX=(sb[0xb].hi<<5)|(sb[0xb].bit<<4)|sb[0xf].hi;
+    s32 scrollY=(sb[0x13].hi<<5)|(sb[0x13].bit<<4)|sb[0x17].hi;
     s32* wave=NULL;
     void* controller=fn_8022BCD4(player);
     if (enabled) {
         u8 special=0;
         if (((((((u8*)registerPtr)[2]>>2)&7)-1)&7)==0 || self[0x134+player]!=0) special=1;
-        u16 color=((u16*)(self+0x114))[2-(special!=0)];
+        u16 color=((u16*)(self+0x114))[special ? 1 : 2];
         fn_8013B3F0(lbl_8053AB10);
         JGeometry::TBox2<f32> bg;
         bg.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
@@ -2343,6 +2344,30 @@ extern "C" void fn_802FC80C(u8* this_) {
 }
 
 #pragma dont_inline on
+extern "C" s32 fn_8023E10C(s32);
+extern "C" Vec* fn_8023E214(s32);
+extern "C" Vec* fn_8023E32C(s32);
+extern "C" void fn_8030C5F0(void*, Vec*, s32, s32, Vec*);
+extern "C" u8 fn_8022C8EC(s32);
+extern "C" void fn_80433718(void*);
+extern "C" void fn_80432AF8(void*);
+extern "C" const f32 sincosTable___5JMath[];
+extern "C" void* lbl_8053AF80;
+extern "C" void fn_80458880(void*,s32,s32);
+extern "C" f32 lbl_8054159C, lbl_805415A0, lbl_805415A4, lbl_805415A8;
+extern "C" f32 lbl_805415AC, lbl_805415B0, lbl_805415B4, lbl_80541530;
+static inline void WarpBounds802F(s32* dst, u8* pane, s32 off, s32 tx, s32 ty, f32 x, f32 y, f32 sx, f32 sy, const Vec& pos) {
+    s32 w = *(f32*)(pane+off) * sx;
+    s32 h = *(f32*)(pane+off+8) * sy;
+    s32 cx = ((s32)*(f32*)(pane+off)-w)>>1;
+    s32 cy = ((s32)*(f32*)(pane+off+8)-h)>>1;
+    u8* point = pane + 0x40 + pane[0xa4]*12 + (off<0x80 ? 0 : 0x18);
+    dst[0] = (pos.x+(f32)w*x)*(lbl_80541518-sx) + sx*((f32)tx+((f32)cx+*(f32*)point));
+    dst[1] = (pos.y+(f32)h*y)*(lbl_80541518-sy) + sy*((f32)ty+((f32)cy+*(f32*)(point+4)));
+    dst[2] = w;
+    dst[3] = h;
+}
+
 extern "C" void fn_802FCE74(u8* this_) {
     u8* p = this_;
     p[0] = 0;
