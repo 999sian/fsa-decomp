@@ -91,7 +91,7 @@ static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
     n = 0;
     out = slots;
     q = p;
-    for (i = 0; i < 20; i++, q += 4) {
+    for (i = 0; i < 20; q += 4, i++) {
         if (*(void**)(q + 0x258) == 0) {
             n++;
             *out++ = i;
@@ -190,12 +190,13 @@ extern "C" void fn_8036E5E8(void* this_) {
         }
         if (*(s32*)(p + 0x238) < 0) {
             s32 n;
+            s32 k;
             s32 j;
             void* mgr = fn_801F856C();
             j = 0;
             n = *(s32*)((char*)mgr + 0x1008);
-            for (; j < n; j++) {
-                char* a = *(char**)((char*)fn_801F856C() + j * 4 + 8);
+            for (k = j; j < n; j++, k += 4) {
+                char* a = *(char**)((char*)fn_801F856C() + k + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
                     s32 s = *(s32*)(a + 0x238);
                     if (s == 0x26 || (u32)(s - 0x27) <= 1 || s == 0x29) {
