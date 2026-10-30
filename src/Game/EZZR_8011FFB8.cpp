@@ -303,11 +303,13 @@ static inline bool EZZR_MoveToGate(EZZR* p) {
     } else {
         t.y -= lbl_8053C968;
     }
-    f32 rad = JMath::atanTable_.atan2_(t.x - p->field_0C.x, t.y - p->field_0C.y);
+    f32 dy = t.y - p->field_0C.y;
+    f32 dx = t.x - p->field_0C.x;
+    f32 rad = JMath::atanTable_.atan2_(dx, dy);
     u16 ang = (s32)(rad * lbl_8053C96C);
     p->field_98 = ClassifyBamAngleToQuadrant(ang);
-    f32 sy;
     f32 sx;
+    f32 sy;
     sx = lbl_8053C970 * JMath::sincosTable_.mTable[ang >> 5].first;
     sy = lbl_8053C970 * JMath::sincosTable_.mTable[ang >> 5].second;
     bool done = true;
@@ -416,31 +418,8 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(4);
         }
         break;
-    case 4: {
-        JGeometry::TVec3f t = *fn_8023E724(*(s32*)((u8*)p + 0x3cc));
-        t.z = lbl_8053C964;
-        if (((EzzrMgr*)fn_802D6A9C())->flag(p->field_04) != 0) {
-            t.x += lbl_8053C968;
-        } else {
-            t.y -= lbl_8053C968;
-        }
-        f32 rad = JMath::atanTable_.atan2_(t.x - p->field_0C.x, t.y - p->field_0C.y);
-        u16 ang = (s32)(rad * lbl_8053C96C);
-        p->field_98 = ClassifyBamAngleToQuadrant(ang);
-        f32 sy;
-        f32 sx;
-        sx = lbl_8053C970 * JMath::sincosTable_.mTable[ang >> 5].first;
-        sy = lbl_8053C970 * JMath::sincosTable_.mTable[ang >> 5].second;
-        bool done = true;
-        if (fn_801CD950(&p->field_0C.x, t.x, sx) != 0 && lbl_8053C964 != sx) {
-            done = false;
-        }
-        if (((EzzrMgr*)fn_802D6A9C())->flag(p->field_04) == 0) {
-            if (fn_801CD950(&p->field_0C.y, t.y, sy) != 0 && lbl_8053C964 != sy) {
-                done = false;
-            }
-        }
-        if (!done) {
+    case 4:
+        if (!EZZR_MoveToGate(p)) {
             fn_80122730(p, p->field_98, 0, 0);
             break;
         }
@@ -455,7 +434,6 @@ extern "C" void fn_80120570(EZZR* p) {
             }
         }
         break;
-    }
     case 5:
         fn_8022FE80(*(s32*)((u8*)p + 0x3cc), p->field_04, p->field_198, 0, 0);
         if (fn_80388CAC(*(s32*)((u8*)p + 0x3cc), p->field_198)) {
