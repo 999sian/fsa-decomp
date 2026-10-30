@@ -67,7 +67,9 @@ static inline f32 ryyaDistance(char* p,char* obj) {
     return std::sqrtf(dx*dx+dy*dy);
 }
 static inline void ryyaPlayerDirection(char* p,const JGeometry::TVec3f& delta) {
-    u16 angle=(s32)(JMath::atanTable_.atan2_(-delta.x,-delta.y)*lbl_8053E64C);
+    f32 radians=JMath::atanTable_.atan2_(-delta.x,-delta.y);
+    radians *= lbl_8053E64C;
+    u16 angle=(s32)radians;
     if(angle<0x2000 || angle>=0xe000) *(s32*)(p+0x98)=3;
     else if(angle>=0x2000 && angle<0x6000) *(s32*)(p+0x98)=1;
     else if(angle>=0x6000 && angle<=0xa000) *(s32*)(p+0x98)=2;
@@ -210,19 +212,19 @@ break;}
 case 5: {
 fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);
 *(s32*)(p+0x244)+=1;if(*(s32*)(p+0x244)<=50)break;
-*(s32*)(p+0x244)=51;int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+*(s32*)(p+0x244)=51;int value=fn_8023DE58(0);int handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 s32 result=fn_8022FD8C(*(s32*)(p+0x198));if(result<0)break;
 s32 roomHandle=*(s32*)(p+0x198);s32 room=*(s32*)(p+0x4);argPos5=messagePos;
 fn_8038AD24(fn_8022EA0C(0),0x41d,roomHandle,room,argPos5,0x102);*(s32*)(p+0x230)=6;break;}
 case 6:{
-fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);int value=fn_8023DE58(0);int handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 if(fn_803865B8(fn_8022EA0C(0))){
 fn_80138B7C(lbl_8053AAF8);
 if(*(s32*)(p+0x25c)>=10)fn_8038470C(fn_8022EA0C(0),0x41e);else fn_8038470C(fn_8022EA0C(0),0x420);
 *(s32*)(p+0x230)=7;}break;}
 case 7:{
 char* sayas[1024];JGeometry::TVec3f positions[8];
-ryyaFocus(cameraPos);int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+ryyaFocus(cameraPos);int value=fn_8023DE58(0);int handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 if(!fn_803865B8(fn_8022EA0C(0)))break;
 *(s32*)(p+0x244)=50;
 if(*(s32*)(p+0x25c)>=10){
@@ -231,7 +233,7 @@ s32 found=0;for(s32 i=0;i<count && found<7;i++){char* obj=sayas[i];if(obj && *(u
 positions[found].x=*(f32*)(obj+0xc);positions[found].y=*(f32*)(obj+0x10);positions[found].z=*(f32*)(obj+0x14);found++;
 }}
 if(found>0){
-u32* seed=(u32*)(lbl_8053AAF8+0xb4);*seed=*seed*0x19660d+0x3c6ef35f;u32 bits=(*seed>>9)|0x3f800000;f32 random=*(f32*)&bits-lbl_8053E628;
+f32 random=((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
 s32 index=(s32)(found*random);fishPos.x=positions[index].x;fishPos.y=positions[index].y;fishPos.z=positions[index].z;
 }
 u32 kind=0x80000;if(*(s32*)(p+0x25c)>40)kind+=3;else if(*(s32*)(p+0x25c)>30)kind+=2;else if(*(s32*)(p+0x25c)>20)kind+=1;
@@ -245,7 +247,7 @@ case 8:
 if(*(s32*)(p+0x25c)>=10)fn_8038470C(fn_8022EA0C(0),0x41f);else fn_8038470C(fn_8022EA0C(0),0x421);
 ryyaSetCycle(p,0);*(s32*)(p+0x230)=9;}break;
 case 9:{
-ryyaFocus(cameraPos);int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+ryyaFocus(cameraPos);int value=fn_8023DE58(0);int handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 if(!fn_803865B8(fn_8022EA0C(0)))break;
 if(!fn_80384C58(fn_8022EA0C(0),*(s32*)(p+0x198)))break;
 fn_801F6884(fn_801F856C());
