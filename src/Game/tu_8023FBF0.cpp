@@ -1934,6 +1934,8 @@ inline bool padActive(char* p) {
 }
 
 
+#pragma push
+#pragma opt_lifetimes off
 s32 fn_80243234(char* p) {
     int room=S32(p,0x3b4);
     if(U8(fn_802D6A9C()+0x131df,room)==0) return 0;
@@ -1953,6 +1955,7 @@ ready:
 fail:
     return 0;
 }
+#pragma pop
 
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
@@ -4512,8 +4515,7 @@ inline s32 sharingMode50090R(const char* p, s32& linked, s32& me) {
 }
 
 #pragma opt_strength_reduction off
-u8 fn_80250090(char* self) {
-    char* p = self;
+u8 fn_80250090(char* p) {
     s32 linked;
     s32 me;
     if (F32(p, 0x10) > 0.0f) {
