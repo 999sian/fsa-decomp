@@ -112,7 +112,7 @@ extern "C" void fn_802D8050(void*, s32, s32, s32);
 extern "C" void fn_8010DF58(void* this_);
 extern "C" void fn_8010DF78(void* this_);
 extern "C" void fn_8010F7EC(u8*, s32);
-extern "C" void fn_80110E9C(void*);
+extern "C" void fn_80110E9C(const void*);
 extern "C" void fn_8011093C(void*);
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8010F4DC(u8* this_);
@@ -738,8 +738,7 @@ extern const f32 lbl_8053C578;
 extern const f32 lbl_8053C57C;
 extern const f32 lbl_8053C580;
 extern const f32 lbl_8053C584;
-extern "C" void fn_80110E9C(void* this_) {
-u8* p=(u8*)this_;
+extern "C" void fn_80110E9C(const void* this_) {
 JGeometry::TVec3<f32>* v;
 s32 j;
 s32 i;
@@ -753,8 +752,8 @@ u16 angle;
 f32 zero,dz;
 f32 sine,speed;
 s32 result,kind;
-
-box.set(*(JGeometry::TBox2<f32>*)(p+0x60));box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
+u8* p=(u8*)this_;
+box.set(*(const JGeometry::TBox2<f32>*)(p+0x60));box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
 if(*(s32*)(p+0x238)==1 || *(s32*)(p+0x238)==2)fn_80239914(&box,*(s32*)(p+4),*(s32*)(p+0x198));
 fn_80110454(p);
 switch(*(u32*)(p+0x238)){
