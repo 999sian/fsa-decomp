@@ -7,7 +7,7 @@
 extern "C" s32 fn_8023AE34(void*, s32, void*);
 extern "C" s32 fn_8023B2B0(s32);
 extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
-extern "C" u16 fn_801F6874(s32);
+extern "C" s32 fn_801F6874(s32);
 extern "C" void fn_801F714C(u16*, u16, s32, s32);
 extern "C" f32 fn_801EE4F0();
 
@@ -608,6 +608,186 @@ extern "C" s32 fn_801A4FB4(u8* this_) {
     }
     return *(u8*)(this_ + 0xD4);
 }
+
+#pragma dont_inline reset
+extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
+ u8* other;
+ s32 kind;
+ s32 result;
+ s32 id;
+ u8* self=(u8*)this_;
+ if((*(u32*)(self+0xb0)&255)==0) return 0;
+ result=0;
+ id=fn_8023AE34(a4,*(s32*)(self+4),a5);
+ s32 room=*(s32*)(self+4);
+ u8 (*mgr)[0x10000]=(u8 (*)[0x10000])fn_802D6A9C();
+ if(mgr[1][room+0x31df]==0&&*(f32*)(self+0x14)>32.0f) return 0;
+ if(*(s32*)(self+0xa0)<0) {
+  if(id<0) return 0;
+  kind=*(u32*)(self+0xb0)&255;
+  if(kind!=3) {
+   *(s32*)(self+0xa0)=fn_8023B2B0(id);
+   other=(u8*)fn_801F666C(fn_801F856C(),*(u32*)(self+0xa0));
+  } else {s32 h=fn_8023B2B0(id);other=(u8*)fn_801F666C(fn_801F856C(),h);}
+  if(!other) {*(s32*)(self+0xa0)=-1;return 0;}
+  if(*(s32*)(other+0x108)==0) {*(s32*)(self+0xa0)=-1;return 0;}
+  *(s32*)(self+0x10c)=id;
+  if(kind==9) {
+   kind=4;
+   f32 x=*(f32*)(self+0xc)-((f32*)fn_8023E724(id))[0];
+   f32 y=*(f32*)(self+0x10)-((f32*)fn_8023E724(id))[1];
+   f32 angle=JMath::atanTable_.atan2_(-x,-y);
+   s32 dir=*(s32*)(self+0x98);
+   if(dir!=ClassifyBamAngleToQuadrant((u16)(s32)(angle*lbl_8053E5E0))) kind=5;
+   if(*(s32*)(self+0xa4)) kind=5;
+  }
+  if(kind==16) {
+   f32 x=*(f32*)(self+0xc)-((f32*)fn_8023E724(id))[0];
+   f32 y=*(f32*)(self+0x10)-((f32*)fn_8023E724(id))[1];
+   f32 angle=JMath::atanTable_.atan2_(-x,-y);
+   s32 dir=*(s32*)(self+0x98);
+   if(dir!=ClassifyBamAngleToQuadrant((u16)(s32)(angle*lbl_8053E5E0))) kind=4;
+  }
+  u16 status=*(u16*)(other+0x94);
+  if(status!=0&&status!=4) {
+   if(kind==1||kind==8) kind=2;
+   if(kind==10||kind==17) {*(s32*)(self+0xa0)=-1;return 0;}
+  }
+  if(kind==11&&*(s32*)(self+0xac)>=3) kind=4;
+  switch(kind) {
+  case 1:
+   ++*(s32*)(other+0x270);*(s32*)(self+0xd8)=0;*(s32*)(self+0xdc)=0;*(s32*)(self+0x10c)=id;
+  case 8:
+   if(self[0xc4]) {*(s32*)(self+0xa0)=-1;result=255;break;}
+   if(kind==8&&(*(f32*)(self+0x14)!=0.0f||*(f32*)(self+0x44)!=0.0f)) {*(s32*)(self+0xa0)=-1;result=255;break;}
+   *(JGeometry::TVec3f*)(self+0x24)=JGeometry::TVec3f(*(f32*)(self+0xc)-*(f32*)(other+0xc),*(f32*)(self+0x10)-*(f32*)(other+0x10),*(f32*)(self+0x14)-*(f32*)(other+0x14));
+   if(kind==8) break;
+  case 0: case 9: default:
+   if((*(u32*)(other+0x98)&2)==0) *(JGeometry::TVec3f*)(self+0x48)=JGeometry::TVec3f(0.5f,1.4f,0.0f);
+   else *(JGeometry::TVec3f*)(self+0x48)=JGeometry::TVec3f(1.4f,0.5f,0.0f);
+   break;
+  case 16:
+   {s32 hp=*(s32*)(self+0x108); *(s32*)(self+0x108)=hp-fn_8023B5B4(id);}
+   if(*(s32*)(self+0x108)<1000) {
+    switch(*(s32*)(other+0x98)) {case 0:{s32 r=*(s32*)(other+4);f32 scale=((f32(*)(void*))fn_801EE4F0)(self);fn_8013CC50(r,self+0xc,375,1,1,0,0,1,scale);break;}case 1:{s32 r=*(s32*)(other+4);f32 scale=((f32(*)(void*))fn_801EE4F0)(self);fn_8013CC50(r,self+0xc,374,1,1,0,0,1,scale);break;}case 2:{s32 r=*(s32*)(other+4);f32 scale=((f32(*)(void*))fn_801EE4F0)(self);fn_8013CC50(r,self+0xc,373,1,1,0,0,1,scale);break;}case 3:{s32 r=*(s32*)(other+4);f32 scale=((f32(*)(void*))fn_801EE4F0)(self);fn_8013CC50(r,self+0xc,376,1,1,0,0,1,scale);break;}}
+   }
+  case 2:
+   if(self[0xc4]) {result=255;break;}
+   if(kind!=16) {
+    s32 hp=*(s32*)(self+0x108);hp-=fn_8023B5B4(id);
+    if(hp<=0) {*(s32*)(self+0x108)=0;result=20;other[0x11c]=0;break;}
+    *(s32*)(self+0x108)=hp;
+   }
+  case 5:
+  case 11: case 15: case 18:
+   if(kind==11) ++*(s32*)(self+0xac);
+   other[0x11c]=0;
+   if(kind==5||kind==16||kind==11||kind==18||kind==15) {
+    s32 h=Actor_CreateByID(fn_801F856C(),0x4f4b544d,*(s32*)(other+4),other+0xc,1,-1,-1);
+    if(h>=0) {
+     u8* spawned=(u8*)fn_801F666C(fn_801F856C(),h);
+     if(spawned&&*(s32*)(spawned+0x230)!=4) {
+      s32 heading=fn_801F6874(*(s32*)(self+0x98));
+      f32 x=0.25f*(*(f32*)(self+0xc)-*(f32*)(spawned+0xc));
+      f32 y=0.25f*(*(f32*)(self+0x10)-*(f32*)(spawned+0x10));
+      *(f32*)(spawned+0x254)=std::sqrtf(x*x+y*y);
+      u16 angle=(s32)(JMath::atanTable_.atan2_(-x,-y)*lbl_8053E5E0);
+      u16 goal=fn_801F6874(*(s32*)(other+0x98))+0x8000;
+      while(ClassifyBamAngleToQuadrant(angle)!=ClassifyBamAngleToQuadrant(goal)) fn_801F714C(&angle,goal,1,0x1000);
+      s32 delta=heading-angle;
+      if(kind==15) *(s32*)(spawned+0x230)=5;
+      else if(kind==16||kind==18) *(s32*)(spawned+0x230)=6;
+      else *(s32*)(spawned+0x230)=4;
+      *(s32*)(spawned+0x258)=*(s32*)(self+0x198);
+      *(s16*)(spawned+0x25c)=delta;
+     }
+    }
+   }
+   *(s32*)(self+0xa0)=-1;result=10;*(s32*)(self+0xd8)=0;*(s32*)(self+0xdc)=0;
+   if(kind==15) result=255;
+   break;
+  case 10:result=255;break;
+  case 17:result=10;break;
+  case 6:
+   fn_8013CC50(*(s32*)(other+4),other+0xc,0x117,0,1,0,0,1,1.0f);
+   fn_8013CC50(*(s32*)(other+4),other+0xc,0x118,0,1,0,0,1,1.0f);
+   *(s32*)(self+0x230)=1;
+  case 4:
+   for(s32 i=0;i<4;i++) {
+    s32 h=fn_8023B2B0(i);
+    if(h>=0) {other=(u8*)fn_801F666C(fn_801F856C(),h);if(other) *(s32*)(other+0x108)=0;}
+   }
+   *(s32*)(self+0xa0)=-1;result=255;break;
+  case 3:result=0;break;
+  case 7:
+  case 14:
+   self[0x11c]=0;*(s32*)(self+0xa0)=-1;
+   fn_8013CC50(*(s32*)(other+4),other+0xc,0x24a,0,1,0,0,1,1.0f);
+   fn_8013CC50(*(s32*)(other+4),other+0xc,0x24b,0,1,0,0,1,1.0f);
+   other[0x11c]=0;result=255;break;
+  case 12:
+   if(status==1) *(u16*)(other+0x94)=2;
+   if(*(u16*)(other+0x94)==0) *(u16*)(other+0x94)=4;
+   *(s32*)(self+0xa0)=-1;result=255;break;
+  case 13:
+   if(status==2||status==4) *(u16*)(self+0x94)=1;
+   *(s32*)(self+0xa0)=-1;result=255;break;
+  }
+  if(id>=0) lbl_8053A100=id;
+  if(kind!=4&&kind!=8) ((SayaActor*)self)->v44();
+  if(result) {
+   if(kind==1||kind==2||kind==5||kind==16) {
+    JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(self+0xc));
+    JMathInlineVEC::PSVECSubtract(&pos,(Vec*)(other+0x3c),&pos);
+    fn_801F37AC(self,0,&pos,0,3,-1);
+    if(*(s32*)(self+0xbc)==3||kind==5) *(JGeometry::TVec3f*)(self+0x3c)=JGeometry::TVec3f(0.0f,0.0f,0.0f);
+   }
+   return result;
+  }
+ }
+ s32 handle=*(s32*)(self+0xa0);
+ if(handle>=0) {
+  u8* target=(u8*)fn_801F666C(fn_801F856C(),handle);
+  if(target) {
+   if(*(u32*)(target+0x1a0)==0x41525257) {
+    result=10;
+    switch(*(u32*)(self+0xb0)&255) {
+    case 10:case 17: {
+     JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(target+0xc));
+     if(id>=0) lbl_8053A100=id;
+     s32 flag=*(s32*)(self+0x198);
+     if(((u32)(flag==0)&16)!=0) {pos.x+=3.5f-(s32)(flag&7);pos.y+=3.5f-(s32)(flag&7);}
+     else {pos.x-=3.5f-(s32)(flag&7);pos.y-=3.5f-(s32)(flag&7);}
+     *(JGeometry::TVec3f*)(self+0xc)=pos;
+     *(s32*)(self+4)=*(s32*)(target+4);
+     ((SayaActor*)self)->v44();break;
+    }
+    case 8:
+     if(self[0xc4]||*(f32*)(self+0x14)!=0.0f||*(f32*)(self+0x44)!=0.0f) {*(s32*)(self+0xa0)=-1;result=255;break;}
+     if(*(s32*)(target+0x26c)==1) {*(s32*)(self+0xa0)=-1;*(s32*)(self+0x108)=0;*(s32*)(self+0xb0)=0;}
+     {JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(target+0xc)); pos+=*(JGeometry::TVec3f*)(self+0x24);*(JGeometry::TVec3f*)(self+0xc)=pos;}
+     *(s32*)(self+4)=*(s32*)(target+4);
+     ((SayaActor*)self)->v44();
+     if(*(s32*)(target+0x26c)==2) {((SayaActor*)self)->v24();result=20;}break;
+    case 1:
+     {JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(target+0xc));pos+=*(JGeometry::TVec3f*)(self+0x24);*(JGeometry::TVec3f*)(self+0xc)=pos;}
+     *(s32*)(self+4)=*(s32*)(target+4);
+     if(*(s32*)(target+0x26c)==2) {((SayaActor*)self)->v24();result=20;}break;
+    default:break;
+    }
+   }
+  } else {
+   switch(*(u32*)(self+0xb0)&255) {
+   case 8:*(s32*)(self+0x108)=0;*(s32*)(self+0xb0)=0;
+   case 10:case 17:break;
+   default:((SayaActor*)self)->v24();break;
+   }
+   *(s32*)(self+0xa0)=-1;result=20;
+  }
+ }
+ return result;
+}
+#pragma dont_inline reset
 
 // from src/Game/Saya_ForceState4_801A6108.cpp
 extern "C" void* fn_801F856C(void);
