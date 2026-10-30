@@ -486,7 +486,7 @@ if((*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x100) && ((u8*)lbl_8053AAF8)[
 if(p[0x3af]==0 && p[0x1a9]==0) {
 *(s16*)(p+0x194)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
@@ -496,7 +496,7 @@ if (!*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPan
 }
 }
 else {if(n!=4)n=0;{
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
@@ -508,7 +508,7 @@ if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((M
 } else if(*(u32*)(*(u8**)(p+0x10)+0x4c)==99999 && !p[0x1a9]) {
 *(s16*)(p+0x196)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
@@ -519,7 +519,7 @@ msgRestoreChoice(p,tags,false);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[
 }
 }
 else {if(n!=4)n=0;{
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
@@ -533,7 +533,7 @@ msgRestoreChoiceTV(p,tags);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search
 *(s16*)(p+0x194)=0;
 *(s16*)(p+0x196)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
@@ -541,7 +541,7 @@ if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane*
 }
 }
 else {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
@@ -4299,20 +4299,207 @@ extern "C" void fn_8039ACD0(u8* param_1, s16 param_2) {
 }
 #pragma opt_propagation on
 extern "C" void fn_8039B3EC(u8* self, u8 kind, s32 flag) {
-    s32 len;
-    u8* buf;
-    switch (kind) {
+    MsgProc* p = (MsgProc*)self;
+    switch(kind) {
+    case 1:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x2d;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x40;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x60;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x40;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x30;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x0;
+        if(flag != 1) {
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 2:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x2d;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x40;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x40;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x40;
+        if(flag != 1) {
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 3:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x60;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x20;
+        if(flag == 1) {
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = -0x80;
+        } else {
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 4:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        if(flag != 1) {
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 5:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x0;
+        if(flag != 1) {
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 6:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x60;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        if(flag == 1) {
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x20;
+        } else {
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 7:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x40;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        if(flag != 1) {
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 8:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x60;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x60;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x20;
+        if(flag != 1) {
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
+    case 9:
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x2d;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = 0x40;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x60;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x40;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x14;
+        p->str2c0[p->m2d0++] = 0x20;
+        p->str2c0[p->m2d0++] = 0x2d;
+        p->str2c0[p->m2d0++] = -0x20;
+        p->str2c0[p->m2d0++] = 0x34;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x60;
+        if(flag == 1) {
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = -0x80;
+        } else {
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = -0x80;
+        p->str2c0[p->m2d0++] = 0x35;
+        p->str2c0[p->m2d0++] = 0x0;
+        p->str2c0[p->m2d0++] = 0x38;
+        p->str2c0[p->m2d0++] = -0x40;
+        }
+        break;
     case 0:
-        len = *(s32*)(self + 0x2d0);
-        buf = *(u8**)(self + 0x2c0);
-        *(s32*)(self + 0x2d0) = len + 1;
-        buf[len] = 0x14;
-        break;
-    default:
-        break;
-    }
-    if (flag == 1) {
-        return;
+    default: break;
     }
 }
 
