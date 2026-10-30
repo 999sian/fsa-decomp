@@ -34,6 +34,25 @@ extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B0F50[];
 extern u8 lbl_80529DEC[];
 
+#pragma pool_data on
+static const char bootLogoArc[24] = "/GC4Sword_usa/logo.arc";
+static const char bootLayout[20] = "ZelPac_NIN_logo.blo";
+static const char bootChoice[24] = "progressive_choice.bti";
+static const char bootInter[24] = "progressive_inter.bti";
+static const char bootPro[20] = "progressive_pro.bti";
+static const char bootYes[20] = "progressive_yes.bti";
+static const char bootNo[20] = "progressive_no.bti";
+static const char bootTitleLogo[20] = "kk_titleLogo_01.bti";
+static const char bootReport[16] = "archive load\n";
+static const char bootDataArc[24] = "/GC4Sword_usa/data.arc";
+static const char bootMsgArc[24] = "/GC4Sword_usa/msgus.arc";
+static const char bootMainArc[28] = "/GC4Sword_usa/main2D.arc";
+static const char bootTitleArc[24] = "/GC4Sword_usa/title.arc";
+static const char bootResultArc[28] = "/GC4Sword_usa/result.arc";
+static const char bootResult1Arc[28] = "/GC4Sword_usa/result1.arc";
+static const char bootResult2Arc[28] = "/GC4Sword_usa/result2.arc";
+#pragma pool_data reset
+
 struct BootTaskBase { u32 pad0; u8 ready; u8 pad5[3]; };
 struct BootTask : BootTaskBase { virtual void destroy(s32); u8 padC[8]; void* resource; };
 struct BootLoad {
@@ -225,14 +244,15 @@ endDraw:
 }
 
 extern "C" void fn_803FFAA8(void* this_) {
+ const ResTIMG* img;
  u8* strings;
  u8* p=(u8*)this_;
  strings=lbl_80479AC0;
  if(p[0x79]==0) {
-  BootLoad* load=*(BootLoad**)(p+0x44);
+  BootTask* load=*(BootTask**)(p+0x44);
   if(load->ready==1) {
    *(void**)(lbl_80529DEC+0x58)=load->resource;
-   if(load) load->destroy();
+   if(load) load->destroy(1);
    fn_803007D0();
    void* a=operator new(0xec); if(a) fn_8030AC4C(a);
    *(void**)(p+4)=a; *(void**)(lbl_80529DEC+0x5c)=*(void**)(p+4);
@@ -246,20 +266,20 @@ extern "C" void fn_803FFAA8(void* this_) {
   return;
  }
  if(p[0x79]==1) {
-  BootLoad* load=*(BootLoad**)(p+0x34);
+  BootTask* load=*(BootTask**)(p+0x34);
   if(load->ready==1) {
    *(void**)(lbl_80529DEC+0x18)=load->resource;
-   if(load) load->destroy();
+   if(load) load->destroy(1);
    *(J2DScreen**)(p+0x18)=new J2DScreen;
    (*(J2DScreen**)(p+0x18))->setPriority((char*)strings+0x18,0,*(JKRArchive**)(lbl_80529DEC+0x18));
    ((J2DPicture*)(*(J2DScreen**)(p+0x18))->search(0x4e494e5f4c6f676fULL))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(220,0,0,255));
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+44); *(J2DPicture**)(p+28)=new J2DPicture(img);}
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+68); *(J2DPicture**)(p+32)=new J2DPicture(img);}
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+92); *(J2DPicture**)(p+36)=new J2DPicture(img);}
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+112); *(J2DPicture**)(p+40)=new J2DPicture(img);}
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+132); *(J2DPicture**)(p+44)=new J2DPicture(img);}
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+132); *(J2DPicture**)(p+44)=new J2DPicture(img);}
-   {const ResTIMG* img=fn_80403244(0x54494d47,(char*)strings+152); *(J2DPicture**)(p+48)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+44); *(J2DPicture**)(p+28)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+68); *(J2DPicture**)(p+32)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+92); *(J2DPicture**)(p+36)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+112); *(J2DPicture**)(p+40)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+132); *(J2DPicture**)(p+44)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+132); *(J2DPicture**)(p+44)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)strings+152); *(J2DPicture**)(p+48)=new J2DPicture(img);}
    if(!((lbl_80529DEC[0x21a]==0xa7)||(lbl_80529DEC[0x21b]==0xa5))||p[0x7a]!=0) {
     *(s16*)(p+0x6c)=0;
     if(VIGetDTVStatus()!=0) {
@@ -318,21 +338,21 @@ extern "C" void fn_803FFAA8(void* this_) {
   *(f32*)(p+0x64)=0.0f;
   if(cfg[0x238]==255||cfg[0x238]==1) *(s16*)(p+0x6c)=4;
  }
- if(p[0x79]==3&&(*(BootLoad**)(p+56))->ready==1&&(*(BootLoad**)(p+60))->ready==1&&(*(BootLoad**)(p+64))->ready==1&&(*(BootLoad**)(p+72))->ready==1&&(*(BootLoad**)(p+84))->ready==1&&(*(BootLoad**)(p+88))->ready==1&&(*(BootLoad**)(p+92))->ready==1) {
-  *(void**)(lbl_80529DEC+20)=(*(BootLoad**)(p+56))->resource;
-  *(void**)(lbl_80529DEC+28)=(*(BootLoad**)(p+60))->resource;
-  *(void**)(lbl_80529DEC+32)=(*(BootLoad**)(p+64))->resource;
-  *(void**)(lbl_80529DEC+36)=(*(BootLoad**)(p+72))->resource;
-  *(void**)(lbl_80529DEC+56)=(*(BootLoad**)(p+84))->resource;
-  *(void**)(lbl_80529DEC+64)=(*(BootLoad**)(p+88))->resource;
-  *(void**)(lbl_80529DEC+68)=(*(BootLoad**)(p+92))->resource;
-  {BootLoad* l=*(BootLoad**)(p+56);if(l) l->destroy();}
-  {BootLoad* l=*(BootLoad**)(p+64);if(l) l->destroy();}
-  {BootLoad* l=*(BootLoad**)(p+60);if(l) l->destroy();}
-  {BootLoad* l=*(BootLoad**)(p+72);if(l) l->destroy();}
-  {BootLoad* l=*(BootLoad**)(p+84);if(l) l->destroy();}
-  {BootLoad* l=*(BootLoad**)(p+88);if(l) l->destroy();}
-  {BootLoad* l=*(BootLoad**)(p+92);if(l) l->destroy();}
+ if(p[0x79]==3&&(*(BootTask**)(p+56))->ready==1&&(*(BootTask**)(p+60))->ready==1&&(*(BootTask**)(p+64))->ready==1&&(*(BootTask**)(p+72))->ready==1&&(*(BootTask**)(p+84))->ready==1&&(*(BootTask**)(p+88))->ready==1&&(*(BootTask**)(p+92))->ready==1) {
+  *(void**)(lbl_80529DEC+20)=(*(BootTask**)(p+56))->resource;
+  *(void**)(lbl_80529DEC+28)=(*(BootTask**)(p+60))->resource;
+  *(void**)(lbl_80529DEC+32)=(*(BootTask**)(p+64))->resource;
+  *(void**)(lbl_80529DEC+36)=(*(BootTask**)(p+72))->resource;
+  *(void**)(lbl_80529DEC+56)=(*(BootTask**)(p+84))->resource;
+  *(void**)(lbl_80529DEC+64)=(*(BootTask**)(p+88))->resource;
+  *(void**)(lbl_80529DEC+68)=(*(BootTask**)(p+92))->resource;
+  {BootTask* l=*(BootTask**)(p+56);if(l) l->destroy(1);}
+  {BootTask* l=*(BootTask**)(p+64);if(l) l->destroy(1);}
+  {BootTask* l=*(BootTask**)(p+60);if(l) l->destroy(1);}
+  {BootTask* l=*(BootTask**)(p+72);if(l) l->destroy(1);}
+  {BootTask* l=*(BootTask**)(p+84);if(l) l->destroy(1);}
+  {BootTask* l=*(BootTask**)(p+88);if(l) l->destroy(1);}
+  {BootTask* l=*(BootTask**)(p+92);if(l) l->destroy(1);}
   p[0x79]=4;p[0x78]=1;
  }
  if(p[0x78]==1) {fn_803B9B3C(lbl_8051C1A0);p[0x78]=2;}
