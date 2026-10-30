@@ -46,7 +46,7 @@ extern const f32 lbl_8053E798;
 extern const f32 lbl_8053E7A0;
 extern const f32 lbl_8053E7A8;
 extern const f32 lbl_8053E7AC;
-extern "C" s32 fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
+extern "C" int fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8030C210(void* a, void* b);
 extern "C" s32 fn_801F3D94(void* p, s32 n);
 extern "C" u32 fn_801F2618(void* p, void* a, s32 b);
@@ -325,8 +325,8 @@ extern "C" void fn_801EF510(void*);
 extern "C" double fabs(double);
 extern "C" void fn_801AB6A8(char* p) {
     HitBox box;
-    s32 i;
-    s32 player;
+    int i;
+    int player;
     s32 innerRoom;
     s32 room;
     JGeometry::TVec2<f32> offset;
@@ -391,8 +391,10 @@ extern "C" void fn_801AB6A8(char* p) {
         fn_8013CB44(*(void**)(p+0x280),p+0xc,0,1,1);
         if(*(s32*)(p+0x23c)==1) {
             for(int n=0;n<2;++n) {
-                JPABaseEmitter*& emitter=((JPABaseEmitter**)(p+0x27c))[n];
-                if(emitter) { emitter->becomeInvalidEmitter(); emitter=0; }
+                if(((Handles_gnma*)p)->h[n]) {
+                    ((JPABaseEmitter*)((Handles_gnma*)p)->h[n])->becomeInvalidEmitter();
+                    ((Handles_gnma*)p)->h[n]=0;
+                }
             }
             *(s32*)(p+0x230)=3;
         }
@@ -422,7 +424,7 @@ case 3: *(f32*)(p+0x264)=0.0f; *(f32*)(p+0x268)=-1.0f; *(f32*)(p+0x26c)=0.0f; br
             innerRoom=*(s32*)(p+4);
             u8 turn=0;
             if(!((u8*)((char*)fn_802D6A9C()+0x131df))[innerRoom]) turn=1;
-            else if(0.0f!=collision.y) {
+            else if(collision.y!=lbl_8053E744) {
                 if((collision.x>0.0f && *(f32*)(p+0x3c)<0.0f) ||
                    (collision.x<0.0f && *(f32*)(p+0x3c)>0.0f)) turn=1;
             }
