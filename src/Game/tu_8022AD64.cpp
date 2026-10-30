@@ -1597,6 +1597,66 @@ int fn_80270A8C(Player*);
 int fn_80270A04(Player*);
 int fn_80270A58(Player*);
 int fn_8025F448(Player*);
+static inline int gate_Player_GetField_0x454(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return Player_GetField_0x454(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_80240818(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return fn_80240818(lbl_8053AC90->players[i]);
+}
+static inline int gate_Player_GetField_0xce8(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return Player_GetField_0xce8(lbl_8053AC90->players[i]);
+}
+static inline int gate_GetBusyLocked(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return GetBusyLocked(lbl_8053AC90->players[i]);
+}
+static inline int gate_GetField_0xcfe(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return GetField_0xcfe(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_80270A58(int i) {
+ if(lbl_8053AC90==NULL) return 1;
+ if(!isPlayerEnabled(i)) return 1;
+ return fn_80270A58(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_8025F448(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return fn_8025F448(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_80270A04(int i) {
+ if(lbl_8053AC90==NULL) return 1;
+ if(!isPlayerEnabled(i)) return 1;
+ return fn_80270A04(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_8025F590(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return fn_8025F590(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_8025F418(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return fn_8025F418(lbl_8053AC90->players[i]);
+}
+static inline int gate_fn_80270A8C(int i) {
+ if(lbl_8053AC90==NULL) return 1;
+ if(!isPlayerEnabled(i)) return 1;
+ return fn_80270A8C(lbl_8053AC90->players[i]);
+}
+static inline u8 playerGate43f(int i) {
+ if(lbl_8053AC90==NULL) return 0;
+ if(!isPlayerEnabled(i)) return 0;
+ return ((u8*)lbl_8053AC90->players[i])[0x43f];
+}
 void fn_80231DE4(void)
 {
     s32 local[2];
