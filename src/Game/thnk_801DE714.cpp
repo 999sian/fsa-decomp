@@ -506,6 +506,11 @@ extern "C" void fn_801DF9D8(void* this_, void* obj) {
     }
 }
 
+extern "C" s32 fn_801F732C(void* mgr, void* a, f32 f, void* p5, void* p6, s32 c);
+extern f32 lbl_8053F4B4, lbl_8053F4B8, lbl_8053F498, lbl_8053F4A0;
+extern "C" void fn_8020CF7C(void*);
+extern "C" void fn_801E1AB4(void*, u8);
+
 extern "C" void fn_801E002C(void* this_, s32 state) {
     char* p = (char*)this_;
     if (state != 0 && *(s32*)(p + 0x2ac) >= 0) {
