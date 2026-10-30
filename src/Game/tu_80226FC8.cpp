@@ -14,7 +14,8 @@ static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
 
 static inline bool gateVelocitySame(u8* actor) {
     extern const f32 lbl_8053FF60;
-    const f32 eps = 32.0f * FLT_EPSILON;
+    bool z = false;
+    f32 eps = 32.0f * FLT_EPSILON;
     bool equal = false;
     bool xy = false;
     if (JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x3c), *(f32*)(actor+0x364), eps) &&
@@ -415,10 +416,10 @@ extern "C" s32 fn_801F26CC(void*,const u32*);
 extern "C" void fn_801F349C(void*,s32,void*);
 extern "C" void fn_80227F50(void* this_) {
     const u32* types;
-    types=lbl_8046ABE8;
     u8* p=(u8*)this_;
     s32 i;
     u8* cursor=p;
+    types=lbl_8046ABE8;
     JGeometry::TVec3f delta;
     JGeometry::TVec3f dest;
     GateBox boxA;
@@ -493,12 +494,21 @@ extern "C" void fn_80227F50(void* this_) {
                 playerBox.translate(0.0f,dy);
             }
             if(fn_8023B0F4(j,(f32*)&playerBox,(*(u32*)(p+0x4)),0,8.0f))
-                fn_802317F0(j,gateRoom((*(u32*)(p+0x90))),p+0xc,p+0x238,(*(u32*)(p+0x90))&0x7f);
+                {
+                    int mapRoom,rawRoom;
+                    u32 param=(*(u32*)(p+0x90));
+                    rawRoom=(param>>24)&7;
+                    u32 kind=param&0x7f;
+                    mapRoom=rawRoom+7; if(!rawRoom) mapRoom=rawRoom;
+                    fn_802317F0(j,mapRoom,p+0xc,p+0x238,kind);
+                }
         }
     } else {
         boxB.x0=x0; boxB.y0=y0; boxB.x1=x1; boxB.y1=y1; fn_802278A8(p,(f32*)&boxB);
     }
-    s32 t=(u16)fn_80226850(p+0x238,gateRoom((*(u32*)(p+0x90))));
+    int rawRoom=((*(u32*)(p+0x90))>>24)&7;
+    int mapRoom=rawRoom+7; if(!rawRoom) mapRoom=rawRoom;
+    s32 t=(u16)fn_80226850(p+0x238,mapRoom);
     if(t==0x19c || t==0x19d) return;
     s32 id;
     s32 kind=(*(u32*)(p+0x90))&0x7f;
