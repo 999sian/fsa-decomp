@@ -4504,9 +4504,7 @@ extern "C" u8 fn_8022DA68(s32);
 extern "C" s32 fn_80238CB4(s32);
 extern "C" char lbl_8046AE08[];
 
-inline s32 sharingMode50090I(const char* p) {
-    s32 linked;
-    int me;
+inline s32 countSharing50090I(const char* p, s32& linked, int& me) {
     s32 c = 0;
     for (s32 i = 0; i < 4; i++) {
         if (i == S32(p,4)) c++;
@@ -4519,7 +4517,10 @@ inline s32 sharingMode50090I(const char* p) {
             }
         } else if (i == S32(p,0xd60)) c++;
     }
-    if (c <= 1) return 5;
+    return c;
+}
+inline s32 sharingMode50090I(const char* p, s32& linked, int& me) {
+    if (countSharing50090I(p,linked,me) <= 1) return 5;
     s32 index = S32(p,0xd60);
     if (index >= 0) return fn_8022CAF8(index);
     return S32(p,0x120c);
@@ -4531,10 +4532,10 @@ inline s32 sharingMode50090R(const char* p, s32& linked, s32& me) {
     return S32(p,0x120c);
 }
 
-#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 u8 fn_80250090(char* p) {
-    s32 me;
     s32 linked;
+    s32 me;
     if (F32(p, 0x10) > 0.0f) {
         S32(p, 0xd9c) = -1;
         S32(p, 0xd98) = 0;
@@ -4578,7 +4579,7 @@ u8 fn_80250090(char* p) {
     }
     return S32(p, 0xd98) > 0;
 }
-#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 int fn_80250ACC(char* p) {
     s32 me;
     if (getModeLO(p, me) == 4) {
