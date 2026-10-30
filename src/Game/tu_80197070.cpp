@@ -824,8 +824,8 @@ next:
 #pragma opt_propagation reset
 #else
 extern "C" void fn_8019C500(Pos_8019* this_, int flag) {
-    u8* p;
     int id;
+    u8* p;
     s32 i;
     Vec_8019 pos;
     p=(u8*)this_;
