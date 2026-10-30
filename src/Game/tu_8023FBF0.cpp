@@ -2846,6 +2846,15 @@ s32 fn_802527B0(char* p, s32* out) {
 }
 
 #pragma opt_common_subs off
+static inline void resetTrailFrom486(char* p,int i) {
+    char* q=p;
+    for(;i<0x31;i++) {
+        F32(q,0x38)=F32(p,8);F32(q,0x3c)=F32(p,0xc);F32(q,0x40)=F32(p,0x10);
+        if(F32(p,0x10)>0.0f)U8(p,0x284+i)=1;
+        else U8(p,0x284+i)=0;
+        q+=0xc;
+    }
+}
 static inline void resetGuardedTrail486(char* p) {
     if(U8(p,0x1216)==0) {
         if(U8(p,0x454)!=0)fn_8024B2E0(p);
