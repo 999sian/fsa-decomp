@@ -719,7 +719,6 @@ extern const f32 lbl_80540CD0;
 extern "C" void fn_801F2B20(char* p, s32 a);
 extern "C" void fn_801F0D20(char* p, s32 a);
 
-#define KEY0_LINK_HERE_EARLY
 // KEY0: link the key's home tile to where it is now.
 static inline void key0LinkHere(char* p) {
     u32 x18;
