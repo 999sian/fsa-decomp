@@ -1588,7 +1588,7 @@ static inline JUtility::TColor hudCtorColor(u8* pane, u32 slot) {
 static inline void hudCtorAppend(u8* pane, u32 texture, f32 blend) {
     ((bool (*)(u8*, u32, f32))(*(void***)pane)[39])(pane, texture, blend);
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs off
 extern "C" void* fn_80426DEC(u8* this_) {
 const u8* data=lbl_804B1428;
 const u8* base=lbl_8048E1B8;
