@@ -1,2 +1,312 @@
+#include "types.h"
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80015d50-0x80016924 (21 functions). split_file divides it into the game's real files.
+
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+extern "C" void fn_8015AB1C(void*);
+extern "C" BOOL fn_801BE5B4(void*);
+extern "C" void fn_801BE47C(void*);
+extern "C" void fn_801BE764(void*);
+extern "C" void fn_80016814(void*);
+extern "C" s32 fn_801D703C(u8, void*, void*);
+extern "C" void fn_801D7158(void*);
+extern u8 lbl_80204FA8[];
+extern "C" void fn_801D2BDC(void);
+extern "C" void fn_801BE368(void*);
+extern "C" void fn_801BE670(void*);
+extern "C" u32 fn_801C027C(void);
+extern "C" s32 fn_801C1594(void);
+extern "C" void fn_801C0884(void*, void*, s32, void*, u32, s32, s32);
+extern "C" void fn_801C0EEC(void*);
+extern "C" u32 fn_800168D0(void);
+extern "C" void fn_8015D1F4(void* p, u32 a, s32 b);
+extern "C" void fn_8015D29C(void* p, s32 a);
+extern "C" void fn_80159BA4(s32 a);
+extern u8 lbl_802AE880[];
+extern u8 lbl_802A4560[];
+extern u8 lbl_802A3560[];
+extern "C" void fn_801BE3A0(void*);
+extern "C" void fn_801BE690(void*, void*);
+extern "C" void fn_80015FE8(void*);
+extern "C" s32 fn_801D6398(u8, void*, s32);
+extern "C" s32 fn_801D59DC(u8);
+extern u8 lbl_802A4880[];
+extern "C" void fn_8001606C(void*);
+extern "C" void fn_80016540(void*);
+extern "C" void fn_80016618(void*);
+extern "C" void fn_80016484(void*);
+extern "C" s32 fn_801D6CC4(u8);
+extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
+extern "C" void fn_80015D8C(void* param_1) {
+    u8* p = (u8*)param_1;
+    fn_801D2BDC();
+    p[0x1fa5] = 0;
+    p[0x1fa6] = 2;
+    *(s32*)(p + 0x1fac) = 0;
+    *(s32*)(p + 0x1fa8) = 0;
+    p[0x1fa4] = 0;
+    fn_801BE368(p + 0x1fb0);
+    fn_801BE670(p + 0x1fc8);
+    fn_801C027C();
+    s32 iVar1 = fn_801C1594();
+    fn_801C0884(lbl_802A4560, (void*)fn_800168D0, 0, lbl_802A3560 + 0x1000, 0x1000, iVar1 + 1, 1);
+    fn_801C0EEC(lbl_802A4560);
+}
+
+extern "C" void fn_80015E2C(void* param_1) {
+    u8* p = (u8*)param_1;
+    do {
+        fn_801BE3A0(p + 0x1fb0);
+        while (*(s32*)(p + 0x1fa8) == 0) {
+            fn_801BE690(p + 0x1fc8, p + 0x1fb0);
+        }
+        switch (*(s32*)(p + 0x1fa8)) {
+        case 1:
+            fn_80015FE8(p);
+            break;
+        case 2:
+            fn_8001606C(p);
+            break;
+        case 3:
+            fn_80016484(p);
+            break;
+        case 4:
+            fn_80016540(p);
+            break;
+        case 5:
+            fn_80016618(p);
+            break;
+        }
+        *(s32*)(p + 0x1fa8) = 0;
+        fn_801BE47C(p + 0x1fb0);
+    } while (1);
+}
+
+extern "C" s32 fn_80016B4C(void*, void*, s32);
+void fn_80015FE8(void* param_1) {
+    u8 auStack_28[0x20];
+    s32 iVar1 = fn_801D703C(((u8*)param_1)[0x1fa4], lbl_80204FA8, auStack_28);
+
+    if (iVar1 == 0) {
+        iVar1 = fn_80016B4C(auStack_28, param_1, 0x1fa4);
+        if (iVar1 == 0) {
+            *(s32*)((u8*)param_1 + 0x1fac) = 3;
+        } else {
+            fn_80016814(param_1);
+        }
+        fn_801D7158(auStack_28);
+    } else {
+        fn_80016814(param_1);
+    }
+}
+
+extern "C" void fn_80016170(void* param_1) {
+    u8* p = (u8*)param_1;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        *(s32*)(p + 0x1fa8) = 3;
+        fn_801BE47C(p + 0x1fb0);
+        fn_801BE764(p + 0x1fc8);
+    }
+}
+
+extern "C" void fn_800161C0(void* param_1, void* param_2, u32 param_3, s32 param_4) {
+    u8* p = (u8*)param_1;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        memcpy(p + param_4, param_2, param_3);
+        *(s32*)(p + 0x1fa8) = 2;
+        fn_801BE47C(p + 0x1fb0);
+        fn_801BE764(p + 0x1fc8);
+    }
+}
+
+extern "C" void fn_80016244(void* param_1) {
+    u8* p = (u8*)param_1;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        *(s32*)(p + 0x1fa8) = 1;
+        fn_801BE47C(p + 0x1fb0);
+        fn_801BE764(p + 0x1fc8);
+    }
+}
+
+extern "C" u32 fn_80016294(void* param_1, void* param_2, u32 param_3, s32 param_4) {
+    u8* p = (u8*)param_1;
+    u32 result = 0;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        if (*(s32*)(p + 0x1fac) == 3) {
+            memcpy(param_2, p + param_4, param_3);
+            result = 1;
+            *(s32*)(p + 0x1fac) = 1;
+        } else {
+            result = 2;
+        }
+        fn_801BE47C(p + 0x1fb0);
+    }
+    return result;
+}
+
+extern "C" s32 fn_80016320(void* param_1) {
+    u8* p = (u8*)param_1;
+    s32 result = 0;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        if (*(s32*)(p + 0x1fac) == 4) {
+            *(s32*)(p + 0x1fac) = 1;
+            result = 1;
+        } else if (*(s32*)(p + 0x1fac) == 1) {
+            result = 0;
+        } else {
+            result = 2;
+        }
+        fn_801BE47C(p + 0x1fb0);
+    }
+    return result;
+}
+
+extern "C" s32 fn_800163A0(void* param_1) {
+    u8* p = (u8*)param_1;
+    s32 result;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        switch (*(s32*)(p + 0x1fac)) {
+        case 0:
+            result = 2;
+            break;
+        case 1:
+            result = 1;
+            break;
+        case 2:
+            result = 3;
+            break;
+        case 3:
+            result = 4;
+            break;
+        case 4:
+            result = 5;
+            break;
+        case 5:
+            result = 0;
+            break;
+        case 6:
+            result = 7;
+            break;
+        case 7:
+            result = 6;
+            break;
+        case 8:
+            result = 0xb;
+            break;
+        case 9:
+            result = 0xc;
+            break;
+        case 10:
+            result = 9;
+            break;
+        case 11:
+            result = 0xa;
+            break;
+        case 12:
+            result = 8;
+            break;
+        case 13:
+            result = 0xe;
+            break;
+        }
+        fn_801BE47C(p + 0x1fb0);
+        return result;
+    }
+    return 0xe;
+}
+
+extern "C" void fn_80016484(void* param_1) {
+    u8* p = (u8*)param_1;
+    u32 uVar1 = fn_801D6CC4(p[0x1fa4]);
+    if (uVar1 == 0) {
+        *(s32*)(p + 0x1fac) = 5;
+    } else {
+        fn_80016814(p);
+    }
+}
+
+extern "C" void fn_801BE47C(void*);
+extern "C" BOOL fn_801BE5B4(void*);
+extern "C" s32 fn_800164D0(void* param_1) {
+    u8* p = (u8*)param_1;
+    s32 result = 0;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        if (*(s32*)(p + 0x1fac) == 5) {
+            *(s32*)(p + 0x1fac) = 2;
+            result = 1;
+        } else {
+            result = 2;
+        }
+        fn_801BE47C(p + 0x1fb0);
+    }
+    return result;
+}
+
+extern "C" s32 fn_801D5B34(u8, void*, s32*);
+extern "C" BOOL fn_80016650(void*);
+extern "C" BOOL fn_80016730(void*);
+extern "C" s32 fn_80016790(void*);
+extern "C" void fn_80016540(void* param_1) {
+    u8* p = (u8*)param_1;
+    u8 buf[4];
+    s32 type;
+    if (fn_801D5B34(p[0x1fa4], buf, &type) == -2) {
+        *(s32*)(p + 0x1fac) = 10;
+    } else if (type != 0x2000) {
+        *(s32*)(p + 0x1fac) = 11;
+    } else if (fn_80016650(p)) {
+        if (fn_80016730(p)) {
+            *(s32*)(p + 0x1fac) = 1;
+        } else {
+            switch (fn_80016790(p)) {
+            case 3:
+                break;
+            case 0:
+                *(s32*)(p + 0x1fac) = 2;
+                break;
+            case 1:
+                *(s32*)(p + 0x1fac) = 8;
+                break;
+            case 2:
+                *(s32*)(p + 0x1fac) = 9;
+                break;
+            }
+        }
+    }
+}
+
+extern "C" void fn_801D647C(u8);
+extern "C" void fn_80016618(void* param_1) {
+    u8* p = (u8*)param_1;
+    fn_801D647C(p[0x1fa4]);
+    *(s32*)(p + 0x1fac) = 0;
+}
+
+extern "C" BOOL fn_80016730(void* param_1) {
+    u8 auStack_28[0x20];
+    s32 iVar1 = fn_801D703C(((u8*)param_1)[0x1fa4], lbl_80204FA8, auStack_28);
+    if (iVar1 == 0) {
+        fn_801D7158(auStack_28);
+        return TRUE;
+    } else {
+        fn_80016814(param_1);
+        return FALSE;
+    }
+}
+
+#pragma dont_inline on
+extern "C" u32 fn_800168D0(void) {
+    u8 auStack_80[0x80];
+    fn_8015D1F4(auStack_80, fn_801C027C(), 0);
+    fn_8015D29C(auStack_80, -1);
+    fn_80159BA4(0);
+    fn_80015E2C(lbl_802AE880);
+    return 0;
+}
+#pragma dont_inline reset

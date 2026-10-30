@@ -941,7 +941,8 @@ extern "C" void fn_803146DC(char* p) {
         case 0: {
             fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
             slot = fn_8022FD8C(*(void**)(p + 0x198));
-            if (slot >= 0 && fn_802300EC()) {
+            s32 cmp = fn_8023DE58(*(s32*)(p + 4));
+            if (cmp == *(s32*)(p + 4) && slot >= 0 && fn_802300EC()) {
                 void* room = *(void**)(p + 0x198);
                 s32 player = *(s32*)(p + 4);
                 if (fn_8038AD24(slot, 0x481, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {

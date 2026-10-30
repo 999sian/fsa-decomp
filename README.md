@@ -27,7 +27,7 @@ The Japanese disc ships a second executable, `files/DOL/framework.dol` — **Nav
 
 | ID | Executable | `framework.dol` SHA-1 | Status |
 | :--- | :--- | :--- | :--- |
-| **G4SJ01_NT** | `files/DOL/framework.dol` | `ab5f67bcf0687923d8dc1caf5afeb3bb9fe69011` | **Supported** (1.75% code matched, retail verified) |
+| **G4SJ01_NT** | `files/DOL/framework.dol` | `ab5f67bcf0687923d8dc1caf5afeb3bb9fe69011` | **In progress** (15.47% code matched, 4,178 / 8,121 functions) |
 
 ```sh
 python3 configure.py --version G4SJ01_NT

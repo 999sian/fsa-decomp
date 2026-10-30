@@ -1,2 +1,41 @@
+#include "dolphin/types.h"
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80157a54-0x80157ac4 (5 functions). split_file divides it into the game's real files.
+
+extern "C" u8* lbl_802FF4BC;
+
+struct Unk802FF4BC {
+    u8 pad0[0x70];
+    u16 unk70;
+    u8 pad72[0x94 - 0x72];
+    u32 unk94;
+    u32 unk98;
+    u8 pad9c[0xf4 - 0x9c];
+};
+
+extern "C" void fn_80157A54(int idx, u32 a, u32 b)
+{
+    ((u32*)(lbl_802FF4BC + idx * 0xf4))[0x94 / 4] = a;
+    ((u32*)(lbl_802FF4BC + idx * 0xf4))[0x98 / 4] = b;
+}
+
+extern "C" u8 fn_80157A74(int idx)
+{
+    return *(lbl_802FF4BC + idx * 0xf4 + 0x9c);
+}
+
+extern "C" u8 fn_80157A88(int idx)
+{
+    return *(lbl_802FF4BC + idx * 0xf4 + 0x90);
+}
+
+extern "C" u16 fn_80157A9C(int idx)
+{
+    Unk802FF4BC* p = &((Unk802FF4BC*)lbl_802FF4BC)[idx];
+    return p->unk70;
+}
+
+extern "C" void fn_80157AB0(int idx, u8 v)
+{
+    *(lbl_802FF4BC + idx * 0xf4 + 0xa0) = v;
+}
