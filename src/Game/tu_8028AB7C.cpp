@@ -82,9 +82,6 @@ extern "C" void fn_801F349C(u8* obj, u32 n, f32* v);
 static inline void publishPlatformPos(u8* actor, u32 room, const JGeometry::TVec3<f32>& pos) {
     fn_801F349C(actor, room, (f32*)&pos);
 }
-static inline void publishPlatformXY(u8* actor, u32 room, f32 y, f32 x) {
-    publishPlatformPos(actor, room, JGeometry::TVec3<f32>(x, y, 0.0f));
-}
 extern "C" f32 lbl_805404D0;
 extern "C" f64 lbl_805404E0;
 extern void* lbl_8053AED0;
