@@ -460,7 +460,6 @@ extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     if (outDist != NULL) *outDist = best;
     return id;
 }
-#pragma fp_contract reset
 extern "C" s32 fn_801F778C(ActorPool* pool, u32 type, f32* pos, f32* outDist) {
     s32 id = -1;
     f32 best = 1000000.0f;
