@@ -67,6 +67,7 @@ extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_80158B5C(void*,s32,void*,void*);
 extern "C" void fn_803075AC(s32,s32,void*,s32,s32,s32,s32,s32,s32,s32);
 extern const f32 lbl_805401F8,lbl_805401FC,lbl_80540204,lbl_80540208,lbl_8054020C;
+#pragma opt_common_subs off
 extern "C" void fn_80264998(char* p) {
     u8* self=(u8*)p;
     char* table=lbl_8046B960;
@@ -74,7 +75,7 @@ extern "C" void fn_80264998(char* p) {
     if(self[0xcee]==1)return;
     if(self[0x1215] && !((u8)lbl_8053AAF8[0x82] & (u8)(1<<*(s32*)(self+4))))return;
     u32 alpha=fn_8023FC5C(self);
-    s32 player=(s32)GetPtrField_0x4(self);
+    u32 player=GetPtrField_0x4(self);
     if(*(u16*)(self+0x3c4)>=0x3d5)*(u16*)(self+0x3c4)=0x3d4;
     if(*(f32*)(self+0xb90)>lbl_805401F0) {
         u8 c[4];c[0]=0;c[1]=0;c[2]=0;c[3]=255;u32 color=*(u32*)c;
@@ -86,7 +87,7 @@ extern "C" void fn_80264998(char* p) {
         playerSprite64998(0,self+0xcb0,table,(ticks/6)%3+player*3+0x73,&rec);
     }
     DrawRec shadow;
-    if(!Player_IsLinked(p) || (!fn_80240DAC(p)&&fn_802413F0(p))) {
+    if((!Player_IsLinked(p) || !fn_80240DAC(p)) && fn_802413F0(p)) {
         JGeometry::TVec3<f32> pos;
         shadow.b1d=-2;
         if(fn_80240DAC(p)) {
@@ -116,8 +117,7 @@ extern "C" void fn_80264998(char* p) {
                 const JGeometry::TVec3<f32>& draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
                 playerSprite64998(0,(void*)&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
             }else {
-                const JGeometry::TVec3<f32>& draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
-                playerSprite64998(*(s32*)(self+0x3b4),(void*)&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
+                playerSprite64998(*(s32*)(self+0x3b4),(void*)&(pos+*(JGeometry::TVec3<f32>*)(self+0x2b8)),table+0x14,*(u16*)(self+0x3c4),&shadow);
             }
         }
         if(*(f32*)(self+0x10)>lbl_805401F0 && *(s32*)(self+0x3b4)>=8) {
@@ -137,13 +137,16 @@ extern "C" void fn_80264998(char* p) {
     rec.b2d=1;
     if((u8)alpha<255)shadow.b2c=0;
     if(self[0x11e9])rec.w30=player+4;
-    Mtx scale;
-    scale[0][3]=scale[1][3]=scale[2][3]=lbl_805401F0;
-    scale[0][0]=*(f32*)(self+0xc84)**(f32*)(self+0xc90);
-    scale[0][1]=scale[0][2]=lbl_805401F0;
-    scale[1][0]=lbl_805401F0;scale[1][1]=*(f32*)(self+0xc88)**(f32*)(self+0xc94);scale[1][2]=lbl_805401F0;
-    scale[2][0]=scale[2][1]=lbl_805401F0;scale[2][2]=*(f32*)(self+0xc8c)**(f32*)(self+0xc98);
     ((u8*)&rec.w10)[3]=alpha;
+    Mtx scale;
+    f32 zScale=*(f32*)(self+0xc8c)**(f32*)(self+0xc98);
+    f32 yScale=*(f32*)(self+0xc88)**(f32*)(self+0xc94);
+    f32 xScale=*(f32*)(self+0xc84)**(f32*)(self+0xc90);
+    scale[0][3]=scale[1][3]=scale[2][3]=lbl_805401F0;
+    scale[0][0]=xScale;
+    scale[0][1]=scale[0][2]=lbl_805401F0;
+    scale[1][0]=lbl_805401F0;scale[1][1]=yScale;scale[1][2]=lbl_805401F0;
+    scale[2][0]=scale[2][1]=lbl_805401F0;scale[2][2]=zScale;
     rec.w18=scale;rec.b20=0;
     if(fn_8025F418(p)&&!Player_GetField_0x454(p)){
         rec.b1d=fn_8023CB24(*(s32*)(self+0xd70))+1;
@@ -167,14 +170,14 @@ extern "C" void fn_80264998(char* p) {
     }else if(self[0x400]&&!Player_GetField_0x454(p)){
         s32 c=255-(self[0x400]<<5);if(c<0)c=0;
         ((u8*)&rec.w10)[0]=c;((u8*)&rec.w10)[1]=c;((u8*)&rec.w10)[2]=c;
-    }else if(!lbl_8053AAF8[0x7f] && *(s32*)(self+0x1208)<64){
+    }else if(!((u8*)lbl_8053AAF8)[0x7f] && *(s32*)(self+0x1208)<64){
         u8 c=(*(s32*)(self+0x1208)&63)*4;
         ((u8*)&rec.w10)[0]=c;((u8*)&rec.w10)[1]=c;((u8*)&rec.w10)[2]=c;
     }
     self[0x3d8]=rec.b1c;self[0x3d9]=rec.b1d;
-    if(!fn_802413F0(p) || (u8)alpha<32)return;
+    if(fn_802413F0(p) && (u8)alpha>=32) {
     if(Player_IsLinked(p)&&fn_802486A0(p)!=4&&!fn_8023188C(Player_GetLinkTargetIndex(p)))return;
-    s32 sprite=*(u16*)(self+0x3c4);
+    u32 sprite=*(u16*)(self+0x3c4);
     if(sprite==0x121)return;
     JGeometry::TVec3<f32> draw=*(JGeometry::TVec3<f32>*)(self+8)+*(JGeometry::TVec3<f32>*)(self+0x2b8);
     draw.x=(s32)draw.x;draw.y=(s32)draw.y;draw.z=(s32)draw.z;
@@ -200,7 +203,8 @@ extern "C" void fn_80264998(char* p) {
         else fn_803075AC(-20000-*(s32*)(self+4),*(s32*)(self+0x3b4),&waterPos,*(u16*)(self+0x3ca),0,1,-1,0,0,0);
     }
 }
-
+}
+#pragma opt_common_subs reset
 extern "C" void fn_80265AE4(char* p)
 {
     Vec d1;
@@ -325,6 +329,40 @@ extern "C" void fn_80265DB0(char* p)
 extern "C" u8 Player_GetField_0x454(char* p);
 extern "C" u8 fn_80241230(char* p);
 extern "C" void fn_80268194(char* p);
+extern "C" u8 fn_8025F684(char* p);
+extern "C" void fn_80267018(char* p);
+extern "C" void fn_802670CC(char* p);
+extern "C" void fn_802671C8(char* p);
+extern "C" void fn_80267384(char* p);
+extern "C" void fn_80267470(char* p);
+extern "C" void fn_80267598(char* p);
+extern "C" void fn_80267684(char* p);
+extern "C" void fn_80267748(char* p);
+extern "C" void fn_80267818(char* p);
+extern "C" void fn_802678CC(char* p);
+extern "C" void fn_80267990(char* p);
+extern "C" void fn_80267A54(char* p);
+extern "C" void fn_80267B18(char* p);
+extern "C" void fn_80267BA8(char* p);
+extern "C" void fn_80267C6C(char* p);
+extern "C" void fn_80267D30(char* p);
+extern "C" void fn_80267E18(char* p);
+extern "C" void fn_80267ECC(char* p);
+
+// Picks the player's animation base by its 0x3dc posture (0..2, else).
+#define PLAYER_ANIM4(p, a0, a1, a2, a3)                    \
+    do {                                                   \
+        int t_ = *(int*)((p) + 0x3dc);                     \
+        if (t_ == 0) {                                     \
+            *(unsigned short*)((p) + 0x3c4) = (a0);        \
+        } else if (t_ == 1) {                              \
+            *(unsigned short*)((p) + 0x3c4) = (a1);        \
+        } else if (t_ == 2) {                              \
+            *(unsigned short*)((p) + 0x3c4) = (a2);        \
+        } else {                                           \
+            *(unsigned short*)((p) + 0x3c4) = (a3);        \
+        }                                                  \
+    } while (0)
 extern "C" void fn_80265E88(char* p)
 {
     *(unsigned short*)(p + 0x3c6) = *(unsigned short*)(p + 0x3c4);
