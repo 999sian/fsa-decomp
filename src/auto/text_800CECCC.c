@@ -28,6 +28,8 @@ extern void* __vt__15J3DAnmTransform[];
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_800CFE2C(void*, void*, void*);
 extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
+static inline int texturePatternAttribute(const J3DAnmTexPatternFullData* data) { return data->mAttribute; }
+
 extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800D00F0(void*, J3DAnmColorKey*, const J3DAnmColorKeyData*);
@@ -336,7 +338,7 @@ extern "C" void fn_800CF800(void** self, void* data)
 #pragma opt_propagation off
 extern "C" void fn_800CF828(void*, void* anm_, void* data_) {
     f32 zero = lbl_8053BC80;
-    int attr = ((const J3DAnmTexPatternFullData*)data_)->mAttribute;
+    register int attr = ((const J3DAnmTexPatternFullData*)data_)->mAttribute;
     const J3DAnmTexPatternFullData* data = (const J3DAnmTexPatternFullData*)data_;
     J3DAnmTexPattern* anm = (J3DAnmTexPattern*)anm_;
     int frame = data->mTotalFrameCount;
