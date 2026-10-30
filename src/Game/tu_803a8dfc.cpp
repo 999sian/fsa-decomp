@@ -478,7 +478,9 @@ struct Menu_Main {
     u8 pad44[0x1b8 - 0x44];
     EffHandle* handles[4];      // 0x1b8
     EffHandle* emitters[30];
-    u8 pad240[0x2c8 - 0x240];
+    u8 pad240[4];
+    FVec3 position;
+    FVec3 positions[10];
     s32 countdown[10];           // 0x2c8
     u8 pad2f0[0x440 - 0x2f0];
     s32 timer;                  // 0x440
@@ -2891,41 +2893,55 @@ static inline void spawnMenuEmitter(Menu_Main* self,u32 kind,f32 scale) {
     }
 }
 extern "C" void fn_803B236C(void* this_) {
-    u8* self = (u8*)this_;
-    s32 arr[6];
-    s32 cnt = 0;
-    s32 k;
-    s32 idx;
-    FVec3 pos;
-    f32 scale;
-    if (*(s16*)(self + 0x458) > 0) {
-        return;
-    }
-    if (self[0x4c8] != 0) {
-        for (k = 0; k <= self[0x4c8]; k++) {
-            if (k != *(s16*)(self + 0x45c)) {
-                arr[cnt++] = k;
+    u8* self=(u8*)this_;
+    s32 arr[4];
+    if(*(s16*)(self+0x458)<=0) {
+        s32 cnt=0;
+        if(self[0x4c8]!=0) {
+            s32* out=arr;
+            s32 n=self[0x4c8]+1;
+            for(s32 k=0;k<n;k++) {
+                if(k!=*(s16*)(self+0x45c)) { *out++=k;cnt++; }
+            }
+            s32 idx=(s32)((f32)cnt*lbl_8053AAF8->rnd.get_ufloat_1());
+            *(s16*)(self+0x45c)=self[0x4ac+arr[idx]];
+        } else *(s16*)(self+0x45c)=self[0x4ac];
+        cnt=0;
+        s32* out=arr;
+        for(s32 k=0;k<4;k++) {
+            if(k!=*(s16*)(self+0x45e)) { *out++=k;cnt++; }
+        }
+        s32 idx=(s32)((f32)cnt*lbl_8053AAF8->rnd.get_ufloat_1());
+        *(s16*)(self+0x45e)=arr[idx];
+        *(f32*)(self+0x244)=lbl_80543434*lbl_8053AAF8->rnd.get_ufloat_1()+lbl_80476368[*(s16*)(self+0x45e)];
+        *(f32*)(self+0x248)=lbl_80543434*lbl_8053AAF8->rnd.get_ufloat_1()+lbl_80476378[*(s16*)(self+0x45e)];
+        f32 scale=lbl_805433E8*lbl_8053AAF8->rnd.get_ufloat_1()+lbl_80543438;
+        spawnMenuEmitter((Menu_Main*)self,0x56c,scale);
+        switch(*(s16*)(self+0x45c)) {
+        case 0: spawnMenuEmitter((Menu_Main*)self,0x56e,scale);break;
+        case 1: spawnMenuEmitter((Menu_Main*)self,0x570,scale);break;
+        case 2: spawnMenuEmitter((Menu_Main*)self,0x56d,scale);break;
+        case 3: spawnMenuEmitter((Menu_Main*)self,0x56f,scale);break;
+        default:spawnMenuEmitter((Menu_Main*)self,0x571,scale);break;
+        }
+        u32 msg=0x30029;
+        (*(MsgSinkObj2**)(self+0x184))->send(&msg);
+        for(s32 i=0;i<10;i++) {
+            if(*(s32*)(self+0x2c8+i*4)==-1) {
+                FVec3* p=(FVec3*)(self+0x250+i*12);
+                p->x=*(f32*)(self+0x244);p->y=*(f32*)(self+0x248);p->z=*(f32*)(self+0x24c);
+                *(s32*)(self+0x2c8+i*4)=0x3a;
+                break;
             }
         }
-        idx = (s32)(lbl_8053AAF8->rnd.get_ufloat_1() * (f32)cnt);
-        *(s16*)(self + 0x45c) = self[0x4ac + arr[idx]];
-    } else {
-        *(s16*)(self + 0x45c) = self[0x4ac];
-    }
-    cnt = 0;
-    for (k = 0; k < 4; k++) {
-        if (k != *(s16*)(self + 0x45e)) {
-            arr[cnt++] = k;
+        if(*(s16*)(self+0x45a)<=0) {
+            *(s16*)(self+0x458)=*(s16*)(lbl_8050DB0C+0x50);
+            *(s16*)(self+0x45a)=(s32)((f32)*(s16*)(lbl_8050DB0C+0x52)*lbl_8053AAF8->rnd.get_ufloat_1());
+        } else {
+            *(s16*)(self+0x458)=20;
+            (*(s16*)(self+0x45a))--;
         }
-    }
-    idx = (s32)(lbl_8053AAF8->rnd.get_ufloat_1() * (f32)cnt);
-    *(s16*)(self + 0x45e) = arr[idx];
-    pos.x = lbl_8053AAF8->rnd.get_ufloat_1() * lbl_80543434 + lbl_80476368[*(s16*)(self + 0x45e)];
-    pos.y = lbl_8053AAF8->rnd.get_ufloat_1() * lbl_80543434 + lbl_80476378[*(s16*)(self + 0x45e)];
-    *(f32*)(self + 0x244) = pos.x;
-    *(f32*)(self + 0x248) = pos.y;
-    scale = lbl_8053AAF8->rnd.get_ufloat_1() * lbl_80543438 + lbl_805433E8;
-    *(s32*)(self + 0x1c8) = (s32)fn_8013CC50(*(u32*)(self + 4), &pos, 0x56c, 0, 0, 0, 0, 1, scale);
+    } else (*(s16*)(self+0x458))--;
 }
 
 struct PFlag {
