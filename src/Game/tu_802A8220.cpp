@@ -55,8 +55,7 @@ extern "C" const f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_805
 #pragma opt_propagation off
 static inline bool SpawnRadiusZero(f32 value) {
     u8 nonzero=value!=lbl_80540854;
-    u8 zero=nonzero==0;
-    return zero;
+    return nonzero==0;
 }
 
 static inline f32 SpawnRandom() {
@@ -109,11 +108,11 @@ pos.x=lbl_80540840*sincosTable___5JMath[0xc00]+a->field_0C.x;pos.z=lbl_80540844;
 }
                 } else if(a->m244==10) {pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;pos.z=lbl_80540848;}
                 else if(a->m244==11||a->m244==13) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
+if(SpawnRadiusZero(radius))radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
-f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
-f32 y=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-f32 x=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
+f32 y=radius-spread*SpawnRandom();
+f32 x=radius-spread*SpawnRandom();
 pos.y=a->field_0C.y+y;pos.z=z;pos.x=a->field_0C.x+x;}
                 else {
                     s32 idx=((u16)angle>>5);
@@ -121,7 +120,7 @@ pos.y=a->field_0C.y+y;pos.z=z;pos.x=a->field_0C.x+x;}
                     pos.x=lbl_80540868*sincosTable___5JMath[idx*2]+a->field_0C.x;pos.z=lbl_80540844;
                 }
                 s32 room=a->field_04;
-if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
+if(*(fn_802D6A9C()+(room+0x131df))) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
                 s32 handle=Actor_CreateByID(fn_801F856C(),id,a->field_04,&pos,param,-1,-1);
                 if(handle>=0) {
                     Actor* spawned=fn_801F666C(fn_801F856C(),handle);
@@ -155,25 +154,25 @@ if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
         s32 i=0;
         do {
             s32 room=a->field_04;
-            if(fn_802D6A9C()[0x131df+room]) {
+            if(*(fn_802D6A9C()+(room+0x131df))) {
                 if(a->m244==6||a->m244==7||a->m244==12){
                     f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-                    if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
-                    pos.x=a->field_0C.x+(radius-lbl_8054085C*radius*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1());
-                }else pos.x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+                    if(SpawnRadiusZero(radius))radius=lbl_80540850;
+                    pos.x=a->field_0C.x+(radius-lbl_8054085C*radius*SpawnRandom());
+                }else pos.x=box[0]+(box[2]-box[0])*SpawnRandom();
                 pos.z=lbl_80540854;
             } else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
+if(SpawnRadiusZero(radius))radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
-f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
-f32 y=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-f32 x=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
+f32 y=radius-spread*SpawnRandom();
+f32 x=radius-spread*SpawnRandom();
 pos.y=a->field_0C.y+y;pos.z=z;pos.x=a->field_0C.x+x;}
-            else {f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
-f32 y=box[1]+(box[3]-box[1])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-f32 x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+            else {f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
+f32 y=box[1]+(box[3]-box[1])*SpawnRandom();
+f32 x=box[0]+(box[2]-box[0])*SpawnRandom();
 pos.y=y;pos.z=z;pos.x=x;}
-            s32 pick=lbl_80540870*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+            s32 pick=lbl_80540870*SpawnRandom();
             s32 type;
             if(pick<5)type=2;else if(pick<20)type=1;else type=0;
             fn_801F8544(fn_801F856C(),0x52555059,a->field_04,&pos,type);
@@ -184,17 +183,17 @@ pos.y=y;pos.z=z;pos.x=x;}
             for(s32 i=0;i<(s32)a->m234;i++) {
                 pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
                 s32 room=a->field_04;
-                if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
+                if(*(fn_802D6A9C()+(room+0x131df))) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
                 else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
+if(SpawnRadiusZero(radius))radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
-f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
-f32 y=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-f32 x=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
+f32 y=radius-spread*SpawnRandom();
+f32 x=radius-spread*SpawnRandom();
 pos.y=a->field_0C.y+y;pos.z=z;pos.x=a->field_0C.x+x;}
-                else {f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
-f32 y=box[1]+(box[3]-box[1])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-f32 x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+                else {f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
+f32 y=box[1]+(box[3]-box[1])*SpawnRandom();
+f32 x=box[0]+(box[2]-box[0])*SpawnRandom();
 pos.y=y;pos.z=z;pos.x=x;}
                 if(a->m244==7){Actor_CreateByID(fn_801F856C(),0x4c504c4b,a->field_04,&a->field_0C,0x400,-1,-1);break;}
                 fn_801F8544(fn_801F856C(),0x52555059,a->field_04,&pos,4);
@@ -204,12 +203,12 @@ pos.y=y;pos.z=z;pos.x=x;}
     }
     case 3: {
         if(a->m244==1){ u8* camera=*(u8**)(lbl_8053AB10+0x24);if(!camera[0x7f4])camera[0x7f5]=1; }
-        f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
-f32 y=box[1]+(box[3]-box[1])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-f32 x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+        f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
+f32 y=box[1]+(box[3]-box[1])*SpawnRandom();
+f32 x=box[0]+(box[2]-box[0])*SpawnRandom();
 pos.y=y;pos.z=z;pos.x=x;
         s32 room=a->field_04;
-if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
+if(fn_802D6A9C()[room+0x131df]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
         if((s32)a->m248==0){
             if(a->m244==1){
                 s32 handle=Actor_CreateByID(fn_801F856C(),0x48424d42,a->field_04,&pos,3,-1,-1);
