@@ -1958,34 +1958,19 @@ fail:
 #pragma opt_loop_invariants off
 #pragma opt_lifetimes off
 u8 fn_80243C64(char* p) {
-    f32 f;
-    if (!actionReady(p)) {
-        return 0;
-    }
-    if (S32(p, 0x3dc) == 0) {
-        f = actionReady(p) ? fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) : 0.0f;
-        if (f < 0.0f) {
-            return 1;
-        }
-    }
-    if (S32(p, 0x3dc) == 1) {
-        f = actionReady(p) ? fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) : 0.0f;
-        if (f > 0.0f) {
-            return 1;
-        }
-    }
-    if (S32(p, 0x3dc) == 2) {
-        f = actionReady(p) ? fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) : 0.0f;
-        if (f > 0.0f) {
-            return 1;
-        }
-    }
+    if (!padActive(p)) return 0;
+    if (S32(p, 0x3dc) == 0 &&
+        (!padActive6(p) ? lbl_80540034 : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p,0x11ec)))) < lbl_80540034) goto ready;
+    if (S32(p, 0x3dc) == 1 &&
+        (!padActive6(p) ? lbl_80540034 : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p,0x11ec)))) > lbl_80540034) goto ready;
+    if (S32(p, 0x3dc) == 2 &&
+        (!padActive6(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p,0x11ec)))) > lbl_80540034) goto ready;
     if (S32(p, 0x3dc) == 3) {
-        f = actionReady(p) ? fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) : 0.0f;
-        if (f < 0.0f) {
-            return 1;
-        }
+        if (!((!padActive6(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p,0x11ec)))) < lbl_80540034)) goto fail;
+ready:
+        return 1;
     }
+fail:
     return 0;
 }
 #pragma opt_common_subs reset
