@@ -27,7 +27,7 @@ extern const f32 lbl_8053EE08;
 extern u16 lbl_8046A748;
 extern const f32 lbl_8053EE14;
 extern const f32 lbl_8053EE20;
-extern f32 lbl_8053EE28;
+extern const f32 lbl_8053EE28;
 extern f32 lbl_8053EE50;
 extern "C" void fn_80214900(void* this_);
 extern "C" s32 fn_801CD664(s32 n);
