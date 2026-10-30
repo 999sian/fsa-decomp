@@ -123,7 +123,7 @@ static inline void gnonSetRotation(f32 (*m)[4], f32 rx, f32 ry, f32 rz, f32 scal
     f32 cz;
     f32 cs;
     f32 cc;
-    f32 cx, cy, sx, sy, sz;
+    f32 cx, cy, sz, sy, sx;
     sx = sin(rx);
     sy = sin(ry);
     sz = sin(rz);
@@ -165,15 +165,16 @@ extern "C" void fn_80192090(char* this_) {
     if (type == 0x1f) {
         return;
     }
-    f32 y;
-    f32 x;
-    x = *(f32*)(this_ + 0xc);
-    y = *(f32*)(this_ + 0x10);
+    f32 x = *(f32*)(this_ + 0xc);
+    f32 y = *(f32*)(this_ + 0x10);
     f32 z = *(f32*)(this_ + 0x14);
     if (type != 0) {
         if (type == 0x1e) {
             rec.b1f = 0;
             rec.b1d = 5;
+            m[0][3] = lbl_8053E278;
+            m[1][3] = lbl_8053E278;
+            m[2][3] = lbl_8053E278;
             gnonSetRotation(m, lbl_8053E278, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, lbl_8053E278, 1.4f, 1.4f);
             const ResTIMG* tex = fn_804032E8('GANO', lbl_80467F8C);
             rec.w18 = m;
@@ -191,17 +192,22 @@ extern "C" void fn_80192090(char* this_) {
         ((u8*)&rec.w10)[2] = 0;
         ((u8*)&rec.w10)[3] = 100;
         rec.b1d = -2;
-        const ResTIMG* tex = fn_804032E8('GANO', tables->names1[*(s32*)(this_ + 0x284)]);
+        const char** names = tables->names1;
+        const ResTIMG* tex = fn_804032E8('GANO', names[*(s32*)(this_ + 0x284)]);
         fn_801EFD34(this_, tex, &rec, -1, lbl_8053E278, lbl_8053E278, lbl_8053E278);
         JUTTexture shadow(tex, 0);
         f32 offX = 0.5f * -(f32)shadow.getWidth();
         f32 offY = 0.5f * -(f32)shadow.getHeight();
         if (*(s32*)(this_ + 0x28c) == 5) {
+            m[0][3] = lbl_8053E278;
+            m[1][3] = lbl_8053E278;
+            m[2][3] = lbl_8053E278;
             gnonSetRotation(m, lbl_8053E278, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, lbl_8053E278, 1.4f, 1.4f);
             tex = fn_804032E8('GANO', lbl_80467F8C);
         } else {
             gnonSetScale(m, *(f32*)(this_ + 0x2d0), *(f32*)(this_ + 0x2d4), *(f32*)(this_ + 0x2d4));
-            tex = fn_804032E8('GANO', tables->names2[*(s32*)(this_ + 0x288)]);
+            const char** names2 = tables->names2;
+            tex = fn_804032E8('GANO', names2[*(s32*)(this_ + 0x288)]);
         }
         rec.w18 = m;
         ((u8*)&rec.w10)[0] = 0;
@@ -210,8 +216,9 @@ extern "C" void fn_80192090(char* this_) {
         ((u8*)&rec.w10)[3] = 100;
         rec.b1d = -1;
         JUTTexture body(tex, 0);
-        offX += 0.5f * (f32)body.getWidth() + tables->offsets[*(s32*)(this_ + 0x28c)][0];
-        offY += 0.5f * (f32)body.getHeight() + tables->offsets[*(s32*)(this_ + 0x28c)][1];
+        f32 (*offs)[2] = tables->offsets;
+        offX += 0.5f * (f32)body.getWidth() + offs[*(s32*)(this_ + 0x28c)][0];
+        offY += 0.5f * (f32)body.getHeight() + offs[*(s32*)(this_ + 0x28c)][1];
         *(f32*)(this_ + 0x2c4) = *(f32*)(this_ + 0xc);
         *(f32*)(this_ + 0x2c8) = *(f32*)(this_ + 0x10);
         *(f32*)(this_ + 0x2cc) = *(f32*)(this_ + 0x14);
@@ -240,26 +247,32 @@ extern "C" void fn_80192090(char* this_) {
     } else {
         rec.w30 = 0x11;
     }
-    const ResTIMG* tex = fn_804032E8('GANO', tables->names1[*(s32*)(this_ + 0x284)]);
+    const char** names = tables->names1;
+    const ResTIMG* tex = fn_804032E8('GANO', names[*(s32*)(this_ + 0x284)]);
     fn_801EFD34(this_, tex, &rec, -1, lbl_8053E278, lbl_8053E278, lbl_8053E278);
     JUTTexture head(tex, 0);
     f32 offX = 0.5f * -(f32)head.getWidth();
     f32 offY = 0.5f * -(f32)head.getHeight();
     if (*(s32*)(this_ + 0x28c) == 5) {
+        m[0][3] = lbl_8053E278;
+        m[1][3] = lbl_8053E278;
+        m[2][3] = lbl_8053E278;
         gnonSetRotation(m, lbl_8053E278, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, lbl_8053E278,
                         1.4f * *(f32*)(this_ + 0x2d0), 1.4f * *(f32*)(this_ + 0x2d4));
         tex = fn_804032E8('GANO', lbl_80467F8C);
     } else {
         gnonSetScale(m, *(f32*)(this_ + 0x2d0), *(f32*)(this_ + 0x2d4), *(f32*)(this_ + 0x2d4));
-        tex = fn_804032E8('GANO', tables->names2[*(s32*)(this_ + 0x288)]);
+        const char** names2 = tables->names2;
+        tex = fn_804032E8('GANO', names2[*(s32*)(this_ + 0x288)]);
     }
     rec.w18 = m;
     rec.w30 = -1;
     rec.b1d = 5;
     ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x2b0);
     JUTTexture body(tex, 0);
-    offX += 0.5f * (f32)body.getWidth() + tables->offsets[*(s32*)(this_ + 0x28c)][0];
-    offY += 0.5f * (f32)body.getHeight() + tables->offsets[*(s32*)(this_ + 0x28c)][1];
+    f32 (*offs)[2] = tables->offsets;
+    offX += 0.5f * (f32)body.getWidth() + offs[*(s32*)(this_ + 0x28c)][0];
+    offY += 0.5f * (f32)body.getHeight() + offs[*(s32*)(this_ + 0x28c)][1];
     *(f32*)(this_ + 0x2c4) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x2c8) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2cc) = *(f32*)(this_ + 0x14);
