@@ -223,6 +223,42 @@ extern "C" void fn_802B5284(char* p) {
     }
 }
 
+extern "C" u8 fn_802DEBA0(void);
+extern "C" void fn_80138B7C(void*);
+extern "C" void fn_80458F9C(void*, s32);
+extern "C" u8 fn_801B7550(void);
+extern "C" s32 fn_801CD664(s32);
+extern "C" void* fn_8013CC50(u32, void*, u32, u32, u32, u32, u32, u32, f32);
+extern "C" void fn_8018330C(void*);
+extern "C" void fn_802D7440(void*, s32);
+extern "C" u8 fn_802D75BC(void*, s32);
+extern const f32 lbl_80540A20;
+extern const f32 lbl_80540A24;
+extern const f32 lbl_80540A28;
+extern const f32 lbl_80540A2C;
+extern const f32 lbl_80540A30;
+
+struct Rgba802B {
+    u8 r, g, b, a;
+};
+
+struct Vec802B {
+    f32 x, y, z;
+};
+
+class WaveController {
+public:
+    WaveController(s32 a, s32 b, s32 c);
+    ~WaveController();
+private:
+    unsigned char pad[0x5c];
+};
+
+typedef void (*VFn802B)(char*);
+typedef u8 (*VFnB802B)(char*);
+typedef void (*VFn6802B)(char*, s32, s32, s32, s32, s32, s32);
+#define VT802B(p, off) (*(void**)(*(char**)(p) + (off)))
+
 static void __sinit_tu_802B3674_cpp(void) {
 }
 
