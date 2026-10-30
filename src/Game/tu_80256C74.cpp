@@ -157,6 +157,11 @@ extern "C" s32 fn_802A1D44(void*, void*, u32, s32);
 extern const f32 lbl_8054012C;
 extern const f32 lbl_80540134;
 extern const f32 lbl_80540128;
+struct Tu80256RoomState {
+    u8 pad[0x131df];
+    u8 flags[16];
+};
+
 struct Tu80256Tables {
     JGeometry::TVec3<f32> initial[4];
     u8 frames[4][8];
