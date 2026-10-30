@@ -208,7 +208,7 @@ struct PlayerAreas2 {
     s32 mId[0x50];
 };
 
-inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::TVec3<f32>& b, const f32 epsilon) {
+inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::TVec3<f32>& b, const f32 epsilon, const f32 height = 0.0f) {
     bool equal=false;
     bool xy=false;
     if(JGeometry::TUtilf::epsilonEquals(a.x,b.x,epsilon) &&
