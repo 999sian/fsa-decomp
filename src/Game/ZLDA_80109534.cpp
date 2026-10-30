@@ -17,6 +17,14 @@ static inline void zeldaMotionRate(f32* rate, const f32 distance) {
     *rate = distance / lbl_8053C404;
     if (*rate >= lbl_8053C3E8) *rate = lbl_8053C3E8;
 }
+static inline u8 zeldaPrepareBox(u8* p, JGeometry::TBox2<f32>& rect, u8 flag) {
+    p[0x339] = flag;
+    rect.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+    rect.addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
+    if (*(s32*)(p + 0x328) >= 8 || *(s32*)(p + 0x328) <= 4) flag = 0;
+    else if (p[0x2f8] != 0) flag = 0;
+    return flag;
+}
 static inline u8 zeldaGroundTile(u16 tile) {
     for (int i = 0; i < 8; i++) {
         if (tile == lbl_804642B0[i]) return 1;
@@ -358,6 +366,7 @@ extern const f32 lbl_8053C408;
 extern const f32 lbl_8053C40C;
 extern const f32 lbl_8053C3F4;
 extern const f32 lbl_8053C3F8;
+#pragma opt_common_subs off
 extern "C" void fn_80109FA4(u8* p) {
  JGeometry::TBox2<f32> rect;
  JGeometry::TVec3<f32> probe;
@@ -379,10 +388,10 @@ extern "C" void fn_80109FA4(u8* p) {
  u16 angle2;
  s16 angle;
  s32 player;
- u8 canHit;
+ bool canHit;
  v03__5ActorFv(p);
  (*(f32*)(p+0x330))=lbl_8053C3E8;
- canHit=((*(u8*)(p+0x339))=1);
+ canHit=(*(bool*)(p+0x339))=true;
  rect.set(*(JGeometry::TBox2<f32>*)(p+0x60));
  rect.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
 
@@ -473,9 +482,8 @@ extern "C" void fn_80109FA4(u8* p) {
    (*(f32*)(p+0x3c))=(*(f32*)(p+0x334))*JMath::sincosTable_.sinShort(angle2);
    (*(f32*)(p+0x40))=(*(f32*)(p+0x334))*JMath::sincosTable_.cosShort(angle2);
    (*(JGeometry::TVec3<f32>*)(p+0xc)).add((*(JGeometry::TVec3<f32>*)(p+0x3c)));
-   const f32 ratio=(*(JGeometry::TVec3<f32>*)(p+0x3c)).length()/lbl_8053C404;
- (*(f32*)(p+0x330))=ratio;
-   if((*(f32*)(p+0x330))>=lbl_8053C3E8) (*(f32*)(p+0x330))=lbl_8053C3E8;
+   (*(f32*)(p+0x330))=zeldaScaledSpeed(PSVECMag((Vec*)(p+0x3c)));
+ if((*(f32*)(p+0x330))>=lbl_8053C3E8) (*(f32*)(p+0x330))=lbl_8053C3E8;
    if(anim2>=0 && anim2!=(*(s32*)(p+0x344))){fn_801D22DC(p+0x33c,anim2,2,0);fn_801D1F14(p+0x33c,lbl_8053C3E0);}
    break;}
  case 7:
@@ -493,17 +501,18 @@ extern "C" void fn_80109FA4(u8* p) {
      fn_801CD950((f32*)(p+0xc),pos9.x,lbl_8053C3F8);fn_801CD950((f32*)(p+0x10),pos9.y,lbl_8053C3F8);
    }
    if(!fn_802DCD0C(fn_802D6A9C())) fn_801096C8(p,5);break;
- case 10:{
+ case 10:
    (*(s32*)(p+4))=fn_8023DE58((*(s32*)(p+0x300)));
    if((*(s32*)(p+0x300))>=0){
      (*(u8*)(p+0x339))=0;pos10=*(JGeometry::TVec3<f32>*)fn_8023E724((*(s32*)(p+0x300)));(*(s32*)(p+0x98))=fn_80230CFC((*(s32*)(p+0x300)));
      switch((*(s32*)(p+0x98))){case 0:pos10.x-=lbl_8053C3EC;break;case 1:pos10.x+=lbl_8053C3EC;break;case 2:pos10.y-=lbl_8053C3EC;break;case 3:pos10.y+=lbl_8053C3EC;break;}
      (*(f32*)(p+0x330))=lbl_8053C3F0;
-     int peer=fn_8023E10C((*(s32*)(p+0x300)));
-     if(fn_8023DE58((*(s32*)(p+0x300)))==peer) (*(JGeometry::TVec3<f32>*)(p+0xc)).set(pos10);
+     player=fn_8023E10C((*(s32*)(p+0x300)));
+     s32 actual=fn_8023DE58((*(s32*)(p+0x300)));
+     if(actual==player) (*(JGeometry::TVec3<f32>*)(p+0xc)).set(pos10);
      else{fn_801CD950((f32*)(p+0xc),pos10.x,lbl_8053C3F4);fn_801CD950((f32*)(p+0x10),pos10.y,lbl_8053C3F4);}
    }
-   if(!fn_8022D75C((*(s32*)(p+0x300)))) fn_801096C8(p,5);break;}
+   if(!fn_8022D75C((*(s32*)(p+0x300)))) fn_801096C8(p,5);break;
  case 11:if(fn_801D208C(p+0x33c)) fn_801096C8(p,(*(s32*)(p+0x32c)));break;
  case 12:if(fn_801D208C(p+0x33c)){(*(s32*)(p+0x308))++;if((*(s32*)(p+0x308))>=90) fn_801096C8(p,13);}break;
  case 13:fn_801D1C18(p+0x33c);if(lbl_8053AA80)fn_801096C8(p,14);break;
@@ -549,7 +558,7 @@ extern "C" void fn_80109FA4(u8* p) {
  fn_8030C210(*(void**)(lbl_8053AB10+0x24),p+0xc);
  if((*(s32*)(p+0x108))==0 && (*(s32*)(p+0x328))<12 && !(*(u8*)(p+0x2f8)))fn_801096C8(p,12);
 }
-
+#pragma opt_common_subs reset
 extern "C" void v01__5ActorFv(void* this_);
 extern "C" void fn_801D2608(u8* a, const char* b, s32 c);
 extern "C" void fn_801D22DC(u8* a, s32 b, s32 c, s32 d);
