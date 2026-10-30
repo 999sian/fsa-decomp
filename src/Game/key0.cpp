@@ -931,6 +931,62 @@ extern "C" u8 fn_80388CAC(s32 a, s32 b);
 extern "C" u8 fn_8023061C(s32 a, s32 b);
 extern "C" u8 fn_80230534(s32 a);
 extern u8* lbl_8053AB10;
+
+// KEY0's view of the actor vtable: only slot 0x34 is called here.
+struct Key0VObj {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual u8 v11();
+};
+
+// KEY0: a carried key that was dropped respawns at its carrier; false if it can't yet.
+static inline bool key0Respawn(char* p) {
+    if (*(u8*)(p + 0x2b0) == 0) {
+        return true;
+    }
+    *(f32*)(p + 0x14) = lbl_80540CAC;
+    if (!(u8)fn_8023F264(*(s32*)(p + 0x23c))) {
+        return false;
+    }
+    if ((u8)fn_8022D75C(*(s32*)(p + 0x23c)) == 1) {
+        return false;
+    }
+    if (!fn_8022BC38(*(s32*)(p + 0x23c), *(s32*)(p + 4), p + 0xc)) {
+        if (!fn_802DE764(1, 1, 2)) {
+            return false;
+        }
+        if (*(s32*)(p + 4) != 10) {
+            return false;
+        }
+        if (fn_8023DE58(*(s32*)(p + 0x23c)) != 8) {
+            return false;
+        }
+    }
+    f32* src = (f32*)fn_8023E724(*(s32*)(p + 0x23c));
+    *(f32*)(p + 0xc) = src[0];
+    *(f32*)(p + 0x10) = src[1];
+    *(f32*)(p + 0x14) = src[2];
+    *(s32*)(p + 4) = fn_8023DE58(*(s32*)(p + 0x23c));
+    *(f32*)(p + 0x3c) = *(f32*)(p + 0x40) = *(f32*)(p + 0x44) = lbl_80540C74;
+    *(s32*)(p + 0x240) = 5;
+    *(f32*)(p + 0x14) = lbl_80540C74;
+    u16 kind = fn_8022461C(p + 0xc, *(s32*)(p + 4));
+    *(f32*)(p + 0x14) = lbl_80540CAC;
+    if (kind == 3 && !(u8)fn_801EE24C(p)) {
+        return false;
+    }
+    *(u8*)(p + 0x2b0) = 0;
+    return true;
+}
 extern "C" void fn_802C4498(char* p) {
     bool ok;
     u32 packed;
