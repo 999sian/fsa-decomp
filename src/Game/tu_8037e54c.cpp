@@ -1110,7 +1110,7 @@ extern "C" u8 fn_8037EC98(s32 p, u16 flags) {
 }
 
 
-static inline s32 resolvePlayerConst(const s32 p) {
+static inline s32 resolvePlayerConst(const int p) {
     if(isShared()) {
         const s32 r=fn_8022F340(p);
         if(r>=0 && r<4) return r;
@@ -1978,7 +1978,7 @@ extern "C" void fn_80390B64(void* sub);
 extern "C" u8 fn_802D46D8(void* cfg, s32 index, u32 bit, u8 set);
 extern "C" void OSReport(const char* fmt, ...);
 extern "C" u8 fn_803865B8(s32 p) {
-    const s32 i = resolvePlayer(p);
+    const s32 i = resolvePlayerConst(p);
     bool bVar5;
     u8 bVar15;
     u16 uVar2;
@@ -1999,7 +1999,7 @@ extern "C" u8 fn_803865B8(s32 p) {
             goto L_fail;
         }
     }
-    s32 bVar4 = 0;
+    bool bVar4 = false;
     u8 bVar6 = 0;
     if (fn_803908D0(lbl_8053AD78->sub[i]) == 0) {
         return 0;
@@ -2033,7 +2033,7 @@ extern "C" u8 fn_803865B8(s32 p) {
             }
         } else {
         L_191d8:
-            if (!(u8)bVar4) {
+            if (!bVar4) {
                 goto L_1920c;
             }
         }
@@ -2079,7 +2079,7 @@ extern "C" u8 fn_803865B8(s32 p) {
         }
     } else {
     L_194bc:
-        if (!(u8)bVar4) {
+        if (!bVar4) {
             goto L_194d0;
         }
     }
