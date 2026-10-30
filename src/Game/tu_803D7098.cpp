@@ -325,7 +325,7 @@ extern "C" void fn_803D7098(u8* param_1) {
     }
     fn_80402E08(*(void**)(param_1 + 0x44), *(f32*)(param_1 + 0x58), *(f32*)(param_1 + 0x5c));
 }
-extern "C" s32 fn_80309A9C(void*, s32, s32);
+extern "C" u32 fn_80309A9C(void*, s32, s32);
 extern "C" void fn_80431A9C(void*, s32, s32, void*);
 extern "C" s32 fn_804317AC(void*);
 extern "C" s32 fn_80431740(void*);
