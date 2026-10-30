@@ -1,4 +1,6 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
@@ -368,12 +370,14 @@ extern "C" void fn_80109FA4(u8* p) {
  u16 angle2;
  s16 angle;
  s32 player;
+ u8 canHit;
  v03__5ActorFv(p);
  (*(f32*)(p+0x330))=lbl_8053C3E8;
- (*(u8*)(p+0x339))=1;
+ canHit=1;
+ (*(u8*)(p+0x339))=canHit;
  rect.set(*(JGeometry::TBox2<f32>*)(p+0x60));
  rect.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
- u8 canHit=1;
+
  if((*(s32*)(p+0x328))>=8 || (*(s32*)(p+0x328))<=4) canHit=0;
  else if((*(u8*)(p+0x2f8))!=0) canHit=0;
  if(canHit && fn_801F26CC(p,lbl_80464204)>=0) {
@@ -387,7 +391,7 @@ extern "C" void fn_80109FA4(u8* p) {
    if(player<0) player=-1;
    else if(!(lbl_8053AAF8[0x82]&(u8)(1<<player))) player=-1;
    else if(!fn_8022C5EC(player,0x120)) player=-1;
-   else {interact5=(*(JGeometry::TVec3<f32>*)(p+0xc));if(!fn_8038AD24(player,0x170,(*(s32*)(p+0x198)),(*(s32*)(p+4)),&interact5,0x20)) player=-1;}
+   else {s32 handleinteract5=*(s32*)(p+0x198); s32 roominteract5=*(s32*)(p+4);interact5=(*(JGeometry::TVec3<f32>*)(p+0xc));if(!fn_8038AD24(player,0x170,handleinteract5,roominteract5,&interact5,0x20)) player=-1;}
    if(player>=0){(*(s32*)(p+0x304))=player;fn_801096C8(p,3);}
  }
  if((*(u8*)(p+0x2f8))){
@@ -403,8 +407,8 @@ extern "C" void fn_80109FA4(u8* p) {
       if((*(s32*)(p+0x328))==1){
         fn_8022FE80(0,(*(s32*)(p+4)),(*(s32*)(p+0x198)),0,0);
         if(fn_8022FD8C((*(s32*)(p+0x198)))>=0){
-          pos4=(*(JGeometry::TVec3<f32>*)(p+0xc));
-          if(fn_8038AD24(0,0x170,(*(s32*)(p+0x198)),(*(s32*)(p+4)),&pos4,0x28)){lbl_8053AA81=0;fn_801096C8(p,4);}
+          s32 handlepos4=*(s32*)(p+0x198); s32 roompos4=*(s32*)(p+4);pos4=(*(JGeometry::TVec3<f32>*)(p+0xc));
+          if(fn_8038AD24(0,0x170,handlepos4,roompos4,&pos4,0x28)){lbl_8053AA81=0;fn_801096C8(p,4);}
         }
       }
    }else{
@@ -420,8 +424,8 @@ extern "C" void fn_80109FA4(u8* p) {
        fn_8022FEB8(&rect,(*(s32*)(p+4)),(*(s32*)(p+0x198)),1,0);
        player=fn_8022FD8C((*(s32*)(p+0x198)));
        if(player>=0 && !fn_8022F514(player)){
-         interact=(*(JGeometry::TVec3<f32>*)(p+0xc));
-         if(fn_8038AD24(player,0x230,(*(s32*)(p+0x198)),(*(s32*)(p+4)),&interact,0x28)){(*(s32*)(p+0x300))=player;fn_801096C8(p,2);}
+         s32 handleinteract=*(s32*)(p+0x198); s32 roominteract=*(s32*)(p+4);interact=(*(JGeometry::TVec3<f32>*)(p+0xc));
+         if(fn_8038AD24(player,0x230,handleinteract,roominteract,&interact,0x28)){(*(s32*)(p+0x300))=player;fn_801096C8(p,2);}
        }break;
      case 1:break;
      }
@@ -513,13 +517,13 @@ extern "C" void fn_80109FA4(u8* p) {
      if(done)fn_801096C8(p,16);
    }
  }break;
- case 16:
+ case 16:{
    fn_8022FEB8(&rect,(*(s32*)(p+4)),(*(s32*)(p+0x198)),1,0);
    (*(s32*)(p+0x31c))=fn_8022FD8C((*(s32*)(p+0x198)));
    if((*(s32*)(p+0x31c))>=0 && (lbl_8053AAF8[0x82]&(u8)(1<<(*(s32*)(p+0x31c))))){
-     interact16=(*(JGeometry::TVec3<f32>*)(p+0xc));
-     if(fn_8038AD24((*(s32*)(p+0x31c)),0x16e,(*(s32*)(p+0x198)),(*(s32*)(p+4)),&interact16,0x28))fn_801096C8(p,17);
-   }break;
+     s32 handleinteract16=*(s32*)(p+0x198); s32 roominteract16=*(s32*)(p+4);interact16=(*(JGeometry::TVec3<f32>*)(p+0xc));
+     if(fn_8038AD24((*(s32*)(p+0x31c)),0x16e,handleinteract16,roominteract16,&interact16,0x28))fn_801096C8(p,17);
+   }break;}
  case 17:
    fn_8022FF8C((*(s32*)(p+0x31c)),&rect,(*(s32*)(p+4)),(*(s32*)(p+0x198)),1,0);
    if(fn_80388CAC((*(s32*)(p+0x31c)),(*(s32*)(p+0x198))))fn_801096C8(p,16);break;
@@ -527,10 +531,7 @@ extern "C" void fn_80109FA4(u8* p) {
  if((*(u8*)(p+0x338)))fn_80239914(&rect,(*(s32*)(p+4)),(*(s32*)(p+0x198)));
  if((*(u8*)(p+0x339)) && !fn_8022C52C((*(s32*)(p+0x300)),0x400)){
    u16 tile=fn_8022461C(p+0xc,(*(s32*)(p+4)));
-   u8 found;
-   int i;
-   for(i=0;i<8;i++) {if(tile==lbl_804642B0[i]){found=1;break;}}
-   if(i==8) found=0;
+   u8 found=zeldaGroundTile(tile);
    if(!found)fn_801F2618(p,&probe,0);
  }
  push.setAll(lbl_8053C3E0);
