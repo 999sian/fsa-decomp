@@ -2017,6 +2017,95 @@ extern "C" void fn_8040CE90(u8* self) {
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 	}
 }
+
+extern "C" void fn_804083D8(u8*);
+extern "C" u32 fn_80309B74(void*,s32,s32);
+#pragma opt_propagation on
+#pragma opt_common_subs on
+extern "C" void fn_8040D3D0(u8* self){
+Tbl8048C1F8* tbl=&lbl_8048C1F8;
+const ResTIMG* resource;
+u8* cursor;
+s32 j;
+u8* row;
+s32 i;
+if(fn_80309C4C(lbl_8053AD30,0x100,-1) || self[0x657]){
+*(s32*)(self+0x348)=0;*(s32*)(self+0x34c)=0;
+(*(PaneRef**)(self+0xc8))->frame20=0;
+(*(PaneRef**)(self+0xc8))->frame22=0;
+(*(PaneRef**)(self+0xc8))->frame24=0;
+(*(PaneRef**)(self+0xc8))->frame26=0;
+(*(PaneRef**)(self+0xcc))->frame20=0;
+(*(PaneRef**)(self+0xcc))->frame22=0;
+(*(PaneRef**)(self+0xcc))->frame24=0;
+(*(PaneRef**)(self+0xcc))->frame26=0;
+(*(PaneRef**)(self+0xd0))->frame20=0;
+(*(PaneRef**)(self+0xd0))->frame22=0;
+(*(PaneRef**)(self+0xd0))->frame24=0;
+(*(PaneRef**)(self+0xd0))->frame26=0;
+for(s32 k=0;k<18;k++){(*(PaneRef**)(self+0xd4+k*4))->frame20=0;(*(PaneRef**)(self+0xd4+k*4))->frame22=0;(*(PaneRef**)(self+0xd4+k*4))->frame24=0;(*(PaneRef**)(self+0xd4+k*4))->frame26=0;}
+(*(PaneRef**)(self+0x228))->frame22=0;
+(*(PaneRef**)(self+0x22c))->frame22=0;
+(*(PaneRef**)(self+0x230))->frame22=0;
+(*(PaneRef**)(self+0x234))->frame22=0;
+(*(PaneRef**)(self+0x238))->frame22=0;
+(*(PaneRef**)(self+0x23c))->frame22=0;
+*(s16*)(self+0x41e)=0;
+if(*(s32*)(self+0x340)!=8&&*(s32*)(self+0x340)!=9&&*(s32*)(self+0x340)!=10&&*(s32*)(self+0x340)!=11&&*(s32*)(self+0x340)!=12){
+char name[11];snprintf(name,11,tbl->pictureFormat,*(s32*)(self+0x340)+1,*(s32*)(self+0x348)+1);
+resource=(ResTIMG*)fn_80403184('TIMG',name);
+((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->remove((u8)0);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->append(resource,lbl_805438BC);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->setBlendRatio(0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
+((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->remove((u8)0);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->append(resource,lbl_805438BC);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->setBlendRatio(0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
+fn_803832BC(self+0x564,menuLayoutText((u32*)((u32)tbl+0x40),*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x582,menuLayoutText((u32*)((u32)tbl+0x60),*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x5a0,menuLayoutText((u32*)((u32)tbl+0x80),*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x5be,menuLayoutText((u32*)((u32)tbl+0xa0),*(s32*)(self+0x340)),0,0,0);
+}
+if(!self[0x657])fn_80458880(lbl_8053AF80,11,-1);
+else{fn_804083D8(self);{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuLayoutText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
+strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));
+strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
+(*(Screen408**)(self+0x10))->search(0x54746c763131ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_805438BC));
+(*(Screen408**)(self+0x10))->search(0x54746c763132ULL)->setAlpha((s32)((f32)self[0x64c]*lbl_805438BC));
+(*(Screen408**)(self+0x10))->search(0x54746c763133ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_80543898));
+(*(Screen408**)(self+0x10))->search(0x54746c763134ULL)->setAlpha((s32)((f32)self[0x64c]*lbl_80543898));
+}
+if(!self[0x65d]&&!self[0x657]){
+for(s32 k=0;k<15;k++){(*(Obj240**)(self+0x278+k*4))->f26=0;self[0x65d]=1;}
+}
+row=self;for(i=0;i<8;i++,row+=0x14){fn_80402E08(*(void**)(row+0x28),lbl_80543898,lbl_80543898);(*(PaneRef**)(row+0x28))->frame20=0;
+cursor=row;for(j=0;j<3;j++,cursor+=4){(*(PaneRef**)(cursor+0x28))->pane->setAlpha((*(PaneRef**)(cursor+0x28))->alpha);(*(PaneRef**)(cursor+0x28))->frame26=0;}}
+*(s32*)(self+0x350)=14;
+}else if(fn_80309C4C(lbl_8053AD30,0x1000,-1)){
+if(lbl_8053AAF8[0x7e]==1){
+lbl_80529DEC[0x237]=3;*(s32*)(self+0x668)=4;*(s32*)(lbl_80529DEC+0x118)=*(s32*)(self+0x340);*(s32*)(lbl_80529DEC+0x11c)=*(s32*)(self+0x348);fn_80458880(lbl_8053AF80,11,-1);}
+}else if(fn_80309C4C(lbl_8053AD30,0x200,-1)){
+*(s32*)(self+0x668)=4;fn_80458880(lbl_8053AF80,11,-1);
+}else if(fn_80309B74(lbl_8053AD30,4,-1)||fn_80309B74(lbl_8053AD30,1,-1)){
+*(s32*)(self+0x344)=*(s32*)(self+0x340);--*(s32*)(self+0x340);if(*(s32*)(self+0x340)<0)*(s32*)(self+0x340)=*(s32*)(self+0x370);
+fn_804083D8(self);if(*(s32*)(self+0x370)>0){{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuLayoutText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
+strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));
+strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
+(*(Screen408**)(self+0x10))->search(0x54746c763131ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_805438BC));
+(*(Screen408**)(self+0x10))->search(0x54746c763132ULL)->setAlpha((s32)((f32)self[0x64c]*lbl_805438BC));
+(*(Screen408**)(self+0x10))->search(0x54746c763133ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_80543898));
+(*(Screen408**)(self+0x10))->search(0x54746c763134ULL)->setAlpha((s32)((f32)self[0x64c]*lbl_80543898));
+*(s16*)(self+0x426)=0;*(s32*)(self+0x350)=12;fn_80458880(lbl_8053AF80,38,-1);}
+}else if(fn_80309B74(lbl_8053AD30,8,-1)||fn_80309B74(lbl_8053AD30,2,-1)){
+*(s32*)(self+0x344)=*(s32*)(self+0x340);++*(s32*)(self+0x340);if(*(s32*)(self+0x340)>=*(s32*)(self+0x370)+1)*(s32*)(self+0x340)=0;
+fn_804083D8(self);if(*(s32*)(self+0x370)>0){{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuLayoutText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
+strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));
+strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
+(*(Screen408**)(self+0x10))->search(0x54746c763131ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_805438BC));
+(*(Screen408**)(self+0x10))->search(0x54746c763132ULL)->setAlpha((s32)((f32)self[0x64c]*lbl_805438BC));
+(*(Screen408**)(self+0x10))->search(0x54746c763133ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_80543898));
+(*(Screen408**)(self+0x10))->search(0x54746c763134ULL)->setAlpha((s32)((f32)self[0x64c]*lbl_80543898));
+*(s16*)(self+0x426)=0;*(s32*)(self+0x350)=13;fn_80458880(lbl_8053AF80,38,-1);}
+}
+}
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
+
 #pragma fp_contract reset
 extern "C" char* strcpy(char*, const char*);
 extern "C" void fn_803837A4(char* buf, s32 v, f32 a, f32 b, s32, s32);
@@ -2933,7 +3022,7 @@ if(*(s32*)(self+0x340)<=7){
  p=self+i*4;
  for(;i<*(s32*)(self+0x340)*3+3;i++,p+=4){
  s32 group=i/3;
- u8 style;
+ u32 style;
  if(group<0||group>=8)style=255;
  else{
  s32 slot=i%3;
@@ -2944,7 +3033,7 @@ if(*(s32*)(self+0x340)<=7){
  if(group==7){if(slot>0)slot++;}
  else if(slot>1)slot++;
  s32 idx=slot+group*4;
- switch(style){
+ switch((u8)style){
  case 0: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,50,0,0),JUtility::TColor(255,255,255,255));
  menuSetCornerColor((*(PaneRef**)(p+0x1a8)),JUtility::TColor(127,248,37,255));
@@ -2983,7 +3072,7 @@ case 3: {
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(255,255,120,0),JUtility::TColor(255,255,120,255));
  break;}
  }
- if(style<4)fn_80402628(*(void**)(p+0x1a8),100,0,(*(PaneRef**)(p+0x128))->alpha);
+ if((u8)style<4)fn_80402628(*(void**)(p+0x1a8),100,0,(*(PaneRef**)(p+0x128))->alpha);
  }
  {
  s32 i=*(s32*)(self+0x340)*4;
