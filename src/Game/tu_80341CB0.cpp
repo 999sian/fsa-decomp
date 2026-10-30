@@ -82,6 +82,10 @@ static inline void bombSetSoundArea(JGeometry::TVec3f lo, JGeometry::TVec3f hi) 
     JGeometry::TVec3f b(hi);
     fn_8043E398(lbl_8053AED0, (Vec*)&a, (Vec*)&b);
 }
+extern "C" void fn_8030C210(void* cam, void* pos);
+static inline void bombNotifyCamera(void* cam, const JGeometry::TVec3f& pos) {
+    fn_8030C210(cam, (void*)&pos);
+}
 extern "C" void* lbl_8053AB10;
 
 extern "C" void fn_80341CB0(s32 id, f32* pos) {
@@ -257,8 +261,8 @@ extern "C" void fn_80342850(Actor* a) {
     u8* p = (u8*)a;
     HitBox box;
     JGeometry::TVec2<f32> xy;
-    xy.set(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
     box.set(*(HitBox*)(p + 0x60));
+    xy.set(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
     box.addPos(xy);
     *(s32*)(p + 0x108) = 10000;
     if (*(s32*)(p + 0x230) == 4) {
@@ -274,10 +278,7 @@ extern "C" void fn_80342850(Actor* a) {
         lo.y += *(f32*)(p + 0x64);
         hi.x += *(f32*)(p + 0x68);
         hi.y += *(f32*)(p + 0x6c);
-        Vec v[2];
-        v[0].x = lo.x; v[0].y = lo.y; v[0].z = lo.z;
-        v[1].x = hi.x; v[1].y = hi.y; v[1].z = hi.z;
-        fn_8043E398(lbl_8053AED0, &v[0], &v[1]);
+        bombSetSoundArea(lo, hi);
     }
     if (*(s32*)(p + 0x230) == 6 && *(s32*)(p + 0x234) > 0) {
         fn_802397B4(&box, *(u32*)(p + 4), *(s32*)(p + 0x198));
@@ -299,22 +300,17 @@ extern "C" void fn_80342850(Actor* a) {
         }
     } else if (*(s32*)(p + 0x230) == 5) {
         s32 k = (15 - *(s32*)(p + 0x234)) / 15;
-        HitBox r;
-        r.i.x = *(f32*)(p + 0x60) * k;
-        r.i.y = *(f32*)(p + 0x64) * k;
-        r.f.x = *(f32*)(p + 0x68) * k;
-        r.f.y = *(f32*)(p + 0x6c) * k;
+        HitBox r(*(f32*)(p + 0x60) * k, *(f32*)(p + 0x64) * k, *(f32*)(p + 0x68) * k, *(f32*)(p + 0x6c) * k);
         fn_802397B4(&r, *(u32*)(p + 4), *(s32*)(p + 0x198));
     }
     switch (*(u32*)(p + 0x230)) {
-    case 0:
+    case 0: {
         *(f32*)(p + 0x254) += lbl_805422F8 / *(s32*)(p + 0x244);
         *(f32*)(p + 0x258) = *(f32*)(p + 0x254);
         *(f32*)(p + 0x25c) = *(f32*)(p + 0x254);
-        *(f32*)(p + 0x60) = lbl_8054230C * *(f32*)(p + 0x254);
-        *(f32*)(p + 0x64) = lbl_8054230C * *(f32*)(p + 0x258);
-        *(f32*)(p + 0x68) = lbl_80542308 * *(f32*)(p + 0x254);
-        *(f32*)(p + 0x6c) = lbl_80542308 * *(f32*)(p + 0x258);
+        f32 sx = *(f32*)(p + 0x254);
+        f32 sy = *(f32*)(p + 0x258);
+        ((HitBox*)(p + 0x60))->set(lbl_8054230C * sx, lbl_8054230C * sy, lbl_80542308 * sx, lbl_80542308 * sy);
         if (*(f32*)(p + 0x254) >= lbl_805422F8) {
             *(f32*)(p + 0x254) = lbl_805422F8;
             *(f32*)(p + 0x258) = lbl_805422F8;
@@ -329,6 +325,7 @@ extern "C" void fn_80342850(Actor* a) {
         *(HitBox*)(p + 0x80) = *(HitBox*)(p + 0x60);
         *(HitBox*)(p + 0x70) = *(HitBox*)(p + 0x60);
         break;
+    }
     case 1:
         if (*(s32*)(p + 0x234) <= 0) {
             *(f32*)(p + 0x44) = lbl_80542318;
@@ -348,8 +345,8 @@ extern "C" void fn_80342850(Actor* a) {
     case 3:
         break;
     case 4:
-        if (*(f32*)(p + 0x14) <= lbl_805422EC) {
-            fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 4), 0, lbl_8054231C, lbl_805422EC);
+        if (*(f32*)(p + 0x14) <= 0.0f) {
+            fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 4), 0, lbl_8054231C, 0.0f);
             JGeometry::TVec3f v = *(JGeometry::TVec3f*)(p + 0xc);
             v.y += lbl_80542320;
             fn_8013CC50(*(s32*)(p + 4), (f32*)&v, 0x3cf, 0, -1, 0, 0, 1, lbl_80542324);
@@ -357,7 +354,7 @@ extern "C" void fn_80342850(Actor* a) {
             if (*(u8*)(p + 0x261) == 1) {
                 fn_80458FF0(lbl_8053AF80, 0x1000021, 0, 0);
             }
-            *(f32*)(p + 0x44) = lbl_805422EC;
+            *(f32*)(p + 0x44) = 0.0f;
             *(s32*)(p + 0x234) = 15;
             if (*(s32*)(p + 0x248) == 0) {
                 fn_8043D67C(lbl_8053AED0, 0x1a8, 0, 0);
@@ -429,8 +426,10 @@ extern "C" void fn_80342850(Actor* a) {
         break;
     }
     case 7: {
-        f32 ny = -*(f32*)(p + 0x10);
-        f32 nx = -*(f32*)(p + 0xc);
+        f32 nx;
+        f32 ny;
+        ny = -*(f32*)(p + 0x10);
+        nx = -*(f32*)(p + 0xc);
         *(HitBox*)(p + 0x60) = *(HitBox*)((u8*)fn_802D6A9C() + 0xcc);
         *(f32*)(p + 0x60) += nx;
         *(f32*)(p + 0x64) += ny;
@@ -449,10 +448,7 @@ extern "C" void fn_80342850(Actor* a) {
     }
     }
     if (*(s32*)(p + 0x230) != 2) {
-        JGeometry::TVec3f v;
-        v.x = *(f32*)(p + 0xc);
-        v.y = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-        v.z = lbl_805422EC;
+        JGeometry::TVec3f v(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14), 0.0f);
         fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), &v);
     }
     if (*(s32*)(p + 0x234) < 300 && *(s32*)(p + 0x230) == 6) {
