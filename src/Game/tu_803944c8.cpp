@@ -31,6 +31,33 @@ struct MsgResourceAccess {
 extern void* lbl_804AF5A0[];
 extern u8 lbl_80529DEC[];
 
+static inline void* msgNewCursor(s8 player,void* pos) {
+    void* cursor=__nw__FUl(0x60);
+    if(cursor) fn_8045B46C(cursor,player,pos,0,8);
+    return cursor;
+}
+static inline u8* msgNewSequence(void* ref,void* control) {
+    u8* p=(u8*)__nw__FUl(0x64);
+    if(p) {
+        __ct__Q28JMessage18TSequenceProcessorFPCQ28JMessage10TReferencePQ28JMessage8TControl(p,ref,control);
+        *(void**)p=lbl_804AF774;p[0x5c]=1;
+    }
+    return p;
+}
+static inline u8* msgNewRendering(void* ref) {
+    u8* p=(u8*)__nw__FUl(0x2dc);
+    if(p) {
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(p,ref);
+        *(void**)p=lbl_804AF72C;
+        u8* sub=p+0x38;
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(sub,ref);
+        *(void**)sub=lbl_804AF6E4;
+        *(s32*)(sub+0x1d8)=0;*(s32*)(sub+0x1dc)=0;sub[0x1e8]=0;
+    }
+    return p;
+}
+
+
 // String scratch buffers (snprintf/strcat targets).
 static char lbl_8050E518[0x10];
 static char lbl_8050E528[0x10];
@@ -832,6 +859,177 @@ extern "C" void* fn_80397388(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
+    const char* r=(const char*)&lbl_80475768;
+    const ResTIMG* image;
+    *(void**)p=lbl_804AF5A0;
+    *(void**)(p+0x3c0)=p;
+    *(void**)(p+0x3b8)=font;
+    *(void**)(p+0x18)=(*(MsgResourceAccess**)((u8*)lbl_8053AAF8+0xa8))->get(0x3f3f3f3f,name);
+    (*(s32*)(p+0x1c))=0;(*(s32*)(p+0x15c))=0;(*(s32*)(p+0x164))=0;(*(s32*)(p+0x16c))=0;(*(u8*)(p+0x1a0))=0;(*(u8*)(p+0x1a1))=0;(*(s32*)(p+0x168))=-1;(*(s32*)(p+0x160))=player;(*(s32*)(p+0x14c))=0;
+    (*(u8*)(p+0x3ae))=7;(*(u8*)(p+0x3b0))=0;(*(u8*)(p+0x3af))=1;(*(u8*)(p+0x1aa))=0;
+    (*(s32*)(p+0x180))=-1;(*(s32*)(p+0x184))=-1;(*(s32*)(p+0x188))=-1;(*(s32*)(p+0x18c))=-1;
+    (*(s16*)(p+0x190))=0;(*(s16*)(p+0x192))=0;(*(s32*)(p+0x178))=0;(*(s32*)(p+0x17c))=0;(*(s16*)(p+0x194))=0;(*(s16*)(p+0x196))=0;(*(u8*)(p+0x1a2))=0;
+    (*(f32*)(p+0x98))=0.0f;(*(f32*)(p+0x9c))=0.0f;(*(f32*)(p+0xa0))=0.0f;
+    (*(u8*)(p+0x1ab))=0;(*(u8*)(p+0x2ab))=0;(*(u8*)(p+0x3ab))=0;(*(s32*)(p+0x170))=0;(*(s32*)(p+0x154))=-1;(*(s32*)(p+0x158))=255;(*(u8*)(p+0x19f))=0;(*(u8*)(p+0x1a9))=0;(*(u8*)(p+0x3b1))=0;(*(s32*)(p+0x174))=-1;
+    for(s32 i=0;i<12;i++) {
+        ((MsgDraw*)p)->icons[i]=(u8*)__nw__FUl(12);
+        *(f32*)(((MsgDraw*)p)->icons[i])=0.0f;
+        *(f32*)(((MsgDraw*)p)->icons[i]+4)=0.0f;
+        ((MsgDraw*)p)->icons[i][8]=255;
+    }
+    (*(u8*)(p+0x3b2))=0;(*(u8*)(p+0x3b3))=0;(*(u8*)(p+0x3b4))=0;(*(f32*)(p+0xa4))=0.0f;(*(f32*)(p+0xa8))=0.0f;(*(f32*)(p+0xac))=0.0f;
+    void* cursor=__nw__FUl(0x60);
+    if(cursor) fn_8045B46C(cursor,(s8)player,p+0xa4,0,8);
+    *(void**)(p+0x3bc)=cursor;
+    (*(J2DScreen**)(p+0x20))=new J2DScreen;
+    (*(J2DScreen**)(p+0x20))->setPriority(r+0x670,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x20));
+    (*(J2DScreen**)(p+0x24))=new J2DScreen;
+    (*(J2DScreen**)(p+0x24))->setPriority(r+0x680,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x20));
+    (*(J2DScreen**)(p+0x28))=new J2DScreen;
+    (*(J2DScreen**)(p+0x28))->setPriority(r+0x694,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x20));
+    (*(J2DScreen**)(p+0x2c))=new J2DScreen;
+    (*(J2DScreen**)(p+0x2c))->setPriority(r+0x6a8,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x20));
+    image=fn_804030C4('TIMG',r+0x6b8);
+    *(J2DPicture**)(p+0x30)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x6cc);
+    *(J2DPicture**)(p+0x34)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x6e0);
+    *(J2DPicture**)(p+0x38)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x6f4);
+    *(J2DPicture**)(p+0x3c)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x708);
+    *(J2DPicture**)(p+0x40)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x718);
+    *(J2DPicture**)(p+0x44)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x728);
+    *(J2DPicture**)(p+0x48)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x738);
+    *(J2DPicture**)(p+0x4c)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x744);
+    *(J2DPicture**)(p+0x50)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x754);
+    *(J2DPicture**)(p+0x54)=new J2DPicture(image);
+    image=fn_804030C4('TIMG',r+0x764);
+    *(J2DPicture**)(p+0x58)=new J2DPicture(image);
+    (*(f32*)(p+0xb8))=(*(J2DScreen**)(p+0x20))->search('Pm00')->getWidth();
+    (*(f32*)(p+0xbc))=(*(J2DScreen**)(p+0x20))->search('Pm00')->getHeight();
+    (*(f32*)(p+0xc0))=(*(J2DScreen**)(p+0x20))->search(0x4e6d646174613031ULL)->getBounds()->i.x;
+    (*(f32*)(p+0xc4))=(*(J2DScreen**)(p+0x20))->search(0x4e6d646174613031ULL)->getBounds()->i.y;
+    (*(f32*)(p+0xc8))=(*(J2DScreen**)(p+0x20))->search('Tm01')->getBounds()->i.x;
+    (*(f32*)(p+0xcc))=(*(J2DScreen**)(p+0x20))->search('Tm01')->getBounds()->i.y;
+    { f32 first=(*(J2DScreen**)(p+0x20))->search('Tm01')->getBounds()->i.x; (*(f32*)(p+0xd0))=(*(J2DScreen**)(p+0x20))->search('Tm02')->getBounds()->i.x-first; }
+    { f32 first=(*(J2DScreen**)(p+0x20))->search('Tm01')->getBounds()->i.y; (*(f32*)(p+0xd4))=(*(J2DScreen**)(p+0x20))->search('Tm02')->getBounds()->i.y-first; }
+    (*(f32*)(p+0xe8))=(*(J2DScreen**)(p+0x20))->search('Tm01')->getWidth();
+    (*(f32*)(p+0xec))=(*(J2DScreen**)(p+0x20))->search('Tm01')->getHeight();
+    (*(f32*)(p+0x11c))=(*(J2DScreen**)(p+0x20))->search('ROOT')->getBounds()->i.x;
+    (*(f32*)(p+0x120))=(*(J2DScreen**)(p+0x20))->search('ROOT')->getBounds()->i.y;
+    (*(f32*)(p+0xf8))=(*(J2DScreen**)(p+0x20))->search('P1ar')->getBounds()->i.x;
+    (*(f32*)(p+0xfc))=(*(J2DScreen**)(p+0x20))->search('P1ar')->getBounds()->i.y;
+    (*(f32*)(p+0x100))=(*(J2DScreen**)(p+0x20))->search('P1ar')->getWidth();
+    (*(f32*)(p+0x104))=(*(J2DScreen**)(p+0x20))->search('P1ar')->getHeight();
+    (*(u8*)(p+0x1a3))=(*(J2DScreen**)(p+0x20))->search('P1ar')->getAlpha();
+    (*(u8*)(p+0x1a5))=(*(J2DScreen**)(p+0x20))->search(0x5031623031ULL)->getAlpha();
+    (*(u8*)(p+0x1a6))=(*(J2DScreen**)(p+0x20))->search(0x5031623031ULL)->getAlpha();
+    (*(u8*)(p+0x1a7))=(*(J2DScreen**)(p+0x20))->search(0x50316e3032ULL)->getAlpha();
+    (*(u8*)(p+0x1a8))=(*(J2DScreen**)(p+0x20))->search(0x50316e3031ULL)->getAlpha();
+    (*(f32*)(p+0xd8))=(*(J2DScreen**)(p+0x2c))->search('Tm01')->getBounds()->i.x;
+    (*(f32*)(p+0xdc))=(*(J2DScreen**)(p+0x2c))->search('Tm01')->getBounds()->i.y;
+    (*(f32*)(p+0xf0))=(*(J2DScreen**)(p+0x2c))->search('Tm01')->getWidth();
+    (*(f32*)(p+0xf4))=(*(J2DScreen**)(p+0x2c))->search('Tm01')->getHeight();
+    { f32 first=(*(J2DScreen**)(p+0x2c))->search('Tm01')->getBounds()->i.x;(*(f32*)(p+0xe0))=(*(J2DScreen**)(p+0x2c))->search('Tm02')->getBounds()->i.x-first; }
+    { f32 first=(*(J2DScreen**)(p+0x2c))->search('Tm01')->getBounds()->i.y;(*(f32*)(p+0xe4))=(*(J2DScreen**)(p+0x2c))->search('Tm02')->getBounds()->i.y-first; }
+    (*(f32*)(p+0x108))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getBounds()->i.x;
+    (*(f32*)(p+0x10c))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getBounds()->i.y;
+    (*(f32*)(p+0x110))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getWidth();
+    (*(f32*)(p+0x114))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getHeight();
+    (*(u8*)(p+0x1a3))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getAlpha();
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x24))->search('Tm01'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x28))->search('Tm01'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x2c))->search('Tm01'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x2c))->search('Tm02'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x24))->search('Tm02'))->setFont(font); }
+    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x28))->search('Tm02'))->setFont(font); }
+    JUtility::TColor white(lbl_8050DB0C[0x304],lbl_8050DB0C[0x305],lbl_8050DB0C[0x306],255);
+    JUtility::TColor black(lbl_8050DB0C[0x307],lbl_8050DB0C[0x308],lbl_8050DB0C[0x309],0);
+    ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'))->setBlackWhite(black,white);
+    (*(J2DScreen**)(p+0x2c))->search(0x4e646174613035ULL)->hide();
+    (*(J2DScreen**)(p+0x2c))->search(0x4e646174613031ULL)->hide();
+    image=(const ResTIMG*)(*(MsgResourceAccess**)((u8*)lbl_8053AAF8+0xa4))->get('TIMG',r+0x774);
+    *(J2DPicture**)(p+0x5c)=new J2DPicture(image);
+    (*(J2DPicture**)(p+0x5c))->setBlackWhite(JUtility::TColor(255,255,140,0),JUtility::TColor(255,255,140,255));
+    (*(J2DPicture**)(p+0x5c))->rotate(lbl_80543224,lbl_80543228,(J2DRotateAxis)'z',lbl_80543240);
+    (*(f32*)(p+0x118))=0.0f;
+    {
+        u8* rng=(u8*)lbl_8053AAF8;
+        *(u32*)(rng+0xb4)=*(u32*)(rng+0xb4)*0x19660d+0x3c6ef35f;
+        u32 bits=(*(u32*)(rng+0xb4)>>9)|0x3f800000;
+        (*(s16*)(p+0x198))=(s32)(lbl_8054322C*(*(f32*)&bits-lbl_8054321C))+10;
+    }
+    (*(s16*)(p+0x19a))=-96;(*(s16*)(p+0x19c))=0;
+    *(void**)(p+4)=0;
+    *(JMessage::TResourceContainer**)(p+4)=new JMessage::TResourceContainer;
+    *(void**)(p+8)=0;
+    *(JMessage::TControl**)(p+8)=new JMessage::TControl;
+    *(void**)(p+0xc)=0;
+    u8* ref=(u8*)__nw__FUl(8);
+    if(ref) { *(void**)ref=__vt__Q28JMessage10TReference; *(void**)(ref+4)=0; *(void**)ref=lbl_804AF6D4; }
+    *(void**)(p+0xc)=ref;
+    *(void**)(p+0x10)=0;
+    u8* seq=(u8*)__nw__FUl(0x64);
+    if(seq) {
+        __ct__Q28JMessage18TSequenceProcessorFPCQ28JMessage10TReferencePQ28JMessage8TControl(seq,*(void**)(p+0xc),*(void**)(p+8));
+        *(void**)seq=lbl_804AF774;
+        seq[0x5c]=1;
+    }
+    *(void**)(p+0x10)=seq;
+    *(void**)(*(u8**)(p+0x10)+0x60)=*(void**)(p+0x3c0);
+    *(void**)(p+0x14)=0;
+    u8* render=(u8*)__nw__FUl(0x2dc);
+    if(render) {
+        void* reference=*(void**)(p+0xc);
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(render,reference);
+        *(void**)render=lbl_804AF72C;
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(render+0x38,reference);
+        *(void**)(render+0x38)=lbl_804AF6E4;
+        *(s32*)(render+0x210)=0;*(s32*)(render+0x214)=0;render[0x220]=0;
+    }
+    *(void**)(p+0x14)=render;
+    *(void**)(*(u8**)(p+0x14)+0x2bc)=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->getFont();
+    *(void**)(*(u8**)(p+0x14)+0x2c0)=p+0x1ab;
+    *(void**)(*(u8**)(p+0x14)+0x2c4)=p+0x2ab;
+    *(void**)(*(u8**)(p+0x14)+0x2d8)=*(void**)(p+0x3c0);
+    { J2DTextBox* tb=(J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'); (*(f32*)(p+0x60))=tb->mFontSize.x; (*(f32*)(p+0x64))=tb->mFontSize.y; }
+    (*(f32*)(p+0xb0))=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->mLineSpacing;
+    (*(f32*)(p+0xb4))=lbl_8054321C;
+    J2DTextBox::TFontSize fs;
+    fs.x=(*(f32*)(p+0x60))*lbl_8054321C;fs.y=(*(f32*)(p+0x64))*lbl_8054321C;
+    setTBFontSize((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'),fs);
+    ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->setLineSpace((*(f32*)(p+0xb0))*lbl_8054321C);
+    setTBFontSize((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'),fs);
+    ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'))->setLineSpace((*(f32*)(p+0xb0))*lbl_8054321C);
+    ((MsgPrint*)*(void**)(p+0x14))->setScale(lbl_8054321C,(*(f32*)(p+0x60)));
+    *(void**)(*(u8**)(p+0xc)+4)=*(void**)(p+4);
+    *(void**)(*(u8**)(p+8)+4)=*(void**)(p+0x10);
+    *(void**)(*(u8**)(p+8)+8)=*(void**)(p+0x14);
+    JMessage::TParse parser(*(JMessage::TResourceContainer**)(p+4));
+    const void* data=*(void**)(p+0x18);
+    parser.parse_next(&data,0);
+    if(*(void**)(p+0x1c)) {
+        JMessage::TParse_color colors(*(JMessage::TResourceContainer**)(p+4));
+        const void* col=*(void**)(p+0x1c);
+        colors.parse_next(&col,0);
+    }
+    (*(JMessage::TControl**)(p+8))->reset();
+    u8* ctl=*(u8**)(p+8);
+    if(*(void**)(ctl+4)) *(void**)(*(u8**)(ctl+4)+8)=0;
+    if(*(void**)(ctl+8)) *(void**)(*(u8**)(ctl+8)+8)=0;
+    *(void**)(ctl+0x10)=0;
+    return p;
 }
 
 // ---- from src/Game/fn_803986A0_dtor.cpp ----
