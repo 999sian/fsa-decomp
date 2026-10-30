@@ -32,6 +32,13 @@ extern f32 lbl_8053F5FC;
 struct Fsob8B10 { u8 pad[0x24]; void* m24; };
 extern Fsob8B10* lbl_8053AB10;
 
+struct FsobPath {
+    u8 pad[0x2a8];
+    u32 flags;
+    u8 pad2ac[4];
+    JGeometry::TVec2<f32> points[32];
+};
+
 extern "C" void fn_801E801C(char* p) {
     static f32 radius = -256.0f;
     if (*(s32*)(p + 0x248) == 0) {
@@ -39,6 +46,141 @@ extern "C" void fn_801E801C(char* p) {
     }
 }
 
+#pragma opt_propagation off
+extern "C" void fn_801E8080(char* p) {
+ JGeometry::TVec2<f32> pos;
+ f32 length=0.0f,lastY,lastX;
+ s32 count=(*(u8*)(p+0x2ad)-1)*32+2;
+ u8 split=0;
+ f32 normal=*(f32*)((char*)fn_801E9AFC()+0x178);
+ f32 special=*(f32*)((char*)fn_801E9AFC()+0x17c);
+ f32 tilt=normal;
+ if(*(u8*)(p+0x3b0)==0 && *(f32*)(p+0x3b4)==0.0f) { fn_801EA344(fn_801E9AFC()); }
+ else { fn_801EA304(fn_801E9AFC()); tilt=special; if(!(*(u32*)(p+0x230)&0x4000)) split=1; }
+ if(split) {
+ s32 steps=(u8)(1.0f+*(f32*)(p+0x3b4));
+ s32 first=*(u8*)(p+0x3b0)*32+steps*2+2;
+ GXBegin((GXPrimitive)0x98,GX_VTXFMT0,first);
+ pos.set(*(f32*)(p+0x2b0),*(f32*)(p+0x2b4));
+ s32 emitted=0;
+ u8 end=*(u8*)(p+0x3b0);
+ for(u8 seg=0;seg<=end;seg++) {
+ char* q=p+seg*8;
+ for(u8 step=1;step<=16;step++) {
+ f32 x, y;
+switch (step) {
+case 0: x=*(f32*)(q+0x2b0); y=*(f32*)(q+0x2b4); break;
+case 16: x=*(f32*)(q+0x2b8); y=*(f32*)(q+0x2bc); break;
+default: {
+ f32 t, x2, x3, x0, x1;
+ f32 y0,y1,y2,y3;
+ if (seg==0) { x0=*(f32*)(p+0x2b0); y0=*(f32*)(p+0x2b4); }
+ else { x0=*(f32*)(q+0x2a8); y0=*(f32*)(q+0x2ac); }
+ u8 n=*(u8*)(p+0x2ad);
+ x2=*(f32*)(q+0x2b8); y2=*(f32*)(q+0x2bc);
+ x1=*(f32*)(q+0x2b0); y1=*(f32*)(q+0x2b4);
+ if(seg==n-2) { x3=x2; y3=y2; } else { x3=*(f32*)(q+0x2c0); y3=*(f32*)(q+0x2c4); }
+ t=0.0625f*(f32)step;
+ y=fn_801CD6D8(y0,y1,y2,y3,t);
+ x=fn_801CD6D8(x0,x1,x2,x3,t);
+ break;
+}}
+ f32 dx=x-pos.x,dy=y-pos.y;
+ if(seg==0 && step==1) {lastX=dx;lastY=dy;}
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(dx,dy)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,&pos.x,a,b,length,special); }
+ pos.set(x,y); lastX=dx;lastY=dy;
+ length+=JGeometry::TUtilf::sqrt(dx*dx+dy*dy);
+ emitted+=2;
+ if(emitted>=first-2) goto first_done;
+ }}
+ first_done:
+ f32 d=JGeometry::TUtilf::sqrt(lastX*lastX+lastY*lastY);
+ f32 partial=length-d;
+ partial+=d*(*(f32*)(p+0x3b4)-(u8)*(f32*)(p+0x3b4));
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,(f32*)(p+0xc),a,b,partial,special); }
+ fn_801EA344(fn_801E9AFC());
+ GXBegin((GXPrimitive)0x98,GX_VTXFMT0,count-first+4);
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,(f32*)(p+0xc),a,b,partial,normal); }
+ u8 start=*(u8*)(p+0x3b0);
+ s32 begin=steps+1;
+ s32 finish=*(u8*)(p+0x2ad)-1;
+ for(u8 seg=start;seg<finish;seg++) {
+ char* q=p+seg*8;
+ for(u8 step=1;step<=16;step++) {
+ if(seg<=start && step<begin) continue;
+ f32 x, y;
+switch (step) {
+case 0: x=*(f32*)(q+0x2b0); y=*(f32*)(q+0x2b4); break;
+case 16: x=*(f32*)(q+0x2b8); y=*(f32*)(q+0x2bc); break;
+default: {
+ f32 t, x2, x3, x0, x1;
+ f32 y0,y1,y2,y3;
+ if (seg==0) { x0=*(f32*)(p+0x2b0); y0=*(f32*)(p+0x2b4); }
+ else { x0=*(f32*)(q+0x2a8); y0=*(f32*)(q+0x2ac); }
+ u8 n=*(u8*)(p+0x2ad);
+ x2=*(f32*)(q+0x2b8); y2=*(f32*)(q+0x2bc);
+ x1=*(f32*)(q+0x2b0); y1=*(f32*)(q+0x2b4);
+ if(seg==n-2) { x3=x2; y3=y2; } else { x3=*(f32*)(q+0x2c0); y3=*(f32*)(q+0x2c4); }
+ t=0.0625f*(f32)step;
+ y=fn_801CD6D8(y0,y1,y2,y3,t);
+ x=fn_801CD6D8(x0,x1,x2,x3,t);
+ break;
+}}
+ f32 dx=x-pos.x,dy=y-pos.y;
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(dx,dy)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,&pos.x,a,b,length,normal); }
+ pos.set(x,y);lastX=dx;lastY=dy;
+ length+=JGeometry::TUtilf::sqrt(dx*dx+dy*dy);
+ }}
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,&pos.x,a,b,length,normal); }
+ } else {
+ GXBegin((GXPrimitive)0x98,GX_VTXFMT0,count);
+ pos.set(*(f32*)(p+0x2b0),*(f32*)(p+0x2b4));
+ s32 end=*(u8*)(p+0x2ad)-1;
+ for(u8 seg=0;seg<end;seg++) {
+ char* q=p+seg*8;
+ for(u8 step=1;step<=16;step++) {
+ f32 x, y;
+switch (step) {
+case 0: x=*(f32*)(q+0x2b0); y=*(f32*)(q+0x2b4); break;
+case 16: x=*(f32*)(q+0x2b8); y=*(f32*)(q+0x2bc); break;
+default: {
+ f32 t, x2, x3, x0, x1;
+ f32 y0,y1,y2,y3;
+ if (seg==0) { x0=*(f32*)(p+0x2b0); y0=*(f32*)(p+0x2b4); }
+ else { x0=*(f32*)(q+0x2a8); y0=*(f32*)(q+0x2ac); }
+ u8 n=*(u8*)(p+0x2ad);
+ x2=*(f32*)(q+0x2b8); y2=*(f32*)(q+0x2bc);
+ x1=*(f32*)(q+0x2b0); y1=*(f32*)(q+0x2b4);
+ if(seg==n-2) { x3=x2; y3=y2; } else { x3=*(f32*)(q+0x2c0); y3=*(f32*)(q+0x2c4); }
+ t=0.0625f*(f32)step;
+ y=fn_801CD6D8(y0,y1,y2,y3,t);
+ x=fn_801CD6D8(x0,x1,x2,x3,t);
+ break;
+}}
+ f32 dx=x-pos.x,dy=y-pos.y;
+ if(seg==0 && step==1) {lastX=dx;lastY=dy;}
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(dx,dy)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,&pos.x,a,b,length,tilt); }
+ pos.set(x,y);lastX=dx;lastY=dy;
+ length+=JGeometry::TUtilf::sqrt(dx*dx+dy*dy);
+ }}
+ { s32 b=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
+fn_801E8B1C(p,&pos.x,a,b,length,tilt); }
+ }
+}
+#pragma opt_propagation reset
 static s8 lbl_8053AC44;
 static f32 lbl_8053AC40;
 extern "C" void fn_801E8B1C(void* p0, f32* pos, s16 a, s16 b, f32 scale, f32 tilt) {
@@ -135,12 +277,7 @@ struct FsobVec2 {
     f32 x, y;
 };
 
-struct FsobPath {
-    u8 pad[0x2a8];
-    u32 flags;
-    u8 pad2ac[4];
-    JGeometry::TVec2<f32> points[32];
-};
+
 
 extern "C" void fn_801E8EB4(FsobPath* p, u8 idx, s32 unused, FsobVec2* v) {
     f32 y = v->y;
@@ -464,3 +601,4 @@ extern "C" char* fn_801E9850(char* p) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "dolphin/gx.h"
