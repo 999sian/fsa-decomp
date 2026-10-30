@@ -3151,8 +3151,10 @@ extern "C" void fn_803B38E8(void* this_) {
     u8* src;
     u8* dst;
     int i;
+    Scr_803B1B60* screen;
 
-    *(void**)(p + 0x30) = findScorePane(p, 0x00005072616e3132ULL);
+    screen = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)];
+    *(void**)(p + 0x30) = screen->v3C(0x00005072616e3132ULL);
     *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
     f31 = getBounds__7J2DPaneFv(*(void**)(p + 0x30))[1];
     *(f32*)(p + 0x42c) = getBounds__7J2DPaneFv(((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723031ULL))[1] - f31;
@@ -3256,7 +3258,7 @@ extern "C" void fn_803B6768(void* this_) {
     case 2:
         *(s32*)(p + 0x450) = 2;
         *(s32*)(p + 0x454) = 2;
-        fn_803B38E8((ScoreScreenPaneLookup*)p);
+        fn_803B38E8(p);
         break;
     case 3:
         *(s32*)(p + 0x450) = 1;
