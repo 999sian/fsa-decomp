@@ -16,6 +16,20 @@ extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" void fn_8013CB44(void* emitter, f32* pos, u32 a, u32 b, u32 c);
 extern "C" void fn_801F71A4(void* obj, f32 a, f32 b, f32 c);
 
+#define EZRY_RANDOM_DEFINED
+struct EzryRandom {
+    u32 seed;
+    u32 get() {
+        seed = 0x19660d * seed + 0x3c6ef35f;
+        return seed;
+    }
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        out.s = (get() >> 9) | 0x3f800000;
+        return out.f - lbl_8053D670;
+    }
+};
+
 // from src/Game/fn_80161638_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
