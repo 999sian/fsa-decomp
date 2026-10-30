@@ -115,10 +115,6 @@ extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
 #pragma opt_loop_invariants off
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
-static inline f32 beeeOffset(f32 base, f32 value, f32 scale) {
-    return scale * value + base;
-}
-
 extern "C" void fn_80343D90(char* p) {
     JGeometry::TVec3<f32> delta;
     delta.x=delta.y=delta.z=lbl_80542350;
@@ -206,16 +202,16 @@ states:
                     delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
                     f32 playerY=F7(fn_8023E724(i),4);
                     delta.y=playerY-F7(p,0x10);
-                    f32 yy=delta.y*delta.y;
-                    f32 xx=delta.x*delta.x;
+                    f32 dx=delta.x,dy=delta.y;
+                    f32 xx=dx*dx,yy=dy*dy;
                     if(!(xx+yy>lbl_8054236C)) {
                         I7(p,0x238)=60;
                         {
-                            u32 j;
+                            int j;
                             char* segment=p+12;char* angles=p+2;
                             for(j=1;j<7;j++) {
                                 V7(segment,0x2f8)=V7(p,0x2f8);
-                                H7(angles,0x294)=((s32)(j<<16))/6;
+                                H7(angles,0x294)=(j<<16)/6;
                                 F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
                                 F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
                                 segment+=12;angles+=2;
@@ -230,16 +226,16 @@ states:
                 delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
                 f32 playerY=F7(fn_8023E724(i),4);
                     delta.y=playerY-F7(p,0x10);
-                f32 yy=delta.y*delta.y;
-                    f32 xx=delta.x*delta.x;
+                f32 dx=delta.x,dy=delta.y;
+                    f32 xx=dx*dx,yy=dy*dy;
                 if(!(xx+yy>lbl_80542374)) {
                     I7(p,0x238)=120;
                     {
-                            u32 j;
+                            int j;
                             char* segment=p+12;char* angles=p+2;
                             for(j=1;j<7;j++) {
                                 V7(segment,0x2f8)=V7(p,0x2f8);
-                                H7(angles,0x294)=((s32)(j<<16))/6;
+                                H7(angles,0x294)=(j<<16)/6;
                                 F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
                                 F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
                                 segment+=12;angles+=2;
