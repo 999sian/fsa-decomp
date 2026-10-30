@@ -41,6 +41,7 @@ extern "C" s32 lbl_80539F98;
 extern const char lbl_80466E50[],lbl_80466E60[];
 struct GrokDrawTable {u8 pad[0x80];const char* normal[30];f32 normalY[30];const char* special[28];f32 specialY[28];};
 extern GrokDrawTable lbl_804A13E0;
+extern const f32 lbl_8053DDD8;
 static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     f32 cz,cy,cx,sz,sy,sx;
     sx=sin(0.0f);sy=sin(0.0f);sz=sin(0.0f);
@@ -59,19 +60,102 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     m[2][2]=scaleZ*(cx*cy);
 }
 
-extern "C" void fn_8017EF98(u8* this_) {
-    s32 idx;
-    s32 type;
-    if (*(s32*)(this_ + 0x230) == 0 || *(s32*)(this_ + 0x230) == 1 || *(s32*)(this_ + 0x230) == 0x17) {
+extern "C" void fn_8017EF98(u8* p) {
+    GrokDrawTable* t=&lbl_804A13E0;
+    DrawRec rec;
+    f32 m[3][4];
+    JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(p+0xc);
+    m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
+    if(*(s32*)(p+0x230)==0 || *(s32*)(p+0x230)==1 || *(s32*)(p+0x230)==23) return;
+    if(*(u32*)(p+0x90)==1) return;
+    f32 offset;
+    if(*(u32*)(p+0x90)==2 || *(u32*)(p+0x90)==3) {
+        if(*(u16*)(p+0x94)==0) return;
+        offset=-16.0f;
+        grokRotation(m,1.0f,1.0f,1.0f);
+        if(*(u32*)(p+0x90)==3) {offset=16.0f;grokRotation(m,-1.0f,1.0f,1.0f);}
+        rec.w18=m;
+        void* texture=fn_804032E8(0x47524f43,lbl_80466E50);
+        rec.b1d=-2;
+        rec.b1c=1;
+        fn_801EFD34(p,texture,&rec,-1,offset,-6.0f,0.0f);
         return;
     }
-    type = *(s32*)(this_ + 0x90);
-    if (type == 1) {
+    s32 room=*(s32*)(p+4);
+    if(fn_802D6A9C()[0x131df+room]!=0) {
+        if(*(u32*)(p+0x90)==8) {
+            if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
+            fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
+            return;
+        }
+        if(*(u32*)(p+0x90)==4 || *(u32*)(p+0x90)==5) {
+            if(lbl_8053AB70==*(u32*)(p+0x90)) fn_80307AC8(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x29,0,0,-1);
+            return;
+        }
+        if(*(u32*)(p+0x90)==10) {
+            if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
+            fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
+            return;
+        }
+        if(*(u32*)(p+0x90)==9) {
+            if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
+            fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
+            ((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);
+            return;
+        }
+    }
+    if(*(u32*)(p+0x90)==6) {
+        rec.b1c=1;rec.b1d=2;
+        f32 v=*(f32*)(p+0x30c);
+        m[0][0]=v;m[0][1]=0.0f;m[0][2]=0.0f;
+        m[1][0]=0.0f;m[1][1]=v;m[1][2]=0.0f;
+        m[2][0]=0.0f;m[2][1]=0.0f;m[2][2]=v;
+        ((u8*)&rec.w10)[3]=(s32)*(f32*)(p+0x310);
+        rec.w18=m;
+        fn_801F06F0(p,lbl_80466E60,0xb1,&rec,-1,1.0f,1.0f);
         return;
     }
-    if (type == 0xa) {
-        return;
+    s32 frame=*(s32*)(p+0x26c);
+    s32 index=frame;
+    if(lbl_80539F98<=0) index=frame+14;
+    void* texture;
+    if(*(s32*)(p+0x230)!=9 && *(s32*)(p+0x230)!=15) {
+        if(*(s32*)(p+0x230)==12) {
+            if(frame==12) index=28;
+            else if(frame==13) index=29;
+        }
+        texture=fn_804032E8(0x47524f43,t->normal[index]);
+        offset=t->normalY[index];
+    } else {
+        texture=fn_804032E8(0x47524f43,t->special[index]);
+        offset=t->specialY[index];
     }
+    grokRotation(m,1.0f,1.0f,1.0f);
+    if(*(s32*)(p+0x98)==0) grokRotation(m,-1.0f,1.0f,1.0f);
+    rec.w18=m;
+    ((u8*)&rec.w10)[0]=0;((u8*)&rec.w10)[1]=0;((u8*)&rec.w10)[2]=0;((u8*)&rec.w10)[3]=100;
+    *(f32*)(p+0x14)=0.0f;
+    rec.b1d=-1;rec.b1c=1;
+    fn_801EFD34(p,texture,&rec,-1,0.0f,-8.0f+offset,0.0f);
+    ((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);
+    ((u8*)&rec.w10)[0]=255;((u8*)&rec.w10)[1]=255;((u8*)&rec.w10)[2]=255;((u8*)&rec.w10)[3]=255;
+    grokRotation(m,1.0f,1.0f,1.0f);
+    frame=*(s32*)(p+0x26c);index=frame;
+    if(lbl_80539F98<=0) index=frame+14;
+    if(*(s32*)(p+0x230)!=9 && *(s32*)(p+0x230)!=15) {
+        if(*(s32*)(p+0x230)==12) {
+            if(frame==12) index=28;
+            else if(frame==13) index=29;
+        }
+        texture=fn_804032E8(0x47524f43,t->normal[index]);offset=t->normalY[index];
+    } else { texture=fn_804032E8(0x47524f43,t->special[index]);offset=t->specialY[index]; }
+    rec.b1d=1;
+    if(*(s32*)(p+0x230)!=15) rec.b1f=0;
+    else rec.b1d=0;
+    if(*(s32*)(p+0x98)==0) grokRotation(m,-1.0f,1.0f,1.0f);
+    rec.w18=m;
+    if(lbl_80539F98<=0) rec.w30=17;
+    fn_801EFD34(p,texture,&rec,-1,0.0f,-8.0f+offset,0.0f);
 }
 
 extern "C" void fn_801546F4(void* a, void* b);
