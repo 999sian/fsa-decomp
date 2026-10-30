@@ -91,7 +91,7 @@ static inline f32 tuRandUnit() {
     u8* g = (u8*)lbl_8053AAF8;
     *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
-    return *(f32*)&bits - 1.0f;
+    return *(f32*)&bits - lbl_805423A8;
 }
 extern "C" void fn_80345744(Actor* this_) {
     u8* self = (u8*)this_;
