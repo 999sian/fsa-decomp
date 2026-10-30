@@ -54,7 +54,8 @@ extern "C" const f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_805
 #pragma push
 #pragma opt_propagation off
 static inline u8 SpawnRadiusZero(f32 value) {
-    u8 zero=!(value!=lbl_80540854);
+    s32 nonzero=value!=lbl_80540854;
+    u8 zero=!nonzero;
     return zero;
 }
 
@@ -90,15 +91,16 @@ extern "C" void fn_802A8284(ActorExt* a) {
         case 1:a->m240=8;fn_80458880(lbl_8053AF80,6,-1);a->m230=3;break;
         case 2:a->m240=8;fn_80458880(lbl_8053AF80,6,-1);param=3;id=0x48424d42;break;
         case 4:a->m240=8;fn_80458880(lbl_8053AF80,6,-1);param=0x50000;id=0x534c5231;break;
-        case 10:a->m240=1;param=0x30000|0x102;id=0x534c5231;break;
+        case 10:a->m240=1;id=0x534c5231;param=0x30000;param|=0x102;break;
         case 8:a->m240=2;fn_80458880(lbl_8053AF80,6,-1);param=1;id=0x48494e4f;break;
         case 9:a->m240=8;fn_80458880(lbl_8053AF80,6,-1);param=4;id=0x5354414c;break;
         case 11:fn_80458880(lbl_8053AF80,6,-1);
         case 13:param=0;id=0x524f5045;break;
         }
         if(a->m244==2||a->m244==4||(u32)(a->m244-8)<=3||a->m244==13) {
-            angle=0;
-            for(i=0;i<a->m240;i++) {
+            i=0;
+            angle=i;
+            for(;i<a->m240;i++) {
                 if(a->m244==8) {
                     if(i==0) {
 f32 y=lbl_80540840*sincosTable___5JMath[0x401]+a->field_0C.y;
