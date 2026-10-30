@@ -95,6 +95,30 @@ extern "C" void fn_803239A0(char* this_) {
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, 0xe7, 0, 2, -1, 0, 0, 0);
 }
 
+#include "Game/Actor.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JParticle/JPAEmitter.h"
+extern "C" void* fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" s32 fn_801F26CC(void*, void*);
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void*, s32);
+extern "C" u8 fn_801F2618(void*, void*, u32);
+extern "C" u8 fn_801F2A10(void*, u32, u32, u32, u32);
+extern "C" void* Actor_CreateByID(void*, u32, s32, void*, void*, s32, s32);
+extern "C" void fn_801F0E34(void*, u32, void*);
+extern "C" u8 fn_802DE9A0();
+extern "C" u8 fn_802DEB58();
+extern "C" u8 fn_80225000(void*, s32);
+extern "C" u8 fn_80224D0C(void*, s32);
+extern "C" u8 fn_80224A04(void*, s32);
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_8022E438(s32, u32);
+extern "C" u8 fn_8023B190(s32, void*, s32);
+extern "C" void fn_80238548(s32, s32, void*, s32);
+extern "C" void fn_8030C210(void*, void*);
+extern "C" void fn_801F71A4(void*, f32, f32, f32);
+extern "C" char lbl_80471840[];
+
 static inline u8 roomMoveFlag(s32 room) {
     return ((u8*)fn_802D6A9C() + 0x10000)[room + 0x31df];
 }
