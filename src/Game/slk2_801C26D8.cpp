@@ -390,8 +390,9 @@ static inline void slk2ResetHitRect(u8* this_) {
 }
 
 extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
-    if (flag && ((u8 (*)(u8*, s32, void*))(*(void***)this_)[0x4c / 4])(this_, *(s32*)(this_ + 4), this_ + 0xc)) {
-        f32 delta[2];
+    f32 pos[2];
+    f32 delta[2];
+    if (flag && (u8)((Actor*)this_)->v17(*(s32*)(this_ + 4), (f32*)(this_ + 0xc))) {
         *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x18);
         *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x1c);
         ((void (*)(u8*, void*, f32*, f32))fn_801D01A0)(this_, this_ + 0x32c, delta, lbl_8053EE14);
@@ -405,8 +406,7 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
         case 0x11:
         case 0x1b:
         case 0x22:
-        case 0x27: {
-            f32 pos[2];
+        case 0x27:
             if (fn_801C0FEC(fn_801C0D70(), this_ + 0xc, pos)) {
                 if (*(u16*)fn_801C0D70() & 0x800) {
                     *(f32*)(this_ + 0x32c) = pos[0];
@@ -418,7 +418,6 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
                 fn_801C3B7C(this_, 0x2f);
             }
             break;
-        }
         }
     }
     fn_802188B0(this_ + 0x540);
@@ -644,11 +643,13 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
         break;
     case 30:
         if (*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
+            u32 f;
             fn_802144F0(this_ + 0x4ec);
-            if (*(u32*)(this_ + 0x230) & 0x1000000) {
+            f = *(u32*)(this_ + 0x230);
+            if (f & 0x1000000) {
                 *(u32*)(this_ + 0x230) &= ~0x1000000;
                 fn_801C3B7C(this_, 0x2c);
-            } else if (*(u32*)(this_ + 0x230) & 0x2000000) {
+            } else if (f & 0x2000000) {
                 fn_801C3B7C(this_, 0x11);
             } else {
                 fn_801C3B7C(this_, 0x1f);
@@ -684,7 +685,7 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
                 u8* g = lbl_8053AAF8;
                 *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
                 u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
-                if (*(f32*)&bits - lbl_8053EE28 < lbl_8053EE2C && fn_801D183C(this_, lbl_8053EE30)) {
+                if (*(f32*)&bits - *(const f32*)&lbl_8053EE28 < lbl_8053EE2C && fn_801D183C(this_, lbl_8053EE30)) {
                     fn_801C3B7C(this_, 0x22);
                     break;
                 }
@@ -895,8 +896,6 @@ extern "C" void fn_801D0ED0(void* this_);
 extern "C" u16 fn_801C14A8(void* this_, void* param_2);
 extern "C" void fn_802157B8(void* flags, u8 level);
 extern "C" void fn_800FEB78(void* this_, s32 opcode);
-extern f32 lbl_8053EE28;
-extern f32 lbl_8053EE50;
 extern "C" void fn_801C544C(void* this_) {
     u32 mode;
     void* sub;
