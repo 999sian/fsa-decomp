@@ -1,12 +1,43 @@
 // TU 0x802f032c-0x802f184c (actor SWDL).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 // ---- Swdl_EmptyHook.cpp ----
 // Swdl_EmptyHook - SWDL: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
 
 void Swdl_EmptyHook(void) {}
+
+extern "C" void fn_8023E724(s32 i);
+extern "C" void fn_8030C210(void* p);
+extern "C" s32 fn_80236228(s32 i);
+extern "C" s32 fn_8023077C(void);
+extern "C" void fn_80230498(s32 i, void* vec, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_8013CC50(void* obj, void* vec, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" void fn_80134D14(void* p);
+extern "C" void fn_801B7550(void);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" void fn_8043D67C(void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_80230F44(s32 a, s32 b);
+extern "C" void fn_80236ED8(s32 a, s32 b);
+extern "C" void fn_8045873C(void* p, s32 a);
+extern "C" void fn_80128C58(s32 a);
+extern "C" u8 lbl_8053AAF8[];
+extern "C" void fn_802F0330(void* this_) {
+    u8* p = (u8*)this_;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        fn_8023E724(i);
+    }
+    switch (*(s32*)(p + 0x244)) {
+    case 0x0:
+    case 0x1:
+    default:
+        break;
+    }
+}
 
 }
 
