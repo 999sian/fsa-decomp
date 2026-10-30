@@ -94,7 +94,6 @@ extern "C" void fn_8013CB44(JPABaseEmitter* e, void* pos, s32 a, s32 b, s32 c);
 extern "C" void fn_8038BD08(s32 a, s32 b, s32 c, void* d, s32 e);
 extern "C" u8 fn_80230224(s32 i, s32 b);
 extern "C" void fn_80336298(Actor* self) {
-    s32 ok;
     s32 i;
     s32 j;
     s32 k;
@@ -214,7 +213,7 @@ extern "C" void fn_80336298(Actor* self) {
                     JGeometry::TVec3<f32> pos3(
                         *(f32*)(p + 0x294) + (0.5f + *(f32*)(p + 0x27c)) * ((f32)j - ((f32)*(s32*)(p + 0x278) - 1.0f) / 2.0f),
                         *(f32*)(p + 0x298), *(f32*)(p + 0x29c));
-                    if (((u8 (*)(Actor*, s32, void*))(*(void***)p)[19])(self, *(s32*)(p + 4), &pos3)) {
+                    if ((u8)self->v17(*(s32*)(p + 4), (f32*)&pos3)) {
                         p[0x280] = 1;
                     }
                 }
@@ -234,23 +233,23 @@ extern "C" void fn_80336298(Actor* self) {
     }
     case 3:
         if (*(s32*)(p + 0x234) <= 0 && fn_80388EEC(*(s32*)(p + 0x24c))) {
-            ok = 1;
-            for (i = 0; i < 4; i++) {
-                if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
-                    (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(i) != 4 || !fn_8022F478(i)))) {
-                    if (!fn_80230224(i, 0)) {
-                        ok = 0;
+            i = 1;
+            for (k = 0; k < 4; k++) {
+                if (k == *(s32*)(p + 0x24c) || k == *(s32*)(p + 0x250) ||
+                    (fn_8022E438(k, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(k) != 4 || !fn_8022F478(k)))) {
+                    if (!fn_80230224(k, 0)) {
+                        i = 0;
                         break;
                     }
                 }
             }
-            if (ok == 1) {
-                for (i = 0; i < 4; i++) {
-                    if (*(JPABaseEmitter**)(p + 0x2a0 + i * 4) != 0) {
-                        (*(JPABaseEmitter**)(p + 0x2a0 + i * 4))->becomeInvalidEmitter();
+            if (i == 1) {
+                for (k = 0; k < 4; k++) {
+                    if (*(JPABaseEmitter**)(p + 0x2a0 + k * 4) != 0) {
+                        (*(JPABaseEmitter**)(p + 0x2a0 + k * 4))->becomeInvalidEmitter();
                     }
-                    if (*(JPABaseEmitter**)(p + 0x2b0 + i * 4) != 0) {
-                        (*(JPABaseEmitter**)(p + 0x2b0 + i * 4))->becomeInvalidEmitter();
+                    if (*(JPABaseEmitter**)(p + 0x2b0 + k * 4) != 0) {
+                        (*(JPABaseEmitter**)(p + 0x2b0 + k * 4))->becomeInvalidEmitter();
                     }
                 }
                 p[0x11c] = 0;
