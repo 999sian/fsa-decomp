@@ -342,6 +342,12 @@ static const SelectionTables selectionTables = {
 {0x0050626375723031ULL,0x0050626375723032ULL,0x0050626375723033ULL,0x0050626375723034ULL}
 };
 
+static inline J2DPicture::TCornerColor selectionCornerColors(J2DPicture* picture) {
+    J2DPicture::TCornerColor colors;
+    picture->getCornerColor(colors);
+    return colors;
+}
+
 extern "C" u32 fn_80309A9C(void*, s32, s32);
 extern "C" void fn_80431A9C(void*, s32, s32, void*);
 extern "C" s32 fn_804317AC(void*);
@@ -424,7 +430,7 @@ extern "C" void fn_803D75B0(u8* self) {
    f31=((f32*)(*(J2DPane**)(self+8))->search(0x50306b613030ULL)->getBounds())[1];
    f30=*(f32*)(self+0x5c)+((f32*)(*(J2DPane**)(self+8))->search(0x50306b616b3030ULL)->getBounds())[1]+f31+f30*0.5f;
    if(*(s32*)(self+0x64)==80&&*(void**)(self+0x54)==0) {
-    Vec pos;pos.x=f29;pos.y=f30;pos.z=0.0f;
+    JGeometry::TVec3f pos(f29,f30,0.0f);
     *(void**)(self+0x54)=fn_8013CC50(0,&pos,0x4d0,0,0,0,0,1,1.0f);
     *(u32*)(*(u8**)(self+0x54)+0xf4)|=0x40;
    }
@@ -432,13 +438,13 @@ extern "C" void fn_803D75B0(u8* self) {
    (*(J2DPane**)(self+8))->search(0x50306b616b3030ULL)->animationTransform();
    if(*(s32*)(self+0x64)>1&&*(s32*)(self+0x64)<20) {
     if(*(void**)(self+0x4c)==0) {
-     Vec pos;pos.x=f29;pos.y=f30;pos.z=0.0f;
+     JGeometry::TVec3f pos(f29,f30,0.0f);
      *(void**)(self+0x4c)=fn_8013CC50(0,&pos,0x4cf,0,0,0,0,1,1.0f);
     }
     u8* e=*(u8**)(self+0x4c);
     *(f32*)(e+0xa4)=f29;*(f32*)(e+0xa8)=f30;*(f32*)(e+0xac)=0.0f;
     if(*(s32*)(self+0x64)==19&&*(void**)(self+0x50)==0) {
-     Vec pos;pos.x=f29;pos.y=f30;pos.z=0.0f;
+     JGeometry::TVec3f pos(f29,f30,0.0f);
      *(void**)(self+0x50)=fn_8013CC50(0,&pos,0x4d1,0,0,0,0,1,1.0f);
      *(u32*)(*(u8**)(self+0x50)+0xf4)|=0x40;
     }
