@@ -390,28 +390,40 @@ static inline void slk2ResetHitRect(u8* this_) {
 }
 
 extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
-    if (flag) {
-        if (((u8 (*)(u8*))(*(void***)this_)[0x4c / 4])(this_)) {
-            *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x18);
-            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x1c);
-            f32 delta[2];
-            fn_801D01A0(this_, this_ + 0x32c, delta);
-            *(f32*)(this_ + 0xc) += delta[0];
-            *(f32*)(this_ + 0x10) += delta[1];
-        }
+    if (flag && ((u8 (*)(u8*, s32, void*))(*(void***)this_)[0x4c / 4])(this_, *(s32*)(this_ + 4), this_ + 0xc)) {
+        f32 delta[2];
+        *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x18);
+        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x1c);
+        ((void (*)(u8*, void*, f32*, f32))fn_801D01A0)(this_, this_ + 0x32c, delta, lbl_8053EE14);
+        *(f32*)(this_ + 0xc) += delta[0];
+        *(f32*)(this_ + 0x10) += delta[1];
     }
-    u16* rec = (u16*)fn_801C0D70();
-    if (*rec & 0x400) {
-        if (fn_801D0DD4(this_)) {
-            s32 st = *(s32*)(this_ + 0x248);
-            if (st - 0xe < 0x1a) {
-                return;
+    if ((*(u16*)fn_801C0D70() & 0x400) && fn_801D0DD4(this_)) {
+        switch (*(s32*)(this_ + 0x248)) {
+        case 0xe:
+        case 0xf:
+        case 0x11:
+        case 0x1b:
+        case 0x22:
+        case 0x27: {
+            f32 pos[2];
+            if (fn_801C0FEC(fn_801C0D70(), this_ + 0xc, pos)) {
+                if (*(u16*)fn_801C0D70() & 0x800) {
+                    *(f32*)(this_ + 0x32c) = pos[0];
+                    *(f32*)(this_ + 0x330) = pos[1];
+                    *(f32*)(this_ + 0x334) = lbl_8053EE08;
+                    fn_801C3B7C(this_, 0x1d);
+                }
+            } else {
+                fn_801C3B7C(this_, 0x2f);
             }
+            break;
+        }
         }
     }
     fn_802188B0(this_ + 0x540);
     if (*(u32*)(this_ + 0x230) & 0x40000) {
-        if (*(s8*)(this_ + 0x55c) != -1) {
+        if (*(u8*)(this_ + 0x55c) != 0xff) {
             *(u8*)(this_ + 0x55c) += 1;
         }
     } else {
@@ -422,13 +434,331 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
     if (*(u8*)(this_ + 0x599)) *(u8*)(this_ + 0x599) -= 1;
     if (*(u8*)(this_ + 0x59a)) *(u8*)(this_ + 0x59a) -= 1;
     if (*(u8*)(this_ + 0x59b)) *(u8*)(this_ + 0x59b) -= 1;
+
+    s32 state = *(s32*)(this_ + 0x248);
+    switch (state) {
+    case 0:
+        if ((*(u32*)(this_ + 0x230) & 0x2000) && fn_801CD228(*(void**)(this_ + 4))) {
+            if (fn_801D05F8(this_, lbl_8053EE18 * (f32)*(u8*)(this_ + 0x55e), this_ + 0xc) >= 0) {
+                fn_801C3B7C(this_, 1);
+            }
+        }
+        break;
+    case 1:
+        if (fn_801F68E0(fn_801F856C()) != 0) {
+            fn_80458F9C(lbl_8053AF80, 0x3c);
+            *(u16*)fn_801C0D70() |= 8;
+        }
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801C3B7C(this_, 3);
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801C3B7C(this_, 4);
+        }
+        break;
+    case 4:
+        if (*(s32*)(this_ + 0x24c) > 1 && fn_801D0DD4(this_)) {
+            fn_801C3B7C(this_, 5);
+        }
+        break;
+    case 5:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            *(u32*)(this_ + 0x230) |= 0x8000;
+            *(u16*)fn_801C0D70() |= 0x10;
+        }
+        break;
+    case 6:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            *(s16*)(this_ + 0x33c) = 0;
+            if ((*(u16*)fn_801C0D70() & 1) == 0) {
+                fn_801C3B7C(this_, 9);
+            } else {
+                fn_801C3B7C(this_, 7);
+            }
+        }
+        break;
+    case 7:
+        if (*(s32*)(this_ + 0x24c) >= 0x1e) {
+            fn_801C3B7C(this_, 8);
+        }
+        break;
+    case 8:
+        if (*(s32*)(this_ + 0x24c) >= 0x5a) {
+            fn_801C3B7C(this_, 9);
+        }
+        break;
+    case 9:
+        if (*(s32*)(this_ + 0x24c) >= 0x3c) {
+            if (*(u32*)(this_ + 0x524) & 2) {
+                fn_801C3B7C(this_, 0xa);
+            } else {
+                fn_801C3B7C(this_, 0xc);
+            }
+        }
+        break;
+    case 10:
+        if (*(s32*)(this_ + 0x24c) >= 0x73) {
+            fn_801C3B7C(this_, 0xb);
+        }
+        break;
+    case 11:
+        if (*(s32*)(this_ + 0x24c) >= 0x3c) {
+            fn_801C3B7C(this_, 0xc);
+        }
+        break;
+    case 12:
+        if ((*(u32*)(this_ + 0x230) & 0x2000) && *((u8*)lbl_8053AED0 + 0x10a) == 0) {
+            *(u16*)fn_801C0D70() |= 0x20;
+        }
+        break;
+    case 13:
+        if (*(s32*)(this_ + 0x24c) >= 0xa0) {
+            *(f32*)(this_ + 0x10) += lbl_8053EE1C;
+            fn_801C3B7C(this_, 0x1e);
+        }
+        break;
+    case 14:
+    case 15:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250) && fn_801D05F8(this_, *(f32*)(this_ + 0x5a4), this_ + 0xc) >= 0) {
+            if (*(u8*)(this_ + 0x59c) == 0) {
+                fn_80214E50(this_ + 0x4ec);
+                *(u8*)(this_ + 0x59c) = 0x3c;
+            }
+            fn_801C3B7C(this_, 0x11);
+        } else {
+            u8 r = fn_801CD2F8(*(void**)(this_ + 4));
+            if ((!r && *(s32*)(this_ + 0x24c) >= *(u16*)(this_ + 0x5a0)) || (r == 1 && *(s32*)(this_ + 0x24c) >= *(u16*)(this_ + 0x5a2))) {
+                fn_801C3B7C(this_, 0x11);
+                fn_801C8BC4(this_, 0);
+            } else {
+                *(s16*)(this_ + 0x33c) = fn_80217374(this_ + 0x550, *(s16*)(this_ + 0x33c));
+            }
+        }
+        break;
+    case 16: {
+        s32 t = *(s32*)(this_ + 0x24c);
+        if (t >= *(s32*)(this_ + 0x250)) {
+            if (*(s32*)(this_ + 0x564) == 3) {
+                fn_801C3B7C(this_, 0x2e);
+            } else {
+                fn_801C3B7C(this_, 0xf);
+            }
+        } else if (t % 6 == 0) {
+            *(s16*)(this_ + 0x33c) += 0x4000;
+        }
+        break;
+    }
+    case 17:
+        fn_801C7370(this_, flag);
+        break;
+    case 18:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250) || fn_802189AC(this_ + 0x540)) {
+            fn_801C3B7C(this_, 0x13);
+        }
+        break;
+    case 19:
+        if (fn_801D0DD4(this_)) {
+            s32 t = *(s32*)(this_ + 0x24c);
+            if (t >= *(s32*)(this_ + 0x250) || (t >= 2 && fn_802189AC(this_ + 0x540))) {
+                fn_801C3B7C(this_, 0x14);
+            }
+        }
+        break;
+    case 20:
+        slk2ResetHitRect(this_);
+        if (*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
+            fn_802144F0(this_ + 0x4ec);
+            fn_801C3B7C(this_, 0x15);
+        }
+        break;
+    case 21:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801C3B7C(this_, 0x16);
+        }
+        break;
+    case 22:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801C3B7C(this_, 0x11);
+        }
+        break;
+    case 23:
+        if (*(s32*)(this_ + 0x24c) >= 0x6e) {
+            fn_801C3B7C(this_, 0x11);
+        }
+        break;
+    case 24:
+    case 25:
+    case 26:
+        if (*(s32*)(this_ + 0x24c) >= 0x73) {
+            if (state == 0x19 || state == 0x1a) {
+                fn_801C3B7C(this_, 0xf);
+            } else {
+                s32 room = *(s32*)(this_ + 4);
+                JGeometry::TVec3f save(*(JGeometry::TVec3f*)(this_ + 0xc));
+                s32 r;
+                *(s32*)(this_ + 4) = *(s32*)(this_ + 0x57c);
+                *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x580);
+                *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x584);
+                *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x588);
+                r = fn_801D05F8(this_, lbl_8053EE24, this_ + 0xc);
+                *(s32*)(this_ + 4) = room;
+                ((JGeometry::TVec3f*)(this_ + 0xc))->set(save);
+                if (r >= 0) {
+                    fn_801C3B7C(this_, 0x1e);
+                } else {
+                    fn_801C3B7C(this_, 0x11);
+                }
+            }
+        } else {
+            if (*(s32*)(this_ + 0x24c) == 0x46 && *(s32*)(this_ + 0x58c) == 0) {
+                fn_802146A4(this_ + 0x4ec);
+            }
+            if (*(s32*)(this_ + 0x24c) % 4 == 0) {
+                *(s16*)(this_ + 0x33c) += 0x4000;
+            }
+        }
+        break;
+    case 27:
+        fn_801C5B08(this_, flag);
+        break;
+    case 28:
+        slk2ResetHitRect(this_);
+        if (*(s32*)(this_ + 0x24c) > 1 && fn_801D0DD4(this_)) {
+            fn_801C3B7C(this_, 0x1f);
+        }
+        break;
+    case 29:
+        if (fn_801D0DD4(this_)) {
+            if (*(u16*)fn_801C0D70() & 0x400) {
+                if (*(s32*)(this_ + 0x24c) > 0x1e) {
+                    fn_801C3B7C(this_, 0x1e);
+                }
+            } else if (*(s32*)(this_ + 0x24c) > 1) {
+                fn_801C3B7C(this_, 0x1e);
+            }
+        }
+        break;
+    case 30:
+        if (*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
+            fn_802144F0(this_ + 0x4ec);
+            if (*(u32*)(this_ + 0x230) & 0x1000000) {
+                *(u32*)(this_ + 0x230) &= ~0x1000000;
+                fn_801C3B7C(this_, 0x2c);
+            } else if (*(u32*)(this_ + 0x230) & 0x2000000) {
+                fn_801C3B7C(this_, 0x11);
+            } else {
+                fn_801C3B7C(this_, 0x1f);
+            }
+        }
+        break;
+    case 31:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801C3B7C(this_, 0x1b);
+        }
+        break;
+    case 33:
+        if ((*(u32*)(this_ + 0x230) & 0x4000000) && *(s32*)(this_ + 0x24c) % 4 == 0) {
+            *(s16*)(this_ + 0x33c) += 0x4000;
+        }
+        break;
+    case 34:
+        fn_801C6C7C(this_);
+        break;
+    case 35:
+    case 36:
+        fn_801C6BA8(this_);
+        break;
+    case 37:
+    case 38:
+        fn_801C6A4C(this_);
+        break;
+    case 32:
+    case 39:
+    case 40:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            if ((*(u32*)(this_ + 0x524) & 8) && *(u8*)(this_ + 0x597) == 0) {
+                u8* g = lbl_8053AAF8;
+                *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+                u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+                if (*(f32*)&bits - lbl_8053EE28 < lbl_8053EE2C && fn_801D183C(this_, lbl_8053EE30)) {
+                    fn_801C3B7C(this_, 0x22);
+                    break;
+                }
+            }
+            *(u8*)(this_ + 0x597) = 0x3c;
+            fn_801C3B7C(this_, 0x1b);
+        }
+        break;
+    case 41:
+        if (*(s32*)(this_ + 0x24c) >= 0xa0) {
+            if (*(u32*)(this_ + 0x230) & 0x10000) {
+                fn_801C1224(fn_801C0D70(), *(void**)(this_ + 0x10c));
+            }
+            ((Actor*)this_)->v07();
+        } else {
+            if (*(u32*)(this_ + 0x230) & 0x8010000) {
+                fn_802D79E8(fn_802D6A9C(), *(s32*)(this_ + 4), 0, lbl_8053EE34, lbl_8053EE38);
+            }
+            if (*(s32*)(this_ + 0x24c) % 8 == 0) {
+                *(s16*)(this_ + 0x33c) += 0x4000;
+            }
+        }
+        break;
+    case 42:
+        if (fn_801D0DD4(this_)) {
+            fn_801C6784(this_);
+            fn_801C3B7C(this_, 0x1c);
+        }
+        break;
+    case 43:
+        if (*(s32*)(this_ + 0x24c) >= 0x78) {
+            *(u32*)(this_ + 0x230) |= 0x1000000;
+            fn_801C3B7C(this_, 0x1d);
+        }
+        break;
+    case 44: {
+        s32 prev = *(s32*)(this_ + 0x560);
+        if (fn_802153A8(this_ + 0x548)) {
+            fn_801F0E34(this_, 0x400bf, 0);
+            fn_801C3B7C(this_, 0x2d);
+        }
+        *(s32*)(this_ + 0x560) = *(u8*)(this_ + 0x549);
+        if (*(s32*)(this_ + 0x248) == 0x2c) {
+            s32 cur = *(s32*)(this_ + 0x560);
+            if (prev != cur && cur >= 0 && cur <= 3) {
+                fn_801F0E34(this_, lbl_80469450[cur], 0);
+            }
+        }
+        break;
+    }
+    case 45:
+        if (*(s32*)(this_ + 0x24c) >= 0x4a) {
+            fn_801C3B7C(this_, 0x1b);
+        }
+        break;
+    case 46:
+        if (fn_8021CFF8(this_)) {
+            fn_8021CDE4(this_, 2);
+        }
+        break;
+    case 47:
+        if (!(*(u16*)fn_801C0D70() & 0x400)) {
+            fn_801C3B7C(this_, 0xf);
+        }
+        break;
+    }
     if (*(u32*)(this_ + 0x230) & 0x100000) {
         fn_801C71BC(this_);
     }
-    *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant(*(u16*)(this_ + 0x33e));
+    *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant((u16)*(s16*)(this_ + 0x33c));
 }
 
 extern "C" void fn_801C50A8(void* this_, s32 state);
+#pragma auto_inline off
 extern "C" void fn_801C3B7C(void* this_, s32 state) {
     u8* p = (u8*)this_;
     fn_801C50A8(this_, state);
@@ -438,6 +768,7 @@ extern "C" void fn_801C3B7C(void* this_, s32 state) {
     }
     *(s32*)(p + 0x250) = 1;
 }
+#pragma auto_inline reset
 
 extern "C" void fn_801C50A8(void* this_, s32 state) {
     u8* p = (u8*)this_;
