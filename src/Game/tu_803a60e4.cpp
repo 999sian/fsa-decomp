@@ -260,16 +260,23 @@ extern "C" u8 fn_8030A388(void* pad, void* b);
 extern "C" void fn_80134CC0(void* game, s32 a);
 extern void* lbl_8053AD30;
 extern void* lbl_8053AF80;
+static inline void optionMoveCursors(char* p) {
+    s32 i;
+    for (i = 0; i < 6; i++) {
+        fn_80402E08(*(void**)(p + 0xc + i * 4), lbl_80543370, *(f32*)(p + 0x60) * (f32)*(s32*)(p + 0x64));
+    }
+    *(s16*)(p + 0x6e) = 0;
+    for (i = 0; i < 2; i++) {
+        fn_80402E08(*(void**)(p + 0x24 + i * 4), lbl_80543370, *(f32*)(p + 0x60) * (f32)*(s32*)(p + 0x64));
+    }
+}
 extern "C" void fn_803A6608(char* p) {
-    u8 doneB;
     s32 j;
-    u8 doneA;
-    u8 doneC;
     *(s32*)(p + 0x80) = 5;
     if (*(u8*)(p + 0x76) == 0) {
-        doneA = 0;
-        doneB = 0;
-        doneC = 0;
+        bool doneA = false;
+        bool doneB = false;
+        bool doneC = false;
         *(s16*)(p + 0x68) = *(s16*)(p + 0x68) + 1;
         if (*(s16*)(p + 0x68) > 0) {
             doneA = fn_80402940(*(void**)(p + 0x8), 0x16, 0, lbl_80543374, lbl_80543370);
