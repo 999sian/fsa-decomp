@@ -570,21 +570,184 @@ extern "C" void fn_8016B8AC(u8* self) {
     }
 }
 
-extern "C" void fn_8016B910(u8* self) {
-    if (self[0x1C9]) {
-        if (*(void**)(self + 0x108) == 0) {
-            if (self[0x1CA] && *(void**)(self + 0x10C) != 0) {
-                J3DModel* dummy = 0;
-                (void)dummy;
-            }
-        } else {
-            if (self[0x1CA]) {
-                fn_8013B460(lbl_8053AB10);
-            }
-        }
-    }
+#pragma opt_propagation off
+static inline void screenTexRect(JGeometry::TVec3<f32>& pos, JGeometry::TVec3<f32>& size) {
+    const u8* screen = *(u8**)(lbl_8053AB10 + 0x20);
+    const u8* camera = *(u8**)(lbl_8053AB10 + 0x24);
+    const u8* mode = *(u8**)(sManager__8JUTVideo + 4);
+    f32 sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+    f32 sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+    f32 k = 1.0f / *(f32*)(camera + 0x858);
+    pos.set(-*(f32*)(camera + 0x10) * sx, -*(f32*)(camera + 0x20) * sy, 0.0f);
+    size.set(k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4))), k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6))), 0.0f);
 }
 
+extern "C" void fn_8016B910(u8* self) {
+    extern f32 lbl_8053D980;
+    extern const f32 lbl_8053D984;
+    extern const f32 lbl_8053D98C;
+    extern const f32 lbl_8053D990;
+    extern const f32 lbl_8053D994;
+    extern const f32 lbl_8053D998;
+    extern const f32 lbl_8053D99C;
+    extern const f32 lbl_8053D9A0;
+    extern const f32 lbl_8053D9A4;
+    extern const f32 lbl_8053D9A8;
+    extern const f32 lbl_8053D9AC;
+    extern const u32 lbl_8053D924;
+    extern const u32 lbl_8053D928;
+    extern const u32 lbl_8053D92C;
+    extern const u32 lbl_8053D930;
+    extern const u32 lbl_8053D934;
+    if (self[0x1c9] == 0 || *(void**)(self + 0x108) == 0) {
+        if (self[0x1ca] == 0) return;
+        if (*(void**)(self + 0x10c) == 0) return;
+    }
+    JGeometry::TVec3<f32> pos;
+    JGeometry::TVec3<f32> size;
+    f32 fw, fh;
+    f32 offX, offY;
+    f32 sx, sy, k;
+    const u8* __restrict screen;
+    const u8* __restrict camera;
+    const u8* __restrict mode;
+
+    screen = *(u8**)(lbl_8053AB10 + 0x20);
+    camera = *(u8**)(lbl_8053AB10 + 0x24);
+    mode = *(u8**)(sManager__8JUTVideo + 4);
+    fw = (f32)(int)*(u16*)(mode + 4);
+    fh = (f32)(int)*(u16*)(mode + 6);
+    sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+    sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+    k = 1.0f / *(f32*)(camera + 0x858);
+    pos.x = -*(f32*)(camera + 0x10) * sx;
+    pos.y = -*(f32*)(camera + 0x20) * sy;
+    pos.z = 0.0f;
+    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
+    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
+    size.z = 0.0f;
+    pos.mul(JGeometry::TVec3<f32>(lbl_8053D98C, lbl_8053D98C, 1.0f));
+    pos.add(JGeometry::TVec3<f32>(lbl_8053D990, lbl_8053D990, 0.0f));
+    size.mul(JGeometry::TVec3<f32>(lbl_8053D994, lbl_8053D998, 1.0f));
+    fn_8013B460(lbl_8053AB10);
+    fn_8013B1E8(lbl_8053AB10);
+    if (self[0x1ca]) {
+        load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x10c), 0);
+    } else {
+        load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0x108), 0);
+    }
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y - size.y);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y - size.y);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y + size.y);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y + size.y);
+
+    screen = *(u8**)(lbl_8053AB10 + 0x20);
+    camera = *(u8**)(lbl_8053AB10 + 0x24);
+    mode = *(u8**)(sManager__8JUTVideo + 4);
+    offX = lbl_8053D980 * (f32)(*(s32*)(self + 0x1c0) & 0xfff);
+    sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+    sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+    k = 1.0f / *(f32*)(camera + 0x858);
+    pos.x = -*(f32*)(camera + 0x10) * sx;
+    pos.y = -*(f32*)(camera + 0x20) * sy;
+    pos.z = 0.0f;
+    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
+    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
+    size.z = 0.0f;
+    pos.mul(JGeometry::TVec3<f32>(lbl_8053D98C, lbl_8053D98C, 1.0f));
+    pos.x -= offX;
+    pos.y -= offX;
+    size.mul(JGeometry::TVec3<f32>(lbl_8053D984, lbl_8053D99C, lbl_8053D984));
+    fn_8013B460(lbl_8053AB10);
+    fn_8013B1E8(lbl_8053AB10);
+    load__10JUTTextureF11_GXTexMapID(*(void**)(self + 0xf4), 0);
+    GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
+    GXSetTevColor(GX_TEVREG0, *(GXColor*)&lbl_8053D924);
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXSetZCompLoc(GX_FALSE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y - size.y);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y - size.y);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y + size.y);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y + size.y);
+
+    screen = *(u8**)(lbl_8053AB10 + 0x20);
+    camera = *(u8**)(lbl_8053AB10 + 0x24);
+    mode = *(u8**)(sManager__8JUTVideo + 4);
+    offX = lbl_8053D980 * (f32)(*(s32*)(self + 0x1c0) & 0xfff);
+    offY = lbl_8053D980 * (f32)((*(s32*)(self + 0x1c0) + 0x514) & 0xfff);
+    sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+    sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+    k = 1.0f / *(f32*)(camera + 0x858);
+    pos.x = -*(f32*)(camera + 0x10) * sx;
+    pos.y = -*(f32*)(camera + 0x20) * sy;
+    pos.z = 0.0f;
+    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
+    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
+    size.z = 0.0f;
+    pos.mul(JGeometry::TVec3<f32>(lbl_8053D990, lbl_8053D990, 1.0f));
+    pos.x -= offX;
+    pos.y -= offY;
+    size.mul(JGeometry::TVec3<f32>(lbl_8053D9A0, lbl_8053D9A4, lbl_8053D9A0));
+    if (self[0x1ca]) {
+        GXSetTevColor(GX_TEVREG0, *(GXColor*)&lbl_8053D928);
+    } else {
+        GXSetTevColor(GX_TEVREG0, *(GXColor*)&lbl_8053D92C);
+    }
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y - size.y);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y - size.y);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y + size.y);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y + size.y);
+
+    screen = *(u8**)(lbl_8053AB10 + 0x20);
+    camera = *(u8**)(lbl_8053AB10 + 0x24);
+    mode = *(u8**)(sManager__8JUTVideo + 4);
+    offX = lbl_8053D980 * (f32)((*(s32*)(self + 0x1c0) + 0xc1c) & 0xfff);
+    offY = lbl_8053D980 * (f32)((*(s32*)(self + 0x1c0) + 0x514) & 0xfff);
+    sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
+    sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
+    k = 1.0f / *(f32*)(camera + 0x858);
+    pos.x = -*(f32*)(camera + 0x10) * sx;
+    pos.y = -*(f32*)(camera + 0x20) * sy;
+    pos.z = 0.0f;
+    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
+    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
+    size.z = 0.0f;
+    pos.mul(JGeometry::TVec3<f32>(lbl_8053D9A8, lbl_8053D9A8, 1.0f));
+    pos.x -= offX;
+    pos.y -= offY;
+    size.mul(JGeometry::TVec3<f32>(lbl_8053D9AC, lbl_8053D950, lbl_8053D9AC));
+    if (self[0x1ca]) {
+        GXSetTevColor(GX_TEVREG0, *(GXColor*)&lbl_8053D930);
+    } else {
+        GXSetTevColor(GX_TEVREG0, *(GXColor*)&lbl_8053D934);
+    }
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(0.0f, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y - size.y);
+    GXPosition3f32(fw, 0.0f, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y - size.y);
+    GXPosition3f32(fw, fh, 0.0f);
+    GXTexCoord2f32(pos.x + size.x, pos.y + size.y);
+    GXPosition3f32(0.0f, fh, 0.0f);
+    GXTexCoord2f32(pos.x - size.x, pos.y + size.y);
+}
+#pragma opt_propagation reset
 extern "C" void fn_8016C2FC(u8* self) {
     extern f32 lbl_8053D980;
     extern f32 lbl_8053D984;
