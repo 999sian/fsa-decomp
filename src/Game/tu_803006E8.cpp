@@ -464,12 +464,11 @@ extern "C" void* fn_80300E1C(void* arg) {
         if (msg == (void*)7 && c->program == NULL) {
             msg = (void*)8;
         }
-        writeOff = 0;
         readOff = 0;
         c->msg = (u32)msg;
         count = 0;
         c->f_d1 = 1;
-        c->status[2] = 0;
+        c->status[2] = writeOff = 0;
         switch ((s32)msg) {
         case 3:
             timeout = (*(u32*)0x800000F8 / 4 / 1000) * 500;
@@ -600,9 +599,8 @@ extern "C" void* fn_80300E1C(void* arg) {
         {
             u32 type;
             c->f_d8 = 0;
-            err = 1;
             c->f_d9 = 0;
-            c->f5c = err;
+            c->f5c = err = 1;
             c->status[3] = 0;
             type = SIProbe(c->chan);
             c->probeType = type;
@@ -655,11 +653,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                     goto wait;
                 }
             }
-            if (fn_801365A8() == 0) {
-                expected = *(const volatile u32*)&lbl_80541620;
-            } else {
-                expected = *(const volatile u32*)&lbl_80541628;
-            }
+            expected = gbaExpectedId();
             if (gbaHandshakeBuf(c, expected, &req)) {
                 goto wait;
             }
@@ -677,11 +671,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             if ((err = GBAReset(c->chan, c->status)) != 0) {
                 goto wait;
             }
-            if (fn_801365A8() == 0) {
-                expected = *(const volatile u32*)&lbl_80541620;
-            } else {
-                expected = *(const volatile u32*)&lbl_80541628;
-            }
+            expected = gbaExpectedId();
             if (gbaHandshakeBuf(c, expected, &req)) {
                 goto wait;
             }
