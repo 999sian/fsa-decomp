@@ -56,7 +56,7 @@ extern "C" void fn_80239914(void*, s32, s32);
 extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
 extern "C" s32 fn_8022FD8C(s32);
 extern "C" u8 fn_802300EC(s32);
-extern "C" u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
+extern "C" u8 fn_8038AD24(s32, s32, s32, s32, JGeometry::TVec3<f32>, s32);
 extern "C" s32 fn_8022EA0C(s32);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
