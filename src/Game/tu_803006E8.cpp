@@ -196,10 +196,16 @@ extern "C" int GBAJoyBoot(s32 chan, s32 palette, s32 speed, u8* program, u32 len
 extern "C" u32 SIProbe(s32 chan);
 extern "C" s32 fn_801365A8(void);
 extern "C" s32 fn_80301A88(void* this_);
-extern s8 lbl_8054161C[4];
-extern u8 lbl_80541618[4];
-extern u32 lbl_80541620;
-extern u32 lbl_80541628;
+extern const s8 lbl_8054161C[4];
+extern const u8 lbl_80541618[4];
+extern const u32 lbl_80541620;
+extern const u32 lbl_80541628;
+
+// Byte view of a link channel's packet buffer at +0x28.
+struct GbaChanPktView {
+    u8 pad0[0x28];
+    u8 bytes[0x20];
+};
 
 // Reads the GBA's 4-byte id into +0x64.
 static inline s32 gbaReadId(GbaChan* c) {
@@ -574,7 +580,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             if (!(s & 8)) {
                 goto check;
             }
-            if ((err = GBARead(c->chan, (u8*)&c->pkt + readOff, c->status)) != 0) {
+            if ((err = GBARead(c->chan, &((u8*)c)[readOff + 0x28], c->status)) != 0) {
                 goto fail;
             }
             if ((c->status[0] & 0x30) != 0x30) {
@@ -613,6 +619,7 @@ extern "C" void* fn_80300E1C(void* arg) {
         }
         case 7:
         {
+            u32 req;
             u32 expected;
             c->f_d8 = 0;
             c->f_d9 = 1;
@@ -646,7 +653,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                 }
             }
             expected = gbaExpectedId();
-            if (gbaHandshake(c, expected)) {
+            if (gbaHandshakeBuf(c, expected, &req)) {
                 goto wait;
             }
             ((void (*)(GbaChan*, void*))c->cb)(c, msg);
@@ -654,6 +661,7 @@ extern "C" void* fn_80300E1C(void* arg) {
         }
         case 8:
         {
+            u32 req;
             u32 expected;
             c->f_d8 = 0;
             c->f_d9 = 1;
@@ -663,7 +671,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                 goto wait;
             }
             expected = gbaExpectedId();
-            if (gbaHandshake(c, expected)) {
+            if (gbaHandshakeBuf(c, expected, &req)) {
                 goto wait;
             }
             ((void (*)(GbaChan*, void*))c->cb)(c, msg);
@@ -678,7 +686,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                         c->f_d3 = 1;
                         continue;
                     }
-                    c->f_db = c->gameId[3] & 3;
+                    c->f_db = c->sendData[3] & 3;
                     c->f_da = lbl_80541618[c->f_db];
                     if (c->f_db != 0) {
                         if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
@@ -705,7 +713,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                         goto check;
                     }
                 }
-                if ((err = GBAWrite(c->chan, (u8*)c + (writeOff + 0x68), c->status)) != 0) {
+                if ((err = GBAWrite(c->chan, &c->sendData[writeOff], c->status)) != 0) {
                     goto fail;
                 }
                 if ((c->status[0] & ~2) != 0x30) {
