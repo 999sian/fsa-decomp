@@ -111,6 +111,9 @@ extern "C" void fn_80391D44(void* this_) {
 extern const f32 lbl_80543188;
 extern const f32 lbl_8054319C;
 extern const f32 lbl_80543190;
+static inline void screDigit(int n, const JGeometry::TVec3f pos, const JUtility::TColor color) {
+    add__7RupyNumFUcifQ28JUtility6TColor(lbl_8053AF50, n, (int)&pos, lbl_80543188, color);
+}
 extern "C" void fn_80391F58(void* this_) {
     u8* p = (u8*)this_;
     f32 alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
