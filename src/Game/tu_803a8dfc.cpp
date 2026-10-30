@@ -2974,7 +2974,7 @@ extern "C" void fn_803B236C(void* this_) {
         }
         if(*(s16*)(self+0x45a)<=0) {
             *(s16*)(self+0x458)=*(s16*)(lbl_8050DB0C+0x50);
-            *(s16*)(self+0x45a)=(int)(lbl_8053AAF8->rnd.get_ufloat_1()*(f32)*(s16*)(lbl_8050DB0C+0x52));
+            *(s16*)(self+0x45a)=(lbl_8053AAF8->rnd.get_ufloat_1()*(f32)*(s16*)(lbl_8050DB0C+0x52));
         } else {
             *(s16*)(self+0x458)=20;
             (*(s16*)(self+0x45a))--;
