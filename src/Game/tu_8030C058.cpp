@@ -327,7 +327,7 @@ extern "C" f32* fn_8023E3B8(s32);
 extern "C" f32* fn_8023E32C(s32);
 
 static inline f32 cameraCos(f32 x) {
-    if (x < lbl_805416C8) x = -x;
+    if (x < 0.0f) x = -x;
     return JMath::sincosTable_.mTable[(u16)((2048.0f / 360.0f) * x) & 2047].second;
 }
 static inline f32 cameraBlend(s32 timer, f32 speed) {
@@ -357,11 +357,11 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
     s32 count = 0;
     f32* cfg = (f32*)entry;
     f32 value = *(f32*)(p + 0x1d4);
-    if (value < lbl_805416C8) {
+    if (value < 0.0f) {
         *(f32*)(p + 0x1d4) = cfg[0];
     } else {
         f32 step = lbl_805416F4 * (cfg[0] - value);
-        if (step < lbl_805416C8) {
+        if (step < 0.0f) {
             if (step < lbl_805416F8) step = lbl_805416F8;
         } else {
             if (step > lbl_805416FC) step = lbl_805416FC;
@@ -369,18 +369,18 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
         *(f32*)(p + 0x1d4) = value + step;
     }
     value = *(f32*)(p + 0x1d8);
-    if (value < lbl_805416C8) {
+    if (value < 0.0f) {
         *(f32*)(p + 0x1d8) = cfg[1];
     } else {
         f32 step = lbl_805416F4 * (cfg[1] - value);
-        if (step < lbl_805416C8) {
+        if (step < 0.0f) {
             if (step < lbl_805416F8) step = lbl_805416F8;
         } else {
             if (step > lbl_805416FC) step = lbl_805416FC;
         }
         *(f32*)(p + 0x1d8) = value + step;
     }
-    if (old && !(lbl_805416C8 == old[0] && lbl_805416C8 == old[2] && lbl_805416C8 == old[1] && lbl_805416C8 == old[3])) {
+    if (old && !(0.0f == old[0] && 0.0f == old[2] && 0.0f == old[1] && 0.0f == old[3])) {
         count = *(s32*)(p + 0x7f0);
         if (p[0x7f4]) {
             s32 kind = *(s32*)(p + 0x7f8);
@@ -434,7 +434,7 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
             if (entry[0x20] && !first) {
                 f32 step = *(f32*)(p + 0x1d4) - cfg[2];
                 x = pos[0]; y = pos[1];
-                if (lbl_805416C8 != step) {
+                if (0.0f != step) {
                     if (x < left) { if (x < left - step) x += step; else x = left; }
                     else if (x > right) { if (x > right + step) x -= step; else x = right; }
                     if (y < top) { if (y < top - step) y += step; else y = top; }
@@ -466,9 +466,9 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
         *(s32*)(p + 0x838) = -1;
     }
     if (!p[0x7f4]) *(s32*)(p + 0x83c) = -1;
-    if (old && !(lbl_805416C8 == old[0] && lbl_805416C8 == old[2] && lbl_805416C8 == old[1] && lbl_805416C8 == old[3])) {
+    if (old && !(0.0f == old[0] && 0.0f == old[2] && 0.0f == old[1] && 0.0f == old[3])) {
         f32 step;
-        if (p[0x7f4] || count > 0) step = lbl_805416C8;
+        if (p[0x7f4] || count > 0) step = 0.0f;
         else step = cfg[5];
         if (left > old[0]) { if (left < old[0] + step) left = old[0]; else left -= step; }
         if (right < old[2]) { if (right > old[2] - step) right = old[2]; else right += step; }
@@ -484,7 +484,7 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
                 *(f32*)(p + 0x824) = old[3];
             }
             if (*(s32*)(p + 0x838) > 0) {
-                f32 w = cameraBlend(*(s32*)(p + 0x838), lbl_80541700);
+                f32 w = cameraBlend(*(s32*)(p + 0x838), 1.0f / 70.0f);
                 blended = 1;
                 --*(s32*)(p + 0x838);
                 f32 inv = lbl_805416D8 - w;
@@ -503,7 +503,7 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
                 *(f32*)(p + 0x834) = old[3];
             }
             if (*(s32*)(p + 0x83c) > 0) {
-                f32 w = cameraBlend(*(s32*)(p + 0x83c), lbl_8054170C);
+                f32 w = cameraBlend(*(s32*)(p + 0x83c), 1.0f / 40.0f);
                 blended = 1;
                 --*(s32*)(p + 0x83c);
                 f32 inv = lbl_805416D8 - w;
@@ -521,11 +521,11 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
             diff[1] = right - old[2];
             diff[2] = old[1] - top;
             diff[3] = bottom - old[3];
-            f32 high = lbl_805416C8;
+            f32 high = 0.0f;
             for (s32 k = 0; k < 4; k++) if (diff[k] > high) high = diff[k];
-            f32 low = lbl_805416C8;
+            f32 low = 0.0f;
             for (s32 k = 0; k < 4; k++) if (diff[k] < low) low = diff[k];
-            f32 zeroValue = lbl_805416C8;
+            f32 zeroValue = 0.0f;
             for (s32 k = 0; k < 4; k++) {
                 if (diff[k] < zeroValue) {
                     if (*(s32*)(p + 0x1c4 + k * 4) == 0 || diff[k ^ 1] > zeroValue) {
@@ -535,7 +535,7 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
                 } else negative[k] = zeroValue;
                 if (*(s32*)(p + 0x1c4 + k * 4) > 0) --*(s32*)(p + 0x1c4 + k * 4);
             }
-            zeroValue = lbl_805416C8;
+            zeroValue = 0.0f;
             f32 rate = cfg[3];
             s32 delay = *(s32*)(entry + 0x18);
             for (s32 k = 0; k < 4; k++) {
