@@ -36,6 +36,16 @@ static inline void ezryPlaySe(s32 id) {
     fn_8043D67C(lbl_8053AED0, id, 0, ezryCount());
 }
 
+static inline void ezryFirstSighting() {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+        u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+        if (!(rec[0x87] & 1)) {
+            rec[0x87] |= 1;
+            ezryPlaySe(0x339);
+        }
+    }
+}
+
 struct EzryRandom {
     u32 seed;
     u32 get() {
