@@ -776,6 +776,21 @@ void fn_80271038(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xf); }
 void fn_80271068(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xe); }
 void fn_80271098(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xd); }
 
+u8 fn_80251BFC(char*, s32);
+u8 fn_80240B5C(char*);
+u8 fn_80241498(char*);
+void fn_8024E500(char*);
+u8 fn_80240670(char*);
+u8 fn_80240B70(char*);
+void fn_80236468(s32, s32);
+s32 fn_8024189C(char*);
+void fn_8043D67C(void*, s32, s32, s32);
+extern void* lbl_8053AED0;
+void fn_80134DE4(void* game, s32 a, s32 b);
+u8 fn_8022B1F8(void);
+u8 fn_8022B244(void);
+void fn_8024E694(char*, s32, s32);
+extern u8 lbl_8050EC80[];
 bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
     return false;
 }
