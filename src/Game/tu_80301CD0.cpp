@@ -1301,7 +1301,7 @@ extern "C" void fn_80304D64() {
 }
 
 extern "C" void fn_8030801C(s32 param_1, s32 i);
-extern "C" void fn_80306A94(int ctx, int player);
+extern "C" void fn_80306A94(void* ctx, int player);
 extern "C" void fn_80304FB0(s32 param_1)
 {
     s32 i;
@@ -1310,7 +1310,7 @@ extern "C" void fn_80304FB0(s32 param_1)
         if (lbl_8053ACD0 == 0 || !((*((u8*)lbl_8053AAF8 + 0x82) >> i) & 1)) {
             fn_8030801C(param_1, i);
         } else {
-            fn_80306A94(param_1, i);
+            fn_80306A94((void*)param_1, i);
         }
         lbl_80506D48[i] = (lbl_80506D48[i] + 1) & 3;
     }
@@ -1510,11 +1510,11 @@ static inline void packetPrimaryFlag(Ctl4_80301CD0* header, s32 owner) {
 static inline void packetSecondaryFlag(Ctl4_80301CD0* header, s32 owner) {
     header->x=fn_8023CD74(owner)>>4;
 }
-extern "C" void fn_80306A94(int ctx,int player) {
+extern "C" void fn_80306A94(void* ctx,int player) {
     if(((u8*)lbl_8053AAF8)[0x82] & (u8)(1<<player))
         ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
     else ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=14;
-    fn_803085A4(ctx,player);
+    fn_803085A4((s32)ctx,player);
     s32 owner=fn_8022EA0C(player);
     u8* p=lbl_80506DE8+player*0x68;
     Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
