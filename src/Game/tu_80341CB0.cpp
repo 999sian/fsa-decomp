@@ -73,6 +73,7 @@ extern "C" void fn_80238548(s32 i, s32 b, f32* p, s32 d);
 extern "C" void fn_802F601C(void* obj, f32* pos, f32 a, f32 b, s32 c, s32 d);
 extern "C" void* fn_8013CC50(s32 room, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
 extern "C" void fn_801F0E34(Actor* a, u32 code, u32 z);
+extern "C" void fn_801EE434(void* obj);
 extern "C" void* lbl_8053AB10;
 
 extern "C" void fn_80341CB0(s32 id, f32* pos) {
