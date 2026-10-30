@@ -200,11 +200,10 @@ extern void* lbl_8053AF80;
 extern const f32 lbl_8053DAC4,lbl_8053DAD4,lbl_8053DAD8,lbl_8053DADC,lbl_8053DAE0,lbl_8053DAE4,lbl_8053DAE8,lbl_8053DAEC,lbl_8053DAF0,lbl_8053DAF4,lbl_8053DAF8,lbl_8053DAFC,lbl_8053DB08,lbl_8053DB0C;
 extern s32 lbl_804A0920[];
 static inline f32 slr4Random() {
-    union { u32 bits; f32 value; } out;
-    u32* seed=(u32*)((u8*)lbl_8053AAF8+0xb4);
-    *seed=*seed*0x19660d+0x3c6ef35f;
-    out.bits=(*seed>>9)|0x3f800000;
-    return out.value-1.0f;
+    char* rng=(char*)lbl_8053AAF8;
+    *(u32*)(rng+0xb4)=*(u32*)(rng+0xb4)*0x19660d+0x3c6ef35f;
+    u32 bits=(*(u32*)(rng+0xb4)>>9)|0x3f800000;
+    return *(f32*)&bits-1.0f;
 }
 
 f32 lbl_804A08C0[4][2] = {{-20.0f,-44.0f},{20.0f,-46.0f},{4.0f,-42.0f},{-8.0f,-10.0f}};
@@ -214,10 +213,12 @@ static s32 slr4Attack[40] = {12,13,14,13,12,15,16,15,17,18,19,18,17,20,21,20,22,
 static s32 slr4Anim[24] = {33,32,33,34,35,36,38,37,38,39,40,41,43,42,43,44,45,46,49,47,48,49,50,51};
 static s32 slr4Times[6] = {3,30,2,2,2,5};
 extern "C" void fn_80172DC4(void* this_) {
+    s32 player;
+    s32 i;
     char* p=(char*)this_;
-    s16 angle=0;
+    u16 angle=0;
     s32 direction=0;
-    f32 distance=lbl_8053DAB8;
+    f32 distance=0.0f;
     JGeometry::TVec3f pos;
     if(lbl_8053AB60==1) { (*(f32*)(p+0xc))=(*(f32*)(p+0x2b4)); (*(f32*)(p+0x10))=(*(f32*)(p+0x2b8)); (*(f32*)(p+0x14))=(*(f32*)(p+0x2bc)); return; }
     fn_8030C210(*(void**)(lbl_8053AB10+0x24),p+0xc);
@@ -232,20 +233,23 @@ extern "C" void fn_80172DC4(void* this_) {
         (*(s32*)(p+0x254))=1;(*(s32*)(p+0x250))=60;
     }
     if((*(s32*)(p+0x230))!=8 && (*(s32*)(p+0x230))!=9 && (*(s32*)(p+0xd8))==0) {
-        for(s32 i=0;i<4;i++) {
-            s32 player=fn_801F285C(p,0,0,1,i);
+        for(i=0;i<4;i++) {
+            player=fn_801F285C(p,0,0,1,i);
             if((*(u16*)(p+0x94))!=0) player=(*(u16*)(p+0x94))-1;
             if(player<0) continue;
             if(((u8(*)(s32))fn_80235448)(player)) break;
             f32 dx=(*(f32*)(p+0xc))-fn_8023E724(player)->x;
             f32 dy=(*(f32*)(p+0x10))-fn_8023E724(player)->y;
-            u16 a=(s32)(JMAAtan2Radian(-dx,-dy)*lbl_8053DAC4);
+            f32 radians=JMAAtan2Radian(-dx,-dy);
+            radians *= lbl_8053DAC4;
+            u16 a=(s32)radians;
             if((*(s32*)(p+0x98))!=ClassifyBamAngleToQuadrant(a)) break;
             (*(s32*)(p+0x254))=1;
-            f32 y0=(*(f32*)(p+0x64))+(*(f32*)(p+0x10)), y1=(*(f32*)(p+0x6c))+(*(f32*)(p+0x10));
-            f32 x0=(*(f32*)(p+0x60))+(*(f32*)(p+0xc)), x1=(*(f32*)(p+0x68))+(*(f32*)(p+0xc));
+            f32 px,py,t,x0,y0,x1,y1;
+            py=(*(f32*)(p+0x10));y0=(*(f32*)(p+0x64));y0+=py;y1=(*(f32*)(p+0x6c));y1+=py;
+            px=(*(f32*)(p+0xc));x0=(*(f32*)(p+0x60));x0+=px;x1=(*(f32*)(p+0x68));x1+=px;t=0.5f;
             JGeometry::TVec2f center;
-            center.set(lbl_8053DAC8*(x0-x1)+x1,lbl_8053DAC8*(y0-y1)+y1);
+            center.set(t*(x0-x1)+x1,t*(y0-y1)+y1);
             if((*(u16*)(p+0x94))!=0 || ((*(u16*)(p+0x94))==0 && fn_80237948(player,(f32*)&center))) {
                 fn_801F0E34(p,0x400d1,0);
                 if((*(u16*)(p+0x94))==0) {
@@ -262,10 +266,10 @@ extern "C" void fn_80172DC4(void* this_) {
                 }
                 (*(JGeometry::TVec3f*)(p+0x2a8)).zero();
                 switch((*(s32*)(p+0x98))^1) {
-                case 0: (*(JGeometry::TVec3f*)(p+0x3c)).set(lbl_8053DACC,lbl_8053DAB8,lbl_8053DAB8);break;
-                case 1: (*(JGeometry::TVec3f*)(p+0x3c)).set(lbl_8053DAD0,lbl_8053DAB8,lbl_8053DAB8);break;
-                case 2: (*(JGeometry::TVec3f*)(p+0x3c)).set(lbl_8053DAB8,lbl_8053DACC,lbl_8053DAB8);break;
-                case 3: (*(JGeometry::TVec3f*)(p+0x3c)).set(lbl_8053DAB8,lbl_8053DAD0,lbl_8053DAB8);break;
+                case 0: (*(JGeometry::TVec3f*)(p+0x3c)).set(lbl_8053DACC,0.0f,0.0f);break;
+                case 1: (*(JGeometry::TVec3f*)(p+0x3c)).set(lbl_8053DAD0,0.0f,0.0f);break;
+                case 2: (*(JGeometry::TVec3f*)(p+0x3c)).set(0.0f,lbl_8053DACC,0.0f);break;
+                case 3: (*(JGeometry::TVec3f*)(p+0x3c)).set(0.0f,lbl_8053DAD0,0.0f);break;
                 }
             }
             break;
@@ -283,8 +287,9 @@ extern "C" void fn_80172DC4(void* this_) {
                     else { (*(s32*)(p+0x248))=0;(*(s32*)(p+0x230))=0; }
                     (*(s32*)(p+0x250))=20;
                 }
-                if((*(s32*)(p+0x108))>0 && (*(s32*)(p+0x284))>0 && (*(s32*)(p+0x23c))==1) fn_801F0E34(p,0x4008c,0);
-                else if((*(s32*)(p+0x108))<=0 || (*(s32*)(p+0x284))<=0) {
+                if((*(s32*)(p+0x108))>0 && (*(s32*)(p+0x284))>0) {
+                    if((*(s32*)(p+0x23c))==1) fn_801F0E34(p,0x4008c,0);
+                } else {
                     s32 id=(*(s32*)(p+0x238));
                     if(id>=0) {
                         void* obj=slr4FindActor(id);
@@ -292,13 +297,17 @@ extern "C" void fn_80172DC4(void* this_) {
                     }
                     (*(s32*)(p+0x238))=-1;
                     if((*(s32*)(p+0x4))>=8 && (*(s32*)(p+0x23c))==1) {
-                        for(s32 i=0;i<4;i++) {
-                            s32 id=(*(s32*)(p+0x2c0+i*4));
+                        char* entry;
+                        Actor* obj;
+                        s32 index;
+                        entry=p;
+                        for(index=0;index<4;index++,entry+=4) {
+                            s32 id=(*(s32*)(entry+0x2c0));
                             if(id>=0) {
-                                Actor* obj=(Actor*)slr4FindActor(id);
+                                obj=(Actor*)fn_801F666C(fn_801F856C(),id);
                                 fn_801F0E34(p,0x4008d,0);
                                 if(obj) obj->v07();
-                                (*(s32*)(p+0x2c0+i*4))=-1;
+                                (*(s32*)(entry+0x2c0))=-1;
                             }
                         }
                         (*(s32*)(p+0x230))=8;
@@ -325,19 +334,8 @@ extern "C" void fn_80172DC4(void* this_) {
     if((*(s32*)(p+0x29c))!=2 || (*(s32*)(p+0x264))<4) fn_801F2B7C(p,-100,-1,1);
     else if((s32)((*(u32*)(p+0x90))&0xff)==6) fn_801F2B7C(p,4,-1,3);
     u8 collision=((u8(*)(void*,s32,s32))fn_801F2618)(p,0,0);
-    do {
-        if ((*(s32*)(p+0x230))==0) goto state0;
-        if ((*(s32*)(p+0x230))==1) goto state1;
-        if ((*(s32*)(p+0x230))==2) goto state2;
-        if ((*(s32*)(p+0x230))==3) goto state3;
-        if ((*(s32*)(p+0x230))==4) goto state4;
-        if ((*(s32*)(p+0x230))==5) goto state5;
-        if ((*(s32*)(p+0x230))==6) goto state6;
-        if ((*(s32*)(p+0x230))==7) goto state7;
-        if ((*(s32*)(p+0x230))==8) goto state8;
-        if ((*(s32*)(p+0x230))==9) goto state9;
-        break;
-    state0:
+    switch((*(s32*)(p+0x230))) {
+    case 0:
         if((*(s32*)(p+0x278))>0) --(*(s32*)(p+0x278));
         if((*(s32*)(p+0x278))==0 && (*(s32*)(p+0x290))<=0) {
             (*(s32*)(p+0x240))=0;(*(s32*)(p+0x264))=0;(*(s32*)(p+0x250))=20;
@@ -368,7 +366,7 @@ extern "C" void fn_80172DC4(void* this_) {
             if((*(u32*)(p+0x90))!=2 && (*(u32*)(p+0x90))!=3) (*(s32*)(p+0x230))=1;
         }
         break;
-    state1:
+    case 1:
         if((*(s32*)(p+0x248))==0) { (*(s32*)(p+0x230))=0;break; }
         if((*(s32*)(p+0x24c))==0) {
             (*(s32*)(p+0x24c))=10;
@@ -376,11 +374,11 @@ extern "C" void fn_80172DC4(void* this_) {
             (*(s32*)(p+0x98))=direction;
             if((*(s32*)(p+0x288))==1) angle+=0x8000;
             if((*(s32*)(p+0x258))==0) {
-                (*(f32*)(p+0x2a8))=lbl_8053DADC*JMath::sincosTable_.mTable[(u16)angle>>5].first;
-                (*(f32*)(p+0x2ac))=lbl_8053DADC*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+                (*(f32*)(p+0x2a8))=lbl_8053DADC*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].first;
+                (*(f32*)(p+0x2ac))=lbl_8053DADC*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].second;
                 if((*(s32*)(p+0x4))>=8 && (*(s32*)(p+0x23c))==1) {
-                    (*(f32*)(p+0x2a8))=lbl_8053DAE0*JMath::sincosTable_.mTable[(u16)angle>>5].first;
-                    (*(f32*)(p+0x2ac))=lbl_8053DAE0*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+                    (*(f32*)(p+0x2a8))=lbl_8053DAE0*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].first;
+                    (*(f32*)(p+0x2ac))=lbl_8053DAE0*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].second;
                 }
             }
             (*(s32*)(p+0x29c))=0;
@@ -388,7 +386,7 @@ extern "C" void fn_80172DC4(void* this_) {
         if((*(s32*)(p+0x250))==0 && direction>=0 && distance<lbl_8053DAE4) (*(s32*)(p+0x230))=5;
         if((*(s32*)(p+0x29c))==1 && (*(u8*)(p+0x2a4))==1) (*(s32*)(p+0x230))=4;
         break;
-    state2:
+    case 2:
         ++(*(s32*)(p+0x270));
         if((*(s32*)(p+0x270))>3) { (*(s32*)(p+0x288))=1;(*(s32*)(p+0x270))=3; }
         if((*(s32*)(p+0x244))==0) {
@@ -397,11 +395,11 @@ extern "C" void fn_80172DC4(void* this_) {
             if(direction>=0) {
                 (*(s32*)(p+0x98))=direction;
                 if((*(s32*)(p+0x258))==0) {
-                    (*(f32*)(p+0x2a8))=lbl_8053DAE8*JMath::sincosTable_.mTable[(u16)angle>>5].first;
-                    (*(f32*)(p+0x2ac))=lbl_8053DAE8*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+                    (*(f32*)(p+0x2a8))=lbl_8053DAE8*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].first;
+                    (*(f32*)(p+0x2ac))=lbl_8053DAE8*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].second;
                     if((*(s32*)(p+0x4))>=8 && (*(s32*)(p+0x23c))==1) {
-                        (*(f32*)(p+0x2a8))=lbl_8053DAEC*JMath::sincosTable_.mTable[(u16)angle>>5].first;
-                        (*(f32*)(p+0x2ac))=lbl_8053DAEC*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+                        (*(f32*)(p+0x2a8))=lbl_8053DAEC*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].first;
+                        (*(f32*)(p+0x2ac))=lbl_8053DAEC*JMath::sincosTable_.mTable[((u32)angle&0xffffU)>>5].second;
                     }
                 }
                 (*(s32*)(p+0x29c))=0;
@@ -410,9 +408,9 @@ extern "C" void fn_80172DC4(void* this_) {
         if((*(s32*)(p+0x250))==0 && direction>=0 && distance<lbl_8053DAE4) (*(s32*)(p+0x230))=5;
         if((*(s32*)(p+0x29c))==1 && (*(u8*)(p+0x2a4))==1) (*(s32*)(p+0x230))=4;
         break;
-    state3:
+    case 3:
         (*(s32*)(p+0x29c))=0; (*(s32*)(p+0x244))=(s32)(slr4Random()*lbl_8053DAF0)+50;(*(s32*)(p+0x230))=4;
-    state4:
+    case 4:
         if(collision) {
             (*(JGeometry::TVec3f*)(p+0x3c)).zero();(*(JGeometry::TVec3f*)(p+0x2a8)).zero();(*(s32*)(p+0x240))=8;(*(s32*)(p+0x98))^=1;(*(s32*)(p+0x280))=lbl_804A0920[(*(s32*)(p+0x98))];(*(s32*)(p+0x29c))=0;
             break;
@@ -431,15 +429,15 @@ extern "C" void fn_80172DC4(void* this_) {
         }
         if((*(s32*)(p+0x258))==0) {
             switch((*(s32*)(p+0x98))) {
-            case 0: (*(JGeometry::TVec3f*)(p+0x2a8)).set(lbl_8053DAF4,lbl_8053DAB8,lbl_8053DAB8);break;
-            case 1: (*(JGeometry::TVec3f*)(p+0x2a8)).set(lbl_8053DAF8,lbl_8053DAB8,lbl_8053DAB8);break;
-            case 2: (*(JGeometry::TVec3f*)(p+0x2a8)).set(lbl_8053DAB8,lbl_8053DAF4,lbl_8053DAB8);break;
-            case 3: (*(JGeometry::TVec3f*)(p+0x2a8)).set(lbl_8053DAB8,lbl_8053DAF8,lbl_8053DAB8);break;
+            case 0: (*(JGeometry::TVec3f*)(p+0x2a8)).set(lbl_8053DAF4,0.0f,0.0f);break;
+            case 1: (*(JGeometry::TVec3f*)(p+0x2a8)).set(lbl_8053DAF8,0.0f,0.0f);break;
+            case 2: (*(JGeometry::TVec3f*)(p+0x2a8)).set(0.0f,lbl_8053DAF4,0.0f);break;
+            case 3: (*(JGeometry::TVec3f*)(p+0x2a8)).set(0.0f,lbl_8053DAF8,0.0f);break;
             }
         }
         if(direction>=0) {
             (*(JGeometry::TVec3f*)(p+0x3c)).zero();(*(JGeometry::TVec3f*)(p+0x2a8)).zero();
-            pos.set((*(f32*)(p+0xc)),(*(f32*)(p+0x10)),(*(f32*)(p+0x14)));pos.y+=lbl_8053DAFC;
+            pos.set(*(JGeometry::TVec3f*)(p+0xc));pos.y+=lbl_8053DAFC;
             fn_801F0E34(p,0x40088,0);
             fn_8013CC50((*(u32*)(p+0x4)),&pos,0x33b,0,1,0,0,1,lbl_8053DAC0);
             (*(s32*)(p+0x29c))=0;
@@ -447,12 +445,12 @@ extern "C" void fn_80172DC4(void* this_) {
             else { (*(s32*)(p+0x248))=0;(*(s32*)(p+0x230))=0; }
         }
         break;
-    state5:
+    case 5:
         (*(JGeometry::TVec3f*)(p+0x3c)).zero();(*(JGeometry::TVec3f*)(p+0x2a8)).zero();(*(s32*)(p+0x26c))=0;(*(s32*)(p+0x29c))=2;(*(s32*)(p+0x230))=6;
-    state6:
+    case 6:
         (*(u16*)(p+0x236))=angle;
         if((*(s32*)(p+0x264))<3) break;
-        pos.set((*(f32*)(p+0xc)),(*(f32*)(p+0x10)),(*(f32*)(p+0x14)));
+        pos.set(*(JGeometry::TVec3f*)(p+0xc));
         (*(f32*)(p+0xc))=pos.x;(*(f32*)(p+0x10))=pos.y;(*(f32*)(p+0x14))=pos.z;
         if((*(u8*)(p+0x2a4))==1) {
             ++(*(s32*)(p+0x26c));
@@ -468,26 +466,26 @@ extern "C" void fn_80172DC4(void* this_) {
             }
         }
         break;
-    state7:
+    case 7:
         if((*(u8*)(p+0x2a4))==1) {
             (*(s32*)(p+0x29c))=0;
             if((*(u32*)(p+0x90))==4 || (*(u32*)(p+0x90))==5 || (*(u32*)(p+0x90))==6) (*(s32*)(p+0x230))=2;
             else { (*(s32*)(p+0x248))=0;(*(s32*)(p+0x230))=0; }
         }
         break;
-    state8:
+    case 8:
         (*(s32*)(p+0x248))=150;(*(s32*)(p+0x230))=9;
-    state9:
+    case 9:
         if((*(s32*)(p+0x248))!=0) {
             if(!((*(s32*)(p+0x248))&7)) {
-                pos.set((*(f32*)(p+0xc)),(*(f32*)(p+0x10)),(*(f32*)(p+0x14)));
+                pos.set(*(JGeometry::TVec3f*)(p+0xc));
                 pos.x+=lbl_8053DB08-lbl_8053DB0C*slr4Random();
                 pos.y+=lbl_8053DB08-lbl_8053DB0C*slr4Random();
                 Actor_CreateByID(fn_801F856C(),0x48424d42,(*(u32*)(p+0x4)),&pos,7,-1,-1);
             }
         } else v07__5ActorFv(p);
         break;
-    } while(0);
+    }
     if((*(s32*)(p+0x240))>0)--(*(s32*)(p+0x240));
     if((*(s32*)(p+0x244))>0)--(*(s32*)(p+0x244));
     if((*(s32*)(p+0x248))>0)--(*(s32*)(p+0x248));
