@@ -350,7 +350,8 @@ static inline void jijiFace(u8* p,s32 player) {
         f32 dist;
         fn_801EE558(p,&dir,&dist,player);
         if(dist<100.0f) {
-            u16 ang=(u16)(s32)(JMAAtan2Radian(-dir.x,-dir.y)*lbl_8054304C);
+            f32 rad=JMAAtan2Radian(-dir.x,-dir.y);
+            u16 ang=(u16)(s32)(rad*lbl_8054304C);
             if(ang<0x2000 || ang>=0xe000) *(s32*)(p+0x248)=3;
             else if(ang>=0x2000 && ang<0x6000) *(s32*)(p+0x248)=1;
             else if(ang>=0x6000 && ang<=0xa000) *(s32*)(p+0x248)=2;
