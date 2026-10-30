@@ -927,6 +927,16 @@ static inline void msgInitFontSize(MsgWindow* w) {
     f32 width=w->fontW;
     w->m14->setScale(s,width);
 }
+
+static inline void msgSizes(MsgWindow* w,f32 scale) {
+    J2DTextBox::TFontSize fs;
+    fs.x=w->fontW*scale;fs.y=w->fontH*scale;
+    setTBFontSize((J2DTextBox*)w->screen->search('Tm01'),fs);
+    ((J2DTextBox*)w->screen->search('Tm01'))->setLineSpace(w->lineSpace*lbl_8054321C);
+    setTBFontSize((J2DTextBox*)w->screen->search('Tm02'),fs);
+    ((J2DTextBox*)w->screen->search('Tm02'))->setLineSpace(w->lineSpace*lbl_8054321C);
+}
+
 static inline void msgLineSpace(J2DScreen* screen,u64 tag,f32 spacing) {
     ((J2DTextBox*)screen->search(tag))->setLineSpace(spacing);
 }
@@ -1054,8 +1064,9 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     { u8* processor=*(u8**)(p+0x14); *(void**)(processor+0x2c0)=p+0x1ab; *(void**)(processor+0x2c4)=p+0x2ab; }
     *(void**)(*(u8**)(p+0x14)+0x2d8)=*(void**)(p+0x3c0);
     { J2DTextBox* tb=(J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'); (*(f32*)(p+0x60))=tb->mFontSize.x; (*(f32*)(p+0x64))=tb->mFontSize.y; }
-    (*(f32*)(p+0xb0))=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->mLineSpacing;
+    f32 lineSpace=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->mLineSpacing;
     f32 scale=lbl_8054321C;
+    (*(f32*)(p+0xb0))=lineSpace;
     (*(f32*)(p+0xb4))=scale;
     J2DTextBox::TFontSize fs;
     fs.x=(*(f32*)(p+0x60))*scale;fs.y=(*(f32*)(p+0x64))*scale;
