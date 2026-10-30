@@ -1043,6 +1043,18 @@ if(ent && *(s32*)(ent+0x30)!=-1) fn_802F6800(this_,pos,0,0,0,(s32)tiles,ent);
 }
 }
 
+static inline void WarpTextureVertex802F(u8* self,s32 index,f32 depth,f32 u,f32 v,f32 s,f32 t) {
+    u32 buffer=*(s32*)(self+0x2388);
+    f32* vertex=*(f32**)(self+0x100+buffer*4)+index*3;
+    u8* color=*(u8**)(self+0x108+buffer*4)+index*4;
+    f32 y=vertex[1]+*(f32*)(self+0x236c);
+    f32 x=vertex[0]+*(f32*)(self+0x2368);
+    f32 z=vertex[2]+depth;
+    u8 r=color[0],g=color[1],b=color[2],a=color[3];
+    GXWGFifo.f32=x;GXWGFifo.f32=depth+y;GXWGFifo.f32=z;
+    GXWGFifo.u8=r;GXWGFifo.u8=g;GXWGFifo.u8=b;GXWGFifo.u8=a;
+    GXWGFifo.f32=u;GXWGFifo.f32=v;GXWGFifo.f32=s;GXWGFifo.f32=t;
+}
 extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
     u8* ent=(u8*)ptr;
     u8* timg=(u8*)a;
