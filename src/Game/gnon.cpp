@@ -123,7 +123,7 @@ static inline void gnonSetRotation(f32 (*m)[4], f32 rx, f32 ry, f32 rz, f32 scal
     f32 cz;
     f32 cs;
     f32 cc;
-    f32 cx, cy, sz, sy, sx;
+    f32 sx, sy, sz, cy, cx;
     sx = sin(rx);
     sy = sin(ry);
     sz = sin(rz);
@@ -155,6 +155,9 @@ static inline void gnonSetScale(f32 (*m)[4], f32 x, f32 y, f32 z) {
     m[2][2] = z;
 }
 extern "C" void fn_80192090(char* this_) {
+    f32 z;
+    f32 y;
+    f32 x;
     GnonDrawTables* tables = (GnonDrawTables*)lbl_804A1FF8;
     DrawRec rec;
     f32 m[3][4];
@@ -165,9 +168,9 @@ extern "C" void fn_80192090(char* this_) {
     if (type == 0x1f) {
         return;
     }
-    f32 x = *(f32*)(this_ + 0xc);
-    f32 y = *(f32*)(this_ + 0x10);
-    f32 z = *(f32*)(this_ + 0x14);
+    x = *(f32*)(this_ + 0xc);
+    y = *(f32*)(this_ + 0x10);
+    z = *(f32*)(this_ + 0x14);
     if (type != 0) {
         if (type == 0x1e) {
             rec.b1f = 0;
