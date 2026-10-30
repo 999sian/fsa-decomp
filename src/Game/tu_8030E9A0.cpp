@@ -197,8 +197,11 @@ static inline bool SmriCheckGround(SmriActor* p) {
 static inline void SmriPlayerBox(SmriActor* p, JGeometry::TBox2f& box) {
     for(s32 i=0;i<4;i++){
         if(p->players[i]==1){
-            if(!fn_8022DB04(i)) fn_80239878(i,&box,p->field_04,(s32)p->field_198);
-            else { s32 handle=p->field_198; if(fn_80238CB4(i)==handle) fn_80239878(i,&box,p->field_04,(s32)p->field_198); }
+            if(fn_8022DB04(i)) {
+                s32 handle=p->field_198;
+                if(fn_80238CB4(i)!=handle) continue;
+            }
+            fn_80239878(i,&box,p->field_04,(s32)p->field_198);
         } else if(!fn_8023B0F4(i,&box,p->field_04,0,lbl_80541740)) p->players[i]=1;
     }
 }
