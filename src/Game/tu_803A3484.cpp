@@ -53,17 +53,18 @@ extern "C" void draw__17JPAEmitterManagerFPC11JPADrawInfoUc(void*, void*, u8);
 extern "C" u32 OSGetProgressiveMode(void);
 static inline void titleFadePulse(u8* self,f32& value) {
     s32 period=*(s16*)(lbl_8050DB0C+0x29c);
+    s32 twice=2*period;
     s32 hold=*(s16*)(lbl_8050DB0C+0x29e);
     ++*(s16*)(self+0x7c);
     s32 t=*(s16*)(self+0x7c);
-    if(t<=2*period) {
+    if(t<=twice) {
         s32 d;
         if(t<period) d=period-t; else d=t-period;
         f32 base=(f32)*(s16*)(lbl_8050DB0C+0x2a0)/255.0f;
         value=base+((1.0f-base)*(f32)(d*d))/(f32)(period*period);
     } else {
         value=1.0f;
-        if(t>=hold+2*period) *(s16*)(self+0x7c)=0;
+        if(t>=hold+twice) *(s16*)(self+0x7c)=0;
     }
 }
 
@@ -88,20 +89,7 @@ extern "C" void fn_803A44D8(u8* this_) {
         fn_80427D2C(*(void**)(this_ + 0x48), 0, 0, 0, 0);
         if (lbl_80529DEC[0x249] != 0 && *(s16*)(this_ + 0x80) != 0) {
             if ((fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) || fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) && *(s16*)(this_ + 0x82) == 0) {
-                int period = *(s16*)(lbl_8050DB0C + 0x29c);
-                int hold = *(s16*)(lbl_8050DB0C + 0x29e);
-                (*(s16*)(this_ + 0x7c))++;
-                int t = *(s16*)(this_ + 0x7c);
-                if (t <= period * 2) {
-                    int d = (t < period) ? period - t : t - period;
-                    f32 base = (f32)*(s16*)(lbl_8050DB0C + 0x2a0) / 255.0f;
-                    scale = base + ((1.0f - base) * (f32)(d * d)) / (f32)(period * period);
-                } else {
-                    scale = 1.0f;
-                    if (t >= hold + period * 2) {
-                        *(s16*)(this_ + 0x7c) = 0;
-                    }
-                }
+                titleFadePulse(this_,scale);
             }
             fn_8013B490(lbl_8053AB10);
             drawTitleScreen(this_, scale, FALSE);
@@ -152,20 +140,7 @@ extern "C" void fn_803A44D8(u8* this_) {
             }
             if (*(s16*)(this_ + 0x6e) == 1) {
                 if ((fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) || fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) && *(s16*)(this_ + 0x82) == 0) {
-                    int period = *(s16*)(lbl_8050DB0C + 0x29c);
-                    int hold = *(s16*)(lbl_8050DB0C + 0x29e);
-                    (*(s16*)(this_ + 0x7c))++;
-                    int t = *(s16*)(this_ + 0x7c);
-                    if (t <= period * 2) {
-                        int d = (t < period) ? period - t : t - period;
-                        f32 base = (f32)*(s16*)(lbl_8050DB0C + 0x2a0) / 255.0f;
-                        scale = base + ((1.0f - base) * (f32)(d * d)) / (f32)(period * period);
-                    } else {
-                        scale = 1.0f;
-                        if (t >= hold + period * 2) {
-                            *(s16*)(this_ + 0x7c) = 0;
-                        }
-                    }
+                    titleFadePulse(this_,scale);
                 }
             }
             drawTitleScreen(this_, scale, TRUE);
