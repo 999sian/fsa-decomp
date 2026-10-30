@@ -88,6 +88,9 @@ extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
 extern "C" s32 fn_80230CFC(s32);
 extern "C" void fn_80230498(s32,void*,s32,s32,s32,s32,s32);
 extern "C" u8 fn_801F6758(f32*,s32,f32);
+static inline u8 osinRoomCheck(Actor* actor, f32 margin) {
+    return fn_801F6758(&actor->field_0C.x,actor->field_04,margin);
+}
 extern "C" u8 fn_801F2618(Actor*,s32,s32);
 extern "C" void fn_80239914(void*,s32,s32);
 extern "C" u8 fn_8023F264(s32);
@@ -119,31 +122,29 @@ extern const f32 lbl_80541C98;
 extern const f32 lbl_80541C9C;
 #pragma opt_propagation off
 extern "C" void fn_803279D0(Osin* p) {
-    if(p->scale<lbl_80541C6C) {
+    if(p->scale<1.0f) {
         if((u8)p->v11()==1 && p->hidden==1) {
             fn_8013CC50((void*)p->field_04,&p->field_0C,0x503,1,0,0,0,1,(f32)(p->size+1));
             fn_801F0E34(p,0x30003,0);
             p->hidden=0;
         }
         if(p->hidden==0) {
-            p->scale+=lbl_80541C78;
-            if(p->scale>=lbl_80541C6C) p->scale=lbl_80541C6C;
+            p->scale+=0.1f;
+            if(p->scale>=1.0f) p->scale=1.0f;
         }
         return;
     }
     s32 blocked = 0;
     HitBox box;
-    f32 x=p->field_0C.x;
-    f32 y=p->field_0C.y;
+    JGeometry::TVec2<f32> xy;
+    xy.set(p->field_0C.x,p->field_0C.y);
     box.set(*(HitBox*)&p->field_60);
-    box.i.x+=x;
-    box.i.y+=y;
-    box.f.x+=x;
-    box.f.y+=y;
-    HitBox inset = box;
-    inset.i.x+=lbl_80541C7C;
-    inset.i.y-=lbl_80541C80;
-    inset.f.x-=lbl_80541C7C;
+    box.addPos(xy);
+    HitBox inset;
+    inset = box;
+    inset.i.x+=4.0f;
+    inset.i.y-=2.0f;
+    inset.f.x-=4.0f;
     *(JGeometry::TVec3<f32>*)&p->field_0C+=*(JGeometry::TVec3<f32>*)&p->field_3C;
     if(p->field_94==2 || p->field_94==3) {
         for(s32 i=3;i>=0;i--) {
@@ -154,7 +155,7 @@ extern "C" void fn_803279D0(Osin* p) {
             }
         }
     }
-    if(!fn_801F6758(&p->field_0C.x,p->field_04,lbl_80541C84)) blocked=fn_801F2618(p,0,0);
+    if(!((u8 (*)(const Vec*,s32,f32))fn_801F6758)(&p->field_0C,p->field_04,-40.0f)) blocked=fn_801F2618(p,0,0);
     p->weight=0;
     fn_80239914(&box,p->field_04,p->field_198);
     switch(p->field_94) {
@@ -165,7 +166,7 @@ extern "C" void fn_803279D0(Osin* p) {
         p->players[3]=0;
         for(s32 i=0;i<4;i++) {
             if(fn_8023F264(i) && !fn_8023EA28(i) && p->players[i]==0) {
-                p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
+                p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,0.0f);
                 if(p->players[i]!=0 && fn_8023E724(i)->y<p->field_0C.y) {
                     if(fn_8022CAF8(i)==4) p->weight++;
                     else p->weight+=fn_8022E970(i);
@@ -180,24 +181,25 @@ extern "C" void fn_803279D0(Osin* p) {
         }
         if(p->complete==1) return;
         if(p->maxWeight!=0 && p->weight<p->maxWeight) p->weight=p->maxWeight;
-        if(p->weight>1) {
-            if(!blocked && lbl_80541C88*(f32)(p->weight-1)+p->origin.y>p->field_0C.y) {
-                p->field_3C.y=lbl_80541C8C;
+        s32 weight=p->weight;
+        if(weight>1) {
+            if(!blocked && 48.0f*(f32)(weight-1)+p->origin.y>p->field_0C.y) {
+                p->field_3C.y=0.5f;
                 p->frame=1;
-                if(p->field_94!=0 && p->weight>=p->maxWeight) p->maxWeight=p->weight;
-            } else if(!blocked && lbl_80541C88*(f32)(p->weight-1)+p->origin.y<p->field_0C.y) {
-                p->field_3C.y=lbl_80541C90;
+                if(p->field_94!=0 && weight>=p->maxWeight) p->maxWeight=weight;
+            } else if(!blocked && 48.0f*(f32)(weight-1)+p->origin.y<p->field_0C.y) {
+                p->field_3C.y=-0.5f;
                 p->frame=0;
             } else {
-                p->field_3C.y=lbl_80541C68; p->frame=0;
+                p->field_3C.y=0.0f; p->frame=0;
             }
-        } else if(p->weight<=1 && p->origin.y<p->field_0C.y) {
-            p->field_3C.y=lbl_80541C90; p->frame=0;
-        } else {p->field_3C.y=lbl_80541C68;p->frame=0;}
+        } else if(weight<=1 && p->origin.y<p->field_0C.y) {
+            p->field_3C.y=-0.5f; p->frame=0;
+        } else {p->field_3C.y=0.0f;p->frame=0;}
         if(p->field_94!=0 && p->weight>=4) {
-            if(lbl_80541C88*(f32)(p->weight-1)+p->origin.y<=p->field_0C.y || blocked) {
+            if(48.0f*(f32)(p->weight-1)+p->origin.y<=p->field_0C.y || blocked) {
                 p->complete=1;
-                p->field_3C.y=lbl_80541C68;
+                p->field_3C.y=0.0f;
                 if(!blocked) p->frame=0;
                 else p->frame=1;
             }
@@ -208,9 +210,9 @@ extern "C" void fn_803279D0(Osin* p) {
         case 0:
             if(!fn_802DCD0C(fn_802D6A9C())) {
                 for(s32 i=0;i<4;i++) {
-                    if(fn_80233EDC(i)==1) break;
+                    if(fn_80233EDC(i)==1) goto osinActivate;
                     if(fn_8023F264(i) && !fn_8023EA28(i)) {
-                        p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
+                        p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,0.0f);
                         if(p->players[i]!=0 && fn_8023E724(i)->y<=box.i.y) {
                             p->weight++;
                             if(fn_8023ED8C(i)) p->weight++;
@@ -219,16 +221,17 @@ extern "C" void fn_803279D0(Osin* p) {
                 }
                 if(p->weight<4) break;
             }
+        osinActivate:
             for(s32 i=0;i<4;i++) fn_80230AD4(i);
             p->state=1;
             p->moving=1;
-            p->field_3C.y=lbl_80541C8C;
+            p->field_3C.y=0.5f;
             break;
         case 1:
-            if(p->field_0C.y-p->origin.y>=lbl_80541C94) {
-                if(p->field_94==2) p->field_3C.x=lbl_80541C6C;
-                else if(p->field_94==3) p->field_3C.x=lbl_80541C98;
-                p->field_3C.y=lbl_80541C68;
+            if(p->field_0C.y-p->origin.y>=8.0f) {
+                if(p->field_94==2) p->field_3C.x=1.0f;
+                else if(p->field_94==3) p->field_3C.x=-1.0f;
+                p->field_3C.y=0.0f;
                 p->state=2;
                 p->timer=240;
             }
@@ -236,14 +239,16 @@ extern "C" void fn_803279D0(Osin* p) {
         case 2:
             p->timer--;
             if(p->field_94==2) {
-                if(p->field_0C.x-OSIN_F32(fn_802D6A9C(),0xd4)>lbl_80541C9C) {
+                void* bounds=fn_802D6A9C();
+                if(p->field_0C.x-OSIN_F32(bounds,0xd4)>40.0f) {
                     s32 area = OSIN_S32(fn_802D6A9C(),0x18);
                     void* mgr = fn_802D6A9C();
                     fn_802D9FE8(fn_802D6A9C(),OSIN_S32(mgr,0x14)+1,area);
                     fn_80136798(lbl_8053AAF8,17,0);
                 }
             } else if(p->field_94==3) {
-                if(p->field_0C.x-OSIN_F32(fn_802D6A9C(),0xcc)<lbl_80541C84) {
+                void* bounds=fn_802D6A9C();
+                if(p->field_0C.x-OSIN_F32(bounds,0xcc)<-40.0f) {
                     s32 area=OSIN_S32(fn_802D6A9C(),0x18);
                     void* mgr=fn_802D6A9C();
                     fn_802D9FE8(fn_802D6A9C(),OSIN_S32(mgr,0x14)-1,area);
@@ -252,17 +257,17 @@ extern "C" void fn_803279D0(Osin* p) {
             }
             if(blocked || p->timer==0) {
                 JGeometry::setTVec3f(&p->field_0C.x,&p->origin.x);
-                p->field_3C.x=lbl_80541C68;
-                p->field_3C.y=lbl_80541C90;
+                p->field_3C.x=0.0f;
+                p->field_3C.y=-0.5f;
                 p->state=3;
             }
             break;
         case 3:
-            if(p->origin.y-p->field_0C.y>=lbl_80541C94) {
+            if(p->origin.y-p->field_0C.y>=8.0f) {
                 JGeometry::setTVec3f(&p->field_0C.x,&p->origin.x);
-                p->field_3C.z=lbl_80541C68;
-                p->field_3C.y=lbl_80541C68;
-                p->field_3C.x=lbl_80541C68;
+                p->field_3C.z=0.0f;
+                p->field_3C.y=0.0f;
+                p->field_3C.x=0.0f;
                 for(s32 i=0;i<4;i++) fn_80230224(i,0);
                 fn_80231368();
                 if(p->field_94==2) p->field_94=3;
@@ -273,7 +278,7 @@ extern "C" void fn_803279D0(Osin* p) {
         case 4:
             for(s32 i=0;i<4;i++) {
                 if(fn_8023F264(i) && !fn_8023EA28(i)) {
-                    p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
+                    p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,0.0f);
                     if(p->players[i]!=0 && fn_8023E724(i)->y<=box.i.y) {
                         p->weight++;
                         if(fn_8023ED8C(i)) p->weight++;
