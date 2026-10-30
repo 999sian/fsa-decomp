@@ -294,7 +294,7 @@ static inline void SHBL_updateTrail(u8* p) {
         pos.y=lbl_8053C498*F(p,0x260)+F(p,0x10);
         fn_8013CB44(P(p,0x374),&pos,0,0,1);
         B(P(p,0x374),0xbb)=0x80;
-        if(F(p,0x264)<lbl_8053C49C) U(P(p,0x374),0xf4)|=1;
+        if(F(p,0x264)<0.2f) U(P(p,0x374),0xf4)|=1;
         else U(P(p,0x374),0xf4)&=~1;
     }
 }
