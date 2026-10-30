@@ -89,7 +89,8 @@ static inline void key0Register(char* p) {
 
 static inline void key0RegisterPt(char* p) {
     u32 id = *(u32*)(p + 0x238);
-    fn_802D6C10(fn_802D6A9C(), key0Point(p + 0x230), id);
+    const Key0Pt& pt = Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
+    fn_802D6C10(fn_802D6A9C(), pt, id);
 }
 
 extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
@@ -753,7 +754,7 @@ extern "C" void fn_802C3AE4(char* p) {
             if (kind==4) goto create;
             if (kind==5) {
 create:
-                Actor_CreateByID(fn_801F856C(), 0x544b5241, *(s32*)(p+4), p+0xc, (kind+(i<<12))+0x210, -1, -1);
+                Actor_CreateByID(fn_801F856C(), 0x544b5241, *(s32*)(p+4), p+0xc, kind + (i << 12) + 0x210, -1, -1);
                 key0Register(p);
                 detach__5ActorFv(p);
                 return;
@@ -850,9 +851,7 @@ create:
         else *(f32*)(p+0xc)+=lbl_80540C84;
     }
     if (*(s32*)(p+0x240)!=10) {
-        u32 a=*(u32*)(p+0x23c)<<30;
-        u32 b=*(u8*)(p+0x2b5)<<29;
-        u32 packed=a | b | ((*(u32*)(p+0x280)<<24)&0x1f000000) | (*(u32*)(p+4)&0xff);
+        u32 packed=key0PackActorFlags((u8*)p);
         if (!fn_802DCD0C(fn_802D6A9C())) {
             u32 x18=*(u32*)((u8*)fn_802D6A9C()+0x18);
             packed|=((x18&0xff)<<8) | ((*(u32*)((u8*)fn_802D6A9C()+0x14)&0xff)<<16);
@@ -868,11 +867,7 @@ create:
             handled=1;
             goto done;
         }
-    } else {
-        if (tile!=0xe) {
-            handled=0;
-            goto done;
-        }
+    } else if (tile==0xe) {
         if (fn_802DE9A0()) {
             fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540C7C,0x2a9,-1,1,0,0,1);
             fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540C7C,0x2aa,0,0,0,0,1);
@@ -882,6 +877,9 @@ create:
             fn_8013CC50(*(s32*)(p+4),p+0xc,lbl_80540C7C,0x45f,0,0,0,0,1);
             fn_801F0E34(p,0x5003f,0);
         }
+    } else {
+        handled=0;
+        goto done;
     }
     handled=1;
     *(u8*)(p+0x2b0)=handled;
