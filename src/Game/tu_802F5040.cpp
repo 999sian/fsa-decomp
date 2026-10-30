@@ -1055,35 +1055,49 @@ static inline void WarpTextureVertex802F(u8* self,s32 index,f32 depth,f32 u,f32 
     GXWGFifo.u8=r;GXWGFifo.u8=g;GXWGFifo.u8=b;GXWGFifo.u8=a;
     GXWGFifo.f32=u;GXWGFifo.f32=v;GXWGFifo.f32=s;GXWGFifo.f32=t;
 }
+extern "C" u8 fn_802DCD0C(void*);
+extern "C" f32 lbl_80541540,lbl_80541544;
+static inline void WarpTextureOffsetVertex802F(u8* self,s32 vertexOffset,s32 colorOffset,f32 depth,f32 u,f32 v,f32 s,f32 t) {
+    u32 buffer=*(s32*)(self+0x2388);
+    f32* vertex=(f32*)(*(u8**)(self+0x100+buffer*4)+vertexOffset);
+    u8* color=*(u8**)(self+0x108+buffer*4)+colorOffset;
+    f32 y=vertex[1]+*(f32*)(self+0x236c);
+    f32 x=vertex[0]+*(f32*)(self+0x2368);
+    f32 z=vertex[2]+depth;
+    u8 r=color[0],g=color[1],b=color[2],a=color[3];
+    GXWGFifo.f32=x;GXWGFifo.f32=depth+y;GXWGFifo.f32=z;
+    GXWGFifo.u8=r;GXWGFifo.u8=g;GXWGFifo.u8=b;GXWGFifo.u8=a;
+    GXWGFifo.f32=u;GXWGFifo.f32=v;GXWGFifo.f32=s;GXWGFifo.f32=t;
+}
 extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
     u8* ent=(u8*)ptr;
     u8* timg=(u8*)a;
     f32* pos=(f32*)elem;
     u8* this_=(u8*)base;
     f32 origin[3];
-    u8 tex[0x40];
+
     u8* img;
-    s32 useTex=0;
-    f32 w,h,f27,f26,f30,f31;
+    u8 useTex;
+    s32 row,col,countX,countY;
+    f32 f31,f30,w,h,f27,f26;
     if(!this_[0x2364]) return;
     if(ent && ent[0x21]) {if(fn_802F654C(this_,pos,0,0,(s32)timg,0,ent)) return;}
     if(ent && ent[0x22]) {if(fn_802F6298(this_,(Vec*)pos,0,0,(s32)timg,0,ent)) return;}
-    storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex,timg,0);
-    tex[0x3b]&=2;
-    img=*(u8**)(tex+0x20);
-    w=(f32)*(u16*)(img+2);
-    h=(f32)*(u16*)(img+4);
-    if(ent && ent[0x24] && this_[0x2450]) {
-        useTex=1;
-        fn_8013B1E8(lbl_8053AB10);
-        load__10JUTTextureF11_GXTexMapID(tex,0);
-    }
+    JUTTexture texture((ResTIMG*)timg);
+
+    useTex=0;
+    img=(u8*)texture.mTexInfo;
+    w=(f32)(s32)*(u16*)(img+2);
+    h=(f32)(s32)*(u16*)(img+4);
+    if(ent && ent[0x24] && this_[0xe450])useTex=1;
+    fn_8013B1E8(lbl_8053AB10);
+    texture.load((GXTexMapID)0);
     fn_802F5040(pos,ent,origin);
     f30=lbl_80541520*w;
     f31=lbl_80541520*h;
     f27=pos[0]-f30;
     f26=pos[1]-f31;
-    if(ent && ent[0x23]) {
+    if(ent) {
         if(*(void**)(ent+0x18)) {
             f27+=((f32*)*(u8**)(ent+0x18))[3];
             f26+=((f32*)*(u8**)(ent+0x18))[7];
@@ -1091,6 +1105,14 @@ extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
     }
     f27*=lbl_8054152C;
     f26*=lbl_8054152C;
+
+if(ent&&ent[0x23]&&!*(void**)(ent+0x18)&&!fn_802DCD0C(fn_802D6A9C())) {
+f32 x=pos[0],y=pos[1]-pos[2];u8* mgr=(u8*)fn_802D6A9C();
+bool inside=false;if(x>=*(f32*)(mgr+0xcc)&&y>=*(f32*)(mgr+0xd0)&&x<*(f32*)(mgr+0xd4)&&y<*(f32*)(mgr+0xd8))inside=true;
+if(inside){
+f32 unitU=lbl_80541510/w,unitV=lbl_80541510/h;
+countX=lbl_80541514*w;countY=lbl_80541514*h;
+origin[0]-=f30;origin[1]-=f31;
     GXClearVtxDesc();
     GXSetVtxDesc((GXAttr)9,(GXAttrType)1);
     GXSetVtxDesc((GXAttr)11,(GXAttrType)1);
@@ -1110,19 +1132,131 @@ extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
     GXSetTevSwapMode((GXTevStageID)1,(GXTevSwapSel)0,(GXTevSwapSel)0);
     GXSetTevDirect((GXTevStageID)1);
     GXSetNumTevStages(2);
-    if(useTex) {
-        GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);
-        GXSetNumTexGens(2);
-    }
-    GXSetTevOrder((GXTevStageID)2,(GXTexCoordID)1,(GXTexMapID)1,(GXChannelID)0xff);
-    GXSetTevColorIn((GXTevStageID)2,(GXTevColorArg)0xf,(GXTevColorArg)0,(GXTevColorArg)8,(GXTevColorArg)0xf);
-    GXSetTevAlphaIn((GXTevStageID)2,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)0);
-    GXSetTevColorOp((GXTevStageID)2,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
-    GXSetTevAlphaOp((GXTevStageID)2,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
-    GXSetTevSwapMode((GXTevStageID)2,(GXTevSwapSel)0,(GXTevSwapSel)0);
-    GXSetTevDirect((GXTevStageID)2);
-    GXSetNumTevStages(3);
-    GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,0);
+if(useTex){GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
+u8* mgr=(u8*)lbl_8053AAF8;bool flag;
+if(mgr[0x7f]) {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11;flag=v!=0;}
+else {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11||*(s32*)(mgr+0x4c)==12;flag=v!=0;}
+s32 idx;
+if(flag&&*(void**)(mgr+4))idx=*(s32*)((u8*)fn_802D6A9C()+0x50);else idx=0;
+load__10JUTTextureF11_GXTexMapID(((void**)(this_+0xe428))[idx],1);
+GXSetTevOrder((GXTevStageID)2,(GXTexCoordID)1,(GXTexMapID)1,(GXChannelID)255);
+GXSetTevColorIn((GXTevStageID)2,(GXTevColorArg)15,(GXTevColorArg)0,(GXTevColorArg)8,(GXTevColorArg)15);
+GXSetTevAlphaIn((GXTevStageID)2,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)0);
+GXSetTevColorOp((GXTevStageID)2,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+GXSetTevAlphaOp((GXTevStageID)2,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+GXSetTevSwapMode((GXTevStageID)2,(GXTevSwapSel)0,(GXTevSwapSel)0);
+GXSetTevDirect((GXTevStageID)2);GXSetNumTevStages(3);}
+GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,countX*countY*4);
+f32 oz=origin[2],oy=origin[1],ox=origin[0];
+for(row=0;row<countY;row++){
+s32 y=lbl_80541514*(((f32)(row*8)+oy-oz)-*(f32*)(this_+0x236c));
+if(y<0)y=0;else if(y>64)y=64;
+f32 v=(f32)row*unitV,nextV=v+unitV;
+f32 t=(f32)(row*8)*lbl_8054152C+f26,nextT=lbl_80541534+t;
+for(col=0;col<countX;col++){
+s32 x=lbl_80541514*((f32)(col*8)+ox-*(f32*)(this_+0x2368));
+if(x<0)x=0;else if(x>64)x=64;
+s32 index=y*65+x;
+f32 u=(f32)col*unitU,nextU=u+unitU;
+f32 ss=(f32)(col*8)*lbl_8054152C+f27,nextS=lbl_80541534+ss;
+WarpTextureVertex802F(this_,index,oz,u,v,ss,t);
+WarpTextureVertex802F(this_,index+1,oz,nextU,v,nextS,t);
+WarpTextureVertex802F(this_,index+66,oz,nextU,nextV,nextS,nextT);
+WarpTextureVertex802F(this_,index+65,oz,u,nextV,ss,nextT);
+}
+}
+goto finished;
+}}
+if(ent&&*(void**)(ent+0x18)&&ent[0x25]){
+f32 halfY=lbl_80541520*f31;
+GXClearVtxDesc();
+GXSetVtxDesc((GXAttr)9,(GXAttrType)1);
+GXSetVtxDesc((GXAttr)13,(GXAttrType)1);
+GXSetVtxDesc((GXAttr)14,(GXAttrType)1);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)9,(GXCompCnt)1,(GXCompType)4,0);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)13,(GXCompCnt)1,(GXCompType)4,0);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)14,(GXCompCnt)1,(GXCompType)4,0);
+if(useTex){GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
+u8* mgr=(u8*)lbl_8053AAF8;bool flag;
+if(mgr[0x7f]) {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11;flag=v!=0;}
+else {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11||*(s32*)(mgr+0x4c)==12;flag=v!=0;}
+s32 idx;
+if(flag&&*(void**)(mgr+4))idx=*(s32*)((u8*)fn_802D6A9C()+0x50);else idx=0;
+load__10JUTTextureF11_GXTexMapID(((void**)(this_+0xe428))[idx],1);
+GXSetTevOrder((GXTevStageID)1,(GXTexCoordID)1,(GXTexMapID)1,(GXChannelID)255);
+GXSetTevColorIn((GXTevStageID)1,(GXTevColorArg)15,(GXTevColorArg)0,(GXTevColorArg)8,(GXTevColorArg)15);
+GXSetTevAlphaIn((GXTevStageID)1,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)0);
+GXSetTevColorOp((GXTevStageID)1,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+GXSetTevAlphaOp((GXTevStageID)1,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+GXSetTevSwapMode((GXTevStageID)1,(GXTevSwapSel)0,(GXTevSwapSel)0);
+GXSetTevDirect((GXTevStageID)1);GXSetNumTevStages(2);}
+Vec corners[4];
+Vec a0;a0.x=-f30;a0.y=-halfY;a0.z=halfY;PSMTXMultVecSR((MtxPtr)*(void**)(ent+0x18),&a0,&corners[0]);
+Vec a1;a1.x=f30;a1.y=-halfY;a1.z=halfY;PSMTXMultVecSR((MtxPtr)*(void**)(ent+0x18),&a1,&corners[1]);
+Vec a2;a2.x=f30;a2.y=halfY;a2.z=-halfY;PSMTXMultVecSR((MtxPtr)*(void**)(ent+0x18),&a2,&corners[2]);
+Vec a3;a3.x=-f30;a3.y=halfY;a3.z=-halfY;PSMTXMultVecSR((MtxPtr)*(void**)(ent+0x18),&a3,&corners[3]);
+MtxPtr mat=(MtxPtr)*(void**)(ent+0x18);
+f32 cx=origin[0]+mat[0][3],cy=origin[1]+mat[1][3];
+f32 su=(cx-f30)*lbl_8054152C,sv=(cy-halfY)*lbl_8054152C,eu=(f30+cx)*lbl_8054152C,ev=(halfY+cy)*lbl_8054152C;
+Mtx rotation;
+rotation[0][3]=rotation[1][3]=rotation[2][3]=lbl_805414F8;
+f32 sine=sin(lbl_80541540);f32 cosine=cos(lbl_80541540);
+rotation[0][0]=lbl_80541518;rotation[0][1]=rotation[0][2]=lbl_805414F8;
+rotation[1][0]=lbl_805414F8;rotation[1][1]=cosine;rotation[1][2]=-sine;
+rotation[2][0]=lbl_805414F8;rotation[2][1]=sine;rotation[2][2]=cosine;
+for(s32 i=0;i<4;i++){
+Vec out;PSMTXMultVecSR(rotation,&corners[i],&out);
+f32 divisor=lbl_80541544-out.z;if(divisor<lbl_80541518)divisor=lbl_80541518;
+f32 scale=lbl_80541544/divisor;
+MtxPtr mat=(MtxPtr)*(void**)(ent+0x18);
+corners[i].x=origin[0]+(scale*corners[i].x+mat[0][3]);
+corners[i].y=origin[1]+(corners[i].y+mat[1][3]);
+corners[i].z=origin[2]+(corners[i].z+mat[2][3]);
+}
+GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,4);
+GXWGFifo.f32=corners[0].x;GXWGFifo.f32=corners[0].y;GXWGFifo.f32=corners[0].z;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=su;GXWGFifo.f32=sv;
+GXWGFifo.f32=corners[1].x;GXWGFifo.f32=corners[1].y;GXWGFifo.f32=corners[1].z;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=eu;GXWGFifo.f32=sv;
+GXWGFifo.f32=corners[2].x;GXWGFifo.f32=corners[2].y;GXWGFifo.f32=corners[2].z;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=eu;GXWGFifo.f32=ev;
+GXWGFifo.f32=corners[3].x;GXWGFifo.f32=corners[3].y;GXWGFifo.f32=corners[3].z;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=su;GXWGFifo.f32=ev;
+}else{
+origin[0]-=f30;origin[2]-=f31;
+GXSetClipMode((GXClipMode)0);
+if(useTex){GXClearVtxDesc();
+GXSetVtxDesc((GXAttr)9,(GXAttrType)1);
+GXSetVtxDesc((GXAttr)13,(GXAttrType)1);
+GXSetVtxDesc((GXAttr)14,(GXAttrType)1);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)9,(GXCompCnt)1,(GXCompType)4,0);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)13,(GXCompCnt)1,(GXCompType)4,0);
+GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)14,(GXCompCnt)1,(GXCompType)4,0);
+GXSetTexCoordGen2((GXTexCoordID)0,(GXTexGenType)1,(GXTexGenSrc)4,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
+u8* mgr=(u8*)lbl_8053AAF8;bool flag;
+if(mgr[0x7f]) {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11;flag=v!=0;}
+else {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11||*(s32*)(mgr+0x4c)==12;flag=v!=0;}
+s32 idx;
+if(flag&&*(void**)(mgr+4))idx=*(s32*)((u8*)fn_802D6A9C()+0x50);else idx=0;
+load__10JUTTextureF11_GXTexMapID(((void**)(this_+0xe428))[idx],1);
+GXSetTevOrder((GXTevStageID)1,(GXTexCoordID)1,(GXTexMapID)1,(GXChannelID)4);
+GXSetTevColorIn((GXTevStageID)1,(GXTevColorArg)15,(GXTevColorArg)0,(GXTevColorArg)8,(GXTevColorArg)15);
+GXSetTevAlphaIn((GXTevStageID)1,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)7,(GXTevAlphaArg)0);
+GXSetTevColorOp((GXTevStageID)1,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+GXSetTevAlphaOp((GXTevStageID)1,(GXTevOp)0,(GXTevBias)0,(GXTevScale)0,(GXBool)1,(GXTevRegID)0);
+GXSetTevSwapMode((GXTevStageID)1,(GXTevSwapSel)0,(GXTevSwapSel)0);
+GXSetTevDirect((GXTevStageID)1);GXSetNumTevStages(2);
+f32 eu=w*lbl_8054152C+f27,ev=h*lbl_8054152C+f26;
+GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,4);
+GXWGFifo.f32=origin[0];GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2]+h;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=f27;GXWGFifo.f32=f26;
+GXWGFifo.f32=origin[0]+w;GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2]+h;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=eu;GXWGFifo.f32=f26;
+GXWGFifo.f32=origin[0]+w;GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2];GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=eu;GXWGFifo.f32=ev;
+GXWGFifo.f32=origin[0];GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2];GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=f27;GXWGFifo.f32=ev;
+}else{GXBegin((GXPrimitive)0x80,(GXVtxFmt)0,4);GXWGFifo.f32=origin[0];GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2]+h;GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=lbl_805414F8;
+GXWGFifo.f32=origin[0]+w;GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2]+h;GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_805414F8;
+GXWGFifo.f32=origin[0]+w;GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2];GXWGFifo.f32=lbl_80541518;GXWGFifo.f32=lbl_80541518;
+GXWGFifo.f32=origin[0];GXWGFifo.f32=origin[1];GXWGFifo.f32=origin[2];GXWGFifo.f32=lbl_805414F8;GXWGFifo.f32=lbl_80541518;
+}
+GXSetClipMode((GXClipMode)1);
+}
+finished:
+if(ent&&*(s32*)(ent+0x30)!=-1)fn_802F6800(this_,pos,0,0,(s32)timg,0,ent);
 }
 
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, void* ptr, f32 scaleX, f32 scaleY) {
