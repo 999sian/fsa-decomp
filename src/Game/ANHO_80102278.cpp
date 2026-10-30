@@ -79,7 +79,7 @@ extern "C" void fn_8030C210(void*,void*);
 extern "C" void fn_8022B130();
 extern "C" u8 fn_80384C58(int,int);
 extern const u8 lbl_80539EB8[2];
-static inline u8 anhoStartMessage(int player, int message, int handle, int room, JGeometry::TVec3<f32>& copy, const JGeometry::TVec3<f32>& pos, int mode) {
+static inline u8 anhoStartMessage(const int player, const int message, const int handle, const int room, JGeometry::TVec3<f32>& copy, const JGeometry::TVec3<f32>& pos, int mode) {
     copy = pos;
     return fn_8038AD24(player, message, handle, room, copy, mode);
 }
@@ -91,6 +91,14 @@ static inline u8 anhoStartActorMessage(char* actor, int message, int handle, int
 
 #pragma opt_lifetimes off
 extern "C" void fn_80102398(char* p) {
+    int iB;
+    int iC;
+    int best;
+    char* q;
+    int* delta;
+    char* scoreActor;
+    int* deltaBase;
+    int iA;
     JGeometry::TVec3<f32> pos(*(Vec*)(p + 0xC));
     pos.y -= lbl_8053C1B8;
     JGeometry::TVec3<f32> cam(*(Vec*)(p + 0xC));
@@ -124,7 +132,7 @@ extern "C" void fn_80102398(char* p) {
             s32 room0 = *(s32*)(p+4);
             s32 handle0 = *(s32*)(p+0x198);
             if (anhoStartMessage(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, handle0, room0, temp0, pos, 0)) {
-                for (int i = 0; i < 4; i++) fn_802308E0(i);
+                for (iA = 0; iA < 4; iA++) fn_802308E0(iA);
                 *(s32*)(p + 0x230) = 1;
                 *(s32*)(p + 0x244) = 0;
                 fn_801EE8F4(p, &dir, &dist, *(s32*)(p + 0x23c) + 1);
@@ -158,17 +166,20 @@ extern "C" void fn_80102398(char* p) {
                     *(s32*)(p + 0x230) = 2; *(s32*)(p + 0x244) = 0;
                 } else {
                     fn_8038470C(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32F : 0x32F);
-                    *(s32*)(p + 0x230) = 3; *(s32*)(p + 0x244) = 0;
-                    char* q=p;
-                    for (int i=0;i<4;i++,q+=4) {
-                        *(s32*)(q+0x254) = fn_802373EC(i);
-                        *(s32*)(q+0x264) = fn_8023725C(i);
-                        fn_802372F8(i,9,2);
-                    }
+                    *(s32*)(p + 0x230) = 3; *(s32*)(p + 0x244) = iB = 0;
                     q=p;
-                    for (int i=0;i<4;i++,q+=4) {
-                        if (!fn_8022F514(i)) fn_8023619C(i,-100);
-                        *(s32*)(q+0x274) = fn_80236100(i);
+                    for (;iB<4;iB++,q+=4) {
+                        *(s32*)(q+0x254) = fn_802373EC(iB);
+                        *(s32*)(q+0x264) = fn_8023725C(iB);
+                        fn_802372F8(iB,9,2);
+                    }
+                    iA=0;
+                    q=p;
+                    for (;iA<4;iA++,q+=4) {
+                        if (!fn_8022F514(iA)) {
+                            fn_8023619C(iA,-100);
+                            *(s32*)(q+0x274) = fn_80236100(iA);
+                        }
                     }
                 }
                 break;
@@ -245,19 +256,23 @@ extern "C" void fn_80102398(char* p) {
         if (fn_803865B8(0) && fn_80384C58(0,*(s32*)(p + 0x198))) {
             ((Actor*)p)->v10(255,1);
             *(s32*)(p + 0x230)=7; *(s32*)(p + 0x244)=0; fn_80230534(0);
-            int best=-10000;
-            char* q=p;
-            for (int i=0;i<4;i++,q+=4) {
-                diffs[i]=0;
-                if (!fn_8022F514(i)) {
-                    diffs[i]=fn_80236100(i)-*(s32*)(q+0x274);
-                    if (diffs[i]>best) best=diffs[i];
+            deltaBase = diffs;
+            scoreActor = p;
+            delta = deltaBase;
+            best=-10000;
+            iC=0;
+            int zero = iC;
+            for (;iC<4;iC++,delta++,scoreActor+=4) {
+                *delta=zero;
+                if (!fn_8022F514(iC)) {
+                    *delta=fn_80236100(iC)-*(s32*)(scoreActor+0x274);
+                    if (*delta>best) best=*delta;
                 }
             }
-            q=p;
-            for (int i=0;i<4;i++,q+=4) {
-                if (!fn_8022F514(i) && best != diffs[i])
-                    fn_802372F8(i, *(s32*)(q+0x254), *(s32*)(q+0x264));
+            scoreActor=p;
+            for (iB=0;iB<4;iB++,deltaBase++,scoreActor+=4) {
+                if (!fn_8022F514(iB) && best != *deltaBase)
+                    fn_802372F8(iB, *(s32*)(scoreActor+0x254), *(s32*)(scoreActor+0x264));
             }
             fn_80458FF0(lbl_8053AF80,*(s32*)(p+0x248),1,0);
         }
