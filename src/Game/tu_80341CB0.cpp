@@ -85,9 +85,7 @@ static inline void bombSetSoundArea(JGeometry::TVec3f lo, JGeometry::TVec3f hi) 
 extern const f32 lbl_80542308;
 extern const f32 lbl_8054230C;
 static inline void bombScaleHitBox(u8* p, f32 sx, f32 sy) {
-    f32 lo = lbl_8054230C;
-    f32 hi = lbl_80542308;
-    ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lo * sx, lo * sy, hi * sx, hi * sy);
+    ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lbl_8054230C * sx, lbl_8054230C * sy, lbl_80542308 * sx, lbl_80542308 * sy);
 }
 extern "C" void fn_8030C210(void* cam, void* pos);
 static inline void bombNotifyCamera(void* cam, const JGeometry::TVec3f& pos) {
@@ -313,8 +311,7 @@ extern "C" void fn_80342850(Actor* a) {
     switch (*(u32*)(p + 0x230)) {
     case 0: {
         f32 one = lbl_805422F8;
-        f32 step = one / *(s32*)(p + 0x244);
-        *(f32*)(p + 0x254) += step;
+        *(f32*)(p + 0x254) += one / *(s32*)(p + 0x244);
         *(f32*)(p + 0x258) = *(f32*)(p + 0x254);
         *(f32*)(p + 0x25c) = *(f32*)(p + 0x254);
         bombScaleHitBox(p, *(f32*)(p + 0x254), *(f32*)(p + 0x258));
