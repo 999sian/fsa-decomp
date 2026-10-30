@@ -118,6 +118,7 @@ extern const f32 lbl_80543730;
 extern const f64 lbl_80543738;
 extern const f64 lbl_80543740;
 static inline f32 MenuSquare803F(s32 n) { return n * n; }
+static inline s32 MenuDelayIndex803F(const s32 index) { return index * 5; }
 static inline f32 MenuSelectionOffset803F(const u8* p) { return *(const f32*)(p + 0x130); }
 extern const f32 lbl_80543784;
 extern const f32 lbl_80543788;
@@ -368,8 +369,7 @@ extern const char* lbl_804B0EE8[];
 extern const s16 lbl_80543710[4];
 extern const f32 lbl_80543754;
 extern const f32 lbl_80543758;
-extern "C" void fn_803F1C70(u8* this_) {
-    u8* p = this_;
+extern "C" void fn_803F1C70(u8* p) {
     s32 j;
     s32 rank;
     ResTIMG* img;
