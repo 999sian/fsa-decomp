@@ -145,6 +145,7 @@ extern "C" void fn_8016088C(char* p) {
     fn_8013CB44(*(void**)(p + 0x294), (f32*)(p + 0xc), 0, 0, 1);
 }
 
+#ifndef EZRY_RANDOM_DEFINED
 struct EzryRandom {
     u32 seed;
     u32 get() {
@@ -157,6 +158,7 @@ struct EzryRandom {
         return out.f - lbl_8053D670;
     }
 };
+#endif
 
 extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801F0E34(void* target, s32 soundId, s32 flag);
@@ -251,14 +253,11 @@ extern "C" void fn_80161290(char* p) {
     s32 st = *(s32*)(p + 0x230);
     if (st == 0 || st == 5) {
         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-            register u32 flags;
-            register u8* g;
-            register u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-            flags = e[0x87];
-            if (!(flags & 1)) {
-                e[0x87] = flags | 1;
-                g = lbl_80529DEC;
-                fn_8043D67C(lbl_8053AED0, 0x339, 0, g[0x24f]);
+            u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+            if (!(e[0x87] & 1)) {
+                e[0x87] |= 1;
+                u8* g = lbl_80529DEC;
+                fn_8043D67C(lbl_8053AED0, 0x339, 0, lbl_80529DEC[0x24f]);
             }
         }
     }
