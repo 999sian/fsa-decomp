@@ -42,21 +42,23 @@ struct FsobPath {
 
 #pragma opt_propagation off
 #pragma opt_common_subs off
+static inline f32& fsobX(char* p, int i) { return ((FsobPath*)p)->points[i].x; }
+static inline f32& fsobY(char* p, int i) { return ((FsobPath*)p)->points[i].y; }
 static inline void fsobSample(char* p, u8 seg, u8 step, f32& outX, f32& outY) {
-char* q=p+seg*8;
+
 f32 x,y;
 switch (step) {
-case 0: x=*(f32*)(q+0x2b0); y=*(f32*)(q+0x2b4); break;
-case 16: x=*(f32*)(q+0x2b8); y=*(f32*)(q+0x2bc); break;
+case 0: x=fsobX(p,seg); y=fsobY(p,seg); break;
+case 16: x=fsobX(p,seg+1); y=fsobY(p,seg+1); break;
 default: {
  f32 t, x2, x3, x0, x1;
  f32 y0,y1,y2,y3;
  if (seg==0) { x0=*(f32*)(p+0x2b0); y0=*(f32*)(p+0x2b4); }
- else { x0=*(f32*)(q+0x2a8); y0=*(f32*)(q+0x2ac); }
+ else { x0=fsobX(p,seg-1); y0=fsobY(p,seg-1); }
  u8 n=*(u8*)(p+0x2ad);
- x2=*(f32*)(q+0x2b8); y2=*(f32*)(q+0x2bc);
- x1=*(f32*)(q+0x2b0); y1=*(f32*)(q+0x2b4);
- if(seg==n-2) { x3=x2; y3=y2; } else { x3=*(f32*)(q+0x2c0); y3=*(f32*)(q+0x2c4); }
+ x2=fsobX(p,seg+1); y2=fsobY(p,seg+1);
+ x1=fsobX(p,seg); y1=fsobY(p,seg);
+ if(seg==n-2) { x3=x2; y3=y2; } else { x3=fsobX(p,seg+2); y3=fsobY(p,seg+2); }
  t=0.0625f*(f32)step;
  y=fn_801CD6D8(y0,y1,y2,y3,t);
  x=fn_801CD6D8(x0,x1,x2,x3,t);
@@ -76,8 +78,9 @@ extern "C" void fn_801E801C(char* p) {
 
 #pragma opt_propagation off
 extern "C" void fn_801E8080(char* p) {
+ f32 lastX,lastY;
  JGeometry::TVec2<f32> pos;
- f32 length=0.0f,lastX,lastY;
+ f32 length=0.0f;
  s32 count=(*(u8*)(p+0x2ad)-1)*32+2;
  u8 split=0;
  f32 normal=*(f32*)((char*)fn_801E9AFC()+0x178);
