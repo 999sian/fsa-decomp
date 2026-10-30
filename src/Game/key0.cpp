@@ -907,7 +907,7 @@ extern "C" void fn_801F0E34(char* p, s32 a, s32 b);
 extern "C" void fn_801F0D20(char* p, s32 a);
 extern "C" void fn_801F355C(char* p);
 extern "C" void fn_801F2618(char* p, void* delta, s32 flags);
-extern "C" void fn_8030C210(s32 a, void* b);
+extern "C" void fn_8030C210(s32 a, JGeometry::TVec3<f32> b);
 extern "C" void fn_802C2C30(char* p);
 extern "C" void fn_802C3AE4(char* p);
 extern "C" BOOL fn_801EE24C(char* p);
