@@ -834,8 +834,7 @@ extern "C" void fn_803AB494(void* this_) {
                 ResTIMG* image=(ResTIMG*)fn_80403104('TIMG',((const char**)((u8*)lbl_804AF888+0x108))[rank[i]]);
                 (*(J2DPicture**)(p+0x30+i*4))->changeTexture(image,0);
                 (*(J2DPicture**)(p+0x40+i*4))->changeTexture(image,0);
-                const J2DPicture::TCornerColor& colors=*(J2DPicture::TCornerColor*)(p+0x46c+rank[i]*16);
-                (*(J2DPicture**)(p+0x40+i*4))->setCornerColor(colors);
+                (*(J2DPicture**)(p+0x40+i*4))->setCornerColor(*(J2DPicture::TCornerColor*)(p+0x46c+rank[i]*16));
             }
             k=0;
             for(i=0;i<*(s32*)(p+0x454);i++) {
@@ -3134,13 +3133,16 @@ extern "C" void fn_803B35F8(void* this_, u32 kind) {
     }
 }
 
+static inline void* findScorePane(u8* p, u64 tag) {
+    return ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(tag);
+}
+
 extern "C" void fn_803B38E8(void* this_) {
-    u8* q;
     u8* p = (u8*)this_;
     f32 f31;
     u8* src;
     u8* dst;
-    s32 i;
+    int i;
 
     *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
     *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
@@ -3200,9 +3202,8 @@ extern "C" void fn_803B38E8(void* this_) {
     *(void**)(p + 0x15c) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743032ULL);
     *(void**)(p + 0x168) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x004e646174613035ULL);
     *(void**)(p + 0x16c) = ((Scr_803B1B60*)*(void**)(p + 0x1c))->v3C(0x005072736c746267ULL);
-    i = 0;
-    q = p;
-    for (; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
+        u8* q = p + i * 4;
         ((PaneVt_803B38E8*)*(void**)(q + 0xa8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
         ((PaneVt_803B38E8*)*(void**)(q + 0xb8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
         ((PaneVt_803B38E8*)*(void**)(q + 0xc8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
