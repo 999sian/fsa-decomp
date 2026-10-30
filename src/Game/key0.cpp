@@ -754,7 +754,7 @@ extern "C" void fn_802C3AE4(char* p) {
             if (kind==4) goto create;
             if (kind==5) {
 create:
-                Actor_CreateByID(fn_801F856C(), 0x544b5241, *(s32*)(p+4), p+0xc, kind + (i << 12) + 0x210, -1, -1);
+                Actor_CreateByID(fn_801F856C(), 0x544b5241, *(s32*)(p+4), p+0xc, (kind+(i<<12))+0x210, -1, -1);
                 key0Register(p);
                 detach__5ActorFv(p);
                 return;
@@ -851,9 +851,10 @@ create:
         else *(f32*)(p+0xc)+=lbl_80540C84;
     }
     if (*(s32*)(p+0x240)!=10) {
+        u32 x18;
         u32 packed=key0PackActorFlags((u8*)p);
         if (!fn_802DCD0C(fn_802D6A9C())) {
-            u32 x18=*(u32*)((u8*)fn_802D6A9C()+0x18);
+            x18=*(u32*)((u8*)fn_802D6A9C()+0x18);
             packed|=((x18&0xff)<<8) | ((*(u32*)((u8*)fn_802D6A9C()+0x14)&0xff)<<16);
         } else packed=*(u16*)(p+0x2aa)<<8;
         key0LinkSelf(p, packed);
@@ -881,8 +882,7 @@ create:
         handled=0;
         goto done;
     }
-    handled=1;
-    *(u8*)(p+0x2b0)=handled;
+    *(u8*)(p+0x2b0)=handled=1;
 done:
     if (handled!=1) {
         s32 room=*(s32*)(p+4);
@@ -915,7 +915,20 @@ extern const f32 lbl_80540CAC;
 extern const f32 lbl_80540CC8;
 extern const f32 lbl_80540CD0;
 extern const f32 lbl_80540CF0;
+extern const f32 lbl_80540CF4;
+extern const f32 lbl_80540CF8;
+extern const f32 lbl_80540CFC;
 extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D7584(void* mgr, s32 index, s32 value);
+extern "C" u8 fn_8023A51C(s32 a);
+extern "C" void* fn_8023A478(s32 a);
+extern "C" s32 fn_8023A240(void);
+extern "C" s32 fn_80138A30(s32 a);
+extern "C" void fn_8038AD24(s32 a, s32 b, s32 c, s32 d, void* e, s32 f);
+extern "C" u8 fn_80388CAC(s32 a, s32 b);
+extern "C" u8 fn_8023061C(s32 a, s32 b);
+extern "C" u8 fn_80230534(s32 a);
+extern u8* lbl_8053AB10;
 extern "C" void fn_802C4498(char* p) {
     bool bVar4 = true;
     p[0x2ad] = 0xff;
