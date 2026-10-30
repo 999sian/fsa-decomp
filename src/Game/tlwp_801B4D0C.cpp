@@ -363,6 +363,37 @@ extern "C" void fn_801B5228(char* p) {
     }
 }
 
+
+extern "C" {
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AD30;
+extern u8 lbl_80529DEC[];
+void* fn_80309C4C(void*, s32, s32);
+void fn_801EEC98(void*, s32, void*, void*, void*, void*, s32, s32);
+void fn_8022FEB8(void*, s32, s32, s32, s32);
+s32 fn_8022FD8C(s32);
+u8 fn_802300EC(s32);
+u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
+void fn_8022FE80(s32, s32, s32, s32, s32);
+u8 fn_803865B8(s32);
+void fn_80384C58(s32, s32);
+s32 fn_8037EFB4(s32);
+void fn_80230534(s32);
+s32 fn_80138A30(void*);
+void* fn_801F856C();
+s32 fn_801F68E0(void*);
+s32 fn_8022F3DC(s32);
+void fn_8022CA6C(s32, s32, s32);
+u8 fn_80236B50(s32);
+void fn_8023764C(s32, s32);
+s32 ClassifyBamAngleToQuadrant(u16);
+void fn_80230BF4(s32, s32);
+void fn_802303FC(s32, void*, s32);
+void* Actor_CreateByID(void*, u32, s32, void*, u32, s32, s32);
+void fn_801365E8(void*, s32, s32, s32);
+}
+extern const f32 lbl_8053EA64, lbl_8053EA68, lbl_8053EA6C, lbl_8053EA70, lbl_8053EA74, lbl_8053EA78;
+
 extern "C" void fn_801B56A0(void* this_) {
     char* p = (char*)this_;
     f32 box[4];
