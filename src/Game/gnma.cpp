@@ -72,6 +72,8 @@ static inline u8 gnma_cfgFlagId(s32 id) {
 #define gnma_cfgFlag(p) gnma_cfgFlagId(*(s32*)((p) + 0x4))
 #endif
 
+struct Handles_gnma { u8 pad[0x27c]; void* h[2]; };
+
 // GNMA update (vtable slot 3)
 extern "C" void fn_801AAE88(char* this_) {
     switch (*(s32*)(this_ + 0x254)) {
@@ -321,12 +323,11 @@ extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" s32 fn_801F2718(void*, u32);
 extern "C" void fn_801EF510(void*);
 extern "C" double fabs(double);
-extern "C" void fn_801AB6A8(char* this_) {
+extern "C" void fn_801AB6A8(char* p) {
     HitBox box;
     s32 i;
     s32 player;
     s32 innerRoom;
-    char* p = (char*)this_;
     s32 room;
     JGeometry::TVec2<f32> offset;
     offset.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
@@ -389,19 +390,9 @@ extern "C" void fn_801AB6A8(char* this_) {
         fn_8013CB44(*(void**)(p+0x27c),p+0xc,0,-1,1);
         fn_8013CB44(*(void**)(p+0x280),p+0xc,0,1,1);
         if(*(s32*)(p+0x23c)==1) {
-            s32 one=1;
-            s32 zero=0;
-            if(*(JPABaseEmitter**)(p+0x27c)) {
-                JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x27c);
-                emitter->mFlags |= one;
-                emitter->mMaxFrame=one;
-                *(s32*)(p+0x27c)=zero;
-            }
-            if(*(JPABaseEmitter**)(p+0x280)) {
-                JPABaseEmitter* emitter=*(JPABaseEmitter**)(p+0x280);
-                emitter->mFlags |= one;
-                emitter->mMaxFrame=one;
-                *(s32*)(p+0x280)=zero;
+            for(int n=0;n<2;++n) {
+                JPABaseEmitter*& emitter=((JPABaseEmitter**)(p+0x27c))[n];
+                if(emitter) { emitter->becomeInvalidEmitter(); emitter=0; }
             }
             *(s32*)(p+0x230)=3;
         }
@@ -511,7 +502,7 @@ if ((u8)fn_801F2618(p,0,0)) *(s32*)(p+0x98)^=1;
     }
 }
 
-struct Handles_gnma { u8 pad[0x27c]; void* h[2]; };
+
 
 // GNMA destructor
 extern "C" void* fn_801AC324(char* this_, s16 freeFlag) {
