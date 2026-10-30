@@ -269,6 +269,13 @@ static inline BOOL gbaHandshake(GbaChan* c, u32 expected) {
     return TRUE;
 }
 
+static inline u32 gbaExpectedId(void) {
+    if (fn_801365A8() == 0) {
+        return lbl_80541620;
+    }
+    return lbl_80541628;
+}
+
 // Same CRC as fn_803006E8, used inline by the link thread.
 static inline u8 gbaCrc(u32 data) {
     u32 crc = 0;
