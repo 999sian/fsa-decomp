@@ -934,7 +934,7 @@ static inline void msgSizes(MsgWindow* w,const f32 scale) {
     setTBFontSize((J2DTextBox*)w->screen->search('Tm01'),fs);
     { f32 factor=lbl_8054321C; f32 spacing=factor*w->lineSpace; ((J2DTextBox*)w->screen->search('Tm01'))->setLineSpace(spacing); }
     setTBFontSize((J2DTextBox*)w->screen->search('Tm02'),fs);
-    { f32 factor=lbl_8054321C; f32 spacing=w->lineSpace*factor; ((J2DTextBox*)w->screen->search('Tm02'))->setLineSpace(spacing); }
+    { f32 factor=lbl_8054321C; f32 spacing=factor*w->lineSpace; ((J2DTextBox*)w->screen->search('Tm02'))->setLineSpace(spacing); }
 }
 
 static inline void msgLineSpace(J2DScreen* screen,u64 tag,f32 spacing) {
