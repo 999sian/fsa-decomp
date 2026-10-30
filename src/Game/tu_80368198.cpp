@@ -154,11 +154,11 @@ extern void* lbl_8053AAF8;
 extern char* lbl_8053A1C8;
 extern void* sManager__8JUTVideo;
 extern f32 lbl_80542C64;
-extern f32 lbl_80542C68;
-extern f32 lbl_80542C7C;
-extern f32 lbl_80542C80;
-extern f32 lbl_80542C84;
-extern f32 lbl_80542C88;
+extern const f32 lbl_80542C68;
+extern const f32 lbl_80542C7C;
+extern const f32 lbl_80542C80;
+extern const f32 lbl_80542C84;
+extern const f32 lbl_80542C88;
 extern f32 lbl_80542CB4;
 #pragma opt_dead_assignments off
 extern "C" void fn_80368198(Sub8036C0EC* this_) {
@@ -485,6 +485,351 @@ extern const f32 lbl_80542CAC;
 extern const f32 lbl_80542CB0;
 
 void Unk8036C300::state1() {
+    Vec3f v;
+    char* self = (char*)this;
+    char* tbl = lbl_80474C38;
+    Obj8036C750* o = (Obj8036C750*)self;
+    if (*(s32*)(self + 0x258) != 0) {
+        *(s32*)(self + 0x258) = *(s32*)(self + 0x258) - 1;
+    }
+    if (*(s32*)(self + 0x26c) != 0) {
+        *(s32*)(self + 0x26c) = *(s32*)(self + 0x26c) - 1;
+        if (*(s32*)(self + 0x26c) == 0) {
+            char* em = *(char**)(self + 0x398);
+            if (em != 0) {
+                *(u32*)(em + 0xf4) |= 1;
+                *(s32*)(em + 0x24) = 1;
+                *(s32*)(self + 0x398) = 0;
+            }
+        }
+    }
+    if (*(s32*)(self + 0x274) != 0) {
+        *(s32*)(self + 0x274) = *(s32*)(self + 0x274) - 1;
+    }
+    if (*(s32*)(self + 0x28c) >= 0) {
+        *(s32*)(self + 0x28c) = *(s32*)(self + 0x28c) + 1;
+        if (*(s32*)(self + 0x28c) >= 0x96 && *(f32*)(self + 0x288) < lbl_80542C68) {
+            *(f32*)(self + 0x288) = *(f32*)(self + 0x288) + lbl_80542C58;
+            if (*(f32*)(self + 0x288) >= lbl_80542C68) {
+                *(f32*)(self + 0x288) = lbl_80542C68;
+            }
+            if (*(u8**)(self + 0x39c) != 0) (*(u8**)(self + 0x39c))[0xbb] = (s32)*(f32*)(self + 0x288);
+            if (*(u8**)(self + 0x3a0) != 0) (*(u8**)(self + 0x3a0))[0xbb] = (s32)*(f32*)(self + 0x288);
+            if (*(u8**)(self + 0x3a4) != 0) (*(u8**)(self + 0x3a4))[0xbb] = (s32)*(f32*)(self + 0x288);
+            if (*(u8**)(self + 0x3a8) != 0) (*(u8**)(self + 0x3a8))[0xbb] = (s32)*(f32*)(self + 0x288);
+            if (*(u8**)(self + 0x3ac) != 0) (*(u8**)(self + 0x3ac))[0xbb] = (s32)*(f32*)(self + 0x288);
+            if (*(u8**)(self + 0x3b0) != 0) (*(u8**)(self + 0x3b0))[0xbb] = (s32)*(f32*)(self + 0x288);
+        }
+    }
+    fn_8010DF78(self);
+    {
+        s32 idx = *(s32*)(lbl_80529DEC + 0x118);
+        s32 bit = *(s32*)(lbl_80529DEC + 0x11c);
+        s32 vis = cutsceneFlag(idx, bit);
+        if (vis && *(u8*)(self + 0x270) == 0) {
+            s32 st = *(s32*)(self + 0x240);
+            if (st >= 0x18 && st <= 0x23) {
+                *(u8*)((char*)lbl_8053AAF8 + 0x85) = 2;
+                if ((void*)fn_80309C4C(lbl_8053AD30, 0x1000, -1) != 0) {
+                    *(u8*)(self + 0x270) = 1;
+                    *(f32*)(self + 0x290) = lbl_80542C6C;
+                    fn_80387494(0);
+                    fn_80119DD0();
+                    fn_80119958();
+                    *(s32*)(self + 0x274) = 0x100;
+                }
+            }
+        }
+    }
+    if (*(s32*)(self + 0x240) <= 0x18 && ((u8*)fn_8016A3AC())[0x1ef] == 0 && *(void**)(self + 0x398) == 0) {
+        *(void**)(self + 0x398) = fn_8013CC50(*(u32*)(self + 4), self + 0xc, lbl_80542C58, 0x54c, 0, 1, 0, 0, 1);
+    }
+    if (*(s32*)(self + 0x240) >= 0x15 && *(s32*)(self + 0x240) != 0x26) {
+        if (((*(s32*)(self + 0x240) >= 0x16 && *(s32*)(self + 0x240) < 0x1a) ||
+             (*(s32*)(self + 0x240) >= 0x1c && *(s32*)(self + 0x240) < 0x24)) &&
+            (*(u8*)(self + 0x270) == 0 || *(s32*)(self + 0x274) >= 0x80)) {
+            u8* p = *(u8**)((char*)lbl_8053AB10 + 0x30);
+            if (p[0x284] == 0) {
+                p[0x284] = 1;
+                *(f32*)(p + 0x28c) = lbl_80542C7C;
+            }
+        }
+        v = *(Vec3f*)(self + 0xc);
+        f32 oldY;
+        f32 bottom;
+        bottom = *(f32*)(self + 0x28);
+        oldY = *(f32*)(self + 0x10);
+        v.y += lbl_80542C80 + ((bottom - oldY) - lbl_80542C84);
+        if (*(s32*)(self + 0x240) >= 0x1c) {
+            if (*(s32*)(self + 0x240) <= 0x20) {
+                v.y = v.y + lbl_80542C80;
+            } else {
+                v.y = v.y + lbl_80542C84;
+            }
+        }
+        if (*(s32*)(self + 0x240) >= 0x16) {
+            u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
+            f32 high;
+            f32 low;
+            f32 y;
+            f32 x;
+            y = v.y;
+            x = v.x;
+            high = lbl_80542C88 + y;
+            low = y - lbl_80542C88;
+            eff[0x179] = 1;
+            cutsceneCameraBox(x, low, x, high);
+        } else {
+            fn_8030C210(*(void**)((char*)lbl_8053AB10 + 0x24), &v);
+            {
+                u8* eff = *(u8**)((char*)lbl_8053AB10 + 0x24);
+                if (eff[0x7f5] == 0) {
+                    eff[0x7f4] = 1;
+                    *(s32*)(eff + 0x7f8) = 4;
+                    *(f32*)(eff + 0x7fc) = v.x;
+                    *(f32*)(eff + 0x800) = v.y;
+                    *(f32*)(eff + 0x804) = v.z;
+                    eff[0x7f6] = 0;
+                }
+            }
+        }
+    }
+    if (*(u8*)(self + 0x270) != 1) {
+        switch (*(s32*)(self + 0x240)) {
+        case 0x13:
+            fn_80458FF0(lbl_8053AF80, 0x100001b, 0, 0);
+            ((Sub8036C0EC*)this)->v24(0x14);
+            break;
+        case 0x16:
+            for (s32 i = 0; i < 4; i++) {
+                JGeometry::TVec3f loopPos = *fn_8023E724(i);
+                u16 angle = fn_8023CBC0(i);
+                fn_80230498(i, &loopPos, angle, 0, -128, -128, 1);
+            }
+            if (*(s32*)((char*)fn_8011921C() + 8) == 0x1b8) fn_80458F9C(lbl_8053AF80, 60);
+            break;
+        case 0x17:
+            fn_801CD950((f32*)(self + 0x284), lbl_80542C8C, lbl_80542C90);
+            fn_801CD950((f32*)(self + 0x27c), lbl_80542C94, lbl_80542C98);
+            *(f32*)(self + 0x10) -= *(f32*)(self + 0x27c);
+            if (*(f32*)(self + 0x10) <= *(f32*)(self + 0x28) - lbl_80542C9C) {
+                *(f32*)(self + 0x10) = *(f32*)(self + 0x28) - lbl_80542C9C;
+            }
+            *(s32*)(self + 0x24c) += 2;
+            if (*(s32*)(self + 0x24c) >= 225) *(s32*)(self + 0x24c) = 225;
+            break;
+        case 0x18:
+            *(s32*)(self + 0x24c) = 225;
+            if (!*((u8*)fn_8011921C() + 1)) fn_801CD950((f32*)(self + 0x284), lbl_80542C6C, lbl_80542CA0);
+            fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+            if (fn_803865B8(0)) {
+                fn_80388EEC(0);
+                ((Sub8036C0EC*)this)->v24(0x19);
+                *(s32*)(self + 0x25c) = 0;
+                *(s32*)(self + 0x260) = 0;
+                *(s32*)(self + 0x264) = 0;
+            }
+            break;
+        case 0x19: {
+            const u8* color = (const u8*)(tbl + 0x14c);
+            const u16* idA = (const u16*)(tbl + 0x134);
+            const u16* idB = (const u16*)(tbl + 0x140);
+            for (s32 i = 0; i < 5; i++, color += 3, idA++, idB++) {
+                if (o->a294[i] != 0) {
+                    o->a294[i]--;
+                    if (o->a294[i] == 0) {
+                        JGeometry::TVec3f p1 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
+                        o->a3bc[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p1, lbl_80542C58, 0x32c, 0, -1, 0, 0, 1);
+                        JGeometry::TVec3f p2 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
+                        o->a3d4[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p2, lbl_80542C58, 0x184, 0, -1, 0, 0, 1);
+                        u8* e = (u8*)o->a3bc[i];
+                        if (e != 0) {
+                            e[0xbc] = color[0];
+                            e[0xbd] = color[1];
+                            e[0xbe] = color[2];
+                        }
+                    }
+                }
+                if (o->a294[i] == 0x28) {
+                    JGeometry::TVec3f p3 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
+                    o->a3ec[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p3, lbl_80542C58, *idA, 1, 0, 0, 0, 1);
+                    JGeometry::TVec3f p4 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
+                    o->a400[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p4, lbl_80542C58, *idB, 1, 0, 0, 0, 1);
+                    fn_801F0E34(self, 0x400d9, 0);
+                }
+            }
+            if ((o->a294[0] | o->a294[1] | o->a294[2] | o->a294[3] | o->a294[4]) == 0) {
+                fn_8011921C();
+                fn_801183BC();
+            }
+            break;
+        }
+        case 0x1c:
+            if (*(s32*)(self + 0x258) == 1) {
+                fn_80118454(fn_8011921C());
+            } else if (*(s32*)(self + 0x258) == 0) {
+                ((Sub8036C0EC*)this)->v24(0x1d);
+            }
+            break;
+        case 0x1d:
+            if (*(s32*)(self + 0x258) == 0x32) {
+                u8* mode = *(u8**)((char*)sManager__8JUTVideo + 4);
+                const s32 height = *(u16*)(mode + 6);
+                const s32 width = *(u16*)(mode + 4);
+                v.x = (f32)width * lbl_80542CA4;
+                v.y = (f32)height * lbl_80542CA4;
+                v.z = lbl_80542C6C;
+                v.y += lbl_80542CA8;
+                fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+                s32 room = *(s32*)(self + 4);
+                JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
+                fn_8038BD08(0, 0x848, room, &spawnPos, 0x62);
+            } else if (*(s32*)(self + 0x258) == 0x31) {
+                fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+                if (!fn_803865B8(0)) {
+                    *(s32*)(self + 0x258) += 1;
+                } else {
+                    fn_80388EEC(0);
+                }
+            } else if (*(s32*)(self + 0x258) != 0xf && *(s32*)(self + 0x258) == 0) {
+                ((Sub8036C0EC*)this)->v24(0x1e);
+            }
+            break;
+        case 0x1e:
+            if (*(f32*)(self + 0x250) < lbl_80542CAC) {
+                *(f32*)(self + 0x250) += lbl_80542C58;
+            } else {
+                ((Sub8036C0EC*)this)->v24(0x1f);
+            }
+            *(s32*)(self + 0x24c) = (s32)*(f32*)(self + 0x250);
+            if (*(s32*)(self + 0x24c) >= 0x100) *(s32*)(self + 0x24c) = 0xff;
+            Gol2_SetField_0x2f4(*(void**)(self + 0x2f4), (u8)(0xff - *(s32*)(self + 0x24c)));
+            break;
+        case 0x1f:
+            if (*(s32*)(self + 0x258) != 0) {
+                if (*(s32*)(self + 0x258) == 1) {
+                    u8* mode = *(u8**)((char*)sManager__8JUTVideo + 4);
+                    const s32 height = *(u16*)(mode + 6);
+                    const s32 width = *(u16*)(mode + 4);
+                    v.x = (f32)width * lbl_80542CA4;
+                    v.y = (f32)height * lbl_80542CA4;
+                    v.z = lbl_80542C6C;
+                    v.y += lbl_80542CA8;
+                    fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+                    s32 room = *(s32*)(self + 4);
+                    JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
+                    fn_8038BD08(0, ((u32*)(tbl + 0x30))[*(s32*)(self + 0x268)], room, &spawnPos, 0x62);
+                    *(s32*)(self + 0x268) += 1;
+                }
+            } else {
+                fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+                if (fn_803865B8(0)) {
+                    fn_80388EEC(0);
+                    ((Sub8036C0EC*)this)->v24(0x20);
+                }
+            }
+            break;
+        case 0x20:
+            if (*(s32*)(self + 0x258) == 0) ((Sub8036C0EC*)this)->v24(0x21);
+            break;
+        case 0x21:
+            if (*(u8*)fn_80119DD0() == 0) ((Sub8036C0EC*)this)->v24(0x22);
+            break;
+        case 0x22:
+            fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+            if (fn_803865B8(0)) {
+                fn_80388EEC(0);
+                ((Sub8036C0EC*)this)->v24(0x23);
+            }
+            break;
+        case 0x23:
+            if (*(s32*)(self + 0x258) != 0) {
+                if (*(s32*)(self + 0x258) == 1) {
+                    u8* mode = *(u8**)((char*)sManager__8JUTVideo + 4);
+                    const s32 height = *(u16*)(mode + 6);
+                    const s32 width = *(u16*)(mode + 4);
+                    v.x = (f32)width * lbl_80542CA4;
+                    v.y = (f32)height * lbl_80542CA4;
+                    v.z = lbl_80542C6C;
+                    v.y += lbl_80542CA8;
+                    fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+                    s32 room = *(s32*)(self + 4);
+                    JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
+                    fn_8038BD08(0, ((u32*)(tbl + 0x30))[*(s32*)(self + 0x268)], room, &spawnPos, 0x62);
+                    *(s32*)(self + 0x268) += 1;
+                }
+            } else {
+                fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+                if (fn_803865B8(0)) {
+                    fn_80388EEC(0);
+                    ((Sub8036C0EC*)this)->v24(0x24);
+                }
+            }
+            break;
+        case 0x24: {
+            const s32* timing = (const s32*)(tbl + 0x15c);
+            const u16* idA = (const u16*)(tbl + 0x1e4);
+            const u16* idB = (const u16*)(tbl + 0x1f0);
+            const u8* color = (const u8*)(tbl + 0x1fc);
+            for (s32 i = 0; i < 6; i++, timing++, idA++, idB++, color += 3) {
+                if (*(s32*)(self + 0x258) == *timing) {
+                    o->a2f8[i] = 1;
+                    JGeometry::TVec3f pos = o->trail[i];
+                    pos.z += lbl_80542C5C;
+                    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idA, 0, 0, 0, 0, 1);
+                    pos.z += lbl_80542C60;
+                    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idB, 0, 0, 0, 0, 1);
+                    fn_801F0E34(self, 0x400d9, 0);
+                    o->trail[i].z = lbl_80542C80;
+                } else if (*(s32*)(self + 0x258) == *timing - 0x28) {
+                    o->a2f8[i] = 2;
+                    o->a3bc[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &o->trail[i], lbl_80542C58, 0x32c, 0, -1, 0, 0, 1);
+                    o->a3d4[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &o->trail[i], lbl_80542C58, 0x184, 0, -1, 0, 0, 1);
+                    u8* e = (u8*)o->a3bc[i];
+                    if (e != 0) {
+                        e[0xbc] = color[0];
+                        e[0xbd] = color[1];
+                        e[0xbe] = color[2];
+                    }
+                }
+            }
+            if (*(s32*)(self + 0x258) == 0) ((Sub8036C0EC*)this)->v24(0x25);
+            break;
+        }
+        case 0x25: {
+            const s32* timing = (const s32*)(tbl + 0x174);
+            s32 done = 0;
+            for (s32 i = 0; i < 6; i++, timing++) {
+                if (*(s32*)(self + 0x258) == *timing) o->a2f8[i] = 3;
+                if (o->a2f8[i] == 3) o->trail[i].z += lbl_80542CB0;
+                if (o->a3bc[i] != 0) fn_8013CB44((void*)o->a3bc[i], (Vec3f*)&o->trail[i], 0, -1, 1);
+                if (o->a3d4[i] != 0) fn_8013CB44((void*)o->a3d4[i], (Vec3f*)&o->trail[i], 0, -1, 1);
+                if (o->a2f8[i] != 4 && o->trail[i].z >= lbl_80542C68) {
+                    o->a2f8[i] = 4;
+                    if (o->a3bc[i] != 0) {
+                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)o->a3bc[i]);
+                        o->a3bc[i] = 0;
+                    }
+                }
+                if (o->a2f8[i] == 4) done++;
+            }
+            if (done >= 6) {
+                fn_8011921C();
+                fn_801183BC();
+            }
+            break;
+        }
+        case 0x26:
+            fn_80119998(fn_80119DD0(), 0x78, 0, 0, 0, 1, 0, 0);
+            break;
+        }
+    }
+    if (*(u8*)(self + 0x270) == 1) fn_80368198((Sub8036C0EC*)this);
+    if (*((u8*)self + 0x237)) {
+        *(f32*)(self + 0x280) += *(f32*)(self + 0x284);
+    }
+    fn_801D1C18(self + 0x318);
+    if (*((u8*)self + 0x234)) fn_8036AA60(self);
 }
 
 #pragma opt_common_subs off
