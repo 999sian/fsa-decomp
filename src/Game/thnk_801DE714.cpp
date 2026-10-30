@@ -2,6 +2,32 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "JSystem/JGeometry/Box.h"
+#include "math.h"
+extern "C" void fn_801DF9D8(void*, void*);
+extern "C" void fn_801E002C(void*, void*);
+extern "C" void fn_801E1AB4(void*, u8);
+extern "C" void fn_801E2D88(void*);
+extern "C" s32 fn_802375B0(s32);
+extern "C" u8 fn_801CCFE4(s32);
+extern "C" s32 fn_80138A30(void*);
+extern void* lbl_8053AAF8;
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" u8 fn_802308E0(s32);
+extern "C" u8 fn_8038AD24(s32,s32,s32,s32,void*,s32);
+extern "C" void fn_8023061C(s32,s32);
+extern "C" u8 fn_801D0DD4(void*);
+extern "C" s32 fn_801D05F8(void*,void*,f32);
+extern "C" s32 fn_801D0020(void*,void*,s32,s32);
+extern "C" void fn_801CD950(void*,f32,f32);
+extern "C" u8 fn_803865B8(s32);
+extern "C" s32 fn_8037EFB4(s32);
+extern "C" s32 fn_80236228(s32);
+extern "C" u8 fn_8038470C(s32,s32);
+extern "C" u8 fn_80384C58(s32,s32);
+extern "C" void fn_80237524(s32,s32);
+extern "C" void fn_8023619C(s32,s32);
+extern f32 lbl_8053F498, lbl_8053F49C, lbl_8053F4A0, lbl_8053F4B0;
+
 
 extern "C" void fn_801CE694(void* this_);
 extern "C" u8 fn_801CD2F8(s32 owner);
@@ -517,7 +543,7 @@ extern "C" void fn_801E1AB4(void*, u8);
 extern "C" void fn_801E002C(void* this_, void* obj) {
     s32 period;
     s32 timer;
-    int flag;
+    u8 flag;
     s32 idx;
     void* found;
     char* p=(char*)this_;
@@ -767,7 +793,7 @@ if(!found) {
             }
             if(__fabsf(height-*(f32*)(p+0x14))<lbl_8053F488)flag=1;
         }
-        if((u8)flag) {
+        if(flag) {
             if((fn_801CCF7C()&0xff)==0)fn_801F0E34(this_,0x50019,0);
             fn_801E1AB4(this_,0);
                     *(u32*)(p + 0x230) |= 0x4000;
@@ -789,7 +815,7 @@ if(!found) {
               rec=(char*)fn_802D6A9C();
               field=(idx<8)?rec+0xcc:rec+0xdc;
               if(pos < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field+8))) flag=1;
-            if ((u8)flag && lower < *(f32*)(p + 0xc)) {
+            if (flag && lower < *(f32*)(p + 0xc)) {
                 *(f32*)(p + 0x2c4) = upper;
             } else {
                 *(f32*)(p + 0x2c4) = lower;
@@ -879,7 +905,7 @@ if(!found) {
               rec=(char*)fn_802D6A9C();
               field=(idx<8)?rec+0xcc:rec+0xdc;
               if(pos < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field+8))) flag=1;
-            if ((u8)flag && lower < *(f32*)(p + 0xc)) {
+            if (flag && lower < *(f32*)(p + 0xc)) {
                 *(f32*)(p + 0x2c4) = upper;
             } else {
                 *(f32*)(p + 0x2c4) = lower;
