@@ -251,7 +251,7 @@ void fn_80403E24(T80403D84* self) {
 	self->f659 = 3;
 }
 
-BOOL fn_804045F8(void*, s32 bit) {
+BOOL fn_804045F8(void*, const s32 bit) {
 	if (lbl_8053AAF8[0x7e]) {
 		return (lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a & (u8)(1 << bit)) != 0;
 	}
