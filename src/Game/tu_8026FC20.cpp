@@ -2449,6 +2449,40 @@ void fn_80277EBC(char* p) {
     }
 }
 
+extern "C" {
+s32 fn_80241920(char*);
+s32 fn_80236228(s32);
+s32 fn_80138A30(void*);
+s32 fn_801F6718(void*, s32, s32, void*, s32, s32);
+void* fn_80246D1C(char*, s32);
+void fn_80458F9C(void*, s32);
+extern void* lbl_8053AF80;
+Vec* fn_8023E7B0(s32);
+s32 fn_8023DE58(s32);
+s32 fn_80230CFC(s32);
+void fn_80230C6C(s32);
+u8 fn_8023E98C(s32);
+void* fn_80246B10(char*, s32);
+u8 fn_8022BC38(s32, s32, void*);
+Vec* fn_8023E724(s32);
+u8 fn_80234D94(s32);
+u8 fn_8023B0F4(s32, void*, s32, s32, f32);
+extern u8* lbl_8053AB10;
+extern const f32 lbl_805402F0, lbl_805402F4, lbl_805402C0, lbl_805402C4, lbl_805402D8, lbl_80540300;
+extern const f64 lbl_805402F8;
+}
+inline u8 hitAnySlot(char* o) {
+    for (s32 i = 0; i < 8; i++) {
+        if (U8(o, 0xb4) == 1 && (i == 2 || i == 4 || i == 5)) {
+            continue;
+        }
+        if (U8(o, i + 0x48) == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void fn_80277F98(char* p) {
     s32 r29 = (u32)fn_8022461C(p + 8, (void*)S32(p, 0x3b4));
     if (S32(lbl_8053AAF8, 0x4c) == 0xb) {
