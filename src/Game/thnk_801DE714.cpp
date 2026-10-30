@@ -263,9 +263,9 @@ extern "C" void fn_801DE9F4(void* this_) {
 extern "C" void fn_801E0CF4(char* this_);
 #pragma opt_propagation off
 #pragma opt_common_subs off
-static inline bool thnkPlayerActive(s32 player) {
-    bool active = false;
-    if (fn_802375B0(player) == 0 && (u8)fn_801CCFE4(player)) active = true;
+static inline u8 thnkPlayerActive(s32 player) {
+    s32 active = 0;
+    if (fn_802375B0(player) == 0 && (u8)fn_801CCFE4(player)) active = 1;
     return active;
 }
 static inline bool thnkPlayerValid(s32 player) {
@@ -306,7 +306,11 @@ extern "C" void fn_801DEA70(void* this_) {
             if(*(u32*)(p+0x230)&0x4000)break;
             s32 player=*(s32*)(p+0x2a8);
             if(player<0)break;
-            if(!thnkPlayerValid(player))break;
+            u8 valid=0;
+            s32 active=0;
+            if(fn_802375B0(player)==0 && (u8)fn_801CCFE4(player))active=1;
+            if((u8)active && player<fn_80138A30(lbl_8053AAF8))valid=1;
+            if(!valid)break;
             s32 room=*(s32*)(p+4);
             s32 playerRoom=fn_8023DE58(*(s32*)(p+0x2a8));
             if(playerRoom!=room)break;
@@ -340,8 +344,9 @@ extern "C" void fn_801DEA70(void* this_) {
     }
     case 3:fn_801E002C(this_,found);break;
     case 4: {
-        f32 limit=lbl_8053F4A4;
-        if(*(f32*)(p+0x14)>=limit){*(f32*)(p+0x14)=limit;fn_801E1594(this_,1);}break;
+        f32 z=*(f32*)(p+0x14);
+        f32 limit=30.0f;
+        if(z>=limit){*(f32*)(p+0x14)=limit;fn_801E1594(this_,1);}break;
     }
     case 5:
         if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270)) {
